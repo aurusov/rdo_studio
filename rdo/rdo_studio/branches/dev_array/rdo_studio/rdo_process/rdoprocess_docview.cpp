@@ -11,9 +11,9 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-// ----------------------------------------------------------------------------
-// ---------- RPDoc
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RPDoc
+// --------------------------------------------------------------------------------
 IMPLEMENT_DYNCREATE(RPDoc, CDocument)
 
 BEGIN_MESSAGE_MAP(RPDoc, CDocument)
@@ -38,9 +38,9 @@ BOOL RPDoc::OnNewDocument()
 void RPDoc::Serialize( CArchive& ar )
 {
 	if ( ar.IsStoring() ) {
-		// TODO: add storing code here
+		/// @todo add storing code here
 	} else {
-		// TODO: add loading code here
+		/// @todo add loading code here
 	}
 }
 
@@ -80,9 +80,9 @@ void RPDoc::OnMethodUpdateRange( CCmdUI* pCmdUI )
 	}
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RPView
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RPView
+// --------------------------------------------------------------------------------
 IMPLEMENT_DYNCREATE(RPView, CView)
 
 BEGIN_MESSAGE_MAP(RPView, CView)

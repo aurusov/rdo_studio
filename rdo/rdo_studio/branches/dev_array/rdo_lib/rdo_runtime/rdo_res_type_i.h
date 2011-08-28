@@ -1,38 +1,44 @@
-/**
- @file    rdo_res_type_i.h
- @authors Лущан Дмитрий
- @date    05.06.2011
- @brief   Интерфейс для типов ресурсов
- @indent  4T
- @details Типы ресурсов представляют из себя фабрики, которые реализуют метод createRes для создания ресурсов
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdo_res_type_i.h
+  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \date      05.06.2011
+  \brief     Интерфейс для типов ресурсов
+  \details   Типы ресурсов - фабрики ресурсов. См. паттерн "Фабричный метод"
+  \indent    4T
+*/
 
-#ifndef RDO_RES_TYPE_I_H
-#define RDO_RES_TYPE_I_H
+#ifndef _LIB_RUNTIME_RES_TYPE_I_H_
+#define _LIB_RUNTIME_RES_TYPE_I_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/smart_ptr/interface_ptr.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
 PREDECLARE_POINTER(RDORuntime);
 PREDECLARE_POINTER(RDOResource);
 
+/*!
+  \interface IResourceType
+  \brief     Предоставляет фабричный метод createRes()
+*/
 OBJECT_INTERFACE(IResourceType)
 {
 DECLARE_FACTORY(IResourceType);
 public:
-	virtual rdoRuntime::LPRDOResource createRes(PTR(rdoRuntime::RDORuntime) runtime, CREF(std::vector<RDOValue>) paramsCalcs, rbool trace, rbool permanentFlag) = 0;
+	virtual rdoRuntime::LPRDOResource createRes(CREF(rdoRuntime::LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, rbool trace, rbool permanentFlag) = 0;
 
 protected:
 	IResourceType()          {}
 	virtual ~IResourceType() {}
 };
+
 #define DECLARE_IResourceType \
-	rdoRuntime::LPRDOResource createRes(PTR(rdoRuntime::RDORuntime) runtime, CREF(std::vector<RDOValue>) paramsCalcs, rbool trace, rbool permanentFlag);
+	rdoRuntime::LPRDOResource createRes(CREF(rdoRuntime::LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, rbool trace, rbool permanentFlag);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // RDO_RES_TYPE_I_H
+#endif // _LIB_RUNTIME_RES_TYPE_I_H_

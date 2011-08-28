@@ -1,11 +1,12 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : pch.h
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      pch.h
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
 #ifndef _PARSER_PCH_H_
 #define _PARSER_PCH_H_
@@ -16,7 +17,7 @@
 #define WINVER 0x0501        //! Change this to the appropriate value to target other versions of Windows.
 #endif
 
-// ====================================================================== INCLUDES
+// ----------------------------------------------------------------------- INCLUDES
 #include <algorithm>
 #include <vector>
 #include <map>
@@ -29,11 +30,11 @@
 #include <list>
 #include <math.h>
 #include <time.h>
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/rdocommon.h"
 #include "rdo_common/rdotypes.h"
 #include "rdo_common/rdomacros.h"
 #include "rdo_common/rdodebug.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 #endif //! _PARSER_PCH_H_

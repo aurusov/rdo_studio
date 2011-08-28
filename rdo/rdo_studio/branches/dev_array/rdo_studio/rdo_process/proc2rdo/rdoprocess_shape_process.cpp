@@ -4,9 +4,9 @@
 
 #include "rdo_studio/rdo_process/proc2rdo/stdafx.h"
 #include <list>
-#include "rdoprocess_shape_process.h"
-#include "rdoprocess_shape_process_dlg1.h"
-#include "rdoprocess_method_proc2rdo.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_process.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_process_dlg1.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_method_proc2rdo.h"
 #include "rdo_studio/rdostudioapp.h"
 
 #ifdef _DEBUG
@@ -95,20 +95,20 @@ void RPShapeProcessMJ::generate()
 	switch(action)
 	{
 		case 0://advance
-			m_pParams->addAction(RPShapeDataBlockProcess::Advance);
+			m_pParams->addAction(RPShapeDataBlockProcess::A_ADVANCE);
 			break;
 		case 1://sieze,advance,release
-			m_pParams->addAction(RPShapeDataBlockProcess::Seize  );
-			m_pParams->addAction(RPShapeDataBlockProcess::Advance);
-			m_pParams->addAction(RPShapeDataBlockProcess::Release);
+			m_pParams->addAction(RPShapeDataBlockProcess::A_SEIZE  );
+			m_pParams->addAction(RPShapeDataBlockProcess::A_ADVANCE);
+			m_pParams->addAction(RPShapeDataBlockProcess::A_RELEASE);
 			break;
 		case 2://seize,advance
-			m_pParams->addAction(RPShapeDataBlockProcess::Seize  );
-			m_pParams->addAction(RPShapeDataBlockProcess::Advance);
+			m_pParams->addAction(RPShapeDataBlockProcess::A_SEIZE  );
+			m_pParams->addAction(RPShapeDataBlockProcess::A_ADVANCE);
 			break;
 		case 3://seize,advance
-			m_pParams->addAction(RPShapeDataBlockProcess::Advance);
-			m_pParams->addAction(RPShapeDataBlockProcess::Release);
+			m_pParams->addAction(RPShapeDataBlockProcess::A_ADVANCE);
+			m_pParams->addAction(RPShapeDataBlockProcess::A_RELEASE);
 			break;
 	}
 

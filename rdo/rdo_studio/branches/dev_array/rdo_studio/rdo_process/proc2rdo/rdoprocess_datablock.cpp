@@ -1,22 +1,22 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : rdoprocess_datablock.cpp
- * author   : Шувалов Андрей
- * date     : 04.05.2011
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdoprocess_datablock.cpp
+  \author    Шувалов Андрей
+  \date      04.05.2011
+  \brief     
+  \indent    4T
+*/
 
-// ====================================================================== PCH
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ---------------------------------------------------------------------------- PCH
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_studio/rdo_process/proc2rdo/stdafx.h"
 #include "rdo_studio/rdo_process/proc2rdo/rdoprocess_datablock.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
-// ----------------------------------------------------------------------------
-// ---------- RPShapeDataBlock
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RPShapeDataBlock
+// --------------------------------------------------------------------------------
 RPShapeDataBlock::RPShapeDataBlock(RPShapeDataBlock::zakonRaspr zakon, CREF(tstring) name)
 	: m_zakon(zakon)
 	, m_name (name )
@@ -37,9 +37,9 @@ void RPShapeDataBlock::setBase(int base)
 	m_base=base;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RPShapeDataBlockCreate
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RPShapeDataBlockCreate
+// --------------------------------------------------------------------------------
 RPShapeDataBlockCreate::RPShapeDataBlockCreate(RPShapeDataBlock::zakonRaspr zakon, CREF(tstring) name)
 	: RPShapeDataBlock(zakon, name)
 {}
@@ -52,9 +52,9 @@ void RPShapeDataBlockCreate::setAmount(int amount)
 	m_amount=amount;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RPShapeDataBlockTerminate
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RPShapeDataBlockTerminate
+// --------------------------------------------------------------------------------
 RPShapeDataBlockTerminate::RPShapeDataBlockTerminate(CREF(tstring) name)
 	:m_name(name)
 {}
@@ -67,9 +67,9 @@ void RPShapeDataBlockTerminate::setTermInc(int term_inc)
 	m_term_inc = term_inc;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RPShapeDataBlockProcess
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RPShapeDataBlockProcess
+// --------------------------------------------------------------------------------
 RPShapeDataBlockProcess::RPShapeDataBlockProcess(RPShapeDataBlock::zakonRaspr zakon, CREF(tstring) name)
 	: RPShapeDataBlock(zakon,name)
 {}
@@ -77,22 +77,24 @@ RPShapeDataBlockProcess::RPShapeDataBlockProcess(RPShapeDataBlock::zakonRaspr za
 RPShapeDataBlockProcess::~RPShapeDataBlockProcess()
 {}
 
-void RPShapeDataBlockProcess::addAction(RPShapeDataBlockProcess::resAction action)
+void RPShapeDataBlockProcess::addAction(RPShapeDataBlockProcess::Action action)
 {
-	m_actions.push_back(action);
+	m_actionList.push_back(action);
 }
 
-void RPShapeDataBlockProcess::addRes(CREF(tstring) res)
+void RPShapeDataBlockProcess::addRes(CREF(tstring) resName)
 {
-	m_res.push_back(res);
+	ASSERT(std::find(m_resNameList.begin(), m_resNameList.end(), resName) == m_resNameList.end());
+
+	m_resNameList.push_back(resName);
 }
 
-CREF(RPShapeDataBlockProcess::ActionList) RPShapeDataBlockProcess::getAction() const
+CREF(RPShapeDataBlockProcess::ActionList) RPShapeDataBlockProcess::getActionList() const
 {
-	return m_actions;
+	return m_actionList;
 }
 
-CREF(RPShapeDataBlockProcess::ResList) RPShapeDataBlockProcess::getRes() const
+CREF(RPShapeDataBlockProcess::ResNameList) RPShapeDataBlockProcess::getResNameList() const
 {
-	return m_res;
+	return m_resNameList;
 }

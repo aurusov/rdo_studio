@@ -1,27 +1,34 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : operation_type.h
- * author   : Урусов Андрей
- * date     : 13.03.2011
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      operation_type.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      13.03.2011
+  \brief     Тип операции: арифметическое или логическое выражение
+  \indent    4T
+*/
 
-#ifndef _RDOCALC_OPERATION_TYPE_H_
-#define _RDOCALC_OPERATION_TYPE_H_
+#ifndef _LIB_RUNTIME_CALC_OPERATION_TYPE_H_
+#define _LIB_RUNTIME_CALC_OPERATION_TYPE_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
-// ===============================================================================
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- OperatorType
-// ----------------------------------------------------------------------------
+/*!
+  \class   OperatorType
+  \brief   Тип выражения
+*/
 class OperatorType
 {
 public:
+	/*!
+	  \enum  Type
+	  \brief Тип операции в РДО
+	  \var   OT_ARITHM Арифметическое выражение
+	  \var   OT_LOGIC  Логическое выражение
+	*/
 	enum Type
 	{
 		OT_ARITHM,
@@ -29,13 +36,11 @@ public:
 	};
 
 	template <Type>
-	static REF(ruint) getCalcCounter()
-	{
-		static ruint s_сounter = 0;
-		return s_сounter;
-	}
+	static REF(ruint) getCalcCounter();
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif //! _RDOCALC_OPERATION_TYPE_H_
+#include "rdo_lib/rdo_runtime/calc/operation_type.inl"
+
+#endif // _LIB_RUNTIME_CALC_OPERATION_TYPE_H_

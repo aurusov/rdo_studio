@@ -1,22 +1,23 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : unary.inl
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      unary.inl
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      21.03.2011
+  \brief     Унарные операторы
+  \indent    4T
+*/
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/calc/operation_name.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcUnaryBase
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcUnaryBase
+// --------------------------------------------------------------------------------
 inline RDOCalcUnaryBase::RDOCalcUnaryBase(CREF(LPRDOCalc) pOperation)
 	: m_pOperation(pOperation)
 {
@@ -44,9 +45,9 @@ LPRDOCalc RDOCalcUnaryBase::generateCalc(CREF(RDOSrcInfo::Position) position, CR
 	return pCalc;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcUnary
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcUnary
+// --------------------------------------------------------------------------------
 template <typename ret_type, ret_type (RDOValue::*pOperator)() const, typename OperatorType::Type CalcType>
 inline RDOCalcUnary<ret_type, pOperator, CalcType>::RDOCalcUnary(CREF(RDOSrcInfo::Position) position, CREF(LPRDOCalc) pOperation)
 	: RDOCalcUnaryBase(pOperation)
@@ -70,11 +71,40 @@ inline typename RDOCalcUnary<ret_type, pOperator, CalcType>::value_operator RDOC
 }
 
 template <typename ret_type, ret_type (RDOValue::*pOperator)() const, typename OperatorType::Type CalcType>
-inline REF(RDOValue) RDOCalcUnary<ret_type, pOperator, CalcType>::doCalc(PTR(RDORuntime) runtime)
+inline REF(RDOValue) RDOCalcUnary<ret_type, pOperator, CalcType>::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	++OperatorType::getCalcCounter<CalcType>();
-	m_value = (m_pOperation->calcValue(runtime).*pOperator)();
+	m_value = (m_pOperation->calcValue(pRuntime).*pOperator)();
 	return m_value;
 }
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcDoubleToIntByResult
+// --------------------------------------------------------------------------------
+inline void RDOCalcDoubleToIntByResult::needRound()
+{
+	m_round = true;
+}
+
+inline RDOCalcDoubleToIntByResult::RDOCalcDoubleToIntByResult(CREF(LPRDOCalc) pOper)
+	: m_pOperation(pOper)
+	, m_round     (false)
+{}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcCheckDiap
+// --------------------------------------------------------------------------------
+inline RDOCalcCheckDiap::RDOCalcCheckDiap(CREF(RDOValue) min_value, CREF(RDOValue) max_value, CREF(LPRDOCalc) pOper)
+	: m_pOperation(pOper    )
+	, m_min_value (min_value)
+	, m_max_value (max_value)
+{}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcInt
+// --------------------------------------------------------------------------------
+inline RDOCalcInt::RDOCalcInt(CREF(LPRDOCalc) pOperation)
+	: m_pOperation(pOperation)
+{}
 
 CLOSE_RDO_RUNTIME_NAMESPACE

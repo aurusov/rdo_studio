@@ -1,18 +1,19 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : model_objects_convertor.h
- * author   : Александ Барс, Урусов Андрей
- * date     : 13.06.2009
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      model_objects_convertor.h
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      13.06.2009
+  \brief     
+  \indent    4T
+*/
 
 #ifndef _RDOCOMMON_MODEL_OBJECTS_CONVERTOR_H_
 #define _RDOCOMMON_MODEL_OBJECTS_CONVERTOR_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
-// ===============================================================================
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
+// --------------------------------------------------------------------------------
 
 #define OPEN_RDO_MODEL_OBJECTS_CONVERTOR_NAMESPACE	namespace rdoModelObjectsConvertor {
 #define CLOSE_RDO_MODEL_OBJECTS_CONVERTOR_NAMESPACE	};

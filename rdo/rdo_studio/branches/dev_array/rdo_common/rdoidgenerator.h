@@ -1,20 +1,20 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : rdoidgenerator.h
- * author   : Урусов Андрей
- * date     : 23.02.2010
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdoidgenerator.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      23.02.2010
+  \brief     
+  \indent    4T
+*/
 
 #ifndef _RDOIDGENERATOR_H_
 #define _RDOIDGENERATOR_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/namespace.h"
 #include "rdo_common/rdotypes.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE
 

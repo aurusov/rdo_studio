@@ -1,7 +1,7 @@
 /*
  * copyright: (c) RDO-Team, 2009
  * filename : main.cpp
- * author   : Урусов Андрей
+ * author   : Урусов Андрей (rdo@rk9.bmstu.ru)
  * date     : 07.07.2009
  * bref     : Тест интерфейсов
  * indent   : 4T
@@ -88,7 +88,7 @@ void fun(CREF(LPIMy1) my1)
 
 class MyClass2: public MyClass, public IMy3
 {
-DEFINE_FACTORY(MyClass2);
+DEFINE_IFACTORY(MyClass2);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(MyClass)
 	QUERY_INTERFACE(IMy3)
@@ -115,7 +115,7 @@ private:
 
 class MyClass3: public IMy3, public rdo::IGetUnknown
 {
-DEFINE_FACTORY(MyClass3);
+DEFINE_IFACTORY(MyClass3);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE(IMy3)
 QUERY_INTERFACE_END

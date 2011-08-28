@@ -1,23 +1,24 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : relres.inl
- * author   : Александ Барс, Урусов Андрей
- * date     : 16.04.11
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      relres.inl
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      16.04.2011
+  \brief     RDOCalc для подбора релевантных ресурсов
+  \indent    4T
+*/
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 #include "rdo_lib/rdo_runtime/rdo_activity.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOSetRelResParamCalc
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOSetRelResParamCalc
+// --------------------------------------------------------------------------------
 template <EqualType equalType>
 inline RDOSetRelResParamCalc<equalType>::RDOSetRelResParamCalc(ruint relResID, ruint paramID, CREF(LPRDOCalc) pCalc)
 	: m_relResID(relResID)
@@ -36,7 +37,7 @@ inline RDOSetRelResParamCalc<equalType>::~RDOSetRelResParamCalc()
 {}
 
 template <>
-inline REF(RDOValue) RDOSetRelResParamCalc<ET_EQUAL>::doCalc(PTR(RDORuntime) pRuntime)
+inline REF(RDOValue) RDOSetRelResParamCalc<ET_EQUAL>::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	ruint resID = pRuntime->getCurrentActivity()->getResByRelRes(m_relResID);
 	pRuntime->setResParamVal(resID, m_paramID, m_pCalc->calcValue(pRuntime));
@@ -44,7 +45,7 @@ inline REF(RDOValue) RDOSetRelResParamCalc<ET_EQUAL>::doCalc(PTR(RDORuntime) pRu
 }
 
 template <>
-inline REF(RDOValue) RDOSetRelResParamCalc<ET_PLUS>::doCalc(PTR(RDORuntime) pRuntime)
+inline REF(RDOValue) RDOSetRelResParamCalc<ET_PLUS>::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	ruint resID = pRuntime->getCurrentActivity()->getResByRelRes(m_relResID);
 	pRuntime->getResParamValRaw(resID, m_paramID) += m_pCalc->calcValue(pRuntime);
@@ -52,7 +53,7 @@ inline REF(RDOValue) RDOSetRelResParamCalc<ET_PLUS>::doCalc(PTR(RDORuntime) pRun
 }
 
 template <>
-inline REF(RDOValue) RDOSetRelResParamCalc<ET_MINUS>::doCalc(PTR(RDORuntime) pRuntime)
+inline REF(RDOValue) RDOSetRelResParamCalc<ET_MINUS>::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	ruint resID = pRuntime->getCurrentActivity()->getResByRelRes(m_relResID);
 	pRuntime->getResParamValRaw(resID, m_paramID) -= m_pCalc->calcValue(pRuntime);
@@ -60,7 +61,7 @@ inline REF(RDOValue) RDOSetRelResParamCalc<ET_MINUS>::doCalc(PTR(RDORuntime) pRu
 }
 
 template <>
-inline REF(RDOValue) RDOSetRelResParamCalc<ET_MULTIPLY>::doCalc(PTR(RDORuntime) pRuntime)
+inline REF(RDOValue) RDOSetRelResParamCalc<ET_MULTIPLY>::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	ruint resID = pRuntime->getCurrentActivity()->getResByRelRes(m_relResID);
 	pRuntime->getResParamValRaw(resID, m_paramID) *= m_pCalc->calcValue(pRuntime);
@@ -68,7 +69,7 @@ inline REF(RDOValue) RDOSetRelResParamCalc<ET_MULTIPLY>::doCalc(PTR(RDORuntime) 
 }
 
 template <>
-inline REF(RDOValue) RDOSetRelResParamCalc<ET_DIVIDE>::doCalc(PTR(RDORuntime) pRuntime)
+inline REF(RDOValue) RDOSetRelResParamCalc<ET_DIVIDE>::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	ruint resID = pRuntime->getCurrentActivity()->getResByRelRes(m_relResID);
 	pRuntime->getResParamValRaw(resID, m_paramID) /= m_pCalc->calcValue(pRuntime);
@@ -76,7 +77,7 @@ inline REF(RDOValue) RDOSetRelResParamCalc<ET_DIVIDE>::doCalc(PTR(RDORuntime) pR
 }
 
 template <>
-inline REF(RDOValue) RDOSetRelResParamCalc<ET_INCR>::doCalc(PTR(RDORuntime) pRuntime)
+inline REF(RDOValue) RDOSetRelResParamCalc<ET_INCR>::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	ruint resID = pRuntime->getCurrentActivity()->getResByRelRes(m_relResID);
 	pRuntime->getResParamValRaw(resID, m_paramID) += RDOValue(1);
@@ -84,7 +85,7 @@ inline REF(RDOValue) RDOSetRelResParamCalc<ET_INCR>::doCalc(PTR(RDORuntime) pRun
 }
 
 template <>
-inline REF(RDOValue) RDOSetRelResParamCalc<ET_DECR>::doCalc(PTR(RDORuntime) pRuntime)
+inline REF(RDOValue) RDOSetRelResParamCalc<ET_DECR>::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	ruint resID = pRuntime->getCurrentActivity()->getResByRelRes(m_relResID);
 	pRuntime->getResParamValRaw(resID, m_paramID) -= RDOValue(1);

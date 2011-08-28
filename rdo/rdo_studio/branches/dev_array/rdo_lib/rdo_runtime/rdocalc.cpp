@@ -1,34 +1,36 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdocalc.cpp
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdocalc.cpp
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \date      16.05.2007
+  \brief     Вычислитель
+  \indent    4T
+*/
 
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_runtime/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/namespace.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 #include "rdo_lib/rdo_runtime/rdo_activity.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalc
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalc
+// --------------------------------------------------------------------------------
 RDOCalc::RDOCalc()
 {}
 
 RDOCalc::~RDOCalc()
 {}
 
-REF(RDOValue) RDOCalc::calcValue(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOCalc::calcValue(CREF(LPRDORuntime) pRuntime)
 {
 	try
 	{
@@ -71,25 +73,25 @@ REF(RDOValue) RDOCalc::calcValue(PTR(RDORuntime) pRuntime)
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcGetResParam (Параметры постоянного ресурса)
-// ----------------------------------------------------------------------------
-REF(RDOValue) RDOCalcGetResParam::doCalc(PTR(RDORuntime) pRuntime)
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcGetResParam (Параметры постоянного ресурса)
+// --------------------------------------------------------------------------------
+REF(RDOValue) RDOCalcGetResParam::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_value = pRuntime->getResParamVal(m_resID, m_paramID);
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcGetTempResParamFRM (Параметры временного ресурса для FRM)
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcGetTempResParamFRM (Параметры временного ресурса для FRM)
+// --------------------------------------------------------------------------------
 RDOCalcGetTempResParamFRM::RDOCalcGetTempResParamFRM(int _resNumb, int _parNumb)
 	: RDOCalcGetResParam(_resNumb, _parNumb)
 {
-//TODO	pRuntime->connect(this, RDORuntime::RO_BEFOREDELETE);
+/// @todo pRuntime->connect(this, RDORuntime::RO_BEFOREDELETE);
 }
 
-REF(RDOValue) RDOCalcGetTempResParamFRM::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOCalcGetTempResParamFRM::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	if (m_resID >= 0)
 	{
@@ -106,19 +108,19 @@ REF(RDOValue) RDOCalcGetTempResParamFRM::doCalc(PTR(RDORuntime) pRuntime)
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcGetUnknowResParam (Параметры несуществующего ресурса)
-// ----------------------------------------------------------------------------
-REF(RDOValue) RDOCalcGetUnknowResParam::doCalc(PTR(RDORuntime) pRuntime)
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcGetUnknowResParam (Параметры несуществующего ресурса)
+// --------------------------------------------------------------------------------
+REF(RDOValue) RDOCalcGetUnknowResParam::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->error(rdo::format(_T("Попытка использовать несуществующий ресурс: %s.%s"), m_resName.c_str(), m_parName.c_str()), this);
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcGetGroupResParam
-// ----------------------------------------------------------------------------
-REF(RDOValue) RDOCalcGetGroupResParam::doCalc(PTR(RDORuntime) pRuntime)
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcGetGroupResParam
+// --------------------------------------------------------------------------------
+REF(RDOValue) RDOCalcGetGroupResParam::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	LPRDOResource pCurrRes = pRuntime->getGroupFuncRes();
 	ASSERT(pCurrRes);
@@ -126,77 +128,77 @@ REF(RDOValue) RDOCalcGetGroupResParam::doCalc(PTR(RDORuntime) pRuntime)
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOSetResourceParamCalc
-// ----------------------------------------------------------------------------
-REF(RDOValue) RDOSetResourceParamCalc::doCalc(PTR(RDORuntime) pRuntime)
+// --------------------------------------------------------------------------------
+// -------------------- RDOSetResourceParamCalc
+// --------------------------------------------------------------------------------
+REF(RDOValue) RDOSetResourceParamCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->setResParamVal(m_resNumb, m_parNumb, m_pCalc->calcValue(pRuntime));
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOSetPatternParamCalc
-// ----------------------------------------------------------------------------
-REF(RDOValue) RDOSetPatternParamCalc::doCalc(PTR(RDORuntime) pRuntime)
+// --------------------------------------------------------------------------------
+// -------------------- RDOSetPatternParamCalc
+// --------------------------------------------------------------------------------
+REF(RDOValue) RDOSetPatternParamCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->setPatternParameter(m_parNumb, m_val);
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcPatParam
-// ----------------------------------------------------------------------------
-REF(RDOValue) RDOCalcPatParam::doCalc(PTR(RDORuntime) pRuntime)
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcPatParam
+// --------------------------------------------------------------------------------
+REF(RDOValue) RDOCalcPatParam::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_value = pRuntime->getPatternParameter(m_numberOfParam);
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcGetTimeNow
-// ----------------------------------------------------------------------------
-REF(RDOValue) RDOCalcGetTimeNow::doCalc(PTR(RDORuntime) pRuntime)
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcGetTimeNow
+// --------------------------------------------------------------------------------
+REF(RDOValue) RDOCalcGetTimeNow::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_value = pRuntime->getTimeNow();
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcGetSeconds
-// ----------------------------------------------------------------------------
-REF(RDOValue) RDOCalcGetSeconds::doCalc(PTR(RDORuntime) pRuntime)
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcGetSeconds
+// --------------------------------------------------------------------------------
+REF(RDOValue) RDOCalcGetSeconds::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_value = pRuntime->getSeconds();
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcGetTermNow
-// ----------------------------------------------------------------------------
-REF(RDOValue) RDOCalcGetTermNow::doCalc(PTR(RDORuntime) pRuntime)
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcGetTermNow
+// --------------------------------------------------------------------------------
+REF(RDOValue) RDOCalcGetTermNow::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_value = pRuntime->getCurrentTerm();
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFunListCalc
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOFunListCalc
+// --------------------------------------------------------------------------------
 // Функция типа таблица
-// ----------------------------------------------------------------------------
-REF(RDOValue) RDOFuncTableCalc::doCalc(PTR(RDORuntime) pRuntime)
+// --------------------------------------------------------------------------------
+REF(RDOValue) RDOFuncTableCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	int index = m_pArgCalc->calcValue( pRuntime ).getInt();
 	return m_results.at(index)->calcValue( pRuntime );
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFunListCalc
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOFunListCalc
+// --------------------------------------------------------------------------------
 // Функция типа список
-// ----------------------------------------------------------------------------
-REF(RDOValue) RDOFunListCalc::doCalc(PTR(RDORuntime) pRuntime)
+// --------------------------------------------------------------------------------
+REF(RDOValue) RDOFunListCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	size_t size = m_cases.size();
 	for (ruint i = 0; i < size; i++)
@@ -210,10 +212,10 @@ REF(RDOValue) RDOFunListCalc::doCalc(PTR(RDORuntime) pRuntime)
 	return m_pDefaultValue->calcValue(pRuntime);
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFunAlgorithmicCalc
-// ----------------------------------------------------------------------------
-REF(RDOValue) RDOFunAlgorithmicCalc::doCalc(PTR(RDORuntime) pRuntime)
+// --------------------------------------------------------------------------------
+// -------------------- RDOFunAlgorithmicCalc
+// --------------------------------------------------------------------------------
+REF(RDOValue) RDOFunAlgorithmicCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	int size = m_conditions.size();
 	for (int i = 0; i < size; i++)
@@ -228,10 +230,10 @@ REF(RDOValue) RDOFunAlgorithmicCalc::doCalc(PTR(RDORuntime) pRuntime)
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFunAlgorithmicDiapCalc
-// ----------------------------------------------------------------------------
-REF(RDOValue) RDOFunAlgorithmicDiapCalc::doCalc(PTR(RDORuntime) pRuntime)
+// --------------------------------------------------------------------------------
+// -------------------- RDOFunAlgorithmicDiapCalc
+// --------------------------------------------------------------------------------
+REF(RDOValue) RDOFunAlgorithmicDiapCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	int size = m_conditions.size();
 	for (int i = 0; i < size; i++)
@@ -251,10 +253,10 @@ REF(RDOValue) RDOFunAlgorithmicDiapCalc::doCalc(PTR(RDORuntime) pRuntime)
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFunCalcGroup
-// ----------------------------------------------------------------------------
-REF(RDOValue) RDOFunCalcExist::doCalc(PTR(RDORuntime) pRuntime)
+// --------------------------------------------------------------------------------
+// -------------------- RDOFunCalcGroup
+// --------------------------------------------------------------------------------
+REF(RDOValue) RDOFunCalcExist::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	rbool res = false;
 	RDORuntime::ResCIterator end = pRuntime->res_end();
@@ -275,7 +277,7 @@ REF(RDOValue) RDOFunCalcExist::doCalc(PTR(RDORuntime) pRuntime)
 	return m_value;
 }
 
-REF(RDOValue) RDOFunCalcNotExist::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOFunCalcNotExist::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	rbool res = true;
 	RDORuntime::ResCIterator end = pRuntime->res_end();
@@ -296,7 +298,7 @@ REF(RDOValue) RDOFunCalcNotExist::doCalc(PTR(RDORuntime) pRuntime)
 	return m_value;
 }
 
-REF(RDOValue) RDOFunCalcForAll::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOFunCalcForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	rbool first_found = false;
 	rbool res = true;
@@ -324,7 +326,7 @@ REF(RDOValue) RDOFunCalcForAll::doCalc(PTR(RDORuntime) pRuntime)
 	return m_value;
 }
 
-REF(RDOValue) RDOFunCalcNotForAll::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOFunCalcNotForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	rbool res = false;
 	RDORuntime::ResCIterator end = pRuntime->res_end();
@@ -345,10 +347,10 @@ REF(RDOValue) RDOFunCalcNotForAll::doCalc(PTR(RDORuntime) pRuntime)
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFunCalcSelect
-// ----------------------------------------------------------------------------
-void RDOFunCalcSelect::prepare(PTR(RDORuntime) pRuntime)
+// --------------------------------------------------------------------------------
+// -------------------- RDOFunCalcSelect
+// --------------------------------------------------------------------------------
+void RDOFunCalcSelect::prepare(CREF(LPRDORuntime) pRuntime)
 {
 	res_list.clear();
 	RDORuntime::ResCIterator end = pRuntime->res_end();
@@ -367,13 +369,13 @@ void RDOFunCalcSelect::prepare(PTR(RDORuntime) pRuntime)
 	}
 }
 
-REF(RDOValue) RDOFunCalcSelect::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOFunCalcSelect::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	prepare(pRuntime);
 	return m_value;
 }
 
-REF(RDOValue) RDOFunCalcSelectExist::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOFunCalcSelectExist::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
 	rbool res = false;
@@ -391,7 +393,7 @@ REF(RDOValue) RDOFunCalcSelectExist::doCalc(PTR(RDORuntime) pRuntime)
 	return m_value;
 }
 
-REF(RDOValue) RDOFunCalcSelectNotExist::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOFunCalcSelectNotExist::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
 	rbool res = true;
@@ -409,7 +411,7 @@ REF(RDOValue) RDOFunCalcSelectNotExist::doCalc(PTR(RDORuntime) pRuntime)
 	return m_value;
 }
 
-REF(RDOValue) RDOFunCalcSelectForAll::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOFunCalcSelectForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
 	if (m_pSelect->res_list.empty())
@@ -432,7 +434,7 @@ REF(RDOValue) RDOFunCalcSelectForAll::doCalc(PTR(RDORuntime) pRuntime)
 	return m_value;
 }
 
-REF(RDOValue) RDOFunCalcSelectNotForAll::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOFunCalcSelectNotForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
 	rbool res = false;
@@ -450,48 +452,48 @@ REF(RDOValue) RDOFunCalcSelectNotForAll::doCalc(PTR(RDORuntime) pRuntime)
 	return m_value;
 }
 
-REF(RDOValue) RDOFunCalcSelectSize::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOFunCalcSelectSize::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
 	m_value = m_pSelect->res_list.size();
 	return m_value;
 }
 
-REF(RDOValue) RDOFunCalcSelectEmpty::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOFunCalcSelectEmpty::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
 	m_value = m_pSelect->res_list.empty();
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcFuncParam
-// ----------------------------------------------------------------------------
-REF(RDOValue) RDOCalcFuncParam::doCalc(PTR(RDORuntime) pRuntime)
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcFuncParam
+// --------------------------------------------------------------------------------
+REF(RDOValue) RDOCalcFuncParam::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_value = pRuntime->getFuncArgument(m_param_number);
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcGetConst / RDOCalcSetConst
-// ----------------------------------------------------------------------------
-REF(RDOValue) RDOCalcGetConst::doCalc(PTR(RDORuntime) pRuntime)
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcGetConst / RDOCalcSetConst
+// --------------------------------------------------------------------------------
+REF(RDOValue) RDOCalcGetConst::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_value = pRuntime->getConstValue(m_number);
 	return m_value;
 }
 
-REF(RDOValue) RDOCalcSetConst::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOCalcSetConst::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->setConstValue(m_number, m_pCalc->calcValue(pRuntime));
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcFunctionCall
-// ----------------------------------------------------------------------------
-REF(RDOValue) RDOCalcFunctionCall::doCalc(PTR(RDORuntime) pRuntime)
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcFunctionCall
+// --------------------------------------------------------------------------------
+REF(RDOValue) RDOCalcFunctionCall::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->pushFuncTop();
 	int size = m_parameters.size();

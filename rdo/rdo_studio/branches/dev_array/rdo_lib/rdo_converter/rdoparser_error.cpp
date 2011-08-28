@@ -1,25 +1,26 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdoparser_error.cpp
- * author   : Александ Барс, Урусов Андрей
- * date     : 09.02.2010
- * bref     : основан на rdoparser.h/cpp
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdoparser_error.cpp
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      09.02.2010
+  \brief     основан на rdoparser.h/cpp
+  \indent    4T
+*/
 
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_converter/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_converter/rdoparser_error.h"
 #include "rdo_lib/rdo_converter/rdoparser.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- Error
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- Error
+// --------------------------------------------------------------------------------
 Error::Error()
 	: m_blocked(false)
 {}
@@ -48,7 +49,7 @@ void Error::error(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message, rdoSim
 		return;
 
 	push_only(src_info, message, error_code);
-	throw RDOSyntaxException(m_errors.back().message);
+	throw RDOSyntaxException(m_errors.back().m_message);
 }
 
 void Error::warning(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message, rdoSimulator::RDOSyntaxError::ErrorCode error_code) 
@@ -77,7 +78,7 @@ void Error::error(CREF(RDOParserSrcInfo) src_info1, CREF(RDOParserSrcInfo) src_i
 		return;
 
 	push_only(src_info1.src_pos().m_last_line != src_info2.src_pos().m_last_line ? src_info1 : src_info2, message, error_code);
-	throw RDOSyntaxException(m_errors.back().message);
+	throw RDOSyntaxException(m_errors.back().m_message);
 }
 
 //! misc
@@ -88,7 +89,7 @@ void Error::push_done()
 
 	if (!m_errors.empty())
 	{
-		throw rdoConverter::RDOSyntaxException(m_errors.back().message);
+		throw rdoConverter::RDOSyntaxException(m_errors.back().m_message);
 	}
 }
 
@@ -99,7 +100,7 @@ void Error::modify(CREF(tstring) message)
 
 	if (!m_errors.empty())
 	{
-		m_errors.front().message = message + m_errors.front().message;
+		m_errors.front().m_message = message + m_errors.front().m_message;
 		throw rdoConverter::RDOSyntaxException(_T(""));
 	}
 }

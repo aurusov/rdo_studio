@@ -1,35 +1,42 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdo_logic.inl
- * author   : Урусов Андрей, Лущан Дмитрий
- * date     : 03.10.09
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdo_logic.inl
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \date      03.10.2009
+  \brief     Логика - контейнер БЗ
+  \indent    4T
+*/
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/rdomacros.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/rdo_simulator.h"
 #include "rdo_lib/rdo_runtime/rdo_priority.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
 #pragma warning(disable : 4786)
 
+/// @todo не стоит ли здесь перейти на функторы?
+
+/*!
+  \def   LOGIC_FOR_ALL()
+  \brief Итерация по логики БЗ
+*/
 #define LOGIC_FOR_ALL() STL_FOR_ALL(m_childList, it)
 
-// ----------------------------------------------------------------------------
-// ---------- RDOOrderSimple
-// ----------------------------------------------------------------------------
-inline LPIBaseOperation RDOOrderSimple::sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container)
+// --------------------------------------------------------------------------------
+// -------------------- RDOOrderSimple
+// --------------------------------------------------------------------------------
+inline LPIBaseOperation RDOOrderSimple::sort(CREF(LPRDORuntime) pRuntime, REF(BaseOperationList) container)
 {
 	STL_FOR_ALL(container, it)
 	{
-		if ((*it)->onCheckCondition(sim))
+		if ((*it)->onCheckCondition(pRuntime))
 		{
 			return *it;
 		}
@@ -37,15 +44,14 @@ inline LPIBaseOperation RDOOrderSimple::sort(PTR(RDOSimulator) sim, REF(BaseOper
 	return NULL;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOOrderMeta
-// ----------------------------------------------------------------------------
-inline LPIBaseOperation RDOOrderMeta::sort(PTR(RDOSimulator) sim, REF(BaseOperationList) container)
+// --------------------------------------------------------------------------------
+// -------------------- RDOOrderMeta
+// --------------------------------------------------------------------------------
+inline LPIBaseOperation RDOOrderMeta::sort(CREF(LPRDORuntime) pRuntime, REF(BaseOperationList) container)
 {
 	if (container.empty())
 		return NULL;
 
-	PTR(RDORuntime) runtime = static_cast<PTR(RDORuntime)>(sim);
 	STL_FOR_ALL_CONST(container, it)
 	{
 		LPIPriority pattern = *it;
@@ -54,16 +60,18 @@ inline LPIBaseOperation RDOOrderMeta::sort(PTR(RDOSimulator) sim, REF(BaseOperat
 			LPRDOCalc prior = pattern->getPrior();
 			if (prior)
 			{
-				RDOValue value = prior->calcValue(runtime);
+				RDOValue value = prior->calcValue(pRuntime);
 				if (value < 0 || value > 1)
-					runtime->error(rdo::format(_T("Приоритет активности вышел за пределы диапазона [0..1]: %s"), value.getAsString().c_str()), prior);
+				{
+					pRuntime->error(rdo::format(_T("Приоритет активности вышел за пределы диапазона [0..1]: %s"), value.getAsString().c_str()), prior);
+				}
 			}
 		}
 	}
-	std::sort(container.begin(), container.end(), RDODPTActivityCompare(static_cast<PTR(RDORuntime)>(sim)));
+	std::sort(container.begin(), container.end(), RDODPTActivityCompare(pRuntime));
 	STL_FOR_ALL(container, it)
 	{
-		if ((*it)->onCheckCondition(sim))
+		if ((*it)->onCheckCondition(pRuntime))
 		{
 			return *it;
 		}
@@ -71,15 +79,15 @@ inline LPIBaseOperation RDOOrderMeta::sort(PTR(RDOSimulator) sim, REF(BaseOperat
 	return NULL;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOLogic
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOLogic
+// --------------------------------------------------------------------------------
 template <class Order>
-inline RDOLogic<Order>::RDOLogic(PTR(RDOSimulator) sim, LPIBaseOperationContainer parent)
-	: m_pCondition   (NULL       )
-	, m_lastCondition(false      )
-	, m_first        (NULL       )
-	, m_parent       (parent ? parent : (sim ? sim->m_pMetaLogic : NULL))
+inline RDOLogic<Order>::RDOLogic(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer pParent)
+	: m_pCondition   (NULL )
+	, m_lastCondition(false)
+	, m_first        (NULL )
+	, m_parent       (pParent ? pParent : (pRuntime ? pRuntime->m_pMetaLogic : NULL))
 {}
 
 template <class Order>
@@ -87,10 +95,12 @@ inline RDOLogic<Order>::~RDOLogic()
 {}
 
 template <class Order>
-inline void RDOLogic<Order>::init(PTR(RDOSimulator) sim)
+inline void RDOLogic<Order>::init(CREF(LPRDORuntime) pRuntime)
 {
-	if (sim)
-		sim->appendLogic(rdo::UnknownPointer(this).query_cast<IBaseOperation>(), this->m_parent);
+	if (pRuntime)
+	{
+		pRuntime->appendLogic(rdo::UnknownPointer(this).query_cast<IBaseOperation>(), this->m_parent);
+	}
 }
 
 template <class Order>
@@ -100,51 +110,57 @@ inline void RDOLogic<Order>::setCondition(CREF(LPRDOCalc) pCondition)
 }
 
 template <class Order>
-inline void RDOLogic<Order>::onStart(PTR(RDOSimulator) sim)
+inline void RDOLogic<Order>::onStart(CREF(LPRDORuntime) pRuntime)
 {
-	m_lastCondition = checkSelfCondition(sim);
+	m_lastCondition = checkSelfCondition(pRuntime);
 	if (m_lastCondition)
-		start(sim);
+	{
+		start(pRuntime);
+	}
 }
 
 template <class Order>
-inline void RDOLogic<Order>::onStop(PTR(RDOSimulator) sim)
+inline void RDOLogic<Order>::onStop(CREF(LPRDORuntime) pRuntime)
 {
 	m_lastCondition = false;
-	stop(sim);
+	stop(pRuntime);
 }
 
 template <class Order>
-inline rbool RDOLogic<Order>::onCheckCondition(PTR(RDOSimulator) sim)
+inline rbool RDOLogic<Order>::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
-	rbool condition = checkSelfCondition(sim);
+	rbool condition = checkSelfCondition(pRuntime);
 	if (condition != m_lastCondition)
 	{
 		m_lastCondition = condition;
 		if (condition)
-			start(sim);
+		{
+			start(pRuntime);
+		}
 		else
-			stop(sim);
+		{
+			stop(pRuntime);
+		}
 	}
 
 	if (!condition)
 		return false;
 
-	m_first = Order::sort(sim, m_childList);
+	m_first = Order::sort(pRuntime, m_childList);
 	return m_first ? true : false;
 }
 
 template <class Order>
-inline IBaseOperation::BOResult RDOLogic<Order>::onDoOperation(PTR(RDOSimulator) sim)
+inline IBaseOperation::BOResult RDOLogic<Order>::onDoOperation(CREF(LPRDORuntime) pRuntime)
 {
 	if (m_lastCondition)
 	{
 		if (!m_first)
 			return IBaseOperation::BOR_cant_run;
 
-		IBaseOperation::BOResult result = m_first->onDoOperation(sim);
+		IBaseOperation::BOResult result = m_first->onDoOperation(pRuntime);
 		if (result == IBaseOperation::BOR_must_continue)
-			sim->setMustContinueOpr(m_first);
+			pRuntime->setMustContinueOpr(m_first);
 
 		return result;
 	}
@@ -155,41 +171,47 @@ inline IBaseOperation::BOResult RDOLogic<Order>::onDoOperation(PTR(RDOSimulator)
 }
 
 template <class Order>
-inline void RDOLogic<Order>::onMakePlaned(PTR(RDOSimulator) sim, PTR(void) param)
-{
-	LOGIC_FOR_ALL()
-		(*it)->onMakePlaned(sim, param);
-}
-
-template <class Order>
-inline IBaseOperation::BOResult RDOLogic<Order>::onContinue(PTR(RDOSimulator) sim)
+inline void RDOLogic<Order>::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) param)
 {
 	LOGIC_FOR_ALL()
 	{
-		if ((*it)->onContinue(sim) == IBaseOperation::BOR_must_continue)
+		(*it)->onMakePlaned(pRuntime, param);
+	}
+}
+
+template <class Order>
+inline IBaseOperation::BOResult RDOLogic<Order>::onContinue(CREF(LPRDORuntime) pRuntime)
+{
+	LOGIC_FOR_ALL()
+	{
+		if ((*it)->onContinue(pRuntime) == IBaseOperation::BOR_must_continue)
 			return IBaseOperation::BOR_must_continue;
 	}
 	return IBaseOperation::BOR_cant_run;
 }
 
 template <class Order>
-inline rbool RDOLogic<Order>::checkSelfCondition(PTR(RDOSimulator) sim)
+inline rbool RDOLogic<Order>::checkSelfCondition(CREF(LPRDORuntime) pRuntime)
 {
-	return m_pCondition ? m_pCondition->calcValue(static_cast<PTR(RDORuntime)>(sim)).getAsBool() : true;
+	return m_pCondition ? m_pCondition->calcValue(pRuntime).getAsBool() : true;
 }
 
 template <class Order>
-inline void RDOLogic<Order>::start(PTR(RDOSimulator) sim)
+inline void RDOLogic<Order>::start(CREF(LPRDORuntime) pRuntime)
 {
 	LOGIC_FOR_ALL()
-		(*it)->onStart(sim);
+	{
+		(*it)->onStart(pRuntime);
+	}
 }
 
 template <class Order>
-inline void RDOLogic<Order>::stop(PTR(RDOSimulator) sim)
+inline void RDOLogic<Order>::stop(CREF(LPRDORuntime) pRuntime)
 {
 	LOGIC_FOR_ALL()
-		(*it)->onStop(sim);
+	{
+		(*it)->onStop(pRuntime);
+	}
 }
 
 template <class Order>

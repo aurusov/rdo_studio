@@ -1,23 +1,25 @@
-/**
- @file    rdo_resource.inl
- @authors Ћущан ƒмитрий
- @date    15.06.2011
- @brief   RDOResource inline implementation
- @indent  4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdo_resource.inl
+  \author    Ћущан ƒмитрий (dluschan@rk9.bmstu.ru)
+  \date      15.06.2011
+  \brief     RDOResource inline implementation
+  \indent    4T
+*/
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
-// ===============================================================================
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOResource
-// ----------------------------------------------------------------------------
-inline void RDOResource::setRuntime(PTR(RDORuntime) runtime)
+// --------------------------------------------------------------------------------
+// -------------------- RDOResource
+// --------------------------------------------------------------------------------
+inline void RDOResource::setRuntime(CREF(LPRDORuntime) pRuntime)
 {
-	RDORuntimeContainer::setRuntime(runtime);
+	/// @todo походу надо удалить метод
+	NEVER_REACH_HERE;
 }
 
 inline tstring RDOResource::whoAreYou()

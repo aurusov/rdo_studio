@@ -1,26 +1,27 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : array.h
- * author   : Чирков Михаил
- * date     : 03.12.10
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      array.h
+  \author    Чирков Михаил
+  \date      03.12.2010
+  \brief     Агрегатный тип данных - массив
+  \indent    4T
+*/
 
-#ifndef _RDOCALC_ARRAY_H_
-#define _RDOCALC_ARRAY_H_
+#ifndef _LIB_RUNTIME_CALC_ARRAY_H_
+#define _LIB_RUNTIME_CALC_ARRAY_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcArraySize
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcArraySize
+  \brief   Размер массива
+*/
 CALC(RDOCalcArraySize)
 {
 DECLARE_FACTORY(RDOCalcArraySize)
@@ -29,12 +30,13 @@ private:
 
 	LPRDOCalc m_pArray;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcArrayItem
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcArrayItem
+  \brief   Элемент массива
+*/
 CALC(RDOCalcArrayItem)
 {
 DECLARE_FACTORY(RDOCalcArrayItem)
@@ -44,12 +46,13 @@ private:
 	LPRDOCalc m_pArray;
 	LPRDOCalc m_pArrayInd;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcSetArrayItem
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcSetArrayItem
+  \brief   Множество элементов массива
+*/
 CALC(RDOCalcSetArrayItem)
 {
 	DECLARE_FACTORY(RDOCalcSetArrayItem)
@@ -60,9 +63,9 @@ private:
 	LPRDOCalc m_pArrayInd;
 	LPRDOCalc m_pSetItem;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif //! _RDOCALC_ARRAY_H_
+#endif // _LIB_RUNTIME_CALC_ARRAY_H_

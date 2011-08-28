@@ -1,49 +1,49 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : braces.cpp
- * author   : Чирков Михаил
- * date     : 16.04.11
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      braces.cpp
+  \author    Чирков Михаил
+  \date      16.04.2011
+  \brief     Список инструкций в стиле C++
+  \indent    4T
+*/
 
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_runtime/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/calc/braces.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcOpenBrace
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcOpenBrace
+// --------------------------------------------------------------------------------
 RDOCalcOpenBrace::RDOCalcOpenBrace()
 {}
 
-REF(RDOValue) RDOCalcOpenBrace::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOCalcOpenBrace::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	LPRDOMemory pLocalMemory = rdo::Factory<RDOMemory>::create();
 	pRuntime->getMemoryStack()->push(pLocalMemory);
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcCloseBrace
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcCloseBrace
+// --------------------------------------------------------------------------------
 RDOCalcCloseBrace::RDOCalcCloseBrace()
 {}
 
-REF(RDOValue) RDOCalcCloseBrace::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOCalcCloseBrace::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->getMemoryStack()->pop();
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcBodyBrace
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcBodyBrace
+// --------------------------------------------------------------------------------
 RDOCalcBodyBrace::RDOCalcBodyBrace()
 {}
 
@@ -53,7 +53,7 @@ void RDOCalcBodyBrace::addCalc(CREF(LPRDOCalc) pCalc)
 	m_calcList.push_back(pCalc);
 }
 
-REF(RDOValue) RDOCalcBodyBrace::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOCalcBodyBrace::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	STL_FOR_ALL(m_calcList, calc_it)
 	{
@@ -64,9 +64,9 @@ REF(RDOValue) RDOCalcBodyBrace::doCalc(PTR(RDORuntime) pRuntime)
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcFunBodyBrace
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcFunBodyBrace
+// --------------------------------------------------------------------------------
 RDOCalcFunBodyBrace::RDOCalcFunBodyBrace()
 {}
 
@@ -83,7 +83,7 @@ void RDOCalcFunBodyBrace::addRetCalc(CREF(LPRDOCalc) pCalc)
 	m_calcFunList.insert(--m_calcFunList.end(), pCalcReturn);
 }
 
-REF(RDOValue) RDOCalcFunBodyBrace::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOCalcFunBodyBrace::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	if (pRuntime->getFunBreakFlag() == RDORuntime::FBF_CONTINUE)
 	{
@@ -109,13 +109,13 @@ REF(RDOValue) RDOCalcFunBodyBrace::doCalc(PTR(RDORuntime) pRuntime)
 	return m_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcFunEnd
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcFunEnd
+// --------------------------------------------------------------------------------
 RDOCalcFunEnd::RDOCalcFunEnd()
 {}
 
-REF(RDOValue) RDOCalcFunEnd::doCalc(PTR(RDORuntime) pRuntime)
+REF(RDOValue) RDOCalcFunEnd::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->getMemoryStack()->pop();
 	pRuntime->setFunBreakFlag(RDORuntime::FBF_CONTINUE);

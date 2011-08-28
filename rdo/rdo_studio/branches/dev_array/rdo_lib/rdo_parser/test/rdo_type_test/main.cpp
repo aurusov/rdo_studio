@@ -1,7 +1,7 @@
 /*
  * copyright: (c) RDO-Team, 2010
  * filename : main.cpp
- * author   : Урусов Андрей
+ * author   : Урусов Андрей (rdo@rk9.bmstu.ru)
  * date     : 14.03.2010
  * bref     : Тест типов парсера
  * indent   : 4T

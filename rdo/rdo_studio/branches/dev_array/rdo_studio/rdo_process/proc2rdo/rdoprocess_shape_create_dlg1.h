@@ -6,10 +6,9 @@
 #endif // _MSC_VER > 1000
 // rdoprocess_shape_create_dlg1_MJ.h : header file
 //
-#include "rdoprocess_shape_create.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_create.h"
+#include "rdo_studio/resource.h"
 
-
-#include "../../resource.h"
 /////////////////////////////////////////////////////////////////////////////
 // RPShapeCreateDlg1_MJ dialog
 

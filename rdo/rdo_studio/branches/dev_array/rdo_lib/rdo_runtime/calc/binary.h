@@ -1,26 +1,28 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : binary.h
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      binary.h
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      13.03.2011
+  \brief     Бинарные операторы
+  \indent    4T
+*/
 
-#ifndef _RDOCALC_BINARY_H_
-#define _RDOCALC_BINARY_H_
+#ifndef _LIB_RUNTIME_CALC_BINARY_H_
+#define _LIB_RUNTIME_CALC_BINARY_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/calc/operation_type.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcBinaryBase
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcBinaryBase
+  \brief   Базовый класс для бинарных операторов
+*/
 class RDOCalcBinaryBase: public RDOCalc
 {
 public:
@@ -34,9 +36,13 @@ protected:
 	LPRDOCalc  m_pRight;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcBinary
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcBinary
+  \tparam  ret_type  Возвращаемое значение
+  \tparam  pOperator Оператор
+  \tparam  CalcType  Тип бинарного оператора
+  \brief   Бинарный оператор
+*/
 template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue) rdovalue) const, typename OperatorType::Type CalcType>
 class RDOCalcBinary: public RDOCalcBinaryBase
 {
@@ -56,11 +62,16 @@ protected:
 	RDOCalcBinary(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight);
 
 private:
-	REF(RDOValue) doCalc(PTR(RDORuntime) runtime);
+	//! Выполняет бинарную операцию \ref value_operator над \ref m_pLeft и \ref m_pRight
+	//! \param pRuntime - указатель на объект runtime'а.
+	//!                   Используется для доступа к БД модели, системному времени, генерации ошибок и др.
+	//! \exception RDORuntimeException
+	//! \result Вычесленное калком значение
+	DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "rdo_lib/rdo_runtime/calc/binary.inl"
 
-#endif //! _RDOCALC_BINARY_H_
+#endif // _LIB_RUNTIME_CALC_BINARY_H_

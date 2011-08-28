@@ -9,9 +9,9 @@
 #include "rdo_studio/rdo_tracer/rdotracervalues.h"
 #include "rdo_studio/rdostudiochartdoc.h"
 
-// ----------------------------------------------------------------------------
-// ---------- RDOStudioChartView
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOStudioChartView
+// --------------------------------------------------------------------------------
 class RDOStudioChartViewStyle;
 class RDOTracerSerie;
 class RDOStudioDocSerie;

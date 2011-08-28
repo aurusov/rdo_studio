@@ -1,13 +1,13 @@
 #if !defined(AFX_RDOPROCESS_SHAPE_PROCESS_DLG2_MJ_H__CDF27E31_27E6_4234_B896_4E8D70947E9F__INCLUDED_)
 #define AFX_RDOPROCESS_SHAPE_PROCESS_DLG2_MJ_H__CDF27E31_27E6_4234_B896_4E8D70947E9F__INCLUDED_
-#include "../../resource.h"
+#include "rdo_studio/resource.h"
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
 // rdoprocess_shape_process_dlg2_MJ.h : header file
 //
-#include "rdoprocess_shape_process_dlg1.h"
 #include <list>
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_process_dlg1.h"
 /////////////////////////////////////////////////////////////////////////////
 // RPShapeProcessDlg2_MJ dialog
 

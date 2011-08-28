@@ -1,6 +1,6 @@
-#include "stdafx.h"
-#include "rdoprocess_project.h"
-#include "rdoprocess_messages.h"
+#include "rdo_studio/rdo_process/rp_method/stdafx.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_project.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_messages.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -12,9 +12,9 @@ namespace rpMethod {
 RPProject* project = NULL;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RPProject
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RPProject
+// --------------------------------------------------------------------------------
 RPProject::RPProject():
 	RPObject( NULL ),
 	last_button_id( 20000 ),

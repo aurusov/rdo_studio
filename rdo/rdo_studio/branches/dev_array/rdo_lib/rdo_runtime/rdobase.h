@@ -1,79 +1,81 @@
-#ifndef RDOBASE_H
-#define RDOBASE_H
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdobase.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      11.06.2006
+  \brief     Управление симулятором
+  \indent    4T
+*/
 
+#ifndef _LIB_RUNTIME_BASE_H_
+#define _LIB_RUNTIME_BASE_H_
+
+// ----------------------------------------------------------------------- INCLUDES
 #include <map>
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime_interface_registrator.h"
 #include "rdo_common/rdocommon.h"
-
+#include "rdo_common/smart_ptr/intrusive_ptr.h"
 #ifdef RDO_MT
 #include <afxwin.h>
 #else
 #include <windows.h>
 #endif
+// --------------------------------------------------------------------------------
 
-namespace rdoRuntime
-{
+OPEN_RDO_RUNTIME_NAMESPACE
 
-class RDOSimulatorBase: public RDORuntimeParent
+/*!
+  \class     RDOSimulatorBase
+  \brief     Один из базовых классов для RDORuntime
+*/
+OBJECT(RDOSimulatorBase)
 {
+DECLARE_FACTORY(RDOSimulatorBase)
 public:
 	// Публичные методы управления симулятором
-	virtual void rdoInit();
+	virtual void  rdoInit();
 	virtual rbool rdoNext();
-	virtual void rdoPostProcess();
+	virtual void  rdoPostProcess();
 
-	void setStartTime( double value )          { m_startTime = value;  }
-	double getCurrentTime() const              { return m_currentTime; }
+	void   setStartTime  (double value);
+	double getCurrentTime() const;
 
-	
+	RunTimeMode getMode() const;
+	void        setMode(RunTimeMode _mode);
 
-	RunTimeMode getMode() const                { return m_mode;        }
-	void setMode( RunTimeMode _mode );
+	double getSpeed() const;
+	void setSpeed(double persent);
 
-	double getSpeed() const                    { return m_speed;       }
-	void setSpeed( double persent );
-
-	double getShowRate() const                 { return m_showRate;    }
-	void setShowRate( double value );
+	double getShowRate() const;
+	void setShowRate(double value);
 
 	void addTimePoint   (double timePoint, CREF(LPIBaseOperation) opr, void* param = NULL);
 	void removeTimePoint(CREF(LPIBaseOperation) opr);
 
-	void inc_cnt_events()      { m_cnt_events++;      }
-	void inc_cnt_choice_from() { m_cnt_choice_from++; }
+	void inc_cnt_events();
+	void inc_cnt_choice_from();
 
-	ruint get_cnt_events()      { return m_cnt_events;      }
-	ruint get_cnt_choice_from() { return m_cnt_choice_from; }
+	ruint get_cnt_events();
+	ruint get_cnt_choice_from();
 	ruint get_cnt_calc_arithm() const;
 	ruint get_cnt_calc_logic()  const;
 
-	static ruint getMSec(CREF(SYSTEMTIME) systime)
-	{
-		return systime.wMilliseconds + systime.wSecond * 1000 + systime.wMinute * 1000 * 60 + systime.wHour * 1000 * 60 * 60;
-	}
+	static ruint getMSec(CREF(SYSTEMTIME) systime);
 
 protected:
 	RDOSimulatorBase();
-	virtual ~RDOSimulatorBase() {}
+	virtual ~RDOSimulatorBase();
 
 	struct BOPlanned
 	{
 		LPIBaseOperation  m_opr;
 		PTR(void)         m_param;
 		
-		BOPlanned()
-			: m_opr  (NULL)
-			, m_param(NULL)
-		{}
-		BOPlanned(CREF(BOPlanned) copy)
-			: m_opr  (copy.m_opr  )
-			, m_param(copy.m_param)
-		{}
-		BOPlanned(LPIBaseOperation opr, PTR(void) param = NULL)
-			: m_opr  (opr  )
-			, m_param(param)
-		{}
+		BOPlanned();
+		BOPlanned(CREF(BOPlanned) copy);
+		BOPlanned(LPIBaseOperation opr, PTR(void) param = NULL);
 	};
 	typedef  std::list<BOPlanned>                  BOPlannedItem;
 	typedef  std::map<double, PTR(BOPlannedItem)>  BOPlannedMap;
@@ -81,7 +83,7 @@ protected:
 	BOPlannedMap m_timePoints;
 	rbool        m_checkOperation;
 
-	void setCurrentTime(double value) { m_currentTime = value; }
+	void setCurrentTime(double value);
 
 	// Выполнение любых операций (паттерны, DPT и процессы)
 	// Если вернулось значение true, то необходимо вызвать doOperation
@@ -116,8 +118,9 @@ protected:
 	// Проверка на нажатие клавиши или активной области
 	virtual rbool isKeyDown()   = 0;
 
+	/// @todo не ошибочная ли это реализация по-умолчанию?
 	// Вызывается при увеличении модельного времени
-	virtual void onNewTimeNow() {};
+	virtual void onNewTimeNow();
 
 private:
 	double m_startTime;
@@ -140,6 +143,8 @@ private:
 	ruint        m_cnt_choice_from;
 };
 
-} // namespace rdoRuntime;
+CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // RDOBASE_H
+#include "rdo_lib/rdo_runtime/rdobase.inl"
+
+#endif // _LIB_RUNTIME_BASE_H_

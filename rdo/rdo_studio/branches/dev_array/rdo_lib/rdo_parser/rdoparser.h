@@ -1,19 +1,20 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdoparser.h
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdoparser.h
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
 #ifndef _RDOPARSER_H_
 #define _RDOPARSER_H_
 
-// ====================================================================== INCLUDES
+// ----------------------------------------------------------------------- INCLUDES
 #include <algorithm>
 #include <stack>
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/rdocommon.h"
 #include "rdo_common/rdoindexedstack.h"
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
@@ -37,11 +38,7 @@
 #include "rdo_lib/rdo_parser/context/context_find_i.h"
 #include "rdo_lib/rdo_parser/context/stack.h"
 #include "rdo_lib/rdo_parser/rdo_array.h"
-// ===============================================================================
-
-OPEN_RDO_RUNTIME_NAMESPACE
-class RDORuntime;
-CLOSE_RDO_RUNTIME_NAMESPACE
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
 
@@ -50,9 +47,9 @@ class RDOArrayType;
 
 class RDORTPFuzzyParam;
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParser
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParser
+// --------------------------------------------------------------------------------
 #define DEFINE_OBJECT_CONTAINER_MINIMUM(TYPE, NAME) \
 public: \
 	typedef std::vector<TYPE> NAME##List; \
@@ -109,7 +106,7 @@ public:
 	virtual void init  ();
 	virtual void deinit();
 
-	PTR(rdoRuntime::RDORuntime) runtime() { return &m_runtime; }
+	CREF(rdoRuntime::LPRDORuntime) runtime() const { return m_pRuntime; }
 
 	rbool             isPattern       () const { return m_pattern;     }
 	REF(FUNGroupList) getFUNGroupStack()       { return m_allFUNGroup; }
@@ -239,8 +236,8 @@ protected:
 
 	typedef std::vector<PTR(RDOValue)> ValueList;
 
-	ValueList              m_allValues;
-	rdoRuntime::RDORuntime m_runtime;
+	ValueList                m_allValues;
+	rdoRuntime::LPRDORuntime m_pRuntime;
 
 	void parse(rdoModelObjects::RDOParseType file);
 
@@ -291,9 +288,9 @@ private:
 };
 DECLARE_POINTER(RDOParser);
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserTemplate
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserTemplate
+// --------------------------------------------------------------------------------
 template <class Container>
 class RDOParserTemplate: public RDOParser
 {
@@ -330,19 +327,19 @@ private:
 	LPRDOParserContainer m_pContainer;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserModel
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserModel
+// --------------------------------------------------------------------------------
 typedef RDOParserTemplate<RDOParserContainerModel> RDOParserModel;
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserSMRInfo
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserSMRInfo
+// --------------------------------------------------------------------------------
 typedef RDOParserTemplate<RDOParserContainerSMRInfo> RDOParserSMRInfo;
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserCorbar
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserCorbar
+// --------------------------------------------------------------------------------
 typedef RDOParserTemplate<RDOParserContainerCorba> RDOParserCorba;
 
 CLOSE_RDO_PARSER_NAMESPACE

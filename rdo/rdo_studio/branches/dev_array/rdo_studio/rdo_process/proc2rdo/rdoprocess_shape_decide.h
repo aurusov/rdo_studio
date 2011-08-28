@@ -9,7 +9,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "rdoprocess_shape.h"
+#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape.h"
 
 class RPShapeDecide : public RPShape_MJ  
 {

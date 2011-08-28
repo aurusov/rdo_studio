@@ -10,9 +10,9 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #ifdef RDO_MT
-// --------------------------------------------------------------------
-// ---------- RDOThreadStudio
-// --------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOThreadStudio
+// --------------------------------------------------------------------------------
 RDOThreadStudio::RDOThreadStudio(): RDOThread( "RDOThreadStudio", RDOThread::threadFun )
 {
 	after_constructor();
@@ -36,9 +36,9 @@ void RDOThreadStudio::proc( RDOMessageInfo& msg )
 	}
 }
 
-// --------------------------------------------------------------------
-// ---------- RDOThreadStudioGUI
-// --------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOThreadStudioGUI
+// --------------------------------------------------------------------------------
 RDOThreadStudioGUI::RDOThreadStudioGUI(): RDOKernelGUI( "RDOThreadStudioGUI" )
 {
 	after_constructor();
@@ -46,9 +46,9 @@ RDOThreadStudioGUI::RDOThreadStudioGUI(): RDOKernelGUI( "RDOThreadStudioGUI" )
 #endif
 
 /*
-// --------------------------------------------------------------------
-// ---------- RDOThreadStudio1
-// --------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOThreadStudio1
+// --------------------------------------------------------------------------------
 RDOThreadStudio1::RDOThreadStudio1(): RDOThreadMT( "RDOThreadStudio1" )
 {
 	notifies.push_back( RT_RUNTIME_TRACE_STRING );
@@ -65,9 +65,9 @@ void RDOThreadStudio1::proc( RDOMessageInfo& msg )
 	}
 }
 
-// --------------------------------------------------------------------
-// ---------- RDOThreadStudio2
-// --------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOThreadStudio2
+// --------------------------------------------------------------------------------
 RDOThreadStudio2::RDOThreadStudio2(): RDOThreadMT( "RDOThreadStudio2" )
 {
 	notifies.push_back( RT_RUNTIME_TRACE_STRING );

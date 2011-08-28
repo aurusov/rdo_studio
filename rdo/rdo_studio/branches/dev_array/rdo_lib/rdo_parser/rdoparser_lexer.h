@@ -1,17 +1,18 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdoparser_lexer.h
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdoparser_lexer.h
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
 #ifndef _RDOPARSER_LEXER_H_
 #define _RDOPARSER_LEXER_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_parser/namespace.h"
 #include "rdo_lib/rdo_parser/rdobison.h"
 #include "rdo_lib/rdo_parser/rdogramma.h"
@@ -22,13 +23,13 @@
 #define yyFlexLexer yyFlexLexer
 #include "thirdparty/bison_flex/FlexLexer.h"
 #endif
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOLexer
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOLexer
+// --------------------------------------------------------------------------------
 PREDECLARE_POINTER(RDOParser);
 
 class RDOLexer: public yyFlexLexer

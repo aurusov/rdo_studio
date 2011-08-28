@@ -1,22 +1,22 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdo_enum.inl
- * author   : Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdo_enum.inl
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      18.04.2009
+  \brief     Перечисления
+  \indent    4T
+*/
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo_exception.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOEnumType
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOEnumType
+// --------------------------------------------------------------------------------
 inline RDOEnumType::RDOEnumType()
 	: RDOType(RDOType::t_enum)
 {}
@@ -43,9 +43,24 @@ inline rbool RDOEnumType::exist(CREF(tstring) val) const
 	return findEnum(val) != END;
 }
 
-inline rbool                        RDOEnumType::empty    () const { return m_enum.empty(); }
-inline const RDOEnumType::CIterator RDOEnumType::begin    () const { return m_enum.begin(); }
-inline const RDOEnumType::CIterator RDOEnumType::end      () const { return m_enum.end();   }
-inline CREF(RDOEnumType::Enums)     RDOEnumType::getValues() const { return m_enum;         }
+inline rbool RDOEnumType::empty() const
+{
+	return m_enum.empty();
+}
+
+inline const RDOEnumType::CIterator RDOEnumType::begin() const
+{
+	return m_enum.begin();
+}
+
+inline const RDOEnumType::CIterator RDOEnumType::end() const
+{
+	return m_enum.end();
+}
+
+inline CREF(RDOEnumType::Enums) RDOEnumType::getValues() const
+{
+	return m_enum;
+}
 
 CLOSE_RDO_RUNTIME_NAMESPACE

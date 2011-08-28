@@ -1,6 +1,6 @@
-#include "stdafx.h"
-#include "rdoprocess_object.h"
-#include "rdoprocess_project.h"
+#include "rdo_studio/rdo_process/rp_method/stdafx.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_object.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_project.h"
 #include "rdo_studio/rdo_process/rp_misc/rdoprocess_xml.h"
 
 #ifdef _DEBUG
@@ -9,9 +9,9 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-// ----------------------------------------------------------------------------
-// ---------- RPObject
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RPObject
+// --------------------------------------------------------------------------------
 RPObject::RPObject( RPObject* _parent, const rp::string& _name ):
 	parent( _parent ),
 	name( _name ),

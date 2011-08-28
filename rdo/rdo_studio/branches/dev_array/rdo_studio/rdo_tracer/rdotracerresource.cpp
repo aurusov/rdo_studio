@@ -10,9 +10,9 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-// ----------------------------------------------------------------------------
-// ---------- RDOTracerResParam
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOTracerResParam
+// --------------------------------------------------------------------------------
 RDOTracerResParam::RDOTracerResParam( RDOTracerResource* const res ) :
 	RDOTracerSerie( RDOST_RESPARAM ),
 	resource( res )
@@ -70,9 +70,9 @@ void RDOTracerResParam::getCaptions( std::vector<std::string> &captions, const i
 	const_cast<CMutex&>(mutex).Unlock();
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOTracerResource
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOTracerResource
+// --------------------------------------------------------------------------------
 RDOTracerResource::RDOTracerResource( RDOTracerResType* const type, std::string& name ) :
 	RDOTracerTreeItem(),
 	erased( false ),

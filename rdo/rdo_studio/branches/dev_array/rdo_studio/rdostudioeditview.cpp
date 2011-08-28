@@ -14,9 +14,9 @@ static char THIS_FILE[] = __FILE__;
 
 using namespace rdoEditor;
 
-// ----------------------------------------------------------------------------
-// ---------- RDOStudioEditView
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOStudioEditView
+// --------------------------------------------------------------------------------
 IMPLEMENT_DYNCREATE(RDOStudioEditView, RDOStudioEditBaseView)
 
 BEGIN_MESSAGE_MAP(RDOStudioEditView, RDOStudioEditBaseView)

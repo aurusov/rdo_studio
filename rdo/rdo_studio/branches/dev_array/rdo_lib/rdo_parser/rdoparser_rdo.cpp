@@ -1,16 +1,17 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdoparser_rdo.cpp
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdoparser_rdo.cpp
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_parser/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_parser/rdoparser_rdo.h"
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
 #include "rdo_lib/rdo_parser/rdoparser.h"
@@ -25,13 +26,13 @@
 #include "rdo_kernel/rdokernel.h"
 #include "rdo_repository/rdorepository.h"
 #include "rdo_lib/rdo_runtime/calc/std_fun.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserRDOItem
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserRDOItem
+// --------------------------------------------------------------------------------
 RDOParserRDOItem::RDOParserRDOItem(rdoModelObjects::RDOFileType type, t_bison_parse_fun parser_fun, t_bison_error_fun error_fun, t_flex_lexer_fun lexer_fun, StreamFrom from)
 	: RDOParserItem(type, parser_fun, error_fun, lexer_fun, from)
 	, m_pLexer(NULL)
@@ -103,9 +104,9 @@ ruint RDOParserRDOItem::lexer_loc_pos()
 	return m_pLexer && m_pLexer->m_lploc ? m_pLexer->m_lploc->m_first_pos : 0;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserRSS
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserRSS
+// --------------------------------------------------------------------------------
 RDOParserRSS::RDOParserRSS(StreamFrom from)
 	: RDOParserRDOItem(rdoModelObjects::RSS, rssparse, rsserror, rsslex, from)
 {}
@@ -118,9 +119,9 @@ void RDOParserRSS::parse(CREF(LPRDOParser) pParser)
 	RDOParserRDOItem::parse(pParser);
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserRSSPost
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserRSSPost
+// --------------------------------------------------------------------------------
 void RDOParserRSSPost::parse(CREF(LPRDOParser) pParser)
 {
 	ASSERT(pParser);
@@ -147,9 +148,9 @@ void RDOParserRSSPost::parse(CREF(LPRDOParser) pParser)
 #endif
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserSMRPost
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserSMRPost
+// --------------------------------------------------------------------------------
 RDOParserSMRPost::RDOParserSMRPost()
 	: RDOParserItem(rdoModelObjects::SMR, NULL, NULL, NULL)
 {}
@@ -172,9 +173,9 @@ void RDOParserSMRPost::parse(CREF(LPRDOParser) pParser)
 	}
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserEVNPost
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserEVNPost
+// --------------------------------------------------------------------------------
 void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 {
 	ASSERT(pParser);
@@ -204,7 +205,7 @@ void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 
 		if (pEvent->getRegular())
 		{
-			LPIBaseOperation pRuntimeEvent = static_cast<PTR(rdoRuntime::RDOPatternEvent)>(pPattern->getPatRuntime())->createActivity(pParser->runtime()->m_pMetaLogic, pParser->runtime(), pEvent->name());
+			LPIBaseOperation pRuntimeEvent = pPattern->getPatRuntime<rdoRuntime::RDOPatternEvent>()->createActivity(pParser->runtime()->m_pMetaLogic, pParser->runtime(), pEvent->name());
 			ASSERT(pRuntimeEvent);
 			pEvent->setRuntimeEvent(pRuntimeEvent);
 

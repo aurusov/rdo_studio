@@ -1,22 +1,23 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : rdorss.cpp
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdorss.cpp
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_parser/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_parser/rdorss.h"
 #include "rdo_lib/rdo_parser/rdortp.h"
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
 
@@ -30,9 +31,9 @@ int rsslex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 void rsserror(PTR(char) message)
 {}
 
-// ----------------------------------------------------------------------------
-// ---------- RDORSSResource
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDORSSResource
+// --------------------------------------------------------------------------------
 RDORSSResource::RDORSSResource(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id)
 	: RDOParserSrcInfo(src_info                                      )
 	, m_pResType      (pResType                                      )
@@ -108,7 +109,7 @@ void RDORSSResource::addParam(CREF(RDOValue) param)
 			if (!(*m_currParam)->getDefault().defined())
 			{
 				RDOParser::s_parser()->error().push_only(param.src_info(), _T("Невозможно использовать '*', к.т. отсутствует значение по-умолчанию"));
-				//! TODO: src_info() без параметра RDOParserSrcInfo()
+				/// @todo src_info() без параметра RDOParserSrcInfo()
 				RDOParser::s_parser()->error().push_only((*m_currParam)->getTypeInfo()->src_info(RDOParserSrcInfo()), _T("См. описание параметра"));
 				RDOParser::s_parser()->error().push_done();
 			}
@@ -146,9 +147,9 @@ rdoRuntime::LPRDOCalc RDORSSResource::createCalc() const
 	return calc;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCResource
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCResource
+// --------------------------------------------------------------------------------
 RDOPROCResource::RDOPROCResource(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id)
 	: RDORSSResource(pParser, src_info, pResType, id)
 {}
@@ -170,9 +171,9 @@ rdoRuntime::LPRDOCalc RDOPROCResource::createCalc() const
 	return calc;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCTransact
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCTransact
+// --------------------------------------------------------------------------------
 RDOPROCTransact::RDOPROCTransact(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id)
 : RDORSSResource(pParser, src_info, pResType, id)
 {}

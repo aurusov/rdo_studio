@@ -1,26 +1,27 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : document.cpp
- * author   : Урусов Андрей
- * date     : 01.11.2010
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      document.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      01.11.2010
+  \brief     
+  \indent    4T
+*/
 
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_converter/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+#include <boost/filesystem.hpp>
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_converter/update/document.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
 //#define DUMP_DOCUMENT
 
-// ----------------------------------------------------------------------------
-// ---------- Document
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- Document
+// --------------------------------------------------------------------------------
 Document::Document()
 {}
 
@@ -163,7 +164,9 @@ tstring Document::getName(TypeOut typeOut) const
 	default: NEVER_REACH_HERE;
 	}
 
-	return rdo::format(_T("%s%s.%s"), m_filePath.c_str(), m_modelName.c_str(), extention.c_str());
+	boost::filesystem::path fileName(boost::filesystem::path(m_filePath) / m_modelName);
+	fileName.replace_extension(rdo::format(_T(".%s"), extention.c_str()));
+	return fileName.string();
 }
 
 Document::LPMemoryStream Document::getMemoryStream(Type type)
@@ -229,9 +232,9 @@ tstring Document::get(Type type, ruint from, ruint to)
 	return getMemoryStream(type)->get(from, to);
 }
 
-// ----------------------------------------------------------------------------
-// ---------- MemoryStream
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- MemoryStream
+// --------------------------------------------------------------------------------
 void Document::MemoryStream::init(REF(std::ifstream) stream)
 {
 	if (!m_buffer.empty())

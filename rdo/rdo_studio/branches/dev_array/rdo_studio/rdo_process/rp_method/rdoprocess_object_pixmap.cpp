@@ -1,5 +1,5 @@
-#include "stdafx.h"
-#include "rdoprocess_object_pixmap.h"
+#include "rdo_studio/rdo_process/rp_method/stdafx.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_object_pixmap.h"
 #include "rdo_studio/rdo_process/rp_misc/mctranspblt/McTransparentBlit.h"
 #include "rdo_studio/rdo_process/rp_misc/rdoprocess_pixmap.h"
 #include "rdo_studio/rdo_process/rp_misc/rdoprocess_xml.h"
@@ -10,9 +10,9 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-// ----------------------------------------------------------------------------
-// ---------- RPObjectPixmap
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RPObjectPixmap
+// --------------------------------------------------------------------------------
 RPObjectPixmap::RPObjectPixmap( RPObject* _parent, RPPixmap* _pixmap ):
 	RPShape( _parent, _T("pixmap") ),
 	pixmap( _pixmap )

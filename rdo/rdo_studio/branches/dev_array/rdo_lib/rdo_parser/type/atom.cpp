@@ -1,29 +1,29 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : atom.cpp
- * author   : Урусов Андрей
- * date     : 09.04.2011
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      atom.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      09.04.2011
+  \brief     
+  \indent    4T
+*/
 
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_parser/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_parser/type/atom.h"
 #include "rdo_lib/rdo_parser/type/info.h"
 #include "rdo_lib/rdo_parser/rdo_value.h"
 #include "rdo_lib/rdo_parser/rdoparser_error.h"
 #include "rdo_lib/rdo_runtime/calc/unary.h"
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- ATOM_TYPE_PARSER
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- ATOM_TYPE_PARSER
+// --------------------------------------------------------------------------------
 #define DECLARE_ATOM_TYPE_PARSER(Type, TypeName) \
 tstring RDOType__##Type::name() const            \
 {                                                \
@@ -38,9 +38,9 @@ DECLARE_ATOM_TYPE_PARSER(real,          _T("real")         );
 DECLARE_ATOM_TYPE_PARSER(bool,          _T("bool")         );
 DECLARE_ATOM_TYPE_PARSER(string,        _T("string")       );
 
-// ----------------------------------------------------------------------------
-// ---------- RDOType__unknow
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOType__unknow
+// --------------------------------------------------------------------------------
 LPRDOType RDOType__unknow::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
 	rdoParse::g_error().error(src_info, rdo::format(_T("Внутренная ошибка парсера. Невозможно преобразовать тип '%s' к неизвестному типу"), from_src_info.src_text().c_str()));
@@ -71,9 +71,9 @@ void RDOType__unknow::writeModelStructure(REF(std::ostream) stream) const
 	NEVER_REACH_HERE;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOType__void
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOType__void
+// --------------------------------------------------------------------------------
 LPRDOType RDOType__void::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
 	if (from->type()->typeID() == rdoRuntime::RDOType::t_void)
@@ -113,9 +113,9 @@ void RDOType__void::writeModelStructure(REF(std::ostream) stream) const
 	NEVER_REACH_HERE;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOType__int
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOType__int
+// --------------------------------------------------------------------------------
 LPRDOType RDOType__int::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
 	switch (from->type()->typeID())
@@ -173,9 +173,9 @@ void RDOType__int::writeModelStructure(REF(std::ostream) stream) const
 	stream << _T("I") << std::endl;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOType__real
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOType__real
+// --------------------------------------------------------------------------------
 LPRDOType RDOType__real::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
 	switch (from->type()->typeID())
@@ -227,9 +227,9 @@ void RDOType__real::writeModelStructure(REF(std::ostream) stream) const
 	stream << _T("R") << std::endl;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOType__string
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOType__string
+// --------------------------------------------------------------------------------
 LPRDOType RDOType__string::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
 	switch (from->type()->typeID())
@@ -280,9 +280,9 @@ void RDOType__string::writeModelStructure(REF(std::ostream) stream) const
 	stream << _T("S") << std::endl;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOType__identificator
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOType__identificator
+// --------------------------------------------------------------------------------
 LPRDOType RDOType__identificator::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
 	switch (from->type()->typeID())
@@ -325,9 +325,9 @@ void RDOType__identificator::writeModelStructure(REF(std::ostream) stream) const
 	NEVER_REACH_HERE;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOType__bool
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOType__bool
+// --------------------------------------------------------------------------------
 LPRDOType RDOType__bool::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
 	switch (from->type()->typeID())

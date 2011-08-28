@@ -1,44 +1,49 @@
-#ifndef RDODTPRTIME_H
-#define RDODTPRTIME_H
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdodptrtime.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      16.05.2007
+  \brief     Runtime трассировка для DPTSearch
+  \indent    4T
+*/
 
+#ifndef _LIB_RUNTIME_DPTRTIME_H_
+#define _LIB_RUNTIME_DPTRTIME_H_
+
+// ----------------------------------------------------------------------- INCLUDES
 #include <sstream>
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/searchtrace.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
+// --------------------------------------------------------------------------------
 
-namespace rdoRuntime
-{
+OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDODPTSearchRuntime - DPT (потомок RDODPTSearch)
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDODPTSearchRuntime
+  \brief   потомок RDODPTSearch
+*/
 class RDODPTSearchRuntime: public RDODPTSearchTrace
 {
 DEFINE_IFACTORY(RDODPTSearchRuntime);
 
 private:
-	RDODPTSearchRuntime( RDORuntime* runtime, LPIBaseOperationContainer parent, CREF(LPRDOCalc) _pCondition, CREF(LPRDOCalc) _pTermCondition, CREF(LPRDOCalc) _pEvaluateBy, bool _compTops, RDODPTSearchTrace::DPT_TraceFlag _traceFlag ):
-		RDODPTSearchTrace( runtime, parent ),
-		pCondition( _pCondition ),
-		pTermCondition( _pTermCondition ),
-		pEvaluateBy( _pEvaluateBy ),
-		compTops( _compTops )
-	{
-		setTraceID( runtime->getFreeDPTId() );
-		traceFlag = _traceFlag;
-	}
+	RDODPTSearchRuntime(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer parent, CREF(LPRDOCalc) _pCondition, CREF(LPRDOCalc) _pTermCondition, CREF(LPRDOCalc) _pEvaluateBy, rbool _compTops, RDODPTSearchTrace::DPT_TraceFlag _traceFlag);
 
 	LPRDOCalc pCondition;
 	LPRDOCalc pTermCondition;
 	LPRDOCalc pEvaluateBy;
-	bool      compTops;
+	rbool     compTops;
 
-	virtual bool   onCheckCondition( RDOSimulator* sim ) { return pCondition->calcValue( static_cast<RDORuntime*>(sim) ).getAsBool();     }
-	virtual bool   TermCondition( RDOSimulator* sim )    { return pTermCondition->calcValue( static_cast<RDORuntime*>(sim) ).getAsBool(); }
-	virtual double EvaluateBy( RDOSimulator* sim )       { return pEvaluateBy->calcValue( static_cast<RDORuntime*>(sim) ).getDouble();    }
-	virtual bool   NeedCompareTops()                     { return compTops; }
+	virtual rbool  onCheckCondition(CREF(LPRDORuntime) pRuntime);
+	virtual rbool  TermCondition   (CREF(LPRDORuntime) pRuntime);
+	virtual double EvaluateBy      (CREF(LPRDORuntime) pRuntime);
+	virtual rbool  NeedCompareTops ();
 };
 
-} // namespace rdoRuntime
+CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // RDODTPRTIME_H
+#include "rdo_lib/rdo_runtime/rdodptrtime.inl"
+
+#endif // _LIB_RUNTIME_DPTRTIME_H_

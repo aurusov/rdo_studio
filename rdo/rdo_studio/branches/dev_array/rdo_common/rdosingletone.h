@@ -1,21 +1,21 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdosingletone.h
- * author   : Урусов Андрей
- * date     : 26.07.2009
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdosingletone.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      26.07.2009
+  \brief     
+  \indent    4T
+*/
 
 #ifndef _RDOSINGLETONE_H_
 #define _RDOSINGLETONE_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/namespace.h"
 #include "rdo_common/rdomacros.h"
 #include "rdo_common/rdotypes.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE
 

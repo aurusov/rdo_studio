@@ -1,26 +1,27 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : locvar.h
- * author   : Чирков Михаил
- * date     : 03.12.10
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      locvar.h
+  \author    Чирков Михаил
+  \date      03.12.2010
+  \brief     Локальные переменные
+  \indent    4T
+*/
 
-#ifndef _RDOCALC_LOCVAR_H_
-#define _RDOCALC_LOCVAR_H_
+#ifndef _LIB_RUNTIME_CALC_LOC_VAR_H_
+#define _LIB_RUNTIME_CALC_LOC_VAR_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/equaltype.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcCreateLocalVariable
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcCreateLocalVariable
+  \brief   Создание локальной переменной
+*/
 CALC(RDOCalcCreateLocalVariable)
 {
 DECLARE_FACTORY(RDOCalcCreateLocalVariable)
@@ -29,12 +30,13 @@ private:
 
 	tstring m_name;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcInitLocalVariable
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcInitLocalVariable
+  \brief   Инициализация локальной переменной
+*/
 CALC(RDOCalcInitLocalVariable)
 {
 DECLARE_FACTORY(RDOCalcInitLocalVariable)
@@ -44,12 +46,13 @@ private:
 	tstring   m_name;
 	LPRDOCalc m_pCalc;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcGetLocalVariable
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcGetLocalVariable
+  \brief   Получение локальной переменной
+*/
 CALC(RDOCalcGetLocalVariable)
 {
 DECLARE_FACTORY(RDOCalcGetLocalVariable)
@@ -58,12 +61,13 @@ private:
 
 	tstring m_name;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcSetLocalVariable
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcSetLocalVariable
+  \brief   Сохранение локальной переменной
+*/
 template <EqualType equalType>
 class RDOCalcSetLocalVariable: public RDOCalc
 {
@@ -75,12 +79,13 @@ private:
 	tstring   m_name;
 	LPRDOCalc m_pCalc;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcLocalVariableList
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcLocalVariableList
+  \brief   Список локальных переменных
+*/
 CALC(RDOCalcLocalVariableList)
 {
 	DECLARE_FACTORY(RDOCalcLocalVariableList)
@@ -94,11 +99,11 @@ private:
 
 	CalcLocalVariableList m_calcLocalVariableList;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "rdo_lib/rdo_runtime/calc/locvar.inl"
 
-#endif //! _RDOCALC_LOCVAR_H_
+#endif // _LIB_RUNTIME_CALC_LOC_VAR_H_

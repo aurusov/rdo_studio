@@ -1,27 +1,28 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : std_fun.h
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      std_fun.h
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      13.03.2011
+  \brief     Стандартные функции языка
+  \indent    4T
+*/
 
-#ifndef _RDOCALC_STD_FUN_H_
-#define _RDOCALC_STD_FUN_H_
+#ifndef _LIB_RUNTIME_CALC_STD_FUN_H_
+#define _LIB_RUNTIME_CALC_STD_FUN_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- Стандартные функции языка
-// ----------------------------------------------------------------------------
-
+/*!
+  \class   std_fun1
+  \brief   Функция с одним параметром
+*/
 template <class RT, class P1>
 class std_fun1
 {
@@ -33,6 +34,10 @@ public:
 	typedef RT (*function_type)(P1);
 };
 
+/*!
+  \class   std_fun2
+  \brief   Функция с двумя параметрами
+*/
 template <class RT, class P1, class P2>
 class std_fun2
 {
@@ -45,51 +50,50 @@ public:
 	typedef RT (*function_type)(P1, P2);
 };
 
+/*!
+  \class   RDOFunCalcStd
+  \brief   Функции из пространства имен std C++
+*/
 template <class F>
 class RDOFunCalcStd: public RDOFunCalc
 {
 public:
 	typedef typename F::function_type function_type;
 
-	RDOFunCalcStd(CREF(function_type) pFunction)
-		: m_pFunction(pFunction)
-	{}
+	RDOFunCalcStd(CREF(function_type) pFunction);
 
 private:
 	function_type m_pFunction;
 
-	REF(RDOValue) doCalc(PTR(RDORuntime) pRuntime)
-	{
-		calc<F::arity>(pRuntime);
-		return m_value;
-	}
+	REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime);
 
 	template <int paramCount>
-	FORCEINLINE void calc(PTR(RDORuntime) pRuntime);
+	FORCEINLINE void calc(CREF(LPRDORuntime) pRuntime);
 
+	/// @todo перенести определение функций-членов в std_fun.inl
 	template <>
-	FORCEINLINE void calc<1>(PTR(RDORuntime) pRuntime)
+	FORCEINLINE void calc<1>(CREF(LPRDORuntime) pRuntime)
 	{
 		m_value = m_pFunction(getParam<F::arg1_type>(pRuntime, 0));
 	}
 
 	template <>
-	FORCEINLINE void calc<2>(PTR(RDORuntime) pRuntime)
+	FORCEINLINE void calc<2>(CREF(LPRDORuntime) pRuntime)
 	{
 		m_value = m_pFunction(getParam<F::arg1_type>(pRuntime, 0), getParam<F::arg2_type>(pRuntime, 1));
 	}
 
 	template <class T>
-	FORCEINLINE T getParam(PTR(RDORuntime) pRuntime, ruint paramNumber);
+	FORCEINLINE T getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber);
 
 	template <>
-	FORCEINLINE double getParam<double>(PTR(RDORuntime) pRuntime, ruint paramNumber)
+	FORCEINLINE double getParam<double>(CREF(LPRDORuntime) pRuntime, ruint paramNumber)
 	{
 		return pRuntime->getFuncArgument(paramNumber).getDouble();
 	}
 
 	template <>
-	FORCEINLINE int getParam<int>(PTR(RDORuntime) pRuntime, ruint paramNumber)
+	FORCEINLINE int getParam<int>(CREF(LPRDORuntime) pRuntime, ruint paramNumber)
 	{
 		return pRuntime->getFuncArgument(paramNumber).getInt();
 	}
@@ -97,4 +101,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif //! _RDOCALC_STD_FUN_H_
+#include "rdo_lib/rdo_runtime/calc/std_fun.inl"
+
+#endif // _LIB_RUNTIME_CALC_STD_FUN_H_

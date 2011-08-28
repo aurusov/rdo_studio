@@ -1,10 +1,10 @@
-#include "stdafx.h"
-#include "rdoprocess_factory.h"
-#include "rdoprocess_connector.h"
-#include "rdoprocess_method.h"
-#include "block_default.xpm"
-#include "rdo_studio/rdo_process/rp_misc/rdoprocess_pixmap.h"
+#include "rdo_studio/rdo_process/rp_method/stdafx.h"
 #include <fstream>
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_factory.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_connector.h"
+#include "rdo_studio/rdo_process/rp_method/rdoprocess_method.h"
+#include "rdo_studio/rdo_process/rp_method/block_default.xpm"
+#include "rdo_studio/rdo_process/rp_misc/rdoprocess_pixmap.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -16,9 +16,9 @@ namespace rpMethod {
 RPObjectFactory* factory = NULL;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RPObjectClassInfo
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RPObjectClassInfo
+// --------------------------------------------------------------------------------
 RPObjectClassInfo::RPObjectClassInfo( const rp::string& _class_name, RPObjectClassInfo* _parent, MakeObject _makeObject ):
 	class_name( _class_name ),
 	makeObject( _makeObject ),
@@ -112,9 +112,9 @@ RPPixmap* RPObjectClassInfo::getPreview()
 	return preview;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RPObjectFactory
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RPObjectFactory
+// --------------------------------------------------------------------------------
 RPObjectFactory::RPObjectFactory()
 {
 	rpMethod::project->log() << "RPObjectFactory::RPObjectFactory()" << std::endl;

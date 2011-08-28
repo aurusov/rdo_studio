@@ -15,9 +15,9 @@ static char THIS_FILE[] = __FILE__;
 
 using namespace rdoEditor;
 
-// ----------------------------------------------------------------------------
-// ---------- RDOStudioModelView
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOStudioModelView
+// --------------------------------------------------------------------------------
 static const UINT FINDINMODEL_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 
 IMPLEMENT_DYNCREATE(RDOStudioModelView, RDOStudioEditBaseView)

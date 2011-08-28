@@ -1,18 +1,18 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdo_type_range.inl
- * author   : Урусов Андрей
- * date     : 10.02.2010
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdo_type_range.inl
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      10.02.2010
+  \brief     
+  \indent    4T
+*/
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_converter/rdoparser_error.h"
 #include "rdo_lib/rdo_converter/rdoparser.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
@@ -68,9 +68,9 @@ inline CREF(RDOValue) RDOTypeRangeRange::getMax() const
 	return m_max_value;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOTypeRange
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOTypeRange
+// --------------------------------------------------------------------------------
 template<class T>
 inline RDOTypeRange<T>::RDOTypeRange(CREF(LPRDOTypeRangeRange) range)
 	: T      (     )

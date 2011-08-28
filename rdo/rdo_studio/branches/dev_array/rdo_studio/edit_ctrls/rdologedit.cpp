@@ -14,9 +14,9 @@ static char THIS_FILE[] = __FILE__;
 
 using namespace rdoEditCtrl;
 
-// ----------------------------------------------------------------------------
-// ---------- RDOLogEditLineInfo
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOLogEditLineInfo
+// --------------------------------------------------------------------------------
 RDOLogEditLineInfo::RDOLogEditLineInfo( const std::string& _message, const rdoModelObjects::RDOFileType _fileType, const int _lineNumber, const int _posInLine ):
 	fileType( _fileType ),
 	lineNumber( _lineNumber ),
@@ -53,8 +53,8 @@ std::string RDOLogEditLineInfo::getMessage() const
 	}
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOLogEdit
+// --------------------------------------------------------------------------------
+// -------------------- RDOLogEdit
 // ---------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP( RDOLogEdit, RDOBaseEdit )
 	//{{AFX_MSG_MAP(RDOLogEdit)

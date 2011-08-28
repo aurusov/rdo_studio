@@ -1,18 +1,18 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : counter_reference.h
- * author   : Урусов Андрей
- * date     : 12.06.2010
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      counter_reference.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      12.06.2010
+  \brief     
+  \indent    4T
+*/
 
 #ifndef _RDO_COUNTER_REFERENCE_H_
 #define _RDO_COUNTER_REFERENCE_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
-// ===============================================================================
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE
 
@@ -21,6 +21,7 @@ class counter_reference
 template<class T> friend class intrusive_ptr;
 template<class T> friend class CounterReferenceReal;
 public:
+	//! Инициализиреут счетчик нулём
 	counter_reference();
 
 private:

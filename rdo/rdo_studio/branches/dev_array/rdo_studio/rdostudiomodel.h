@@ -1,11 +1,11 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : rdostudiomodel.h
- * author   : Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdostudiomodel.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
 #ifndef _RDOSTUDIOMODEL_H_
 #define _RDOSTUDIOMODEL_H_
@@ -14,8 +14,8 @@
 #pragma once
 #endif
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_studio/rdostudioframemanager.h"
 #include "rdo_studio/rdostudiomodeldoc.h"
 #include "rdo_studio/rdostudiomodelview.h"
@@ -27,11 +27,11 @@
 #include "rdo_studio/rdostudioapp.h"
 #include "rdo_kernel/rdothread.h"
 #include "rdo_lib/rdo_simulator/rdosimwin.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
-// ----------------------------------------------------------------------------
-// ---------- RDOStudioModel
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOStudioModel
+// --------------------------------------------------------------------------------
 namespace rdoEditor {
 	class RDOEditorTabCtrl;
 }
@@ -238,7 +238,7 @@ public:
 	rbool isPrevModelClosed    () const { return m_modelClosed; }
 };
 
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
 extern PTR(RDOStudioModel) model;
 
 #endif //! _RDOSTUDIOMODEL_H_

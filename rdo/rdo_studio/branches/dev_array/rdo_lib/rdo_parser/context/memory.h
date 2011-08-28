@@ -1,28 +1,28 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : memory.h
- * author   : Урусов Андрей
- * date     : 16.10.2010
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      memory.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      16.10.2010
+  \brief     
+  \indent    4T
+*/
 
 #ifndef _CONEXT_MEMORY_H_
 #define _CONEXT_MEMORY_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_parser/local_variable.h"
 #include "rdo_lib/rdo_parser/context/context.h"
 #include "rdo_lib/rdo_parser/context/context_find_i.h"
 #include "rdo_lib/rdo_parser/context/context_create_expression_i.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- IContextMemory
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- IContextMemory
+// --------------------------------------------------------------------------------
 S_INTERFACE(IContextMemory)
 {
 	virtual LPLocalVariableListStack getLocalMemory() = 0;
@@ -31,9 +31,9 @@ S_INTERFACE(IContextMemory)
 public:                                      \
 	LPLocalVariableListStack getLocalMemory();
 
-// ----------------------------------------------------------------------------
-// ---------- ContextMemory
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- ContextMemory
+// --------------------------------------------------------------------------------
 CLASS(ContextMemory):
 	    INSTANCE_OF      (Context                 )
 	AND IMPLEMENTATION_OF(IContextMemory          )

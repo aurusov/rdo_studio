@@ -1,11 +1,13 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : rdoevn.y
- * author   : Александ Барс, Урусов Андрей, Лущан Дмитрий
- * date     : 12.06.2010
- * bref     : Синтаксис событий
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdoevn.y
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \date      12.06.2010
+  \brief     Синтаксис событий
+  \indent    4T
+*/
 
 %{
 #define YYPARSE_PARAM lexer
@@ -52,6 +54,7 @@
 %token RDO_uniform
 %token RDO_exponential
 %token RDO_normal
+%token RDO_triangular
 %token RDO_by_hist
 %token RDO_enumerative
 
@@ -142,8 +145,6 @@
 %token RDO_IncrEqual
 %token RDO_DecrEqual
 %token RDO_Stopping
-%token RDO_Start
-%token RDO_Stop
 %token RDO_WatchStart
 %token RDO_WatchStop
 
@@ -199,10 +200,10 @@
 %token RDO_ASSIGN
 
 %{
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_parser/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
 #include "rdo_lib/rdo_parser/rdopat.h"
@@ -213,10 +214,10 @@
 #include "rdo_lib/rdo_parser/type/such_as.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/calc/event_plan.h"
-#include "rdo_lib/rdo_runtime/calc_process_control.h"
+#include "rdo_lib/rdo_runtime/calc/process_control.h"
 #include "rdo_lib/rdo_runtime/calc/braces.h"
 #include "rdo_lib/rdo_runtime/calc/statements.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 #define PARSER  LEXER->parser()
 #define RUNTIME PARSER->runtime()
@@ -1457,7 +1458,7 @@ equal_statement
 		}
 		ASSERT(pCalc);
 		//! Проверка на диапазон
-		//! TODO: проверить работоспособность
+		/// @todo проверить работоспособность
 		if (dynamic_cast<PTR(RDOTypeIntRange)>(pParam->getTypeInfo().get()))
 		{
 			LPRDOTypeIntRange pRange = pParam->getTypeInfo()->type().object_static_cast<RDOTypeIntRange>();
@@ -1560,7 +1561,7 @@ equal_statement
 		}
 		ASSERT(pCalc);
 		//! Проверка на диапазон
-		//! TODO: проверить работоспособность
+		/// @todo проверить работоспособность
 		if (dynamic_cast<PTR(RDOTypeIntRange)>(pParam->getTypeInfo().get()))
 		{
 			LPRDOTypeIntRange pRange = pParam->getTypeInfo()->type().object_static_cast<RDOTypeIntRange>();
@@ -1640,26 +1641,7 @@ stopping_statement
 
 		$$ = PARSER->stack().push(pCalc);
 	}
-	| RDO_IDENTIF '.' RDO_Stop '(' ')' ';'
-	{
-		tstring           eventName   = RDOVALUE($1)->getIdentificator();
-		LPRDOEvent        pEvent      = PARSER->findEvent(eventName);
-		if (!pEvent)
-		{
-			PARSER->error().error(@1, rdo::format(_T("Попытка остановить неизвестное событие: %s"), eventName.c_str()));
-		}
-
-		rdoRuntime::LPRDOCalcEventStop pCalc = rdo::Factory<rdoRuntime::RDOCalcEventStop>::create();
-		ASSERT(pCalc);
-		pEvent->attachCalc(pCalc);
-
-		$$ = PARSER->stack().push(pCalc);
-	}
 	| RDO_IDENTIF '.' RDO_Stopping '(' ')' error
-	{
-		PARSER->error().error(@4, _T("Не найден символ окончания инструкции - точка с запятой"));
-	}
-	| RDO_IDENTIF '.' RDO_Stop '(' ')' error
 	{
 		PARSER->error().error(@4, _T("Не найден символ окончания инструкции - точка с запятой"));
 	}
@@ -1717,24 +1699,6 @@ planning_statement
 		ASSERT(pCalcTime);
 
 		rdoRuntime::LPRDOCalcEventPlan pCalc = rdo::Factory<rdoRuntime::RDOCalcEventPlan>::create(pCalcTime);
-		ASSERT(pCalc);
-		pEvent->attachCalc(pCalc);
-
-		$$ = PARSER->stack().push(pCalc);
-	}
-	| RDO_IDENTIF '.' RDO_Start '(' event_descr_param ')' ';'
-	{
-		tstring           eventName   = RDOVALUE($1)->getIdentificator();
-		LPRDOEvent        pEvent      = PARSER->findEvent(eventName);
-		if (!pEvent)
-		{
-			PARSER->error().error(@1, rdo::format(_T("Попытка запустить неизвестное событие: %s"), eventName.c_str()));
-		}
-
-		rdoRuntime::LPRDOCalcGetTimeNow pCalcTimeNow = rdo::Factory<rdoRuntime::RDOCalcGetTimeNow>::create();
-		ASSERT(pCalcTimeNow);
-
-		rdoRuntime::LPRDOCalcEventPlan pCalc = rdo::Factory<rdoRuntime::RDOCalcEventPlan>::create(pCalcTimeNow);
 		ASSERT(pCalc);
 		pEvent->attachCalc(pCalc);
 
@@ -1867,9 +1831,9 @@ pat_pattern
 	}
 	;
 
-// ----------------------------------------------------------------------------
-// ---------- Описание типа параметра
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- Описание типа параметра
+// --------------------------------------------------------------------------------
 param_type
 	: RDO_integer param_type_range
 	{
@@ -2237,11 +2201,11 @@ array_item
 	}
 	;
 
-// ----------------------------------------------------------------------------
-// ---------- Общие составные токены для всех объектов РДО
-// ----------------------------------------------------------------------------
-// ---------- Логические выражения
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- Общие составные токены для всех объектов РДО
+// --------------------------------------------------------------------------------
+// -------------------- Логические выражения
+// --------------------------------------------------------------------------------
 fun_logic_eq
 	: RDO_eq { $$ = RDO_eq; }
 	;
@@ -2372,9 +2336,9 @@ fun_logic
 	}
 	;
 
-// ----------------------------------------------------------------------------
-// ---------- Арифметические выражения
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- Арифметические выражения
+// --------------------------------------------------------------------------------
 fun_arithm
 	: RDO_INT_CONST                      { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(RDOVALUE($1))); }
 	| RDO_REAL_CONST                     { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(RDOVALUE($1))); }
@@ -2444,9 +2408,9 @@ fun_arithm
 	}
 	;
 
-// ----------------------------------------------------------------------------
-// ---------- Функции и последовательности
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- Функции и последовательности
+// --------------------------------------------------------------------------------
 fun_arithm_func_call
 	: RDO_IDENTIF '(' ')'
 	{
@@ -2509,9 +2473,9 @@ fun_arithm_func_call_pars
 	}
 	;
 
-// ----------------------------------------------------------------------------
-// ---------- Групповые выражения
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- Групповые выражения
+// --------------------------------------------------------------------------------
 fun_group_keyword
 	: RDO_Exist       { $$ = RDOFUNGroupLogic::fgt_exist;     }
 	| RDO_Not_Exist   { $$ = RDOFUNGroupLogic::fgt_notexist;  }
@@ -2568,9 +2532,9 @@ fun_group
 	}
 	;
 
-// ----------------------------------------------------------------------------
-// ---------- Select
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- Select
+// --------------------------------------------------------------------------------
 fun_select_header
 	: RDO_Select '(' RDO_IDENTIF_COLON
 	{

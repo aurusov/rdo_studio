@@ -1,17 +1,19 @@
-/**
- @file    rdo_runtime.cpp
- @authors Урусов Андрей, Лущан Дмитрий
- @date    unknown
- @brief   RDORuntime implementation
- @indent  4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdo_runtime.cpp
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \date      16.05.2007
+  \brief     RDORuntime implementation
+  \indent    4T
+*/
 
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/pch.h"
-// ====================================================================== INCLUDES
+// ----------------------------------------------------------------------- INCLUDES
 #include <limits>
 #include <iomanip>
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/pch.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 #include "rdo_lib/rdo_runtime/rdo_activity.h"
@@ -19,20 +21,21 @@
 #include "rdo_lib/rdo_runtime/rdo_operation.h"
 #include "rdo_lib/rdo_runtime/rdoprocess.h"
 #include "rdo_lib/rdo_runtime/rdopokaz.h"
+#include "rdo_lib/rdo_runtime/rdoframe.h"
 #include "rdo_lib/rdo_runtime/rdodptrtime.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/calc/relres.h"
 #include "rdo_common/rdodebug.h"
 #include "rdo_kernel/rdothread.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 #pragma warning(disable : 4786)  
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDORuntime
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDORuntime
+// --------------------------------------------------------------------------------
 RDORuntime::RDORuntime()
 	: RDOSimulatorTrace   (                   )
 	, m_currActivity      (NULL               )
@@ -45,8 +48,6 @@ RDORuntime::RDORuntime()
 	, m_funBreakFlag      (FBF_CONTINUE       )
 	, m_pStudioThread     (NULL               )
 {
-	m_parent         = NULL;
-	detach();
 	pTerminateIfCalc = NULL;
 	m_pMemoryStack   = rdo::Factory<RDOMemoryStack>::create();
 }
@@ -62,7 +63,6 @@ void RDORuntime::init()
 void RDORuntime::deinit()
 {
 	m_connected.clear();
-	deleteObjects();
 	onDestroy();
 }
 
@@ -73,7 +73,7 @@ void RDORuntime::connect(PTR(INotify) to, ruint message)
 	{
 		if (it->second == to)
 			break;
-		it++;
+		++it;
 	}
 	if (it == m_connected.end())
 	{
@@ -91,7 +91,7 @@ void RDORuntime::disconnect(PTR(INotify) to)
 			it = m_connected.erase(it);
 			if (it == m_connected.end()) break;
 		}
-		it++;
+		++it;
 	}
 }
 
@@ -105,7 +105,7 @@ void RDORuntime::disconnect(PTR(INotify) to, ruint message)
 			it = m_connected.erase(it);
 			if (it == m_connected.end()) break;
 		}
-		it++;
+		++it;
 	}
 }
 
@@ -115,7 +115,7 @@ void RDORuntime::fireMessage(ruint message, PTR(void) param)
 	while (it != m_connected.end())
 	{
 		it->second->notify(message, param);
-		it++;
+		++it;
 	}
 }
 
@@ -124,9 +124,9 @@ void RDORuntime::setStudioThread(PTR(RDOThread) pStudioThread)
 	m_pStudioThread = pStudioThread;
 }
 
-bool RDORuntime::endCondition()
+rbool RDORuntime::endCondition()
 {
-	if ( !pTerminateIfCalc )
+	if (!pTerminateIfCalc)
 	{
 		return false;	// forever
 	}
@@ -138,43 +138,39 @@ void RDORuntime::setTerminateIf(CREF(LPRDOCalc) _pTerminateIfCalc)
 	pTerminateIfCalc = _pTerminateIfCalc;
 }
 
-bool RDORuntime::breakPoints()
+rbool RDORuntime::breakPoints()
 {
-	std::list<BreakPoint*>::const_iterator it = breakPointsCalcs.begin();
-	while (it != breakPointsCalcs.end())
+	STL_FOR_ALL_CONST(breakPointsCalcs, it)
 	{
-		if ((*it)->pCalc->calcValue(this).getAsBool())
+		if ((*it)->getCalc()->calcValue(this).getAsBool())
 		{
 			lastActiveBreakPoint = *it;
 			return true;
 		}
-		it++;
 	}
 	return false;
 }
 
-void RDORuntime::insertBreakPoint(const std::string& name, CREF(LPRDOCalc) pCalc)
+void RDORuntime::insertBreakPoint(CREF(tstring) name, CREF(LPRDOCalc) pCalc)
 {
-	breakPointsCalcs.push_back(new BreakPoint(this, name, pCalc));
+	breakPointsCalcs.push_back(rdo::Factory<BreakPoint>::create(name, pCalc));
 }
 
-LPRDOCalc RDORuntime::findBreakPoint(const std::string& name)
+LPRDOCalc RDORuntime::findBreakPoint(CREF(tstring) name)
 {
-	std::list< BreakPoint* >::const_iterator it = breakPointsCalcs.begin();
-	while (it != breakPointsCalcs.end())
+	STL_FOR_ALL_CONST(breakPointsCalcs, it)
 	{
-		if ((*it)->name == name)
+		if ((*it)->getName() == name)
 		{
-			return (*it)->pCalc;
+			return (*it)->getCalc();
 		}
-		it++;
 	}
 	return NULL;
 }
 
-std::string RDORuntime::getLastBreakPointName() const
+tstring RDORuntime::getLastBreakPointName() const
 {
-	return lastActiveBreakPoint ? lastActiveBreakPoint->name + ": " + lastActiveBreakPoint->pCalc->src_text() : "";
+	return lastActiveBreakPoint ? lastActiveBreakPoint->getName() + _T(": ") + lastActiveBreakPoint->getCalc()->src_text() : _T("");
 }
 
 void RDORuntime::setConstValue(ruint numberOfConst, RDOValue value)
@@ -192,7 +188,7 @@ RDOValue RDORuntime::getConstValue(int numberOfConst)
 }
 
 #ifdef _DEBUG
-bool RDORuntime::checkState()
+rbool RDORuntime::checkState()
 {
 	if (state.empty())
 	{
@@ -217,10 +213,10 @@ bool RDORuntime::checkState()
 		state.push_back(res);
 	}
 	if (state.size() != allResourcesByID.size()) return false;
-	for (ruint i = 0; i < state.size(); i++)
+	for (ruint i = 0; i < state.size(); ++i)
 	{
 		if (state[i].size() != allResourcesByID[i]->paramsCount()) return false;
-		for (ruint j = 0; j < allResourcesByID[i]->paramsCount(); j++)
+		for (ruint j = 0; j < allResourcesByID[i]->paramsCount(); ++j)
 		{
 			if (state[i][j] != allResourcesByID[i]->getParam(j)) return false;
 		}
@@ -238,7 +234,7 @@ void RDORuntime::showResources(int node) const
 		if (*it)
 		{
 			TRACE1(_T("%d. "), index);
-			for (ruint i = 0; i < (*it)->paramsCount(); i++)
+			for (ruint i = 0; i < (*it)->paramsCount(); ++i)
 			{
 				TRACE1(_T("%s "), (*it)->getParam(i).getAsString().c_str());
 			}
@@ -248,8 +244,8 @@ void RDORuntime::showResources(int node) const
 		{
 			TRACE1(_T("%d. NULL\n"), index);
 		}
-		index++;
-		it++;
+		++index;
+		++it;
 	}
 }
 #endif
@@ -272,11 +268,12 @@ void RDORuntime::onEraseRes(const int res_id, CREF(LPRDOEraseResRelCalc) pCalc)
 		while (it != m_pokazWatchValueList.end())
 		{
 			(*it)->checkResourceErased(res);
-			it++;
+			++it;
 		}
 		allResourcesByID.at(res_id) = NULL;
 		// Диструктор ресурса вызывается в std::list::erase, который вызывается из std::list::remove
 		allResourcesByTime.remove(res);
+		onResourceErase(res);
 	}
 }
 
@@ -302,12 +299,6 @@ void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
 	allResourcesByTime.push_back(pResource);
 }
 
-void RDORuntime::insertNewResourceBeforeSim(CREF(LPRDOResource) pResource)
-{
-	ASSERT(pResource);
-	allResourcesBeforeSim.push_back(pResource);
-}
-
 void RDORuntime::addRuntimeEvent(LPIBaseOperationContainer logic, CREF(LPIEvent) ev)
 {
 	appendBaseOperation(logic, ev);
@@ -323,32 +314,32 @@ void RDORuntime::addRuntimeOperation(LPIBaseOperationContainer logic, CREF(LPIOp
 	appendBaseOperation(logic, opration);
 }
 
-void RDORuntime::addRuntimePokaz(CREF(LPIPokaz) pokaz)
+void RDORuntime::addRuntimePokaz(CREF(LPIPokaz) pPokaz)
 {
-	m_pokazAllList.push_back(pokaz);
-	LPIPokazTrace pokazTrace = pokaz;
-	LPITrace      trace      = pokaz;
+	m_pokazAllList.push_back(pPokaz);
+	LPIPokazTrace pokazTrace = pPokaz;
+	LPITrace      trace      = pPokaz;
 	if (pokazTrace && trace && trace->traceable())
 	{
 		m_pokazTraceList.push_back(pokazTrace);
 	}
-	if (pokaz.query_cast<IPokazWatchValue>())
+	if (pPokaz.query_cast<IPokazWatchValue>())
 	{
-		m_pokazWatchValueList.push_back(pokaz);
+		m_pokazWatchValueList.push_back(pPokaz);
 	}
 }
 
-void RDORuntime::addRuntimeFrame(PTR(RDOFRMFrame) frame)
+void RDORuntime::addRuntimeFrame(CREF(LPRDOFRMFrame) pFrame)
 { 
-	allFrames.push_back(frame);
+	allFrames.push_back(pFrame);
 }
 
-RDOFRMFrame* RDORuntime::lastFrame() const
+LPRDOFRMFrame RDORuntime::lastFrame() const
 {
 	return !allFrames.empty() ? allFrames.front() : NULL;
 }
 
-bool RDORuntime::keyDown(ruint scan_code)
+rbool RDORuntime::keyDown(ruint scan_code)
 {
 	// Если нажаты VK_SHIFT или VK_CONTROL, то сбросим буфер клавиатуры
 	if (scan_code == VK_SHIFT || scan_code == VK_CONTROL)
@@ -362,7 +353,7 @@ bool RDORuntime::keyDown(ruint scan_code)
 			}
 			else
 			{
-				it++;
+				++it;
 			}
 		}
 	}
@@ -373,9 +364,9 @@ bool RDORuntime::keyDown(ruint scan_code)
 	{
 		if (*it == scan_code)
 		{
-			cnt++;
+			++cnt;
 		}
-		it++;
+		++it;
 	}
 	// Добавим клавишу в буфер
 	if (cnt < 4)
@@ -400,17 +391,17 @@ void RDORuntime::keyUp(ruint scan_code)
 			}
 			else
 			{
-				it++;
+				++it;
 			}
 		}
 	//}
 }
 
-bool RDORuntime::checkKeyPressed(ruint scan_code, bool shift, bool control)
+rbool RDORuntime::checkKeyPressed(ruint scan_code, rbool shift, rbool control)
 {
 	if (scan_code == 0) return false;
-	bool shift_found   = false;
-	bool control_found = false;
+	rbool shift_found   = false;
+	rbool control_found = false;
 	// Найдем VK_SHIFT и/или VK_CONTROL в буфере
 	std::list<ruint>::iterator it = keysDown.begin();
 	while (it != keysDown.end())
@@ -425,7 +416,7 @@ bool RDORuntime::checkKeyPressed(ruint scan_code, bool shift, bool control)
 			control_found = true;
 			if (shift_found && control_found) break;
 		}
-		it++;
+		++it;
 	}
 	// Теперь найдем саму клавишу в буфере
 	// Удалим её из буфера перед выходом
@@ -440,16 +431,16 @@ bool RDORuntime::checkKeyPressed(ruint scan_code, bool shift, bool control)
 				key_found = true;
 				return true;
 			}
-			it++;
+			++it;
 		}
 	}
 	key_found = false;
 	return false;
 }
 
-bool RDORuntime::checkAreaActivated(const std::string& oprName)
+rbool RDORuntime::checkAreaActivated(CREF(tstring) oprName)
 {
-	std::vector<std::string>::iterator it = std::find(activeAreasMouseClicked.begin(), activeAreasMouseClicked.end(), oprName);
+	std::vector<tstring>::iterator it = std::find(activeAreasMouseClicked.begin(), activeAreasMouseClicked.end(), oprName);
 	if (it == activeAreasMouseClicked.end())
 	{
 		return false;
@@ -458,7 +449,7 @@ bool RDORuntime::checkAreaActivated(const std::string& oprName)
 	return true;
 }
 
-bool RDORuntime::isKeyDown()
+rbool RDORuntime::isKeyDown()
 {
 	return key_found || !activeAreasMouseClicked.empty();
 }
@@ -479,21 +470,11 @@ void RDORuntime::onInit()
 {
 	STL_FOR_ALL(initCalcs, calcIt)
 		(*calcIt)->calcValue(this);
-
-	std::vector<LPRDOResource>::const_iterator it = allResourcesByID.begin();
-	while (it != allResourcesByID.end())
-	{
-		allResourcesByTime.push_back(*it);
-		it++;
-	}
-	//std::copy(allResourcesByID.begin(), allResourcesByID.end(), allResourcesByTime.begin());
 }
 
 void RDORuntime::onDestroy()
 {
-	//! TODO: Дима, посмотри содержимое контейнеров, почему в allResourcesByTime дублируются ресурсы ?
-	//! TODO: Дима, почему у первого ресурса счетчик на 1 больше, чем у других ?
-	allResourcesBeforeSim.clear();
+	/// @todo Дима, почему у первого ресурса счетчик на 1 больше, чем у других ?
 	allResourcesByTime.clear();
 	allResourcesByID.clear();
 
@@ -514,54 +495,56 @@ RDOValue RDORuntime::getFuncArgument(int numberOfParam)
 	return funcStack.at(currFuncTop + numberOfParam);
 }
 
-RDOSimulator* RDORuntime::clone()
+LPRDORuntime RDORuntime::clone() const
 {
-	RDORuntime* other = new RDORuntime();
-	other->m_sizeofSim = sizeof(RDORuntime);
+	LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create();
+	ASSERT(pRuntime);
+	pRuntime->m_sizeofSim = sizeof(RDORuntime);
 
-	*other = *this;
+	LPRDORuntime pThis(const_cast<PTR(RDORuntime)>(this));
+	pRuntime->copyFrom(pThis);
 
-	return other;
+	return pRuntime;
 }
 
-void RDORuntime::operator= (CREF(RDORuntime) other)
+void RDORuntime::copyFrom(CREF(LPRDORuntime) pOther)
 {
-	ruint size = other.allResourcesByID.size();
-	for (ruint i = 0; i < size; i++)
+	ASSERT(pOther);
+
+	ruint size = pOther->allResourcesByID.size();
+	for (ruint i = 0; i < size; ++i)
 	{
-		if (other.allResourcesByID.at(i) == NULL)
+		if (pOther->allResourcesByID.at(i) == NULL)
 		{
 			allResourcesByID.push_back(NULL);
 		}
 		else
 		{
 			// вставка ресурса в контейнер allResourcesByID нового RDORuntime произойдет в его конструкторе
-			other.allResourcesByID.at(i)->clone(this);
+			pOther->allResourcesByID.at(i)->clone(this);
 			m_sizeofSim += sizeof(RDOResource) + sizeof(void*) * 2;
 		}
 	}
-	allConstants      = other.allConstants;
-	patternParameters = other.patternParameters;
-	results           = other.results;
-	m_pThreadProxy    = other.m_pThreadProxy;
-	setCurrentTime(other.getCurrentTime());
+	allConstants      = pOther->allConstants;
+	patternParameters = pOther->patternParameters;
+	results           = pOther->results;
+	m_pThreadProxy    = pOther->m_pThreadProxy;
+	setCurrentTime(pOther->getCurrentTime());
 
-	Parent::operator= (*static_cast<const Parent*>(&other));
+	Parent::copyFrom(pOther.object_parent_cast<Parent>());
 }
 
-bool RDORuntime::operator== (CREF(RDOSimulator) other)
+rbool RDORuntime::equal(CREF(LPRDORuntime) pOther) const
 {
-	CPTR(RDORuntime) otherRuntime = dynamic_cast<CPTR(RDORuntime)>(&other);
-
-	if (otherRuntime->allResourcesByID.size() != allResourcesByID.size()) return false;
+	if (pOther->allResourcesByID.size() != allResourcesByID.size()) return false;
 
 	ruint size = allResourcesByID.size();
-	for (ruint i = 0; i < size; i++)
+	for (ruint i = 0; i < size; ++i)
 	{
-		if (allResourcesByID.at(i) == NULL && otherRuntime->allResourcesByID.at(i) != NULL) return false;
-		if (allResourcesByID.at(i) != NULL && otherRuntime->allResourcesByID.at(i) == NULL) return false;
-		if (allResourcesByID.at(i) == NULL && otherRuntime->allResourcesByID.at(i) == NULL) continue;
-		if (otherRuntime->allResourcesByID.at(i) != allResourcesByID.at(i)) return false;
+		if (allResourcesByID.at(i) == NULL && pOther->allResourcesByID.at(i) != NULL) return false;
+		if (allResourcesByID.at(i) != NULL && pOther->allResourcesByID.at(i) == NULL) return false;
+		if (allResourcesByID.at(i) == NULL && pOther->allResourcesByID.at(i) == NULL) continue;
+		if (pOther->allResourcesByID.at(i) != allResourcesByID.at(i)) return false;
 	}
 	return true;
 }
@@ -572,7 +555,7 @@ void RDORuntime::onResetPokaz()
 	while (it != m_pokazAllList.end())
 	{
 		(*it)->resetPokaz(this);
-		it++;
+		++it;
 	}
 }
 
@@ -582,7 +565,7 @@ void RDORuntime::onCheckPokaz()
 	while (it != m_pokazAllList.end())
 	{
 		(*it)->checkPokaz(this);
-		it++;
+		++it;
 	}
 }
 
@@ -592,7 +575,7 @@ void RDORuntime::onAfterCheckPokaz()
 	while (it != m_pokazTraceList.end())
 	{
 		(*it)->tracePokaz();
-		it++;
+		++it;
 	}
 }
 
@@ -610,7 +593,7 @@ void RDORuntime::onPutToTreeNode()
 	// when create TreeNode with new RDOSimulator,
 	// make all resources permanent, to avoid trace their
 	// erase when delete TreeNode
-	for (ruint i = 0; i < allResourcesByID.size(); i++)
+	for (ruint i = 0; i < allResourcesByID.size(); ++i)
 	{
 		if (allResourcesByID.at(i))
 		{
@@ -650,7 +633,7 @@ void RDORuntime::postProcess()
 		}
 		catch (REF(RDORuntimeException))
 		{}
-		it++;
+		++it;
 	}
 
 	try
@@ -730,17 +713,18 @@ RDORuntime::RDOHotKeyToolkit::RDOHotKeyToolkit()
 	m_keys.insert(KeySet::value_type("NUMPAD9", VK_NUMPAD9));
 	m_keys.insert(KeySet::value_type("NOKEY", 0));
 
-	for (char i = '0'; i <= '9'; i++)
+	for (char i = '0'; i <= '9'; ++i)
 	{
-		m_keys.insert(KeySet::value_type(std::string(1, i), (KeyCode)i));
+		m_keys.insert(KeySet::value_type(tstring(1, i), (KeyCode)i));
 	}
-	for (char i = 'A'; i <= 'Z'; i++)
+
+	for (char i = 'A'; i <= 'Z'; ++i)
 	{
-		m_keys.insert(KeySet::value_type(std::string(1, i), (KeyCode)i));
+		m_keys.insert(KeySet::value_type(tstring(1, i), (KeyCode)i));
 	}
 }
 
-RDORuntime::RDOHotKeyToolkit::KeyCode RDORuntime::RDOHotKeyToolkit::codeFromString(const std::string& key) const
+RDORuntime::RDOHotKeyToolkit::KeyCode RDORuntime::RDOHotKeyToolkit::codeFromString(CREF(tstring) key) const
 {
 	CIterator it = m_keys.find(key);
 	if (it == m_keys.end())

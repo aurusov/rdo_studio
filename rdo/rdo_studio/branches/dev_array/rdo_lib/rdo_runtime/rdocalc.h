@@ -1,18 +1,20 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdocalc.h
- * author   : Александ Барс, Урусов Андрей, Дмитрий Лущан
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdocalc.h
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \date      16.05.2007
+  \brief     Вычислитель
+  \indent    4T
+*/
 
-#ifndef _RDOCALC_H_
-#define _RDOCALC_H_
+#ifndef _LIB_RUNTIME_CALC_H_
+#define _LIB_RUNTIME_CALC_H_
 
-// ====================================================================== INCLUDES
+// ----------------------------------------------------------------------- INCLUDES
 #include <list>
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/namespace.h"
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
 #include "rdo_common/smart_ptr/interface_ptr.h"
@@ -21,345 +23,338 @@
 #include "rdo_lib/rdo_runtime/rdo_random_distribution.h"
 #include "rdo_lib/rdo_runtime/rdo_memory.h"
 #include "rdo_lib/rdo_runtime/rdo_res_type.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalc
-// ----------------------------------------------------------------------------
+//! \defgroup calc      Общая группа калков
+//! \defgroup calc_base Абстрактный калк
+
+/*!
+  \class    RDOCalc
+  \brief    Абстрактный "вычислитель", он же калк.
+  \details  Cкомпилированная модель состоит из последовательоности калков, так же как и скомпилированная программа состоит из ассемблеровских команд. Данный класс описывает базовый, абстрактный калк.
+  \ingroup  calc calc_base
+*/
 OBJECT(RDOCalc) IS INSTANCE_OF(RDOSrcInfo)
 {
+//! \details Фабрика для автоматического удаления калка
 DECLARE_FACTORY(RDOCalc)
 
 public:
-	REF(RDOValue) calcValue(PTR(RDORuntime) pRuntime);
+	//! Расчет значение калка. Является публичным методом, через который у калка запрашивается значение
+	//! \param pRuntime - указатель на объект runtime'а.
+	//!                   Используется для доступа к БД модели, системному времени, генерации ошибок и др.
+	//! \result Вычесленное калком значение
+	REF(RDOValue) calcValue(CREF(LPRDORuntime) pRuntime);
 
-	virtual rbool compare(CREF(LPRDOCalc) pCalc) const
-	{
-		return false;
-	}
+	//! Сравнение двух калков как объектов (результаты калков в сравнении не используются).
+	//! Реализовывать этот метод в новых калках необязательно.
+	//! \param pCalc - калк, с которым просводит сравнение текущий
+	//! \result true, если калки одинаковые. Значение по умолчанию false
+	virtual rbool compare(CREF(LPRDOCalc) pCalc) const;
 
 protected:
 	RDOCalc();
 	virtual ~RDOCalc();
 
+	//! Атрибут должен хранить последнее значение калка и возвращать его в \ref doCalc
 	RDOValue m_value;
 
-	virtual REF(RDOValue) doCalc(PTR(RDORuntime) pRuntime) = 0;
+	//! Абстрактное действие калка.
+	//! Метод должен быть реализован в потомках (реальных калках).
+	//! \param pRuntime - указатель на объект runtime'а.
+	//!                   Используется для доступа к БД модели, системному времени, генерации ошибок и др.
+	//! \exception RDORuntimeException
+	//! \result Вычесленное калком значение
+	virtual REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime) = 0;
 };
 
-#define DECALRE_ICalc \
+#define DECLARE_ICalc \
 private:              \
-	REF(RDOValue) doCalc(PTR(RDORuntime) pRuntime);
+	REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime);
 
+//! \def    CALC_SUB
+//! \brief  Описывает класс-потомок
 #define CALC_SUB(TYPE, PARENT) \
 PREDECLARE_POINTER(TYPE);      \
 class TYPE: public PARENT
 
+//! \def    CALC
+//! \brief  Описывает класс-потомок от RDOCalc
 #define CALC(TYPE) CALC_SUB(TYPE, RDOCalc)
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcConst
-// ----------------------------------------------------------------------------
+/*!
+  \defgroup calc_const Константный калк
+  \class    RDOCalcConst
+  \brief    Константа
+  \details  Возвращает константное значение
+  \ingroup  calc calc_const
+*/
 CALC(RDOCalcConst)
 {
 DECLARE_FACTORY(RDOCalcConst)
 public:
+	//! Возвращает хранимую константу, может быть использован в parser-time
+	//! \result Значение константы
 	CREF(RDOValue) getValue() const;
 
 private:
+	//! Инициализируется указанным значением переменную базового класса \ref RDOCalc::m_value
+	//! \param value - Значение константы
 	RDOCalcConst(CREF(RDOValue) value);
-	DECALRE_ICalc;
+
+	//! Возвращает значение константы
+	//! \param pRuntime - Не используется
+	//! \result Значение константы
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcGetResParam (Параметры постоянного ресурса)
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcGetResParam
+  \brief   Параметры постоянного ресурса
+*/
 CALC(RDOCalcGetResParam)
 {
 DECLARE_FACTORY(RDOCalcGetResParam)
 protected:
-	RDOCalcGetResParam(int _resNumb, int _parNumb)
-		: m_resID  (_resNumb)
-		, m_paramID(_parNumb)
-	{}
+	RDOCalcGetResParam(int _resNumb, int _parNumb);
 
 	int m_resID;
 	int m_paramID;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcGetTempResParamFRM (Параметры временного ресурса для FRM)
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcGetTempResParamFRM
+  \brief   Параметры временного ресурса для FRM
+*/
 CALC_SUB(RDOCalcGetTempResParamFRM, RDOCalcGetResParam)
 	AND IMPLEMENTATION_OF(INotify)
 {
 DECLARE_FACTORY(RDOCalcGetTempResParamFRM)
 private:
 	RDOCalcGetTempResParamFRM(int _resNumb, int _parNumb);
-	virtual REF(RDOValue) doCalc(PTR(RDORuntime) pRuntime);
+	virtual REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime);
 
-	virtual void notify(ruint message, PTR(void) param)
-	{
-		if (m_resID == *reinterpret_cast<PTR(int)>(param))
-		{
-			m_resID = -1;
-		}
-	};
+	virtual void notify(ruint message, PTR(void) param);
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcGetUnknowResParam (Параметры несуществующего ресурса)
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcGetUnknowResParam
+  \brief   Параметры несуществующего ресурса
+*/
 CALC(RDOCalcGetUnknowResParam)
 {
 DECLARE_FACTORY(RDOCalcGetUnknowResParam)
 private:
-	RDOCalcGetUnknowResParam(CREF(tstring) resName, CREF(tstring) parName)
-		: m_resName(resName)
-		, m_parName(parName)
-	{}
+	RDOCalcGetUnknowResParam(CREF(tstring) resName, CREF(tstring) parName);
 
 	tstring m_resName;
 	tstring m_parName;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcGetGroupResParam
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcGetGroupResParam
+  \brief   Получение группы параметров ресурсов
+  \todo    Что это?
+*/
 CALC(RDOCalcGetGroupResParam)
 {
 DECLARE_FACTORY(RDOCalcGetGroupResParam)
 private:
-	RDOCalcGetGroupResParam(int parNumb)
-		: m_parNumb(parNumb)
-	{}
+	RDOCalcGetGroupResParam(int parNumb);
 
 	int m_parNumb;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOSetResourceParamCalc
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOSetResourceParamCalc
+  \brief   Сохранение калки для ресурса паттерна
+*/
 CALC(RDOSetResourceParamCalc)
 {
 DECLARE_FACTORY(RDOSetResourceParamCalc)
 private:
-	RDOSetResourceParamCalc(int resNumb, int parNumb, CREF(LPRDOCalc) pCalc)
-		: m_resNumb(resNumb)
-		, m_parNumb(parNumb)
-		, m_pCalc  (pCalc   )
-	{
-		m_value = true;
-		if (m_pCalc)
-			setSrcInfo(m_pCalc->src_info());
-	}
+	RDOSetResourceParamCalc(int resNumb, int parNumb, CREF(LPRDOCalc) pCalc);
 
 	int        m_resNumb;
 	int        m_parNumb;
 	LPRDOCalc  m_pCalc;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOSetPatternParamCalc
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOSetPatternParamCalc
+  \brief   Сохранение калки для параметра паттерна
+*/
 CALC(RDOSetPatternParamCalc)
 {
 DECLARE_FACTORY(RDOSetPatternParamCalc)
 private:
-	RDOSetPatternParamCalc(int parNumb, RDOValue val)
-		: m_parNumb(parNumb)
-		, m_val    (val    )
-	{
-		m_value = 0;
-	}
+	RDOSetPatternParamCalc(int parNumb, RDOValue val);
 
 	int      m_parNumb;
 	RDOValue m_val;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcPatParam
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcPatParam
+  \brief   Параметр паттерна
+*/
 CALC(RDOCalcPatParam)
 {
 DECLARE_FACTORY(RDOCalcPatParam)
 private:
-	RDOCalcPatParam(int numberOfParam)
-		: m_numberOfParam(numberOfParam)
-	{}
+	RDOCalcPatParam(int numberOfParam);
 
 	int m_numberOfParam;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcGetTimeNow
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcGetTimeNow
+  \brief   Получение текущего модельного времени
+*/
 CALC(RDOCalcGetTimeNow)
 {
 DECLARE_FACTORY(RDOCalcGetTimeNow)
-DECALRE_ICalc;
+DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcGetSeconds
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcGetSeconds
+  \brief   Получение реального времени работы модели
+*/
 CALC(RDOCalcGetSeconds)
 {
 DECLARE_FACTORY(RDOCalcGetSeconds)
-DECALRE_ICalc;
+DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcGetTermNow
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcGetTermNow
+  \brief   Получение значения терминального счетчика
+*/
 CALC(RDOCalcGetTermNow)
 {
 DECLARE_FACTORY(RDOCalcGetTermNow)
-DECALRE_ICalc;
+DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFunCalc
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOFunCalc
+  \brief   Функция
+*/
 CALC(RDOFunCalc)
 {
 public:
-	virtual void addRetCalc(CREF(LPRDOCalc) pCalc)
-	{}
+	virtual void addRetCalc(CREF(LPRDOCalc) pCalc);
 
 protected:
-	RDOFunCalc()
-	{}
+	RDOFunCalc();
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFuncTableCalc
-// ----------------------------------------------------------------------------
-// Функция типа список
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOFuncTableCalc
+  \brief   Функция типа таблица
+*/
 CALC_SUB(RDOFuncTableCalc, RDOFunCalc)
 {
 DECLARE_FACTORY(RDOFuncTableCalc)
 public:
-	void addResultCalc(CREF(LPRDOCalcConst) res)
-	{
-		m_results.push_back( res );
-	}
+	void addResultCalc(CREF(LPRDOCalcConst) res);
 
 private:
-	RDOFuncTableCalc(CREF(LPRDOCalc) pArgCalc)
-		: m_pArgCalc(pArgCalc)
-	{}
+	RDOFuncTableCalc(CREF(LPRDOCalc) pArgCalc);
 
 	std::vector<LPRDOCalcConst> m_results;
 	LPRDOCalc                   m_pArgCalc;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFunListCalc
-// ----------------------------------------------------------------------------
-// Функция типа список
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOFunListCalc
+  \brief   Функция типа список
+*/
 CALC_SUB(RDOFunListCalc, RDOFunCalc)
 {
 DECLARE_FACTORY(RDOFunListCalc)
 public:
-	void addCase(CREF(LPRDOCalc) pCaseCalc, CREF(LPRDOCalcConst) pResultCalc)
-	{
-		m_cases  .push_back(pCaseCalc  ); 
-		m_results.push_back(pResultCalc);
-	}
+	void addCase(CREF(LPRDOCalc) pCaseCalc, CREF(LPRDOCalcConst) pResultCalc);
 
 private:
-	RDOFunListCalc(CREF(LPRDOCalcConst) pDefaultValue)
-		: m_pDefaultValue(pDefaultValue)
-	{}
+	RDOFunListCalc(CREF(LPRDOCalcConst) pDefaultValue);
 
 	std::vector<LPRDOCalc>       m_cases;
 	std::vector<LPRDOCalcConst>  m_results;
 	LPRDOCalcConst               m_pDefaultValue;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFunAlgorithmicCalc
-// ----------------------------------------------------------------------------
-// Алгоритмическая функция
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOFunAlgorithmicCalc
+  \brief   Алгоритмическая функция
+*/
 CALC_SUB(RDOFunAlgorithmicCalc, RDOFunCalc)
 {
 DECLARE_FACTORY(RDOFunAlgorithmicCalc)
 public:
-	void addCalcIf(CREF(LPRDOCalc) pCond, CREF(LPRDOCalc) pAct)
-	{
-		m_conditions.push_back(pCond);
-		m_actions   .push_back(pAct );
-	}
+	void addCalcIf(CREF(LPRDOCalc) pCond, CREF(LPRDOCalc) pAct);
 
 protected:
-	RDOFunAlgorithmicCalc()
-	{
-		m_value = 0;
-	}
+	RDOFunAlgorithmicCalc();
 
 	std::vector<LPRDOCalc> m_conditions;
 	std::vector<LPRDOCalc> m_actions;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFunAlgorithmicDiapCalc
-// ----------------------------------------------------------------------------
-// Алгоритмическая функция с проверкой на диапазон возвращаемого значения
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOFunAlgorithmicDiapCalc
+  \brief   Алгоритмическая функция с проверкой на диапазон возвращаемого значения
+*/
 CALC_SUB(RDOFunAlgorithmicDiapCalc, RDOFunAlgorithmicCalc)
 {
 DECLARE_FACTORY(RDOFunAlgorithmicDiapCalc)
 private:
-	RDOFunAlgorithmicDiapCalc(CREF(RDOValue) min_value, CREF(RDOValue) max_value)
-		: m_min_value          (min_value)
-		, m_max_value          (max_value)
-	{}
+	RDOFunAlgorithmicDiapCalc(CREF(RDOValue) min_value, CREF(RDOValue) max_value);
 
 	RDOValue m_min_value;
 	RDOValue m_max_value;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFunCalcGroup
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOFunCalcGroup
+  \brief   Базовая калка для групповых калок
+*/
 CALC_SUB(RDOFunCalcGroup, RDOFunCalc)
 {
 protected:
 	int        m_nResType;
 	LPRDOCalc  m_pCondition;
 
-	RDOFunCalcGroup(int nResType, CREF(LPRDOCalc) pCondition)
-		: m_nResType  (nResType  )
-		, m_pCondition(pCondition)
-	{}
+	RDOFunCalcGroup(int nResType, CREF(LPRDOCalc) pCondition);
 };
 
+/*!
+  \def     DEFINE_CALC_GROUP
+  \brief   Групповые калки
+*/
 #define DEFINE_CALC_GROUP(CalcName) \
 CALC_SUB(RDOFunCalc##CalcName, RDOFunCalcGroup) \
 { \
@@ -368,47 +363,69 @@ private: \
 	RDOFunCalc##CalcName(int nResType, CREF(LPRDOCalc) pCondition) \
 		: RDOFunCalcGroup(nResType, pCondition) \
 	{} \
- 	virtual REF(RDOValue) doCalc(PTR(RDORuntime) pRuntime); \
+ 	virtual REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime); \
 };
 
-DEFINE_CALC_GROUP( Exist     );
-DEFINE_CALC_GROUP( NotExist  );
-DEFINE_CALC_GROUP( ForAll    );
-DEFINE_CALC_GROUP( NotForAll );
+/*!
+  \class   RDOFunCalcExist
+  \brief   Логический предикат существования
+*/
+DEFINE_CALC_GROUP(Exist);
 
-// ----------------------------------------------------------------------------
-// ---------- RDOFunCalcSelect
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOFunCalcNotExist
+  \brief   Логический предикат отрицания существования
+*/
+DEFINE_CALC_GROUP(NotExist);
+
+/*!
+  \class   RDOFunCalcForAll
+  \brief   Логический предикат общности
+*/
+DEFINE_CALC_GROUP(ForAll);
+
+/*!
+  \class   RDOFunCalcNotForAll
+  \brief   Логический предикат отрицания общности
+*/
+DEFINE_CALC_GROUP(NotForAll);
+
 class RDOResource;
 
+/*!
+  \class   RDOFunCalcSelect
+  \brief   Базовая групповая функция
+*/
 CALC_SUB(RDOFunCalcSelect, RDOFunCalcGroup)
 {
 DECLARE_FACTORY(RDOFunCalcSelect)
 public:
 	mutable std::list<LPRDOResource> res_list;
-	void prepare(PTR(RDORuntime) sim);
+	void prepare(CREF(LPRDORuntime) pRuntime);
 
 private:
-	RDOFunCalcSelect(int nResType, CREF(LPRDOCalc) pCondition)
-		: RDOFunCalcGroup(nResType, pCondition)
-	{
-		m_value = 1;
-	}
-	DECALRE_ICalc;
+	RDOFunCalcSelect(int nResType, CREF(LPRDOCalc) pCondition);
+
+	DECLARE_ICalc;
 };
 
+/*!
+  \class   RDOFunCalcSelectBase
+  \brief   Базовая калка для операторов Select
+*/
 CALC_SUB(RDOFunCalcSelectBase, RDOFunCalc)
 {
 protected:
-	RDOFunCalcSelectBase(CREF(LPRDOFunCalcSelect) pSelect, CREF(LPRDOCalc) pCondition)
-		: m_pSelect   (pSelect   )
-		, m_pCondition(pCondition)
-	{}
+	RDOFunCalcSelectBase(CREF(LPRDOFunCalcSelect) pSelect, CREF(LPRDOCalc) pCondition);
 
 	LPRDOFunCalcSelect m_pSelect;
 	LPRDOCalc          m_pCondition;
 };
 
+/*!
+  \def     DEFINE_CALC_SELECT_GROUP
+  \brief   Select-группа
+*/
 #define DEFINE_CALC_SELECT_GROUP(CalcName) \
 CALC_SUB(RDOFunCalcSelect##CalcName, RDOFunCalcSelectBase) \
 { \
@@ -417,9 +434,13 @@ private: \
 	RDOFunCalcSelect##CalcName(CREF(LPRDOFunCalcSelect) pSelect, CREF(LPRDOCalc) pCondition) \
 		: RDOFunCalcSelectBase(pSelect, pCondition) \
 	{} \
-	DECALRE_ICalc; \
+	DECLARE_ICalc; \
 };
 
+/*!
+  \def     DEFINE_CALC_SELECT_METHOD
+  \brief   Select-метод
+*/
 #define DEFINE_CALC_SELECT_METHOD(CalcName) \
 CALC_SUB(RDOFunCalcSelect##CalcName, RDOFunCalcSelectBase) \
 { \
@@ -428,103 +449,120 @@ private: \
 	RDOFunCalcSelect##CalcName(CREF(LPRDOFunCalcSelect) pSelect) \
 		: RDOFunCalcSelectBase(pSelect, NULL) \
 	{} \
-	DECALRE_ICalc; \
+	DECLARE_ICalc; \
 };
 
-DEFINE_CALC_SELECT_GROUP ( Exist     );
-DEFINE_CALC_SELECT_GROUP ( NotExist  );
-DEFINE_CALC_SELECT_GROUP ( ForAll    );
-DEFINE_CALC_SELECT_GROUP ( NotForAll );
-DEFINE_CALC_SELECT_METHOD( Empty     );
-DEFINE_CALC_SELECT_METHOD( Size      );
+/*!
+  \class   RDOFunCalcSelectExist
+  \brief   Квантор существования
+*/
+DEFINE_CALC_SELECT_GROUP(Exist);
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcFuncParam
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOFunCalcSelectNotExist
+  \brief   Обратный квантор существования
+*/
+DEFINE_CALC_SELECT_GROUP (NotExist );
+
+/*!
+  \class   RDOFunCalcSelectForAll
+  \brief   Проверка условия для каждого элемента множества
+*/
+DEFINE_CALC_SELECT_GROUP (ForAll   );
+
+/*!
+  \class   RDOFunCalcSelectNotForAll
+  \brief   Обратная проверка условия для каждого элемента множества
+*/
+DEFINE_CALC_SELECT_GROUP (NotForAll);
+
+/*!
+  \class   RDOFunCalcSelectEmpty
+  \brief   Проверка множества на пустоту
+*/
+DEFINE_CALC_SELECT_METHOD(Empty    );
+
+/*!
+  \class   RDOFunCalcSelectSize
+  \brief   Размер множества
+*/
+DEFINE_CALC_SELECT_METHOD(Size     );
+
+/*!
+  \class   RDOCalcFuncParam
+  \brief   Параметр функции
+*/
 CALC(RDOCalcFuncParam)
 {
 DECLARE_FACTORY(RDOCalcFuncParam)
 private:
-	RDOCalcFuncParam(int param_number, CREF(RDOSrcInfo) _src_info)
-		: m_param_number(param_number)
-	{
-		setSrcInfo( _src_info );
-	}
+	RDOCalcFuncParam(int param_number, CREF(RDOSrcInfo) _src_info);
 
 	int m_param_number;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcGetConst / RDOCalcSetConst
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcGetConst
+  \brief   Получение контанты
+*/
 CALC(RDOCalcGetConst)
 {
 DECLARE_FACTORY(RDOCalcGetConst)
 private:
-	RDOCalcGetConst(int number)
-		: m_number(number)
-	{}
+	RDOCalcGetConst(int number);
 
 	int m_number;
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
+/*!
+  \class   RDOCalcSetConst
+  \brief   Установка константы
+*/
 CALC(RDOCalcSetConst)
 {
 DECLARE_FACTORY(RDOCalcSetConst)
 private:
-	RDOCalcSetConst(int number, CREF(LPRDOCalc) pCalc)
-		: m_number(number)
-		, m_pCalc (pCalc )
-	{
-		m_value = 0;
-		if (m_pCalc) setSrcInfo(m_pCalc->src_info());
-	}
+	RDOCalcSetConst(int number, CREF(LPRDOCalc) pCalc);
 
 	int        m_number;
 	LPRDOCalc  m_pCalc;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcFunctionCall
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcFunctionCall
+  \brief   Вызов функции
+*/
 CALC(RDOCalcFunctionCall)
 {
 DECLARE_FACTORY(RDOCalcFunctionCall)
 public:
-	void addParameter(CREF(LPRDOCalc) pCalc)
-	{
-		m_parameters.push_back(pCalc);
-	}
-	void setFunctionCalc(CREF(LPRDOFunCalc) pFunction)
-	{
-		m_pFunction = pFunction;
-	}
+	void addParameter(CREF(LPRDOCalc) pCalc);
+	void setFunctionCalc(CREF(LPRDOFunCalc) pFunction);
 
 private:
-	RDOCalcFunctionCall(CREF(LPRDOFunCalc) pFunction)
-		: m_pFunction(pFunction)
-	{}
+	RDOCalcFunctionCall(CREF(LPRDOFunCalc) pFunction);
 
 	std::vector<LPRDOCalc>  m_parameters;
 	LPRDOFunCalc            m_pFunction;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcCreateNumberedResource (рудимент для rdo_converter)
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcCreateNumberedResource
+  \brief   Рудимент для rdo_converter
+*/
 CALC(RDOCalcCreateNumberedResource)
 {
 DECLARE_FACTORY(RDOCalcCreateNumberedResource)
 public:
 	ruint getNumber() const {NEVER_REACH_HERE;}
-	virtual PTR(RDOResource) createResource(PTR(RDORuntime) pRuntime) const {NEVER_REACH_HERE; return 0;}
+	virtual PTR(RDOResource) createResource(CREF(LPRDORuntime) pRuntime) const {NEVER_REACH_HERE; return 0;}
 
 protected:
 	RDOCalcCreateNumberedResource(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent);
@@ -535,18 +573,19 @@ protected:
 	ruint                  number;
 	rbool                  isPermanent;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcCreateProcessResource (рудимент для rdo_converter)
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcCreateProcessResource
+  \brief   Рудимент для rdo_converter
+*/
 CALC(RDOCalcCreateProcessResource)
 {
 DECLARE_FACTORY(RDOCalcCreateProcessResource)
 public:
 	ruint getNumber() const {NEVER_REACH_HERE;}
-	virtual PTR(RDOResource) createResource(PTR(RDORuntime) pRuntime) const {NEVER_REACH_HERE; return 0;}
+	virtual PTR(RDOResource) createResource(CREF(LPRDORuntime) pRuntime) const {NEVER_REACH_HERE; return 0;}
 
 protected:
 	RDOCalcCreateProcessResource(rsint _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent);
@@ -557,12 +596,13 @@ protected:
 	ruint                  number;
 	rbool                  isPermanent;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOCalcCreateResource (создание нового ресурса)
-// ----------------------------------------------------------------------------
+/*!
+  \class   RDOCalcCreateResource
+  \brief   Создание нового ресурса
+*/
 CALC(RDOCalcCreateResource)
 {
 DECLARE_FACTORY(RDOCalcCreateResource)
@@ -576,11 +616,11 @@ private:
 	rbool                  m_permanentFlag;
 	ruint                  m_relResID;
 
-	DECALRE_ICalc;
+	DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "rdo_lib/rdo_runtime/rdocalc.inl"
 
-#endif //! _RDOCALC_H_
+#endif // _LIB_RUNTIME_CALC_H_

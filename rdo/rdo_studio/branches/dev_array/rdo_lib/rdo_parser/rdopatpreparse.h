@@ -1,29 +1,29 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : rdopatpreparse.h
- * author   : Ћущан ƒмитрий
- * date     : 22.05.10
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdopatpreparse.h
+  \author    Ћущан ƒмитрий (dluschan@rk9.bmstu.ru)
+  \date      22.05.10
+  \brief     
+  \indent    4T
+*/
 
 #ifndef _RDOPATPREPARSE_H_
 #define _RDOPATPREPARSE_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/rdomacros.h"
 #include "rdo_common/rdotypes.h"
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
 #include "rdo_lib/rdo_runtime/calc/event_plan.h"
 #include "rdo_lib/rdo_runtime/rdo_event.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOEvent
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOEvent
+// --------------------------------------------------------------------------------
 OBJECT(RDOEvent)
 {
 DECLARE_FACTORY(RDOEvent);

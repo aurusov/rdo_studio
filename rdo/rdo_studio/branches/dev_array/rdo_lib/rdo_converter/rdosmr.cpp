@@ -1,23 +1,24 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : rdosmr.cpp
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdosmr.cpp
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_converter/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_converter/rdosmr.h"
 #include "rdo_lib/rdo_converter/rdoparser.h"
 #include "rdo_lib/rdo_converter/rdorss.h"
 #include "rdo_lib/rdo_converter/rdoparser_lexer.h"
 #include "rdo_lib/rdo_converter/rdoparser_rdo.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
@@ -41,9 +42,9 @@ int cnv_smr_sim_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 void cnv_smr_sim_error(PTR(char) mes)
 {}
 
-// ----------------------------------------------------------------------------
-// ---------- RDOSMR
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOSMR
+// --------------------------------------------------------------------------------
 RDOSMR::RDOSMR(CREF(tstring) modelName)
 	: m_frameNumber   (1 )
 	, m_showRate      (60)
@@ -67,7 +68,7 @@ void RDOSMR::setFrameNumber(int value, CREF(YYLTYPE) pos)
 	{
 		Converter::s_converter()->error().error(pos, _T("Номер кадра должен быть больше нуля"));
 	}
-	if (Converter::s_converter()->runtime()->allFrames.size() + 1 <= (ruint)value)
+	if (Converter::s_converter()->getNumberFrame() < (ruint)value)
 	{
 		Converter::s_converter()->error().error(pos, rdo::format(_T("Несуществующий кадр: %d"), value));
 	}

@@ -1,19 +1,20 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : rdoopr.h
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdoopr.h
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
 #ifndef _CONVERTOR_RDOOPR_H_
 #define _CONVERTOR_RDOOPR_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_converter/rdodpt.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 class RDOOperations;
@@ -25,9 +26,9 @@ int  cnv_oprparse(PTR(void) lexer);
 int  cnv_oprlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
 void cnv_oprerror(PTR(char) mes);
 
-// ----------------------------------------------------------------------------
-// ---------- RDOOPROperation
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOOPROperation
+// --------------------------------------------------------------------------------
 class RDOOPROperation: public RDODPTActivityHotKey
 {
 DECLARE_FACTORY(RDOOPROperation);
@@ -36,9 +37,9 @@ private:
 };
 DECLARE_POINTER(RDOOPROperation);
 
-// ----------------------------------------------------------------------------
-// ---------- RDOOperations
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOOperations
+// --------------------------------------------------------------------------------
 OBJECT(RDOOperations) IS public RDOLogicActivity<rdoRuntime::RDOOperations, RDOOPROperation>
 {
 DECLARE_FACTORY(RDOOperations);

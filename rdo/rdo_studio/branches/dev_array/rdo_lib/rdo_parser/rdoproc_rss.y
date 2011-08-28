@@ -1,11 +1,12 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdoproc_rss.y
- * author   : Александ Барс, Урусов Андрей
- * date     : 24.03.2008
- * bref     : Сбор ресурсов из процессов. based on rdodpt_rss.y
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdoproc_rss.y
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      24.03.2008
+  \brief     Сбор ресурсов из процессов. based on rdodpt_rss.y
+  \indent    4T
+*/
 
 %{
 #define YYPARSE_PARAM lexer
@@ -52,6 +53,7 @@
 %token RDO_uniform
 %token RDO_exponential
 %token RDO_normal
+%token RDO_triangular
 %token RDO_by_hist
 %token RDO_enumerative
 
@@ -142,8 +144,6 @@
 %token RDO_IncrEqual
 %token RDO_DecrEqual
 %token RDO_Stopping
-%token RDO_Start
-%token RDO_Stop
 %token RDO_WatchStart
 %token RDO_WatchStop
 
@@ -199,10 +199,10 @@
 %token RDO_ASSIGN
 
 %{
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_parser/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
@@ -215,7 +215,7 @@
 
 #include "rdo_lib/rdo_mbuilder/rdo_resources.h"
 #include "rdo_lib/rdo_mbuilder/process.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 #define PARSER  LEXER->parser()
 #define RUNTIME PARSER->runtime()
@@ -237,17 +237,17 @@ OPEN_RDO_PARSER_NAMESPACE
 
 %%
 
-// ----------------------------------------------------------------------------
-// ---------- General part
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- General part
+// --------------------------------------------------------------------------------
 prc_rss_main
 	: /* empty */
 	| prc_rss_main dpt_process_end
 	;
 
-// ----------------------------------------------------------------------------
-// ---------- Process
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- Process
+// --------------------------------------------------------------------------------
 dpt_process
 	: dpt_process_header dpt_process_input
 	;

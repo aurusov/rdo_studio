@@ -1,43 +1,63 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdointerface.h
- * author   : Урусов Андрей
- * date     : 05.07.2009
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdointerface.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      05.07.2009
+  \brief     Реализация COM-модели на РДО
+  \indent    4T
+*/
 
-#ifndef _RDOINTERFACE_H_
-#define _RDOINTERFACE_H_
+#ifndef _LIB_COMMON_RDOINTERFACE_H_
+#define _LIB_COMMON_RDOINTERFACE_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/namespace.h"
 #include "rdo_common/rdodebug.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE
+
+//! \class   rdo::InterfaceRegistrator
+//! \brief   Регистратор интерфейсов
+//! \details Нужен для получения идентификатора интерфейса по его типу
+//! \tparam  T  - тип интерфейса
+//! \tparam  id - уникальный идентификатр интерфейса
 template <class T, ruint id>
 class InterfaceRegistrator
 {
 public:
+	//! \details Запоминает тип интерфейса
 	typedef T Type;
-	enum { ID = id };
+
+	enum
+	{
+		ID = id //!< Запоминает идентификатор интерфейса
+	};
 };
 
-template <class T> class GetInterface {};
+//! Позволяет спросить у интерфейса идентификатор
+//! \tparam I - тип интерфейса
+template <class I> class GetInterface {};
 CLOSE_RDO_NAMESPACE
 
-#define INTERFACE_REGISTRATOR(I, ID) \
-class I; \
-typedef rdo::InterfaceRegistrator<I, ID> Registered##I; \
+//! \details Макрос регистрации интерфейса
+//! \param I  - тип интерфейса (сам интерфейс)
+//! \param ID - идентификатор интерфейса, должен быть уникальным
+#define INTERFACE_REGISTRATOR(I, ID)                             \
+class I;                                                         \
+typedef rdo::InterfaceRegistrator<I, ID> Registered##I;          \
 template <> class rdo::GetInterface<I>: public Registered##I {}; \
-class ___InterfaceRegistrator___DoubleID___##ID {}; \
+class ___InterfaceRegistrator___DoubleID___##ID {};              \
 typedef rdo::Interface<I> LP##I;
 
+//! \details Предекларация интерфейса
+//! \param I - тип интерфейса
 #define INTERFACE_PREDECLARATION(I) \
 typedef rdo::Interface<I> LP##I;
 
+//! \details Возвращает идентификатор интерфейса
+//! \param I - тип интерфейса
 #define IID(I) \
 Registered##I::ID
 
@@ -50,6 +70,7 @@ typedef PTR(IGetUnknown) LPIGetUnknown;
 
 template<class T> class Interface;
 
+//! \brief Базовый класс для интерфейсов, отвечает за кастинг
 class UnknownPointer
 {
 public:
@@ -457,4 +478,4 @@ public:
 
 INTERFACE_REGISTRATOR(IInit, 0);
 
-#endif //! _RDOINTERFACE_H_
+#endif //! _LIB_COMMON_RDOINTERFACE_H_

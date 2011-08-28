@@ -1,28 +1,27 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdo_type.cpp
- * author   : Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdo_type.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_converter/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_converter/rdo_type.h"
 #include "rdo_lib/rdo_converter/rdo_value.h"
 #include "rdo_lib/rdo_converter/rdoparser_error.h"
 #include "rdo_lib/rdo_converter/rdoparser.h"
-//#include "rdo_lib/rdo_runtime/rdo_exception.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- ATOM_TYPE_CONVERTER
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- ATOM_TYPE_CONVERTER
+// --------------------------------------------------------------------------------
 #define DECLARE_ATOM_TYPE_PARSER(Type, TypeName)    \
 tstring RDOType__##Type::name() const               \
 {                                                   \
@@ -36,9 +35,9 @@ DECLARE_ATOM_TYPE_PARSER(real,          _T("real")         );
 DECLARE_ATOM_TYPE_PARSER(bool,          _T("bool")         );
 DECLARE_ATOM_TYPE_PARSER(string,        _T("string")       );
 
-// ----------------------------------------------------------------------------
-// ---------- RDOType
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOType
+// --------------------------------------------------------------------------------
 
 //! RDOType__unknow
 LPRDOType RDOType__unknow::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const

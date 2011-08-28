@@ -1,31 +1,31 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : rdo_ie.h
- * author   : 
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdo_ie.h
+  \author    
+  \date      
+  \brief     
+  \indent    4T
+*/
 
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_converter/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_converter/runtime/rdo_ie.h"
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPatternIrregEvent
-// ----------------------------------------------------------------------------
-RDOPatternIrregEvent::RDOPatternIrregEvent(PTR(RDORuntime) rTime, rbool trace)
-	: RDOPattern(rTime, trace)
-	, m_timeCalc(NULL        )
+// --------------------------------------------------------------------------------
+// -------------------- RDOPatternIrregEvent
+// --------------------------------------------------------------------------------
+RDOPatternIrregEvent::RDOPatternIrregEvent(rbool trace)
+	: RDOPattern(trace)
+	, m_timeCalc(NULL )
 {}
 
-double RDOPatternIrregEvent::getNextTimeInterval(PTR(RDORuntime) pRuntime)
+double RDOPatternIrregEvent::getNextTimeInterval(CREF(LPRDORuntime) pRuntime)
 {
 	double time_next = m_timeCalc->calcValue(pRuntime).getDouble();
 	if (time_next >= 0)
@@ -36,68 +36,68 @@ double RDOPatternIrregEvent::getNextTimeInterval(PTR(RDORuntime) pRuntime)
 	return 0;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOIrregEvent
-// ----------------------------------------------------------------------------
-RDOIrregEvent::RDOIrregEvent(PTR(RDORuntime) pRuntime, PTR(RDOPatternIrregEvent) pPattern, rbool trace, CREF(tstring) name)
-	: RDOActivityPattern<RDOPatternIrregEvent>(pRuntime, pPattern, trace, name)
+// --------------------------------------------------------------------------------
+// -------------------- RDOIrregEvent
+// --------------------------------------------------------------------------------
+RDOIrregEvent::RDOIrregEvent(PTR(RDOPatternIrregEvent) pPattern, rbool trace, CREF(tstring) name)
+	: RDOActivityPattern<RDOPatternIrregEvent>(pPattern, trace, name)
 {
 	setTrace  (trace);
 	setTraceID(~0   );
 }
 
-void RDOIrregEvent::onStart(PTR(RDOSimulator) pSimulator)
+void RDOIrregEvent::onStart(CREF(LPRDORuntime) pRuntime)
 {
-	onBeforeIrregularEvent(pSimulator);
-	pSimulator->addTimePoint(getNextTimeInterval(pSimulator) + pSimulator->getCurrentTime(), this);
+	onBeforeIrregularEvent(pRuntime);
+	pRuntime->addTimePoint(getNextTimeInterval(pRuntime) + pRuntime->getCurrentTime(), this);
 }
 
-void RDOIrregEvent::onStop(PTR(RDOSimulator) pSimulator)
+void RDOIrregEvent::onStop(CREF(LPRDORuntime) pRuntime)
 {
-	pSimulator->removeTimePoint(this);
+	pRuntime->removeTimePoint(this);
 }
 
-rbool RDOIrregEvent::onCheckCondition(PTR(RDOSimulator) pSimulator)
+rbool RDOIrregEvent::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
 	return false;
 }
 
-IBaseOperation::BOResult RDOIrregEvent::onDoOperation(PTR(RDOSimulator) pSimulator)
+IBaseOperation::BOResult RDOIrregEvent::onDoOperation(CREF(LPRDORuntime) pRuntime)
 {
 	return IBaseOperation::BOR_cant_run;
 }
 
-void RDOIrregEvent::onMakePlaned(PTR(RDOSimulator) pSimulator, PTR(void) pParam)
+void RDOIrregEvent::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
 {
-	pSimulator->inc_cnt_events();
-	onBeforeIrregularEvent(pSimulator);
-	convertEvent(pSimulator);
-	pSimulator->addTimePoint(getNextTimeInterval(pSimulator) + pSimulator->getCurrentTime(), this);
-	onAfterIrregularEvent(pSimulator);
+	pRuntime->inc_cnt_events();
+	onBeforeIrregularEvent(pRuntime);
+	convertEvent(pRuntime);
+	pRuntime->addTimePoint(getNextTimeInterval(pRuntime) + pRuntime->getCurrentTime(), this);
+	onAfterIrregularEvent(pRuntime);
 }
 
-void RDOIrregEvent::convertEvent(PTR(RDOSimulator) pSimulator) 
+void RDOIrregEvent::convertEvent(CREF(LPRDORuntime) pRuntime) 
 { 
 	NEVER_REACH_HERE;
 }
 
-void RDOIrregEvent::onBeforeIrregularEvent(PTR(RDOSimulator) pSimulator)
+void RDOIrregEvent::onBeforeIrregularEvent(CREF(LPRDORuntime) pRuntime)
 {
 	NEVER_REACH_HERE;
 }
 
-void RDOIrregEvent::onAfterIrregularEvent(PTR(RDOSimulator) pSimulator)
+void RDOIrregEvent::onAfterIrregularEvent(CREF(LPRDORuntime) pRuntime)
 {
 	NEVER_REACH_HERE;
 }
 
-double RDOIrregEvent::getNextTimeInterval(PTR(RDOSimulator) pSimulator) 
+double RDOIrregEvent::getNextTimeInterval(CREF(LPRDORuntime) pRuntime) 
 { 
-	static_cast<PTR(RDORuntime)>(pSimulator)->setCurrentActivity(this);
-	return m_pattern->getNextTimeInterval(static_cast<PTR(RDORuntime)>(pSimulator)); 
+	pRuntime->setCurrentActivity(this);
+	return m_pPattern->getNextTimeInterval(pRuntime); 
 }
 
-IBaseOperation::BOResult RDOIrregEvent::onContinue(PTR(rdoRuntime::RDOSimulator) pSimulator)
+IBaseOperation::BOResult RDOIrregEvent::onContinue(CREF(LPRDORuntime) pRuntime)
 {
 	return IBaseOperation::BOR_cant_run;
 }

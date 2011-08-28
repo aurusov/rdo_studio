@@ -1,31 +1,33 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : rdo_rule.h
- * author   : Урусов Андрей, Лущан Дмитрий
- * date     : 18.08.2010
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdo_rule.h
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \date      18.08.2010
+  \brief     Продукционные правила
+  \indent    4T
+*/
 
-#ifndef _RDO_RULE_H_
-#define _RDO_RULE_H_
+#ifndef _LIB_RUNTIME_RULE_H_
+#define _LIB_RUNTIME_RULE_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_runtime/rdo_pattern.h"
 #include "rdo_lib/rdo_runtime/rdo_activity.h"
 #include "rdo_lib/rdo_runtime/rdo_priority.h"
 #include "rdo_lib/rdo_runtime/rdo_rule_i.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDORule
-// ----------------------------------------------------------------------------
-class RDORule: public IBaseOperation, public IRule, public RDOActivityPattern<RDOPatternRule>, public RDOPatternPrior, public RDORuntimeContainer
+/*!
+  \class     RDORule
+  \brief     Продукционное правило
+*/
+class RDORule: public IBaseOperation, public IRule, public RDOActivityPattern<RDOPatternRule>, public RDOPatternPrior
 {
 typedef RDOActivityPattern<RDOPatternRule> pattern_type;
 DEFINE_IFACTORY(RDORule);
@@ -41,17 +43,17 @@ friend class RDODPTSearch;
 friend class TreeNode;
 
 private:
-	RDORule( RDORuntime* runtime, RDOPatternRule* pattern, bool trace, const std::string& name );
-	RDORule( RDORuntime* runtime, RDOPatternRule* pattern, bool trace, CREF(LPRDOCalc) pCondition, const std::string& name );
+	RDORule(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternRule) pPattern, rbool trace, CREF(tstring) name);
+	RDORule(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternRule) pPattern, rbool trace, CREF(LPRDOCalc) pCondition, CREF(tstring) name);
 
-	virtual ~RDORule()
-	{}
+	virtual ~RDORule();
 
 	void init();
 
-	LPRDOCalc m_additionalCondition;
+	LPRDORuntime m_pRuntime;
+	LPRDOCalc    m_additionalCondition;
+	rbool        m_traceOFF;
 
-	bool m_traceOFF;
 	void trace();
 
 	DECLARE_IBaseOperation;
@@ -60,4 +62,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif //! _RDO_RULE_H_
+#endif // _LIB_RUNTIME_RULE_H_

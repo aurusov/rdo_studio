@@ -1,22 +1,23 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : rdosmr.h
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdosmr.h
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
 #ifndef _RDOSMR_H_
 #define _RDOSMR_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/rdocommon.h"
 #include "rdo_lib/rdo_runtime/rdotrace.h"
 #include "rdo_lib/rdo_parser/rdo_object.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 class RDOCalc;
@@ -32,9 +33,9 @@ int  smr_sim_parse (PTR(void) lexer);
 int  smr_sim_lex   (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
 void smr_sim_error (PTR(char) mes);
 
-// ----------------------------------------------------------------------------
-// ---------- RDOSMR
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOSMR
+// --------------------------------------------------------------------------------
 OBJECT(RDOSMR)
 {
 DECLARE_FACTORY(RDOSMR);

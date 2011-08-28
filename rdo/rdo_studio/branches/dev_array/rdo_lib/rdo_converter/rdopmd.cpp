@@ -1,23 +1,24 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : rdopmd.cpp
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdopmd.cpp
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_converter/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_converter/rdopmd.h"
 #include "rdo_lib/rdo_converter/rdoparser.h"
 #include "rdo_lib/rdo_converter/rdorss.h"
 #include "rdo_lib/rdo_converter/rdortp.h"
 #include "rdo_lib/rdo_converter/rdoparser_lexer.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
@@ -31,9 +32,9 @@ int cnv_pmdlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 void cnv_pmderror(PTR(char) mes)
 {}
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPMDPokaz
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPMDPokaz
+// --------------------------------------------------------------------------------
 RDOPMDPokaz::RDOPMDPokaz(CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
 {
@@ -58,13 +59,13 @@ void RDOPMDPokaz::endOfCreation(CREF(LPIPokaz) pPokaz)
 		trace->setTraceID(Converter::s_converter()->getPMD_id());
 	}
 	Converter::s_converter()->insertPMDPokaz(this);
-	//! [TODO]: перенести в конструктор rdoRuntime::RDOPMDPokaz
+	/// @todo перенести в конструктор rdoRuntime::RDOPMDPokaz
 	Converter::s_converter()->runtime()->addRuntimePokaz(m_pPokaz);
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPMDWatchPar
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPMDWatchPar
+// --------------------------------------------------------------------------------
 RDOPMDWatchPar::RDOPMDWatchPar(CREF(RDOParserSrcInfo) src_info, rbool trace, CREF(RDOParserSrcInfo) res_src_info, CREF(RDOParserSrcInfo) par_src_info)
 	: RDOPMDPokaz(src_info)
 {
@@ -99,18 +100,18 @@ RDOPMDWatchPar::RDOPMDWatchPar(CREF(RDOParserSrcInfo) src_info, rbool trace, CRE
 	endOfCreation(F(rdoRuntime::RDOPMDWatchPar)::create(Converter::s_converter()->runtime(), src_text(), trace, res_src_info.src_text(), par_src_info.src_text(), pResource->getID(), pResource->getType()->getRTPParamNumber(par_src_info.src_text())));
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPMDWatchState
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPMDWatchState
+// --------------------------------------------------------------------------------
 RDOPMDWatchState::RDOPMDWatchState(CREF(RDOParserSrcInfo) src_info, rbool trace, LPRDOFUNLogic pLogic)
 	: RDOPMDPokaz(src_info)
 {
 	endOfCreation(F(rdoRuntime::RDOPMDWatchState)::create(Converter::s_converter()->runtime(), src_text(), trace, pLogic->getCalc()));
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPMDWatchTemp
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPMDWatchTemp
+// --------------------------------------------------------------------------------
 RDOPMDWatchTemp::RDOPMDWatchTemp(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) res_type_src_info)
 	: RDOPMDPokaz(src_info)
 {
@@ -127,9 +128,9 @@ RDOPMDWatchTemp::RDOPMDWatchTemp(CREF(RDOParserSrcInfo) src_info, CREF(RDOParser
 	}
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPMDWatchQuant
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPMDWatchQuant
+// --------------------------------------------------------------------------------
 RDOPMDWatchQuant::RDOPMDWatchQuant(CREF(RDOParserSrcInfo) src_info, rbool trace, CREF(RDOParserSrcInfo) res_type_src_info)
 	: RDOPMDWatchTemp(src_info, res_type_src_info)
 {
@@ -154,9 +155,9 @@ void RDOPMDWatchQuant::setLogicNoCheck()
 	Converter::s_converter()->getFUNGroupStack().pop_back();
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPMDWatchValue
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPMDWatchValue
+// --------------------------------------------------------------------------------
 RDOPMDWatchValue::RDOPMDWatchValue(CREF(RDOParserSrcInfo) src_info, rbool trace, CREF(RDOParserSrcInfo) res_type_src_info)
 	: RDOPMDWatchTemp(src_info, res_type_src_info)
 {
@@ -183,9 +184,9 @@ void RDOPMDWatchValue::setLogicNoCheck(REF(LPRDOFUNArithm) pArithm)
 	Converter::s_converter()->getFUNGroupStack().pop_back();
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPMDGetValue
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPMDGetValue
+// --------------------------------------------------------------------------------
 RDOPMDGetValue::RDOPMDGetValue(CREF(RDOParserSrcInfo) src_info, LPRDOFUNArithm pArithm)
 	: RDOPMDPokaz(src_info)
 {

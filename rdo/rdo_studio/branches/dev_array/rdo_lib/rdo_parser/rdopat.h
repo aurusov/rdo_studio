@@ -1,17 +1,18 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : rdopat.h
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdopat.h
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
 #ifndef _RDOPAT_H_
 #define _RDOPAT_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_parser/rdortp_param.h"
 #include "rdo_lib/rdo_parser/rdofun.h"
 #include "rdo_lib/rdo_parser/rdorss.h"
@@ -21,17 +22,14 @@
 #include "rdo_lib/rdo_parser/context/context_find_i.h"
 #include "rdo_lib/rdo_parser/context/context_create_expression_i.h"
 
+#include "rdo_lib/rdo_runtime/rdo_pattern.h"
 #include "rdo_lib/rdo_runtime/rdo_resource.h"
 #include "rdo_lib/rdo_runtime/rdocalc.h"
 #include "rdo_lib/rdo_runtime/calc/relres.h"
 #include "rdo_lib/rdo_runtime/calc/choice_from.h"
 
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
-// ===============================================================================
-
-OPEN_RDO_RUNTIME_NAMESPACE
-class RDOPattern;
-CLOSE_RDO_RUNTIME_NAMESPACE
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
 
@@ -47,9 +45,9 @@ int  evn_preparse_parse(PTR(void) lexer);
 int  evn_preparse_lex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
 void evn_preparse_error(PTR(char) mes);
 
-// ----------------------------------------------------------------------------
-// ---------- ConvertCmdList
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- ConvertCmdList
+// --------------------------------------------------------------------------------
 OBJECT(ConvertCmdList)
 {
 DECLARE_FACTORY(ConvertCmdList)
@@ -69,9 +67,9 @@ private:
 	CalcList m_calcList;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPATPattern
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPATPattern
+// --------------------------------------------------------------------------------
 PREDECLARE_POINTER(RDOPATChoiceFrom);
 PREDECLARE_POINTER(RDOPATChoiceOrder);
 PREDECLARE_POINTER(RDORelevantResource);
@@ -98,8 +96,16 @@ public:
 
 	typedef std::vector<LPRDORelevantResource> RelResList;
 
-	rbool                       isHaveConvertEnd() const { return getType() == PT_Operation || getType() == PT_Keyboard; }
-	PTR(rdoRuntime::RDOPattern) getPatRuntime   () const { return m_pPatRuntime; }
+	rbool                          isHaveConvertEnd() const { return getType() == PT_Operation || getType() == PT_Keyboard; }
+
+	CREF(rdoRuntime::LPRDOPattern) getPatRuntime   () const { return m_pPatRuntime; }
+	template<class T>
+	rdo::intrusive_ptr<T>          getPatRuntime   () const
+	{
+		rdo::intrusive_ptr<T> pPatRuntime = m_pPatRuntime.object_static_cast<T>();
+		ASSERT(pPatRuntime);
+		return pPatRuntime;
+	}
 
 	static tstring StatusToStr(rdoRuntime::RDOResource::ConvertStatus value);
 	rdoRuntime::RDOResource::ConvertStatus StrToStatus(CREF(tstring) value, CREF(YYLTYPE) convertor_pos);
@@ -140,7 +146,7 @@ protected:
 	virtual ~RDOPATPattern()
 	{}
 
-	PTR(rdoRuntime::RDOPattern) m_pPatRuntime;
+	rdoRuntime::LPRDOPattern m_pPatRuntime;
 
 	rdoRuntime::LPRDOCalc createRelRes   (rbool trace) const;
 	virtual void          addParamSetCalc(CREF(rdoRuntime::LPRDOCalc) pCalc);
@@ -181,9 +187,9 @@ private:
 };
 DECLARE_POINTER(RDOPATPattern);
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPatternEvent
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPatternEvent
+// --------------------------------------------------------------------------------
 class RDOPatternEvent: public RDOPATPattern
 {
 DECLARE_FACTORY(RDOPatternEvent)
@@ -208,9 +214,9 @@ private:
 	RDOPatternEvent(CREF(RDOParserSrcInfo) name_src_info, rbool trace);
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPatternRule
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPatternRule
+// --------------------------------------------------------------------------------
 class RDOPatternRule: public RDOPATPattern
 {
 DECLARE_FACTORY(RDOPatternRule)
@@ -234,9 +240,9 @@ private:
 	RDOPatternRule(CREF(RDOParserSrcInfo) name_src_info, rbool trace);
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPatternOperation
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPatternOperation
+// --------------------------------------------------------------------------------
 class RDOPatternOperation: public RDOPATPattern
 {
 DECLARE_FACTORY(RDOPatternOperation)
@@ -276,9 +282,9 @@ private:
 	ConvertorType m_convertorType;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPatternKeyboard
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPatternKeyboard
+// --------------------------------------------------------------------------------
 class RDOPatternKeyboard: public RDOPatternOperation
 {
 DECLARE_FACTORY(RDOPatternKeyboard)
@@ -296,9 +302,9 @@ private:
 	RDOPatternKeyboard(CREF(RDOParserSrcInfo) name_src_info, rbool trace);
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDORelevantResource
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDORelevantResource
+// --------------------------------------------------------------------------------
 CLASS(RDORelevantResource):
 	    INSTANCE_OF      (RDOParserSrcInfo        )
 	AND INSTANCE_OF      (Context                 )
@@ -401,9 +407,9 @@ private:
 };
 DECLARE_POINTER(RDORelevantResource);
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPATChoiceFrom
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPATChoiceFrom
+// --------------------------------------------------------------------------------
 OBJECT(RDOPATChoiceFrom) IS INSTANCE_OF(RDOParserSrcInfo)
 {
 DECLARE_FACTORY(RDOPATChoiceFrom)
@@ -425,9 +431,9 @@ private:
 	{}
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPATChoiceOrder
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPATChoiceOrder
+// --------------------------------------------------------------------------------
 OBJECT(RDOPATChoiceOrder) IS INSTANCE_OF(RDOParserSrcInfo)
 {
 DECLARE_FACTORY(RDOPATChoiceOrder)
@@ -457,9 +463,9 @@ private:
 	{}
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDORelevantResourceDirect - по имени ресурса
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDORelevantResourceDirect - по имени ресурса
+// --------------------------------------------------------------------------------
 class RDORelevantResourceDirect: public RDORelevantResource
 {
 DECLARE_FACTORY(RDORelevantResourceDirect)
@@ -482,9 +488,9 @@ private:
 	LPRDORSSResource m_pResource;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDORelevantResourceByType - по имени типа
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDORelevantResourceByType - по имени типа
+// --------------------------------------------------------------------------------
 class RDORelevantResourceByType: public RDORelevantResource
 {
 DECLARE_FACTORY(RDORelevantResourceByType)

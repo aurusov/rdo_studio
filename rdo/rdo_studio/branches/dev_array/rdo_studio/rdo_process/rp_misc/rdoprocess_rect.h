@@ -5,15 +5,15 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "rdoprocess_polyline.h"
-#include "rdoprocess_matrix.h"
 #include <list>
+#include "rdo_studio/rdo_process/rp_misc/rdoprocess_polyline.h"
+#include "rdo_studio/rdo_process/rp_misc/rdoprocess_matrix.h"
 
 namespace rp {
 
-// ----------------------------------------------------------------------------
-// ---------- rect
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- rect
+// --------------------------------------------------------------------------------
 class rect {
 private:
 	polyline pa;

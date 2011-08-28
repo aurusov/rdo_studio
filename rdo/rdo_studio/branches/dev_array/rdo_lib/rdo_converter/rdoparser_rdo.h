@@ -1,29 +1,30 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdoparser_rdo.h
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdoparser_rdo.h
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
 #ifndef _CONVERTOR_RDOCONVERTER_CONVERTOR_RDO_H_
 #define _CONVERTOR_RDOCONVERTER_CONVERTOR_RDO_H_
 
-// ====================================================================== INCLUDES
+// ----------------------------------------------------------------------- INCLUDES
 #include <iostream>
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_converter/rdoparser_base.h"
 #include "rdo_lib/rdo_converter/rdoparser_lexer.h"
 #include "rdo_lib/rdo_converter/rdo_object.h"
 #include "rdo_lib/rdo_runtime/rdo_object.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserRDOItem
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserRDOItem
+// --------------------------------------------------------------------------------
 class Converter;
 
 class RDOParserRDOItem: public RDOParserItem
@@ -45,9 +46,9 @@ private:
 	PTR(RDOLexer) getLexer(PTR(Converter) pParser, PTR(std::istream) streamIn, PTR(std::ostream) streamOut);
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserRSS
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserRSS
+// --------------------------------------------------------------------------------
 class RDOParserRSS: public RDOParserRDOItem
 {
 DECLARE_FACTORY(RDOParserRSS);
@@ -56,9 +57,9 @@ private:
 	virtual void parse(PTR(Converter) pParser, REF(std::istream) streamIn);
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserRSSPost
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserRSSPost
+// --------------------------------------------------------------------------------
 class RDOParserRSSPost: public RDOParserItem
 {
 DECLARE_FACTORY(RDOParserRSSPost);
@@ -67,9 +68,9 @@ private:
 	virtual void parse(PTR(Converter) pParser);
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOParserSTDFUN
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserSTDFUN
+// --------------------------------------------------------------------------------
 class RDOParserSTDFUN: public RDOParserItem
 {
 DECLARE_FACTORY(RDOParserSTDFUN);

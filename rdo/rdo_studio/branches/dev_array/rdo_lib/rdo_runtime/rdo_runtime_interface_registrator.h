@@ -1,19 +1,19 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : rdo_runtime_interface_registrator.h
- * author   : Урусов Андрей
- * date     : 29.07.2009
- * bref     : Присваивает интерфейсам уникальные номера
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdo_runtime_interface_registrator.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      29.07.2009
+  \brief     Глобальная регистрация интерфейсов
+  \indent    4T
+*/
 
-#ifndef _RDO_RUNTIME_INTERFACE_REGISTRATOR_H_
-#define _RDO_RUNTIME_INTERFACE_REGISTRATOR_H_
+#ifndef _LIB_RUNTIME_RUNTIME_INTERFACE_REGISTRATOR_H_
+#define _LIB_RUNTIME_RUNTIME_INTERFACE_REGISTRATOR_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/rdointerface.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 INTERFACE_REGISTRATOR(IPokaz,                     1);
 INTERFACE_REGISTRATOR(IPokazTrace,                2);
@@ -44,4 +44,4 @@ INTERFACE_REGISTRATOR(IPROCProcess,              26);
 INTERFACE_REGISTRATOR(IPokazGroup,               27);
 INTERFACE_REGISTRATOR(IPokazGetValue,            28);
 
-#endif //! _RDO_RUNTIME_INTERFACE_REGISTRATOR_H_
+#endif // _LIB_RUNTIME_RUNTIME_INTERFACE_REGISTRATOR_H_

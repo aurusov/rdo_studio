@@ -1,16 +1,17 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : rdodpt.cpp
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdodpt.cpp
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
-// ====================================================================== PCH
+// ---------------------------------------------------------------------------- PCH
 #include "rdo_lib/rdo_parser/pch.h"
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_parser/rdodpt.h"
 #include "rdo_lib/rdo_parser/rdoparser.h"
 #include "rdo_lib/rdo_parser/rdoparser_lexer.h"
@@ -27,7 +28,7 @@
 #include "rdo_lib/rdo_runtime/rdo_dptsearch_activity.h"
 
 #include "rdo_lib/rdo_mbuilder/rdo_resources.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
 
@@ -71,9 +72,9 @@ int proc_opr_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 void proc_opr_error(PTR(char) mes)
 {}
 
-// ----------------------------------------------------------------------------
-// ---------- RDODPTActivity
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDODPTActivity
+// --------------------------------------------------------------------------------
 RDODPTActivity::RDODPTActivity(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_currParam     (0       )
@@ -175,24 +176,24 @@ rbool RDODPTActivity::setPrior(REF(LPRDOFUNArithm) pPrior)
 	return false;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDODPTActivityHotKey
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDODPTActivityHotKey
+// --------------------------------------------------------------------------------
 RDODPTActivityHotKey::RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info)
 	: RDODPTActivity(src_info, pattern_src_info)
 {
 	switch (pattern()->getType())
 	{
 	case RDOPATPattern::PT_Rule:
-		m_pActivity = static_cast<PTR(rdoRuntime::RDOPatternRule)>(pattern()->getPatRuntime())->createActivity(pDPT, RDOParser::s_parser()->runtime(), name());
+		m_pActivity = pattern()->getPatRuntime<rdoRuntime::RDOPatternRule>()->createActivity(pDPT, RDOParser::s_parser()->runtime(), name());
 		break;
 
 	case RDOPATPattern::PT_Operation:
-		m_pActivity = static_cast<PTR(rdoRuntime::RDOPatternOperation)>(pattern()->getPatRuntime())->createActivity(pDPT, RDOParser::s_parser()->runtime(), name());
+		m_pActivity = pattern()->getPatRuntime<rdoRuntime::RDOPatternOperation>()->createActivity(pDPT, RDOParser::s_parser()->runtime(), name());
 		break;
 
 	case RDOPATPattern::PT_Keyboard:
-		m_pActivity = static_cast<PTR(rdoRuntime::RDOPatternKeyboard)>(pattern()->getPatRuntime())->createActivity(pDPT, RDOParser::s_parser()->runtime(), name());
+		m_pActivity = pattern()->getPatRuntime<rdoRuntime::RDOPatternKeyboard>()->createActivity(pDPT, RDOParser::s_parser()->runtime(), name());
 		break;
 
 	default:
@@ -236,18 +237,18 @@ void RDODPTActivityHotKey::addHotKey(CREF(tstring) hotKey, CREF(YYLTYPE) hotkey_
 	}
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDODPTFreeActivity
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDODPTFreeActivity
+// --------------------------------------------------------------------------------
 RDODPTFreeActivity::RDODPTFreeActivity(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info)
 	: RDODPTActivityHotKey(pDPT, src_info, pattern_src_info)
 {
 	RDOParser::s_parser()->insertDPTFreeActivity(this);
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDODPTFree
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDODPTFree
+// --------------------------------------------------------------------------------
 RDODPTFree::RDODPTFree(CREF(RDOParserSrcInfo) src_info)
 	: RDOLogicActivity<rdoRuntime::RDODPTFree, RDODPTFreeActivity>(src_info)
 {
@@ -270,23 +271,23 @@ LPContext RDODPTFree::onFindContext(CREF(RDOValue) value) const
 	return NULL;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDODPTSomeActivity
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDODPTSomeActivity
+// --------------------------------------------------------------------------------
 RDODPTSomeActivity::RDODPTSomeActivity(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info)
 	: RDODPTActivityHotKey(pDPT, src_info, pattern_src_info)
 {}
 
-// ----------------------------------------------------------------------------
-// ---------- RDODPTPriorActivity
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDODPTPriorActivity
+// --------------------------------------------------------------------------------
 RDODPTPriorActivity::RDODPTPriorActivity(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info)
 	: RDODPTActivityHotKey(pDPT, src_info, pattern_src_info)
 {}
 
-// ----------------------------------------------------------------------------
-// ---------- RDODPTSome
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDODPTSome
+// --------------------------------------------------------------------------------
 RDODPTSome::RDODPTSome(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
 	: RDOLogicActivity<rdoRuntime::RDODPTSome, RDODPTSomeActivity>(src_info)
 {
@@ -313,9 +314,9 @@ void RDODPTSome::end()
 	RDOParser::s_parser()->contextStack()->pop();
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDODPTPrior
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDODPTPrior
+// --------------------------------------------------------------------------------
 RDODPTPrior::RDODPTPrior(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
 	: RDOLogicActivity<rdoRuntime::RDODPTPrior, RDODPTPriorActivity>(src_info)
 {
@@ -342,9 +343,9 @@ void RDODPTPrior::end()
 	RDOParser::s_parser()->contextStack()->pop();
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDODPTSearchActivity
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDODPTSearchActivity
+// --------------------------------------------------------------------------------
 RDODPTSearchActivity::RDODPTSearchActivity(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info)
 	: RDODPTActivity(src_info, pattern_src_info   )
 	, m_value       (IDPTSearchActivity::vt_before)
@@ -365,7 +366,7 @@ RDODPTSearchActivity::RDODPTSearchActivity(LPIBaseOperationContainer pDPT, CREF(
 			RDOParser::s_parser()->error().push_done();
 		}
 	}
-	m_pActivity = F(rdoRuntime::RDORule)::create(RDOParser::s_parser()->runtime(), static_cast<PTR(rdoRuntime::RDOPatternRule)>(pattern()->getPatRuntime()), true, name());
+	m_pActivity = F(rdoRuntime::RDORule)::create(RDOParser::s_parser()->runtime(), pattern()->getPatRuntime<rdoRuntime::RDOPatternRule>(), true, name());
 	ASSERT(m_pActivity);
 }
 
@@ -375,9 +376,9 @@ void RDODPTSearchActivity::setValue(IDPTSearchActivity::ValueTime value, CREF(LP
 	m_pRuleCost = pRuleCost;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDODPTSearch
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDODPTSearch
+// --------------------------------------------------------------------------------
 RDODPTSearch::RDODPTSearch(CREF(RDOParserSrcInfo) src_info, rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag trace, LPILogic pParent)
 	: RDOLogicActivity<rdoRuntime::RDODPTSearchRuntime, RDODPTSearchActivity>(src_info)
 	, m_trace  (trace  )
@@ -429,9 +430,9 @@ void RDODPTSearch::end()
 	RDOParser::s_parser()->contextStack()->pop();
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCProcess
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCProcess
+// --------------------------------------------------------------------------------
 tstring RDOPROCProcess::s_name_prefix = _T("");
 tstring RDOPROCProcess::s_name_sufix  = _T("s");
 
@@ -485,9 +486,9 @@ rbool RDOPROCProcess::checkTransactType(CREF(tstring) name) const
 	return (name == m_transactType->name());
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCOperator
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCOperator
+// --------------------------------------------------------------------------------
 RDOPROCOperator::RDOPROCOperator(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name)
 	: m_name    (name    )
 	, m_pProcess(pProcess)
@@ -499,9 +500,9 @@ RDOPROCOperator::RDOPROCOperator(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) 
 RDOPROCOperator::~RDOPROCOperator()
 {}
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCGenerate
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCGenerate
+// --------------------------------------------------------------------------------
 RDOPROCGenerate::RDOPROCGenerate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pTimeCalc)
 	: RDOPROCOperator(pProcess, name)
 {
@@ -509,16 +510,16 @@ RDOPROCGenerate::RDOPROCGenerate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) 
 	ASSERT(m_pRuntime);
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCBlockForQueue
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCBlockForQueue
+// --------------------------------------------------------------------------------
 RDOPROCBlockForQueue::RDOPROCBlockForQueue(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name)
 	: RDOPROCOperator(pProcess, name)
 {}
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCQueue
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCQueue
+// --------------------------------------------------------------------------------
 RDOPROCQueue::RDOPROCQueue(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name)
 	: RDOPROCBlockForQueue(pProcess, name)
 {}
@@ -554,9 +555,9 @@ void RDOPROCQueue::setResource(CREF(tstring) name)
 	m_resourceName = name;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCDepart
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCDepart
+// --------------------------------------------------------------------------------
 RDOPROCDepart::RDOPROCDepart(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name)
 	: RDOPROCBlockForQueue(pProcess, name)
 {}
@@ -592,16 +593,16 @@ void RDOPROCDepart::setResource(CREF(tstring) name)
 	m_resourceName = name;
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCBlockForSeize
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCBlockForSeize
+// --------------------------------------------------------------------------------
 RDOPROCBlockForSeize::RDOPROCBlockForSeize(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name)
 	: RDOPROCOperator(pProcess, name)
 {}
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCSeize
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCSeize
+// --------------------------------------------------------------------------------
 RDOPROCSeize::RDOPROCSeize(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name)
 	: RDOPROCBlockForSeize(pProcess, name)
 {}
@@ -614,13 +615,13 @@ void RDOPROCSeize::createRuntime()
 		if (pResource)
 		{
 			tstring res_name = pResource->name();
-			//! Получили список всех ресурсов
+			// Получили список всех ресурсов
 			rdoMBuilder::RDOResourceList rssList(RDOParser::s_parser());
-			//! Создадим тип ресурса
+			// Создадим тип ресурса
 			rdoMBuilder::RDOResType rtp = rssList[res_name].getType();
-			//! "Состояние"
+			// "Состояние"
 			tstring rtp_param_name = rdoRuntime::RDOPROCBlockForSeize::getStateParamName();
-			//! проверим его на наличие перечислимого параметра
+			// проверим его на наличие перечислимого параметра
 			if (!rtp.m_params[rtp_param_name].exist())
 			{
 				RDOParser::s_parser()->error().error(rtp.src_info(), rdo::format(_T("У типа ресурса '%s' нет параметра перечислимого типа '%s'"), rtp.name().c_str(), rtp_param_name.c_str()));
@@ -653,9 +654,9 @@ void RDOPROCSeize::addResource(CREF(tstring) name)
 	m_resourceList.push_back(name);
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCRelease
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCRelease
+// --------------------------------------------------------------------------------
 RDOPROCRelease::RDOPROCRelease(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name)
 	: RDOPROCBlockForSeize(pProcess, name)
 {}
@@ -707,9 +708,9 @@ void RDOPROCRelease::addResource(CREF(tstring) name)
 	m_resourceList.push_back(name);
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCAdvance
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCAdvance
+// --------------------------------------------------------------------------------
 RDOPROCAdvance::RDOPROCAdvance(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pTimeCalc)
 	: RDOPROCOperator(pProcess, name)
 {
@@ -717,9 +718,9 @@ RDOPROCAdvance::RDOPROCAdvance(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) na
 	ASSERT(m_pRuntime);
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCTerminate
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCTerminate
+// --------------------------------------------------------------------------------
 RDOPROCTerminate::RDOPROCTerminate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(ruint) term)
 	: RDOPROCOperator(pProcess, name)
 {
@@ -727,9 +728,9 @@ RDOPROCTerminate::RDOPROCTerminate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring
 	ASSERT(m_pRuntime);
 }
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPROCAssign
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPROCAssign
+// --------------------------------------------------------------------------------
 RDOPROCAssign::RDOPROCAssign(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pValue, int resID, int paramID)
 	: RDOPROCOperator(pProcess, name)
 {

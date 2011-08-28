@@ -519,6 +519,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\rdo_exception.inl"
+				>
+			</File>
+			<File
 				RelativePath=".\rdo_memory.cpp"
 				>
 			</File>
@@ -532,6 +536,10 @@
 			</File>
 			<File
 				RelativePath=".\rdo_object.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_object.inl"
 				>
 			</File>
 			<File
@@ -597,6 +605,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\rdo_runtime.inl"
+				>
+			</File>
+			<File
 				RelativePath="rdo_simulator.cpp"
 				>
 				<FileConfiguration
@@ -656,6 +668,10 @@
 			</File>
 			<File
 				RelativePath="rdo_simulator.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_simulator.inl"
 				>
 			</File>
 			<File
@@ -721,6 +737,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\rdobase.inl"
+				>
+			</File>
+			<File
 				RelativePath="simtrace.cpp"
 				>
 				<FileConfiguration
@@ -780,6 +800,10 @@
 			</File>
 			<File
 				RelativePath="simtrace.h"
+				>
+			</File>
+			<File
+				RelativePath=".\simtrace.inl"
 				>
 			</File>
 			<File
@@ -937,6 +961,10 @@
 						</File>
 						<File
 							RelativePath="rdoprocess.h"
+							>
+						</File>
+						<File
+							RelativePath=".\rdoprocess.inl"
 							>
 						</File>
 						<File
@@ -1162,6 +1190,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\rdodptrtime.inl"
+							>
+						</File>
+						<File
 							RelativePath="searchtrace.cpp"
 							>
 							<FileConfiguration
@@ -1221,6 +1253,10 @@
 						</File>
 						<File
 							RelativePath="searchtrace.h"
+							>
+						</File>
+						<File
+							RelativePath=".\searchtrace.inl"
 							>
 						</File>
 						<File
@@ -1287,6 +1323,10 @@
 						</File>
 						<File
 							RelativePath="searchtree.h"
+							>
+						</File>
+						<File
+							RelativePath=".\searchtree.inl"
 							>
 						</File>
 					</Filter>
@@ -1664,6 +1704,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\rdo_activity.inl"
+							>
+						</File>
+						<File
 							RelativePath=".\rdo_activity_i.h"
 							>
 						</File>
@@ -1734,6 +1778,10 @@
 							>
 						</File>
 						<File
+							RelativePath=".\rdo_pattern.inl"
+							>
+						</File>
+						<File
 							RelativePath=".\rdo_priority.h"
 							>
 						</File>
@@ -1793,6 +1841,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\calc\arithm.inl"
+				>
+			</File>
+			<File
 				RelativePath=".\calc\array.cpp"
 				>
 			</File>
@@ -1817,19 +1869,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\calc_process_control.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\calc_process_control.h"
-				>
-			</File>
-			<File
 				RelativePath=".\calc\choice_from.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\calc\choice_from.h"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\choice_from.inl"
 				>
 			</File>
 			<File
@@ -1862,6 +1910,18 @@
 			</File>
 			<File
 				RelativePath=".\calc\logic.h"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\logic.inl"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\process_control.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\process_control.h"
 				>
 			</File>
 			<File
@@ -1951,6 +2011,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\calc\sequence.inl"
+				>
+			</File>
+			<File
 				RelativePath=".\calc\statements.cpp"
 				>
 			</File>
@@ -1964,6 +2028,10 @@
 			</File>
 			<File
 				RelativePath=".\calc\std_fun.h"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\std_fun.inl"
 				>
 			</File>
 			<File
@@ -2001,6 +2069,10 @@
 					RelativePath=".\calc\operation_type.h"
 					>
 				</File>
+				<File
+					RelativePath=".\calc\operation_type.inl"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -2008,6 +2080,10 @@
 			>
 			<File
 				RelativePath="rdo_random_distribution.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_random_distribution.inl"
 				>
 			</File>
 		</Filter>
@@ -2074,6 +2150,10 @@
 			</File>
 			<File
 				RelativePath="rdotrace.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdotrace.inl"
 				>
 			</File>
 			<File
@@ -2308,6 +2388,10 @@
 			</File>
 			<File
 				RelativePath="rdoframe.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdoframe.inl"
 				>
 			</File>
 		</Filter>

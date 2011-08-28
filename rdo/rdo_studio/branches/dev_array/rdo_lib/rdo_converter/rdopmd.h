@@ -1,22 +1,23 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : rdopmd.h
- * author   : Александ Барс, Урусов Андрей
- * date     : 
- * bref     : 
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdopmd.h
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      
+  \brief     
+  \indent    4T
+*/
 
 #ifndef _CONVERTOR_RDOPMD_PMD_H_
 #define _CONVERTOR_RDOPMD_PMD_H_
 
-// ====================================================================== INCLUDES
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
 #include "rdo_lib/rdo_runtime/rdopokaz.h"
 #include "rdo_lib/rdo_converter/rdo_object.h"
 #include "rdo_lib/rdo_converter/rdofun.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
@@ -24,9 +25,9 @@ int  cnv_pmdparse(PTR(void) lexer);
 int  cnv_pmdlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
 void cnv_pmderror(PTR(char) mes);
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPMDPokaz
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPMDPokaz
+// --------------------------------------------------------------------------------
 OBJECT(RDOPMDPokaz) IS INSTANCE_OF(RDOParserSrcInfo)
 {
 DECLARE_FACTORY(RDOPMDPokaz);
@@ -42,9 +43,9 @@ protected:
 	LPIPokaz m_pPokaz;
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPMDWatchPar
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPMDWatchPar
+// --------------------------------------------------------------------------------
 class RDOPMDWatchPar: public RDOPMDPokaz
 {
 DECLARE_FACTORY(RDOPMDWatchPar);
@@ -52,9 +53,9 @@ private:
 	RDOPMDWatchPar(CREF(RDOParserSrcInfo) src_info, rbool trace, CREF(RDOParserSrcInfo) res_src_info, CREF(RDOParserSrcInfo) par_src_info);
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPMDWatchState
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPMDWatchState
+// --------------------------------------------------------------------------------
 class RDOPMDWatchState: public RDOPMDPokaz
 {
 DECLARE_FACTORY(RDOPMDWatchState);
@@ -62,18 +63,18 @@ private:
 	RDOPMDWatchState(CREF(RDOParserSrcInfo) src_info, rbool trace, LPRDOFUNLogic pLogic);
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPMDWatchTemp
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPMDWatchTemp
+// --------------------------------------------------------------------------------
 class RDOPMDWatchTemp: public RDOPMDPokaz
 {
 protected:
 	RDOPMDWatchTemp(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) res_type_src_info);
 };
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPMDWatchQuant
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPMDWatchQuant
+// --------------------------------------------------------------------------------
 class RDOPMDWatchQuant: public RDOPMDWatchTemp
 {
 DECLARE_FACTORY(RDOPMDWatchQuant);
@@ -86,9 +87,9 @@ private:
 };
 DECLARE_POINTER(RDOPMDWatchQuant);
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPMDWatchValue
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPMDWatchValue
+// --------------------------------------------------------------------------------
 class RDOPMDWatchValue: public RDOPMDWatchTemp
 {
 DECLARE_FACTORY(RDOPMDWatchValue);
@@ -101,9 +102,9 @@ private:
 };
 DECLARE_POINTER(RDOPMDWatchValue);
 
-// ----------------------------------------------------------------------------
-// ---------- RDOPMDGetValue
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// -------------------- RDOPMDGetValue
+// --------------------------------------------------------------------------------
 class RDOPMDGetValue: public RDOPMDPokaz
 {
 DECLARE_FACTORY(RDOPMDGetValue);
