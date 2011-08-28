@@ -540,6 +540,11 @@
 		<param name="Local" value="html\rdo_obj_dpt.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="circle">
+		<param name="Name" value="Описание кадров">
+		<param name="Local" value="html\rdo_obj_frm.htm#elem_type">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="ellipse">
 		<param name="Name" value="Описание кадров">
 		<param name="Local" value="html\rdo_obj_frm.htm#elem_type">
