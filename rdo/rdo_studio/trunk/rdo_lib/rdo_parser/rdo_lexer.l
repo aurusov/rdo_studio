@@ -287,6 +287,7 @@ triang                         return(RDO_triang);
 active                         return(RDO_active);
 ruler                          return(RDO_ruler);
 space                          return(RDO_space);
+circle                         return(RDO_circle);
 
 transparent                    return(RDO_color_transparent);
 white                          return(RDO_color_white);

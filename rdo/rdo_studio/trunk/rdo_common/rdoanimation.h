@@ -3,6 +3,7 @@
   \file      rdoanimation.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Копнин Андрей (kopninandrey@gmail.com)
   \date      13.06.2009
   \brief     Описание объектов анимации, которые передаются от симулятора к GUI для отрисовки
   \indent    4T
@@ -33,6 +34,7 @@ OPEN_RDO_ANIMATION_NAMESPACE
 			FIT_TRIANG , //!< Треугольник
 			FIT_RECT   , //!< Прямоугольник
 			FIT_R_RECT , //!< Прямоугольник со скруглёнными краями
+			FIT_CIRCLE , //!< Окружности
 			FIT_ELLIPSE, //!< Эллипс
 			FIT_BMP    , //!< Картинка
 			FIT_S_BMP  , //!< Смасштабированная картинка
@@ -142,6 +144,20 @@ OPEN_RDO_ANIMATION_NAMESPACE
 		RDOBoundedElement(CREF(RDOPoint) point, CREF(RDOSize) size);
 	};
 
+	//! Радиус окружности
+	STRUCT(RDORadius)
+	{
+		double m_radius; //!< Радиус
+
+		//! Конструктор копии
+		//! \param radius - радиус, на основе которой создаётся новый
+		RDORadius(CREF(RDORadius) radius);
+
+		//! Создаёт радиус
+		//! \param radius - значение радиуса
+		RDORadius(double radius);
+	};
+
 //! Объявление нового элемента
 #define FRAME_ITEM(A) STRUCT_PARENT_OF(A, FrameItem)
 
@@ -220,6 +236,20 @@ OPEN_RDO_ANIMATION_NAMESPACE
 		//! \param rect  - координаты и размер фигуры
 		//! \param color - цвет фигуры
 		RDORRectElement(CREF(RDOBoundedElement) rect, CREF(RDOColoredElement) color);
+	};
+
+	//! \brief   Окружность
+	//! \details Используется для реализации команды анимации <tt>circle[x, y, радиус, цвет_фона, цвет]</tt>
+	FRAME_ITEM(RDOCircleElement) IS IMPLEMENTATION_OF(RDOColoredElement)
+	{
+		RDOPoint  m_center; //!< Центр окружности
+		RDORadius m_radius; //!< Радиус окружности
+
+		//! Создаёт окружность
+		//! \param center - центр окружности
+		//! \param radius - радиус окружности
+		//! \param color  - цвет окружности
+		RDOCircleElement(CREF(RDOPoint) center, CREF(RDORadius) radius, CREF(RDOColoredElement) color);
 	};
 
 	//! \brief   Эллипс

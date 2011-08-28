@@ -540,7 +540,7 @@ frm_postype
 	{
 		$$ = RDOFRMPosition::PT_ABSOLUTE;
 	}
-	| '+'           
+	| '+'
 	{
 		$$ = RDOFRMPosition::PT_DELTA;
 	}
@@ -584,7 +584,7 @@ frm_postype_wh
 	;
 
 frm_position_xy
-	: fun_arithm frm_postype_xy 
+	: fun_arithm frm_postype_xy
 	{
 		rdoRuntime::LPRDOCalc pCalc = CONVERTER->stack().pop<RDOFUNArithm>($1)->createCalc();
 		if ($2 >= RDOFRMPosition::PT_RULET)
@@ -637,11 +637,11 @@ frm_ruler
 		ASSERT(pY);
 		if (pX->getType() != RDOFRMPosition::PT_ABSOLUTE)
 		{
-			CONVERTER->error().error(@5, _T(" оодинаты рулетки должны быть абсолютными"));
+			CONVERTER->error().error(@5, _T(" оординаты рулетки должны быть абсолютными"));
 		}
 		if (pY->getType() != RDOFRMPosition::PT_ABSOLUTE)
 		{
-			CONVERTER->error().error(@7, _T(" оодинаты рулетки должны быть абсолютными"));
+			CONVERTER->error().error(@7, _T(" оординаты рулетки должны быть абсолютными"));
 		}
 		pRulet = rdo::Factory<RDOFRMRulet>::create(RDOParserSrcInfo(@1), P_RDOVALUE($3)->value().getInt(), pX, pY);
 		ASSERT(pRulet);

@@ -1,7 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdoframe.inl
-  \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Копнин Андрей (kopninandrey@gmail.com)
   \date      31.07.2011
   \brief     Кадры РДО модели
   \indent    4T
@@ -157,10 +158,15 @@ inline PTR(rdoAnimation::RDOFrame) RDOFRMFrame::createFrame(CREF(LPRDORuntime) p
 
 inline void RDOFRMFrame::setLastXYWH(double x, double y, double width, double height)
 {
-	m_lastX      = x;
-	m_lastY      = y;
+	setLastXY(x ,y);
 	m_lastWidth  = width;
 	m_lastHeight = height;
+}
+
+inline void RDOFRMFrame::setLastXY(double x, double y)
+{
+	m_lastX = x;
+	m_lastY = y;
 }
 
 inline int RDOFRMFrame::getRuletX(CREF(LPRDORuntime) pRuntime, ruint ruletID) const
