@@ -3,6 +3,7 @@
   \file      rdofrm.y
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Копнин Андрей (kopninandrey@gmail.com)
   \date      20.02.2003
   \brief     Синтаксис кадров анимации
   \indent    4T
@@ -158,6 +159,7 @@
 %token RDO_rect
 %token RDO_r_rect
 %token RDO_line
+%token RDO_circle
 %token RDO_ellipse
 %token RDO_triang
 %token RDO_active
@@ -239,6 +241,8 @@ typedef rdoRuntime::RDOFRMRect                    RDOFRMRect;
 typedef rdoRuntime::LPRDOFRMRect                  LPRDOFRMRect;
 typedef rdoRuntime::RDOFRMRectRound               RDOFRMRectRound;
 typedef rdoRuntime::LPRDOFRMRectRound             LPRDOFRMRectRound;
+typedef rdoRuntime::RDOFRMCircle                  RDOFRMCircle;
+typedef rdoRuntime::LPRDOFRMCircle                LPRDOFRMCircle;
 typedef rdoRuntime::RDOFRMEllipse                 RDOFRMEllipse;
 typedef rdoRuntime::LPRDOFRMEllipse               LPRDOFRMEllipse;
 typedef rdoRuntime::RDOFRMLine                    RDOFRMLine;
@@ -385,6 +389,7 @@ frm_item
 	| frm_item frm_bitmap  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMBitmap       >($2));}
 	| frm_item frm_rect    {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMRect         >($2));}
 	| frm_item frm_line    {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMLine         >($2));}
+	| frm_item frm_circle  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMCircle       >($2));}
 	| frm_item frm_ellipse {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMEllipse      >($2));}
 	| frm_item frm_r_rect  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMRectRound    >($2));}
 	| frm_item frm_triang  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMTriang       >($2));}
@@ -579,7 +584,7 @@ frm_postype
 	{
 		$$ = RDOFRMPosition::PT_ABSOLUTE;
 	}
-	| '+'           
+	| '+'
 	{
 		$$ = RDOFRMPosition::PT_DELTA;
 	}
@@ -623,7 +628,7 @@ frm_postype_wh
 	;
 
 frm_position_xy
-	: fun_arithm frm_postype_xy 
+	: fun_arithm frm_postype_xy
 	{
 		rdoRuntime::LPRDOCalc pCalc = PARSER->stack().pop<RDOFUNArithm>($1)->createCalc();
 		if ($2 >= RDOFRMPosition::PT_RULET)
@@ -660,6 +665,25 @@ frm_position_wh
 	}
 	;
 
+frm_radius
+	: fun_arithm frm_postype_xy
+	{
+		if ($2 != rdoRuntime::RDOFRMFrame::RDOFRMPosition::PT_ABSOLUTE &&
+		    $2 != rdoRuntime::RDOFRMFrame::RDOFRMPosition::PT_DELTA    &&
+		    $2 != rdoRuntime::RDOFRMFrame::RDOFRMPosition::PT_MULT
+		)
+		{
+			PARSER->error().error(@2, _T("Нельзя использовать данное выравнивание для радиуса"));
+		}
+
+		rdoRuntime::LPRDOCalc pCalc = PARSER->stack().pop<RDOFUNArithm>($1)->createCalc();
+		ASSERT(pCalc);
+
+		LPRDOFRMPosition pPosition = rdo::Factory<RDOFRMPosition>::create(pCalc, (RDOFRMPosition::PositionType)$2);
+		ASSERT(pPosition);
+		$$ = PARSER->stack().push(pPosition);
+	};
+
 frm_ruler
 	: RDO_ruler '[' RDO_INT_CONST ',' frm_position_xy ',' frm_position_xy ']'
 	{
@@ -676,11 +700,11 @@ frm_ruler
 		ASSERT(pY);
 		if (pX->getType() != RDOFRMPosition::PT_ABSOLUTE)
 		{
-			PARSER->error().error(@5, _T("Коодинаты рулетки должны быть абсолютными"));
+			PARSER->error().error(@5, _T("Координаты рулетки должны быть абсолютными"));
 		}
 		if (pY->getType() != RDOFRMPosition::PT_ABSOLUTE)
 		{
-			PARSER->error().error(@7, _T("Коодинаты рулетки должны быть абсолютными"));
+			PARSER->error().error(@7, _T("Координаты рулетки должны быть абсолютными"));
 		}
 		pRulet = rdo::Factory<RDOFRMRulet>::create(RDOParserSrcInfo(@1), P_RDOVALUE($3)->value().getInt(), pX, pY);
 		ASSERT(pRulet);
@@ -1293,6 +1317,70 @@ frm_r_rect
 		PARSER->error().error(@1, _T("Ожидается '['"));
 	}
 	;
+
+frm_circle
+	: RDO_circle '[' frm_position_xy ',' frm_position_xy ',' frm_radius ',' frm_color ',' frm_color ']'
+	{
+		LPRDOFRMPosition pX      = PARSER->stack().pop<RDOFRMPosition>($3);
+		LPRDOFRMPosition pY      = PARSER->stack().pop<RDOFRMPosition>($5);
+		LPRDOFRMPosition pRadius = PARSER->stack().pop<RDOFRMPosition>($7);
+		ASSERT(pX     );
+		ASSERT(pY     );
+		ASSERT(pRadius);
+		LPRDOFRMColor pBgColor = PARSER->stack().pop<RDOFRMColor>($9);
+		LPRDOFRMColor pFgColor = PARSER->stack().pop<RDOFRMColor>($11);
+		ASSERT(pBgColor);
+		ASSERT(pFgColor);
+		pBgColor->setType(RDOFRMColor::CT_LAST_BG);
+		pFgColor->setType(RDOFRMColor::CT_LAST_FG);
+		LPRDOFRMCircle pCircle = rdo::Factory<RDOFRMCircle>::create(RUNTIME->lastFrame(), pX, pY, pRadius, pBgColor, pFgColor);
+		ASSERT(pCircle);
+		$$ = PARSER->stack().push(pCircle);
+	}
+	| RDO_circle '[' frm_position_xy ',' frm_position_xy ',' frm_radius ',' frm_color ',' frm_color error
+	{
+		PARSER->error().error(@11, _T("Ожидается ']'"));
+	}
+	| RDO_circle '[' frm_position_xy ',' frm_position_xy ',' frm_radius ',' frm_color ',' error
+	{
+		PARSER->error().error(@10, @11, _T("Ожидается цвет линии круга"));
+	}
+	| RDO_circle '[' frm_position_xy ',' frm_position_xy ',' frm_radius ',' frm_color error
+	{
+		PARSER->error().error(@9, _T("Ожидается запятая"));
+	}
+	| RDO_circle '[' frm_position_xy ',' frm_position_xy ',' frm_radius ',' error
+	{
+		PARSER->error().error(@8, @9, _T("Ожидается цвет фона"));
+	}
+	| RDO_circle '[' frm_position_xy ',' frm_position_xy ',' frm_radius error
+	{
+		PARSER->error().error(@7, _T("Ожидается запятая"));
+	}
+	| RDO_circle '[' frm_position_xy ',' frm_position_xy ',' error
+	{
+		PARSER->error().error(@6, @7, _T("Ожидается радиус"));
+	}
+	| RDO_circle '[' frm_position_xy ',' frm_position_xy error
+	{
+		PARSER->error().error(@5, _T("Ожидается запятая"));
+	}
+	| RDO_circle '[' frm_position_xy ',' error
+	{
+		PARSER->error().error(@4, @5, _T("Ожидается координата по оси Y"));
+	}
+	| RDO_circle '[' frm_position_xy error
+	{
+		PARSER->error().error(@3, _T("Ожидается запятая"));
+	}
+	| RDO_circle '[' error
+	{
+		PARSER->error().error(@2, @3, _T("Ожидается координата по оси X"));
+	}
+	| RDO_circle error
+	{
+		PARSER->error().error(@1, _T("Ожидается '['"));
+	};
 
 frm_ellipse
 	: RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color ']'

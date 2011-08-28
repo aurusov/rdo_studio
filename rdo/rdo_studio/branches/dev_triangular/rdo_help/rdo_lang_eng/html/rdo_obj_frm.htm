@@ -90,8 +90,12 @@ $End</PRE>
 										<TD class="visible" width="80%">Direct line interval</TD>
 									</TR>
 									<TR valign="top">
+										<TD class="visible" NOWRAP width="20%"><FONT class="syntax">circle</FONT></TD>
+										<TD class="visible" width="80%">Circle</TD>
+									</TR>
+									<TR valign="top">
 										<TD class="visible" NOWRAP width="20%"><FONT class="syntax">ellipse</FONT></TD>
-										<TD class="visible" width="80%">Ellipse (circle)</TD>
+										<TD class="visible" width="80%">Ellipse</TD>
 									</TR>
 									<TR valign="top">
 										<TD class="visible" NOWRAP width="20%"><FONT class="syntax">r_rect</FONT></TD>
@@ -180,6 +184,17 @@ $End</PRE>
 						<PRE class="syntax">line [ &lt;X-coordinate_1&gt;, &lt;Y-coordinate_1&gt;, &lt;X-coordinate_2&gt;,
   &lt;Y-coordinate_2&gt;, &lt;colour&gt; ]</PRE>
 						<P>That element depicts a direct line interval of the given colour between two points with given coordinates. The line is one pixel thick.</P>
+						<P>A <B>circle</B> (<FONT class="syntax">circle</FONT>) is described with the following format:</P>
+						<PRE class="syntax">circle [ <A class="syntax" href="#x_coord">&lt;X-coordinate&gt;</A>, <A class="syntax" href="#y_coord">&lt;Y-coordinate&gt;</A>, <A class="syntax" href="#el_radius">&lt;radius&gt;</A>,
+  &lt;background_colour&gt;, &lt;colour&gt; ]</PRE>
+						<P>That element depicts circle in given coordinates with given radius, given filling colour and given boundary line colour.</P>
+						<DL class="syntax">
+							<DT class="syntax"><A name="x_coord"></A><A name="y_coord"></A><I>X-coordinate, Y-coordinate</I></DT>
+							<DD class="syntax">The coordinates determine the centre of circle.</DD>
+							<DT class="syntax"><A name="el_radius"></A><I>radius</I></DT>
+							<DD class="syntax">The circle radius is its radius.</DD>
+						</DL>
+						<P>The boundary line is one pixel thick.</P>
 						<P>An <B>ellipse</B> (<FONT class="syntax">ellipse</FONT>) is described with the following format:</P>
 						<PRE class="syntax">ellipse [ <A class="syntax" href="#x_coord">&lt;X-coordinate&gt;</A>, <A class="syntax" href="#y_coord">&lt;Y-coordinate&gt;</A>, <A class="syntax" href="#el_width">&lt;width&gt;</A>, <A class="syntax" href="#el_height">&lt;height&gt;</A>,
   &lt;background_colour&gt;, &lt;colour&gt; ]</PRE>
@@ -220,6 +235,7 @@ Show
            &lt;255 255 0&gt; ]
   text     [ System2.X_coord1, System2.Y_coord1, 100, 20,
            transparent, &lt;255 255 0&gt;, 'Hello everybody!' ]
+  circle   [ 145, 220, 50, yellow, red ]
   ellipse  [ System2.X_coord1, System2.Y_coord1, 50, 50,
            &lt;0  0 255&gt;, &lt;255 255 0&gt; ]
   r_rect   [ System2.X_coord3 - 30, System2.Y_coord3 -

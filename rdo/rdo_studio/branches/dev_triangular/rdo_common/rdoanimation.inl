@@ -3,6 +3,7 @@
   \file      rdoanimation.inl
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Копнин Андрей (kopninandrey@gmail.com)
   \date      13.06.2009
   \brief     Описание объектов анимации, которые передаются от симулятора к GUI для отрисовки
   \indent    4T
@@ -86,6 +87,14 @@ inline RDOBoundedElement::RDOBoundedElement(CREF(RDOPoint) point, CREF(RDOSize) 
 	, m_size (size )
 {}
 
+inline RDORadius::RDORadius(CREF(RDORadius) radius)
+	: m_radius(radius.m_radius)
+{}
+
+inline RDORadius::RDORadius(double radius)
+	: m_radius(radius)
+{}
+
 inline RDOTextElement::RDOTextElement(CREF(RDOBoundedElement) rect, CREF(RDOColoredElement) color, CREF(tstring) text, TextAlign align)
 	: FrameItem        (FIT_TEXT)
 	, RDOBoundedElement(rect    )
@@ -119,6 +128,13 @@ inline RDORRectElement::RDORRectElement(CREF(RDOBoundedElement) rect, CREF(RDOCo
 	: FrameItem        (FIT_R_RECT)
 	, RDOBoundedElement(rect      )
 	, RDOColoredElement(color     )
+{}
+
+inline RDOCircleElement::RDOCircleElement(CREF(RDOPoint) center, CREF(RDORadius) radius, CREF(RDOColoredElement) color)
+	: FrameItem        (FIT_CIRCLE)
+	, RDOColoredElement(color     )
+	, m_center         (center    )
+	, m_radius         (radius    )
 {}
 
 inline RDOEllipseElement::RDOEllipseElement(CREF(RDOBoundedElement) rect, CREF(RDOColoredElement) color)

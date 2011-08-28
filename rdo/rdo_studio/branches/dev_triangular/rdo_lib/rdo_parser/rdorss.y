@@ -158,6 +158,7 @@
 %token RDO_rect
 %token RDO_r_rect
 %token RDO_line
+%token RDO_circle
 %token RDO_ellipse
 %token RDO_triang
 %token RDO_active

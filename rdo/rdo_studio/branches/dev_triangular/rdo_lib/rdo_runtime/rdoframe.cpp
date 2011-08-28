@@ -1,7 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdoframe.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Копнин Андрей (kopninandrey@gmail.com)
   \date      07.12.2008
   \brief     Кадры РДО модели
   \indent    4T
@@ -451,6 +452,48 @@ PTR(rdoAnimation::FrameItem) RDOFRMRectRound::createElement(CREF(LPRDORuntime) p
 
 	return new rdoAnimation::RDORRectElement(
 		rdoAnimation::RDOBoundedElement(rdoAnimation::RDOPoint(x, y), rdoAnimation::RDOSize(width, height)),
+		rdoAnimation::RDOColoredElement(bg, fg)
+	);
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOFRMCircle
+// --------------------------------------------------------------------------------
+RDOFRMCircle::RDOFRMCircle(
+		CREF(LPRDOFRMFrame)                 pFrame,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pX,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pY,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pRadius,
+		CREF(RDOFRMFrame::LPRDOFRMColor)    pBgColor,
+		CREF(RDOFRMFrame::LPRDOFRMColor)    pFgColor
+	)
+	: RDOFRMItem       (pFrame )
+	, m_pX             (pX     )
+	, m_pY             (pY     )
+	, m_pRadius        (pRadius)
+	, RDOFRMColoredItem(pBgColor, pFgColor)
+{}
+
+RDOFRMCircle::~RDOFRMCircle()
+{}
+
+PTR(rdoAnimation::FrameItem) RDOFRMCircle::createElement(CREF(LPRDORuntime) pRuntime)
+{
+	pRuntime->memory_insert(sizeof(rdoAnimation::RDOCircleElement));
+
+	rdoAnimation::RDOColor bg = getBg(pRuntime, getFrame());
+	rdoAnimation::RDOColor fg = getFg(pRuntime, getFrame());
+	getFrame()->setColorLastBG(getBgColor()->getType(), bg);
+	getFrame()->setColorLastFG(getFgColor()->getType(), fg);
+
+	int x      = m_pX     ->getX(pRuntime, getFrame());
+	int y      = m_pY     ->getY(pRuntime, getFrame());
+	int radius = m_pRadius->getX(pRuntime, getFrame());
+	getFrame()->setLastXY(x, y);
+
+	return new rdoAnimation::RDOCircleElement(
+		rdoAnimation::RDOPoint (x ,y),
+		rdoAnimation::RDORadius(radius),
 		rdoAnimation::RDOColoredElement(bg, fg)
 	);
 }

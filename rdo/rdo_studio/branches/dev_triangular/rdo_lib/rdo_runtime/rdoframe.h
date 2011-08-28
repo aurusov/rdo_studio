@@ -1,7 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdoframe.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Копнин Андрей (kopninandrey@gmail.com)
   \date      07.12.2008
   \brief     Кадры РДО модели
   \indent    4T
@@ -159,6 +160,7 @@ public:
 	void setColorLastFG    (RDOFRMColor::ColorType type, CREF(rdoAnimation::RDOColor) lastFg);
 	void setColorLastBGText(RDOFRMColor::ColorType type, CREF(rdoAnimation::RDOColor) lastBgText);
 	void setColorLastFGText(RDOFRMColor::ColorType type, CREF(rdoAnimation::RDOColor) lastFgText);
+	void setLastXY         (double x, double y);
 	void setLastXYWH       (double x, double y, double width, double height);
 
 	int getRuletX(CREF(LPRDORuntime) pRuntime, ruint ruletID) const;
@@ -423,6 +425,31 @@ private:
 		CREF(RDOFRMFrame::LPRDOFRMColor)    pFgColor
 	);
 	virtual ~RDOFRMRectRound();
+
+	DECLARE_RDOFRMIItem;
+};
+
+/*!
+  \class     RDOFRMCircle
+  \brief     Окружность для анимации
+*/
+RDOFRM_ITEM(RDOFRMCircle) IS INSTANCE_OF(RDOFRMColoredItem)
+{
+DECLARE_FACTORY(RDOFRMCircle)
+private:
+	RDOFRMCircle(
+		CREF(LPRDOFRMFrame)                 pFrame,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pX,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pY,
+		CREF(RDOFRMFrame::LPRDOFRMPosition) pRadius,
+		CREF(RDOFRMFrame::LPRDOFRMColor)    pBgColor,
+		CREF(RDOFRMFrame::LPRDOFRMColor)    pFgColor
+	);
+	virtual ~RDOFRMCircle();
+
+	RDOFRMFrame::LPRDOFRMPosition m_pX;
+	RDOFRMFrame::LPRDOFRMPosition m_pY;
+	RDOFRMFrame::LPRDOFRMPosition m_pRadius;
 
 	DECLARE_RDOFRMIItem;
 };

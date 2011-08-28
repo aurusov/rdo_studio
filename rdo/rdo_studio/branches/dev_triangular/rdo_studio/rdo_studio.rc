@@ -961,6 +961,7 @@ BEGIN
             MENUITEM "text",                        ID_INSERT_FRM_TEXT
             MENUITEM "line",                        ID_INSERT_FRM_LINE
             MENUITEM "rect",                        ID_INSERT_FRM_RECT
+            MENUITEM "circle",                      ID_INSERT_FRM_CIRCLE
             MENUITEM "ellipse",                     ID_INSERT_FRM_ELLIPSE
             MENUITEM "r_rect",                      ID_INSERT_FRM_RRECT
             MENUITEM "triang",                      ID_INSERT_FRM_TRIANG
@@ -4438,6 +4439,7 @@ BEGIN
             MENUITEM "text",                        ID_INSERT_FRM_TEXT
             MENUITEM "line",                        ID_INSERT_FRM_LINE
             MENUITEM "rect",                        ID_INSERT_FRM_RECT
+            MENUITEM "circle",                      ID_INSERT_FRM_CIRCLE
             MENUITEM "ellipse",                     ID_INSERT_FRM_ELLIPSE
             MENUITEM "r_rect",                      ID_INSERT_FRM_RRECT
             MENUITEM "triang",                      ID_INSERT_FRM_TRIANG

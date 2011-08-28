@@ -1,3 +1,13 @@
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      rdostudioframemanager.cpp
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Копнин Андрей (kopninandrey@gmail.com)
+  \date      23.03.2003
+  \brief     Отрисовка кадров анимации
+  \indent    4T
+*/
+
 #include "rdo_studio/stdafx.h"
 #include "rdo_studio/rdostudioframemanager.h"
 #include "rdo_studio/rdostudiomodel.h"
@@ -418,16 +428,18 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 						}
 
 						UINT nFormat = DT_SINGLELINE | DT_VCENTER;
-						switch( element->m_align ) {
-							case rdoAnimation::RDOTextElement::TETA_LEFT  : nFormat |= DT_LEFT; break;
-							case rdoAnimation::RDOTextElement::TETA_RIGHT : nFormat |= DT_RIGHT; break;
-							case rdoAnimation::RDOTextElement::TETA_CENTER: nFormat |= DT_CENTER; break;
+						switch( element->m_align )
+						{
+						case rdoAnimation::RDOTextElement::TETA_LEFT  : nFormat |= DT_LEFT;   break;
+						case rdoAnimation::RDOTextElement::TETA_RIGHT : nFormat |= DT_RIGHT;  break;
+						case rdoAnimation::RDOTextElement::TETA_CENTER: nFormat |= DT_CENTER; break;
 						}
 
 						::DrawText( hdc, element->m_text.c_str(), element->m_text.length(), CRect( (int)element->m_point.m_x, (int)element->m_point.m_y, (int)(element->m_point.m_x + element->m_size.m_width), (int)(element->m_point.m_y + element->m_size.m_height) ), nFormat );
 
 						break;
 					}
+
 					case rdoAnimation::FrameItem::FIT_RECT:
 					{
 						rdoAnimation::RDORectElement* element = static_cast<rdoAnimation::RDORectElement*>(currElement);
@@ -457,6 +469,7 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 
 						break;
 					}
+
 					case rdoAnimation::FrameItem::FIT_R_RECT:
 					{
 						rdoAnimation::RDORRectElement* element = static_cast<rdoAnimation::RDORRectElement*>(currElement);
@@ -487,6 +500,7 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 
 						break;
 					}
+
 					case rdoAnimation::FrameItem::FIT_LINE:
 					{
 						rdoAnimation::RDOLineElement* element = static_cast<rdoAnimation::RDOLineElement*>(currElement);
@@ -503,6 +517,7 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 
 						break;
 					}
+
 					case rdoAnimation::FrameItem::FIT_TRIANG:
 					{
 						rdoAnimation::RDOTriangElement* element = static_cast<rdoAnimation::RDOTriangElement*>(currElement);
@@ -539,6 +554,37 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 
 						break;
 					}
+
+					case rdoAnimation::FrameItem::FIT_CIRCLE:
+					{
+						rdoAnimation::RDOCircleElement* element = static_cast<rdoAnimation::RDOCircleElement*>(currElement);
+						HBRUSH brush = ::CreateSolidBrush( RGB(element->m_background.m_r, element->m_background.m_g, element->m_background.m_b) );
+						HBRUSH pOldBrush;
+						if( !element->m_background.m_transparent ) {
+							pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
+						} else {
+							pOldBrush = static_cast<HBRUSH>(::GetStockObject( NULL_BRUSH ));
+						}
+
+						HPEN pen     = NULL;
+						HPEN pOldPen = NULL;
+						if( !element->m_foreground.m_transparent ) {
+							pen     = ::CreatePen( PS_SOLID, 0, RGB(element->m_foreground.m_r, element->m_foreground.m_g, element->m_foreground.m_b) );
+							pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
+						}
+
+						::Ellipse( hdc, (int)(element->m_center.m_x - element->m_radius.m_radius), (int)(element->m_center.m_y - element->m_radius.m_radius), (int)(element->m_center.m_x + element->m_radius.m_radius), (int)(element->m_center.m_y + element->m_radius.m_radius) );
+
+						::SelectObject( hdc, pOldBrush );
+						::DeleteObject( brush );
+						if ( pen ) {
+							::SelectObject( hdc, pOldPen );
+							::DeleteObject( pen );
+						}
+
+						break;
+					}
+
 					case rdoAnimation::FrameItem::FIT_ELLIPSE:
 					{
 						rdoAnimation::RDOEllipseElement* element = static_cast<rdoAnimation::RDOEllipseElement*>(currElement);
@@ -568,6 +614,7 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 
 						break;
 					}
+
 					case rdoAnimation::FrameItem::FIT_BMP:
 					{
 						rdoAnimation::RDOBmpElement* element = static_cast<rdoAnimation::RDOBmpElement*>(currElement);
@@ -587,6 +634,7 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 						}
 						break;
 					}
+
 					case rdoAnimation::FrameItem::FIT_S_BMP:
 					{
 						rdoAnimation::RDOSBmpElement* element = static_cast<rdoAnimation::RDOSBmpElement*>(currElement);
@@ -606,6 +654,7 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 						}
 						break;
 					}
+
 					case rdoAnimation::FrameItem::FIT_ACTIVE:
 					{
 						rdoAnimation::RDOActiveElement* element = static_cast<rdoAnimation::RDOActiveElement*>(currElement);
