@@ -23,16 +23,11 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class OperatorType
 {
 public:
-	/*!
-	  \enum  Type
-	  \brief Тип операции в РДО
-	  \var   OT_ARITHM Арифметическое выражение
-	  \var   OT_LOGIC  Логическое выражение
-	*/
+	//! Тип операции в РДО
 	enum Type
 	{
-		OT_ARITHM,
-		OT_LOGIC
+		OT_ARITHM, //!< Арифметическое выражение
+		OT_LOGIC   //!< Логическое выражение
 	};
 
 	template <Type>

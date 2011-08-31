@@ -53,8 +53,8 @@ public:
 	  \fn      virtual void onStart(CREF(rdoRuntime::LPRDORuntime) pRuntime)
 	  \brief   Запуск
 	  \details Вызывается перед стартом прогона и перед возобновление операции
-	 * Например, условие DPT-some поменялось с false на true
-	 * Используется для GENERATE, чтобы задать время прихода первого клиента
+	           Например, условие DPT-some поменялось с false на true
+	           Используется для GENERATE, чтобы задать время прихода первого клиента
 	  \param   pRuntime константная ссылка на указатель на Рантайм
 	*/
 	virtual void onStart(CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
@@ -88,7 +88,7 @@ public:
 	  \fn      virtual void onMakePlaned(CREF(rdoRuntime::LPRDORuntime) pRuntime, PTR(void) param)
 	  \brief   Планирование
 	  \details Вызывается для запланированных в будующем событий: event, operation_end, keyboard_end
-	 * Может не использоваться, например, для rule
+	           Может не использоваться, например, для rule
 	  \param   pRuntime константная ссылка на указатель на Рантайм
 	*/
 	virtual void onMakePlaned(CREF(rdoRuntime::LPRDORuntime) pRuntime, PTR(void) param) = 0;
