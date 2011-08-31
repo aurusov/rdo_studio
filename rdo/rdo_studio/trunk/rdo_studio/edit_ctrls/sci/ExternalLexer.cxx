@@ -164,7 +164,7 @@ LexerLibrary::~LexerLibrary() {
 }
 
 void LexerLibrary::Release() {
-	/// @todo maintain a list of lexers created, and delete them!
+	//TODO maintain a list of lexers created, and delete them!
 	LexerMinder *lm;
 	LexerMinder *next;
 	lm = first;

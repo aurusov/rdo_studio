@@ -169,7 +169,7 @@ void LineVector::Expand(int sizeNew) {
 		size = sizeNew;
 	} else {
 		Platform::DebugPrintf("No memory available\n");
-		/// @todo Blow up
+		// TODO: Blow up
 	}
 
 }
@@ -189,7 +189,7 @@ void LineVector::ExpandLevels(int sizeNew) {
 		sizeLevels = sizeNew;
 	} else {
 		Platform::DebugPrintf("No memory available\n");
-		/// @todo Blow up
+		// TODO: Blow up
 	}
 
 }

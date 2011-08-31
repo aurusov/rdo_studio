@@ -3163,7 +3163,7 @@ void Editor::SetScrollBars() {
 	int nPage = LinesOnScreen();
 	bool modified = ModifyScrollBars(nMax + nPage - 1, nPage);
 
-	/// @todo ensure always showing as many lines as possible
+	// TODO: ensure always showing as many lines as possible
 	// May not be, if, for example, window made larger
 	if (topLine > MaxScrollPos()) {
 		SetTopLine(Platform::Clamp(topLine, 0, MaxScrollPos()));
@@ -3640,7 +3640,7 @@ void Editor::NotifyModified(Document*, DocModification mh, void *) {
 		}
 		if (cs.LinesDisplayed() < cs.LinesInDoc()) {
 			// Some lines are hidden so may need shown.
-			/// @todo check if the modified area is hidden.
+			// TODO: check if the modified area is hidden.
 			if (mh.modificationType & SC_MOD_BEFOREINSERT) {
 				NotifyNeedShown(mh.position, mh.length);
 			} else if (mh.modificationType & SC_MOD_BEFOREDELETE) {
@@ -3669,7 +3669,7 @@ void Editor::NotifyModified(Document*, DocModification mh, void *) {
 			}
 
 			//Platform::DebugPrintf("** %x Doc Changed\n", this);
-			/// @todo could invalidate from mh.startModification to end of screen
+			// TODO: could invalidate from mh.startModification to end of screen
 			//InvalidateRange(mh.position, mh.position + mh.length);
 			if (paintState == notPainting) {
 				Redraw();
@@ -5358,8 +5358,8 @@ char BraceOpposite(char ch) {
 	}
 }
 
-/// @todo should be able to extend styled region to find matching brace
-/// @todo may need to make DBCS safe
+// TODO: should be able to extend styled region to find matching brace
+// TODO: may need to make DBCS safe
 // so should be moved into Document
 int Editor::BraceMatch(int position, int /*maxReStyle*/) {
 	char chBrace = pdoc->CharAt(position);
@@ -5702,7 +5702,7 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 				if (selType == selStream) {
 					return 1 + SelectionEnd() - SelectionStart();
 				} else {
-					/// @todo why is selLines handled the slow way?
+					// TODO: why is selLines handled the slow way?
 					int size = 0;
 					int extraCharsPerLine = 0;
 					if (selType != selLines)
