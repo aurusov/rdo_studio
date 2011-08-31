@@ -18,6 +18,8 @@
 #include "Document.h"
 #include "RESearch.h"
 
+#include "LexRdo.h"
+
 // This is ASCII specific but is safe with chars >= 0x80
 static inline bool isspacechar(unsigned char ch) {
 	return (ch == ' ') || ((ch >= 0x09) && (ch <= 0x0d));
@@ -904,17 +906,23 @@ bool Document::IsWordAt(int start, int end) {
 // or extended ASCII such as the normal Windows code page.
 
 static inline char MakeUpperCase(char ch) {
+/*
 	if (ch < 'a' || ch > 'z')
 		return ch;
 	else
 		return static_cast<char>(ch - 'a' + 'A');
+*/
+	return RDOMakeUpperCase(ch);
 }
 
 static inline char MakeLowerCase(char ch) {
+/*
 	if (ch < 'A' || ch > 'Z')
 		return ch;
 	else
 		return static_cast<char>(ch - 'A' + 'a');
+*/
+	return RDOMakeLowerCase(ch);
 }
 
 // Define a way for the Regular Expression code to access the document
@@ -1192,11 +1200,11 @@ void Document::ChangeCase(Range r, bool makeUpperCase) {
 		} else {
 			char ch = CharAt(pos);
 			if (makeUpperCase) {
-				if (IsLowerCase(ch)) {
+				if (isRDOLower(ch)) {
 					ChangeChar(pos, static_cast<char>(MakeUpperCase(ch)));
 				}
 			} else {
-				if (IsUpperCase(ch)) {
+				if (isRDOUpper(ch)) {
 					ChangeChar(pos, static_cast<char>(MakeLowerCase(ch)));
 				}
 			}

@@ -29,6 +29,8 @@
 #include "Document.h"
 #include "Editor.h"
 
+#include "LexRdo.h"
+
 Caret::Caret() :
 active(false), on(false), period(500) {}
 
@@ -3552,7 +3554,7 @@ void Editor::NotifyModifyAttempt(Document*, void *) {
 
 void Editor::NotifyMove(int position) {
 	SCNotification scn;
-	scn.nmhdr.code = SCN_POSCHANGED;
+	scn.nmhdr.code = SCN_RDO_POSCHANGED;
 	scn.position = position;
 	NotifyParent(scn);
 }
@@ -4891,6 +4893,11 @@ void Editor::DwellEnd(bool mouseMoved) {
 
 void Editor::ButtonDown(Point pt, unsigned int curTime, bool shift, bool ctrl, bool alt) {
 	//Platform::DebugPrintf("Scintilla:ButtonDown %d %d = %d alt=%d\n", curTime, lastClickTime, curTime - lastClickTime, alt);
+
+	SCNotification scn;
+	scn.nmhdr.code = SCN_RDO_CLICK;
+	NotifyParent(scn);
+
 	ptMouseLast = pt;
 	int newPos = PositionFromLocation(pt);
 	newPos = MovePositionOutsideChar(newPos, currentPos - newPos);
@@ -4905,22 +4912,26 @@ void Editor::ButtonDown(Point pt, unsigned int curTime, bool shift, bool ctrl, b
 	if (shift & !inSelMargin) {
 		SetSelection(newPos);
 	}
+	bool doubleClick = false;
 	if (((curTime - lastClickTime) < Platform::DoubleClickTime()) && Close(pt, lastClick)) {
 		//Platform::DebugPrintf("Double click %d %d = %d\n", curTime, lastClickTime, curTime - lastClickTime);
 		SetMouseCapture(true);
 		SetEmptySelection(newPos);
-		bool doubleClick = false;
-		// Stop mouse button bounce changing selection type
-		if (!Platform::MouseButtonBounce() || curTime != lastClickTime) {
-			if (selectionType == selChar) {
-				selectionType = selWord;
-				doubleClick = true;
-			} else if (selectionType == selWord) {
-				selectionType = selLine;
-			} else {
-				selectionType = selChar;
-				originalAnchorPos = currentPos;
+		if ( selectByClick() ) {
+			// Stop mouse button bounce changing selection type
+			if (!Platform::MouseButtonBounce() || curTime != lastClickTime) {
+				if (selectionType == selChar) {
+					selectionType = selWord;
+					doubleClick = true;
+				} else if (selectionType == selWord) {
+					selectionType = selLine;
+				} else {
+					selectionType = selChar;
+					originalAnchorPos = currentPos;
+				}
 			}
+		} else {
+			doubleClick = true;
 		}
 
 		if (selectionType == selWord) {
@@ -5000,6 +5011,11 @@ void Editor::ButtonDown(Point pt, unsigned int curTime, bool shift, bool ctrl, b
 	lastClickTime = curTime;
 	lastXChosen = pt.x;
 	ShowCaretAtCurrentPosition();
+}
+
+bool Editor::selectByClick()
+{
+	return true;
 }
 
 bool Editor::PositionIsHotspot(int position) {
@@ -5736,8 +5752,10 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 		return pdoc->LineStart(wParam + 1) - pdoc->LineStart(wParam);
 
 	case SCI_REPLACESEL: {
-			if (lParam == 0)
+			if (lParam == 0) {
+				EnsureCaretVisible();
 				return 0;
+			}
 			pdoc->BeginUndoAction();
 			ClearSelection();
 			char *replacement = CharPtrFromSPtr(lParam);

@@ -11,11 +11,11 @@
 #ifndef SCINTILLA_H
 #define SCINTILLA_H
 
-#if PLAT_WIN
+//#if PLAT_WIN
 // Return false on failure:
 bool Scintilla_RegisterClasses(void *hInstance);
 bool Scintilla_ReleaseResources();
-#endif
+//#endif
 int Scintilla_LinkLexers();
 
 // Here should be placed typedefs for uptr_t, an unsigned integer type large enough to

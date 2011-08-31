@@ -48,6 +48,8 @@
 #include "ExternalLexer.h"
 #endif
 
+#include "LexRdo.h"
+
 #ifndef SPI_GETWHEELSCROLLLINES
 #define SPI_GETWHEELSCROLLLINES   104
 #endif
@@ -643,11 +645,18 @@ sptr_t ScintillaWin::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam
 		//	Platform::IsKeyDown(VK_SHIFT),
 		//	Platform::IsKeyDown(VK_CONTROL),
 		//	Platform::IsKeyDown(VK_MENU));
-		ButtonDown(Point::FromLong(lParam), ::GetMessageTime(),
-			(wParam & MK_SHIFT) != 0,
-			(wParam & MK_CONTROL) != 0,
-			Platform::IsKeyDown(VK_MENU));
-		::SetFocus(MainHWND());
+
+		{
+			bool wasFocus = ::GetFocus() == MainHWND();
+			ButtonDown(Point::FromLong(lParam), ::GetMessageTime(),
+				(wParam & MK_SHIFT) != 0,
+				(wParam & MK_CONTROL) != 0,
+				Platform::IsKeyDown(VK_MENU));
+			if ( !wasFocus ) {
+				::SetFocus(MainHWND());
+			}
+//			::SetFocus(MainHWND());
+		}
 		break;
 
 	case WM_MOUSEMOVE:
@@ -685,17 +694,24 @@ sptr_t ScintillaWin::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam
 		}
 
 	case WM_CHAR:
-		if (!iscntrl(wParam&0xff) || !lastKeyDownConsumed) {
-			if (IsUnicodeMode()) {
-				// For a wide character version of the window:
-				//char utfval[4];
-				//wchar_t wcs[2] = {wParam, 0};
-				//unsigned int len = UTF8Length(wcs, 1);
-				//UTF8FromUCS2(wcs, 1, utfval, len);
-				//AddCharUTF(utfval, len);
-				AddCharBytes(static_cast<char>(wParam & 0xff));
-			} else {
-				AddChar(static_cast<char>(wParam & 0xff));
+		if (Platform::IsKeyDown(20)) {
+			SCNotification scn;
+			scn.nmhdr.code = SCN_RDO_BUFFERKEY;
+			scn.ch = wParam & 0xff;
+			NotifyParent(scn);
+		} else {
+			if (!iscntrl(wParam&0xff) || !lastKeyDownConsumed) {
+				if (IsUnicodeMode()) {
+					// For a wide character version of the window:
+					//char utfval[4];
+					//wchar_t wcs[2] = {wParam, 0};
+					//unsigned int len = UTF8Length(wcs, 1);
+					//UTF8FromUCS2(wcs, 1, utfval, len);
+					//AddCharUTF(utfval, len);
+					AddCharBytes(static_cast<char>(wParam & 0xff));
+				} else {
+					AddChar(static_cast<char>(wParam & 0xff));
+				}
 			}
 		}
 		return 1;
@@ -720,6 +736,9 @@ sptr_t ScintillaWin::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam
 
 	case WM_SYSKEYDOWN:
 	case WM_KEYDOWN: {
+		if (Platform::IsKeyDown(20)) {
+			break;
+		}
 		//Platform::DebugPrintf("S keydown %d %x %x %x %x\n",iMessage, wParam, lParam, ::IsKeyDown(VK_SHIFT), ::IsKeyDown(VK_CONTROL));
 			lastKeyDownConsumed = false;
 			int ret = KeyDown(KeyTranslate(wParam),
@@ -1309,14 +1328,14 @@ void ScintillaWin::SetLexer(uptr_t wParam) {
 	lexLanguage = wParam;
 	lexCurrent = LexerModule::Find(lexLanguage);
 	if (!lexCurrent)
-		lexCurrent = LexerModule::Find(SCLEX_NULL);
+		lexCurrent = LexerModule::Find(SCLEX_RDO);
 }
 
 void ScintillaWin::SetLexerLanguage(const char *languageName) {
 	lexLanguage = SCLEX_CONTAINER;
 	lexCurrent = LexerModule::Find(languageName);
 	if (!lexCurrent)
-		lexCurrent = LexerModule::Find(SCLEX_NULL);
+		lexCurrent = LexerModule::Find(SCLEX_RDO);
 	if (lexCurrent)
 		lexLanguage = lexCurrent->GetLanguage();
 }

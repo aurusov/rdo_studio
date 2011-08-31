@@ -23,6 +23,8 @@
 #include "UniConversion.h"
 #include "XPM.h"
 
+#include "../../resource.h"
+
 #ifndef IDC_HAND
 #define IDC_HAND MAKEINTRESOURCE(32649)
 #endif
@@ -840,7 +842,7 @@ void Window::SetCursor(Cursor curs) {
 				hinstPlatformRes = ::GetModuleHandle("SciLexer");
 			if (!hinstPlatformRes)
 				hinstPlatformRes = ::GetModuleHandle(NULL);
-			HCURSOR hcursor = ::LoadCursor(hinstPlatformRes, MAKEINTRESOURCE(IDC_MARGIN));
+			HCURSOR hcursor = ::LoadCursor(hinstPlatformRes, MAKEINTRESOURCE(IDC_CURMARGIN));
 			if (hcursor)
 				::SetCursor(hcursor);
 			else

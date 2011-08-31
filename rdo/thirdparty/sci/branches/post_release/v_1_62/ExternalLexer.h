@@ -8,11 +8,11 @@
 #ifndef EXTERNALLEXER_H
 #define EXTERNALLEXER_H
 
-#if PLAT_WIN
+//#if PLAT_WIN
 #define EXT_LEXER_DECL __stdcall
-#elif PLAT_GTK
-#define EXT_LEXER_DECL 
-#endif
+//#elif PLAT_GTK
+//#define EXT_LEXER_DECL 
+//#endif
 
 // External Lexer function definitions...
 typedef void (EXT_LEXER_DECL *ExtLexerFunction)(unsigned int lexer, unsigned int startPos, int length, int initStyle,

@@ -12,6 +12,8 @@
 
 #include "Platform.h"
 
+#include "LexFind.h"
+
 #include "Scintilla.h"
 #include "PropSet.h"
 #ifdef SCI_LEXER
@@ -42,7 +44,7 @@ ScintillaBase::ScintillaBase() {
 	lexLanguage = SCLEX_CONTAINER;
 	lexCurrent = 0;
 	for (int wl = 0;wl < numWordLists;wl++)
-		keyWordLists[wl] = new WordList;
+		keyWordLists[wl] = new WordList( wl == SCI_RDO_ENDOFLINEONLY_KEYWORDSINDEX );
 	keyWordLists[numWordLists] = 0;
 #endif
 }
@@ -413,18 +415,23 @@ void ScintillaBase::ButtonDown(Point pt, unsigned int curTime, bool shift, bool 
 }
 
 #ifdef SCI_LEXER
+bool ScintillaBase::selectByClick()
+{
+	return props.GetInt("withoutselectbyclick", 0) ? false : true;
+}
+
 void ScintillaBase::SetLexer(uptr_t wParam) {
 	lexLanguage = wParam;
 	lexCurrent = LexerModule::Find(lexLanguage);
 	if (!lexCurrent)
-		lexCurrent = LexerModule::Find(SCLEX_NULL);
+		lexCurrent = LexerModule::Find(SCLEX_RDO);
 }
 
 void ScintillaBase::SetLexerLanguage(const char *languageName) {
 	lexLanguage = SCLEX_CONTAINER;
 	lexCurrent = LexerModule::Find(languageName);
 	if (!lexCurrent)
-		lexCurrent = LexerModule::Find(SCLEX_NULL);
+		lexCurrent = LexerModule::Find(SCLEX_RDO);
 	if (lexCurrent)
 		lexLanguage = lexCurrent->GetLanguage();
 }

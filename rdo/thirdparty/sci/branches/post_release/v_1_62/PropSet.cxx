@@ -15,18 +15,24 @@
 
 #include "PropSet.h"
 
+#include "LexRdo.h"
+
 // The comparison and case changing functions here assume ASCII
 // or extended ASCII such as the normal Windows code page.
 
 static inline char MakeUpperCase(char ch) {
+/*
 	if (ch < 'a' || ch > 'z')
 		return ch;
 	else
 		return static_cast<char>(ch - 'a' + 'A');
+*/
+	return RDOMakeUpperCase(ch);
 }
 
 static inline bool IsLetter(char ch) {
-	return ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z'));
+//	return ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z'));
+	return isRDOLetter(ch);
 }
 
 inline bool IsASpace(unsigned int ch) {
@@ -846,7 +852,7 @@ bool WordList::InList(const char *s) {
 	unsigned char firstChar = s[0];
 	int j = starts[firstChar];
 	if (j >= 0) {
-		while (words[j][0] == firstChar) {
+		while (words[j][0] == s[0]) {
 			if (s[1] == words[j][1]) {
 				const char *a = words[j] + 1;
 				const char *b = s + 1;

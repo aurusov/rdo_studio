@@ -488,6 +488,7 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	void LineSelection(int lineCurrent_, int lineAnchor_);
 	void DwellEnd(bool mouseMoved);
 	virtual void ButtonDown(Point pt, unsigned int curTime, bool shift, bool ctrl, bool alt);
+	virtual bool selectByClick();
 	void ButtonMove(Point pt);
 	void ButtonUp(Point pt, unsigned int curTime, bool ctrl);
 
