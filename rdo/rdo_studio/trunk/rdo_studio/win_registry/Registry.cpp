@@ -232,7 +232,7 @@ BOOL DeleteRegistryValue(HKEY root, const CString & var)
 
      ::RegDeleteValue(key, name);
      ::RegCloseKey(key);
-     return TRUE; /// @todo error detection
+     return TRUE; // TODO: error detection
     }
 
 /****************************************************************************
@@ -264,7 +264,7 @@ BOOL DeleteRegistryKey(HKEY root, const CString & keyname)
        return FALSE; 
 
     SHDeleteKey(key, name); // delete key and all subkeys
-    return TRUE; /// @todo error detection
+    return TRUE; // TODO: error detection
    } // DeleteRegistryKey
 
 /****************************************************************************
