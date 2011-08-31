@@ -1,7 +1,7 @@
-#include "rdo_plugin_mfc/stdafx.h"
-#include "rdo_plugin_mfc/rdopluginmfc.h"
-#include "rdo_plugin_mfc/rdopluginmfcmainframe.h"
-#include "rdo_plugin_mfc/resource.h"
+#include "rdo_studio/plugins/mfc/stdafx.h"
+#include "rdo_studio/plugins/mfc/rdopluginmfc.h"
+#include "rdo_studio/plugins/mfc/rdopluginmfcmainframe.h"
+#include "rdo_studio/plugins/mfc/resource.h"
 
 #include <string>
 #include <algorithm>
