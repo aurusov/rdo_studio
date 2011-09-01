@@ -1,4 +1,4 @@
-#include "rdo_studio/stdafx.h"
+#include "rdo_studio/pch/pch.h"
 #include "rdo_studio/rdo_edit/rdoeditoredit.h"
 #include "rdo_studio/rdo_edit/rdoeditortabctrl.h"
 #include "rdo_studio/rdostudioapp.h"

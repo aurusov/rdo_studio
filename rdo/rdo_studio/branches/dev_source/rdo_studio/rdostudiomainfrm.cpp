@@ -1,4 +1,4 @@
-#include "rdo_studio/stdafx.h"
+#include "rdo_studio/pch/pch.h"
 #include <limits>
 #include "rdo_studio/rdostudiomainfrm.h"
 #include "rdo_studio/rdostudioapp.h"

@@ -1,4 +1,4 @@
-#include "rdo_studio/stdafx.h"
+#include "rdo_studio/pch/pch.h"
 #include "rdo_studio/rdostudiochartdoc.h"
 #include "rdo_studio/rdostudiochartview.h"
 #include "rdo_studio/rdo_tracer/rdotracer.h"

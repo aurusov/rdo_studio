@@ -1,4 +1,4 @@
-#include "rdo_studio/stdafx.h"
+#include "rdo_studio/pch/pch.h"
 #include "rdo_studio/rdo_process/rdoprocess_project.h"
 #include "rdo_studio/rdostudioapp.h"
 #include "rdo_studio/rdo_process/rdoprocess_childfrm.h"

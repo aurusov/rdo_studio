@@ -1,4 +1,4 @@
-#include "rdo_studio/stdafx.h"
+#include "rdo_studio/pch/pch.h"
 #include "rdo_studio/edit_ctrls/rdofindeditstyle.h"
 #include "rdo_studio/edit_ctrls/sci/SciLexer.h"
 

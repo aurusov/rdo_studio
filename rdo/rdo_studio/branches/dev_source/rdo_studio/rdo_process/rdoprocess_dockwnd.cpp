@@ -1,4 +1,4 @@
-#include "rdo_studio/StdAfx.h"
+#include "rdo_studio/pch/pch.h"
 #include "rdoprocess_dockwnd.h"
 
 #ifdef _DEBUG

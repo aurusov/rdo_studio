@@ -54,7 +54,7 @@
 				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_WINDOWS;SCI_LEXER;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="rdo_studio/StdAfx.h"
+				PrecompiledHeaderThrough="rdo_studio/pch/pch.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 				DebugInformationFormat="4"
@@ -143,7 +143,7 @@
 				AdditionalIncludeDirectories="../"
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_WINDOWS;SCI_LEXER;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="rdo_studio/StdAfx.h"
+				PrecompiledHeaderThrough="rdo_studio/pch/pch.h"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
@@ -230,7 +230,7 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="rdo_studio/StdAfx.h"
+				PrecompiledHeaderThrough="rdo_studio/pch/pch.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 				DebugInformationFormat="4"
@@ -317,7 +317,7 @@
 				AdditionalIncludeDirectories="../;../thirdparty/corba/include"
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;NDEBUG;_WINDOWS;SCI_LEXER;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="rdo_studio/StdAfx.h"
+				PrecompiledHeaderThrough="rdo_studio/pch/pch.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 			/>
@@ -402,7 +402,7 @@
 				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_WINDOWS;SCI_LEXER;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="rdo_studio/StdAfx.h"
+				PrecompiledHeaderThrough="rdo_studio/pch/pch.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 				DebugInformationFormat="4"
@@ -489,7 +489,7 @@
 				AdditionalIncludeDirectories="../"
 				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_WINDOWS;SCI_LEXER;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="rdo_studio/StdAfx.h"
+				PrecompiledHeaderThrough="rdo_studio/pch/pch.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 			/>
@@ -5276,70 +5276,6 @@
 						/>
 					</FileConfiguration>
 				</File>
-				<File
-					RelativePath="StdAfx.cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							UsePrecompiledHeader="1"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							UsePrecompiledHeader="1"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							UsePrecompiledHeader="1"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							UsePrecompiledHeader="1"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							UsePrecompiledHeader="1"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-							UsePrecompiledHeader="1"
-						/>
-					</FileConfiguration>
-				</File>
 			</Filter>
 			<Filter
 				Name="Header Files"
@@ -5395,10 +5331,6 @@
 				</File>
 				<File
 					RelativePath="Resource.h"
-					>
-				</File>
-				<File
-					RelativePath="StdAfx.h"
 					>
 				</File>
 			</Filter>
@@ -6750,6 +6682,66 @@
 			</File>
 			<File
 				RelativePath=".\rdo_process\rdoprocess_toolbar.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name=".pch"
+			>
+			<File
+				RelativePath=".\pch\pch.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug Corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release Corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\pch\pch.h"
 				>
 			</File>
 		</Filter>

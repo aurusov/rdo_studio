@@ -1,4 +1,4 @@
-#include "rdo_studio/StdAfx.h"
+#include "rdo_studio/pch/pch.h"
 #include "rdoprocess_method_manager.h"
 #include "rdo_studio/rdostudioapp.h"
 #include "rdo_studio/rdo_process/rp_misc/rdoprocess_pixmap.h"

@@ -1,4 +1,4 @@
-#include "rdo_studio/stdafx.h"
+#include "rdo_studio/pch/pch.h"
 #include "rdo_studio/rdostudioframedoc.h"
 #include "rdo_studio/rdostudiomodel.h"
 #include "rdo_studio/rdostudioframemanager.h"
