@@ -1,7 +1,7 @@
 #include <windows.h>
 
 #define RDOPLUGIN_EXPORTS
-#include "rdo_plugin/rdoplugin.h"
+#include "rdo_studio/plugins/common/rdoplugin.h"
 
 int WINAPI DllMain( HINSTANCE hinst, DWORD fdwReason, PVOID pvReserved )
 {

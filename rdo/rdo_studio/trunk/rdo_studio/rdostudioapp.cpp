@@ -13,7 +13,7 @@
 #include "rdo_studio/win_registry/registry.h"
 #include "rdo_repository/rdorepository.h"
 #include "rdo_lib/rdo_simulator/rdosimwin.h"
-#include "rdo_plugin/rdoplugin.h"
+#include "rdo_studio/plugins/common/rdoplugin.h"
 #include "rdo_kernel/rdothread.h"
 #include "rdo_common/rdofile.h"
 #include "rdo_studio/rdo_process/rp_method/rdoprocess_factory.h"

@@ -30,7 +30,7 @@
 #include "rdo_repository/rdorepository.h"
 #include "rdo_common/rdostream.h"
 #include "rdo_common/rdoanimation.h"
-#include "rdo_plugin/rdoplugin.h"
+#include "rdo_studio/plugins/common/rdoplugin.h"
 #include "rdo_lib/rdo_runtime/rdo_exception.h"
 // --------------------------------------------------------------------------------
 

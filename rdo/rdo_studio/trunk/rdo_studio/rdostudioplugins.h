@@ -7,7 +7,7 @@
 
 #include <string>
 #include <vector>
-#include "rdo_plugin/rdoplugin.h"
+#include "rdo_studio/plugins/common/rdoplugin.h"
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioPlugin
