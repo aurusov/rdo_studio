@@ -1,9 +1,9 @@
 #include "rdo_studio/pch/pch.h"
-#include "rdo_studio/rdostudiooptions.h"
-#include "rdo_studio/rdostudioapp.h"
-#include "rdo_studio/rdostudiomainfrm.h"
-#include "rdo_studio/rdostudioplugins.h"
-#include "rdo_studio/rdostudiomodel.h"
+#include "rdo_studio/src/options.h"
+#include "rdo_studio/src/application.h"
+#include "rdo_studio/src/main_frm.h"
+#include "rdo_studio/src/plugins.h"
+#include "rdo_studio/src/model/model.h"
 #include "rdo_studio/htmlhelp.h"
 
 #ifdef _DEBUG

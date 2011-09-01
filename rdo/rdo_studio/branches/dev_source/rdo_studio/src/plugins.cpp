@@ -1,7 +1,7 @@
 #include "rdo_studio/pch/pch.h"
-#include "rdo_studio/rdostudioplugins.h"
-#include "rdo_studio/rdostudioapp.h"
-#include "rdo_studio/rdostudiomodel.h"
+#include "rdo_studio/src/plugins.h"
+#include "rdo_studio/src/application.h"
+#include "rdo_studio/src/model/model.h"
 #include "rdo_studio/rdo_edit/rdoeditortabctrl.h"
 
 #ifdef _DEBUG

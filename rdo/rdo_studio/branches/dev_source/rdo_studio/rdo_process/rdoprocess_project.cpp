@@ -1,6 +1,6 @@
 #include "rdo_studio/pch/pch.h"
 #include "rdo_studio/rdo_process/rdoprocess_project.h"
-#include "rdo_studio/rdostudioapp.h"
+#include "rdo_studio/src/application.h"
 #include "rdo_studio/rdo_process/rdoprocess_childfrm.h"
 #include "rdo_studio/rdo_process/rdoprocess_docview.h"
 #include "rdo_studio/rdo_process/rdoprocess_toolbar.h"
@@ -9,7 +9,7 @@
 #include "rdo_studio/rdo_process/rp_method/rdoprocess_method.h"
 #include "rdo_studio/rdo_process/rp_misc/rdoprocess_xml.h"
 
-#include "rdo_studio/rdostudiomodel.h"
+#include "rdo_studio/src/model/model.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -6,7 +6,7 @@
 #include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_create_dlg1.h"
 #include "rdo_studio/rdo_process/proc2rdo/rdoprocess_method_proc2rdo.h"
 #include "rdo_studio/rdo_process/rp_method/rdoprocess_shape.h"
-#include "rdo_studio/rdostudioapp.h"
+#include "rdo_studio/src/application.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE

@@ -18,13 +18,13 @@
 #include "rdo_studio/edit_ctrls/rdofindeditstyle.h"
 #include "rdo_studio/rdo_tracer/tracer_ctrls/rdotracerlogctrl.h"
 #include "rdo_studio/rdo_tracer/tracer_ctrls/rdotracerlogstyle.h"
-#include "rdo_studio/rdostudiochartdoc.h"
-#include "rdo_studio/rdostudiochartview.h"
-#include "rdo_studio/rdostudiochartviewstyle.h"
+#include "rdo_studio/src/chart/document.h"
+#include "rdo_studio/src/chart/view.h"
+#include "rdo_studio/src/chart/view_style.h"
 #include "rdo_studio/rdo_tracer/rdotracerserie.h"
 #include "rdo_studio/rdo_tracer/rdotracervalues.h"
-#include "rdo_studio/rdostudioframestyle.h"
-#include "rdo_studio/rdostudioframeoptionsctrl.h"
+#include "rdo_studio/src/frame/style.h"
+#include "rdo_studio/src/frame/options_ctrl.h"
 #include "rdo_studio/resource.h"
 
 // --------------------------------------------------------------------------------

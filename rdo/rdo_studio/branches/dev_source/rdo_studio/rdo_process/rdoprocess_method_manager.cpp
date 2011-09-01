@@ -1,6 +1,6 @@
 #include "rdo_studio/pch/pch.h"
 #include "rdoprocess_method_manager.h"
-#include "rdo_studio/rdostudioapp.h"
+#include "rdo_studio/src/application.h"
 #include "rdo_studio/rdo_process/rp_misc/rdoprocess_pixmap.h"
 #include "rdo_studio/rdo_process/rp_method/rdoprocess_method.h"
 #include "rdo_studio/rdo_process/rp_method/rdoprocess_factory.h"

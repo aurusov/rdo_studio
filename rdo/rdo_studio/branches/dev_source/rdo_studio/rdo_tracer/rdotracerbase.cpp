@@ -8,11 +8,11 @@
 #include "rdo_studio/rdo_tracer/rdotracervalues.h"
 #include "rdo_studio/rdo_tracer/tracer_ctrls/rdotracerlogctrl.h"
 #include "rdo_studio/rdo_tracer/tracer_ctrls/rdotracertreectrl.h"
-#include "rdo_studio/rdostudiochartdoc.h"
-#include "rdo_studio/rdostudiochartview.h"
-#include "rdo_studio/rdostudioapp.h"
-#include "rdo_studio/rdostudiochildfrm.h"
-#include "rdo_studio/rdostudiomainfrm.h"
+#include "rdo_studio/src/chart/document.h"
+#include "rdo_studio/src/chart/view.h"
+#include "rdo_studio/src/application.h"
+#include "rdo_studio/src/child_frm.h"
+#include "rdo_studio/src/main_frm.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

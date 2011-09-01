@@ -12,13 +12,13 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <limits>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_studio/rdostudiomodel.h"
-#include "rdo_studio/rdostudiothread.h"
-#include "rdo_studio/rdostudiomainfrm.h"
-#include "rdo_studio/rdostudiochildfrm.h"
-#include "rdo_studio/rdostudioframedoc.h"
-#include "rdo_studio/rdostudioframeview.h"
-#include "rdo_studio/rdostudioplugins.h"
+#include "rdo_studio/src/model/model.h"
+#include "rdo_studio/src/thread.h"
+#include "rdo_studio/src/main_frm.h"
+#include "rdo_studio/src/child_frm.h"
+#include "rdo_studio/src/frame/document.h"
+#include "rdo_studio/src/frame/view.h"
+#include "rdo_studio/src/plugins.h"
 #include "rdo_studio/rdo_edit/rdoeditortabctrl.h"
 #include "rdo_studio/edit_ctrls/rdobuildedit.h"
 #include "rdo_studio/edit_ctrls/rdodebugedit.h"

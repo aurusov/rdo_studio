@@ -16,15 +16,15 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_studio/rdostudioframemanager.h"
-#include "rdo_studio/rdostudiomodeldoc.h"
-#include "rdo_studio/rdostudiomodelview.h"
+#include "rdo_studio/src/frame/manager.h"
+#include "rdo_studio/src/model/document.h"
+#include "rdo_studio/src/model/view.h"
 #include "rdo_studio/rdo_process/rdoprocess_childfrm.h"
 #include "rdo_studio/rdo_process/rdoprocess_docview.h"
-#include "rdo_studio/rdostudioplugins.h"
+#include "rdo_studio/src/plugins.h"
 #include "rdo_studio/rdo_process/rdoprocess_project.h"
 #include "rdo_studio/rdo_process/proc2rdo/rdoprocess_method_proc2rdo.h"
-#include "rdo_studio/rdostudioapp.h"
+#include "rdo_studio/src/application.h"
 #include "rdo_kernel/rdothread.h"
 #include "rdo_lib/rdo_simulator/rdosimwin.h"
 // --------------------------------------------------------------------------------

@@ -2,7 +2,7 @@
 #define RDOSTUDIOCHARTVIEWSTYLE_H
 #pragma once
 
-#include "rdo_studio/rdostudiostyle.h"
+#include "rdo_studio/src/style.h"
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioChartViewTheme

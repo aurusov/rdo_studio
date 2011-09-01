@@ -7,8 +7,8 @@
 
 #include <vector>
 #include <map>
-#include "rdo_studio/rdostudioframedoc.h"
-#include "rdo_studio/rdostudioframeview.h"
+#include "rdo_studio/src/frame/document.h"
+#include "rdo_studio/src/frame/view.h"
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioFrameManager

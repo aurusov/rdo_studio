@@ -1,5 +1,5 @@
 #include "rdo_studio/pch/pch.h"
-#include "rdo_studio/rdostudioframestyle.h"
+#include "rdo_studio/src/frame/style.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

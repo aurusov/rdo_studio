@@ -5,8 +5,8 @@
 #pragma once
 #endif
 
-#include "rdo_studio/rdostudiodockwnd.h"
-#include "rdo_studio/rdostudioframetreectrl.h"
+#include "rdo_studio/src/dock_wnd.h"
+#include "rdo_studio/src/frame/tree_ctrl.h"
 #include "rdo_ctrls/rdotabctrl.h"
 #include "rdo_studio/rdo_process/rdoprocess_pagectrl.h"
 // --------------------------------------------------------------------------------

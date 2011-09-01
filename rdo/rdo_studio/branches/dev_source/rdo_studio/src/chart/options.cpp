@@ -1,8 +1,8 @@
 #include "rdo_studio/pch/pch.h"
 #include "rdo_studio/rdostudiochartoptions.h"
-#include "rdo_studio/rdostudiochartview.h"
-#include "rdo_studio/rdostudiochartdoc.h"
-#include "rdo_studio/rdostudioapp.h"
+#include "rdo_studio/src/chart/view.h"
+#include "rdo_studio/src/chart/document.h"
+#include "rdo_studio/src/application.h"
 #include "rdo_studio/htmlhelp.h"
 
 #ifdef _DEBUG

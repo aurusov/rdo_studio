@@ -1,7 +1,7 @@
 #include "rdo_studio/pch/pch.h"
 #include "rdo_studio/rdo_tracer/tracer_ctrls/rdotracerlogctrl.h"
-#include "rdo_studio/rdostudioapp.h"
-#include "rdo_studio/rdostudiomainfrm.h"
+#include "rdo_studio/src/application.h"
+#include "rdo_studio/src/main_frm.h"
 #include "rdo_studio/resource.h"
 #include "rdo_studio/htmlhelp.h"
 

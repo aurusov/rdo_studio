@@ -1,8 +1,8 @@
 #include "rdo_studio/pch/pch.h"
-#include "rdo_studio/rdostudioeditbaseview.h"
-#include "rdo_studio/rdostudioeditbasedoc.h"
-#include "rdo_studio/rdostudioapp.h"
-#include "rdo_studio/rdostudiomainfrm.h"
+#include "rdo_studio/src/edit/view_base.h"
+#include "rdo_studio/src/edit/document_base.h"
+#include "rdo_studio/src/application.h"
+#include "rdo_studio/src/main_frm.h"
 #include "rdo_studio/rdo_edit/rdoeditoredit.h"
 
 #ifdef _DEBUG

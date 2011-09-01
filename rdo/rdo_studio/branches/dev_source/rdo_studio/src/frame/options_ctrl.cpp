@@ -1,8 +1,8 @@
 #include "rdo_studio/pch/pch.h"
-#include "rdo_studio/rdostudioframeoptionsctrl.h"
-#include "rdo_studio/rdostudioframestyle.h"
-#include "rdo_studio/rdostudioapp.h"
-#include "rdo_studio/rdostudiomainfrm.h"
+#include "rdo_studio/src/frame/options_ctrl.h"
+#include "rdo_studio/src/frame/style.h"
+#include "rdo_studio/src/application.h"
+#include "rdo_studio/src/main_frm.h"
 #include "rdo_studio/resource.h"
 
 #ifdef _DEBUG

@@ -2,7 +2,7 @@
 #include "rdo_studio/edit_ctrls/rdofindedit.h"
 #include "rdo_studio/edit_ctrls/sci/SciLexer.h"
 #include "rdo_studio/edit_ctrls/sci/LexFind.h"
-#include "rdo_studio/rdostudioapp.h"
+#include "rdo_studio/src/application.h"
 #include "rdo_studio/resource.h"
 #include "rdo_studio/htmlhelp.h"
 

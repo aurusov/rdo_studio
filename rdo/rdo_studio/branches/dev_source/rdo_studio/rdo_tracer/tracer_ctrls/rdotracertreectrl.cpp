@@ -7,9 +7,9 @@
 #include "rdo_studio/rdo_tracer/rdotraceroperation.h"
 #include "rdo_studio/rdo_tracer/rdotracerresult.h"
 #include "rdo_studio/resource.h"
-#include "rdo_studio/rdostudioapp.h"
-#include "rdo_studio/rdostudiomainfrm.h"
-#include "rdo_studio/rdostudiochartdoc.h"
+#include "rdo_studio/src/application.h"
+#include "rdo_studio/src/main_frm.h"
+#include "rdo_studio/src/chart/document.h"
 #include "rdo_studio/htmlhelp.h"
 
 #ifdef _DEBUG

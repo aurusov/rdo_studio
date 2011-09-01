@@ -1,5 +1,5 @@
 #include "rdo_studio/pch/pch.h"
-#include "rdo_studio/rdostudiodockwnd.h"
+#include "rdo_studio/src/dock_wnd.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

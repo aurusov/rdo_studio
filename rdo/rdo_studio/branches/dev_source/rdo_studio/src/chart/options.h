@@ -6,7 +6,7 @@
 #endif
 
 #include "rdo_ctrls/rdocolorcombobox.h"
-#include "rdo_studio/rdostudiochartdoc.h"
+#include "rdo_studio/src/chart/document.h"
 #include "rdo_studio/resource.h"
 
 // --------------------------------------------------------------------------------

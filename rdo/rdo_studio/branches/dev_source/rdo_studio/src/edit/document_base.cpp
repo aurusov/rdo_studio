@@ -1,5 +1,5 @@
 #include "rdo_studio/pch/pch.h"
-#include "rdo_studio/rdostudioeditbasedoc.h"
+#include "rdo_studio/src/edit/document_base.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

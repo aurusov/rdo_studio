@@ -1,6 +1,6 @@
 #include "rdo_studio/pch/pch.h"
-#include "rdo_studio/rdostudiothread.h"
-#include "rdo_studio/rdostudiomodel.h"
+#include "rdo_studio/src/thread.h"
+#include "rdo_studio/src/model/model.h"
 #include "rdo_studio/rdo_tracer/rdotracer.h"
 
 #ifdef _DEBUG

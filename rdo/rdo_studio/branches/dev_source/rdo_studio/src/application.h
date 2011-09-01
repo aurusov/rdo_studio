@@ -14,7 +14,7 @@
 #include "rdo_kernel/rdothread.h"
 #include "rdo_studio/resource.h"
 #include "rdo_studio/rdo_process/rdoprocess_method_manager.h"
-#include "rdo_studio/rdostudiomainfrm.h"
+#include "rdo_studio/src/main_frm.h"
 
 //#define PROCGUI_ENABLE
 

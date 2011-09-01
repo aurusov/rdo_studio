@@ -1,7 +1,7 @@
 #include "rdo_studio/pch/pch.h"
 #include "rdo_studio/edit_ctrls/rdodebugedit.h"
 #include "rdo_studio/edit_ctrls/sci/SciLexer.h"
-#include "rdo_studio/rdostudioapp.h"
+#include "rdo_studio/src/application.h"
 #include "rdo_studio/resource.h"
 #include "rdo_studio/htmlhelp.h"
 
