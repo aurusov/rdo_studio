@@ -27,6 +27,7 @@ const ruint64 s_createTestLocalTime = 129557633912040000;
 
 BOOST_AUTO_TEST_SUITE(RDOCommon_Test)
 
+#ifdef WIN32
 BOOST_AUTO_TEST_CASE(RDOCommon_ResourceFormat)
 {
 	tstring str1 = rdo::format(IDS_STRING101);
@@ -36,6 +37,7 @@ BOOST_AUTO_TEST_CASE(RDOCommon_ResourceFormat)
 	tstring str3 = rdo::format(IDS_STRING103, str1.c_str(), 33, str2.c_str());
 	BOOST_CHECK(str3 == s_resourceStr3);
 }
+#endif
 
 BOOST_AUTO_TEST_CASE(RDOCommon_FileCreate)
 {
