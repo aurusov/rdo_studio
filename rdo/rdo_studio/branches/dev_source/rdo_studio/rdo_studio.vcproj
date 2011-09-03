@@ -541,7 +541,7 @@
 	</References>
 	<Files>
 		<Filter
-			Name="8. controls"
+			Name=".controls"
 			>
 			<Filter
 				Name="CSizingControlBar"
@@ -3441,7 +3441,7 @@
 			</Filter>
 		</Filter>
 		<Filter
-			Name="5. RDO-Tracer"
+			Name=".tracer"
 			>
 			<Filter
 				Name="Source Files"
@@ -4013,7 +4013,7 @@
 			</Filter>
 		</Filter>
 		<Filter
-			Name="4. RDO-Frame"
+			Name=".frame"
 			>
 			<File
 				RelativePath=".\src\frame\document.cpp"
@@ -4209,7 +4209,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Resource Files"
+			Name=".resources"
 			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 			>
 			<File
@@ -4390,7 +4390,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="1. RDO-Studio"
+			Name=".main"
 			>
 			<File
 				RelativePath=".\src\application.cpp"
@@ -4598,7 +4598,7 @@
 			</Filter>
 		</Filter>
 		<Filter
-			Name="2. RDO-Model"
+			Name=".model"
 			>
 			<File
 				RelativePath=".\src\model\document.cpp"
@@ -4730,7 +4730,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="6. RDO-Chart"
+			Name=".chart"
 			>
 			<File
 				RelativePath=".\src\chart\doc_serie.cpp"
@@ -4918,7 +4918,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="3. RDO-Editor"
+			Name=".editor"
 			>
 			<File
 				RelativePath=".\src\edit\document.cpp"
@@ -5492,7 +5492,7 @@
 			</Filter>
 		</Filter>
 		<Filter
-			Name="7. RDO-Process"
+			Name=".process"
 			>
 			<File
 				RelativePath=".\rdo_process\rdoprocess_childfrm.cpp"
@@ -5611,14 +5611,6 @@
 				>
 			</File>
 		</Filter>
-		<File
-			RelativePath="..\Changes.txt"
-			>
-		</File>
-		<File
-			RelativePath="..\TODO.txt"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>
