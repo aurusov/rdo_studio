@@ -3,7 +3,7 @@
 #pragma once
 
 #include "rdo_studio/src/style.h"
-#include "rdo_studio/edit_ctrls/sci/Scintilla.h"
+#include "thirdparty/sci/Scintilla.h"
 
 namespace rdoEditCtrl {
 

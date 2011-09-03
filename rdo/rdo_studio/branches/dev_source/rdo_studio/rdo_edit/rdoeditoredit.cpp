@@ -4,8 +4,8 @@
 #include "rdo_studio/src/application.h"
 #include "rdo_studio/src/model/model.h"
 #include "rdo_studio/src/edit/view_base.h"
-#include "rdo_studio/edit_ctrls/sci/LexRdo.h"
-#include "rdo_studio/edit_ctrls/sci/PropSet.h"
+#include "thirdparty/sci/LexRdo.h"
+#include "thirdparty/sci/PropSet.h"
 #include "rdo_studio/resource.h"
 #include "rdo_studio/htmlhelp.h"
 

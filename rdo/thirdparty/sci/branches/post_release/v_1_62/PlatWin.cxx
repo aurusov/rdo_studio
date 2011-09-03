@@ -23,7 +23,7 @@
 #include "UniConversion.h"
 #include "XPM.h"
 
-#include "../../resource.h"
+#include "../../rdo_studio/resource.h"
 
 #ifndef IDC_HAND
 #define IDC_HAND MAKEINTRESOURCE(32649)

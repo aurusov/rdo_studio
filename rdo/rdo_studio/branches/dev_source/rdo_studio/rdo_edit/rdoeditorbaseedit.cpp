@@ -1,6 +1,6 @@
 #include "rdo_studio/pch/pch.h"
 #include "rdo_studio/rdo_edit/rdoeditorbaseedit.h"
-#include "rdo_studio/edit_ctrls/sci/SciLexer.h"
+#include "thirdparty/sci/SciLexer.h"
 #include "rdo_studio/resource.h"
 #include "rdo_studio/res/ac_function.xpm"
 #include "rdo_studio/res/ac_data.xpm"
