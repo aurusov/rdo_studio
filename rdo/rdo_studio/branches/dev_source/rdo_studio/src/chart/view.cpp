@@ -6,7 +6,7 @@
 #include "rdo_studio/resource.h"
 #include "rdo_studio/src/chart/view_style.h"
 #include "rdo_studio/src/chart/doc_serie.h"
-#include "rdo_studio/rdostudiochartoptions.h"
+#include "rdo_studio/src/chart/options.h"
 #include "rdo_studio/htmlhelp.h"
 
 #ifdef _DEBUG

@@ -1,5 +1,5 @@
 #include "rdo_studio/pch/pch.h"
-#include "rdo_studio/rdostudiochartoptions.h"
+#include "rdo_studio/src/chart/options.h"
 #include "rdo_studio/src/chart/view.h"
 #include "rdo_studio/src/chart/document.h"
 #include "rdo_studio/src/application.h"

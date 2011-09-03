@@ -1,6 +1,6 @@
 #include "rdo_studio/pch/pch.h"
-#include "rdo_studio/rdostudioeditview.h"
-#include "rdo_studio/rdostudioeditdoc.h"
+#include "rdo_studio/src/edit/view.h"
+#include "rdo_studio/src/edit/document.h"
 #include "rdo_studio/src/application.h"
 #include "rdo_studio/src/main_frm.h"
 #include "rdo_studio/rdo_edit/rdoeditoredit.h"
