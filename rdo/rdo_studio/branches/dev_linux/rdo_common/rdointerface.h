@@ -31,7 +31,9 @@ CLOSE_RDO_NAMESPACE
 #define INTERFACE_REGISTRATOR(I, ID)                             \
 class I;                                                         \
 typedef rdo::InterfaceRegistrator<I, ID> Registered##I;          \
-template <> class rdo::GetInterface<I>: public Registered##I {}; \
+OPEN_RDO_NAMESPACE                                               \
+template <> class GetInterface<I>: public Registered##I {};      \
+CLOSE_RDO_NAMESPACE                                              \
 class ___InterfaceRegistrator___DoubleID___##ID {};              \
 typedef rdo::Interface<I> LP##I;
 
