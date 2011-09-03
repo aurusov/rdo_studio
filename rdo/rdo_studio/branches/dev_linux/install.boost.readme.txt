@@ -107,3 +107,16 @@ http://www.boost.org/doc/libs/1_47_0/more/getting_started/unix-variants.html#lib
 PSS: Параметры запуска bjam
 http://www.boost.org/boost-build2/doc/html/bbv2/overview/invocation.html#bbv2.overview.invocation.properties
 
+--------------------------------------------------------------------------------------------------------------
+
+для linux
+
+./bootstrap.sh
+./bjam --build-dir=./stage/ --build-type=complete --layout=tagged --prefix=/home/evgeny/software/boost-install -j4 install
+
+export BOOST_ROOT=/home/evgeny/software/boost-install
+
+также строку export BOOST_ROOT=/home/evgeny/software/boost-install лучше добавить в ваш .bashrc - чтобы не делать этого постоянно
+в вашей IDE также придеться сделать эту переменную.
+
+--------------------------------------------------------------------------------------------------------------
