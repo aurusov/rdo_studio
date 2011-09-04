@@ -1,8 +1,8 @@
 #ifndef RDO_PROCESS_PAGECTRL_H
 #define RDO_PROCESS_PAGECTRL_H
 
-#include "rdo_studio/rdo_process/rp_misc/rdoprocess_string.h"
-#include "rdo_studio/rdo_process/rp_misc/rdoprocess_pixmap.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_string.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_pixmap.h"
 
 #if _MSC_VER > 1000
 #pragma once

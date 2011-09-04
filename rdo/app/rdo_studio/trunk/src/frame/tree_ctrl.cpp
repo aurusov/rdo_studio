@@ -1,13 +1,13 @@
-#include "rdo_studio/pch/pch.h"
-#include "rdo_studio/src/frame/tree_ctrl.h"
-#include "rdo_studio/src/model/model.h"
-#include "rdo_studio/src/frame/manager.h"
-#include "rdo_studio/src/frame/document.h"
-#include "rdo_studio/src/frame/view.h"
-#include "rdo_studio/src/application.h"
-#include "rdo_studio/src/main_frm.h"
-#include "rdo_studio/resource.h"
-#include "rdo_studio/htmlhelp.h"
+#include "app/rdo_studio_mfc/pch/pch.h"
+#include "app/rdo_studio_mfc/src/frame/tree_ctrl.h"
+#include "app/rdo_studio_mfc/src/model/model.h"
+#include "app/rdo_studio_mfc/src/frame/manager.h"
+#include "app/rdo_studio_mfc/src/frame/document.h"
+#include "app/rdo_studio_mfc/src/frame/view.h"
+#include "app/rdo_studio_mfc/src/application.h"
+#include "app/rdo_studio_mfc/src/main_frm.h"
+#include "app/rdo_studio_mfc/resource.h"
+#include "app/rdo_studio_mfc/htmlhelp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

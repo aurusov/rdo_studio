@@ -50,11 +50,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../"
+				AdditionalIncludeDirectories="../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_WINDOWS;SCI_LEXER;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="rdo_studio/pch/pch.h"
+				PrecompiledHeaderThrough="app/rdo_studio_mfc/pch/pch.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 				DebugInformationFormat="4"
@@ -74,7 +74,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib pugixml_d.lib"
 				OutputFile="$(OutDir)\RAO-studio.exe"
-				AdditionalLibraryDirectories="../thirdparty/pugixml/lib"
+				AdditionalLibraryDirectories="../../thirdparty/pugixml/lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
@@ -140,10 +140,10 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../"
+				AdditionalIncludeDirectories="../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_WINDOWS;SCI_LEXER;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="rdo_studio/pch/pch.h"
+				PrecompiledHeaderThrough="app/rdo_studio_mfc/pch/pch.h"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
@@ -162,7 +162,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib pugixml.lib"
 				OutputFile="$(OutDir)\RAO-studio.exe"
-				AdditionalLibraryDirectories="../thirdparty/pugixml/lib"
+				AdditionalLibraryDirectories="../../thirdparty/pugixml/lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
@@ -225,12 +225,12 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../;../thirdparty/corba/include"
+				AdditionalIncludeDirectories="../../;../../thirdparty/corba/include"
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;_DEBUG;_WINDOWS;SCI_LEXER;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="rdo_studio/pch/pch.h"
+				PrecompiledHeaderThrough="app/rdo_studio_mfc/pch/pch.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 				DebugInformationFormat="4"
@@ -250,7 +250,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib pugixml_d.lib &quot;$(OutDir)/rdo_corba.lib&quot;"
 				OutputFile="$(OutDir)\RAO-studio.exe"
-				AdditionalLibraryDirectories="../thirdparty/pugixml/lib"
+				AdditionalLibraryDirectories="../../thirdparty/pugixml/lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
@@ -314,10 +314,10 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../;../thirdparty/corba/include"
+				AdditionalIncludeDirectories="../../;../../thirdparty/corba/include"
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;NDEBUG;_WINDOWS;SCI_LEXER;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="rdo_studio/pch/pch.h"
+				PrecompiledHeaderThrough="app/rdo_studio_mfc/pch/pch.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 			/>
@@ -336,7 +336,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib pugixml.lib &quot;$(OutDir)/rdo_corba.lib&quot;"
 				OutputFile="$(OutDir)\RAO-studio.exe"
-				AdditionalLibraryDirectories="../thirdparty/pugixml/lib"
+				AdditionalLibraryDirectories="../../thirdparty/pugixml/lib"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
@@ -398,11 +398,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../"
+				AdditionalIncludeDirectories="../../"
 				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_WINDOWS;SCI_LEXER;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="rdo_studio/pch/pch.h"
+				PrecompiledHeaderThrough="app/rdo_studio_mfc/pch/pch.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 				DebugInformationFormat="4"
@@ -422,7 +422,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib pugixml_d.lib"
 				OutputFile="$(OutDir)\RAO-studio.exe"
-				AdditionalLibraryDirectories="../thirdparty/pugixml/lib"
+				AdditionalLibraryDirectories="../../thirdparty/pugixml/lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
@@ -486,10 +486,10 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../"
+				AdditionalIncludeDirectories="../../"
 				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_WINDOWS;SCI_LEXER;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="rdo_studio/pch/pch.h"
+				PrecompiledHeaderThrough="app/rdo_studio_mfc/pch/pch.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 			/>
@@ -508,7 +508,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib pugixml.lib"
 				OutputFile="$(OutDir)\RAO-studio.exe"
-				AdditionalLibraryDirectories="../thirdparty/pugixml/lib"
+				AdditionalLibraryDirectories="../../thirdparty/pugixml/lib"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
@@ -3814,67 +3814,11 @@
 				Name=".scintilla"
 				>
 				<File
-					RelativePath="..\thirdparty\sci\Accessor.h"
+					RelativePath="..\..\thirdparty\sci\Accessor.h"
 					>
 				</File>
 				<File
-					RelativePath="..\thirdparty\sci\AutoComplete.cxx"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\thirdparty\sci\AutoComplete.h"
-					>
-				</File>
-				<File
-					RelativePath="..\thirdparty\sci\CallTip.cxx"
+					RelativePath="..\..\thirdparty\sci\AutoComplete.cxx"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -3926,67 +3870,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\thirdparty\sci\CallTip.h"
+					RelativePath="..\..\thirdparty\sci\AutoComplete.h"
 					>
 				</File>
 				<File
-					RelativePath="..\thirdparty\sci\CellBuffer.cxx"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\thirdparty\sci\CellBuffer.h"
-					>
-				</File>
-				<File
-					RelativePath="..\thirdparty\sci\ContractionState.cxx"
+					RelativePath="..\..\thirdparty\sci\CallTip.cxx"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -4038,67 +3926,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\thirdparty\sci\ContractionState.h"
+					RelativePath="..\..\thirdparty\sci\CallTip.h"
 					>
 				</File>
 				<File
-					RelativePath="..\thirdparty\sci\Document.cxx"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\thirdparty\sci\Document.h"
-					>
-				</File>
-				<File
-					RelativePath="..\thirdparty\sci\DocumentAccessor.cxx"
+					RelativePath="..\..\thirdparty\sci\CellBuffer.cxx"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -4150,67 +3982,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\thirdparty\sci\DocumentAccessor.h"
+					RelativePath="..\..\thirdparty\sci\CellBuffer.h"
 					>
 				</File>
 				<File
-					RelativePath="..\thirdparty\sci\Editor.cxx"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\thirdparty\sci\Editor.h"
-					>
-				</File>
-				<File
-					RelativePath="..\thirdparty\sci\ExternalLexer.cxx"
+					RelativePath="..\..\thirdparty\sci\ContractionState.cxx"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -4262,67 +4038,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\thirdparty\sci\ExternalLexer.h"
+					RelativePath="..\..\thirdparty\sci\ContractionState.h"
 					>
 				</File>
 				<File
-					RelativePath="..\thirdparty\sci\Indicator.cxx"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\thirdparty\sci\Indicator.h"
-					>
-				</File>
-				<File
-					RelativePath="..\thirdparty\sci\KeyMap.cxx"
+					RelativePath="..\..\thirdparty\sci\Document.cxx"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -4374,67 +4094,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\thirdparty\sci\KeyMap.h"
+					RelativePath="..\..\thirdparty\sci\Document.h"
 					>
 				</File>
 				<File
-					RelativePath="..\thirdparty\sci\KeyWords.cxx"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\thirdparty\sci\KeyWords.h"
-					>
-				</File>
-				<File
-					RelativePath="..\thirdparty\sci\LexFind.cxx"
+					RelativePath="..\..\thirdparty\sci\DocumentAccessor.cxx"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -4486,67 +4150,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\thirdparty\sci\LexFind.h"
+					RelativePath="..\..\thirdparty\sci\DocumentAccessor.h"
 					>
 				</File>
 				<File
-					RelativePath="..\thirdparty\sci\LexRdo.cxx"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\thirdparty\sci\LexRdo.h"
-					>
-				</File>
-				<File
-					RelativePath="..\thirdparty\sci\LexText.cxx"
+					RelativePath="..\..\thirdparty\sci\Editor.cxx"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -4598,79 +4206,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\thirdparty\sci\License.txt"
+					RelativePath="..\..\thirdparty\sci\Editor.h"
 					>
 				</File>
 				<File
-					RelativePath="..\thirdparty\sci\LineMarker.cxx"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\thirdparty\sci\LineMarker.h"
-					>
-				</File>
-				<File
-					RelativePath="..\thirdparty\sci\Margin.cur"
-					>
-				</File>
-				<File
-					RelativePath="..\thirdparty\sci\Platform.h"
-					>
-				</File>
-				<File
-					RelativePath="..\thirdparty\sci\PlatformRes.h"
-					>
-				</File>
-				<File
-					RelativePath="..\thirdparty\sci\PlatWin.cxx"
+					RelativePath="..\..\thirdparty\sci\ExternalLexer.cxx"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -4722,7 +4262,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\thirdparty\sci\PropSet.cxx"
+					RelativePath="..\..\thirdparty\sci\ExternalLexer.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\thirdparty\sci\Indicator.cxx"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -4774,75 +4318,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\thirdparty\sci\PropSet.h"
+					RelativePath="..\..\thirdparty\sci\Indicator.h"
 					>
 				</File>
 				<File
-					RelativePath="..\thirdparty\sci\RESearch.cxx"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\thirdparty\sci\RESearch.h"
-					>
-				</File>
-				<File
-					RelativePath="..\thirdparty\sci\SciLexer.h"
-					>
-				</File>
-				<File
-					RelativePath="..\thirdparty\sci\Scintilla.h"
-					>
-				</File>
-				<File
-					RelativePath="..\thirdparty\sci\ScintillaBase.cxx"
+					RelativePath="..\..\thirdparty\sci\KeyMap.cxx"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -4894,15 +4374,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\thirdparty\sci\ScintillaBase.h"
+					RelativePath="..\..\thirdparty\sci\KeyMap.h"
 					>
 				</File>
 				<File
-					RelativePath="..\thirdparty\sci\ScintillaWidget.h"
-					>
-				</File>
-				<File
-					RelativePath="..\thirdparty\sci\ScintillaWin.cxx"
+					RelativePath="..\..\thirdparty\sci\KeyWords.cxx"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -4954,67 +4430,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\thirdparty\sci\SString.h"
+					RelativePath="..\..\thirdparty\sci\KeyWords.h"
 					>
 				</File>
 				<File
-					RelativePath="..\thirdparty\sci\Style.cxx"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\thirdparty\sci\Style.h"
-					>
-				</File>
-				<File
-					RelativePath="..\thirdparty\sci\StyleContext.cxx"
+					RelativePath="..\..\thirdparty\sci\LexFind.cxx"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -5066,15 +4486,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\thirdparty\sci\StyleContext.h"
+					RelativePath="..\..\thirdparty\sci\LexFind.h"
 					>
 				</File>
 				<File
-					RelativePath="..\thirdparty\sci\SVector.h"
-					>
-				</File>
-				<File
-					RelativePath="..\thirdparty\sci\UniConversion.cxx"
+					RelativePath="..\..\thirdparty\sci\LexRdo.cxx"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -5126,67 +4542,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\thirdparty\sci\UniConversion.h"
+					RelativePath="..\..\thirdparty\sci\LexRdo.h"
 					>
 				</File>
 				<File
-					RelativePath="..\thirdparty\sci\ViewStyle.cxx"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\thirdparty\sci\ViewStyle.h"
-					>
-				</File>
-				<File
-					RelativePath="..\thirdparty\sci\WindowAccessor.cxx"
+					RelativePath="..\..\thirdparty\sci\LexText.cxx"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -5238,11 +4598,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\thirdparty\sci\WindowAccessor.h"
+					RelativePath="..\..\thirdparty\sci\License.txt"
 					>
 				</File>
 				<File
-					RelativePath="..\thirdparty\sci\XPM.cxx"
+					RelativePath="..\..\thirdparty\sci\LineMarker.cxx"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -5294,7 +4654,647 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\thirdparty\sci\XPM.h"
+					RelativePath="..\..\thirdparty\sci\LineMarker.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\thirdparty\sci\Margin.cur"
+					>
+				</File>
+				<File
+					RelativePath="..\..\thirdparty\sci\Platform.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\thirdparty\sci\PlatformRes.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\thirdparty\sci\PlatWin.cxx"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\thirdparty\sci\PropSet.cxx"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\thirdparty\sci\PropSet.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\thirdparty\sci\RESearch.cxx"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\thirdparty\sci\RESearch.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\thirdparty\sci\SciLexer.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\thirdparty\sci\Scintilla.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\thirdparty\sci\ScintillaBase.cxx"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\thirdparty\sci\ScintillaBase.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\thirdparty\sci\ScintillaWidget.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\thirdparty\sci\ScintillaWin.cxx"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\thirdparty\sci\SString.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\thirdparty\sci\Style.cxx"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\thirdparty\sci\Style.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\thirdparty\sci\StyleContext.cxx"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\thirdparty\sci\StyleContext.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\thirdparty\sci\SVector.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\thirdparty\sci\UniConversion.cxx"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\thirdparty\sci\UniConversion.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\thirdparty\sci\ViewStyle.cxx"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\thirdparty\sci\ViewStyle.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\thirdparty\sci\WindowAccessor.cxx"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\thirdparty\sci\WindowAccessor.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\thirdparty\sci\XPM.cxx"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\thirdparty\sci\XPM.h"
 					>
 				</File>
 			</Filter>

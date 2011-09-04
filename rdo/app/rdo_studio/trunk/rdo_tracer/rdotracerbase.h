@@ -2,7 +2,7 @@
 #define RDOTRACERTBASE_H
 #pragma once
 
-#include "rdo_studio/resource.h"
+#include "app/rdo_studio_mfc/resource.h"
 #include "rdo_kernel/rdothread.h"
 #include "rdo_kernel/rdokernel.h"
 #include "rdo_common/rdostream.h"

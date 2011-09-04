@@ -5,7 +5,7 @@
 #pragma once
 #endif
 
-#include "rdo_studio/src/edit/view_base.h"
+#include "app/rdo_studio_mfc/src/edit/view_base.h"
 
 namespace rdoEditor {
 	class RDOEditorEdit;

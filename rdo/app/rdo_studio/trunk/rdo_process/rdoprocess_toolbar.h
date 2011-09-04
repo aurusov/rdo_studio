@@ -5,7 +5,7 @@
 #pragma once
 #endif
 
-#include "rdo_studio/rdo_process/rp_ctrl/rdoprocess_toolbar.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_ctrl/rdoprocess_toolbar.h"
 
 // --------------------------------------------------------------------------------
 // -------------------- RPCtrlToolbarMFC

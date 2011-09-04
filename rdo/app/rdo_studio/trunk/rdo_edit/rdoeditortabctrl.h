@@ -2,7 +2,7 @@
 #define RDOEDITORTABCTRL_H
 #pragma once
 
-#include "rdo_studio/rdo_edit/rdoeditoredit.h"
+#include "app/rdo_studio_mfc/rdo_edit/rdoeditoredit.h"
 #include "rdo_ctrls/rdotabctrl.h"
 
 class RDOStudioEditBaseView;

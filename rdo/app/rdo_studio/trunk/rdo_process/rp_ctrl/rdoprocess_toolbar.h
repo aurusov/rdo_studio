@@ -2,7 +2,7 @@
 #define RDO_PROCESS_CTRL_TOOLBAR_H
 
 #include "rdo_common/rdomacros.h"
-#include "rdo_studio/rdo_process/rp_misc/rdoprocess_string.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_string.h"
 
 #if _MSC_VER > 1000
 #pragma once

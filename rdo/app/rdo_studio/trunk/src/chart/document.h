@@ -5,8 +5,8 @@
 #pragma once
 #endif
 
-#include "rdo_studio/src/chart/doc_serie.h"
-#include "rdo_studio/rdo_tracer/rdotracerserie.h"
+#include "app/rdo_studio_mfc/src/chart/doc_serie.h"
+#include "app/rdo_studio_mfc/rdo_tracer/rdotracerserie.h"
 
 #define WM_USER_UPDATE_CHART_VIEW WM_USER + 0x156
 #define UPDATE_NEWSERIE  0x000

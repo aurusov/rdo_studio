@@ -1,7 +1,7 @@
-#include "rdo_studio/pch/pch.h"
-#include "rdo_studio/rdo_tracer/tracer_ctrls/rdologctrl.h"
-#include "rdo_studio/src/application.h"
-#include "rdo_studio/src/main_frm.h"
+#include "app/rdo_studio_mfc/pch/pch.h"
+#include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdologctrl.h"
+#include "app/rdo_studio_mfc/src/application.h"
+#include "app/rdo_studio_mfc/src/main_frm.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -1,11 +1,11 @@
-#include "rdo_studio/pch/pch.h"
+#include "app/rdo_studio_mfc/pch/pch.h"
 #include "rdoprocess_method_manager.h"
-#include "rdo_studio/src/application.h"
-#include "rdo_studio/rdo_process/rp_misc/rdoprocess_pixmap.h"
-#include "rdo_studio/rdo_process/rp_method/rdoprocess_method.h"
-#include "rdo_studio/rdo_process/rp_method/rdoprocess_factory.h"
-#include "rdo_studio/rdo_process/rp_method/rdoprocess_shape.h"
-#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_method_proc2rdo.h"
+#include "app/rdo_studio_mfc/src/application.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_pixmap.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_method.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_factory.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_shape.h"
+#include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_method_proc2rdo.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

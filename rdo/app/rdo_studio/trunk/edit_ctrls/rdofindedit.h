@@ -2,8 +2,8 @@
 #define RDOFINDEDIT_H
 #pragma once
 
-#include "rdo_studio/edit_ctrls/rdologedit.h"
-#include "rdo_studio/edit_ctrls/rdofindeditstyle.h"
+#include "app/rdo_studio_mfc/edit_ctrls/rdologedit.h"
+#include "app/rdo_studio_mfc/edit_ctrls/rdofindeditstyle.h"
 
 namespace rdoEditCtrl {
 

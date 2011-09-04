@@ -1,5 +1,5 @@
-#include "rdo_studio/pch/pch.h"
-#include "rdo_studio/src/status_bar.h"
+#include "app/rdo_studio_mfc/pch/pch.h"
+#include "app/rdo_studio_mfc/src/status_bar.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

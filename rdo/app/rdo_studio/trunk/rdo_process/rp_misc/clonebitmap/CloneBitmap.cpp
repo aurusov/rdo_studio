@@ -2,8 +2,8 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include "rdo_studio/rdo_process/rp_misc/stdafx.h"
-#include "rdo_studio/rdo_process/rp_misc/clonebitmap/CloneBitmap.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_misc/stdafx.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_misc/clonebitmap/CloneBitmap.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE

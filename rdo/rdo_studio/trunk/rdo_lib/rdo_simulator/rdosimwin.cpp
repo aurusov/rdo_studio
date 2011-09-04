@@ -37,7 +37,7 @@
 #include "rdo_lib/rdo_converter/rdoparser.h"
 #include "rdo_lib/rdo_mbuilder/rdo_resources.h"
 #include "rdo_common/rdodebug.h"
-#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_datablock.h"
+#include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_datablock.h"
 // --------------------------------------------------------------------------------
 
 //#ifndef DISABLE_CORBA

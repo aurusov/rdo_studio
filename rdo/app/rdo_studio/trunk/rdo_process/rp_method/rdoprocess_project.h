@@ -6,8 +6,8 @@
 #endif // _MSC_VER > 1000
 
 #include <fstream>
-#include "rdo_studio/rdo_process/rp_method/rdoprocess_object.h"
-#include "rdo_studio/rdo_process/rp_method/rdoprocess_messages.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_object.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_messages.h"
 
 // --------------------------------------------------------------------------------
 // -------------------- RPProject

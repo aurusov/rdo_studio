@@ -6,8 +6,8 @@
 #endif // _MSC_VER > 1000
 
 #include <vector>
-#include "rdo_studio/rdo_process/rp_method/rdoprocess_object_chart.h"
-#include "rdo_studio/rdo_process/rp_misc/rdoprocess_math.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_object_chart.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_math.h"
 
 // --------------------------------------------------------------------------------
 // -------------------- RPObjectMatrix

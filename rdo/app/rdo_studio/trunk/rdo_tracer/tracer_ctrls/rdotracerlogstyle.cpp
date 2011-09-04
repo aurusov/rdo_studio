@@ -1,6 +1,6 @@
-#include "rdo_studio/pch/pch.h"
-#include "rdo_studio/rdo_tracer/tracer_ctrls/rdotracerlogstyle.h"
-#include "rdo_studio/src/application.h"
+#include "app/rdo_studio_mfc/pch/pch.h"
+#include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracerlogstyle.h"
+#include "app/rdo_studio_mfc/src/application.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

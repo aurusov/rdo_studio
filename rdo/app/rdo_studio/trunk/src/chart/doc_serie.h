@@ -5,7 +5,7 @@
 #pragma once
 #endif
 
-#include "rdo_studio/rdo_tracer/rdotracerserie.h"
+#include "app/rdo_studio_mfc/rdo_tracer/rdotracerserie.h"
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioDocSerie

@@ -14,7 +14,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_lib/rdo_runtime/rdo_runtime.h"
 #include "rdo_lib/rdo_parser/rdoparser.h"
-#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_datablock.h"
+#include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_datablock.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_SIMULATOR_NAMESPACE

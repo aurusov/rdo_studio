@@ -2,8 +2,8 @@
 #define RDOEDITORBASEEDIT_H
 #pragma once
 
-#include "rdo_studio/edit_ctrls/rdobaseedit.h"
-#include "rdo_studio/rdo_edit/rdoeditoreditstyle.h"
+#include "app/rdo_studio_mfc/edit_ctrls/rdobaseedit.h"
+#include "app/rdo_studio_mfc/rdo_edit/rdoeditoreditstyle.h"
 
 namespace rdoEditor {
 

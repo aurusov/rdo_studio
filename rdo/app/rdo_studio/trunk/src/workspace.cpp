@@ -1,10 +1,10 @@
-#include "rdo_studio/pch/pch.h"
-#include "rdo_studio/src/workspace.h"
-#include "rdo_studio/src/application.h"
-#include "rdo_studio/src/main_frm.h"
-#include "rdo_studio/rdo_tracer/rdotracer.h"
-#include "rdo_studio/rdo_tracer/tracer_ctrls/rdotracertreectrl.h"
-#include "rdo_studio/resource.h"
+#include "app/rdo_studio_mfc/pch/pch.h"
+#include "app/rdo_studio_mfc/src/workspace.h"
+#include "app/rdo_studio_mfc/src/application.h"
+#include "app/rdo_studio_mfc/src/main_frm.h"
+#include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
+#include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracertreectrl.h"
+#include "app/rdo_studio_mfc/resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

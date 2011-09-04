@@ -1,8 +1,8 @@
-#include "rdo_studio/pch/pch.h"
+#include "app/rdo_studio_mfc/pch/pch.h"
 #include "rdoprocess_pagectrl.h"
-#include "rdo_studio/rdo_process/rp_misc/mctranspblt/McTransparentBlit.h"
-#include "rdo_studio/resource.h"
-#include "rdo_studio/rdo_process/rp_method/rdoprocess_factory.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_misc/mctranspblt/McTransparentBlit.h"
+#include "app/rdo_studio_mfc/resource.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_factory.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

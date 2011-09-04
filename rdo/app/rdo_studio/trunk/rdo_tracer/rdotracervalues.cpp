@@ -1,5 +1,5 @@
-#include "rdo_studio/pch/pch.h"
-#include "rdo_studio/rdo_tracer/rdotracervalues.h"
+#include "app/rdo_studio_mfc/pch/pch.h"
+#include "app/rdo_studio_mfc/rdo_tracer/rdotracervalues.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

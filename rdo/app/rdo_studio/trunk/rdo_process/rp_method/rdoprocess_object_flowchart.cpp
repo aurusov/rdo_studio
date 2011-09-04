@@ -1,13 +1,13 @@
-#include "rdo_studio/rdo_process/rp_method/stdafx.h"
-#include "rdo_studio/rdo_process/rp_method/rdoprocess_object_flowchart.h"
-#include "rdo_studio/rdo_process/rp_method/rdoprocess_flowchart.h"
-#include "rdo_studio/rdo_process/rp_method/rdoprocess_messages.h"
-#include "rdo_studio/rdo_process/rp_method/rdoprocess_method.h"
-#include "rdo_studio/rdo_process/rp_method/rdoprocess_factory.h"
-#include "rdo_studio/rdo_process/rp_method/rdoprocess_object_pixmap.h"
-#include "rdo_studio/resource.h"
-#include "rdo_studio/rdo_process/rp_misc/rdoprocess_pixmap.h"
-#include "rdo_studio/rdo_process/rp_misc/rdoprocess_xml.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_method/stdafx.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_object_flowchart.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_flowchart.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_messages.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_method.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_factory.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_object_pixmap.h"
+#include "app/rdo_studio_mfc/resource.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_pixmap.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_xml.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

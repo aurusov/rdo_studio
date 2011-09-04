@@ -1,5 +1,5 @@
-#include "rdo_studio/pch/pch.h"
-#include "rdo_studio/src/chart/view_style.h"
+#include "app/rdo_studio_mfc/pch/pch.h"
+#include "app/rdo_studio_mfc/src/chart/view_style.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -5,10 +5,10 @@
 #pragma once
 #endif
 
-#include "rdo_studio/src/dock_wnd.h"
-#include "rdo_studio/src/frame/tree_ctrl.h"
+#include "app/rdo_studio_mfc/src/dock_wnd.h"
+#include "app/rdo_studio_mfc/src/frame/tree_ctrl.h"
 #include "rdo_ctrls/rdotabctrl.h"
-#include "rdo_studio/rdo_process/rdoprocess_pagectrl.h"
+#include "app/rdo_studio_mfc/rdo_process/rdoprocess_pagectrl.h"
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioWorkspace
 // --------------------------------------------------------------------------------

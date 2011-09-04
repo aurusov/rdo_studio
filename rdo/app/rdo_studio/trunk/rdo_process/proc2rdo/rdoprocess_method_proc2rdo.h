@@ -5,9 +5,9 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "rdo_studio/rdo_process/rp_method/rdoprocess_method.h"
-#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_creation_RDO_files.h"
-#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_method.h"
+#include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_creation_RDO_files.h"
+#include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape.h"
 #include "rdo_common/rdotypes.h"
 
 class RPMethodProc2RDO_MJ: public rpMethod::RPMethod, public RPObject_MJ

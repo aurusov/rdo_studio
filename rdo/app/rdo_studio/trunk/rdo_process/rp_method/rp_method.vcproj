@@ -41,12 +41,12 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../"
+				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="rdo_studio\rdo_process\rp_method\stdafx.h"
+				PrecompiledHeaderThrough="app\rdo_studio_mfc\rdo_process\rp_method\stdafx.h"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
@@ -105,10 +105,10 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="2"
-				AdditionalIncludeDirectories="../../../"
+				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="rdo_studio\rdo_process\rp_method\stdafx.h"
+				PrecompiledHeaderThrough="app\rdo_studio_mfc\rdo_process\rp_method\stdafx.h"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"

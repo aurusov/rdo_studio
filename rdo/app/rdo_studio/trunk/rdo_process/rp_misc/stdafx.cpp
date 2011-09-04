@@ -2,4 +2,4 @@
 //	rdo_process.pch will be the pre-compiled header
 //	stdafx.obj will contain the pre-compiled type information
 
-#include "rdo_studio/rdo_process/rp_misc/stdafx.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_misc/stdafx.h"

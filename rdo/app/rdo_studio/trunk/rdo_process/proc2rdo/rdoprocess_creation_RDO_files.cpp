@@ -2,7 +2,7 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include "rdo_studio/rdo_process/proc2rdo/stdafx.h"
+#include "app/rdo_studio_mfc/rdo_process/proc2rdo/stdafx.h"
 #include "rdoprocess_creation_RDO_files.h"
 
 #ifdef _DEBUG

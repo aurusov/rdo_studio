@@ -1,10 +1,10 @@
-#include "rdo_studio/pch/pch.h"
-#include "rdo_studio/edit_ctrls/rdofindedit.h"
+#include "app/rdo_studio_mfc/pch/pch.h"
+#include "app/rdo_studio_mfc/edit_ctrls/rdofindedit.h"
 #include "thirdparty/sci/SciLexer.h"
 #include "thirdparty/sci/LexFind.h"
-#include "rdo_studio/src/application.h"
-#include "rdo_studio/resource.h"
-#include "rdo_studio/htmlhelp.h"
+#include "app/rdo_studio_mfc/src/application.h"
+#include "app/rdo_studio_mfc/resource.h"
+#include "app/rdo_studio_mfc/htmlhelp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

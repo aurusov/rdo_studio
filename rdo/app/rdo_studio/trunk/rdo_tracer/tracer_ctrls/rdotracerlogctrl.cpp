@@ -1,9 +1,9 @@
-#include "rdo_studio/pch/pch.h"
-#include "rdo_studio/rdo_tracer/tracer_ctrls/rdotracerlogctrl.h"
-#include "rdo_studio/src/application.h"
-#include "rdo_studio/src/main_frm.h"
-#include "rdo_studio/resource.h"
-#include "rdo_studio/htmlhelp.h"
+#include "app/rdo_studio_mfc/pch/pch.h"
+#include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracerlogctrl.h"
+#include "app/rdo_studio_mfc/src/application.h"
+#include "app/rdo_studio_mfc/src/main_frm.h"
+#include "app/rdo_studio_mfc/resource.h"
+#include "app/rdo_studio_mfc/htmlhelp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

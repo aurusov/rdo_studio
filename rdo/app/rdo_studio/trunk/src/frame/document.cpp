@@ -1,7 +1,7 @@
-#include "rdo_studio/pch/pch.h"
-#include "rdo_studio/src/frame/document.h"
-#include "rdo_studio/src/model/model.h"
-#include "rdo_studio/src/frame/manager.h"
+#include "app/rdo_studio_mfc/pch/pch.h"
+#include "app/rdo_studio_mfc/src/frame/document.h"
+#include "app/rdo_studio_mfc/src/model/model.h"
+#include "app/rdo_studio_mfc/src/frame/manager.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -8,29 +8,29 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "rdo_studio/pch/pch.h"
+#include "app/rdo_studio_mfc/pch/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <limits>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_studio/src/model/model.h"
-#include "rdo_studio/src/thread.h"
-#include "rdo_studio/src/main_frm.h"
-#include "rdo_studio/src/child_frm.h"
-#include "rdo_studio/src/frame/document.h"
-#include "rdo_studio/src/frame/view.h"
-#include "rdo_studio/src/plugins.h"
-#include "rdo_studio/rdo_edit/rdoeditortabctrl.h"
-#include "rdo_studio/edit_ctrls/rdobuildedit.h"
-#include "rdo_studio/edit_ctrls/rdodebugedit.h"
-#include "rdo_studio/rdo_edit/rdoeditorresults.h"
-#include "rdo_studio/rdo_tracer/rdotracer.h"
-#include "rdo_studio/resource.h"
+#include "app/rdo_studio_mfc/src/model/model.h"
+#include "app/rdo_studio_mfc/src/thread.h"
+#include "app/rdo_studio_mfc/src/main_frm.h"
+#include "app/rdo_studio_mfc/src/child_frm.h"
+#include "app/rdo_studio_mfc/src/frame/document.h"
+#include "app/rdo_studio_mfc/src/frame/view.h"
+#include "app/rdo_studio_mfc/src/plugins.h"
+#include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
+#include "app/rdo_studio_mfc/edit_ctrls/rdobuildedit.h"
+#include "app/rdo_studio_mfc/edit_ctrls/rdodebugedit.h"
+#include "app/rdo_studio_mfc/rdo_edit/rdoeditorresults.h"
+#include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
+#include "app/rdo_studio_mfc/resource.h"
 #include "rdo_kernel/rdokernel.h"
 #include "rdo_kernel/rdothread.h"
 #include "rdo_repository/rdorepository.h"
 #include "rdo_common/rdostream.h"
 #include "rdo_common/rdoanimation.h"
-#include "rdo_studio/plugins/common/rdoplugin.h"
+#include "app/rdo_studio_mfc/plugins/common/rdoplugin.h"
 #include "rdo_lib/rdo_runtime/rdo_exception.h"
 // --------------------------------------------------------------------------------
 

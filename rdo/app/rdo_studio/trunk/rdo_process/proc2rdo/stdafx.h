@@ -96,4 +96,4 @@
 #include "rdo_common/rdocommon.h"
 #include "rdo_common/rdotypes.h"
 #include "rdo_common/rdomacros.h"
-#include "rdo_studio/rdo_process/rp_misc/rdoprocess_string.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_string.h"

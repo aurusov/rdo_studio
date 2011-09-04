@@ -1,7 +1,7 @@
-#include "rdo_studio/rdo_process/rp_misc/stdafx.h"
-#include "rdo_studio/rdo_process/rp_misc/rdoprocess_polyline.h"
-#include "rdo_studio/rdo_process/rp_misc/rdoprocess_rect.h"
-#include "rdo_studio/rdo_process/rp_misc/rdoprocess_math.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_misc/stdafx.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_polyline.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_rect.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_math.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

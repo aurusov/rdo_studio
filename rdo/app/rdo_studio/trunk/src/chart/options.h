@@ -6,8 +6,8 @@
 #endif
 
 #include "rdo_ctrls/rdocolorcombobox.h"
-#include "rdo_studio/src/chart/document.h"
-#include "rdo_studio/resource.h"
+#include "app/rdo_studio_mfc/src/chart/document.h"
+#include "app/rdo_studio_mfc/resource.h"
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioChartOptionsChart

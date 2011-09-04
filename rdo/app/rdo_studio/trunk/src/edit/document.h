@@ -5,7 +5,7 @@
 #pragma once
 #endif
 
-#include "rdo_studio/src/edit/document_base.h"
+#include "app/rdo_studio_mfc/src/edit/document_base.h"
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioEditDoc

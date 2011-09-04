@@ -1,8 +1,8 @@
-#include "rdo_studio/pch/pch.h"
-#include "rdo_studio/rdo_process/rdoprocess_toolbar.h"
-#include "rdo_studio/rdo_process/rp_misc/rdoprocess_pixmap.h"
-#include "rdo_studio/rdo_process/rdoprocess_project.h"
-#include "rdo_studio/resource.h"
+#include "app/rdo_studio_mfc/pch/pch.h"
+#include "app/rdo_studio_mfc/rdo_process/rdoprocess_toolbar.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_pixmap.h"
+#include "app/rdo_studio_mfc/rdo_process/rdoprocess_project.h"
+#include "app/rdo_studio_mfc/resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

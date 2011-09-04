@@ -1,8 +1,8 @@
-#include "rdo_studio/pch/pch.h"
-#include "rdo_studio/rdo_process/rdoprocess_childfrm.h"
-#include "rdo_studio/rdo_process/rdoprocess_docview.h"
-#include "rdo_studio/rdo_process/rp_method/rdoprocess_object_flowchart.h"
-#include "rdo_studio/rdo_process/rp_method/rdoprocess_flowchart.h"
+#include "app/rdo_studio_mfc/pch/pch.h"
+#include "app/rdo_studio_mfc/rdo_process/rdoprocess_childfrm.h"
+#include "app/rdo_studio_mfc/rdo_process/rdoprocess_docview.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_object_flowchart.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_flowchart.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

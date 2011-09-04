@@ -1,5 +1,5 @@
-#include "rdo_studio/pch/pch.h"
-#include "rdo_studio/edit_ctrls/rdofindeditstyle.h"
+#include "app/rdo_studio_mfc/pch/pch.h"
+#include "app/rdo_studio_mfc/edit_ctrls/rdofindeditstyle.h"
 #include "thirdparty/sci/SciLexer.h"
 
 #ifdef _DEBUG

@@ -6,8 +6,8 @@
 #endif // _MSC_VER > 1000
 
 #include <list>
-#include "rdo_studio/rdo_process/rp_misc/rdoprocess_polyline.h"
-#include "rdo_studio/rdo_process/rp_misc/rdoprocess_matrix.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_polyline.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_matrix.h"
 
 namespace rp {
 

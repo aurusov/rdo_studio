@@ -2,7 +2,7 @@
 #define RDOBUILDEDIT_H
 #pragma once
 
-#include "rdo_studio/edit_ctrls/rdologedit.h"
+#include "app/rdo_studio_mfc/edit_ctrls/rdologedit.h"
 #include "rdo_common/rdocommon.h"
 
 namespace rdoEditCtrl {

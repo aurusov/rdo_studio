@@ -1,10 +1,10 @@
-#include "rdo_studio/pch/pch.h"
-#include "rdo_studio/edit_ctrls/rdologedit.h"
-#include "rdo_studio/src/application.h"
-#include "rdo_studio/src/model/model.h"
-#include "rdo_studio/rdo_edit/rdoeditortabctrl.h"
+#include "app/rdo_studio_mfc/pch/pch.h"
+#include "app/rdo_studio_mfc/edit_ctrls/rdologedit.h"
+#include "app/rdo_studio_mfc/src/application.h"
+#include "app/rdo_studio_mfc/src/model/model.h"
+#include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
 #include "thirdparty/sci/Scintilla.h"
-#include "rdo_studio/resource.h"
+#include "app/rdo_studio_mfc/resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

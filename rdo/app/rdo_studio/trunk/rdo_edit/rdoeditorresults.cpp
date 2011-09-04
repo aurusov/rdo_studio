@@ -1,8 +1,8 @@
-#include "rdo_studio/pch/pch.h"
-#include "rdo_studio/rdo_edit/rdoeditorresults.h"
-#include "rdo_studio/src/application.h"
-#include "rdo_studio/resource.h"
-#include "rdo_studio/htmlhelp.h"
+#include "app/rdo_studio_mfc/pch/pch.h"
+#include "app/rdo_studio_mfc/rdo_edit/rdoeditorresults.h"
+#include "app/rdo_studio_mfc/src/application.h"
+#include "app/rdo_studio_mfc/resource.h"
+#include "app/rdo_studio_mfc/htmlhelp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

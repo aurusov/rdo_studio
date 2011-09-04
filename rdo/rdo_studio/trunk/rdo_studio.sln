@@ -87,7 +87,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_help_lang_eng", "rdo_he
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_help_studio_rus", "rdo_help\rdo_studio_rus\rdo_studio_rus.vcproj", "{083D1F44-0D2E-422B-966D-0AEC03F89807}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_studio", "rdo_studio\rdo_studio.vcproj", "{B24B66FC-B6FB-4051-AB29-93AF90570C26}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_studio", "app\rdo_studio_mfc\rdo_studio.vcproj", "{B24B66FC-B6FB-4051-AB29-93AF90570C26}"
 	ProjectSection(ProjectDependencies) = postProject
 		{9EEDD880-5EA7-40E5-B065-DA72B19892F4} = {9EEDD880-5EA7-40E5-B065-DA72B19892F4}
 		{9EEDD880-5EA7-40E5-B065-DA72B19892F4} = {9EEDD880-5EA7-40E5-B065-DA72B19892F4}
@@ -112,32 +112,32 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_converter", "rdo_lib\rd
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_version", "rdo_version\rdo_version.vcproj", "{6A0AC201-55B9-4861-8339-5AD42572B2FC}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rp_method", "rdo_studio\rdo_process\rp_method\rp_method.vcproj", "{E3E1B8AA-D06A-4999-923A-A4D7BB2AAD62}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rp_method", "app\rdo_studio_mfc\rdo_process\rp_method\rp_method.vcproj", "{E3E1B8AA-D06A-4999-923A-A4D7BB2AAD62}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1C949A7B-8C06-4A86-A833-C1052DD93810} = {1C949A7B-8C06-4A86-A833-C1052DD93810}
 		{6EA136E5-E2E9-45C3-AF41-93EB339894BE} = {6EA136E5-E2E9-45C3-AF41-93EB339894BE}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "method_proc2rdo", "rdo_studio\rdo_process\proc2rdo\proc2rdo.vcproj", "{9EEDD880-5EA7-40E5-B065-DA72B19892F4}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "method_proc2rdo", "app\rdo_studio_mfc\rdo_process\proc2rdo\proc2rdo.vcproj", "{9EEDD880-5EA7-40E5-B065-DA72B19892F4}"
 	ProjectSection(ProjectDependencies) = postProject
 		{7FDB2504-B35B-4698-88A5-55B7112E01F4} = {7FDB2504-B35B-4698-88A5-55B7112E01F4}
 		{E3E1B8AA-D06A-4999-923A-A4D7BB2AAD62} = {E3E1B8AA-D06A-4999-923A-A4D7BB2AAD62}
 		{6EA136E5-E2E9-45C3-AF41-93EB339894BE} = {6EA136E5-E2E9-45C3-AF41-93EB339894BE}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rp_ctrl", "rdo_studio\rdo_process\rp_ctrl\rp_ctrl.vcproj", "{6EA136E5-E2E9-45C3-AF41-93EB339894BE}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rp_ctrl", "app\rdo_studio_mfc\rdo_process\rp_ctrl\rp_ctrl.vcproj", "{6EA136E5-E2E9-45C3-AF41-93EB339894BE}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1C949A7B-8C06-4A86-A833-C1052DD93810} = {1C949A7B-8C06-4A86-A833-C1052DD93810}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rp_misc", "rdo_studio\rdo_process\rp_misc\rp_misc.vcproj", "{1C949A7B-8C06-4A86-A833-C1052DD93810}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rp_misc", "app\rdo_studio_mfc\rdo_process\rp_misc\rp_misc.vcproj", "{1C949A7B-8C06-4A86-A833-C1052DD93810}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_plugin_mfc", "rdo_studio\plugins\mfc\rdo_plugin_mfc.vcproj", "{37214C3A-5EA5-4CE1-B843-ABF4399CFC51}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_plugin_mfc", "app\rdo_studio_mfc\plugins\mfc\rdo_plugin_mfc.vcproj", "{37214C3A-5EA5-4CE1-B843-ABF4399CFC51}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1FACE2E3-B02E-45E1-9A93-56FD00508301} = {1FACE2E3-B02E-45E1-9A93-56FD00508301}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_plugin", "rdo_studio\plugins\common\rdo_plugin.vcproj", "{1FACE2E3-B02E-45E1-9A93-56FD00508301}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_plugin", "app\rdo_studio_mfc\plugins\common\rdo_plugin.vcproj", "{1FACE2E3-B02E-45E1-9A93-56FD00508301}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

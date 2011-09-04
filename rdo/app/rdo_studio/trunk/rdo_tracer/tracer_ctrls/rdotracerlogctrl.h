@@ -2,8 +2,8 @@
 #define RDOTRACERLOGCTRL_H
 #pragma once
 
-#include "rdo_studio/rdo_tracer/tracer_ctrls/rdologctrl.h"
-#include "rdo_studio/rdo_tracer/tracer_ctrls/rdotracerlogstyle.h"
+#include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdologctrl.h"
+#include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracerlogstyle.h"
 
 namespace rdoTracer {
 class RDOTracerBase;

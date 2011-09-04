@@ -1,4 +1,4 @@
-#include "rdo_studio/pch/pch.h"
+#include "app/rdo_studio_mfc/pch/pch.h"
 #include "rdoprocess_dockwnd.h"
 
 #ifdef _DEBUG

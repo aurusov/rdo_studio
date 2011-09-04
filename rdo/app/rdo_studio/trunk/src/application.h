@@ -12,9 +12,9 @@
 #include <fstream>
 #include "rdo_ctrls/rdolink.h"
 #include "rdo_kernel/rdothread.h"
-#include "rdo_studio/resource.h"
-#include "rdo_studio/rdo_process/rdoprocess_method_manager.h"
-#include "rdo_studio/src/main_frm.h"
+#include "app/rdo_studio_mfc/resource.h"
+#include "app/rdo_studio_mfc/rdo_process/rdoprocess_method_manager.h"
+#include "app/rdo_studio_mfc/src/main_frm.h"
 
 //#define PROCGUI_ENABLE
 

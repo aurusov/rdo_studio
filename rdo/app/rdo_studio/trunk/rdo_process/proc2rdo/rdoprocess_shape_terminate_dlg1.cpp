@@ -1,7 +1,7 @@
 // rdoprocess_shape_terminate_dlg1_MJ.cpp : implementation file
 //
 
-#include "rdo_studio/rdo_process/proc2rdo/stdafx.h"
+#include "app/rdo_studio_mfc/rdo_process/proc2rdo/stdafx.h"
 #include "rdoprocess_shape_terminate_dlg1.h"
 
 #ifdef _DEBUG

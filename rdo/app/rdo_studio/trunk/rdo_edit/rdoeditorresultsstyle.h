@@ -2,7 +2,7 @@
 #define RDOEDITORRESULTSSTYLE_H
 #pragma once
 
-#include "rdo_studio/rdo_edit/rdoeditorbaseeditstyle.h"
+#include "app/rdo_studio_mfc/rdo_edit/rdoeditorbaseeditstyle.h"
 
 namespace rdoEditor {
 

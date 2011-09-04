@@ -61,8 +61,8 @@
 #include "rdo_common/rdomacros.h"
 #include "rdo_common/rdodebug.h"
 
-#include "rdo_studio/sizecbar/sizecbar.h"
-#include "rdo_studio/sizecbar/scbarg.h"
+#include "app/rdo_studio_mfc/sizecbar/sizecbar.h"
+#include "app/rdo_studio_mfc/sizecbar/scbarg.h"
 
 void appendMenu( CMenu* from, const int from_index, CMenu* to );
 void eraseMenu( CMenu* from, const int from_index = -1 );

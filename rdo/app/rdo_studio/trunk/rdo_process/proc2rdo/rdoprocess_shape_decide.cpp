@@ -2,11 +2,11 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include "rdo_studio/rdo_process/proc2rdo/stdafx.h"
-#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_decide.h"
-#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_decide_dlg1.h"
-#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_method_proc2rdo.h"
-#include "rdo_studio/rdo_process/rp_method/rdoprocess_shape.h"
+#include "app/rdo_studio_mfc/rdo_process/proc2rdo/stdafx.h"
+#include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_decide.h"
+#include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_decide_dlg1.h"
+#include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_method_proc2rdo.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_shape.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE

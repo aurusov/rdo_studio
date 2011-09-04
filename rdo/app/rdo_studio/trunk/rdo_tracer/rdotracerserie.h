@@ -2,7 +2,7 @@
 #define RDOTRACERSERIE_H
 #pragma once
 
-#include "rdo_studio/rdo_tracer/tracer_ctrls/rdotracertreeitem.h"
+#include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracertreeitem.h"
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOTracerSerie

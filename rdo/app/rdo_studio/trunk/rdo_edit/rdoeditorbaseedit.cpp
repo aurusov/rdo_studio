@@ -1,10 +1,10 @@
-#include "rdo_studio/pch/pch.h"
-#include "rdo_studio/rdo_edit/rdoeditorbaseedit.h"
+#include "app/rdo_studio_mfc/pch/pch.h"
+#include "app/rdo_studio_mfc/rdo_edit/rdoeditorbaseedit.h"
 #include "thirdparty/sci/SciLexer.h"
-#include "rdo_studio/resource.h"
-#include "rdo_studio/res/ac_function.xpm"
-#include "rdo_studio/res/ac_data.xpm"
-#include "rdo_studio/res/ac_trace.xpm"
+#include "app/rdo_studio_mfc/resource.h"
+#include "app/rdo_studio_mfc/res/ac_function.xpm"
+#include "app/rdo_studio_mfc/res/ac_data.xpm"
+#include "app/rdo_studio_mfc/res/ac_trace.xpm"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -1,7 +1,7 @@
-#include "rdo_studio/pch/pch.h"
-#include "rdo_studio/src/edit/document.h"
-#include "rdo_studio/src/edit/view.h"
-#include "rdo_studio/rdo_edit/rdoeditoredit.h"
+#include "app/rdo_studio_mfc/pch/pch.h"
+#include "app/rdo_studio_mfc/src/edit/document.h"
+#include "app/rdo_studio_mfc/src/edit/view.h"
+#include "app/rdo_studio_mfc/rdo_edit/rdoeditoredit.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

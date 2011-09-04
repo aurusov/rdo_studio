@@ -1,6 +1,6 @@
-#include "rdo_studio/rdo_process/rp_method/stdafx.h"
-#include "rdo_studio/rdo_process/rp_method/rdoprocess_messages.h"
-#include "rdo_studio/rdo_process/rp_method/rdoprocess_object.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_method/stdafx.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_messages.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_object.h"
 
 namespace rp {
 // --------------------------------------------------------------------------------

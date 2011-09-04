@@ -10,8 +10,8 @@
 #endif // _MSC_VER > 1000
 
 #include <list>
-#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape.h"
-#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_datablock.h"
+#include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape.h"
+#include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_datablock.h"
 
 class RPShapeProcessMJ : public RPShape_MJ
 {

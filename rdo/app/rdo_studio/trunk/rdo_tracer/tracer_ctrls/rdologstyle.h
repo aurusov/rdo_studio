@@ -2,7 +2,7 @@
 #define RDOLOGSTYLE_H
 #pragma once
 
-#include "rdo_studio/src/style.h"
+#include "app/rdo_studio_mfc/src/style.h"
 
 namespace rdoTracerLog {
 

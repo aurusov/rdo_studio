@@ -1,11 +1,11 @@
-#include "rdo_studio/rdo_process/proc2rdo/stdafx.h"
-#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape.h"
-#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_method_proc2rdo.h"
-#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_process.h" 
-#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_create.h"
-#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_decide.h"
-#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_terminate.h"
-#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_resource.h"
+#include "app/rdo_studio_mfc/rdo_process/proc2rdo/stdafx.h"
+#include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape.h"
+#include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_method_proc2rdo.h"
+#include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_process.h" 
+#include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_create.h"
+#include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_decide.h"
+#include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_terminate.h"
+#include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_resource.h"
 
 // --------------------------------------------------------------------------------
 // -------------------- RPObjectFlowChart_MJ

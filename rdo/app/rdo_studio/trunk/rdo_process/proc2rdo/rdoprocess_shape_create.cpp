@@ -1,12 +1,12 @@
 // rdoprocess_shape_create_MJ.cpp: implementation of the RPShapeCreateMJ class.
 //
 //////////////////////////////////////////////////////////////////////
-#include "rdo_studio/rdo_process/proc2rdo/stdafx.h"
-#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_create.h"
-#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_shape_create_dlg1.h"
-#include "rdo_studio/rdo_process/proc2rdo/rdoprocess_method_proc2rdo.h"
-#include "rdo_studio/rdo_process/rp_method/rdoprocess_shape.h"
-#include "rdo_studio/src/application.h"
+#include "app/rdo_studio_mfc/rdo_process/proc2rdo/stdafx.h"
+#include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_create.h"
+#include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_create_dlg1.h"
+#include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_method_proc2rdo.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_shape.h"
+#include "app/rdo_studio_mfc/src/application.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE

@@ -1,7 +1,7 @@
-#include "rdo_studio/rdo_process/rp_method/stdafx.h"
-#include "rdo_studio/rdo_process/rp_method/rdoprocess_object.h"
-#include "rdo_studio/rdo_process/rp_method/rdoprocess_project.h"
-#include "rdo_studio/rdo_process/rp_misc/rdoprocess_xml.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_method/stdafx.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_object.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_project.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_xml.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "rdo_ctrls/rdotreectrl.h"
-#include "rdo_studio/rdo_tracer/tracer_ctrls/rdotracertreeitem.h"
+#include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracertreeitem.h"
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOTracerTreeCtrl

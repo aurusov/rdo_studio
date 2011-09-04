@@ -1,9 +1,9 @@
-#include "rdo_studio/pch/pch.h"
-#include "rdo_studio/src/chart/options.h"
-#include "rdo_studio/src/chart/view.h"
-#include "rdo_studio/src/chart/document.h"
-#include "rdo_studio/src/application.h"
-#include "rdo_studio/htmlhelp.h"
+#include "app/rdo_studio_mfc/pch/pch.h"
+#include "app/rdo_studio_mfc/src/chart/options.h"
+#include "app/rdo_studio_mfc/src/chart/view.h"
+#include "app/rdo_studio_mfc/src/chart/document.h"
+#include "app/rdo_studio_mfc/src/application.h"
+#include "app/rdo_studio_mfc/htmlhelp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
