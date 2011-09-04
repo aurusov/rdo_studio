@@ -8,8 +8,8 @@
   \indent    4T
 */
 
-#ifndef _RDO_INTERFACE_PTR_H_
-#define _RDO_INTERFACE_PTR_H_
+#ifndef _LIB_COMMON_SMART_PTR_INTERFACE_PTR_H_
+#define _LIB_COMMON_SMART_PTR_INTERFACE_PTR_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -26,11 +26,7 @@ class Factory;
 template<class T>
 class intrusive_ptr;
 
-#ifndef WIN32
-#define __declspec(novtable)
-#endif
-
-struct __declspec(novtable) ICounterReference
+struct NO_V_TABLE ICounterReference
 {
 	virtual void addref () = 0;
 	virtual void release() = 0;
@@ -69,11 +65,11 @@ private:
 };
 
 #define DECLARE_OBJECT_INTERFACE(TYPE)    typedef rdo::interface_ptr<TYPE> LP##TYPE;
-#define PREDECLARE_OBJECT_INTERFACE(TYPE) struct __declspec(novtable) TYPE; DECLARE_OBJECT_INTERFACE(TYPE);
+#define PREDECLARE_OBJECT_INTERFACE(TYPE) struct NO_V_TABLE TYPE; DECLARE_OBJECT_INTERFACE(TYPE);
 #define OBJECT_INTERFACE(TYPE)            PREDECLARE_OBJECT_INTERFACE(TYPE) struct TYPE: public rdo::CounterReferenceReal<TYPE>
 
 CLOSE_RDO_NAMESPACE
 
 #include "rdo_common/smart_ptr/interface_ptr.inl"
 
-#endif // _RDO_INTERFACE_PTR_H_
+#endif // _LIB_COMMON_SMART_PTR_INTERFACE_PTR_H_

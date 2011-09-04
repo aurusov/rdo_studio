@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/typeof/typeof.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "rdo_common/platform.h"
 // --------------------------------------------------------------------------------
 
 //! Ссылка на A
@@ -58,5 +59,10 @@ for (CONTAINER_TYPE_FOR_##IT::const_iterator IT = CONTAINER.begin(); IT != CONTA
 //! Автоматическое определение типа для паременной
 #define AUTO BOOST_AUTO
 
-#endif // _LIB_COMMON_MACROS_H_
+#ifdef COMPILER_VISUAL_STUDIO
+	#define NO_V_TABLE __declspec(novtable)
+#else  // not WIN32
+	#define NO_V_TABLE
+#endif // WIN32
 
+#endif // _LIB_COMMON_MACROS_H_

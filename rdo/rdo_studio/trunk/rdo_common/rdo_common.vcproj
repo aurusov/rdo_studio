@@ -299,6 +299,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\platform.h"
+				>
+			</File>
+			<File
 				RelativePath=".\rdocommon.cpp"
 				>
 			</File>
