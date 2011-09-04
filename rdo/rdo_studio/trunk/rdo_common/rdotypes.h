@@ -8,8 +8,8 @@
   \indent    4T
 */
 
-#ifndef _RDOTYPES_H_
-#define _RDOTYPES_H_
+#ifndef _LIB_COMMON_RDOTYPES_H_
+#define _LIB_COMMON_RDOTYPES_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #ifdef WIN32
@@ -46,4 +46,4 @@ typedef  unsigned long long int     ruint64;
 //! Тип байта
 typedef  unsigned char              rbyte;
 
-#endif // _RDOTYPES_H_
+#endif // _LIB_COMMON_RDOTYPES_H_
