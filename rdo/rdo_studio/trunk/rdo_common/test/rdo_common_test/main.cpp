@@ -1,24 +1,24 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : main.cpp
- * authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      main.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \authors   Пройдаков Евгений (lord.tiran@gmail.com)
- * date     : 10.05.2009
- * bref     : Тест common-библиотеки
- * indent   : 4T
- */
+  \date      10.05.2009
+  \brief     Тест common-библиотеки
+  \indent    4T
+*/
 
-// ====================================================================== PCH
-// ====================================================================== INCLUDES
+// ---------------------------------------------------------------------------- PCH
+// ----------------------------------------------------------------------- INCLUDES
 #include <boost/regex.hpp>
 #define BOOST_TEST_MODULE RDOCommon_Test
 #include <boost/test/included/unit_test.hpp>
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/rdocommon.h"
 #include "rdo_common/rdofile.h"
 #include "rdo_common/rdotime.h"
 #include "rdo_common/test/rdo_common_test/resource.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 const tstring s_testFileName(_T("test_file"));
 const tstring s_resourceStr1(_T("test_101"));

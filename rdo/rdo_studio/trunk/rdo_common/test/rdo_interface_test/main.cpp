@@ -1,23 +1,23 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : main.cpp
- * authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      main.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \authors   Пройдаков Евгений (lord.tiran@gmail.com)
- * date     : 07.07.2009
- * bref     : Тест интерфейсов
- * indent   : 4T
- */
+  \date      07.07.2009
+  \brief     Тест интерфейсов
+  \indent    4T
+*/
  
-// ====================================================================== PCH
-// ====================================================================== INCLUDES
+// ---------------------------------------------------------------------------- PCH
+// ----------------------------------------------------------------------- INCLUDES
 #include <vector>
 #include <list>
 #include <iostream>
 #define BOOST_TEST_MODULE RDOInterfaceTest
 #include <boost/test/included/unit_test.hpp>
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/rdointerface.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 #define DISABLE_CONSOLE_OUTPUT
 

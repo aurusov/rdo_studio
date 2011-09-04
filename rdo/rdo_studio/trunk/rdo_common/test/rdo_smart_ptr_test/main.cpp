@@ -1,25 +1,25 @@
-/*
- * copyright: (c) RDO-Team, 2011
- * filename : main.cpp
- * authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      main.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \authors   Пройдаков Евгений (lord.tiran@gmail.com)
- * date     : 14.07.2009
- * bref     : Тест умных указателей
- * indent   : 4T
- */
+  \date      14.07.2009
+  \brief     Тест умных указателей
+  \indent    4T
+*/
 
-// ====================================================================== PCH
-// ====================================================================== INCLUDES
+// ---------------------------------------------------------------------------- PCH
+// ----------------------------------------------------------------------- INCLUDES
 #include <vector>
 #include <list>
 #include <iostream>
 #define BOOST_TEST_MODULE RDOSmartPrtTest
 #include <boost/test/included/unit_test.hpp>
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/smart_ptr/intrusive_ptr.h"
 #include "rdo_common/smart_ptr/interface_ptr.h"
 #include "rdo_common/rdodebug.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 class Log;
 PTR(Log) g_pLog = NULL;
