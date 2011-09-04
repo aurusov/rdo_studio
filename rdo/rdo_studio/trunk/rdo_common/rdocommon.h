@@ -14,7 +14,7 @@
 
 #ifdef WIN32
 #pragma warning(disable : 4786)
-#endif
+#endif // WIN32
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
@@ -60,6 +60,7 @@ OPEN_RDO_NAMESPACE
 	//! \result ќтформатированна€ строчка
 	tstring format(CPTR(tchar) str, REF(va_list) params);
 
+#ifdef WIN32
 	//! ‘ормирование строки по формату, аналогично <a href="http://ru.wikipedia.org/wiki/Printf">printf</a>
 	//! \param  resource - номер строкового ресурса, который может содержать символы форматировани€
 	//! \param  ...      - произвольный набор параметров
@@ -71,7 +72,7 @@ OPEN_RDO_NAMESPACE
 	//! \param  params   - определенный по формату набор параметров (вытащенный по формату из стека)
 	//! \result ќтформатированна€ строчка
 	tstring format(ruint resource, REF(va_list) params);
-#endif
+#endif // WIN32
 
 	//! ѕеревод строки в нижний регистр
 	//! \param[in, out] str - измен€ема€ строка
