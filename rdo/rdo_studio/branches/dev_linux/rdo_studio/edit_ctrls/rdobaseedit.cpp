@@ -1,10 +1,10 @@
-#include "rdo_studio/stdafx.h"
+#include "rdo_studio/pch/pch.h"
 #include "rdo_studio/edit_ctrls/rdobaseedit.h"
-#include "rdo_studio/rdostudioapp.h"
-#include "rdo_studio/rdostudiomainfrm.h"
-#include "rdo_studio/edit_ctrls/sci/SciLexer.h"
-#include "rdo_studio/edit_ctrls/sci/PropSet.h"
-#include "rdo_studio/edit_ctrls/sci/Scintilla.h"
+#include "rdo_studio/src/application.h"
+#include "rdo_studio/src/main_frm.h"
+#include "thirdparty/sci/SciLexer.h"
+#include "thirdparty/sci/PropSet.h"
+#include "thirdparty/sci/Scintilla.h"
 #include "rdo_studio/resource.h"
 
 #ifdef _DEBUG

@@ -1,6 +1,6 @@
-#include "rdo_studio/stdafx.h"
+#include "rdo_studio/pch/pch.h"
 #include "rdo_studio/rdo_edit/rdoeditorbaseeditstyle.h"
-#include "rdo_studio/edit_ctrls/sci/SciLexer.h"
+#include "thirdparty/sci/SciLexer.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

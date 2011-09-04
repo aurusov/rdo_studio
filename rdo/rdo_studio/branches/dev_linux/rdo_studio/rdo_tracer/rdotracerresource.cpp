@@ -1,4 +1,4 @@
-#include "rdo_studio/stdafx.h"
+#include "rdo_studio/pch/pch.h"
 #include "rdo_studio/rdo_tracer/rdotracerresource.h"
 #include "rdo_studio/rdo_tracer/rdotracerrestype.h"
 #include "rdo_studio/rdo_tracer/rdotracervalues.h"
