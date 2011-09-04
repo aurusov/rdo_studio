@@ -16,23 +16,23 @@
 
 #ifdef _MSC_VER
 	#define COMPILER_VISUAL_STUDIO
-#else  // not _MSC_VER
+#else
 	#ifdef __GNUC__
 		#define COMPILER_GCC
-	#endif // not __GNUC__
-#endif // _MSC_VER
+	#endif
+#endif
 
 #ifdef _WIN32
 	#define OS_WINDOWS
 	#ifdef _WIN64
 		#define OS_WINDOWS_64
-	#else  // not _WIN64
+	#else
 		#define OS_WINDOWS_32
-	#endif // _WIN64
-#elif  // not _WIN32
+	#endif
+#elif
 	#ifdef __linux__
 		#define OS_LINUX
 	#endif
-#endif // _WIN32
+#endif
 
 #endif // _LIB_COMMON_PLATFORM_H_

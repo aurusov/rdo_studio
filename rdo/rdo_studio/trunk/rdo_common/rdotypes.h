@@ -11,12 +11,14 @@
 #ifndef _LIB_COMMON_RDOTYPES_H_
 #define _LIB_COMMON_RDOTYPES_H_
 
+// ----------------------------------------------------------------------- PLATFORM
+#include "rdo_common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
-#ifdef WIN32
-#include <tchar.h>
-#else // not WIN32
-#define _T(x)       x
-#endif // WIN32
+#ifdef OS_WINDOWS
+	#include <tchar.h>
+#else
+	#define _T(x) x
+#endif
 
 #include <string>
 // ----------------------------------------------------------------------- SYNOPSIS

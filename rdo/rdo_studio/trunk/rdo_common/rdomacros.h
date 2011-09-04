@@ -10,10 +10,11 @@
 #ifndef _LIB_COMMON_MACROS_H_
 #define _LIB_COMMON_MACROS_H_
 
+// ----------------------------------------------------------------------- PLATFORM
+#include "rdo_common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/typeof/typeof.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/platform.h"
 // --------------------------------------------------------------------------------
 
 //! —сылка на A
@@ -61,8 +62,8 @@ for (CONTAINER_TYPE_FOR_##IT::const_iterator IT = CONTAINER.begin(); IT != CONTA
 
 #ifdef COMPILER_VISUAL_STUDIO
 	#define NO_V_TABLE __declspec(novtable)
-#else  // not WIN32
+#else
 	#define NO_V_TABLE
-#endif // WIN32
+#endif
 
 #endif // _LIB_COMMON_MACROS_H_

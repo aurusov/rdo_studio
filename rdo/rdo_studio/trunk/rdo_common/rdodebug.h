@@ -11,17 +11,19 @@
 #ifndef _LIB_COMMON_RDODEBUG_H_
 #define _LIB_COMMON_RDODEBUG_H_
 
+// ----------------------------------------------------------------------- PLATFORM
+#include "rdo_common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
-#ifdef WIN32
-#ifdef RDO_MT
-#include <afxwin.h>
-#else  // not RDO_MT
-#include <windows.h>
-#endif // RDO_MT
-#else  // not WIN32
-#include <iostream>
-#include <assert.h>
-#endif // WIN32
+#ifdef OS_WINDOWS
+	#ifdef RDO_MT
+		#include <afxwin.h>
+	#else
+		#include <windows.h>
+	#endif
+#else
+	#include <iostream>
+	#include <assert.h>
+#endif
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/rdocommon.h"
 // --------------------------------------------------------------------------------
@@ -44,7 +46,7 @@
 
 #ifdef _DEBUG
 
-#ifdef WIN32
+#ifdef COMPILER_VISUAL_STUDIO
 
 #define TRACE(A)               ::OutputDebugString(A);
 #define TRACE1(A, P1)          ::OutputDebugString(rdo::format(A, P1).c_str());
@@ -60,7 +62,7 @@
 
 #define NEVER_REACH_HERE ASSERT(false)
 
-#else // not WIN32
+#else // not COMPILER_VISUAL_STUDIO
 
 void NewOutputDebugString(CREF(tstring) A)
 {
@@ -75,7 +77,7 @@ void NewOutputDebugString(CREF(tstring) A)
 
 #define NEVER_REACH_HERE ASSERT(false)
 
-#endif // WIN32
+#endif // COMPILER_VISUAL_STUDIO
 
 #else // not _DEBUG
 

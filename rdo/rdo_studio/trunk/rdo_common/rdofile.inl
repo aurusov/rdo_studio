@@ -8,10 +8,12 @@
   \indent    4T
 */
 
+// ----------------------------------------------------------------------- PLATFORM
+#include "rdo_common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
-#ifdef WIN32
-#include <io.h>
-#endif // WIN32
+#ifdef OS_WINDOWS
+	#include <io.h>
+#endif
 
 #include <fstream>
 #include <boost/filesystem.hpp>
@@ -42,12 +44,12 @@ inline rbool File::exist(CREF(tstring) name)
 
 inline rbool File::read_only(CREF(tstring) name)
 {
-#ifdef WIN32
+#ifdef OS_WINDOWS
 	return _access(name.c_str(), 04) == 0 && _access(name.c_str(), 06) == -1;
-#else  // not WIN32
+#else  // not OS_WINDOWS
 	//! @todo написать реализацию под линуха
 	return true;
-#endif // WIN32
+#endif // OS_WINDOWS
 }
 
 inline rbool File::unlink(CREF(tstring) name)

@@ -12,10 +12,8 @@
 #ifndef _LIB_COMMON_RDOCOMMON_H_
 #define _LIB_COMMON_RDOCOMMON_H_
 
-#ifdef WIN32
-#pragma warning(disable : 4786)
-#endif // WIN32
-
+// ----------------------------------------------------------------------- PLATFORM
+#include "rdo_common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
 #include <sstream>
@@ -25,6 +23,10 @@
 #include "rdo_common/rdomacros.h"
 #include "rdo_common/model_objects.h"
 // --------------------------------------------------------------------------------
+
+#ifdef COMPILER_VISUAL_STUDIO
+	#pragma warning(disable : 4786)
+#endif
 
 OPEN_RDO_NAMESPACE
 
@@ -60,7 +62,7 @@ OPEN_RDO_NAMESPACE
 	//! \result ќтформатированна€ строчка
 	tstring format(CPTR(tchar) str, REF(va_list) params);
 
-#ifdef WIN32
+#ifdef OS_WINDOWS
 	//! ‘ормирование строки по формату, аналогично <a href="http://ru.wikipedia.org/wiki/Printf">printf</a>
 	//! \param  resource - номер строкового ресурса, который может содержать символы форматировани€
 	//! \param  ...      - произвольный набор параметров
@@ -72,7 +74,7 @@ OPEN_RDO_NAMESPACE
 	//! \param  params   - определенный по формату набор параметров (вытащенный по формату из стека)
 	//! \result ќтформатированна€ строчка
 	tstring format(ruint resource, REF(va_list) params);
-#endif // WIN32
+#endif // OS_WINDOWS
 
 	//! ѕеревод строки в нижний регистр
 	//! \param[in, out] str - измен€ема€ строка
