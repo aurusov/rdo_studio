@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _RDOSINGLETONE_H_
-#define _RDOSINGLETONE_H_
+#ifndef _LIB_COMMON_RDOSINGLETONE_H_
+#define _LIB_COMMON_RDOSINGLETONE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -54,4 +54,4 @@ private:
 
 CLOSE_RDO_NAMESPACE
 
-#endif // _RDOSINGLETONE_H_
+#endif // _LIB_COMMON_RDOSINGLETONE_H_

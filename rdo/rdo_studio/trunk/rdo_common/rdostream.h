@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _RDOSTREAM_H_
-#define _RDOSTREAM_H_
+#ifndef _LIB_COMMON_RDOSTREAM_H_
+#define _LIB_COMMON_RDOSTREAM_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <sstream>
@@ -56,4 +56,4 @@ public:
 
 CLOSE_RDO_NAMESPACE
 
-#endif // _RDOSTREAM_H_
+#endif // _LIB_COMMON_RDOSTREAM_H_

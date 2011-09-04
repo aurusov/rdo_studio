@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _SUPERSUBCLASS_H_
-#define _SUPERSUBCLASS_H_
+#ifndef _LIB_COMMON_SUPERSUBCLASS_H_
+#define _LIB_COMMON_SUPERSUBCLASS_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -47,4 +47,4 @@ public:
 
 CLOSE_RDO_NAMESPACE
 
-#endif // _SUPERSUBCLASS_H_
+#endif // _LIB_COMMON_SUPERSUBCLASS_H_

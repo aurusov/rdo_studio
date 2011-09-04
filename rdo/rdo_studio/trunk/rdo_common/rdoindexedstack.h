@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _RDOINDEXEDSTACK_H_
-#define _RDOINDEXEDSTACK_H_
+#ifndef _LIB_COMMON_RDOINDEXEDSTACK_H_
+#define _LIB_COMMON_RDOINDEXEDSTACK_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
@@ -55,4 +55,4 @@ protected:
 
 CLOSE_RDO_NAMESPACE
 
-#endif // _RDOINDEXEDSTACK_H_
+#endif // _LIB_COMMON_RDOINDEXEDSTACK_H_

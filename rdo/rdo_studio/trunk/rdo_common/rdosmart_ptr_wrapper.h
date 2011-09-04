@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _RDOSMART_PTR_WRAPPER_H_
-#define _RDOSMART_PTR_WRAPPER_H_
+#ifndef _LIB_COMMON_RDOSMART_PTR_WRAPPER_H_
+#define _LIB_COMMON_RDOSMART_PTR_WRAPPER_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -85,4 +85,4 @@ private:
 
 CLOSE_RDO_NAMESPACE
 
-#endif // _RDOSMART_PTR_WRAPPER_H_
+#endif // _LIB_COMMON_RDOSMART_PTR_WRAPPER_H_

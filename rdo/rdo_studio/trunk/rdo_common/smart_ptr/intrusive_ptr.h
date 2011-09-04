@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _RDO_INTRUSIVE_PTR_H_
-#define _RDO_INTRUSIVE_PTR_H_
+#ifndef _LIB_COMMON_SMART_PTR_INTRUSIVE_PTR_H_
+#define _LIB_COMMON_SMART_PTR_INTRUSIVE_PTR_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -242,4 +242,4 @@ CLOSE_RDO_NAMESPACE
 
 #include "rdo_common/smart_ptr/intrusive_ptr.inl"
 
-#endif // _RDO_INTRUSIVE_PTR_H_
+#endif // _LIB_COMMON_SMART_PTR_INTRUSIVE_PTR_H_
