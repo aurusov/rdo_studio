@@ -3,6 +3,7 @@
   \file      rdocommon.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Пройдаков Евгений (lord.tiran@gmail.com)
   \date      13.06.2009
   \brief     Общесистемные функции и типы
   \indent    4T
@@ -11,7 +12,9 @@
 #ifndef _LIB_COMMON_RDOCOMMON_H_
 #define _LIB_COMMON_RDOCOMMON_H_
 
+#ifdef WIN32
 #pragma warning(disable : 4786)
+#endif
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
@@ -68,6 +71,7 @@ OPEN_RDO_NAMESPACE
 	//! \param  params   - определенный по формату набор параметров (вытащенный по формату из стека)
 	//! \result Отформатированная строчка
 	tstring format(ruint resource, REF(va_list) params);
+#endif
 
 	//! Перевод строки в нижний регистр
 	//! \param[in, out] str - изменяемая строка
@@ -112,7 +116,7 @@ OPEN_RDO_NAMESPACE
 	template<class T>
 	void deleteAllObjects(REF(T) container)
 	{
-		T::reverse_iterator it = container.rbegin();
+		typename T::reverse_iterator it = container.rbegin();
 		while (it != container.rend())
 		{
 			delete *it;

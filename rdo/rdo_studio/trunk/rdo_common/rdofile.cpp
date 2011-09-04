@@ -1,7 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdofile.cpp
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Пройдаков Евгений (lord.tiran@gmail.com)
   \date      07.11.2020
   \brief     
   \indent    4T
@@ -9,8 +10,17 @@
 
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
+#ifdef WIN32
 #include <Windows.h>
+#else
+
+#define _MAX_DRIVE 512
+#define _MAX_DIR 512
+#define _MAX_FNAME 512
+#define _MAX_EXT 512
+#endif
 #include <boost/filesystem.hpp>
+#include <boost/random.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/rdofile.h"
 #include "rdo_common/rdocommon.h"
@@ -25,10 +35,15 @@ rbool File::splitpath(CREF(tstring) name, REF(tstring) fileDir, REF(tstring) fil
 	char _name [_MAX_FNAME];
 	char _ext  [_MAX_EXT  ];
 
+#ifdef WIN32
 	if (_splitpath_s(name.c_str(), _drive, _MAX_DRIVE, _dir, _MAX_DIR, _name, _MAX_FNAME, _ext, _MAX_EXT) != 0)
 		return false;
-
-	fileDir  = rdo::format(_T("%s%s"), _drive, _dir);
+#else
+	if(!exist(name.c_str()))
+		return false;
+#endif
+	boost::filesystem::path from(_dir);
+	fileDir = from.string();
 	fileName = _name;
 	fileExt  = _ext;
 	return true;
@@ -36,6 +51,7 @@ rbool File::splitpath(CREF(tstring) name, REF(tstring) fileDir, REF(tstring) fil
 
 tstring File::getTempFileName()
 {
+#ifdef WIN32
 	const ruint BUFSIZE = 4096;
 	char lpPathBuffer[BUFSIZE];
 
@@ -43,14 +59,20 @@ tstring File::getTempFileName()
 	{
 		return tstring();
 	}
-
 	char szTempName[MAX_PATH];
 	if (::GetTempFileName(lpPathBuffer, NULL, 0, szTempName) == 0)
 	{
 		return tstring();
 	}
-
 	return szTempName;
+#else
+	// TODO check random
+	int x = rand();
+	std::string tempFileName("/tmp/rdo_temp_file_num_");
+	tempFileName.push_back(x);
+	create(tempFileName);
+	return tempFileName;
+#endif
 }
 
 rbool File::trimLeft(CREF(tstring) name)

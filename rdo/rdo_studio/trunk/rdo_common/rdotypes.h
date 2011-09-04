@@ -1,7 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdotypes.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Пройдаков Евгений (lord.tiran@gmail.com)
   \date      18.04.2009
   \brief     Объявление базовый типов
   \indent    4T
@@ -11,7 +12,11 @@
 #define _RDOTYPES_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#ifdef WIN32
 #include <tchar.h>
+#else
+#define _T(x)       x
+#endif
 #include <string>
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------

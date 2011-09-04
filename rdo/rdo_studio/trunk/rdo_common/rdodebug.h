@@ -1,7 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdodebug.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Пройдаков Евгений (lord.tiran@gmail.com)
   \date      10.05.2009
   \brief     Декларация макросов для отладки
   \indent    4T
@@ -11,10 +12,15 @@
 #define _LIB_COMMON_RDODEBUG_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#ifdef WIN32
 #ifdef RDO_MT
 #include <afxwin.h>
 #else
 #include <windows.h>
+#endif
+#else
+#include <iostream>
+#include <assert.h>
 #endif
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/rdocommon.h"
@@ -36,10 +42,11 @@
 #undef ASSERT
 #endif
 
-
 #ifdef _DEBUG
 
-#define  TRACE(A)              ::OutputDebugString(A);
+#ifdef WIN32
+
+#define TRACE(A)               ::OutputDebugString(A);
 #define TRACE1(A, P1)          ::OutputDebugString(rdo::format(A, P1).c_str());
 #define TRACE2(A, P1, P2)      ::OutputDebugString(rdo::format(A, P1, P2).c_str());
 #define TRACE3(A, P1, P2, P3)  ::OutputDebugString(rdo::format(A, P1, P2, P3).c_str());
@@ -53,7 +60,24 @@
 
 #define NEVER_REACH_HERE ASSERT(false)
 
-#else // _DEBUG
+#else // WIN32
+
+void NewOutputDebugString(CREF(tstring) A)
+{
+	std::cout << A;
+}
+
+#define TRACE(A)                NewOutputDebugString(A);
+#define TRACE1(A, P1)           NewOutputDebugString(rdo::format(A, P1).c_str());
+#define TRACE2(A, P1, P2)       NewOutputDebugString(rdo::format(A, P1, P2).c_str());
+#define TRACE3(A, P1, P2, P3)   NewOutputDebugString(rdo::format(A, P1, P2, P3).c_str());
+#define ASSERT(A)               assert(A);
+
+#define NEVER_REACH_HERE ASSERT(false)
+
+#endif // WIN32
+
+#else //! _DEBUG
 
 #define  TRACE(A)
 #define TRACE1(A, P1)
@@ -62,7 +86,7 @@
 #define ASSERT(A)
 #define NEVER_REACH_HERE
 
-#endif
+#endif //! _DEBUG
 
 //! \def TRACE(A)
 //! Выводит сообщение в окно Output Visial Studio. В режиме компиляции \b release удаляется из кода.

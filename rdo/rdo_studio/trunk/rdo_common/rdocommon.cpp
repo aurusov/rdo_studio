@@ -3,12 +3,15 @@
   \file      rdocommon.cpp
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Пройдаков Евгений (lord.tiran@gmail.com)
   \date      13.06.2009
   \brief     Общесистемные функции и типы
   \indent    4T
 */
 
-#pragma warning(disable : 4786)  
+#ifdef WIN32
+#pragma warning(disable : 4786)
+#endif
 
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
@@ -16,8 +19,10 @@
 #include <stdarg.h>
 #include <locale>
 #include <algorithm>
+#ifdef WIN32
 #include <windows.h>
 #include <io.h>
+#endif
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/rdocommon.h"
 // --------------------------------------------------------------------------------
@@ -39,9 +44,13 @@ tstring format( CPTR(tchar) str, REF(va_list) params )
 	s.resize( 256 );
 	int size = -1;
 	while ( size == -1 ) {
+#ifdef WIN32
 #pragma warning(disable: 4996)
 		size = _vsnprintf( &s[0], s.size(), str, params );
 #pragma warning(default: 4996)
+#else
+		size = vsnprintf( &s[0], s.size(), str, params );
+#endif
 		if ( size == -1 ) {
 			s.resize( s.size() + 256 );
 		}
@@ -49,6 +58,8 @@ tstring format( CPTR(tchar) str, REF(va_list) params )
 	s.resize( size );
 	return tstring( s.begin(), s.end() );
 }
+
+#ifdef WIN32
 
 tstring format(ruint resource, ...)
 {
@@ -70,6 +81,8 @@ tstring format(ruint resource, REF(va_list) params)
 	}
 	return _T("");
 }
+
+#endif
 
 struct _toLower {
 	_toLower( std::locale loc ): m_loc(loc) {};

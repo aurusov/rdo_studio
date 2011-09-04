@@ -282,6 +282,10 @@
 				RelativePath=".\rdointerface.h"
 				>
 			</File>
+			<File
+				RelativePath=".\rdointerface.inl"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name=".common"

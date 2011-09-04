@@ -66,7 +66,7 @@ rbool RDOOperation::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 
 IBaseOperation::BOResult RDOOperation::onDoOperation(CREF(LPRDORuntime) pRuntime)
 {
-	LPIOperation newOper = F(RDOOperation)::create(pRuntime, *this);
+	LPIOperation newOper = RF(RDOOperation)::create(pRuntime, *this);
 	newOper->onBeforeOperationBegin(pRuntime);
 	newOper->convertBegin(pRuntime);
 	pRuntime->addTimePoint(newOper->getNextTimeInterval(pRuntime) + pRuntime->getCurrentTime(), newOper);

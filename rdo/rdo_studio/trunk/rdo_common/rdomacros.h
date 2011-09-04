@@ -46,8 +46,13 @@
 #define STRUCT_PARENT_OF(A, B) STRUCT(A): IMPLEMENTATION_OF(B)
 
 //! Итерирование контейнера
-#define STL_FOR_ALL(CONTAINER, IT)       for (BOOST_TYPEOF(CONTAINER)::iterator IT = CONTAINER.begin(); IT != CONTAINER.end(); ++IT)
+#define STL_FOR_ALL(CONTAINER, IT)       typedef BOOST_TYPEOF(CONTAINER) CONTAINER##_##IT##_TYPE; for (CONTAINER##_##IT##_TYPE::iterator IT = CONTAINER.begin(); IT != CONTAINER.end(); ++IT)
+
 //! Итерирование константного контейнера
-#define STL_FOR_ALL_CONST(CONTAINER, IT) for (BOOST_TYPEOF(CONTAINER)::const_iterator IT = CONTAINER.begin(); IT != CONTAINER.end(); ++IT)
+#define STL_FOR_ALL_CONST(CONTAINER, IT) typedef BOOST_TYPEOF(CONTAINER) CONTAINER##_##IT##_TYPE; for (CONTAINER##_##IT##_TYPE::const_iterator IT = CONTAINER.begin(); IT != CONTAINER.end(); ++IT)
+
+//! Автоматическое определение типа для паременной
+#define AUTO BOOST_AUTO
 
 #endif //! _LIB_COMMON_MACROS_H_
+

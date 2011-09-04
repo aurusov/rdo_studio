@@ -1,7 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      interface_ptr.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Пройдаков Евгений (lord.tiran@gmail.com)
   \date      12.06.2010
   \brief     
   \indent    4T
@@ -19,11 +20,22 @@
 
 OPEN_RDO_NAMESPACE
 
+template <class T>
+class Factory;
+
+template<class T>
+class intrusive_ptr;
+
+#ifndef WIN32
+#define __declspec(novtable)
+#endif
+
 struct __declspec(novtable) ICounterReference
 {
 	virtual void addref () = 0;
 	virtual void release() = 0;
 };
+
 typedef PTR(ICounterReference) LPICounterReference;
 
 template <class T>
