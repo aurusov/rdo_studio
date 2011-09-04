@@ -76,4 +76,4 @@ CLOSE_RDO_NAMESPACE
 
 #include "rdo_common/smart_ptr/interface_ptr.inl"
 
-#endif //! _RDO_INTERFACE_PTR_H_
+#endif // _RDO_INTERFACE_PTR_H_

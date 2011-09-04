@@ -45,4 +45,4 @@ typedef  unsigned long long int     ruint64;
 //! Тип байта
 typedef  unsigned char              rbyte;
 
-#endif //! _RDOTYPES_H_
+#endif // _RDOTYPES_H_

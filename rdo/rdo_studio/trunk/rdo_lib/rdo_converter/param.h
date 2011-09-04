@@ -44,4 +44,4 @@ private:
 
 CLOSE_RDO_CONVERTER_NAMESPACE
 
-#endif //! _CONVERTOR_PARAM_H_
+#endif // _CONVERTOR_PARAM_H_

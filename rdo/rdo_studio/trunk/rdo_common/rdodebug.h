@@ -86,7 +86,7 @@ void NewOutputDebugString(CREF(tstring) A)
 #define ASSERT(A)
 #define NEVER_REACH_HERE
 
-#endif //! _DEBUG
+#endif // _DEBUG
 
 //! \def TRACE(A)
 //! Выводит сообщение в окно Output Visial Studio. В режиме компиляции \b release удаляется из кода.
@@ -120,4 +120,4 @@ void NewOutputDebugString(CREF(tstring) A)
 //! \def NEVER_REACH_HERE
 //! Указывается в тех местах кода, до которых не должно дойти дело при работе программы. Аналог ASSERT(false). В режиме компиляции \b release удаляется из кода.
 
-#endif //! _LIB_COMMON_RDODEBUG_H_
+#endif // _LIB_COMMON_RDODEBUG_H_

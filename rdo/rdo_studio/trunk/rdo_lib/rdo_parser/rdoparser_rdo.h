@@ -97,4 +97,4 @@ private:
 
 CLOSE_RDO_PARSER_NAMESPACE
 
-#endif //! _RDOPARSER_RDO_H_
+#endif // _RDOPARSER_RDO_H_

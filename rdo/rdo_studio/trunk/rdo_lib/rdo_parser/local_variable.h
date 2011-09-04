@@ -79,4 +79,4 @@ private:
 
 CLOSE_RDO_PARSER_NAMESPACE
 
-#endif //! _LOCAL_VARIABLE_H_
+#endif // _LOCAL_VARIABLE_H_

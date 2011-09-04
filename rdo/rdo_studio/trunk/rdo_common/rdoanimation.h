@@ -342,4 +342,4 @@ CLOSE_RDO_ANIMATION_NAMESPACE
 
 #include "rdo_common/rdoanimation.inl"
 
-#endif //! _LIB_COMMON_RDOANIMATION_H_
+#endif // _LIB_COMMON_RDOANIMATION_H_

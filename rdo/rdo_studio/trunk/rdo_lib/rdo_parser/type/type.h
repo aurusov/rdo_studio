@@ -90,4 +90,4 @@ protected:
 
 CLOSE_RDO_PARSER_NAMESPACE
 
-#endif //! _RDOPARSER_TYPE_H_
+#endif // _RDOPARSER_TYPE_H_

@@ -17,4 +17,4 @@
 #define OPEN_MBUILDER_NAMESPACE    namespace rdoMBuilder {
 #define CLOSE_MBUILDER_NAMESPACE   };
 
-#endif //! _MBUILDER_NAMESPACE_H_
+#endif // _MBUILDER_NAMESPACE_H_

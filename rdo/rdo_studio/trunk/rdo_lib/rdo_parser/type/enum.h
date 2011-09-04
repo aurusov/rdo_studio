@@ -56,4 +56,4 @@ private:
 
 CLOSE_RDO_PARSER_NAMESPACE
 
-#endif //! _RDOPARSER_TYPE_ENUM_H_
+#endif // _RDOPARSER_TYPE_ENUM_H_

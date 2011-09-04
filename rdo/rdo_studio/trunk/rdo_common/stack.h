@@ -40,4 +40,4 @@ CLOSE_RDO_NAMESPACE
 
 #include "rdo_common/stack.inl"
 
-#endif //! _RDO_COMMON_STACK_H_
+#endif // _RDO_COMMON_STACK_H_

@@ -48,4 +48,4 @@ CLOSE_RDO_PARSER_NAMESPACE
 
 #include "rdo_lib/rdo_parser/context/context.inl"
 
-#endif //! _RDOPARSER_CONTEXT_H_
+#endif // _RDOPARSER_CONTEXT_H_

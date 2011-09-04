@@ -54,4 +54,4 @@ private:
 
 CLOSE_RDO_NAMESPACE
 
-#endif //! _RDOSINGLETONE_H_
+#endif // _RDOSINGLETONE_H_

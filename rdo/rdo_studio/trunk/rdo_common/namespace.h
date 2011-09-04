@@ -39,4 +39,4 @@
 #define OPEN_RDO_ANIMATION_NAMESPACE		namespace rdoAnimation {
 #define CLOSE_RDO_ANIMATION_NAMESPACE		};
 
-#endif //! _LIB_COMMON_NAMESPACE_H_
+#endif // _LIB_COMMON_NAMESPACE_H_

@@ -35,4 +35,4 @@ CLOSE_RDO_NAMESPACE
 
 #include "rdo_common/smart_ptr/counter_reference.inl"
 
-#endif //! _RDO_COUNTER_REFERENCE_H_
+#endif // _RDO_COUNTER_REFERENCE_H_

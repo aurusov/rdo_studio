@@ -43,4 +43,4 @@ public:
 
 CLOSE_MBUILDER_NAMESPACE
 
-#endif //! _MBUILDER_PROCESS_H_
+#endif // _MBUILDER_PROCESS_H_

@@ -17,5 +17,5 @@
 #define OPEN_RDO_PARSER_NAMESPACE			namespace rdoParse {
 #define CLOSE_RDO_PARSER_NAMESPACE			};
 
-#endif //! _PARSER_NAMESPACE_H_
+#endif // _PARSER_NAMESPACE_H_
 

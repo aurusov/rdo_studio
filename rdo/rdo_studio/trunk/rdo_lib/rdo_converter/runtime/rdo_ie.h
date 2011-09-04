@@ -84,4 +84,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif //! _RDO_IE_H_
+#endif // _RDO_IE_H_

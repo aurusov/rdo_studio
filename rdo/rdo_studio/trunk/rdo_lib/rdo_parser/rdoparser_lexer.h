@@ -75,4 +75,4 @@ CLOSE_RDO_PARSER_NAMESPACE
 
 #include "rdo_lib/rdo_parser/rdoparser_lexer.inl"
 
-#endif //! _RDOPARSER_LEXER_H_
+#endif // _RDOPARSER_LEXER_H_

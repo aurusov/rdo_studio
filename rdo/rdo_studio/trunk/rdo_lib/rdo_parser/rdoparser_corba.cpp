@@ -482,4 +482,4 @@ void RDOParserCorbaRSS::parse(CREF(LPRDOParser) pParser)
 
 CLOSE_RDO_PARSER_NAMESPACE
 
-#endif //! CORBA_ENABLE
+#endif // CORBA_ENABLE

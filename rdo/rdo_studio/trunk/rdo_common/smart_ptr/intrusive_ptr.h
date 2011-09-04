@@ -242,4 +242,4 @@ CLOSE_RDO_NAMESPACE
 
 #include "rdo_common/smart_ptr/intrusive_ptr.inl"
 
-#endif //! _RDO_INTRUSIVE_PTR_H_
+#endif // _RDO_INTRUSIVE_PTR_H_

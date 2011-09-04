@@ -65,4 +65,4 @@ CLOSE_RDO_PARSER_NAMESPACE
 
 #include "rdo_lib/rdo_parser/rdo_value.inl"
 
-#endif //! _RDOPARSER_VALUE_H_
+#endif // _RDOPARSER_VALUE_H_

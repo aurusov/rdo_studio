@@ -64,4 +64,4 @@ CLOSE_RDO_NAMESPACE
 
 #include "rdo_common/rdofile.inl"
 
-#endif //! _LIB_COMMON_RDOFILE_H_
+#endif // _LIB_COMMON_RDOFILE_H_

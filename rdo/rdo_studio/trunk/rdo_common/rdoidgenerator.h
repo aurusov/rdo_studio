@@ -38,4 +38,4 @@ private:
 
 CLOSE_RDO_NAMESPACE
 
-#endif //! _RDOIDGENERATOR_H_
+#endif // _RDOIDGENERATOR_H_

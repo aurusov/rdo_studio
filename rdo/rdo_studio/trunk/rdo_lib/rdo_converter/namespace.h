@@ -17,4 +17,4 @@
 #define OPEN_RDO_CONVERTER_NAMESPACE			namespace rdoConverter {
 #define CLOSE_RDO_CONVERTER_NAMESPACE			};
 
-#endif //! _CONVERTER_NAMESPACE_H_
+#endif // _CONVERTER_NAMESPACE_H_

@@ -55,4 +55,4 @@ protected:
 
 CLOSE_RDO_NAMESPACE
 
-#endif //! _RDOINDEXEDSTACK_H_
+#endif // _RDOINDEXEDSTACK_H_

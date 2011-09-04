@@ -58,4 +58,4 @@ CLOSE_RDO_CONVERTER_NAMESPACE
 
 #include "rdo_lib/rdo_converter/rdo_value.inl"
 
-#endif //! _CONVERTOR_RDOCONVERTER_VALUE_H_
+#endif // _CONVERTOR_RDOCONVERTER_VALUE_H_

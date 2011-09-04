@@ -48,6 +48,6 @@ private:
 
 CLOSE_RDO_PARSER_NAMESPACE
 
-#endif //! CORBA_ENABLE
+#endif // CORBA_ENABLE
 
-#endif //! _RDOPARSER_CORBA_H_
+#endif // _RDOPARSER_CORBA_H_

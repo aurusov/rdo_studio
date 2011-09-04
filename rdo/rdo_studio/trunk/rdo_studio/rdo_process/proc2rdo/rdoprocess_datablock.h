@@ -121,4 +121,4 @@ private:
 };
 DECLARE_POINTER(RPShapeDataBlockProcess);
 
-#endif //! RDO_PROCESS_DATABLOCK_H
+#endif // RDO_PROCESS_DATABLOCK_H

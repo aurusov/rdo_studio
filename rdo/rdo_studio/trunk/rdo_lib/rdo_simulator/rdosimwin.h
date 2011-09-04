@@ -91,7 +91,7 @@ private:
 
 } //! namespace rdoCorba
 
-#endif //! CORBA_ENABLE
+#endif // CORBA_ENABLE
 
 OPEN_RDO_SIMULATOR_NAMESPACE
 class RDOThreadSimulator;
@@ -222,7 +222,7 @@ private:
 	void corbaGetRTP(REF(rdoParse::RDOCorba::GetRTP_var) my_rtpList);
 	void corbaGetRSS(REF(rdoParse::RDOCorba::GetRSS_var) my_rssList);
 
-#endif //! CORBA_ENABLE
+#endif // CORBA_ENABLE
 
 protected:
 	virtual ~RDOThreadSimulator(); //! „тобы нельз€ было удалить через delete помещаем его в protected
@@ -302,4 +302,4 @@ public:
 
 CLOSE_RDO_SIMULATOR_NAMESPACE
 
-#endif //! _RDOSIMWIN_H_
+#endif // _RDOSIMWIN_H_

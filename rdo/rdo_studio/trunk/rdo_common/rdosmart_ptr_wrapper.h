@@ -85,4 +85,4 @@ private:
 
 CLOSE_RDO_NAMESPACE
 
-#endif //! _RDOSMART_PTR_WRAPPER_H_
+#endif // _RDOSMART_PTR_WRAPPER_H_

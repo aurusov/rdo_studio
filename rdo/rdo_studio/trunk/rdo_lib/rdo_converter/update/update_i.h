@@ -84,4 +84,4 @@ CLOSE_RDO_CONVERTER_NAMESPACE
 
 #include "rdo_lib/rdo_converter/update/update_i.inl"
 
-#endif //! _CONVERTOR_UPDATE_I_H_
+#endif // _CONVERTOR_UPDATE_I_H_

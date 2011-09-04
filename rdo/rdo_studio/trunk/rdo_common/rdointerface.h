@@ -291,4 +291,4 @@ INTERFACE_REGISTRATOR(IInit, 0);
 
 #include "rdo_common/rdointerface.inl"
 
-#endif //! _LIB_COMMON_RDOINTERFACE_H_
+#endif // _LIB_COMMON_RDOINTERFACE_H_

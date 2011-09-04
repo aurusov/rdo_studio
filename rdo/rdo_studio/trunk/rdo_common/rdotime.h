@@ -45,4 +45,4 @@ CLOSE_RDO_NAMESPACE
 
 #include "rdo_common/rdotime.inl"
 
-#endif //! _RDOTIME_H_
+#endif // _RDOTIME_H_

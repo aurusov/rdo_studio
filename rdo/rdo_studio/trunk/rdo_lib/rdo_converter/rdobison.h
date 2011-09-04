@@ -16,4 +16,4 @@
 #include "rdo_lib/rdo_parser/rdobison.h"
 // --------------------------------------------------------------------------------
 
-#endif //! _CONVERTOR_RDOBISON_H_
+#endif // _CONVERTOR_RDOBISON_H_

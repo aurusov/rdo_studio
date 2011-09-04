@@ -74,4 +74,4 @@ CLOSE_RDO_CONVERTER_NAMESPACE
 
 #include "rdo_lib/rdo_converter/rdoparser_lexer.inl"
 
-#endif //! _CONVERTOR_RDOCONVERTER_LEXER_H_
+#endif // _CONVERTOR_RDOCONVERTER_LEXER_H_

@@ -47,4 +47,4 @@ public:
 
 CLOSE_RDO_NAMESPACE
 
-#endif //! _SUPERSUBCLASS_H_
+#endif // _SUPERSUBCLASS_H_

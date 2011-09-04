@@ -102,4 +102,4 @@ private:
 
 CLOSE_RDO_PARSER_NAMESPACE
 
-#endif //! _RDOSMR_H_
+#endif // _RDOSMR_H_

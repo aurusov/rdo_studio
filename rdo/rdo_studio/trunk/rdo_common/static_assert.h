@@ -40,4 +40,4 @@ struct CompileTimeError<true> {};
 
 CLOSE_RDO_NAMESPACE
 
-#endif //! _LIB_COMMON_STATIC_ASSERT_H_
+#endif // _LIB_COMMON_STATIC_ASSERT_H_

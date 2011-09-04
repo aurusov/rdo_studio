@@ -516,4 +516,4 @@ private:
 
 CLOSE_RDO_PARSER_NAMESPACE
 
-#endif //! _RDOPAT_H_
+#endif // _RDOPAT_H_

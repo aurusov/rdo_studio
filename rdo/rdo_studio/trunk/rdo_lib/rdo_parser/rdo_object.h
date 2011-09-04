@@ -128,4 +128,4 @@ private:
 
 CLOSE_RDO_PARSER_NAMESPACE
 
-#endif //! _RDOPARSER_OBJECT_H_
+#endif // _RDOPARSER_OBJECT_H_

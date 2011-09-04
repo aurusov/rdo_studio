@@ -54,5 +54,5 @@
 //! јвтоматическое определение типа дл€ паременной
 #define AUTO BOOST_AUTO
 
-#endif //! _LIB_COMMON_MACROS_H_
+#endif // _LIB_COMMON_MACROS_H_
 

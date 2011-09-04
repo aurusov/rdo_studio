@@ -229,4 +229,4 @@ CLOSE_RDO_SIMULATOR_NAMESPACE
 
 #include "rdo_common/rdocommon.inl"
 
-#endif //! _LIB_COMMON_RDOCOMMON_H_
+#endif // _LIB_COMMON_RDOCOMMON_H_

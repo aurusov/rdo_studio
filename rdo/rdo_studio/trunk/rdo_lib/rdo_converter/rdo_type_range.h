@@ -71,4 +71,4 @@ CLOSE_RDO_CONVERTER_NAMESPACE
 
 #include "rdo_lib/rdo_converter/rdo_type_range.inl"
 
-#endif //! _CONVERTOR_RDO_TYPE_RANGE_H_
+#endif // _CONVERTOR_RDO_TYPE_RANGE_H_

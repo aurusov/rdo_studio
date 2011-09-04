@@ -233,4 +233,4 @@ private:
 
 CLOSE_RDO_SIMULATOR_NAMESPACE
 
-#endif //! _PROCGUI_H_
+#endif // _PROCGUI_H_

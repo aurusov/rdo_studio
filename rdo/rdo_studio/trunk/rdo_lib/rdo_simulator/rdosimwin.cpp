@@ -341,7 +341,7 @@ void RDOThreadCorba::stop()
 
 } //! namespace rdoCorba
 
-#endif //! CORBA_ENABLE
+#endif // CORBA_ENABLE
 
 
 OPEN_RDO_SIMULATOR_NAMESPACE
@@ -985,7 +985,7 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 			msg.unlock();
 			break;
 		}
-#endif //! CORBA_ENABLE
+#endif // CORBA_ENABLE
 
 		case RT_SIMULATOR_GET_LIST:
 		{
@@ -1548,7 +1548,7 @@ void RDOThreadSimulator::corbaGetRSS(REF(rdoParse::RDOCorba::GetRSS_var) my_rssL
 	}
 */
 }
-#endif //! CORBA_ENABLE
+#endif // CORBA_ENABLE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOThreadCodeComp
