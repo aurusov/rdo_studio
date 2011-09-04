@@ -15,8 +15,8 @@
 #include "rdo_studio/rdo_process/proc2rdo/res/block_resource.xpm"
 #include "rdo_studio/rdo_process/rp_method/rdoprocess_object_chart.h"
 #include "rdo_studio/rdo_process/rp_method/rdoprocess_shape.h"
-#include "rdo_studio/rdostudioapp.h"
-#include "rdo_studio/rdostudiomodel.h"
+#include "rdo_studio/src/application.h"
+#include "rdo_studio/src/model/model.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE

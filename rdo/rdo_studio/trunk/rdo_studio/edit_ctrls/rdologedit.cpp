@@ -1,9 +1,9 @@
-#include "rdo_studio/stdafx.h"
+#include "rdo_studio/pch/pch.h"
 #include "rdo_studio/edit_ctrls/rdologedit.h"
-#include "rdo_studio/rdostudioapp.h"
-#include "rdo_studio/rdostudiomodel.h"
+#include "rdo_studio/src/application.h"
+#include "rdo_studio/src/model/model.h"
 #include "rdo_studio/rdo_edit/rdoeditortabctrl.h"
-#include "rdo_studio/edit_ctrls/sci/Scintilla.h"
+#include "thirdparty/sci/Scintilla.h"
 #include "rdo_studio/resource.h"
 
 #ifdef _DEBUG

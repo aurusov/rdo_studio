@@ -1,6 +1,6 @@
 #ifndef RDO_PROCESS_CHILDFRM_H
 #define RDO_PROCESS_CHILDFRM_H
-#include "rdo_studio/rdostudiochildfrm.h"
+#include "rdo_studio/src/child_frm.h"
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
