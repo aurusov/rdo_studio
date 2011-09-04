@@ -22,7 +22,7 @@ void main(int paramCount, char* params[])
 
 	ruint rev;
 	std::cin >> rev;
-	const tstring versionFileName = "../rdo_studio/res/version.h";
+	const tstring versionFileName = "../app/rdo_studio_mfc/res/version.h";
 
 	std::ifstream ifile(versionFileName.c_str());
 	if (ifile.is_open())
