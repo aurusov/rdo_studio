@@ -15,13 +15,13 @@
 #ifdef WIN32
 #ifdef RDO_MT
 #include <afxwin.h>
-#else
+#else  // not RDO_MT
 #include <windows.h>
-#endif
-#else
+#endif // RDO_MT
+#else  // not WIN32
 #include <iostream>
 #include <assert.h>
-#endif
+#endif // WIN32
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/rdocommon.h"
 // --------------------------------------------------------------------------------
@@ -60,7 +60,7 @@
 
 #define NEVER_REACH_HERE ASSERT(false)
 
-#else // WIN32
+#else // not WIN32
 
 void NewOutputDebugString(CREF(tstring) A)
 {
@@ -77,7 +77,7 @@ void NewOutputDebugString(CREF(tstring) A)
 
 #endif // WIN32
 
-#else //! _DEBUG
+#else // not _DEBUG
 
 #define  TRACE(A)
 #define TRACE1(A, P1)

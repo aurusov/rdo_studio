@@ -11,7 +11,7 @@
 
 #ifdef WIN32
 #pragma warning(disable : 4786)
-#endif
+#endif // WIN32
 
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
@@ -19,10 +19,11 @@
 #include <stdarg.h>
 #include <locale>
 #include <algorithm>
+
 #ifdef WIN32
 #include <windows.h>
 #include <io.h>
-#endif
+#endif // WIN32
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/rdocommon.h"
 // --------------------------------------------------------------------------------
@@ -48,9 +49,9 @@ tstring format( CPTR(tchar) str, REF(va_list) params )
 #pragma warning(disable: 4996)
 		size = _vsnprintf( &s[0], s.size(), str, params );
 #pragma warning(default: 4996)
-#else
+#else // not WIN32
 		size = vsnprintf( &s[0], s.size(), str, params );
-#endif
+#endif // WIN32
 		if ( size == -1 ) {
 			s.resize( s.size() + 256 );
 		}
@@ -60,7 +61,6 @@ tstring format( CPTR(tchar) str, REF(va_list) params )
 }
 
 #ifdef WIN32
-
 tstring format(ruint resource, ...)
 {
 	va_list params;
@@ -81,8 +81,7 @@ tstring format(ruint resource, REF(va_list) params)
 	}
 	return _T("");
 }
-
-#endif
+#endif // WIN32
 
 struct _toLower {
 	_toLower( std::locale loc ): m_loc(loc) {};

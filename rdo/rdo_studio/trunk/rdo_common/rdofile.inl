@@ -11,7 +11,8 @@
 // ----------------------------------------------------------------------- INCLUDES
 #ifdef WIN32
 #include <io.h>
-#endif
+#endif // WIN32
+
 #include <fstream>
 #include <boost/filesystem.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -43,10 +44,10 @@ inline rbool File::read_only(CREF(tstring) name)
 {
 #ifdef WIN32
 	return _access(name.c_str(), 04) == 0 && _access(name.c_str(), 06) == -1;
-#else
-	// TODO
+#else  // not WIN32
+	//! @todo написать реализацию под линуха
 	return true;
-#endif
+#endif // WIN32
 }
 
 inline rbool File::unlink(CREF(tstring) name)
