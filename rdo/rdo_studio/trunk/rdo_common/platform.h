@@ -23,7 +23,9 @@
 #endif
 
 #ifdef _WIN32
-	#define OS_WINDOWS
+	#ifndef OS_WINDOWS
+		#define OS_WINDOWS
+	#endif
 	#ifdef _WIN64
 		#define OS_WINDOWS_64
 	#else
