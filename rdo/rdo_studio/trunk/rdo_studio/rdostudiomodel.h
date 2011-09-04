@@ -241,4 +241,4 @@ public:
 // --------------------------------------------------------------------------------
 extern PTR(RDOStudioModel) model;
 
-#endif // _RDOSTUDIOMODEL_H_
+#endif //! _RDOSTUDIOMODEL_H_

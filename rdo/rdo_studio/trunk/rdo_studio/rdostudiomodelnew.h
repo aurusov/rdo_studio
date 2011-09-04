@@ -74,4 +74,4 @@ private:
 
 //{{AFX_INSERT_LOCATION}}
 
-#endif // _RDOSTUDIOMODEL_NEW_H_
+#endif //! _RDOSTUDIOMODEL_NEW_H_
