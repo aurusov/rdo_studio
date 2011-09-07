@@ -12,7 +12,7 @@
 // ----------------------------------------------------------------------- PLATFORM
 #include "rdo_common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
-#ifdef OS_WINDOWS
+#ifdef OST_WINDOWS
 	#include <windows.h>
 #else
 	#define _MAX_DRIVE 512
@@ -37,13 +37,13 @@ rbool File::splitpath(CREF(tstring) name, REF(tstring) fileDir, REF(tstring) fil
 	char _name [_MAX_FNAME];
 	char _ext  [_MAX_EXT  ];
 
-#ifdef OS_WINDOWS
+#ifdef OST_WINDOWS
 	if (_splitpath_s(name.c_str(), _drive, _MAX_DRIVE, _dir, _MAX_DIR, _name, _MAX_FNAME, _ext, _MAX_EXT) != 0)
 		return false;
-#else  // not OS_WINDOWS
+#else  // not OST_WINDOWS
 	if(!exist(name.c_str()))
 		return false;
-#endif // OS_WINDOWS
+#endif // OST_WINDOWS
 	boost::filesystem::path from(_dir);
 	fileDir = from.string();
 	fileName = _name;
@@ -53,7 +53,7 @@ rbool File::splitpath(CREF(tstring) name, REF(tstring) fileDir, REF(tstring) fil
 
 tstring File::getTempFileName()
 {
-#ifdef OS_WINDOWS
+#ifdef OST_WINDOWS
 	const ruint BUFSIZE = 4096;
 	char lpPathBuffer[BUFSIZE];
 
@@ -67,14 +67,14 @@ tstring File::getTempFileName()
 		return tstring();
 	}
 	return szTempName;
-#else // not OS_WINDOWS
+#else // not OST_WINDOWS
 	//! @todo check random
 	int x = rand();
 	std::string tempFileName("/tmp/rdo_temp_file_num_");
 	tempFileName.push_back(x);
 	create(tempFileName);
 	return tempFileName;
-#endif // OS_WINDOWS
+#endif // OST_WINDOWS
 }
 
 rbool File::trimLeft(CREF(tstring) name)

@@ -11,7 +11,7 @@
 // ----------------------------------------------------------------------- PLATFORM
 #include "rdo_common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
-#ifdef OS_WINDOWS
+#ifdef OST_WINDOWS
 	#include <io.h>
 #endif
 
@@ -44,12 +44,12 @@ inline rbool File::exist(CREF(tstring) name)
 
 inline rbool File::read_only(CREF(tstring) name)
 {
-#ifdef OS_WINDOWS
+#ifdef OST_WINDOWS
 	return _access(name.c_str(), 04) == 0 && _access(name.c_str(), 06) == -1;
-#else  // not OS_WINDOWS
+#else  // not OST_WINDOWS
 	//! @todo написать реализацию под линуха
 	return true;
-#endif // OS_WINDOWS
+#endif // OST_WINDOWS
 }
 
 inline rbool File::unlink(CREF(tstring) name)

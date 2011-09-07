@@ -62,7 +62,7 @@ OPEN_RDO_NAMESPACE
 	//! \result ќтформатированна€ строчка
 	tstring format(CPTR(tchar) str, REF(va_list) params);
 
-#ifdef OS_WINDOWS
+#ifdef OST_WINDOWS
 	//! ‘ормирование строки по формату, аналогично <a href="http://ru.wikipedia.org/wiki/Printf">printf</a>
 	//! \param  resource - номер строкового ресурса, который может содержать символы форматировани€
 	//! \param  ...      - произвольный набор параметров
@@ -74,7 +74,7 @@ OPEN_RDO_NAMESPACE
 	//! \param  params   - определенный по формату набор параметров (вытащенный по формату из стека)
 	//! \result ќтформатированна€ строчка
 	tstring format(ruint resource, REF(va_list) params);
-#endif // OS_WINDOWS
+#endif // OST_WINDOWS
 
 	//! ѕеревод строки в нижний регистр
 	//! \param[in, out] str - измен€ема€ строка

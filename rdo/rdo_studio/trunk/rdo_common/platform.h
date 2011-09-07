@@ -23,17 +23,15 @@
 #endif
 
 #ifdef _WIN32
-	#ifndef OS_WINDOWS
-		#define OS_WINDOWS
-	#endif
+	#define OST_WINDOWS
 	#ifdef _WIN64
-		#define OS_WINDOWS_64
+		#define OST_WINDOWS_64
 	#else
-		#define OS_WINDOWS_32
+		#define OST_WINDOWS_32
 	#endif
 #elif
 	#ifdef __linux__
-		#define OS_LINUX
+		#define OST_LINUX
 	#endif
 #endif
 

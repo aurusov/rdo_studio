@@ -18,7 +18,7 @@
 #include <locale>
 #include <algorithm>
 
-#ifdef OS_WINDOWS
+#ifdef OST_WINDOWS
 	#include <windows.h>
 	#include <io.h>
 #endif
@@ -62,7 +62,7 @@ tstring format( CPTR(tchar) str, REF(va_list) params )
 	return tstring( s.begin(), s.end() );
 }
 
-#ifdef OS_WINDOWS
+#ifdef OST_WINDOWS
 tstring format(ruint resource, ...)
 {
 	va_list params;
@@ -83,7 +83,7 @@ tstring format(ruint resource, REF(va_list) params)
 	}
 	return _T("");
 }
-#endif // OS_WINDOWS
+#endif // OST_WINDOWS
 
 struct _toLower {
 	_toLower( std::locale loc ): m_loc(loc) {};

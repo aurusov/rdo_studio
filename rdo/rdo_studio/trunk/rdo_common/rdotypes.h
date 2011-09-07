@@ -14,7 +14,7 @@
 // ----------------------------------------------------------------------- PLATFORM
 #include "rdo_common/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
-#ifdef OS_WINDOWS
+#ifdef OST_WINDOWS
 	#include <tchar.h>
 #else
 	#define _T(x) x
