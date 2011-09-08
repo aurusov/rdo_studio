@@ -29,7 +29,7 @@
 	#else
 		#define OS_WINDOWS_32
 	#endif
-#elif
+#else
 	#ifdef __linux__
 		#define OS_LINUX
 	#endif
