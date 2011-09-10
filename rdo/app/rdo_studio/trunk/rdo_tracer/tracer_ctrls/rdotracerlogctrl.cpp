@@ -1,4 +1,4 @@
-#include "app/rdo_studio_mfc/pch/pch.h"
+#include "app/rdo_studio_mfc/pch/stdpch.h"
 #include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracerlogctrl.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"

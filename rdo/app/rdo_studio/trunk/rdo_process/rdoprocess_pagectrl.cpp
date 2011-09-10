@@ -1,4 +1,4 @@
-#include "app/rdo_studio_mfc/pch/pch.h"
+#include "app/rdo_studio_mfc/pch/stdpch.h"
 #include "rdoprocess_pagectrl.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_misc/mctranspblt/McTransparentBlit.h"
 #include "app/rdo_studio_mfc/resource.h"

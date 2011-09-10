@@ -1,4 +1,4 @@
-#include "app/rdo_studio_mfc/pch/pch.h"
+#include "app/rdo_studio_mfc/pch/stdpch.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdodebugedit.h"
 #include "thirdparty/sci/SciLexer.h"
 #include "app/rdo_studio_mfc/src/application.h"

@@ -1,4 +1,4 @@
-#include "app/rdo_studio_mfc/pch/pch.h"
+#include "app/rdo_studio_mfc/pch/stdpch.h"
 #include "rdoprocess_method_manager.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_pixmap.h"

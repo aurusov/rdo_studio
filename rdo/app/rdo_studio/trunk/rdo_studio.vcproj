@@ -54,7 +54,7 @@
 				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_WINDOWS;SCI_LEXER;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="app/rdo_studio_mfc/pch/pch.h"
+				PrecompiledHeaderThrough="app/rdo_studio_mfc/pch/stdpch.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 				DebugInformationFormat="4"
@@ -144,7 +144,7 @@
 				AdditionalIncludeDirectories="../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_WINDOWS;SCI_LEXER;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="app/rdo_studio_mfc/pch/pch.h"
+				PrecompiledHeaderThrough="app/rdo_studio_mfc/pch/stdpch.h"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
@@ -231,7 +231,7 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="app/rdo_studio_mfc/pch/pch.h"
+				PrecompiledHeaderThrough="app/rdo_studio_mfc/pch/stdpch.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 				DebugInformationFormat="4"
@@ -319,7 +319,7 @@
 				AdditionalIncludeDirectories="../../;../../thirdparty/corba/include"
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;NDEBUG;_WINDOWS;SCI_LEXER;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="app/rdo_studio_mfc/pch/pch.h"
+				PrecompiledHeaderThrough="app/rdo_studio_mfc/pch/stdpch.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 			/>
@@ -404,7 +404,7 @@
 				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_WINDOWS;SCI_LEXER;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="app/rdo_studio_mfc/pch/pch.h"
+				PrecompiledHeaderThrough="app/rdo_studio_mfc/pch/stdpch.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 				DebugInformationFormat="4"
@@ -492,7 +492,7 @@
 				AdditionalIncludeDirectories="../../"
 				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_WINDOWS;SCI_LEXER;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="app/rdo_studio_mfc/pch/pch.h"
+				PrecompiledHeaderThrough="app/rdo_studio_mfc/pch/stdpch.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 			/>
@@ -3939,7 +3939,7 @@
 			Name=".pch"
 			>
 			<File
-				RelativePath=".\pch\pch.cpp"
+				RelativePath=".\pch\stdpch.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -3991,7 +3991,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\pch\pch.h"
+				RelativePath=".\pch\stdpch.h"
 				>
 			</File>
 		</Filter>

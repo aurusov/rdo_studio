@@ -1,4 +1,4 @@
-#include "app/rdo_studio_mfc/pch/pch.h"
+#include "app/rdo_studio_mfc/pch/stdpch.h"
 #include "app/rdo_studio_mfc/src/status_bar.h"
 
 #ifdef _DEBUG

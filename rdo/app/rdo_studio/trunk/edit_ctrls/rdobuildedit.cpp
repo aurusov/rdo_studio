@@ -1,4 +1,4 @@
-#include "app/rdo_studio_mfc/pch/pch.h"
+#include "app/rdo_studio_mfc/pch/stdpch.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdobuildedit.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoredit.h"
 #include "app/rdo_studio_mfc/src/application.h"

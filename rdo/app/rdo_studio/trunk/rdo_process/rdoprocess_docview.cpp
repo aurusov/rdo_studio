@@ -1,4 +1,4 @@
-#include "app/rdo_studio_mfc/pch/pch.h"
+#include "app/rdo_studio_mfc/pch/stdpch.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_docview.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_object_flowchart.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_flowchart.h"
