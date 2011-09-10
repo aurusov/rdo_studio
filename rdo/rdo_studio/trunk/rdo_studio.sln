@@ -137,7 +137,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_plugin_mfc", "app\rdo_s
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_plugin", "app\rdo_studio_mfc\plugins\common\rdo_plugin.vcproj", "{1FACE2E3-B02E-45E1-9A93-56FD00508301}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_version", "app\rdo_studio_mfc\version\rdo_version.vcproj", "{6A0AC201-55B9-4861-8339-5AD42572B2FC}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_version", "app\rdo_studio_mfc\rdo_version.vcproj", "{6A0AC201-55B9-4861-8339-5AD42572B2FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
