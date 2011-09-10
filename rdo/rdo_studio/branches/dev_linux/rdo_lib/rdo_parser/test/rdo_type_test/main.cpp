@@ -17,7 +17,7 @@
 //#include "rdo_lib/rdo_parser/rdo_enum.h"
 // ===============================================================================
 
-using namespace rdoParse;
+//using namespace rdoParse;
 
 void main()
 {
