@@ -5,7 +5,7 @@
 #define IDD_CHART_OPTIONS_CHART         107
 #define IDR_MAINFRAME                   128
 #define IDR_MODEL_TYPE                  129
-#define IDC_CURMARGIN                   130
+//#define IDC_CURMARGIN                   130 // можно использовать
 #define IDR_EDIT_TYPE                   131
 #define IDR_FILE_TOOLBAR                132
 #define IDB_TREECTRL                    133

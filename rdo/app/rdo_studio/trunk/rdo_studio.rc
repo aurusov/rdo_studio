@@ -1,6 +1,7 @@
 // Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
+#include "../../thirdparty/sci/PlatformRes.h"
 
 // Generated Help ID header file
 #define APSTUDIO_HIDDEN_SYMBOLS
@@ -584,7 +585,7 @@ END
 // Cursor
 //
 
-IDC_CURMARGIN           CURSOR                  "res\\Margin.cur"
+IDC_MARGIN              CURSOR                  "..\\..\\thirdparty\\sci\\Margin.cur"
 IDC_FLOW_SELECT         CURSOR  DISCARDABLE     "res\\flow_select.cur"
 IDC_FLOW_ROTATE         CURSOR  DISCARDABLE     "res\\flow_rotate.cur"
 IDC_FLOW_CONNECTOR      CURSOR  DISCARDABLE     "res\\flow_connector.cur"
