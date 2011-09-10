@@ -8,21 +8,15 @@ typedef unsigned int ruint;
 
 void main(int paramCount, char* params[])
 {
-	//if (paramCount != 2)
-	//{
-	//	std::cerr << "using version.exe <rev.number>" << std::endl;
-	//	return;
-	//}
-
-	//std::stringstream revStr;
-	//revStr << params[1];
-	//ruint rev;
-	//revStr >> rev;
-	//const tstring versionFileName = "C:/rdo/rdo_studio/rdo_studio/res/version.h";
+	if (paramCount != 2)
+	{
+		std::cerr << "using version.exe <filename.h>" << std::endl;
+		return;
+	}
 
 	ruint rev;
 	std::cin >> rev;
-	const tstring versionFileName = "../app/rdo_studio_mfc/res/version.h";
+	const tstring versionFileName = params[1];
 
 	std::ifstream ifile(versionFileName.c_str());
 	if (ifile.is_open())
