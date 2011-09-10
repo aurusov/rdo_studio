@@ -13,15 +13,17 @@ FIND_PACKAGE(BISON)
 FIND_PACKAGE(FLEX)
 
 IF(NOT BISON_FOUND)
-    MESSAGE(STATUS "Bison can not be found")
+    MESSAGE(ERROR "Bison can not be found")
 ENDIF(NOT BISON_FOUND)
 IF(NOT FLEX_FOUND)
-    MESSAGE(STATUS "Flex can not be found")
+    MESSAGE(ERROR "Flex can not be found")
 ENDIF(NOT FLEX_FOUND)
 
-BISON_TARGET(MyParser rdortp.y ${CMAKE_CURRENT_BINARY_DIR}/parser.cc)
-FLEX_TARGET(MyScanner rdo_lexer.l ${CMAKE_CURRENT_BIANRY_DIR}/lexer.cc)
+BISON_TARGET(MyParser rdortp.y ${CMAKE_CURRENT_BINARY_DIR}/rdogramrtp.cpp)
+FLEX_TARGET(MyScanner lexer.l  ${CMAKE_CURRENT_BINARY_DIR}/lexer.cpp)
 ADD_FLEX_BISON_DEPENDENCY(MyScanner MyParser)
+
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
@@ -145,7 +147,7 @@ SET(BISON_FILES
         # *.l files
         rdo_lexer.l)
 
-ADD_LIBRARY(rdo_nix_parser ${HEADER_FILES} ${INLITE_FILES} ${SOURCE_FILES} ${BISON_FILES} ${BISON_MyParser_OUTPUTS} ${FLEX_MyScanner_OUTPUTS})
+ADD_LIBRARY(rdo_nix_parser ${HEADER_FILES} ${INLITE_FILES} ${SOURCE_FILES} ${BISON_FILES})
 
 TARGET_LINK_LIBRARIES(rdo_nix_parser ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY})
 TARGET_LINK_LIBRARIES(rdo_nix_parser rdo_nix_common)
