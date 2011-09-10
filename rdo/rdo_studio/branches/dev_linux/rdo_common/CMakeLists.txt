@@ -56,7 +56,7 @@ SOURCE_GROUP(".animation" FILES
 	rdoanimation.h
 	rdoanimation.inl)
 
-source_group (".common" FILES
+SOURCE_GROUP(".common" FILES
 	rdotypes.h
 	namespace.h
 	rdomacros.h 

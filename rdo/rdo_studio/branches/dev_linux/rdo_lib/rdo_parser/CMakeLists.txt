@@ -9,6 +9,19 @@ FIND_PACKAGE(Boost COMPONENTS system filesystem thread date_time REQUIRED)
 LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
+FIND_PACKAGE(BISON)
+FIND_PACKAGE(FLEX)
+
+BISON_TARGET(MyParser rdortp.y ${CMAKE_CURRENT_BINARY_DIR}/parser.cc)
+FLEX_TARGET(MyScanner rdo_lexer.l  ${CMAKE_CURRENT_BIANRY_DIR}/lexer.cc)
+ADD_FLEX_BISON_DEPENDENCY(MyScanner MyParser)
+
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
+add_executable(Foo
+  Foo.cc
+  ${BISON_MyParser_OUTPUTS}
+  ${FLEX_MyScanner_OUTPUTS})
+
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/parser)
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/context)
@@ -129,7 +142,139 @@ SET(BISON_FILES
         # *.l files
         rdo_lexer.l)
 
-ADD_LIBRARY(rdo_nix_parser ${HEADER_FILES} ${INLITE_FILES} ${SOURCE_FILES})
+SOURCE_GROUP(".animation" FILES 
+	rdofrm.h
+	rdofrm.cpp)
+
+SOURCE_GROUP(".bison" FILES 
+	${BISON_FILES}
+	rdobison.h)
+	
+SOURCE_GROUP(".common" FILES 
+	local_variable.h
+	local_variable.cpp
+	namespace.h
+	rdo_object.h
+	rdo_object.cpp
+	variable_container.h
+	variable_container.cpp)	
+
+SOURCE_GROUP(".context" FILES 
+	context/context.h
+	context/context.inl
+	context/context.cpp
+	context/context_create_calc_i.h
+	context/context_create_expression_i.h
+	context/memory.h
+	context/memory.cpp
+	context/stack.h
+	context/stack.cpp
+	context/type.h
+	context/type.cpp
+	context/context_find_i.h)
+	
+SOURCE_GROUP(".dpt" FILES
+	rdodpt.h
+	rdodpt.cpp
+	rdo_logic.h
+	rdo_logic.cpp)	
+
+SOURCE_GROUP(".expression" FILES
+	expression.h
+	expression.cpp)	
+
+SOURCE_GROUP(".function" FILES
+	rdofun.h
+	rdofun.cpp)	
+
+SOURCE_GROUP(".parser" FILES
+	parser/std_fun.h
+	parser/std_fun.cpp
+	rdoparser_rdo.h
+	rdoparser_rdo.cpp
+	rdoparser_corba.h
+	rdoparser_corba.cpp
+	rdoparser_base.h
+	rdoparser_base.cpp
+	rdoparser.h
+	rdoparser.cpp)
+
+SOURCE_GROUP(".parser_error" FILES
+	rdoparser_error.h
+	rdoparser_error.cpp)		
+
+SOURCE_GROUP(".parser_lexer" FILES
+	rdoparser_lexer.h
+	rdoparser_lexer.inl
+	rdoparser_lexer.cpp)
+
+SOURCE_GROUP(".pattern" FILES
+	rdopat.h
+	rdopat.cpp
+	rdopatpreparse.h
+	rdopatpreparse.inl)
+
+SOURCE_GROUP(".pch" FILES
+	pch.h
+	pch.cpp)
+
+SOURCE_GROUP(".project" FILES
+	rdosmr.h
+	rdosmr.cpp)
+
+SOURCE_GROUP(".resorces" FILES
+	rdortp_param.h
+	rdortp_param.cpp
+	rdortp.h
+	rdortp.cpp
+	rdorss.h
+	rdorss.cpp)
+
+SOURCE_GROUP(".resorces_param" FILES
+	param.h
+	param.cpp)
+
+SOURCE_GROUP(".type" FILES
+	type/type.h
+	type/info.h
+	type/info.inl
+	type/info.cpp)
+
+SOURCE_GROUP(".value_array" FILES
+	rdo_array.h
+	rdo_array.cpp)
+
+SOURCE_GROUP(".value" FILES
+	rdo_value.h
+	rdo_value.inl
+	rdo_value.cpp)
+
+SOURCE_GROUP(".watch" FILES
+	rdopmd.h
+	rdopmd.cpp)
+
+SOURCE_GROUP(".type_array" FILES
+	type/array.h
+	type/array.cpp)
+
+SOURCE_GROUP(".type_atom" FILES
+	type/atom.h
+	type/atom.cpp)
+
+SOURCE_GROUP(".type_enum" FILES
+        type/enum.h
+        type/enum.cpp)
+
+SOURCE_GROUP(".type_range" FILES
+        type/range.h
+        type/range.inl)
+
+SOURCE_GROUP(".type_such_as" FILES
+        type/such_as.h
+        type/such_as.cpp)
+
+ADD_LIBRARY(rdo_nix_parser ${HEADER_FILES} ${INLITE_FILES} ${SOURCE_FILES} ${BISON_FILES} ${BISON_MyParser_OUTPUTS} ${FLEX_MyScanner_OUTPUTS})
+
 TARGET_LINK_LIBRARIES(rdo_nix_parser ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY})
 TARGET_LINK_LIBRARIES(rdo_nix_parser rdo_nix_common)
 
