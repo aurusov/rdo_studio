@@ -13,14 +13,14 @@
 #include <list>
 #include <iostream>
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_parser/rdo_type.h"
-#include "rdo_lib/rdo_parser/rdo_enum.h"
+//#include "rdo_lib/rdo_parser/rdo_type.h"
+//#include "rdo_lib/rdo_parser/rdo_enum.h"
 // ===============================================================================
 
 using namespace rdoParse;
 
 void main()
 {
-	LPRDOType pType = g_int;
+        //LPRDOType pType = g_int;
 	int i = 1;
 }
