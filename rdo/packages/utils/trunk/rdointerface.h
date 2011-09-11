@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _LIB_COMMON_RDOINTERFACE_H_
-#define _LIB_COMMON_RDOINTERFACE_H_
+#ifndef _UTILS_RDOINTERFACE_H_
+#define _UTILS_RDOINTERFACE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -291,4 +291,4 @@ INTERFACE_REGISTRATOR(IInit, 0);
 
 #include "utils/rdointerface.inl"
 
-#endif // _LIB_COMMON_RDOINTERFACE_H_
+#endif // _UTILS_RDOINTERFACE_H_

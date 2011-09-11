@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _LIB_COMMON_MACROS_H_
-#define _LIB_COMMON_MACROS_H_
+#ifndef _UTILS_MACROS_H_
+#define _UTILS_MACROS_H_
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/platform.h"
@@ -66,4 +66,4 @@ for (CONTAINER_TYPE_FOR_##IT::const_iterator IT = CONTAINER.begin(); IT != CONTA
 	#define NO_V_TABLE
 #endif
 
-#endif // _LIB_COMMON_MACROS_H_
+#endif // _UTILS_MACROS_H_

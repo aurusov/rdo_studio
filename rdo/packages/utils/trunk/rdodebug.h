@@ -8,8 +8,8 @@
   \indent    4T
 */
 
-#ifndef _LIB_COMMON_RDODEBUG_H_
-#define _LIB_COMMON_RDODEBUG_H_
+#ifndef _UTILS_RDODEBUG_H_
+#define _UTILS_RDODEBUG_H_
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/platform.h"
@@ -122,4 +122,4 @@ void NewOutputDebugString(CREF(tstring) A)
 //! \def NEVER_REACH_HERE
 //! Указывается в тех местах кода, до которых не должно дойти дело при работе программы. Аналог ASSERT(false). В режиме компиляции \b release удаляется из кода.
 
-#endif // _LIB_COMMON_RDODEBUG_H_
+#endif // _UTILS_RDODEBUG_H_

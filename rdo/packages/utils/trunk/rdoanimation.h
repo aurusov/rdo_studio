@@ -9,8 +9,8 @@
   \indent    4T
 */
 
-#ifndef _LIB_COMMON_RDOANIMATION_H_
-#define _LIB_COMMON_RDOANIMATION_H_
+#ifndef _UTILS_RDOANIMATION_H_
+#define _UTILS_RDOANIMATION_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
@@ -342,4 +342,4 @@ CLOSE_RDO_ANIMATION_NAMESPACE
 
 #include "utils/rdoanimation.inl"
 
-#endif // _LIB_COMMON_RDOANIMATION_H_
+#endif // _UTILS_RDOANIMATION_H_

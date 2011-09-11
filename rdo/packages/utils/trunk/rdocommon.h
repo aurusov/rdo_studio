@@ -9,8 +9,8 @@
   \indent    4T
 */
 
-#ifndef _LIB_COMMON_RDOCOMMON_H_
-#define _LIB_COMMON_RDOCOMMON_H_
+#ifndef _UTILS_RDOCOMMON_H_
+#define _UTILS_RDOCOMMON_H_
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/platform.h"
@@ -231,4 +231,4 @@ CLOSE_RDO_SIMULATOR_NAMESPACE
 
 #include "utils/rdocommon.inl"
 
-#endif // _LIB_COMMON_RDOCOMMON_H_
+#endif // _UTILS_RDOCOMMON_H_

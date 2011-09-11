@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _LIB_COMMON_PLATFORM_H_
-#define _LIB_COMMON_PLATFORM_H_
+#ifndef _UTILS_PLATFORM_H_
+#define _UTILS_PLATFORM_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -35,4 +35,4 @@
 	#endif
 #endif
 
-#endif // _LIB_COMMON_PLATFORM_H_
+#endif // _UTILS_PLATFORM_H_

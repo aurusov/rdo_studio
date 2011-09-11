@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _LIB_COMMON_RDOIDGENERATOR_H_
-#define _LIB_COMMON_RDOIDGENERATOR_H_
+#ifndef _UTILS_RDOIDGENERATOR_H_
+#define _UTILS_RDOIDGENERATOR_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -38,4 +38,4 @@ private:
 
 CLOSE_RDO_NAMESPACE
 
-#endif // _LIB_COMMON_RDOIDGENERATOR_H_
+#endif // _UTILS_RDOIDGENERATOR_H_

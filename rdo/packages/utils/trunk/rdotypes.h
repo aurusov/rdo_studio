@@ -8,8 +8,8 @@
   \indent    4T
 */
 
-#ifndef _LIB_COMMON_RDOTYPES_H_
-#define _LIB_COMMON_RDOTYPES_H_
+#ifndef _UTILS_RDOTYPES_H_
+#define _UTILS_RDOTYPES_H_
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/platform.h"
@@ -48,4 +48,4 @@ typedef  unsigned long long int     ruint64;
 //! Тип байта
 typedef  unsigned char              rbyte;
 
-#endif // _LIB_COMMON_RDOTYPES_H_
+#endif // _UTILS_RDOTYPES_H_

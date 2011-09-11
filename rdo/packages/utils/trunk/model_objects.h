@@ -8,8 +8,8 @@
   \indent    4T
 */
 
-#ifndef _LIB_COMMON_MODEL_OBJECTS_H_
-#define _LIB_COMMON_MODEL_OBJECTS_H_
+#ifndef _UTILS_MODEL_OBJECTS_H_
+#define _UTILS_MODEL_OBJECTS_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -60,4 +60,4 @@ OPEN_RDO_MODEL_OBJECTS_NAMESPACE
 	};
 CLOSE_RDO_MODEL_OBJECTS_NAMESPACE
 
-#endif // _LIB_COMMON_MODEL_OBJECTS_H_
+#endif // _UTILS_MODEL_OBJECTS_H_

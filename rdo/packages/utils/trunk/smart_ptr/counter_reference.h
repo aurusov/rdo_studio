@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _LIB_COMMON_SMART_PTR_COUNTER_REFERENCE_H_
-#define _LIB_COMMON_SMART_PTR_COUNTER_REFERENCE_H_
+#ifndef _UTILS_SMART_PTR_COUNTER_REFERENCE_H_
+#define _UTILS_SMART_PTR_COUNTER_REFERENCE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -35,4 +35,4 @@ CLOSE_RDO_NAMESPACE
 
 #include "utils/smart_ptr/counter_reference.inl"
 
-#endif // _LIB_COMMON_SMART_PTR_COUNTER_REFERENCE_H_
+#endif // _UTILS_SMART_PTR_COUNTER_REFERENCE_H_

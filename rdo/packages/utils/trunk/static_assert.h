@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _LIB_COMMON_STATIC_ASSERT_H_
-#define _LIB_COMMON_STATIC_ASSERT_H_
+#ifndef _UTILS_STATIC_ASSERT_H_
+#define _UTILS_STATIC_ASSERT_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -40,4 +40,4 @@ struct CompileTimeError<true> {};
 
 CLOSE_RDO_NAMESPACE
 
-#endif // _LIB_COMMON_STATIC_ASSERT_H_
+#endif // _UTILS_STATIC_ASSERT_H_

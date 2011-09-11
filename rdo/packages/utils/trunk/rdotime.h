@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _LIB_COMMON_RDOTIME_H_
-#define _LIB_COMMON_RDOTIME_H_
+#ifndef _UTILS_RDOTIME_H_
+#define _UTILS_RDOTIME_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -46,4 +46,4 @@ CLOSE_RDO_NAMESPACE
 
 #include "utils/rdotime.inl"
 
-#endif // _LIB_COMMON_RDOTIME_H_
+#endif // _UTILS_RDOTIME_H_

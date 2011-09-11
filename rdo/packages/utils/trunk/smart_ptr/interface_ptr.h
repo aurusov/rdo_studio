@@ -8,8 +8,8 @@
   \indent    4T
 */
 
-#ifndef _LIB_COMMON_SMART_PTR_INTERFACE_PTR_H_
-#define _LIB_COMMON_SMART_PTR_INTERFACE_PTR_H_
+#ifndef _UTILS_SMART_PTR_INTERFACE_PTR_H_
+#define _UTILS_SMART_PTR_INTERFACE_PTR_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -72,4 +72,4 @@ CLOSE_RDO_NAMESPACE
 
 #include "utils/smart_ptr/interface_ptr.inl"
 
-#endif // _LIB_COMMON_SMART_PTR_INTERFACE_PTR_H_
+#endif // _UTILS_SMART_PTR_INTERFACE_PTR_H_
