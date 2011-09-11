@@ -5,7 +5,7 @@
 #pragma once
 #endif
 
-#include "rdo_ctrls/rdotreectrl.h"
+#include "ui/mfc_ctrls/rdotreectrl.h"
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioFrameTreeCtrl

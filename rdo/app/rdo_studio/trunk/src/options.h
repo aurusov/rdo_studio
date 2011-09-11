@@ -5,7 +5,7 @@
 #pragma once
 #endif
 
-#include "rdo_ctrls/rdocolorcombobox.h"
+#include "ui/mfc_ctrls/rdocolorcombobox.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoredit.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorresults.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoreditstyle.h"

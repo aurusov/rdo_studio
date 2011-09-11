@@ -43,8 +43,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".process", ".process", "{7E
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_common", "rdo_common\rdo_common.vcproj", "{AC7C7972-A31D-4CDE-99E5-B56A19AB6457}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_ctrls", "rdo_ctrls\rdo_ctrls.vcproj", "{07426CDA-CE5C-4545-9C50-FF25E80CDF96}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_repository", "rdo_repository\rdo_repository.vcproj", "{FF8088D9-472E-4480-901D-009B51311853}"
 	ProjectSection(ProjectDependencies) = postProject
 		{048B01A3-8722-476D-AF0C-DF56EA18E57B} = {048B01A3-8722-476D-AF0C-DF56EA18E57B}
@@ -139,6 +137,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_plugin", "app\rdo_studi
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_version", "app\rdo_studio_mfc\rdo_version.vcproj", "{6A0AC201-55B9-4861-8339-5AD42572B2FC}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_ctrls", "ui\mfc_ctrls\rdo_ctrls.vcproj", "{07426CDA-CE5C-4545-9C50-FF25E80CDF96}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug Corba|Win32 = Debug Corba|Win32
@@ -161,18 +161,6 @@ Global
 		{AC7C7972-A31D-4CDE-99E5-B56A19AB6457}.Release MT|Win32.Build.0 = Release MT|Win32
 		{AC7C7972-A31D-4CDE-99E5-B56A19AB6457}.Release|Win32.ActiveCfg = Release|Win32
 		{AC7C7972-A31D-4CDE-99E5-B56A19AB6457}.Release|Win32.Build.0 = Release|Win32
-		{07426CDA-CE5C-4545-9C50-FF25E80CDF96}.Debug Corba|Win32.ActiveCfg = Debug MT|Win32
-		{07426CDA-CE5C-4545-9C50-FF25E80CDF96}.Debug Corba|Win32.Build.0 = Debug MT|Win32
-		{07426CDA-CE5C-4545-9C50-FF25E80CDF96}.Debug MT|Win32.ActiveCfg = Debug MT|Win32
-		{07426CDA-CE5C-4545-9C50-FF25E80CDF96}.Debug MT|Win32.Build.0 = Debug MT|Win32
-		{07426CDA-CE5C-4545-9C50-FF25E80CDF96}.Debug|Win32.ActiveCfg = Debug|Win32
-		{07426CDA-CE5C-4545-9C50-FF25E80CDF96}.Debug|Win32.Build.0 = Debug|Win32
-		{07426CDA-CE5C-4545-9C50-FF25E80CDF96}.Release Corba|Win32.ActiveCfg = Release MT|Win32
-		{07426CDA-CE5C-4545-9C50-FF25E80CDF96}.Release Corba|Win32.Build.0 = Release MT|Win32
-		{07426CDA-CE5C-4545-9C50-FF25E80CDF96}.Release MT|Win32.ActiveCfg = Release MT|Win32
-		{07426CDA-CE5C-4545-9C50-FF25E80CDF96}.Release MT|Win32.Build.0 = Release MT|Win32
-		{07426CDA-CE5C-4545-9C50-FF25E80CDF96}.Release|Win32.ActiveCfg = Release|Win32
-		{07426CDA-CE5C-4545-9C50-FF25E80CDF96}.Release|Win32.Build.0 = Release|Win32
 		{FF8088D9-472E-4480-901D-009B51311853}.Debug Corba|Win32.ActiveCfg = Debug Corba|Win32
 		{FF8088D9-472E-4480-901D-009B51311853}.Debug Corba|Win32.Build.0 = Debug Corba|Win32
 		{FF8088D9-472E-4480-901D-009B51311853}.Debug MT|Win32.ActiveCfg = Debug MT|Win32
@@ -381,6 +369,18 @@ Global
 		{6A0AC201-55B9-4861-8339-5AD42572B2FC}.Release MT|Win32.Build.0 = Release|Win32
 		{6A0AC201-55B9-4861-8339-5AD42572B2FC}.Release|Win32.ActiveCfg = Release|Win32
 		{6A0AC201-55B9-4861-8339-5AD42572B2FC}.Release|Win32.Build.0 = Release|Win32
+		{07426CDA-CE5C-4545-9C50-FF25E80CDF96}.Debug Corba|Win32.ActiveCfg = Debug MT|Win32
+		{07426CDA-CE5C-4545-9C50-FF25E80CDF96}.Debug Corba|Win32.Build.0 = Debug MT|Win32
+		{07426CDA-CE5C-4545-9C50-FF25E80CDF96}.Debug MT|Win32.ActiveCfg = Debug MT|Win32
+		{07426CDA-CE5C-4545-9C50-FF25E80CDF96}.Debug MT|Win32.Build.0 = Debug MT|Win32
+		{07426CDA-CE5C-4545-9C50-FF25E80CDF96}.Debug|Win32.ActiveCfg = Debug|Win32
+		{07426CDA-CE5C-4545-9C50-FF25E80CDF96}.Debug|Win32.Build.0 = Debug|Win32
+		{07426CDA-CE5C-4545-9C50-FF25E80CDF96}.Release Corba|Win32.ActiveCfg = Release MT|Win32
+		{07426CDA-CE5C-4545-9C50-FF25E80CDF96}.Release Corba|Win32.Build.0 = Release MT|Win32
+		{07426CDA-CE5C-4545-9C50-FF25E80CDF96}.Release MT|Win32.ActiveCfg = Release MT|Win32
+		{07426CDA-CE5C-4545-9C50-FF25E80CDF96}.Release MT|Win32.Build.0 = Release MT|Win32
+		{07426CDA-CE5C-4545-9C50-FF25E80CDF96}.Release|Win32.ActiveCfg = Release|Win32
+		{07426CDA-CE5C-4545-9C50-FF25E80CDF96}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

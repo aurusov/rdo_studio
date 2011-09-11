@@ -1,5 +1,5 @@
-#include "rdo_ctrls/rdo_ctrls_pch.h"
-#include "rdo_ctrls/rdotreectrl.h"
+#include "ui/mfc_ctrls/rdo_ctrls_pch.h"
+#include "ui/mfc_ctrls/rdotreectrl.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

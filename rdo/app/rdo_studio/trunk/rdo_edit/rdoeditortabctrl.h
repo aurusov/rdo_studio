@@ -3,7 +3,7 @@
 #pragma once
 
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoredit.h"
-#include "rdo_ctrls/rdotabctrl.h"
+#include "ui/mfc_ctrls/rdotabctrl.h"
 
 class RDOStudioEditBaseView;
 

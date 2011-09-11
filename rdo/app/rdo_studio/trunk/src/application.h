@@ -10,7 +10,7 @@
 #endif
 
 #include <fstream>
-#include "rdo_ctrls/rdolink.h"
+#include "ui/mfc_ctrls/rdolink.h"
 #include "rdo_kernel/rdothread.h"
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_method_manager.h"

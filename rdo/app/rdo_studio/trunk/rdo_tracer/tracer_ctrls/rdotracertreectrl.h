@@ -2,7 +2,7 @@
 #define RDOTRACERTREECTRL_H
 #pragma once
 
-#include "rdo_ctrls/rdotreectrl.h"
+#include "ui/mfc_ctrls/rdotreectrl.h"
 #include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracertreeitem.h"
 
 // --------------------------------------------------------------------------------

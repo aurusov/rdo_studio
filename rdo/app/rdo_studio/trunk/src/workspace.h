@@ -7,7 +7,7 @@
 
 #include "app/rdo_studio_mfc/src/dock_wnd.h"
 #include "app/rdo_studio_mfc/src/frame/tree_ctrl.h"
-#include "rdo_ctrls/rdotabctrl.h"
+#include "ui/mfc_ctrls/rdotabctrl.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_pagectrl.h"
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioWorkspace
