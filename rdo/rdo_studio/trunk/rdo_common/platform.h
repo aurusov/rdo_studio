@@ -29,7 +29,7 @@
 	#else
 		#define OST_WINDOWS_32
 	#endif
-#elif
+#else
 	#ifdef __linux__
 		#define OST_LINUX
 	#endif

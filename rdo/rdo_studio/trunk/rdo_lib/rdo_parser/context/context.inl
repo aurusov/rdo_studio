@@ -9,6 +9,9 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "rdo_lib/rdo_parser/rdo_value.h"
+#include "rdo_lib/rdo_parser/expression.h"
+#include "rdo_lib/rdo_parser/context/stack.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

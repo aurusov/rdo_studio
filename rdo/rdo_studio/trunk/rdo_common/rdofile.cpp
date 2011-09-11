@@ -22,7 +22,9 @@
 #endif
 
 #include <boost/filesystem.hpp>
-#include <boost/random.hpp>
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_io.hpp>
+#include <boost/uuid/uuid_generators.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "rdo_common/rdofile.h"
 #include "rdo_common/rdocommon.h"
@@ -69,9 +71,8 @@ tstring File::getTempFileName()
 	return szTempName;
 #else // not OST_WINDOWS
 	//! @todo check random
-	int x = rand();
-	std::string tempFileName("/tmp/rdo_temp_file_num_");
-	tempFileName.push_back(x);
+	boost::uuids::random_generator random_gen;
+	tstring tempFileName = tstring(_T("/tmp/rdo_temp_file_num_")) + boost::uuids::to_string(random_gen());
 	create(tempFileName);
 	return tempFileName;
 #endif // OST_WINDOWS

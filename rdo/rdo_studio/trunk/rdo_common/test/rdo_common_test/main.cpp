@@ -60,6 +60,17 @@ BOOST_AUTO_TEST_CASE(RDOCommon_FileRemove)
 	BOOST_CHECK(rdo::File::unlink(s_testFileName));
 }
 
+BOOST_AUTO_TEST_CASE(RDOCommon_GetTempFile)
+{
+	std::set<tstring> name_set;
+	for(int i = 0; i < 15; ++i)
+	{
+		tstring file_name = rdo::File::getTempFileName();
+		BOOST_CHECK(name_set.find(file_name) == name_set.end());
+		name_set.insert(file_name);
+	}
+}
+
 BOOST_AUTO_TEST_CASE(RDOCommon_Time)
 {
 	rdo::Time timeValue = rdo::Time::local();
