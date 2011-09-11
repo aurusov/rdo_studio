@@ -17,17 +17,17 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <list>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/rdodebug.h"
+#include "utils/rdodebug.h"
 
-#include "rdo_lib/rdo_mbuilder/namespace.h"
+#include "simulator/compiler/mbuilder/namespace.h"
 
-#include "rdo_lib/rdo_runtime/rdo_object.h"
-#include "rdo_lib/rdo_runtime/rdo_enum.h"
+#include "simulator/runtime/rdo_object.h"
+#include "simulator/runtime/rdo_enum.h"
 
-#include "rdo_lib/rdo_parser/rdo_object.h"
-#include "rdo_lib/rdo_parser/rdoparser.h"
-#include "rdo_lib/rdo_parser/rdorss.h"
-#include "rdo_lib/rdo_parser/type/info.h"
+#include "simulator/compiler/parser/rdo_object.h"
+#include "simulator/compiler/parser/rdoparser.h"
+#include "simulator/compiler/parser/rdorss.h"
+#include "simulator/compiler/parser/type/info.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

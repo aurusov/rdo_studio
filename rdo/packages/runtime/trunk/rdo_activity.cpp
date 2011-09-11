@@ -10,10 +10,10 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_runtime/pch.h"
-#include "rdo_lib/rdo_runtime/rdo_activity.h"
-#include "rdo_lib/rdo_runtime/rdo_runtime.h"
-#include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "simulator/runtime/pch.h"
+#include "simulator/runtime/rdo_activity.h"
+#include "simulator/runtime/rdo_runtime.h"
+#include "simulator/runtime/rdocalc.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

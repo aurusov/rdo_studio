@@ -18,7 +18,7 @@
 #include "app/rdo_studio_mfc/src/chart/view_style.h"
 #include "app/rdo_studio_mfc/src/status_bar.h"
 #include "app/rdo_studio_mfc/src/frame/style.h"
-#include "rdo_kernel/rdokernel.h"
+#include "kernel/rdokernel.h"
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOToolBar

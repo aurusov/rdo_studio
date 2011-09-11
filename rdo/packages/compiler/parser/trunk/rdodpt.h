@@ -13,18 +13,18 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/smart_ptr/intrusive_ptr.h"
+#include "utils/smart_ptr/intrusive_ptr.h"
 
-#include "rdo_lib/rdo_parser/rdo_object.h"
-#include "rdo_lib/rdo_parser/rdo_logic.h"
-#include "rdo_lib/rdo_parser/rdofun.h"
-#include "rdo_lib/rdo_parser/rdopat.h"
-#include "rdo_lib/rdo_parser/context/context.h"
-#include "rdo_lib/rdo_parser/context/context_find_i.h"
-#include "rdo_lib/rdo_runtime/rdoprocess.h"
-#include "rdo_lib/rdo_runtime/rdo_activity.h"
-#include "rdo_lib/rdo_runtime/searchtrace.h"
-#include "rdo_lib/rdo_runtime/rdo_dptsearch_activity_i.h"
+#include "simulator/compiler/parser/rdo_object.h"
+#include "simulator/compiler/parser/rdo_logic.h"
+#include "simulator/compiler/parser/rdofun.h"
+#include "simulator/compiler/parser/rdopat.h"
+#include "simulator/compiler/parser/context/context.h"
+#include "simulator/compiler/parser/context/context_find_i.h"
+#include "simulator/runtime/rdoprocess.h"
+#include "simulator/runtime/rdo_activity.h"
+#include "simulator/runtime/searchtrace.h"
+#include "simulator/runtime/rdo_dptsearch_activity_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

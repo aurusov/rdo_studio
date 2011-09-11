@@ -10,7 +10,7 @@
 
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- PLATFORM
-#include "rdo_common/platform.h"
+#include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #ifdef OST_WINDOWS
 	#include <windows.h>
@@ -26,8 +26,8 @@
 #include <boost/uuid/uuid_io.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/rdofile.h"
-#include "rdo_common/rdocommon.h"
+#include "utils/rdofile.h"
+#include "utils/rdocommon.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE

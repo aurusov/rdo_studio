@@ -13,10 +13,10 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_runtime/rdo_object.h"
-#include "rdo_lib/rdo_runtime/rdo_runtime_interface_registrator.h"
-#include "rdo_common/rdocommon.h"
-#include "rdo_common/smart_ptr/intrusive_ptr.h"
+#include "simulator/runtime/rdo_object.h"
+#include "simulator/runtime/rdo_runtime_interface_registrator.h"
+#include "utils/rdocommon.h"
+#include "utils/smart_ptr/intrusive_ptr.h"
 #ifdef RDO_MT
 #include <afxwin.h>
 #else
@@ -147,6 +147,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "rdo_lib/rdo_runtime/rdobase.inl"
+#include "simulator/runtime/rdobase.inl"
 
 #endif // _LIB_RUNTIME_BASE_H_

@@ -191,20 +191,20 @@
 
 %{
 // ---------------------------------------------------------------------------- PCH
-#include "rdo_lib/rdo_converter/pch.h"
+#include "converter/smr2rdox/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_converter/rdoparser.h"
-#include "rdo_lib/rdo_converter/rdoparser_lexer.h"
-#include "rdo_lib/rdo_converter/rdosmr.h"
-#include "rdo_lib/rdo_converter/rdofun.h"
-#include "rdo_lib/rdo_runtime/rdocalc.h"
-#include "rdo_lib/rdo_converter/rdopat.h"
-#include "rdo_lib/rdo_converter/rdortp.h"
-#include "rdo_lib/rdo_converter/rdo_type_range.h"
-#include "rdo_lib/rdo_converter/update/update.h"
-#include "rdo_lib/rdo_runtime/rdotrace.h"
-#include "rdo_lib/rdo_runtime/calc/event_plan.h"
+#include "converter/smr2rdox/rdoparser.h"
+#include "converter/smr2rdox/rdoparser_lexer.h"
+#include "converter/smr2rdox/rdosmr.h"
+#include "converter/smr2rdox/rdofun.h"
+#include "simulator/runtime/rdocalc.h"
+#include "converter/smr2rdox/rdopat.h"
+#include "converter/smr2rdox/rdortp.h"
+#include "converter/smr2rdox/rdo_type_range.h"
+#include "converter/smr2rdox/update/update.h"
+#include "simulator/runtime/rdotrace.h"
+#include "simulator/runtime/calc/event_plan.h"
 // --------------------------------------------------------------------------------
 
 #define CONVERTER LEXER->converter()

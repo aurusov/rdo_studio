@@ -8,13 +8,13 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "rdo_lib/rdo_mbuilder/pch.h"
+#include "simulator/compiler/mbuilder/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_mbuilder/rdo_resources.h"
+#include "simulator/compiler/mbuilder/rdo_resources.h"
 
-#include "rdo_lib/rdo_parser/rdortp.h"
-#include "rdo_lib/rdo_parser/type/range.h"
+#include "simulator/compiler/parser/rdortp.h"
+#include "simulator/compiler/parser/type/range.h"
 // --------------------------------------------------------------------------------
 
 OPEN_MBUILDER_NAMESPACE

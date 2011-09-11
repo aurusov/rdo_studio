@@ -8,12 +8,12 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "rdo_lib/rdo_converter/pch.h"
+#include "converter/smr2rdox/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_converter/rdo_enum.h"
-#include "rdo_lib/rdo_converter/rdoparser.h"
-#include "rdo_lib/rdo_converter/rdoparser_error.h"
+#include "converter/smr2rdox/rdo_enum.h"
+#include "converter/smr2rdox/rdoparser.h"
+#include "converter/smr2rdox/rdoparser_error.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE

@@ -13,9 +13,9 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_converter/namespace.h"
-#include "rdo_lib/rdo_converter/rdobison.h"
-#include "rdo_lib/rdo_converter/rdogramma.h"
+#include "converter/smr2rdox/namespace.h"
+#include "converter/smr2rdox/rdobison.h"
+#include "converter/smr2rdox/rdogramma.h"
 
 #ifndef __FLEX_LEXER_H
 #undef yyFlexLexer
@@ -72,6 +72,6 @@ CLOSE_RDO_CONVERTER_NAMESPACE
 #define LEXER     reinterpret_cast<PTR(rdoConverter::RDOLexer)>(lexer)
 #define LEXER_POS (*LEXER->m_lploc)
 
-#include "rdo_lib/rdo_converter/rdoparser_lexer.inl"
+#include "converter/smr2rdox/rdoparser_lexer.inl"
 
 #endif // _CONVERTOR_RDOCONVERTER_LEXER_H_

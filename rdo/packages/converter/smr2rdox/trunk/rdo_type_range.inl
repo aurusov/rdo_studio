@@ -9,9 +9,9 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_converter/rdoparser_error.h"
-#include "rdo_lib/rdo_converter/rdoparser.h"
-#include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "converter/smr2rdox/rdoparser_error.h"
+#include "converter/smr2rdox/rdoparser.h"
+#include "simulator/runtime/rdocalc.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE

@@ -13,13 +13,13 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/namespace.h"
-#include "rdo_lib/rdo_runtime/rdotrace.h"
-#include "rdo_lib/rdo_runtime/rdotrace_i.h"
-#include "rdo_lib/rdo_runtime/rdopokaz_i.h"
-#include "rdo_lib/rdo_runtime/rdo_model_i.h"
-#include "rdo_lib/rdo_runtime/rdo_value.h"
-#include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "utils/namespace.h"
+#include "simulator/runtime/rdotrace.h"
+#include "simulator/runtime/rdotrace_i.h"
+#include "simulator/runtime/rdopokaz_i.h"
+#include "simulator/runtime/rdo_model_i.h"
+#include "simulator/runtime/rdo_value.h"
+#include "simulator/runtime/rdocalc.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

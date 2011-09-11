@@ -12,7 +12,7 @@
 #define _LIB_COMMON_RDOTYPES_H_
 
 // ----------------------------------------------------------------------- PLATFORM
-#include "rdo_common/platform.h"
+#include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #ifdef OST_WINDOWS
 	#include <tchar.h>

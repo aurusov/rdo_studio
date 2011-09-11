@@ -6,9 +6,9 @@
 
 #include <fstream>
 #include <algorithm>
-#include "rdo_kernel/rdothread.h"
-#include "rdo_kernel/rdokernel.h"
-#include "rdo_common/rdocommon.h"
+#include "kernel/rdothread.h"
+#include "kernel/rdokernel.h"
+#include "utils/rdocommon.h"
 
 #ifdef TR_TRACE
 #ifdef RDO_MT

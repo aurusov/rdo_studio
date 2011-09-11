@@ -12,9 +12,9 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/smart_ptr/interface_ptr.h"
+#include "utils/smart_ptr/interface_ptr.h"
 
-#include "rdo_lib/rdo_converter/namespace.h"
+#include "converter/smr2rdox/namespace.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE

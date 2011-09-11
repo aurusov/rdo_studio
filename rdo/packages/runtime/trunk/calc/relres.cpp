@@ -9,10 +9,10 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "rdo_lib/rdo_runtime/pch.h"
+#include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_runtime/calc/relres.h"
+#include "simulator/runtime/calc/relres.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

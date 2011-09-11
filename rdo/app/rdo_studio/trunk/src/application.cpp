@@ -14,10 +14,10 @@
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_factory.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_method.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_project.h"
-#include "rdo_common/rdofile.h"
-#include "rdo_kernel/rdothread.h"
-#include "rdo_repository/rdorepository.h"
-#include "rdo_lib/rdo_simulator/rdosimwin.h"
+#include "utils/rdofile.h"
+#include "kernel/rdothread.h"
+#include "repository/rdorepository.h"
+#include "simulator/service/rdosimwin.h"
 #include "thirdparty/win_registry/registry.h"
 
 #ifdef _DEBUG

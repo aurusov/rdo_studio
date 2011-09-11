@@ -13,10 +13,10 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/rdocommon.h"
-#include "rdo_lib/rdo_parser/namespace.h"
-#include "rdo_lib/rdo_parser/rdo_object.h"
-#include "rdo_lib/rdo_runtime/rdo_exception.h"
+#include "utils/rdocommon.h"
+#include "simulator/compiler/parser/namespace.h"
+#include "simulator/compiler/parser/rdo_object.h"
+#include "simulator/runtime/rdo_exception.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

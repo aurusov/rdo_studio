@@ -13,9 +13,9 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/namespace.h"
-#include "rdo_common/rdotypes.h"
-#include "rdo_common/rdomacros.h"
+#include "utils/namespace.h"
+#include "utils/rdotypes.h"
+#include "utils/rdomacros.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE
@@ -62,6 +62,6 @@ public:
 
 CLOSE_RDO_NAMESPACE
 
-#include "rdo_common/rdofile.inl"
+#include "utils/rdofile.inl"
 
 #endif // _LIB_COMMON_RDOFILE_H_

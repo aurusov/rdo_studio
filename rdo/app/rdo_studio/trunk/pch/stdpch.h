@@ -38,11 +38,11 @@
 #include <list>
 #include <algorithm>
 
-#include "rdo_common/rdodebug.h"
-#include "rdo_common/rdocommon.h"
-#include "rdo_common/rdotypes.h"
-#include "rdo_common/rdomacros.h"
-#include "rdo_common/rdodebug.h"
+#include "utils/rdodebug.h"
+#include "utils/rdocommon.h"
+#include "utils/rdotypes.h"
+#include "utils/rdomacros.h"
+#include "utils/rdodebug.h"
 
 void appendMenu (PTR(CMenu) pFrom, const int from_index, PTR(CMenu) pTo);
 void eraseMenu  (PTR(CMenu) pFrom, const int from_index = -1 );

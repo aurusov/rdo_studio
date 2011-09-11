@@ -13,9 +13,9 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_converter/param.h"
-#include "rdo_lib/rdo_runtime/rdo_model_i.h"
-#include "rdo_common/smart_ptr/intrusive_ptr.h"
+#include "converter/smr2rdox/param.h"
+#include "simulator/runtime/rdo_model_i.h"
+#include "utils/smart_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE

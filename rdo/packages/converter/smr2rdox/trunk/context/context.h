@@ -12,11 +12,11 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/rdomacros.h"
-#include "rdo_common/smart_ptr/intrusive_ptr.h"
-#include "rdo_lib/rdo_converter/namespace.h"
-#include "rdo_lib/rdo_converter/rdo_value.h"
-#include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "utils/rdomacros.h"
+#include "utils/smart_ptr/intrusive_ptr.h"
+#include "converter/smr2rdox/namespace.h"
+#include "converter/smr2rdox/rdo_value.h"
+#include "simulator/runtime/rdocalc.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE

@@ -13,10 +13,10 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/rdocommon.h"
-#include "rdo_lib/rdo_converter/namespace.h"
-#include "rdo_lib/rdo_converter/rdo_object.h"
-#include "rdo_lib/rdo_runtime/rdo_exception.h"
+#include "utils/rdocommon.h"
+#include "converter/smr2rdox/namespace.h"
+#include "converter/smr2rdox/rdo_object.h"
+#include "simulator/runtime/rdo_exception.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE

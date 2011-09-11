@@ -9,24 +9,24 @@
 */
 
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_runtime/pch.h"
+#include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <limits>
 #include <iomanip>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_runtime/pch.h"
-#include "rdo_lib/rdo_runtime/rdo_runtime.h"
-#include "rdo_lib/rdo_runtime/rdo_activity.h"
-#include "rdo_lib/rdo_runtime/rdo_rule.h"
-#include "rdo_lib/rdo_runtime/rdo_operation.h"
-#include "rdo_lib/rdo_runtime/rdoprocess.h"
-#include "rdo_lib/rdo_runtime/rdopokaz.h"
-#include "rdo_lib/rdo_runtime/rdoframe.h"
-#include "rdo_lib/rdo_runtime/rdodptrtime.h"
-#include "rdo_lib/rdo_runtime/rdocalc.h"
-#include "rdo_lib/rdo_runtime/calc/relres.h"
-#include "rdo_common/rdodebug.h"
-#include "rdo_kernel/rdothread.h"
+#include "simulator/runtime/pch.h"
+#include "simulator/runtime/rdo_runtime.h"
+#include "simulator/runtime/rdo_activity.h"
+#include "simulator/runtime/rdo_rule.h"
+#include "simulator/runtime/rdo_operation.h"
+#include "simulator/runtime/rdoprocess.h"
+#include "simulator/runtime/rdopokaz.h"
+#include "simulator/runtime/rdoframe.h"
+#include "simulator/runtime/rdodptrtime.h"
+#include "simulator/runtime/rdocalc.h"
+#include "simulator/runtime/calc/relres.h"
+#include "utils/rdodebug.h"
+#include "kernel/rdothread.h"
 // --------------------------------------------------------------------------------
 
 #pragma warning(disable : 4786)  

@@ -11,20 +11,20 @@
 #define _LIB_RUNTIME_MATRIX_DEF_H_
 
 #ifndef _LIB_RUNTIME_VALUE_H_
-#error include "rdo_lib/rdo_runtime/rdo_value.h" first (вместо "rdo_matrix_def.h" надо инклюдить "rdo_matrix.h")
+#error include "simulator/runtime/rdo_value.h" first (вместо "rdo_matrix_def.h" надо инклюдить "rdo_matrix.h")
 #endif
 
 //
 // Напрямую этот файл инклюдить не надо, юзайте
-// #include "rdo_lib/rdo_runtime/rdo_matrix.h"
+// #include "simulator/runtime/rdo_matrix.h"
 //
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <string>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_runtime/rdo_type.h"
-#include "rdo_lib/rdo_runtime/rdo_object.h"
-#include "rdo_common/rdocommon.h"
+#include "simulator/runtime/rdo_type.h"
+#include "simulator/runtime/rdo_object.h"
+#include "utils/rdocommon.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

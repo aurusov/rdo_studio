@@ -4,9 +4,9 @@
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/thread.h"
-#include "rdo_kernel/rdokernel.h"
-#include "rdo_repository/rdorepository.h"
-#include "rdo_lib/rdo_simulator/rdosimwin.h"
+#include "kernel/rdokernel.h"
+#include "repository/rdorepository.h"
+#include "simulator/service/rdosimwin.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

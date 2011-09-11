@@ -9,8 +9,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_parser/rdo_array.h"
-#include "rdo_lib/rdo_parser/type/atom.h"
+#include "simulator/compiler/parser/rdo_array.h"
+#include "simulator/compiler/parser/type/atom.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

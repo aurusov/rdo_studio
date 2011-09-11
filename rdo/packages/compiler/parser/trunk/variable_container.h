@@ -12,8 +12,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_runtime/rdocalc.h"
-#include "rdo_lib/rdo_parser/local_variable.h"
+#include "simulator/runtime/rdocalc.h"
+#include "simulator/compiler/parser/local_variable.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

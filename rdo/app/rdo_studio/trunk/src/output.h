@@ -8,7 +8,7 @@
 #include "app/rdo_studio_mfc/src/dock_wnd.h"
 
 #include "ui/mfc_ctrls/rdotabctrl.h"
-#include "rdo_lib/rdo_simulator/rdosimwin.h"
+#include "simulator/service/rdosimwin.h"
 
 namespace rdoEditor {
 	class RDOEditorEdit;

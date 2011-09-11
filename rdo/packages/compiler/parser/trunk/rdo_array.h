@@ -12,8 +12,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_parser/rdo_value.h"
-#include "rdo_lib/rdo_parser/type/array.h"
+#include "simulator/compiler/parser/rdo_value.h"
+#include "simulator/compiler/parser/type/array.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

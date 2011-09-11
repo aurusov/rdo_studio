@@ -13,22 +13,22 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_parser/rdo_object.h"
-#include "rdo_lib/rdo_parser/rdo_value.h"
-#include "rdo_lib/rdo_parser/rdortp.h"
-#include "rdo_lib/rdo_parser/param.h"
-#include "rdo_lib/rdo_parser/expression.h"
-#include "rdo_lib/rdo_parser/context/context.h"
-#include "rdo_lib/rdo_parser/context/memory.h"
-#include "rdo_lib/rdo_parser/context/context_find_i.h"
-#include "rdo_lib/rdo_parser/context/context_create_expression_i.h"
+#include "simulator/compiler/parser/rdo_object.h"
+#include "simulator/compiler/parser/rdo_value.h"
+#include "simulator/compiler/parser/rdortp.h"
+#include "simulator/compiler/parser/param.h"
+#include "simulator/compiler/parser/expression.h"
+#include "simulator/compiler/parser/context/context.h"
+#include "simulator/compiler/parser/context/memory.h"
+#include "simulator/compiler/parser/context/context_find_i.h"
+#include "simulator/compiler/parser/context/context_create_expression_i.h"
 
-#include "rdo_lib/rdo_runtime/rdo_object.h"
-#include "rdo_lib/rdo_runtime/rdo_type.h"
-#include "rdo_lib/rdo_runtime/rdocalc.h"
-#include "rdo_lib/rdo_runtime/calc/logic.h"
-#include "rdo_lib/rdo_runtime/calc/unary.h"
-#include "rdo_lib/rdo_runtime/calc/sequence.h"
+#include "simulator/runtime/rdo_object.h"
+#include "simulator/runtime/rdo_type.h"
+#include "simulator/runtime/rdocalc.h"
+#include "simulator/runtime/calc/logic.h"
+#include "simulator/runtime/calc/unary.h"
+#include "simulator/runtime/calc/sequence.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

@@ -10,14 +10,14 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "rdo_lib/rdo_runtime/pch.h"
+#include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/rdotypes.h"
-#include "rdo_common/rdomacros.h"
-#include "rdo_lib/rdo_runtime/rdoprocess.h"
-#include "rdo_lib/rdo_runtime/rdocalc.h"
-#include "rdo_lib/rdo_runtime/calc/relres.h"
+#include "utils/rdotypes.h"
+#include "utils/rdomacros.h"
+#include "simulator/runtime/rdoprocess.h"
+#include "simulator/runtime/rdocalc.h"
+#include "simulator/runtime/calc/relres.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

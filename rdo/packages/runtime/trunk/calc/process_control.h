@@ -12,12 +12,12 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/namespace.h"
-#include "rdo_lib/rdo_runtime/rdocalc.h"
-#include "rdo_lib/rdo_runtime/rdo.h"
-#include "rdo_lib/rdo_runtime/rdo_runtime.h"
-#include "rdo_lib/rdo_runtime/rdoprocess.h"
-#include "rdo_lib/rdo_runtime/rdo_logic.h"
+#include "utils/namespace.h"
+#include "simulator/runtime/rdocalc.h"
+#include "simulator/runtime/rdo.h"
+#include "simulator/runtime/rdo_runtime.h"
+#include "simulator/runtime/rdoprocess.h"
+#include "simulator/runtime/rdo_logic.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

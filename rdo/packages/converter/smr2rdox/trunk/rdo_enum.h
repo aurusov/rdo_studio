@@ -12,10 +12,10 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_converter/rdo_type.h"
-#include "rdo_lib/rdo_converter/rdo_value.h"
-#include "rdo_lib/rdo_runtime/rdo_enum.h"
-#include "rdo_common/smart_ptr/intrusive_ptr.h"
+#include "converter/smr2rdox/rdo_type.h"
+#include "converter/smr2rdox/rdo_value.h"
+#include "simulator/runtime/rdo_enum.h"
+#include "utils/smart_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE

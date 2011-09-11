@@ -13,7 +13,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_runtime/calc/binary.h"
+#include "simulator/runtime/calc/binary.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -78,6 +78,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "rdo_lib/rdo_runtime/calc/arithm.inl"
+#include "simulator/runtime/calc/arithm.inl"
 
 #endif // _LIB_RUNTIME_CALC_ARITHM_H_

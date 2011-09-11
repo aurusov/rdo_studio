@@ -12,10 +12,10 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_parser/namespace.h"
-#include "rdo_lib/rdo_parser/rdo_object.h"
-#include "rdo_lib/rdo_parser/type/info.h"
-#include "rdo_lib/rdo_runtime/rdo_value.h"
+#include "simulator/compiler/parser/namespace.h"
+#include "simulator/compiler/parser/rdo_object.h"
+#include "simulator/compiler/parser/type/info.h"
+#include "simulator/runtime/rdo_value.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -63,6 +63,6 @@ private:
 
 CLOSE_RDO_PARSER_NAMESPACE
 
-#include "rdo_lib/rdo_parser/rdo_value.inl"
+#include "simulator/compiler/parser/rdo_value.inl"
 
 #endif // _RDOPARSER_VALUE_H_

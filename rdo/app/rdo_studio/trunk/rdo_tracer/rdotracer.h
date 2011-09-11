@@ -3,8 +3,8 @@
 #pragma once
 
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracerbase.h"
-#include "rdo_lib/rdo_simulator/rdosimwin.h"
-#include "rdo_kernel/rdothread.h"
+#include "simulator/service/rdosimwin.h"
+#include "kernel/rdothread.h"
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOTracer

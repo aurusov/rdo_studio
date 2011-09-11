@@ -13,16 +13,16 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/smart_ptr/intrusive_ptr.h"
+#include "utils/smart_ptr/intrusive_ptr.h"
 
-#include "rdo_lib/rdo_converter/rdo_object.h"
-#include "rdo_lib/rdo_converter/rdo_logic.h"
-#include "rdo_lib/rdo_converter/rdofun.h"
-#include "rdo_lib/rdo_converter/rdopat.h"
-#include "rdo_lib/rdo_runtime/rdoprocess.h"
-#include "rdo_lib/rdo_runtime/searchtrace.h"
-#include "rdo_lib/rdo_runtime/rdo_dptsearch_activity_i.h"
-#include "rdo_lib/rdo_runtime/rdo_keyboard_i.h"
+#include "converter/smr2rdox/rdo_object.h"
+#include "converter/smr2rdox/rdo_logic.h"
+#include "converter/smr2rdox/rdofun.h"
+#include "converter/smr2rdox/rdopat.h"
+#include "simulator/runtime/rdoprocess.h"
+#include "simulator/runtime/searchtrace.h"
+#include "simulator/runtime/rdo_dptsearch_activity_i.h"
+#include "simulator/runtime/rdo_keyboard_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

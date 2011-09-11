@@ -9,17 +9,17 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "rdo_lib/rdo_parser/pch.h"
+#include "simulator/compiler/parser/pch.h"
 #ifdef CORBA_ENABLE
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #pragma warning(disable: 4996)
-#include "rdo_lib/rdo_parser/rdoparser_corba.h"
-#include "rdo_lib/rdo_parser/rdortp.h"
-#include "rdo_lib/rdo_parser/rdosmr.h"
-#include "rdo_lib/rdo_mbuilder/rdo_resources.h"
-#include "rdo_lib/rdo_runtime/rdo_object.h"
-#include "rdo_lib/rdo_corba/RDOCorba.hh"
+#include "simulator/compiler/parser/rdoparser_corba.h"
+#include "simulator/compiler/parser/rdortp.h"
+#include "simulator/compiler/parser/rdosmr.h"
+#include "simulator/compiler/mbuilder/rdo_resources.h"
+#include "simulator/runtime/rdo_object.h"
+#include "simulator/corba/RDOCorba.hh"
 #pragma warning(default: 4996)
 // --------------------------------------------------------------------------------
 

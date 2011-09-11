@@ -12,8 +12,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_runtime/rdo_value.h"
-#include "rdo_lib/rdo_runtime/rdo_array_def.h"
+#include "simulator/runtime/rdo_value.h"
+#include "simulator/runtime/rdo_array_def.h"
 // --------------------------------------------------------------------------------
 
 #endif // _LIB_RUNTIME_ARRAY_H_

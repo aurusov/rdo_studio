@@ -13,9 +13,9 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_runtime/rdotrace.h"
-#include "rdo_lib/rdo_runtime/rdo_object.h"
-#include "rdo_lib/rdo_runtime/rdo_value.h"
+#include "simulator/runtime/rdotrace.h"
+#include "simulator/runtime/rdo_object.h"
+#include "simulator/runtime/rdo_value.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -94,6 +94,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "rdo_lib/rdo_runtime/rdo_resource.inl"
+#include "simulator/runtime/rdo_resource.inl"
 
 #endif // _LIB_RUNTIME_RESOURCE_H_

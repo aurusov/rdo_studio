@@ -12,8 +12,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/rdocommon.h"
-#include "rdo_lib/rdo_runtime/rdo_type.h"
+#include "utils/rdocommon.h"
+#include "simulator/runtime/rdo_type.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -52,6 +52,6 @@ DECLARE_POINTER(RDOEnumType);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "rdo_lib/rdo_runtime/rdo_enum.inl"
+#include "simulator/runtime/rdo_enum.inl"
 
 #endif // _LIB_RUNTIME_ENUM_H_

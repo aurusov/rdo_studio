@@ -12,9 +12,9 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/namespace.h"
-#include "rdo_lib/rdo_runtime/rdo_logic.h"
-#include "rdo_lib/rdo_runtime/rdo_priority.h"
+#include "utils/namespace.h"
+#include "simulator/runtime/rdo_logic.h"
+#include "simulator/runtime/rdo_priority.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -38,6 +38,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "rdo_lib/rdo_runtime/rdo_logic_dptsome.inl"
+#include "simulator/runtime/rdo_logic_dptsome.inl"
 
 #endif // _LIB_RUNTIME_LOGIC_DPTSOME_H_

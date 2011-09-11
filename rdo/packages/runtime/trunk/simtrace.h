@@ -12,8 +12,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // --------------------*************************************************** SYNOPSIS
-#include "rdo_lib/rdo_runtime/rdotrace.h"
-#include "rdo_lib/rdo_runtime/rdo_simulator.h"
+#include "simulator/runtime/rdotrace.h"
+#include "simulator/runtime/rdo_simulator.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSE_NAMESPACE
@@ -116,6 +116,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "rdo_lib/rdo_runtime/simtrace.inl"
+#include "simulator/runtime/simtrace.inl"
 
 #endif // _LIB_RUNTIME_SIM_TRACE_H_

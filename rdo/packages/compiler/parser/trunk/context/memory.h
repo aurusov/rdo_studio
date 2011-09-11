@@ -12,10 +12,10 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_parser/local_variable.h"
-#include "rdo_lib/rdo_parser/context/context.h"
-#include "rdo_lib/rdo_parser/context/context_find_i.h"
-#include "rdo_lib/rdo_parser/context/context_create_expression_i.h"
+#include "simulator/compiler/parser/local_variable.h"
+#include "simulator/compiler/parser/context/context.h"
+#include "simulator/compiler/parser/context/context_find_i.h"
+#include "simulator/compiler/parser/context/context_create_expression_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

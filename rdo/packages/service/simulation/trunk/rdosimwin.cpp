@@ -24,19 +24,19 @@
 #include <sstream>
 #include <algorithm>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_simulator/rdosimwin.h"
-#include "rdo_kernel/rdokernel.h"
-#include "rdo_repository/rdorepository.h"
-#include "rdo_lib/rdo_runtime/rdotrace.h"
-#include "rdo_lib/rdo_runtime/rdo_runtime.h"
-#include "rdo_lib/rdo_runtime/rdoframe.h"
-#include "rdo_lib/rdo_parser/rdoparser.h"
-#include "rdo_lib/rdo_parser/rdosmr.h"
-#include "rdo_lib/rdo_parser/rdofrm.h"
-#include "rdo_lib/rdo_parser/rdortp.h"
-#include "rdo_lib/rdo_converter/rdoparser.h"
-#include "rdo_lib/rdo_mbuilder/rdo_resources.h"
-#include "rdo_common/rdodebug.h"
+#include "simulator/service/rdosimwin.h"
+#include "kernel/rdokernel.h"
+#include "repository/rdorepository.h"
+#include "simulator/runtime/rdotrace.h"
+#include "simulator/runtime/rdo_runtime.h"
+#include "simulator/runtime/rdoframe.h"
+#include "simulator/compiler/parser/rdoparser.h"
+#include "simulator/compiler/parser/rdosmr.h"
+#include "simulator/compiler/parser/rdofrm.h"
+#include "simulator/compiler/parser/rdortp.h"
+#include "converter/smr2rdox/rdoparser.h"
+#include "simulator/compiler/mbuilder/rdo_resources.h"
+#include "utils/rdodebug.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_datablock.h"
 // --------------------------------------------------------------------------------
 

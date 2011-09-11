@@ -25,8 +25,8 @@
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_project.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_method_proc2rdo.h"
 #include "app/rdo_studio_mfc/src/application.h"
-#include "rdo_kernel/rdothread.h"
-#include "rdo_lib/rdo_simulator/rdosimwin.h"
+#include "kernel/rdothread.h"
+#include "simulator/service/rdosimwin.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------

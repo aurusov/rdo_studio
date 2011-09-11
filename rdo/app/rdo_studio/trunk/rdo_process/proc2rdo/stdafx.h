@@ -92,8 +92,8 @@
 #undef TRACE3
 #endif
 
-#include "rdo_common/rdodebug.h"
-#include "rdo_common/rdocommon.h"
-#include "rdo_common/rdotypes.h"
-#include "rdo_common/rdomacros.h"
+#include "utils/rdodebug.h"
+#include "utils/rdocommon.h"
+#include "utils/rdotypes.h"
+#include "utils/rdomacros.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_string.h"

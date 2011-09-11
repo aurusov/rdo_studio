@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <list>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_converter/context/context.h"
+#include "converter/smr2rdox/context/context.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE

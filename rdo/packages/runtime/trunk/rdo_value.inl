@@ -9,12 +9,12 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/rdodebug.h"
-#include "rdo_lib/rdo_runtime/rdo_enum.h"
-#include "rdo_lib/rdo_runtime/rdo_fuzzy_def.h"
-#include "rdo_lib/rdo_runtime/rdo_array_def.h"
-#include "rdo_lib/rdo_runtime/rdo_matrix_def.h"
-#include "rdo_lib/rdo_runtime/rdo_exception.h"
+#include "utils/rdodebug.h"
+#include "simulator/runtime/rdo_enum.h"
+#include "simulator/runtime/rdo_fuzzy_def.h"
+#include "simulator/runtime/rdo_array_def.h"
+#include "simulator/runtime/rdo_matrix_def.h"
+#include "simulator/runtime/rdo_exception.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

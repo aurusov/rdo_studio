@@ -9,13 +9,13 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "rdo_lib/rdo_runtime/pch.h"
+#include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_runtime/rdo_resource.h"
-#include "rdo_lib/rdo_runtime/rdo_runtime.h"
-#include "rdo_lib/rdo_runtime/rdoprocess.h"
-#include "rdo_common/smart_ptr/intrusive_ptr.h"
+#include "simulator/runtime/rdo_resource.h"
+#include "simulator/runtime/rdo_runtime.h"
+#include "simulator/runtime/rdoprocess.h"
+#include "utils/smart_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

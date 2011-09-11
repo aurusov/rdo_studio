@@ -8,14 +8,14 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "rdo_lib/rdo_runtime/pch.h"
+#include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/rdodebug.h"
-#include "rdo_lib/rdo_runtime/searchtree.h"
-#include "rdo_lib/rdo_runtime/searchtrace.h"
-#include "rdo_lib/rdo_runtime/rdo_runtime.h"
-#include "rdo_lib/rdo_runtime/rdo_rule.h"
+#include "utils/rdodebug.h"
+#include "simulator/runtime/searchtree.h"
+#include "simulator/runtime/searchtrace.h"
+#include "simulator/runtime/rdo_runtime.h"
+#include "simulator/runtime/rdo_rule.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

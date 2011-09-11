@@ -5,7 +5,7 @@
 #pragma once
 #endif
 
-#include "rdo_kernel/rdothread.h"
+#include "kernel/rdothread.h"
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOKernel

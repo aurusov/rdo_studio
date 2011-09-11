@@ -9,13 +9,13 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "rdo_lib/rdo_parser/pch.h"
+#include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_parser/parser/std_fun.h"
-#include "rdo_lib/rdo_parser/param.h"
-#include "rdo_lib/rdo_parser/rdofun.h"
-#include "rdo_lib/rdo_runtime/calc/std_fun.h"
+#include "simulator/compiler/parser/parser/std_fun.h"
+#include "simulator/compiler/parser/param.h"
+#include "simulator/compiler/parser/rdofun.h"
+#include "simulator/runtime/calc/std_fun.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -69,7 +69,7 @@ int roundLocal(double value)
 //#define SPEED_TEST
 
 #ifdef SPEED_TEST
-#include "rdo_lib/rdo_runtime/rdobase.h"
+#include "simulator/runtime/rdobase.h"
 
 class MaxCalc: public rdoRuntime::RDOFunCalc
 {

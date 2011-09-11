@@ -11,9 +11,9 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/namespace.h"
-#include "rdo_common/rdotypes.h"
-#include "rdo_common/rdomacros.h"
+#include "utils/namespace.h"
+#include "utils/rdotypes.h"
+#include "utils/rdomacros.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_ANIMATION_NAMESPACE

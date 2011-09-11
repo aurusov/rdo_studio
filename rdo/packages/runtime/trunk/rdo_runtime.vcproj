@@ -49,7 +49,7 @@
 				AdditionalIncludeDirectories="../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="rdo_lib/rdo_runtime/pch.h"
+				PrecompiledHeaderThrough="simulator/runtime/pch.h"
 				BrowseInformation="1"
 				DebugInformationFormat="3"
 			/>
@@ -115,7 +115,7 @@
 				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="rdo_lib/rdo_runtime/pch.h"
+				PrecompiledHeaderThrough="simulator/runtime/pch.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 				DebugInformationFormat="4"
@@ -183,7 +183,7 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="rdo_lib/rdo_runtime/pch.h"
+				PrecompiledHeaderThrough="simulator/runtime/pch.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 				DebugInformationFormat="4"
@@ -248,7 +248,7 @@
 				AdditionalIncludeDirectories="../../"
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="rdo_lib/rdo_runtime/pch.h"
+				PrecompiledHeaderThrough="simulator/runtime/pch.h"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -312,7 +312,7 @@
 				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="rdo_lib/rdo_runtime/pch.h"
+				PrecompiledHeaderThrough="simulator/runtime/pch.h"
 				BrowseInformation="1"
 				WarningLevel="3"
 				DebugInformationFormat="4"
@@ -377,7 +377,7 @@
 				AdditionalIncludeDirectories="../../"
 				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="rdo_lib/rdo_runtime/pch.h"
+				PrecompiledHeaderThrough="simulator/runtime/pch.h"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"

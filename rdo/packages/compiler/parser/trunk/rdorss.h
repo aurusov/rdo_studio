@@ -13,12 +13,12 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_parser/rdo_object.h"
-#include "rdo_lib/rdo_parser/rdo_value.h"
-#include "rdo_lib/rdo_parser/rdortp.h"
-#include "rdo_lib/rdo_parser/context/context.h"
-#include "rdo_lib/rdo_parser/context/context_create_expression_i.h"
-#include "rdo_lib/rdo_runtime/rdo_object.h"
+#include "simulator/compiler/parser/rdo_object.h"
+#include "simulator/compiler/parser/rdo_value.h"
+#include "simulator/compiler/parser/rdortp.h"
+#include "simulator/compiler/parser/context/context.h"
+#include "simulator/compiler/parser/context/context_create_expression_i.h"
+#include "simulator/runtime/rdo_object.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

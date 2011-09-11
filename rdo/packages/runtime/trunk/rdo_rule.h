@@ -13,12 +13,12 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_runtime/rdo.h"
-#include "rdo_lib/rdo_runtime/rdotrace.h"
-#include "rdo_lib/rdo_runtime/rdo_pattern.h"
-#include "rdo_lib/rdo_runtime/rdo_activity.h"
-#include "rdo_lib/rdo_runtime/rdo_priority.h"
-#include "rdo_lib/rdo_runtime/rdo_rule_i.h"
+#include "simulator/runtime/rdo.h"
+#include "simulator/runtime/rdotrace.h"
+#include "simulator/runtime/rdo_pattern.h"
+#include "simulator/runtime/rdo_activity.h"
+#include "simulator/runtime/rdo_priority.h"
+#include "simulator/runtime/rdo_rule_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

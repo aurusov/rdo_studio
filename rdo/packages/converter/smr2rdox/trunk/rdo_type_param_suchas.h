@@ -12,8 +12,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_converter/rdo_type_param.h"
-#include "rdo_lib/rdo_converter/param.h"
+#include "converter/smr2rdox/rdo_type_param.h"
+#include "converter/smr2rdox/param.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE

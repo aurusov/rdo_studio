@@ -20,9 +20,9 @@
 #include <map>
 #include <boost/date_time/posix_time/posix_time_types.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_kernel/rdothread.h"
-#include "rdo_common/rdostream.h"
-#include "rdo_common/rdocommon.h"
+#include "kernel/rdothread.h"
+#include "utils/rdostream.h"
+#include "utils/rdocommon.h"
 // --------------------------------------------------------------------------------
 
 #define OPEN_RDO_REPOSITORY_NAMESPACE  namespace rdoRepository {

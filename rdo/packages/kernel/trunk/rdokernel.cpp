@@ -1,6 +1,6 @@
-#include "rdo_kernel/rdokernel.h"
-#include "rdo_repository/rdorepository.h"
-#include "rdo_lib/rdo_simulator/rdosimwin.h"
+#include "kernel/rdokernel.h"
+#include "repository/rdorepository.h"
+#include "simulator/service/rdosimwin.h"
 
 #include <algorithm>
 #include <vector>

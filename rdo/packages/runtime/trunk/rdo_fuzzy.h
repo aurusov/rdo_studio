@@ -12,9 +12,9 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_runtime/rdo_value.h"
-#include "rdo_lib/rdo_runtime/rdo_fuzzy_def.h"
-#include "rdo_lib/rdo_runtime/rdo_fuzzy.inl"
+#include "simulator/runtime/rdo_value.h"
+#include "simulator/runtime/rdo_fuzzy_def.h"
+#include "simulator/runtime/rdo_fuzzy.inl"
 // --------------------------------------------------------------------------------
 
 #endif // _LIB_RUNTIME_FUZZY_H_

@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <string>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_runtime/rdo_value.h"
+#include "simulator/runtime/rdo_value.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

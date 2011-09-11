@@ -8,14 +8,14 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "rdo_lib/rdo_runtime/pch.h"
+#include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_runtime/rdopokaz_group.h"
-#include "rdo_lib/rdo_runtime/rdo_runtime.h"
-#include "rdo_lib/rdo_runtime/rdo_model_i.h"
-#include "rdo_kernel/rdothread.h"
-#include "rdo_repository/rdorepository.h"
+#include "simulator/runtime/rdopokaz_group.h"
+#include "simulator/runtime/rdo_runtime.h"
+#include "simulator/runtime/rdo_model_i.h"
+#include "kernel/rdothread.h"
+#include "repository/rdorepository.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

@@ -9,12 +9,12 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "rdo_lib/rdo_converter/pch.h"
+#include "converter/smr2rdox/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_converter/rdofrm.h"
-#include "rdo_lib/rdo_converter/rdoparser.h"
-#include "rdo_lib/rdo_converter/rdoparser_lexer.h"
+#include "converter/smr2rdox/rdofrm.h"
+#include "converter/smr2rdox/rdoparser.h"
+#include "converter/smr2rdox/rdoparser_lexer.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "app/rdo_studio_mfc/edit_ctrls/rdologedit.h"
-#include "rdo_common/rdocommon.h"
+#include "utils/rdocommon.h"
 
 namespace rdoEditCtrl {
 

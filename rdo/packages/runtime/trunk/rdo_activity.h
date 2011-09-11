@@ -13,11 +13,11 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/rdostream.h"
-#include "rdo_lib/rdo_runtime/rdo.h"
-#include "rdo_lib/rdo_runtime/rdo_resource.h"
-#include "rdo_lib/rdo_runtime/rdo_model_i.h"
-#include "rdo_lib/rdo_runtime/rdo_activity_i.h"
+#include "utils/rdostream.h"
+#include "simulator/runtime/rdo.h"
+#include "simulator/runtime/rdo_resource.h"
+#include "simulator/runtime/rdo_model_i.h"
+#include "simulator/runtime/rdo_activity_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -81,6 +81,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "rdo_lib/rdo_runtime/rdo_activity.inl"
+#include "simulator/runtime/rdo_activity.inl"
 
 #endif // _LIB_RUNTIME_ACTIVITY_H_

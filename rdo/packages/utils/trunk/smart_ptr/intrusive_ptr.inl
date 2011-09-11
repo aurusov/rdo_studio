@@ -9,8 +9,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/rdomacros.h"
-#include "rdo_common/namespace.h"
+#include "utils/rdomacros.h"
+#include "utils/namespace.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE

@@ -13,14 +13,14 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_converter/rdo_object.h"
-#include "rdo_lib/rdo_converter/rdo_value.h"
-#include "rdo_lib/rdo_converter/rdo_type.h"
-#include "rdo_lib/rdo_converter/rdo_enum.h"
-#include "rdo_lib/rdo_converter/rdortp_param.h"
+#include "converter/smr2rdox/rdo_object.h"
+#include "converter/smr2rdox/rdo_value.h"
+#include "converter/smr2rdox/rdo_type.h"
+#include "converter/smr2rdox/rdo_enum.h"
+#include "converter/smr2rdox/rdortp_param.h"
 
-#include "rdo_lib/rdo_runtime/rdo_object.h"
-#include "rdo_lib/rdo_runtime/rdo_value.h"
+#include "simulator/runtime/rdo_object.h"
+#include "simulator/runtime/rdo_value.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE

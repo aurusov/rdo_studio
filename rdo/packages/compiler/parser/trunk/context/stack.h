@@ -13,9 +13,9 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <list>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/smart_ptr/intrusive_ptr.h"
+#include "utils/smart_ptr/intrusive_ptr.h"
 
-#include "rdo_lib/rdo_parser/namespace.h"
+#include "simulator/compiler/parser/namespace.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

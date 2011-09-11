@@ -15,14 +15,14 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <list>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/namespace.h"
-#include "rdo_common/smart_ptr/intrusive_ptr.h"
-#include "rdo_common/smart_ptr/interface_ptr.h"
-#include "rdo_lib/rdo_runtime/rdo_value.h"
-#include "rdo_lib/rdo_runtime/rdo_object.h"
-#include "rdo_lib/rdo_runtime/rdo_random_distribution.h"
-#include "rdo_lib/rdo_runtime/rdo_memory.h"
-#include "rdo_lib/rdo_runtime/rdo_res_type.h"
+#include "utils/namespace.h"
+#include "utils/smart_ptr/intrusive_ptr.h"
+#include "utils/smart_ptr/interface_ptr.h"
+#include "simulator/runtime/rdo_value.h"
+#include "simulator/runtime/rdo_object.h"
+#include "simulator/runtime/rdo_random_distribution.h"
+#include "simulator/runtime/rdo_memory.h"
+#include "simulator/runtime/rdo_res_type.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -621,6 +621,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "rdo_lib/rdo_runtime/rdocalc.inl"
+#include "simulator/runtime/rdocalc.inl"
 
 #endif // _LIB_RUNTIME_CALC_H_

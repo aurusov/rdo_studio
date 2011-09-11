@@ -13,10 +13,10 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/namespace.h"
-#include "rdo_common/rdoanimation.h"
-#include "rdo_lib/rdo_runtime/rdocalc.h"
-#include "rdo_lib/rdo_runtime/rdo_object.h"
+#include "utils/namespace.h"
+#include "utils/rdoanimation.h"
+#include "simulator/runtime/rdocalc.h"
+#include "simulator/runtime/rdo_object.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -605,6 +605,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "rdo_lib/rdo_runtime/rdoframe.inl"
+#include "simulator/runtime/rdoframe.inl"
 
 #endif // _LIB_RUNTIME_FRAME_H_

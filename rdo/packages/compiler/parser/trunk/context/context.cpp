@@ -8,13 +8,13 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "rdo_lib/rdo_parser/pch.h"
+#include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_parser/rdoparser.h"
-#include "rdo_lib/rdo_parser/context/context.h"
-#include "rdo_lib/rdo_parser/context/context_find_i.h"
-#include "rdo_lib/rdo_parser/context/context_create_expression_i.h"
+#include "simulator/compiler/parser/rdoparser.h"
+#include "simulator/compiler/parser/context/context.h"
+#include "simulator/compiler/parser/context/context_find_i.h"
+#include "simulator/compiler/parser/context/context_create_expression_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

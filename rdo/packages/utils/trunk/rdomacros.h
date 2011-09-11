@@ -11,7 +11,7 @@
 #define _LIB_COMMON_MACROS_H_
 
 // ----------------------------------------------------------------------- PLATFORM
-#include "rdo_common/platform.h"
+#include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/typeof/typeof.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS

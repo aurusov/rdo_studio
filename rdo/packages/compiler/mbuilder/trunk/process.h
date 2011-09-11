@@ -12,8 +12,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_mbuilder/namespace.h"
-#include "rdo_lib/rdo_mbuilder/rdo_resources.h"
+#include "simulator/compiler/mbuilder/namespace.h"
+#include "simulator/compiler/mbuilder/rdo_resources.h"
 // --------------------------------------------------------------------------------
 
 OPEN_MBUILDER_NAMESPACE

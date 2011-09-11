@@ -12,8 +12,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_runtime/rdo_value.h"
-#include "rdo_lib/rdo_runtime/rdo_matrix_def.h"
+#include "simulator/runtime/rdo_value.h"
+#include "simulator/runtime/rdo_matrix_def.h"
 // --------------------------------------------------------------------------------
 
 #endif // _LIB_RUNTIME_MATRIX_H_

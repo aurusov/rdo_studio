@@ -74,6 +74,6 @@ public:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "rdo_lib/rdo_runtime/rdo_exception.inl"
+#include "simulator/runtime/rdo_exception.inl"
 
 #endif // _LIB_RUNTIME_EXCEPTION_H_

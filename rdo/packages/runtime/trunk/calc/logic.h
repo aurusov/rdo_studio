@@ -14,8 +14,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_runtime/calc/binary.h"
-#include "rdo_lib/rdo_runtime/calc/unary.h"
+#include "simulator/runtime/calc/binary.h"
+#include "simulator/runtime/calc/unary.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -96,6 +96,6 @@ typedef RDOCalcBinary<rbool, (&RDOValue::operator>=), OperatorType::OT_LOGIC> RD
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "rdo_lib/rdo_runtime/calc/logic.inl"
+#include "simulator/runtime/calc/logic.inl"
 
 #endif // _LIB_RUNTIME_CALC_LOGIC_H_

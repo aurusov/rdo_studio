@@ -9,9 +9,9 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_parser/rdoparser_error.h"
-#include "rdo_lib/rdo_parser/rdoparser.h"
-#include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "simulator/compiler/parser/rdoparser_error.h"
+#include "simulator/compiler/parser/rdoparser.h"
+#include "simulator/runtime/rdocalc.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

@@ -8,11 +8,11 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "rdo_lib/rdo_converter/pch.h"
+#include "converter/smr2rdox/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_converter/update/update.h"
-#include "rdo_lib/rdo_converter/rdoparser.h"
+#include "converter/smr2rdox/update/update.h"
+#include "converter/smr2rdox/rdoparser.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE

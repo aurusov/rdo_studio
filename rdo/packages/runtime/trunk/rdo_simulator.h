@@ -13,9 +13,9 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_runtime/rdo.h"
-#include "rdo_lib/rdo_runtime/rdobase.h"
-#include "rdo_lib/rdo_runtime/rdo_logic_i.h"
+#include "simulator/runtime/rdo.h"
+#include "simulator/runtime/rdobase.h"
+#include "simulator/runtime/rdo_logic_i.h"
 // --------------------************************************************************
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -68,6 +68,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "rdo_lib/rdo_runtime/rdo_simulator.inl"
+#include "simulator/runtime/rdo_simulator.inl"
 
 #endif // _LIB_RUNTIME_SIMULATOR_H_

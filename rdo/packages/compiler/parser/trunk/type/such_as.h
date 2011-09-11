@@ -12,8 +12,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_parser/type/info.h"
-#include "rdo_lib/rdo_parser/param.h"
+#include "simulator/compiler/parser/type/info.h"
+#include "simulator/compiler/parser/param.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

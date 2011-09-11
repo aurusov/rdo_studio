@@ -13,9 +13,9 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <fstream>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_converter/namespace.h"
-#include "rdo_lib/rdo_converter/rdo_common/model_objects_convertor.h"
-#include "rdo_lib/rdo_converter/update/document_i.h"
+#include "converter/smr2rdox/namespace.h"
+#include "converter/smr2rdox/rdo_common/model_objects_convertor.h"
+#include "converter/smr2rdox/update/document_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE
@@ -82,6 +82,6 @@ protected:
 
 CLOSE_RDO_CONVERTER_NAMESPACE
 
-#include "rdo_lib/rdo_converter/update/update_i.inl"
+#include "converter/smr2rdox/update/update_i.inl"
 
 #endif // _CONVERTOR_UPDATE_I_H_

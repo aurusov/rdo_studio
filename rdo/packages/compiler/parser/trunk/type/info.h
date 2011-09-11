@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/optional.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_parser/type/type.h"
+#include "simulator/compiler/parser/type/type.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -46,6 +46,6 @@ private:
 
 CLOSE_RDO_PARSER_NAMESPACE
 
-#include "rdo_lib/rdo_parser/type/info.inl"
+#include "simulator/compiler/parser/type/info.inl"
 
 #endif // _RDOPARSER_TYPE_INFO_H_

@@ -8,12 +8,12 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "rdo_lib/rdo_converter/pch.h"
+#include "converter/smr2rdox/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_converter/rdo_value.h"
-#include "rdo_lib/rdo_converter/rdo_type.h"
-#include "rdo_lib/rdo_runtime/rdo_resource.h"
+#include "converter/smr2rdox/rdo_value.h"
+#include "converter/smr2rdox/rdo_type.h"
+#include "simulator/runtime/rdo_resource.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE

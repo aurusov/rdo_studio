@@ -4,7 +4,7 @@
 
 #include "app/rdo_studio_mfc/edit_ctrls/rdobaseedit.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdologeditstyle.h"
-#include "rdo_lib/rdo_simulator/rdosimwin.h"
+#include "simulator/service/rdosimwin.h"
 
 namespace rdoEditor {
 class RDOEditorEdit;

@@ -9,18 +9,18 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "rdo_lib/rdo_converter/pch.h"
+#include "converter/smr2rdox/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_converter/rdoparser_base.h"
-#include "rdo_lib/rdo_converter/rdoparser_rdo.h"
-#include "rdo_lib/rdo_converter/rdopat.h"
-#include "rdo_lib/rdo_converter/rdoopr.h"
-#include "rdo_lib/rdo_converter/rdodpt.h"
-#include "rdo_lib/rdo_converter/rdosmr.h"
-#include "rdo_lib/rdo_converter/rdofrm.h"
-#include "rdo_lib/rdo_converter/rdopmd.h"
-#include "rdo_lib/rdo_converter/rdortp.h"
+#include "converter/smr2rdox/rdoparser_base.h"
+#include "converter/smr2rdox/rdoparser_rdo.h"
+#include "converter/smr2rdox/rdopat.h"
+#include "converter/smr2rdox/rdoopr.h"
+#include "converter/smr2rdox/rdodpt.h"
+#include "converter/smr2rdox/rdosmr.h"
+#include "converter/smr2rdox/rdofrm.h"
+#include "converter/smr2rdox/rdopmd.h"
+#include "converter/smr2rdox/rdortp.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE

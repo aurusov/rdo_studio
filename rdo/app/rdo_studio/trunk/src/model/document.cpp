@@ -6,8 +6,8 @@
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
 #include "app/rdo_studio_mfc/resource.h"
-#include "rdo_kernel/rdokernel.h"
-#include "rdo_repository/rdorepository.h"
+#include "kernel/rdokernel.h"
+#include "repository/rdorepository.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

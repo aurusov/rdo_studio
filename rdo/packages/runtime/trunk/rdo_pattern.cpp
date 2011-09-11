@@ -10,13 +10,13 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_runtime/pch.h"
-#include "rdo_lib/rdo_runtime/rdo_pattern.h"
-#include "rdo_lib/rdo_runtime/rdo_event.h"
-#include "rdo_lib/rdo_runtime/rdo_rule.h"
-#include "rdo_lib/rdo_runtime/rdo_operation.h"
-#include "rdo_lib/rdo_runtime/rdo_keyboard.h"
-#include "rdo_lib/rdo_runtime/rdo_runtime.h"
+#include "simulator/runtime/pch.h"
+#include "simulator/runtime/rdo_pattern.h"
+#include "simulator/runtime/rdo_event.h"
+#include "simulator/runtime/rdo_rule.h"
+#include "simulator/runtime/rdo_operation.h"
+#include "simulator/runtime/rdo_keyboard.h"
+#include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

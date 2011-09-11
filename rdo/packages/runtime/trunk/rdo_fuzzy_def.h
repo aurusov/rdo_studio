@@ -11,19 +11,19 @@
 #define _LIB_RUNTIME_FUZZY_DEF_H_
 
 #ifndef _LIB_RUNTIME_VALUE_H_
-#error include "rdo_lib/rdo_runtime/rdo_value.h" first (вместо "rdo_fuzzy_def.h" надо инклюдить "rdo_fuzzy.h")
+#error include "simulator/runtime/rdo_value.h" first (вместо "rdo_fuzzy_def.h" надо инклюдить "rdo_fuzzy.h")
 #endif
 
 //
 // Напрямую этот файл инклюдить не надо, юзайте
-// #include "rdo_lib/rdo_runtime/rdo_fuzzy.h"
+// #include "simulator/runtime/rdo_fuzzy.h"
 //
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_runtime/rdo_type.h"
-#include "rdo_lib/rdo_runtime/rdo_object.h"
+#include "simulator/runtime/rdo_type.h"
+#include "simulator/runtime/rdo_object.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

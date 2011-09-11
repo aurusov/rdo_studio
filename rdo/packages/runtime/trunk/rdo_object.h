@@ -15,8 +15,8 @@
 #include <vector>
 #include <algorithm>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/rdocommon.h"
-#include "rdo_common/rdotypes.h"
+#include "utils/rdocommon.h"
+#include "utils/rdotypes.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -184,6 +184,6 @@ public:
 #define DECLARE_INotify \
 	virtual void notify(ruint message, PTR(void) param);
 
-#include "rdo_lib/rdo_runtime/rdo_object.inl"
+#include "simulator/runtime/rdo_object.inl"
 
 #endif // _LIB_RUNTIME_OBJECT_H_

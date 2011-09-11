@@ -11,9 +11,9 @@
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_runtime/pch.h"
-#include "rdo_lib/rdo_runtime/rdo_resource.h"
-#include "rdo_lib/rdo_runtime/rdo_runtime.h"
+#include "simulator/runtime/pch.h"
+#include "simulator/runtime/rdo_resource.h"
+#include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

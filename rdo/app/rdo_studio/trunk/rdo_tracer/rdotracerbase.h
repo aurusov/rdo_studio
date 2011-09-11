@@ -3,9 +3,9 @@
 #pragma once
 
 #include "app/rdo_studio_mfc/resource.h"
-#include "rdo_kernel/rdothread.h"
-#include "rdo_kernel/rdokernel.h"
-#include "rdo_common/rdostream.h"
+#include "kernel/rdothread.h"
+#include "kernel/rdokernel.h"
+#include "utils/rdostream.h"
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOTracerBase

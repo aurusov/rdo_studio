@@ -201,18 +201,18 @@
 
 %{
 // ---------------------------------------------------------------------------- PCH
-#include "rdo_lib/rdo_parser/pch.h"
+#include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_parser/rdoparser.h"
-#include "rdo_lib/rdo_parser/rdoparser_lexer.h"
-#include "rdo_lib/rdo_parser/rdofun.h"
-#include "rdo_lib/rdo_parser/rdodpt.h"
-#include "rdo_lib/rdo_parser/rdortp.h"
-#include "rdo_lib/rdo_parser/rdorss.h"
-#include "rdo_lib/rdo_runtime/rdo_res_type.h"
+#include "simulator/compiler/parser/rdoparser.h"
+#include "simulator/compiler/parser/rdoparser_lexer.h"
+#include "simulator/compiler/parser/rdofun.h"
+#include "simulator/compiler/parser/rdodpt.h"
+#include "simulator/compiler/parser/rdortp.h"
+#include "simulator/compiler/parser/rdorss.h"
+#include "simulator/runtime/rdo_res_type.h"
 
-#include "rdo_lib/rdo_mbuilder/rdo_resources.h"
+#include "simulator/compiler/mbuilder/rdo_resources.h"
 // --------------------------------------------------------------------------------
 
 #define PARSER  LEXER->parser()

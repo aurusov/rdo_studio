@@ -12,10 +12,10 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/namespace.h"
-#include "rdo_common/rdointerface.h"
-#include "rdo_lib/rdo_runtime/rdo_rule_i.h"
-#include "rdo_lib/rdo_runtime/rdo_runtime_interface_registrator.h"
+#include "utils/namespace.h"
+#include "utils/rdointerface.h"
+#include "simulator/runtime/rdo_rule_i.h"
+#include "simulator/runtime/rdo_runtime_interface_registrator.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

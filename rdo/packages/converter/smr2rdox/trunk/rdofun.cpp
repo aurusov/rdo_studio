@@ -9,23 +9,23 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "rdo_lib/rdo_converter/pch.h"
+#include "converter/smr2rdox/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_converter/rdofun.h"
-#include "rdo_lib/rdo_converter/rdoparser.h"
-#include "rdo_lib/rdo_converter/rdortp.h"
-#include "rdo_lib/rdo_converter/rdorss.h"
-#include "rdo_lib/rdo_converter/rdopat.h"
-#include "rdo_lib/rdo_converter/rdofrm.h"
-#include "rdo_lib/rdo_converter/rdodpt.h"
-#include "rdo_lib/rdo_converter/rdoparser_lexer.h"
-#include "rdo_lib/rdo_converter/rdo_type_range.h"
-#include "rdo_lib/rdo_runtime/rdo_random_distribution.h"
-#include "rdo_lib/rdo_runtime/rdo_runtime.h"
-#include "rdo_lib/rdo_runtime/rdoframe.h"
-#include "rdo_lib/rdo_runtime/rdocalc.h"
-#include "rdo_lib/rdo_runtime/calc/arithm.h"
+#include "converter/smr2rdox/rdofun.h"
+#include "converter/smr2rdox/rdoparser.h"
+#include "converter/smr2rdox/rdortp.h"
+#include "converter/smr2rdox/rdorss.h"
+#include "converter/smr2rdox/rdopat.h"
+#include "converter/smr2rdox/rdofrm.h"
+#include "converter/smr2rdox/rdodpt.h"
+#include "converter/smr2rdox/rdoparser_lexer.h"
+#include "converter/smr2rdox/rdo_type_range.h"
+#include "simulator/runtime/rdo_random_distribution.h"
+#include "simulator/runtime/rdo_runtime.h"
+#include "simulator/runtime/rdoframe.h"
+#include "simulator/runtime/rdocalc.h"
+#include "simulator/runtime/calc/arithm.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE

@@ -8,13 +8,13 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "rdo_lib/rdo_runtime/pch.h"
+#include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_runtime/calc/process_control.h"
-#include "rdo_lib/rdo_runtime/rdo_resource.h"
-#include "rdo_lib/rdo_runtime/rdo_activity_i.h"
-#include "rdo_lib/rdo_runtime/rdoprocess.h"
+#include "simulator/runtime/calc/process_control.h"
+#include "simulator/runtime/rdo_resource.h"
+#include "simulator/runtime/rdo_activity_i.h"
+#include "simulator/runtime/rdoprocess.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

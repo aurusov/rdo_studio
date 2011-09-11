@@ -12,8 +12,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/namespace.h"
-#include "rdo_common/rdotypes.h"
+#include "utils/namespace.h"
+#include "utils/rdotypes.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE

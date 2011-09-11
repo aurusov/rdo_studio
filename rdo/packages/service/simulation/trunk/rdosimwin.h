@@ -22,14 +22,14 @@
 #include <windows.h>
 #endif
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/rdocommon.h"
-#include "rdo_common/rdostream.h"
-#include "rdo_kernel/rdokernel.h"
-#include "rdo_kernel/rdothread.h"
-#include "rdo_lib/rdo_runtime/thread_proxy_i.h"
-#include "rdo_lib/rdo_parser/namespace.h"
-#include "rdo_lib/rdo_converter/rdo_common/model_objects_convertor.h"
-#include "rdo_lib/rdo_simulator/procgui.h"
+#include "utils/rdocommon.h"
+#include "utils/rdostream.h"
+#include "kernel/rdokernel.h"
+#include "kernel/rdothread.h"
+#include "simulator/runtime/thread_proxy_i.h"
+#include "simulator/compiler/parser/namespace.h"
+#include "converter/smr2rdox/rdo_common/model_objects_convertor.h"
+#include "simulator/service/procgui.h"
 // --------------------------------------------------------------------------------
 
 //#define DISABLE_CORBA
@@ -65,7 +65,7 @@ CLOSE_RDO_ANIMATION_NAMESPACE
 
 #pragma warning(disable: 4996)
 #include <omniORB4/CORBA.h>
-#include "rdo_lib/rdo_corba/RDOCorba.hh"
+#include "simulator/corba/RDOCorba.hh"
 #pragma warning(default: 4996)
 
 namespace rdoCorba {

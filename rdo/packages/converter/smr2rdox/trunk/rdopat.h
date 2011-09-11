@@ -13,18 +13,18 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_converter/rdortp_param.h"
-#include "rdo_lib/rdo_converter/rdofun.h"
-#include "rdo_lib/rdo_converter/rdorss.h"
-#include "rdo_lib/rdo_converter/param.h"
+#include "converter/smr2rdox/rdortp_param.h"
+#include "converter/smr2rdox/rdofun.h"
+#include "converter/smr2rdox/rdorss.h"
+#include "converter/smr2rdox/param.h"
 
-#include "rdo_lib/rdo_runtime/rdo_pattern.h"
-#include "rdo_lib/rdo_runtime/rdo_resource.h"
-#include "rdo_lib/rdo_runtime/rdocalc.h"
-#include "rdo_lib/rdo_runtime/calc/relres.h"
-#include "rdo_lib/rdo_runtime/calc/choice_from.h"
+#include "simulator/runtime/rdo_pattern.h"
+#include "simulator/runtime/rdo_resource.h"
+#include "simulator/runtime/rdocalc.h"
+#include "simulator/runtime/calc/relres.h"
+#include "simulator/runtime/calc/choice_from.h"
 
-#include "rdo_common/smart_ptr/intrusive_ptr.h"
+#include "utils/smart_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE

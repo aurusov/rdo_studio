@@ -12,10 +12,10 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_parser/type/type.h"
-#include "rdo_lib/rdo_parser/rdo_value.h"
-#include "rdo_lib/rdo_runtime/rdo_enum.h"
-#include "rdo_common/smart_ptr/intrusive_ptr.h"
+#include "simulator/compiler/parser/type/type.h"
+#include "simulator/compiler/parser/rdo_value.h"
+#include "simulator/runtime/rdo_enum.h"
+#include "utils/smart_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

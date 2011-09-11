@@ -13,9 +13,9 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <sstream>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_runtime/searchtrace.h"
-#include "rdo_lib/rdo_runtime/rdo_runtime.h"
-#include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "simulator/runtime/searchtrace.h"
+#include "simulator/runtime/rdo_runtime.h"
+#include "simulator/runtime/rdocalc.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -44,6 +44,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "rdo_lib/rdo_runtime/rdodptrtime.inl"
+#include "simulator/runtime/rdodptrtime.inl"
 
 #endif // _LIB_RUNTIME_DPTRTIME_H_

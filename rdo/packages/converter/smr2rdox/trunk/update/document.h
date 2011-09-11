@@ -14,13 +14,13 @@
 #include <fstream>
 #include <boost/shared_ptr.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/smart_ptr/intrusive_ptr.h"
-#include "rdo_common/rdomacros.h"
+#include "utils/smart_ptr/intrusive_ptr.h"
+#include "utils/rdomacros.h"
 
-#include "rdo_lib/rdo_converter/namespace.h"
-#include "rdo_lib/rdo_converter/rdo_common/model_objects_convertor.h"
-#include "rdo_lib/rdo_converter/update/document_i.h"
-#include "rdo_lib/rdo_converter/update/update_i.h"
+#include "converter/smr2rdox/namespace.h"
+#include "converter/smr2rdox/rdo_common/model_objects_convertor.h"
+#include "converter/smr2rdox/update/document_i.h"
+#include "converter/smr2rdox/update/update_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE

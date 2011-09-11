@@ -12,9 +12,9 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_parser/type/info.h"
-#include "rdo_lib/rdo_parser/rdo_value.h"
-#include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "simulator/compiler/parser/type/info.h"
+#include "simulator/compiler/parser/rdo_value.h"
+#include "simulator/runtime/rdocalc.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

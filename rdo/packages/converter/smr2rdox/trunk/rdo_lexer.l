@@ -10,18 +10,18 @@
 
 %{
 // ---------------------------------------------------------------------------- PCH
-#include "rdo_lib/rdo_converter/pch.h"
+#include "converter/smr2rdox/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_converter/rdobison.h"
-#include "rdo_lib/rdo_converter/rdogramma.h"
-#include "rdo_lib/rdo_converter/rdoparser.h"
-#include "rdo_lib/rdo_converter/rdoparser_lexer.h"
-#include "rdo_lib/rdo_converter/rdo_value.h"
-#include "rdo_lib/rdo_converter/rdopat.h"
-#include "rdo_lib/rdo_converter/update/update.h"
+#include "converter/smr2rdox/rdobison.h"
+#include "converter/smr2rdox/rdogramma.h"
+#include "converter/smr2rdox/rdoparser.h"
+#include "converter/smr2rdox/rdoparser_lexer.h"
+#include "converter/smr2rdox/rdo_value.h"
+#include "converter/smr2rdox/rdopat.h"
+#include "converter/smr2rdox/update/update.h"
 
-#include "rdo_lib/rdo_runtime/rdo_runtime.h"
+#include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
 
 #ifdef LEXER

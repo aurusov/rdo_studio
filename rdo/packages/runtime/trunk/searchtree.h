@@ -12,8 +12,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_runtime/rdo_logic_dptsearch.h"
-#include "rdo_lib/rdo_runtime/rdo_dptsearch_activity_i.h"
+#include "simulator/runtime/rdo_logic_dptsearch.h"
+#include "simulator/runtime/rdo_dptsearch_activity_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -109,6 +109,6 @@ protected:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "rdo_lib/rdo_runtime/searchtree.inl"
+#include "simulator/runtime/searchtree.inl"
 
 #endif // _LIB_RUNTIME_SEARCH_TREE_H_

@@ -12,11 +12,11 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_runtime/rdo.h"
-#include "rdo_lib/rdo_runtime/searchtree.h"
-#include "rdo_lib/rdo_runtime/rdotrace.h"
-#include "rdo_lib/rdo_runtime/simtrace.h"
-#include "rdo_lib/rdo_runtime/searchtrace_i.h"
+#include "simulator/runtime/rdo.h"
+#include "simulator/runtime/searchtree.h"
+#include "simulator/runtime/rdotrace.h"
+#include "simulator/runtime/simtrace.h"
+#include "simulator/runtime/searchtrace_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -107,6 +107,6 @@ public:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "rdo_lib/rdo_runtime/searchtrace.inl"
+#include "simulator/runtime/searchtrace.inl"
 
 #endif // _LIB_RUNTIME_SEARCH_TRACE_H_

@@ -12,10 +12,10 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_converter/namespace.h"
-#include "rdo_lib/rdo_converter/rdo_object.h"
-#include "rdo_lib/rdo_converter/rdo_type.h"
-#include "rdo_lib/rdo_runtime/rdo_value.h"
+#include "converter/smr2rdox/namespace.h"
+#include "converter/smr2rdox/rdo_object.h"
+#include "converter/smr2rdox/rdo_type.h"
+#include "simulator/runtime/rdo_value.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE
@@ -56,6 +56,6 @@ private:
 
 CLOSE_RDO_CONVERTER_NAMESPACE
 
-#include "rdo_lib/rdo_converter/rdo_value.inl"
+#include "converter/smr2rdox/rdo_value.inl"
 
 #endif // _CONVERTOR_RDOCONVERTER_VALUE_H_

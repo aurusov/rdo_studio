@@ -13,9 +13,9 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_runtime/rdoframe.h"
-#include "rdo_lib/rdo_converter/rdo_object.h"
-#include "rdo_lib/rdo_converter/rdofun.h"
+#include "simulator/runtime/rdoframe.h"
+#include "converter/smr2rdox/rdo_object.h"
+#include "converter/smr2rdox/rdofun.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE

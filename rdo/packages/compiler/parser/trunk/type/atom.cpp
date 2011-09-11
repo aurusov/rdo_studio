@@ -8,15 +8,15 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "rdo_lib/rdo_parser/pch.h"
+#include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_parser/type/atom.h"
-#include "rdo_lib/rdo_parser/type/info.h"
-#include "rdo_lib/rdo_parser/rdo_value.h"
-#include "rdo_lib/rdo_parser/rdoparser_error.h"
-#include "rdo_lib/rdo_runtime/calc/unary.h"
-#include "rdo_lib/rdo_runtime/rdo_resource.h"
+#include "simulator/compiler/parser/type/atom.h"
+#include "simulator/compiler/parser/type/info.h"
+#include "simulator/compiler/parser/rdo_value.h"
+#include "simulator/compiler/parser/rdoparser_error.h"
+#include "simulator/runtime/calc/unary.h"
+#include "simulator/runtime/rdo_resource.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

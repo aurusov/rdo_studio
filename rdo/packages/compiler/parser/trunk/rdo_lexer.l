@@ -10,16 +10,16 @@
 
 %{
 // ---------------------------------------------------------------------------- PCH
-#include "rdo_lib/rdo_parser/pch.h"
+#include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_parser/rdobison.h"
-#include "rdo_lib/rdo_parser/rdogramma.h"
-#include "rdo_lib/rdo_parser/rdoparser.h"
-#include "rdo_lib/rdo_parser/rdoparser_lexer.h"
-#include "rdo_lib/rdo_parser/rdo_value.h"
-#include "rdo_lib/rdo_parser/rdopat.h"
-#include "rdo_lib/rdo_runtime/rdo_runtime.h"
+#include "simulator/compiler/parser/rdobison.h"
+#include "simulator/compiler/parser/rdogramma.h"
+#include "simulator/compiler/parser/rdoparser.h"
+#include "simulator/compiler/parser/rdoparser_lexer.h"
+#include "simulator/compiler/parser/rdo_value.h"
+#include "simulator/compiler/parser/rdopat.h"
+#include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
 
 #ifdef LEXER

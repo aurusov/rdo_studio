@@ -2,7 +2,7 @@
 
 #pragma warning(disable: 4996)
 
-#include "rdo_lib/rdo_corba/RDOCorba.hh"
+#include "simulator/corba/RDOCorba.hh"
 
 #include <omniORB4/IOP_S.h>
 #include <omniORB4/IOP_C.h>

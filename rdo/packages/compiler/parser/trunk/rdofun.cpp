@@ -9,23 +9,23 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "rdo_lib/rdo_parser/pch.h"
+#include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_parser/rdofun.h"
-#include "rdo_lib/rdo_parser/rdoparser.h"
-#include "rdo_lib/rdo_parser/rdortp.h"
-#include "rdo_lib/rdo_parser/rdorss.h"
-#include "rdo_lib/rdo_parser/rdopat.h"
-#include "rdo_lib/rdo_parser/rdofrm.h"
-#include "rdo_lib/rdo_parser/rdodpt.h"
-#include "rdo_lib/rdo_parser/rdoparser_lexer.h"
-#include "rdo_lib/rdo_parser/type/range.h"
-#include "rdo_lib/rdo_runtime/rdo_random_distribution.h"
-#include "rdo_lib/rdo_runtime/rdo_runtime.h"
-#include "rdo_lib/rdo_runtime/rdoframe.h"
-#include "rdo_lib/rdo_runtime/rdocalc.h"
-#include "rdo_lib/rdo_runtime/calc/arithm.h"
+#include "simulator/compiler/parser/rdofun.h"
+#include "simulator/compiler/parser/rdoparser.h"
+#include "simulator/compiler/parser/rdortp.h"
+#include "simulator/compiler/parser/rdorss.h"
+#include "simulator/compiler/parser/rdopat.h"
+#include "simulator/compiler/parser/rdofrm.h"
+#include "simulator/compiler/parser/rdodpt.h"
+#include "simulator/compiler/parser/rdoparser_lexer.h"
+#include "simulator/compiler/parser/type/range.h"
+#include "simulator/runtime/rdo_random_distribution.h"
+#include "simulator/runtime/rdo_runtime.h"
+#include "simulator/runtime/rdoframe.h"
+#include "simulator/runtime/rdocalc.h"
+#include "simulator/runtime/calc/arithm.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

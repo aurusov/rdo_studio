@@ -13,22 +13,22 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_parser/rdortp_param.h"
-#include "rdo_lib/rdo_parser/rdofun.h"
-#include "rdo_lib/rdo_parser/rdorss.h"
-#include "rdo_lib/rdo_parser/param.h"
-#include "rdo_lib/rdo_parser/context/context.h"
-#include "rdo_lib/rdo_parser/context/memory.h"
-#include "rdo_lib/rdo_parser/context/context_find_i.h"
-#include "rdo_lib/rdo_parser/context/context_create_expression_i.h"
+#include "simulator/compiler/parser/rdortp_param.h"
+#include "simulator/compiler/parser/rdofun.h"
+#include "simulator/compiler/parser/rdorss.h"
+#include "simulator/compiler/parser/param.h"
+#include "simulator/compiler/parser/context/context.h"
+#include "simulator/compiler/parser/context/memory.h"
+#include "simulator/compiler/parser/context/context_find_i.h"
+#include "simulator/compiler/parser/context/context_create_expression_i.h"
 
-#include "rdo_lib/rdo_runtime/rdo_pattern.h"
-#include "rdo_lib/rdo_runtime/rdo_resource.h"
-#include "rdo_lib/rdo_runtime/rdocalc.h"
-#include "rdo_lib/rdo_runtime/calc/relres.h"
-#include "rdo_lib/rdo_runtime/calc/choice_from.h"
+#include "simulator/runtime/rdo_pattern.h"
+#include "simulator/runtime/rdo_resource.h"
+#include "simulator/runtime/rdocalc.h"
+#include "simulator/runtime/calc/relres.h"
+#include "simulator/runtime/calc/choice_from.h"
 
-#include "rdo_common/smart_ptr/intrusive_ptr.h"
+#include "utils/smart_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

@@ -31,8 +31,8 @@
 #include <map>
 #include <functional>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/rdocommon.h"
-#include "rdo_common/rdotypes.h"
-#include "rdo_common/rdomacros.h"
-#include "rdo_common/rdodebug.h"
+#include "utils/rdocommon.h"
+#include "utils/rdotypes.h"
+#include "utils/rdomacros.h"
+#include "utils/rdodebug.h"
 // --------------------------------------------------------------------------------

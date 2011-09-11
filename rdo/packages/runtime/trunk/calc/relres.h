@@ -13,8 +13,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_runtime/rdocalc.h"
-#include "rdo_lib/rdo_runtime/equaltype.h"
+#include "simulator/runtime/rdocalc.h"
+#include "simulator/runtime/equaltype.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -95,6 +95,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "rdo_lib/rdo_runtime/calc/relres.inl"
+#include "simulator/runtime/calc/relres.inl"
 
 #endif // _LIB_RUNTIME_CALC_REL_RES_H_

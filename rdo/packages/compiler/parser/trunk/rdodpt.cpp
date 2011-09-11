@@ -9,25 +9,25 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "rdo_lib/rdo_parser/pch.h"
+#include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_parser/rdodpt.h"
-#include "rdo_lib/rdo_parser/rdoparser.h"
-#include "rdo_lib/rdo_parser/rdoparser_lexer.h"
-#include "rdo_lib/rdo_parser/rdorss.h"
-#include "rdo_lib/rdo_parser/type/type.h"
-#include "rdo_lib/rdo_runtime/rdo_rule.h"
-#include "rdo_lib/rdo_runtime/rdo_operation.h"
-#include "rdo_lib/rdo_runtime/rdo_keyboard.h"
-#include "rdo_lib/rdo_runtime/rdoprocess.h"
-#include "rdo_lib/rdo_runtime/rdo_logic_dptfree.h"
-#include "rdo_lib/rdo_runtime/rdo_logic_dptsome.h"
-#include "rdo_lib/rdo_runtime/rdo_logic_dptprior.h"
-#include "rdo_lib/rdo_runtime/rdodptrtime.h"
-#include "rdo_lib/rdo_runtime/rdo_dptsearch_activity.h"
+#include "simulator/compiler/parser/rdodpt.h"
+#include "simulator/compiler/parser/rdoparser.h"
+#include "simulator/compiler/parser/rdoparser_lexer.h"
+#include "simulator/compiler/parser/rdorss.h"
+#include "simulator/compiler/parser/type/type.h"
+#include "simulator/runtime/rdo_rule.h"
+#include "simulator/runtime/rdo_operation.h"
+#include "simulator/runtime/rdo_keyboard.h"
+#include "simulator/runtime/rdoprocess.h"
+#include "simulator/runtime/rdo_logic_dptfree.h"
+#include "simulator/runtime/rdo_logic_dptsome.h"
+#include "simulator/runtime/rdo_logic_dptprior.h"
+#include "simulator/runtime/rdodptrtime.h"
+#include "simulator/runtime/rdo_dptsearch_activity.h"
 
-#include "rdo_lib/rdo_mbuilder/rdo_resources.h"
+#include "simulator/compiler/mbuilder/rdo_resources.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

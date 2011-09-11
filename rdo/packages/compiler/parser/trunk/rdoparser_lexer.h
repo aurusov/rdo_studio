@@ -13,10 +13,10 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_parser/namespace.h"
-#include "rdo_lib/rdo_parser/rdobison.h"
-#include "rdo_lib/rdo_parser/rdogramma.h"
-#include "rdo_common/smart_ptr/intrusive_ptr.h"
+#include "simulator/compiler/parser/namespace.h"
+#include "simulator/compiler/parser/rdobison.h"
+#include "simulator/compiler/parser/rdogramma.h"
+#include "utils/smart_ptr/intrusive_ptr.h"
 
 #ifndef __FLEX_LEXER_H
 #undef yyFlexLexer
@@ -73,6 +73,6 @@ CLOSE_RDO_PARSER_NAMESPACE
 #define LEXER     reinterpret_cast<PTR(rdoParse::RDOLexer)>(lexer)
 #define LEXER_POS (*LEXER->m_lploc)
 
-#include "rdo_lib/rdo_parser/rdoparser_lexer.inl"
+#include "simulator/compiler/parser/rdoparser_lexer.inl"
 
 #endif // _RDOPARSER_LEXER_H_

@@ -8,12 +8,12 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "rdo_lib/rdo_runtime/pch.h"
+#include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <limits>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_runtime/rdobase.h"
-#include "rdo_lib/rdo_runtime/calc/operation_type.h"
+#include "simulator/runtime/rdobase.h"
+#include "simulator/runtime/calc/operation_type.h"
 // --------------------------------------------------------------------------------
 
 #pragma warning(disable : 4786)

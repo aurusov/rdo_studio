@@ -14,10 +14,10 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <iostream>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_converter/rdoparser_base.h"
-#include "rdo_lib/rdo_converter/rdoparser_lexer.h"
-#include "rdo_lib/rdo_converter/rdo_object.h"
-#include "rdo_lib/rdo_runtime/rdo_object.h"
+#include "converter/smr2rdox/rdoparser_base.h"
+#include "converter/smr2rdox/rdoparser_lexer.h"
+#include "converter/smr2rdox/rdo_object.h"
+#include "simulator/runtime/rdo_object.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE

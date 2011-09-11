@@ -12,8 +12,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/smart_ptr/intrusive_ptr.h"
-#include "rdo_lib/rdo_runtime/rdo_type.h"
+#include "utils/smart_ptr/intrusive_ptr.h"
+#include "simulator/runtime/rdo_type.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -172,6 +172,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "rdo_lib/rdo_runtime/rdo_value.inl"
+#include "simulator/runtime/rdo_value.inl"
 
 #endif // _LIB_RUNTIME_VALUE_H_

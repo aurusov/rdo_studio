@@ -12,9 +12,9 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/namespace.h"
-#include "rdo_common/rdomacros.h"
-#include "rdo_common/rdotypes.h"
+#include "utils/namespace.h"
+#include "utils/rdomacros.h"
+#include "utils/rdotypes.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE
@@ -33,6 +33,6 @@ private:
 
 CLOSE_RDO_NAMESPACE
 
-#include "rdo_common/smart_ptr/counter_reference.inl"
+#include "utils/smart_ptr/counter_reference.inl"
 
 #endif // _LIB_COMMON_SMART_PTR_COUNTER_REFERENCE_H_

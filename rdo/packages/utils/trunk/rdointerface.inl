@@ -9,8 +9,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/namespace.h"
-#include "rdo_common/rdodebug.h"
+#include "utils/namespace.h"
+#include "utils/rdodebug.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE

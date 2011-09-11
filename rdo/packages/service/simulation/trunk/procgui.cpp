@@ -10,9 +10,9 @@
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_simulator/procgui.h"
-#include "rdo_lib/rdo_mbuilder/rdo_resources.h"
-#include "rdo_lib/rdo_mbuilder/process.h"
+#include "simulator/service/procgui.h"
+#include "simulator/compiler/mbuilder/rdo_resources.h"
+#include "simulator/compiler/mbuilder/process.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_SIMULATOR_NAMESPACE

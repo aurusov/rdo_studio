@@ -13,9 +13,9 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_parser/rdo_object.h"
-#include "rdo_lib/rdo_parser/rdofun.h"
-#include "rdo_lib/rdo_runtime/rdo_logic_i.h"
+#include "simulator/compiler/parser/rdo_object.h"
+#include "simulator/compiler/parser/rdofun.h"
+#include "simulator/runtime/rdo_logic_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

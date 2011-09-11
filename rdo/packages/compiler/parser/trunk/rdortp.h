@@ -13,13 +13,13 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_parser/rdo_object.h"
-#include "rdo_lib/rdo_parser/rdo_value.h"
-#include "rdo_lib/rdo_parser/type/type.h"
-#include "rdo_lib/rdo_parser/type/enum.h"
-#include "rdo_lib/rdo_parser/rdortp_param.h"
-#include "rdo_lib/rdo_runtime/rdo_object.h"
-#include "rdo_lib/rdo_runtime/rdo_value.h"
+#include "simulator/compiler/parser/rdo_object.h"
+#include "simulator/compiler/parser/rdo_value.h"
+#include "simulator/compiler/parser/type/type.h"
+#include "simulator/compiler/parser/type/enum.h"
+#include "simulator/compiler/parser/rdortp_param.h"
+#include "simulator/runtime/rdo_object.h"
+#include "simulator/runtime/rdo_value.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

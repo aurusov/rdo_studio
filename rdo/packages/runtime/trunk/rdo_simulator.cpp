@@ -9,13 +9,13 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "rdo_lib/rdo_runtime/pch.h"
+#include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/rdostream.h"
-#include "rdo_lib/rdo_runtime/rdo_simulator.h"
-#include "rdo_lib/rdo_runtime/rdo_logic_dptprior.h"
-#include "rdo_lib/rdo_runtime/rdo_model_i.h"
+#include "utils/rdostream.h"
+#include "simulator/runtime/rdo_simulator.h"
+#include "simulator/runtime/rdo_logic_dptprior.h"
+#include "simulator/runtime/rdo_model_i.h"
 // --------------------------------------------------------------------------------
 
 #pragma warning(disable : 4786)  

@@ -201,24 +201,24 @@
 
 %{
 // ---------------------------------------------------------------------------- PCH
-#include "rdo_lib/rdo_parser/pch.h"
+#include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_parser/rdoparser.h"
-#include "rdo_lib/rdo_parser/rdoparser_lexer.h"
-#include "rdo_lib/rdo_parser/rdortp.h"
-#include "rdo_lib/rdo_parser/rdofun.h"
-#include "rdo_lib/rdo_parser/type/range.h"
-#include "rdo_lib/rdo_parser/rdo_array.h"
-#include "rdo_lib/rdo_parser/type/such_as.h"
-#include "rdo_lib/rdo_parser/local_variable.h"
-#include "rdo_lib/rdo_parser/context/type.h"
-#include "rdo_lib/rdo_parser/context/memory.h"
-#include "rdo_lib/rdo_parser/variable_container.h"
-#include "rdo_lib/rdo_runtime/calc/locvar.h"
-#include "rdo_lib/rdo_runtime/calc/braces.h"
-#include "rdo_lib/rdo_runtime/calc/statements.h"
-#include "rdo_lib/rdo_runtime/calc/array.h"
+#include "simulator/compiler/parser/rdoparser.h"
+#include "simulator/compiler/parser/rdoparser_lexer.h"
+#include "simulator/compiler/parser/rdortp.h"
+#include "simulator/compiler/parser/rdofun.h"
+#include "simulator/compiler/parser/type/range.h"
+#include "simulator/compiler/parser/rdo_array.h"
+#include "simulator/compiler/parser/type/such_as.h"
+#include "simulator/compiler/parser/local_variable.h"
+#include "simulator/compiler/parser/context/type.h"
+#include "simulator/compiler/parser/context/memory.h"
+#include "simulator/compiler/parser/variable_container.h"
+#include "simulator/runtime/calc/locvar.h"
+#include "simulator/runtime/calc/braces.h"
+#include "simulator/runtime/calc/statements.h"
+#include "simulator/runtime/calc/array.h"
 // --------------------------------------------------------------------------------
 
 #define PARSER  LEXER->parser()

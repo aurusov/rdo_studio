@@ -12,9 +12,9 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_converter/rdo_object.h"
-#include "rdo_lib/rdo_converter/rdo_value.h"
-#include "rdo_common/smart_ptr/intrusive_ptr.h"
+#include "converter/smr2rdox/rdo_object.h"
+#include "converter/smr2rdox/rdo_value.h"
+#include "utils/smart_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE
@@ -69,6 +69,6 @@ DECLARE_POINTER(RDOTypeRealRange);
 
 CLOSE_RDO_CONVERTER_NAMESPACE
 
-#include "rdo_lib/rdo_converter/rdo_type_range.inl"
+#include "converter/smr2rdox/rdo_type_range.inl"
 
 #endif // _CONVERTOR_RDO_TYPE_RANGE_H_

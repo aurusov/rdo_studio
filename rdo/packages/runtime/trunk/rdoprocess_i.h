@@ -13,8 +13,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/rdointerface.h"
-#include "rdo_common/namespace.h"
+#include "utils/rdointerface.h"
+#include "utils/namespace.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

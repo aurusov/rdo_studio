@@ -18,12 +18,12 @@
 #include "app/rdo_studio_mfc/src/frame/tree_ctrl.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdodebugedit.h"
 #include "app/rdo_studio_mfc/resource.h"
-#include "rdo_kernel/rdokernel.h"
-#include "rdo_kernel/rdothread.h"
-#include "rdo_lib/rdo_simulator/rdosimwin.h"
-#include "rdo_repository/rdorepository.h"
-#include "rdo_common/rdostream.h"
-#include "rdo_common/rdoanimation.h"
+#include "kernel/rdokernel.h"
+#include "kernel/rdothread.h"
+#include "simulator/service/rdosimwin.h"
+#include "repository/rdorepository.h"
+#include "utils/rdostream.h"
+#include "utils/rdoanimation.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

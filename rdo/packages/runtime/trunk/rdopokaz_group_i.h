@@ -12,9 +12,9 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/rdointerface.h"
-#include "rdo_lib/rdo_runtime/rdo_simulator.h"
-#include "rdo_lib/rdo_runtime/rdopokaz_i.h"
+#include "utils/rdointerface.h"
+#include "simulator/runtime/rdo_simulator.h"
+#include "simulator/runtime/rdopokaz_i.h"
 // --------------------------------------------------------------------------------
 
 /*!

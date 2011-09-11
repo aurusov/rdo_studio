@@ -8,13 +8,13 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "rdo_lib/rdo_runtime/pch.h"
+#include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_runtime/rdo_logic_dptsearch.h"
-#include "rdo_lib/rdo_runtime/searchtree.h"
-#include "rdo_lib/rdo_runtime/rdo_rule.h"
-#include "rdo_lib/rdo_runtime/rdo_runtime.h"
+#include "simulator/runtime/rdo_logic_dptsearch.h"
+#include "simulator/runtime/searchtree.h"
+#include "simulator/runtime/rdo_rule.h"
+#include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
 
 #pragma warning(disable : 4786)  

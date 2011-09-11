@@ -17,16 +17,16 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <time.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/namespace.h"
-#include "rdo_common/rdocommon.h"
-#include "rdo_common/smart_ptr/intrusive_ptr.h"
-#include "rdo_lib/rdo_runtime/rdotrace.h"
-#include "rdo_lib/rdo_runtime/simtrace.h"
-#include "rdo_lib/rdo_runtime/rdo_resource.h"
-#include "rdo_lib/rdo_runtime/rdo_runtime_interface_registrator.h"
-#include "rdo_lib/rdo_runtime/rdocalc.h"
-#include "rdo_lib/rdo_runtime/rdo_memory.h"
-#include "rdo_lib/rdo_runtime/thread_proxy_i.h"
+#include "utils/namespace.h"
+#include "utils/rdocommon.h"
+#include "utils/smart_ptr/intrusive_ptr.h"
+#include "simulator/runtime/rdotrace.h"
+#include "simulator/runtime/simtrace.h"
+#include "simulator/runtime/rdo_resource.h"
+#include "simulator/runtime/rdo_runtime_interface_registrator.h"
+#include "simulator/runtime/rdocalc.h"
+#include "simulator/runtime/rdo_memory.h"
+#include "simulator/runtime/thread_proxy_i.h"
 // ------------------------------------------------------------------------------------
 
 class RDOThread;
@@ -314,6 +314,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "rdo_lib/rdo_runtime/rdo_runtime.inl"
+#include "simulator/runtime/rdo_runtime.inl"
 
 #endif // _LIB_RUNTIME_RUNTIME_H_

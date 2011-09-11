@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <math.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_runtime/rdo_value.h"
+#include "simulator/runtime/rdo_value.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -171,6 +171,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "rdo_lib/rdo_runtime/rdo_random_distribution.inl"
+#include "simulator/runtime/rdo_random_distribution.inl"
 
 #endif // _LIB_RUNTIME_RANDOM_DISTRIBUTION_H_

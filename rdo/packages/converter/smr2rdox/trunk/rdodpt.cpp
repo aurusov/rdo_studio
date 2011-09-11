@@ -9,24 +9,24 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "rdo_lib/rdo_converter/pch.h"
+#include "converter/smr2rdox/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_converter/rdodpt.h"
-#include "rdo_lib/rdo_converter/rdoopr.h"
-#include "rdo_lib/rdo_converter/rdoparser.h"
-#include "rdo_lib/rdo_converter/rdoparser_lexer.h"
-#include "rdo_lib/rdo_converter/rdorss.h"
-#include "rdo_lib/rdo_converter/rdo_type.h"
-#include "rdo_lib/rdo_runtime/rdo_rule.h"
-#include "rdo_lib/rdo_runtime/rdo_operation.h"
-#include "rdo_lib/rdo_runtime/rdo_keyboard.h"
-#include "rdo_lib/rdo_runtime/rdoprocess.h"
-#include "rdo_lib/rdo_runtime/rdo_logic_dptfree.h"
-#include "rdo_lib/rdo_runtime/rdo_logic_dptsome.h"
-#include "rdo_lib/rdo_runtime/rdo_logic_dptprior.h"
-#include "rdo_lib/rdo_runtime/rdodptrtime.h"
-#include "rdo_lib/rdo_runtime/rdo_dptsearch_activity.h"
+#include "converter/smr2rdox/rdodpt.h"
+#include "converter/smr2rdox/rdoopr.h"
+#include "converter/smr2rdox/rdoparser.h"
+#include "converter/smr2rdox/rdoparser_lexer.h"
+#include "converter/smr2rdox/rdorss.h"
+#include "converter/smr2rdox/rdo_type.h"
+#include "simulator/runtime/rdo_rule.h"
+#include "simulator/runtime/rdo_operation.h"
+#include "simulator/runtime/rdo_keyboard.h"
+#include "simulator/runtime/rdoprocess.h"
+#include "simulator/runtime/rdo_logic_dptfree.h"
+#include "simulator/runtime/rdo_logic_dptsome.h"
+#include "simulator/runtime/rdo_logic_dptprior.h"
+#include "simulator/runtime/rdodptrtime.h"
+#include "simulator/runtime/rdo_dptsearch_activity.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE

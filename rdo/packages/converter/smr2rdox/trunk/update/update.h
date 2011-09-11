@@ -12,10 +12,10 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/smart_ptr/intrusive_ptr.h"
-#include "rdo_common/rdomacros.h"
+#include "utils/smart_ptr/intrusive_ptr.h"
+#include "utils/rdomacros.h"
 
-#include "rdo_lib/rdo_converter/update/update_i.h"
+#include "converter/smr2rdox/update/update_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE

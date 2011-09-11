@@ -11,7 +11,7 @@
 
 #include <fstream>
 #include "ui/mfc_ctrls/rdolink.h"
-#include "rdo_kernel/rdothread.h"
+#include "kernel/rdothread.h"
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_method_manager.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"

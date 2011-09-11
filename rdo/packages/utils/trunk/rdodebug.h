@@ -12,7 +12,7 @@
 #define _LIB_COMMON_RDODEBUG_H_
 
 // ----------------------------------------------------------------------- PLATFORM
-#include "rdo_common/platform.h"
+#include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #ifdef OST_WINDOWS
 	#ifdef RDO_MT
@@ -25,7 +25,7 @@
 	#include <assert.h>
 #endif
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/rdocommon.h"
+#include "utils/rdocommon.h"
 // --------------------------------------------------------------------------------
 
 #ifdef TRACE

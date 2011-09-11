@@ -9,9 +9,9 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/rdodebug.h"
-#include "rdo_common/namespace.h"
-#include "rdo_common/smart_ptr/intrusive_ptr.h"
+#include "utils/rdodebug.h"
+#include "utils/namespace.h"
+#include "utils/smart_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE

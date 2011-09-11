@@ -9,12 +9,12 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "rdo_lib/rdo_mbuilder/pch.h"
+#include "simulator/compiler/mbuilder/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_mbuilder/process.h"
+#include "simulator/compiler/mbuilder/process.h"
 
-#include "rdo_lib/rdo_parser/rdoparser.h"
+#include "simulator/compiler/parser/rdoparser.h"
 // --------------------------------------------------------------------------------
 
 OPEN_MBUILDER_NAMESPACE

@@ -9,7 +9,7 @@
 */
 
 // ----------------------------------------------------------------------- PLATFORM
-#include "rdo_common/platform.h"
+#include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #ifdef OST_WINDOWS
 	#include <io.h>
@@ -18,8 +18,8 @@
 #include <fstream>
 #include <boost/filesystem.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/rdotypes.h"
-#include "rdo_common/rdomacros.h"
+#include "utils/rdotypes.h"
+#include "utils/rdomacros.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE

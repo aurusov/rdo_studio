@@ -12,9 +12,9 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_parser/rdo_value.h"
-#include "rdo_lib/rdo_parser/expression.h"
-#include "rdo_lib/rdo_parser/context/stack.h"
+#include "simulator/compiler/parser/rdo_value.h"
+#include "simulator/compiler/parser/expression.h"
+#include "simulator/compiler/parser/context/stack.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -46,6 +46,6 @@ private:
 
 CLOSE_RDO_PARSER_NAMESPACE
 
-#include "rdo_lib/rdo_parser/context/context.inl"
+#include "simulator/compiler/parser/context/context.inl"
 
 #endif // _RDOPARSER_CONTEXT_H_

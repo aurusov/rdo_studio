@@ -13,12 +13,12 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/smart_ptr/intrusive_ptr.h"
-#include "rdo_lib/rdo_runtime/rdopokaz.h"
-#include "rdo_lib/rdo_runtime/rdopokaz_group_i.h"
-#include "rdo_lib/rdo_parser/rdo_object.h"
-#include "rdo_lib/rdo_parser/rdofun.h"
-#include "rdo_lib/rdo_parser/context/context.h"
+#include "utils/smart_ptr/intrusive_ptr.h"
+#include "simulator/runtime/rdopokaz.h"
+#include "simulator/runtime/rdopokaz_group_i.h"
+#include "simulator/compiler/parser/rdo_object.h"
+#include "simulator/compiler/parser/rdofun.h"
+#include "simulator/compiler/parser/context/context.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

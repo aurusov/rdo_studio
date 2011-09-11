@@ -12,9 +12,9 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_parser/rdo_object.h"
-#include "rdo_lib/rdo_parser/rdo_value.h"
-#include "rdo_common/smart_ptr/intrusive_ptr.h"
+#include "simulator/compiler/parser/rdo_object.h"
+#include "simulator/compiler/parser/rdo_value.h"
+#include "utils/smart_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -67,6 +67,6 @@ DECLARE_POINTER(RDOTypeRealRange);
 
 CLOSE_RDO_PARSER_NAMESPACE
 
-#include "rdo_lib/rdo_parser/type/range.inl"
+#include "simulator/compiler/parser/type/range.inl"
 
 #endif // _RDOPARSER_TYPE_RANGE_H_

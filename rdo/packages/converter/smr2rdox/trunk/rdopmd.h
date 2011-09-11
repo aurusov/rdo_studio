@@ -13,10 +13,10 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/smart_ptr/intrusive_ptr.h"
-#include "rdo_lib/rdo_runtime/rdopokaz.h"
-#include "rdo_lib/rdo_converter/rdo_object.h"
-#include "rdo_lib/rdo_converter/rdofun.h"
+#include "utils/smart_ptr/intrusive_ptr.h"
+#include "simulator/runtime/rdopokaz.h"
+#include "converter/smr2rdox/rdo_object.h"
+#include "converter/smr2rdox/rdofun.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE

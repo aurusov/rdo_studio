@@ -9,22 +9,22 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "rdo_lib/rdo_converter/pch.h"
+#include "converter/smr2rdox/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/date_time/posix_time/posix_time_types.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/format.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/rdocommon.h"
-#include "rdo_common/rdofile.h"
+#include "utils/rdocommon.h"
+#include "utils/rdofile.h"
 
-#include "rdo_lib/rdo_converter/rdoparser.h"
-#include "rdo_lib/rdo_converter/rdoparser_rdo.h"
-#include "rdo_lib/rdo_converter/rdofun.h"
-#include "rdo_lib/rdo_converter/rdorss.h"
-#include "rdo_lib/rdo_converter/rdo_common/model_objects_convertor.h"
-#include "rdo_lib/rdo_converter/update/update_i.h"
-#include "rdo_lib/rdo_converter/update/update.h"
+#include "converter/smr2rdox/rdoparser.h"
+#include "converter/smr2rdox/rdoparser_rdo.h"
+#include "converter/smr2rdox/rdofun.h"
+#include "converter/smr2rdox/rdorss.h"
+#include "converter/smr2rdox/rdo_common/model_objects_convertor.h"
+#include "converter/smr2rdox/update/update_i.h"
+#include "converter/smr2rdox/update/update.h"
 
 #include "thirdparty/pugixml/src/pugixml.hpp"
 // --------------------------------------------------------------------------------

@@ -14,9 +14,9 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <iostream>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_parser/rdoparser_rdo.h"
-#include "rdo_lib/rdo_parser/param.h"
-#include "rdo_lib/rdo_runtime/rdocalc.h"
+#include "simulator/compiler/parser/rdoparser_rdo.h"
+#include "simulator/compiler/parser/param.h"
+#include "simulator/runtime/rdocalc.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

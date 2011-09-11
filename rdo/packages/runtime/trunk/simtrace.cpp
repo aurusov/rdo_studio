@@ -8,15 +8,15 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "rdo_lib/rdo_runtime/pch.h"
+#include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/rdodebug.h"
-#include "rdo_lib/rdo_runtime/simtrace.h"
-#include "rdo_lib/rdo_runtime/searchtrace.h"
-#include "rdo_lib/rdo_runtime/rdo_rule.h"
-#include "rdo_lib/rdo_runtime/rdo_operation.h"
-#include "rdo_lib/rdo_runtime/rdo_resource.h"
+#include "utils/rdodebug.h"
+#include "simulator/runtime/simtrace.h"
+#include "simulator/runtime/searchtrace.h"
+#include "simulator/runtime/rdo_rule.h"
+#include "simulator/runtime/rdo_operation.h"
+#include "simulator/runtime/rdo_resource.h"
 // --------------------------------------------------------------------------------
 
 #pragma warning(disable : 4786)  

@@ -48,6 +48,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "rdo_lib/rdo_runtime/calc/operation_name.inl"
+#include "simulator/runtime/calc/operation_name.inl"
 
 #endif // _LIB_RUNTIME_CALC_OPERATION_NAME_H_

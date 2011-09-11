@@ -6,8 +6,8 @@
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/htmlhelp.h"
-#include "rdo_kernel/rdokernel.h"
-#include "rdo_lib/rdo_simulator/rdosimwin.h"
+#include "kernel/rdokernel.h"
+#include "simulator/service/rdosimwin.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

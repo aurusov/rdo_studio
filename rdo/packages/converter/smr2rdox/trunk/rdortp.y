@@ -191,16 +191,16 @@
 
 %{
 // ---------------------------------------------------------------------------- PCH
-#include "rdo_lib/rdo_converter/pch.h"
+#include "converter/smr2rdox/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_converter/rdoparser.h"
-#include "rdo_lib/rdo_converter/rdoparser_lexer.h"
-#include "rdo_lib/rdo_converter/rdortp.h"
-#include "rdo_lib/rdo_converter/rdofun.h"
-#include "rdo_lib/rdo_converter/rdo_type_range.h"
-#include "rdo_lib/rdo_converter/rdo_type_param_suchas.h"
-#include "rdo_lib/rdo_converter/update/update.h"
+#include "converter/smr2rdox/rdoparser.h"
+#include "converter/smr2rdox/rdoparser_lexer.h"
+#include "converter/smr2rdox/rdortp.h"
+#include "converter/smr2rdox/rdofun.h"
+#include "converter/smr2rdox/rdo_type_range.h"
+#include "converter/smr2rdox/rdo_type_param_suchas.h"
+#include "converter/smr2rdox/update/update.h"
 // --------------------------------------------------------------------------------
 
 #define CONVERTER LEXER->converter()

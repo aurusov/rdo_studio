@@ -25,13 +25,13 @@
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorresults.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
 #include "app/rdo_studio_mfc/resource.h"
-#include "rdo_kernel/rdokernel.h"
-#include "rdo_kernel/rdothread.h"
-#include "rdo_repository/rdorepository.h"
-#include "rdo_common/rdostream.h"
-#include "rdo_common/rdoanimation.h"
+#include "kernel/rdokernel.h"
+#include "kernel/rdothread.h"
+#include "repository/rdorepository.h"
+#include "utils/rdostream.h"
+#include "utils/rdoanimation.h"
 #include "app/rdo_studio_mfc/plugins/common/rdoplugin.h"
-#include "rdo_lib/rdo_runtime/rdo_exception.h"
+#include "simulator/runtime/rdo_exception.h"
 // --------------------------------------------------------------------------------
 
 using namespace rdoEditor;

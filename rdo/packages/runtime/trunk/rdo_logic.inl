@@ -10,11 +10,11 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/rdomacros.h"
-#include "rdo_lib/rdo_runtime/rdotrace.h"
-#include "rdo_lib/rdo_runtime/rdo_simulator.h"
-#include "rdo_lib/rdo_runtime/rdo_priority.h"
-#include "rdo_lib/rdo_runtime/rdo_runtime.h"
+#include "utils/rdomacros.h"
+#include "simulator/runtime/rdotrace.h"
+#include "simulator/runtime/rdo_simulator.h"
+#include "simulator/runtime/rdo_priority.h"
+#include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

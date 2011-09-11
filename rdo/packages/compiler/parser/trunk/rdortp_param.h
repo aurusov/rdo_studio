@@ -13,9 +13,9 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_parser/param.h"
-#include "rdo_lib/rdo_runtime/rdo_model_i.h"
-#include "rdo_common/smart_ptr/intrusive_ptr.h"
+#include "simulator/compiler/parser/param.h"
+#include "simulator/runtime/rdo_model_i.h"
+#include "utils/smart_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

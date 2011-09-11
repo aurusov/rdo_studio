@@ -11,20 +11,20 @@
 #define _LIB_RUNTIME_ARRAY_DEF_H_
 
 #ifndef _LIB_RUNTIME_VALUE_H_
-#error include "rdo_lib/rdo_runtime/rdo_value.h" first (вместо "rdo_array_def.h" надо инклюдить "rdo_array.h")
+#error include "simulator/runtime/rdo_value.h" first (вместо "rdo_array_def.h" надо инклюдить "rdo_array.h")
 #endif
 
 //
 // Напрямую этот файл инклюдить не надо, юзайте
-// #include "rdo_lib/rdo_runtime/rdo_array.h"
+// #include "simulator/runtime/rdo_array.h"
 //
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <string>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_runtime/rdo_type.h"
-#include "rdo_lib/rdo_runtime/rdo_object.h"
-#include "rdo_common/rdocommon.h"
+#include "simulator/runtime/rdo_type.h"
+#include "simulator/runtime/rdo_object.h"
+#include "utils/rdocommon.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

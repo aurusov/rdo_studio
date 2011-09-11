@@ -13,13 +13,13 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_lib/rdo_converter/namespace.h"
-#include "rdo_lib/rdo_converter/rdobison.h"
-#include "rdo_lib/rdo_converter/rdogramma.h"
-#include "rdo_lib/rdo_runtime/rdo_object.h"
-#include "rdo_common/rdomacros.h"
-#include "rdo_common/rdotypes.h"
-#include "rdo_common/smart_ptr/intrusive_ptr.h"
+#include "converter/smr2rdox/namespace.h"
+#include "converter/smr2rdox/rdobison.h"
+#include "converter/smr2rdox/rdogramma.h"
+#include "simulator/runtime/rdo_object.h"
+#include "utils/rdomacros.h"
+#include "utils/rdotypes.h"
+#include "utils/smart_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE
