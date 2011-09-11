@@ -5,8 +5,8 @@
 #pragma once
 #endif
 
-#include "app/rdo_studio_mfc/sizecbar/sizecbar.h"
-#include "app/rdo_studio_mfc/sizecbar/scbarg.h"
+#include "thirdparty/sizecbar/sizecbar.h"
+#include "thirdparty/sizecbar/scbarg.h"
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioDockWnd
