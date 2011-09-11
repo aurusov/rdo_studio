@@ -38,35 +38,15 @@
 #include <list>
 #include <algorithm>
 
-#ifdef ASSERT
-#undef ASSERT
-#endif
-
-#ifdef TRACE
-#undef TRACE
-#endif
-#ifdef TRACE1
-#undef TRACE1
-#endif
-#ifdef TRACE2
-#undef TRACE2
-#endif
-#ifdef TRACE3
-#undef TRACE3
-#endif
-
 #include "rdo_common/rdodebug.h"
 #include "rdo_common/rdocommon.h"
 #include "rdo_common/rdotypes.h"
 #include "rdo_common/rdomacros.h"
 #include "rdo_common/rdodebug.h"
 
-#include "thirdparty/sizecbar/sizecbar.h"
-#include "thirdparty/sizecbar/scbarg.h"
-
-void appendMenu( CMenu* from, const int from_index, CMenu* to );
-void eraseMenu( CMenu* from, const int from_index = -1 );
-int roundDouble( const double val );
+void appendMenu (PTR(CMenu) pFrom, const int from_index, PTR(CMenu) pTo);
+void eraseMenu  (PTR(CMenu) pFrom, const int from_index = -1 );
+int  roundDouble(const double val);
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

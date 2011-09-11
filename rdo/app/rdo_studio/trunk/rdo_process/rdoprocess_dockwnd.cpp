@@ -1,5 +1,5 @@
 #include "app/rdo_studio_mfc/pch/stdpch.h"
-#include "rdoprocess_dockwnd.h"
+#include "app/rdo_studio_mfc/rdo_process/rdoprocess_dockwnd.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
