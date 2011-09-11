@@ -2760,18 +2760,6 @@
 				RelativePath=".\src\workspace.h"
 				>
 			</File>
-			<Filter
-				Name=".win.registry"
-				>
-				<File
-					RelativePath=".\win_registry\Registry.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\win_registry\Registry.h"
-					>
-				</File>
-			</Filter>
 		</Filter>
 		<Filter
 			Name=".model"
@@ -5619,6 +5607,70 @@
 				</File>
 				<File
 					RelativePath="..\..\thirdparty\sizecbar\sizecbar.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name=".win.registry"
+				>
+				<File
+					RelativePath="..\..\thirdparty\win_registry\Registry.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\thirdparty\win_registry\Registry.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\thirdparty\win_registry\resource.h"
 					>
 				</File>
 			</Filter>

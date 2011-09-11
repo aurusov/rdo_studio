@@ -10,15 +10,15 @@
 #include "app/rdo_studio_mfc/src/model/new.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
 #include "app/rdo_studio_mfc/htmlhelp.h"
-#include "app/rdo_studio_mfc/win_registry/registry.h"
-#include "rdo_repository/rdorepository.h"
-#include "rdo_lib/rdo_simulator/rdosimwin.h"
 #include "app/rdo_studio_mfc/plugins/common/rdoplugin.h"
-#include "rdo_kernel/rdothread.h"
-#include "rdo_common/rdofile.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_factory.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_method.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_project.h"
+#include "rdo_common/rdofile.h"
+#include "rdo_kernel/rdothread.h"
+#include "rdo_repository/rdorepository.h"
+#include "rdo_lib/rdo_simulator/rdosimwin.h"
+#include "thirdparty/win_registry/registry.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
