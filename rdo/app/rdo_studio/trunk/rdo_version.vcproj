@@ -57,7 +57,7 @@
 			<Tool
 				Name="VCPostBuildEventTool"
 				Description="generate version"
-				CommandLine="..\thirdparty\svnversion\svnversion .. | ..\thirdparty\svnversion\version_diff.exe"
+				CommandLine="..\..\thirdparty\svnversion\svnversion ..\.. | ..\..\thirdparty\svnversion\version_diff.exe res/version.h"
 			/>
 		</Configuration>
 	</Configurations>
