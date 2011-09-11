@@ -18,9 +18,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".help", ".help", "{5810CF5F-91F9-4CEA-9355-1BF51A22CC1D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".resources (not for compiler)", ".resources (not for compiler)", "{9ECFE882-0486-4248-9A76-7F44E9732861}"
-	ProjectSection(SolutionItems) = preProject
-		app\rdo_studio_mfc\help\rdodoc-src-html.doxyfile = app\rdo_studio_mfc\help\rdodoc-src-html.doxyfile
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "help_tools", "help_tools", "{2B5E6C99-0AC7-4736-8647-E69E9327A8E0}"
 	ProjectSection(SolutionItems) = preProject
