@@ -25,10 +25,7 @@
 // --------------------------------------------------------------------------------
 
 //! Тип символа
-typedef  signed char                tchar;
-
-//! Тип байта
-typedef  unsigned char              rbyte;
+typedef  char                       tchar;
 
 //! Тип строки
 typedef  std::basic_string<tchar>   tstring;
@@ -42,16 +39,13 @@ typedef  signed int                 rsint;
 //! Целый беззнаковый тип
 typedef  unsigned int               ruint;
 
-//! Целый знаковый длинный тип
-typedef  signed long int            rslong;
-
-//! Целый беззнаковый длинный тип
-typedef  unsigned long int          rulong;
-
 //! Целый знаковый 64-х битный тип
 typedef  signed long long int       rsint64;
 
 //! Целый беззнаковый 64-х битный тип
 typedef  unsigned long long int     ruint64;
+
+//! Тип байта
+typedef  unsigned char              rbyte;
 
 #endif // _UTILS_RDOTYPES_H_
