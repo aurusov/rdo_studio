@@ -45,7 +45,7 @@ inline void TreeNode::onSearchNodeInfoNew(CREF(LPRDORuntime) pRuntime)
 {}
 
 /*!
-  \fn      compareNodes
+  \fn      rbool compareNodes(const TreeNode* tn1, const TreeNode* tn2)
   \brief   функция сравнения вершин графа для сортировки списка OPEN
 */
 inline rbool compareNodes(const TreeNode* tn1, const TreeNode* tn2)

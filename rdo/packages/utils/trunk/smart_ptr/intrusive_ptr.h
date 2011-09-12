@@ -83,7 +83,7 @@ private:
 	REF(ruint) counter();
 };
 
-//! \class Factory<T>
+//! \class Factory
 //! Фабрика, используется для создания и автоматического удаления объектов
 //! \tparam T - Тип создаваемого объекта
 template <class T>

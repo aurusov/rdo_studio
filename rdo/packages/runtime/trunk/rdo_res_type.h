@@ -23,7 +23,7 @@ class RDORuntime;
 class RDOResource;
 class RDOPROCTransact;
 
-/// @todo сделать классы \a RDOResourceType, \a RDOResourceTypeTransact и \a RDOResourceTypeProccess шаблонным
+//! @todo сделать классы \ref RDOResourceType, \ref RDOResourceTypeTransact и \ref RDOResourceTypeProccess шаблонными
 
 /*!
   \class   RDOResourceType
@@ -42,7 +42,7 @@ friend class RDOPROCGenerate;
 private:
 	/*!
 	  \brief Конструктор
-	  \param Целочисленный идентификатор
+	  \param number - Целочисленный идентификатор
 	*/
 	RDOResourceType(ruint number);
 	virtual ~RDOResourceType();
@@ -65,7 +65,7 @@ DECLARE_FACTORY(RDOResourceTypeTransact);
 private:
 	/*!
 	  \brief Конструктор
-	  \param Целочисленный идентификатор
+	  \param number - Целочисленный идентификатор
 	*/
 	RDOResourceTypeTransact(ruint number);
 	virtual ~RDOResourceTypeTransact();
@@ -88,7 +88,7 @@ DECLARE_FACTORY(RDOResourceTypeProccess);
 private:
 	/*!
 	  \brief Конструктор
-	  \param Целочисленный идентификатор
+	  \param number - Целочисленный идентификатор
 	*/
 	RDOResourceTypeProccess(ruint number);
 	virtual ~RDOResourceTypeProccess();

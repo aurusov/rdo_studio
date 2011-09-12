@@ -45,7 +45,7 @@ public:
 	DECLARE_FACTORY(RDOFRMPosition)
 	public:
 		/*!
-		  \enum      RDOFRMFrame
+		  \enum      PositionType
 		  \brief     Тип позици кадра
 		*/
 		enum PositionType
