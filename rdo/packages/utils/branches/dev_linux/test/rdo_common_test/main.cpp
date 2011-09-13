@@ -14,10 +14,10 @@
 #define BOOST_TEST_MODULE RDOCommon_Test
 #include <boost/test/included/unit_test.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/rdocommon.h"
-#include "rdo_common/rdofile.h"
-#include "rdo_common/rdotime.h"
-#include "rdo_common/test/rdo_common_test/resource.h"
+#include "utils/rdocommon.h"
+#include "utils/rdofile.h"
+#include "utils/rdotime.h"
+#include "utils/test/rdo_common_test/resource.h"
 // --------------------------------------------------------------------------------
 
 const tstring s_testFileName(_T("test_file"));

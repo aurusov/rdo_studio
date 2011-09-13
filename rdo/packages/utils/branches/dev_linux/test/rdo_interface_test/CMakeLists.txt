@@ -18,11 +18,11 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 ADD_EXECUTABLE(test_rdo_interface ${SOURCE_FILES})
 ADD_TEST(NAME test_rdo_interface COMMAND ${EXECUTABLE_OUTPUT_PATH}/test_rdo_interface)
-ADD_DEPENDENCIES(test_rdo_interface rdo_nix_common)
+ADD_DEPENDENCIES(test_rdo_interface rdo_nix_utils)
 
 IF(MSVC)
 	SET_TARGET_PROPERTIES(test_rdo_interface PROPERTIES COMPILE_FLAGS "/EHa")
 ENDIF()
 
-TARGET_LINK_LIBRARIES(test_rdo_interface rdo_nix_common)
+TARGET_LINK_LIBRARIES(test_rdo_interface rdo_nix_utils)
 TARGET_LINK_LIBRARIES(test_rdo_interface ${Boost_LIBRARIES})
