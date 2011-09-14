@@ -83,7 +83,8 @@ SOURCE_GROUP(".file" FILES
 	rdofile.cpp)
 
 SOURCE_GROUP(".interface" FILES 
-	rdointerface.h)
+	rdointerface.h
+	rdointerface.inl)
 
 SOURCE_GROUP(".smart_prt" FILES
 	rdosmart_ptr_wrapper.h
