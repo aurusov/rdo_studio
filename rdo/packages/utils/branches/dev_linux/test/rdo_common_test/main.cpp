@@ -52,12 +52,12 @@ BOOST_AUTO_TEST_CASE(RDOCommon_FileExist)
 
 BOOST_AUTO_TEST_CASE(RDOCommon_FileReadOnly)
 {
-	BOOST_CHECK(!rdo::File::read_only(s_testFileName));
+        BOOST_CHECK(!rdo::File::read_only(s_testFileName));
 }
 
 BOOST_AUTO_TEST_CASE(RDOCommon_FileRemove)
 {
-	BOOST_CHECK(rdo::File::unlink(s_testFileName));
+        BOOST_CHECK(rdo::File::unlink(s_testFileName));
 }
 
 BOOST_AUTO_TEST_CASE(RDOCommon_GetTempFile)
