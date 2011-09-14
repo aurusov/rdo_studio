@@ -18,7 +18,7 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 ADD_EXECUTABLE(test_rdo_type ${SOURCE_FILES})
 ADD_TEST(NAME test_rdo_type COMMAND ${EXECUTABLE_OUTPUT_PATH}/test_rdo_type)
-ADD_DEPENDENCIES(test_rdo_type rdo_nix_common)
+ADD_DEPENDENCIES(test_rdo_type rdo_nix_parser)
 
 IF(MSVC)
 	SET_TARGET_PROPERTIES(test_rdo_type PROPERTIES COMPILE_FLAGS "/EHa")
