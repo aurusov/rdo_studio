@@ -11,7 +11,7 @@
 // ====================================================================== INCLUDES
 #include <iostream>
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_runtime/rdo_value.h"
+#include "simulator/runtime/rdo_value.h"
 // ===============================================================================
 
 using namespace rdoRuntime;

@@ -11,8 +11,8 @@
 // ====================================================================== INCLUDES
 #include <iostream>
 // ====================================================================== SYNOPSIS
-#include "rdo_lib/rdo_runtime/rdo_runtime.h"
-#include "rdo_lib/rdo_runtime/rdo_fuzzy.h"
+#include "simulator/runtime/rdo_runtime.h"
+#include "simulator/runtime/rdo_fuzzy.h"
 // ===============================================================================
 
 using namespace rdoRuntime;

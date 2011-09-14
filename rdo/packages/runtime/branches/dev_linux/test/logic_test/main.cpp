@@ -12,9 +12,9 @@
 #include <vector>
 #include <algorithm>
 // ====================================================================== SYNOPSIS
-#include "rdo_common/rdomacros.h"
-#include "rdo_common/rdotypes.h"
-#include "rdo_common/rdodebug.h"
+#include "utils/rdomacros.h"
+#include "utils/rdotypes.h"
+#include "utils/rdodebug.h"
 // ===============================================================================
 
 class MyOperation

@@ -11,7 +11,6 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_value.h"
 #include "simulator/runtime/rdo_fuzzy_def.h"
-#include "simulator/runtime/rdo_fuzzy.inl"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

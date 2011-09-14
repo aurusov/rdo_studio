@@ -2,14 +2,14 @@
 #include <iostream>
 #include <stdio.h>
 // ====================================================================== SYNOPSIS
-#include "rdo_lib\rdo_runtime\rdo_value.h"
-#include "rdo_lib\rdo_runtime\rdo_array.h"
-#include "rdo_lib\rdo_runtime\rdo_type.h"
+#include "simulator/runtime/rdo_value.h"
+#include "simulator/runtime/rdo_array.h"
+#include "simulator/runtime/rdo_type.h"
 // ===============================================================================
 
 using namespace rdoRuntime;
 
-#include "rdo_lib\rdo_runtime\test\rdo_array_test\arrayTestFunction.inl"
+#include "simulator/runtime/test/rdo_array_test/arrayTestFunction.inl"
 
 void main()
 {
