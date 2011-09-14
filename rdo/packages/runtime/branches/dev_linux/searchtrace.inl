@@ -9,6 +9,11 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "simulator/runtime/rdo.h"
+#include "simulator/runtime/searchtree.h"
+#include "simulator/runtime/rdotrace.h"
+#include "simulator/runtime/simtrace.h"
+#include "simulator/runtime/searchtrace_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
