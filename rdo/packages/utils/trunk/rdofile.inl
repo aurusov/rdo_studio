@@ -12,12 +12,15 @@
 #include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #ifdef OST_WINDOWS
-	#include <io.h>
+        #include <io.h>
+#else
+        #include <unistd.h>
 #endif
 
 #include <fstream>
 #include <boost/filesystem.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/namespace.h"
 #include "utils/rdotypes.h"
 #include "utils/rdomacros.h"
 // --------------------------------------------------------------------------------
@@ -47,8 +50,7 @@ inline rbool File::read_only(CREF(tstring) name)
 #ifdef OST_WINDOWS
 	return _access(name.c_str(), 04) == 0 && _access(name.c_str(), 06) == -1;
 #else  // not OST_WINDOWS
-	//! @todo написать реализацию под линуха
-	return true;
+	return access(name.c_str(), R_OK) == 0 && access(name.c_str(), W_OK) == -1;
 #endif // OST_WINDOWS
 }
 

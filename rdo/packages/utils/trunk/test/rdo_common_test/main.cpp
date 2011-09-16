@@ -8,16 +8,18 @@
   \indent    4T
 */
 
+// ----------------------------------------------------------------------- PLATFORM
+#include "utils/platform.h"
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/regex.hpp>
 #define BOOST_TEST_MODULE RDOCommon_Test
 #include <boost/test/included/unit_test.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "rdo_common/rdocommon.h"
-#include "rdo_common/rdofile.h"
-#include "rdo_common/rdotime.h"
-#include "rdo_common/test/rdo_common_test/resource.h"
+#include "utils/rdocommon.h"
+#include "utils/rdofile.h"
+#include "utils/rdotime.h"
+#include "utils/test/rdo_common_test/resource.h"
 // --------------------------------------------------------------------------------
 
 const tstring s_testFileName(_T("test_file"));
@@ -28,7 +30,7 @@ const ruint64 s_createTestLocalTime = 129557633912040000;
 
 BOOST_AUTO_TEST_SUITE(RDOCommon_Test)
 
-#ifdef WIN32
+#ifdef OST_WINDOWS
 BOOST_AUTO_TEST_CASE(RDOCommon_ResourceFormat)
 {
 	tstring str1 = rdo::format(IDS_STRING101);
