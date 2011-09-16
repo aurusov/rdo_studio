@@ -159,7 +159,7 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Source Files"
+			Name=".test"
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
@@ -169,7 +169,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Inline Files"
+			Name=".inl"
 			>
 			<File
 				RelativePath=".\arrayCreate.inl"
