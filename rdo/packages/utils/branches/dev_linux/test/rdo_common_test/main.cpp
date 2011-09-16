@@ -8,6 +8,8 @@
   \indent    4T
 */
 
+// ----------------------------------------------------------------------- PLATFORM
+#include "utils/platform.h"
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/regex.hpp>
@@ -28,7 +30,7 @@ const ruint64 s_createTestLocalTime = 129557633912040000;
 
 BOOST_AUTO_TEST_SUITE(RDOCommon_Test)
 
-#ifdef WIN32
+#ifdef OST_WINDOWS
 BOOST_AUTO_TEST_CASE(RDOCommon_ResourceFormat)
 {
 	tstring str1 = rdo::format(IDS_STRING101);
@@ -52,12 +54,12 @@ BOOST_AUTO_TEST_CASE(RDOCommon_FileExist)
 
 BOOST_AUTO_TEST_CASE(RDOCommon_FileReadOnly)
 {
-        BOOST_CHECK(!rdo::File::read_only(s_testFileName));
+	BOOST_CHECK(!rdo::File::read_only(s_testFileName));
 }
 
 BOOST_AUTO_TEST_CASE(RDOCommon_FileRemove)
 {
-        BOOST_CHECK(rdo::File::unlink(s_testFileName));
+	BOOST_CHECK(rdo::File::unlink(s_testFileName));
 }
 
 BOOST_AUTO_TEST_CASE(RDOCommon_GetTempFile)
