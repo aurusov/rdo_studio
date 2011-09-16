@@ -613,11 +613,10 @@ dpt_some_parent
 	;
 
 dpt_some_begin
-	: RDO_Decision_point RDO_IDENTIF_COLON RDO_some dpt_some_parent dpt_some_trace
+	: RDO_Decision_point RDO_IDENTIF_COLON RDO_some dpt_some_trace dpt_some_parent
 	{
-		/// @todo а где признак трассировки для some ?
 		PTR(RDOValue) name        = P_RDOVALUE($2);
-		PTR(RDOValue) parent_name = P_RDOVALUE($4);
+		PTR(RDOValue) parent_name = P_RDOVALUE($5);
 		LPRDODPTSome  pDPTSome;
 		if (parent_name)
 		{
