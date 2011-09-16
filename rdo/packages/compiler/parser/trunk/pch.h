@@ -11,12 +11,16 @@
 #ifndef _PARSER_PCH_H_
 #define _PARSER_PCH_H_
 
-#pragma warning(disable: 4786)  
+// ----------------------------------------------------------------------- PLATFORM
+#include "utils/platform.h"
 
-#ifndef WINVER               //! Allow use of features specific to Windows XP or later.
-#define WINVER 0x0501        //! Change this to the appropriate value to target other versions of Windows.
+#ifdef OST_WINDOWS
+	#pragma warning(disable: 4786) 
 #endif
 
+#ifndef WINVER               //! Allow use of features specific to Windows XP or later.
+	#define WINVER 0x0501        //! Change this to the appropriate value to target other versions of Windows.
+#endif
 // ----------------------------------------------------------------------- INCLUDES
 #include <algorithm>
 #include <vector>
