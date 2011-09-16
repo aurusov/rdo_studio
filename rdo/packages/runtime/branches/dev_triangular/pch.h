@@ -7,17 +7,21 @@
   \indent    4T
 */
 
-#pragma warning(disable : 4786)
-
-#ifndef WINVER               // Allow use of features specific to Windows XP or later.
-#define WINVER 0x0501        // Change this to the appropriate value to target other versions of Windows.
+// ----------------------------------------------------------------------- PLATFORM
+#include "utils/platform.h"
+#ifdef OST_WINDOWS
+	#pragma warning(disable : 4786)
 #endif
-
+#ifndef WINVER               // Allow use of features specific to Windows XP or later.
+	#define WINVER 0x0501     // Change this to the appropriate value to target other versions of Windows.
+#endif
 // ----------------------------------------------------------------------- INCLUDES
-#ifdef RDO_MT
-#include <afxwin.h>
-#else
-#include <windows.h>
+#ifdef OST_WINDOWS
+	#ifdef RDO_MT
+		#include <afxwin.h>
+	#else
+		#include <windows.h>
+	#endif
 #endif
 #include <algorithm>
 #include <list>

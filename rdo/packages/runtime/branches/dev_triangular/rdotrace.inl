@@ -9,6 +9,11 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/smart_ptr/intrusive_ptr.h"
+#include "simulator/runtime/rdo.h"
+#include "simulator/runtime/rdotrace_i.h"
+#include "simulator/runtime/rdo_runtime_interface_registrator.h"
+#include "simulator/runtime/rdo_object.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

@@ -1,20 +1,33 @@
-RDOValue integerVal1(1);
-RDOValue integerVal2(2);
-RDOValue integerVal3(3);
-RDOValue integerVal4(4);
-RDOValue integerVal5(5);
-RDOValue integerVal6(6);
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      arrayCreate.inl
+  \authors   Чирков Михаил
+  \date      01.10.2010
+  \brief     Тест массивов
+  \indent    4T
+*/
 
-RDOArrayType atype1(NULL, g_int);
-RDOArrayValue avalue1(atype1);
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
+// --------------------------------------------------------------------------------
+
+rdoRuntime::RDOValue integerVal1(1);
+rdoRuntime::RDOValue integerVal2(2);
+rdoRuntime::RDOValue integerVal3(3);
+rdoRuntime::RDOValue integerVal4(4);
+rdoRuntime::RDOValue integerVal5(5);
+rdoRuntime::RDOValue integerVal6(6);
+
+rdoRuntime::LPRDOArrayType atype1 = rdo::Factory<rdoRuntime::RDOArrayType>::create(rdoRuntime::g_int);
+rdoRuntime::RDOArrayValue avalue1(atype1);
 avalue1.insertItem(integerVal1);
 avalue1.insertItem(integerVal2);
 avalue1.insertItem(integerVal3);
-RDOValue arrayVal1(avalue1);
+rdoRuntime::RDOValue arrayVal1(avalue1);
 
-RDOArrayType atype2(NULL, g_int);
-RDOArrayValue avalue2(atype2);
+rdoRuntime::LPRDOArrayType atype2 = rdo::Factory<rdoRuntime::RDOArrayType>::create(rdoRuntime::g_int);
+rdoRuntime::RDOArrayValue avalue2(atype2);
 avalue2.insertItem(integerVal4);
 avalue2.insertItem(integerVal5);
 avalue2.insertItem(integerVal6);
-RDOValue arrayVal2(avalue2);
+rdoRuntime::RDOValue arrayVal2(avalue2);
