@@ -12,9 +12,9 @@
 #include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #ifdef OST_WINDOWS
-        #include <io.h>
+	#include <io.h>
 #else
-        #include <unistd.h>
+	#include <unistd.h>
 #endif
 
 #include <fstream>
