@@ -18,11 +18,11 @@
 #include "utils/rdocommon.h"
 #include "utils/smart_ptr/intrusive_ptr.h"
 #ifdef OST_WINDOWS
-#ifdef RDO_MT
-#   include <afxwin.h>
-#else
-#   include <windows.h>
-#   endif
+	#ifdef RDO_MT
+		#include <afxwin.h>
+	#else
+		#include <windows.h>
+	#endif
 #endif
 // --------------------------------------------------------------------------------
 

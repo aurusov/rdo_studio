@@ -61,7 +61,7 @@ OPEN_RDO_NAMESPACE
 	//! \param  str    - исходная строка, которая может содержать символы форматирования
 	//! \param  params - определенный по формату набор параметров (вытащенный по формату из стека)
 	//! \result Отформатированная строчка
-        tstring format(CPTR(tchar) str, REF(va_list) params);
+	tstring format(CPTR(tchar) str, REF(va_list) params);
 
 #ifdef OST_WINDOWS
 	//! Формирование строки по формату, аналогично <a href="http://ru.wikipedia.org/wiki/Printf">printf</a>

@@ -139,8 +139,8 @@ public:
 		ruint m_last_line;
 		ruint m_last_pos;
 
-                Position();
-                Position(ruint first_line, ruint first_pos, ruint last_line, ruint last_pos);
+		Position();
+		Position(ruint first_line, ruint first_pos, ruint last_line, ruint last_pos);
 		rbool empty() const;
 		rbool point() const;
 	};

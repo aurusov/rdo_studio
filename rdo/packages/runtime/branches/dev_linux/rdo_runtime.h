@@ -15,7 +15,7 @@
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/platform.h"
 #ifdef OST_WINDOWS
-#   pragma warning(disable : 4786)
+	#pragma warning(disable : 4786)
 #endif
 // ----------------------------------------------------------------------- INCLUDES
 #include <time.h>
