@@ -1,27 +1,29 @@
-/*
- * copyright: (c) RDO-Team, 2009
- * filename : main.cpp
- * author   : Урусов Андрей (rdo@rk9.bmstu.ru)
- * date     : 10.05.2009
- * bref     : Тест нечеткой логики
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      main.cpp
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      10.05.2009
+  \brief     Тест нечёткой логики
+  \indent    4T
+*/
 
-// ====================================================================== PCH
-// ====================================================================== INCLUDES
+// ---------------------------------------------------------------------------- PCH
+// ----------------------------------------------------------------------- INCLUDES
 #include <iostream>
-// ====================================================================== SYNOPSIS
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/runtime/rdo_fuzzy.h"
-// ===============================================================================
+// --------------------------------------------------------------------------------
 
 using namespace rdoRuntime;
 
 void main()
 {
-	RDORuntime runtime;
-	PTR(RDOFuzzySetDefinitionRangeDiscret) setDefinition1 = new RDOFuzzySetDefinitionRangeDiscret(&runtime, 0, 50);
-	RDOFuzzyType type1(setDefinition1);
+	LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create();
+	ASSERT(pRuntime);
+
+	PTR(RDOFuzzySetDefinitionRangeDiscret) setDefinition1 = new RDOFuzzySetDefinitionRangeDiscret(0, 50);
+	LPRDOFuzzyType type1 = rdo::Factory<RDOFuzzyType>::create(setDefinition1);
 
 	RDOFuzzyValue value1(type1);
 	value1.append(1, 1.0)(2, 1.0)(23, 1.0)(4, 1.0)(5, 1.0)(6, 1.0)(7, 1.0)(8, 1.0)(9, 1.0);
