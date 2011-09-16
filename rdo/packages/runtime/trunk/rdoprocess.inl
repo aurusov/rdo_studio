@@ -9,6 +9,10 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "simulator/runtime/rdo.h"
+#include "simulator/runtime/rdo_runtime.h"
+#include "simulator/runtime/rdoprocess_i.h"
+#include "simulator/runtime/rdo_logic.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

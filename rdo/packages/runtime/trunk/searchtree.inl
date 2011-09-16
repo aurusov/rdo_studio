@@ -9,6 +9,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "simulator/runtime/rdo_logic_dptsearch.h"
+#include "simulator/runtime/rdo_dptsearch_activity_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

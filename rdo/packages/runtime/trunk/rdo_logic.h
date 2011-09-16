@@ -11,8 +11,11 @@
 #ifndef _LIB_RUNTIME_LOGIC_H_
 #define _LIB_RUNTIME_LOGIC_H_
 
-#pragma warning(disable : 4786)
-
+// ----------------------------------------------------------------------- PLATFORM
+#include "utils/platform.h"
+#ifdef OST_WINDOWS
+	#pragma warning(disable : 4786)
+#endif
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/namespace.h"
