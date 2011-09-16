@@ -25,20 +25,13 @@ OPEN_RDO_RUNTIME_NAMESPACE
 CALC(RDOSelectResourceCalc)
 {
 public:
-	/*!
-	  \enum  Type
-	  \brief —пособ выбора релевантного ресурса
-	  \var   order_empty    —пособ выбора не задан
-	  \var   order_first    ѕервый попавшийс€ (без предварительной сортировки)
-	  \var   order_with_min — минимальным значением выражени€
-	  \var   order_with_max — максимальным значением выражени€
-	*/
+	//! —пособ выбора релевантного ресурса
 	enum Type
 	{
-		order_empty = 0,
-		order_first,
-		order_with_min, 
-		order_with_max
+		order_empty = 0, //!< —пособ выбора не задан
+		order_first,     //!< ѕервый попавшийс€ (без предварительной сортировки)
+		order_with_min,  //!< — минимальным значением выражени€
+		order_with_max   //!< — максимальным значением выражени€
 	};
 
 protected:
