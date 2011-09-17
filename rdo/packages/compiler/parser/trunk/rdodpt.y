@@ -243,7 +243,7 @@ dpt_main
 	| dpt_main dpt_prior_end
 	| error
 	{
-		PARSER->error().error(@1, _T("Ожидается описание точки или свободного блока активностей"));
+		PARSER->error().error(@1, _T("Ожидается описание точки"));
 	}
 	;
 
