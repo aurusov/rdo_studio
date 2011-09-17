@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      stack.h
+  \file      simulator/compiler/parser/context/stack.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      06.06.2010
   \brief     

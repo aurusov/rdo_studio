@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      rdo_value.inl
+  \file      simulator/runtime/rdo_value.inl
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      24.07.2008
   \brief     RDOValue

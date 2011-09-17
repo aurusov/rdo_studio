@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      rdo_array.cpp
+  \file      simulator/runtime/rdo_array.cpp
   \author    Чирков Михаил
   \date      14.12.2009
   \brief     Массив
