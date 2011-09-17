@@ -8,8 +8,8 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "simulator/runtime/pch.h"
+#include "converter/smr2rdox/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/rdo_logic_dptfree.h"
+#include "converter/smr2rdox/runtime/rdo_logic_dptfree.h"
 // --------------------------------------------------------------------------------

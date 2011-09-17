@@ -38,6 +38,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/rdo_logic_dptfree.inl"
+#include "converter/smr2rdox/runtime/rdo_logic_dptfree.inl"
 
 #endif // _LIB_RUNTIME_LOGIC_DPTFREE_H_

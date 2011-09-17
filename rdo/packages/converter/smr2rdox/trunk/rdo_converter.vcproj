@@ -2652,6 +2652,18 @@
 				RelativePath=".\runtime\rdo_ie.h"
 				>
 			</File>
+			<File
+				RelativePath=".\runtime\rdo_logic_dptfree.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\runtime\rdo_logic_dptfree.h"
+				>
+			</File>
+			<File
+				RelativePath=".\runtime\rdo_logic_dptfree.inl"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
