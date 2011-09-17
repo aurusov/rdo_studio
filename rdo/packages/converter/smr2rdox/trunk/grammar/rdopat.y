@@ -1,11 +1,11 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdopat.y
-  \authors   Барс Александр
-  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
+  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
   \date      12.07.2010
-  \brief     закладка PAT - описание образцов активностей модели
+  \brief     Р·Р°РєР»Р°РґРєР° PAT - РѕРїРёСЃР°РЅРёРµ РѕР±СЂР°Р·С†РѕРІ Р°РєС‚РёРІРЅРѕСЃС‚РµР№ РјРѕРґРµР»Рё
   \indent    4T
 */
 
@@ -256,7 +256,7 @@ pat_main
 	}
 	| error
 	{
-		CONVERTER->error().error(@1, _T("Неизвестная ошибка"));
+		CONVERTER->error().error(@1, _T("РќРµРёР·РІРµСЃС‚РЅР°СЏ РѕС€РёР±РєР°"));
 	}
 	;
 
@@ -300,11 +300,11 @@ pat_header
 	}
 	| RDO_Pattern error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается имя образца"));
+		CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ РѕР±СЂР°Р·С†Р°"));
 	}
 	| RDO_Pattern RDO_IDENTIF_COLON error
 	{
-		CONVERTER->error().error(@2, @3, _T("Ожидается тип образца"));
+		CONVERTER->error().error(@2, @3, _T("РћР¶РёРґР°РµС‚СЃСЏ С‚РёРї РѕР±СЂР°Р·С†Р°"));
 	}
 	;
 
@@ -348,66 +348,66 @@ pat_params
 	{
 		if (@1.m_last_line != @2.m_last_line)
 		{
-			CONVERTER->error().error(@2, _T("Ожидается имя параметра образца"));
+			CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ РїР°СЂР°РјРµС‚СЂР° РѕР±СЂР°Р·С†Р°"));
 		}
 		else
 		{
-			CONVERTER->error().error(@2, rdo::format(_T("Ожидается имя параметра образца, найдено: %s"), LEXER->YYText()));
+			CONVERTER->error().error(@2, rdo::format(_T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ РїР°СЂР°РјРµС‚СЂР° РѕР±СЂР°Р·С†Р°, РЅР°Р№РґРµРЅРѕ: %s"), LEXER->YYText()));
 		}
 	}
 	| pat_params_begin RDO_IDENTIF error
 	{
 		if (@2.m_last_line != @3.m_last_line)
 		{
-			CONVERTER->error().error(@2, @3, _T("Ожидается двоеточие"));
+			CONVERTER->error().error(@2, @3, _T("РћР¶РёРґР°РµС‚СЃСЏ РґРІРѕРµС‚РѕС‡РёРµ"));
 		}
 		else
 		{
-			CONVERTER->error().error(@2, @3, rdo::format(_T("Ожидается двоеточие, найдено: %s"), LEXER->YYText()));
+			CONVERTER->error().error(@2, @3, rdo::format(_T("РћР¶РёРґР°РµС‚СЃСЏ РґРІРѕРµС‚РѕС‡РёРµ, РЅР°Р№РґРµРЅРѕ: %s"), LEXER->YYText()));
 		}
 	}
 	| pat_params_begin RDO_IDENTIF_COLON error
 	{
 		if (@2.m_last_line != @3.m_last_line)
 		{
-			CONVERTER->error().error(@2, @3, _T("Ожидается тип параметра образца"));
+			CONVERTER->error().error(@2, @3, _T("РћР¶РёРґР°РµС‚СЃСЏ С‚РёРї РїР°СЂР°РјРµС‚СЂР° РѕР±СЂР°Р·С†Р°"));
 		}
 		else
 		{
-			CONVERTER->error().error(@2, @3, rdo::format(_T("Ожидается тип параметра образца, найдено: %s"), LEXER->YYText()));
+			CONVERTER->error().error(@2, @3, rdo::format(_T("РћР¶РёРґР°РµС‚СЃСЏ С‚РёРї РїР°СЂР°РјРµС‚СЂР° РѕР±СЂР°Р·С†Р°, РЅР°Р№РґРµРЅРѕ: %s"), LEXER->YYText()));
 		}
 	}
 	| pat_params error
 	{
 		if (@1.m_last_line != @2.m_last_line)
 		{
-			CONVERTER->error().error(@2, _T("Ожидается имя параметра образца"));
+			CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ РїР°СЂР°РјРµС‚СЂР° РѕР±СЂР°Р·С†Р°"));
 		}
 		else
 		{
-			CONVERTER->error().error(@2, rdo::format(_T("Ожидается имя параметра образца, найдено: %s"), LEXER->YYText()));
+			CONVERTER->error().error(@2, rdo::format(_T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ РїР°СЂР°РјРµС‚СЂР° РѕР±СЂР°Р·С†Р°, РЅР°Р№РґРµРЅРѕ: %s"), LEXER->YYText()));
 		}
 	}
 	| pat_params RDO_IDENTIF error
 	{
 		if (@2.m_last_line != @3.m_last_line)
 		{
-			CONVERTER->error().error(@2, @3, _T("Ожидается двоеточие"));
+			CONVERTER->error().error(@2, @3, _T("РћР¶РёРґР°РµС‚СЃСЏ РґРІРѕРµС‚РѕС‡РёРµ"));
 		}
 		else
 		{
-			CONVERTER->error().error(@2, @3, rdo::format(_T("Ожидается двоеточие, найдено: %s"), LEXER->YYText()));
+			CONVERTER->error().error(@2, @3, rdo::format(_T("РћР¶РёРґР°РµС‚СЃСЏ РґРІРѕРµС‚РѕС‡РёРµ, РЅР°Р№РґРµРЅРѕ: %s"), LEXER->YYText()));
 		}
 	}
 	| pat_params RDO_IDENTIF_COLON error
 	{
 		if (@2.m_last_line != @3.m_last_line)
 		{
-			CONVERTER->error().error(@2, @3, _T("Ожидается тип параметра образца"));
+			CONVERTER->error().error(@2, @3, _T("РћР¶РёРґР°РµС‚СЃСЏ С‚РёРї РїР°СЂР°РјРµС‚СЂР° РѕР±СЂР°Р·С†Р°"));
 		}
 		else
 		{
-			CONVERTER->error().error(@2, @3, rdo::format(_T("Ожидается тип параметра образца, найдено: %s"), LEXER->YYText()));
+			CONVERTER->error().error(@2, @3, rdo::format(_T("РћР¶РёРґР°РµС‚СЃСЏ С‚РёРї РїР°СЂР°РјРµС‚СЂР° РѕР±СЂР°Р·С†Р°, РЅР°Р№РґРµРЅРѕ: %s"), LEXER->YYText()));
 		}
 	}
 	;
@@ -423,14 +423,14 @@ pat_params_end
 	}
 	| pat_header error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается ключевое слово $Relevant_resources"));
+		CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ РєР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ $Relevant_resources"));
 	}
 	;
 
 pat_rel_res
 	: pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv
 	{
-		// проверено для ie,event,rule,opr,key
+		// РїСЂРѕРІРµСЂРµРЅРѕ РґР»СЏ ie,event,rule,opr,key
 		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
 		ASSERT(pPattern);
 		switch (pPattern->getType())
@@ -445,12 +445,12 @@ pat_rel_res
 			}
 			case RDOPATPattern::PT_IE:
 			{
-				CONVERTER->error().error(@5, _T("У нерегулярного события нет события конца, а значит и второго статуса конвертора"));
+				CONVERTER->error().error(@5, _T("РЈ РЅРµСЂРµРіСѓР»СЏСЂРЅРѕРіРѕ СЃРѕР±С‹С‚РёСЏ РЅРµС‚ СЃРѕР±С‹С‚РёСЏ РєРѕРЅС†Р°, Р° Р·РЅР°С‡РёС‚ Рё РІС‚РѕСЂРѕРіРѕ СЃС‚Р°С‚СѓСЃР° РєРѕРЅРІРµСЂС‚РѕСЂР°"));
 				break;
 			}
 			case RDOPATPattern::PT_Rule:
 			{
-				CONVERTER->error().error(@5, _T("У продукционного правила нет события конца, а значит и второго статуса конвертора"));
+				CONVERTER->error().error(@5, _T("РЈ РїСЂРѕРґСѓРєС†РёРѕРЅРЅРѕРіРѕ РїСЂР°РІРёР»Р° РЅРµС‚ СЃРѕР±С‹С‚РёСЏ РєРѕРЅС†Р°, Р° Р·РЅР°С‡РёС‚ Рё РІС‚РѕСЂРѕРіРѕ СЃС‚Р°С‚СѓСЃР° РєРѕРЅРІРµСЂС‚РѕСЂР°"));
 				break;
 			}
 		}
@@ -458,7 +458,7 @@ pat_rel_res
 	}
 	| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF pat_conv pat_conv
 	{
-		// проверено для ie,event,rule,opr,key
+		// РїСЂРѕРІРµСЂРµРЅРѕ РґР»СЏ ie,event,rule,opr,key
 		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
 		ASSERT(pPattern);
 		switch (pPattern->getType())
@@ -473,12 +473,12 @@ pat_rel_res
 			}
 			case RDOPATPattern::PT_IE:
 			{
-				CONVERTER->error().error(@5, _T("У нерегулярного события нет события конца, а значит и второго статуса конвертора"));
+				CONVERTER->error().error(@5, _T("РЈ РЅРµСЂРµРіСѓР»СЏСЂРЅРѕРіРѕ СЃРѕР±С‹С‚РёСЏ РЅРµС‚ СЃРѕР±С‹С‚РёСЏ РєРѕРЅС†Р°, Р° Р·РЅР°С‡РёС‚ Рё РІС‚РѕСЂРѕРіРѕ СЃС‚Р°С‚СѓСЃР° РєРѕРЅРІРµСЂС‚РѕСЂР°"));
 				break;
 			}
 			case RDOPATPattern::PT_Rule:
 			{
-				CONVERTER->error().error(@5, _T("У продукционного правила нет события конца, а значит и второго статуса конвертора"));
+				CONVERTER->error().error(@5, _T("РЈ РїСЂРѕРґСѓРєС†РёРѕРЅРЅРѕРіРѕ РїСЂР°РІРёР»Р° РЅРµС‚ СЃРѕР±С‹С‚РёСЏ РєРѕРЅС†Р°, Р° Р·РЅР°С‡РёС‚ Рё РІС‚РѕСЂРѕРіРѕ СЃС‚Р°С‚СѓСЃР° РєРѕРЅРІРµСЂС‚РѕСЂР°"));
 				break;
 			}
 		}
@@ -486,7 +486,7 @@ pat_rel_res
 	}
 	| pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv
 	{
-		// проверено для ie,event,rule,opr,key
+		// РїСЂРѕРІРµСЂРµРЅРѕ РґР»СЏ ie,event,rule,opr,key
 		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
 		ASSERT(pPattern);
 		switch (pPattern->getType())
@@ -494,7 +494,7 @@ pat_rel_res
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
 			{
-				CONVERTER->error().error(@4, rdo::format(_T("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца"), RDOPATPattern::StatusToStr((rdoRuntime::RDOResource::ConvertStatus)$4).c_str()));
+				CONVERTER->error().error(@4, rdo::format(_T("РџРѕРјРёРјРѕ СЃС‚Р°С‚СѓСЃР° РєРѕРЅРІРµСЂС‚РѕСЂР° РЅР°С‡Р°Р»Р° (%s), РѕР¶РёРґР°РµС‚СЃСЏ СЃС‚Р°С‚СѓСЃ РєРѕРЅРІРµСЂС‚РѕСЂР° РєРѕРЅС†Р°, РїРѕС‚РѕРјСѓ С‡С‚Рѕ Сѓ РѕРїРµСЂР°С†РёРё РµСЃС‚СЊ СЃРѕР±С‹С‚РёРµ РєРѕРЅС†Р°"), RDOPATPattern::StatusToStr((rdoRuntime::RDOResource::ConvertStatus)$4).c_str()));
 				break;
 			}
 			case RDOPATPattern::PT_IE  :
@@ -510,7 +510,7 @@ pat_rel_res
 	}
 	| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF pat_conv
 	{
-		// проверено для ie,event,rule,opr,key
+		// РїСЂРѕРІРµСЂРµРЅРѕ РґР»СЏ ie,event,rule,opr,key
 		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
 		ASSERT(pPattern);
 		switch (pPattern->getType())
@@ -518,7 +518,7 @@ pat_rel_res
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
 			{
-				CONVERTER->error().error(@4, rdo::format(_T("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца"), RDOPATPattern::StatusToStr((rdoRuntime::RDOResource::ConvertStatus)$4).c_str()));
+				CONVERTER->error().error(@4, rdo::format(_T("РџРѕРјРёРјРѕ СЃС‚Р°С‚СѓСЃР° РєРѕРЅРІРµСЂС‚РѕСЂР° РЅР°С‡Р°Р»Р° (%s), РѕР¶РёРґР°РµС‚СЃСЏ СЃС‚Р°С‚СѓСЃ РєРѕРЅРІРµСЂС‚РѕСЂР° РєРѕРЅС†Р°, РїРѕС‚РѕРјСѓ С‡С‚Рѕ Сѓ РѕРїРµСЂР°С†РёРё РµСЃС‚СЊ СЃРѕР±С‹С‚РёРµ РєРѕРЅС†Р°"), RDOPATPattern::StatusToStr((rdoRuntime::RDOResource::ConvertStatus)$4).c_str()));
 				break;
 			}
 			case RDOPATPattern::PT_IE  :
@@ -534,7 +534,7 @@ pat_rel_res
 	}
 	| pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF_NoChange pat_conv
 	{
-		// проверено для ie,event,rule,opr,key
+		// РїСЂРѕРІРµСЂРµРЅРѕ РґР»СЏ ie,event,rule,opr,key
 		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
 		ASSERT(pPattern);
 		switch (pPattern->getType())
@@ -553,12 +553,12 @@ pat_rel_res
 			}
 			case RDOPATPattern::PT_IE:
 			{
-				CONVERTER->error().error(@4, _T("У нерегулярного события нет события конца, а значит и второго статуса конвертора"));
+				CONVERTER->error().error(@4, _T("РЈ РЅРµСЂРµРіСѓР»СЏСЂРЅРѕРіРѕ СЃРѕР±С‹С‚РёСЏ РЅРµС‚ СЃРѕР±С‹С‚РёСЏ РєРѕРЅС†Р°, Р° Р·РЅР°С‡РёС‚ Рё РІС‚РѕСЂРѕРіРѕ СЃС‚Р°С‚СѓСЃР° РєРѕРЅРІРµСЂС‚РѕСЂР°"));
 				break;
 			}
 			case RDOPATPattern::PT_Rule:
 			{
-				CONVERTER->error().error(@4, _T("У продукционного правила нет события конца, а значит и второго статуса конвертора"));
+				CONVERTER->error().error(@4, _T("РЈ РїСЂРѕРґСѓРєС†РёРѕРЅРЅРѕРіРѕ РїСЂР°РІРёР»Р° РЅРµС‚ СЃРѕР±С‹С‚РёСЏ РєРѕРЅС†Р°, Р° Р·РЅР°С‡РёС‚ Рё РІС‚РѕСЂРѕРіРѕ СЃС‚Р°С‚СѓСЃР° РєРѕРЅРІРµСЂС‚РѕСЂР°"));
 				break;
 			}
 		}
@@ -566,7 +566,7 @@ pat_rel_res
 	}
 	| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF_NoChange pat_conv
 	{
-		// проверено для ie,event,rule,opr,key
+		// РїСЂРѕРІРµСЂРµРЅРѕ РґР»СЏ ie,event,rule,opr,key
 		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
 		ASSERT(pPattern);
 		switch (pPattern->getType())
@@ -585,12 +585,12 @@ pat_rel_res
 			}
 			case RDOPATPattern::PT_IE:
 			{
-				CONVERTER->error().error(@4, _T("У нерегулярного события нет события конца, а значит и второго статуса конвертора"));
+				CONVERTER->error().error(@4, _T("РЈ РЅРµСЂРµРіСѓР»СЏСЂРЅРѕРіРѕ СЃРѕР±С‹С‚РёСЏ РЅРµС‚ СЃРѕР±С‹С‚РёСЏ РєРѕРЅС†Р°, Р° Р·РЅР°С‡РёС‚ Рё РІС‚РѕСЂРѕРіРѕ СЃС‚Р°С‚СѓСЃР° РєРѕРЅРІРµСЂС‚РѕСЂР°"));
 				break;
 			}
 			case RDOPATPattern::PT_Rule:
 			{
-				CONVERTER->error().error(@4, _T("У продукционного правила нет события конца, а значит и второго статуса конвертора"));
+				CONVERTER->error().error(@4, _T("РЈ РїСЂРѕРґСѓРєС†РёРѕРЅРЅРѕРіРѕ РїСЂР°РІРёР»Р° РЅРµС‚ СЃРѕР±С‹С‚РёСЏ РєРѕРЅС†Р°, Р° Р·РЅР°С‡РёС‚ Рё РІС‚РѕСЂРѕРіРѕ СЃС‚Р°С‚СѓСЃР° РєРѕРЅРІРµСЂС‚РѕСЂР°"));
 				break;
 			}
 		}
@@ -598,7 +598,7 @@ pat_rel_res
 	}
 	| pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF_NoChange_NoChange
 	{
-		// проверено для ie,event,rule,opr,key
+		// РїСЂРѕРІРµСЂРµРЅРѕ РґР»СЏ ie,event,rule,opr,key
 		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
 		ASSERT(pPattern);
 		switch (pPattern->getType())
@@ -642,12 +642,12 @@ pat_rel_res
 			}
 			case RDOPATPattern::PT_IE:
 			{
-				CONVERTER->error().error(@3, _T("У нерегулярного события нет события конца, а значит и второго статуса конвертора"));
+				CONVERTER->error().error(@3, _T("РЈ РЅРµСЂРµРіСѓР»СЏСЂРЅРѕРіРѕ СЃРѕР±С‹С‚РёСЏ РЅРµС‚ СЃРѕР±С‹С‚РёСЏ РєРѕРЅС†Р°, Р° Р·РЅР°С‡РёС‚ Рё РІС‚РѕСЂРѕРіРѕ СЃС‚Р°С‚СѓСЃР° РєРѕРЅРІРµСЂС‚РѕСЂР°"));
 				break;
 			}
 			case RDOPATPattern::PT_Rule:
 			{
-				CONVERTER->error().error(@3, _T("У продукционного правила нет события конца, а значит и второго статуса конвертора"));
+				CONVERTER->error().error(@3, _T("РЈ РїСЂРѕРґСѓРєС†РёРѕРЅРЅРѕРіРѕ РїСЂР°РІРёР»Р° РЅРµС‚ СЃРѕР±С‹С‚РёСЏ РєРѕРЅС†Р°, Р° Р·РЅР°С‡РёС‚ Рё РІС‚РѕСЂРѕРіРѕ СЃС‚Р°С‚СѓСЃР° РєРѕРЅРІРµСЂС‚РѕСЂР°"));
 				break;
 			}
 		}
@@ -655,7 +655,7 @@ pat_rel_res
 	}
 	| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF_NoChange_NoChange
 	{
-		// проверено для ie,event,rule,opr,key
+		// РїСЂРѕРІРµСЂРµРЅРѕ РґР»СЏ ie,event,rule,opr,key
 		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
 		ASSERT(pPattern);
 		switch (pPattern->getType())
@@ -699,12 +699,12 @@ pat_rel_res
 			}
 			case RDOPATPattern::PT_IE:
 			{
-				CONVERTER->error().error(@3, _T("У нерегулярного события нет события конца, а значит и второго статуса конвертора"));
+				CONVERTER->error().error(@3, _T("РЈ РЅРµСЂРµРіСѓР»СЏСЂРЅРѕРіРѕ СЃРѕР±С‹С‚РёСЏ РЅРµС‚ СЃРѕР±С‹С‚РёСЏ РєРѕРЅС†Р°, Р° Р·РЅР°С‡РёС‚ Рё РІС‚РѕСЂРѕРіРѕ СЃС‚Р°С‚СѓСЃР° РєРѕРЅРІРµСЂС‚РѕСЂР°"));
 				break;
 			}
 			case RDOPATPattern::PT_Rule:
 			{
-				CONVERTER->error().error(@3, _T("У продукционного правила нет события конца, а значит и второго статуса конвертора"));
+				CONVERTER->error().error(@3, _T("РЈ РїСЂРѕРґСѓРєС†РёРѕРЅРЅРѕРіРѕ РїСЂР°РІРёР»Р° РЅРµС‚ СЃРѕР±С‹С‚РёСЏ РєРѕРЅС†Р°, Р° Р·РЅР°С‡РёС‚ Рё РІС‚РѕСЂРѕРіРѕ СЃС‚Р°С‚СѓСЃР° РєРѕРЅРІРµСЂС‚РѕСЂР°"));
 				break;
 			}
 		}
@@ -712,7 +712,7 @@ pat_rel_res
 	}
 	| pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF_NoChange
 	{
-		// проверено для ie,rule,opr,key
+		// РїСЂРѕРІРµСЂРµРЅРѕ РґР»СЏ ie,rule,opr,key
 		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
 		ASSERT(pPattern);
 		switch (pPattern->getType())
@@ -720,7 +720,7 @@ pat_rel_res
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
 			{
-				CONVERTER->error().error(@3, rdo::format(_T("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца"), RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).c_str()));
+				CONVERTER->error().error(@3, rdo::format(_T("РџРѕРјРёРјРѕ СЃС‚Р°С‚СѓСЃР° РєРѕРЅРІРµСЂС‚РѕСЂР° РЅР°С‡Р°Р»Р° (%s), РѕР¶РёРґР°РµС‚СЃСЏ СЃС‚Р°С‚СѓСЃ РєРѕРЅРІРµСЂС‚РѕСЂР° РєРѕРЅС†Р°, РїРѕС‚РѕРјСѓ С‡С‚Рѕ Сѓ РѕРїРµСЂР°С†РёРё РµСЃС‚СЊ СЃРѕР±С‹С‚РёРµ РєРѕРЅС†Р°"), RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).c_str()));
 				break;
 			}
 			case RDOPATPattern::PT_IE  :
@@ -740,7 +740,7 @@ pat_rel_res
 	}
 	| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF_NoChange
 	{
-		// проверено для ie,event,rule,opr,key
+		// РїСЂРѕРІРµСЂРµРЅРѕ РґР»СЏ ie,event,rule,opr,key
 		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
 		ASSERT(pPattern);
 		switch (pPattern->getType())
@@ -748,7 +748,7 @@ pat_rel_res
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
 			{
-				CONVERTER->error().error(@3, rdo::format(_T("Помимо статуса конвертора начала (%s), ожидается статус конвертора конца, потому что у операции есть событие конца"), RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).c_str()));
+				CONVERTER->error().error(@3, rdo::format(_T("РџРѕРјРёРјРѕ СЃС‚Р°С‚СѓСЃР° РєРѕРЅРІРµСЂС‚РѕСЂР° РЅР°С‡Р°Р»Р° (%s), РѕР¶РёРґР°РµС‚СЃСЏ СЃС‚Р°С‚СѓСЃ РєРѕРЅРІРµСЂС‚РѕСЂР° РєРѕРЅС†Р°, РїРѕС‚РѕРјСѓ С‡С‚Рѕ Сѓ РѕРїРµСЂР°С†РёРё РµСЃС‚СЊ СЃРѕР±С‹С‚РёРµ РєРѕРЅС†Р°"), RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).c_str()));
 				break;
 			}
 			case RDOPATPattern::PT_IE   :
@@ -768,7 +768,7 @@ pat_rel_res
 	}
 	| pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF RDO_IDENTIF_NoChange
 	{
-		// проверено для ie,rule,opr,key
+		// РїСЂРѕРІРµСЂРµРЅРѕ РґР»СЏ ie,rule,opr,key
 		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
 		ASSERT(pPattern);
 		switch (pPattern->getType())
@@ -792,12 +792,12 @@ pat_rel_res
 			}
 			case RDOPATPattern::PT_IE:
 			{
-				CONVERTER->error().error(@4, _T("У нерегулярного события нет события конца, а значит и второго статуса конвертора"));
+				CONVERTER->error().error(@4, _T("РЈ РЅРµСЂРµРіСѓР»СЏСЂРЅРѕРіРѕ СЃРѕР±С‹С‚РёСЏ РЅРµС‚ СЃРѕР±С‹С‚РёСЏ РєРѕРЅС†Р°, Р° Р·РЅР°С‡РёС‚ Рё РІС‚РѕСЂРѕРіРѕ СЃС‚Р°С‚СѓСЃР° РєРѕРЅРІРµСЂС‚РѕСЂР°"));
 				break;
 			}
 			case RDOPATPattern::PT_Rule:
 			{
-				CONVERTER->error().error(@4, _T("У продукционного правила нет события конца, а значит и второго статуса конвертора"));
+				CONVERTER->error().error(@4, _T("РЈ РїСЂРѕРґСѓРєС†РёРѕРЅРЅРѕРіРѕ РїСЂР°РІРёР»Р° РЅРµС‚ СЃРѕР±С‹С‚РёСЏ РєРѕРЅС†Р°, Р° Р·РЅР°С‡РёС‚ Рё РІС‚РѕСЂРѕРіРѕ СЃС‚Р°С‚СѓСЃР° РєРѕРЅРІРµСЂС‚РѕСЂР°"));
 				break;
 			}
 		}
@@ -805,7 +805,7 @@ pat_rel_res
 	}
 	| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF RDO_IDENTIF_NoChange
 	{
-		// проверено для ie,event,rule,opr,key
+		// РїСЂРѕРІРµСЂРµРЅРѕ РґР»СЏ ie,event,rule,opr,key
 		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
 		ASSERT(pPattern);
 		switch (pPattern->getType())
@@ -829,12 +829,12 @@ pat_rel_res
 			}
 			case RDOPATPattern::PT_IE:
 			{
-				CONVERTER->error().error(@4, _T("У нерегулярного события нет события конца, а значит и второго статуса конвертора"));
+				CONVERTER->error().error(@4, _T("РЈ РЅРµСЂРµРіСѓР»СЏСЂРЅРѕРіРѕ СЃРѕР±С‹С‚РёСЏ РЅРµС‚ СЃРѕР±С‹С‚РёСЏ РєРѕРЅС†Р°, Р° Р·РЅР°С‡РёС‚ Рё РІС‚РѕСЂРѕРіРѕ СЃС‚Р°С‚СѓСЃР° РєРѕРЅРІРµСЂС‚РѕСЂР°"));
 				break;
 			}
 			case RDOPATPattern::PT_Rule:
 			{
-				CONVERTER->error().error(@4, _T("У продукционного правила нет события конца, а значит и второго статуса конвертора"));
+				CONVERTER->error().error(@4, _T("РЈ РїСЂРѕРґСѓРєС†РёРѕРЅРЅРѕРіРѕ РїСЂР°РІРёР»Р° РЅРµС‚ СЃРѕР±С‹С‚РёСЏ РєРѕРЅС†Р°, Р° Р·РЅР°С‡РёС‚ Рё РІС‚РѕСЂРѕРіРѕ СЃС‚Р°С‚СѓСЃР° РєРѕРЅРІРµСЂС‚РѕСЂР°"));
 				break;
 			}
 		}
@@ -842,40 +842,40 @@ pat_rel_res
 	}
 	| pat_params_end error
 	{
-		CONVERTER->error().error(@2, _T("Ошибка в описании релевантных ресурсов"));
+		CONVERTER->error().error(@2, _T("РћС€РёР±РєР° РІ РѕРїРёСЃР°РЅРёРё СЂРµР»РµРІР°РЅС‚РЅС‹С… СЂРµСЃСѓСЂСЃРѕРІ"));
 	}
 	| pat_rel_res error
 	{
-		CONVERTER->error().error(@2, _T("Ошибка в описании релевантных ресурсов"));
+		CONVERTER->error().error(@2, _T("РћС€РёР±РєР° РІ РѕРїРёСЃР°РЅРёРё СЂРµР»РµРІР°РЅС‚РЅС‹С… СЂРµСЃСѓСЂСЃРѕРІ"));
 	}
 	| pat_params_end RDO_IDENTIF_COLON error
 	{
-		CONVERTER->error().error(@2, @3, _T("Ожидается описатель (имя типа или ресурса)"));
+		CONVERTER->error().error(@2, @3, _T("РћР¶РёРґР°РµС‚СЃСЏ РѕРїРёСЃР°С‚РµР»СЊ (РёРјСЏ С‚РёРїР° РёР»Рё СЂРµСЃСѓСЂСЃР°)"));
 	}
 	| pat_rel_res RDO_IDENTIF_COLON error
 	{
-		CONVERTER->error().error(@2, @3, _T("Ожидается описатель (имя типа или ресурса)"));
+		CONVERTER->error().error(@2, @3, _T("РћР¶РёРґР°РµС‚СЃСЏ РѕРїРёСЃР°С‚РµР»СЊ (РёРјСЏ С‚РёРїР° РёР»Рё СЂРµСЃСѓСЂСЃР°)"));
 	}
 	| pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF error
 	{
 		if (CONVERTER->getLastPATPattern()->isHaveConvertEnd())
 		{
-			CONVERTER->error().error(@3, @4, _T("Ожидается статус конвертора начала"));
+			CONVERTER->error().error(@3, @4, _T("РћР¶РёРґР°РµС‚СЃСЏ СЃС‚Р°С‚СѓСЃ РєРѕРЅРІРµСЂС‚РѕСЂР° РЅР°С‡Р°Р»Р°"));
 		}
 		else
 		{
-			CONVERTER->error().error(@3, @4, _T("Ожидается статус конвертора"));
+			CONVERTER->error().error(@3, @4, _T("РћР¶РёРґР°РµС‚СЃСЏ СЃС‚Р°С‚СѓСЃ РєРѕРЅРІРµСЂС‚РѕСЂР°"));
 		}
 	}
 	| pat_rel_res RDO_IDENTIF_COLON RDO_IDENTIF error
 	{
 		if (CONVERTER->getLastPATPattern()->isHaveConvertEnd())
 		{
-			CONVERTER->error().error(@3, @4, _T("Ожидается статус конвертора начала"));
+			CONVERTER->error().error(@3, @4, _T("РћР¶РёРґР°РµС‚СЃСЏ СЃС‚Р°С‚СѓСЃ РєРѕРЅРІРµСЂС‚РѕСЂР° РЅР°С‡Р°Р»Р°"));
 		}
 		else
 		{
-			CONVERTER->error().error(@3, @4, _T("Ожидается статус конвертора"));
+			CONVERTER->error().error(@3, @4, _T("РћР¶РёРґР°РµС‚СЃСЏ СЃС‚Р°С‚СѓСЃ РєРѕРЅРІРµСЂС‚РѕСЂР°"));
 		}
 	}
 	| pat_params_end RDO_IDENTIF_COLON RDO_IDENTIF pat_conv error
@@ -884,18 +884,18 @@ pat_rel_res
 		{
 			case RDOPATPattern::PT_Rule:
 			{
-				CONVERTER->error().error(@5, _T("Ожидается способ выбора (first/with_min/with_max) или $Body"));
+				CONVERTER->error().error(@5, _T("РћР¶РёРґР°РµС‚СЃСЏ СЃРїРѕСЃРѕР± РІС‹Р±РѕСЂР° (first/with_min/with_max) РёР»Рё $Body"));
 				break;
 			}
 			case RDOPATPattern::PT_IE:
 			{
-				CONVERTER->error().error(@5, _T("Ожидается способ выбора (first/with_min/with_max) или $Time"));
+				CONVERTER->error().error(@5, _T("РћР¶РёРґР°РµС‚СЃСЏ СЃРїРѕСЃРѕР± РІС‹Р±РѕСЂР° (first/with_min/with_max) РёР»Рё $Time"));
 				break;
 			}
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
 			{
-				CONVERTER->error().error(@4, @5, rdo::format(_T("Ожидается статус конвертора конца, найдено: %s"), LEXER->YYText()));
+				CONVERTER->error().error(@4, @5, rdo::format(_T("РћР¶РёРґР°РµС‚СЃСЏ СЃС‚Р°С‚СѓСЃ РєРѕРЅРІРµСЂС‚РѕСЂР° РєРѕРЅС†Р°, РЅР°Р№РґРµРЅРѕ: %s"), LEXER->YYText()));
 				break;
 			}
 		}
@@ -906,18 +906,18 @@ pat_rel_res
 		{
 			case RDOPATPattern::PT_Rule:
 			{
-				CONVERTER->error().error(@5, _T("Ожидается способ выбора (first/with_min/with_max) или $Body"));
+				CONVERTER->error().error(@5, _T("РћР¶РёРґР°РµС‚СЃСЏ СЃРїРѕСЃРѕР± РІС‹Р±РѕСЂР° (first/with_min/with_max) РёР»Рё $Body"));
 				break;
 			}
 			case RDOPATPattern::PT_IE:
 			{
-				CONVERTER->error().error(@5, _T("Ожидается способ выбора (first/with_min/with_max) или $Time"));
+				CONVERTER->error().error(@5, _T("РћР¶РёРґР°РµС‚СЃСЏ СЃРїРѕСЃРѕР± РІС‹Р±РѕСЂР° (first/with_min/with_max) РёР»Рё $Time"));
 				break;
 			}
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
 			{
-				CONVERTER->error().error(@4, @5, rdo::format(_T("Ожидается статус конвертора конца, найдено: %s"), LEXER->YYText()));
+				CONVERTER->error().error(@4, @5, rdo::format(_T("РћР¶РёРґР°РµС‚СЃСЏ СЃС‚Р°С‚СѓСЃ РєРѕРЅРІРµСЂС‚РѕСЂР° РєРѕРЅС†Р°, РЅР°Р№РґРµРЅРѕ: %s"), LEXER->YYText()));
 				break;
 			}
 		}
@@ -928,18 +928,18 @@ pat_rel_res
 		{
 			case RDOPATPattern::PT_Rule:
 			{
-				CONVERTER->error().error(@4, _T("Ожидается способ выбора (first/with_min/with_max) или $Body"));
+				CONVERTER->error().error(@4, _T("РћР¶РёРґР°РµС‚СЃСЏ СЃРїРѕСЃРѕР± РІС‹Р±РѕСЂР° (first/with_min/with_max) РёР»Рё $Body"));
 				break;
 			}
 			case RDOPATPattern::PT_IE:
 			{
-				CONVERTER->error().error(@4, _T("Ожидается способ выбора (first/with_min/with_max) или $Time"));
+				CONVERTER->error().error(@4, _T("РћР¶РёРґР°РµС‚СЃСЏ СЃРїРѕСЃРѕР± РІС‹Р±РѕСЂР° (first/with_min/with_max) РёР»Рё $Time"));
 				break;
 			}
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
 			{
-				CONVERTER->error().error(@3, @4, rdo::format(_T("Ожидается статус конвертора конца, найдено: %s"), LEXER->YYText()));
+				CONVERTER->error().error(@3, @4, rdo::format(_T("РћР¶РёРґР°РµС‚СЃСЏ СЃС‚Р°С‚СѓСЃ РєРѕРЅРІРµСЂС‚РѕСЂР° РєРѕРЅС†Р°, РЅР°Р№РґРµРЅРѕ: %s"), LEXER->YYText()));
 				break;
 			}
 		}
@@ -950,18 +950,18 @@ pat_rel_res
 		{
 			case RDOPATPattern::PT_Rule:
 			{
-				CONVERTER->error().error(@4, _T("Ожидается способ выбора (first/with_min/with_max) или $Body"));
+				CONVERTER->error().error(@4, _T("РћР¶РёРґР°РµС‚СЃСЏ СЃРїРѕСЃРѕР± РІС‹Р±РѕСЂР° (first/with_min/with_max) РёР»Рё $Body"));
 				break;
 			}
 			case RDOPATPattern::PT_IE:
 			{
-				CONVERTER->error().error(@4, _T("Ожидается способ выбора (first/with_min/with_max) или $Time"));
+				CONVERTER->error().error(@4, _T("РћР¶РёРґР°РµС‚СЃСЏ СЃРїРѕСЃРѕР± РІС‹Р±РѕСЂР° (first/with_min/with_max) РёР»Рё $Time"));
 				break;
 			}
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
 			{
-				CONVERTER->error().error(@3, @4, rdo::format(_T("Ожидается статус конвертора конца, найдено: %s"), LEXER->YYText()));
+				CONVERTER->error().error(@3, @4, rdo::format(_T("РћР¶РёРґР°РµС‚СЃСЏ СЃС‚Р°С‚СѓСЃ РєРѕРЅРІРµСЂС‚РѕСЂР° РєРѕРЅС†Р°, РЅР°Р№РґРµРЅРѕ: %s"), LEXER->YYText()));
 				break;
 			}
 		}
@@ -982,7 +982,7 @@ pat_common_choice
 		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
 		if (pPattern->getType() == RDOPATPattern::PT_IE)
 		{
-			CONVERTER->error().error(@2, _T("В событиях не используется способ выбора релевантных ресурсов"));
+			CONVERTER->error().error(@2, _T("Р’ СЃРѕР±С‹С‚РёСЏС… РЅРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ СЃРїРѕСЃРѕР± РІС‹Р±РѕСЂР° СЂРµР»РµРІР°РЅС‚РЅС‹С… СЂРµСЃСѓСЂСЃРѕРІ"));
 		}
 		else
 		{
@@ -995,7 +995,7 @@ pat_common_choice
 		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
 		if (pPattern->getType() == RDOPATPattern::PT_IE)
 		{
-			CONVERTER->error().error(@2, _T("В событиях не используется способ выбора релевантных ресурсов"));
+			CONVERTER->error().error(@2, _T("Р’ СЃРѕР±С‹С‚РёСЏС… РЅРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ СЃРїРѕСЃРѕР± РІС‹Р±РѕСЂР° СЂРµР»РµРІР°РЅС‚РЅС‹С… СЂРµСЃСѓСЂСЃРѕРІ"));
 		}
 		else
 		{
@@ -1012,7 +1012,7 @@ pat_common_choice
 		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
 		if (pPattern->getType() == RDOPATPattern::PT_IE)
 		{
-			CONVERTER->error().error(@2, _T("В событиях не используется способ выбора релевантных ресурсов"));
+			CONVERTER->error().error(@2, _T("Р’ СЃРѕР±С‹С‚РёСЏС… РЅРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ СЃРїРѕСЃРѕР± РІС‹Р±РѕСЂР° СЂРµР»РµРІР°РЅС‚РЅС‹С… СЂРµСЃСѓСЂСЃРѕРІ"));
 		}
 		else
 		{
@@ -1026,11 +1026,11 @@ pat_common_choice
 	}
 	| pat_rel_res RDO_with_min error
 	{
-		CONVERTER->error().error(@3, _T("Ошибка в арифметическом выражении"));
+		CONVERTER->error().error(@3, _T("РћС€РёР±РєР° РІ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
 	}
 	| pat_rel_res RDO_with_max error
 	{
-		CONVERTER->error().error(@3, _T("Ошибка в арифметическом выражении"));
+		CONVERTER->error().error(@3, _T("РћС€РёР±РєР° РІ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
 	}
 	;
 
@@ -1044,7 +1044,7 @@ pat_time
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
 			{
-				CONVERTER->error().error(@2, _T("Перед $Body пропущено ключевое слово $Time"));
+				CONVERTER->error().error(@2, _T("РџРµСЂРµРґ $Body РїСЂРѕРїСѓС‰РµРЅРѕ РєР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ $Time"));
 				break;
 			}
 		}
@@ -1057,7 +1057,7 @@ pat_time
 		{
 			case RDOPATPattern::PT_Rule:
 			{
-				CONVERTER->error().error(@2, _T("Поле $Time не используется в продукционном правиле"));
+				CONVERTER->error().error(@2, _T("РџРѕР»Рµ $Time РЅРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РІ РїСЂРѕРґСѓРєС†РёРѕРЅРЅРѕРј РїСЂР°РІРёР»Рµ"));
 				break;
 			}
 		}
@@ -1087,15 +1087,15 @@ pat_time
 	}
 	| pat_common_choice RDO_Time '=' fun_arithm error
 	{
-		CONVERTER->error().error(@4, @5, _T("Ожидается ключевое слово $Body"));
+		CONVERTER->error().error(@4, @5, _T("РћР¶РёРґР°РµС‚СЃСЏ РєР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ $Body"));
 	}
 	| pat_common_choice RDO_Time '=' error
 	{
-		CONVERTER->error().error(@4, _T("Ошибка в арифметическом выражении"));
+		CONVERTER->error().error(@4, _T("РћС€РёР±РєР° РІ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
 	}
 	| pat_common_choice RDO_Time error
 	{
-		CONVERTER->error().error(@2, @3, _T("После ключевого слова $Time ожидается знак равенства"));
+		CONVERTER->error().error(@2, @3, _T("РџРѕСЃР»Рµ РєР»СЋС‡РµРІРѕРіРѕ СЃР»РѕРІР° $Time РѕР¶РёРґР°РµС‚СЃСЏ Р·РЅР°Рє СЂР°РІРµРЅСЃС‚РІР°"));
 	}
 	| pat_common_choice error
 	{
@@ -1104,14 +1104,14 @@ pat_time
 		{
 			case RDOPATPattern::PT_Rule:
 			{
-				CONVERTER->error().error(@2, rdo::format(_T("Ожидается $Body, найдено: %s"), LEXER->YYText()));
+				CONVERTER->error().error(@2, rdo::format(_T("РћР¶РёРґР°РµС‚СЃСЏ $Body, РЅР°Р№РґРµРЅРѕ: %s"), LEXER->YYText()));
 				break;
 			}
 			case RDOPATPattern::PT_IE       :
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
 			{
-				CONVERTER->error().error(@2, rdo::format(_T("Ожидается $Time, найдено: %s"), LEXER->YYText()));
+				CONVERTER->error().error(@2, rdo::format(_T("РћР¶РёРґР°РµС‚СЃСЏ $Time, РЅР°Р№РґРµРЅРѕ: %s"), LEXER->YYText()));
 				break;
 			}
 		}
@@ -1137,12 +1137,12 @@ pat_body
 	| pat_time error
 	{
 		tstring str(LEXER->YYText());
-		CONVERTER->error().error(@2, rdo::format(_T("Неизвестный релевантный ресурс: %s"), str.c_str()));
+		CONVERTER->error().error(@2, rdo::format(_T("РќРµРёР·РІРµСЃС‚РЅС‹Р№ СЂРµР»РµРІР°РЅС‚РЅС‹Р№ СЂРµСЃСѓСЂСЃ: %s"), str.c_str()));
 	}
 	| pat_convert error
 	{
 		tstring str(LEXER->YYText());
-		CONVERTER->error().error(@2, rdo::format(_T("Неизвестный релевантный ресурс: %s"), str.c_str()));
+		CONVERTER->error().error(@2, rdo::format(_T("РќРµРёР·РІРµСЃС‚РЅС‹Р№ СЂРµР»РµРІР°РЅС‚РЅС‹Р№ СЂРµСЃСѓСЂСЃ: %s"), str.c_str()));
 	}
 	;
 
@@ -1187,7 +1187,7 @@ pat_choice
 	}
 	| pat_choice_from error
 	{
-		CONVERTER->error().error(@2, _T("Ошибка в логическом выражении"));
+		CONVERTER->error().error(@2, _T("РћС€РёР±РєР° РІ Р»РѕРіРёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
 	}
 	;
 
@@ -1237,11 +1237,11 @@ pat_order
 	}
 	| pat_choice_with_min error
 	{
-		CONVERTER->error().error(@2, _T("Ошибка в арифметическом выражении"));
+		CONVERTER->error().error(@2, _T("РћС€РёР±РєР° РІ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
 	}
 	| pat_choice_with_max error
 	{
-		CONVERTER->error().error(@2, _T("Ошибка в арифметическом выражении"));
+		CONVERTER->error().error(@2, _T("РћС€РёР±РєР° РІ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
 	}
 	;
 
@@ -1275,15 +1275,15 @@ pat_convert
 		tstring str;
 		if (rel_res->m_pChoiceOrder->m_type != rdoRuntime::RDOSelectResourceCalc::order_empty)
 		{
-			str = _T("Сразу после ключевого слова ") + rel_res->m_pChoiceOrder->asString();
+			str = _T("РЎСЂР°Р·Сѓ РїРѕСЃР»Рµ РєР»СЋС‡РµРІРѕРіРѕ СЃР»РѕРІР° ") + rel_res->m_pChoiceOrder->asString();
 		}
 		else if (rel_res->m_pChoiceFrom->m_type != RDOPATChoiceFrom::ch_empty)
 		{
-			str = _T("Сразу после условия выбора");
+			str = _T("РЎСЂР°Р·Сѓ РїРѕСЃР»Рµ СѓСЃР»РѕРІРёСЏ РІС‹Р±РѕСЂР°");
 		}
 		else
 		{
-			str = _T("Сразу после имени");
+			str = _T("РЎСЂР°Р·Сѓ РїРѕСЃР»Рµ РёРјРµРЅРё");
 		}
 		if (rel_res->m_statusBegin != rdoRuntime::RDOResource::CS_NoChange && rel_res->m_statusBegin != rdoRuntime::RDOResource::CS_Erase && rel_res->m_statusBegin != rdoRuntime::RDOResource::CS_NonExist)
 		{
@@ -1291,18 +1291,18 @@ pat_convert
 			{
 				case RDOPATPattern::PT_IE:
 				{
-					CONVERTER->error().error(@1, rdo::format(_T("%s ожидается ключевое слово Convert_event для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s"), str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->m_statusBegin).c_str(), LEXER->YYText()));
+					CONVERTER->error().error(@1, rdo::format(_T("%s РѕР¶РёРґР°РµС‚СЃСЏ РєР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ Convert_event РґР»СЏ СЂРµР»РµРІР°РЅС‚РЅРѕРіРѕ СЂРµСЃСѓСЂСЃР° '%s', С‚.Рє. РµРіРѕ СЃС‚Р°С‚СѓСЃ '%s', РЅРѕ РЅР°Р№РґРµРЅРѕ: %s"), str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->m_statusBegin).c_str(), LEXER->YYText()));
 					break;
 				}
 				case RDOPATPattern::PT_Rule:
 				{
-					CONVERTER->error().error(@1, rdo::format(_T("%s ожидается ключевое слово Convert_rule для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s"), str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->m_statusBegin).c_str(), LEXER->YYText()));
+					CONVERTER->error().error(@1, rdo::format(_T("%s РѕР¶РёРґР°РµС‚СЃСЏ РєР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ Convert_rule РґР»СЏ СЂРµР»РµРІР°РЅС‚РЅРѕРіРѕ СЂРµСЃСѓСЂСЃР° '%s', С‚.Рє. РµРіРѕ СЃС‚Р°С‚СѓСЃ '%s', РЅРѕ РЅР°Р№РґРµРЅРѕ: %s"), str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->m_statusBegin).c_str(), LEXER->YYText()));
 					break;
 				}
 				case RDOPATPattern::PT_Operation:
 				case RDOPATPattern::PT_Keyboard :
 				{
-					CONVERTER->error().error(@1, rdo::format(_T("%s ожидается ключевое слово Convert_begin для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s"), str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->m_statusBegin).c_str(), LEXER->YYText()));
+					CONVERTER->error().error(@1, rdo::format(_T("%s РѕР¶РёРґР°РµС‚СЃСЏ РєР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ Convert_begin РґР»СЏ СЂРµР»РµРІР°РЅС‚РЅРѕРіРѕ СЂРµСЃСѓСЂСЃР° '%s', С‚.Рє. РµРіРѕ СЃС‚Р°С‚СѓСЃ '%s', РЅРѕ РЅР°Р№РґРµРЅРѕ: %s"), str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->m_statusBegin).c_str(), LEXER->YYText()));
 					break;
 				}
 			}
@@ -1314,13 +1314,13 @@ pat_convert
 				case RDOPATPattern::PT_IE  :
 				case RDOPATPattern::PT_Rule:
 				{
-					CONVERTER->error().error(@1, _T("Внутренняя ошибка"));
+					CONVERTER->error().error(@1, _T("Р’РЅСѓС‚СЂРµРЅРЅСЏСЏ РѕС€РёР±РєР°"));
 					break;
 				}
 				case RDOPATPattern::PT_Operation:
 				case RDOPATPattern::PT_Keyboard :
 				{
-					CONVERTER->error().error(@1, rdo::format(_T("%s ожидается ключевое слово Convert_end для релевантного ресурса '%s', т.к. его статус '%s', но найдено: %s"), str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->m_statusBegin).c_str(), LEXER->YYText()));
+					CONVERTER->error().error(@1, rdo::format(_T("%s РѕР¶РёРґР°РµС‚СЃСЏ РєР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ Convert_end РґР»СЏ СЂРµР»РµРІР°РЅС‚РЅРѕРіРѕ СЂРµСЃСѓСЂСЃР° '%s', С‚.Рє. РµРіРѕ СЃС‚Р°С‚СѓСЃ '%s', РЅРѕ РЅР°Р№РґРµРЅРѕ: %s"), str.c_str(), rel_res->name().c_str(), RDOPATPattern::StatusToStr(rel_res->m_statusBegin).c_str(), LEXER->YYText()));
 					break;
 				}
 			}
@@ -1338,16 +1338,16 @@ pat_convert
 			{
 				case RDOPATPattern::PT_IE:
 				{
-					type = _T("нерегулярном событии"); 
+					type = _T("РЅРµСЂРµРіСѓР»СЏСЂРЅРѕРј СЃРѕР±С‹С‚РёРё"); 
 					break;
 				}
 				case RDOPATPattern::PT_Rule:
 				{
-					type = _T("продукционном правиле");
+					type = _T("РїСЂРѕРґСѓРєС†РёРѕРЅРЅРѕРј РїСЂР°РІРёР»Рµ");
 					break;
 				}
 			}
-			CONVERTER->error().error(@2, rdo::format(_T("Ключевое слово Convert_begin может быть использовано в обыкновенной или клавиатурной операции, но не в %s '%s'"), type.c_str(), pPattern->name().c_str()));
+			CONVERTER->error().error(@2, rdo::format(_T("РљР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ Convert_begin РјРѕР¶РµС‚ Р±С‹С‚СЊ РёСЃРїРѕР»СЊР·РѕРІР°РЅРѕ РІ РѕР±С‹РєРЅРѕРІРµРЅРЅРѕР№ РёР»Рё РєР»Р°РІРёР°С‚СѓСЂРЅРѕР№ РѕРїРµСЂР°С†РёРё, РЅРѕ РЅРµ РІ %s '%s'"), type.c_str(), pPattern->name().c_str()));
 		}
 		LPConvertCmdList pCmdList = CONVERTER->stack().pop<ConvertCmdList>($4);
 		pPattern.object_static_cast<RDOPatternOperation>()->addRelResConvertBeginEnd($3 != 0, pCmdList, false, NULL, @2, @2, @3, @3);
@@ -1364,16 +1364,16 @@ pat_convert
 			{
 				case RDOPATPattern::PT_IE:
 				{
-					type = _T("нерегулярном событии");
+					type = _T("РЅРµСЂРµРіСѓР»СЏСЂРЅРѕРј СЃРѕР±С‹С‚РёРё");
 					break;
 				}
 				case RDOPATPattern::PT_Rule:
 				{
-					type = _T("продукционном правиле");
+					type = _T("РїСЂРѕРґСѓРєС†РёРѕРЅРЅРѕРј РїСЂР°РІРёР»Рµ");
 					break;
 				}
 			}
-			CONVERTER->error().error(@2, rdo::format(_T("Ключевое слово Convert_end может быть использовано в обыкновенной и клавиатурной операции, но не в %s '%s'"), type.c_str(), pPattern->name().c_str()));
+			CONVERTER->error().error(@2, rdo::format(_T("РљР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ Convert_end РјРѕР¶РµС‚ Р±С‹С‚СЊ РёСЃРїРѕР»СЊР·РѕРІР°РЅРѕ РІ РѕР±С‹РєРЅРѕРІРµРЅРЅРѕР№ Рё РєР»Р°РІРёР°С‚СѓСЂРЅРѕР№ РѕРїРµСЂР°С†РёРё, РЅРѕ РЅРµ РІ %s '%s'"), type.c_str(), pPattern->name().c_str()));
 		}
 		LPConvertCmdList pCmdList = CONVERTER->stack().pop<ConvertCmdList>($4);
 		pPattern.object_static_cast<RDOPatternOperation>()->addRelResConvertBeginEnd(false, NULL, $3 != 0, pCmdList, @2, @2, @3, @3);
@@ -1390,16 +1390,16 @@ pat_convert
 			{
 				case RDOPATPattern::PT_IE:
 				{
-					type = _T("нерегулярном событии");
+					type = _T("РЅРµСЂРµРіСѓР»СЏСЂРЅРѕРј СЃРѕР±С‹С‚РёРё");
 					break;
 				}
 				case RDOPATPattern::PT_Rule:
 				{
-					type = _T("продукционном правиле");
+					type = _T("РїСЂРѕРґСѓРєС†РёРѕРЅРЅРѕРј РїСЂР°РІРёР»Рµ");
 					break;
 				}
 			}
-			CONVERTER->error().error(@2, rdo::format(_T("Ключевые слова Convert_begin и Convert_end могут быть использованы в обыкновенной и клавиатурной операции, но не в %s '%s'"), type.c_str(), pPattern->name().c_str()));
+			CONVERTER->error().error(@2, rdo::format(_T("РљР»СЋС‡РµРІС‹Рµ СЃР»РѕРІР° Convert_begin Рё Convert_end РјРѕРіСѓС‚ Р±С‹С‚СЊ РёСЃРїРѕР»СЊР·РѕРІР°РЅС‹ РІ РѕР±С‹РєРЅРѕРІРµРЅРЅРѕР№ Рё РєР»Р°РІРёР°С‚СѓСЂРЅРѕР№ РѕРїРµСЂР°С†РёРё, РЅРѕ РЅРµ РІ %s '%s'"), type.c_str(), pPattern->name().c_str()));
 		}
 		LPConvertCmdList pCmdListBegin = CONVERTER->stack().pop<ConvertCmdList>($4);
 		LPConvertCmdList pCmdListEnd   = CONVERTER->stack().pop<ConvertCmdList>($7);
@@ -1417,21 +1417,21 @@ pat_convert
 			{
 				case RDOPATPattern::PT_IE:
 				{
-					type = _T("нерегулярном событии");
+					type = _T("РЅРµСЂРµРіСѓР»СЏСЂРЅРѕРј СЃРѕР±С‹С‚РёРё");
 					break;
 				}
 				case RDOPATPattern::PT_Operation:
 				{
-					type = _T("операции");
+					type = _T("РѕРїРµСЂР°С†РёРё");
 					break;
 				}
 				case RDOPATPattern::PT_Keyboard :
 				{
-					type = _T("клавиатурной операции");
+					type = _T("РєР»Р°РІРёР°С‚СѓСЂРЅРѕР№ РѕРїРµСЂР°С†РёРё");
 					break;
 				}
 			}
-			CONVERTER->error().error(@2, rdo::format(_T("Ключевое слово Convert_rule может быть использовано в продукционном правиле, но не в %s '%s'"), type.c_str(), pPattern->name().c_str()));
+			CONVERTER->error().error(@2, rdo::format(_T("РљР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ Convert_rule РјРѕР¶РµС‚ Р±С‹С‚СЊ РёСЃРїРѕР»СЊР·РѕРІР°РЅРѕ РІ РїСЂРѕРґСѓРєС†РёРѕРЅРЅРѕРј РїСЂР°РІРёР»Рµ, РЅРѕ РЅРµ РІ %s '%s'"), type.c_str(), pPattern->name().c_str()));
 		}
 		LPConvertCmdList pCmdList = CONVERTER->stack().pop<ConvertCmdList>($4);
 		ASSERT(pPattern->m_pCurrRelRes);
@@ -1449,21 +1449,21 @@ pat_convert
 			{
 				case RDOPATPattern::PT_Rule     :
 				{
-					type = _T("продукционном правиле");
+					type = _T("РїСЂРѕРґСѓРєС†РёРѕРЅРЅРѕРј РїСЂР°РІРёР»Рµ");
 					break;
 				}
 				case RDOPATPattern::PT_Operation:
 				{
-					type = _T("операции");
+					type = _T("РѕРїРµСЂР°С†РёРё");
 					break;
 				}
 				case RDOPATPattern::PT_Keyboard :
 				{
-					type = _T("клавиатурной операции");
+					type = _T("РєР»Р°РІРёР°С‚СѓСЂРЅРѕР№ РѕРїРµСЂР°С†РёРё");
 					break;
 				}
 			}
-			CONVERTER->error().error(@2, rdo::format(_T("Ключевое слово Convert_event может быть использовано в событии или в нерегулярном событии, но не в %s '%s'"), type.c_str(), pPattern->name().c_str()));
+			CONVERTER->error().error(@2, rdo::format(_T("РљР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ Convert_event РјРѕР¶РµС‚ Р±С‹С‚СЊ РёСЃРїРѕР»СЊР·РѕРІР°РЅРѕ РІ СЃРѕР±С‹С‚РёРё РёР»Рё РІ РЅРµСЂРµРіСѓР»СЏСЂРЅРѕРј СЃРѕР±С‹С‚РёРё, РЅРѕ РЅРµ РІ %s '%s'"), type.c_str(), pPattern->name().c_str()));
 		}
 
 		LPConvertCmdList pCmdList = CONVERTER->stack().pop<ConvertCmdList>($4);
@@ -1521,7 +1521,7 @@ pat_convert_cmd
 		LPRDORTPParam param = pRelRes->getType()->findRTPParam(paramName);
 		if (!param)
 		{
-			CONVERTER->error().error(@2, rdo::format(_T("Неизвестный параметр: %s"), paramName.c_str()));
+			CONVERTER->error().error(@2, rdo::format(_T("РќРµРёР·РІРµСЃС‚РЅС‹Р№ РїР°СЂР°РјРµС‚СЂ: %s"), paramName.c_str()));
 		}
 		rdoRuntime::LPRDOCalc pCalcRight = pRightArithm->createCalc(param->getType().get());
 		rdoRuntime::LPRDOCalc pCalc;
@@ -1541,8 +1541,8 @@ pat_convert_cmd
 		}
 		if (pCalc)
 		{
-			//! Проверка на диапазон
-			/// @todo проверить работоспособность
+			//! РџСЂРѕРІРµСЂРєР° РЅР° РґРёР°РїР°Р·РѕРЅ
+			/// @todo РїСЂРѕРІРµСЂРёС‚СЊ СЂР°Р±РѕС‚РѕСЃРїРѕСЃРѕР±РЅРѕСЃС‚СЊ
 			if (dynamic_cast<PTR(RDOTypeIntRange)>(param->getType().get()))
 			{
 				LPRDOTypeIntRange pRange = param->getType()->type().object_static_cast<RDOTypeIntRange>();
@@ -1584,7 +1584,7 @@ pat_convert_cmd
 	}
 	| pat_convert_cmd RDO_IDENTIF param_equal_type error
 	{
-		CONVERTER->error().error(@4, _T("Ошибка в арифметическом выражении"));
+		CONVERTER->error().error(@4, _T("РћС€РёР±РєР° РІ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
 	}
 	| pat_convert_cmd RDO_IDENTIF_NoChange
 	{
@@ -1633,7 +1633,7 @@ pat_pattern
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- Описание типа параметра
+// -------------------- РћРїРёСЃР°РЅРёРµ С‚РёРїР° РїР°СЂР°РјРµС‚СЂР°
 // --------------------------------------------------------------------------------
 param_type
 	: RDO_integer param_type_range
@@ -1649,7 +1649,7 @@ param_type
 			if (pRange->getMin().typeID() != rdoRuntime::RDOType::t_int ||
 			    pRange->getMax().typeID() != rdoRuntime::RDOType::t_int)
 			{
-				CONVERTER->error().error(@2, _T("Диапазон целого типа должен быть целочисленным"));
+				CONVERTER->error().error(@2, _T("Р”РёР°РїР°Р·РѕРЅ С†РµР»РѕРіРѕ С‚РёРїР° РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ С†РµР»РѕС‡РёСЃР»РµРЅРЅС‹Рј"));
 			}
 			LPRDOTypeIntRange pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
 			ASSERT(pIntRange);
@@ -1745,31 +1745,31 @@ param_type_range
 	}
 	| '[' RDO_REAL_CONST RDO_dblpoint RDO_REAL_CONST error
 	{
-		CONVERTER->error().error(@4, _T("Диапазон задан неверно"));
+		CONVERTER->error().error(@4, _T("Р”РёР°РїР°Р·РѕРЅ Р·Р°РґР°РЅ РЅРµРІРµСЂРЅРѕ"));
 	}
 	| '[' RDO_REAL_CONST RDO_dblpoint RDO_INT_CONST error
 	{
-		CONVERTER->error().error(@4, _T("Диапазон задан неверно"));
+		CONVERTER->error().error(@4, _T("Р”РёР°РїР°Р·РѕРЅ Р·Р°РґР°РЅ РЅРµРІРµСЂРЅРѕ"));
 	}
 	| '[' RDO_INT_CONST RDO_dblpoint RDO_REAL_CONST error
 	{
-		CONVERTER->error().error(@4, _T("Диапазон задан неверно"));
+		CONVERTER->error().error(@4, _T("Р”РёР°РїР°Р·РѕРЅ Р·Р°РґР°РЅ РЅРµРІРµСЂРЅРѕ"));
 	}
 	| '[' RDO_INT_CONST RDO_dblpoint RDO_INT_CONST error
 	{
-		CONVERTER->error().error(@4, _T("Диапазон задан неверно"));
+		CONVERTER->error().error(@4, _T("Р”РёР°РїР°Р·РѕРЅ Р·Р°РґР°РЅ РЅРµРІРµСЂРЅРѕ"));
 	}
 	| '[' RDO_REAL_CONST RDO_dblpoint error
 	{
-		CONVERTER->error().error(@4, _T("Диапазон задан неверно"));
+		CONVERTER->error().error(@4, _T("Р”РёР°РїР°Р·РѕРЅ Р·Р°РґР°РЅ РЅРµРІРµСЂРЅРѕ"));
 	}
 	| '[' RDO_INT_CONST RDO_dblpoint error
 	{
-		CONVERTER->error().error(@4, _T("Диапазон задан неверно"));
+		CONVERTER->error().error(@4, _T("Р”РёР°РїР°Р·РѕРЅ Р·Р°РґР°РЅ РЅРµРІРµСЂРЅРѕ"));
 	}
 	| '[' error
 	{
-		CONVERTER->error().error(@2, _T("Диапазон задан неверно"));
+		CONVERTER->error().error(@2, _T("Р”РёР°РїР°Р·РѕРЅ Р·Р°РґР°РЅ РЅРµРІРµСЂРЅРѕ"));
 	}
 	;
 
@@ -1782,7 +1782,7 @@ param_type_enum
 	}
 	| '(' param_type_enum_list error
 	{
-		CONVERTER->error().error(@2, _T("Перечисление должно заканчиваться скобкой"));
+		CONVERTER->error().error(@2, _T("РџРµСЂРµС‡РёСЃР»РµРЅРёРµ РґРѕР»Р¶РЅРѕ Р·Р°РєР°РЅС‡РёРІР°С‚СЊСЃСЏ СЃРєРѕР±РєРѕР№"));
 	}
 	;
 
@@ -1806,7 +1806,7 @@ param_type_enum_list
 		}
 		else
 		{
-			CONVERTER->error().error(@3, _T("Ошибка в описании значений перечислимого типа"));
+			CONVERTER->error().error(@3, _T("РћС€РёР±РєР° РІ РѕРїРёСЃР°РЅРёРё Р·РЅР°С‡РµРЅРёР№ РїРµСЂРµС‡РёСЃР»РёРјРѕРіРѕ С‚РёРїР°"));
 		}
 	}
 	| param_type_enum_list RDO_IDENTIF
@@ -1817,36 +1817,36 @@ param_type_enum_list
 			ASSERT(pEnum);
 			pEnum->add(RDOVALUE($2));
 			$$ = CONVERTER->stack().push(pEnum);
-			CONVERTER->error().warning(@1, rdo::format(_T("Пропущена запятая перед: %s"), RDOVALUE($2)->getIdentificator().c_str()));
+			CONVERTER->error().warning(@1, rdo::format(_T("РџСЂРѕРїСѓС‰РµРЅР° Р·Р°РїСЏС‚Р°СЏ РїРµСЂРµРґ: %s"), RDOVALUE($2)->getIdentificator().c_str()));
 		}
 		else
 		{
-			CONVERTER->error().error(@2, _T("Ошибка в описании значений перечислимого типа"));
+			CONVERTER->error().error(@2, _T("РћС€РёР±РєР° РІ РѕРїРёСЃР°РЅРёРё Р·РЅР°С‡РµРЅРёР№ РїРµСЂРµС‡РёСЃР»РёРјРѕРіРѕ С‚РёРїР°"));
 		}
 	}
 	| param_type_enum_list ',' RDO_INT_CONST
 	{
-		CONVERTER->error().error(@3, _T("Значение перечислимого типа не может быть цифрой"));
+		CONVERTER->error().error(@3, _T("Р—РЅР°С‡РµРЅРёРµ РїРµСЂРµС‡РёСЃР»РёРјРѕРіРѕ С‚РёРїР° РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ С†РёС„СЂРѕР№"));
 	}
 	| param_type_enum_list ',' RDO_REAL_CONST
 	{
-		CONVERTER->error().error(@3, _T("Значение перечислимого типа не может быть цифрой"));
+		CONVERTER->error().error(@3, _T("Р—РЅР°С‡РµРЅРёРµ РїРµСЂРµС‡РёСЃР»РёРјРѕРіРѕ С‚РёРїР° РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ С†РёС„СЂРѕР№"));
 	}
 	| param_type_enum_list RDO_INT_CONST
 	{
-		CONVERTER->error().error(@2, _T("Значение перечислимого типа не может быть цифрой"));
+		CONVERTER->error().error(@2, _T("Р—РЅР°С‡РµРЅРёРµ РїРµСЂРµС‡РёСЃР»РёРјРѕРіРѕ С‚РёРїР° РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ С†РёС„СЂРѕР№"));
 	}
 	| param_type_enum_list RDO_REAL_CONST
 	{
-		CONVERTER->error().error(@2, _T("Значение перечислимого типа не может быть цифрой"));
+		CONVERTER->error().error(@2, _T("Р—РЅР°С‡РµРЅРёРµ РїРµСЂРµС‡РёСЃР»РёРјРѕРіРѕ С‚РёРїР° РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ С†РёС„СЂРѕР№"));
 	}
 	| RDO_INT_CONST
 	{
-		CONVERTER->error().error(@1, _T("Значение перечислимого типа не может начинаться с цифры"));
+		CONVERTER->error().error(@1, _T("Р—РЅР°С‡РµРЅРёРµ РїРµСЂРµС‡РёСЃР»РёРјРѕРіРѕ С‚РёРїР° РЅРµ РјРѕР¶РµС‚ РЅР°С‡РёРЅР°С‚СЊСЃСЏ СЃ С†РёС„СЂС‹"));
 	}
 	| RDO_REAL_CONST
 	{
-		CONVERTER->error().error(@1, _T("Значение перечислимого типа не может начинаться с цифры"));
+		CONVERTER->error().error(@1, _T("Р—РЅР°С‡РµРЅРёРµ РїРµСЂРµС‡РёСЃР»РёРјРѕРіРѕ С‚РёРїР° РЅРµ РјРѕР¶РµС‚ РЅР°С‡РёРЅР°С‚СЊСЃСЏ СЃ С†РёС„СЂС‹"));
 	}
 	;
 
@@ -1858,12 +1858,12 @@ param_type_such_as
 		LPRDORTPResType pResType = CONVERTER->findRTPResType(type);
 		if (!pResType)
 		{
-			CONVERTER->error().error(@2, rdo::format(_T("Ссылка на неизвестный тип ресурса: %s"), type.c_str()));
+			CONVERTER->error().error(@2, rdo::format(_T("РЎСЃС‹Р»РєР° РЅР° РЅРµРёР·РІРµСЃС‚РЅС‹Р№ С‚РёРї СЂРµСЃСѓСЂСЃР°: %s"), type.c_str()));
 		}
 		LPRDORTPParam pRTPParam = pResType->findRTPParam(param);
 		if (!pRTPParam)
 		{
-			CONVERTER->error().error(@4, rdo::format(_T("Ссылка на неизвестный параметр ресурса: %s.%s"), type.c_str(), param.c_str()));
+			CONVERTER->error().error(@4, rdo::format(_T("РЎСЃС‹Р»РєР° РЅР° РЅРµРёР·РІРµСЃС‚РЅС‹Р№ РїР°СЂР°РјРµС‚СЂ СЂРµСЃСѓСЂСЃР°: %s.%s"), type.c_str(), param.c_str()));
 		}
 		LPRDOParam pParam = pRTPParam.object_parent_cast<RDOParam>();
 		ASSERT(pParam);
@@ -1877,7 +1877,7 @@ param_type_such_as
 		LPRDOFUNConstant pConstant = CONVERTER->findFUNConstant(constName);
 		if (!pConstant)
 		{
-			CONVERTER->error().error(@2, rdo::format(_T("Ссылка на несуществующую константу: %s"), constName.c_str()));
+			CONVERTER->error().error(@2, rdo::format(_T("РЎСЃС‹Р»РєР° РЅР° РЅРµСЃСѓС‰РµСЃС‚РІСѓСЋС‰СѓСЋ РєРѕРЅСЃС‚Р°РЅС‚Сѓ: %s"), constName.c_str()));
 		}
 		LPRDOParam pParam = pConstant.object_parent_cast<RDOParam>();
 		ASSERT(pParam);
@@ -1891,16 +1891,16 @@ param_type_such_as
 		LPRDORTPResType pResType = CONVERTER->findRTPResType(type);
 		if (!pResType)
 		{
-			CONVERTER->error().error(@2, rdo::format(_T("Ссылка на неизвестный тип ресурса: %s"), type.c_str()));
+			CONVERTER->error().error(@2, rdo::format(_T("РЎСЃС‹Р»РєР° РЅР° РЅРµРёР·РІРµСЃС‚РЅС‹Р№ С‚РёРї СЂРµСЃСѓСЂСЃР°: %s"), type.c_str()));
 		}
 		else
 		{
-			CONVERTER->error().error(@4, _T("Ошибка при указании параметра"));
+			CONVERTER->error().error(@4, _T("РћС€РёР±РєР° РїСЂРё СѓРєР°Р·Р°РЅРёРё РїР°СЂР°РјРµС‚СЂР°"));
 		}
 	}
 	| RDO_such_as error
 	{
-		CONVERTER->error().error(@2, _T("После ключевого слова such_as необходимо указать тип и параметер ресурса для ссылки"));
+		CONVERTER->error().error(@2, _T("РџРѕСЃР»Рµ РєР»СЋС‡РµРІРѕРіРѕ СЃР»РѕРІР° such_as РЅРµРѕР±С…РѕРґРёРјРѕ СѓРєР°Р·Р°С‚СЊ С‚РёРї Рё РїР°СЂР°РјРµС‚РµСЂ СЂРµСЃСѓСЂСЃР° РґР»СЏ СЃСЃС‹Р»РєРё"));
 	}
 	;
 
@@ -1934,19 +1934,19 @@ param_value_default
 		RDOParserSrcInfo src_info(@1, @2, true);
 		if (src_info.src_pos().point())
 		{
-			CONVERTER->error().error(src_info, _T("Не указано значение по-умолчанию"));
+			CONVERTER->error().error(src_info, _T("РќРµ СѓРєР°Р·Р°РЅРѕ Р·РЅР°С‡РµРЅРёРµ РїРѕ-СѓРјРѕР»С‡Р°РЅРёСЋ"));
 		}
 		else
 		{
-			CONVERTER->error().error(src_info, _T("Неверное значение по-умолчанию"));
+			CONVERTER->error().error(src_info, _T("РќРµРІРµСЂРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ РїРѕ-СѓРјРѕР»С‡Р°РЅРёСЋ"));
 		}
 	}
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- Общие составные токены для всех объектов РДО
+// -------------------- РћР±С‰РёРµ СЃРѕСЃС‚Р°РІРЅС‹Рµ С‚РѕРєРµРЅС‹ РґР»СЏ РІСЃРµС… РѕР±СЉРµРєС‚РѕРІ Р Р”Рћ
 // --------------------------------------------------------------------------------
-// -------------------- Логические выражения
+// -------------------- Р›РѕРіРёС‡РµСЃРєРёРµ РІС‹СЂР°Р¶РµРЅРёСЏ
 // --------------------------------------------------------------------------------
 fun_logic_eq
 	: '='
@@ -2082,16 +2082,16 @@ fun_logic
 	}
 	| '[' fun_logic error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	| '(' fun_logic error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- Арифметические выражения
+// -------------------- РђСЂРёС„РјРµС‚РёС‡РµСЃРєРёРµ РІС‹СЂР°Р¶РµРЅРёСЏ
 // --------------------------------------------------------------------------------
 fun_arithm
 	: RDO_INT_CONST                      { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
@@ -2163,7 +2163,7 @@ fun_arithm
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- Функции и последовательности
+// -------------------- Р¤СѓРЅРєС†РёРё Рё РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё
 // --------------------------------------------------------------------------------
 fun_arithm_func_call
 	: RDO_IDENTIF '(' ')'
@@ -2192,7 +2192,7 @@ fun_arithm_func_call
 	}
 	| RDO_IDENTIF '(' error
 	{
-		CONVERTER->error().error(@3, _T("Ошибка в параметрах функции"));
+		CONVERTER->error().error(@3, _T("РћС€РёР±РєР° РІ РїР°СЂР°РјРµС‚СЂР°С… С„СѓРЅРєС†РёРё"));
 	}
 	;
 
@@ -2219,16 +2219,16 @@ fun_arithm_func_call_pars
 	}
 	| fun_arithm_func_call_pars error
 	{
-		CONVERTER->error().error(@2, _T("Ошибка в арифметическом выражении"));
+		CONVERTER->error().error(@2, _T("РћС€РёР±РєР° РІ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
 	}
 	| fun_arithm_func_call_pars ',' error
 	{
-		CONVERTER->error().error(@3, _T("Ошибка в арифметическом выражении"));
+		CONVERTER->error().error(@3, _T("РћС€РёР±РєР° РІ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
 	}
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- Групповые выражения
+// -------------------- Р“СЂСѓРїРїРѕРІС‹Рµ РІС‹СЂР°Р¶РµРЅРёСЏ
 // --------------------------------------------------------------------------------
 fun_group_keyword
 	: RDO_Exist       { $$ = RDOFUNGroupLogic::fgt_exist;     }
@@ -2245,11 +2245,11 @@ fun_group_header
 	}
 	| fun_group_keyword '(' error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается имя типа"));
+		CONVERTER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ С‚РёРїР°"));
 	}
 	| fun_group_keyword error
 	{
-		CONVERTER->error().error(@1, _T("После имени функции ожидается октрывающаяся скобка"));
+		CONVERTER->error().error(@1, _T("РџРѕСЃР»Рµ РёРјРµРЅРё С„СѓРЅРєС†РёРё РѕР¶РёРґР°РµС‚СЃСЏ РѕРєС‚СЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	;
 
@@ -2276,15 +2276,15 @@ fun_group
 	}
 	| fun_group_header fun_logic error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	| fun_group_header RDO_NoCheck error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	| fun_group_header error
 	{
-		CONVERTER->error().error(@1, @2, _T("Ошибка в логическом выражении"));
+		CONVERTER->error().error(@1, @2, _T("РћС€РёР±РєР° РІ Р»РѕРіРёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
 	}
 	;
 
@@ -2302,11 +2302,11 @@ fun_select_header
 	}
 	| RDO_Select '(' error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается имя типа"));
+		CONVERTER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ С‚РёРїР°"));
 	}
 	| RDO_Select error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается октрывающаяся скобка"));
+		CONVERTER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ РѕРєС‚СЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	;
 
@@ -2337,15 +2337,15 @@ fun_select_body
 	}
 	| fun_select_header fun_logic error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	| fun_select_header RDO_NoCheck error
 	{
-		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	| fun_select_header error
 	{
-		CONVERTER->error().error(@1, @2, _T("Ошибка в логическом выражении"));
+		CONVERTER->error().error(@1, @2, _T("РћС€РёР±РєР° РІ Р»РѕРіРёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
 	}
 	;
 
@@ -2370,11 +2370,11 @@ fun_select_logic
 	}
 	| fun_select_body '.' fun_select_keyword '(' error
 	{
-		CONVERTER->error().error(@4, @5, _T("Ошибка в логическом выражении"));
+		CONVERTER->error().error(@4, @5, _T("РћС€РёР±РєР° РІ Р»РѕРіРёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
 	}
 	| fun_select_body '.' fun_select_keyword error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
+		CONVERTER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ РѕРєС‚СЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	| fun_select_body '.' RDO_Empty '(' ')'
 	{
@@ -2388,19 +2388,19 @@ fun_select_logic
 	}
 	| fun_select_body '.' RDO_Empty '(' error
 	{
-		CONVERTER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@4, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	| fun_select_body '.' RDO_Empty error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
+		CONVERTER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ РѕРєС‚СЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	| fun_select_body '.' error
 	{
-		CONVERTER->error().error(@2, @3, _T("Ожидается метод списка ресурсов"));
+		CONVERTER->error().error(@2, @3, _T("РћР¶РёРґР°РµС‚СЃСЏ РјРµС‚РѕРґ СЃРїРёСЃРєР° СЂРµСЃСѓСЂСЃРѕРІ"));
 	}
 	| fun_select_body error
 	{
-		CONVERTER->error().error(@1, _T("Ожидается '.' (точка) для вызова метода списка ресурсов"));
+		CONVERTER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ '.' (С‚РѕС‡РєР°) РґР»СЏ РІС‹Р·РѕРІР° РјРµС‚РѕРґР° СЃРїРёСЃРєР° СЂРµСЃСѓСЂСЃРѕРІ"));
 	}
 	;
 
@@ -2417,11 +2417,11 @@ fun_select_arithm
 	}
 	| fun_select_body '.' RDO_Size error
 	{
-		CONVERTER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
+		CONVERTER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ РѕРєС‚СЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	| fun_select_body '.' RDO_Size '(' error
 	{
-		CONVERTER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
+		CONVERTER->error().error(@4, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
 	}
 	;
 

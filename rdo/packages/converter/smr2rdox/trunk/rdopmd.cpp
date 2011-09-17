@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdopmd.cpp
-  \authors   Áàðñ Àëåêñàíäð
-  \authors   Óðóñîâ Àíäðåé (rdo@rk9.bmstu.ru)
+  \authors   Ð‘Ð°Ñ€Ñ ÐÐ»ÐµÐºÑÐ°Ð½Ð´Ñ€
+  \authors   Ð£Ñ€ÑƒÑÐ¾Ð² ÐÐ½Ð´Ñ€ÐµÐ¹ (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -41,8 +41,8 @@ RDOPMDPokaz::RDOPMDPokaz(CREF(RDOParserSrcInfo) src_info)
 	LPRDOPMDPokaz pPokaz = Converter::s_converter()->findPMDPokaz(src_text());
 	if (pPokaz)
 	{
-		Converter::s_converter()->error().push_only(this->src_info(), rdo::format(_T("Ïîêàçàòåëü '%s' óæå ñóùåñòâóåò"), src_text().c_str()));
-		Converter::s_converter()->error().push_only(pPokaz->src_info(), _T("Ñì. ïåðâîå îïðåäåëåíèå"));
+		Converter::s_converter()->error().push_only(this->src_info(), rdo::format(_T("ÐŸÐ¾ÐºÐ°Ð·Ð°Ñ‚ÐµÐ»ÑŒ '%s' ÑƒÐ¶Ðµ ÑÑƒÑ‰ÐµÑÑ‚Ð²ÑƒÐµÑ‚"), src_text().c_str()));
+		Converter::s_converter()->error().push_only(pPokaz->src_info(), _T("Ð¡Ð¼. Ð¿ÐµÑ€Ð²Ð¾Ðµ Ð¾Ð¿Ñ€ÐµÐ´ÐµÐ»ÐµÐ½Ð¸Ðµ"));
 		Converter::s_converter()->error().push_done();
 	}
 }
@@ -59,7 +59,7 @@ void RDOPMDPokaz::endOfCreation(CREF(LPIPokaz) pPokaz)
 		trace->setTraceID(Converter::s_converter()->getPMD_id());
 	}
 	Converter::s_converter()->insertPMDPokaz(this);
-	/// @todo ïåðåíåñòè â êîíñòðóêòîð rdoRuntime::RDOPMDPokaz
+	/// @todo Ð¿ÐµÑ€ÐµÐ½ÐµÑÑ‚Ð¸ Ð² ÐºÐ¾Ð½ÑÑ‚Ñ€ÑƒÐºÑ‚Ð¾Ñ€ rdoRuntime::RDOPMDPokaz
 	Converter::s_converter()->runtime()->addRuntimePokaz(m_pPokaz);
 }
 
@@ -72,29 +72,29 @@ RDOPMDWatchPar::RDOPMDWatchPar(CREF(RDOParserSrcInfo) src_info, rbool trace, CRE
 	LPRDORSSResource pResource = Converter::s_converter()->findRSSResource(res_src_info.src_text());
 	if (!pResource)
 	{
-		Converter::s_converter()->error().error(res_src_info, rdo::format(_T("Ðåñóðñ '%s' íå íàéäåí"), res_src_info.src_text().c_str()));
+		Converter::s_converter()->error().error(res_src_info, rdo::format(_T("Ð ÐµÑÑƒÑ€Ñ '%s' Ð½Ðµ Ð½Ð°Ð¹Ð´ÐµÐ½"), res_src_info.src_text().c_str()));
 	}
 /*
 	if (!pResource->getType()->isPermanent())
 	{
-		Converter::s_converter()->error().push_only(res_src_info, _T("Íàáëþäàòü (watch_par) ìîæíî òîëüêî çà ïàðàìåòðîì ïîñòîÿííîãî ðåñóðñà"));
-		Converter::s_converter()->error().push_only(pResource->getType()->src_info(), _T("Ñì. òèï ðåñóðñà"));
+		Converter::s_converter()->error().push_only(res_src_info, _T("ÐÐ°Ð±Ð»ÑŽÐ´Ð°Ñ‚ÑŒ (watch_par) Ð¼Ð¾Ð¶Ð½Ð¾ Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ð·Ð° Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð¾Ð¼ Ð¿Ð¾ÑÑ‚Ð¾ÑÐ½Ð½Ð¾Ð³Ð¾ Ñ€ÐµÑÑƒÑ€ÑÐ°"));
+		Converter::s_converter()->error().push_only(pResource->getType()->src_info(), _T("Ð¡Ð¼. Ñ‚Ð¸Ð¿ Ñ€ÐµÑÑƒÑ€ÑÐ°"));
 		Converter::s_converter()->error().push_done();
 	}
 */
 	LPRDORTPParam pParam = pResource->getType()->findRTPParam(par_src_info.src_text());
 	if (!pParam)
 	{
-		Converter::s_converter()->error().push_only(par_src_info, rdo::format(_T("Ïàðàìåòð '%s' íå íàéäåí"), par_src_info.src_text().c_str()));
-		Converter::s_converter()->error().push_only(pResource->src_info(), _T("Ñì. ðåñóðñ"));
-		Converter::s_converter()->error().push_only(pResource->getType()->src_info(), _T("Ñì. òèï ðåñóðñà"));
+		Converter::s_converter()->error().push_only(par_src_info, rdo::format(_T("ÐŸÐ°Ñ€Ð°Ð¼ÐµÑ‚Ñ€ '%s' Ð½Ðµ Ð½Ð°Ð¹Ð´ÐµÐ½"), par_src_info.src_text().c_str()));
+		Converter::s_converter()->error().push_only(pResource->src_info(), _T("Ð¡Ð¼. Ñ€ÐµÑÑƒÑ€Ñ"));
+		Converter::s_converter()->error().push_only(pResource->getType()->src_info(), _T("Ð¡Ð¼. Ñ‚Ð¸Ð¿ Ñ€ÐµÑÑƒÑ€ÑÐ°"));
 		Converter::s_converter()->error().push_done();
 	}
 	rdoRuntime::RDOType::TypeID typeID = pParam->getType()->type()->typeID();
 	if (typeID != rdoRuntime::RDOType::t_int && typeID != rdoRuntime::RDOType::t_real)
 	{
-		Converter::s_converter()->error().push_only(par_src_info, _T("Íàáëþäàòü ìîæíî òîëüêî çà ïàðàìåòðîì öåëîãî èëè âåùåñòâåííîãî òèïà"));
-		Converter::s_converter()->error().push_only(pParam->getType()->src_info(), _T("Ñì. òèï ïàðàìåòðà"));
+		Converter::s_converter()->error().push_only(par_src_info, _T("ÐÐ°Ð±Ð»ÑŽÐ´Ð°Ñ‚ÑŒ Ð¼Ð¾Ð¶Ð½Ð¾ Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ð·Ð° Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð¾Ð¼ Ñ†ÐµÐ»Ð¾Ð³Ð¾ Ð¸Ð»Ð¸ Ð²ÐµÑ‰ÐµÑÑ‚Ð²ÐµÐ½Ð½Ð¾Ð³Ð¾ Ñ‚Ð¸Ð¿Ð°"));
+		Converter::s_converter()->error().push_only(pParam->getType()->src_info(), _T("Ð¡Ð¼. Ñ‚Ð¸Ð¿ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð°"));
 		Converter::s_converter()->error().push_done();
 	}
 	endOfCreation(RF(rdoRuntime::RDOPMDWatchPar)::create(Converter::s_converter()->runtime(), src_text(), trace, res_src_info.src_text(), par_src_info.src_text(), pResource->getID(), pResource->getType()->getRTPParamNumber(par_src_info.src_text())));
@@ -118,12 +118,12 @@ RDOPMDWatchTemp::RDOPMDWatchTemp(CREF(RDOParserSrcInfo) src_info, CREF(RDOParser
 	LPRDORTPResType pResType = Converter::s_converter()->findRTPResType(res_type_src_info.src_text());
 	if (!pResType)
 	{
-		Converter::s_converter()->error().error(res_type_src_info, rdo::format(_T("Òèï ðåñóðñà '%s' íå íàéäåí"), res_type_src_info.src_text().c_str()));
+		Converter::s_converter()->error().error(res_type_src_info, rdo::format(_T("Ð¢Ð¸Ð¿ Ñ€ÐµÑÑƒÑ€ÑÐ° '%s' Ð½Ðµ Ð½Ð°Ð¹Ð´ÐµÐ½"), res_type_src_info.src_text().c_str()));
 	}
 	if (!pResType->isTemporary())
 	{
-		Converter::s_converter()->error().push_only(res_type_src_info, _T("Ïîêàçàòåëü ñîáèðàåò èíôîðìàöèþ ïî âðåìåííûì ðåñóðñàì (temporary)"));
-		Converter::s_converter()->error().push_only(pResType->src_info(), _T("Ñì. òèï ðåñóðñà"));
+		Converter::s_converter()->error().push_only(res_type_src_info, _T("ÐŸÐ¾ÐºÐ°Ð·Ð°Ñ‚ÐµÐ»ÑŒ ÑÐ¾Ð±Ð¸Ñ€Ð°ÐµÑ‚ Ð¸Ð½Ñ„Ð¾Ñ€Ð¼Ð°Ñ†Ð¸ÑŽ Ð¿Ð¾ Ð²Ñ€ÐµÐ¼ÐµÐ½Ð½Ñ‹Ð¼ Ñ€ÐµÑÑƒÑ€ÑÐ°Ð¼ (temporary)"));
+		Converter::s_converter()->error().push_only(pResType->src_info(), _T("Ð¡Ð¼. Ñ‚Ð¸Ð¿ Ñ€ÐµÑÑƒÑ€ÑÐ°"));
 		Converter::s_converter()->error().push_done();
 	}
 }
