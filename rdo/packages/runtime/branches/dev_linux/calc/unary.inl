@@ -33,7 +33,7 @@ LPRDOCalc RDOCalcUnaryBase::generateCalc(CREF(RDOSrcInfo::Position) position, CR
 	LPRDOCalc pCalc;
 	if (pConstCalc)
 	{
-		T::value_operator pOperation = T::getOperation();
+                typename T::value_operator pOperation = T::getOperation();
 		pCalc = rdo::Factory<RDOCalcConst>::create((pConstCalc->calcValue(NULL).*pOperation)());
 		pCalc->setSrcInfo(T::getStaticSrcInfo(position, pConstCalc));
 	}

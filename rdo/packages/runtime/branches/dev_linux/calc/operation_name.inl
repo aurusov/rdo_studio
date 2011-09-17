@@ -9,6 +9,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/namespace.h"
+#include "utils/rdomacros.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -37,7 +39,7 @@ inline rbool OperatorName<opr_type>::OprItem::operator== (CREF(opr_type) pOperat
 }
 
 template <>
-inline static CREF(OperatorName<RDOValue (RDOValue::*)(CREF(RDOValue)) const>::NameList) OperatorName<RDOValue (RDOValue::*)(CREF(RDOValue)) const>::getList()
+inline CREF(OperatorName<RDOValue (RDOValue::*)(CREF(RDOValue)) const>::NameList) OperatorName<RDOValue (RDOValue::*)(CREF(RDOValue)) const>::getList()
 {
 	static NameList s_nameList;
 	if (s_nameList.empty())
@@ -53,7 +55,7 @@ inline static CREF(OperatorName<RDOValue (RDOValue::*)(CREF(RDOValue)) const>::N
 }
 
 template <>
-inline static CREF(OperatorName<rbool (RDOValue::*)(CREF(RDOValue)) const>::NameList) OperatorName<rbool (RDOValue::*)(CREF(RDOValue)) const>::getList()
+inline CREF(OperatorName<rbool (RDOValue::*)(CREF(RDOValue)) const>::NameList) OperatorName<rbool (RDOValue::*)(CREF(RDOValue)) const>::getList()
 {
 	static NameList s_nameList;
 	if (s_nameList.empty())
@@ -69,7 +71,7 @@ inline static CREF(OperatorName<rbool (RDOValue::*)(CREF(RDOValue)) const>::Name
 }
 
 template <>
-inline static CREF(OperatorName<rbool (RDOValue::*)() const>::NameList) OperatorName<rbool (RDOValue::*)() const>::getList()
+inline CREF(OperatorName<rbool (RDOValue::*)() const>::NameList) OperatorName<rbool (RDOValue::*)() const>::getList()
 {
 	static NameList s_nameList;
 	if (s_nameList.empty())
@@ -80,7 +82,7 @@ inline static CREF(OperatorName<rbool (RDOValue::*)() const>::NameList) Operator
 }
 
 template <>
-inline static CREF(OperatorName<RDOValue (RDOValue::*)() const>::NameList) OperatorName<RDOValue (RDOValue::*)() const>::getList()
+inline CREF(OperatorName<RDOValue (RDOValue::*)() const>::NameList) OperatorName<RDOValue (RDOValue::*)() const>::getList()
 {
 	static NameList s_nameList;
 	if (s_nameList.empty())
@@ -91,7 +93,7 @@ inline static CREF(OperatorName<RDOValue (RDOValue::*)() const>::NameList) Opera
 }
 
 template <>
-inline static CREF(OperatorName<rsint (RDOValue::*)() const>::NameList) OperatorName<rsint (RDOValue::*)() const>::getList()
+inline CREF(OperatorName<rsint (RDOValue::*)() const>::NameList) OperatorName<rsint (RDOValue::*)() const>::getList()
 {
 	static NameList s_nameList;
 	if (s_nameList.empty())
