@@ -12,6 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
+#include <boost/date_time/posix_time/posix_time.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_object.h"
 #include "simulator/runtime/rdo_runtime_interface_registrator.h"
@@ -64,7 +65,7 @@ public:
 	ruint get_cnt_calc_arithm() const;
 	ruint get_cnt_calc_logic()  const;
 
-	static ruint getMSec(CREF(SYSTEMTIME) systime);
+	static ruint getMSec(CREF(boost::posix_time::ptime) ptime);
 
 protected:
 	RDOSimulatorBase();

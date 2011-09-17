@@ -96,10 +96,9 @@ rbool RDOSimulatorBase::rdoNext()
 		// который сбрасываетс€ в setMode и не измен€етс€ далее.
 		if (m_msec_wait > 1)
 		{
-			SYSTEMTIME systime_current;
-			::GetSystemTime(&systime_current);
-			unsigned int msec_curr = getMSec(systime_current);
-			unsigned int msec_delta;
+			boost::posix_time::ptime systime_current = boost::posix_time::microsec_clock::local_time();
+			ruint msec_curr = getMSec(systime_current);
+			ruint msec_delta;
 			// ћилисекунды считаютс€ с учетом часов, но при смене суток часы сбрасываютс€ на ноль,
 			// и текущее врем€ в милисекундах становитс€ меньше предыдущего. ”читываем этот момент
 			// через ветку ELSE. “еперь система сможет учесть переход на один день вперед между
@@ -172,8 +171,7 @@ rbool RDOSimulatorBase::rdoNext()
 						{
 							m_msec_wait = m_msec_wait / DBL_MIN;
 						}
-						SYSTEMTIME systime_current;
-						::GetSystemTime(&systime_current);
+						boost::posix_time::ptime systime_current = boost::posix_time::microsec_clock::local_time();
 						m_msec_prev = getMSec(systime_current);
 					}
 					else

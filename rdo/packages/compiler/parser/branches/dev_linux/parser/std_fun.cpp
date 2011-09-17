@@ -89,8 +89,8 @@ public:
 		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<MaxCalc>::create();
 		ASSERT(pCalc);
 
-		SYSTEMTIME tnow;
-		::GetSystemTime(&tnow);
+
+		boost::posix_time::ptime tnow = boost::posix_time::microsec_clock::local_time();
 		ruint tnow1 = rdoRuntime::RDOSimulatorBase::getMSec(tnow);
 
 		for (ruint i = 0; i < 10000000; i++)
@@ -98,7 +98,7 @@ public:
 			pCalc->calcValue(runtime);
 		}
 
-		::GetSystemTime(&tnow);
+		tnow = boost::posix_time::microsec_clock::local_time();
 		ruint tnow2 = rdoRuntime::RDOSimulatorBase::getMSec(tnow);
 		ruint delta = tnow2 - tnow1;
 		YYLTYPE pos = {1, 1, 1, 1, 1, 1};
