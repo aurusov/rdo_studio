@@ -32,15 +32,15 @@ public:
 
 	ID push(CREF(T) object)
 	{
-		std::pair<Stack::iterator, rbool> result = m_stack.insert(
-			std::pair<Stack::key_type, Stack::mapped_type>(m_generator.get(), object)
+                std::pair<typename Stack::iterator, rbool> result = m_stack.insert(
+                        std::pair<typename Stack::key_type, typename Stack::mapped_type>(m_generator.get(), object)
 		);
 		ASSERT(result.second);
 		return result.first->first;
 	}
 	T pop(ID index)
 	{
-		Stack::iterator it = m_stack.find(index);
+                typename Stack::iterator it = m_stack.find(index);
 		ASSERT(it != m_stack.end());
 		T object = it->second;
 		m_stack.erase(it);
