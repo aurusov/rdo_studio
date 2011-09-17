@@ -17,18 +17,18 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-RDOParam::RDOParam(CREF(tstring) name, CREF(LPTypeInfo) pType, RDOValue default)
-	: RDOParserSrcInfo(name   )
-	, m_pType         (pType  )
-	, m_default       (default)
+RDOParam::RDOParam(CREF(tstring) name, CREF(LPTypeInfo) pType, RDOValue defaultValue)
+        : RDOParserSrcInfo(name        )
+        , m_pType         (pType       )
+        , m_default       (defaultValue)
 {
 	checkDefault();
 }
 
-RDOParam::RDOParam(CREF(RDOParserSrcInfo) src_info, CREF(LPTypeInfo) pType, RDOValue default)
-	: RDOParserSrcInfo(src_info)
-	, m_pType         (pType   )
-	, m_default       (default )
+RDOParam::RDOParam(CREF(RDOParserSrcInfo) src_info, CREF(LPTypeInfo) pType, RDOValue defaultValue)
+        : RDOParserSrcInfo(src_info    )
+        , m_pType         (pType       )
+        , m_default       (defaultValue)
 {
 	checkDefault();
 }
