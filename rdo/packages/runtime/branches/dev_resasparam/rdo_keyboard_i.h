@@ -22,20 +22,13 @@
 class IKeyboard
 {
 public:
-	/*!
-	  \enum  AddHotKeyResult
-	  \brief —татуc нажати€ клавиши
-	  \var   addhk_ok        клавиша нажата
-	  \var   addhk_already   клавиша уже нажата
-	  \var   addhk_notfound  клавиша не найдена
-	  \var   addhk_dont      клавиша не нажата
-	*/
+	//! —татуc нажати€ клавиши
 	enum AddHotKeyResult
 	{
-		addhk_ok,
-		addhk_already,
-		addhk_notfound,
-		addhk_dont
+		addhk_ok,       //!< клавиша нажата
+		addhk_already,  //!< клавиша уже нажата
+		addhk_notfound, //!< клавиша не найдена
+		addhk_dont	    //!< клавиша не нажата
 	};
 	virtual rbool           hasHotKey() const = 0;
 	virtual AddHotKeyResult addHotKey(CREF(rdoRuntime::LPRDORuntime) pRuntime, CREF(tstring) hotKey) = 0;

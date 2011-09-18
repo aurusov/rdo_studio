@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      rdo_logic.h
+  \file      simulator/runtime/rdo_logic.h
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      23.04.2008
@@ -11,8 +11,11 @@
 #ifndef _LIB_RUNTIME_LOGIC_H_
 #define _LIB_RUNTIME_LOGIC_H_
 
-#pragma warning(disable : 4786)
-
+// ----------------------------------------------------------------------- PLATFORM
+#include "utils/platform.h"
+#ifdef OST_WINDOWS
+	#pragma warning(disable : 4786)
+#endif
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/namespace.h"

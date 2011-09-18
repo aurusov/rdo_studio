@@ -12,8 +12,11 @@
 #ifndef _LIB_RUNTIME_RUNTIME_H_
 #define _LIB_RUNTIME_RUNTIME_H_
 
-#pragma warning(disable : 4786)
-
+// ----------------------------------------------------------------------- PLATFORM
+#include "utils/platform.h"
+#ifdef OST_WINDOWS
+	#pragma warning(disable : 4786)
+#endif
 // ----------------------------------------------------------------------- INCLUDES
 #include <time.h>
 // ----------------------------------------------------------------------- SYNOPSIS
