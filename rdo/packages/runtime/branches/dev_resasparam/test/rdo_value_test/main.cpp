@@ -14,7 +14,7 @@
 #define BOOST_TEST_MODULE RDOValue_Test
 #include <boost/test/included/unit_test.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/rdo_value.h"
+#include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
 
 BOOST_AUTO_TEST_SUITE(RDOValue_Test)
@@ -35,6 +35,31 @@ BOOST_AUTO_TEST_CASE(RDOValue_String)
 	value2 += str2;
 	BOOST_CHECK(value2.getString  () == str1 + str2);
 	BOOST_CHECK(value2.getAsString() == str1 + str2);
+}
+
+BOOST_AUTO_TEST_CASE(RDOValue_Resource)
+{
+	using namespace rdoRuntime;
+
+	LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create();
+	ASSERT(pRuntime);
+
+	LPRDOResourceType pResourceType = rdo::Factory<RDOResourceType>::create(0);
+	ASSERT(pResourceType);
+	LPIResourceType pResourceFactory = pResourceType.interface_cast<IResourceType>();
+	ASSERT(pResourceFactory);
+
+	std::vector<RDOValue> paramList;
+	paramList.push_back(RDOValue(1      ));
+	paramList.push_back(RDOValue(2.2    ));
+	paramList.push_back(RDOValue(_T("3")));
+
+	LPRDOResource pResource = pResourceFactory->createRes(pRuntime, paramList, true, true);
+	ASSERT(pResource);
+
+	RDOValue value1(pResource);
+
+	int i = 1;
 }
 
 BOOST_AUTO_TEST_SUITE_END()

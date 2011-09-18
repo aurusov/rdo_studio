@@ -53,6 +53,9 @@ public:
 	RDOValue(CREF(RDOMatrixValue)    matrixValue);
 	RDOValue(CREF(RDOMatrixIterator) mIterator  );
 
+	template <class T>
+	RDOValue(CREF(rdo::intrusive_ptr<T>) pPointer);
+
 	rsint             getInt          () const;
 	rsint             getEnumAsInt    () const;
 	LPRDOEnumType     getEnum         () const;
@@ -105,24 +108,14 @@ public:
 	void setArrayItem(CREF(RDOValue) ind, CREF(RDOValue) item);
 
 private:
-	LPRDOType m_pType;
+	//! Тип контейнера значения, размер определяется по максимальному размеру типа данных
+	typedef rbyte Value[sizeof(double)];
+
+	Value      m_value; //!< контейнер значения
+	LPRDOType  m_pType; //!< тип значения
 
 	void set        (CREF(RDOValue) rdovalue);
 	void deleteValue();
-
-	LPRDOEnumType           __enumT    () const;
-	 REF(tstring)           __stringV  ();
-	CREF(tstring)           __stringV  () const;
-	 REF(RDOFuzzyValue)     __fuzzyV   ();
-	CREF(RDOFuzzyValue)     __fuzzyV   () const;
-	 REF(RDOArrayValue)     __arrayV   ();
-	CREF(RDOArrayValue)     __arrayV   () const;
-	 REF(RDOArrayIterator)  __arrayItr ();
-	CREF(RDOArrayIterator)  __arrayItr () const;
-	 REF(RDOMatrixValue)    __matrixV  ();
-	CREF(RDOMatrixValue)    __matrixV  () const;
-	 REF(RDOMatrixIterator) __matrixItr();
-	CREF(RDOMatrixIterator) __matrixItr() const;
 
 	/*!
 	  \class     string_class
@@ -155,19 +148,29 @@ private:
 	};
 	void deleteString();
 
-	/*!
-	  \union     Value
-	  \brief     Значение
-	*/
-	union Value
-	{
-		int                i_value;
-		double             d_value;
-		rbool              b_value;
-		PTR(smart_string)  s_value;
-		PTR(void)          p_data;
-	};
-	Value m_value;
+	template <class T>
+	REF(T) __get();
+
+	template <class T>
+	CREF(T) __get() const;
+
+	 REF(PTR(void))         __voidPtrV  ();
+	CREF(PTR(void))         __voidPtrV  () const;
+	 REF(PTR(smart_string)) __stringPtrV();
+	CREF(PTR(smart_string)) __stringPtrV() const;
+	LPRDOEnumType           __enumT     () const;
+	 REF(tstring)           __stringV   ();
+	CREF(tstring)           __stringV   () const;
+	 REF(RDOFuzzyValue)     __fuzzyV    ();
+	CREF(RDOFuzzyValue)     __fuzzyV    () const;
+	 REF(RDOArrayValue)     __arrayV    ();
+	CREF(RDOArrayValue)     __arrayV    () const;
+	 REF(RDOArrayIterator)  __arrayItr  ();
+	CREF(RDOArrayIterator)  __arrayItr  () const;
+	 REF(RDOMatrixValue)    __matrixV   ();
+	CREF(RDOMatrixValue)    __matrixV   () const;
+	 REF(RDOMatrixIterator) __matrixItr ();
+	CREF(RDOMatrixIterator) __matrixItr () const;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
