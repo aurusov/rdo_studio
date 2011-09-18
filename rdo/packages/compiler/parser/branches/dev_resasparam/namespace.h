@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      namespace.h
+  \file      simulator/compiler/parser/namespace.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      09.02.2010
   \brief     

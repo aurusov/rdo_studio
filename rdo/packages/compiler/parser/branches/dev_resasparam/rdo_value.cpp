@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      rdo_value.cpp
+  \file      simulator/compiler/parser/rdo_value.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      
   \brief     

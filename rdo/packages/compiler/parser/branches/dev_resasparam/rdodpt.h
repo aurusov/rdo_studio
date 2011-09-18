@@ -29,7 +29,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 class RDOCalc;
-class RDODPTFree;
 class RDODPTSome;
 class RDODPTPrior;
 class RDODPTSearchRuntime;
@@ -106,34 +105,6 @@ protected:
 	RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info);
 };
 DECLARE_POINTER(RDODPTActivityHotKey);
-
-// --------------------------------------------------------------------------------
-// -------------------- RDODPTFreeActivity
-// --------------------------------------------------------------------------------
-class RDODPTFreeActivity: public RDODPTActivityHotKey
-{
-DECLARE_FACTORY(RDODPTFreeActivity);
-private:
-	RDODPTFreeActivity(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info);
-};
-DECLARE_POINTER(RDODPTFreeActivity);
-
-// --------------------------------------------------------------------------------
-// -------------------- RDODPTFree
-// --------------------------------------------------------------------------------
-CLASS(RDODPTFree): public RDOLogicActivity<rdoRuntime::RDODPTFree, RDODPTFreeActivity>
-	AND INSTANCE_OF      (Context     )
-	AND IMPLEMENTATION_OF(IContextFind)
-{
-DECLARE_FACTORY(RDODPTFree);
-public:
-	void end();
-
-private:
-	RDODPTFree(CREF(RDOParserSrcInfo) src_info);
-	DECLARE_IContextFind;
-};
-DECLARE_POINTER(RDODPTFree);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSomeActivity
