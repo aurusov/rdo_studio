@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_type.cpp
-  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -42,14 +42,14 @@ DECLARE_ATOM_TYPE_PARSER(string,        _T("string")       );
 //! RDOType__unknow
 LPRDOType RDOType__unknow::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
-	rdoConverter::g_error().error(src_info, rdo::format(_T("Р’РЅСѓС‚СЂРµРЅРЅР°СЏ РѕС€РёР±РєР° РїР°СЂСЃРµСЂР°. РќРµРІРѕР·РјРѕР¶РЅРѕ РїСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ С‚РёРї '%s' Рє РЅРµРёР·РІРµСЃС‚РЅРѕРјСѓ С‚РёРїСѓ"), from_src_info.src_text().c_str()));
+	rdoConverter::g_error().error(src_info, rdo::format(_T("Внутренная ошибка парсера. Невозможно преобразовать тип '%s' к неизвестному типу"), from_src_info.src_text().c_str()));
 	return NULL;
 }
 
 RDOValue RDOType__unknow::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
-	rdoConverter::g_error().push_only(src_info,    rdo::format(_T("РќРµРІРѕР·РјРѕР¶РЅРѕ РїСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ Р·РЅР°С‡РµРЅРёРµ '%s' Рє РЅРµРёР·РІРµСЃС‚РЅРѕРјСѓ С‚РёРїСѓ"), from.src_info().src_text().c_str()));
-	rdoConverter::g_error().push_only(to_src_info, rdo::format(_T("РЎРј. С‚РёРї: %s"), to_src_info.src_text().c_str()));
+	rdoConverter::g_error().push_only(src_info,    rdo::format(_T("Невозможно преобразовать значение '%s' к неизвестному типу"), from.src_info().src_text().c_str()));
+	rdoConverter::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
 	rdoConverter::g_error().push_done();
 	return RDOValue();
 }
@@ -66,7 +66,7 @@ RDOValue RDOType__unknow::get_default() const
 
 void RDOType__unknow::writeModelStructure(REF(std::ostream) stream) const
 {
-	rdoConverter::g_error().error(RDOParserSrcInfo(), _T("Р’РЅСѓС‚СЂРµРЅРЅР°СЏ РѕС€РёР±РєР° РїР°СЂСЃРµСЂР°. РќРµРІРѕР·РјРѕР¶РЅРѕ Р·Р°РїРёСЃР°С‚СЊ РЅРµРёР·РІРµСЃС‚РЅС‹Р№ С‚РёРї РІ РѕС‚С‡РµС‚"));
+	rdoConverter::g_error().error(RDOParserSrcInfo(), _T("Внутренная ошибка парсера. Невозможно записать неизвестный тип в отчет"));
 	NEVER_REACH_HERE;
 }
 
@@ -78,11 +78,11 @@ LPRDOType RDOType__int::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) f
 		case rdoRuntime::RDOType::t_int :
 			return rdo::Factory<RDOType__int>::create();
 		case rdoRuntime::RDOType::t_real:
-			rdoConverter::g_error().warning(src_info, rdo::format(_T("РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРµ '%s' РІ '%s', РІРѕР·РјРѕР¶РЅР° РїРѕС‚РµСЂСЏ РґР°РЅРЅС‹С…"), from->name().c_str(), name().c_str()));
+			rdoConverter::g_error().warning(src_info, rdo::format(_T("Преобразование '%s' в '%s', возможна потеря данных"), from->name().c_str(), name().c_str()));
 			return rdo::Factory<RDOType__real>::create();
 		default:
-			rdoConverter::g_error().push_only(src_info,    rdo::format(_T("РћР¶РёРґР°РµС‚СЃСЏ С†РµР»РѕС‡РёСЃР»РµРЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ, РЅР°Р№РґРµРЅРѕ: %s"), from_src_info.src_text().c_str()));
-			rdoConverter::g_error().push_only(to_src_info, rdo::format(_T("РЎРј. С‚РёРї: %s"), to_src_info.src_text().c_str()));
+			rdoConverter::g_error().push_only(src_info,    rdo::format(_T("Ожидается целочисленное значение, найдено: %s"), from_src_info.src_text().c_str()));
+			rdoConverter::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
 			rdoConverter::g_error().push_done();
 	}
 	return NULL;
@@ -100,8 +100,8 @@ RDOValue RDOType__int::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to
 
 	if (toValue.typeID() == rdoRuntime::RDOType::t_unknow)
 	{
-		rdoConverter::g_error().push_only(src_info,    rdo::format(_T("РќРµРІРѕР·РјРѕР¶РЅРѕ РїСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ Р·РЅР°С‡РµРЅРёРµ '%s' Рє С†РµР»РѕРјСѓ С‚РёРїСѓ"), from.src_info().src_text().c_str()));
-		rdoConverter::g_error().push_only(to_src_info, rdo::format(_T("РЎРј. С‚РёРї: %s"), to_src_info.src_text().c_str()));
+		rdoConverter::g_error().push_only(src_info,    rdo::format(_T("Невозможно преобразовать значение '%s' к целому типу"), from.src_info().src_text().c_str()));
+		rdoConverter::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
 		rdoConverter::g_error().push_done();
 	}
 	return toValue;
@@ -135,8 +135,8 @@ LPRDOType RDOType__real::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) 
 		case rdoRuntime::RDOType::t_real:
 			return rdo::Factory<RDOType__real>::create();
 		default:
-			rdoConverter::g_error().push_only(src_info,    rdo::format(_T("РћР¶РёРґР°РµС‚СЃСЏ РІРµС‰РµСЃС‚РІРµРЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ, РЅР°Р№РґРµРЅРѕ: %s"), from_src_info.src_text().c_str()));
-			rdoConverter::g_error().push_only(to_src_info, rdo::format(_T("РЎРј. С‚РёРї: %s"), to_src_info.src_text().c_str()));
+			rdoConverter::g_error().push_only(src_info,    rdo::format(_T("Ожидается вещественное значение, найдено: %s"), from_src_info.src_text().c_str()));
+			rdoConverter::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
 			rdoConverter::g_error().push_done();
 	}
 	return NULL;
@@ -154,8 +154,8 @@ RDOValue RDOType__real::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) t
 
 	if (toValue.typeID() == rdoRuntime::RDOType::t_unknow)
 	{
-		rdoConverter::g_error().push_only(src_info,    rdo::format(_T("РќРµРІРѕР·РјРѕР¶РЅРѕ РїСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ Р·РЅР°С‡РµРЅРёРµ '%s' Рє РІРµС‰РµСЃС‚РІРµРЅРЅРѕРјСѓ С‚РёРїСѓ"), from.src_info().src_text().c_str()));
-		rdoConverter::g_error().push_only(to_src_info, rdo::format(_T("РЎРј. С‚РёРї: %s"), to_src_info.src_text().c_str()));
+		rdoConverter::g_error().push_only(src_info,    rdo::format(_T("Невозможно преобразовать значение '%s' к вещественному типу"), from.src_info().src_text().c_str()));
+		rdoConverter::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
 		rdoConverter::g_error().push_done();
 	}
 	return toValue;
@@ -184,8 +184,8 @@ LPRDOType RDOType__string::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo
 		case rdoRuntime::RDOType::t_string:
 			return rdo::Factory<RDOType__string>::create();
 		default:
-			rdoConverter::g_error().push_only(src_info,    rdo::format(_T("РћР¶РёРґР°РµС‚СЃСЏ СЃС‚СЂРѕРєРѕРІРѕРµ Р·РЅР°С‡РµРЅРёРµ, РЅР°Р№РґРµРЅРѕ: %s"), from_src_info.src_text().c_str()));
-			rdoConverter::g_error().push_only(to_src_info, rdo::format(_T("РЎРј. С‚РёРї: %s"), to_src_info.src_text().c_str()));
+			rdoConverter::g_error().push_only(src_info,    rdo::format(_T("Ожидается строковое значение, найдено: %s"), from_src_info.src_text().c_str()));
+			rdoConverter::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
 			rdoConverter::g_error().push_done();
 	}
 	return NULL;
@@ -203,8 +203,8 @@ RDOValue RDOType__string::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo)
 
 	if (toValue.typeID() == rdoRuntime::RDOType::t_unknow)
 	{
-		rdoConverter::g_error().push_only(src_info,    rdo::format(_T("РќРµРІРѕР·РјРѕР¶РЅРѕ РїСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ Р·РЅР°С‡РµРЅРёРµ '%s' Рє СЃС‚СЂРѕРєРѕРІРѕРјСѓ С‚РёРїСѓ"), from.src_info().src_text().c_str()));
-		rdoConverter::g_error().push_only(to_src_info, rdo::format(_T("РЎРј. С‚РёРї: %s"), to_src_info.src_text().c_str()));
+		rdoConverter::g_error().push_only(src_info,    rdo::format(_T("Невозможно преобразовать значение '%s' к строковому типу"), from.src_info().src_text().c_str()));
+		rdoConverter::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
 		rdoConverter::g_error().push_done();
 	}
 	return toValue;
@@ -228,14 +228,14 @@ void RDOType__string::writeModelStructure(REF(std::ostream) stream) const
 //! RDOType__identificator
 LPRDOType RDOType__identificator::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
-	rdoConverter::g_error().error(src_info, rdo::format(_T("Р’РЅСѓС‚СЂРµРЅРЅР°СЏ РѕС€РёР±РєР° РїР°СЂСЃРµСЂР°. РќРµРІРѕР·РјРѕР¶РЅРѕ РїСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ С‚РёРї '%s' Рє РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂСѓ"), from_src_info.src_text().c_str()));
+	rdoConverter::g_error().error(src_info, rdo::format(_T("Внутренная ошибка парсера. Невозможно преобразовать тип '%s' к идентификатору"), from_src_info.src_text().c_str()));
 	return NULL;
 }
 
 RDOValue RDOType__identificator::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
-	rdoConverter::g_error().push_only(src_info,    rdo::format(_T("РќРµРІРѕР·РјРѕР¶РЅРѕ РїСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ Р·РЅР°С‡РµРЅРёРµ '%s' Рє С‚РёРїСѓ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ"), from.src_info().src_text().c_str()));
-	rdoConverter::g_error().push_only(to_src_info, rdo::format(_T("РЎРј. С‚РёРї: %s"), to_src_info.src_text().c_str()));
+	rdoConverter::g_error().push_only(src_info,    rdo::format(_T("Невозможно преобразовать значение '%s' к типу идентификатор"), from.src_info().src_text().c_str()));
+	rdoConverter::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
 	rdoConverter::g_error().push_done();
 	return RDOValue();
 }
@@ -252,7 +252,7 @@ RDOValue RDOType__identificator::get_default() const
 
 void RDOType__identificator::writeModelStructure(REF(std::ostream) stream) const
 {
-	rdoConverter::g_error().error(RDOParserSrcInfo(), _T("Р’РЅСѓС‚СЂРµРЅРЅР°СЏ РѕС€РёР±РєР° РїР°СЂСЃРµСЂР°. РќРµРІРѕР·РјРѕР¶РЅРѕ Р·Р°РїРёСЃР°С‚СЊ С‚РёРї РёРґРµРєС‚РёС„РёРєР°С‚РѕСЂ РІ РѕС‚С‡РµС‚"));
+	rdoConverter::g_error().error(RDOParserSrcInfo(), _T("Внутренная ошибка парсера. Невозможно записать тип идектификатор в отчет"));
 	NEVER_REACH_HERE;
 }
 
@@ -264,8 +264,8 @@ LPRDOType RDOType__bool::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) 
 		case rdoRuntime::RDOType::t_bool:
 			return rdo::Factory<RDOType__bool>::create();
 		default:
-			rdoConverter::g_error().push_only(src_info,    rdo::format(_T("РћР¶РёРґР°РµС‚СЃСЏ Р±СѓР»РµРІСЃРєРѕРµ Р·РЅР°С‡РµРЅРёРµ, РЅР°Р№РґРµРЅРѕ: %s"), from_src_info.src_text().c_str()));
-			rdoConverter::g_error().push_only(to_src_info, rdo::format(_T("РЎРј. С‚РёРї: %s"), to_src_info.src_text().c_str()));
+			rdoConverter::g_error().push_only(src_info,    rdo::format(_T("Ожидается булевское значение, найдено: %s"), from_src_info.src_text().c_str()));
+			rdoConverter::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
 			rdoConverter::g_error().push_done();
 	}
 	return NULL;
@@ -283,8 +283,8 @@ RDOValue RDOType__bool::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) t
 
 	if (toValue.typeID() == rdoRuntime::RDOType::t_unknow)
 	{
-		rdoConverter::g_error().push_only(src_info,    rdo::format(_T("РќРµРІРѕР·РјРѕР¶РЅРѕ РїСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ Р·РЅР°С‡РµРЅРёРµ '%s' Рє Р±СѓР»РµРІСЃРєРѕРјСѓ С‚РёРїСѓ"), from.src_info().src_text().c_str()));
-		rdoConverter::g_error().push_only(to_src_info, rdo::format(_T("РЎРј. С‚РёРї: %s"), to_src_info.src_text().c_str()));
+		rdoConverter::g_error().push_only(src_info,    rdo::format(_T("Невозможно преобразовать значение '%s' к булевскому типу"), from.src_info().src_text().c_str()));
+		rdoConverter::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
 		rdoConverter::g_error().push_done();
 	}
 	return toValue;

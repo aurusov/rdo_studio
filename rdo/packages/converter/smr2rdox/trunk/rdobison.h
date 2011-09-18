@@ -1,10 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdobison.h
-  \authors   Р›СѓС‰Р°РЅ Р”РјРёС‚СЂРёР№ (dluschan@rk9.bmstu.ru)
-  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      
-  \brief     РЎС‚СЂСѓРєС‚СѓСЂР° РєРѕРѕСЂРґРёРЅР°С‚ С‚РѕРєРµРЅР° Р±РёР·РѕРЅР°, РґРѕРїРѕР»РЅРµРЅРЅР°СЏ Р»РёРЅРµР№РЅРѕР№ РїРѕР·РёС†РёРµР№
+  \brief     Структура координат токена бизона, дополненная линейной позицией
   \indent    4T
 */
 

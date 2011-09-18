@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_value.inl
-  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      21.04.2010
   \brief     
   \indent    4T

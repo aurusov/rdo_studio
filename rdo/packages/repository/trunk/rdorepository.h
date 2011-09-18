@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdorepository.h
-  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -192,7 +192,7 @@ private:
 	void      writeModelFilesInfo(REF(std::ofstream) stream) const;
 
 protected:
-	virtual ~RDOThreadRepository(); // Р§С‚РѕР±С‹ РЅРµР»СЊР·СЏ Р±С‹Р»Рѕ СѓРґР°Р»РёС‚СЊ С‡РµСЂРµР· delete
+	virtual ~RDOThreadRepository(); // Чтобы нельзя было удалить через delete
 	virtual void proc(REF(RDOMessageInfo) msg);
 
 	void  newModel   (CPTRC(NewModel) data                  );

@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdodpt.cpp
-  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
-  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -82,7 +82,7 @@ RDODPTActivity::RDODPTActivity(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSr
 	m_pPattern = Converter::s_converter()->findPATPattern(pattern_src_info.src_text());
 	if (!m_pPattern)
 	{
-		Converter::s_converter()->error().error(pattern_src_info, rdo::format(_T("РќРµ РЅР°Р№РґРµРЅ РѕР±СЂР°Р·РµС†: %s"), pattern_src_info.src_text().c_str()));
+		Converter::s_converter()->error().error(pattern_src_info, rdo::format(_T("Не найден образец: %s"), pattern_src_info.src_text().c_str()));
 	}
 }
 
@@ -97,24 +97,24 @@ void RDODPTActivity::addParam(CREF(RDOValue) param)
 		{
 			if (dynamic_cast<PTR(RDOOPROperation)>(this))
 			{
-				Converter::s_converter()->error().push_only(param, rdo::format(_T("РЎР»РёС€РєРѕРј РјРЅРѕРіРѕ РїР°СЂР°РјРµС‚СЂРѕРІ РґР»СЏ РѕР±СЂР°Р·С†Р° '%s' РїСЂРё РѕРїРёСЃР°РЅРёРё РѕРїРµСЂР°С†РёРё '%s'"), m_pPattern->name().c_str(), name().c_str()));
+				Converter::s_converter()->error().push_only(param, rdo::format(_T("Слишком много параметров для образца '%s' при описании операции '%s'"), m_pPattern->name().c_str(), name().c_str()));
 			}
 			else
 			{
-				Converter::s_converter()->error().push_only(param, rdo::format(_T("РЎР»РёС€РєРѕРј РјРЅРѕРіРѕ РїР°СЂР°РјРµС‚СЂРѕРІ РґР»СЏ РѕР±СЂР°Р·С†Р° '%s' РїСЂРё РѕРїРёСЃР°РЅРёРё Р°РєС‚РёРІРЅРѕСЃС‚Рё '%s'"), m_pPattern->name().c_str(), name().c_str()));
+				Converter::s_converter()->error().push_only(param, rdo::format(_T("Слишком много параметров для образца '%s' при описании активности '%s'"), m_pPattern->name().c_str(), name().c_str()));
 			}
-			Converter::s_converter()->error().push_only(m_pPattern->src_info(), _T("РЎРј. РѕР±СЂР°Р·РµС†"));
+			Converter::s_converter()->error().push_only(m_pPattern->src_info(), _T("См. образец"));
 			Converter::s_converter()->error().push_done();
 		}
 		else
 		{
 			if (dynamic_cast<PTR(RDOOPROperation)>(this))
 			{
-				Converter::s_converter()->error().error(param, _T("РРјСЏ РѕРїРµСЂР°С†РёРё РґРѕР»Р¶РЅРѕ Р·Р°РєР°РЅС‡РёРІР°С‚СЊСЃСЏ РґРІРѕРµС‚РѕС‡РёРµРј"));
+				Converter::s_converter()->error().error(param, _T("Имя операции должно заканчиваться двоеточием"));
 			}
 			else
 			{
-				Converter::s_converter()->error().error(param, _T("РРјСЏ Р°РєС‚РёРІРЅРѕСЃС‚Рё РґРѕР»Р¶РЅРѕ Р·Р°РєР°РЅС‡РёРІР°С‚СЊСЃСЏ РґРІРѕРµС‚РѕС‡РёРµРј"));
+				Converter::s_converter()->error().error(param, _T("Имя активности должно заканчиваться двоеточием"));
 			}
 		}
 	}
@@ -124,8 +124,8 @@ void RDODPTActivity::addParam(CREF(RDOValue) param)
 	{
 		if (!pPatternParam->getDefault().defined())
 		{
-			Converter::s_converter()->error().push_only(param, rdo::format(_T("РќРµС‚ Р·РЅР°С‡РµРЅРёСЏ РїРѕ-СѓРјРѕР»С‡Р°РЅРёСЋ РґР»СЏ РїР°СЂР°РјРµС‚СЂР° '%s'"), pPatternParam->src_text().c_str()));
-			Converter::s_converter()->error().push_only(pPatternParam->src_info(), rdo::format(_T("РЎРј. РїР°СЂР°РјРµС‚СЂ '%s', С‚РёРї '%s'"), pPatternParam->src_text().c_str(), pPatternParam->getType()->src_text().c_str()));
+			Converter::s_converter()->error().push_only(param, rdo::format(_T("Нет значения по-умолчанию для параметра '%s'"), pPatternParam->src_text().c_str()));
+			Converter::s_converter()->error().push_only(pPatternParam->src_info(), rdo::format(_T("См. параметр '%s', тип '%s'"), pPatternParam->src_text().c_str(), pPatternParam->getType()->src_text().c_str()));
 			Converter::s_converter()->error().push_done();
 		}
 		val = pPatternParam->getDefault().value();
@@ -136,7 +136,7 @@ void RDODPTActivity::addParam(CREF(RDOValue) param)
 	}
 	rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOSetPatternParamCalc>::create(m_currParam, val);
 	ASSERT(pCalc);
-	pCalc->setSrcInfo(RDOParserSrcInfo(param.getPosAsYY(), rdo::format(_T("РџР°СЂР°РјРµС‚СЂ РѕР±СЂР°Р·С†Р° %s.%s = %s"), m_pPattern->name().c_str(), pPatternParam->name().c_str(), param->getAsString().c_str())));
+	pCalc->setSrcInfo(RDOParserSrcInfo(param.getPosAsYY(), rdo::format(_T("Параметр образца %s.%s = %s"), m_pPattern->name().c_str(), pPatternParam->name().c_str(), param->getAsString().c_str())));
 	m_currParam++;
 }
 
@@ -145,11 +145,11 @@ void RDODPTActivity::endParam(CREF(YYLTYPE) param_pos)
 	if (m_pPattern->m_paramList.size() > m_currParam)
 	{
 		LPRDOParam pPatternParam = m_pPattern->m_paramList.at(m_currParam);
-		Converter::s_converter()->error().push_only(param_pos, rdo::format(_T("РЈРєР°Р·Р°РЅС‹ РЅРµ РІСЃРµ РїР°СЂР°РјРµС‚СЂР° РѕР±СЂР°Р·С†Р° '%s':"), m_pPattern->src_text().c_str()));
+		Converter::s_converter()->error().push_only(param_pos, rdo::format(_T("Указаны не все параметра образца '%s':"), m_pPattern->src_text().c_str()));
 		for (ruint i = m_currParam; i < m_pPattern->m_paramList.size(); i++)
 		{
 			pPatternParam = m_pPattern->m_paramList.at(i);
-			Converter::s_converter()->error().push_only(pPatternParam->src_info(), rdo::format(_T("РћР¶РёРґР°РµРјС‹Р№ РїР°СЂР°РјРµС‚СЂ '%s' РёРјРµРµС‚ С‚РёРї '%s'"), pPatternParam->name().c_str(), pPatternParam->getType()->src_text().c_str()));
+			Converter::s_converter()->error().push_only(pPatternParam->src_info(), rdo::format(_T("Ожидаемый параметр '%s' имеет тип '%s'"), pPatternParam->name().c_str(), pPatternParam->getType()->src_text().c_str()));
 		}
 		Converter::s_converter()->error().push_done();
 	}
@@ -159,13 +159,13 @@ void RDODPTActivity::endParam(CREF(YYLTYPE) param_pos)
 		{
 			if (dynamic_cast<PTR(RDOOPROperation)>(this))
 			{
-				Converter::s_converter()->error().push_only(param_pos, _T("Р”Р»СЏ РєР»Р°РІРёР°С‚СѓСЂРЅРѕР№ РѕРїРµСЂР°С†РёРё РґРѕР»Р¶РЅР° Р±С‹С‚СЊ СѓРєР°Р·Р°РЅР° РєР»Р°РІРёС€Р°"));
+				Converter::s_converter()->error().push_only(param_pos, _T("Для клавиатурной операции должна быть указана клавиша"));
 			}
 			else
 			{
-				Converter::s_converter()->error().push_only(param_pos, _T("Р”Р»СЏ Р°РєС‚РёРІРЅРѕСЃС‚Рё РґРѕР»Р¶РЅР° Р±С‹С‚СЊ СѓРєР°Р·Р°РЅР° РєР»Р°РІРёС€Р°"));
+				Converter::s_converter()->error().push_only(param_pos, _T("Для активности должна быть указана клавиша"));
 			}
-			Converter::s_converter()->error().push_only(m_pPattern->src_info(), _T("РЎРј. РѕР±СЂР°Р·РµС†"));
+			Converter::s_converter()->error().push_only(m_pPattern->src_info(), _T("См. образец"));
 			Converter::s_converter()->error().push_done();
 		}
 	}
@@ -191,8 +191,8 @@ RDODPTActivityHotKey::RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, CREF(
 		break;
 
 	default:
-		Converter::s_converter()->error().push_only(this->src_info(), _T("РќРµРёР·РІРµСЃС‚РЅС‹Р№ С‚РёРї РѕР±СЂР°Р·С†Р°"));
-		Converter::s_converter()->error().push_only(pattern()->src_info(), _T("РЎРј. РѕР±СЂР°Р·РµС†"));
+		Converter::s_converter()->error().push_only(this->src_info(), _T("Неизвестный тип образца"));
+		Converter::s_converter()->error().push_only(pattern()->src_info(), _T("См. образец"));
 		Converter::s_converter()->error().push_done();
 	}
 }
@@ -228,8 +228,8 @@ void RDODPTActivityHotKey::addHotKey(CREF(tstring) hotKey, CREF(YYLTYPE) hotkey_
 {
 	if (pattern()->getType() != RDOPATPattern::PT_Keyboard)
 	{
-		Converter::s_converter()->error().push_only(hotkey_pos, _T("Р“РѕСЂСЏС‡РёРµ РєР»Р°РІРёС€Рё РёСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ С‚РѕР»СЊРєРѕ РІ РєР»Р°РІРёР°С‚СѓСЂРЅС‹С… РѕРїРµСЂР°С†РёСЏС…"));
-		Converter::s_converter()->error().push_only(pattern()->src_info(), _T("РЎРј. РѕР±СЂР°Р·РµС†"));
+		Converter::s_converter()->error().push_only(hotkey_pos, _T("Горячие клавиши используются только в клавиатурных операциях"));
+		Converter::s_converter()->error().push_only(pattern()->src_info(), _T("См. образец"));
 		Converter::s_converter()->error().push_done();
 	}
 
@@ -241,26 +241,26 @@ void RDODPTActivityHotKey::addHotKey(CREF(tstring) hotKey, CREF(YYLTYPE) hotkey_
 	case rdoRuntime::RDOKeyboard::addhk_already:
 		if (dynamic_cast<PTR(RDOOPROperation)>(this))
 		{
-			Converter::s_converter()->error().error(hotkey_pos, rdo::format(_T("Р”Р»СЏ РѕРїРµСЂР°С†РёРё '%s' РєР»Р°РІРёС€Р° СѓР¶Рµ РЅР°Р·РЅР°С‡РµРЅР°"), src_text().c_str()));
+			Converter::s_converter()->error().error(hotkey_pos, rdo::format(_T("Для операции '%s' клавиша уже назначена"), src_text().c_str()));
 		}
 		else
 		{
-			Converter::s_converter()->error().error(hotkey_pos, rdo::format(_T("Р”Р»СЏ Р°РєС‚РёРІРЅРѕСЃС‚Рё '%s' РєР»Р°РІРёС€Р° СѓР¶Рµ РЅР°Р·РЅР°С‡РµРЅР°"), src_text().c_str()));
+			Converter::s_converter()->error().error(hotkey_pos, rdo::format(_T("Для активности '%s' клавиша уже назначена"), src_text().c_str()));
 		}
 		break;
 
 	case rdoRuntime::RDOKeyboard::addhk_notfound:
-		Converter::s_converter()->error().error(hotkey_pos, rdo::format(_T("РќРµРёР·РІРµСЃС‚РЅР°СЏ РєР»Р°РІРёС€Р°: %s"), hotKey.c_str()));
+		Converter::s_converter()->error().error(hotkey_pos, rdo::format(_T("Неизвестная клавиша: %s"), hotKey.c_str()));
 		break;
 
 	case rdoRuntime::RDOKeyboard::addhk_dont:
-		Converter::s_converter()->error().push_only(src_info(), rdo::format(_T("РћРїРµСЂР°С†РёСЏ '%s' РЅРµ СЏРІР»СЏРµС‚СЃСЏ РєР»Р°РІРёР°С‚СѓСЂРЅРѕР№"), src_text().c_str()));
-		Converter::s_converter()->error().push_only(pattern()->src_info(), _T("РЎРј. РѕР±СЂР°Р·РµС†"));
+		Converter::s_converter()->error().push_only(src_info(), rdo::format(_T("Операция '%s' не является клавиатурной"), src_text().c_str()));
+		Converter::s_converter()->error().push_only(pattern()->src_info(), _T("См. образец"));
 		Converter::s_converter()->error().push_done();
 		break;
 
 	default:
-		Converter::s_converter()->error().error(src_info(), _T("Р’РЅСѓС‚СЂРµРЅРЅР°СЏ РѕС€РёР±РєР°: RDODPTActivityHotKey::addHotKey"));
+		Converter::s_converter()->error().error(src_info(), _T("Внутренная ошибка: RDODPTActivityHotKey::addHotKey"));
 	}
 }
 
@@ -351,17 +351,17 @@ RDODPTSearchActivity::RDODPTSearchActivity(LPIBaseOperationContainer pDPT, CREF(
 {
 	if (pattern()->getType() != RDOPATPattern::PT_Rule)
 	{
-		Converter::s_converter()->error().push_only(this->src_info(), _T("РўРѕР»СЊРєРѕ РїСЂРѕРґСѓРєС†РёРѕРЅРЅС‹Рµ РїСЂР°РІРёР»Р° РјРѕРіСѓС‚ Р±С‹С‚СЊ РёСЃРїРѕР»СЊР·РѕРІР°РЅС‹ РІ С‚РѕС‡РєРµ РїСЂРёРЅСЏС‚РёСЏ СЂРµС€РµРЅРёР№ С‚РёРїР° search"));
-		Converter::s_converter()->error().push_only(pattern()->src_info(), _T("РЎРј. РѕР±СЂР°Р·РµС†"));
+		Converter::s_converter()->error().push_only(this->src_info(), _T("Только продукционные правила могут быть использованы в точке принятия решений типа search"));
+		Converter::s_converter()->error().push_only(pattern()->src_info(), _T("См. образец"));
 		Converter::s_converter()->error().push_done();
 	}
 	for (RDOPATPattern::RelResList::const_iterator it = pattern()->rel_res_begin(); it != pattern()->rel_res_end(); ++it)
 	{
 		if (((*it)->m_statusBegin == rdoRuntime::RDOResource::CS_Create) || ((*it)->m_statusBegin == rdoRuntime::RDOResource::CS_Erase))
 		{
-			Converter::s_converter()->error().push_only(this->src_info(), rdo::format(_T("Р’ РїСЂРѕРґСѓРєС†РёРѕРЅРЅРѕРј РїСЂР°РІРёР»Рµ '%s' РЅРµР»СЊР·СЏ СЃРѕР·РґР°РІР°С‚СЊ РёР»Рё СѓРґР°Р»СЏС‚СЊ СЂРµСЃСѓСЂСЃС‹, С‚.Рє. РѕРЅРѕ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РІ С‚РѕС‡РєРµ С‚РёРїР° search"), src_text().c_str()));
-			Converter::s_converter()->error().push_only(pattern()->src_info(), _T("РЎРј. РѕР±СЂР°Р·РµС†"));
-			Converter::s_converter()->error().push_only((*it)->src_info(), _T("РЎРј. СЂРµР»РµРІР°РЅС‚РЅС‹Р№ СЂРµСЃСѓСЂСЃ"));
+			Converter::s_converter()->error().push_only(this->src_info(), rdo::format(_T("В продукционном правиле '%s' нельзя создавать или удалять ресурсы, т.к. оно используется в точке типа search"), src_text().c_str()));
+			Converter::s_converter()->error().push_only(pattern()->src_info(), _T("См. образец"));
+			Converter::s_converter()->error().push_only((*it)->src_info(), _T("См. релевантный ресурс"));
 			Converter::s_converter()->error().push_done();
 		}
 	}
