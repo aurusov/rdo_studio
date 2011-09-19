@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdodpt.y
-  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
-  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -245,7 +245,7 @@ dpt_main
 	}
 	| error
 	{
-		CONVERTER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ РѕРїРёСЃР°РЅРёРµ С‚РѕС‡РєРё РёР»Рё СЃРІРѕР±РѕРґРЅРѕРіРѕ Р±Р»РѕРєР° Р°РєС‚РёРІРЅРѕСЃС‚РµР№"));
+		CONVERTER->error().error(@1, _T("Ожидается описание точки или свободного блока активностей"));
 	}
 	;
 
@@ -263,7 +263,7 @@ dpt_search_trace
 	}
 	| RDO_trace
 	{
-		CONVERTER->error().error(@1, _T("Р”Р°РЅРЅС‹Р№ РїСЂРёР·РЅР°Рє С‚СЂР°СЃСЃРёСЂРѕРІРєРё РЅРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РІ С‚РѕС‡РєРµ С‚РёРїР° search"));
+		CONVERTER->error().error(@1, _T("Данный признак трассировки не используется в точке типа search"));
 	}
 	| RDO_trace_stat
 	{
@@ -290,7 +290,7 @@ dpt_search_parent
 	}
 	| RDO_Parent error
 	{
-		CONVERTER->error().error(@1, _T("РћС€РёР±РєР° РІ РёРјРµРЅРё СЂРѕРґРёС‚РµР»СЊСЃРєРѕР№ С‚РѕС‡РєРё"));
+		CONVERTER->error().error(@1, _T("Ошибка в имени родительской точки"));
 	}
 	;
 
@@ -307,11 +307,11 @@ dpt_search_begin
 			LPRDODPTSome   pParentDPTSome   = CONVERTER->findDPTSome  (parent_name->value().getIdentificator());
 			if (!pParentDPTPrior && !pParentDPTSearch && !pParentDPTSome)
 			{
-				CONVERTER->error().error(@1, rdo::format(_T("РќРµ РЅР°Р№РґРµРЅР° СЂРѕРґРёС‚РµСЃРєР°СЏ С‚РѕС‡РєР° %s"), parent_name->value().getIdentificator().c_str()));
+				CONVERTER->error().error(@1, rdo::format(_T("Не найдена родитеская точка %s"), parent_name->value().getIdentificator().c_str()));
 			}
 			if (pParentDPTSearch)
 			{
-				CONVERTER->error().error(@1, _T("РўРѕС‡РєР° РїСЂРёРЅСЏС‚РёСЏ СЂРµС€РµРЅРёР№ С‚РёРїР° search РјРѕР¶РµС‚ СЃРѕРґРµСЂР¶Р°С‚СЊ Р»РёС€СЊ Р°РєС‚РёРІРЅРѕСЃС‚Рё С‚РёРїР° rule Рё РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ СѓРєР°Р·Р°РЅР° РІ РєР°С‡РµСЃС‚РІРµ СЂРѕРґРёС‚РµР»СЊСЃРєРѕР№ С‚РѕС‡РєРё"));
+				CONVERTER->error().error(@1, _T("Точка принятия решений типа search может содержать лишь активности типа rule и не может быть указана в качестве родительской точки"));
 			}
 			else if (pParentDPTPrior)
 			{
@@ -335,15 +335,15 @@ dpt_search_begin
 	}
 	| RDO_Decision_point RDO_IDENTIF_COLON error
 	{
-		CONVERTER->error().error(@2, @3, _T("РћР¶РёРґР°РµС‚СЃСЏ С‚РёРї С‚РѕС‡РєРё"));
+		CONVERTER->error().error(@2, @3, _T("Ожидается тип точки"));
 	}
 	| RDO_Decision_point RDO_IDENTIF error
 	{
-		CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ РґРІРѕРµС‚РѕС‡РёРµ"));
+		CONVERTER->error().error(@2, _T("Ожидается двоеточие"));
 	}
 	| RDO_Decision_point error
 	{
-		CONVERTER->error().error(@1, @2, _T("РџРѕСЃР»Рµ РєР»СЋС‡РµРІРѕРіРѕ СЃР»РѕРІР° $Decision_point РѕР¶РёРґР°РµС‚СЃСЏ РёРјСЏ С‚РѕС‡РєРё"));
+		CONVERTER->error().error(@1, @2, _T("После ключевого слова $Decision_point ожидается имя точки"));
 	}
 	;
 
@@ -364,11 +364,11 @@ dpt_search_condition
 	}
 	| dpt_search_begin RDO_Condition error
 	{
-		CONVERTER->error().error(@2, @3, _T("РџРѕСЃР»Рµ РєР»СЋС‡РµРІРѕРіРѕ СЃР»РѕРІР° $Condition РѕР¶РёРґР°РµС‚СЃСЏ СѓСЃР»РѕРІРёРµ РЅР°С‡Р°Р»Р° РїРѕРёСЃРєР° (РЅР°С‡Р°Р»СЊРЅР°СЏ РІРµСЂС€РёРЅР°)"));
+		CONVERTER->error().error(@2, @3, _T("После ключевого слова $Condition ожидается условие начала поиска (начальная вершина)"));
 	}
 	| dpt_search_begin error
 	{
-		CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ РєР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ $Condition"));
+		CONVERTER->error().error(@2, _T("Ожидается ключевое слово $Condition"));
 	}
 	;
 
@@ -378,16 +378,16 @@ dpt_search_prior
 	{
 		if (!CONVERTER->getLastDPTSearch()->setPrior(CONVERTER->stack().pop<RDOFUNArithm>($3)))
 		{
-			CONVERTER->error().error(@3, _T("РўРѕС‡РєР° РїСЂРёРЅСЏС‚РёСЏ СЂРµС€РµРЅРёР№ РїРѕРєР° РЅРµ РјРѕР¶РµС‚ РёРјРµС‚СЊ РїСЂРёРѕСЂРёС‚РµС‚"));
+			CONVERTER->error().error(@3, _T("Точка принятия решений пока не может иметь приоритет"));
 		}
 	}
 	| dpt_search_condition RDO_Priority error
 	{
-		CONVERTER->error().error(@1, @2, _T("РћС€РёР±РєР° РѕРїРёСЃР°РЅРёСЏ РїСЂРёРѕСЂРёС‚РµС‚Р° С‚РѕС‡РєРё РїСЂРёРЅСЏС‚РёСЏ СЂРµС€РµРЅРёР№"))
+		CONVERTER->error().error(@1, @2, _T("Ошибка описания приоритета точки принятия решений"))
 	}
 	| dpt_search_condition error
 	{
-		CONVERTER->error().error(@1, @2, _T("РћР¶РёРґР°РµС‚СЃСЏ РєР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ $Priority"))
+		CONVERTER->error().error(@1, @2, _T("Ожидается ключевое слово $Priority"))
 	}
 	;
 
@@ -408,11 +408,11 @@ dpt_search_term
 	}
 	| dpt_search_prior RDO_Term_condition error
 	{
-		CONVERTER->error().error(@2, @3, _T("РџРѕСЃР»Рµ РєР»СЋС‡РµРІРѕРіРѕ СЃР»РѕРІР° $Term_condition РѕР¶РёРґР°РµС‚СЃСЏ СѓСЃР»РѕРІРёРµ РѕСЃС‚Р°РЅРѕРІРєРё РїРѕРёСЃРєР° (РєРѕРЅРµС‡РЅР°СЏ РІРµСЂС€РёРЅР°)"));
+		CONVERTER->error().error(@2, @3, _T("После ключевого слова $Term_condition ожидается условие остановки поиска (конечная вершина)"));
 	}
 	| dpt_search_prior error
 	{
-		CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ РєР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ $Term_condition"));
+		CONVERTER->error().error(@2, _T("Ожидается ключевое слово $Term_condition"));
 	}
 	;
 
@@ -426,11 +426,11 @@ dpt_search_evaluate
 	}
 	| dpt_search_term RDO_Evaluate_by error
 	{
-		CONVERTER->error().error(@2, @3, _T("РџРѕСЃР»Рµ РєР»СЋС‡РµРІРѕРіРѕ СЃР»РѕРІР° $Evaluate_by РѕР¶РёРґР°РµС‚СЃСЏ РѕС†РµРЅРѕС‡РЅР°СЏ С„СѓРЅРєС†РёСЏ, РЅР°РїСЂРёРјРµСЂ, 0 РґР»СЏ РїРѕРёСЃРєР° РІ С€РёСЂРёРЅСѓ"));
+		CONVERTER->error().error(@2, @3, _T("После ключевого слова $Evaluate_by ожидается оценочная функция, например, 0 для поиска в ширину"));
 	}
 	| dpt_search_term error
 	{
-		CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ РєР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ $Evaluate_by"));
+		CONVERTER->error().error(@2, _T("Ожидается ключевое слово $Evaluate_by"));
 	}
 	;
 
@@ -451,15 +451,15 @@ dp_searcht_compare
 	}
 	| dpt_search_evaluate RDO_Compare_tops '=' error
 	{
-		CONVERTER->error().error(@3, @4, _T("РћР¶РёРґР°РµС‚СЃСЏ СЂРµР¶РёРј Р·Р°РїРѕРјРёРЅР°РЅРёСЏ РїСЂРѕР№РґРµРЅРЅС‹С… РІРµСЂС€РёРЅ (YES РёР»Рё NO)"));
+		CONVERTER->error().error(@3, @4, _T("Ожидается режим запоминания пройденных вершин (YES или NO)"));
 	}
 	| dpt_search_evaluate RDO_Compare_tops error
 	{
-		CONVERTER->error().error(@2, @3, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·РЅР°Рє СЂР°РІРµРЅСЃС‚РІР°"));
+		CONVERTER->error().error(@2, @3, _T("Ожидается знак равенства"));
 	}
 	| dpt_search_evaluate error
 	{
-		CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ РєР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ $Compare_tops"));
+		CONVERTER->error().error(@2, _T("Ожидается ключевое слово $Compare_tops"));
 	}
 	;
 
@@ -475,7 +475,7 @@ dpt_search_descr_param
 	}
 	| dpt_search_descr_param error
 	{
-		CONVERTER->error().error(@1, @2, _T("РћС€РёР±РєР° РѕРїРёСЃР°РЅРёСЏ РїР°СЂР°РјРµС‚СЂР° РѕР±СЂР°Р·С†Р°"))
+		CONVERTER->error().error(@1, @2, _T("Ошибка описания параметра образца"))
 	}
 	;
 
@@ -494,11 +494,11 @@ dpt_search_descr_value
 	}
 	| RDO_value_before error
 	{
-		CONVERTER->error().error(@1, @2, _T("РћС€РёР±РєР° РІ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
+		CONVERTER->error().error(@1, @2, _T("Ошибка в арифметическом выражении"));
 	}
 	| RDO_value_after error
 	{
-		CONVERTER->error().error(@1, @2, _T("РћС€РёР±РєР° РІ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
+		CONVERTER->error().error(@1, @2, _T("Ошибка в арифметическом выражении"));
 	}
 	;
 
@@ -515,15 +515,15 @@ dpt_search_name
 	}
 	| RDO_IDENTIF_COLON error
 	{
-		CONVERTER->error().error(@1, @2, _T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ РѕР±СЂР°Р·С†Р°"));
+		CONVERTER->error().error(@1, @2, _T("Ожидается имя образца"));
 	}
 	| RDO_IDENTIF
 	{
-		CONVERTER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ ':'"));
+		CONVERTER->error().error(@1, _T("Ожидается ':'"));
 	}
 	| error
 	{
-		CONVERTER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ Р°РєС‚РёРІРЅРѕСЃС‚Рё"));
+		CONVERTER->error().error(@1, _T("Ожидается имя активности"));
 	}
 	;
 
@@ -537,7 +537,7 @@ dpt_searcht_activity
 	}
 	| dpt_searcht_activity dpt_search_name dpt_search_descr_param error
 	{
-		CONVERTER->error().error(@3, @4, _T("РћР¶РёРґР°СЋС‚СЃСЏ РєР»СЋС‡РµРІС‹Рµ СЃР»РѕРІР° value before РёР»Рё value after Рё СЃС‚РѕРёРјРѕСЃС‚СЊ РїСЂРёРјРµРЅРµРЅРёСЏ РїСЂР°РІРёР»Р°"));
+		CONVERTER->error().error(@3, @4, _T("Ожидаются ключевые слова value before или value after и стоимость применения правила"));
 	}
 	;
 
@@ -545,7 +545,7 @@ dpt_search_header
 	: dp_searcht_compare RDO_Activities dpt_searcht_activity
 	| dp_searcht_compare error
 	{
-		CONVERTER->error().error(@1, @2, _T("РџРѕСЃР»Рµ СЂРµР¶РёРјР° Р·Р°РїРѕРјРёРЅР°РЅРёСЏ РїСЂРѕР№РґРµРЅРЅС‹С… РІРµСЂС€РёРЅ РѕР¶РёРґР°РµС‚СЃСЏ РєР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ $Activities"));
+		CONVERTER->error().error(@1, @2, _T("После режима запоминания пройденных вершин ожидается ключевое слово $Activities"));
 	}
 	;
 
@@ -559,7 +559,7 @@ dpt_search_end
 	}
 	| dpt_search_header
 	{
-		CONVERTER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ РєР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ $End"));
+		CONVERTER->error().error(@1, _T("Ожидается ключевое слово $End"));
 	}
 	;
 
@@ -581,15 +581,15 @@ dpt_some_trace
 	}
 	| RDO_trace_stat
 	{
-		CONVERTER->error().error(@1, _T("Р”Р°РЅРЅС‹Р№ РїСЂРёР·РЅР°Рє С‚СЂР°СЃСЃРёСЂРѕРІРєРё РЅРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РІ С‚РѕС‡РєРµ С‚РёРїР° some"));
+		CONVERTER->error().error(@1, _T("Данный признак трассировки не используется в точке типа some"));
 	}
 	| RDO_trace_tops
 	{
-		CONVERTER->error().error(@1, _T("Р”Р°РЅРЅС‹Р№ РїСЂРёР·РЅР°Рє С‚СЂР°СЃСЃРёСЂРѕРІРєРё РЅРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РІ С‚РѕС‡РєРµ С‚РёРїР° some"));
+		CONVERTER->error().error(@1, _T("Данный признак трассировки не используется в точке типа some"));
 	}
 	| RDO_trace_all
 	{
-		CONVERTER->error().error(@1, _T("Р”Р°РЅРЅС‹Р№ РїСЂРёР·РЅР°Рє С‚СЂР°СЃСЃРёСЂРѕРІРєРё РЅРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РІ С‚РѕС‡РєРµ С‚РёРїР° some"));
+		CONVERTER->error().error(@1, _T("Данный признак трассировки не используется в точке типа some"));
 	}
 	;
 
@@ -604,14 +604,14 @@ dpt_some_parent
 	}
 	| RDO_Parent error
 	{
-		CONVERTER->error().error(@1, _T("РћС€РёР±РєР° РІ РёРјРµРЅРё СЂРѕРґРёС‚РµР»СЊСЃРєРѕР№ С‚РѕС‡РєРё"));
+		CONVERTER->error().error(@1, _T("Ошибка в имени родительской точки"));
 	}
 	;
 
 dpt_some_begin
 	: RDO_Decision_point RDO_IDENTIF_COLON RDO_some dpt_some_parent dpt_some_trace
 	{
-		/// @todo Р° РіРґРµ РїСЂРёР·РЅР°Рє С‚СЂР°СЃСЃРёСЂРѕРІРєРё РґР»СЏ some ?
+		/// @todo а где признак трассировки для some ?
 		PTR(RDOValue) name        = P_RDOVALUE($2);
 		PTR(RDOValue) parent_name = P_RDOVALUE($4);
 		LPRDODPTSome  pDPTSome;
@@ -622,11 +622,11 @@ dpt_some_begin
 			LPRDODPTSome   pParentDPTSome   = CONVERTER->findDPTSome  (parent_name->value().getIdentificator());
 			if (!pParentDPTPrior && !pParentDPTSearch && !pParentDPTSome)
 			{
-				CONVERTER->error().error(@1, rdo::format(_T("РќРµ РЅР°Р№РґРµРЅР° СЂРѕРґРёС‚РµСЃРєР°СЏ С‚РѕС‡РєР° %s"), parent_name->value().getIdentificator().c_str()));
+				CONVERTER->error().error(@1, rdo::format(_T("Не найдена родитеская точка %s"), parent_name->value().getIdentificator().c_str()));
 			}
 			if (pParentDPTSearch)
 			{
-				CONVERTER->error().error(@5, @1, _T("РўРѕС‡РєР° РїСЂРёРЅСЏС‚РёСЏ СЂРµС€РµРЅРёР№ С‚РёРїР° search РјРѕР¶РµС‚ СЃРѕРґРµСЂР¶Р°С‚СЊ Р»РёС€СЊ Р°РєС‚РёРІРЅРѕСЃС‚Рё С‚РёРїР° rule Рё РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ СѓРєР°Р·Р°РЅР° РІ РєР°С‡РµСЃС‚РІРµ СЂРѕРґРёС‚РµР»СЊСЃРєРѕР№ С‚РѕС‡РєРё"));
+				CONVERTER->error().error(@5, @1, _T("Точка принятия решений типа search может содержать лишь активности типа rule и не может быть указана в качестве родительской точки"));
 			}
 			else if (pParentDPTPrior)
 			{
@@ -667,7 +667,7 @@ dpt_some_condition
 	}
 	| dpt_some_begin RDO_Condition error
 	{
-		CONVERTER->error().error(@2, @3, _T("РџРѕСЃР»Рµ РєР»СЋС‡РµРІРѕРіРѕ СЃР»РѕРІР° $Condition РѕР¶РёРґР°РµС‚СЃСЏ СѓСЃР»РѕРІРёРµ Р·Р°РїСѓСЃРєР° С‚РѕС‡РєРё"));
+		CONVERTER->error().error(@2, @3, _T("После ключевого слова $Condition ожидается условие запуска точки"));
 	}
 	| dpt_some_begin
 	{
@@ -684,16 +684,16 @@ dpt_some_prior
 	{
 		if (!CONVERTER->getLastDPTSome()->setPrior(CONVERTER->stack().pop<RDOFUNArithm>($3)))
 		{
-			CONVERTER->error().error(@3, _T("РўРѕС‡РєР° РїСЂРёРЅСЏС‚РёСЏ СЂРµС€РµРЅРёР№ РїРѕРєР° РЅРµ РјРѕР¶РµС‚ РёРјРµС‚СЊ РїСЂРёРѕСЂРёС‚РµС‚"));
+			CONVERTER->error().error(@3, _T("Точка принятия решений пока не может иметь приоритет"));
 		}
 	}
 	| dpt_some_condition RDO_Priority error
 	{
-		CONVERTER->error().error(@1, @2, _T("РћС€РёР±РєР° РѕРїРёСЃР°РЅРёСЏ РїСЂРёРѕСЂРёС‚РµС‚Р° С‚РѕС‡РєРё РїСЂРёРЅСЏС‚РёСЏ СЂРµС€РµРЅРёР№"))
+		CONVERTER->error().error(@1, @2, _T("Ошибка описания приоритета точки принятия решений"))
 	}
 	| dpt_some_condition error
 	{
-		CONVERTER->error().error(@1, @2, _T("РћР¶РёРґР°РµС‚СЃСЏ РєР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ $Priority"))
+		CONVERTER->error().error(@1, @2, _T("Ожидается ключевое слово $Priority"))
 	}
 	;
 
@@ -710,15 +710,15 @@ dpt_some_name
 	}
 	| RDO_IDENTIF_COLON error
 	{
-		CONVERTER->error().error(@1, @2, _T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ РѕР±СЂР°Р·С†Р°"));
+		CONVERTER->error().error(@1, @2, _T("Ожидается имя образца"));
 	}
 	| RDO_IDENTIF
 	{
-		CONVERTER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ ':'"));
+		CONVERTER->error().error(@1, _T("Ожидается ':'"));
 	}
 	| error
 	{
-		CONVERTER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ Р°РєС‚РёРІРЅРѕСЃС‚Рё"));
+		CONVERTER->error().error(@1, _T("Ожидается имя активности"));
 	}
 	;
 
@@ -752,7 +752,7 @@ dpt_some_descr_param
 	}
 	| dpt_some_descr_param error
 	{
-		CONVERTER->error().error(@1, @2, _T("РћС€РёР±РєР° РѕРїРёСЃР°РЅРёСЏ РїР°СЂР°РјРµС‚СЂР° РѕР±СЂР°Р·С†Р°"))
+		CONVERTER->error().error(@1, @2, _T("Ошибка описания параметра образца"))
 	}
 	;
 
@@ -771,7 +771,7 @@ dpt_some_header
 	: dpt_some_prior RDO_Activities dpt_some_activity
 	| dpt_some_prior error
 	{
-		CONVERTER->error().error(@1, @2, _T("РћР¶РёРґР°РµС‚СЃСЏ РєР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ $Activities"));
+		CONVERTER->error().error(@1, @2, _T("Ожидается ключевое слово $Activities"));
 	}
 	;
 
@@ -785,7 +785,7 @@ dpt_some_end
 	}
 	| dpt_some_header
 	{
-		CONVERTER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ РєР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ $End"));
+		CONVERTER->error().error(@1, _T("Ожидается ключевое слово $End"));
 	}
 	;
 
@@ -807,15 +807,15 @@ dpt_prior_trace
 	}
 	| RDO_trace_stat
 	{
-		CONVERTER->error().error(@1, _T("Р”Р°РЅРЅС‹Р№ РїСЂРёР·РЅР°Рє С‚СЂР°СЃСЃРёСЂРѕРІРєРё РЅРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РІ С‚РѕС‡РєРµ С‚РёРїР° prior"));
+		CONVERTER->error().error(@1, _T("Данный признак трассировки не используется в точке типа prior"));
 	}
 	| RDO_trace_tops
 	{
-		CONVERTER->error().error(@1, _T("Р”Р°РЅРЅС‹Р№ РїСЂРёР·РЅР°Рє С‚СЂР°СЃСЃРёСЂРѕРІРєРё РЅРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РІ С‚РѕС‡РєРµ С‚РёРїР° prior"));
+		CONVERTER->error().error(@1, _T("Данный признак трассировки не используется в точке типа prior"));
 	}
 	| RDO_trace_all
 	{
-		CONVERTER->error().error(@1, _T("Р”Р°РЅРЅС‹Р№ РїСЂРёР·РЅР°Рє С‚СЂР°СЃСЃРёСЂРѕРІРєРё РЅРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РІ С‚РѕС‡РєРµ С‚РёРїР° prior"));
+		CONVERTER->error().error(@1, _T("Данный признак трассировки не используется в точке типа prior"));
 	}
 	;
 
@@ -830,14 +830,14 @@ dpt_prior_parent
 	}
 	| RDO_Parent error
 	{
-		CONVERTER->error().error(@1, _T("РћС€РёР±РєР° РІ РёРјРµРЅРё СЂРѕРґРёС‚РµР»СЊСЃРєРѕР№ С‚РѕС‡РєРё"));
+		CONVERTER->error().error(@1, _T("Ошибка в имени родительской точки"));
 	}
 	;
 
 dpt_prior_begin
 	: RDO_Decision_point RDO_IDENTIF_COLON RDO_prior dpt_prior_parent dpt_prior_trace
 	{
-		/// @todo Р° РіРґРµ РїСЂРёР·РЅР°Рє С‚СЂР°СЃСЃРёСЂРѕРІРєРё РґР»СЏ prior ?
+		/// @todo а где признак трассировки для prior ?
 		PTR(RDOValue) name        = P_RDOVALUE($2);
 		PTR(RDOValue) parent_name = P_RDOVALUE($4);
 		LPRDODPTPrior pDPTPrior;
@@ -848,11 +848,11 @@ dpt_prior_begin
 			LPRDODPTSome   pParentDPTSome   = CONVERTER->findDPTSome  (parent_name->value().getIdentificator());
 			if (!pParentDPTPrior && !pParentDPTSome && !pParentDPTSearch)
 			{
-				CONVERTER->error().error(@1, rdo::format(_T("РќРµ РЅР°Р№РґРµРЅР° СЂРѕРґРёС‚РµСЃРєР°СЏ С‚РѕС‡РєР° %s"), parent_name->value().getIdentificator().c_str()));
+				CONVERTER->error().error(@1, rdo::format(_T("Не найдена родитеская точка %s"), parent_name->value().getIdentificator().c_str()));
 			}
 			if (pParentDPTSearch)
 			{
-				CONVERTER->error().error(@5, @1, _T("РўРѕС‡РєР° РїСЂРёРЅСЏС‚РёСЏ СЂРµС€РµРЅРёР№ С‚РёРїР° search РјРѕР¶РµС‚ СЃРѕРґРµСЂР¶Р°С‚СЊ Р»РёС€СЊ Р°РєС‚РёРІРЅРѕСЃС‚Рё С‚РёРїР° rule Рё РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ СѓРєР°Р·Р°РЅР° РІ РєР°С‡РµСЃС‚РІРµ СЂРѕРґРёС‚РµР»СЊСЃРєРѕР№ С‚РѕС‡РєРё"));
+				CONVERTER->error().error(@5, @1, _T("Точка принятия решений типа search может содержать лишь активности типа rule и не может быть указана в качестве родительской точки"));
 			}
 			else if (pParentDPTPrior)
 			{
@@ -893,7 +893,7 @@ dpt_prior_condition
 	}
 	| dpt_prior_begin RDO_Condition error
 	{
-		CONVERTER->error().error(@2, @3, _T("РџРѕСЃР»Рµ РєР»СЋС‡РµРІРѕРіРѕ СЃР»РѕРІР° $Condition РѕР¶РёРґР°РµС‚СЃСЏ СѓСЃР»РѕРІРёРµ Р·Р°РїСѓСЃРєР° С‚РѕС‡РєРё"));
+		CONVERTER->error().error(@2, @3, _T("После ключевого слова $Condition ожидается условие запуска точки"));
 	}
 	| dpt_prior_begin
 	{
@@ -910,16 +910,16 @@ dpt_prior_prior
 	{
 		if (!CONVERTER->getLastDPTPrior()->setPrior(CONVERTER->stack().pop<RDOFUNArithm>($3)))
 		{
-			CONVERTER->error().error(@3, _T("РўРѕС‡РєР° РїСЂРёРЅСЏС‚РёСЏ СЂРµС€РµРЅРёР№ РїРѕРєР° РЅРµ РјРѕР¶РµС‚ РёРјРµС‚СЊ РїСЂРёРѕСЂРёС‚РµС‚"));
+			CONVERTER->error().error(@3, _T("Точка принятия решений пока не может иметь приоритет"));
 		}
 	}
 	| dpt_prior_condition RDO_Priority error
 	{
-		CONVERTER->error().error(@1, @2, _T("РћС€РёР±РєР° РѕРїРёСЃР°РЅРёСЏ РїСЂРёРѕСЂРёС‚РµС‚Р° С‚РѕС‡РєРё РїСЂРёРЅСЏС‚РёСЏ СЂРµС€РµРЅРёР№"))
+		CONVERTER->error().error(@1, @2, _T("Ошибка описания приоритета точки принятия решений"))
 	}
 	| dpt_some_condition error
 	{
-		CONVERTER->error().error(@1, @2, _T("РћР¶РёРґР°РµС‚СЃСЏ РєР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ $Priority"))
+		CONVERTER->error().error(@1, @2, _T("Ожидается ключевое слово $Priority"))
 	}
 	;
 
@@ -936,15 +936,15 @@ dpt_prior_name
 	}
 	| RDO_IDENTIF_COLON error
 	{
-		CONVERTER->error().error(@1, @2, _T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ РѕР±СЂР°Р·С†Р°"));
+		CONVERTER->error().error(@1, @2, _T("Ожидается имя образца"));
 	}
 	| RDO_IDENTIF
 	{
-		CONVERTER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ ':'"));
+		CONVERTER->error().error(@1, _T("Ожидается ':'"));
 	}
 	| error
 	{
-		CONVERTER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ Р°РєС‚РёРІРЅРѕСЃС‚Рё"));
+		CONVERTER->error().error(@1, _T("Ожидается имя активности"));
 	}
 	;
 
@@ -978,7 +978,7 @@ dpt_prior_descr_param
 	}
 	| dpt_prior_descr_param error
 	{
-		CONVERTER->error().error(@1, @2, _T("РћС€РёР±РєР° РѕРїРёСЃР°РЅРёСЏ РїР°СЂР°РјРµС‚СЂР° РѕР±СЂР°Р·С†Р°"))
+		CONVERTER->error().error(@1, @2, _T("Ошибка описания параметра образца"))
 	}
 	;
 
@@ -988,16 +988,16 @@ dpt_prior_activ_prior
 	{
 		if (!CONVERTER->getLastDPTPrior()->getLastActivity()->setPrior(CONVERTER->stack().pop<RDOFUNArithm>($3)))
 		{
-			CONVERTER->error().error(@3, _T("РђРєС‚РёРІРЅРѕСЃС‚СЊ РЅРµ РјРѕР¶РµС‚ РёРјРµС‚СЊ РїСЂРёРѕСЂРёС‚РµС‚"));
+			CONVERTER->error().error(@3, _T("Активность не может иметь приоритет"));
 		}
 	}
 	| RDO_CF '=' error
 	{
-		CONVERTER->error().error(@1, @2, _T("РћС€РёР±РєР° РѕРїРёСЃР°РЅРёСЏ РїСЂРёРѕСЂРёС‚РµС‚Р° Р°РєС‚РёРІРЅРѕСЃС‚Рё"))
+		CONVERTER->error().error(@1, @2, _T("Ошибка описания приоритета активности"))
 	}
 	| RDO_CF error
 	{
-		CONVERTER->error().error(@1, @2, _T("РћС€РёР±РєР°: РѕР¶РёРґР°РµС‚СЃСЏ Р·РЅР°Рє СЂР°РІРµРЅСЃС‚РІР°"))
+		CONVERTER->error().error(@1, @2, _T("Ошибка: ожидается знак равенства"))
 	}
 	;
 
@@ -1016,7 +1016,7 @@ dpt_prior_header
 	: dpt_prior_prior RDO_Activities dpt_prior_activity
 	| dpt_prior_prior error
 	{
-		CONVERTER->error().error(@1, @2, _T("РћР¶РёРґР°РµС‚СЃСЏ РєР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ $Activities"));
+		CONVERTER->error().error(@1, @2, _T("Ожидается ключевое слово $Activities"));
 	}
 	;
 
@@ -1030,7 +1030,7 @@ dpt_prior_end
 	}
 	| dpt_prior_header
 	{
-		CONVERTER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ РєР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ $End"));
+		CONVERTER->error().error(@1, _T("Ожидается ключевое слово $End"));
 	}
 	;
 
@@ -1043,16 +1043,16 @@ dpt_free_prior
 	{
 		if (!CONVERTER->getLastDPTFree()->setPrior(CONVERTER->stack().pop<RDOFUNArithm>($2)))
 		{
-			CONVERTER->error().error(@3, _T("РўРѕС‡РєР° РїСЂРёРЅСЏС‚РёСЏ СЂРµС€РµРЅРёР№ РїРѕРєР° РЅРµ РјРѕР¶РµС‚ РёРјРµС‚СЊ РїСЂРёРѕСЂРёС‚РµС‚"));
+			CONVERTER->error().error(@3, _T("Точка принятия решений пока не может иметь приоритет"));
 		}
 	}
 	| RDO_Priority error dpt_free_header
 	{
-		CONVERTER->error().error(@1, @2, _T("РћС€РёР±РєР° РѕРїРёСЃР°РЅРёСЏ РїСЂРёРѕСЂРёС‚РµС‚Р° С‚РѕС‡РєРё РїСЂРёРЅСЏС‚РёСЏ СЂРµС€РµРЅРёР№"))
+		CONVERTER->error().error(@1, @2, _T("Ошибка описания приоритета точки принятия решений"))
 	}
 	| error dpt_free_header
 	{
-		CONVERTER->error().error(@1, @2, _T("РћР¶РёРґР°РµС‚СЃСЏ РєР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ $Priority"))
+		CONVERTER->error().error(@1, @2, _T("Ожидается ключевое слово $Priority"))
 	}
 	;
 
@@ -1083,15 +1083,15 @@ dpt_free_activity_name
 	}
 	| RDO_IDENTIF_COLON error
 	{
-		CONVERTER->error().error(@1, @2, _T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ РѕР±СЂР°Р·С†Р°"));
+		CONVERTER->error().error(@1, @2, _T("Ожидается имя образца"));
 	}
 	| RDO_IDENTIF
 	{
-		CONVERTER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ ':'"));
+		CONVERTER->error().error(@1, _T("Ожидается ':'"));
 	}
 	| error
 	{
-		CONVERTER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ Р°РєС‚РёРІРЅРѕСЃС‚Рё"));
+		CONVERTER->error().error(@1, _T("Ожидается имя активности"));
 	}
 	;
 
@@ -1107,7 +1107,7 @@ dpt_free_activity_param
 	}
 	| dpt_free_activity_param error
 	{
-		CONVERTER->error().error(@1, @2, _T("РћС€РёР±РєР° РѕРїРёСЃР°РЅРёСЏ РїР°СЂР°РјРµС‚СЂР° РѕР±СЂР°Р·С†Р°"))
+		CONVERTER->error().error(@1, @2, _T("Ошибка описания параметра образца"))
 	}
 	;
 
@@ -1133,21 +1133,21 @@ dpt_free_end
 	: dpt_free_prior dpt_free_activity RDO_End
 	| dpt_free_header error
 	{
-		CONVERTER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ РєР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ $End"));
+		CONVERTER->error().error(@1, _T("Ожидается ключевое слово $End"));
 	}
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- Р·Р°РіР»СѓС€РєР° РґР»СЏ $Process
+// -------------------- заглушка для $Process
 // --------------------------------------------------------------------------------
 dpt_process_end
 	: RDO_Process error RDO_End
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- РћР±С‰РёРµ СЃРѕСЃС‚Р°РІРЅС‹Рµ С‚РѕРєРµРЅС‹ РґР»СЏ РІСЃРµС… РѕР±СЉРµРєС‚РѕРІ Р Р”Рћ
+// -------------------- Общие составные токены для всех объектов РДО
 // --------------------------------------------------------------------------------
-// -------------------- Р›РѕРіРёС‡РµСЃРєРёРµ РІС‹СЂР°Р¶РµРЅРёСЏ
+// -------------------- Логические выражения
 // --------------------------------------------------------------------------------
 fun_logic_eq
 	: '='
@@ -1283,16 +1283,16 @@ fun_logic
 	}
 	| '[' fun_logic error
 	{
-		CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
+		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
 	}
 	| '(' fun_logic error
 	{
-		CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
+		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
 	}
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- РђСЂРёС„РјРµС‚РёС‡РµСЃРєРёРµ РІС‹СЂР°Р¶РµРЅРёСЏ
+// -------------------- Арифметические выражения
 // --------------------------------------------------------------------------------
 fun_arithm
 	: RDO_INT_CONST                      { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
@@ -1364,7 +1364,7 @@ fun_arithm
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- Р¤СѓРЅРєС†РёРё Рё РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё
+// -------------------- Функции и последовательности
 // --------------------------------------------------------------------------------
 fun_arithm_func_call
 	: RDO_IDENTIF '(' ')'
@@ -1393,7 +1393,7 @@ fun_arithm_func_call
 	}
 	| RDO_IDENTIF '(' error
 	{
-		CONVERTER->error().error(@3, _T("РћС€РёР±РєР° РІ РїР°СЂР°РјРµС‚СЂР°С… С„СѓРЅРєС†РёРё"));
+		CONVERTER->error().error(@3, _T("Ошибка в параметрах функции"));
 	}
 	;
 
@@ -1420,16 +1420,16 @@ fun_arithm_func_call_pars
 	}
 	| fun_arithm_func_call_pars error
 	{
-		CONVERTER->error().error(@2, _T("РћС€РёР±РєР° РІ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
+		CONVERTER->error().error(@2, _T("Ошибка в арифметическом выражении"));
 	}
 	| fun_arithm_func_call_pars ',' error
 	{
-		CONVERTER->error().error(@3, _T("РћС€РёР±РєР° РІ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
+		CONVERTER->error().error(@3, _T("Ошибка в арифметическом выражении"));
 	}
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- Р“СЂСѓРїРїРѕРІС‹Рµ РІС‹СЂР°Р¶РµРЅРёСЏ
+// -------------------- Групповые выражения
 // --------------------------------------------------------------------------------
 fun_group_keyword
 	: RDO_Exist       { $$ = RDOFUNGroupLogic::fgt_exist;     }
@@ -1446,11 +1446,11 @@ fun_group_header
 	}
 	| fun_group_keyword '(' error
 	{
-		CONVERTER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ С‚РёРїР°"));
+		CONVERTER->error().error(@3, _T("Ожидается имя типа"));
 	}
 	| fun_group_keyword error
 	{
-		CONVERTER->error().error(@1, _T("РџРѕСЃР»Рµ РёРјРµРЅРё С„СѓРЅРєС†РёРё РѕР¶РёРґР°РµС‚СЃСЏ РѕРєС‚СЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
+		CONVERTER->error().error(@1, _T("После имени функции ожидается октрывающаяся скобка"));
 	}
 	;
 
@@ -1477,15 +1477,15 @@ fun_group
 	}
 	| fun_group_header fun_logic error
 	{
-		CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
+		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
 	}
 	| fun_group_header RDO_NoCheck error
 	{
-		CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
+		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
 	}
 	| fun_group_header error
 	{
-		CONVERTER->error().error(@1, @2, _T("РћС€РёР±РєР° РІ Р»РѕРіРёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
+		CONVERTER->error().error(@1, @2, _T("Ошибка в логическом выражении"));
 	}
 	;
 
@@ -1503,11 +1503,11 @@ fun_select_header
 	}
 	| RDO_Select '(' error
 	{
-		CONVERTER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ С‚РёРїР°"));
+		CONVERTER->error().error(@3, _T("Ожидается имя типа"));
 	}
 	| RDO_Select error
 	{
-		CONVERTER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ РѕРєС‚СЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
+		CONVERTER->error().error(@1, _T("Ожидается октрывающаяся скобка"));
 	}
 	;
 
@@ -1538,15 +1538,15 @@ fun_select_body
 	}
 	| fun_select_header fun_logic error
 	{
-		CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
+		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
 	}
 	| fun_select_header RDO_NoCheck error
 	{
-		CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
+		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
 	}
 	| fun_select_header error
 	{
-		CONVERTER->error().error(@1, @2, _T("РћС€РёР±РєР° РІ Р»РѕРіРёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
+		CONVERTER->error().error(@1, @2, _T("Ошибка в логическом выражении"));
 	}
 	;
 
@@ -1571,11 +1571,11 @@ fun_select_logic
 	}
 	| fun_select_body '.' fun_select_keyword '(' error
 	{
-		CONVERTER->error().error(@4, @5, _T("РћС€РёР±РєР° РІ Р»РѕРіРёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
+		CONVERTER->error().error(@4, @5, _T("Ошибка в логическом выражении"));
 	}
 	| fun_select_body '.' fun_select_keyword error
 	{
-		CONVERTER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ РѕРєС‚СЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
+		CONVERTER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
 	}
 	| fun_select_body '.' RDO_Empty '(' ')'
 	{
@@ -1589,19 +1589,19 @@ fun_select_logic
 	}
 	| fun_select_body '.' RDO_Empty '(' error
 	{
-		CONVERTER->error().error(@4, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
+		CONVERTER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
 	}
 	| fun_select_body '.' RDO_Empty error
 	{
-		CONVERTER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ РѕРєС‚СЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
+		CONVERTER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
 	}
 	| fun_select_body '.' error
 	{
-		CONVERTER->error().error(@2, @3, _T("РћР¶РёРґР°РµС‚СЃСЏ РјРµС‚РѕРґ СЃРїРёСЃРєР° СЂРµСЃСѓСЂСЃРѕРІ"));
+		CONVERTER->error().error(@2, @3, _T("Ожидается метод списка ресурсов"));
 	}
 	| fun_select_body error
 	{
-		CONVERTER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ '.' (С‚РѕС‡РєР°) РґР»СЏ РІС‹Р·РѕРІР° РјРµС‚РѕРґР° СЃРїРёСЃРєР° СЂРµСЃСѓСЂСЃРѕРІ"));
+		CONVERTER->error().error(@1, _T("Ожидается '.' (точка) для вызова метода списка ресурсов"));
 	}
 	;
 
@@ -1618,11 +1618,11 @@ fun_select_arithm
 	}
 	| fun_select_body '.' RDO_Size error
 	{
-		CONVERTER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ РѕРєС‚СЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
+		CONVERTER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
 	}
 	| fun_select_body '.' RDO_Size '(' error
 	{
-		CONVERTER->error().error(@4, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
+		CONVERTER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
 	}
 	;
 

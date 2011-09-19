@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      procgui.h
-  \author    РЁСѓРІР°Р»РѕРІ РђРЅРґСЂРµР№
+  \author    Шувалов Андрей
   \date      22.04.2011
   \brief     
   \indent    4T

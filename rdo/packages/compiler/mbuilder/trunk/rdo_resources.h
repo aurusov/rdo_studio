@@ -1,7 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_resources.h
-  \author    РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -102,7 +102,7 @@ protected:
 };
 
 // --------------------------------------------------------------------------------
-// -------------------- Р‘Р°Р·РѕРІР°СЏ С‡Р°СЃС‚СЊ mbuilder-РѕР±СЉРµРєС‚Р°
+// -------------------- Базовая часть mbuilder-объекта
 // --------------------------------------------------------------------------------
 #define MBUILDER_OBJECT(Class)                             \
 class Class: public rdoParse::RDOParserSrcInfo             \
@@ -130,9 +130,9 @@ public:
 		rt_permanent,
 		rt_temporary
 	};
-	// РџСЂРѕРёРЅРёС†РёР°Р»РёР·РёСЂРѕРІР°С‚СЊ РїРѕ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РµРјСѓ С‚РёРїСѓ
+	// Проинициализировать по существующему типу
 	RDOResType(CREF(rdoParse::LPRDORTPResType) rtp);
-	// РЎРѕР·РґР°С‚СЊ РЅРѕРІС‹Р№ С‚РёРї
+	// Создать новый тип
 	RDOResType(CREF(tstring) name, Type type = rt_permanent);
 
 	MBUILDER_OBJECT(Param)
@@ -215,9 +215,9 @@ private:
 // --------------------------------------------------------------------------------
 MBUILDER_OBJECT(RDOResource)
 public:
-	// РџСЂРѕРёРЅРёС†РёР°Р»РёР·РёСЂРѕРІР°С‚СЊ РїРѕ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РµРјСѓ СЂРµСЃСѓСЂСЃСѓ
+	// Проинициализировать по существующему ресурсу
 	RDOResource(CREF(rdoParse::LPRDORSSResource) rss);
-	// РЎРѕР·РґР°С‚СЊ РЅРѕРІС‹Р№ СЂРµСЃСѓСЂСЃ
+	// Создать новый ресурс
 	RDOResource(CREF(RDOResType) rtp, CREF(tstring) name);
 
 	CREF(RDOResType)  getType() const { return m_rtp; }
@@ -294,7 +294,7 @@ public:
 	RDOResourceList(CREF(rdoParse::LPRDOParser) pParser);
 
 	// --------------------------------------------------------------------------------
-	// ---- Р”РѕР±Р°РІР»РµРЅРёРµ *РЅРѕРІРѕРіРѕ* СЂРµСЃСѓСЂСЃР°
+	// ---- Добавление *нового* ресурса
 	// --------------------------------------------------------------------------------
 	template<class T> rbool append(REF(RDOResource) mbuilderRSS)
 	{
@@ -315,7 +315,7 @@ public:
 		return true;
 	}
 	// --------------------------------------------------------------------------------
-	// ---- Р—Р°РјРµРЅР° СЃСѓС‰РµСЃС‚РІСѓСЋС‰РµРіРѕ СЂРµСЃСѓСЂСЃР° РЅРѕРІС‹Рј
+	// ---- Замена существующего ресурса новым
 	// --------------------------------------------------------------------------------
 	template<class T> rbool replace(REF(RDOResource) mbuilderRSSNew)
 	{
@@ -335,7 +335,7 @@ public:
 		mbuilderRSSNew.m_exist = true;
 		m_list.push_back(mbuilderRSSNew);
 
-		//! РЈРґР°Р»РёРј СЃС‚Р°СЂС‹Р№
+		//! Удалим старый
 		m_pParser->removeRSSResource(parserRSSPrev);
 		m_list.erase(mbuilderRSSPrevIt);
 

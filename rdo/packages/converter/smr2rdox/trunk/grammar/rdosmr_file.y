@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdosmr_file.y
-  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
-  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -225,11 +225,11 @@ smr_model
 	}
 	| RDO_Model_name '=' error
 	{
-		CONVERTER->error().error( @2, @3, "РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ РјРѕРґРµР»Рё" );
+		CONVERTER->error().error( @2, @3, "Ожидается имя модели" );
 	}
 	| RDO_Model_name error
 	{
-		CONVERTER->error().error( @1, "РћР¶РёРґР°РµС‚СЃСЏ '='" );
+		CONVERTER->error().error( @1, "Ожидается '='" );
 	}
 	;
 
@@ -243,11 +243,11 @@ smr_descr
 	}
 	| smr_descr RDO_Resource_file '=' error
 	{
-		CONVERTER->error().error( @3, @4, "РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ С„Р°Р№Р»Р° СЂРµСЃСѓСЂСЃРѕРІ" );
+		CONVERTER->error().error( @3, @4, "Ожидается имя файла ресурсов" );
 	}
 	| smr_descr RDO_Resource_file error
 	{
-		CONVERTER->error().error( @2, "РћР¶РёРґР°РµС‚СЃСЏ '='" );
+		CONVERTER->error().error( @2, "Ожидается '='" );
 	}
 	| smr_descr RDO_OprIev_file '=' RDO_IDENTIF
 	{
@@ -257,11 +257,11 @@ smr_descr
 	}
 	| smr_descr RDO_OprIev_file '=' error
 	{
-		CONVERTER->error().error( @3, @4, "РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ С„Р°Р№Р»Р° РѕРїРµСЂР°С†РёР№" );
+		CONVERTER->error().error( @3, @4, "Ожидается имя файла операций" );
 	}
 	| smr_descr RDO_OprIev_file error
 	{
-		CONVERTER->error().error( @2, "РћР¶РёРґР°РµС‚СЃСЏ '='" );
+		CONVERTER->error().error( @2, "Ожидается '='" );
 	}
 	| smr_descr RDO_Frame_file '=' RDO_IDENTIF
 	{
@@ -271,11 +271,11 @@ smr_descr
 	}
 	| smr_descr RDO_Frame_file '=' error
 	{
-		CONVERTER->error().error( @3, @4, "РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ С„Р°Р№Р»Р° Р°РЅРёРјР°С†РёРё" );
+		CONVERTER->error().error( @3, @4, "Ожидается имя файла анимации" );
 	}
 	| smr_descr RDO_Frame_file error
 	{
-		CONVERTER->error().error( @2, "РћР¶РёРґР°РµС‚СЃСЏ '='" );
+		CONVERTER->error().error( @2, "Ожидается '='" );
 	}
 	| smr_descr RDO_Statistic_file '=' RDO_IDENTIF
 	{
@@ -285,11 +285,11 @@ smr_descr
 	}
 	| smr_descr RDO_Statistic_file '=' error
 	{
-		CONVERTER->error().error( @3, @4, "РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ С„Р°Р№Р»Р° СЃРѕР±РёСЂР°РµРјС‹С… РїРѕРєР°Р·Р°С‚РµР»РµР№" );
+		CONVERTER->error().error( @3, @4, "Ожидается имя файла собираемых показателей" );
 	}
 	| smr_descr RDO_Statistic_file error
 	{
-		CONVERTER->error().error( @2, "РћР¶РёРґР°РµС‚СЃСЏ '='" );
+		CONVERTER->error().error( @2, "Ожидается '='" );
 	}
 	| smr_descr RDO_Results_file '=' RDO_IDENTIF
 	{
@@ -299,11 +299,11 @@ smr_descr
 	}
 	| smr_descr RDO_Results_file '=' error
 	{
-		CONVERTER->error().error( @3, @4, "РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ С„Р°Р№Р»Р° СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ" );
+		CONVERTER->error().error( @3, @4, "Ожидается имя файла результатов" );
 	}
 	| smr_descr RDO_Results_file error
 	{
-		CONVERTER->error().error( @2, "РћР¶РёРґР°РµС‚СЃСЏ '='" );
+		CONVERTER->error().error( @2, "Ожидается '='" );
 	}
 	| smr_descr RDO_Trace_file '=' RDO_IDENTIF
 	{
@@ -313,11 +313,11 @@ smr_descr
 	}
 	| smr_descr RDO_Trace_file '=' error
 	{
-		CONVERTER->error().error( @3, @4, "РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ С„Р°Р№Р»Р° С‚СЂР°СЃСЃРёСЂРѕРІРєРё" );
+		CONVERTER->error().error( @3, @4, "Ожидается имя файла трассировки" );
 	}
 	| smr_descr RDO_Trace_file error
 	{
-		CONVERTER->error().error( @2, "РћР¶РёРґР°РµС‚СЃСЏ '='" );
+		CONVERTER->error().error( @2, "Ожидается '='" );
 	}
 	| smr_descr RDO_External_Model RDO_IDENTIF '=' RDO_IDENTIF
 	{
@@ -329,15 +329,15 @@ smr_descr
 	}
 	| smr_descr RDO_External_Model RDO_IDENTIF '=' error
 	{
-		CONVERTER->error().error( @4, @5, "РћР¶РёРґР°РµС‚СЃСЏ РїСѓС‚СЊ Рё РЅР°Р·РІР°РЅРёРµ РІРЅРµС€РЅРµР№ РјРѕРґРµР»Рё" );
+		CONVERTER->error().error( @4, @5, "Ожидается путь и название внешней модели" );
 	}
 	| smr_descr RDO_External_Model RDO_IDENTIF error
 	{
-		CONVERTER->error().error( @3, "РћР¶РёРґР°РµС‚СЃСЏ '='" );
+		CONVERTER->error().error( @3, "Ожидается '='" );
 	}
 	| smr_descr RDO_External_Model error
 	{
-		CONVERTER->error().error( @2, "РћР¶РёРґР°РµС‚СЃСЏ РїСЃРµРІРґРѕРЅРёРј РІРЅРµС€РµР№ РјРѕРґРµР»Рё" );
+		CONVERTER->error().error( @2, "Ожидается псевдоним внешей модели" );
 	}
 	| smr_descr error
 	;

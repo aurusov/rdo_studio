@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdopmd.y
-  \authors   Р‘Р°СЂСЃ РђР»РµРєСЃР°РЅРґСЂ
-  \authors   РЈСЂСѓСЃРѕРІ РђРЅРґСЂРµР№ (rdo@rk9.bmstu.ru)
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      
   \brief     
   \indent    4T
@@ -272,31 +272,31 @@ pmd_pokaz
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_par RDO_IDENTIF '.' error
 	{
-		CONVERTER->error().error(@5, @6, _T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ РїР°СЂР°РјРµС‚СЂР°"));
+		CONVERTER->error().error(@5, @6, _T("Ожидается имя параметра"));
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_par RDO_IDENTIF error
 	{
-		CONVERTER->error().error(@4, _T("РћР¶РёРґР°РµС‚СЃСЏ '.'"));
+		CONVERTER->error().error(@4, _T("Ожидается '.'"));
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_par error
 	{
-		CONVERTER->error().error(@3, @4, _T("РџРѕСЃР»Рµ РєР»СЋС‡РµРІРѕРіРѕ СЃР»РѕРІР° watch_par РѕР¶РёРґР°РµС‚СЃСЏ РёРјСЏ СЂРµСЃСѓСЂСЃР°"));
+		CONVERTER->error().error(@3, @4, _T("После ключевого слова watch_par ожидается имя ресурса"));
 	}
 	| RDO_IDENTIF_COLON pmd_trace error
 	{
-		CONVERTER->error().error(@2, @3, _T("РћР¶РёРґР°РµС‚СЃСЏ С‚РёРї РїРѕРєР°Р·Р°С‚РµР»СЏ"));
+		CONVERTER->error().error(@2, @3, _T("Ожидается тип показателя"));
 	}
 	| RDO_IDENTIF_COLON error
 	{
-		CONVERTER->error().error(@1, @2, _T("РћР¶РёРґР°РµС‚СЃСЏ РїСЂРёР·РЅР°Рє С‚СЂР°СЃСЃРёСЂРѕРІРєРё РёР»Рё С‚РёРї РїРѕРєР°Р·Р°С‚РµР»СЏ"));
+		CONVERTER->error().error(@1, @2, _T("Ожидается признак трассировки или тип показателя"));
 	}
 	| RDO_IDENTIF error
 	{
-		CONVERTER->error().error(@1, @2, _T("РћР¶РёРґР°РµС‚СЃСЏ ':'"));
+		CONVERTER->error().error(@1, @2, _T("Ожидается ':'"));
 	}
 	| error
 	{
-		CONVERTER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ РїРѕРєР°Р·Р°С‚РµР»СЏ"));
+		CONVERTER->error().error(@1, _T("Ожидается имя показателя"));
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_state fun_logic
 	{
@@ -306,7 +306,7 @@ pmd_pokaz
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_state error
 	{
-		CONVERTER->error().error(@3, @4, _T("РџРѕСЃР»Рµ РєР»СЋС‡РµРІРѕРіРѕ СЃР»РѕРІР° watch_state РѕР¶РёРґР°РµС‚СЃСЏ Р»РѕРіРёС‡РµСЃРєРѕРµ РІС‹СЂР°Р¶РµРЅРёРµ"));
+		CONVERTER->error().error(@3, @4, _T("После ключевого слова watch_state ожидается логическое выражение"));
 	}
 	| pmd_pokaz_watch_quant_begin fun_logic
 	{
@@ -324,11 +324,11 @@ pmd_pokaz
 	}
 	| pmd_pokaz_watch_quant_begin error
 	{
-		CONVERTER->error().error(@1, @2, _T("РџРѕСЃР»Рµ РёРјРµРЅРё С‚РёРїР° РѕР¶РёРґР°РµС‚СЃСЏ Р»РѕРіРёС‡РµСЃРєРѕРµ РІС‹СЂР°Р¶РµРЅРёРµ"));
+		CONVERTER->error().error(@1, @2, _T("После имени типа ожидается логическое выражение"));
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_quant error
 	{
-		CONVERTER->error().error(@3, @4, _T("РџРѕСЃР»Рµ РєР»СЋС‡РµРІРѕРіРѕ СЃР»РѕРІР° watch_quant РѕР¶РёРґР°РµС‚СЃСЏ С‚РёРї СЂРµСЃСѓСЂСЃР°"));
+		CONVERTER->error().error(@3, @4, _T("После ключевого слова watch_quant ожидается тип ресурса"));
 	}
 	| pmd_pokaz_watch_value_begin fun_logic fun_arithm
 	{
@@ -346,19 +346,19 @@ pmd_pokaz
 	}
 	| pmd_pokaz_watch_value_begin fun_logic error
 	{
-		CONVERTER->error().error(@2, @3, _T("РџРѕСЃР»Рµ Р»РѕРіРёС‡РµСЃРєРѕРіРѕ РѕР¶РёРґР°РµС‚СЃСЏ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРѕРµ РІС‹СЂР°Р¶РµРЅРёРµ"));
+		CONVERTER->error().error(@2, @3, _T("После логического ожидается арифметическое выражение"));
 	}
 	| pmd_pokaz_watch_value_begin RDO_NoCheck error
 	{
-		CONVERTER->error().error(@2, @3, _T("РџРѕСЃР»Рµ Р»РѕРіРёС‡РµСЃРєРѕРіРѕ РѕР¶РёРґР°РµС‚СЃСЏ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРѕРµ РІС‹СЂР°Р¶РµРЅРёРµ"));
+		CONVERTER->error().error(@2, @3, _T("После логического ожидается арифметическое выражение"));
 	}
 	| pmd_pokaz_watch_value_begin error
 	{
-		CONVERTER->error().error(@1, @2, _T("РџРѕСЃР»Рµ РёРјРµРЅРё С‚РёРїР° РѕР¶РёРґР°РµС‚СЃСЏ Р»РѕРіРёС‡РµСЃРєРѕРµ РІС‹СЂР°Р¶РµРЅРёРµ"));
+		CONVERTER->error().error(@1, @2, _T("После имени типа ожидается логическое выражение"));
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_value error
 	{
-		CONVERTER->error().error(@3, @4, _T("РџРѕСЃР»Рµ РєР»СЋС‡РµРІРѕРіРѕ СЃР»РѕРІР° watch_value РѕР¶РёРґР°РµС‚СЃСЏ С‚РёРї СЂРµСЃСѓСЂСЃР°"));
+		CONVERTER->error().error(@3, @4, _T("После ключевого слова watch_value ожидается тип ресурса"));
 	}
 	| RDO_IDENTIF_COLON RDO_get_value fun_arithm
 	{
@@ -368,7 +368,7 @@ pmd_pokaz
 	}
 	| RDO_IDENTIF_COLON RDO_get_value error
 	{
-		CONVERTER->error().error(@2, @3, _T("РџРѕСЃР»Рµ РєР»СЋС‡РµРІРѕРіРѕ СЃР»РѕРІР° get_value РѕР¶РёРґР°РµС‚СЃСЏ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРѕРµ РІС‹СЂР°Р¶РµРЅРёРµ"));
+		CONVERTER->error().error(@2, @3, _T("После ключевого слова get_value ожидается арифметическое выражение"));
 	}
 	;
 
@@ -380,18 +380,18 @@ pmd_end
 		pos.m_last_line = pos.m_first_line;
 		pos.m_last_pos  = pos.m_first_pos;
 		pos.m_last_seek = pos.m_first_seek;
-		CONVERTER->error().error(pos, _T("РћР¶РёРґР°РµС‚СЃСЏ РєР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ $Results"));
+		CONVERTER->error().error(pos, _T("Ожидается ключевое слово $Results"));
 	}
 	| RDO_Results pmd_body error
 	{
-		CONVERTER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ РєР»СЋС‡РµРІРѕРµ СЃР»РѕРІРѕ $End"));
+		CONVERTER->error().error(@3, _T("Ожидается ключевое слово $End"));
 	}
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- РћР±С‰РёРµ СЃРѕСЃС‚Р°РІРЅС‹Рµ С‚РѕРєРµРЅС‹ РґР»СЏ РІСЃРµС… РѕР±СЉРµРєС‚РѕРІ Р Р”Рћ
+// -------------------- Общие составные токены для всех объектов РДО
 // --------------------------------------------------------------------------------
-// -------------------- Р›РѕРіРёС‡РµСЃРєРёРµ РІС‹СЂР°Р¶РµРЅРёСЏ
+// -------------------- Логические выражения
 // --------------------------------------------------------------------------------
 fun_logic_eq
 	: '='
@@ -527,16 +527,16 @@ fun_logic
 	}
 	| '[' fun_logic error
 	{
-		CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
+		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
 	}
 	| '(' fun_logic error
 	{
-		CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
+		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
 	}
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- РђСЂРёС„РјРµС‚РёС‡РµСЃРєРёРµ РІС‹СЂР°Р¶РµРЅРёСЏ
+// -------------------- Арифметические выражения
 // --------------------------------------------------------------------------------
 fun_arithm
 	: RDO_INT_CONST                      { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
@@ -608,7 +608,7 @@ fun_arithm
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- Р¤СѓРЅРєС†РёРё Рё РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё
+// -------------------- Функции и последовательности
 // --------------------------------------------------------------------------------
 fun_arithm_func_call
 	: RDO_IDENTIF '(' ')'
@@ -637,7 +637,7 @@ fun_arithm_func_call
 	}
 	| RDO_IDENTIF '(' error
 	{
-		CONVERTER->error().error(@3, _T("РћС€РёР±РєР° РІ РїР°СЂР°РјРµС‚СЂР°С… С„СѓРЅРєС†РёРё"));
+		CONVERTER->error().error(@3, _T("Ошибка в параметрах функции"));
 	}
 	;
 
@@ -664,16 +664,16 @@ fun_arithm_func_call_pars
 	}
 	| fun_arithm_func_call_pars error
 	{
-		CONVERTER->error().error(@2, _T("РћС€РёР±РєР° РІ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
+		CONVERTER->error().error(@2, _T("Ошибка в арифметическом выражении"));
 	}
 	| fun_arithm_func_call_pars ',' error
 	{
-		CONVERTER->error().error(@3, _T("РћС€РёР±РєР° РІ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
+		CONVERTER->error().error(@3, _T("Ошибка в арифметическом выражении"));
 	}
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- Р“СЂСѓРїРїРѕРІС‹Рµ РІС‹СЂР°Р¶РµРЅРёСЏ
+// -------------------- Групповые выражения
 // --------------------------------------------------------------------------------
 fun_group_keyword
 	: RDO_Exist       { $$ = RDOFUNGroupLogic::fgt_exist;     }
@@ -690,11 +690,11 @@ fun_group_header
 	}
 	| fun_group_keyword '(' error
 	{
-		CONVERTER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ С‚РёРїР°"));
+		CONVERTER->error().error(@3, _T("Ожидается имя типа"));
 	}
 	| fun_group_keyword error
 	{
-		CONVERTER->error().error(@1, _T("РџРѕСЃР»Рµ РёРјРµРЅРё С„СѓРЅРєС†РёРё РѕР¶РёРґР°РµС‚СЃСЏ РѕРєС‚СЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
+		CONVERTER->error().error(@1, _T("После имени функции ожидается октрывающаяся скобка"));
 	}
 	;
 
@@ -721,15 +721,15 @@ fun_group
 	}
 	| fun_group_header fun_logic error
 	{
-		CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
+		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
 	}
 	| fun_group_header RDO_NoCheck error
 	{
-		CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
+		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
 	}
 	| fun_group_header error
 	{
-		CONVERTER->error().error(@1, @2, _T("РћС€РёР±РєР° РІ Р»РѕРіРёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
+		CONVERTER->error().error(@1, @2, _T("Ошибка в логическом выражении"));
 	}
 	;
 
@@ -747,11 +747,11 @@ fun_select_header
 	}
 	| RDO_Select '(' error
 	{
-		CONVERTER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ РёРјСЏ С‚РёРїР°"));
+		CONVERTER->error().error(@3, _T("Ожидается имя типа"));
 	}
 	| RDO_Select error
 	{
-		CONVERTER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ РѕРєС‚СЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
+		CONVERTER->error().error(@1, _T("Ожидается октрывающаяся скобка"));
 	}
 	;
 
@@ -782,15 +782,15 @@ fun_select_body
 	}
 	| fun_select_header fun_logic error
 	{
-		CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
+		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
 	}
 	| fun_select_header RDO_NoCheck error
 	{
-		CONVERTER->error().error(@2, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
+		CONVERTER->error().error(@2, _T("Ожидается закрывающаяся скобка"));
 	}
 	| fun_select_header error
 	{
-		CONVERTER->error().error(@1, @2, _T("РћС€РёР±РєР° РІ Р»РѕРіРёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
+		CONVERTER->error().error(@1, @2, _T("Ошибка в логическом выражении"));
 	}
 	;
 
@@ -815,11 +815,11 @@ fun_select_logic
 	}
 	| fun_select_body '.' fun_select_keyword '(' error
 	{
-		CONVERTER->error().error(@4, @5, _T("РћС€РёР±РєР° РІ Р»РѕРіРёС‡РµСЃРєРѕРј РІС‹СЂР°Р¶РµРЅРёРё"));
+		CONVERTER->error().error(@4, @5, _T("Ошибка в логическом выражении"));
 	}
 	| fun_select_body '.' fun_select_keyword error
 	{
-		CONVERTER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ РѕРєС‚СЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
+		CONVERTER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
 	}
 	| fun_select_body '.' RDO_Empty '(' ')'
 	{
@@ -833,19 +833,19 @@ fun_select_logic
 	}
 	| fun_select_body '.' RDO_Empty '(' error
 	{
-		CONVERTER->error().error(@4, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
+		CONVERTER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
 	}
 	| fun_select_body '.' RDO_Empty error
 	{
-		CONVERTER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ РѕРєС‚СЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
+		CONVERTER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
 	}
 	| fun_select_body '.' error
 	{
-		CONVERTER->error().error(@2, @3, _T("РћР¶РёРґР°РµС‚СЃСЏ РјРµС‚РѕРґ СЃРїРёСЃРєР° СЂРµСЃСѓСЂСЃРѕРІ"));
+		CONVERTER->error().error(@2, @3, _T("Ожидается метод списка ресурсов"));
 	}
 	| fun_select_body error
 	{
-		CONVERTER->error().error(@1, _T("РћР¶РёРґР°РµС‚СЃСЏ '.' (С‚РѕС‡РєР°) РґР»СЏ РІС‹Р·РѕРІР° РјРµС‚РѕРґР° СЃРїРёСЃРєР° СЂРµСЃСѓСЂСЃРѕРІ"));
+		CONVERTER->error().error(@1, _T("Ожидается '.' (точка) для вызова метода списка ресурсов"));
 	}
 	;
 
@@ -862,11 +862,11 @@ fun_select_arithm
 	}
 	| fun_select_body '.' RDO_Size error
 	{
-		CONVERTER->error().error(@3, _T("РћР¶РёРґР°РµС‚СЃСЏ РѕРєС‚СЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
+		CONVERTER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
 	}
 	| fun_select_body '.' RDO_Size '(' error
 	{
-		CONVERTER->error().error(@4, _T("РћР¶РёРґР°РµС‚СЃСЏ Р·Р°РєСЂС‹РІР°СЋС‰Р°СЏСЃСЏ СЃРєРѕР±РєР°"));
+		CONVERTER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
 	}
 	;
 
