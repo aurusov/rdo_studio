@@ -305,7 +305,7 @@ inline void RDOFRMBitmapBase::getBitmaps(REF(RDOFRMFrame::ImageNameList) list)
 // --------------------------------------------------------------------------------
 inline rbool RDOFRMShow::isShowIf() const
 {
-        return m_pConditionCalc != rbool(NULL);
+        return m_pConditionCalc != LPRDOCalc(NULL);
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE
