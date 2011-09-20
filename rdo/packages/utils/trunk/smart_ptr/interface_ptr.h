@@ -28,8 +28,9 @@ class intrusive_ptr;
 
 struct NO_V_TABLE ICounterReference
 {
-	virtual void addref () = 0;
-	virtual void release() = 0;
+	virtual void  addref ()       = 0;
+	virtual void  release()       = 0;
+	virtual rbool owner  () const = 0;
 };
 
 typedef PTR(ICounterReference) LPICounterReference;
@@ -38,8 +39,9 @@ template <class T>
 class CounterReferenceReal: public ICounterReference
 {
 public:
-	void addref ();
-	void release();
+	void  addref ();
+	void  release();
+	rbool owner  () const;
 };
 
 template<class T>

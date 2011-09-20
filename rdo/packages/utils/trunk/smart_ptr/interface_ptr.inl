@@ -39,6 +39,14 @@ inline void CounterReferenceReal<T>::release()
 }
 
 template<class T>
+inline rbool CounterReferenceReal<T>::owner() const
+{
+	CPTR(counter_reference) pCounter = dynamic_cast<CPTR(counter_reference)>(this);
+	ASSERT(pCounter);
+	return pCounter->m_intrusive_counter == 1;
+}
+
+template<class T>
 inline interface_ptr<T>::interface_ptr()
 	: m_pInterface(NULL)
 	, m_pCounter  (NULL)
