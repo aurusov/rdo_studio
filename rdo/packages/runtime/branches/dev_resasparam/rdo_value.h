@@ -127,8 +127,9 @@ private:
 	public:
 		RefCounter(CREF(rdo::intrusive_ptr<T>) pPointer);
 
-		void addref ();
-		void release();
+		void  addref ();
+		void  release();
+		rbool owner  () const;
 
 	private:
 		typedef rdo::intrusive_ptr<T> parent_type;
@@ -142,28 +143,8 @@ private:
 	{
 	public:
 		string_class(CREF(tstring) string);
+		rdo::intrusive_ptr<string_class> clone() const;
 	};
-
-	/*!
-	  \class     smart_string
-	  \brief     Умный строковый тип данных
-	  \details   С реализацией "копирование при записи"?
-	*/
-	class smart_string: public rdo::intrusive_ptr<string_class>
-	{
-	public:
-		typedef rdo::intrusive_ptr<string_class> parent_type;
-
-		smart_string(PTR(string_class) pString);
-
-		PTR(string_class)  get();
-		CPTR(string_class) get() const;
-
-		void  addref ();
-		void  release();
-		rbool owner  ();
-	};
-	void deleteString();
 
 	template <class T>
 	REF(T) __get();
@@ -173,8 +154,6 @@ private:
 
 	 REF(PTR(void))         __voidPtrV  ();
 	CREF(PTR(void))         __voidPtrV  () const;
-	 REF(PTR(smart_string)) __stringPtrV();
-	CREF(PTR(smart_string)) __stringPtrV() const;
 	LPRDOEnumType           __enumT     () const;
 	 REF(tstring)           __stringV   ();
 	CREF(tstring)           __stringV   () const;

@@ -48,8 +48,8 @@ inline RDOValue::RDOValue(CREF(LPRDOType) pType)
 	case RDOType::t_real          : __get<double>() = 0; break;
 	case RDOType::t_enum          : __get<int>   () = 0; break;
 	case RDOType::t_bool          : __get<rbool> () = false; break;
-	case RDOType::t_string        : __stringPtrV () = new smart_string(new string_class(_T(""))); break;
-	case RDOType::t_identificator : __stringPtrV () = new smart_string(new string_class(_T(""))); break;
+	case RDOType::t_string        : new (&m_value) RefCounter<string_class>(new string_class(_T(""))); break;
+	case RDOType::t_identificator : new (&m_value) RefCounter<string_class>(new string_class(_T(""))); break;
 	case RDOType::t_array         : __voidPtrV   () = new RDOArrayValue(pType.object_static_cast<RDOArrayType>()); break;
 	case RDOType::t_arrayIterator : __voidPtrV   () = new PTR(void); break;
 	case RDOType::t_matrix        : __voidPtrV   () = new PTR(void); break;
@@ -117,13 +117,13 @@ inline RDOValue::RDOValue(CREF(RDOFuzzyValue) fuzzy)
 inline RDOValue::RDOValue(CREF(tstring) value)
 	: m_pType(g_string)
 {
-	__stringPtrV() = new smart_string(new string_class(value));
+	new (&m_value) RefCounter<string_class>(new string_class(value));
 }
 
 inline RDOValue::RDOValue(CPTR(tchar) value)
 	: m_pType(g_string)
 {
-	__stringPtrV() = new smart_string(new string_class(value));
+	new (&m_value) RefCounter<string_class>(new string_class(value));
 }
 
 inline RDOValue::RDOValue(CREF(tstring) value, CREF(LPRDOType) pType)
@@ -132,7 +132,7 @@ inline RDOValue::RDOValue(CREF(tstring) value, CREF(LPRDOType) pType)
 	if (pType->typeID() != RDOType::t_identificator)
 		RDOValueException();
 
-	__stringPtrV() = new smart_string(new string_class(value));
+	new (&m_value) RefCounter<string_class>(new string_class(value));
 }
 
 inline RDOValue::RDOValue(CREF(RDOArrayValue) arrayValue)
@@ -173,7 +173,8 @@ inline void RDOValue::deleteValue()
 	{
 	case RDOType::t_string       :
 	case RDOType::t_identificator:
-		deleteString();
+	case RDOType::t_pointer      :
+		reinterpret_cast<rdo::LPICounterReference>(&m_value)->release();
 		break;
 
 	case RDOType::t_fuzzy:
@@ -190,10 +191,6 @@ inline void RDOValue::deleteValue()
 
 	case RDOType::t_matrixIterator:
 		delete &__matrixItr();
-		break;
-
-	case RDOType::t_pointer:
-		reinterpret_cast<rdo::LPICounterReference>(&m_value)->release();
 		break;
 	}
 }
@@ -328,19 +325,6 @@ inline tstring RDOValue::getAsStringForTrace() const
 	throw RDOValueException(_T("Для rdoRuntime::RDOValue неопределен метод getAsStringForTrace()"));
 }
 
-inline void RDOValue::deleteString()
-{
-	ASSERT(__stringPtrV());
-	if (__stringPtrV()->owner())
-	{
-		delete __stringPtrV();
-	}
-	else
-	{
-		__stringPtrV()->release();
-	}
-}
-
 inline void RDOValue::set(CREF(RDOValue) rdovalue)
 {
 	deleteValue();
@@ -350,10 +334,10 @@ inline void RDOValue::set(CREF(RDOValue) rdovalue)
 	{
 	case RDOType::t_string       :
 	case RDOType::t_identificator:
+	case RDOType::t_pointer      :
 		{
-			//! Заменяем указатель, а не вызываем rdo::smart_ptr operator=
-			__stringPtrV() = const_cast<REF(RDOValue)>(rdovalue).__stringPtrV();
-			__stringPtrV()->addref();
+			memcpy(&m_value, &rdovalue.m_value, sizeof(m_value));
+			reinterpret_cast<rdo::LPICounterReference>(&m_value)->addref();
 			break;
 		}
 	case RDOType::t_fuzzy:
@@ -637,13 +621,20 @@ inline void RDOValue::operator+= (CREF(RDOValue) rdovalue)
 			{
 			case RDOType::t_string:
 				{
-					ASSERT(__stringPtrV());
-					if (!__stringPtrV()->owner())
+					rdo::LPICounterReference pIRefCountrer = reinterpret_cast<rdo::LPICounterReference>(&m_value);
+					ASSERT(pIRefCountrer);
+					PTR(RefCounter<string_class>) pValue1 = reinterpret_cast<PTR(RefCounter<string_class>)>(&m_value);
+
+					if (!pIRefCountrer->owner())
 					{
-						__stringPtrV()->release();
-						__stringPtrV() = new smart_string(new string_class(__stringV()));
+						rdo::intrusive_ptr<string_class> pValue = pValue1->get()->clone();
+						ASSERT(pValue);
+						pIRefCountrer->release();
+						pValue1 = new (&m_value) RefCounter<string_class>(pValue);
 					}
-					__stringV() += rdovalue.__stringV();
+
+					CPTR(RefCounter<string_class>) pValue2 = reinterpret_cast<CPTR(RefCounter<string_class>)>(&rdovalue.m_value);
+					*pValue1->get() += *pValue2->get();
 					return;
 				}
 			}
@@ -945,12 +936,12 @@ inline LPRDOEnumType RDOValue::__enumT() const
 
 inline REF(tstring) RDOValue::__stringV()
 {
-	return *__stringPtrV()->get();
+	return *reinterpret_cast<PTR(RefCounter<string_class>)>(&m_value)->get();
 }
 
 inline CREF(tstring) RDOValue::__stringV() const
 {
-	return *__stringPtrV()->get();
+	return *reinterpret_cast<CPTR(RefCounter<string_class>)>(&m_value)->get();
 }
 
 inline REF(RDOFuzzyValue) RDOValue::__fuzzyV()
@@ -1009,6 +1000,18 @@ inline REF(std::ostream) operator<< (REF(std::ostream) stream, CREF(RDOValue) rd
 	return stream;
 }
 
+template <class T>
+inline REF(T) RDOValue::__get()
+{
+	return *reinterpret_cast<PTR(T)>(&m_value);
+}
+
+template <class T>
+inline CREF(T) RDOValue::__get() const
+{
+	return *reinterpret_cast<CPTR(T)>(&m_value);
+}
+
 // --------------------------------------------------------------------------------
 // -------------------- RefCounter<T>
 // --------------------------------------------------------------------------------
@@ -1029,6 +1032,12 @@ inline void RDOValue::RefCounter<T>::release()
 	parent_type::release();
 }
 
+template <class T>
+inline rbool RDOValue::RefCounter<T>::owner() const
+{
+	return parent_type::owner();
+}
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOValue::string_class
 // --------------------------------------------------------------------------------
@@ -1036,48 +1045,9 @@ inline RDOValue::string_class::string_class(CREF(tstring) string)
 	: tstring(string)
 {}
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOValue::smart_string
-// --------------------------------------------------------------------------------
-inline RDOValue::smart_string::smart_string(PTR(string_class) pString)
-	: parent_type(pString)
-{}
-
-inline PTR(RDOValue::string_class) RDOValue::smart_string::get()
+inline rdo::intrusive_ptr<RDOValue::string_class> RDOValue::string_class::clone() const
 {
-	return parent_type::get();
-}
-
-inline CPTR(RDOValue::string_class) RDOValue::smart_string::get() const
-{
-	return parent_type::get();
-}
-
-inline void RDOValue::smart_string::addref()
-{
-	parent_type::addref();
-}
-
-inline void RDOValue::smart_string::release()
-{
-	parent_type::release();
-}
-
-inline rbool RDOValue::smart_string::owner()
-{
-	return parent_type::owner();
-}
-
-template <class T>
-inline REF(T) RDOValue::__get()
-{
-	return *reinterpret_cast<PTR(T)>(&m_value);
-}
-
-template <class T>
-inline CREF(T) RDOValue::__get() const
-{
-	return *reinterpret_cast<CPTR(T)>(&m_value);
+	return rdo::intrusive_ptr<string_class>(new string_class(c_str()));
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE
