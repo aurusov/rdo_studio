@@ -623,18 +623,14 @@ inline void RDOValue::operator+= (CREF(RDOValue) rdovalue)
 				{
 					rdo::LPICounterReference pIRefCountrer = reinterpret_cast<rdo::LPICounterReference>(&m_value);
 					ASSERT(pIRefCountrer);
-					PTR(RefCounter<string_class>) pValue1 = reinterpret_cast<PTR(RefCounter<string_class>)>(&m_value);
 
 					if (!pIRefCountrer->owner())
 					{
-						rdo::intrusive_ptr<string_class> pValue = pValue1->get()->clone();
-						ASSERT(pValue);
 						pIRefCountrer->release();
-						pValue1 = new (&m_value) RefCounter<string_class>(pValue);
+						new (&m_value) RefCounter<string_class>(new string_class(__stringV()));
 					}
 
-					CPTR(RefCounter<string_class>) pValue2 = reinterpret_cast<CPTR(RefCounter<string_class>)>(&rdovalue.m_value);
-					*pValue1->get() += *pValue2->get();
+					__stringV() += rdovalue.__stringV();
 					return;
 				}
 			}
@@ -936,12 +932,12 @@ inline LPRDOEnumType RDOValue::__enumT() const
 
 inline REF(tstring) RDOValue::__stringV()
 {
-	return *__get<PTR(RefCounter<string_class>)>()->get();
+	return *__get<RefCounter<string_class> >().get();
 }
 
 inline CREF(tstring) RDOValue::__stringV() const
 {
-	return *__get<CPTR(RefCounter<string_class>)>()->get();
+	return *__get<RefCounter<string_class> >().get();
 }
 
 inline REF(RDOFuzzyValue) RDOValue::__fuzzyV()
