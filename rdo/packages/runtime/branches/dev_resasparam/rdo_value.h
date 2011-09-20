@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/smart_ptr/intrusive_ptr.h"
+#include "utils/smart_ptr/interface_ptr.h"
 #include "simulator/runtime/rdo_type.h"
 // --------------------------------------------------------------------------------
 
@@ -116,6 +117,22 @@ private:
 
 	void set        (CREF(RDOValue) rdovalue);
 	void deleteValue();
+
+	//! Оборачивает умный указатель в интерфейс
+	//! tparam T - тип объекта, на который ссылается указатель
+	//! \details Используется для вызова release() через абстрактный интерфейс
+	template <class T>
+	class RefCounter: public rdo::ICounterReference, public rdo::intrusive_ptr<T>
+	{
+	public:
+		RefCounter(CREF(rdo::intrusive_ptr<T>) pPointer);
+
+		void addref ();
+		void release();
+
+	private:
+		typedef rdo::intrusive_ptr<T> parent_type;
+	};
 
 	/*!
 	  \class     string_class

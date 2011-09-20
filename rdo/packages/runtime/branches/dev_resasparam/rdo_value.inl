@@ -10,6 +10,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdodebug.h"
+#include "utils/static_assert.h"
 #include "simulator/runtime/rdo_enum.h"
 #include "simulator/runtime/rdo_fuzzy_def.h"
 #include "simulator/runtime/rdo_array_def.h"
@@ -31,14 +32,6 @@ inline RDOValue::~RDOValue()
 	deleteValue();
 }
 
-template <class T>
-inline RDOValue::RDOValue(CREF(rdo::intrusive_ptr<T>) pPointer)
-	: m_pType(rdo::Factory<RDOType>::create(RDOType::t_pointer))
-{
-	memset(&m_value, 0, sizeof(m_value));
-	__get<rdo::intrusive_ptr<T> >() = pPointer;
-}
-
 inline RDOValue::RDOValue(CREF(RDOValue) rdovalue)
 	: m_pType(g_unknow)
 {
@@ -51,16 +44,16 @@ inline RDOValue::RDOValue(CREF(LPRDOType) pType)
 	switch (typeID())
 	{
 	case RDOType::t_unknow        : break;
-	case RDOType::t_int           : __get<int>() = 0; break;
+	case RDOType::t_int           : __get<int>   () = 0; break;
 	case RDOType::t_real          : __get<double>() = 0; break;
-	case RDOType::t_enum          : __get<int>() = 0; break;
-	case RDOType::t_bool          : __get<bool>() = false; break;
-	case RDOType::t_string        : __stringPtrV() = new smart_string(new string_class(_T(""))); break;
-	case RDOType::t_identificator : __stringPtrV() = new smart_string(new string_class(_T(""))); break;
-	case RDOType::t_array         : __voidPtrV()  = new RDOArrayValue(pType.object_static_cast<RDOArrayType>()); break;
-	case RDOType::t_arrayIterator : __voidPtrV()  = new PTR(void); break;
-	case RDOType::t_matrix        : __voidPtrV()  = new PTR(void); break;
-	case RDOType::t_matrixIterator: __voidPtrV()  = new PTR(void); break;
+	case RDOType::t_enum          : __get<int>   () = 0; break;
+	case RDOType::t_bool          : __get<rbool> () = false; break;
+	case RDOType::t_string        : __stringPtrV () = new smart_string(new string_class(_T(""))); break;
+	case RDOType::t_identificator : __stringPtrV () = new smart_string(new string_class(_T(""))); break;
+	case RDOType::t_array         : __voidPtrV   () = new RDOArrayValue(pType.object_static_cast<RDOArrayType>()); break;
+	case RDOType::t_arrayIterator : __voidPtrV   () = new PTR(void); break;
+	case RDOType::t_matrix        : __voidPtrV   () = new PTR(void); break;
+	case RDOType::t_matrixIterator: __voidPtrV   () = new PTR(void); break;
 	default                       : throw RDOValueException();
 	}
 }
@@ -86,7 +79,7 @@ inline RDOValue::RDOValue(double value)
 inline RDOValue::RDOValue(rbool value)
 	: m_pType(g_bool)
 {
-	__get<bool>() = value;
+	__get<rbool>() = value;
 }
 
 inline RDOValue::RDOValue(CREF(LPRDOEnumType) pEnum)
@@ -166,6 +159,14 @@ inline RDOValue::RDOValue(CREF(RDOMatrixIterator) mIterator)
 	__voidPtrV() = new RDOMatrixIterator(mIterator);
 }
 
+template <class T>
+inline RDOValue::RDOValue(CREF(rdo::intrusive_ptr<T>) pPointer)
+	: m_pType(rdo::Factory<RDOType>::create(RDOType::t_pointer))
+{
+	STATIC_ASSERT(sizeof(double) >= sizeof(RefCounter<T>));
+	new (&m_value) RefCounter<T>(pPointer);
+}
+
 inline void RDOValue::deleteValue()
 {
 	switch (typeID())
@@ -190,6 +191,10 @@ inline void RDOValue::deleteValue()
 	case RDOType::t_matrixIterator:
 		delete &__matrixItr();
 		break;
+
+	case RDOType::t_pointer:
+		reinterpret_cast<rdo::LPICounterReference>(&m_value)->release();
+		break;
 	}
 }
 
@@ -197,10 +202,10 @@ inline rsint RDOValue::getInt() const
 {
 	switch (typeID())
 	{
-	case RDOType::t_int  : return __get<int>();
+	case RDOType::t_int  : return __get<int>  ();
 	case RDOType::t_real : return (rsint)__get<double>();
-	case RDOType::t_enum : return __get<int>();
-	case RDOType::t_bool : return __get<bool>() ? 1 : 0;
+	case RDOType::t_enum : return __get<int>  ();
+	case RDOType::t_bool : return __get<rbool>() ? 1 : 0;
 	case RDOType::t_fuzzy: return const_cast<RDOValue*>(this)->__fuzzyV().defuzzyfication().getInt();
 	}
 	throw RDOValueException();
@@ -210,10 +215,10 @@ inline rsint RDOValue::getEnumAsInt() const
 {
 	switch (typeID())
 	{
-	case RDOType::t_int : return __get<int>();
+	case RDOType::t_int : return __get<int>  ();
 	case RDOType::t_real: return (rsint)__get<double>();
-	case RDOType::t_enum: return __get<int>();
-	case RDOType::t_bool: return __get<bool>() ? 1 : 0;
+	case RDOType::t_enum: return __get<int>  ();
+	case RDOType::t_bool: return __get<rbool>() ? 1 : 0;
 	}
 	throw RDOValueException();
 }
@@ -231,10 +236,10 @@ inline double RDOValue::getDouble() const
 {
 	switch (typeID())
 	{
-	case RDOType::t_int : return __get<int>();
+	case RDOType::t_int : return __get<int>   ();
 	case RDOType::t_real: return __get<double>();
-	case RDOType::t_enum: return __get<int>();
-	case RDOType::t_bool: return __get<bool>() ? 1 : 0;
+	case RDOType::t_enum: return __get<int>   ();
+	case RDOType::t_bool: return __get<rbool> () ? 1 : 0;
 	}
 	throw RDOValueException();
 }
@@ -243,7 +248,7 @@ inline rbool RDOValue::getBool() const
 {
 	switch (typeID())
 	{
-	case RDOType::t_bool: return __get<bool>();
+	case RDOType::t_bool: return __get<rbool>();
 	}
 	throw RDOValueException();
 }
@@ -252,11 +257,11 @@ inline rbool RDOValue::getAsBool() const
 {
 	switch (typeID())
 	{
-	case RDOType::t_int   : return __get<int>()      ? true : false;
+	case RDOType::t_int   : return __get<int>   ()      ? true : false;
 	case RDOType::t_real  : return __get<double>()      ? true : false;
-	case RDOType::t_enum  : return __get<int>()      ? true : false;
+	case RDOType::t_enum  : return __get<int>   ()      ? true : false;
 	case RDOType::t_string: return !__stringV().empty() ? true : false;
-	case RDOType::t_bool  : return __get<bool>();
+	case RDOType::t_bool  : return __get<rbool> ();
 	}
 	throw RDOValueException();
 }
@@ -293,13 +298,13 @@ inline tstring RDOValue::getAsString() const
 {
 	switch (typeID())
 	{
-	case RDOType::t_int          : return rdo::format(_T("%d"), __get<int>());
-	case RDOType::t_real         : return rdo::toString(__get<double>());
-	case RDOType::t_enum         : return __enumT()->getValues().at(__get<int>());
-	case RDOType::t_bool         : return __get<bool>() ? _T("true") : _T("false");
-	case RDOType::t_string       : return __stringV();
-	case RDOType::t_identificator: return __stringV();
-	case RDOType::t_fuzzy        : return __fuzzyV().getAsString();
+	case RDOType::t_int           : return rdo::format(_T("%d"), __get<int>());
+	case RDOType::t_real          : return rdo::toString(__get<double>());
+	case RDOType::t_enum          : return __enumT()->getValues().at(__get<int>());
+	case RDOType::t_bool          : return __get<rbool>() ? _T("true") : _T("false");
+	case RDOType::t_string        : return __stringV();
+	case RDOType::t_identificator : return __stringV();
+	case RDOType::t_fuzzy         : return __fuzzyV().getAsString();
 	case RDOType::t_array         : return __arrayV().getAsString();
 	case RDOType::t_arrayIterator : return __arrayItr().getValue().getAsString();
 	case RDOType::t_matrix        : return __matrixV().getAsString();
@@ -315,9 +320,9 @@ inline tstring RDOValue::getAsStringForTrace() const
 	case RDOType::t_int   : return rdo::format(_T("%d"), __get<int>());
 	case RDOType::t_real  : return rdo::toString(__get<double>());
 	case RDOType::t_enum  : return rdo::format(_T("%d"), __get<int>());
-	case RDOType::t_bool  : return __get<bool>() ? _T("true") : _T("false");
+	case RDOType::t_bool  : return __get<rbool>() ? _T("true") : _T("false");
 	case RDOType::t_string: return __stringV();
-	case RDOType::t_array : return __arrayV().getAsString();
+	case RDOType::t_array : return __arrayV ().getAsString();
 	case RDOType::t_matrix: return __matrixV().getAsString();
 	}
 	throw RDOValueException(_T("Для rdoRuntime::RDOValue неопределен метод getAsStringForTrace()"));
@@ -416,7 +421,7 @@ inline rbool RDOValue::operator== (CREF(RDOValue) rdovalue) const
 		{
 			switch (rdovalue.typeID())
 			{
-			case RDOType::t_bool: return __get<bool>() == rdovalue.__get<bool>();
+			case RDOType::t_bool: return __get<rbool>() == rdovalue.__get<rbool>();
 			}
 			break;
 		}
@@ -495,7 +500,7 @@ inline rbool RDOValue::operator< (CREF(RDOValue) rdovalue) const
 		{
 			switch (rdovalue.typeID())
 			{
-			case RDOType::t_bool: return __get<bool>() < rdovalue.__get<bool>();
+			case RDOType::t_bool: return __get<rbool>() < rdovalue.__get<rbool>();
 			}
 			break;
 		}
@@ -539,7 +544,7 @@ inline RDOValue RDOValue::operator&& (CREF(RDOValue) rdovalue) const
 		{
 			switch (rdovalue.typeID())
 			{
-			case RDOType::t_bool: return __get<bool>() && rdovalue.__get<bool>();
+			case RDOType::t_bool: return __get<rbool>() && rdovalue.__get<rbool>();
 			}
 			break;
 		}
@@ -563,7 +568,7 @@ inline RDOValue RDOValue::operator|| (CREF(RDOValue) rdovalue) const
 		{
 			switch (rdovalue.typeID())
 			{
-			case RDOType::t_bool: return __get<bool>() || rdovalue.__get<bool>();
+			case RDOType::t_bool: return __get<rbool>() || rdovalue.__get<rbool>();
 			}
 			break;
 		}
@@ -584,10 +589,10 @@ inline RDOValue RDOValue::operator- () const
 	RDOValue rdovalue(*this);
 	switch (typeID())
 	{
-	case RDOType::t_int  : rdovalue.__get<int>() = -__get<int>(); break;
-	case RDOType::t_real : rdovalue.__get<double>() = -__get<double>(); break;
-	case RDOType::t_bool : rdovalue.__get<bool>() = !__get<bool>(); break;
-	case RDOType::t_fuzzy: rdovalue.__fuzzyV()      = __fuzzyV().u_minus(); break;
+	case RDOType::t_int  : rdovalue.__get<int>   () = -__get<int>       (); break;
+	case RDOType::t_real : rdovalue.__get<double>() = -__get<double>    (); break;
+	case RDOType::t_bool : rdovalue.__get<rbool> () = !__get<rbool>     (); break;
+	case RDOType::t_fuzzy: rdovalue.__fuzzyV     () = __fuzzyV().u_minus(); break;
 	default              : throw RDOValueException();
 	}
 	return rdovalue;
@@ -597,9 +602,9 @@ inline rbool RDOValue::operator! () const
 {
 	switch (typeID())
 	{
-	case RDOType::t_int : return !__get<int>(); break;
+	case RDOType::t_int : return !__get<int>   (); break;
 	case RDOType::t_real: return !__get<double>(); break;
-	case RDOType::t_bool: return !__get<bool>(); break;
+	case RDOType::t_bool: return !__get<rbool> (); break;
 	default             : throw RDOValueException();
 	}
 }
@@ -1002,6 +1007,26 @@ inline REF(std::ostream) operator<< (REF(std::ostream) stream, CREF(RDOValue) rd
 {
 	stream << rdovalue.getAsStringForTrace();
 	return stream;
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- RefCounter<T>
+// --------------------------------------------------------------------------------
+template <class T>
+inline RDOValue::RefCounter<T>::RefCounter(CREF(rdo::intrusive_ptr<T>) pPointer)
+	: parent_type(pPointer)
+{}
+
+template <class T>
+inline void RDOValue::RefCounter<T>::addref()
+{
+	parent_type::addref();
+}
+
+template <class T>
+inline void RDOValue::RefCounter<T>::release()
+{
+	parent_type::release();
 }
 
 // --------------------------------------------------------------------------------
