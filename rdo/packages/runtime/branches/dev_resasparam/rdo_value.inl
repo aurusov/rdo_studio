@@ -203,7 +203,7 @@ inline rsint RDOValue::getInt() const
 	case RDOType::t_real : return (rsint)__get<double>();
 	case RDOType::t_enum : return __get<int>  ();
 	case RDOType::t_bool : return __get<rbool>() ? 1 : 0;
-	case RDOType::t_fuzzy: return const_cast<RDOValue*>(this)->__fuzzyV().defuzzyfication().getInt();
+	case RDOType::t_fuzzy: return const_cast<PTR(RDOValue)>(this)->__fuzzyV().defuzzyfication().getInt();
 	}
 	throw RDOValueException();
 }
@@ -936,17 +936,17 @@ inline LPRDOEnumType RDOValue::__enumT() const
 
 inline REF(tstring) RDOValue::__stringV()
 {
-	return *reinterpret_cast<PTR(RefCounter<string_class>)>(&m_value)->get();
+	return *__get<PTR(RefCounter<string_class>)>()->get();
 }
 
 inline CREF(tstring) RDOValue::__stringV() const
 {
-	return *reinterpret_cast<CPTR(RefCounter<string_class>)>(&m_value)->get();
+	return *__get<CPTR(RefCounter<string_class>)>()->get();
 }
 
 inline REF(RDOFuzzyValue) RDOValue::__fuzzyV()
 {
-	return *static_cast<RDOFuzzyValue*>(__voidPtrV());
+	return *static_cast<PTR(RDOFuzzyValue)>(__voidPtrV());
 }
 
 inline CREF(RDOFuzzyValue) RDOValue::__fuzzyV() const
@@ -966,7 +966,7 @@ inline CREF(RDOArrayValue) RDOValue::__arrayV() const
 
 inline REF(RDOArrayIterator) RDOValue::__arrayItr()
 {
-	return *static_cast<RDOArrayIterator*>(__voidPtrV());
+	return *static_cast<PTR(RDOArrayIterator)>(__voidPtrV());
 }
 
 inline CREF(RDOArrayIterator) RDOValue::__arrayItr() const
@@ -976,7 +976,7 @@ inline CREF(RDOArrayIterator) RDOValue::__arrayItr() const
 
 inline REF(RDOMatrixValue) RDOValue::__matrixV()
 {
-	return *static_cast<RDOMatrixValue*>(__voidPtrV());
+	return *static_cast<PTR(RDOMatrixValue)>(__voidPtrV());
 }
 
 inline CREF(RDOMatrixValue) RDOValue::__matrixV() const
@@ -986,7 +986,7 @@ inline CREF(RDOMatrixValue) RDOValue::__matrixV() const
 
 inline REF(RDOMatrixIterator) RDOValue::__matrixItr()
 {
-	return *static_cast<RDOMatrixIterator*>(__voidPtrV());
+	return *static_cast<PTR(RDOMatrixIterator)>(__voidPtrV());
 }
 
 inline CREF(RDOMatrixIterator) RDOValue::__matrixItr() const
