@@ -59,7 +59,12 @@ BOOST_AUTO_TEST_CASE(RDOValue_Resource)
 
 	RDOValue value1(pResource);
 
-	int i = 1;
+	pRuntime  = NULL;
+	value1    = RDOValue();
+
+	BOOST_CHECK(pResource.owner());
+
+	pResource = NULL;
 }
 
 BOOST_AUTO_TEST_SUITE_END()
