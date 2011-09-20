@@ -31,8 +31,8 @@ public:
 	CREF(RDOValue) getDefault () const { return m_default;             }
 
 protected:
-        RDOParam(CREF(tstring)          name,     CREF(LPTypeInfo) pType, RDOValue defaultValue = RDOValue());
-        RDOParam(CREF(RDOParserSrcInfo) src_info, CREF(LPTypeInfo) pType, RDOValue defaultValue = RDOValue());
+	RDOParam(CREF(tstring)          name,     CREF(LPTypeInfo) pType, RDOValue defaultValue = RDOValue());
+	RDOParam(CREF(RDOParserSrcInfo) src_info, CREF(LPTypeInfo) pType, RDOValue defaultValue = RDOValue());
 	virtual ~RDOParam();
 
 private:

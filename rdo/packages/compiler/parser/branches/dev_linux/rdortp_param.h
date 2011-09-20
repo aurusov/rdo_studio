@@ -36,7 +36,7 @@ public:
 	DECLARE_IName;
 
 private:
-        RDORTPParam(CREF(LPTypeInfo) pType, CREF(RDOValue) defaultValue, CREF(RDOParserSrcInfo) src_info);
+	RDORTPParam(CREF(LPTypeInfo) pType, CREF(RDOValue) defaultValue, CREF(RDOParserSrcInfo) src_info);
 	virtual ~RDORTPParam();
 };
 DECLARE_POINTER(RDORTPParam);

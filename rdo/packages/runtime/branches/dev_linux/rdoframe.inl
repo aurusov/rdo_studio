@@ -142,7 +142,7 @@ inline RDOFRMFrame::RDOFRMRulet::~RDOFRMRulet()
 // --------------------------------------------------------------------------------
 inline LPRDOFRMShow RDOFRMFrame::getLastShow() const
 {
-        return !m_showList.empty() ? m_showList.back() : LPRDOFRMShow(NULL);
+	return !m_showList.empty() ? m_showList.back() : LPRDOFRMShow(NULL);
 }
 
 inline CREF(tstring) RDOFRMFrame::name() const

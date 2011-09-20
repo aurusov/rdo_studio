@@ -551,7 +551,7 @@ rdoRuntime::LPRDOCalc RDOFUNArithm::createCalc(CREF(LPTypeInfo) pForType)
 {
 	if (typeID() != rdoRuntime::RDOType::t_identificator)
 	{
-                if (pForType == 0)
+		if (pForType == 0)
 		{
 			return m_pExpression->calc();
 		}
@@ -627,7 +627,7 @@ void RDOFUNArithm::setSrcPos(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end)
 // -------------------- RDOFUNConstant
 // --------------------------------------------------------------------------------
 RDOFUNConstant::RDOFUNConstant(CREF(RDOParserSrcInfo) src_info, CREF(LPTypeInfo) pType, CREF(RDOValue) defaultValue)
-        : RDOParam(src_info, pType, defaultValue)
+	: RDOParam(src_info, pType, defaultValue)
 {
 	if (!getDefault().defined())
 	{

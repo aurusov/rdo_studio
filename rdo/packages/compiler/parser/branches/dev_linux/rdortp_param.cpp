@@ -22,7 +22,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // -------------------- RDORTPParam
 // --------------------------------------------------------------------------------
 RDORTPParam::RDORTPParam(CREF(LPTypeInfo) pType, CREF(RDOValue) defaultValue, CREF(RDOParserSrcInfo) src_info)
-        : RDOParam(src_info, pType, defaultValue)
+	: RDOParam(src_info, pType, defaultValue)
 {}
 
 RDORTPParam::~RDORTPParam()

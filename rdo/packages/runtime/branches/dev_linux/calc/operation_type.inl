@@ -21,8 +21,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
 template <OperatorType::Type>
 inline REF(ruint) OperatorType::getCalcCounter()
 {
-        static ruint s_counter = 0;
-        return s_counter;
+	static ruint s_counter = 0;
+	return s_counter;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE
