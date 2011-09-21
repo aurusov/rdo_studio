@@ -20,7 +20,6 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 class RDORuntime;
-class RDOResource;
 class RDOPROCTransact;
 
 //! @todo сделать классы \ref RDOResourceType, \ref RDOResourceTypeTransact и \ref RDOResourceTypeProccess шаблонными
