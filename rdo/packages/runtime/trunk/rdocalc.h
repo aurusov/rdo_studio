@@ -390,8 +390,6 @@ DEFINE_CALC_GROUP(ForAll);
 */
 DEFINE_CALC_GROUP(NotForAll);
 
-class RDOResource;
-
 /*!
   \class   RDOFunCalcSelect
   \brief   Базовая групповая функция

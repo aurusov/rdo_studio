@@ -46,7 +46,8 @@ public:
 		t_arrayIterator,
 		t_matrix,
 		t_matrixIterator,
-		t_fuzzy
+		t_fuzzy,
+		t_pointer
 	};
 
 	RDOType(TypeID typeID);
