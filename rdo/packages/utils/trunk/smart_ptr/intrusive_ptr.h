@@ -72,10 +72,11 @@ public:
 	PTR(T)   get();
 	CPTR(T)  get() const;
 
+	rbool owner () const;
+
 protected:
 	void  addref ();
 	void  release();
-	rbool owner  () const;
 
 private:
 	PTR(T) m_object;
