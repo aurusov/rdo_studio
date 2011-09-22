@@ -11,6 +11,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdodebug.h"
 #include "utils/static_assert.h"
+#include "utils/smart_ptr/intrusive_ptr_interface_wrapper.h"
 #include "simulator/runtime/rdo_enum.h"
 #include "simulator/runtime/rdo_fuzzy_def.h"
 #include "simulator/runtime/rdo_array_def.h"
@@ -48,8 +49,8 @@ inline RDOValue::RDOValue(CREF(LPRDOType) pType)
 	case RDOType::t_real          : __get<double>() = 0; break;
 	case RDOType::t_enum          : __get<int>   () = 0; break;
 	case RDOType::t_bool          : __get<rbool> () = false; break;
-	case RDOType::t_string        : new (&m_value) RefCounter<string_class>(new string_class(_T(""))); break;
-	case RDOType::t_identificator : new (&m_value) RefCounter<string_class>(new string_class(_T(""))); break;
+	case RDOType::t_string        : new (&m_value) rdo::intrusive_ptr_interface_wrapper<string_class>(new string_class(_T(""))); break;
+	case RDOType::t_identificator : new (&m_value) rdo::intrusive_ptr_interface_wrapper<string_class>(new string_class(_T(""))); break;
 	case RDOType::t_array         : __voidPtrV   () = new RDOArrayValue(pType.object_static_cast<RDOArrayType>()); break;
 	case RDOType::t_arrayIterator : __voidPtrV   () = new PTR(void); break;
 	case RDOType::t_matrix        : __voidPtrV   () = new PTR(void); break;
@@ -117,13 +118,15 @@ inline RDOValue::RDOValue(CREF(RDOFuzzyValue) fuzzy)
 inline RDOValue::RDOValue(CREF(tstring) value)
 	: m_pType(g_string)
 {
-	new (&m_value) RefCounter<string_class>(new string_class(value));
+	STATIC_ASSERT(sizeof(double) >= sizeof(rdo::intrusive_ptr_interface_wrapper<string_class>));
+
+	new (&m_value) rdo::intrusive_ptr_interface_wrapper<string_class>(new string_class(value));
 }
 
 inline RDOValue::RDOValue(CPTR(tchar) value)
 	: m_pType(g_string)
 {
-	new (&m_value) RefCounter<string_class>(new string_class(value));
+	new (&m_value) rdo::intrusive_ptr_interface_wrapper<string_class>(new string_class(value));
 }
 
 inline RDOValue::RDOValue(CREF(tstring) value, CREF(LPRDOType) pType)
@@ -132,7 +135,7 @@ inline RDOValue::RDOValue(CREF(tstring) value, CREF(LPRDOType) pType)
 	if (pType->typeID() != RDOType::t_identificator)
 		RDOValueException();
 
-	new (&m_value) RefCounter<string_class>(new string_class(value));
+	new (&m_value) rdo::intrusive_ptr_interface_wrapper<string_class>(new string_class(value));
 }
 
 inline RDOValue::RDOValue(CREF(RDOArrayValue) arrayValue)
@@ -163,8 +166,8 @@ template <class T>
 inline RDOValue::RDOValue(CREF(rdo::intrusive_ptr<T>) pPointer)
 	: m_pType(rdo::Factory<RDOType>::create(RDOType::t_pointer))
 {
-	STATIC_ASSERT(sizeof(double) >= sizeof(RefCounter<T>));
-	new (&m_value) RefCounter<T>(pPointer);
+	STATIC_ASSERT(sizeof(double) >= sizeof(rdo::intrusive_ptr_interface_wrapper<T>));
+	new (&m_value) rdo::intrusive_ptr_interface_wrapper<T>(pPointer);
 }
 
 inline void RDOValue::deleteValue()
@@ -174,7 +177,7 @@ inline void RDOValue::deleteValue()
 	case RDOType::t_string       :
 	case RDOType::t_identificator:
 	case RDOType::t_pointer      :
-		reinterpret_cast<rdo::LPICounterReference>(&m_value)->release();
+		reinterpret_cast<rdo::LPIRefCounter>(&m_value)->release();
 		break;
 
 	case RDOType::t_fuzzy:
@@ -337,7 +340,7 @@ inline void RDOValue::set(CREF(RDOValue) rdovalue)
 	case RDOType::t_pointer      :
 		{
 			memcpy(&m_value, &rdovalue.m_value, sizeof(m_value));
-			reinterpret_cast<rdo::LPICounterReference>(&m_value)->addref();
+			reinterpret_cast<rdo::LPIRefCounter>(&m_value)->addref();
 			break;
 		}
 	case RDOType::t_fuzzy:
@@ -621,13 +624,13 @@ inline void RDOValue::operator+= (CREF(RDOValue) rdovalue)
 			{
 			case RDOType::t_string:
 				{
-					rdo::LPICounterReference pIRefCountrer = reinterpret_cast<rdo::LPICounterReference>(&m_value);
+					rdo::LPIRefCounter pIRefCountrer = reinterpret_cast<rdo::LPIRefCounter>(&m_value);
 					ASSERT(pIRefCountrer);
 
 					if (!pIRefCountrer->owner())
 					{
 						pIRefCountrer->release();
-						new (&m_value) RefCounter<string_class>(new string_class(__stringV()));
+						new (&m_value) rdo::intrusive_ptr_interface_wrapper<string_class>(new string_class(__stringV()));
 					}
 
 					__stringV() += rdovalue.__stringV();
@@ -932,12 +935,12 @@ inline LPRDOEnumType RDOValue::__enumT() const
 
 inline REF(tstring) RDOValue::__stringV()
 {
-	return *__get<RefCounter<string_class> >().get();
+	return *__get<rdo::intrusive_ptr_interface_wrapper<string_class> >().get();
 }
 
 inline CREF(tstring) RDOValue::__stringV() const
 {
-	return *__get<RefCounter<string_class> >().get();
+	return *__get<rdo::intrusive_ptr_interface_wrapper<string_class> >().get();
 }
 
 inline REF(RDOFuzzyValue) RDOValue::__fuzzyV()
@@ -1006,32 +1009,6 @@ template <class T>
 inline CREF(T) RDOValue::__get() const
 {
 	return *reinterpret_cast<CPTR(T)>(&m_value);
-}
-
-// --------------------------------------------------------------------------------
-// -------------------- RefCounter<T>
-// --------------------------------------------------------------------------------
-template <class T>
-inline RDOValue::RefCounter<T>::RefCounter(CREF(rdo::intrusive_ptr<T>) pPointer)
-	: parent_type(pPointer)
-{}
-
-template <class T>
-inline void RDOValue::RefCounter<T>::addref()
-{
-	parent_type::addref();
-}
-
-template <class T>
-inline void RDOValue::RefCounter<T>::release()
-{
-	parent_type::release();
-}
-
-template <class T>
-inline rbool RDOValue::RefCounter<T>::owner() const
-{
-	return parent_type::owner();
 }
 
 // --------------------------------------------------------------------------------
