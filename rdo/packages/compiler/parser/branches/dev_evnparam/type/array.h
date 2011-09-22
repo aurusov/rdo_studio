@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      array.h
+  \file      simulator/compiler/parser/type/array.h
   \author    Чирков Михаил
   \date      
   \brief     

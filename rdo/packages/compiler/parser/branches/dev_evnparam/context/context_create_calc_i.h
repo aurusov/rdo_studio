@@ -13,8 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdomacros.h"
-#include "utils/smart_ptr/intrusive_ptr.h"
-
+#include "utils/smart_ptr/factory.h"
 #include "simulator/runtime/rdocalc.h"
 // --------------------------------------------------------------------------------
 

@@ -21,7 +21,6 @@
 #include "simulator/runtime/rdo_operation.h"
 #include "simulator/runtime/rdo_keyboard.h"
 #include "simulator/runtime/rdoprocess.h"
-#include "simulator/runtime/rdo_logic_dptfree.h"
 #include "simulator/runtime/rdo_logic_dptsome.h"
 #include "simulator/runtime/rdo_logic_dptprior.h"
 #include "simulator/runtime/rdodptrtime.h"
@@ -86,6 +85,7 @@ RDODPTActivity::RDODPTActivity(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSr
 		RDOParser::s_parser()->error().error(pattern_src_info, rdo::format(_T("Не найден образец: %s"), pattern_src_info.src_text().c_str()));
 	}
 	RDOParser::s_parser()->contextStack()->push(this);
+	RDOParser::s_parser()->insertDPTActivity(this);
 }
 
 RDODPTActivity::~RDODPTActivity()
@@ -235,40 +235,6 @@ void RDODPTActivityHotKey::addHotKey(CREF(tstring) hotKey, CREF(YYLTYPE) hotkey_
 	default:
 		RDOParser::s_parser()->error().error(src_info(), _T("Внутренная ошибка: RDOOPROperation::addHotKey"));
 	}
-}
-
-// --------------------------------------------------------------------------------
-// -------------------- RDODPTFreeActivity
-// --------------------------------------------------------------------------------
-RDODPTFreeActivity::RDODPTFreeActivity(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info)
-	: RDODPTActivityHotKey(pDPT, src_info, pattern_src_info)
-{
-	RDOParser::s_parser()->insertDPTFreeActivity(this);
-}
-
-// --------------------------------------------------------------------------------
-// -------------------- RDODPTFree
-// --------------------------------------------------------------------------------
-RDODPTFree::RDODPTFree(CREF(RDOParserSrcInfo) src_info)
-	: RDOLogicActivity<rdoRuntime::RDODPTFree, RDODPTFreeActivity>(src_info)
-{
-	RDOParser::s_parser()->checkDPTName(this->src_info());
-	m_pRuntimeLogic = RF(rdoRuntime::RDODPTFree)::create(RDOParser::s_parser()->runtime());
-	ASSERT(m_pRuntimeLogic);
-	m_pRuntimeLogic->init(RDOParser::s_parser()->runtime());
-	RDOParser::s_parser()->insertDPTFree(this);
-	RDOParser::s_parser()->contextStack()->push(this);
-}
-
-void RDODPTFree::end()
-{
-	RDOParser::s_parser()->contextStack()->pop();
-}
-
-LPContext RDODPTFree::onFindContext(CREF(RDOValue) value) const
-{
-	//! Поиск не нужен, добавлен для порядка, чтобы контекст активности был на стеке после контекста точки
-	return NULL;
 }
 
 // --------------------------------------------------------------------------------

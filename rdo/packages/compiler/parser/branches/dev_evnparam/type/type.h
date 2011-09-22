@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      type.h
+  \file      simulator/compiler/parser/type/type.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      
   \brief     
@@ -12,7 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/smart_ptr/intrusive_ptr.h"
+#include "utils/smart_ptr/factory.h"
 #include "simulator/runtime/rdo_type.h"
 #include "simulator/runtime/rdo_value.h"
 #include "simulator/runtime/rdo_model_i.h"

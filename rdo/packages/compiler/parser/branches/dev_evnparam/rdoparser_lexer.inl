@@ -13,7 +13,6 @@
 #include "simulator/compiler/parser/namespace.h"
 #include "simulator/compiler/parser/rdobison.h"
 #include "simulator/compiler/parser/rdogramma.h"
-#include "utils/smart_ptr/intrusive_ptr.h"
 
 #ifndef __FLEX_LEXER_H
 #undef yyFlexLexer
