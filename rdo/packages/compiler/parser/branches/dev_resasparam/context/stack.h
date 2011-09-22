@@ -13,8 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <list>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/smart_ptr/intrusive_ptr.h"
-
+#include "utils/smart_ptr/factory.h"
 #include "simulator/compiler/parser/namespace.h"
 // --------------------------------------------------------------------------------
 
