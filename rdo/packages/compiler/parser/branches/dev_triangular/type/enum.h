@@ -15,7 +15,7 @@
 #include "simulator/compiler/parser/type/type.h"
 #include "simulator/compiler/parser/rdo_value.h"
 #include "simulator/runtime/rdo_enum.h"
-#include "utils/smart_ptr/intrusive_ptr.h"
+#include "utils/smart_ptr/factory.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      pch.h
+  \file      simulator/compiler/parser/pch.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      
@@ -19,7 +19,7 @@
 #endif
 
 #ifndef WINVER               //! Allow use of features specific to Windows XP or later.
-	#define WINVER 0x0501        //! Change this to the appropriate value to target other versions of Windows.
+	#define WINVER 0x0501    //! Change this to the appropriate value to target other versions of Windows.
 #endif
 // ----------------------------------------------------------------------- INCLUDES
 #include <algorithm>

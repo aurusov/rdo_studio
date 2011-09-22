@@ -241,10 +241,9 @@ dpt_main
 	| dpt_main dpt_search_end
 	| dpt_main dpt_some_end
 	| dpt_main dpt_prior_end
-	| dpt_main dpt_free_end
 	| error
 	{
-		PARSER->error().error(@1, _T("Ожидается описание точки или свободного блока активностей"));
+		PARSER->error().error(@1, _T("Ожидается описание точки"));
 	}
 	;
 
@@ -1042,119 +1041,6 @@ dpt_prior_end
 		$$ = PARSER->stack().push(pDPTPrior);
 	}
 	| dpt_prior_header
-	{
-		PARSER->error().error(@1, _T("Ожидается ключевое слово $End"));
-	}
-	;
-
-// --------------------------------------------------------------------------------
-// -------------------- DPT Free
-// --------------------------------------------------------------------------------
-dpt_free_prior
-	: dpt_free_header
-	| RDO_Priority fun_arithm dpt_free_header
-	{
-		if (!PARSER->getLastDPTFree()->setPrior(PARSER->stack().pop<RDOFUNArithm>($2)))
-		{
-			PARSER->error().error(@3, _T("Точка принятия решений пока не может иметь приоритет"));
-		}
-	}
-	| RDO_Priority error dpt_free_header
-	{
-		PARSER->error().error(@1, @2, _T("Ошибка описания приоритета точки принятия решений"))
-	}
-	| error dpt_free_header
-	{
-		PARSER->error().error(@1, @2, _T("Ожидается ключевое слово $Priority"))
-	}
-	;
-
-dpt_free_header
-	: RDO_Activities
-	{
-		LPRDODPTFree pDPTFree = rdo::Factory<RDODPTFree>::create(@1);
-		ASSERT(pDPTFree);
-		$$ = PARSER->stack().push(pDPTFree);
-	}
-	;
-
-dpt_free_activity
-	: /* empty */
-	| dpt_free_activity dpt_free_activity_name dpt_free_activity_param dpt_free_activity_keys
-	;
-
-dpt_free_activity_name
-	: RDO_IDENTIF_COLON RDO_IDENTIF
-	{
-		LPRDODPTFree pDPTFree = PARSER->getLastDPTFree();
-		ASSERT(pDPTFree);
-		PTR(RDOValue) name    = P_RDOVALUE($1);
-		PTR(RDOValue) pattern = P_RDOVALUE($2);
-		LPRDODPTActivity pActivity = pDPTFree->addNewActivity(name->src_info(), pattern->src_info());
-		ASSERT(pActivity);
-		$$ = PARSER->stack().push(pActivity);
-	}
-	| RDO_IDENTIF_COLON error
-	{
-		PARSER->error().error(@1, @2, _T("Ожидается имя образца"));
-	}
-	| RDO_IDENTIF
-	{
-		PARSER->error().error(@1, _T("Ожидается ':'"));
-	}
-	| error
-	{
-		PARSER->error().error(@1, _T("Ожидается имя активности"));
-	}
-	;
-
-dpt_free_activity_param
-	: /* empty */
-	| dpt_free_activity_param '*'
-	{
-		PARSER->getLastDPTFree()->getLastActivity()->addParam(RDOValue(RDOParserSrcInfo(@2, _T("*"))));
-	}
-	| dpt_free_activity_param fun_arithm
-	{
-		RDOValue constant = PARSER->stack().pop<RDOFUNArithm>($2)->expression()->constant();
-		if (!constant.defined())
-		{
-			PARSER->error().error(@2, _T("Параметр может быть только константой"));
-		}
-		PARSER->getLastDPTFree()->getLastActivity()->addParam(constant);
-	}
-	| dpt_free_activity_param error
-	{
-		PARSER->error().error(@1, @2, _T("Ошибка описания параметра образца"))
-	}
-	;
-
-dpt_free_activity_keys
-	: /* empty */
-	| dpt_free_activity_keys RDO_STRING_CONST
-	{
-		LPRDODPTActivityHotKey pActivityHotKey = PARSER->getLastDPTFree()->getLastActivity();
-		ASSERT(pActivityHotKey);
-		tstring key = P_RDOVALUE($2)->value().getString();
-		pActivityHotKey->addHotKey(key, @2);
-	}
-	| dpt_free_activity_keys '+' RDO_STRING_CONST
-	{
-		LPRDODPTActivityHotKey pActivityHotKey = PARSER->getLastDPTFree()->getLastActivity();
-		ASSERT(pActivityHotKey);
-		tstring key = P_RDOVALUE($3)->value().getString();
-		pActivityHotKey->addHotKey(key, @3);
-	}
-	;
-
-dpt_free_end
-	: dpt_free_prior dpt_free_activity RDO_End
-	{
-		LPRDODPTFree pDPTFree = PARSER->getLastDPTFree();
-		ASSERT(pDPTFree);
-		pDPTFree->end();
-	}
-	| dpt_free_header error
 	{
 		PARSER->error().error(@1, _T("Ожидается ключевое слово $End"));
 	}
