@@ -118,6 +118,8 @@ inline RDOValue::RDOValue(CREF(RDOFuzzyValue) fuzzy)
 inline RDOValue::RDOValue(CREF(tstring) value)
 	: m_pType(g_string)
 {
+	STATIC_ASSERT(sizeof(double) >= sizeof(rdo::intrusive_ptr_interface_wrapper<string_class>));
+
 	new (&m_value) rdo::intrusive_ptr_interface_wrapper<string_class>(new string_class(value));
 }
 
