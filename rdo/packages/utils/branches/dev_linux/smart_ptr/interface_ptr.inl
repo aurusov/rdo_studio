@@ -17,43 +17,13 @@
 OPEN_RDO_NAMESPACE
 
 template<class T>
-inline void CounterReferenceReal<T>::addref()
-{
-	PTR(counter_reference) pCounter = dynamic_cast<PTR(counter_reference)>(this);
-	ASSERT(pCounter);
-	pCounter->m_intrusive_counter++;
-}
-
-template<class T>
-inline void CounterReferenceReal<T>::release()
-{
-	PTR(counter_reference) pCounter = dynamic_cast<PTR(counter_reference)>(this);
-	ASSERT(pCounter);
-	pCounter->m_intrusive_counter--;
-	if (pCounter->m_intrusive_counter == 0)
-	{
-		PTR(T) pObject = dynamic_cast<PTR(T)>(this);
-		ASSERT(pObject);
-		Factory<T>::destroy(pObject);
-	}
-}
-
-template<class T>
-inline rbool CounterReferenceReal<T>::owner() const
-{
-	CPTR(counter_reference) pCounter = dynamic_cast<CPTR(counter_reference)>(this);
-	ASSERT(pCounter);
-	return pCounter->m_intrusive_counter == 1;
-}
-
-template<class T>
 inline interface_ptr<T>::interface_ptr()
 	: m_pInterface(NULL)
 	, m_pCounter  (NULL)
 {}
 
 template<class T>
-inline interface_ptr<T>::interface_ptr(PTR(T) pInterface, LPICounterReference pCounter)
+inline interface_ptr<T>::interface_ptr(PTR(T) pInterface, LPIRefCounter pCounter)
 	: m_pInterface(pInterface)
 	, m_pCounter  (pCounter  )
 {

@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="rdo_common"
+	Name="utils_common"
 	ProjectGUID="{AC7C7972-A31D-4CDE-99E5-B56A19AB6457}"
-	RootNamespace="rdo_common"
+	RootNamespace="utils_common"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -396,38 +396,6 @@
 			</File>
 			<File
 				RelativePath=".\supersubclass.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name=".smart_ptr"
-			>
-			<File
-				RelativePath=".\smart_ptr\counter_reference.h"
-				>
-			</File>
-			<File
-				RelativePath=".\smart_ptr\counter_reference.inl"
-				>
-			</File>
-			<File
-				RelativePath=".\smart_ptr\interface_ptr.h"
-				>
-			</File>
-			<File
-				RelativePath=".\smart_ptr\interface_ptr.inl"
-				>
-			</File>
-			<File
-				RelativePath=".\smart_ptr\intrusive_ptr.h"
-				>
-			</File>
-			<File
-				RelativePath=".\smart_ptr\intrusive_ptr.inl"
-				>
-			</File>
-			<File
-				RelativePath=".\rdosmart_ptr_wrapper.h"
 				>
 			</File>
 		</Filter>
