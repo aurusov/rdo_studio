@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      rdo_value.h
+  \file      simulator/runtime/rdo_value.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      22.06.2008
   \brief     RDOValue
@@ -52,6 +52,9 @@ public:
 	RDOValue(CREF(RDOArrayIterator)  aIterator  );
 	RDOValue(CREF(RDOMatrixValue)    matrixValue);
 	RDOValue(CREF(RDOMatrixIterator) mIterator  );
+
+	template <class T>
+	RDOValue(CREF(rdo::intrusive_ptr<T>) pPointer);
 
 	rsint             getInt          () const;
 	rsint             getEnumAsInt    () const;
@@ -105,24 +108,14 @@ public:
 	void setArrayItem(CREF(RDOValue) ind, CREF(RDOValue) item);
 
 private:
-	LPRDOType m_pType;
+	//! Тип контейнера значения, размер определяется по максимальному размеру типа данных
+	typedef rbyte Value[sizeof(double)];
+
+	Value      m_value; //!< контейнер значения
+	LPRDOType  m_pType; //!< тип значения
 
 	void set        (CREF(RDOValue) rdovalue);
 	void deleteValue();
-
-	LPRDOEnumType           __enumT    () const;
-	 REF(tstring)           __stringV  ();
-	CREF(tstring)           __stringV  () const;
-	 REF(RDOFuzzyValue)     __fuzzyV   ();
-	CREF(RDOFuzzyValue)     __fuzzyV   () const;
-	 REF(RDOArrayValue)     __arrayV   ();
-	CREF(RDOArrayValue)     __arrayV   () const;
-	 REF(RDOArrayIterator)  __arrayItr ();
-	CREF(RDOArrayIterator)  __arrayItr () const;
-	 REF(RDOMatrixValue)    __matrixV  ();
-	CREF(RDOMatrixValue)    __matrixV  () const;
-	 REF(RDOMatrixIterator) __matrixItr();
-	CREF(RDOMatrixIterator) __matrixItr() const;
 
 	/*!
 	  \class     string_class
@@ -132,42 +125,30 @@ private:
 	{
 	public:
 		string_class(CREF(tstring) string);
+		rdo::intrusive_ptr<string_class> clone() const;
 	};
 
-	/*!
-	  \class     smart_string
-	  \brief     Умный строковый тип данных
-	  \details   С реализацией "копирование при записи"?
-	*/
-	class smart_string: public rdo::intrusive_ptr<string_class>
-	{
-	public:
-		typedef rdo::intrusive_ptr<string_class> parent_type;
+	template <class T>
+	REF(T) __get();
 
-		smart_string(PTR(string_class) pString);
+	template <class T>
+	CREF(T) __get() const;
 
-		PTR(string_class)  get();
-		CPTR(string_class) get() const;
-
-		void  addref ();
-		void  release();
-		rbool owner  ();
-	};
-	void deleteString();
-
-	/*!
-	  \union     Value
-	  \brief     Значение
-	*/
-	union Value
-	{
-		int                i_value;
-		double             d_value;
-		rbool              b_value;
-		PTR(smart_string)  s_value;
-		PTR(void)          p_data;
-	};
-	Value m_value;
+	 REF(PTR(void))         __voidPtrV  ();
+	CREF(PTR(void))         __voidPtrV  () const;
+	LPRDOEnumType           __enumT     () const;
+	 REF(tstring)           __stringV   ();
+	CREF(tstring)           __stringV   () const;
+	 REF(RDOFuzzyValue)     __fuzzyV    ();
+	CREF(RDOFuzzyValue)     __fuzzyV    () const;
+	 REF(RDOArrayValue)     __arrayV    ();
+	CREF(RDOArrayValue)     __arrayV    () const;
+	 REF(RDOArrayIterator)  __arrayItr  ();
+	CREF(RDOArrayIterator)  __arrayItr  () const;
+	 REF(RDOMatrixValue)    __matrixV   ();
+	CREF(RDOMatrixValue)    __matrixV   () const;
+	 REF(RDOMatrixIterator) __matrixItr ();
+	CREF(RDOMatrixIterator) __matrixItr () const;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

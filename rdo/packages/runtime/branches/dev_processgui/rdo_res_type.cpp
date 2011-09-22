@@ -15,7 +15,7 @@
 #include "simulator/runtime/rdo_resource.h"
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/runtime/rdoprocess.h"
-#include "utils/smart_ptr/intrusive_ptr.h"
+#include "utils/smart_ptr/factory.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

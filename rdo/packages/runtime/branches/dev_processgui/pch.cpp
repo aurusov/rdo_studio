@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      pch.cpp
+  \file      simulator/runtime/pch.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      11.06.2006
   \brief     Включение стандартных заголовочных файлов C++ и РДО

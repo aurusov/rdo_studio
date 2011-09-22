@@ -31,16 +31,11 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 class IDPTSearchActivity
 {
 public:
-	/*!
-	  \enum  ValueTime
-	  \brief Время вычисления функции стоимости пути
-	  \var   vt_before до выполнения активности
-	  \var   vt_after  после выполнения активности
-	*/
+	//! Время вычисления функции стоимости пути
 	enum ValueTime
 	{
-		vt_before,
-		vt_after
+		vt_before, //!< до выполнения активности
+		vt_after   //!< после выполнения активности
 	};
 
 	virtual REF(LPIRule) rule     ()                                        = 0;
