@@ -38,7 +38,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".converter", ".converter", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".process", ".process", "{7ECBB553-A3BC-426A-B472-66C7947C39A8}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_common", "utils\rdo_common.vcproj", "{AC7C7972-A31D-4CDE-99E5-B56A19AB6457}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "utils_common", "utils\utils_common.vcproj", "{AC7C7972-A31D-4CDE-99E5-B56A19AB6457}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_repository", "repository\rdo_repository.vcproj", "{FF8088D9-472E-4480-901D-009B51311853}"
 	ProjectSection(ProjectDependencies) = postProject
