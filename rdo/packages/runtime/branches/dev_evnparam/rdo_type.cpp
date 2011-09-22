@@ -12,6 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_type.h"
+#include "utils/smart_ptr/factory.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -19,7 +20,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 /// @todo внимание макрос!
 
 /*!
-  \def       DECLARE_ATOM_TYPE
+  \def       DEFINE_ATOM_TYPE_DEFAULT_VALUE
   \brief     Макрос для определения значений по умолчанию для простых (атомарных) типов данных
 */
 #define DEFINE_ATOM_TYPE_DEFAULT_VALUE(Type) rdo::intrusive_ptr<RDOType__##Type> g_##Type = rdo::Factory<RDOType__##Type>::create();

@@ -1,20 +1,33 @@
-RDOValue integerVal1(1);
-RDOValue integerVal2(2);
-RDOValue integerVal3(3);
-RDOValue integerVal4(4);
-RDOValue integerVal5(5);
-RDOValue integerVal6(6);
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      matrixCreate.inl
+  \authors   Чирков Михаил
+  \date      01.10.2010
+  \brief     Тест матриц
+  \indent    4T
+*/
 
-RDOMatrixType mtype1(NULL, g_int);
-RDOMatrixValue mvalue1(mtype1);
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
+// --------------------------------------------------------------------------------
+
+rdoRuntime::RDOValue integerVal1(1);
+rdoRuntime::RDOValue integerVal2(2);
+rdoRuntime::RDOValue integerVal3(3);
+rdoRuntime::RDOValue integerVal4(4);
+rdoRuntime::RDOValue integerVal5(5);
+rdoRuntime::RDOValue integerVal6(6);
+
+rdoRuntime::LPRDOMatrixType mtype1 = rdo::Factory<rdoRuntime::RDOMatrixType>::create(rdoRuntime::g_int);
+rdoRuntime::RDOMatrixValue mvalue1(mtype1);
 mvalue1.insertItem(integerVal1);
 mvalue1.insertItem(integerVal2);
 mvalue1.insertItem(integerVal3);
-RDOValue matrixVal1(mvalue1);
+rdoRuntime::RDOValue matrixVal1(mvalue1);
 
-RDOMatrixType mtype2(NULL, g_int);
-RDOMatrixValue mvalue2(mtype2);
+rdoRuntime::LPRDOMatrixType mtype2 = rdo::Factory<rdoRuntime::RDOMatrixType>::create(rdoRuntime::g_int);
+rdoRuntime::RDOMatrixValue mvalue2(mtype2);
 mvalue2.insertItem(integerVal4);
 mvalue2.insertItem(integerVal5);
 mvalue2.insertItem(integerVal6);
-RDOValue matrixVal2(mvalue2);
+rdoRuntime::RDOValue matrixVal2(mvalue2);

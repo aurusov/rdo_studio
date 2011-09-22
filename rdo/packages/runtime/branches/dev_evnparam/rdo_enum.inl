@@ -8,7 +8,10 @@
 */
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <algorithm>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/rdocommon.h"
+#include "simulator/runtime/rdo_type.h"
 #include "simulator/runtime/rdo_exception.h"
 // --------------------------------------------------------------------------------
 

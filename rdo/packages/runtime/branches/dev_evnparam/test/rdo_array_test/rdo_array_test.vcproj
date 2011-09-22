@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
+	Version="9,00"
 	Name="rdo_array_test"
 	ProjectGUID="{F83B49E2-A9F0-4BD6-B6B7-91FBDACE518F}"
 	RootNamespace="rdo_value_test"
 	Keyword="Win32Proj"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -80,9 +81,6 @@
 				Name="VCAppVerifierTool"
 			/>
 			<Tool
-				Name="VCWebDeploymentTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -113,7 +111,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories=".,../../,../../../../rdo_common"
+				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_CONSOLE"
 			/>
 			<Tool
@@ -149,9 +147,6 @@
 				Name="VCAppVerifierTool"
 			/>
 			<Tool
-				Name="VCWebDeploymentTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -160,7 +155,7 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Source Files"
+			Name=".test"
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
@@ -170,7 +165,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Inline Files"
+			Name=".inl"
 			>
 			<File
 				RelativePath=".\arrayCreate.inl"

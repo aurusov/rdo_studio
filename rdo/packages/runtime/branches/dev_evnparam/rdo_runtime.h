@@ -12,14 +12,17 @@
 #ifndef _LIB_RUNTIME_RUNTIME_H_
 #define _LIB_RUNTIME_RUNTIME_H_
 
-#pragma warning(disable : 4786)
-
+// ----------------------------------------------------------------------- PLATFORM
+#include "utils/platform.h"
+#ifdef OST_WINDOWS
+	#pragma warning(disable : 4786)
+#endif
 // ----------------------------------------------------------------------- INCLUDES
 #include <time.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/namespace.h"
 #include "utils/rdocommon.h"
-#include "utils/smart_ptr/intrusive_ptr.h"
+#include "utils/smart_ptr/factory.h"
 #include "simulator/runtime/rdotrace.h"
 #include "simulator/runtime/simtrace.h"
 #include "simulator/runtime/rdo_resource.h"

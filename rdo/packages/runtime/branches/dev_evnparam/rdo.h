@@ -33,20 +33,13 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 class IBaseOperation
 {
 public:
-	/*!
-	  \enum  BOResult
-	  \brief Статуc состояния операции
-	  \var   BOR_cant_run        операция не может быть запущена
-	  \var   BOR_planned_and_run операция запланирована и выполняется
-	  \var   BOR_must_continue   операция может быть продолжена
-	  \var   BOR_done            операция выполнена
-	*/
+	//! Статуc состояния операции
 	enum BOResult
 	{
-		BOR_cant_run       = 0,
-		BOR_planned_and_run,
-		BOR_must_continue  ,
-		BOR_done
+		BOR_cant_run       = 0, //!< операция не может быть запущена
+		BOR_planned_and_run,    //!< операция запланирована и выполняется
+		BOR_must_continue  ,    //!< операция может быть продолжена
+		BOR_done			    //!< операция выполнена
 	};
 
 	/*!

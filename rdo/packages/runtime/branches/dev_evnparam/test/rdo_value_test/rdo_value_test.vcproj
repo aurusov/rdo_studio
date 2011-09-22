@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
+	Version="9,00"
 	Name="rdo_value_test"
 	ProjectGUID="{F83B49E2-A9F0-4BD6-B6B7-91FBDACE518F}"
 	RootNamespace="rdo_value_test"
 	Keyword="Win32Proj"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -42,6 +43,7 @@
 				Optimization="0"
 				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
+				ExceptionHandling="2"
 				RuntimeLibrary="3"
 				WarningLevel="3"
 				DebugInformationFormat="4"
@@ -80,9 +82,6 @@
 				Name="VCAppVerifierTool"
 			/>
 			<Tool
-				Name="VCWebDeploymentTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -115,6 +114,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_CONSOLE"
+				ExceptionHandling="2"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -149,9 +149,6 @@
 				Name="VCAppVerifierTool"
 			/>
 			<Tool
-				Name="VCWebDeploymentTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -160,7 +157,7 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Source Files"
+			Name=".test"
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
