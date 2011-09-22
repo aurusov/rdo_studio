@@ -28,7 +28,7 @@
 #include "simulator/runtime/calc/relres.h"
 #include "simulator/runtime/calc/choice_from.h"
 
-#include "utils/smart_ptr/intrusive_ptr.h"
+#include "utils/smart_ptr/factory.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
