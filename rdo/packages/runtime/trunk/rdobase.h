@@ -16,7 +16,7 @@
 #include "simulator/runtime/rdo_object.h"
 #include "simulator/runtime/rdo_runtime_interface_registrator.h"
 #include "utils/rdocommon.h"
-#include "utils/smart_ptr/intrusive_ptr.h"
+#include "utils/smart_ptr/factory.h"
 #ifdef OST_WINDOWS
 	#ifdef RDO_MT
 		#include <afxwin.h>

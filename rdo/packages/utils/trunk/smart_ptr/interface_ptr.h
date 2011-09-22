@@ -13,36 +13,10 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/namespace.h"
-#include "utils/rdomacros.h"
-#include "utils/rdotypes.h"
+#include "utils/smart_ptr/ref_counter.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE
-
-template <class T>
-class Factory;
-
-template<class T>
-class intrusive_ptr;
-
-struct NO_V_TABLE ICounterReference
-{
-	virtual void  addref ()       = 0;
-	virtual void  release()       = 0;
-	virtual rbool owner  () const = 0;
-};
-
-typedef PTR(ICounterReference) LPICounterReference;
-
-template <class T>
-class CounterReferenceReal: public ICounterReference
-{
-public:
-	void  addref ();
-	void  release();
-	rbool owner  () const;
-};
 
 template<class T>
 class interface_ptr
@@ -51,7 +25,7 @@ public:
 	typedef interface_ptr<T> this_type;
 
 	interface_ptr ();
-	interface_ptr (PTR (T) pInterface, LPICounterReference pCounter);
+	interface_ptr (PTR (T) pInterface, LPIRefCounter pCounter);
 	interface_ptr (CREF(this_type) sptr);
 	~interface_ptr();
 
@@ -62,13 +36,13 @@ public:
 	 PTR(T)  operator-> ();
 
 private:
-	PTR(T)              m_pInterface;
-	LPICounterReference m_pCounter;
+	PTR(T)        m_pInterface;
+	LPIRefCounter m_pCounter;
 };
 
 #define DECLARE_OBJECT_INTERFACE(TYPE)    typedef rdo::interface_ptr<TYPE> LP##TYPE;
 #define PREDECLARE_OBJECT_INTERFACE(TYPE) struct NO_V_TABLE TYPE; DECLARE_OBJECT_INTERFACE(TYPE);
-#define OBJECT_INTERFACE(TYPE)            PREDECLARE_OBJECT_INTERFACE(TYPE) struct TYPE: public rdo::CounterReferenceReal<TYPE>
+#define OBJECT_INTERFACE(TYPE)            PREDECLARE_OBJECT_INTERFACE(TYPE) struct TYPE: public rdo::RefCounter<TYPE>
 
 CLOSE_RDO_NAMESPACE
 

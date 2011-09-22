@@ -399,38 +399,6 @@
 				>
 			</File>
 		</Filter>
-		<Filter
-			Name=".smart_ptr"
-			>
-			<File
-				RelativePath=".\smart_ptr\counter_reference.h"
-				>
-			</File>
-			<File
-				RelativePath=".\smart_ptr\counter_reference.inl"
-				>
-			</File>
-			<File
-				RelativePath=".\smart_ptr\interface_ptr.h"
-				>
-			</File>
-			<File
-				RelativePath=".\smart_ptr\interface_ptr.inl"
-				>
-			</File>
-			<File
-				RelativePath=".\smart_ptr\intrusive_ptr.h"
-				>
-			</File>
-			<File
-				RelativePath=".\smart_ptr\intrusive_ptr.inl"
-				>
-			</File>
-			<File
-				RelativePath=".\rdosmart_ptr_wrapper.h"
-				>
-			</File>
-		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

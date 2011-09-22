@@ -22,7 +22,7 @@ OPEN_RDO_NAMESPACE
 class counter_reference
 {
 template<class T> friend class intrusive_ptr;
-template<class T> friend class CounterReferenceReal;
+template<class T> friend class RefCounter;
 public:
 	//! Инициализиреут счетчик нулём
 	counter_reference();

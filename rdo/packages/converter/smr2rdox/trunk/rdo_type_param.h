@@ -16,7 +16,7 @@
 #include "converter/smr2rdox/rdo_value.h"
 #include "converter/smr2rdox/rdo_object.h"
 #include "simulator/runtime/rdo_model_i.h"
-#include "utils/smart_ptr/intrusive_ptr.h"
+#include "utils/smart_ptr/factory.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE

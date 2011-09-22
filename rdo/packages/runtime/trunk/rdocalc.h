@@ -16,7 +16,7 @@
 #include <list>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/namespace.h"
-#include "utils/smart_ptr/intrusive_ptr.h"
+#include "utils/smart_ptr/factory.h"
 #include "utils/smart_ptr/interface_ptr.h"
 #include "simulator/runtime/rdo_value.h"
 #include "simulator/runtime/rdo_object.h"

@@ -14,7 +14,7 @@
 #include <fstream>
 #include <boost/shared_ptr.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/smart_ptr/intrusive_ptr.h"
+#include "utils/smart_ptr/factory.h"
 #include "utils/rdomacros.h"
 
 #include "converter/smr2rdox/namespace.h"

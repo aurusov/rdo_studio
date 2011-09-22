@@ -13,7 +13,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/smart_ptr/intrusive_ptr.h"
+#include "utils/smart_ptr/factory.h"
 #include "utils/rdocommon.h"
 
 #include "converter/smr2rdox/rdo_common/model_objects_convertor.h"

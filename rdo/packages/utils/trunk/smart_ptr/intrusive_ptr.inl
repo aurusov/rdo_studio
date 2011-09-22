@@ -128,7 +128,7 @@ template<class T>
 template<class P>
 inline interface_ptr<P> intrusive_ptr<T>::interface_cast()
 {
-	return interface_ptr<P>(static_cast<PTR(P)>(m_object), static_cast<LPICounterReference>(m_object));
+	return interface_ptr<P>(static_cast<PTR(P)>(m_object), static_cast<LPIRefCounter>(m_object));
 }
 
 template<class T>
@@ -136,7 +136,7 @@ template<class P>
 inline interface_ptr<P> intrusive_ptr<T>::interface_dynamic_cast()
 {
 	PTR(P) pInterface = dynamic_cast<PTR(P)>(m_object);
-	return interface_ptr<P>(pInterface, dynamic_cast<LPICounterReference>(pInterface));
+	return interface_ptr<P>(pInterface, dynamic_cast<LPIRefCounter>(pInterface));
 }
 
 template<class T>

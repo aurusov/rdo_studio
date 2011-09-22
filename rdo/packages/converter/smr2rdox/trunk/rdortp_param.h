@@ -15,7 +15,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "converter/smr2rdox/param.h"
 #include "simulator/runtime/rdo_model_i.h"
-#include "utils/smart_ptr/intrusive_ptr.h"
+#include "utils/smart_ptr/factory.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE

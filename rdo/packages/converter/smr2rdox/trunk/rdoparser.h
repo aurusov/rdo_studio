@@ -17,7 +17,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdocommon.h"
 #include "utils/rdoindexedstack.h"
-#include "utils/smart_ptr/intrusive_ptr.h"
+#include "utils/smart_ptr/factory.h"
 #include "utils/rdosmart_ptr_wrapper.h"
 
 #include "converter/smr2rdox/rdo_object.h"
