@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      array.cpp
+  \file      simulator/compiler/parser/type/array.cpp
   \author    Чирков Михаил
   \date      
   \brief     

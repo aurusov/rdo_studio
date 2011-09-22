@@ -1620,7 +1620,7 @@ frm_active
 	: RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ']'
 	{
 		tstring oprName = P_RDOVALUE($2)->value().getIdentificator();
-		LPRDODPTFreeActivity pActivity = PARSER->findDPTFreeActivity(oprName);
+		LPRDODPTActivity pActivity = PARSER->findDPTActivity(oprName);
 		if (!pActivity)
 		{
 			PARSER->error().error(@2, rdo::format(_T("Активность '%s' не найдена"), oprName.c_str()));

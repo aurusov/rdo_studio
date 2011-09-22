@@ -49,23 +49,22 @@ rbool RDOParser::remove##NAME(const LPRDO##NAME item) \
 	return true; \
 }
 
-DECLARE_PARSER_OBJECT_CONTAINER(PATPattern     );
-DECLARE_PARSER_OBJECT_CONTAINER(RTPResType     );
-DECLARE_PARSER_OBJECT_CONTAINER(RSSResource    );
-DECLARE_PARSER_OBJECT_CONTAINER(FRMFrame       );
-DECLARE_PARSER_OBJECT_CONTAINER(FUNConstant    );
-DECLARE_PARSER_OBJECT_CONTAINER(FUNFunction    );
-DECLARE_PARSER_OBJECT_CONTAINER(FUNSequence    );
-DECLARE_PARSER_OBJECT_CONTAINER(DPTSearch      );
-DECLARE_PARSER_OBJECT_CONTAINER(DPTSome        );
-DECLARE_PARSER_OBJECT_CONTAINER(DPTPrior       );
-DECLARE_PARSER_OBJECT_CONTAINER(DPTFreeActivity);
-DECLARE_PARSER_OBJECT_CONTAINER(Event          );
-DECLARE_PARSER_OBJECT_CONTAINER(ResultGroup    );
-DECLARE_PARSER_OBJECT_CONTAINER(PROCProcess    );
+DECLARE_PARSER_OBJECT_CONTAINER(PATPattern );
+DECLARE_PARSER_OBJECT_CONTAINER(RTPResType );
+DECLARE_PARSER_OBJECT_CONTAINER(RSSResource);
+DECLARE_PARSER_OBJECT_CONTAINER(FRMFrame   );
+DECLARE_PARSER_OBJECT_CONTAINER(FUNConstant);
+DECLARE_PARSER_OBJECT_CONTAINER(FUNFunction);
+DECLARE_PARSER_OBJECT_CONTAINER(FUNSequence);
+DECLARE_PARSER_OBJECT_CONTAINER(DPTSearch  );
+DECLARE_PARSER_OBJECT_CONTAINER(DPTSome    );
+DECLARE_PARSER_OBJECT_CONTAINER(DPTPrior   );
+DECLARE_PARSER_OBJECT_CONTAINER(DPTActivity);
+DECLARE_PARSER_OBJECT_CONTAINER(Event      );
+DECLARE_PARSER_OBJECT_CONTAINER(ResultGroup);
+DECLARE_PARSER_OBJECT_CONTAINER(PROCProcess);
 
-DECLARE_PARSER_OBJECT_CONTAINER_NONAME(FUNGroup   );
-DECLARE_PARSER_OBJECT_CONTAINER_NONAME(DPTFree    );
+DECLARE_PARSER_OBJECT_CONTAINER_NONAME(FUNGroup);
 
 rdoModelObjects::RDOFileType RDOParser::getFileToParse()
 {
@@ -518,13 +517,6 @@ void RDOParser::checkActivityName(CREF(RDOParserSrcInfo) src_info)
 			error().push_only((*it_prior_act)->src_info(), _T("См. первое определение"));
 			error().push_done();
 		}
-	}
-	LPRDODPTFreeActivity pFreeActivity = findDPTFreeActivity(src_info.src_text());
-	if (pFreeActivity)
-	{
-		error().push_only(src_info, rdo::format(_T("Активность '%s' уже существует"), src_info.src_text().c_str()));
-		error().push_only(pFreeActivity->src_info(), _T("См. первое определение"));
-		error().push_done();
 	}
 }
 
