@@ -13,17 +13,9 @@
 #define BOOST_TEST_MODULE RDOTriangularTest
 #include <iostream>
 #include <fstream>
-#include <iterator>
-#include <algorithm>
-#include <functional>
-#include <numeric>
 #include <map>
+#include <cmath>
 #include <boost/test/included/unit_test.hpp>
-#include <boost/bind.hpp>
-#include <boost/assign/std/map.hpp>
-#include <boost/archive/xml_iarchive.hpp>
-#include <boost/archive/xml_oarchive.hpp>
-#include <boost/serialization/map.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_random_distribution.h"
 // --------------------------------------------------------------------------------
@@ -31,33 +23,38 @@ using namespace rdoRuntime;
 
 BOOST_AUTO_TEST_CASE(RDOTriangularTest)
 {
-	RandGeneratorTriangular triang(123456789);				//создаю объект, генерящий числа по треугольному закону
+	RandGeneratorTriangular triang(123456789);			//создаю объект, генерящий числа по треугольному закону
 
-	typedef std::map<int, double> Container;				//даю более красивое название контейнеру map
-	Container m_base, m_forTest;							//создаю два контейнера
+	typedef std::map<int, double> Container;			//даю более красивое название контейнеру map
+	Container m_base, m_forTest;						//создаю два контейнера
+	std::ifstream  testFile("Test.txt");				//открываю файл, котором будут лежать образцовые данные.
 
-	std::ofstream  testFile("Test.txt", std::ios::binary);	//открываю файл, котором будут лежать образцовые данные.
-
-	for (int i = 0; i < 100000; i++)						//контейнер забивается числами, нагенеренными тестируемым объектом
+	for (int i = 0; i < 100000; i++)					//контейнер забивается числами, нагенеренными тестируемым объектом
 	{
-		std::pair<Container::iterator, bool> result =
-			m_forTest.insert(Container::value_type(i, triang.next(1,5,7)));	//в контейнере значения следуют парами (порядковый номер и сгенеренное число)
+		m_forTest.insert(Container::value_type(i, 0.00001*floor(100000*triang.next(1,5,7)+0.5)));	//в контейнере значения следуют парами (порядковый номер и сгенеренное число)
 	}
 	
-	
-	
-	//Этот блок планировалось использовать для записи эталонного файла. Уперся в незнание. Понятия не имею, как
-	//записать данные в файл
-/*
+	//Этот блок используeтся для записи эталонного файла. + надо изменить std::ifstream на std::ofstream
+	/*
 	Container::const_iterator it = m_forTest.begin();
 	while (it != m_forTest.end())
 	{
-	//char aaa[] = std::cout << it->first << ";" << it->second <<std::endl;
-		testFile.write(aaa,sizeof(aaa));
+		testFile << it->second << std::endl;
+		++it;
 	}
-*/
+	*/
+	int t=0;
+	char a[8];
+	char* b;
+	Container::iterator iter = m_base.begin();
+	while (t != 100000)
+	{
+		testFile >> a;
+		m_base.insert(Container::value_type(t, strtod(a,&b)));
+		++t;
+	}
+	BOOST_CHECK(m_base == m_forTest);
+	//boost::equal_pointees(&m_base, &m_forTest);
 	testFile.close();
-	int i = 1;
+	int k = 1;
 }
-
-
