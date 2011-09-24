@@ -210,7 +210,7 @@
 #include "simulator/compiler/parser/rdodpt.h"
 #include "simulator/compiler/parser/rdortp.h"
 #include "simulator/compiler/parser/rdorss.h"
-#include "simulator/runtime/rdo_res_type.h"
+#include "simulator/runtime/rdoprocess.h"
 
 #include "simulator/compiler/mbuilder/rdo_resources.h"
 // --------------------------------------------------------------------------------
