@@ -27,9 +27,9 @@ inline RDOResourceTypeBase<T>::~RDOResourceTypeBase()
 template <class T>
 inline LPRDOResource RDOResourceTypeBase<T>::createRes(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, rbool traceFlag, rbool permanentFlag)
 {
-	LPRDOResourceType pResType(this);
-	ASSERT(pResType);
-	LPIResourceType pIResType = pResType.interface_cast<IResourceType>();
+	rdo::intrusive_ptr<RDOResourceTypeBase<T> > pThis(this);
+	ASSERT(pThis);
+	LPIResourceType pIResType = pThis.interface_cast<IResourceType>();
 	ASSERT(pIResType);
 	return rdo::Factory<T>::create(pRuntime, paramsCalcs, pIResType, pRuntime->getResourceId(), this->getTraceID(), traceFlag, permanentFlag);
 }
