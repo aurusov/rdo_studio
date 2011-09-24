@@ -19,82 +19,35 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-class RDORuntime;
-class RDOPROCTransact;
-
-//! @todo сделать классы \ref RDOResourceType, \ref RDOResourceTypeTransact и \ref RDOResourceTypeProccess шаблонными
-
-/*!
-  \class   RDOResourceType
-  \brief   Тип ресурсов для создания обычных ресурсов РДО
-  \details Создает ресурсы, которые могут быть релевантны активностям и
-           событиям, но не могут использоваться в процессах
-*/
-OBJECT(RDOResourceType)
-	IS  IMPLEMENTATION_OF(IResourceType     )
-	AND INSTANCE_OF      (RDORuntimeObject  )
-	AND INSTANCE_OF      (RDOTraceableObject)
+//! Описывает РДО-тип ресурса (RTP), который суть фабрика для РДО-ресурсов
+//! tparam T - ресурс, который будет создаваться данной фабрикой
+template <class T>
+class RDOResourceTypeBase:
+	    IMPLEMENTATION_OF(IResourceType         )
+	AND INSTANCE_OF      (RDORuntimeObject      )
+	AND INSTANCE_OF      (RDOTraceableObject    )
+	AND INSTANCE_OF      (rdo::counter_reference)
 {
-DECLARE_FACTORY(RDOResourceType);
+DECLARE_FACTORY(RDOResourceTypeBase<T>);
 friend class RDOCalcCreateResource;
 friend class RDOPROCGenerate;
 private:
-	/*!
-	  \brief Конструктор
-	  \param number - Целочисленный идентификатор
-	*/
-	RDOResourceType(ruint number);
-	virtual ~RDOResourceType();
+	//! Конструктор
+	//! \param number - Целочисленный идентификатор
+	RDOResourceTypeBase(ruint number);
+	virtual ~RDOResourceTypeBase();
 
 	DECLARE_IResourceType;
 };
 
-/*!
-  \class   RDOResourceTypeTransact
-  \brief   Тип ресурсов для создания ресуров-транзактов
-  \details Создает ресурсы, которые могут быть релевантны активностям и 
-           событиям, а также обслуживать транзакты в процессах
-*/
-OBJECT(RDOResourceTypeTransact)
-	IS  IMPLEMENTATION_OF(IResourceType     )
-	AND INSTANCE_OF      (RDORuntimeObject  )
-	AND INSTANCE_OF      (RDOTraceableObject)
-{
-DECLARE_FACTORY(RDOResourceTypeTransact);
-private:
-	/*!
-	  \brief Конструктор
-	  \param number - Целочисленный идентификатор
-	*/
-	RDOResourceTypeTransact(ruint number);
-	virtual ~RDOResourceTypeTransact();
-
-	DECLARE_IResourceType;
-};
-
-/*!
-  \class   RDOResourceTypeProccess
-  \brief   Тип ресурсов для создания ресурсов-ресурсов (который свободен/занят с точки зрения процесснорго подхода)
-  \details Создает ресурсы, которые могут быть релевантны активностям и 
-           событиям, а также становиться ресурсам (свободен/занят) в процессах
-*/
-OBJECT(RDOResourceTypeProccess)
-	IS  IMPLEMENTATION_OF(IResourceType     )
-	AND INSTANCE_OF      (RDORuntimeObject  )
-	AND INSTANCE_OF      (RDOTraceableObject)
-{
-DECLARE_FACTORY(RDOResourceTypeProccess);
-private:
-	/*!
-	  \brief Конструктор
-	  \param number - Целочисленный идентификатор
-	*/
-	RDOResourceTypeProccess(ruint number);
-	virtual ~RDOResourceTypeProccess();
-
-	DECLARE_IResourceType;
-};
+//! Тип ресурсов для создания обычных ресурсов РДО
+//! \details Создает ресурсы, которые могут быть релевантны активностям и
+//!          событиям, но не могут использоваться в процессах
+typedef  RDOResourceTypeBase<RDOResource>     RDOResourceType;
+typedef  rdo::intrusive_ptr<RDOResourceType>  LPRDOResourceType;
 
 CLOSE_RDO_RUNTIME_NAMESPACE
+
+#include "simulator/runtime/rdo_res_type.inl"
 
 #endif // _LIB_RUNTIME_RES_TYPE_H_

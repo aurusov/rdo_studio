@@ -31,7 +31,6 @@ PREDECLARE_OBJECT_INTERFACE(IResourceType);
 */
 OBJECT(RDOResource) IS INSTANCE_OF(RDORuntimeObject) AND INSTANCE_OF(RDOTraceableObject)
 {
-friend class RDOResourceType;
 public:
 	/*!
 	  \enum  ConvertStatus
