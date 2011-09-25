@@ -12,16 +12,19 @@
 #include <vector>
 #include <list>
 #include <iostream>
+#define BOOST_TEST_MODULE RDOParserType_Test
+#include <boost/test/included/unit_test.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/type/atom.h"
 #include "simulator/runtime/rdo_resource.h" //! @todo непонятный инклюд, но нужен чтобы собиралось
 // --------------------------------------------------------------------------------
 
-using namespace rdoParse;
+BOOST_AUTO_TEST_SUITE(RDOParserType_Test)
 
-void main()
+BOOST_AUTO_TEST_CASE(RDOParserType_Test_int)
 {
-	LPRDOType pType = rdo::Factory<RDOType__int>::create();
-	ASSERT(pType);
-	int i = 1;
+	rdoParse::LPRDOType pType = rdo::Factory<rdoParse::RDOType__int>::create();
+	BOOST_CHECK(pType);
 }
+
+BOOST_AUTO_TEST_SUITE_END()
