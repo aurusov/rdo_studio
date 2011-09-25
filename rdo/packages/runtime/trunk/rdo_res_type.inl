@@ -16,7 +16,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 template <class T>
 inline RDOResourceTypeBase<T>::RDOResourceTypeBase(ruint number)
-	: RDORuntimeObject  (                                        )
+	: RDOType           (t_pointer                               )
+	, RDORuntimeObject  (                                        )
 	, RDOTraceableObject(false, number, rdo::toString(number + 1))
 {}
 

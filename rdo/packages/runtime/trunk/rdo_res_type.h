@@ -15,6 +15,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdotrace.h"
 #include "simulator/runtime/rdo_res_type_i.h"
+#include "simulator/runtime/rdo_type.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -22,11 +23,10 @@ OPEN_RDO_RUNTIME_NAMESPACE
 //! Описывает РДО-тип ресурса (RTP), который суть фабрика для РДО-ресурсов
 //! tparam T - ресурс, который будет создаваться данной фабрикой
 template <class T>
-class RDOResourceTypeBase:
-	    IMPLEMENTATION_OF(IResourceType         )
-	AND INSTANCE_OF      (RDORuntimeObject      )
-	AND INSTANCE_OF      (RDOTraceableObject    )
-	AND INSTANCE_OF      (rdo::counter_reference)
+CLASS_PARENT_OF(RDOResourceTypeBase, RDOType)
+	IS  IMPLEMENTATION_OF(IResourceType     )
+	AND INSTANCE_OF      (RDORuntimeObject  )
+	AND INSTANCE_OF      (RDOTraceableObject)
 {
 DECLARE_FACTORY(RDOResourceTypeBase<T>);
 friend class RDOCalcCreateResource;

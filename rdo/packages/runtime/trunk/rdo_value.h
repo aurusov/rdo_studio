@@ -54,7 +54,7 @@ public:
 	RDOValue(CREF(RDOMatrixIterator) mIterator  );
 
 	template <class T>
-	RDOValue(CREF(rdo::intrusive_ptr<T>) pPointer);
+	RDOValue(CREF(LPRDOType) pType, CREF(rdo::intrusive_ptr<T>) pObject);
 
 	rsint             getInt          () const;
 	rsint             getEnumAsInt    () const;
