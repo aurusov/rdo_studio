@@ -17,44 +17,68 @@
 #include <cmath>
 #include <boost/test/included/unit_test.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/rdofile.h"
 #include "simulator/runtime/rdo_random_distribution.h"
 // --------------------------------------------------------------------------------
-using namespace rdoRuntime;
 
-BOOST_AUTO_TEST_CASE(RDOTriangularTest)
+const long int g_seed     = 123456789;        //!< база генератора
+const tstring  g_fileName = _T("data.txt");   //!< файл данных
+const ruint    g_count    = 100000;           //!< количество генерируемых данных
+const double   g_from     = 1.0;              //!< параметр закона
+const double   g_top      = 5.0;              //!< параметр закона
+const double   g_to       = 7.0;              //!< параметр закона
+
+typedef std::list<double> Container;
+
+BOOST_AUTO_TEST_SUITE(RDOTriangularTest)
+
+BOOST_AUTO_TEST_CASE(RDOTriangularTest_GenerateData)
 {
-	RandGeneratorTriangular triang(123456789);			//создаю объект, генерящий числа по треугольному закону
+	if (rdo::File::exist(g_fileName))
+	{
+		return;
+	}
 
-	typedef std::map<int, double> Container;			//даю более красивое название контейнеру map
-	Container m_base, m_forTest;						//создаю два контейнера
-	std::ifstream  testFile("Test.txt");				//открываю файл, котором будут лежать образцовые данные.
+	rdoRuntime::RandGeneratorTriangular triang(g_seed);
+	Container                           container;
 
-	for (int i = 0; i < 100000; i++)					//контейнер забивается числами, нагенеренными тестируемым объектом
+	for (ruint i = 0; i < g_count; i++)
 	{
-		m_forTest.insert(Container::value_type(i, 0.00001*floor(100000*triang.next(1,5,7)+0.5)));	//в контейнере значения следуют парами (порядковый номер и сгенеренное число)
+		container.push_back(triang.next(g_from, g_top, g_to));
 	}
-	
-	//Этот блок используeтся для записи эталонного файла. + надо изменить std::ifstream на std::ofstream
-	/*
-	Container::const_iterator it = m_forTest.begin();
-	while (it != m_forTest.end())
+
+	std::ofstream stream(g_fileName.c_str());
+	BOOST_CHECK(stream.good());
+
+	stream.precision(20);
+	STL_FOR_ALL_CONST(container, it)
 	{
-		testFile << it->second << std::endl;
-		++it;
+		stream << *it << std::endl;
 	}
-	*/
-	int t=0;
-	char a[8];
-	char* b;
-	Container::iterator iter = m_base.begin();
-	while (t != 100000)
-	{
-		testFile >> a;
-		m_base.insert(Container::value_type(t, strtod(a,&b)));
-		++t;
-	}
-	BOOST_CHECK(m_base == m_forTest);
-	//boost::equal_pointees(&m_base, &m_forTest);
-	testFile.close();
-	int k = 1;
 }
+
+BOOST_AUTO_TEST_CASE(RDOTriangularTest_CheckData)
+{
+	BOOST_CHECK(rdo::File::exist(g_fileName));
+
+	rdoRuntime::RandGeneratorTriangular triang(g_seed);
+	Container                           container;
+
+	for (ruint i = 0; i < g_count; i++)
+	{
+		container.push_back(triang.next(g_from, g_top, g_to));
+	}
+
+	std::ifstream stream(g_fileName.c_str());
+	BOOST_CHECK(stream.good());
+
+	STL_FOR_ALL_CONST(container, it)
+	{
+		BOOST_CHECK(stream.good());
+		double value;
+		stream >> value;
+		BOOST_CHECK(value == *it);
+	}
+}
+
+BOOST_AUTO_TEST_SUITE_END()
