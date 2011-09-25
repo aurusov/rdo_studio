@@ -1,26 +1,27 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : main.cpp
- * author   : Урусов Андрей (rdo@rk9.bmstu.ru)
- * date     : 14.03.2010
- * bref     : Тест типов парсера
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      main.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      14.03.2010
+  \brief     Тест типов парсера
+  \indent    4T
+*/
 
-// ====================================================================== PCH
-// ====================================================================== INCLUDES
+// ---------------------------------------------------------------------------- PCH
+// ----------------------------------------------------------------------- INCLUDES
 #include <vector>
 #include <list>
 #include <iostream>
-// ====================================================================== SYNOPSIS
-#include "sumulator/compiler/parser/rdo_type.h"
-#include "sumulator/compiler/parser/rdo_enum.h"
-// ===============================================================================
+// ----------------------------------------------------------------------- SYNOPSIS
+#include "simulator/compiler/parser/type/atom.h"
+#include "simulator/runtime/rdo_resource.h" //! @todo непонятный инклюд, но нужен чтобы собиралось
+// --------------------------------------------------------------------------------
 
 using namespace rdoParse;
 
 void main()
 {
-	LPRDOType pType = g_int;
+	LPRDOType pType = rdo::Factory<RDOType__int>::create();
+	ASSERT(pType);
 	int i = 1;
 }
