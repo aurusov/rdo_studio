@@ -15,11 +15,11 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdointerface.h"
 #include "utils/namespace.h"
+#include "simulator/runtime/rdo_res_type_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 PREDECLARE_POINTER(RDOPROCTransact);
-PREDECLARE_POINTER(RDOResourceType);
 CLOSE_RDO_RUNTIME_NAMESPACE
 
 /*!
@@ -57,13 +57,13 @@ public:
 	virtual void  insertChild(LPIPROCProcess                      pProcess ) = 0;
 	virtual void  setParent  (LPIPROCProcess                      pProcess ) = 0;
 	virtual void  next       (CREF(rdoRuntime::LPRDOPROCTransact) pTransact) = 0;
-	virtual CREF(rdoRuntime::LPRDOResourceType) getTranType() const          = 0;
+	virtual rdoRuntime::LPIResourceType getTranType() const                  = 0;
 };
 
 #define DECLARE_IPROCProcess                                                  \
 	virtual void  insertChild(LPIPROCProcess                      pProcess ); \
 	virtual void  setParent  (LPIPROCProcess                      pProcess ); \
 	virtual void  next       (CREF(rdoRuntime::LPRDOPROCTransact) pTransact); \
-	virtual CREF(rdoRuntime::LPRDOResourceType) getTranType() const;
+	virtual rdoRuntime::LPIResourceType getTranType() const;
 
 #endif // _LIB_RUNTIME_PROCESS_I_H_

@@ -163,11 +163,14 @@ inline RDOValue::RDOValue(CREF(RDOMatrixIterator) mIterator)
 }
 
 template <class T>
-inline RDOValue::RDOValue(CREF(rdo::intrusive_ptr<T>) pPointer)
-	: m_pType(rdo::Factory<RDOType>::create(RDOType::t_pointer))
+inline RDOValue::RDOValue(CREF(LPRDOType) pType, CREF(rdo::intrusive_ptr<T>) pObject)
+	: m_pType(pType)
 {
 	STATIC_ASSERT(sizeof(double) >= sizeof(rdo::intrusive_ptr_interface_wrapper<T>));
-	new (&m_value) rdo::intrusive_ptr_interface_wrapper<T>(pPointer);
+
+	ASSERT(m_pType);
+	ASSERT(m_pType->typeID() == RDOType::t_pointer);
+	new (&m_value) rdo::intrusive_ptr_interface_wrapper<T>(pObject);
 }
 
 inline void RDOValue::deleteValue()

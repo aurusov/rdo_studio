@@ -72,7 +72,7 @@ protected:
 
 private:
 	RDOPROCProcess(CREF(tstring) _name, CREF(LPRDORuntime) pRuntime);
-	LPRDOResourceType            m_transactType;
+	LPIResourceType m_pTransactType;
 };
 
 PREDECLARE_POINTER(RDOPROCResource);
@@ -390,6 +390,18 @@ private:
 
 	DECLARE_IBaseOperation;
 };
+
+//! Тип РДО-ресурсов для создания ресуров-транзактов
+//! \details Создает ресурсы, которые могут быть релевантны активностям и 
+//!          событиям, а также обслуживать транзакты в процессах
+typedef  RDOResourceTypeBase<RDOPROCTransact>         RDOResourceTypeTransact;
+typedef  rdo::intrusive_ptr<RDOResourceTypeTransact>  LPRDOResourceTypeTransact;
+
+//! Тип ресурсов для создания ресурсов-ресурсов (который свободен/занят с точки зрения процесснорго подхода)
+//! \details Создает ресурсы, которые могут быть релевантны активностям и 
+//!          событиям, а также становиться процесс-ресурсами (свободен/занят) в процессах
+typedef  RDOResourceTypeBase<RDOPROCResource>         RDOResourceTypeProccess;
+typedef  rdo::intrusive_ptr<RDOResourceTypeProccess>  LPRDOResourceTypeProccess;
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
