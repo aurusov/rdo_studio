@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="rdo_common_test"
+	Name="utils_common_test"
 	ProjectGUID="{7FB0726B-9FA1-446D-9AD1-80BB4D0255CC}"
-	RootNamespace="rdo_common_test"
+	RootNamespace="utils_common_test"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
