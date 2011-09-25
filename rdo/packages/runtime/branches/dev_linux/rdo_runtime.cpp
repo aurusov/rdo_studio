@@ -26,7 +26,6 @@
 #include "simulator/runtime/rdocalc.h"
 #include "simulator/runtime/calc/relres.h"
 #include "utils/rdodebug.h"
-#include "kernel/rdothread.h"
 // --------------------------------------------------------------------------------
 
 #pragma warning(disable : 4786)  
