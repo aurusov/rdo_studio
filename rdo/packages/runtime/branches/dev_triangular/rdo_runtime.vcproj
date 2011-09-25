@@ -814,11 +814,11 @@
 				Name=".rdo_db"
 				>
 				<File
-					RelativePath=".\rdo_res_type.cpp"
+					RelativePath=".\rdo_res_type.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rdo_res_type.h"
+					RelativePath=".\rdo_res_type.inl"
 					>
 				</File>
 				<File

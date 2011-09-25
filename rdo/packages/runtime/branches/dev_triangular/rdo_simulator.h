@@ -16,7 +16,7 @@
 #include "simulator/runtime/rdo.h"
 #include "simulator/runtime/rdobase.h"
 #include "simulator/runtime/rdo_logic_i.h"
-// --------------------************************************************************
+// --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
