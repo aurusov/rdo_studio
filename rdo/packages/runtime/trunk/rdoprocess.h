@@ -72,7 +72,7 @@ protected:
 
 private:
 	RDOPROCProcess(CREF(tstring) _name, CREF(LPRDORuntime) pRuntime);
-	LPRDOResourceType            m_transactType;
+	LPIResourceType m_pTransactType;
 };
 
 PREDECLARE_POINTER(RDOPROCResource);

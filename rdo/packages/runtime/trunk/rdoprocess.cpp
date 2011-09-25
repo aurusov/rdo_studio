@@ -44,9 +44,9 @@ void RDOPROCProcess::setParent(LPIPROCProcess pProcess)
 	m_parent = pProcess;
 }
 
-CREF(LPRDOResourceType) RDOPROCProcess::getTranType() const
+LPIResourceType RDOPROCProcess::getTranType() const
 {
-	return m_transactType;
+	return m_pTransactType;
 }
 
 void RDOPROCProcess::next(CREF(LPRDOPROCTransact) pTransact)
@@ -216,7 +216,7 @@ IBaseOperation::BOResult RDOPROCGenerate::onDoOperation(CREF(LPRDORuntime) pRunt
 //	TRACE1( "%7.1f GENERATE\n", pRuntime->getCurrentTime() );
 	std::vector<RDOValue> transactParams(1);
 	transactParams.push_back(pRuntime->getCurrentTime());
-	LPRDOPROCTransact pTransact = this->m_process->getTranType()->createRes(pRuntime, transactParams, true, true).object_static_cast<RDOPROCTransact>();
+	LPRDOPROCTransact pTransact = m_process->getTranType()->createRes(pRuntime, transactParams, true, true).object_static_cast<RDOPROCTransact>();
 	ASSERT(pTransact);
 	LPIPROCBlock pBlock(this);
 	pTransact->setBlock(pBlock);

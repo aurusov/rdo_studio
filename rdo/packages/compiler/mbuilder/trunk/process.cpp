@@ -48,6 +48,7 @@ rbool BlockForQueue::checkType(RDOResType rtp, CREF(rdoParse::RDOParserSrcInfo) 
 
 	return true;
 }
+
 RDOResType BlockForQueue::createType(CREF(tstring) rtp_name, CREF(rdoParse::RDOParserSrcInfo) info)
 {
 	// "длина_очереди"
@@ -61,7 +62,7 @@ RDOResType BlockForQueue::createType(CREF(tstring) rtp_name, CREF(rdoParse::RDOP
 	// Создадим параметр типа integer
 	rtp.m_params.append(RDOResType::Param(rtp_param_name, rdo::Factory<rdoParse::RDOType__int>::create(), default));
 	// Добавим тип ресурса
-	if (!rtpList.append<rdoRuntime::RDOResourceType>(rtp))
+	if (!rtpList.append<rdoRuntime::RDOResourceTypeProccess>(rtp))
 	{
 		rdoParse::RDOParser::s_parser()->error().error(info, rdo::format(_T("Ошибка создания типа ресурса: %s"), rtp_name.c_str()));
 	}
