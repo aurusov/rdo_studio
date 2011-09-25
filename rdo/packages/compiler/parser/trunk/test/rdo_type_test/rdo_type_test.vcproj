@@ -114,7 +114,6 @@
 				AdditionalIncludeDirectories="../../../../../"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				ExceptionHandling="2"
-				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 			/>
