@@ -14,7 +14,6 @@
 #include "simulator/runtime/rdopokaz_group.h"
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/runtime/rdo_model_i.h"
-#include "kernel/rdothread.h"
 #include "repository/rdorepository.h"
 // --------------------------------------------------------------------------------
 
