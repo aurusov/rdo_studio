@@ -16,6 +16,7 @@
 #include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/compiler/parser/rdofun.h"
 #include "simulator/runtime/rdo_logic_i.h"
+#include "simulator/runtime/rdo_priority_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

@@ -20,6 +20,7 @@
 #include "simulator/compiler/parser/rdortp_param.h"
 #include "simulator/runtime/rdo_object.h"
 #include "simulator/runtime/rdo_value.h"
+#include "simulator/runtime/rdo_res_type_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -61,7 +62,8 @@ public:
 	template<class T>
 	void end()
 	{
-		m_pRuntimeResType = rdo::Factory<T>::create(m_number).interface_cast<rdoRuntime::IResourceType>();
+		rdo::intrusive_ptr<T> pT = rdo::Factory<T>::create(m_number);
+		m_pRuntimeResType = pT.interface_cast<rdoRuntime::IResourceType>();
 		ASSERT(m_pRuntimeResType);
 	}
 

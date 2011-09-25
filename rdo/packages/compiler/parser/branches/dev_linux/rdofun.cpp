@@ -1350,7 +1350,7 @@ void RDOFUNFunction::setFunctionCalc(CREF(rdoRuntime::LPRDOFunCalc) pCalc)
 LPRDOParam RDOFUNFunction::findFUNFunctionParam(CREF(tstring) paramName) const 
 {
 	ParamList::const_iterator it = std::find_if(m_paramList.begin(), m_paramList.end(), compareName<RDOParam>(paramName));
-	return it != m_paramList.end() ? *it : NULL;
+	return it != m_paramList.end() ? *it : LPRDOParam(NULL);
 }
 
 int RDOFUNFunction::findFUNFunctionParamNum(CREF(tstring) paramName) const

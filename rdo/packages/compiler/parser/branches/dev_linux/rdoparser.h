@@ -54,7 +54,7 @@ class RDORTPFuzzyParam;
 public: \
 	typedef std::vector<TYPE> NAME##List; \
 	void                insert##NAME (TYPE value); \
-	TYPE                getLast##NAME()       { return !m_all##NAME.empty() ? m_all##NAME.back() : NULL; } \
+	TYPE                getLast##NAME()       { return !m_all##NAME.empty() ? m_all##NAME.back() : TYPE(NULL); } \
 	CREF(NAME##List)    get##NAME##s () const { return m_all##NAME; } \
 private: \
 	NAME##List m_all##NAME;
