@@ -7,16 +7,24 @@
   \indent    4T
 */
 
+// ----------------------------------------------------------------------- PLATFORM
+#include "utils/platform.h"
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <limits>
+#ifndef OST_WINDOWS
+	#include <float.h>
+#endif
+
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdobase.h"
 #include "simulator/runtime/calc/operation_type.h"
 // --------------------------------------------------------------------------------
 
-#pragma warning(disable : 4786)
+#ifdef OST_WINDOWS
+	#pragma warning(disable : 4786)
+#endif
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
