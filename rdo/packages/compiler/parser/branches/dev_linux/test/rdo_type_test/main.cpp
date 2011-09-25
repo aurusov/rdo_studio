@@ -1,26 +1,30 @@
-/*
- * copyright: (c) RDO-Team, 2010
- * filename : main.cpp
- * author   : Урусов Андрей (rdo@rk9.bmstu.ru)
- * date     : 14.03.2010
- * bref     : Тест типов парсера
- * indent   : 4T
- */
+/*!
+  \copyright (c) RDO-Team, 2011
+  \file      main.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      14.03.2010
+  \brief     Тест типов парсера
+  \indent    4T
+*/
 
-// ====================================================================== PCH
-// ====================================================================== INCLUDES
+// ---------------------------------------------------------------------------- PCH
+// ----------------------------------------------------------------------- INCLUDES
 #include <vector>
 #include <list>
 #include <iostream>
-// ====================================================================== SYNOPSIS
-#include "sumulator/compiler/parser/rdo_type.h"
-#include "sumulator/compiler/parser/rdo_enum.h"
-// ===============================================================================
+#define BOOST_TEST_MODULE RDOParserType_Test
+#include <boost/test/included/unit_test.hpp>
+// ----------------------------------------------------------------------- SYNOPSIS
+#include "simulator/compiler/parser/type/atom.h"
+#include "simulator/runtime/rdo_resource.h" //! @todo непонятный инклюд, но нужен чтобы собиралось
+// --------------------------------------------------------------------------------
 
-using namespace rdoParse;
+BOOST_AUTO_TEST_SUITE(RDOParserType_Test)
 
-void main()
+BOOST_AUTO_TEST_CASE(RDOParserType_Test_int)
 {
-	LPRDOType pType = g_int;
-	int i = 1;
+	rdoParse::LPRDOType pType = rdo::Factory<rdoParse::RDOType__int>::create();
+	BOOST_CHECK(pType);
 }
+
+BOOST_AUTO_TEST_SUITE_END()
