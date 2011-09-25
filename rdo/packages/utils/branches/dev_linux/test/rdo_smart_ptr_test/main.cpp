@@ -16,7 +16,7 @@
 #define BOOST_TEST_MODULE RDOSmartPrtTest
 #include <boost/test/included/unit_test.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/smart_ptr/intrusive_ptr.h"
+#include "utils/smart_ptr/factory.h"
 #include "utils/smart_ptr/interface_ptr.h"
 #include "utils/rdodebug.h"
 // --------------------------------------------------------------------------------
