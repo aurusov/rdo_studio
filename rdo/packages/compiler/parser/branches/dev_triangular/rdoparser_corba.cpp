@@ -234,7 +234,7 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 			CORBA::Object_var      obj         = getObjectReference(orb,  left); //! может лучше right
 			rdoParse::RDOCorba_var rdocorbaref = rdoParse::RDOCorba::_narrow(obj);
 
-			//*************************************************************
+			//-------------------------------------------------------------
 			CORBA::Long rtp_count = 0;
 
 			rdoParse::RDOCorba::GetRTP_var tmp_rtp = rdocorbaref->getRDORTPlist(rtp_count);
@@ -242,7 +242,7 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 
 			//! Печатаем в файл на С для теста
 			print_RTP(my_rtpList);
-			//!*************************************************************
+			//!-------------------------------------------------------------
 			//! Добавляем к существующим типам ресурсов и выводим в трассировке
 	
 			//! Получили список всех описанных типов ресурсов
@@ -350,7 +350,7 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 				}
 			}
 
-			//! *************************************************************
+			//! -------------------------------------------------------------
 			CORBA::Long rss_count = 0;
 
 			rdoParse::RDOCorba::GetRSS_var tmp_rss = rdocorbaref->getRDORSSPlist(rss_count);
@@ -359,7 +359,7 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 			//! Печатаем в файл на С для теста:
 			print_RSS(my_rssList);
 
-			//! *************************************************************
+			//! -------------------------------------------------------------
 			//! Добавляем к существующим ресурсам и выводим в трассировке
 
 			//! Переписали имеющиеся ресурсы в rssList
@@ -419,7 +419,7 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 				}
 			}
 
-			//*************************************************************
+			//-------------------------------------------------------------
 			orb->destroy();
 		}	
 		catch(REF(CORBA::TRANSIENT))
