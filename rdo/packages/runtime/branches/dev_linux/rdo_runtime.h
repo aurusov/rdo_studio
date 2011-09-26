@@ -22,7 +22,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/namespace.h"
 #include "utils/rdocommon.h"
-#include "utils/smart_ptr/factory.h"
+#include "utils/smart_ptr/intrusive_ptr.h"
 #include "simulator/runtime/rdotrace.h"
 #include "simulator/runtime/simtrace.h"
 #include "simulator/runtime/rdo_resource.h"
