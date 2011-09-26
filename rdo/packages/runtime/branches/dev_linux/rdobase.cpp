@@ -16,6 +16,7 @@
 #ifndef OST_WINDOWS
 	#include <float.h>
 #endif
+#include <boost/thread.hpp>
 
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdobase.h"
@@ -84,7 +85,7 @@ rbool RDOSimulatorBase::rdoNext()
 {
 	if (m_mode == rdoRuntime::RTM_Pause || m_mode == rdoRuntime::RTM_BreakPoint)
 	{
-		::Sleep(1);
+		boost::this_thread::sleep(boost::posix_time::milliseconds(1));
 		return true;
 	}
 	// ≈сли нажата клавиша или активна€ область, то задержки надо проскачить
