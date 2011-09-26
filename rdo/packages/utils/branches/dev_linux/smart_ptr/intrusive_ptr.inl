@@ -11,14 +11,9 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdomacros.h"
 #include "utils/namespace.h"
-#include "utils/smart_ptr/factory.h"
-#include "utils/smart_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE
-
-template <class T>
-class Factory;
 
 template<class T>
 inline intrusive_ptr<T>::intrusive_ptr()

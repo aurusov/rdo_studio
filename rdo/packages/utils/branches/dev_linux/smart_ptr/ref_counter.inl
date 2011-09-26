@@ -11,13 +11,9 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdodebug.h"
 #include "utils/smart_ptr/counter_reference.h"
-#include "utils/smart_ptr/factory.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE
-
-template <class T>
-class Factory;
 
 template<class T>
 inline void RefCounter<T>::addref()
