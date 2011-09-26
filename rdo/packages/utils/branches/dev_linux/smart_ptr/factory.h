@@ -12,10 +12,17 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/smart_ptr/intrusive_ptr.h"
+#include "utils/namespace.h"
+#include "utils/rdomacros.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE
+
+template <class T>
+class intrusive_ptr;
+
+template <class T>
+class RefCounter;
 
 //! Фабрика, используется для создания и удаления объектов
 //! \tparam T - Тип создаваемого объекта
@@ -126,7 +133,5 @@ private:
 #define DECLARE_FACTORY(TYPE) friend class rdo::Factory<TYPE>;
 
 CLOSE_RDO_NAMESPACE
-
-#include "utils/smart_ptr/factory.inl"
 
 #endif // _UTILS_SMART_PTR_FACTORY_H_

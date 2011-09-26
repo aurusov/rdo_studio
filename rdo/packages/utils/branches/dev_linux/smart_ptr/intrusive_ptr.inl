@@ -11,6 +11,10 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdomacros.h"
 #include "utils/namespace.h"
+#include "utils/smart_ptr/factory.h"
+#include "utils/smart_ptr/factory.inl"
+#include "utils/smart_ptr/ref_counter.h"
+#include "utils/smart_ptr/ref_counter.inl"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE
