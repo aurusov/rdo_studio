@@ -15,6 +15,12 @@
 #include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
 
+#ifdef OST_LINUX
+	//! @todo ј что на самом деле делать под линухами ?
+	const ruint VK_SHIFT   = 0x10;
+	const ruint VK_CONTROL = 0x11;
+#endif
+
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // --------------------------------------------------------------------------------
