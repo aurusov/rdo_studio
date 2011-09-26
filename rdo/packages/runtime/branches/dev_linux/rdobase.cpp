@@ -284,7 +284,7 @@ void RDOSimulatorBase::removeTimePoint(CREF(LPIBaseOperation) opr)
 		// ≈сли список запланированых пустой, то удалим и его
 		if (list->empty())
 		{
-			it = m_timePoints.erase(it);
+			m_timePoints.erase(it++);
 			continue;
 		}
 		else
