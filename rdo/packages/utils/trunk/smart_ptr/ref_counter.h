@@ -26,6 +26,4 @@ public:
 
 CLOSE_RDO_NAMESPACE
 
-#include "utils/smart_ptr/ref_counter.inl"
-
 #endif // _UTILS_SMART_PTR_REF_COUNTER_H_

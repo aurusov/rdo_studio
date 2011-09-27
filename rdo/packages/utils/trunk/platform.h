@@ -22,16 +22,20 @@
 	#endif
 #endif
 
-#ifdef _WIN32
-	#define OST_WINDOWS
-	#ifdef _WIN64
-		#define OST_WINDOWS_64
-	#else
-		#define OST_WINDOWS_32
-	#endif
+#ifdef __MINGW32__
+	#define OST_LINUX
 #else
-	#ifdef __linux__
-		#define OST_LINUX
+	#ifdef _WIN32
+		#define OST_WINDOWS
+		#ifdef _WIN64
+			#define OST_WINDOWS_64
+		#else
+			#define OST_WINDOWS_32
+		#endif
+	#else
+		#ifdef __linux__
+			#define OST_LINUX
+		#endif
 	#endif
 #endif
 

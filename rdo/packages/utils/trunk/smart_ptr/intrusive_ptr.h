@@ -17,6 +17,7 @@
 #include "utils/rdotypes.h"
 #include "utils/smart_ptr/counter_reference.h"
 #include "utils/smart_ptr/interface_ptr.h"
+#include "utils/smart_ptr/ref_counter_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE

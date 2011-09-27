@@ -15,10 +15,11 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/smart_ptr)
 
 SET(HEADER_FILES	
-	rdocommon.h
 	model_objects.h
 	namespace.h
+	platform.h
 	rdoanimation.h
+	rdocommon.h
 	rdodebug.h
 	rdofile.h
 	rdoidgenerator.h
@@ -34,19 +35,26 @@ SET(HEADER_FILES
 	static_assert.h
 	supersubclass.h
 	smart_ptr/counter_reference.h
+	smart_ptr/factory.h
 	smart_ptr/interface_ptr.h
-	smart_ptr/intrusive_ptr.h)
+	smart_ptr/intrusive_ptr.h
+	smart_ptr/intrusive_ptr_interface_wrapper.h
+	smart_ptr/ref_counter.h
+	smart_ptr/ref_counter_i.h)
 
 SET(INLITE_FILES
-	stack.inl
-	rdotime.inl
-	rdofile.inl
-	rdocommon.inl
 	rdoanimation.inl
-        rdointerface.inl
+	rdocommon.inl
+	rdofile.inl
+	rdointerface.inl
+	rdotime.inl
+	stack.inl
 	smart_ptr/counter_reference.inl
+	smart_ptr/factory.inl
 	smart_ptr/interface_ptr.inl
-	smart_ptr/intrusive_ptr.inl)
+	smart_ptr/intrusive_ptr.inl
+	smart_ptr/intrusive_ptr_interface_wrapper.inl
+	smart_ptr/ref_counter.inl)
 
 SET(SOURCE_FILES
 	rdocommon.cpp
