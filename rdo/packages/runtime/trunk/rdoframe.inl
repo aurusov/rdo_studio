@@ -142,7 +142,7 @@ inline RDOFRMFrame::RDOFRMRulet::~RDOFRMRulet()
 // --------------------------------------------------------------------------------
 inline LPRDOFRMShow RDOFRMFrame::getLastShow() const
 {
-	return !m_showList.empty() ? m_showList.back() : NULL;
+	return !m_showList.empty() ? m_showList.back() : LPRDOFRMShow(NULL);
 }
 
 inline CREF(tstring) RDOFRMFrame::name() const
@@ -184,7 +184,7 @@ inline int RDOFRMFrame::getRuletY(CREF(LPRDORuntime) pRuntime, ruint ruletID) co
 inline RDOFRMFrame::LPRDOFRMRulet RDOFRMFrame::findRulet(ruint ruletID) const
 {
 	RuletList::const_iterator it = m_ruletList.find(ruletID);
-	return it != m_ruletList.end() ? it->second : NULL;
+        return it != m_ruletList.end() ? it->second : LPRDOFRMRulet(NULL);
 }
 
 // --------------------------------------------------------------------------------
@@ -305,7 +305,7 @@ inline void RDOFRMBitmapBase::getBitmaps(REF(RDOFRMFrame::ImageNameList) list)
 // --------------------------------------------------------------------------------
 inline rbool RDOFRMShow::isShowIf() const
 {
-	return m_pConditionCalc != NULL;
+        return m_pConditionCalc != LPRDOCalc(NULL);
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

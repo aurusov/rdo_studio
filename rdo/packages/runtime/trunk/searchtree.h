@@ -11,6 +11,7 @@
 #define _LIB_RUNTIME_SEARCH_TREE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/date_time/posix_time/posix_time.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_logic_dptsearch.h"
 #include "simulator/runtime/rdo_dptsearch_activity_i.h"
@@ -32,16 +33,16 @@ public:
 
 	virtual void createRootTreeNode(CREF(LPRDORuntime) pRuntime) = 0;
 
-	std::vector<TreeNode*> m_OPEN;
-	RDODPTSearch*          m_dp;
-	TreeNode*              m_rootNode;
-	TreeNode*              m_targetNode;
-	LPRDORuntime           m_theRealSimulator;
-	int                    m_nodesInGraphCount;
-	int                    m_expandedNodesCount;
-	int                    m_fullNodesCount;
-	SYSTEMTIME             m_systime_begin;
-	unsigned int           m_sizeof_dpt;
+	std::vector<TreeNode*>		m_OPEN;
+	RDODPTSearch*				m_dp;
+	TreeNode*					m_rootNode;
+	TreeNode*					m_targetNode;
+	LPRDORuntime				m_theRealSimulator;
+	int							m_nodesInGraphCount;
+	int							m_expandedNodesCount;
+	int							m_fullNodesCount;
+	boost::posix_time::ptime	m_ptime;
+	unsigned int				m_sizeof_dpt;
 
 	int getNodesCound() const;
 	int getNewNodeNumber();

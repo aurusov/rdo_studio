@@ -7,16 +7,25 @@
   \indent    4T
 */
 
+// ----------------------------------------------------------------------- PLATFORM
+#include "utils/platform.h"
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <limits>
+#ifndef OST_WINDOWS
+	#include <float.h>
+#endif
+#include <boost/thread.hpp>
+
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdobase.h"
 #include "simulator/runtime/calc/operation_type.h"
 // --------------------------------------------------------------------------------
 
-#pragma warning(disable : 4786)
+#ifdef OST_WINDOWS
+	#pragma warning(disable : 4786)
+#endif
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
@@ -76,7 +85,7 @@ rbool RDOSimulatorBase::rdoNext()
 {
 	if (m_mode == rdoRuntime::RTM_Pause || m_mode == rdoRuntime::RTM_BreakPoint)
 	{
-		::Sleep(1);
+		boost::this_thread::sleep(boost::posix_time::milliseconds(1));
 		return true;
 	}
 	// ≈сли нажата клавиша или активна€ область, то задержки надо проскачить
@@ -96,10 +105,9 @@ rbool RDOSimulatorBase::rdoNext()
 		// который сбрасываетс€ в setMode и не измен€етс€ далее.
 		if (m_msec_wait > 1)
 		{
-			SYSTEMTIME systime_current;
-			::GetSystemTime(&systime_current);
-			unsigned int msec_curr = getMSec(systime_current);
-			unsigned int msec_delta;
+			boost::posix_time::ptime systime_current = boost::posix_time::microsec_clock::local_time();
+			ruint msec_curr = getMSec(systime_current);
+			ruint msec_delta;
 			// ћилисекунды считаютс€ с учетом часов, но при смене суток часы сбрасываютс€ на ноль,
 			// и текущее врем€ в милисекундах становитс€ меньше предыдущего. ”читываем этот момент
 			// через ветку ELSE. “еперь система сможет учесть переход на один день вперед между
@@ -172,8 +180,7 @@ rbool RDOSimulatorBase::rdoNext()
 						{
 							m_msec_wait = m_msec_wait / DBL_MIN;
 						}
-						SYSTEMTIME systime_current;
-						::GetSystemTime(&systime_current);
+						boost::posix_time::ptime systime_current = boost::posix_time::microsec_clock::local_time();
 						m_msec_prev = getMSec(systime_current);
 					}
 					else
@@ -277,7 +284,7 @@ void RDOSimulatorBase::removeTimePoint(CREF(LPIBaseOperation) opr)
 		// ≈сли список запланированых пустой, то удалим и его
 		if (list->empty())
 		{
-			it = m_timePoints.erase(it);
+			m_timePoints.erase(it++);
 			continue;
 		}
 		else

@@ -8,6 +8,7 @@
 */
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <string.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdodebug.h"
 #include "utils/static_assert.h"

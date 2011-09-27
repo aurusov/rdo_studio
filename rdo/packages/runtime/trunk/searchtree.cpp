@@ -34,7 +34,7 @@ TreeRoot::TreeRoot(CREF(LPRDORuntime) pRuntime, PTR(RDODPTSearch) pDP)
 	, m_fullNodesCount    (0       )
 	, m_sizeof_dpt        (0       )
 {
-	::GetSystemTime(&m_systime_begin);
+	m_ptime = boost::posix_time::microsec_clock::local_time();
 }
 
 // --------------------------------------------------------------------------------

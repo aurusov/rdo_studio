@@ -31,7 +31,6 @@ SET(HEADER_FILES
         rdo.h
         rdo_keyboard.h
         rdo_keyboard_i.h
-        rdo_logic_dptfree.h
         rdo_logic_dptprior.h
         rdo_logic_dptsearch.h
         rdo_logic_dptsearch_i.h
@@ -100,7 +99,6 @@ SET(INLITE_FILES
         rdo_exception.inl
         rdoframe.inl
         rdo_fuzzy.inl
-        rdo_logic_dptfree.inl
         rdo_logic_dptprior.inl
         rdo_logic_dptsome.inl
         rdo_logic.inl
@@ -115,6 +113,7 @@ SET(INLITE_FILES
         rdotrace.inl
         rdo_type.inl
         rdo_value.inl
+	rdo_res_type.inl
         searchtrace.inl
         searchtree.inl
         simtrace.inl
@@ -143,7 +142,6 @@ SET(SOURCE_FILE
         rdo_fuzzy.cpp
         rdo_keyboard.cpp
         rdo_logic.cpp
-        rdo_logic_dptfree.cpp
         rdo_logic_dptprior.cpp
         rdo_logic_dptsearch.cpp
         rdo_logic_dptsome.cpp
@@ -156,7 +154,6 @@ SET(SOURCE_FILE
         rdopokaz_group.cpp
         rdoprocess.cpp
         rdo_resource.cpp
-        rdo_res_type.cpp
         rdo_rule.cpp
         rdo_runtime.cpp
         rdo_simulator.cpp
@@ -328,7 +325,7 @@ SOURCE_GROUP(".rdo_simulator" FILES
 
 SOURCE_GROUP(".rdo_simulator_db" FILES 
 	rdo_res_type.h
-	rdo_res_type.cpp
+	rdo_res_type.inl
 	rdo_res_type_i.h
 	rdo_resource.h
 	rdo_resource.inl
@@ -358,9 +355,6 @@ SOURCE_GROUP(".rdo_simulator_kb_logic" FILES
 	searchtree.h
 	searchtree.inl
 	searchtree.cpp
-	rdo_logic_dptfree.h
-	rdo_logic_dptfree.inl
-	rdo_logic_dptfree.cpp
 	rdoprocess.h
 	rdoprocess.inl
 	rdoprocess.cpp

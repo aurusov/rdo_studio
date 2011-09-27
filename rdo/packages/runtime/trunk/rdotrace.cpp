@@ -144,14 +144,13 @@ void RDOTrace::writeSearchResult(char letter, CREF(LPRDORuntime) simTr, PTR(Tree
 	if (!canTrace())
 		return;
 
-	SYSTEMTIME systime_current;
-	::GetSystemTime(&systime_current);
-	unsigned int msec_current = RDOSimulatorBase::getMSec(systime_current);
-	unsigned int msec_begin   = RDOSimulatorBase::getMSec(treeRoot->m_systime_begin);
-	double sec_delay = 0;
-	if (systime_current.wYear == treeRoot->m_systime_begin.wYear && systime_current.wMonth == treeRoot->m_systime_begin.wMonth) {
-		sec_delay = static_cast<double>(msec_current - msec_begin) / 1000 + (systime_current.wDay - treeRoot->m_systime_begin.wDay) * 24 * 60 * 60;
-	}
+
+	boost::posix_time::ptime systime_current = boost::posix_time::microsec_clock::local_time();
+
+	ruint msec_current = RDOSimulatorBase::getMSec(systime_current);
+	ruint msec_begin   = RDOSimulatorBase::getMSec(treeRoot->m_ptime);
+	double sec_delay = static_cast<double>(msec_current - msec_begin) / 1000;
+
 	static_cast<PTR(RDODPTSearchTrace)>(treeRoot->m_dp)->calc_times.push_back(sec_delay);
 
 	getOStream() << "SE" << letter

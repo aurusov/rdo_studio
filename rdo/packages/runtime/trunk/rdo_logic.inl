@@ -87,7 +87,7 @@ inline RDOLogic<Order>::RDOLogic(CREF(LPRDORuntime) pRuntime, LPIBaseOperationCo
 	: m_pCondition   (NULL )
 	, m_lastCondition(false)
 	, m_first        (NULL )
-	, m_parent       (pParent ? pParent : (pRuntime ? pRuntime->m_pMetaLogic : NULL))
+	, m_parent       (pParent ? pParent : (pRuntime ? pRuntime->m_pMetaLogic : LPIBaseOperationContainer(NULL)))
 {}
 
 template <class Order>

@@ -9,6 +9,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/namespace.h"
+#include "utils/rdomacros.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -19,8 +21,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
 template <OperatorType::Type>
 inline REF(ruint) OperatorType::getCalcCounter()
 {
-	static ruint s_ñounter = 0;
-	return s_ñounter;
+	static ruint s_counter = 0;
+	return s_counter;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

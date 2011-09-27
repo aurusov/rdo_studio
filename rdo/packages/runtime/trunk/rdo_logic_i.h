@@ -16,11 +16,11 @@
 #include "utils/namespace.h"
 #include "utils/rdointerface.h"
 #include "simulator/runtime/rdo_runtime_interface_registrator.h"
-#include "simulator/runtime/rdocalc.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
-class RDOSimulator;
+PREDECLARE_POINTER(RDORuntime);
+PREDECLARE_POINTER(RDOCalc);
 CLOSE_RDO_RUNTIME_NAMESPACE
 
 /*!
@@ -30,13 +30,13 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 class ILogic
 {
 public:
-	virtual void init           (CREF(rdoRuntime::LPRDORuntime) pRuntime  ) = 0;
-	virtual void setCondition   (CREF(rdoRuntime::LPRDOCalc)    pCondition) = 0;
+	virtual void init        (CREF(rdoRuntime::LPRDORuntime) pRuntime  ) = 0;
+	virtual void setCondition(CREF(rdoRuntime::LPRDOCalc)    pCondition) = 0;
 };
 
 #define DECLARE_ILogic                                                       \
-	virtual void init           (CREF(rdoRuntime::LPRDORuntime) pRuntime  ); \
-	virtual void setCondition   (CREF(rdoRuntime::LPRDOCalc)    pCondition);
+	virtual void init        (CREF(rdoRuntime::LPRDORuntime) pRuntime  ); \
+	virtual void setCondition(CREF(rdoRuntime::LPRDOCalc)    pCondition);
 
 /*!
   \interface IBaseOperationContainer
