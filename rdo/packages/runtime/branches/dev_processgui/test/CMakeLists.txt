@@ -1,0 +1,5 @@
+ADD_SUBDIRECTORY(logic_test)
+ADD_SUBDIRECTORY(rdo_array_test)
+ADD_SUBDIRECTORY(rdo_matrix_test)
+ADD_SUBDIRECTORY(rdo_value_test)
+ADD_SUBDIRECTORY(test_fuzzy)
