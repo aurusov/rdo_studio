@@ -365,7 +365,7 @@ LPContext RDODPTSearch::onFindContext(CREF(RDOValue) value) const
 void RDODPTSearch::end()
 {
 	rdoRuntime::LPRDOCalc pCalcCondition = m_pConditon     ? m_pConditon->getCalc()     : rdo::Factory<rdoRuntime::RDOCalcConst>::create(1);
-	rdoRuntime::LPRDOCalc pCalcTerminate = m_pTermConditon ? m_pTermConditon->getCalc() : rdo::Factory<rdoRuntime::RDOCalcConst>::create(1);
+ 	rdoRuntime::LPRDOCalc pCalcTerminate = m_pTermConditon ? m_pTermConditon->getCalc() : rdo::Factory<rdoRuntime::RDOCalcConst>::create(1);
 
 	m_pRuntimeLogic = RF(rdoRuntime::RDODPTSearchRuntime)::create(RDOParser::s_parser()->runtime(),
 		m_pParent,
