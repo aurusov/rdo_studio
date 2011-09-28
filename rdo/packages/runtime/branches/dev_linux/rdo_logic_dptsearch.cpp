@@ -7,6 +7,20 @@
   \indent    4T
 */
 
+// ----------------------------------------------------------------------- PLATFORM
+#include "utils/platform.h"
+#ifdef OST_WINDOWS
+	#pragma warning(disable : 4786)
+#else
+	#include <iostream>
+	#include <sys/time.h> 
+	unsigned long GetTickCount() 
+	{ 
+		struct timeval tv; 
+		gettimeofday(&tv,NULL); 
+		return (tv.tv_sec*1000+tv.tv_usec/1000); 
+	}
+#endif
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
@@ -16,8 +30,6 @@
 #include "simulator/runtime/rdo_rule.h"
 #include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
-
-#pragma warning(disable : 4786)  
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
@@ -44,7 +56,7 @@ IBaseOperation::BOResult RDODPTSearch::onDoOperation(CREF(LPRDORuntime) pRuntime
 
 IBaseOperation::BOResult RDODPTSearch::onContinue(CREF(LPRDORuntime) pRuntime)
 {
-	DWORD time_begin = ::GetTickCount();
+	uint32_t time_begin = ::GetTickCount();
 	while (true)
 	{
 		// ¬озмем дл€ раскрыти€ первую вершину из списка OPEN
@@ -52,7 +64,7 @@ IBaseOperation::BOResult RDODPTSearch::onContinue(CREF(LPRDORuntime) pRuntime)
 		curr->ExpandChildren();
 		if (treeRoot->m_OPEN.empty() || treeRoot->m_targetNode) break;
 
-		DWORD time_current = ::GetTickCount();
+		uint32_t time_current = ::GetTickCount();
 		if (time_current - time_begin > 1000 / 40)
 		{
 			return BOR_must_continue;

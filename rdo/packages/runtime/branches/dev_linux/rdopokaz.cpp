@@ -8,6 +8,11 @@
   \indent    4T
 */
 
+// ----------------------------------------------------------------------- PLATFORM
+#include "utils/platform.h"
+#ifndef OST_WINDOWS
+	#include <float.h>
+#endif
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
@@ -234,7 +239,7 @@ void RDOPMDWatchQuant::checkPokaz(CREF(LPRDORuntime) pRuntime)
 	int newValue = 0;
 	for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != pRuntime->res_end(); it++)
 	{
-		if (*it == NULL)
+		if (*it == 0)
 			continue;
 
 		if (!(*it)->checkType(m_rtpID))
