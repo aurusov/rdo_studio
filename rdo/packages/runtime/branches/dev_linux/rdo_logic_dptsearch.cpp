@@ -9,8 +9,12 @@
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/platform.h"
+// ---------------------------------------------------------------------------- PCH
+#include "simulator/runtime/pch.h"
+// ----------------------------------------------------------------------- INCLUDES
 #ifdef OST_WINDOWS
 	#pragma warning(disable : 4786)
+	#include <stdint.h>
 #else
 	#include <iostream>
 	#include <sys/time.h> 
@@ -21,9 +25,6 @@
 		return (tv.tv_sec*1000+tv.tv_usec/1000); 
 	}
 #endif
-// ---------------------------------------------------------------------------- PCH
-#include "simulator/runtime/pch.h"
-// ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_logic_dptsearch.h"
 #include "simulator/runtime/searchtree.h"
