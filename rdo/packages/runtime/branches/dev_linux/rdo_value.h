@@ -26,10 +26,7 @@ class RDOMatrixValue;
 class RDOMatrixIterator;
 PREDECLARE_POINTER(RDOEnumType);
 
-/*!
-  \class     RDOValue
-  \brief     Значение переменных в РДО
-*/
+//! Значение переменных в РДО
 class RDOValue
 {
 public:
@@ -109,10 +106,7 @@ public:
 	void setArrayItem(CREF(RDOValue) ind, CREF(RDOValue) item);
 
 private:
-	/*!
-	  \class     string_class
-	  \brief     Строковый тип данных
-	*/
+	//! Строковый тип данных
 	OBJECT(string_class) IS INSTANCE_OF(tstring)
 	{
 	public:
