@@ -32,6 +32,18 @@
 #include "utils/rdoanimation.h"
 #include "app/rdo_studio_mfc/plugins/common/rdoplugin.h"
 #include "simulator/runtime/rdo_exception.h"
+
+//=================================================================================
+#include "thirdparty/pugixml/src/pugixml.hpp"
+//#include <stdio.h>
+//#include <stdlib.h>
+#include <iostream>
+#include <fstream>
+using namespace std;
+//using std::fstream;
+ 
+
+//=================================================================================
 // --------------------------------------------------------------------------------
 
 using namespace rdoEditor;
@@ -993,7 +1005,7 @@ void RDOStudioModel::saveModelToRepository()
 	rdoRepository::RDOThreadRepository::FileInfo data(rdoModelObjects::RDOX);
 	studioApp.studioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
 	setName(data.m_name);
-
+	
 	studioApp.insertReopenItem(getFullName());
 
 	if (smr_modified)
@@ -1006,6 +1018,40 @@ void RDOStudioModel::saveModelToRepository()
 		plugins->pluginProc(rdoPlugin::PM_MODEL_SAVE);
 	}
 }
+
+
+
+
+//=======================================================================================
+void RDOStudioModel::save()
+{
+
+	path_rdo_xml = _T('C:\\');
+//	Default constructor, makes empty document (just create document from code)
+	pugi::xml_document doc;
+
+//Попытка через поток
+	fstream MyStream("TESTXML.txt");
+		if (MyStream.good())
+			doc.save(MyStream);
+
+	
+//	pugi::xml_writer_file(*file);
+
+//
+//fstream outStream("myTextfile", fstream::out);
+//outStream << "This is the text";
+
+//	bool xml_document::save_file()
+//	Save document to file
+//	std::cout << "Saving result: " << doc.save_file("save_file_output.xml") << std::endl;
+
+
+}
+
+//========================================================================================
+
+
 
 tstring RDOStudioModel::getFullName() const
 {
