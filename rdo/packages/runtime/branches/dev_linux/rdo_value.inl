@@ -12,7 +12,6 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdodebug.h"
 #include "utils/static_assert.h"
-#include "utils/smart_ptr/intrusive_ptr_interface_wrapper.h"
 #include "simulator/runtime/rdo_enum.h"
 #include "simulator/runtime/rdo_fuzzy_def.h"
 #include "simulator/runtime/rdo_array_def.h"
@@ -119,7 +118,7 @@ inline RDOValue::RDOValue(CREF(RDOFuzzyValue) fuzzy)
 inline RDOValue::RDOValue(CREF(tstring) value)
 	: m_pType(g_string)
 {
-	STATIC_ASSERT(sizeof(double) >= sizeof(rdo::intrusive_ptr_interface_wrapper<string_class>));
+	STATIC_ASSERT(sizeof(rdo::intrusive_ptr_interface_wrapper<string_class>) >= sizeof(double));
 
 	new (&m_value) rdo::intrusive_ptr_interface_wrapper<string_class>(new string_class(value));
 }
@@ -167,7 +166,7 @@ template <class T>
 inline RDOValue::RDOValue(CREF(LPRDOType) pType, CREF(rdo::intrusive_ptr<T>) pObject)
 	: m_pType(pType)
 {
-	STATIC_ASSERT(sizeof(double) >= sizeof(rdo::intrusive_ptr_interface_wrapper<T>));
+	STATIC_ASSERT(sizeof(rdo::intrusive_ptr_interface_wrapper<T>) >= sizeof(double));
 
 	ASSERT(m_pType);
 	ASSERT(m_pType->typeID() == RDOType::t_pointer);
