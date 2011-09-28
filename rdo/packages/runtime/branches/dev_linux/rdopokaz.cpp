@@ -10,12 +10,12 @@
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/platform.h"
-#ifndef OST_WINDOWS
-	#include <float.h>
-#endif
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#ifndef OST_WINDOWS
+	#include <float.h>
+#endif
 #include <limits>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdopokaz.h"

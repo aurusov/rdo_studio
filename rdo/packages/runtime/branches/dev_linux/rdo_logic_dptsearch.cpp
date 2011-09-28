@@ -14,7 +14,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #ifdef OST_WINDOWS
 	#pragma warning(disable : 4786)
-	#include <stdint.h>
+	#include <boost/cstdint.hpp>
 #else
 	#include <iostream>
 	#include <sys/time.h> 
