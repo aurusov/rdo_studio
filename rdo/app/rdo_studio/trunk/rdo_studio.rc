@@ -983,6 +983,7 @@ BEGIN
             MENUITEM "normal",                      ID_INSERT_FUN_NORMAL
             MENUITEM "uniform",                     ID_INSERT_FUN_UNIFORM
             MENUITEM "exponential",                 ID_INSERT_FUN_EXPONENTIAL
+            MENUITEM "triangular",                  ID_INSERT_FUN_TRIANGULAR
             MENUITEM "by_hist",                     ID_INSERT_FUN_BYHIST
             MENUITEM "enumerative",                 ID_INSERT_FUN_ENUMERATIVE
             MENUITEM "$Parameters",                 ID_INSERT_FUN_PARAMETERS
@@ -4461,6 +4462,7 @@ BEGIN
             MENUITEM "normal",                      ID_INSERT_FUN_NORMAL
             MENUITEM "uniform",                     ID_INSERT_FUN_UNIFORM
             MENUITEM "exponential",                 ID_INSERT_FUN_EXPONENTIAL
+            MENUITEM "triangular",                  ID_INSERT_FUN_TRIANGULAR
             MENUITEM "by_hist",                     ID_INSERT_FUN_BYHIST
             MENUITEM "enumerative",                 ID_INSERT_FUN_ENUMERATIVE
             MENUITEM "$Parameters",                 ID_INSERT_FUN_PARAMETERS
