@@ -154,7 +154,7 @@ inline void RDORuntime::popFuncTop()
 
 inline LPRDOResource RDORuntime::getResourceByID(const int num) const
 {
-        return num >= 0 ? allResourcesByID.at(num) : LPRDOResource(NULL);
+	return num >= 0 ? allResourcesByID.at(num) : LPRDOResource(NULL);
 }
 
 inline void RDORuntime::setPatternParameter(unsigned int parNumb, RDOValue val)
