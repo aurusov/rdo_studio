@@ -25,7 +25,6 @@
 	}
 #endif
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdotypes.h"
 #include "simulator/runtime/rdo_logic_dptsearch.h"
 #include "simulator/runtime/searchtree.h"
 #include "simulator/runtime/rdo_rule.h"
