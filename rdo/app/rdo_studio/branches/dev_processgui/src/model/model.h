@@ -71,12 +71,6 @@ private:
 	rbool                     m_GUI_ACTION_BUILD;
 	rbool                     m_GUI_ACTION_RUN;
 
-//========================================================================================
-	tstring path_rdo_xml;
-//========================================================================================
-
-
-
 	SYSTEMTIME                m_timeStart;
 	BuildState                m_buildState;
 
@@ -168,9 +162,6 @@ public:
 	void  update        ();
 	void  setGUIPause   ();
 	void  setGUIContinue();
-//========================================================================================
-	virtual	void save	();
-//========================================================================================
 
 	PTR(RPDoc) getFlowchartDoc() const
 	{
