@@ -1005,7 +1005,21 @@ void RDOStudioModel::saveModelToRepository()
 	rdoRepository::RDOThreadRepository::FileInfo data(rdoModelObjects::RDOX);
 	studioApp.studioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
 	setName(data.m_name);
-	
+
+	pugi::xml_document doc;
+	pugi::xml_node      rootNode   = doc.append_child(_T("Some node"));
+	pugi::xml_node      childNode  = rootNode.append_child(_T("Child Node"));
+	pugi::xml_attribute value1Attr = childNode.append_attribute(_T("value1"));
+	pugi::xml_attribute value2Attr = childNode.append_attribute(_T("value2"));
+	value1Attr.set_value(_T("1"));
+	value2Attr.set_value(_T("2"));
+
+	std::ofstream ofs(_T("TESTXML.txt"));
+	if (ofs.good())
+	{
+		doc.save(ofs);
+	}
+
 	studioApp.insertReopenItem(getFullName());
 
 	if (smr_modified)
@@ -1018,40 +1032,6 @@ void RDOStudioModel::saveModelToRepository()
 		plugins->pluginProc(rdoPlugin::PM_MODEL_SAVE);
 	}
 }
-
-
-
-
-//=======================================================================================
-void RDOStudioModel::save()
-{
-
-	path_rdo_xml = _T('C:\\');
-//	Default constructor, makes empty document (just create document from code)
-	pugi::xml_document doc;
-
-//Попытка через поток
-	fstream MyStream("TESTXML.txt");
-		if (MyStream.good())
-			doc.save(MyStream);
-
-	
-//	pugi::xml_writer_file(*file);
-
-//
-//fstream outStream("myTextfile", fstream::out);
-//outStream << "This is the text";
-
-//	bool xml_document::save_file()
-//	Save document to file
-//	std::cout << "Saving result: " << doc.save_file("save_file_output.xml") << std::endl;
-
-
-}
-
-//========================================================================================
-
-
 
 tstring RDOStudioModel::getFullName() const
 {
