@@ -32,17 +32,7 @@
 #include "utils/rdoanimation.h"
 #include "app/rdo_studio_mfc/plugins/common/rdoplugin.h"
 #include "simulator/runtime/rdo_exception.h"
-
-//=================================================================================
 #include "thirdparty/pugixml/src/pugixml.hpp"
-//#include <stdio.h>
-//#include <stdlib.h>
-#include <iostream>
-#include <fstream>
-//using std::fstream;
- 
-
-//=================================================================================
 // --------------------------------------------------------------------------------
 
 using namespace rdoEditor;
