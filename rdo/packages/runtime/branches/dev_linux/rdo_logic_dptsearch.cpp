@@ -14,18 +14,18 @@
 // ----------------------------------------------------------------------- INCLUDES
 #ifdef OST_WINDOWS
 	#pragma warning(disable : 4786)
-	#include <boost/cstdint.hpp>
 #else
 	#include <iostream>
 	#include <sys/time.h> 
-	unsigned long GetTickCount() 
+	ruint32 GetTickCount() 
 	{ 
 		struct timeval tv; 
 		gettimeofday(&tv,NULL); 
-		return (tv.tv_sec*1000+tv.tv_usec/1000); 
+		return (tv.tv_sec * 1000 + tv.tv_usec / 1000); 
 	}
 #endif
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/rdotypes.h"
 #include "simulator/runtime/rdo_logic_dptsearch.h"
 #include "simulator/runtime/searchtree.h"
 #include "simulator/runtime/rdo_rule.h"
@@ -57,7 +57,7 @@ IBaseOperation::BOResult RDODPTSearch::onDoOperation(CREF(LPRDORuntime) pRuntime
 
 IBaseOperation::BOResult RDODPTSearch::onContinue(CREF(LPRDORuntime) pRuntime)
 {
-	uint32_t time_begin = ::GetTickCount();
+	ruint32 time_begin = ::GetTickCount();
 	while (true)
 	{
 		// ¬озмем дл€ раскрыти€ первую вершину из списка OPEN
@@ -65,7 +65,7 @@ IBaseOperation::BOResult RDODPTSearch::onContinue(CREF(LPRDORuntime) pRuntime)
 		curr->ExpandChildren();
 		if (treeRoot->m_OPEN.empty() || treeRoot->m_targetNode) break;
 
-		uint32_t time_current = ::GetTickCount();
+		ruint32 time_current = ::GetTickCount();
 		if (time_current - time_begin > 1000 / 40)
 		{
 			return BOR_must_continue;
