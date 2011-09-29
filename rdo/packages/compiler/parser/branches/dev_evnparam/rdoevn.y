@@ -1686,7 +1686,7 @@ process_input_statement
 	;
 
 planning_statement
-	: RDO_IDENTIF '.' RDO_Planning '(' fun_arithm event_descr_param ')' ';'
+	: RDO_IDENTIF '.' RDO_Planning '(' fun_arithm ')' '('event_descr_param ')' ';'
 	{
 		tstring        eventName   = RDOVALUE($1)->getIdentificator();
 		LPRDOFUNArithm pTimeArithm = PARSER->stack().pop<RDOFUNArithm>($5);
@@ -1705,7 +1705,7 @@ planning_statement
 
 		$$ = PARSER->stack().push(pCalc);
 	}
-	| RDO_IDENTIF '.' RDO_Planning '(' fun_arithm event_descr_param ')' error
+	| RDO_IDENTIF '.' RDO_Planning '(' fun_arithm ')' '('event_descr_param ')' error
 	{
 		PARSER->error().error(@7, _T("Не найден символ окончания инструкции - точка с запятой"));
 	}
@@ -1717,7 +1717,7 @@ planning_statement
 	{
 		PARSER->error().error(@4, _T("Ожидается открывающая скобка"));
 	}
-	| RDO_IDENTIF '.' RDO_Planning '(' fun_arithm event_descr_param error
+	| RDO_IDENTIF '.' RDO_Planning '(' fun_arithm')' '('event_descr_param error
 	{
 		PARSER->error().error(@6, _T("Ожидается закрывающая скобка"));
 	}
@@ -1725,19 +1725,41 @@ planning_statement
 
 event_descr_param
 	: /* empty */
-	| event_descr_param ',' '*'
 	{
-		PARSER->error().error(@1, @2, "Планировать события с параметрами по умолчанию пока нельзя")
+		LPRDOFUNParams pEvnParams = rdo::Factory<RDOFUNParams>::create();
+		ASSERT(pEvnParams);
+		TRACE1(_T("MSG1: %s\n"),pEvnParams->src_info().src_text().c_str());
+		$$ = PARSER->stack().push(pEvnParams);
+
 	}
-	| event_descr_param ',' fun_arithm
+	| event_descr_param_seq
+	{	};
+	
+event_descr_param_seq
+	: fun_arithm
 	{
-		PARSER->error().error(@1, @2, "Планировать события с параметрами пока нельзя")
+		LPRDOFUNParams pEvnParams = rdo::Factory<RDOFUNParams>::create();
+		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($1);
+		ASSERT (pEvnParams);
+		ASSERT (pArithm	  );
+		pEvnParams->setSrcText  (pArithm->src_text());
+		pEvnParams->addParameter(pArithm);
+		$$ = PARSER->stack().push(pEvnParams);
+		
+		
 	}
-	| event_descr_param ',' error
+	| event_descr_param_seq ',' fun_arithm
 	{
-		PARSER->error().error(@1, @2, "Ошибка описания параметра события")
+		LPRDOFUNParams pEvnParams = PARSER->stack().pop<RDOFUNParams>($1);
+		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT (pEvnParams);
+		ASSERT (pArithm);
+		pEvnParams->setSrcText(pEvnParams->src_text()+_T(", ")+pArithm->src_text());
+		pEvnParams->addParameter(pArithm);
+		$$ = PARSER->stack().push(pEvnParams);
 	}
 	;
+	 
 
 if_statement
 	: RDO_if '(' fun_logic ')' statement
