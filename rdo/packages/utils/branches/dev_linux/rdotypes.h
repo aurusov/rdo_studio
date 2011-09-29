@@ -40,11 +40,18 @@ typedef  signed int                 rsint;
 //! Целый беззнаковый тип
 typedef  unsigned int               ruint;
 
+//! Целый знаковый 32-х битный тип
+#ifdef OST_WINDOWS
+	typedef  long                   rsint32;
+#else
+	typedef  int32_t                rsint32;
+#endif
+
 //! Целый беззнаковый 32-х битный тип
 #ifdef OST_WINDOWS
-typedef  unsigned long				ruint32;
+	typedef  unsigned long          ruint32;
 #else
-typedef  uint32_t					ruint32;
+	typedef  uint32_t               ruint32;
 #endif
 
 //! Целый знаковый 64-х битный тип
