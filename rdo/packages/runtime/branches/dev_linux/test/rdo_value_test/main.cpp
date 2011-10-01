@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Resource)
 	paramList.push_back(RDOValue(2.2    ));
 	paramList.push_back(RDOValue(_T("3")));
 
-	LPRDOResource pResource = pResourceFactory->createRes(pRuntime, paramList, true, true);
+	LPRDOResource pResource = pResourceFactory->createRes(pRuntime, pRuntime->getResourceId(), paramList, true, true);
 	ASSERT(pResource);
 
 	RDOValue value1(pResourceType, pResource);

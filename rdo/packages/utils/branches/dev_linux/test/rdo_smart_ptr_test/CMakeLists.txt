@@ -1,4 +1,4 @@
-MESSAGE(STATUS "CREATE  TEST  FOR  RDO_SMART_PRT")
+MESSAGE(STATUS "CREATE  TEST  FOR  RDO  UTILS  SMART  POINTER")
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${RDO_BASE_DIRECTORY})
@@ -12,13 +12,13 @@ SOURCE_GROUP(".test" FILES
 FIND_PACKAGE(Boost COMPONENTS unit_test_framework REQUIRED)
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
-ADD_EXECUTABLE(test_rdo_smart_prt ${SOURCE_FILES})
-ADD_TEST(NAME test_rdo_smart_prt COMMAND ${EXECUTABLE_OUTPUT_PATH}/test_rdo_smart_prt)
-ADD_DEPENDENCIES(test_rdo_smart_prt rdo_utils)
+ADD_EXECUTABLE(test_rdo_utils_smart_prt ${SOURCE_FILES})
+ADD_TEST(NAME test_rdo_utils_smart_prt COMMAND ${EXECUTABLE_OUTPUT_PATH}/test_rdo_utils_smart_prt)
+ADD_DEPENDENCIES(test_rdo_utils_smart_prt rdo_utils)
 
 IF(MSVC)
-	SET_TARGET_PROPERTIES(test_rdo_smart_prt PROPERTIES COMPILE_FLAGS "/EHa")
+	SET_TARGET_PROPERTIES(test_rdo_utils_smart_prt PROPERTIES COMPILE_FLAGS "/EHa")
 ENDIF()
 
-TARGET_LINK_LIBRARIES(test_rdo_smart_prt rdo_utils)
-TARGET_LINK_LIBRARIES(test_rdo_smart_prt ${Boost_LIBRARIES})
+TARGET_LINK_LIBRARIES(test_rdo_utils_smart_prt rdo_utils)
+TARGET_LINK_LIBRARIES(test_rdo_utils_smart_prt ${Boost_LIBRARIES})
