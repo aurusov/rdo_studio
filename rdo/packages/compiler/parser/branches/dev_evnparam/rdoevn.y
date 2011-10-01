@@ -1726,7 +1726,7 @@ planning_statement
 event_descr_param
 	: /* empty */
 	{
-		LPRDOFUNParams pEvnParams = rdo::Factory<RDOFUNParams>::create();
+		LPRDOEVNParams pEvnParams = rdo::Factory<RDOEVNParams>::create();
 		ASSERT(pEvnParams);
 		TRACE1(_T("MSG1: %s\n"),pEvnParams->src_info().src_text().c_str());
 		$$ = PARSER->stack().push(pEvnParams);
@@ -1738,10 +1738,11 @@ event_descr_param
 event_descr_param_seq
 	: fun_arithm
 	{
-		LPRDOFUNParams pEvnParams = rdo::Factory<RDOFUNParams>::create();
+		LPRDOEVNParams pEvnParams = rdo::Factory<RDOEVNParams>::create();
 		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($1);
 		ASSERT (pEvnParams);
-		ASSERT (pArithm	  );
+		ASSERT (pArithm);
+		TRACE1(_T("MSG2: %s\n"),pEvnParams->src_info().src_text().c_str());
 		pEvnParams->setSrcText  (pArithm->src_text());
 		pEvnParams->addParameter(pArithm);
 		$$ = PARSER->stack().push(pEvnParams);
@@ -1750,10 +1751,11 @@ event_descr_param_seq
 	}
 	| event_descr_param_seq ',' fun_arithm
 	{
-		LPRDOFUNParams pEvnParams = PARSER->stack().pop<RDOFUNParams>($1);
+		LPRDOEVNParams pEvnParams = PARSER->stack().pop<RDOEVNParams>($1);
 		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($3);
 		ASSERT (pEvnParams);
 		ASSERT (pArithm);
+		TRACE1(_T("MSG3: %s\n"),pEvnParams->src_info().src_text().c_str());
 		pEvnParams->setSrcText(pEvnParams->src_text()+_T(", ")+pArithm->src_text());
 		pEvnParams->addParameter(pArithm);
 		$$ = PARSER->stack().push(pEvnParams);

@@ -641,6 +641,23 @@ RDOFUNConstant::RDOFUNConstant(CREF(RDOParserSrcInfo) src_info, CREF(LPTypeInfo)
 
 RDOFUNConstant::~RDOFUNConstant()
 {}
+// ------------------- RDOEVNParams -----------------------------------------------
+// --------------------------------------------------------------------------------
+// ------------------- Ïאנאלוענû גûחמגא סמבûעטי -----------------------------------
+// --------------------------------------------------------------------------------
+void RDOEVNParams::addParameter(CREF(LPRDOFUNArithm) pEvnParam)
+{
+	ASSERT(pEvnParam);
+	m_paramList.push_back(pEvnParam);
+
+}
+RDOEVNParams::RDOEVNParams()
+: RDOParserSrcInfo()
+{}
+
+RDOEVNParams::~RDOEVNParams()
+{}
+
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNParams
@@ -661,7 +678,6 @@ rdoRuntime::LPRDOCalc RDOFUNParams::getCalc(ruint paramID, CREF(LPTypeInfo) pTyp
 	ASSERT(pCalc);
 	return pCalc;
 }
-
 void RDOFUNParams::addParameter(CREF(LPRDOFUNArithm) pParam)
 {
 	ASSERT(pParam);
