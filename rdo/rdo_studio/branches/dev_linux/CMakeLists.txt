@@ -1,3 +1,11 @@
+#==============================================================================
+# Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>
+#==============================================================================
+# Welcome to the CMake build system for RDO STUDIO (UNIX VERSION).
+# This is the main file where we prepare the general build environment
+# and provide build configuration options.
+#==============================================================================
+
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6.0)
 
 PROJECT(rdo_nix_studio)

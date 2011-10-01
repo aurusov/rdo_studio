@@ -1,3 +1,7 @@
+#==============================================================================
+# Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>
+#==============================================================================
+
 MESSAGE(STATUS "CREATE  RDO_UTILS  LIBRARY  PROJECT")
 
 # Find Boost
