@@ -1728,13 +1728,11 @@ event_descr_param
 	{
 		LPRDOEVNParams pEvnParams = rdo::Factory<RDOEVNParams>::create();
 		ASSERT(pEvnParams);
-		TRACE1(_T("MSG1: %s\n"),pEvnParams->src_info().src_text().c_str());
 		$$ = PARSER->stack().push(pEvnParams);
-
 	}
 	| event_descr_param_seq
-	{	};
-	
+	{};
+
 event_descr_param_seq
 	: fun_arithm
 	{
@@ -1742,12 +1740,9 @@ event_descr_param_seq
 		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($1);
 		ASSERT (pEvnParams);
 		ASSERT (pArithm);
-		TRACE1(_T("MSG2: %s\n"),pEvnParams->src_info().src_text().c_str());
 		pEvnParams->setSrcText  (pArithm->src_text());
 		pEvnParams->addParameter(pArithm);
 		$$ = PARSER->stack().push(pEvnParams);
-		
-		
 	}
 	| event_descr_param_seq ',' fun_arithm
 	{
@@ -1755,13 +1750,11 @@ event_descr_param_seq
 		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($3);
 		ASSERT (pEvnParams);
 		ASSERT (pArithm);
-		TRACE1(_T("MSG3: %s\n"),pEvnParams->src_info().src_text().c_str());
-		pEvnParams->setSrcText(pEvnParams->src_text()+_T(", ")+pArithm->src_text());
+		pEvnParams->setSrcText  (pEvnParams->src_text() + _T(", ") + pArithm->src_text());
 		pEvnParams->addParameter(pArithm);
 		$$ = PARSER->stack().push(pEvnParams);
 	}
 	;
-	 
 
 if_statement
 	: RDO_if '(' fun_logic ')' statement

@@ -237,14 +237,13 @@ private:
 // --------------------------------------------------------------------------------
 OBJECT(RDOEVNParams) IS INSTANCE_OF(RDOParserSrcInfo)
 {
-	DECLARE_FACTORY(RDOEVNParams);
+DECLARE_FACTORY(RDOEVNParams);
 public:
 	typedef std::vector<LPRDOFUNArithm> ParamList;
 
 	REF(RDOParserSrcInfo) getEvnseqName()       { return m_evnseqName; }
 	CREF(ParamList)       getParamList () const { return m_paramList ; }
-
-	void           addParameter (CREF(LPRDOFUNArithm) pEvnParam );
+	void                  addParameter (CREF(LPRDOFUNArithm) pEvnParam );
 
 private:
 	RDOEVNParams();

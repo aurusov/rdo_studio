@@ -641,23 +641,24 @@ RDOFUNConstant::RDOFUNConstant(CREF(RDOParserSrcInfo) src_info, CREF(LPTypeInfo)
 
 RDOFUNConstant::~RDOFUNConstant()
 {}
-// ------------------- RDOEVNParams -----------------------------------------------
-// --------------------------------------------------------------------------------
-// ------------------- Параметры вызова событий -----------------------------------
-// --------------------------------------------------------------------------------
-void RDOEVNParams::addParameter(CREF(LPRDOFUNArithm) pEvnParam)
-{
-	ASSERT(pEvnParam);
-	m_paramList.push_back(pEvnParam);
 
-}
+// --------------------------------------------------------------------------------
+// -------------------- RDOEVNParams
+// --------------------------------------------------------------------------------
+// Параметры, с которыми вызывается событие
+// --------------------------------------------------------------------------------
 RDOEVNParams::RDOEVNParams()
-: RDOParserSrcInfo()
+	: RDOParserSrcInfo()
 {}
 
 RDOEVNParams::~RDOEVNParams()
 {}
 
+void RDOEVNParams::addParameter(CREF(LPRDOFUNArithm) pEvnParam)
+{
+	ASSERT(pEvnParam);
+	m_paramList.push_back(pEvnParam);
+}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNParams
