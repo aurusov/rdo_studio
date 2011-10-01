@@ -143,6 +143,7 @@ private:
 	ModelTemplateList m_modelTemplates;
 
 	void show_result();
+	void save       ();
 
 protected:
 	virtual void proc(REF(RDOThread::RDOMessageInfo) msg);

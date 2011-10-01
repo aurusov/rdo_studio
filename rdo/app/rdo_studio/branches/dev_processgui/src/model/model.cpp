@@ -995,6 +995,24 @@ void RDOStudioModel::saveModelToRepository()
 	studioApp.studioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
 	setName(data.m_name);
 
+	// Вызов функции сохранения в xml
+	save();
+
+	studioApp.insertReopenItem(getFullName());
+
+	if (smr_modified)
+	{
+		updateFrmDescribed();
+	}
+
+	if (wasSaved && plugins)
+	{
+		plugins->pluginProc(rdoPlugin::PM_MODEL_SAVE);
+	}
+}
+
+void RDOStudioModel::save()
+{
 	pugi::xml_document doc;
 	pugi::xml_node      rootNode   = doc.append_child(_T("Some node"));
 	pugi::xml_node      childNode  = rootNode.append_child(_T("Child Node"));
@@ -1007,18 +1025,6 @@ void RDOStudioModel::saveModelToRepository()
 	if (ofs.good())
 	{
 		doc.save(ofs);
-	}
-
-	studioApp.insertReopenItem(getFullName());
-
-	if (smr_modified)
-	{
-		updateFrmDescribed();
-	}
-
-	if (wasSaved && plugins)
-	{
-		plugins->pluginProc(rdoPlugin::PM_MODEL_SAVE);
 	}
 }
 
