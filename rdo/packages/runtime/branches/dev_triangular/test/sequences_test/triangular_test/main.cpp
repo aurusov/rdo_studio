@@ -13,20 +13,19 @@
 #define BOOST_TEST_MODULE RDOTriangularTest
 #include <iostream>
 #include <fstream>
-#include <map>
-#include <cmath>
+#include <list>
 #include <boost/test/included/unit_test.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdofile.h"
 #include "simulator/runtime/rdo_random_distribution.h"
 // --------------------------------------------------------------------------------
 
-const long int g_seed     = 123456789;        //!< база генератора
-const tstring  g_fileName = _T("data.txt");   //!< файл данных
-const ruint    g_count    = 100000;           //!< количество генерируемых данных
-const double   g_from     = 1.0;              //!< параметр закона
-const double   g_top      = 5.0;              //!< параметр закона
-const double   g_to       = 7.0;              //!< параметр закона
+const long int g_seed     = 123456789;                  //!< база генератора
+const tstring  g_fileName = _T("data_triangular.txt");  //!< файл данных
+const ruint    g_count    = 100000;                     //!< количество генерируемых данных
+const double   g_from     = 1.0;                        //!< параметр закона
+const double   g_top      = 5.0;                        //!< параметр закона
+const double   g_to       = 7.0;                        //!< параметр закона
 
 typedef std::list<double> Container;
 
