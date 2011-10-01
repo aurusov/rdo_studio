@@ -14,11 +14,11 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 ADD_EXECUTABLE(test_rdo_smart_prt ${SOURCE_FILES})
 ADD_TEST(NAME test_rdo_smart_prt COMMAND ${EXECUTABLE_OUTPUT_PATH}/test_rdo_smart_prt)
-ADD_DEPENDENCIES(test_rdo_smart_prt rdo_nix_utils)
+ADD_DEPENDENCIES(test_rdo_smart_prt rdo_utils)
 
 IF(MSVC)
 	SET_TARGET_PROPERTIES(test_rdo_smart_prt PROPERTIES COMPILE_FLAGS "/EHa")
 ENDIF()
 
-TARGET_LINK_LIBRARIES(test_rdo_smart_prt rdo_nix_utils)
+TARGET_LINK_LIBRARIES(test_rdo_smart_prt rdo_utils)
 TARGET_LINK_LIBRARIES(test_rdo_smart_prt ${Boost_LIBRARIES})

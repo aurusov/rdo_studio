@@ -19,11 +19,11 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 ADD_EXECUTABLE(test_rdo_matrix ${SOURCE_FILES} ${INLINE_FILES})
 ADD_TEST(NAME test_rdo_matrix COMMAND ${EXECUTABLE_OUTPUT_PATH}/test_rdo_matrix)
-ADD_DEPENDENCIES(test_rdo_matrix rdo_nix_utils)
+ADD_DEPENDENCIES(test_rdo_matrix rdo_utils)
 
 IF(MSVC)
 	SET_TARGET_PROPERTIES(test_rdo_matrix PROPERTIES COMPILE_FLAGS "/EHa")
 ENDIF()
 
-TARGET_LINK_LIBRARIES(test_rdo_matrix rdo_nix_runtime)
+TARGET_LINK_LIBRARIES(test_rdo_matrix rdo_runtime)
 TARGET_LINK_LIBRARIES(test_rdo_matrix ${Boost_LIBRARIES})

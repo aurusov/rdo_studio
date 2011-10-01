@@ -14,11 +14,11 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 ADD_EXECUTABLE(test_rdo_fuzzy ${SOURCE_FILES})
 ADD_TEST(NAME test_rdo_fuzzy COMMAND ${EXECUTABLE_OUTPUT_PATH}/test_rdo_fuzzy)
-ADD_DEPENDENCIES(test_rdo_fuzzy rdo_nix_utils)
+ADD_DEPENDENCIES(test_rdo_fuzzy rdo_utils)
 
 IF(MSVC)
 	SET_TARGET_PROPERTIES(test_rdo_fuzzy PROPERTIES COMPILE_FLAGS "/EHa")
 ENDIF()
 
-TARGET_LINK_LIBRARIES(test_rdo_fuzzy rdo_nix_runtime)
+TARGET_LINK_LIBRARIES(test_rdo_fuzzy rdo_runtime)
 TARGET_LINK_LIBRARIES(test_rdo_fuzzy ${Boost_LIBRARIES})

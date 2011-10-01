@@ -19,11 +19,11 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 ADD_EXECUTABLE(test_rdo_array ${SOURCE_FILES} ${INLINE_FILES})
 ADD_TEST(NAME test_rdo_array COMMAND ${EXECUTABLE_OUTPUT_PATH}/test_rdo_array)
-ADD_DEPENDENCIES(test_rdo_array rdo_nix_utils)
+ADD_DEPENDENCIES(test_rdo_array rdo_utils)
 
 IF(MSVC)
 	SET_TARGET_PROPERTIES(test_rdo_array PROPERTIES COMPILE_FLAGS "/EHa")
 ENDIF()
 
-TARGET_LINK_LIBRARIES(test_rdo_array rdo_nix_runtime)
+TARGET_LINK_LIBRARIES(test_rdo_array rdo_runtime)
 TARGET_LINK_LIBRARIES(test_rdo_array ${Boost_LIBRARIES})
