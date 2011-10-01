@@ -1,24 +1,6 @@
-MESSAGE(STATUS "CREATE  TEST  FOR  RDO  RUNTIME  VALUE")
-
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
-INCLUDE_DIRECTORIES(${RDO_BASE_DIRECTORY})
-
 SET(SOURCE_FILES
 	main.cpp)
 
-SOURCE_GROUP(".test" FILES 
-	${SOURCE_FILES})
-
-FIND_PACKAGE(Boost COMPONENTS unit_test_framework REQUIRED)
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
-
-ADD_EXECUTABLE(test_rdo_runtime_value ${SOURCE_FILES})
-ADD_TEST(NAME test_rdo_runtime_value COMMAND ${EXECUTABLE_OUTPUT_PATH}/test_rdo_runtime_value)
-ADD_DEPENDENCIES(test_rdo_runtime_value rdo_utils)
-
-IF(MSVC)
-	SET_TARGET_PROPERTIES(test_rdo_runtime_value PROPERTIES COMPILE_FLAGS "/EHa")
-ENDIF()
-
+ADD_BOOST_TEST(test_rdo_runtime_value ${SOURCE_FILES})
+ADD_DEPENDENCIES(test_rdo_runtime_value rdo_runtime)
 TARGET_LINK_LIBRARIES(test_rdo_runtime_value rdo_runtime)
-TARGET_LINK_LIBRARIES(test_rdo_runtime_value ${Boost_LIBRARIES})
