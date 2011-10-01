@@ -1,6 +1,6 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6.0)
 
-PROJECT(rdo_studio)
+PROJECT(rdo_nix_studio)
 
 MESSAGE(STATUS "Cmake version : " ${CMAKE_VERSION})
 MESSAGE(STATUS "CMake generates " ${CMAKE_GENERATOR})
