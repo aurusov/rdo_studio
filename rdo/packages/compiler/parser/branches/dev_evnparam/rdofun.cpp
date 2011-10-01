@@ -663,24 +663,22 @@ void ArithmContainer::addItem(CREF(LPRDOFUNArithm) pArithm)
 // --------------------------------------------------------------------------------
 // Параметры, с которыми функция вызывается
 // --------------------------------------------------------------------------------
-RDOFUNParams::RDOFUNParams()
-	: RDOParserSrcInfo()
-{}
+RDOFUNParams::RDOFUNParams(CREF(LPArithmContainer) pArithmContainer)
+	: RDOParserSrcInfo  (                )
+	, m_pArithmContainer(pArithmContainer)
+{
+	ASSERT(m_pArithmContainer);
+}
 
 RDOFUNParams::~RDOFUNParams()
 {}
 
 rdoRuntime::LPRDOCalc RDOFUNParams::getCalc(ruint paramID, CREF(LPTypeInfo) pType)
 {
-	ASSERT(paramID < m_paramList.size());
-	rdoRuntime::LPRDOCalc pCalc = m_paramList[paramID]->createCalc(pType);
+	ASSERT(paramID < m_pArithmContainer->getContainer().size());
+	rdoRuntime::LPRDOCalc pCalc = m_pArithmContainer->getContainer()[paramID]->createCalc(pType);
 	ASSERT(pCalc);
 	return pCalc;
-}
-void RDOFUNParams::addParameter(CREF(LPRDOFUNArithm) pParam)
-{
-	ASSERT(pParam);
-	m_paramList.push_back(pParam);
 }
 
 LPRDOFUNArithm RDOFUNParams::createCall(CREF(tstring) funName)
@@ -692,7 +690,7 @@ LPRDOFUNArithm RDOFUNParams::createCall(CREF(tstring) funName)
 	}
 
 	int nParams = pFunction->getParams().size();
-	if (nParams != m_paramList.size())
+	if (nParams != m_pArithmContainer->getContainer().size())
 	{
 		RDOParser::s_parser()->error().error(src_info(), rdo::format(_T("Неверное количество параметров функции: %s"), funName.c_str()));
 	}
@@ -704,7 +702,7 @@ LPRDOFUNArithm RDOFUNParams::createCall(CREF(tstring) funName)
 	for (int i = 0; i < nParams; i++)
 	{
 		LPTypeInfo pFuncParam = pFunction->getParams()[i]->getTypeInfo();
-		LPRDOFUNArithm pArithm = m_paramList[i];
+		LPRDOFUNArithm pArithm = m_pArithmContainer->getContainer()[i];
 		ASSERT(pArithm);
 		pArithm->checkParamType(pFuncParam);
 		pFuncCall->addParameter(pFuncParam->type()->calc_cast(pArithm->createCalc(pFuncParam), pArithm->typeInfo()->type()));
@@ -817,7 +815,7 @@ void RDOFUNSequenceUniform::createCalcs()
 
 LPRDOFUNArithm RDOFUNSequenceUniform::createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) seq_src_info) const
 {
-	if (pParamList->getParamList().size() != 2)
+	if (pParamList->getParamList()->getContainer().size() != 2)
 	{
 		RDOParser::s_parser()->error().error(seq_src_info, rdo::format(_T("Для равномерного закона распределения '%s' нужно указать два параметра: минимальную и максимальную границы диапазона"), name().c_str()));
 	}
@@ -871,7 +869,7 @@ void RDOFUNSequenceExponential::createCalcs()
 
 LPRDOFUNArithm RDOFUNSequenceExponential::createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) seq_src_info) const
 {
-	if (pParamList->getParamList().size() != 1)
+	if (pParamList->getParamList()->getContainer().size() != 1)
 	{
 		RDOParser::s_parser()->error().error(seq_src_info, rdo::format(_T("Для экспоненциального закона распределения '%s' нужно указать один параметр: математическое ожидание"), name().c_str()));
 	}
@@ -923,7 +921,7 @@ void RDOFUNSequenceNormal::createCalcs()
 
 LPRDOFUNArithm RDOFUNSequenceNormal::createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) seq_src_info) const
 {
-	if (pParamList->getParamList().size() != 2)
+	if (pParamList->getParamList()->getContainer().size() != 2)
 	{
 		RDOParser::s_parser()->error().error(seq_src_info, rdo::format(_T("Для нормального закона распределения '%s' нужно указать два параметра: математическое ожидание и среднее квадратическое отклонение"), name().c_str()));
 	}
@@ -977,7 +975,7 @@ void RDOFUNSequenceTriangular::createCalcs()
 
 LPRDOFUNArithm RDOFUNSequenceTriangular::createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) seq_src_info) const
 {
-	if (pParamList->getParamList().size() != 3)
+	if (pParamList->getParamList()->getContainer().size() != 3)
 	{
 		RDOParser::s_parser()->error().error(seq_src_info, rdo::format(_T("Для треугольного закона распределения '%s' нужно указать три параметра: левую границу, точку под высотой треугольника, правую границу"), name().c_str()));
 	}
@@ -1021,7 +1019,7 @@ RDOFUNSequenceByHist::RDOFUNSequenceByHist(CREF(LPRDOFUNSequenceByHistHeader) pH
 
 LPRDOFUNArithm RDOFUNSequenceByHist::createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) src_info) const
 {
-	if (pParamList->getParamList().size() != 0)
+	if (pParamList->getParamList()->getContainer().size() != 0)
 	{
 		RDOParser::s_parser()->error().error(src_info, rdo::format(_T("Гистограмма '%s' должна вызываться без параметров"), name().c_str()));
 	}
@@ -1140,7 +1138,7 @@ void RDOFUNSequenceByHistEnum::createCalcs()
 // --------------------------------------------------------------------------------
 LPRDOFUNArithm RDOFUNSequenceEnumerative::createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) src_info) const
 {
-	if (pParamList->getParamList().size() != 0)
+	if (pParamList->getParamList()->getContainer().size() != 0)
 	{
 		RDOParser::s_parser()->error().error(src_info, rdo::format(_T("Перечисление '%s' должно вызываться без параметров"), name().c_str()));
 	}
