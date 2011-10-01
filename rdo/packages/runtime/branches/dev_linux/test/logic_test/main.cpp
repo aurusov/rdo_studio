@@ -2,6 +2,7 @@
   \copyright (c) RDO-Team, 2011
   \file      main.cpp
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Пройдаков Евгений (lord.tiran@gmail.com)
   \date      28.09.2009
   \brief     Тест логик
   \indent    4T
@@ -11,6 +12,8 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
 #include <algorithm>
+#define BOOST_TEST_MODULE RDORuntime_Logic_Test
+#include <boost/test/included/unit_test.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdomacros.h"
 #include "utils/rdotypes.h"
@@ -106,7 +109,9 @@ private:
 	Container  m_сontainer;
 };
 
-void main()
+BOOST_AUTO_TEST_SUITE(RDORuntime_Logic_Test)
+
+BOOST_AUTO_TEST_CASE(RDORuntime_Logic_Test)
 {
 	{
 		Logic<OrderFIFO> logic;
@@ -124,3 +129,5 @@ void main()
 		int i = 1;
 	}
 }
+
+BOOST_AUTO_TEST_SUITE_END() // RDORuntime_Logic_Test
