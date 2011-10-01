@@ -331,7 +331,7 @@ void RDOTrace::writeTraceEnd(CREF(LPRDORuntime) pRuntime)
       << " 2" << std::endl << getEOL();
 }
 
-void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, PTR(char) status)
+void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, CPTR(char) status)
 {
 	if (isNull()) return;
 

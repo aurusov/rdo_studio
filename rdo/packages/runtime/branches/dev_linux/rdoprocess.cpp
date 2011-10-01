@@ -216,7 +216,7 @@ IBaseOperation::BOResult RDOPROCGenerate::onDoOperation(CREF(LPRDORuntime) pRunt
 //	TRACE1( "%7.1f GENERATE\n", pRuntime->getCurrentTime() );
 	std::vector<RDOValue> transactParams(1);
 	transactParams.push_back(pRuntime->getCurrentTime());
-	LPRDOPROCTransact pTransact = m_process->getTranType()->createRes(pRuntime, transactParams, true, true).object_static_cast<RDOPROCTransact>();
+	LPRDOPROCTransact pTransact = m_process->getTranType()->createRes(pRuntime, pRuntime->getResourceId(), transactParams, true, true).object_static_cast<RDOPROCTransact>();
 	ASSERT(pTransact);
 	LPIPROCBlock pBlock(this);
 	pTransact->setBlock(pBlock);
