@@ -6,8 +6,7 @@ SET(SOURCE_FILES
 	main.cpp)
 
 SET(INLINE_FILES
-	arrayCreate.inl
-	arrayTestFunction.inl)
+	arrayCreate.inl)
 
 ADD_BOOST_TEST(test_rdo_runtime_array ${SOURCE_FILES} ${INLINE_FILES})
 ADD_DEPENDENCIES(test_rdo_runtime_array rdo_runtime)
