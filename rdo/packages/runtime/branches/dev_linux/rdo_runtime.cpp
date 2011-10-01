@@ -20,6 +20,7 @@
 #include <iomanip>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/pch.h"
+#include "simulator/runtime/keyboard.h"
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/runtime/rdo_activity.h"
 #include "simulator/runtime/rdo_rule.h"
