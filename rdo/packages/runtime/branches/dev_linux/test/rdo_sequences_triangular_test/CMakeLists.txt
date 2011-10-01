@@ -1,4 +1,4 @@
-MESSAGE(STATUS "CREATE  TEST  FOR  RDO  RUNTIME  SEQUENCES")
+MESSAGE(STATUS "CREATE  TEST  FOR  RDO  RUNTIME  SEQUENCES  TRIANGULAR")
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${RDO_BASE_DIRECTORY})
@@ -16,13 +16,13 @@ SOURCE_GROUP(".test" FILES
 FIND_PACKAGE(Boost COMPONENTS unit_test_framework REQUIRED)
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
-ADD_EXECUTABLE(test_rdo_runtime_sequences ${SOURCE_FILES} ${FILES})
-ADD_TEST(NAME test_rdo_runtime_sequences COMMAND ${EXECUTABLE_OUTPUT_PATH}/test_rdo_runtime_sequences)
-ADD_DEPENDENCIES(test_rdo_runtime_sequences rdo_utils)
+ADD_EXECUTABLE(test_rdo_runtime_sequences_triangular ${SOURCE_FILES} ${FILES})
+ADD_TEST(NAME test_rdo_runtime_sequences_triangular COMMAND ${EXECUTABLE_OUTPUT_PATH}/test_rdo_runtime_sequences_triangular)
+ADD_DEPENDENCIES(test_rdo_runtime_sequences_triangular rdo_utils)
 
 IF(MSVC)
-	SET_TARGET_PROPERTIES(test_rdo_runtime_sequences PROPERTIES COMPILE_FLAGS "/EHa")
+	SET_TARGET_PROPERTIES(test_rdo_runtime_sequences_triangular PROPERTIES COMPILE_FLAGS "/EHa")
 ENDIF()
 
-TARGET_LINK_LIBRARIES(test_rdo_runtime_sequences rdo_runtime)
-TARGET_LINK_LIBRARIES(test_rdo_runtime_sequences ${Boost_LIBRARIES})
+TARGET_LINK_LIBRARIES(test_rdo_runtime_sequences_triangular rdo_runtime)
+TARGET_LINK_LIBRARIES(test_rdo_runtime_sequences_triangular ${Boost_LIBRARIES})
