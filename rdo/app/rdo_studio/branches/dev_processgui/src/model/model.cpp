@@ -996,7 +996,7 @@ void RDOStudioModel::saveModelToRepository()
 	setName(data.m_name);
 
 	// Вызов функции сохранения в xml
-	save();
+	saveToXML();
 
 	studioApp.insertReopenItem(getFullName());
 
@@ -1011,7 +1011,7 @@ void RDOStudioModel::saveModelToRepository()
 	}
 }
 
-void RDOStudioModel::save()
+void RDOStudioModel::saveToXML()
 {
 	pugi::xml_document doc;
 	pugi::xml_node      rootNode   = doc.append_child(_T("Some node"));
