@@ -643,21 +643,19 @@ RDOFUNConstant::~RDOFUNConstant()
 {}
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOEVNParams
+// -------------------- ArithmContainer
 // --------------------------------------------------------------------------------
-// Параметры, с которыми вызывается событие
-// --------------------------------------------------------------------------------
-RDOEVNParams::RDOEVNParams()
+ArithmContainer::ArithmContainer()
 	: RDOParserSrcInfo()
 {}
 
-RDOEVNParams::~RDOEVNParams()
+ArithmContainer::~ArithmContainer()
 {}
 
-void RDOEVNParams::addParameter(CREF(LPRDOFUNArithm) pEvnParam)
+void ArithmContainer::addItem(CREF(LPRDOFUNArithm) pArithm)
 {
-	ASSERT(pEvnParam);
-	m_paramList.push_back(pEvnParam);
+	ASSERT(pArithm);
+	m_arithmList.push_back(pArithm);
 }
 
 // --------------------------------------------------------------------------------

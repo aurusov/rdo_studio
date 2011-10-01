@@ -1686,7 +1686,7 @@ process_input_statement
 	;
 
 planning_statement
-	: RDO_IDENTIF '.' RDO_Planning '(' fun_arithm ')' '('event_descr_param ')' ';'
+	: RDO_IDENTIF '.' RDO_Planning '(' fun_arithm ')' '(' arithm_list ')' ';'
 	{
 		tstring        eventName   = RDOVALUE($1)->getIdentificator();
 		LPRDOFUNArithm pTimeArithm = PARSER->stack().pop<RDOFUNArithm>($5);
@@ -1705,7 +1705,7 @@ planning_statement
 
 		$$ = PARSER->stack().push(pCalc);
 	}
-	| RDO_IDENTIF '.' RDO_Planning '(' fun_arithm ')' '('event_descr_param ')' error
+	| RDO_IDENTIF '.' RDO_Planning '(' fun_arithm ')' '(' arithm_list ')' error
 	{
 		PARSER->error().error(@7, _T("Не найден символ окончания инструкции - точка с запятой"));
 	}
@@ -1717,42 +1717,42 @@ planning_statement
 	{
 		PARSER->error().error(@4, _T("Ожидается открывающая скобка"));
 	}
-	| RDO_IDENTIF '.' RDO_Planning '(' fun_arithm')' '('event_descr_param error
+	| RDO_IDENTIF '.' RDO_Planning '(' fun_arithm')' '(' arithm_list error
 	{
 		PARSER->error().error(@6, _T("Ожидается закрывающая скобка"));
 	}
 	;
 
-event_descr_param
+arithm_list
 	: /* empty */
 	{
-		LPRDOEVNParams pEvnParams = rdo::Factory<RDOEVNParams>::create();
-		ASSERT(pEvnParams);
-		$$ = PARSER->stack().push(pEvnParams);
+		LPArithmContainer pArithmContainer = rdo::Factory<ArithmContainer>::create();
+		ASSERT(pArithmContainer);
+		$$ = PARSER->stack().push(pArithmContainer);
 	}
-	| event_descr_param_seq
+	| arithm_list_body
 	{};
 
-event_descr_param_seq
+arithm_list_body
 	: fun_arithm
 	{
-		LPRDOEVNParams pEvnParams = rdo::Factory<RDOEVNParams>::create();
-		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($1);
-		ASSERT (pEvnParams);
+		LPArithmContainer pArithmContainer = rdo::Factory<ArithmContainer>::create();
+		LPRDOFUNArithm    pArithm          = PARSER->stack().pop<RDOFUNArithm>($1);
+		ASSERT (pArithmContainer);
 		ASSERT (pArithm);
-		pEvnParams->setSrcText  (pArithm->src_text());
-		pEvnParams->addParameter(pArithm);
-		$$ = PARSER->stack().push(pEvnParams);
+		pArithmContainer->setSrcText(pArithm->src_text());
+		pArithmContainer->addItem   (pArithm);
+		$$ = PARSER->stack().push(pArithmContainer);
 	}
-	| event_descr_param_seq ',' fun_arithm
+	| arithm_list_body ',' fun_arithm
 	{
-		LPRDOEVNParams pEvnParams = PARSER->stack().pop<RDOEVNParams>($1);
-		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($3);
-		ASSERT (pEvnParams);
+		LPArithmContainer pArithmContainer = PARSER->stack().pop<ArithmContainer>($1);
+		LPRDOFUNArithm    pArithm          = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT (pArithmContainer);
 		ASSERT (pArithm);
-		pEvnParams->setSrcText  (pEvnParams->src_text() + _T(", ") + pArithm->src_text());
-		pEvnParams->addParameter(pArithm);
-		$$ = PARSER->stack().push(pEvnParams);
+		pArithmContainer->setSrcText(pArithmContainer->src_text() + _T(", ") + pArithm->src_text());
+		pArithmContainer->addItem   (pArithm);
+		$$ = PARSER->stack().push(pArithmContainer);
 	}
 	;
 

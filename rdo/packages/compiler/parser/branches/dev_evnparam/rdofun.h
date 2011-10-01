@@ -206,6 +206,24 @@ private:
 };
 DECLARE_POINTER(RDOFUNConstant);
 
+//! Список арифметических выражений
+//! \details Используется для передачи параметров при вызове событий и функций
+OBJECT(ArithmContainer) IS INSTANCE_OF(RDOParserSrcInfo)
+{
+DECLARE_FACTORY(ArithmContainer);
+public:
+	typedef std::vector<LPRDOFUNArithm> Container;
+
+	CREF(Container) getContainer() const { return m_arithmList; }
+	void            addItem     (CREF(LPRDOFUNArithm) pArithm);
+
+private:
+	ArithmContainer();
+	virtual ~ArithmContainer();
+
+	Container m_arithmList;
+};
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNParams
 // --------------------------------------------------------------------------------
@@ -232,27 +250,6 @@ private:
 	RDOParserSrcInfo m_funseqName;
 	ParamList        m_paramList;
 };
-// --------------------------------------------------------------------------------
-// -------------------- Параметры вызова событий ----------------------------------
-// --------------------------------------------------------------------------------
-OBJECT(RDOEVNParams) IS INSTANCE_OF(RDOParserSrcInfo)
-{
-DECLARE_FACTORY(RDOEVNParams);
-public:
-	typedef std::vector<LPRDOFUNArithm> ParamList;
-
-	REF(RDOParserSrcInfo) getEvnseqName()       { return m_evnseqName; }
-	CREF(ParamList)       getParamList () const { return m_paramList ; }
-	void                  addParameter (CREF(LPRDOFUNArithm) pEvnParam );
-
-private:
-	RDOEVNParams();
-	virtual ~RDOEVNParams();
-
-	RDOParserSrcInfo m_evnseqName;
-	ParamList        m_paramList;
-};
-
 // --------------------------------------------------------------------------------
 // -------------------- Последовательности
 // --------------------------------------------------------------------------------
