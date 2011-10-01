@@ -8,9 +8,14 @@
   \indent    4T
 */
 
+// ----------------------------------------------------------------------- PLATFORM
+#include "utils/platform.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#ifndef OST_WINDOWS
+	#include <float.h>
+#endif
 #include <limits>
 #include <iomanip>
 // ----------------------------------------------------------------------- SYNOPSIS
