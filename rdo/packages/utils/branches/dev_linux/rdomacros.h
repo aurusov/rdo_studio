@@ -47,7 +47,7 @@
 //! Структура-потомок от B
 #define STRUCT_PARENT_OF(A, B) STRUCT(A): IMPLEMENTATION_OF(B)
 //! Макрос подавляет предупреждения компилятора о неиспользуемых переменных
-#define UNUSED(A) (PTR(void))(A);
+#define UNUSED(A) ((void)A);
 
 //! Итерирование контейнера
 #define STL_FOR_ALL(CONTAINER, IT)                       \
