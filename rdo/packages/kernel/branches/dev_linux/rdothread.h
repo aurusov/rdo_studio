@@ -311,7 +311,8 @@ public:
 		while (::WaitForSingleObject(event.m_hObject, 0) == WAIT_TIMEOUT)
 			processMessages();
 #else
-		to->processMessages(RDOMessageInfo(this, message, param));
+		RDOMessageInfo messageInfo(this, message, param);
+		to->processMessages(messageInfo);
 #endif
 	}
 
