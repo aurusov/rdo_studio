@@ -29,7 +29,7 @@ RDOParser::ParserList RDOParser::s_parserStack;
 #define DECLARE_PARSER_OBJECT_CONTAINER_NONAME(NAME) \
 void RDOParser::insert##NAME(LPRDO##NAME value) \
 { \
-	howIsIt<LPRDO##NAME>(); \
+	howIsIt2<LPRDO##NAME>(); \
 	m_all##NAME.push_back(value); \
 }
 

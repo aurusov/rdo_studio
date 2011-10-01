@@ -63,7 +63,7 @@ public:
 	void end()
 	{
 		rdo::intrusive_ptr<T> pT = rdo::Factory<T>::create(m_number);
-		m_pRuntimeResType = pT.interface_cast<rdoRuntime::IResourceType>();
+		m_pRuntimeResType = pT.template interface_cast<rdoRuntime::IResourceType>();
 		ASSERT(m_pRuntimeResType);
 	}
 

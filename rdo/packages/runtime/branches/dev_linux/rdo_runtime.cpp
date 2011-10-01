@@ -286,7 +286,7 @@ void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
 	}
 	else
 	{
-		if (allResourcesByID.at(pResource->getTraceID()) == NULL)
+		if (allResourcesByID.at(pResource->getTraceID()) == (ruint)NULL)
 		{
 			allResourcesByID.at(pResource->getTraceID()) = pResource;
 		}
@@ -513,7 +513,7 @@ void RDORuntime::copyFrom(CREF(LPRDORuntime) pOther)
 	ruint size = pOther->allResourcesByID.size();
 	for (ruint i = 0; i < size; ++i)
 	{
-		if (pOther->allResourcesByID.at(i) == NULL)
+		if (pOther->allResourcesByID.at(i) == (ruint)NULL)
 		{
 			allResourcesByID.push_back(NULL);
 		}
@@ -540,9 +540,9 @@ rbool RDORuntime::equal(CREF(LPRDORuntime) pOther) const
 	ruint size = allResourcesByID.size();
 	for (ruint i = 0; i < size; ++i)
 	{
-		if (allResourcesByID.at(i) == NULL && pOther->allResourcesByID.at(i) != NULL) return false;
-		if (allResourcesByID.at(i) != NULL && pOther->allResourcesByID.at(i) == NULL) return false;
-		if (allResourcesByID.at(i) == NULL && pOther->allResourcesByID.at(i) == NULL) continue;
+		if (allResourcesByID.at(i) == (ruint)NULL && pOther->allResourcesByID.at(i) != (ruint)NULL) return false;
+		if (allResourcesByID.at(i) != (ruint)NULL && pOther->allResourcesByID.at(i) == (ruint)NULL) return false;
+		if (allResourcesByID.at(i) == (ruint)NULL && pOther->allResourcesByID.at(i) == (ruint)NULL) continue;
 		if (pOther->allResourcesByID.at(i) != allResourcesByID.at(i)) return false;
 	}
 	return true;
@@ -606,16 +606,16 @@ void RDORuntime::writeExitCode()
 	switch (whyStop)
 	{
 	case rdoSimulator::EC_OK:
-		getTracer()->writeStatus(this, "NORMAL_TERMINATION");
+		getTracer()->writeStatus(this, tstring("NORMAL_TERMINATION").c_str);
 		break;
 	case rdoSimulator::EC_NoMoreEvents:
-		getTracer()->writeStatus(this, "NO_MORE_EVENTS");
+		getTracer()->writeStatus(this, tstring("NO_MORE_EVENTS").c_str);
 		break;
 	case rdoSimulator::EC_RunTimeError:
-		getTracer()->writeStatus(this, "RUN_TIME_ERROR");
+		getTracer()->writeStatus(this, tstring("RUN_TIME_ERROR").c_str);
 		break;
 	case rdoSimulator::EC_UserBreak:
-		getTracer()->writeStatus(this, "USER_BREAK");
+		getTracer()->writeStatus(this, tstring("USER_BREAK").c_str);
 		break;
 	}
 }

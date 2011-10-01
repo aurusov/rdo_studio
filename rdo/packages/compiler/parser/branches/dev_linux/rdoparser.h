@@ -76,6 +76,12 @@ DEFINE_OBJECT_CONTAINER_WITHNAME(LPRDO##NAME, NAME)
 
 PREDECLARE_POINTER(RDOParser);
 
+template <typename T>
+struct identity
+{
+	typedef T type;
+};
+
 CLASS(RDOParser):
 	    INSTANCE_OF      (Context                 )
 	AND IMPLEMENTATION_OF(IContextFind            )
@@ -252,17 +258,22 @@ private:
 	rdo::IDGenerator      m_resultGeneratorID;
 
 	template <class T>
-	void howIsIt()
+	void howIsIt2()
+	{
+		howIsIt(identity<T>());
+		m_pattern = false;
+	}
+
+	template <class T>
+	void howIsIt(identity<T>)
 	{
 		m_pattern = false;
 	}
 
-	template <>
-	void howIsIt<LPRDOFUNGroup>()
+	void howIsIt(identity<LPRDOFUNGroup>)
 	{}
 
-	template <>
-	void howIsIt<LPRDOPATPattern>()
+	void howIsIt(identity<LPRDOPATPattern>)
 	{
 		m_pattern = true;
 	}
