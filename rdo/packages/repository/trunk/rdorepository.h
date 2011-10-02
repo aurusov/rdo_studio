@@ -19,6 +19,7 @@
 #include <fstream>
 #include <map>
 #include <boost/date_time/posix_time/posix_time_types.hpp>
+#include <boost/noncopyable.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
 #include "utils/rdostream.h"
@@ -38,7 +39,7 @@ class RDOThreadRepository: public RDOThreadMT
 public:
 	RDOThreadRepository();
 
-	struct FileData
+	struct FileData: public boost::noncopyable
 	{
 		rdoModelObjects::RDOFileType  m_type;
 		REF(rdo::stream)              m_stream;
@@ -48,7 +49,7 @@ public:
 			, m_stream(stream)
 		{}
 	};
-	struct BinaryFile
+	struct BinaryFile: public boost::noncopyable
 	{
 		tstring           m_name;
 		REF(rdo::stream)  m_stream;
@@ -58,7 +59,7 @@ public:
 			, m_stream(stream)
 		{}
 	};
-	struct CreateFileInfo
+	struct CreateFileInfo: public boost::noncopyable
 	{
 		tstring            m_name;
 		tstring            m_ext;
