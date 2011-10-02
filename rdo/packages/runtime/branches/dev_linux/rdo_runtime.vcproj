@@ -515,6 +515,10 @@
 			Name=".rdo_simulator"
 			>
 			<File
+				RelativePath=".\keyboard.h"
+				>
+			</File>
+			<File
 				RelativePath=".\rdo_exception.h"
 				>
 			</File>
