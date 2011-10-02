@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="rdo_sequences_triangular_test"
+	Name="triangular_test"
 	ProjectGUID="{9C98A1F3-ECD6-4871-B3E0-A58E6E1B48CC}"
-	RootNamespace="rdo_sequences_triangular_test"
+	RootNamespace="triangular_test"
 	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../../"
+				AdditionalIncludeDirectories="../../../../../"
 				ExceptionHandling="2"
 				RuntimeLibrary="3"
 				WarningLevel="3"
@@ -107,7 +107,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="../../../../"
+				AdditionalIncludeDirectories="../../../../../"
 				ExceptionHandling="2"
 				WarningLevel="3"
 			/>
