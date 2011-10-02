@@ -609,26 +609,17 @@ void RDORuntime::onPutToTreeNode()
 
 void RDORuntime::writeExitCode()
 {
-	const tstring NORMAL_TERMINATION(_T("NORMAL_TERMINATION"));
-	const tstring NO_MORE_EVENTS    (_T("NO_MORE_EVENTS"));
-	const tstring RUN_TIME_ERROR    (_T("RUN_TIME_ERROR"));
-	const tstring USER_BREAK        (_T("USER_BREAK"));
-
+	tstring status;
 	switch (whyStop)
 	{
-	case rdoSimulator::EC_OK:
-		getTracer()->writeStatus(this, NORMAL_TERMINATION.c_str());
-		break;
-	case rdoSimulator::EC_NoMoreEvents:
-		getTracer()->writeStatus(this, NO_MORE_EVENTS.c_str());
-		break;
-	case rdoSimulator::EC_RunTimeError:
-		getTracer()->writeStatus(this, RUN_TIME_ERROR.c_str());
-		break;
-	case rdoSimulator::EC_UserBreak:
-		getTracer()->writeStatus(this, USER_BREAK.c_str());
-		break;
+	case rdoSimulator::EC_OK          : status = _T("NORMAL_TERMINATION"); break;
+	case rdoSimulator::EC_NoMoreEvents: status = _T("NO_MORE_EVENTS");     break;
+	case rdoSimulator::EC_RunTimeError: status = _T("RUN_TIME_ERROR");     break;
+	case rdoSimulator::EC_UserBreak   : status = _T("USER_BREAK");         break;
+	default: NEVER_REACH_HERE;
 	}
+
+	getTracer()->writeStatus(this, status);
 }
 
 void RDORuntime::postProcess()

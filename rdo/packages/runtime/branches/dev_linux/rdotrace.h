@@ -84,7 +84,7 @@ public:
 	virtual void writeTraceBegin(CREF(LPRDORuntime) pRuntime);
 	virtual void writeModelBegin(CREF(LPRDORuntime) pRuntime);
 	virtual void writeTraceEnd  (CREF(LPRDORuntime) pRuntime);
-	virtual void writeStatus    (CREF(LPRDORuntime) pRuntime, CPTR(char) status);
+	virtual void writeStatus    (CREF(LPRDORuntime) pRuntime, CREF(tstring) status);
 
 	virtual void writePermanentResources(CREF(LPRDORuntime) pRuntime, CREF(std::list<LPRDOResource>) res_perm);
 
