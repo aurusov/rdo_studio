@@ -46,6 +46,10 @@
 #define  CLASS_PARENT_OF(A, B)  CLASS(A): IMPLEMENTATION_OF(B)
 //! Структура-потомок от B
 #define STRUCT_PARENT_OF(A, B) STRUCT(A): IMPLEMENTATION_OF(B)
+
+#ifdef UNUSED
+	#undef UNUSED
+#endif
 //! Макрос подавляет предупреждения компилятора о неиспользуемых переменных
 #define UNUSED(A) ((void)A);
 
