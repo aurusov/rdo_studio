@@ -609,10 +609,10 @@ void RDORuntime::onPutToTreeNode()
 
 void RDORuntime::writeExitCode()
 {
-	tstring NORMAL_TERMINATION("NORMAL_TERMINATION");
-	tstring NO_MORE_EVENTS("NO_MORE_EVENTS");
-	tstring RUN_TIME_ERROR("RUN_TIME_ERROR");
-	tstring USER_BREAK("USER_BREAK");
+	const tstring NORMAL_TERMINATION(_T("NORMAL_TERMINATION"));
+	const tstring NO_MORE_EVENTS    (_T("NO_MORE_EVENTS"));
+	const tstring RUN_TIME_ERROR    (_T("RUN_TIME_ERROR"));
+	const tstring USER_BREAK        (_T("USER_BREAK"));
 
 	switch (whyStop)
 	{
