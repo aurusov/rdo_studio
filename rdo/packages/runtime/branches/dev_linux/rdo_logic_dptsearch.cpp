@@ -16,13 +16,7 @@
 	#pragma warning(disable : 4786)
 #else
 	#include <iostream>
-	#include <sys/time.h> 
-	ruint32 GetTickCount() 
-	{ 
-		struct timeval tv; 
-		gettimeofday(&tv,NULL); 
-		return (tv.tv_sec * 1000 + tv.tv_usec / 1000); 
-	}
+	#include <sys/time.h>
 #endif
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_logic_dptsearch.h"
@@ -30,6 +24,15 @@
 #include "simulator/runtime/rdo_rule.h"
 #include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
+
+#ifndef OST_WINDOWS
+	ruint32 GetTickCount()
+	{ 
+		struct timeval tv;
+		gettimeofday(&tv,NULL);
+		return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
+	}
+#endif
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
