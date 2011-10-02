@@ -12,6 +12,7 @@
 #define _RDOPAT_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/noncopyable.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdortp_param.h"
 #include "simulator/compiler/parser/rdofun.h"
@@ -308,6 +309,7 @@ private:
 CLASS(RDORelevantResource):
 	    INSTANCE_OF      (RDOParserSrcInfo        )
 	AND INSTANCE_OF      (Context                 )
+	AND INSTANCE_OF      (boost::noncopyable      )
 	AND IMPLEMENTATION_OF(IContextCreateExpression)
 {
 DECLARE_FACTORY(RDORelevantResource)

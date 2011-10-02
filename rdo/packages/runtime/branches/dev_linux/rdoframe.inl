@@ -272,7 +272,9 @@ inline RDOFRMItem::~RDOFRMItem()
 {}
 
 inline void RDOFRMItem::getBitmaps(REF(RDOFRMFrame::ImageNameList) list)
-{}
+{
+	UNUSED(list);
+}
 
 inline CREF(LPRDOFRMFrame) RDOFRMItem::getFrame() const
 {

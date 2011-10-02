@@ -12,6 +12,7 @@
 #define _RDOFUN_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/noncopyable.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/compiler/parser/rdo_value.h"
@@ -636,7 +637,9 @@ DECLARE_POINTER(RDOFUNGroup);
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNGroupLogic
 // --------------------------------------------------------------------------------
-class RDOFUNGroupLogic: public RDOFUNGroup
+CLASS(RDOFUNGroupLogic):
+	    INSTANCE_OF(RDOFUNGroup       )
+	AND INSTANCE_OF(boost::noncopyable)
 {
 DECLARE_FACTORY(RDOFUNGroupLogic)
 public:

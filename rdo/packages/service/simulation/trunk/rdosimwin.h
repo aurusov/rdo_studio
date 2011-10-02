@@ -17,10 +17,11 @@
 #include <sstream>
 #include <vector>
 #ifdef RDO_MT
-#include <afxwin.h>
+	#include <afxwin.h>
 #else
-#include <windows.h>
+	#include <windows.h>
 #endif
+#include <boost/noncopyable.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdocommon.h"
 #include "utils/rdostream.h"
@@ -284,7 +285,7 @@ protected:
 public:
 	RDOThreadCodeComp();
 
-	struct GetCodeComp
+	struct GetCodeComp: public boost::noncopyable
 	{
 		rdoModelObjects::RDOFileType m_file;
 		int                          m_pos_x;

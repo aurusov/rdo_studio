@@ -18,6 +18,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 inline void RDOResource::setRuntime(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
+
 	/// @todo походу надо удалить метод
 	NEVER_REACH_HERE;
 }

@@ -686,6 +686,8 @@ inline CREF(RDOValue) RDOValue::operator++()
 
 inline RDOValue RDOValue::operator++(int inc)
 {
+	UNUSED(inc);
+
 	RDOValue prevValue(*this);
 	operator+=(1);
 	return prevValue;
@@ -699,6 +701,8 @@ inline CREF(RDOValue) RDOValue::operator--()
 
 inline RDOValue RDOValue::operator--(int inc)
 {
+	UNUSED(inc);
+
 	RDOValue prevValue(*this);
 	operator-=(1);
 	return prevValue;

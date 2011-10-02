@@ -93,7 +93,7 @@ void RDORuntime::disconnect(PTR(INotify) to)
 	{
 		if (it->second == to)
 		{
-			it = m_connected.erase(it);
+			m_connected.erase(it++);
 			if (it == m_connected.end()) break;
 		}
 		++it;
@@ -107,7 +107,7 @@ void RDORuntime::disconnect(PTR(INotify) to, ruint message)
 	{
 		if (it->second == to)
 		{
-			it = m_connected.erase(it);
+			m_connected.erase(it++);
 			if (it == m_connected.end()) break;
 		}
 		++it;

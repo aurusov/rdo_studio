@@ -12,6 +12,7 @@
 #define _RDORTP_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/noncopyable.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/compiler/parser/rdo_value.h"
@@ -35,7 +36,9 @@ void rtperror(PTR(char) mes);
 PREDECLARE_POINTER(RDOParser);
 PREDECLARE_POINTER(RDORSSResource);
 
-OBJECT(RDORTPResType) IS INSTANCE_OF(RDOParserSrcInfo)
+OBJECT(RDORTPResType)
+	IS  INSTANCE_OF(RDOParserSrcInfo  )
+	AND INSTANCE_OF(boost::noncopyable)
 {
 DECLARE_FACTORY(RDORTPResType);
 public:

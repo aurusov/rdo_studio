@@ -13,6 +13,7 @@
 #define _LIB_RUNTIME_PROCESS_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/noncopyable.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo.h"
 #include "simulator/runtime/rdo_runtime.h"
@@ -56,8 +57,8 @@ class RDOPROCProcess: public RDOLogicSimple, public IPROCProcess, public RDOPatt
 {
 DEFINE_IFACTORY(RDOPROCProcess)
 QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE       (IPROCProcess)
-	QUERY_INTERFACE_PARENT(RDOLogic    )
+	QUERY_INTERFACE       (IPROCProcess   )
+	QUERY_INTERFACE_PARENT(RDOLogicSimple )
 	QUERY_INTERFACE_PARENT(RDOPatternPrior)
 QUERY_INTERFACE_END
 friend class RDOPROCBlock;
@@ -352,7 +353,7 @@ private:
   \class   RDOPROCTerminate
   \brief   Процессный блок TERMINATE
 */
-class RDOPROCTerminate: public RDOPROCBlock, public IBaseOperation
+class RDOPROCTerminate: public RDOPROCBlock, public IBaseOperation, public boost::noncopyable
 {
 DEFINE_IFACTORY(RDOPROCTerminate);
 QUERY_INTERFACE_BEGIN

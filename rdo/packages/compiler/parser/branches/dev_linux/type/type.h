@@ -73,6 +73,7 @@ public:
 
 	virtual rdoRuntime::LPRDOCalc calc_cast(CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
 	{
+		UNUSED(pType);
 		return pCalc;
 	}
 
