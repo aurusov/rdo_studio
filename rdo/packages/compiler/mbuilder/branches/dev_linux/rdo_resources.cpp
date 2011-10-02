@@ -141,37 +141,37 @@ rbool RDOResType::ParamList::append(REF(Param) param)
 	return true;
 }
 
-RDOResType::Param::Param(CREF(tstring) name, CREF(rdoParse::LPTypeInfo) pType, CREF(rdoParse::RDOValue) default)
+RDOResType::Param::Param(CREF(tstring) name, CREF(rdoParse::LPTypeInfo) pType, CREF(rdoParse::RDOValue) defaultValue)
 	: m_name   (name   )
 	, m_pType  (pType  )
 	, m_exist  (true   )
 	, m_id     (-1     )
-	, m_default(default)
+	, m_default(defaultValue)
 {}
 
-RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<rdoParse::RDOType__int>) pType, CREF(rdoParse::RDOValue) default)
+RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<rdoParse::RDOType__int>) pType, CREF(rdoParse::RDOValue) defaultValue)
 	: m_name   (name   )
 	, m_exist  (true   )
 	, m_id     (-1     )
-	, m_default(default)
+	, m_default(defaultValue)
 {
 	initType(pType);
 }
 
-RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<rdoParse::RDOType__real>) pType, CREF(rdoParse::RDOValue) default)
+RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<rdoParse::RDOType__real>) pType, CREF(rdoParse::RDOValue) defaultValue)
 	: m_name   (name   )
 	, m_exist  (true   )
 	, m_id     (-1     )
-	, m_default(default)
+	, m_default(defaultValue)
 {
 	initType(pType);
 }
 
-RDOResType::Param::Param(CREF(tstring) name, CREF(rdoRuntime::RDOEnumType::Enums) enums, CREF(rdoParse::RDOValue) default)
+RDOResType::Param::Param(CREF(tstring) name, CREF(rdoRuntime::RDOEnumType::Enums) enums, CREF(rdoParse::RDOValue) defaultValue)
 	: m_name   (name   )
 	, m_exist  (true   )
 	, m_id     (-1     )
-	, m_default(default)
+	, m_default(defaultValue)
 {
 	initType(enums);
 }
@@ -182,9 +182,9 @@ void RDOResType::Param::setDiap(CREF(rdoParse::RDOValue) min, CREF(rdoParse::RDO
 	m_max = max;
 }
 
-void RDOResType::Param::setDefault(CREF(rdoParse::RDOValue) default)
+void RDOResType::Param::setDefault(CREF(rdoParse::RDOValue) defaultValue)
 {
-	m_default = default;
+	m_default = defaultValue;
 }
 
 rbool RDOResType::Param::operator== (CREF(Param) param) const
@@ -228,7 +228,7 @@ rbool RDOResTypeList::appendAfter(REF(RDOResType) rtp, CREF(rdoParse::LPRDORTPRe
 	STL_FOR_ALL_CONST(rtp.m_params, param)
 	{
 		rdoParse::LPTypeInfo pParamType;
-		rdoParse::RDOValue   default = param->hasDefault() ? param->getDefault() : rdoParse::RDOValue();
+		rdoParse::RDOValue   defaultValue = param->hasDefault() ? param->getDefault() : rdoParse::RDOValue();
 		switch (param->typeID())
 		{
 			case rdoRuntime::RDOType::t_int:
@@ -270,7 +270,7 @@ rbool RDOResTypeList::appendAfter(REF(RDOResType) rtp, CREF(rdoParse::LPRDORTPRe
 				return false;
 			}
 		}
-		rdoParse::LPRDORTPParam pParam = rdo::Factory<rdoParse::RDORTPParam>::create(pParamType, default, rdoParse::RDOParserSrcInfo(param->name()));
+		rdoParse::LPRDORTPParam pParam = rdo::Factory<rdoParse::RDORTPParam>::create(pParamType, defaultValue, rdoParse::RDOParserSrcInfo(param->name()));
 		ASSERT(pParam);
 		pResourceType->addParam(pParam);
 	}
