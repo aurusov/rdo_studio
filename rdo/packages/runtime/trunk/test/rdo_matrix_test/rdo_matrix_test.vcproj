@@ -43,10 +43,8 @@
 				Optimization="0"
 				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
-				MinimalRebuild="false"
-				BasicRuntimeChecks="0"
+				ExceptionHandling="2"
 				RuntimeLibrary="3"
-				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="4"
 			/>
@@ -114,7 +112,6 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
-				RuntimeLibrary="0"
 				WarningLevel="3"
 			/>
 			<Tool
@@ -172,10 +169,6 @@
 			>
 			<File
 				RelativePath=".\matrixCreate.inl"
-				>
-			</File>
-			<File
-				RelativePath=".\matrixTestFunction.inl"
 				>
 			</File>
 		</Filter>
