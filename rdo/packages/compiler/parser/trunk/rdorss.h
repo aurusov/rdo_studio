@@ -12,6 +12,7 @@
 #define _RDORSS_RSS_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/noncopyable.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/compiler/parser/rdo_value.h"
@@ -37,6 +38,7 @@ void rsserror(PTR(char)    message);
 CLASS(RDORSSResource):
 	    INSTANCE_OF      (RDOParserSrcInfo        )
 	AND INSTANCE_OF      (Context                 )
+	AND INSTANCE_OF      (boost::noncopyable      )
 	AND IMPLEMENTATION_OF(IContextCreateExpression)
 {
 DECLARE_FACTORY(RDORSSResource);

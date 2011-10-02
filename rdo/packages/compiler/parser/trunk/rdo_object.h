@@ -77,8 +77,8 @@ public:
 		pos1.m_first_pos  = pos2.m_first_pos;
 		pos1.m_last_line  = pos2.m_last_line;
 		pos1.m_last_pos   = pos2.m_last_pos;
-		pos1.m_first_seek = Position::UNDEFINE_POS;
-		pos1.m_last_seek  = Position::UNDEFINE_POS;
+		pos1.m_first_seek = ruint(Position::UNDEFINE_POS);
+		pos1.m_last_seek  = ruint(Position::UNDEFINE_POS);
 		return pos1;
 	}
 	static ruint getPosByLength(ruint pos, CREF(tstring) text)

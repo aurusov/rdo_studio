@@ -1,4 +1,8 @@
-MESSAGE(STATUS "CREATE  RDO_COMMON  LIBRARY  PROJECT")
+#==============================================================================
+# Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>
+#==============================================================================
+
+MESSAGE(STATUS "CREATE  RDO_PARSER  LIBRARY  PROJECT")
 
 # Find Boost
 SET(Boost_USE_STATIC_LIBS   ON)
@@ -16,8 +20,6 @@ ENDIF(NOT BISON_FOUND)
 IF(NOT FLEX_FOUND)
     MESSAGE(ERROR "Flex can not be found")
 ENDIF(NOT FLEX_FOUND)
-
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
@@ -141,10 +143,10 @@ SET(BISON_FILES
         # *.l files
         rdo_lexer.l)
 
-ADD_LIBRARY(rdo_nix_parser ${HEADER_FILES} ${INLITE_FILES} ${SOURCE_FILES} ${BISON_FILES})
+ADD_LIBRARY(rdo_parser ${HEADER_FILES} ${INLITE_FILES} ${SOURCE_FILES} ${BISON_FILES})
 
-TARGET_LINK_LIBRARIES(rdo_nix_parser ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY})
-TARGET_LINK_LIBRARIES(rdo_nix_parser rdo_nix_utils)
+TARGET_LINK_LIBRARIES(rdo_parser ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY})
+TARGET_LINK_LIBRARIES(rdo_parser rdo_utils)
 
 SET(RDO_PARSER_TEST_PATH ${CMAKE_CURRENT_SOURCE_DIR}/test)
 #ADD_SUBDIRECTORY(${RDO_PARSER_TEST_PATH})
