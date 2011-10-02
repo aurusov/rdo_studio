@@ -84,7 +84,7 @@ public:
 	}
 	CREF(T) operator[] (CREF(tstring) name) const
 	{
-		List::const_iterator it = found(name);
+		typename List::const_iterator it = found(name);
 		if (it != end())
 		{
 			return *it;
@@ -139,10 +139,10 @@ public:
 	friend class RDOResType;
 	public:
 		explicit Param(CREF(rdoParse::LPRDORTPParam) param);
-		explicit Param(CREF(tstring) name, CREF(rdoParse::LPTypeInfo) pType,  CREF(rdoParse::RDOValue) default);
-		explicit Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<rdoParse::RDOType__int>)  pType, CREF(rdoParse::RDOValue) default = rdoParse::RDOValue());
-		explicit Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<rdoParse::RDOType__real>) pType, CREF(rdoParse::RDOValue) default = rdoParse::RDOValue());
-		explicit Param(CREF(tstring) name, CREF(rdoRuntime::RDOEnumType::Enums)              enums, CREF(rdoParse::RDOValue) default = rdoParse::RDOValue());
+		explicit Param(CREF(tstring) name, CREF(rdoParse::LPTypeInfo) pType,  CREF(rdoParse::RDOValue) defaultValue);
+		explicit Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<rdoParse::RDOType__int>)  pType, CREF(rdoParse::RDOValue) defaultValue = rdoParse::RDOValue());
+		explicit Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<rdoParse::RDOType__real>) pType, CREF(rdoParse::RDOValue) defaultValue = rdoParse::RDOValue());
+		explicit Param(CREF(tstring) name, CREF(rdoRuntime::RDOEnumType::Enums)              enums, CREF(rdoParse::RDOValue) defaultValue = rdoParse::RDOValue());
 
 		CREF(rdoParse::LPTypeInfo)         type   () const { return m_pType;                           }
 		const rdoRuntime::RDOType::TypeID  typeID () const { return m_pType->type()->typeID(); }
@@ -157,7 +157,7 @@ public:
 
 		rbool                     hasDefault() const  { return m_default.defined(); }
 		CREF(rdoParse::RDOValue)  getDefault() const  { return m_default;           }
-		void                      setDefault(CREF(rdoParse::RDOValue) default);
+		void                      setDefault(CREF(rdoParse::RDOValue) defaultValue);
 
 		rdoParse::LPRDOEnumType   getEnum() const
 		{
