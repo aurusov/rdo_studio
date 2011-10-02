@@ -261,7 +261,6 @@ private:
 	void howIsIt2()
 	{
 		howIsIt(identity<T>());
-		m_pattern = false;
 	}
 
 	template <class T>
