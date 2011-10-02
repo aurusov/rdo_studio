@@ -292,7 +292,7 @@ void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
 	}
 	else
 	{
-		if (allResourcesByID.at(pResource->getTraceID()) == (ruint)NULL)
+		if (allResourcesByID.at(pResource->getTraceID()) == LPRDOResource(NULL))
 		{
 			allResourcesByID.at(pResource->getTraceID()) = pResource;
 		}
@@ -519,7 +519,7 @@ void RDORuntime::copyFrom(CREF(LPRDORuntime) pOther)
 	ruint size = pOther->allResourcesByID.size();
 	for (ruint i = 0; i < size; ++i)
 	{
-		if (pOther->allResourcesByID.at(i) == (ruint)NULL)
+		if (pOther->allResourcesByID.at(i) == LPRDOResource(NULL))
 		{
 			allResourcesByID.push_back(NULL);
 		}
@@ -546,9 +546,9 @@ rbool RDORuntime::equal(CREF(LPRDORuntime) pOther) const
 	ruint size = allResourcesByID.size();
 	for (ruint i = 0; i < size; ++i)
 	{
-		if (allResourcesByID.at(i) == (ruint)NULL && pOther->allResourcesByID.at(i) != (ruint)NULL) return false;
-		if (allResourcesByID.at(i) != (ruint)NULL && pOther->allResourcesByID.at(i) == (ruint)NULL) return false;
-		if (allResourcesByID.at(i) == (ruint)NULL && pOther->allResourcesByID.at(i) == (ruint)NULL) continue;
+		if (allResourcesByID.at(i) == LPRDOResource(NULL) && pOther->allResourcesByID.at(i) != LPRDOResource(NULL)) return false;
+		if (allResourcesByID.at(i) != LPRDOResource(NULL) && pOther->allResourcesByID.at(i) == LPRDOResource(NULL)) return false;
+		if (allResourcesByID.at(i) == LPRDOResource(NULL) && pOther->allResourcesByID.at(i) == LPRDOResource(NULL)) continue;
 		if (pOther->allResourcesByID.at(i) != allResourcesByID.at(i)) return false;
 	}
 	return true;
