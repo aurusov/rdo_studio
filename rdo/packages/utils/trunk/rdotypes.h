@@ -17,6 +17,7 @@
 #ifdef OST_WINDOWS
 	#include <tchar.h>
 #else
+	#include <stdint.h>
 	#define _T(x) x
 #endif
 
@@ -38,6 +39,20 @@ typedef  signed int                 rsint;
 
 //! Целый беззнаковый тип
 typedef  unsigned int               ruint;
+
+//! Целый знаковый 32-х битный тип
+#ifdef OST_WINDOWS
+	typedef  long                   rsint32;
+#else
+	typedef  int32_t                rsint32;
+#endif
+
+//! Целый беззнаковый 32-х битный тип
+#ifdef OST_WINDOWS
+	typedef  unsigned long          ruint32;
+#else
+	typedef  uint32_t               ruint32;
+#endif
 
 //! Целый знаковый 64-х битный тип
 typedef  signed long long int       rsint64;

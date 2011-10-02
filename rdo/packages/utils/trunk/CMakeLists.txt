@@ -1,3 +1,7 @@
+#==============================================================================
+# Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>
+#==============================================================================
+
 MESSAGE(STATUS "CREATE  RDO_UTILS  LIBRARY  PROJECT")
 
 # Find Boost
@@ -60,9 +64,9 @@ SET(SOURCE_FILES
 	rdocommon.cpp
 	rdofile.cpp)
 
-ADD_LIBRARY(rdo_nix_utils ${HEADER_FILES} ${INLITE_FILES} ${SOURCE_FILES})
-SET_TARGET_PROPERTIES(rdo_nix_utils PROPERTIES LINKER_LANGUAGE CXX)
-TARGET_LINK_LIBRARIES(rdo_nix_utils ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY})
+ADD_LIBRARY(rdo_utils ${HEADER_FILES} ${INLITE_FILES} ${SOURCE_FILES})
+SET_TARGET_PROPERTIES(rdo_utils PROPERTIES LINKER_LANGUAGE CXX)
+TARGET_LINK_LIBRARIES(rdo_utils ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY})
 
 SET(RDO_UTILS_TEST_PATH ${CMAKE_CURRENT_SOURCE_DIR}/test)
 ADD_SUBDIRECTORY(${RDO_UTILS_TEST_PATH})

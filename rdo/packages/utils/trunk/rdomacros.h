@@ -47,6 +47,12 @@
 //! Структура-потомок от B
 #define STRUCT_PARENT_OF(A, B) STRUCT(A): IMPLEMENTATION_OF(B)
 
+#ifdef UNUSED
+	#undef UNUSED
+#endif
+//! Макрос подавляет предупреждения компилятора о неиспользуемых переменных
+#define UNUSED(A) ((void)A);
+
 //! Итерирование контейнера
 #define STL_FOR_ALL(CONTAINER, IT)                       \
 typedef BOOST_TYPEOF(CONTAINER) CONTAINER_TYPE_FOR_##IT; \

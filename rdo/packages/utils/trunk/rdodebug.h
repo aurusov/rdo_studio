@@ -60,7 +60,13 @@
 		::DebugBreak(); \
 	}
 
-#define NEVER_REACH_HERE ASSERT(false)
+template<typename type>
+type identity_NEVER_REACH_HERE(type value)
+{
+	return value;
+}
+
+#define NEVER_REACH_HERE ASSERT(identity_NEVER_REACH_HERE(false))
 
 #else // not COMPILER_VISUAL_STUDIO
 

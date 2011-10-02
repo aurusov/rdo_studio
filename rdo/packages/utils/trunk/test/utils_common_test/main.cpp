@@ -80,4 +80,4 @@ BOOST_AUTO_TEST_CASE(RDOCommon_Time)
 	std::cout << _T("Today:  ") << timeValue.asString() << _T("  is not it?");
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+BOOST_AUTO_TEST_SUITE_END() // RDOCommon_Test

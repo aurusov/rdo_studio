@@ -275,4 +275,4 @@ BOOST_AUTO_TEST_CASE(RdoInterfaceTest)
 	s_logList.clear();
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+BOOST_AUTO_TEST_SUITE_END() // RDOInterfaceTest
