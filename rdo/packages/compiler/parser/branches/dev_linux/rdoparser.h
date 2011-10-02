@@ -258,7 +258,7 @@ private:
 	rdo::IDGenerator      m_resultGeneratorID;
 
 	template <class T>
-	void howIsIt2()
+	void howIsIt()
 	{
 		howIsIt(identity<T>());
 	}
