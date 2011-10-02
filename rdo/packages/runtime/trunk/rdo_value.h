@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/smart_ptr/intrusive_ptr.h"
+#include "utils/smart_ptr/intrusive_ptr_interface_wrapper.h"
 #include "simulator/runtime/rdo_type.h"
 // --------------------------------------------------------------------------------
 
@@ -25,10 +26,7 @@ class RDOMatrixValue;
 class RDOMatrixIterator;
 PREDECLARE_POINTER(RDOEnumType);
 
-/*!
-  \class     RDOValue
-  \brief     Значение переменных в РДО
-*/
+//! Значение переменных в РДО
 class RDOValue
 {
 public:
@@ -108,25 +106,22 @@ public:
 	void setArrayItem(CREF(RDOValue) ind, CREF(RDOValue) item);
 
 private:
-	//! Тип контейнера значения, размер определяется по максимальному размеру типа данных
-	typedef rbyte Value[sizeof(double)];
-
-	Value      m_value; //!< контейнер значения
-	LPRDOType  m_pType; //!< тип значения
-
-	void set        (CREF(RDOValue) rdovalue);
-	void deleteValue();
-
-	/*!
-	  \class     string_class
-	  \brief     Строковый тип данных
-	*/
+	//! Строковый тип данных
 	OBJECT(string_class) IS INSTANCE_OF(tstring)
 	{
 	public:
 		string_class(CREF(tstring) string);
 		rdo::intrusive_ptr<string_class> clone() const;
 	};
+
+	//! Тип контейнера значения, размер определяется по максимальному размеру типа данных
+	typedef rbyte Value[sizeof(rdo::intrusive_ptr_interface_wrapper<string_class>)];
+
+	Value      m_value; //!< контейнер значения
+	LPRDOType  m_pType; //!< тип значения
+
+	void set        (CREF(RDOValue) rdovalue);
+	void deleteValue();
 
 	template <class T>
 	REF(T) __get();

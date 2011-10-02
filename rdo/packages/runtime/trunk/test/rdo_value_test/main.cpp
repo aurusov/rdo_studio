@@ -2,6 +2,7 @@
   \copyright (c) RDO-Team, 2011
   \file      main.cpp
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Пройдаков Евгений (lord.tiran@gmail.com)
   \date      13.07.2009
   \brief     Тест для RDOValue
   \indent    4T
@@ -54,7 +55,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Resource)
 	paramList.push_back(RDOValue(2.2    ));
 	paramList.push_back(RDOValue(_T("3")));
 
-	LPRDOResource pResource = pResourceFactory->createRes(pRuntime, paramList, true, true);
+	LPRDOResource pResource = pResourceFactory->createRes(pRuntime, pRuntime->getResourceId(), paramList, true, true);
 	ASSERT(pResource);
 
 	RDOValue value1(pResourceType, pResource);
@@ -67,4 +68,4 @@ BOOST_AUTO_TEST_CASE(RDOValue_Resource)
 	pResource = NULL;
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+BOOST_AUTO_TEST_SUITE_END() //RDOValue_Resource

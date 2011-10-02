@@ -560,7 +560,12 @@ CALC(RDOCalcCreateNumberedResource)
 DECLARE_FACTORY(RDOCalcCreateNumberedResource)
 public:
 	ruint getNumber() const {NEVER_REACH_HERE;}
-	virtual PTR(RDOResource) createResource(CREF(LPRDORuntime) pRuntime) const {NEVER_REACH_HERE; return 0;}
+	virtual PTR(RDOResource) createResource(CREF(LPRDORuntime) pRuntime) const
+	{
+		UNUSED(pRuntime);
+		NEVER_REACH_HERE;
+		return 0;
+	}
 
 protected:
 	RDOCalcCreateNumberedResource(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent);
@@ -583,7 +588,12 @@ CALC(RDOCalcCreateProcessResource)
 DECLARE_FACTORY(RDOCalcCreateProcessResource)
 public:
 	ruint getNumber() const {NEVER_REACH_HERE;}
-	virtual PTR(RDOResource) createResource(CREF(LPRDORuntime) pRuntime) const {NEVER_REACH_HERE; return 0;}
+	virtual PTR(RDOResource) createResource(CREF(LPRDORuntime) pRuntime) const
+	{
+		UNUSED(pRuntime);
+		NEVER_REACH_HERE;
+		return 0;
+	}
 
 protected:
 	RDOCalcCreateProcessResource(rsint _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent);

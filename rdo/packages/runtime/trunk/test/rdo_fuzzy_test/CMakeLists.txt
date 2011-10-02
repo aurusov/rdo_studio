@@ -5,6 +5,6 @@
 SET(SOURCE_FILES
 	main.cpp)
 
-ADD_BOOST_TEST(test_rdo_runtime_logic ${SOURCE_FILES})
-ADD_DEPENDENCIES(test_rdo_runtime_logic rdo_runtime)
-TARGET_LINK_LIBRARIES(test_rdo_runtime_logic rdo_runtime)
+ADD_BOOST_TEST(test_rdo_runtime_fuzzy ${SOURCE_FILES})
+ADD_DEPENDENCIES(test_rdo_runtime_fuzzy rdo_runtime)
+TARGET_LINK_LIBRARIES(test_rdo_runtime_fuzzy rdo_runtime)

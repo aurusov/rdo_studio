@@ -1,3 +1,7 @@
+#==============================================================================
+# Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>
+#==============================================================================
+
 MESSAGE(STATUS "CREATE  RDO_RUNTIME  LIBRARY  PROJECT")
 
 # Find Boost
@@ -10,6 +14,7 @@ LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 SET(HEADER_FILES
+        keyboard.h
         equaltype.h
         pch.h
         rdo_activity.h
@@ -178,11 +183,11 @@ SET(SOURCE_FILE
         calc/unary.cpp
         calc/watch.cpp)
 
-ADD_LIBRARY(rdo_nix_runtime ${HEADER_FILES} ${INLITE_FILES} ${SOURCE_FILE})
-ADD_DEPENDENCIES(test_rdo_utils rdo_nix_utils)
-TARGET_LINK_LIBRARIES(rdo_nix_runtime rdo_nix_utils)
-SET_TARGET_PROPERTIES(rdo_nix_runtime PROPERTIES LINKER_LANGUAGE CXX)
-TARGET_LINK_LIBRARIES(rdo_nix_runtime ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY})
+ADD_LIBRARY(rdo_runtime ${HEADER_FILES} ${INLITE_FILES} ${SOURCE_FILE})
+ADD_DEPENDENCIES(test_rdo_utils rdo_utils)
+TARGET_LINK_LIBRARIES(rdo_runtime rdo_utils)
+SET_TARGET_PROPERTIES(rdo_runtime PROPERTIES LINKER_LANGUAGE CXX)
+TARGET_LINK_LIBRARIES(rdo_runtime ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY})
 
 SET(RDO_RUNTIME_TEST_PATH ${CMAKE_CURRENT_SOURCE_DIR}/test)
 ADD_SUBDIRECTORY(${RDO_RUNTIME_TEST_PATH})

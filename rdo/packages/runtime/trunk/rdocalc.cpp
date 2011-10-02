@@ -262,7 +262,7 @@ REF(RDOValue) RDOFunCalcExist::doCalc(CREF(LPRDORuntime) pRuntime)
 	RDORuntime::ResCIterator end = pRuntime->res_end();
 	for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != end && !res; ++it)
 	{
-		if (*it == NULL)
+		if (*it == LPRDOResource(NULL))
 			continue;
 
 		if (!(*it)->checkType(m_nResType))
@@ -283,7 +283,7 @@ REF(RDOValue) RDOFunCalcNotExist::doCalc(CREF(LPRDORuntime) pRuntime)
 	RDORuntime::ResCIterator end = pRuntime->res_end();
 	for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != end && res; it++)
 	{
-		if (*it == NULL)
+		if (*it == LPRDOResource(NULL))
 			continue;
 
 		if (!(*it)->checkType(m_nResType))
@@ -305,7 +305,7 @@ REF(RDOValue) RDOFunCalcForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 	RDORuntime::ResCIterator end = pRuntime->res_end();
 	for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != end && res; it++)
 	{
-		if (*it == NULL)
+		if (*it == LPRDOResource(NULL))
 			continue;
 
 		if (!(*it)->checkType(m_nResType))
@@ -332,7 +332,7 @@ REF(RDOValue) RDOFunCalcNotForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 	RDORuntime::ResCIterator end = pRuntime->res_end();
 	for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != end && !res; it++)
 	{
-		if (*it == NULL)
+		if (*it == LPRDOResource(NULL))
 			continue;
 
 		if (!(*it)->checkType(m_nResType))
@@ -356,7 +356,7 @@ void RDOFunCalcSelect::prepare(CREF(LPRDORuntime) pRuntime)
 	RDORuntime::ResCIterator end = pRuntime->res_end();
 	for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != end; it++)
 	{
-		if (*it == NULL)
+		if (*it == LPRDOResource(NULL))
 			continue;
 
 		if (!(*it)->checkType(m_nResType))

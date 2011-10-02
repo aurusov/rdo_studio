@@ -7,9 +7,17 @@
   \indent    4T
 */
 
+// ----------------------------------------------------------------------- PLATFORM
+#include "utils/platform.h"
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#ifdef OST_WINDOWS
+	#pragma warning(disable : 4786)
+#else
+	#include <iostream>
+	#include <sys/time.h>
+#endif
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_logic_dptsearch.h"
 #include "simulator/runtime/searchtree.h"
@@ -17,7 +25,14 @@
 #include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
 
-#pragma warning(disable : 4786)  
+#ifndef OST_WINDOWS
+	ruint32 GetTickCount()
+	{ 
+		struct timeval tv;
+		gettimeofday(&tv,NULL);
+		return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
+	}
+#endif
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
@@ -44,7 +59,7 @@ IBaseOperation::BOResult RDODPTSearch::onDoOperation(CREF(LPRDORuntime) pRuntime
 
 IBaseOperation::BOResult RDODPTSearch::onContinue(CREF(LPRDORuntime) pRuntime)
 {
-	DWORD time_begin = ::GetTickCount();
+	ruint32 time_begin = ::GetTickCount();
 	while (true)
 	{
 		// ¬озмем дл€ раскрыти€ первую вершину из списка OPEN
@@ -52,7 +67,7 @@ IBaseOperation::BOResult RDODPTSearch::onContinue(CREF(LPRDORuntime) pRuntime)
 		curr->ExpandChildren();
 		if (treeRoot->m_OPEN.empty() || treeRoot->m_targetNode) break;
 
-		DWORD time_current = ::GetTickCount();
+		ruint32 time_current = ::GetTickCount();
 		if (time_current - time_begin > 1000 / 40)
 		{
 			return BOR_must_continue;

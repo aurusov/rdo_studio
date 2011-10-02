@@ -8,13 +8,19 @@
   \indent    4T
 */
 
+// ----------------------------------------------------------------------- PLATFORM
+#include "utils/platform.h"
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#ifndef OST_WINDOWS
+	#include <float.h>
+#endif
 #include <limits>
 #include <iomanip>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/pch.h"
+#include "simulator/runtime/keyboard.h"
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/runtime/rdo_activity.h"
 #include "simulator/runtime/rdo_rule.h"
@@ -87,7 +93,7 @@ void RDORuntime::disconnect(PTR(INotify) to)
 	{
 		if (it->second == to)
 		{
-			it = m_connected.erase(it);
+			m_connected.erase(it++);
 			if (it == m_connected.end()) break;
 		}
 		++it;
@@ -101,7 +107,7 @@ void RDORuntime::disconnect(PTR(INotify) to, ruint message)
 	{
 		if (it->second == to)
 		{
-			it = m_connected.erase(it);
+			m_connected.erase(it++);
 			if (it == m_connected.end()) break;
 		}
 		++it;
@@ -286,7 +292,7 @@ void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
 	}
 	else
 	{
-		if (allResourcesByID.at(pResource->getTraceID()) == NULL)
+		if (allResourcesByID.at(pResource->getTraceID()) == LPRDOResource(NULL))
 		{
 			allResourcesByID.at(pResource->getTraceID()) = pResource;
 		}
@@ -513,7 +519,7 @@ void RDORuntime::copyFrom(CREF(LPRDORuntime) pOther)
 	ruint size = pOther->allResourcesByID.size();
 	for (ruint i = 0; i < size; ++i)
 	{
-		if (pOther->allResourcesByID.at(i) == NULL)
+		if (pOther->allResourcesByID.at(i) == LPRDOResource(NULL))
 		{
 			allResourcesByID.push_back(NULL);
 		}
@@ -540,9 +546,9 @@ rbool RDORuntime::equal(CREF(LPRDORuntime) pOther) const
 	ruint size = allResourcesByID.size();
 	for (ruint i = 0; i < size; ++i)
 	{
-		if (allResourcesByID.at(i) == NULL && pOther->allResourcesByID.at(i) != NULL) return false;
-		if (allResourcesByID.at(i) != NULL && pOther->allResourcesByID.at(i) == NULL) return false;
-		if (allResourcesByID.at(i) == NULL && pOther->allResourcesByID.at(i) == NULL) continue;
+		if (allResourcesByID.at(i) == LPRDOResource(NULL) && pOther->allResourcesByID.at(i) != LPRDOResource(NULL)) return false;
+		if (allResourcesByID.at(i) != LPRDOResource(NULL) && pOther->allResourcesByID.at(i) == LPRDOResource(NULL)) return false;
+		if (allResourcesByID.at(i) == LPRDOResource(NULL) && pOther->allResourcesByID.at(i) == LPRDOResource(NULL)) continue;
 		if (pOther->allResourcesByID.at(i) != allResourcesByID.at(i)) return false;
 	}
 	return true;
@@ -603,21 +609,17 @@ void RDORuntime::onPutToTreeNode()
 
 void RDORuntime::writeExitCode()
 {
+	tstring status;
 	switch (whyStop)
 	{
-	case rdoSimulator::EC_OK:
-		getTracer()->writeStatus(this, "NORMAL_TERMINATION");
-		break;
-	case rdoSimulator::EC_NoMoreEvents:
-		getTracer()->writeStatus(this, "NO_MORE_EVENTS");
-		break;
-	case rdoSimulator::EC_RunTimeError:
-		getTracer()->writeStatus(this, "RUN_TIME_ERROR");
-		break;
-	case rdoSimulator::EC_UserBreak:
-		getTracer()->writeStatus(this, "USER_BREAK");
-		break;
+	case rdoSimulator::EC_OK          : status = _T("NORMAL_TERMINATION"); break;
+	case rdoSimulator::EC_NoMoreEvents: status = _T("NO_MORE_EVENTS");     break;
+	case rdoSimulator::EC_RunTimeError: status = _T("RUN_TIME_ERROR");     break;
+	case rdoSimulator::EC_UserBreak   : status = _T("USER_BREAK");         break;
+	default: NEVER_REACH_HERE;
 	}
+
+	getTracer()->writeStatus(this, status);
 }
 
 void RDORuntime::postProcess()

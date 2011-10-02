@@ -59,7 +59,7 @@ inline tstring RDOPROCResource::whoAreYou()
 // --------------------------------------------------------------------------------
 inline RDOPROCGenerate::RDOPROCGenerate(LPIPROCProcess process, CREF(LPRDOCalc) pTime, int maxTransCount)
 	: RDOPROCBlock   (process      )
-	, timeNext       (NULL         )
+	, timeNext       (0.0          )
 	, pTimeCalc      (pTime        )
 	, m_maxTransCount(maxTransCount)
 {

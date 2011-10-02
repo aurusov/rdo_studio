@@ -19,6 +19,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 inline rbool RDOCalc::compare(CREF(LPRDOCalc) pCalc) const
 {
+	UNUSED(pCalc);
 	return false;
 }
 
@@ -35,6 +36,8 @@ inline RDOCalcGetResParam::RDOCalcGetResParam(int _resNumb, int _parNumb)
 // --------------------------------------------------------------------------------
 inline void RDOCalcGetTempResParamFRM::notify(ruint message, PTR(void) param)
 {
+	UNUSED(message);
+
 	if (m_resID == *reinterpret_cast<PTR(int)>(param))
 	{
 		m_resID = -1;
@@ -93,7 +96,9 @@ inline RDOFunCalc::RDOFunCalc()
 {}
 
 inline void RDOFunCalc::addRetCalc(CREF(LPRDOCalc) pCalc)
-{}
+{
+	UNUSED(pCalc);
+}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFuncTableCalc
@@ -226,6 +231,8 @@ inline CREF(RDOValue) RDOCalcConst::getValue() const
 
 inline REF(RDOValue) RDOCalcConst::doCalc(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
+
 	return m_value;
 }
 
