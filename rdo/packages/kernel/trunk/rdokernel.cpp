@@ -145,9 +145,9 @@ void RDOKernel::idle()
 class CheckThreadID
 {
 protected:
-	int thread_id;
+	ruint thread_id;
 public:
-	CheckThreadID( int _thread_id ): thread_id( _thread_id ) {}
+	CheckThreadID( ruint _thread_id ): thread_id( _thread_id ) {}
 	bool operator() ( RDOThread* thread ) { return thread->getID() == thread_id; }
 };
 

@@ -10,6 +10,7 @@
 #include <string>
 #include <list>
 #include <vector>
+#include <boost/noncopyable.hpp>
 #include "utils/rdomacros.h"
 #include "utils/rdotypes.h"
 
@@ -62,7 +63,7 @@
 typedef ruint (*RDOThreadFun)(PTR(void) param);
 #endif
 
-class RDOThread
+class RDOThread: public boost::noncopyable
 {
 #ifdef RDO_MT
 friend class RDOKernelGUI;
@@ -311,7 +312,8 @@ public:
 		while (::WaitForSingleObject(event.m_hObject, 0) == WAIT_TIMEOUT)
 			processMessages();
 #else
-		to->processMessages(RDOMessageInfo(this, message, param));
+		RDOMessageInfo messageInfo(this, message, param);
+		to->processMessages(messageInfo);
 #endif
 	}
 
