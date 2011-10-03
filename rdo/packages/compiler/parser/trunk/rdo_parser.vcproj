@@ -52,7 +52,7 @@
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="simulator/compiler/parser/pch.h"
 				BrowseInformation="1"
-				WarningLevel="3"
+				WarningLevel="4"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -121,7 +121,7 @@
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="simulator/compiler/parser/pch.h"
 				BrowseInformation="1"
-				WarningLevel="3"
+				WarningLevel="4"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -192,7 +192,7 @@
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="simulator/compiler/parser/pch.h"
 				BrowseInformation="1"
-				WarningLevel="3"
+				WarningLevel="4"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -264,7 +264,7 @@
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="simulator/compiler/parser/pch.h"
 				BrowseInformation="1"
-				WarningLevel="3"
+				WarningLevel="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -333,7 +333,7 @@
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="simulator/compiler/parser/pch.h"
 				BrowseInformation="1"
-				WarningLevel="3"
+				WarningLevel="4"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -405,7 +405,7 @@
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="simulator/compiler/parser/pch.h"
 				BrowseInformation="1"
-				WarningLevel="3"
+				WarningLevel="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
