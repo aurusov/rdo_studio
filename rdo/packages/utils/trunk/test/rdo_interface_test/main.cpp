@@ -200,7 +200,7 @@ BOOST_AUTO_TEST_CASE(RdoInterfaceTest)
 		rdo::UnknownPointer smptr = RF(MyClass2)::create(initFValue);
 		BOOST_REQUIRE(smptr);
 
-		BOOST_CHECK_EQUAL(s_logList.size(), 2);
+		BOOST_CHECK_EQUAL(s_logList.size(), LogList::size_type(2));
 		LogList::const_iterator it = s_logList.begin();
 		BOOST_CHECK_EQUAL(*it,     strMyClass1Create + initFValue);
 		BOOST_CHECK_EQUAL(*(++it), strMyClass2Create + initFValue);
@@ -212,7 +212,7 @@ BOOST_AUTO_TEST_CASE(RdoInterfaceTest)
 		MyInterface         imy3 = smptr;
 		rdo::UnknownPointer smptr2;
 		smptr2 = RF(MyClass2)::create(initSValue);
-		BOOST_CHECK_EQUAL(s_logList.size(), 2);
+		BOOST_CHECK_EQUAL(s_logList.size(), LogList::size_type(2));
 		it = s_logList.begin();
 		BOOST_CHECK_EQUAL(*it,     strMyClass1Create + initSValue);
 		BOOST_CHECK_EQUAL(*(++it), strMyClass2Create + initSValue);
@@ -261,7 +261,7 @@ BOOST_AUTO_TEST_CASE(RdoInterfaceTest)
 		s_logList.clear();
 	}
 
-	BOOST_CHECK_EQUAL(s_logList.size(), 5);
+	BOOST_CHECK_EQUAL(s_logList.size(), LogList::size_type(5));
 	LogList::const_iterator it = s_logList.begin();
 	BOOST_CHECK_EQUAL(*it, strMyClass3Destroy + initTValue);
 	++it;

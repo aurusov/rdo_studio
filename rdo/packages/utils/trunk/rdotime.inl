@@ -67,7 +67,7 @@ inline Time Time::local()
 
 inline Time Time::invalid()
 {
-	return ~0;
+	return Time(Value(~0));
 }
 
 CLOSE_RDO_NAMESPACE
