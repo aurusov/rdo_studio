@@ -51,6 +51,7 @@
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="simulator/runtime/pch.h"
 				BrowseInformation="1"
+				WarningLevel="4"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -117,7 +118,7 @@
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="simulator/runtime/pch.h"
 				BrowseInformation="1"
-				WarningLevel="3"
+				WarningLevel="4"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -185,7 +186,7 @@
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="simulator/runtime/pch.h"
 				BrowseInformation="1"
-				WarningLevel="3"
+				WarningLevel="4"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -249,6 +250,7 @@
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="simulator/runtime/pch.h"
+				WarningLevel="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -314,7 +316,7 @@
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="simulator/runtime/pch.h"
 				BrowseInformation="1"
-				WarningLevel="3"
+				WarningLevel="4"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -378,6 +380,7 @@
 				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="simulator/runtime/pch.h"
+				WarningLevel="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
