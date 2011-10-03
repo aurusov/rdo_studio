@@ -23,6 +23,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 REF(RDOValue) RDOCalcSeqInit::doCalc(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
 	m_gen->setSeed(m_base);
 	return m_value;
 }
@@ -91,6 +92,7 @@ RDOValue RDOCalcSeqNextTriangular::getNextValue(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 RDOValue RDOCalcSeqNextByHist::getNextValue(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
 	return m_gen->next();
 }
 

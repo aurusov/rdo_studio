@@ -271,7 +271,7 @@ RDOValue RDOFuzzyValue::defuzzyfication()
 	double a      = it->second;
 	double b      = it_next->second;
 	double h      = x_next - x;
-	while (true)
+	for (;;)
 	{
 		double t = h*(a+b)/2.0;
 		g += t*(x_next + x)/2.0;

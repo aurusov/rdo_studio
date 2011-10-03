@@ -25,6 +25,7 @@ RDOCalcNoChange::RDOCalcNoChange()
 
 REF(RDOValue) RDOCalcNoChange::doCalc(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
 	m_value = RDOValue(0);
 	return m_value;
 }
