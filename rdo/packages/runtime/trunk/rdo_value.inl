@@ -214,6 +214,19 @@ inline rsint RDOValue::getInt() const
 	throw RDOValueException();
 }
 
+inline ruint RDOValue::getUInt() const
+{
+	switch (typeID())
+	{
+	case RDOType::t_int  : return __get<ruint>();
+	case RDOType::t_real : return (ruint)__get<double>();
+	case RDOType::t_enum : return __get<ruint>();
+	case RDOType::t_bool : return __get<rbool>() ? 1 : 0;
+	case RDOType::t_fuzzy: return (ruint)const_cast<PTR(RDOValue)>(this)->__fuzzyV().defuzzyfication().getInt();
+	}
+	throw RDOValueException();
+}
+
 inline rsint RDOValue::getEnumAsInt() const
 {
 	switch (typeID())

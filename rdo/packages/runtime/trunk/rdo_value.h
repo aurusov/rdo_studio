@@ -55,6 +55,7 @@ public:
 	RDOValue(CREF(LPRDOType) pType, CREF(rdo::intrusive_ptr<T>) pObject);
 
 	rsint             getInt          () const;
+	ruint             getUInt         () const;
 	rsint             getEnumAsInt    () const;
 	LPRDOEnumType     getEnum         () const;
 	double            getDouble       () const;
