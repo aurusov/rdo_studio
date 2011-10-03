@@ -62,8 +62,6 @@
 				Name="VCLinkerTool"
 				GenerateDebugInformation="true"
 				SubSystem="1"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -115,6 +113,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="../../../"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
+				ExceptionHandling="2"
 				BrowseInformation="1"
 				WarningLevel="4"
 			/>
@@ -130,8 +129,6 @@
 			<Tool
 				Name="VCLinkerTool"
 				SubSystem="1"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
