@@ -88,6 +88,7 @@ DECLARE_POINTER(MyClass2)
 void MyClass2::ifun21()
 {
 	int i = 1;
+	UNUSED(i);
 }
 
 OBJECT(MyClass3)
