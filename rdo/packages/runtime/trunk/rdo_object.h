@@ -178,11 +178,11 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 class INotify
 {
 public:
-	virtual void notify(ruint message, PTR(void) param) = 0;
+	virtual void notify(ruint message, PTR(void) pParam) = 0;
 };
 
 #define DECLARE_INotify \
-	virtual void notify(ruint message, PTR(void) param);
+	virtual void notify(ruint message, PTR(void) pParam);
 
 #include "simulator/runtime/rdo_object.inl"
 

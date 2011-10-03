@@ -60,7 +60,7 @@
 // -------------------- RDOThread
 // --------------------------------------------------------------------------------
 #ifdef RDO_MT
-typedef ruint (*RDOThreadFun)(PTR(void) param);
+typedef ruint (*RDOThreadFun)(PTR(void) pParam);
 #endif
 
 class RDOThread: public boost::noncopyable
@@ -286,20 +286,20 @@ public:
 	};
 
 	// POST: отправка сообщений без ожидани€ выполнени€
-	void postMessage( RDOTreadMessage message, void* param = NULL ) {
-		postMessageFrom( NULL, message, param );
+	void postMessage( RDOTreadMessage message, void* pParam = NULL ) {
+		postMessageFrom( NULL, message, pParam );
 	}
-	void postMessageFrom( RDOThread* from, RDOTreadMessage message, void* param = NULL ) {
+	void postMessageFrom( RDOThread* from, RDOTreadMessage message, void* pParam = NULL ) {
 		messages_mutex.Lock();
-		messages.push_back( RDOMessageInfo( from, message, param, RDOThread::RDOMessageInfo::post ) );
+		messages.push_back( RDOMessageInfo( from, message, pParam, RDOThread::RDOMessageInfo::post ) );
 		messages_mutex.Unlock();
 	}
 */
 	// SEND: отправка сообщений с ожиданием выполнени€
-	void sendMessage(PTR(RDOThread) to, RDOTreadMessage message, PTR(void) param = NULL)
+	void sendMessage(PTR(RDOThread) to, RDOTreadMessage message, PTR(void) pParam = NULL)
 	{
 #ifdef RDO_MT
-		RDOMessageInfo msg(this, message, param, RDOThread::RDOMessageInfo::send);
+		RDOMessageInfo msg(this, message, pParam, RDOThread::RDOMessageInfo::send);
 		CEvent event;
 		msg.send_event = &event;
 
@@ -312,19 +312,19 @@ public:
 		while (::WaitForSingleObject(event.m_hObject, 0) == WAIT_TIMEOUT)
 			processMessages();
 #else
-		RDOMessageInfo messageInfo(this, message, param);
+		RDOMessageInfo messageInfo(this, message, pParam);
 		to->processMessages(messageInfo);
 #endif
 	}
 
 #ifdef RDO_MT
 	// MANUAL: отправка сообщений с 'ручным' ожиданием выполнени€ дл€ this
-	PTR(CEvent) manualMessageFrom(RDOTreadMessage message, PTR(void) param = NULL);
+	PTR(CEvent) manualMessageFrom(RDOTreadMessage message, PTR(void) pParam = NULL);
 #endif
 
 	// –ассылка уведомлений всем тредам с учетом их notifies
 	// ¬ажно: должна вызыватьс€ только дл€ this (в собственной треде)
-	void broadcastMessage(RDOTreadMessage message, PTR(void) param = NULL, rbool lock = false);
+	void broadcastMessage(RDOTreadMessage message, PTR(void) pParam = NULL, rbool lock = false);
 
 #ifdef TR_TRACE
 	static void trace(CREF(tstring) str);
@@ -337,7 +337,7 @@ protected:
 	// 2.  ажда€ треда имеет доступ к списку уведомлений (notifies), чтобы пон€ть, а надо ли посылать сообщение треде.
 	// ¬торое еще можно сделать через дублирование: map< key = thread*, value = notifies > в каджой треде,
 	// а вот как добавить сообщение - не совсем понр€тно.
-	static ruint threadFun(PTR(void) param);
+	static ruint threadFun(PTR(void) pParam);
 	const RDOThreadFun thread_fun;
 	PTR(CWinThread)    thread_win;
 	CEvent             proc_create;    // ¬ызываетс€ из процедуры треды, конструктор должен его дождатьс€

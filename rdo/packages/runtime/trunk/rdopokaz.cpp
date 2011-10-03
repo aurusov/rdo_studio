@@ -59,11 +59,11 @@ RDOPMDWatchPar::RDOPMDWatchPar(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, 
 RDOPMDWatchPar::~RDOPMDWatchPar()
 {}
 
-void RDOPMDWatchPar::notify(ruint message, PTR(void) param)
+void RDOPMDWatchPar::notify(ruint message, PTR(void) pParam)
 {
 	UNUSED(message);
 
-	if ((int)param == m_resNumber)
+	if ((int)pParam == m_resNumber)
 	{
 		m_resNumber = -1;
 		m_timeErase = m_pRuntime->getCurrentTime();

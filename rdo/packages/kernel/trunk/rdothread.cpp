@@ -121,9 +121,9 @@ void RDOThread::after_constructor()
 }
 
 #ifdef RDO_MT
-ruint RDOThread::threadFun(PTR(void) param)
+ruint RDOThread::threadFun(PTR(void) pParam)
 {
-	PTR(RDOThread) thread = static_cast<PTR(RDOThread)>(param);
+	PTR(RDOThread) thread = static_cast<PTR(RDOThread)>(pParam);
 	thread->thread_id = ::GetCurrentThreadId();
 	thread->proc_create.SetEvent();
 	thread->thread_create.Lock();
@@ -191,10 +191,10 @@ rbool RDOThread::processMessages()
 }
 #endif
 /*
-void RDOThread::sendMessage(PTR(RDOThread) to, RDOTreadMessage message, PTR(void) param)
+void RDOThread::sendMessage(PTR(RDOThread) to, RDOTreadMessage message, PTR(void) pParam)
 {
 #ifdef RDO_MT
-	RDOMessageInfo msg(this, message, param, RDOThread::RDOMessageInfo::send);
+	RDOMessageInfo msg(this, message, pParam, RDOThread::RDOMessageInfo::send);
 	CEvent event;
 	msg.send_event = &event;
 
@@ -205,14 +205,14 @@ void RDOThread::sendMessage(PTR(RDOThread) to, RDOTreadMessage message, PTR(void
 	while (::WaitForSingleObject( event.m_hObject, 0 ) == WAIT_TIMEOUT)
 		processMessages();
 #else
-	to->processMessages(RDOMessageInfo(this, message, param));
+	to->processMessages(RDOMessageInfo(this, message, pParam));
 #endif
 }
 */
 #ifdef RDO_MT
-PTR(CEvent) RDOThread::manualMessageFrom(RDOTreadMessage message, PTR(void) param)
+PTR(CEvent) RDOThread::manualMessageFrom(RDOTreadMessage message, PTR(void) pParam)
 {
-	RDOMessageInfo msg(this, message, param, RDOThread::RDOMessageInfo::manual);
+	RDOMessageInfo msg(this, message, pParam, RDOThread::RDOMessageInfo::manual);
 	msg.send_event = new CEvent();
 
 	messages_mutex.Lock();
@@ -223,10 +223,10 @@ PTR(CEvent) RDOThread::manualMessageFrom(RDOTreadMessage message, PTR(void) para
 }
 #endif
 
-void RDOThread::broadcastMessage(RDOTreadMessage message, PTR(void) param, rbool lock)
+void RDOThread::broadcastMessage(RDOTreadMessage message, PTR(void) pParam, rbool lock)
 {
 #ifdef RDO_MT
-	if (param) lock = true;
+	if (pParam) lock = true;
 	broadcast_cnt++;
 	if (broadcast_data.size() < broadcast_cnt + 1)
 		broadcast_data.push_back(BroadcastData(10));
@@ -242,7 +242,7 @@ void RDOThread::broadcastMessage(RDOTreadMessage message, PTR(void) param, rbool
 		{
 			if (broadcast_data[broadcast_cnt].cnt < cnt + 1)
 				broadcast_data[broadcast_cnt].resize();
-			RDOMessageInfo msg(this, message, param, RDOThread::RDOMessageInfo::send);
+			RDOMessageInfo msg(this, message, pParam, RDOThread::RDOMessageInfo::send);
 			if (lock)
 			{
 				if (!param_lock)
@@ -274,7 +274,7 @@ void RDOThread::broadcastMessage(RDOTreadMessage message, PTR(void) param, rbool
 		delete param_lock;
 #else
 	UNUSED(lock);
-	RDOMessageInfo msg(this, message, param);
+	RDOMessageInfo msg(this, message, pParam);
 	std::list< RDOThread* >::iterator it = kernel->threads.begin();
 	while ( it != kernel->threads.end() ) {
 		RDOThread* thread = *it;

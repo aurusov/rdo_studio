@@ -197,7 +197,7 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, CP
 	return 1;
 }
 
-ruint RDOThreadCorba::corbaRunThreadFun(PTR(void) param)
+ruint RDOThreadCorba::corbaRunThreadFun(PTR(void) pParam)
 {
 	try
 	{

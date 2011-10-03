@@ -138,7 +138,7 @@ private:
 	RDOCalcGetTempResParamFRM(int _resNumb, int _parNumb);
 	virtual REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime);
 
-	virtual void notify(ruint message, PTR(void) param);
+	virtual void notify(ruint message, PTR(void) pParam);
 };
 
 /*!

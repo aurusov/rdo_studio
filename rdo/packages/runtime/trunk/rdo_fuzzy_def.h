@@ -84,12 +84,12 @@ private:
 	FuzzySet::iterator  end  ();
 
 	typedef RDOValue (*ExtUnaryFun )(CREF(RDOValue) value);
-	typedef RDOValue (*ExtUnaryFunP)(CREF(RDOValue) value, PTR(void) param);
+	typedef RDOValue (*ExtUnaryFunP)(CREF(RDOValue) value, PTR(void) pParam);
 	typedef RDOValue (*ExtBinaryFun)(CREF(RDOValue) value1, CREF(RDOValue) value2);
 
 	             RDOFuzzyValue a_pow     (double power) const;
 	/* 3.114*/  RDOFuzzyValue ext_unary (ExtUnaryFun  fun) const;
-	/* 3.114*/  RDOFuzzyValue ext_unary (ExtUnaryFunP fun, PTR(void) param) const;
+	/* 3.114*/  RDOFuzzyValue ext_unary (ExtUnaryFunP fun, PTR(void) pParam) const;
 	/* 3.83 */  RDOFuzzyValue ext_binary(ExtBinaryFun fun, CREF(RDOFuzzyValue) fuzzy_value) const;
 };
 

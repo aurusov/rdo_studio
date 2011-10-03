@@ -34,11 +34,11 @@ inline RDOCalcGetResParam::RDOCalcGetResParam(int _resNumb, int _parNumb)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetTempResParamFRM
 // --------------------------------------------------------------------------------
-inline void RDOCalcGetTempResParamFRM::notify(ruint message, PTR(void) param)
+inline void RDOCalcGetTempResParamFRM::notify(ruint message, PTR(void) pParam)
 {
 	UNUSED(message);
 
-	if (m_resID == *reinterpret_cast<PTR(int)>(param))
+	if (m_resID == *reinterpret_cast<PTR(int)>(pParam))
 	{
 		m_resID = -1;
 	}

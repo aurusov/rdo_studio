@@ -240,10 +240,10 @@ void RDOPROCGenerate::onStop(CREF(LPRDORuntime) pRuntime)
 	UNUSED(pRuntime);
 }
 
-void RDOPROCGenerate::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) param)
+void RDOPROCGenerate::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
 {
 	UNUSED(pRuntime);
-	UNUSED(param   );
+	UNUSED(pParam  );
 }
 
 IBaseOperation::BOResult RDOPROCGenerate::onContinue(CREF(LPRDORuntime) pRuntime)
@@ -306,10 +306,10 @@ void RDOPROCQueue::onStop (CREF(LPRDORuntime) pRuntime)
 	UNUSED(pRuntime);
 }
 
-void RDOPROCQueue::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) param)
+void RDOPROCQueue::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
 {
 	UNUSED(pRuntime);
-	UNUSED(param   );
+	UNUSED(pParam  );
 }
 
 IBaseOperation::BOResult RDOPROCQueue::onContinue(CREF(LPRDORuntime) pRuntime)
@@ -354,10 +354,10 @@ void RDOPROCDepart::onStop(CREF(LPRDORuntime) pRuntime)
 	UNUSED(pRuntime);
 }
 
-void RDOPROCDepart::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) param)
+void RDOPROCDepart::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
 {
 	UNUSED(pRuntime);
-	UNUSED(param   );
+	UNUSED(pParam  );
 }
 
 IBaseOperation::BOResult RDOPROCDepart::onContinue(CREF(LPRDORuntime) pRuntime)
@@ -463,10 +463,10 @@ void RDOPROCSeize::onStop(CREF(LPRDORuntime) pRuntime)
 	UNUSED(pRuntime);
 }
 
-void RDOPROCSeize::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) param)
+void RDOPROCSeize::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
 {
 	UNUSED(pRuntime);
-	UNUSED(param   );
+	UNUSED(pParam  );
 }
 
 IBaseOperation::BOResult RDOPROCSeize::onContinue(CREF(LPRDORuntime) pRuntime)
@@ -540,10 +540,10 @@ void RDOPROCRelease::onStop(CREF(LPRDORuntime) pRuntime)
 	UNUSED(pRuntime);
 }
 
-void RDOPROCRelease::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) param)
+void RDOPROCRelease::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
 {
 	UNUSED(pRuntime);
-	UNUSED(param   );
+	UNUSED(pParam  );
 }
 
 IBaseOperation::BOResult RDOPROCRelease::onContinue(CREF(LPRDORuntime) pRuntime)
@@ -620,10 +620,10 @@ void RDOPROCAdvance::onStop(CREF(LPRDORuntime) pRuntime)
 	UNUSED(pRuntime);
 }
 
-void RDOPROCAdvance::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) param)
+void RDOPROCAdvance::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
 {
 	UNUSED(pRuntime);
-	UNUSED(param   );
+	UNUSED(pParam  );
 }
 
 IBaseOperation::BOResult RDOPROCAdvance::onContinue(CREF(LPRDORuntime) pRuntime)
@@ -670,10 +670,10 @@ void RDOPROCTerminate::onStop(CREF(LPRDORuntime) pRuntime)
 	UNUSED(pRuntime);
 }
 
-void RDOPROCTerminate::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) param)
+void RDOPROCTerminate::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
 {
 	UNUSED(pRuntime);
-	UNUSED(param   );
+	UNUSED(pParam  );
 }
 
 IBaseOperation::BOResult RDOPROCTerminate::onContinue(CREF(LPRDORuntime) pRuntime)
@@ -710,10 +710,10 @@ void RDOPROCAssign::onStop(CREF(LPRDORuntime) pRuntime)
 	UNUSED(pRuntime);
 }
 
-void RDOPROCAssign::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) param)
+void RDOPROCAssign::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
 {
 	UNUSED(pRuntime);
-	UNUSED(param   );
+	UNUSED(pParam  );
 }
 
 IBaseOperation::BOResult RDOPROCAssign::onContinue(CREF(LPRDORuntime) pRuntime)

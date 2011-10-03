@@ -74,9 +74,10 @@ IBaseOperation::BOResult RDOOperation::onDoOperation(CREF(LPRDORuntime) pRuntime
 	return IBaseOperation::BOR_planned_and_run;
 }
 
-void RDOOperation::onMakePlaned(CREF(LPRDORuntime) pRuntime, void* param)
+void RDOOperation::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
 {
-	UNUSED(param);
+	UNUSED(pParam);
+
 	// ¬ыполн€ем событие конца операции-клона
 	pRuntime->inc_cnt_events();
 	onBeforeOperationEnd(pRuntime);

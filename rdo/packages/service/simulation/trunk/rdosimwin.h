@@ -87,7 +87,7 @@ private:
 	virtual void stop();
 
 	PTR(CWinThread) thread_corbaRunThreadFun;
-	static ruint corbaRunThreadFun(PTR(void) param);
+	static ruint corbaRunThreadFun(PTR(void) pParam);
 };
 
 } //! namespace rdoCorba

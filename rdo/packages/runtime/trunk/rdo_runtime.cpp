@@ -114,12 +114,12 @@ void RDORuntime::disconnect(PTR(INotify) to, ruint message)
 	}
 }
 
-void RDORuntime::fireMessage(ruint message, PTR(void) param)
+void RDORuntime::fireMessage(ruint message, PTR(void) pParam)
 {
 	Connected::iterator it = m_connected.find(message);
 	while (it != m_connected.end())
 	{
-		it->second->notify(message, param);
+		it->second->notify(message, pParam);
 		++it;
 	}
 }

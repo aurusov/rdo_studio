@@ -171,11 +171,11 @@ inline IBaseOperation::BOResult RDOLogic<Order>::onDoOperation(CREF(LPRDORuntime
 }
 
 template <class Order>
-inline void RDOLogic<Order>::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) param)
+inline void RDOLogic<Order>::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
 {
 	LOGIC_FOR_ALL()
 	{
-		(*it)->onMakePlaned(pRuntime, param);
+		(*it)->onMakePlaned(pRuntime, pParam);
 	}
 }
 

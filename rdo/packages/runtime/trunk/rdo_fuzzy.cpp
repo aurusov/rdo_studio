@@ -149,13 +149,13 @@ RDOFuzzyValue RDOFuzzyValue::ext_unary(ExtUnaryFun fun) const
 	}
 }
 
-RDOFuzzyValue RDOFuzzyValue::ext_unary(ExtUnaryFunP fun, PTR(void) param) const
+RDOFuzzyValue RDOFuzzyValue::ext_unary(ExtUnaryFunP fun, PTR(void) pParam) const
 {
 	FuzzySet values;
 	FuzzySet::const_iterator it = begin();
 	while (it != end())
 	{
-		RDOValue rdo_value = fun(it->first, param);
+		RDOValue rdo_value = fun(it->first, pParam);
 		FuzzySet::iterator val = values.find(rdo_value);
 		if (val == values.end())
 		{
