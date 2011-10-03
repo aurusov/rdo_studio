@@ -730,7 +730,7 @@ RDORuntime::RDOHotKeyToolkit::KeyCode RDORuntime::RDOHotKeyToolkit::codeFromStri
 	CIterator it = m_keys.find(key);
 	if (it == m_keys.end())
 	{
-		return UNDEFINED_KEY;
+		return RDORuntime::RDOHotKeyToolkit::KeyCode(UNDEFINED_KEY);
 //		throw RDORuntimeException("Unknown key name: " + key);
 	}
 	return (*it).second;

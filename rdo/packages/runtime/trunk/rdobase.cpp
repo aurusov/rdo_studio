@@ -199,7 +199,6 @@ rbool RDOSimulatorBase::rdoNext()
 			return false;
 		}
 	}
-	return true;
 }
 
 void RDOSimulatorBase::setMode(rdoRuntime::RunTimeMode _mode)

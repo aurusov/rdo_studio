@@ -27,7 +27,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 REF(RDOValue) RDOSelectResourceNonExistCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	pRuntime->getCurrentActivity()->setRelRes(m_relResID, ~0);
+	pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
 	return m_value;
 }
 
@@ -39,10 +39,13 @@ RDOCalcCreateNumberedResource::RDOCalcCreateNumberedResource(int typeID, rbool t
 	, m_traceFlag  (traceFlag  )
 	, m_number     (number     )
 	, m_isPermanent(isPermanent)
-{}
+{
+	UNUSED(paramsCalcs);
+}
 
 REF(RDOValue) RDOCalcCreateNumberedResource::doCalc(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
 	NEVER_REACH_HERE;
 	return m_value;
 }
@@ -55,10 +58,13 @@ RDOCalcCreateProcessResource::RDOCalcCreateProcessResource(int typeID, rbool tra
 	, m_traceFlag  (traceFlag  )
 	, m_number     (number     )
 	, m_isPermanent(isPermanent)
-{}
+{
+	UNUSED(paramsCalcs);
+}
 
 REF(RDOValue) RDOCalcCreateProcessResource::doCalc(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
 	NEVER_REACH_HERE;
 	return m_value;
 }
@@ -105,7 +111,7 @@ REF(RDOValue) RDOSelectResourceDirectCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 	pRuntime->getCurrentActivity()->setRelRes(m_relResID, m_resID);
 	if (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
 	{
-		pRuntime->getCurrentActivity()->setRelRes(m_relResID, -1);
+		pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
 		m_value = 0;
 		return m_value;
 	}
@@ -136,7 +142,7 @@ REF(RDOValue) RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 					pRuntime->getCurrentActivity()->setRelRes(m_relResID, res_id);
 					if (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
 					{
-						pRuntime->getCurrentActivity()->setRelRes(m_relResID, -1);
+						pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
 						continue;
 					}
 					m_value = 1;
@@ -147,7 +153,7 @@ REF(RDOValue) RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 					pRuntime->getCurrentActivity()->setRelRes(m_relResID, res_id);
 					if (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
 					{
-						pRuntime->getCurrentActivity()->setRelRes(m_relResID, -1);
+						pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
 						continue;
 					}
 					RDOValue tmp = m_pCalcOrder->calcValue(pRuntime);
@@ -163,7 +169,7 @@ REF(RDOValue) RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 					pRuntime->getCurrentActivity()->setRelRes(m_relResID, res_id);
 					if (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
 					{
-						pRuntime->getCurrentActivity()->setRelRes(m_relResID, -1);
+						pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
 						continue;
 					}
 					RDOValue tmp = m_pCalcOrder->calcValue(pRuntime);
@@ -311,6 +317,7 @@ REF(RDOValue) RDOSelectResourceCommonCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 std::vector<int> RDOSelectResourceDirectCommonCalc::getPossibleNumbers(CREF(LPRDORuntime) pRuntime) const
 {
+	UNUSED(pRuntime);
 	std::vector<int> res;	
 	res.push_back(m_resID);
 	return res;

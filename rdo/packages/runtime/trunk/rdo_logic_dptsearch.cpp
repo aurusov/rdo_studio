@@ -59,8 +59,9 @@ IBaseOperation::BOResult RDODPTSearch::onDoOperation(CREF(LPRDORuntime) pRuntime
 
 IBaseOperation::BOResult RDODPTSearch::onContinue(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
 	ruint32 time_begin = ::GetTickCount();
-	while (true)
+	for (;;)
 	{
 		// ¬озмем дл€ раскрыти€ первую вершину из списка OPEN
 		TreeNode* curr = *(treeRoot->m_OPEN.begin());

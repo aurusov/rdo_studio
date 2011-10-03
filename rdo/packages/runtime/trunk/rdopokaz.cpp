@@ -51,6 +51,8 @@ RDOPMDWatchPar::RDOPMDWatchPar(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, 
 	, m_resNumber(resNumber            )
 	, m_parNumber(parNumber            )
 {
+	UNUSED(resName);
+	UNUSED(parName);
 	pRuntime->connect(this, RDORuntime::RO_BEFOREDELETE);
 }
 
@@ -59,6 +61,8 @@ RDOPMDWatchPar::~RDOPMDWatchPar()
 
 void RDOPMDWatchPar::notify(ruint message, PTR(void) param)
 {
+	UNUSED(message);
+
 	if ((int)param == m_resNumber)
 	{
 		m_resNumber = -1;
@@ -213,7 +217,9 @@ RDOPMDWatchQuant::RDOPMDWatchQuant(CREF(LPRDORuntime) pRuntime, CREF(tstring) na
 	: RDOPMDPokaz (pRuntime, name, trace)
 	, m_pLogicCalc(NULL                 )
 	, m_rtpID     (rtpID                )
-{}
+{
+	UNUSED(resTypeName);
+}
 
 RDOPMDWatchQuant::~RDOPMDWatchQuant()
 {}
@@ -309,6 +315,7 @@ RDOPMDWatchValue::RDOPMDWatchValue(CREF(LPRDORuntime) pRuntime, CREF(tstring) na
 	, m_pArithmCalc(NULL                 )
 	, m_rtpID      (rtpID                )
 {
+	UNUSED(resTypeName);
 	m_wasChanged = false;
 }
 
@@ -322,6 +329,8 @@ tstring RDOPMDWatchValue::traceValue() const
 
 void RDOPMDWatchValue::resetPokaz(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
+
 	m_watchNumber = 0;
 	m_currValue   = 0;
 	m_sum         = 0;
@@ -331,10 +340,14 @@ void RDOPMDWatchValue::resetPokaz(CREF(LPRDORuntime) pRuntime)
 }
 
 void RDOPMDWatchValue::checkPokaz(CREF(LPRDORuntime) pRuntime)
-{}
+{
+	UNUSED(pRuntime);
+}
 
 void RDOPMDWatchValue::calcStat(CREF(LPRDORuntime) pRuntime, REF(std::ostream) stream)
 {
+	UNUSED(pRuntime);
+
 	double average, averageSqr, deviation;
 	if (m_watchNumber < 2)
 	{
@@ -416,10 +429,14 @@ tstring RDOPMDGetValue::traceValue() const
 }
 
 void RDOPMDGetValue::resetPokaz(CREF(LPRDORuntime) pRuntime)
-{}
+{
+	UNUSED(pRuntime);
+}
 
 void RDOPMDGetValue::checkPokaz(CREF(LPRDORuntime) pRuntime)
-{}
+{
+	UNUSED(pRuntime);
+}
 
 void RDOPMDGetValue::calcStat(CREF(LPRDORuntime) pRuntime, REF(std::ostream) stream)
 {

@@ -62,7 +62,9 @@ rbool RDORule::choiceFrom(CREF(LPRDORuntime) pRuntime)
 }
 
 void RDORule::onBeforeRule(CREF(LPRDORuntime) pRuntime)
-{}
+{
+	UNUSED(pRuntime);
+}
 
 void RDORule::convertRule(CREF(LPRDORuntime) pRuntime)
 { 
@@ -121,9 +123,9 @@ IBaseOperation::BOResult RDORule::onDoOperation(CREF(LPRDORuntime) pRuntime)
 	return IBaseOperation::BOR_done;
 }
 
-void                     RDORule::onStart     (CREF(LPRDORuntime) pRuntime)                  {}
-void                     RDORule::onStop      (CREF(LPRDORuntime) pRuntime)                  {}
-void                     RDORule::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) param) {}
-IBaseOperation::BOResult RDORule::onContinue  (CREF(LPRDORuntime) pRuntime)                  {return IBaseOperation::BOR_cant_run;}
+void                     RDORule::onStart     (CREF(LPRDORuntime) pRuntime)                  { UNUSED(pRuntime); }
+void                     RDORule::onStop      (CREF(LPRDORuntime) pRuntime)                  { UNUSED(pRuntime); }
+void                     RDORule::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) param) { UNUSED(pRuntime); UNUSED(param); }
+IBaseOperation::BOResult RDORule::onContinue  (CREF(LPRDORuntime) pRuntime)                  { UNUSED(pRuntime); return IBaseOperation::BOR_cant_run; }
 
 CLOSE_RDO_RUNTIME_NAMESPACE
