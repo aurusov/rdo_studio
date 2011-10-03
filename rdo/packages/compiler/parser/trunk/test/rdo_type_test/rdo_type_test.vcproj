@@ -45,7 +45,6 @@
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				ExceptionHandling="2"
 				RuntimeLibrary="3"
-				UsePrecompiledHeader="0"
 				WarningLevel="4"
 				DebugInformationFormat="4"
 			/>
@@ -114,7 +113,6 @@
 				AdditionalIncludeDirectories="../../../../../"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				ExceptionHandling="2"
-				UsePrecompiledHeader="0"
 				WarningLevel="4"
 			/>
 			<Tool
