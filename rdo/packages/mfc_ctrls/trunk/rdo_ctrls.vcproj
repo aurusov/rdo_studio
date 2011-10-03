@@ -48,7 +48,7 @@
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="ui/mfc_ctrls/rdo_ctrls_pch.h"
 				BrowseInformation="1"
-				WarningLevel="3"
+				WarningLevel="4"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -112,7 +112,7 @@
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;WINVER=0x0501"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="ui/mfc_ctrls/rdo_ctrls_pch.h"
-				WarningLevel="3"
+				WarningLevel="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -174,7 +174,7 @@
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="ui/mfc_ctrls/rdo_ctrls_pch.h"
 				BrowseInformation="1"
-				WarningLevel="3"
+				WarningLevel="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -236,7 +236,7 @@
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="ui/mfc_ctrls/rdo_ctrls_pch.h"
 				BrowseInformation="1"
-				WarningLevel="3"
+				WarningLevel="4"
 				DebugInformationFormat="4"
 			/>
 			<Tool

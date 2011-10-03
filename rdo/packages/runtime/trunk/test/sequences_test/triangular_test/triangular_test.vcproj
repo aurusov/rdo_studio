@@ -43,7 +43,7 @@
 				AdditionalIncludeDirectories="../../../../../"
 				ExceptionHandling="2"
 				RuntimeLibrary="3"
-				WarningLevel="3"
+				WarningLevel="4"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -109,7 +109,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="../../../../../"
 				ExceptionHandling="2"
-				WarningLevel="3"
+				WarningLevel="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
