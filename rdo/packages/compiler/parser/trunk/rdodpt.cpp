@@ -38,8 +38,10 @@ int dptlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void dpterror(PTR(char) mes)
-{}
+void dpterror(PTR(char) message)
+{
+	UNUSED(message);
+}
 
 int proc_rtp_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
@@ -48,8 +50,10 @@ int proc_rtp_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void proc_rtp_error(PTR(char) mes)
-{}
+void proc_rtp_error(PTR(char) message)
+{
+	UNUSED(message);
+}
 
 int proc_rss_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
@@ -58,8 +62,10 @@ int proc_rss_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void proc_rss_error(PTR(char) mes)
-{}
+void proc_rss_error(PTR(char) message)
+{
+	UNUSED(message);
+}
 
 int proc_opr_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
@@ -68,8 +74,10 @@ int proc_opr_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void proc_opr_error(PTR(char) mes)
-{}
+void proc_opr_error(PTR(char) message)
+{
+	UNUSED(message);
+}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTActivity
@@ -267,6 +275,8 @@ RDODPTSome::RDODPTSome(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
 
 LPContext RDODPTSome::onFindContext(CREF(RDOValue) value) const
 {
+	UNUSED(value);
+
 	//! Поиск не нужен, добавлен для порядка, чтобы контекст активности был на стеке после контекста точки
 	return NULL;
 }
@@ -296,6 +306,8 @@ RDODPTPrior::RDODPTPrior(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
 
 LPContext RDODPTPrior::onFindContext(CREF(RDOValue) value) const
 {
+	UNUSED(value);
+
 	//! Поиск не нужен, добавлен для порядка, чтобы контекст активности был на стеке после контекста точки
 	return NULL;
 }
@@ -358,6 +370,8 @@ RDODPTSearch::RDODPTSearch(CREF(RDOParserSrcInfo) src_info, rdoRuntime::RDODPTSe
 
 LPContext RDODPTSearch::onFindContext(CREF(RDOValue) value) const
 {
+	UNUSED(value);
+
 	//! Поиск не нужен, добавлен для порядка, чтобы контекст активности был на стеке после контекста точки
 	return NULL;
 }

@@ -374,7 +374,9 @@ dpt_search_prior
 	: dpt_search_condition
 	| dpt_search_condition RDO_Priority fun_arithm
 	{
-		if (!PARSER->getLastDPTSearch()->setPrior(PARSER->stack().pop<RDOFUNArithm>($3)))
+		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm);
+		if (!PARSER->getLastDPTSearch()->setPrior(pArithm))
 		{
 			PARSER->error().error(@3, _T("“очка прин€ти€ решений пока не может иметь приоритет"));
 		}
@@ -684,7 +686,9 @@ dpt_some_prior
 	: dpt_some_condition
 	| dpt_some_condition RDO_Priority fun_arithm
 	{
-		if (!PARSER->getLastDPTSome()->setPrior(PARSER->stack().pop<RDOFUNArithm>($3)))
+		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm);
+		if (!PARSER->getLastDPTSome()->setPrior(pArithm))
 		{
 			PARSER->error().error(@3, _T("“очка прин€ти€ решений пока не может иметь приоритет"));
 		}
@@ -915,7 +919,9 @@ dpt_prior_prior
 	: dpt_prior_condition
 	| dpt_prior_condition RDO_Priority fun_arithm
 	{
-		if (!PARSER->getLastDPTPrior()->setPrior(PARSER->stack().pop<RDOFUNArithm>($3)))
+		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm);
+		if (!PARSER->getLastDPTPrior()->setPrior(pArithm))
 		{
 			PARSER->error().error(@3, _T("“очка прин€ти€ решений пока не может иметь приоритет"));
 		}
@@ -998,7 +1004,9 @@ dpt_prior_activ_prior
 	: /* empty */
 	| RDO_CF '=' fun_arithm
 	{
-		if (!PARSER->getLastDPTPrior()->getLastActivity()->setPrior(PARSER->stack().pop<RDOFUNArithm>($3)))
+		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm);
+		if (!PARSER->getLastDPTPrior()->getLastActivity()->setPrior(pArithm))
 		{
 			PARSER->error().error(@3, _T("јктивность не может иметь приоритет"));
 		}

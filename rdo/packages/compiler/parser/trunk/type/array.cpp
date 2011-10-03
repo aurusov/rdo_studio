@@ -43,6 +43,8 @@ inline tstring RDOArrayType::name() const
 
 LPRDOType RDOArrayType::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
+	UNUSED(from_src_info);
+
 	switch (from->typeID())
 	{
 	case rdoRuntime::RDOType::t_array:

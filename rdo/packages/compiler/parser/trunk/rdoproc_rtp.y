@@ -253,7 +253,8 @@ prc_rtp_main
 			// Создадим тип ресурса-транзакта
 			rdoMBuilder::RDOResType rtp(rtp_name, rdoMBuilder::RDOResType::rt_temporary);
 			// Добавим параметр Время_создания
-			rtp.m_params.append(rdoMBuilder::RDOResType::Param(rtp_param_name, rdo::Factory<RDOType__real>::create()));
+			rdoMBuilder::RDOResType::Param param(rtp_param_name, rdo::Factory<RDOType__real>::create());
+			rtp.m_params.append(param);
 			// Добавим тип ресурса
 			if (!rtpList.append<rdoRuntime::RDOResourceTypeTransact>(rtp))
 			{

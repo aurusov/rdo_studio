@@ -55,11 +55,17 @@ void RDOParserRDOItem::parse(CREF(LPRDOParser) pParser)
 	switch (m_from)
 	{
 		case sf_repository:
-			kernel->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &rdoRepository::RDOThreadRepository::FileData(m_type, in_stream));
+		{
+			rdoRepository::RDOThreadRepository::FileData fileData(m_type, in_stream);
+			kernel->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &fileData);
 			break;
+		}
 		case sf_editor:
-			kernel->sendMessage(kernel->studio(), RDOThread::RT_STUDIO_MODEL_GET_TEXT, &rdoRepository::RDOThreadRepository::FileData(m_type, in_stream));
+		{
+			rdoRepository::RDOThreadRepository::FileData fileData(m_type, in_stream);
+			kernel->sendMessage(kernel->studio(), RDOThread::RT_STUDIO_MODEL_GET_TEXT, &fileData);
 			break;
+		}
 	}
 	if (in_stream.good())
 	{
@@ -95,7 +101,7 @@ ruint RDOParserRDOItem::lexer_loc_line()
 	}
 	else
 	{
-		return rdoRuntime::RDOSrcInfo::Position::UNDEFINE_LINE;
+		return ruint(rdoRuntime::RDOSrcInfo::Position::UNDEFINE_LINE);
 	}
 }
 

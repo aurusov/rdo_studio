@@ -22,7 +22,7 @@ OPEN_RDO_CONVERTER_NAMESPACE
 
 int  cnv_frmparse(PTR(void) lexer);
 int  cnv_frmlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void cnv_frmerror(PTR(char) mes);
+void cnv_frmerror(PTR(char) message);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFRMFrame

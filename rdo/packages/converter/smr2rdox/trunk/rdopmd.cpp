@@ -29,8 +29,10 @@ int cnv_pmdlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void cnv_pmderror(PTR(char) mes)
-{}
+void cnv_pmderror(PTR(char) message)
+{
+	UNUSED(message);
+}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDPokaz

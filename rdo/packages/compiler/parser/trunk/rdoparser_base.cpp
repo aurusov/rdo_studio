@@ -92,7 +92,7 @@ void RDOParserContainer::getMinMax(rdoModelObjects::RDOParseType type, REF(ruint
 		case rdoModelObjects::obFRM : min = 1000; max = 1099; break;
 		case rdoModelObjects::obSMR : min = 1100; max = 1199; break;
 		case rdoModelObjects::obPOST: min = 1200; max = 1299; break;
-		default                     : min = UNDEFINED_ID; max = UNDEFINED_ID; break;
+		default                     : min = ruint(UNDEFINED_ID); max = ruint(UNDEFINED_ID); break;
 	}
 }
 

@@ -243,7 +243,9 @@ ext_param_type
 ext_par_type_enum
 	: param_type_enum RDO_IDENTIF
 	{
-		PTR(RDOEnumType) enu = reinterpret_cast<PTR(RDOEnumType)>($1);
+		LPTypeInfo pType = PARSER->stack().pop<TypeInfo>($1);
+		ASSERT(pType);
+		$$ = PARSER->stack().push(pType);
 	}
 	;
 

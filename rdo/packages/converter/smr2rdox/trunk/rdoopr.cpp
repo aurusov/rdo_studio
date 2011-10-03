@@ -27,8 +27,10 @@ int cnv_oprlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void cnv_oprerror(PTR(char) mes)
-{}
+void cnv_oprerror(PTR(char) message)
+{
+	UNUSED(message);
+}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOOPROperation

@@ -29,7 +29,9 @@ int cnv_rsslex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 }
 
 void cnv_rsserror(PTR(char) message)
-{}
+{
+	UNUSED(message);
+}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDORSSResource

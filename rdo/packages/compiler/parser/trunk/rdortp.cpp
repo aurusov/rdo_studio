@@ -27,8 +27,10 @@ int rtplex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void rtperror(PTR(char) mes)
-{}
+void rtperror(PTR(char) message)
+{
+	UNUSED(message);
+}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDORTPResType
@@ -60,6 +62,8 @@ void RDORTPResType::addParam(CREF(LPRDORTPParam) param)
 
 void RDORTPResType::addParam(CREF(tstring) param_name, rdoRuntime::RDOType::TypeID param_typeID)
 {
+	UNUSED(param_name  );
+	UNUSED(param_typeID);
 }
 
 LPRDORTPParam RDORTPResType::findRTPParam(CREF(tstring) paramName) const

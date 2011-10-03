@@ -28,8 +28,10 @@ int cnv_rtplex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void cnv_rtperror(PTR(char) mes)
-{}
+void cnv_rtperror(PTR(char) message)
+{
+	UNUSED(message);
+}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDORTPResType

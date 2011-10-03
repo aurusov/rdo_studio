@@ -591,8 +591,8 @@ pat_rel_res
 				tstring str = LEXER->YYText();
 				rdo::toLower(str);
 				tstring::size_type first_nochange = str.find(_T("nochange"));
-				int i = 0;
-				while (true)
+				ruint i = 0;
+				for (;;)
 				{
 					if (str[i] == '\n')
 					{
@@ -648,8 +648,8 @@ pat_rel_res
 				tstring str = LEXER->YYText();
 				rdo::toLower(str);
 				tstring::size_type first_nochange = str.find(_T("nochange"));
-				int i = 0;
-				while (true)
+				ruint i = 0;
+				for (;;)
 				{
 					if (str[i] == '\n')
 					{

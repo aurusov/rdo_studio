@@ -94,12 +94,20 @@ template <class T>
 class compareName
 {
 public:
+	compareName(CREF(compareName<T>) obj)
+		: m_name(obj.m_name)
+	{}
 	compareName(CREF(tstring) name)
 		: m_name(name)
 	{}
-	rbool operator() (CPTR(T) obj)
+	REF(compareName<T>) operator= (CREF(compareName<T>) obj)
 	{
-		return obj->name() == m_name;
+		m_name = obj.m_name;
+		return *this;
+	}
+	rbool operator() (CPTR(T) pObj)
+	{
+		return pObj->name() == m_name;
 	}
 	rbool operator() (CREF(rdo::intrusive_ptr<T>) pObj)
 	{
@@ -114,9 +122,17 @@ template <class T>
 class compareNameRef
 {
 public:
+	compareNameRef(CREF(compareNameRef<T>) obj)
+		: m_name(obj.m_name)
+	{}
 	compareNameRef(CREF(tstring) name)
 		: m_name(name)
 	{}
+	REF(compareNameRef<T>) operator= (CREF(compareNameRef<T>) obj)
+	{
+		m_name = obj.m_name;
+		return *this;
+	}
 	rbool operator() (CREF(T) obj)
 	{
 		return obj.name() == m_name;

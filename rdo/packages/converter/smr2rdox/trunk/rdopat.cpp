@@ -29,8 +29,10 @@ int cnv_patlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void cnv_paterror(PTR(char) mes)
-{}
+void cnv_paterror(PTR(char) message)
+{
+	UNUSED(message);
+}
 
 int pat_preparse_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
@@ -39,8 +41,10 @@ int pat_preparse_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void pat_preparse_error(PTR(char) mes)
-{}
+void pat_preparse_error(PTR(char) message)
+{
+	UNUSED(message);
+}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPATPattern

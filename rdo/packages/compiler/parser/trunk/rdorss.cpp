@@ -29,7 +29,9 @@ int rsslex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 }
 
 void rsserror(PTR(char) message)
-{}
+{
+	UNUSED(message);
+}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDORSSResource

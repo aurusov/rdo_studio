@@ -371,7 +371,9 @@ pmd_pokaz
 	{
 		LPRDOPMDWatchQuant pWatchQuant = PARSER->stack().pop<RDOPMDWatchQuant>($1);
 		ASSERT(pWatchQuant);
-		pWatchQuant->setLogic(PARSER->stack().pop<RDOFUNLogic>($2));
+		LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($2);
+		ASSERT(pLogic);
+		pWatchQuant->setLogic(pLogic);
 		$$ = PARSER->stack().push(pWatchQuant);
 	}
 	| pmd_pokaz_watch_quant_begin RDO_NoCheck
@@ -393,14 +395,20 @@ pmd_pokaz
 	{
 		LPRDOPMDWatchValue pWatchValue = PARSER->stack().pop<RDOPMDWatchValue>($1);
 		ASSERT(pWatchValue);
-		pWatchValue->setLogic(PARSER->stack().pop<RDOFUNLogic>($2), PARSER->stack().pop<RDOFUNArithm>($3));
+		LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($2);
+		ASSERT(pLogic);
+		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm);
+		pWatchValue->setLogic(pLogic, pArithm);
 		$$ = PARSER->stack().push(pWatchValue);
 	}
 	| pmd_pokaz_watch_value_begin RDO_NoCheck fun_arithm
 	{
 		LPRDOPMDWatchValue pWatchValue = PARSER->stack().pop<RDOPMDWatchValue>($1);
 		ASSERT(pWatchValue);
-		pWatchValue->setLogicNoCheck(PARSER->stack().pop<RDOFUNArithm>($3));
+		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm);
+		pWatchValue->setLogicNoCheck(pArithm);
 		$$ = PARSER->stack().push(pWatchValue);
 	}
 	| pmd_pokaz_watch_value_begin fun_logic error

@@ -26,8 +26,10 @@ int frmlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void frmerror(PTR(char) mes)
-{}
+void frmerror(PTR(char) message)
+{
+	UNUSED(message);
+}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFRMFrame
@@ -44,6 +46,8 @@ RDOFRMFrame::RDOFRMFrame(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic)
 
 LPContext RDOFRMFrame::onFindContext(CREF(RDOValue) value) const
 {
+	UNUSED(value);
+
 	//! Код из RDOFUNArithm::init(CREF(RDOValue) resName, CREF(RDOValue) parName)
 	//! Зачем он нужен - непонятно
 	//! Его задача - сгенерить исключение в рантайме, почему это не сделать в парсере ?

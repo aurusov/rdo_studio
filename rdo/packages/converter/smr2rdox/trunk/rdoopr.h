@@ -24,7 +24,7 @@ OPEN_RDO_CONVERTER_NAMESPACE
 
 int  cnv_oprparse(PTR(void) lexer);
 int  cnv_oprlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void cnv_oprerror(PTR(char) mes);
+void cnv_oprerror(PTR(char) message);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOOPROperation

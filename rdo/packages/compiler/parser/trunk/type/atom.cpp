@@ -43,6 +43,9 @@ DECLARE_ATOM_TYPE_PARSER(string,        _T("string")       );
 // --------------------------------------------------------------------------------
 LPRDOType RDOType__unknow::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
+	UNUSED(from       );
+	UNUSED(to_src_info);
+
 	rdoParse::g_error().error(src_info, rdo::format(_T("Внутренная ошибка парсера. Невозможно преобразовать тип '%s' к неизвестному типу"), from_src_info.src_text().c_str()));
 	return NULL;
 }
@@ -67,6 +70,7 @@ rdoRuntime::RDOValue RDOType__unknow::get_default() const
 
 void RDOType__unknow::writeModelStructure(REF(std::ostream) stream) const
 {
+	UNUSED(stream);
 	rdoParse::g_error().error(RDOParserSrcInfo(), _T("Внутренная ошибка парсера. Невозможно записать неизвестный тип в отчет"));
 	NEVER_REACH_HERE;
 }
@@ -76,6 +80,8 @@ void RDOType__unknow::writeModelStructure(REF(std::ostream) stream) const
 // --------------------------------------------------------------------------------
 LPRDOType RDOType__void::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
+	UNUSED(to_src_info);
+
 	if (from->type()->typeID() == rdoRuntime::RDOType::t_void)
 	{
 		return rdo::Factory<RDOType__void>::create();
@@ -109,6 +115,7 @@ rdoRuntime::RDOValue RDOType__void::get_default() const
 
 void RDOType__void::writeModelStructure(REF(std::ostream) stream) const
 {
+	UNUSED(stream);
 	rdoParse::g_error().error(RDOParserSrcInfo(), _T("Внутренная ошибка парсера. Невозможно записать void-тип в отчет"));
 	NEVER_REACH_HERE;
 }
@@ -285,6 +292,8 @@ void RDOType__string::writeModelStructure(REF(std::ostream) stream) const
 // --------------------------------------------------------------------------------
 LPRDOType RDOType__identificator::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
+	UNUSED(to_src_info);
+
 	switch (from->type()->typeID())
 	{
 	case rdoRuntime::RDOType::t_identificator:
@@ -321,6 +330,7 @@ rdoRuntime::RDOValue RDOType__identificator::get_default() const
 
 void RDOType__identificator::writeModelStructure(REF(std::ostream) stream) const
 {
+	UNUSED(stream);
 	rdoParse::g_error().error(RDOParserSrcInfo(), _T("Внутренная ошибка парсера. Невозможно записать тип идектификатор в отчет"));
 	NEVER_REACH_HERE;
 }

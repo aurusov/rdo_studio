@@ -27,11 +27,11 @@ OPEN_RDO_PARSER_NAMESPACE
 
 int  smr_file_parse(PTR(void) lexer);
 int  smr_file_lex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void smr_file_error(PTR(char) mes);
+void smr_file_error(PTR(char) message);
 
 int  smr_sim_parse (PTR(void) lexer);
 int  smr_sim_lex   (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void smr_sim_error (PTR(char) mes);
+void smr_sim_error (PTR(char) message);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOSMR

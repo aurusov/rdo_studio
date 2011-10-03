@@ -23,7 +23,7 @@ OPEN_RDO_CONVERTER_NAMESPACE
 
 int  cnv_pmdparse(PTR(void) lexer);
 int  cnv_pmdlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void cnv_pmderror(PTR(char) mes);
+void cnv_pmderror(PTR(char) message);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDPokaz

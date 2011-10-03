@@ -308,7 +308,9 @@ dpt_process_prior
 	: /* empty */
 	| RDO_Priority fun_arithm
 	{
-		if (!PARSER->getLastPROCProcess()->setPrior(PARSER->stack().pop<RDOFUNArithm>($2)))
+		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
+		ASSERT(pArithm);
+		if (!PARSER->getLastPROCProcess()->setPrior(pArithm))
 		{
 			PARSER->error().error(@2, _T("Процесс не может иметь приоритет"));
 		}
@@ -534,7 +536,6 @@ dpt_assign_param
 	{
 		tstring res   = P_RDOVALUE($1)->value().getIdentificator();
 		tstring param = P_RDOVALUE($3)->value().getIdentificator();
-		CREF(RDOParserSrcInfo) info = @1;
 		rdoMBuilder::RDOResType rtp;
 
 		// Получили список всех ресурсов

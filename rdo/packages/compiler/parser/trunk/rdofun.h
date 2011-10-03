@@ -36,7 +36,7 @@ OPEN_RDO_PARSER_NAMESPACE
 
 int  funparse(PTR(void) lexer);
 int  funlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void funerror(PTR(char) mes);
+void funerror(PTR(char) message);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNDoubleToIntByResult

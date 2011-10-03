@@ -24,7 +24,7 @@ OPEN_RDO_PARSER_NAMESPACE
 
 int  frmparse(PTR(void) lexer);
 int  frmlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
-void frmerror(PTR(char) mes);
+void frmerror(PTR(char) message);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFRMFrame

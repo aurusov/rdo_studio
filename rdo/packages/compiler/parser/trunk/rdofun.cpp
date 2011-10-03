@@ -37,8 +37,10 @@ int funlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 	return LEXER->yylex();
 }
 
-void funerror(PTR(char) mes)
-{}
+void funerror(PTR(char) message)
+{
+	UNUSED(message);
+}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNDoubleToIntByResult
@@ -332,6 +334,8 @@ void RDOFUNArithm::castValue(CREF(LPRDOFUNArithm) pSecond, CREF(tstring) error)
 template <class T>
 rdoRuntime::LPRDOCalc RDOFUNArithm::generateCalc(CREF(rdoRuntime::RDOSrcInfo::Position) position, CREF(tstring) error)
 {
+	UNUSED(error);
+
 	rdoRuntime::LPRDOCalc pCalc = rdoRuntime::RDOCalcUnaryBase::generateCalc<T>(position, m_pExpression->calc());
 	ASSERT(pCalc);
 	return pCalc;
@@ -676,7 +680,7 @@ LPRDOFUNArithm RDOFUNParams::createCall(CREF(tstring) funName)
 		return createSeqCall(funName);
 	}
 
-	int nParams = pFunction->getParams().size();
+	ruint nParams = pFunction->getParams().size();
 	if (nParams != m_paramList.size())
 	{
 		RDOParser::s_parser()->error().error(src_info(), rdo::format(_T("Неверное количество параметров функции: %s"), funName.c_str()));
@@ -686,7 +690,7 @@ LPRDOFUNArithm RDOFUNParams::createCall(CREF(tstring) funName)
 	rdoRuntime::LPRDOCalcFunctionCall pFuncCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCall>::create(pFunction->getFunctionCalc());
 	pFunction->insertPostLinked(pFuncCall);
 	pFuncCall->setSrcInfo(src_info());
-	for (int i = 0; i < nParams; i++)
+	for (ruint i = 0; i < nParams; i++)
 	{
 		LPTypeInfo pFuncParam = pFunction->getParams()[i]->getTypeInfo();
 		LPRDOFUNArithm pArithm = m_paramList[i];
@@ -714,7 +718,9 @@ LPRDOFUNArithm RDOFUNParams::createSeqCall(CREF(tstring) seqName)
 	{
 		RDOParser::s_parser()->error().error(m_funseqName, rdo::format(_T("Неопределенная функция или последовательность: %s"), seqName.c_str()));
 	}
-	LPRDOFUNArithm pArithm = pSequence->createCallCalc(LPRDOFUNParams(this), src_info());
+	LPRDOFUNParams pThis(this);
+	ASSERT(pThis);
+	LPRDOFUNArithm pArithm = pSequence->createCallCalc(pThis, src_info());
 	ASSERT(pArithm);
 	return pArithm;
 }
@@ -1236,6 +1242,7 @@ RDOFUNFunctionListElementEq::RDOFUNFunctionListElementEq(CREF(YYLTYPE) position)
 
 rdoRuntime::LPRDOCalcConst RDOFUNFunctionListElementEq::createResultCalc(CREF(LPTypeInfo) pRetType, CREF(RDOParserSrcInfo) src_pos) const
 {
+	UNUSED(pRetType);
 	RDOParser::s_parser()->error().error(src_pos, _T("Внутренная ошибка парсера: RDOFUNFunctionListElementEq::createResultCalc"));
 	NEVER_REACH_HERE;
 	return NULL;
@@ -1484,8 +1491,8 @@ void RDOFUNFunction::createTableCalc(CREF(YYLTYPE) elements_pos)
 		}
 		++it;
 	}
-	int param_cnt = m_paramList.size();
-	int range     = 1;
+	int   param_cnt = m_paramList.size();
+	ruint range     = 1;
 	rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcConst>::create(0);
 	ASSERT(pCalc);
 	pCalc->setSrcInfo(src_info());
@@ -1509,7 +1516,6 @@ void RDOFUNFunction::createTableCalc(CREF(YYLTYPE) elements_pos)
 		rdoRuntime::LPRDOCalcMult pCalcMult = rdo::Factory<rdoRuntime::RDOCalcMultEnumSafe>::create(pCalcConst2, pValue2);
 		rdoRuntime::LPRDOCalcPlus pCalcAdd  = rdo::Factory<rdoRuntime::RDOCalcPlusEnumSafe>::create(pCalcMult, pCalc);
 
-		rbool found = false;
 		switch (pFunctionParam->getTypeInfo()->type()->typeID())
 		{
 		case rdoRuntime::RDOType::t_int:
@@ -1544,7 +1550,7 @@ void RDOFUNFunction::createTableCalc(CREF(YYLTYPE) elements_pos)
 	rdoRuntime::LPRDOFuncTableCalc pFuncTableCalc = rdo::Factory<rdoRuntime::RDOFuncTableCalc>::create(pCalc);
 	ASSERT(pFuncTableCalc);
 	pFuncTableCalc->setSrcInfo(src_info());
-	for (int currElem = 0; currElem < range; currElem++)
+	for (ruint currElem = 0; currElem < range; currElem++)
 	{
 		LPRDOFUNFunctionListElement pListElement = m_elementList.at(currElem);
 		ASSERT(pListElement);

@@ -386,7 +386,9 @@ smr_cond
 	}
 	| smr_cond RDO_Terminate_if fun_logic
 	{
-		PARSER->getSMR()->setTerminateIf(PARSER->stack().pop<RDOFUNLogic>($3));
+		LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($3);
+		ASSERT(pLogic);
+		PARSER->getSMR()->setTerminateIf(pLogic);
 	}
 	| smr_cond RDO_Terminate_if error
 	{
@@ -396,7 +398,9 @@ smr_cond
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
-		pSMR->insertBreakPoint(P_RDOVALUE($3)->src_info(), PARSER->stack().pop<RDOFUNLogic>($4));
+		LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($4);
+		ASSERT(pLogic);
+		pSMR->insertBreakPoint(P_RDOVALUE($3)->src_info(), pLogic);
 	}
 	| smr_cond RDO_Break_point RDO_IDENTIF error
 	{
@@ -408,7 +412,9 @@ smr_cond
 	}
 	| smr_cond RDO_IDENTIF '=' fun_arithm
 	{
-		PARSER->getSMR()->setConstValue(P_RDOVALUE($2)->src_info(), PARSER->stack().pop<RDOFUNArithm>($4));
+		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($4);
+		ASSERT(pArithm);
+		PARSER->getSMR()->setConstValue(P_RDOVALUE($2)->src_info(), pArithm);
 	}
 	| smr_cond RDO_IDENTIF '=' error
 	{
@@ -420,7 +426,9 @@ smr_cond
 	}
 	| smr_cond RDO_IDENTIF '.' RDO_IDENTIF '=' fun_arithm
 	{
-		PARSER->getSMR()->setResParValue(P_RDOVALUE($2)->src_info(), P_RDOVALUE($4)->src_info(), PARSER->stack().pop<RDOFUNArithm>($6));
+		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($6);
+		ASSERT(pArithm);
+		PARSER->getSMR()->setResParValue(P_RDOVALUE($2)->src_info(), P_RDOVALUE($4)->src_info(), pArithm);
 	}
 	| smr_cond RDO_IDENTIF '.' RDO_IDENTIF '=' error
 	{
