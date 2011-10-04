@@ -21,10 +21,10 @@
 // --------------------------------------------------------------------------------
 
 const long int g_seed     = 123456789;                  //!< база генератора
-const tstring  g_fileName = _T("data_normal.txt");  //!< файл данных
+const tstring  g_fileName = _T("data_normal.txt");      //!< файл данных
 const ruint    g_count    = 100000;                     //!< количество генерируемых данных
-const double   g_from     = 1.0;                        //!< параметр закона
-const double   g_to       = 7.0;                        //!< параметр закона
+const double   g_main     = 10.0;                       //!< параметр закона
+const double   g_var      = 1.0;                        //!< параметр закона
 
 typedef std::list <double> Container;
 
@@ -32,4 +32,25 @@ BOOST_AUTO_TEST_SUITE(RDOTriangularTest)
 
 BOOST_AUTO_TEST_CASE(RDOTriangularTestCreate)
 {
+	if (rdo::File::exist(g_fileName.c_str()))
+		return;
+
+	rdoRuntime::RandGeneratorNormal normal(g_seed);
+	Container base;
+
+	for (int i = 0; i < g_count; ++i)
+	{
+		base.push_back(normal.next(g_main,g_var));
+	}
+
+	std::ofstream strm(g_fileName.c_str());
+	
+	strm.precision(20);
+
+	STL_FOR_ALL(base,it)
+	{
+		strm << *it << std::endl;
+	}
 }
+
+BOOST_AUTO_TEST_SUITE_END()
