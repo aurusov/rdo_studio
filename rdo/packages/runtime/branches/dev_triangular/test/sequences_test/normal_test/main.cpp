@@ -51,6 +51,32 @@ BOOST_AUTO_TEST_CASE(RDOTriangularTestCreate)
 	{
 		strm << *it << std::endl;
 	}
+	strm.close();
+}
+
+BOOST_AUTO_TEST_CASE(RDOTriangularTestCheck)
+{
+	std::ifstream strm(g_fileName.c_str());
+	BOOST_CHECK(strm.good());
+
+	Container test,base;
+	rdoRuntime::RandGeneratorNormal normal(g_seed);
+	for (int i = 0; i < g_count; ++i)
+	{
+		test.push_back(normal.next(g_main,g_var));
+	}
+
+	strm.precision(20);
+
+	STL_FOR_ALL(test,it)
+	{
+		BOOST_CHECK(strm.good());
+		double val;
+		strm >> val;
+		BOOST_CHECK(val == *it);
+	}
+
+	strm.close();
 }
 
 BOOST_AUTO_TEST_SUITE_END()
