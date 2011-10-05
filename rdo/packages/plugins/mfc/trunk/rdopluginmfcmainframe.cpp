@@ -154,6 +154,10 @@ int RDOPluginMFCLogCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 
 void RDOPluginMFCLogCtrl::OnSize( UINT nType, int cx, int cy )
 {
+	UNUSED(nType);
+	UNUSED(cx   );
+	UNUSED(cy   );
+
 	TRACE( "S. %d, %d, %d, %d\n", ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId() );
 		//In our case OnSize() invalidates all needed rectangles.
 		//Default handler invalidates all client area.
@@ -348,6 +352,9 @@ void RDOPluginMFCLogCtrl::OnPaint()
 
 void RDOPluginMFCLogCtrl::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar )
 {
+	UNUSED(nPos      );
+	UNUSED(pScrollBar);
+
 	int inc;
 	SCROLLINFO si;
 	si.cbSize = sizeof( si );
@@ -383,6 +390,9 @@ void RDOPluginMFCLogCtrl::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrol
 
 void RDOPluginMFCLogCtrl::OnVScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar )
 {
+	UNUSED(nPos      );
+	UNUSED(pScrollBar);
+
 	int inc;
 	SCROLLINFO si;
 	si.cbSize = sizeof( si );
@@ -424,7 +434,8 @@ void RDOPluginMFCLogCtrl::OnVScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrol
 
 BOOL RDOPluginMFCLogCtrl::OnEraseBkgnd(CDC* pDC) 
 {
-  return TRUE;
+	UNUSED(pDC);
+	return TRUE;
 }
 
 void RDOPluginMFCLogCtrl::OnSetFocus( CWnd* pOldWnd )
@@ -443,6 +454,9 @@ void RDOPluginMFCLogCtrl::OnKillFocus( CWnd* pNewWnd )
 
 void RDOPluginMFCLogCtrl::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 {
+	UNUSED(nRepCnt);
+	UNUSED(nFlags );
+
 	WORD scrollNotify = 0xFFFF;
 	UINT msg = WM_VSCROLL;
 	
@@ -494,6 +508,9 @@ void RDOPluginMFCLogCtrl::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 
 BOOL RDOPluginMFCLogCtrl::OnMouseWheel( UINT nFlags, short zDelta, CPoint pt )
 {
+	UNUSED(nFlags);
+	UNUSED(pt    );
+
 	WORD scrollNotify = 0xFFFF;
 	
 	if ( zDelta < 0 )

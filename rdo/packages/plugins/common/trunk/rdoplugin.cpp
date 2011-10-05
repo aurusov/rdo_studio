@@ -1,15 +1,20 @@
 #include <windows.h>
 
 #define RDOPLUGIN_EXPORTS
+#include "utils/rdomacros.h"
 #include "app/rdo_studio_mfc/plugins/common/rdoplugin.h"
 
-int WINAPI DllMain( HINSTANCE hinst, DWORD fdwReason, PVOID pvReserved )
+int WINAPI DllMain(HINSTANCE hinst, DWORD fdwReason, PVOID pvReserved)
 {
-	switch( fdwReason ) {
-		case DLL_PROCESS_ATTACH: break;
-		case DLL_PROCESS_DETACH: break;
-		case DLL_THREAD_ATTACH :
-		case DLL_THREAD_DETACH : break;
+	UNUSED(hinst     );
+	UNUSED(pvReserved);
+
+	switch(fdwReason)
+	{
+	case DLL_PROCESS_ATTACH: break;
+	case DLL_PROCESS_DETACH: break;
+	case DLL_THREAD_ATTACH :
+	case DLL_THREAD_DETACH : break;
 	}
 	return TRUE;
 }
@@ -30,6 +35,7 @@ void __stdcall getPluginInfo( rdoPlugin::PluginInfo* info )
 
 bool __stdcall startPlugin( const rdoPlugin::Studio* studio )
 {
+	UNUSED(studio);
 	return true;
 }
 
@@ -44,12 +50,16 @@ const int __stdcall enumMessages()
 
 void __stdcall pluginProc( const int message, const int param1 )
 {
+	UNUSED(message);
+	UNUSED(param1 );
 }
 
 void __stdcall trace( const char* line )
 {
+	UNUSED(line);
 }
 
 void __stdcall results( const char* lines )
 {
+	UNUSED(lines);
 }

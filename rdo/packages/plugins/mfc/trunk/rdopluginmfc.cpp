@@ -86,6 +86,8 @@ const int __stdcall enumMessages()
 
 void __stdcall pluginProc( const int message, void* param1 )
 {
+	UNUSED(param1);
+
 	TRACE( "5. %d, %d, %d, %d\n", ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId() );
 	switch ( message ) {
 		case rdoPlugin::PM_MODEL_NEW: {
