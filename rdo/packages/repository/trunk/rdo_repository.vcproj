@@ -115,8 +115,6 @@
 				WholeProgramOptimization="true"
 				AdditionalIncludeDirectories="../"
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;WINVER=0x0501;BOOST_TYPEOF_SILENT"
-				StringPooling="true"
-				EnableFunctionLevelLinking="true"
 				WarningLevel="4"
 			/>
 			<Tool
@@ -179,7 +177,6 @@
 				Optimization="0"
 				AdditionalIncludeDirectories="../;../thirdparty/corba/include"
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
-				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				BrowseInformation="1"
 				WarningLevel="4"
@@ -246,8 +243,6 @@
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../;../thirdparty/corba/include"
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501;BOOST_TYPEOF_SILENT"
-				StringPooling="true"
-				EnableFunctionLevelLinking="true"
 				BrowseInformation="1"
 				WarningLevel="4"
 			/>
@@ -378,8 +373,6 @@
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../"
 				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501;BOOST_TYPEOF_SILENT"
-				StringPooling="true"
-				EnableFunctionLevelLinking="true"
 				BrowseInformation="1"
 				WarningLevel="4"
 			/>
