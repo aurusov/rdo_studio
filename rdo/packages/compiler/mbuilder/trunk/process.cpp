@@ -34,6 +34,8 @@ void BlockForQueue::createRes(RDOResType rtp, CREF(tstring) res_name)
 
 rbool BlockForQueue::checkType(RDOResType rtp, CREF(rdoParse::RDOParserSrcInfo) info)
 {
+	UNUSED(info);
+
 	// "длина_очереди"
 	tstring rtp_param_name = rdoRuntime::RDOPROCQueue::getQueueParamName();
 	// Тип найден, проверим его на наличие параметра "длина_очереди"
@@ -60,7 +62,8 @@ RDOResType BlockForQueue::createType(CREF(tstring) rtp_name, CREF(rdoParse::RDOP
 	// Создадим тип ресурса
 	RDOResType rtp(rtp_name);
 	// Создадим параметр типа integer
-	rtp.m_params.append(RDOResType::Param(rtp_param_name, rdo::Factory<rdoParse::RDOType__int>::create(), defaultValue));
+	RDOResType::Param param(rtp_param_name, rdo::Factory<rdoParse::RDOType__int>::create(), defaultValue);
+	rtp.m_params.append(param);
 	// Добавим тип ресурса
 	if (!rtpList.append<rdoRuntime::RDOResourceTypeProccess>(rtp))
 	{
@@ -133,11 +136,12 @@ RDOResType BlockForSeize::createType(CREF(tstring) rtp_name, CREF(rdoParse::RDOP
 	// Создадим тип ресурса
 	RDOResType rtp(rtp_name);
 	// Создадим параметр перечислимого типа - "Состояние"
-	rtp.m_params.append(RDOResType::Param(
+	RDOResType::Param param(
 		rtp_param_name,
 		rdoRuntime::RDOEnumType::Enums(rtp_state_free)(rtp_state_buzy),
 		defaultValue
-	));
+	);
+	rtp.m_params.append(param);
 	// Добавим тип ресурса
 	if (!rtpList.append<rdoRuntime::RDOResourceTypeProccess>(rtp))
 	{
