@@ -204,10 +204,10 @@ int RDOPATPattern::findPATPatternParamNum(CREF(tstring) paramName) const
 	return it != m_paramList.end() ? it - m_paramList.begin() : -1;
 }
 
-int RDOPATPattern::findRelevantResourceNum(CREF(tstring) resName) const
+ruint RDOPATPattern::findRelevantResourceNum(CREF(tstring) resName) const
 {
 	RelResList::const_iterator it = std::find_if(m_relResList.begin(), m_relResList.end(), compareName<RDORelevantResource>(resName));
-	return it != m_relResList.end() ? it - m_relResList.begin() : -1;
+	return it != m_relResList.end() ? it - m_relResList.begin() : ruint(~0);
 }
 
 void RDOPATPattern::add(CREF(LPRDOParam) pParam)
@@ -587,7 +587,9 @@ RDOPatternOperation::RDOPatternOperation(CREF(RDOParserSrcInfo) name_src_info, r
 RDOPatternOperation::RDOPatternOperation(rbool trace, CREF(RDOParserSrcInfo) name_src_info)
 	: RDOPATPattern  (name_src_info )
 	, m_convertorType(convert_unknow)
-{}
+{
+	UNUSED(trace);
+}
 
 void RDOPatternOperation::rel_res_insert(CREF(LPRDORelevantResource) pRelevantResource)
 {
@@ -598,6 +600,10 @@ void RDOPatternOperation::rel_res_insert(CREF(LPRDORelevantResource) pRelevantRe
 
 void RDOPatternOperation::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSrcInfo) type_info, rdoRuntime::RDOResource::ConvertStatus beg, CREF(YYLTYPE) convertor_pos)
 {
+	UNUSED(rel_info );
+	UNUSED(type_info);
+	UNUSED(beg      );
+
 	rdoConverter::g_error().error(convertor_pos, _T("¬нутренн€€ ошибка парсера"));
 }
 

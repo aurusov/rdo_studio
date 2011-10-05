@@ -376,7 +376,9 @@ dpt_search_prior
 	: dpt_search_condition
 	| dpt_search_condition RDO_Priority fun_arithm
 	{
-		if (!CONVERTER->getLastDPTSearch()->setPrior(CONVERTER->stack().pop<RDOFUNArithm>($3)))
+		LPRDOFUNArithm pArithm = CONVERTER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm);
+		if (!CONVERTER->getLastDPTSearch()->setPrior(pArithm))
 		{
 			CONVERTER->error().error(@3, _T("“очка прин€ти€ решений пока не может иметь приоритет"));
 		}
@@ -682,7 +684,9 @@ dpt_some_prior
 	: dpt_some_condition
 	| dpt_some_condition RDO_Priority fun_arithm
 	{
-		if (!CONVERTER->getLastDPTSome()->setPrior(CONVERTER->stack().pop<RDOFUNArithm>($3)))
+		LPRDOFUNArithm pArithm = CONVERTER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm);
+		if (!CONVERTER->getLastDPTSome()->setPrior(pArithm))
 		{
 			CONVERTER->error().error(@3, _T("“очка прин€ти€ решений пока не может иметь приоритет"));
 		}
@@ -908,7 +912,9 @@ dpt_prior_prior
 	: dpt_prior_condition
 	| dpt_prior_condition RDO_Priority fun_arithm
 	{
-		if (!CONVERTER->getLastDPTPrior()->setPrior(CONVERTER->stack().pop<RDOFUNArithm>($3)))
+		LPRDOFUNArithm pArithm = CONVERTER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm);
+		if (!CONVERTER->getLastDPTPrior()->setPrior(pArithm))
 		{
 			CONVERTER->error().error(@3, _T("“очка прин€ти€ решений пока не может иметь приоритет"));
 		}
@@ -986,7 +992,9 @@ dpt_prior_activ_prior
 	: /* empty */
 	| RDO_CF '=' fun_arithm
 	{
-		if (!CONVERTER->getLastDPTPrior()->getLastActivity()->setPrior(CONVERTER->stack().pop<RDOFUNArithm>($3)))
+		LPRDOFUNArithm pArithm = CONVERTER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm);
+		if (!CONVERTER->getLastDPTPrior()->getLastActivity()->setPrior(pArithm))
 		{
 			CONVERTER->error().error(@3, _T("јктивность не может иметь приоритет"));
 		}
@@ -1041,7 +1049,9 @@ dpt_free_prior
 	: dpt_free_header
 	| RDO_Priority fun_arithm dpt_free_header
 	{
-		if (!CONVERTER->getLastDPTFree()->setPrior(CONVERTER->stack().pop<RDOFUNArithm>($2)))
+		LPRDOFUNArithm pArithm = CONVERTER->stack().pop<RDOFUNArithm>($2);
+		ASSERT(pArithm);
+		if (!CONVERTER->getLastDPTFree()->setPrior(pArithm))
 		{
 			CONVERTER->error().error(@3, _T("“очка прин€ти€ решений пока не может иметь приоритет"));
 		}

@@ -51,7 +51,7 @@ void Document::init(rdoModelObjectsConvertor::RDOFileTypeIn type, REF(std::ifstr
 	case rdoModelObjectsConvertor::SMR_IN: typeOut = SMR; break;
 	case rdoModelObjectsConvertor::PMD_IN: typeOut = PMD; break;
 	case rdoModelObjectsConvertor::PMV_IN: typeOut = PMV; break;
-	default: NEVER_REACH_HERE;
+	default                              : typeOut = UNDEFINED; NEVER_REACH_HERE; break;
 	}
 	LPMemoryStream streamOut = getMemoryStream(typeOut);
 	streamOut->init(stream);
@@ -242,7 +242,7 @@ void Document::MemoryStream::init(REF(std::ifstream) stream)
 		return;
 	}
 
-	while (true)
+	for (;;)
 	{
 		char byte;
 		stream.get(byte);

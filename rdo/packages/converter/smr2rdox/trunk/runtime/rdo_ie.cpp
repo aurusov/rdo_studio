@@ -42,8 +42,8 @@ double RDOPatternIrregEvent::getNextTimeInterval(CREF(LPRDORuntime) pRuntime)
 RDOIrregEvent::RDOIrregEvent(PTR(RDOPatternIrregEvent) pPattern, rbool trace, CREF(tstring) name)
 	: RDOActivityPattern<RDOPatternIrregEvent>(pPattern, trace, name)
 {
-	setTrace  (trace);
-	setTraceID(~0   );
+	setTrace  (trace    );
+	setTraceID(ruint(~0));
 }
 
 void RDOIrregEvent::onStart(CREF(LPRDORuntime) pRuntime)
@@ -59,16 +59,20 @@ void RDOIrregEvent::onStop(CREF(LPRDORuntime) pRuntime)
 
 rbool RDOIrregEvent::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
 	return false;
 }
 
 IBaseOperation::BOResult RDOIrregEvent::onDoOperation(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
 }
 
 void RDOIrregEvent::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
 {
+	UNUSED(pParam);
+
 	pRuntime->inc_cnt_events();
 	onBeforeIrregularEvent(pRuntime);
 	convertEvent(pRuntime);
@@ -78,16 +82,19 @@ void RDOIrregEvent::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
 
 void RDOIrregEvent::convertEvent(CREF(LPRDORuntime) pRuntime) 
 { 
+	UNUSED(pRuntime);
 	NEVER_REACH_HERE;
 }
 
 void RDOIrregEvent::onBeforeIrregularEvent(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
 	NEVER_REACH_HERE;
 }
 
 void RDOIrregEvent::onAfterIrregularEvent(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
 	NEVER_REACH_HERE;
 }
 
@@ -99,6 +106,7 @@ double RDOIrregEvent::getNextTimeInterval(CREF(LPRDORuntime) pRuntime)
 
 IBaseOperation::BOResult RDOIrregEvent::onContinue(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
 }
 

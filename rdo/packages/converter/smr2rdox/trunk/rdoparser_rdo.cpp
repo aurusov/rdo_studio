@@ -78,7 +78,7 @@ ruint RDOParserRDOItem::lexer_loc_line()
 	}
 	else
 	{
-		return rdoRuntime::RDOSrcInfo::Position::UNDEFINE_LINE;
+		return ruint(rdoRuntime::RDOSrcInfo::Position::UNDEFINE_LINE);
 	}
 }
 

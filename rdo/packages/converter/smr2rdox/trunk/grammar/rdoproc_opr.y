@@ -289,7 +289,9 @@ dpt_process_prior
 	: /* empty */
 	| RDO_Priority fun_arithm
 	{
-		if (!CONVERTER->getLastPROCProcess()->setPrior(CONVERTER->stack().pop<RDOFUNArithm>($2)))
+		LPRDOFUNArithm pArithm = CONVERTER->stack().pop<RDOFUNArithm>($2);
+		ASSERT(pArithm);
+		if (!CONVERTER->getLastPROCProcess()->setPrior(pArithm))
 		{
 			CONVERTER->error().error(@2, _T("Процесс пока не может иметь приоритет"));
 		}

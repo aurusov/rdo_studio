@@ -110,7 +110,7 @@ public:
 	LPRDOParam            findPATPatternParam    (CREF(tstring) paramName) const;
 	int                   findPATPatternParamNum (CREF(tstring) paramName) const;
 	LPRDORelevantResource findRelevantResource   (CREF(tstring) resName  ) const;
-	int                   findRelevantResourceNum(CREF(tstring) resName  ) const;
+	ruint                 findRelevantResourceNum(CREF(tstring) resName  ) const;
 	virtual void          addRelRes              (CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSrcInfo) type_info, rdoRuntime::RDOResource::ConvertStatus beg, CREF(YYLTYPE) convertor_pos) = 0;
 
 	CREF(tstring) name() const { return src_text(); }

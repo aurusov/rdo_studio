@@ -312,7 +312,9 @@ pmd_pokaz
 	{
 		LPRDOPMDWatchQuant pWatchQuant = CONVERTER->stack().pop<RDOPMDWatchQuant>($1);
 		ASSERT(pWatchQuant);
-		pWatchQuant->setLogic(CONVERTER->stack().pop<RDOFUNLogic>($2));
+		LPRDOFUNLogic pLogic = CONVERTER->stack().pop<RDOFUNLogic>($2);
+		ASSERT(pLogic);
+		pWatchQuant->setLogic(pLogic);
 		$$ = CONVERTER->stack().push(pWatchQuant);
 	}
 	| pmd_pokaz_watch_quant_begin RDO_NoCheck
@@ -334,14 +336,20 @@ pmd_pokaz
 	{
 		LPRDOPMDWatchValue pWatchValue = CONVERTER->stack().pop<RDOPMDWatchValue>($1);
 		ASSERT(pWatchValue);
-		pWatchValue->setLogic(CONVERTER->stack().pop<RDOFUNLogic>($2), CONVERTER->stack().pop<RDOFUNArithm>($3));
+		LPRDOFUNArithm pArithm = CONVERTER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm);
+		LPRDOFUNLogic pLogic = CONVERTER->stack().pop<RDOFUNLogic>($2);
+		ASSERT(pLogic);
+		pWatchValue->setLogic(pLogic, pArithm);
 		$$ = CONVERTER->stack().push(pWatchValue);
 	}
 	| pmd_pokaz_watch_value_begin RDO_NoCheck fun_arithm
 	{
 		LPRDOPMDWatchValue pWatchValue = CONVERTER->stack().pop<RDOPMDWatchValue>($1);
 		ASSERT(pWatchValue);
-		pWatchValue->setLogicNoCheck(CONVERTER->stack().pop<RDOFUNArithm>($3));
+		LPRDOFUNArithm pArithm = CONVERTER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm);
+		pWatchValue->setLogicNoCheck(pArithm);
 		$$ = CONVERTER->stack().push(pWatchValue);
 	}
 	| pmd_pokaz_watch_value_begin fun_logic error

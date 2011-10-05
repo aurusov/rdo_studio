@@ -612,8 +612,8 @@ pat_rel_res
 				tstring str = LEXER->YYText();
 				rdo::toLower(str);
 				tstring::size_type first_nochange = str.find(_T("nochange"));
-				int i = 0;
-				while (true)
+				ruint i = 0;
+				for (;;)
 				{
 					if (str[i] == '\n')
 					{
@@ -669,8 +669,8 @@ pat_rel_res
 				tstring str = LEXER->YYText();
 				rdo::toLower(str);
 				tstring::size_type first_nochange = str.find(_T("nochange"));
-				int i = 0;
-				while (true)
+				ruint i = 0;
+				for (;;)
 				{
 					if (str[i] == '\n')
 					{
@@ -1573,8 +1573,6 @@ pat_convert_cmd
 			pCalc->setSrcPos (@2.m_first_line, @2.m_first_pos, @4.m_last_line, @4.m_last_pos);
 			pCmdList->insertCommand(pCalc);
 		}
-
-		YYLTYPE convertor_pos = @4;
 
 		LPDocUpdate pInsert = rdo::Factory<UpdateInsert>::create(@4.m_last_seek, _T(";"));
 		ASSERT(pInsert);

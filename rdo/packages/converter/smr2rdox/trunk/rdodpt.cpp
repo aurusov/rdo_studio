@@ -181,6 +181,7 @@ void RDODPTActivity::endParam(CREF(YYLTYPE) param_pos)
 
 rbool RDODPTActivity::setPrior(REF(LPRDOFUNArithm) pPrior)
 {
+	UNUSED(pPrior);
 	return false;
 }
 

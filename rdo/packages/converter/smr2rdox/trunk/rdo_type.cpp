@@ -42,6 +42,9 @@ DECLARE_ATOM_TYPE_PARSER(string,        _T("string")       );
 //! RDOType__unknow
 LPRDOType RDOType__unknow::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
+	UNUSED(from       );
+	UNUSED(to_src_info);
+
 	rdoConverter::g_error().error(src_info, rdo::format(_T("Внутренная ошибка парсера. Невозможно преобразовать тип '%s' к неизвестному типу"), from_src_info.src_text().c_str()));
 	return NULL;
 }
@@ -66,6 +69,8 @@ RDOValue RDOType__unknow::get_default() const
 
 void RDOType__unknow::writeModelStructure(REF(std::ostream) stream) const
 {
+	UNUSED(stream);
+
 	rdoConverter::g_error().error(RDOParserSrcInfo(), _T("Внутренная ошибка парсера. Невозможно записать неизвестный тип в отчет"));
 	NEVER_REACH_HERE;
 }
@@ -228,6 +233,9 @@ void RDOType__string::writeModelStructure(REF(std::ostream) stream) const
 //! RDOType__identificator
 LPRDOType RDOType__identificator::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
+	UNUSED(from       );
+	UNUSED(to_src_info);
+
 	rdoConverter::g_error().error(src_info, rdo::format(_T("Внутренная ошибка парсера. Невозможно преобразовать тип '%s' к идентификатору"), from_src_info.src_text().c_str()));
 	return NULL;
 }
@@ -252,6 +260,8 @@ RDOValue RDOType__identificator::get_default() const
 
 void RDOType__identificator::writeModelStructure(REF(std::ostream) stream) const
 {
+	UNUSED(stream);
+
 	rdoConverter::g_error().error(RDOParserSrcInfo(), _T("Внутренная ошибка парсера. Невозможно записать тип идектификатор в отчет"));
 	NEVER_REACH_HERE;
 }
