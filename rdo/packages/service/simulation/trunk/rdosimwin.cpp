@@ -23,6 +23,7 @@
 #include <math.h>
 #include <sstream>
 #include <algorithm>
+#include <boost/noncopyable.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/service/rdosimwin.h"
 #include "kernel/rdokernel.h"
@@ -361,7 +362,7 @@ public:
 		if (trace_str.empty()        ) return;
 		if (!m_pSimulator->m_canTrace) return;
 		tstring::size_type pos = 0;
-		while (true)
+		for (;;)
 		{
 			tstring::size_type next = trace_str.find('\n', pos);
 			tstring str = trace_str.substr(pos, next-pos);
@@ -422,7 +423,7 @@ private:
 		m_stream << bufferStr;
 
 		tstring::size_type pos = 0;
-		while (true)
+		for (;;)
 		{
 			tstring::size_type next = bufferStr.find('\n', pos);
 			tstring str = bufferStr.substr(pos, next-pos+1);
@@ -444,7 +445,7 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- RDOSimResultInformer
 // --------------------------------------------------------------------------------
-class RDOSimResultInformer: public rdoRuntime::RDOResults
+class RDOSimResultInformer: public rdoRuntime::RDOResults, public boost::noncopyable
 {
 public:
 	RDOSimResultInformer(REF(std::ostream) stream)
@@ -1193,6 +1194,8 @@ void RDOThreadSimulator::closeModel()
 
 void RDOThreadSimulator::parseSMRFileInfo(REF(rdo::textstream) smr, REF(rdoModelObjectsConvertor::RDOSMRFileInfo) info)
 {
+	UNUSED(smr);
+
 	try
 	{
 		rdoConverter::RDOParserModel converter;

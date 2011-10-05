@@ -12,6 +12,7 @@
 #define _CONVERTOR_RDOPAT_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/noncopyable.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "converter/smr2rdox/rdortp_param.h"
 #include "converter/smr2rdox/rdofun.h"
@@ -285,7 +286,9 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- RDORelevantResource
 // --------------------------------------------------------------------------------
-OBJECT(RDORelevantResource) IS INSTANCE_OF(RDOParserSrcInfo)
+OBJECT(RDORelevantResource)
+	IS  INSTANCE_OF(RDOParserSrcInfo  )
+	AND INSTANCE_OF(boost::noncopyable)
 {
 DECLARE_FACTORY(RDORelevantResource)
 public:

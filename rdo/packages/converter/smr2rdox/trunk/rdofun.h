@@ -12,6 +12,7 @@
 #define _CONVERTOR_RDOFUN_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/noncopyable.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "converter/smr2rdox/rdo_object.h"
 #include "converter/smr2rdox/rdo_value.h"
@@ -553,7 +554,9 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNGroupLogic
 // --------------------------------------------------------------------------------
-class RDOFUNGroupLogic: public RDOFUNGroup
+CLASS(RDOFUNGroupLogic):
+	    INSTANCE_OF(RDOFUNGroup       )
+	AND INSTANCE_OF(boost::noncopyable)
 {
 DECLARE_FACTORY(RDOFUNGroupLogic)
 public:

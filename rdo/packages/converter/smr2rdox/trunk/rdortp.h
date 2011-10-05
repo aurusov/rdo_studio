@@ -12,6 +12,7 @@
 #define _CONVERTOR_RDORTP_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/noncopyable.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "converter/smr2rdox/rdo_object.h"
 #include "converter/smr2rdox/rdo_value.h"
@@ -34,7 +35,9 @@ void cnv_rtperror(PTR(char) message);
 // --------------------------------------------------------------------------------
 class Converter;
 
-OBJECT(RDORTPResType) IS INSTANCE_OF(RDOParserSrcInfo)
+OBJECT(RDORTPResType)
+	IS  INSTANCE_OF(RDOParserSrcInfo  )
+	AND INSTANCE_OF(boost::noncopyable)
 {
 DECLARE_FACTORY(RDORTPResType);
 public:

@@ -12,6 +12,7 @@
 #define _CONVERTOR_RDORSS_RSS_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/noncopyable.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "converter/smr2rdox/rdo_object.h"
 #include "converter/smr2rdox/rdo_value.h"
@@ -32,7 +33,9 @@ void cnv_rsserror(PTR(char)    message);
 // --------------------------------------------------------------------------------
 // -------------------- RDORSSResource
 // --------------------------------------------------------------------------------
-OBJECT(RDORSSResource) IS INSTANCE_OF(RDOParserSrcInfo)
+OBJECT(RDORSSResource)
+	IS  INSTANCE_OF(RDOParserSrcInfo  )
+	AND INSTANCE_OF(boost::noncopyable)
 {
 DECLARE_FACTORY(RDORSSResource);
 public:

@@ -47,11 +47,18 @@ public:
 	t_bison_error_fun m_error_fun;
 	t_flex_lexer_fun  m_lexer_fun;
 
-	virtual void  parse  (PTR(Converter) pParser)                             {};
-	virtual void  parse  (PTR(Converter) pParser, REF(std::istream) streamIn) {};
+	virtual void parse(PTR(Converter) pParser)
+	{
+		UNUSED(pParser);
+	}
+	virtual void parse(PTR(Converter) pParser, REF(std::istream) streamIn)
+	{
+		UNUSED(pParser );
+		UNUSED(streamIn);
+	}
 
-	virtual ruint lexer_loc_line() { return rdoRuntime::RDOSrcInfo::Position::UNDEFINE_LINE; };
-	virtual ruint lexer_loc_pos()  { return 0;                                               };
+	virtual ruint lexer_loc_line() { return ruint(rdoRuntime::RDOSrcInfo::Position::UNDEFINE_LINE); };
+	virtual ruint lexer_loc_pos () { return 0; };
 
 	rbool needStream() const
 	{
