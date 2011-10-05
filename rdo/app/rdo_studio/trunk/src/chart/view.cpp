@@ -900,7 +900,7 @@ void RDOStudioChartView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollB
 	// take the scrolling position out of the scrolling range, 
 	// increment the scrolling position, adjust the position 
 	// of the scroll box, and update the window.
-	if ( inc = max ( -xPos, min ( inc, xMax - xPos ) ) ) {
+	if ( inc == max ( -xPos, min ( inc, xMax - xPos ) ) ) {
 		xPos += inc;
 		
 		setScrollPos( SB_HORZ, xPos );

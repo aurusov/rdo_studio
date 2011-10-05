@@ -585,7 +585,7 @@ bool RDOPluginMFCLogCtrl::scrollVertically( int inc )
 	// take the scrolling position out of the scrolling range, 
 	// increment the scrolling position, adjust the position 
 	// of the scroll box, and update the window.
-	if ( inc = max ( -yPos, min ( inc, yMax - yPos ) ) ) {
+	if ( inc == max ( -yPos, min ( inc, yMax - yPos ) ) ) {
 		int prev_ypos = yPos;
 		yPos += inc;
 		setYPosIterator( prev_ypos );
@@ -650,7 +650,7 @@ bool RDOPluginMFCLogCtrl::scrollHorizontally( int inc )
 	// take the scrolling position out of the scrolling range, 
 	// increment the scrolling position, adjust the position 
 	// of the scroll box, and update the window.
-	if ( inc = max ( -xPos, min ( inc, xMax - xPos ) ) ) {
+	if ( inc == max ( -xPos, min ( inc, xMax - xPos ) ) ) {
 		xPos += inc;
 		
 		ScrollWindowEx( -charWidth * inc, 0,
