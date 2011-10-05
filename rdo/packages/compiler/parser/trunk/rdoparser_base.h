@@ -56,7 +56,7 @@ public:
 	};
 
 	virtual ruint lexer_loc_line() { return ruint(rdoRuntime::RDOSrcInfo::Position::UNDEFINE_LINE); };
-	virtual ruint lexer_loc_pos()  { return 0; };
+	virtual ruint lexer_loc_pos () { return 0; };
 
 protected:
 	RDOParserItem()
