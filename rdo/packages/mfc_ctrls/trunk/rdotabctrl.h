@@ -53,8 +53,12 @@ protected:
 	//{{AFX_MSG(RDOTab)
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	//}}AFX_MSG
-	afx_msg void OnSelChanged( NMHDR* pNMHDR, LRESULT* pResult ) {
-		showCurrentPage();
+	afx_msg void OnSelChanged(NMHDR* pNMHDR, LRESULT* pResult)
+	{
+		UNUSED(pNMHDR );
+		UNUSED(pResult);
+
+		showCurrentPage  ();
 		changeCurrentItem();
 	}
 	DECLARE_MESSAGE_MAP()
