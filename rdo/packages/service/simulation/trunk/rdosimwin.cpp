@@ -8,10 +8,13 @@
   \indent    4T
 */
 
-#pragma warning(disable : 4786)
-
 // ---------------------------------------------------------------------------- PCH
+// ----------------------------------------------------------------------- PLATFORM
+#include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
+#ifdef OST_WINDOWS
+	#pragma warning(disable : 4786)
+#endif
 #include <stdio.h>
 #include <conio.h>
 #include <fstream>

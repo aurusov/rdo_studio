@@ -11,17 +11,22 @@
 #ifndef _RDOSIMWIN_H_
 #define _RDOSIMWIN_H_
 
+// ----------------------------------------------------------------------- PLATFORM
+#include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
-#pragma warning(disable : 4786)
 #include <string>
 #include <sstream>
 #include <vector>
-#ifdef RDO_MT
-	#include <afxwin.h>
-#else
-	#include <windows.h>
-#endif
 #include <boost/noncopyable.hpp>
+
+#ifdef OST_WINDOWS
+	#pragma warning(disable : 4786)
+	#ifdef RDO_MT
+		#include <afxwin.h>
+	#else
+		#include <windows.h>
+	#endif
+#endif
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdocommon.h"
 #include "utils/rdostream.h"
