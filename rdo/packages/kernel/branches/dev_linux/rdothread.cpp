@@ -1,14 +1,22 @@
-#ifdef RDO_MT
-#include <afxwin.h>
-#else
-#include <windows.h>
-#endif
-
+// ---------------------------------------------------------------------------- PCH
+// ----------------------------------------------------------------------- PLATFORM
+#include "utils/platform.h"
+// ----------------------------------------------------------------------- INCLUDES
 #include <fstream>
 #include <algorithm>
+
+#ifdef OST_WINDOWS
+	#ifdef RDO_MT
+		#include <afxwin.h>
+	#else
+		#include <windows.h>
+	#endif
+#endif
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
 #include "kernel/rdokernel.h"
 #include "utils/rdocommon.h"
+// --------------------------------------------------------------------------------
 
 #ifdef TR_TRACE
 #ifdef RDO_MT

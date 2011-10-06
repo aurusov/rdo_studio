@@ -1,18 +1,25 @@
 #ifndef RDO_THREAD_H
 #define RDO_THREAD_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
-
-#pragma warning( disable : 4786 )
-
+// ---------------------------------------------------------------------------- PCH
+// ----------------------------------------------------------------------- PLATFORM
+#include "utils/platform.h"
+// ----------------------------------------------------------------------- INCLUDES
 #include <string>
 #include <list>
 #include <vector>
 #include <boost/noncopyable.hpp>
+
+#ifdef OST_WINDOWS
+	#if _MSC_VER > 1000
+	#pragma once
+	#endif
+	#pragma warning( disable : 4786 )
+#endif
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdomacros.h"
 #include "utils/rdotypes.h"
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // #define RDOSIM_COMPATIBLE

@@ -1,9 +1,12 @@
+// ---------------------------------------------------------------------------- PCH
+// ----------------------------------------------------------------------- INCLUDES
+#include <vector>
+#include <algorithm>
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
 #include "repository/rdorepository.h"
 #include "simulator/service/rdosimwin.h"
-
-#include <algorithm>
-#include <vector>
+// --------------------------------------------------------------------------------
 
 RDOKernel* kernel = NULL;
 
