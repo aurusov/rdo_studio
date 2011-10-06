@@ -1,4 +1,8 @@
-MESSAGE(STATUS "CREATE  RDO_MBUILDER  LIBRARY  PROJECT")
+#==============================================================================
+# Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>
+#==============================================================================
+
+MESSAGE(STATUS "CREATE  RDO_MBUILDER  LIBRARY")
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 

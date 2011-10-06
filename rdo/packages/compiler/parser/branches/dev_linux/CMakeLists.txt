@@ -2,7 +2,7 @@
 # Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>
 #==============================================================================
 
-MESSAGE(STATUS "CREATE  RDO_PARSER  LIBRARY  PROJECT")
+MESSAGE(STATUS "CREATE  RDO_PARSER  LIBRARY")
 
 # Find Boost
 SET(Boost_USE_STATIC_LIBS   ON)
