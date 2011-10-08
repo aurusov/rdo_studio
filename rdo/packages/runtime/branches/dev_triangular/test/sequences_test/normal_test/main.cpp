@@ -10,7 +10,7 @@
 
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
-#define BOOST_TEST_MODULE RDOTriangularTest
+#define BOOST_TEST_MODULE RDONormalTest
 #include <iostream>
 #include <fstream>
 #include <list>
@@ -28,9 +28,9 @@ const double   g_var      = 1.0;                        //!< параметр закона
 
 typedef std::list <double> Container;
 
-BOOST_AUTO_TEST_SUITE(RDOTriangularTest)
+BOOST_AUTO_TEST_SUITE(RDONormalTest)
 
-BOOST_AUTO_TEST_CASE(RDOTriangularTestCreate)
+BOOST_AUTO_TEST_CASE(RDONormalTestCreate)
 {
 	if (rdo::File::exist(g_fileName.c_str()))
 		return;
@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE(RDOTriangularTestCreate)
 	strm.close();
 }
 
-BOOST_AUTO_TEST_CASE(RDOTriangularTestCheck)
+BOOST_AUTO_TEST_CASE(RDONormalTestCheck)
 {
 	std::ifstream strm(g_fileName.c_str());
 	BOOST_CHECK(strm.good());
