@@ -20,13 +20,14 @@
 #include "simulator/runtime/rdo_random_distribution.h"
 // --------------------------------------------------------------------------------
 
-const long int g_seed     = 123456789;                  //!< база генератора
-const tstring  g_fileName = _T("data_normal.txt");      //!< файл данных
-const ruint    g_count    = 100000;                     //!< количество генерируемых данных
-const double   g_main     = 10.0;                       //!< параметр закона
-const double   g_var      = 1.0;                        //!< параметр закона
+const long int g_seed      = 123456789;                  //!< база генератора
+const tstring  g_fileName  = _T("data_normal.txt");      //!< файл данных
+const ruint    g_count     = 100000;                     //!< количество генерируемых данных
+const double   g_main      = 10.0;                       //!< параметр закона
+const double   g_var       = 1.0;                        //!< параметр закона
+const ruint    g_precision = 20;                         //!< точность вещественного числа при выводе в поток
 
-typedef std::list <double> Container;
+typedef std::list<double> Container;
 
 BOOST_AUTO_TEST_SUITE(RDONormalTest)
 
@@ -36,47 +37,41 @@ BOOST_AUTO_TEST_CASE(RDONormalTestCreate)
 		return;
 
 	rdoRuntime::RandGeneratorNormal normal(g_seed);
-	Container base;
+	Container test;
 
-	for (int i = 0; i < g_count; ++i)
+	for (ruint i = 0; i < g_count; ++it)
 	{
-		base.push_back(normal.next(g_main,g_var));
+		test.push_back(normal.next(g_main, g_var));
 	}
 
-	std::ofstream strm(g_fileName.c_str());
-	
-	strm.precision(20);
-
-	STL_FOR_ALL(base,it)
+	std::ofstream stream(g_fileName.c_str());
+	stream.precision(g_precision);
+	STL_FOR_ALL(test, it)
 	{
-		strm << *it << std::endl;
+		stream << *it << std::endl;
 	}
-	strm.close();
 }
 
 BOOST_AUTO_TEST_CASE(RDONormalTestCheck)
 {
-	std::ifstream strm(g_fileName.c_str());
-	BOOST_CHECK(strm.good());
+	std::ifstream stream(g_fileName.c_str());
+	BOOST_CHECK(stream.good());
 
-	Container test,base;
+	Container test;
 	rdoRuntime::RandGeneratorNormal normal(g_seed);
-	for (int i = 0; i < g_count; ++i)
+	for (ruint i = 0; i < g_count; ++i)
 	{
-		test.push_back(normal.next(g_main,g_var));
+		test.push_back(normal.next(g_main, g_var));
 	}
 
-	strm.precision(20);
-
-	STL_FOR_ALL(test,it)
+	stream.precision(g_precision);
+	STL_FOR_ALL(test, it)
 	{
-		BOOST_CHECK(strm.good());
+		BOOST_CHECK(stream.good());
 		double val;
-		strm >> val;
+		stream >> val;
 		BOOST_CHECK(val == *it);
 	}
-
-	strm.close();
 }
 
 BOOST_AUTO_TEST_SUITE_END()
