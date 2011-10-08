@@ -15,6 +15,8 @@
 #include <fstream>
 #include <list>
 #include <boost/test/included/unit_test.hpp>
+#include <boost/bind.hpp>
+#include <boost/function.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdofile.h"
 #include "simulator/runtime/rdo_random_distribution.h"
@@ -31,17 +33,18 @@ typedef std::list<double> Container;
 
 BOOST_AUTO_TEST_SUITE(RDONormalTest)
 
-BOOST_AUTO_TEST_CASE(RDONormalTestCreate)
+template <class T, class F>
+void onGenerateData(F binder)
 {
 	if (rdo::File::exist(g_fileName.c_str()))
 		return;
 
-	rdoRuntime::RandGeneratorNormal normal(g_seed);
+	T sequence(g_seed);
 	Container test;
 
 	for (ruint i = 0; i < g_count; ++i)
 	{
-		test.push_back(normal.next(g_main, g_var));
+		test.push_back(binder.operator()(&sequence));
 	}
 
 	std::ofstream stream(g_fileName.c_str());
@@ -50,6 +53,11 @@ BOOST_AUTO_TEST_CASE(RDONormalTestCreate)
 	{
 		stream << *it << std::endl;
 	}
+}
+
+BOOST_AUTO_TEST_CASE(RDONormalTestCreate)
+{
+	onGenerateData<rdoRuntime::RandGeneratorNormal>(boost::bind(&rdoRuntime::RandGeneratorNormal::next, _1, g_main, g_var));
 }
 
 BOOST_AUTO_TEST_CASE(RDONormalTestCheck)
