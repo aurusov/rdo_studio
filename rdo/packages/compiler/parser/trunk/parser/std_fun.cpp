@@ -139,7 +139,7 @@ void RDOParserSTDFUN::generateReal(CREF(tstring) name, CREF(rdoRuntime::LPRDOFun
 
 void RDOParserSTDFUN::parse(CREF(LPRDOParser) pParser)
 {
-	ASSERT(pParser);
+	UNUSED(pParser);
 
 	typedef rdoRuntime::std_fun1<double, double>         StdFun_D_D;
 	typedef rdoRuntime::std_fun2<double, double, double> StdFun_D_DD;

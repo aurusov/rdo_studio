@@ -296,6 +296,8 @@ rbool RDOPROCQueue::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 
 IBaseOperation::BOResult RDOPROCQueue::onDoOperation(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
+
 	TRACE1(_T("%7.1f QUEUE\n"), pRuntime->getCurrentTime());
 	m_transacts.front()->next();
 	return IBaseOperation::BOR_done;
@@ -344,6 +346,8 @@ rbool RDOPROCDepart::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 
 IBaseOperation::BOResult RDOPROCDepart::onDoOperation(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
+
 	TRACE1(_T("%7.1f DEPART\n"), pRuntime->getCurrentTime());
 	m_transacts.front()->next();
 	return IBaseOperation::BOR_done;
