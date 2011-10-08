@@ -72,17 +72,19 @@ RDOStudioPlugin::~RDOStudioPlugin()
 
 bool RDOStudioPlugin::isRDOStudioPlugin( const std::string& modulName )
 {
+	UNUSED(modulName);
 	return true;
-	bool res = false;
-	HMODULE local_lib = ::LoadLibrary( modulName.c_str() );
-	if ( local_lib ) {
-		rdoPlugin::PFunGetPluginInfo getPluginInfo = reinterpret_cast<rdoPlugin::PFunGetPluginInfo>(::GetProcAddress( local_lib, "getPluginInfo" ));
-		if ( getPluginInfo ) {
-			res = true;
-		}
-		::FreeLibrary( local_lib );
-	}
-	return res;
+
+	//bool res = false;
+	//HMODULE local_lib = ::LoadLibrary( modulName.c_str() );
+	//if ( local_lib ) {
+	//	rdoPlugin::PFunGetPluginInfo getPluginInfo = reinterpret_cast<rdoPlugin::PFunGetPluginInfo>(::GetProcAddress( local_lib, "getPluginInfo" ));
+	//	if ( getPluginInfo ) {
+	//		res = true;
+	//	}
+	//	::FreeLibrary( local_lib );
+	//}
+	//return res;
 }
 
 std::string RDOStudioPlugin::getProfilePath() const
@@ -653,6 +655,7 @@ bool RDOStudioPlugins::readFile( rdoPlugin::ModelFileType file_type, char** data
 				case rdoPlugin::PMD: edit_type = rdoModelObjects::PMD; break;
 				case rdoPlugin::PMV: edit_type = rdoModelObjects::PMV; break;
 				case rdoPlugin::TRC: edit_type = rdoModelObjects::TRC; break;
+				default            : edit_type = rdoModelObjects::TRC; NEVER_REACH_HERE;
 			}
 			if ( tab->typeSupported( edit_type ) ) {
 				rdoEditor::RDOEditorEdit* edit = tab->getItemEdit( edit_type );
@@ -688,6 +691,7 @@ bool RDOStudioPlugins::writeFile( rdoPlugin::ModelFileType file_type, const char
 				case rdoPlugin::PMD: edit_type = rdoModelObjects::PMD; break;
 				case rdoPlugin::PMV: edit_type = rdoModelObjects::PMV; break;
 				case rdoPlugin::TRC: edit_type = rdoModelObjects::TRC; break;
+				default            : edit_type = rdoModelObjects::TRC; NEVER_REACH_HERE;
 			}
 			if ( tab->typeSupported( edit_type ) ) {
 				rdoEditor::RDOEditorEdit* edit = tab->getItemEdit( edit_type );

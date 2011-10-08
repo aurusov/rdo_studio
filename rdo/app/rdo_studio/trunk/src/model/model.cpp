@@ -348,7 +348,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			m_frameManager.bmp_clear();
 			SYSTEMTIME time_stop;
 			::GetSystemTime(&time_stop);
-			ruint delay = -1;
+			ruint delay = ruint(~0);
 			if (m_timeStart.wYear == time_stop.wYear && m_timeStart.wMonth == time_stop.wMonth)
 			{
 				delay = (time_stop.wDay - m_timeStart.wDay) * 24 * 60 * 60 * 1000 + (time_stop.wHour - m_timeStart.wHour) * 60 * 60 * 1000 + (time_stop.wMinute - m_timeStart.wMinute) * 60 * 1000 + (time_stop.wSecond - m_timeStart.wSecond) * 1000 + (time_stop.wMilliseconds - m_timeStart.wMilliseconds);
@@ -609,7 +609,8 @@ rbool RDOStudioModel::openModel(CREF(tstring) modelName) const
 	if (data.m_result && !m_openError && !m_smrEmptyError)
 	{
 		rdo::binarystream stream;
-		studioApp.studioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &rdoRepository::RDOThreadRepository::FileData(rdoModelObjects::PMV, stream));
+		rdoRepository::RDOThreadRepository::FileData fileData(rdoModelObjects::PMV, stream);
+		studioApp.studioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &fileData);
 		output->appendStringToResults(stream.str());
 		output->updateLogConnection();
 		output->appendStringToDebug(rdo::format(IDS_MODEL_LOADING_OK));
@@ -863,7 +864,8 @@ void RDOStudioModel::openModelFromRepository()
 				rdoModelObjects::RDOFileType type = pTab->indexToType(i);
 				if (pTab->typeSupported(type))
 				{
-					studioApp.studioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &rdoRepository::RDOThreadRepository::FileData(type, stream));
+					rdoRepository::RDOThreadRepository::FileData fileData(type, stream);
+					studioApp.studioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &fileData);
 				}
 				else
 				{
@@ -939,7 +941,8 @@ void RDOStudioModel::saveModelToRepository()
 			rdo::binarystream stream;
 			smr_edit->save(stream);
 			m_smrEmptyError = false;
-			studioApp.studioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_SAVE, &rdoRepository::RDOThreadRepository::FileData(rdoModelObjects::SMR, stream));
+			rdoRepository::RDOThreadRepository::FileData fileData(rdoModelObjects::SMR, stream);
+			studioApp.studioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_SAVE, &fileData);
 			if (m_smrEmptyError)
 			{
 				studioApp.mainFrame->MessageBox(_T("В smr-файле не найдено имя модели, модель не будет записана"), _T("Ошибка записи модели"), MB_OK | MB_ICONERROR);
@@ -979,7 +982,12 @@ void RDOStudioModel::saveModelToRepository()
 					case rdoModelObjects::PRC:
 					case rdoModelObjects::FRM:
 					case rdoModelObjects::FUN:
-					case rdoModelObjects::PMD: studioApp.studioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_SAVE, &rdoRepository::RDOThreadRepository::FileData(type, stream)); break;
+					case rdoModelObjects::PMD:
+						{
+							rdoRepository::RDOThreadRepository::FileData fileData(type, stream);
+							studioApp.studioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_SAVE, &fileData);
+							break;
+						}
 					default: break;
 					}
 					edit->setModifyFalse();
@@ -1087,8 +1095,10 @@ void RDOStudioModel::afterModelStart()
 
 		std::list< tstring > frames;
 		std::list< tstring > bitmaps;
-		sendMessage(kernel->simulator(), RT_SIMULATOR_GET_LIST, &rdoSimulator::RDOThreadSimulator::GetList(rdoSimulator::RDOThreadSimulator::GetList::frames, &frames));
-		sendMessage(kernel->simulator(), RT_SIMULATOR_GET_LIST, &rdoSimulator::RDOThreadSimulator::GetList(rdoSimulator::RDOThreadSimulator::GetList::bitmaps, &bitmaps));
+		rdoSimulator::RDOThreadSimulator::GetList getListFrames (rdoSimulator::RDOThreadSimulator::GetList::frames,  &frames );
+		rdoSimulator::RDOThreadSimulator::GetList getListBitmaps(rdoSimulator::RDOThreadSimulator::GetList::bitmaps, &bitmaps);
+		sendMessage(kernel->simulator(), RT_SIMULATOR_GET_LIST, &getListFrames );
+		sendMessage(kernel->simulator(), RT_SIMULATOR_GET_LIST, &getListBitmaps);
 		STL_FOR_ALL_CONST(bitmaps, bmp_it)
 		{
 			m_frameManager.bmp_insert(*bmp_it);
@@ -1233,7 +1243,8 @@ void RDOStudioModel::update()
 				try
 				{
 					rdoAnimation::RDOFrame frame;
-					sendMessage(kernel->runtime(), RT_RUNTIME_GET_FRAME, &rdoRuntime::RDOThreadRunTime::GetFrame(&frame, i));
+					rdoRuntime::RDOThreadRunTime::GetFrame getFrame(&frame, i);
+					sendMessage(kernel->runtime(), RT_RUNTIME_GET_FRAME, &getFrame);
 					m_frameManager.showFrame(&frame, i);
 				}
 				catch (REF(rdoRuntime::RDORuntimeException))

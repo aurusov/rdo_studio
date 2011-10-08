@@ -98,8 +98,19 @@ bool RDOStudioChartOptionsChart::checkValues() const
 		((CStatic*) GetDlgItem(IDC_VAL_COUNT_X_STATIC))->GetWindowText(ctrl_caption);
 		AfxGetMainWnd()->MessageBox(rdo::format(IDS_CHART_OPTIONS_INT_VERIFY, ctrl_caption, MIN_X_Y_M, MAX_X_Y ).c_str(), NULL, MB_OK | MB_ICONWARNING);
 
-		if (valCount_X < MIN_X_Y_M) val_corrected = MIN_X_Y_M;
-		if (valCount_X > MAX_X_Y)   val_corrected = MAX_X_Y;
+		if (valCount_X < MIN_X_Y_M)
+		{
+			val_corrected = MIN_X_Y_M;
+		}
+		else if (valCount_X > MAX_X_Y)
+		{
+			val_corrected = MAX_X_Y;
+		}
+		else
+		{
+			val_corrected = ~0;
+			NEVER_REACH_HERE;
+		}
 		edit_X->SetSel(0, -1);
 		edit_X->ReplaceSel(rdo::format( "%d", val_corrected ).c_str());
 		edit_X->SetFocus();
@@ -110,8 +121,19 @@ bool RDOStudioChartOptionsChart::checkValues() const
 		((CStatic*) GetDlgItem(IDC_VAL_COUNT_Y_STATIC))->GetWindowText(ctrl_caption);
 		AfxGetMainWnd()->MessageBox(rdo::format(IDS_CHART_OPTIONS_INT_VERIFY, ctrl_caption, MIN_X_Y_M, MAX_X_Y ).c_str(), NULL, MB_OK | MB_ICONWARNING);
 		
-		if (valCount_Y < MIN_X_Y_M) val_corrected = MIN_X_Y_M;
-		if (valCount_Y > MAX_X_Y)   val_corrected = MAX_X_Y;
+		if (valCount_Y < MIN_X_Y_M)
+		{
+			val_corrected = MIN_X_Y_M;
+		}
+		else if (valCount_Y > MAX_X_Y)
+		{
+			val_corrected = MAX_X_Y;
+		}
+		else
+		{
+			val_corrected = 0;
+			NEVER_REACH_HERE;
+		}
 		edit_Y->SetSel(0, -1);
 		edit_Y->ReplaceSel(rdo::format( "%d", val_corrected ).c_str());
 		edit_Y->SetFocus();
@@ -273,8 +295,19 @@ bool RDOStudioChartOptionsSeries::checkValues() const
 		((CStatic*) GetDlgItem(IDC_MAKER_SIZE_STATIC))->GetWindowText(ctrl_caption);
 		AfxGetMainWnd()->MessageBox(rdo::format(IDS_CHART_OPTIONS_INT_VERIFY, ctrl_caption, MIN_X_Y_M, MAX_M ).c_str(), NULL, MB_OK | MB_ICONWARNING);
 
-		if (marker_size < MIN_X_Y_M) val_corrected = MIN_X_Y_M;
-		if (marker_size > MAX_M)     val_corrected = MAX_M;
+		if (marker_size < MIN_X_Y_M)
+		{
+			val_corrected = MIN_X_Y_M;
+		}
+		else if (marker_size > MAX_M)
+		{
+			val_corrected = MAX_M;
+		}
+		else
+		{
+			val_corrected = ~0;
+			NEVER_REACH_HERE;
+		}
 		edit_marker_size->SetSel(0, -1);
 		edit_marker_size->ReplaceSel(rdo::format( "%d", val_corrected ).c_str());
 		edit_marker_size->SetFocus();

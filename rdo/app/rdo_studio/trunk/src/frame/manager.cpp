@@ -264,7 +264,6 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 
 			CDC dc;
 			dc.CreateCompatibleDC( desktopDC );
-			int i = sizeof( CBitmap );
 			BMP* bmp = new BMP;
 			bitmaps[name] = bmp;
 			bitmaps[name]->w = bmInfoHeader.biWidth;

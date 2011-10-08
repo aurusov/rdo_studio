@@ -91,7 +91,7 @@ int RDOEditorBaseEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	if ( RDOBaseEdit::OnCreate(lpCreateStruct) == -1 ) return -1;
 
 	sendEditor( SCI_SETLEXER, SCLEX_RDO );
-	int lexLanguage = sendEditor( SCI_GETLEXER );
+	sendEditor( SCI_GETLEXER );
 
 	sendEditorString( SCI_SETPROPERTY, reinterpret_cast<unsigned long>("fold"), "1" );
 

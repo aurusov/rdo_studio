@@ -25,11 +25,11 @@ protected:
 	std::list< RPPageCtrlItem* >::const_iterator it_current;
 	int label_height;
 
-	int  fly_timer;
+	ruint fly_timer;
 	void startFly();
 	void repaint();
 
-	int  over_timer;
+	ruint over_timer;
 	void startOver();
 
 public:

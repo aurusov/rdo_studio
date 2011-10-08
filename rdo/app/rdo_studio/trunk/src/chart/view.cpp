@@ -235,7 +235,7 @@ void RDOStudioChartView::recalcLayout()
 		if ( timeRange > 0 ) {
 			long double timeScaleAuto = doUnwrapTime() ? (double)( chartRect.Width() - style->fonts_ticks->tickWidth * doc->ticksCount ) / timeRange : (double)chartRect.Width() / timeRange;
 			timeScale = (double)style->fonts_ticks->tickWidth / doc->minTimeOffset;
-			auto_zoom = timeScaleAuto / timeScale;
+			auto_zoom = double(timeScaleAuto) / double(timeScale);
 			/*if ( doUnwrapTime() && auto_zoom < 0 ) {
 				auto_zoom = 1;
 			}*/
@@ -285,7 +285,7 @@ void RDOStudioChartView::updateScrollBars( const bool need_update )
 
 	int size;
 	if ( !doc->docTimes.empty() ) {
-		size = roundDouble( ( doc->docTimes.back()->time - doc->docTimes.front()->time ) * timeScale );
+		size = roundDouble( ( doc->docTimes.back()->time - doc->docTimes.front()->time ) * double(timeScale) );
 		if ( doUnwrapTime() )
 			size += style->fonts_ticks->tickWidth * doc->ticksCount;
 	} else {
@@ -332,11 +332,11 @@ void RDOStudioChartView::setFromTo()
 
 	if ( !doUnwrapTime() ) {
 		if ( timeScale ) {
-			drawFromX.time = doc->docTimes.front()->time + (double)xPos / timeScale;
+			drawFromX.time = doc->docTimes.front()->time + (double)xPos / double(timeScale);
 			if ( maxXVisible() )
 				drawToX.time = doc->docTimes.back()->time;
 			else
-				drawToX.time = doc->docTimes.front()->time + (double)( xPos + chartRect.Width() ) / timeScale;
+				drawToX.time = doc->docTimes.front()->time + (double)( xPos + chartRect.Width() ) / double(timeScale);
 		} else {
 			drawFromX.time = 0;
 			drawToX.time = 0;
@@ -348,7 +348,7 @@ void RDOStudioChartView::setFromTo()
 		int ticks = 0;
 		timesList::iterator it;
 		for( it = doc->docTimes.begin(); it != doc->docTimes.end(); it++ ) {
-			it_pos = roundDouble( ( (*it)->time - doc->docTimes.front()->time ) * timeScale ) + ticks * style->fonts_ticks->tickWidth;
+			it_pos = roundDouble( ( (*it)->time - doc->docTimes.front()->time ) * double(timeScale) ) + ticks * style->fonts_ticks->tickWidth;
 			it_max_pos = it_pos + style->fonts_ticks->tickWidth * (*it)->eventCount;
 			if ( it_pos == xPos ) {
 				drawFromX = *(*it);
@@ -363,7 +363,7 @@ void RDOStudioChartView::setFromTo()
 				break;
 			}
 			if ( it_pos > xPos ) {
-				drawFromX.time = (*it)->time - ( it_pos - xPos ) / timeScale;
+				drawFromX.time = (*it)->time - ( it_pos - xPos ) / double(timeScale);
 				need_search_to = setTo( 0 );
 				break;
 			}
@@ -391,7 +391,7 @@ void RDOStudioChartView::setFromTo()
 			}
 			int pos = xPos + chartRect.Width();
 			for( ; it != doc->docTimes.end(); it++ ) {
-				it_pos = roundDouble( ( (*it)->time - doc->docTimes.front()->time ) * timeScale ) + ticks * style->fonts_ticks->tickWidth;
+				it_pos = roundDouble( ( (*it)->time - doc->docTimes.front()->time ) * double(timeScale) ) + ticks * style->fonts_ticks->tickWidth;
 				it_max_pos = it_pos + style->fonts_ticks->tickWidth * (*it)->eventCount;
 				if ( it_pos == pos ) {
 					drawToX = *(*it);
@@ -405,7 +405,7 @@ void RDOStudioChartView::setFromTo()
 					break;
 				}
 				if ( it_pos > pos ) {
-					drawToX.time = (*it)->time - ( it_pos - pos ) / timeScale;
+					drawToX.time = (*it)->time - ( it_pos - pos ) / double(timeScale);
 					break;
 				}
 				unwrapTimesList.push_back( (*it) );
@@ -525,8 +525,6 @@ void RDOStudioChartView::drawXAxis( CRect& chartRect )
 			int lastx = 0;
 			SIZE sz;
 			for( timesList::iterator it = unwrapTimesList.begin(); it != unwrapTimesList.end(); it++ ) {
-				int width = (*it)->eventCount * style->fonts_ticks->tickWidth;
-				RDOTracerTimeNow* timenow = (*it);
 				tmprect.left = chartRect.left + (LONG)(( (*it)->time - unwrapTimesList.front()->time ) * timeScale + ticks * style->fonts_ticks->tickWidth - chartShift);
 				tmprect.left = min( tmprect.left, chartRect.right - 1 );
 				str = rdo::format( formatstr.c_str(), (*it)->time );
@@ -582,7 +580,6 @@ void RDOStudioChartView::drawGrid( CRect& chartRect )
 		CRect tmprect;
 		tmprect.CopyRect( &rect );
 		
-		RDOStudioChartDoc* doc = GetDocument();
 		::IntersectClipRect( hmemdc, rect.left, rect.top, rect.right, rect.bottom );
 		int ticks = 0;
 		timesList::iterator it = unwrapTimesList.begin();
@@ -593,7 +590,6 @@ void RDOStudioChartView::drawGrid( CRect& chartRect )
 		::SetBkColor( hmemdc, style->getTheme()->timeBgColor );
 		for( ; it != unwrapTimesList.end(); it++ ) {
 			int width = (*it)->eventCount * style->fonts_ticks->tickWidth;
-			RDOTracerTimeNow* timenow = (*it);
 			tmprect.left = rect.left + (LONG)(( (*it)->time - unwrapTimesList.front()->time ) * timeScale + ticks * style->fonts_ticks->tickWidth - chartShift);
 			if ( tmprect.left < rect.left )
 				tmprect.left = rect.left;
@@ -651,6 +647,8 @@ void RDOStudioChartView::copyToClipboard()
 
 void RDOStudioChartView::setZoom( double new_zoom, const bool force_update )
 {
+	UNUSED(force_update);
+
 	/*scale_koeff = new_zoom;
 	if ( scale_koeff < auto_zoom ) {
 		scale_koeff = auto_zoom;
@@ -747,10 +745,13 @@ void RDOStudioChartView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 
 DROPEFFECT RDOStudioChartView::OnDragEnter( COleDataObject* pDataObject, DWORD dwKeyState, CPoint point )
 {
+	UNUSED(dwKeyState);
+	UNUSED(point     );
+
 	HGLOBAL glb = NULL;
 	UINT format = tracer->getClipboardFormat();
-	if ( pDataObject->IsDataAvailable( format ) ) {
-		glb = pDataObject->GetGlobalData( format );
+	if ( pDataObject->IsDataAvailable( CLIPFORMAT(format) ) ) {
+		glb = pDataObject->GetGlobalData( CLIPFORMAT(format) );
 		if ( glb ) {
 			dragedSerie = *(RDOTracerSerie**)::GlobalLock( glb );
 			::GlobalUnlock( glb );
@@ -771,7 +772,10 @@ void RDOStudioChartView::OnDragLeave()
 
 DROPEFFECT RDOStudioChartView::OnDragOver( COleDataObject* pDataObject, DWORD dwKeyState, CPoint point )
 {
-	if ( pDataObject->IsDataAvailable( tracer->getClipboardFormat() ) && dragedSerie )
+	UNUSED(dwKeyState);
+	UNUSED(point     );
+
+	if ( pDataObject->IsDataAvailable( CLIPFORMAT(tracer->getClipboardFormat()) ) && dragedSerie )
 		return DROPEFFECT_COPY;
 	else
 		return DROPEFFECT_NONE;
@@ -779,6 +783,10 @@ DROPEFFECT RDOStudioChartView::OnDragOver( COleDataObject* pDataObject, DWORD dw
 
 BOOL RDOStudioChartView::OnDrop( COleDataObject* pDataObject, DROPEFFECT dropEffect, CPoint point )
 {
+	UNUSED(pDataObject);
+	UNUSED(dropEffect );
+	UNUSED(point      );
+
 	GetDocument()->addSerie( dragedSerie );
 	dragedSerie = NULL;
 	return TRUE;
@@ -806,11 +814,16 @@ RDOStudioChartDoc* RDOStudioChartView::GetDocument()
 
 BOOL RDOStudioChartView::OnEraseBkgnd(CDC* pDC) 
 {
+	UNUSED(pDC);
 	return TRUE;
 }
 
 void RDOStudioChartView::OnSize(UINT nType, int cx, int cy) 
 {
+	UNUSED(nType);
+	UNUSED(cx   );
+	UNUSED(cy   );
+
 	mutex.Lock();
 
 	GetClientRect( &newClientRect );
@@ -852,11 +865,17 @@ void RDOStudioChartView::OnUpdateChartTimewrap(CCmdUI* pCmdUI)
 
 void RDOStudioChartView::OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint) 
 {
+	UNUSED(pSender);
+	UNUSED(lHint  );
+	UNUSED(pHint  );
+
 	updateView();
 }
 
 LRESULT RDOStudioChartView::OnUserUpdateChartView(WPARAM wParam, LPARAM lParam)
 {
+	UNUSED(lParam);
+
 	if ( doUnwrapTime() || wParam != UPDATE_TIMETICKS )
 		updateView();
 	return 0;
@@ -864,6 +883,9 @@ LRESULT RDOStudioChartView::OnUserUpdateChartView(WPARAM wParam, LPARAM lParam)
 
 void RDOStudioChartView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
 {
+	UNUSED(nPos      );
+	UNUSED(pScrollBar);
+
 	int inc = 0;
 	SCROLLINFO si;
 	si.cbSize = sizeof( si );
@@ -909,6 +931,9 @@ void RDOStudioChartView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollB
 
 void RDOStudioChartView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) 
 {
+	UNUSED(nRepCnt);
+	UNUSED(nFlags );
+
 	WORD scrollNotify = 0xFFFF;
 	UINT msg = WM_VSCROLL;
 	bool ctrl = ( ( ::GetKeyState( VK_CONTROL ) & 0x80000000 ) != 0 );
@@ -1023,6 +1048,8 @@ int RDOStudioChartView::OnMouseActivate( CWnd* pDesktopWnd, UINT nHitTest, UINT 
 
 void RDOStudioChartView::setFonts( const bool needRedraw )
 {
+	UNUSED(needRedraw);
+
 	if ( !style ) return;
 	
 	mutex.Lock();
@@ -1039,7 +1066,7 @@ void RDOStudioChartView::setFonts( const bool needRedraw )
 		lf.lfWeight    = chart_theme->defaultStyle & RDOStyleFont::BOLD ? FW_BOLD : FW_NORMAL;
 		lf.lfItalic    = chart_theme->defaultStyle & RDOStyleFont::ITALIC;
 		lf.lfUnderline = chart_theme->defaultStyle & RDOStyleFont::UNDERLINE;
-		lf.lfCharSet   = style->font->characterSet;
+		lf.lfCharSet   = BYTE(style->font->characterSet);
 #pragma warning(disable: 4996)
 		strcpy( lf.lfFaceName, style->font->name.c_str() );
 #pragma warning(default: 4996)
@@ -1054,7 +1081,7 @@ void RDOStudioChartView::setFonts( const bool needRedraw )
 		lf.lfWeight    = chart_theme->titleStyle & RDOStyleFont::BOLD ? FW_BOLD : FW_NORMAL;
 		lf.lfItalic    = chart_theme->titleStyle & RDOStyleFont::ITALIC;
 		lf.lfUnderline = chart_theme->titleStyle & RDOStyleFont::UNDERLINE;
-		lf.lfCharSet   = style->font->characterSet;
+		lf.lfCharSet   = BYTE(style->font->characterSet);
 #pragma warning(disable: 4996)
 		strcpy( lf.lfFaceName, style->font->name.c_str() );
 #pragma warning(default: 4996)
@@ -1069,7 +1096,7 @@ void RDOStudioChartView::setFonts( const bool needRedraw )
 		lf.lfWeight    = chart_theme->legendStyle & RDOStyleFont::BOLD ? FW_BOLD : FW_NORMAL;
 		lf.lfItalic    = chart_theme->legendStyle & RDOStyleFont::ITALIC;
 		lf.lfUnderline = chart_theme->legendStyle & RDOStyleFont::UNDERLINE;
-		lf.lfCharSet   = style->font->characterSet;
+		lf.lfCharSet   = BYTE(style->font->characterSet);
 #pragma warning(disable: 4996)
 		strcpy( lf.lfFaceName, style->font->name.c_str() );
 #pragma warning(default: 4996)

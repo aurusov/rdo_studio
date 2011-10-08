@@ -233,9 +233,9 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, HDC &dc, CRect &
 			if ( flag )
 				it --;
 			
-			int lasty = roundDouble( (double)rect.bottom - ky * ( (*it)->value - minValue ) );
+			int lasty = roundDouble( (double)rect.bottom - double(ky) * ( (*it)->value - minValue ) );
 			lasty = min( lasty, rect.bottom - 1 );
-			int lastx = rect.left + roundDouble( ( (*it)->modeltime->time - view->drawFromX.time ) * view->timeScale ) - view->chartShift;
+			int lastx = rect.left + roundDouble( ( (*it)->modeltime->time - view->drawFromX.time ) * double(view->timeScale) ) - view->chartShift;
 			lastx = min( lastx, rect.right - 1 );
 			
 			int ticks = 0;
@@ -287,9 +287,9 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, HDC &dc, CRect &
 				}
 
 				while ( it != values.end() && ( (!view->doUnwrapTime() && (*it)->modeltime->time <= view->drawToX.time) || (view->doUnwrapTime() && ((*it)->modeltime->time < view->drawToX.time || ((*it)->modeltime->time == view->drawToX.time && (*it)->eventIndex <= view->drawToEventCount) )) ) ) {
-					y = roundDouble( (double)rect.bottom - ky * ( (*it)->value - minValue ) );
+					y = roundDouble( (double)rect.bottom - double(ky) * ( (*it)->value - minValue ) );
 					y = min( y, rect.bottom - 1 );
-					x = rect.left + roundDouble( ( (*it)->modeltime->time - view->drawFromX.time ) * view->timeScale ) - view->chartShift;
+					x = rect.left + roundDouble( ( (*it)->modeltime->time - view->drawFromX.time ) * double(view->timeScale) ) - view->chartShift;
 					if ( view->doUnwrapTime() ) {
 						x += ( ticks + (*it)->eventIndex ) * view->style->fonts_ticks->tickWidth;
 					}

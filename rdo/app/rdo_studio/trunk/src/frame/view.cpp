@@ -136,7 +136,7 @@ void RDOStudioFrameView::updateFont()
 	lf.lfWeight    = style->theme->defaultStyle & rdoStyle::RDOStyleFont::BOLD ? FW_BOLD : FW_NORMAL;
 	lf.lfItalic    = style->theme->defaultStyle & rdoStyle::RDOStyleFont::ITALIC;
 	lf.lfUnderline = style->theme->defaultStyle & rdoStyle::RDOStyleFont::UNDERLINE;
-	lf.lfCharSet   = style->font->characterSet;
+	lf.lfCharSet   = BYTE(style->font->characterSet);
 #pragma warning(disable: 4996)
 	strcpy( lf.lfFaceName, style->font->name.c_str() );
 #pragma warning(default: 4996)
@@ -237,6 +237,9 @@ void RDOStudioFrameView::updateScrollBars()
 
 void RDOStudioFrameView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
+	UNUSED(nPos      );
+	UNUSED(pScrollBar);
+
 	if ( nSBCode == SB_ENDSCROLL ) {
 		model->setGUIContinue();
 	}
@@ -286,6 +289,9 @@ void RDOStudioFrameView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollB
 
 void RDOStudioFrameView::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
+	UNUSED(nPos      );
+	UNUSED(pScrollBar);
+
 	if ( nSBCode == SB_ENDSCROLL ) {
 		model->setGUIContinue();
 	}
@@ -380,6 +386,9 @@ void RDOStudioFrameView::OnActivateView(BOOL bActivate, CView* pActivateView, CV
 
 BOOL RDOStudioFrameView::OnMouseWheel( UINT nFlags, short zDelta, CPoint pt )
 {
+	UNUSED(nFlags);
+	UNUSED(pt    );
+
 	SCROLLINFO si;
 	si.cbSize = sizeof( si );
 	si.fMask  = SIF_POS;

@@ -37,6 +37,8 @@ void RDOTracerOperationBase::getCaptions( std::vector<std::string> &captions, co
 
 void RDOTracerOperationBase::monitorTime( RDOTracerTimeNow* const time, const int eventIndex )
 {
+	UNUSED(time      );
+	UNUSED(eventIndex);
 }
 
 // --------------------------------------------------------------------------------

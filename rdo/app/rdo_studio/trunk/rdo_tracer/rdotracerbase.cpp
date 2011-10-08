@@ -46,7 +46,7 @@ RDOTracerBase::~RDOTracerBase()
 RDOTracerResParamInfo* RDOTracerBase::getParamType( rdo::textstream& stream )
 {
 	std::string            par_type;
-	RDOTracerResParamType  parType;
+	RDOTracerResParamType  parType = RDOPT_UNDEFINED;
 	ruint                  enum_count = 0;
 	stream >> par_type;
 	if ( par_type == "E" )
@@ -66,6 +66,8 @@ RDOTracerResParamInfo* RDOTracerBase::getParamType( rdo::textstream& stream )
 	{
 		parType = RDOPT_ARRAY;
 	}
+	ASSERT(parType != RDOPT_UNDEFINED);
+
 	RDOTracerResParamInfo* param = new RDOTracerResParamInfo( parType );
 	if ( parType == RDOPT_ENUMERATIVE )
 	{
@@ -80,7 +82,7 @@ RDOTracerResParamInfo* RDOTracerBase::getParamType( rdo::textstream& stream )
 	else if ( parType == RDOPT_ARRAY )
 	{
 		RDOTracerResParamInfo* arrayItem = getParamType(stream);
-		int i = 1;
+		UNUSED(arrayItem);
 	}
 	return param;
 }
@@ -98,6 +100,8 @@ RDOTracerResParamInfo* RDOTracerBase::getParam( rdo::textstream& stream )
 
 void RDOTracerBase::addResourceType( std::string& s, rdo::textstream& stream )
 {
+	UNUSED(s);
+
 	RDOTracerResType* type = new RDOTracerResType( RDOTK_PERMANENT );
 	stream >> type->Name;
 	int paramcount;
@@ -135,6 +139,8 @@ void RDOTracerBase::addResource( std::string& s, rdo::textstream& stream )
 
 void RDOTracerBase::addPattern( std::string& s, rdo::textstream& stream )
 {
+	UNUSED(s);
+
 	std::string pat_name;
 	stream >> pat_name;
 	std::string pat_type;
@@ -148,6 +154,8 @@ void RDOTracerBase::addPattern( std::string& s, rdo::textstream& stream )
 		kind = RDOPK_RULE;
 	else if ( pat_type == "K" )
 		kind = RDOPK_KEYBOARD;
+	else kind = RDOPK_UNDEFINED;
+
 	RDOTracerPattern* pat = new RDOTracerPattern( kind );
 	pat->Name = pat_name;
 
@@ -178,6 +186,8 @@ void RDOTracerBase::addPattern( std::string& s, rdo::textstream& stream )
 
 void RDOTracerBase::addOperation( std::string& s, rdo::textstream& stream )
 {
+	UNUSED(s);
+
 	std::string opr_name;
 	stream >> opr_name;
 	int pat_id;
@@ -253,6 +263,9 @@ void RDOTracerBase::addResult( std::string& s, rdo::textstream& stream )
 		resKind = RDORK_WATCHQUANT;
 	else if ( res_kind == "watch_value" )
 		resKind = RDORK_WATCHVALUE;
+	else resKind = RDORK_UNDEFINED;
+	ASSERT(resKind != RDORK_UNDEFINED);
+
 	RDOTracerResult* res = new RDOTracerResult( resKind );
 	res->setName( s );
 	res->id = resid;
@@ -362,7 +375,7 @@ std::string RDOTracerBase::getNextValue( std::string& line )
 	return res;
 }
 
-RDOTracerTimeNow* RDOTracerBase::addTime( std::string& time )
+RDOTracerTimeNow* RDOTracerBase::addTime( const std::string& time )
 {
 	double val = atof( time.c_str() );
 	bool empty = timeList.empty();
@@ -591,7 +604,7 @@ void RDOTracerBase::getModelStructure( rdo::textstream& stream )
 	while( !stream.eof() ) {
 		stream >> s;
 		if ( !s.empty() ) {
-			int pos = std::string::npos;
+			std::string::size_type pos = std::string::npos;
 			if ( s.find( "$Resource_type" ) != std::string::npos ) {
 				do {
 					stream >> s;

@@ -177,6 +177,8 @@ void RDOTracerLogCtrl::OnFindPrev()
 
 LRESULT RDOTracerLogCtrl::OnFindReplaceMsg( WPARAM wParam, LPARAM lParam )
 {
+	UNUSED(wParam);
+
 	CFindReplaceDialog* pDialog = CFindReplaceDialog::GetNotifier( lParam );
 
 	findStr = pDialog->GetFindString();

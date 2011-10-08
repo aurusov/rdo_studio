@@ -107,9 +107,8 @@ void RPPageCtrl::repaint()
 		CRect client_rect;
 		GetClientRect( client_rect );
 		std::list< RPPageCtrlItem* >::const_iterator it = items.begin();
-		bool before_current = true;
-		int  delta_height_before = 0;
-		int  delta_height_after  = 0;
+		int delta_height_before = 0;
+		int delta_height_after  = 0;
 		while ( it != it_current && it != items.end() ) {
 			RPPageCtrlItem* item = *it;
 			item->SetWindowPos( NULL, 0, delta_height_before, client_rect.Width(), label_height, 0 );
@@ -146,7 +145,7 @@ RPPageCtrlItem* RPPageCtrl::prepareNewPage()
 	}
 	RPPageCtrlItem* page = new RPPageCtrlItem();
 	items.push_back( page );
-	page->Create( "", "", 0, CRect(0,0,100,100), this, -1 );
+	page->Create( "", "", 0, CRect(0,0,100,100), this, UINT(~0) );
 	return page;
 }
 
@@ -204,9 +203,8 @@ void RPPageCtrl::OnTimer( UINT nIDEvent )
 			std::list< RPPageCtrlItem* >::const_iterator it = items.begin();
 			std::list< RPPageCtrlItem* >::const_iterator it_last = it_current;
 			it_last++;
-			bool before_current = true;
-			int  delta_height_before = 0;
-			int  delta_height_after  = 0;
+			int delta_height_before = 0;
+			int delta_height_after  = 0;
 			while ( it != it_last ) {
 				RPPageCtrlItem* item = *it;
 				item->fly = true;
@@ -479,7 +477,7 @@ int RPPageCtrlItem::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
 	if ( CWnd::OnCreate(lpCreateStruct) == -1 ) return -1;
 
-	label.Create( "", "", WS_DLGFRAME, CRect(0,0,200,200), this, -1 );
+	label.Create( "", "", WS_DLGFRAME, CRect(0,0,200,200), this, UINT(~0) );
 
 	RPPageCtrl* pagectrl = static_cast<RPPageCtrl*>(GetParent());
 	if ( !pagectrl->label_height ) {
@@ -563,6 +561,8 @@ void RPPageCtrlItem::show()
 
 void RPPageCtrlItem::OnListCtrlBeginDrag( NMHDR* pNMHDR, LRESULT* pResult )
 {
+	UNUSED(pNMHDR);
+
 	// Это уведомление приходит только от CListCtrl, поэтому смело можем приводить тип
 	CListCtrl* list_ctrl = static_cast<CListCtrl*>(wnd);
 	list_ctrl->SetFocus();

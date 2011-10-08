@@ -8,7 +8,8 @@
 // -------------------- RDOTracerResParamInfo
 // --------------------------------------------------------------------------------
 enum RDOTracerResParamType {
-	RDOPT_INTEGER = 0,
+	RDOPT_UNDEFINED = ~0,
+	RDOPT_INTEGER   = 0,
 	RDOPT_REAL,
 	RDOPT_ENUMERATIVE,
 	RDOPT_ARRAY

@@ -92,12 +92,14 @@ void RPProjectMFC::save()
 
 void RPProjectMFC::load( rp::RPXMLNode* node )
 {
-	rp::RPXMLNode* flowchart_node = NULL;
-	while ( flowchart_node = node->nextChild(flowchart_node) ) {
+	rp::RPXMLNode* flowchart_node = node->nextChild(NULL);
+	while ( flowchart_node )
+	{
 		if ( flowchart_node->getName() == "flowchart" ) {
 			RPObjectFlowChart* flowobj = static_cast<RPObjectFlowChart*>(rpMethod::factory->getNewObject( flowchart_node->getAttribute("class"), rpMethod::project ));
 			flowobj->load( flowchart_node );
 		}
+		flowchart_node = node->nextChild(flowchart_node);
 	}
 }
 
