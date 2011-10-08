@@ -62,6 +62,8 @@ void msg::sendMessage( RPObject* from, UINT message, void* param )
 
 void msg::notify( RPObject* from, UINT message, void* param )
 {
+	UNUSED(param);
+
 	if ( message == RP_OBJ_BEFOREDELETE ) {
 		disconnect( from );
 	}

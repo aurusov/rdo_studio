@@ -74,6 +74,9 @@ RPObject* RPShapeDecide::newObject( RPObject* parent )
 
 void RPShapeDecide::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 {
+	UNUSED(nFlags          );
+	UNUSED(global_chart_pos);
+
 	RPShapeDecideDlg1 dlg( AfxGetMainWnd(), this );
 	dlg.DoModal();
 }

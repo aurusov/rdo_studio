@@ -60,7 +60,8 @@ RPObject* RPProject::findObject( rp::string fullname )
 			obj_name = fullname;
 			last = true;
 		}
-		if ( obj = obj->find_child( obj_name ) ) {
+		obj = obj->find_child( obj_name );
+		if ( obj ) {
 			if ( last ) return obj;
 		} else {
 			return NULL;

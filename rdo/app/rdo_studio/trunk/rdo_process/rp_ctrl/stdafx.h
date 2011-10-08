@@ -28,6 +28,8 @@
 #include <list>
 #include <algorithm>
 
+#include "utils/rdotypes.h"
+#include "utils/rdomacros.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_string.h"
 
 //{{AFX_INSERT_LOCATION}}

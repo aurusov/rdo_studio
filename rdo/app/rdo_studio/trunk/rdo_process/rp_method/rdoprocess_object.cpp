@@ -155,7 +155,6 @@ void RPObject::selectChildOff( RPObject* withoutObj )
 {
 	std::list< RPObject* >::iterator it = child.begin();
 	while ( it != child.end() ) {
-		RPObject* obj = *it;
 		if ( (*it) != withoutObj ) {
 			(*it)->setSelected( false );
 		}

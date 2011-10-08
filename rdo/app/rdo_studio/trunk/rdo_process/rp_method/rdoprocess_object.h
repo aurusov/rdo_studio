@@ -40,10 +40,15 @@ protected:
 	bool       selected;
 	bool       can_modify;
 
-	virtual void notify( RPObject* from, UINT message, void* param = NULL ) {};
-	virtual void modify()                                                   {};
-	RPObject* get_this()                                                    { return this;     }
-	virtual rp::string get_xml_node_name() const                            { return "object"; }
+	virtual void notify( RPObject* from, UINT message, void* param = NULL )
+	{
+		UNUSED(from   );
+		UNUSED(message);
+		UNUSED(param  );
+	}
+	virtual void modify()                        {};
+	RPObject* get_this()                         { return this;     }
+	virtual rp::string get_xml_node_name() const { return "object"; }
 
 public:
 	RPObject( RPObject* parent = NULL, const rp::string& name = "object" );

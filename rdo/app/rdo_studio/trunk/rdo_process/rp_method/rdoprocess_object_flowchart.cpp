@@ -130,19 +130,23 @@ void RPObjectFlowChart::load( rp::RPXMLNode* node )
 {
 	setCorrectName( node->getAttribute("name") );
 	can_update = false;
-	rp::RPXMLNode* shape_node = NULL;
-	while ( shape_node = node->nextChild( shape_node ) ) {
+	rp::RPXMLNode* shape_node = node->nextChild( NULL );
+	while (shape_node)
+	{
 		if ( shape_node->getName() == "shape" ) {
 			RPObject* shape = rpMethod::factory->getNewObject( shape_node->getAttribute("class"), this );
 			shape->load( shape_node );
 		} else if ( shape_node->getName() == "connectors" ) {
-			rp::RPXMLNode* connector_node = NULL;
-			while ( connector_node = shape_node->nextChild( connector_node ) ) {
+			rp::RPXMLNode* connector_node = shape_node->nextChild( NULL );
+			while (connector_node)
+			{
 				RPObject* connector = rpMethod::factory->getNewObject( connector_node->getAttribute("class"), this );
 				connector->load( connector_node );
+				connector_node = shape_node->nextChild( connector_node );
 			}
 			break;
 		}
+		shape_node = node->nextChild( shape_node );
 	}
 	can_update = true;
 	update();
@@ -328,6 +332,8 @@ void RPObjectFlowChart::onDragLeave()
 
 void RPObjectFlowChart::onDrop( const rp::point& point )
 {
+	UNUSED(point);
+
 	if ( drag_and_drop_shape ) {
 		if ( rpMethod::project->getFlowState() == RPProject::flow_select || rpMethod::project->getFlowState() == RPProject::flow_rotate ) {
 			drag_and_drop_shape->setSelected( true );
@@ -403,6 +409,8 @@ bool RPObjectFlowChart::pointInPolygon( const rp::point& global_chart_pos )
 
 rp::rect RPObjectFlowChart::getBoundingRect( bool global ) const
 {
+	UNUSED(global);
+
 	rp::rect rect = const_cast<RPObjectFlowChart*>(this)->getMaxRect();
 	return rp::rect( rect.getMinX() + 100, rect.getMinY() + 100, rect.getMaxX() - 100, rect.getMaxY() - 100 );
 }
@@ -410,7 +418,6 @@ rp::rect RPObjectFlowChart::getBoundingRect( bool global ) const
 rp::rect RPObjectFlowChart::getMaxRect()
 {
 	rp::rect rect = RPObjectMatrix::getMaxRect();
-	double i = rect.getMaxX();
 	return rp::rect( rect.getMinX() - matrix_transform.dx_const() - 100, rect.getMinY() - matrix_transform.dy_const() - 100, rect.getMaxX() - matrix_transform.dx_const() + 100, rect.getMaxY() - matrix_transform.dy_const() + 100 );
 }
 
@@ -684,6 +691,8 @@ void RPObjectFlowChart::makeNewPixmap()
 
 void RPObjectFlowChart::snapToGrid( RPObjectMatrix* shape )
 {
+	UNUSED(shape);
+
 /*
 	if ( shape ) {
 		if ( grid_pa.empty() ) return;

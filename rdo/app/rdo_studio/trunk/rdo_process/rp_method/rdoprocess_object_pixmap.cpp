@@ -119,10 +119,10 @@ float max4(float a, float b, float c, float d)
 #pragma pack(push)
 #pragma pack(1)
 typedef struct ssBGR {
-	unsigned char b;
-	unsigned char g;
-	unsigned char r;
-	unsigned char pad;
+	rbyte b;
+	rbyte g;
+	rbyte r;
+	rbyte pad;
 } sBGR;
 
 typedef sBGR *pBGR;
@@ -265,8 +265,6 @@ void RPObjectPixmap::draw( CDC& dc )
 	CBitmap* original_old_bitmap = original_dc.SelectObject( &pixmap->getCBitmap() );
 	int w = pixmap->getWidth();
 	int h = pixmap->getHeight();
-	int scaled_w = int(w * getScaleX());
-	int scaled_h = int(h * getScaleY());
 	int rotated_w;
 	int rotated_h;
 	CDC rotated_dc;

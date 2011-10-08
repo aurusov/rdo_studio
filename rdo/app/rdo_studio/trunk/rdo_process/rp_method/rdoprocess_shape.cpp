@@ -202,7 +202,8 @@ void RPShape::transformToGlobal()
 	if ( pa_global.size() != pa_src.size() ) {
 		pa_global.resize( pa_src.size() );
 	}
-	trans tr( globalMatrix() );
+	rp::matrix m(globalMatrix());
+	trans tr(m);
 	std::transform( pa_src.begin(), pa_src.end(), pa_global.begin(), tr );
 }
 
@@ -378,8 +379,7 @@ void RPShape::draw_selected( CDC& dc )
 	dc.LineTo( x0, y0 );
 	dc.SelectObject( flowchart->getPenSelectedBox() );
 	dc.SelectObject( flowchart->getBrushSelectedBox() );
-	int box_size   = flowchart->getSelectBoxSize2() * 2 -1;
-	int box_size_2 = flowchart->getSelectBoxSize2();
+	int box_size = flowchart->getSelectBoxSize2();
 	if ( rpMethod::project->getFlowState() == RPProject::flow_rotate ) {
 		int radius = RPObjectFlowChart::getSensitivity();
 		dc.Ellipse( x0 - radius, y0 - radius, x0 + radius, y0 + radius );
@@ -387,15 +387,15 @@ void RPShape::draw_selected( CDC& dc )
 		dc.Ellipse( x2 - radius, y2 - radius, x2 + radius, y2 + radius );
 		dc.Ellipse( x3 - radius, y3 - radius, x3 + radius, y3 + radius );
 	} else {
-		dc.Rectangle( x0 - box_size_2, y0 - box_size_2, x0 + box_size_2, y0 + box_size_2 );
-		dc.Rectangle( x1 - box_size_2, y1 - box_size_2, x1 + box_size_2, y1 + box_size_2 );
-		dc.Rectangle( x2 - box_size_2, y2 - box_size_2, x2 + box_size_2, y2 + box_size_2 );
-		dc.Rectangle( x3 - box_size_2, y3 - box_size_2, x3 + box_size_2, y3 + box_size_2 );
+		dc.Rectangle( x0 - box_size, y0 - box_size, x0 + box_size, y0 + box_size );
+		dc.Rectangle( x1 - box_size, y1 - box_size, x1 + box_size, y1 + box_size );
+		dc.Rectangle( x2 - box_size, y2 - box_size, x2 + box_size, y2 + box_size );
+		dc.Rectangle( x3 - box_size, y3 - box_size, x3 + box_size, y3 + box_size );
 	}
-	dc.Rectangle( (x0 + x1)/2 - box_size_2, (y0 + y1)/2 - box_size_2, (x0 + x1)/2 + box_size_2, (y0 + y1)/2 + box_size_2 );
-	dc.Rectangle( (x1 + x2)/2 - box_size_2, (y1 + y2)/2 - box_size_2, (x1 + x2)/2 + box_size_2, (y1 + y2)/2 + box_size_2 );
-	dc.Rectangle( (x2 + x3)/2 - box_size_2, (y2 + y3)/2 - box_size_2, (x2 + x3)/2 + box_size_2, (y2 + y3)/2 + box_size_2 );
-	dc.Rectangle( (x3 + x0)/2 - box_size_2, (y3 + y0)/2 - box_size_2, (x3 + x0)/2 + box_size_2, (y3 + y0)/2 + box_size_2 );
+	dc.Rectangle( (x0 + x1)/2 - box_size, (y0 + y1)/2 - box_size, (x0 + x1)/2 + box_size, (y0 + y1)/2 + box_size );
+	dc.Rectangle( (x1 + x2)/2 - box_size, (y1 + y2)/2 - box_size, (x1 + x2)/2 + box_size, (y1 + y2)/2 + box_size );
+	dc.Rectangle( (x2 + x3)/2 - box_size, (y2 + y3)/2 - box_size, (x2 + x3)/2 + box_size, (y2 + y3)/2 + box_size );
+	dc.Rectangle( (x3 + x0)/2 - box_size, (y3 + y0)/2 - box_size, (x3 + x0)/2 + box_size, (y3 + y0)/2 + box_size );
 	if ( rpMethod::project->getFlowState() == RPProject::flow_rotate ) {
 		// Центр вращения
 		rp::point center = getRotateCenter();
@@ -427,7 +427,6 @@ void RPShape::command_make( const rp::point& global_chart_pos )
 
 	RPObjectFlowChart* flowchart = flowChart();
 	RPShape::angle90 a90 = getAngle90();
-	bool horz = a90 == RPShape::angle90_0 || a90 == RPShape::angle90_180;
 	rp::point mouse_delta = flowchart->mouse_delta();
 	switch ( pcmd ) {
 		case RPShape::pcmd_move: {
@@ -474,7 +473,8 @@ void RPShape::command_make( const rp::point& global_chart_pos )
 			}
 			setScaleX( getScaleX() * (len.x + point_delta.x ) / len.x );
 			setScaleY( getScaleY() * (len.y + point_delta.y ) / len.y );
-			RPShape::getRectDelta( rect, getBoundingRect(), point_delta, a90, pcmd );
+			rp::rect r(getBoundingRect());
+			RPShape::getRectDelta( rect, r, point_delta, a90, pcmd );
 			point_delta = globalRotate().obr() * point_delta;
 			setPostX( getPostX() + point_delta.x );
 			setPostY( getPostY() + point_delta.y );
@@ -1194,6 +1194,9 @@ void RPShape::getRectDelta( rp::rect& rect_old, rp::rect& rect_new, rp::point& d
 
 void RPShape::onRButtonDown( UINT nFlags, CPoint global_chart_pos )
 {
+	UNUSED(nFlags          );
+	UNUSED(global_chart_pos);
+
 	std::vector< RPConnectorDock* >::const_iterator it = docks.begin();
 	while ( it != docks.end() ) {
 		std::list< RPConnector* >::const_iterator conn_it = (*it)->connectors.begin();

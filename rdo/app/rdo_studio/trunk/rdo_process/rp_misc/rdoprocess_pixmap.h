@@ -17,28 +17,27 @@ protected:
 	CBitmap  bmp;
 	BITMAP   bmp_info;
 	COLORREF transparent;
-	struct Pixel {
-		unsigned int r;
-		unsigned int g;
-		unsigned int b;
-		Pixel():
-			r(0),
-			g(0),
-			b(0)
-		{
-		}
-		Pixel( unsigned int _r, unsigned int _g, unsigned int _b ):
-			r(_r),
-			g(_g),
-			b(_b)
-		{
-		}
-		Pixel( const Pixel& copy ):
-			r(copy.r),
-			g(copy.g),
-			b(copy.b)
-		{
-		}
+	struct Pixel
+	{
+		ruint r;
+		ruint g;
+		ruint b;
+
+		Pixel()
+			: r(0)
+			, g(0)
+			, b(0)
+		{}
+		Pixel(ruint _r, ruint _g, ruint _b)
+			: r(_r)
+			, g(_g)
+			, b(_b)
+		{}
+		Pixel( const Pixel& copy )
+			: r(copy.r)
+			, g(copy.g)
+			, b(copy.b)
+		{}
 	};
 
 	int char_per_pixel;
@@ -51,7 +50,7 @@ protected:
 public:
 	RPPixmap( char* _xpm[] );
 	RPPixmap( HICON icon );
-	RPPixmap( unsigned int resource, COLORREF _transparent );
+	RPPixmap( ruint resource, COLORREF _transparent );
 	HBITMAP getBitmap()   { return reinterpret_cast<HBITMAP>(bmp.m_hObject); }
 	CBitmap& getCBitmap() { return bmp;                                      }
 	int getWidth();

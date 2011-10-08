@@ -15,7 +15,7 @@ int string::tohex() const
 {
 	rp::string str = toupper();
 	int result = 0;
-	for ( unsigned int i = 0; i < str.size(); i++ ) {
+	for ( ruint i = 0; i < str.size(); i++ ) {
 		result = result << 4;
 		switch ( str[i] ) {
 			case '0': break;
@@ -58,7 +58,7 @@ string format( const char* str, ... )
 	return std::string( s.begin(), s.end() );
 }
 
-string format( unsigned int resource, ... )
+string format( ruint resource, ... )
 {
 	CString str;
 	if ( str.LoadString( resource ) ) {

@@ -95,6 +95,9 @@ RPObject* RPShapeResource_MJ::newObject( RPObject* parent )
 
 void RPShapeResource_MJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 {
+	UNUSED(nFlags          );
+	UNUSED(global_chart_pos);
+
 	RPShapeResourceDLG1_MJ dlg( AfxGetMainWnd(), this );
 	dlg.DoModal();
 }

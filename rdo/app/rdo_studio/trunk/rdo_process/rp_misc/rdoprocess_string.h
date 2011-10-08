@@ -132,7 +132,7 @@ rp::string str = rp::string::fromdouble( 20.2 );
 };
 
 rp::string format( const char* str, ... );
-rp::string format( unsigned int resource, ... );
+rp::string format( ruint resource, ... );
 rp::string extractFilePath( const rp::string& fileName );
 
 } // namespace rp

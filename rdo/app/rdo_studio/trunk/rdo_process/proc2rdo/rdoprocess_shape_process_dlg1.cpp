@@ -273,11 +273,11 @@ void RPShapeProcessDlg1_MJ::OnCloseupCombo2()
 HBRUSH RPShapeProcessDlg1_MJ::OnCtlColor( CDC* pDC, CWnd* pWnd, UINT nCtlColor )
 {
 	return CDialog::OnCtlColor( pDC, pWnd, nCtlColor );
-	if ( nCtlColor == CTLCOLOR_LISTBOX && pWnd == &m_ResList ) {
-		return m_ResList.IsWindowEnabled() ? brush1 : brush2;
-	} else {
-		return CDialog::OnCtlColor( pDC, pWnd, nCtlColor );
-	}
+	//if ( nCtlColor == CTLCOLOR_LISTBOX && pWnd == &m_ResList ) {
+	//	return m_ResList.IsWindowEnabled() ? brush1 : brush2;
+	//} else {
+	//	return CDialog::OnCtlColor( pDC, pWnd, nCtlColor );
+	//}
 }
 
 void RPShapeProcessDlg1_MJ::OnButton2() 

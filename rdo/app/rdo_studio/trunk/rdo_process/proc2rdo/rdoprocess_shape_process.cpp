@@ -63,6 +63,9 @@ RPObject* RPShapeProcessMJ::newObject( RPObject* parent )
 
 void RPShapeProcessMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 {
+	UNUSED(nFlags          );
+	UNUSED(global_chart_pos);
+
 	RPShapeProcessDlg1_MJ dlg( AfxGetMainWnd(), this );
 	dlg.DoModal();
 }

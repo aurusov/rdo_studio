@@ -46,16 +46,22 @@ private:
 	virtual void transformToGlobal() {};
 
 	// Находится ли точка внутри фигуры
-	virtual bool pointInPolygon( const rp::point& global_chart_pos ) {
+	virtual bool pointInPolygon( const rp::point& global_chart_pos )
+	{
+		UNUSED(global_chart_pos);
 		return false;
 	};
 	// Находится ли точка в служебной (неклиентской) части фигуры (прямоугольник выделения, к примеру)
-	virtual bool pointInNCArea( const rp::point& global_chart_pos ) {
+	virtual bool pointInNCArea( const rp::point& global_chart_pos )
+	{
+		UNUSED(global_chart_pos);
 		return false;
 	};
 
 	// Габориты фигуры
-	virtual rp::rect getBoundingRect( bool global = true ) const {
+	virtual rp::rect getBoundingRect( bool global = true ) const
+	{
+		UNUSED(global);
 		return rp::rect();
 	};
 
