@@ -39,7 +39,7 @@ BOOST_AUTO_TEST_CASE(RDONormalTestCreate)
 	rdoRuntime::RandGeneratorNormal normal(g_seed);
 	Container test;
 
-	for (ruint i = 0; i < g_count; ++it)
+	for (ruint i = 0; i < g_count; ++i)
 	{
 		test.push_back(normal.next(g_main, g_var));
 	}
