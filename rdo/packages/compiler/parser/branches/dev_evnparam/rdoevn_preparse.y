@@ -530,17 +530,16 @@ fun_arithm
 // -------------------- Функции и последовательности
 // --------------------------------------------------------------------------------
 fun_arithm_func_call
-	: RDO_IDENTIF '(' ')'                           {}
-	| RDO_IDENTIF '(' fun_arithm_func_call_pars ')' {}
-	| RDO_IDENTIF '(' error                         {}
-	;
-
-fun_arithm_func_call_pars
-	: fun_arithm                               {}
-	| fun_arithm_func_call_pars ',' fun_arithm {}
-	| fun_arithm_func_call_pars error          {}
-	| fun_arithm_func_call_pars ',' error      {}
-	;
+	: RDO_IDENTIF '(' arithm_list ')'   {};
+	
+arithm_list
+	: /* empty */
+	| arithm_list_body					{};
+	
+arithm_list_body
+	: fun_arithm						{};
+	| arithm_list_body ',' fun_arithm	{};
+	| arithm_list_body ',' error		{};
 
 // --------------------------------------------------------------------------------
 // -------------------- Групповые выражения
