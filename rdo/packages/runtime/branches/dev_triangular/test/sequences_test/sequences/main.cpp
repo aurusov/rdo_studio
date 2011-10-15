@@ -42,7 +42,7 @@ const ruint    g_precision            = 20;                         //!< точност
 
 
 BOOST_AUTO_TEST_SUITE(RDOSequencesTest)
-
+/*
 // --------------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE(RDONormalTestCreate)
 {
@@ -70,7 +70,7 @@ BOOST_AUTO_TEST_CASE(RDOUniformTestCheck)
 		(boost::bind(&rdoRuntime::RandGeneratorUniform::next, _1, g_from, g_to), g_fileUniformName);
 }
 // --------------------------------------------------------------------------------
-
+*/
 // --------------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE(RDOExponentialTestCreate)
 {
@@ -84,7 +84,7 @@ BOOST_AUTO_TEST_CASE(RDOExponentialTestCheck)
 		(boost::bind(&rdoRuntime::RandGeneratorExponential::next, _1, g_main), g_fileExponentialName);
 }
 // --------------------------------------------------------------------------------
-
+/*
 // --------------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE(RDOTriangularTestCreate)
 {
@@ -98,5 +98,5 @@ BOOST_AUTO_TEST_CASE(RDOTriangularTestCheck)
 		(boost::bind(&rdoRuntime::RandGeneratorTriangular::next, _1, g_from, g_top, g_to), g_fileTriangularName);
 }
 // --------------------------------------------------------------------------------
-
+*/
 BOOST_AUTO_TEST_SUITE_END()

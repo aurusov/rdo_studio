@@ -50,5 +50,11 @@ void onCheckData(F binder, contstr g_fileName)
 		double val;
 		stream >> val;
 		BOOST_CHECK(val == *it);
+				if (val != *it)
+		{
+			std::cout.precision(25);
+			std::cout << *it << std::endl;
+			std::cout << val << std::endl;
+		}
 	}
 }
