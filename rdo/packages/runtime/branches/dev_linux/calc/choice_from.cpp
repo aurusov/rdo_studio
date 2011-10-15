@@ -9,10 +9,15 @@
   \indent    4T
 */
 
+// ----------------------------------------------------------------------- PLATFORM
+#include "utils/platform.h"
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <limits>
+#ifdef OST_LINUX
+	#include <float.h>
+#endif // OST_LINUX
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/choice_from.h"
 #include "simulator/runtime/rdo_runtime.h"
@@ -340,7 +345,7 @@ std::vector<int> RDOSelectResourceByTypeCommonCalc::getPossibleNumbers(CREF(LPRD
 	RDORuntime::ResCIterator end = pRuntime->res_end();
 	for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != end; it++)
 	{
-		if (*it == NULL)
+		if (*it == LPRDOResource(NULL))
 			continue;
 
 		if (!(*it)->checkType(m_resTypeID))
