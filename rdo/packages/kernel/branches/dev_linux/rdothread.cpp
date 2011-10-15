@@ -11,6 +11,8 @@
 	#else
 		#include <windows.h>
 	#endif
+#else
+	#include <pthread.h>
 #endif
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
@@ -50,7 +52,11 @@ RDOThread::RDOThread(CREF(tstring) _thread_name, RDOThreadFun _thread_fun)
 #else
 RDOThread::RDOThread(CREF(tstring) _thread_name)
 	: thread_name(_thread_name          )
+#ifdef OST_WINDOWS
 	, thread_id  (::GetCurrentThreadId())
+#else
+	, thread_id  (pthread_self())
+#endif
 	, idle_cnt   (0                     )
 #endif
 {
