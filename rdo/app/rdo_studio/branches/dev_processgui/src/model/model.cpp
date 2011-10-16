@@ -996,9 +996,11 @@ void RDOStudioModel::saveModelToRepository()
 	setName(data.m_name);
 
 	// Вызов функции сохранения в xml
-	saveToXML();
+	// Создание документа doc класса xml_document, в который осуществляется запись
+	pugi::xml_document doc;
+	saveToXML(doc);
 
-	studioApp.insertReopenItem(getFullName());
+ 	studioApp.insertReopenItem(getFullName());
 
 	if (smr_modified)
 	{
@@ -1011,20 +1013,44 @@ void RDOStudioModel::saveModelToRepository()
 	}
 }
 
-void RDOStudioModel::saveToXML()
+void RDOStudioModel::saveToXML(pugi::xml_document& doc)
 {
-	pugi::xml_document doc;
-	pugi::xml_node      rootNode   = doc.append_child(_T("Some node"));
-	pugi::xml_node      childNode  = rootNode.append_child(_T("Child Node"));
-	pugi::xml_attribute value1Attr = childNode.append_attribute(_T("value1"));
-	pugi::xml_attribute value2Attr = childNode.append_attribute(_T("value2"));
-	value1Attr.set_value(_T("1"));
-	value2Attr.set_value(_T("2"));
+    // Создаем список указателей на класс RPObject:
+	std::list< RPObject* > all_child;
 
-	std::ofstream ofs(_T("TESTXML.txt"));
-	if (ofs.good())
+	// Разыменовываем указатель RPProject* project, вызывая тем самым
+	// метод getAllChild, который заполняет список all_child всеми
+    // размещенными в "РДО-Процесс" потомками класса RPObject:
+	rpMethod::project->getAllChild(all_child, true);
+	
+	// Ставим итератор в начало заполненного списка:
+	std::list< RPObject* >::const_iterator ex_shape = all_child.begin();
+
+	// Запускаем цикл, пробегающий по списку и записывающий имена встречающихся
+	// потомков класса RPObject в xml-форме:
+	while( ex_shape != all_child.end() )
 	{
-		doc.save(ofs);
+		pugi::xml_node node = doc.append_child((*ex_shape)->getClassName().c_str());	
+		//node.append_child(pugi::node_element).set_name((*ex_shape)->getName().c_str());
+		pugi::xml_node ClassName = node.append_child((*ex_shape)->getName().c_str());
+		
+		// Записываем свойства каждого блока в узлы каждого объекта класса RPShape_MJ:
+		pugi::xml_node data = ClassName.append_child("Have");
+		data.append_attribute("method?") = (*ex_shape)->getClassInfo()->haveMethod();
+
+		ex_shape++;
+	}
+
+	// Автоматически открываем файл при создании потока:
+	// P.S. Режим открытия файла (битовые маски) - 
+	//         ios::out - открыть файл для записи;
+	//         ios::ate - начало вывода устанавливается в конец файла;
+	std::ofstream OutFile("D:\\TESTXML.txt", std::ios::out | std::ios::ate);
+	// Проверяем открытый нами поток на наличие ошибок ввода-вывода:
+	if (OutFile.good())
+	{
+		doc.save(OutFile, "\t", pugi::format_indent | pugi::format_no_declaration);
+		OutFile.close();
 	}
 }
 

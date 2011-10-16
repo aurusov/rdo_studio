@@ -27,6 +27,7 @@
 #include "app/rdo_studio_mfc/src/application.h"
 #include "kernel/rdothread.h"
 #include "simulator/service/rdosimwin.h"
+#include "thirdparty/pugixml/src/pugixml.hpp"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
@@ -143,7 +144,7 @@ private:
 	ModelTemplateList m_modelTemplates;
 
 	void show_result();
-	void saveToXML  ();
+	void saveToXML  (pugi::xml_document& doc);
 
 protected:
 	virtual void proc(REF(RDOThread::RDOMessageInfo) msg);
