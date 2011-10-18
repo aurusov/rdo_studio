@@ -1021,14 +1021,11 @@ void RDOStudioModel::saveToXML(pugi::xml_document& doc)
 	// Разыменовываем указатель RPProject* project, вызывая тем самым
 	// метод getAllChild, который заполняет список all_child всеми
     // размещенными в "РДО-Процесс" потомками класса RPObject:
-	rpMethod::project->getAllChild(all_child, true);
-	
-	// Ставим итератор в начало заполненного списка:
-	std::list< RPObject* >::const_iterator ex_shape = all_child.begin();
+	rpMethod::project->getAllChild(all_child);
 
 	// Запускаем цикл, пробегающий по списку и записывающий имена встречающихся
 	// потомков класса RPObject в xml-форме:
-	while( ex_shape != all_child.end() )
+	STL_FOR_ALL_CONST(all_child, ex_shape)
 	{
 		pugi::xml_node node = doc.append_child((*ex_shape)->getClassName().c_str());	
 		//node.append_child(pugi::node_element).set_name((*ex_shape)->getName().c_str());
@@ -1037,8 +1034,6 @@ void RDOStudioModel::saveToXML(pugi::xml_document& doc)
 		// Записываем свойства каждого блока в узлы каждого объекта класса RPShape_MJ:
 		pugi::xml_node data = ClassName.append_child("Have");
 		data.append_attribute("method?") = (*ex_shape)->getClassInfo()->haveMethod();
-
-		ex_shape++;
 	}
 
 	// Автоматически открываем файл при создании потока:
