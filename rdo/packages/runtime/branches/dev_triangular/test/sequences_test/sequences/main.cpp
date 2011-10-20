@@ -39,10 +39,64 @@ const double   g_to                   = 7.0;                        //!< парамет
 const double   g_top                  = 5.0;                        //!< параметр закона
 const ruint    g_precision            = 20;                         //!< точность вещественного числа при выводе в поток
 
+// --------------------------------------------------------------------------------
+// -------Templates
+// --------------------------------------------------------------------------------
+template <class T, class F, class contstr>
+void onGenerateData(F binder, contstr g_fileName)
+{
+	if (rdo::File::exist(g_fileName.c_str()))
+		return;
 
+	T sequence(g_seed);
+	Container test;
+
+	for (ruint i = 0; i < g_count; ++i)
+	{
+		test.push_back(binder.operator()(&sequence));
+	}
+
+	std::ofstream stream(g_fileName.c_str());
+	stream.precision(g_precision);
+	STL_FOR_ALL(test, it)
+	{
+		stream << *it << std::endl;
+	}
+}
+
+template <class T, class F, class contstr>
+void onCheckData(F binder, contstr g_fileName)
+{
+	std::ifstream stream(g_fileName.c_str());
+	BOOST_CHECK(stream.good());
+
+	Container test;
+	T sequence(g_seed);
+	for (ruint i = 0; i < g_count; ++i)
+	{
+		test.push_back(binder.operator()(&sequence));
+	}
+
+	STL_FOR_ALL(test, it)
+	{
+		BOOST_CHECK(stream.good());
+		double val;
+		stream >> val;
+		BOOST_CHECK(val == *it);
+				if (val != *it)
+		{
+			std::cout.precision(25);
+			std::cout << *it << std::endl;
+			std::cout << val << std::endl;
+		}
+	}
+}
+// --------------------------------------------------------------------------------
 
 BOOST_AUTO_TEST_SUITE(RDOSequencesTest)
 /*
+// --------------------------------------------------------------------------------
+// -------Normal sequence
 // --------------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE(RDONormalTestCreate)
 {
@@ -58,6 +112,8 @@ BOOST_AUTO_TEST_CASE(RDONormalTestCheck)
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
+// -------Uniform sequence
+// --------------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE(RDOUniformTestCreate)
 {
 	onGenerateData<rdoRuntime::RandGeneratorUniform>
@@ -72,6 +128,8 @@ BOOST_AUTO_TEST_CASE(RDOUniformTestCheck)
 // --------------------------------------------------------------------------------
 */
 // --------------------------------------------------------------------------------
+// -------Exponential sequence
+// --------------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE(RDOExponentialTestCreate)
 {
 	onGenerateData<rdoRuntime::RandGeneratorExponential>
@@ -85,6 +143,8 @@ BOOST_AUTO_TEST_CASE(RDOExponentialTestCheck)
 }
 // --------------------------------------------------------------------------------
 /*
+// --------------------------------------------------------------------------------
+// -------Triangular sequence
 // --------------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE(RDOTriangularTestCreate)
 {

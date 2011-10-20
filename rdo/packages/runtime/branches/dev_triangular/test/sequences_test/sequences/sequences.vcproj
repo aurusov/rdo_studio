@@ -165,10 +165,6 @@
 				RelativePath=".\main.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\templ.cpp"
-				>
-			</File>
 		</Filter>
 	</Files>
 	<Globals>
