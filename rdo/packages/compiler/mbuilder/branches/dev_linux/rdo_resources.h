@@ -10,11 +10,15 @@
 #ifndef _MBUILDER_RESOURCES_H_
 #define _MBUILDER_RESOURCES_H_
 
-#if _MSC_VER > 1000
-#pragma once
+// ----------------------------------------------------------------------- PLATFORM
+#include "utils/platform.h"
+// ----------------------------------------------------------------------- INCLUDES
+#ifdef COMPILER_VISUAL_STUDIO
+	#if _MSC_VER > 1000
+		#pragma once
+	#endif
 #endif
 
-// ----------------------------------------------------------------------- INCLUDES
 #include <list>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdodebug.h"
