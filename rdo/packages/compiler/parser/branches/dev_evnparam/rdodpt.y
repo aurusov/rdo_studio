@@ -741,53 +741,6 @@ dpt_some_descr_keyb
 		pActivityHotKey->addHotKey(key, @1);
 	}
 	;
-dpt_some_fun_params
-	: /* empty */ 
-	{
-		LPArithmContainer pArithmContainer = rdo::Factory<ArithmContainer>::create();
-		ASSERT(pArithmContainer);
-		$$ = PARSER->stack().push(pArithmContainer);
-	}
-	| dpt_some_fun_params_body
-	{};
-
-dpt_some_fun_params_body
-	: fun_arithm
-	{
-		LPArithmContainer pArithmContainer = rdo::Factory<ArithmContainer>::create();
-		LPRDOFUNArithm    pArithm          = PARSER->stack().pop<RDOFUNArithm>($1);
-		ASSERT (pArithmContainer);
-		ASSERT (pArithm);
-		pArithmContainer->setSrcText(pArithm->src_text());
-		pArithmContainer->addItem   (pArithm);
-		$$ = PARSER->stack().push(pArithmContainer);
-	}
-	| dpt_some_fun_params_body fun_arithm
-	{
-		LPArithmContainer pArithmContainer = PARSER->stack().pop<ArithmContainer>($1);
-		LPRDOFUNArithm    pArithm          = PARSER->stack().pop<RDOFUNArithm>($2);
-		ASSERT (pArithmContainer);
-		ASSERT (pArithm);
-		pArithmContainer->setSrcText(pArithmContainer->src_text() + _T(", ") + pArithm->src_text());
-		pArithmContainer->addItem   (pArithm);
-		$$ = PARSER->stack().push(pArithmContainer);
-	}
-
-dpt_some_func_call
-	: RDO_IDENTIF '(' dpt_some_fun_params ')'
-	{
-		tstring funName                    = RDOVALUE($1)->getIdentificator();
-		LPArithmContainer pArithmContainer = PARSER->stack().pop<ArithmContainer>($3);
-		ASSERT(pArithmContainer);
-		LPRDOFUNParams pFunParams = rdo::Factory<RDOFUNParams>::create(pArithmContainer);
-		ASSERT(pFunParams);
-		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
-		pFunParams->setSrcPos (@1, @4);
-		pFunParams->setSrcText(funName + _T("(") + pArithmContainer->src_text() + _T(")"));
-		LPRDOFUNArithm pArithm = pFunParams->createCall(funName);
-		ASSERT(pArithm);
-		$$ = PARSER->stack().push(pArithm);	
-	}
 
 dpt_some_descr_param
 	: /* empty */
@@ -795,26 +748,12 @@ dpt_some_descr_param
 	{
 		PARSER->getLastDPTSome()->getLastActivity()->addParam(RDOValue(RDOParserSrcInfo(@2, _T("*"))));
 	}
-	| dpt_some_descr_param dpt_some_func_call
+	| dpt_some_descr_param fun_arithm
 	{
-		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
-		RDOValue constant = pArithm->expression()->constant();
+		RDOValue constant = PARSER->stack().pop<RDOFUNArithm>($2)->expression()->constant();
 		if (!constant.defined())
 		{
-			/*
-			 LPArithmContainer pArithmContainer = PARSER->stack().pop<ArithmContainer>($2);
-			ASSERT(pArithmContainer);
-			LPRDOFUNParams pFunParams = rdo::Factory<RDOFUNParams>::create(pArithmContainer);
-			ASSERT(pFunParams);
-			pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@2, funName));
-			pFunParams->setSrcPos (@1, @4);
-			pFunParams->setSrcText(funName + _T("(") + pArithmContainer->src_text() + _T(")"));
-			LPRDOFUNArithm pArithm = pFunParams->createCall(funName);
-			ASSERT(pArithm);
-			$$ = PARSER->stack().push(pArithm);
-			RDOValue constant = PARSER->stack().pop<pArithm>($2)->expression()->constant();
-			*/ 
-		PARSER->error().error(@2, _T("Ошибка вызова"));
+			PARSER->error().error(@2, _T("Параметр может быть только константой"));
 		}
 		PARSER->getLastDPTSome()->getLastActivity()->addParam(constant);
 	}
@@ -1630,7 +1569,6 @@ fun_select_arithm
 		PARSER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
 	}
 	;
-
 
 %%
 
