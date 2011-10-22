@@ -76,15 +76,19 @@ void onCheckData(F binder, contstr g_fileName)
 		test.push_back(binder.operator()(&sequence));
 	}
 
+	stream.precision(g_precision);
 	STL_FOR_ALL(test, it)
 	{
 		BOOST_CHECK(stream.good());
+		tstring str;
+		stream >> str;
+
 		double val;
-		stream >> val;
+		BOOST_CHECK(sscanf_s(str.c_str(), _T("%lf"), &val) == 1);
 		BOOST_CHECK(val == *it);
 				if (val != *it)
 		{
-			std::cout.precision(25);
+			std::cout.precision(g_precision);
 			std::cout << *it << std::endl;
 			std::cout << val << std::endl;
 		}
