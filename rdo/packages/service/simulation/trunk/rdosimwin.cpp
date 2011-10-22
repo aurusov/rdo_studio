@@ -483,8 +483,8 @@ RDOThreadRunTime::RDOThreadRunTime()
 {
 	rdo::Time time;
 	
-	m_timeStar = time.local();
-	m_timeStar / 1000000;
+	m_timeStart = time.local();
+	m_timeStart /= 1000000;
 
 	m_pSimulator = kernel->simulator();
 
@@ -730,7 +730,7 @@ void RDOThreadRunTime::writeResultsInfo()
 	rdo::Time time;
 	
 	ruint64 timeStop = time.local();
-	time_stop / 1000000;
+	timeStop /= 1000000;
 	
 	double delay = -1;
 
