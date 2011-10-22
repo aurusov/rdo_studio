@@ -32,10 +32,10 @@
 #include "utils/rdostream.h"
 #include "kernel/rdokernel.h"
 #include "kernel/rdothread.h"
+#include "simulator/service/procgui.h"
 #include "simulator/runtime/thread_proxy_i.h"
 #include "simulator/compiler/parser/namespace.h"
 #include "converter/smr2rdox/rdo_common/model_objects_convertor.h"
-#include "simulator/service/procgui.h"
 // --------------------------------------------------------------------------------
 
 //#define DISABLE_CORBA
@@ -143,7 +143,7 @@ public:
 private:
 	PTR(rdoSimulator::RDOThreadSimulator) m_pSimulator;
 	rbool                                 m_runtimeError;
-	SYSTEMTIME                            m_timeStart;
+	ruint64                               m_timeStart;
 
 	RDOThreadRunTime();
 	virtual ~RDOThreadRunTime() //! Чтобы нельзя было удалить через delete

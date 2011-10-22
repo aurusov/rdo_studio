@@ -14,9 +14,9 @@
 // ----------------------------------------------------------------------- INCLUDES
 #ifdef OST_WINDOWS
 	#pragma warning(disable : 4786)
+	#include <conio.h>
 #endif
 #include <stdio.h>
-#include <conio.h>
 #include <fstream>
 #include <iostream>
 #include <functional>
@@ -38,9 +38,10 @@
 #include "simulator/compiler/parser/rdosmr.h"
 #include "simulator/compiler/parser/rdofrm.h"
 #include "simulator/compiler/parser/rdortp.h"
-#include "converter/smr2rdox/rdoparser.h"
 #include "simulator/compiler/mbuilder/rdo_resources.h"
 #include "utils/rdodebug.h"
+#include "utils/rdotime.h"
+#include "converter/smr2rdox/rdoparser.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_datablock.h"
 // --------------------------------------------------------------------------------
 
@@ -480,7 +481,10 @@ RDOThreadRunTime::RDOThreadRunTime()
 	, m_pSimulator  (NULL                  )
 	, m_runtimeError(false                 )
 {
-	::GetSystemTime(&m_timeStart);
+	rdo::Time time;
+	
+	m_timeStar = time.local();
+	m_timeStar / 1000000;
 
 	m_pSimulator = kernel->simulator();
 
@@ -722,17 +726,16 @@ void RDOThreadRunTime::writeResultsInfo()
 			break;
 	}
 	m_pSimulator->m_pRuntime->getResultsInfo() << '\n' << _T("$Result_values  0  ") << m_pSimulator->m_pRuntime->getTimeNow();
-	SYSTEMTIME time_stop;
-	::GetSystemTime(&time_stop);
+	
+	rdo::Time time;
+	
+	ruint64 timeStop = time.local();
+	time_stop / 1000000;
+	
 	double delay = -1;
-	if (m_timeStart.wYear == time_stop.wYear && m_timeStart.wMonth == time_stop.wMonth)
-	{
-		delay = (time_stop.wDay - m_timeStart.wDay) * 24 * 60 * 60 * 1000 + (time_stop.wHour - m_timeStart.wHour) * 60 * 60 * 1000 + (time_stop.wMinute - m_timeStart.wMinute) * 60 * 1000 + (time_stop.wSecond - m_timeStart.wSecond) * 1000 + (time_stop.wMilliseconds - m_timeStart.wMilliseconds);
-	}
-	else if (time_stop.wYear - m_timeStart.wYear == 1 && m_timeStart.wMonth == 12 && time_stop.wMonth == 1)
-	{
-		delay = (time_stop.wDay + 31 - m_timeStart.wDay) * 24 * 60 * 60 * 1000 + (time_stop.wHour - m_timeStart.wHour) * 60 * 60 * 1000 + (time_stop.wMinute - m_timeStart.wMinute) * 60 * 1000 + (time_stop.wSecond - m_timeStart.wSecond) * 1000 + (time_stop.wMilliseconds - m_timeStart.wMilliseconds);
-	}
+
+	delay = timeStop - m_timeStart;
+	
 	if (delay != -1)
 	{
 		m_pSimulator->m_pRuntime->getResultsInfo() << _T("  ") << delay / 1000.0;
@@ -750,6 +753,7 @@ void RDOThreadRunTime::writeResultsInfo()
 	{
 		m_pSimulator->m_pRuntime->getResultsInfo() << _T("?");
 	}
+	
 	m_pSimulator->m_pRuntime->getResultsInfo() << '\n' << _T("  OperRuleCheckCounter ") << m_pSimulator->m_pRuntime->get_cnt_choice_from() << _T("  ") << (double)m_pSimulator->m_pRuntime->get_cnt_choice_from() / m_pSimulator->m_pRuntime->getTimeNow() << _T("  ");
 	if (delay != -1)
 	{
