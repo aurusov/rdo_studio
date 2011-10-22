@@ -13,10 +13,10 @@
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/platform.h"
-#ifdef OST_WINDOWS
+// ----------------------------------------------------------------------- INCLUDES
+#ifdef COMPILER_VISUAL_STUDIO
 	#pragma warning(disable : 4786)
 #endif
-// ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/namespace.h"
 #include "simulator/runtime/rdo.h"

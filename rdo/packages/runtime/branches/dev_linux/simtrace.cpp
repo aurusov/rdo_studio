@@ -7,6 +7,8 @@
   \indent    4T
 */
 
+// ----------------------------------------------------------------------- PLATFORM
+#include "utils/platform.h"
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
@@ -19,7 +21,9 @@
 #include "simulator/runtime/rdo_resource.h"
 // --------------------------------------------------------------------------------
 
-#pragma warning(disable : 4786)  
+#ifdef COMPILER_VISUAL_STUDIO
+	#pragma warning(disable : 4786)
+#endif
 
 OPEN_RDO_RUNTIME_NAMESPACE
 

@@ -10,6 +10,12 @@
 #ifndef _LIB_RUNTIME_EXCEPTION_H_
 #define _LIB_RUNTIME_EXCEPTION_H_
 
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/namespace.h"
+#include <utils/rdomacros.h>
+// --------------------------------------------------------------------------------
+
 OPEN_RDO_RUNTIME_NAMESPACE
 
 /*!

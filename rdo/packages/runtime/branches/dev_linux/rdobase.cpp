@@ -13,7 +13,7 @@
 #include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <limits>
-#ifndef OST_WINDOWS
+#ifdef COMPILER_GCC
 	#include <float.h>
 #endif
 #include <boost/thread.hpp>
@@ -23,7 +23,7 @@
 #include "simulator/runtime/calc/operation_type.h"
 // --------------------------------------------------------------------------------
 
-#ifdef OST_WINDOWS
+#ifdef COMPILER_VISUAL_STUDIO
 	#pragma warning(disable : 4786)
 #endif
 

@@ -12,9 +12,10 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#ifdef OST_WINDOWS
+#ifdef COMPILER_VISUAL_STUDIO
 	#pragma warning(disable : 4786)
-#else
+#endif
+#ifndef OST_WINDOWS
 	#include <iostream>
 	#include <sys/time.h>
 #endif

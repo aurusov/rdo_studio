@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#ifndef OST_WINDOWS
+#ifdef COMPILER_GCC
 	#include <float.h>
 #endif
 #include <limits>
@@ -34,7 +34,9 @@
 #include "utils/rdodebug.h"
 // --------------------------------------------------------------------------------
 
-#pragma warning(disable : 4786)  
+#ifdef COMPILER_VISUAL_STUDIO
+	#pragma warning(disable : 4786)
+#endif
 
 OPEN_RDO_RUNTIME_NAMESPACE
 

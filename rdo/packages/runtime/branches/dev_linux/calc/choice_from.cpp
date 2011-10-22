@@ -15,7 +15,7 @@
 #include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <limits>
-#ifdef OST_LINUX
+#ifdef COMPILER_GCC
 	#include <float.h>
 #endif // OST_LINUX
 // ----------------------------------------------------------------------- SYNOPSIS
