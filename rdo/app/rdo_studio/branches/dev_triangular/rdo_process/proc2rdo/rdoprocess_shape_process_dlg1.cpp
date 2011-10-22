@@ -154,15 +154,15 @@ case 2: // равномерный закон
 	m_proc_dlg1_disp_control_MJ.EnableWindow(TRUE);
 	m_proc_dlg1_max_control_MJ.EnableWindow(FALSE);
 					break;
-case 3: // экспоненциальный
-	m_proc_dlg1_exp_control_MJ.EnableWindow(TRUE);
-	m_proc_dlg1_disp_control_MJ.EnableWindow(FALSE);
-	m_proc_dlg1_max_control_MJ.EnableWindow(FALSE);
-					break;
-case 4: //труегольный
+case 3: // труегольный
 	m_proc_dlg1_exp_control_MJ.EnableWindow(TRUE);
 	m_proc_dlg1_disp_control_MJ.EnableWindow(TRUE);
 	m_proc_dlg1_max_control_MJ.EnableWindow(TRUE);
+					break;
+case 4: //экспоненциальный
+	m_proc_dlg1_exp_control_MJ.EnableWindow(TRUE);
+	m_proc_dlg1_disp_control_MJ.EnableWindow(FALSE);
+	m_proc_dlg1_max_control_MJ.EnableWindow(FALSE);
 					break;
 }	
 }

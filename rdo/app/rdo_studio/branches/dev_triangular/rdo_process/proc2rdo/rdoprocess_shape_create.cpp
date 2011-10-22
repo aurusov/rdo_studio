@@ -88,11 +88,11 @@ void RPShapeCreateMJ::generate()
 		case 2: // равномерный закон
 			zakon = RPShapeDataBlock::Uniform;
 			break;
-		case 3: // экспоненциальный
-			zakon = RPShapeDataBlock::Exp;
-			break;
-		case 4: // треугольный
+		case 3: // треугольный
 			zakon = RPShapeDataBlock::Triangular;
+			break;
+		case 4: // экспоненциальный
+			zakon = RPShapeDataBlock::Exp;
 			break;
 	}
 

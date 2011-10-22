@@ -124,13 +124,13 @@ case 2: // равномерный закон
 	break;
 case 3: // экспоненциальный
 	m_create_dlg1_exp_control_MJ.EnableWindow(TRUE);
-	m_create_dlg1_disp_control_MJ.EnableWindow(FALSE);
-	m_create_dlg1_max_control_MJ.EnableWindow(FALSE);
+	m_create_dlg1_disp_control_MJ.EnableWindow(TRUE);
+	m_create_dlg1_max_control_MJ.EnableWindow(TRUE);
 	break;
 case 4: //труегольный
 	m_create_dlg1_exp_control_MJ.EnableWindow(TRUE);
-	m_create_dlg1_disp_control_MJ.EnableWindow(TRUE);
-	m_create_dlg1_max_control_MJ.EnableWindow(TRUE);
+	m_create_dlg1_disp_control_MJ.EnableWindow(FALSE);
+	m_create_dlg1_max_control_MJ.EnableWindow(FALSE);
 	break;
 	}
 	UpdateData(FALSE);	
