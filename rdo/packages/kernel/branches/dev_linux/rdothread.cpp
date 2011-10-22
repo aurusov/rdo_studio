@@ -5,7 +5,7 @@
 #include <fstream>
 #include <algorithm>
 
-#ifdef OST_WINDOWS
+#ifdef COMPILER_VISUAL_STUDIO
 	#ifdef RDO_MT
 		#include <afxwin.h>
 	#else
