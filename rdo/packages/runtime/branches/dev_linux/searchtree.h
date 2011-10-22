@@ -11,6 +11,7 @@
 #define _LIB_RUNTIME_SEARCH_TREE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/date_time/posix_time/posix_time.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_logic_dptsearch.h"
 #include "simulator/runtime/rdo_dptsearch_activity_i.h"
@@ -40,6 +41,7 @@ public:
 	int							m_nodesInGraphCount;
 	int							m_expandedNodesCount;
 	int							m_fullNodesCount;
+	boost::posix_time::ptime	m_ptime;
 	unsigned int				m_sizeof_dpt;
 
 	int getNodesCound() const;
