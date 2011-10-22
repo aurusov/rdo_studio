@@ -752,7 +752,7 @@ dpt_some_fun_params
 	{};
 
 dpt_some_fun_params_body
-	: fun_atithm
+	: fun_arithm
 	{
 		LPArithmContainer pArithmContainer = rdo::Factory<ArithmContainer>::create();
 		LPRDOFUNArithm    pArithm          = PARSER->stack().pop<RDOFUNArithm>($1);
@@ -762,10 +762,10 @@ dpt_some_fun_params_body
 		pArithmContainer->addItem   (pArithm);
 		$$ = PARSER->stack().push(pArithmContainer);
 	}
-	| dpt_some_fun_params_body fun arithm
+	| dpt_some_fun_params_body fun_arithm
 	{
 		LPArithmContainer pArithmContainer = PARSER->stack().pop<ArithmContainer>($1);
-		LPRDOFUNArithm    pArithm          = PARSER->stack().pop<RDOFUNArithm>($3);
+		LPRDOFUNArithm    pArithm          = PARSER->stack().pop<RDOFUNArithm>($2);
 		ASSERT (pArithmContainer);
 		ASSERT (pArithm);
 		pArithmContainer->setSrcText(pArithmContainer->src_text() + _T(", ") + pArithm->src_text());
@@ -774,8 +774,7 @@ dpt_some_fun_params_body
 	}
 
 dpt_some_func_call
-
-	:RDO_IDENTIF '(' dpt_some_fun_params ')'
+	: RDO_IDENTIF '(' dpt_some_fun_params ')'
 	{
 		tstring funName                    = RDOVALUE($1)->getIdentificator();
 		LPArithmContainer pArithmContainer = PARSER->stack().pop<ArithmContainer>($3);
@@ -798,10 +797,12 @@ dpt_some_descr_param
 	}
 	| dpt_some_descr_param dpt_some_func_call
 	{
-		RDOValue constant = PARSER->stack().pop<pArithm>($2)->expression()->constant();
+		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
+		RDOValue constant = pArithm->expression()->constant();
 		if (!constant.defined())
 		{
-			LPArithmContainer pArithmContainer = PARSER->stack().pop<ArithmContainer>($2);
+			/*
+			 LPArithmContainer pArithmContainer = PARSER->stack().pop<ArithmContainer>($2);
 			ASSERT(pArithmContainer);
 			LPRDOFUNParams pFunParams = rdo::Factory<RDOFUNParams>::create(pArithmContainer);
 			ASSERT(pFunParams);
@@ -812,7 +813,8 @@ dpt_some_descr_param
 			ASSERT(pArithm);
 			$$ = PARSER->stack().push(pArithm);
 			RDOValue constant = PARSER->stack().pop<pArithm>($2)->expression()->constant();
-			//PARSER->error().error(@2, _T("Параметр может быть только константой"));
+			*/ 
+		PARSER->error().error(@2, _T("Ошибка вызова"));
 		}
 		PARSER->getLastDPTSome()->getLastActivity()->addParam(constant);
 	}
@@ -1628,6 +1630,7 @@ fun_select_arithm
 		PARSER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
 	}
 	;
+
 
 %%
 
