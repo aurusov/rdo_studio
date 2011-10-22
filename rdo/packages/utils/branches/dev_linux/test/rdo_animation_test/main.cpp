@@ -48,8 +48,8 @@ BOOST_AUTO_TEST_CASE(RDOCommonAnimationPoint)
 	int y = 0;
 	rdoAnimation::RDOPoint point(x,y);
 
-	BOOST_CHECK(point.m_x = x);
-	BOOST_CHECK(point.m_y = y);
+	BOOST_CHECK(point.m_x == x);
+	BOOST_CHECK(point.m_y == y);
 }
 
 BOOST_AUTO_TEST_CASE(RDOCommonAnimationSize)
@@ -74,10 +74,10 @@ BOOST_AUTO_TEST_CASE(RDOCommonAnimationBoundedElement)
 	rdoAnimation::RDOSize size(width, height);
 	rdoAnimation::RDOBoundedElement boundedElement(point, size);
 
-	BOOST_CHECK(boundedElement.m_point.m_x = x);
-	BOOST_CHECK(boundedElement.m_point.m_y = y);
-	BOOST_CHECK(boundedElement.m_size.m_width = width);
-	BOOST_CHECK(boundedElement.m_size.m_height = height);
+	BOOST_CHECK(boundedElement.m_point.m_x == x);
+	BOOST_CHECK(boundedElement.m_point.m_y == y);
+	BOOST_CHECK(boundedElement.m_size.m_width == width);
+	BOOST_CHECK(boundedElement.m_size.m_height == height);
 }
 
 BOOST_AUTO_TEST_CASE(RDOCommonAnimationRadius)
@@ -126,10 +126,10 @@ BOOST_AUTO_TEST_CASE(RDOCommonAnimationLineElement)
 	rdoAnimation::RDOLineElement lineElem(point1, point2, color);
 	
 	BOOST_CHECK(lineElem.m_color.m_transparent == color.m_transparent);
-	BOOST_CHECK(lineElem.m_point1.m_x = x1);
-	BOOST_CHECK(lineElem.m_point1.m_y = y1);
-	BOOST_CHECK(lineElem.m_point2.m_x = x2);
-	BOOST_CHECK(lineElem.m_point2.m_y = y2);
+	BOOST_CHECK(lineElem.m_point1.m_x == x1);
+	BOOST_CHECK(lineElem.m_point1.m_y == y1);
+	BOOST_CHECK(lineElem.m_point2.m_x == x2);
+	BOOST_CHECK(lineElem.m_point2.m_y == y2);
 }
 
 BOOST_AUTO_TEST_CASE(RDOCommonAnimationTriangElement)
