@@ -42,6 +42,7 @@ public:
 	//атрибуты законов
 	double gexp;
 	double gdisp;
+	double gmax;
 
 	//второе окно
 	int inf; // бесконечноть

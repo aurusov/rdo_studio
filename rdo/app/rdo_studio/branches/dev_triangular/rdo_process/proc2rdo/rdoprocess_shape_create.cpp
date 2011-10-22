@@ -39,6 +39,7 @@ RPShapeCreateMJ::RPShapeCreateMJ(PTR(RPObject) _parent)
 	//атрибуты законов
 	gexp=10;
 	gdisp=0;
+	gmax=20;
 
 	//второе окно
 	inf=1000000; // бесконечноть
@@ -90,6 +91,9 @@ void RPShapeCreateMJ::generate()
 		case 3: // экспоненциальный
 			zakon = RPShapeDataBlock::Exp;
 			break;
+		case 4: // треугольный
+			zakon = RPShapeDataBlock::Triangular;
+			break;
 	}
 
 	m_pParams = rdo::Factory<RPShapeDataBlockCreate>::create(zakon, gname);
@@ -97,6 +101,7 @@ void RPShapeCreateMJ::generate()
 	m_pParams->setAmount(gamount);
 	m_pParams->setDisp(gdisp);
 	m_pParams->setExp(gexp);
+	m_pParams->setMax(gmax);
 
 	studioApp.studioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_CREATE, m_pParams.get());
 

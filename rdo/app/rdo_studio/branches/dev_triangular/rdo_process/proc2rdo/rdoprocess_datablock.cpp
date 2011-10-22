@@ -37,6 +37,11 @@ void RPShapeDataBlock::setBase(int base)
 	m_base=base;
 }
 
+void RPShapeDataBlock::setMax(double max)
+{
+	m_max=max;
+}
+
 // --------------------------------------------------------------------------------
 // -------------------- RPShapeDataBlockCreate
 // --------------------------------------------------------------------------------

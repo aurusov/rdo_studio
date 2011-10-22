@@ -27,19 +27,22 @@ public:
 		Const,
 		Normal,
 		Uniform,
-		Exp
+		Exp,
+		Triangular
 	};
 
 	void setBase  (int base   );
 	void setAmount(int amount );
 	void setDisp  (double disp);
 	void setExp   (double exp );
+	void setMax   (double max );
 
 	zakonRaspr    getZakon() const { return m_zakon; }
 	CREF(tstring) getName () const { return m_name;  }
 	int           getBase () const { return m_base;  }
 	double        getDisp () const { return m_disp;  }
 	double        getExp  () const { return m_exp;   }
+	double        getMax  () const { return m_max;   }
 
 protected:
 	RPShapeDataBlock(zakonRaspr zakon, CREF(tstring) name);
@@ -50,6 +53,7 @@ protected:
 	int        m_base;
 	double     m_exp;
 	double     m_disp;
+	double     m_max;
 };
 
 // --------------------------------------------------------------------------------

@@ -87,6 +87,9 @@ void RPShapeProcessMJ::generate()
 		case 3: // экспоненциальный
 			zakon = RPShapeDataBlock::Exp;
 			break;
+		case 4: // треугольный
+			zakon = RPShapeDataBlock::Triangular;
+			break;
 	}
 
 	m_pParams = rdo::Factory<RPShapeDataBlockProcess>::create(zakon, gname);
@@ -94,6 +97,7 @@ void RPShapeProcessMJ::generate()
 	m_pParams->setBase(base_gen);
 	m_pParams->setDisp(gdisp);
 	m_pParams->setExp(gexp);
+	m_pParams->setMax(gmax);
 
 	switch(action)
 	{

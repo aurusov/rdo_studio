@@ -24,6 +24,7 @@ RPShapeCreateDlg1_MJ::RPShapeCreateDlg1_MJ(CWnd* pParent /*=NULL*/,RPShapeCreate
 	m_dlgamount = 0;
 	m_dlgexp = 0.0;
 	m_dlgdisp = 0.0;
+	m_dlgmax = 0.0;
 	m_dlgbase_gen = 0;
 	//}}AFX_DATA_INIT
     pParentMJ = ppParent;
@@ -36,12 +37,14 @@ void RPShapeCreateDlg1_MJ::DoDataExchange(CDataExchange* pDX)
 	//{{AFX_DATA_MAP(RPShapeCreateDlg1_MJ)
 	DDX_Control(pDX, IDC_EDIT5, m_create_dlg1_disp_control_MJ);
 	DDX_Control(pDX, IDC_EDIT4, m_create_dlg1_exp_control_MJ);
+	DDX_Control(pDX, IDC_EDIT6, m_create_dlg1_max_control_MJ);
 	DDX_Control(pDX, IDC_COMBO1, m_create_dlg1_combo1_MJ);
 	DDX_Text(pDX, IDC_EDIT1, m_name);
 	DDX_Text(pDX, IDC_EDIT2, m_dlgfirst);
 	DDX_Text(pDX, IDC_EDIT3, m_dlgamount);
 	DDX_Text(pDX, IDC_EDIT4, m_dlgexp);
 	DDX_Text(pDX, IDC_EDIT5, m_dlgdisp);
+	DDX_Text(pDX, IDC_EDIT6, m_dlgmax);
 	DDX_Text(pDX, IDC_EDIT8, m_dlgbase_gen);
 	DDV_MinMaxInt(pDX, m_dlgbase_gen, -2147483647, 2147483647);
 	//}}AFX_DATA_MAP
@@ -71,7 +74,7 @@ BOOL RPShapeCreateDlg1_MJ::OnInitDialog()
 	//атрибуты законов
 	m_dlgexp=pParentMJ->gexp;
 	m_dlgdisp=pParentMJ->gdisp;
-
+	m_dlgmax=pParentMJ->gmax;
 	//второе окно
 	pParentMJ->inf; // бесконечноть
 	pParentMJ->gID; // ID группы
@@ -107,18 +110,27 @@ UpdateData(TRUE);
 case 0: // константа
 	m_create_dlg1_exp_control_MJ.EnableWindow(TRUE);
 	m_create_dlg1_disp_control_MJ.EnableWindow(FALSE);
+	m_create_dlg1_max_control_MJ.EnableWindow(FALSE);
 	break;	
 case 1: // нормальный
 	m_create_dlg1_exp_control_MJ.EnableWindow(TRUE);
 	m_create_dlg1_disp_control_MJ.EnableWindow(TRUE);
+	m_create_dlg1_max_control_MJ.EnableWindow(FALSE);
 	break;
 case 2: // равномерный закон
 	m_create_dlg1_exp_control_MJ.EnableWindow(TRUE);
 	m_create_dlg1_disp_control_MJ.EnableWindow(TRUE);
+	m_create_dlg1_max_control_MJ.EnableWindow(FALSE);
 	break;
 case 3: // экспоненциальный
 	m_create_dlg1_exp_control_MJ.EnableWindow(TRUE);
 	m_create_dlg1_disp_control_MJ.EnableWindow(FALSE);
+	m_create_dlg1_max_control_MJ.EnableWindow(FALSE);
+	break;
+case 4: //труегольный
+	m_create_dlg1_exp_control_MJ.EnableWindow(TRUE);
+	m_create_dlg1_disp_control_MJ.EnableWindow(TRUE);
+	m_create_dlg1_max_control_MJ.EnableWindow(TRUE);
 	break;
 	}
 	UpdateData(FALSE);	
@@ -148,5 +160,6 @@ UpdateData(TRUE);
 	//атрибуты законов
 	pParentMJ->gexp=m_dlgexp;
 	pParentMJ->gdisp=m_dlgdisp;
+	pParentMJ->gmax=m_dlgmax;
 
 }

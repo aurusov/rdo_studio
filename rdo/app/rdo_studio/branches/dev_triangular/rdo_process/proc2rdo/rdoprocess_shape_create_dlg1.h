@@ -26,12 +26,14 @@ virtual BOOL OnInitDialog();
 	enum { IDD = IDD_DIALOG_CREATE_1_MJ };
 	CEdit	m_create_dlg1_disp_control_MJ;
 	CEdit	m_create_dlg1_exp_control_MJ;
+	CEdit	m_create_dlg1_max_control_MJ;
 	CComboBox	m_create_dlg1_combo1_MJ;
 	CString	m_name;
 	double	m_dlgfirst;
 	int		m_dlgamount;
 	double	m_dlgexp;
 	double	m_dlgdisp;
+	double	m_dlgmax;
 	int		m_dlgbase_gen;
 	//}}AFX_DATA
 
