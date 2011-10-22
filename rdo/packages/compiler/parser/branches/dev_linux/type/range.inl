@@ -29,7 +29,7 @@ inline RDOTypeRangeRange::RDOTypeRangeRange(CREF(RDOValue) min_value, CREF(RDOVa
 inline RDOTypeRangeRange::~RDOTypeRangeRange()
 {}
 
-inline void RDOTypeRangeRange::checkRange() const throw(...)
+inline void RDOTypeRangeRange::checkRange() const
 {
 	if (m_min_value->typeID() != m_max_value->typeID())
 	{
@@ -41,7 +41,7 @@ inline void RDOTypeRangeRange::checkRange() const throw(...)
 	}
 }
 
-inline void RDOTypeRangeRange::checkValue(CREF(RDOValue) value) const throw(...)
+inline void RDOTypeRangeRange::checkValue(CREF(RDOValue) value) const
 {
 	if (value.value() < m_min_value.value() || value.value() > m_max_value.value())
 	{
