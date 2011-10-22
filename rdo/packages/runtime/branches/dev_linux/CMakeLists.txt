@@ -194,6 +194,9 @@ ADD_SUBDIRECTORY(${RDO_RUNTIME_TEST_PATH})
 
 IF(MSVC) # lotions for windows #
 
+SOURCE_GROUP(".keyboard" FILES 
+	keyboard.h)
+
 SOURCE_GROUP(".pch" FILES 
 	pch.h
 	pch.cpp)

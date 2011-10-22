@@ -15,13 +15,14 @@ FIND_PACKAGE(BISON)
 FIND_PACKAGE(FLEX)
 
 IF(NOT BISON_FOUND)
-    MESSAGE(ERROR "Bison can not be found")
+	MESSAGE(ERROR "Bison can not be found")
 ENDIF(NOT BISON_FOUND)
 IF(NOT FLEX_FOUND)
-    MESSAGE(ERROR "Flex can not be found")
+	MESSAGE(ERROR "Flex can not be found")
 ENDIF(NOT FLEX_FOUND)
 
 IF(PROJECT_OS_LINUX)
+
 	FLEX_TARGET(lexer_scaner rdo_lexer.l  ${CMAKE_CURRENT_SOURCE_DIR}/rdolex.cpp)
 	BISON_TARGET(rdodpt rdodpt.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramdpt.cpp COMPILE_FLAGS "-g -pdpt -o")
 	BISON_TARGET(rdoevn rdoevn.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramevn.cpp COMPILE_FLAGS "-g -pevn -o")
@@ -38,17 +39,6 @@ IF(PROJECT_OS_LINUX)
 	BISON_TARGET(rdosmr_file rdosmr_file.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramsmr_file.cpp COMPILE_FLAGS "-g -psmr_file_ -o")
 	BISON_TARGET(rdosmr_sim rdosmr_sim.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramsmr_sim.cpp COMPILE_FLAGS "-g -psmr_sim_ -o")
 
-	CONFIGURE_FILE(${CMAKE_MODULE_PATH}/rdogramma.h.cmake ${CMAKE_CURRENT_SOURCE_DIR}/rdogramma.h)
-ELSE(PROJECT_OS_LINUX)
-	#WINDOWS PLACE
-ENDIF(PROJECT_OS_LINUX)
-
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/parser)
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/context)
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/type)
-
 SET(GENERATED_FILES
 	${FLEX_lexer_scaner_OUTPUTS}
 	${BISON_rdodpt_OUTPUTS}
@@ -64,34 +54,46 @@ SET(GENERATED_FILES
 	${BISON_rdorss_OUTPUTS}
 	${BISON_rdortp_OUTPUTS}
 	${BISON_rdosmr_file_OUTPUTS}
-	${BISON_rdosmr_sim_OUTPUTS}
+	${BISON_rdosmr_sim_OUTPUTS})
+	
+	CONFIGURE_FILE(${CMAKE_MODULE_PATH}/rdogramma.h.cmake ${CMAKE_CURRENT_SOURCE_DIR}/rdogramma.h)
+ENDIF(PROJECT_OS_LINUX)
+
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/parser)
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/context)
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/type)
+
+SET(GENERATED_FILES
+	${GENERATED_FILES}
 	rdogramma.h)
 
 SET(HEADER_FILES
 	expression.h
-    local_variable.h
-    namespace.h
-    param.h
-    pch.h
-    rdo_array.h
-    rdobison.h
-    rdodpt.h
-    rdofrm.h
-    rdofun.h
-    rdo_logic.h
-    rdo_object.h
-    rdoparser_base.h
-    rdoparser_corba.h
-    rdoparser_error.h
-    rdoparser.h
-    rdoparser_lexer.h
-    rdoparser_rdo.h
-    rdopat.h
-    rdopatpreparse.h
-    rdopmd.h
-    rdorss.h
-    rdortp.h
-    rdortp_param.h
+	local_variable.h
+	namespace.h
+	param.h
+	pch.h
+	rdo_array.h
+	rdobison.h
+	rdodpt.h
+	rdofrm.h
+	rdofun.h
+	rdo_logic.h
+	rdo_object.h
+	rdoparser_base.h
+	rdoparser_corba.h
+	rdoparser_error.h
+	rdoparser.h
+	rdoparser_lexer.h
+	rdoparser_rdo.h
+	rdopat.h
+	rdopatpreparse.h
+	rdopmd.h
+	rdorss.h
+	rdortp.h
+	rdortp_param.h
 	rdosmr.h
 	rdo_value.h
 	variable_container.h
@@ -149,35 +151,35 @@ SET(SOURCE_FILES
 	rdosmr.cpp
 	rdo_value.cpp
 	variable_container.cpp
-    # context path
-    context/context.cpp
-    context/memory.cpp
-    context/stack.cpp
-    context/type.cpp
-    # parses paht
-    parser/std_fun.cpp
-    # type path
-    type/array.cpp
-    type/atom.cpp
-    type/enum.cpp
-    type/info.cpp
-    type/such_as.cpp)
+	# context path
+	context/context.cpp
+	context/memory.cpp
+	context/stack.cpp
+	context/type.cpp
+	# parses paht
+	parser/std_fun.cpp
+	# type path
+	type/array.cpp
+	type/atom.cpp
+	type/enum.cpp
+	type/info.cpp
+	type/such_as.cpp)
 
 SET(BISON_FILES
-    # *.y files
-    rdodpt.y
-    rdoevn_preparse.y
-    rdoevn.y
-    rdofrm.y
-    rdofun.y
-    rdopat.y
-    rdopmd.y
-    rdoproc_opr.y
-    rdoproc_rss.y
+	# *.y files
+	rdodpt.y
+	rdoevn_preparse.y
+	rdoevn.y
+	rdofrm.y
+	rdofun.y
+	rdopat.y
+	rdopmd.y
+	rdoproc_opr.y
+	rdoproc_rss.y
 	rdoproc_rtp.y
-    rdorss.y
+	rdorss.y
 	rdortp.y
-    rdosmr_file.y
+	rdosmr_file.y
 	rdosmr_sim.y
 	rdo_lexer.l)
 
@@ -321,5 +323,8 @@ SOURCE_GROUP(".type_range" FILES
 SOURCE_GROUP(".type_such_as" FILES
 	type/such_as.h
 	type/such_as.cpp)
+
+SOURCE_GROUP(".generated" FILES
+	${GENERATED_FILES})
 
 ENDIF(MSVC)
