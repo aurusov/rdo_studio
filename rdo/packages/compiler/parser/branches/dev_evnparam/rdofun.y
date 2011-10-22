@@ -2798,8 +2798,10 @@ fun_arithm_func_call
 		tstring funName                    = RDOVALUE($1)->getIdentificator();
 		LPArithmContainer pArithmContainer = PARSER->stack().pop<ArithmContainer>($3);
 		ASSERT(pArithmContainer);
+
 		LPRDOFUNParams pFunParams = rdo::Factory<RDOFUNParams>::create(pArithmContainer);
 		ASSERT(pFunParams);
+
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @4);
 		pFunParams->setSrcText(funName + _T("(") + pArithmContainer->src_text() + _T(")"));
@@ -2812,6 +2814,7 @@ fun_arithm_func_call
 		PARSER->error().error(@3, _T("Ошибка в параметрах функции"));
 	}
 	;
+
 arithm_list
 	: /* empty */
 	{
