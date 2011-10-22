@@ -20,7 +20,6 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdofile.h"
 #include "simulator/runtime/rdo_random_distribution.h"
-#include "simulator/runtime/test/sequences_test/sequences/templ.cpp"
 // --------------------------------------------------------------------------------
 
 typedef std::list<double> Container;
