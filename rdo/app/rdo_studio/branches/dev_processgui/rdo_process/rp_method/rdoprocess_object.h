@@ -7,6 +7,7 @@
 
 #include <list>
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_factory.h"
+#include "thirdparty/pugixml/src/pugixml.hpp"
 
 // --------------------------------------------------------------------------------
 // -------------------- RPObject
@@ -53,6 +54,10 @@ public:
 	const RPObjectClassInfo* getClassInfo() const { return rpMethod::factory->getClassInfo( getClassName() ); }
 	virtual void load( rp::RPXMLNode* node );
 	virtual rp::RPXMLNode* save( rp::RPXMLNode* parent_node );
+	// Виртуальная функция для сохранения данных о графике в xml-формате:
+	//virtual void SaveToXML(pugi::xml_document& doc);
+	//virtual void save_To_XML(std::list< RPObject* >& all_child, pugi::xml_document& doc);
+	virtual void save_To_XML();
 
 	bool hasChild() const { return !child.empty(); }
 	std::list< RPObject* >::const_iterator find_child( const RPObject* object ) {

@@ -7,6 +7,7 @@
 
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_object_matrix.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_connector.h"
+//#include "thirdparty/pugixml/src/pugixml.hpp"
 
 // --------------------------------------------------------------------------------
 // -------------------- RPObjectFlowChart
@@ -104,6 +105,10 @@ public:
 	virtual rp::string getClassName() const { return "RPObjectFlowChart"; }
 	virtual void load( rp::RPXMLNode* node );
 	virtual rp::RPXMLNode* save( rp::RPXMLNode* parent_node );
+	// Виртуальная функция для записи рабочей области блок-схемы:
+	//virtual void SaveToXML(pugi::xml_document& doc);
+	//void save_To_XML(std::list< RPObject* >& all_child, pugi::xml_document& doc);
+	void save_To_XML();
 	virtual rpMethod::RPMethod* getMethod() = 0;
 	virtual bool setName( const rp::string& value );
 

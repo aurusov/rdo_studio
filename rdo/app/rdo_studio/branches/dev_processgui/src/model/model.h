@@ -27,7 +27,7 @@
 #include "app/rdo_studio_mfc/src/application.h"
 #include "kernel/rdothread.h"
 #include "simulator/service/rdosimwin.h"
-#include "thirdparty/pugixml/src/pugixml.hpp"
+//#include "thirdparty/pugixml/src/pugixml.hpp"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
@@ -144,7 +144,6 @@ private:
 	ModelTemplateList m_modelTemplates;
 
 	void show_result();
-	void saveToXML  (pugi::xml_document& doc);
 
 protected:
 	virtual void proc(REF(RDOThread::RDOMessageInfo) msg);
@@ -238,6 +237,11 @@ public:
 
 	void  updateStyleOfAllModel() const;
 	rbool isPrevModelClosed    () const { return m_modelClosed; }
+    
+	// Виртуальная функция для записи данных о графике в xml-форме:
+	//pugi::xml_document doc;
+	//virtual void SaveToXML();
+	//void save_To_XML(std::list< RPObject* >& all_child, pugi::xml_document& doc);
 };
 
 // --------------------------------------------------------------------------------

@@ -8,6 +8,7 @@
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_pixmap.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_xml.h"
+//#include "thirdparty/pugixml/src/pugixml.hpp"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -173,6 +174,72 @@ rp::RPXMLNode* RPObjectFlowChart::save( rp::RPXMLNode* parent_node )
 	}
 	return obj_node;
 }
+
+void RPObjectFlowChart::save_To_XML()
+{
+	std::list< RPObject* > all_child;
+	getAllChild(all_child);
+	std::list< RPObject* >::iterator it = all_child.begin();
+	pugi::xml_document doc;
+	while( it != all_child.end() )
+	{
+		pugi::xml_node node = doc.append_child("1");
+	    rpMethod::project->save_To_XML();
+		it++;
+	}
+}
+
+//void RPObjectFlowChart::save_To_XML(std::list< RPObject* >& all_child, pugi::xml_document& doc)
+//{
+//	getAllChild(all_child);
+//	std::list< RPObject* >::iterator it = all_child.begin();
+//	while( it != all_child.end() )
+//	{
+//		pugi::xml_node node = doc.append_child((*it)->getClassName().c_str());
+//		it++;
+//	}
+//}
+
+//void RPObjectFlowChart::SaveToXML(pugi::xml_document& doc)
+//{
+//
+//	std::list< RPObject* > all_child;
+//	getAllChild(all_child);
+//	std::list< RPObject* >::iterator it = all_child.begin();
+//	while( it != all_child.end() )
+//	{
+//		dynamic_cast< RPObject* >(*it)->SaveToXML(doc);
+//		it++;
+//	}
+//}
+//void RPObjectFlowChart::SaveToXML(pugi::xml_document& doc)
+//{
+//	
+//	std::list< RPObject* > all_child;
+//	getAllChild(all_child);
+//	std::list< RPObject* >::iterator flow_it = all_child.begin();
+//	while( flow_it != all_child.end() )
+//	{
+//		pugi::xml_node flow_node = doc.append_child((*flow_it)->getClassName().c_str());
+//		flow_it ++;
+//	}
+//	//std::ofstream OutFile("D:\\TESTXML.txt", std::ios::out | std::ios::ate);
+//	//doc.save(OutFile, "\t", pugi::format_indent | pugi::format_no_declaration);
+////rpMethod::project->SaveToXML(doc);
+//}
+
+//void RPObjectFlowChart::SaveToXML()
+//{
+//	pugi::xml_document doc;
+//	std::list< RPObject* > all_child;
+//	getAllChild(all_child);
+//	std::list< RPObject* >::iterator exist_child = all_child.begin();
+//	while(exist_child != all_child.end())
+//	{
+//		pugi::xml_node node =  doc.append_child((*exist_child)->getClassName().c_str());
+//		exist_child ++;
+//	}
+//}
 
 void RPObjectFlowChart::notify( RPObject* from, UINT message, void* param )
 {
