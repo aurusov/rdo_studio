@@ -31,11 +31,11 @@ contstr        g_fileUniformName      = _T("data_uniform.txt");     //!< файл да
 contstr        g_fileExponentialName  = _T("data_exponential.txt"); //!< файл данных
 contstr        g_fileTriangularName   = _T("data_trinagular.txt");  //!< файл данных
 const ruint    g_count                = 100000;                     //!< количество генерируемых данных
-const double   g_main                 = 10.0;                       //!< параметр закона
-const double   g_var                  = 1.0;                        //!< параметр закона
-const double   g_from                 = 1.0;                        //!< параметр закона
-const double   g_to                   = 7.0;                        //!< параметр закона
-const double   g_top                  = 5.0;                        //!< параметр закона
+const double   g_main                 = 10.0;                       //!< параметр закона экспоненциального и нормального
+const double   g_var                  = 1.0;                        //!< параметр закона нормального
+const double   g_from                 = 1.0;                        //!< параметр закона равномерного и треугольного
+const double   g_to                   = 7.0;                        //!< параметр закона равномерного и треугольного
+const double   g_top                  = 5.0;                        //!< параметр закона треугольного
 const ruint    g_precision            = 20;                         //!< точность вещественного числа при выводе в поток
 
 // --------------------------------------------------------------------------------
@@ -97,7 +97,7 @@ void onCheckData(F binder, contstr g_fileName)
 // --------------------------------------------------------------------------------
 
 BOOST_AUTO_TEST_SUITE(RDOSequencesTest)
-/*
+
 // --------------------------------------------------------------------------------
 // -------Normal sequence
 // --------------------------------------------------------------------------------
@@ -129,7 +129,7 @@ BOOST_AUTO_TEST_CASE(RDOUniformTestCheck)
 		(boost::bind(&rdoRuntime::RandGeneratorUniform::next, _1, g_from, g_to), g_fileUniformName);
 }
 // --------------------------------------------------------------------------------
-*/
+
 // --------------------------------------------------------------------------------
 // -------Exponential sequence
 // --------------------------------------------------------------------------------
@@ -145,7 +145,7 @@ BOOST_AUTO_TEST_CASE(RDOExponentialTestCheck)
 		(boost::bind(&rdoRuntime::RandGeneratorExponential::next, _1, g_main), g_fileExponentialName);
 }
 // --------------------------------------------------------------------------------
-/*
+
 // --------------------------------------------------------------------------------
 // -------Triangular sequence
 // --------------------------------------------------------------------------------
@@ -161,5 +161,5 @@ BOOST_AUTO_TEST_CASE(RDOTriangularTestCheck)
 		(boost::bind(&rdoRuntime::RandGeneratorTriangular::next, _1, g_from, g_top, g_to), g_fileTriangularName);
 }
 // --------------------------------------------------------------------------------
-*/
+
 BOOST_AUTO_TEST_SUITE_END()
