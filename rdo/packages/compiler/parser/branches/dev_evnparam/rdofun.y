@@ -2436,6 +2436,16 @@ param_type_such_as
 	}
 	;
 
+param_type_array
+	: RDO_array '<' param_type '>'
+	{
+		LPTypeInfo pParamType = PARSER->stack().pop<TypeInfo>($3);
+		ASSERT(pParamType);
+		LPRDOArrayType pArray = rdo::Factory<RDOArrayType>::create(pParamType, RDOParserSrcInfo(@1, @4));
+		$$ = PARSER->stack().push(pArray);
+	}
+	;
+
 param_value_default
 	: /* empty */
 	{
@@ -2459,6 +2469,11 @@ param_value_default
 	}
 	;
 
+// --------------------------------------------------------------------------------
+// -------------------- Общие составные токены для всех объектов РДО
+// --------------------------------------------------------------------------------
+// -------------------- Описание переменной
+// --------------------------------------------------------------------------------
 param_value
 	: RDO_INT_CONST
 	{
@@ -2481,24 +2496,18 @@ param_value
 	}
 	;
 
-param_type_array
-	: RDO_array '<' param_type '>'
-	{
-		LPTypeInfo pParamType = PARSER->stack().pop<TypeInfo>($3);
-		ASSERT(pParamType);
-		LPRDOArrayType pArray = rdo::Factory<RDOArrayType>::create(pParamType, RDOParserSrcInfo(@1, @4));
-		$$ = PARSER->stack().push(pArray);
-	}
-	;
-
 param_array_value
-	:	'[' array_item ']'
+	: '[' array_item ']'
 	{
 		LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($2);
 		ASSERT(pArrayValue);
-		$$ = (int)PARSER->addValue(new RDOValue(pArrayValue->getRArray(), RDOParserSrcInfo(@2), pArrayValue->getArrayType()->typeInfo()));
+		RDOParserSrcInfo srcInfo(@1, @3, pArrayValue->getAsString());
+		pArrayValue->setSrcInfo(srcInfo);
+		pArrayValue->getArrayType()->setSrcInfo(srcInfo);
+		$$ = (int)PARSER->addValue(new RDOValue(pArrayValue));
 	}
-	|'[' array_item error {
+	| '[' array_item error
+	{
 		PARSER->error().error(@2, _T("Массив должен закрываться скобкой"));
 	}
 	;
@@ -2529,8 +2538,6 @@ array_item
 	}
 	;
 
-// --------------------------------------------------------------------------------
-// -------------------- Общие составные токены для всех объектов РДО
 // --------------------------------------------------------------------------------
 // -------------------- Логические выражения
 // --------------------------------------------------------------------------------
