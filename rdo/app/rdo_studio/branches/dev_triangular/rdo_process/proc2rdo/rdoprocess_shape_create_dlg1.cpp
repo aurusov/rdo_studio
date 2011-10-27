@@ -110,27 +110,37 @@ UpdateData(TRUE);
 case 0: // константа
 	m_create_dlg1_exp_control_MJ.EnableWindow(TRUE);
 	m_create_dlg1_disp_control_MJ.EnableWindow(FALSE);
+	m_create_dlg1_disp_control_MJ.ShowWindow(SW_HIDE);
 	m_create_dlg1_max_control_MJ.EnableWindow(FALSE);
+	m_create_dlg1_max_control_MJ.ShowWindow(SW_HIDE);
 	break;	
 case 1: // нормальный
 	m_create_dlg1_exp_control_MJ.EnableWindow(TRUE);
 	m_create_dlg1_disp_control_MJ.EnableWindow(TRUE);
+	m_create_dlg1_disp_control_MJ.ShowWindow(SW_SHOW);
 	m_create_dlg1_max_control_MJ.EnableWindow(FALSE);
+	m_create_dlg1_max_control_MJ.ShowWindow(SW_HIDE);
 	break;
 case 2: // равномерный закон
 	m_create_dlg1_exp_control_MJ.EnableWindow(TRUE);
 	m_create_dlg1_disp_control_MJ.EnableWindow(TRUE);
+	m_create_dlg1_disp_control_MJ.ShowWindow(SW_SHOW);
 	m_create_dlg1_max_control_MJ.EnableWindow(FALSE);
+	m_create_dlg1_max_control_MJ.ShowWindow(SW_HIDE);
 	break;
-case 3: // экспоненциальный
+case 3: // труегольный
 	m_create_dlg1_exp_control_MJ.EnableWindow(TRUE);
 	m_create_dlg1_disp_control_MJ.EnableWindow(TRUE);
+	m_create_dlg1_disp_control_MJ.ShowWindow(SW_SHOW);
 	m_create_dlg1_max_control_MJ.EnableWindow(TRUE);
+	m_create_dlg1_max_control_MJ.ShowWindow(SW_SHOW);
 	break;
-case 4: //труегольный
+case 4: //экспоненциальный
 	m_create_dlg1_exp_control_MJ.EnableWindow(TRUE);
 	m_create_dlg1_disp_control_MJ.EnableWindow(FALSE);
+	m_create_dlg1_disp_control_MJ.ShowWindow(SW_HIDE);
 	m_create_dlg1_max_control_MJ.EnableWindow(FALSE);
+	m_create_dlg1_max_control_MJ.ShowWindow(SW_HIDE);
 	break;
 	}
 	UpdateData(FALSE);	
