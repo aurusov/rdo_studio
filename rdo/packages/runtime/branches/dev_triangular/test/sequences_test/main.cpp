@@ -14,6 +14,7 @@
 #include <iostream>
 #include <fstream>
 #include <list>
+#include <math.h>
 #include <boost/test/included/unit_test.hpp>
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
@@ -37,6 +38,9 @@ const double   g_from                 = 1.0;                        //!< парамет
 const double   g_to                   = 7.0;                        //!< параметр закона равномерного и треугольного
 const double   g_top                  = 5.0;                        //!< параметр закона треугольного
 const ruint    g_precision            = 20;                         //!< точность вещественного числа при выводе в поток
+const ruint    g_countOfExamples      = 2000;                       //!< количество чисел в выборке
+const ruint    g_countOfFree          = 39;                         //!< число разрядов
+const double   pi                     = 3.141592653;                //!< фундаментальная константа
 
 // --------------------------------------------------------------------------------
 // -------Templates
@@ -94,7 +98,53 @@ void onCheckData(F binder, contstr g_fileName)
 		}
 	}
 }
+
+template <class F>
+double  area (F binder, double elem, double a, double b);
+
+template <class T, class F>
+void onCheckKsi(F binder, double left, double right)
+{
+	Container xITemp;								//создаю временный контейнер значений, на основе которых потом буду считать границы участка
+	double elem = (right-left)/(1000*g_countOfFree);//расстояние между точками на прямой, между временными значениями
+	for (ruint i = 0; i < g_countOfFree*1000+1; ++i)//загоняю элементарные значения в контейнер. решил, что на три порядка больше точек (чем колчество участков) даст достаточную точность при вычислениях
+	{
+		xITemp.push_back(elem*i);
+	}
+
+	Container xI;							//контейнер для границ интервалов, которые будут участововать в вычислениях
+	Container::iterator it = xI.begin();
+	xI.push_back(left);						//левая граница будет в начале списка, правая граница или близкая к ней точка - right
+	STL_FOR_ALL(xITemp, itTemp)
+	{
+//		if (fabs(area(binder, elem, *it, *itTemp) - 1/g_countOfFree) < fabs(area(binder, elem, *it, *(++itTemp)) - 1/g_countOfFree))
+//		{
+//			xI.push_back(*(--itTemp));
+//			++it:
+//		}
+	}
+	if(xI.size() == (g_countOfFree - 1))	//обрабатывается случай, когда площадь на последнем интервале окажется чуть меньше чем отведенная ему доля площади. погрешность ожидаестся очень малая из-за этого. проблема могла возникнуть при посчете количества попаданий в последний интервал. а его бы не было
+	{
+		xI.push_back(right);
+	}
+
+//случай, когда последний интервал будет иметь границу раньше значения right рассмаотривать не будем, т.к. погрешность тоже крошечная. искренне полагаю, что это несущенственно
+}
 // --------------------------------------------------------------------------------
+
+class SequenceNormal
+{
+public:
+	SequenceNormal(double x): m_x(x)
+	{}
+	double next(double main, double var)
+	{
+		return 1/(sqrt(2*pi)*sqrt(var)*exp((m_x - main)*(m_x - main)/(2*var))); //функция плотности распределения вероятности. по определению для закона. таких будет еще 3 шутки.
+	}
+private:
+	double m_x;
+};
+
 
 BOOST_AUTO_TEST_SUITE(RDOSequencesTest)
 
@@ -111,6 +161,8 @@ BOOST_AUTO_TEST_CASE(RDONormalTestCheck)
 {
 	onCheckData<rdoRuntime::RandGeneratorNormal>
 		(boost::bind(&rdoRuntime::RandGeneratorNormal::next, _1, g_main, g_var), g_fileNormalName);
+	onCheckKsi<SequenceNormal>
+		(boost::bind(&SequenceNormal::next, _1, g_main, g_var), g_main-4*sqrt(g_var), g_main+4*sqrt(g_var));
 }
 // --------------------------------------------------------------------------------
 
