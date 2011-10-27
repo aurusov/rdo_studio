@@ -2728,6 +2728,91 @@ param_type_such_as
 	}
 	;
 
+param_type_array
+	: RDO_array '<' param_type '>'
+	{
+		LPTypeInfo pParamType = PARSER->stack().pop<TypeInfo>($3);
+		ASSERT(pParamType);
+		LPRDOArrayType pArray = rdo::Factory<RDOArrayType>::create(pParamType, RDOParserSrcInfo(@1, @4));
+		$$ = PARSER->stack().push(pArray);
+	}
+	;
+
+// --------------------------------------------------------------------------------
+// -------------------- Общие составные токены для всех объектов РДО
+// --------------------------------------------------------------------------------
+// -------------------- Описание переменной
+// --------------------------------------------------------------------------------
+param_value
+	: RDO_INT_CONST
+	{
+		$$ = $1;
+	}
+	| RDO_REAL_CONST
+	{
+		$$ = $1;
+	}
+	| RDO_STRING_CONST
+	{
+		$$ = $1;
+	}
+	| RDO_IDENTIF
+	{
+		$$ = $1;
+	}
+	| RDO_BOOL_CONST
+	{
+		$$ = $1;
+	}
+	| param_array_value
+	{
+		$$ = $1;
+	}
+	;
+
+param_array_value
+	: '[' array_item ']'
+	{
+		LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($2);
+		ASSERT(pArrayValue);
+		RDOParserSrcInfo srcInfo(@1, @3, pArrayValue->getAsString());
+		pArrayValue->setSrcInfo(srcInfo);
+		pArrayValue->getArrayType()->setSrcInfo(srcInfo);
+		$$ = (int)PARSER->addValue(new RDOValue(pArrayValue));
+	}
+	| '[' array_item error
+	{
+		PARSER->error().error(@2, _T("Массив должен закрываться скобкой"));
+	}
+	;
+
+array_item
+	: param_value
+	{
+		LPRDOArrayType pArrayType = rdo::Factory<RDOArrayType>::create(RDOVALUE($1).typeInfo(), RDOParserSrcInfo(@1));
+		ASSERT(pArrayType);
+		LPRDOArrayValue pArrayValue = rdo::Factory<RDOArrayValue>::create(pArrayType);
+		ASSERT(pArrayValue);
+		pArrayValue->insertItem(RDOVALUE($1));
+		$$ = PARSER->stack().push(pArrayValue);
+	}
+	| array_item ',' param_value
+	{
+		LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($1);
+		ASSERT(pArrayValue);
+		pArrayValue->insertItem(RDOVALUE($3));
+		$$ = PARSER->stack().push(pArrayValue);
+	}
+	| array_item param_value
+	{
+		LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($1);
+		ASSERT(pArrayValue);
+		pArrayValue->insertItem(RDOVALUE($2));
+		$$ = PARSER->stack().push(pArrayValue);
+		PARSER->error().warning(@1, rdo::format(_T("Пропущена запятая перед: %s"), RDOVALUE($2)->getAsString().c_str()));
+	}
+	;
+
 param_value_default
 	: /* empty */
 	{
@@ -2751,78 +2836,6 @@ param_value_default
 	}
 	;
 
-param_value
-	: RDO_INT_CONST
-	{
-		$$ = $1;
-	}
-	| RDO_REAL_CONST {
-		$$ = $1;
-	}
-	| RDO_STRING_CONST {
-		$$ = $1;
-	}
-	| RDO_IDENTIF {
-		$$ = $1;
-	}
-	| RDO_BOOL_CONST {
-		$$ = $1;
-	}
-	| param_array_value {
-		$$ = $1;
-	}
-	;
-
-param_type_array
-	: RDO_array '<' param_type '>'
-	{
-		LPTypeInfo pParamType = PARSER->stack().pop<TypeInfo>($3);
-		ASSERT(pParamType);
-		LPRDOArrayType pArray = rdo::Factory<RDOArrayType>::create(pParamType, RDOParserSrcInfo(@1, @4));
-		$$ = PARSER->stack().push(pArray);
-	}
-	;
-
-param_array_value
-	:	'[' array_item ']'
-	{
-		LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($2);
-		ASSERT(pArrayValue);
-		$$ = (int)PARSER->addValue(new RDOValue(pArrayValue->getRArray(), RDOParserSrcInfo(@2), pArrayValue->getArrayType()->typeInfo()));
-	}
-	|'[' array_item error {
-		PARSER->error().error(@2, _T("Массив должен закрываться скобкой"));
-	}
-	;
-
-array_item
-	: param_value
-	{
-		LPRDOArrayType pArrayType = rdo::Factory<RDOArrayType>::create(RDOVALUE($1).typeInfo(), RDOParserSrcInfo(@1));
-		ASSERT(pArrayType);
-		LPRDOArrayValue pArrayValue = rdo::Factory<RDOArrayValue>::create(pArrayType);
-		pArrayValue->insertItem(RDOVALUE($1));
-		$$ = PARSER->stack().push(pArrayValue);
-	}
-	| array_item ',' param_value
-	{
-		LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($1);
-		ASSERT(pArrayValue);
-		pArrayValue->insertItem(RDOVALUE($3));
-		$$ = PARSER->stack().push(pArrayValue);
-	}
-	| array_item param_value
-	{
-		LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($1);
-		ASSERT(pArrayValue);
-		pArrayValue->insertItem(RDOVALUE($2));
-		$$ = PARSER->stack().push(pArrayValue);
-		PARSER->error().warning(@1, rdo::format(_T("Пропущена запятая перед: %s"), RDOVALUE($2)->getAsString().c_str()));
-	}
-	;
-
-// --------------------------------------------------------------------------------
-// -------------------- Общие составные токены для всех объектов РДО
 // --------------------------------------------------------------------------------
 // -------------------- Логические выражения
 // --------------------------------------------------------------------------------
@@ -3149,6 +3162,7 @@ arithm_list_body
 		PARSER->error().error(@3, _T("Ошибка в арифметическом выражении"));
 	}
 	;
+
 // --------------------------------------------------------------------------------
 // -------------------- Групповые выражения
 // --------------------------------------------------------------------------------

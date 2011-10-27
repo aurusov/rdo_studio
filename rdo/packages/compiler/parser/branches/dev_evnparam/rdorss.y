@@ -345,6 +345,9 @@ rss_value
 	}
 	;
 
+// --------------------------------------------------------------------------------
+// -------------------- Описание переменной
+// --------------------------------------------------------------------------------
 param_value
 	: RDO_INT_CONST
 	{
@@ -373,7 +376,7 @@ param_value
 	;
 
 param_array_value
-	: '[' array_enumeration ']'
+	: '[' array_item ']'
 	{
 		LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($2);
 		ASSERT(pArrayValue);
@@ -382,30 +385,30 @@ param_array_value
 		pArrayValue->getArrayType()->setSrcInfo(srcInfo);
 		$$ = (int)PARSER->addValue(new RDOValue(pArrayValue));
 	}
-	| '[' array_enumeration error
+	| '[' array_item error
 	{
 		PARSER->error().error(@2, _T("Массив должен закрываться скобкой"));
 	}
 	;
 
-array_enumeration
+array_item
 	: param_value
 	{
-		LPRDOArrayType pArrayType = rdo::Factory<RDOArrayType>::create(RDOVALUE($1).typeInfo(), RDOVALUE($1).src_info());
+		LPRDOArrayType pArrayType = rdo::Factory<RDOArrayType>::create(RDOVALUE($1).typeInfo(), RDOParserSrcInfo(@1));
 		ASSERT(pArrayType);
 		LPRDOArrayValue pArrayValue = rdo::Factory<RDOArrayValue>::create(pArrayType);
 		ASSERT(pArrayValue);
 		pArrayValue->insertItem(RDOVALUE($1));
 		$$ = PARSER->stack().push(pArrayValue);
 	}
-	| array_enumeration ',' param_value
+	| array_item ',' param_value
 	{
 		LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($1);
 		ASSERT(pArrayValue);
 		pArrayValue->insertItem(RDOVALUE($3));
 		$$ = PARSER->stack().push(pArrayValue);
 	}
-	| array_enumeration param_value
+	| array_item param_value
 	{
 		LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($1);
 		ASSERT(pArrayValue);
@@ -414,8 +417,6 @@ array_enumeration
 		PARSER->error().warning(@1, rdo::format(_T("Пропущена запятая перед: %s"), RDOVALUE($2)->getAsString().c_str()));
 	}
 	;
-
-// --------------------------------------------------------------------------------
 
 %%
 

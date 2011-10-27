@@ -469,14 +469,39 @@ param_type_such_as
 	| RDO_such_as error                       {}
 	;
 
+param_type_array
+	: RDO_array '<' param_type '>' {}
+	;
+
+// --------------------------------------------------------------------------------
+// -------------------- Общие составные токены для всех объектов РДО
+// --------------------------------------------------------------------------------
+// -------------------- Описание переменной
+// --------------------------------------------------------------------------------
+param_value
+	: RDO_INT_CONST     {}
+	| RDO_REAL_CONST    {}
+	| RDO_STRING_CONST  {}
+	| RDO_IDENTIF       {}
+	| RDO_BOOL_CONST    {}
+	| param_array_value {}
+	;
+
+param_array_value
+	: '[' array_item ']'   {}
+	| '[' array_item error {}
+	;
+
+array_item
+	: param_value                {}
+	| array_item ',' param_value {}
+	| array_item     param_value {}
+	;
+
 param_value_default
-	: /* empty */         {}
-	| '=' RDO_INT_CONST   {}
-	| '=' RDO_REAL_CONST  {}
-	| '=' RDO_STRING_CONST{}
-	| '=' RDO_IDENTIF     {}
-	| '=' RDO_BOOL_CONST  {}
-	| '=' error           {}
+	: /* empty */     {}
+	| '=' param_value {}
+	| '=' error       {}
 	;
 
 // --------------------------------------------------------------------------------
@@ -513,6 +538,7 @@ fun_arithm
 	| RDO_REAL_CONST                     {}
 	| RDO_BOOL_CONST                     {}
 	| RDO_STRING_CONST                   {}
+	| param_array_value                  {}
 	| RDO_IDENTIF                        {}
 	| RDO_IDENTIF '.' RDO_IDENTIF        {}
 	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF {}
@@ -530,7 +556,7 @@ fun_arithm
 // -------------------- Функции и последовательности
 // --------------------------------------------------------------------------------
 fun_arithm_func_call
-	: RDO_IDENTIF '(' arithm_list ')'   {};
+	: RDO_IDENTIF '(' arithm_list ')' {};
 	
 arithm_list
 	: /* empty */
