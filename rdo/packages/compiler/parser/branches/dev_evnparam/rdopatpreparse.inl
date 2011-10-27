@@ -44,6 +44,14 @@ inline void RDOEvent::attachCalc(CREF(rdoRuntime::LPRDOCalcEventPlan) pCalc)
 	ASSERT(pCalc);
 	m_calcList.push_back(pCalc);
 }
+/*
+inline void RDOEvent::attachCalc(CREF(rdoRuntime::LPRDOCalcEventParam) pCalc)
+{
+	ASSERT(pCalc);
+	m_calcList.push_back(pCalc);
+}
+*/
+
 
 inline void RDOEvent::setRuntimeEvent(LPIBaseOperation pRuntimeEvent)
 {
@@ -75,6 +83,10 @@ inline void RDOEvent::setInitCalc(CREF(rdoRuntime::LPRDOCalc) pCalc)
 {
 	ASSERT(pCalc);
 	m_pInitCalc = pCalc;
+}
+inline void RDOEvent::addParamList(CREF(RDOValue) paramList)
+{
+	m_pParamList = paramList;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

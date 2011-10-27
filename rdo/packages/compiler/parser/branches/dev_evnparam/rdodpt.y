@@ -211,6 +211,7 @@
 #include "simulator/compiler/parser/rdodpt.h"
 #include "simulator/compiler/parser/rdortp.h"
 #include "simulator/compiler/parser/rdorss.h"
+#include "simulator/runtime/calc/array.h"
 // --------------------------------------------------------------------------------
 
 #define PARSER  LEXER->parser()

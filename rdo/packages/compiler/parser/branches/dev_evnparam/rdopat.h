@@ -196,7 +196,6 @@ DECLARE_FACTORY(RDOPatternEvent)
 public:
 	virtual void addRelRes     (CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSrcInfo) type_info, rdoRuntime::RDOResource::ConvertStatus beg, CREF(YYLTYPE) convertor_pos);
 	virtual void addRelResUsage(CREF(LPRDOPATChoiceFrom) pChoiceFrom, CREF(LPRDOPATChoiceOrder) pChoiceOrder);
-
 	virtual char getModelStructureLetter() const
 	{
 		return _T('V');

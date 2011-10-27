@@ -209,6 +209,7 @@
 #include "simulator/compiler/parser/rdopmd.h"
 #include "simulator/compiler/parser/rdofun.h"
 #include "simulator/runtime/rdocalc.h"
+#include "simulator/runtime/calc/array.h"
 // --------------------------------------------------------------------------------
 
 #define PARSER  LEXER->parser()

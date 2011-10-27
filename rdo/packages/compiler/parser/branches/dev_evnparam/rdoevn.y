@@ -218,6 +218,7 @@
 #include "simulator/runtime/calc/process_control.h"
 #include "simulator/runtime/calc/braces.h"
 #include "simulator/runtime/calc/statements.h"
+#include "simulator/runtime/calc/array.h"
 // --------------------------------------------------------------------------------
 
 #define PARSER  LEXER->parser()

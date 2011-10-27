@@ -215,6 +215,7 @@
 #include "simulator/compiler/parser/type/range.h"
 #include "simulator/runtime/rdocalc.h"
 #include "utils/rdoanimation.h"
+#include "simulator/runtime/calc/array.h"
 // --------------------------------------------------------------------------------
 
 #define PARSER  LEXER->parser()
