@@ -27,6 +27,9 @@ public:
 	virtual void onLButtonDblClk( UINT nFlags, CPoint global_chart_pos );
 	virtual void generate();
 
+	// Переопределенная виртуальная функция save_To_XML для RPShapeResource_MJ:
+	void save_To_XML(pugi::xml_document &doc, std::list< RPObject* >& all_child);
+
 	int gamount;
 };
 

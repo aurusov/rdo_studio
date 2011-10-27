@@ -54,10 +54,8 @@ public:
 	const RPObjectClassInfo* getClassInfo() const { return rpMethod::factory->getClassInfo( getClassName() ); }
 	virtual void load( rp::RPXMLNode* node );
 	virtual rp::RPXMLNode* save( rp::RPXMLNode* parent_node );
-	// Виртуальная функция для сохранения данных о графике в xml-формате:
-	//virtual void SaveToXML(pugi::xml_document& doc);
-	//virtual void save_To_XML(std::list< RPObject* >& all_child, pugi::xml_document& doc);
-	virtual void save_To_XML();
+	// Чистая виртуальная функция для сохранения данных о графике в xml-формате:
+	virtual void save_To_XML(pugi::xml_document &doc, std::list< RPObject* >& all_child) = 0;
 
 	bool hasChild() const { return !child.empty(); }
 	std::list< RPObject* >::const_iterator find_child( const RPObject* object ) {

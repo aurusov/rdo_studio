@@ -64,3 +64,11 @@ rpMethod::RPMethod* RPObjectFlowChart_MJ::getMethod()
 {
 	return proc2rdo;
 }
+
+void RPObjectFlowChart_MJ::save_To_XML(pugi::xml_document &doc, std::list< RPObject* >& all_child)
+{
+	all_child.insert( all_child.end(), child.begin(), child.end() );
+	
+	
+
+}

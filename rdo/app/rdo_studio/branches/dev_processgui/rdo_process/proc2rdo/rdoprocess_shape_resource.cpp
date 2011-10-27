@@ -152,11 +152,9 @@ RDOfiles->resourse<<std::endl<<std::endl<<"{-------ресурс ------" <<getName().c_
 
 <<"Resource_"<<getName().c_str()<<" : Resource свободен 0 1";
 
+}
 
-
-
-
-
-
+void RPShapeResource_MJ::save_To_XML(pugi::xml_document &doc, std::list< RPObject* >& all_child)
+{
 
 }

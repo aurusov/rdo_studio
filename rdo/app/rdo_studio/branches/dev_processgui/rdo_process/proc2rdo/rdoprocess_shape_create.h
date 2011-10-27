@@ -47,6 +47,9 @@ public:
 	int inf; // бесконечноть
 	int gID; // ID группы
 	double gpar1, gpar2, gpar3;
+
+	// Переопределенная виртуальная функция save_To_XML для RPShapeCreateMJ:
+	void save_To_XML(pugi::xml_document &doc, std::list< RPObject* >& all_child);
 };
 
 #endif // !defined(AFX_RDOPROCESS_SHAPE_CREATE_MJ_H__B043A584_EC30_4198_83AE_4C54E356FDAF__INCLUDED_)

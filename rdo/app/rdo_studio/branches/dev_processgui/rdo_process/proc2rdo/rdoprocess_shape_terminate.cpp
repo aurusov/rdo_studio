@@ -59,3 +59,8 @@ void RPShapeTerminateMJ::generate()
 	studioApp.studioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_TERMINATE, m_pParams.get());
 	m_pParams = NULL;
 }
+
+void RPShapeTerminateMJ::save_To_XML(pugi::xml_document &doc, std::list< RPObject* >& all_child)
+{
+
+}

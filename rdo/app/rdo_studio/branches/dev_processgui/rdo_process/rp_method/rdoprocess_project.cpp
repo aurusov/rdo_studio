@@ -93,3 +93,4 @@ void RPProject::setActiveFlowChart( RPObjectFlowChart* flowChart )
 	flow_state = activeFlowChart ? flow_select : flow_none;
 	sendMessage( this, rp::msg::RP_FLOWSTATE_CHANGED, &flow_state );
 }
+

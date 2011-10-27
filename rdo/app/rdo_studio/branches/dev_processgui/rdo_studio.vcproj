@@ -5675,7 +5675,15 @@
 				</File>
 			</Filter>
 		</Filter>
+		<File
+			RelativePath=".\ClassDiagram1.cd"
+			>
+		</File>
 	</Files>
 	<Globals>
+		<Global
+			Name="RESOURCE_FILE"
+			Value="rdo_studio.rc"
+		/>
 	</Globals>
 </VisualStudioProject>
