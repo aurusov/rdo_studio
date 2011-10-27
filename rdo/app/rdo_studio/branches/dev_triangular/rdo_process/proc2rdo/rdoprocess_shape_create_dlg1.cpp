@@ -35,9 +35,12 @@ void RPShapeCreateDlg1_MJ::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(RPShapeCreateDlg1_MJ)
-	DDX_Control(pDX, IDC_EDIT5, m_create_dlg1_disp_control_MJ);
 	DDX_Control(pDX, IDC_EDIT4, m_create_dlg1_exp_control_MJ);
+	DDX_Control(pDX, IDC_EDIT5, m_create_dlg1_disp_control_MJ);
 	DDX_Control(pDX, IDC_EDIT6, m_create_dlg1_max_control_MJ);
+	DDX_Control(pDX, IDC_STATIC7, m_create_dlgl_exp_text_MJ);
+	DDX_Control(pDX, IDC_STATIC8, m_create_dlgl_disp_text_MJ);
+	DDX_Control(pDX, IDC_STATIC9, m_create_dlgl_max_text_MJ);
 	DDX_Control(pDX, IDC_COMBO1, m_create_dlg1_combo1_MJ);
 	DDX_Text(pDX, IDC_EDIT1, m_name);
 	DDX_Text(pDX, IDC_EDIT2, m_dlgfirst);
@@ -49,7 +52,6 @@ void RPShapeCreateDlg1_MJ::DoDataExchange(CDataExchange* pDX)
 	DDV_MinMaxInt(pDX, m_dlgbase_gen, -2147483647, 2147483647);
 	//}}AFX_DATA_MAP
 }
-
 
 BOOL RPShapeCreateDlg1_MJ::OnInitDialog()
 {
@@ -109,37 +111,46 @@ UpdateData(TRUE);
 	{
 case 0: // константа
 	m_create_dlg1_exp_control_MJ.EnableWindow(TRUE);
-	m_create_dlg1_disp_control_MJ.EnableWindow(FALSE);
+	m_create_dlgl_exp_text_MJ.SetWindowText(_T("Константа"));
+	m_create_dlgl_disp_text_MJ.ShowWindow(SW_HIDE);
 	m_create_dlg1_disp_control_MJ.ShowWindow(SW_HIDE);
-	m_create_dlg1_max_control_MJ.EnableWindow(FALSE);
+	m_create_dlgl_max_text_MJ.ShowWindow(SW_HIDE);
 	m_create_dlg1_max_control_MJ.ShowWindow(SW_HIDE);
-	break;	
+	break;
 case 1: // нормальный
 	m_create_dlg1_exp_control_MJ.EnableWindow(TRUE);
-	m_create_dlg1_disp_control_MJ.EnableWindow(TRUE);
+	m_create_dlgl_exp_text_MJ.SetWindowText(_T("Мат. ожидание"));
+	m_create_dlgl_disp_text_MJ.ShowWindow(SW_SHOW);
+	m_create_dlgl_disp_text_MJ.SetWindowText(_T("Дисперсия"));
 	m_create_dlg1_disp_control_MJ.ShowWindow(SW_SHOW);
-	m_create_dlg1_max_control_MJ.EnableWindow(FALSE);
+	m_create_dlgl_max_text_MJ.ShowWindow(SW_HIDE);
 	m_create_dlg1_max_control_MJ.ShowWindow(SW_HIDE);
 	break;
 case 2: // равномерный закон
 	m_create_dlg1_exp_control_MJ.EnableWindow(TRUE);
-	m_create_dlg1_disp_control_MJ.EnableWindow(TRUE);
+	m_create_dlgl_exp_text_MJ.SetWindowText(_T("Левая граница"));
+	m_create_dlgl_disp_text_MJ.ShowWindow(SW_SHOW);
+	m_create_dlgl_disp_text_MJ.SetWindowText(_T("Правая граница"));
 	m_create_dlg1_disp_control_MJ.ShowWindow(SW_SHOW);
-	m_create_dlg1_max_control_MJ.EnableWindow(FALSE);
+	m_create_dlgl_max_text_MJ.ShowWindow(SW_HIDE);
 	m_create_dlg1_max_control_MJ.ShowWindow(SW_HIDE);
 	break;
 case 3: // труегольный
 	m_create_dlg1_exp_control_MJ.EnableWindow(TRUE);
-	m_create_dlg1_disp_control_MJ.EnableWindow(TRUE);
+	m_create_dlgl_exp_text_MJ.SetWindowText(_T("Левая граница"));
+	m_create_dlgl_disp_text_MJ.ShowWindow(SW_SHOW);
+	m_create_dlgl_disp_text_MJ.SetWindowText(_T("Высота"));
 	m_create_dlg1_disp_control_MJ.ShowWindow(SW_SHOW);
-	m_create_dlg1_max_control_MJ.EnableWindow(TRUE);
+	m_create_dlgl_max_text_MJ.ShowWindow(SW_SHOW);
+	m_create_dlgl_max_text_MJ.SetWindowText(_T("Правая граница"));
 	m_create_dlg1_max_control_MJ.ShowWindow(SW_SHOW);
 	break;
 case 4: //экспоненциальный
 	m_create_dlg1_exp_control_MJ.EnableWindow(TRUE);
-	m_create_dlg1_disp_control_MJ.EnableWindow(FALSE);
+	m_create_dlgl_exp_text_MJ.SetWindowText(_T("Мат. ожидание"));
+	m_create_dlgl_disp_text_MJ.ShowWindow(SW_HIDE);
 	m_create_dlg1_disp_control_MJ.ShowWindow(SW_HIDE);
-	m_create_dlg1_max_control_MJ.EnableWindow(FALSE);
+	m_create_dlgl_max_text_MJ.ShowWindow(SW_HIDE);
 	m_create_dlg1_max_control_MJ.ShowWindow(SW_HIDE);
 	break;
 	}

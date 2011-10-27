@@ -250,6 +250,15 @@
 #define IDC_FLOW_MOVE                   1159
 #define IDC_FLOW_DOCK_NOT               1160
 #define IDC_FLOW_TRASH                  1161
+#define IDC_STATIC1                     1162
+#define IDC_STATIC2                     1163
+#define IDC_STATIC3                     1164
+#define IDC_STATIC4                     1165
+#define IDC_STATIC5                     1166
+#define IDC_STATIC6                     1167
+#define IDC_STATIC7                     1168
+#define IDC_STATIC8                     1169
+#define IDC_STATIC9                     1170
 #define ID_CHART_ADDTONEWCHART          32771
 #define ID_DOCK_PROJECT_BAR             32772
 #define ID_VIEW_WORKSPACE               32774
