@@ -2446,29 +2446,6 @@ param_type_array
 	}
 	;
 
-param_value_default
-	: /* empty */
-	{
-		$$ = (int)PARSER->addValue(new rdoParse::RDOValue());
-	}
-	| '=' param_value
-	{
-		$$ = $2;
-	}
-	| '=' error
-	{
-		RDOParserSrcInfo src_info(@1, @2, true);
-		if (src_info.src_pos().point())
-		{
-			PARSER->error().error(src_info, _T("Не указано значение по-умолчанию"));
-		}
-		else
-		{
-			PARSER->error().error(src_info, _T("Неверное значение по-умолчанию"));
-		}
-	}
-	;
-
 // --------------------------------------------------------------------------------
 // -------------------- Общие составные токены для всех объектов РДО
 // --------------------------------------------------------------------------------
@@ -2535,6 +2512,29 @@ array_item
 		pArrayValue->insertItem(RDOVALUE($2));
 		$$ = PARSER->stack().push(pArrayValue);
 		PARSER->error().warning(@1, rdo::format(_T("Пропущена запятая перед: %s"), RDOVALUE($2)->getAsString().c_str()));
+	}
+	;
+
+param_value_default
+	: /* empty */
+	{
+		$$ = (int)PARSER->addValue(new rdoParse::RDOValue());
+	}
+	| '=' param_value
+	{
+		$$ = $2;
+	}
+	| '=' error
+	{
+		RDOParserSrcInfo src_info(@1, @2, true);
+		if (src_info.src_pos().point())
+		{
+			PARSER->error().error(src_info, _T("Не указано значение по-умолчанию"));
+		}
+		else
+		{
+			PARSER->error().error(src_info, _T("Неверное значение по-умолчанию"));
+		}
 	}
 	;
 
