@@ -2456,19 +2456,24 @@ param_value
 	{
 		$$ = $1;
 	}
-	| RDO_REAL_CONST {
+	| RDO_REAL_CONST
+	{
 		$$ = $1;
 	}
-	| RDO_STRING_CONST {
+	| RDO_STRING_CONST
+	{
 		$$ = $1;
 	}
-	| RDO_IDENTIF {
+	| RDO_IDENTIF
+	{
 		$$ = $1;
 	}
-	| RDO_BOOL_CONST {
+	| RDO_BOOL_CONST
+	{
 		$$ = $1;
 	}
-	| param_array_value {
+	| param_array_value
+	{
 		$$ = $1;
 	}
 	;
@@ -2495,6 +2500,7 @@ array_item
 		LPRDOArrayType pArrayType = rdo::Factory<RDOArrayType>::create(RDOVALUE($1).typeInfo(), RDOParserSrcInfo(@1));
 		ASSERT(pArrayType);
 		LPRDOArrayValue pArrayValue = rdo::Factory<RDOArrayValue>::create(pArrayType);
+		ASSERT(pArrayValue);
 		pArrayValue->insertItem(RDOVALUE($1));
 		$$ = PARSER->stack().push(pArrayValue);
 	}
