@@ -74,10 +74,10 @@ void RPObjectFlowChart_MJ::save_To_XML(pugi::xml_document &doc, std::list< RPObj
 	for( std::list< RPObject* >::const_iterator it = all_child.begin(); it != all_child.end(); ++it )
 	{
 		//pugi::xml_node new_node = node.append_child(getClassName().c_str());
-		for(pugi::xml_node_iterator it_node = node.begin(); it_node != node.end(); ++it_node)
-		{
-			//node.
-		}
+		//for(pugi::xml_node_iterator it_node = node.begin(); it_node != node.end(); ++it_node)
+		//{
+		node.append_child(this->getClassName().c_str());
+		//}
 	}
 
 }

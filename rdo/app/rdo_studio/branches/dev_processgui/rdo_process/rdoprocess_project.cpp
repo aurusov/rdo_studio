@@ -109,7 +109,7 @@ void RPProjectMFC::save_To_XML(pugi::xml_document &doc, std::list< RPObject* >& 
 	for( std::list< RPObject* >::const_iterator it = all_child.begin(); it != all_child.end(); ++it )
 		(*it)->save_To_XML(doc, all_child);        // - вызываем для каждого помещенного на рабочую область
 	                                               //   элемента его же виртуальную функцию сохранения               
-	
+
 	// Автоматически открываем файл при создании потока:
 	// P.S. Режим открытия файла (битовые маски) - 
 	//         ios::out - открыть файл для записи;
