@@ -74,10 +74,8 @@ BOOST_AUTO_TEST_CASE(RDOCommonAnimationBoundedElement)
 	rdoAnimation::RDOSize size(width, height);
 	rdoAnimation::RDOBoundedElement boundedElement(point, size);
 
-	BOOST_CHECK(boundedElement.m_point.m_x == x);
-	BOOST_CHECK(boundedElement.m_point.m_y == y);
-	BOOST_CHECK(boundedElement.m_size.m_width == width);
-	BOOST_CHECK(boundedElement.m_size.m_height == height);
+	BOOST_CHECK(boundedElement.m_point == point);
+	BOOST_CHECK(boundedElement.m_size == size);
 }
 
 BOOST_AUTO_TEST_CASE(RDOCommonAnimationRadius)
@@ -103,10 +101,11 @@ BOOST_AUTO_TEST_CASE(RDOCommonAnimationTextElement)
 	rdoAnimation::RDOTextElement::TextAlign align = rdoAnimation::RDOTextElement::TETA_CENTER;
 
 	rdoAnimation::RDOTextElement textElement(boundedElement, elem, text, align);
-	
-	BOOST_CHECK(textElement.m_background.m_transparent == background.m_transparent);
-	BOOST_CHECK(textElement.m_foreground.m_transparent == foreground.m_transparent);
 
+	BOOST_CHECK(textElement.m_point == point);
+	BOOST_CHECK(textElement.m_size == size);
+	BOOST_CHECK(textElement.m_background == background);
+	BOOST_CHECK(textElement.m_foreground == foreground);
 	BOOST_CHECK(textElement.m_text == text);
 	BOOST_CHECK(textElement.m_align == align);
 }
@@ -126,10 +125,9 @@ BOOST_AUTO_TEST_CASE(RDOCommonAnimationLineElement)
 	rdoAnimation::RDOLineElement lineElem(point1, point2, color);
 	
 	BOOST_CHECK(lineElem.m_color.m_transparent == color.m_transparent);
-	BOOST_CHECK(lineElem.m_point1.m_x == x1);
-	BOOST_CHECK(lineElem.m_point1.m_y == y1);
-	BOOST_CHECK(lineElem.m_point2.m_x == x2);
-	BOOST_CHECK(lineElem.m_point2.m_y == y2);
+	BOOST_CHECK(lineElem.m_color == color);
+	BOOST_CHECK(lineElem.m_point1 == point1);
+	BOOST_CHECK(lineElem.m_point2 == point2);
 }
 
 BOOST_AUTO_TEST_CASE(RDOCommonAnimationTriangElement)
@@ -143,7 +141,12 @@ BOOST_AUTO_TEST_CASE(RDOCommonAnimationTriangElement)
 	rdoAnimation::RDOColoredElement elem(background, foreground);
 
 	rdoAnimation::RDOTriangElement triangElement(point1, point2, point3, elem);
-	BOOST_CHECK(&triangElement);
+
+	BOOST_CHECK(triangElement.m_background == background);
+	BOOST_CHECK(triangElement.m_foreground == foreground);
+	BOOST_CHECK(triangElement.m_point1 == point1);
+	BOOST_CHECK(triangElement.m_point2 == point2);
+	BOOST_CHECK(triangElement.m_point3 == point3);
 }
 
 BOOST_AUTO_TEST_CASE(RDOCommonAnimationRectElements)
@@ -157,13 +160,16 @@ BOOST_AUTO_TEST_CASE(RDOCommonAnimationRectElements)
 	rdoAnimation::RDOBoundedElement boundedElement(point, size);
 
 	rdoAnimation::RDORectElement rectElement(boundedElement, elem);
-	BOOST_CHECK(&rectElement);
+
+	BOOST_CHECK(rectElement.m_background == background);
+	BOOST_CHECK(rectElement.m_foreground == foreground);
+	BOOST_CHECK(rectElement.m_point == point);
+	BOOST_CHECK(rectElement.m_size == size);
 }
 
 BOOST_AUTO_TEST_CASE(RDOCommonAnimationCircleElement)
 {
 	rdoAnimation::RDOPoint point(0,0);
-
 	rdoAnimation::RDORadius radius(10);
 
 	rdoAnimation::RDOColor background;
@@ -171,7 +177,11 @@ BOOST_AUTO_TEST_CASE(RDOCommonAnimationCircleElement)
 	rdoAnimation::RDOColoredElement elem(background, foreground);
 
 	rdoAnimation::RDOCircleElement circle(point ,radius, elem);
-	BOOST_CHECK(&circle);
+
+	BOOST_CHECK(circle.m_center == point);
+	BOOST_CHECK(circle.m_radius == radius);
+	BOOST_CHECK(circle.m_background == background);
+	BOOST_CHECK(circle.m_foreground == foreground);
 }
 
 BOOST_AUTO_TEST_CASE(RDOCommonAnimationEllipseElement)
@@ -185,7 +195,11 @@ BOOST_AUTO_TEST_CASE(RDOCommonAnimationEllipseElement)
 	rdoAnimation::RDOColoredElement elem(background, foreground);
 
 	rdoAnimation::RDOEllipseElement ellipse(boundedElement, elem);
-	BOOST_CHECK(&ellipse);
+
+	BOOST_CHECK(ellipse.m_background == background);
+	BOOST_CHECK(ellipse.m_foreground == foreground);
+	BOOST_CHECK(ellipse.m_point == point);
+	BOOST_CHECK(ellipse.m_size == size);
 }
 
 BOOST_AUTO_TEST_CASE(RDOCommonAnimationBmpElement)
@@ -195,7 +209,10 @@ BOOST_AUTO_TEST_CASE(RDOCommonAnimationBmpElement)
 	tstring mask_name("mask");
 
 	rdoAnimation::RDOBmpElement bmpElement(point, bmp_name, mask_name);
-	BOOST_CHECK(&bmpElement);
+
+	BOOST_CHECK(bmpElement.m_point == point);
+	BOOST_CHECK(bmpElement.m_bmp_name == bmp_name);
+	BOOST_CHECK(bmpElement.m_mask_name == mask_name);
 }
 
 BOOST_AUTO_TEST_CASE(RDOCommonAnimationSBmpElement)
@@ -208,7 +225,11 @@ BOOST_AUTO_TEST_CASE(RDOCommonAnimationSBmpElement)
 	rdoAnimation::RDOBoundedElement boundedElement(point, size);
 
 	rdoAnimation::RDOSBmpElement sbmpElement(boundedElement, bmp_name, mask_name);
-	BOOST_CHECK(&sbmpElement);
+
+	BOOST_CHECK(sbmpElement.m_bmp_name == bmp_name);
+	BOOST_CHECK(sbmpElement.m_mask_name == mask_name);
+	BOOST_CHECK(sbmpElement.m_point == point);
+	BOOST_CHECK(sbmpElement.m_size == size);
 }
 
 BOOST_AUTO_TEST_CASE(RDOCommonAnimationActiveElement)
@@ -220,13 +241,16 @@ BOOST_AUTO_TEST_CASE(RDOCommonAnimationActiveElement)
 	rdoAnimation::RDOBoundedElement boundedElement(point, size);
 
 	rdoAnimation::RDOActiveElement actionElement(boundedElement, text);
-	BOOST_CHECK(&actionElement);
+
+	BOOST_CHECK(actionElement.m_point == point);
+	BOOST_CHECK(actionElement.m_size == size);
 }
 
 BOOST_AUTO_TEST_CASE(RDOCommonAnimationNullElement)
 {
-	rdoAnimation::RDONullElement nullElem;
-	BOOST_CHECK(&nullElem);
+	rdoAnimation::RDONullElement* nullElem = new rdoAnimation::RDONullElement;
+	BOOST_CHECK(nullElem);
+	delete nullElem;
 }
 
 BOOST_AUTO_TEST_CASE(RDOCommonAnimationFramet)
