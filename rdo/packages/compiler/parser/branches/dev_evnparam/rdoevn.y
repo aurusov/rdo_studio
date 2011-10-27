@@ -1723,43 +1723,6 @@ planning_statement
 	}
 	;
 
-arithm_list
-	: /* empty */
-	{
-		LPArithmContainer pArithmContainer = rdo::Factory<ArithmContainer>::create();
-		ASSERT(pArithmContainer);
-		$$ = PARSER->stack().push(pArithmContainer);
-	}
-	| arithm_list_body
-	{};
-
-arithm_list_body
-	: fun_arithm
-	{
-		LPArithmContainer pArithmContainer = rdo::Factory<ArithmContainer>::create();
-		LPRDOFUNArithm    pArithm          = PARSER->stack().pop<RDOFUNArithm>($1);
-		ASSERT (pArithmContainer);
-		ASSERT (pArithm);
-		pArithmContainer->setSrcText(pArithm->src_text());
-		pArithmContainer->addItem   (pArithm);
-		$$ = PARSER->stack().push(pArithmContainer);
-	}
-	| arithm_list_body ',' fun_arithm
-	{
-		LPArithmContainer pArithmContainer = PARSER->stack().pop<ArithmContainer>($1);
-		LPRDOFUNArithm    pArithm          = PARSER->stack().pop<RDOFUNArithm>($3);
-		ASSERT (pArithmContainer);
-		ASSERT (pArithm);
-		pArithmContainer->setSrcText(pArithmContainer->src_text() + _T(", ") + pArithm->src_text());
-		pArithmContainer->addItem   (pArithm);
-		$$ = PARSER->stack().push(pArithmContainer);
-	}
-	| arithm_list_body ',' error
-	{
-		PARSER->error().error(@3, _T("Ошибка в арифметическом выражении"));
-	}
-	;
-
 if_statement
 	: RDO_if '(' fun_logic ')' statement
 	{
@@ -2439,8 +2402,10 @@ fun_arithm_func_call
 		tstring funName                    = RDOVALUE($1)->getIdentificator();
 		LPArithmContainer pArithmContainer = PARSER->stack().pop<ArithmContainer>($3);
 		ASSERT(pArithmContainer);
+
 		LPRDOFUNParams pFunParams = rdo::Factory<RDOFUNParams>::create(pArithmContainer);
 		ASSERT(pFunParams);
+
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @4);
 		pFunParams->setSrcText(funName + _T("(") + pArithmContainer->src_text() + _T(")"));
@@ -2451,6 +2416,43 @@ fun_arithm_func_call
 	| RDO_IDENTIF '(' error
 	{
 		PARSER->error().error(@3, _T("Ошибка в параметрах функции"));
+	}
+	;
+
+arithm_list
+	: /* empty */
+	{
+		LPArithmContainer pArithmContainer = rdo::Factory<ArithmContainer>::create();
+		ASSERT(pArithmContainer);
+		$$ = PARSER->stack().push(pArithmContainer);
+	}
+	| arithm_list_body
+	{};
+
+arithm_list_body
+	: fun_arithm
+	{
+		LPArithmContainer pArithmContainer = rdo::Factory<ArithmContainer>::create();
+		LPRDOFUNArithm    pArithm          = PARSER->stack().pop<RDOFUNArithm>($1);
+		ASSERT (pArithmContainer);
+		ASSERT (pArithm);
+		pArithmContainer->setSrcText(pArithm->src_text());
+		pArithmContainer->addItem   (pArithm);
+		$$ = PARSER->stack().push(pArithmContainer);
+	}
+	| arithm_list_body ',' fun_arithm
+	{
+		LPArithmContainer pArithmContainer = PARSER->stack().pop<ArithmContainer>($1);
+		LPRDOFUNArithm    pArithm          = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT (pArithmContainer);
+		ASSERT (pArithm);
+		pArithmContainer->setSrcText(pArithmContainer->src_text() + _T(", ") + pArithm->src_text());
+		pArithmContainer->addItem   (pArithm);
+		$$ = PARSER->stack().push(pArithmContainer);
+	}
+	| arithm_list_body ',' error
+	{
+		PARSER->error().error(@3, _T("Ошибка в арифметическом выражении"));
 	}
 	;
 
