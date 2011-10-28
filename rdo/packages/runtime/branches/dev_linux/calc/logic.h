@@ -24,7 +24,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
   \class   RDOCalcAnd
   \brief   Оператор логическое И
 */
-class RDOCalcAnd: public RDOCalcBinary<RDOValue, (&RDOValue::operator&&), OperatorType::OT_LOGIC>
+class RDOCalcAnd: public RDOCalcBinary<RDOValue, &RDOValue::operator&&, OperatorType::OT_LOGIC>
 {
 DECLARE_FACTORY(RDOCalcAnd)
 private:
@@ -40,7 +40,7 @@ private:
   \class   RDOCalcOr
   \brief   Оператор логическое ИЛИ
 */
-class RDOCalcOr: public RDOCalcBinary<RDOValue, (&RDOValue::operator||), OperatorType::OT_LOGIC>
+class RDOCalcOr: public RDOCalcBinary<RDOValue, &RDOValue::operator||, OperatorType::OT_LOGIC>
 {
 DECLARE_FACTORY(RDOCalcOr)
 private:
@@ -56,43 +56,43 @@ private:
   \typedef RDOCalcNot
   \brief   Оператор отрицания
 */
-typedef RDOCalcUnary <rbool, (&RDOValue::operator! ), OperatorType::OT_LOGIC> RDOCalcNot;         DECLARE_POINTER(RDOCalcNot);
+typedef RDOCalcUnary <rbool, &RDOValue::operator! , OperatorType::OT_LOGIC> RDOCalcNot;         DECLARE_POINTER(RDOCalcNot);
 
 /*!
   \typedef RDOCalcIsEqual
   \brief   Оператор равенства
 */
-typedef RDOCalcBinary<rbool, (&RDOValue::operator==), OperatorType::OT_LOGIC> RDOCalcIsEqual;     DECLARE_POINTER(RDOCalcIsEqual);
+typedef RDOCalcBinary<rbool, &RDOValue::operator==, OperatorType::OT_LOGIC> RDOCalcIsEqual;     DECLARE_POINTER(RDOCalcIsEqual);
 
 /*!
   \typedef RDOCalcIsNotEqual
   \brief   Оператор неравенства
 */
-typedef RDOCalcBinary<rbool, (&RDOValue::operator!=), OperatorType::OT_LOGIC> RDOCalcIsNotEqual;  DECLARE_POINTER(RDOCalcIsNotEqual);
+typedef RDOCalcBinary<rbool, &RDOValue::operator!=, OperatorType::OT_LOGIC> RDOCalcIsNotEqual;  DECLARE_POINTER(RDOCalcIsNotEqual);
 
 /*!
   \typedef RDOCalcIsLess
   \brief   Оператор меньше
 */
-typedef RDOCalcBinary<rbool, (&RDOValue::operator< ), OperatorType::OT_LOGIC> RDOCalcIsLess;      DECLARE_POINTER(RDOCalcIsLess);
+typedef RDOCalcBinary<rbool, &RDOValue::operator< , OperatorType::OT_LOGIC> RDOCalcIsLess;      DECLARE_POINTER(RDOCalcIsLess);
 
 /*!
   \typedef RDOCalcIsGreater
   \brief   Оператор больше
 */
-typedef RDOCalcBinary<rbool, (&RDOValue::operator> ), OperatorType::OT_LOGIC> RDOCalcIsGreater;   DECLARE_POINTER(RDOCalcIsGreater);
+typedef RDOCalcBinary<rbool, &RDOValue::operator> , OperatorType::OT_LOGIC> RDOCalcIsGreater;   DECLARE_POINTER(RDOCalcIsGreater);
 
 /*!
   \typedef RDOCalcIsLEQ
   \brief   Оператор меньше или равно
 */
-typedef RDOCalcBinary<rbool, (&RDOValue::operator<=), OperatorType::OT_LOGIC> RDOCalcIsLEQ;       DECLARE_POINTER(RDOCalcIsLEQ);
+typedef RDOCalcBinary<rbool, &RDOValue::operator<=, OperatorType::OT_LOGIC> RDOCalcIsLEQ;       DECLARE_POINTER(RDOCalcIsLEQ);
 
 /*!
   \typedef RDOCalcIsGEQ
   \brief   Оператор больше или равно
 */
-typedef RDOCalcBinary<rbool, (&RDOValue::operator>=), OperatorType::OT_LOGIC> RDOCalcIsGEQ;       DECLARE_POINTER(RDOCalcIsGEQ);
+typedef RDOCalcBinary<rbool, &RDOValue::operator>=, OperatorType::OT_LOGIC> RDOCalcIsGEQ;       DECLARE_POINTER(RDOCalcIsGEQ);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
