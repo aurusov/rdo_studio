@@ -734,7 +734,7 @@ void RDOThreadRunTime::writeResultsInfo()
 	
 	double delay = -1;
 
-	delay = timeStop - m_timeStart;
+	delay = (double)(timeStop - m_timeStart);
 	
 	if (delay != -1)
 	{
