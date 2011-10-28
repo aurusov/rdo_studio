@@ -56,43 +56,71 @@ private:
   \typedef RDOCalcNot
   \brief   Оператор отрицания
 */
-typedef RDOCalcUnary <rbool, &RDOValue::operator! , OperatorType::OT_LOGIC> RDOCalcNot;         DECLARE_POINTER(RDOCalcNot);
+#ifdef OST_WINDOWS
+	typedef RDOCalcUnary <rbool, (&RDOValue::operator!) , OperatorType::OT_LOGIC> RDOCalcNot;         DECLARE_POINTER(RDOCalcNot);
+#else if OST_LINUX
+	typedef RDOCalcUnary <rbool, &RDOValue::operator! , OperatorType::OT_LOGIC> RDOCalcNot;         DECLARE_POINTER(RDOCalcNot);
+#endif
 
 /*!
   \typedef RDOCalcIsEqual
   \brief   Оператор равенства
 */
-typedef RDOCalcBinary<rbool, &RDOValue::operator==, OperatorType::OT_LOGIC> RDOCalcIsEqual;     DECLARE_POINTER(RDOCalcIsEqual);
+#ifdef OST_WINDOWS
+	typedef RDOCalcBinary<rbool, (&RDOValue::operator==), OperatorType::OT_LOGIC> RDOCalcIsEqual;     DECLARE_POINTER(RDOCalcIsEqual);
+#else if OST_LINUX
+	typedef RDOCalcBinary<rbool, &RDOValue::operator==, OperatorType::OT_LOGIC> RDOCalcIsEqual;     DECLARE_POINTER(RDOCalcIsEqual);
+#endif
 
 /*!
   \typedef RDOCalcIsNotEqual
   \brief   Оператор неравенства
 */
-typedef RDOCalcBinary<rbool, &RDOValue::operator!=, OperatorType::OT_LOGIC> RDOCalcIsNotEqual;  DECLARE_POINTER(RDOCalcIsNotEqual);
+#ifdef OST_WINDOWS
+	typedef RDOCalcBinary<rbool, (&RDOValue::operator!=), OperatorType::OT_LOGIC> RDOCalcIsNotEqual;  DECLARE_POINTER(RDOCalcIsNotEqual);
+#else if OST_LINUX
+	typedef RDOCalcBinary<rbool, &RDOValue::operator!=, OperatorType::OT_LOGIC> RDOCalcIsNotEqual;  DECLARE_POINTER(RDOCalcIsNotEqual);
+#endif
 
 /*!
   \typedef RDOCalcIsLess
   \brief   Оператор меньше
 */
-typedef RDOCalcBinary<rbool, &RDOValue::operator< , OperatorType::OT_LOGIC> RDOCalcIsLess;      DECLARE_POINTER(RDOCalcIsLess);
+#ifdef OST_WINDOWS
+	typedef RDOCalcBinary<rbool, (&RDOValue::operator<), OperatorType::OT_LOGIC> RDOCalcIsLess;      DECLARE_POINTER(RDOCalcIsLess);
+#else if OST_LINUX
+	typedef RDOCalcBinary<rbool, &RDOValue::operator< , OperatorType::OT_LOGIC> RDOCalcIsLess;      DECLARE_POINTER(RDOCalcIsLess);
+#endif
 
 /*!
   \typedef RDOCalcIsGreater
   \brief   Оператор больше
 */
-typedef RDOCalcBinary<rbool, &RDOValue::operator> , OperatorType::OT_LOGIC> RDOCalcIsGreater;   DECLARE_POINTER(RDOCalcIsGreater);
+#ifdef OST_WINDOWS
+	typedef RDOCalcBinary<rbool, (&RDOValue::operator>) , OperatorType::OT_LOGIC> RDOCalcIsGreater;   DECLARE_POINTER(RDOCalcIsGreater);
+#else if OST_LINUX
+	typedef RDOCalcBinary<rbool, &RDOValue::operator> , OperatorType::OT_LOGIC> RDOCalcIsGreater;   DECLARE_POINTER(RDOCalcIsGreater);
+#endif
 
 /*!
   \typedef RDOCalcIsLEQ
   \brief   Оператор меньше или равно
 */
-typedef RDOCalcBinary<rbool, &RDOValue::operator<=, OperatorType::OT_LOGIC> RDOCalcIsLEQ;       DECLARE_POINTER(RDOCalcIsLEQ);
+#ifdef OST_WINDOWS
+	typedef RDOCalcBinary<rbool, (&RDOValue::operator<=), OperatorType::OT_LOGIC> RDOCalcIsLEQ;       DECLARE_POINTER(RDOCalcIsLEQ);
+#else if OST_LINUX
+	typedef RDOCalcBinary<rbool, &RDOValue::operator<=, OperatorType::OT_LOGIC> RDOCalcIsLEQ;       DECLARE_POINTER(RDOCalcIsLEQ);
+#endif
 
 /*!
   \typedef RDOCalcIsGEQ
   \brief   Оператор больше или равно
 */
-typedef RDOCalcBinary<rbool, &RDOValue::operator>=, OperatorType::OT_LOGIC> RDOCalcIsGEQ;       DECLARE_POINTER(RDOCalcIsGEQ);
+#ifdef OST_WINDOWS
+	typedef RDOCalcBinary<rbool, (&RDOValue::operator>=), OperatorType::OT_LOGIC> RDOCalcIsGEQ;       DECLARE_POINTER(RDOCalcIsGEQ);
+#else if OST_LINUX
+	typedef RDOCalcBinary<rbool, &RDOValue::operator>=, OperatorType::OT_LOGIC> RDOCalcIsGEQ;       DECLARE_POINTER(RDOCalcIsGEQ);
+#endif
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
