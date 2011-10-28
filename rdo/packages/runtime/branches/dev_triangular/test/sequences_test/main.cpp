@@ -99,10 +99,28 @@ void onCheckData(F binder, contstr g_fileName)
 	}
 }
 
-template <class F>
-double  area (F binder, double elem, double a, double b);
+template <class T,class F>
+double  area (F binder, double elem, double n, double m)
+{
+	double S1 = 1;
+	double S2 = 0;
+	ruint t = (n-m)/elem;
+	while (fabs(S1-S2)/S1 > 0.01)
+	{
+		S2 = S1;
+		S1 = 0;
+		for (ruint i = 0; i < t; ++i)
+		{
+			T sequnece(i*(n-m)/t);
+			S1 += binder.operator()(&sequence);
+		}
+		S1 *= 0.5*(m-n);
+		t  *= 10;
+	}
+	return S1;
+}
 
-template <class T, class F>
+template <class T,class F>
 void onCheckKsi(F binder, double left, double right)
 {
 	Container xITemp;								//создаю временный контейнер значений, на основе которых потом буду считать границы участка
@@ -115,13 +133,15 @@ void onCheckKsi(F binder, double left, double right)
 	Container xI;							//контейнер для границ интервалов, которые будут участововать в вычислениях
 	Container::iterator it = xI.begin();
 	xI.push_back(left);						//левая граница будет в начале списка, правая граница или близкая к ней точка - right
+
 	STL_FOR_ALL(xITemp, itTemp)
 	{
-//		if (fabs(area(binder, elem, *it, *itTemp) - 1/g_countOfFree) < fabs(area(binder, elem, *it, *(++itTemp)) - 1/g_countOfFree))
-//		{
-//			xI.push_back(*(--itTemp));
-//			++it:
-//		}
+		if (fabs(area(binder, elem, *it, *itTemp) - 1/g_countOfFree) < fabs(area(binder, elem, *it, *(++itTemp)) - 1/g_countOfFree))
+		{
+			xI.push_back(*((--itTemp)++);
+			++it;
+		}
+		--itTemp;
 	}
 	if(xI.size() == (g_countOfFree - 1))	//обрабатывается случай, когда площадь на последнем интервале окажется чуть меньше чем отведенная ему доля площади. погрешность ожидаестся очень малая из-за этого. проблема могла возникнуть при посчете количества попаданий в последний интервал. а его бы не было
 	{
