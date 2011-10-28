@@ -38,6 +38,9 @@ const tstring VERSION_COMMENT  = _T("display program version");
 const tstring RDO_STUDIO_CONSOLE_VERSION = _T("0.1.0");
 const tstring RDO_LANGUAGE_VERSION       = _T("1.5");
 
+const tstring RDO_SITE                         = _T(" ( http://rdo.rk9.bmstu.ru )");
+const tstring RDO_STUDIO_CONSOLE_PROGRAMM_NAME = _T("rdo console studio");
+
 namespace po = boost::program_options;
 
 tstring create_description_message();
@@ -67,7 +70,7 @@ int main(int argc, char *argv[])
 	}
 	else if (options.count(VERSION_COMMANDS))
 	{
-		std::cout << _T("rdo console studio v") + RDO_STUDIO_CONSOLE_VERSION << std::endl;
+		std::cout << RDO_STUDIO_CONSOLE_PROGRAMM_NAME + _T(" v") + RDO_STUDIO_CONSOLE_VERSION << std::endl;
 	}
 	else
 	{
@@ -78,9 +81,9 @@ int main(int argc, char *argv[])
 
 tstring create_description_message()
 {
-	return _T("rdo console studio v") + 
+	return  RDO_STUDIO_CONSOLE_PROGRAMM_NAME + _T(" v") + 
 			RDO_STUDIO_CONSOLE_VERSION + " " + 
-			SYSTEM_OS + _T(" ( http://rdo.rk9.bmstu.ru )");
+			SYSTEM_OS + RDO_SITE;
 }
 
 void create_description(po::options_description& description)
