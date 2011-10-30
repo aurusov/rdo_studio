@@ -71,7 +71,7 @@ private:
 	typedef RDOCalcBinary<rbool, (&RDOValue::operator==), OperatorType::OT_LOGIC> RDOCalcIsEqual;     DECLARE_POINTER(RDOCalcIsEqual);
 #endif
 #ifdef COMPILER_GCC
-	typedef RDOCalcBinary<rbool, &RDOValue::operator==, OperatorType::OT_LOGIC> RDOCalcIsEqual;     DECLARE_POINTER(RDOCalcIsEqual);
+	typedef RDOCalcBinary<rbool,  &RDOValue::operator==,  OperatorType::OT_LOGIC> RDOCalcIsEqual;     DECLARE_POINTER(RDOCalcIsEqual);
 #endif
 
 /*!
@@ -82,7 +82,7 @@ private:
 	typedef RDOCalcBinary<rbool, (&RDOValue::operator!=), OperatorType::OT_LOGIC> RDOCalcIsNotEqual;  DECLARE_POINTER(RDOCalcIsNotEqual);
 #endif
 #ifdef COMPILER_GCC
-	typedef RDOCalcBinary<rbool, &RDOValue::operator!=, OperatorType::OT_LOGIC> RDOCalcIsNotEqual;  DECLARE_POINTER(RDOCalcIsNotEqual);
+	typedef RDOCalcBinary<rbool,  &RDOValue::operator!=,  OperatorType::OT_LOGIC> RDOCalcIsNotEqual;  DECLARE_POINTER(RDOCalcIsNotEqual);
 #endif
 
 /*!
@@ -93,7 +93,7 @@ private:
 	typedef RDOCalcBinary<rbool, (&RDOValue::operator<), OperatorType::OT_LOGIC> RDOCalcIsLess;      DECLARE_POINTER(RDOCalcIsLess);
 #endif
 #ifdef COMPILER_GCC
-	typedef RDOCalcBinary<rbool, &RDOValue::operator<, OperatorType::OT_LOGIC> RDOCalcIsLess;      DECLARE_POINTER(RDOCalcIsLess);
+	typedef RDOCalcBinary<rbool,  &RDOValue::operator<,  OperatorType::OT_LOGIC> RDOCalcIsLess;      DECLARE_POINTER(RDOCalcIsLess);
 #endif
 
 /*!
@@ -101,10 +101,10 @@ private:
   \brief   Оператор больше
 */
 #ifdef COMPILER_VISUAL_STUDIO
-	typedef RDOCalcBinary<rbool, (&RDOValue::operator>) , OperatorType::OT_LOGIC> RDOCalcIsGreater;   DECLARE_POINTER(RDOCalcIsGreater);
+	typedef RDOCalcBinary<rbool, (&RDOValue::operator>), OperatorType::OT_LOGIC> RDOCalcIsGreater;   DECLARE_POINTER(RDOCalcIsGreater);
 #endif
 #ifdef COMPILER_GCC
-	typedef RDOCalcBinary<rbool, &RDOValue::operator>, OperatorType::OT_LOGIC> RDOCalcIsGreater;   DECLARE_POINTER(RDOCalcIsGreater);
+	typedef RDOCalcBinary<rbool,  &RDOValue::operator>,  OperatorType::OT_LOGIC> RDOCalcIsGreater;   DECLARE_POINTER(RDOCalcIsGreater);
 #endif
 
 /*!
@@ -115,7 +115,7 @@ private:
 	typedef RDOCalcBinary<rbool, (&RDOValue::operator<=), OperatorType::OT_LOGIC> RDOCalcIsLEQ;       DECLARE_POINTER(RDOCalcIsLEQ);
 #endif
 #ifdef COMPILER_GCC
-	typedef RDOCalcBinary<rbool, &RDOValue::operator<=, OperatorType::OT_LOGIC> RDOCalcIsLEQ;       DECLARE_POINTER(RDOCalcIsLEQ);
+	typedef RDOCalcBinary<rbool,  &RDOValue::operator<=,  OperatorType::OT_LOGIC> RDOCalcIsLEQ;       DECLARE_POINTER(RDOCalcIsLEQ);
 #endif
 
 /*!
@@ -126,7 +126,7 @@ private:
 	typedef RDOCalcBinary<rbool, (&RDOValue::operator>=), OperatorType::OT_LOGIC> RDOCalcIsGEQ;       DECLARE_POINTER(RDOCalcIsGEQ);
 #endif
 #ifdef COMPILER_GCC
-	typedef RDOCalcBinary<rbool, &RDOValue::operator>=, OperatorType::OT_LOGIC> RDOCalcIsGEQ;       DECLARE_POINTER(RDOCalcIsGEQ);
+	typedef RDOCalcBinary<rbool,  &RDOValue::operator>=,  OperatorType::OT_LOGIC> RDOCalcIsGEQ;       DECLARE_POINTER(RDOCalcIsGEQ);
 #endif
 
 CLOSE_RDO_RUNTIME_NAMESPACE

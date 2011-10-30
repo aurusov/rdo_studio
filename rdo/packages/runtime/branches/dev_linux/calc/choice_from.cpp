@@ -17,7 +17,7 @@
 #include <limits>
 #ifdef COMPILER_GCC
 	#include <float.h>
-#endif // OST_LINUX
+#endif // COMPILER_GCC
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/choice_from.h"
 #include "simulator/runtime/rdo_runtime.h"

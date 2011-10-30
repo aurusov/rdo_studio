@@ -64,6 +64,6 @@
 #define VK_NUMPAD8          316 //! @todo find code
 #define VK_NUMPAD9          317 //! @todo find code
 
-#endif // not a OST_LINUX
+#endif // OST_LINUX
 
 #endif // _LIB_RUNTIME_KEYBOARD_H_
