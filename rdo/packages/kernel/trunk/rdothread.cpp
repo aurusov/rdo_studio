@@ -55,7 +55,7 @@ RDOThread::RDOThread(CREF(tstring) _thread_name)
 #ifdef OST_WINDOWS
 	, thread_id  (::GetCurrentThreadId())
 #else
-	, thread_id  (pthread_self())
+	, thread_id  (pthread_self()        )
 #endif
 	, idle_cnt   (0                     )
 #endif
