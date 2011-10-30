@@ -57,8 +57,14 @@ BOOST_AUTO_TEST_CASE(RDOValue_Resource)
 
 	LPRDOResource pResource = pResourceFactory->createRes(pRuntime, pRuntime->getResourceId(), paramList, true, true);
 	ASSERT(pResource);
-
+		
 	RDOValue value1(pResourceType, pResource);
+
+	LPRDOResourceType pType = value1.type().object_dynamic_cast<RDOResourceType>();
+	ASSERT(pType);
+
+	typedef rdo::intrusive_ptr_interface_wrapper<RDOResource> WRDOResource;
+	LPRDOResource pResource1 = value1.__get<WRDOResource>();
 
 	pRuntime  = NULL;
 	value1    = RDOValue();
