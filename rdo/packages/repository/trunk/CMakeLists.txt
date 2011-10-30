@@ -1,6 +1,6 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6.0)
 
-MESSAGE(STATUS "CREATE RDO_REPOSITORY LIBRARY PROJECT")
+MESSAGE(STATUS "CREATE RDO_REPOSITORY LIBRARY")
 
 # Find Boost
 SET(Boost_USE_STATIC_LIBS   ON)
@@ -23,7 +23,8 @@ SOURCE_GROUP(".repository" FILES
 	rdorepository.h
 	rdorepository.cpp)
 
-ADD_LIBRARY(rdo_nix_repository ${HEADER_FILES} ${SOURCE_FILES})
-TARGET_LINK_LIBRARIES(rdo_nix_repository ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY})
+ADD_LIBRARY(rdo_repository ${HEADER_FILES} ${SOURCE_FILES})
+ADD_DEPENDENCIES(rdo_repository rdo_kernel)
 
-ADD_DEPENDENCIES(rdo_nix_repository rdo_nix_kernel)
+TARGET_LINK_LIBRARIES(rdo_repository ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY})
+TARGET_LINK_LIBRARIES(rdo_repository rdo_kernel)
