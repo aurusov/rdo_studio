@@ -47,6 +47,11 @@ OPEN_RDO_ANIMATION_NAMESPACE
 		//! \details Возвращает тип элемента
 		Type getType() const;
 
+		rbool operator== (CREF(FrameItem) item) const
+		{
+			return m_type == item.m_type;
+		}
+
 	private:
 		Type m_type;
 	};
@@ -73,6 +78,11 @@ OPEN_RDO_ANIMATION_NAMESPACE
 		//! \param b           - синяя составляющая цвета
 		//! \param transparent - признак прозрачности
 		RDOColor(rbyte r, rbyte g, rbyte b, rbool transparent = false);
+
+		rbool operator== (CREF(RDOColor) color) const
+		{
+			return m_r == color.m_r && m_g == color.m_g && m_b == color.m_b && m_transparent == color.m_transparent;
+		}
 	};
 
 	//! \brief   Цвет элемента
@@ -90,6 +100,11 @@ OPEN_RDO_ANIMATION_NAMESPACE
 		//! \param background - цвет фона
 		//! \param foreground - цвет переднего плана
 		RDOColoredElement(CREF(RDOColor) background, CREF(RDOColor) foreground);
+
+		rbool operator== (CREF(RDOColoredElement) element) const
+		{
+			return m_background == element.m_background && m_foreground == element.m_foreground;
+		}
 	};
 
 	//! \brief   Точка
@@ -107,6 +122,11 @@ OPEN_RDO_ANIMATION_NAMESPACE
 		//! \param x - координата x
 		//! \param y - координата y
 		RDOPoint(double x, double y);
+
+		rbool operator== (CREF(RDOPoint) point) const
+		{
+			return m_x == point.m_x && m_y == point.m_y;
+		}
 	};
 
 	//! Размер
@@ -126,6 +146,11 @@ OPEN_RDO_ANIMATION_NAMESPACE
 		//! \param width  - ширина
 		//! \param height - высота
 		RDOSize(double width, double height);
+
+		rbool operator== (CREF(RDOSize) size) const
+		{
+			return m_width == size.m_width && m_height == size.m_height;
+		}
 	};
 
 	//! Вписанный в прямоуголник элемент
@@ -142,6 +167,11 @@ OPEN_RDO_ANIMATION_NAMESPACE
 		//! \param point - координата элемента
 		//! \param size  - размер элемента
 		RDOBoundedElement(CREF(RDOPoint) point, CREF(RDOSize) size);
+
+		rbool operator== (CREF(RDOBoundedElement) element) const
+		{
+			return m_point == element.m_point && m_size == element.m_size;
+		}
 	};
 
 	//! Радиус окружности
@@ -156,6 +186,11 @@ OPEN_RDO_ANIMATION_NAMESPACE
 		//! Создаёт радиус
 		//! \param radius - значение радиуса
 		RDORadius(double radius);
+
+		rbool operator== (CREF(RDORadius) radius) const
+		{
+			return m_radius == radius.m_radius;
+		}
 	};
 
 //! Объявление нового элемента
@@ -198,6 +233,11 @@ OPEN_RDO_ANIMATION_NAMESPACE
 		//! \param point2 - конечная точка
 		//! \param color  - цвет отрезка
 		RDOLineElement(CREF(RDOPoint) point1, CREF(RDOPoint) point2, CREF(RDOColor) color);
+	
+		rbool operator== (CREF(RDOLineElement) element) const
+		{
+			return m_point1 == element.m_point1 && m_point2 == element.m_point2 && m_color == element.m_color;
+		}
 	};
 
 	//! \brief   Треугольник

@@ -34,8 +34,8 @@ public:
 
 	CREF(Value) value() const;
 
-	static Time utc    ();
-	static Time local  ();
+	static Time utc    (); // total_nanoseconds
+	static Time local  (); // total_nanoseconds
 	static Time invalid();
 
 private:
