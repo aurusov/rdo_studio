@@ -57,10 +57,10 @@ private:
   \brief   Оператор отрицания
 */
 #ifdef COMPILER_VISUAL_STUDIO
-	typedef RDOCalcUnary <rbool, (&RDOValue::operator!) , OperatorType::OT_LOGIC> RDOCalcNot;         DECLARE_POINTER(RDOCalcNot);
+	typedef RDOCalcUnary<rbool, (&RDOValue::operator!), OperatorType::OT_LOGIC> RDOCalcNot;         DECLARE_POINTER(RDOCalcNot);
 #endif
 #ifdef COMPILER_GCC
-	typedef RDOCalcUnary <rbool, &RDOValue::operator!, OperatorType::OT_LOGIC> RDOCalcNot;         DECLARE_POINTER(RDOCalcNot);
+	typedef RDOCalcUnary<rbool,  &RDOValue::operator!,  OperatorType::OT_LOGIC> RDOCalcNot;         DECLARE_POINTER(RDOCalcNot);
 #endif
 
 /*!
