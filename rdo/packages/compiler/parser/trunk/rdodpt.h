@@ -59,6 +59,40 @@ void proc_rss_error(PTR(char) message);
 int  proc_opr_parse(PTR(void) lexer);
 int  proc_opr_lex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
 void proc_opr_error(PTR(char) message);
+/*
+// --------------------------------------------------------------------------------
+// -------------------- RDOParsEvent
+// --------------------------------------------------------------------------------
+CLASS(RDOParsEvent):
+	INSTANCE_OF      (RDOParserSrcInfo)
+AND INSTANCE_OF      (Context         )
+AND IMPLEMENTATION_OF(IContextFind    )
+{
+	DECLARE_FACTORY(RDOParsEvent);
+public:
+	CREF(tstring)     name    () const { return src_info().src_text(); }
+	CREF(LPIActivity) activity() const { return m_pActivity;           }
+	LPRDOPATPattern   pattern () const { return m_pPattern;            }
+
+	void addParam(CREF(RDOValue) param    );
+	void endParam(CREF(YYLTYPE)  param_pos);
+
+//	rbool setPrior(REF(LPRDOFUNArithm) pPrior);
+
+protected:
+	RDOParsEvent(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info);
+	virtual ~RDOParsEvent();
+
+	LPIActivity m_pActivity;
+
+private:
+	ruint           m_currParam;
+	LPRDOPATPattern m_pPattern;
+
+	DECLARE_IContextFind;
+};
+DECLARE_POINTER(RDOParsEvent);
+*/
 
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTActivity
@@ -105,6 +139,7 @@ protected:
 	RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info);
 };
 DECLARE_POINTER(RDODPTActivityHotKey);
+
 
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSomeActivity

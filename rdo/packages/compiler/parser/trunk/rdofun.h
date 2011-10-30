@@ -207,6 +207,24 @@ private:
 };
 DECLARE_POINTER(RDOFUNConstant);
 
+//! Список арифметических выражений
+//! \details Используется для передачи параметров при вызове событий и функций
+OBJECT(ArithmContainer) IS INSTANCE_OF(RDOParserSrcInfo)
+{
+DECLARE_FACTORY(ArithmContainer);
+public:
+	typedef std::vector<LPRDOFUNArithm> Container;
+
+	CREF(Container) getContainer() const { return m_arithmList; }
+	void            addItem     (CREF(LPRDOFUNArithm) pArithm);
+
+private:
+	ArithmContainer();
+	virtual ~ArithmContainer();
+
+	Container m_arithmList;
+};
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNParams
 // --------------------------------------------------------------------------------
@@ -218,22 +236,20 @@ DECLARE_FACTORY(RDOFUNParams);
 public:
 	typedef std::vector<LPRDOFUNArithm> ParamList;
 
-	REF(RDOParserSrcInfo) getFunseqName()       { return m_funseqName; }
-	CREF(ParamList)       getParamList () const { return m_paramList ; }
-	rdoRuntime::LPRDOCalc getCalc      (ruint paramID, CREF(LPTypeInfo) pType);
+	REF(RDOParserSrcInfo)   getFunseqName()       { return m_funseqName;        }
+	CREF(LPArithmContainer) getParamList () const { return m_pArithmContainer ; }
+	rdoRuntime::LPRDOCalc   getCalc      (ruint paramID, CREF(LPTypeInfo) pType);
 
-	void           addParameter (CREF(LPRDOFUNArithm) pParam );
-	LPRDOFUNArithm createCall   (CREF(tstring)        funName);
-	LPRDOFUNArithm createSeqCall(CREF(tstring)        seqName);
+	LPRDOFUNArithm createCall   (CREF(tstring) funName);
+	LPRDOFUNArithm createSeqCall(CREF(tstring) seqName);
 
 private:
-	RDOFUNParams();
+	RDOFUNParams(CREF(LPArithmContainer) pArithmContainer);
 	virtual ~RDOFUNParams();
 
-	RDOParserSrcInfo m_funseqName;
-	ParamList        m_paramList;
+	RDOParserSrcInfo  m_funseqName;
+	LPArithmContainer m_pArithmContainer;
 };
-
 // --------------------------------------------------------------------------------
 // -------------------- Последовательности
 // --------------------------------------------------------------------------------

@@ -78,6 +78,64 @@ void proc_opr_error(PTR(char) message)
 {
 	UNUSED(message);
 }
+/*
+// --------------------------------------------------------------------------------
+// -------------------- RDOParsEvent
+// --------------------------------------------------------------------------------
+RDOParsEvent::RDOParsEvent(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info)
+: RDOParserSrcInfo(src_info)
+, m_currParam     (0       )
+{
+	RDOParser::s_parser()->checkActivityName(src_info);
+	m_pPattern = RDOParser::s_parser()->findPATPattern(pattern_src_info.src_text());
+	if (!m_pPattern)
+	{
+		RDOParser::s_parser()->error().error(pattern_src_info, rdo::format(_T("Не найден образец: %s"), pattern_src_info.src_text().c_str()));
+	}
+	RDOParser::s_parser()->contextStack()->push(this);
+	RDOParser::s_parser()->insertEvent(this);
+}
+
+RDOParsEvent::~RDOParsEvent()
+{}
+void RDOParsEvent::addParam(CREF(RDOValue) param)
+{
+	if (m_pPattern->m_paramList.size() <= m_currParam)
+	{
+		if (param.src_pos().m_first_line == src_pos().m_first_line)
+		{
+			RDOParser::s_parser()->error().push_only(param, rdo::format(_T("Слишком много параметров для образца '%s' при описании активности '%s'"), m_pPattern->name().c_str(), name().c_str()));
+			RDOParser::s_parser()->error().push_only(m_pPattern->src_info(), _T("См. образец"));
+			RDOParser::s_parser()->error().push_done();
+		}
+		else
+		{
+			RDOParser::s_parser()->error().error(param, _T("Имя активности должно заканчиваться двоеточием"));
+		}
+	}
+	rdoRuntime::RDOValue val;
+	LPRDOParam pPatternParam = m_pPattern->m_paramList.at(m_currParam);
+	if (param->getAsString() == _T("*"))
+	{
+		if (!pPatternParam->getDefault().defined())
+		{
+			RDOParser::s_parser()->error().push_only(param, rdo::format(_T("Нет значения по-умолчанию для параметра '%s'"), pPatternParam->src_text().c_str()));
+			RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format(_T("См. параметр '%s', тип '%s'"), pPatternParam->src_text().c_str(), pPatternParam->getTypeInfo()->src_info().src_text().c_str()));
+			RDOParser::s_parser()->error().push_done();
+		}
+		val = pPatternParam->getDefault().value();
+	}
+	else
+	{
+		val = pPatternParam->getTypeInfo()->value_cast(param).value();
+	}
+	rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOSetPatternParamCalc>::create(m_currParam, val);
+	ASSERT(pCalc);
+	pCalc->setSrcInfo(RDOParserSrcInfo(param.getPosAsYY(), rdo::format(_T("Параметр образца %s.%s = %s"), m_pPattern->name().c_str(), pPatternParam->name().c_str(), param->getAsString().c_str())));
+	m_pActivity->addParamCalc(pCalc);
+	m_currParam++;
+}
+*/
 
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTActivity

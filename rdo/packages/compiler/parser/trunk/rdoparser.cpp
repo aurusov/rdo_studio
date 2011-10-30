@@ -247,7 +247,9 @@ LPExpression RDOParser::onCreateExpression(CREF(RDOValue) value)
 	LPRDOFUNSequence pSequence = findFUNSequence(value->getIdentificator());
 	if (pSequence)
 	{
-		LPRDOFUNParams pParams = rdo::Factory<RDOFUNParams>::create();
+		LPRDOFUNParams pParams = rdo::Factory<RDOFUNParams>::create(
+			rdo::Factory<ArithmContainer>::create()
+		);
 		ASSERT(pParams);
 		LPRDOFUNArithm pArithm = pParams->createSeqCall(value->getIdentificator());
 		ASSERT(pArithm);

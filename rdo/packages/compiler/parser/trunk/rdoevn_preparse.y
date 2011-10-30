@@ -233,13 +233,13 @@ OPEN_RDO_PARSER_NAMESPACE
 %%
 
 pat_main
-	: /* empty */	       {   }
+	: /* empty */          {   }
 	| pat_main pat_pattern {@1;}
 	| error                {   }
 	;
 
 pat_header
-	: RDO_Pattern RDO_IDENTIF_COLON RDO_event           pat_trace
+	: RDO_Pattern RDO_IDENTIF_COLON RDO_event pat_trace
 	{
 		LPRDOEvent pEvent = rdo::Factory<RDOEvent>::create(RDOVALUE($2)->getIdentificator(), true);
 		ASSERT(pEvent);
@@ -250,9 +250,9 @@ pat_header
 	;
 
 pat_trace
-	: /* empty */	{}
-	| RDO_trace		{}
-	| RDO_no_trace	{}
+	: /* empty */  {}
+	| RDO_trace    {}
+	| RDO_no_trace {}
 	;
 
 pat_params_begin
@@ -302,10 +302,10 @@ pat_rel_res
 	;
 
 pat_conv
-	: RDO_Keep			{}
-	| RDO_Create		{}
-	| RDO_Erase			{}
-	| RDO_NonExist		{}
+	: RDO_Keep     {}
+	| RDO_Create   {}
+	| RDO_Erase    {}
+	| RDO_NonExist {}
 	;
 
 pat_common_choice
@@ -469,14 +469,39 @@ param_type_such_as
 	| RDO_such_as error                       {}
 	;
 
+param_type_array
+	: RDO_array '<' param_type '>' {}
+	;
+
+// --------------------------------------------------------------------------------
+// -------------------- Общие составные токены для всех объектов РДО
+// --------------------------------------------------------------------------------
+// -------------------- Описание переменной
+// --------------------------------------------------------------------------------
+param_value
+	: RDO_INT_CONST     {}
+	| RDO_REAL_CONST    {}
+	| RDO_STRING_CONST  {}
+	| RDO_IDENTIF       {}
+	| RDO_BOOL_CONST    {}
+	| param_array_value {}
+	;
+
+param_array_value
+	: '[' array_item ']'   {}
+	| '[' array_item error {}
+	;
+
+array_item
+	: param_value                {}
+	| array_item ',' param_value {}
+	| array_item     param_value {}
+	;
+
 param_value_default
-	: /* empty */         {}
-	| '=' RDO_INT_CONST   {}
-	| '=' RDO_REAL_CONST  {}
-	| '=' RDO_STRING_CONST{}
-	| '=' RDO_IDENTIF     {}
-	| '=' RDO_BOOL_CONST  {}
-	| '=' error           {}
+	: /* empty */     {}
+	| '=' param_value {}
+	| '=' error       {}
 	;
 
 // --------------------------------------------------------------------------------
@@ -513,13 +538,14 @@ fun_arithm
 	| RDO_REAL_CONST                     {}
 	| RDO_BOOL_CONST                     {}
 	| RDO_STRING_CONST                   {}
+	| param_array_value                  {}
 	| RDO_IDENTIF                        {}
 	| RDO_IDENTIF '.' RDO_IDENTIF        {}
 	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF {}
-	| fun_arithm '+' fun_arithm		     {}
-	| fun_arithm '-' fun_arithm		     {}
-	| fun_arithm '*' fun_arithm		     {}
-	| fun_arithm '/' fun_arithm		     {}
+	| fun_arithm '+' fun_arithm          {}
+	| fun_arithm '-' fun_arithm          {}
+	| fun_arithm '*' fun_arithm          {}
+	| fun_arithm '/' fun_arithm          {}
 	| fun_arithm_func_call               {}
 	| fun_select_arithm                  {}
 	| '(' fun_arithm ')'                 {}
@@ -530,26 +556,25 @@ fun_arithm
 // -------------------- Функции и последовательности
 // --------------------------------------------------------------------------------
 fun_arithm_func_call
-	: RDO_IDENTIF '(' ')'                           {}
-	| RDO_IDENTIF '(' fun_arithm_func_call_pars ')' {}
-	| RDO_IDENTIF '(' error                         {}
-	;
-
-fun_arithm_func_call_pars
-	: fun_arithm                               {}
-	| fun_arithm_func_call_pars ',' fun_arithm {}
-	| fun_arithm_func_call_pars error          {}
-	| fun_arithm_func_call_pars ',' error      {}
-	;
+	: RDO_IDENTIF '(' arithm_list ')' {};
+	
+arithm_list
+	: /* empty */
+	| arithm_list_body {};
+	
+arithm_list_body
+	: fun_arithm                      {};
+	| arithm_list_body ',' fun_arithm {};
+	| arithm_list_body ',' error      {};
 
 // --------------------------------------------------------------------------------
 // -------------------- Групповые выражения
 // --------------------------------------------------------------------------------
 fun_group_keyword
-	: RDO_Exist			{}
-	| RDO_Not_Exist		{}
-	| RDO_For_All		{}
-	| RDO_Not_For_All	{}
+	: RDO_Exist       {}
+	| RDO_Not_Exist   {}
+	| RDO_For_All     {}
+	| RDO_Not_For_All {}
 	;
 
 fun_group_header
@@ -584,10 +609,10 @@ fun_select_body
 	;
 
 fun_select_keyword
-	: RDO_Exist			{}
-	| RDO_Not_Exist		{}
-	| RDO_For_All		{}
-	| RDO_Not_For_All	{}
+	: RDO_Exist       {}
+	| RDO_Not_Exist   {}
+	| RDO_For_All     {}
+	| RDO_Not_For_All {}
 	;
 
 fun_select_logic
