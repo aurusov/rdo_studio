@@ -26,8 +26,8 @@ OBJECT(RDOTypeRangeRange) IS INSTANCE_OF(RDOParserSrcInfo)
 {
 DECLARE_FACTORY(RDOTypeRangeRange);
 public:
-	void           checkRange()                     const throw(...);
-	void           checkValue(CREF(RDOValue) value) const throw(...);
+	void           checkRange()                     const;
+	void           checkValue(CREF(RDOValue) value) const;
 	CREF(RDOValue) getMin    () const;
 	CREF(RDOValue) getMax    () const;
 
