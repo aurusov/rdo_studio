@@ -20,9 +20,9 @@
 #include <boost/noncopyable.hpp>
 
 #ifdef COMPILER_VISUAL_STUDIO
-    #if _MSC_VER > 1000
-    #pragma once
-    #endif
+	#if _MSC_VER > 1000
+		#pragma once
+	#endif
 #endif
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
