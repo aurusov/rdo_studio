@@ -13,7 +13,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#ifndef OST_WINDOWS
+#ifdef COMPILER_GCC
 	#include <float.h>
 #endif
 #include <limits>

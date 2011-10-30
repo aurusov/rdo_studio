@@ -8,7 +8,12 @@
   \indent    4T
 */
 
+// ----------------------------------------------------------------------- PLATFORM
+#include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
+#ifdef COMPILER_VISUAL_STUDIO
+	#pragma warning(disable : 4786)
+#endif
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdomacros.h"
 #include "simulator/runtime/rdotrace.h"
@@ -18,8 +23,6 @@
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
-
-#pragma warning(disable : 4786)
 
 /// @todo не стоит ли здесь перейти на функторы?
 

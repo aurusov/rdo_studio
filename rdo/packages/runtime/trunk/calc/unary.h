@@ -64,13 +64,13 @@ private:
   \typedef RDOCalcUMinus
   \brief   Унарный оператор плюс
 */
-typedef RDOCalcUnary<RDOValue, (&RDOValue::operator-), OperatorType::OT_ARITHM> RDOCalcUMinus;
+typedef RDOCalcUnary<RDOValue, &RDOValue::operator-, OperatorType::OT_ARITHM> RDOCalcUMinus;
 
 /*!
   \typedef RDOCalcDoubleToInt
   \brief   Оператор праобразования вещественного числа в целое
 */
-typedef RDOCalcUnary<rsint,    (&RDOValue::getInt   ), OperatorType::OT_ARITHM> RDOCalcDoubleToInt;
+typedef RDOCalcUnary<rsint,    &RDOValue::getInt   , OperatorType::OT_ARITHM> RDOCalcDoubleToInt;
 
 /*!
   \class   RDOCalcDoubleToIntByResult
