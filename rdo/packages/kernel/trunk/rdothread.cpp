@@ -1,14 +1,24 @@
-#ifdef RDO_MT
-#include <afxwin.h>
-#else
-#include <windows.h>
-#endif
-
+// ---------------------------------------------------------------------------- PCH
+// ----------------------------------------------------------------------- PLATFORM
+#include "utils/platform.h"
+// ----------------------------------------------------------------------- INCLUDES
 #include <fstream>
 #include <algorithm>
+
+#ifdef COMPILER_VISUAL_STUDIO
+	#ifdef RDO_MT
+		#include <afxwin.h>
+	#else
+		#include <windows.h>
+	#endif
+#else
+	#include <pthread.h>
+#endif
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
 #include "kernel/rdokernel.h"
 #include "utils/rdocommon.h"
+// --------------------------------------------------------------------------------
 
 #ifdef TR_TRACE
 #ifdef RDO_MT
@@ -42,7 +52,11 @@ RDOThread::RDOThread(CREF(tstring) _thread_name, RDOThreadFun _thread_fun)
 #else
 RDOThread::RDOThread(CREF(tstring) _thread_name)
 	: thread_name(_thread_name          )
+#ifdef OST_WINDOWS
 	, thread_id  (::GetCurrentThreadId())
+#else
+	, thread_id  (pthread_self())
+#endif
 	, idle_cnt   (0                     )
 #endif
 {
