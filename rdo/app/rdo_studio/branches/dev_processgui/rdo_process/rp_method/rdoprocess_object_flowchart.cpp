@@ -174,7 +174,6 @@ rp::RPXMLNode* RPObjectFlowChart::save( rp::RPXMLNode* parent_node )
 	return obj_node;
 }
 
-
 void RPObjectFlowChart::notify( RPObject* from, UINT message, void* param )
 {
 	if ( message == rp::msg::RP_FLOWSTATE_CHANGED ) {

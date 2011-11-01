@@ -2,6 +2,7 @@
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_object.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_project.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_xml.h"
+#include "thirdparty/pugixml/src/pugixml.hpp"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -81,7 +82,6 @@ rp::RPXMLNode* RPObject::save( rp::RPXMLNode* parent_node )
 	obj_node->insertAttribute( "class", getClassName() );
 	return obj_node;
 }
-
 
 rp::string RPObject::getFullName() const
 {

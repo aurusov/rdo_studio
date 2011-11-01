@@ -67,19 +67,25 @@ rpMethod::RPMethod* RPObjectFlowChart_MJ::getMethod()
 
 void RPObjectFlowChart_MJ::save_To_XML(pugi::xml_document &doc, std::list< RPObject* >& all_child)
 {
+	// Заносим в список все объекты, размещенные на рабочей области "РДО-Процесс".
+	// RPObjectFlowChart_MJ является их владельцем.
 	all_child.insert( all_child.end(), child.begin(), child.end() );
 	
-	//pugi::xml_node node = doc.append_child(getClassName().c_str());
-
-	for( std::list< RPObject* >::const_iterator it = all_child.begin(); it != all_child.end(); ++it )
+	for(std::list< RPObject* >::const_iterator it = all_child.begin(); it != all_child.end(); ++it)
 	{
+		//pugi::xml_node nnode = node.append_child((*it)->getClassName().c_str());
+		//pugi::xml_node node = doc.insert_child_after(pugi::node_document, doc);	
+		//pugi::xml_node node = doc.append_child((*it)->getClassName().c_str());
+		//pugi::xml_node nnode = node.prepend_child((*it)->getClassName().c_str());
+	}
+
+	//for( std::list< RPObject* >::const_iterator it = all_child.begin(); it != all_child.end(); ++it )
+	//{
 		//pugi::xml_node new_node = node.append_child(getClassName().c_str());
 		//for(pugi::xml_node_iterator it_node = node.begin(); it_node != node.end(); ++it_node)
 		//{
 		//node.append_child(this->getClassName().c_str());
-		pugi::xml_node node = doc.append_child((*it)->getClassName().c_str());
-	
+	//	pugi::xml_node node = doc.append_child((*it)->getClassName().c_str());
 		//}
-	}
-
+	//}
 }

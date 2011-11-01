@@ -90,6 +90,7 @@ void RPProjectMFC::save()
 	}
 }
 
+
 void RPProjectMFC::save_To_XML(pugi::xml_document &doc, std::list< RPObject* >& all_child)
 {
 
@@ -103,12 +104,19 @@ void RPProjectMFC::save_To_XML(pugi::xml_document &doc, std::list< RPObject* >& 
 #pragma endregion Использование готовой функции. // COMMENT //
 
 	// Заполняем список всеми созданными потомками RPObject в рабочей области "РДО-Процесс".
+	// Сначала список пополняют сами окна этой рабочей области.
 	// Используем функцию "insert" именно в такой интерпретации, поскольку потомков одинакового  
 	// типа может быть более одного.
 	all_child.insert( all_child.end(), child.begin(), child.end() );
 	for( std::list< RPObject* >::const_iterator it = all_child.begin(); it != all_child.end(); ++it )
+	//{
 		(*it)->save_To_XML(doc, all_child);        // - вызываем для каждого помещенного на рабочую область
-	                                               //   элемента его же виртуальную функцию сохранения               
+	                                               //   элемента его же виртуальную функцию сохранения
+	
+		//pugi::xml_node node = doc.append_child((*it)->getClassName().c_str());
+		//pugi::xml_node node = doc.insert_child_after((*it)->getClassName().c_str(), doc);
+
+	//}
 
 	// Автоматически открываем файл при создании потока:
 	// P.S. Режим открытия файла (битовые маски) - 

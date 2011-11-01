@@ -39,7 +39,6 @@ public:
 	// Блокируем вхождение функции save_To_XML в RPMethod
 	// (из-за проектной ошибки - класс RPMethod не должен наследоваться от RPObject)
 	virtual void save_To_XML(pugi::xml_document &doc, std::list< RPObject* >& all_child) { NEVER_REACH_HERE; };
-	
 };
 
 extern RPMethodProc2RDO_MJ* proc2rdo;

@@ -25,6 +25,8 @@ public:
 
 	virtual rp::string getClassName() const { return "RPShapeCreateMJ"; }
 	virtual rp::RPXMLNode* save( rp::RPXMLNode* parent_node );
+	// Переопределенная виртуальная функция save_To_XML для RPShapeCreateMJ:
+	void save_To_XML(pugi::xml_document &doc, std::list< RPObject* >& all_child);
 
 	virtual void onLButtonDblClk( UINT nFlags, CPoint global_chart_pos );
 	//virtual void list_name();
