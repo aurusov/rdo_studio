@@ -48,6 +48,9 @@ public:
 	int parameter;
 
 	std::list< CString> list_resource_procMJ;
+
+	// Перопределенная виртуальная функция save_To_XML для RPShapeProcessMJ:
+	void save_To_XML(pugi::xml_document &doc, std::list< RPObject* >& all_child);
 };
 
 #endif // !defined(AFX_RDOPROCESS_SHAPE_PROCESS_MJ_H__A5AEB64C_2CE8_46D3_9E6B_86368CB68269__INCLUDED_)

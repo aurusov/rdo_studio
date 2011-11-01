@@ -59,6 +59,11 @@ rp::RPXMLNode* RPShapeCreateMJ::save( rp::RPXMLNode* parent_node )
 	return obj_node;
 }
 
+void RPShapeCreateMJ::save_To_XML(pugi::xml_document &doc, std::list< RPObject* >& all_child)
+{
+
+}
+
 RPObject* RPShapeCreateMJ::newObject( RPObject* parent )
 {
 	return new RPShapeCreateMJ( parent );

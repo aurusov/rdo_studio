@@ -995,15 +995,13 @@ void RDOStudioModel::saveModelToRepository()
 	studioApp.studioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
 	setName(data.m_name);
 
-	// Вызов функции сохранения в xml
-	// Создание документа doc класса xml_document, в который осуществляется запись
-	//pugi::xml_document doc;
-	//rpMethod::project->SaveToXML(doc);
-	//rp::msg::save_To_XML();
-	//std::list< RPObject* > all_child;
-	rpMethod::project->save_To_XML();
-	//save_To_XML(all_child , doc);
-	//SaveToXML();
+	// Создание документа doc класса xml_document, в который осуществляется запись:
+	pugi::xml_document doc;
+	// Заводим лист указателей на базовый класс RPObject:
+	std::list< RPObject* > all_child;
+	// Вызов функции сохранения в xml:
+	rpMethod::project->save_To_XML(doc, all_child);
+
  	studioApp.insertReopenItem(getFullName());
 
 	if (smr_modified)
@@ -1017,32 +1015,17 @@ void RDOStudioModel::saveModelToRepository()
 	}
 }
 
-//void RDOStudioModel::save_To_XML(std::list< RPObject* >& all_child, pugi::xml_document &doc)
-//{
-//	std::list< RPObject* >::iterator it = all_child.begin();
-//	while( it != all_child.end() )
-//	{
-//	   (*it)->save_To_XML(all_child, doc);
-//	   std::ofstream OutFile("D:\\TESTXML.txt", std::ios::out | std::ios::ate);
-//	   // Проверяем открытый нами поток на наличие ошибок ввода-вывода:
-//	   if (OutFile.good())
-//	   {
-//	    	doc.save(OutFile, "\t", pugi::format_indent | pugi::format_no_declaration);
-//		    OutFile.close();		
-//	   }
-//	   it++;
-//	}
-//}
+#pragma region First Version Of Save_To_XML Function.
 //void RDOStudioModel::SaveToXML()
 //{
-//	//Создание документа doc класса xml_document, в который осуществляется запись
+	//Создание документа doc класса xml_document, в который осуществляется запись
 	//pugi::xml_document doc;
-//    // Создаем список указателей на класс RPObject:
+    // Создаем список указателей на класс RPObject:
 	//std::list< RPObject* > all_child;
-//
-//	// Разыменовываем указатель RPProject* project, вызывая тем самым
-//	// метод getAllChild, который заполняет список all_child всеми
-//    // размещенными в "РДО-Процесс" потомками класса RPObject:
+
+	// Разыменовываем указатель RPProject* project, вызывая тем самым
+	// метод getAllChild, который заполняет список all_child всеми
+    // размещенными в "РДО-Процесс" потомками класса RPObject:
 	//rpMethod::project->getAllChild(all_child);
 
 	// Запускаем цикл, пробегающий по списку и записывающий имена встречающихся
@@ -1053,7 +1036,7 @@ void RDOStudioModel::saveModelToRepository()
 	//	//node.append_child(pugi::node_element).set_name((*ex_shape)->getName().c_str());
 	//	pugi::xml_node ClassName = node.append_child((*ex_shape)->getName().c_str());
 	//	
-	//	// Записываем свойства каждого блока в узлы каждого объекта класса RPShape_MJ:
+		// Записываем свойства каждого блока в узлы каждого объекта класса RPShape_MJ:
 	//	pugi::xml_node data = ClassName.append_child("Have");
 	//	data.append_attribute("method?") = (*ex_shape)->getClassInfo()->haveMethod();
 	//}
@@ -1062,13 +1045,15 @@ void RDOStudioModel::saveModelToRepository()
 	//         ios::out - открыть файл для записи;
 	//         ios::ate - начало вывода устанавливается в конец файла;
 //	std::ofstream OutFile("D:\\TESTXML.txt", std::ios::out | std::ios::ate);
-//	// Проверяем открытый нами поток на наличие ошибок ввода-вывода:
+	// Проверяем открытый нами поток на наличие ошибок ввода-вывода:
 //	if (OutFile.good())
 //	{
 //		doc.save(OutFile, "\t", pugi::format_indent | pugi::format_no_declaration);
 //		OutFile.close();
 //	}
 //}
+#pragma endregion Работа с потоком (открытие и запись в файл). Примеры работы с pugi-парсером :)
+//P.S. В настоящее время не используется
 
 tstring RDOStudioModel::getFullName() const
 {

@@ -2,8 +2,6 @@
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_object.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_project.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_xml.h"
-#include "thirdparty/pugixml/src/pugixml.hpp"
-//#include "utils/rdomacros.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -82,18 +80,6 @@ rp::RPXMLNode* RPObject::save( rp::RPXMLNode* parent_node )
 	obj_node->insertAttribute( "name", name );
 	obj_node->insertAttribute( "class", getClassName() );
 	return obj_node;
-}
-
-void RPObject::save_To_XML()
-{
-	pugi::xml_document doc;
-	std::ofstream OutFile("D:\\TESTXML.txt", std::ios::out | std::ios::ate);
-	// Проверяем открытый нами поток на наличие ошибок ввода-вывода:
-	if (OutFile.good())
-	{
-		doc.save(OutFile, "\t", pugi::format_indent | pugi::format_no_declaration);
-		//OutFile.close();	
-	}
 }
 
 rp::string RPObject::getFullName() const

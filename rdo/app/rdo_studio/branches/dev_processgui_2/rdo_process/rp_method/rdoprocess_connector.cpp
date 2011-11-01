@@ -54,6 +54,11 @@ rp::RPXMLNode* RPConnector::save( rp::RPXMLNode* parent_node )
 	return obj_node;
 }
 
+void RPConnector::save_To_XML(pugi::xml_document &doc, std::list< RPObject* >& all_child)
+{
+
+}
+
 void RPConnector::registerObject()
 {
 	rpMethod::factory->insertFactory( new RPObjectClassInfo( "RPConnector", "RPObjectChart", RPConnector::newObject ) );
