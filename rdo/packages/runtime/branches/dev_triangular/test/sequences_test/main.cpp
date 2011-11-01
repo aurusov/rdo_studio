@@ -102,19 +102,23 @@ void onCheckData(F binder, contstr g_fileName)
 template <class T,class F>
 double  area (F binder, double elem, double n, double m)
 {
+	int k = 1;
 	double S1 = 1;
 	double S2 = 0;
-	ruint t = (n-m)/elem;
+	ruint t = (m-n)/elem;
 	while (fabs(S1-S2)/S1 > 0.01)
 	{
 		S2 = S1;
 		S1 = 0;
-		for (ruint i = 0; i < t; ++i)
+		for (ruint i = 1; i < t-1; ++i)
 		{
-			T sequnece(i*(n-m)/t);
-			S1 += binder.operator()(&sequence);
+			if ((i == 0) || (i == t - 1))
+				k = 0.5;
+			T sequence(i*(m-n)/t);
+			S1 += k*(binder.operator()(&sequence));
+			k = 1;
 		}
-		S1 *= 0.5*(m-n);
+		S1 *= (m-n);
 		t  *= 10;
 	}
 	return S1;
