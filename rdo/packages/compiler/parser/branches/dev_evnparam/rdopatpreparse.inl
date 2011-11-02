@@ -77,8 +77,9 @@ inline void RDOEvent::setInitCalc(CREF(rdoRuntime::LPRDOCalc) pCalc)
 	ASSERT(pCalc);
 	m_pInitCalc = pCalc;
 }
-inline void RDOEvent::addParamList(CREF(RDOValue) paramList)
+inline void RDOEvent::addParamList(CREF(LPArithmContainer) paramList)
 {
+	ASSERT(paramList);
 	m_pParamList = paramList;
 }
 
