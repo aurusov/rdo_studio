@@ -17,6 +17,7 @@
 #include "utils/smart_ptr/factory.h"
 #include "simulator/runtime/calc/event_plan.h"
 #include "simulator/runtime/rdo_event.h"
+#include "simulator/compiler/parser/rdofun.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -39,18 +40,18 @@ public:
 	rbool                  getRegular     () const;
 	rdoRuntime::LPRDOCalc  getInitCalc    () const;
 	void                   setInitCalc    (CREF(rdoRuntime::LPRDOCalc) pCalc);
-	void                   addParamList   (CREF(LPRDOValue) pParamList);
+	void                   addParamList   (CREF(LPArithmContainer) paramList);
 
 private:
 	RDOEvent(CREF(tstring) name, rbool regular);
 	virtual ~RDOEvent();
 
-	tstring                m_name;
-	rbool                  m_regullar;
-	CalcList               m_calcList;
-	LPIBaseOperation       m_runtimeEvent;
-	rdoRuntime::LPRDOCalc  m_pInitCalc;
-	LPRDOValue             m_pParamList;
+	tstring                      m_name;
+	rbool                        m_regullar;
+	CalcList                     m_calcList;
+	LPIBaseOperation             m_runtimeEvent;
+	rdoRuntime::LPRDOCalc        m_pInitCalc;
+	LPArithmContainer            m_pParamList;
 
 };
 

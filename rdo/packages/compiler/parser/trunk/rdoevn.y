@@ -1745,6 +1745,8 @@ planning_statement
 		{
 			PARSER->error().error(@1, rdo::format(_T("Попытка запланировать неизвестное событие: %s"), eventName.c_str()));
 		}
+		LPArithmContainer pParamList = PARSER->stack().pop<ArithmContainer>($8);
+		PARSER->findEvent(eventName)->addParamList(pParamList);
 
 		rdoRuntime::LPRDOCalc pCalcTime = pTimeArithm->createCalc(NULL);
 		ASSERT(pCalcTime);
