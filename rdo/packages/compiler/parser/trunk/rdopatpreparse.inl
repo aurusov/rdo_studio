@@ -77,10 +77,11 @@ inline void RDOEvent::setInitCalc(CREF(rdoRuntime::LPRDOCalc) pCalc)
 	ASSERT(pCalc);
 	m_pInitCalc = pCalc;
 }
-inline void RDOEvent::addParamList(CREF(LPArithmContainer) paramList)
+
+inline void RDOEvent::setParamList(CREF(LPArithmContainer) pParamList)
 {
-	ASSERT(paramList);
-	m_pParamList = paramList;
+	ASSERT(pParamList);
+	m_pParamList = pParamList;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

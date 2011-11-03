@@ -40,19 +40,18 @@ public:
 	rbool                  getRegular     () const;
 	rdoRuntime::LPRDOCalc  getInitCalc    () const;
 	void                   setInitCalc    (CREF(rdoRuntime::LPRDOCalc) pCalc);
-	void                   addParamList   (CREF(LPArithmContainer) paramList);
+	void                   setParamList   (CREF(LPArithmContainer) pParamList);
 
 private:
 	RDOEvent(CREF(tstring) name, rbool regular);
 	virtual ~RDOEvent();
 
-	tstring                      m_name;
-	rbool                        m_regullar;
-	CalcList                     m_calcList;
-	LPIBaseOperation             m_runtimeEvent;
-	rdoRuntime::LPRDOCalc        m_pInitCalc;
-	LPArithmContainer            m_pParamList;
-
+	tstring                m_name;
+	rbool                  m_regullar;
+	CalcList               m_calcList;
+	LPIBaseOperation       m_runtimeEvent;
+	rdoRuntime::LPRDOCalc  m_pInitCalc;
+	LPArithmContainer      m_pParamList;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
