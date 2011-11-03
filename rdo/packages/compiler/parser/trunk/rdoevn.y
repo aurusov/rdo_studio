@@ -1722,8 +1722,21 @@ process_input_statement
 	}
 	;
 
+evn_param_list
+	: /* empty */
+	{
+		LPArithmContainer pArithmContainer = rdo::Factory<ArithmContainer>::create();
+		ASSERT(pArithmContainer);
+		$$ = PARSER->stack().push(pArithmContainer);
+	}
+	| '(' arithm_list ')'
+	{
+		$$ = $2;
+	}
+	;
+
 planning_statement
-	: RDO_IDENTIF '.' RDO_Planning '(' fun_arithm ')' '(' arithm_list ')' ';'
+	: RDO_IDENTIF '.' RDO_Planning '(' fun_arithm ')' evn_param_list ';'
 	{
 		tstring        eventName   = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		LPRDOFUNArithm pTimeArithm = PARSER->stack().pop<RDOFUNArithm>($5);
