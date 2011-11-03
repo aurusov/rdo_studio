@@ -29,7 +29,7 @@ public:
 	RDOParserSrcInfo       src_info  () const;
 	CREF(RDOParserSrcInfo) src_info  (CREF(RDOParserSrcInfo) srcInfo) const;
 	LPTypeInfo             type_cast (CREF(LPTypeInfo) pFrom, CREF(RDOParserSrcInfo) src_info) const;
-	RDOValue               value_cast(CREF(RDOValue) value) const;
+	LPRDOValue             value_cast(CREF(LPRDOValue) pValue) const;
 
 protected:
 	TypeInfo(CREF(LPTypeInfo) pTypeInfo);

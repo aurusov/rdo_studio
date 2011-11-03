@@ -54,9 +54,9 @@ LPTypeInfo TypeInfo::type_cast(CREF(LPTypeInfo) pFrom, CREF(RDOParserSrcInfo) sr
 	return pTypeInfo;
 }
 
-RDOValue TypeInfo::value_cast(CREF(RDOValue) value) const
+LPRDOValue TypeInfo::value_cast(CREF(LPRDOValue) pValue) const
 {
-	return m_pType->value_cast(value, m_srcInfo.get(), value.src_info());
+	return m_pType->value_cast(pValue, m_srcInfo.get(), pValue->src_info());
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

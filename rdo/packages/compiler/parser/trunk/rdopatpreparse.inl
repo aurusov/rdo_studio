@@ -77,9 +77,9 @@ inline void RDOEvent::setInitCalc(CREF(rdoRuntime::LPRDOCalc) pCalc)
 	ASSERT(pCalc);
 	m_pInitCalc = pCalc;
 }
-inline void RDOEvent::addParamList(CREF(RDOValue) paramList)
+inline void RDOEvent::addParamList(CREF(LPRDOValue) pParamList)
 {
-	m_pParamList = paramList;
+	m_pParamList = pParamList;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

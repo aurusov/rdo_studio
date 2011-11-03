@@ -323,7 +323,7 @@ $term                          return(RDO_Fuzzy_Term);
 	);
 	ASSERT(pType);
 	/// @todo TypeInfo, убрать rdoParse::RDOParserSrcInfo()
-	LEXER->setvalue((int)PARSER->addValue(new rdoParse::RDOValue(name, pType->src_info(rdoParse::RDOParserSrcInfo()), pType)));
+	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdoParse::RDOValue>::create(name, pType->src_info(rdoParse::RDOParserSrcInfo()), pType)));
 	return RDO_STRING_CONST;
 }
 
@@ -363,7 +363,7 @@ $term                          return(RDO_Fuzzy_Term);
 	);
 	ASSERT(pType);
 	/// @todo TypeInfo, убрать rdoParse::RDOParserSrcInfo()
-	LEXER->setvalue((int)PARSER->addValue(new rdoParse::RDOValue(atoi(value.c_str()), pType->src_info(rdoParse::RDOParserSrcInfo()), pType)));
+	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdoParse::RDOValue>::create(atoi(value.c_str()), pType->src_info(rdoParse::RDOParserSrcInfo()), pType)));
 	return RDO_INT_CONST;
 }
 
@@ -374,7 +374,7 @@ $term                          return(RDO_Fuzzy_Term);
 	);
 	ASSERT(pType);
 	/// @todo TypeInfo, убрать rdoParse::RDOParserSrcInfo()
-	LEXER->setvalue((int)PARSER->addValue(new rdoParse::RDOValue(atof(YYText()), pType->src_info(rdoParse::RDOParserSrcInfo()), pType)));
+	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdoParse::RDOValue>::create(atof(YYText()), pType->src_info(rdoParse::RDOParserSrcInfo()), pType)));
 	return RDO_REAL_CONST;
 }
 
@@ -385,7 +385,7 @@ $term                          return(RDO_Fuzzy_Term);
 	);
 	ASSERT(pType);
 	/// @todo TypeInfo, убрать rdoParse::RDOParserSrcInfo()
-	LEXER->setvalue((int)PARSER->addValue(new rdoParse::RDOValue(atoi(YYText()), pType->src_info(rdoParse::RDOParserSrcInfo()), pType)));
+	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdoParse::RDOValue>::create(atoi(YYText()), pType->src_info(rdoParse::RDOParserSrcInfo()), pType)));
 	return RDO_INT_CONST;
 }
 
@@ -396,7 +396,7 @@ true {
 	);
 	ASSERT(pType);
 	/// @todo TypeInfo, убрать rdoParse::RDOParserSrcInfo()
-	LEXER->setvalue((int)PARSER->addValue(new rdoParse::RDOValue(rdoRuntime::RDOValue(true), pType->src_info(rdoParse::RDOParserSrcInfo()), pType)));
+	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdoParse::RDOValue>::create(rdoRuntime::RDOValue(true), pType->src_info(rdoParse::RDOParserSrcInfo()), pType)));
 	return RDO_BOOL_CONST;
 }
 
@@ -407,7 +407,7 @@ false {
 	);
 	ASSERT(pType);
 	/// @todo TypeInfo, убрать rdoParse::RDOParserSrcInfo()
-	LEXER->setvalue((int)PARSER->addValue(new rdoParse::RDOValue(rdoRuntime::RDOValue(false), pType->src_info(rdoParse::RDOParserSrcInfo()), pType)));
+	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdoParse::RDOValue>::create(rdoRuntime::RDOValue(false), pType->src_info(rdoParse::RDOParserSrcInfo()), pType)));
 	return RDO_BOOL_CONST;
 }
 
@@ -422,20 +422,21 @@ false {
 	tstring::size_type pos = n1.find_first_of("\r\n\t :");
 	tstring name(n1, 0, pos);
 	RUNTIME->memory_insert(name.length() + sizeof(tstring));
-	PTR(rdoParse::RDOValue) value;
+	rdoParse::LPRDOValue pValue;
 	if (LEXER->m_lploc)
 	{
 		YYLTYPE pos     = LEXER_POS;
 		pos.m_last_line = pos.m_first_line;
 		pos.m_last_pos  = pos.m_first_pos  + name.length();
 		pos.m_last_seek = pos.m_first_seek + name.length();
-		value = new rdoParse::RDOValue(rdoParse::RDOParserSrcInfo(pos, name));
+		pValue = rdo::Factory<rdoParse::RDOValue>::create(rdoParse::RDOParserSrcInfo(pos, name));
 	}
 	else
 	{
-		value = new rdoParse::RDOValue(rdoParse::RDOParserSrcInfo(name));
+		pValue = rdo::Factory<rdoParse::RDOValue>::create(rdoParse::RDOParserSrcInfo(name));
 	}
-	LEXER->setvalue((int)PARSER->addValue(value));
+	ASSERT(pValue);
+	LEXER->setvalue(PARSER->stack().push(pValue));
 	return RDO_IDENTIF_NoChange_NoChange;
 }
 
@@ -444,20 +445,21 @@ false {
 	tstring::size_type pos = n1.find_first_of("\r\n\t :");
 	tstring name(n1, 0, pos);
 	RUNTIME->memory_insert(name.length() + sizeof(tstring));
-	PTR(rdoParse::RDOValue) value;
+	rdoParse::LPRDOValue pValue;
 	if (LEXER->m_lploc)
 	{
 		YYLTYPE pos     = LEXER_POS;
 		pos.m_last_line = pos.m_first_line;
 		pos.m_last_pos  = pos.m_first_pos  + name.length();
 		pos.m_last_seek = pos.m_first_seek + name.length();
-		value = new rdoParse::RDOValue(rdoParse::RDOParserSrcInfo(pos, name));
+		pValue = rdo::Factory<rdoParse::RDOValue>::create(rdoParse::RDOParserSrcInfo(pos, name));
 	}
 	else
 	{
-		value = new rdoParse::RDOValue(rdoParse::RDOParserSrcInfo(name));
+		pValue = rdo::Factory<rdoParse::RDOValue>::create(rdoParse::RDOParserSrcInfo(name));
 	}
-	LEXER->setvalue((int)PARSER->addValue(value));
+	ASSERT(pValue);
+	LEXER->setvalue(PARSER->stack().push(pValue));
 	return RDO_IDENTIF_NoChange;
 }
 
@@ -466,27 +468,28 @@ false {
 	tstring::size_type pos = n1.find_first_of("\r\n\t :");
 	tstring name(n1, 0, pos);
 	RUNTIME->memory_insert(name.length() + sizeof(tstring));
-	PTR(rdoParse::RDOValue) value;
+	rdoParse::LPRDOValue pValue;
 	if (LEXER->m_lploc)
 	{
 		YYLTYPE pos     = LEXER_POS;
 		pos.m_last_line = pos.m_first_line;
 		pos.m_last_pos  = pos.m_first_pos  + name.length();
 		pos.m_last_seek = pos.m_first_seek + name.length();
-		value = new rdoParse::RDOValue(rdoParse::RDOParserSrcInfo(pos, name));
+		pValue = rdo::Factory<rdoParse::RDOValue>::create(rdoParse::RDOParserSrcInfo(pos, name));
 	}
 	else
 	{
-		value = new rdoParse::RDOValue(rdoParse::RDOParserSrcInfo(name));
+		pValue = rdo::Factory<rdoParse::RDOValue>::create(rdoParse::RDOParserSrcInfo(name));
 	}
-	LEXER->setvalue((int)PARSER->addValue(value));
+	ASSERT(pValue);
+	LEXER->setvalue(PARSER->stack().push(pValue));
 	return RDO_IDENTIF_COLON;
 }
 
 [A-Za-zА-Яа-я\xB8_$][A-Za-zА-Яа-я\xB80-9_$]* {
 	tstring name(YYText());
 	RUNTIME->memory_insert(name.length() + sizeof(tstring));
-	LEXER->setvalue((int)PARSER->addValue(new rdoParse::RDOValue(LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(LEXER_POS, name) : rdoParse::RDOParserSrcInfo(name))));
+	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdoParse::RDOValue>::create(LEXER->m_lploc ? rdoParse::RDOParserSrcInfo(LEXER_POS, name) : rdoParse::RDOParserSrcInfo(name))));
 	switch (PARSER->getFileToParse())
 	{
 	case rdoModelObjects::EVN:

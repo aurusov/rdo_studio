@@ -26,14 +26,14 @@ OBJECT(LocalVariable)
 {
 DECLARE_FACTORY(LocalVariable);
 public:
-	CREF(RDOValue)     getValue     () const;
+	CREF(LPRDOValue)   getValue     () const;
 	CREF(LPExpression) getExpression() const;
 	CREF(LPTypeInfo)   getTypeInfo  () const;
 
 private:
-	LocalVariable(CREF(RDOValue) value, CREF(LPExpression) pExpression, CREF(LPTypeInfo) pType);
+	LocalVariable(CREF(LPRDOValue) pValue, CREF(LPExpression) pExpression, CREF(LPTypeInfo) pType);
 
-	RDOValue      m_value;
+	LPRDOValue    m_pValue;
 	LPExpression  m_pExpression;
 	LPTypeInfo    m_pType;
 };

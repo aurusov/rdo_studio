@@ -39,7 +39,7 @@ public:
 	rbool                  getRegular     () const;
 	rdoRuntime::LPRDOCalc  getInitCalc    () const;
 	void                   setInitCalc    (CREF(rdoRuntime::LPRDOCalc) pCalc);
-	void                   addParamList   (CREF(RDOValue) paramList);
+	void                   addParamList   (CREF(LPRDOValue) pParamList);
 
 private:
 	RDOEvent(CREF(tstring) name, rbool regular);
@@ -50,7 +50,7 @@ private:
 	CalcList               m_calcList;
 	LPIBaseOperation       m_runtimeEvent;
 	rdoRuntime::LPRDOCalc  m_pInitCalc;
-	RDOValue               m_pParamList;
+	LPRDOValue             m_pParamList;
 
 };
 

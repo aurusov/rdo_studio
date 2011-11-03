@@ -112,56 +112,62 @@ LPRDOType RDOEnumType::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) fr
 	return NULL;
 }
 
-RDOValue RDOEnumType::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+LPRDOValue RDOEnumType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
-	RDOValue toValue;
+	ASSERT(pFrom);
+
+	LPRDOValue pToValue;
 	LPRDOEnumType pEnum(const_cast<PTR(RDOEnumType)>(this));
 	try
 	{
-		switch (from.typeID())
+		switch (pFrom->typeID())
 		{
 		case rdoRuntime::RDOType::t_identificator:
-			if (getEnums()->findEnum(from->getIdentificator()) != rdoRuntime::RDOEnumType::END)
+			if (getEnums()->findEnum(pFrom->value().getIdentificator()) != rdoRuntime::RDOEnumType::END)
 			{
 				LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pEnum, to_src_info);
 				ASSERT(pType);
-				toValue = RDOValue(rdoRuntime::RDOValue(getEnums(), from->getIdentificator()), from.src_info(), pType);
+				pToValue = rdo::Factory<RDOValue>::create(rdoRuntime::RDOValue(getEnums(), pFrom->value().getIdentificator()), pFrom->src_info(), pType);
+				ASSERT(pToValue);
 			}
 			else
 			{
-				toValue = RDOValue(rdo::Factory<RDOType__unknow>::create(), from.src_info());
+				pToValue = rdo::Factory<RDOValue>::create(rdo::Factory<RDOType__unknow>::create(), pFrom->src_info());
+				ASSERT(pToValue);
 			}
 			break;
 
 		case rdoRuntime::RDOType::t_string:
-			if (getEnums()->findEnum(from->getAsString()) != rdoRuntime::RDOEnumType::END)
+			if (getEnums()->findEnum(pFrom->value().getAsString()) != rdoRuntime::RDOEnumType::END)
 			{
 				LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pEnum, to_src_info);
 				ASSERT(pType);
-				toValue = RDOValue(rdoRuntime::RDOValue(getEnums(), from->getAsString()), from.src_info(), pType);
+				pToValue = rdo::Factory<RDOValue>::create(rdoRuntime::RDOValue(getEnums(), pFrom->value().getAsString()), pFrom->src_info(), pType);
+				ASSERT(pToValue);
 			}
 			else
 			{
-				toValue = RDOValue(rdo::Factory<RDOType__unknow>::create(), from.src_info());
+				pToValue = rdo::Factory<RDOValue>::create(rdo::Factory<RDOType__unknow>::create(), pFrom->src_info());
+				ASSERT(pToValue);
 			}
 			break;
 
 		case rdoRuntime::RDOType::t_enum:
-			if (m_pType == from.typeInfo()->type()->type())
-				toValue = from;
+			if (m_pType == pFrom->typeInfo()->type()->type())
+				pToValue = rdo::Factory<RDOValue>::create(pFrom);
 			break;
 		}
 	}
 	catch (CREF(rdoRuntime::RDOValueException))
 	{}
 
-	if (toValue.typeID() == rdoRuntime::RDOType::t_unknow)
+	if (!pToValue || pToValue->typeID() == rdoRuntime::RDOType::t_unknow)
 	{
-		rdoParse::g_error().push_only(src_info,    rdo::format(_T("Ќеверное значение параметра перечислимого типа: %s"), from.src_info().src_text().c_str()));
+		rdoParse::g_error().push_only(src_info,    rdo::format(_T("Ќеверное значение параметра перечислимого типа: %s"), pFrom->src_info().src_text().c_str()));
 		rdoParse::g_error().push_only(to_src_info, rdo::format(_T("¬озможные значени€: %s"), name().c_str()));
 		rdoParse::g_error().push_done();
 	}
-	return toValue;
+	return pToValue;
 }
 
 rdoRuntime::LPRDOCalc RDOEnumType::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
@@ -183,13 +189,15 @@ void RDOEnumType::writeModelStructure(REF(std::ostream) stream) const
 	}
 }
 
-void RDOEnumType::add(CREF(RDOValue) next)
+void RDOEnumType::add(CREF(LPRDOValue) pNext)
 {
-	if (getEnums()->findEnum(next->getAsString()) != rdoRuntime::RDOEnumType::END)
+	ASSERT(pNext);
+
+	if (getEnums()->findEnum(pNext->value().getAsString()) != rdoRuntime::RDOEnumType::END)
 	{
-		rdoParse::g_error().error(next.src_info(), rdo::format(_T("«начение перечислимого типа уже существует: %s"), next.src_text().c_str()));
+		rdoParse::g_error().error(pNext->src_info(), rdo::format(_T("«начение перечислимого типа уже существует: %s"), pNext->src_text().c_str()));
 	}
-	getEnums()->add(next->getAsString());
+	getEnums()->add(pNext->value().getAsString());
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

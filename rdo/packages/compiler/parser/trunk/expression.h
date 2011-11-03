@@ -33,7 +33,7 @@ public:
 	CREF(rdoRuntime::RDOSrcInfo) src_info  () const;
 	void                         setSrcInfo(CREF(rdoRuntime::RDOSrcInfo) src_info);
 
-	RDOValue                     constant  () const;
+	LPRDOValue                   constant  () const;
 
 private:
 	Expression(CREF(LPTypeInfo) pType, CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(rdoRuntime::RDOSrcInfo) src_info);

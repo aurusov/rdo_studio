@@ -31,8 +31,8 @@ public:
 	template <class T>
 	rdo::intrusive_ptr<T> cast();
 
-	LPContext    find  (CREF(RDOValue) value) const;
-	LPExpression create(CREF(RDOValue) value);
+	LPContext    find  (CREF(LPRDOValue) pValue) const;
+	LPExpression create(CREF(LPRDOValue) pValue);
 
 protected:
 	Context();

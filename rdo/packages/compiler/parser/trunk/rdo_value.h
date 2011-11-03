@@ -12,6 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/smart_ptr/intrusive_ptr.h"
 #include "simulator/compiler/parser/namespace.h"
 #include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/compiler/parser/type/info.h"
@@ -25,9 +26,22 @@ PREDECLARE_POINTER(RDOArrayValue);
 // --------------------------------------------------------------------------------
 // -------------------- RDOValue
 // --------------------------------------------------------------------------------
-class RDOValue: public RDOParserSrcInfo
+OBJECT(RDOValue) IS INSTANCE_OF(RDOParserSrcInfo)
 {
+DECLARE_FACTORY(RDOValue);
 public:
+	CREF(LPTypeInfo)              typeInfo() const;
+	rdoRuntime::RDOType::TypeID     typeID() const;
+	CREF(rdoRuntime::RDOValue)       value() const;
+	CPTR(rdoRuntime::RDOValue) operator-> () const;
+	CREF(LPRDOArrayValue)         getArray() const;
+
+	rbool defined () const;
+	rbool constant() const;
+
+	static LPRDOValue getIdentificator(CREF(tstring) identificator);
+
+private:
 	explicit RDOValue(CREF(rsint)           value, CREF(RDOParserSrcInfo) src_info);
 	explicit RDOValue(CREF(ruint)           value, CREF(RDOParserSrcInfo) src_info);
 	explicit RDOValue(CREF(double)          value, CREF(RDOParserSrcInfo) src_info);
@@ -35,27 +49,13 @@ public:
 	explicit RDOValue(CREF(LPRDOArrayValue) pValue);
 
 	explicit RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(RDOParserSrcInfo) src_info, CREF(LPTypeInfo) pType);
-	         RDOValue(CREF(RDOValue) value);
+	         RDOValue(CREF(LPRDOValue) pValue);
 	         RDOValue(CREF(LPTypeInfo) pType);
 	// Для t_identificator известно только имя, но не тип
 	explicit RDOValue(CREF(RDOParserSrcInfo) src_info);
 	// Неопределенный тип
 	         RDOValue();
 
-	CREF(LPTypeInfo)              typeInfo() const;
-	rdoRuntime::RDOType::TypeID     typeID() const;
-	CREF(rdoRuntime::RDOValue)       value() const;
-	CPTR(rdoRuntime::RDOValue) operator-> () const;
-	CREF(LPRDOArrayValue)         getArray() const;
-
-	void operator= (CREF(RDOValue) value);
-
-	rbool defined () const;
-	rbool constant() const;
-
-	static RDOValue getIdentificator(CREF(tstring) identificator);
-
-private:
 	rdoRuntime::RDOValue m_value;
 	LPRDOArrayValue      m_pArray;
 	LPTypeInfo           m_pType;

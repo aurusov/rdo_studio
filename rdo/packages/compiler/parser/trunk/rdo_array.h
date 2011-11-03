@@ -25,9 +25,9 @@ OBJECT(RDOArrayValue) IS INSTANCE_OF(RDOParserSrcInfo)
 {
 DECLARE_FACTORY(RDOArrayValue);
 public:
-	typedef std::vector<RDOValue> Container;
+	typedef std::vector<LPRDOValue> Container;
 
-	void insertItem(CREF(RDOValue) value);
+	void insertItem(CREF(LPRDOValue) pValue);
 
 	CREF(LPRDOArrayType) getArrayType() const;
 	 REF(LPRDOArrayType) getArrayType();

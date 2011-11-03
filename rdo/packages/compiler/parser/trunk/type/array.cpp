@@ -69,22 +69,25 @@ LPRDOType RDOArrayType::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) f
 	return NULL;
 }
 
-RDOValue RDOArrayType::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+LPRDOValue RDOArrayType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
-	switch(from.typeID())
+	ASSERT(pFrom);
+
+	switch(pFrom->typeID())
 	{
 	case rdoRuntime::RDOType::t_array:
 		{
 			LPRDOArrayType pThisArray(const_cast<PTR(RDOArrayType)>(this));
 			LPRDOArrayValue pThisArrayValue = rdo::Factory<RDOArrayValue>::create(pThisArray);
 			ASSERT(pThisArrayValue);
-			rdoRuntime::RDOArrayValue pFromArrayValue = from->getArray();
+			rdoRuntime::RDOArrayValue pFromArrayValue = pFrom->value().getArray();
 			for (rdoRuntime::RDOArrayValue::Container::iterator it = pFromArrayValue.containerBegin(); it < pFromArrayValue.containerEnd(); ++it)
 			{
-				RDOValue itemValue = RDOValue((*it), src_info, pThisArray->getItemType());
-				pThisArrayValue->insertItem(pThisArray->getItemType()->type()->value_cast(itemValue, to_src_info, src_info));
+				LPRDOValue pItemValue = rdo::Factory<RDOValue>::create((*it), src_info, pThisArray->getItemType());
+				ASSERT(pItemValue);
+				pThisArrayValue->insertItem(pThisArray->getItemType()->type()->value_cast(pItemValue, to_src_info, src_info));
 			}
-			return RDOValue(pThisArrayValue);
+			return rdo::Factory<RDOValue>::create(pThisArrayValue);
 			break;
 		}
 	default:
@@ -93,7 +96,7 @@ RDOValue RDOArrayType::value_cast(CREF(RDOValue) from, CREF(RDOParserSrcInfo) to
 		rdoParse::g_error().push_done();
 		break;
 	}
-	return from;
+	return rdo::Factory<RDOValue>::create(pFrom);
 }
 
 rdoRuntime::LPRDOCalc RDOArrayType::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const

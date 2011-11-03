@@ -139,17 +139,19 @@ LPContext RDOParser::context() const
 	return m_pContextStack->top();
 }
 
-LPContext RDOParser::onFindContext(CREF(RDOValue) value) const
+LPContext RDOParser::onFindContext(CREF(LPRDOValue) pValue) const
 {
-	if (value->getIdentificator() == _T("Time_now")          || value->getIdentificator() == _T("time_now") || value->getIdentificator() == _T("Системное_время") || value->getIdentificator() == _T("системное_время") ||
-		value->getIdentificator() == _T("Seconds")           || value->getIdentificator() == _T("seconds") ||
-		value->getIdentificator() == _T("Terminate_counter") || value->getIdentificator() == _T("terminate_counter"))
+	ASSERT(pValue);
+
+	if (pValue->value().getIdentificator() == _T("Time_now")          || pValue->value().getIdentificator() == _T("time_now") || pValue->value().getIdentificator() == _T("Системное_время") || pValue->value().getIdentificator() == _T("системное_время") ||
+		pValue->value().getIdentificator() == _T("Seconds")           || pValue->value().getIdentificator() == _T("seconds") ||
+		pValue->value().getIdentificator() == _T("Terminate_counter") || pValue->value().getIdentificator() == _T("terminate_counter"))
 	{
 		return const_cast<PTR(RDOParser)>(this);
 	}
 
 	//! Ресурсы
-	LPRDORSSResource pResource = findRSSResource(value->getIdentificator());
+	LPRDORSSResource pResource = findRSSResource(pValue->value().getIdentificator());
 	if (pResource)
 	{
 		//! Это ресурс с закладки RSS
@@ -157,14 +159,14 @@ LPContext RDOParser::onFindContext(CREF(RDOValue) value) const
 	}
 
 	//! Константы
-	LPRDOFUNConstant pConstant = findFUNConstant(value->getIdentificator());
+	LPRDOFUNConstant pConstant = findFUNConstant(pValue->value().getIdentificator());
 	if (pConstant)
 	{
 		return const_cast<PTR(RDOParser)>(this);
 	}
 
 	//! Последовательности
-	LPRDOFUNSequence pSequence = findFUNSequence(value->getIdentificator());
+	LPRDOFUNSequence pSequence = findFUNSequence(pValue->value().getIdentificator());
 	if (pSequence)
 	{
 		return const_cast<PTR(RDOParser)>(this);
@@ -176,88 +178,90 @@ LPContext RDOParser::onFindContext(CREF(RDOValue) value) const
 		CREF(PreCastTypeList) typeList = getPreCastTypeList();
 		STL_FOR_ALL_CONST(typeList, it)
 		{
-			RDOValue try_cast_value = (*it)->value_cast(value);
-			if (try_cast_value.defined())
+			LPRDOValue pTryCastValue = (*it)->value_cast(pValue);
+			if (pTryCastValue && pTryCastValue->defined())
 			{
 				return const_cast<PTR(RDOParser)>(this);
 			}
 		}
 	}
 
-	const_cast<PTR(RDOParser)>(this)->error().error(value.src_info(), rdo::format(_T("Неизвестный идентификатор: %s"), value->getIdentificator().c_str()));
-	return NULL;
+	const_cast<PTR(RDOParser)>(this)->error().error(pValue->src_info(), rdo::format(_T("Неизвестный идентификатор: %s"), pValue->value().getIdentificator().c_str()));
+	return LPContext(NULL);
 }
 
-LPExpression RDOParser::onCreateExpression(CREF(RDOValue) value)
+LPExpression RDOParser::onCreateExpression(CREF(LPRDOValue) pValue)
 {
-	if (value->getIdentificator() == _T("Time_now") || value->getIdentificator() == _T("time_now") || value->getIdentificator() == _T("Системное_время") || value->getIdentificator() == _T("системное_время"))
+	ASSERT(pValue);
+
+	if (pValue->value().getIdentificator() == _T("Time_now") || pValue->value().getIdentificator() == _T("time_now") || pValue->value().getIdentificator() == _T("Системное_время") || pValue->value().getIdentificator() == _T("системное_время"))
 	{
 		LPExpression pExpression = rdo::Factory<Expression>::create(
 			rdo::Factory<TypeInfo>::create(
 				rdo::Factory<RDOType__real>::create(),
-				value.src_info()
+				pValue->src_info()
 			),
 			rdo::Factory<rdoRuntime::RDOCalcGetTimeNow>::create(),
-			value.src_info()
+			pValue->src_info()
 		);
 		ASSERT(pExpression);
 		return pExpression;
 	}
-	else if (value->getIdentificator() == _T("Seconds") || value->getIdentificator() == _T("seconds"))
+	else if (pValue->value().getIdentificator() == _T("Seconds") || pValue->value().getIdentificator() == _T("seconds"))
 	{
 		LPExpression pExpression = rdo::Factory<Expression>::create(
 			rdo::Factory<TypeInfo>::create(
 				rdo::Factory<RDOType__real>::create(),
-				value.src_info()
+				pValue->src_info()
 			),
 			rdo::Factory<rdoRuntime::RDOCalcGetSeconds>::create(),
-			value.src_info()
+			pValue->src_info()
 		);
 		ASSERT(pExpression);
 		return pExpression;
 	}
-	else if (value->getIdentificator() == _T("Terminate_counter") || value->getIdentificator() == _T("terminate_counter"))
+	else if (pValue->value().getIdentificator() == _T("Terminate_counter") || pValue->value().getIdentificator() == _T("terminate_counter"))
 	{
 		LPExpression pExpression = rdo::Factory<Expression>::create(
 			rdo::Factory<TypeInfo>::create(
 				rdo::Factory<RDOType__int>::create(),
-				value.src_info()
+				pValue->src_info()
 			),
 			rdo::Factory<rdoRuntime::RDOCalcGetTermNow>::create(),
-			value.src_info()
+			pValue->src_info()
 		);
 		ASSERT(pExpression);
 		return pExpression;
 	}
 
 	//! Константы
-	LPRDOFUNConstant pConstant = findFUNConstant(value->getIdentificator());
+	LPRDOFUNConstant pConstant = findFUNConstant(pValue->value().getIdentificator());
 	if (pConstant)
 	{
 		LPExpression pExpression = rdo::Factory<Expression>::create(
 			pConstant->getTypeInfo(),
 			rdo::Factory<rdoRuntime::RDOCalcGetConst>::create(pConstant->getNumber()),
-			value.src_info()
+			pValue->src_info()
 		);
 		ASSERT(pExpression);
 		return pExpression;
 	}
 
 	//! Последовательности
-	LPRDOFUNSequence pSequence = findFUNSequence(value->getIdentificator());
+	LPRDOFUNSequence pSequence = findFUNSequence(pValue->value().getIdentificator());
 	if (pSequence)
 	{
 		LPRDOFUNParams pParams = rdo::Factory<RDOFUNParams>::create(
 			rdo::Factory<ArithmContainer>::create()
 		);
 		ASSERT(pParams);
-		LPRDOFUNArithm pArithm = pParams->createSeqCall(value->getIdentificator());
+		LPRDOFUNArithm pArithm = pParams->createSeqCall(pValue->value().getIdentificator());
 		ASSERT(pArithm);
-		pArithm->setSrcInfo(value.src_info());
+		pArithm->setSrcInfo(pValue->src_info());
 		LPExpression pExpression = rdo::Factory<Expression>::create(
 			pArithm->typeInfo(),
 			pArithm->calc(),
-			value.src_info()
+			pValue->src_info()
 		);
 		ASSERT(pExpression);
 		return pExpression;
@@ -269,16 +273,16 @@ LPExpression RDOParser::onCreateExpression(CREF(RDOValue) value)
 		CREF(PreCastTypeList) typeList = getPreCastTypeList();
 		STL_FOR_ALL_CONST(typeList, it)
 		{
-			RDOValue try_cast_value = (*it)->value_cast(value);
-			if (try_cast_value.defined())
+			LPRDOValue pTryCastValue = (*it)->value_cast(pValue);
+			if (pTryCastValue && pTryCastValue->defined())
 			{
 				LPExpression pExpression = rdo::Factory<Expression>::create(
 					rdo::Factory<TypeInfo>::create(
 						rdo::Factory<RDOType__identificator>::create(),
-						value.src_info()
+						pValue->src_info()
 					),
-					rdo::Factory<rdoRuntime::RDOCalcConst>::create(value.value()),
-					value.src_info()
+					rdo::Factory<rdoRuntime::RDOCalcConst>::create(pValue->value()),
+					pValue->src_info()
 				);
 				ASSERT(pExpression);
 				return pExpression;
@@ -286,7 +290,7 @@ LPExpression RDOParser::onCreateExpression(CREF(RDOValue) value)
 		}
 	}
 
-	return NULL;
+	return LPExpression(NULL);
 }
 
 rbool RDOParser::isCurrentDPTSearch()

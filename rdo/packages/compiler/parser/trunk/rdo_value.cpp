@@ -65,14 +65,6 @@ RDOValue::RDOValue(CREF(RDOParserSrcInfo) src_info)
 	);
 }
 
-void RDOValue::operator= (CREF(RDOValue) value)
-{
-	m_value  = value.m_value;
-	m_pType  = value.m_pType;
-	m_pArray = value.m_pArray;
-	setSrcInfo(value.src_info());
-}
-
 CREF(LPTypeInfo) RDOValue::typeInfo() const
 {
 	return m_pType;
@@ -113,9 +105,9 @@ rbool RDOValue::constant() const
 		m_value.typeID() == rdoRuntime::RDOType::t_string;
 }
 
-RDOValue RDOValue::getIdentificator(CREF(tstring) identificator)
+LPRDOValue RDOValue::getIdentificator(CREF(tstring) identificator)
 {
-	return RDOValue(RDOParserSrcInfo(identificator));
+	return rdo::Factory<RDOValue>::create(RDOParserSrcInfo(identificator));
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

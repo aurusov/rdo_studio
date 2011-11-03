@@ -221,9 +221,6 @@
 #define PARSER  LEXER->parser()
 #define RUNTIME PARSER->runtime()
 
-#define P_RDOVALUE(A) reinterpret_cast<PTR(RDOValue)>(A)
-#define RDOVALUE(A)   (*P_RDOVALUE(A))
-
 OPEN_RDO_PARSER_NAMESPACE
 %}
 
@@ -309,7 +306,7 @@ dpt_queue_param
 	: RDO_IDENTIF
 	{
 		//! Имя ресурса
-		tstring                res_name = P_RDOVALUE($1)->value().getIdentificator().c_str();
+		tstring                res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
 		CREF(RDOParserSrcInfo) info     = @1;
 		// Получили список всех ресурсов
 		rdoMBuilder::RDOResourceList rssList(PARSER);
@@ -364,7 +361,7 @@ dpt_depart_param
 	: RDO_IDENTIF
 	{
 		//! Имя ресурса
-		tstring                res_name = P_RDOVALUE($1)->value().getIdentificator().c_str();
+		tstring                res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
 		CREF(RDOParserSrcInfo) info     = @1;
 		//! Получили список всех ресурсов
 		rdoMBuilder::RDOResourceList rssList(PARSER);
@@ -408,7 +405,7 @@ dpt_seize_param
 	: RDO_IDENTIF
 	{
 		//! Имя ресурса
-		tstring                res_name = P_RDOVALUE($1)->value().getIdentificator().c_str();
+		tstring                res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
 		CREF(RDOParserSrcInfo) info     = @1;
 		//! Получили список всех ресурсов
 		rdoMBuilder::RDOResourceList rssList(PARSER);
@@ -451,7 +448,7 @@ dpt_seize_param
 	| dpt_seize_param ',' RDO_IDENTIF
 	{
 		//! Имя ресурса
-		tstring                res_name = P_RDOVALUE($3)->value().getIdentificator().c_str();
+		tstring                res_name = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator().c_str();
 		CREF(RDOParserSrcInfo) info     = @3;
 		//! Получили список всех ресурсов
 		rdoMBuilder::RDOResourceList rssList(PARSER);
@@ -501,7 +498,7 @@ dpt_release_param
 	: RDO_IDENTIF
 	{
 		//! Имя ресурса
-		tstring                res_name = P_RDOVALUE($1)->value().getIdentificator().c_str();
+		tstring                res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
 		CREF(RDOParserSrcInfo) info     = @1;
 		//! Получили список всех ресурсов
 		rdoMBuilder::RDOResourceList rssList(PARSER);
@@ -543,7 +540,7 @@ dpt_release_param
 	| dpt_release_param ',' RDO_IDENTIF
 	{
 		//! Имя ресурса
-		tstring                res_name = P_RDOVALUE($3)->value().getIdentificator().c_str();
+		tstring                res_name = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator().c_str();
 		CREF(RDOParserSrcInfo) info     = @3;
 		//! Получили список всех ресурсов
 		rdoMBuilder::RDOResourceList rssList(PARSER);

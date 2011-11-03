@@ -59,7 +59,7 @@ void Expression::setSrcInfo(CREF(rdoRuntime::RDOSrcInfo) src_info)
 	m_pCalc->setSrcInfo(src_info);
 }
 
-RDOValue Expression::constant() const
+LPRDOValue Expression::constant() const
 {
 	ASSERT(m_pCalc);
 	ASSERT(m_pType);
@@ -67,10 +67,10 @@ RDOValue Expression::constant() const
 	rdoRuntime::LPRDOCalcConst pCalc = m_pCalc.object_dynamic_cast<rdoRuntime::RDOCalcConst>();
 	if (pCalc)
 	{
-		return RDOValue(pCalc->getValue(), src_info(), m_pType);
+		return rdo::Factory<RDOValue>::create(pCalc->getValue(), src_info(), m_pType);
 	}
 
-	return RDOValue();
+	return LPRDOValue(NULL);
 }
 // --------------------------------------------------------------------------------
 // -------------------- ExpressionStatement

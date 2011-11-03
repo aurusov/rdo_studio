@@ -31,26 +31,30 @@ LPLocalVariableListStack ContextMemory::getLocalMemory()
 	return m_pLocalVariableListStack;
 }
 
-LPContext ContextMemory::onFindContext(CREF(RDOValue) value) const
+LPContext ContextMemory::onFindContext(CREF(LPRDOValue) pValue) const
 {
-	LPLocalVariable pLocalVariable = m_pLocalVariableListStack->findLocalVariable(value->getIdentificator());
+	ASSERT(pValue);
+
+	LPLocalVariable pLocalVariable = m_pLocalVariableListStack->findLocalVariable(pValue->value().getIdentificator());
 	if (pLocalVariable)
 	{
 		return const_cast<PTR(ContextMemory)>(this);
 	}
 
-	return NULL;
+	return LPContext(NULL);
 }
 
-LPExpression ContextMemory::onCreateExpression(CREF(RDOValue) value)
+LPExpression ContextMemory::onCreateExpression(CREF(LPRDOValue) pValue)
 {
-	LPLocalVariable pLocalVariable = m_pLocalVariableListStack->findLocalVariable(value->getIdentificator());
+	ASSERT(pValue);
+
+	LPLocalVariable pLocalVariable = m_pLocalVariableListStack->findLocalVariable(pValue->value().getIdentificator());
 	ASSERT(pLocalVariable);
 
 	LPExpression pExpression = rdo::Factory<Expression>::create(
 		pLocalVariable->getExpression()->typeInfo(),
-		rdo::Factory<rdoRuntime::RDOCalcGetLocalVariable>::create(pLocalVariable->getValue()->getIdentificator()),
-		value.src_info()
+		rdo::Factory<rdoRuntime::RDOCalcGetLocalVariable>::create(pLocalVariable->getValue()->value().getIdentificator()),
+		pValue->src_info()
 	);
 	ASSERT(pExpression);
 	return pExpression;

@@ -157,50 +157,53 @@ RDODPTActivity::RDODPTActivity(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSr
 RDODPTActivity::~RDODPTActivity()
 {}
 
-LPContext RDODPTActivity::onFindContext(CREF(RDOValue) value) const
+LPContext RDODPTActivity::onFindContext(CREF(LPRDOValue) pValue) const
 {
-	LPContext pContext = m_pPattern->onFindContext(value);
+	ASSERT(pValue);
+	LPContext pContext = m_pPattern->onFindContext(pValue);
 	if (pContext)
 	{
 		return pContext;
 	}
-	return NULL;
+	return LPContext(NULL);
 }
 
-void RDODPTActivity::addParam(CREF(RDOValue) param)
+void RDODPTActivity::addParam(CREF(LPRDOValue) pParam)
 {
+	ASSERT(pParam);
+
 	if (m_pPattern->m_paramList.size() <= m_currParam)
 	{
-		if (param.src_pos().m_first_line == src_pos().m_first_line)
+		if (pParam->src_pos().m_first_line == src_pos().m_first_line)
 		{
-			RDOParser::s_parser()->error().push_only(param, rdo::format(_T("—лишком много параметров дл€ образца '%s' при описании активности '%s'"), m_pPattern->name().c_str(), name().c_str()));
+			RDOParser::s_parser()->error().push_only(pParam->src_pos(), rdo::format(_T("—лишком много параметров дл€ образца '%s' при описании активности '%s'"), m_pPattern->name().c_str(), name().c_str()));
 			RDOParser::s_parser()->error().push_only(m_pPattern->src_info(), _T("—м. образец"));
 			RDOParser::s_parser()->error().push_done();
 		}
 		else
 		{
-			RDOParser::s_parser()->error().error(param, _T("»м€ активности должно заканчиватьс€ двоеточием"));
+			RDOParser::s_parser()->error().error(pParam->src_pos(), _T("»м€ активности должно заканчиватьс€ двоеточием"));
 		}
 	}
 	rdoRuntime::RDOValue val;
 	LPRDOParam pPatternParam = m_pPattern->m_paramList.at(m_currParam);
-	if (param->getAsString() == _T("*"))
+	if (pParam->value().getAsString() == _T("*"))
 	{
-		if (!pPatternParam->getDefault().defined())
+		if (!pPatternParam->getDefault()->defined())
 		{
-			RDOParser::s_parser()->error().push_only(param, rdo::format(_T("Ќет значени€ по-умолчанию дл€ параметра '%s'"), pPatternParam->src_text().c_str()));
+			RDOParser::s_parser()->error().push_only(pParam->src_pos(), rdo::format(_T("Ќет значени€ по-умолчанию дл€ параметра '%s'"), pPatternParam->src_text().c_str()));
 			RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format(_T("—м. параметр '%s', тип '%s'"), pPatternParam->src_text().c_str(), pPatternParam->getTypeInfo()->src_info().src_text().c_str()));
 			RDOParser::s_parser()->error().push_done();
 		}
-		val = pPatternParam->getDefault().value();
+		val = pPatternParam->getDefault()->value();
 	}
 	else
 	{
-		val = pPatternParam->getTypeInfo()->value_cast(param).value();
+		val = pPatternParam->getTypeInfo()->value_cast(pParam)->value();
 	}
 	rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOSetPatternParamCalc>::create(m_currParam, val);
 	ASSERT(pCalc);
-	pCalc->setSrcInfo(RDOParserSrcInfo(param.getPosAsYY(), rdo::format(_T("ѕараметр образца %s.%s = %s"), m_pPattern->name().c_str(), pPatternParam->name().c_str(), param->getAsString().c_str())));
+	pCalc->setSrcInfo(RDOParserSrcInfo(pParam->getPosAsYY(), rdo::format(_T("ѕараметр образца %s.%s = %s"), m_pPattern->name().c_str(), pPatternParam->name().c_str(), pParam->value().getAsString().c_str())));
 	m_pActivity->addParamCalc(pCalc);
 	m_currParam++;
 }
@@ -331,12 +334,12 @@ RDODPTSome::RDODPTSome(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
 	RDOParser::s_parser()->contextStack()->push(this);
 }
 
-LPContext RDODPTSome::onFindContext(CREF(RDOValue) value) const
+LPContext RDODPTSome::onFindContext(CREF(LPRDOValue) pValue) const
 {
-	UNUSED(value);
+	UNUSED(pValue);
 
 	//! ѕоиск не нужен, добавлен дл€ пор€дка, чтобы контекст активности был на стеке после контекста точки
-	return NULL;
+	return LPContext(NULL);
 }
 
 void RDODPTSome::end()
@@ -362,12 +365,12 @@ RDODPTPrior::RDODPTPrior(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
 	RDOParser::s_parser()->contextStack()->push(this);
 }
 
-LPContext RDODPTPrior::onFindContext(CREF(RDOValue) value) const
+LPContext RDODPTPrior::onFindContext(CREF(LPRDOValue) pValue) const
 {
-	UNUSED(value);
+	UNUSED(pValue);
 
 	//! ѕоиск не нужен, добавлен дл€ пор€дка, чтобы контекст активности был на стеке после контекста точки
-	return NULL;
+	return LPContext(NULL);
 }
 
 void RDODPTPrior::end()
@@ -426,12 +429,12 @@ RDODPTSearch::RDODPTSearch(CREF(RDOParserSrcInfo) src_info, rdoRuntime::RDODPTSe
 	RDOParser::s_parser()->contextStack()->push(this);
 }
 
-LPContext RDODPTSearch::onFindContext(CREF(RDOValue) value) const
+LPContext RDODPTSearch::onFindContext(CREF(LPRDOValue) pValue) const
 {
-	UNUSED(value);
+	UNUSED(pValue);
 
 	//! ѕоиск не нужен, добавлен дл€ пор€дка, чтобы контекст активности был на стеке после контекста точки
-	return NULL;
+	return LPContext(NULL);
 }
 
 void RDODPTSearch::end()

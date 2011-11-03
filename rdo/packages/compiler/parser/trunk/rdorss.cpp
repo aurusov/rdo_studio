@@ -56,12 +56,14 @@ void RDORSSResource::end()
 	RDOParser::s_parser()->contextStack()->pop();
 }
 
-LPExpression RDORSSResource::onCreateExpression(CREF(RDOValue) value)
+LPExpression RDORSSResource::onCreateExpression(CREF(LPRDOValue) pValue)
 {
-	ruint parNumb = getType()->getRTPParamNumber(value->getIdentificator());
+	ASSERT(pValue);
+
+	ruint parNumb = getType()->getRTPParamNumber(pValue->value().getIdentificator());
 	if (parNumb == RDORTPResType::UNDEFINED_PARAM)
 	{
-		RDOParser::s_parser()->error().error(value.src_info(), rdo::format(_T("Неизвестный параметр ресурса: %s"), value->getIdentificator().c_str()));
+		RDOParser::s_parser()->error().error(pValue->src_info(), rdo::format(_T("Неизвестный параметр ресурса: %s"), pValue->value().getIdentificator().c_str()));
 	}
 
 	rdoRuntime::LPRDOCalc pCalc;
@@ -75,17 +77,17 @@ LPExpression RDORSSResource::onCreateExpression(CREF(RDOValue) value)
 	}
 	else
 	{
-		RDOParser::s_parser()->error().error(value.src_info(), rdo::format(_T("Нельзя использовать временный ресурс: %s"), value->getIdentificator().c_str()));
+		RDOParser::s_parser()->error().error(pValue->src_info(), rdo::format(_T("Нельзя использовать временный ресурс: %s"), pValue->value().getIdentificator().c_str()));
 	}
 	ASSERT(pCalc);
 
-	LPRDORTPParam pParam = getType()->findRTPParam(value->getIdentificator());
+	LPRDORTPParam pParam = getType()->findRTPParam(pValue->value().getIdentificator());
 	ASSERT(pParam);
 
 	LPExpression pExpression = rdo::Factory<Expression>::create(
 		pParam->getTypeInfo(),
 		pCalc,
-		value.src_info()
+		pValue->src_info()
 	);
 	ASSERT(pExpression);
 	return pExpression;
@@ -96,21 +98,23 @@ void RDORSSResource::writeModelStructure(REF(std::ostream) stream) const
 	stream << (getID() + 1) << _T(" ") << name() << _T(" ") << getType()->getNumber() << std::endl;
 }
 
-void RDORSSResource::addParam(CREF(RDOValue) param)
+void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 {
+	ASSERT(pParam);
+
 	if (m_currParam == getType()->getParams().end())
 	{
-		RDOParser::s_parser()->error().push_only(param.src_info(), _T("Слишком много параметров"));
+		RDOParser::s_parser()->error().push_only(pParam->src_info(), _T("Слишком много параметров"));
 		RDOParser::s_parser()->error().push_only(getType()->src_info(), _T("См. тип ресурса"));
 		RDOParser::s_parser()->error().push_done();
 	}
 	try
 	{
-		if (param->getAsString() == _T("*"))
+		if (pParam->value().getAsString() == _T("*"))
 		{
-			if (!(*m_currParam)->getDefault().defined())
+			if (!(*m_currParam)->getDefault()->defined())
 			{
-				RDOParser::s_parser()->error().push_only(param.src_info(), _T("Невозможно использовать '*', к.т. отсутствует значение по-умолчанию"));
+				RDOParser::s_parser()->error().push_only(pParam->src_info(), _T("Невозможно использовать '*', к.т. отсутствует значение по-умолчанию"));
 				/// @todo src_info() без параметра RDOParserSrcInfo()
 				RDOParser::s_parser()->error().push_only((*m_currParam)->getTypeInfo()->src_info(RDOParserSrcInfo()), _T("См. описание параметра"));
 				RDOParser::s_parser()->error().push_done();
@@ -120,7 +124,7 @@ void RDORSSResource::addParam(CREF(RDOValue) param)
 		}
 		else
 		{
-			m_paramList.push_back(Param((*m_currParam)->getTypeInfo()->value_cast(param)));
+			m_paramList.push_back(Param((*m_currParam)->getTypeInfo()->value_cast(pParam)));
 			m_currParam++;
 		}
 	}
@@ -140,7 +144,7 @@ rdoRuntime::LPRDOCalc RDORSSResource::createCalc() const
 	std::vector<rdoRuntime::RDOValue> paramList;
 	STL_FOR_ALL_CONST(params(), it)
 	{
-		paramList.push_back(it->param().value());
+		paramList.push_back(it->param()->value());
 	}
 
 	rdoRuntime::LPRDOCalc calc = rdo::Factory<rdoRuntime::RDOCalcCreateResource>::create(getType()->getRuntimeResType(), paramList, getTrace(), getType()->isPermanent());
@@ -164,7 +168,7 @@ rdoRuntime::LPRDOCalc RDOPROCResource::createCalc() const
 	std::vector<rdoRuntime::RDOValue> paramList;
 	STL_FOR_ALL_CONST(params(), it)
 	{
-		paramList.push_back(it->param().value());
+		paramList.push_back(it->param()->value());
 	}
 
 	rdoRuntime::LPRDOCalc calc = rdo::Factory<rdoRuntime::RDOCalcCreateResource>::create(getType()->getRuntimeResType(), paramList, getTrace(), getType()->isPermanent());
@@ -188,7 +192,7 @@ rdoRuntime::LPRDOCalc RDOPROCTransact::createCalc() const
 	std::vector<rdoRuntime::RDOValue> paramList;
 	STL_FOR_ALL_CONST(params(), it)
 	{
-		paramList.push_back(it->param().value());
+		paramList.push_back(it->param()->value());
 	}
 
 	rdoRuntime::LPRDOCalc calc = rdo::Factory<rdoRuntime::RDOCalcCreateResource>::create(getType()->getRuntimeResType(), paramList, getTrace(), getType()->isPermanent());

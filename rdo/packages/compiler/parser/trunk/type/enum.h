@@ -29,7 +29,7 @@ class RDOEnumType: public RDOType
 {
 DECLARE_FACTORY(RDOEnumType);
 public:
-	void add(CREF(RDOValue) next);
+	void add(CREF(LPRDOValue) pNext);
 
 	rdoRuntime::LPRDOEnumType getEnums() const
 	{

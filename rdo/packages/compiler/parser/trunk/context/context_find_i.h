@@ -25,7 +25,7 @@ OBJECT_INTERFACE(IContextFind)
 {
 DECLARE_FACTORY(IContextFind)
 public:
-	virtual LPContext onFindContext(CREF(RDOValue) value) const = 0;
+	virtual LPContext onFindContext(CREF(LPRDOValue) pValue) const = 0;
 
 protected:
 	IContextFind()
@@ -34,7 +34,7 @@ protected:
 	{}
 };
 #define DECLARE_IContextFind \
-	LPContext onFindContext(CREF(RDOValue) value) const;
+	LPContext onFindContext(CREF(LPRDOValue) pValue) const;
 
 CLOSE_RDO_PARSER_NAMESPACE
 

@@ -55,11 +55,11 @@ inline RDOValue::RDOValue(CREF(tstring) value, CREF(RDOParserSrcInfo) src_info)
 	);
 }
 
-inline RDOValue::RDOValue(CREF(RDOValue) value)
-	: RDOParserSrcInfo(value.src_info())
-	, m_value         (value.m_value   )
-	, m_pType         (value.m_pType   )
-	, m_pArray        (value.m_pArray  )
+inline RDOValue::RDOValue(CREF(LPRDOValue) pValue)
+	: RDOParserSrcInfo(pValue->src_info())
+	, m_value         (pValue->m_value   )
+	, m_pType         (pValue->m_pType   )
+	, m_pArray        (pValue->m_pArray  )
 {}
 
 CLOSE_RDO_PARSER_NAMESPACE

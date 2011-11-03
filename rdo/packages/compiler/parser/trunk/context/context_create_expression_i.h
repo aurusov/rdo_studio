@@ -24,7 +24,7 @@ OBJECT_INTERFACE(IContextCreateExpression)
 {
 DECLARE_FACTORY(IContextCreateExpression)
 public:
-	virtual LPExpression onCreateExpression(CREF(RDOValue) value) = 0;
+	virtual LPExpression onCreateExpression(CREF(LPRDOValue) pValue) = 0;
 
 protected:
 	IContextCreateExpression()
@@ -33,7 +33,7 @@ protected:
 	{}
 };
 #define DECLARE_IContextCreateExpression \
-	LPExpression onCreateExpression(CREF(RDOValue) value);
+	LPExpression onCreateExpression(CREF(LPRDOValue) pValue);
 
 CLOSE_RDO_PARSER_NAMESPACE
 

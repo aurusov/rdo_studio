@@ -218,9 +218,6 @@
 #define PARSER  LEXER->parser()
 #define RUNTIME PARSER->runtime()
 
-#define P_RDOVALUE(A) reinterpret_cast<PTR(RDOValue)>(A)
-#define RDOVALUE(A)   (*P_RDOVALUE(A))
-
 OPEN_RDO_PARSER_NAMESPACE
 %}
 
@@ -242,7 +239,7 @@ prc_rtp_main
 	: /* empty */
 	| prc_rtp_main RDO_Process RDO_IDENTIF RDO_IDENTIF error RDO_End
 	{
-		tstring rtp_name       = P_RDOVALUE($4)->value().getIdentificator();
+		tstring rtp_name       = PARSER->stack().pop<RDOValue>($4)->value().getIdentificator();
 		tstring rtp_param_name = _T("Время_создания");
 
 		// Получили список всех типов ресурсов

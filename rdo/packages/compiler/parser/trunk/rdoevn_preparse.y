@@ -217,9 +217,6 @@
 #define PARSER  LEXER->parser()
 #define RUNTIME PARSER->runtime()
 
-#define P_RDOVALUE(A) reinterpret_cast<PTR(RDOValue)>(A)
-#define RDOVALUE(A)   (*P_RDOVALUE(A))
-
 OPEN_RDO_PARSER_NAMESPACE
 %}
 
@@ -241,7 +238,9 @@ pat_main
 pat_header
 	: RDO_Pattern RDO_IDENTIF_COLON RDO_event pat_trace
 	{
-		LPRDOEvent pEvent = rdo::Factory<RDOEvent>::create(RDOVALUE($2)->getIdentificator(), true);
+		LPRDOValue pName = PARSER->stack().pop<RDOValue>($2);
+		ASSERT(pName);
+		LPRDOEvent pEvent = rdo::Factory<RDOEvent>::create(pName->value().getIdentificator(), true);
 		ASSERT(pEvent);
 		PARSER->insertEvent(pEvent);
 	}

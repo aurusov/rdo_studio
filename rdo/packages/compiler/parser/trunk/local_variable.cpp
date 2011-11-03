@@ -21,15 +21,15 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- LocalVariable
 // --------------------------------------------------------------------------------
-LocalVariable::LocalVariable(CREF(RDOValue) value, CREF(LPExpression) pExpression, CREF(LPTypeInfo) pType)
-	: m_value      (value      )
+LocalVariable::LocalVariable(CREF(LPRDOValue) pValue, CREF(LPExpression) pExpression, CREF(LPTypeInfo) pType)
+	: m_pValue     (pValue     )
 	, m_pExpression(pExpression)
 	, m_pType      (pType      )
 {}
 
-CREF(RDOValue) LocalVariable::getValue() const
+CREF(LPRDOValue) LocalVariable::getValue() const
 {
-	return m_value;
+	return m_pValue;
 }
 
 CREF(LPExpression) LocalVariable::getExpression() const
@@ -54,10 +54,10 @@ void LocalVariableList::append(CREF(LPLocalVariable) pVariable)
 
 	STL_FOR_ALL_CONST(m_variableList, it)
 	{
-		if ((*it)->getValue()->getIdentificator() == pVariable->getValue()->getIdentificator())
+		if ((*it)->getValue()->value().getIdentificator() == pVariable->getValue()->value().getIdentificator())
 		{
-			rdoParse::g_error().push_only(pVariable->getValue().src_info(), rdo::format(_T("Переменная %s уже объявлена"), pVariable->getValue()->getIdentificator().c_str()));
-			rdoParse::g_error().push_only((*it)->getValue().src_info(),     _T("См. первое описание"));
+			rdoParse::g_error().push_only(pVariable->getValue()->src_info(), rdo::format(_T("Переменная %s уже объявлена"), pVariable->getValue()->value().getIdentificator().c_str()));
+			rdoParse::g_error().push_only((*it)->getValue()->src_info(),     _T("См. первое описание"));
 			rdoParse::g_error().push_done();
 		}
 	}
@@ -69,7 +69,7 @@ LPLocalVariable LocalVariableList::findLocalVariable(CREF(tstring) paramName) co
 {
 	STL_FOR_ALL_CONST(m_variableList, LocalVariable_it)
 	{
-		if((*LocalVariable_it)->getValue()->getIdentificator() == paramName)
+		if((*LocalVariable_it)->getValue()->value().getIdentificator() == paramName)
 			return (*LocalVariable_it);
 	}
 	return NULL;

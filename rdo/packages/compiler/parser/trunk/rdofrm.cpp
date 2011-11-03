@@ -44,9 +44,9 @@ RDOFRMFrame::RDOFRMFrame(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic)
 	RDOParser::s_parser()->contextStack()->push(this);
 }
 
-LPContext RDOFRMFrame::onFindContext(CREF(RDOValue) value) const
+LPContext RDOFRMFrame::onFindContext(CREF(LPRDOValue) pValue) const
 {
-	UNUSED(value);
+	UNUSED(pValue);
 
 	//! Код из RDOFUNArithm::init(CREF(RDOValue) resName, CREF(RDOValue) parName)
 	//! Зачем он нужен - непонятно

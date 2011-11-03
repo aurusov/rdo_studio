@@ -213,9 +213,6 @@
 #define PARSER  LEXER->parser()
 #define RUNTIME PARSER->runtime()
 
-#define P_RDOVALUE(A) reinterpret_cast<PTR(RDOValue)>(A)
-#define RDOVALUE(A)   (*P_RDOVALUE(A))
-
 OPEN_RDO_PARSER_NAMESPACE
 %}
 
@@ -289,21 +286,24 @@ rss_res_descr
 rss_res_type
 	: RDO_IDENTIF_COLON RDO_IDENTIF
 	{
-		PTR(RDOValue) name = P_RDOVALUE($1);
-		PTR(RDOValue) type = P_RDOVALUE($2);
-		LPRDORTPResType pResType = PARSER->findRTPResType(type->value().getIdentificator());
+		LPRDOValue pName = PARSER->stack().pop<RDOValue>($1);
+		LPRDOValue pType = PARSER->stack().pop<RDOValue>($2);
+		ASSERT(pName);
+		ASSERT(pType);
+
+		LPRDORTPResType pResType = PARSER->findRTPResType(pType->value().getIdentificator());
 		if (!pResType)
 		{
-			PARSER->error().error(@2, rdo::format(_T("Неизвестный тип ресурса: %s"), type->value().getIdentificator().c_str()));
+			PARSER->error().error(@2, rdo::format(_T("Неизвестный тип ресурса: %s"), pType->value().getIdentificator().c_str()));
 		}
-		LPRDORSSResource pResourceExist = PARSER->findRSSResource(name->value().getIdentificator());
+		LPRDORSSResource pResourceExist = PARSER->findRSSResource(pName->value().getIdentificator());
 		if (pResourceExist)
 		{
-			PARSER->error().push_only(name->src_info(), rdo::format(_T("Ресурс '%s' уже существует"), name->value().getIdentificator().c_str()));
+			PARSER->error().push_only(pName->src_info(), rdo::format(_T("Ресурс '%s' уже существует"), pName->value().getIdentificator().c_str()));
 			PARSER->error().push_only(pResourceExist->src_info(), _T("См. первое определение"));
 			PARSER->error().push_done();
 		}
-		LPRDORSSResource pResource = pResType->createRes(PARSER, name->src_info());
+		LPRDORSSResource pResource = pResType->createRes(PARSER, pName->src_info());
 		$$ = PARSER->stack().push(pResource);
 	}
 	| RDO_IDENTIF_COLON error
@@ -332,13 +332,13 @@ rss_values
 	;
 
 rss_value
-	: '*'               {PARSER->getLastRSSResource()->addParam(RDOValue(RDOParserSrcInfo(@1, _T("*"))));}
-	| RDO_INT_CONST     {PARSER->getLastRSSResource()->addParam(RDOVALUE($1));}
-	| RDO_REAL_CONST    {PARSER->getLastRSSResource()->addParam(RDOVALUE($1));}
-	| RDO_BOOL_CONST    {PARSER->getLastRSSResource()->addParam(RDOVALUE($1));}
-	| RDO_STRING_CONST  {PARSER->getLastRSSResource()->addParam(RDOVALUE($1));}
-	| RDO_IDENTIF       {PARSER->getLastRSSResource()->addParam(RDOVALUE($1));}
-	| param_array_value {PARSER->getLastRSSResource()->addParam(RDOVALUE($1));}
+	: '*'               {PARSER->getLastRSSResource()->addParam(rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@1, _T("*"))));}
+	| RDO_INT_CONST     {PARSER->getLastRSSResource()->addParam(PARSER->stack().pop<RDOValue>($1));}
+	| RDO_REAL_CONST    {PARSER->getLastRSSResource()->addParam(PARSER->stack().pop<RDOValue>($1));}
+	| RDO_BOOL_CONST    {PARSER->getLastRSSResource()->addParam(PARSER->stack().pop<RDOValue>($1));}
+	| RDO_STRING_CONST  {PARSER->getLastRSSResource()->addParam(PARSER->stack().pop<RDOValue>($1));}
+	| RDO_IDENTIF       {PARSER->getLastRSSResource()->addParam(PARSER->stack().pop<RDOValue>($1));}
+	| param_array_value {PARSER->getLastRSSResource()->addParam(PARSER->stack().pop<RDOValue>($1));}
 	| error
 	{
 		PARSER->error().error(@1, rdo::format(_T("Неправильное значение параметра: %s"), LEXER->YYText()));
@@ -383,7 +383,7 @@ param_array_value
 		RDOParserSrcInfo srcInfo(@1, @3, pArrayValue->getAsString());
 		pArrayValue->setSrcInfo(srcInfo);
 		pArrayValue->getArrayType()->setSrcInfo(srcInfo);
-		$$ = (int)PARSER->addValue(new RDOValue(pArrayValue));
+		$$ = PARSER->stack().push(rdo::Factory<RDOValue>::create(pArrayValue));
 	}
 	| '[' array_item error
 	{
@@ -394,27 +394,33 @@ param_array_value
 array_item
 	: param_value
 	{
-		LPRDOArrayType pArrayType = rdo::Factory<RDOArrayType>::create(RDOVALUE($1).typeInfo(), RDOParserSrcInfo(@1));
+		LPRDOValue pValue = PARSER->stack().pop<RDOValue>($1);
+		ASSERT(pValue);
+		LPRDOArrayType pArrayType = rdo::Factory<RDOArrayType>::create(pValue->typeInfo(), RDOParserSrcInfo(@1));
 		ASSERT(pArrayType);
 		LPRDOArrayValue pArrayValue = rdo::Factory<RDOArrayValue>::create(pArrayType);
 		ASSERT(pArrayValue);
-		pArrayValue->insertItem(RDOVALUE($1));
+		pArrayValue->insertItem(pValue);
 		$$ = PARSER->stack().push(pArrayValue);
 	}
 	| array_item ',' param_value
 	{
 		LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($1);
 		ASSERT(pArrayValue);
-		pArrayValue->insertItem(RDOVALUE($3));
+		LPRDOValue pValue = PARSER->stack().pop<RDOValue>($3);
+		ASSERT(pValue);
+		pArrayValue->insertItem(pValue);
 		$$ = PARSER->stack().push(pArrayValue);
 	}
 	| array_item param_value
 	{
 		LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($1);
 		ASSERT(pArrayValue);
-		pArrayValue->insertItem(RDOVALUE($2));
+		LPRDOValue pValue = PARSER->stack().pop<RDOValue>($2);
+		ASSERT(pValue);
+		pArrayValue->insertItem(pValue);
 		$$ = PARSER->stack().push(pArrayValue);
-		PARSER->error().warning(@1, rdo::format(_T("Пропущена запятая перед: %s"), RDOVALUE($2)->getAsString().c_str()));
+		PARSER->error().warning(@1, rdo::format(_T("Пропущена запятая перед: %s"), pValue->value().getAsString().c_str()));
 	}
 	;
 

@@ -143,27 +143,27 @@ public:
 	friend class RDOResType;
 	public:
 		explicit Param(CREF(rdoParse::LPRDORTPParam) param);
-		explicit Param(CREF(tstring) name, CREF(rdoParse::LPTypeInfo) pType,  CREF(rdoParse::RDOValue) defaultValue);
-		explicit Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<rdoParse::RDOType__int>)  pType, CREF(rdoParse::RDOValue) defaultValue = rdoParse::RDOValue());
-		explicit Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<rdoParse::RDOType__real>) pType, CREF(rdoParse::RDOValue) defaultValue = rdoParse::RDOValue());
-		explicit Param(CREF(tstring) name, CREF(rdoRuntime::RDOEnumType::Enums)              enums, CREF(rdoParse::RDOValue) defaultValue = rdoParse::RDOValue());
+		explicit Param(CREF(tstring) name, CREF(rdoParse::LPTypeInfo) pType,  CREF(rdoParse::LPRDOValue) pDefault);
+		explicit Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<rdoParse::RDOType__int>)  pType, CREF(rdoParse::LPRDOValue) pDefault = rdoParse::LPRDOValue(NULL));
+		explicit Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<rdoParse::RDOType__real>) pType, CREF(rdoParse::LPRDOValue) pDefault = rdoParse::LPRDOValue(NULL));
+		explicit Param(CREF(tstring) name, CREF(rdoRuntime::RDOEnumType::Enums)              enums, CREF(rdoParse::LPRDOValue) pDefault = rdoParse::LPRDOValue(NULL));
 
-		CREF(rdoParse::LPTypeInfo)         type   () const { return m_pType;                           }
+		CREF(rdoParse::LPTypeInfo)         type   () const { return m_pType;                   }
 		const rdoRuntime::RDOType::TypeID  typeID () const { return m_pType->type()->typeID(); }
 		tstring                            typeStr() const { return m_pType->type()->name();   }
 
-		rsint                     id() const          { return m_id;  }
+		rsint                      id() const          { return m_id;  }
 
-		rbool                     hasDiap() const     { return m_min.typeID() != rdoRuntime::RDOType::t_unknow && m_max.typeID() != rdoRuntime::RDOType::t_unknow; }
-		CREF(rdoParse::RDOValue)  getMin () const     { return m_min; }
-		CREF(rdoParse::RDOValue)  getMax () const     { return m_max; }
-		void                      setDiap(CREF(rdoParse::RDOValue) min, CREF(rdoParse::RDOValue) max);
+		rbool                      hasDiap() const     { return m_pMin->typeID() != rdoRuntime::RDOType::t_unknow && m_pMax->typeID() != rdoRuntime::RDOType::t_unknow; }
+		CREF(rdoParse::LPRDOValue) getMin () const     { return m_pMin; }
+		CREF(rdoParse::LPRDOValue) getMax () const     { return m_pMax; }
+		void                       setDiap(CREF(rdoParse::LPRDOValue) pMin, CREF(rdoParse::LPRDOValue) pMax);
 
-		rbool                     hasDefault() const  { return m_default.defined(); }
-		CREF(rdoParse::RDOValue)  getDefault() const  { return m_default;           }
-		void                      setDefault(CREF(rdoParse::RDOValue) defaultValue);
+		rbool                      hasDefault() const  { return m_pDefault->defined(); }
+		CREF(rdoParse::LPRDOValue) getDefault() const  { return m_pDefault;            }
+		void                       setDefault(CREF(rdoParse::LPRDOValue) pDefault);
 
-		rdoParse::LPRDOEnumType   getEnum() const
+		rdoParse::LPRDOEnumType    getEnum() const
 		{
 			ASSERT(typeID() == rdoRuntime::RDOType::t_enum);
 			return type()->type().object_static_cast<rdoParse::RDOEnumType>();
@@ -173,9 +173,9 @@ public:
 
 	private:
 		rdoParse::LPTypeInfo   m_pType;
-		rdoParse::RDOValue     m_min;
-		rdoParse::RDOValue     m_max;
-		rdoParse::RDOValue     m_default;
+		rdoParse::LPRDOValue   m_pMin;
+		rdoParse::LPRDOValue   m_pMax;
+		rdoParse::LPRDOValue   m_pDefault;
 		rsint                  m_id;
 
 		template <class T>
@@ -193,7 +193,7 @@ public:
 			{
 				pEnum->add(rdoParse::RDOValue::getIdentificator(*it));
 			}
-//			m_default = rdoParse::RDOValue(rdoParse::RDOValue::getIdentificator(m_default.value().getAsString()).value(), pEnum, rdoParse::RDOParserSrcInfo(m_default));
+//			m_default = rdoParse::RDOValue(rdoParse::RDOValue::getIdentificator(m_pDefault->value().getAsString()).value(), pEnum, rdoParse::RDOParserSrcInfo(m_default));
 			m_pType    = rdo::Factory<rdoParse::TypeInfo>::create(pEnum, rdoParse::RDOParserSrcInfo());
 			ASSERT(m_pType);
 		}
@@ -227,7 +227,7 @@ public:
 	CREF(RDOResType)  getType() const { return m_rtp; }
 	rsint             getID  () const { return m_id;  }
 
-	typedef std::map< tstring, rdoParse::RDOValue > Params;
+	typedef std::map<tstring, rdoParse::LPRDOValue> Params;
 
 	Params::const_iterator begin() const { return m_params.begin(); }
 	Params::const_iterator end  () const { return m_params.end();   }

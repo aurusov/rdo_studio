@@ -217,9 +217,6 @@
 #define PARSER  LEXER->parser()
 #define RUNTIME PARSER->runtime()
 
-#define P_RDOVALUE(A) reinterpret_cast<PTR(RDOValue)>(A)
-#define RDOVALUE(A)   (*P_RDOVALUE(A))
-
 OPEN_RDO_PARSER_NAMESPACE
 %}
 
@@ -262,10 +259,10 @@ dpt_process_begin
 			PARSER->error().error(pProcess->src_info(), _T("Незакрыт предыдущий блок $Process"));
 		}
 
-		tstring transactName = P_RDOVALUE($3)->value().getIdentificator();
+		tstring transactName = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator();
 		LPRDORTPResType transactType = PARSER->findRTPResType(transactName);
 
-		tstring procName = P_RDOVALUE($2)->value().getIdentificator();
+		tstring procName = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		pProcess = rdo::Factory<RDOPROCProcess>::create(RDOParserSrcInfo(@1, @3, procName), procName, transactType);
 		ASSERT(pProcess);
 	}
@@ -333,7 +330,7 @@ dpt_process_input
 dpt_process_line
 	: RDO_IDENTIF
 	{
-		PARSER->error().error(@1, rdo::format(_T("Неизвестный оператор '%s'"), P_RDOVALUE($1)->value().getIdentificator().c_str()));
+		PARSER->error().error(@1, rdo::format(_T("Неизвестный оператор '%s'"), PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str()));
 	}
 	| RDO_GENERATE fun_arithm
 	{
@@ -427,7 +424,7 @@ dpt_process_line
 dpt_queue_param
 	: RDO_IDENTIF
 	{
-		tstring res_name = P_RDOVALUE($1)->value().getIdentificator();
+		tstring res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		TRACE1(_T("%s _good\n"), res_name.c_str());
 		LPRDOPROCQueue pQueue = rdo::Factory<RDOPROCQueue>::create(PARSER->getLastPROCProcess(), _T("QUEUE"));
 		ASSERT(pQueue);
@@ -443,7 +440,7 @@ dpt_queue_param
 dpt_depart_param
 	: RDO_IDENTIF
 	{
-		tstring res_name = P_RDOVALUE($1)->value().getIdentificator();
+		tstring res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		TRACE1(_T("%s _good\n"), res_name.c_str());
 		LPRDOPROCDepart pDepart = rdo::Factory<RDOPROCDepart>::create(PARSER->getLastPROCProcess(), _T("DEPART"));
 		ASSERT(pDepart);
@@ -488,7 +485,7 @@ dpt_term_param
 dpt_seize_param
 	: RDO_IDENTIF
 	{
-		tstring        res_name = P_RDOVALUE($1)->value().getIdentificator().c_str();
+		tstring        res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
 		LPRDOPROCSeize pSeize   = rdo::Factory<RDOPROCSeize>::create(PARSER->getLastPROCProcess(), _T("SEIZE"));
 		ASSERT(pSeize);
 		pSeize->addResource(res_name);
@@ -498,7 +495,7 @@ dpt_seize_param
 	{
 		LPRDOPROCSeize pSeize = PARSER->stack().pop<RDOPROCSeize>($1);
 		ASSERT(pSeize);
-		tstring res_name = P_RDOVALUE($3)->value().getIdentificator().c_str();
+		tstring res_name = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator().c_str();
 		pSeize->addResource(res_name);
 		$$ = PARSER->stack().push(pSeize);
 	}
@@ -511,7 +508,7 @@ dpt_seize_param
 dpt_release_param
 	: RDO_IDENTIF
 	{
-		tstring          res_name = P_RDOVALUE($1)->value().getIdentificator().c_str();
+		tstring          res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
 		LPRDOPROCRelease pRelease = rdo::Factory<RDOPROCRelease>::create(PARSER->getLastPROCProcess(), _T("RELEASE"));
 		ASSERT(pRelease);
 		pRelease->addResource(res_name);
@@ -521,7 +518,7 @@ dpt_release_param
 	{
 		LPRDOPROCRelease pRelease = PARSER->stack().pop<RDOPROCRelease>($1);
 		ASSERT(pRelease);
-		tstring res_name = P_RDOVALUE($3)->value().getIdentificator().c_str();
+		tstring res_name = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator().c_str();
 		pRelease->addResource(res_name);
 		$$ = PARSER->stack().push(pRelease);
 	}
@@ -534,8 +531,8 @@ dpt_release_param
 dpt_assign_param
 	: RDO_IDENTIF '.' RDO_IDENTIF '=' fun_arithm
 	{
-		tstring res   = P_RDOVALUE($1)->value().getIdentificator();
-		tstring param = P_RDOVALUE($3)->value().getIdentificator();
+		tstring res   = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+		tstring param = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator();
 		rdoMBuilder::RDOResType rtp;
 
 		// Получили список всех ресурсов
@@ -617,7 +614,7 @@ param_array_value
 		RDOParserSrcInfo srcInfo(@1, @3, pArrayValue->getAsString());
 		pArrayValue->setSrcInfo(srcInfo);
 		pArrayValue->getArrayType()->setSrcInfo(srcInfo);
-		$$ = (int)PARSER->addValue(new RDOValue(pArrayValue));
+		$$ = PARSER->stack().push(rdo::Factory<RDOValue>::create(pArrayValue));
 	}
 	| '[' array_item error
 	{
@@ -628,34 +625,42 @@ param_array_value
 array_item
 	: param_value
 	{
-		LPRDOArrayType pArrayType = rdo::Factory<RDOArrayType>::create(RDOVALUE($1).typeInfo(), RDOParserSrcInfo(@1));
+		LPRDOValue pValue = PARSER->stack().pop<RDOValue>($1);
+		ASSERT(pValue);
+		LPRDOArrayType pArrayType = rdo::Factory<RDOArrayType>::create(pValue->typeInfo(), RDOParserSrcInfo(@1));
 		ASSERT(pArrayType);
 		LPRDOArrayValue pArrayValue = rdo::Factory<RDOArrayValue>::create(pArrayType);
 		ASSERT(pArrayValue);
-		pArrayValue->insertItem(RDOVALUE($1));
+		pArrayValue->insertItem(pValue);
 		$$ = PARSER->stack().push(pArrayValue);
 	}
 	| array_item ',' param_value
 	{
 		LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($1);
 		ASSERT(pArrayValue);
-		pArrayValue->insertItem(RDOVALUE($3));
+		LPRDOValue pValue = PARSER->stack().pop<RDOValue>($3);
+		ASSERT(pValue);
+		pArrayValue->insertItem(pValue);
 		$$ = PARSER->stack().push(pArrayValue);
 	}
 	| array_item param_value
 	{
 		LPRDOArrayValue pArrayValue = PARSER->stack().pop<RDOArrayValue>($1);
 		ASSERT(pArrayValue);
-		pArrayValue->insertItem(RDOVALUE($2));
+		LPRDOValue pValue = PARSER->stack().pop<RDOValue>($2);
+		ASSERT(pValue);
+		pArrayValue->insertItem(pValue);
 		$$ = PARSER->stack().push(pArrayValue);
-		PARSER->error().warning(@1, rdo::format(_T("Пропущена запятая перед: %s"), RDOVALUE($2)->getAsString().c_str()));
+		PARSER->error().warning(@1, rdo::format(_T("Пропущена запятая перед: %s"), pValue->value().getAsString().c_str()));
 	}
 	;
 
 param_value_default
 	: /* empty */
 	{
-		$$ = (int)PARSER->addValue(new rdoParse::RDOValue());
+		LPRDOValue pValue = rdo::Factory<RDOValue>::create();
+		ASSERT(pValue);
+		$$ = PARSER->stack().push(pValue);
 	}
 	| '=' param_value
 	{
@@ -812,14 +817,14 @@ fun_logic
 // -------------------- Арифметические выражения
 // --------------------------------------------------------------------------------
 fun_arithm
-	: RDO_INT_CONST                      { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(RDOVALUE($1))); }
-	| RDO_REAL_CONST                     { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(RDOVALUE($1))); }
-	| RDO_BOOL_CONST                     { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(RDOVALUE($1))); }
-	| RDO_STRING_CONST                   { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(RDOVALUE($1))); }
-	| param_array_value                  { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(RDOVALUE($1))); }
-	| RDO_IDENTIF                        { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(RDOVALUE($1))); }
-	| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(RDOVALUE($1), RDOVALUE($3))); }
-	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(RDOVALUE($1), RDOVALUE($3))); }
+	: RDO_INT_CONST                      { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
+	| RDO_REAL_CONST                     { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
+	| RDO_BOOL_CONST                     { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
+	| RDO_STRING_CONST                   { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
+	| param_array_value                  { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
+	| RDO_IDENTIF                        { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1))); }
+	| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1), PARSER->stack().pop<RDOValue>($3))); }
+	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1), PARSER->stack().pop<RDOValue>($3))); }
 	| fun_arithm '+' fun_arithm
 	{
 		LPRDOFUNArithm pArithm1 = PARSER->stack().pop<RDOFUNArithm>($1);
@@ -880,7 +885,9 @@ fun_arithm
 	}
 	| RDO_IDENTIF '.' RDO_Size
 	{
-		LPRDOFUNArithm pArithm = RDOFUNArithm::generateByIdentificator(RDOVALUE($1));
+		LPRDOValue pValue = PARSER->stack().pop<RDOValue>($1);
+		ASSERT(pValue);
+		LPRDOFUNArithm pArithm = RDOFUNArithm::generateByIdentificator(pValue);
 		rdoRuntime::LPRDOCalc pCalc;
 		if(pArithm->typeID() == rdoRuntime::RDOType::t_array)
 		{
@@ -889,7 +896,7 @@ fun_arithm
 		}
 		else
 		{
-			PARSER->error().error(@1, rdo::format(_T("'%s' не является массивом."), P_RDOVALUE($1)->value().getIdentificator().c_str()));
+			PARSER->error().error(@1, rdo::format(_T("'%s' не является массивом."), pValue->value().getIdentificator().c_str()));
 		}
 
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__int>::create(), RDOParserSrcInfo(@1));
@@ -905,11 +912,13 @@ fun_arithm
 	}
 	| RDO_IDENTIF '[' fun_arithm ']'
 	{
-		LPRDOFUNArithm pArithm = RDOFUNArithm::generateByIdentificator(RDOVALUE($1));
+		LPRDOValue pValue = PARSER->stack().pop<RDOValue>($1);
+		ASSERT(pValue);
+		LPRDOFUNArithm pArithm = RDOFUNArithm::generateByIdentificator(pValue);
 		LPRDOFUNArithm pArithmInd = PARSER->stack().pop<RDOFUNArithm>($3);
 		if (pArithm->typeID() != rdoRuntime::RDOType::t_array)
 		{
-			PARSER->error().error(@1, rdo::format(_T("'%s' не является массивом."), P_RDOVALUE($1)->value().getIdentificator().c_str()));
+			PARSER->error().error(@1, rdo::format(_T("'%s' не является массивом."), pValue->value().getIdentificator().c_str()));
 		}
 
 		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcArrayItem>::create(pArithm->calc(), pArithmInd->calc());
@@ -939,7 +948,7 @@ fun_arithm
 fun_arithm_func_call
 	: RDO_IDENTIF '(' arithm_list ')'
 	{
-		tstring funName                    = RDOVALUE($1)->getIdentificator();
+		tstring funName                    = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		LPArithmContainer pArithmContainer = PARSER->stack().pop<ArithmContainer>($3);
 		ASSERT(pArithmContainer);
 
@@ -1009,8 +1018,9 @@ fun_group_keyword
 fun_group_header
 	: fun_group_keyword '(' RDO_IDENTIF_COLON
 	{
-		PTR(RDOValue) type_name = P_RDOVALUE($3);
-		$$ = PARSER->stack().push(rdo::Factory<RDOFUNGroupLogic>::create((RDOFUNGroupLogic::FunGroupType)$1, type_name->src_info()));
+		LPRDOValue pValue = PARSER->stack().pop<RDOValue>($3);
+		ASSERT(pValue);
+		$$ = PARSER->stack().push(rdo::Factory<RDOFUNGroupLogic>::create((RDOFUNGroupLogic::FunGroupType)$1, pValue->src_info()));
 	}
 	| fun_group_keyword '(' error
 	{
@@ -1061,10 +1071,11 @@ fun_group
 fun_select_header
 	: RDO_Select '(' RDO_IDENTIF_COLON
 	{
-		PTR(RDOValue)  type_name = P_RDOVALUE($3);
-		LPRDOFUNSelect pSelect   = rdo::Factory<RDOFUNSelect>::create(type_name->src_info());
+		LPRDOValue pValue = PARSER->stack().pop<RDOValue>($3);
+		ASSERT(pValue);
+		LPRDOFUNSelect pSelect   = rdo::Factory<RDOFUNSelect>::create(pValue->src_info());
 		ASSERT(pSelect);
-		pSelect->setSrcText(_T("Select(") + type_name->value().getIdentificator() + _T(": "));
+		pSelect->setSrcText(_T("Select(") + pValue->value().getIdentificator() + _T(": "));
 		$$ = PARSER->stack().push(pSelect);
 	}
 	| RDO_Select '(' error
