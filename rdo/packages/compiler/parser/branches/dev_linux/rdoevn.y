@@ -1746,7 +1746,7 @@ planning_statement
 			PARSER->error().error(@1, rdo::format(_T("Попытка запланировать неизвестное событие: %s"), eventName.c_str()));
 		}
 
-		LPArithmContainer pParamList = PARSER->stack().pop<ArithmContainer>($8);
+		LPArithmContainer pParamList = PARSER->stack().pop<ArithmContainer>($7);
 		ASSERT(pParamList);
 		//! @todo А если такого события не существует ?
 		PARSER->findEvent(eventName)->setParamList(pParamList);
