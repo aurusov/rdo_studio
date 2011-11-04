@@ -437,7 +437,6 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		}
 		case RDOThread::RT_SIMULATOR_PARSE_OK:
 		{
-			::GetSystemTime(&m_timeStart);
 			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_EXITCODE, &m_exitCode);
 			PTR(RDOStudioOutput) output = &studioApp.mainFrame->output;
 			std::vector<RDOSyntaxError> errors;
@@ -471,6 +470,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			{
 				pMethod->generate();
 			}
+			::GetSystemTime(&m_timeStart);
 			break;
 		}
 		case RDOThread::RT_SIMULATOR_PARSE_ERROR:
