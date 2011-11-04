@@ -67,9 +67,11 @@ for (CONTAINER_TYPE_FOR_##IT::const_iterator IT = CONTAINER.begin(); IT != CONTA
 #define AUTO BOOST_AUTO
 
 #ifdef COMPILER_VISUAL_STUDIO
-	#define NO_V_TABLE __declspec(novtable)
+	#define NO_V_TABLE   __declspec(novtable)
+	#define FORCE_INLINE __forceinline
 #else
 	#define NO_V_TABLE
+	#define FORCE_INLINE inline
 #endif
 
 #endif // _UTILS_MACROS_H_

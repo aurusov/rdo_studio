@@ -20,12 +20,12 @@
 OPEN_RDO_NAMESPACE
 
 template<class T>
-inline intrusive_ptr<T>::intrusive_ptr()
+FORCE_INLINE intrusive_ptr<T>::intrusive_ptr()
 	: m_object(NULL)
 {}
 
 template<class T>
-inline intrusive_ptr<T>::intrusive_ptr(PTR(T) object)
+FORCE_INLINE intrusive_ptr<T>::intrusive_ptr(PTR(T) object)
 	: m_object(object)
 {
 	if (m_object)
@@ -33,7 +33,7 @@ inline intrusive_ptr<T>::intrusive_ptr(PTR(T) object)
 }
 
 template<class T>
-inline intrusive_ptr<T>::intrusive_ptr(CREF(this_type) sptr)
+FORCE_INLINE intrusive_ptr<T>::intrusive_ptr(CREF(this_type) sptr)
 	: m_object(sptr.m_object)
 {
 	if (m_object)
@@ -41,14 +41,14 @@ inline intrusive_ptr<T>::intrusive_ptr(CREF(this_type) sptr)
 }
 
 template<class T>
-inline intrusive_ptr<T>::~intrusive_ptr()
+FORCE_INLINE intrusive_ptr<T>::~intrusive_ptr()
 {
 	if (m_object)
 		release();
 }
 
 template<class T>
-inline REF(typename intrusive_ptr<T>::this_type) intrusive_ptr<T>::operator= (CREF(this_type) sptr)
+FORCE_INLINE REF(typename intrusive_ptr<T>::this_type) intrusive_ptr<T>::operator= (CREF(this_type) sptr)
 {
 	if (m_object)
 		release();
@@ -63,39 +63,39 @@ inline REF(typename intrusive_ptr<T>::this_type) intrusive_ptr<T>::operator= (CR
 
 template<class T>
 template<class P>
-inline rbool intrusive_ptr<T>::operator== (CREF(intrusive_ptr<P>) sptr) const
+FORCE_INLINE rbool intrusive_ptr<T>::operator== (CREF(intrusive_ptr<P>) sptr) const
 {
 	return &m_object->m_intrusive_counter == &sptr.m_object->m_intrusive_counter;
 }
 
 template<class T>
 template<class P>
-inline rbool intrusive_ptr<T>::operator!= (CREF(intrusive_ptr<P>) sptr) const
+FORCE_INLINE rbool intrusive_ptr<T>::operator!= (CREF(intrusive_ptr<P>) sptr) const
 {
 	return !operator==(sptr);
 }
 
 template<class T>
 template<class P>
-inline rbool intrusive_ptr<T>::compare(CREF(intrusive_ptr<P>) sptr) const
+FORCE_INLINE rbool intrusive_ptr<T>::compare(CREF(intrusive_ptr<P>) sptr) const
 {
 	return *m_object == *sptr.m_object;
 }
 
 template<class T>
-inline intrusive_ptr<T>::operator rbool () const
+FORCE_INLINE intrusive_ptr<T>::operator rbool () const
 {
 	return m_object != NULL;
 }
 
 template<class T>
-inline PTR(T) intrusive_ptr<T>::operator-> () const
+FORCE_INLINE PTR(T) intrusive_ptr<T>::operator-> () const
 {
 	return m_object;
 }
 
 template<class T>
-inline PTR(T) intrusive_ptr<T>::operator-> ()
+FORCE_INLINE PTR(T) intrusive_ptr<T>::operator-> ()
 {
 	return m_object;
 }
@@ -144,25 +144,25 @@ inline interface_ptr<P> intrusive_ptr<T>::interface_dynamic_cast()
 }
 
 template<class T>
-inline PTR(T) intrusive_ptr<T>::get()
+FORCE_INLINE PTR(T) intrusive_ptr<T>::get()
 {
 	return m_object;
 }
 
 template<class T>
-inline CPTR(T) intrusive_ptr<T>::get() const
+FORCE_INLINE CPTR(T) intrusive_ptr<T>::get() const
 {
 	return m_object;
 }
 
 template<class T>
-inline void intrusive_ptr<T>::addref()
+FORCE_INLINE void intrusive_ptr<T>::addref()
 {
 	counter()++;
 }
 
 template<class T>
-inline void intrusive_ptr<T>::release()
+FORCE_INLINE void intrusive_ptr<T>::release()
 {
 	counter()--;
 	if (counter() == 0)
@@ -176,13 +176,13 @@ inline void intrusive_ptr<T>::release()
 }
 
 template<class T>
-inline rbool intrusive_ptr<T>::owner() const
+FORCE_INLINE rbool intrusive_ptr<T>::owner() const
 {
 	return m_object->m_intrusive_counter == 1;
 }
 
 template<class T>
-inline REF(ruint) intrusive_ptr<T>::counter()
+FORCE_INLINE REF(ruint) intrusive_ptr<T>::counter()
 {
 	return m_object->m_intrusive_counter;
 }

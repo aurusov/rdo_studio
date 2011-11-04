@@ -13,7 +13,7 @@
 
 OPEN_RDO_NAMESPACE
 
-inline counter_reference::counter_reference()
+FORCE_INLINE counter_reference::counter_reference()
 	: m_intrusive_counter(0)
 {}
 
