@@ -16,68 +16,68 @@
 OPEN_RDO_NAMESPACE
 
 template<class I>
-inline Interface<I>::Interface()
+FORCE_INLINE Interface<I>::Interface()
 	: UnknownPointer(NULL, NULL)
 {}
 
 template<class I>
-inline Interface<I>::Interface(LPIGetUnknown pGetUnknown)
+FORCE_INLINE Interface<I>::Interface(LPIGetUnknown pGetUnknown)
 	: UnknownPointer(pGetUnknown ? pGetUnknown->GetUnknown()->QueryInterface(GetInterface<I>::ID) : UnknownPointer())
 {}
 
 template<class I>
-inline Interface<I>::Interface(PTR(void) pInterface, LPIUnknown pUnknown)
+FORCE_INLINE Interface<I>::Interface(PTR(void) pInterface, LPIUnknown pUnknown)
 	: UnknownPointer(pInterface, pUnknown)
 {}
 
 template<class I>
-inline Interface<I>::Interface(CREF(this_type) aInterface)
+FORCE_INLINE Interface<I>::Interface(CREF(this_type) aInterface)
 	: UnknownPointer(aInterface)
 {}
 
 template<class I>
-inline REF(typename Interface<I>::this_type) Interface<I>::operator= (CREF(this_type) aInterface)
+FORCE_INLINE REF(typename Interface<I>::this_type) Interface<I>::operator= (CREF(this_type) aInterface)
 {
 	parent_type::operator= (aInterface);
 	return *this;
 }
 
 template<class I>
-inline Interface<I>::operator rbool() const
+FORCE_INLINE Interface<I>::operator rbool() const
 {
 	return m_pInterface != NULL;
 }
 
 template<class I>
-inline PTR(I) Interface<I>::get()
+FORCE_INLINE PTR(I) Interface<I>::get()
 {
 	return static_cast<PTR(I)>(m_pInterface);
 }
 
 template<class I>
-inline CPTR(I) Interface<I>::get() const
+FORCE_INLINE CPTR(I) Interface<I>::get() const
 {
 	return static_cast<PTR(I)>(m_pInterface);
 }
 
 template<class I>
-inline PTR(I) Interface<I>::operator-> ()
+FORCE_INLINE PTR(I) Interface<I>::operator-> ()
 {
 	return get();
 }
 
 template<class I>
-inline CPTR(I) Interface<I>::operator-> () const
+FORCE_INLINE CPTR(I) Interface<I>::operator-> () const
 {
 	return get();
 }
 
-inline UnknownPointer::UnknownPointer()
+FORCE_INLINE UnknownPointer::UnknownPointer()
 	: m_pInterface(NULL)
 	, m_pUnknown  (NULL)
 {}
 
-inline UnknownPointer::UnknownPointer(REF(IUnknown) unknown)
+FORCE_INLINE UnknownPointer::UnknownPointer(REF(IUnknown) unknown)
 	: m_pInterface(NULL    )
 	, m_pUnknown  (&unknown)
 {
@@ -85,7 +85,7 @@ inline UnknownPointer::UnknownPointer(REF(IUnknown) unknown)
 		m_pUnknown->AddRef();
 }
 
-inline UnknownPointer::UnknownPointer(LPIGetUnknown pGetUnknown)
+FORCE_INLINE UnknownPointer::UnknownPointer(LPIGetUnknown pGetUnknown)
 	: m_pInterface(NULL)
 {
 	m_pUnknown = pGetUnknown ? pGetUnknown->GetUnknown() : NULL;
@@ -93,7 +93,7 @@ inline UnknownPointer::UnknownPointer(LPIGetUnknown pGetUnknown)
 		m_pUnknown->AddRef();
 }
 
-inline UnknownPointer::UnknownPointer(PTR(void) pInterface, LPIUnknown pUnknown)
+FORCE_INLINE UnknownPointer::UnknownPointer(PTR(void) pInterface, LPIUnknown pUnknown)
 	: m_pInterface(pInterface)
 	, m_pUnknown  (pUnknown  )
 {
@@ -101,7 +101,7 @@ inline UnknownPointer::UnknownPointer(PTR(void) pInterface, LPIUnknown pUnknown)
 		m_pUnknown->AddRef();
 }
 
-inline UnknownPointer::UnknownPointer(CREF(UnknownPointer) pointer)
+FORCE_INLINE UnknownPointer::UnknownPointer(CREF(UnknownPointer) pointer)
 	: m_pInterface(pointer.m_pInterface)
 	, m_pUnknown  (pointer.m_pUnknown  )
 {
@@ -109,13 +109,13 @@ inline UnknownPointer::UnknownPointer(CREF(UnknownPointer) pointer)
 		m_pUnknown->AddRef();
 }
 
-inline UnknownPointer::~UnknownPointer()
+FORCE_INLINE UnknownPointer::~UnknownPointer()
 {
 	if (m_pUnknown)
 		m_pUnknown->Release();
 }
 
-inline rbool UnknownPointer::operator== (CREF(UnknownPointer) pointer) const
+FORCE_INLINE rbool UnknownPointer::operator== (CREF(UnknownPointer) pointer) const
 {
 	return m_pUnknown == pointer.m_pUnknown;
 }
@@ -133,12 +133,12 @@ inline REF(UnknownPointer) UnknownPointer::operator= (CREF(UnknownPointer) point
 	return *this;
 }
 
-inline UnknownPointer::operator rbool () const
+FORCE_INLINE UnknownPointer::operator rbool () const
 {
 	return m_pUnknown != NULL;
 }
 
-inline UnknownPointer UnknownPointer::query_cast(ruint id)
+FORCE_INLINE UnknownPointer UnknownPointer::query_cast(ruint id)
 {
 	return m_pUnknown ? m_pUnknown->QueryInterface(id) : UnknownPointer();
 }
@@ -156,7 +156,7 @@ inline UnknownPointer::operator Interface<I> ()
 	return query_cast<I>();
 }
 
-inline UnknownPointer UnknownPointer::query_cast(ruint id) const
+FORCE_INLINE UnknownPointer UnknownPointer::query_cast(ruint id) const
 {
 	return m_pUnknown ? m_pUnknown->QueryInterface(id) : UnknownPointer();
 }
@@ -175,12 +175,12 @@ inline UnknownPointer::operator Interface<I> () const
 }
 
 template <class T>
-inline IFactory<T>::Counter::Counter()
+FORCE_INLINE IFactory<T>::Counter::Counter()
 	: m_counter(0)
 {}
 
 template <class T>
-inline IFactory<T>::Counter::operator UnknownPointer()
+FORCE_INLINE IFactory<T>::Counter::operator UnknownPointer()
 {
 	return UnknownPointer(NULL, this);
 }
@@ -212,24 +212,24 @@ inline UnknownPointer IFactory<T>::Counter::QueryInterface(ruint id)
 }
 
 template <class T>
-inline IFactory<T>::Object::Object()
+FORCE_INLINE IFactory<T>::Object::Object()
 	: T()
 {
 	create();
 }
 
 template <class T>
-inline IFactory<T>::Object::~Object()
+FORCE_INLINE IFactory<T>::Object::~Object()
 {}
 
 template <class T>
-inline LPIUnknown IFactory<T>::Object::GetUnknown()
+FORCE_INLINE LPIUnknown IFactory<T>::Object::GetUnknown()
 {
 	return &m_counter;
 }
 
 template <class T>
-inline void IFactory<T>::Object::create()
+FORCE_INLINE void IFactory<T>::Object::create()
 {
 	m_counter.m_pObject = this;
 }
@@ -290,7 +290,7 @@ inline UnknownPointer IFactory<T>::create(CREF(P1) p1, CREF(P2) p2, CREF(P3) p3,
 }
 
 template <class T>
-inline void IFactory<T>::destroy(PTR(T) pObject)
+FORCE_INLINE void IFactory<T>::destroy(PTR(T) pObject)
 {
 	delete pObject;
 }
