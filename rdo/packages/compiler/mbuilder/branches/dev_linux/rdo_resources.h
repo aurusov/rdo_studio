@@ -184,12 +184,13 @@ public:
 			m_pType = rdo::Factory<rdoParse::TypeInfo>::create(pType, rdoParse::RDOParserSrcInfo());
 			ASSERT(m_pType);
 		}
+		// from template<> to template <class T>
 		template <>
-		void initType(CREF(rdoRuntime::RDOEnumType::Enums) enums)
+		void initType(CREF(rdoRuntime::RDOEnumType::Enums) pType)
 		{
 			rdoParse::LPRDOEnumType pEnum = rdo::Factory<rdoParse::RDOEnumType>::create();
 			ASSERT(pEnum)
-			STL_FOR_ALL_CONST(enums, it)
+			STL_FOR_ALL_CONST(pType, it)
 			{
 				pEnum->add(rdoParse::RDOValue::getIdentificator(*it));
 			}

@@ -343,7 +343,7 @@ void RDORuntime::addRuntimeFrame(CREF(LPRDOFRMFrame) pFrame)
 
 LPRDOFRMFrame RDORuntime::lastFrame() const
 {
-	return !allFrames.empty() ? allFrames.front() : NULL;
+	return !allFrames.empty() ? allFrames.front() : LPRDOFRMFrame(NULL);
 }
 
 rbool RDORuntime::keyDown(ruint scan_code)

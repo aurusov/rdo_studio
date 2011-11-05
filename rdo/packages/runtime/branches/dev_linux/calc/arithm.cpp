@@ -14,6 +14,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/arithm.h"
 #include "simulator/runtime/rdo_runtime.h"
+#include "simulator/runtime/calc/operation_type.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -23,7 +24,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 REF(RDOValue) RDOCalcDiv::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	++OperatorType::getCalcCounter<calc_type>();
+	++OperatorType::getCalcCounter<OperatorType::Type(calc_type)>();
 	REF(RDOValue) rVal = m_pRight->calcValue(pRuntime);
 	if (rVal == 0)
 	{
@@ -39,7 +40,7 @@ REF(RDOValue) RDOCalcDiv::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 REF(RDOValue) RDOCalcPlusEnumSafe::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	++OperatorType::getCalcCounter<calc_type>();
+	++OperatorType::getCalcCounter<OperatorType::Type(calc_type)>();
 	m_value = m_pLeft->calcValue(pRuntime).getEnumAsInt() + m_pRight->calcValue(pRuntime).getEnumAsInt();
 	return m_value;
 }
@@ -49,7 +50,7 @@ REF(RDOValue) RDOCalcPlusEnumSafe::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 REF(RDOValue) RDOCalcMultEnumSafe::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	++OperatorType::getCalcCounter<calc_type>();
+	++OperatorType::getCalcCounter<OperatorType::Type(calc_type)>();
 	m_value = m_pLeft->calcValue(pRuntime).getEnumAsInt() * m_pRight->calcValue(pRuntime).getEnumAsInt();
 	return m_value;
 }

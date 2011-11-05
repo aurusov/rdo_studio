@@ -13,6 +13,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/rdomacros.h"
 #include "simulator/runtime/rdocalc.h"
 #include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
@@ -68,32 +69,32 @@ private:
 	REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime);
 
 	template <int paramCount>
-	FORCEINLINE void calc(CREF(LPRDORuntime) pRuntime);
+	FORCE_INLINE void calc(CREF(LPRDORuntime) pRuntime);
 
 	/// @todo перенести определение функций-членов в std_fun.inl
 	template <>
-	FORCEINLINE void calc<1>(CREF(LPRDORuntime) pRuntime)
+	FORCE_INLINE void calc<1>(CREF(LPRDORuntime) pRuntime)
 	{
 		m_value = m_pFunction(getParam<F::arg1_type>(pRuntime, 0));
 	}
 
 	template <>
-	FORCEINLINE void calc<2>(CREF(LPRDORuntime) pRuntime)
+	FORCE_INLINE void calc<2>(CREF(LPRDORuntime) pRuntime)
 	{
 		m_value = m_pFunction(getParam<F::arg1_type>(pRuntime, 0), getParam<F::arg2_type>(pRuntime, 1));
 	}
 
 	template <class T>
-	FORCEINLINE T getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber);
+	FORCE_INLINE T getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber);
 
 	template <>
-	FORCEINLINE double getParam<double>(CREF(LPRDORuntime) pRuntime, ruint paramNumber)
+	FORCE_INLINE double getParam<double>(CREF(LPRDORuntime) pRuntime, ruint paramNumber)
 	{
 		return pRuntime->getFuncArgument(paramNumber).getDouble();
 	}
 
 	template <>
-	FORCEINLINE int getParam<int>(CREF(LPRDORuntime) pRuntime, ruint paramNumber)
+	FORCE_INLINE int getParam<int>(CREF(LPRDORuntime) pRuntime, ruint paramNumber)
 	{
 		return pRuntime->getFuncArgument(paramNumber).getInt();
 	}
