@@ -71,33 +71,20 @@ private:
 	template <int paramCount>
 	FORCE_INLINE void calc(CREF(LPRDORuntime) pRuntime);
 
-	/// @todo перенести определение функций-членов в std_fun.inl
 	template <>
-	FORCE_INLINE void calc<1>(CREF(LPRDORuntime) pRuntime)
-	{
-		m_value = m_pFunction(getParam<F::arg1_type>(pRuntime, 0));
-	}
-
+	FORCE_INLINE void calc<1>(CREF(LPRDORuntime) pRuntime);
+	
 	template <>
-	FORCE_INLINE void calc<2>(CREF(LPRDORuntime) pRuntime)
-	{
-		m_value = m_pFunction(getParam<F::arg1_type>(pRuntime, 0), getParam<F::arg2_type>(pRuntime, 1));
-	}
-
+	FORCE_INLINE void calc<2>(CREF(LPRDORuntime) pRuntime);
+	
 	template <class T>
 	FORCE_INLINE T getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber);
 
 	template <>
-	FORCE_INLINE double getParam<double>(CREF(LPRDORuntime) pRuntime, ruint paramNumber)
-	{
-		return pRuntime->getFuncArgument(paramNumber).getDouble();
-	}
-
+	FORCE_INLINE double getParam<double>(CREF(LPRDORuntime) pRuntime, ruint paramNumber);
+	
 	template <>
-	FORCE_INLINE int getParam<int>(CREF(LPRDORuntime) pRuntime, ruint paramNumber)
-	{
-		return pRuntime->getFuncArgument(paramNumber).getInt();
-	}
+	FORCE_INLINE int getParam<int>(CREF(LPRDORuntime) pRuntime, ruint paramNumber);
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
