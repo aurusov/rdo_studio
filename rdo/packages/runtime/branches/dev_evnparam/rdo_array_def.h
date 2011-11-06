@@ -31,65 +31,58 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 PREDECLARE_POINTER(RDOArrayType);
 
-/*!
-  \class     RDOArrayValue
-  \brief     Ёлемент массива
-*/
-class RDOArrayValue
+//! Ёлемент массива
+OBJECT(RDOArrayValue)
 {
+DECLARE_FACTORY(RDOArrayValue)
 public:
 	typedef std::vector<RDOValue> Container;
 
-	RDOArrayValue(CREF(LPRDOArrayType) pType);
-	RDOArrayValue(CREF(RDOArrayValue)  value);
-	~RDOArrayValue();
-
 	CREF(LPRDOArrayType) type() const;
 
-	void insertItem(CREF(RDOValue) pArray);
+	void insertItem(CREF(RDOValue) item);
 	Container::iterator containerBegin();
-	Container::iterator containerEnd();
-	void insertItems(Container::iterator itr, Container::iterator itrFst, Container::iterator itrLst);
-	void  eraseItems(Container::iterator itrFst, Container::iterator itrLst                         );
-	CREF(RDOValue) operator[] (CREF(RDOValue) ind) const;
+	Container::iterator containerEnd  ();
+	void insertItems(Container::iterator itr,    Container::iterator itrFst, Container::iterator itrLst);
+	void  eraseItems(Container::iterator itrFst, Container::iterator itrLst                            );
+	CREF(RDOValue) operator[] (CREF(RDOValue) index) const;
 
-	ruint arraySize() const;
-
-	tstring getAsString() const;
-	void setArrayItem(CREF(RDOValue) ind, CREF(RDOValue) item);
+	ruint   arraySize   () const;
+	tstring getAsString () const;
+	void    setArrayItem(CREF(RDOValue) index, CREF(RDOValue) item);
 
 private:
+	RDOArrayValue(CREF(LPRDOArrayType)  pType );
+	RDOArrayValue(CREF(LPRDOArrayValue) pValue);
+	virtual ~RDOArrayValue();
+
 	Container       m_container;
 	LPRDOArrayType  m_pArrayType;
 };
 
-/*!
-  \class     RDOArrayIterator
-  \brief     »тератор массива
-*/
-class RDOArrayIterator
+//! »тератор массива
+OBJECT(RDOArrayIterator)
 {
+DECLARE_FACTORY(RDOArrayIterator)
 public:
 	typedef RDOArrayValue::Container::iterator Iterator;
-
-	RDOArrayIterator(CREF(RDOArrayIterator) iterator);
-	RDOArrayIterator(CREF(Iterator)         iterator);
 
 	Iterator getIterator() const;
 	Iterator operator+  (rsint num);
 	Iterator operator-  (rsint num);
-	rbool    operator== (CREF(RDOArrayIterator) iterator) const;
+	rbool    operator== (CREF(LPRDOArrayIterator) pIterator) const;
 
 	RDOValue getValue() const;
 
 private:
+	RDOArrayIterator(CREF(LPRDOArrayIterator) pIterator);
+	RDOArrayIterator(CREF(Iterator)           iterator );
+	virtual ~RDOArrayIterator();
+
 	Iterator m_iterator;
 };
 
-/*!
-  \class     RDOArrayType
-  \brief     “ип массива
-*/
+//! “ип массива
 class RDOArrayType: public RDOType
 {
 DECLARE_FACTORY(RDOArrayType);

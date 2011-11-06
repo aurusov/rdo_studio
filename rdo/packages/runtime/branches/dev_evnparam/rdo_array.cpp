@@ -23,9 +23,9 @@ RDOArrayValue::RDOArrayValue(CREF(LPRDOArrayType) pType)
 	: m_pArrayType(pType)
 {}
 
-RDOArrayValue::RDOArrayValue(CREF(RDOArrayValue) value)
-	: m_container (value.m_container )
-	, m_pArrayType(value.m_pArrayType)
+RDOArrayValue::RDOArrayValue(CREF(LPRDOArrayValue) pValue)
+	: m_container (pValue->m_container )
+	, m_pArrayType(pValue->m_pArrayType)
 {}
 
 RDOArrayValue::~RDOArrayValue()
@@ -97,12 +97,15 @@ void RDOArrayValue::setArrayItem(CREF(RDOValue) ind, CREF(RDOValue) item)
 // --------------------------------------------------------------------------------
 // -------------------- RDOArrayIterator
 // --------------------------------------------------------------------------------
-RDOArrayIterator::RDOArrayIterator(CREF(RDOArrayIterator) iterator)
-	: m_iterator(iterator.m_iterator)
+RDOArrayIterator::RDOArrayIterator(CREF(LPRDOArrayIterator) pIterator)
+	: m_iterator(pIterator->m_iterator)
 {}
 
 RDOArrayIterator::RDOArrayIterator(CREF(Iterator) iterator)
 	: m_iterator(iterator)
+{}
+
+RDOArrayIterator::~RDOArrayIterator()
 {}
 
 RDOArrayIterator::Iterator RDOArrayIterator::getIterator() const
@@ -125,9 +128,9 @@ RDOValue RDOArrayIterator::getValue() const
 	return *m_iterator;
 }
 
-rbool RDOArrayIterator::operator== (CREF(RDOArrayIterator) iterator) const
+rbool RDOArrayIterator::operator== (CREF(LPRDOArrayIterator) pIterator) const
 {
-	return m_iterator == iterator.m_iterator;
+	return m_iterator == pIterator->m_iterator;
 }
 
 // --------------------------------------------------------------------------------
