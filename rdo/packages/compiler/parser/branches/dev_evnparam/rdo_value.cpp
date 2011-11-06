@@ -31,15 +31,29 @@ RDOValue::RDOValue()
 	);
 }
 
-RDOValue::RDOValue(CREF(LPRDOArrayValue) pValue)
+RDOValue::RDOValue(CREF(LPRDOValue) pValue)
 	: RDOParserSrcInfo(pValue->src_info())
-	, m_pArray        (pValue            )
+	, m_value         (pValue->m_value   )
+	, m_pType         (pValue->m_pType   )
 {
-	m_value = m_pArray->getRArray();
-	m_pType = rdo::Factory<TypeInfo>::create(
-		pValue->getArrayType(),
-		pValue->src_info() /// @todo Взять TypeInfo из pValue->getArrayType()
-	);
+	memcpy(&m_buffer, &pValue->m_buffer, sizeof(m_buffer));
+
+	switch (typeID())
+	{
+	case rdoRuntime::RDOType::t_string       :
+	case rdoRuntime::RDOType::t_identificator:
+	case rdoRuntime::RDOType::t_array        :
+	case rdoRuntime::RDOType::t_arrayIterator:
+	case rdoRuntime::RDOType::t_pointer      :
+		{
+			reinterpret_cast<rdo::LPIRefCounter>(&m_buffer)->addref();
+			break;
+		}
+	default:
+		{
+			break;
+		}
+	}
 }
 
 RDOValue::RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(RDOParserSrcInfo) src_info, CREF(LPTypeInfo) pType)
@@ -78,16 +92,6 @@ rdoRuntime::RDOType::TypeID RDOValue::typeID() const
 CREF(rdoRuntime::RDOValue) RDOValue::value() const
 {
 	return m_value;
-}
-
-CPTR(rdoRuntime::RDOValue) RDOValue::operator-> () const
-{
-	return &m_value;
-}
-
-CREF(LPRDOArrayValue) RDOValue::getArray() const
-{
-	return m_pArray;
 }
 
 rbool RDOValue::defined() const
