@@ -51,8 +51,7 @@ inline RDOValue::RDOValue(CREF(LPRDOType) pType)
 	case RDOType::t_bool          : __get<rbool> () = false; break;
 	case RDOType::t_string        : new (&m_value) rdo::intrusive_ptr_interface_wrapper<string_class>(new string_class(_T(""))); break;
 	case RDOType::t_identificator : new (&m_value) rdo::intrusive_ptr_interface_wrapper<string_class>(new string_class(_T(""))); break;
-	case RDOType::t_array         : __voidPtrV   () = new RDOArrayValue(pType.object_static_cast<RDOArrayType>()); break;
-	case RDOType::t_arrayIterator : __voidPtrV   () = new PTR(void); break;
+	case RDOType::t_array         : new (&m_value) rdo::intrusive_ptr_interface_wrapper<RDOArrayType>(rdo::Factory<RDOArrayType>::create(pType.object_static_cast<RDOArrayType>())); break;
 	case RDOType::t_matrix        : __voidPtrV   () = new PTR(void); break;
 	case RDOType::t_matrixIterator: __voidPtrV   () = new PTR(void); break;
 	default                       : throw RDOValueException();
@@ -138,16 +137,10 @@ inline RDOValue::RDOValue(CREF(tstring) value, CREF(LPRDOType) pType)
 	new (&m_value) rdo::intrusive_ptr_interface_wrapper<string_class>(new string_class(value));
 }
 
-inline RDOValue::RDOValue(CREF(RDOArrayValue) arrayValue)
-	: m_pType(arrayValue.type())
-{
-	__voidPtrV() = new RDOArrayValue(arrayValue);
-}
-
-inline RDOValue::RDOValue(CREF(RDOArrayIterator) aIterator)
+inline RDOValue::RDOValue(CREF(LPRDOArrayIterator) pIterator)
 	: m_pType(g_arrayIterator)
 {
-	__voidPtrV() = new RDOArrayIterator(aIterator);
+	new (&m_value) rdo::intrusive_ptr_interface_wrapper<RDOArrayIterator>(pIterator);
 }
 
 inline RDOValue::RDOValue(CREF(RDOMatrixValue) matrixValue)
@@ -169,7 +162,13 @@ inline RDOValue::RDOValue(CREF(LPRDOType) pType, CREF(rdo::intrusive_ptr<T>) pOb
 	STATIC_ASSERT(sizeof(rdo::intrusive_ptr_interface_wrapper<T>) >= sizeof(double));
 
 	ASSERT(m_pType);
-	ASSERT(m_pType->typeID() == RDOType::t_pointer);
+	ASSERT(
+		typeID() == rdoRuntime::RDOType::t_string        ||
+		typeID() == rdoRuntime::RDOType::t_identificator ||
+		typeID() == rdoRuntime::RDOType::t_array         ||
+		typeID() == rdoRuntime::RDOType::t_arrayIterator ||
+		typeID() == rdoRuntime::RDOType::t_pointer
+	);
 	new (&m_value) rdo::intrusive_ptr_interface_wrapper<T>(pObject);
 }
 
@@ -179,20 +178,14 @@ inline void RDOValue::deleteValue()
 	{
 	case RDOType::t_string       :
 	case RDOType::t_identificator:
+	case RDOType::t_array        :
+	case RDOType::t_arrayIterator:
 	case RDOType::t_pointer      :
 		reinterpret_cast<rdo::LPIRefCounter>(&m_value)->release();
 		break;
 
 	case RDOType::t_fuzzy:
 		delete &__fuzzyV();
-		break;
-
-	case RDOType::t_array:
-		delete &__arrayV();
-		break;
-
-	case RDOType::t_arrayIterator:
-		delete &__arrayItr();
 		break;
 
 	case RDOType::t_matrixIterator:
@@ -321,8 +314,8 @@ inline tstring RDOValue::getAsString() const
 	case RDOType::t_string        : return __stringV();
 	case RDOType::t_identificator : return __stringV();
 	case RDOType::t_fuzzy         : return __fuzzyV().getAsString();
-	case RDOType::t_array         : return __arrayV().getAsString();
-	case RDOType::t_arrayIterator : return __arrayItr().getValue().getAsString();
+	case RDOType::t_array         : return __arrayV()->getAsString();
+	case RDOType::t_arrayIterator : return __arrayItr()->getValue().getAsString();
 	case RDOType::t_matrix        : return __matrixV().getAsString();
 	case RDOType::t_matrixIterator: return __matrixItr().getValue().getAsString();
 	}
@@ -338,7 +331,7 @@ inline tstring RDOValue::getAsStringForTrace() const
 	case RDOType::t_enum  : return rdo::format(_T("%d"), __get<int>());
 	case RDOType::t_bool  : return __get<rbool>() ? _T("true") : _T("false");
 	case RDOType::t_string: return __stringV();
-	case RDOType::t_array : return __arrayV ().getAsString();
+	case RDOType::t_array : return __arrayV ()->getAsString();
 	case RDOType::t_matrix: return __matrixV().getAsString();
 	}
 	throw RDOValueException(_T("Для rdoRuntime::RDOValue неопределен метод getAsStringForTrace()"));
@@ -353,6 +346,8 @@ inline void RDOValue::set(CREF(RDOValue) rdovalue)
 	{
 	case RDOType::t_string       :
 	case RDOType::t_identificator:
+	case RDOType::t_array        :
+	case RDOType::t_arrayIterator:
 	case RDOType::t_pointer      :
 		{
 			memcpy(&m_value, &rdovalue.m_value, sizeof(m_value));
@@ -362,16 +357,6 @@ inline void RDOValue::set(CREF(RDOValue) rdovalue)
 	case RDOType::t_fuzzy:
 		{
 			__voidPtrV() = new RDOFuzzyValue(rdovalue.__fuzzyV());
-			break;
-		}
-	case RDOType::t_array:
-		{
-			__voidPtrV() = new RDOArrayValue(rdovalue.__arrayV());
-			break;
-		}
-	case RDOType::t_arrayIterator:
-		{
-			__voidPtrV() = new RDOArrayIterator(rdovalue.__arrayItr());
 			break;
 		}
 	case RDOType::t_matrix:
@@ -668,9 +653,9 @@ inline void RDOValue::operator+= (CREF(RDOValue) rdovalue)
 			switch(rdovalue.typeID())
 			{
 			case RDOType::t_int:
-				PTR(RDOArrayIterator) pPrevIt = &__arrayItr();
-				__voidPtrV() = new RDOArrayIterator(__arrayItr() + rdovalue.getInt());
-				delete pPrevIt;
+				LPRDOArrayIterator pIt = __get<rdo::intrusive_ptr_interface_wrapper<RDOArrayIterator> >();
+				ASSERT(pIt);
+				pIt->operator +(rdovalue.getInt());
 				return;
 			}
 			break;
@@ -756,9 +741,9 @@ inline void RDOValue::operator-= (CREF(RDOValue) rdovalue)
 			switch(rdovalue.typeID())
 			{
 			case RDOType::t_int:
-				PTR(RDOArrayIterator) pPrevIt = &__arrayItr();
-				__voidPtrV() = new RDOArrayIterator(__arrayItr() - rdovalue.getInt());
-				delete pPrevIt;
+				LPRDOArrayIterator pIt = __get<rdo::intrusive_ptr_interface_wrapper<RDOArrayIterator> >();
+				ASSERT(pIt);
+				pIt->operator -(rdovalue.getInt());
 				return;
 			}
 			break;
@@ -879,7 +864,7 @@ inline RDOValue RDOValue::operator[] (CREF(RDOValue) rdovalue)
 {
 	switch (typeID())
 	{
-	case RDOType::t_array : return __arrayV ()[rdovalue];
+	case RDOType::t_array : return __arrayV ()->operator [](rdovalue);
 	case RDOType::t_matrix: return __matrixV()[rdovalue];
 	}
 	throw RDOValueException();
@@ -889,7 +874,7 @@ inline RDOValue RDOValue::begin()
 {
 	switch (typeID())
 	{
-	case RDOType::t_array : return RDOValue(RDOArrayIterator (__arrayV ().containerBegin()));
+	case RDOType::t_array : return RDOValue(rdo::Factory<RDOArrayIterator>::create(__arrayV()->containerBegin()));
 	case RDOType::t_matrix: return RDOValue(RDOMatrixIterator(__matrixV().containerBegin()));
 	}
 	throw RDOValueException();	
@@ -899,7 +884,7 @@ inline RDOValue RDOValue::end()
 {
 	switch (typeID())
 	{
-	case RDOType::t_array : return RDOValue(RDOArrayIterator ( __arrayV().containerEnd()));
+	case RDOType::t_array : return RDOValue(rdo::Factory<RDOArrayIterator>::create( __arrayV()->containerEnd()));
 	case RDOType::t_matrix: return RDOValue(RDOMatrixIterator(__matrixV().containerEnd()));
 	}
 	throw RDOValueException();
@@ -909,7 +894,7 @@ inline void RDOValue::insert(CREF(RDOValue) itr, CREF(RDOValue) itrFst, CREF(RDO
 {
 	switch (typeID())
 	{
-	case RDOType::t_array : __arrayV ().insertItems(itr.__arrayItr( ).getIterator(), itrFst.__arrayItr ().getIterator(), itrLst.__arrayItr ().getIterator()); return;
+	case RDOType::t_array : __arrayV ()->insertItems(itr.__arrayItr()->getIterator(), itrFst.__arrayItr ()->getIterator(), itrLst.__arrayItr ()->getIterator()); return;
 	case RDOType::t_matrix: __matrixV().insertItems(itr.__matrixItr().getIterator(), itrFst.__matrixItr().getIterator(), itrLst.__matrixItr().getIterator()); return;
 	}
 	throw RDOValueException();	
@@ -919,7 +904,7 @@ inline void RDOValue::erase(CREF(RDOValue) itrFst, CREF(RDOValue) itrLst)
 {
 	switch (typeID())
 	{
-	case RDOType::t_array : __arrayV ().eraseItems(itrFst.__arrayItr ().getIterator(), itrLst.__arrayItr ().getIterator()); return;
+	case RDOType::t_array : __arrayV ()->eraseItems(itrFst.__arrayItr ()->getIterator(), itrLst.__arrayItr ()->getIterator()); return;
 	case RDOType::t_matrix: __matrixV().eraseItems(itrFst.__matrixItr().getIterator(), itrLst.__matrixItr().getIterator()); return;
 	}
 	throw RDOValueException();
@@ -931,7 +916,7 @@ inline void RDOValue::setArrayItem(CREF(RDOValue) ind, CREF(RDOValue) item)
 	{
 	case RDOType::t_array :
 		{
-			__arrayV().setArrayItem(ind, item);
+			__arrayV()->setArrayItem(ind, item);
 			return;
 		}
 	}
@@ -973,24 +958,24 @@ inline CREF(RDOFuzzyValue) RDOValue::__fuzzyV() const
 	return *static_cast<CPTR(RDOFuzzyValue)>(__voidPtrV());
 }
 
-inline REF(RDOArrayValue) RDOValue::__arrayV()
+inline REF(LPRDOArrayValue) RDOValue::__arrayV()
 {
-	return *static_cast<PTR(RDOArrayValue)>(__voidPtrV());
+	return __get<rdo::intrusive_ptr_interface_wrapper<RDOArrayValue> >();
 }
 
-inline CREF(RDOArrayValue) RDOValue::__arrayV() const
+inline CREF(LPRDOArrayValue) RDOValue::__arrayV() const
 {
-	return *static_cast<CPTR(RDOArrayValue)>(__voidPtrV());
+	return __get<rdo::intrusive_ptr_interface_wrapper<RDOArrayValue> >();
 }
 
-inline REF(RDOArrayIterator) RDOValue::__arrayItr()
+inline REF(LPRDOArrayIterator) RDOValue::__arrayItr()
 {
-	return *static_cast<PTR(RDOArrayIterator)>(__voidPtrV());
+	return __get<rdo::intrusive_ptr_interface_wrapper<RDOArrayIterator> >();
 }
 
-inline CREF(RDOArrayIterator) RDOValue::__arrayItr() const
+inline CREF(LPRDOArrayIterator) RDOValue::__arrayItr() const
 {
-	return *static_cast<CPTR(RDOArrayIterator)>(__voidPtrV());
+	return __get<rdo::intrusive_ptr_interface_wrapper<RDOArrayIterator> >();
 }
 
 inline REF(RDOMatrixValue) RDOValue::__matrixV()
