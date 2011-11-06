@@ -78,13 +78,13 @@ public:
 	virtual BOResult onDoOperation(CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
 
 	/*!
-	  \fn      virtual void onMakePlaned(CREF(rdoRuntime::LPRDORuntime) pRuntime, PTR(void) param)
+	  \fn      virtual void onMakePlaned(CREF(rdoRuntime::LPRDORuntime) pRuntime, PTR(void) pParam)
 	  \brief   Планирование
 	  \details Вызывается для запланированных в будующем событий: event, operation_end, keyboard_end
 	           Может не использоваться, например, для rule
 	  \param   pRuntime константная ссылка на указатель на Рантайм
 	*/
-	virtual void onMakePlaned(CREF(rdoRuntime::LPRDORuntime) pRuntime, PTR(void) param) = 0;
+	virtual void onMakePlaned(CREF(rdoRuntime::LPRDORuntime) pRuntime, PTR(void) pParam) = 0;
 
 	/*!
 	  \fn      virtual BOResult onContinue(CREF(rdoRuntime::LPRDORuntime) pRuntime)
@@ -96,12 +96,12 @@ public:
 	virtual BOResult onContinue(CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
 };
 
-#define DECLARE_IBaseOperation                                                                   \
-	virtual void     onStart         (CREF(rdoRuntime::LPRDORuntime) pRuntime);                  \
-	virtual void     onStop          (CREF(rdoRuntime::LPRDORuntime) pRuntime);                  \
-	virtual rbool    onCheckCondition(CREF(rdoRuntime::LPRDORuntime) pRuntime);                  \
-	virtual BOResult onDoOperation   (CREF(rdoRuntime::LPRDORuntime) pRuntime);                  \
-	virtual void     onMakePlaned    (CREF(rdoRuntime::LPRDORuntime) pRuntime, PTR(void) param); \
+#define DECLARE_IBaseOperation                                                                    \
+	virtual void     onStart         (CREF(rdoRuntime::LPRDORuntime) pRuntime);                   \
+	virtual void     onStop          (CREF(rdoRuntime::LPRDORuntime) pRuntime);                   \
+	virtual rbool    onCheckCondition(CREF(rdoRuntime::LPRDORuntime) pRuntime);                   \
+	virtual BOResult onDoOperation   (CREF(rdoRuntime::LPRDORuntime) pRuntime);                   \
+	virtual void     onMakePlaned    (CREF(rdoRuntime::LPRDORuntime) pRuntime, PTR(void) pParam); \
 	virtual BOResult onContinue      (CREF(rdoRuntime::LPRDORuntime) pRuntime);
 
 INTERFACE_PREDECLARATION(IBaseOperation);

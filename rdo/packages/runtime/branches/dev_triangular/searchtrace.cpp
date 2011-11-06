@@ -145,7 +145,7 @@ void __getStats(CREF(std::list<T>) list, REF(T) min, REF(T) max, REF(double) med
 {
 	T      sum = 0;
 	ruint  cnt = 0;
-	std::list<T>::const_iterator it = list.begin();
+	typename std::list<T>::const_iterator it = list.begin();
 	while (it != list.end())
 	{
 		sum += *it;

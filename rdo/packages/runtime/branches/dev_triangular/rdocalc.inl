@@ -10,6 +10,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/namespace.h"
+#include "utils/rdomacros.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -34,11 +36,11 @@ inline RDOCalcGetResParam::RDOCalcGetResParam(int _resNumb, int _parNumb)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetTempResParamFRM
 // --------------------------------------------------------------------------------
-inline void RDOCalcGetTempResParamFRM::notify(ruint message, PTR(void) param)
+inline void RDOCalcGetTempResParamFRM::notify(ruint message, PTR(void) pParam)
 {
 	UNUSED(message);
 
-	if (m_resID == *reinterpret_cast<PTR(int)>(param))
+	if (m_resID == *reinterpret_cast<PTR(int)>(pParam))
 	{
 		m_resID = -1;
 	}
@@ -221,6 +223,10 @@ inline void RDOCalcFunctionCall::setFunctionCalc(CREF(LPRDOFunCalc) pFunction)
 // --------------------------------------------------------------------------------
 inline RDOCalcConst::RDOCalcConst(CREF(RDOValue) value)
 {
+	if (value.typeID() != RDOType::t_identificator)
+	{
+		__asm nop;
+	}
 	m_value = value;
 }
 

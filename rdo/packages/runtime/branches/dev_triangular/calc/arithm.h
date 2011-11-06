@@ -22,25 +22,25 @@ OPEN_RDO_RUNTIME_NAMESPACE
   \typedef RDOCalcPlus
   \brief   Бинарный оператор плюс
 */
-typedef RDOCalcBinary<RDOValue, (&RDOValue::operator+), OperatorType::OT_ARITHM> RDOCalcPlus;  DECLARE_POINTER(RDOCalcPlus);
+typedef RDOCalcBinary<RDOValue, &RDOValue::operator+, OperatorType::OT_ARITHM> RDOCalcPlus;  DECLARE_POINTER(RDOCalcPlus);
 
 /*!
   \typedef RDOCalcMinus
   \brief   Бинарный оператор минус
 */
-typedef RDOCalcBinary<RDOValue, (&RDOValue::operator-), OperatorType::OT_ARITHM> RDOCalcMinus; DECLARE_POINTER(RDOCalcMinus);
+typedef RDOCalcBinary<RDOValue, &RDOValue::operator-, OperatorType::OT_ARITHM> RDOCalcMinus; DECLARE_POINTER(RDOCalcMinus);
 
 /*!
   \typedef RDOCalcMult
   \brief   Бинарный оператор умножить
 */
-typedef RDOCalcBinary<RDOValue, (&RDOValue::operator*), OperatorType::OT_ARITHM> RDOCalcMult;  DECLARE_POINTER(RDOCalcMult);
+typedef RDOCalcBinary<RDOValue, &RDOValue::operator*, OperatorType::OT_ARITHM> RDOCalcMult;  DECLARE_POINTER(RDOCalcMult);
 
 /*!
   \class   RDOCalcDiv
   \brief   Бинарный оператор умножить
 */
-class RDOCalcDiv: public RDOCalcBinary<RDOValue, (&RDOValue::operator/), OperatorType::OT_ARITHM>
+class RDOCalcDiv: public RDOCalcBinary<RDOValue, &RDOValue::operator/, OperatorType::OT_ARITHM>
 {
 DECLARE_FACTORY(RDOCalcDiv);
 private:

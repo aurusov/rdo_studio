@@ -14,10 +14,10 @@
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/platform.h"
-#ifdef OST_WINDOWS
+// ----------------------------------------------------------------------- INCLUDES
+#ifdef COMPILER_VISUAL_STUDIO
 	#pragma warning(disable : 4786)
 #endif
-// ----------------------------------------------------------------------- INCLUDES
 #include <time.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/namespace.h"
@@ -88,10 +88,10 @@ public:
 		RO_BEFOREDELETE = 0
 	};
 
-	void connect    (PTR(INotify) to, ruint message);
-	void disconnect (PTR(INotify) to               );
-	void disconnect (PTR(INotify) to, ruint message);
-	void fireMessage(ruint message, PTR(void) param);
+	void connect    (PTR(INotify) to, ruint message );
+	void disconnect (PTR(INotify) to                );
+	void disconnect (PTR(INotify) to, ruint message );
+	void fireMessage(ruint message, PTR(void) pParam);
 
 	std::vector<rdoSimulator::RDOSyntaxError> errors;
 	void error(CREF(tstring) message, CREF(LPRDOCalc) pCalc = NULL);

@@ -95,6 +95,7 @@ inline tstring RDOFuzzyType::name() const
 
 inline RDOValue RDOFuzzyType::value_cast(CREF(RDOValue) from) const
 {
+	UNUSED(from);
 	throw RDOTypeException();
 }
 
@@ -204,11 +205,13 @@ inline RDOFuzzyEmptyType::RDOFuzzySetDefinitionEmpty::~RDOFuzzySetDefinitionEmpt
 
 inline rbool RDOFuzzyEmptyType::RDOFuzzySetDefinitionEmpty::inRange(CREF(RDOValue) rdovalue) const
 {
+	UNUSED(rdovalue);
 	return false;
 }
 
 inline RDOFuzzyValue RDOFuzzyEmptyType::RDOFuzzySetDefinitionEmpty::getSupplement(CREF(RDOFuzzyValue) value) const
 {
+	UNUSED(value);
 	return RDOFuzzyValue(RDOFuzzyEmptyType::getInstance());
 }
 

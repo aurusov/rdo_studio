@@ -103,6 +103,10 @@ tstring RDOActivity::traceResourcesList(char prefix, CREF(LPRDORuntime) pRuntime
 
 tstring RDOActivity::traceResourcesListNumbers(CREF(LPRDORuntime) pRuntime, rbool show_create_index)
 {
+	UNUSED(pRuntime);
+#ifndef RDOSIM_COMPATIBLE
+	UNUSED(show_create_index);
+#endif
 	std::ostringstream res;
 	res << m_relevantResources.size() << " ";
 	for (std::list<LPRDOResource>::const_iterator i = m_relevantResources.begin(); i != m_relevantResources.end(); ++i)

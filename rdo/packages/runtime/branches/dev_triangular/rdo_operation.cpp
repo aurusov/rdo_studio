@@ -74,8 +74,10 @@ IBaseOperation::BOResult RDOOperation::onDoOperation(CREF(LPRDORuntime) pRuntime
 	return IBaseOperation::BOR_planned_and_run;
 }
 
-void RDOOperation::onMakePlaned(CREF(LPRDORuntime) pRuntime, void* param)
+void RDOOperation::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
 {
+	UNUSED(pParam);
+
 	// ¬ыполн€ем событие конца операции-клона
 	pRuntime->inc_cnt_events();
 	onBeforeOperationEnd(pRuntime);
@@ -150,9 +152,9 @@ tstring RDOOperation::traceOperId() const
 	return rdo::toString(m_operId);
 }
 
-void                     RDOOperation::onBeforeOperationBegin(CREF(LPRDORuntime) pRuntime) {}
-void                     RDOOperation::onStart               (CREF(LPRDORuntime) pRuntime) {}
-void                     RDOOperation::onStop                (CREF(LPRDORuntime) pRuntime) {}
-IBaseOperation::BOResult RDOOperation::onContinue            (CREF(LPRDORuntime) pRuntime) {return IBaseOperation::BOR_cant_run;}
+void                     RDOOperation::onBeforeOperationBegin(CREF(LPRDORuntime) pRuntime) { UNUSED(pRuntime); }
+void                     RDOOperation::onStart               (CREF(LPRDORuntime) pRuntime) { UNUSED(pRuntime); }
+void                     RDOOperation::onStop                (CREF(LPRDORuntime) pRuntime) { UNUSED(pRuntime); }
+IBaseOperation::BOResult RDOOperation::onContinue            (CREF(LPRDORuntime) pRuntime) { UNUSED(pRuntime); return IBaseOperation::BOR_cant_run; }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

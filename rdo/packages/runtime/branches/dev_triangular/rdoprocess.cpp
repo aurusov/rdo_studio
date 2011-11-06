@@ -236,13 +236,19 @@ void RDOPROCGenerate::calcNextTimeInterval( CREF(LPRDORuntime) pRuntime )
 }
 
 void RDOPROCGenerate::onStop(CREF(LPRDORuntime) pRuntime)
-{}
+{
+	UNUSED(pRuntime);
+}
 
-void RDOPROCGenerate::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) param)
-{}
+void RDOPROCGenerate::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
+{
+	UNUSED(pRuntime);
+	UNUSED(pParam  );
+}
 
 IBaseOperation::BOResult RDOPROCGenerate::onContinue(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
 }
 
@@ -274,11 +280,12 @@ void RDOPROCQueue::onStart(CREF(LPRDORuntime) pRuntime)
 
 rbool RDOPROCQueue::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
-	if ( !m_transacts.empty() ) 
+	UNUSED(pRuntime);
+	if (!m_transacts.empty())
 	{
 		RDOValue i = forRes.rss->getParam(forRes.Id_param);
 		RDOValue j = RDOValue(int (1));
-		forRes.rss->setParam(forRes.Id_param, i + j);	
+		forRes.rss->setParam(forRes.Id_param, i + j);
 		return true;
 	}
 	else
@@ -289,19 +296,27 @@ rbool RDOPROCQueue::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 
 IBaseOperation::BOResult RDOPROCQueue::onDoOperation(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
+
 	TRACE1(_T("%7.1f QUEUE\n"), pRuntime->getCurrentTime());
 	m_transacts.front()->next();
 	return IBaseOperation::BOR_done;
 }
 
 void RDOPROCQueue::onStop (CREF(LPRDORuntime) pRuntime)
-{}
+{
+	UNUSED(pRuntime);
+}
 
-void RDOPROCQueue::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) param)
-{}
+void RDOPROCQueue::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
+{
+	UNUSED(pRuntime);
+	UNUSED(pParam  );
+}
 
 IBaseOperation::BOResult RDOPROCQueue::onContinue(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
 }
 
@@ -315,6 +330,7 @@ void RDOPROCDepart::onStart(CREF(LPRDORuntime) pRuntime)
 
 rbool RDOPROCDepart::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
 	if (!m_transacts.empty())
 	{
 		RDOValue i = forRes.rss->getParam(forRes.Id_param);
@@ -330,19 +346,27 @@ rbool RDOPROCDepart::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 
 IBaseOperation::BOResult RDOPROCDepart::onDoOperation(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
+
 	TRACE1(_T("%7.1f DEPART\n"), pRuntime->getCurrentTime());
 	m_transacts.front()->next();
 	return IBaseOperation::BOR_done;
 }
 
 void RDOPROCDepart::onStop(CREF(LPRDORuntime) pRuntime)
-{}
+{
+	UNUSED(pRuntime);
+}
 
-void RDOPROCDepart::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) param)
-{}
+void RDOPROCDepart::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
+{
+	UNUSED(pRuntime);
+	UNUSED(pParam  );
+}
 
 IBaseOperation::BOResult RDOPROCDepart::onContinue(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
 }
 
@@ -358,7 +382,6 @@ void RDOPROCBlockForSeize::_onStart(CREF(LPRDORuntime) pRuntime)
 {
 	/// @todo: если потребуетс€ стоить деревь€, вершинами которых будут полные снимки Ѕƒ,
 	// как при DPT search, то инициализацию атрибутов надо будет делать в checkOperation
-	int size = fromParser.size();
 	std::vector<parser_for_Seize>::iterator it1 = fromParser.begin();
 	while (it1 != fromParser.end())
 	{
@@ -414,6 +437,7 @@ rbool RDOPROCSeize::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 
 IBaseOperation::BOResult RDOPROCSeize::onDoOperation(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
 	m_transacts.front()->next();
 	return IBaseOperation::BOR_done;
 }
@@ -439,13 +463,19 @@ void RDOPROCSeize::transactGoOut(RDOPROCTransact* _transact)
 }
 
 void RDOPROCSeize::onStop(CREF(LPRDORuntime) pRuntime)
-{}
+{
+	UNUSED(pRuntime);
+}
 
-void RDOPROCSeize::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) param)
-{}
+void RDOPROCSeize::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
+{
+	UNUSED(pRuntime);
+	UNUSED(pParam  );
+}
 
 IBaseOperation::BOResult RDOPROCSeize::onContinue(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
 }
 
@@ -504,18 +534,25 @@ rbool RDOPROCRelease::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 
 IBaseOperation::BOResult RDOPROCRelease::onDoOperation(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
 	m_transacts.front()->next();
 	return IBaseOperation::BOR_done;
 }
 
 void RDOPROCRelease::onStop(CREF(LPRDORuntime) pRuntime)
-{}
+{
+	UNUSED(pRuntime);
+}
 
-void RDOPROCRelease::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) param)
-{}
+void RDOPROCRelease::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
+{
+	UNUSED(pRuntime);
+	UNUSED(pParam  );
+}
 
 IBaseOperation::BOResult RDOPROCRelease::onContinue(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
 }
 
@@ -578,16 +615,24 @@ IBaseOperation::BOResult RDOPROCAdvance::onDoOperation(CREF(LPRDORuntime) pRunti
 }
 
 void RDOPROCAdvance::onStart(CREF(LPRDORuntime) pRuntime)
-{}
+{
+	UNUSED(pRuntime);
+}
 
 void RDOPROCAdvance::onStop(CREF(LPRDORuntime) pRuntime)
-{}
+{
+	UNUSED(pRuntime);
+}
 
-void RDOPROCAdvance::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) param)
-{}
+void RDOPROCAdvance::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
+{
+	UNUSED(pRuntime);
+	UNUSED(pParam  );
+}
 
 IBaseOperation::BOResult RDOPROCAdvance::onContinue(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
 }
 
@@ -596,6 +641,7 @@ IBaseOperation::BOResult RDOPROCAdvance::onContinue(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 rbool RDOPROCTerminate::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
 	return !m_transacts.empty() ? true : false;
 }
 
@@ -619,16 +665,24 @@ IBaseOperation::BOResult RDOPROCTerminate::onDoOperation(CREF(LPRDORuntime) pRun
 }
 
 void RDOPROCTerminate::onStart(CREF(LPRDORuntime) pRuntime)
-{}
+{
+	UNUSED(pRuntime);
+}
 
 void RDOPROCTerminate::onStop(CREF(LPRDORuntime) pRuntime)
-{}
+{
+	UNUSED(pRuntime);
+}
 
-void RDOPROCTerminate::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) param)
-{}
+void RDOPROCTerminate::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
+{
+	UNUSED(pRuntime);
+	UNUSED(pParam  );
+}
 
 IBaseOperation::BOResult RDOPROCTerminate::onContinue(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
 }
 
@@ -637,6 +691,7 @@ IBaseOperation::BOResult RDOPROCTerminate::onContinue(CREF(LPRDORuntime) pRuntim
 // --------------------------------------------------------------------------------
 rbool RDOPROCAssign::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
 	return !m_transacts.empty();
 }
 
@@ -650,16 +705,24 @@ IBaseOperation::BOResult RDOPROCAssign::onDoOperation(CREF(LPRDORuntime) pRuntim
 }
 
 void RDOPROCAssign::onStart(CREF(LPRDORuntime) pRuntime)
-{}
+{
+	UNUSED(pRuntime);
+}
 
 void RDOPROCAssign::onStop(CREF(LPRDORuntime) pRuntime)
-{}
+{
+	UNUSED(pRuntime);
+}
 
-void RDOPROCAssign::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) param)
-{}
+void RDOPROCAssign::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
+{
+	UNUSED(pRuntime);
+	UNUSED(pParam  );
+}
 
 IBaseOperation::BOResult RDOPROCAssign::onContinue(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
 }
 

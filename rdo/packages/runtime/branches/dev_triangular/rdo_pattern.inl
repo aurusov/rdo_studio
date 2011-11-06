@@ -29,7 +29,7 @@ inline void RDOPattern::addPreSelectRelRes(CREF(LPRDOCalc) pCalc)
 		{
 			return;
 		}
-		it++;
+		++it;
 	}
 	m_preSelectRelRes.push_back(pCalc);
 }

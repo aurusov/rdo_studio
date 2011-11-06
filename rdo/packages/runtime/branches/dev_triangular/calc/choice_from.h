@@ -35,12 +35,12 @@ public:
 	};
 
 protected:
-	RDOSelectResourceCalc(int _rel_res_id, CREF(LPRDOCalc) _choice_calc, CREF(LPRDOCalc) _order_calc, Type _order_type = order_empty);
+	RDOSelectResourceCalc(int relResID, CREF(LPRDOCalc) pCalcChoiceFrom, CREF(LPRDOCalc) pCalcOrder, Type orderType = order_empty);
 
-	int        rel_res_id;
-	LPRDOCalc  choice_calc;
-	LPRDOCalc  order_calc;
-	Type       order_type;
+	int        m_relResID;
+	LPRDOCalc  m_pCalcChoiceFrom;
+	LPRDOCalc  m_pCalcOrder;
+	Type       m_orderType;
 };
 
 /*!
@@ -51,7 +51,7 @@ CALC_SUB(RDOSelectResourceNonExistCalc, RDOSelectResourceCalc)
 {
 DECLARE_FACTORY(RDOSelectResourceNonExistCalc)
 private:
-	RDOSelectResourceNonExistCalc(int _rel_res_id);
+	RDOSelectResourceNonExistCalc(int relResID);
 	DECLARE_ICalc;
 };
 
@@ -64,9 +64,9 @@ CALC_SUB(RDOSelectResourceDirectCalc, RDOSelectResourceCalc)
 {
 DECLARE_FACTORY(RDOSelectResourceDirectCalc)
 protected:
-	RDOSelectResourceDirectCalc(int _rel_res_id, int _res_id, CREF(LPRDOCalc) _choice_calc = NULL, CREF(LPRDOCalc) _order_calc = NULL, Type _order_type = order_empty);
+	RDOSelectResourceDirectCalc(int relResID, int resID, CREF(LPRDOCalc) pCalcChoiceFrom = NULL, CREF(LPRDOCalc) pCalcOrder = NULL, Type orderType = order_empty);
 
-	int res_id;
+	int m_resID;
 
 	virtual rbool compare(CREF(LPRDOCalc) pCalc) const;
 
@@ -81,9 +81,9 @@ CALC_SUB(RDOSelectResourceByTypeCalc, RDOSelectResourceCalc)
 {
 DECLARE_FACTORY(RDOSelectResourceByTypeCalc)
 protected:
-	RDOSelectResourceByTypeCalc(int _rel_res_id, int _resType, CREF(LPRDOCalc) pChoiceCalc = NULL, CREF(LPRDOCalc) pOrderCalc = NULL, Type _order_type = order_empty);
+	RDOSelectResourceByTypeCalc(int relResID, int resTypeID, CREF(LPRDOCalc) pChoiceCalc = NULL, CREF(LPRDOCalc) pOrderCalc = NULL, Type orderType = order_empty);
 
-	int resType;
+	int m_resTypeID;
 
 	DECLARE_ICalc;
 };
@@ -114,11 +114,11 @@ DECLARE_FACTORY(RDOSelectResourceCommonCalc)
 private:
 	typedef  std::vector<LPIRDOSelectResourceCommon>  SelectResourceCommonList;
 
-	RDOSelectResourceCommonCalc(CREF(SelectResourceCommonList) _resSelectors, rbool _useCommonWithMax, CREF(LPRDOCalc) _choice_calc);
+	RDOSelectResourceCommonCalc(CREF(SelectResourceCommonList) resSelectorList, rbool useCommonWithMax, CREF(LPRDOCalc) pCalcChoiceFrom);
 
-	LPRDOCalc                 choice_calc;
-	SelectResourceCommonList  resSelectors;
-	rbool                     useCommonWithMax;
+	LPRDOCalc                 m_pCalcChoiceFrom;
+	SelectResourceCommonList  m_resSelectorList;
+	rbool                     m_useCommonWithMax;
 
 	void  getBest ( REF(std::vector< std::vector<int> >) allNumbs, ruint level, REF(std::vector<int>) res, REF(RDOValue) bestVal, CREF(LPRDORuntime) pRuntime, REF(rbool) hasBest) const;
 	rbool getFirst( REF(std::vector< std::vector<int> >) allNumbs, ruint level, CREF(LPRDORuntime) pRuntime) const;
@@ -140,7 +140,7 @@ public:
 	virtual rbool    callChoice        (CREF(LPRDORuntime) pRuntime) const;
 
 private:
-	RDOSelectResourceDirectCommonCalc(int _relNumb, int _resNumb, CREF(LPRDOCalc) _choice_calc = NULL, CREF(LPRDOCalc) _order_calc = NULL, Type _order_type = order_empty);
+	RDOSelectResourceDirectCommonCalc(int relResID, int resID, CREF(LPRDOCalc) pCalcChoiceFrom = NULL, CREF(LPRDOCalc) pCalcOrder = NULL, Type orderType = order_empty);
 	virtual ~RDOSelectResourceDirectCommonCalc();
 };
 
@@ -158,7 +158,7 @@ public:
 	virtual rbool    callChoice        (CREF(LPRDORuntime) pRuntime) const;
 
 private:
-	RDOSelectResourceByTypeCommonCalc(int _relNumb, int _resType, CREF(LPRDOCalc) pChoiceCalc = NULL, CREF(LPRDOCalc) pOrderCalc = NULL, Type _order_type = order_empty);
+	RDOSelectResourceByTypeCommonCalc(int relResID, int resTypeID, CREF(LPRDOCalc) pChoiceCalc = NULL, CREF(LPRDOCalc) pOrderCalc = NULL, Type orderType = order_empty);
 	virtual ~RDOSelectResourceByTypeCommonCalc();
 };
 

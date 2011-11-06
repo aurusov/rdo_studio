@@ -93,9 +93,9 @@ inline RDOSimulatorBase::BOPlanned::BOPlanned(CREF(BOPlanned) copy)
 	, m_param(copy.m_param)
 {}
 
-inline RDOSimulatorBase::BOPlanned::BOPlanned(LPIBaseOperation opr, PTR(void) param)
-	: m_opr  (opr  )
-	, m_param(param)
+inline RDOSimulatorBase::BOPlanned::BOPlanned(LPIBaseOperation opr, PTR(void) pParam)
+	: m_opr  (opr   )
+	, m_param(pParam)
 {}
 
 CLOSE_RDO_RUNTIME_NAMESPACE

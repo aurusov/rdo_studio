@@ -138,7 +138,7 @@ private:
 	RDOCalcGetTempResParamFRM(int _resNumb, int _parNumb);
 	virtual REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime);
 
-	virtual void notify(ruint message, PTR(void) param);
+	virtual void notify(ruint message, PTR(void) pParam);
 };
 
 /*!
@@ -568,13 +568,13 @@ public:
 	}
 
 protected:
-	RDOCalcCreateNumberedResource(int _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent);
+	RDOCalcCreateNumberedResource(int typeID, rbool traceFlag, CREF(std::vector<RDOValue>) paramsCalcs, int number, rbool isPermanent);
 
-	int                    m_pType;
-	rbool                  traceFlag;
-	std::vector<RDOValue>  paramsCalcs;
-	ruint                  number;
-	rbool                  isPermanent;
+	int                    m_typeID;
+	rbool                  m_traceFlag;
+	std::vector<RDOValue>  m_paramsCalcs;
+	ruint                  m_number;
+	rbool                  m_isPermanent;
 
 	DECLARE_ICalc;
 };
@@ -596,13 +596,13 @@ public:
 	}
 
 protected:
-	RDOCalcCreateProcessResource(rsint _type, rbool _traceFlag, CREF(std::vector<RDOValue>) _paramsCalcs, int _number, rbool _isPermanent);
+	RDOCalcCreateProcessResource(rsint typeID, rbool traceFlag, CREF(std::vector<RDOValue>) paramsCalcs, int number, rbool isPermanent);
 
-	rsint                  m_pType;
-	rbool                  traceFlag;
-	std::vector<RDOValue>  paramsCalcs;
-	ruint                  number;
-	rbool                  isPermanent;
+	rsint                  m_typeID;
+	rbool                  m_traceFlag;
+	std::vector<RDOValue>  m_paramsCalcs;
+	ruint                  m_number;
+	rbool                  m_isPermanent;
 
 	DECLARE_ICalc;
 };

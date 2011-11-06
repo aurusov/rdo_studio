@@ -40,16 +40,20 @@ void RDOEvent::onStop(CREF(LPRDORuntime) pRuntime)
 
 rbool RDOEvent::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
 	return false;
 }
 
 IBaseOperation::BOResult RDOEvent::onDoOperation(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
 }
 
-void RDOEvent::onMakePlaned(CREF(LPRDORuntime) pRuntime, void* param)
+void RDOEvent::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
 {
+	UNUSED(pParam);
+
 	pRuntime->inc_cnt_events();
 	onBeforeEvent(pRuntime);
 	convertEvent (pRuntime);
@@ -77,6 +81,7 @@ void RDOEvent::onAfterEvent(CREF(LPRDORuntime) pRuntime)
 
 IBaseOperation::BOResult RDOEvent::onContinue(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
 }
 

@@ -8,7 +8,12 @@
   \indent    4T
 */
 
+// ----------------------------------------------------------------------- PLATFORM
+#include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
+#ifdef COMPILER_VISUAL_STUDIO
+	#pragma warning(disable : 4786)
+#endif
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdomacros.h"
 #include "simulator/runtime/rdotrace.h"
@@ -18,8 +23,6 @@
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
-
-#pragma warning(disable : 4786)
 
 /// @todo не стоит ли здесь перейти на функторы?
 
@@ -171,11 +174,11 @@ inline IBaseOperation::BOResult RDOLogic<Order>::onDoOperation(CREF(LPRDORuntime
 }
 
 template <class Order>
-inline void RDOLogic<Order>::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) param)
+inline void RDOLogic<Order>::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
 {
 	LOGIC_FOR_ALL()
 	{
-		(*it)->onMakePlaned(pRuntime, param);
+		(*it)->onMakePlaned(pRuntime, pParam);
 	}
 }
 

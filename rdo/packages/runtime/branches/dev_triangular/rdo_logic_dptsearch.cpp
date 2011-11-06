@@ -12,9 +12,10 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#ifdef OST_WINDOWS
+#ifdef COMPILER_VISUAL_STUDIO
 	#pragma warning(disable : 4786)
-#else
+#endif
+#ifndef OST_WINDOWS
 	#include <iostream>
 	#include <sys/time.h>
 #endif
@@ -59,8 +60,9 @@ IBaseOperation::BOResult RDODPTSearch::onDoOperation(CREF(LPRDORuntime) pRuntime
 
 IBaseOperation::BOResult RDODPTSearch::onContinue(CREF(LPRDORuntime) pRuntime)
 {
+	UNUSED(pRuntime);
 	ruint32 time_begin = ::GetTickCount();
-	while (true)
+	for (;;)
 	{
 		// ¬озмем дл€ раскрыти€ первую вершину из списка OPEN
 		TreeNode* curr = *(treeRoot->m_OPEN.begin());

@@ -78,7 +78,7 @@ protected:
 		
 		BOPlanned();
 		BOPlanned(CREF(BOPlanned) copy);
-		BOPlanned(LPIBaseOperation opr, PTR(void) param = NULL);
+		BOPlanned(LPIBaseOperation opr, PTR(void) pParam = NULL);
 	};
 	typedef  std::list<BOPlanned>                  BOPlannedItem;
 	typedef  std::map<double, PTR(BOPlannedItem)>  BOPlannedMap;

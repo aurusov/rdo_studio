@@ -60,9 +60,9 @@ rdoAnimation::RDOColor RDOFRMFrame::RDOFRMColor::getColor(CREF(LPRDORuntime) pRu
 	case CT_NONE        : return rdoAnimation::RDOColor(50, 200, 50);
 	case CT_RGB         : return rdoAnimation::RDOColor
 						  (
-							m_pRedCalc  ->calcValue(pRuntime).getInt(),
-							m_pGreenCalc->calcValue(pRuntime).getInt(),
-							m_pBlueCalc ->calcValue(pRuntime).getInt()
+							(rbyte)m_pRedCalc  ->calcValue(pRuntime).getUInt(),
+							(rbyte)m_pGreenCalc->calcValue(pRuntime).getUInt(),
+							(rbyte)m_pBlueCalc ->calcValue(pRuntime).getUInt()
 						  );
 	case CT_TRANSPARENT : return rdoAnimation::RDOColor();
 	case CT_LAST_BG     : return pFrame->m_colorLastBg;
