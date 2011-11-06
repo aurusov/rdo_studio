@@ -51,13 +51,19 @@ REF(LPRDOArrayType) RDOArrayValue::getArrayType()
 
 rdoRuntime::RDOValue RDOArrayValue::getRArray() const
 {
-	rdoRuntime::RDOArrayValue arrayValue(m_pArrayType->getRuntimeArrayType());
+	rdoRuntime::RDOValue value(m_pArrayType->getRuntimeArrayType(), createRuntimeValue());
+	return value;
+}
+
+rdoRuntime::LPRDOArrayValue RDOArrayValue::createRuntimeValue() const
+{
+	rdoRuntime::LPRDOArrayValue pArrayValue = rdo::Factory<rdoRuntime::RDOArrayValue>::create(m_pArrayType->getRuntimeArrayType());
+	ASSERT(pArrayValue);
 	STL_FOR_ALL_CONST(m_container, it)
 	{
-		arrayValue.insertItem((*it)->value());
+		pArrayValue->insertItem((*it)->value());
 	}
-	rdoRuntime::RDOValue value(arrayValue);
-	return value;
+	return pArrayValue;
 }
 
 tstring RDOArrayValue::getAsString() const

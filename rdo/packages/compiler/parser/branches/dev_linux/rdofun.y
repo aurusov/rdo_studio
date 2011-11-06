@@ -2515,7 +2515,7 @@ param_array_value
 		RDOParserSrcInfo srcInfo(@1, @3, pArrayValue->getAsString());
 		pArrayValue->setSrcInfo(srcInfo);
 		pArrayValue->getArrayType()->setSrcInfo(srcInfo);
-		$$ = PARSER->stack().push(rdo::Factory<RDOValue>::create(pArrayValue));
+		$$ = PARSER->stack().push(rdo::Factory<RDOValue>::create(pArrayValue->getArrayType()->typeInfo(), pArrayValue));
 	}
 	| '[' array_item error
 	{
