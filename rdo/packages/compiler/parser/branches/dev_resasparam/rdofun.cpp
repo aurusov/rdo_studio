@@ -246,11 +246,7 @@ LPRDOFUNArithm RDOFUNArithm::generateByConst(CREF(LPRDOValue) pValue)
 	ASSERT(pValue);
 	ASSERT(pValue->constant());
 
-	LPExpression pExpression = rdo::Factory<Expression>::create(
-		pValue->typeInfo(),
-		rdo::Factory<rdoRuntime::RDOCalcConst>::create(pValue->value()),
-		pValue->src_info()
-	);
+	LPExpression pExpression = rdo::Factory<Expression>::create(pValue);
 	ASSERT(pExpression);
 
 	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);

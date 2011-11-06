@@ -22,9 +22,8 @@ OPEN_RDO_PARSER_NAMESPACE
 // -------------------- RDOEnumType
 // --------------------------------------------------------------------------------
 RDOEnumType::RDOEnumType()
-	: RDOType(rdoRuntime::g_unknow)
+	: RDOType(rdo::Factory<rdoRuntime::RDOEnumType>::create())
 {
-	m_pType = rdo::Factory<rdoRuntime::RDOEnumType>::create();
 	ASSERT(m_pType);
 }
 

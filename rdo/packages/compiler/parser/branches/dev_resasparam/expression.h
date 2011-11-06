@@ -37,12 +37,15 @@ public:
 
 private:
 	Expression(CREF(LPTypeInfo) pType, CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(rdoRuntime::RDOSrcInfo) src_info);
+	Expression(CREF(LPRDOValue) pValue);
 	Expression(CREF(LPExpression) pExpression);
 	virtual ~Expression();
 
 	LPTypeInfo             m_pType;
-	rdoRuntime::LPRDOCalc  m_pCalc;
+	LPRDOValue             m_pValue; //! < Используется или m_pValue или m_pCalc
+	rdoRuntime::LPRDOCalc  m_pCalc;  //! < Более красивое решение: завести парсеровский калк
 };
+
 // --------------------------------------------------------------------------------
 // -------------------- ExpressionStatement
 // --------------------------------------------------------------------------------
