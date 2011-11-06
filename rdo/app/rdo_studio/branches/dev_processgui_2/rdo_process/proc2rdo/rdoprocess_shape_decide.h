@@ -24,8 +24,8 @@ public:
 
 	virtual rp::string getClassName() const { return "RPShapeDecide"; }
 	virtual rp::RPXMLNode* save( rp::RPXMLNode* parent_node );
-	// Переопределенная виртуальная функция save_To_XML для RPShapeDecide:
-	void save_To_XML(pugi::xml_document &doc, std::list< RPObject* >& all_child);
+	// Переопределенная виртуальная функция Save_To_XML для RPShapeDecide:
+	void Save_To_XML(pugi::xml_node &node);
 	virtual void onLButtonDblClk( UINT nFlags, CPoint global_chart_pos );
 	virtual void generate();
 	double ptrue; 

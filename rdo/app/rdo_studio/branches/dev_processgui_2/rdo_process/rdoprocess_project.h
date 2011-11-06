@@ -2,6 +2,7 @@
 #define RDO_PROCESS_PROJECT_MFC_H
 
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_project.h"
+#include "utils/rdodebug.h"
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
@@ -27,8 +28,8 @@ public:
 	void open();
 	void save();
 	virtual void load( rp::RPXMLNode* node );
-	// Переопределенная виртуальная функция save_To_XML для RPProjectMFC:
-	void save_To_XML(pugi::xml_document &doc, std::list< RPObject* >& all_child);
+	// Переопределенная виртуальная функция Save_To_XML для RPProjectMFC:
+	void Save_To_XML(pugi::xml_node &node);
 };
 
 #endif // RDO_PROCESS_PROJECT_MFC_H

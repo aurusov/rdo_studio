@@ -154,7 +154,7 @@ RDOfiles->resourse<<std::endl<<std::endl<<"{-------ресурс ------" <<getName().c_
 
 }
 
-void RPShapeResource_MJ::save_To_XML(pugi::xml_document &doc, std::list< RPObject* >& all_child)
+void RPShapeResource_MJ::Save_To_XML(pugi::xml_node &node)
 {
 
 }

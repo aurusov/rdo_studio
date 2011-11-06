@@ -123,7 +123,7 @@ void RPShapeProcessMJ::generate()
 	m_pParams = NULL;
 }
 
-void RPShapeProcessMJ::save_To_XML(pugi::xml_document &doc, std::list< RPObject* >& all_child)
+void RPShapeProcessMJ::Save_To_XML(pugi::xml_node &node)
 {
 
 }

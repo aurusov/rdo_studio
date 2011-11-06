@@ -60,7 +60,7 @@ void RPShapeTerminateMJ::generate()
 	m_pParams = NULL;
 }
 
-void RPShapeTerminateMJ::save_To_XML(pugi::xml_document &doc, std::list< RPObject* >& all_child)
+void RPShapeTerminateMJ::Save_To_XML(pugi::xml_node &node)
 {
 
 }

@@ -45,9 +45,9 @@ public:
 	void disconnect( RPObject* to );
 	void disconnect( RPObject* to, UINT message );
 
-	// Блокируем вхождение в данный класс функции save_To_XML
+	// Блокируем вхождение в данный класс функции Save_To_XML
 	// (из-за проектной ошибки - класс msg не должен наследоваться от RPObject).
-	virtual void save_To_XML(pugi::xml_document &doc, std::list< RPObject* >& all_child) { NEVER_REACH_HERE; };
+	virtual void Save_To_XML(pugi::xml_node &node) { NEVER_REACH_HERE; };
 };
 
 } // namespace rp

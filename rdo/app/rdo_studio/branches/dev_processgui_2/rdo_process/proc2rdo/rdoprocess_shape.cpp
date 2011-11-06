@@ -65,28 +65,7 @@ rpMethod::RPMethod* RPObjectFlowChart_MJ::getMethod()
 	return proc2rdo;
 }
 
-void RPObjectFlowChart_MJ::save_To_XML(pugi::xml_document &doc, std::list< RPObject* >& all_child)
+void RPObjectFlowChart_MJ::Save_To_XML(pugi::xml_node &node)
 {
-	// Дополняем список потомками FlowChart'a:
-	all_child.insert( all_child.end(), child.begin(), child.end() );
-
-	// Выводим всех потомков в файл:
-	for( std::list< RPObject* >::const_iterator it = all_child.begin(); it != all_child.end(); ++it )
-	{
-		pugi::xml_node node = doc.append_child((*it)->getClassName().c_str());
-		pugi::xml_node new_node = node.insert_child_after((*it)->getClassName().c_str(), doc);
-	}
-#pragma region Попытка сделать вложенный цикл, создающий узлы дерева:
-	//for( std::list< RPObject* >::const_iterator it = all_child.begin(); it != all_child.end(); ++it )
-	//{
-		//pugi::xml_node new_node = node.append_child(getClassName().c_str());
-		//for(pugi::xml_node_iterator it_node = node.begin(); it_node != node.end(); ++it_node)
-		//{
-		//node.append_child(this->getClassName().c_str());
-	    //pugi::xml_node node = doc.append_child((*it)->getClassName().c_str());
-	
-		//}
-	//}
-#pragma endregion Неудачная попытка.
 
 }
