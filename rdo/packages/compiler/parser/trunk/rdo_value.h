@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/smart_ptr/intrusive_ptr.h"
+#include "utils/smart_ptr/intrusive_ptr_interface_wrapper.h"
 #include "simulator/compiler/parser/namespace.h"
 #include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/compiler/parser/type/info.h"
@@ -30,23 +31,28 @@ OBJECT(RDOValue) IS INSTANCE_OF(RDOParserSrcInfo)
 {
 DECLARE_FACTORY(RDOValue);
 public:
-	CREF(LPTypeInfo)              typeInfo() const;
-	rdoRuntime::RDOType::TypeID     typeID() const;
-	CREF(rdoRuntime::RDOValue)       value() const;
-	CPTR(rdoRuntime::RDOValue) operator-> () const;
-	CREF(LPRDOArrayValue)         getArray() const;
+	CREF(LPTypeInfo)             typeInfo() const;
+	rdoRuntime::RDOType::TypeID  typeID  () const;
+	CREF(rdoRuntime::RDOValue)   value   () const;
 
 	rbool defined () const;
 	rbool constant() const;
 
+	template <class T>
+	CREF(rdo::intrusive_ptr<T>) get() const;
+
 	static LPRDOValue getIdentificator(CREF(tstring) identificator);
 
 private:
-	explicit RDOValue(CREF(rsint)           value, CREF(RDOParserSrcInfo) src_info);
-	explicit RDOValue(CREF(ruint)           value, CREF(RDOParserSrcInfo) src_info);
-	explicit RDOValue(CREF(double)          value, CREF(RDOParserSrcInfo) src_info);
-	explicit RDOValue(CREF(tstring)         value, CREF(RDOParserSrcInfo) src_info);
-	explicit RDOValue(CREF(LPRDOArrayValue) pValue);
+	explicit RDOValue(CREF(rsint)   value, CREF(RDOParserSrcInfo) src_info);
+	explicit RDOValue(CREF(ruint)   value, CREF(RDOParserSrcInfo) src_info);
+	explicit RDOValue(CREF(double)  value, CREF(RDOParserSrcInfo) src_info);
+	explicit RDOValue(CREF(tstring) value, CREF(RDOParserSrcInfo) src_info);
+
+	template <class T>
+	RDOValue(CREF(LPTypeInfo) pType, CREF(rdo::intrusive_ptr<T>) pObject);
+	template <class T>
+	RDOValue(CREF(LPTypeInfo) pType, CREF(rdo::intrusive_ptr<T>) pObject, CREF(RDOParserSrcInfo) src_info);
 
 	explicit RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(RDOParserSrcInfo) src_info, CREF(LPTypeInfo) pType);
 	         RDOValue(CREF(LPRDOValue) pValue);
@@ -56,9 +62,21 @@ private:
 	// Ќеопределенный тип
 	         RDOValue();
 
+ 	template <class T>
+	void setPointer(CREF(rdo::intrusive_ptr<T>) pObject);
+
+	//! “ип контейнера значени€, размер определ€етс€ по максимальному размеру типа данных
+	typedef rbyte Value[sizeof(rdo::intrusive_ptr_interface_wrapper<RDOValue>)];
+
+	Value                m_buffer;
 	rdoRuntime::RDOValue m_value;
-	LPRDOArrayValue      m_pArray;
 	LPTypeInfo           m_pType;
+
+	template <class T>
+	REF(T) __get();
+
+	template <class T>
+	CREF(T) __get() const;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

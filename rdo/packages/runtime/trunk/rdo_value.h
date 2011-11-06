@@ -20,10 +20,10 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 class RDOFuzzyValue;
-class RDOArrayValue;
-class RDOArrayIterator;
 class RDOMatrixValue;
 class RDOMatrixIterator;
+PREDECLARE_POINTER(RDOArrayValue);
+PREDECLARE_POINTER(RDOArrayIterator);
 PREDECLARE_POINTER(RDOEnumType);
 
 //! Значение переменных в РДО
@@ -46,8 +46,7 @@ public:
 	RDOValue(CREF(tstring)       value   );
 	RDOValue(CPTR(tchar)         value   );
 	RDOValue(CREF(tstring)       value, CREF(LPRDOType) pType);
-	RDOValue(CREF(RDOArrayValue)     arrayValue );
-	RDOValue(CREF(RDOArrayIterator)  aIterator  );
+	RDOValue(CREF(LPRDOArrayIterator) pIterator  );
 	RDOValue(CREF(RDOMatrixValue)    matrixValue);
 	RDOValue(CREF(RDOMatrixIterator) mIterator  );
 
@@ -137,10 +136,10 @@ private:
 	CREF(tstring)           __stringV   () const;
 	 REF(RDOFuzzyValue)     __fuzzyV    ();
 	CREF(RDOFuzzyValue)     __fuzzyV    () const;
-	 REF(RDOArrayValue)     __arrayV    ();
-	CREF(RDOArrayValue)     __arrayV    () const;
-	 REF(RDOArrayIterator)  __arrayItr  ();
-	CREF(RDOArrayIterator)  __arrayItr  () const;
+	 REF(LPRDOArrayValue)   __arrayV    ();
+	CREF(LPRDOArrayValue)   __arrayV    () const;
+	 REF(LPRDOArrayIterator)__arrayItr  ();
+	CREF(LPRDOArrayIterator)__arrayItr  () const;
 	 REF(RDOMatrixValue)    __matrixV   ();
 	CREF(RDOMatrixValue)    __matrixV   () const;
 	 REF(RDOMatrixIterator) __matrixItr ();

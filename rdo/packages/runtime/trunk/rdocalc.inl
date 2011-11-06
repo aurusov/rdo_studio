@@ -223,6 +223,10 @@ inline void RDOCalcFunctionCall::setFunctionCalc(CREF(LPRDOFunCalc) pFunction)
 // --------------------------------------------------------------------------------
 inline RDOCalcConst::RDOCalcConst(CREF(RDOValue) value)
 {
+	if (value.typeID() != RDOType::t_identificator)
+	{
+		__asm nop;
+	}
 	m_value = value;
 }
 

@@ -23,14 +23,13 @@ OPEN_RDO_PARSER_NAMESPACE
  //---------- RDOArrayType
  //----------------------------------------------------------------------------
 RDOArrayType::RDOArrayType(CREF(LPTypeInfo) pItemType, CREF(RDOParserSrcInfo) src_info)
-	: RDOType          (rdoRuntime::g_unknow)
-	, RDOParserSrcInfo (src_info            )
-	, m_pItemType      (pItemType           )
+	: RDOType          (rdo::Factory<rdoRuntime::RDOArrayType>::create(pItemType->type()->type()))
+	, RDOParserSrcInfo (src_info )
+	, m_pItemType      (pItemType)
 {
+	ASSERT(m_pType  );
 	ASSERT(pItemType);
 	setSrcText(name());
-	m_pType = rdo::Factory<rdoRuntime::RDOArrayType>::create(pItemType->type()->type());
-	ASSERT(m_pType);
 }
 
 RDOArrayType::~RDOArrayType()
@@ -80,14 +79,15 @@ LPRDOValue RDOArrayType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInf
 			LPRDOArrayType pThisArray(const_cast<PTR(RDOArrayType)>(this));
 			LPRDOArrayValue pThisArrayValue = rdo::Factory<RDOArrayValue>::create(pThisArray);
 			ASSERT(pThisArrayValue);
-			rdoRuntime::RDOArrayValue pFromArrayValue = pFrom->value().getArray();
-			for (rdoRuntime::RDOArrayValue::Container::iterator it = pFromArrayValue.containerBegin(); it < pFromArrayValue.containerEnd(); ++it)
+			rdoRuntime::LPRDOArrayValue pFromArrayValue = pFrom->get<RDOArrayValue>()->createRuntimeValue();
+			ASSERT(pFromArrayValue);
+			for (rdoRuntime::RDOArrayValue::Container::iterator it = pFromArrayValue->containerBegin(); it < pFromArrayValue->containerEnd(); ++it)
 			{
 				LPRDOValue pItemValue = rdo::Factory<RDOValue>::create((*it), src_info, pThisArray->getItemType());
 				ASSERT(pItemValue);
 				pThisArrayValue->insertItem(pThisArray->getItemType()->type()->value_cast(pItemValue, to_src_info, src_info));
 			}
-			return rdo::Factory<RDOValue>::create(pThisArrayValue);
+			return rdo::Factory<RDOValue>::create(pThisArray->typeInfo(), pThisArrayValue, pFrom->src_info());
 			break;
 		}
 	default:
@@ -106,7 +106,7 @@ rdoRuntime::LPRDOCalc RDOArrayType::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCalc,
 
 rdoRuntime::RDOValue RDOArrayType::get_default() const
 {
-	return rdoRuntime::RDOArrayValue(getRuntimeArrayType());
+	return rdoRuntime::RDOValue(getRuntimeArrayType(), rdo::Factory<rdoRuntime::RDOArrayValue>::create(getRuntimeArrayType()));
 }
 
 void RDOArrayType::writeModelStructure(REF(std::ostream) stream) const
