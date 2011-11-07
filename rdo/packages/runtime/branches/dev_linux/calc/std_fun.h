@@ -20,6 +20,9 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
+class std_fun_one_param {};
+class std_fun_two_param {};
+
 /*!
   \class   std_fun1
   \brief   Функция с одним параметром
@@ -28,11 +31,10 @@ template <class RT, class P1>
 class std_fun1
 {
 public:
-	enum { arity = 1 };
-
-	typedef RT return_type;
-	typedef P1 arg1_type;
-	typedef RT (*function_type)(P1);
+	typedef  RT                 return_type;
+	typedef  P1                 arg1_type;
+	typedef  RT                 (*function_type)(P1);
+	typedef  std_fun_one_param  param_count;
 };
 
 /*!
@@ -43,18 +45,12 @@ template <class RT, class P1, class P2>
 class std_fun2
 {
 public:
-	enum { arity = 2 };
-
-	typedef RT return_type;
-	typedef P1 arg1_type;
-	typedef P2 arg2_type;
-	typedef RT (*function_type)(P1, P2);
+	typedef  RT                 return_type;
+	typedef  P1                 arg1_type;
+	typedef  P2                 arg2_type;
+	typedef  RT                 (*function_type)(P1, P2);
+	typedef  std_fun_two_param  param_count;
 };
-
-#ifdef  OST_LINUX
-	template<typename T>
-	struct identity { typedef T type; };
-#endif
 
 /*!
   \class   RDOFunCalcStd
@@ -73,51 +69,11 @@ private:
 
 	REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime);
 
-	//template <int paramCount>
-	FORCE_INLINE void calc(CREF(LPRDORuntime) pRuntime, ruint paramCount)
-	{
-		#if paramCount == 1
-			m_value = m_pFunction(getParam<F::arg1_type>(pRuntime, 0));
-		#elif paramCount == 2
-			m_value = m_pFunction(getParam<F::arg1_type>(pRuntime, 0), getParam<F::arg2_type>(pRuntime, 1));
-		#else
-			NEVER_REACH_HERE;
-		#endif
-	}
+	void calc(CREF(LPRDORuntime) pRuntime, std_fun_one_param);
+	void calc(CREF(LPRDORuntime) pRuntime, std_fun_two_param);
 
-#ifdef OST_WINDOWS
-	template <class T>
-	FORCE_INLINE T getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber);
-
-	template <>
-	FORCE_INLINE double getParam<double>(CREF(LPRDORuntime) pRuntime, ruint paramNumber)
-	{
-		return pRuntime->getFuncArgument(paramNumber).getDouble();
-	}
-
-	template <>
-	FORCE_INLINE int getParam<int>(CREF(LPRDORuntime) pRuntime, ruint paramNumber)
-	{
-		return pRuntime->getFuncArgument(paramNumber).getInt();
-	}
-#endif // OST_WINDOWS
-
-#ifdef OST_LINUX
-	template <class T>
-	FORCE_INLINE identity<T> getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber);
-
-	template <class T>
-	FORCE_INLINE identity<double> getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber)
-	{
-		return pRuntime->getFuncArgument(paramNumber).getDouble();
-	}
-
-	template <class T>
-	FORCE_INLINE identity<int> getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber)
-	{
-		return pRuntime->getFuncArgument(paramNumber).getInt();
-	}
-#endif // OST_LINUX
+	double getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber, double);
+	int    getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber, int   );
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
