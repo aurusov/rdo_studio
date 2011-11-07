@@ -24,24 +24,10 @@ inline RDOFunCalcStd<F>::RDOFunCalcStd(CREF(function_type) pFunction)
 {}
 
 template <class F>
-REF(RDOValue) RDOFunCalcStd<F>::doCalc(CREF(LPRDORuntime) pRuntime)
+inline REF(RDOValue) RDOFunCalcStd<F>::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	calc<F::arity>(pRuntime);
+	calc(pRuntime, F::arity);
 	return m_value;
-}
-
-template <class F>
-template <>
-FORCE_INLINE void RDOFunCalcStd<F>::calc<1>(CREF(LPRDORuntime) pRuntime)
-{
-   m_value = m_pFunction(getParam<F::arg1_type>(pRuntime, 0), getParam<F::arg2_type>(pRuntime, 1));
-}
-
-template <class F>
-template <>
-FORCE_INLINE void RDOFunCalcStd<F>::calc<2>(CREF(LPRDORuntime) pRuntime)
-{
-   m_value = m_pFunction(getParam<F::arg1_type>(pRuntime, 0), getParam<F::arg2_type>(pRuntime, 1));
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -27,9 +27,9 @@ OPEN_RDO_RUNTIME_NAMESPACE
 template <class RT, class P1>
 class std_fun1
 {
-	public:
+public:
 	enum { arity = 1 };
-	
+
 	typedef RT return_type;
 	typedef P1 arg1_type;
 	typedef RT (*function_type)(P1);
@@ -44,15 +44,12 @@ class std_fun2
 {
 public:
 	enum { arity = 2 };
-	
+
 	typedef RT return_type;
 	typedef P1 arg1_type;
 	typedef P2 arg2_type;
 	typedef RT (*function_type)(P1, P2);
 };
-
-template<typename T>
-struct identity { typedef T type; };
 
 /*!
   \class   RDOFunCalcStd
@@ -63,31 +60,44 @@ class RDOFunCalcStd: public RDOFunCalc
 {
 public:
 	typedef typename F::function_type function_type;
-	
+
 	RDOFunCalcStd(CREF(function_type) pFunction);
-	
+
 private:
 	function_type m_pFunction;
-	
+
 	REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime);
-	
+
+	template <int paramCount>
+	FORCE_INLINE void calc(CREF(LPRDORuntime) pRuntime);
+
+	/// @todo перенести определение функций-членов в std_fun.inl
+	template <>
+	FORCE_INLINE void calc<1>(CREF(LPRDORuntime) pRuntime)
+	{
+		m_value = m_pFunction(getParam<F::arg1_type>(pRuntime, 0));
+	}
+
+	template <>
+	FORCE_INLINE void calc<2>(CREF(LPRDORuntime) pRuntime)
+	{
+		m_value = m_pFunction(getParam<F::arg1_type>(pRuntime, 0), getParam<F::arg2_type>(pRuntime, 1));
+	}
+
 	template <class T>
-	FORCE_INLINE identity<T> getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber);
-	
-	template <class T>
-	FORCE_INLINE identity<double> getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber)
+	FORCE_INLINE T getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber);
+
+	template <>
+	FORCE_INLINE double getParam<double>(CREF(LPRDORuntime) pRuntime, ruint paramNumber)
 	{
 		return pRuntime->getFuncArgument(paramNumber).getDouble();
 	}
-	
-	template <class T>
-	FORCE_INLINE identity<int> getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber)
+
+	template <>
+	FORCE_INLINE int getParam<int>(CREF(LPRDORuntime) pRuntime, ruint paramNumber)
 	{
 		return pRuntime->getFuncArgument(paramNumber).getInt();
 	}
-	
-	template <int paramCount>
-	FORCE_INLINE void calc(CREF(LPRDORuntime) pRuntime);
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
