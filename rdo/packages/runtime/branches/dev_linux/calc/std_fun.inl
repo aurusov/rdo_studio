@@ -33,13 +33,13 @@ REF(RDOValue) RDOFunCalcStd<F>::doCalc(CREF(LPRDORuntime) pRuntime)
 template <>
 void calc<1>(CREF(LPRDORuntime) pRuntime)
 {
-	m_value = m_pFunction(getParam<F::arg1_type>(pRuntime, 0));
+	m_value = m_pFunction(getParam<typename F::arg1_type>(pRuntime, 0));
 }
 
 template <>
 void calc<2>(CREF(LPRDORuntime) pRuntime)
 {
-	m_value = m_pFunction(getParam<F::arg1_type>(pRuntime, 0), getParam<F::arg2_type>(pRuntime, 1));
+	m_value = m_pFunction(getParam<typename F::arg1_type>(pRuntime, 0), getParam<F::arg2_type>(pRuntime, 1));
 }
 
 template <>
