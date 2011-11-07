@@ -51,6 +51,11 @@ public:
 	typedef RT (*function_type)(P1, P2);
 };
 
+#ifdef  OST_LINUX
+	template<typename T>
+	struct identity { typedef T type; };
+#endif
+
 /*!
   \class   RDOFunCalcStd
   \brief   Функции из пространства имен std C++
@@ -68,22 +73,19 @@ private:
 
 	REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime);
 
-	template <int paramCount>
-	FORCE_INLINE void calc(CREF(LPRDORuntime) pRuntime);
-
-	/// @todo перенести определение функций-членов в std_fun.inl
-	template <>
-	FORCE_INLINE void calc<1>(CREF(LPRDORuntime) pRuntime)
+	//template <int paramCount>
+	FORCE_INLINE void calc(CREF(LPRDORuntime) pRuntime, ruint paramCount)
 	{
-		m_value = m_pFunction(getParam<F::arg1_type>(pRuntime, 0));
+		#if paramCount == 1
+			m_value = m_pFunction(getParam<F::arg1_type>(pRuntime, 0));
+		#elif paramCount == 2
+			m_value = m_pFunction(getParam<F::arg1_type>(pRuntime, 0), getParam<F::arg2_type>(pRuntime, 1));
+		#else
+			NEVER_REACH_HERE;
+		#endif
 	}
 
-	template <>
-	FORCE_INLINE void calc<2>(CREF(LPRDORuntime) pRuntime)
-	{
-		m_value = m_pFunction(getParam<F::arg1_type>(pRuntime, 0), getParam<F::arg2_type>(pRuntime, 1));
-	}
-
+#ifdef OST_WINDOWS
 	template <class T>
 	FORCE_INLINE T getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber);
 
@@ -98,6 +100,24 @@ private:
 	{
 		return pRuntime->getFuncArgument(paramNumber).getInt();
 	}
+#endif // OST_WINDOWS
+
+#ifdef OST_LINUX
+	template <class T>
+	FORCE_INLINE identity<T> getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber);
+
+	template <class T>
+	FORCE_INLINE identity<double> getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber)
+	{
+		return pRuntime->getFuncArgument(paramNumber).getDouble();
+	}
+
+	template <class T>
+	FORCE_INLINE identity<int> getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber)
+	{
+		return pRuntime->getFuncArgument(paramNumber).getInt();
+	}
+#endif // OST_LINUX
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
