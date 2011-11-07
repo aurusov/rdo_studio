@@ -52,6 +52,15 @@ public:
 	typedef  std_fun_two_param  param_count;
 };
 
+template <class T>
+struct GetParam         { static T      getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber); };
+
+template <>
+struct GetParam<double> { static double getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber); };
+
+template <>
+struct GetParam<int>    { static int    getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber); };
+
 /*!
   \class   RDOFunCalcStd
   \brief   Функции из пространства имен std C++
@@ -71,9 +80,6 @@ private:
 
 	void calc(CREF(LPRDORuntime) pRuntime, std_fun_one_param);
 	void calc(CREF(LPRDORuntime) pRuntime, std_fun_two_param);
-
-	double getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber, double);
-	int    getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber, int   );
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
