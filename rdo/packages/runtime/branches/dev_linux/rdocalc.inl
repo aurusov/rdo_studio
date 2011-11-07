@@ -39,7 +39,7 @@ inline RDOCalcGetResParam::RDOCalcGetResParam(int _resNumb, int _parNumb)
 inline void RDOCalcGetTempResParamFRM::notify(ruint message, PTR(void) pParam)
 {
 	UNUSED(message);
-	
+
 	if (m_resID == *reinterpret_cast<PTR(int)>(pParam))
 	{
 		m_resID = -1;
@@ -239,7 +239,7 @@ inline CREF(RDOValue) RDOCalcConst::getValue() const
 inline REF(RDOValue) RDOCalcConst::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	UNUSED(pRuntime);
-	
+
 	return m_value;
 }
 
