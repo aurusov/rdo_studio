@@ -55,7 +55,7 @@ private:
 	RDOArrayValue(CREF(LPRDOArrayType)  pType );
 	RDOArrayValue(CREF(LPRDOArrayValue) pValue);
 	virtual ~RDOArrayValue();
-
+	
 	Container       m_container;
 	LPRDOArrayType  m_pArrayType;
 };
@@ -78,7 +78,7 @@ private:
 	RDOArrayIterator(CREF(LPRDOArrayIterator) pIterator);
 	RDOArrayIterator(CREF(Iterator)           iterator );
 	virtual ~RDOArrayIterator();
-
+	
 	Iterator m_iterator;
 };
 

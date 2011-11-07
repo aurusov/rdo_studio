@@ -39,22 +39,22 @@ class RDOMatrixValue
 {
 public:
 	typedef std::vector<RDOValue> Container;
-
+	
 	RDOMatrixValue(CREF(LPRDOMatrixType) pType);
 	RDOMatrixValue(CREF(RDOMatrixValue)  value);
 	~RDOMatrixValue();
-
+	
 	CREF(LPRDOMatrixType) type() const;
-
+	
 	void insertItem(CREF(RDOValue) pMatrix);
 	Container::iterator containerBegin();
 	Container::iterator containerEnd();
 	void insertItems(Container::iterator itr, Container::iterator itrFst, Container::iterator itrLst);
 	void  eraseItems(Container::iterator itrFst, Container::iterator itrLst                         );
 	CREF(RDOValue) operator[] (CREF(RDOValue) ind);
-
+	
 	tstring getAsString() const;
-
+	
 private:
 	Container       m_container;
 	LPRDOMatrixType m_pMatrixType;
@@ -68,17 +68,17 @@ class RDOMatrixIterator
 {
 public:
 	typedef RDOMatrixValue::Container::iterator Iterator;
-
+	
 	RDOMatrixIterator(CREF(RDOMatrixIterator) iterator);
 	RDOMatrixIterator(CREF(Iterator)         iterator);
-
+	
 	Iterator getIterator() const;
 	Iterator operator+  (rsint num);
 	Iterator operator-  (rsint num);
 	rbool    operator== (CREF(RDOMatrixIterator) iterator) const;
-
+	
 	RDOValue getValue() const;
-
+	
 private:
 	Iterator m_iterator;
 };
@@ -92,12 +92,12 @@ class RDOMatrixType: public RDOType
 DECLARE_FACTORY(RDOMatrixType);
 public:
 	typedef LPRDOType LPMatrixType;
-
+	
 	LPMatrixType getMatrixType() const;
-
+	
 private:
 	RDOMatrixType(CREF(LPMatrixType) pMatrixType);
-
+	
 	LPMatrixType  m_pMatrixType;
 };
 
