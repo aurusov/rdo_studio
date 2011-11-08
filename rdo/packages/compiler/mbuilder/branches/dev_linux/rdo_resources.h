@@ -184,8 +184,9 @@ public:
 			m_pType = rdo::Factory<rdoParse::TypeInfo>::create(pType, rdoParse::RDOParserSrcInfo());
 			ASSERT(m_pType);
 		}
-		// from template<> to template <class T>
+#ifdef COMPILER_VISUAL_STUDIO
 		template <>
+#endif
 		void initType(CREF(rdoRuntime::RDOEnumType::Enums) pType)
 		{
 			rdoParse::LPRDOEnumType pEnum = rdo::Factory<rdoParse::RDOEnumType>::create();
@@ -194,7 +195,7 @@ public:
 			{
 				pEnum->add(rdoParse::RDOValue::getIdentificator(*it));
 			}
-//			m_default = rdoParse::RDOValue(rdoParse::RDOValue::getIdentificator(m_pDefault->value().getAsString()).value(), pEnum, rdoParse::RDOParserSrcInfo(m_default));
+			//			m_default = rdoParse::RDOValue(rdoParse::RDOValue::getIdentificator(m_pDefault->value().getAsString()).value(), pEnum, rdoParse::RDOParserSrcInfo(m_default));
 			m_pType    = rdo::Factory<rdoParse::TypeInfo>::create(pEnum, rdoParse::RDOParserSrcInfo());
 			ASSERT(m_pType);
 		}
@@ -214,7 +215,7 @@ private:
 	Type   m_type;
 	rsint  m_id;
 };
-
+	
 // --------------------------------------------------------------------------------
 // -------------------- RDOResource
 // --------------------------------------------------------------------------------
