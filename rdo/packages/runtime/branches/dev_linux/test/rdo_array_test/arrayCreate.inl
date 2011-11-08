@@ -18,16 +18,16 @@ rdoRuntime::RDOValue integerVal4(4);
 rdoRuntime::RDOValue integerVal5(5);
 rdoRuntime::RDOValue integerVal6(6);
 
-rdoRuntime::LPRDOArrayType atype1 = rdo::Factory<rdoRuntime::RDOArrayType>::create(rdoRuntime::g_int);
-rdoRuntime::RDOArrayValue avalue1(atype1);
-avalue1.insertItem(integerVal1);
-avalue1.insertItem(integerVal2);
-avalue1.insertItem(integerVal3);
-rdoRuntime::RDOValue arrayVal1(avalue1);
+rdoRuntime::LPRDOArrayType  atype1  = rdo::Factory<rdoRuntime::RDOArrayType>::create(rdoRuntime::g_int);
+rdoRuntime::LPRDOArrayValue avalue1 = rdo::Factory<rdoRuntime::RDOArrayValue>::create(atype1);
+avalue1->insertItem(integerVal1);
+avalue1->insertItem(integerVal2);
+avalue1->insertItem(integerVal3);
+rdoRuntime::RDOValue arrayVal1(atype1, avalue1);
 
-rdoRuntime::LPRDOArrayType atype2 = rdo::Factory<rdoRuntime::RDOArrayType>::create(rdoRuntime::g_int);
-rdoRuntime::RDOArrayValue avalue2(atype2);
-avalue2.insertItem(integerVal4);
-avalue2.insertItem(integerVal5);
-avalue2.insertItem(integerVal6);
-rdoRuntime::RDOValue arrayVal2(avalue2);
+rdoRuntime::LPRDOArrayType  atype2  = rdo::Factory<rdoRuntime::RDOArrayType>::create(rdoRuntime::g_int);
+rdoRuntime::LPRDOArrayValue avalue2 = rdo::Factory<rdoRuntime::RDOArrayValue>::create(atype2);
+avalue2->insertItem(integerVal4);
+avalue2->insertItem(integerVal5);
+avalue2->insertItem(integerVal6);
+rdoRuntime::RDOValue arrayVal2(atype2, avalue2);
