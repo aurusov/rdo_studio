@@ -11,6 +11,3 @@ SET(RESOURCE_FILES
 ADD_BOOST_TEST(test_rdo_utils ${SOURCE_FILES} ${RESOURCE_FILES})
 ADD_DEPENDENCIES(test_rdo_utils rdo_utils)
 TARGET_LINK_LIBRARIES(test_rdo_utils rdo_utils)
-
-SOURCE_GROUP(".resource" FILES 
-	${RESOURCE_FILES})
