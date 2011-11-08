@@ -17,9 +17,13 @@
 #include "utils/rdocommon.h"
 // --------------------------------------------------------------------------------
 
+#ifdef COMPILER_VISUAL_STUDIO
+#	pragma warning (disable:4512)
+#endif
+
 #ifdef OST_WINDOWS
 const tstring SYSTEM_OS = _T("Windows");
-#else
+#elif OST_LINUX
 const tstring SYSTEM_OS = _T("Linux");
 #endif
 
@@ -38,8 +42,11 @@ const tstring VERSION_COMMENT  = _T("display program version");
 const tstring RDO_STUDIO_CONSOLE_VERSION = _T("0.1.0");
 const tstring RDO_LANGUAGE_VERSION       = _T("1.5");
 
-const tstring RDO_SITE                         = _T(" ( http://rdo.rk9.bmstu.ru )");
+const tstring RDO_SITE                         = _T("( http://rdo.rk9.bmstu.ru )");
 const tstring RDO_STUDIO_CONSOLE_PROGRAMM_NAME = _T("rdo console studio");
+
+const tstring NOP_STRING   = _T(" ");
+const tstring COMMA_STRING = _T(",");
 
 namespace po = boost::program_options;
 
@@ -70,7 +77,7 @@ int main(int argc, char *argv[])
 	}
 	else if (options.count(VERSION_COMMANDS))
 	{
-		std::cout << RDO_STUDIO_CONSOLE_PROGRAMM_NAME + _T(" v") + RDO_STUDIO_CONSOLE_VERSION << std::endl;
+		std::cout << RDO_STUDIO_CONSOLE_PROGRAMM_NAME + NOP_STRING + VERSION_COMMANDS_SHORT + RDO_STUDIO_CONSOLE_VERSION << std::endl;
 	}
 	else
 	{
@@ -81,15 +88,15 @@ int main(int argc, char *argv[])
 
 tstring create_description_message()
 {
-	return  RDO_STUDIO_CONSOLE_PROGRAMM_NAME + _T(" v") + 
-			RDO_STUDIO_CONSOLE_VERSION + " " + 
+	return  RDO_STUDIO_CONSOLE_PROGRAMM_NAME + NOP_STRING + VERSION_COMMANDS_SHORT +
+			RDO_STUDIO_CONSOLE_VERSION + NOP_STRING + 
 			SYSTEM_OS + RDO_SITE;
 }
 
 void create_description(po::options_description& description)
 {
 	description.add_options()
-			((HELP_COMMANDS + "," + HELP_COMMANDS_SHORT).c_str(), HELP_COMMENT.c_str())
-			((LANGUAGE_COMMANDS + "," + LANGUAGE_COMMANDS_SHORT).c_str(), LANGUAGE_COMMENT.c_str())
-			((VERSION_COMMANDS + "," + VERSION_COMMANDS_SHORT).c_str(), VERSION_COMMENT.c_str());	
+			((HELP_COMMANDS + COMMA_STRING + HELP_COMMANDS_SHORT).c_str(), HELP_COMMENT.c_str())
+			((LANGUAGE_COMMANDS + COMMA_STRING + LANGUAGE_COMMANDS_SHORT).c_str(), LANGUAGE_COMMENT.c_str())
+			((VERSION_COMMANDS + COMMA_STRING + VERSION_COMMANDS_SHORT).c_str(), VERSION_COMMENT.c_str());	
 }
