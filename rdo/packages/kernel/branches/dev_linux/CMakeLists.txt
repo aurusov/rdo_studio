@@ -24,14 +24,6 @@ SET(SOURCE_FILES
 	rdothread.cpp
 	rdokernel.cpp)
 
-SOURCE_GROUP(".thread" FILES 
-	rdothread.h
-	rdothread.cpp)
-
-SOURCE_GROUP(".kernel" FILES 
-	rdokernel.h
-	rdokernel.cpp)
-
 ADD_LIBRARY(rdo_kernel ${HEADER_FILES} ${SOURCE_FILES})
 ADD_DEPENDENCIES(rdo_kernel rdo_utils)
 
@@ -40,3 +32,15 @@ TARGET_LINK_LIBRARIES(rdo_kernel rdo_utils)
 IF(PROJECT_OS_LINUX)
 	TARGET_LINK_LIBRARIES(rdo_kernel ${PTHREAD})
 ENDIF(PROJECT_OS_LINUX)
+
+IF(MSVC) # lotions for windows #
+
+SOURCE_GROUP(".thread" FILES 
+	rdothread.h
+	rdothread.cpp)
+
+SOURCE_GROUP(".kernel" FILES 
+	rdokernel.h
+	rdokernel.cpp)
+	
+ENDIF(MSVC)
