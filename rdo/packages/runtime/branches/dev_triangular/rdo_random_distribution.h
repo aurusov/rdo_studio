@@ -19,15 +19,15 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 /*!
-  \def       RDO_NATIVE_U01
-  \brief     Законы распределения псевдослучайных чисел в стиле РДО
+  \def            RDO_NATIVE_U01
+  \brief          Законы распределения псевдослучайных чисел в стиле РДО
 */
 #define RDO_NATIVE_U01
 
 /*!
   \class          RandGenerator
   \brief          Базовое равномерное распределение [0, 1)
-  \param   seed   База генератора псевдослучайных чисел (123456789)
+  \param   seed   База генератора псевдослучайных чисел (long int = 123456789)
   \note
   ~RandGenerator  Удалять нельзя
   Нужен именно виртуальный деструктор для вызова из RDOCalcSeqInit::~RDOCalcSeqInit()
@@ -52,9 +52,9 @@ protected:
 /*!
   \class          RandGeneratorUniform
   \brief          Равномерное распределение [0, 1)
-  \param   seed   База генератора псевдослучайных чисел (123456789)
-  \param   from   Нижняя граница диапазона распределения
-  \param   to     Верхняя граница диапазона распределения
+  \param   seed   База генератора псевдослучайных чисел (long int = 123456789)
+  \param   from   Нижняя граница диапазона распределения (double)
+  \param   to     Верхняя граница диапазона распределения (double)
 */
 class RandGeneratorUniform: public RandGenerator
 {
@@ -66,8 +66,8 @@ public:
 /*!
   \class          RandGeneratorUniform
   \brief          Экспоненциальное распределение
-  \param   seed   База генератора псевдослучайных чисел (123456789)
-  \param   math   Математическое ожидание закона распределения
+  \param   seed   База генератора псевдослучайных чисел (long int = 123456789)
+  \param   math   Математическое ожидание закона распределения (double)
   */
 class RandGeneratorExponential: public RandGenerator
 {
@@ -79,9 +79,9 @@ public:
 /*!
   \class          RandGeneratorNormal
   \brief          Нормальное распределение
-  \param   seed   База генератора псевдослучайных чисел (123456789)
-  \param   av     Среднее значение последовательности
-  \param   var    Среднеквадратическое отклонение
+  \param   seed   База генератора псевдослучайных чисел (long int = 123456789)
+  \param   av     Среднее значение последовательности (double)
+  \param   var    Среднеквадратическое отклонение (double)
   */
 class RandGeneratorNormal: public RandGenerator
 {
@@ -93,10 +93,10 @@ public:
 /*!
   \class          RandGeneratorTriangular
   \brief          Треугольное распределение
-  \param   seed   База генератора псевдослучайных чисел (123456789)
-  \param   from   Левая граница интервала распределения
-  \param   top    Точка под вершиной треугольника
-  \param   to     Правая граница интервала распределения
+  \param   seed   База генератора псевдослучайных чисел (long int = 123456789)
+  \param   from   Левая граница интервала распределения (double)
+  \param   top    Точка под вершиной треугольника (double)
+  \param   to     Правая граница интервала распределения (double)
 */
 class RandGeneratorTriangular: public RandGenerator
 {
@@ -122,7 +122,7 @@ protected:
 /*!
   \class          RandGeneratorByHist
   \brief          Базовый класс для гистограмм
-  \param   seed   База генератора чисел (123456789)
+  \param   seed   База генератора чисел (long int = 123456789)
 */
 class RandGeneratorByHist: public RandGeneratorUniform, public RandGeneratorCommonNext
 {
@@ -134,10 +134,10 @@ protected:
 /*!
   \class          RandGeneratorByHistReal
   \brief          Гистограмма вещественных чисел
-  \param   seed   База генератора чисел (123456789)
-  \param   from   Нижняя граница диапазона
-  \param   to     Верхняя граница диапазона
-  \param   freq   Относительная частота попадания последовательности в заданный интервал
+  \param   seed   База генератора чисел (long int = 123456789)
+  \param   from   Нижняя граница диапазона (double)
+  \param   to     Верхняя граница диапазона (double)
+  \param   freq   Относительная частота попадания последовательности в заданный интервал (double)
 */
 class RandGeneratorByHistReal: public RandGeneratorByHist
 {
@@ -156,9 +156,9 @@ private:
 /*!
   \class          RandGeneratorByHistEnum
   \brief          Гистограмма перечислимого типа
-  \param   seed   База генератора чисел (123456789)
-  \param   val    Имя перечислимого типа
-  \param   freq   Относительная частота попадания последовательности в заданный интервал
+  \param   seed   База генератора чисел (long int = 123456789)
+  \param   val    Имя перечислимого типа (RDOValue)
+  \param   freq   Относительная частота попадания последовательности в заданный интервал (double)
 */
 class RandGeneratorByHistEnum: public RandGeneratorByHist
 {
@@ -176,7 +176,7 @@ private:
 /*!
   \class         RandGeneratorEnumerative
   \brief         Перечень значений
-  \param   val   Имя вещественной константы или Имя значения в соответсвии с типом значений последовательности
+  \param   val   Имя вещественной константы или Имя значения в соответсвии с типом значений последовательности (RDOValue)
 */
 class RandGeneratorEnumerative: public RandGeneratorCommonNext
 {
