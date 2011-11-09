@@ -10,12 +10,13 @@
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/format.hpp>
+#include <boost/filesystem.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "repository/rdorepository.h"
-#include "kernel/rdokernel.h"
-#include "simulator/service/rdosimwin.h"
 #include "utils/rdofile.h"
 #include "utils/rdotime.h"
+#include "kernel/rdokernel.h"
+#include "simulator/service/rdosimwin.h"
 #include "thirdparty/pugixml/src/pugixml.hpp"
 // --------------------------------------------------------------------------------
 
@@ -235,7 +236,7 @@ void RDOThreadRepository::newModel(CPTRC(NewModel) data)
 			extractName(path + data->m_name + m_files[rdoModelObjects::RDOX].m_extention);
 			if (!rdo::File::exist(path))
 			{
-				::CreateDirectory(path.c_str(), NULL);
+				boost::filesystem::create_directory(path.c_str());
 			}
 			createRDOX();
 		}
