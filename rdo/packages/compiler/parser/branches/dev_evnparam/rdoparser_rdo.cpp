@@ -12,6 +12,7 @@
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "simulator/runtime/rdo_activity_i.h"
 #include "simulator/compiler/parser/rdoparser_rdo.h"
 #include "simulator/compiler/parser/rdoparser_lexer.h"
 #include "simulator/compiler/parser/rdoparser.h"
@@ -219,6 +220,20 @@ void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 			{
 				(*calcIt)->setEvent(pRuntimeEvent);
 			}
+
+			LPIActivity pActivity = pRuntimeEvent;
+			ASSERT(pActivity);
+			STL_FOR_ALL_CONST(pEvent->getParamList()->getContainer(), paramIT)
+			{
+				rdoRuntime::RDOValue val;
+
+				LPRDOParam pPatternParam = m_pPattern->m_paramList.at(paramIT);
+				val = pPatternParam->getTypeInfo()->value_cast(*paramIT)->value();
+				rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOSetPatternParamCalc>::create((paramIT), val);
+				ASSERT(pCalc);
+				pActivity->addParamCalc(pCalc);
+			}
+			
 		}
 		else
 		{

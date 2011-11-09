@@ -83,5 +83,9 @@ inline void RDOEvent::setParamList(CREF(LPArithmContainer) pParamList)
 	ASSERT(pParamList);
 	m_pParamList = pParamList;
 }
+inline LPArithmContainer RDOEvent::getParamList() const
+{
+	return(m_pParamList);
+}
 
 CLOSE_RDO_PARSER_NAMESPACE
