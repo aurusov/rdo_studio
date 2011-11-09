@@ -24,6 +24,7 @@
 
 #ifdef __MINGW32__
 	#define OST_LINUX
+        #define COMPILER_MINGW
 #else
 	#ifdef _WIN32
 		#define OST_WINDOWS
