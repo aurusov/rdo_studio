@@ -130,7 +130,7 @@ SET(INLITE_FILES
 	calc/operation_name.inl
 	calc/operation_type.inl
 	calc/relres.inl
-    calc/sequence.inl
+	calc/sequence.inl
 	calc/std_fun.inl
 	calc/unary.inl)
 

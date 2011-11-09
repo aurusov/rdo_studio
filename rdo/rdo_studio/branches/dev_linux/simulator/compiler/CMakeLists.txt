@@ -1,3 +1,6 @@
-SET(RDO_PARSER_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/parser)
-ADD_SUBDIRECTORY(${RDO_PARSER_DIRECTORY})
-ADD_SUBDIRECTORY(mbuilder)
+#==============================================================================
+# Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>
+#==============================================================================
+
+#ADD_SUBDIRECTORY(parser)
+#ADD_SUBDIRECTORY(mbuilder)

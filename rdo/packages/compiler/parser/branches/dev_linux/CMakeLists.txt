@@ -21,6 +21,8 @@ IF(NOT FLEX_FOUND)
 	MESSAGE(ERROR "Flex can not be found")
 ENDIF(NOT FLEX_FOUND)
 
+SET(GENERATED_FILES)
+
 IF(PROJECT_OS_LINUX)
 
 	FLEX_TARGET(lexer_scaner rdo_lexer.l  ${CMAKE_CURRENT_SOURCE_DIR}/rdolex.cpp)
