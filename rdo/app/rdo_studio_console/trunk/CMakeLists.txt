@@ -4,9 +4,7 @@
 # Cmake for RDO  STUDIO  CONSOLE  EXECUTABLE
 #==============================================================================
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6.0)
-
-MESSAGE(STATUS "create  RDO  STUDIO  CONSOLE  EXECUTABLE")
+MESSAGE(STATUS "CREATE  RDO  STUDIO  CONSOLE  EXECUTABLE")
 
 # Find Boost
 IF(MSVC)
