@@ -11,7 +11,9 @@
 	#else
 		#include <windows.h>
 	#endif
-#else
+#endif
+
+#ifdef COMPILER_GCC
 	#include <pthread.h>
 #endif
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -52,11 +54,16 @@ RDOThread::RDOThread(CREF(tstring) _thread_name, RDOThreadFun _thread_fun)
 #else
 RDOThread::RDOThread(CREF(tstring) _thread_name)
 	: thread_name(_thread_name          )
-#ifdef OST_WINDOWS
+    #ifdef COMPILER_VISUAL_STUDIO
 	, thread_id  (::GetCurrentThreadId())
-#else
-	, thread_id  (pthread_self()        )
-#endif
+    #endif
+    #ifdef COMPILER_GCC
+        #ifdef COMPILER_MINGW
+        , thread_id  (::GetCurrentThreadId())
+        #else
+        , thread_id  (pthread_self()      )
+        #endif
+    #endif
 	, idle_cnt   (0                     )
 #endif
 {
