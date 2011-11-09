@@ -49,7 +49,7 @@ rp::RPXMLNode* RPObjectPixmap::save( rp::RPXMLNode* parent_node )
 
 void RPObjectPixmap::Save_To_XML(pugi::xml_node &node)
 {
-
+	node.append_child(getClassName().c_str());
 }
 
 void RPObjectPixmap::setPosition( double posx, double posy )

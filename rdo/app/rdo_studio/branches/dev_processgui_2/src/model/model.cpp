@@ -995,8 +995,10 @@ void RDOStudioModel::saveModelToRepository()
 	studioApp.studioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
 	setName(data.m_name);
 
-	// Вызов функции сохранения в xml-формате:
-	SaveToXML();
+	// Создаем первый узел (ноду):
+	pugi::xml_node node;
+    // Ссылаемся на виртуальную функцию Save_To_XML(), которая поэтапно запишет информацию в файл:
+	rpMethod::project->Save_To_XML(node);
 
  	studioApp.insertReopenItem(getFullName());
 
@@ -1008,26 +1010,6 @@ void RDOStudioModel::saveModelToRepository()
 	if (wasSaved && plugins)
 	{
 		plugins->pluginProc(rdoPlugin::PM_MODEL_SAVE);
-	}
-}
-
-void RDOStudioModel::SaveToXML()
-{
-	// Заводим документ:
-	pugi::xml_document doc;
-	// Создаем первый узел (ноду) в этом документе и ставим ее в начало документа (!) :
-	pugi::xml_node node = doc.root();
-
-    // Ссылаемся на виртуальную функцию Save_To_XML(), которая поэтапно запишет информацию в файл:
-	rpMethod::project->Save_To_XML(node);
-	
-	// Автоматически открываем файл при создании потока:
-	std::ofstream outFile("D:\\TESTXML.txt");
-	// Проверяем открытый нами поток на наличие ошибок ввода-вывода:
-	if (outFile.good())
-	{
-		doc.save(outFile);
-		outFile.close();
 	}
 }
 

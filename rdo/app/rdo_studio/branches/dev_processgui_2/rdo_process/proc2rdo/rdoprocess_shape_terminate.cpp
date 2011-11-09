@@ -62,5 +62,5 @@ void RPShapeTerminateMJ::generate()
 
 void RPShapeTerminateMJ::Save_To_XML(pugi::xml_node &node)
 {
-
+	node.append_child(getClassName().c_str());
 }

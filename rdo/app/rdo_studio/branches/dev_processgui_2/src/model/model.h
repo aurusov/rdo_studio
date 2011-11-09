@@ -236,9 +236,6 @@ public:
 
 	void  updateStyleOfAllModel() const;
 	rbool isPrevModelClosed    () const { return m_modelClosed; }
-
-	// Функция сохранения GUI в xml-формате в текстовом файле:
-	void SaveToXML();
 };
 
 // --------------------------------------------------------------------------------
