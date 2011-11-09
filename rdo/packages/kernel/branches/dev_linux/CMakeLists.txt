@@ -1,10 +1,14 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6.0)
+#==============================================================================
+# Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>
+#==============================================================================
 
 MESSAGE(STATUS "CREATE RDO_KERNEL LIBRARY")
 
 # Find Boost
-SET(Boost_USE_STATIC_LIBS   ON)
-SET(Boost_USE_MULTITHREADED ON)
+IF(MSVC)
+	SET(Boost_USE_STATIC_LIBS   ON)
+	SET(Boost_USE_MULTITHREADED ON)
+ENDIF(MSVC)
 FIND_PACKAGE(Boost COMPONENTS system filesystem thread REQUIRED)
 IF(PROJECT_OS_LINUX)
 	FIND_LIBRARY(PTHREAD pthread $ENV{LD_LIBRARY_PATH})
