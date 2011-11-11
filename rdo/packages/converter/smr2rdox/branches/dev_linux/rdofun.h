@@ -157,7 +157,7 @@ public:
 	int getNumber() const { return m_number; }
 
 private:
-	RDOFUNConstant(CREF(RDOParserSrcInfo) src_info, CREF(LPRDOTypeParam) pType, CREF(RDOValue) default);
+	RDOFUNConstant(CREF(RDOParserSrcInfo) src_info, CREF(LPRDOTypeParam) pType, CREF(RDOValue) defaultValue);
 	virtual ~RDOFUNConstant();
 
 	int m_number;
