@@ -13,10 +13,10 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <limits>
 #ifdef COMPILER_GCC
 	#include <float.h>
-#endif
-#include <limits>
+#endif // COMPILER_GCC
 #include <iomanip>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/pch.h"

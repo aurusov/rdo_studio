@@ -11,11 +11,11 @@
 	#else
 		#include <windows.h>
 	#endif
-#endif
+#endif // COMPILER_VISUAL_STUDIO
 
 #ifdef COMPILER_GCC
 	#include <pthread.h>
-#endif
+#endif // COMPILER_GCC
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
 #include "kernel/rdokernel.h"

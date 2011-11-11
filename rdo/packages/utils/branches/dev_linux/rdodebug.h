@@ -14,16 +14,17 @@
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
-#ifdef OST_WINDOWS
+#ifdef COMPILER_VISUAL_STUDIO
 	#ifdef RDO_MT
 		#include <afxwin.h>
 	#else
 		#include <windows.h>
 	#endif
-#else
+#endif // COMPILER_VISUAL_STUDIO
+#ifdef COMPILER_GCC
 	#include <iostream>
 	#include <assert.h>
-#endif
+#endif // COMPILER_GCC
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdocommon.h"
 // --------------------------------------------------------------------------------

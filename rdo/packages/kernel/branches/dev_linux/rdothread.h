@@ -14,7 +14,7 @@
 		#pragma once
 	#endif
 	#pragma warning( disable : 4786 )
-#endif
+#endif // COMPILER_VISUAL_STUDIO
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdomacros.h"
 #include "utils/rdotypes.h"

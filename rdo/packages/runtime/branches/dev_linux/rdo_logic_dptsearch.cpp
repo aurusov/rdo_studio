@@ -14,11 +14,9 @@
 // ----------------------------------------------------------------------- INCLUDES
 #ifdef COMPILER_VISUAL_STUDIO
 	#pragma warning(disable : 4786)
-#endif
-#ifndef OST_WINDOWS
 	#include <iostream>
 	#include <sys/time.h>
-#endif
+#endif // COMPILER_VISUAL_STUDIO
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_logic_dptsearch.h"
 #include "simulator/runtime/searchtree.h"

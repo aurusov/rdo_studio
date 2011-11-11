@@ -19,13 +19,14 @@
 
 #ifdef COMPILER_VISUAL_STUDIO
 #	pragma warning (disable:4512)
-#endif
+#endif // COMPILER_VISUAL_STUDIO
 
 #ifdef OST_WINDOWS
 const tstring SYSTEM_OS = _T("Windows");
-#elif OST_LINUX
+#endif // OST_WINDOWS
+#ifdef OST_LINUX
 const tstring SYSTEM_OS = _T("Linux");
-#endif
+#endif // OST_LINUX
 
 const tstring HELP_COMMANDS     = _T("help");
 const tstring LANGUAGE_COMMANDS = _T("language");

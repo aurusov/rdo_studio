@@ -11,11 +11,12 @@
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
-#ifdef OST_WINDOWS
+#ifdef COMPILER_VISUAL_STUDIO
 	#include <io.h>
-#else
+#endif // COMPILER_VISUAL_STUDIO
+#ifdef COMPILER_GCC
 	#include <unistd.h>
-#endif
+#endif // COMPILER_GCC
 
 #include <fstream>
 #include <boost/filesystem.hpp>
@@ -47,11 +48,12 @@ inline rbool File::exist(CREF(tstring) name)
 
 inline rbool File::read_only(CREF(tstring) name)
 {
-#ifdef OST_WINDOWS
+#ifdef COMPILER_VISUAL_STUDIO
 	return _access(name.c_str(), 04) == 0 && _access(name.c_str(), 06) == -1;
-#else  // not OST_WINDOWS
+#endif  // COMPILER_VISUAL_STUDIO
+#ifdef COMPILER_GCC
 	return access(name.c_str(), R_OK) == 0 && access(name.c_str(), W_OK) == -1;
-#endif // OST_WINDOWS
+#endif // COMPILER_GCC
 }
 
 inline rbool File::unlink(CREF(tstring) name)

@@ -18,7 +18,7 @@
 #include <locale>
 #include <algorithm>
 
-#ifdef OST_WINDOWS
+#ifdef COMPILER_VISUAL_STUDIO
 	#include <windows.h>
 	#include <io.h>
 #endif
@@ -51,9 +51,10 @@ tstring format( CPTR(tchar) str, REF(va_list) params )
 		#pragma warning(disable: 4996)
 		size = _vsnprintf( &s[0], s.size(), str, params );
 		#pragma warning(default: 4996)
-#else  // not COMPILER_VISUAL_STUDIO
+#endif  // COMPILER_VISUAL_STUDIO
+#ifdef COMPILER_GCC
 		size = vsnprintf( &s[0], s.size(), str, params );
-#endif // COMPILER_VISUAL_STUDIO
+#endif // COMPILER_GCC
 		if ( size == -1 ) {
 			s.resize( s.size() + 256 );
 		}
@@ -62,7 +63,7 @@ tstring format( CPTR(tchar) str, REF(va_list) params )
 	return tstring( s.begin(), s.end() );
 }
 
-#ifdef OST_WINDOWS
+#ifdef COMPILER_VISUAL_STUDIO
 tstring format(ruint resource, ...)
 {
 	va_list params;
@@ -83,7 +84,7 @@ tstring format(ruint resource, REF(va_list) params)
 	}
 	return _T("");
 }
-#endif // OST_WINDOWS
+#endif // COMPILER_VISUAL_STUDIO
 
 struct _toLower {
 	_toLower( std::locale loc ): m_loc(loc) {};

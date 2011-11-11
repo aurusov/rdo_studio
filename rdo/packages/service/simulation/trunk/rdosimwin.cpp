@@ -12,10 +12,10 @@
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
-#ifdef OST_WINDOWS
+#ifdef COMPILER_VISUAL_STUDIO
 	#pragma warning(disable : 4786)
 	#include <conio.h>
-#endif
+#endif // COMPILER_VISUAL_STUDIO
 #include <stdio.h>
 #include <fstream>
 #include <iostream>

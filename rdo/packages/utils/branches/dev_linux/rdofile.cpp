@@ -12,14 +12,15 @@
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
-#ifdef OST_WINDOWS
-	#include <windows.h>
-#else
+#ifdef COMPILER_VISUAL_STUDIO
+        #include <windows.h>
+#endif // COMPILER_VISUAL_STUDIO
+#ifdef COMPILER_GCC
 	#define _MAX_DRIVE 512
 	#define _MAX_DIR   512
 	#define _MAX_FNAME 512
 	#define _MAX_EXT   512
-#endif
+#endif // COMPILER_GCC
 
 #include <boost/filesystem.hpp>
 #include <boost/uuid/uuid.hpp>
@@ -39,13 +40,14 @@ rbool File::splitpath(CREF(tstring) name, REF(tstring) fileDir, REF(tstring) fil
 	char _name [_MAX_FNAME];
 	char _ext  [_MAX_EXT  ];
 
-#ifdef OST_WINDOWS
+#ifdef COMPILER_VISUAL_STUDIO
 	if (_splitpath_s(name.c_str(), _drive, _MAX_DRIVE, _dir, _MAX_DIR, _name, _MAX_FNAME, _ext, _MAX_EXT) != 0)
 		return false;
-#else  // not OST_WINDOWS
+#endif // COMPILER_VISUAL_STUDIO
+#ifdef COMPILER_GCC
 	if(!exist(name.c_str()))
 		return false;
-#endif // OST_WINDOWS
+#endif // COMPILER_GCC
 	boost::filesystem::path from(_dir);
 	fileDir = from.string();
 	fileName = _name;
@@ -55,7 +57,7 @@ rbool File::splitpath(CREF(tstring) name, REF(tstring) fileDir, REF(tstring) fil
 
 tstring File::getTempFileName()
 {
-#ifdef OST_WINDOWS
+#ifdef COMPILER_VISUAL_STUDIO
 	const ruint BUFSIZE = 4096;
 	char lpPathBuffer[BUFSIZE];
 
@@ -69,7 +71,8 @@ tstring File::getTempFileName()
 		return tstring();
 	}
 	return szTempName;
-#else // not OST_WINDOWS
+#endif // COMPILER_VISUAL_STUDIO
+#ifdef COMPILER_GCC
 	//! @todo check random
 	boost::uuids::random_generator random_gen;
 	tstring tempFileName = tstring(_T("/tmp/rdo_temp_file_num_")) + boost::uuids::to_string(random_gen());

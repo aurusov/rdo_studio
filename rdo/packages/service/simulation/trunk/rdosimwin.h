@@ -19,14 +19,14 @@
 #include <vector>
 #include <boost/noncopyable.hpp>
 
-#ifdef OST_WINDOWS
+#ifdef COMPILER_VISUAL_STUDIO
 	#pragma warning(disable : 4786)
 	#ifdef RDO_MT
 		#include <afxwin.h>
 	#else
 		#include <windows.h>
 	#endif
-#endif
+#endif // COMPILER_VISUAL_STUDIO
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdocommon.h"
 #include "utils/rdostream.h"
