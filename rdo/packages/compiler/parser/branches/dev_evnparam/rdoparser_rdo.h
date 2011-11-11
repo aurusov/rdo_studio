@@ -90,10 +90,10 @@ class RDOParserEVNPost: public RDOParserItem
 {
 DECLARE_FACTORY(RDOParserEVNPost);
 private:
-	LPRDOPATPattern m_pPattern;
-	ruint paramIT;
+	ruint             m_currParam;
+	LPRDOPATPattern   m_pPattern;
 	RDOParserEVNPost()
-		: RDOParserItem(rdoModelObjects::PAT, NULL, NULL, NULL)
+		: RDOParserItem(rdoModelObjects::PAT, NULL, NULL, NULL), m_currParam (0)
 	{}
 	virtual void parse(CREF(LPRDOParser) pParser);
 };
