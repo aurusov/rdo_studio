@@ -12,11 +12,6 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#ifdef COMPILER_VISUAL_STUDIO
-	#pragma warning(disable : 4786)
-	#include <iostream>
-	#include <sys/time.h>
-#endif // COMPILER_VISUAL_STUDIO
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_logic_dptsearch.h"
 #include "simulator/runtime/searchtree.h"
