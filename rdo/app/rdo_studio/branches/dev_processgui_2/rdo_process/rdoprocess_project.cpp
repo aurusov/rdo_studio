@@ -95,7 +95,7 @@ void RPProjectMFC::saveToXML(REF(pugi::xml_node) node)
 	// «аводим документ:
 	pugi::xml_document doc;
 	// —в€зываем первый узел с документом, присваива€ ему тип node_element:
-	node = doc.append_child(pugi::node_element);
+	node = doc.append_child();
 	// »нициализируем первую ноду именем класса первого встретившегос€ потомка:
 	node.set_name(getClassName().c_str());
 
