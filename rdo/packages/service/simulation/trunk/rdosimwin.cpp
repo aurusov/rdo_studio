@@ -28,6 +28,10 @@
 #include <algorithm>
 #include <boost/noncopyable.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
+#ifdef COMPILER_GCC
+	#define DISABLE_CONVERTER
+#endif // COMPILER_GCC
+
 #include "simulator/service/rdosimwin.h"
 #include "kernel/rdokernel.h"
 #include "repository/rdorepository.h"
@@ -41,8 +45,11 @@
 #include "simulator/compiler/mbuilder/rdo_resources.h"
 #include "utils/rdodebug.h"
 #include "utils/rdotime.h"
-#include "converter/smr2rdox/rdoparser.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_datablock.h"
+
+#ifndef DISABLE_CONVERTER
+	#include "converter/smr2rdox/rdoparser.h"
+#endif // DISABLE_CONVERTER
 // --------------------------------------------------------------------------------
 
 //#ifndef DISABLE_CORBA
@@ -1203,6 +1210,9 @@ void RDOThreadSimulator::parseSMRFileInfo(REF(rdo::textstream) smr, REF(rdoModel
 {
 	UNUSED(smr);
 
+#ifdef DISABLE_CONVERTER
+	UNUSED(info);
+#else
 	try
 	{
 		rdoConverter::RDOParserModel converter;
@@ -1234,6 +1244,7 @@ void RDOThreadSimulator::parseSMRFileInfo(REF(rdo::textstream) smr, REF(rdoModel
 	{}
 	catch (...)
 	{}
+#endif
 }
 
 RDOThreadSimulator::SyntaxErrorList RDOThreadSimulator::getErrors()
