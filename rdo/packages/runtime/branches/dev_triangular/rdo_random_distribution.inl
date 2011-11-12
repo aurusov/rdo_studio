@@ -25,13 +25,6 @@ inline RandGenerator::RandGenerator(long int seed)
 inline RandGenerator::~RandGenerator()
 {}
 
-/*!
-  \fn             void RandGenerator::setSeed(long int seed)
-  \brief          Передача базы генератора параметру класса
-  \param   seed   База генератора (long int)
-  \return  0
-*/
-
 inline void RandGenerator::setSeed(long int seed)
 {
 	m_seed = seed;

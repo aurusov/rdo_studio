@@ -18,25 +18,22 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \def            RDO_NATIVE_U01
-  \brief          Законы распределения псевдослучайных чисел в стиле РДО
-*/
+//! Законы распределения псевдослучайных чисел в стиле РДО
 #define RDO_NATIVE_U01
 
-/*!
-  \class          RandGenerator
-  \brief          Базовое равномерное распределение [0, 1)
-  \param   seed   База генератора псевдослучайных чисел (long int = 123456789)
-  \note
-  ~RandGenerator  Удалять нельзя
-  Нужен именно виртуальный деструктор для вызова из RDOCalcSeqInit::~RDOCalcSeqInit()
-*/
+//! @brief Базовое равномерное распределение [0, 1)
 class RandGenerator
 {
 public:
+	//! Удалять нельзя, нужен именно виртуальный деструктор для вызова из \ref RDOCalcSeqInit::~RDOCalcSeqInit()
 	virtual ~RandGenerator();
+
+	//! Установка базы генератора
+	//! @param seed - База генератора
 	void setSeed(long int seed = 123456789);
+
+	//! @brief  Генерация псевдо-случайного числа на интевале [0, 1) по равномерному закону распределения
+	//! @result Псевдо-случайное число, значение в дипазоне [0, 1)
 	double u01();
 
 protected:
