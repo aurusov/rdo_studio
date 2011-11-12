@@ -27,8 +27,24 @@ IF(PROJECT_OS_LINUX)
 
 	FLEX_TARGET(lexer_scaner grammar/rdo_lexer.l  ${CMAKE_CURRENT_SOURCE_DIR}/rdolex.cpp)
 
+	SET(BISON_TEMP_FILES
+		${CMAKE_CURRENT_SOURCE_DIR}/grammar/rdogramsmr_sim.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/grammar/rdogramsmr_file.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/grammar/rdogramrtp.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/grammar/rdogramrss.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/grammar/rdogramproc_rtp.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/grammar/rdogramproc_rss.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/grammar/rdogramproc_opr.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/grammar/rdogrampmd.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/grammar/rdogrampat.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/grammar/rdogramopr.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/grammar/rdogramfun.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/grammar/rdogramfrm.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/grammar/rdogramdpt.cpp)
+
 SET(GENERATED_FILES
 	${FLEX_lexer_scaner_OUTPUTS}
+	${BISON_TEMP_FILES}
 	grammar/rdogramma.h)
 
 ENDIF(PROJECT_OS_LINUX)
