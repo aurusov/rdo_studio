@@ -8,6 +8,7 @@
 #include <list>
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_factory.h"
 #include "thirdparty/pugixml/src/pugixml.hpp"
+#include "utils/rdomacros.h"
 
 // --------------------------------------------------------------------------------
 // -------------------- RPObject

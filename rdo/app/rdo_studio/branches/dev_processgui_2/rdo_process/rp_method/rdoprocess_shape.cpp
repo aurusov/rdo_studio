@@ -1200,7 +1200,7 @@ void RPShape::onRButtonDown( UINT nFlags, CPoint global_chart_pos )
 		while ( conn_it != (*it)->connectors.end() ) {
 			RPConnectorDock* dock = (*conn_it)->getConnectedDock( **it );
 			if ( dock ) {
-				TRACE( "%s", getName().c_str() );
+				TRACE1( "%s", getName().c_str() );
 				const RPObjectChart& obj = dock->object();
 				if ( dock->isType( RPConnectorDock::inout ) ) {
 					TRACE( " <--> " );
@@ -1209,7 +1209,7 @@ void RPShape::onRButtonDown( UINT nFlags, CPoint global_chart_pos )
 				} else if ( dock->isType( RPConnectorDock::out ) ) {
 					TRACE( " <--- " );
 				}
-				TRACE( "%s\n", obj.getName().c_str() );
+				TRACE1( "%s\n", obj.getName().c_str() );
 			}
 			conn_it++;
 		}

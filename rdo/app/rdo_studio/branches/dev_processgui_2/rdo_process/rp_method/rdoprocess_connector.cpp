@@ -472,7 +472,7 @@ void RPConnector::makeConnector( const rp::point& p1, const rp::point& p2, doubl
 //				pa.putPoints( pa.size(), 1, dir.x(), dir.y() );
 				borders.push_back( interborder );
 				borders.push_back( dir );
-				TRACE( "around border: x1 = %f, y1 = %f, x2 = %f, y2 = %f\n", interborder.x, interborder.y, dir.x, dir.y );
+				TRACE4( "around border: x1 = %f, y1 = %f, x2 = %f, y2 = %f\n", interborder.x, interborder.y, dir.x, dir.y );
 				TRACE( "around border: next\n" );
 #ifdef CON_DEBUG
 				makeConnector( dc, dir, p2, norm1, norm2, pa );
@@ -480,7 +480,7 @@ void RPConnector::makeConnector( const rp::point& p1, const rp::point& p2, doubl
 				makeConnector( dir, p2, norm1, norm2, pa );
 #endif
 			} else {
-				TRACE( "border: loop found for (%f,%f)\n", dir.x, dir.y );
+				TRACE2( "border: loop found for (%f,%f)\n", dir.x, dir.y );
 			}
 		} else {
 #ifdef CON_DEBUG
@@ -492,7 +492,7 @@ void RPConnector::makeConnector( const rp::point& p1, const rp::point& p2, doubl
 			dc.Ellipse( inter.x - 3, inter.y - 3, inter.x + 3, inter.y + 3 );
 			dc.RestoreDC( -1 );
 #endif
-			TRACE( "red, x = %f, y = %f\n", inter.x, inter.y );
+			TRACE2( "red, x = %f, y = %f\n", inter.x, inter.y );
 			pa.push_back( inter );
 //			pa.putPoints( pa.size(), 1, inter.x(), inter.y() );
 			norm1 += 90;
@@ -562,7 +562,7 @@ bool RPConnector::getShortLine( const rp::polyline& pa, const rp::point& from, c
 				if ( fabs(K) > 0 ) {
 					if ( !rect.pointInRect( from ) ) {
 						if ( Ua >= 0.0 && Ua <= 1.0 && Ub >= 0.0 && Ub <= 1.0 ) {
-							TRACE( "K = %g, Ua = %g, Ub = %g\n", K, Ua, Ub );
+							TRACE3( "K = %g, Ua = %g, Ub = %g\n", K, Ua, Ub );
 							double len = rp::math::getLength( from, _inter );
 							if ( lengthA2 >= len ) {
 								bool vect_inter = true;
@@ -598,20 +598,20 @@ bool RPConnector::getShortLine( const rp::polyline& pa, const rp::point& from, c
 //									CBDFlowChartScrollView::correctPoint( pa, B2 );
 									interborder = _inter;
 									flag = true;
-									TRACE( "new lengthA2 = %g, (%f,%f)\n", lengthA2, interborder.x, interborder.y );
+									TRACE3( "new lengthA2 = %g, (%f,%f)\n", lengthA2, interborder.x, interborder.y );
 								} else {
-									TRACE( "skip lengthA2 (no intersection of shape) = %g, (%f,%f)\n", lengthA2, interborder.x, interborder.y );
+									TRACE3( "skip lengthA2 (no intersection of shape) = %g, (%f,%f)\n", lengthA2, interborder.x, interborder.y );
 								}
 							} else {
-								TRACE( "no new lengthA2: %g < %g, x= %f, y = %f\n", lengthA2, len, _inter.x, _inter.y );
+								TRACE4( "no new lengthA2: %g < %g, x= %f, y = %f\n", lengthA2, len, _inter.x, _inter.y );
 							}
 						} else {
-							TRACE( "_K = %g, Ua = %g, Ub = %g\n", K, Ua, Ub );
+							TRACE3( "_K = %g, Ua = %g, Ub = %g\n", K, Ua, Ub );
 						}
 					} else {
 						TRACE( "rect.contains( from )\n" );
 						if ( Ub >= 0.0 && Ub <= 1.0 ) {
-							TRACE( "K = %g, Ua = %g, Ub = %g\n", K, Ua, Ub );
+							TRACE3( "K = %g, Ua = %g, Ub = %g\n", K, Ua, Ub );
 							double len = rp::math::getLength( from, _inter );
 							if ( lengthBorder >= len ) {
 #ifdef CON_DEBUG
@@ -633,16 +633,16 @@ bool RPConnector::getShortLine( const rp::polyline& pa, const rp::point& from, c
 //								CBDFlowChartScrollView::correctPoint( pa, B2 );
 								interborder = _inter;
 								flag = true;
-								TRACE( "new lengthA2 = %g, (%f,%f)\n", lengthA2, interborder.x, interborder.y );
+								TRACE3( "new lengthA2 = %g, (%f,%f)\n", lengthA2, interborder.x, interborder.y );
 							} else {
-								TRACE( "skip lengthA2 (no intersection of shape) = %g, (%f,%f)\n", lengthA2, interborder.x, interborder.y );
+								TRACE3( "skip lengthA2 (no intersection of shape) = %g, (%f,%f)\n", lengthA2, interborder.x, interborder.y );
 							}
 						} else {
-							TRACE( "_K = %g, Ua = %g, Ub = %g\n", K, Ua, Ub );
+							TRACE3( "_K = %g, Ua = %g, Ub = %g\n", K, Ua, Ub );
 						}
 					}
 				} else {
-					TRACE( "K = %g\n", K );
+					TRACE1( "K = %g\n", K );
 				}
 			}
 		}
