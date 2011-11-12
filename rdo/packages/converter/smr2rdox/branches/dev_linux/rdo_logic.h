@@ -16,6 +16,7 @@
 #include "converter/smr2rdox/rdo_object.h"
 #include "converter/smr2rdox/rdofun.h"
 #include "simulator/runtime/rdo_logic_i.h"
+#include "simulator/runtime/rdo_priority_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE
