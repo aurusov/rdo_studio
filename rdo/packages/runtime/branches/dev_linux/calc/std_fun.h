@@ -71,7 +71,7 @@ class RDOFunCalcStd: public RDOFunCalc
 public:
 	typedef typename F::function_type function_type;
 
-	RDOFunCalcStd(CREF(function_type) pFunction);
+	RDOFunCalcStd(function_type pFunction);
 
 private:
 	function_type m_pFunction;

@@ -19,7 +19,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // -------------------- RDOFunCalcStd
 // --------------------------------------------------------------------------------
 template <class F>
-inline RDOFunCalcStd<F>::RDOFunCalcStd(CREF(function_type) pFunction)
+inline RDOFunCalcStd<F>::RDOFunCalcStd(function_type pFunction)
 	: m_pFunction(pFunction)
 {}
 
