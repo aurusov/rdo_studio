@@ -20,8 +20,6 @@
 #include "simulator/runtime/rdo_type.h"
 // --------------------------------------------------------------------------------
 
-const ruint KILLER_ITERATION = 6;
-
 BOOST_AUTO_TEST_SUITE(RDORuntime_Array_Test)
 
 BOOST_AUTO_TEST_CASE(arrayTestCreate)
@@ -53,68 +51,54 @@ BOOST_AUTO_TEST_CASE(arrayTestPPOperator)
 {
 	#include "simulator/runtime/test/rdo_array_test/arrayCreate.inl"
 
-	ruint killer_cycle = KILLER_ITERATION;
 	tstring itStr = _T("");
-	for (rdoRuntime::RDOValue it = arrayVal1.begin(); it != arrayVal1.end()  && killer_cycle; ++it)
+	for (rdoRuntime::RDOValue it = arrayVal1.begin(); it != arrayVal1.end(); ++it)
 	{
 		itStr += it.getAsString();
-		--killer_cycle;
 	}
 	BOOST_CHECK(itStr == _T("123"));
-	BOOST_CHECK(killer_cycle); // infinite loop error
 }
 
 BOOST_AUTO_TEST_CASE(arrayTestOperatorPP)
 {
 	#include "simulator/runtime/test/rdo_array_test/arrayCreate.inl"
 
-	ruint killer_cycle = KILLER_ITERATION;
 	tstring itStr = _T("");
-	for (rdoRuntime::RDOValue it = arrayVal1.begin(); it != arrayVal1.end()  && killer_cycle; it++)
+	for (rdoRuntime::RDOValue it = arrayVal1.begin(); it != arrayVal1.end(); it++)
 	{
 		itStr += it.getAsString();
-		--killer_cycle;
 	}
 	BOOST_CHECK(itStr == _T("123"));
-	BOOST_CHECK(killer_cycle);  // infinite loop error
 }
 
 BOOST_AUTO_TEST_CASE(arrayTestMMOperator)
 {
 	#include "simulator/runtime/test/rdo_array_test/arrayCreate.inl"
 
-	ruint killer_cycle = KILLER_ITERATION;
 	tstring itStr = _T("");
 	rdoRuntime::RDOValue it1 = arrayVal2.end();
 	do 
 	{
-		--killer_cycle;
-
 		--it1;
 		itStr += it1.getAsString();
-	} while (it1 != arrayVal2.begin() && killer_cycle);
+	} while (it1 != arrayVal2.begin());
 
 	BOOST_CHECK(itStr == _T("654"));
-	BOOST_CHECK(killer_cycle);  // infinite loop error
 }
 
 BOOST_AUTO_TEST_CASE(arrayTestOperatorMM)
 {
 	#include "simulator/runtime/test/rdo_array_test/arrayCreate.inl"
 
-	ruint killer_cycle = KILLER_ITERATION;
 	tstring itStr = _T("");
 	rdoRuntime::RDOValue it1 = arrayVal2.end();
 	do 
 	{
-		--killer_cycle;
-
 		it1--;
 		itStr += it1.getAsString();
-	} while (it1 != arrayVal2.begin() && killer_cycle);
+	} while (it1 != arrayVal2.begin());
 
 	BOOST_CHECK(itStr == _T("654"));
-	BOOST_CHECK(killer_cycle);  // infinite loop error
 }
 
 BOOST_AUTO_TEST_SUITE_END() // RDORuntime_Array_Test
