@@ -102,7 +102,7 @@ void RPProjectMFC::saveToXML(REF(pugi::xml_node) node)
 	// —сылаемс€ на первого потомка RPObject (RPObjectFlowChart_MJ), использу€ контейнер "list":
 	std::list< RPObject* > first_offspring;
 	getAllChild(first_offspring);
-    first_offspring.front()->saveToXML(node);
+	first_offspring.front()->saveToXML(node);
 
 	// јвтоматически открываем файл при создании потока:
 	std::ofstream outFile("D:\\TESTXML.txt");
