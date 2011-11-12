@@ -48,7 +48,7 @@ DECLARE_PARSER_OBJECT_CONTAINER_NONAME(NAME) \
 const LPRDO##NAME Converter::find##NAME(CREF(tstring) name) const \
 { \
 	NAME##List::const_iterator it = std::find_if(m_all##NAME.begin(), m_all##NAME.end(), compareName<RDO##NAME>(name)); \
-	return it != m_all##NAME.end() ? *it : NULL; \
+	return it != m_all##NAME.end() ? *it : LPRDO##NAME(NULL); \
 } \
 rbool Converter::remove##NAME(const LPRDO##NAME item) \
 { \
@@ -429,7 +429,7 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 				YYLTYPE pos;
 				pos.m_last_line = 0;
 				pos.m_last_pos  = 0;
-				error().error(RDOParserSrcInfo(pos), rdo::format(_T("Ошибка создания backup-директории '%s': уже существует\n"), backupPath.c_str()));
+				error().error(RDOParserSrcInfo(pos), rdo::format(_T("Ошибка создания backup-директории '%s': уже существует\n"), backupPath.string().c_str()));
 			}
 		}
 		catch (CREF(boost::system::error_code) ex)
@@ -446,7 +446,7 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 			YYLTYPE pos;
 			pos.m_last_line = 0;
 			pos.m_last_pos  = 0;
-			error().error(RDOParserSrcInfo(pos), rdo::format(_T("Ошибка создания backup-директории '%s': %s\n"), backupPath.c_str(), message.c_str()));
+			error().error(RDOParserSrcInfo(pos), rdo::format(_T("Ошибка создания backup-директории '%s': %s\n"), backupPath.string().c_str(), message.c_str()));
 		}
 
 		STL_FOR_ALL(fileList, it)

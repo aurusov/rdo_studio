@@ -204,7 +204,7 @@ UpdateMove::UpdateMove(CREF(Position) posFromBegin, CREF(Position) posFromEnd, C
 	, m_posTo       (posTo       )
 	, m_fileFrom    (fileFrom    )
 {
-	if (m_fileFrom == rdoModelObjectsConvertor::UNDEFINED_OUT)
+	if (static_cast<int>(m_fileFrom) == static_cast<int>(rdoModelObjectsConvertor::UNDEFINED_OUT))
 	{
 		m_fileFrom = getCurrentType();
 	}
