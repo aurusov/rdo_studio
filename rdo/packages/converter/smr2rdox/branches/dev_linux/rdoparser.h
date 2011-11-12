@@ -248,7 +248,7 @@ private:
 		tstring m_name;
 		tstring m_value;
 	};
-	
+
 	typedef std::vector<ChangesData> ChangesList;
 	ChangesList m_changes;
 
@@ -257,11 +257,11 @@ private:
 };
 
 template <>
-void Converter::howIsIt<LPRDOFUNGroup>()
+inline void Converter::howIsIt<LPRDOFUNGroup>()
 {}
 
 template <>
-void Converter::howIsIt<LPRDOPATPattern>()
+inline void Converter::howIsIt<LPRDOPATPattern>()
 {
 	m_pattern = true;
 }

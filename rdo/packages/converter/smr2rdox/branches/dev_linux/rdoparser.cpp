@@ -156,7 +156,7 @@ rbool Converter::isCurrentDPTPrior()
 
 void Converter::insertChanges(CREF(tstring) name, CREF(tstring) value)
 {
-	m_changes.push_back(Changes(name, value));
+	m_changes.push_back(ChangesData(name, value));
 }
 
 tstring Converter::getChanges() const
