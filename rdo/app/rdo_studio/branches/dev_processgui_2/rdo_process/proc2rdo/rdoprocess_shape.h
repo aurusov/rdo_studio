@@ -51,7 +51,7 @@ public:
 	virtual rp::string getClassName() const { return "RPObjectFlowChart_MJ"; }
 	virtual rpMethod::RPMethod* getMethod();
 	// Переопределенная для FlowChart виртуальная функция saveToXML:
-	void saveToXML(REF(pugi::xml_node) node);
+	void saveToXML(REF(pugi::xml_node) parentNode);
 };
 
 #endif // RDO_PROCESS_SHAPE_MJ_H

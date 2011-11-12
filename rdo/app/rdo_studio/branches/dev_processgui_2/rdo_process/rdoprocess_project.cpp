@@ -90,27 +90,18 @@ void RPProjectMFC::save()
 	}
 }
 
-void RPProjectMFC::saveToXML(REF(pugi::xml_node) node)
+void RPProjectMFC::saveToXML(REF(pugi::xml_node) parentNode)
 {
-	// Заводим документ:
-	pugi::xml_document doc;
-	// Связываем первый узел с документом, присваивая ему тип node_element:
-	node = doc.append_child();
 	// Инициализируем первую ноду именем класса первого встретившегося потомка:
+	pugi::xml_node node = parentNode.append_child(getClassName().c_str());
 	node.set_name(getClassName().c_str());
 
 	// Ссылаемся на первого потомка RPObject (RPObjectFlowChart_MJ), используя контейнер "list":
-	std::list< RPObject* > first_offspring;
-	getAllChild(first_offspring);
-	first_offspring.front()->saveToXML(node);
-
-	// Автоматически открываем файл при создании потока:
-	std::ofstream outFile("D:\\TESTXML.txt");
-	// Проверяем открытый нами поток на наличие ошибок ввода-вывода:
-	if (outFile.good())
+	std::list<PTR(RPObject)> childList;
+	getAllChild(childList);
+	STL_FOR_ALL_CONST(childList, it)
 	{
-		doc.save(outFile);
-		outFile.close();
+		(*it)->saveToXML(node);
 	}
 }
 

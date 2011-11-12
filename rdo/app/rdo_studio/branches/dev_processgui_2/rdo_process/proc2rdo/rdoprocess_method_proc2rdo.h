@@ -38,7 +38,7 @@ public:
 	std::list< CString > list_pattern_names; // MJ 7.04.06 хранятся имена всех паттернов для записи в файл *.opr generate() заполняет его
 	// Блокируем вхождение функции saveToXML в RPMethod
 	// (из-за проектной ошибки - класс RPMethod не должен наследоваться от RPObject)
-	virtual void saveToXML(REF(pugi::xml_node) node) { NEVER_REACH_HERE; };
+	virtual void saveToXML(REF(pugi::xml_node) parentNode) { NEVER_REACH_HERE; };
 	
 };
 

@@ -154,7 +154,7 @@ RDOfiles->resourse<<std::endl<<std::endl<<"{-------ресурс ------" <<getName().c_
 
 }
 
-void RPShapeResource_MJ::saveToXML(REF(pugi::xml_node) node)
+void RPShapeResource_MJ::saveToXML(REF(pugi::xml_node) parentNode)
 {
-	node.append_child(getClassName().c_str());
+	parentNode.append_child(getClassName().c_str());
 }

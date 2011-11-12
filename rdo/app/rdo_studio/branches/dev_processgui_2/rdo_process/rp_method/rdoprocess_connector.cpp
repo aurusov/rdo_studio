@@ -54,10 +54,9 @@ rp::RPXMLNode* RPConnector::save( rp::RPXMLNode* parent_node )
 	return obj_node;
 }
 
-void RPConnector::saveToXML(REF(pugi::xml_node) node)
+void RPConnector::saveToXML(REF(pugi::xml_node) parentNode)
 {
-	node = node.append_copy(node);
-    node.set_name(getClassName().c_str());
+	parentNode.append_child(getClassName().c_str());
 }
 
 void RPConnector::registerObject()
