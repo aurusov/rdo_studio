@@ -61,8 +61,7 @@ rp::RPXMLNode* RPShapeCreateMJ::save( rp::RPXMLNode* parent_node )
 
 void RPShapeCreateMJ::saveToXML(REF(pugi::xml_node) node)
 {
-	node = node.append_copy(node);
-    node.set_name(getClassName().c_str());
+	node.append_child(getClassName().c_str());
 }
 
 RPObject* RPShapeCreateMJ::newObject( RPObject* parent )
