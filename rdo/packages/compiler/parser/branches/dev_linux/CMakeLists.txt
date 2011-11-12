@@ -27,6 +27,22 @@ IF(PROJECT_OS_LINUX)
 
 	FLEX_TARGET(lexer_scaner rdo_lexer.l  ${CMAKE_CURRENT_SOURCE_DIR}/rdolex.cpp)
 
+	SET(BISON_TEMP_FILES
+		${CMAKE_CURRENT_SOURCE_DIR}/rdogramdpt.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/rdogramevn.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/rdogramevn_preparse.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/rdogramfrm.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/rdogramfun.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/rdogrampat.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/rdogrampmd.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/rdogramproc_opr.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/rdogramproc_rss.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/rdogramproc_rtp.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/rdogramrss.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/rdogramrtp.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/rdogramsmr_file.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/rdogramsmr_sim.cpp)
+
 	#ADD_CUSTOM_COMMAND(TARGET rdortp.y PRE_BUILD COMMAND ${BISON_EXECUTABLE} ARGS -g -v --defines=rdogramma.h -prtp -ordogramrtp.cpp rdortp.y)
 	#BISON_TARGET(rdodpt rdodpt.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramdpt.cpp COMPILE_FLAGS "-g -pdpt -o")
 	#BISON_TARGET(rdoevn rdoevn.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramevn.cpp COMPILE_FLAGS "-g -pevn -o")
@@ -44,7 +60,9 @@ IF(PROJECT_OS_LINUX)
 	#BISON_TARGET(rdosmr_sim rdosmr_sim.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramsmr_sim.cpp COMPILE_FLAGS "-g -psmr_sim_ -o")
 
 SET(GENERATED_FILES
-	${FLEX_lexer_scaner_OUTPUTS})
+	${FLEX_lexer_scaner_OUTPUTS}
+	${BISON_TEMP_FILES}
+	rdogramma.h)
 	#${BISON_rdodpt_OUTPUTS}
 	#${BISON_rdoevn_OUTPUTS}
 	#${BISON_rdoevn_preparse_OUTPUTS}
@@ -71,8 +89,7 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/context)
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/type)
 
 SET(GENERATED_FILES
-	${GENERATED_FILES}
-	rdogramma.h)
+	${GENERATED_FILES})
 
 SET(HEADER_FILES
 	expression.h
