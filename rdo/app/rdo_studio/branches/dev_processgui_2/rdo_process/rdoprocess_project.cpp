@@ -96,12 +96,12 @@ void RPProjectMFC::Save_To_XML(pugi::xml_node &node)
 	pugi::xml_document doc;
 	// —в€зываем первый узел с документом, присваива€ ему тип node_element:
 	node = doc.append_child(pugi::node_element);
-	
+	// »нициализируем первую ноду именем класса первого встретившегос€ потомка:
+	node.set_name(getClassName().c_str());
+
 	// —сылаемс€ на первого потомка RPObject (RPObjectFlowChart_MJ), использу€ контейнер "list":
 	std::list< RPObject* > first_offspring;
 	getAllChild(first_offspring);
-	// »нициализируем первую ноду именем класса первого встретившегос€ потомка:
-	node.set_name(first_offspring.front()->getClassName().c_str());
     first_offspring.front()->Save_To_XML(node);
 
 	// јвтоматически открываем файл при создании потока:

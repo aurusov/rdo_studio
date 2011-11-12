@@ -156,5 +156,6 @@ RDOfiles->resourse<<std::endl<<std::endl<<"{-------ресурс ------" <<getName().c_
 
 void RPShapeResource_MJ::Save_To_XML(pugi::xml_node &node)
 {
-
+	node = node.append_copy(node);
+    node.set_name(getClassName().c_str());
 }

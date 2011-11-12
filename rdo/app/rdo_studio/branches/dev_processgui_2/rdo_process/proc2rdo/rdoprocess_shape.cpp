@@ -67,10 +67,15 @@ rpMethod::RPMethod* RPObjectFlowChart_MJ::getMethod()
 
 void RPObjectFlowChart_MJ::Save_To_XML(pugi::xml_node &node)
 {
+	// Создаем узел FlowChart'а:	
+	node = node.append_copy(node);
+    node.set_name(getClassName().c_str());
+
+	// Атрибуты: ===========================
+	// =====================================
 	// Заносим в список потомков FlowChart'а:
 	std::list< RPObject* > all_child;
 	getAllChild(all_child);
-	 
 	// Пробегая по листу, вызываем для каждого его элемента соответствующую функцию-потомок Save_To_XML(node):
 	for(std::list< RPObject* >::const_iterator list_iterator = all_child.begin(); list_iterator != all_child.end(); ++list_iterator)
 		(*list_iterator)->Save_To_XML(node);
