@@ -29,8 +29,8 @@ public:
 
 	int gamount;
 
-	// Переопределенная виртуальная функция Save_To_XML для RPShapeResource_MJ:
-	void Save_To_XML(pugi::xml_node &node);
+	// Переопределенная виртуальная функция saveToXML для RPShapeResource_MJ:
+	void saveToXML(REF(pugi::xml_node) node);
 };
 
 #endif // !defined(AFX_RDOPROCESS_SHAPE_RESOURCE_H__108AB1F9_8742_446F_9CB2_ABD461A09C12__INCLUDED_)

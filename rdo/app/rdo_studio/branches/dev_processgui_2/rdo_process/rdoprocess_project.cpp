@@ -90,7 +90,7 @@ void RPProjectMFC::save()
 	}
 }
 
-void RPProjectMFC::Save_To_XML(pugi::xml_node &node)
+void RPProjectMFC::saveToXML(REF(pugi::xml_node) node)
 {
 	// Заводим документ:
 	pugi::xml_document doc;
@@ -102,7 +102,7 @@ void RPProjectMFC::Save_To_XML(pugi::xml_node &node)
 	// Ссылаемся на первого потомка RPObject (RPObjectFlowChart_MJ), используя контейнер "list":
 	std::list< RPObject* > first_offspring;
 	getAllChild(first_offspring);
-    first_offspring.front()->Save_To_XML(node);
+    first_offspring.front()->saveToXML(node);
 
 	// Автоматически открываем файл при создании потока:
 	std::ofstream outFile("D:\\TESTXML.txt");

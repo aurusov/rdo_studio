@@ -997,8 +997,8 @@ void RDOStudioModel::saveModelToRepository()
 
 	// Создаем первый узел (ноду):
 	pugi::xml_node node;
-    // Ссылаемся на виртуальную функцию Save_To_XML(), которая поэтапно запишет информацию в файл:
-	rpMethod::project->Save_To_XML(node);
+    // Ссылаемся на виртуальную функцию saveToXML(), которая поэтапно запишет информацию в файл:
+	rpMethod::project->saveToXML(node);
 
  	studioApp.insertReopenItem(getFullName());
 

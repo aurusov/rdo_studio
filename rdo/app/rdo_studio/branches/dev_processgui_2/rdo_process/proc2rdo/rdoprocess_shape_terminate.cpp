@@ -60,7 +60,7 @@ void RPShapeTerminateMJ::generate()
 	m_pParams = NULL;
 }
 
-void RPShapeTerminateMJ::Save_To_XML(pugi::xml_node &node)
+void RPShapeTerminateMJ::saveToXML(REF(pugi::xml_node) node)
 {
 	node = node.append_copy(node);
     node.set_name(getClassName().c_str());

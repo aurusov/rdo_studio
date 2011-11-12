@@ -76,8 +76,8 @@ public:
 	virtual rp::string getClassName() const { return "RPConnector"; }
 	virtual void load( rp::RPXMLNode* node );
 	virtual rp::RPXMLNode* save( rp::RPXMLNode* parent_node );
-	// Переопределенная виртуальная функция Save_To_XML для RPConnector:
-	void Save_To_XML(pugi::xml_node &node);
+	// Переопределенная виртуальная функция saveToXML для RPConnector:
+	void saveToXML(REF(pugi::xml_node) node);
 
 	RPConnectorDock* getConnectedDock( const RPConnectorDock& dock ) const;
 };
