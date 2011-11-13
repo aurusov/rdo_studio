@@ -49,10 +49,12 @@ void RPShapeProcessDlg1_MJ::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LIST1, m_ResList);
 	DDX_Control(pDX, IDC_BUTTON2, m_DelRes);
 	DDX_Control(pDX, IDC_BUTTON1, m_AddRes);
-	DDX_Control(pDX, IDC_EDIT7, m_proc_dlg1_max_control_MJ);
-	DDX_Control(pDX, IDC_EDIT6, m_proc_dlg1_min_control_MJ);
-	DDX_Control(pDX, IDC_EDIT5, m_proc_dlg1_disp_control_MJ);
 	DDX_Control(pDX, IDC_EDIT4, m_proc_dlg1_exp_control_MJ);
+	DDX_Control(pDX, IDC_EDIT5, m_proc_dlg1_disp_control_MJ);
+	DDX_Control(pDX, IDC_EDIT7, m_proc_dlg1_max_control_MJ);
+	DDX_Control(pDX, IDC_STATIC4, m_proc_dlgl_exp_text_MJ);
+	DDX_Control(pDX, IDC_STATIC5, m_proc_dlgl_disp_text_MJ);
+	DDX_Control(pDX, IDC_STATIC7, m_proc_dlgl_max_text_MJ);
 	DDX_Control(pDX, IDC_COMBO4, m_parameter);
 	DDX_Control(pDX, IDC_COMBO2, m_action);
 	DDX_Text(pDX, IDC_EDIT1, m_name);
@@ -60,7 +62,6 @@ void RPShapeProcessDlg1_MJ::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT2, m_gprior);
 	DDX_Text(pDX, IDC_EDIT4, m_gexp);
 	DDX_Text(pDX, IDC_EDIT5, m_gdisp);
-	DDX_Text(pDX, IDC_EDIT6, m_gmin);
 	DDX_Text(pDX, IDC_EDIT7, m_gmax);
 	DDX_Text(pDX, IDC_EDIT8, m_gbase_gen);
 	DDV_MinMaxInt(pDX, m_gbase_gen, -2147483647, 2147483647);
@@ -111,14 +112,6 @@ OnCloseupCombo1();
 
 
 
-
-
-
-
-
-
-
-
 BEGIN_MESSAGE_MAP(RPShapeProcessDlg1_MJ, CDialog)
 	//{{AFX_MSG_MAP(RPShapeProcessDlg1_MJ)
 	ON_CBN_CLOSEUP(IDC_COMBO1, OnCloseupCombo1)
@@ -141,28 +134,43 @@ switch(cur) // определяем активные окна исходя из закона
 {
 case 0: // константа
 	m_proc_dlg1_exp_control_MJ.EnableWindow(TRUE);
-	m_proc_dlg1_disp_control_MJ.EnableWindow(FALSE);
-	m_proc_dlg1_max_control_MJ.EnableWindow(FALSE);
+	m_proc_dlgl_exp_text_MJ.SetWindowText(_T("Константа"));
+	m_proc_dlgl_disp_text_MJ.ShowWindow(SW_HIDE);
+	m_proc_dlg1_disp_control_MJ.ShowWindow(SW_HIDE);
+	m_proc_dlgl_max_text_MJ.ShowWindow(SW_HIDE);
+	m_proc_dlg1_max_control_MJ.ShowWindow(SW_HIDE);
 					break;	
 case 1: // нормальный
-	m_proc_dlg1_exp_control_MJ.EnableWindow(TRUE);
-	m_proc_dlg1_disp_control_MJ.EnableWindow(TRUE);
-	m_proc_dlg1_max_control_MJ.EnableWindow(FALSE);
+	m_proc_dlgl_exp_text_MJ.SetWindowText(_T("Мат. ожидание"));
+	m_proc_dlgl_disp_text_MJ.ShowWindow(SW_SHOW);
+	m_proc_dlgl_disp_text_MJ.SetWindowText(_T("Дисперсия"));
+	m_proc_dlg1_disp_control_MJ.ShowWindow(SW_SHOW);
+	m_proc_dlgl_max_text_MJ.ShowWindow(SW_HIDE);
+	m_proc_dlg1_max_control_MJ.ShowWindow(SW_HIDE);
 					break;
 case 2: // равномерный закон
-	m_proc_dlg1_exp_control_MJ.EnableWindow(TRUE);
-	m_proc_dlg1_disp_control_MJ.EnableWindow(TRUE);
-	m_proc_dlg1_max_control_MJ.EnableWindow(FALSE);
+	m_proc_dlgl_exp_text_MJ.SetWindowText(_T("Левая граница"));
+	m_proc_dlgl_disp_text_MJ.ShowWindow(SW_SHOW);
+	m_proc_dlgl_disp_text_MJ.SetWindowText(_T("Правая граница"));
+	m_proc_dlg1_disp_control_MJ.ShowWindow(SW_SHOW);
+	m_proc_dlgl_max_text_MJ.ShowWindow(SW_HIDE);
+	m_proc_dlg1_max_control_MJ.ShowWindow(SW_HIDE);
 					break;
 case 3: // труегольный
-	m_proc_dlg1_exp_control_MJ.EnableWindow(TRUE);
-	m_proc_dlg1_disp_control_MJ.EnableWindow(TRUE);
-	m_proc_dlg1_max_control_MJ.EnableWindow(TRUE);
+	m_proc_dlgl_exp_text_MJ.SetWindowText(_T("Левая граница"));
+	m_proc_dlgl_disp_text_MJ.ShowWindow(SW_SHOW);
+	m_proc_dlgl_disp_text_MJ.SetWindowText(_T("Высота"));
+	m_proc_dlg1_disp_control_MJ.ShowWindow(SW_SHOW);
+	m_proc_dlgl_max_text_MJ.ShowWindow(SW_SHOW);
+	m_proc_dlgl_max_text_MJ.SetWindowText(_T("Правая граница"));
+	m_proc_dlg1_max_control_MJ.ShowWindow(SW_SHOW);
 					break;
 case 4: //экспоненциальный
-	m_proc_dlg1_exp_control_MJ.EnableWindow(TRUE);
-	m_proc_dlg1_disp_control_MJ.EnableWindow(FALSE);
-	m_proc_dlg1_max_control_MJ.EnableWindow(FALSE);
+	m_proc_dlgl_exp_text_MJ.SetWindowText(_T("Мат. ожидание"));
+	m_proc_dlgl_disp_text_MJ.ShowWindow(SW_HIDE);
+	m_proc_dlg1_disp_control_MJ.ShowWindow(SW_HIDE);
+	m_proc_dlgl_max_text_MJ.ShowWindow(SW_HIDE);
+	m_proc_dlg1_max_control_MJ.ShowWindow(SW_HIDE);
 					break;
 }	
 }

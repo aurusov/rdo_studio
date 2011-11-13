@@ -37,9 +37,9 @@ RPShapeCreateMJ::RPShapeCreateMJ(PTR(RPObject) _parent)
 	gtype=0; // закон прибытия
 	base_gen=1234567890;
 	//атрибуты законов
-	gexp=10;
+	gexp=0;
 	gdisp=0;
-	gmax=20;
+	gmax=0;
 
 	//второе окно
 	inf=1000000; // бесконечноть

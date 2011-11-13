@@ -30,7 +30,6 @@ RPShapeCreateDlg1_MJ::RPShapeCreateDlg1_MJ(CWnd* pParent /*=NULL*/,RPShapeCreate
     pParentMJ = ppParent;
 }
 
-
 void RPShapeCreateDlg1_MJ::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -110,7 +109,6 @@ UpdateData(TRUE);
 	switch(cur) // определяем активные окна исходя из закона
 	{
 case 0: // константа
-	m_create_dlg1_exp_control_MJ.EnableWindow(TRUE);
 	m_create_dlgl_exp_text_MJ.SetWindowText(_T("Константа"));
 	m_create_dlgl_disp_text_MJ.ShowWindow(SW_HIDE);
 	m_create_dlg1_disp_control_MJ.ShowWindow(SW_HIDE);
@@ -118,7 +116,6 @@ case 0: // константа
 	m_create_dlg1_max_control_MJ.ShowWindow(SW_HIDE);
 	break;
 case 1: // нормальный
-	m_create_dlg1_exp_control_MJ.EnableWindow(TRUE);
 	m_create_dlgl_exp_text_MJ.SetWindowText(_T("Мат. ожидание"));
 	m_create_dlgl_disp_text_MJ.ShowWindow(SW_SHOW);
 	m_create_dlgl_disp_text_MJ.SetWindowText(_T("Дисперсия"));
@@ -127,7 +124,6 @@ case 1: // нормальный
 	m_create_dlg1_max_control_MJ.ShowWindow(SW_HIDE);
 	break;
 case 2: // равномерный закон
-	m_create_dlg1_exp_control_MJ.EnableWindow(TRUE);
 	m_create_dlgl_exp_text_MJ.SetWindowText(_T("Левая граница"));
 	m_create_dlgl_disp_text_MJ.ShowWindow(SW_SHOW);
 	m_create_dlgl_disp_text_MJ.SetWindowText(_T("Правая граница"));
@@ -136,7 +132,6 @@ case 2: // равномерный закон
 	m_create_dlg1_max_control_MJ.ShowWindow(SW_HIDE);
 	break;
 case 3: // труегольный
-	m_create_dlg1_exp_control_MJ.EnableWindow(TRUE);
 	m_create_dlgl_exp_text_MJ.SetWindowText(_T("Левая граница"));
 	m_create_dlgl_disp_text_MJ.ShowWindow(SW_SHOW);
 	m_create_dlgl_disp_text_MJ.SetWindowText(_T("Высота"));
@@ -146,7 +141,6 @@ case 3: // труегольный
 	m_create_dlg1_max_control_MJ.ShowWindow(SW_SHOW);
 	break;
 case 4: //экспоненциальный
-	m_create_dlg1_exp_control_MJ.EnableWindow(TRUE);
 	m_create_dlgl_exp_text_MJ.SetWindowText(_T("Мат. ожидание"));
 	m_create_dlgl_disp_text_MJ.ShowWindow(SW_HIDE);
 	m_create_dlg1_disp_control_MJ.ShowWindow(SW_HIDE);
