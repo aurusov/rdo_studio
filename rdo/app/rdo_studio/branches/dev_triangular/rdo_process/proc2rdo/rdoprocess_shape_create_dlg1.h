@@ -54,7 +54,7 @@ protected:
 
 	// Generated message map functions
 	//{{AFX_MSG(RPShapeCreateDlg1_MJ)
-	afx_msg void OnCloseupCombo1();
+	afx_msg void OnCbnSelchange1();
 	afx_msg void OnButton1();
 	virtual void OnOK();
 	//}}AFX_MSG

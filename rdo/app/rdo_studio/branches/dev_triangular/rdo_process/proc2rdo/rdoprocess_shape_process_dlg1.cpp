@@ -105,8 +105,8 @@ std::list<CString>::iterator it = pParentMJ->list_resource_procMJ.begin();
 
 
 UpdateData(FALSE);
-OnCloseupCombo2(); 
-OnCloseupCombo1();
+OnCbnSelchange2(); 
+OnCbnSelchange1();
 	return TRUE;
 }
 
@@ -114,10 +114,10 @@ OnCloseupCombo1();
 
 BEGIN_MESSAGE_MAP(RPShapeProcessDlg1_MJ, CDialog)
 	//{{AFX_MSG_MAP(RPShapeProcessDlg1_MJ)
-	ON_CBN_CLOSEUP(IDC_COMBO1, OnCloseupCombo1)
-	ON_CBN_CLOSEUP(IDC_COMBO3, OnCloseupCombo3)
+	ON_CBN_SELCHANGE(IDC_COMBO1, OnCbnSelchange1)
+	ON_CBN_SELCHANGE(IDC_COMBO3, OnCbnSelchange3)
 	ON_BN_CLICKED(IDC_BUTTON1, OnButton1)
-	ON_CBN_CLOSEUP(IDC_COMBO2, OnCloseupCombo2)
+	ON_CBN_SELCHANGE(IDC_COMBO2, OnCbnSelchange2)
 	ON_WM_CTLCOLOR()
 	ON_BN_CLICKED(IDC_BUTTON2, OnButton2)
 	//}}AFX_MSG_MAP
@@ -126,7 +126,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // RPShapeProcessDlg1_MJ message handlers
 
-void RPShapeProcessDlg1_MJ::OnCloseupCombo1() 
+void RPShapeProcessDlg1_MJ::OnCbnSelchange1() 
 {
 int cur = m_gtype.GetCurSel();
 
@@ -175,7 +175,7 @@ case 4: //экспоненциальный
 }	
 }
 
-void RPShapeProcessDlg1_MJ::OnCloseupCombo3() 
+void RPShapeProcessDlg1_MJ::OnCbnSelchange3() 
 {
 int cur = m_gqueque.GetCurSel();
 
@@ -230,7 +230,7 @@ pParentMJ->queue=m_gqueque.GetCurSel();
 	CDialog::OnOK();	
 }
 
-void RPShapeProcessDlg1_MJ::OnCloseupCombo2() 
+void RPShapeProcessDlg1_MJ::OnCbnSelchange2() 
 {
 	int cur = m_action.GetCurSel();
 

@@ -75,11 +75,11 @@ protected:
 
 	// Generated message map functions
 	//{{AFX_MSG(RPShapeProcessDlg1_MJ)
-	afx_msg void OnCloseupCombo1();
-	afx_msg void OnCloseupCombo3();
+	afx_msg void OnCbnSelchange1();
+	afx_msg void OnCbnSelchange3();
 	afx_msg void OnButton1();
 	virtual void OnOK();
-	afx_msg void OnCloseupCombo2();
+	afx_msg void OnCbnSelchange2();
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnButton2();
 	//}}AFX_MSG

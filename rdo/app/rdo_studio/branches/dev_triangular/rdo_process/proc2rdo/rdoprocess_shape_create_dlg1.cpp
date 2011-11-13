@@ -85,7 +85,7 @@ BOOL RPShapeCreateDlg1_MJ::OnInitDialog()
 
 UpdateData(FALSE);
 
- RPShapeCreateDlg1_MJ::OnCloseupCombo1();
+ RPShapeCreateDlg1_MJ::OnCbnSelchange1();
 	return TRUE;
 }
 
@@ -93,7 +93,7 @@ UpdateData(FALSE);
 
 BEGIN_MESSAGE_MAP(RPShapeCreateDlg1_MJ, CDialog)
 	//{{AFX_MSG_MAP(RPShapeCreateDlg1_MJ)
-	ON_CBN_CLOSEUP(IDC_COMBO1, OnCloseupCombo1)
+	ON_CBN_SELCHANGE(IDC_COMBO1, OnCbnSelchange1)
 	ON_BN_CLICKED(IDC_BUTTON1, OnButton1)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -101,7 +101,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // RPShapeCreateDlg1_MJ message handlers
 
-void RPShapeCreateDlg1_MJ::OnCloseupCombo1() 
+void RPShapeCreateDlg1_MJ::OnCbnSelchange1() 
 {
 
 int cur = m_create_dlg1_combo1_MJ.GetCurSel();
