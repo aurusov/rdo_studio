@@ -84,6 +84,7 @@ CLASS(RDOPATPattern):
 DECLARE_FACTORY(RDOPATPattern)
 friend class RDOOPROperation;
 friend class RDODPTActivity;
+friend class RDOParserEVNPost;
 
 public:
 	enum PatType
@@ -148,6 +149,7 @@ protected:
 	{}
 
 	rdoRuntime::LPRDOPattern m_pPatRuntime;
+
 
 	rdoRuntime::LPRDOCalc createRelRes   (rbool trace) const;
 	virtual void          addParamSetCalc(CREF(rdoRuntime::LPRDOCalc) pCalc);
