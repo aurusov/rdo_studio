@@ -61,13 +61,13 @@ void RDOEvent::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
 }
 
 void RDOEvent::convertEvent(CREF(LPRDORuntime) pRuntime)
-{ 
-	pRuntime->setCurrentActivity(this);
+{
 	m_pPattern->convertEvent(pRuntime);
 }
 
 void RDOEvent::onBeforeEvent(CREF(LPRDORuntime) pRuntime)
 {
+	pRuntime->setCurrentActivity(this);
 	setPatternParameters(pRuntime);
 }
 

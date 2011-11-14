@@ -198,10 +198,10 @@ CALC(RDOSetPatternParamCalc)
 {
 DECLARE_FACTORY(RDOSetPatternParamCalc)
 private:
-	RDOSetPatternParamCalc(int parNumb, RDOValue val);
+	RDOSetPatternParamCalc(int parNumb, CREF(LPRDOCalc) pCalc);
 
-	int      m_parNumb;
-	RDOValue m_val;
+	int        m_parNumb;
+	LPRDOCalc  m_pCalc;
 
 	DECLARE_ICalc;
 };
