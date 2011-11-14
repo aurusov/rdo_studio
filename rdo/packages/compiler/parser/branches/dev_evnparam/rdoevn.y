@@ -2564,7 +2564,7 @@ arithm_list
 		$$ = PARSER->stack().push(pArithmContainer);
 	}
 	| arithm_list_body
-	{};
+	;
 
 arithm_list_body
 	: fun_arithm
