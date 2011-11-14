@@ -72,6 +72,11 @@ void RPShapeDecide::saveToXML(REF(pugi::xml_node) parentNode)
 	parentNode.append_child(getClassName().c_str());
 }
 
+void RPShapeDecide::loadFromXML(REF(pugi::xml_node) Node)
+{
+
+}
+
 RPObject* RPShapeDecide::newObject( RPObject* parent )
 {
 	return new RPShapeDecide( parent );

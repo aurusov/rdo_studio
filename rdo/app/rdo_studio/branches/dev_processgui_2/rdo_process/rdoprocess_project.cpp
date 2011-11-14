@@ -94,7 +94,6 @@ void RPProjectMFC::saveToXML(REF(pugi::xml_node) parentNode)
 {
 	// Инициализируем первую ноду именем класса первого встретившегося потомка:
 	pugi::xml_node node = parentNode.append_child(getClassName().c_str());
-	node.set_name(getClassName().c_str());
 
 	// Ссылаемся на первого потомка RPObject (RPObjectFlowChart_MJ), используя контейнер "list":
 	std::list<PTR(RPObject)> childList;
@@ -102,6 +101,23 @@ void RPProjectMFC::saveToXML(REF(pugi::xml_node) parentNode)
 	STL_FOR_ALL_CONST(childList, it)
 	{
 		(*it)->saveToXML(node);
+	}
+}
+
+void RPProjectMFC::loadFromXML(REF(pugi::xml_node) Node)
+{
+	// Переходим к первому потомку узла Node, который установлен на <Model>:
+	pugi::xml_node node = Node.first_child();
+	// Проверяем, а стоим ли мы на узле RPProjectMFC ?
+	if(strcmp(node.name(), getClassName().c_str()) == 0)
+	{
+		std::list<PTR(RPObject)> mfchild;
+		getAllChild(mfchild);
+		// Для каждого FlowChart'а вызываем его функцию loadFromXML(node), где "node" есть <RPProjectMFC>
+		STL_FOR_ALL_CONST(mfchild, it)
+		{
+			(*it)->loadFromXML(node);
+		}
 	}
 }
 

@@ -26,6 +26,9 @@ public:
 	virtual rp::RPXMLNode* save( rp::RPXMLNode* parent_node );
 	// Переопределенная виртуальная функция saveToXML для RPShapeDecide:
 	void saveToXML(REF(pugi::xml_node) parentNode);
+	// Переопределенная виртуальная функция loadFromXML для RPShapeDecide:
+	void loadFromXML(REF(pugi::xml_node) Node);
+
 	virtual void onLButtonDblClk( UINT nFlags, CPoint global_chart_pos );
 	virtual void generate();
 	double ptrue; 

@@ -915,6 +915,8 @@ void RDOStudioModel::openModelFromRepository()
 			studioApp.mainFrame->endProgress();
 		}
 
+		loadFromXML();
+
 		PTR(CWnd) wnd = studioApp.mainFrame->GetActiveFrame();
 		if (maximize && wnd && wnd != studioApp.mainFrame)
 		{
@@ -995,20 +997,7 @@ void RDOStudioModel::saveModelToRepository()
 	studioApp.studioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
 	setName(data.m_name);
 
-	// Заводим документ:
-	pugi::xml_document doc;
-	pugi::xml_node node = doc.append_child(_T("Model"));
-	// Ссылаемся на виртуальную функцию saveToXML(), которая поэтапно запишет информацию в файл:
-	rpMethod::project->saveToXML(node);
-
-	// Автоматически открываем файл при создании потока:
-	std::ofstream outFile("C:\\1\\TESTXML.txt");
-	// Проверяем открытый нами поток на наличие ошибок ввода-вывода:
-	if (outFile.good())
-	{
-		doc.save(outFile);
-		outFile.close();
-	}
+	saveToXML();
 
 	studioApp.insertReopenItem(getFullName());
 
@@ -1020,6 +1009,46 @@ void RDOStudioModel::saveModelToRepository()
 	if (wasSaved && plugins)
 	{
 		plugins->pluginProc(rdoPlugin::PM_MODEL_SAVE);
+	}
+}
+
+void RDOStudioModel::saveToXML()
+{
+	// Заводим документ:
+	pugi::xml_document doc;
+	// Пишем первый узел документа:
+	pugi::xml_node node = doc.append_child(_T("Model"));
+	// Ссылаемся на виртуальную функцию saveToXML(parentNode), которая поэтапно запишет информацию в файл:
+	rpMethod::project->saveToXML(node);
+
+	// Автоматически открываем файл при создании потока:
+	std::ofstream outFile("C:\\temp\\GuI.xml");
+	// Проверяем открытый нами поток на наличие ошибок ввода-вывода:
+	if (outFile.good())
+	{
+		doc.save(outFile);
+		outFile.close();
+	}
+}
+
+void RDOStudioModel::loadFromXML()
+{
+	// Заводим документ:
+	pugi::xml_document doc;
+	
+	// Открываем сохраненный xml-файл и проверяем поток на ошибки ввода-вывода:
+	std::ifstream inFile("C:\\temp\\GuI.xml");
+	if(inFile.good())
+	{
+		// Загружаем документ и проверяем на предмет ошибок парсинга и пустого узла:
+		pugi::xml_parse_result result = doc.load(inFile);
+		pugi::xml_node node = doc.child(_T("Model"));
+		if(result && !node.empty())
+		{
+			// Ссылаемся на виртуальную функцию loadFromXML(node), которая поэтапно загрузит графику из файла:
+			rpMethod::project->loadFromXML(node);
+		}
+		inFile.close();
 	}
 }
 

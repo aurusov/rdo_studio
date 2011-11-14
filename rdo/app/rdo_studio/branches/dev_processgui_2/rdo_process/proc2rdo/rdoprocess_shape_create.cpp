@@ -61,9 +61,47 @@ rp::RPXMLNode* RPShapeCreateMJ::save( rp::RPXMLNode* parent_node )
 
 void RPShapeCreateMJ::saveToXML(REF(pugi::xml_node) parentNode)
 {
-	pugi::xml_node      node     = parentNode.append_child(getClassName().c_str());
-	pugi::xml_attribute nameAttr = node.append_attribute(_T("name"));
+	// Записываем узел <RShapeCreateMJ/>:
+	pugi::xml_node      node        = parentNode.append_child(getClassName().c_str());
+	// Соxраняем атрибуты объекта:
+	pugi::xml_attribute nameAttr    = node.append_attribute(_T("gname"));
 	nameAttr.set_value(getName().c_str());
+	pugi::xml_attribute amountAttr  = node.append_attribute(_T("gamount"));
+	amountAttr.set_value(gamount);
+	pugi::xml_attribute basegenAttr = node.append_attribute(_T("base_gen"));
+	basegenAttr.set_value(base_gen);
+	pugi::xml_attribute gexpAttr    = node.append_attribute(_T("gexp"));
+	gexpAttr.set_value(gexp);
+	pugi::xml_attribute gdispAttr   = node.append_attribute(_T("gdisp"));
+	gdispAttr.set_value(gdisp);
+	pugi::xml_attribute zakonAttr   = node.append_attribute(_T("zakon"));
+	zakonAttr.set_value(gtype);
+}
+
+void RPShapeCreateMJ::loadFromXML(REF(pugi::xml_node) Node)
+{
+	// Ищем в соответствующем FlowChart'е, пришедшем по Node'е, блок(и) "Create":
+	for(pugi::xml_node node = Node.first_child(); node; node = node.next_sibling())
+	{
+		if(strcmp(node.name(), getClassName().c_str()) == 0)
+		{
+			// Считываем атрибуты для загрузки сохраненного блока "Create":
+			for(pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute())
+			{
+				// Присваиваем сохраненные в xml-файле параметры:
+				gname    = node.attribute(_T("gname")).value();
+				gamount  = node.attribute(_T("gamount")).as_int();
+				base_gen = node.attribute(_T("base_gen")).as_int();
+				gexp     = node.attribute(_T("gexp")).as_double();
+				gdisp    = node.attribute(_T("gdisp")).as_double();
+				gtype    = node.attribute(_T("zakon")).as_int();
+			}
+		}
+	}
+
+	// Создаем блок RPShapeCreateMJ:
+	RPShapeCreateMJ* p = static_cast<RPShapeCreateMJ*>(rpMethod::factory->getNewObject(getClassName().c_str(), rpMethod::project));
+	p->generate();
 }
 
 RPObject* RPShapeCreateMJ::newObject( RPObject* parent )

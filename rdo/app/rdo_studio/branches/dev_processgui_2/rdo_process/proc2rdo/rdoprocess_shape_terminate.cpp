@@ -64,3 +64,8 @@ void RPShapeTerminateMJ::saveToXML(REF(pugi::xml_node) parentNode)
 {
 	parentNode.append_child(getClassName().c_str());
 }
+
+void RPShapeTerminateMJ::loadFromXML(REF(pugi::xml_node) Node)
+{
+
+}

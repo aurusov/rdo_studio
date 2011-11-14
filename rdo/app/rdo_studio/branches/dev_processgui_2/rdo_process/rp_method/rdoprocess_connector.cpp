@@ -59,6 +59,11 @@ void RPConnector::saveToXML(REF(pugi::xml_node) parentNode)
 	parentNode.append_child(getClassName().c_str());
 }
 
+void RPConnector::loadFromXML(REF(pugi::xml_node) Node)
+{
+
+}
+
 void RPConnector::registerObject()
 {
 	rpMethod::factory->insertFactory( new RPObjectClassInfo( "RPConnector", "RPObjectChart", RPConnector::newObject ) );

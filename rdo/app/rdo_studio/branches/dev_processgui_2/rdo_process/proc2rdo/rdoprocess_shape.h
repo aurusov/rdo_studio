@@ -52,6 +52,8 @@ public:
 	virtual rpMethod::RPMethod* getMethod();
 	// Переопределенная для FlowChart виртуальная функция saveToXML:
 	void saveToXML(REF(pugi::xml_node) parentNode);
+	// Переопределенная для FlowChart виртуальная функция loadFromXML:
+	void loadFromXML(REF(pugi::xml_node) Node);
 };
 
 #endif // RDO_PROCESS_SHAPE_MJ_H

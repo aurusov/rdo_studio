@@ -48,6 +48,9 @@ public:
 	// Блокируем вхождение в данный класс функции saveToXML
 	// (из-за проектной ошибки - класс msg не должен наследоваться от RPObject).
 	virtual void saveToXML(REF(pugi::xml_node) parentNode) { NEVER_REACH_HERE; };
+	// Блокируем вхождение в данный класс функции loadFromXML
+	// (из-за проектной ошибки - класс msg не должен наследоваться от RPObject).
+	virtual void loadFromXML(REF(pugi::xml_node) Node)     { NEVER_REACH_HERE; };
 };
 
 } // namespace rp

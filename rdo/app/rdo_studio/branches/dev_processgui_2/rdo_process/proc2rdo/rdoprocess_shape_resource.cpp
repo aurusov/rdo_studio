@@ -158,3 +158,8 @@ void RPShapeResource_MJ::saveToXML(REF(pugi::xml_node) parentNode)
 {
 	parentNode.append_child(getClassName().c_str());
 }
+
+void RPShapeResource_MJ::loadFromXML(REF(pugi::xml_node) Node)
+{
+
+}

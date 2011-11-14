@@ -78,7 +78,8 @@ public:
 	virtual rp::RPXMLNode* save( rp::RPXMLNode* parent_node );
 	// Переопределенная виртуальная функция saveToXML для RPConnector:
 	void saveToXML(REF(pugi::xml_node) parentNode);
-
+	// Переопределенная виртуальная функция loadFromXML для RPConnector:
+	void loadFromXML(REF(pugi::xml_node) Node);
 	RPConnectorDock* getConnectedDock( const RPConnectorDock& dock ) const;
 };
 

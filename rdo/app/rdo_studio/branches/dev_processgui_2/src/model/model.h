@@ -155,6 +155,8 @@ public:
 	rbool openModel     (CREF(tstring) modelName = _T("")) const;
 	rbool saveModel     () const;
 	void  saveAsModel   () const;
+	void  saveToXML     ();
+	void  loadFromXML   ();
 	rbool closeModel    () const;
 	rbool buildModel    ();
 	rbool runModel      ();

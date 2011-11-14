@@ -57,6 +57,8 @@ public:
 	virtual rp::RPXMLNode* save( rp::RPXMLNode* parent_node );
 	// Чистая виртуальная функция для сохранения данных о графике в xml-формате:
 	virtual void saveToXML(REF(pugi::xml_node) parentNode) = 0;
+	// Чистая виртуальная функция для загрузки графики из xml-файла:
+	virtual void loadFromXML(REF(pugi::xml_node) Node) = 0;
 
 	bool hasChild() const { return !child.empty(); }
 	std::list< RPObject* >::const_iterator find_child( const RPObject* object ) {

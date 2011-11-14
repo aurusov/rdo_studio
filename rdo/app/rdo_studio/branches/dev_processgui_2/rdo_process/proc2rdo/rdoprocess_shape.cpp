@@ -80,3 +80,19 @@ void RPObjectFlowChart_MJ::saveToXML(REF(pugi::xml_node) parentNode)
 		(*it)->saveToXML(node);
 	}
 }
+
+void RPObjectFlowChart_MJ::loadFromXML(REF(pugi::xml_node) Node)
+{
+	// Пробегаем по потомкам узла Node, установленного в <RPProjectMFC>.
+	// В общем случае может быть открыто несколько окон FlowChart'a.
+	for(pugi::xml_node node = Node.first_child(); node; node = node.next_sibling())
+	{
+		// Заносим в список потомков FlowChart'а:
+		std::list<PTR(RPObject)> flowChild;
+		getAllChild(flowChild);
+		STL_FOR_ALL_CONST(flowChild, it)
+		{
+			(*it)->loadFromXML(node);
+		}
+	}
+}

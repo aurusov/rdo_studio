@@ -39,7 +39,9 @@ public:
 	// Блокируем вхождение функции saveToXML в RPMethod
 	// (из-за проектной ошибки - класс RPMethod не должен наследоваться от RPObject)
 	virtual void saveToXML(REF(pugi::xml_node) parentNode) { NEVER_REACH_HERE; };
-	
+	// Блокируем вхождение функции loadFromXML в RPMethod
+	// (из-за проектной ошибки - класс RPMethod не должен наследоваться от RPObject)
+	virtual void loadFromXML(REF(pugi::xml_node) Node)     { NEVER_REACH_HERE; };
 };
 
 extern RPMethodProc2RDO_MJ* proc2rdo;

@@ -31,6 +31,8 @@ public:
 
 	// Переопределенная виртуальная функция saveToXML для RPShapeResource_MJ:
 	void saveToXML(REF(pugi::xml_node) parentNode);
+	// Переопределенная виртуальная функция loadFromXML для RPShapeResource_MJ:
+	void loadFromXML(REF(pugi::xml_node) Node);
 };
 
 #endif // !defined(AFX_RDOPROCESS_SHAPE_RESOURCE_H__108AB1F9_8742_446F_9CB2_ABD461A09C12__INCLUDED_)
