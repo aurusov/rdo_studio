@@ -142,9 +142,13 @@ void RDODPTActivity::addParam(CREF(RDOValue) param)
 	{
 		val = pPatternParam->getType()->value_cast(param).value();
 	}
-	rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOSetPatternParamCalc>::create(m_currParam, val);
-	ASSERT(pCalc);
-	pCalc->setSrcInfo(RDOParserSrcInfo(param.getPosAsYY(), rdo::format(_T("Параметр образца %s.%s = %s"), m_pPattern->name().c_str(), pPatternParam->name().c_str(), param->getAsString().c_str())));
+
+	rdoRuntime::LPRDOCalc pSetParamCalc = rdo::Factory<rdoRuntime::RDOSetPatternParamCalc>::create(
+		m_currParam,
+		rdo::Factory<rdoRuntime::RDOCalcConst>::create(val)
+	);
+	ASSERT(pSetParamCalc);
+	pSetParamCalc->setSrcInfo(RDOParserSrcInfo(param.getPosAsYY(), rdo::format(_T("Параметр образца %s.%s = %s"), m_pPattern->name().c_str(), pPatternParam->name().c_str(), param->getAsString().c_str())));
 	m_currParam++;
 }
 

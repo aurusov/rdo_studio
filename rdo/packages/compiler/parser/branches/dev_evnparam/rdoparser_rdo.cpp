@@ -229,10 +229,17 @@ void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 				if(m_currParam < pPattern->m_paramList.size())
 				{
 					LPRDOParam pPatternParam = pPattern->m_paramList[m_currParam];
-					LPTypeInfo typeInfo = pPatternParam->getTypeInfo();
-					rdoRuntime::LPRDOCalc pCalc = pParam->createCalc(typeInfo);
-					ASSERT(pCalc);
-					pActivity->addParamCalc(pCalc);
+					ASSERT(pPatternParam);
+					LPTypeInfo pTypeInfo = pPatternParam->getTypeInfo();
+					ASSERT(pTypeInfo);
+					rdoRuntime::LPRDOCalc pParamValueCalc = pParam->createCalc(pTypeInfo);
+					ASSERT(pParamValueCalc);
+					rdoRuntime::LPRDOCalc pSetParamCalc = rdo::Factory<rdoRuntime::RDOSetPatternParamCalc>::create(
+						m_currParam,
+						pParamValueCalc
+					);
+					ASSERT(pSetParamCalc);
+					pActivity->addParamCalc(pSetParamCalc);
 					++m_currParam;
 				}
 			}

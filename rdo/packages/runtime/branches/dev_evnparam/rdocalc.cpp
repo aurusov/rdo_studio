@@ -142,7 +142,7 @@ REF(RDOValue) RDOSetResourceParamCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 REF(RDOValue) RDOSetPatternParamCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	pRuntime->setPatternParameter(m_parNumb, m_val);
+	pRuntime->setPatternParameter(m_parNumb, m_pCalc->calcValue(pRuntime));
 	return m_value;
 }
 
