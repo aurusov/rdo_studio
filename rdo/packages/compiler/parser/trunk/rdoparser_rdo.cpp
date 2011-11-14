@@ -12,6 +12,7 @@
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "simulator/runtime/rdo_activity_i.h"
 #include "simulator/compiler/parser/rdoparser_rdo.h"
 #include "simulator/compiler/parser/rdoparser_lexer.h"
 #include "simulator/compiler/parser/rdoparser.h"
@@ -218,6 +219,29 @@ void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 			STL_FOR_ALL(pEvent->getCalcList(), calcIt)
 			{
 				(*calcIt)->setEvent(pRuntimeEvent);
+			}
+
+			LPIActivity pActivity = pRuntimeEvent;
+			ASSERT(pActivity);
+			STL_FOR_ALL_CONST(pEvent->getParamList()->getContainer(), paramIT)
+			{
+				LPRDOFUNArithm pParam = *paramIT;
+				if(m_currParam < pPattern->m_paramList.size())
+				{
+					LPRDOParam pPatternParam = pPattern->m_paramList[m_currParam];
+					ASSERT(pPatternParam);
+					LPTypeInfo pTypeInfo = pPatternParam->getTypeInfo();
+					ASSERT(pTypeInfo);
+					rdoRuntime::LPRDOCalc pParamValueCalc = pParam->createCalc(pTypeInfo);
+					ASSERT(pParamValueCalc);
+					rdoRuntime::LPRDOCalc pSetParamCalc = rdo::Factory<rdoRuntime::RDOSetPatternParamCalc>::create(
+						m_currParam,
+						pParamValueCalc
+					);
+					ASSERT(pSetParamCalc);
+					pActivity->addParamCalc(pSetParamCalc);
+					++m_currParam;
+				}
 			}
 		}
 		else

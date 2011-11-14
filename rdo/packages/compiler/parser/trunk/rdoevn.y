@@ -1749,7 +1749,7 @@ planning_statement
 		LPArithmContainer pParamList = PARSER->stack().pop<ArithmContainer>($7);
 		ASSERT(pParamList);
 		//! @todo А если такого события не существует ?
-		PARSER->findEvent(eventName)->setParamList(pParamList);
+		pEvent->setParamList(pParamList);
 
 		rdoRuntime::LPRDOCalc pCalcTime = pTimeArithm->createCalc(NULL);
 		ASSERT(pCalcTime);
@@ -2564,7 +2564,7 @@ arithm_list
 		$$ = PARSER->stack().push(pArithmContainer);
 	}
 	| arithm_list_body
-	{};
+	;
 
 arithm_list_body
 	: fun_arithm

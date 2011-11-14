@@ -18,6 +18,7 @@
 #include "simulator/compiler/parser/rdoparser_lexer.h"
 #include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/runtime/rdo_object.h"
+#include "simulator/compiler/parser/rdopat.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -89,8 +90,10 @@ class RDOParserEVNPost: public RDOParserItem
 {
 DECLARE_FACTORY(RDOParserEVNPost);
 private:
+	ruint             m_currParam;
+	LPRDOPATPattern   m_pPattern;
 	RDOParserEVNPost()
-		: RDOParserItem(rdoModelObjects::PAT, NULL, NULL, NULL)
+		: RDOParserItem(rdoModelObjects::PAT, NULL, NULL, NULL), m_currParam (0)
 	{}
 	virtual void parse(CREF(LPRDOParser) pParser);
 };
