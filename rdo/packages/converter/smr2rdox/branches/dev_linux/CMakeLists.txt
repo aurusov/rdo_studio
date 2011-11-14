@@ -25,27 +25,60 @@ SET(GENERATED_FILES)
 
 IF(PROJECT_OS_LINUX)
 
-	FLEX_TARGET(lexer_scaner grammar/rdo_lexer.l  ${CMAKE_CURRENT_SOURCE_DIR}/rdolex.cpp)
+	SET(GRAMMA_PATH ${CMAKE_CURRENT_SOURCE_DIR}/grammar)
 
-	SET(BISON_TEMP_FILES
-		${CMAKE_CURRENT_SOURCE_DIR}/grammar/rdogramsmr_sim.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/grammar/rdogramsmr_file.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/grammar/rdogramrtp.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/grammar/rdogramrss.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/grammar/rdogramproc_rtp.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/grammar/rdogramproc_rss.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/grammar/rdogramproc_opr.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/grammar/rdogrampmd.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/grammar/rdogrampat.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/grammar/rdogramopr.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/grammar/rdogramfun.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/grammar/rdogramfrm.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/grammar/rdogramdpt.cpp)
+	CONFIGURE_FILE(${CMAKE_MODULE_PATH}/rdogramma.h.cmake ${GRAMMA_PATH}/rdogramma.h)
+
+	BISON_TARGET(rdosmr_sim ${GRAMMA_PATH}/rdosmr_sim.y ${GRAMMA_PATH}/rdogramsmr_sim.cpp COMPILE_FLAGS "-g -v -pcnv_smr_sim_")
+	BISON_TARGET(rdosmr_file ${GRAMMA_PATH}/rdosmr_file.y ${GRAMMA_PATH}/rdogramsmr_file.cpp COMPILE_FLAGS "-g -v -pcnv_smr_file_")
+	BISON_TARGET(rdoproc_rtp ${GRAMMA_PATH}/rdoproc_rtp.y ${GRAMMA_PATH}/rdogramproc_rtp.cpp COMPILE_FLAGS "-g -v -pcnv_proc_rtp_")
+	BISON_TARGET(rdoproc_rss ${GRAMMA_PATH}/rdoproc_rss.y ${GRAMMA_PATH}/rdogramproc_rss.cpp COMPILE_FLAGS "-g -v -pcnv_proc_rss_")
+	BISON_TARGET(rdoproc_opr ${GRAMMA_PATH}/rdoproc_opr.y ${GRAMMA_PATH}/rdogramproc_opr.cpp COMPILE_FLAGS "-g -v -pcnv_proc_opr_")
+	BISON_TARGET(rdortp ${GRAMMA_PATH}/rdortp.y ${GRAMMA_PATH}/rdogramrtp.cpp COMPILE_FLAGS "-g -v -pcnv_rtp")
+	BISON_TARGET(rdorss ${GRAMMA_PATH}/rdorss.y ${GRAMMA_PATH}/rdogramrss.cpp COMPILE_FLAGS "-g -v -pcnv_rss")
+	BISON_TARGET(rdopmd ${GRAMMA_PATH}/rdopmd.y ${GRAMMA_PATH}/rdogrampmd.cpp COMPILE_FLAGS "-g -v -pcnv_pmd")
+	BISON_TARGET(rdopat ${GRAMMA_PATH}/rdopat.y ${GRAMMA_PATH}/rdogrampat.cpp COMPILE_FLAGS "-g -v -pcnv_pat")
+	BISON_TARGET(rdoopr ${GRAMMA_PATH}/rdoopr.y ${GRAMMA_PATH}/rdogramopr.cpp COMPILE_FLAGS "-g -v -pcnv_opr")
+	BISON_TARGET(rdofun ${GRAMMA_PATH}/rdofun.y ${GRAMMA_PATH}/rdogramfun.cpp COMPILE_FLAGS "-g -v -pcnv_fun")
+	BISON_TARGET(rdofrm ${GRAMMA_PATH}/rdofrm.y ${GRAMMA_PATH}/rdogramfrm.cpp COMPILE_FLAGS "-g -v -pcnv_frm")
+	BISON_TARGET(rdodpt ${GRAMMA_PATH}/rdodpt.y ${GRAMMA_PATH}/rdogramdpt.cpp COMPILE_FLAGS "-g -v -pcnv_dpt")
+
+	FLEX_TARGET(lexer_scaner ${GRAMMA_PATH}/rdo_lexer.l  ${GRAMMA_PATH}/rdolex.cpp)
+
+	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdosmr_sim)
+	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdosmr_file)
+	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdortp)
+	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdorss)
+	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdoproc_rtp)
+	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdoproc_rss)
+	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdoproc_opr)
+	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdopmd)
+	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdopat)
+	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdoopr)
+	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdofun)
+	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdofrm)
+	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdodpt)
+
+	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdosmr_sim)
 
 SET(GENERATED_FILES
+	${GRAMMA_PATH}/rdogramma.h
 	${FLEX_lexer_scaner_OUTPUTS}
-	${BISON_TEMP_FILES}
-	grammar/rdogramma.h)
+	${BISON_rdortp_OUTPUTS}
+	${BISON_rdortp_OUTPUT_HEADER}
+	${BISON_rdodpt_OUTPUTS}
+	${BISON_rdoevn_OUTPUTS}
+	${BISON_rdoevn_preparse_OUTPUTS}
+	${BISON_rdofrm_OUTPUTS}
+	${BISON_rdofun_OUTPUTS}
+	${BISON_rdopat_OUTPUTS}
+	${BISON_rdopmd_OUTPUTS}
+	${BISON_rdoproc_opr_OUTPUTS}
+	${BISON_rdoproc_rss_OUTPUTS}
+	${BISON_rdoproc_rtp_OUTPUTS}
+	${BISON_rdorss_OUTPUTS}
+	${BISON_rdosmr_file_OUTPUTS}
+	${BISON_rdosmr_sim_OUTPUTS})
 
 ENDIF(PROJECT_OS_LINUX)
 
