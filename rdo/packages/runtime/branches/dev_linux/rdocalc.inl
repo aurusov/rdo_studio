@@ -77,11 +77,12 @@ inline RDOSetResourceParamCalc::RDOSetResourceParamCalc(int resNumb, int parNumb
 // --------------------------------------------------------------------------------
 // -------------------- RDOSetPatternParamCalc
 // --------------------------------------------------------------------------------
-inline RDOSetPatternParamCalc::RDOSetPatternParamCalc(int parNumb, RDOValue val)
+inline RDOSetPatternParamCalc::RDOSetPatternParamCalc(int parNumb, CREF(LPRDOCalc) pCalc)
 	: m_parNumb(parNumb)
-	, m_val    (val    )
+	, m_pCalc  (pCalc  )
 {
 	m_value = 0;
+	ASSERT(m_pCalc);
 }
 
 // --------------------------------------------------------------------------------
