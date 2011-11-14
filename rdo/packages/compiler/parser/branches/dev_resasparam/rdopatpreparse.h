@@ -41,6 +41,7 @@ public:
 	rdoRuntime::LPRDOCalc  getInitCalc    () const;
 	void                   setInitCalc    (CREF(rdoRuntime::LPRDOCalc) pCalc);
 	void                   setParamList   (CREF(LPArithmContainer) pParamList);
+	LPArithmContainer      getParamList   () const;
 
 private:
 	RDOEvent(CREF(tstring) name, rbool regular);
