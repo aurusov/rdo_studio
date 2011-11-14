@@ -168,7 +168,8 @@ inline void RDORuntime::setPatternParameter(unsigned int parNumb, RDOValue val)
 
 inline RDOValue RDORuntime::getPatternParameter(int parNumb) 
 {
-	return patternParameters.at(parNumb);
+	ASSERT((ruint)parNumb < patternParameters.size());
+	return patternParameters[parNumb];
 }
 
 inline void RDORuntime::onNothingMoreToDo()
