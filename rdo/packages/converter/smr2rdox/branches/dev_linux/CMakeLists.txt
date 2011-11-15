@@ -175,3 +175,136 @@ ADD_DEPENDENCIES(rdo_converter_smr2rdox rdo_runtime)
 TARGET_LINK_LIBRARIES(rdo_converter_smr2rdox ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${Boost_DATE_TIME_LIBRARY})
 TARGET_LINK_LIBRARIES(rdo_converter_smr2rdox rdo_utils)
 TARGET_LINK_LIBRARIES(rdo_converter_smr2rdox rdo_runtime)
+
+IF(MSVC) # lotions for windows #
+
+SOURCE_GROUP(".animation" FILES 
+	rdofrm.h
+	rdofrm.cpp)
+	
+SOURCE_GROUP(".common" FILES 
+	namespace.h
+	rdo_object.h
+	rdo_object.cpp)	
+
+SOURCE_GROUP(".context" FILES 
+	context/context.h
+	context/context.cpp
+	context/stack.h
+	context/stack.cpp)
+	
+SOURCE_GROUP(".converter" FILES 
+	rdobison.h
+	rdoparser.cpp
+	rdoparser.h
+	rdoparser_base.cpp
+	rdoparser_base.h
+	rdoparser_rdo.cpp
+	rdoparser_rdo.h)
+	
+SOURCE_GROUP(".converter_error" FILES 
+	rdoparser_error.cpp
+	rdoparser_error.h)
+	
+SOURCE_GROUP(".converter_lexer" FILES
+	rdoparser_lexer.cpp
+	rdoparser_lexer.inl
+	rdoparser_lexer.h)
+	
+SOURCE_GROUP(".dpt" FILES
+	rdodpt.h
+	rdodpt.cpp
+	rdo_logic.h
+	rdo_logic.cpp)	
+
+SOURCE_GROUP(".function" FILES
+	rdofun.h
+	rdofun.cpp)
+
+SOURCE_GROUP(".opt" FILES
+	rdoopr.cpp
+	rdoopr.h)
+	
+SOURCE_GROUP(".pattern" FILES	
+	rdopat.cpp
+	rdopat.h)
+
+SOURCE_GROUP(".pch" FILES
+	pch.h
+	pch.cpp)
+
+SOURCE_GROUP(".project" FILES
+	rdosmr.h
+	rdosmr.cpp)
+
+SOURCE_GROUP(".rdo_common" FILES
+	rdo_common/model_objects_convertor.h)
+
+SOURCE_GROUP(".resorces" FILES
+	rdortp_param.h
+	rdortp_param.cpp
+	rdortp.h
+	rdortp.cpp
+	rdorss.h
+	rdorss.cpp)
+
+SOURCE_GROUP(".resorces_param" FILES
+	param.h
+	param.cpp)
+
+SOURCE_GROUP(".type" FILES
+	type/type.h
+	type/info.h
+	type/info.inl
+	type/info.cpp)
+
+SOURCE_GROUP(".value_array" FILES
+	rdo_array.h
+	rdo_array.cpp)
+
+SOURCE_GROUP(".value" FILES
+	rdo_value.h
+	rdo_value.inl
+	rdo_value.cpp)
+
+SOURCE_GROUP(".watch" FILES
+	rdopmd.h
+	rdopmd.cpp)
+
+SOURCE_GROUP(".type" FILES
+	rdo_type.h
+	rdo_type.cpp)
+
+SOURCE_GROUP(".type_enum" FILES
+	rdo_enum.h
+	rdo_enum.cpp)
+
+SOURCE_GROUP(".type_param" FILES
+	rdo_type_param.cpp
+	rdo_type_param.h)
+
+SOURCE_GROUP(".type_such_as" FILES
+	rdo_type_param_suchas.h
+	rdo_type_param_suchas.cpp)
+
+SOURCE_GROUP(".type_param" FILES
+	rdo_type_range.h
+	rdo_type_range.cpp)
+
+SOURCE_GROUP(".runtime" FILES
+	runtime/rdo_ie.cpp
+	runtime/rdo_ie.h
+	runtime/rdo_logic_dptfree.cpp
+	runtime/rdo_logic_dptfree.inl
+	runtime/rdo_logic_dptfree.h)
+
+SOURCE_GROUP(".update" FILES
+	update/document.cpp
+	update/document.h
+	update/document_i.h
+	update/update.cpp
+	update/update.h
+	update/update_i.inl
+	update/update_i.h)
+	
+ENDIF(MSVC)
