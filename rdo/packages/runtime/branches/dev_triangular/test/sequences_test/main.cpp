@@ -31,6 +31,7 @@ contstr        g_fileNormalName       = _T("data_normal.txt");      //!< файл да
 contstr        g_fileUniformName      = _T("data_uniform.txt");     //!< файл данных
 contstr        g_fileExponentialName  = _T("data_exponential.txt"); //!< файл данных
 contstr        g_fileTriangularName   = _T("data_trinagular.txt");  //!< файл данных
+
 const ruint    g_count                = 100000;                     //!< количество генерируемых данных
 const double   g_main                 = 10.0;                       //!< параметр закона экспоненциального и нормального
 const double   g_var                  = 1.0;                        //!< параметр закона нормального
@@ -38,10 +39,11 @@ const double   g_from                 = 1.0;                        //!< парамет
 const double   g_to                   = 7.0;                        //!< параметр закона равномерного и треугольного
 const double   g_top                  = 5.0;                        //!< параметр закона треугольного
 const ruint    g_precision            = 20;                         //!< точность вещественного числа при выводе в поток
+
 const ruint    g_countOfExamples      = 2000;                       //!< количество чисел в выборке
 const ruint    g_countOfFree          = 39;                         //!< число разрядов
 const double   pi                     = 3.141592653;                //!< фундаментальная константа
-
+const double   g_ksiEtalon            = 54.5722;                    //!< табличное значение
 
 // --------------------------------------------------------------------------------
 // -------Templates
@@ -57,7 +59,7 @@ void onGenerateData(F binder, contstr g_fileName)
 
 	for (ruint i = 0; i < g_count; ++i)
 	{
-		test.push_back(binder.operator()(&sequence));
+		test[i] = binder.operator()(&sequence);
 	}
 
 	std::ofstream stream(g_fileName.c_str());
@@ -78,7 +80,7 @@ void onCheckData(F binder, contstr g_fileName)
 	T sequence(g_seed);
 	for (ruint i = 0; i < g_count; ++i)
 	{
-		test.push_back(binder.operator()(&sequence));
+		test[i] = binder.operator()(&sequence);
 	}
 
 	stream.precision(g_precision);
@@ -135,10 +137,10 @@ void onCheckKsi(F binder, S binderSeq, double left, double right)
 
 	for (ruint i = 0; i < countOfxI + 1; ++i)//загоняю элементарные значения в контейнер. решил, что на три порядка больше точек (чем колчество участков) даст достаточную точность при вычислениях
 	{
-		xTemp.push_back(elem*i);
+		xTemp[i] = elem*i;
 	}
 
-	Container x(g_countOfExamples);			//контейнер для границ интервалов, которые будут участововать в вычислениях
+	Container x;							//контейнер для границ интервалов, которые будут участововать в вычислениях
 	x.push_back(left);						//левая граница будет в начале списка, правая граница или близкая к ней точка - right
 
 	for (ruint i = 1; i < countOfxI; ++i)
@@ -154,7 +156,7 @@ void onCheckKsi(F binder, S binderSeq, double left, double right)
 	}
 	else if(x.back() < right)				//случай, когда последний интервал заканчивается раньше конца заданного интервала
 	{
-		x.erase(x.end() - 1, x.end());
+		x.pop_back();
 		x.push_back(right);
 	}
 
@@ -165,10 +167,32 @@ void onCheckKsi(F binder, S binderSeq, double left, double right)
 	G sequence(g_seed);
 	for (ruint i = 0; i < g_countOfExamples; ++i)
 	{
-		vb.push_back(binderSeq.operator()(&sequence));
+		vb[i] = binderSeq.operator()(&sequence);
 	}
 
+	Container fI(g_countOfFree);
 	
+	for(ruint i = 0; i < g_countOfFree - 1; ++i)
+	{
+		ruint freq = 0;
+		for(ruint k = 0; k < g_countOfExamples; ++k)
+		{
+			if((vb[k] > x[i]) & (vb[k] <= x[i+1]))
+			{
+				++freq;
+			}
+		}
+		fI[i] = freq;
+	}
+
+	double ksi = 0;
+	double Fi = g_countOfExamples/g_countOfFree;
+	for(ruint i = 0; i < g_countOfFree; ++i)
+	{
+		ksi += ((fI[i] - Fi)*(fI[i] - Fi))/Fi;
+	}
+
+	BOOST_CHECK(ksi < g_ksiEtalon);
 }
 // --------------------------------------------------------------------------------
 
@@ -191,7 +215,7 @@ private:
 };
 
 BOOST_AUTO_TEST_SUITE(RDOSequencesTest)
-
+/*
 // --------------------------------------------------------------------------------
 // -------Normal sequence
 // --------------------------------------------------------------------------------
@@ -200,12 +224,12 @@ BOOST_AUTO_TEST_CASE(RDONormalTestCreate)
 	onGenerateData<rdoRuntime::RandGeneratorNormal>
 		(boost::bind(&rdoRuntime::RandGeneratorNormal::next, _1, g_main, g_var), g_fileNormalName);
 }
-
+*/
 BOOST_AUTO_TEST_CASE(RDONormalTestCheck)
 {
-	onCheckData<rdoRuntime::RandGeneratorNormal>
+/*	onCheckData<rdoRuntime::RandGeneratorNormal>
 		(boost::bind(&rdoRuntime::RandGeneratorNormal::next, _1, g_main, g_var), g_fileNormalName);
-
+*/
 	SequenceNormal normal(g_main, g_var);
 	onCheckKsi<SequenceNormal, rdoRuntime::RandGeneratorNormal>
 		(boost::bind(&SequenceNormal::get, normal, _1),
@@ -215,7 +239,7 @@ BOOST_AUTO_TEST_CASE(RDONormalTestCheck)
 }
 
 // --------------------------------------------------------------------------------
-
+/*
 // --------------------------------------------------------------------------------
 // -------Uniform sequence
 // --------------------------------------------------------------------------------
@@ -263,5 +287,5 @@ BOOST_AUTO_TEST_CASE(RDOTriangularTestCheck)
 		(boost::bind(&rdoRuntime::RandGeneratorTriangular::next, _1, g_from, g_top, g_to), g_fileTriangularName);
 }
 // --------------------------------------------------------------------------------
-
+*/
 BOOST_AUTO_TEST_SUITE_END()
