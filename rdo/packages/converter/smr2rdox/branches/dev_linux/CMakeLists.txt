@@ -23,9 +23,9 @@ ENDIF(NOT FLEX_FOUND)
 
 SET(GENERATED_FILES)
 
-IF(PROJECT_OS_LINUX)
+SET(GRAMMA_PATH ${CMAKE_CURRENT_SOURCE_DIR}/grammar)
 
-	SET(GRAMMA_PATH ${CMAKE_CURRENT_SOURCE_DIR}/grammar)
+IF(PROJECT_OS_LINUX)
 
 	CONFIGURE_FILE(${CMAKE_MODULE_PATH}/rdogramma.h.cmake ${GRAMMA_PATH}/rdogramma.h)
 
@@ -166,7 +166,23 @@ SET(SOURCE_FILES
     update/document.cpp
     update/update.cpp)
 
-ADD_LIBRARY(rdo_converter_smr2rdox ${HEADER_FILES} ${SOURCE_FILES} ${GENERATED_FILES})
+SET(GRAMMA_FILES
+	${GRAMMA_PATH}/rdo_lexer.l
+	${GRAMMA_PATH}/rdoproc_rtp.y
+	${GRAMMA_PATH}/rdoproc_rss.y
+	${GRAMMA_PATH}/rdoproc_opr.y
+	${GRAMMA_PATH}/rdosmr_file.y
+	${GRAMMA_PATH}/rdosmr_sim.y
+	${GRAMMA_PATH}/rdortp.y
+	${GRAMMA_PATH}/rdorss.y
+	${GRAMMA_PATH}/rdopmd.y
+	${GRAMMA_PATH}/rdopat.y
+	${GRAMMA_PATH}/rdoopr.y
+	${GRAMMA_PATH}/rdofun.y
+	${GRAMMA_PATH}/rdofrm.y
+	${GRAMMA_PATH}/rdodpt.y)
+
+ADD_LIBRARY(rdo_converter_smr2rdox ${HEADER_FILES} ${SOURCE_FILES} ${GENERATED_FILES} ${GRAMMA_FILES})
 SET_TARGET_PROPERTIES(rdo_converter_smr2rdox PROPERTIES LINKER_LANGUAGE CXX)
 
 ADD_DEPENDENCIES(rdo_converter_smr2rdox rdo_utils)
@@ -221,6 +237,10 @@ SOURCE_GROUP(".function" FILES
 	rdofun.h
 	rdofun.cpp)
 
+SOURCE_GROUP(".grammar" FILES
+	${GRAMMA_FILES}
+	${GENERATED_FILES})
+	
 SOURCE_GROUP(".opt" FILES
 	rdoopr.cpp
 	rdoopr.h)
@@ -251,16 +271,6 @@ SOURCE_GROUP(".resorces" FILES
 SOURCE_GROUP(".resorces_param" FILES
 	param.h
 	param.cpp)
-
-SOURCE_GROUP(".type" FILES
-	type/type.h
-	type/info.h
-	type/info.inl
-	type/info.cpp)
-
-SOURCE_GROUP(".value_array" FILES
-	rdo_array.h
-	rdo_array.cpp)
 
 SOURCE_GROUP(".value" FILES
 	rdo_value.h
