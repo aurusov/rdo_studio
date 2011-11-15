@@ -13,7 +13,7 @@
 #define BOOST_TEST_MODULE RDOSequencesTest
 #include <iostream>
 #include <fstream>
-#include <list>
+#include <vector>
 #include <math.h>
 #include <boost/test/included/unit_test.hpp>
 #include <boost/bind.hpp>
@@ -23,7 +23,7 @@
 #include "simulator/runtime/rdo_random_distribution.h"
 // --------------------------------------------------------------------------------
 
-typedef std::list<double> Container;
+typedef std::vector<double> Container;
 typedef const tstring contstr;
 
 const long int g_seed                 = 123456789;                  //!< база генератора
@@ -42,6 +42,7 @@ const ruint    g_countOfExamples      = 2000;                       //!< количес
 const ruint    g_countOfFree          = 39;                         //!< число разрядов
 const double   pi                     = 3.141592653;                //!< фундаментальная константа
 
+
 // --------------------------------------------------------------------------------
 // -------Templates
 // --------------------------------------------------------------------------------
@@ -52,7 +53,7 @@ void onGenerateData(F binder, contstr g_fileName)
 		return;
 
 	T sequence(g_seed);
-	Container test;
+	Container test(g_count);
 
 	for (ruint i = 0; i < g_count; ++i)
 	{
@@ -73,7 +74,7 @@ void onCheckData(F binder, contstr g_fileName)
 	std::ifstream stream(g_fileName.c_str());
 	BOOST_CHECK(stream.good());
 
-	Container test;
+	Container test(g_count);
 	T sequence(g_seed);
 	for (ruint i = 0; i < g_count; ++i)
 	{
@@ -102,7 +103,7 @@ void onCheckData(F binder, contstr g_fileName)
 template <class T,class F>
 double  area (F binder, double elem, double n, double m)
 {
-	int k = 1;
+	double k = 1;
 	double S1 = 1;
 	double S2 = 0;
 	ruint t = (m-n)/elem;
@@ -123,37 +124,51 @@ double  area (F binder, double elem, double n, double m)
 	return S1;
 }
 
-template <class T, class F>
-void onCheckKsi(F binder, double left, double right)
+template <class T, class G, class F, class S>
+void onCheckKsi(F binder, S binderSeq, double left, double right)
 {
-	Container xITemp;								//создаю временный контейнер значений, на основе которых потом буду считать границы участка
-	double elem = (right-left)/(1000*g_countOfFree);//расстояние между точками на прямой, между временными значениями
-	for (ruint i = 0; i < g_countOfFree*1000+1; ++i)//загоняю элементарные значения в контейнер. решил, что на три порядка больше точек (чем колчество участков) даст достаточную точность при вычислениях
+	const ruint countOfxI   = g_countOfFree*1000;	//количество отрезков, на 1 меньше числа точек
+	const ruint areaOfI = 1/g_countOfFree;			//площадь на отрезке
+
+	Container xTemp(countOfxI + 1);			//создаю временный контейнер значений, на основе которых потом буду считать границы участка
+	double elem = (right-left)/(countOfxI);	//расстояние между точками на прямой, между временными значениями
+
+	for (ruint i = 0; i < countOfxI + 1; ++i)//загоняю элементарные значения в контейнер. решил, что на три порядка больше точек (чем колчество участков) даст достаточную точность при вычислениях
 	{
-		xITemp.push_back(elem*i);
+		xTemp.push_back(elem*i);
 	}
 
-	Container xI;							//контейнер для границ интервалов, которые будут участововать в вычислениях
-	Container::iterator it = xI.begin();
-	xI.push_back(left);						//левая граница будет в начале списка, правая граница или близкая к ней точка - right
+	Container x(g_countOfExamples);			//контейнер для границ интервалов, которые будут участововать в вычислениях
+	x.push_back(left);						//левая граница будет в начале списка, правая граница или близкая к ней точка - right
 
-	Container::iterator itTemp = xITemp.begin();
-	while (itTemp != xITemp.end())
+	for (ruint i = 1; i < countOfxI; ++i)
 	{
-		//! @todo перед вызовом ++itTemp надо itTemp проверить на end()
-		if (fabs(area<T>(binder, elem, *it, *itTemp) - 1/g_countOfFree) < fabs(area<T>(binder, elem, *it, *(++itTemp)) - 1/g_countOfFree))
+		if (fabs(area<T>(binder, elem, x.back(), xTemp[i]) - areaOfI) < fabs(area<T>(binder, elem, x.back(), xTemp[i+1]) - areaOfI))
 		{
-			xI.push_back(*((--itTemp)++));
-			++it;
+			x.push_back(xTemp[i]);
 		}
-		--itTemp;
 	}
-	if(xI.size() == (g_countOfFree - 1))	//обрабатывается случай, когда площадь на последнем интервале окажется чуть меньше чем отведенная ему доля площади. погрешность ожидаестся очень малая из-за этого. проблема могла возникнуть при посчете количества попаданий в последний интервал. а его бы не было
+	if(x.size() == g_countOfFree)			//обрабатывается случай, когда площадь на последнем интервале окажется чуть меньше чем отведенная ему доля площади. погрешность ожидаестся очень малая из-за этого. проблема могла возникнуть при посчете количества попаданий в последний интервал. а его бы не было
 	{
-		xI.push_back(right);
+		x.push_back(right);
+	}
+	else if(x.back() < right)				//случай, когда последний интервал заканчивается раньше конца заданного интервала
+	{
+		x.erase(x.end() - 1, x.end());
+		x.push_back(right);
 	}
 
-//случай, когда последний интервал будет иметь границу раньше значения right рассмаотривать не будем, т.к. погрешность тоже крошечная. искренне полагаю, что это несущенственно
+	//итак, теперь у нас есть границы интервалов
+
+	Container vb(g_countOfExamples);		//контейнер для хранения выборки
+
+	G sequence(g_seed);
+	for (ruint i = 0; i < g_countOfExamples; ++i)
+	{
+		vb.push_back(binderSeq.operator()(&sequence));
+	}
+
+	
 }
 // --------------------------------------------------------------------------------
 
@@ -167,7 +182,7 @@ public:
 
 	double get(double x) const
 	{
-		return 1/(sqrt(2*pi)*sqrt(m_var)*exp((x - m_main)*(x - m_main)/(2*m_var))); //функция плотности распределения вероятности. по определению для закона. таких будет еще 3 шутки.
+		return 1/(sqrt(2*pi*m_var)*exp((x - m_main)*(x - m_main)/(2*m_var))); //функция плотности распределения вероятности. по определению для закона. таких будет еще 3 шутки.
 	}
 
 private:
@@ -192,8 +207,11 @@ BOOST_AUTO_TEST_CASE(RDONormalTestCheck)
 		(boost::bind(&rdoRuntime::RandGeneratorNormal::next, _1, g_main, g_var), g_fileNormalName);
 
 	SequenceNormal normal(g_main, g_var);
-	onCheckKsi<SequenceNormal>
-		(boost::bind(&SequenceNormal::get, normal, _1), g_main-4*sqrt(g_var), g_main+4*sqrt(g_var));
+	onCheckKsi<SequenceNormal, rdoRuntime::RandGeneratorNormal>
+		(boost::bind(&SequenceNormal::get, normal, _1),
+		boost::bind(&rdoRuntime::RandGeneratorNormal::next, _1, g_main, g_var),
+		g_main-4*sqrt(g_var),
+		g_main+4*sqrt(g_var));
 }
 
 // --------------------------------------------------------------------------------
