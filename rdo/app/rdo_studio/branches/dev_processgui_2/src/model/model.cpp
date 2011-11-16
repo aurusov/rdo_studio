@@ -832,6 +832,7 @@ void RDOStudioModel::openModelFromRepository()
 		if (pMethod)
 		{
 			m_pFlowchartDocTemplate->OpenDocumentFile(NULL);
+			loadFromXML();
 			pMethod->makeFlowChart(rpMethod::project);
 		}
 
@@ -915,7 +916,7 @@ void RDOStudioModel::openModelFromRepository()
 			studioApp.mainFrame->endProgress();
 		}
 
-		loadFromXML();
+		//loadFromXML();
 
 		PTR(CWnd) wnd = studioApp.mainFrame->GetActiveFrame();
 		if (maximize && wnd && wnd != studioApp.mainFrame)

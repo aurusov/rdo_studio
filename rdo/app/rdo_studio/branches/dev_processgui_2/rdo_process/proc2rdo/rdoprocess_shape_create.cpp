@@ -80,6 +80,9 @@ void RPShapeCreateMJ::saveToXML(REF(pugi::xml_node) parentNode)
 
 void RPShapeCreateMJ::loadFromXML(REF(pugi::xml_node) Node)
 {
+	// Создаем объект класса RPShapeCreateMJ:
+	RPShapeCreateMJ* create = new RPShapeCreateMJ(this);
+
 	// Ищем в соответствующем FlowChart'е, пришедшем по Node'е, блок(и) "Create":
 	for(pugi::xml_node node = Node.first_child(); node; node = node.next_sibling())
 	{
@@ -89,19 +92,28 @@ void RPShapeCreateMJ::loadFromXML(REF(pugi::xml_node) Node)
 			for(pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute())
 			{
 				// Присваиваем сохраненные в xml-файле параметры:
-				gname    = node.attribute(_T("gname")).value();
-				gamount  = node.attribute(_T("gamount")).as_int();
-				base_gen = node.attribute(_T("base_gen")).as_int();
-				gexp     = node.attribute(_T("gexp")).as_double();
-				gdisp    = node.attribute(_T("gdisp")).as_double();
-				gtype    = node.attribute(_T("zakon")).as_int();
+				if(strcmp(attr.name(), "gname") == 0)
+					create->gname    = attr.value();
+				else if(strcmp(attr.name(), "gamount") == 0)
+					create->gamount  = attr.as_int();
+				else if(strcmp(attr.name(), "base_gen") == 0)
+					create->base_gen = attr.as_int();
+				else if(strcmp(attr.name(), "gexp") == 0)
+					create->gexp     = attr.as_double();
+				else if(strcmp(attr.name(), "gdisp") == 0)
+					create->gdisp    = attr.as_double();
+				else if(strcmp(attr.name(), "zakon") == 0)
+					create->gtype    = node.attribute(_T("zakon")).as_int();
 			}
 		}
 	}
-
-	// Создаем блок RPShapeCreateMJ:
-	RPShapeCreateMJ* p = static_cast<RPShapeCreateMJ*>(rpMethod::factory->getNewObject(getClassName().c_str(), rpMethod::project));
-	p->generate();
+	//Отрисовать блок не получается, так как параметр dc() ожидает CWnd, а не указатель на RPShapeCreateMJ
+	//CPaintDC dc(this);
+	//dc.SaveDC();
+	//create->draw(dc);
+	//dc.RestoreDC(-1);
+	// ИЛИ ЧЕРЕЗ ФАБРИКУ, НО ПАРАМЕТР "zakon" неясно как задать.
+	//rdo::Factory<RPShapeDataBlockCreate>::create(zakon,  
 }
 
 RPObject* RPShapeCreateMJ::newObject( RPObject* parent )

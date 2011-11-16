@@ -72,7 +72,7 @@ RPObjectFlowChart::RPObjectFlowChart( RPObject* _parent ):
 	trash_rect.top    = 0;
 	trash_rect.right  = 32;
 	trash_rect.bottom = 32;
-	trash_bmp = new RPObjectPixmap( this, new RPPixmap( IDB_TRASH, RGB(0xFF,0x00,0xFF) ) );
+	//trash_bmp = new RPObjectPixmap( this, new RPPixmap( IDB_TRASH, RGB(0xFF,0x00,0xFF) ) );
 }
 
 RPObjectFlowChart::~RPObjectFlowChart()
