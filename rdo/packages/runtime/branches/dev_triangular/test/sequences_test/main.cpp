@@ -43,7 +43,7 @@ const ruint    g_precision            = 20;                         //!< точност
 const ruint    g_countOfExamples      = 2000;                       //!< количество чисел в выборке
 const ruint    g_countOfFree          = 39;                         //!< число разрядов
 const double   pi                     = 3.141592653;                //!< фундаментальная константа
-const double   g_ksiEtalon            = 54.5722;                    //!< табличное значение
+const double   g_ksiEtalon            = 50.9985;                    //!< табличное значение. 95% вероятность того, что это действительно тот самый закон распределения
 
 // --------------------------------------------------------------------------------
 // -------Templates
@@ -103,24 +103,24 @@ void onCheckData(F binder, contstr g_fileName)
 }
 
 template <class T,class F>
-double  area (F binder, double elem, double n, double m)
+double  area (F binder, double n, double m)
 {
 	double k = 1;
 	double S1 = 1;
 	double S2 = 0;
-	ruint t = (m-n)/elem;
+	ruint t = 10;
 	while (fabs(S1-S2)/S1 > 0.01)
 	{
 		S2 = S1;
 		S1 = 0;
-		for (ruint i = 1; i < t-1; ++i)
+		for (ruint g = 0; g < t + 1; ++g)
 		{
-			if ((i == 0) || (i == t - 1))
+			if ((g == 0) || (g == t - 1))
 				k = 0.5;
-			S1 += k*(binder.operator()(i*(m-n)/t));
+			S1 += k*(binder.operator()(n + g*(m-n)/t));
 			k = 1;
 		}
-		S1 *= (m-n);
+		S1 *= (m-n)/t;
 		t  *= 10;
 	}
 	return S1;
@@ -129,15 +129,15 @@ double  area (F binder, double elem, double n, double m)
 template <class T, class G, class F, class S>
 void onCheckKsi(F binder, S binderSeq, double left, double right)
 {
-	const ruint countOfxI   = g_countOfFree*1000;	//количество отрезков, на 1 меньше числа точек
-	const ruint areaOfI = 1/g_countOfFree;			//площадь на отрезке
+	const ruint  countOfxI  = g_countOfFree*1000;	//количество отрезков, на 1 меньше числа точек
+	const double areaOfI    = 1/(g_countOfFree*1.0);			//площадь на отрезке
 
 	Container xTemp(countOfxI + 1);			//создаю временный контейнер значений, на основе которых потом буду считать границы участка
 	double elem = (right-left)/(countOfxI);	//расстояние между точками на прямой, между временными значениями
 
 	for (ruint i = 0; i < countOfxI + 1; ++i)//загоняю элементарные значения в контейнер. решил, что на три порядка больше точек (чем колчество участков) даст достаточную точность при вычислениях
 	{
-		xTemp[i] = elem*i;
+		xTemp[i] = left + elem*i;
 	}
 
 	Container x;							//контейнер для границ интервалов, которые будут участововать в вычислениях
@@ -145,7 +145,7 @@ void onCheckKsi(F binder, S binderSeq, double left, double right)
 
 	for (ruint i = 1; i < countOfxI; ++i)
 	{
-		if (fabs(area<T>(binder, elem, x.back(), xTemp[i]) - areaOfI) < fabs(area<T>(binder, elem, x.back(), xTemp[i+1]) - areaOfI))
+		if (fabs(area<T>(binder, x.back(), xTemp[i]) - areaOfI) < fabs(area<T>(binder, x.back(), xTemp[i+1]) - areaOfI))
 		{
 			x.push_back(xTemp[i]);
 		}
@@ -164,15 +164,15 @@ void onCheckKsi(F binder, S binderSeq, double left, double right)
 
 	Container vb(g_countOfExamples);		//контейнер для хранения выборки
 
-	G sequence(g_seed);
+	G sequence(g_seed);						//выборка
 	for (ruint i = 0; i < g_countOfExamples; ++i)
 	{
 		vb[i] = binderSeq.operator()(&sequence);
 	}
 
-	Container fI(g_countOfFree);
+	Container fI(g_countOfFree);			//контейнер для храниения количества попаданий на интервал
 	
-	for(ruint i = 0; i < g_countOfFree - 1; ++i)
+	for(ruint i = 0; i < g_countOfFree; ++i)	//нахождение количества попаданий на интервал
 	{
 		ruint freq = 0;
 		for(ruint k = 0; k < g_countOfExamples; ++k)
@@ -186,7 +186,7 @@ void onCheckKsi(F binder, S binderSeq, double left, double right)
 	}
 
 	double ksi = 0;
-	double Fi = g_countOfExamples/g_countOfFree;
+	double Fi = g_countOfExamples/g_countOfFree;		//вычисление самой формулы
 	for(ruint i = 0; i < g_countOfFree; ++i)
 	{
 		ksi += ((fI[i] - Fi)*(fI[i] - Fi))/Fi;
@@ -206,7 +206,7 @@ public:
 
 	double get(double x) const
 	{
-		return 1/(sqrt(2*pi*m_var)*exp((x - m_main)*(x - m_main)/(2*m_var))); //функция плотности распределения вероятности. по определению для закона. таких будет еще 3 шутки.
+		return 1/(sqrt(2*pi)*m_var*exp((x - m_main)*(x - m_main)/(2*m_var*m_var))); //функция плотности распределения вероятности. по определению для закона. таких будет еще 3 шутки.
 	}
 
 private:
@@ -215,7 +215,7 @@ private:
 };
 
 BOOST_AUTO_TEST_SUITE(RDOSequencesTest)
-/*
+
 // --------------------------------------------------------------------------------
 // -------Normal sequence
 // --------------------------------------------------------------------------------
@@ -224,12 +224,12 @@ BOOST_AUTO_TEST_CASE(RDONormalTestCreate)
 	onGenerateData<rdoRuntime::RandGeneratorNormal>
 		(boost::bind(&rdoRuntime::RandGeneratorNormal::next, _1, g_main, g_var), g_fileNormalName);
 }
-*/
+
 BOOST_AUTO_TEST_CASE(RDONormalTestCheck)
 {
-/*	onCheckData<rdoRuntime::RandGeneratorNormal>
+	onCheckData<rdoRuntime::RandGeneratorNormal>
 		(boost::bind(&rdoRuntime::RandGeneratorNormal::next, _1, g_main, g_var), g_fileNormalName);
-*/
+
 	SequenceNormal normal(g_main, g_var);
 	onCheckKsi<SequenceNormal, rdoRuntime::RandGeneratorNormal>
 		(boost::bind(&SequenceNormal::get, normal, _1),
@@ -239,7 +239,7 @@ BOOST_AUTO_TEST_CASE(RDONormalTestCheck)
 }
 
 // --------------------------------------------------------------------------------
-/*
+
 // --------------------------------------------------------------------------------
 // -------Uniform sequence
 // --------------------------------------------------------------------------------
@@ -287,5 +287,5 @@ BOOST_AUTO_TEST_CASE(RDOTriangularTestCheck)
 		(boost::bind(&rdoRuntime::RandGeneratorTriangular::next, _1, g_from, g_top, g_to), g_fileTriangularName);
 }
 // --------------------------------------------------------------------------------
-*/
+
 BOOST_AUTO_TEST_SUITE_END()
