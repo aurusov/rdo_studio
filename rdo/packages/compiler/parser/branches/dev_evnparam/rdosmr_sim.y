@@ -248,10 +248,22 @@ smr_show_mode
 		$$ = rdoSimulator::SM_Animation;
 	}
 	;
+evn_param_list
+	: /* empty */
+	{
+		LPArithmContainer pArithmContainer = rdo::Factory<ArithmContainer>::create();
+		ASSERT(pArithmContainer);
+		$$ = PARSER->stack().push(pArithmContainer);
+	}
+	| arithm_list
+	{
+		$$ = $1;
+	}
+	;
 
 smr_cond
 	: /* empty */
-	| smr_cond RDO_IDENTIF '.' RDO_Planning '(' fun_arithm ')'
+	| smr_cond RDO_IDENTIF '.' RDO_Planning '(' fun_arithm ')' '(' evn_param_list ')'
 	{
 		tstring    eventName = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		LPRDOEvent pEvent    = PARSER->findEvent(eventName);
@@ -264,12 +276,15 @@ smr_cond
 		ASSERT(pTimeArithm);
 		rdoRuntime::LPRDOCalc pCalcTime = pTimeArithm->createCalc(NULL);
 		ASSERT(pCalcTime);
+		LPArithmContainer pParamList = PARSER->stack().pop<ArithmContainer>($9);
+		ASSERT(pParamList);
 
 		LPIBaseOperation pBaseOperation = pEvent->getRuntimeEvent();
 		ASSERT(pBaseOperation);
 
 		rdoRuntime::LPRDOCalcEventPlan pEventPlan = rdo::Factory<rdoRuntime::RDOCalcEventPlan>::create(pCalcTime);
 		ASSERT(pEventPlan);
+		pEvent->setParamList(pParamList);
 		pEventPlan->setEvent(pBaseOperation);
 		pEvent->setInitCalc(pEventPlan);
 	}
@@ -728,6 +743,16 @@ fun_arithm
 	| RDO_IDENTIF                        { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1))); }
 	| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1), PARSER->stack().pop<RDOValue>($3))); }
 	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1), PARSER->stack().pop<RDOValue>($3))); }
+	| '*' 
+	{
+		LPRDOValue pValue = rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@1, _T("*")));
+		ASSERT(pValue);
+		LPExpression pExpression = rdo::Factory<Expression>::create(pValue);
+		ASSERT(pExpression);
+		LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
+		ASSERT(pArithm);
+		$$ = PARSER->stack().push(pArithm);
+	}
 	| fun_arithm '+' fun_arithm
 	{
 		LPRDOFUNArithm pArithm1 = PARSER->stack().pop<RDOFUNArithm>($1);
