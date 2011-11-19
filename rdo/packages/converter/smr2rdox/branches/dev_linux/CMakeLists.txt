@@ -204,8 +204,6 @@ SET(GRAMMA_FILES
 	${GRAMMA_PATH}/rdofrm.y
 	${GRAMMA_PATH}/rdodpt.y)
 
-ADD_DEFINITIONS(-D_UNISTD_H_)
-
 ADD_LIBRARY(rdo_converter_smr2rdox ${HEADER_FILES} ${SOURCE_FILES} ${GENERATED_FILES} ${GRAMMA_FILES})
 SET_TARGET_PROPERTIES(rdo_converter_smr2rdox PROPERTIES LINKER_LANGUAGE CXX)
 
@@ -216,6 +214,8 @@ TARGET_LINK_LIBRARIES(rdo_converter_smr2rdox ${Boost_SYSTEM_LIBRARY} ${Boost_FIL
 TARGET_LINK_LIBRARIES(rdo_converter_smr2rdox rdo_utils)
 TARGET_LINK_LIBRARIES(rdo_converter_smr2rdox rdo_runtime)
 
+SET_TARGET_PROPERTIES(rdo_converter_smr2rdox PROPERTIES COMPILE_FLAGS "-D_UNISTD_H_")
+	
 IF(MSVC) # lotions for windows #
 
 SOURCE_GROUP(".animation" FILES 
