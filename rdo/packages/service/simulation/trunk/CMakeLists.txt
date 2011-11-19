@@ -8,11 +8,13 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
 SET(HEADER_FILES
     procgui.h
-    rdosimwin.h)
+    rdosimwin.h
+    procgui_datablock.h)
 
 SET(SOURCE_FILES
     procgui.cpp
-    rdosimwin.cpp)
+    rdosimwin.cpp
+    procgui_datablock.cpp)
 
 ADD_LIBRARY(rdo_simulator ${HEADER_FILES} ${SOURCE_FILES})
 
