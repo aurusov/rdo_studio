@@ -96,6 +96,8 @@ void RPMethodManager::init()
 
 static int CALLBACK BlocksCompareProc( LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort )
 {
+	UNUSED(lParamSort);
+
 	int order1 = reinterpret_cast<RPObjectClassInfo*>(lParam1)->getOrder();
 	int order2 = reinterpret_cast<RPObjectClassInfo*>(lParam2)->getOrder();
 	if ( order1 != -1 && order2 != -1 ) {
@@ -245,6 +247,8 @@ void RPMethodNewDlg::DoDataExchange( CDataExchange* pDX )
 
 static int CALLBACK MethodsCompareProc( LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort )
 {
+	UNUSED(lParamSort);
+
 	return reinterpret_cast<rpMethod::RPMethod*>(lParam1)->getName() > reinterpret_cast<rpMethod::RPMethod*>(lParam2)->getName();
 }
 
@@ -330,6 +334,8 @@ void RPMethodNewDlg::OnOK()
 
 void RPMethodNewDlg::OnMethodListDblClick(NMHDR *pNMHDR, LRESULT *pResult)
 {
+	UNUSED(pNMHDR);
+
 	if ( methods.GetItemCount() ) {
 		int index = methods.GetNextItem( -1, LVNI_SELECTED );
 		if ( index != -1 ) {
@@ -342,6 +348,8 @@ void RPMethodNewDlg::OnMethodListDblClick(NMHDR *pNMHDR, LRESULT *pResult)
 
 void RPMethodNewDlg::OnMethodListClick(NMHDR *pNMHDR, LRESULT *pResult)
 {
+	UNUSED(pNMHDR);
+
 	method_last = NULL;
 	if ( methods.GetItemCount() ) {
 		int index = methods.GetNextItem( -1, LVNI_SELECTED );

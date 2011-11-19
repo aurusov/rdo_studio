@@ -239,7 +239,6 @@ RPXMLNode* RPXML::open( const rp::string& fname )
 	} else {
 		throw rp::RPXMLException( "Не найдено описание проекта" );
 	}
-	return NULL;
 }
 
 void RPXML::save( const rp::string& fname )

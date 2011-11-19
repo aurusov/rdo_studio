@@ -70,7 +70,7 @@ public:
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioPlugins
 // --------------------------------------------------------------------------------
-static const int PLUGIN_MUSTEXIT_MESSAGE = ::RegisterWindowMessage( "PLUGIN_MUSTEXIT_MESSAGE" );
+static const ruint PLUGIN_MUSTEXIT_MESSAGE = ::RegisterWindowMessage( "PLUGIN_MUSTEXIT_MESSAGE" );
 
 class RDOStudioPlugins
 {

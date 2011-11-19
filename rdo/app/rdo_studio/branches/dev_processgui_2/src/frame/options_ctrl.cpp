@@ -68,7 +68,7 @@ void RDOStudioFrameOptionsCtrl::setStyle( RDOStudioFrameStyle* _style )
 	lf.lfWeight    = style->theme->defaultStyle & rdoStyle::RDOStyleFont::BOLD ? FW_BOLD : FW_NORMAL;
 	lf.lfItalic    = style->theme->defaultStyle & rdoStyle::RDOStyleFont::ITALIC;
 	lf.lfUnderline = style->theme->defaultStyle & rdoStyle::RDOStyleFont::UNDERLINE;
-	lf.lfCharSet   = style->font->characterSet;
+	lf.lfCharSet   = BYTE(style->font->characterSet);
 #pragma warning(disable: 4996)
 	strcpy( lf.lfFaceName, style->font->name.c_str() );
 #pragma warning(default: 4996)

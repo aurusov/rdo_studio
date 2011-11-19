@@ -73,7 +73,7 @@ void RDOTracerResParam::getCaptions( std::vector<std::string> &captions, const i
 // --------------------------------------------------------------------------------
 // -------------------- RDOTracerResource
 // --------------------------------------------------------------------------------
-RDOTracerResource::RDOTracerResource( RDOTracerResType* const type, std::string& name ) :
+RDOTracerResource::RDOTracerResource( RDOTracerResType* const type, const std::string& name ) :
 	RDOTracerTreeItem(),
 	erased( false ),
 	resType( type ),

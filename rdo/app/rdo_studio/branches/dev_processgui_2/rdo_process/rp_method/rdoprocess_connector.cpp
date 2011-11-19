@@ -130,8 +130,8 @@ void RPConnector::next_step( CDC& dc, const rp::point& p1, const rp::point& p2, 
 	double Ka, Kb, K, Ua, Ub;
 	rp::point inter = rp::math::getIntersection( p1, p12, p2, p22, Ka, Kb, K, Ua, Ub );
 	bool intersect  = Ua >= 0 && Ua <= 1 && Ub >= 0 && Ub <= 1;
-	bool parallel   = fabs(K) == 0.0;
-	bool same       = fabs(K) == 0.0 && fabs(Ka) == 0.0 && fabs(Kb) == 0.0;
+	//bool parallel   = fabs(K) == 0.0;
+	//bool same       = fabs(K) == 0.0 && fabs(Ka) == 0.0 && fabs(Kb) == 0.0;
 	if ( intersect ) {
 		// Всё нормально, фигуры пересекаются своими прямыми под углом в 90-то градусов
 		pa.push_back( inter );
@@ -516,6 +516,8 @@ bool RPConnector::getShortLine( CDC& dc, const rp::polyline& pa, const rp::point
 bool RPConnector::getShortLine( const rp::polyline& pa, const rp::point& from, const rp::point& to, double& lengthA2, rp::point& B1, rp::point& B2, rp::point& interborder )
 #endif
 {
+	UNUSED(pa);
+
 	bool flag = false;
 	double lengthBorder = 1e10;
 	RPObjectFlowChart* flowchart = flowChart();

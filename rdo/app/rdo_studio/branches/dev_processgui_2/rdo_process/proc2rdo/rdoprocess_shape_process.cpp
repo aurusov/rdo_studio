@@ -63,6 +63,9 @@ RPObject* RPShapeProcessMJ::newObject( RPObject* parent )
 
 void RPShapeProcessMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 {
+	UNUSED(nFlags          );
+	UNUSED(global_chart_pos);
+
 	RPShapeProcessDlg1_MJ dlg( AfxGetMainWnd(), this );
 	dlg.DoModal();
 }
@@ -81,7 +84,10 @@ void RPShapeProcessMJ::generate()
 		case 2: // равномерный закон
 			zakon = RPShapeDataBlock::Uniform;
 			break;
-		case 3: // экспоненциальный
+		case 3: // треугольный
+			zakon = RPShapeDataBlock::Triangular;
+			break;
+		case 4: // экспоненциальный
 			zakon = RPShapeDataBlock::Exp;
 			break;
 	}
@@ -91,6 +97,7 @@ void RPShapeProcessMJ::generate()
 	m_pParams->setBase(base_gen);
 	m_pParams->setDisp(gdisp);
 	m_pParams->setExp(gexp);
+	m_pParams->setMax(gmax);
 
 	switch(action)
 	{

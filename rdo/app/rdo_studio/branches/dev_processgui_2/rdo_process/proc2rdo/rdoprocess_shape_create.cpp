@@ -37,8 +37,9 @@ RPShapeCreateMJ::RPShapeCreateMJ(PTR(RPObject) _parent)
 	gtype=0; // закон прибыти€
 	base_gen=1234567890;
 	//атрибуты законов
-	gexp=10;
+	gexp=0;
 	gdisp=0;
+	gmax=0;
 
 	//второе окно
 	inf=1000000; // бесконечноть
@@ -123,6 +124,9 @@ RPObject* RPShapeCreateMJ::newObject( RPObject* parent )
 
 void RPShapeCreateMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 {
+	UNUSED(nFlags          );
+	UNUSED(global_chart_pos);
+
 	RPShapeCreateDlg1_MJ dlg( AfxGetMainWnd(), this );
 	dlg.DoModal();
 }
@@ -141,7 +145,10 @@ void RPShapeCreateMJ::generate()
 		case 2: // равномерный закон
 			zakon = RPShapeDataBlock::Uniform;
 			break;
-		case 3: // экспоненциальный
+		case 3: // треугольный
+			zakon = RPShapeDataBlock::Triangular;
+			break;
+		case 4: // экспоненциальный
 			zakon = RPShapeDataBlock::Exp;
 			break;
 	}
@@ -151,6 +158,7 @@ void RPShapeCreateMJ::generate()
 	m_pParams->setAmount(gamount);
 	m_pParams->setDisp(gdisp);
 	m_pParams->setExp(gexp);
+	m_pParams->setMax(gmax);
 
 	studioApp.studioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_CREATE, m_pParams.get());
 

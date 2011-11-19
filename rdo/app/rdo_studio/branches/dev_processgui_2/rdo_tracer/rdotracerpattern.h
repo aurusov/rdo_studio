@@ -8,6 +8,7 @@
 // -------------------- RDOTracerPattern
 // --------------------------------------------------------------------------------
 enum RDOTracerPatternKind {
+	RDOPK_UNDEFINED = ~0,
 	RDOPK_OPERATION = 0,
 	RDOPK_IRREGULAREVENT,
 	RDOPK_RULE,

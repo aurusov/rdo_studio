@@ -126,8 +126,8 @@ private:
 		int   m_position;
 
 		ModelTemplateItem()
-			: m_resID   (~0)
-			, m_position(~0)
+			: m_resID   (ruint(~0))
+			, m_position(~0       )
 		{}
 		ModelTemplateItem(CREF(ModelTemplateItem) copy)
 			: m_resID   (copy.m_resID   )

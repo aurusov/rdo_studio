@@ -10,7 +10,7 @@
 #endif // _MSC_VER > 1000
 
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape.h"
-#include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_datablock.h"
+#include "simulator/service/procgui_datablock.h"
 
 class RPShapeCreateMJ : public RPShape_MJ  
 {
@@ -46,6 +46,7 @@ public:
 	//атрибуты законов
 	double gexp;
 	double gdisp;
+	double gmax;
 
 	//второе окно
 	int inf; // бесконечноть

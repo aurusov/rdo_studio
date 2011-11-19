@@ -48,6 +48,9 @@ RPObject* RPShapeTerminateMJ::newObject( RPObject* parent )
 
 void RPShapeTerminateMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 {
+	UNUSED(nFlags          );
+	UNUSED(global_chart_pos);
+
 	RPShapeTerminateDlg1_MJ dlg( AfxGetMainWnd(), this );
 	dlg.DoModal();
 }

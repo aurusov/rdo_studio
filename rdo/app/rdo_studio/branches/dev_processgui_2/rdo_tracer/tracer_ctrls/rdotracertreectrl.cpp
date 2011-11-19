@@ -119,11 +119,13 @@ void RDOTracerTreeCtrl::setHasChildren( const RDOTracerTreeItem* item, const boo
 
 void RDOTracerTreeCtrl::doDragDrop( RDOTracerTreeItem* item, CPoint point )
 {
+	UNUSED(point);
+
 	UINT format = tracer->getClipboardFormat();
 	if ( format ) {
 		RDOTracerSerie** ptr = (RDOTracerSerie**)::GlobalAlloc( LMEM_FIXED, sizeof( RDOTracerSerie* ) );
 		*ptr = (RDOTracerSerie*)item;
-		source.CacheGlobalData( format, ptr );
+		source.CacheGlobalData( CLIPFORMAT(format), ptr );
 		source.DoDragDrop( DROPEFFECT_COPY, NULL, &dropsource );
 		source.Empty();
 		// Dont call ::GlobalFree( ptr ), because
@@ -222,8 +224,9 @@ void RDOTracerTreeCtrl::clear()
 
 void RDOTracerTreeCtrl::addToNewChart( const HTREEITEM hitem ) const
 {
+	UNUSED(hitem);
+
 	RDOTracerTreeItem* item = getIfItemIsDrawable( GetSelectedItem() );
-	RDOTracerSerie* serie = NULL;
 	if ( item ) {
 		tracer->addSerieToChart( static_cast<RDOTracerSerie*>( item ) );
 	}
@@ -231,6 +234,8 @@ void RDOTracerTreeCtrl::addToNewChart( const HTREEITEM hitem ) const
 
 bool RDOTracerTreeCtrl::findInCharts( const HTREEITEM hitem ) const
 {
+	UNUSED(hitem);
+
 	bool res = false;
 	RDOTracerTreeItem* item = getIfItemIsDrawable( GetSelectedItem() );
 	RDOTracerSerie* serie = NULL;
@@ -266,8 +271,10 @@ void RDOTracerTreeCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 	}
 }
 
-void RDOTracerTreeCtrl::OnRButtonDown(UINT nFlags, CPoint point) 
+void RDOTracerTreeCtrl::OnRButtonDown(UINT _nFlags, CPoint point) 
 {
+	UNUSED(_nFlags);
+
 	UINT uFlags;
 	HTREEITEM hitem = HitTest( point, &uFlags );
 	if ( hitem && ( TVHT_ONITEM & uFlags ) ) {

@@ -54,7 +54,7 @@ private:
 	
 	void dispatchNextString( std::string& line );
 
-	RDOTracerTimeNow* addTime( std::string& time );
+	RDOTracerTimeNow* addTime( const std::string& time );
 	int eventIndex;
 	
 	RDOTracerOperationBase* getOperation( std::string& line );

@@ -190,6 +190,8 @@ const RPObjectClassInfo* RPView::getSrcClassInfo( COleDataObject* pDataObject ) 
 
 DROPEFFECT RPView::OnDragEnter( COleDataObject* pDataObject, DWORD dwKeyState, CPoint point )
 {
+	UNUSED(dwKeyState);
+
 	const RPObjectClassInfo* class_info = getSrcClassInfo( pDataObject );
 	if ( class_info ) {
 		flowchart->getObjectFlowChart().onDragEnter( class_info, rp::point( point.x - 16, point.y - 16 ) );
@@ -201,6 +203,8 @@ DROPEFFECT RPView::OnDragEnter( COleDataObject* pDataObject, DWORD dwKeyState, C
 
 DROPEFFECT RPView::OnDragOver( COleDataObject* pDataObject, DWORD dwKeyState, CPoint point )
 {
+	UNUSED(dwKeyState);
+
 	if ( getSrcClassInfo( pDataObject ) ) {
 		flowchart->getObjectFlowChart().onDragOver( rp::point( point.x - 16, point.y - 16 ) );
 		return DROPEFFECT_MOVE;
@@ -216,6 +220,8 @@ void RPView::OnDragLeave()
 
 BOOL RPView::OnDrop( COleDataObject* pDataObject, DROPEFFECT dropEffect, CPoint point )
 {
+	UNUSED(dropEffect);
+
 	if ( getSrcClassInfo( pDataObject ) ) {
 		flowchart->getObjectFlowChart().onDrop( rp::point( point.x - 16, point.y - 16 ) );
 		return true;

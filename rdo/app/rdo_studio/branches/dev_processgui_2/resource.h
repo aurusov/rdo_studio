@@ -250,6 +250,15 @@
 #define IDC_FLOW_MOVE                   1159
 #define IDC_FLOW_DOCK_NOT               1160
 #define IDC_FLOW_TRASH                  1161
+#define IDC_STATIC1                     1162
+#define IDC_STATIC2                     1163
+#define IDC_STATIC3                     1164
+#define IDC_STATIC4                     1165
+#define IDC_STATIC5                     1166
+#define IDC_STATIC6                     1167
+#define IDC_STATIC7                     1168
+#define IDC_STATIC8                     1169
+#define IDC_STATIC9                     1170
 #define ID_CHART_ADDTONEWCHART          32771
 #define ID_DOCK_PROJECT_BAR             32772
 #define ID_VIEW_WORKSPACE               32774
@@ -442,6 +451,7 @@
 #define ID_INSERT_RTP_TRUE              33015
 #define ID_INSERT_RTP_FALSE             33016
 #define ID_INSERT_FRM_CIRCLE            33017
+#define ID_INSERT_FUN_TRIANGULAR        33018
 #define ID_INSERT_BUFFER1_PASTE         33110
 #define ID_INSERT_BUFFER1_EDIT          33111
 #define ID_INSERT_BUFFER2_PASTE         33112
@@ -758,7 +768,7 @@
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        268
 #define _APS_NEXT_COMMAND_VALUE         33308
-#define _APS_NEXT_CONTROL_VALUE         1162
+#define _APS_NEXT_CONTROL_VALUE         1171
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

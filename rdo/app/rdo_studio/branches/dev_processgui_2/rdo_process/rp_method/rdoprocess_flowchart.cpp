@@ -133,6 +133,8 @@ void RPFlowChart::OnDestroy()
 
 void RPFlowChart::setName( const rp::string& value )
 {
+	UNUSED(value);
+
 	doc->SetTitle( flowobj->getName().c_str() );
 }
 
@@ -316,6 +318,9 @@ void RPFlowChart::OnPaint()
 
 void RPFlowChart::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar )
 {
+	UNUSED(nPos      );
+	UNUSED(pScrollBar);
+
 	SCROLLINFO si;
 	si.cbSize = sizeof( SCROLLINFO );
 	switch ( nSBCode ) {
@@ -367,6 +372,9 @@ void RPFlowChart::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar )
 
 void RPFlowChart::OnVScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar )
 {
+	UNUSED(nPos      );
+	UNUSED(pScrollBar);
+
 	SCROLLINFO si;
 	si.cbSize = sizeof( SCROLLINFO );
 	switch ( nSBCode ) {
@@ -501,6 +509,10 @@ void RPFlowChart::OnMouseMove( UINT nFlags, CPoint local_win_pos )
 // когда мышка перемещается над окном с зажатой клавишей
 BOOL RPFlowChart::OnSetCursor( CWnd* pWnd, UINT nHitTest, UINT message )
 {
+	UNUSED(pWnd    );
+	UNUSED(nHitTest);
+	UNUSED(message );
+
 	CPoint point;
 	::GetCursorPos( &point );
 	ScreenToClient( &point );

@@ -334,7 +334,6 @@ bool RDOStudioApp::shortToLongPath( const std::string& shortPath, std::string& l
 	ULONG         chEaten = 0;
 	LPITEMIDLIST  pidlShellItem = NULL;
 	WCHAR         szLongPath[_MAX_PATH] = { 0 };
-	BOOL          bResult = TRUE;
 
 	// Get the Desktop's shell folder interface
 	HRESULT hr = ::SHGetDesktopFolder( &psfDesktop );

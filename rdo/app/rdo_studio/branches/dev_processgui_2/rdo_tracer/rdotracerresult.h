@@ -8,7 +8,8 @@
 // -------------------- RDOTracerResult
 // --------------------------------------------------------------------------------
 enum RDOTracerResultKind {
-	RDORK_WATCHPAR = 0,
+	RDORK_UNDEFINED  = ~0,
+	RDORK_WATCHPAR   = 0,
 	RDORK_WATCHSTATE,
 	RDORK_WATCHQUANT,
 	RDORK_WATCHVALUE

@@ -15,8 +15,8 @@ namespace rp {
 // --------------------------------------------------------------------------------
 bool rect::pointInRect( const rp::point& point ) const
 {
-	unsigned int i;
-	unsigned int j;
+	ruint i;
+	ruint j;
 	int k0 = 0;
 	bool flag = true;
 	for ( i = 0, j = 1; i < 4; i++, j++ ) {

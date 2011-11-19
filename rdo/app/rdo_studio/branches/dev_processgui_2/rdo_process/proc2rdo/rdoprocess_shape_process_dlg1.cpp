@@ -49,10 +49,12 @@ void RPShapeProcessDlg1_MJ::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LIST1, m_ResList);
 	DDX_Control(pDX, IDC_BUTTON2, m_DelRes);
 	DDX_Control(pDX, IDC_BUTTON1, m_AddRes);
-	DDX_Control(pDX, IDC_EDIT7, m_proc_dlg1_max_control_MJ);
-	DDX_Control(pDX, IDC_EDIT6, m_proc_dlg1_min_control_MJ);
-	DDX_Control(pDX, IDC_EDIT5, m_proc_dlg1_disp_control_MJ);
 	DDX_Control(pDX, IDC_EDIT4, m_proc_dlg1_exp_control_MJ);
+	DDX_Control(pDX, IDC_EDIT5, m_proc_dlg1_disp_control_MJ);
+	DDX_Control(pDX, IDC_EDIT7, m_proc_dlg1_max_control_MJ);
+	DDX_Control(pDX, IDC_STATIC4, m_proc_dlgl_exp_text_MJ);
+	DDX_Control(pDX, IDC_STATIC5, m_proc_dlgl_disp_text_MJ);
+	DDX_Control(pDX, IDC_STATIC7, m_proc_dlgl_max_text_MJ);
 	DDX_Control(pDX, IDC_COMBO4, m_parameter);
 	DDX_Control(pDX, IDC_COMBO2, m_action);
 	DDX_Text(pDX, IDC_EDIT1, m_name);
@@ -60,7 +62,6 @@ void RPShapeProcessDlg1_MJ::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT2, m_gprior);
 	DDX_Text(pDX, IDC_EDIT4, m_gexp);
 	DDX_Text(pDX, IDC_EDIT5, m_gdisp);
-	DDX_Text(pDX, IDC_EDIT6, m_gmin);
 	DDX_Text(pDX, IDC_EDIT7, m_gmax);
 	DDX_Text(pDX, IDC_EDIT8, m_gbase_gen);
 	DDV_MinMaxInt(pDX, m_gbase_gen, -2147483647, 2147483647);
@@ -104,27 +105,19 @@ std::list<CString>::iterator it = pParentMJ->list_resource_procMJ.begin();
 
 
 UpdateData(FALSE);
-OnCloseupCombo2(); 
-OnCloseupCombo1();
+OnCbnSelchange2(); 
+OnCbnSelchange1();
 	return TRUE;
 }
 
 
 
-
-
-
-
-
-
-
-
 BEGIN_MESSAGE_MAP(RPShapeProcessDlg1_MJ, CDialog)
 	//{{AFX_MSG_MAP(RPShapeProcessDlg1_MJ)
-	ON_CBN_CLOSEUP(IDC_COMBO1, OnCloseupCombo1)
-	ON_CBN_CLOSEUP(IDC_COMBO3, OnCloseupCombo3)
+	ON_CBN_SELCHANGE(IDC_COMBO1, OnCbnSelchange1)
+	ON_CBN_SELCHANGE(IDC_COMBO3, OnCbnSelchange3)
 	ON_BN_CLICKED(IDC_BUTTON1, OnButton1)
-	ON_CBN_CLOSEUP(IDC_COMBO2, OnCloseupCombo2)
+	ON_CBN_SELCHANGE(IDC_COMBO2, OnCbnSelchange2)
 	ON_WM_CTLCOLOR()
 	ON_BN_CLICKED(IDC_BUTTON2, OnButton2)
 	//}}AFX_MSG_MAP
@@ -133,7 +126,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // RPShapeProcessDlg1_MJ message handlers
 
-void RPShapeProcessDlg1_MJ::OnCloseupCombo1() 
+void RPShapeProcessDlg1_MJ::OnCbnSelchange1() 
 {
 int cur = m_gtype.GetCurSel();
 
@@ -141,26 +134,48 @@ switch(cur) // определяем активные окна исходя из закона
 {
 case 0: // константа
 	m_proc_dlg1_exp_control_MJ.EnableWindow(TRUE);
-	m_proc_dlg1_disp_control_MJ.EnableWindow(FALSE);
+	m_proc_dlgl_exp_text_MJ.SetWindowText(_T("Константа"));
+	m_proc_dlgl_disp_text_MJ.ShowWindow(SW_HIDE);
+	m_proc_dlg1_disp_control_MJ.ShowWindow(SW_HIDE);
+	m_proc_dlgl_max_text_MJ.ShowWindow(SW_HIDE);
+	m_proc_dlg1_max_control_MJ.ShowWindow(SW_HIDE);
 					break;	
 case 1: // нормальный
-	m_proc_dlg1_exp_control_MJ.EnableWindow(TRUE);
-	m_proc_dlg1_disp_control_MJ.EnableWindow(TRUE);
+	m_proc_dlgl_exp_text_MJ.SetWindowText(_T("Мат. ожидание"));
+	m_proc_dlgl_disp_text_MJ.ShowWindow(SW_SHOW);
+	m_proc_dlgl_disp_text_MJ.SetWindowText(_T("Дисперсия"));
+	m_proc_dlg1_disp_control_MJ.ShowWindow(SW_SHOW);
+	m_proc_dlgl_max_text_MJ.ShowWindow(SW_HIDE);
+	m_proc_dlg1_max_control_MJ.ShowWindow(SW_HIDE);
 					break;
 case 2: // равномерный закон
-	m_proc_dlg1_exp_control_MJ.EnableWindow(TRUE);
-	m_proc_dlg1_disp_control_MJ.EnableWindow(TRUE);
+	m_proc_dlgl_exp_text_MJ.SetWindowText(_T("Левая граница"));
+	m_proc_dlgl_disp_text_MJ.ShowWindow(SW_SHOW);
+	m_proc_dlgl_disp_text_MJ.SetWindowText(_T("Правая граница"));
+	m_proc_dlg1_disp_control_MJ.ShowWindow(SW_SHOW);
+	m_proc_dlgl_max_text_MJ.ShowWindow(SW_HIDE);
+	m_proc_dlg1_max_control_MJ.ShowWindow(SW_HIDE);
 					break;
-case 3: // экспоненциальный
-	m_proc_dlg1_exp_control_MJ.EnableWindow(TRUE);
-	m_proc_dlg1_disp_control_MJ.EnableWindow(FALSE);
+case 3: // труегольный
+	m_proc_dlgl_exp_text_MJ.SetWindowText(_T("Левая граница"));
+	m_proc_dlgl_disp_text_MJ.ShowWindow(SW_SHOW);
+	m_proc_dlgl_disp_text_MJ.SetWindowText(_T("Высота"));
+	m_proc_dlg1_disp_control_MJ.ShowWindow(SW_SHOW);
+	m_proc_dlgl_max_text_MJ.ShowWindow(SW_SHOW);
+	m_proc_dlgl_max_text_MJ.SetWindowText(_T("Правая граница"));
+	m_proc_dlg1_max_control_MJ.ShowWindow(SW_SHOW);
 					break;
-
-
+case 4: //экспоненциальный
+	m_proc_dlgl_exp_text_MJ.SetWindowText(_T("Мат. ожидание"));
+	m_proc_dlgl_disp_text_MJ.ShowWindow(SW_HIDE);
+	m_proc_dlg1_disp_control_MJ.ShowWindow(SW_HIDE);
+	m_proc_dlgl_max_text_MJ.ShowWindow(SW_HIDE);
+	m_proc_dlg1_max_control_MJ.ShowWindow(SW_HIDE);
+					break;
 }	
 }
 
-void RPShapeProcessDlg1_MJ::OnCloseupCombo3() 
+void RPShapeProcessDlg1_MJ::OnCbnSelchange3() 
 {
 int cur = m_gqueque.GetCurSel();
 
@@ -215,7 +230,7 @@ pParentMJ->queue=m_gqueque.GetCurSel();
 	CDialog::OnOK();	
 }
 
-void RPShapeProcessDlg1_MJ::OnCloseupCombo2() 
+void RPShapeProcessDlg1_MJ::OnCbnSelchange2() 
 {
 	int cur = m_action.GetCurSel();
 
@@ -273,11 +288,11 @@ void RPShapeProcessDlg1_MJ::OnCloseupCombo2()
 HBRUSH RPShapeProcessDlg1_MJ::OnCtlColor( CDC* pDC, CWnd* pWnd, UINT nCtlColor )
 {
 	return CDialog::OnCtlColor( pDC, pWnd, nCtlColor );
-	if ( nCtlColor == CTLCOLOR_LISTBOX && pWnd == &m_ResList ) {
-		return m_ResList.IsWindowEnabled() ? brush1 : brush2;
-	} else {
-		return CDialog::OnCtlColor( pDC, pWnd, nCtlColor );
-	}
+	//if ( nCtlColor == CTLCOLOR_LISTBOX && pWnd == &m_ResList ) {
+	//	return m_ResList.IsWindowEnabled() ? brush1 : brush2;
+	//} else {
+	//	return CDialog::OnCtlColor( pDC, pWnd, nCtlColor );
+	//}
 }
 
 void RPShapeProcessDlg1_MJ::OnButton2() 

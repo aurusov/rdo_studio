@@ -671,7 +671,7 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 	}
 
 	LOGFONT lf;
-	lf.lfCharSet = static_cast<unsigned char>(sheet->style_editor.font->characterSet);
+	lf.lfCharSet = static_cast<rbyte>(sheet->style_editor.font->characterSet);
 	lf.lfFaceName[0] = '\0';
 	CDC* dc = GetDC();
 	::EnumFontFamiliesEx( dc->m_hDC, &lf, reinterpret_cast<FONTENUMPROC>(RDOStudioOptionsColorsStyles::EnumFontFamExProc), reinterpret_cast<LPARAM>(&fonts), 0 );

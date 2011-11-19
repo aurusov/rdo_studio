@@ -40,8 +40,14 @@ public:
 	virtual rp::string getVersionDesc() const { return ""; }
 	virtual rp::string getDescription() const { return ""; }
 
-	virtual void buttonCommand( int button_id ) {};
-	virtual void buttonUpdate( RPCtrlToolbar::ButtonUpdate& button_update ) {};
+	virtual void buttonCommand( int button_id )
+	{
+		UNUSED(button_id);
+	}
+	virtual void buttonUpdate( RPCtrlToolbar::ButtonUpdate& button_update )
+	{
+		UNUSED(button_update);
+	}
 	virtual RPObjectFlowChart* makeFlowChart( RPObject* parent ) = 0;
 	virtual void generate() = 0;
 

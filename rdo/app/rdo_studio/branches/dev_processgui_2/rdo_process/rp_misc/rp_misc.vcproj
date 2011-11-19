@@ -47,7 +47,7 @@
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="app\rdo_studio_mfc\rdo_process\rp_misc\stdafx.h"
 				ObjectFile="$(IntDir)\"
-				WarningLevel="3"
+				WarningLevel="4"
 				DebugInformationFormat="4"
 			/>
 			<Tool

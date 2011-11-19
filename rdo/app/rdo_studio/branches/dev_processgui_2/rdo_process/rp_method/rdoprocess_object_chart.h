@@ -42,7 +42,10 @@ protected:
 	virtual bool pointInNCArea( const rp::point& global_chart_pos ) = 0;
 
 	// Отрисовка фигуры
-	virtual void draw_selected( CDC& dc ) {};
+	virtual void draw_selected( CDC& dc )
+	{
+		UNUSED(dc);
+	}
 
 public:
 	RPObjectChart( RPObject* parent, const rp::string& name = "chart" );
@@ -80,14 +83,41 @@ public:
 		}
 	}
 
-	virtual void onLButtonDown( UINT nFlags, CPoint global_chart_pos ) {
-		if ( !isSelected() ) setSelected( true );
+	virtual void onLButtonDown( UINT nFlags, CPoint global_chart_pos )
+	{
+		UNUSED(nFlags          );
+		UNUSED(global_chart_pos);
+
+		if (!isSelected())
+		{
+			setSelected(true);
+		}
 	};
-	virtual void onLButtonUp( UINT nFlags, CPoint global_chart_pos ) {};
-	virtual void onLButtonDblClk( UINT nFlags, CPoint global_chart_pos ) {};
-	virtual void onRButtonDown( UINT nFlags, CPoint global_chart_pos ) {};
-	virtual void onRButtonUp( UINT nFlags, CPoint global_chart_pos ) {};
-	virtual void onMouseMove( UINT nFlags, CPoint global_chart_pos ) {};
+	virtual void onLButtonUp( UINT nFlags, CPoint global_chart_pos )
+	{
+		UNUSED(nFlags          );
+		UNUSED(global_chart_pos);
+	}
+	virtual void onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
+	{
+		UNUSED(nFlags          );
+		UNUSED(global_chart_pos);
+	}
+	virtual void onRButtonDown( UINT nFlags, CPoint global_chart_pos )
+	{
+		UNUSED(nFlags          );
+		UNUSED(global_chart_pos);
+	}
+	virtual void onRButtonUp( UINT nFlags, CPoint global_chart_pos )
+	{
+		UNUSED(nFlags          );
+		UNUSED(global_chart_pos);
+	}
+	virtual void onMouseMove( UINT nFlags, CPoint global_chart_pos )
+	{
+		UNUSED(nFlags          );
+		UNUSED(global_chart_pos);
+	}
 
 	// Выделить/снять выделение с фигуры
 	virtual void setSelected( bool value );
@@ -110,9 +140,16 @@ public:
 	virtual rp::rect getBoundingRectNoRotateIner()  { return getBoundingRect(); }
 
 	// Перед выполнение команды (объект должен подготовить команду)
-	virtual void command_before( const rp::point& global_chart_pos, bool first_click ) {};
+	virtual void command_before( const rp::point& global_chart_pos, bool first_click )
+	{
+		UNUSED(global_chart_pos);
+		UNUSED(first_click     );
+	}
 	// Выполнить команду над объектом
-	virtual void command_make( const rp::point& global_chart_pos ) {};
+	virtual void command_make( const rp::point& global_chart_pos )
+	{
+		UNUSED(global_chart_pos);
+	}
 
 	virtual bool can_delete() const { return true; }
 

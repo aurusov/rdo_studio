@@ -15,12 +15,8 @@ public:
 	static double pi;
 
 	static double getLength( const rp::point& point1, const rp::point& point2 ) {
-		try {
-			double res = sqrt( (point1.x - point2.x)*(point1.x - point2.x) + (point1.y - point2.y)*(point1.y - point2.y) );
-			return res < 1e-10 ? -1 : res;
-		} catch (...) {
-			return -1;
-		}
+		double res = sqrt( (point1.x - point2.x)*(point1.x - point2.x) + (point1.y - point2.y)*(point1.y - point2.y) );
+		return res < 1e-10 ? -1 : res;
 	}
 	static double getDistance( const rp::point& line_point1, const rp::point& line_point2, const rp::point& point, bool* inside = NULL );
 	static double getAlpha( const rp::point& p1, const rp::point& p2 );

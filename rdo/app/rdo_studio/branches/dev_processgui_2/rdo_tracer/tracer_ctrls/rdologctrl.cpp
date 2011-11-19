@@ -245,6 +245,10 @@ int RDOLogCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 
 void RDOLogCtrl::OnSize( UINT nType, int cx, int cy )
 {
+	UNUSED(nType);
+	UNUSED(cx   );
+	UNUSED(cy   );
+
 		//In our case OnSize() invalidates all needed rectangles.
 		//Default handler invalidates all client area.
 //		CWnd::OnSize(  nType, cx, cy );
@@ -456,6 +460,9 @@ void RDOLogCtrl::OnPaint()
 
 void RDOLogCtrl::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar )
 {
+	UNUSED(nPos      );
+	UNUSED(pScrollBar);
+
 	int inc;
 	SCROLLINFO si;
 	si.cbSize = sizeof( si );
@@ -491,6 +498,9 @@ void RDOLogCtrl::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar )
 
 void RDOLogCtrl::OnVScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar )
 {
+	UNUSED(nPos      );
+	UNUSED(pScrollBar);
+
 	int inc;
 	SCROLLINFO si;
 	si.cbSize = sizeof( si );
@@ -532,7 +542,8 @@ void RDOLogCtrl::OnVScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar )
 
 BOOL RDOLogCtrl::OnEraseBkgnd(CDC* pDC) 
 {
-  return TRUE;
+	UNUSED(pDC);
+	return TRUE;
 }
 
 void RDOLogCtrl::OnSetFocus( CWnd* pOldWnd )
@@ -551,6 +562,9 @@ void RDOLogCtrl::OnKillFocus( CWnd* pNewWnd )
 
 void RDOLogCtrl::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 {
+	UNUSED(nRepCnt);
+	UNUSED(nFlags );
+
 	WORD scrollNotify = 0xFFFF;
 	UINT msg = WM_VSCROLL;
 	
@@ -602,6 +616,9 @@ void RDOLogCtrl::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
 
 BOOL RDOLogCtrl::OnMouseWheel( UINT nFlags, short zDelta, CPoint pt )
 {
+	UNUSED(nFlags);
+	UNUSED(pt    );
+
 	WORD scrollNotify = 0xFFFF;
 	
 	if ( zDelta < 0 )
@@ -693,7 +710,7 @@ bool RDOLogCtrl::scrollVertically( int inc )
 	// take the scrolling position out of the scrolling range, 
 	// increment the scrolling position, adjust the position 
 	// of the scroll box, and update the window.
-	if ( inc = max ( -yPos, min ( inc, yMax - yPos ) ) ) {
+	if ( inc == max ( -yPos, min ( inc, yMax - yPos ) ) ) {
 		int prev_ypos = yPos;
 		yPos += inc;
 		setYPosIterator( prev_ypos );
@@ -758,7 +775,7 @@ bool RDOLogCtrl::scrollHorizontally( int inc )
 	// take the scrolling position out of the scrolling range, 
 	// increment the scrolling position, adjust the position 
 	// of the scroll box, and update the window.
-	if ( inc = max ( -xPos, min ( inc, xMax - xPos ) ) ) {
+	if ( inc == max ( -xPos, min ( inc, xMax - xPos ) ) ) {
 		xPos += inc;
 		
 		ScrollWindowEx( -charWidth * inc, 0,
@@ -956,7 +973,7 @@ void RDOLogCtrl::setFont( const bool needRedraw )
 	lf.lfWeight    = logStyle->theme->style & RDOStyleFont::BOLD ? FW_BOLD : FW_NORMAL;
 	lf.lfItalic    = logStyle->theme->style & RDOStyleFont::ITALIC;
 	lf.lfUnderline = logStyle->theme->style & RDOStyleFont::UNDERLINE;
-	lf.lfCharSet   = logStyle->font->characterSet;
+	lf.lfCharSet   = BYTE(logStyle->font->characterSet);
 #pragma warning(disable: 4996)
 	strcpy( lf.lfFaceName, logStyle->font->name.c_str() );
 #pragma warning(default: 4996)
@@ -1239,7 +1256,7 @@ void RDOLogCtrl::setText( std::string text )
 {
 	clear();
 	while ( !text.empty() ) {
-		int pos = text.find_first_of( "\r\n" );
+		ruint pos = text.find_first_of( "\r\n" );
 		if ( pos == std::string::npos )
 			pos = text.length();
 		addStringToLog( pos ? text.substr( 0, pos ) : "" );

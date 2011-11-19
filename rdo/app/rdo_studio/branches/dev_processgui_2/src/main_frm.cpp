@@ -59,7 +59,10 @@ void RDOToolBarModel::init( CWnd* parent, unsigned int tbResID, unsigned int tbD
 
 void RDOToolBarModel::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar )
 {
-	if ( nSBCode = SB_THUMBTRACK ) {
+	UNUSED(nPos      );
+	UNUSED(pScrollBar);
+
+	if ( nSBCode == SB_THUMBTRACK ) {
 		model->setSpeed( getSpeed() );
 	}
 }
@@ -67,9 +70,9 @@ void RDOToolBarModel::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioMainFrame
 // --------------------------------------------------------------------------------
-const int WORKSPACE_SHOW_MESSAGE = ::RegisterWindowMessage( "WORKSPACE_SHOW_MESSAGE" );
-const int OUTPUT_SHOW_MESSAGE    = ::RegisterWindowMessage( "OUTPUT_SHOW_MESSAGE" );
-const int update_timer_ID = 1;
+const ruint WORKSPACE_SHOW_MESSAGE = ::RegisterWindowMessage( "WORKSPACE_SHOW_MESSAGE" );
+const ruint OUTPUT_SHOW_MESSAGE    = ::RegisterWindowMessage( "OUTPUT_SHOW_MESSAGE" );
+const ruint update_timer_ID = 1;
 
 IMPLEMENT_DYNAMIC(RDOStudioMainFrame, CMDIFrameWnd)
 

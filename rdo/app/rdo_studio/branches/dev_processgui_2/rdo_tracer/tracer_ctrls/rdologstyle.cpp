@@ -177,6 +177,8 @@ void RDOLogStyle::initBorders()
 
 bool RDOLogStyle::getItemColors( const int index, RDOLogColorPair* &colors ) const
 {
+	UNUSED(index);
+
 	if ( theme ) {
 		colors = &theme->defaultColor;
 	}
@@ -185,6 +187,8 @@ bool RDOLogStyle::getItemColors( const int index, RDOLogColorPair* &colors ) con
 
 bool RDOLogStyle::getItemColors( const std::string& item, RDOLogColorPair* &colors ) const
 {
+	UNUSED(item);
+
 	if ( theme ) {
 		colors = &theme->defaultColor;
 	}

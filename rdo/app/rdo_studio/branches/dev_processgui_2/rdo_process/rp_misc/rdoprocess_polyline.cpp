@@ -18,9 +18,9 @@ bool polyline::pointInPolygon( const rp::point& point ) const
 {
 	if ( size() > 2 ) {
 		int counter  = 0;
-		unsigned int i, j;
+		ruint i, j;
 		bool polygon     = isPolygon();
-		unsigned int cnt = polygon ? size() - 1 : size();
+		ruint cnt = polygon ? size() - 1 : size();
 		for ( i = 0, j = 1; i < cnt; i++, j++ ) {
 			if ( !polygon && j == cnt ) {
 				j = 0;
@@ -50,8 +50,8 @@ bool polyline::pointInPolygon( const rp::point& point ) const
 bool polyline::pointInPolygon( const rp::point& point ) const
 {
 	if ( size() > 2 ) {
-		unsigned int i;
-		unsigned int j;
+		ruint i;
+		ruint j;
 		double k0 = 0;
 		bool flag = true;
 		bool polygon = isPolygon();
@@ -90,8 +90,8 @@ bool polyline::pointInPolygon( const rp::point& point ) const
 bool polyline::pointInPolygon( const rp::point& point ) const
 {
 	if ( size() > 2 ) {
-		unsigned int i;
-		unsigned int j;
+		ruint i;
+		ruint j;
 		bool flag = false;
 		bool polygon = isPolygon();
 		int  cnt     = polygon ? size() - 1 : size();

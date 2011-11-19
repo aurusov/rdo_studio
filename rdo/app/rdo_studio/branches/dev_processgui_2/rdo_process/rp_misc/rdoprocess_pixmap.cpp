@@ -52,26 +52,26 @@ RPPixmap::RPPixmap( char* _xpm[] ):
 		byte_per_pixel = 4;
 	}
 	int w_align = !(w % 2) ? w : w + 1;
-	unsigned char* data = new unsigned char[ w_align * h * byte_per_pixel ];
+	rbyte* data = new rbyte[ w_align * h * byte_per_pixel ];
 	for ( int y = 0; y < h; y++ ) {
 		line = xpm[ y + line_index ];
 		for ( int x = 0; x < w; x++ ) {
 			if ( color_data_per_pixel == 1 ) {
 				Pixel pixel = colors[ line.substr( x * char_per_pixel, char_per_pixel ) ];
-				unsigned char r = char_per_r == 2 ? pixel.r : pixel.r >> 8;
-				unsigned char g = char_per_r == 2 ? pixel.g : pixel.g >> 8;
-				unsigned char b = char_per_r == 2 ? pixel.b : pixel.b >> 8;
+				rbyte r = char_per_r == 2 ? rbyte(pixel.r) : rbyte(pixel.r >> 8);
+				rbyte g = char_per_r == 2 ? rbyte(pixel.g) : rbyte(pixel.g >> 8);
+				rbyte b = char_per_r == 2 ? rbyte(pixel.b) : rbyte(pixel.b >> 8);
 				data[ y * w_align * byte_per_pixel + x * byte_per_pixel + 0 ] = b;
 				data[ y * w_align * byte_per_pixel + x * byte_per_pixel + 1 ] = g;
 				data[ y * w_align * byte_per_pixel + x * byte_per_pixel + 2 ] = r;
 				data[ y * w_align * byte_per_pixel + x * byte_per_pixel + 3 ] = 0;
 			} else if ( color_data_per_pixel == 3 ) {
 				Pixel pixel = colors[ line.substr( x * char_per_pixel * color_data_per_pixel, char_per_pixel ) ];
-				unsigned char r = char_per_r == 2 ? pixel.r : pixel.r >> 8;
+				rbyte r = char_per_r == 2 ? rbyte(pixel.r) : rbyte(pixel.r >> 8);
 				pixel = colors[ line.substr( x * char_per_pixel * color_data_per_pixel + char_per_pixel, char_per_pixel ) ];
-				unsigned char g = char_per_r == 2 ? pixel.r : pixel.r >> 8;
+				rbyte g = char_per_r == 2 ? rbyte(pixel.r) : rbyte(pixel.r >> 8);
 				pixel = colors[ line.substr( x * char_per_pixel * color_data_per_pixel + char_per_pixel + char_per_pixel, char_per_pixel ) ];
-				unsigned char b = char_per_r == 2 ? pixel.r : pixel.r >> 8;
+				rbyte b = char_per_r == 2 ? rbyte(pixel.r) : rbyte(pixel.r >> 8);
 				data[ y * w_align * byte_per_pixel + x * byte_per_pixel + 0 ] = b;
 				data[ y * w_align * byte_per_pixel + x * byte_per_pixel + 1 ] = g;
 				data[ y * w_align * byte_per_pixel + x * byte_per_pixel + 2 ] = r;
@@ -79,10 +79,10 @@ RPPixmap::RPPixmap( char* _xpm[] ):
 			} else if ( color_data_per_pixel == 2 ) {
 				Pixel pixel1 = colors[ line.substr( x * char_per_pixel * color_data_per_pixel, char_per_pixel ) ];
 				Pixel pixel2 = colors[ line.substr( x * char_per_pixel * color_data_per_pixel + char_per_pixel, char_per_pixel ) ];
-				unsigned char byte1 = char_per_r == 2 ? pixel1.r : pixel1.r >> 8;
-				unsigned char byte2 = char_per_r == 2 ? pixel2.r : pixel2.r >> 8;
-				unsigned char r = byte2 & 0x7C;
-				unsigned char b = byte1 & 0x1F;
+				rbyte byte1 = char_per_r == 2 ? rbyte(pixel1.r) : rbyte(pixel1.r >> 8);
+				rbyte byte2 = char_per_r == 2 ? rbyte(pixel2.r) : rbyte(pixel2.r >> 8);
+				rbyte r = byte2 & 0x7C;
+				rbyte b = byte1 & 0x1F;
 				byte1 &= ~0x1F;
 				byte2 &= ~0x7C;
 				byte1 |= (r >> 2);
@@ -109,7 +109,7 @@ RPPixmap::RPPixmap( char* _xpm[] ):
 	bitmap_info.bmiHeader.biWidth         = w_align;
 	bitmap_info.bmiHeader.biHeight        = -h;
 	bitmap_info.bmiHeader.biPlanes        = 1;
-	bitmap_info.bmiHeader.biBitCount      = byte_per_pixel * 8;
+	bitmap_info.bmiHeader.biBitCount      = WORD(byte_per_pixel * 8);
 	bitmap_info.bmiHeader.biCompression   = BI_RGB;
 	bitmap_info.bmiHeader.biSizeImage     = 0;
 	bitmap_info.bmiHeader.biXPelsPerMeter = 0;
@@ -197,7 +197,7 @@ RPPixmap::RPPixmap( HICON icon ):
 	CWnd::GetDesktopWindow()->ReleaseDC( desktopDC );
 }
 
-RPPixmap::RPPixmap( unsigned int resource, COLORREF _transparent ):
+RPPixmap::RPPixmap( ruint resource, COLORREF _transparent ):
 	xpm( NULL ),
 	transparent( _transparent )
 {

@@ -38,7 +38,7 @@ protected:
 	RDOTracerResType* resType;
 	bool erased;
 public:
-	RDOTracerResource( RDOTracerResType* const type, std::string& name );
+	RDOTracerResource( RDOTracerResType* const type, const std::string& name );
 	virtual ~RDOTracerResource();
 
 	std::string Name;

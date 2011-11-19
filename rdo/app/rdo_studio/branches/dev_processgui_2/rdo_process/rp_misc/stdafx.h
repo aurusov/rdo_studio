@@ -27,6 +27,8 @@
 #include <vector>
 #include <list>
 #include <algorithm>
+#include "utils/rdotypes.h"
+#include "utils/rdomacros.h"
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

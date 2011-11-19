@@ -48,7 +48,7 @@
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="app/rdo_studio_mfc/rdo_process/proc2rdo/stdafx.h"
-				WarningLevel="3"
+				WarningLevel="4"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -110,7 +110,7 @@
 				MinimalRebuild="true"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="app/rdo_studio_mfc/rdo_process/proc2rdo/stdafx.h"
-				WarningLevel="3"
+				WarningLevel="4"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
 			/>
@@ -153,10 +153,6 @@
 			>
 			<File
 				RelativePath=".\rdoprocess_creation_RDO_files.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\rdoprocess_datablock.cpp"
 				>
 			</File>
 			<File
@@ -251,10 +247,6 @@
 			>
 			<File
 				RelativePath=".\rdoprocess_creation_RDO_files.h"
-				>
-			</File>
-			<File
-				RelativePath=".\rdoprocess_datablock.h"
 				>
 			</File>
 			<File
