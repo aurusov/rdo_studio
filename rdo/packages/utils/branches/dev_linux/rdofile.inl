@@ -14,9 +14,6 @@
 #ifdef COMPILER_VISUAL_STUDIO
 	#include <io.h>
 #endif // COMPILER_VISUAL_STUDIO
-#ifdef COMPILER_GCC
-	#include <unistd.h>
-#endif // COMPILER_GCC
 
 #include <fstream>
 #include <boost/filesystem.hpp>
@@ -44,16 +41,6 @@ inline rbool File::create(CREF(tstring) name, CREF(tstring) content)
 inline rbool File::exist(CREF(tstring) name)
 {
 	return  boost::filesystem::exists(name.c_str());
-}
-
-inline rbool File::read_only(CREF(tstring) name)
-{
-#ifdef COMPILER_VISUAL_STUDIO
-	return _access(name.c_str(), 04) == 0 && _access(name.c_str(), 06) == -1;
-#endif  // COMPILER_VISUAL_STUDIO
-#ifdef COMPILER_GCC
-	return access(name.c_str(), R_OK) == 0 && access(name.c_str(), W_OK) == -1;
-#endif // COMPILER_GCC
 }
 
 inline rbool File::unlink(CREF(tstring) name)

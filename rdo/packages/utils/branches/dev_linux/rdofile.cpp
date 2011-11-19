@@ -20,6 +20,7 @@
 	#define _MAX_DIR   512
 	#define _MAX_FNAME 512
 	#define _MAX_EXT   512
+	#include <unistd.h>
 #endif // COMPILER_GCC
 
 #include <boost/filesystem.hpp>
@@ -32,6 +33,16 @@
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE
+
+rbool File::read_only(CREF(tstring) name)
+{
+#ifdef COMPILER_VISUAL_STUDIO
+	return _access(name.c_str(), 04) == 0 && _access(name.c_str(), 06) == -1;
+#endif  // COMPILER_VISUAL_STUDIO
+#ifdef COMPILER_GCC
+	return access(name.c_str(), R_OK) == 0 && access(name.c_str(), W_OK) == -1;
+#endif // COMPILER_GCC
+}
 
 rbool File::splitpath(CREF(tstring) name, REF(tstring) fileDir, REF(tstring) fileName, REF(tstring) fileExt)
 {
