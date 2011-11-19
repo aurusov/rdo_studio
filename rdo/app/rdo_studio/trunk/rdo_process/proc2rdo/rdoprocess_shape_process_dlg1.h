@@ -40,12 +40,14 @@ public:
 	CComboBox	m_gtype;
 	CComboBox	m_gqueque;
 	RPListBox	m_ResList;
-	CButton	m_DelRes;
-	CButton	m_AddRes;
-	CEdit	m_proc_dlg1_max_control_MJ;
-	CEdit	m_proc_dlg1_min_control_MJ;
-	CEdit	m_proc_dlg1_disp_control_MJ;
-	CEdit	m_proc_dlg1_exp_control_MJ;
+	CButton		m_DelRes;
+	CButton		m_AddRes;
+	CEdit		m_proc_dlg1_max_control_MJ;
+	CEdit		m_proc_dlg1_disp_control_MJ;
+	CEdit		m_proc_dlg1_exp_control_MJ;
+	CStatic		m_proc_dlgl_exp_text_MJ;
+	CStatic		m_proc_dlgl_disp_text_MJ;
+	CStatic		m_proc_dlgl_max_text_MJ;
 	CComboBox	m_parameter;
 	CComboBox	m_action;
 	CString	m_name;
@@ -73,11 +75,11 @@ protected:
 
 	// Generated message map functions
 	//{{AFX_MSG(RPShapeProcessDlg1_MJ)
-	afx_msg void OnCloseupCombo1();
-	afx_msg void OnCloseupCombo3();
+	afx_msg void OnCbnSelchange1();
+	afx_msg void OnCbnSelchange3();
 	afx_msg void OnButton1();
 	virtual void OnOK();
-	afx_msg void OnCloseupCombo2();
+	afx_msg void OnCbnSelchange2();
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnButton2();
 	//}}AFX_MSG

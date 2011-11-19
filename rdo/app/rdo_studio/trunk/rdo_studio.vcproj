@@ -2364,7 +2364,63 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\flow_connector.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\res\flow_dock_in.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\res\flow_dock_not.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\res\flow_move.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\res\flow_rotate.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\res\flow_rotate_center.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\res\flow_rotate_tl.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\res\flow_scale_lr.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\res\flow_scale_tb.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\res\flow_scale_tlbr.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\res\flow_scale_trbl.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\res\flow_select.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\res\flow_trash.cur"
+				>
+			</File>
+			<File
 				RelativePath=".\res\flowchart_default.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\flowchart_icon.ico"
 				>
 			</File>
 			<File
@@ -2485,6 +2541,26 @@
 			</File>
 			<File
 				RelativePath="resource.hm"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar1.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar_empty.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar_mainframe.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar_mainframe_d.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\toolbar_styleandcolor.bmp"
 				>
 			</File>
 			<File

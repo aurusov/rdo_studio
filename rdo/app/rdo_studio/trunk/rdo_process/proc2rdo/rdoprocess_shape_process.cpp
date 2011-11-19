@@ -84,7 +84,10 @@ void RPShapeProcessMJ::generate()
 		case 2: // равномерный закон
 			zakon = RPShapeDataBlock::Uniform;
 			break;
-		case 3: // экспоненциальный
+		case 3: // треугольный
+			zakon = RPShapeDataBlock::Triangular;
+			break;
+		case 4: // экспоненциальный
 			zakon = RPShapeDataBlock::Exp;
 			break;
 	}
@@ -94,6 +97,7 @@ void RPShapeProcessMJ::generate()
 	m_pParams->setBase(base_gen);
 	m_pParams->setDisp(gdisp);
 	m_pParams->setExp(gexp);
+	m_pParams->setMax(gmax);
 
 	switch(action)
 	{
