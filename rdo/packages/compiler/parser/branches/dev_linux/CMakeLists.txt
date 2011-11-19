@@ -44,7 +44,7 @@ IF(PROJECT_OS_LINUX)
 	BISON_TARGET(rdosmr_file rdosmr_file.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramsmr_file.cpp COMPILE_FLAGS "-g -v -psmr_file_")
 	BISON_TARGET(rdosmr_sim rdosmr_sim.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramsmr_sim.cpp COMPILE_FLAGS "-g -v -psmr_sim_")
 
-	FLEX_TARGET(lexer_scaner rdo_lexer.l  ${CMAKE_CURRENT_SOURCE_DIR}/rdolex.cpp)
+	FLEX_TARGET(lexer_scaner rdo_lexer.l ${CMAKE_CURRENT_SOURCE_DIR}/rdolex.cpp COMPILE_FLAGS "--c++")
 
 	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdortp)
 	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdodpt)
@@ -60,24 +60,24 @@ IF(PROJECT_OS_LINUX)
 	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdosmr_file)
 	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdosmr_sim)
 
-SET(GENERATED_FILES
-	rdogramma.h
-	${FLEX_lexer_scaner_OUTPUTS}
-	${BISON_rdortp_OUTPUTS}
-	${BISON_rdortp_OUTPUT_HEADER}
-	${BISON_rdodpt_OUTPUTS}
-	${BISON_rdoevn_OUTPUTS}
-	${BISON_rdoevn_preparse_OUTPUTS}
-	${BISON_rdofrm_OUTPUTS}
-	${BISON_rdofun_OUTPUTS}
-	${BISON_rdopat_OUTPUTS}
-	${BISON_rdopmd_OUTPUTS}
-	${BISON_rdoproc_opr_OUTPUTS}
-	${BISON_rdoproc_rss_OUTPUTS}
-	${BISON_rdoproc_rtp_OUTPUTS}
-	${BISON_rdorss_OUTPUTS}
-	${BISON_rdosmr_file_OUTPUTS}
-	${BISON_rdosmr_sim_OUTPUTS})
+	SET(GENERATED_FILES
+		rdogramma.h
+		${FLEX_lexer_scaner_OUTPUTS}
+		${BISON_rdortp_OUTPUTS}
+		${BISON_rdortp_OUTPUT_HEADER}
+		${BISON_rdodpt_OUTPUTS}
+		${BISON_rdoevn_OUTPUTS}
+		${BISON_rdoevn_preparse_OUTPUTS}
+		${BISON_rdofrm_OUTPUTS}
+		${BISON_rdofun_OUTPUTS}
+		${BISON_rdopat_OUTPUTS}
+		${BISON_rdopmd_OUTPUTS}
+		${BISON_rdoproc_opr_OUTPUTS}
+		${BISON_rdoproc_rss_OUTPUTS}
+		${BISON_rdoproc_rtp_OUTPUTS}
+		${BISON_rdorss_OUTPUTS}
+		${BISON_rdosmr_file_OUTPUTS}
+		${BISON_rdosmr_sim_OUTPUTS})
 
 ELSE(WIN32)
 
@@ -234,7 +234,9 @@ TARGET_LINK_LIBRARIES(rdo_parser ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBR
 TARGET_LINK_LIBRARIES(rdo_parser rdo_utils)
 TARGET_LINK_LIBRARIES(rdo_parser rdo_runtime)
 
-SET_TARGET_PROPERTIES(rdo_parser PROPERTIES COMPILE_FLAGS "-D_UNISTD_H_")
+IF(MSVC)
+	SET_TARGET_PROPERTIES(rdo_parser PROPERTIES COMPILE_FLAGS "-D_UNISTD_H_")
+ENDIF(MSVC)
 
 SET(RDO_PARSER_TEST_PATH ${CMAKE_CURRENT_SOURCE_DIR}/test)
 #ADD_SUBDIRECTORY(${RDO_PARSER_TEST_PATH})
