@@ -214,6 +214,69 @@ private:
 	double m_var;
 };
 
+class SequenceExponential
+{
+public:
+	SequenceExponential(double main)
+		: m_main(main)
+	{}
+
+	double get(double x) const
+	{
+		return 1/(m_main*exp(x/m_main)); 
+	}
+
+private:
+	double m_main;
+};
+
+class SequenceUniform
+{
+public:
+	SequenceUniform(double min, double max)
+		: m_min(min)
+		, m_max(max)
+	{}
+
+	double get(double x) const
+	{
+		return 1/(m_max-m_min); 
+	}
+
+private:
+	double m_min;
+	double m_max;
+};
+
+class SequenceTriangular
+{
+public:
+	SequenceTriangular(double min, double top, double max)
+		: m_min(min-top)
+		, m_top(0)
+		, m_max(max-top)
+	{}
+
+	double get(double x) const
+	{
+		double temp;
+		if (x < m_top)
+		{
+			temp = -2*x/((m_max - m_min)*m_min) + 2/(m_max - m_min);
+		}
+		else
+		{
+			temp = -2*x/((m_max - m_min)*m_max) + 2/(m_max - m_min);
+		}
+		return temp; 
+	}
+
+private:
+	double m_min;
+	double m_top;
+	double m_max;
+};
+
 BOOST_AUTO_TEST_SUITE(RDOSequencesTest)
 
 // --------------------------------------------------------------------------------
