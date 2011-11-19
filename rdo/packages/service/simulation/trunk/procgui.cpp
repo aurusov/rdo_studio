@@ -48,6 +48,11 @@ ProcGUICalc::ProcGUICalc(CREF(rdoRuntime::LPRDORuntime) pRuntime, CREF(LPRPShape
 			m_pCalc = static_cast<rdoRuntime::LPRDOCalc>(getExpCalc(pParams->getBase(), pParams->getExp()));
 			break;
 		}
+		case RPShapeDataBlock::Triangular: // треугольный закон
+		{
+			m_pCalc = static_cast<rdoRuntime::LPRDOCalc>(getTriangularCalc(pParams->getBase(), pParams->getExp(), pParams->getDisp(), pParams->getMax()));
+			break;
+		}
 	}
 }
 
