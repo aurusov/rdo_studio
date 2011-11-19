@@ -15,9 +15,9 @@
 #include <boost/program_options.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdocommon.h"
-//#include "kernel/rdothread.h"
-//#include "repository/rdorepository.h"
-//#include "simulator/service/rdosimwin.h"
+#include "kernel/rdothread.h"
+#include "repository/rdorepository.h"
+#include "simulator/service/rdosimwin.h"
 // --------------------------------------------------------------------------------
 
 #ifdef COMPILER_VISUAL_STUDIO
@@ -33,7 +33,7 @@ const tstring SYSTEM_OS = _T("Linux");
 
 // Input param constant
 const tstring MODEL_COMMAND                 = _T("model");
-const tstring HELP_COMMAND                  = _T("help");
+const tstring CHELP_COMMAND                 = _T("help");
 const tstring VERSION_COMMAND               = _T("version");
 const tstring LANGUAGE_COMMAND              = _T("language");
 const tstring AUTO_RUN_COMMAND              = _T("autorun");
@@ -107,7 +107,7 @@ int main(int argc, char *argv[])
 	{
 		std::cout << _T("command line error: ") << e.what() << std::endl;
 	}
-	if (options.empty() || options.count(HELP_COMMAND))
+	if (options.empty() || options.count(CHELP_COMMAND))
 	{
 		std::cout << description << std::endl;
 	}
@@ -122,12 +122,12 @@ int main(int argc, char *argv[])
 	else
 	{
 		// Init
-		//RDOKernel::init();
-		//new rdoSimulator::RDOThreadSimulator();
-		//new rdoRepository::RDOThreadRepository();
+		RDOKernel::init();
+		new rdoSimulator::RDOThreadSimulator();
+		new rdoRepository::RDOThreadRepository();
 		
 		// Close
-		//RDOKernel::close();
+		RDOKernel::close();
 	}
 	return 0;
 }
@@ -144,7 +144,7 @@ void create_description(po::options_description& description)
 	description.add_options()
 			((MODEL_COMMAND + COMMA_STRING + MODEL_COMMAND_SHORT).c_str(), MODEL_COMMENT.c_str())
 			((VERSION_COMMAND + COMMA_STRING + VERSION_COMMAND_SHORT).c_str(), VERSION_COMMENT.c_str())
-			((HELP_COMMAND + COMMA_STRING + HELP_COMMAND_SHORT).c_str(), HELP_COMMENT.c_str())
+			((CHELP_COMMAND + COMMA_STRING + HELP_COMMAND_SHORT).c_str(), HELP_COMMENT.c_str())
 			((LANGUAGE_COMMAND + COMMA_STRING + LANGUAGE_COMMAND_SHORT).c_str(), LANGUAGE_COMMENT.c_str())
 			(AUTO_RUN_COMMAND.c_str(), AUTO_RUN_COMMENT.c_str())
 			(AUTO_EXIT_COMMAND.c_str(), AUTO_EXIT_COMMENT.c_str())

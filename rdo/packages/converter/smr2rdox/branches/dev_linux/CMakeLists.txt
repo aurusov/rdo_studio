@@ -4,6 +4,8 @@
 
 MESSAGE(STATUS "CREATE CONVERTER SMR2RDOX LIBRARY")
 
+INCLUDE_DIRECTORIES(${BISON_FLEX_DIRECTORY})
+
 # Find Boost
 IF(MSVC)
     SET(Boost_USE_STATIC_LIBS   ON)
@@ -79,6 +81,26 @@ SET(GENERATED_FILES
 	${BISON_rdorss_OUTPUTS}
 	${BISON_rdosmr_file_OUTPUTS}
 	${BISON_rdosmr_sim_OUTPUTS})
+
+ELSE(WIN32)
+
+    SET(GENERATED_FILES
+        ${GRAMMA_PATH}/rdogramma.h
+        ${GRAMMA_PATH}/rdogramsmr_sim.cpp
+	    ${GRAMMA_PATH}/rdogramsmr_file.cpp
+	    ${GRAMMA_PATH}/rdogramproc_rtp.cpp
+	    ${GRAMMA_PATH}/rdogramproc_rss.cpp
+	    ${GRAMMA_PATH}/rdogramproc_opr.cpp
+	    ${GRAMMA_PATH}/rdogramrtp.cpp
+	    ${GRAMMA_PATH}/rdogramrss.cpp
+	    ${GRAMMA_PATH}/rdogrampmd.cpp
+	    ${GRAMMA_PATH}/rdogrampat.cpp
+	    ${GRAMMA_PATH}/rdogramopr.cpp
+	    ${GRAMMA_PATH}/rdogramfun.cpp
+	    ${GRAMMA_PATH}/rdogramfrm.cpp
+	    ${GRAMMA_PATH}/rdogramdpt.cpp
+	    
+	    ${GRAMMA_PATH}/rdolex.cpp)
 
 ENDIF(PROJECT_OS_LINUX)
 
@@ -181,6 +203,8 @@ SET(GRAMMA_FILES
 	${GRAMMA_PATH}/rdofun.y
 	${GRAMMA_PATH}/rdofrm.y
 	${GRAMMA_PATH}/rdodpt.y)
+
+ADD_DEFINITIONS(-D_UNISTD_H_)
 
 ADD_LIBRARY(rdo_converter_smr2rdox ${HEADER_FILES} ${SOURCE_FILES} ${GENERATED_FILES} ${GRAMMA_FILES})
 SET_TARGET_PROPERTIES(rdo_converter_smr2rdox PROPERTIES LINKER_LANGUAGE CXX)

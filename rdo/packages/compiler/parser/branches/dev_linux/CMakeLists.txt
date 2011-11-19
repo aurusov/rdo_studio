@@ -4,6 +4,8 @@
 
 MESSAGE(STATUS "CREATE  RDO_PARSER  LIBRARY")
 
+INCLUDE_DIRECTORIES(${BISON_FLEX_DIRECTORY})
+
 # Find Boost
 SET(Boost_USE_STATIC_LIBS   ON)
 SET(Boost_USE_MULTITHREADED ON)
@@ -76,6 +78,27 @@ SET(GENERATED_FILES
 	${BISON_rdorss_OUTPUTS}
 	${BISON_rdosmr_file_OUTPUTS}
 	${BISON_rdosmr_sim_OUTPUTS})
+
+ELSE(WIN32)
+
+    SET(GENERATED_FILES
+        rdogramma.h
+        rdogramrtp.cpp
+        rdogramdpt.cpp
+        rdogramevn.cpp
+        rdogramevn_preparse.cpp
+        rdogramfrm.cpp
+        rdogramfun.cpp
+        rdogrampat.cpp
+        rdogrampmd.cpp
+        rdogramproc_opr.cpp
+        rdogramproc_rss.cpp
+        rdogramproc_rtp.cpp
+        rdogramrss.cpp
+        rdogramsmr_file.cpp
+        rdogramsmr_sim.cpp
+        	    
+	    rdolex.cpp)
 
 ENDIF(PROJECT_OS_LINUX)
 
@@ -201,6 +224,8 @@ SET(BISON_FILES
 	rdosmr_file.y
 	rdosmr_sim.y
 	rdo_lexer.l)
+
+ADD_DEFINITIONS(-D_UNISTD_H_)
 
 ADD_LIBRARY(rdo_parser ${HEADER_FILES} ${INLITE_FILES} ${SOURCE_FILES} ${BISON_FILES} ${GENERATED_FILES})
 
