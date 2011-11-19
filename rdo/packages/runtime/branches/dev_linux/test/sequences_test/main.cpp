@@ -24,27 +24,6 @@
 #include "simulator/runtime/rdo_random_distribution.h"
 // --------------------------------------------------------------------------------
 
-#ifndef OST_WINDOWS
-
-#define sscanf_s( fmt, ... ) scanf( scanf_validate( fmt, __FILE__, __LINE__ ), __VA_ARGS__ )
-
-const char* scanf_validate( const char* fmt, const char* file, long line )
-{
-    const char* p = fmt;
-    while (1)
-    {
-        p = strstr( p, "%s" );
-        if (p == NULL) break;
-        if ((p == fmt) || (*(p-1) != '%'))
-        {
-            fprintf( stderr, "Hey, you used \"%%s\" in %s: line %d!\n", file, line );
-            abort();
-        }
-    }
-    return fmt;
-}
-#endif 
-
 typedef std::vector<double> Container;
 typedef const tstring contstr;
 
@@ -113,7 +92,7 @@ void onCheckData(F binder, contstr g_fileName)
 		stream >> str;
 
 		double val;
-		BOOST_CHECK(sscanf_s(str.c_str(), _T("%lf"), &val) == 1);
+		BOOST_CHECK(sscanf(str.c_str(), _T("%lf"), &val) == 1);
 		BOOST_CHECK(val == *it);
 				if (val != *it)
 		{
