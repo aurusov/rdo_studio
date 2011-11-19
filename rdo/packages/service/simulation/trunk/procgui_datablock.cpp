@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      rdoprocess_datablock.cpp
+  \file      procgui_datablock.cpp
   \author    Шувалов Андрей
   \date      04.05.2011
   \brief     
@@ -10,8 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/rdo_process/proc2rdo/stdafx.h"
-#include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_datablock.h"
+#include "simulator/service/procgui_datablock.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------

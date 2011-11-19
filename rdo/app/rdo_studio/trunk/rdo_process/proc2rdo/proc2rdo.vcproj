@@ -156,10 +156,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_datablock.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\rdoprocess_generation_type.cpp"
 				>
 			</File>
@@ -251,10 +247,6 @@
 			>
 			<File
 				RelativePath=".\rdoprocess_creation_RDO_files.h"
-				>
-			</File>
-			<File
-				RelativePath=".\rdoprocess_datablock.h"
 				>
 			</File>
 			<File

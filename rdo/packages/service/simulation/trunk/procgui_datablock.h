@@ -1,16 +1,17 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      rdoprocess_datablock.h
+  \file      procgui_datablock.h
   \author    Шувалов Андрей
   \date      04.05.2011
   \brief     
   \indent    4T
 */
 
-#ifndef RDO_PROCESS_DATABLOCK_H
-#define RDO_PROCESS_DATABLOCK_H
+#ifndef _PROCGUI_DATABLOCK_H_
+#define _PROCGUI_DATABLOCK_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <list>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/smart_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
@@ -125,4 +126,4 @@ private:
 };
 DECLARE_POINTER(RPShapeDataBlockProcess);
 
-#endif // RDO_PROCESS_DATABLOCK_H
+#endif // _PROCGUI_DATABLOCK_H_

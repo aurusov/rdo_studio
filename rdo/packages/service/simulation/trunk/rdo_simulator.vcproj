@@ -430,6 +430,14 @@
 			>
 		</File>
 		<File
+			RelativePath=".\procgui_datablock.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\procgui_datablock.h"
+			>
+		</File>
+		<File
 			RelativePath="rdosimwin.cpp"
 			>
 			<FileConfiguration

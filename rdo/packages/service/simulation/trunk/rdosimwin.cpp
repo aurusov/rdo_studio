@@ -33,6 +33,7 @@
 #endif // COMPILER_GCC
 
 #include "simulator/service/rdosimwin.h"
+#include "simulator/service/procgui_datablock.h"
 #include "kernel/rdokernel.h"
 #include "repository/rdorepository.h"
 #include "simulator/runtime/rdotrace.h"
@@ -45,7 +46,6 @@
 #include "simulator/compiler/mbuilder/rdo_resources.h"
 #include "utils/rdodebug.h"
 #include "utils/rdotime.h"
-#include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_datablock.h"
 
 #ifndef DISABLE_CONVERTER
 	#include "converter/smr2rdox/rdoparser.h"
