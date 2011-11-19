@@ -45,7 +45,7 @@ IF(PROJECT_OS_LINUX)
 	BISON_TARGET(rdofrm ${GRAMMA_PATH}/rdofrm.y ${GRAMMA_PATH}/rdogramfrm.cpp COMPILE_FLAGS "-g -v -pcnv_frm")
 	BISON_TARGET(rdodpt ${GRAMMA_PATH}/rdodpt.y ${GRAMMA_PATH}/rdogramdpt.cpp COMPILE_FLAGS "-g -v -pcnv_dpt")
 
-	FLEX_TARGET(lexer_scaner ${GRAMMA_PATH}/rdo_lexer.l  ${GRAMMA_PATH}/rdolex.cpp)
+	FLEX_TARGET(lexer_scaner ${GRAMMA_PATH}/rdo_lexer.l ${GRAMMA_PATH}/rdolex.cpp COMPILE_FLAGS "-+")
 
 	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdosmr_sim)
 	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdosmr_file)
@@ -63,24 +63,24 @@ IF(PROJECT_OS_LINUX)
 
 	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdosmr_sim)
 
-SET(GENERATED_FILES
-	${GRAMMA_PATH}/rdogramma.h
-	${FLEX_lexer_scaner_OUTPUTS}
-	${BISON_rdortp_OUTPUTS}
-	${BISON_rdortp_OUTPUT_HEADER}
-	${BISON_rdodpt_OUTPUTS}
-	${BISON_rdoevn_OUTPUTS}
-	${BISON_rdoevn_preparse_OUTPUTS}
-	${BISON_rdofrm_OUTPUTS}
-	${BISON_rdofun_OUTPUTS}
-	${BISON_rdopat_OUTPUTS}
-	${BISON_rdopmd_OUTPUTS}
-	${BISON_rdoproc_opr_OUTPUTS}
-	${BISON_rdoproc_rss_OUTPUTS}
-	${BISON_rdoproc_rtp_OUTPUTS}
-	${BISON_rdorss_OUTPUTS}
-	${BISON_rdosmr_file_OUTPUTS}
-	${BISON_rdosmr_sim_OUTPUTS})
+	SET(GENERATED_FILES
+		${GRAMMA_PATH}/rdogramma.h
+		${FLEX_lexer_scaner_OUTPUTS}
+		${BISON_rdortp_OUTPUTS}
+		${BISON_rdortp_OUTPUT_HEADER}
+		${BISON_rdodpt_OUTPUTS}
+		${BISON_rdoevn_OUTPUTS}
+		${BISON_rdoevn_preparse_OUTPUTS}
+		${BISON_rdofrm_OUTPUTS}
+		${BISON_rdofun_OUTPUTS}
+		${BISON_rdopat_OUTPUTS}
+		${BISON_rdopmd_OUTPUTS}
+		${BISON_rdoproc_opr_OUTPUTS}
+		${BISON_rdoproc_rss_OUTPUTS}
+		${BISON_rdoproc_rtp_OUTPUTS}
+		${BISON_rdorss_OUTPUTS}
+		${BISON_rdosmr_file_OUTPUTS}
+		${BISON_rdosmr_sim_OUTPUTS})
 
 ELSE(WIN32)
 
@@ -214,8 +214,10 @@ TARGET_LINK_LIBRARIES(rdo_converter_smr2rdox ${Boost_SYSTEM_LIBRARY} ${Boost_FIL
 TARGET_LINK_LIBRARIES(rdo_converter_smr2rdox rdo_utils)
 TARGET_LINK_LIBRARIES(rdo_converter_smr2rdox rdo_runtime)
 
-SET_TARGET_PROPERTIES(rdo_converter_smr2rdox PROPERTIES COMPILE_FLAGS "-D_UNISTD_H_")
-	
+IF(MSVC)
+	SET_TARGET_PROPERTIES(rdo_converter_smr2rdox PROPERTIES COMPILE_FLAGS "-D_UNISTD_H_")
+ENDIF(MSVC)
+
 IF(MSVC) # lotions for windows #
 
 SOURCE_GROUP(".animation" FILES 
