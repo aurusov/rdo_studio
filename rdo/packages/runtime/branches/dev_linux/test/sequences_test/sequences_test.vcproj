@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="normal_test"
-	ProjectGUID="{276957F2-5402-491E-8DA8-82E633C2E3E7}"
-	RootNamespace="normal_test"
+	Name="sequences_test"
+	ProjectGUID="{9F58A671-DD59-4DB6-BADB-E67F39C5D269}"
+	RootNamespace="sequences_test"
 	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../../../"
+				AdditionalIncludeDirectories="../../../../"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
 				BasicRuntimeChecks="3"

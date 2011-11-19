@@ -33,7 +33,7 @@ inline double RandGenerator::u01()
 {
 #ifdef RDO_NATIVE_U01
 	m_seed = m_seed * 69069 + 1;
-	return m_seed / 4294967296.0; //(long double)UINT_MAX + 1
+	return m_seed / 4294967296.0;
 #else
 	const long int MODLUS = 2147483647;
 	const long int MULT1  = 24112;
@@ -48,7 +48,7 @@ inline double RandGenerator::u01()
 	zi = ((lowprd & 65535) - MODLUS) + ((hi31 & 32767) << 16) + (hi31 >> 15);
 	if (zi < 0) zi += MODLUS;
 	m_seed = zi;
-	//return ((zi >> 7) + 1) / 16777216.0;       // Так в примере на FORTRAN imho
+	//return ((zi >> 7) + 1) / 16777216.0;     // Так в примере на FORTRAN imho
 	return (((zi >> 7) | 1) + 1) / 16777216.0; // Так в примере на C
 #endif
 }
