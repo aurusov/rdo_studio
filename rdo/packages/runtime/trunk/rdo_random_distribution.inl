@@ -14,9 +14,10 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-// --------------------------------------------------------------------------------
-// -------------------- RandGenerator
-// --------------------------------------------------------------------------------
+/********************************************************************************
+    RandGenerator
+***********************************************************************************/
+
 inline RandGenerator::RandGenerator(long int seed)
 	: m_seed(seed)
 {}
@@ -33,7 +34,7 @@ inline double RandGenerator::u01()
 {
 #ifdef RDO_NATIVE_U01
 	m_seed = m_seed * 69069 + 1;
-	return m_seed / 4294967296.0; //(long double)UINT_MAX + 1
+	return m_seed / 4294967296.0;
 #else
 	const long int MODLUS = 2147483647;
 	const long int MULT1  = 24112;
@@ -53,9 +54,10 @@ inline double RandGenerator::u01()
 #endif
 }
 
-// --------------------------------------------------------------------------------
-// -------------------- RandGeneratorUniform
-// --------------------------------------------------------------------------------
+/********************************************************************************
+    RandGeneratorUniform
+***********************************************************************************/
+
 inline RandGeneratorUniform::RandGeneratorUniform(long int seed)
 	: RandGenerator(seed)
 {}
@@ -65,9 +67,10 @@ inline double RandGeneratorUniform::next(double from, double to)
 	return u01() * (to - from) + from;
 }
 
-// --------------------------------------------------------------------------------
-// -------------------- RandGeneratorExponential
-// --------------------------------------------------------------------------------
+/********************************************************************************
+    RandGeneratorExponential
+***********************************************************************************/
+
 inline RandGeneratorExponential::RandGeneratorExponential(long int seed)
 	: RandGenerator(seed)
 {}
@@ -77,9 +80,10 @@ inline double RandGeneratorExponential::next(double math)
 	return -log(u01()) * math;
 }
 
-// --------------------------------------------------------------------------------
-// -------------------- RandGeneratorNormal
-// --------------------------------------------------------------------------------
+/*******************************************************************************
+    RandGeneratorNormal
+***********************************************************************************/
+
 inline RandGeneratorNormal::RandGeneratorNormal(long int seed)
 	: RandGenerator(seed)
 {}
@@ -94,12 +98,14 @@ inline double RandGeneratorNormal::next(double av, double var)
 	return var * (ran - 6) + av;
 }
 
-// --------------------------------------------------------------------------------
-// -------------------- RandGeneratorTriangular
-// --------------------------------------------------------------------------------
+/*******************************************************************************
+    RandGeneratorTriangular
+***********************************************************************************/
+
 inline RandGeneratorTriangular::RandGeneratorTriangular(long int seed)
 	: RandGenerator(seed)
 {}
+
 
 inline double RandGeneratorTriangular::next(double from, double top, double to)
 {
@@ -115,27 +121,30 @@ inline double RandGeneratorTriangular::next(double from, double top, double to)
 	return result + top;
 }
 
-// --------------------------------------------------------------------------------
-// -------------------- RandGeneratorCommonNext
-// --------------------------------------------------------------------------------
+/********************************************************************************
+    RandGeneratorCommonNext
+***********************************************************************************/
+
 inline RandGeneratorCommonNext::RandGeneratorCommonNext()
 {}
 
 inline RandGeneratorCommonNext::~RandGeneratorCommonNext()
 {}
 
-// --------------------------------------------------------------------------------
-// -------------------- RandGeneratorByHist
-// --------------------------------------------------------------------------------
+/********************************************************************************
+    RandGeneratorByHist
+***********************************************************************************/
+
 inline RandGeneratorByHist::RandGeneratorByHist(long int seed)
 	: RandGeneratorUniform   (seed)
 	, RandGeneratorCommonNext(    )
 	, summ                   (0   )
 {}
 
-// --------------------------------------------------------------------------------
-// -------------------- RandGeneratorByHistReal
-// --------------------------------------------------------------------------------
+/********************************************************************************
+    RandGeneratorByHistReal
+***********************************************************************************/
+
 inline RandGeneratorByHistReal::RandGeneratorByHistReal(long int seed)
 	: RandGeneratorByHist(seed)
 {}
@@ -161,9 +170,10 @@ inline RDOValue RandGeneratorByHistReal::next()
 	return RandGeneratorUniform::next(m_from[i], m_to[i]);
 }
 
-// --------------------------------------------------------------------------------
-// -------------------- RandGeneratorByHistEnum
-// --------------------------------------------------------------------------------
+/********************************************************************************
+    RandGeneratorByHistEnum
+***********************************************************************************/
+
 inline RandGeneratorByHistEnum::RandGeneratorByHistEnum(long int seed)
 	: RandGeneratorByHist(seed)
 {}
@@ -174,6 +184,7 @@ inline void RandGeneratorByHistEnum::addValues(RDOValue val, double freq)
 	m_freq.push_back(freq);
 	summ += freq;
 }
+
 
 inline RDOValue RandGeneratorByHistEnum::next()
 {
@@ -188,9 +199,10 @@ inline RDOValue RandGeneratorByHistEnum::next()
 	return m_vals[i];
 }
 
-// --------------------------------------------------------------------------------
-// -------------------- RandGeneratorEnumerative
-// --------------------------------------------------------------------------------
+/********************************************************************************
+    RandGeneratorEnumerative
+***********************************************************************************/
+
 inline RandGeneratorEnumerative::RandGeneratorEnumerative()
 	: RandGeneratorCommonNext( )
 	, m_curr                 (0)
@@ -199,10 +211,12 @@ inline RandGeneratorEnumerative::RandGeneratorEnumerative()
 inline RandGeneratorEnumerative::~RandGeneratorEnumerative()
 {}
 
+
 inline void RandGeneratorEnumerative::addValue(RDOValue val)
 {
 	m_vals.push_back(val);
 }
+
 
 inline RDOValue RandGeneratorEnumerative::next()
 {

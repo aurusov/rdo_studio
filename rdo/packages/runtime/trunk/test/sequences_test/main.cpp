@@ -114,8 +114,7 @@ double  area (F binder, double elem, double n, double m)
 		{
 			if ((i == 0) || (i == t - 1))
 				k = 0.5;
-			T sequence(i*(m-n)/t);
-			S1 += k*(binder.operator()(&sequence));
+			S1 += k*(binder.operator()(i*(m-n)/t));
 			k = 1;
 		}
 		S1 *= (m-n);
@@ -124,7 +123,7 @@ double  area (F binder, double elem, double n, double m)
 	return S1;
 }
 
-template <class T,class F>
+template <class T, class F>
 void onCheckKsi(F binder, double left, double right)
 {
 	Container xITemp;								//создаю временный контейнер значений, на основе которых потом буду считать границы участка
@@ -138,11 +137,13 @@ void onCheckKsi(F binder, double left, double right)
 	Container::iterator it = xI.begin();
 	xI.push_back(left);						//левая граница будет в начале списка, правая граница или близкая к ней точка - right
 
-	STL_FOR_ALL(xITemp, itTemp)
+	Container::iterator itTemp = xITemp.begin();
+	while (itTemp != xITemp.end())
 	{
-		if (fabs(area(binder, elem, *it, *itTemp) - 1/g_countOfFree) < fabs(area(binder, elem, *it, *(++itTemp)) - 1/g_countOfFree))
+		//! @todo перед вызовом ++itTemp надо itTemp проверить на end()
+		if (fabs(area<T>(binder, elem, *it, *itTemp) - 1/g_countOfFree) < fabs(area<T>(binder, elem, *it, *(++itTemp)) - 1/g_countOfFree))
 		{
-			xI.push_back(*((--itTemp)++);
+			xI.push_back(*((--itTemp)++));
 			++it;
 		}
 		--itTemp;
@@ -159,16 +160,20 @@ void onCheckKsi(F binder, double left, double right)
 class SequenceNormal
 {
 public:
-	SequenceNormal(double x): m_x(x)
+	SequenceNormal(double main, double var)
+		: m_main(main)
+		, m_var (var )
 	{}
-	double next(double main, double var)
-	{
-		return 1/(sqrt(2*pi)*sqrt(var)*exp((m_x - main)*(m_x - main)/(2*var))); //функция плотности распределения вероятности. по определению для закона. таких будет еще 3 шутки.
-	}
-private:
-	double m_x;
-};
 
+	double get(double x) const
+	{
+		return 1/(sqrt(2*pi)*sqrt(m_var)*exp((x - m_main)*(x - m_main)/(2*m_var))); //функция плотности распределения вероятности. по определению для закона. таких будет еще 3 шутки.
+	}
+
+private:
+	double m_main;
+	double m_var;
+};
 
 BOOST_AUTO_TEST_SUITE(RDOSequencesTest)
 
@@ -185,9 +190,12 @@ BOOST_AUTO_TEST_CASE(RDONormalTestCheck)
 {
 	onCheckData<rdoRuntime::RandGeneratorNormal>
 		(boost::bind(&rdoRuntime::RandGeneratorNormal::next, _1, g_main, g_var), g_fileNormalName);
+
+	SequenceNormal normal(g_main, g_var);
 	onCheckKsi<SequenceNormal>
-		(boost::bind(&SequenceNormal::next, _1, g_main, g_var), g_main-4*sqrt(g_var), g_main+4*sqrt(g_var));
+		(boost::bind(&SequenceNormal::get, normal, _1), g_main-4*sqrt(g_var), g_main+4*sqrt(g_var));
 }
+
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
