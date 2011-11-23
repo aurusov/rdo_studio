@@ -64,6 +64,11 @@ public:
 	CREF(RDOArrayValue) getArray      () const;
 	CREF(RDOMatrixValue)getMatrix     () const;
 
+	template <class T>
+	REF(rdo::intrusive_ptr<T>) getPointer();
+
+	template <class T>
+	CREF(rdo::intrusive_ptr<T>) getPointer() const;
 
 	rbool   getAsBool          () const;
 	tstring getAsString        () const;
