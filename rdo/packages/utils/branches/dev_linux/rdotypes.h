@@ -27,54 +27,53 @@
 // --------------------------------------------------------------------------------
 
 //! Тип символа
-typedef  char                       tchar;
+typedef  char                        tchar;
 
 //! Тип строки
-typedef  std::basic_string<tchar>   tstring;
+typedef  std::basic_string<tchar>    tstring;
 
 //! Булевский тип
-typedef  bool                       rbool;
+typedef  bool                        rbool;
 
 //! Целый знаковый тип
-typedef  signed int                 rsint;
+typedef  signed int                  rsint;
 
 //! Целый беззнаковый тип
-typedef  unsigned int               ruint;
+typedef  unsigned int                ruint;
 
 //! Целый знаковый 32-х битный тип
 #ifdef COMPILER_VISUAL_STUDIO
-	typedef  long                   rsint32;
+	typedef  long                    rsint32;
 #endif
 #ifdef COMPILER_GCC
-	typedef  int32_t                rsint32;
+	typedef  int32_t                 rsint32;
 #endif
 
 //! Целый беззнаковый 32-х битный тип
 #ifdef COMPILER_VISUAL_STUDIO
-	typedef  unsigned long          ruint32;
+	typedef  unsigned long           ruint32;
 #endif
 #ifdef COMPILER_GCC
-	typedef  uint32_t               ruint32;
+	typedef  uint32_t                ruint32;
 #endif
 
 //! Целый знаковый 64-х битный тип
 #ifdef COMPILER_VISUAL_STUDIO
-typedef  signed long long int       rsint64;
+	typedef  signed long long int    rsint64;
 #endif
 #ifdef COMPILER_GCC
-typedef  int64_t                    rsint64;
+	typedef  int64_t                 rsint64;
 #endif
 
 //! Целый беззнаковый 64-х битный тип
-
 #ifdef COMPILER_VISUAL_STUDIO
-typedef  unsigned long long int     ruint64;
+	typedef  unsigned long long int  ruint64;
 #endif
 #ifdef COMPILER_GCC
-typedef  uint64_t                   ruint64;
+	typedef  uint64_t                ruint64;
 #endif
 
 //! Тип байта
-typedef  unsigned char              rbyte;
+typedef  unsigned char               rbyte;
 
 #endif // _UTILS_RDOTYPES_H_

@@ -13,7 +13,7 @@
 #include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #ifdef COMPILER_VISUAL_STUDIO
-        #include <windows.h>
+	#include <windows.h>
 #endif // COMPILER_VISUAL_STUDIO
 #ifdef COMPILER_GCC
 	#define _MAX_DRIVE 512
