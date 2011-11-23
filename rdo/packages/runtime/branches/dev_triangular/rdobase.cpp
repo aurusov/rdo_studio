@@ -15,7 +15,7 @@
 #include <limits>
 #ifdef COMPILER_GCC
 	#include <float.h>
-#endif
+#endif // COMPILER_GCC
 #include <boost/thread.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdobase.h"

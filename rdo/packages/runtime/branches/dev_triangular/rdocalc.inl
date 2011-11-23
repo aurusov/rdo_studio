@@ -226,7 +226,8 @@ inline RDOCalcConst::RDOCalcConst(CREF(RDOValue) value)
 {
 	if (value.typeID() != RDOType::t_identificator)
 	{
-		__asm nop;
+		int i = 1;
+		UNUSED(i);
 	}
 	m_value = value;
 }

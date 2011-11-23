@@ -34,7 +34,7 @@ BOOST_AUTO_TEST_CASE(arrayTestInsert)
 	#include "simulator/runtime/test/rdo_array_test/arrayCreate.inl"
 
 	arrayVal1.insert(arrayVal1.begin() + rdoRuntime::RDOValue(1), arrayVal2.begin(), arrayVal2.end());
-	
+
 	BOOST_CHECK(arrayVal1.getAsString() == _T("[1, 4, 5, 6, 2, 3]"));
 }
 
@@ -43,7 +43,7 @@ BOOST_AUTO_TEST_CASE(arrayTestErase)
 	#include "simulator/runtime/test/rdo_array_test/arrayCreate.inl"
 
 	arrayVal1.erase(arrayVal1.begin() + rdoRuntime::RDOValue(1), arrayVal1.begin() + rdoRuntime::RDOValue(3));
-	
+
 	BOOST_CHECK(arrayVal1.getAsString() == _T("[1]"));
 }
 
@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_CASE(arrayTestMMOperator)
 
 	tstring itStr = _T("");
 	rdoRuntime::RDOValue it1 = arrayVal2.end();
-	do 
+	do
 	{
 		--it1;
 		itStr += it1.getAsString();
@@ -92,7 +92,7 @@ BOOST_AUTO_TEST_CASE(arrayTestOperatorMM)
 
 	tstring itStr = _T("");
 	rdoRuntime::RDOValue it1 = arrayVal2.end();
-	do 
+	do
 	{
 		it1--;
 		itStr += it1.getAsString();

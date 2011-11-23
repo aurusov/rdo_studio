@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _LIB_RUNTIME_KEYBOARD_H_
-#define _LIB_RUNTIME_KEYBOARD_H_
+#ifndef _LIB_RUNTIME_KEYBOARD_REDEFINE_H_
+#define _LIB_RUNTIME_KEYBOARD_REDEFINE_H_
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/platform.h"
@@ -66,4 +66,4 @@
 
 #endif // OST_LINUX
 
-#endif // _LIB_RUNTIME_KEYBOARD_H_
+#endif // _LIB_RUNTIME_KEYBOARD_REDEFINE_H_

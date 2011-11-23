@@ -68,8 +68,8 @@ public:
 	typedef RDOArrayValue::Container::iterator Iterator;
 
 	Iterator getIterator() const;
-	Iterator operator+  (rsint num);
-	Iterator operator-  (rsint num);
+	void     operator+  (rsint num);
+	void     operator-  (rsint num);
 	rbool    operator== (CREF(LPRDOArrayIterator) pIterator) const;
 
 	RDOValue getValue() const;

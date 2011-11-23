@@ -130,7 +130,7 @@ SET(INLITE_FILES
 	calc/operation_name.inl
 	calc/operation_type.inl
 	calc/relres.inl
-    calc/sequence.inl
+	calc/sequence.inl
 	calc/std_fun.inl
 	calc/unary.inl)
 
@@ -184,7 +184,9 @@ SET(SOURCE_FILE
 	calc/watch.cpp)
 
 ADD_LIBRARY(rdo_runtime ${HEADER_FILES} ${INLITE_FILES} ${SOURCE_FILE})
+
 ADD_DEPENDENCIES(test_rdo_utils rdo_utils)
+
 TARGET_LINK_LIBRARIES(rdo_runtime rdo_utils)
 SET_TARGET_PROPERTIES(rdo_runtime PROPERTIES LINKER_LANGUAGE CXX)
 TARGET_LINK_LIBRARIES(rdo_runtime ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY})
