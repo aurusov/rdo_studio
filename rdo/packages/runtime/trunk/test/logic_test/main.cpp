@@ -105,17 +105,17 @@ public:
 		data_vector::const_iterator endIt = data.end();
 		for(data_vector::const_iterator it = data.begin(); it != endIt; ++it) 
 		{
-			m_ñontainer(*it);
+			m_container(*it);
 		}
 	}
 	rbool checkOperation(const data_vector& data)
 	{
-		Order::sort(m_ñontainer);
+		Order::sort(m_container);
 
 		data_vector check_data;
 
-		Container::CIterator endIt = m_ñontainer.end();
-		for(Container::Iterator it = m_ñontainer.begin() ;it != endIt; ++it)
+		DataContainer::CIterator endIt = m_container.end();
+		for(DataContainer::Iterator it = m_container.begin() ;it != endIt; ++it)
 		{
 			check_data.push_back((*it).getData());
 		}
@@ -125,9 +125,9 @@ public:
 
 private:
 	typedef MyOperation              Item;
-	typedef Container<Item>          Container;
+	typedef Container<Item>          DataContainer;
 
-	Container  m_ñontainer;
+	DataContainer  m_container;
 };
 
 data_vector createData()

@@ -10,7 +10,7 @@
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
-#ifdef OST_WINDOWS
+#ifdef COMPILER_VISUAL_STUDIO
 	#pragma warning(disable : 4786)
 	#ifndef WINVER               // Allow use of features specific to Windows XP or later.
 		#define WINVER 0x0501    // Change this to the appropriate value to target other versions of Windows.
@@ -21,7 +21,7 @@
 	#else
 		#include <windows.h>
 	#endif
-#endif
+#endif // COMPILER_VISUAL_STUDIO
 
 #include <algorithm>
 #include <list>

@@ -19,7 +19,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // -------------------- RDOCalcAnd
 // --------------------------------------------------------------------------------
 inline RDOCalcAnd::RDOCalcAnd(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
-	: RDOCalcBinary(pLeft, pRight)
+	: parent_type(pLeft, pRight)
 {
 	m_value_true  = 1;
 	m_value_false = 0;
@@ -29,7 +29,7 @@ inline RDOCalcAnd::RDOCalcAnd(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
 // -------------------- RDOCalcOr
 // --------------------------------------------------------------------------------
 inline RDOCalcOr::RDOCalcOr(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
-	: RDOCalcBinary(pLeft, pRight)
+	: parent_type(pLeft, pRight)
 {
 	m_value_true  = 1;
 	m_value_false = 0;

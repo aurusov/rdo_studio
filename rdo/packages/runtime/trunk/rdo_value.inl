@@ -441,7 +441,7 @@ inline rbool RDOValue::operator== (CREF(RDOValue) rdovalue) const
 		{
 			switch (rdovalue.typeID())
 			{
-			case RDOType::t_arrayIterator: return __arrayItr() == rdovalue.__arrayItr();
+			case RDOType::t_arrayIterator: return __arrayItr()->operator== (rdovalue.__arrayItr());
 			}
 			break;
 		}

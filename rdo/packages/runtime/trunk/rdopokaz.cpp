@@ -13,10 +13,10 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <limits>
 #ifdef COMPILER_GCC
 	#include <float.h>
-#endif
-#include <limits>
+#endif // COMPILER_GCC
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdopokaz.h"
 #include "simulator/runtime/rdocalc.h"

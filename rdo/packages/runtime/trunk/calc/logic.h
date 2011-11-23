@@ -28,6 +28,8 @@ class RDOCalcAnd: public RDOCalcBinary<RDOValue, &RDOValue::operator&&, Operator
 {
 DECLARE_FACTORY(RDOCalcAnd)
 private:
+	typedef RDOCalcBinary<RDOValue, &RDOValue::operator&&, OperatorType::OT_LOGIC> parent_type;
+
 	RDOCalcAnd(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight);
 
 	RDOValue m_value_true;
@@ -44,6 +46,8 @@ class RDOCalcOr: public RDOCalcBinary<RDOValue, &RDOValue::operator||, OperatorT
 {
 DECLARE_FACTORY(RDOCalcOr)
 private:
+	typedef RDOCalcBinary<RDOValue, &RDOValue::operator||, OperatorType::OT_LOGIC> parent_type;
+
 	RDOCalcOr(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight);
 
 	RDOValue m_value_true;

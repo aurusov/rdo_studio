@@ -13,10 +13,10 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <limits>
 #ifdef COMPILER_GCC
 	#include <float.h>
-#endif
-#include <limits>
+#endif // COMPILER_GCC
 #include <iomanip>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/pch.h"
@@ -343,7 +343,7 @@ void RDORuntime::addRuntimeFrame(CREF(LPRDOFRMFrame) pFrame)
 
 LPRDOFRMFrame RDORuntime::lastFrame() const
 {
-	return !allFrames.empty() ? allFrames.front() : NULL;
+	return !allFrames.empty() ? allFrames.front() : LPRDOFRMFrame(NULL);
 }
 
 rbool RDORuntime::keyDown(ruint scan_code)

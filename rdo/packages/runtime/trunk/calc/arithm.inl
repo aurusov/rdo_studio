@@ -19,7 +19,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // -------------------- RDOCalcDiv
 // --------------------------------------------------------------------------------
 inline RDOCalcDiv::RDOCalcDiv(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
-	: RDOCalcBinary(pLeft, pRight)
+	: parent_type(pLeft, pRight)
 {}
 
 // --------------------------------------------------------------------------------

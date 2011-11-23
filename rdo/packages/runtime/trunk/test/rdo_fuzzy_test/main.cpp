@@ -51,6 +51,7 @@ BOOST_AUTO_TEST_CASE(RDORuntime_Fuzzy_Test)
 	std::cout << value1.defuzzyfication().getAsString() << std::endl;
 
 	int i = 1;
+	UNUSED(i);
 }
 
 BOOST_AUTO_TEST_SUITE_END() // RDORuntime_Fuzzy_Test

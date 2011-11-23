@@ -20,6 +20,7 @@
 #include <boost/function.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdofile.h"
+#include <utils/platform.h>
 #include "simulator/runtime/rdo_random_distribution.h"
 // --------------------------------------------------------------------------------
 
@@ -91,7 +92,7 @@ void onCheckData(F binder, contstr g_fileName)
 		stream >> str;
 
 		double val;
-		BOOST_CHECK(sscanf_s(str.c_str(), _T("%lf"), &val) == 1);
+		BOOST_CHECK(sscanf(str.c_str(), _T("%lf"), &val) == 1);
 		BOOST_CHECK(val == *it);
 				if (val != *it)
 		{
