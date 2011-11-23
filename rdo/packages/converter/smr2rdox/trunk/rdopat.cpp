@@ -189,13 +189,13 @@ void RDOPATPattern::writeModelStructure(REF(std::ostream) stream) const
 LPRDOParam RDOPATPattern::findPATPatternParam(CREF(tstring) paramName) const
 {
 	ParamList::const_iterator it = std::find_if(m_paramList.begin(), m_paramList.end(), compareName<RDOParam>(paramName));
-	return it != m_paramList.end() ? (*it) : NULL;
+	return it != m_paramList.end() ? (*it) : LPRDOParam(NULL);
 }
 
 LPRDORelevantResource RDOPATPattern::findRelevantResource(CREF(tstring) resName) const
 {
 	RelResList::const_iterator it = std::find_if(m_relResList.begin(), m_relResList.end(), compareName<RDORelevantResource>(resName));
-	return it != m_relResList.end() ? (*it) : NULL;
+	return it != m_relResList.end() ? (*it) : LPRDORelevantResource(NULL);
 }
 
 int RDOPATPattern::findPATPatternParamNum(CREF(tstring) paramName) const
@@ -353,7 +353,7 @@ void RDOPATPattern::end()
 	{
 		//! first
 		//! –аботает неправильно, а как обыкновенный first
-		if (m_pCommonChoice == NULL)
+		if (!m_pCommonChoice)
 		{
 			//! first
 			std::vector<rdoRuntime::LPIRDOSelectResourceCommon> resSelectors;

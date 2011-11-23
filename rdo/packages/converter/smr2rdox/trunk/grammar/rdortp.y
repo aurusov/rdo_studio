@@ -349,17 +349,17 @@ rtp_param
 	{
 		PTR(RDOValue)  param_name = P_RDOVALUE($1);
 		LPRDOTypeParam pParamType = CONVERTER->stack().pop<RDOTypeParam>($2);
-		RDOValue       default = RDOVALUE($3);
-		if (!default.defined())
+		RDOValue       defaultValue = RDOVALUE($3);
+		if (!defaultValue.defined())
 		{
 			LPRDOTypeParamSuchAs pTypeSuchAs = pParamType.object_dynamic_cast<RDOTypeParamSuchAs>();
 			if (pTypeSuchAs)
 			{
-				default = pTypeSuchAs->getParam()->getDefault();
+				defaultValue = pTypeSuchAs->getParam()->getDefault();
 			}
 		}
 
-		LPRDORTPParam pParam = rdo::Factory<RDORTPParam>::create(pParamType, default, param_name->src_info());
+		LPRDORTPParam pParam = rdo::Factory<RDORTPParam>::create(pParamType, defaultValue, param_name->src_info());
 
 		rdoConverter::LPDocUpdate pColonDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(
 			@1.m_last_seek - 1,

@@ -16,6 +16,7 @@
 #include "converter/smr2rdox/rdo_object.h"
 #include "converter/smr2rdox/rdofun.h"
 #include "simulator/runtime/rdo_logic_i.h"
+#include "simulator/runtime/rdo_priority_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE
@@ -48,7 +49,7 @@ public:
 
 	LPActivity getLastActivity() const
 	{
-		return !m_activityList.empty() ? m_activityList.back() : NULL;
+		return !m_activityList.empty() ? m_activityList.back() : LPActivity(NULL);
 	}
 	CREF(ActivityList) getActivities() const { return m_activityList; }
 

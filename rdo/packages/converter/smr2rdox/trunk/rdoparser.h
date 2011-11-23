@@ -238,31 +238,33 @@ private:
 		m_pattern = false;
 	}
 
-	template <>
-	void howIsIt<LPRDOFUNGroup>()
-	{}
-
-	template <>
-	void howIsIt<LPRDOPATPattern>()
-	{
-		m_pattern = true;
-	}
-
-	struct Changes
+	struct ChangesData
 	{
 		tstring m_name;
 		tstring m_value;
-		Changes(CREF(tstring) name, CREF(tstring) value)
+
+		ChangesData(CREF(tstring) name, CREF(tstring) value)
 			: m_name (name )
 			, m_value(value)
 		{}
 	};
-	typedef std::vector<Changes> ChangesList;
+
+	typedef std::vector<ChangesData> ChangesList;
 	ChangesList m_changes;
 
 	typedef std::list<PTR(Converter)> ParserList;
 	static ParserList s_parserStack;
 };
+
+template <>
+inline void Converter::howIsIt<LPRDOFUNGroup>()
+{}
+
+template <>
+inline void Converter::howIsIt<LPRDOPATPattern>()
+{
+	m_pattern = true;
+}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserTemplate
@@ -321,12 +323,12 @@ public:
 private:
 	FileList m_fileList;
 
-	void RDOParserSMRInfo::insertFileName(rdoModelObjectsConvertor::RDOFileTypeIn type,
-	                                      CREF(tstring)                           modelPath,
-	                                      CREF(tstring)                           modelName,
-	                                      CREF(tstring)                           smrFileName,
-	                                      CREF(tstring)                           nameFromSMR,
-	                                      CREF(tstring)                           fileExt);
+	void insertFileName(rdoModelObjectsConvertor::RDOFileTypeIn type,
+	                    CREF(tstring)                           modelPath,
+	                    CREF(tstring)                           modelName,
+	                    CREF(tstring)                           smrFileName,
+	                    CREF(tstring)                           nameFromSMR,
+	                    CREF(tstring)                           fileExt);
 };
 
 CLOSE_RDO_CONVERTER_NAMESPACE
