@@ -1,10 +1,14 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6.0)
+#==============================================================================
+# Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>
+#==============================================================================
 
 MESSAGE(STATUS "CREATE RDO_KERNEL LIBRARY")
 
 # Find Boost
-SET(Boost_USE_STATIC_LIBS   ON)
-SET(Boost_USE_MULTITHREADED ON)
+IF(MSVC)
+	SET(Boost_USE_STATIC_LIBS   ON)
+	SET(Boost_USE_MULTITHREADED ON)
+ENDIF(MSVC)
 FIND_PACKAGE(Boost COMPONENTS system filesystem thread REQUIRED)
 IF(PROJECT_OS_LINUX)
 	FIND_LIBRARY(PTHREAD pthread $ENV{LD_LIBRARY_PATH})
@@ -24,6 +28,24 @@ SET(SOURCE_FILES
 	rdothread.cpp
 	rdokernel.cpp)
 
+ADD_LIBRARY(rdo_kernel ${HEADER_FILES} ${SOURCE_FILES})
+
+ADD_DEPENDENCIES(rdo_kernel rdo_utils)
+ADD_DEPENDENCIES(rdo_kernel rdo_runtime)
+
+TARGET_LINK_LIBRARIES(rdo_kernel ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY})
+TARGET_LINK_LIBRARIES(rdo_kernel rdo_utils)
+TARGET_LINK_LIBRARIES(rdo_kernel rdo_runtime)
+
+IF(CYGWIN)
+	TARGET_LINK_LIBRARIES(rdo_kernel ${PTHREAD})
+ENDIF(CYGWIN)
+IF(PROJECT_OS_LINUX)
+	TARGET_LINK_LIBRARIES(rdo_kernel ${PTHREAD})
+ENDIF(PROJECT_OS_LINUX)
+
+IF(MSVC) # lotions for windows #
+
 SOURCE_GROUP(".thread" FILES 
 	rdothread.h
 	rdothread.cpp)
@@ -31,12 +53,5 @@ SOURCE_GROUP(".thread" FILES
 SOURCE_GROUP(".kernel" FILES 
 	rdokernel.h
 	rdokernel.cpp)
-
-ADD_LIBRARY(rdo_kernel ${HEADER_FILES} ${SOURCE_FILES})
-ADD_DEPENDENCIES(rdo_kernel rdo_utils)
-
-TARGET_LINK_LIBRARIES(rdo_kernel ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY})
-TARGET_LINK_LIBRARIES(rdo_kernel rdo_utils)
-IF(PROJECT_OS_LINUX)
-	TARGET_LINK_LIBRARIES(rdo_kernel ${PTHREAD})
-ENDIF(PROJECT_OS_LINUX)
+	
+ENDIF(MSVC)
