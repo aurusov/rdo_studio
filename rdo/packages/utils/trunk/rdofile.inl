@@ -11,11 +11,9 @@
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
-#ifdef OST_WINDOWS
+#ifdef COMPILER_VISUAL_STUDIO
 	#include <io.h>
-#else
-	#include <unistd.h>
-#endif
+#endif // COMPILER_VISUAL_STUDIO
 
 #include <fstream>
 #include <boost/filesystem.hpp>
@@ -43,15 +41,6 @@ inline rbool File::create(CREF(tstring) name, CREF(tstring) content)
 inline rbool File::exist(CREF(tstring) name)
 {
 	return  boost::filesystem::exists(name.c_str());
-}
-
-inline rbool File::read_only(CREF(tstring) name)
-{
-#ifdef OST_WINDOWS
-	return _access(name.c_str(), 04) == 0 && _access(name.c_str(), 06) == -1;
-#else  // not OST_WINDOWS
-	return access(name.c_str(), R_OK) == 0 && access(name.c_str(), W_OK) == -1;
-#endif // OST_WINDOWS
 }
 
 inline rbool File::unlink(CREF(tstring) name)

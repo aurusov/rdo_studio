@@ -37,14 +37,7 @@ SET(HEADER_FILES
 	rdotypes.h
 	stack.h
 	static_assert.h
-	supersubclass.h
-	smart_ptr/counter_reference.h
-	smart_ptr/factory.h
-	smart_ptr/interface_ptr.h
-	smart_ptr/intrusive_ptr.h
-	smart_ptr/intrusive_ptr_interface_wrapper.h
-	smart_ptr/ref_counter.h
-	smart_ptr/ref_counter_i.h)
+	supersubclass.h)
 
 SET(INLITE_FILES
 	rdoanimation.inl
@@ -52,21 +45,33 @@ SET(INLITE_FILES
 	rdofile.inl
 	rdointerface.inl
 	rdotime.inl
-	stack.inl
-	smart_ptr/counter_reference.inl
-	smart_ptr/factory.inl
-	smart_ptr/interface_ptr.inl
-	smart_ptr/intrusive_ptr.inl
-	smart_ptr/intrusive_ptr_interface_wrapper.inl
-	smart_ptr/ref_counter.inl)
+	stack.inl)
 
 SET(SOURCE_FILES
 	rdocommon.cpp
 	rdofile.cpp)
 
-ADD_LIBRARY(rdo_utils ${HEADER_FILES} ${INLITE_FILES} ${SOURCE_FILES})
+SET(SMART_PTR_FILES
+	smart_ptr/factory.h
+	smart_ptr/factory.inl
+
+	smart_ptr/interface_ptr.h
+	smart_ptr/interface_ptr.inl
+
+	smart_ptr/intrusive_ptr.h
+	smart_ptr/intrusive_ptr_interface_wrapper.h
+	smart_ptr/intrusive_ptr.inl
+	smart_ptr/intrusive_ptr_interface_wrapper.inl
+
+	smart_ptr/ref_counter_i.h
+	smart_ptr/ref_counter.inl
+	smart_ptr/ref_counter.h
+	smart_ptr/counter_reference.h
+	smart_ptr/counter_reference.inl)
+
+ADD_LIBRARY(rdo_utils ${HEADER_FILES} ${INLITE_FILES} ${SOURCE_FILES} ${SMART_PTR_FILES})
 SET_TARGET_PROPERTIES(rdo_utils PROPERTIES LINKER_LANGUAGE CXX)
-TARGET_LINK_LIBRARIES(rdo_utils ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY})
+TARGET_LINK_LIBRARIES(rdo_utils ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${Boost_DATE_TIME_LIBRARY})
 
 SET(RDO_UTILS_TEST_PATH ${CMAKE_CURRENT_SOURCE_DIR}/test)
 ADD_SUBDIRECTORY(${RDO_UTILS_TEST_PATH})
@@ -99,14 +104,29 @@ SOURCE_GROUP(".interface" FILES
 	rdointerface.h
 	rdointerface.inl)
 
-SOURCE_GROUP(".smart_prt" FILES
-	rdosmart_ptr_wrapper.h
+SOURCE_GROUP(".smart_ptr_factory" FILES
+	smart_ptr/factory.h
+	smart_ptr/factory.inl)
+
+SOURCE_GROUP(".smart_ptr_wrapper" FILES
+	rdosmart_ptr_wrapper.h)
+
+SOURCE_GROUP(".smart_ptr_ref_counter" FILES
+	smart_ptr/ref_counter_i.h
+	smart_ptr/ref_counter.inl
+	smart_ptr/ref_counter.h
 	smart_ptr/counter_reference.h
+	smart_ptr/counter_reference.inl)
+
+SOURCE_GROUP(".smart_ptr_interface_ptr" FILES
 	smart_ptr/interface_ptr.h
+	smart_ptr/interface_ptr.inl)
+
+SOURCE_GROUP(".smart_ptr_intrusive_ptr" FILES
 	smart_ptr/intrusive_ptr.h
-	smart_ptr/counter_reference.inl
-	smart_ptr/interface_ptr.inl
-	smart_ptr/intrusive_ptr.inl)
+	smart_ptr/intrusive_ptr_interface_wrapper.h
+	smart_ptr/intrusive_ptr.inl
+	smart_ptr/intrusive_ptr_interface_wrapper.inl)
 
 SOURCE_GROUP(".stream" FILES 
 	rdostream.h)
@@ -122,5 +142,8 @@ SOURCE_GROUP(".stuff" FILES
 SOURCE_GROUP(".time" FILES
 	rdotime.h
 	rdotime.inl)
+
+SOURCE_GROUP(".platform" FILES
+	platform.h)
 
 ENDIF(MSVC)

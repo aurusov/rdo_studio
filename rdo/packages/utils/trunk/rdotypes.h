@@ -14,53 +14,66 @@
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
-#ifdef OST_WINDOWS
+#ifdef COMPILER_VISUAL_STUDIO
 	#include <tchar.h>
-#else
+#endif // COMPILER_VISUAL_STUDIO
+#ifdef COMPILER_GCC
 	#include <stdint.h>
 	#define _T(x) x
-#endif
+#endif // COMPILER_GCC
 
 #include <string>
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
 //! Тип символа
-typedef  char                       tchar;
+typedef  char                        tchar;
 
 //! Тип строки
-typedef  std::basic_string<tchar>   tstring;
+typedef  std::basic_string<tchar>    tstring;
 
 //! Булевский тип
-typedef  bool                       rbool;
+typedef  bool                        rbool;
 
 //! Целый знаковый тип
-typedef  signed int                 rsint;
+typedef  signed int                  rsint;
 
 //! Целый беззнаковый тип
-typedef  unsigned int               ruint;
+typedef  unsigned int                ruint;
 
 //! Целый знаковый 32-х битный тип
-#ifdef OST_WINDOWS
-	typedef  long                   rsint32;
-#else
-	typedef  int32_t                rsint32;
+#ifdef COMPILER_VISUAL_STUDIO
+	typedef  long                    rsint32;
+#endif
+#ifdef COMPILER_GCC
+	typedef  int32_t                 rsint32;
 #endif
 
 //! Целый беззнаковый 32-х битный тип
-#ifdef OST_WINDOWS
-	typedef  unsigned long          ruint32;
-#else
-	typedef  uint32_t               ruint32;
+#ifdef COMPILER_VISUAL_STUDIO
+	typedef  unsigned long           ruint32;
+#endif
+#ifdef COMPILER_GCC
+	typedef  uint32_t                ruint32;
 #endif
 
 //! Целый знаковый 64-х битный тип
-typedef  signed long long int       rsint64;
+#ifdef COMPILER_VISUAL_STUDIO
+	typedef  signed long long int    rsint64;
+#endif
+#ifdef COMPILER_GCC
+	typedef  int64_t                 rsint64;
+#endif
 
 //! Целый беззнаковый 64-х битный тип
-typedef  unsigned long long int     ruint64;
+#ifdef COMPILER_VISUAL_STUDIO
+	typedef  unsigned long long int  ruint64;
+#endif
+#ifdef COMPILER_GCC
+	typedef  uint64_t                ruint64;
+#endif
 
 //! Тип байта
-typedef  unsigned char              rbyte;
+typedef  unsigned char               rbyte;
 
 #endif // _UTILS_RDOTYPES_H_
