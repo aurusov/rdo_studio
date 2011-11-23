@@ -43,12 +43,12 @@ BOOST_AUTO_TEST_CASE(RDOValue_Resource)
 	using namespace rdoRuntime;
 
 	LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create();
-	ASSERT(pRuntime);
+	BOOST_CHECK(pRuntime);
 
 	LPRDOResourceType pResourceType = rdo::Factory<RDOResourceType>::create(0);
-	ASSERT(pResourceType);
+	BOOST_CHECK(pResourceType);
 	LPIResourceType pResourceFactory = pResourceType.interface_cast<IResourceType>();
-	ASSERT(pResourceFactory);
+	BOOST_CHECK(pResourceFactory);
 
 	std::vector<RDOValue> paramList;
 	paramList.push_back(RDOValue(1      ));
@@ -56,18 +56,18 @@ BOOST_AUTO_TEST_CASE(RDOValue_Resource)
 	paramList.push_back(RDOValue(_T("3")));
 
 	LPRDOResource pResource = pResourceFactory->createRes(pRuntime, pRuntime->getResourceId(), paramList, true, true);
-	ASSERT(pResource);
-		
+	BOOST_CHECK(pResource);
+
 	RDOValue value1(pResourceType, pResource);
 
 	LPRDOResourceType pType = value1.type().object_dynamic_cast<RDOResourceType>();
-	ASSERT(pType);
+	BOOST_CHECK(pType);
 
-	typedef rdo::intrusive_ptr_interface_wrapper<RDOResource> WRDOResource;
-	LPRDOResource pResource1 = value1.__get<WRDOResource>();
+	LPRDOResource pResource1 = value1.getPointer<RDOResource>();
 
-	pRuntime  = NULL;
-	value1    = RDOValue();
+	pRuntime   = NULL;
+	value1     = RDOValue();
+	pResource1 = NULL;
 
 	BOOST_CHECK(pResource.owner());
 
