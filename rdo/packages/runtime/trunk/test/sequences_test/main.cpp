@@ -20,9 +20,15 @@
 #include <boost/function.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdofile.h"
-#include <utils/platform.h>
+#include "utils/platform.h"
 #include "simulator/runtime/rdo_random_distribution.h"
 // --------------------------------------------------------------------------------
+
+#ifdef COMPILER_VISUAL_STUDIO
+	#define  __SCANF  sscanf_s
+#else  // not COMPILER_VISUAL_STUDIO
+	#define  __SCANF  sscanf
+#endif // COMPILER_VISUAL_STUDIO
 
 typedef std::vector<double> Container;
 typedef const tstring contstr;
@@ -92,7 +98,7 @@ void onCheckData(F binder, contstr g_fileName)
 		stream >> str;
 
 		double val;
-		BOOST_CHECK(sscanf(str.c_str(), _T("%lf"), &val) == 1);
+		BOOST_CHECK(__SCANF(str.c_str(), _T("%lf"), &val) == 1);
 		BOOST_CHECK(val == *it);
 				if (val != *it)
 		{
