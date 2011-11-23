@@ -23,7 +23,7 @@
 	#if _MSC_VER > 1000
 		#pragma once
 	#endif
-#endif
+#endif // COMPILER_VISUAL_STUDIO
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
 #include "utils/rdostream.h"

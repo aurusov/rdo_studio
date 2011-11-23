@@ -1,10 +1,14 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6.0)
+#==============================================================================
+# Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>
+#==============================================================================
 
 MESSAGE(STATUS "CREATE RDO_REPOSITORY LIBRARY")
 
 # Find Boost
-SET(Boost_USE_STATIC_LIBS   ON)
-SET(Boost_USE_MULTITHREADED ON)
+IF(MSVC)
+	SET(Boost_USE_STATIC_LIBS   ON)
+	SET(Boost_USE_MULTITHREADED ON)
+ENDIF(MSVC)
 FIND_PACKAGE(Boost COMPONENTS system filesystem thread REQUIRED)
 
 # Find Boost
@@ -24,7 +28,12 @@ SOURCE_GROUP(".repository" FILES
 	rdorepository.cpp)
 
 ADD_LIBRARY(rdo_repository ${HEADER_FILES} ${SOURCE_FILES})
+
+ADD_DEPENDENCIES(rdo_repository rdo_simulator)
 ADD_DEPENDENCIES(rdo_repository rdo_kernel)
+ADD_DEPENDENCIES(rdo_repository pugixml)
 
 TARGET_LINK_LIBRARIES(rdo_repository ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY})
+TARGET_LINK_LIBRARIES(rdo_repository rdo_simulator)
 TARGET_LINK_LIBRARIES(rdo_repository rdo_kernel)
+TARGET_LINK_LIBRARIES(rdo_repository pugixml)
