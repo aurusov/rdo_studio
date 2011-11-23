@@ -63,12 +63,12 @@ void RPShapeTerminateMJ::generate()
 	m_pParams = NULL;
 }
 
-void RPShapeTerminateMJ::saveToXML(REF(pugi::xml_node) parentNode)
+void RPShapeTerminateMJ::saveToXML(REF(pugi::xml_node) parentNode) const
 {
 	parentNode.append_child(getClassName().c_str());
 }
 
-void RPShapeTerminateMJ::loadFromXML(REF(pugi::xml_node) Node)
+void RPShapeTerminateMJ::loadFromXML(CREF(pugi::xml_node) node)
 {
 
 }

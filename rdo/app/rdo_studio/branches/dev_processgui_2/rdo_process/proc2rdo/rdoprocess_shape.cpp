@@ -65,7 +65,7 @@ rpMethod::RPMethod* RPObjectFlowChart_MJ::getMethod()
 	return proc2rdo;
 }
 
-void RPObjectFlowChart_MJ::saveToXML(REF(pugi::xml_node) parentNode)
+void RPObjectFlowChart_MJ::saveToXML(REF(pugi::xml_node) parentNode) const
 {
 	// Создаем узел FlowChart'а:
 	pugi::xml_node node = parentNode.append_child(getClassName().c_str());
@@ -81,18 +81,14 @@ void RPObjectFlowChart_MJ::saveToXML(REF(pugi::xml_node) parentNode)
 	}
 }
 
-void RPObjectFlowChart_MJ::loadFromXML(REF(pugi::xml_node) Node)
+void RPObjectFlowChart_MJ::loadFromXML(CREF(pugi::xml_node) node)
 {
-	// Пробегаем по потомкам узла Node, установленного в <RPProjectMFC>.
-	// В общем случае может быть открыто несколько окон FlowChart'a.
-	for(pugi::xml_node node = Node.first_child(); node; node = node.next_sibling())
+	// Пробегаем по потомкам узла <RPObjectFlowChart_MJ>:
+	for(pugi::xml_node child = node.first_child(); child; child = child.next_sibling())
 	{
-		// Заносим в список потомков FlowChart'а:
-		std::list<PTR(RPObject)> flowChild;
-		getAllChild(flowChild);
-		STL_FOR_ALL_CONST(flowChild, it)
-		{
-			(*it)->loadFromXML(node);
-		}
+		// В класс RPObjectPixmap не заходим, т.к. он абстрактный:
+		if (strcmp(child.name(), "RPObjectPixmap") != 0)
+			(rpMethod::factory->getNewObject(child.name(), this))->loadFromXML(child);
+		
 	}
 }

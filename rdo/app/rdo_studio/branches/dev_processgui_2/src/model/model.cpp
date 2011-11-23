@@ -834,7 +834,7 @@ void RDOStudioModel::openModelFromRepository()
 		{
 			m_pFlowchartDocTemplate->OpenDocumentFile(NULL);
 			loadFromXML();
-			pMethod->makeFlowChart(rpMethod::project);
+			//pMethod->makeFlowChart(rpMethod::project); // Load empty flowchart.
 		}
 
 		BOOL maximize = false;
@@ -917,8 +917,6 @@ void RDOStudioModel::openModelFromRepository()
 			}
 			studioApp.mainFrame->endProgress();
 		}
-
-		//loadFromXML();
 
 		PTR(CWnd) wnd = studioApp.mainFrame->GetActiveFrame();
 		if (maximize && wnd && wnd != studioApp.mainFrame)
@@ -1044,18 +1042,20 @@ void RDOStudioModel::loadFromXML()
 {
 	// Заводим документ:
 	pugi::xml_document doc;
-	
+
 	// Открываем сохраненный xml-файл и проверяем поток на ошибки ввода-вывода:
 	std::ifstream inFile("C:\\temp\\GuI.xml");
-	if(inFile.good())
+	if (inFile.good())
 	{
 		// Загружаем документ и проверяем на предмет ошибок парсинга и пустого узла:
-		pugi::xml_parse_result result = doc.load(inFile);
-		pugi::xml_node node = doc.child(_T("Model"));
-		if(result && !node.empty())
+		if (doc.load(inFile))
 		{
-			// Ссылаемся на виртуальную функцию loadFromXML(node), которая поэтапно загрузит графику из файла:
-			rpMethod::project->loadFromXML(node);
+			pugi::xml_node node = doc.child(_T("Model"));
+			if (!node.empty())
+			{
+				// Ссылаемся на виртуальную функцию loadFromXML(node), которая поэтапно загрузит графику из файла:
+				rpMethod::project->loadFromXML(node.first_child());
+			}
 		}
 		inFile.close();
 	}

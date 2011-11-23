@@ -50,9 +50,9 @@ public:
 	std::list< CString> list_resource_procMJ;
 
 	// Перопределенная виртуальная функция saveToXML для RPShapeProcessMJ:
-	void saveToXML(REF(pugi::xml_node) parentNode);
+	void saveToXML(REF(pugi::xml_node) parentNode) const;
 	// Перопределенная виртуальная функция loadFromXML для RPShapeProcessMJ:
-	void loadFromXML(REF(pugi::xml_node) Node);
+	void loadFromXML(CREF(pugi::xml_node) node);
 };
 
 #endif // !defined(AFX_RDOPROCESS_SHAPE_PROCESS_MJ_H__A5AEB64C_2CE8_46D3_9E6B_86368CB68269__INCLUDED_)

@@ -47,11 +47,11 @@ rp::RPXMLNode* RPObjectPixmap::save( rp::RPXMLNode* parent_node )
 	return obj_node;
 }
 
-void RPObjectPixmap::saveToXML(REF(pugi::xml_node) parentNode)
+void RPObjectPixmap::saveToXML(REF(pugi::xml_node) parentNode) const
 {
 	parentNode.append_child(getClassName().c_str());
 }
-void RPObjectPixmap::loadFromXML(REF(pugi::xml_node) Node)
+void RPObjectPixmap::loadFromXML(CREF(pugi::xml_node) node)
 {
 	// Пустой метод, так как "корзина" сама загружается.
 }

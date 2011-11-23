@@ -28,9 +28,9 @@ public:
 	virtual void load( rp::RPXMLNode* node );
 	virtual rp::RPXMLNode* save( rp::RPXMLNode* parent_node );
 	// Переопределение виртуальной функции saveToXML для RPObjectPixmap:
-	void saveToXML(REF(pugi::xml_node) parentNode);
+	void saveToXML(REF(pugi::xml_node) parentNode) const;
 	// Переопределение виртуальной функции loadFromXML для RPObjectPixmap:
-	void loadFromXML(REF(pugi::xml_node) Node);
+	void loadFromXML(CREF(pugi::xml_node) node);
 };
 
 //{{AFX_INSERT_LOCATION}}

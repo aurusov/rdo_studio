@@ -130,12 +130,12 @@ void RPShapeProcessMJ::generate()
 	m_pParams = NULL;
 }
 
-void RPShapeProcessMJ::saveToXML(REF(pugi::xml_node) parentNode)
+void RPShapeProcessMJ::saveToXML(REF(pugi::xml_node) parentNode) const
 {
 	parentNode.append_child(getClassName().c_str());
 }
 
-void RPShapeProcessMJ::loadFromXML(REF(pugi::xml_node) Node)
+void RPShapeProcessMJ::loadFromXML(CREF(pugi::xml_node) node)
 {
 
 }

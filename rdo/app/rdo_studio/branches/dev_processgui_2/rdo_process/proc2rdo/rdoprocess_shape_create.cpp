@@ -60,7 +60,7 @@ rp::RPXMLNode* RPShapeCreateMJ::save( rp::RPXMLNode* parent_node )
 	return obj_node;
 }
 
-void RPShapeCreateMJ::saveToXML(REF(pugi::xml_node) parentNode)
+void RPShapeCreateMJ::saveToXML(REF(pugi::xml_node) parentNode) const
 {
 	// Записываем узел <RShapeCreateMJ/>:
 	pugi::xml_node      node        = parentNode.append_child(getClassName().c_str());
@@ -79,42 +79,25 @@ void RPShapeCreateMJ::saveToXML(REF(pugi::xml_node) parentNode)
 	zakonAttr.set_value(gtype);
 }
 
-void RPShapeCreateMJ::loadFromXML(REF(pugi::xml_node) Node)
+void RPShapeCreateMJ::loadFromXML(CREF(pugi::xml_node) node)
 {
-	// Создаем объект класса RPShapeCreateMJ:
-	RPShapeCreateMJ* create = new RPShapeCreateMJ(this);
-
-	// Ищем в соответствующем FlowChart'е, пришедшем по Node'е, блок(и) "Create":
-	for(pugi::xml_node node = Node.first_child(); node; node = node.next_sibling())
+	// Считываем атрибуты для загрузки сохраненного блока "Create":
+	for(pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute())
 	{
-		if(strcmp(node.name(), getClassName().c_str()) == 0)
-		{
-			// Считываем атрибуты для загрузки сохраненного блока "Create":
-			for(pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute())
-			{
-				// Присваиваем сохраненные в xml-файле параметры:
-				if(strcmp(attr.name(), "gname") == 0)
-					create->gname    = attr.value();
-				else if(strcmp(attr.name(), "gamount") == 0)
-					create->gamount  = attr.as_int();
-				else if(strcmp(attr.name(), "base_gen") == 0)
-					create->base_gen = attr.as_int();
-				else if(strcmp(attr.name(), "gexp") == 0)
-					create->gexp     = attr.as_double();
-				else if(strcmp(attr.name(), "gdisp") == 0)
-					create->gdisp    = attr.as_double();
-				else if(strcmp(attr.name(), "zakon") == 0)
-					create->gtype    = node.attribute(_T("zakon")).as_int();
-			}
-		}
+		// Присваиваем сохраненные в xml-файле параметры:
+		if(strcmp(attr.name(), "gname") == 0)
+		gname    = attr.value();
+		else if(strcmp(attr.name(), "gamount") == 0)
+		gamount  = attr.as_int();
+		else if(strcmp(attr.name(), "base_gen") == 0)
+		base_gen = attr.as_int();
+		else if(strcmp(attr.name(), "gexp") == 0)
+		gexp     = attr.as_double();
+		else if(strcmp(attr.name(), "gdisp") == 0)
+		gdisp    = attr.as_double();
+		else if(strcmp(attr.name(), "zakon") == 0)
+		gtype    = node.attribute(_T("zakon")).as_int();
 	}
-	//Отрисовать блок не получается, так как параметр dc() ожидает CWnd, а не указатель на RPShapeCreateMJ
-	//CPaintDC dc(this);
-	//dc.SaveDC();
-	//create->draw(dc);
-	//dc.RestoreDC(-1);
-	// ИЛИ ЧЕРЕЗ ФАБРИКУ, НО ПАРАМЕТР "zakon" неясно как задать.
-	//rdo::Factory<RPShapeDataBlockCreate>::create(zakon,  
 }
 
 RPObject* RPShapeCreateMJ::newObject( RPObject* parent )
