@@ -51,21 +51,21 @@ RDOThread::RDOThread(CREF(tstring) _thread_name, RDOThreadFun _thread_fun)
 	, broadcast_waiting(false       )
 	, was_start        (false       )
 	, was_close        (false       )
-#else
+#else // not RDO_MT
 RDOThread::RDOThread(CREF(tstring) _thread_name)
 	: thread_name(_thread_name          )
-    #ifdef COMPILER_VISUAL_STUDIO
+#ifdef COMPILER_VISUAL_STUDIO
 	, thread_id  (::GetCurrentThreadId())
-    #endif
-    #ifdef COMPILER_GCC
-        #ifdef COMPILER_MINGW
-        , thread_id  (::GetCurrentThreadId())
-        #else
-        , thread_id  (pthread_self()      )
-        #endif
-    #endif
+#endif // COMPILER_VISUAL_STUDIO
+#ifdef COMPILER_GCC
+	#ifdef COMPILER_MINGW
+	, thread_id  (::GetCurrentThreadId())
+	#else
+	, thread_id  (pthread_self()        )
+	#endif // COMPILER_MINGW
+#endif // COMPILER_GCC
 	, idle_cnt   (0                     )
-#endif
+#endif // RDO_MT
 {
 #ifdef TR_TRACE
 	trace(thread_name + _T("::") + thread_name);
