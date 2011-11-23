@@ -21,6 +21,9 @@ inline RDOType::RDOType(TypeID typeID)
 	: m_typeID(typeID)
 {}
 
+inline RDOType::~RDOType()
+{}
+
 inline RDOType::TypeID RDOType::typeID() const
 {
 	return m_typeID;
