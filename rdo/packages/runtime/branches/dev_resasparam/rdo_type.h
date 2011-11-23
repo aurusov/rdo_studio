@@ -51,7 +51,7 @@ public:
 	};
 
 	RDOType(TypeID typeID);
-	virtual ~RDOType() {};
+	virtual ~RDOType();
 
 	TypeID  typeID() const;
 
