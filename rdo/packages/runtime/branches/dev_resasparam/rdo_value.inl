@@ -653,7 +653,7 @@ inline void RDOValue::operator+= (CREF(RDOValue) rdovalue)
 			switch(rdovalue.typeID())
 			{
 			case RDOType::t_int:
-				LPRDOArrayIterator pIt = __get<rdo::intrusive_ptr_interface_wrapper<RDOArrayIterator> >();
+				LPRDOArrayIterator pIt = getPointer<RDOArrayIterator>();
 				ASSERT(pIt);
 				pIt->operator +(rdovalue.getInt());
 				return;
@@ -741,7 +741,7 @@ inline void RDOValue::operator-= (CREF(RDOValue) rdovalue)
 			switch(rdovalue.typeID())
 			{
 			case RDOType::t_int:
-				LPRDOArrayIterator pIt = __get<rdo::intrusive_ptr_interface_wrapper<RDOArrayIterator> >();
+				LPRDOArrayIterator pIt = getPointer<RDOArrayIterator>();
 				ASSERT(pIt);
 				pIt->operator -(rdovalue.getInt());
 				return;
@@ -940,12 +940,12 @@ inline LPRDOEnumType RDOValue::__enumT() const
 
 inline REF(tstring) RDOValue::__stringV()
 {
-	return *__get<rdo::intrusive_ptr_interface_wrapper<string_class> >().get();
+	return *getPointer<string_class>().get();
 }
 
 inline CREF(tstring) RDOValue::__stringV() const
 {
-	return *__get<rdo::intrusive_ptr_interface_wrapper<string_class> >().get();
+	return *getPointer<string_class>().get();
 }
 
 inline REF(RDOFuzzyValue) RDOValue::__fuzzyV()
@@ -960,22 +960,22 @@ inline CREF(RDOFuzzyValue) RDOValue::__fuzzyV() const
 
 inline REF(LPRDOArrayValue) RDOValue::__arrayV()
 {
-	return __get<rdo::intrusive_ptr_interface_wrapper<RDOArrayValue> >();
+	return getPointer<RDOArrayValue>();
 }
 
 inline CREF(LPRDOArrayValue) RDOValue::__arrayV() const
 {
-	return __get<rdo::intrusive_ptr_interface_wrapper<RDOArrayValue> >();
+	return getPointer<RDOArrayValue>();
 }
 
 inline REF(LPRDOArrayIterator) RDOValue::__arrayItr()
 {
-	return __get<rdo::intrusive_ptr_interface_wrapper<RDOArrayIterator> >();
+	return getPointer<RDOArrayIterator>();
 }
 
 inline CREF(LPRDOArrayIterator) RDOValue::__arrayItr() const
 {
-	return __get<rdo::intrusive_ptr_interface_wrapper<RDOArrayIterator> >();
+	return getPointer<RDOArrayIterator>();
 }
 
 inline REF(RDOMatrixValue) RDOValue::__matrixV()
@@ -1002,6 +1002,18 @@ inline REF(std::ostream) operator<< (REF(std::ostream) stream, CREF(RDOValue) rd
 {
 	stream << rdovalue.getAsStringForTrace();
 	return stream;
+}
+
+template <class T>
+inline REF(rdo::intrusive_ptr<T>) RDOValue::getPointer()
+{
+	return __get<rdo::intrusive_ptr_interface_wrapper<T> >();
+}
+
+template <class T>
+inline CREF(rdo::intrusive_ptr<T>) RDOValue::getPointer() const
+{
+	return __get<rdo::intrusive_ptr_interface_wrapper<T> >();
 }
 
 template <class T>
