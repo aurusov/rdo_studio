@@ -11,6 +11,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #define BOOST_TEST_MODULE RDOCommonAnimation_Test
 #include <boost/test/included/unit_test.hpp>
+#include <memory>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdoanimation.h"
 // --------------------------------------------------------------------------------
@@ -248,9 +249,8 @@ BOOST_AUTO_TEST_CASE(RDOCommonAnimationActiveElement)
 
 BOOST_AUTO_TEST_CASE(RDOCommonAnimationNullElement)
 {
-	rdoAnimation::RDONullElement* nullElem = new rdoAnimation::RDONullElement;
-	BOOST_CHECK(nullElem);
-	delete nullElem;
+	std::auto_ptr<rdoAnimation::RDONullElement> nullElem(new rdoAnimation::RDONullElement);
+	BOOST_CHECK(nullElem.get());
 }
 
 BOOST_AUTO_TEST_CASE(RDOCommonAnimationFramet)
