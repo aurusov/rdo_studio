@@ -44,6 +44,8 @@ class RDOCalcDiv: public RDOCalcBinary<RDOValue, &RDOValue::operator/, OperatorT
 {
 DECLARE_FACTORY(RDOCalcDiv);
 private:
+	typedef RDOCalcBinary<RDOValue, &RDOValue::operator/, OperatorType::OT_ARITHM> parent_type;
+
 	RDOCalcDiv(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight);
 
 	DECLARE_ICalc;

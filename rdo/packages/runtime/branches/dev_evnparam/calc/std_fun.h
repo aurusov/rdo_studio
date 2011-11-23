@@ -13,11 +13,15 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/rdomacros.h"
 #include "simulator/runtime/rdocalc.h"
 #include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
+
+class std_fun_one_param {};
+class std_fun_two_param {};
 
 /*!
   \class   std_fun1
@@ -27,11 +31,10 @@ template <class RT, class P1>
 class std_fun1
 {
 public:
-	enum { arity = 1 };
-
-	typedef RT return_type;
-	typedef P1 arg1_type;
-	typedef RT (*function_type)(P1);
+	typedef  RT                 return_type;
+	typedef  P1                 arg1_type;
+	typedef  RT                 (*function_type)(P1);
+	typedef  std_fun_one_param  param_count;
 };
 
 /*!
@@ -42,13 +45,21 @@ template <class RT, class P1, class P2>
 class std_fun2
 {
 public:
-	enum { arity = 2 };
-
-	typedef RT return_type;
-	typedef P1 arg1_type;
-	typedef P2 arg2_type;
-	typedef RT (*function_type)(P1, P2);
+	typedef  RT                 return_type;
+	typedef  P1                 arg1_type;
+	typedef  P2                 arg2_type;
+	typedef  RT                 (*function_type)(P1, P2);
+	typedef  std_fun_two_param  param_count;
 };
+
+template <class T>
+struct GetParam         { static T      getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber); };
+
+template <>
+struct GetParam<double> { static double getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber); };
+
+template <>
+struct GetParam<int>    { static int    getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber); };
 
 /*!
   \class   RDOFunCalcStd
@@ -60,43 +71,15 @@ class RDOFunCalcStd: public RDOFunCalc
 public:
 	typedef typename F::function_type function_type;
 
-	RDOFunCalcStd(CREF(function_type) pFunction);
+	RDOFunCalcStd(function_type pFunction);
 
 private:
 	function_type m_pFunction;
 
 	REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime);
 
-	template <int paramCount>
-	FORCEINLINE void calc(CREF(LPRDORuntime) pRuntime);
-
-	/// @todo перенести определение функций-членов в std_fun.inl
-	template <>
-	FORCEINLINE void calc<1>(CREF(LPRDORuntime) pRuntime)
-	{
-		m_value = m_pFunction(getParam<F::arg1_type>(pRuntime, 0));
-	}
-
-	template <>
-	FORCEINLINE void calc<2>(CREF(LPRDORuntime) pRuntime)
-	{
-		m_value = m_pFunction(getParam<F::arg1_type>(pRuntime, 0), getParam<F::arg2_type>(pRuntime, 1));
-	}
-
-	template <class T>
-	FORCEINLINE T getParam(CREF(LPRDORuntime) pRuntime, ruint paramNumber);
-
-	template <>
-	FORCEINLINE double getParam<double>(CREF(LPRDORuntime) pRuntime, ruint paramNumber)
-	{
-		return pRuntime->getFuncArgument(paramNumber).getDouble();
-	}
-
-	template <>
-	FORCEINLINE int getParam<int>(CREF(LPRDORuntime) pRuntime, ruint paramNumber)
-	{
-		return pRuntime->getFuncArgument(paramNumber).getInt();
-	}
+	void calc(CREF(LPRDORuntime) pRuntime, std_fun_one_param);
+	void calc(CREF(LPRDORuntime) pRuntime, std_fun_two_param);
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

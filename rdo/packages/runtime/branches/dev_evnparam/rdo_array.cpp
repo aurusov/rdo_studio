@@ -113,14 +113,14 @@ RDOArrayIterator::Iterator RDOArrayIterator::getIterator() const
 	return m_iterator;
 }
 
-RDOArrayIterator::Iterator RDOArrayIterator::operator+ (rsint num)
+void RDOArrayIterator::operator+ (rsint num)
 {
-	return m_iterator + num;
+	m_iterator += num;
 }
 
-RDOArrayIterator::Iterator RDOArrayIterator::operator- (rsint num)
+void RDOArrayIterator::operator- (rsint num)
 {
-	return m_iterator - num;
+	m_iterator -= num;
 }
 
 RDOValue RDOArrayIterator::getValue() const

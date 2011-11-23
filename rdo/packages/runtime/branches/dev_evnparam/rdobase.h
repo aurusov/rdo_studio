@@ -18,13 +18,13 @@
 #include "simulator/runtime/rdo_runtime_interface_registrator.h"
 #include "utils/rdocommon.h"
 #include "utils/smart_ptr/intrusive_ptr.h"
-#ifdef OST_WINDOWS
+#ifdef COMPILER_VISUAL_STUDIO
 	#ifdef RDO_MT
 		#include <afxwin.h>
 	#else
 		#include <windows.h>
 	#endif
-#endif
+#endif // COMPILER_VISUAL_STUDIO
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

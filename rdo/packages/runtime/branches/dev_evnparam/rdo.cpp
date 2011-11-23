@@ -18,4 +18,4 @@
 
 #ifdef COMPILER_VISUAL_STUDIO
 	#pragma warning(disable : 4786)
-#endif
+#endif // COMPILER_VISUAL_STUDIO
