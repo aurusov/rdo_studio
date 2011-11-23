@@ -195,7 +195,7 @@ public:
 			{
 				pEnum->add(rdoParse::RDOValue::getIdentificator(*it));
 			}
-			//			m_default = rdoParse::RDOValue(rdoParse::RDOValue::getIdentificator(m_pDefault->value().getAsString()).value(), pEnum, rdoParse::RDOParserSrcInfo(m_default));
+			// m_default = rdoParse::RDOValue(rdoParse::RDOValue::getIdentificator(m_pDefault->value().getAsString()).value(), pEnum, rdoParse::RDOParserSrcInfo(m_default));
 			m_pType    = rdo::Factory<rdoParse::TypeInfo>::create(pEnum, rdoParse::RDOParserSrcInfo());
 			ASSERT(m_pType);
 		}
