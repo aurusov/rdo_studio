@@ -724,7 +724,7 @@ rdoRuntime::LPRDOCalc RDOFUNArithm::createCalc(CREF(LPRDOTypeParam) pForType)
 {
 	if (typeID() != rdoRuntime::RDOType::t_identificator)
 	{
-		if (pForType == LPRDOTypeParam(NULL))
+		if (!pForType)
 		{
 			return m_pCalc;
 		}

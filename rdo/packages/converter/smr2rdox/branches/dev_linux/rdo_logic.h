@@ -49,7 +49,7 @@ public:
 
 	LPActivity getLastActivity() const
 	{
-  		return !m_activityList.empty() ? m_activityList.back() : LPActivity(NULL);
+		return !m_activityList.empty() ? m_activityList.back() : LPActivity(NULL);
 	}
 	CREF(ActivityList) getActivities() const { return m_activityList; }
 

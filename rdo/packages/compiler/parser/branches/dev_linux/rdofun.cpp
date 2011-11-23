@@ -558,7 +558,7 @@ rdoRuntime::LPRDOCalc RDOFUNArithm::createCalc(CREF(LPTypeInfo) pForType)
 {
 	if (typeID() != rdoRuntime::RDOType::t_identificator)
 	{
-		if (pForType == 0)
+		if (!pForType)
 		{
 			return m_pExpression->calc();
 		}

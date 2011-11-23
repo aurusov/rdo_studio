@@ -353,7 +353,7 @@ void RDOPATPattern::end()
 	{
 		//! first
 		//! –аботает неправильно, а как обыкновенный first
-		if (m_pCommonChoice == LPRDOFUNArithm(NULL))
+		if (!m_pCommonChoice)
 		{
 			//! first
 			std::vector<rdoRuntime::LPIRDOSelectResourceCommon> resSelectors;

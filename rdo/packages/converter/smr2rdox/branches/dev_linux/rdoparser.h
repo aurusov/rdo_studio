@@ -240,13 +240,13 @@ private:
 
 	struct ChangesData
 	{
+		tstring m_name;
+		tstring m_value;
+
 		ChangesData(CREF(tstring) name, CREF(tstring) value)
 			: m_name (name )
 			, m_value(value)
 		{}
-		
-		tstring m_name;
-		tstring m_value;
 	};
 
 	typedef std::vector<ChangesData> ChangesList;
@@ -324,11 +324,11 @@ private:
 	FileList m_fileList;
 
 	void insertFileName(rdoModelObjectsConvertor::RDOFileTypeIn type,
-	                                      CREF(tstring)                           modelPath,
-	                                      CREF(tstring)                           modelName,
-	                                      CREF(tstring)                           smrFileName,
-	                                      CREF(tstring)                           nameFromSMR,
-	                                      CREF(tstring)                           fileExt);
+	                    CREF(tstring)                           modelPath,
+	                    CREF(tstring)                           modelName,
+	                    CREF(tstring)                           smrFileName,
+	                    CREF(tstring)                           nameFromSMR,
+	                    CREF(tstring)                           fileExt);
 };
 
 CLOSE_RDO_CONVERTER_NAMESPACE
