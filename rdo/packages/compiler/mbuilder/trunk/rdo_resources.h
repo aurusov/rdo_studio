@@ -17,7 +17,7 @@
 	#if _MSC_VER > 1000
 		#pragma once
 	#endif
-#endif
+#endif // COMPILER_VISUAL_STUDIO
 
 #include <list>
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -184,16 +184,18 @@ public:
 			m_pType = rdo::Factory<rdoParse::TypeInfo>::create(pType, rdoParse::RDOParserSrcInfo());
 			ASSERT(m_pType);
 		}
+#ifdef COMPILER_VISUAL_STUDIO
 		template <>
-		void initType(CREF(rdoRuntime::RDOEnumType::Enums) enums)
+#endif
+		void initType(CREF(rdoRuntime::RDOEnumType::Enums) pType)
 		{
 			rdoParse::LPRDOEnumType pEnum = rdo::Factory<rdoParse::RDOEnumType>::create();
 			ASSERT(pEnum)
-			STL_FOR_ALL_CONST(enums, it)
+			STL_FOR_ALL_CONST(pType, it)
 			{
 				pEnum->add(rdoParse::RDOValue::getIdentificator(*it));
 			}
-//			m_default = rdoParse::RDOValue(rdoParse::RDOValue::getIdentificator(m_pDefault->value().getAsString()).value(), pEnum, rdoParse::RDOParserSrcInfo(m_default));
+			// m_default = rdoParse::RDOValue(rdoParse::RDOValue::getIdentificator(m_pDefault->value().getAsString()).value(), pEnum, rdoParse::RDOParserSrcInfo(m_default));
 			m_pType    = rdo::Factory<rdoParse::TypeInfo>::create(pEnum, rdoParse::RDOParserSrcInfo());
 			ASSERT(m_pType);
 		}
@@ -213,7 +215,7 @@ private:
 	Type   m_type;
 	rsint  m_id;
 };
-
+	
 // --------------------------------------------------------------------------------
 // -------------------- RDOResource
 // --------------------------------------------------------------------------------

@@ -19,5 +19,27 @@ SET(SOURCE_FILES
 
 ADD_LIBRARY(rdo_mbuilder ${HEADER_FILES} ${SOURCE_FILES})
 
+ADD_DEPENDENCIES(rdo_mbuilder rdo_parser)
+
 TARGET_LINK_LIBRARIES(rdo_mbuilder ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY})
 TARGET_LINK_LIBRARIES(rdo_mbuilder rdo_utils)
+TARGET_LINK_LIBRARIES(rdo_mbuilder rdo_parser)
+
+IF(MSVC) # lotions for windows #
+
+SOURCE_GROUP(".common" FILES 
+	namespace.h)
+
+SOURCE_GROUP(".pch" FILES 
+	pch.h
+	pch.cpp)
+
+SOURCE_GROUP(".process" FILES 
+	process.h
+	process.cpp)
+
+SOURCE_GROUP(".resources" FILES 
+	rdo_resources.h
+	rdo_resources.cpp)
+
+ENDIF(MSVC)
