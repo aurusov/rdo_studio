@@ -249,16 +249,13 @@ BOOST_AUTO_TEST_CASE(RDOCommonAnimationActiveElement)
 BOOST_AUTO_TEST_CASE(RDOCommonAnimationNullElement)
 {
 	rdoAnimation::RDONullElement* nullElem = new rdoAnimation::RDONullElement;
-	
 	BOOST_CHECK(nullElem);
-	
 	delete nullElem;
 }
 
 BOOST_AUTO_TEST_CASE(RDOCommonAnimationFramet)
 {
 	rdoAnimation::RDOFrame frame;
-	
 	BOOST_CHECK(!frame.hasBgImage());
 }
 
