@@ -38,29 +38,29 @@ const tstring VERSION_COMMAND               = _T("version");
 const tstring LANGUAGE_COMMAND              = _T("language");
 const tstring AUTO_RUN_COMMAND              = _T("autorun");
 const tstring AUTO_EXIT_COMMAND             = _T("autoexit");
-const tstring DONT_CLOSE_IF_ERROR_COMMAND	= _T("dont_close_if_error");
-const tstring PLUGIN_START_COMMAND			= _T("pluginstart");
+const tstring DONT_CLOSE_IF_ERROR_COMMAND   = _T("dont_close_if_error");
+const tstring PLUGIN_START_COMMAND          = _T("pluginstart");
 const tstring PLUGIN_AUTO_EXIT_COMMAND      = _T("pluginautoexit");
 
 const tstring MODEL_COMMAND_SHORT           = _T("m");
-const tstring HELP_COMMAND_SHORT			= _T("h");
-const tstring VERSION_COMMAND_SHORT			= _T("v");
-const tstring LANGUAGE_COMMAND_SHORT		= _T("l");
+const tstring HELP_COMMAND_SHORT            = _T("h");
+const tstring VERSION_COMMAND_SHORT         = _T("v");
+const tstring LANGUAGE_COMMAND_SHORT        = _T("l");
 
 // Input param comment
 const tstring MODEL_COMMENT                 = _T("path to RDO model");
-const tstring HELP_COMMENT					= _T("display help message");
-const tstring VERSION_COMMENT				= _T("display program version");
-const tstring LANGUAGE_COMMENT				= _T("display language version of RDO");
-const tstring AUTO_RUN_COMMENT				= _T("autostart program, skipped in console version");
-const tstring AUTO_EXIT_COMMENT				= _T("autoexit program, skipped in console version");
-const tstring DONT_CLOSE_IF_ERROR_COMMENT	= _T("dont close if error, skipped in console version");
-const tstring PLUGIN_START_COMMENT			= _T("start plugin, skipped in console version");
-const tstring PLUGIN_AUTO_EXIT_COMMENT		= _T("plugin auto exit, skipped in console version");
+const tstring HELP_COMMENT                  = _T("display help message");
+const tstring VERSION_COMMENT               = _T("display program version");
+const tstring LANGUAGE_COMMENT              = _T("display language version of RDO");
+const tstring AUTO_RUN_COMMENT              = _T("autostart program, skipped in console version");
+const tstring AUTO_EXIT_COMMENT             = _T("autoexit program, skipped in console version");
+const tstring DONT_CLOSE_IF_ERROR_COMMENT   = _T("dont close if error, skipped in console version");
+const tstring PLUGIN_START_COMMENT          = _T("start plugin, skipped in console version");
+const tstring PLUGIN_AUTO_EXIT_COMMENT      = _T("plugin auto exit, skipped in console version");
 
 // Auxiliary constants
-const tstring RDO_STUDIO_CONSOLE_VERSION = _T("0.1.5");
-const tstring RDO_LANGUAGE_VERSION       = _T("1.5");
+const tstring RDO_STUDIO_CONSOLE_VERSION       = _T("0.1.5");
+const tstring RDO_LANGUAGE_VERSION             = _T("1.5");
 
 const tstring RDO_SITE                         = _T("( http://rdo.rk9.bmstu.ru )");
 const tstring RDO_STUDIO_CONSOLE_PROGRAMM_NAME = _T("rdo console studio");
