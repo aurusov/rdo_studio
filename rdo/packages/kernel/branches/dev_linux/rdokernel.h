@@ -74,13 +74,13 @@ protected:
 	void registration( RDOThread* thread );
 	void unregistered( RDOThread* thread );
 
-#ifdef RDO_ST
-	virtual void idle();
-#endif
-
 public:
 	static void init();
 	static void close();
+
+#ifdef RDO_ST
+	virtual void idle();
+#endif
 
 	RDOThread*                          studio() const     { return thread_studio;     }
 	rdoRuntime::RDOThreadRunTime*       runtime() const    { return thread_runtime;    }
