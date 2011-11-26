@@ -71,21 +71,28 @@ void RPConnector::saveToXML(REF(pugi::xml_node) parentNode) const
 
 void RPConnector::loadFromXML(CREF(pugi::xml_node) node)
 {
-	RPObject* obj_from;
-	RPObject* obj_to;
+	PTR(RPObject) pObjFrom = NULL;
+	PTR(RPObject) pObjTo   = NULL;
+
 	// Считываем атрибуты для загрузки сохраненного блока "Connector":
-	for(pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute())
+	for (pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute())
 	{
 		// Присваиваем сохраненные в xml-файле параметры:
 		// 1) Для отображения объекта на Flowchart'е
 		if ( strcmp(attr.name(), "obj_from")    == 0 )
-			obj_from = rpMethod::project->findObject(attr.value());
+			pObjFrom = rpMethod::project->findObject(attr.value());
 		if ( strcmp(attr.name(), "obj_to" )     == 0 )
-			obj_to = rpMethod::project->findObject(attr.value());
-		if ( strcmp(attr.name(), "index_from")  == 0 && obj_from && obj_from->getClassInfo()->isKindOf("RPShape"))
-			dock_begin = static_cast<RPShape*>(obj_from)->getDock(attr.as_uint());
-		if ( strcmp(attr.name(), "index_to")    == 0 && obj_to && obj_to->getClassInfo()->isKindOf("RPShape"))
-			dock_end   = static_cast<RPShape*>(obj_to)->getDock(attr.as_uint());
+			pObjTo = rpMethod::project->findObject(attr.value());
+		if ( strcmp(attr.name(), "index_from")  == 0)
+		{
+			ASSERT(pObjFrom && pObjFrom->getClassInfo()->isKindOf("RPShape"));
+			dock_begin = static_cast<RPShape*>(pObjFrom)->getDock(attr.as_uint());
+		}
+		if ( strcmp(attr.name(), "index_to")    == 0)
+		{
+			ASSERT(pObjTo && pObjTo->getClassInfo()->isKindOf("RPShape"));
+			dock_end = static_cast<RPShape*>(pObjTo)->getDock(attr.as_uint());
+		}
 	}
 }
 
