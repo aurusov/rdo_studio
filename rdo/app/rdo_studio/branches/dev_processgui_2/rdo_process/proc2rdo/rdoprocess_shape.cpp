@@ -89,6 +89,5 @@ void RPObjectFlowChart_MJ::loadFromXML(CREF(pugi::xml_node) node)
 		// В класс RPObjectPixmap не заходим, т.к. он абстрактный:
 		if (strcmp(child.name(), "RPObjectPixmap") != 0)
 			(rpMethod::factory->getNewObject(child.name(), this))->loadFromXML(child);
-		
 	}
 }

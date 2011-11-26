@@ -132,10 +132,56 @@ void RPShapeProcessMJ::generate()
 
 void RPShapeProcessMJ::saveToXML(REF(pugi::xml_node) parentNode) const
 {
-	parentNode.append_child(getClassName().c_str());
+	// Записываем узел <RPShapeProcessMJ/>:
+	pugi::xml_node      node        = parentNode.append_child(getClassName().c_str());
+	// Соxраняем атрибуты объекта:
+	// 1) Атрибуты графики
+	pugi::xml_attribute nameAttr    = node.append_attribute("gname");
+						nameAttr.set_value(getName().c_str());
+	pugi::xml_attribute position_X  = node.append_attribute("pos_X");
+						position_X.set_value(getCenter().x);
+	pugi::xml_attribute position_Y  = node.append_attribute("pos_Y");
+						position_Y.set_value(getCenter().y);
+	pugi::xml_attribute scale_X     = node.append_attribute("scale_X");
+						scale_X.set_value(getScaleX());
+	pugi::xml_attribute scale_Y     = node.append_attribute("scale_Y");
+						scale_Y.set_value(getScaleY());
+	// 2) Атрибуты симулятора
+	pugi::xml_attribute basegenAttr = node.append_attribute("base_gen");
+						basegenAttr.set_value(base_gen);
+	pugi::xml_attribute gexpAttr    = node.append_attribute("gexp");
+						gexpAttr.set_value(gexp);
+	pugi::xml_attribute gdispAttr   = node.append_attribute("gdisp");
+						gdispAttr.set_value(gdisp);
+	pugi::xml_attribute zakonAttr   = node.append_attribute("zakon");
+						zakonAttr.set_value(gtype);
+	pugi::xml_attribute actionAttr  = node.append_attribute("action");
+						actionAttr.set_value(action);
+	pugi::xml_attribute priorAttr   = node.append_attribute("prior");
+						priorAttr.set_value(prior);
+	pugi::xml_attribute queueAttr   = node.append_attribute("queue");
+						queueAttr.set_value(queue);
 }
 
 void RPShapeProcessMJ::loadFromXML(CREF(pugi::xml_node) node)
 {
-
+	// Считываем атрибуты для загрузки сохраненного блока "Process":
+	for(pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute())
+	{
+		// Присваиваем сохраненные в xml-файле параметры:
+		// 1) Для отображения объекта на Flowchart'е
+		if ( strcmp(attr.name(), "gname")    == 0 )				setName   (attr.value());
+		if ( strcmp(attr.name(), "pos_X")    == 0 )				setX      (attr.as_double());
+		if ( strcmp(attr.name(), "pos_Y")    == 0 )				setY      (attr.as_double());
+		if ( strcmp(attr.name(), "scale_X")  == 0 )				setScaleX (attr.as_double());
+		if ( strcmp(attr.name(), "scale_Y")  == 0 )				setScaleY (attr.as_double());
+		// 2) Для симулятора (диалоговые окна)
+		if ( strcmp(attr.name(), "base_gen") == 0 )				base_gen  = attr.as_int();
+		if ( strcmp(attr.name(), "gexp")     == 0 )				gexp      = attr.as_double();
+		if ( strcmp(attr.name(), "gdisp")    == 0 )				gdisp     = attr.as_double();
+		if ( strcmp(attr.name(), "zakon")    == 0 )				gtype     = attr.as_int();
+		if ( strcmp(attr.name(), "action")   == 0 )				action    = attr.as_int();
+		if ( strcmp(attr.name(), "prior")    == 0 )				prior     = attr.as_int();
+		if ( strcmp(attr.name(), "queue")    == 0 )				queue     = attr.as_int();
+	}
 }

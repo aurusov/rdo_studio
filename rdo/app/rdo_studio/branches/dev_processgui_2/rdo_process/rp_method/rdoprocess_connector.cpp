@@ -56,12 +56,37 @@ rp::RPXMLNode* RPConnector::save( rp::RPXMLNode* parent_node )
 
 void RPConnector::saveToXML(REF(pugi::xml_node) parentNode) const
 {
-	parentNode.append_child(getClassName().c_str());
+	// Записываем узел <RPConnector/>:
+	pugi::xml_node      node        = parentNode.append_child(getClassName().c_str());
+	// Соxраняем атрибуты объекта:
+	pugi::xml_attribute obj_from    = node.append_attribute("obj_from");
+						obj_from.set_value(dock_begin->object().getFullName().c_str());
+	pugi::xml_attribute obj_to      = node.append_attribute("obj_to");
+						obj_to.set_value(dock_end->object().getFullName().c_str());
+	pugi::xml_attribute index_from  = node.append_attribute("index_from");
+						index_from.set_value(dock_begin->getIndex());
+	pugi::xml_attribute index_to    = node.append_attribute("index_to");
+						index_to.set_value(dock_end->getIndex());
 }
 
 void RPConnector::loadFromXML(CREF(pugi::xml_node) node)
 {
-
+	RPObject* obj_from;
+	RPObject* obj_to;
+	// Считываем атрибуты для загрузки сохраненного блока "Connector":
+	for(pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute())
+	{
+		// Присваиваем сохраненные в xml-файле параметры:
+		// 1) Для отображения объекта на Flowchart'е
+		if ( strcmp(attr.name(), "obj_from")    == 0 )
+			obj_from = rpMethod::project->findObject(attr.value());
+		if ( strcmp(attr.name(), "obj_to" )     == 0 )
+			obj_to = rpMethod::project->findObject(attr.value());
+		if ( strcmp(attr.name(), "index_from")  == 0 && obj_from && obj_from->getClassInfo()->isKindOf("RPShape"))
+			dock_begin = static_cast<RPShape*>(obj_from)->getDock(attr.as_uint());
+		if ( strcmp(attr.name(), "index_to")    == 0 && obj_to && obj_to->getClassInfo()->isKindOf("RPShape"))
+			dock_end   = static_cast<RPShape*>(obj_to)->getDock(attr.as_uint());
+	}
 }
 
 void RPConnector::registerObject()

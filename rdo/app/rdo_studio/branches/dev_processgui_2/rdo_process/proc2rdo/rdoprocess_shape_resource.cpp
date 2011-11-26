@@ -159,10 +159,38 @@ RDOfiles->resourse<<std::endl<<std::endl<<"{-------ресурс ------" <<getName().c_
 
 void RPShapeResource_MJ::saveToXML(REF(pugi::xml_node) parentNode) const
 {
-	parentNode.append_child(getClassName().c_str());
+	// Записываем узел <RPShapeResource_MJ/>:
+	pugi::xml_node      node        = parentNode.append_child(getClassName().c_str());
+	// Соxраняем атрибуты объекта:
+	// 1) Атрибуты графики
+	pugi::xml_attribute nameAttr    = node.append_attribute("gname");
+						nameAttr.set_value(getName().c_str());
+	pugi::xml_attribute position_X  = node.append_attribute("pos_X");
+						position_X.set_value(getCenter().x);
+	pugi::xml_attribute position_Y  = node.append_attribute("pos_Y");
+						position_Y.set_value(getCenter().y);
+	pugi::xml_attribute scale_X     = node.append_attribute("scale_X");
+						scale_X.set_value(getScaleX());
+	pugi::xml_attribute scale_Y     = node.append_attribute("scale_Y");
+						scale_Y.set_value(getScaleY());
+	// 2) Атрибуты симулятора
+	pugi::xml_attribute amountAttr  = node.append_attribute("gamount");
+						amountAttr.set_value(gamount);
 }
 
 void RPShapeResource_MJ::loadFromXML(CREF(pugi::xml_node) node)
 {
-
+	// Считываем атрибуты для загрузки сохраненного блока "Resource":
+	for(pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute())
+	{
+		// Присваиваем сохраненные в xml-файле параметры:
+		// 1) Для отображения объекта на Flowchart'е
+		if ( strcmp(attr.name(), "gname")    == 0 )				setName   (attr.value());
+		if ( strcmp(attr.name(), "pos_X")    == 0 )				setX      (attr.as_double());
+		if ( strcmp(attr.name(), "pos_Y")    == 0 )				setY      (attr.as_double());
+		if ( strcmp(attr.name(), "scale_X")  == 0 )				setScaleX (attr.as_double());
+		if ( strcmp(attr.name(), "scale_Y")  == 0 )				setScaleY (attr.as_double());
+		// 2) Для симулятора (диалоговые окна)
+		if ( strcmp(attr.name(), "gamount")  == 0 )				gamount   = attr.as_int();
+	}
 }

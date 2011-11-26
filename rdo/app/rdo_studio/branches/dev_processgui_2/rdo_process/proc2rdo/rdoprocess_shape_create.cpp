@@ -62,21 +62,31 @@ rp::RPXMLNode* RPShapeCreateMJ::save( rp::RPXMLNode* parent_node )
 
 void RPShapeCreateMJ::saveToXML(REF(pugi::xml_node) parentNode) const
 {
-	// Записываем узел <RShapeCreateMJ/>:
+	// Записываем узел <RPShapeCreateMJ/>:
 	pugi::xml_node      node        = parentNode.append_child(getClassName().c_str());
 	// Соxраняем атрибуты объекта:
-	pugi::xml_attribute nameAttr    = node.append_attribute(_T("gname"));
-	nameAttr.set_value(getName().c_str());
-	pugi::xml_attribute amountAttr  = node.append_attribute(_T("gamount"));
-	amountAttr.set_value(gamount);
-	pugi::xml_attribute basegenAttr = node.append_attribute(_T("base_gen"));
-	basegenAttr.set_value(base_gen);
-	pugi::xml_attribute gexpAttr    = node.append_attribute(_T("gexp"));
-	gexpAttr.set_value(gexp);
-	pugi::xml_attribute gdispAttr   = node.append_attribute(_T("gdisp"));
-	gdispAttr.set_value(gdisp);
-	pugi::xml_attribute zakonAttr   = node.append_attribute(_T("zakon"));
-	zakonAttr.set_value(gtype);
+	// 1) Атрибуты графики
+	pugi::xml_attribute nameAttr    = node.append_attribute("gname");
+						nameAttr.set_value(getName().c_str());
+	pugi::xml_attribute position_X  = node.append_attribute("pos_X");
+						position_X.set_value(getCenter().x);
+	pugi::xml_attribute position_Y  = node.append_attribute("pos_Y");
+						position_Y.set_value(getCenter().y);
+	pugi::xml_attribute scale_X     = node.append_attribute("scale_X");
+						scale_X.set_value(getScaleX());
+	pugi::xml_attribute scale_Y     = node.append_attribute("scale_Y");
+						scale_Y.set_value(getScaleY());
+	// 2) Атрибуты симулятора
+	pugi::xml_attribute amountAttr  = node.append_attribute("gamount");
+						amountAttr.set_value(gamount);
+	pugi::xml_attribute basegenAttr = node.append_attribute("base_gen");
+						basegenAttr.set_value(base_gen);
+	pugi::xml_attribute gexpAttr    = node.append_attribute("gexp");
+						gexpAttr.set_value(gexp);
+	pugi::xml_attribute gdispAttr   = node.append_attribute("gdisp");
+						gdispAttr.set_value(gdisp);
+	pugi::xml_attribute zakonAttr   = node.append_attribute("zakon");
+						zakonAttr.set_value(gtype);
 }
 
 void RPShapeCreateMJ::loadFromXML(CREF(pugi::xml_node) node)
@@ -85,18 +95,18 @@ void RPShapeCreateMJ::loadFromXML(CREF(pugi::xml_node) node)
 	for(pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute())
 	{
 		// Присваиваем сохраненные в xml-файле параметры:
-		if(strcmp(attr.name(), "gname") == 0)
-		gname    = attr.value();
-		else if(strcmp(attr.name(), "gamount") == 0)
-		gamount  = attr.as_int();
-		else if(strcmp(attr.name(), "base_gen") == 0)
-		base_gen = attr.as_int();
-		else if(strcmp(attr.name(), "gexp") == 0)
-		gexp     = attr.as_double();
-		else if(strcmp(attr.name(), "gdisp") == 0)
-		gdisp    = attr.as_double();
-		else if(strcmp(attr.name(), "zakon") == 0)
-		gtype    = node.attribute(_T("zakon")).as_int();
+		// 1) Для отображения объекта на Flowchart'е
+		if ( strcmp(attr.name(), "gname")    == 0 )				setName   (attr.value());
+		if ( strcmp(attr.name(), "pos_X")    == 0 )				setX      (attr.as_double());
+		if ( strcmp(attr.name(), "pos_Y")    == 0 )				setY      (attr.as_double());
+		if ( strcmp(attr.name(), "scale_X")  == 0 )				setScaleX (attr.as_double());
+		if ( strcmp(attr.name(), "scale_Y")  == 0 )				setScaleY (attr.as_double());
+		// 2) Для симулятора (диалоговые окна)
+		if ( strcmp(attr.name(), "gamount")  == 0 )				gamount   = attr.as_int();
+		if ( strcmp(attr.name(), "base_gen") == 0 )				base_gen  = attr.as_int();
+		if ( strcmp(attr.name(), "gexp")     == 0 )				gexp      = attr.as_double();
+		if ( strcmp(attr.name(), "gdisp")    == 0 )				gdisp     = attr.as_double();
+		if ( strcmp(attr.name(), "zakon")    == 0 )				gtype     = attr.as_int();
 	}
 }
 
