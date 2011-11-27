@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 	tstring model_name;
 	options_controller.getModelName(model_name);
 	
-	if(!model_name.empty())//!model_name.empty())
+	if(!model_name.empty())
 	{
 		// Init
 		RDOKernel::init();
