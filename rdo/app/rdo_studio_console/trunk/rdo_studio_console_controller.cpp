@@ -61,92 +61,74 @@ void RDOStudioConsoleController::proc(REF(RDOThread::RDOMessageInfo) msg)
 	switch (msg.message)
 	{
 	case RDOThread::RT_REPOSITORY_MODEL_OPEN:
-	{
 		test_fun();
 		break;
-	}
+		
 	case RDOThread::RT_REPOSITORY_MODEL_OPEN_ERROR:
-	{
 		test_fun();
 		break;
-	}
+		
 	case RDOThread::RT_REPOSITORY_MODEL_SAVE:
-	{
 		test_fun();
 		break;
-	}
+		
 	case RDOThread::RT_REPOSITORY_MODEL_OPEN_GET_NAME:
-	{
 		test_fun();
 		break;
-	}
+		
 	case RDOThread::RT_REPOSITORY_MODEL_CLOSE:
-	{
 		test_fun();
 		break;
-	}
+		
 	case RDOThread::RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE:
-	{
 		test_fun();
 		break;
-	}
+		
 	case RDOThread::RT_REPOSITORY_MODEL_CLOSE_ERROR:
-	{
 		test_fun();
 		break;
-	}
+		
 	case RDOThread::RT_RUNTIME_MODEL_START_BEFORE:
-	{
 		test_fun();
 		break;
-	}
+		
 	case RDOThread::RT_RUNTIME_MODEL_START_AFTER:
-	{
 		test_fun();
 		break;
-	}
+		
 	case RDOThread::RT_RUNTIME_MODEL_STOP_BEFORE:
-	{
 		test_fun();
 		break;
-	}
+		
 	case RDOThread::RT_SIMULATOR_MODEL_STOP_OK:
-	{
 		m_simulation_mutex.lock();
 		m_simulation = false;
 		m_simulation_mutex.unlock();
 		test_fun();
 		break;
-	}
+		
 	case RDOThread::RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR:
-	{
 		test_fun();
 		break;
-	}
+		
 	case RDOThread::RT_SIMULATOR_PARSE_OK:
-	{
 		test_fun();
 		break;
-	}
+		
 	case RDOThread::RT_SIMULATOR_PARSE_ERROR:
-	{
 		test_fun();
 		break;
-	}
+		
 	case RDOThread::RT_SIMULATOR_PARSE_STRING:
-	{
 		test_fun();
 		break;
-	}
+		
 	case RDOThread::RT_DEBUG_STRING:
-	{
 		test_fun();
 		break;
-	}
+		
 	case RDOThread::RT_RESULT_STRING:
-	{
 		test_fun();
 		break;
-	}
 	}
 }
