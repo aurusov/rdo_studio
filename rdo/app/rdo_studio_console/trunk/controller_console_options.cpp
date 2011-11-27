@@ -44,8 +44,8 @@ RDOControllerConsoleOptions::RDOControllerConsoleOptions(int argc, char *argv[])
 
 void RDOControllerConsoleOptions::parseQuery()
 {
-	if (m_variables.empty() || m_variables.count(CHELP_COMMAND) || 
-		(!m_variables.count(LANGUAGE_COMMAND) || !m_variables.count(VERSION_COMMAND) || !m_variables.count(INPUT_MODEL_COMMAND)))
+	if (m_variables.empty() || m_variables.count(CHELP_COMMAND) && 
+		!m_variables.count(LANGUAGE_COMMAND) && !m_variables.count(VERSION_COMMAND))
 	{
 		std::cout << m_options << std::endl;
 	}
