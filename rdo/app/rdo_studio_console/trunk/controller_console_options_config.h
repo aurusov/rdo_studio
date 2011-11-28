@@ -44,7 +44,7 @@ const tstring VERSION_COMMENT               = _T(": display program version");
 const tstring LANGUAGE_COMMENT              = _T(": display language version of rdo");
 const tstring AUTO_RUN_COMMENT              = _T(": autostart program");
 const tstring AUTO_EXIT_COMMENT             = _T(": autoexit program");
-const tstring DONT_CLOSE_IF_ERROR_COMMENT   = _T(": dont close if error");
+const tstring DONT_CLOSE_IF_ERROR_COMMENT   = _T(": don't close if error");
 const tstring PLUGIN_START_COMMENT          = _T(": start plugin");
 const tstring PLUGIN_AUTO_EXIT_COMMENT      = _T(": plugin auto exit");
 

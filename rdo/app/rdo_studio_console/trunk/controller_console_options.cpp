@@ -51,7 +51,7 @@ void RDOControllerConsoleOptions::parseQuery()
 	}
 	else if (m_variables.count(LANGUAGE_COMMAND))
 	{
-		std::cout << _T("rdo language v") + RDO_LANGUAGE_VERSION << std::endl;
+		std::cout << _T("rdo language v") + RDO_LANGUAGE_VERSION << _T(" ( supported rdox )") << std::endl;
 	}
 	else if (m_variables.count(VERSION_COMMAND))
 	{
