@@ -13,7 +13,6 @@
 #include "utils/rdodebug.h"
 #include "utils/static_assert.h"
 #include "simulator/runtime/rdo_enum.h"
-#include "simulator/runtime/rdo_fuzzy_def.h"
 #include "simulator/runtime/rdo_exception.h"
 // --------------------------------------------------------------------------------
 
@@ -103,12 +102,6 @@ inline RDOValue::RDOValue(CREF(LPRDOEnumType) pEnum, ruint index)
 	__get<int>() = index;
 }
 
-inline RDOValue::RDOValue(CREF(RDOFuzzyValue) fuzzy)
-	: m_pType(fuzzy.type())
-{
-	__voidPtrV() = new RDOFuzzyValue(fuzzy);
-}
-
 inline RDOValue::RDOValue(CREF(tstring) value)
 	: m_pType(g_string)
 {
@@ -156,10 +149,6 @@ inline void RDOValue::deleteValue()
 	case RDOType::t_pointer      :
 		reinterpret_cast<rdo::LPIRefCounter>(&m_value)->release();
 		break;
-
-	case RDOType::t_fuzzy:
-		delete &__fuzzyV();
-		break;
 	}
 }
 
@@ -167,11 +156,11 @@ inline rsint RDOValue::getInt() const
 {
 	switch (typeID())
 	{
-	case RDOType::t_int  : return __get<int>  ();
-	case RDOType::t_real : return (rsint)__get<double>();
-	case RDOType::t_enum : return __get<int>  ();
-	case RDOType::t_bool : return __get<rbool>() ? 1 : 0;
-	case RDOType::t_fuzzy: return const_cast<PTR(RDOValue)>(this)->__fuzzyV().defuzzyfication().getInt();
+	case RDOType::t_int    : return __get<int>  ();
+	case RDOType::t_real   : return (rsint)__get<double>();
+	case RDOType::t_enum   : return __get<int>  ();
+	case RDOType::t_bool   : return __get<rbool>() ? 1 : 0;
+	case RDOType::t_pointer: return onPointerGetInt();
 	}
 	throw RDOValueException();
 }
@@ -180,11 +169,11 @@ inline ruint RDOValue::getUInt() const
 {
 	switch (typeID())
 	{
-	case RDOType::t_int  : return __get<ruint>();
-	case RDOType::t_real : return (ruint)__get<double>();
-	case RDOType::t_enum : return __get<ruint>();
-	case RDOType::t_bool : return __get<rbool>() ? 1 : 0;
-	case RDOType::t_fuzzy: return (ruint)const_cast<PTR(RDOValue)>(this)->__fuzzyV().defuzzyfication().getInt();
+	case RDOType::t_int    : return __get<ruint>();
+	case RDOType::t_real   : return (ruint)__get<double>();
+	case RDOType::t_enum   : return __get<ruint>();
+	case RDOType::t_bool   : return __get<rbool>() ? 1 : 0;
+	case RDOType::t_pointer: return onPointerGetUInt();
 	}
 	throw RDOValueException();
 }
@@ -262,23 +251,17 @@ inline CREF(tstring) RDOValue::getIdentificator() const
 	throw RDOValueException();
 }
 
-inline CREF(RDOMatrixValue) RDOValue::getMatrix() const
-{
-	return *static_cast<CPTR(RDOMatrixValue)>(__voidPtrV());
-}
-
 inline tstring RDOValue::getAsString() const
 {
 	switch (typeID())
 	{
-	case RDOType::t_int           : return rdo::format(_T("%d"), __get<int>());
-	case RDOType::t_real          : return rdo::toString(__get<double>());
-	case RDOType::t_enum          : return __enumT()->getValues().at(__get<int>());
-	case RDOType::t_bool          : return __get<rbool>() ? _T("true") : _T("false");
-	case RDOType::t_string        : return __stringV();
-	case RDOType::t_identificator : return __stringV();
-	case RDOType::t_fuzzy         : return __fuzzyV().getAsString();
-	case RDOType::t_pointer       : return onPointerAsString();
+	case RDOType::t_int          : return rdo::format(_T("%d"), __get<int>());
+	case RDOType::t_real         : return rdo::toString(__get<double>());
+	case RDOType::t_enum         : return __enumT()->getValues().at(__get<int>());
+	case RDOType::t_bool         : return __get<rbool>() ? _T("true") : _T("false");
+	case RDOType::t_string       : return __stringV();
+	case RDOType::t_identificator: return __stringV();
+	case RDOType::t_pointer      : return onPointerAsString();
 	}
 	throw RDOValueException(_T("Для rdoRuntime::RDOValue не определен метод getAsString()"));
 }
@@ -310,11 +293,6 @@ inline void RDOValue::set(CREF(RDOValue) rdovalue)
 		{
 			memcpy(&m_value, &rdovalue.m_value, sizeof(m_value));
 			reinterpret_cast<rdo::LPIRefCounter>(&m_value)->addref();
-			break;
-		}
-	case RDOType::t_fuzzy:
-		{
-			__voidPtrV() = new RDOFuzzyValue(rdovalue.__fuzzyV());
 			break;
 		}
 	default:
@@ -472,13 +450,9 @@ inline RDOValue RDOValue::operator&& (CREF(RDOValue) rdovalue) const
 			}
 			break;
 		}
-	case RDOType::t_fuzzy:
+	case RDOType::t_pointer: 
 		{
-			switch (rdovalue.typeID())
-			{
-			case RDOType::t_fuzzy: return __fuzzyV() && rdovalue.__fuzzyV();
-			}
-			break;
+			return onPointerAnd(rdovalue);
 		}
 	}
 	throw RDOValueException();
@@ -496,13 +470,9 @@ inline RDOValue RDOValue::operator|| (CREF(RDOValue) rdovalue) const
 			}
 			break;
 		}
-	case RDOType::t_fuzzy:
+	case RDOType::t_pointer:
 		{
-			switch (rdovalue.typeID())
-			{
-			case RDOType::t_fuzzy: return __fuzzyV() || rdovalue.__fuzzyV();
-			}
-			break;
+			return onPointerAnd(rdovalue);
 		}
 	}
 	throw RDOValueException();
@@ -510,16 +480,14 @@ inline RDOValue RDOValue::operator|| (CREF(RDOValue) rdovalue) const
 
 inline RDOValue RDOValue::operator- () const
 {
-	RDOValue rdovalue(*this);
 	switch (typeID())
 	{
-	case RDOType::t_int  : rdovalue.__get<int>   () = -__get<int>       (); break;
-	case RDOType::t_real : rdovalue.__get<double>() = -__get<double>    (); break;
-	case RDOType::t_bool : rdovalue.__get<rbool> () = !__get<rbool>     (); break;
-	case RDOType::t_fuzzy: rdovalue.__fuzzyV     () = __fuzzyV().u_minus(); break;
-	default              : throw RDOValueException();
+	case RDOType::t_int    : return RDOValue(-__get<int>   ());
+	case RDOType::t_real   : return RDOValue(-__get<double>());
+	case RDOType::t_bool   : return RDOValue(!__get<rbool> ());
+	case RDOType::t_pointer: return onPointerUMinus();
+	default                : throw RDOValueException();
 	}
-	return rdovalue;
 }
 
 inline rbool RDOValue::operator! () const
@@ -573,14 +541,6 @@ inline void RDOValue::operator+= (CREF(RDOValue) rdovalue)
 					__stringV() += rdovalue.__stringV();
 					return;
 				}
-			}
-			break;
-		}
-	case RDOType::t_fuzzy:
-		{
-			switch (rdovalue.typeID())
-			{
-			case RDOType::t_fuzzy: __fuzzyV() = __fuzzyV() + rdovalue.__fuzzyV(); return;
 			}
 			break;
 		}
@@ -645,14 +605,6 @@ inline void RDOValue::operator-= (CREF(RDOValue) rdovalue)
 			}
 			break;
 		}
-	case RDOType::t_fuzzy:
-		{
-			switch (rdovalue.typeID())
-			{
-			case RDOType::t_fuzzy: __fuzzyV() = __fuzzyV() - rdovalue.__fuzzyV(); return;
-			}
-			break;
-		}
 	case RDOType::t_pointer:
 		{
 			onPointerMinus(rdovalue);
@@ -684,13 +636,10 @@ inline void RDOValue::operator*= (CREF(RDOValue) rdovalue)
 			}
 			break;
 		}
-	case RDOType::t_fuzzy:
+	case RDOType::t_pointer:
 		{
-			switch (rdovalue.typeID())
-			{
-			case RDOType::t_fuzzy: __fuzzyV() = __fuzzyV() * rdovalue.__fuzzyV(); return;
-			}
-			break;
+			onPointerMult(rdovalue);
+			return;
 		}
 	}
 	throw RDOValueException();
@@ -718,13 +667,10 @@ inline void RDOValue::operator/= (CREF(RDOValue) rdovalue)
 			}
 			break;
 		}
-	case RDOType::t_fuzzy:
+	case RDOType::t_pointer:
 		{
-			switch (rdovalue.typeID())
-			{
-			case RDOType::t_fuzzy: __fuzzyV() = __fuzzyV() / rdovalue.__fuzzyV(); return;
-			}
-			break;
+			onPointerDiv(rdovalue);
+			return;
 		}
 	}
 	throw RDOValueException();
@@ -844,16 +790,6 @@ inline REF(tstring) RDOValue::__stringV()
 inline CREF(tstring) RDOValue::__stringV() const
 {
 	return *getPointer<string_class>().get();
-}
-
-inline REF(RDOFuzzyValue) RDOValue::__fuzzyV()
-{
-	return *static_cast<PTR(RDOFuzzyValue)>(__voidPtrV());
-}
-
-inline CREF(RDOFuzzyValue) RDOValue::__fuzzyV() const
-{
-	return *static_cast<CPTR(RDOFuzzyValue)>(__voidPtrV());
 }
 
 inline REF(std::ostream) operator<< (REF(std::ostream) stream, CREF(RDOValue) rdovalue)

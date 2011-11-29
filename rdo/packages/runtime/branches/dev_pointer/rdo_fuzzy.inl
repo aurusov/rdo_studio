@@ -22,10 +22,10 @@ inline RDOFuzzyValue::RDOFuzzyValue(CREF(LPRDOFuzzyType) pType)
 	: m_pType(pType)
 {}
 
-inline RDOFuzzyValue::RDOFuzzyValue(CREF(RDOFuzzyValue) value)
-	: m_pType(value.m_pType)
+inline RDOFuzzyValue::RDOFuzzyValue(CREF(LPRDOFuzzyValue) pFuzzyValue)
+	: m_pType(pFuzzyValue->m_pType)
 {
-	m_fuzzySet = value.m_fuzzySet;
+	m_fuzzySet = pFuzzyValue->m_fuzzySet;
 }
 
 inline RDOFuzzyValue::~RDOFuzzyValue()
@@ -69,15 +69,19 @@ inline RDOFuzzyValue::FuzzySet::iterator       RDOFuzzyValue::end  ()       { re
 inline rbool                                   RDOFuzzyValue::empty() const { return m_fuzzySet.empty(); }
 inline CREF(LPRDOFuzzyType)                    RDOFuzzyValue::type () const { return m_pType;            }
 
-inline RDOFuzzyValue RDOFuzzyValue::supplement() const { return type()->getSupplement(*this); }
-inline RDOFuzzyValue RDOFuzzyValue::a_con     () const { return a_pow(2.0);                   }
-inline RDOFuzzyValue RDOFuzzyValue::a_dil     () const { return a_pow(0.5);                   }
+inline LPRDOFuzzyValue RDOFuzzyValue::supplement() const
+{
+	return type()->getSupplement(LPRDOFuzzyValue(const_cast<PTR(RDOFuzzyValue)>(this)));
+}
+
+inline LPRDOFuzzyValue RDOFuzzyValue::a_con     () const { return a_pow(2.0);                   }
+inline LPRDOFuzzyValue RDOFuzzyValue::a_dil     () const { return a_pow(0.5);                   }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFuzzyType
 // --------------------------------------------------------------------------------
 inline RDOFuzzyType::RDOFuzzyType(CREF(LPRDOFuzzySetDefinition) pFuzzySetDefinition)
-	: RDOType             (t_fuzzy            )
+	: RDOType             (t_pointer          )
 	, m_fuzzySetDefinition(pFuzzySetDefinition)
 {
 	//! Áûכמ
@@ -114,9 +118,9 @@ inline rbool RDOFuzzyType::inRange(CREF(RDOValue) rdovalue) const
 	return m_fuzzySetDefinition->inRange(rdovalue);
 }
 
-inline RDOFuzzyValue RDOFuzzyType::getSupplement(CREF(RDOFuzzyValue) value) const
+inline LPRDOFuzzyValue RDOFuzzyType::getSupplement(CREF(LPRDOFuzzyValue) pFuzzyValue) const
 {
-	return m_fuzzySetDefinition->getSupplement(value);
+	return m_fuzzySetDefinition->getSupplement(pFuzzyValue);
 }
 
 // --------------------------------------------------------------------------------
@@ -209,10 +213,10 @@ inline rbool RDOFuzzyEmptyType::RDOFuzzySetDefinitionEmpty::inRange(CREF(RDOValu
 	return false;
 }
 
-inline RDOFuzzyValue RDOFuzzyEmptyType::RDOFuzzySetDefinitionEmpty::getSupplement(CREF(RDOFuzzyValue) value) const
+inline LPRDOFuzzyValue RDOFuzzyEmptyType::RDOFuzzySetDefinitionEmpty::getSupplement(CREF(LPRDOFuzzyValue) pFuzzyValue) const
 {
-	UNUSED(value);
-	return RDOFuzzyValue(RDOFuzzyEmptyType::getInstance());
+	UNUSED(pFuzzyValue);
+	return rdo::Factory<RDOFuzzyValue>::create(RDOFuzzyEmptyType::getInstance());
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -42,7 +42,6 @@ public:
 		t_bool,
 		t_string,
 		t_enum,
-		t_fuzzy,
 		t_pointer
 	};
 

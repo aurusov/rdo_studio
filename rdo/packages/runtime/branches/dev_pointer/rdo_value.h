@@ -19,9 +19,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-class RDOFuzzyValue;
-class RDOMatrixValue;
-class RDOMatrixIterator;
 PREDECLARE_POINTER(RDOEnumType);
 
 //! Значение переменных в РДО
@@ -40,7 +37,6 @@ public:
 	RDOValue(CREF(LPRDOEnumType) pEnum   );
 	RDOValue(CREF(LPRDOEnumType) pEnum, CREF(tstring) value);
 	RDOValue(CREF(LPRDOEnumType) pEnum, ruint index);
-	RDOValue(CREF(RDOFuzzyValue) fuzzy   );
 	RDOValue(CREF(tstring)       value   );
 	RDOValue(CPTR(tchar)         value   );
 	RDOValue(CREF(tstring)       value, CREF(LPRDOType) pType);
@@ -56,7 +52,6 @@ public:
 	rbool             getBool         () const;
 	CREF(tstring)     getString       () const;
 	CREF(tstring)     getIdentificator() const;
-	CREF(RDOMatrixValue)getMatrix     () const;
 
 	template <class T>
 	REF(rdo::intrusive_ptr<T>) getPointer();
@@ -133,13 +128,11 @@ private:
 	template <class T>
 	CREF(T) __get() const;
 
-	 REF(PTR(void))         __voidPtrV  ();
-	CREF(PTR(void))         __voidPtrV  () const;
-	LPRDOEnumType           __enumT     () const;
-	 REF(tstring)           __stringV   ();
-	CREF(tstring)           __stringV   () const;
-	 REF(RDOFuzzyValue)     __fuzzyV    ();
-	CREF(RDOFuzzyValue)     __fuzzyV    () const;
+	 REF(PTR(void))  __voidPtrV();
+	CREF(PTR(void))  __voidPtrV() const;
+	LPRDOEnumType    __enumT   () const;
+	 REF(tstring)    __stringV ();
+	CREF(tstring)    __stringV () const;
 
 	RDOValue clone() const;
 
@@ -147,6 +140,13 @@ private:
 	rbool    onPointerEqual    (CREF(RDOValue) rdovalue) const;
 	void     onPointerPlus     (CREF(RDOValue) rdovalue);
 	void     onPointerMinus    (CREF(RDOValue) rdovalue);
+	void     onPointerMult     (CREF(RDOValue) rdovalue);
+	void     onPointerDiv      (CREF(RDOValue) rdovalue);
+	rsint    onPointerGetInt   () const;
+	ruint    onPointerGetUInt  () const;
+	rbool    onPointerAnd      (CREF(RDOValue) rdovalue) const;
+	rbool    onPointerOr       (CREF(RDOValue) rdovalue) const;
+	RDOValue onPointerUMinus   () const;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

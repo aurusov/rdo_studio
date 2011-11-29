@@ -14,6 +14,7 @@
 #include "simulator/runtime/rdo_value.h"
 #include "simulator/runtime/rdo_array.h"
 #include "simulator/runtime/rdo_matrix.h"
+#include "simulator/runtime/rdo_fuzzy.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -46,6 +47,18 @@ RDOValue RDOValue::clone() const
 		LPRDOMatrixIterator pIterator = pThisMatrixIterator->clone();
 		ASSERT(pIterator);
 		return RDOValue(pIterator, pIterator);
+	}
+
+	LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
+	if (pThisFuzzyType)
+	{
+		LPRDOFuzzyValue pThisValue = getPointer<RDOFuzzyValue>();
+		ASSERT(pThisValue);
+
+		LPRDOFuzzyValue pCloneValue = pThisValue->clone();
+		ASSERT(pCloneValue);
+
+		return RDOValue(pCloneValue->type(), pCloneValue);
 	}
 
 	throw RDOValueException(_T("Для rdoRuntime::RDOValue не определен метод clone()"));
@@ -81,6 +94,14 @@ tstring RDOValue::onPointerAsString() const
 	if (pThisMatrixIterator)
 	{
 		return pThisMatrixIterator->getValue().getAsString();
+	}
+
+	LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
+	if (pThisFuzzyType)
+	{
+		LPRDOFuzzyValue pValue = getPointer<RDOFuzzyValue>();
+		ASSERT(pValue);
+		return pValue->getAsString();
 	}
 
 	throw RDOValueException(_T("Для rdoRuntime::RDOValue не определен метод getAsString()"));
@@ -137,6 +158,20 @@ void RDOValue::onPointerPlus(CREF(RDOValue) rdovalue)
 		}
 	}
 
+	LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
+	if (pThisFuzzyType)
+	{
+		LPRDOFuzzyValue pThisValue = getPointer<RDOFuzzyValue>();
+		ASSERT(pThisValue);
+
+		LPRDOFuzzyType pValueFuzzyType = rdovalue.type().object_dynamic_cast<RDOFuzzyType>();
+		if (pValueFuzzyType)
+		{
+			pThisValue->operator+ (rdovalue.getPointer<RDOFuzzyValue>());
+			return;
+		}
+	}
+
 	throw RDOValueException(_T("Для rdoRuntime::RDOValue не определен метод onPointerPlus()"));
 }
 
@@ -164,7 +199,148 @@ void RDOValue::onPointerMinus(CREF(RDOValue) rdovalue)
 		}
 	}
 
+	LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
+	if (pThisFuzzyType)
+	{
+		LPRDOFuzzyValue pThisValue = getPointer<RDOFuzzyValue>();
+		ASSERT(pThisValue);
+
+		LPRDOFuzzyType pValueFuzzyType = rdovalue.type().object_dynamic_cast<RDOFuzzyType>();
+		if (pValueFuzzyType)
+		{
+			pThisValue->operator- (rdovalue.getPointer<RDOFuzzyValue>());
+			return;
+		}
+	}
+
 	throw RDOValueException(_T("Для rdoRuntime::RDOValue не определен метод onPointerMinus()"));
+}
+
+void RDOValue::onPointerMult(CREF(RDOValue) rdovalue)
+{
+	ASSERT(typeID() == RDOType::t_pointer);
+
+	LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
+	if (pThisFuzzyType)
+	{
+		LPRDOFuzzyValue pThisValue = getPointer<RDOFuzzyValue>();
+		ASSERT(pThisValue);
+
+		LPRDOFuzzyType pValueFuzzyType = rdovalue.type().object_dynamic_cast<RDOFuzzyType>();
+		if (pValueFuzzyType)
+		{
+			pThisValue->operator* (rdovalue.getPointer<RDOFuzzyValue>());
+			return;
+		}
+	}
+
+	throw RDOValueException(_T("Для rdoRuntime::RDOValue не определен метод onPointerMult()"));
+}
+
+void RDOValue::onPointerDiv(CREF(RDOValue) rdovalue)
+{
+	ASSERT(typeID() == RDOType::t_pointer);
+
+	LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
+	if (pThisFuzzyType)
+	{
+		LPRDOFuzzyValue pThisValue = getPointer<RDOFuzzyValue>();
+		ASSERT(pThisValue);
+
+		LPRDOFuzzyType pValueFuzzyType = rdovalue.type().object_dynamic_cast<RDOFuzzyType>();
+		if (pValueFuzzyType)
+		{
+			pThisValue->operator/ (rdovalue.getPointer<RDOFuzzyValue>());
+			return;
+		}
+	}
+
+	throw RDOValueException(_T("Для rdoRuntime::RDOValue не определен метод onPointerMult()"));
+}
+
+rsint RDOValue::onPointerGetInt() const
+{
+	ASSERT(typeID() == RDOType::t_pointer);
+
+	LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
+	if (pThisFuzzyType)
+	{
+		LPRDOFuzzyValue pThisValue = getPointer<RDOFuzzyValue>();
+		ASSERT(pThisValue);
+		return pThisValue->defuzzyfication().getInt();
+	}
+
+	throw RDOValueException(_T("Для rdoRuntime::RDOValue не определен метод onPointerGetInt()"));
+}
+
+ruint RDOValue::onPointerGetUInt() const
+{
+	ASSERT(typeID() == RDOType::t_pointer);
+
+	LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
+	if (pThisFuzzyType)
+	{
+		LPRDOFuzzyValue pThisValue = getPointer<RDOFuzzyValue>();
+		ASSERT(pThisValue);
+		return (ruint)pThisValue->defuzzyfication().getInt();
+	}
+
+	throw RDOValueException(_T("Для rdoRuntime::RDOValue не определен метод onPointerGetUInt()"));
+}
+
+rbool RDOValue::onPointerAnd(CREF(RDOValue) rdovalue) const
+{
+	ASSERT(typeID() == RDOType::t_pointer);
+
+	LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
+	if (pThisFuzzyType)
+	{
+		LPRDOFuzzyValue pThisValue = getPointer<RDOFuzzyValue>();
+		ASSERT(pThisValue);
+
+		LPRDOFuzzyType pValueFuzzyType = rdovalue.type().object_dynamic_cast<RDOFuzzyType>();
+		if (pValueFuzzyType)
+		{
+			return pThisValue->operator&& (rdovalue.getPointer<RDOFuzzyValue>());
+		}
+	}
+
+	throw RDOValueException(_T("Для rdoRuntime::RDOValue не определен метод onPointerAnd()"));
+}
+
+rbool RDOValue::onPointerOr(CREF(RDOValue) rdovalue) const
+{
+	ASSERT(typeID() == RDOType::t_pointer);
+
+	LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
+	if (pThisFuzzyType)
+	{
+		LPRDOFuzzyValue pThisValue = getPointer<RDOFuzzyValue>();
+		ASSERT(pThisValue);
+
+		LPRDOFuzzyType pValueFuzzyType = rdovalue.type().object_dynamic_cast<RDOFuzzyType>();
+		if (pValueFuzzyType)
+		{
+			return pThisValue->operator|| (rdovalue.getPointer<RDOFuzzyValue>());
+		}
+	}
+
+	throw RDOValueException(_T("Для rdoRuntime::RDOValue не определен метод onPointerOr()"));
+}
+
+RDOValue RDOValue::onPointerUMinus() const
+{
+	ASSERT(typeID() == RDOType::t_pointer);
+
+	LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
+	if (pThisFuzzyType)
+	{
+		LPRDOFuzzyValue pCloneValue = clone().getPointer<RDOFuzzyValue>();
+		ASSERT(pCloneValue);
+		return RDOValue(pCloneValue->type(), pCloneValue->u_minus());
+	}
+
+	throw RDOValueException(_T("Для rdoRuntime::RDOValue не определен метод onPointerUMinus()"));
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE
