@@ -22,8 +22,6 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class RDOFuzzyValue;
 class RDOMatrixValue;
 class RDOMatrixIterator;
-PREDECLARE_POINTER(RDOArrayValue);
-PREDECLARE_POINTER(RDOArrayIterator);
 PREDECLARE_POINTER(RDOEnumType);
 
 //! Значение переменных в РДО
@@ -46,9 +44,6 @@ public:
 	RDOValue(CREF(tstring)       value   );
 	RDOValue(CPTR(tchar)         value   );
 	RDOValue(CREF(tstring)       value, CREF(LPRDOType) pType);
-	RDOValue(CREF(LPRDOArrayIterator) pIterator  );
-	RDOValue(CREF(RDOMatrixValue)    matrixValue);
-	RDOValue(CREF(RDOMatrixIterator) mIterator  );
 
 	template <class T>
 	RDOValue(CREF(LPRDOType) pType, CREF(rdo::intrusive_ptr<T>) pObject);
@@ -61,7 +56,6 @@ public:
 	rbool             getBool         () const;
 	CREF(tstring)     getString       () const;
 	CREF(tstring)     getIdentificator() const;
-	CREF(RDOArrayValue) getArray      () const;
 	CREF(RDOMatrixValue)getMatrix     () const;
 
 	template <class T>
@@ -69,6 +63,12 @@ public:
 
 	template <class T>
 	CREF(rdo::intrusive_ptr<T>) getPointer() const;
+
+	template <class T>
+	CREF(rdo::intrusive_ptr<typename T::value_type>) getPointerSafety() const;
+
+	template <class T>
+	rbool isType() const;
 
 	rbool   getAsBool          () const;
 	tstring getAsString        () const;
@@ -98,17 +98,16 @@ public:
 	RDOValue       operator-  (CREF(RDOValue) rdovalue) const;
 	RDOValue       operator*  (CREF(RDOValue) rdovalue) const;
 	RDOValue       operator/  (CREF(RDOValue) rdovalue) const;
-	RDOValue       operator[] (CREF(RDOValue) rdovalue);
 
 	CREF(LPRDOType) type  () const;
 	RDOType::TypeID typeID() const;
 
-	RDOValue  begin ();
-	RDOValue  end   ();
-	void      insert(CREF(RDOValue) itr,    CREF(RDOValue) itrFst, CREF(RDOValue) itrLst);
-	void      erase (CREF(RDOValue) itrFst, CREF(RDOValue) itrLst                       );
+	//RDOValue  begin ();
+	//RDOValue  end   ();
+	//void      insert(CREF(RDOValue) itr,    CREF(RDOValue) itrFst, CREF(RDOValue) itrLst);
+	//void      erase (CREF(RDOValue) itrFst, CREF(RDOValue) itrLst                       );
 
-	void setArrayItem(CREF(RDOValue) ind, CREF(RDOValue) item);
+	//void setArrayItem(CREF(RDOValue) ind, CREF(RDOValue) item);
 
 private:
 	//! Строковый тип данных
@@ -141,14 +140,13 @@ private:
 	CREF(tstring)           __stringV   () const;
 	 REF(RDOFuzzyValue)     __fuzzyV    ();
 	CREF(RDOFuzzyValue)     __fuzzyV    () const;
-	 REF(LPRDOArrayValue)   __arrayV    ();
-	CREF(LPRDOArrayValue)   __arrayV    () const;
-	 REF(LPRDOArrayIterator)__arrayItr  ();
-	CREF(LPRDOArrayIterator)__arrayItr  () const;
-	 REF(RDOMatrixValue)    __matrixV   ();
-	CREF(RDOMatrixValue)    __matrixV   () const;
-	 REF(RDOMatrixIterator) __matrixItr ();
-	CREF(RDOMatrixIterator) __matrixItr () const;
+
+	RDOValue clone() const;
+
+	tstring  onPointerAsString () const;
+	rbool    onPointerEqual    (CREF(RDOValue) rdovalue) const;
+	void     onPointerPlus     (CREF(RDOValue) rdovalue);
+	void     onPointerMinus    (CREF(RDOValue) rdovalue);
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

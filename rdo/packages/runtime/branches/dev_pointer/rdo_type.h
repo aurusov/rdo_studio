@@ -42,10 +42,6 @@ public:
 		t_bool,
 		t_string,
 		t_enum,
-		t_array,
-		t_arrayIterator,
-		t_matrix,
-		t_matrixIterator,
 		t_fuzzy,
 		t_pointer
 	};
@@ -115,18 +111,6 @@ DEFINE_ATOM_TYPE(bool);
   \brief     Атомарный строковый тип данных
 */
 DEFINE_ATOM_TYPE(string);
-
-/*!
-  \class     RDOType__arrayIterator
-  \brief     Атомарный тип данных итератор массива
-*/
-DEFINE_ATOM_TYPE(arrayIterator);
-
-/*!
-  \class     RDOType__matrixIterator
-  \brief     Атомарный тип данных итератор матрицы
-*/
-DEFINE_ATOM_TYPE(matrixIterator);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 

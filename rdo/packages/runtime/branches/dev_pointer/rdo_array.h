@@ -1,7 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      simulator/runtime/rdo_array.h
-  \author    Чирков Михаил
+  \authors   Чирков Михаил
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      14.12.2009
   \brief     Массив
   \indent    4T

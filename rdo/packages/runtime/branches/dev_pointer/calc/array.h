@@ -26,9 +26,9 @@ CALC(RDOCalcArraySize)
 {
 DECLARE_FACTORY(RDOCalcArraySize)
 private:
-	RDOCalcArraySize(CREF(LPRDOCalc) pArray);
+	RDOCalcArraySize(CREF(LPRDOCalc) pCalc);
 
-	LPRDOCalc m_pArray;
+	LPRDOCalc m_pCalc;
 
 	DECLARE_ICalc;
 };

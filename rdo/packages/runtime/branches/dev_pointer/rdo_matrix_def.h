@@ -1,9 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      rdo_matrix_def.h
-  \author    Чирков Михаил
+  \file      simulator/runtime/rdo_matrix_def.h
+  \authors   Чирков Михаил
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      01.10.2010
-  \brief     Матрицы
+  \brief     Определение матрицы
   \indent    4T
 */
 
@@ -29,76 +30,78 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-PREDECLARE_POINTER(RDOMatrixType);
+PREDECLARE_POINTER(RDOMatrixType    );
+PREDECLARE_POINTER(RDOMatrixIterator);
 
-/*!
-  \class     RDOMatrixValue
-  \brief     Элемент матрицы
-*/
-class RDOMatrixValue
+//! Элемент матрицы
+OBJECT(RDOMatrixValue)
 {
+DECLARE_FACTORY(RDOMatrixValue)
 public:
 	typedef std::vector<RDOValue> Container;
 
-	RDOMatrixValue(CREF(LPRDOMatrixType) pType);
-	RDOMatrixValue(CREF(RDOMatrixValue)  value);
-	~RDOMatrixValue();
-
 	CREF(LPRDOMatrixType) type() const;
 
-	void insertItem(CREF(RDOValue) pMatrix);
-	Container::iterator containerBegin();
-	Container::iterator containerEnd();
-	void insertItems(Container::iterator itr, Container::iterator itrFst, Container::iterator itrLst);
-	void  eraseItems(Container::iterator itrFst, Container::iterator itrLst                         );
-	CREF(RDOValue) operator[] (CREF(RDOValue) ind);
+	void push_back(CREF(RDOValue) item);
+	LPRDOMatrixIterator begin();
+	LPRDOMatrixIterator end  ();
+	void insert(CREF(LPRDOMatrixIterator) pWhere, CREF(LPRDOMatrixIterator) pFromFirst, CREF(LPRDOMatrixIterator) pFromLast);
+	void  erase(CREF(LPRDOMatrixIterator) pFirst, CREF(LPRDOMatrixIterator) pLast);
 
+	ruint   size       () const;
 	tstring getAsString() const;
 
+	CREF(RDOValue) getItem(CREF(RDOValue) index) const;
+	void           setItem(CREF(RDOValue) index, CREF(RDOValue) item);
+
 private:
-	Container       m_container;
-	LPRDOMatrixType m_pMatrixType;
+	RDOMatrixValue(CREF(LPRDOMatrixType)  pType );
+	RDOMatrixValue(CREF(LPRDOMatrixValue) pValue);
+	virtual ~RDOMatrixValue();
+
+	Container        m_container;
+	LPRDOMatrixType  m_pMatrixType;
 };
 
-/*!
-  \class     RDOMatrixIterator
-  \brief     Итератор матрицы
-*/
-class RDOMatrixIterator
+//! Итератор матрицы
+class RDOMatrixIterator: public RDOType
 {
+DECLARE_FACTORY(RDOMatrixIterator)
 public:
 	typedef RDOMatrixValue::Container::iterator Iterator;
 
-	RDOMatrixIterator(CREF(RDOMatrixIterator) iterator);
-	RDOMatrixIterator(CREF(Iterator)         iterator);
-
-	Iterator getIterator() const;
-	Iterator operator+  (rsint num);
-	Iterator operator-  (rsint num);
-	rbool    operator== (CREF(RDOMatrixIterator) iterator) const;
-
-	RDOValue getValue() const;
+	Iterator             getIterator() const;
+	CREF(RDOValue)       getValue   () const;
+	LPRDOMatrixIterator  preInc     (rsint delta);
+	LPRDOMatrixIterator  postInc    (rsint delta);
+	LPRDOMatrixIterator  next       ();
+	rbool                equal      (CREF(LPRDOMatrixIterator) pIterator) const;
+	LPRDOMatrixIterator  clone      () const;
 
 private:
-	Iterator m_iterator;
+	RDOMatrixIterator(CREF(LPRDOMatrixIterator) pIterator);
+	RDOMatrixIterator(CREF(RDOMatrixIterator)   iterator );
+	RDOMatrixIterator(CREF(Iterator)            iterator );
+	virtual ~RDOMatrixIterator();
+
+	Iterator  m_iterator;
 };
 
-/*!
-  \class     RDOMatrixType
-  \brief     Матричный тип
-*/
+//! Тип матрица
 class RDOMatrixType: public RDOType
 {
 DECLARE_FACTORY(RDOMatrixType);
 public:
-	typedef LPRDOType LPMatrixType;
+	typedef  LPRDOType       LPItemType;
+	typedef  RDOMatrixValue  value_type;
 
-	LPMatrixType getMatrixType() const;
+	CREF(LPItemType) getItemType() const;
 
 private:
-	RDOMatrixType(CREF(LPMatrixType) pMatrixType);
+	RDOMatrixType(CREF(LPItemType) pItemType);
+	virtual ~RDOMatrixType();
 
-	LPMatrixType  m_pMatrixType;
+	LPItemType  m_pItemType;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

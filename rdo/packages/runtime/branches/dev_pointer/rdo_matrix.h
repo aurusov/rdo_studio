@@ -1,9 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      rdo_matrix.h
-  \author    Чирков Михаил
+  \file      simulator/runtime/rdo_matrix.h
+  \authors   Чирков Михаил
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      01.10.2010
-  \brief     Матрицы
+  \brief     Матрица
   \indent    4T
 */
 

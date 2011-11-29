@@ -167,14 +167,6 @@
 				>
 			</File>
 		</Filter>
-		<Filter
-			Name=".inl"
-			>
-			<File
-				RelativePath=".\arrayCreate.inl"
-				>
-			</File>
-		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

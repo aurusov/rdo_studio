@@ -1,7 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      rdo_array_def.h
-  \author    Чирков Михаил
+  \authors   Чирков Михаил
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      14.12.2009
   \brief     Определение массива
   \indent    4T
@@ -29,7 +30,8 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-PREDECLARE_POINTER(RDOArrayType);
+PREDECLARE_POINTER(RDOArrayType    );
+PREDECLARE_POINTER(RDOArrayIterator);
 
 //! Элемент массива
 OBJECT(RDOArrayValue)
@@ -40,16 +42,17 @@ public:
 
 	CREF(LPRDOArrayType) type() const;
 
-	void insertItem(CREF(RDOValue) item);
-	Container::iterator containerBegin();
-	Container::iterator containerEnd  ();
-	void insertItems(Container::iterator itr,    Container::iterator itrFst, Container::iterator itrLst);
-	void  eraseItems(Container::iterator itrFst, Container::iterator itrLst                            );
-	CREF(RDOValue) operator[] (CREF(RDOValue) index) const;
+	void push_back(CREF(RDOValue) item);
+	LPRDOArrayIterator begin();
+	LPRDOArrayIterator end  ();
+	void insert(CREF(LPRDOArrayIterator) pWhere, CREF(LPRDOArrayIterator) pFromFirst, CREF(LPRDOArrayIterator) pFromLast);
+	void  erase(CREF(LPRDOArrayIterator) pFirst, CREF(LPRDOArrayIterator) pLast);
 
-	ruint   arraySize   () const;
-	tstring getAsString () const;
-	void    setArrayItem(CREF(RDOValue) index, CREF(RDOValue) item);
+	ruint   size       () const;
+	tstring getAsString() const;
+
+	CREF(RDOValue) getItem(CREF(RDOValue) index) const;
+	void           setItem(CREF(RDOValue) index, CREF(RDOValue) item);
 
 private:
 	RDOArrayValue(CREF(LPRDOArrayType)  pType );
@@ -61,40 +64,44 @@ private:
 };
 
 //! Итератор массива
-OBJECT(RDOArrayIterator)
+class RDOArrayIterator: public RDOType
 {
 DECLARE_FACTORY(RDOArrayIterator)
 public:
 	typedef RDOArrayValue::Container::iterator Iterator;
 
-	Iterator getIterator() const;
-	void     operator+  (rsint num);
-	void     operator-  (rsint num);
-	rbool    operator== (CREF(LPRDOArrayIterator) pIterator) const;
-
-	RDOValue getValue() const;
+	Iterator            getIterator() const;
+	CREF(RDOValue)      getValue   () const;
+	LPRDOArrayIterator  preInc     (rsint delta);
+	LPRDOArrayIterator  postInc    (rsint delta);
+	LPRDOArrayIterator  next       ();
+	rbool               equal      (CREF(LPRDOArrayIterator) pIterator) const;
+	LPRDOArrayIterator  clone      () const;
 
 private:
 	RDOArrayIterator(CREF(LPRDOArrayIterator) pIterator);
+	RDOArrayIterator(CREF(RDOArrayIterator)   iterator );
 	RDOArrayIterator(CREF(Iterator)           iterator );
 	virtual ~RDOArrayIterator();
 
-	Iterator m_iterator;
+	Iterator  m_iterator;
 };
 
-//! Тип массива
+//! Тип массив
 class RDOArrayType: public RDOType
 {
 DECLARE_FACTORY(RDOArrayType);
 public:
-	typedef LPRDOType LPItemType;
+	typedef  LPRDOType      LPItemType;
+	typedef  RDOArrayValue  value_type;
 
-	LPItemType getItemType() const;
+	CREF(LPItemType) getItemType() const;
 
 private:
 	RDOArrayType(CREF(LPItemType) pItemType);
+	virtual ~RDOArrayType();
 
-	LPItemType m_pItemType;
+	LPItemType  m_pItemType;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
