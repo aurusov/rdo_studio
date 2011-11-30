@@ -1,9 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      rdo_matrix.cpp
-  \author    Чирков Михаил
+  \file      simulator/runtime/rdo_matrix.cpp
+  \authors   Чирков Михаил
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      01.10.2010
-  \brief     Матрицы
+  \brief     Матрица
   \indent    4T
 */
 
@@ -23,9 +24,9 @@ RDOMatrixValue::RDOMatrixValue(CREF(LPRDOMatrixType) pType)
 	: m_pMatrixType(pType)
 {}
 
-RDOMatrixValue::RDOMatrixValue(CREF(RDOMatrixValue) value)
-	: m_container  (value.m_container  )
-	, m_pMatrixType(value.m_pMatrixType)
+RDOMatrixValue::RDOMatrixValue(CREF(LPRDOMatrixValue) pValue)
+	: m_container  (pValue->m_container  )
+	, m_pMatrixType(pValue->m_pMatrixType)
 {}
 
 RDOMatrixValue::~RDOMatrixValue()
@@ -37,57 +38,93 @@ CREF(LPRDOMatrixType) RDOMatrixValue::type() const
 	return m_pMatrixType;
 }
 
-void RDOMatrixValue::insertItem(CREF(RDOValue) pMatrix)
+void RDOMatrixValue::push_back(CREF(RDOValue) item)
 {
-	m_container.push_back(pMatrix);
+	m_container.push_back(item);
 }
 
-RDOMatrixValue::Container::iterator RDOMatrixValue::containerBegin()
+LPRDOMatrixIterator RDOMatrixValue::begin()
 {
-	return m_container.begin();
+	return rdo::Factory<RDOMatrixIterator>::create(m_container.begin());
 }
 
-RDOMatrixValue::Container::iterator RDOMatrixValue::containerEnd()
+LPRDOMatrixIterator RDOMatrixValue::end()
 {
-	return m_container.end();
+	return rdo::Factory<RDOMatrixIterator>::create(m_container.end());
 }
 
-void RDOMatrixValue::insertItems(Container::iterator itr, Container::iterator itrFst, Container::iterator itrLst)
+void RDOMatrixValue::insert(CREF(LPRDOMatrixIterator) pWhere, CREF(LPRDOMatrixIterator) pFromFirst, CREF(LPRDOMatrixIterator) pFromLast)
 {
-	m_container.insert(itr,itrFst,itrLst);
+	ASSERT(pWhere    );
+	ASSERT(pFromFirst);
+	ASSERT(pFromLast );
+
+	m_container.insert(pWhere->getIterator(), pFromFirst->getIterator(), pFromLast->getIterator());
 }
 
-void RDOMatrixValue::eraseItems(Container::iterator itrFst, Container::iterator itrLst)
+void RDOMatrixValue::erase(CREF(LPRDOMatrixIterator) pFirst, CREF(LPRDOMatrixIterator) pLast)
 {
-	m_container.erase(itrFst,itrLst);
+	ASSERT(pFirst)
+	ASSERT(pLast );
+
+	m_container.erase(pFirst->getIterator(), pLast->getIterator());
 }
 
 tstring RDOMatrixValue::getAsString() const
 {
-	tstring MatrixName = _T("[");
+	tstring result(_T("["));
 	STL_FOR_ALL_CONST(m_container, it)
 	{
-		MatrixName += it->getAsString();
-		if(it != --m_container.end())
-			MatrixName += _T(", ");
+		if (it == m_container.begin())
+		{
+			result = rdo::format(_T("%s%s"), result.c_str(), it->getAsString().c_str());
+		}
+		else
+		{
+			result = rdo::format(_T("%s, %s"), result.c_str(), it->getAsString().c_str());
+		}
 	}
-	return MatrixName += _T("]");
+	return rdo::format(_T("%s]"), result.c_str());
 }
 
-CREF(RDOValue) RDOMatrixValue::operator[] (CREF(RDOValue) ind)
+ruint RDOMatrixValue::size() const
 {
-	return m_container[ind.getInt()];
+	return m_container.size();
+}
+
+CREF(RDOValue) RDOMatrixValue::getItem(CREF(RDOValue) index) const
+{
+	ruint ind = index.getUInt();
+	ASSERT(m_container.size() < ind);
+	return m_container[ind];
+}
+
+void RDOMatrixValue::setItem(CREF(RDOValue) index, CREF(RDOValue) item)
+{
+	ruint ind = index.getUInt();
+	ASSERT(m_container.size() < ind);
+	m_container[ind] = item;
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOMatrixIterator
 // --------------------------------------------------------------------------------
+RDOMatrixIterator::RDOMatrixIterator(CREF(LPRDOMatrixIterator) pIterator)
+	: RDOType   (RDOType::t_pointer   )
+	, m_iterator(pIterator->m_iterator)
+{}
+
 RDOMatrixIterator::RDOMatrixIterator(CREF(RDOMatrixIterator) iterator)
-	: m_iterator(iterator.m_iterator)
+	: RDOType   (RDOType::t_pointer )
+	, m_iterator(iterator.m_iterator)
 {}
 
 RDOMatrixIterator::RDOMatrixIterator(CREF(Iterator) iterator)
-	: m_iterator(iterator)
+	: RDOType   (RDOType::t_pointer)
+	, m_iterator(iterator          )
+{}
+
+RDOMatrixIterator::~RDOMatrixIterator()
 {}
 
 RDOMatrixIterator::Iterator RDOMatrixIterator::getIterator() const
@@ -95,37 +132,55 @@ RDOMatrixIterator::Iterator RDOMatrixIterator::getIterator() const
 	return m_iterator;
 }
 
-RDOMatrixIterator::Iterator RDOMatrixIterator::operator+ (rsint num)
-{
-	return m_iterator + num;
-}
-
-RDOMatrixIterator::Iterator RDOMatrixIterator::operator- (rsint num)
-{
-	return m_iterator - num;
-}
-
-RDOValue RDOMatrixIterator::getValue() const
+CREF(RDOValue) RDOMatrixIterator::getValue() const
 {
 	return *m_iterator;
 }
 
-rbool RDOMatrixIterator::operator== (CREF(RDOMatrixIterator) iterator) const
+LPRDOMatrixIterator RDOMatrixIterator::preInc(rsint delta)
 {
-	return m_iterator == iterator.m_iterator;
+	m_iterator += delta;
+	return LPRDOMatrixIterator(this);
+}
+
+LPRDOMatrixIterator RDOMatrixIterator::postInc(rsint delta)
+{
+	LPRDOMatrixIterator pPrev = rdo::Factory<RDOMatrixIterator>::create(m_iterator);
+	ASSERT(pPrev);
+	m_iterator += delta;
+	return pPrev;
+}
+
+LPRDOMatrixIterator RDOMatrixIterator::next()
+{
+	return preInc(1);
+}
+
+rbool RDOMatrixIterator::equal(CREF(LPRDOMatrixIterator) pIterator) const
+{
+	ASSERT(pIterator);
+	return m_iterator == pIterator->m_iterator;
+}
+
+LPRDOMatrixIterator RDOMatrixIterator::clone() const
+{
+	return rdo::Factory<RDOMatrixIterator>::create(*this);
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOMatrixType
 // --------------------------------------------------------------------------------
-RDOMatrixType::RDOMatrixType(CREF(LPMatrixType) pMatrixType)
-	: RDOType      (RDOType::t_matrix)
-	, m_pMatrixType(pMatrixType      )
+RDOMatrixType::RDOMatrixType(CREF(LPItemType) pItemType)
+	: RDOType    (RDOType::t_pointer)
+	, m_pItemType(pItemType         )
 {}
 
-RDOMatrixType::LPMatrixType RDOMatrixType::getMatrixType() const
+RDOMatrixType::~RDOMatrixType()
+{}
+
+CREF(RDOMatrixType::LPItemType) RDOMatrixType::getItemType() const
 {
-	return m_pMatrixType;
+	return m_pItemType;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

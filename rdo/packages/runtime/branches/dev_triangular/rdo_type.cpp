@@ -67,16 +67,4 @@ DEFINE_ATOM_TYPE_DEFAULT_VALUE(bool);
 */
 DEFINE_ATOM_TYPE_DEFAULT_VALUE(string);
 
-/*!
-  \var       g_arrayIterator
-  \brief     Значение типа arrayIterator по умолчанию
-*/
-DEFINE_ATOM_TYPE_DEFAULT_VALUE(arrayIterator);
-
-/*!
-  \var       g_matrixIterator
-  \brief     Значение типа matrixIterator по умолчанию
-*/
-DEFINE_ATOM_TYPE_DEFAULT_VALUE(matrixIterator);
-
 CLOSE_RDO_RUNTIME_NAMESPACE

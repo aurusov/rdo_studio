@@ -19,7 +19,6 @@ SET(HEADER_FILES
 	pch.h
 	rdo_activity.h
 	rdo_activity_i.h
-	rdo_array_def.h
 	rdo_array.h
 	rdobase.h
 	rdocalc.h
@@ -31,7 +30,6 @@ SET(HEADER_FILES
 	rdo_event_i.h
 	rdo_exception.h
 	rdoframe.h
-	rdo_fuzzy_def.h
 	rdo_fuzzy.h
 	rdo.h
 	rdo_keyboard.h
@@ -42,7 +40,6 @@ SET(HEADER_FILES
 	rdo_logic_dptsome.h
 	rdo_logic.h
 	rdo_logic_i.h
-	rdo_matrix_def.h
 	rdo_matrix.h
 	rdo_memory.h
 	rdo_model_i.h
@@ -215,8 +212,7 @@ SOURCE_GROUP(".rdo_type" FILES
 	
 SOURCE_GROUP(".rdo_type_array" FILES 
 	rdo_array.h
-	rdo_array.cpp
-	rdo_array_def.h)	
+	rdo_array.cpp)	
 
 SOURCE_GROUP(".rdo_type_enum" FILES 
 	rdo_enum.h
@@ -225,13 +221,11 @@ SOURCE_GROUP(".rdo_type_enum" FILES
 SOURCE_GROUP(".rdo_type_fuzzy" FILES 
 	rdo_fuzzy.h
 	rdo_fuzzy.inl
-	rdo_fuzzy.cpp
-	rdo_fuzzy_def.h)	
+	rdo_fuzzy.cpp)	
 
 SOURCE_GROUP(".rdo_type_matrix" FILES 
 	rdo_matrix.h
-	rdo_matrix.cpp
-	rdo_matrix_def.h)	
+	rdo_matrix.cpp)	
 
 SOURCE_GROUP(".rdo_trace" FILES 
 	rdotrace.h

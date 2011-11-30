@@ -19,11 +19,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-class RDOFuzzyValue;
-class RDOMatrixValue;
-class RDOMatrixIterator;
-PREDECLARE_POINTER(RDOArrayValue);
-PREDECLARE_POINTER(RDOArrayIterator);
 PREDECLARE_POINTER(RDOEnumType);
 
 //! Значение переменных в РДО
@@ -42,13 +37,9 @@ public:
 	RDOValue(CREF(LPRDOEnumType) pEnum   );
 	RDOValue(CREF(LPRDOEnumType) pEnum, CREF(tstring) value);
 	RDOValue(CREF(LPRDOEnumType) pEnum, ruint index);
-	RDOValue(CREF(RDOFuzzyValue) fuzzy   );
 	RDOValue(CREF(tstring)       value   );
 	RDOValue(CPTR(tchar)         value   );
 	RDOValue(CREF(tstring)       value, CREF(LPRDOType) pType);
-	RDOValue(CREF(LPRDOArrayIterator) pIterator  );
-	RDOValue(CREF(RDOMatrixValue)    matrixValue);
-	RDOValue(CREF(RDOMatrixIterator) mIterator  );
 
 	template <class T>
 	RDOValue(CREF(LPRDOType) pType, CREF(rdo::intrusive_ptr<T>) pObject);
@@ -61,14 +52,18 @@ public:
 	rbool             getBool         () const;
 	CREF(tstring)     getString       () const;
 	CREF(tstring)     getIdentificator() const;
-	CREF(RDOArrayValue) getArray      () const;
-	CREF(RDOMatrixValue)getMatrix     () const;
 
 	template <class T>
 	REF(rdo::intrusive_ptr<T>) getPointer();
 
 	template <class T>
 	CREF(rdo::intrusive_ptr<T>) getPointer() const;
+
+	template <class T>
+	CREF(rdo::intrusive_ptr<typename T::value_type>) getPointerSafety() const;
+
+	template <class T>
+	rbool isType() const;
 
 	rbool   getAsBool          () const;
 	tstring getAsString        () const;
@@ -98,17 +93,16 @@ public:
 	RDOValue       operator-  (CREF(RDOValue) rdovalue) const;
 	RDOValue       operator*  (CREF(RDOValue) rdovalue) const;
 	RDOValue       operator/  (CREF(RDOValue) rdovalue) const;
-	RDOValue       operator[] (CREF(RDOValue) rdovalue);
 
 	CREF(LPRDOType) type  () const;
 	RDOType::TypeID typeID() const;
 
-	RDOValue  begin ();
-	RDOValue  end   ();
-	void      insert(CREF(RDOValue) itr,    CREF(RDOValue) itrFst, CREF(RDOValue) itrLst);
-	void      erase (CREF(RDOValue) itrFst, CREF(RDOValue) itrLst                       );
+	//RDOValue  begin ();
+	//RDOValue  end   ();
+	//void      insert(CREF(RDOValue) itr,    CREF(RDOValue) itrFst, CREF(RDOValue) itrLst);
+	//void      erase (CREF(RDOValue) itrFst, CREF(RDOValue) itrLst                       );
 
-	void setArrayItem(CREF(RDOValue) ind, CREF(RDOValue) item);
+	//void setArrayItem(CREF(RDOValue) ind, CREF(RDOValue) item);
 
 private:
 	//! Строковый тип данных
@@ -134,21 +128,25 @@ private:
 	template <class T>
 	CREF(T) __get() const;
 
-	 REF(PTR(void))         __voidPtrV  ();
-	CREF(PTR(void))         __voidPtrV  () const;
-	LPRDOEnumType           __enumT     () const;
-	 REF(tstring)           __stringV   ();
-	CREF(tstring)           __stringV   () const;
-	 REF(RDOFuzzyValue)     __fuzzyV    ();
-	CREF(RDOFuzzyValue)     __fuzzyV    () const;
-	 REF(LPRDOArrayValue)   __arrayV    ();
-	CREF(LPRDOArrayValue)   __arrayV    () const;
-	 REF(LPRDOArrayIterator)__arrayItr  ();
-	CREF(LPRDOArrayIterator)__arrayItr  () const;
-	 REF(RDOMatrixValue)    __matrixV   ();
-	CREF(RDOMatrixValue)    __matrixV   () const;
-	 REF(RDOMatrixIterator) __matrixItr ();
-	CREF(RDOMatrixIterator) __matrixItr () const;
+	 REF(PTR(void))  __voidPtrV();
+	CREF(PTR(void))  __voidPtrV() const;
+	LPRDOEnumType    __enumT   () const;
+	 REF(tstring)    __stringV ();
+	CREF(tstring)    __stringV () const;
+
+	RDOValue clone() const;
+
+	tstring  onPointerAsString () const;
+	rbool    onPointerEqual    (CREF(RDOValue) rdovalue) const;
+	void     onPointerPlus     (CREF(RDOValue) rdovalue);
+	void     onPointerMinus    (CREF(RDOValue) rdovalue);
+	void     onPointerMult     (CREF(RDOValue) rdovalue);
+	void     onPointerDiv      (CREF(RDOValue) rdovalue);
+	rsint    onPointerGetInt   () const;
+	ruint    onPointerGetUInt  () const;
+	rbool    onPointerAnd      (CREF(RDOValue) rdovalue) const;
+	rbool    onPointerOr       (CREF(RDOValue) rdovalue) const;
+	RDOValue onPointerUMinus   () const;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
