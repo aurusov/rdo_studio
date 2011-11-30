@@ -11,6 +11,7 @@
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "simulator/runtime/rdo_fuzzy.h"
 #include "simulator/compiler/parser/type/info.h"
 #include "simulator/compiler/parser/rdo_value.h"
 #include "simulator/compiler/parser/rdoparser.h"
@@ -37,10 +38,10 @@ TypeInfo::TypeInfo(CREF(LPRDOType) pType, CREF(RDOParserSrcInfo) srcInfo)
 
 void TypeInfo::init()
 {
-	switch (m_pType->type()->typeID())
+	if (m_pType->type()->typeID() == rdoRuntime::RDOType::t_enum ||
+		m_pType->type().object_dynamic_cast<rdoRuntime::RDOFuzzyType>())
 	{
-	case rdoRuntime::RDOType::t_enum :
-	case rdoRuntime::RDOType::t_fuzzy: RDOParser::s_parser()->insertPreCastType(this); break;
+		RDOParser::s_parser()->insertPreCastType(this);
 	}
 }
 

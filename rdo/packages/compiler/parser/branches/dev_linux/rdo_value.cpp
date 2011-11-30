@@ -42,8 +42,6 @@ RDOValue::RDOValue(CREF(LPRDOValue) pValue)
 	{
 	case rdoRuntime::RDOType::t_string       :
 	case rdoRuntime::RDOType::t_identificator:
-	case rdoRuntime::RDOType::t_array        :
-	case rdoRuntime::RDOType::t_arrayIterator:
 	case rdoRuntime::RDOType::t_pointer      :
 		{
 			reinterpret_cast<rdo::LPIRefCounter>(&m_buffer)->addref();
@@ -101,12 +99,25 @@ rbool RDOValue::defined() const
 
 rbool RDOValue::constant() const
 {
-	return
-		m_value.typeID() == rdoRuntime::RDOType::t_int     ||
-		m_value.typeID() == rdoRuntime::RDOType::t_real    ||
-		m_value.typeID() == rdoRuntime::RDOType::t_bool    ||
-		m_value.typeID() == rdoRuntime::RDOType::t_array   ||
-		m_value.typeID() == rdoRuntime::RDOType::t_string;
+	if (m_value.typeID() == rdoRuntime::RDOType::t_int     ||
+	    m_value.typeID() == rdoRuntime::RDOType::t_real    ||
+	    m_value.typeID() == rdoRuntime::RDOType::t_bool    ||
+	    m_value.typeID() == rdoRuntime::RDOType::t_string)
+	{
+		return true;
+	}
+
+	if (m_value.typeID() == rdoRuntime::RDOType::t_identificator && m_value.getIdentificator() == _T("*"))
+	{
+		return true;
+	}
+
+	if (m_value.typeID() == rdoRuntime::RDOType::t_pointer)
+	{
+		return m_value.isType<rdoRuntime::RDOArrayType>();
+	}
+
+	return false;
 }
 
 LPRDOValue RDOValue::getIdentificator(CREF(tstring) identificator)

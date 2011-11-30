@@ -81,8 +81,6 @@ inline void RDOValue::setPointer(CREF(rdo::intrusive_ptr<T>) pObject)
 	ASSERT(
 		typeID() == rdoRuntime::RDOType::t_string        ||
 		typeID() == rdoRuntime::RDOType::t_identificator ||
-		typeID() == rdoRuntime::RDOType::t_array         ||
-		typeID() == rdoRuntime::RDOType::t_arrayIterator ||
 		typeID() == rdoRuntime::RDOType::t_pointer
 	);
 
@@ -108,8 +106,6 @@ inline CREF(rdo::intrusive_ptr<T>) RDOValue::get() const
 	ASSERT(
 		typeID() == rdoRuntime::RDOType::t_string        ||
 		typeID() == rdoRuntime::RDOType::t_identificator ||
-		typeID() == rdoRuntime::RDOType::t_array         ||
-		typeID() == rdoRuntime::RDOType::t_arrayIterator ||
 		typeID() == rdoRuntime::RDOType::t_pointer
 	);
 

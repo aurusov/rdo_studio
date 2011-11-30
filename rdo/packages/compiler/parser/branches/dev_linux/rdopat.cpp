@@ -121,7 +121,7 @@ LPContext RDOPATPattern::onFindContext(CREF(LPRDOValue) pValue) const
 			{
 				if (!pRelevantResource->m_alreadyHaveConverter && !pRelevantResource->isDirect())
 				{
-					RDOParser::s_parser()->error().error(pValue->src_info(), rdo::format(_T("Релевантный ресурс неопределен: %s. Его нельзя использовать в условиях выбора других ресурсов до его собственного Choice from"), pRelevantResource->name().c_str()));
+					RDOParser::s_parser()->error().error(pValue->src_info(), rdo::format(_T("Релевантный ресурс не определен: %s. Его нельзя использовать в условиях выбора других ресурсов до его собственного Choice from"), pRelevantResource->name().c_str()));
 				}
 				if (pRelevantResource->m_statusBegin == rdoRuntime::RDOResource::CS_NonExist)
 				{

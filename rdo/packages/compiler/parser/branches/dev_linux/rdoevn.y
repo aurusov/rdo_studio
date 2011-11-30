@@ -2475,9 +2475,12 @@ fun_arithm
 	{
 		LPRDOValue pValue = PARSER->stack().pop<RDOValue>($1);
 		ASSERT(pValue);
+
 		LPRDOFUNArithm pArithm = RDOFUNArithm::generateByIdentificator(pValue);
+		ASSERT(pArithm);
+
 		rdoRuntime::LPRDOCalc pCalc;
-		if(pArithm->typeID() == rdoRuntime::RDOType::t_array)
+		if (pArithm->typeInfo()->type().object_dynamic_cast<RDOArrayType>())
 		{
 			pCalc = rdo::Factory<rdoRuntime::RDOCalcArraySize>::create(pArithm->calc());
 			ASSERT(pCalc);
@@ -2502,9 +2505,14 @@ fun_arithm
 	{
 		LPRDOValue pValue = PARSER->stack().pop<RDOValue>($1);
 		ASSERT(pValue);
+
 		LPRDOFUNArithm pArithm = RDOFUNArithm::generateByIdentificator(pValue);
+		ASSERT(pArithm);
+
 		LPRDOFUNArithm pArithmInd = PARSER->stack().pop<RDOFUNArithm>($3);
-		if (pArithm->typeID() != rdoRuntime::RDOType::t_array)
+		ASSERT(pArithmInd);
+
+		if (pArithm->typeInfo()->type().object_dynamic_cast<RDOArrayType>())
 		{
 			PARSER->error().error(@1, rdo::format(_T("'%s' не является массивом."), pValue->value().getIdentificator().c_str()));
 		}

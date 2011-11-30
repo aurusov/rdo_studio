@@ -1924,14 +1924,15 @@ set_array_item_statement
 	: RDO_IDENTIF '[' fun_arithm ']' '=' fun_arithm
 	{
 		LPRDOValue     pParamName   = PARSER->stack().pop<RDOValue>($1);
+		ASSERT(pParamName);
+		LPRDOFUNArithm pArrayArithm = RDOFUNArithm::generateByIdentificator(pParamName);
 		LPRDOFUNArithm pArithmInd   = PARSER->stack().pop<RDOFUNArithm>($3);
 		LPRDOFUNArithm pRightArithm = PARSER->stack().pop<RDOFUNArithm>($6);
-		ASSERT(pParamName  );
+		ASSERT(pArrayArithm);
 		ASSERT(pArithmInd  );
 		ASSERT(pRightArithm);
 
-		LPRDOFUNArithm pArrayArithm = RDOFUNArithm::generateByIdentificator(pParamName);
-		if (pArrayArithm->typeID() != rdoRuntime::RDOType::t_array)
+		if (!pArrayArithm->typeInfo()->type().object_dynamic_cast<RDOArrayType>())
 		{
 			PARSER->error().error(@1, rdo::format(_T("'%s' не является массивом."), pParamName->value().getIdentificator().c_str()));
 		}
@@ -1941,7 +1942,7 @@ set_array_item_statement
 		LPRDOArrayType pArrayType = pType.object_dynamic_cast<RDOArrayType>();
 		ASSERT(pArrayType);
 
-		LPTypeInfo pItemType = pArrayType->getItemType()->type_cast(pRightArithm->typeInfo(),RDOParserSrcInfo(@1));
+		LPTypeInfo pItemType = pArrayType->getItemType()->type_cast(pRightArithm->typeInfo(), RDOParserSrcInfo(@1));
 		ASSERT(pItemType);
 
 		rdoRuntime::LPRDOCalc pArrayItemCalc = rdo::Factory<rdoRuntime::RDOCalcSetArrayItem>::create(pArrayArithm->calc(), pArithmInd->calc(), pRightArithm->calc());
@@ -1978,7 +1979,7 @@ set_array_item_statement
 		LPExpression pExpression = rdo::Factory<Expression>::create(pArrayArithm->typeInfo(), pCalc, RDOParserSrcInfo(@1));
 		ASSERT(pExpression);
 
-		$$ = PARSER->stack().push(pCalc);
+		$$ = PARSER->stack().push(pExpression);
 	}
 	;
 
@@ -3117,9 +3118,12 @@ fun_arithm
 	{
 		LPRDOValue pValue = PARSER->stack().pop<RDOValue>($1);
 		ASSERT(pValue);
+
 		LPRDOFUNArithm pArithm = RDOFUNArithm::generateByIdentificator(pValue);
+		ASSERT(pArithm);
+
 		rdoRuntime::LPRDOCalc pCalc;
-		if(pArithm->typeID() == rdoRuntime::RDOType::t_array)
+		if (pArithm->typeInfo()->type().object_dynamic_cast<RDOArrayType>())
 		{
 			pCalc = rdo::Factory<rdoRuntime::RDOCalcArraySize>::create(pArithm->calc());
 			ASSERT(pCalc);
@@ -3144,9 +3148,14 @@ fun_arithm
 	{
 		LPRDOValue pValue = PARSER->stack().pop<RDOValue>($1);
 		ASSERT(pValue);
+
 		LPRDOFUNArithm pArithm = RDOFUNArithm::generateByIdentificator(pValue);
+		ASSERT(pArithm);
+
 		LPRDOFUNArithm pArithmInd = PARSER->stack().pop<RDOFUNArithm>($3);
-		if (pArithm->typeID() != rdoRuntime::RDOType::t_array)
+		ASSERT(pArithmInd);
+
+		if (pArithm->typeInfo()->type().object_dynamic_cast<RDOArrayType>())
 		{
 			PARSER->error().error(@1, rdo::format(_T("'%s' не является массивом."), pValue->value().getIdentificator().c_str()));
 		}
