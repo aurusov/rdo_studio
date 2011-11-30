@@ -3,6 +3,7 @@
   \file      main.cpp
   \authors   Чирков Михаил
   \authors   Пройдаков Евгений (lord.tiran@gmail.com)
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      01.10.2010
   \brief     Тест матриц
   \indent    4T
@@ -22,83 +23,200 @@
 
 BOOST_AUTO_TEST_SUITE(RDORuntime_Matrix_Test)
 
-BOOST_AUTO_TEST_CASE(matrixTestCreate)
+typedef  rdo::vector<rsint>                                            Container;
+typedef  std::pair<rdoRuntime::LPRDOMatrixValue, rdoRuntime::RDOValue>  Matrix;
+
+Matrix createMatrix(CREF(Container) data)
 {
-	#include "simulator/runtime/test/rdo_matrix_test/matrixCreate.inl"
+	rdoRuntime::LPRDOMatrixType  pType  = rdo::Factory<rdoRuntime::RDOMatrixType>::create(rdoRuntime::g_int);
+	ASSERT(pType);
+	rdoRuntime::LPRDOMatrixValue pValue = rdo::Factory<rdoRuntime::RDOMatrixValue>::create(pType);
+	ASSERT(pValue);
 
-	BOOST_CHECK(matrixVal1.getAsString() == _T("[1, 2, 3]"));
-}
-
-BOOST_AUTO_TEST_CASE(matrixTestInsert)
-{
-	#include "simulator/runtime/test/rdo_matrix_test/matrixCreate.inl"
-
-	matrixVal1.insert(matrixVal1.begin() + rdoRuntime::RDOValue(1), matrixVal2.begin(), matrixVal2.end());
-	
-	BOOST_CHECK(matrixVal1.getAsString() == _T("[1, 4, 5, 6, 2, 3]"));
-}
-
-BOOST_AUTO_TEST_CASE(matrixTestErase)
-{
-	#include "simulator/runtime/test/rdo_matrix_test/matrixCreate.inl"
-
-	matrixVal1.erase(matrixVal1.begin() + rdoRuntime::RDOValue(1), matrixVal1.begin() + rdoRuntime::RDOValue(3));
-	
-	BOOST_CHECK(matrixVal1.getAsString() == _T("[1]"));
-}
-
-BOOST_AUTO_TEST_CASE(matrixTestPPOperator)
-{
-	#include "simulator/runtime/test/rdo_matrix_test/matrixCreate.inl"
-
-	tstring itStr = _T("");
-	for (rdoRuntime::RDOValue it = matrixVal1.begin(); it != matrixVal1.end(); ++it)
+	STL_FOR_ALL_CONST(data, it)
 	{
-		itStr += it.getAsString();
+		pValue->push_back(rdoRuntime::RDOValue(*it));
 	}
-	BOOST_CHECK(itStr == _T("123"));
+
+	return std::make_pair(pValue, rdoRuntime::RDOValue(pType, pValue));
 }
 
-BOOST_AUTO_TEST_CASE(matrixTestOperatorPP)
+tstring getString(CREF(rdoRuntime::LPRDOMatrixValue) pMatrix, CREF(rdoRuntime::LPRDOMatrixIterator) pIt)
 {
-	#include "simulator/runtime/test/rdo_matrix_test/matrixCreate.inl"
-
-	tstring itStr = _T("");
-	for (rdoRuntime::RDOValue it = matrixVal1.begin(); it != matrixVal1.end(); it++)
+	if (!pIt->equal(pMatrix->end()))
 	{
-		itStr += it.getAsString();
+		return pIt->getValue().getAsString();
 	}
-	BOOST_CHECK(itStr == _T("123"));
+	return _T("");
 }
 
-BOOST_AUTO_TEST_CASE(matrixTestMMOperator)
+tstring getString(CREF(rdoRuntime::RDOValue) it, CREF(rdoRuntime::RDOValue) end)
 {
-	#include "simulator/runtime/test/rdo_matrix_test/matrixCreate.inl"
-
-	tstring itStr = _T("");
-	rdoRuntime::RDOValue it1 = matrixVal2.end();
-	do 
+	if (it != end)
 	{
-		--it1;
-		itStr += it1.getAsString();
-	} while (it1 != matrixVal2.begin());
-
-	BOOST_CHECK(itStr == _T("654"));
+		return it.getAsString();
+	}
+	return _T("");
 }
 
-BOOST_AUTO_TEST_CASE(matrixTestOperatorMM)
+BOOST_AUTO_TEST_CASE(MatrixTestCreate)
 {
-	#include "simulator/runtime/test/rdo_matrix_test/matrixCreate.inl"
+	BOOST_CHECK(createMatrix(Container()(1)(2)(3)).second.getAsString() == _T("[1, 2, 3]"));
+}
 
-	tstring itStr = _T("");
-	rdoRuntime::RDOValue it1 = matrixVal2.end();
+BOOST_AUTO_TEST_CASE(MatrixTestInsert)
+{
+	Matrix matrix1 = createMatrix(Container()(1)(2)(3));
+	Matrix matrix2 = createMatrix(Container()(4)(5)(6));
+
+	matrix1.first->insert(matrix1.first->begin()->next(), matrix2.first->begin(), matrix2.first->end());
+
+	BOOST_CHECK(matrix1.second.getAsString() == _T("[1, 4, 5, 6, 2, 3]"));
+}
+
+BOOST_AUTO_TEST_CASE(MatrixTestErase)
+{
+	Matrix matrix = createMatrix(Container()(1)(2)(3));
+
+	matrix.first->erase(matrix.first->begin()->next(), matrix.first->begin()->preInc(3));
+
+	BOOST_CHECK(matrix.second.getAsString() == _T("[1]"));
+}
+
+BOOST_AUTO_TEST_CASE(MatrixTestIteratorPrePlus)
+{
+	Matrix matrix = createMatrix(Container()(1)(2)(3));
+
+	tstring result;
+	rdoRuntime::LPRDOMatrixIterator pIt = matrix.first->begin();
+	while (!pIt->equal(matrix.first->end()))
+	{
+		result += getString(matrix.first, pIt->preInc(1));
+	}
+	BOOST_CHECK(result == _T("23"));
+}
+
+BOOST_AUTO_TEST_CASE(MatrixTestIteratorPostPlus)
+{
+	Matrix matrix = createMatrix(Container()(1)(2)(3));
+
+	tstring result;
+	rdoRuntime::LPRDOMatrixIterator pIt = matrix.first->begin();
+	while (!pIt->equal(matrix.first->end()))
+	{
+		result += getString(matrix.first, pIt->postInc(1));
+	}
+	BOOST_CHECK(result == _T("123"));
+}
+
+BOOST_AUTO_TEST_CASE(MatrixTestIteratorPreMinus)
+{
+	Matrix matrix = createMatrix(Container()(1)(2)(3));
+
+	tstring result;
+	rdoRuntime::LPRDOMatrixIterator pIt = matrix.first->end();
 	do
 	{
-		it1--;
-		itStr += it1.getAsString();
-	} while (it1 != matrixVal2.begin());
+		result += getString(matrix.first, pIt->preInc(-1));
+	}
+	while (!pIt->equal(matrix.first->begin()));
 
-	BOOST_CHECK(itStr == _T("654"));
+	BOOST_CHECK(result == _T("321"));
+}
+
+BOOST_AUTO_TEST_CASE(MatrixTestIteratorPostMinus)
+{
+	Matrix matrix = createMatrix(Container()(1)(2)(3));
+
+	tstring result;
+	rdoRuntime::LPRDOMatrixIterator pIt = matrix.first->end();
+	do
+	{
+		result += getString(matrix.first, pIt->postInc(-1));
+	}
+	while (!pIt->equal(matrix.first->begin()));
+
+	BOOST_CHECK(result == _T("32"));
+}
+
+BOOST_AUTO_TEST_CASE(MatrixTestValuePrePlus)
+{
+	Matrix matrix = createMatrix(Container()(1)(2)(3));
+
+	tstring result;
+	rdoRuntime::LPRDOMatrixIterator pIt  = matrix.first->begin();
+	rdoRuntime::LPRDOMatrixIterator pEnd = matrix.first->end  ();
+	rdoRuntime::RDOValue it (pIt,  pIt );
+	rdoRuntime::RDOValue end(pEnd, pEnd);
+	BOOST_CHECK(it != end);
+
+	while (it != end)
+	{
+		result += getString(++it, end);
+	}
+	BOOST_CHECK(result == _T("23"));
+}
+
+BOOST_AUTO_TEST_CASE(MatrixTestValuePostPlus)
+{
+	Matrix matrix = createMatrix(Container()(1)(2)(3));
+
+	tstring result;
+	rdoRuntime::LPRDOMatrixIterator pIt  = matrix.first->begin();
+	rdoRuntime::LPRDOMatrixIterator pEnd = matrix.first->end  ();
+	rdoRuntime::RDOValue it (pIt,  pIt );
+	rdoRuntime::RDOValue end(pEnd, pEnd);
+	BOOST_CHECK(it != end);
+
+	while (it != end)
+	{
+		result += getString(it++, end);
+	}
+	BOOST_CHECK(result == _T("123"));
+}
+
+BOOST_AUTO_TEST_CASE(MatrixTestValuePreMinus)
+{
+	Matrix matrix = createMatrix(Container()(1)(2)(3));
+
+	tstring result;
+	rdoRuntime::LPRDOMatrixIterator pIt    = matrix.first->end  ();
+	rdoRuntime::LPRDOMatrixIterator pBegin = matrix.first->begin();
+	rdoRuntime::LPRDOMatrixIterator pEnd   = matrix.first->end  ();
+	rdoRuntime::RDOValue it   (pIt,    pIt   );
+	rdoRuntime::RDOValue begin(pBegin, pBegin);
+	rdoRuntime::RDOValue end  (pEnd,   pEnd  );
+	BOOST_CHECK(it != begin);
+	BOOST_CHECK(it == end  );
+
+	do 
+	{
+		result += getString(--it, end);
+	}
+	while (it != begin);
+	BOOST_CHECK(result == _T("321"));
+}
+
+BOOST_AUTO_TEST_CASE(MatrixTestValuePostMinus)
+{
+	Matrix matrix = createMatrix(Container()(1)(2)(3));
+
+	tstring result;
+	rdoRuntime::LPRDOMatrixIterator pIt    = matrix.first->end  ();
+	rdoRuntime::LPRDOMatrixIterator pBegin = matrix.first->begin();
+	rdoRuntime::LPRDOMatrixIterator pEnd   = matrix.first->end  ();
+	rdoRuntime::RDOValue it   (pIt,    pIt   );
+	rdoRuntime::RDOValue begin(pBegin, pBegin);
+	rdoRuntime::RDOValue end  (pEnd,   pEnd  );
+	BOOST_CHECK(it != begin);
+	BOOST_CHECK(it == end  );
+
+	do 
+	{
+		result += getString(it--, end);
+	}
+	while (it != begin);
+	BOOST_CHECK(result == _T("32"));
 }
 
 BOOST_AUTO_TEST_SUITE_END() // RDORuntime_Matrix_Test
