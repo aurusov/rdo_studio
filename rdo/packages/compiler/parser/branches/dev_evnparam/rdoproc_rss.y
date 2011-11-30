@@ -418,6 +418,7 @@ dpt_seize_param
 			{
 				if (!rssList[res_name].checkParserResourceType<rdoParse::RDOPROCResource>(PARSER))
 				{
+					//здесь нужно переделать тип ресурса, а не ресурс
 					rdoMBuilder::BlockForSeize::reobjectRes(rtp, res_name);
 				}
 			}
