@@ -2266,10 +2266,6 @@
 					RelativePath=".\rdo_fuzzy.inl"
 					>
 				</File>
-				<File
-					RelativePath=".\rdo_fuzzy_def.h"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name=".rdo_array"
@@ -2282,10 +2278,6 @@
 					RelativePath=".\rdo_array.h"
 					>
 				</File>
-				<File
-					RelativePath=".\rdo_array_def.h"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name=".rdo_matrix"
@@ -2296,10 +2288,6 @@
 				</File>
 				<File
 					RelativePath=".\rdo_matrix.h"
-					>
-				</File>
-				<File
-					RelativePath=".\rdo_matrix_def.h"
 					>
 				</File>
 			</Filter>
