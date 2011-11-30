@@ -11,6 +11,7 @@
 #include "converter/smr2rdox/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "simulator/runtime/rdo_fuzzy.h"
 #include "converter/smr2rdox/rdo_type_param.h"
 #include "converter/smr2rdox/rdoparser.h"
 // --------------------------------------------------------------------------------
@@ -27,10 +28,10 @@ RDOTypeParam::RDOTypeParam(CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info
 	ASSERT(m_type);
 	setSrcText(m_type->name());
 
-	switch (m_type->type()->typeID())
+	if (m_type->type()->typeID() == rdoRuntime::RDOType::t_enum ||
+		m_type->type().object_dynamic_cast<rdoRuntime::RDOFuzzyType>())
 	{
-	case rdoRuntime::RDOType::t_enum :
-	case rdoRuntime::RDOType::t_fuzzy: Converter::s_converter()->insertPreCastType(this); break;
+		Converter::s_converter()->insertPreCastType(this);
 	}
 }
 

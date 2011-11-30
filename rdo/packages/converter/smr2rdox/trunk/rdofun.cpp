@@ -443,7 +443,7 @@ void RDOFUNArithm::init(CREF(RDOValue) resName, CREF(RDOValue) parName)
 					{
 						if (!pRelevantResource->m_alreadyHaveConverter && !pRelevantResource->isDirect())
 						{
-							Converter::s_converter()->error().error(resName.src_info(), rdo::format(_T("Релевантный ресурс неопределен: %s. Его нельзя использовать в условиях выбора других ресурсов до его собственного Choice from"), pRelevantResource->name().c_str()));
+							Converter::s_converter()->error().error(resName.src_info(), rdo::format(_T("Релевантный ресурс не определен: %s. Его нельзя использовать в условиях выбора других ресурсов до его собственного Choice from"), pRelevantResource->name().c_str()));
 						}
 						if (pRelevantResource->m_statusBegin == rdoRuntime::RDOResource::CS_NonExist)
 						{
