@@ -2495,6 +2495,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\context\context_switch_i.h"
+				>
+			</File>
+			<File
 				RelativePath=".\context\memory.cpp"
 				>
 			</File>

@@ -32,6 +32,7 @@ public:
 	rdo::intrusive_ptr<T> cast();
 
 	LPContext    find  (CREF(LPRDOValue) pValue) const;
+	LPContext    swch  (CREF(LPRDOValue) pValue) const;
 	LPExpression create(CREF(LPRDOValue) pValue);
 
 protected:

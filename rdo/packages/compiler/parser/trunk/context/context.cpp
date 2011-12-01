@@ -14,6 +14,7 @@
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/context/context.h"
 #include "simulator/compiler/parser/context/context_find_i.h"
+#include "simulator/compiler/parser/context/context_switch_i.h"
 #include "simulator/compiler/parser/context/context_create_expression_i.h"
 // --------------------------------------------------------------------------------
 
@@ -48,6 +49,18 @@ LPContext Context::find(CREF(LPRDOValue) pValue) const
 	}
 	LPContext pPrev = m_pContextStack->prev(pThis);
 	return pPrev ? pPrev->find(pValue) : LPContext();
+}
+
+LPContext Context::swch(CREF(LPRDOValue) pValue) const
+{
+	ASSERT(pValue);
+
+	LPContext pThis(const_cast<PTR(Context)>(this));
+	LPIContextSwitch pThisContextSwitch = pThis.interface_dynamic_cast<IContextSwitch>();
+	ASSERT(pThisContextSwitch);
+	LPContext pThisResult = pThisContextSwitch->onSwitchContext(pValue);
+	ASSERT(pThisResult);
+	return pThisResult;
 }
 
 LPExpression Context::create(CREF(LPRDOValue) pValue)

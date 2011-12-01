@@ -101,6 +101,7 @@ SET(HEADER_FILES
 	context/context_create_calc_i.h
 	context/context_create_expression_i.h
 	context/context_find_i.h
+	context/context_switch_i.h
 	context/context.h
 	context/memory.h
 	context/stack.h
@@ -222,7 +223,8 @@ SOURCE_GROUP(".context" FILES
 	context/stack.cpp
 	context/type.h
 	context/type.cpp
-	context/context_find_i.h)
+	context/context_find_i.h
+	context/context_switch_i.h)
 	
 SOURCE_GROUP(".dpt" FILES
 	rdodpt.h
