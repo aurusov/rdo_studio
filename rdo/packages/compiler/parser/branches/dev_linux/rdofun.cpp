@@ -285,6 +285,9 @@ LPRDOFUNArithm RDOFUNArithm::generateByIdentificator(CREF(LPRDOValue) pValue1, C
 	pContext = pContext->find(pValue1);
 	ASSERT(pContext);
 
+	pContext = pContext->swch(pValue1);
+	ASSERT(pContext);
+
 	LPExpression pExpression = pContext->create(pValue2);
 	ASSERT(pExpression);
 
@@ -1665,6 +1668,12 @@ LPContext RDOFUNGroup::onFindContext(CREF(LPRDOValue) pValue) const
 	}
 
 	return LPContext(NULL);
+}
+
+LPContext RDOFUNGroup::onSwitchContext(CREF(LPRDOValue) pValue) const
+{
+	//! switch на себя
+	return onFindContext(pValue);
 }
 
 LPExpression RDOFUNGroup::onCreateExpression(CREF(LPRDOValue) pValue)
