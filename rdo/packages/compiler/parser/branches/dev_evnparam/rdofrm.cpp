@@ -62,6 +62,12 @@ LPContext RDOFRMFrame::onFindContext(CREF(LPRDOValue) pValue) const
 	return NULL;
 }
 
+LPContext RDOFRMFrame::onSwitchContext(CREF(LPRDOValue) pValue) const
+{
+	UNUSED(pValue);
+	return NULL;
+}
+
 void RDOFRMFrame::end()
 {
 	RDOParser::s_parser()->contextStack()->pop();

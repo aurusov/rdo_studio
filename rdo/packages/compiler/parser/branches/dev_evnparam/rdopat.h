@@ -21,6 +21,7 @@
 #include "simulator/compiler/parser/context/context.h"
 #include "simulator/compiler/parser/context/memory.h"
 #include "simulator/compiler/parser/context/context_find_i.h"
+#include "simulator/compiler/parser/context/context_switch_i.h"
 #include "simulator/compiler/parser/context/context_create_expression_i.h"
 
 #include "simulator/runtime/rdo_pattern.h"
@@ -79,6 +80,7 @@ CLASS(RDOPATPattern):
 	    INSTANCE_OF      (RDOParserSrcInfo        )
 	AND INSTANCE_OF      (Context                 )
 	AND IMPLEMENTATION_OF(IContextFind            )
+	AND IMPLEMENTATION_OF(IContextSwitch          )
 	AND IMPLEMENTATION_OF(IContextCreateExpression)
 {
 DECLARE_FACTORY(RDOPATPattern)
@@ -171,21 +173,12 @@ private:
 
 	LPContextMemory  m_pContextMemory;
 
-	tstring typeToString(PatType type)
-	{
-		switch (type)
-		{
-		case PT_Event    : return _T("событие");
-		case PT_Rule     : return _T("продукционное правило");
-		case PT_Operation: return _T("операция");
-		case PT_Keyboard : return _T("клавиатурная операция");
-		default          : return _T("неизвестный");
-		}
-	}
-
-	void addChoiceFromCalc(CREF(rdoRuntime::LPRDOCalc) pCalc);
+	tstring               typeToString     (PatType type) const;
+	void                  addChoiceFromCalc(CREF(rdoRuntime::LPRDOCalc) pCalc);
+	LPRDORelevantResource findRelRes       (CREF(LPRDOValue) pValue) const;
 
 	DECLARE_IContextFind;
+	DECLARE_IContextSwitch;
 	DECLARE_IContextCreateExpression;
 };
 DECLARE_POINTER(RDOPATPattern);
