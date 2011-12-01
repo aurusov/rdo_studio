@@ -155,7 +155,7 @@ LPContext RDOParser::onFindContext(CREF(LPRDOValue) pValue) const
 	if (pResource)
 	{
 		//! Это ресурс с закладки RSS
-		return pResource.object_static_cast<Context>();
+		return const_cast<PTR(RDOParser)>(this);
 	}
 
 	//! Константы
@@ -184,6 +184,20 @@ LPContext RDOParser::onFindContext(CREF(LPRDOValue) pValue) const
 				return const_cast<PTR(RDOParser)>(this);
 			}
 		}
+	}
+
+	const_cast<PTR(RDOParser)>(this)->error().error(pValue->src_info(), rdo::format(_T("Неизвестный идентификатор: %s"), pValue->value().getIdentificator().c_str()));
+	return LPContext(NULL);
+}
+
+LPContext RDOParser::onSwitchContext(CREF(LPRDOValue) pValue) const
+{
+	//! Ресурсы
+	LPRDORSSResource pResource = findRSSResource(pValue->value().getIdentificator());
+	if (pResource)
+	{
+		//! Это ресурс с закладки RSS
+		return pResource.object_static_cast<Context>();
 	}
 
 	const_cast<PTR(RDOParser)>(this)->error().error(pValue->src_info(), rdo::format(_T("Неизвестный идентификатор: %s"), pValue->value().getIdentificator().c_str()));
@@ -290,6 +304,7 @@ LPExpression RDOParser::onCreateExpression(CREF(LPRDOValue) pValue)
 		}
 	}
 
+	const_cast<PTR(RDOParser)>(this)->error().error(pValue->src_info(), rdo::format(_T("Неизвестный идентификатор: %s"), pValue->value().getIdentificator().c_str()));
 	return LPExpression(NULL);
 }
 

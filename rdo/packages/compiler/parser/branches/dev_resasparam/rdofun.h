@@ -22,6 +22,7 @@
 #include "simulator/compiler/parser/context/context.h"
 #include "simulator/compiler/parser/context/memory.h"
 #include "simulator/compiler/parser/context/context_find_i.h"
+#include "simulator/compiler/parser/context/context_switch_i.h"
 #include "simulator/compiler/parser/context/context_create_expression_i.h"
 
 #include "simulator/runtime/rdo_object.h"
@@ -628,6 +629,7 @@ CLASS(RDOFUNGroup):
 	    INSTANCE_OF      (RDOParserSrcInfo        )
 	AND INSTANCE_OF      (Context                 )
 	AND IMPLEMENTATION_OF(IContextFind            )
+	AND IMPLEMENTATION_OF(IContextSwitch          )
 	AND IMPLEMENTATION_OF(IContextCreateExpression)
 {
 DECLARE_FACTORY(RDOFUNGroup);
@@ -646,6 +648,7 @@ private:
 	LPRDORTPResType m_pResType;
 
 	DECLARE_IContextFind;
+	DECLARE_IContextSwitch;
 	DECLARE_IContextCreateExpression;
 };
 DECLARE_POINTER(RDOFUNGroup);

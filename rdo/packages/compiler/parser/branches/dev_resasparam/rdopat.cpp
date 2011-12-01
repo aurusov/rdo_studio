@@ -92,14 +92,21 @@ RDOPATPattern::RDOPATPattern(CREF(RDOParserSrcInfo) name_src_info)
 	pLocalVariableListStack->push(pLocalVariableList);
 }
 
-LPContext RDOPATPattern::onFindContext(CREF(LPRDOValue) pValue) const
+tstring RDOPATPattern::typeToString(PatType type) const
+{
+	switch (type)
+	{
+	case PT_Event    : return _T("событие");
+	case PT_Rule     : return _T("продукционное правило");
+	case PT_Operation: return _T("операция");
+	case PT_Keyboard : return _T("клавиатурная операция");
+	default          : return _T("неизвестный");
+	}
+}
+
+LPRDORelevantResource RDOPATPattern::findRelRes(CREF(LPRDOValue) pValue) const
 {
 	ASSERT(pValue);
-
-	if (m_pContextMemory->onFindContext(pValue))
-	{
-		return m_pContextMemory;
-	}
 
 	//! Релевантные ресурсы
 	LPRDORelevantResource pRelevantResource = findRelevantResource(pValue->value().getIdentificator());
@@ -169,7 +176,24 @@ LPContext RDOPATPattern::onFindContext(CREF(LPRDOValue) pValue) const
 				}
 			}
 		}
-		return pRelevantResource.object_parent_cast<Context>();
+	}
+	return pRelevantResource;
+}
+
+LPContext RDOPATPattern::onFindContext(CREF(LPRDOValue) pValue) const
+{
+	ASSERT(pValue);
+
+	if (m_pContextMemory->onFindContext(pValue))
+	{
+		return m_pContextMemory;
+	}
+
+	//! Релевантные ресурсы
+	LPRDORelevantResource pRelevantResource = findRelRes(pValue);
+	if (pRelevantResource)
+	{
+		return const_cast<PTR(RDOPATPattern)>(this);
 	}
 
 	//! Параметры
@@ -179,7 +203,21 @@ LPContext RDOPATPattern::onFindContext(CREF(LPRDOValue) pValue) const
 		return const_cast<PTR(RDOPATPattern)>(this);
 	}
 
-	return NULL;
+	return LPContext(NULL);
+}
+
+LPContext RDOPATPattern::onSwitchContext(CREF(LPRDOValue) pValue) const
+{
+	ASSERT(pValue);
+
+	//! Релевантные ресурсы
+	LPRDORelevantResource pRelevantResource = findRelRes(pValue);
+	if (pRelevantResource)
+	{
+		return pRelevantResource.object_parent_cast<Context>();
+	}
+
+	return LPContext(NULL);
 }
 
 LPExpression RDOPATPattern::onCreateExpression(CREF(LPRDOValue) pValue)

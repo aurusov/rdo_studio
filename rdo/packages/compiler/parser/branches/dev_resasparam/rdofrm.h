@@ -18,6 +18,7 @@
 #include "simulator/compiler/parser/rdofun.h"
 #include "simulator/compiler/parser/context/context.h"
 #include "simulator/compiler/parser/context/context_find_i.h"
+#include "simulator/compiler/parser/context/context_switch_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -33,6 +34,7 @@ CLASS(RDOFRMFrame):
 	    INSTANCE_OF      (RDOParserSrcInfo)
 	AND INSTANCE_OF      (Context         )
 	AND IMPLEMENTATION_OF(IContextFind    )
+	AND IMPLEMENTATION_OF(IContextSwitch  )
 {
 DECLARE_FACTORY(RDOFRMFrame);
 public:
@@ -46,6 +48,7 @@ private:
 	rdoRuntime::LPRDOFRMFrame m_pFrame;
 
 	DECLARE_IContextFind;
+	DECLARE_IContextSwitch;
 };
 DECLARE_POINTER(RDOFRMFrame);
 
