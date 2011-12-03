@@ -11,6 +11,7 @@
 #define _RDO_STUDIO_CONSOLE_CONTROLLER_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/optional.hpp>
 #include <boost/thread/mutex.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
@@ -21,15 +22,14 @@ class RDOStudioConsoleController: public RDOThread
 public:
 	RDOStudioConsoleController();
 	virtual ~RDOStudioConsoleController();
-	
-	bool simulationFinished();
-	
+
+	rbool simulationFinished();
+
 private:
+	boost::optional<rbool>  m_simulation;
+	boost::mutex            m_simulationMutex;
+
 	void proc(REF(RDOMessageInfo) msg);
-	
-private:
-	boost::mutex m_simulation_mutex;
-	rbool        m_simulation;
 };
 
 #endif // _RDO_STUDIO_CONSOLE_CONTROLLER_H_

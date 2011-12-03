@@ -16,7 +16,7 @@
 #include "app/rdo_studio_console/rdo_studio_console_controller.h"
 // --------------------------------------------------------------------------------
 
-int main(int argc, char *argv[])
+int main(int argc, PTR(char) argv[])
 {
 	RDOControllerConsoleOptions options_controller(argc, argv);
 
@@ -25,21 +25,22 @@ int main(int argc, char *argv[])
 	tstring model_name;
 	options_controller.getModelName(model_name);
 	
-	if(!model_name.empty())
+	if (!model_name.empty())
 	{
 		// Init
 		RDOKernel::init();
 		new rdoSimulator::RDOThreadSimulator();
 		new rdoRepository::RDOThreadRepository();
 
-		RDOStudioConsoleController* app_controller = new RDOStudioConsoleController();
+		PTR(RDOStudioConsoleController) pAppController = new RDOStudioConsoleController();
+		ASSERT(pAppController);
 
 		rdoRepository::RDOThreadRepository::OpenFile data(model_name);
-		app_controller->broadcastMessage(RDOThread::RT_STUDIO_MODEL_OPEN, &data);
-		app_controller->broadcastMessage(RDOThread::RT_STUDIO_MODEL_BUILD);
-		app_controller->broadcastMessage(RDOThread::RT_STUDIO_MODEL_RUN  );
+		pAppController->broadcastMessage(RDOThread::RT_STUDIO_MODEL_OPEN, &data);
+		pAppController->broadcastMessage(RDOThread::RT_STUDIO_MODEL_BUILD);
+		pAppController->broadcastMessage(RDOThread::RT_STUDIO_MODEL_RUN  );
 
-		while(app_controller->simulationFinished())
+		while (pAppController->simulationFinished())
 		{
 			kernel->idle();
 		}
@@ -47,7 +48,7 @@ int main(int argc, char *argv[])
 		// Close
 		RDOKernel::close();
 
-		std::cout << "  simulation finished successfully  " << std::endl;
+		std::cout << _T("  simulation finished successfully  ") << std::endl;
 	}
 	return 0;
 }

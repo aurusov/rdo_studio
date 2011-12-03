@@ -16,12 +16,11 @@
 void test_fun()
 {
 	int i = 0;
-	(void)i;
+	UNUSED(i);
 }
 
 RDOStudioConsoleController::RDOStudioConsoleController()
 	: RDOThread(_T("RDOThreadRDOStudioConsoleController"))
-	, m_simulation(true)
 {
 	notifies.push_back(RT_REPOSITORY_MODEL_OPEN             );
 	notifies.push_back(RT_REPOSITORY_MODEL_OPEN_GET_NAME    );
@@ -45,15 +44,17 @@ RDOStudioConsoleController::RDOStudioConsoleController()
 }
 
 RDOStudioConsoleController::~RDOStudioConsoleController()
-{
-}
+{}
 
-bool RDOStudioConsoleController::simulationFinished()
+rbool RDOStudioConsoleController::simulationFinished()
 {
-	bool res = true;
-	m_simulation_mutex.lock();
-	res = m_simulation;
-	m_simulation_mutex.unlock();
+	rbool res = true;
+	m_simulationMutex.lock();
+	if (m_simulation)
+	{
+		res = m_simulation.get();
+	}
+	m_simulationMutex.unlock();
 	return !res;
 }
 
@@ -98,13 +99,16 @@ void RDOStudioConsoleController::proc(REF(RDOThread::RDOMessageInfo) msg)
 		break;
 		
 	case RDOThread::RT_RUNTIME_MODEL_STOP_BEFORE:
+		m_simulationMutex.lock();
+		m_simulation = true;
+		m_simulationMutex.unlock();
 		test_fun();
 		break;
 		
 	case RDOThread::RT_SIMULATOR_MODEL_STOP_OK:
-		m_simulation_mutex.lock();
+		m_simulationMutex.lock();
 		m_simulation = false;
-		m_simulation_mutex.unlock();
+		m_simulationMutex.unlock();
 		test_fun();
 		break;
 		
