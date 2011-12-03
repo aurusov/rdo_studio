@@ -72,6 +72,55 @@ rp::RPXMLNode* RPObjectMatrix::save( rp::RPXMLNode* parent_node )
 	return obj_node;
 }
 
+void RPObjectMatrix::saveToXML(REF (pugi::xml_node) parentNode) const
+{
+	// Создаем текстовый подузел "BaseClass" для узла parentNode
+						  parentNode.append_child(pugi::node_comment).set_value(_T("BaseClass"));
+	pugi::xml_node node = parentNode.append_child                         (_T("RPObjectMatrix"));
+	// Записываем атрибуты графики:
+	node.append_attribute(_T("X"))       .set_value(getCenter().x);
+	node.append_attribute(_T("Y"))       .set_value(getCenter().y);
+	node.append_attribute(_T("scale_X")) .set_value(getScaleX()  );
+	node.append_attribute(_T("scale_Y")) .set_value(getScaleY()  );
+	node.append_attribute(_T("alpha"))   .set_value(getRotation());
+}
+
+void RPObjectMatrix::loadFromXML(CREF(pugi::xml_node) node)
+{
+	// Поиск узла <RPObjectMatrix/> в списке потомков корня поддерева:
+	for (pugi::xml_node next_node = node.first_child(); next_node; next_node = next_node.next_sibling())
+	{
+		if (strcmp(next_node.name(), "RPObjectMatrix") == 0)
+		{
+			for (pugi::xml_attribute attr = next_node.first_attribute(); attr; attr = attr.next_attribute())
+			{
+				// Для отслеживания процесса "debug" заводим новую переменную:
+				tstring attrName = attr.name();
+				if (attrName == _T("X"))
+				{
+					setX(attr.as_double());
+				}
+				else if (attrName == _T("Y"))
+				{
+					setY(attr.as_double());
+				}
+				else if (attrName == _T("scale_X"))
+				{
+					setScaleX(attr.as_double());
+				}
+				else if (attrName == _T("scale_Y"))
+				{
+					setScaleY(attr.as_double());
+				}
+				else if (attrName == _T("alpha"))
+				{
+					setRotation(attr.as_double());
+				}
+			}
+		}
+	}
+}
+
 void RPObjectMatrix::setPosition( double posx, double posy )
 {
 	matrix_transform.dx() = posx;

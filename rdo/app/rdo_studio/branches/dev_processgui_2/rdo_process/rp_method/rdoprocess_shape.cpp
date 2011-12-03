@@ -85,6 +85,67 @@ rp::RPXMLNode* RPShape::save( rp::RPXMLNode* parent_node )
 	return obj_node;
 }
 
+
+void RPShape::saveToXML(REF(pugi::xml_node) parentNode) const
+{
+	pugi::xml_node node = parentNode.append_child(_T("RPShape"));
+	// Создаем фон:
+	CFont font;
+	LOGFONT lf;
+	font.CreateFontIndirectA(&lf);
+
+		//node.append_attribute(_T("name"))   .set_value(lf.lfFaceName                                );
+		//node.append_attribute(_T("height")) .set_value(lf.lfHeight                                  );
+		//node.append_attribute(_T("color"))  .set_value(RPObjectChart::colorToStr(text_color).c_str());
+		//node.append_attribute(_T("show"))   .set_value(rp::string::   frombool  (text_show ).c_str());
+
+	// Создаем кисть:
+	CBrush brush;
+	LOGBRUSH lb;
+	brush.CreateBrushIndirect(&lb);
+
+		node.append_attribute(_T("color")) .set_value(RPObjectChart::colorToStr(lb.lbColor).c_str());
+		//node.append_attribute(_T("style"))       .set_value(lb.lbStyle                                   );
+}
+
+void RPShape::loadFromXML(CREF(pugi::xml_node) node)
+{
+	// Поиск узла <RPShape/> в списке потомков корня поддерева:
+	for (pugi::xml_node next_node = node.first_child(); next_node; next_node = next_node.next_sibling())
+	{
+		if (strcmp(next_node.name(), "RPShape") == 0)
+		{
+			for (pugi::xml_attribute attr = next_node.first_attribute(); attr; attr = attr.next_attribute())
+			{
+				// Для отслеживания процесса "debug" заводим новую переменную:
+				tstring attrName = attr.name();
+				//if (attrName == _T("name"))
+				//{
+				//	rp::string font_name(attr.value());
+				//	LOGFONT lf;
+				//	text_font.GetLogFont(&lf);
+				//}
+				//else if (attrName == _T("height"))
+				//{
+				//	LOGFONT lf;
+				//	lf.lfHeight = attr.as_int();
+				//}
+				if (attrName == _T("color"))
+				{
+					CFont font;
+					font.m_hObject;
+					LOGBRUSH lb;
+					lb.lbColor = attr.hash_value();
+					CBrush brush;
+					brush.CreateBrushIndirect(&lb);
+					modify();
+					update();
+				}
+			}
+		}
+	}
+}
+
 RPObjectChart* RPShape::find( const rp::point& global_chart_pos )
 {
 	if ( pointInShape(global_chart_pos) ) {

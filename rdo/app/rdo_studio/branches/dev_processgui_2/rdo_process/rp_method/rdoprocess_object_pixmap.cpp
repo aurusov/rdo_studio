@@ -54,6 +54,7 @@ void RPObjectPixmap::saveToXML(REF(pugi::xml_node) parentNode) const
 void RPObjectPixmap::loadFromXML(CREF(pugi::xml_node) node)
 {
 	// Пустой метод, так как "корзина" сама загружается.
+	UNUSED(node);
 }
 
 void RPObjectPixmap::setPosition( double posx, double posy )

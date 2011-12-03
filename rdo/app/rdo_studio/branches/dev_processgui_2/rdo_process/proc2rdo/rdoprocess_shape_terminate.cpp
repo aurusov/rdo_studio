@@ -69,12 +69,11 @@ void RPShapeTerminateMJ::saveToXML(REF(pugi::xml_node) parentNode) const
 	pugi::xml_node node = parentNode.append_child(getClassName().c_str());
 	// Соxраняем атрибуты объекта:
 	// 1) Атрибуты графики
-	node.append_attribute(_T("gname"))           .set_value(getName().c_str());
-	node.append_attribute(_T("pos_X"))           .set_value(getCenter().x    );
-	node.append_attribute(_T("pos_Y"))           .set_value(getCenter().y    );
-	node.append_attribute(_T("scale_X"))         .set_value(getScaleX()      );
-	node.append_attribute(_T("scale_Y"))         .set_value(getScaleY()      );
-	node.append_attribute(_T("terminateCounter")).set_value(m_term_inc       );
+	RPObjectMatrix::saveToXML(node);
+	RPShape::       saveToXML(node);
+	// 2) Атрибуты симулятора
+	node.append_attribute(_T("name"))                .set_value(getName().c_str());
+	node.append_attribute(_T("terminateCounter"))    .set_value(m_term_inc       );
 }
 
 void RPShapeTerminateMJ::loadFromXML(CREF(pugi::xml_node) node)
@@ -82,24 +81,19 @@ void RPShapeTerminateMJ::loadFromXML(CREF(pugi::xml_node) node)
 	// Считываем атрибуты для загрузки сохраненного блока "Terminate":
 	for (pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute())
 	{
+		// Присваиваем сохраненные в xml-файле параметры:
+		// Для симулятора (диалоговые окна)
 		tstring attrName = attr.name();
-		if (attrName == _T("gname"))
+		if (attrName == _T("name"))
 		{
 			setName(attr.value());
-		}
-		else if (attrName == _T("pos_X"))
-		{
-			setX(attr.as_double());
 		}
 		else if (attrName == _T("terminateCounter"))
 		{
 			m_term_inc = attr.as_int();
 		}
-		// Присваиваем сохраненные в xml-файле параметры:
-		// 1) Для отображения объекта на Flowchart'е
-		if ( strcmp(attr.name(), "pos_Y")      == 0 )			setY      (attr.as_double());
-		if ( strcmp(attr.name(), "scale_X")    == 0 )			setScaleX (attr.as_double());
-		if ( strcmp(attr.name(), "scale_Y")    == 0 )			setScaleY (attr.as_double());
-		// 2) Для симулятора (диалоговые окна)
 	}
+	// Отображения объекта на Flowchart'е
+	RPObjectMatrix::loadFromXML(node);
+	RPShape::       loadFromXML(node);
 }

@@ -69,6 +69,8 @@ void RPObjectFlowChart_MJ::saveToXML(REF(pugi::xml_node) parentNode) const
 {
 	// Создаем узел FlowChart'а:
 	pugi::xml_node node = parentNode.append_child(getClassName().c_str());
+	// Атрибуты <RPObjectFlowChart_MJ>:
+	node.append_attribute(_T("path")).set_value(getFullName().c_str());
 
 	// Заносим в список потомков FlowChart'а:
 	std::list<PTR(RPObject)> all_child;
@@ -88,6 +90,10 @@ void RPObjectFlowChart_MJ::loadFromXML(CREF(pugi::xml_node) node)
 	{
 		// В класс RPObjectPixmap не заходим, т.к. он абстрактный:
 		if (strcmp(child.name(), "RPObjectPixmap") != 0)
-			(rpMethod::factory->getNewObject(child.name(), this))->loadFromXML(child);
+		{
+			PTR(RPObject) pFlowObject = static_cast<PTR(RPObject)>(rpMethod::factory->getNewObject(child.name(), this));
+			ASSERT(pFlowObject);
+			pFlowObject->loadFromXML(child);
+		}
 	}
 }

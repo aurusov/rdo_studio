@@ -33,9 +33,8 @@ public:
     virtual void onLButtonDblClk( UINT nFlags, CPoint global_chart_pos );
 	virtual void generate();
 
-	// Переопределенная виртуальная функция saveToXML для RPShapeTerminateMJ:
-	void saveToXML(REF(pugi::xml_node) parentNode) const;
-	// Переопределенная виртуальная функция loadFromXML для RPShapeTerminateMJ:
+	// Переопределенная виртуальная функция saveToXML и loadFromXML для RPShapeTerminateMJ:
+	void saveToXML  (REF (pugi::xml_node) parentNode) const;
 	void loadFromXML(CREF(pugi::xml_node) node);
 };
 

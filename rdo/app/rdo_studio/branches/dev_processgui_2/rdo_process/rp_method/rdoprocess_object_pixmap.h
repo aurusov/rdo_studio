@@ -27,9 +27,8 @@ public:
 	virtual rp::string getClassName() const { return "RPObjectPixmap"; }
 	virtual void load( rp::RPXMLNode* node );
 	virtual rp::RPXMLNode* save( rp::RPXMLNode* parent_node );
-	// Переопределение виртуальной функции saveToXML для RPObjectPixmap:
-	void saveToXML(REF(pugi::xml_node) parentNode) const;
-	// Переопределение виртуальной функции loadFromXML для RPObjectPixmap:
+	// Переопределение виртуальных функций saveToXML и loadFromXML для RPObjectPixmap:
+	void saveToXML  (REF (pugi::xml_node) parentNode) const;
 	void loadFromXML(CREF(pugi::xml_node) node);
 };
 

@@ -69,4 +69,16 @@ void msg::notify( RPObject* from, UINT message, void* param )
 	}
 }
 
+void msg::saveToXML(REF(pugi::xml_node) parentNode) const
+{
+	UNUSED(parentNode);
+	NEVER_REACH_HERE;
 }
+
+void msg::loadFromXML(const pugi::xml_node &node)
+{
+	UNUSED(node);
+	NEVER_REACH_HERE;
+}
+
+} // namespace rp

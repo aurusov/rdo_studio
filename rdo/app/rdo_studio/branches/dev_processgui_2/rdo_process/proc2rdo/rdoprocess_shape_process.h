@@ -49,9 +49,8 @@ public:
 
 	std::list< CString> list_resource_procMJ;
 
-	// Перопределенная виртуальная функция saveToXML для RPShapeProcessMJ:
-	void saveToXML(REF(pugi::xml_node) parentNode) const;
-	// Перопределенная виртуальная функция loadFromXML для RPShapeProcessMJ:
+	// Перопределенная виртуальная функция saveToXML и loadFromXML для RPShapeProcessMJ:
+	void saveToXML  (REF (pugi::xml_node) parentNode) const;
 	void loadFromXML(CREF(pugi::xml_node) node);
 };
 

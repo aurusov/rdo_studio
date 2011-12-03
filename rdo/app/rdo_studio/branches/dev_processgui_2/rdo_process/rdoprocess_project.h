@@ -28,9 +28,8 @@ public:
 	void open();
 	void save();
 	virtual void load( rp::RPXMLNode* node );
-	// Переопределенная виртуальная функция saveToXML для RPProjectMFC:
-	void saveToXML(REF(pugi::xml_node) parentNode) const;
-	// Переопределенная виртуальная функция loadFromXML для RPProjectMFC:
+	// Переопределенная виртуальная функция saveToXML и loadFromXML для RPProjectMFC:
+	void saveToXML  (REF (pugi::xml_node) parentNode) const;
 	void loadFromXML(CREF(pugi::xml_node) node);
 };
 

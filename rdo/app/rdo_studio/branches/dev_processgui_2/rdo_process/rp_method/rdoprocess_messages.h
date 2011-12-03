@@ -45,20 +45,10 @@ public:
 	void disconnect( RPObject* to );
 	void disconnect( RPObject* to, UINT message );
 
-	// Блокируем вхождение в данный класс функции saveToXML
+	// Блокируем вхождение в данный класс функции saveToXML и loadFromXML
 	// (из-за проектной ошибки - класс msg не должен наследоваться от RPObject).
-	virtual void saveToXML(REF(pugi::xml_node) parentNode) const
-	{
-		UNUSED(parentNode);
-		NEVER_REACH_HERE;
-	};
-	// Блокируем вхождение в данный класс функции loadFromXML
-	// (из-за проектной ошибки - класс msg не должен наследоваться от RPObject).
-	virtual void loadFromXML(CREF(pugi::xml_node) node)
-	{
-		UNUSED(node);
-		NEVER_REACH_HERE;
-	};
+	virtual void saveToXML  (REF (pugi::xml_node) parentNode) const;
+	virtual void loadFromXML(CREF(pugi::xml_node) node);
 };
 
 } // namespace rp

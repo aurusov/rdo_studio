@@ -57,38 +57,49 @@ rp::RPXMLNode* RPConnector::save( rp::RPXMLNode* parent_node )
 void RPConnector::saveToXML(REF(pugi::xml_node) parentNode) const
 {
 	// Записываем узел <RPConnector/>:
-	pugi::xml_node      node        = parentNode.append_child(getClassName().c_str());
+	pugi::xml_node node = parentNode.append_child(getClassName().c_str());
 	// Соxраняем атрибуты объекта:
-	pugi::xml_attribute obj_from    = node.append_attribute("obj_from");
-						obj_from.set_value(dock_begin->object().getFullName().c_str());
-	pugi::xml_attribute obj_to      = node.append_attribute("obj_to");
-						obj_to.set_value(dock_end->object().getFullName().c_str());
-	pugi::xml_attribute index_from  = node.append_attribute("index_from");
-						index_from.set_value(dock_begin->getIndex());
-	pugi::xml_attribute index_to    = node.append_attribute("index_to");
-						index_to.set_value(dock_end->getIndex());
+	node.append_attribute("obj_from")        .set_value(dock_begin->object().getFullName().c_str());
+	node.append_attribute("obj_to")          .set_value(dock_end->  object().getFullName().c_str());
+	node.append_attribute("index_from")      .set_value(dock_begin->getIndex()                    );
+	node.append_attribute("index_to")        .set_value(dock_end->  getIndex()                    );
 }
 
 void RPConnector::loadFromXML(CREF(pugi::xml_node) node)
 {
 	PTR(RPObject) pObjFrom = NULL;
 	PTR(RPObject) pObjTo   = NULL;
-
+	
 	// Считываем атрибуты для загрузки сохраненного блока "Connector":
 	for (pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute())
 	{
 		// Присваиваем сохраненные в xml-файле параметры:
-		// 1) Для отображения объекта на Flowchart'е
-		if ( strcmp(attr.name(), "obj_from")    == 0 )
+		// Для отображения объекта на Flowchart'е
+		tstring attrName = attr.name();
+		if (attrName == _T("obj_from"))
+		{
 			pObjFrom = rpMethod::project->findObject(attr.value());
-		if ( strcmp(attr.name(), "obj_to" )     == 0 )
+			// Для блока Resource восстанавливаем его коннектор (отличен от других):
+			if (pObjFrom->getClassInfo()->isKindOf("RPShapeResource_MJ"))
+			{
+				main_pen_width = 1;
+				main_pen_default.DeleteObject();
+				main_pen_default.CreatePen( PS_DASHDOTDOT, 1, RGB(0x00, 0x00, 0xFF) );
+				can_update = false;
+				setPen( main_pen_default );
+				can_update = true;
+			}
+		}
+		else if (attrName == _T("obj_to" ))
+		{
 			pObjTo = rpMethod::project->findObject(attr.value());
-		if ( strcmp(attr.name(), "index_from")  == 0)
+		}
+		else if (attrName == _T("index_from"))
 		{
 			ASSERT(pObjFrom && pObjFrom->getClassInfo()->isKindOf("RPShape"));
 			dock_begin = static_cast<RPShape*>(pObjFrom)->getDock(attr.as_uint());
 		}
-		if ( strcmp(attr.name(), "index_to")    == 0)
+		else if (attrName == _T("index_to"))
 		{
 			ASSERT(pObjTo && pObjTo->getClassInfo()->isKindOf("RPShape"));
 			dock_end = static_cast<RPShape*>(pObjTo)->getDock(attr.as_uint());

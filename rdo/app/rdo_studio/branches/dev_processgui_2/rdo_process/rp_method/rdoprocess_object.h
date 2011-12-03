@@ -61,7 +61,7 @@ public:
 	virtual void load( rp::RPXMLNode* node );
 	virtual rp::RPXMLNode* save( rp::RPXMLNode* parent_node );
 	// Чистая виртуальная функция для сохранения данных о графике в xml-формате:
-	virtual void saveToXML(REF(pugi::xml_node) parentNode) const = 0;
+	virtual void saveToXML  (REF (pugi::xml_node) parentNode) const = 0;
 	// Чистая виртуальная функция для загрузки графики из xml-файла:
 	virtual void loadFromXML(CREF(pugi::xml_node) node) = 0;
 
