@@ -1722,32 +1722,37 @@ process_input_statement
 	}
 	;
 
-evn_param_list
-	: /* empty */
-	{
-		LPArithmContainer pArithmContainer = rdo::Factory<ArithmContainer>::create();
-		ASSERT(pArithmContainer);
-		$$ = PARSER->stack().push(pArithmContainer);
-	}
-	| '(' arithm_list ')'
-	{
-		$$ = $2;
-	}
-	;
-
 planning_statement
-	: RDO_IDENTIF '.' RDO_Planning '(' fun_arithm ')' evn_param_list ';'
+	: RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')'';'
 	{
 		tstring        eventName   = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
-		LPRDOFUNArithm pTimeArithm = PARSER->stack().pop<RDOFUNArithm>($5);
+		LPArithmContainer pArithmList = PARSER->stack().pop<ArithmContainer>($5);
+		LPRDOFUNArithm pTimeArithm;
+		if (pArithmList->getContainer().empty())
+		{
+			PARSER->error().error(@1, rdo::format(_T("Не указано время планирования события: %s"), eventName.c_str()));
+		}
+		else
+		{
+			pTimeArithm = pArithmList->getContainer().at(0);
+		}
 		LPRDOEvent     pEvent      = PARSER->findEvent(eventName);
 		if (!pEvent)
 		{
 			PARSER->error().error(@1, rdo::format(_T("Попытка запланировать неизвестное событие: %s"), eventName.c_str()));
 		}
+		LPArithmContainer pParamList = rdo::Factory<ArithmContainer>::create();
 
-		LPArithmContainer pParamList = PARSER->stack().pop<ArithmContainer>($7);
-		ASSERT(pParamList);
+		STL_FOR_ALL_CONST(pArithmList->getContainer(), it)
+		{
+			if(it == pArithmList->getContainer().begin())
+			{
+				it++;
+				pParamList->addItem(*(it));
+			}
+			else
+				pParamList->addItem(*(it));
+		}
 		//! @todo А если такого события не существует ?
 		pEvent->setParamList(pParamList);
 
@@ -1760,7 +1765,7 @@ planning_statement
 
 		$$ = PARSER->stack().push(pCalc);
 	}
-	| RDO_IDENTIF '.' RDO_Planning '(' fun_arithm ')' '(' arithm_list ')' error
+	| RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')' error
 	{
 		PARSER->error().error(@7, _T("Не найден символ окончания инструкции - точка с запятой"));
 	}
@@ -1772,7 +1777,7 @@ planning_statement
 	{
 		PARSER->error().error(@4, _T("Ожидается открывающая скобка"));
 	}
-	| RDO_IDENTIF '.' RDO_Planning '(' fun_arithm')' '(' arithm_list error
+	| RDO_IDENTIF '.' RDO_Planning '(' arithm_list error
 	{
 		PARSER->error().error(@6, _T("Ожидается закрывающая скобка"));
 	}
@@ -2413,6 +2418,16 @@ fun_arithm
 	| RDO_IDENTIF                        { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1))); }
 	| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1), PARSER->stack().pop<RDOValue>($3))); }
 	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1), PARSER->stack().pop<RDOValue>($3))); }
+	| '*' 
+	{
+		LPRDOValue pValue = rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@1, _T("*")));
+		ASSERT(pValue);
+		LPExpression pExpression = rdo::Factory<Expression>::create(pValue);
+		ASSERT(pExpression);
+		LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
+		ASSERT(pArithm);
+		$$ = PARSER->stack().push(pArithm);
+	}
 	| fun_arithm '+' fun_arithm
 	{
 		LPRDOFUNArithm pArithm1 = PARSER->stack().pop<RDOFUNArithm>($1);
@@ -2573,7 +2588,7 @@ arithm_list
 	}
 	| arithm_list_body
 	;
-
+ 
 arithm_list_body
 	: fun_arithm
 	{

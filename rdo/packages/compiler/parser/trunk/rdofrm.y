@@ -1940,6 +1940,16 @@ fun_arithm
 	| RDO_IDENTIF                        { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1))); }
 	| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1), PARSER->stack().pop<RDOValue>($3))); }
 	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1), PARSER->stack().pop<RDOValue>($3))); }
+	| '*' 
+	{
+		LPRDOValue pValue = rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@1, _T("*")));
+		ASSERT(pValue);
+		LPExpression pExpression = rdo::Factory<Expression>::create(pValue);
+		ASSERT(pExpression);
+		LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
+		ASSERT(pArithm);
+		$$ = PARSER->stack().push(pArithm);
+	}
 	| fun_arithm '+' fun_arithm
 	{
 		LPRDOFUNArithm pArithm1 = PARSER->stack().pop<RDOFUNArithm>($1);
@@ -2099,7 +2109,7 @@ arithm_list
 		$$ = PARSER->stack().push(pArithmContainer);
 	}
 	| arithm_list_body
-	{};
+	;
 
 arithm_list_body
 	: fun_arithm

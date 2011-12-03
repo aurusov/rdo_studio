@@ -226,23 +226,48 @@ void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 			STL_FOR_ALL_CONST(pEvent->getParamList()->getContainer(), paramIT)
 			{
 				LPRDOFUNArithm pParam = *paramIT;
-				if(m_currParam < pPattern->m_paramList.size())
+				if (m_currParam < pPattern->m_paramList.size())
 				{
+					rdoRuntime::LPRDOCalc pSetParamCalc;
 					LPRDOParam pPatternParam = pPattern->m_paramList[m_currParam];
 					ASSERT(pPatternParam);
-					LPTypeInfo pTypeInfo = pPatternParam->getTypeInfo();
-					ASSERT(pTypeInfo);
-					rdoRuntime::LPRDOCalc pParamValueCalc = pParam->createCalc(pTypeInfo);
-					ASSERT(pParamValueCalc);
-					rdoRuntime::LPRDOCalc pSetParamCalc = rdo::Factory<rdoRuntime::RDOSetPatternParamCalc>::create(
-						m_currParam,
-						pParamValueCalc
-					);
+					if (pParam->typeInfo()->src_info().src_text() == _T("*"))
+					{
+						if (!pPatternParam->getDefault()->defined())
+						{
+							RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format(_T("Ќет значени€ по-умолчанию дл€ параметра '%s'"), pPatternParam->src_text().c_str()));
+							RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format(_T("—м. параметр '%s', тип '%s'"), pPatternParam->src_text().c_str(), pPatternParam->getTypeInfo()->src_info().src_text().c_str()));
+							RDOParser::s_parser()->error().push_done();
+						}
+						rdoRuntime::RDOValue val = pPatternParam->getDefault()->value();
+						ASSERT(val);
+						pSetParamCalc = rdo::Factory<rdoRuntime::RDOSetPatternParamCalc>::create(
+							m_currParam,
+							rdo::Factory<rdoRuntime::RDOCalcConst>::create(val)
+						);
+					}
+					else
+					{
+						LPTypeInfo pTypeInfo = pPatternParam->getTypeInfo();
+						ASSERT(pTypeInfo);
+						rdoRuntime::LPRDOCalc pParamValueCalc = pParam->createCalc(pTypeInfo);
+						ASSERT(pParamValueCalc);
+						pSetParamCalc = rdo::Factory<rdoRuntime::RDOSetPatternParamCalc>::create(
+							m_currParam,
+							pParamValueCalc
+						);
+					}
 					ASSERT(pSetParamCalc);
 					pActivity->addParamCalc(pSetParamCalc);
 					++m_currParam;
 				}
+				else
+				{
+					RDOParser::s_parser()->error().push_only(pParam->src_info(), rdo::format(_T("—лишком много параметров дл€ событи€ '%s' при планировании событи€ '%s'"), pEvent->name().c_str(), pEvent->name().c_str()));
+					RDOParser::s_parser()->error().push_done();
+				}
 			}
+			m_currParam = 0;
 		}
 		else
 		{
