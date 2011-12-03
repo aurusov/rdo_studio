@@ -132,13 +132,12 @@ LPRDOValue RDORTPResType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcIn
 	ASSERT(pFrom);
 
 	LPRDORTPResType pRTPResType = pFrom->typeInfo()->type().object_dynamic_cast<RDORTPResType>();
-	
-	LPRDOType pFromType = pFrom->typeInfo()->type();
-	LPRDOType pThisType = const_cast<PTR(RDORTPResType)>(this);
 	if (pRTPResType)
 	{
+		LPRDOType pThisType = const_cast<PTR(RDORTPResType)>(this);
+
 		//! Это один и тот же тип
-		if (pFromType == pThisType)
+		if (pThisType == pRTPResType)
 			return pFrom;
 
 		//! Типы разные, сгенерим ошибку
@@ -160,6 +159,7 @@ rdoRuntime::LPRDOCalc RDORTPResType::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCalc
 
 rdoRuntime::RDOValue RDORTPResType::get_default() const
 {
+	NEVER_REACH_HERE;
 	return rdoRuntime::RDOValue();
 	//return rdoRuntime::RDOValue (pResourceType,pResource);
 }
