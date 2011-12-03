@@ -1725,35 +1725,34 @@ process_input_statement
 planning_statement
 	: RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')'';'
 	{
-		tstring        eventName   = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+		tstring           eventName   = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		LPArithmContainer pArithmList = PARSER->stack().pop<ArithmContainer>($5);
-		LPRDOFUNArithm pTimeArithm;
-		if (pArithmList->getContainer().empty())
-		{
-			PARSER->error().error(@1, rdo::format(_T("Не указано время планирования события: %s"), eventName.c_str()));
-		}
-		else
-		{
-			pTimeArithm = pArithmList->getContainer().at(0);
-		}
-		LPRDOEvent     pEvent      = PARSER->findEvent(eventName);
+
+		LPRDOEvent pEvent = PARSER->findEvent(eventName);
 		if (!pEvent)
 		{
 			PARSER->error().error(@1, rdo::format(_T("Попытка запланировать неизвестное событие: %s"), eventName.c_str()));
 		}
-		LPArithmContainer pParamList = rdo::Factory<ArithmContainer>::create();
 
-		STL_FOR_ALL_CONST(pArithmList->getContainer(), it)
+		ArithmContainer::Container::const_iterator arithmIt = pArithmList->getContainer().begin();
+		if (arithmIt == pArithmList->getContainer().end())
 		{
-			if(it == pArithmList->getContainer().begin())
-			{
-				it++;
-				pParamList->addItem(*(it));
-			}
-			else
-				pParamList->addItem(*(it));
+			PARSER->error().error(@1, rdo::format(_T("Не указано время планирования события: %s"), eventName.c_str()));
 		}
-		//! @todo А если такого события не существует ?
+
+		LPRDOFUNArithm pTimeArithm = *arithmIt;
+		ASSERT(pTimeArithm);
+		++arithmIt;
+
+		LPArithmContainer pParamList = rdo::Factory<ArithmContainer>::create();
+		ASSERT(pParamList);
+
+		while (arithmIt != pArithmList->getContainer().end())
+		{
+			pParamList->addItem(*arithmIt);
+			++arithmIt;
+		}
+
 		pEvent->setParamList(pParamList);
 
 		rdoRuntime::LPRDOCalc pCalcTime = pTimeArithm->createCalc(NULL);
@@ -2588,7 +2587,7 @@ arithm_list
 	}
 	| arithm_list_body
 	;
- 
+
 arithm_list_body
 	: fun_arithm
 	{
