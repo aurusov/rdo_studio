@@ -95,21 +95,23 @@ tstring RDORTPResType::name() const
 	return s_name;
 }
 
-LPRDOType RDORTPResType::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+LPRDOType RDORTPResType::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
 	UNUSED(from_src_info);
 
-	switch (from->typeID())
+	switch (pFrom->typeID())
 	{
 	case rdoRuntime::RDOType::t_pointer:
 		{	
 			LPRDOType pThisRTPType(const_cast<PTR(RDORTPResType)>(this));
+
 			//! Это один и тот же тип
-			if (pThisRTPType == from)
+			if (pThisRTPType == pFrom)
 				return pThisRTPType;
+
 			//! Типы разные, сгенерим ошибку
-			rdoParse::g_error().push_only(src_info,     _T("Несоответствие типов ресурсов"));
-			rdoParse::g_error().push_only(to_src_info,   to_src_info.src_text());
+			rdoParse::g_error().push_only(src_info,    _T("Несоответствие типов ресурсов"));
+			rdoParse::g_error().push_only(to_src_info, to_src_info.src_text());
 			rdoParse::g_error().push_done();
 			break;
 		}
@@ -121,7 +123,8 @@ LPRDOType RDORTPResType::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) 
 			break;
 		}
 	}
-	return NULL;
+
+	return LPRDOType(NULL);
 }
 
 LPRDOValue RDORTPResType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
@@ -134,19 +137,20 @@ LPRDOValue RDORTPResType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcIn
 	LPRDOType pThisType = const_cast<PTR(RDORTPResType)>(this);
 	if (pRTPResType)
 	{
-			//! Это один и тот же тип
-			if (pFromType == pThisType)
-				return pFrom;
-			//! Типы разные, сгенерим ошибку
-			rdoParse::g_error().push_only(src_info,     _T("Несоответствие типов ресурсов"));
-			rdoParse::g_error().push_only(to_src_info,   to_src_info.src_text());
-			rdoParse::g_error().push_done();
+		//! Это один и тот же тип
+		if (pFromType == pThisType)
+			return pFrom;
+
+		//! Типы разные, сгенерим ошибку
+		rdoParse::g_error().push_only(src_info,    _T("Несоответствие типов ресурсов"));
+		rdoParse::g_error().push_only(to_src_info, to_src_info.src_text());
+		rdoParse::g_error().push_done();
 	}
 	rdoParse::g_error().push_only(src_info,    rdo::format(_T("Ожидается ресурс, найдено: %s"), pFrom->src_text().c_str()));
 	rdoParse::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
 	rdoParse::g_error().push_done();
 
-	return NULL;
+	return LPRDOValue(NULL);
 }
 
 rdoRuntime::LPRDOCalc RDORTPResType::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
