@@ -561,6 +561,7 @@ CLASS(RDOFUNFunction):
 	    INSTANCE_OF      (RDOParserSrcInfo        )
 	AND INSTANCE_OF      (Context                 )
 	AND IMPLEMENTATION_OF(IContextFind            )
+	AND IMPLEMENTATION_OF(IContextSwitch          )
 	AND IMPLEMENTATION_OF(IContextCreateExpression)
 {
 DECLARE_FACTORY(RDOFUNFunction)
@@ -616,6 +617,7 @@ private:
 	void init();
 
 	DECLARE_IContextFind;
+	DECLARE_IContextSwitch;
 	DECLARE_IContextCreateExpression;
 };
 DECLARE_POINTER(RDOFUNFunction);

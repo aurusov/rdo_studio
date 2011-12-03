@@ -1360,6 +1360,26 @@ LPContext RDOFUNFunction::onFindContext(CREF(LPRDOValue) pValue) const
 	return LPContext(NULL);
 }
 
+LPContext RDOFUNFunction::onSwitchContext(CREF(LPRDOValue) pValue) const
+{
+	//! Параметры
+	LPRDOParam pParam = findFUNFunctionParam(pValue->value().getIdentificator());
+	if (pParam)
+	{
+		LPRDOType pType = pParam->getTypeInfo()->type();
+		ASSERT(pType);
+
+		LPRDORTPResType pResType = pType.object_dynamic_cast<RDORTPResType>();
+		if (pResType)
+		{
+//			return pResType;
+			LPContext(NULL);
+		}
+	}
+
+	return LPContext(NULL);
+}
+
 LPExpression RDOFUNFunction::onCreateExpression(CREF(LPRDOValue) pValue)
 {
 	ASSERT(pValue);
