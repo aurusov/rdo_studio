@@ -25,15 +25,13 @@ Expression::Expression(CREF(LPTypeInfo) pType, CREF(rdoRuntime::LPRDOCalc) pCalc
 	, m_pCalc(pCalc)
 {
 	ASSERT(m_pType);
-	ASSERT(m_pCalc);
-
-	rdoRuntime::LPRDOCalcConst pConstCalc = m_pCalc.object_dynamic_cast<rdoRuntime::RDOCalcConst>();
-	if (pConstCalc)
+	
+	if (m_pCalc)
 	{
-		m_pValue = rdo::Factory<RDOValue>::create(pConstCalc->getValue(), src_info, m_pType);
-		if (m_pValue->typeID() == rdoRuntime::RDOType::t_identificator)
+		rdoRuntime::LPRDOCalcConst pConstCalc = m_pCalc.object_dynamic_cast<rdoRuntime::RDOCalcConst>();
+		if (pConstCalc)
 		{
-			__asm nop;
+			m_pValue = rdo::Factory<RDOValue>::create(pConstCalc->getValue(), src_info, m_pType);
 		}
 	}
 	setSrcInfo(src_info);
@@ -79,8 +77,10 @@ CREF(rdoRuntime::RDOSrcInfo) Expression::src_info() const
 
 void Expression::setSrcInfo(CREF(rdoRuntime::RDOSrcInfo) src_info)
 {
-	ASSERT(m_pCalc);
-	m_pCalc->setSrcInfo(src_info);
+	if (m_pCalc)
+	{
+		m_pCalc->setSrcInfo(src_info);
+	}
 }
 
 LPRDOValue Expression::constant() const
