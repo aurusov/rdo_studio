@@ -23,7 +23,7 @@ public:
 	RDOStudioConsoleController();
 	virtual ~RDOStudioConsoleController();
 
-	rbool simulationFinished();
+	rbool inProgress();
 
 private:
 	boost::optional<rbool>  m_simulation;

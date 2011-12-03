@@ -46,7 +46,7 @@ RDOStudioConsoleController::RDOStudioConsoleController()
 RDOStudioConsoleController::~RDOStudioConsoleController()
 {}
 
-rbool RDOStudioConsoleController::simulationFinished()
+rbool RDOStudioConsoleController::inProgress()
 {
 	rbool res = true;
 	m_simulationMutex.lock();
@@ -55,7 +55,7 @@ rbool RDOStudioConsoleController::simulationFinished()
 		res = m_simulation.get();
 	}
 	m_simulationMutex.unlock();
-	return !res;
+	return res;
 }
 
 void RDOStudioConsoleController::proc(REF(RDOThread::RDOMessageInfo) msg)

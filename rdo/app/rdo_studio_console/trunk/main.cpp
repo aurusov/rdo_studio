@@ -40,7 +40,7 @@ int main(int argc, PTR(char) argv[])
 		pAppController->broadcastMessage(RDOThread::RT_STUDIO_MODEL_BUILD);
 		pAppController->broadcastMessage(RDOThread::RT_STUDIO_MODEL_RUN  );
 
-		while (pAppController->simulationFinished())
+		while (pAppController->inProgress())
 		{
 			kernel->idle();
 		}
