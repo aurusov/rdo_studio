@@ -947,6 +947,19 @@ LPExpression RDORelevantResource::onCreateExpression(CREF(LPRDOValue) pValue)
 {
 	ASSERT(pValue);
 
+/*	if (name() == pValue->value().getIdentificator())
+	{
+	// пришло имя рел. ресурса
+		LPRDOValue pThisResource = rdo::Factory<RDOValue>::create(
+			pType,
+			pObject,
+			pValue->src_info()
+		);
+		LPExpression pExpression = rdo::Factory<Expression>::create(pThisResource);
+		ASSERT(pExpression);
+		return pExpression;
+	}
+*/
 	ruint parNumb = getType()->getRTPParamNumber(pValue->value().getIdentificator());
 	if (parNumb == RDORTPResType::UNDEFINED_PARAM)
 	{
@@ -990,6 +1003,7 @@ LPExpression RDORelevantResource::onCreateExpression(CREF(LPRDOValue) pValue)
 	ASSERT(pExpression);
 	return pExpression;
 }
+
 
 rdoRuntime::LPRDOCalc RDORelevantResource::getChoiceCalc()
 {

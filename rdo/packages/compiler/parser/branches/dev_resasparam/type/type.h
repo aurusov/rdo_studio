@@ -87,6 +87,8 @@ protected:
 			__asm nop;
 		}
 	}
+	inline RDOType()
+	{}
 	virtual ~RDOType()
 	{}
 

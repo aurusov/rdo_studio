@@ -88,6 +88,78 @@ void RDORTPResType::writeModelStructure(REF(std::ostream) stream) const
 	}
 }
 
+tstring RDORTPResType::name() const
+{
+	static tstring s_name;
+	s_name = src_text();
+	return s_name;
+}
+
+LPRDOType RDORTPResType::type_cast(CREF(LPRDOType) from, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+{
+	UNUSED(from_src_info);
+
+	switch (from->typeID())
+	{
+	case rdoRuntime::RDOType::t_pointer:
+		{	
+			LPRDOType pThisRTPType(const_cast<PTR(RDORTPResType)>(this));
+			//! Это один и тот же тип
+			if (pThisRTPType == from)
+				return pThisRTPType;
+			//! Типы разные, сгенерим ошибку
+			rdoParse::g_error().push_only(src_info,     _T("Несоответствие типов ресурсов"));
+			rdoParse::g_error().push_only(to_src_info,   to_src_info.src_text());
+			rdoParse::g_error().push_done();
+			break;
+		}
+	default:
+		{
+			rdoParse::g_error().push_only(src_info,    rdo::format(_T("Ожидается тип ресурса, найдено: %s"), from_src_info.src_text().c_str()));
+			rdoParse::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
+			rdoParse::g_error().push_done();
+			break;
+		}
+	}
+	return NULL;
+}
+
+LPRDOValue RDORTPResType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+{
+	ASSERT(pFrom);
+
+	LPRDORTPResType pRTPResType = pFrom->typeInfo()->type().object_dynamic_cast<RDORTPResType>();
+	
+	LPRDOType pFromType = pFrom->typeInfo()->type();
+	LPRDOType pThisType = const_cast<PTR(RDORTPResType)>(this);
+	if (pRTPResType)
+	{
+			//! Это один и тот же тип
+			if (pFromType == pThisType)
+				return pFrom;
+			//! Типы разные, сгенерим ошибку
+			rdoParse::g_error().push_only(src_info,     _T("Несоответствие типов ресурсов"));
+			rdoParse::g_error().push_only(to_src_info,   to_src_info.src_text());
+			rdoParse::g_error().push_done();
+	}
+	rdoParse::g_error().push_only(src_info,    rdo::format(_T("Ожидается ресурс, найдено: %s"), pFrom->src_text().c_str()));
+	rdoParse::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
+	rdoParse::g_error().push_done();
+
+	return NULL;
+}
+
+rdoRuntime::LPRDOCalc RDORTPResType::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
+{
+	return RDOType::calc_cast(pCalc, pType);
+}
+
+rdoRuntime::RDOValue RDORTPResType::get_default() const
+{
+	return rdoRuntime::RDOValue();
+	//return rdoRuntime::RDOValue (pResourceType,pResource);
+}
+
 /*
 // --------------------------------------------------------------------------------
 // -------------------- RDORTPFuzzyMembershiftFun - ф-ия принадлежности нечеткого терма

@@ -36,9 +36,10 @@ void rtperror(PTR(char) message);
 PREDECLARE_POINTER(RDOParser);
 PREDECLARE_POINTER(RDORSSResource);
 
-OBJECT(RDORTPResType)
-	IS  INSTANCE_OF(RDOParserSrcInfo  )
+class RDORTPResType:
+	    INSTANCE_OF(RDOParserSrcInfo  )
 	AND INSTANCE_OF(boost::noncopyable)
+	AND INSTANCE_OF(RDOType           )
 {
 DECLARE_FACTORY(RDORTPResType);
 public:
@@ -46,10 +47,9 @@ public:
 
 	enum { UNDEFINED_PARAM = ~0 };
 
-	CREF(tstring) name       () const   { return src_text();   };
-	rsint         getNumber  () const   { return m_number;     };
-	rbool         isPermanent() const   { return m_permanent;  };
-	rbool         isTemporary() const   { return !m_permanent; };
+	rsint getNumber  () const   { return m_number;     };
+	rbool isPermanent() const   { return m_permanent;  };
+	rbool isTemporary() const   { return !m_permanent; };
 
 	LPRDORSSResource createRes(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info);
 
@@ -71,6 +71,8 @@ public:
 	}
 
 	void writeModelStructure(REF(std::ostream) stream) const;
+
+	DECLARE_IType;
 
 private:
 	RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent);
