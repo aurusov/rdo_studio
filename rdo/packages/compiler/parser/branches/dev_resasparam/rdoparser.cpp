@@ -150,6 +150,14 @@ LPContext RDOParser::onFindContext(CREF(LPRDOValue) pValue) const
 		return const_cast<PTR(RDOParser)>(this);
 	}
 
+	//! Типы ресурсов
+	LPRDORTPResType pResType = findRTPResType(pValue->value().getIdentificator());
+	if (pResType)
+	{
+		//! Это тип ресурса с закладки RTP
+		return const_cast<PTR(RDOParser)>(this);
+	}
+
 	//! Ресурсы
 	LPRDORSSResource pResource = findRSSResource(pValue->value().getIdentificator());
 	if (pResource)
@@ -242,6 +250,23 @@ LPExpression RDOParser::onCreateExpression(CREF(LPRDOValue) pValue)
 				pValue->src_info()
 			),
 			rdo::Factory<rdoRuntime::RDOCalcGetTermNow>::create(),
+			pValue->src_info()
+		);
+		ASSERT(pExpression);
+		return pExpression;
+	}
+
+	//! Типы ресурсов
+	LPRDORTPResType pResType = findRTPResType(pValue->value().getIdentificator());
+	if (pResType)
+	{
+		//! Это тип ресурса с закладки RTP
+		LPExpression pExpression = rdo::Factory<Expression>::create(
+			rdo::Factory<TypeInfo>::create(
+				pResType,
+				pValue->src_info()
+			),
+			rdoRuntime::LPRDOCalc(NULL),
 			pValue->src_info()
 		);
 		ASSERT(pExpression);
