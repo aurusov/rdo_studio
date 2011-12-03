@@ -68,7 +68,7 @@ void onGenerateData(F binder, contstr g_fileName)
 
 	for (ruint i = 0; i < g_count; ++i)
 	{
-		test[i] = binder.operator()(&sequence);
+		test.push_back(binder.operator()(&sequence));
 	}
 
 	std::ofstream stream(g_fileName.c_str());
@@ -90,7 +90,7 @@ void onCheckData(F binder, contstr g_fileName)
 	T sequence(g_seed);
 	for (ruint i = 0; i < g_count; ++i)
 	{
-		test[i] = binder.operator()(&sequence);
+		test.push_back(binder.operator()(&sequence));
 	}
 
 	stream.precision(g_precision);
@@ -139,25 +139,26 @@ double  area (F binder, double n, double m)
 template <class T, class G, class F, class S>
 void onCheckKsi(F binder, S binderSeq, double left, double right)
 {
-	Container x(g_countOfR + 1);
-	//x.reserve(g_countOfR + 1);
+	Container x;
+	x.reserve(g_countOfR + 1);
 	double elem = (right-left)/(g_countOfR*1.0);	//расстояние между точками на прямой
 
 	for (ruint i = 0; i < g_countOfR + 1; ++i)
 	{
-		x[i] = left + elem*i;
+		x.push_back(left + elem*i);
 	}
 
-	Container vb(g_countOfExamples);				//контейнер для хранения выборки
-	//vb.reserve(g_countOfExamples);
+	Container vb;									//контейнер для хранения выборки
+	vb.reserve(g_countOfExamples);
 
 	G sequence(g_seed);								//выборка
 	for (ruint i = 0; i < g_countOfExamples; ++i)
 	{
-		vb[i] = binderSeq.operator()(&sequence);
+		vb.push_back(binderSeq.operator()(&sequence));
 	}
 
-	Container f_vb(g_countOfR);						//контейнер для храниения количества попаданий на интервал
+	Container f_vb;									//контейнер для храниения количества попаданий на интервал
+	f_vb.reserve(g_countOfR);
 
 	for(ruint i = 0; i < g_countOfR; ++i)			//нахождение количества попаданий на интервал
 	{
@@ -169,24 +170,28 @@ void onCheckKsi(F binder, S binderSeq, double left, double right)
 				++freq;
 			}
 		}
-		f_vb[i] = freq/(g_countOfExamples*1.0);
+		f_vb.push_back(freq);
 	}
 
-	Container F_etalon(g_countOfR);
-	//Fi.reserve(g_countOfR);
+	Container F_etalon;
+	F_etalon.reserve(g_countOfR);
 
 	for (ruint i = 0; i < g_countOfR; ++i)
 	{
-		F_etalon[i] = area<T>(binder, x[i], x[i+1]);
+		F_etalon.push_back(area<T>(binder, x[i], x[i+1]));
 	}
 
 	double ksi = 0;
 	for(ruint i = 0; i < g_countOfR; ++i)
 	{
-		ksi += (f_vb[i] - F_etalon[i])*(f_vb[i] - F_etalon[i])/F_etalon[i];
+		double ksiTemp = F_etalon[i]*g_countOfExamples;
+		ksi += (f_vb[i] - ksiTemp)*(f_vb[i] - ksiTemp)/ksiTemp;
 	}
-	ksi *= g_countOfExamples*1.0;
 	BOOST_CHECK(ksi <= g_ksiEtalon);
+			if (ksi >  g_ksiEtalon)
+	{
+		std::cout << ksi << std::endl;
+	}
 }
 // --------------------------------------------------------------------------------
 
@@ -200,7 +205,7 @@ public:
 
 	double get(double x) const
 	{
-		return 1/(sqrt(2*pi)*m_var*exp((x - m_main)*(x - m_main)/(2*m_var*m_var))); //функция плотности распределения вероятности. по определению для закона. таких будет еще 3 шутки.
+		return 1/(sqrt(2*pi)*m_var*exp((x - m_main)*(x - m_main)/(2*m_var*m_var)));
 	}
 
 private:
@@ -279,14 +284,14 @@ BOOST_AUTO_TEST_SUITE(RDOSequencesTest)
 // --------------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE(RDONormalTestCreate)
 {
-	//onGenerateData<rdoRuntime::RandGeneratorNormal>
-	//	(boost::bind(&rdoRuntime::RandGeneratorNormal::next, _1, g_main, g_var), g_fileNormalName);
+	onGenerateData<rdoRuntime::RandGeneratorNormal>
+		(boost::bind(&rdoRuntime::RandGeneratorNormal::next, _1, g_main, g_var), g_fileNormalName);
 }
 
 BOOST_AUTO_TEST_CASE(RDONormalTestCheck)
 {
-	//onCheckData<rdoRuntime::RandGeneratorNormal>
-	//	(boost::bind(&rdoRuntime::RandGeneratorNormal::next, _1, g_main, g_var), g_fileNormalName);
+	onCheckData<rdoRuntime::RandGeneratorNormal>
+		(boost::bind(&rdoRuntime::RandGeneratorNormal::next, _1, g_main, g_var), g_fileNormalName);
 
 	SequenceNormal normal(g_main, g_var);
 	onCheckKsi<SequenceNormal, rdoRuntime::RandGeneratorNormal>
@@ -295,7 +300,6 @@ BOOST_AUTO_TEST_CASE(RDONormalTestCheck)
 		g_main-4*g_var,
 		g_main+4*g_var);
 }
-
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
@@ -303,14 +307,14 @@ BOOST_AUTO_TEST_CASE(RDONormalTestCheck)
 // --------------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE(RDOUniformTestCreate)
 {
-	//onGenerateData<rdoRuntime::RandGeneratorUniform>
-	//	(boost::bind(&rdoRuntime::RandGeneratorUniform::next, _1, g_from, g_to), g_fileUniformName);
+	onGenerateData<rdoRuntime::RandGeneratorUniform>
+		(boost::bind(&rdoRuntime::RandGeneratorUniform::next, _1, g_from, g_to), g_fileUniformName);
 }
 
 BOOST_AUTO_TEST_CASE(RDOUniformTestCheck)
 {
-	//onCheckData<rdoRuntime::RandGeneratorUniform>
-	//	(boost::bind(&rdoRuntime::RandGeneratorUniform::next, _1, g_from, g_to), g_fileUniformName);
+	onCheckData<rdoRuntime::RandGeneratorUniform>
+		(boost::bind(&rdoRuntime::RandGeneratorUniform::next, _1, g_from, g_to), g_fileUniformName);
 
 	SequenceUniform uniform(g_from, g_to);
 	onCheckKsi<SequenceUniform, rdoRuntime::RandGeneratorUniform>
@@ -326,21 +330,21 @@ BOOST_AUTO_TEST_CASE(RDOUniformTestCheck)
 // --------------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE(RDOExponentialTestCreate)
 {
-	//onGenerateData<rdoRuntime::RandGeneratorExponential>
-	//	(boost::bind(&rdoRuntime::RandGeneratorExponential::next, _1, g_main), g_fileExponentialName);
+	onGenerateData<rdoRuntime::RandGeneratorExponential>
+		(boost::bind(&rdoRuntime::RandGeneratorExponential::next, _1, g_main), g_fileExponentialName);
 }
 
 BOOST_AUTO_TEST_CASE(RDOExponentialTestCheck)
 {
-	//onCheckData<rdoRuntime::RandGeneratorExponential>
-	//	(boost::bind(&rdoRuntime::RandGeneratorExponential::next, _1, g_main), g_fileExponentialName);
+	onCheckData<rdoRuntime::RandGeneratorExponential>
+		(boost::bind(&rdoRuntime::RandGeneratorExponential::next, _1, g_main), g_fileExponentialName);
 
 	SequenceExponential exponential(g_main);
 	onCheckKsi<SequenceExponential, rdoRuntime::RandGeneratorExponential>
 		(boost::bind(&SequenceExponential::get, exponential, _1),
 		boost::bind(&rdoRuntime::RandGeneratorExponential::next, _1, g_main),
 		0,
-		5*g_main);
+		7*g_main);
 }
 // --------------------------------------------------------------------------------
 
@@ -349,14 +353,14 @@ BOOST_AUTO_TEST_CASE(RDOExponentialTestCheck)
 // --------------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE(RDOTriangularTestCreate)
 {
-	//onGenerateData<rdoRuntime::RandGeneratorTriangular>
-	//	(boost::bind(&rdoRuntime::RandGeneratorTriangular::next, _1, g_from, g_top, g_to), g_fileTriangularName);
+	onGenerateData<rdoRuntime::RandGeneratorTriangular>
+		(boost::bind(&rdoRuntime::RandGeneratorTriangular::next, _1, g_from, g_top, g_to), g_fileTriangularName);
 }
 
 BOOST_AUTO_TEST_CASE(RDOTriangularTestCheck)
 {
-	//onCheckData<rdoRuntime::RandGeneratorTriangular>
-	//	(boost::bind(&rdoRuntime::RandGeneratorTriangular::next, _1, g_from, g_top, g_to), g_fileTriangularName);
+	onCheckData<rdoRuntime::RandGeneratorTriangular>
+		(boost::bind(&rdoRuntime::RandGeneratorTriangular::next, _1, g_from, g_top, g_to), g_fileTriangularName);
 
 	SequenceTriangular triangular(g_from, g_top, g_to);
 	onCheckKsi<SequenceTriangular, rdoRuntime::RandGeneratorTriangular>
