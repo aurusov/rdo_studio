@@ -1,7 +1,7 @@
-Results_file   = event_model_qs_etalon.pmv    2011-Dec-04 01:57:37.676038
-Run_file       = event_model_qs_etalon.smr
-Model_name     = event_model_qs_etalon
-Resource_file  = event_model_qs_etalon.rss
+Results_file   = event_qs.pmv    2011-Dec-04 01:57:37.676038
+Run_file       = event_qs.smr
+Model_name     = event_qs
+Resource_file  = event_qs.rss
 
 $Changes
 
