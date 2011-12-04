@@ -541,6 +541,7 @@ fun_arithm
 	| RDO_IDENTIF                        {}
 	| RDO_IDENTIF '.' RDO_IDENTIF        {}
 	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF {}
+	| '*'                                {}
 	| fun_arithm '+' fun_arithm          {}
 	| fun_arithm '-' fun_arithm          {}
 	| fun_arithm '*' fun_arithm          {}

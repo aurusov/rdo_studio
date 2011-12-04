@@ -267,6 +267,7 @@ void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 					RDOParser::s_parser()->error().push_done();
 				}
 			}
+			m_currParam = 0;
 		}
 		else
 		{

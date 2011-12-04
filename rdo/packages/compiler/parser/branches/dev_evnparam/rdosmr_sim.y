@@ -248,37 +248,40 @@ smr_show_mode
 		$$ = rdoSimulator::SM_Animation;
 	}
 	;
-evn_param_list
-	: /* empty */
-	{
-		LPArithmContainer pArithmContainer = rdo::Factory<ArithmContainer>::create();
-		ASSERT(pArithmContainer);
-		$$ = PARSER->stack().push(pArithmContainer);
-	}
-	| arithm_list
-	{
-		$$ = $1;
-	}
-	;
 
 smr_cond
 	: /* empty */
-	| smr_cond RDO_IDENTIF '.' RDO_Planning '(' fun_arithm ')' '(' evn_param_list ')'
+	| smr_cond RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')'
 	{
-		tstring    eventName = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
-		LPRDOEvent pEvent    = PARSER->findEvent(eventName);
+		tstring    eventName          = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		LPArithmContainer pArithmList = PARSER->stack().pop<ArithmContainer>($6);
+		LPRDOEvent pEvent             = PARSER->findEvent(eventName);
 		if (!pEvent)
 		{
 			PARSER->error().error(@2, rdo::format(_T("Попытка запланировать неизвестное событие: %s"), eventName.c_str()));
 		}
 
-		LPRDOFUNArithm pTimeArithm = PARSER->stack().pop<RDOFUNArithm>($6);
+		ArithmContainer::Container::const_iterator arithmIt = pArithmList->getContainer().begin();
+		if (arithmIt == pArithmList->getContainer().end())
+		{
+			PARSER->error().error(@1, rdo::format(_T("Не указано время планирования события: %s"), eventName.c_str()));
+		}
+
+		LPRDOFUNArithm pTimeArithm = *arithmIt;
 		ASSERT(pTimeArithm);
-		rdoRuntime::LPRDOCalc pCalcTime = pTimeArithm->createCalc(NULL);
-		ASSERT(pCalcTime);
-		LPArithmContainer pParamList = PARSER->stack().pop<ArithmContainer>($9);
+		++arithmIt;
+
+		LPArithmContainer pParamList = rdo::Factory<ArithmContainer>::create();
 		ASSERT(pParamList);
 
+		while (arithmIt != pArithmList->getContainer().end())
+		{
+			pParamList->addItem(*arithmIt);
+			++arithmIt;
+		}
+
+		rdoRuntime::LPRDOCalc pCalcTime = pTimeArithm->createCalc(NULL);
+		ASSERT(pCalcTime);
 		LPIBaseOperation pBaseOperation = pEvent->getRuntimeEvent();
 		ASSERT(pBaseOperation);
 
@@ -912,7 +915,7 @@ arithm_list
 		$$ = PARSER->stack().push(pArithmContainer);
 	}
 	| arithm_list_body
-	{};
+	;
 
 arithm_list_body
 	: fun_arithm
