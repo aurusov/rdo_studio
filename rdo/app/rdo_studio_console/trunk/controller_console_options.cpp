@@ -22,10 +22,10 @@ RDOControllerConsoleOptions::RDOControllerConsoleOptions(int argc, char *argv[])
 		RDO_STUDIO_CONSOLE_VERSION + NOP_STRING + SYSTEM_OS + RDO_SITE);
 
 	po::options_description options_general(_T("General options"));
-	create_general_options(options_general);
+	createGeneralOptions(options_general);
 
 	po::options_description options_additional(_T("Compatibility options (skipped in console version)"));
-	create_additional_options(options_additional);
+	createAdditionalOptions(options_additional);
 
 	m_options.add(options_header);
 	m_options.add(options_general);
@@ -70,7 +70,7 @@ void RDOControllerConsoleOptions::getModelName(tstring& model_name)
 	model_name = _T("");
 }
 
-void RDOControllerConsoleOptions::create_general_options(po::options_description& options)
+void RDOControllerConsoleOptions::createGeneralOptions(po::options_description& options)
 {
 	options.add_options()
 		((INPUT_MODEL_COMMAND + COMMA_STRING + INPUT_MODEL_COMMAND_SHORT).c_str(), po::value<tstring>(), MODEL_COMMENT.c_str())
@@ -79,7 +79,7 @@ void RDOControllerConsoleOptions::create_general_options(po::options_description
 		((LANGUAGE_COMMAND + COMMA_STRING + LANGUAGE_COMMAND_SHORT).c_str(), LANGUAGE_COMMENT.c_str());
 }
 
-void RDOControllerConsoleOptions::create_additional_options(po::options_description& options)
+void RDOControllerConsoleOptions::createAdditionalOptions(po::options_description& options)
 {
 	options.add_options()
 		(AUTO_RUN_COMMAND.c_str(), AUTO_RUN_COMMENT.c_str())
