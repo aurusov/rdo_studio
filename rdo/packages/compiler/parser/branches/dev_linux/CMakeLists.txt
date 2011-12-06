@@ -46,21 +46,7 @@ IF(PROJECT_OS_LINUX)
 	BISON_TARGET(rdosmr_file rdosmr_file.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramsmr_file.cpp COMPILE_FLAGS "-g -v -psmr_file_")
 	BISON_TARGET(rdosmr_sim rdosmr_sim.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramsmr_sim.cpp COMPILE_FLAGS "-g -v -psmr_sim_")
 
-	FLEX_TARGET(lexer_scaner rdo_lexer.l ${CMAKE_CURRENT_SOURCE_DIR}/rdolex.cpp COMPILE_FLAGS "--c++")
-
-	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdortp)
-	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdodpt)
-	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdoevn)
-	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdoevn_preparse)
-	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdofrm)
-	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdopat)
-	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdopmd)
-	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdoproc_opr)
-	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdoproc_rss)
-	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdoproc_rtp)
-	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdorss)
-	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdosmr_file)
-	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdosmr_sim)
+	FLEX_TARGET(lexer_scaner rdo_lexer.l ${CMAKE_CURRENT_SOURCE_DIR}/rdolex.cpp COMPILE_FLAGS "-+")
 
 	SET(GENERATED_FILES
 		rdogramma.h
