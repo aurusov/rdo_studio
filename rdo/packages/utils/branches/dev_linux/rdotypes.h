@@ -15,11 +15,11 @@
 #include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #ifdef COMPILER_VISUAL_STUDIO
-	#include <tchar.h>
+#   include <tchar.h>
 #endif // COMPILER_VISUAL_STUDIO
 #ifdef COMPILER_GCC
-	#include <stdint.h>
-	#define _T(x) x
+#   include <stdint.h>
+#   define _T(x) x
 #endif // COMPILER_GCC
 
 #include <string>
@@ -44,32 +44,28 @@ typedef  unsigned int                ruint;
 //! Целый знаковый 32-х битный тип
 #ifdef COMPILER_VISUAL_STUDIO
 	typedef  long                    rsint32;
-#endif
-#ifdef COMPILER_GCC
+#elif defined COMPILER_GCC
 	typedef  int32_t                 rsint32;
 #endif
 
 //! Целый беззнаковый 32-х битный тип
 #ifdef COMPILER_VISUAL_STUDIO
 	typedef  unsigned long           ruint32;
-#endif
-#ifdef COMPILER_GCC
+#elif defined COMPILER_GCC
 	typedef  uint32_t                ruint32;
 #endif
 
 //! Целый знаковый 64-х битный тип
 #ifdef COMPILER_VISUAL_STUDIO
 	typedef  signed long long int    rsint64;
-#endif
-#ifdef COMPILER_GCC
+#elif defined COMPILER_GCC
 	typedef  int64_t                 rsint64;
 #endif
 
 //! Целый беззнаковый 64-х битный тип
 #ifdef COMPILER_VISUAL_STUDIO
 	typedef  unsigned long long int  ruint64;
-#endif
-#ifdef COMPILER_GCC
+#elif defined COMPILER_GCC
 	typedef  uint64_t                ruint64;
 #endif
 
