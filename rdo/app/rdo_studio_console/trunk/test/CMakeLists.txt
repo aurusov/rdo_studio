@@ -22,12 +22,10 @@ SET(ARRAY_MODEL
 SET(CREATE_RES_MODEL
     create_res/create_res_etalon.pmv
     create_res/create_res_etalon.trc
-    create_res/create_res.pmv
     create_res/create_res.prc
     create_res/create_res.rdox
     create_res/create_res.rss
-    create_res/create_res.rtp
-    create_res/create_res.trc)
+    create_res/create_res.rtp)
 
 SET(EVENT_QS_MODEL
     event_qs/event_qs_etalon.pmv
@@ -58,13 +56,11 @@ SET(FMS_PLANING_MODEL
     fms_planing/fms_planing.fun
     fms_planing/fms_planing.pat
     fms_planing/fms_planing.pmd
-    fms_planing/fms_planing.pmv
     fms_planing/fms_planing.prc
     fms_planing/fms_planing.rdox
     fms_planing/fms_planing.rss
     fms_planing/fms_planing.rtp
-    fms_planing/fms_planing.smr
-    fms_planing/fms_planing.trc)
+    fms_planing/fms_planing.smr)
 
 SET(POLICLINIC_MODEL
     policlinic/policlinic.dpt
@@ -74,11 +70,9 @@ SET(POLICLINIC_MODEL
     policlinic/policlinic.fun
     policlinic/policlinic.pat
     policlinic/policlinic.pmd
-    policlinic/policlinic.pmv
     policlinic/policlinic.rdox
     policlinic/policlinic.rss
-    policlinic/policlinic.rtp
-    policlinic/policlinic.trc)
+    policlinic/policlinic.rtp)
 
 SET(TEST_MODEL_FILES
     ${ARRAY_MODEL}
@@ -88,5 +82,17 @@ SET(TEST_MODEL_FILES
     ${FMS_PLANING_MODEL}
     ${POLICLINIC_MODEL})
 
-ADD_BOOST_TEST(test_rdo_studio_console ${MAIN_FILE} ${TEST_MODEL_FILES})
+CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/config.h.cmake ${CMAKE_CURRENT_SOURCE_DIR}/config.h)
+
+SET(CONFIG_FILES
+    config.h)
+
+SET(RDO_STUDIO_CONSOLE_APP ${EXECUTABLE_OUTPUT_PATH}/rdo)
+SET(RDO_STUDIO_CONSOLE_TEST_PATH ${CMAKE_CURRENT_SOURCE_DIR})
+
+ADD_BOOST_TEST(test_rdo_studio_console ${MAIN_FILE} ${TEST_MODEL_FILES} ${CONFIG_FILES})
+
 ADD_DEPENDENCIES(test_rdo_studio_console rdo)
+ADD_DEPENDENCIES(test_rdo_studio_console rdo_utils)
+
+TARGET_LINK_LIBRARIES(test_rdo_studio_console rdo_utils)
