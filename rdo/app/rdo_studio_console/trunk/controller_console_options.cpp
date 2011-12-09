@@ -42,6 +42,11 @@ RDOControllerConsoleOptions::RDOControllerConsoleOptions(int argc, char *argv[])
 	}
 }
 
+RDOControllerConsoleOptions::~RDOControllerConsoleOptions()
+{
+
+}
+
 void RDOControllerConsoleOptions::parseQuery()
 {
 	if (m_variables.empty() || m_variables.count(CHELP_COMMAND) && 
@@ -59,18 +64,18 @@ void RDOControllerConsoleOptions::parseQuery()
 	}
 }
 
-void RDOControllerConsoleOptions::getModelName(tstring& model_name)
+void RDOControllerConsoleOptions::getModelName(CREF(tstring) modelName)
 {
 	if(m_variables.count(INPUT_MODEL_COMMAND))
 	{
-		//! @todo added control input data
-		model_name = m_variables[INPUT_MODEL_COMMAND].as<tstring>();
+		///! @todo added control input data
+		modelName = m_variables[INPUT_MODEL_COMMAND].as<tstring>();
 		return;
 	}
-	model_name = _T("");
+	modelName = _T("");
 }
 
-void RDOControllerConsoleOptions::createGeneralOptions(po::options_description& options)
+void RDOControllerConsoleOptions::createGeneralOptions(REF(po::options_description) options)
 {
 	options.add_options()
 		((INPUT_MODEL_COMMAND + COMMA_STRING + INPUT_MODEL_COMMAND_SHORT).c_str(), po::value<tstring>(), MODEL_COMMENT.c_str())
@@ -79,7 +84,7 @@ void RDOControllerConsoleOptions::createGeneralOptions(po::options_description& 
 		((LANGUAGE_COMMAND + COMMA_STRING + LANGUAGE_COMMAND_SHORT).c_str(), LANGUAGE_COMMENT.c_str());
 }
 
-void RDOControllerConsoleOptions::createAdditionalOptions(po::options_description& options)
+void RDOControllerConsoleOptions::createAdditionalOptions(REF(po::options_description) options)
 {
 	options.add_options()
 		(AUTO_RUN_COMMAND.c_str(), AUTO_RUN_COMMENT.c_str())

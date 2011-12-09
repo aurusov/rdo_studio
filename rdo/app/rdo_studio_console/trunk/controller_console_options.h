@@ -26,13 +26,14 @@ class RDOControllerConsoleOptions
 {
 public:
 	RDOControllerConsoleOptions(int argc, char *argv[]);
+	~RDOControllerConsoleOptions();
 	
 	void parseQuery();
-	void getModelName(tstring& model_name);
+	void getModelName(CREF(tstring) modelName);
 	
 private:
-	void createGeneralOptions(po::options_description& options);
-	void createAdditionalOptions(po::options_description& options);
+	void createGeneralOptions(REF(po::options_description) options);
+	void createAdditionalOptions(REF(po::options_description) options);
 	
 private:
 	po::options_description m_options;

@@ -43,12 +43,27 @@ int main(int argc, PTR(char) argv[])
 		while (pAppController->inProgress())
 		{
 			kernel->idle();
+
+			if (pAppController->errorOccurred())
+			{
+				std::cerr << _T("  run-time error  ") << std::endl;
+				exit(1);
+			}
 		}
+
+		bool simulationResult = pAppController->simulationSuccessfully();
 
 		// Close
 		RDOKernel::close();
 
-		std::cout << _T("  simulation finished successfully  ") << std::endl;
+		if (simulationResult)
+		{
+			std::cout << _T("  simulation finished successfully  ") << std::endl;
+		}
+		else
+		{
+			std::cout << _T("  simulation completed with errors  ") << std::endl;		
+		}
 	}
 	return 0;
 }
