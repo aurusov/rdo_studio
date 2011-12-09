@@ -82,7 +82,12 @@ SET(TEST_MODEL_FILES
     ${FMS_PLANING_MODEL}
     ${POLICLINIC_MODEL})
 
-CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/config.h.cmake ${CMAKE_CURRENT_SOURCE_DIR}/config.h)
+IF(MSVC)
+    CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/config.msvc.h.cmake ${CMAKE_CURRENT_SOURCE_DIR}/config.h)
+ELSE()
+    CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/config.gcc.h.cmake ${CMAKE_CURRENT_SOURCE_DIR}/config.h)
+ENDIF(MSVC)
+
 
 SET(CONFIG_FILES
     config.h)
@@ -96,3 +101,25 @@ ADD_DEPENDENCIES(test_rdo_studio_console rdo)
 ADD_DEPENDENCIES(test_rdo_studio_console rdo_utils)
 
 TARGET_LINK_LIBRARIES(test_rdo_studio_console rdo_utils)
+
+IF(MSVC) # lotions for windows #
+
+SOURCE_GROUP(".array_model" FILES
+    ${ARRAY_MODEL})
+
+SOURCE_GROUP(".create_res_model" FILES
+    ${CREATE_RES_MODEL})
+
+SOURCE_GROUP(".event_qs_model" FILES
+    ${EVENT_QS_MODEL})
+
+SOURCE_GROUP(".fms_event_model" FILES
+    ${FMS_EVENT_MODEL})
+
+SOURCE_GROUP(".fms_planing_model" FILES
+    ${FMS_PLANING_MODEL})
+
+SOURCE_GROUP(".policlinic_model" FILES
+    ${POLICLINIC_MODEL})
+
+ENDIF(MSVC)
