@@ -10,15 +10,17 @@
 #ifndef _RDO_CONTROLLER_CONSOLE_OPTIONS_H_
 #define _RDO_CONTROLLER_CONSOLE_OPTIONS_H_
 
+// ----------------------------------------------------------------------- PLATFORM
+#include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
+#ifdef COMPILER_VISUAL_STUDIO
+#	pragma warning (disable:4512)
+#endif // COMPILER_VISUAL_STUDIO
+
 #include <boost/program_options.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdotypes.h"
 // --------------------------------------------------------------------------------
-
-#ifdef COMPILER_VISUAL_STUDIO
-#	pragma warning (disable:4512)
-#endif // COMPILER_VISUAL_STUDIO
 
 namespace po = boost::program_options;
 
@@ -39,5 +41,9 @@ private:
 	po::options_description m_options;
 	po::variables_map m_variables;
 };
+
+#ifdef COMPILER_VISUAL_STUDIO
+#	pragma warning (default:4512)
+#endif // COMPILER_VISUAL_STUDIO
 
 #endif // _RDO_CONTROLLER_CONSOLE_OPTIONS_H_
