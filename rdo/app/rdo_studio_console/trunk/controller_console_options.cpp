@@ -64,7 +64,7 @@ void RDOControllerConsoleOptions::parseQuery()
 	}
 }
 
-void RDOControllerConsoleOptions::getModelName(CREF(tstring) modelName)
+void RDOControllerConsoleOptions::getModelName(REF(tstring) modelName)
 {
 	if(m_variables.count(INPUT_MODEL_COMMAND))
 	{

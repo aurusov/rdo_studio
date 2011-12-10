@@ -29,7 +29,7 @@ public:
 	~RDOControllerConsoleOptions();
 	
 	void parseQuery();
-	void getModelName(CREF(tstring) modelName);
+	void getModelName(REF(tstring) modelName);
 	
 private:
 	void createGeneralOptions(REF(po::options_description) options);
