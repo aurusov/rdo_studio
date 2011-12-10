@@ -175,30 +175,42 @@
 	<References>
 	</References>
 	<Files>
-		<File
-			RelativePath=".\controller_console_options.cpp"
+		<Filter
+			Name=".code"
 			>
-		</File>
-		<File
-			RelativePath=".\controller_console_options.h"
+			<File
+				RelativePath=".\main.cpp"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name=".console_controller"
 			>
-		</File>
-		<File
-			RelativePath=".\controller_console_options_config.h"
+			<File
+				RelativePath=".\rdo_studio_console_controller.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_studio_console_controller.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name=".console_options"
 			>
-		</File>
-		<File
-			RelativePath=".\main.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\rdo_studio_console_controller.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\rdo_studio_console_controller.h"
-			>
-		</File>
+			<File
+				RelativePath=".\controller_console_options.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\controller_console_options.h"
+				>
+			</File>
+			<File
+				RelativePath=".\controller_console_options_config.h"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
