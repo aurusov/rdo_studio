@@ -51,8 +51,15 @@ ADD_SUBDIRECTORY(${RDO_STUDIO_CONSOLE_TEST_PATH})
 IF(MSVC) # lotions for windows #
 
 SOURCE_GROUP(".code" FILES
-    ${MAIN_FILES}
-    ${HEADER_FILES}
-    ${SOURCE_FILES})
+    ${MAIN_FILES})
+
+SOURCE_GROUP(".console_controller" FILES
+    rdo_studio_console_controller.h
+    rdo_studio_console_controller.cpp)
+
+SOURCE_GROUP(".console_options" FILES
+    controller_console_options.h
+    controller_console_options.cpp
+    controller_console_options_config.h)
 
 ENDIF(MSVC)
