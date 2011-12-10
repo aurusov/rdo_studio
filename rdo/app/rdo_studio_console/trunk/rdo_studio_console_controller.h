@@ -23,15 +23,20 @@ public:
 	RDOStudioConsoleController();
 	virtual ~RDOStudioConsoleController();
 
-	rbool inProgress();
-	rbool errorOccurred();
-	rbool simulationSuccessfully();
+	rbool finished              () const;
+	rbool errorOccurred         () const;
+	rbool simulationSuccessfully() const;
 
 private:
-	enum program_state { program_start, running_emulation, simulation_completed_successfully };
+	enum SimulatorState
+	{
+		SS_UNDEFINED,
+		SS_IN_PROGRESS,
+		SS_FINISHED
+	};
 
-	program_state           m_state;
-	boost::mutex            m_simulationMutex;
+	SimulatorState        m_state;
+	mutable boost::mutex  m_stateMutex;
 
 	void proc(REF(RDOMessageInfo) msg);
 };

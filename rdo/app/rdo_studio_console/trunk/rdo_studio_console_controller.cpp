@@ -20,59 +20,48 @@ void test_fun()
 }
 
 RDOStudioConsoleController::RDOStudioConsoleController()
-	: RDOThread(_T("RDOThreadRDOStudioConsoleController")),
-	m_state(program_start)
+	: RDOThread(_T("RDOThreadRDOStudioConsoleController"))
+	, m_state  (SS_UNDEFINED)
 {
-	notifies.push_back(RT_REPOSITORY_MODEL_OPEN             );
-	notifies.push_back(RT_REPOSITORY_MODEL_OPEN_GET_NAME    );
 	notifies.push_back(RT_REPOSITORY_MODEL_OPEN_ERROR       );
-	notifies.push_back(RT_REPOSITORY_MODEL_CLOSE            );
-	notifies.push_back(RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE  );
-	notifies.push_back(RT_REPOSITORY_MODEL_CLOSE_ERROR      );
-	notifies.push_back(RT_REPOSITORY_MODEL_SAVE             );
-	notifies.push_back(RT_SIMULATOR_PARSE_STRING            );
+	notifies.push_back(RT_RUNTIME_MODEL_START_BEFORE        );
+	notifies.push_back(RT_RUNTIME_MODEL_STOP_AFTER          );
 	notifies.push_back(RT_SIMULATOR_PARSE_OK                );
 	notifies.push_back(RT_SIMULATOR_PARSE_ERROR             );
+	notifies.push_back(RT_SIMULATOR_PARSE_ERROR_SMR         );
+	notifies.push_back(RT_SIMULATOR_PARSE_ERROR_SMR_EMPTY   );
 	notifies.push_back(RT_SIMULATOR_MODEL_STOP_OK           );
 	notifies.push_back(RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR);
-	notifies.push_back(RT_RUNTIME_MODEL_START_BEFORE        );
-	notifies.push_back(RT_RUNTIME_MODEL_START_AFTER         );
-	notifies.push_back(RT_RUNTIME_MODEL_STOP_BEFORE         );
-	notifies.push_back(RT_DEBUG_STRING                      );
-	notifies.push_back(RT_RESULT_STRING                     );
-	
+
 	after_constructor();
 }
 
 RDOStudioConsoleController::~RDOStudioConsoleController()
 {
-
 }
 
-rbool RDOStudioConsoleController::inProgress()
+rbool RDOStudioConsoleController::finished() const
 {
 	rbool res = true;
-	m_simulationMutex.lock();
-	if(m_state != program_start)
-	{
-		res = m_state == running_emulation;
-	}
-	m_simulationMutex.unlock();
+	m_stateMutex.lock();
+	res = m_state == SS_FINISHED;
+	m_stateMutex.unlock();
 	return res;
 }
 
-rbool RDOStudioConsoleController::errorOccurred()
+rbool RDOStudioConsoleController::errorOccurred() const
 {
 	/// @todo added errors controle
 	return false;
 }
 
-rbool RDOStudioConsoleController::simulationSuccessfully()
+rbool RDOStudioConsoleController::simulationSuccessfully() const
 {
 	bool res = false;
-	m_simulationMutex.lock();
-	res = m_state == simulation_completed_successfully;
-	m_simulationMutex.unlock();
+	m_stateMutex.lock();
+	//! @todo запросить код возврата у симулятора (RT_SIMULATOR_GET_MODEL_EXITCODE)
+	res = true;
+	m_stateMutex.unlock();
 	return res;
 }
 
@@ -80,77 +69,45 @@ void RDOStudioConsoleController::proc(REF(RDOThread::RDOMessageInfo) msg)
 {
 	switch (msg.message)
 	{
-	case RDOThread::RT_REPOSITORY_MODEL_OPEN:
-		test_fun();
-		break;
-		
 	case RDOThread::RT_REPOSITORY_MODEL_OPEN_ERROR:
 		test_fun();
 		break;
-		
-	case RDOThread::RT_REPOSITORY_MODEL_SAVE:
-		test_fun();
-		break;
-		
-	case RDOThread::RT_REPOSITORY_MODEL_OPEN_GET_NAME:
-		test_fun();
-		break;
-		
-	case RDOThread::RT_REPOSITORY_MODEL_CLOSE:
-		test_fun();
-		break;
-		
-	case RDOThread::RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE:
-		test_fun();
-		break;
-		
-	case RDOThread::RT_REPOSITORY_MODEL_CLOSE_ERROR:
-		test_fun();
-		break;
-		
+
 	case RDOThread::RT_RUNTIME_MODEL_START_BEFORE:
+		m_stateMutex.lock();
+		m_state = SS_IN_PROGRESS;
+		m_stateMutex.unlock();
 		test_fun();
 		break;
-		
-	case RDOThread::RT_RUNTIME_MODEL_START_AFTER:
+
+	case RDOThread::RT_RUNTIME_MODEL_STOP_AFTER:
+		m_stateMutex.lock();
+		m_state = SS_FINISHED;
+		m_stateMutex.unlock();
 		test_fun();
 		break;
-		
-	case RDOThread::RT_RUNTIME_MODEL_STOP_BEFORE:
-		m_simulationMutex.lock();
-		m_state = running_emulation;
-		m_simulationMutex.unlock();
-		test_fun();
-		break;
-		
-	case RDOThread::RT_SIMULATOR_MODEL_STOP_OK:
-		m_simulationMutex.lock();
-		m_state = simulation_completed_successfully;
-		m_simulationMutex.unlock();
-		test_fun();
-		break;
-		
-	case RDOThread::RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR:
-		test_fun();
-		break;
-		
+
 	case RDOThread::RT_SIMULATOR_PARSE_OK:
 		test_fun();
 		break;
-		
+
 	case RDOThread::RT_SIMULATOR_PARSE_ERROR:
 		test_fun();
 		break;
-		
-	case RDOThread::RT_SIMULATOR_PARSE_STRING:
+
+	case RDOThread::RT_SIMULATOR_PARSE_ERROR_SMR:
 		test_fun();
 		break;
-		
-	case RDOThread::RT_DEBUG_STRING:
+
+	case RDOThread::RT_SIMULATOR_PARSE_ERROR_SMR_EMPTY:
 		test_fun();
 		break;
-		
-	case RDOThread::RT_RESULT_STRING:
+
+	case RDOThread::RT_SIMULATOR_MODEL_STOP_OK:
+		test_fun();
+		break;
+
+	case RDOThread::RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR:
 		test_fun();
 		break;
 	}
