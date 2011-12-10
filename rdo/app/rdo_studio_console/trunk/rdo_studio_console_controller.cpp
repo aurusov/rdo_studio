@@ -9,9 +9,12 @@
 
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/thread/locks.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_console/rdo_studio_console_controller.h"
 // --------------------------------------------------------------------------------
+
+#define MUTEXT_PROTECTION(A) boost::lock_guard<boost::mutex> lg_##__LINE__(A);
 
 void test_fun()
 {
@@ -43,9 +46,10 @@ RDOStudioConsoleController::~RDOStudioConsoleController()
 rbool RDOStudioConsoleController::finished() const
 {
 	rbool res = true;
-	m_stateMutex.lock();
-	res = m_state == SS_FINISHED;
-	m_stateMutex.unlock();
+	{
+		MUTEXT_PROTECTION(m_stateMutex);
+		res = m_state == SS_FINISHED;
+	}
 	return res;
 }
 
@@ -58,10 +62,11 @@ rbool RDOStudioConsoleController::errorOccurred() const
 rbool RDOStudioConsoleController::simulationSuccessfully() const
 {
 	bool res = false;
-	m_stateMutex.lock();
-	//! @todo запросить код возврата у симулятора (RT_SIMULATOR_GET_MODEL_EXITCODE)
-	res = true;
-	m_stateMutex.unlock();
+	{
+		MUTEXT_PROTECTION(m_stateMutex);
+		//! @todo запросить код возврата у симулятора (RT_SIMULATOR_GET_MODEL_EXITCODE)
+		res = true;
+	}
 	return res;
 }
 
@@ -74,16 +79,18 @@ void RDOStudioConsoleController::proc(REF(RDOThread::RDOMessageInfo) msg)
 		break;
 
 	case RDOThread::RT_RUNTIME_MODEL_START_BEFORE:
-		m_stateMutex.lock();
-		m_state = SS_IN_PROGRESS;
-		m_stateMutex.unlock();
+		{
+			MUTEXT_PROTECTION(m_stateMutex);
+			m_state = SS_IN_PROGRESS;
+		}
 		test_fun();
 		break;
 
 	case RDOThread::RT_RUNTIME_MODEL_STOP_AFTER:
-		m_stateMutex.lock();
-		m_state = SS_FINISHED;
-		m_stateMutex.unlock();
+		{
+			MUTEXT_PROTECTION(m_stateMutex);
+			m_state = SS_FINISHED;
+		}
 		test_fun();
 		break;
 
