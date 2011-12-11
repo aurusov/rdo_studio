@@ -7,8 +7,10 @@ MESSAGE(STATUS "CREATE  RDO_PARSER  LIBRARY")
 INCLUDE_DIRECTORIES(${BISON_FLEX_DIRECTORY})
 
 # Find Boost
-SET(Boost_USE_STATIC_LIBS   ON)
-SET(Boost_USE_MULTITHREADED ON)
+IF(MSVC)
+    SET(Boost_USE_STATIC_LIBS    ON)
+    SET(Boost_USE_MULTITHREADED  ON)
+ENDIF(MSVC)
 FIND_PACKAGE(Boost COMPONENTS system filesystem thread date_time REQUIRED)
 LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
@@ -44,21 +46,7 @@ IF(PROJECT_OS_LINUX)
 	BISON_TARGET(rdosmr_file rdosmr_file.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramsmr_file.cpp COMPILE_FLAGS "-g -v -psmr_file_")
 	BISON_TARGET(rdosmr_sim rdosmr_sim.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramsmr_sim.cpp COMPILE_FLAGS "-g -v -psmr_sim_")
 
-	FLEX_TARGET(lexer_scaner rdo_lexer.l ${CMAKE_CURRENT_SOURCE_DIR}/rdolex.cpp COMPILE_FLAGS "--c++")
-
-	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdortp)
-	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdodpt)
-	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdoevn)
-	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdoevn_preparse)
-	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdofrm)
-	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdopat)
-	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdopmd)
-	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdoproc_opr)
-	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdoproc_rss)
-	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdoproc_rtp)
-	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdorss)
-	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdosmr_file)
-	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdosmr_sim)
+	FLEX_TARGET(lexer_scaner rdo_lexer.l ${CMAKE_CURRENT_SOURCE_DIR}/rdolex.cpp COMPILE_FLAGS "-+")
 
 	SET(GENERATED_FILES
 		rdogramma.h
@@ -231,7 +219,7 @@ ADD_LIBRARY(rdo_parser ${HEADER_FILES} ${INLITE_FILES} ${SOURCE_FILES} ${BISON_F
 ADD_DEPENDENCIES(rdo_parser rdo_utils)
 ADD_DEPENDENCIES(rdo_parser rdo_runtime)
 
-TARGET_LINK_LIBRARIES(rdo_parser ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY})
+TARGET_LINK_LIBRARIES(rdo_parser ${Boost_LIBRARIES})
 TARGET_LINK_LIBRARIES(rdo_parser rdo_utils)
 TARGET_LINK_LIBRARIES(rdo_parser rdo_runtime)
 
