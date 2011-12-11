@@ -10,6 +10,8 @@
 
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
+// ----------------------------------------------------------------------- PLATFORM
+#include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/parser/std_fun.h"
@@ -112,7 +114,9 @@ public:
 void RDOParserSTDFUN::generate(CREF(tstring) name, CREF(rdoRuntime::LPRDOFunCalc) pCalc, CREF(LPRDOParam) pReturnType, CREF(ParamList) paramList) const
 {
 	tstring nameLower = name;
+#ifdef COMPILER_VISUAL_STUDIO
 	rdo::toLower(nameLower);
+#endif // COMPILER_VISUAL_STUDIO
 	generateReal(name,      pCalc, pReturnType, paramList);
 	generateReal(nameLower, pCalc, pReturnType, paramList);
 }
