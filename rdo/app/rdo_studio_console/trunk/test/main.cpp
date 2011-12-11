@@ -20,11 +20,12 @@ namespace fs = boost::filesystem;
 #include <boost/test/included/unit_test.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdocommon.h"
-
-#include "config.h"
 // --------------------------------------------------------------------------------
 
 typedef std::list<tstring> file_data_list;
+
+const tstring RDO_STUDIO_CONSOLE_TEST_PATH_STRING = RDO_STUDIO_CONSOLE_TEST_PATH;
+const tstring RDO_STUDIO_CONSOLE_APP_STRING = RDO_STUDIO_CONSOLE_APP;
 
 void read_trace(CREF(tstring) file, REF(file_data_list) list)
 {
@@ -75,11 +76,11 @@ void read_result(CREF(tstring) file, REF(file_data_list) list)
 		if (stream.fail())
 			break;
 		
-		if (!key)
-			key = temp_string.find("$Changes") == -1 ? false : true;
-		
 		if (key)
 			list.push_back(temp_string);
+
+		if (!key)
+			key = temp_string.find("$BExpCalcCounter") == -1 ? false : true;
 	}
 }
 
@@ -92,7 +93,7 @@ void compare_result(CREF(tstring) etalon_result, CREF(tstring) result)
 	read_result(result, result_list);
 	
 	BOOST_CHECK(etalon_result_list.size() == result_list.size());
-	//BOOST_CHECK(etalon_list == list);
+	BOOST_CHECK(etalon_result_list == result_list);
 }
 
 void test_model(CREF(tstring) path, CREF(tstring) model_name)
@@ -126,7 +127,7 @@ void test_model(CREF(tstring) path, CREF(tstring) model_name)
 	boost::filesystem::remove(simulation_trace);
 	boost::filesystem::remove(simulation_result);
 	
-	tstring command(RDO_STUDIO_CONSOLE_APP + tstring(" -i ") + file);
+	tstring command(RDO_STUDIO_CONSOLE_APP_STRING + tstring(" -i ") + file);
 	system(command.c_str());
 	
 	BOOST_REQUIRE(fs::exists(simulation_trace));
@@ -141,40 +142,68 @@ void test_model(CREF(tstring) path, CREF(tstring) model_name)
 
 BOOST_AUTO_TEST_SUITE(RDOStudioConsoleTest)
 
+BOOST_AUTO_TEST_CASE(RDOStudioConsoleTestCheckInputData)
+{
+	if(RDO_STUDIO_CONSOLE_APP_STRING == "NULL") 
+	{
+		BOOST_ERROR("Invalid input data");
+		exit(1);
+	}
+}
+
+BOOST_AUTO_TEST_CASE(RDOStudioConsoleModelSimpleQS)
+{
+	tstring string("simple_qs");
+	test_model(RDO_STUDIO_CONSOLE_TEST_PATH_STRING + string, string);
+}
+
+BOOST_AUTO_TEST_CASE(RDOStudioConsoleModelMultichannelQS)
+{
+	tstring string("multichannel_qs");
+	test_model(RDO_STUDIO_CONSOLE_TEST_PATH_STRING + string, string);
+}
+
 BOOST_AUTO_TEST_CASE(RDOStudioConsoleModelArray)
 {
 	tstring string("array");
-	test_model(RDO_STUDIO_CONSOLE_TEST_PATH + string, string);
+	test_model(RDO_STUDIO_CONSOLE_TEST_PATH_STRING + string, string);
 }
 
 BOOST_AUTO_TEST_CASE(RDOStudioConsoleModelCreateRes)
 {
 	tstring string("create_res");
-	test_model(RDO_STUDIO_CONSOLE_TEST_PATH + string, string);
-}
-
-BOOST_AUTO_TEST_CASE(RDOStudioConsoleModelEventQS)
-{
-	tstring string("event_qs");
-	test_model(RDO_STUDIO_CONSOLE_TEST_PATH + string, string);
+	test_model(RDO_STUDIO_CONSOLE_TEST_PATH_STRING + string, string);
 }
 
 BOOST_AUTO_TEST_CASE(RDOStudioConsoleModelFmsEvent)
 {
 	tstring string("fms_event");
-	test_model(RDO_STUDIO_CONSOLE_TEST_PATH + string, string);
+	test_model(RDO_STUDIO_CONSOLE_TEST_PATH_STRING + string, string);
 }
 
 BOOST_AUTO_TEST_CASE(RDOStudioConsoleModelFmsPlaning)
 {
 	tstring string("fms_planing");
-	test_model(RDO_STUDIO_CONSOLE_TEST_PATH + string, string);
+	test_model(RDO_STUDIO_CONSOLE_TEST_PATH_STRING + string, string);
+}
+
+BOOST_AUTO_TEST_CASE(RDOStudioConsoleModelHeidel)
+{
+	tstring string("heidel");
+	test_model(RDO_STUDIO_CONSOLE_TEST_PATH_STRING + string, string);
+}
+
+/*
+BOOST_AUTO_TEST_CASE(RDOStudioConsoleModelEventQS)
+{
+	tstring string("event_qs");
+	test_model(RDO_STUDIO_CONSOLE_TEST_PATH_STRING + string, string);
 }
 
 BOOST_AUTO_TEST_CASE(RDOStudioConsoleModelPoliclinic)
 {
 	tstring string("policlinic");
-	test_model(RDO_STUDIO_CONSOLE_TEST_PATH + string, string);
+	test_model(RDO_STUDIO_CONSOLE_TEST_PATH_STRING + string, string);
 }
-
+*/
 BOOST_AUTO_TEST_SUITE_END() // RDOStudioConsoleTest
