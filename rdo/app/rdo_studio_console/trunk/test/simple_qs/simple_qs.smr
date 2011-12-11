@@ -1,0 +1,6 @@
+Show_mode      = NoShow
+Show_rate      = 3600.0
+
+Образец_прихода_клиента.planning( time_now + Интервал_прихода( 30 ) )
+
+Terminate_if Time_now >= 12 * 7 * 60
