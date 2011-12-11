@@ -1,7 +1,7 @@
-Results_file   = Heidel.pmv    2011-Dec-10 16:58:16.406250
-Run_file       = Heidel.smr
-Model_name     = Heidel
-Resource_file  = Heidel.rss
+Results_file   = heidel.pmv    2011-Dec-10 16:58:16.406250
+Run_file       = heidel.smr
+Model_name     = heidel
+Resource_file  = heidel.rss
 
 $Changes
 

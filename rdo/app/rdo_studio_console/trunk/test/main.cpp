@@ -192,7 +192,6 @@ BOOST_AUTO_TEST_CASE(RDOStudioConsoleModelHeidel)
 	tstring string("heidel");
 	test_model(RDO_STUDIO_CONSOLE_TEST_PATH_STRING + string, string);
 }
-
 /*
 BOOST_AUTO_TEST_CASE(RDOStudioConsoleModelEventQS)
 {
