@@ -818,7 +818,7 @@ inline CREF(rdo::intrusive_ptr<typename T::value_type>) RDOValue::getPointerSafe
 	ASSERT(pType);
 #endif // _DEBUG
 
-	return getPointer<T::value_type>();
+	return getPointer<typename T::value_type>();
 }
 
 template <class T>

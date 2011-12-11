@@ -177,7 +177,7 @@ void onCheckKsi(F binder, S binderSeq, double left, double right)
 
 	for (ruint i = 0; i < g_countOfR; ++i)
 	{
-		F_etalon[i] = g_countOfExamples*area<T>(binder, x[i], x[i+1]);
+		F_etalon[i] = static_cast<ruint>(g_countOfExamples*area<T>(binder, x[i], x[i+1]));
 	}
 
 	double sum = 0;
@@ -242,6 +242,7 @@ public:
 
 	double get(double x) const
 	{
+		UNUSED(x);
 		return 1/(m_max-m_min); 
 	}
 
