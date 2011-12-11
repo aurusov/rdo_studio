@@ -17,17 +17,18 @@
 #include <stdarg.h>
 #include <locale>
 #include <algorithm>
+#include <boost/algorithm/string.hpp>
 
 #ifdef COMPILER_VISUAL_STUDIO
-	#include <windows.h>
-	#include <io.h>
+#   include <windows.h>
+#   include <io.h>
 #endif
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdocommon.h"
 // --------------------------------------------------------------------------------
 
 #ifdef COMPILER_VISUAL_STUDIO
-	#pragma warning(disable : 4786)
+#   pragma warning(disable : 4786)
 #endif
 
 OPEN_RDO_NAMESPACE
@@ -48,9 +49,9 @@ tstring format( CPTR(tchar) str, REF(va_list) params )
 	int size = -1;
 	while ( size == -1 ) {
 #ifdef COMPILER_VISUAL_STUDIO
-		#pragma warning(disable: 4996)
+#   pragma warning(disable: 4996)
 		size = _vsnprintf( &s[0], s.size(), str, params );
-		#pragma warning(default: 4996)
+#   pragma warning(default: 4996)
 #endif  // COMPILER_VISUAL_STUDIO
 #ifdef COMPILER_GCC
 		size = vsnprintf( &s[0], s.size(), str, params );
@@ -96,9 +97,13 @@ struct _toLower {
 
 void toLower( REF(tstring) str )
 {
+#ifdef COMPILER_VISUAL_STUDIO
 	_toLower tr1( std::locale(_T("rus")) );
 	std::transform( str.begin(), str.end(), str.begin(), tr1 );
 	_toLower tr2( std::locale(_T("C")) );
+#elif defined COMPILER_GCC
+	boost::algorithm::to_lower(str);
+#endif // COMPILER_VISUAL_STUDIO
 }
 
 void trim( REF(tstring) str )
