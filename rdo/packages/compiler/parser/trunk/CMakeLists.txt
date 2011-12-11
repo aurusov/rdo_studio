@@ -21,26 +21,48 @@ IF(NOT FLEX_FOUND)
 	MESSAGE(ERROR "Flex can not be found")
 ENDIF(NOT FLEX_FOUND)
 
+SET(GENERATED_FILES)
+
 IF(PROJECT_OS_LINUX)
 
+	CONFIGURE_FILE(${CMAKE_MODULE_PATH}/rdogramma.h.cmake ${CMAKE_CURRENT_SOURCE_DIR}/rdogramma.h)
+
+	BISON_TARGET(rdortp rdortp.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramrtp.cpp COMPILE_FLAGS "-g -v -prtp")
+	BISON_TARGET(rdodpt rdodpt.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramdpt.cpp COMPILE_FLAGS "-g -v -pdpt")
+	BISON_TARGET(rdoevn rdoevn.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramevn.cpp COMPILE_FLAGS "-g -v -pevn")
+	BISON_TARGET(rdoevn_preparse rdoevn_preparse.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramevn_preparse.cpp COMPILE_FLAGS "-g -v -pevn_preparse_")
+	BISON_TARGET(rdofrm rdofrm.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramfrm.cpp COMPILE_FLAGS "-g -v -pfrm")
+	BISON_TARGET(rdofun rdofun.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramfun.cpp COMPILE_FLAGS "-g -v -pfun")
+	BISON_TARGET(rdopat rdopat.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogrampat.cpp COMPILE_FLAGS "-g -v -ppat")
+	BISON_TARGET(rdopmd rdopmd.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogrampmd.cpp COMPILE_FLAGS "-g -v -ppmd")
+	BISON_TARGET(rdoproc_opr rdoproc_opr.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramproc_opr.cpp COMPILE_FLAGS "-g -v -pproc_opr_")
+	BISON_TARGET(rdoproc_rss rdoproc_rss.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramproc_rss.cpp COMPILE_FLAGS "-g -v -pproc_rss_")
+	BISON_TARGET(rdoproc_rtp rdoproc_rtp.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramproc_rtp.cpp COMPILE_FLAGS "-g -v -pproc_rtp_")
+	BISON_TARGET(rdorss rdorss.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramrss.cpp COMPILE_FLAGS "-g -v -prss")
+	BISON_TARGET(rdosmr_file rdosmr_file.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramsmr_file.cpp COMPILE_FLAGS "-g -v -psmr_file_")
+	BISON_TARGET(rdosmr_sim rdosmr_sim.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramsmr_sim.cpp COMPILE_FLAGS "-g -v -psmr_sim_")
+
 	FLEX_TARGET(lexer_scaner rdo_lexer.l  ${CMAKE_CURRENT_SOURCE_DIR}/rdolex.cpp)
-	BISON_TARGET(rdodpt rdodpt.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramdpt.cpp COMPILE_FLAGS "-g -pdpt -o")
-	BISON_TARGET(rdoevn rdoevn.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramevn.cpp COMPILE_FLAGS "-g -pevn -o")
-	BISON_TARGET(rdoevn_preparse rdoevn_preparse.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramevn_preparse.cpp COMPILE_FLAGS "-g -pevn_preparse_ -o")
-	BISON_TARGET(rdofrm rdofrm.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramfrm.cpp COMPILE_FLAGS "-g -pfrm -o")
-	BISON_TARGET(rdofun rdofun.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramfun.cpp COMPILE_FLAGS "-g -pfun -o")
-	BISON_TARGET(rdopat rdopat.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogrampat.cpp COMPILE_FLAGS "-g -ppat -o")
-	BISON_TARGET(rdopmd rdopmd.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogrampmd.cpp COMPILE_FLAGS "-g -ppmd -o")
-	BISON_TARGET(rdoproc_opr rdoproc_opr.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramproc_opr.cpp COMPILE_FLAGS "-g -pproc_opr_ -o")
-	BISON_TARGET(rdoproc_rss rdoproc_rss.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramproc_rss.cpp COMPILE_FLAGS "-g -pproc_rss_ -o")
-	BISON_TARGET(rdoproc_rtp rdoproc_rtp.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramproc_rtp.cpp COMPILE_FLAGS "-g -pproc_rtp_ -o")
-	BISON_TARGET(rdorss rdorss.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramrss.cpp COMPILE_FLAGS "-g -prss -o")
-	BISON_TARGET(rdortp rdortp.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramrtp.cpp COMPILE_FLAGS "-g -prtp -o")
-	BISON_TARGET(rdosmr_file rdosmr_file.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramsmr_file.cpp COMPILE_FLAGS "-g -psmr_file_ -o")
-	BISON_TARGET(rdosmr_sim rdosmr_sim.y ${CMAKE_CURRENT_SOURCE_DIR}/rdogramsmr_sim.cpp COMPILE_FLAGS "-g -psmr_sim_ -o")
+
+	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdortp)
+	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdodpt)
+	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdoevn)
+	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdoevn_preparse)
+	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdofrm)
+	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdopat)
+	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdopmd)
+	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdoproc_opr)
+	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdoproc_rss)
+	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdoproc_rtp)
+	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdorss)
+	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdosmr_file)
+	ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdosmr_sim)
 
 SET(GENERATED_FILES
+	rdogramma.h
 	${FLEX_lexer_scaner_OUTPUTS}
+	${BISON_rdortp_OUTPUTS}
+	${BISON_rdortp_OUTPUT_HEADER}
 	${BISON_rdodpt_OUTPUTS}
 	${BISON_rdoevn_OUTPUTS}
 	${BISON_rdoevn_preparse_OUTPUTS}
@@ -52,11 +74,9 @@ SET(GENERATED_FILES
 	${BISON_rdoproc_rss_OUTPUTS}
 	${BISON_rdoproc_rtp_OUTPUTS}
 	${BISON_rdorss_OUTPUTS}
-	${BISON_rdortp_OUTPUTS}
 	${BISON_rdosmr_file_OUTPUTS}
 	${BISON_rdosmr_sim_OUTPUTS})
-	
-	CONFIGURE_FILE(${CMAKE_MODULE_PATH}/rdogramma.h.cmake ${CMAKE_CURRENT_SOURCE_DIR}/rdogramma.h)
+
 ENDIF(PROJECT_OS_LINUX)
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
@@ -66,8 +86,7 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/context)
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/type)
 
 SET(GENERATED_FILES
-	${GENERATED_FILES}
-	rdogramma.h)
+	${GENERATED_FILES})
 
 SET(HEADER_FILES
 	expression.h
@@ -186,8 +205,12 @@ SET(BISON_FILES
 
 ADD_LIBRARY(rdo_parser ${HEADER_FILES} ${INLITE_FILES} ${SOURCE_FILES} ${BISON_FILES} ${GENERATED_FILES})
 
+ADD_DEPENDENCIES(rdo_parser rdo_utils)
+ADD_DEPENDENCIES(rdo_parser rdo_runtime)
+
 TARGET_LINK_LIBRARIES(rdo_parser ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY})
 TARGET_LINK_LIBRARIES(rdo_parser rdo_utils)
+TARGET_LINK_LIBRARIES(rdo_parser rdo_runtime)
 
 SET(RDO_PARSER_TEST_PATH ${CMAKE_CURRENT_SOURCE_DIR}/test)
 #ADD_SUBDIRECTORY(${RDO_PARSER_TEST_PATH})

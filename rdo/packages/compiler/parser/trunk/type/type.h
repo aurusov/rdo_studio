@@ -84,7 +84,8 @@ protected:
 		ASSERT(m_pType);
 		if (typeID() == rdoRuntime::RDOType::t_unknow)
 		{
-			__asm nop;
+			int i = 1;
+			UNUSED(i);
 		}
 	}
 	virtual ~RDOType()

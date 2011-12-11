@@ -33,7 +33,8 @@ Expression::Expression(CREF(LPTypeInfo) pType, CREF(rdoRuntime::LPRDOCalc) pCalc
 		m_pValue = rdo::Factory<RDOValue>::create(pConstCalc->getValue(), src_info, m_pType);
 		if (m_pValue->typeID() == rdoRuntime::RDOType::t_identificator)
 		{
-			__asm nop;
+			int i = 0;
+			UNUSED(i);
 		}
 	}
 	setSrcInfo(src_info);
