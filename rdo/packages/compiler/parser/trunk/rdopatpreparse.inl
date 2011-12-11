@@ -84,7 +84,7 @@ inline void RDOEvent::setParamList(CREF(LPArithmContainer) pParamList)
 	m_pParamList = pParamList;
 }
 
-inline LPArithmContainer RDOEvent::getParamList() const
+inline CREF(LPArithmContainer) RDOEvent::getParamList() const
 {
 	return m_pParamList;
 }

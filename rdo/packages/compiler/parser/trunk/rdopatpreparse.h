@@ -31,17 +31,17 @@ DECLARE_FACTORY(RDOEvent);
 public:
 	typedef std::list<rdoRuntime::LPRDOCalcEvent> CalcList;
 
-	CREF(tstring)          name           () const;
-	void                   attachCalc     (CREF(rdoRuntime::LPRDOCalcEventStop) pCalc);
-	void                   attachCalc     (CREF(rdoRuntime::LPRDOCalcEventPlan) pCalc);
-	REF(CalcList)          getCalcList    ();
-	LPIBaseOperation       getRuntimeEvent() const;
-	void                   setRuntimeEvent(LPIBaseOperation pRuntimeEvent);
-	rbool                  getRegular     () const;
-	rdoRuntime::LPRDOCalc  getInitCalc    () const;
-	void                   setInitCalc    (CREF(rdoRuntime::LPRDOCalc) pCalc);
-	void                   setParamList   (CREF(LPArithmContainer) pParamList);
-	LPArithmContainer      getParamList   () const;
+	CREF(tstring)            name           () const;
+	void                     attachCalc     (CREF(rdoRuntime::LPRDOCalcEventStop) pCalc);
+	void                     attachCalc     (CREF(rdoRuntime::LPRDOCalcEventPlan) pCalc);
+	REF(CalcList)            getCalcList    ();
+	LPIBaseOperation         getRuntimeEvent() const;
+	void                     setRuntimeEvent(LPIBaseOperation pRuntimeEvent);
+	rbool                    getRegular     () const;
+	rdoRuntime::LPRDOCalc    getInitCalc    () const;
+	void                     setInitCalc    (CREF(rdoRuntime::LPRDOCalc) pCalc);
+	void                     setParamList   (CREF(LPArithmContainer) pParamList);
+	CREF(LPArithmContainer)  getParamList   () const;
 
 private:
 	RDOEvent(CREF(tstring) name, rbool regular);
