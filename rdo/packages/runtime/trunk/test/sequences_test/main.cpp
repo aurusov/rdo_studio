@@ -49,7 +49,7 @@ const double   g_top                  = 5.0;                        //!< парамет
 const ruint    g_precision            = 20;                         //!< точность вещественного числа при выводе в поток
 
 const ruint    g_countOfExamples      = 2000;                       //!< количество чисел в выборке
-const ruint    g_countOfR          = 39;                         //!< число разрядов
+const ruint    g_countOfR             = 39;                         //!< число разрядов
 const double   pi                     = 3.141592653;                //!< фундаментальная константа
 const double   g_ksiEtalon            = 50.9985;                    //!< табличное значение. 95% вероятность того, что это действительно тот самый закон распределения
 
@@ -169,23 +169,15 @@ void onCheckKsi(F binder, S binderSeq, double left, double right)
 				++freq;
 			}
 		}
-		f_vb[i] = freq;
+		f_vb[i] = freq/(g_countOfExamples*1.0);
 	}
 
-	ContainerInt F_etalon(g_countOfR);
+	Container F_etalon(g_countOfR);
 	//Fi.reserve(g_countOfR);
 
 	for (ruint i = 0; i < g_countOfR; ++i)
 	{
-		F_etalon[i] = static_cast<ruint>(g_countOfExamples*area<T>(binder, x[i], x[i+1]));
-	}
-
-	double sum = 0;
-	double summ= 0;
-	for(ruint i = 0; i < g_countOfR; ++i)
-	{
-		sum += F_etalon[i];
-		summ += f_vb[i];
+		F_etalon[i] = area<T>(binder, x[i], x[i+1]);
 	}
 
 	double ksi = 0;
@@ -193,7 +185,7 @@ void onCheckKsi(F binder, S binderSeq, double left, double right)
 	{
 		ksi += (f_vb[i] - F_etalon[i])*(f_vb[i] - F_etalon[i])/F_etalon[i];
 	}
-
+	ksi *= g_countOfExamples*1.0;
 	BOOST_CHECK(ksi <= g_ksiEtalon);
 }
 // --------------------------------------------------------------------------------
@@ -301,8 +293,8 @@ BOOST_AUTO_TEST_CASE(RDONormalTestCheck)
 	onCheckKsi<SequenceNormal, rdoRuntime::RandGeneratorNormal>
 		(boost::bind(&SequenceNormal::get, normal, _1),
 		boost::bind(&rdoRuntime::RandGeneratorNormal::next, _1, g_main, g_var),
-		g_main-3.2*sqrt(g_var),
-		g_main+3.2*sqrt(g_var));
+		g_main-4*g_var,
+		g_main+4*g_var);
 }
 
 // --------------------------------------------------------------------------------
