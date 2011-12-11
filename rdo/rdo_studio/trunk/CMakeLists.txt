@@ -1,3 +1,11 @@
+#==============================================================================
+# Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>
+#==============================================================================
+# Welcome to the CMake build system for RDO STUDIO (UNIX VERSION).
+# This is the main file where we prepare the general build environment
+# and provide build configuration options.
+#==============================================================================
+
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6.0)
 
 PROJECT(rdo_nix_studio)
@@ -36,8 +44,14 @@ IF(NOT BUILD_SHARED_LIBS)
 ENDIF(NOT BUILD_SHARED_LIBS)
 ENDIF(NOT MSVC)
 
-SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/build)
-SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/build)
+IF(NOT MSVC)
+    SET(CDEFS "-m32 -o output32")
+    SET(CMAKE_C_FLAGS  ${CDEFS})
+    SET(CMAKE_CXX_FLAGS ${CDEFS})
+ENDIF(NOT MSVC)
+
+SET(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR})
+SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR})
 
 # add the include folder to the include path
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR})
@@ -49,6 +63,9 @@ ENDIF(NOT MSVC)
 
 # set base directory
 SET(RDO_BASE_DIRECTORY ${PROJECT_SOURCE_DIR})
+
+SET(CMAKE_MODULE_PATH ${RDO_BASE_DIRECTORY}/cmake)
+INCLUDE(add_boost_test)
 
 # Compile the rdo_common
 SET(UTILS_PATH ${RDO_BASE_DIRECTORY}/utils)
