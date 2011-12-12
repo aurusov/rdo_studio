@@ -168,6 +168,37 @@ rdoRuntime::RDOValue RDORTPResType::get_default() const
 }
 
 
+LPExpression RDORTPResType::onCreateExpression(CREF(LPRDOValue) pValue)
+{
+	ASSERT(pValue);
+/*
+	//! ѕараметры
+	tstring pResAsParamString = pValue->value().getIdentificator();
+	tstring pResAsParamString1 = pResAsParamString.substr(0,find_first_of(_T('.')));
+	tstring pResAsParamString2 = pResAsParamString.substr(find_first_of(_T('.')));
+	LPRDORSSResource pResAsParam =RDOParser::s_parser()->findRSSResource(pResAsParamString1);
+	if(pResAsParam)
+	{
+		ruint pResAsParamID = pResAsParam->getID();
+		LPRDORTPParam pParam = findRTPParam(pResAsParamString2);
+		if (pParam)
+		{
+			ruint pParamID = getRTPParamNumber (pParam->name());
+			LPExpression pExpression = rdo::Factory<Expression>::create(
+			pParam->getTypeInfo(),
+			rdo::Factory<rdoRuntime::RDOCalcGetResParam>::create(pResAsParamID,pParamID),
+			pValue->src_info()
+			);
+			ASSERT(pExpression);
+		return pExpression;
+		}
+	}
+*/
+	NEVER_REACH_HERE;
+	return LPExpression(NULL);
+}
+
+
 /*
 // --------------------------------------------------------------------------------
 // -------------------- RDORTPFuzzyMembershiftFun - ф-и€ принадлежности нечеткого терма

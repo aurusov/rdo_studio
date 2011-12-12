@@ -22,7 +22,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- Context
 // --------------------------------------------------------------------------------
-OBJECT(Context)
+class Context: virtual public rdo::counter_reference
 {
 DECLARE_FACTORY(Context);
 friend void ContextStack::push(LPContext pContext);
@@ -44,6 +44,7 @@ private:
 
 	void setContextStack(CREF(LPContextStack) pContextStack);
 };
+DECLARE_POINTER(Context);
 
 CLOSE_RDO_PARSER_NAMESPACE
 

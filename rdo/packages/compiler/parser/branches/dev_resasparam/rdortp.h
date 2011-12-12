@@ -21,6 +21,8 @@
 #include "simulator/compiler/parser/rdortp_param.h"
 #include "simulator/runtime/rdo_object.h"
 #include "simulator/runtime/rdo_value.h"
+#include "simulator/compiler/parser/context/context.h"
+#include "simulator/compiler/parser/context/context_create_expression_i.h"
 #include "simulator/runtime/rdo_res_type_i.h"
 // --------------------------------------------------------------------------------
 
@@ -37,9 +39,11 @@ PREDECLARE_POINTER(RDOParser);
 PREDECLARE_POINTER(RDORSSResource);
 
 class RDORTPResType:
-	    INSTANCE_OF(RDOParserSrcInfo  )
-	AND INSTANCE_OF(boost::noncopyable)
-	AND INSTANCE_OF(RDOType           )
+	    INSTANCE_OF      (RDOParserSrcInfo        )
+	AND INSTANCE_OF      (boost::noncopyable      )
+	AND INSTANCE_OF      (RDOType                 )
+	AND INSTANCE_OF      (Context                 )
+	AND IMPLEMENTATION_OF(IContextCreateExpression)
 {
 DECLARE_FACTORY(RDORTPResType);
 public:
@@ -82,6 +86,8 @@ private:
 	const ruint                 m_number;
 	const rbool                 m_permanent;
 	ParamList                   m_params;
+
+	DECLARE_IContextCreateExpression;
 };
 DECLARE_POINTER(RDORTPResType);
 

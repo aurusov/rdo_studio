@@ -60,8 +60,8 @@ public:
 // --------------------------------------------------------------------------------
 // -------------------- RDOType
 // --------------------------------------------------------------------------------
-OBJECT(RDOType)
-	IS  IMPLEMENTATION_OF(IType          )
+class RDOType: virtual public rdo::counter_reference
+	AND IMPLEMENTATION_OF(IType          )
 	AND IMPLEMENTATION_OF(IModelStructure)
 {
 DECLARE_FACTORY(RDOType)
@@ -94,6 +94,7 @@ protected:
 
 	rdoRuntime::LPRDOType m_pType;
 };
+DECLARE_POINTER(RDOType);
 
 CLOSE_RDO_PARSER_NAMESPACE
 
