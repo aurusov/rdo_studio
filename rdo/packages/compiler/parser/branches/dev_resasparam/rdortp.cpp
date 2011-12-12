@@ -11,6 +11,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdortp.h"
 #include "simulator/compiler/parser/rdoparser.h"
@@ -137,11 +138,13 @@ LPRDOValue RDORTPResType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcIn
 		LPRDOType pThisType = const_cast<PTR(RDORTPResType)>(this);
 
 		//! Это один и тот же тип
-		if (pThisType == pRTPResType)
+		if (pThisType == pRTPResType.object_parent_cast<RDOType>())
 			return pFrom;
 
 		//! Типы разные, сгенерим ошибку
 		rdoParse::g_error().push_only(src_info,    _T("Несоответствие типов ресурсов"));
+		rdoParse::g_error().push_only(to_src_info,  rdo::format(  _T("Ожидается: %s"), to_src_info.src_text().c_str()));
+		rdoParse::g_error().push_only(src_info,  rdo::format(  _T("Пришел: %s"), pFrom->src_text().c_str()));
 		rdoParse::g_error().push_only(to_src_info, to_src_info.src_text());
 		rdoParse::g_error().push_done();
 	}
@@ -163,6 +166,7 @@ rdoRuntime::RDOValue RDORTPResType::get_default() const
 	return rdoRuntime::RDOValue();
 	//return rdoRuntime::RDOValue (pResourceType,pResource);
 }
+
 
 /*
 // --------------------------------------------------------------------------------
