@@ -24,7 +24,9 @@ OPEN_RDO_PARSER_NAMESPACE
 inline RDOEvent::RDOEvent(CREF(tstring) name, rbool regular)
 	: m_name    (name   )
 	, m_regullar(regular)
-{}
+{
+	m_pParamList = rdo::Factory<ArithmContainer>::create();
+}
 
 inline RDOEvent::~RDOEvent()
 {}
@@ -84,7 +86,7 @@ inline void RDOEvent::setParamList(CREF(LPArithmContainer) pParamList)
 	m_pParamList = pParamList;
 }
 
-inline LPArithmContainer RDOEvent::getParamList() const
+inline CREF(LPArithmContainer) RDOEvent::getParamList() const
 {
 	return m_pParamList;
 }

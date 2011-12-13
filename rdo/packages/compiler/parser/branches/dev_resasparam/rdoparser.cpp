@@ -38,7 +38,7 @@ DECLARE_PARSER_OBJECT_CONTAINER_NONAME(NAME) \
 const LPRDO##NAME RDOParser::find##NAME(CREF(tstring) name) const \
 { \
 	NAME##List::const_iterator it = std::find_if(m_all##NAME.begin(), m_all##NAME.end(), compareName<RDO##NAME>(name)); \
-	return it != m_all##NAME.end() ? *it : NULL; \
+	return it != m_all##NAME.end() ? *it : LPRDO##NAME(NULL); \
 } \
 rbool RDOParser::remove##NAME(const LPRDO##NAME item) \
 { \
@@ -83,7 +83,7 @@ ruint RDOParser::lexer_loc_pos()
 
 LPRDOParser RDOParser::s_parser()
 {
-	return !s_parserStack.empty() ? s_parserStack.back() : NULL;
+	return !s_parserStack.empty() ? s_parserStack.back() : LPRDOParser(NULL);
 }
 
 RDOParser::RDOParser()
