@@ -39,13 +39,13 @@ inline RDOCalcGetResID::RDOCalcGetResID(CREF(LPRDOCalc) pCalcGetResource)
 	: m_pCalcGetResource  (pCalcGetResource)
 {}
 // --------------------------------------------------------------------------------
-// -------------------- RDOCalcGetResParam2
+// -------------------- RDOCalcGetResParamByCalc
 // --------------------------------------------------------------------------------
-/*inline RDOCalcGetResParam2::RDOCalcGetResParam2(int _resNumb, int _parNumb)
-	: m_resID  (_resNumb)
-	, m_paramID(_parNumb)
+inline RDOCalcGetResParamByCalc::RDOCalcGetResParamByCalc(CREF(LPRDOCalc)pResourceCalc, int _parNumb)
+	: m_pResourceCalc  (rdo::Factory<rdoRuntime::RDOCalcGetResID>::create(pResourceCalc))
+	, m_paramID        (_parNumb)
 {}
-*/
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetTempResParamFRM
 // --------------------------------------------------------------------------------

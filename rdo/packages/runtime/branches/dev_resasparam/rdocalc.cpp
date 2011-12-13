@@ -89,18 +89,18 @@ REF(RDOValue) RDOCalcGetResID::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	LPRDOResource pResource = m_pCalcGetResource->calcValue(pRuntime).getPointer<RDOResource>();
 	ASSERT(pResource);
-	m_value = pResource->getTraceID();//TODO:здесь должен быть метод, возвращающий ID ресурса, а не типа.
+	m_value = pResource->getTraceID();
 	return m_value;
 }
 // --------------------------------------------------------------------------------
-// -------------------- RDOCalcGetResParam2 (Параметры постоянного ресурса как параметра функции)
+// -------------------- RDOCalcGetResParamByCalc (Параметр ресурса по калку ресурса и ID параметра)
 // --------------------------------------------------------------------------------
-/*REF(RDOValue) RDOCalcGetResParam2::doCalc(CREF(LPRDORuntime) pRuntime)
+REF(RDOValue) RDOCalcGetResParamByCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	m_value = pRuntime->getResParamVal(m_resID, m_paramID);
+	m_value = pRuntime->getResParamVal(m_pResourceCalc->calcValue(pRuntime).getInt(), m_paramID);
 	return m_value;
 }
-*/
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetTempResParamFRM (Параметры временного ресурса для FRM)
 // --------------------------------------------------------------------------------

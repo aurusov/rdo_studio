@@ -145,20 +145,22 @@ protected:
 
 /*!
   \class   RDOCalcGetResParam
-  \brief   Параметры постоянного ресурса как параметра функции
+  \brief   Параметр ресурса по калку ресурса и ID параметра
 */
-/*CALC(RDOCalcGetResParam2)
+CALC(RDOCalcGetResParamByCalc)
 {
-DECLARE_FACTORY(RDOCalcGetResParam2)
-protected:
-	RDOCalcGetResParam(int _resNumb, int _parNumb);
+DECLARE_FACTORY(RDOCalcGetResParamByCalc)
+private:
 
-	int m_resID;
+	LPRDOCalc m_pResourceCalc;
 	int m_paramID;
+
+protected:
+	RDOCalcGetResParamByCalc( CREF(LPRDOCalc)pResourceCalc, int _parNumb);
 
 	DECLARE_ICalc;
 };
-*/
+
 /*!
   \class   RDOCalcGetTempResParamFRM
   \brief   Параметры временного ресурса для FRM
