@@ -127,6 +127,39 @@ protected:
 };
 
 /*!
+  \class   RDOCalcGetResID
+  \brief   Получение ID ресурса по калку
+*/
+CALC(RDOCalcGetResID)
+{
+DECLARE_FACTORY(RDOCalcGetResID)
+
+private:
+	LPRDOCalc m_pCalcGetResource;
+protected:
+	RDOCalcGetResID(CREF(LPRDOCalc) pCalcGetResource);
+
+	DECLARE_ICalc;
+};
+
+
+/*!
+  \class   RDOCalcGetResParam
+  \brief   Параметры постоянного ресурса как параметра функции
+*/
+/*CALC(RDOCalcGetResParam2)
+{
+DECLARE_FACTORY(RDOCalcGetResParam2)
+protected:
+	RDOCalcGetResParam(int _resNumb, int _parNumb);
+
+	int m_resID;
+	int m_paramID;
+
+	DECLARE_ICalc;
+};
+*/
+/*!
   \class   RDOCalcGetTempResParamFRM
   \brief   Параметры временного ресурса для FRM
 */
