@@ -31,6 +31,7 @@
 #include "simulator/runtime/calc/logic.h"
 #include "simulator/runtime/calc/unary.h"
 #include "simulator/runtime/calc/sequence.h"
+#include "simulator/runtime/calc/select.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
