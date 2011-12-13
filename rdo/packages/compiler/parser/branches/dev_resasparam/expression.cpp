@@ -31,8 +31,7 @@ Expression::Expression(CREF(LPTypeInfo) pType, CREF(rdoRuntime::LPRDOCalc) pCalc
 		rdoRuntime::LPRDOCalcConst pConstCalc = m_pCalc.object_dynamic_cast<rdoRuntime::RDOCalcConst>();
 		if (pConstCalc)
 		{
-			int i = 0;
-			UNUSED(i);
+			m_pValue = rdo::Factory<RDOValue>::create(pConstCalc->getValue(), src_info, m_pType);
 		}
 	}
 	setSrcInfo(src_info);
