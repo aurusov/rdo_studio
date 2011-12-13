@@ -164,31 +164,6 @@ inline RDOFunAlgorithmicDiapCalc::RDOFunAlgorithmicDiapCalc(CREF(RDOValue) min_v
 {}
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOFunCalcGroup
-// --------------------------------------------------------------------------------
-inline RDOFunCalcGroup::RDOFunCalcGroup(int nResType, CREF(LPRDOCalc) pCondition)
-	: m_nResType  (nResType  )
-	, m_pCondition(pCondition)
-{}
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOFunCalcSelect
-// --------------------------------------------------------------------------------
-inline RDOFunCalcSelect::RDOFunCalcSelect(int nResType, CREF(LPRDOCalc) pCondition)
-	: RDOFunCalcGroup(nResType, pCondition)
-{
-	m_value = 1;
-}
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOFunCalcSelectBase
-// --------------------------------------------------------------------------------
-inline RDOFunCalcSelectBase::RDOFunCalcSelectBase(CREF(LPRDOFunCalcSelect) pSelect, CREF(LPRDOCalc) pCondition)
-	: m_pSelect   (pSelect   )
-	, m_pCondition(pCondition)
-{}
-
-// --------------------------------------------------------------------------------
 // -------------------- RDOCalcFuncParam
 // --------------------------------------------------------------------------------
 inline RDOCalcFuncParam::RDOCalcFuncParam(int param_number, CREF(RDOSrcInfo) _src_info)

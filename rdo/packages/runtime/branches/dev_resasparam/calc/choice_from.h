@@ -14,9 +14,30 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdocalc.h"
+#include "simulator/runtime/rdo_res_type_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
+
+/*!
+  \class   RDOCalcCreateResource
+  \brief   Создание нового ресурса
+*/
+CALC(RDOCalcCreateResource)
+{
+DECLARE_FACTORY(RDOCalcCreateResource)
+private:
+	//! relResID == 0 для ресурсов, создаваемых при инициализации модели
+	RDOCalcCreateResource(CREF(LPIResourceType) pType, CREF(std::vector<RDOValue>) rParamsCalcs, rbool traceFlag, rbool permanentFlag, ruint relResID = 0);
+
+	LPIResourceType        m_pResType;
+	std::vector<RDOValue>  m_paramsCalcs;
+	rbool                  m_traceFlag;
+	rbool                  m_permanentFlag;
+	ruint                  m_relResID;
+
+	DECLARE_ICalc;
+};
 
 /*!
   \class   RDOSelectResourceCalc

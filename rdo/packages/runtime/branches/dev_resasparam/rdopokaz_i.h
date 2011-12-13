@@ -15,6 +15,7 @@
 #include "utils/rdointerface.h"
 #include "simulator/runtime/rdo_simulator.h"
 #include "simulator/runtime/rdocalc.h"
+#include "simulator/runtime/rdo_resource.h"
 // --------------------------------------------------------------------------------
 
 /*!
