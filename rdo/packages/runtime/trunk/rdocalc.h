@@ -13,7 +13,6 @@
 #define _LIB_RUNTIME_CALC_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <list>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/namespace.h"
 #include "utils/smart_ptr/factory.h"
@@ -22,10 +21,11 @@
 #include "simulator/runtime/rdo_object.h"
 #include "simulator/runtime/rdo_random_distribution.h"
 #include "simulator/runtime/rdo_memory.h"
-#include "simulator/runtime/rdo_res_type.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
+
+PREDECLARE_POINTER(RDORuntime);
 
 //! \defgroup calc      Общая группа калков
 //! \defgroup calc_base Абстрактный калк
@@ -339,152 +339,8 @@ private:
 };
 
 /*!
-  \class   RDOFunCalcGroup
-  \brief   Базовая калка для групповых калок
-*/
-CALC_SUB(RDOFunCalcGroup, RDOFunCalc)
-{
-protected:
-	int        m_nResType;
-	LPRDOCalc  m_pCondition;
-
-	RDOFunCalcGroup(int nResType, CREF(LPRDOCalc) pCondition);
-};
-
 /*!
-  \def     DEFINE_CALC_GROUP
-  \brief   Групповые калки
-*/
-#define DEFINE_CALC_GROUP(CalcName) \
-CALC_SUB(RDOFunCalc##CalcName, RDOFunCalcGroup) \
-{ \
-DECLARE_FACTORY(RDOFunCalc##CalcName) \
-private: \
-	RDOFunCalc##CalcName(int nResType, CREF(LPRDOCalc) pCondition) \
-		: RDOFunCalcGroup(nResType, pCondition) \
-	{} \
- 	virtual REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime); \
-};
-
 /*!
-  \class   RDOFunCalcExist
-  \brief   Логический предикат существования
-*/
-DEFINE_CALC_GROUP(Exist);
-
-/*!
-  \class   RDOFunCalcNotExist
-  \brief   Логический предикат отрицания существования
-*/
-DEFINE_CALC_GROUP(NotExist);
-
-/*!
-  \class   RDOFunCalcForAll
-  \brief   Логический предикат общности
-*/
-DEFINE_CALC_GROUP(ForAll);
-
-/*!
-  \class   RDOFunCalcNotForAll
-  \brief   Логический предикат отрицания общности
-*/
-DEFINE_CALC_GROUP(NotForAll);
-
-/*!
-  \class   RDOFunCalcSelect
-  \brief   Базовая групповая функция
-*/
-CALC_SUB(RDOFunCalcSelect, RDOFunCalcGroup)
-{
-DECLARE_FACTORY(RDOFunCalcSelect)
-public:
-	mutable std::list<LPRDOResource> res_list;
-	void prepare(CREF(LPRDORuntime) pRuntime);
-
-private:
-	RDOFunCalcSelect(int nResType, CREF(LPRDOCalc) pCondition);
-
-	DECLARE_ICalc;
-};
-
-/*!
-  \class   RDOFunCalcSelectBase
-  \brief   Базовая калка для операторов Select
-*/
-CALC_SUB(RDOFunCalcSelectBase, RDOFunCalc)
-{
-protected:
-	RDOFunCalcSelectBase(CREF(LPRDOFunCalcSelect) pSelect, CREF(LPRDOCalc) pCondition);
-
-	LPRDOFunCalcSelect m_pSelect;
-	LPRDOCalc          m_pCondition;
-};
-
-/*!
-  \def     DEFINE_CALC_SELECT_GROUP
-  \brief   Select-группа
-*/
-#define DEFINE_CALC_SELECT_GROUP(CalcName) \
-CALC_SUB(RDOFunCalcSelect##CalcName, RDOFunCalcSelectBase) \
-{ \
-DECLARE_FACTORY(RDOFunCalcSelect##CalcName) \
-private: \
-	RDOFunCalcSelect##CalcName(CREF(LPRDOFunCalcSelect) pSelect, CREF(LPRDOCalc) pCondition) \
-		: RDOFunCalcSelectBase(pSelect, pCondition) \
-	{} \
-	DECLARE_ICalc; \
-};
-
-/*!
-  \def     DEFINE_CALC_SELECT_METHOD
-  \brief   Select-метод
-*/
-#define DEFINE_CALC_SELECT_METHOD(CalcName) \
-CALC_SUB(RDOFunCalcSelect##CalcName, RDOFunCalcSelectBase) \
-{ \
-DECLARE_FACTORY(RDOFunCalcSelect##CalcName) \
-private: \
-	RDOFunCalcSelect##CalcName(CREF(LPRDOFunCalcSelect) pSelect) \
-		: RDOFunCalcSelectBase(pSelect, NULL) \
-	{} \
-	DECLARE_ICalc; \
-};
-
-/*!
-  \class   RDOFunCalcSelectExist
-  \brief   Квантор существования
-*/
-DEFINE_CALC_SELECT_GROUP(Exist);
-
-/*!
-  \class   RDOFunCalcSelectNotExist
-  \brief   Обратный квантор существования
-*/
-DEFINE_CALC_SELECT_GROUP (NotExist );
-
-/*!
-  \class   RDOFunCalcSelectForAll
-  \brief   Проверка условия для каждого элемента множества
-*/
-DEFINE_CALC_SELECT_GROUP (ForAll   );
-
-/*!
-  \class   RDOFunCalcSelectNotForAll
-  \brief   Обратная проверка условия для каждого элемента множества
-*/
-DEFINE_CALC_SELECT_GROUP (NotForAll);
-
-/*!
-  \class   RDOFunCalcSelectEmpty
-  \brief   Проверка множества на пустоту
-*/
-DEFINE_CALC_SELECT_METHOD(Empty    );
-
-/*!
-  \class   RDOFunCalcSelectSize
-  \brief   Размер множества
-*/
-DEFINE_CALC_SELECT_METHOD(Size     );
 
 /*!
   \class   RDOCalcFuncParam
@@ -503,7 +359,7 @@ private:
 
 /*!
   \class   RDOCalcGetConst
-  \brief   Получение контанты
+  \brief   Получение константы
 */
 CALC(RDOCalcGetConst)
 {
@@ -547,82 +403,6 @@ private:
 
 	std::vector<LPRDOCalc>  m_parameters;
 	LPRDOFunCalc            m_pFunction;
-
-	DECLARE_ICalc;
-};
-
-/*!
-  \class   RDOCalcCreateNumberedResource
-  \brief   Рудимент для rdo_converter
-*/
-CALC(RDOCalcCreateNumberedResource)
-{
-DECLARE_FACTORY(RDOCalcCreateNumberedResource)
-public:
-	ruint getNumber() const {NEVER_REACH_HERE;}
-	virtual PTR(RDOResource) createResource(CREF(LPRDORuntime) pRuntime) const
-	{
-		UNUSED(pRuntime);
-		NEVER_REACH_HERE;
-		return 0;
-	}
-
-protected:
-	RDOCalcCreateNumberedResource(int typeID, rbool traceFlag, CREF(std::vector<RDOValue>) paramsCalcs, int number, rbool isPermanent);
-
-	int                    m_typeID;
-	rbool                  m_traceFlag;
-	std::vector<RDOValue>  m_paramsCalcs;
-	ruint                  m_number;
-	rbool                  m_isPermanent;
-
-	DECLARE_ICalc;
-};
-
-/*!
-  \class   RDOCalcCreateProcessResource
-  \brief   Рудимент для rdo_converter
-*/
-CALC(RDOCalcCreateProcessResource)
-{
-DECLARE_FACTORY(RDOCalcCreateProcessResource)
-public:
-	ruint getNumber() const {NEVER_REACH_HERE;}
-	virtual PTR(RDOResource) createResource(CREF(LPRDORuntime) pRuntime) const
-	{
-		UNUSED(pRuntime);
-		NEVER_REACH_HERE;
-		return 0;
-	}
-
-protected:
-	RDOCalcCreateProcessResource(rsint typeID, rbool traceFlag, CREF(std::vector<RDOValue>) paramsCalcs, int number, rbool isPermanent);
-
-	rsint                  m_typeID;
-	rbool                  m_traceFlag;
-	std::vector<RDOValue>  m_paramsCalcs;
-	ruint                  m_number;
-	rbool                  m_isPermanent;
-
-	DECLARE_ICalc;
-};
-
-/*!
-  \class   RDOCalcCreateResource
-  \brief   Создание нового ресурса
-*/
-CALC(RDOCalcCreateResource)
-{
-DECLARE_FACTORY(RDOCalcCreateResource)
-private:
-	//! relResID == 0 для ресурсов, создаваемых при инициализации модели
-	RDOCalcCreateResource(CREF(LPIResourceType) pType, CREF(std::vector<RDOValue>) rParamsCalcs, rbool traceFlag, rbool permanentFlag, ruint relResID = 0);
-
-	LPIResourceType        m_pResType;
-	std::vector<RDOValue>  m_paramsCalcs;
-	rbool                  m_traceFlag;
-	rbool                  m_permanentFlag;
-	ruint                  m_relResID;
 
 	DECLARE_ICalc;
 };

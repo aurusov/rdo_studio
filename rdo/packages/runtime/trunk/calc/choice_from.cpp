@@ -28,53 +28,6 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOSelectResourceNonExistCalc
-// --------------------------------------------------------------------------------
-REF(RDOValue) RDOSelectResourceNonExistCalc::doCalc(CREF(LPRDORuntime) pRuntime)
-{
-	pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
-	return m_value;
-}
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOCalcCreateNumberedResource
-// --------------------------------------------------------------------------------
-RDOCalcCreateNumberedResource::RDOCalcCreateNumberedResource(int typeID, rbool traceFlag, CREF(std::vector<RDOValue>) paramsCalcs, int number, rbool isPermanent)
-	: m_typeID     (typeID     )
-	, m_traceFlag  (traceFlag  )
-	, m_number     (number     )
-	, m_isPermanent(isPermanent)
-{
-	UNUSED(paramsCalcs);
-}
-
-REF(RDOValue) RDOCalcCreateNumberedResource::doCalc(CREF(LPRDORuntime) pRuntime)
-{
-	UNUSED(pRuntime);
-	NEVER_REACH_HERE;
-	return m_value;
-}
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOCalcCreateProcessResource
-// --------------------------------------------------------------------------------
-RDOCalcCreateProcessResource::RDOCalcCreateProcessResource(int typeID, rbool traceFlag, CREF(std::vector<RDOValue>) paramsCalcs, int number, rbool isPermanent)
-	: m_typeID     (typeID     )
-	, m_traceFlag  (traceFlag  )
-	, m_number     (number     )
-	, m_isPermanent(isPermanent)
-{
-	UNUSED(paramsCalcs);
-}
-
-REF(RDOValue) RDOCalcCreateProcessResource::doCalc(CREF(LPRDORuntime) pRuntime)
-{
-	UNUSED(pRuntime);
-	NEVER_REACH_HERE;
-	return m_value;
-}
-
-// --------------------------------------------------------------------------------
 // -------------------- RDOCalcCreateResource
 // --------------------------------------------------------------------------------
 RDOCalcCreateResource::RDOCalcCreateResource(CREF(LPIResourceType) pType, CREF(std::vector<RDOValue>) rParamsCalcs, rbool traceFlag, rbool permanentFlag, ruint relResID)
@@ -107,6 +60,15 @@ RDOSelectResourceCalc::RDOSelectResourceCalc(int relResID, CREF(LPRDOCalc) pCalc
 	, m_pCalcOrder     (pCalcOrder     )
 	, m_orderType      (orderType      )
 {}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOSelectResourceNonExistCalc
+// --------------------------------------------------------------------------------
+REF(RDOValue) RDOSelectResourceNonExistCalc::doCalc(CREF(LPRDORuntime) pRuntime)
+{
+	pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
+	return m_value;
+}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOSelectResourceDirectCalc
@@ -198,6 +160,15 @@ REF(RDOValue) RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 	m_value = 0;
 	return m_value;
 }
+
+// --------------------------------------------------------------------------------
+// -------------------- IRDOSelectResourceCommon
+// --------------------------------------------------------------------------------
+IRDOSelectResourceCommon::IRDOSelectResourceCommon()
+{}
+
+IRDOSelectResourceCommon::~IRDOSelectResourceCommon()
+{}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOSelectResourceCommonCalc
@@ -363,15 +334,6 @@ rbool RDOSelectResourceByTypeCommonCalc::callChoice(CREF(LPRDORuntime) pRuntime)
 }
 
 RDOSelectResourceByTypeCommonCalc::~RDOSelectResourceByTypeCommonCalc()
-{}
-
-// --------------------------------------------------------------------------------
-// -------------------- IRDOSelectResourceCommon
-// --------------------------------------------------------------------------------
-IRDOSelectResourceCommon::IRDOSelectResourceCommon()
-{}
-
-IRDOSelectResourceCommon::~IRDOSelectResourceCommon()
 {}
 
 CLOSE_RDO_RUNTIME_NAMESPACE

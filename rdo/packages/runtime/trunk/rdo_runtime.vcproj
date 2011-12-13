@@ -1884,6 +1884,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\calc\group.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\group.h"
+				>
+			</File>
+			<File
 				RelativePath=".\calc\locvar.cpp"
 				>
 			</File>
@@ -1991,6 +1999,14 @@
 			</File>
 			<File
 				RelativePath=".\calc\relres.inl"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\select.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\select.h"
 				>
 			</File>
 			<File
