@@ -180,49 +180,31 @@ LPRDORelevantResource RDOPATPattern::findRelRes(CREF(LPRDOValue) pValue) const
 	return pRelevantResource;
 }
 
-LPContext RDOPATPattern::onFindContext(CREF(LPRDOValue) pValue) const
+IContextFind::Result RDOPATPattern::onFindContext(CREF(LPRDOValue) pValue) const
 {
 	ASSERT(pValue);
 
-	if (m_pContextMemory->onFindContext(pValue))
+	IContextFind::Result result = m_pContextMemory->onFindContext(pValue);
+	if (result.m_pContext)
 	{
-		return m_pContextMemory;
+		return result;
 	}
 
 	//! Релевантные ресурсы
 	LPRDORelevantResource pRelevantResource = findRelRes(pValue);
 	if (pRelevantResource)
 	{
-		return const_cast<PTR(RDOPATPattern)>(this);
+		LPExpression pExpression = rdo::Factory<Expression>::create(
+			rdo::Factory<TypeInfo>::create(
+				pRelevantResource->getType(),
+				pValue->src_info()
+			),
+			rdo::Factory<rdoRuntime::RDOGetResourceByRelevantResourceID>::create(pRelevantResource->m_relResID),
+			pValue->src_info()
+		);
+		ASSERT(pExpression);
+		return IContextFind::Result(const_cast<PTR(RDOPATPattern)>(this), pExpression, pValue, pRelevantResource);
 	}
-
-	//! Параметры
-	LPRDOParam pParam = findPATPatternParam(pValue->value().getIdentificator());
-	if (pParam)
-	{
-		return const_cast<PTR(RDOPATPattern)>(this);
-	}
-
-	return LPContext(NULL);
-}
-
-LPContext RDOPATPattern::onSwitchContext(CREF(LPRDOValue) pValue) const
-{
-	ASSERT(pValue);
-
-	//! Релевантные ресурсы
-	LPRDORelevantResource pRelevantResource = findRelRes(pValue);
-	if (pRelevantResource)
-	{
-		return pRelevantResource.object_parent_cast<Context>();
-	}
-
-	return LPContext(NULL);
-}
-
-LPExpression RDOPATPattern::onCreateExpression(CREF(LPRDOValue) pValue)
-{
-	ASSERT(pValue);
 
 	//! Параметры
 	LPRDOParam pParam = findPATPatternParam(pValue->value().getIdentificator());
@@ -234,11 +216,10 @@ LPExpression RDOPATPattern::onCreateExpression(CREF(LPRDOValue) pValue)
 			pValue->src_info()
 		);
 		ASSERT(pExpression);
-		return pExpression;
+		return IContextFind::Result(const_cast<PTR(RDOPATPattern)>(this), pExpression, pValue);
 	}
 
-	NEVER_REACH_HERE;
-	return NULL;
+	return IContextFind::Result();
 }
 
 tstring RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::ConvertStatus value)
@@ -943,23 +924,11 @@ RDOPatternKeyboard::RDOPatternKeyboard(CREF(RDOParserSrcInfo) name_src_info, rbo
 // --------------------------------------------------------------------------------
 // -------------------- RDORelevantResource
 // --------------------------------------------------------------------------------
-LPExpression RDORelevantResource::onCreateExpression(CREF(LPRDOValue) pValue)
+IContextFind::Result RDORelevantResource::onSwitchContext(CREF(LPExpression) pSwitchExpression, CREF(LPRDOValue) pValue) const
 {
-	ASSERT(pValue);
+	ASSERT(pSwitchExpression);
+	ASSERT(pValue           );
 
-/*	if (name() == pValue->value().getIdentificator())
-	{
-	// пришло имя рел. ресурса
-		LPRDOValue pThisResource = rdo::Factory<RDOValue>::create(
-			pType,
-			pObject,
-			pValue->src_info()
-		);
-		LPExpression pExpression = rdo::Factory<Expression>::create(pThisResource);
-		ASSERT(pExpression);
-		return pExpression;
-	}
-*/
 	ruint parNumb = getType()->getRTPParamNumber(pValue->value().getIdentificator());
 	if (parNumb == RDORTPResType::UNDEFINED_PARAM)
 	{
@@ -997,13 +966,13 @@ LPExpression RDORelevantResource::onCreateExpression(CREF(LPRDOValue) pValue)
 
 	LPExpression pExpression = rdo::Factory<Expression>::create(
 		pParam->getTypeInfo(),
-		rdo::Factory<rdoRuntime::RDOGetRelResParamCalc>::create(m_relResID, parNumb),
+		rdo::Factory<rdoRuntime::RDOCalcGetResParamByCalc>::create(pSwitchExpression->calc(), parNumb),
 		pValue->src_info()
 	);
 	ASSERT(pExpression);
-	return pExpression;
-}
 
+	return IContextFind::Result(const_cast<PTR(RDORelevantResource)>(this), pExpression, pValue);
+}
 
 rdoRuntime::LPRDOCalc RDORelevantResource::getChoiceCalc()
 {

@@ -12,8 +12,9 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/compiler/parser/context/context.h"
 #include "simulator/compiler/parser/rdo_value.h"
+#include "simulator/compiler/parser/context/context.h"
+#include "simulator/compiler/parser/context/context_find_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -25,7 +26,7 @@ OBJECT_INTERFACE(IContextSwitch)
 {
 DECLARE_FACTORY(IContextSwitch)
 public:
-	virtual LPContext onSwitchContext(CREF(LPRDOValue) pValue) const = 0;
+	virtual IContextFind::Result onSwitchContext(CREF(LPExpression) pSwitchExpression, CREF(LPRDOValue) pValue) const = 0;
 
 protected:
 	IContextSwitch()
@@ -34,7 +35,7 @@ protected:
 	{}
 };
 #define DECLARE_IContextSwitch \
-	LPContext onSwitchContext(CREF(LPRDOValue) pValue) const;
+	IContextFind::Result onSwitchContext(CREF(LPExpression) pSwitchExpression, CREF(LPRDOValue) pValue) const;
 
 CLOSE_RDO_PARSER_NAMESPACE
 

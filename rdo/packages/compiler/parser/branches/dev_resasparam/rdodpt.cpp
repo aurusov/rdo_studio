@@ -99,15 +99,15 @@ RDODPTActivity::RDODPTActivity(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSr
 RDODPTActivity::~RDODPTActivity()
 {}
 
-LPContext RDODPTActivity::onFindContext(CREF(LPRDOValue) pValue) const
+IContextFind::Result RDODPTActivity::onFindContext(CREF(LPRDOValue) pValue) const
 {
 	ASSERT(pValue);
-	LPContext pContext = m_pPattern->onFindContext(pValue);
-	if (pContext)
+	IContextFind::Result result = m_pPattern->onFindContext(pValue);
+	if (result.m_pContext)
 	{
-		return pContext;
+		return result;
 	}
-	return LPContext(NULL);
+	return IContextFind::Result();
 }
 
 void RDODPTActivity::addParam(CREF(LPRDOValue) pParam)
@@ -280,12 +280,12 @@ RDODPTSome::RDODPTSome(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
 	RDOParser::s_parser()->contextStack()->push(this);
 }
 
-LPContext RDODPTSome::onFindContext(CREF(LPRDOValue) pValue) const
+IContextFind::Result RDODPTSome::onFindContext(CREF(LPRDOValue) pValue) const
 {
 	UNUSED(pValue);
 
 	//! Поиск не нужен, добавлен для порядка, чтобы контекст активности был на стеке после контекста точки
-	return LPContext(NULL);
+	return IContextFind::Result();
 }
 
 void RDODPTSome::end()
@@ -311,12 +311,12 @@ RDODPTPrior::RDODPTPrior(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
 	RDOParser::s_parser()->contextStack()->push(this);
 }
 
-LPContext RDODPTPrior::onFindContext(CREF(LPRDOValue) pValue) const
+IContextFind::Result RDODPTPrior::onFindContext(CREF(LPRDOValue) pValue) const
 {
 	UNUSED(pValue);
 
 	//! Поиск не нужен, добавлен для порядка, чтобы контекст активности был на стеке после контекста точки
-	return LPContext(NULL);
+	return IContextFind::Result();
 }
 
 void RDODPTPrior::end()
@@ -375,12 +375,12 @@ RDODPTSearch::RDODPTSearch(CREF(RDOParserSrcInfo) src_info, rdoRuntime::RDODPTSe
 	RDOParser::s_parser()->contextStack()->push(this);
 }
 
-LPContext RDODPTSearch::onFindContext(CREF(LPRDOValue) pValue) const
+IContextFind::Result RDODPTSearch::onFindContext(CREF(LPRDOValue) pValue) const
 {
 	UNUSED(pValue);
 
 	//! Поиск не нужен, добавлен для порядка, чтобы контекст активности был на стеке после контекста точки
-	return LPContext(NULL);
+	return IContextFind::Result();
 }
 
 void RDODPTSearch::end()

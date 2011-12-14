@@ -15,6 +15,7 @@
 #include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/compiler/parser/rdo_value.h"
 #include "simulator/compiler/parser/type/info.h"
+#include "simulator/compiler/parser/context/context_switch_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -22,7 +23,10 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOParam
 // --------------------------------------------------------------------------------
-OBJECT(RDOParam) IS INSTANCE_OF(RDOParserSrcInfo)
+CLASS(RDOParam):
+	    INSTANCE_OF      (RDOParserSrcInfo)
+	AND INSTANCE_OF      (Context         )
+	AND IMPLEMENTATION_OF(IContextSwitch  )
 {
 DECLARE_FACTORY(RDOParam)
 public:
@@ -40,7 +44,10 @@ private:
 	LPRDOValue m_pDefault;
 
 	void checkDefault();
+
+	DECLARE_IContextSwitch;
 };
+DECLARE_POINTER(RDOParam);
 
 CLOSE_RDO_PARSER_NAMESPACE
 

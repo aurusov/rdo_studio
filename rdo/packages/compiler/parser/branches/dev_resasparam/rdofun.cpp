@@ -285,7 +285,7 @@ LPRDOFUNArithm RDOFUNArithm::generateByIdentificator(CREF(LPRDOValue) pValue1, C
 	pContext = pContext->find(pValue1);
 	ASSERT(pContext);
 
-	pContext = pContext->swch(pValue1);
+	pContext = pContext->swch(pValue2);
 	ASSERT(pContext);
 
 	LPExpression pExpression = pContext->create(pValue2);
@@ -1341,48 +1341,15 @@ void RDOFUNFunction::end()
 	RDOParser::s_parser()->contextStack()->pop();
 }
 
-LPContext RDOFUNFunction::onFindContext(CREF(LPRDOValue) pValue) const
+IContextFind::Result RDOFUNFunction::onFindContext(CREF(LPRDOValue) pValue) const
 {
 	ASSERT(pValue);
 
-	if (m_pContextMemory->onFindContext(pValue))
+	IContextFind::Result result = m_pContextMemory->onFindContext(pValue);
+	if (result.m_pContext)
 	{
-		return m_pContextMemory;
+		return result;
 	}
-
-	//! Параметры
-	LPRDOParam pParam = findFUNFunctionParam(pValue->value().getIdentificator());
-	if (pParam)
-	{
-		return const_cast<PTR(RDOFUNFunction)>(this);
-	}
-
-	return LPContext(NULL);
-}
-
-LPContext RDOFUNFunction::onSwitchContext(CREF(LPRDOValue) pValue) const
-{
-	//! Параметры
-	LPRDOParam pParam = findFUNFunctionParam(pValue->value().getIdentificator());
-	if (pParam)
-	{
-		LPRDOType pType = pParam->getTypeInfo()->type();
-		ASSERT(pType);
-
-		LPRDORTPResType pResType = pType.object_dynamic_cast<RDORTPResType>();
-		if (pResType)
-		{
-//			return pResType;
-			LPContext(NULL);
-		}
-	}
-
-	return LPContext(NULL);
-}
-
-LPExpression RDOFUNFunction::onCreateExpression(CREF(LPRDOValue) pValue)
-{
-	ASSERT(pValue);
 
 	//! Параметры
 	LPRDOParam pParam = findFUNFunctionParam(pValue->value().getIdentificator());
@@ -1394,11 +1361,10 @@ LPExpression RDOFUNFunction::onCreateExpression(CREF(LPRDOValue) pValue)
 			pValue->src_info()
 		);
 		ASSERT(pExpression);
-		return pExpression;
+		return IContextFind::Result(const_cast<PTR(RDOFUNFunction)>(this), pExpression, pValue, pParam);
 	}
 
-	NEVER_REACH_HERE;
-	return LPExpression(NULL);
+	return IContextFind::Result();
 }
 
 RDOFUNFunction::~RDOFUNFunction()
@@ -1678,25 +1644,7 @@ void RDOFUNGroup::end()
 	RDOParser::s_parser()->contextStack()->pop();
 }
 
-LPContext RDOFUNGroup::onFindContext(CREF(LPRDOValue) pValue) const
-{
-	ASSERT(pValue);
-
-	if (getResType()->name() == pValue->value().getIdentificator())
-	{
-		return const_cast<PTR(RDOFUNGroup)>(this);
-	}
-
-	return LPContext(NULL);
-}
-
-LPContext RDOFUNGroup::onSwitchContext(CREF(LPRDOValue) pValue) const
-{
-	//! switch на себя
-	return onFindContext(pValue);
-}
-
-LPExpression RDOFUNGroup::onCreateExpression(CREF(LPRDOValue) pValue)
+IContextFind::Result RDOFUNGroup::onFindContext(CREF(LPRDOValue) pValue) const
 {
 	ASSERT(pValue);
 
@@ -1704,7 +1652,7 @@ LPExpression RDOFUNGroup::onCreateExpression(CREF(LPRDOValue) pValue)
 	ruint parNumb = getResType()->getRTPParamNumber(pValue->value().getIdentificator());
 	if (parNumb == RDORTPResType::UNDEFINED_PARAM)
 	{
-		RDOParser::s_parser()->error().error(pValue->src_info(), rdo::format(_T("Неизвестный параметр ресурса: %s"), pValue->value().getIdentificator().c_str()));
+		return IContextFind::Result();
 	}
 
 	LPTypeInfo pTypeParam = getResType()->findRTPParam(pValue->value().getIdentificator())->getTypeInfo();
@@ -1719,8 +1667,7 @@ LPExpression RDOFUNGroup::onCreateExpression(CREF(LPRDOValue) pValue)
 		pValue->src_info()
 	);
 	ASSERT(pExpression);
-
-	return pExpression;
+	return IContextFind::Result(const_cast<PTR(RDOFUNGroup)>(this), pExpression, pValue);
 }
 
 // --------------------------------------------------------------------------------

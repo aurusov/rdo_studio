@@ -12,6 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/param.h"
+#include "simulator/compiler/parser/rdortp.h"
 #include "simulator/runtime/rdo_resource.h"
 // --------------------------------------------------------------------------------
 
@@ -43,6 +44,22 @@ void RDOParam::checkDefault()
 		m_pType->type()->type_cast(m_pDefault->typeInfo()->type(), m_pDefault->src_info(), this->src_info(), m_pDefault->src_info());
 		m_pDefault = m_pType->type()->value_cast(m_pDefault, this->src_info(), m_pDefault->src_info());
 	}
+}
+
+IContextFind::Result RDOParam::onSwitchContext(CREF(LPExpression) pSwitchExpression, CREF(LPRDOValue) pValue) const
+{
+	ASSERT(pSwitchExpression);
+	ASSERT(pValue           );
+
+	LPRDORTPResType pResType = pSwitchExpression->typeInfo()->type().object_dynamic_cast<RDORTPResType>();
+	if (pResType)
+	{
+		LPIContextSwitch pContextSwitch = pResType.interface_dynamic_cast<IContextSwitch>();
+		ASSERT(pContextSwitch);
+		return pContextSwitch->onSwitchContext(pSwitchExpression, pValue);
+	}
+
+	return IContextFind::Result();
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

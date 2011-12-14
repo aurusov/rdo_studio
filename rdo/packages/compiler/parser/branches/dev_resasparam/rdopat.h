@@ -20,9 +20,7 @@
 #include "simulator/compiler/parser/param.h"
 #include "simulator/compiler/parser/context/context.h"
 #include "simulator/compiler/parser/context/memory.h"
-#include "simulator/compiler/parser/context/context_find_i.h"
 #include "simulator/compiler/parser/context/context_switch_i.h"
-#include "simulator/compiler/parser/context/context_create_expression_i.h"
 
 #include "simulator/runtime/rdo_pattern.h"
 #include "simulator/runtime/rdo_resource.h"
@@ -77,11 +75,9 @@ PREDECLARE_POINTER(RDOPATChoiceOrder);
 PREDECLARE_POINTER(RDORelevantResource);
 
 CLASS(RDOPATPattern):
-	    INSTANCE_OF      (RDOParserSrcInfo        )
-	AND INSTANCE_OF      (Context                 )
-	AND IMPLEMENTATION_OF(IContextFind            )
-	AND IMPLEMENTATION_OF(IContextSwitch          )
-	AND IMPLEMENTATION_OF(IContextCreateExpression)
+	    INSTANCE_OF      (RDOParserSrcInfo)
+	AND INSTANCE_OF      (Context         )
+	AND IMPLEMENTATION_OF(IContextFind    )
 {
 DECLARE_FACTORY(RDOPATPattern)
 friend class RDOOPROperation;
@@ -178,8 +174,6 @@ private:
 	LPRDORelevantResource findRelRes       (CREF(LPRDOValue) pValue) const;
 
 	DECLARE_IContextFind;
-	DECLARE_IContextSwitch;
-	DECLARE_IContextCreateExpression;
 };
 DECLARE_POINTER(RDOPATPattern);
 
@@ -302,10 +296,10 @@ private:
 // -------------------- RDORelevantResource
 // --------------------------------------------------------------------------------
 CLASS(RDORelevantResource):
-	    INSTANCE_OF      (RDOParserSrcInfo        )
-	AND INSTANCE_OF      (Context                 )
-	AND INSTANCE_OF      (boost::noncopyable      )
-	AND IMPLEMENTATION_OF(IContextCreateExpression)
+	    INSTANCE_OF      (RDOParserSrcInfo  )
+	AND INSTANCE_OF      (Context           )
+	AND INSTANCE_OF      (boost::noncopyable)
+	AND IMPLEMENTATION_OF(IContextSwitch    )
 {
 DECLARE_FACTORY(RDORelevantResource)
 public:
@@ -400,7 +394,7 @@ protected:
 private:
 	ParamSetList m_paramSetList;
 
-	DECLARE_IContextCreateExpression;
+	DECLARE_IContextSwitch;
 };
 DECLARE_POINTER(RDORelevantResource);
 

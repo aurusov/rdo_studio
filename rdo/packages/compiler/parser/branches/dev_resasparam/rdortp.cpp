@@ -167,37 +167,29 @@ rdoRuntime::RDOValue RDORTPResType::get_default() const
 	//return rdoRuntime::RDOValue (pResourceType,pResource);
 }
 
-
-LPExpression RDORTPResType::onCreateExpression(CREF(LPRDOValue) pValue)
+IContextFind::Result RDORTPResType::onSwitchContext(CREF(LPExpression) pSwitchExpression, CREF(LPRDOValue) pValue) const
 {
-	ASSERT(pValue);
-/*
-	//! Параметры
-	tstring pResAsParamString = pValue->value().getIdentificator();
-	tstring pResAsParamString1 = pResAsParamString.substr(0,find_first_of(_T('.')));
-	tstring pResAsParamString2 = pResAsParamString.substr(find_first_of(_T('.')));
-	LPRDORSSResource pResAsParam =RDOParser::s_parser()->findRSSResource(pResAsParamString1);
-	if(pResAsParam)
-	{
-		ruint pResAsParamID = pResAsParam->getID();
-		LPRDORTPParam pParam = findRTPParam(pResAsParamString2);
-		if (pParam)
-		{
-			ruint pParamID = getRTPParamNumber (pParam->name());
-			LPExpression pExpression = rdo::Factory<Expression>::create(
-			pParam->getTypeInfo(),
-			rdo::Factory<rdoRuntime::RDOCalcGetResParam>::create(pResAsParamID,pParamID),
-			pValue->src_info()
-			);
-			ASSERT(pExpression);
-		return pExpression;
-		}
-	}
-*/
-	NEVER_REACH_HERE;
-	return LPExpression(NULL);
-}
+	ASSERT(pSwitchExpression);
+	ASSERT(pValue           );
 
+	ruint parNumb = getRTPParamNumber(pValue->value().getIdentificator());
+	if (parNumb == RDORTPResType::UNDEFINED_PARAM)
+	{
+		RDOParser::s_parser()->error().error(pValue->src_info(), rdo::format(_T("Неизвестный параметр ресурса: %s"), pValue->value().getIdentificator().c_str()));
+	}
+
+	LPRDORTPParam pParam = findRTPParam(pValue->value().getIdentificator());
+	ASSERT(pParam);
+
+	LPExpression pExpression = rdo::Factory<Expression>::create(
+		pParam->getTypeInfo(),
+		rdo::Factory<rdoRuntime::RDOCalcGetResParamByCalc>::create(pSwitchExpression->calc(), parNumb),
+		pValue->src_info()
+	);
+	ASSERT(pExpression);
+
+	return IContextFind::Result(const_cast<PTR(RDORTPResType)>(this), pExpression, pValue);
+}
 
 /*
 // --------------------------------------------------------------------------------

@@ -17,8 +17,7 @@
 #include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/compiler/parser/rdo_value.h"
 #include "simulator/compiler/parser/rdortp.h"
-#include "simulator/compiler/parser/context/context.h"
-#include "simulator/compiler/parser/context/context_create_expression_i.h"
+#include "simulator/compiler/parser/context/context_switch_i.h"
 #include "simulator/runtime/rdo_object.h"
 // --------------------------------------------------------------------------------
 
@@ -36,10 +35,10 @@ void rsserror(PTR(char)    message);
 // -------------------- RDORSSResource
 // --------------------------------------------------------------------------------
 CLASS(RDORSSResource):
-	    INSTANCE_OF      (RDOParserSrcInfo        )
-	AND INSTANCE_OF      (Context                 )
-	AND INSTANCE_OF      (boost::noncopyable      )
-	AND IMPLEMENTATION_OF(IContextCreateExpression)
+	    INSTANCE_OF      (RDOParserSrcInfo  )
+	AND INSTANCE_OF      (Context           )
+	AND INSTANCE_OF      (boost::noncopyable)
+	AND IMPLEMENTATION_OF(IContextSwitch    )
 {
 DECLARE_FACTORY(RDORSSResource);
 public:
@@ -90,7 +89,7 @@ protected:
 private:
 	RDORTPResType::ParamList::const_iterator m_currParam;
 
-	DECLARE_IContextCreateExpression;
+	DECLARE_IContextSwitch;
 };
 DECLARE_POINTER(RDORSSResource);
 

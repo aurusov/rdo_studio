@@ -35,9 +35,6 @@
 #include "simulator/compiler/parser/rdofrm.h"
 #include "simulator/compiler/parser/rdosmr.h"
 #include "simulator/compiler/parser/context/context.h"
-#include "simulator/compiler/parser/context/context_find_i.h"
-#include "simulator/compiler/parser/context/context_switch_i.h"
-#include "simulator/compiler/parser/context/context_create_expression_i.h"
 #include "simulator/compiler/parser/context/stack.h"
 #include "simulator/compiler/parser/rdo_array.h"
 // --------------------------------------------------------------------------------
@@ -85,10 +82,8 @@ struct identity
 };
 
 CLASS(RDOParser):
-	    INSTANCE_OF      (Context                 )
-	AND IMPLEMENTATION_OF(IContextFind            )
-	AND IMPLEMENTATION_OF(IContextSwitch          )
-	AND IMPLEMENTATION_OF(IContextCreateExpression)
+	    INSTANCE_OF      (Context     )
+	AND IMPLEMENTATION_OF(IContextFind)
 {
 DECLARE_FACTORY(RDOParser);
 
@@ -289,8 +284,6 @@ private:
 	static ParserList s_parserStack;
 
 	DECLARE_IContextFind;
-	DECLARE_IContextSwitch;
-	DECLARE_IContextCreateExpression;
 };
 DECLARE_POINTER(RDOParser);
 

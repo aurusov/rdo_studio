@@ -15,6 +15,7 @@
 #include "simulator/compiler/parser/rdo_value.h"
 #include "simulator/compiler/parser/expression.h"
 #include "simulator/compiler/parser/context/stack.h"
+#include "simulator/compiler/parser/context/context_find_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -40,7 +41,8 @@ protected:
 	virtual ~Context();
 
 private:
-	LPContextStack m_pContextStack;
+	LPContextStack        m_pContextStack;
+	IContextFind::Result  m_findResult;
 
 	void setContextStack(CREF(LPContextStack) pContextStack);
 };
