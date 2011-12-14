@@ -32,19 +32,39 @@ inline RDOCalcGetResParam::RDOCalcGetResParam(int _resNumb, int _parNumb)
 	: m_resID  (_resNumb)
 	, m_paramID(_parNumb)
 {}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcGetResourceByCalcID
+// --------------------------------------------------------------------------------
+inline RDOCalcGetResourceByCalcID::RDOCalcGetResourceByCalcID(CREF(LPRDOCalc) pGetResourceID)
+	: m_pGetResourceID(pGetResourceID)
+{
+	ASSERT(m_pGetResourceID);
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcGetResourceByID
+// --------------------------------------------------------------------------------
+inline RDOCalcGetResourceByID::RDOCalcGetResourceByID(CREF(ruint) resourceID)
+	: m_resourceID(resourceID)
+{}
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetResID
 // --------------------------------------------------------------------------------
 inline RDOCalcGetResID::RDOCalcGetResID(CREF(LPRDOCalc) pCalcGetResource)
 	: m_pCalcGetResource  (pCalcGetResource)
 {}
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetResParamByCalc
 // --------------------------------------------------------------------------------
-inline RDOCalcGetResParamByCalc::RDOCalcGetResParamByCalc(CREF(LPRDOCalc)pResourceCalc, int _parNumb)
-	: m_pResourceCalc  (rdo::Factory<rdoRuntime::RDOCalcGetResID>::create(pResourceCalc))
-	, m_paramID        (_parNumb)
-{}
+inline RDOCalcGetResParamByCalc::RDOCalcGetResParamByCalc(CREF(LPRDOCalc) pResource, ruint paramID)
+	: m_pResource(pResource)
+	, m_paramID  (paramID  )
+{
+	ASSERT(m_pResource);
+}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetTempResParamFRM

@@ -17,6 +17,7 @@
 #include "simulator/runtime/rdocalc.h"
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/runtime/rdo_activity.h"
+#include "simulator/runtime/rdo_res_type.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -83,6 +84,46 @@ REF(RDOValue) RDOCalcGetResParam::doCalc(CREF(LPRDORuntime) pRuntime)
 }
 
 // --------------------------------------------------------------------------------
+// -------------------- RDOCalcGetResourceHelper
+// --------------------------------------------------------------------------------
+rbool RDOCalcGetResourceHelper::getResource(CREF(LPRDORuntime) pRuntime, ruint resourceID, REF(RDOValue) result)
+{
+	LPRDOResource pResource = pRuntime->getResourceByID(resourceID);
+	if (!pResource)
+		false;
+
+	LPRDOType pType(pResource->getResType());
+	ASSERT(pType);
+
+	result = RDOValue(pType, pResource);
+	return true;
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcGetResourceByCalcID (Получение ресурса по калку, который возвращает ID)
+// --------------------------------------------------------------------------------
+REF(RDOValue) RDOCalcGetResourceByCalcID::doCalc(CREF(LPRDORuntime) pRuntime)
+{
+	if (!RDOCalcGetResourceHelper::getResource(pRuntime, m_pGetResourceID->calcValue(pRuntime).getUInt(), m_value))
+	{
+		pRuntime->error(_T("Не найден ресурс"), this);
+	}
+	return m_value;
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcGetResourceByID (Получение ресурса сразу по ID)
+// --------------------------------------------------------------------------------
+REF(RDOValue) RDOCalcGetResourceByID::doCalc(CREF(LPRDORuntime) pRuntime)
+{
+	if (!RDOCalcGetResourceHelper::getResource(pRuntime, m_resourceID, m_value))
+	{
+		pRuntime->error(_T("Не найден ресурс"), this);
+	}
+	return m_value;
+}
+
+// --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetResID (Получение ID ресурса по калку)
 // --------------------------------------------------------------------------------
 REF(RDOValue) RDOCalcGetResID::doCalc(CREF(LPRDORuntime) pRuntime)
@@ -92,12 +133,15 @@ REF(RDOValue) RDOCalcGetResID::doCalc(CREF(LPRDORuntime) pRuntime)
 	m_value = pResource->getTraceID();
 	return m_value;
 }
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetResParamByCalc (Параметр ресурса по калку ресурса и ID параметра)
 // --------------------------------------------------------------------------------
 REF(RDOValue) RDOCalcGetResParamByCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	m_value = pRuntime->getResParamVal(m_pResourceCalc->calcValue(pRuntime).getInt(), m_paramID);
+	LPRDOResource pResource = m_pResource->calcValue(pRuntime).getPointerSafety<RDOResourceType>();
+	ASSERT(pResource);
+	m_value = pResource->getParam(m_paramID);
 	return m_value;
 }
 

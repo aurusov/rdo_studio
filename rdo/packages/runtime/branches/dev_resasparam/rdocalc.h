@@ -110,10 +110,9 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class   RDOCalcGetResParam
-  \brief   ѕараметры посто€нного ресурса
-*/
+//! ѕараметры ресурса
+//! @todo удалить, вместо него используетс€ св€зка
+//! (\ref RDOCalcGetResourceByID или \ref RDOCalcGetResourceByCalcID) и \ref RDOCalcGetResParamByCalc
 CALC(RDOCalcGetResParam)
 {
 DECLARE_FACTORY(RDOCalcGetResParam)
@@ -122,6 +121,37 @@ protected:
 
 	int m_resID;
 	int m_paramID;
+
+	DECLARE_ICalc;
+};
+
+//! ¬спомогательный класс дл€ вытаскивани€ ресурса по ID и оборачивани€ его в RDOValue
+class RDOCalcGetResourceHelper
+{
+public:
+	static rbool getResource(CREF(LPRDORuntime) pRuntime, ruint resourceID, REF(RDOValue) result);
+};
+
+//! ѕолучение ресурса по калку, который возвращает ID
+CALC(RDOCalcGetResourceByCalcID)
+{
+DECLARE_FACTORY(RDOCalcGetResourceByCalcID)
+private:
+	RDOCalcGetResourceByCalcID(CREF(LPRDOCalc) pGetResourceID);
+
+	LPRDOCalc m_pGetResourceID;
+
+	DECLARE_ICalc;
+};
+
+//! ѕолучение ресурса сразу по ID
+CALC(RDOCalcGetResourceByID)
+{
+DECLARE_FACTORY(RDOCalcGetResourceByID)
+private:
+	RDOCalcGetResourceByID(CREF(ruint) resourceID);
+
+	ruint m_resourceID;
 
 	DECLARE_ICalc;
 };
@@ -142,21 +172,15 @@ protected:
 	DECLARE_ICalc;
 };
 
-
-/*!
-  \class   RDOCalcGetResParam
-  \brief   ѕараметр ресурса по калку ресурса и ID параметра
-*/
+//! ѕараметр ресурса по калку ресурса и ID параметра
 CALC(RDOCalcGetResParamByCalc)
 {
 DECLARE_FACTORY(RDOCalcGetResParamByCalc)
 private:
+	RDOCalcGetResParamByCalc(CREF(LPRDOCalc) pResource, ruint paramID);
 
-	LPRDOCalc m_pResourceCalc;
-	int m_paramID;
-
-protected:
-	RDOCalcGetResParamByCalc( CREF(LPRDOCalc)pResourceCalc, int _parNumb);
+	LPRDOCalc m_pResource;
+	int       m_paramID;
 
 	DECLARE_ICalc;
 };
