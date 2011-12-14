@@ -19,10 +19,21 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \class   RDOGetRelResParamCalc
-  \brief   ѕараметр релевантного ресурса
-*/
+//! ѕолучить ресурс по ID релевантного ресурса
+CALC(RDOGetResourceByRelevantResourceID)
+{
+DECLARE_FACTORY(RDOGetResourceByRelevantResourceID)
+private:
+	RDOGetResourceByRelevantResourceID(ruint relevantResourceID);
+
+	ruint m_relevantResourceID;
+
+	DECLARE_ICalc;
+};
+
+
+//! ѕараметр релевантного ресурса
+//! @todo удалить, вместо него используетс€ \ref RDOCalcGetResParamByCalc
 CALC(RDOGetRelResParamCalc)
 {
 DECLARE_FACTORY(RDOGetRelResParamCalc)

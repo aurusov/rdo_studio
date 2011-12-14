@@ -18,6 +18,22 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // --------------------------------------------------------------------------------
+// -------------------- RDOGetResourceByRelevantResourceID
+// --------------------------------------------------------------------------------
+RDOGetResourceByRelevantResourceID::RDOGetResourceByRelevantResourceID(ruint relevantResourceID)
+	: m_relevantResourceID(relevantResourceID)
+{}
+
+REF(RDOValue) RDOGetResourceByRelevantResourceID::doCalc(CREF(LPRDORuntime) pRuntime)
+{
+	if (!RDOCalcGetResourceHelper::getResource(pRuntime, pRuntime->getCurrentActivity()->getResByRelRes(m_relevantResourceID), m_value))
+	{
+		pRuntime->error(_T("Не найден ресурс"), this);
+	}
+	return m_value;
+}
+
+// --------------------------------------------------------------------------------
 // -------------------- RDOGetRelResParamCalc
 // --------------------------------------------------------------------------------
 RDOGetRelResParamCalc::RDOGetRelResParamCalc(ruint relResID, ruint paramID)
