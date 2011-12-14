@@ -33,6 +33,8 @@ public:
 	 intrusive_ptr();
 	 intrusive_ptr(PTR (T)         object);
 	 intrusive_ptr(CREF(this_type) sptr  );
+	 template <class P>
+	 intrusive_ptr(CREF(interface_ptr<P>) pInterface);
 	~intrusive_ptr();
 
 	REF(this_type) operator= (CREF(this_type) sptr);

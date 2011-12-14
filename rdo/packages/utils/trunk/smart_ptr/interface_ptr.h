@@ -21,6 +21,7 @@ OPEN_RDO_NAMESPACE
 template<class T>
 class interface_ptr
 {
+template <typename P> friend class intrusive_ptr;
 public:
 	typedef interface_ptr<T> this_type;
 

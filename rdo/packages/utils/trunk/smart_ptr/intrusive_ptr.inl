@@ -40,6 +40,15 @@ FORCE_INLINE intrusive_ptr<T>::intrusive_ptr(CREF(this_type) sptr)
 		addref();
 }
 
+template <class T>
+template <class P>
+inline intrusive_ptr<T>::intrusive_ptr(CREF(interface_ptr<P>) pInterface)
+{
+	m_object = dynamic_cast<PTR(T)>(pInterface.m_pInterface);
+	if (m_object)
+		addref();
+}
+
 template<class T>
 FORCE_INLINE intrusive_ptr<T>::~intrusive_ptr()
 {
