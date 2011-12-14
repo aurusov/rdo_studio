@@ -16,8 +16,8 @@ MESSAGE(STATUS "Create RDO")
 SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 # call system info script
-INCLUDE(FindOS)
-INCLUDE(add_boost_test)
+INCLUDE(cmake/FindOS.cmake)
+INCLUDE(cmake/add_boost_test.cmake)
 
 # set warning level to maximum Compiler
 IF(MSVC)
