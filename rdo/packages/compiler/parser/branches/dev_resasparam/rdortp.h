@@ -71,6 +71,7 @@ public:
 	{
 		rdo::intrusive_ptr<T> pT = rdo::Factory<T>::create(m_number);
 		m_pRuntimeResType = pT.template interface_cast<rdoRuntime::IResourceType>();
+		m_pType = m_pRuntimeResType;
 		ASSERT(m_pRuntimeResType);
 	}
 
