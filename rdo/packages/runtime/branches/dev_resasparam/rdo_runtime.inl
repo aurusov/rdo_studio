@@ -111,7 +111,7 @@ inline void RDORuntime::setResParamVal(ruint resID, ruint paramID, CREF(RDOValue
 	pResource->setParam(paramID, value);
 }
 
-inline LPRDOResource RDORuntime::getGroupFuncRes()
+inline LPRDOResource RDORuntime::getGroupFuncRes() const
 {
 	return groupFuncStack.back();
 }
