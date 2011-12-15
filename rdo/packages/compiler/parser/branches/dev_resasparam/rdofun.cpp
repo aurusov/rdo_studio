@@ -1649,25 +1649,21 @@ IContextFind::Result RDOFUNGroup::onFindContext(CREF(LPRDOValue) pValue) const
 	ASSERT(pValue);
 
 	//! Ресурс внутри групповой функции
-	ruint parNumb = getResType()->getRTPParamNumber(pValue->value().getIdentificator());
-	if (parNumb == RDORTPResType::UNDEFINED_PARAM)
+	if (getResType()->name() == pValue->value().getIdentificator())
 	{
-		return IContextFind::Result();
+		LPExpression pExpression = rdo::Factory<Expression>::create(
+			rdo::Factory<TypeInfo>::create(
+				getResType(),
+				pValue->src_info()
+			),
+			rdo::Factory<rdoRuntime::RDOCalcGetGroupFunctionResource>::create(),
+			pValue->src_info()
+		);
+		ASSERT(pExpression);
+		return IContextFind::Result(const_cast<PTR(RDOFUNGroup)>(this), pExpression, pValue, getResType());
 	}
 
-	LPTypeInfo pTypeParam = getResType()->findRTPParam(pValue->value().getIdentificator())->getTypeInfo();
-	ASSERT(pTypeParam);
-
-	LPExpression pExpression = rdo::Factory<Expression>::create(
-		rdo::Factory<TypeInfo>::create(
-			pTypeParam->type(),
-			pTypeParam->src_info()
-		),
-		rdo::Factory<rdoRuntime::RDOCalcGetGroupResParam>::create(parNumb),
-		pValue->src_info()
-	);
-	ASSERT(pExpression);
-	return IContextFind::Result(const_cast<PTR(RDOFUNGroup)>(this), pExpression, pValue);
+	return IContextFind::Result();
 }
 
 // --------------------------------------------------------------------------------

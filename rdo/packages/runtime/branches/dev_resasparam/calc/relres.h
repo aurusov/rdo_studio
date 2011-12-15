@@ -104,6 +104,16 @@ private:
 	DECLARE_ICalc;
 };
 
+//! Возвращает ресурс групповой функции
+CALC(RDOCalcGetGroupFunctionResource)
+{
+DECLARE_FACTORY(RDOCalcGetGroupFunctionResource)
+private:
+	RDOCalcGetGroupFunctionResource();
+
+	DECLARE_ICalc;
+};
+
 CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "simulator/runtime/calc/relres.inl"
