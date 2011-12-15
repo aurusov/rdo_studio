@@ -218,8 +218,8 @@ private:
 
 /*!
   \class   RDOCalcGetGroupResParam
-  \brief   Получение группы параметров ресурсов
-  \todo    Что это?
+  \brief   Получение параметра ресурса из группы
+  \todo    Удалить
 */
 CALC(RDOCalcGetGroupResParam)
 {
