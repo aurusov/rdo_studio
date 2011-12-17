@@ -456,7 +456,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name=".bison"
+			Name=".grammar"
 			>
 			<File
 				RelativePath="rdo_lexer.l"
