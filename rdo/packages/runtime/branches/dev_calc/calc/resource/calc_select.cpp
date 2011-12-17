@@ -13,7 +13,7 @@
 #include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/calc/select.h"
+#include "simulator/runtime/calc/resource/calc_select.h"
 #include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
 

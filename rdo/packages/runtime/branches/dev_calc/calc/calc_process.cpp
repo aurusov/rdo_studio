@@ -11,7 +11,7 @@
 #include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/calc/process_control.h"
+#include "simulator/runtime/calc/calc_process.h"
 #include "simulator/runtime/rdo_resource.h"
 #include "simulator/runtime/rdo_activity_i.h"
 #include "simulator/runtime/rdoprocess.h"

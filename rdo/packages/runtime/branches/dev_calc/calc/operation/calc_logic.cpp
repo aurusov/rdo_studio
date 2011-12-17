@@ -12,7 +12,7 @@
 #include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/calc/logic.h"
+#include "simulator/runtime/calc/operation/calc_logic.h"
 #include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
 

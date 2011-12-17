@@ -11,7 +11,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "converter/smr2rdox/rdoparser_error.h"
 #include "converter/smr2rdox/rdoparser.h"
-#include "simulator/runtime/rdocalc.h"
+#include "simulator/runtime/calc/calc_base.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE

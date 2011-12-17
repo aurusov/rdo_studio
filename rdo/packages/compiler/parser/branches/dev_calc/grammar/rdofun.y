@@ -215,10 +215,10 @@
 #include "simulator/compiler/parser/context/type.h"
 #include "simulator/compiler/parser/context/memory.h"
 #include "simulator/compiler/parser/variable_container.h"
-#include "simulator/runtime/calc/locvar.h"
-#include "simulator/runtime/calc/braces.h"
-#include "simulator/runtime/calc/statements.h"
-#include "simulator/runtime/calc/array.h"
+#include "simulator/runtime/calc/procedural/calc_locvar.h"
+#include "simulator/runtime/calc/procedural/calc_braces.h"
+#include "simulator/runtime/calc/procedural/calc_statement.h"
+#include "simulator/runtime/calc/calc_array.h"
 // --------------------------------------------------------------------------------
 
 #define PARSER  LEXER->parser()

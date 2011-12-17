@@ -24,8 +24,8 @@
 #include "simulator/runtime/rdo_random_distribution.h"
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/runtime/rdoframe.h"
-#include "simulator/runtime/rdocalc.h"
-#include "simulator/runtime/calc/arithm.h"
+#include "simulator/runtime/calc/calc_base.h"
+#include "simulator/runtime/calc/operation/calc_arithm.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

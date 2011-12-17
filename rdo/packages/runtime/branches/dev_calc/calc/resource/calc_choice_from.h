@@ -13,7 +13,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/rdocalc.h"
+#include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/rdo_res_type_i.h"
 // --------------------------------------------------------------------------------
 
@@ -185,6 +185,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/calc/choice_from.inl"
+#include "simulator/runtime/calc/resource/calc_choice_from.inl"
 
 #endif // _LIB_RUNTIME_CALC_CHOICE_FROM_H_

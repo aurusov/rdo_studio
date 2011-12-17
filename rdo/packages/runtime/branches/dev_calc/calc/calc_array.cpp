@@ -11,7 +11,7 @@
 #include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/calc/array.h"
+#include "simulator/runtime/calc/calc_array.h"
 #include "simulator/runtime/rdo_array.h"
 // --------------------------------------------------------------------------------
 

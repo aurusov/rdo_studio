@@ -12,7 +12,7 @@
 #include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/calc/relres.h"
+#include "simulator/runtime/calc/resource/calc_relevant.h"
 #include "simulator/runtime/rdo_res_type_i.h"
 // --------------------------------------------------------------------------------
 

@@ -12,7 +12,7 @@
 #include "converter/smr2rdox/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/rdocalc.h"
+#include "simulator/runtime/calc/calc_base.h"
 #include "converter/smr2rdox/rdopmd.h"
 #include "converter/smr2rdox/rdoparser.h"
 #include "converter/smr2rdox/rdorss.h"

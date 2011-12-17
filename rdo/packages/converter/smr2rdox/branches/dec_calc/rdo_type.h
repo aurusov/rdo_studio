@@ -16,7 +16,7 @@
 #include "simulator/runtime/rdo_type.h"
 #include "simulator/runtime/rdo_value.h"
 #include "simulator/runtime/rdo_model_i.h"
-#include "simulator/runtime/rdocalc.h"
+#include "simulator/runtime/calc/calc_base.h"
 #include "converter/smr2rdox/rdo_object.h"
 // --------------------------------------------------------------------------------
 

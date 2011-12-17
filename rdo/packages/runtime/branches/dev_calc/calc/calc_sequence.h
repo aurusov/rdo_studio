@@ -13,7 +13,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/rdocalc.h"
+#include "simulator/runtime/calc/calc_base.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -120,6 +120,6 @@ DEFINE_RANDON_DISTRIBUTION(ByHist, RandGeneratorCommonNext);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/calc/sequence.inl"
+#include "simulator/runtime/calc/calc_sequence.inl"
 
 #endif // _LIB_RUNTIME_CALC_SEQUENCE_H_

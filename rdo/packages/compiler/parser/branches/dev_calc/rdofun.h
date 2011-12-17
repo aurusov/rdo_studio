@@ -25,11 +25,11 @@
 
 #include "simulator/runtime/rdo_object.h"
 #include "simulator/runtime/rdo_type.h"
-#include "simulator/runtime/rdocalc.h"
-#include "simulator/runtime/calc/logic.h"
-#include "simulator/runtime/calc/unary.h"
-#include "simulator/runtime/calc/sequence.h"
-#include "simulator/runtime/calc/select.h"
+#include "simulator/runtime/calc/calc_base.h"
+#include "simulator/runtime/calc/operation/calc_logic.h"
+#include "simulator/runtime/calc/operation/calc_unary.h"
+#include "simulator/runtime/calc/calc_sequence.h"
+#include "simulator/runtime/calc/resource/calc_select.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

@@ -19,7 +19,7 @@
 	#include <float.h>
 #endif // COMPILER_GCC
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/calc/choice_from.h"
+#include "simulator/runtime/calc/resource/calc_choice_from.h"
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/runtime/rdo_activity.h"
 #include "simulator/runtime/rdoprocess.h"

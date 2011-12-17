@@ -15,7 +15,7 @@
 #include "utils/namespace.h"
 #include "simulator/runtime/rdo_logic.h"
 #include "simulator/runtime/rdo_priority.h"
-#include "simulator/runtime/rdocalc.h"
+#include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/rdo_dptsearch_activity_i.h"
 #include "simulator/runtime/rdo_logic_dptsearch_i.h"
 // --------------------------------------------------------------------------------

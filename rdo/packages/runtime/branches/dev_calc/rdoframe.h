@@ -15,7 +15,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/namespace.h"
 #include "utils/rdoanimation.h"
-#include "simulator/runtime/rdocalc.h"
+#include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/rdo_object.h"
 // --------------------------------------------------------------------------------
 

@@ -15,7 +15,7 @@
 #include "utils/rdomacros.h"
 #include "utils/rdotypes.h"
 #include "utils/smart_ptr/factory.h"
-#include "simulator/runtime/calc/event_plan.h"
+#include "simulator/runtime/calc/calc_event.h"
 #include "simulator/runtime/rdo_event.h"
 #include "simulator/compiler/parser/rdofun.h"
 // --------------------------------------------------------------------------------

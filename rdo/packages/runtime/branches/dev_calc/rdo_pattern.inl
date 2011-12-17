@@ -11,7 +11,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdotrace.h"
 #include "simulator/runtime/rdo_resource.h"
-#include "simulator/runtime/rdocalc.h"
+#include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
 

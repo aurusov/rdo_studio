@@ -13,8 +13,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/rdocalc.h"
-#include "simulator/runtime/calc/operation_type.h"
+#include "simulator/runtime/calc/calc_base.h"
+#include "simulator/runtime/calc/operation/operation_type.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -125,6 +125,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/calc/unary.inl"
+#include "simulator/runtime/calc/operation/calc_unary.inl"
 
 #endif // _LIB_RUNTIME_CALC_UNARY_H_

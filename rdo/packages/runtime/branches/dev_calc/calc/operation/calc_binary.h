@@ -13,8 +13,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/rdocalc.h"
-#include "simulator/runtime/calc/operation_type.h"
+#include "simulator/runtime/calc/calc_base.h"
+#include "simulator/runtime/calc/operation/operation_type.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -72,6 +72,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/calc/binary.inl"
+#include "simulator/runtime/calc/operation/calc_binary.inl"
 
 #endif // _LIB_RUNTIME_CALC_BINARY_H_

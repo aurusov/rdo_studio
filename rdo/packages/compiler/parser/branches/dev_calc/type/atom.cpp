@@ -15,7 +15,7 @@
 #include "simulator/compiler/parser/type/info.h"
 #include "simulator/compiler/parser/rdo_value.h"
 #include "simulator/compiler/parser/rdoparser_error.h"
-#include "simulator/runtime/calc/unary.h"
+#include "simulator/runtime/calc/operation/calc_unary.h"
 #include "simulator/runtime/rdo_resource.h"
 // --------------------------------------------------------------------------------
 

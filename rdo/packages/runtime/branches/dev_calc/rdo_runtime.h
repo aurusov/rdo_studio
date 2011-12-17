@@ -27,7 +27,7 @@
 #include "simulator/runtime/simtrace.h"
 #include "simulator/runtime/rdo_resource.h"
 #include "simulator/runtime/rdo_runtime_interface_registrator.h"
-#include "simulator/runtime/rdocalc.h"
+#include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/rdo_memory.h"
 #include "simulator/runtime/thread_proxy_i.h"
 // ------------------------------------------------------------------------------------

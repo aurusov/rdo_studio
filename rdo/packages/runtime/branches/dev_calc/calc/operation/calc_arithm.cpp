@@ -12,9 +12,9 @@
 #include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/calc/arithm.h"
 #include "simulator/runtime/rdo_runtime.h"
-#include "simulator/runtime/calc/operation_type.h"
+#include "simulator/runtime/calc/operation/operation_type.h"
+#include "simulator/runtime/calc/operation/calc_arithm.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

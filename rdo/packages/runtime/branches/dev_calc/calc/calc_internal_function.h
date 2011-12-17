@@ -14,7 +14,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdomacros.h"
-#include "simulator/runtime/rdocalc.h"
+#include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
 
@@ -84,6 +84,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/calc/std_fun.inl"
+#include "simulator/runtime/calc/calc_internal_function.inl"
 
 #endif // _LIB_RUNTIME_CALC_STD_FUN_H_

@@ -219,13 +219,13 @@
 #include "simulator/compiler/parser/variable_container.h"
 
 #include "simulator/runtime/rdotrace.h"
-#include "simulator/runtime/calc/event_plan.h"
-#include "simulator/runtime/calc/locvar.h"
-#include "simulator/runtime/calc/watch.h"
-#include "simulator/runtime/calc/braces.h"
-#include "simulator/runtime/calc/statements.h"
-#include "simulator/runtime/calc/process_control.h"
-#include "simulator/runtime/calc/array.h"
+#include "simulator/runtime/calc/calc_event.h"
+#include "simulator/runtime/calc/procedural/calc_locvar.h"
+#include "simulator/runtime/calc/calc_watch.h"
+#include "simulator/runtime/calc/procedural/calc_braces.h"
+#include "simulator/runtime/calc/procedural/calc_statement.h"
+#include "simulator/runtime/calc/calc_process.h"
+#include "simulator/runtime/calc/calc_array.h"
 // --------------------------------------------------------------------------------
 
 #define PARSER  LEXER->parser()

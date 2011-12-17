@@ -198,13 +198,13 @@
 #include "converter/smr2rdox/rdoparser_lexer.h"
 #include "converter/smr2rdox/rdosmr.h"
 #include "converter/smr2rdox/rdofun.h"
-#include "simulator/runtime/rdocalc.h"
+#include "simulator/runtime/calc/calc_base.h"
 #include "converter/smr2rdox/rdopat.h"
 #include "converter/smr2rdox/rdortp.h"
 #include "converter/smr2rdox/rdo_type_range.h"
 #include "converter/smr2rdox/update/update.h"
 #include "simulator/runtime/rdotrace.h"
-#include "simulator/runtime/calc/event_plan.h"
+#include "simulator/runtime/calc/calc_event.h"
 // --------------------------------------------------------------------------------
 
 #define CONVERTER LEXER->converter()
