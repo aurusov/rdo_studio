@@ -1,6 +1,6 @@
 #ifndef RDO_GRAMMA_H
 #define RDO_GRAMMA_H
 
-#include "rdogramrtp.hpp"
+#include "${GRAMMA_PATH}/rdogramrtp.hpp"
 
 #endif // RDO_GRAMMA_H

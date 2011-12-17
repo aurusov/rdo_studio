@@ -16,6 +16,7 @@
 #include <boost/test/included/unit_test.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_runtime.h"
+#include "simulator/runtime/rdo_res_type.h"
 // --------------------------------------------------------------------------------
 
 BOOST_AUTO_TEST_SUITE(RDOValue_Test)

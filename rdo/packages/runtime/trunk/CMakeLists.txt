@@ -74,18 +74,21 @@ SET(HEADER_FILES
 	searchtree.h
 	simtrace.h
 	thread_proxy_i.h
+
 	calc/arithm.h
 	calc/array.h
 	calc/binary.h
 	calc/braces.h
 	calc/choice_from.h
 	calc/event_plan.h
+	calc/group.h
 	calc/locvar.h
 	calc/logic.h
 	calc/operation_name.h
 	calc/operation_type.h
 	calc/process_control.h
 	calc/relres.h
+	calc/select.h
 	calc/sequence.h
 	calc/statements.h
 	calc/std_fun.h
@@ -119,6 +122,7 @@ SET(INLITE_FILES
 	searchtrace.inl
 	searchtree.inl
 	simtrace.inl
+
 	calc/arithm.inl
 	calc/binary.inl
 	calc/choice_from.inl
@@ -165,15 +169,18 @@ SET(SOURCE_FILE
 	searchtrace.cpp
 	searchtree.cpp
 	simtrace.cpp
+
 	calc/arithm.cpp
 	calc/array.cpp
 	calc/braces.cpp
 	calc/choice_from.cpp
 	calc/event_plan.cpp
+	calc/group.cpp
 	calc/locvar.cpp
 	calc/logic.cpp
 	calc/process_control.cpp
 	calc/relres.cpp
+	calc/select.cpp
 	calc/sequence.cpp
 	calc/statements.cpp
 	calc/std_fun.cpp
