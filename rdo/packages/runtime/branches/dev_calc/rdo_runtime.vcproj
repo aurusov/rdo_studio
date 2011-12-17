@@ -1979,6 +1979,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\calc\procedural\calc_nop.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\procedural\calc_nop.h"
+					>
+				</File>
+				<File
 					RelativePath=".\calc\procedural\calc_statement.cpp"
 					>
 				</File>
