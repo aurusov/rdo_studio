@@ -19,10 +19,21 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \class   RDOGetRelResParamCalc
-  \brief   Параметр релевантного ресурса
-*/
+//! Получить ресурс по ID релевантного ресурса
+CALC(RDOGetResourceByRelevantResourceID)
+{
+DECLARE_FACTORY(RDOGetResourceByRelevantResourceID)
+private:
+	RDOGetResourceByRelevantResourceID(ruint relevantResourceID);
+
+	ruint m_relevantResourceID;
+
+	DECLARE_ICalc;
+};
+
+
+//! Параметр релевантного ресурса
+//! @todo удалить, вместо него используется \ref RDOCalcGetResParamByCalc
 CALC(RDOGetRelResParamCalc)
 {
 DECLARE_FACTORY(RDOGetRelResParamCalc)
@@ -89,6 +100,16 @@ private:
 
 	ruint   m_relResID;
 	tstring m_relResName;
+
+	DECLARE_ICalc;
+};
+
+//! Возвращает ресурс групповой функции
+CALC(RDOCalcGetGroupFunctionResource)
+{
+DECLARE_FACTORY(RDOCalcGetGroupFunctionResource)
+private:
+	RDOCalcGetGroupFunctionResource();
 
 	DECLARE_ICalc;
 };

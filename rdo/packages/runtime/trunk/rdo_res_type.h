@@ -29,6 +29,9 @@ CLASS_PARENT_OF(RDOResourceTypeBase, RDOType)
 	AND INSTANCE_OF      (RDOTraceableObject)
 {
 DECLARE_FACTORY(RDOResourceTypeBase<T>);
+public:
+	typedef  T  value_type;
+
 private:
 	//! Конструктор
 	//! \param number - Целочисленный идентификатор

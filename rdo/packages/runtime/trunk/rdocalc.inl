@@ -34,6 +34,39 @@ inline RDOCalcGetResParam::RDOCalcGetResParam(int _resNumb, int _parNumb)
 {}
 
 // --------------------------------------------------------------------------------
+// -------------------- RDOCalcGetResourceByCalcID
+// --------------------------------------------------------------------------------
+inline RDOCalcGetResourceByCalcID::RDOCalcGetResourceByCalcID(CREF(LPRDOCalc) pGetResourceID)
+	: m_pGetResourceID(pGetResourceID)
+{
+	ASSERT(m_pGetResourceID);
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcGetResourceByID
+// --------------------------------------------------------------------------------
+inline RDOCalcGetResourceByID::RDOCalcGetResourceByID(CREF(ruint) resourceID)
+	: m_resourceID(resourceID)
+{}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcGetResID
+// --------------------------------------------------------------------------------
+inline RDOCalcGetResID::RDOCalcGetResID(CREF(LPRDOCalc) pCalcGetResource)
+	: m_pCalcGetResource  (pCalcGetResource)
+{}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcGetResParamByCalc
+// --------------------------------------------------------------------------------
+inline RDOCalcGetResParamByCalc::RDOCalcGetResParamByCalc(CREF(LPRDOCalc) pResource, ruint paramID)
+	: m_pResource(pResource)
+	, m_paramID  (paramID  )
+{
+	ASSERT(m_pResource);
+}
+
+// --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetTempResParamFRM
 // --------------------------------------------------------------------------------
 inline void RDOCalcGetTempResParamFRM::notify(ruint message, PTR(void) pParam)

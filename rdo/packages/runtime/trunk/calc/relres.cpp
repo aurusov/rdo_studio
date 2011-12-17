@@ -13,9 +13,26 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/relres.h"
+#include "simulator/runtime/rdo_res_type_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOGetResourceByRelevantResourceID
+// --------------------------------------------------------------------------------
+RDOGetResourceByRelevantResourceID::RDOGetResourceByRelevantResourceID(ruint relevantResourceID)
+	: m_relevantResourceID(relevantResourceID)
+{}
+
+REF(RDOValue) RDOGetResourceByRelevantResourceID::doCalc(CREF(LPRDORuntime) pRuntime)
+{
+	if (!RDOCalcGetResourceHelper::getResource(pRuntime, pRuntime->getCurrentActivity()->getResByRelRes(m_relevantResourceID), m_value))
+	{
+		pRuntime->error(_T("Не найден ресурс"), this);
+	}
+	return m_value;
+}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOGetRelResParamCalc
@@ -78,6 +95,24 @@ REF(RDOValue) RDOEraseResRelCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 CREF(tstring) RDOEraseResRelCalc::getName() const
 {
 	return m_relResName;
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcGetGroupFunctionResource
+// --------------------------------------------------------------------------------
+RDOCalcGetGroupFunctionResource::RDOCalcGetGroupFunctionResource()
+{}
+
+REF(RDOValue) RDOCalcGetGroupFunctionResource::doCalc(CREF(LPRDORuntime) pRuntime)
+{
+	LPRDOResource pResource = pRuntime->getGroupFuncRes();
+	ASSERT(pResource);
+
+	LPRDOType pType(pResource->getResType());
+	ASSERT(pType);
+
+	m_value = RDOValue(pType, pResource);
+	return m_value;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

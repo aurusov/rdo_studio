@@ -172,7 +172,7 @@ public:
 	void insertNewResource         (CREF(LPRDOResource) pResource);
 
 	RDOValue      getFuncArgument (int numberOfParam);
-	LPRDOResource getGroupFuncRes ();
+	LPRDOResource getGroupFuncRes () const;
 	void          pushFuncArgument(RDOValue arg);
 	void          pushGroupFunc   (CREF(LPRDOResource) pResource);
 	void          popFuncArgument ();
