@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      std_fun.inl
+  \file      calc_function_internal.inl
   \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      31.07.2011
   \brief     Стандартные функции языка
