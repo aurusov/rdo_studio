@@ -2119,7 +2119,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="pch"
+			Name=".pch"
 			>
 			<File
 				RelativePath="pch.cpp"
