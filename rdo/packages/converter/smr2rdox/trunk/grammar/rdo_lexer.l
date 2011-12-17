@@ -13,7 +13,7 @@
 #include "converter/smr2rdox/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "converter/smr2rdox/rdobison.h"
+#include "converter/smr2rdox/grammar/rdobison.h"
 #include "converter/smr2rdox/grammar/rdogramma.h"
 #include "converter/smr2rdox/rdoparser.h"
 #include "converter/smr2rdox/rdoparser_lexer.h"

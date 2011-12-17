@@ -14,7 +14,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "converter/smr2rdox/namespace.h"
-#include "converter/smr2rdox/rdobison.h"
+#include "converter/smr2rdox/grammar/rdobison.h"
 #include "converter/smr2rdox/grammar/rdogramma.h"
 #include "simulator/runtime/rdo_object.h"
 #include "utils/rdomacros.h"

@@ -2401,7 +2401,7 @@
 			Name=".converter"
 			>
 			<File
-				RelativePath=".\rdobison.h"
+				RelativePath="grammar\rdobison.h"
 				>
 			</File>
 			<File
