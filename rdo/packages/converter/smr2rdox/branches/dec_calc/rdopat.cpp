@@ -470,6 +470,8 @@ void RDOPatternIrregEvent::addRelResUsage(CREF(LPRDOPATChoiceFrom) pChoiceFrom, 
 
 rdoRuntime::LPRDOCalc RDOPATPattern::createRelRes(rbool trace) const
 {
+	UNUSED(trace);
+
 	std::vector<rdoRuntime::RDOValue> params_default;
 	STL_FOR_ALL_CONST(m_pCurrRelRes->getType()->getParams(), it)
 	{
