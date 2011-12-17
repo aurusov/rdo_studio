@@ -110,21 +110,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! ѕараметры ресурса
-//! @todo удалить, вместо него используетс€ св€зка
-//! (\ref RDOCalcGetResourceByID или \ref RDOCalcGetResourceByCalcID) и \ref RDOCalcGetResParamByCalc
-CALC(RDOCalcGetResParam)
-{
-DECLARE_FACTORY(RDOCalcGetResParam)
-protected:
-	RDOCalcGetResParam(int _resNumb, int _parNumb);
-
-	int m_resID;
-	int m_paramID;
-
-	DECLARE_ICalc;
-};
-
 //! ¬спомогательный класс дл€ вытаскивани€ ресурса по ID и оборачивани€ его в RDOValue
 class RDOCalcGetResourceHelper
 {
@@ -183,21 +168,6 @@ private:
 	int       m_paramID;
 
 	DECLARE_ICalc;
-};
-
-/*!
-  \class   RDOCalcGetTempResParamFRM
-  \brief   ѕараметры временного ресурса дл€ FRM
-*/
-CALC_SUB(RDOCalcGetTempResParamFRM, RDOCalcGetResParam)
-	AND IMPLEMENTATION_OF(INotify)
-{
-DECLARE_FACTORY(RDOCalcGetTempResParamFRM)
-private:
-	RDOCalcGetTempResParamFRM(int _resNumb, int _parNumb);
-	virtual REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime);
-
-	virtual void notify(ruint message, PTR(void) pParam);
 };
 
 /*!

@@ -75,15 +75,6 @@ REF(RDOValue) RDOCalc::calcValue(CREF(LPRDORuntime) pRuntime)
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOCalcGetResParam (Параметры постоянного ресурса)
-// --------------------------------------------------------------------------------
-REF(RDOValue) RDOCalcGetResParam::doCalc(CREF(LPRDORuntime) pRuntime)
-{
-	m_value = pRuntime->getResParamVal(m_resID, m_paramID);
-	return m_value;
-}
-
-// --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetResourceHelper
 // --------------------------------------------------------------------------------
 rbool RDOCalcGetResourceHelper::getResource(CREF(LPRDORuntime) pRuntime, ruint resourceID, REF(RDOValue) result)
@@ -142,32 +133,6 @@ REF(RDOValue) RDOCalcGetResParamByCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 	LPRDOResource pResource = m_pResource->calcValue(pRuntime).getPointerSafety<RDOResourceType>();
 	ASSERT(pResource);
 	m_value = pResource->getParam(m_paramID);
-	return m_value;
-}
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOCalcGetTempResParamFRM (Параметры временного ресурса для FRM)
-// --------------------------------------------------------------------------------
-RDOCalcGetTempResParamFRM::RDOCalcGetTempResParamFRM(int _resNumb, int _parNumb)
-	: RDOCalcGetResParam(_resNumb, _parNumb)
-{
-/// @todo pRuntime->connect(this, RDORuntime::RO_BEFOREDELETE);
-}
-
-REF(RDOValue) RDOCalcGetTempResParamFRM::doCalc(CREF(LPRDORuntime) pRuntime)
-{
-	if (m_resID >= 0)
-	{
-		m_value = pRuntime->getResParamVal(m_resID, m_paramID);
-	}
-	else if (m_resID == -1)
-	{
-		LPRDOEnumType pEnum = rdo::Factory<RDOEnumType>::create();
-		ASSERT(pEnum);
-		pEnum->add(_T("Удален"));
-		m_value = RDOValue(pEnum);
-		m_resID = -2;
-	}
 	return m_value;
 }
 

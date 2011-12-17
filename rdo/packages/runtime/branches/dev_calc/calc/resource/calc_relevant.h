@@ -32,20 +32,6 @@ private:
 };
 
 
-//! Параметр релевантного ресурса
-//! @todo удалить, вместо него используется \ref RDOCalcGetResParamByCalc
-CALC(RDOGetRelResParamCalc)
-{
-DECLARE_FACTORY(RDOGetRelResParamCalc)
-private:
-	RDOGetRelResParamCalc(ruint relResID, ruint paramID);
-
-	ruint m_relResID;
-	ruint m_paramID;
-
-	DECLARE_ICalc;
-};
-
 /*!
   \class   RDOSetRelResParamCalc
   \tparam  equalType Тип присваивания

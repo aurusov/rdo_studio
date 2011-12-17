@@ -35,20 +35,6 @@ REF(RDOValue) RDOGetResourceByRelevantResourceID::doCalc(CREF(LPRDORuntime) pRun
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOGetRelResParamCalc
-// --------------------------------------------------------------------------------
-RDOGetRelResParamCalc::RDOGetRelResParamCalc(ruint relResID, ruint paramID)
-	: m_relResID(relResID)
-	, m_paramID (paramID )
-{}
-
-REF(RDOValue) RDOGetRelResParamCalc::doCalc(CREF(LPRDORuntime) pRuntime)
-{
-	m_value = pRuntime->getResParamVal(pRuntime->getCurrentActivity()->getResByRelRes(m_relResID), m_paramID);
-	return m_value;
-}
-
-// --------------------------------------------------------------------------------
 // -------------------- RDOSetRelResParamDiapCalc
 // --------------------------------------------------------------------------------
 RDOSetRelResParamDiapCalc::RDOSetRelResParamDiapCalc(ruint relResID, ruint paramID, CREF(RDOValue) minValue, CREF(RDOValue) maxValue, CREF(LPRDOCalc) pCalc)

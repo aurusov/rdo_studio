@@ -392,7 +392,7 @@ void RDOFUNArithm::init(CREF(RDOValue) resName, CREF(RDOValue) parName)
 		}
 		else if (pResource->getType()->isTemporary() && Converter::s_converter()->getFileToParse() == rdoModelObjectsConvertor::FRM_IN)
 		{
-			m_pCalc = rdo::Factory<rdoRuntime::RDOCalcGetTempResParamFRM>::create(pResource->getID(), parNumb);
+			m_pCalc = rdo::Factory<rdoRuntime::RDOCalcNop>::create();
 		}
 		else
 		{

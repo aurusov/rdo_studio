@@ -26,14 +26,6 @@ inline rbool RDOCalc::compare(CREF(LPRDOCalc) pCalc) const
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOCalcGetResParam
-// --------------------------------------------------------------------------------
-inline RDOCalcGetResParam::RDOCalcGetResParam(int _resNumb, int _parNumb)
-	: m_resID  (_resNumb)
-	, m_paramID(_parNumb)
-{}
-
-// --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetResourceByCalcID
 // --------------------------------------------------------------------------------
 inline RDOCalcGetResourceByCalcID::RDOCalcGetResourceByCalcID(CREF(LPRDOCalc) pGetResourceID)
@@ -65,19 +57,6 @@ inline RDOCalcGetResParamByCalc::RDOCalcGetResParamByCalc(CREF(LPRDOCalc) pResou
 {
 	ASSERT(m_pResource);
 }
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOCalcGetTempResParamFRM
-// --------------------------------------------------------------------------------
-inline void RDOCalcGetTempResParamFRM::notify(ruint message, PTR(void) pParam)
-{
-	UNUSED(message);
-
-	if (m_resID == *reinterpret_cast<PTR(int)>(pParam))
-	{
-		m_resID = -1;
-	}
-};
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetUnknowResParam
