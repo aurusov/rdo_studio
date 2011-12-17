@@ -84,32 +84,6 @@ class TYPE: public PARENT
 //! \brief  Описывает класс-потомок от RDOCalc
 #define CALC(TYPE) CALC_SUB(TYPE, RDOCalc)
 
-/*!
-  \defgroup calc_const Константный калк
-  \class    RDOCalcConst
-  \brief    Константа
-  \details  Возвращает константное значение
-  \ingroup  calc calc_const
-*/
-CALC(RDOCalcConst)
-{
-DECLARE_FACTORY(RDOCalcConst)
-public:
-	//! Возвращает хранимую константу, может быть использован в parser-time
-	//! \result Значение константы
-	CREF(RDOValue) getValue() const;
-
-private:
-	//! Инициализируется указанным значением переменную базового класса \ref RDOCalc::m_value
-	//! \param value - Значение константы
-	RDOCalcConst(CREF(RDOValue) value);
-
-	//! Возвращает значение константы
-	//! \param pRuntime - Не используется
-	//! \result Значение константы
-	DECLARE_ICalc;
-};
-
 //! Вспомогательный класс для вытаскивания ресурса по ID и оборачивания его в RDOValue
 class RDOCalcGetResourceHelper
 {
