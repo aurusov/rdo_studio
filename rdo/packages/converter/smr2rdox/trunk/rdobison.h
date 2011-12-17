@@ -13,7 +13,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/compiler/parser/rdobison.h"
+#include "simulator/compiler/parser/grammar/rdobison.h"
 // --------------------------------------------------------------------------------
 
 #endif // _CONVERTOR_RDOBISON_H_

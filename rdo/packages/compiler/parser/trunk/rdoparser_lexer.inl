@@ -11,7 +11,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/namespace.h"
-#include "simulator/compiler/parser/rdobison.h"
+#include "simulator/compiler/parser/grammar/rdobison.h"
 #include "simulator/compiler/parser/rdogramma.h"
 
 #ifndef __FLEX_LEXER_H

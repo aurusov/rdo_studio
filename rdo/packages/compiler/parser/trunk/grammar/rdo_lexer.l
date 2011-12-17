@@ -13,7 +13,7 @@
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/compiler/parser/rdobison.h"
+#include "simulator/compiler/parser/grammar/rdobison.h"
 #include "simulator/compiler/parser/rdogramma.h"
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/rdoparser_lexer.h"
