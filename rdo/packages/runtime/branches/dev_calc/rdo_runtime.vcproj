@@ -1852,18 +1852,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\calc\calc_internal_function.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\calc_internal_function.h"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\calc_internal_function.inl"
-				>
-			</File>
-			<File
 				RelativePath=".\calc\calc_process.cpp"
 				>
 			</File>
@@ -2036,6 +2024,22 @@
 				</File>
 				<File
 					RelativePath=".\calc\resource\calc_select.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name=".function"
+				>
+				<File
+					RelativePath=".\calc\function\calc_function_internal.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\function\calc_function_internal.h"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\function\calc_function_internal.inl"
 					>
 				</File>
 			</Filter>
