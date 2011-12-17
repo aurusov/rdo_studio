@@ -13,9 +13,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/context/context.h"
-#include "simulator/compiler/parser/context/context_find_i.h"
 #include "simulator/compiler/parser/context/context_switch_i.h"
-#include "simulator/compiler/parser/context/context_create_expression_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -41,10 +39,10 @@ LPContext Context::find(CREF(LPRDOValue) pValue) const
 	LPIContextFind pThisContextFind = pThis.interface_dynamic_cast<IContextFind>();
 	if (pThisContextFind)
 	{
-		LPContext pThisResult = pThisContextFind->onFindContext(pValue);
-		if (pThisResult)
+		const_cast<PTR(Context)>(this)->m_findResult = pThisContextFind->onFindContext(pValue);
+		if (m_findResult.m_pContext)
 		{
-			return pThisResult;
+			return m_findResult.m_pContext;
 		}
 	}
 	LPContext pPrev = m_pContextStack->prev(pThis);
@@ -55,29 +53,22 @@ LPContext Context::swch(CREF(LPRDOValue) pValue) const
 {
 	ASSERT(pValue);
 
-	LPContext pThis(const_cast<PTR(Context)>(this));
-	LPIContextSwitch pThisContextSwitch = pThis.interface_dynamic_cast<IContextSwitch>();
-	ASSERT(pThisContextSwitch);
-	LPContext pThisResult = pThisContextSwitch->onSwitchContext(pValue);
-	ASSERT(pThisResult);
-	return pThisResult;
+	LPIContextSwitch pContextSwitch = m_findResult.m_pValueContext.interface_dynamic_cast<IContextSwitch>();
+	ASSERT(pContextSwitch);
+	IContextFind::Result result = pContextSwitch->onSwitchContext(m_findResult.m_pExpression, pValue);
+	ASSERT(result.m_pContext);
+	result.m_pContext->m_findResult = result;
+	ASSERT(result.m_pContext);
+	return result.m_pContext;
 }
 
 LPExpression Context::create(CREF(LPRDOValue) pValue)
 {
 	ASSERT(pValue);
+	ASSERT(m_findResult.m_pFindByValue == pValue);
+	ASSERT(m_findResult.m_pExpression);
 
-	LPContext pThis(this);
-	LPIContextCreateExpression pThisContextCreateExpression = pThis.interface_dynamic_cast<IContextCreateExpression>();
-	if (pThisContextCreateExpression)
-	{
-		LPExpression pExpression = pThisContextCreateExpression->onCreateExpression(pValue);
-		if (pExpression)
-		{
-			return pExpression;
-		}
-	}
-	return LPExpression(NULL);
+	return m_findResult.m_pExpression;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

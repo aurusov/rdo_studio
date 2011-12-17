@@ -15,7 +15,6 @@
 #include "simulator/compiler/parser/local_variable.h"
 #include "simulator/compiler/parser/context/context.h"
 #include "simulator/compiler/parser/context/context_find_i.h"
-#include "simulator/compiler/parser/context/context_create_expression_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -35,10 +34,9 @@ public:                                      \
 // -------------------- ContextMemory
 // --------------------------------------------------------------------------------
 CLASS(ContextMemory):
-	    INSTANCE_OF      (Context                 )
-	AND IMPLEMENTATION_OF(IContextMemory          )
-	AND IMPLEMENTATION_OF(IContextFind            )
-	AND IMPLEMENTATION_OF(IContextCreateExpression)
+	    INSTANCE_OF      (Context       )
+	AND IMPLEMENTATION_OF(IContextMemory)
+	AND IMPLEMENTATION_OF(IContextFind  )
 {
 DECLARE_FACTORY(ContextMemory);
 protected:
@@ -49,7 +47,6 @@ private:
 
 	DECLARE_IContextMemory;
 	DECLARE_IContextFind;
-	DECLARE_IContextCreateExpression;
 };
 DECLARE_POINTER(ContextMemory);
 

@@ -12,11 +12,13 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/compiler/parser/context/context.h"
 #include "simulator/compiler/parser/rdo_value.h"
+#include "simulator/compiler/parser/expression.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
+
+PREDECLARE_POINTER(Context);
 
 // --------------------------------------------------------------------------------
 // -------------------- IContextFind
@@ -25,16 +27,25 @@ OBJECT_INTERFACE(IContextFind)
 {
 DECLARE_FACTORY(IContextFind)
 public:
-	virtual LPContext onFindContext(CREF(LPRDOValue) pValue) const = 0;
+	struct Result
+	{
+		LPContext     m_pContext;
+		LPExpression  m_pExpression;
+		LPRDOValue    m_pFindByValue;
+		LPContext     m_pValueContext;
+
+		Result();
+		Result(CREF(Result) result);
+		Result(CREF(LPContext) pContext, CREF(LPExpression) pExpression, CREF(LPRDOValue) pFindByParam, LPContext pValueContext = LPContext());
+	};
+	virtual Result onFindContext(CREF(LPRDOValue) pValue) const = 0;
 
 protected:
-	IContextFind()
-	{}
-	virtual ~IContextFind()
-	{}
+	         IContextFind();
+	virtual ~IContextFind();
 };
 #define DECLARE_IContextFind \
-	LPContext onFindContext(CREF(LPRDOValue) pValue) const;
+	IContextFind::Result onFindContext(CREF(LPRDOValue) pValue) const;
 
 CLOSE_RDO_PARSER_NAMESPACE
 

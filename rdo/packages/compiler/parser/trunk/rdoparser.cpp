@@ -139,72 +139,7 @@ LPContext RDOParser::context() const
 	return m_pContextStack->top();
 }
 
-LPContext RDOParser::onFindContext(CREF(LPRDOValue) pValue) const
-{
-	ASSERT(pValue);
-
-	if (pValue->value().getIdentificator() == _T("Time_now")          || pValue->value().getIdentificator() == _T("time_now") || pValue->value().getIdentificator() == _T("Системное_время") || pValue->value().getIdentificator() == _T("системное_время") ||
-		pValue->value().getIdentificator() == _T("Seconds")           || pValue->value().getIdentificator() == _T("seconds") ||
-		pValue->value().getIdentificator() == _T("Terminate_counter") || pValue->value().getIdentificator() == _T("terminate_counter"))
-	{
-		return const_cast<PTR(RDOParser)>(this);
-	}
-
-	//! Ресурсы
-	LPRDORSSResource pResource = findRSSResource(pValue->value().getIdentificator());
-	if (pResource)
-	{
-		//! Это ресурс с закладки RSS
-		return const_cast<PTR(RDOParser)>(this);
-	}
-
-	//! Константы
-	LPRDOFUNConstant pConstant = findFUNConstant(pValue->value().getIdentificator());
-	if (pConstant)
-	{
-		return const_cast<PTR(RDOParser)>(this);
-	}
-
-	//! Последовательности
-	LPRDOFUNSequence pSequence = findFUNSequence(pValue->value().getIdentificator());
-	if (pSequence)
-	{
-		return const_cast<PTR(RDOParser)>(this);
-	}
-
-	//! Возможно, что это значение перечислимого типа, только одно и тоже значение может встречаться в разных
-	//! перечислимых типах, поэтому какой именно из них выбрать - вопрос
-	{ErrorBlockMonicker errorBlockMonicker;
-		CREF(PreCastTypeList) typeList = getPreCastTypeList();
-		STL_FOR_ALL_CONST(typeList, it)
-		{
-			LPRDOValue pTryCastValue = (*it)->value_cast(pValue);
-			if (pTryCastValue && pTryCastValue->defined())
-			{
-				return const_cast<PTR(RDOParser)>(this);
-			}
-		}
-	}
-
-	const_cast<PTR(RDOParser)>(this)->error().error(pValue->src_info(), rdo::format(_T("Неизвестный идентификатор: %s"), pValue->value().getIdentificator().c_str()));
-	return LPContext(NULL);
-}
-
-LPContext RDOParser::onSwitchContext(CREF(LPRDOValue) pValue) const
-{
-	//! Ресурсы
-	LPRDORSSResource pResource = findRSSResource(pValue->value().getIdentificator());
-	if (pResource)
-	{
-		//! Это ресурс с закладки RSS
-		return pResource.object_static_cast<Context>();
-	}
-
-	const_cast<PTR(RDOParser)>(this)->error().error(pValue->src_info(), rdo::format(_T("Неизвестный идентификатор: %s"), pValue->value().getIdentificator().c_str()));
-	return LPContext(NULL);
-}
-
-LPExpression RDOParser::onCreateExpression(CREF(LPRDOValue) pValue)
+IContextFind::Result RDOParser::onFindContext(CREF(LPRDOValue) pValue) const
 {
 	ASSERT(pValue);
 
@@ -219,7 +154,7 @@ LPExpression RDOParser::onCreateExpression(CREF(LPRDOValue) pValue)
 			pValue->src_info()
 		);
 		ASSERT(pExpression);
-		return pExpression;
+		return IContextFind::Result(const_cast<PTR(RDOParser)>(this), pExpression, pValue);
 	}
 	else if (pValue->value().getIdentificator() == _T("Seconds") || pValue->value().getIdentificator() == _T("seconds"))
 	{
@@ -232,7 +167,7 @@ LPExpression RDOParser::onCreateExpression(CREF(LPRDOValue) pValue)
 			pValue->src_info()
 		);
 		ASSERT(pExpression);
-		return pExpression;
+		return IContextFind::Result(const_cast<PTR(RDOParser)>(this), pExpression, pValue);
 	}
 	else if (pValue->value().getIdentificator() == _T("Terminate_counter") || pValue->value().getIdentificator() == _T("terminate_counter"))
 	{
@@ -245,7 +180,40 @@ LPExpression RDOParser::onCreateExpression(CREF(LPRDOValue) pValue)
 			pValue->src_info()
 		);
 		ASSERT(pExpression);
-		return pExpression;
+		return IContextFind::Result(const_cast<PTR(RDOParser)>(this), pExpression, pValue);
+	}
+
+	//! Типы ресурсов
+	LPRDORTPResType pResType = findRTPResType(pValue->value().getIdentificator());
+	if (pResType)
+	{
+		//! Это тип ресурса с закладки RTP
+		LPExpression pExpression = rdo::Factory<Expression>::create(
+			rdo::Factory<TypeInfo>::create(
+				pResType,
+				pValue->src_info()
+			),
+			rdoRuntime::LPRDOCalc(NULL),
+			pValue->src_info()
+		);
+		ASSERT(pExpression);
+		return IContextFind::Result(const_cast<PTR(RDOParser)>(this), pExpression, pValue, pResType.object_static_cast<Context>());
+	}
+
+	//! Это ресурс с закладки RSS
+	LPRDORSSResource pResource = findRSSResource(pValue->value().getIdentificator());
+	if (pResource)
+	{
+		LPExpression pExpression = rdo::Factory<Expression>::create(
+			rdo::Factory<TypeInfo>::create(
+				pResource->getType(),
+				pValue->src_info()
+			),
+			rdo::Factory<rdoRuntime::RDOCalcGetResourceByID>::create(pResource->getID()),
+			pValue->src_info()
+		);
+		ASSERT(pExpression);
+		return IContextFind::Result(const_cast<PTR(RDOParser)>(this), pExpression, pValue, pResource.object_static_cast<Context>());
 	}
 
 	//! Константы
@@ -258,7 +226,7 @@ LPExpression RDOParser::onCreateExpression(CREF(LPRDOValue) pValue)
 			pValue->src_info()
 		);
 		ASSERT(pExpression);
-		return pExpression;
+		return IContextFind::Result(const_cast<PTR(RDOParser)>(this), pExpression, pValue);
 	}
 
 	//! Последовательности
@@ -278,7 +246,7 @@ LPExpression RDOParser::onCreateExpression(CREF(LPRDOValue) pValue)
 			pValue->src_info()
 		);
 		ASSERT(pExpression);
-		return pExpression;
+		return IContextFind::Result(const_cast<PTR(RDOParser)>(this), pExpression, pValue);
 	}
 
 	//! Возможно, что это значение перечислимого типа, только одно и тоже значение может встречаться в разных
@@ -299,13 +267,13 @@ LPExpression RDOParser::onCreateExpression(CREF(LPRDOValue) pValue)
 					pValue->src_info()
 				);
 				ASSERT(pExpression);
-				return pExpression;
+				return IContextFind::Result(const_cast<PTR(RDOParser)>(this), pExpression, pValue);
 			}
 		}
 	}
 
 	const_cast<PTR(RDOParser)>(this)->error().error(pValue->src_info(), rdo::format(_T("Неизвестный идентификатор: %s"), pValue->value().getIdentificator().c_str()));
-	return LPExpression(NULL);
+	return IContextFind::Result();
 }
 
 rbool RDOParser::isCurrentDPTSearch()

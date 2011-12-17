@@ -40,17 +40,12 @@ RDOValue::RDOValue(CREF(LPRDOValue) pValue)
 
 	switch (typeID())
 	{
-	case rdoRuntime::RDOType::t_string       :
-	case rdoRuntime::RDOType::t_identificator:
-	case rdoRuntime::RDOType::t_pointer      :
-		{
-			reinterpret_cast<rdo::LPIRefCounter>(&m_buffer)->addref();
-			break;
-		}
+	case rdoRuntime::RDOType::t_pointer:
+		reinterpret_cast<rdo::LPIRefCounter>(&m_buffer)->addref();
+		break;
+
 	default:
-		{
-			break;
-		}
+		break;
 	}
 }
 

@@ -11,6 +11,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdortp.h"
 #include "simulator/compiler/parser/rdoparser.h"
@@ -86,6 +87,108 @@ void RDORTPResType::writeModelStructure(REF(std::ostream) stream) const
 		stream << "  " << (i+1) << " ";
 		getParams().at(i)->writeModelStructure(stream);
 	}
+}
+
+tstring RDORTPResType::name() const
+{
+	static tstring s_name;
+	s_name = src_text();
+	return s_name;
+}
+
+LPRDOType RDORTPResType::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+{
+	UNUSED(from_src_info);
+
+	switch (pFrom->typeID())
+	{
+	case rdoRuntime::RDOType::t_pointer:
+		{	
+			LPRDOType pThisRTPType(const_cast<PTR(RDORTPResType)>(this));
+
+			//! Это один и тот же тип
+			if (pThisRTPType == pFrom)
+				return pThisRTPType;
+
+			//! Типы разные, сгенерим ошибку
+			rdoParse::g_error().push_only(src_info,    _T("Несоответствие типов ресурсов"));
+			rdoParse::g_error().push_only(to_src_info, to_src_info.src_text());
+			rdoParse::g_error().push_done();
+			break;
+		}
+	default:
+		{
+			rdoParse::g_error().push_only(src_info,    rdo::format(_T("Ожидается тип ресурса, найдено: %s"), from_src_info.src_text().c_str()));
+			rdoParse::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
+			rdoParse::g_error().push_done();
+			break;
+		}
+	}
+
+	return LPRDOType(NULL);
+}
+
+LPRDOValue RDORTPResType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
+{
+	ASSERT(pFrom);
+
+	LPRDORTPResType pRTPResType = pFrom->typeInfo()->type().object_dynamic_cast<RDORTPResType>();
+	if (pRTPResType)
+	{
+		LPRDOType pThisType = const_cast<PTR(RDORTPResType)>(this);
+
+		//! Это один и тот же тип
+		if (pThisType == pRTPResType.object_parent_cast<RDOType>())
+			return pFrom;
+
+		//! Типы разные, сгенерим ошибку
+		rdoParse::g_error().push_only(src_info,    _T("Несоответствие типов ресурсов"));
+		rdoParse::g_error().push_only(to_src_info,  rdo::format(  _T("Ожидается: %s"), to_src_info.src_text().c_str()));
+		rdoParse::g_error().push_only(src_info,  rdo::format(  _T("Пришел: %s"), pFrom->src_text().c_str()));
+		rdoParse::g_error().push_only(to_src_info, to_src_info.src_text());
+		rdoParse::g_error().push_done();
+	}
+	rdoParse::g_error().push_only(src_info,    rdo::format(_T("Ожидается ресурс, найдено: %s"), pFrom->src_text().c_str()));
+	rdoParse::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
+	rdoParse::g_error().push_done();
+
+	return LPRDOValue(NULL);
+}
+
+rdoRuntime::LPRDOCalc RDORTPResType::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
+{
+	return RDOType::calc_cast(pCalc, pType);
+}
+
+rdoRuntime::RDOValue RDORTPResType::get_default() const
+{
+	NEVER_REACH_HERE;
+	return rdoRuntime::RDOValue();
+	//return rdoRuntime::RDOValue (pResourceType,pResource);
+}
+
+IContextFind::Result RDORTPResType::onSwitchContext(CREF(LPExpression) pSwitchExpression, CREF(LPRDOValue) pValue) const
+{
+	ASSERT(pSwitchExpression);
+	ASSERT(pValue           );
+
+	ruint parNumb = getRTPParamNumber(pValue->value().getIdentificator());
+	if (parNumb == RDORTPResType::UNDEFINED_PARAM)
+	{
+		RDOParser::s_parser()->error().error(pValue->src_info(), rdo::format(_T("Неизвестный параметр ресурса: %s"), pValue->value().getIdentificator().c_str()));
+	}
+
+	LPRDORTPParam pParam = findRTPParam(pValue->value().getIdentificator());
+	ASSERT(pParam);
+
+	LPExpression pExpression = rdo::Factory<Expression>::create(
+		pParam->getTypeInfo(),
+		rdo::Factory<rdoRuntime::RDOCalcGetResParamByCalc>::create(pSwitchExpression->calc(), parNumb),
+		pValue->src_info()
+	);
+	ASSERT(pExpression);
+
+	return IContextFind::Result(const_cast<PTR(RDORTPResType)>(this), pExpression, pValue);
 }
 
 /*

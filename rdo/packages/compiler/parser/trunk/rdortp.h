@@ -21,6 +21,8 @@
 #include "simulator/compiler/parser/rdortp_param.h"
 #include "simulator/runtime/rdo_object.h"
 #include "simulator/runtime/rdo_value.h"
+#include "simulator/compiler/parser/context/context.h"
+#include "simulator/compiler/parser/context/context_switch_i.h"
 #include "simulator/runtime/rdo_res_type_i.h"
 // --------------------------------------------------------------------------------
 
@@ -36,9 +38,12 @@ void rtperror(PTR(char) message);
 PREDECLARE_POINTER(RDOParser);
 PREDECLARE_POINTER(RDORSSResource);
 
-OBJECT(RDORTPResType)
-	IS  INSTANCE_OF(RDOParserSrcInfo  )
-	AND INSTANCE_OF(boost::noncopyable)
+CLASS(RDORTPResType):
+	    INSTANCE_OF      (RDOParserSrcInfo  )
+	AND INSTANCE_OF      (boost::noncopyable)
+	AND INSTANCE_OF      (RDOType           )
+	AND INSTANCE_OF      (Context           )
+	AND IMPLEMENTATION_OF(IContextSwitch    )
 {
 DECLARE_FACTORY(RDORTPResType);
 public:
@@ -46,10 +51,9 @@ public:
 
 	enum { UNDEFINED_PARAM = ~0 };
 
-	CREF(tstring) name       () const   { return src_text();   };
-	rsint         getNumber  () const   { return m_number;     };
-	rbool         isPermanent() const   { return m_permanent;  };
-	rbool         isTemporary() const   { return !m_permanent; };
+	rsint getNumber  () const   { return m_number;     };
+	rbool isPermanent() const   { return m_permanent;  };
+	rbool isTemporary() const   { return !m_permanent; };
 
 	LPRDORSSResource createRes(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info);
 
@@ -67,10 +71,13 @@ public:
 	{
 		rdo::intrusive_ptr<T> pT = rdo::Factory<T>::create(m_number);
 		m_pRuntimeResType = pT.template interface_cast<rdoRuntime::IResourceType>();
+		m_pType = m_pRuntimeResType;
 		ASSERT(m_pRuntimeResType);
 	}
 
 	void writeModelStructure(REF(std::ostream) stream) const;
+
+	DECLARE_IType;
 
 private:
 	RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent);
@@ -80,6 +87,8 @@ private:
 	const ruint                 m_number;
 	const rbool                 m_permanent;
 	ParamList                   m_params;
+
+	DECLARE_IContextSwitch;
 };
 DECLARE_POINTER(RDORTPResType);
 

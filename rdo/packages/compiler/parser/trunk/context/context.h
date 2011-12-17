@@ -15,6 +15,7 @@
 #include "simulator/compiler/parser/rdo_value.h"
 #include "simulator/compiler/parser/expression.h"
 #include "simulator/compiler/parser/context/stack.h"
+#include "simulator/compiler/parser/context/context_find_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -22,7 +23,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- Context
 // --------------------------------------------------------------------------------
-OBJECT(Context)
+class Context: virtual public rdo::counter_reference
 {
 DECLARE_FACTORY(Context);
 friend void ContextStack::push(LPContext pContext);
@@ -40,10 +41,12 @@ protected:
 	virtual ~Context();
 
 private:
-	LPContextStack m_pContextStack;
+	LPContextStack        m_pContextStack;
+	IContextFind::Result  m_findResult;
 
 	void setContextStack(CREF(LPContextStack) pContextStack);
 };
+DECLARE_POINTER(Context);
 
 CLOSE_RDO_PARSER_NAMESPACE
 
