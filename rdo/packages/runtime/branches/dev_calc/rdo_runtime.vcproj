@@ -1824,39 +1824,11 @@
 			Name=".rdo_calc"
 			>
 			<File
-				RelativePath=".\calc\arithm.cpp"
+				RelativePath=".\calc\calc_array.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\calc\arithm.h"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\arithm.inl"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\array.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\array.h"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\binary.h"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\binary.inl"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\braces.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\braces.h"
+				RelativePath=".\calc\calc_array.h"
 				>
 			</File>
 			<File
@@ -1872,158 +1844,190 @@
 				>
 			</File>
 			<File
-				RelativePath=".\calc\choice_from.cpp"
+				RelativePath=".\calc\calc_event.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\calc\choice_from.h"
+				RelativePath=".\calc\calc_event.h"
 				>
 			</File>
 			<File
-				RelativePath=".\calc\choice_from.inl"
+				RelativePath=".\calc\calc_internal_function.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\equaltype.h"
+				RelativePath=".\calc\calc_internal_function.h"
 				>
 			</File>
 			<File
-				RelativePath=".\calc\event_plan.cpp"
+				RelativePath=".\calc\calc_internal_function.inl"
 				>
 			</File>
 			<File
-				RelativePath=".\calc\event_plan.h"
+				RelativePath=".\calc\calc_process.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\calc\group.cpp"
+				RelativePath=".\calc\calc_process.h"
 				>
 			</File>
 			<File
-				RelativePath=".\calc\group.h"
+				RelativePath=".\calc\calc_sequence.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\calc\locvar.cpp"
+				RelativePath=".\calc\calc_sequence.h"
 				>
 			</File>
 			<File
-				RelativePath=".\calc\locvar.h"
+				RelativePath=".\calc\calc_sequence.inl"
 				>
 			</File>
 			<File
-				RelativePath=".\calc\locvar.inl"
+				RelativePath=".\calc\calc_watch.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\calc\logic.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\logic.h"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\logic.inl"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\process_control.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\process_control.h"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\relres.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\relres.h"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\relres.inl"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\select.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\select.h"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\sequence.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\sequence.h"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\sequence.inl"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\statements.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\statements.h"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\std_fun.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\std_fun.h"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\std_fun.inl"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\unary.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\unary.h"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\unary.inl"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\watch.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\calc\watch.h"
+				RelativePath=".\calc\calc_watch.h"
 				>
 			</File>
 			<Filter
 				Name=".operation"
 				>
 				<File
-					RelativePath=".\calc\operation_name.h"
+					RelativePath=".\calc\operation\calc_arithm.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\calc\operation_name.inl"
+					RelativePath=".\calc\operation\calc_arithm.h"
 					>
 				</File>
 				<File
-					RelativePath=".\calc\operation_type.h"
+					RelativePath=".\calc\operation\calc_arithm.inl"
 					>
 				</File>
 				<File
-					RelativePath=".\calc\operation_type.inl"
+					RelativePath=".\calc\operation\calc_binary.h"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\operation\calc_binary.inl"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\operation\calc_logic.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\operation\calc_logic.h"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\operation\calc_logic.inl"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\operation\calc_unary.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\operation\calc_unary.h"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\operation\calc_unary.inl"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\operation\operation_name.h"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\operation\operation_name.inl"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\operation\operation_type.h"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\operation\operation_type.inl"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name=".procedural"
+				>
+				<File
+					RelativePath=".\calc\procedural\calc_braces.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\procedural\calc_braces.h"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\procedural\calc_locvar.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\procedural\calc_locvar.h"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\procedural\calc_locvar.inl"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\procedural\calc_statement.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\procedural\calc_statement.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name=".resource"
+				>
+				<File
+					RelativePath=".\calc\resource\calc_choice_from.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\resource\calc_choice_from.h"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\resource\calc_choice_from.inl"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\resource\calc_group.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\resource\calc_group.h"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\resource\calc_relevant.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\resource\calc_relevant.h"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\resource\calc_relevant.inl"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\resource\calc_select.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\resource\calc_select.h"
 					>
 				</File>
 			</Filter>
