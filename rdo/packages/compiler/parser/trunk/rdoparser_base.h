@@ -16,7 +16,7 @@
 #include "utils/smart_ptr/intrusive_ptr.h"
 #include "utils/rdocommon.h"
 #include "simulator/compiler/parser/grammar/rdobison.h"
-#include "simulator/compiler/parser/rdogramma.h"
+#include "simulator/compiler/parser/grammar/rdogramma.h"
 #include "simulator/compiler/parser/namespace.h"
 #include "simulator/runtime/rdo_object.h"
 // --------------------------------------------------------------------------------

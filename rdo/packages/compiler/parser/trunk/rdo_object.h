@@ -15,7 +15,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/namespace.h"
 #include "simulator/compiler/parser/grammar/rdobison.h"
-#include "simulator/compiler/parser/rdogramma.h"
+#include "simulator/compiler/parser/grammar/rdogramma.h"
 #include "simulator/runtime/rdo_object.h"
 #include "utils/rdomacros.h"
 #include "utils/rdotypes.h"
