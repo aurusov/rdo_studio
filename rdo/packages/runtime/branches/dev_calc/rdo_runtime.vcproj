@@ -1963,6 +1963,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\calc\procedural\calc_const.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\procedural\calc_const.h"
+					>
+				</File>
+				<File
 					RelativePath=".\calc\procedural\calc_locvar.cpp"
 					>
 				</File>
