@@ -19,7 +19,7 @@
 
 #include <boost/program_options.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdotypes.h"
+#include "utils/rdocommon.h"
 // --------------------------------------------------------------------------------
 
 namespace po = boost::program_options;

@@ -7,6 +7,9 @@
   \indent    4T
 */
 
+#ifndef _RDO_CONTROLLER_CONSOLE_OPTIONS_CONFIG_H_
+#define _RDO_CONTROLLER_CONSOLE_OPTIONS_CONFIG_H_
+
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
@@ -57,3 +60,5 @@ const tstring RDO_STUDIO_CONSOLE_PROGRAMM_NAME = _T("rdo console studio");
 
 const tstring NOP_STRING   = _T(" ");
 const tstring COMMA_STRING = _T(",");
+
+#endif // _RDO_CONTROLLER_CONSOLE_OPTIONS_CONFIG_H_
