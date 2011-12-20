@@ -14,6 +14,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/function/calc_function.h"
+#include "simulator/runtime/rdo_random_distribution.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
