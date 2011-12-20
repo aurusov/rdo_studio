@@ -130,19 +130,4 @@ REF(RDOValue) RDOFunCalcNotForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 	return m_value;
 }
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOCalcGetGroupResParam
-// --------------------------------------------------------------------------------
-RDOCalcGetGroupResParam::RDOCalcGetGroupResParam(int parNumb)
-	: m_parNumb(parNumb)
-{}
-
-REF(RDOValue) RDOCalcGetGroupResParam::doCalc(CREF(LPRDORuntime) pRuntime)
-{
-	LPRDOResource pCurrRes = pRuntime->getGroupFuncRes();
-	ASSERT(pCurrRes);
-	m_value = pCurrRes->getParam(m_parNumb);
-	return m_value;
-}
-
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -68,22 +68,6 @@ DEFINE_CALC_GROUP(ForAll);
 */
 DEFINE_CALC_GROUP(NotForAll);
 
-/*!
-  \class   RDOCalcGetGroupResParam
-  \brief   Получение параметра ресурса из группы
-  \todo    Удалить
-*/
-CALC(RDOCalcGetGroupResParam)
-{
-DECLARE_FACTORY(RDOCalcGetGroupResParam)
-private:
-	RDOCalcGetGroupResParam(int parNumb);
-
-	int m_parNumb;
-
-	DECLARE_ICalc;
-};
-
 CLOSE_RDO_RUNTIME_NAMESPACE
 
 #endif // _LIB_RUNTIME_CALC_GROUP_H_

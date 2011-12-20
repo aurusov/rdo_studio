@@ -415,7 +415,7 @@ void RDOFUNArithm::init(CREF(RDOValue) resName, CREF(RDOValue) parName)
 		{
 			Converter::s_converter()->error().error(parName.src_info(), rdo::format(_T("Неизвестный параметр ресурса: %s"), parName->getIdentificator().c_str()));
 		}
-		m_pCalc = rdo::Factory<rdoRuntime::RDOCalcGetGroupResParam>::create(parNumb);
+		m_pCalc = rdo::Factory<rdoRuntime::RDOCalcNop>::create();
 		m_pCalc->setSrcInfo(src_info());
 		m_value = pFUNGroup->getResType()->findRTPParam(parName->getIdentificator())->getType()->type();
 		return;
