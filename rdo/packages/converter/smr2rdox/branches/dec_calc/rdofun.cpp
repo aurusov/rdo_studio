@@ -544,7 +544,6 @@ void RDOFUNArithm::init(CREF(RDOValue) resName, CREF(RDOValue) parName)
 				if (pPattern && pPattern->findRelevantResource(resName->getIdentificator())) {
 					//! Это ресурс, который используется в DPT (condition, term_condition, evaluate_by, value before, value after)
 					LPRDORelevantResource pRelevantResource = pPattern->findRelevantResource(resName->getIdentificator());
-					int                   relResNumb        = pPattern->findRelevantResourceNum(resName->getIdentificator());
 					ruint                 parNumb           = pRelevantResource->getType()->getRTPParamNumber(parName->getIdentificator());
 					if (parNumb == RDORTPResType::UNDEFINED_PARAM)
 					{
@@ -562,7 +561,6 @@ void RDOFUNArithm::init(CREF(RDOValue) resName, CREF(RDOValue) parName)
 				if (pPattern && pPattern->findRelevantResource(resName->getIdentificator())) {
 					//! Это ресурс, который используется в выражении приоритета активности DPTPrior
 					LPRDORelevantResource pRelevantResource = pPattern->findRelevantResource(resName->getIdentificator());
-					int                   relResNumb        = pPattern->findRelevantResourceNum(resName->getIdentificator());
 					ruint                 parNumb           = pRelevantResource->getType()->getRTPParamNumber(parName->getIdentificator());
 					if (parNumb == RDORTPResType::UNDEFINED_PARAM)
 					{
