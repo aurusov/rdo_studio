@@ -119,7 +119,7 @@ REF(RDOValue) RDOCalcGetUnknowResParam::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOSetResourceParamCalc
 // --------------------------------------------------------------------------------
-inline RDOSetResourceParamCalc::RDOSetResourceParamCalc(ruint resourceID, ruint paramID, CREF(LPRDOCalc) pCalc)
+RDOSetResourceParamCalc::RDOSetResourceParamCalc(ruint resourceID, ruint paramID, CREF(LPRDOCalc) pCalc)
 	: m_resourceID(resourceID)
 	, m_paramID   (paramID   )
 	, m_pCalc     (pCalc     )

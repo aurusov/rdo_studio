@@ -133,7 +133,7 @@ REF(RDOValue) RDOFunCalcNotForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetGroupResParam
 // --------------------------------------------------------------------------------
-inline RDOCalcGetGroupResParam::RDOCalcGetGroupResParam(int parNumb)
+RDOCalcGetGroupResParam::RDOCalcGetGroupResParam(int parNumb)
 	: m_parNumb(parNumb)
 {}
 
