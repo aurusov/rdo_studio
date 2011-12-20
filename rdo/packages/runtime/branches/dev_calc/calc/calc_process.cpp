@@ -44,4 +44,13 @@ REF(RDOValue) RDOCalcProcessControl::doCalc(CREF(LPRDORuntime) pRuntime)
 	return m_value;
 }
 
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcGetTermNow
+// --------------------------------------------------------------------------------
+REF(RDOValue) RDOCalcGetTermNow::doCalc(CREF(LPRDORuntime) pRuntime)
+{
+	m_value = pRuntime->getCurrentTerm();
+	return m_value;
+}
+
 CLOSE_RDO_RUNTIME_NAMESPACE

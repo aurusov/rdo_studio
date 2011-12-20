@@ -13,7 +13,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/calc/calc_base.h"
+#include "simulator/runtime/calc/function/calc_function.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

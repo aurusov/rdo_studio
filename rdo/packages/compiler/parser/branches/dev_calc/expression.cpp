@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/expression.h"
 #include "simulator/runtime/rdo_resource.h"
+#include "simulator/runtime/calc/procedural/calc_const.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

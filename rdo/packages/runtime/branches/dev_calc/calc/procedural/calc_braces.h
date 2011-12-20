@@ -12,44 +12,35 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/calc/procedural/calc_statement.h"
+#include "simulator/runtime/calc/function/calc_function.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \class   RDOCalcOpenBrace
-  \brief   Открывающая скобка
-*/
+//! Открывающая скобка
 CALC(RDOCalcOpenBrace)
 {
-	DECLARE_FACTORY(RDOCalcOpenBrace)
+DECLARE_FACTORY(RDOCalcOpenBrace)
 private:
 	RDOCalcOpenBrace();
 
 	DECLARE_ICalc;
 };
 
-/*!
-  \class   RDOCalcCloseBrace
-  \brief   Закрывающая скобка
-*/
+//! Закрывающая скобка
 CALC(RDOCalcCloseBrace)
 {
-	DECLARE_FACTORY(RDOCalcCloseBrace)
+DECLARE_FACTORY(RDOCalcCloseBrace)
 private:
 	RDOCalcCloseBrace();
 
 	DECLARE_ICalc;
 };
 
-/*!
-  \class   RDOCalcBodyBrace
-  \brief   Тело списка инструкций между скобками
-*/
+//! Тело списка инструкций между скобками
 CALC(RDOCalcBodyBrace)
 {
-	DECLARE_FACTORY(RDOCalcBodyBrace)
+DECLARE_FACTORY(RDOCalcBodyBrace)
 public:
 	typedef std::vector<LPRDOCalc> CalcList;
 
@@ -70,7 +61,7 @@ private:
 */
 CALC_SUB(RDOCalcFunBodyBrace, RDOFunCalc)
 {
-	DECLARE_FACTORY(RDOCalcFunBodyBrace)
+DECLARE_FACTORY(RDOCalcFunBodyBrace)
 public:
 	typedef std::vector<LPRDOCalc> CalcFunList;
 
@@ -92,7 +83,7 @@ private:
 */
 CALC(RDOCalcFunEnd)
 {
-	DECLARE_FACTORY(RDOCalcFunEnd)
+DECLARE_FACTORY(RDOCalcFunEnd)
 private:
 	RDOCalcFunEnd();
 

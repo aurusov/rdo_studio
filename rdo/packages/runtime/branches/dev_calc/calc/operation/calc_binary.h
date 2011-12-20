@@ -13,7 +13,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/calc/calc_base.h"
+#include "simulator/runtime/calc/procedural/calc_const.h"
 #include "simulator/runtime/calc/operation/operation_type.h"
 // --------------------------------------------------------------------------------
 

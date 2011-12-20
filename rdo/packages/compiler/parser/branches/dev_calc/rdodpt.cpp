@@ -17,6 +17,7 @@
 #include "simulator/compiler/parser/rdoparser_lexer.h"
 #include "simulator/compiler/parser/rdorss.h"
 #include "simulator/compiler/parser/type/type.h"
+#include "simulator/compiler/mbuilder/rdo_resources.h"
 #include "simulator/runtime/rdo_rule.h"
 #include "simulator/runtime/rdo_operation.h"
 #include "simulator/runtime/rdo_keyboard.h"
@@ -25,8 +26,7 @@
 #include "simulator/runtime/rdo_logic_dptprior.h"
 #include "simulator/runtime/rdodptrtime.h"
 #include "simulator/runtime/rdo_dptsearch_activity.h"
-
-#include "simulator/compiler/mbuilder/rdo_resources.h"
+#include "simulator/runtime/calc/calc_pattern.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

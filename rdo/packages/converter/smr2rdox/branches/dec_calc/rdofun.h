@@ -508,7 +508,7 @@ public:
 	void                     setFunctionCalc(CREF(rdoRuntime::LPRDOFunCalc) pCalc);
 	rdoRuntime::LPRDOFunCalc getFunctionCalc() const { return m_pFunctionCalc; }
 
-	void insertPostLinked(CREF(rdoRuntime::LPRDOCalcFunctionCall) pCalc)
+	void insertPostLinked(CREF(rdoRuntime::LPRDOCalcFunctionCaller) pCalc)
 	{
 		ASSERT(pCalc);
 		m_postLinkedList.push_back(pCalc);
@@ -519,9 +519,9 @@ private:
 	RDOFUNFunction(CREF(tstring) name,              CREF(LPRDOParam) pReturn);
 	virtual ~RDOFUNFunction();
 
-	typedef std::vector<LPRDOFUNFunctionListElement>       ElementList;
-	typedef std::vector<LPRDOFUNCalculateIf>               CalculateIfList;
-	typedef std::vector<rdoRuntime::LPRDOCalcFunctionCall> PostLinkedList;
+	typedef std::vector<LPRDOFUNFunctionListElement>         ElementList;
+	typedef std::vector<LPRDOFUNCalculateIf>                 CalculateIfList;
+	typedef std::vector<rdoRuntime::LPRDOCalcFunctionCaller> PostLinkedList;
 
 	LPRDOParam               m_pReturn;
 	ParamList                m_paramList;

@@ -26,10 +26,10 @@ class ProcGUICalc
 {
 public:
 	rdoRuntime::LPRDOCalcConst        getConstCalc     (double arg                                       );
-	rdoRuntime::LPRDOCalcFunctionCall getNormalCalc    (ruint base, double arg1, double arg2             );
-	rdoRuntime::LPRDOCalcFunctionCall getUniformCalc   (ruint base, double arg1, double arg2             );
-	rdoRuntime::LPRDOCalcFunctionCall getExpCalc       (ruint base, double arg                           );
-	rdoRuntime::LPRDOCalcFunctionCall getTriangularCalc(ruint base, double arg1, double arg2, double arg3);
+	rdoRuntime::LPRDOCalcFunctionCaller getNormalCalc    (ruint base, double arg1, double arg2             );
+	rdoRuntime::LPRDOCalcFunctionCaller getUniformCalc   (ruint base, double arg1, double arg2             );
+	rdoRuntime::LPRDOCalcFunctionCaller getExpCalc       (ruint base, double arg                           );
+	rdoRuntime::LPRDOCalcFunctionCaller getTriangularCalc(ruint base, double arg1, double arg2, double arg3);
 	rdoRuntime::LPRDOCalc             getCalc();
 
 protected:

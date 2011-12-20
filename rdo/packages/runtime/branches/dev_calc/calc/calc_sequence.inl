@@ -16,29 +16,6 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOCalcSeqInit
-// --------------------------------------------------------------------------------
-inline RDOCalcSeqInit::RDOCalcSeqInit(int base, PTR(RandGenerator) gen)
-	: m_base(base)
-	, m_gen (gen )
-{}
-
-inline void RDOCalcSeqInit::setBase(int base)
-{
-	m_base = base;
-}
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOCalcSeqNext
-// --------------------------------------------------------------------------------
-inline RDOCalcSeqNext::RDOCalcSeqNext()
-	: m_res_real(true )
-	, m_diap    (false)
-	, m_diap_min(0    )
-	, m_diap_max(0    )
-{}
-
-// --------------------------------------------------------------------------------
 // -------------------- RDOCalcRandomDistribution
 // --------------------------------------------------------------------------------
 template<class T>

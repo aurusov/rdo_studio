@@ -12,6 +12,8 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/procedural/calc_braces.h"
+#include "simulator/runtime/calc/procedural/calc_statement.h"
+#include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

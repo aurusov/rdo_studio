@@ -84,6 +84,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/calc/calc_internal_function.inl"
+#include "simulator/runtime/calc/function/calc_function_internal.inl"
 
 #endif // _LIB_RUNTIME_CALC_FUNCTION_INTERNAL_H_

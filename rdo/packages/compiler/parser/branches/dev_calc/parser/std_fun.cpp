@@ -17,7 +17,7 @@
 #include "simulator/compiler/parser/parser/std_fun.h"
 #include "simulator/compiler/parser/param.h"
 #include "simulator/compiler/parser/rdofun.h"
-#include "simulator/runtime/calc/calc_internal_function.h"
+#include "simulator/runtime/calc/function/calc_function_internal.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

@@ -71,7 +71,7 @@ rdoRuntime::LPRDOCalc ProcGUICalc::getCalc()
 	return m_pCalc;
 }
 
-rdoRuntime::LPRDOCalcFunctionCall ProcGUICalc::getNormalCalc(ruint base, double arg1, double arg2)
+rdoRuntime::LPRDOCalcFunctionCaller ProcGUICalc::getNormalCalc(ruint base, double arg1, double arg2)
 {
 	PTR(rdoRuntime::RandGeneratorNormal) pGenerator = new rdoRuntime::RandGeneratorNormal();
 	ASSERT(pGenerator);
@@ -80,7 +80,7 @@ rdoRuntime::LPRDOCalcFunctionCall ProcGUICalc::getNormalCalc(ruint base, double 
 	m_pRuntime->addInitCalc(pInitCalc);
 	rdoRuntime::LPRDOCalcSeqNext pNextCalc = rdo::Factory<rdoRuntime::RDOCalcSeqNextNormal>::create(pGenerator);
 	ASSERT(pNextCalc);
-	rdoRuntime::LPRDOCalcFunctionCall pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCall>::create(pNextCalc);
+	rdoRuntime::LPRDOCalcFunctionCaller pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCaller>::create(pNextCalc);
 	ASSERT(pFuctionCall);
 	rdoRuntime::LPRDOCalcConst pArg1 = rdo::Factory<rdoRuntime::RDOCalcConst>::create(arg1);
 	rdoRuntime::LPRDOCalcConst pArg2 = rdo::Factory<rdoRuntime::RDOCalcConst>::create(arg2);
@@ -91,7 +91,7 @@ rdoRuntime::LPRDOCalcFunctionCall ProcGUICalc::getNormalCalc(ruint base, double 
 	return pFuctionCall;
 }
 
-rdoRuntime::LPRDOCalcFunctionCall ProcGUICalc::getUniformCalc(ruint base, double arg1, double arg2)
+rdoRuntime::LPRDOCalcFunctionCaller ProcGUICalc::getUniformCalc(ruint base, double arg1, double arg2)
 {
 	PTR(rdoRuntime::RandGeneratorUniform) pGenerator = new rdoRuntime::RandGeneratorUniform();
 	ASSERT(pGenerator);
@@ -100,7 +100,7 @@ rdoRuntime::LPRDOCalcFunctionCall ProcGUICalc::getUniformCalc(ruint base, double
 	m_pRuntime->addInitCalc(pInitCalc);
 	rdoRuntime::LPRDOCalcSeqNext pNextCalc = rdo::Factory<rdoRuntime::RDOCalcSeqNextUniform>::create(pGenerator);
 	ASSERT(pNextCalc);
-	rdoRuntime::LPRDOCalcFunctionCall pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCall>::create(pNextCalc);
+	rdoRuntime::LPRDOCalcFunctionCaller pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCaller>::create(pNextCalc);
 	ASSERT(pFuctionCall);
 	rdoRuntime::LPRDOCalcConst pArg1 = rdo::Factory<rdoRuntime::RDOCalcConst>::create(arg1);
 	rdoRuntime::LPRDOCalcConst pArg2 = rdo::Factory<rdoRuntime::RDOCalcConst>::create(arg2);
@@ -111,7 +111,7 @@ rdoRuntime::LPRDOCalcFunctionCall ProcGUICalc::getUniformCalc(ruint base, double
 	return pFuctionCall;
 }
 
-rdoRuntime::LPRDOCalcFunctionCall ProcGUICalc::getExpCalc(ruint base, double arg)
+rdoRuntime::LPRDOCalcFunctionCaller ProcGUICalc::getExpCalc(ruint base, double arg)
 {
 	PTR(rdoRuntime::RandGeneratorExponential) pGenerator = new rdoRuntime::RandGeneratorExponential();
 	ASSERT(pGenerator);
@@ -120,7 +120,7 @@ rdoRuntime::LPRDOCalcFunctionCall ProcGUICalc::getExpCalc(ruint base, double arg
 	m_pRuntime->addInitCalc(pInitCalc);
 	rdoRuntime::LPRDOCalcSeqNext pNextCalc = rdo::Factory<rdoRuntime::RDOCalcSeqNextExponential>::create(pGenerator);
 	ASSERT(pNextCalc);
-	rdoRuntime::LPRDOCalcFunctionCall pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCall>::create(pNextCalc);
+	rdoRuntime::LPRDOCalcFunctionCaller pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCaller>::create(pNextCalc);
 	ASSERT(pFuctionCall);
 	rdoRuntime::LPRDOCalcConst pArg = rdo::Factory<rdoRuntime::RDOCalcConst>::create(arg);
 	ASSERT(pArg);
@@ -128,7 +128,7 @@ rdoRuntime::LPRDOCalcFunctionCall ProcGUICalc::getExpCalc(ruint base, double arg
 	return pFuctionCall;
 }
 
-rdoRuntime::LPRDOCalcFunctionCall ProcGUICalc::getTriangularCalc(ruint base, double arg1, double arg2, double arg3)
+rdoRuntime::LPRDOCalcFunctionCaller ProcGUICalc::getTriangularCalc(ruint base, double arg1, double arg2, double arg3)
 {
 	PTR(rdoRuntime::RandGeneratorTriangular) pGenerator = new rdoRuntime::RandGeneratorTriangular();
 	rdoRuntime::LPRDOCalcSeqInit pInitCalc = rdo::Factory<rdoRuntime::RDOCalcSeqInit>::create(base, pGenerator);
@@ -136,7 +136,7 @@ rdoRuntime::LPRDOCalcFunctionCall ProcGUICalc::getTriangularCalc(ruint base, dou
 	m_pRuntime->addInitCalc(pInitCalc);
 	rdoRuntime::LPRDOCalcSeqNext pNextCalc = rdo::Factory<rdoRuntime::RDOCalcSeqNextTriangular>::create(pGenerator);
 	ASSERT(pNextCalc);
-	rdoRuntime::LPRDOCalcFunctionCall pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCall>::create(pNextCalc);
+	rdoRuntime::LPRDOCalcFunctionCaller pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCaller>::create(pNextCalc);
 	ASSERT(pFuctionCall);
 	rdoRuntime::LPRDOCalcConst pArg1 = rdo::Factory<rdoRuntime::RDOCalcConst>::create(arg1);
 	rdoRuntime::LPRDOCalcConst pArg2 = rdo::Factory<rdoRuntime::RDOCalcConst>::create(arg2);

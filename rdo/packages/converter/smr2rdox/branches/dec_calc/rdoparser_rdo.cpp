@@ -25,7 +25,7 @@
 #include "utils/rdostream.h"
 #include "kernel/rdokernel.h"
 #include "repository/rdorepository.h"
-#include "simulator/runtime/calc/calc_internal_function.h"
+#include "simulator/runtime/calc/function/calc_function_internal.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE

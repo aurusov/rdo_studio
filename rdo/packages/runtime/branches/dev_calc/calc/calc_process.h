@@ -22,10 +22,7 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \class   RDOCalcProcessControl
-  \brief   Передача транзакта в процесс и его запуск
-*/
+//! Передача транзакта в процесс и его запуск
 CALC(RDOCalcProcessControl)
 {
 DECLARE_FACTORY(RDOCalcProcessControl)
@@ -36,6 +33,13 @@ protected:
 private:
 	LPIPROCBlock  m_Block;
 	rsint         m_relResNum;
+};
+
+//! Получение значения терминального счетчика
+CALC(RDOCalcGetTermNow)
+{
+DECLARE_FACTORY(RDOCalcGetTermNow)
+DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

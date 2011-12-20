@@ -13,5 +13,5 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <math.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/calc/calc_internal_function.h"
+#include "simulator/runtime/calc/function/calc_function_internal.h"
 // --------------------------------------------------------------------------------

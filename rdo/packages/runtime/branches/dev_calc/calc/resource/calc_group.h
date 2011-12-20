@@ -14,15 +14,12 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/calc/calc_base.h"
+#include "simulator/runtime/calc/function/calc_function.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \class   RDOFunCalcGroup
-  \brief   Базовая калка для групповых калок
-*/
+//! Базовая калка для групповых калок
 CALC_SUB(RDOFunCalcGroup, RDOFunCalc)
 {
 protected:
@@ -70,6 +67,22 @@ DEFINE_CALC_GROUP(ForAll);
   \brief   Логический предикат отрицания общности
 */
 DEFINE_CALC_GROUP(NotForAll);
+
+/*!
+  \class   RDOCalcGetGroupResParam
+  \brief   Получение параметра ресурса из группы
+  \todo    Удалить
+*/
+CALC(RDOCalcGetGroupResParam)
+{
+DECLARE_FACTORY(RDOCalcGetGroupResParam)
+private:
+	RDOCalcGetGroupResParam(int parNumb);
+
+	int m_parNumb;
+
+	DECLARE_ICalc;
+};
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 

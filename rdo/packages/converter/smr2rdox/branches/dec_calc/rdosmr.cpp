@@ -17,7 +17,7 @@
 #include "converter/smr2rdox/rdorss.h"
 #include "converter/smr2rdox/rdoparser_lexer.h"
 #include "converter/smr2rdox/rdoparser_rdo.h"
-#include "simulator/runtime/calc/calc_base.h"
+#include "simulator/runtime/calc/resource/calc_resource.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE

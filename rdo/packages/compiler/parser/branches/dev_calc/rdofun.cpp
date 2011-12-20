@@ -706,7 +706,7 @@ LPRDOFUNArithm RDOFUNParams::createCall(CREF(tstring) funName)
 	}
 
 	//rdoRuntime::LPRDOCalc pFuncCall = pFunction->getFunctionCalc();
-	rdoRuntime::LPRDOCalcFunctionCall pFuncCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCall>::create(pFunction->getFunctionCalc());
+	rdoRuntime::LPRDOCalcFunctionCaller pFuncCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCaller>::create(pFunction->getFunctionCalc());
 	pFunction->insertPostLinked(pFuncCall);
 	pFuncCall->setSrcInfo(src_info());
 	for (ruint i = 0; i < nParams; i++)
@@ -832,7 +832,7 @@ LPRDOFUNArithm RDOFUNSequenceUniform::createCallCalc(REF(LPRDOFUNParams) pParamL
 		RDOParser::s_parser()->error().error(seq_src_info, rdo::format(_T("ƒл€ равномерного закона распределени€ '%s' нужно указать два параметра: минимальную и максимальную границы диапазона"), name().c_str()));
 	}
 
-	rdoRuntime::LPRDOCalcFunctionCall pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCall>::create(m_pNextCalc);
+	rdoRuntime::LPRDOCalcFunctionCaller pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCaller>::create(m_pNextCalc);
 	ASSERT(pFuctionCall);
 
 	LPTypeInfo            pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__real>::create(), RDOParserSrcInfo());
@@ -886,7 +886,7 @@ LPRDOFUNArithm RDOFUNSequenceExponential::createCallCalc(REF(LPRDOFUNParams) pPa
 		RDOParser::s_parser()->error().error(seq_src_info, rdo::format(_T("ƒл€ экспоненциального закона распределени€ '%s' нужно указать один параметр: математическое ожидание"), name().c_str()));
 	}
 
-	rdoRuntime::LPRDOCalcFunctionCall pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCall>::create(m_pNextCalc);
+	rdoRuntime::LPRDOCalcFunctionCaller pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCaller>::create(m_pNextCalc);
 	ASSERT(pFuctionCall);
 
 	LPTypeInfo            pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__real>::create(), RDOParserSrcInfo());
@@ -938,7 +938,7 @@ LPRDOFUNArithm RDOFUNSequenceNormal::createCallCalc(REF(LPRDOFUNParams) pParamLi
 		RDOParser::s_parser()->error().error(seq_src_info, rdo::format(_T("ƒл€ нормального закона распределени€ '%s' нужно указать два параметра: математическое ожидание и среднее квадратическое отклонение"), name().c_str()));
 	}
 
-	rdoRuntime::LPRDOCalcFunctionCall pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCall>::create(m_pNextCalc);
+	rdoRuntime::LPRDOCalcFunctionCaller pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCaller>::create(m_pNextCalc);
 	ASSERT(pFuctionCall);
 
 	LPTypeInfo            pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__real>::create(), RDOParserSrcInfo());
@@ -992,7 +992,7 @@ LPRDOFUNArithm RDOFUNSequenceTriangular::createCallCalc(REF(LPRDOFUNParams) pPar
 		RDOParser::s_parser()->error().error(seq_src_info, rdo::format(_T("ƒл€ треугольного закона распределени€ '%s' нужно указать три параметра: левую границу, точку под высотой треугольника, правую границу"), name().c_str()));
 	}
 
-	rdoRuntime::LPRDOCalcFunctionCall pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCall>::create(m_pNextCalc);
+	rdoRuntime::LPRDOCalcFunctionCaller pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCaller>::create(m_pNextCalc);
 	ASSERT(pFuctionCall);
 
 	LPTypeInfo            pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__real>::create(), RDOParserSrcInfo());
@@ -1036,7 +1036,7 @@ LPRDOFUNArithm RDOFUNSequenceByHist::createCallCalc(REF(LPRDOFUNParams) pParamLi
 		RDOParser::s_parser()->error().error(src_info, rdo::format(_T("√истограмма '%s' должна вызыватьс€ без параметров"), name().c_str()));
 	}
 
-	rdoRuntime::LPRDOCalcFunctionCall pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCall>::create(m_pNextCalc);
+	rdoRuntime::LPRDOCalcFunctionCaller pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCaller>::create(m_pNextCalc);
 	ASSERT(pFuctionCall);
 
 	LPExpression pExpression = rdo::Factory<Expression>::create(
@@ -1162,7 +1162,7 @@ LPRDOFUNArithm RDOFUNSequenceEnumerative::createCallCalc(REF(LPRDOFUNParams) pPa
 		RDOParser::s_parser()->error().error(src_info, rdo::format(_T("ѕеречисление '%s' должно вызыватьс€ без параметров"), name().c_str()));
 	}
 
-	rdoRuntime::LPRDOCalcFunctionCall pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCall>::create(m_pNextCalc);
+	rdoRuntime::LPRDOCalcFunctionCaller pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCaller>::create(m_pNextCalc);
 	ASSERT(pFuctionCall);
 
 	LPExpression pExpression = rdo::Factory<Expression>::create(

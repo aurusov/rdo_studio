@@ -585,7 +585,7 @@ public:
 	void  setReturnFlag(rbool flag) {m_returnFlag = flag;}
 	rbool getReturnFlag(          ) {return m_returnFlag;}
 
-	void insertPostLinked(CREF(rdoRuntime::LPRDOCalcFunctionCall) pCalc)
+	void insertPostLinked(CREF(rdoRuntime::LPRDOCalcFunctionCaller) pCalc)
 	{
 		ASSERT(pCalc);
 		m_postLinkedList.push_back(pCalc);
@@ -600,7 +600,7 @@ private:
 
 	typedef std::vector<LPRDOFUNFunctionListElement>       ElementList;
 	typedef std::vector<LPRDOFUNCalculateIf>               CalculateIfList;
-	typedef std::vector<rdoRuntime::LPRDOCalcFunctionCall> PostLinkedList;
+	typedef std::vector<rdoRuntime::LPRDOCalcFunctionCaller> PostLinkedList;
 
 	LPRDOParam               m_pReturn;
 	ParamList                m_paramList;

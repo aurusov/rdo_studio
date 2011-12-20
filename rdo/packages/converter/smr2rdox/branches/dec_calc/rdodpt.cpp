@@ -28,7 +28,7 @@
 #include "simulator/runtime/rdo_logic_dptprior.h"
 #include "simulator/runtime/rdodptrtime.h"
 #include "simulator/runtime/rdo_dptsearch_activity.h"
-#include "utils/smart_ptr/intrusive_ptr.h"
+#include "simulator/runtime/calc/calc_pattern.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE

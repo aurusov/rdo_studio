@@ -1852,6 +1852,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\calc\calc_pattern.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\calc\calc_pattern.h"
+				>
+			</File>
+			<File
 				RelativePath=".\calc\calc_process.cpp"
 				>
 			</File>
@@ -2019,6 +2027,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\calc\resource\calc_resource.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\resource\calc_resource.h"
+					>
+				</File>
+				<File
 					RelativePath=".\calc\resource\calc_select.cpp"
 					>
 				</File>
@@ -2031,6 +2047,14 @@
 				Name=".function"
 				>
 				<File
+					RelativePath=".\calc\function\calc_function.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\function\calc_function.h"
+					>
+				</File>
+				<File
 					RelativePath=".\calc\function\calc_function_internal.cpp"
 					>
 				</File>
@@ -2040,6 +2064,14 @@
 				</File>
 				<File
 					RelativePath=".\calc\function\calc_function_internal.inl"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\function\calc_function_system.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\function\calc_function_system.h"
 					>
 				</File>
 			</Filter>
