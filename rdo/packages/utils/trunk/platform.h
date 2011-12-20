@@ -23,7 +23,7 @@
 #endif
 
 #ifdef __MINGW32__
-	#define OST_LINUX
+	#define COMPILER_GCC
 	#define COMPILER_MINGW
 #else
 	#ifdef _WIN32

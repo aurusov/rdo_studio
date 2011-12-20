@@ -12,9 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/namespace.h"
-#include "utils/rdomacros.h"
-#include "utils/rdotypes.h"
+#include "utils/rdocommon.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE

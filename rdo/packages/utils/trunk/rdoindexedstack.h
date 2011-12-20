@@ -13,9 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/namespace.h"
-#include "utils/rdomacros.h"
-#include "utils/rdotypes.h"
+#include "utils/rdocommon.h"
 #include "utils/rdoidgenerator.h"
 // --------------------------------------------------------------------------------
 

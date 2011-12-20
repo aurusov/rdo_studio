@@ -13,9 +13,9 @@
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <locale>
 #include <stdio.h>
 #include <stdarg.h>
-#include <locale>
 #include <algorithm>
 #include <boost/algorithm/string.hpp>
 
