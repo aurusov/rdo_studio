@@ -4,8 +4,8 @@
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <string>
 #include <list>
+#include <string>
 #include <vector>
 #include <boost/noncopyable.hpp>
 
@@ -16,8 +16,7 @@
 	#pragma warning( disable : 4786 )
 #endif // COMPILER_VISUAL_STUDIO
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdomacros.h"
-#include "utils/rdotypes.h"
+#include "utils/rdocommon.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
