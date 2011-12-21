@@ -16,7 +16,7 @@
 #include "converter/smr2rdox/rdortp.h"
 #include "converter/smr2rdox/rdoparser.h"
 #include "converter/smr2rdox/rdoparser_lexer.h"
-#include "simulator/runtime/rdocalc.h"
+#include "simulator/runtime/calc/procedural/calc_nop.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE
@@ -98,7 +98,7 @@ rdoRuntime::LPRDOCalc RDORSSResource::createCalc() const
 		paramList.push_back(it->param().value());
 	}
 
-	rdoRuntime::LPRDOCalc calc = rdo::Factory<rdoRuntime::RDOCalcConst>::create(true);
+	rdoRuntime::LPRDOCalc calc = rdo::Factory<rdoRuntime::RDOCalcNop>::create();
 	calc->setSrcInfo(src_info());
 	calc->setSrcText(_T("Создание ресурса ") + calc->src_text());
 	return calc;
@@ -119,7 +119,7 @@ rdoRuntime::LPRDOCalc RDOPROCResource::createCalc() const
 		paramList.push_back(it->param().value());
 	}
 
-	rdoRuntime::LPRDOCalc calc = rdo::Factory<rdoRuntime::RDOCalcConst>::create(true);
+	rdoRuntime::LPRDOCalc calc = rdo::Factory<rdoRuntime::RDOCalcNop>::create();
 	calc->setSrcInfo(src_info());
 	calc->setSrcText(_T("Создание ресурса ") + calc->src_text());
 	return calc;

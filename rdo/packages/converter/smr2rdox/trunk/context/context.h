@@ -16,7 +16,7 @@
 #include "utils/smart_ptr/intrusive_ptr.h"
 #include "converter/smr2rdox/namespace.h"
 #include "converter/smr2rdox/rdo_value.h"
-#include "simulator/runtime/rdocalc.h"
+#include "simulator/runtime/calc/calc_base.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE

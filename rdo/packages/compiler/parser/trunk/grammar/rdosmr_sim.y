@@ -208,13 +208,13 @@
 #include "simulator/compiler/parser/rdoparser_lexer.h"
 #include "simulator/compiler/parser/rdosmr.h"
 #include "simulator/compiler/parser/rdofun.h"
-#include "simulator/runtime/rdocalc.h"
+#include "simulator/runtime/calc/calc_base.h"
 #include "simulator/compiler/parser/rdopat.h"
 #include "simulator/compiler/parser/rdortp.h"
 #include "simulator/compiler/parser/type/range.h"
 #include "simulator/runtime/rdotrace.h"
-#include "simulator/runtime/calc/event_plan.h"
-#include "simulator/runtime/calc/array.h"
+#include "simulator/runtime/calc/calc_event.h"
+#include "simulator/runtime/calc/calc_array.h"
 // --------------------------------------------------------------------------------
 
 #define PARSER  LEXER->parser()

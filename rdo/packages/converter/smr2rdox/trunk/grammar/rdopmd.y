@@ -199,7 +199,7 @@
 #include "converter/smr2rdox/rdopmd.h"
 #include "converter/smr2rdox/rdofun.h"
 #include "converter/smr2rdox/update/update.h"
-#include "simulator/runtime/rdocalc.h"
+#include "simulator/runtime/calc/calc_base.h"
 // --------------------------------------------------------------------------------
 
 #define CONVERTER LEXER->converter()

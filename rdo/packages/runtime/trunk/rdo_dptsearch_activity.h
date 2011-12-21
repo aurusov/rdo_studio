@@ -15,7 +15,7 @@
 #include "simulator/runtime/rdo_rule_i.h"
 #include "simulator/runtime/rdo_runtime_interface_registrator.h"
 #include "simulator/runtime/rdo_dptsearch_activity_i.h"
-#include "simulator/runtime/rdocalc.h"
+#include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/rdotrace.h"
 // --------------------------------------------------------------------------------
 

@@ -18,6 +18,8 @@
 #include "simulator/compiler/parser/rdoparser_lexer.h"
 #include "simulator/compiler/parser/type/range.h"
 #include "simulator/compiler/parser/local_variable.h"
+#include "simulator/runtime/calc/calc_pattern.h"
+#include "simulator/runtime/calc/resource/calc_resource.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

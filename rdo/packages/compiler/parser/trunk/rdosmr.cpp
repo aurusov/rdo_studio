@@ -17,7 +17,7 @@
 #include "simulator/compiler/parser/rdorss.h"
 #include "simulator/compiler/parser/rdoparser_lexer.h"
 #include "simulator/compiler/parser/rdoparser_rdo.h"
-#include "simulator/runtime/rdocalc.h"
+#include "simulator/runtime/calc/resource/calc_resource.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

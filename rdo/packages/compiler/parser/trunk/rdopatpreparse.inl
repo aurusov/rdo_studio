@@ -12,7 +12,7 @@
 #include "simulator/compiler/parser/namespace.h"
 #include "utils/rdomacros.h"
 #include "utils/rdotypes.h"
-#include "simulator/runtime/calc/event_plan.h"
+#include "simulator/runtime/calc/calc_event.h"
 #include "simulator/runtime/rdo_event.h"
 // --------------------------------------------------------------------------------
 

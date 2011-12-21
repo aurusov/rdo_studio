@@ -12,7 +12,7 @@
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/rdocalc.h"
+#include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/rdopokaz_group.h"
 #include "simulator/compiler/parser/rdopmd.h"
 #include "simulator/compiler/parser/rdoparser.h"

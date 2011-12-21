@@ -29,8 +29,8 @@
 #include "simulator/runtime/rdopokaz.h"
 #include "simulator/runtime/rdoframe.h"
 #include "simulator/runtime/rdodptrtime.h"
-#include "simulator/runtime/rdocalc.h"
-#include "simulator/runtime/calc/relres.h"
+#include "simulator/runtime/calc/calc_base.h"
+#include "simulator/runtime/calc/resource/calc_relevant.h"
 #include "utils/rdodebug.h"
 // --------------------------------------------------------------------------------
 

@@ -19,7 +19,7 @@
 #include <boost/thread.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdobase.h"
-#include "simulator/runtime/calc/operation_type.h"
+#include "simulator/runtime/calc/operation/operation_type.h"
 // --------------------------------------------------------------------------------
 
 #ifdef COMPILER_VISUAL_STUDIO

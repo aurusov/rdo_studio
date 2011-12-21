@@ -18,6 +18,7 @@
 #include "converter/smr2rdox/rdoparser_lexer.h"
 #include "converter/smr2rdox/rdo_type_range.h"
 #include "converter/smr2rdox/runtime/rdo_ie.h"
+#include "simulator/runtime/calc/procedural/calc_nop.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE
@@ -470,6 +471,8 @@ void RDOPatternIrregEvent::addRelResUsage(CREF(LPRDOPATChoiceFrom) pChoiceFrom, 
 
 rdoRuntime::LPRDOCalc RDOPATPattern::createRelRes(rbool trace) const
 {
+	UNUSED(trace);
+
 	std::vector<rdoRuntime::RDOValue> params_default;
 	STL_FOR_ALL_CONST(m_pCurrRelRes->getType()->getParams(), it)
 	{
@@ -486,7 +489,7 @@ rdoRuntime::LPRDOCalc RDOPATPattern::createRelRes(rbool trace) const
 			params_default.push_back((*it)->getDefault().value());
 		}
 	}
-	rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcConst>::create(true);
+	rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcNop>::create();
 	pCalc->setSrcInfo(m_pCurrRelRes->src_info());
 	pCalc->setSrcText(rdo::format(_T("Создание временного ресурса %s"), m_pCurrRelRes->name().c_str()));
 	return pCalc;

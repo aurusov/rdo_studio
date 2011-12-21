@@ -213,9 +213,9 @@
 #include "simulator/compiler/parser/rdopat.h"
 #include "simulator/compiler/parser/rdodpt.h"
 #include "simulator/compiler/parser/type/range.h"
-#include "simulator/runtime/rdocalc.h"
+#include "simulator/runtime/calc/calc_base.h"
 #include "utils/rdoanimation.h"
-#include "simulator/runtime/calc/array.h"
+#include "simulator/runtime/calc/calc_array.h"
 // --------------------------------------------------------------------------------
 
 #define PARSER  LEXER->parser()

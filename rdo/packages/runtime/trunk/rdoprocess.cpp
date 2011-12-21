@@ -16,8 +16,8 @@
 #include "utils/rdotypes.h"
 #include "utils/rdomacros.h"
 #include "simulator/runtime/rdoprocess.h"
-#include "simulator/runtime/rdocalc.h"
-#include "simulator/runtime/calc/relres.h"
+#include "simulator/runtime/calc/calc_base.h"
+#include "simulator/runtime/calc/resource/calc_relevant.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

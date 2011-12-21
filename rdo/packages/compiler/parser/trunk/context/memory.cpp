@@ -12,7 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/context/memory.h"
-#include "simulator/runtime/calc/locvar.h"
+#include "simulator/runtime/calc/procedural/calc_locvar.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

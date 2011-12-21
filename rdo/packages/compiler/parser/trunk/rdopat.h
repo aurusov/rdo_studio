@@ -24,9 +24,9 @@
 
 #include "simulator/runtime/rdo_pattern.h"
 #include "simulator/runtime/rdo_resource.h"
-#include "simulator/runtime/rdocalc.h"
-#include "simulator/runtime/calc/relres.h"
-#include "simulator/runtime/calc/choice_from.h"
+#include "simulator/runtime/calc/calc_base.h"
+#include "simulator/runtime/calc/resource/calc_relevant.h"
+#include "simulator/runtime/calc/resource/calc_choice_from.h"
 
 #include "utils/smart_ptr/factory.h"
 // --------------------------------------------------------------------------------

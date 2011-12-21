@@ -25,11 +25,11 @@
 
 #include "simulator/runtime/rdo_object.h"
 #include "simulator/runtime/rdo_type.h"
-#include "simulator/runtime/rdocalc.h"
-#include "simulator/runtime/calc/logic.h"
-#include "simulator/runtime/calc/unary.h"
-#include "simulator/runtime/calc/sequence.h"
-#include "simulator/runtime/calc/select.h"
+#include "simulator/runtime/calc/calc_base.h"
+#include "simulator/runtime/calc/operation/calc_logic.h"
+#include "simulator/runtime/calc/operation/calc_unary.h"
+#include "simulator/runtime/calc/calc_sequence.h"
+#include "simulator/runtime/calc/resource/calc_select.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -585,7 +585,7 @@ public:
 	void  setReturnFlag(rbool flag) {m_returnFlag = flag;}
 	rbool getReturnFlag(          ) {return m_returnFlag;}
 
-	void insertPostLinked(CREF(rdoRuntime::LPRDOCalcFunctionCall) pCalc)
+	void insertPostLinked(CREF(rdoRuntime::LPRDOCalcFunctionCaller) pCalc)
 	{
 		ASSERT(pCalc);
 		m_postLinkedList.push_back(pCalc);
@@ -600,7 +600,7 @@ private:
 
 	typedef std::vector<LPRDOFUNFunctionListElement>       ElementList;
 	typedef std::vector<LPRDOFUNCalculateIf>               CalculateIfList;
-	typedef std::vector<rdoRuntime::LPRDOCalcFunctionCall> PostLinkedList;
+	typedef std::vector<rdoRuntime::LPRDOCalcFunctionCaller> PostLinkedList;
 
 	LPRDOParam               m_pReturn;
 	ParamList                m_paramList;

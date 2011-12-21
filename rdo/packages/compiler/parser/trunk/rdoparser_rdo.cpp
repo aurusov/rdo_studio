@@ -26,7 +26,7 @@
 #include "utils/rdostream.h"
 #include "kernel/rdokernel.h"
 #include "repository/rdorepository.h"
-#include "simulator/runtime/calc/std_fun.h"
+#include "simulator/runtime/calc/calc_pattern.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
