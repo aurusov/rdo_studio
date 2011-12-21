@@ -21,7 +21,6 @@ SET(HEADER_FILES
 	rdo_activity_i.h
 	rdo_array.h
 	rdobase.h
-	rdocalc.h
 	rdodptrtime.h
 	rdo_dptsearch_activity.h
 	rdo_dptsearch_activity_i.h
@@ -75,30 +74,36 @@ SET(HEADER_FILES
 	simtrace.h
 	thread_proxy_i.h
 
-	calc/arithm.h
-	calc/array.h
-	calc/binary.h
-	calc/braces.h
-	calc/choice_from.h
-	calc/event_plan.h
-	calc/group.h
-	calc/locvar.h
-	calc/logic.h
-	calc/operation_name.h
-	calc/operation_type.h
-	calc/process_control.h
-	calc/relres.h
-	calc/select.h
-	calc/sequence.h
-	calc/statements.h
-	calc/std_fun.h
-	calc/unary.h
-	calc/watch.h)
+	calc/calc_array.h
+	calc/calc_base.h
+	calc/calc_event.h
+	calc/calc_pattern.h
+	calc/calc_process.h
+	calc/calc_sequence.h
+	calc/calc_watch.h
+	calc/function/calc_function.h
+	calc/function/calc_function_internal.h
+	calc/function/calc_function_system.h
+	calc/operation/calc_arithm.h
+	calc/operation/calc_binary.h
+	calc/operation/calc_logic.h
+	calc/operation/calc_unary.h
+	calc/operation/operation_name.h
+	calc/operation/operation_type.h
+	calc/procedural/calc_braces.h
+	calc/procedural/calc_const.h
+	calc/procedural/calc_locvar.h
+	calc/procedural/calc_nop.h
+	calc/procedural/calc_statement.h
+	calc/resource/calc_choice_from.h
+	calc/resource/calc_group.h
+	calc/resource/calc_relevant.h
+	calc/resource/calc_resource.h
+	calc/resource/calc_select.h)
 
 SET(INLITE_FILES
 	rdo_activity.inl
 	rdobase.inl
-	rdocalc.inl
 	rdodptrtime.inl
 	rdo_enum.inl
 	rdo_exception.inl
@@ -123,24 +128,24 @@ SET(INLITE_FILES
 	searchtree.inl
 	simtrace.inl
 
-	calc/arithm.inl
-	calc/binary.inl
-	calc/choice_from.inl
-	calc/locvar.inl
-	calc/logic.inl
-	calc/operation_name.inl
-	calc/operation_type.inl
-	calc/relres.inl
-	calc/sequence.inl
-	calc/std_fun.inl
-	calc/unary.inl)
+	calc/calc_base.inl
+	calc/calc_sequence.inl
+	calc/function/calc_function_internal.inl
+	calc/operation/calc_arithm.inl
+	calc/operation/calc_binary.inl
+	calc/operation/calc_logic.inl
+	calc/operation/calc_unary.inl
+	calc/operation/operation_name.inl
+	calc/operation/operation_type.inl
+	calc/procedural/calc_locvar.inl
+	calc/resource/calc_choice_from.inl
+	calc/resource/calc_relevant.inl)
 
 SET(SOURCE_FILE
 	pch.cpp
 	rdo_activity.cpp
 	rdo_array.cpp
 	rdobase.cpp
-	rdocalc.cpp
 	rdo.cpp
 	rdo_dptsearch_activity.cpp
 	rdo_event.cpp
@@ -170,22 +175,29 @@ SET(SOURCE_FILE
 	searchtree.cpp
 	simtrace.cpp
 
-	calc/arithm.cpp
-	calc/array.cpp
-	calc/braces.cpp
-	calc/choice_from.cpp
-	calc/event_plan.cpp
-	calc/group.cpp
-	calc/locvar.cpp
-	calc/logic.cpp
-	calc/process_control.cpp
-	calc/relres.cpp
-	calc/select.cpp
-	calc/sequence.cpp
-	calc/statements.cpp
-	calc/std_fun.cpp
-	calc/unary.cpp
-	calc/watch.cpp)
+	calc/calc_array.cpp
+	calc/calc_base.cpp
+	calc/calc_event.cpp
+	calc/calc_pattern.cpp
+	calc/calc_process.cpp
+	calc/calc_sequence.cpp
+	calc/calc_watch.cpp
+	calc/function/calc_function.cpp
+	calc/function/calc_function_internal.cpp
+	calc/function/calc_function_system.cpp
+	calc/operation/calc_arithm.cpp
+	calc/operation/calc_logic.cpp
+	calc/operation/calc_unary.cpp
+	calc/procedural/calc_braces.cpp
+	calc/procedural/calc_const.cpp
+	calc/procedural/calc_locvar.cpp
+	calc/procedural/calc_nop.cpp
+	calc/procedural/calc_statement.cpp
+	calc/resource/calc_choice_from.cpp
+	calc/resource/calc_group.cpp
+	calc/resource/calc_relevant.cpp
+	calc/resource/calc_resource.cpp
+	calc/resource/calc_select.cpp)
 
 ADD_LIBRARY(rdo_runtime ${HEADER_FILES} ${INLITE_FILES} ${SOURCE_FILE})
 
@@ -262,54 +274,75 @@ SOURCE_GROUP(".rdo_pokaz" FILES
 	rdopokaz_i.h)
 
 SOURCE_GROUP(".rdo_calc" FILES 
-	calc/arithm.h
-	calc/arithm.inl
-	calc/arithm.cpp
-	calc/array.h
-	calc/array.cpp
-	calc/binary.h
-	calc/binary.inl
-	calc/braces.h
-	calc/braces.cpp
-	calc/choice_from.h
-	calc/choice_from.inl
-	calc/choice_from.cpp
-	equaltype.h
-	calc/event_plan.h
-	calc/event_plan.cpp
-	calc/locvar.h
-	calc/locvar.inl
-	calc/locvar.cpp
-	calc/logic.h
-	calc/logic.inl
-	calc/logic.cpp
-	calc/process_control.h
-	calc/process_control.cpp
-	rdocalc.h
-	rdocalc.inl
-	rdocalc.cpp
-	calc/relres.h
-	calc/relres.inl
-	calc/relres.cpp
-	calc/sequence.h
-	calc/sequence.inl
-	calc/sequence.cpp
-	calc/statements.h
-	calc/statements.cpp
-	calc/std_fun.h
-	calc/std_fun.inl
-	calc/std_fun.cpp
-	calc/unary.h
-	calc/unary.inl
-	calc/unary.cpp
-	calc/watch.h
-	calc/watch.cpp)
+	calc/calc_array.cpp
+	calc/calc_array.h
+	calc/calc_base.cpp
+	calc/calc_base.h
+	calc/calc_base.inl
+	calc/calc_event.cpp
+	calc/calc_event.h
+	calc/calc_pattern.cpp
+	calc/calc_pattern.h
+	calc/calc_process.cpp
+	calc/calc_process.h
+	calc/calc_sequence.cpp
+	calc/calc_sequence.h
+	calc/calc_sequence.inl
+	calc/calc_watch.cpp
+	calc/calc_watch.h)
+
+SOURCE_GROUP(".rdo_calc_function" FILES 
+	calc/function/calc_function.cpp
+	calc/function/calc_function.h
+	calc/function/calc_function_internal.cpp
+	calc/function/calc_function_internal.h
+	calc/function/calc_function_internal.inl
+	calc/function/calc_function_system.cpp
+	calc/function/calc_function_system.h)
 
 SOURCE_GROUP(".rdo_calc_operation" FILES 
-	calc/operation_type.h
-	calc/operation_type.inl
-	calc/operation_name.h
-	calc/operation_name.inl)
+	calc/operation/calc_arithm.cpp
+	calc/operation/calc_arithm.h
+	calc/operation/calc_arithm.inl
+	calc/operation/calc_binary.h
+	calc/operation/calc_binary.inl
+	calc/operation/calc_logic.cpp
+	calc/operation/calc_logic.h
+	calc/operation/calc_logic.inl
+	calc/operation/calc_unary.cpp
+	calc/operation/calc_unary.h
+	calc/operation/calc_unary.inl
+	calc/operation/operation_name.h
+	calc/operation/operation_name.inl
+	calc/operation/operation_type.h
+	calc/operation/operation_type.inl)
+
+SOURCE_GROUP(".rdo_calc_procedural" FILES 
+	calc/procedural/calc_braces.cpp
+	calc/procedural/calc_braces.h
+	calc/procedural/calc_const.cpp
+	calc/procedural/calc_const.h
+	calc/procedural/calc_locvar.cpp
+	calc/procedural/calc_locvar.h
+	calc/procedural/calc_locvar.inl
+	calc/procedural/calc_nop.cpp
+	calc/procedural/calc_nop.h
+	calc/procedural/calc_statement.cpp
+	calc/procedural/calc_statement.h)
+
+SOURCE_GROUP(".rdo_calc_resource" FILES 
+	calc/resource/calc_choice_from.cpp
+	calc/resource/calc_choice_from.h
+	calc/resource/calc_choice_from.inl
+	calc/resource/calc_group.cpp
+	calc/resource/calc_group.h
+	calc/resource/calc_relevant.cpp
+	calc/resource/calc_relevant.h
+	calc/resource/calc_relevant.inl
+	calc/resource/calc_resource.cpp
+	calc/resource/calc_resource.h
+	calc/resource/calc_select.cpp
+	calc/resource/calc_select.h)
 
 SOURCE_GROUP(".rdo_simulator" FILES 
 	rdo_exception.h
