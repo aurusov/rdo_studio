@@ -38,33 +38,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! ѕолучение ресурса по калку, который возвращает ID
-//! @todo не используетс€
-CALC(RDOCalcGetResourceByCalcID)
-{
-DECLARE_FACTORY(RDOCalcGetResourceByCalcID)
-private:
-	RDOCalcGetResourceByCalcID(CREF(LPRDOCalc) pGetResourceID);
-
-	LPRDOCalc m_pGetResourceID;
-
-	DECLARE_ICalc;
-};
-
-//! ѕолучение ID ресурса по калку
-//! @todo не используетс€
-CALC(RDOCalcGetResID)
-{
-DECLARE_FACTORY(RDOCalcGetResID)
-
-private:
-	LPRDOCalc m_pCalcGetResource;
-protected:
-	RDOCalcGetResID(CREF(LPRDOCalc) pCalcGetResource);
-
-	DECLARE_ICalc;
-};
-
 //! ѕараметр ресурса по калку ресурса и ID параметра
 CALC(RDOCalcGetResParamByCalc)
 {

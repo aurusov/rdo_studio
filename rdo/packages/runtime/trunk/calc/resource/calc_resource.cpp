@@ -52,39 +52,6 @@ REF(RDOValue) RDOCalcGetResourceByID::doCalc(CREF(LPRDORuntime) pRuntime)
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOCalcGetResourceByCalcID
-// --------------------------------------------------------------------------------
-RDOCalcGetResourceByCalcID::RDOCalcGetResourceByCalcID(CREF(LPRDOCalc) pGetResourceID)
-	: m_pGetResourceID(pGetResourceID)
-{
-	ASSERT(m_pGetResourceID);
-}
-
-REF(RDOValue) RDOCalcGetResourceByCalcID::doCalc(CREF(LPRDORuntime) pRuntime)
-{
-	if (!RDOCalcGetResourceHelper::getResource(pRuntime, m_pGetResourceID->calcValue(pRuntime).getUInt(), m_value))
-	{
-		pRuntime->error(_T("Не найден ресурс"), this);
-	}
-	return m_value;
-}
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOCalcGetResID
-// --------------------------------------------------------------------------------
-RDOCalcGetResID::RDOCalcGetResID(CREF(LPRDOCalc) pCalcGetResource)
-	: m_pCalcGetResource(pCalcGetResource)
-{}
-
-REF(RDOValue) RDOCalcGetResID::doCalc(CREF(LPRDORuntime) pRuntime)
-{
-	LPRDOResource pResource = m_pCalcGetResource->calcValue(pRuntime).getPointer<RDOResource>();
-	ASSERT(pResource);
-	m_value = pResource->getTraceID();
-	return m_value;
-}
-
-// --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetResParamByCalc
 // --------------------------------------------------------------------------------
 RDOCalcGetResParamByCalc::RDOCalcGetResParamByCalc(CREF(LPRDOCalc) pResource, ruint paramID)
