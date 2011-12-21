@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      unary.h
+  \file      calc_unary.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      13.03.2011
@@ -8,8 +8,8 @@
   \indent    4T
 */
 
-#ifndef _LIB_RUNTIME_CALC_UNARY_H_
-#define _LIB_RUNTIME_CALC_UNARY_H_
+#ifndef _LIB_RUNTIME_CALC_OPERATION_UNARY_H_
+#define _LIB_RUNTIME_CALC_OPERATION_UNARY_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -127,4 +127,4 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "simulator/runtime/calc/operation/calc_unary.inl"
 
-#endif // _LIB_RUNTIME_CALC_UNARY_H_
+#endif // _LIB_RUNTIME_CALC_OPERATION_UNARY_H_

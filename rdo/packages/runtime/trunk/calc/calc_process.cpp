@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      process_control.cpp
+  \file      calc_process.cpp
   \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      10.03.2011
   \brief     RDOCalc для передачи управления в процесс из БЗ и событий

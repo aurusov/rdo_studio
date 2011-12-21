@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      select.h
+  \file      calc_select.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
@@ -9,8 +9,8 @@
   \indent    4T
 */
 
-#ifndef _LIB_RUNTIME_CALC_SELECT_H_
-#define _LIB_RUNTIME_CALC_SELECT_H_
+#ifndef _LIB_RUNTIME_CALC_RESOURCE_SELECT_H_
+#define _LIB_RUNTIME_CALC_RESOURCE_SELECT_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <list>
@@ -119,4 +119,4 @@ DEFINE_CALC_SELECT_METHOD(Size     );
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // _LIB_RUNTIME_CALC_SELECT_H_
+#endif // _LIB_RUNTIME_CALC_RESOURCE_SELECT_H_

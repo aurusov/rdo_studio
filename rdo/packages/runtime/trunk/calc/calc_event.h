@@ -1,14 +1,14 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      event_plan.h
+  \file      calc_event.h
   \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      26.05.2010
   \brief     RDOCalc для планирования и остановки событий
   \indent    4T
 */
 
-#ifndef _LIB_RUNTIME_CALC_EVENT_PLAN_H_
-#define _LIB_RUNTIME_CALC_EVENT_PLAN_H_
+#ifndef _LIB_RUNTIME_CALC_EVENT_H_
+#define _LIB_RUNTIME_CALC_EVENT_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -65,4 +65,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // _LIB_RUNTIME_CALC_EVENT_PLAN_H_
+#endif // _LIB_RUNTIME_CALC_EVENT_H_

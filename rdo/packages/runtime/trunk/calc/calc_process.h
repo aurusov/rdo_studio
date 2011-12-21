@@ -1,14 +1,14 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      process_control.h
+  \file      calc_process.h
   \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      10.03.2011
   \brief     RDOCalc для передачи управления в процесс из БЗ и событий
   \indent    4T
 */
 
-#ifndef _LIB_RUNTIME_CALC_PROCESS_CONTROL_H_
-#define _LIB_RUNTIME_CALC_PROCESS_CONTROL_H_
+#ifndef _LIB_RUNTIME_CALC_PROCESS_H_
+#define _LIB_RUNTIME_CALC_PROCESS_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -44,4 +44,4 @@ DECLARE_ICalc;
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // _LIB_RUNTIME_CALC_PROCESS_CONTROL_H_
+#endif // _LIB_RUNTIME_CALC_PROCESS_H_

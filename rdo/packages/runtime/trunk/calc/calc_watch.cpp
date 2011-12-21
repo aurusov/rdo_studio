@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      watch.cpp
+  \file      calc_watch.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      04.03.2011
   \brief     Собираемые показатели

@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      rdocalc.h
+  \file      calc_base.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
@@ -9,8 +9,8 @@
   \indent    4T
 */
 
-#ifndef _LIB_RUNTIME_CALC_H_
-#define _LIB_RUNTIME_CALC_H_
+#ifndef _LIB_RUNTIME_CALC_BASE_H_
+#define _LIB_RUNTIME_CALC_BASE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -86,4 +86,4 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "simulator/runtime/calc/calc_base.inl"
 
-#endif // _LIB_RUNTIME_CALC_H_
+#endif // _LIB_RUNTIME_CALC_BASE_H_

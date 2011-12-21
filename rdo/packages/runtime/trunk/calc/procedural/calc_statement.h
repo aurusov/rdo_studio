@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      statements.h
+  \file      calc_statement.h
   \authors   Чирков Михаил
   \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      16.04.2011
@@ -8,8 +8,8 @@
   \indent    4T
 */
 
-#ifndef _LIB_RUNTIME_CALC_STATEMENTS_H_
-#define _LIB_RUNTIME_CALC_STATEMENTS_H_
+#ifndef _LIB_RUNTIME_CALC_PROCEDURAL_STATEMENT_H_
+#define _LIB_RUNTIME_CALC_PROCEDURAL_STATEMENT_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -111,4 +111,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // _LIB_RUNTIME_CALC_STATEMENTS_H_
+#endif // _LIB_RUNTIME_CALC_PROCEDURAL_STATEMENT_H_

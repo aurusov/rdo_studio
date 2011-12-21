@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      locvar.inl
+  \file      calc_locvar.inl
   \author    Чирков Михаил
   \date      16.04.2011
   \brief     Локальные переменные

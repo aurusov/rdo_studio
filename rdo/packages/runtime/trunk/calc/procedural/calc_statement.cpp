@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      statements.cpp
+  \file      calc_statement.cpp
   \authors   Чирков Михаил
   \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      16.04.2011

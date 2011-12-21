@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      calc_pattern.h
+  \file      calc_pattern.cpp
   \author    Барс Александр
   \date      20.12.2011
   \brief     Калки для паттернов

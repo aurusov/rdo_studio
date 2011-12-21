@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      sequence.inl
+  \file      calc_sequence.inl
   \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      31.07.2011
   \brief     Последовательности

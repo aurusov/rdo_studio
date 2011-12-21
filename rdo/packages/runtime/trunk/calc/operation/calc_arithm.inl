@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      arithm.inl
+  \file      calc_arithm.inl
   \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      26.07.2011
   \brief     Арифметические операции

@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      logic.inl
+  \file      calc_logic.inl
   \author    Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      31.07.2011
   \brief     Логические операторы

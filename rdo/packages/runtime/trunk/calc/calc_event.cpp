@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      event_plan.cpp
+  \file      calc_event.cpp
   \author    Ћущан ƒмитрий (dluschan@rk9.bmstu.ru)
   \date      26.05.2010
   \brief     RDOCalc дл€ планировани€, запуска и остановки событий и нерегул€рных событий

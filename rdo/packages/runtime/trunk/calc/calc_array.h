@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      simulator/runtime/calc/array.h
+  \file      calc_array.h
   \author    Чирков Михаил
   \date      03.12.2010
   \brief     Агрегатный тип данных - массив

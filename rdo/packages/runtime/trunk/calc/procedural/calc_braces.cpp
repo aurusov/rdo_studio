@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      braces.cpp
+  \file      calc_braces.cpp
   \author    Чирков Михаил
   \date      16.04.2011
   \brief     Список инструкций в стиле C++

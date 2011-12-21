@@ -1,14 +1,14 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      braces.h
+  \file      calc_braces.h
   \author    Чирков Михаил
   \date      16.04.2011
   \brief     Список инструкций в стиле C++
   \indent    4T
 */
 
-#ifndef _LIB_RUNTIME_CALC_BRACES_H_
-#define _LIB_RUNTIME_CALC_BRACES_H_
+#ifndef _LIB_RUNTIME_CALC_PROCEDURAL_BRACES_H_
+#define _LIB_RUNTIME_CALC_PROCEDURAL_BRACES_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -92,4 +92,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // _LIB_RUNTIME_CALC_BRACES_H_
+#endif // _LIB_RUNTIME_CALC_PROCEDURAL_BRACES_H_

@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      relres.h
+  \file      calc_relevant.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      28.12.2009
@@ -8,8 +8,8 @@
   \indent    4T
 */
 
-#ifndef _LIB_RUNTIME_CALC_REL_RES_H_
-#define _LIB_RUNTIME_CALC_REL_RES_H_
+#ifndef _LIB_RUNTIME_CALC_RESOURCE_RELEVANT_H_
+#define _LIB_RUNTIME_CALC_RESOURCE_RELEVANT_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -104,4 +104,4 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 #include "simulator/runtime/calc/resource/calc_relevant.inl"
 
-#endif // _LIB_RUNTIME_CALC_REL_RES_H_
+#endif // _LIB_RUNTIME_CALC_RESOURCE_RELEVANT_H_

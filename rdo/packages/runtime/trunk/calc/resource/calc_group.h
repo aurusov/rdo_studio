@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      group.h
+  \file      calc_group.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
@@ -9,8 +9,8 @@
   \indent    4T
 */
 
-#ifndef _LIB_RUNTIME_CALC_GROUP_H_
-#define _LIB_RUNTIME_CALC_GROUP_H_
+#ifndef _LIB_RUNTIME_CALC_RESOURCE_GROUP_H_
+#define _LIB_RUNTIME_CALC_RESOURCE_GROUP_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -70,4 +70,4 @@ DEFINE_CALC_GROUP(NotForAll);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // _LIB_RUNTIME_CALC_GROUP_H_
+#endif // _LIB_RUNTIME_CALC_RESOURCE_GROUP_H_
