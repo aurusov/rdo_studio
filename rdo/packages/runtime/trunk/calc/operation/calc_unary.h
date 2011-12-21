@@ -19,10 +19,7 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \class   RDOCalcUnaryBase
-  \brief   Базовый класс для унарного оператора
-*/
+//! Базовый класс для унарного оператора
 class RDOCalcUnaryBase: public RDOCalc
 {
 public:
@@ -60,22 +57,13 @@ private:
 	REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime);
 };
 
-/*!
-  \typedef RDOCalcUMinus
-  \brief   Унарный оператор плюс
-*/
+//! Унарный оператор плюс
 typedef RDOCalcUnary<RDOValue, &RDOValue::operator-, OperatorType::OT_ARITHM> RDOCalcUMinus;
 
-/*!
-  \typedef RDOCalcDoubleToInt
-  \brief   Оператор праобразования вещественного числа в целое
-*/
+//! Оператор праобразования вещественного числа в целое
 typedef RDOCalcUnary<rsint,    &RDOValue::getInt   , OperatorType::OT_ARITHM> RDOCalcDoubleToInt;
 
-/*!
-  \class   RDOCalcDoubleToIntByResult
-  \brief   Преобразование вещественного в целое как результат
-*/
+//! Преобразование вещественного в целое по типу lvalue
 CALC_SUB(RDOCalcDoubleToIntByResult, RDOCalc)
 {
 DECLARE_FACTORY(RDOCalcDoubleToIntByResult)
@@ -91,10 +79,7 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class   RDOCalcCheckDiap
-  \brief   Проверка диапазона
-*/
+//! Проверка диапазона
 CALC_SUB(RDOCalcCheckDiap, RDOCalc)
 {
 DECLARE_FACTORY(RDOCalcCheckDiap)
@@ -108,10 +93,7 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class   RDOCalcInt
-  \brief   Приведение к целому
-*/
+//! Приведение к целому
 CALC_SUB(RDOCalcInt, RDOCalc)
 {
 DECLARE_FACTORY(RDOCalcInt)

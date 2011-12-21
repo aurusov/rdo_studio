@@ -21,10 +21,7 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \class   RDOFunCalcSelect
-  \brief   Базовая групповая функция
-*/
+//! Базовая групповая функция
 CALC_SUB(RDOFunCalcSelect, RDOFunCalcGroup)
 {
 DECLARE_FACTORY(RDOFunCalcSelect)
@@ -38,10 +35,7 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class   RDOFunCalcSelectBase
-  \brief   Базовая калка для операторов Select
-*/
+//! Базовая класс для операторов Select
 CALC_SUB(RDOFunCalcSelectBase, RDOFunCalc)
 {
 protected:

@@ -19,7 +19,7 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Базовая калка для групповых калок
+//! Базовый класс для групповых калков
 CALC_SUB(RDOFunCalcGroup, RDOFunCalc)
 {
 protected:

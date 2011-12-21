@@ -37,7 +37,7 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Тело списка инструкций между скобками
+//! Вызывает инструкции из списка
 CALC(RDOCalcBodyBrace)
 {
 DECLARE_FACTORY(RDOCalcBodyBrace)
@@ -54,11 +54,7 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class   RDOCalcFunBodyBrace
-  \brief   Функция в теле инструкций
-  \todo    что это?
-*/
+//! Вызывает инструкции из списка и обрабатывает команды return и break
 CALC_SUB(RDOCalcFunBodyBrace, RDOFunCalc)
 {
 DECLARE_FACTORY(RDOCalcFunBodyBrace)
@@ -76,11 +72,7 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class   RDOCalcFunEnd
-  \brief   Окончание функции
-  \todo    что это?
-*/
+//! Окончание функции
 CALC(RDOCalcFunEnd)
 {
 DECLARE_FACTORY(RDOCalcFunEnd)

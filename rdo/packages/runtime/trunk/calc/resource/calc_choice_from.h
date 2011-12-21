@@ -19,10 +19,7 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \class   RDOCalcCreateResource
-  \brief   Создание нового ресурса
-*/
+//! Создание нового ресурса
 CALC(RDOCalcCreateResource)
 {
 DECLARE_FACTORY(RDOCalcCreateResource)
@@ -39,10 +36,7 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class   RDOSelectResourceCalc
-  \brief   Выбор ресурсов
-*/
+//! Выбор ресурсов
 CALC(RDOSelectResourceCalc)
 {
 public:
@@ -64,10 +58,7 @@ protected:
 	Type       m_orderType;
 };
 
-/*!
-  \class   RDOSelectResourceNonExistCalc
-  \brief   RDOCalc для оператора !Exist()
-*/
+//! RDOCalc для оператора !Exist()
 CALC_SUB(RDOSelectResourceNonExistCalc, RDOSelectResourceCalc)
 {
 DECLARE_FACTORY(RDOSelectResourceNonExistCalc)
@@ -76,11 +67,7 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class   RDOSelectResourceDirectCalc
-  \brief   RDOCalc для прямого вычисления оператора Select()
-  \todo    что это?
-*/
+//! Выбор релевантного ресурса по имени ресурса
 CALC_SUB(RDOSelectResourceDirectCalc, RDOSelectResourceCalc)
 {
 DECLARE_FACTORY(RDOSelectResourceDirectCalc)
@@ -94,10 +81,7 @@ protected:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class   RDOSelectResourceByTypeCalc
-  \brief   Выбор ресурсов по типу
-*/
+//! Выбор релевантного ресурса по типу
 CALC_SUB(RDOSelectResourceByTypeCalc, RDOSelectResourceCalc)
 {
 DECLARE_FACTORY(RDOSelectResourceByTypeCalc)
@@ -109,10 +93,7 @@ protected:
 	DECLARE_ICalc;
 };
 
-/*!
-  \interface IRDOSelectResourceCommon
-  \brief     Интерфейс для выбора ресурсов оператором Select()
-*/
+//! Интерфейс для выбора релевантных ресурсов
 OBJECT_INTERFACE(IRDOSelectResourceCommon)
 {
 DECLARE_FACTORY(IRDOSelectResourceCommon)
@@ -125,10 +106,7 @@ protected:
 	virtual ~IRDOSelectResourceCommon();
 };
 
-/*!
-  \class   RDOSelectResourceCommonCalc
-  \brief   RDOCalc для оператора Select()
-*/
+//! Выбор
 CALC(RDOSelectResourceCommonCalc)
 {
 DECLARE_FACTORY(RDOSelectResourceCommonCalc)
@@ -147,11 +125,7 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class   RDOSelectResourceDirectCommonCalc
-  \brief   RDOCalc для общего прямого вычисления оператора Select()
-  \todo    что это?
-*/
+//! Выбор по имени ресурса
 CALC_SUB(RDOSelectResourceDirectCommonCalc, RDOSelectResourceDirectCalc)
 	AND IMPLEMENTATION_OF(IRDOSelectResourceCommon)
 {
@@ -165,11 +139,7 @@ private:
 	virtual ~RDOSelectResourceDirectCommonCalc();
 };
 
-/*!
-  \class   RDOSelectResourceByTypeCommonCalc
-  \brief   RDOCalc для общего вычисления оператора Select() по типу
-  \todo    что это?
-*/
+//! Выбор по типу
 CALC_SUB(RDOSelectResourceByTypeCommonCalc, RDOSelectResourceByTypeCalc)
 	AND IMPLEMENTATION_OF(IRDOSelectResourceCommon)
 {

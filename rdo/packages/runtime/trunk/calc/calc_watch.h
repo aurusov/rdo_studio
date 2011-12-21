@@ -18,10 +18,7 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \class   RDOCalcWatchGroupStart
-  \brief   RDOCalc 
-*/
+//! Начало сбора статистики по группе показателей
 CALC(RDOCalcWatchGroupStart)
 {
 DECLARE_FACTORY(RDOCalcWatchGroupStart)
@@ -34,10 +31,7 @@ protected:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class   RDOCalcWatchGroupStop
-  \brief   Начало сбора статистики по группе показателей
-*/
+//! Окончание сбора статистики по группе показателей
 CALC(RDOCalcWatchGroupStop)
 {
 DECLARE_FACTORY(RDOCalcWatchGroupStop)

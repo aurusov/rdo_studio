@@ -19,10 +19,7 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \class   RDOCalcEvent
-  \brief   Базовая калка для управления событиями
-*/
+//! Базовая калка для управления событиями
 CALC(RDOCalcEvent)
 {
 DECLARE_FACTORY(RDOCalcEvent)
@@ -35,10 +32,7 @@ protected:
 	LPIBaseOperation m_pEvent;
 };
 
-/*!
-  \class   RDOCalcEventPlan
-  \brief   Планирование событий
-*/
+//! Планирование события
 CALC_SUB(RDOCalcEventPlan, RDOCalcEvent)
 {
 DECLARE_FACTORY(RDOCalcEventPlan)
@@ -50,10 +44,7 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class   RDOCalcEventStop
-  \brief   Остановка событий
-*/
+//! Остановка события
 CALC_SUB(RDOCalcEventStop, RDOCalcEvent)
 {
 DECLARE_FACTORY(RDOCalcEventStop)

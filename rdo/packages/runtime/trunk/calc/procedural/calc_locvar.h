@@ -18,10 +18,7 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \class   RDOCalcCreateLocalVariable
-  \brief   Создание локальной переменной
-*/
+//! Создание локальной переменной
 CALC(RDOCalcCreateLocalVariable)
 {
 DECLARE_FACTORY(RDOCalcCreateLocalVariable)
@@ -33,10 +30,7 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class   RDOCalcInitLocalVariable
-  \brief   Инициализация локальной переменной
-*/
+//! Инициализация локальной переменной
 CALC(RDOCalcInitLocalVariable)
 {
 DECLARE_FACTORY(RDOCalcInitLocalVariable)
@@ -49,10 +43,7 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class   RDOCalcGetLocalVariable
-  \brief   Получение локальной переменной
-*/
+//! Получение значения локальной переменной
 CALC(RDOCalcGetLocalVariable)
 {
 DECLARE_FACTORY(RDOCalcGetLocalVariable)
@@ -64,10 +55,7 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class   RDOCalcSetLocalVariable
-  \brief   Сохранение локальной переменной
-*/
+//! Установка значения локальной переменной
 template <EqualType equalType>
 class RDOCalcSetLocalVariable: public RDOCalc
 {
@@ -82,13 +70,10 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class   RDOCalcLocalVariableList
-  \brief   Список локальных переменных
-*/
+//! Список локальных переменных
 CALC(RDOCalcLocalVariableList)
 {
-	DECLARE_FACTORY(RDOCalcLocalVariableList)
+DECLARE_FACTORY(RDOCalcLocalVariableList)
 public:
 	typedef std::vector<LPRDOCalc> CalcLocalVariableList;
 

@@ -19,10 +19,7 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \class   RDOCalcSeqInit
-  \brief   RDOCalc дл€ инициализации последовательности псевдослучайных чисел
-*/
+//! »нициализаци€ последовательности псевдослучайных чисел
 CALC(RDOCalcSeqInit)
 {
 DECLARE_FACTORY(RDOCalcSeqInit)
@@ -39,10 +36,7 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class   RDOCalcSeqNext
-  \brief   RDOCalc дл€ вычислени€ следующего значени€ последовательности псевдослучайных чисел
-*/
+//! ¬ычисл€ет следующее значение последовательности псевдослучайных чисел
 CALC_SUB(RDOCalcSeqNext, RDOFunCalc)
 {
 public:
@@ -57,10 +51,7 @@ protected:
 	virtual RDOValue getNextValue(CREF(LPRDORuntime) pRuntime) = 0;
 };
 
-/*!
-  \class   RDOCalcRandomDistribution
-  \brief   ѕсевдослучайное распределение
-*/
+//! ѕсевдослучайное распределение
 template<class T>
 class RDOCalcRandomDistribution: public RDOCalcSeqNext
 {

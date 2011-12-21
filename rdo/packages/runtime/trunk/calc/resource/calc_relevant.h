@@ -31,11 +31,10 @@ private:
 	DECLARE_ICalc;
 };
 
-
 /*!
   \class   RDOSetRelResParamCalc
   \tparam  equalType Тип присваивания
-  \brief   RDOCalc для установки значения параметра релевантного ресурса
+  \brief   Установка значения параметра релевантного ресурса
 */
 template <EqualType equalType>
 class RDOSetRelResParamCalc: public RDOCalc
@@ -52,10 +51,7 @@ protected:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class   RDOSetRelResParamDiapCalc
-  \brief   RDOCalc ограничения диапазона параметра
-*/
+//! Ограничение параметра по диапазону
 CALC(RDOSetRelResParamDiapCalc)
 {
 DECLARE_FACTORY(RDOSetRelResParamDiapCalc)
@@ -71,10 +67,7 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class   RDOEraseResRelCalc
-  \brief   RDOCalc для удаления релевантного ресурса
-*/
+//! Удаление релевантного ресурса
 CALC(RDOEraseResRelCalc)
 {
 DECLARE_FACTORY(RDOEraseResRelCalc)

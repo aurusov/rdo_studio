@@ -19,10 +19,7 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \class   RDOCalcBinaryBase
-  \brief   Базовый класс для бинарных операторов
-*/
+//! Базовый класс для бинарных операторов
 class RDOCalcBinaryBase: public RDOCalc
 {
 public:

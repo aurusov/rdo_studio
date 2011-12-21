@@ -18,10 +18,7 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \class   RDOCalcArraySize
-  \brief   Размер массива
-*/
+//! Размер массива
 CALC(RDOCalcArraySize)
 {
 DECLARE_FACTORY(RDOCalcArraySize)
@@ -33,10 +30,7 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class   RDOCalcArrayItem
-  \brief   Элемент массива
-*/
+//! Возвращает элемент массива
 CALC(RDOCalcArrayItem)
 {
 DECLARE_FACTORY(RDOCalcArrayItem)
@@ -49,10 +43,7 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class   RDOCalcSetArrayItem
-  \brief   Множество элементов массива
-*/
+//! Устанавливает элемент массива
 CALC(RDOCalcSetArrayItem)
 {
 	DECLARE_FACTORY(RDOCalcSetArrayItem)

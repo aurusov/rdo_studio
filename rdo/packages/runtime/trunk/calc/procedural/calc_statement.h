@@ -19,10 +19,8 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \class   RDOCalcNoChange
-  \brief   RDOCalc для константного параметра релевантного ресурса
-*/
+//! Пустая операция
+//! @todo заменить на CalcNop ?
 CALC(RDOCalcNoChange)
 {
 	DECLARE_FACTORY(RDOCalcNoChange)
@@ -31,10 +29,7 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class   RDOCalcIf
-  \brief   RDOCalc для сокращенного условного оператора
-*/
+//! Условный оператор if () then {}
 CALC(RDOCalcIf)
 {
 	DECLARE_FACTORY(RDOCalcIf)
@@ -47,10 +42,7 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class   RDOCalcIfElse
-  \brief   RDOCalc для полного условного оператора
-*/
+//! Условный оператор if () then {} else {}
 CALC(RDOCalcIfElse)
 {
 	DECLARE_FACTORY(RDOCalcIfElse)
@@ -64,10 +56,7 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class   RDOCalcFor
-  \brief   RDOCalc для циклического оператора for
-*/
+//! Оператор цикла for
 CALC(RDOCalcFor)
 {
 	DECLARE_FACTORY(RDOCalcFor)
@@ -82,10 +71,7 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class   RDOCalcFunReturn
-  \brief   RDOCalc для оператора выхода из функции
-*/
+//! Оператор возврата return
 CALC(RDOCalcFunReturn)
 {
 	DECLARE_FACTORY(RDOCalcFunReturn)
@@ -96,10 +82,7 @@ private:
 	DECLARE_ICalc;
 };
 
-/*!
-  \class   RDOCalcFunBreak
-  \brief   RDOCalc для оператора выхода из тела цикла
-*/
+//! Оператор возврата break
 CALC(RDOCalcFunBreak)
 {
 	DECLARE_FACTORY(RDOCalcFunBreak)

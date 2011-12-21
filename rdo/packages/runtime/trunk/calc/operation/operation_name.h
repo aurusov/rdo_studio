@@ -21,7 +21,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 /*!
   \class   OperatorName
   \tparam  opr_type Тип операции
-  \brief   Имя операторов
+  \brief   Регистрирует имена операций
 */
 template <typename opr_type>
 class OperatorName
@@ -30,10 +30,6 @@ public:
 	static tstring name(CREF(opr_type) pOperator);
 
 private:
-	/*!
-	  \struct OprItem
-	  \brief  Экземпляр оператора
-	*/
 	struct OprItem
 	{
 		opr_type m_pOperator;
