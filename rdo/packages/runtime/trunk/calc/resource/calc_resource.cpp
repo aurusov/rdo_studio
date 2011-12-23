@@ -15,6 +15,7 @@
 #include "simulator/runtime/calc/resource/calc_resource.h"
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/runtime/rdo_res_type.h"
+#include "simulator/runtime/rdo_activity_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -101,6 +102,34 @@ RDOSetResourceParamCalc::RDOSetResourceParamCalc(ruint resourceID, ruint paramID
 REF(RDOValue) RDOSetResourceParamCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->setResParamVal(m_resourceID, m_paramID, m_pCalc->calcValue(pRuntime));
+	return m_value;
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOSetRelResParamDiapCalc
+// --------------------------------------------------------------------------------
+RDOSetRelResParamDiapCalc::RDOSetRelResParamDiapCalc(ruint relResID, ruint paramID, CREF(RDOValue) minValue, CREF(RDOValue) maxValue, CREF(LPRDOCalc) pCalc)
+	: m_relResID(relResID)
+	, m_paramID (paramID )
+	, m_pCalc   (pCalc   )
+	, m_minValue(minValue)
+	, m_maxValue(maxValue)
+{
+	m_value = true;
+	if (m_pCalc)
+	{
+		setSrcInfo(m_pCalc->src_info());
+	}
+}
+
+REF(RDOValue) RDOSetRelResParamDiapCalc::doCalc(CREF(LPRDORuntime) pRuntime)
+{
+	m_pCalc->calcValue(pRuntime);
+	m_value = pRuntime->getResParamVal(pRuntime->getCurrentActivity()->getResByRelRes(m_relResID), m_paramID);
+	if (m_value < m_minValue || m_value > m_maxValue)
+	{
+		pRuntime->error(rdo::format(_T("Значение выходит за допустимый диапазон [%s..%s]: %s"), m_minValue.getAsString().c_str(), m_maxValue.getAsString().c_str(), m_value.getAsString().c_str()), this);
+	}
 	return m_value;
 }
 

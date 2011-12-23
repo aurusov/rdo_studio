@@ -51,22 +51,6 @@ protected:
 	DECLARE_ICalc;
 };
 
-//! Ограничение параметра по диапазону
-CALC(RDOSetRelResParamDiapCalc)
-{
-DECLARE_FACTORY(RDOSetRelResParamDiapCalc)
-private:
-	RDOSetRelResParamDiapCalc(ruint relResID, ruint paramID, CREF(RDOValue) minValue, CREF(RDOValue) maxValue, CREF(LPRDOCalc) pCalc);
-
-	ruint     m_relResID;
-	ruint     m_paramID;
-	LPRDOCalc m_pCalc;
-	RDOValue  m_minValue;
-	RDOValue  m_maxValue;
-
-	DECLARE_ICalc;
-};
-
 //! Удаление релевантного ресурса
 CALC(RDOEraseResRelCalc)
 {

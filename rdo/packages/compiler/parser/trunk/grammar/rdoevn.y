@@ -216,9 +216,10 @@
 #include "simulator/runtime/rdotrace.h"
 #include "simulator/runtime/calc/calc_event.h"
 #include "simulator/runtime/calc/calc_process.h"
+#include "simulator/runtime/calc/calc_array.h"
 #include "simulator/runtime/calc/procedural/calc_braces.h"
 #include "simulator/runtime/calc/procedural/calc_statement.h"
-#include "simulator/runtime/calc/calc_array.h"
+#include "simulator/runtime/calc/resource/calc_resource.h"
 // --------------------------------------------------------------------------------
 
 #define PARSER  LEXER->parser()
