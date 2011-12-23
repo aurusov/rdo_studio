@@ -40,13 +40,13 @@ protected:
   \tparam  CalcType  Тип бинарного оператора
   \brief   Бинарный оператор
 */
-template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue) rdovalue) const, typename OperatorType::Type CalcType>
+template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue)) const, typename OperatorType::Type CalcType>
 class RDOCalcBinary: public RDOCalcBinaryBase
 {
 friend class rdo::Factory<RDOCalcBinary<ret_type, pOperator, CalcType> >;
 public:
 	enum { calc_type = CalcType };
-	typedef ret_type (RDOValue::*value_operator)(CREF(RDOValue) rdovalue) const;
+	typedef ret_type (RDOValue::*value_operator)(CREF(RDOValue)) const;
 
 	LPRDOCalc      getLeft        () const;
 	LPRDOCalcConst getRightAsConst() const;
