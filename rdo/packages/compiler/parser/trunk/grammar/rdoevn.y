@@ -999,30 +999,6 @@ pat_time
 	{
 		PARSER->error().error(@1, @2, _T("ќжидаетс€ ключевое слово $Body"));
 	}
-	| pat_common_choice error
-	{
-		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
-		switch (pPattern->getType())
-		{
-			case RDOPATPattern::PT_Rule:
-			{
-				PARSER->error().error(@2, rdo::format(_T("ќжидаетс€ $Body, найдено: %s"), LEXER->YYText()));
-				break;
-			}
-			case RDOPATPattern::PT_Event:
-			{
-				PARSER->error().error(@2, rdo::format(_T("ќжидаетс€ $Body, найдено: %s"), LEXER->YYText()));
-				break;
-			}
-			case RDOPATPattern::PT_Operation:
-			case RDOPATPattern::PT_Keyboard :
-			{
-				PARSER->error().error(@2, rdo::format(_T("ќжидаетс€ $Time, найдено: %s"), LEXER->YYText()));
-				break;
-			}
-		}
-		$$ = PARSER->stack().push(pPattern);
-	}
 	;
 
 pat_body
