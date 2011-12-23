@@ -101,7 +101,7 @@ SET(HEADER_FILES
 	calc/resource/calc_resource.h
 	calc/resource/calc_select.h)
 
-SET(INLITE_FILES
+SET(INLINE_FILES
 	rdo_activity.inl
 	rdobase.inl
 	rdodptrtime.inl
@@ -141,7 +141,7 @@ SET(INLITE_FILES
 	calc/resource/calc_choice_from.inl
 	calc/resource/calc_relevant.inl)
 
-SET(SOURCE_FILE
+SET(SOURCE_FILES
 	pch.cpp
 	rdo_activity.cpp
 	rdo_array.cpp
@@ -199,7 +199,7 @@ SET(SOURCE_FILE
 	calc/resource/calc_resource.cpp
 	calc/resource/calc_select.cpp)
 
-ADD_LIBRARY(rdo_runtime ${HEADER_FILES} ${INLITE_FILES} ${SOURCE_FILE})
+ADD_LIBRARY(rdo_runtime ${HEADER_FILES} ${INLINE_FILES} ${SOURCE_FILES})
 
 ADD_DEPENDENCIES(test_rdo_utils rdo_utils)
 
