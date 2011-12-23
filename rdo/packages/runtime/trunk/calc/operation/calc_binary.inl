@@ -52,47 +52,47 @@ inline LPRDOCalc RDOCalcBinaryBase::generateCalc(CREF(LPRDOCalc) pFirst, CREF(LP
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcBinary
 // --------------------------------------------------------------------------------
-template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue)) const, typename OperatorType::Type CalcType>
-inline RDOCalcBinary<ret_type, pOperator, CalcType>::RDOCalcBinary(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
+template <typename OperatorType::Type CalcType, typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue)) const>
+inline RDOCalcBinary<CalcType, ret_type, pOperator>::RDOCalcBinary(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
 	: RDOCalcBinaryBase(pLeft, pRight)
 {
 	setSrcInfo(getStaticSrcInfo(m_pLeft, m_pRight));
 }
 
-template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue)) const, typename OperatorType::Type CalcType>
-inline LPRDOCalc RDOCalcBinary<ret_type, pOperator, CalcType>::getLeft() const
+template <typename OperatorType::Type CalcType, typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue)) const>
+inline LPRDOCalc RDOCalcBinary<CalcType, ret_type, pOperator>::getLeft() const
 {
 	return m_pLeft;
 }
 
-template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue)) const, typename OperatorType::Type CalcType>
-inline LPRDOCalcConst RDOCalcBinary<ret_type, pOperator, CalcType>::getRightAsConst() const
+template <typename OperatorType::Type CalcType, typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue)) const>
+inline LPRDOCalcConst RDOCalcBinary<CalcType, ret_type, pOperator>::getRightAsConst() const
 {
 	return m_pRight.object_static_cast<RDOCalcConst>();
 }
 
-template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue)) const, typename OperatorType::Type CalcType>
-inline void RDOCalcBinary<ret_type, pOperator, CalcType>::setRight(CREF(LPRDOCalc) pRight)
+template <typename OperatorType::Type CalcType, typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue)) const>
+inline void RDOCalcBinary<CalcType, ret_type, pOperator>::setRight(CREF(LPRDOCalc) pRight)
 {
 	m_pRight = pRight;
 }
 
-template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue)) const, typename OperatorType::Type CalcType>
-inline RDOSrcInfo RDOCalcBinary<ret_type, pOperator, CalcType>::getStaticSrcInfo(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
+template <typename OperatorType::Type CalcType, typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue)) const>
+inline RDOSrcInfo RDOCalcBinary<CalcType, ret_type, pOperator>::getStaticSrcInfo(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
 {
 	RDOSrcInfo src_info;
 	src_info.setSrcInfo(pLeft->src_info(), rdo::format(_T(" %s "), OperatorName<ret_type (RDOValue::*)(CREF(RDOValue)) const>::name(pOperator).c_str()), pRight->src_info());
 	return src_info;
 }
 
-template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue)) const, typename OperatorType::Type CalcType>
-inline typename RDOCalcBinary<ret_type, pOperator, CalcType>::value_operator RDOCalcBinary<ret_type, pOperator, CalcType>::getOperation()
+template <typename OperatorType::Type CalcType, typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue)) const>
+inline typename RDOCalcBinary<CalcType, ret_type, pOperator>::value_operator RDOCalcBinary<CalcType, ret_type, pOperator>::getOperation()
 {
 	return pOperator;
 }
 
-template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue)) const, typename OperatorType::Type CalcType>
-inline REF(RDOValue) RDOCalcBinary<ret_type, pOperator, CalcType>::doCalc(CREF(LPRDORuntime) pRuntime)
+template <typename OperatorType::Type CalcType, typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue)) const>
+inline REF(RDOValue) RDOCalcBinary<CalcType, ret_type, pOperator>::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	++OperatorType::getCalcCounter<CalcType>();
 	m_value = (m_pLeft->calcValue(pRuntime).*pOperator)(m_pRight->calcValue(pRuntime));
