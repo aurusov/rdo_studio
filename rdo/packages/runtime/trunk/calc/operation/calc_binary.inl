@@ -58,6 +58,15 @@ inline typename BinaryOperatorConstP1<ret_type, pMethod>::method_type BinaryOper
 }
 
 // --------------------------------------------------------------------------------
+// -------------------- BinaryOperatorNonConstP1
+// --------------------------------------------------------------------------------
+template <typename ret_type, ret_type (RDOValue::*pMethod)(CREF(RDOValue))>
+inline typename BinaryOperatorNonConstP1<ret_type, pMethod>::method_type BinaryOperatorNonConstP1<ret_type, pMethod>::method()
+{
+	return pMethod;
+}
+
+// --------------------------------------------------------------------------------
 // -------------------- RDOCalcBinary
 // --------------------------------------------------------------------------------
 template <class F, typename OperatorType::Type CalcType>

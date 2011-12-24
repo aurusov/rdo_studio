@@ -42,6 +42,15 @@ struct BinaryOperatorConstP1
 	static method_type method();
 };
 
+//! Неконстантный бинарный оператор RDOValue
+template <typename ret_type, ret_type (RDOValue::*pMethod)(CREF(RDOValue))>
+struct BinaryOperatorNonConstP1
+{
+	typedef ret_type (RDOValue::*method_type)(CREF(RDOValue));
+
+	static method_type method();
+};
+
 /*!
   \class   RDOCalcBinary
   \tparam  ret_type  Возвращаемое значение
