@@ -42,7 +42,7 @@ protected:
 template <typename OperatorType::Type CalcType, typename ret_type, ret_type (RDOValue::*pOperator)() const>
 class RDOCalcUnary: public RDOCalcUnaryBase
 {
-friend class rdo::Factory<RDOCalcUnary<pOperator, ret_type, CalcType> >;
+friend class rdo::Factory<RDOCalcUnary<CalcType, ret_type, pOperator> >;
 public:
 	enum { calc_type = CalcType };
 	typedef ret_type (RDOValue::*value_operator)() const;
