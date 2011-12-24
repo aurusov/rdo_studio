@@ -5,6 +5,6 @@
 SET(SOURCE_FILES
 	main.cpp)
 
-ADD_BOOST_TEST(test_rdo_runtime_matrix ${SOURCE_FILES} ${INLINE_FILES})
+ADD_BOOST_TEST(test_rdo_runtime_matrix ${SOURCE_FILES})
 ADD_DEPENDENCIES(test_rdo_runtime_matrix rdo_runtime)
 TARGET_LINK_LIBRARIES(test_rdo_runtime_matrix rdo_runtime)
