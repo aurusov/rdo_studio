@@ -70,7 +70,7 @@ class OrderFIFO
 {
 public:
 	template <class Container>
-	static void sort(REF(Container) container)
+	static void sort(REF(Container))
 	{}
 };
 
@@ -153,7 +153,6 @@ BOOST_AUTO_TEST_CASE(RDORuntime_Logic_FIFO_Test)
 	checkVector.push_back(3);
 
 	BOOST_CHECK(logic.checkOperation(checkVector));
-	int i = 1;
 }
 
 BOOST_AUTO_TEST_CASE(RDORuntime_Logic_LIFO_Test)
@@ -167,7 +166,6 @@ BOOST_AUTO_TEST_CASE(RDORuntime_Logic_LIFO_Test)
 	checkVector.push_back(1);
 
 	BOOST_CHECK(logic.checkOperation(checkVector));
-	int i = 1;
 }
 
 BOOST_AUTO_TEST_CASE(RDORuntime_Logic_Prior_Test)
@@ -181,7 +179,6 @@ BOOST_AUTO_TEST_CASE(RDORuntime_Logic_Prior_Test)
 	checkVector.push_back(4);
 
 	BOOST_CHECK(logic.checkOperation(checkVector));
-	int i = 1;
 }
 
 BOOST_AUTO_TEST_SUITE_END() // RDORuntime_Logic_Test
