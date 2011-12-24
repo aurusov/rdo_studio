@@ -39,10 +39,10 @@ protected:
   \tparam  CalcType  Тип бинарного оператора
   \brief   Базовый унарный оператор
 */
-template <typename OperatorType::Type CalcType, typename ret_type, ret_type (RDOValue::*pOperator)() const>
+template <typename ret_type, ret_type (RDOValue::*pOperator)() const, typename OperatorType::Type CalcType>
 class RDOCalcUnary: public RDOCalcUnaryBase
 {
-friend class rdo::Factory<RDOCalcUnary<CalcType, ret_type, pOperator> >;
+friend class rdo::Factory<RDOCalcUnary<ret_type, pOperator, CalcType> >;
 public:
 	enum { calc_type = CalcType };
 	typedef ret_type (RDOValue::*value_operator)() const;
@@ -58,10 +58,10 @@ private:
 };
 
 //! Унарный оператор плюс
-typedef RDOCalcUnary<OperatorType::OT_ARITHM, RDOValue, &RDOValue::operator- > RDOCalcUMinus;
+typedef RDOCalcUnary<RDOValue, &RDOValue::operator-, OperatorType::OT_ARITHM> RDOCalcUMinus;
 
 //! Оператор праобразования вещественного числа в целое
-typedef RDOCalcUnary<OperatorType::OT_ARITHM, rsint,    &RDOValue::getInt    > RDOCalcDoubleToInt;
+typedef RDOCalcUnary<rsint,    &RDOValue::getInt   , OperatorType::OT_ARITHM> RDOCalcDoubleToInt;
 
 //! Преобразование вещественного в целое по типу lvalue
 CALC_SUB(RDOCalcDoubleToIntByResult, RDOCalc)
