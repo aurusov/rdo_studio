@@ -18,24 +18,21 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! Бинарный оператор присваивания
-//typedef RDOCalcBinaryNonConstP1<OperatorType::OT_ARITHM, REF(RDOValue), &RDOValue::operator= > RDOCalcSet;  DECLARE_POINTER(RDOCalcSet);
-
 //! Бинарный оператор плюс
-typedef RDOCalcBinary<RDOValue, &RDOValue::operator+, OperatorType::OT_ARITHM> RDOCalcPlus;  DECLARE_POINTER(RDOCalcPlus);
+typedef RDOCalcBinary<OperatorType::OT_ARITHM, RDOValue, &RDOValue::operator+ > RDOCalcPlus;  DECLARE_POINTER(RDOCalcPlus);
 
 //! Бинарный оператор минус
-typedef RDOCalcBinary<RDOValue, &RDOValue::operator-, OperatorType::OT_ARITHM> RDOCalcMinus; DECLARE_POINTER(RDOCalcMinus);
+typedef RDOCalcBinary<OperatorType::OT_ARITHM, RDOValue, &RDOValue::operator- > RDOCalcMinus; DECLARE_POINTER(RDOCalcMinus);
 
 //! Бинарный оператор умножить
-typedef RDOCalcBinary<RDOValue, &RDOValue::operator*, OperatorType::OT_ARITHM> RDOCalcMult;  DECLARE_POINTER(RDOCalcMult);
+typedef RDOCalcBinary<OperatorType::OT_ARITHM, RDOValue, &RDOValue::operator* > RDOCalcMult;  DECLARE_POINTER(RDOCalcMult);
 
 //! Бинарный оператор разделить
-class RDOCalcDiv: public RDOCalcBinary<RDOValue, &RDOValue::operator/, OperatorType::OT_ARITHM>
+class RDOCalcDiv: public RDOCalcBinary<OperatorType::OT_ARITHM, RDOValue, &RDOValue::operator/ >
 {
 DECLARE_FACTORY(RDOCalcDiv);
 private:
-	typedef RDOCalcBinary<RDOValue, &RDOValue::operator/, OperatorType::OT_ARITHM> parent_type;
+	typedef RDOCalcBinary<OperatorType::OT_ARITHM, RDOValue, &RDOValue::operator/ > parent_type;
 
 	RDOCalcDiv(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight);
 

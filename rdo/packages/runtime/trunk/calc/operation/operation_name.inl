@@ -55,17 +55,6 @@ inline CREF(OperatorName<RDOValue (RDOValue::*)(CREF(RDOValue)) const>::NameList
 }
 
 template <>
-inline CREF(OperatorName<REF(RDOValue) (RDOValue::*)(CREF(RDOValue))>::NameList) OperatorName<REF(RDOValue) (RDOValue::*)(CREF(RDOValue))>::getList()
-{
-	static NameList s_nameList;
-	if (s_nameList.empty())
-	{
-		s_nameList.push_back(OprItem(&RDOValue::operator=, _T("=")));
-	}
-	return s_nameList;
-}
-
-template <>
 inline CREF(OperatorName<rbool (RDOValue::*)(CREF(RDOValue)) const>::NameList) OperatorName<rbool (RDOValue::*)(CREF(RDOValue)) const>::getList()
 {
 	static NameList s_nameList;
