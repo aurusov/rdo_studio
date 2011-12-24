@@ -33,6 +33,15 @@ protected:
 	LPRDOCalc  m_pRight;
 };
 
+//! Константный бинарный оператор RDOValue
+template <typename ret_type, ret_type (RDOValue::*pMethod)(CREF(RDOValue)) const>
+struct BinaryOperatorConstP1
+{
+	typedef ret_type (RDOValue::*method_type)(CREF(RDOValue)) const;
+
+	static method_type method();
+};
+
 /*!
   \class   RDOCalcBinary
   \tparam  ret_type  Возвращаемое значение
@@ -40,20 +49,19 @@ protected:
   \tparam  CalcType  Тип бинарного оператора
   \brief   Бинарный оператор
 */
-template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue)) const, typename OperatorType::Type CalcType>
+template <class F, typename OperatorType::Type CalcType>
 class RDOCalcBinary: public RDOCalcBinaryBase
 {
-friend class rdo::Factory<RDOCalcBinary<ret_type, pOperator, CalcType> >;
+friend class rdo::Factory<RDOCalcBinary<F, CalcType> >;
 public:
 	enum { calc_type = CalcType };
-	typedef ret_type (RDOValue::*value_operator)(CREF(RDOValue)) const;
+	typedef F caller_type;
 
 	LPRDOCalc      getLeft        () const;
 	LPRDOCalcConst getRightAsConst() const;
 	void           setRight       (CREF(LPRDOCalc) pRight);
 
-	static RDOSrcInfo     getStaticSrcInfo(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight);
-	static value_operator getOperation    ();
+	static RDOSrcInfo getStaticSrcInfo(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight);
 
 protected:
 	RDOCalcBinary(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight);

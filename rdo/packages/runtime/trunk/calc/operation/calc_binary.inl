@@ -37,8 +37,7 @@ inline LPRDOCalc RDOCalcBinaryBase::generateCalc(CREF(LPRDOCalc) pFirst, CREF(LP
 	LPRDOCalc pCalc;
 	if (pConstCalc1 && pConstCalc2)
 	{
-		typename T::value_operator pOperation = T::getOperation();
-		pCalc = rdo::Factory<RDOCalcConst>::create((pConstCalc1->getValue().*pOperation)(pConstCalc2->getValue()));
+		pCalc = rdo::Factory<RDOCalcConst>::create((pConstCalc1->getValue().*T::caller_type::method())(pConstCalc2->getValue()));
 		pCalc->setSrcInfo(T::getStaticSrcInfo(pConstCalc1, pConstCalc2));
 	}
 	else
@@ -50,52 +49,55 @@ inline LPRDOCalc RDOCalcBinaryBase::generateCalc(CREF(LPRDOCalc) pFirst, CREF(LP
 }
 
 // --------------------------------------------------------------------------------
+// -------------------- BinaryOperatorConstP1
+// --------------------------------------------------------------------------------
+template <typename ret_type, ret_type (RDOValue::*pMethod)(CREF(RDOValue)) const>
+inline typename BinaryOperatorConstP1<ret_type, pMethod>::method_type BinaryOperatorConstP1<ret_type, pMethod>::method()
+{
+	return pMethod;
+}
+
+// --------------------------------------------------------------------------------
 // -------------------- RDOCalcBinary
 // --------------------------------------------------------------------------------
-template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue)) const, typename OperatorType::Type CalcType>
-inline RDOCalcBinary<ret_type, pOperator, CalcType>::RDOCalcBinary(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
+template <class F, typename OperatorType::Type CalcType>
+inline RDOCalcBinary<F, CalcType>::RDOCalcBinary(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
 	: RDOCalcBinaryBase(pLeft, pRight)
 {
 	setSrcInfo(getStaticSrcInfo(m_pLeft, m_pRight));
 }
 
-template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue)) const, typename OperatorType::Type CalcType>
-inline LPRDOCalc RDOCalcBinary<ret_type, pOperator, CalcType>::getLeft() const
+template <class F, typename OperatorType::Type CalcType>
+inline LPRDOCalc RDOCalcBinary<F, CalcType>::getLeft() const
 {
 	return m_pLeft;
 }
 
-template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue)) const, typename OperatorType::Type CalcType>
-inline LPRDOCalcConst RDOCalcBinary<ret_type, pOperator, CalcType>::getRightAsConst() const
+template <class F, typename OperatorType::Type CalcType>
+inline LPRDOCalcConst RDOCalcBinary<F, CalcType>::getRightAsConst() const
 {
 	return m_pRight.object_static_cast<RDOCalcConst>();
 }
 
-template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue)) const, typename OperatorType::Type CalcType>
-inline void RDOCalcBinary<ret_type, pOperator, CalcType>::setRight(CREF(LPRDOCalc) pRight)
+template <class F, typename OperatorType::Type CalcType>
+inline void RDOCalcBinary<F, CalcType>::setRight(CREF(LPRDOCalc) pRight)
 {
 	m_pRight = pRight;
 }
 
-template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue)) const, typename OperatorType::Type CalcType>
-inline RDOSrcInfo RDOCalcBinary<ret_type, pOperator, CalcType>::getStaticSrcInfo(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
+template <class F, typename OperatorType::Type CalcType>
+inline RDOSrcInfo RDOCalcBinary<F, CalcType>::getStaticSrcInfo(CREF(LPRDOCalc) pLeft, CREF(LPRDOCalc) pRight)
 {
 	RDOSrcInfo src_info;
-	src_info.setSrcInfo(pLeft->src_info(), rdo::format(_T(" %s "), OperatorName<ret_type (RDOValue::*)(CREF(RDOValue)) const>::name(pOperator).c_str()), pRight->src_info());
+	src_info.setSrcInfo(pLeft->src_info(), rdo::format(_T(" %s "), OperatorName<F::method_type>::name(F::method()).c_str()), pRight->src_info());
 	return src_info;
 }
 
-template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue)) const, typename OperatorType::Type CalcType>
-inline typename RDOCalcBinary<ret_type, pOperator, CalcType>::value_operator RDOCalcBinary<ret_type, pOperator, CalcType>::getOperation()
-{
-	return pOperator;
-}
-
-template <typename ret_type, ret_type (RDOValue::*pOperator)(CREF(RDOValue)) const, typename OperatorType::Type CalcType>
-inline REF(RDOValue) RDOCalcBinary<ret_type, pOperator, CalcType>::doCalc(CREF(LPRDORuntime) pRuntime)
+template <class F, typename OperatorType::Type CalcType>
+inline REF(RDOValue) RDOCalcBinary<F, CalcType>::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	++OperatorType::getCalcCounter<CalcType>();
-	m_value = (m_pLeft->calcValue(pRuntime).*pOperator)(m_pRight->calcValue(pRuntime));
+	m_value = (m_pLeft->calcValue(pRuntime).*F::method())(m_pRight->calcValue(pRuntime));
 	return m_value;
 }
 
