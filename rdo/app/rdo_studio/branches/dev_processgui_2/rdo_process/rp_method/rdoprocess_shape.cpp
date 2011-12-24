@@ -85,62 +85,108 @@ rp::RPXMLNode* RPShape::save( rp::RPXMLNode* parent_node )
 	return obj_node;
 }
 
+void RPShape::saveToXML(REF(pugi::xml_node) parentNode) const
+{
+	pugi::xml_node node = parentNode.append_child(_T("RPShape"));
+	// Создаем физическую кисть (цвет, стиль и узор):
+	LOGBRUSH lb;
+	if (const_cast<CBrush&>(bg_brush).GetLogBrush(&lb))
+	{
+		pugi::xml_node brushNode = node.append_child(_T("LOGBRUSH"));
+		brushNode.append_attribute(_T("color"))    .set_value(RPObjectChart::colorToStr(lb.lbColor).c_str());
+		brushNode.append_attribute(_T("style"))    .set_value(lb.lbStyle                                   );
+	}
+	// Создаем фон текста:
+	LOGFONT lf;
+	if (const_cast<CFont&>(text_font).GetLogFont(&lf))
+	{
+		pugi::xml_node fontNode = node.append_child(_T("LOGFONT"));
+		fontNode.append_attribute(_T("name"))     .set_value(lf.lfFaceName                                );
+		fontNode.append_attribute(_T("height"))   .set_value(lf.lfHeight                                  );
+		fontNode.append_attribute(_T("color"))    .set_value(RPObjectChart::colorToStr(text_color).c_str());
+		fontNode.append_attribute(_T("show"))     .set_value(rp::string::   frombool  (text_show) .c_str());
+	}
+}
+
 void RPShape::loadFromXML(CREF(pugi::xml_node) node)
 {
 	LOGBRUSH lb;
-	CBrush brush;
+	LOGFONT  lf;
+	CFont    font;
+	CBrush   brush;
+	//COLORREF clr;
 	// Переменные для проверки существования структур lb:
-	bool color_exist = FALSE;
-	bool style_exist = FALSE;
+	rbool colorExist = false;
+	rbool styleExist = false;
+	//rbool show       = false;
 	
 	// Поиск узла <RPShape/> в списке потомков корня поддерева:
 	for (pugi::xml_node next_node = node.first_child(); next_node; next_node = next_node.next_sibling())
 	{
 		if (strcmp(next_node.name(), "RPShape") == 0)
 		{
-			for (pugi::xml_attribute attr = next_node.first_attribute(); attr; attr = attr.next_attribute())
+			for (pugi::xml_node sub_node = next_node.first_child(); sub_node; sub_node = sub_node.next_sibling())
 			{
-				// Для отслеживания процесса "debug" заводим новую переменную:
-				tstring attrName = attr.name();
-				if (attrName == _T("color"))
+				// Считываем атрибуты кисти
+				if (strcmp(sub_node.name(), _T("LOGBRUSH")) == 0)
 				{
-					lb.lbColor = RPObjectChart::strToColor(attr.value());
-					color_exist = TRUE;
+					for (pugi::xml_attribute attr = sub_node.first_attribute(); attr; attr = attr.next_attribute())
+					{
+						// Для отслеживания процесса "debug" заводим новую переменную
+						tstring attrName = attr.name();
+						if (attrName == _T("color"))
+						{
+							lb.lbColor = RPObjectChart::strToColor(attr.value());
+							colorExist = true;
+						}
+						// Значение атрибута "style" должно лежать в интервале [0; 3):
+						else if (attrName == _T("style") && (attr.as_int() < 3 && attr.as_int() > -1))
+						{
+							lb.lbStyle = attr.as_int();
+							styleExist = true;
+						}
+					}
 				}
-				// Значение атрибута "style" должно лежать в интервале [0; 3):
-				else if (attrName == _T("style") && (attr.as_int() < 3 && attr.as_int() > -1))
+				// Считываем атрибуты стиля текста
+				if (strcmp(sub_node.name(), _T("LOGFONT")) == 0)
 				{
-					lb.lbStyle = attr.as_int();
-					style_exist = TRUE;
+					for (pugi::xml_attribute attr = sub_node.first_attribute(); attr; attr = attr.next_attribute())
+					{
+						tstring attrName = attr.name();
+						if (attrName == _T("name"))
+						{
+							tstring font_name = attr.value();
+							text_font.GetLogFont(&lf);
+							memset(lf.lfFaceName, 0, LF_FACESIZE);
+							memcpy(lf.lfFaceName, font_name.c_str(), font_name.size());
+						}
+						else if (attrName == _T("height"))
+						{
+							lf.lfHeight = attr.as_double();
+						}
+						else if (attrName == _T("color"))
+						{
+							//clr = RPObjectChart::strToColor(attr.value());
+						}
+						else if (attrName == _T("show"))
+						{
+							//rbool show = attr.as_bool();
+						}
+					}
 				}
 			}
 		}
 	}
 	// Условие существования структур типа lb:
-	if (color_exist && style_exist)
+	if (colorExist && styleExist)
 	{
 		lb.lbHatch = 0;
 		brush.CreateBrushIndirect(&lb);
 		setBgBrush(brush);
 	}
-}
-
-void RPShape::saveToXML(REF(pugi::xml_node) parentNode) const
-{
-	pugi::xml_node node = parentNode.append_child(_T("RPShape"));
-	// Создаем фон:
-	//node.append_attribute(_T("name"))   .set_value(lf.lfFaceName                                );
-	//node.append_attribute(_T("height")) .set_value(lf.lfHeight                                  );
-	//node.append_attribute(_T("color"))  .set_value(RPObjectChart::colorToStr(text_color).c_str());
-	//node.append_attribute(_T("show"))   .set_value(rp::string::   frombool  (text_show ).c_str());
-
-	// Создаем кисть (заливку):
-	LOGBRUSH lb;
-	if (const_cast<CBrush&>(bg_brush).GetLogBrush(&lb))
-	{
-		node.append_attribute(_T("color"))    .set_value(RPObjectChart::colorToStr(lb.lbColor).c_str());
-		node.append_attribute(_T("style"))    .set_value(lb.lbStyle                                   );
-	}
+	// Текстовый стиль:
+	font.CreateFontIndirect(&lf);
+	//setTextFont(font, clr, show);
 }
 
 RPObjectChart* RPShape::find( const rp::point& global_chart_pos )
