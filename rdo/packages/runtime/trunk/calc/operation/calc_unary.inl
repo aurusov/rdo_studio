@@ -49,15 +49,15 @@ LPRDOCalc RDOCalcUnaryBase::generateCalc(CREF(RDOSrcInfo::Position) position, CR
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcUnary
 // --------------------------------------------------------------------------------
-template <typename OperatorType::Type CalcType, typename ret_type, ret_type (RDOValue::*pOperator)() const>
-inline RDOCalcUnary<CalcType, ret_type, pOperator>::RDOCalcUnary(CREF(RDOSrcInfo::Position) position, CREF(LPRDOCalc) pOperation)
+template <typename ret_type, ret_type (RDOValue::*pOperator)() const, typename OperatorType::Type CalcType>
+inline RDOCalcUnary<ret_type, pOperator, CalcType>::RDOCalcUnary(CREF(RDOSrcInfo::Position) position, CREF(LPRDOCalc) pOperation)
 	: RDOCalcUnaryBase(pOperation)
 {
 	setSrcInfo(getStaticSrcInfo(position, m_pOperation));
 }
 
-template <typename OperatorType::Type CalcType, typename ret_type, ret_type (RDOValue::*pOperator)() const>
-inline RDOSrcInfo RDOCalcUnary<CalcType, ret_type, pOperator>::getStaticSrcInfo(CREF(RDOSrcInfo::Position) position, CREF(LPRDOCalc) pUnaryCalc)
+template <typename ret_type, ret_type (RDOValue::*pOperator)() const, typename OperatorType::Type CalcType>
+inline RDOSrcInfo RDOCalcUnary<ret_type, pOperator, CalcType>::getStaticSrcInfo(CREF(RDOSrcInfo::Position) position, CREF(LPRDOCalc) pUnaryCalc)
 {
 	RDOSrcInfo src_info(pUnaryCalc->src_info());
 	src_info.setSrcPos (position);
@@ -65,14 +65,14 @@ inline RDOSrcInfo RDOCalcUnary<CalcType, ret_type, pOperator>::getStaticSrcInfo(
 	return src_info;
 }
 
-template <typename OperatorType::Type CalcType, typename ret_type, ret_type (RDOValue::*pOperator)() const>
-inline typename RDOCalcUnary<CalcType, ret_type, pOperator>::value_operator RDOCalcUnary<CalcType, ret_type, pOperator>::getOperation()
+template <typename ret_type, ret_type (RDOValue::*pOperator)() const, typename OperatorType::Type CalcType>
+inline typename RDOCalcUnary<ret_type, pOperator, CalcType>::value_operator RDOCalcUnary<ret_type, pOperator, CalcType>::getOperation()
 {
 	return pOperator;
 }
 
-template <typename OperatorType::Type CalcType, typename ret_type, ret_type (RDOValue::*pOperator)() const>
-inline REF(RDOValue) RDOCalcUnary<CalcType, ret_type, pOperator>::doCalc(CREF(LPRDORuntime) pRuntime)
+template <typename ret_type, ret_type (RDOValue::*pOperator)() const, typename OperatorType::Type CalcType>
+inline REF(RDOValue) RDOCalcUnary<ret_type, pOperator, CalcType>::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	++OperatorType::getCalcCounter<CalcType>();
 	m_value = (m_pOperation->calcValue(pRuntime).*pOperator)();
