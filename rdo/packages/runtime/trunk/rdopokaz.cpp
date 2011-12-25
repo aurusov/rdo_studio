@@ -77,8 +77,13 @@ tstring RDOPMDWatchPar::traceValue() const
 
 void RDOPMDWatchPar::resetPokaz(CREF(LPRDORuntime) pRuntime)
 {
+	ASSERT(pRuntime);
+
+	m_pResource = pRuntime->getResourceByID(m_resNumber);
+	ASSERT(m_pResource);
+
+	m_currValue   = m_pResource->getParam(m_parNumber);
 	m_watchNumber = 0;
-	m_currValue   = pRuntime->getResParamVal(m_resNumber, m_parNumber);
 	m_sum         = 0;
 	m_sumSqr      = 0;
 	m_minValue    = m_currValue;
@@ -93,7 +98,8 @@ void RDOPMDWatchPar::checkPokaz(CREF(LPRDORuntime) pRuntime)
 		return;
 	}
 
-	RDOValue newValue = pRuntime->getResParamVal(m_resNumber, m_parNumber);
+	ASSERT(m_pResource);
+	RDOValue newValue = m_pResource->getParam(m_parNumber);
 	if (newValue != m_currValue)
 	{
 		double currTime = pRuntime->getCurrentTime();

@@ -65,8 +65,9 @@ private:
 	RDOPMDWatchPar(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resName, CREF(tstring) parName, int resNumber, int parNumber);
 	virtual ~RDOPMDWatchPar();
 
-	int       m_resNumber;
-	int       m_parNumber;
+	LPRDOResource m_pResource;
+	int           m_resNumber;
+	int           m_parNumber;
 
 	int       m_watchNumber;
 	RDOValue  m_currValue;
