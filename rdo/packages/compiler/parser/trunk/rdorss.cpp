@@ -36,7 +36,7 @@ void rsserror(PTR(char) message)
 // --------------------------------------------------------------------------------
 // -------------------- RDORSSResource
 // --------------------------------------------------------------------------------
-RDORSSResource::RDORSSResource(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id)
+RDORSSResource::RDORSSResource(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, ruint id)
 	: RDOParserSrcInfo(src_info                                      )
 	, m_pResType      (pResType                                      )
 	, m_id            (id == UNDEFINED_ID ? pParser->getRSS_id() : id)

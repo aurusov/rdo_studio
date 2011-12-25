@@ -65,7 +65,7 @@ public:
 	CREF(tstring)    name   () const { return src_info().src_text(); }
 	LPRDORTPResType  getType() const { return m_pResType;            }
 
-	int              getID  () const { return m_id;                  }
+	ruint            getID  () const { return m_id;                  }
 
 	CREF(ParamList)  params () const { return m_paramList;           }
 
@@ -78,11 +78,11 @@ public:
 	void writeModelStructure(REF(std::ostream) stream) const;
 
 protected:
-	RDORSSResource(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id = UNDEFINED_ID);
+	RDORSSResource(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, ruint id = UNDEFINED_ID);
 	virtual ~RDORSSResource();
 
 	LPRDORTPResType m_pResType;
-	const int       m_id;        //! in system
+	ruint           m_id;        //! in system
 	ParamList       m_paramList;
 	rbool           trace;
 

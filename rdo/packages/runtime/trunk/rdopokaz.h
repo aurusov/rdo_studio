@@ -62,24 +62,24 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 private:
-	RDOPMDWatchPar(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resName, CREF(tstring) parName, int resNumber, int parNumber);
+	RDOPMDWatchPar(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resName, CREF(tstring) parName, ruint resourceID, ruint paramID);
 	virtual ~RDOPMDWatchPar();
 
 	LPRDOResource m_pResource;
-	int           m_resNumber;
-	int           m_parNumber;
+	ruint         m_resourceID;
+	ruint         m_paramID;
 
-	int       m_watchNumber;
-	RDOValue  m_currValue;
-	double    m_sum;
-	double    m_sumSqr;
-	RDOValue  m_minValue;
-	RDOValue  m_maxValue;
+	int           m_watchNumber;
+	RDOValue      m_currValue;
+	double        m_sum;
+	double        m_sumSqr;
+	RDOValue      m_minValue;
+	RDOValue      m_maxValue;
 
-	double    m_timeBegin;
-	double    m_timePrev;
+	double        m_timeBegin;
+	double        m_timePrev;
 
-	double    m_timeErase;
+	double        m_timeErase;
 
 	DECLARE_INotify;
 	DECLARE_IPokaz;

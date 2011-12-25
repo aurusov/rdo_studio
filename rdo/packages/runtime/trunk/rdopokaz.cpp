@@ -46,10 +46,10 @@ CREF(tstring) RDOPMDPokaz::name() const
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchPar
 // --------------------------------------------------------------------------------
-RDOPMDWatchPar::RDOPMDWatchPar(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resName, CREF(tstring) parName, int resNumber, int parNumber)
-	: RDOPMDPokaz(pRuntime, name, trace)
-	, m_resNumber(resNumber            )
-	, m_parNumber(parNumber            )
+RDOPMDWatchPar::RDOPMDWatchPar(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resName, CREF(tstring) parName, ruint resourceID, ruint paramID)
+	: RDOPMDPokaz (pRuntime, name, trace)
+	, m_resourceID(resourceID           )
+	, m_paramID   (paramID              )
 {
 	UNUSED(resName);
 	UNUSED(parName);
@@ -63,9 +63,9 @@ void RDOPMDWatchPar::notify(ruint message, PTR(void) pParam)
 {
 	UNUSED(message);
 
-	if ((int)pParam == m_resNumber)
+	if ((ruint)pParam == m_resourceID)
 	{
-		m_resNumber = -1;
+		m_resourceID = ruint(~0);
 		m_timeErase = m_pRuntime->getCurrentTime();
 	}
 };
@@ -79,10 +79,10 @@ void RDOPMDWatchPar::resetPokaz(CREF(LPRDORuntime) pRuntime)
 {
 	ASSERT(pRuntime);
 
-	m_pResource = pRuntime->getResourceByID(m_resNumber);
+	m_pResource = pRuntime->getResourceByID(m_resourceID);
 	ASSERT(m_pResource);
 
-	m_currValue   = m_pResource->getParam(m_parNumber);
+	m_currValue   = m_pResource->getParam(m_paramID);
 	m_watchNumber = 0;
 	m_sum         = 0;
 	m_sumSqr      = 0;
@@ -93,13 +93,13 @@ void RDOPMDWatchPar::resetPokaz(CREF(LPRDORuntime) pRuntime)
 
 void RDOPMDWatchPar::checkPokaz(CREF(LPRDORuntime) pRuntime)
 {
-	if (m_resNumber == -1)
+	if (m_resourceID == ~0)
 	{
 		return;
 	}
 
 	ASSERT(m_pResource);
-	RDOValue newValue = m_pResource->getParam(m_parNumber);
+	RDOValue newValue = m_pResource->getParam(m_paramID);
 	if (newValue != m_currValue)
 	{
 		double currTime = pRuntime->getCurrentTime();
@@ -125,7 +125,7 @@ void RDOPMDWatchPar::checkPokaz(CREF(LPRDORuntime) pRuntime)
 
 void RDOPMDWatchPar::calcStat(CREF(LPRDORuntime) pRuntime, REF(std::ostream) stream)
 {
-	double currTime = m_resNumber == -1 ? m_timeErase : pRuntime->getCurrentTime();
+	double currTime = m_resourceID == ~0 ? m_timeErase : pRuntime->getCurrentTime();
 	double val      = m_currValue.getDouble() * (currTime - m_timePrev);
 	m_sum	       += val;
 	m_sumSqr       += val * val;
