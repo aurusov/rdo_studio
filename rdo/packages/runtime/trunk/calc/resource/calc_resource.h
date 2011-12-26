@@ -83,13 +83,11 @@ CALC(RDOSetRelResParamDiapCalc)
 {
 DECLARE_FACTORY(RDOSetRelResParamDiapCalc)
 private:
-	RDOSetRelResParamDiapCalc(ruint relResID, ruint paramID, CREF(RDOValue) minValue, CREF(RDOValue) maxValue, CREF(LPRDOCalc) pCalc);
+	RDOSetRelResParamDiapCalc(CREF(RDOValue) minValue, CREF(RDOValue) maxValue, CREF(LPRDOCalc) pCalc);
 
-	ruint     m_relResID;
-	ruint     m_paramID;
-	LPRDOCalc m_pCalc;
 	RDOValue  m_minValue;
 	RDOValue  m_maxValue;
+	LPRDOCalc m_pCalc;
 
 	DECLARE_ICalc;
 };
