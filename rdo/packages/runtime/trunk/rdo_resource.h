@@ -46,25 +46,26 @@ public:
 		CS_NoChange
 	};
 
-	RDOResource(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary);
+	typedef  std::vector<RDOValue>      ParamList;
+	typedef  ParamList::const_iterator  ParamCIt;
+
+	RDOResource(CREF(LPRDORuntime) pRuntime, CREF(ParamList) paramList, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary);
 	RDOResource(CREF(LPRDORuntime) pRuntime, CREF(RDOResource) copy);
 	virtual ~RDOResource();
 
 	rbool operator!= (REF(RDOResource) other);
 
-	ConvertStatus               getState   (                           ) const;
-	CREF(RDOValue)              getParam   (ruint index                ) const;
-	rbool                       checkType  (ruint type                 ) const;
-	rbool                       canFree    (                           ) const;
-	CREF(LPIResourceType)       getResType (                           ) const;
-	ruint                       getType    (                           ) const;
-	virtual ruint               paramsCount(                           ) const;
-	LPRDOResource               clone      (CREF(LPRDORuntime) pRuntime) const;
-	CREF(std::vector<RDOValue>) getParams  (                           ) const;
+	ConvertStatus          getState    (                           ) const;
+	CREF(RDOValue)         getParam    (ruint index                ) const;
+	rbool                  checkType   (ruint type                 ) const;
+	rbool                  canFree     (                           ) const;
+	CREF(LPIResourceType)  getResType  (                           ) const;
+	ruint                  getType     (                           ) const;
+	virtual ruint          paramsCount (                           ) const;
+	LPRDOResource          clone       (CREF(LPRDORuntime) pRuntime) const;
+	CREF(ParamList)        getParamList(                           ) const;
 
-	typedef std::vector<RDOValue>::const_iterator VCI;
-
-	virtual void    appendParams        (CREF(VCI) from_begin, CREF(VCI) from_end);
+	virtual void    appendParams        (CREF(ParamCIt) from_begin, CREF(ParamCIt) from_end);
 	void            setRuntime          (CREF(LPRDORuntime) pRuntime             );
 	void            makeTemporary       (rbool value                             );
 	void            setState            (ConvertStatus value                     );
@@ -78,9 +79,9 @@ public:
 	void            decRef              ();
 
 protected:
-	std::vector<RDOValue> m_params;
-	rbool                 m_temporary;
-	ConvertStatus         m_state;
+	ParamList      m_paramList;
+	rbool          m_temporary;
+	ConvertStatus  m_state;
 
 private:
 	ruint            m_type;

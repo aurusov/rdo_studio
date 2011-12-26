@@ -111,8 +111,8 @@ void RDOPROCProcess::next(CREF(LPRDOPROCTransact) pTransact)
 RDOPROCTransact::RDOPROCTransact(CREF(LPRDORuntime) pRuntime, CREF(std::vector<RDOValue>) paramsCalcs, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary)
 	: RDOResource(pRuntime, paramsCalcs, pResType, resID, typeID, trace, temporary)
 {
-	m_state     = RDOResource::CS_Create;
-	m_params.push_back(pRuntime->getCurrentTime());
+	m_state = RDOResource::CS_Create;
+	m_paramList.push_back(pRuntime->getCurrentTime());
 }
 
 RDOPROCTransact::~RDOPROCTransact()
@@ -120,7 +120,7 @@ RDOPROCTransact::~RDOPROCTransact()
 
 LPRDOResource RDOPROCTransact::clone(CREF(LPRDORuntime) pRuntime) const
 {
-	return rdo::Factory<RDOResource>::create(pRuntime, getParams(), getResType(), getTraceID(), getType(), traceable(), m_temporary);
+	return rdo::Factory<RDOResource>::create(pRuntime, getParamList(), getResType(), getTraceID(), getType(), traceable(), m_temporary);
 }
 
 void RDOPROCTransact::next()
@@ -140,7 +140,7 @@ RDOPROCResource::~RDOPROCResource()
 
 LPRDOResource RDOPROCResource::clone(CREF(LPRDORuntime) pRuntime) const
 {
-	return rdo::Factory<RDOResource>::create(pRuntime, getParams(), getResType(), getTraceID(), getType(), traceable(), m_temporary);
+	return rdo::Factory<RDOResource>::create(pRuntime, getParamList(), getResType(), getTraceID(), getType(), traceable(), m_temporary);
 }
 
 // --------------------------------------------------------------------------------

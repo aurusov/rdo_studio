@@ -61,39 +61,39 @@ inline ruint RDOResource::getType() const
 	return m_type;
 }
 
-inline CREF(std::vector<RDOValue>) RDOResource::getParams() const
+inline CREF(RDOResource::ParamList) RDOResource::getParamList() const
 {
-	return m_params;
+	return m_paramList;
 }
 
 inline CREF(RDOValue) RDOResource::getParam(ruint index) const
 {
-	ASSERT(index < m_params.size());
-	return m_params[index];
+	ASSERT(index < m_paramList.size());
+	return m_paramList[index];
 }
 
 inline REF(RDOValue) RDOResource::getParamRaw(ruint index)
 {
-	ASSERT(index < m_params.size());
+	ASSERT(index < m_paramList.size());
 	setState(CS_Keep);
-	return m_params[index];
+	return m_paramList[index];
 }
 
 inline void RDOResource::setParam(ruint index, CREF(RDOValue) value)
 {
-	ASSERT(index < m_params.size());
+	ASSERT(index < m_paramList.size());
 	setState(CS_Keep);
-	m_params[index] = value;
+	m_paramList[index] = value;
 }
 
 inline ruint RDOResource::paramsCount() const
 {
-	return m_params.size();
+	return m_paramList.size();
 }
 
-inline void RDOResource::appendParams(const std::vector<RDOValue>::const_iterator& from_begin, const std::vector<RDOValue>::const_iterator& from_end)
+inline void RDOResource::appendParams(CREF(ParamCIt) from_begin, CREF(ParamCIt) from_end)
 {
-	m_params.insert(m_params.end(), from_begin, from_end);
+	m_paramList.insert(m_paramList.end(), from_begin, from_end);
 }
 
 inline rbool RDOResource::canFree() const
