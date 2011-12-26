@@ -1582,36 +1582,9 @@ void RDOFUNFunction::createTableCalc(CREF(YYLTYPE) elements_pos)
 
 void RDOFUNFunction::createAlgorithmicCalc(CREF(RDOParserSrcInfo) /* body_src_info */)
 {
-	rdoRuntime::LPRDOFunAlgorithmicCalc pFunAlgorithmicCalc;
-	//! Фильтр на функцию
-	switch (m_pReturn->getType()->type()->typeID())
-	{
-		case rdoRuntime::RDOType::t_int:
-		{
-			LPRDOTypeIntRange pRange = m_pReturn->getType()->type().object_dynamic_cast<RDOTypeIntRange>();
-			if (pRange)
-			{
-				pFunAlgorithmicCalc = rdo::Factory<rdoRuntime::RDOFunAlgorithmicDiapCalc>::create(pRange->range()->getMin().value(), pRange->range()->getMax().value());
-				ASSERT(pFunAlgorithmicCalc);
-			}
-			break;
-		}
-		case rdoRuntime::RDOType::t_real:
-		{
-			LPRDOTypeRealRange pRange = m_pReturn->getType()->type().object_dynamic_cast<RDOTypeRealRange>();
-			if (pRange)
-			{
-				pFunAlgorithmicCalc = rdo::Factory<rdoRuntime::RDOFunAlgorithmicDiapCalc>::create(pRange->range()->getMin().value(), pRange->range()->getMax().value());
-				ASSERT(pFunAlgorithmicCalc);
-			}
-			break;
-		}
-	}
-	if (!pFunAlgorithmicCalc)
-	{
-		pFunAlgorithmicCalc = rdo::Factory<rdoRuntime::RDOFunAlgorithmicCalc>::create();
-		ASSERT(pFunAlgorithmicCalc);
-	}
+	rdoRuntime::LPRDOFunAlgorithmicCalc pFunAlgorithmicCalc = rdo::Factory<rdoRuntime::RDOFunAlgorithmicCalc>::create();
+	ASSERT(pFunAlgorithmicCalc);
+
 	pFunAlgorithmicCalc->setSrcInfo(src_info());
 	rbool defaultFlag = false;
 	rbool trueConst   = false;

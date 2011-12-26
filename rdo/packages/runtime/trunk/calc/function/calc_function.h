@@ -84,19 +84,6 @@ protected:
 	DECLARE_ICalc;
 };
 
-//! Алгоритмическая функция с проверкой на диапазон возвращаемого значения
-CALC_SUB(RDOFunAlgorithmicDiapCalc, RDOFunAlgorithmicCalc)
-{
-DECLARE_FACTORY(RDOFunAlgorithmicDiapCalc)
-private:
-	RDOFunAlgorithmicDiapCalc(CREF(RDOValue) minValue, CREF(RDOValue) maxValue);
-
-	RDOValue m_minValue;
-	RDOValue m_maxValue;
-
-	DECLARE_ICalc;
-};
-
 //! Параметр функции
 CALC(RDOCalcFuncParam)
 {

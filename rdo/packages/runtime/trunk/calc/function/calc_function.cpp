@@ -118,40 +118,6 @@ REF(RDOValue) RDOFunAlgorithmicCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOFunAlgorithmicDiapCalc
-// --------------------------------------------------------------------------------
-RDOFunAlgorithmicDiapCalc::RDOFunAlgorithmicDiapCalc(CREF(RDOValue) minValue, CREF(RDOValue) maxValue)
-	: m_minValue(minValue)
-	, m_maxValue(maxValue)
-{}
-
-REF(RDOValue) RDOFunAlgorithmicDiapCalc::doCalc(CREF(LPRDORuntime) pRuntime)
-{
-	CalcList::const_iterator actionIt = m_actionList.begin();
-	STL_FOR_ALL_CONST(m_conditionList, conditionIt)
-	{
-		if ((*conditionIt)->calcValue(pRuntime).getAsBool())
-		{
-			m_value = (*actionIt)->calcValue(pRuntime);
-			if (m_value < m_minValue || m_value > m_maxValue)
-			{
-				pRuntime->error(rdo::format(_T("Значение выходит за допустимый диапазон [%s..%s]: %s")
-					, m_minValue.getAsString().c_str()
-					, m_maxValue.getAsString().c_str()
-					, m_value   .getAsString().c_str()
-				), this);
-			}
-			return m_value;
-		}
-		++actionIt;
-	}
-
-	// До сюда дело дойти не должно, т.к. последний conditions должен быть значением по-умолчанию
-	pRuntime->error(_T("Внутренная ошибка, RDOFunAlgorithmicDiapCalc"), this);
-	return m_value;
-}
-
-// --------------------------------------------------------------------------------
 // -------------------- RDOCalcFuncParam
 // --------------------------------------------------------------------------------
 RDOCalcFuncParam::RDOCalcFuncParam(ruint paramID, CREF(RDOSrcInfo) src_info)
