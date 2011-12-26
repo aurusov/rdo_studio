@@ -81,12 +81,9 @@ inline REF(RDOValue) RDOResource::getParamRaw(ruint index)
 
 inline void RDOResource::setParam(ruint index, CREF(RDOValue) value)
 {
-	if (m_params.size() <= index)
-	{
-		m_params.resize(index + 1);
-	}
+	ASSERT(index < m_params.size());
 	setState(CS_Keep);
-	m_params.at(index) = value;
+	m_params[index] = value;
 }
 
 inline ruint RDOResource::paramsCount() const
