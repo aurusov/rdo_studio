@@ -1473,6 +1473,19 @@ equal_statement
 		}
 		ASSERT(pCalc);
 
+		//! Проверка на диапазон
+		LPRDOTypeIntRange pTypeIntRange = pParam->getTypeInfo()->type().object_dynamic_cast<RDOTypeIntRange>();
+		if (pTypeIntRange)
+		{
+			pCalc = rdo::Factory<rdoRuntime::RDOSetRelResParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pTypeIntRange->range()->getMin()->value(), pTypeIntRange->range()->getMax()->value(), pCalc);
+		}
+
+		LPRDOTypeRealRange pTypeRealRange = pParam->getTypeInfo()->type().object_dynamic_cast<RDOTypeRealRange>();
+		if (pTypeRealRange)
+		{
+			pCalc = rdo::Factory<rdoRuntime::RDOSetRelResParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pTypeRealRange->range()->getMin()->value(), pTypeRealRange->range()->getMax()->value(), pCalc);
+		}
+
 		tstring oprStr;
 		switch (equalType)
 		{
@@ -1492,22 +1505,8 @@ equal_statement
 				break;
 			}
 		}
-		pCalc->setSrcText    (rdo::format(_T("%s %s"), paramName.c_str(), oprStr.c_str()));
-		pCalc->setSrcPos     (@1.m_first_line, @1.m_first_pos, @2.m_last_line, @2.m_last_pos);
-		pCalc->setSrcFileType(PARSER->getFileToParse());
-
-		//! Проверка на диапазон
-		LPRDOTypeIntRange pTypeIntRange = pParam->getTypeInfo()->type().object_dynamic_cast<RDOTypeIntRange>();
-		if (pTypeIntRange)
-		{
-			pCalc = rdo::Factory<rdoRuntime::RDOSetRelResParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pTypeIntRange->range()->getMin()->value(), pTypeIntRange->range()->getMax()->value(), pCalc);
-		}
-
-		LPRDOTypeRealRange pTypeRealRange = pParam->getTypeInfo()->type().object_dynamic_cast<RDOTypeRealRange>();
-		if (pTypeRealRange)
-		{
-			pCalc = rdo::Factory<rdoRuntime::RDOSetRelResParamDiapCalc>::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pTypeRealRange->range()->getMin()->value(), pTypeRealRange->range()->getMax()->value(), pCalc);
-		}
+		pCalc->setSrcText(rdo::format(_T("%s %s"), paramName.c_str(), oprStr.c_str()));
+		pCalc->setSrcPos (@1.m_first_line, @1.m_first_pos, @2.m_last_line, @2.m_last_pos);
 
 		$$ = PARSER->stack().push(pCalc);
 	}
