@@ -180,7 +180,7 @@ RDOResType::Param::Param(CREF(tstring) name, CREF(rdoRuntime::RDOEnumType::Enums
 	initType(enums);
 }
 
-void RDOResType::Param::setDiap(CREF(rdoParse::LPRDOValue) pMin, CREF(rdoParse::LPRDOValue) pMax)
+void RDOResType::Param::setRange(CREF(rdoParse::LPRDOValue) pMin, CREF(rdoParse::LPRDOValue) pMax)
 {
 	ASSERT(pMin);
 	ASSERT(pMax);
@@ -246,7 +246,7 @@ rbool RDOResTypeList::appendAfter(REF(RDOResType) rtp, CREF(rdoParse::LPRDORTPRe
 		{
 			case rdoRuntime::RDOType::t_int:
 			{
-				if (param->hasDiap())
+				if (param->hasRange())
 				{
 					rdoParse::LPRDOTypeRangeRange pRange    = rdo::Factory<rdoParse::RDOTypeRangeRange>::create(param->getMin(), param->getMax(), rdoParse::RDOParserSrcInfo());
 					rdoParse::LPRDOTypeIntRange   pIntRange = rdo::Factory<rdoParse::RDOTypeIntRange>::create(pRange);
@@ -260,7 +260,7 @@ rbool RDOResTypeList::appendAfter(REF(RDOResType) rtp, CREF(rdoParse::LPRDORTPRe
 			}
 			case rdoRuntime::RDOType::t_real:
 			{
-				if (param->hasDiap())
+				if (param->hasRange())
 				{
 					rdoParse::LPRDOTypeRangeRange pRange     = rdo::Factory<rdoParse::RDOTypeRangeRange>::create(param->getMin(), param->getMax(), rdoParse::RDOParserSrcInfo());
 					rdoParse::LPRDOTypeRealRange  pRealRange = rdo::Factory<rdoParse::RDOTypeRealRange>::create(pRange);
@@ -381,7 +381,7 @@ RDOResource::RDOResource(CREF(RDOResType) rtp, CREF(tstring) name)
 		{
 			pValue = param_it->getDefault();
 		}
-		else if (param_it->hasDiap())
+		else if (param_it->hasRange())
 		{
 			pValue = param_it->getMin();
 		}

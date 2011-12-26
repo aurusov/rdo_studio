@@ -1362,7 +1362,7 @@ void RDOThreadSimulator::corbaGetRTP(REF(rdoParse::RDOCorba::GetRTP_var) my_rtpL
 				{
 					my_rtpList[i].m_param[j].m_type = rdoParse::RDOCorba::int_type;
 
-					if (param_it->hasDiap())
+					if (param_it->hasRange())
 					{
 						my_rtpList[i].m_param[j].m_min_int = param_it->getMin()->getInt();
 						my_rtpList[i].m_param[j].m_max_int = param_it->getMax()->getInt();
@@ -1380,7 +1380,7 @@ void RDOThreadSimulator::corbaGetRTP(REF(rdoParse::RDOCorba::GetRTP_var) my_rtpL
 				{
 					my_rtpList[i].m_param[j].m_type = rdoParse::RDOCorba::double_type;
 
-					if (param_it->hasDiap())
+					if (param_it->hasRange())
 					{
 						my_rtpList[i].m_param[j].m_min_double = param_it->getMin()->getDouble();
 						my_rtpList[i].m_param[j].m_max_double = param_it->getMax()->getDouble();

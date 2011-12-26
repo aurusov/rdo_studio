@@ -154,10 +154,10 @@ public:
 
 		rsint                      id() const          { return m_id;  }
 
-		rbool                      hasDiap() const     { return (m_pMin && m_pMax) ? m_pMin->typeID() != rdoRuntime::RDOType::t_unknow && m_pMax->typeID() != rdoRuntime::RDOType::t_unknow : false; }
-		CREF(rdoParse::LPRDOValue) getMin () const     { return m_pMin; }
-		CREF(rdoParse::LPRDOValue) getMax () const     { return m_pMax; }
-		void                       setDiap(CREF(rdoParse::LPRDOValue) pMin, CREF(rdoParse::LPRDOValue) pMax);
+		rbool                      hasRange() const     { return (m_pMin && m_pMax) ? m_pMin->typeID() != rdoRuntime::RDOType::t_unknow && m_pMax->typeID() != rdoRuntime::RDOType::t_unknow : false; }
+		CREF(rdoParse::LPRDOValue) getMin  () const     { return m_pMin; }
+		CREF(rdoParse::LPRDOValue) getMax  () const     { return m_pMax; }
+		void                       setRange(CREF(rdoParse::LPRDOValue) pMin, CREF(rdoParse::LPRDOValue) pMax);
 
 		rbool                      hasDefault() const  { return m_pDefault ? m_pDefault->defined() : false; }
 		CREF(rdoParse::LPRDOValue) getDefault() const  { return m_pDefault;            }

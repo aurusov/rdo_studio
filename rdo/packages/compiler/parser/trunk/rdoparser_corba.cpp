@@ -262,7 +262,7 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 						rdoMBuilder::RDOResType::Param par_int(my_rtpList[i].m_param[j].m_name.in(), rdo::Factory<RDOType__int>::create());
 
 						if (my_rtpList[i].m_param[j].m_diap_int == 1)
-							par_int.setDiap(RDOValue(my_rtpList[i].m_param[j].m_min_int), RDOValue(my_rtpList[i].m_param[j].m_max_int));
+							par_int.setRange(RDOValue(my_rtpList[i].m_param[j].m_min_int), RDOValue(my_rtpList[i].m_param[j].m_max_int));
 
 						if (my_rtpList[i].m_param[j].m_default_int_ch == 1)
 							par_int.setDefault(RDOValue(my_rtpList[i].m_param[j].m_default_int));
@@ -275,7 +275,7 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 						rdoMBuilder::RDOResType::Param par_double(my_rtpList[i].m_param[j].m_name.in(), rdo::Factory<RDOType__real>::create());
 
 						if (my_rtpList[i].m_param[j].m_diap_double == 1)
-							par_double.setDiap(RDOValue(my_rtpList[i].m_param[j].m_min_double), RDOValue(my_rtpList[i].m_param[j].m_max_double));
+							par_double.setRange(RDOValue(my_rtpList[i].m_param[j].m_min_double), RDOValue(my_rtpList[i].m_param[j].m_max_double));
 
 						if (my_rtpList[i].m_param[j].m_default_double_ch == 1)
 							par_double.setDefault(RDOValue(my_rtpList[i].m_param[j].m_default_double));
@@ -330,7 +330,7 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 				STL_FOR_ALL_CONST(rtp_it->m_params, param_it)
 				{
 					tstring info = rdo::format("  param: %s: %s", param_it->name().c_str() , param_it->typeStr().c_str());
-					if (param_it->hasDiap())
+					if (param_it->hasRange())
 					{
 						info = rdo::format("%s [%s..%s]", info.c_str(), param_it->getMin()->getAsString().c_str(), param_it->getMax()->getAsString().c_str());
 					}
