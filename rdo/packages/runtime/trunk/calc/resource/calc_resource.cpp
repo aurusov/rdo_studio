@@ -105,28 +105,4 @@ REF(RDOValue) RDOSetResourceParamCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 	return m_value;
 }
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOSetRelResParamDiapCalc
-// --------------------------------------------------------------------------------
-RDOSetRelResParamDiapCalc::RDOSetRelResParamDiapCalc(CREF(RDOValue) minValue, CREF(RDOValue) maxValue, CREF(LPRDOCalc) pCalc)
-	: m_minValue(minValue)
-	, m_maxValue(maxValue)
-	, m_pCalc   (pCalc   )
-{
-	if (m_pCalc)
-	{
-		setSrcInfo(m_pCalc->src_info());
-	}
-}
-
-REF(RDOValue) RDOSetRelResParamDiapCalc::doCalc(CREF(LPRDORuntime) pRuntime)
-{
-	m_value = m_pCalc->calcValue(pRuntime);
-	if (m_value < m_minValue || m_value > m_maxValue)
-	{
-		pRuntime->error(rdo::format(_T("Значение выходит за допустимый диапазон [%s..%s]: %s"), m_minValue.getAsString().c_str(), m_maxValue.getAsString().c_str(), m_value.getAsString().c_str()), this);
-	}
-	return m_value;
-}
-
 CLOSE_RDO_RUNTIME_NAMESPACE

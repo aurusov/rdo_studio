@@ -1991,6 +1991,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\calc\procedural\calc_range.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\procedural\calc_range.h"
+					>
+				</File>
+				<File
 					RelativePath=".\calc\procedural\calc_statement.cpp"
 					>
 				</File>

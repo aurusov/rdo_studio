@@ -78,20 +78,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Ограничение параметра по диапазону
-CALC(RDOSetRelResParamDiapCalc)
-{
-DECLARE_FACTORY(RDOSetRelResParamDiapCalc)
-private:
-	RDOSetRelResParamDiapCalc(CREF(RDOValue) minValue, CREF(RDOValue) maxValue, CREF(LPRDOCalc) pCalc);
-
-	RDOValue  m_minValue;
-	RDOValue  m_maxValue;
-	LPRDOCalc m_pCalc;
-
-	DECLARE_ICalc;
-};
-
 CLOSE_RDO_RUNTIME_NAMESPACE
 
 #endif // _LIB_RUNTIME_CALC_RESOURCE_H_

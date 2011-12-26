@@ -226,6 +226,7 @@
 #include "simulator/runtime/calc/procedural/calc_locvar.h"
 #include "simulator/runtime/calc/procedural/calc_braces.h"
 #include "simulator/runtime/calc/procedural/calc_statement.h"
+#include "simulator/runtime/calc/procedural/calc_range.h"
 #include "simulator/runtime/calc/resource/calc_resource.h"
 // --------------------------------------------------------------------------------
 
@@ -1711,13 +1712,13 @@ equal_statement
 			LPRDOTypeIntRange pTypeIntRange = pParam->getTypeInfo()->type().object_dynamic_cast<RDOTypeIntRange>();
 			if (pTypeIntRange)
 			{
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelResParamDiapCalc>::create(pTypeIntRange->range()->getMin()->value(), pTypeIntRange->range()->getMax()->value(), pCalc);
+				pCalc = rdo::Factory<rdoRuntime::RDOCalcCheckRange>::create(pTypeIntRange->range()->getMin()->value(), pTypeIntRange->range()->getMax()->value(), pCalc);
 			}
 
 			LPRDOTypeRealRange pTypeRealRange = pParam->getTypeInfo()->type().object_dynamic_cast<RDOTypeRealRange>();
 			if (pTypeRealRange)
 			{
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelResParamDiapCalc>::create(pTypeRealRange->range()->getMin()->value(), pTypeRealRange->range()->getMax()->value(), pCalc);
+				pCalc = rdo::Factory<rdoRuntime::RDOCalcCheckRange>::create(pTypeRealRange->range()->getMin()->value(), pTypeRealRange->range()->getMax()->value(), pCalc);
 			}
 		}
 
@@ -1868,13 +1869,13 @@ equal_statement
 			LPRDOTypeIntRange pTypeIntRange = pParam->getTypeInfo()->type().object_dynamic_cast<RDOTypeIntRange>();
 			if (pTypeIntRange)
 			{
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelResParamDiapCalc>::create(pTypeIntRange->range()->getMin()->value(), pTypeIntRange->range()->getMax()->value(), pCalc);
+				pCalc = rdo::Factory<rdoRuntime::RDOCalcCheckRange>::create(pTypeIntRange->range()->getMin()->value(), pTypeIntRange->range()->getMax()->value(), pCalc);
 			}
 
 			LPRDOTypeRealRange pTypeRealRange = pParam->getTypeInfo()->type().object_dynamic_cast<RDOTypeRealRange>();
 			if (pTypeRealRange)
 			{
-				pCalc = rdo::Factory<rdoRuntime::RDOSetRelResParamDiapCalc>::create(pTypeRealRange->range()->getMin()->value(), pTypeRealRange->range()->getMax()->value(), pCalc);
+				pCalc = rdo::Factory<rdoRuntime::RDOCalcCheckRange>::create(pTypeRealRange->range()->getMin()->value(), pTypeRealRange->range()->getMax()->value(), pCalc);
 			}
 		}
 

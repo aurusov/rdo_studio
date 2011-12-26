@@ -94,6 +94,7 @@ SET(HEADER_FILES
 	calc/procedural/calc_const.h
 	calc/procedural/calc_locvar.h
 	calc/procedural/calc_nop.h
+	calc/procedural/calc_range.h
 	calc/procedural/calc_statement.h
 	calc/resource/calc_choice_from.h
 	calc/resource/calc_group.h
@@ -192,6 +193,7 @@ SET(SOURCE_FILES
 	calc/procedural/calc_const.cpp
 	calc/procedural/calc_locvar.cpp
 	calc/procedural/calc_nop.cpp
+	calc/procedural/calc_range.cpp
 	calc/procedural/calc_statement.cpp
 	calc/resource/calc_choice_from.cpp
 	calc/resource/calc_group.cpp
@@ -327,6 +329,8 @@ SOURCE_GROUP(".rdo_calc_procedural" FILES
 	calc/procedural/calc_locvar.inl
 	calc/procedural/calc_nop.cpp
 	calc/procedural/calc_nop.h
+	calc/procedural/calc_range.cpp
+	calc/procedural/calc_range.h
 	calc/procedural/calc_statement.cpp
 	calc/procedural/calc_statement.h)
 
