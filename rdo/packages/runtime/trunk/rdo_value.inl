@@ -551,7 +551,6 @@ inline REF(RDOValue) RDOValue::operator+= (CREF(RDOValue) rdovalue)
 	}
 
 	throw RDOValueException();
-	return *this;
 }
 
 inline CREF(RDOValue) RDOValue::operator++()
@@ -613,7 +612,6 @@ inline REF(RDOValue) RDOValue::operator-= (CREF(RDOValue) rdovalue)
 	}
 
 	throw RDOValueException();
-	return *this;
 }
 
 inline REF(RDOValue) RDOValue::operator*= (CREF(RDOValue) rdovalue)
@@ -645,7 +643,6 @@ inline REF(RDOValue) RDOValue::operator*= (CREF(RDOValue) rdovalue)
 	}
 
 	throw RDOValueException();
-	return *this;
 }
 
 inline REF(RDOValue) RDOValue::operator/= (CREF(RDOValue) rdovalue)
@@ -677,7 +674,6 @@ inline REF(RDOValue) RDOValue::operator/= (CREF(RDOValue) rdovalue)
 	}
 
 	throw RDOValueException();
-	return *this;
 }
 
 inline RDOValue RDOValue::operator+ (CREF(RDOValue) rdovalue) const
