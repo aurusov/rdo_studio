@@ -25,7 +25,6 @@ inline RDOSetRelResParamCalc<equalType>::RDOSetRelResParamCalc(ruint relResID, r
 	, m_paramID (paramID )
 	, m_pCalc   (pCalc   )
 {
-	m_value = 1;
 	if (m_pCalc)
 	{
 		setSrcInfo(m_pCalc->src_info());
