@@ -90,13 +90,6 @@ inline void RDORuntime::addInitCalc(CREF(LPRDOCalc) initCalc)
 	initCalcs.push_back(initCalc);
 }
 
-inline RDOValue RDORuntime::getResParamVal(ruint resID, ruint paramID) const
-{
-	LPRDOResource pResource = getResourceByID(resID);
-	ASSERT(pResource);
-	return pResource->getParam(paramID);
-}
-
 inline REF(RDOValue) RDORuntime::getResParamValRaw(ruint resID, ruint paramID)
 {
 	LPRDOResource pResource = getResourceByID(resID);

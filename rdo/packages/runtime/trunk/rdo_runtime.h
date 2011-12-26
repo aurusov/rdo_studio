@@ -156,7 +156,6 @@ public:
 	void addInitCalc(CREF(LPRDOCalc) initCalc);
 
 	// Параметры ресурса
-	RDOValue getResParamVal(ruint resID, ruint paramID) const;
 	REF(RDOValue) getResParamValRaw(ruint resID, ruint paramID);
 	void setResParamVal(ruint resID, ruint paramID, CREF(RDOValue) value);
 
