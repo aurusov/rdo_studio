@@ -1505,8 +1505,9 @@ equal_statement
 				break;
 			}
 		}
-		pCalc->setSrcText(rdo::format(_T("%s %s"), paramName.c_str(), oprStr.c_str()));
-		pCalc->setSrcPos (@1.m_first_line, @1.m_first_pos, @2.m_last_line, @2.m_last_pos);
+		pCalc->setSrcText    (rdo::format(_T("%s %s"), paramName.c_str(), oprStr.c_str()));
+		pCalc->setSrcPos     (@1.m_first_line, @1.m_first_pos, @2.m_last_line, @2.m_last_pos);
+		pCalc->setSrcFileType(PARSER->getFileToParse());
 
 		$$ = PARSER->stack().push(pCalc);
 	}
@@ -1625,8 +1626,9 @@ equal_statement
 				break;
 			}
 		}
-		pCalc->setSrcText(rdo::format(_T("%s %s %s"), paramName.c_str(), oprStr.c_str(), pCalcRight->src_text().c_str()));
-		pCalc->setSrcPos (@1.m_first_line, @1.m_first_pos, @3.m_last_line, @3.m_last_pos);
+		pCalc->setSrcText    (rdo::format(_T("%s %s %s"), paramName.c_str(), oprStr.c_str(), pCalcRight->src_text().c_str()));
+		pCalc->setSrcPos     (@1.m_first_line, @1.m_first_pos, @3.m_last_line, @3.m_last_pos);
+		pCalc->setSrcFileType(PARSER->getFileToParse());
 
 		$$ = PARSER->stack().push(pCalc);
 	}
