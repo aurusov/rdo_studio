@@ -93,15 +93,6 @@ inline RDOCalcDoubleToIntByResult::RDOCalcDoubleToIntByResult(CREF(LPRDOCalc) pO
 {}
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOCalcCheckDiap
-// --------------------------------------------------------------------------------
-inline RDOCalcCheckDiap::RDOCalcCheckDiap(CREF(RDOValue) min_value, CREF(RDOValue) max_value, CREF(LPRDOCalc) pOper)
-	: m_pOperation(pOper    )
-	, m_min_value (min_value)
-	, m_max_value (max_value)
-{}
-
-// --------------------------------------------------------------------------------
 // -------------------- RDOCalcInt
 // --------------------------------------------------------------------------------
 inline RDOCalcInt::RDOCalcInt(CREF(LPRDOCalc) pOperation)

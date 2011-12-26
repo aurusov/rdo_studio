@@ -11,7 +11,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdoparser_error.h"
 #include "simulator/compiler/parser/rdoparser.h"
-#include "simulator/runtime/calc/calc_base.h"
+#include "simulator/runtime/calc/procedural/calc_range.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -109,7 +109,7 @@ inline LPRDOValue RDOTypeRange<T>::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOPa
 template<class T>
 inline rdoRuntime::LPRDOCalc RDOTypeRange<T>::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
 {
-	return rdo::Factory<rdoRuntime::RDOCalcCheckDiap>::create(range()->getMin()->value(), range()->getMax()->value(), T::calc_cast(pCalc, pType));
+	return rdo::Factory<rdoRuntime::RDOCalcCheckRange>::create(range()->getMin()->value(), range()->getMax()->value(), T::calc_cast(pCalc, pType));
 }
 
 template<class T>

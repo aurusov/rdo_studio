@@ -27,16 +27,6 @@ REF(RDOValue) RDOCalcDoubleToIntByResult::doCalc(CREF(LPRDORuntime) pRuntime)
 	return m_value;
 }
 
-REF(RDOValue) RDOCalcCheckDiap::doCalc(CREF(LPRDORuntime) pRuntime)
-{
-	m_value = m_pOperation->calcValue(pRuntime);
-	if (m_value < m_min_value || m_value > m_max_value)
-	{
-		pRuntime->error(rdo::format(_T("Значение выходит за допустимый диапазон [%s..%s]: %s"), m_min_value.getAsString().c_str(), m_max_value.getAsString().c_str(), m_value.getAsString().c_str()), this);
-	}
-	return m_value; 
-}
-
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcInt (приведение к целому)
 // --------------------------------------------------------------------------------

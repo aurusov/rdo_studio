@@ -79,20 +79,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Проверка диапазона
-CALC_SUB(RDOCalcCheckDiap, RDOCalc)
-{
-DECLARE_FACTORY(RDOCalcCheckDiap)
-private:
-	RDOCalcCheckDiap(CREF(RDOValue) min_value, CREF(RDOValue) max_value, CREF(LPRDOCalc) pOper);
-
-	RDOValue  m_min_value;
-	RDOValue  m_max_value;
-	LPRDOCalc m_pOperation;
-
-	DECLARE_ICalc;
-};
-
 //! Приведение к целому
 CALC_SUB(RDOCalcInt, RDOCalc)
 {
