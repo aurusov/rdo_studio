@@ -85,10 +85,10 @@ public:
 	RDOValue       operator++ (int inc);
 	CREF(RDOValue) operator-- ();
 	RDOValue       operator-- (int inc);
-	void           operator+= (CREF(RDOValue) rdovalue);
-	void           operator-= (CREF(RDOValue) rdovalue);
-	void           operator*= (CREF(RDOValue) rdovalue);
-	void           operator/= (CREF(RDOValue) rdovalue);
+	REF(RDOValue)  operator+= (CREF(RDOValue) rdovalue);
+	REF(RDOValue)  operator-= (CREF(RDOValue) rdovalue);
+	REF(RDOValue)  operator*= (CREF(RDOValue) rdovalue);
+	REF(RDOValue)  operator/= (CREF(RDOValue) rdovalue);
 	RDOValue       operator+  (CREF(RDOValue) rdovalue) const;
 	RDOValue       operator-  (CREF(RDOValue) rdovalue) const;
 	RDOValue       operator*  (CREF(RDOValue) rdovalue) const;
@@ -136,17 +136,17 @@ private:
 
 	RDOValue clone() const;
 
-	tstring  onPointerAsString () const;
-	rbool    onPointerEqual    (CREF(RDOValue) rdovalue) const;
-	void     onPointerPlus     (CREF(RDOValue) rdovalue);
-	void     onPointerMinus    (CREF(RDOValue) rdovalue);
-	void     onPointerMult     (CREF(RDOValue) rdovalue);
-	void     onPointerDiv      (CREF(RDOValue) rdovalue);
-	rsint    onPointerGetInt   () const;
-	ruint    onPointerGetUInt  () const;
-	rbool    onPointerAnd      (CREF(RDOValue) rdovalue) const;
-	rbool    onPointerOr       (CREF(RDOValue) rdovalue) const;
-	RDOValue onPointerUMinus   () const;
+	tstring       onPointerAsString () const;
+	rbool         onPointerEqual    (CREF(RDOValue) rdovalue) const;
+	REF(RDOValue) onPointerPlus     (CREF(RDOValue) rdovalue);
+	REF(RDOValue) onPointerMinus    (CREF(RDOValue) rdovalue);
+	REF(RDOValue) onPointerMult     (CREF(RDOValue) rdovalue);
+	REF(RDOValue) onPointerDiv      (CREF(RDOValue) rdovalue);
+	rsint         onPointerGetInt   () const;
+	ruint         onPointerGetUInt  () const;
+	rbool         onPointerAnd      (CREF(RDOValue) rdovalue) const;
+	rbool         onPointerOr       (CREF(RDOValue) rdovalue) const;
+	RDOValue      onPointerUMinus   () const;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

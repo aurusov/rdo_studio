@@ -501,7 +501,7 @@ inline rbool RDOValue::operator! () const
 	}
 }
 
-inline void RDOValue::operator+= (CREF(RDOValue) rdovalue)
+inline REF(RDOValue) RDOValue::operator+= (CREF(RDOValue) rdovalue)
 {
 	switch (typeID())
 	{
@@ -510,7 +510,7 @@ inline void RDOValue::operator+= (CREF(RDOValue) rdovalue)
 			switch (rdovalue.typeID())
 			{
 			case RDOType::t_int :
-			case RDOType::t_real: __get<int>() += rdovalue.getInt(); return;
+			case RDOType::t_real: __get<int>() += rdovalue.getInt(); return *this;
 			}
 			break;
 		}
@@ -519,7 +519,7 @@ inline void RDOValue::operator+= (CREF(RDOValue) rdovalue)
 			switch (rdovalue.typeID())
 			{
 			case RDOType::t_int :
-			case RDOType::t_real: __get<double>() += rdovalue.getDouble(); return;
+			case RDOType::t_real: __get<double>() += rdovalue.getDouble(); return *this;
 			}
 			break;
 		}
@@ -539,18 +539,19 @@ inline void RDOValue::operator+= (CREF(RDOValue) rdovalue)
 					}
 
 					__stringV() += rdovalue.__stringV();
-					return;
+					return *this;
 				}
 			}
 			break;
 		}
 	case RDOType::t_pointer:
 		{
-			onPointerPlus(rdovalue);
-			return;
+			return onPointerPlus(rdovalue);
 		}
 	}
+
 	throw RDOValueException();
+	return *this;
 }
 
 inline CREF(RDOValue) RDOValue::operator++()
@@ -583,7 +584,7 @@ inline RDOValue RDOValue::operator--(int inc)
 	return prevValue;
 }
 
-inline void RDOValue::operator-= (CREF(RDOValue) rdovalue)
+inline REF(RDOValue) RDOValue::operator-= (CREF(RDOValue) rdovalue)
 {
 	switch (typeID())
 	{
@@ -592,7 +593,7 @@ inline void RDOValue::operator-= (CREF(RDOValue) rdovalue)
 			switch (rdovalue.typeID())
 			{
 			case RDOType::t_int :
-			case RDOType::t_real: __get<int>() -= rdovalue.getInt(); return;
+			case RDOType::t_real: __get<int>() -= rdovalue.getInt(); return *this;
 			}
 			break;
 		}
@@ -601,20 +602,21 @@ inline void RDOValue::operator-= (CREF(RDOValue) rdovalue)
 			switch (rdovalue.typeID())
 			{
 			case RDOType::t_int :
-			case RDOType::t_real: __get<double>() -= rdovalue.getDouble(); return;
+			case RDOType::t_real: __get<double>() -= rdovalue.getDouble(); return *this;
 			}
 			break;
 		}
 	case RDOType::t_pointer:
 		{
-			onPointerMinus(rdovalue);
-			return;
+			return onPointerMinus(rdovalue);
 		}
 	}
+
 	throw RDOValueException();
+	return *this;
 }
 
-inline void RDOValue::operator*= (CREF(RDOValue) rdovalue)
+inline REF(RDOValue) RDOValue::operator*= (CREF(RDOValue) rdovalue)
 {
 	switch (typeID())
 	{
@@ -622,8 +624,8 @@ inline void RDOValue::operator*= (CREF(RDOValue) rdovalue)
 		{
 			switch (rdovalue.typeID())
 			{
-			case RDOType::t_int : __get<int>() *= rdovalue.__get<int>(); return;
-			case RDOType::t_real: __get<double>() = ((double)__get<int>()) * rdovalue.__get<double>(); m_pType = g_real; return;
+			case RDOType::t_int : __get<int>() *= rdovalue.__get<int>(); return *this;
+			case RDOType::t_real: __get<double>() = ((double)__get<int>()) * rdovalue.__get<double>(); m_pType = g_real; return *this;
 			}
 			break;
 		}
@@ -632,20 +634,21 @@ inline void RDOValue::operator*= (CREF(RDOValue) rdovalue)
 			switch (rdovalue.typeID())
 			{
 			case RDOType::t_int :
-			case RDOType::t_real: __get<double>() *= rdovalue.getDouble(); return;
+			case RDOType::t_real: __get<double>() *= rdovalue.getDouble(); return *this;
 			}
 			break;
 		}
 	case RDOType::t_pointer:
 		{
-			onPointerMult(rdovalue);
-			return;
+			return onPointerMult(rdovalue);
 		}
 	}
+
 	throw RDOValueException();
+	return *this;
 }
 
-inline void RDOValue::operator/= (CREF(RDOValue) rdovalue)
+inline REF(RDOValue) RDOValue::operator/= (CREF(RDOValue) rdovalue)
 {
 	switch (typeID())
 	{
@@ -654,7 +657,7 @@ inline void RDOValue::operator/= (CREF(RDOValue) rdovalue)
 			switch (rdovalue.typeID())
 			{
 			case RDOType::t_int :
-			case RDOType::t_real: __get<double>() = ((double)__get<int>()) / rdovalue.getDouble(); m_pType = g_real; return;
+			case RDOType::t_real: __get<double>() = ((double)__get<int>()) / rdovalue.getDouble(); m_pType = g_real; return *this;
 			}
 			break;
 		}
@@ -663,17 +666,18 @@ inline void RDOValue::operator/= (CREF(RDOValue) rdovalue)
 			switch (rdovalue.typeID())
 			{
 			case RDOType::t_int :
-			case RDOType::t_real: __get<double>() = __get<double>() / rdovalue.getDouble(); return;
+			case RDOType::t_real: __get<double>() = __get<double>() / rdovalue.getDouble(); return *this;
 			}
 			break;
 		}
 	case RDOType::t_pointer:
 		{
-			onPointerDiv(rdovalue);
-			return;
+			return onPointerDiv(rdovalue);
 		}
 	}
+
 	throw RDOValueException();
+	return *this;
 }
 
 inline RDOValue RDOValue::operator+ (CREF(RDOValue) rdovalue) const

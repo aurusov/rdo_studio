@@ -134,7 +134,7 @@ rbool RDOValue::onPointerEqual(CREF(RDOValue) rdovalue) const
 	throw RDOValueException(_T("Для rdoRuntime::RDOValue не определен метод onPointerEqual()"));
 }
 
-void RDOValue::onPointerPlus(CREF(RDOValue) rdovalue)
+REF(RDOValue) RDOValue::onPointerPlus(CREF(RDOValue) rdovalue)
 {
 	ASSERT(typeID() == RDOType::t_pointer);
 
@@ -144,7 +144,7 @@ void RDOValue::onPointerPlus(CREF(RDOValue) rdovalue)
 		if (rdovalue.typeID() == RDOType::t_int)
 		{
 			pThisArrayIterator->preInc(rdovalue.getInt());
-			return;
+			return *this;
 		}
 	}
 
@@ -154,7 +154,7 @@ void RDOValue::onPointerPlus(CREF(RDOValue) rdovalue)
 		if (rdovalue.typeID() == RDOType::t_int)
 		{
 			pThisMatrixIterator->preInc(rdovalue.getInt());
-			return;
+			return *this;
 		}
 	}
 
@@ -168,14 +168,14 @@ void RDOValue::onPointerPlus(CREF(RDOValue) rdovalue)
 		if (pValueFuzzyType)
 		{
 			pThisValue->operator+ (rdovalue.getPointer<RDOFuzzyValue>());
-			return;
+			return *this;
 		}
 	}
 
 	throw RDOValueException(_T("Для rdoRuntime::RDOValue не определен метод onPointerPlus()"));
 }
 
-void RDOValue::onPointerMinus(CREF(RDOValue) rdovalue)
+REF(RDOValue) RDOValue::onPointerMinus(CREF(RDOValue) rdovalue)
 {
 	ASSERT(typeID() == RDOType::t_pointer);
 
@@ -185,7 +185,7 @@ void RDOValue::onPointerMinus(CREF(RDOValue) rdovalue)
 		if (rdovalue.typeID() == RDOType::t_int)
 		{
 			pThisArrayIterator->preInc(-rdovalue.getInt());
-			return;
+			return *this;
 		}
 	}
 
@@ -195,7 +195,7 @@ void RDOValue::onPointerMinus(CREF(RDOValue) rdovalue)
 		if (rdovalue.typeID() == RDOType::t_int)
 		{
 			pThisMatrixIterator->preInc(-rdovalue.getInt());
-			return;
+			return *this;
 		}
 	}
 
@@ -209,14 +209,14 @@ void RDOValue::onPointerMinus(CREF(RDOValue) rdovalue)
 		if (pValueFuzzyType)
 		{
 			pThisValue->operator- (rdovalue.getPointer<RDOFuzzyValue>());
-			return;
+			return *this;
 		}
 	}
 
 	throw RDOValueException(_T("Для rdoRuntime::RDOValue не определен метод onPointerMinus()"));
 }
 
-void RDOValue::onPointerMult(CREF(RDOValue) rdovalue)
+REF(RDOValue) RDOValue::onPointerMult(CREF(RDOValue) rdovalue)
 {
 	ASSERT(typeID() == RDOType::t_pointer);
 
@@ -230,14 +230,14 @@ void RDOValue::onPointerMult(CREF(RDOValue) rdovalue)
 		if (pValueFuzzyType)
 		{
 			pThisValue->operator* (rdovalue.getPointer<RDOFuzzyValue>());
-			return;
+			return *this;
 		}
 	}
 
 	throw RDOValueException(_T("Для rdoRuntime::RDOValue не определен метод onPointerMult()"));
 }
 
-void RDOValue::onPointerDiv(CREF(RDOValue) rdovalue)
+REF(RDOValue) RDOValue::onPointerDiv(CREF(RDOValue) rdovalue)
 {
 	ASSERT(typeID() == RDOType::t_pointer);
 
@@ -251,7 +251,7 @@ void RDOValue::onPointerDiv(CREF(RDOValue) rdovalue)
 		if (pValueFuzzyType)
 		{
 			pThisValue->operator/ (rdovalue.getPointer<RDOFuzzyValue>());
-			return;
+			return *this;
 		}
 	}
 
