@@ -168,7 +168,7 @@ REF(RDOValue) RDOCalcSetConst::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcFunctionCaller
 // --------------------------------------------------------------------------------
-RDOCalcFunctionCaller::RDOCalcFunctionCaller(CREF(LPRDOFunCalc) pFunction)
+RDOCalcFunctionCaller::RDOCalcFunctionCaller(CREF(LPRDOCalc) pFunction)
 	: m_pFunction(pFunction)
 {}
 
@@ -177,7 +177,7 @@ void RDOCalcFunctionCaller::addParameter(CREF(LPRDOCalc) pParam)
 	m_paramList.push_back(pParam);
 }
 
-void RDOCalcFunctionCaller::setFunctionCalc(CREF(LPRDOFunCalc) pFunction)
+void RDOCalcFunctionCaller::setFunctionCalc(CREF(LPRDOCalc) pFunction)
 {
 	m_pFunction = pFunction;
 }

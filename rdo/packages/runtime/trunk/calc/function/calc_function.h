@@ -126,16 +126,16 @@ CALC(RDOCalcFunctionCaller)
 {
 DECLARE_FACTORY(RDOCalcFunctionCaller)
 public:
-	void addParameter   (CREF(LPRDOCalc)    pParam   );
-	void setFunctionCalc(CREF(LPRDOFunCalc) pFunction);
+	void addParameter   (CREF(LPRDOCalc) pParam   );
+	void setFunctionCalc(CREF(LPRDOCalc) pFunction);
 
 private:
-	RDOCalcFunctionCaller(CREF(LPRDOFunCalc) pFunction);
+	RDOCalcFunctionCaller(CREF(LPRDOCalc) pFunction);
 
 	typedef  std::vector<LPRDOCalc>  ParamList;
 
-	ParamList     m_paramList;
-	LPRDOFunCalc  m_pFunction;
+	ParamList  m_paramList;
+	LPRDOCalc  m_pFunction;
 
 	DECLARE_ICalc;
 };
