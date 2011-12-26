@@ -12,6 +12,7 @@
 #define _LIB_RUNTIME_CALC_SEQUENCE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/optional.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/function/calc_function.h"
 #include "simulator/runtime/rdo_random_distribution.h"
@@ -40,10 +41,17 @@ private:
 CALC_SUB(RDOCalcSeqNext, RDOFunCalc)
 {
 public:
-	rbool   m_res_real;
-	rbool   m_diap;
-	double  m_diap_min;
-	double  m_diap_max;
+	struct Range
+	{
+		double  m_min;
+		double  m_max;
+
+		Range();
+		Range(CREF(double) min, CREF(double) max);
+	};
+
+	rbool                   m_res_real;
+	boost::optional<Range>  m_range;
 
 protected:
 	RDOCalcSeqNext();

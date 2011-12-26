@@ -21,12 +21,12 @@ rdoParse::RDOCorba::ParamRTP::operator>>= (cdrStream &_n) const
 {
   _n.marshalString(m_name,0);
   m_type >>= _n;
-  _n.marshalBoolean(m_diap_int);
+  _n.marshalBoolean(m_range_int);
   m_min_int >>= _n;
   m_max_int >>= _n;
   _n.marshalBoolean(m_default_int_ch);
   m_default_int >>= _n;
-  _n.marshalBoolean(m_diap_double);
+  _n.marshalBoolean(m_range_double);
   m_min_double >>= _n;
   m_max_double >>= _n;
   _n.marshalBoolean(m_default_double_ch);
@@ -44,12 +44,12 @@ rdoParse::RDOCorba::ParamRTP::operator<<= (cdrStream &_n)
 {
   m_name = _n.unmarshalString(0);
   (TypeParam&)m_type <<= _n;
-  m_diap_int = _n.unmarshalBoolean();
+  m_range_int = _n.unmarshalBoolean();
   (::CORBA::Long&)m_min_int <<= _n;
   (::CORBA::Long&)m_max_int <<= _n;
   m_default_int_ch = _n.unmarshalBoolean();
   (::CORBA::Long&)m_default_int <<= _n;
-  m_diap_double = _n.unmarshalBoolean();
+  m_range_double = _n.unmarshalBoolean();
   (::CORBA::Double&)m_min_double <<= _n;
   (::CORBA::Double&)m_max_double <<= _n;
   m_default_double_ch = _n.unmarshalBoolean();

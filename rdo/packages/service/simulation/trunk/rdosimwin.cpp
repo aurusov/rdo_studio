@@ -1348,9 +1348,9 @@ void RDOThreadSimulator::corbaGetRTP(REF(rdoParse::RDOCorba::GetRTP_var) my_rtpL
 			//! Добавляем в структуру параметр!!!!!!!!!!!!!!!!
 			my_rtpList[i].m_param[j].m_name = CORBA::string_dup(param_it->name().c_str());
 
-			my_rtpList[i].m_param[j].m_diap_int = 0;
+			my_rtpList[i].m_param[j].m_range_int = 0;
 			my_rtpList[i].m_param[j].m_default_int_ch = 0;
-			my_rtpList[i].m_param[j].m_diap_double = 0;
+			my_rtpList[i].m_param[j].m_range_double = 0;
 			my_rtpList[i].m_param[j].m_default_double_ch = 0;
 			my_rtpList[i].m_param[j].m_var_enum_ch = 0;	
 			my_rtpList[i].m_param[j].m_default_enum_ch = 0;
@@ -1366,7 +1366,7 @@ void RDOThreadSimulator::corbaGetRTP(REF(rdoParse::RDOCorba::GetRTP_var) my_rtpL
 					{
 						my_rtpList[i].m_param[j].m_min_int = param_it->getMin()->getInt();
 						my_rtpList[i].m_param[j].m_max_int = param_it->getMax()->getInt();
-						my_rtpList[i].m_param[j].m_diap_int = 1;
+						my_rtpList[i].m_param[j].m_range_int = 1;
 
 					}
 					if (param_it->hasDefault())
@@ -1384,7 +1384,7 @@ void RDOThreadSimulator::corbaGetRTP(REF(rdoParse::RDOCorba::GetRTP_var) my_rtpL
 					{
 						my_rtpList[i].m_param[j].m_min_double = param_it->getMin()->getDouble();
 						my_rtpList[i].m_param[j].m_max_double = param_it->getMax()->getDouble();
-						my_rtpList[i].m_param[j].m_diap_double = 1;
+						my_rtpList[i].m_param[j].m_range_double = 1;
 
 					}
 					if (param_it->hasDefault())

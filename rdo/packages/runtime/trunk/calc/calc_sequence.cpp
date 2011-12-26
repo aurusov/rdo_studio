@@ -46,11 +46,18 @@ RDOCalcSeqInit::~RDOCalcSeqInit()
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcSeqNext
 // --------------------------------------------------------------------------------
+RDOCalcSeqNext::Range::Range()
+	: m_min(0)
+	, m_max(0)
+{}
+
+RDOCalcSeqNext::Range::Range(CREF(double) min, CREF(double) max)
+	: m_min(min)
+	, m_max(max)
+{}
+
 RDOCalcSeqNext::RDOCalcSeqNext()
 	: m_res_real(true )
-	, m_diap    (false)
-	, m_diap_min(0    )
-	, m_diap_max(0    )
 {}
 
 // --------------------------------------------------------------------------------

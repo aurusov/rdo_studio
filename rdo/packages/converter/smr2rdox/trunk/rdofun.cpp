@@ -922,9 +922,7 @@ void RDOFUNSequence::initResult()
 			LPRDOTypeIntRange pRange = m_pHeader->getType()->type().object_dynamic_cast<RDOTypeIntRange>();
 			if (pRange)
 			{
-				m_pNextCalc->m_diap     = true;
-				m_pNextCalc->m_diap_min = pRange->range()->getMin().value().getDouble();
-				m_pNextCalc->m_diap_max = pRange->range()->getMax().value().getDouble();
+				m_pNextCalc->m_range = rdoRuntime::RDOCalcSeqNext::Range(pRange->range()->getMin().value().getDouble(), pRange->range()->getMax().value().getDouble());
 			}
 			break;
 		}
@@ -934,9 +932,7 @@ void RDOFUNSequence::initResult()
 			LPRDOTypeRealRange pRange = m_pHeader->getType()->type().object_dynamic_cast<RDOTypeRealRange>();
 			if (pRange)
 			{
-				m_pNextCalc->m_diap     = true;
-				m_pNextCalc->m_diap_min = pRange->range()->getMin().value().getDouble();
-				m_pNextCalc->m_diap_max = pRange->range()->getMax().value().getDouble();
+				m_pNextCalc->m_range = rdoRuntime::RDOCalcSeqNext::Range(pRange->range()->getMin().value().getDouble(), pRange->range()->getMax().value().getDouble());
 			}
 			break;
 		}

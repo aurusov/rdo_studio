@@ -234,7 +234,7 @@ _CORBA_MODULE_BEG
 
       TypeParam m_type;
 
-      ::CORBA::Boolean m_diap_int;
+      ::CORBA::Boolean m_range_int;
 
       ::CORBA::Long m_min_int;
 
@@ -244,7 +244,7 @@ _CORBA_MODULE_BEG
 
       ::CORBA::Long m_default_int;
 
-      ::CORBA::Boolean m_diap_double;
+      ::CORBA::Boolean m_range_double;
 
       ::CORBA::Double m_min_double;
 

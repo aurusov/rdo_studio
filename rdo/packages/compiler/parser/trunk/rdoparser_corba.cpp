@@ -54,7 +54,7 @@ void print_RTP(REF(rdoParse::RDOCorba::GetRTP_var) my_rtpList)
 			{
 			case rdoParse::RDOCorba::int_type:
 				fprintf(f1, _T("      Тип параметра: integer\n"));
-				if (my_rtpList[i].m_param[j].m_diap_int == 1)
+				if (my_rtpList[i].m_param[j].m_range_int == 1)
 				{
 					fprintf(f1, _T("      Минимальное значение: %d \n"),  my_rtpList[i].m_param[j].m_min_int);
 					fprintf(f1, _T("      Максимальное значение: %d \n"), my_rtpList[i].m_param[j].m_max_int);
@@ -66,7 +66,7 @@ void print_RTP(REF(rdoParse::RDOCorba::GetRTP_var) my_rtpList)
 				break;
 			case rdoParse::RDOCorba::double_type:
 					fprintf(f1, _T("      Тип параметра: real\n"));
-					if (my_rtpList[i].m_param[j].m_diap_double == 1)
+					if (my_rtpList[i].m_param[j].m_range_double == 1)
 					{
 						fprintf(f1, _T("      Минимальное значение: %f \n"), my_rtpList[i].m_param[j].m_min_double);
 						fprintf(f1, _T("      Максимальное значение: %f \n"), my_rtpList[i].m_param[j].m_max_double);
@@ -261,7 +261,7 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 					{
 						rdoMBuilder::RDOResType::Param par_int(my_rtpList[i].m_param[j].m_name.in(), rdo::Factory<RDOType__int>::create());
 
-						if (my_rtpList[i].m_param[j].m_diap_int == 1)
+						if (my_rtpList[i].m_param[j].m_range_int == 1)
 							par_int.setRange(RDOValue(my_rtpList[i].m_param[j].m_min_int), RDOValue(my_rtpList[i].m_param[j].m_max_int));
 
 						if (my_rtpList[i].m_param[j].m_default_int_ch == 1)
@@ -274,7 +274,7 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 					{
 						rdoMBuilder::RDOResType::Param par_double(my_rtpList[i].m_param[j].m_name.in(), rdo::Factory<RDOType__real>::create());
 
-						if (my_rtpList[i].m_param[j].m_diap_double == 1)
+						if (my_rtpList[i].m_param[j].m_range_double == 1)
 							par_double.setRange(RDOValue(my_rtpList[i].m_param[j].m_min_double), RDOValue(my_rtpList[i].m_param[j].m_max_double));
 
 						if (my_rtpList[i].m_param[j].m_default_double_ch == 1)
