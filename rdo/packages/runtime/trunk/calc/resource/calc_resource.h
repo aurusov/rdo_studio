@@ -38,12 +38,12 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Параметр ресурса по калку ресурса и ID параметра
-CALC(RDOCalcGetResParamByCalc)
+//! Получение параметр ресурса по калку ресурса и ID параметра
+CALC(RDOCalcGetResourceParam)
 {
-DECLARE_FACTORY(RDOCalcGetResParamByCalc)
+DECLARE_FACTORY(RDOCalcGetResourceParam)
 private:
-	RDOCalcGetResParamByCalc(CREF(LPRDOCalc) pResource, ruint paramID);
+	RDOCalcGetResourceParam(CREF(LPRDOCalc) pResource, ruint paramID);
 
 	LPRDOCalc m_pResource;
 	int       m_paramID;

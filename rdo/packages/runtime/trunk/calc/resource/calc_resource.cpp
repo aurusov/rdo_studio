@@ -53,16 +53,16 @@ REF(RDOValue) RDOCalcGetResourceByID::doCalc(CREF(LPRDORuntime) pRuntime)
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOCalcGetResParamByCalc
+// -------------------- RDOCalcGetResourceParam
 // --------------------------------------------------------------------------------
-RDOCalcGetResParamByCalc::RDOCalcGetResParamByCalc(CREF(LPRDOCalc) pResource, ruint paramID)
+RDOCalcGetResourceParam::RDOCalcGetResourceParam(CREF(LPRDOCalc) pResource, ruint paramID)
 	: m_pResource(pResource)
 	, m_paramID  (paramID  )
 {
 	ASSERT(m_pResource);
 }
 
-REF(RDOValue) RDOCalcGetResParamByCalc::doCalc(CREF(LPRDORuntime) pRuntime)
+REF(RDOValue) RDOCalcGetResourceParam::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	LPRDOResource pResource = m_pResource->calcValue(pRuntime).getPointerSafety<RDOResourceType>();
 	ASSERT(pResource);

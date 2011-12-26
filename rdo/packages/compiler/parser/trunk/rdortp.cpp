@@ -183,7 +183,7 @@ IContextFind::Result RDORTPResType::onSwitchContext(CREF(LPExpression) pSwitchEx
 
 	LPExpression pExpression = rdo::Factory<Expression>::create(
 		pParam->getTypeInfo(),
-		rdo::Factory<rdoRuntime::RDOCalcGetResParamByCalc>::create(pSwitchExpression->calc(), parNumb),
+		rdo::Factory<rdoRuntime::RDOCalcGetResourceParam>::create(pSwitchExpression->calc(), parNumb),
 		pValue->src_info()
 	);
 	ASSERT(pExpression);
