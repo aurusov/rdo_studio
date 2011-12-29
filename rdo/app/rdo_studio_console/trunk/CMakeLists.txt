@@ -20,6 +20,7 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 
 SET(HEADER_FILES
+	terminate_codes.h
     controller_console_options.h
     rdo_studio_console_controller.h
     controller_console_options_config.h)
@@ -51,6 +52,8 @@ ADD_SUBDIRECTORY(${RDO_STUDIO_CONSOLE_TEST_PATH})
 IF(MSVC) # lotions for windows #
 
 SOURCE_GROUP(".code" FILES
+	${HEADER_FILES}
+	${SOURCE_FILES}
     ${MAIN_FILES})
 
 SOURCE_GROUP(".console_controller" FILES

@@ -47,7 +47,7 @@ RDOControllerConsoleOptions::~RDOControllerConsoleOptions()
 
 }
 
-void RDOControllerConsoleOptions::parseQuery()
+void RDOControllerConsoleOptions::parseOptions()
 {
 	if (m_variables.empty() || m_variables.count(CHELP_COMMAND) && 
 		!m_variables.count(LANGUAGE_COMMAND) && !m_variables.count(VERSION_COMMAND))

@@ -30,7 +30,7 @@ public:
 	RDOControllerConsoleOptions(int argc, char *argv[]);
 	~RDOControllerConsoleOptions();
 	
-	void parseQuery();
+	void parseOptions();
 	void getModelName(REF(tstring) modelName);
 	
 private:

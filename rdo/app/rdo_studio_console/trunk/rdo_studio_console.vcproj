@@ -182,6 +182,10 @@
 				RelativePath=".\main.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\terminate_codes.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name=".console_controller"
