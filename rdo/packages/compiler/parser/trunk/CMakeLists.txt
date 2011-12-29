@@ -236,7 +236,7 @@ SOURCE_GROUP(".animation" FILES
 
 SOURCE_GROUP(".bison" FILES 
 	${BISON_FILES}
-	rdobison.h)
+	${GRAMMA_PATH}/rdobison.h)
 	
 SOURCE_GROUP(".common" FILES 
 	local_variable.h
@@ -260,6 +260,7 @@ SOURCE_GROUP(".context" FILES
 	context/type.h
 	context/type.cpp
 	context/context_find_i.h
+	context/context_find.cpp
 	context/context_switch_i.h)
 	
 SOURCE_GROUP(".dpt" FILES

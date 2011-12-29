@@ -276,22 +276,69 @@ SOURCE_GROUP(".rdo_pokaz" FILES
 	rdopokaz_i.h)
 
 SOURCE_GROUP(".rdo_calc" FILES 
-	calc/calc_array.cpp
+	calc/arithm.h
+	calc/arithm.inl
+	calc/arithm.cpp
+	calc/array.h
+	calc/array.cpp
+	calc/binary.h
+	calc/binary.inl
+	calc/braces.h
+	calc/braces.cpp
+	calc/choice_from.h
+	calc/choice_from.inl
+	calc/choice_from.cpp
+	equaltype.h
+	calc/event_plan.h
+	calc/event_plan.cpp
+	calc/locvar.h
+	calc/locvar.inl
+	calc/locvar.cpp
+	calc/logic.h
+	calc/logic.inl
+	calc/logic.cpp
+	calc/process_control.h
+	calc/process_control.cpp
+	rdocalc.h
+	rdocalc.inl
+	rdocalc.cpp
+	calc/relres.h
+	calc/relres.inl
+	calc/relres.cpp
+	calc/sequence.h
+	calc/sequence.inl
+	calc/sequence.cpp
+	calc/statements.h
+	calc/statements.cpp
+	calc/std_fun.h
+	calc/std_fun.inl
+	calc/std_fun.cpp
+	calc/unary.h
+	calc/unary.inl
+	calc/unary.cpp
+	calc/watch.h
+	calc/watch.cpp
+	calc/select.h
+	calc/select.cpp
+	calc/group.h
+	calc/group.cpp
+	
 	calc/calc_array.h
-	calc/calc_base.cpp
+	calc/calc_array.cpp
 	calc/calc_base.h
 	calc/calc_base.inl
-	calc/calc_event.cpp
+	calc/calc_base.cpp
 	calc/calc_event.h
-	calc/calc_pattern.cpp
+	calc/calc_event.cpp
 	calc/calc_pattern.h
-	calc/calc_process.cpp
+	calc/calc_pattern.cpp
 	calc/calc_process.h
-	calc/calc_sequence.cpp
+	calc/calc_process.cpp
 	calc/calc_sequence.h
 	calc/calc_sequence.inl
-	calc/calc_watch.cpp
-	calc/calc_watch.h)
+	calc/calc_sequence.cpp
+	calc/calc_watch.h
+	calc/calc_watch.cpp)
 
 SOURCE_GROUP(".rdo_calc_function" FILES 
 	calc/function/calc_function.cpp
