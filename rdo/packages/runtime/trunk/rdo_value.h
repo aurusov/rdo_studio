@@ -10,6 +10,8 @@
 #ifndef _LIB_RUNTIME_VALUE_H_
 #define _LIB_RUNTIME_VALUE_H_
 
+// ----------------------------------------------------------------------- PLATFORM
+#include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/smart_ptr/intrusive_ptr.h"
@@ -32,6 +34,9 @@ public:
 	RDOValue(CREF(LPRDOType)     pType   );
 	RDOValue(rsint               value   );
 	RDOValue(ruint               value   );
+#ifdef ARCHITECTURES_AMD64
+	RDOValue(ruint64             value   );
+#endif // ARCHITECTURES_AMD64
 	RDOValue(double              value   );
 	RDOValue(rbool               value   );
 	RDOValue(CREF(LPRDOEnumType) pEnum   );

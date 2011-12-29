@@ -9,6 +9,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <string.h>
+#include <stdlib.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdodebug.h"
 #include "utils/static_assert.h"
@@ -63,6 +64,14 @@ inline RDOValue::RDOValue(ruint value)
 {
 	__get<int>() = value;
 }
+
+#ifdef ARCHITECTURES_AMD64
+inline RDOValue::RDOValue(ruint64 value)
+	: m_pType(g_int)
+{
+	__get<ruint64>() = value;
+}
+#endif // ARCHITECTURES_AMD64
 
 inline RDOValue::RDOValue(double value)
 	: m_pType(g_real)

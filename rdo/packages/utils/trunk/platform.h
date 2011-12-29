@@ -2,6 +2,7 @@
   \copyright (c) RDO-Team, 2011
   \file      platform.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    Пройдаков Евгений (lord.tiran@gmail.com)
   \date      04.09.2011
   \brief     Определение платформы и компилятора
   \indent    4T
@@ -14,30 +15,33 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
+// compilers
 #ifdef _MSC_VER
 	#define COMPILER_VISUAL_STUDIO
-#else
-	#ifdef __GNUC__
-		#define COMPILER_GCC
-	#endif
-#endif
-
-#ifdef __MINGW32__
+#elif defined( __GNUC__ )
+	#define COMPILER_GCC
+#elif defined( __MINGW32__ )
 	#define COMPILER_GCC
 	#define COMPILER_MINGW
-#else
-	#ifdef _WIN32
-		#define OST_WINDOWS
-		#ifdef _WIN64
-			#define OST_WINDOWS_64
-		#else
-			#define OST_WINDOWS_32
-		#endif
+#endif // _MSC_VER
+
+// operating systems
+#ifdef _WIN32
+	#define OST_WINDOWS
+	#ifdef _WIN64
+		#define OST_WINDOWS_64
 	#else
-		#ifdef __linux__
-			#define OST_LINUX
-		#endif
+		#define OST_WINDOWS_32
 	#endif
+#elif defined( __linux__ )
+	#define OST_LINUX
+#endif
+
+// architectures
+#if defined( __amd64__ ) || defined( _M_X64 )
+	#define ARCHITECTURES_AMD64
+#elif defined( __i386__ ) || defined( _M_IX86 )
+	#define ARCHITECTURES_X86
 #endif
 
 #endif // _UTILS_PLATFORM_H_

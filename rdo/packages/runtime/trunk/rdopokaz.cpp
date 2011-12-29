@@ -23,6 +23,12 @@
 #include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
 
+#if defined( ARCHITECTURES_AMD64 )
+typedef ruint64 ruint_type;
+#elif defined( ARCHITECTURES_X86 )
+typedef ruint ruint_type;
+#endif // ARCHITECTURES_AMD64
+
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // --------------------------------------------------------------------------------
@@ -63,7 +69,7 @@ void RDOPMDWatchPar::notify(ruint message, PTR(void) pParam)
 {
 	UNUSED(message);
 
-	if ((ruint)pParam == m_resourceID)
+	if ((ruint_type)pParam == m_resourceID)
 	{
 		m_resourceID = ruint(~0);
 		m_timeErase = m_pRuntime->getCurrentTime();
