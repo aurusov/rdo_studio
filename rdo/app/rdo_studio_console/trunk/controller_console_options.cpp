@@ -16,10 +16,12 @@
 #include "app/rdo_studio_console/controller_console_options_config.h"
 // --------------------------------------------------------------------------------
 
+const tstring program_description = RDO_STUDIO_CONSOLE_PROGRAMM_NAME + NOP_STRING + VERSION_COMMAND_SHORT +
+RDO_STUDIO_CONSOLE_VERSION + NOP_STRING + SYSTEM_OS + NOP_STRING + SYSTEM_ARCHITECTURES + NOP_STRING + RDO_SITE;
+
 RDOControllerConsoleOptions::RDOControllerConsoleOptions(int argc, char *argv[])
 {
-	po::options_description options_header(RDO_STUDIO_CONSOLE_PROGRAMM_NAME + NOP_STRING + VERSION_COMMAND_SHORT +
-		RDO_STUDIO_CONSOLE_VERSION + NOP_STRING + SYSTEM_OS + RDO_SITE);
+	po::options_description options_header(program_description);
 
 	po::options_description options_general(_T("General options"));
 	createGeneralOptions(options_general);
