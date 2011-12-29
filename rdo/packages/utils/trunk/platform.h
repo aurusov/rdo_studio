@@ -1,8 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2011
   \file      platform.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \author    Пройдаков Евгений (lord.tiran@gmail.com)
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Пройдаков Евгений (lord.tiran@gmail.com)
   \date      04.09.2011
   \brief     Определение платформы и компилятора
   \indent    4T
