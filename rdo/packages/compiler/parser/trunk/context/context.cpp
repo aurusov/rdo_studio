@@ -24,6 +24,14 @@ Context::Context()
 Context::~Context()
 {}
 
+void Context::init()
+{}
+
+void Context::deinit()
+{
+	m_findResult = IContextFind::Result();
+}
+
 void Context::setContextStack(CREF(LPContextStack) pContextStack)
 {
 	ASSERT(pContextStack   );

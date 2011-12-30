@@ -40,6 +40,9 @@ protected:
 	Context();
 	virtual ~Context();
 
+	void init  ();
+	void deinit();
+
 private:
 	LPContextStack        m_pContextStack;
 	IContextFind::Result  m_findResult;

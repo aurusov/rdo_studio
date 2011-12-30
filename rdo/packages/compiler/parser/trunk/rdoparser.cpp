@@ -123,6 +123,8 @@ void RDOParser::deinit()
 {
 	m_pContextStack->pop();
 
+	Context::deinit();
+
 	m_pRuntime->deinit();
 	m_pRuntime = NULL;
 
