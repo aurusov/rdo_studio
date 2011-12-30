@@ -126,7 +126,29 @@ void RDOParser::deinit()
 	m_pRuntime->deinit();
 	m_pRuntime = NULL;
 
+	m_allPATPattern .clear();
+	m_allRTPResType .clear();
+	m_allRSSResource.clear();
+	m_allFRMFrame   .clear();
+	m_allFUNConstant.clear();
+	m_allFUNFunction.clear();
+	m_allFUNSequence.clear();
+	m_allDPTSearch  .clear();
+	m_allDPTSome    .clear();
+	m_allDPTPrior   .clear();
+	m_allDPTActivity.clear();
+	m_allEvent      .clear();
+	m_allResultGroup.clear();
+	m_allPROCProcess.clear();
+	m_allFUNGroup   .clear();
+
+	m_parser_item   = NULL;
+	m_pSMR          = NULL;
+	m_pContextStack = NULL;
+
+	m_preCastTypeList   .clear();
 	m_movementObjectList.clear();
+
 	s_parserStack.remove(this);
 }
 
