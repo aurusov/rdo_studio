@@ -76,16 +76,21 @@ void RDOParserRDOItem::parse(CREF(LPRDOParser) pParser)
 
 void RDOParserRDOItem::parse(CREF(LPRDOParser) pParser, REF(std::istream) in_stream)
 {
-	ASSERT(pParser);
-
-	if (m_pLexer)
-		delete m_pLexer;
+	ASSERT(pParser  );
+	ASSERT(!m_pLexer);
 
 	std::ostringstream out_stream;
 	m_pLexer = getLexer(pParser, &in_stream, &out_stream);
 
-	if (m_pLexer && m_parser_fun)
-		m_parser_fun(m_pLexer);
+	if (m_pLexer)
+	{
+		if (m_parser_fun)
+		{
+			m_parser_fun(m_pLexer);
+		}
+		delete m_pLexer;
+		m_pLexer = NULL;
+	}
 }
 
 PTR(RDOLexer) RDOParserRDOItem::getLexer(CREF(LPRDOParser) pParser, PTR(std::istream) in_stream, PTR(std::ostream) out_stream)
