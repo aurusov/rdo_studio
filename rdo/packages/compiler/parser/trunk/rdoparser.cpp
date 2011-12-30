@@ -126,7 +126,6 @@ void RDOParser::deinit()
 	m_pRuntime->deinit();
 	m_pRuntime = NULL;
 
-	rdo::deleteAllObjects(m_allValues);
 	m_movementObjectList.clear();
 	s_parserStack.remove(this);
 }
