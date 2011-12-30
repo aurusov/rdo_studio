@@ -1588,7 +1588,7 @@ statement_list
 		rdoRuntime::LPRDOCalcBodyBrace pCalcBodyBrace = PARSER->stack().pop<rdoRuntime::RDOCalcBodyBrace>($1);
 		ASSERT(pCalcBodyBrace);
 
-		rdoRuntime::LPRDOCalc     pCalc     = PARSER->stack().pop<rdoRuntime::RDOCalc>($2);
+		rdoRuntime::LPRDOCalc pCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($2);
 		ASSERT(pCalc);
 
 		pCalcBodyBrace->addCalc(pCalc);
