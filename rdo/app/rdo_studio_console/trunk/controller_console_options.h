@@ -33,13 +33,17 @@ public:
 	void parseOptions();
 	void getModelName(REF(tstring) modelName);
 	
+	rbool helpQuery();
+	
 private:
 	void createGeneralOptions(REF(po::options_description) options);
 	void createAdditionalOptions(REF(po::options_description) options);
 	
 private:
-	po::options_description m_options;
-	po::variables_map m_variables;
+	po::options_description	m_options;
+	po::variables_map		m_variables;
+	
+	rbool					m_help;
 };
 
 #ifdef COMPILER_VISUAL_STUDIO
