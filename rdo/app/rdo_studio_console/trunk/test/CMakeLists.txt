@@ -23,13 +23,13 @@ SET(SOURCE_FILES
 SET(MAIN_FILE 
     main.cpp)
 
-ADD_EXECUTABLE(test_rdo_studio_console ${MAIN_FILE} ${HEADER_FILES} ${SOURCE_FILES})
+ADD_EXECUTABLE(rdo_test ${MAIN_FILE} ${HEADER_FILES} ${SOURCE_FILES})
 
-ADD_DEPENDENCIES(test_rdo_studio_console rdo)
-ADD_DEPENDENCIES(test_rdo_studio_console rdo_utils)
+ADD_DEPENDENCIES(rdo_test rdo)
+ADD_DEPENDENCIES(rdo_test rdo_utils)
 
-TARGET_LINK_LIBRARIES(test_rdo_studio_console rdo_utils)
-TARGET_LINK_LIBRARIES(test_rdo_studio_console ${Boost_PROGRAM_OPTIONS_LIBRARY})
+TARGET_LINK_LIBRARIES(rdo_test rdo_utils)
+TARGET_LINK_LIBRARIES(rdo_test ${Boost_PROGRAM_OPTIONS_LIBRARY})
 
 IF(MSVC)
     ADD_DEFINITIONS(-DRDO_STUDIO_CONSOLE_APP="${EXECUTABLE_OUTPUT_PATH}/${CMAKE_BUILD_TYPE}/rdo.exe")
