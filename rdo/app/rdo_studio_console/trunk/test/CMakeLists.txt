@@ -48,3 +48,17 @@ SOURCE_GROUP(".console_options" FILES
     controller_console_options_config.h)
 
 ENDIF(MSVC)
+
+#==============================================================================
+# temp
+#==============================================================================
+
+ADD_BOOST_TEST(test_rdo_studio_console test.cpp)
+
+IF(MSVC)
+    ADD_DEFINITIONS(-DRDO_TEST_APP="${EXECUTABLE_OUTPUT_PATH}/${CMAKE_BUILD_TYPE}/rdo_test.exe")
+ELSE()
+    ADD_DEFINITIONS(-DRDO_TEST_APP="${EXECUTABLE_OUTPUT_PATH}/rdo_test")
+ENDIF(MSVC)
+
+ADD_DEFINITIONS(-DRDO_TEST_APP_PATH="${CMAKE_CURRENT_SOURCE_DIR}/")
