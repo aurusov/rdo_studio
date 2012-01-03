@@ -11,16 +11,36 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <list>
 #include <fstream>
+#include <iostream>
 #include <boost/filesystem.hpp>
 namespace fs = boost::filesystem;
 
 #include <stdlib.h>
-
-#define BOOST_TEST_MODULE RDOStudioConsoleTest
-#include <boost/test/included/unit_test.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdocommon.h"
+#include "utils/rdofile.h"
+#include "app/rdo_studio_console/test/controller_console_options.h"
 // --------------------------------------------------------------------------------
+
+#define TERMINATION_NORMAL	0
+#define TERMINATION_ERROR	1
+
+rbool g_state = TERMINATION_NORMAL;
+
+void ERROR(CREF(tstring) message)
+{ 
+	std::cout << "test error : " << message << std::endl;
+	exit(TERMINATION_ERROR);
+}
+
+void CHECK(rbool condition, CREF(tstring) error_message)
+{
+	if(!condition)
+	{
+		std::cout << "test error : " << error_message << std::endl;
+		g_state = TERMINATION_ERROR;
+	}
+}
 
 typedef std::list<tstring> file_data_list;
 
@@ -30,12 +50,14 @@ const tstring RDO_STUDIO_CONSOLE_APP_STRING = RDO_STUDIO_CONSOLE_APP;
 void read_trace(CREF(tstring) file, REF(file_data_list) list)
 {
 	std::fstream stream(file.c_str(), std::ios::in);
-	if (!stream.is_open()) {
-		BOOST_ERROR("Can't open file " + file);
+	if (!stream.is_open()) 
+	{
+		ERROR("Can't open file " + file);
 	}
 	tstring temp_string;
 	bool key = false;
-	while(true) {
+	while(true) 
+	{
 		std::getline(stream, temp_string);
 		if (stream.fail())
 			break;
@@ -59,26 +81,28 @@ void compare_trace(CREF(tstring) etalon_trace, CREF(tstring) trace)
 	read_trace(etalon_trace, etalon_trace_list);
 	read_trace(trace, trace_list);
 	
-	BOOST_CHECK(etalon_trace_list.size() == trace_list.size());
-	BOOST_CHECK(etalon_trace_list == trace_list);
+	CHECK(etalon_trace_list.size() == trace_list.size(), _T("etalon_trace_list size != trace_list size"));
+	CHECK(etalon_trace_list == trace_list, _T("etalon_trace_list != trace_list"));
 }
 
 void read_result(CREF(tstring) file, REF(file_data_list) list)
 {
 	std::fstream stream(file.c_str(), std::ios::in);
-	if (!stream.is_open()) {
-		BOOST_ERROR("Can't open file " + file);
+	if (!stream.is_open()) 
+	{
+		ERROR("Can't open file " + file);
 	}
 	tstring temp_string;
 	bool key = false;
-	while(true) {
+	while(true) 
+	{
 		std::getline(stream, temp_string);
 		if (stream.fail())
 			break;
 		
 		if (key)
 			list.push_back(temp_string);
-
+		
 		if (!key)
 			key = temp_string.find("$BExpCalcCounter") == -1 ? false : true;
 	}
@@ -92,117 +116,67 @@ void compare_result(CREF(tstring) etalon_result, CREF(tstring) result)
 	read_result(etalon_result, etalon_result_list);
 	read_result(result, result_list);
 	
-	BOOST_CHECK(etalon_result_list.size() == result_list.size());
-	BOOST_CHECK(etalon_result_list == result_list);
+	CHECK(etalon_result_list.size() == result_list.size(), _T("etalon result list size != result_list size"));
+	CHECK(etalon_result_list == result_list, _T("etalon_result_list != result_list"));
 }
 
-void test_model(CREF(tstring) path, CREF(tstring) model_name)
+void test_model(CREF(tstring) model)
 {	
-	tstring dir = path;
-	if(dir[dir.size() - 1] != '/')
-		dir += '/';
-	fs::path directory = dir.c_str();
-	tstring file = dir + model_name + ".rdox";
+	CHECK(fs::exists(model), "model " + model + " not found");
 	
-	if (!fs::exists(directory)) {
-		tstring message("file \"" + file + "\" does not exist");
-		std::cerr << message.c_str() << std::endl;
-		BOOST_REQUIRE(false);
-	}
-	if(!fs::exists(file)) {
-		tstring message("directory \"" + dir + "\" does not exist");
-		std::cerr << message.c_str() << std::endl;
-		BOOST_REQUIRE(false);
-	}
+	tstring dir;
+	tstring name;
+	tstring ext;
+	CHECK(rdo::File::splitpath(model, dir, name, ext), "splitpath check");
+	dir += "/"; // added directory end symbol
+	
 	tstring etalon_mark("_etalon");
-	tstring etalon_trace = dir + model_name + etalon_mark + ".trc";
-	tstring etalon_result = dir + model_name + etalon_mark + ".pmv";
+	tstring etalon_trace = dir + name + etalon_mark + ".trc";
+	tstring etalon_result = dir + name + etalon_mark + ".pmv";
 	
-	BOOST_REQUIRE(fs::exists(etalon_trace));
-	BOOST_REQUIRE(fs::exists(etalon_result));
+	CHECK(fs::exists(etalon_trace), _T("etalon_trace not found"));
+	CHECK(fs::exists(etalon_result), _T("etalon_result not found"));
 	
-	tstring simulation_trace = dir + model_name + ".trc";
-	tstring simulation_result = dir + model_name + ".pmv";
+	tstring simulation_trace = dir + name + ".trc";
+	tstring simulation_result = dir + name + ".pmv";
 	
 	boost::filesystem::remove(simulation_trace);
 	boost::filesystem::remove(simulation_result);
 	
-	tstring command(RDO_STUDIO_CONSOLE_APP_STRING + tstring(" -i ") + file);
+	tstring command(RDO_STUDIO_CONSOLE_APP_STRING + tstring(" -i ") + model);
 	system(command.c_str());
 	
-	BOOST_REQUIRE(fs::exists(simulation_trace));
-	BOOST_REQUIRE(fs::exists(simulation_result));
+	CHECK(fs::exists(simulation_trace), _T("simulation_trace not found"));
+	CHECK(fs::exists(simulation_result), _T("simulation_result not found"));
 	
 	compare_trace(etalon_trace, simulation_trace);
 	compare_result(etalon_result, simulation_result);
 	
 	boost::filesystem::remove(simulation_trace);
 	boost::filesystem::remove(simulation_result);
-}
-
-BOOST_AUTO_TEST_SUITE(RDOStudioConsoleTest)
-
-BOOST_AUTO_TEST_CASE(RDOStudioConsoleTestCheckInputData)
-{
-	if(RDO_STUDIO_CONSOLE_APP_STRING == "NULL") 
+	
+	if(!g_state) 
 	{
-		BOOST_ERROR("Invalid input data");
-		exit(1);
+		std::cout << "test ok" << std::endl;
 	}
 }
 
-BOOST_AUTO_TEST_CASE(RDOStudioConsoleModelSimpleQS)
+int main(int argc, PTR(char) argv[])
 {
-	tstring string("simple_qs");
-	test_model(RDO_STUDIO_CONSOLE_TEST_PATH_STRING + string, string);
+	RDOControllerConsoleOptions options_controller(argc, argv);
+	options_controller.parseOptions();
+	if(options_controller.helpQuery())
+		return TERMINATION_NORMAL;
+	
+	if(RDO_STUDIO_CONSOLE_APP_STRING == "NULL") 
+	{
+		ERROR("Invalid input data");
+	}
+	
+	tstring model_name;
+	options_controller.getModelName(model_name);
+	
+	test_model(model_name);
+	
+	return g_state;
 }
-
-BOOST_AUTO_TEST_CASE(RDOStudioConsoleModelMultichannelQS)
-{
-	tstring string("multichannel_qs");
-	test_model(RDO_STUDIO_CONSOLE_TEST_PATH_STRING + string, string);
-}
-
-BOOST_AUTO_TEST_CASE(RDOStudioConsoleModelArray)
-{
-	tstring string("array");
-	test_model(RDO_STUDIO_CONSOLE_TEST_PATH_STRING + string, string);
-}
-
-BOOST_AUTO_TEST_CASE(RDOStudioConsoleModelCreateRes)
-{
-	tstring string("create_res");
-	test_model(RDO_STUDIO_CONSOLE_TEST_PATH_STRING + string, string);
-}
-
-BOOST_AUTO_TEST_CASE(RDOStudioConsoleModelFmsEvent)
-{
-	tstring string("fms_event");
-	test_model(RDO_STUDIO_CONSOLE_TEST_PATH_STRING + string, string);
-}
-
-BOOST_AUTO_TEST_CASE(RDOStudioConsoleModelFmsPlaning)
-{
-	tstring string("fms_planing");
-	test_model(RDO_STUDIO_CONSOLE_TEST_PATH_STRING + string, string);
-}
-
-BOOST_AUTO_TEST_CASE(RDOStudioConsoleModelHeidel)
-{
-	tstring string("heidel");
-	test_model(RDO_STUDIO_CONSOLE_TEST_PATH_STRING + string, string);
-}
-/*
-BOOST_AUTO_TEST_CASE(RDOStudioConsoleModelEventQS)
-{
-	tstring string("event_qs");
-	test_model(RDO_STUDIO_CONSOLE_TEST_PATH_STRING + string, string);
-}
-
-BOOST_AUTO_TEST_CASE(RDOStudioConsoleModelPoliclinic)
-{
-	tstring string("policlinic");
-	test_model(RDO_STUDIO_CONSOLE_TEST_PATH_STRING + string, string);
-}
-*/
-BOOST_AUTO_TEST_SUITE_END() // RDOStudioConsoleTest
