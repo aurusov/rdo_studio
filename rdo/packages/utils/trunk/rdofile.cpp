@@ -12,6 +12,9 @@
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
+#ifdef COMPILER_VISUAL_STUDIO
+	#include <Windows.h>
+#endif // COMPILER_VISUAL_STUDIO
 #include <boost/filesystem.hpp>
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_io.hpp>
@@ -37,8 +40,8 @@ rbool File::splitpath(CREF(tstring) name, REF(tstring) fileDir, REF(tstring) fil
 {
 	boost::filesystem::path from(name);
 	fileDir = from.parent_path().string();
-	fileName = from.stem();
-	fileExt  = from.extension();
+	fileName = from.stem().string();
+	fileExt  = from.extension().string();
 	return true;
 }
 
