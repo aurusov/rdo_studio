@@ -63,17 +63,17 @@ int main(int argc, PTR(char) argv[])
 
 		if (simulationResult)
 		{
-			std::cout << _T("  simulation finished successfully  ") << std::endl;
+			std::cout << _T("simulation finished successfully") << std::endl;
 		}
 		else
 		{
-			std::cout << _T("  simulation completed with errors  ") << std::endl;		
+			std::cout << _T("simulation completed with errors") << std::endl;		
 		}
 	}
 	else if(!options_controller.helpQuery())
 	{
-		std::cout << _T("  model does not exist  ") << std::endl;
+		std::cout << _T("model does not exist") << std::endl;
 		return TERMINATION_WITH_AN_ERROR_NO_MODEL;
 	}
-	return NORMAL_TERMINATION;
+	return TERMINATION_NORMAL;
 }

@@ -12,12 +12,13 @@
 #include <iostream>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdomacros.h"
+#include "app/rdo_studio_console/terminate_codes.h"
 #include "app/rdo_studio_console/controller_console_options.h"
 #include "app/rdo_studio_console/controller_console_options_config.h"
 // --------------------------------------------------------------------------------
 
-const tstring program_description = RDO_STUDIO_CONSOLE_PROGRAMM_NAME + NOP_STRING + VERSION_COMMAND_SHORT +
-RDO_STUDIO_CONSOLE_VERSION + NOP_STRING + SYSTEM_OS + NOP_STRING + SYSTEM_ARCHITECTURES + NOP_STRING + RDO_SITE;
+const tstring program_description = PROGRAM_NAME + NOP_STRING + VERSION_COMMAND_SHORT +
+PROGRAM_VERSION + NOP_STRING + SYSTEM_OS + NOP_STRING + SYSTEM_ARCHITECTURES + NOP_STRING + RDO_SITE;
 
 RDOControllerConsoleOptions::RDOControllerConsoleOptions(int argc, char *argv[]) :
 	m_help(false)
@@ -65,7 +66,7 @@ void RDOControllerConsoleOptions::parseOptions()
 	}
 	else if (m_variables.count(VERSION_COMMAND))
 	{
-		std::cout << RDO_STUDIO_CONSOLE_PROGRAMM_NAME + NOP_STRING + VERSION_COMMAND_SHORT + RDO_STUDIO_CONSOLE_VERSION << std::endl;
+		std::cout << PROGRAM_NAME + NOP_STRING + VERSION_COMMAND_SHORT + PROGRAM_VERSION << std::endl;
 		m_help = true;
 	}
 }
@@ -80,7 +81,6 @@ void RDOControllerConsoleOptions::getModelName(REF(tstring) modelName)
 	}
 	modelName = _T("");
 }
-
 
 rbool RDOControllerConsoleOptions::helpQuery()
 {

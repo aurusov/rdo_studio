@@ -57,11 +57,11 @@ const tstring PLUGIN_START_COMMENT          = _T(": start plugin");
 const tstring PLUGIN_AUTO_EXIT_COMMENT      = _T(": plugin auto exit");
 
 // Auxiliary constants
-const tstring RDO_STUDIO_CONSOLE_VERSION       = _T("0.4.5");
-const tstring RDO_LANGUAGE_VERSION             = _T("2.0");
+const tstring PROGRAM_VERSION               = _T("0.9");
+const tstring RDO_LANGUAGE_VERSION          = _T("2.0");
 
-const tstring RDO_SITE                         = _T("( http://rdo.rk9.bmstu.ru )");
-const tstring RDO_STUDIO_CONSOLE_PROGRAMM_NAME = _T("rdo console studio");
+const tstring RDO_SITE                      = _T("( http://rdo.rk9.bmstu.ru )");
+const tstring PROGRAM_NAME                  = _T("rdo console studio");
 
 const tstring NOP_STRING   = _T(" ");
 const tstring COMMA_STRING = _T(",");
