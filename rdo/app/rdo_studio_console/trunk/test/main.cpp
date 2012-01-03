@@ -31,6 +31,10 @@ namespace fs = boost::filesystem;
 
 ruint g_state = TERMINATION_NORMAL;
 
+const tstring RDO_STUDIO_CONSOLE_APP_STRING = RDO_STUDIO_CONSOLE_APP;
+
+typedef std::list<tstring> file_data_list;
+
 void TEST_ERROR(CREF(tstring) message)
 { 
 	std::cout << "test error : " << message << std::endl;
@@ -45,10 +49,6 @@ void TEST_CHECK(rbool condition, CREF(tstring) error_message)
 		g_state = TERMINATION_ERROR;
 	}
 }
-
-typedef std::list<tstring> file_data_list;
-
-const tstring RDO_STUDIO_CONSOLE_APP_STRING = RDO_STUDIO_CONSOLE_APP;
 
 void read_trace(CREF(tstring) file, REF(file_data_list) list)
 {
