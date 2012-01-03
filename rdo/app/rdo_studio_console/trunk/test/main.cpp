@@ -22,18 +22,22 @@ namespace fs = boost::filesystem;
 #include "app/rdo_studio_console/test/controller_console_options.h"
 // --------------------------------------------------------------------------------
 
+#ifdef COMPILER_VISUAL_STUDIO
+#	pragma warning (disable:4127)
+#endif // COMPILER_VISUAL_STUDIO
+
 #define TERMINATION_NORMAL	0
 #define TERMINATION_ERROR	1
 
-rbool g_state = TERMINATION_NORMAL;
+ruint g_state = TERMINATION_NORMAL;
 
-void ERROR(CREF(tstring) message)
+void TEST_ERROR(CREF(tstring) message)
 { 
 	std::cout << "test error : " << message << std::endl;
 	exit(TERMINATION_ERROR);
 }
 
-void CHECK(rbool condition, CREF(tstring) error_message)
+void TEST_CHECK(rbool condition, CREF(tstring) error_message)
 {
 	if(!condition)
 	{
@@ -51,10 +55,10 @@ void read_trace(CREF(tstring) file, REF(file_data_list) list)
 	std::fstream stream(file.c_str(), std::ios::in);
 	if (!stream.is_open()) 
 	{
-		ERROR("Can't open file " + file);
+		TEST_ERROR("Can't open file " + file);
 	}
 	tstring temp_string;
-	bool key = false;
+	rbool key = false;
 	while(true) 
 	{
 		std::getline(stream, temp_string);
@@ -80,8 +84,8 @@ void compare_trace(CREF(tstring) etalon_trace, CREF(tstring) trace)
 	read_trace(etalon_trace, etalon_trace_list);
 	read_trace(trace, trace_list);
 	
-	CHECK(etalon_trace_list.size() == trace_list.size(), _T("etalon_trace_list size != trace_list size"));
-	CHECK(etalon_trace_list == trace_list, _T("etalon_trace_list != trace_list"));
+	TEST_CHECK(etalon_trace_list.size() == trace_list.size(), _T("etalon_trace_list size != trace_list size"));
+	TEST_CHECK(etalon_trace_list == trace_list, _T("etalon_trace_list != trace_list"));
 }
 
 void read_result(CREF(tstring) file, REF(file_data_list) list)
@@ -89,10 +93,10 @@ void read_result(CREF(tstring) file, REF(file_data_list) list)
 	std::fstream stream(file.c_str(), std::ios::in);
 	if (!stream.is_open()) 
 	{
-		ERROR("Can't open file " + file);
+		TEST_ERROR("Can't open file " + file);
 	}
 	tstring temp_string;
-	bool key = false;
+	rbool key = false;
 	while(true) 
 	{
 		std::getline(stream, temp_string);
@@ -115,26 +119,26 @@ void compare_result(CREF(tstring) etalon_result, CREF(tstring) result)
 	read_result(etalon_result, etalon_result_list);
 	read_result(result, result_list);
 	
-	CHECK(etalon_result_list.size() == result_list.size(), _T("etalon result list size != result_list size"));
-	CHECK(etalon_result_list == result_list, _T("etalon_result_list != result_list"));
+	TEST_CHECK(etalon_result_list.size() == result_list.size(), _T("etalon result list size != result_list size"));
+	TEST_CHECK(etalon_result_list == result_list, _T("etalon_result_list != result_list"));
 }
 
 void test_model(CREF(tstring) model)
 {	
-	CHECK(fs::exists(model), "model " + model + " not found");
+	TEST_CHECK(fs::exists(model), "model " + model + " not found");
 	
 	tstring dir;
 	tstring name;
 	tstring ext;
-	CHECK(rdo::File::splitpath(model, dir, name, ext), "splitpath check");
+	TEST_CHECK(rdo::File::splitpath(model, dir, name, ext), tstring("splitpath check"));
 	dir += "/"; // added directory end symbol
 	
 	tstring etalon_mark("_etalon");
 	tstring etalon_trace = dir + name + etalon_mark + ".trc";
 	tstring etalon_result = dir + name + etalon_mark + ".pmv";
 	
-	CHECK(fs::exists(etalon_trace), _T("etalon_trace not found"));
-	CHECK(fs::exists(etalon_result), _T("etalon_result not found"));
+	TEST_CHECK(fs::exists(etalon_trace), _T("etalon_trace not found"));
+	TEST_CHECK(fs::exists(etalon_result), _T("etalon_result not found"));
 	
 	tstring simulation_trace = dir + name + ".trc";
 	tstring simulation_result = dir + name + ".pmv";
@@ -145,8 +149,8 @@ void test_model(CREF(tstring) model)
 	tstring command(RDO_STUDIO_CONSOLE_APP_STRING + tstring(" -i ") + model);
 	system(command.c_str());
 	
-	CHECK(fs::exists(simulation_trace), _T("simulation_trace not found"));
-	CHECK(fs::exists(simulation_result), _T("simulation_result not found"));
+	TEST_CHECK(fs::exists(simulation_trace), _T("simulation_trace not found"));
+	TEST_CHECK(fs::exists(simulation_result), _T("simulation_result not found"));
 	
 	compare_trace(etalon_trace, simulation_trace);
 	compare_result(etalon_result, simulation_result);
@@ -169,7 +173,7 @@ int main(int argc, PTR(char) argv[])
 	
 	if(RDO_STUDIO_CONSOLE_APP_STRING == "NULL") 
 	{
-		ERROR("Invalid input data");
+		TEST_ERROR(_T("Invalid compile app"));
 	}
 	
 	tstring model_name;
@@ -179,3 +183,7 @@ int main(int argc, PTR(char) argv[])
 	
 	return g_state;
 }
+
+#ifdef COMPILER_VISUAL_STUDIO
+#	pragma warning (default:4127)
+#endif // COMPILER_VISUAL_STUDIO

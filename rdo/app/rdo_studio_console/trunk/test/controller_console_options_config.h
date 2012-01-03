@@ -33,9 +33,9 @@ const tstring VERSION_COMMENT               = _T(": display program version");
 
 // Auxiliary constants
 const tstring PROGRAM_VERSION               = _T("0.3");
-const tstring PROGRAM_NAME                  = _T("test rdo console studio");
+const tstring PROGRAM_NAME                  = _T("rdo test");
 
-const tstring NOP_STRING   = _T(" ");
-const tstring COMMA_STRING = _T(",");
+const tstring NOP_STRING                    = _T(" ");
+const tstring COMMA_STRING                  = _T(",");
 
 #endif // _RDO_CONTROLLER_CONSOLE_OPTIONS_CONFIG_H_
