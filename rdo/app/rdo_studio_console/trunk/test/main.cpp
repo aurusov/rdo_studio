@@ -44,7 +44,6 @@ void CHECK(rbool condition, CREF(tstring) error_message)
 
 typedef std::list<tstring> file_data_list;
 
-//const tstring RDO_STUDIO_CONSOLE_TEST_PATH_STRING = RDO_STUDIO_CONSOLE_TEST_PATH;
 const tstring RDO_STUDIO_CONSOLE_APP_STRING = RDO_STUDIO_CONSOLE_APP;
 
 void read_trace(CREF(tstring) file, REF(file_data_list) list)
