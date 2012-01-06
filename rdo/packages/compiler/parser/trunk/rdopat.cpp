@@ -94,6 +94,9 @@ RDOPATPattern::RDOPATPattern(CREF(RDOParserSrcInfo) name_src_info)
 	pLocalVariableListStack->push(pLocalVariableList);
 }
 
+RDOPATPattern::~RDOPATPattern()
+{}
+
 tstring RDOPATPattern::typeToString(PatType type) const
 {
 	switch (type)

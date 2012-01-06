@@ -143,8 +143,7 @@ public:
 
 protected:
 	RDOPATPattern(CREF(RDOParserSrcInfo) name_src_info);
-	virtual ~RDOPATPattern()
-	{}
+	virtual ~RDOPATPattern();
 
 	rdoRuntime::LPRDOPattern m_pPatRuntime;
 
