@@ -67,6 +67,7 @@ LPContext Context::swch(CREF(LPRDOValue) pValue) const
 	ASSERT(result.m_pContext);
 	result.m_pContext->m_findResult = result;
 	ASSERT(result.m_pContext);
+	const_cast<PTR(Context)>(this)->deinit();
 	return result.m_pContext;
 }
 
@@ -76,7 +77,9 @@ LPExpression Context::create(CREF(LPRDOValue) pValue)
 	ASSERT(m_findResult.m_pFindByValue == pValue);
 	ASSERT(m_findResult.m_pExpression);
 
-	return m_findResult.m_pExpression;
+	LPExpression pExpression = m_findResult.m_pExpression;
+	deinit();
+	return pExpression;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE
