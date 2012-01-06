@@ -15,8 +15,11 @@
 
 OPEN_RDO_NAMESPACE
 
-FORCE_INLINE counter_reference::counter_reference()
+inline counter_reference::counter_reference()
 	: m_intrusive_counter(0)
+{}
+
+inline counter_reference::~counter_reference()
 {}
 
 CLOSE_RDO_NAMESPACE

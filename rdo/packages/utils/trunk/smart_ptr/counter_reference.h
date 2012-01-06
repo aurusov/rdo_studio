@@ -26,6 +26,7 @@ template<class T> friend class RefCounter;
 public:
 	//! Инициализиреут счетчик нулём
 	counter_reference();
+	virtual ~counter_reference();
 
 private:
 	ruint m_intrusive_counter;

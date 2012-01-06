@@ -21,15 +21,16 @@ OPEN_RDO_NAMESPACE
 class ISmartPtrWrapper
 {
 public:
-	virtual void      destroy    () = 0;
-	virtual PTR(void) getSmartPtr() = 0;
+	virtual void                    destroy      () = 0;
+	virtual PTR(void)               getSmartPtr  () = 0;
+	virtual CPTR(counter_reference) getRefCounter() const = 0;
 };
 typedef PTR(ISmartPtrWrapper) LPISmartPtrWrapper;
 
-#define DECLARE_ISmartPtrWrapper     \
-public:                              \
-	virtual void      destroy    (); \
-	virtual PTR(void) getSmartPtr();
+#define DECLARE_ISmartPtrWrapper                     \
+	virtual void                    destroy      (); \
+	virtual PTR(void)               getSmartPtr  (); \
+	virtual CPTR(counter_reference) getRefCounter() const;
 
 template<class T>
 class smart_ptr_wrapper: public ISmartPtrWrapper
@@ -47,6 +48,10 @@ public:
 	PTR(void) getSmartPtr()
 	{
 		return &m_intrusive_ptr;
+	}
+	CPTR(counter_reference) getRefCounter() const
+	{
+		return m_intrusive_ptr.m_object;
 	}
 	CREF(intrusive_ptr<T>) get() const
 	{
