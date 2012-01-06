@@ -237,8 +237,20 @@ OPEN_RDO_PARSER_NAMESPACE
 dpt_main
 	: /* empty */
 	| dpt_main dpt_search_end
+	{
+		LPRDODPTSearch pDPTSearch = PARSER->stack().pop<RDODPTSearch>($2);
+		ASSERT(pDPTSearch);
+	}
 	| dpt_main dpt_some_end
+	{
+		LPRDODPTSome pDPTSome = PARSER->stack().pop<RDODPTSome>($2);
+		ASSERT(pDPTSome);
+	}
 	| dpt_main dpt_prior_end
+	{
+		LPRDODPTPrior pDPTPrior = PARSER->stack().pop<RDODPTPrior>($2);
+		ASSERT(pDPTPrior);
+	}
 	| error
 	{
 		PARSER->error().error(@1, _T("Ожидается описание точки"));
