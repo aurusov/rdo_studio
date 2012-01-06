@@ -41,7 +41,7 @@ void TypeInfo::init()
 	if (m_pType->type())
 	{
 		if (m_pType->type()->typeID() == rdoRuntime::RDOType::t_enum ||
-			 m_pType->type().object_dynamic_cast<rdoRuntime::RDOFuzzyType>())
+		    m_pType->type().object_dynamic_cast<rdoRuntime::RDOFuzzyType>())
 		{
 			RDOParser::s_parser()->insertPreCastType(this);
 		}
