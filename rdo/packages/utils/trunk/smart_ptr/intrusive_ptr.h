@@ -26,7 +26,7 @@ template<class T>
 class intrusive_ptr
 {
 template <typename P> friend class intrusive_ptr;
-template <class T>    friend class smart_ptr_wrapper;
+template <class W>    friend class smart_ptr_wrapper;
 public:
 	typedef T                object_type;
 	typedef intrusive_ptr<T> this_type;
