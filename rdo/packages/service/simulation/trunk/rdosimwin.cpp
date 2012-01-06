@@ -569,7 +569,7 @@ void RDOThreadRunTime::proc(REF(RDOMessageInfo) msg)
 		{
 			msg.lock();
 			PTR(GetFrame) getframe = static_cast<PTR(GetFrame)>(msg.param);
-			m_pSimulator->m_pRuntime->allFrames.at(getframe->m_number)->prepareFrame(getframe->m_pFrame, m_pSimulator->m_pRuntime);
+			m_pSimulator->m_pRuntime->m_frameList.at(getframe->m_number)->prepareFrame(getframe->m_pFrame, m_pSimulator->m_pRuntime);
 			msg.unlock();
 			break;
 		}
@@ -583,7 +583,7 @@ void RDOThreadRunTime::proc(REF(RDOMessageInfo) msg)
 		case RT_RUNTIME_KEY_DOWN:
 		{
 			msg.lock();
-			if (std::find(m_pSimulator->m_pRuntime->using_scan_codes.begin(), m_pSimulator->m_pRuntime->using_scan_codes.end(), *static_cast<PTR(ruint)>(msg.param)) != m_pSimulator->m_pRuntime->using_scan_codes.end())
+			if (std::find(m_pSimulator->m_pRuntime->m_usingScanCodeList.begin(), m_pSimulator->m_pRuntime->m_usingScanCodeList.end(), *static_cast<PTR(ruint)>(msg.param)) != m_pSimulator->m_pRuntime->m_usingScanCodeList.end())
 			{
 				if (!m_pSimulator->m_pRuntime->keyDown(*static_cast<PTR(ruint)>(msg.param)))
 				{
@@ -603,7 +603,7 @@ void RDOThreadRunTime::proc(REF(RDOMessageInfo) msg)
 		case RT_RUNTIME_FRAME_AREA_DOWN:
 		{
 			msg.lock();
-			m_pSimulator->m_pRuntime->activeAreasMouseClicked.push_back(*static_cast<PTR(tstring)>(msg.param));
+			m_pSimulator->m_pRuntime->m_activeAreasMouseClicked.push_back(*static_cast<PTR(tstring)>(msg.param));
 			m_pSimulator->m_pRuntime->setShowRate(m_pSimulator->m_pRuntime->getShowRate());
 			msg.unlock();
 			break;
@@ -633,8 +633,8 @@ void RDOThreadRunTime::start()
 	pResultsInfo = new rdoSimulator::RDOSimResultInformer(m_pSimulator->m_resultInfoString);
 
 	//! RDO config initialization
-	m_pSimulator->m_pRuntime->keysDown.clear();
-	m_pSimulator->m_pRuntime->activeAreasMouseClicked.clear();
+	m_pSimulator->m_pRuntime->m_keysDown.clear();
+	m_pSimulator->m_pRuntime->m_activeAreasMouseClicked.clear();
 	m_pSimulator->m_pRuntime->setStartTime     (m_pSimulator->m_pParser->getSMR()->getRunStartTime  ());
 	m_pSimulator->m_pRuntime->setTraceStartTime(m_pSimulator->m_pParser->getSMR()->getTraceStartTime());
 	m_pSimulator->m_pRuntime->setTraceEndTime  (m_pSimulator->m_pParser->getSMR()->getTraceEndTime  ());
@@ -717,7 +717,7 @@ void RDOThreadRunTime::idle()
 
 void RDOThreadRunTime::writeResultsInfo()
 {
-	switch (m_pSimulator->m_pRuntime->whyStop)
+	switch (m_pSimulator->m_pRuntime->m_whyStop)
 	{
 		case rdoSimulator::EC_OK:
 			m_pSimulator->m_pRuntime->getResultsInfo() << _T("$Status = ") << _T("NORMAL_TERMINATION");
@@ -1012,10 +1012,10 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 				{
 					if (m_pRuntime)
 					{
-						int size = m_pRuntime->allFrames.size();
+						int size = m_pRuntime->m_frameList.size();
 						for (int i = 0; i < size; i++)
 						{
-							getlist->m_list->push_back(m_pRuntime->allFrames.at(i)->name());
+							getlist->m_list->push_back(m_pRuntime->m_frameList.at(i)->name());
 						}
 					}
 					break;
@@ -1024,10 +1024,10 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 				{
 					if (m_pRuntime)
 					{
-						int size = m_pRuntime->allFrames.size();
+						int size = m_pRuntime->m_frameList.size();
 						for (int i = 0; i < size; i++)
 						{
-							m_pRuntime->allFrames.at(i)->getBitmaps(*getlist->m_list);
+							m_pRuntime->m_frameList.at(i)->getBitmaps(*getlist->m_list);
 						}
 					}
 					break;
@@ -1038,10 +1038,10 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 		}
 		case RT_SIMULATOR_GET_ERRORS:
 		{
-			SyntaxErrorList errors = getErrors();
+			SyntaxErrorList m_errorList = getErrors();
 			msg.lock();
 			PTR(SyntaxErrorList) msg_errors = static_cast<PTR(SyntaxErrorList)>(msg.param);
-			msg_errors->assign(errors.begin(), errors.end());
+			msg_errors->assign(m_errorList.begin(), m_errorList.end());
 			msg.unlock();
 			break;
 		}
@@ -1052,7 +1052,7 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 				//! rdoSimulator::EC_ParserError   - Не используется в run-time
 				//! rdoSimulator::EC_ModelNotFound - Не используется в run-time
 				//! rdoSimulator::EC_UserBreak     - Устанавливается в m_pSimulator, перехват RT_THREAD_STOP_AFTER не срабатывает
-				m_exitCode = m_pRuntime->whyStop;
+				m_exitCode = m_pRuntime->m_whyStop;
 				if (!m_pThreadRuntime->runtimeError())
 				{
 					//! Остановились сами нормально
@@ -1257,7 +1257,7 @@ RDOThreadSimulator::SyntaxErrorList RDOThreadSimulator::getErrors()
 	}
 
 	res = m_pParser->error().getList();
-	res.insert(res.end(), m_pRuntime->errors.begin(), m_pRuntime->errors.end());
+	res.insert(res.end(), m_pRuntime->m_errorList.begin(), m_pRuntime->m_errorList.end());
 	return res;
 }
 

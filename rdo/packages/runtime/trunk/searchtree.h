@@ -42,7 +42,7 @@ public:
 	int							m_expandedNodesCount;
 	int							m_fullNodesCount;
 	boost::posix_time::ptime	m_ptime;
-	unsigned int				m_sizeof_dpt;
+	ruint						m_sizeof_dpt;
 
 	int getNodesCound() const;
 	int getNewNodeNumber();

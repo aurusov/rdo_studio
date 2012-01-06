@@ -34,11 +34,11 @@ inline ruint RDOSimulator::getSizeofSim() const
 	return m_sizeofSim;
 }
 
-inline void RDOSimulator::appendBaseOperation(LPIBaseOperationContainer logic, CREF(LPIBaseOperation) op)
+inline void RDOSimulator::appendBaseOperation(LPIBaseOperationContainer pLogic, CREF(LPIBaseOperation) pBaseOperation)
 {
-	ASSERT(op);
-	ASSERT(logic);
-	logic->append(op);
+	ASSERT(pLogic        );
+	ASSERT(pBaseOperation);
+	pLogic->append(pBaseOperation);
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -36,11 +36,7 @@ class RDOThread;
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \class     RDOResults
-  \brief     Результаты моделирования
-  \todo      что это?
-*/
+//! Результаты моделирования
 class RDOResults
 {
 public:
@@ -49,7 +45,8 @@ public:
 
 	void width(ruint w);
 
-	template<class T> REF(RDOResults) operator<< (CREF(T) value);
+	template<class T>
+	REF(RDOResults) operator<< (CREF(T) value);
 
 	virtual void              flush     () = 0;
 	virtual REF(std::ostream) getOStream() = 0;
@@ -64,10 +61,7 @@ PREDECLARE_POINTER(RDOFRMFrame);
 class RDOCalcCreateResource;
 PREDECLARE_POINTER(RDOEraseResRelCalc);
 
-/*!
-  \class     RDORuntime
-  \brief     RDORuntime
-*/
+//! Симулятор, вычислитель, рантайм машина
 CLASS(RDORuntime): INSTANCE_OF(RDOSimulatorTrace)
 {
 DECLARE_FACTORY(RDORuntime);
@@ -79,37 +73,33 @@ public:
 	typedef  std::vector<LPIPokazTrace>      LPIPokazTraceList;
 	typedef  std::vector<LPIPokazWatchValue> LPIPokazWatchValueList;
 
-	/*!
-	  \enum      Messages
-	  \brief     Работа с уведомлениями
-	*/
+	//! Типы сообщений
 	enum Messages
 	{
 		RO_BEFOREDELETE = 0
 	};
 
-	void connect    (PTR(INotify) to, ruint message );
-	void disconnect (PTR(INotify) to                );
-	void disconnect (PTR(INotify) to, ruint message );
+	void connect    (PTR(INotify) pTo, ruint message);
+	void disconnect (PTR(INotify) pTo               );
+	void disconnect (PTR(INotify) pTo, ruint message);
 	void fireMessage(ruint message, PTR(void) pParam);
 
-	std::vector<rdoSimulator::RDOSyntaxError> errors;
+	typedef  std::vector<rdoSimulator::RDOSyntaxError>  ErrorList;
+	ErrorList m_errorList;
 	void error(CREF(tstring) message, CREF(LPRDOCalc) pCalc = NULL);
 
 	LPRDORuntime clone   () const;
 	void         copyFrom(CREF(LPRDORuntime) pOther);
 	rbool        equal   (CREF(LPRDORuntime) pOther) const;
 
-	/*!
-	  \class     RDOHotKeyToolkit
-	  \brief     Горячие клавиши
-	*/
+	//! Горячие клавиши
 	class RDOHotKeyToolkit
 	{
 	public:
-		typedef unsigned int               KeyCode;
-		typedef std::map<tstring, KeyCode> KeySet;
-		typedef KeySet::const_iterator     CIterator;
+		typedef  ruint                       KeyCode;
+		typedef  std::map<tstring, KeyCode>  KeySet;
+		typedef  KeySet::const_iterator      CIterator;
+
 		enum    { UNDEFINED_KEY = ~0 };
 
 		RDOHotKeyToolkit();
@@ -119,36 +109,38 @@ public:
 		KeySet m_keys;
 	};
 
-	RDOHotKeyToolkit rdoHotKeyToolkit;
+	RDOHotKeyToolkit m_rdoHotKeyToolkit;
 
-	std::vector<unsigned int> using_scan_codes;
-	rbool keyDown(unsigned int scan_code);
-	void keyUp(unsigned int scan_code);
-	rbool checkKeyPressed(unsigned int scan_code, rbool shift, rbool control);
+	typedef  std::vector<ruint>  UsingScanCodeList;
+	UsingScanCodeList m_usingScanCodeList;
+	rbool keyDown           (ruint scanCode);
+	void  keyUp             (ruint scanCode);
+	rbool checkKeyPressed   (ruint scanCode, rbool shift, rbool control);
 	rbool checkAreaActivated(CREF(tstring) oprName);
 
-	void setConstValue(unsigned int numberOfConst, RDOValue value);
-	RDOValue getConstValue(int numberOfConst);
+	void     setConstValue(ruint constID, CREF(RDOValue) constValue);
+	RDOValue getConstValue(ruint constID) const;
+
 	void rdoInit(PTR(RDOTrace) tracer, PTR(RDOResults) customResults, PTR(RDOResults) customResultsInfo, CREF(LPIThreadProxy) pThreadProxy);
 
-	REF(RDOResults) getResults();
+	REF(RDOResults) getResults    ();
 	REF(RDOResults) getResultsInfo();
 
 	double getTimeNow();
 	double getSeconds();
-	
-	unsigned int getCurrentTerm() const;
-	void setCurrentTerm(unsigned int value);
+
+	ruint getCurrentTerm() const;
+	void  setCurrentTerm(ruint value);
 
 	REF(LPIActivity) getCurrentActivity();
 	void             setCurrentActivity(CREF(LPIActivity) activity);
 
-	void addRuntimeEvent    (LPIBaseOperationContainer logic, CREF(LPIEvent)      ev      );
-	void addRuntimeRule     (LPIBaseOperationContainer logic, CREF(LPIRule)       rule    );
-	void addRuntimeOperation(LPIBaseOperationContainer logic, CREF(LPIOperation)  opration);
+	void addRuntimeEvent    (LPIBaseOperationContainer pLogic, CREF(LPIEvent)      pEvent    );
+	void addRuntimeRule     (LPIBaseOperationContainer pLogic, CREF(LPIRule)       pRule     );
+	void addRuntimeOperation(LPIBaseOperationContainer pLogic, CREF(LPIOperation)  pOperation);
 	void addRuntimePokaz    (CREF(LPIPokaz)      pPokaz);
 	void addRuntimeFrame    (CREF(LPRDOFRMFrame) pFrame);
-	
+
 	LPRDOFRMFrame lastFrame() const;
 
 	CREF(LPIPokazList) getPokaz() const;
@@ -157,20 +149,19 @@ public:
 
 	// Параметры ресурса
 	REF(RDOValue) getResParamValRaw(ruint resID, ruint paramID);
-	void setResParamVal(ruint resID, ruint paramID, CREF(RDOValue) value);
+	void          setResParamVal   (ruint resID, ruint paramID, CREF(RDOValue) value);
 
 #ifdef _DEBUG
-	std::vector<std::vector<RDOValue> > state;
-	rbool checkState();
-	void showResources(int node) const;
+	rbool checkState   ();
+	void  showResources(int node) const;
 #endif
 
-	void onEraseRes(const int res_id, CREF(LPRDOEraseResRelCalc) pCalc);
-	LPRDOResource createNewResource(unsigned int type, PTR(RDOCalcCreateResource) calc);
-	LPRDOResource createNewResource(unsigned int type, rbool trace);
+	void onEraseRes(ruint resourceID, CREF(LPRDOEraseResRelCalc) pCalc);
+	LPRDOResource createNewResource(ruint type, PTR(RDOCalcCreateResource) calc);
+	LPRDOResource createNewResource(ruint type, rbool trace);
 	void insertNewResource         (CREF(LPRDOResource) pResource);
 
-	RDOValue      getFuncArgument (int numberOfParam);
+	RDOValue      getFuncArgument (ruint paramID) const;
 	LPRDOResource getGroupFuncRes () const;
 	void          pushFuncArgument(RDOValue arg);
 	void          pushGroupFunc   (CREF(LPRDOResource) pResource);
@@ -181,25 +172,29 @@ public:
 	void          popFuncTop      ();
 
 	virtual rbool endCondition();
-	void setTerminateIf(CREF(LPRDOCalc) _pTerminateIfCalc);
+	void setTerminateIf(CREF(LPRDOCalc) pTerminateIfCalc);
 
 	virtual rbool breakPoints();
-	void insertBreakPoint(CREF(tstring) name, CREF(LPRDOCalc) pCalc);
-	LPRDOCalc findBreakPoint(CREF(tstring) name);
-	tstring getLastBreakPointName() const;
+	void      insertBreakPoint     (CREF(tstring) name, CREF(LPRDOCalc) pCalc);
+	LPRDOCalc findBreakPoint       (CREF(tstring) name);
+	tstring   getLastBreakPointName() const;
 
-	LPRDOResource getResourceByID(const int num) const;
+	LPRDOResource getResourceByID(ruint resourceID) const;
 
-	void setPatternParameter(unsigned int parNumb, RDOValue val);
-	RDOValue getPatternParameter(int parNumb);
+	void     setPatternParameter(ruint paramID, CREF(RDOValue) paramValue);
+	RDOValue getPatternParameter(ruint paramID) const;
 
-	std::vector<tstring>        activeAreasMouseClicked;
-	std::list<unsigned int>     keysDown;
-	std::vector<LPRDOFRMFrame>  allFrames;
+	typedef std::vector<tstring>        NameList;
+	typedef std::list<ruint>            KeyList;
+	typedef std::vector<LPRDOFRMFrame>  FrameList;
+
+	NameList        m_activeAreasMouseClicked;
+	KeyList         m_keysDown;
+	FrameList       m_frameList;
 
 	virtual void onPutToTreeNode();
 
-	rdoSimulator::RDOExitCode whyStop;
+	rdoSimulator::RDOExitCode m_whyStop;
 
 	virtual void onNothingMoreToDo();
 	virtual void onEndCondition();
@@ -238,26 +233,31 @@ private:
 	RDORuntime();
 	virtual ~RDORuntime();
 
-	typedef RDOSimulatorTrace     Parent;
-	typedef std::list<LPRDOCalc>  CalcList;
+	typedef  RDOSimulatorTrace           parent_type;
+	typedef  std::list<LPRDOCalc>        CalcList;
+	typedef  std::vector<RDOValue>       ValueList;
+	typedef  std::vector<LPRDOResource>  ResourceListByID;
+	typedef  std::list  <LPRDOResource>  ResourceListByTime;
 
-	std::vector<LPRDOResource>  allResourcesByID;      // Все ресурсы симулятора, даже NULL (NULL стоит на месте уже удаленного временного ресурса)
-	std::list  <LPRDOResource>  allResourcesByTime;    // Они же, только упорядочены по времени создания и без NULL-ов
-	CalcList                    initCalcs;
-	LPRDOMemoryStack            m_pMemoryStack;
-	FunBreakFlag                m_funBreakFlag;
-	LPIThreadProxy              m_pThreadProxy;
-	PTR(RDOThread)              m_pStudioThread;
+	ResourceListByID    m_resourceListByID;      // Все ресурсы симулятора, даже NULL (NULL стоит на месте уже удаленного временного ресурса)
+	ResourceListByTime  m_resourceListByTime;    // Они же, только упорядочены по времени создания и без NULL-ов
+	CalcList            m_initCalcList;
+	LPRDOMemoryStack    m_pMemoryStack;
+	FunBreakFlag        m_funBreakFlag;
+	LPIThreadProxy      m_pThreadProxy;
+	PTR(RDOThread)      m_pStudioThread;
 
-	/*!
-	  \class     BreakPoint
-	  \brief     Точка останова
-	*/
+#ifdef _DEBUG
+	typedef  std::vector<ValueList>  State;
+	State  m_state;
+#endif
+
+	//! Точка останова
 	OBJECT(BreakPoint) IS INSTANCE_OF(RDORuntimeObject)
 	{
 	DECLARE_FACTORY(BreakPoint)
 	public:
-		CREF(tstring) getName() const;
+		CREF(tstring)   getName() const;
 		CREF(LPRDOCalc) getCalc() const;
 
 	private:
@@ -269,15 +269,15 @@ private:
 
 	typedef std::list<LPBreakPoint> BreakPointList;
 
-	BreakPointList  breakPointsCalcs;
-	LPBreakPoint    lastActiveBreakPoint;
+	BreakPointList  m_breakPointList;
+	LPBreakPoint    m_pLastActiveBreakPoint;
 
-	std::vector<RDOValue>       funcStack;
-	std::vector<LPRDOResource>  groupFuncStack;
-	int currFuncTop;
-	int savedFuncTop;
+	ValueList         m_funcStack;
+	ResourceListByID  m_groupFuncStack;
+	int               m_currFuncTop;
+	int               m_savedFuncTop;
 
-	virtual void onInit();
+	virtual void onInit   ();
 	virtual void onDestroy();
 
 	virtual ResList getResourcesBeforeSim() const;
@@ -285,23 +285,21 @@ private:
 	LPIPokazList            m_pokazAllList;
 	LPIPokazTraceList       m_pokazTraceList;
 	LPIPokazWatchValueList  m_pokazWatchValueList;
-
 	LPIActivity             m_currActivity;
+	ValueList               m_patternParameterList;
 
-	std::vector<RDOValue> patternParameters;
-
-	time_t physic_time;
+	time_t m_physicTime;
 	virtual void preProcess();
 
-	PTR(RDOResults) results;
-	PTR(RDOResults) results_info;
+	PTR(RDOResults) m_resultList;
+	PTR(RDOResults) m_resultListInfo;
 
-	LPRDOCalc pTerminateIfCalc;
-	std::vector<RDOValue> allConstants;
+	LPRDOCalc       m_pTerminateIfCalc;
+	ValueList       m_constantList;
 
 	void writeExitCode();
 
-	rbool key_found;
+	rbool m_keyFound;
 	virtual rbool isKeyDown();
 
 	typedef std::multimap<ruint, PTR(INotify)> Connected;
@@ -311,7 +309,7 @@ private:
 	virtual void onCheckPokaz();
 	virtual void onAfterCheckPokaz();
 
-	unsigned int m_currentTerm;
+	ruint m_currentTerm;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

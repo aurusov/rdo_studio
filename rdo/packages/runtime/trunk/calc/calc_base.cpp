@@ -59,7 +59,7 @@ REF(RDOValue) RDOCalc::calcValue(CREF(LPRDORuntime) pRuntime)
 	}
 	catch (REF(RDORuntimeException))
 	{
-		if (pRuntime->errors.empty())
+		if (pRuntime->m_errorList.empty())
 		{
 			pRuntime->error(_T("ошибка в"), this);
 //			pRuntime->error(_T("in"),       this);

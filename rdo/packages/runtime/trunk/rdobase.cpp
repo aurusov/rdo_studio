@@ -222,7 +222,7 @@ void RDOSimulatorBase::setSpeed( double value )
 	if (value < 0) value = 0;
 	if (value > 1) value = 1;
 	m_speed = value;
-	m_next_delay_count = (unsigned int)((1 - m_speed) * m_speed_range_max);
+	m_next_delay_count = (ruint)((1 - m_speed) * m_speed_range_max);
 	// „тобы сразу перейти к следующей операции
 	m_next_delay_current = m_next_delay_count;
 	m_msec_wait          = 0;

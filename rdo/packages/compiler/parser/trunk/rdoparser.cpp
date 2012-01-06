@@ -125,9 +125,6 @@ void RDOParser::deinit()
 
 	Context::deinit();
 
-	m_pRuntime->deinit();
-	m_pRuntime = NULL;
-
 	m_allPATPattern .clear();
 	m_allRTPResType .clear();
 	m_allRSSResource.clear();
@@ -150,6 +147,9 @@ void RDOParser::deinit()
 
 	m_preCastTypeList   .clear();
 	m_movementObjectList.clear();
+
+	m_pRuntime->deinit();
+	m_pRuntime = NULL;
 
 	s_parserStack.remove(this);
 }

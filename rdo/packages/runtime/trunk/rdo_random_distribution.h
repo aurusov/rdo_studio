@@ -44,7 +44,7 @@ protected:
 
 #ifdef RDO_NATIVE_U01
 	//! @param  m_seed  База генератора
-	unsigned int m_seed;
+	ruint m_seed;
 #else
 	long int m_seed;
 #endif

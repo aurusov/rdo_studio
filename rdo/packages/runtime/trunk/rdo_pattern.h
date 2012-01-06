@@ -73,7 +73,7 @@ public:
 
 	double getNextTimeInterval(CREF(LPRDORuntime) pRuntime);
 
-	LPIEvent createActivity(LPIBaseOperationContainer parent, CREF(LPRDORuntime) pRuntime, CREF(tstring) oprName);
+	LPIEvent createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(tstring) oprName);
 
 private:
 	RDOPatternEvent(rbool trace);
@@ -107,8 +107,8 @@ public:
 
 	rbool choiceFrom (CREF(LPRDORuntime) pRuntime);
 
-	LPIRule createActivity(LPIBaseOperationContainer parent, CREF(LPRDORuntime) pRuntime, CREF(tstring) _oprName);
-	LPIRule createActivity(LPIBaseOperationContainer parent, CREF(LPRDORuntime) pRuntime, CREF(LPRDOCalc) condition, CREF(tstring) _oprName);
+	LPIRule createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(tstring) _oprName);
+	LPIRule createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(LPRDOCalc) condition, CREF(tstring) _oprName);
 
 private:
 	RDOPatternRule(rbool trace);
@@ -149,8 +149,8 @@ public:
 	rbool  choiceFrom           (CREF(LPRDORuntime) pRuntime);
 	double getNextTimeInterval  (CREF(LPRDORuntime) pRuntime);
 
-	LPIOperation createActivity(LPIBaseOperationContainer parent, CREF(LPRDORuntime) pRuntime, CREF(tstring) _oprName);
-	LPIOperation createActivity(LPIBaseOperationContainer parent, CREF(LPRDORuntime) pRuntime, CREF(LPRDOCalc) condition, CREF(tstring) _oprName);
+	LPIOperation createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(tstring) _oprName);
+	LPIOperation createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(LPRDOCalc) condition, CREF(tstring) _oprName);
 
 protected:
 	RDOPatternOperation(rbool trace);
@@ -178,8 +178,8 @@ CLASS(RDOPatternKeyboard): INSTANCE_OF(RDOPatternOperation)
 {
 DECLARE_FACTORY(RDOPatternKeyboard);
 public:
-	LPIKeyboard createActivity(LPIBaseOperationContainer parent, CREF(LPRDORuntime) pRuntime, CREF(tstring) _oprName);
-	LPIKeyboard createActivity(LPIBaseOperationContainer parent, CREF(LPRDORuntime) pRuntime, CREF(LPRDOCalc) condition, CREF(tstring) _oprName);
+	LPIKeyboard createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(tstring) _oprName);
+	LPIKeyboard createActivity(LPIBaseOperationContainer pLogic, CREF(LPRDORuntime) pRuntime, CREF(LPRDOCalc) condition, CREF(tstring) _oprName);
 
 private:
 	RDOPatternKeyboard(rbool trace);

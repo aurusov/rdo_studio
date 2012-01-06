@@ -46,16 +46,16 @@ public:
 	rbool     canTrace() const;
 
 	double getTraceStartTime() const;
-	void setTraceStartTime(double value);
+	void   setTraceStartTime(double value);
 
 	double getTraceEndTime() const;
-	void setTraceEndTime(double value);
+	void   setTraceEndTime(double value);
 
 	virtual void onNewTimeNow();
 
-	void memory_insert(unsigned int mem);
-	void memory_remove(unsigned int mem);
-	unsigned int memory_get() const;
+	void  memory_insert(ruint mem);
+	void  memory_remove(ruint mem);
+	ruint memory_get   () const;
 
 	ruint getResourceId();
 	void incrementResourceIdReference(int id);

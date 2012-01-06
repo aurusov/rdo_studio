@@ -44,19 +44,20 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // -------------------- RDORuntime
 // --------------------------------------------------------------------------------
 RDORuntime::RDORuntime()
-	: RDOSimulatorTrace   (                   )
-	, m_currActivity      (NULL               )
-	, results             (NULL               )
-	, results_info        (NULL               )
-	, lastActiveBreakPoint(NULL               )
-	, whyStop             (rdoSimulator::EC_OK)
-	, key_found           (false              )
-	, m_currentTerm       (0                  )
-	, m_funBreakFlag      (FBF_CONTINUE       )
-	, m_pStudioThread     (NULL               )
+	: RDOSimulatorTrace      (                   )
+	, m_currActivity         (NULL               )
+	, m_resultList           (NULL               )
+	, m_resultListInfo       (NULL               )
+	, m_pLastActiveBreakPoint(NULL               )
+	, m_whyStop              (rdoSimulator::EC_OK)
+	, m_keyFound             (false              )
+	, m_currentTerm          (0                  )
+	, m_funBreakFlag         (FBF_CONTINUE       )
+	, m_pStudioThread        (NULL               )
 {
-	pTerminateIfCalc = NULL;
-	m_pMemoryStack   = rdo::Factory<RDOMemoryStack>::create();
+	m_pTerminateIfCalc = NULL;
+	m_pMemoryStack = rdo::Factory<RDOMemoryStack>::create();
+	ASSERT(m_pMemoryStack);
 }
 
 RDORuntime::~RDORuntime()
@@ -73,27 +74,27 @@ void RDORuntime::deinit()
 	onDestroy();
 }
 
-void RDORuntime::connect(PTR(INotify) to, ruint message)
+void RDORuntime::connect(PTR(INotify) pTo, ruint message)
 {
 	Connected::iterator it = m_connected.find(message);
 	while (it != m_connected.end())
 	{
-		if (it->second == to)
+		if (it->second == pTo)
 			break;
 		++it;
 	}
 	if (it == m_connected.end())
 	{
-		m_connected.insert(Connected::value_type(message, to));
+		m_connected.insert(Connected::value_type(message, pTo));
 	}
 }
 
-void RDORuntime::disconnect(PTR(INotify) to)
+void RDORuntime::disconnect(PTR(INotify) pTo)
 {
 	Connected::iterator it = m_connected.begin();
 	while (it != m_connected.end())
 	{
-		if (it->second == to)
+		if (it->second == pTo)
 		{
 			m_connected.erase(it++);
 			if (it == m_connected.end()) break;
@@ -102,12 +103,12 @@ void RDORuntime::disconnect(PTR(INotify) to)
 	}
 }
 
-void RDORuntime::disconnect(PTR(INotify) to, ruint message)
+void RDORuntime::disconnect(PTR(INotify) pTo, ruint message)
 {
 	Connected::iterator it = m_connected.find( message );
 	while (it != m_connected.end())
 	{
-		if (it->second == to)
+		if (it->second == pTo)
 		{
 			m_connected.erase(it++);
 			if (it == m_connected.end()) break;
@@ -133,25 +134,26 @@ void RDORuntime::setStudioThread(PTR(RDOThread) pStudioThread)
 
 rbool RDORuntime::endCondition()
 {
-	if (!pTerminateIfCalc)
+	if (!m_pTerminateIfCalc)
 	{
-		return false;	// forever
+		return false; // forever
 	}
-	return fabs(pTerminateIfCalc->calcValue(this).getDouble()) > DBL_EPSILON;
+	return fabs(m_pTerminateIfCalc->calcValue(this).getDouble()) > DBL_EPSILON;
 }
 
-void RDORuntime::setTerminateIf(CREF(LPRDOCalc) _pTerminateIfCalc)
+void RDORuntime::setTerminateIf(CREF(LPRDOCalc) pTerminateIfCalc)
 {
-	pTerminateIfCalc = _pTerminateIfCalc;
+	ASSERT(pTerminateIfCalc);
+	m_pTerminateIfCalc = pTerminateIfCalc;
 }
 
 rbool RDORuntime::breakPoints()
 {
-	STL_FOR_ALL_CONST(breakPointsCalcs, it)
+	STL_FOR_ALL_CONST(m_breakPointList, it)
 	{
 		if ((*it)->getCalc()->calcValue(this).getAsBool())
 		{
-			lastActiveBreakPoint = *it;
+			m_pLastActiveBreakPoint = *it;
 			return true;
 		}
 	}
@@ -160,12 +162,13 @@ rbool RDORuntime::breakPoints()
 
 void RDORuntime::insertBreakPoint(CREF(tstring) name, CREF(LPRDOCalc) pCalc)
 {
-	breakPointsCalcs.push_back(rdo::Factory<BreakPoint>::create(name, pCalc));
+	ASSERT(pCalc);
+	m_breakPointList.push_back(rdo::Factory<BreakPoint>::create(name, pCalc));
 }
 
 LPRDOCalc RDORuntime::findBreakPoint(CREF(tstring) name)
 {
-	STL_FOR_ALL_CONST(breakPointsCalcs, it)
+	STL_FOR_ALL_CONST(m_breakPointList, it)
 	{
 		if ((*it)->getName() == name)
 		{
@@ -177,55 +180,56 @@ LPRDOCalc RDORuntime::findBreakPoint(CREF(tstring) name)
 
 tstring RDORuntime::getLastBreakPointName() const
 {
-	return lastActiveBreakPoint ? lastActiveBreakPoint->getName() + _T(": ") + lastActiveBreakPoint->getCalc()->src_text() : _T("");
+	return m_pLastActiveBreakPoint ? m_pLastActiveBreakPoint->getName() + _T(": ") + m_pLastActiveBreakPoint->getCalc()->src_text() : _T("");
 }
 
-void RDORuntime::setConstValue(ruint numberOfConst, RDOValue value)
+void RDORuntime::setConstValue(ruint constID, CREF(RDOValue) constValue)
 {
-	if (allConstants.size() <= numberOfConst)
+	if (m_constantList.size() <= constID)
 	{
-		allConstants.resize(numberOfConst + 1);
+		m_constantList.resize(constID + 1);
 	}
-	allConstants.at(numberOfConst) = value;
+	m_constantList[constID] = constValue;
 }
 
-RDOValue RDORuntime::getConstValue(int numberOfConst)
+RDOValue RDORuntime::getConstValue(ruint constID) const
 {
-	return allConstants.at(numberOfConst);
+	ASSERT(constID < m_constantList.size());
+	return m_constantList[constID];
 }
 
 #ifdef _DEBUG
 rbool RDORuntime::checkState()
 {
-	if (state.empty())
+	if (m_state.empty())
 	{
-		std::vector<RDOValue> res;
+		ValueList res;
 		res.push_back(1);
 		res.push_back(4);
-		state.push_back(res);
+		m_state.push_back(res);
 		res[0] = 2;
 		res[1] = 1;
-		state.push_back(res);
+		m_state.push_back(res);
 		res[0] = 3;
 		res[1] = 3;
-		state.push_back(res);
+		m_state.push_back(res);
 		res[0] = 4;
 		res[1] = 2;
-		state.push_back(res);
+		m_state.push_back(res);
 		res[0] = 5;
 		res[1] = 6;
-		state.push_back(res);
+		m_state.push_back(res);
 		res.clear();
 		res.push_back(5);
-		state.push_back(res);
+		m_state.push_back(res);
 	}
-	if (state.size() != allResourcesByID.size()) return false;
-	for (ruint i = 0; i < state.size(); ++i)
+	if (m_state.size() != m_resourceListByID.size()) return false;
+	for (ruint i = 0; i < m_state.size(); ++i)
 	{
-		if (state[i].size() != allResourcesByID[i]->paramsCount()) return false;
-		for (ruint j = 0; j < allResourcesByID[i]->paramsCount(); ++j)
+		if (m_state[i].size() != m_resourceListByID[i]->paramsCount()) return false;
+		for (ruint j = 0; j < m_resourceListByID[i]->paramsCount(); ++j)
 		{
-			if (state[i][j] != allResourcesByID[i]->getParam(j)) return false;
+			if (m_state[i][j] != m_resourceListByID[i]->getParam(j)) return false;
 		}
 	}
 	return true;
@@ -235,8 +239,8 @@ void RDORuntime::showResources(int node) const
 {
 	TRACE1(_T("------------- %d:\n"), node);
 	int index = 0;
-	std::vector<LPRDOResource>::const_iterator it = allResourcesByID.begin();
-	while (it != allResourcesByID.end())
+	ResourceListByID::const_iterator it = m_resourceListByID.begin();
+	while (it != m_resourceListByID.end())
 	{
 		if (*it)
 		{
@@ -257,9 +261,9 @@ void RDORuntime::showResources(int node) const
 }
 #endif
 
-void RDORuntime::onEraseRes(const int res_id, CREF(LPRDOEraseResRelCalc) pCalc)
+void RDORuntime::onEraseRes(ruint resourceID, CREF(LPRDOEraseResRelCalc) pCalc)
 {
-	LPRDOResource res = allResourcesByID.at(res_id);
+	LPRDOResource res = m_resourceListByID.at(resourceID);
 	if (!res)
 	{
 		error(rdo::format("Временный ресурс уже удален. Возможно, он удален ранее в этом же образце. Имя релевантного ресурса: %s", pCalc ? pCalc->getName().c_str() : "неизвестное имя"), pCalc);
@@ -277,9 +281,9 @@ void RDORuntime::onEraseRes(const int res_id, CREF(LPRDOEraseResRelCalc) pCalc)
 			(*it)->checkResourceErased(res);
 			++it;
 		}
-		allResourcesByID.at(res_id) = NULL;
+		m_resourceListByID.at(resourceID) = NULL;
 		// Диструктор ресурса вызывается в std::list::erase, который вызывается из std::list::remove
-		allResourcesByTime.remove(res);
+		m_resourceListByTime.remove(res);
 		onResourceErase(res);
 	}
 }
@@ -287,38 +291,44 @@ void RDORuntime::onEraseRes(const int res_id, CREF(LPRDOEraseResRelCalc) pCalc)
 void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
 {
 	ASSERT(pResource);
-	if (pResource->getTraceID() >= allResourcesByID.size())
+	if (pResource->getTraceID() >= m_resourceListByID.size())
 	{
-		allResourcesByID.resize(pResource->getTraceID() + 1, NULL);
-		allResourcesByID.at(pResource->getTraceID()) = pResource;
+		m_resourceListByID.resize(pResource->getTraceID() + 1, NULL);
+		m_resourceListByID.at(pResource->getTraceID()) = pResource;
 	}
 	else
 	{
-		if (allResourcesByID.at(pResource->getTraceID()) == LPRDOResource(NULL))
+		if (m_resourceListByID.at(pResource->getTraceID()) == LPRDOResource(NULL))
 		{
-			allResourcesByID.at(pResource->getTraceID()) = pResource;
+			m_resourceListByID.at(pResource->getTraceID()) = pResource;
 		}
 		else
 		{
 			error("Внутренняя ошибка: insertNewResource");
 		}
 	}
-	allResourcesByTime.push_back(pResource);
+	m_resourceListByTime.push_back(pResource);
 }
 
-void RDORuntime::addRuntimeEvent(LPIBaseOperationContainer logic, CREF(LPIEvent) ev)
+void RDORuntime::addRuntimeEvent(LPIBaseOperationContainer pLogic, CREF(LPIEvent) pEvent)
 {
-	appendBaseOperation(logic, ev);
+	ASSERT(pLogic);
+	ASSERT(pEvent);
+	appendBaseOperation(pLogic, pEvent);
 }
 
-void RDORuntime::addRuntimeRule(LPIBaseOperationContainer logic, CREF(LPIRule) rule)
+void RDORuntime::addRuntimeRule(LPIBaseOperationContainer pLogic, CREF(LPIRule) pRule)
 {
-	appendBaseOperation(logic, rule);
+	ASSERT(pLogic);
+	ASSERT(pRule );
+	appendBaseOperation(pLogic, pRule);
 }
 
-void RDORuntime::addRuntimeOperation(LPIBaseOperationContainer logic, CREF(LPIOperation) opration)
+void RDORuntime::addRuntimeOperation(LPIBaseOperationContainer pLogic, CREF(LPIOperation) pOperation)
 {
-	appendBaseOperation(logic, opration);
+	ASSERT(pLogic    );
+	ASSERT(pOperation);
+	appendBaseOperation(pLogic, pOperation);
 }
 
 void RDORuntime::addRuntimePokaz(CREF(LPIPokaz) pPokaz)
@@ -338,25 +348,25 @@ void RDORuntime::addRuntimePokaz(CREF(LPIPokaz) pPokaz)
 
 void RDORuntime::addRuntimeFrame(CREF(LPRDOFRMFrame) pFrame)
 { 
-	allFrames.push_back(pFrame);
+	m_frameList.push_back(pFrame);
 }
 
 LPRDOFRMFrame RDORuntime::lastFrame() const
 {
-	return !allFrames.empty() ? allFrames.front() : LPRDOFRMFrame(NULL);
+	return !m_frameList.empty() ? m_frameList.front() : LPRDOFRMFrame(NULL);
 }
 
-rbool RDORuntime::keyDown(ruint scan_code)
+rbool RDORuntime::keyDown(ruint scanCode)
 {
 	// Если нажаты VK_SHIFT или VK_CONTROL, то сбросим буфер клавиатуры
-	if (scan_code == VK_SHIFT || scan_code == VK_CONTROL)
+	if (scanCode == VK_SHIFT || scanCode == VK_CONTROL)
 	{
-		std::list<ruint>::iterator it = keysDown.begin();
-		while (it != keysDown.end())
+		KeyList::iterator it = m_keysDown.begin();
+		while (it != m_keysDown.end())
 		{
 			if (*it != VK_SHIFT && *it != VK_CONTROL)
 			{
-				it = keysDown.erase(it);
+				it = m_keysDown.erase(it);
 			}
 			else
 			{
@@ -366,10 +376,10 @@ rbool RDORuntime::keyDown(ruint scan_code)
 	}
 	// Подсчитаем сколько раз клавиша уже в буфере
 	int cnt = 0;
-	std::list<ruint>::iterator it = keysDown.begin();
-	while (it != keysDown.end())
+	KeyList::iterator it = m_keysDown.begin();
+	while (it != m_keysDown.end())
 	{
-		if (*it == scan_code)
+		if (*it == scanCode)
 		{
 			++cnt;
 		}
@@ -378,23 +388,23 @@ rbool RDORuntime::keyDown(ruint scan_code)
 	// Добавим клавишу в буфер
 	if (cnt < 4)
 	{
-		keysDown.push_back(scan_code);
+		m_keysDown.push_back(scanCode);
 	}
-	if (cnt == 0) key_found = true;
+	if (cnt == 0) m_keyFound = true;
 	return cnt > 0;
 }
 
-void RDORuntime::keyUp(ruint scan_code)
+void RDORuntime::keyUp(ruint scanCode)
 {
 	// Если отжаты VK_SHIFT или VK_CONTROL, то сбросим удалим их из буфера
-	//if (scan_code == VK_SHIFT || scan_code == VK_CONTROL)
+	//if (scanCode == VK_SHIFT || scanCode == VK_CONTROL)
 	//{
-		std::list<ruint>::iterator it = keysDown.begin();
-		while (it != keysDown.end())
+		KeyList::iterator it = m_keysDown.begin();
+		while (it != m_keysDown.end())
 		{
-			if (*it == scan_code)
+			if (*it == scanCode)
 			{
-				it = keysDown.erase(it);
+				it = m_keysDown.erase(it);
 			}
 			else
 			{
@@ -404,14 +414,14 @@ void RDORuntime::keyUp(ruint scan_code)
 	//}
 }
 
-rbool RDORuntime::checkKeyPressed(ruint scan_code, rbool shift, rbool control)
+rbool RDORuntime::checkKeyPressed(ruint scanCode, rbool shift, rbool control)
 {
-	if (scan_code == 0) return false;
+	if (scanCode == 0) return false;
 	rbool shift_found   = false;
 	rbool control_found = false;
 	// Найдем VK_SHIFT и/или VK_CONTROL в буфере
-	std::list<ruint>::iterator it = keysDown.begin();
-	while (it != keysDown.end())
+	KeyList::iterator it = m_keysDown.begin();
+	while (it != m_keysDown.end())
 	{
 		if (*it == VK_SHIFT)
 		{
@@ -429,77 +439,78 @@ rbool RDORuntime::checkKeyPressed(ruint scan_code, rbool shift, rbool control)
 	// Удалим её из буфера перед выходом
 	if (shift_found == shift && control_found == control)
 	{
-		std::list<ruint>::iterator it = keysDown.begin();
-		while (it != keysDown.end())
+		KeyList::iterator it = m_keysDown.begin();
+		while (it != m_keysDown.end())
 		{
-			if (*it == scan_code)
+			if (*it == scanCode)
 			{
-				keysDown.erase(it);
-				key_found = true;
+				m_keysDown.erase(it);
+				m_keyFound = true;
 				return true;
 			}
 			++it;
 		}
 	}
-	key_found = false;
+	m_keyFound = false;
 	return false;
 }
 
 rbool RDORuntime::checkAreaActivated(CREF(tstring) oprName)
 {
-	std::vector<tstring>::iterator it = std::find(activeAreasMouseClicked.begin(), activeAreasMouseClicked.end(), oprName);
-	if (it == activeAreasMouseClicked.end())
+	NameList::iterator it = std::find(m_activeAreasMouseClicked.begin(), m_activeAreasMouseClicked.end(), oprName);
+	if (it == m_activeAreasMouseClicked.end())
 	{
 		return false;
 	}
-	activeAreasMouseClicked.erase(it);
+	m_activeAreasMouseClicked.erase(it);
 	return true;
 }
 
 rbool RDORuntime::isKeyDown()
 {
-	return key_found || !activeAreasMouseClicked.empty();
+	return m_keyFound || !m_activeAreasMouseClicked.empty();
 }
 
 void RDORuntime::rdoInit(RDOTrace* tracer, RDOResults* customResults, RDOResults* customResultsInfo, CREF(LPIThreadProxy) pThreadProxy)
 {
 	ASSERT(pThreadProxy);
 
-	m_tracer       = tracer;
-	results        = customResults;
-	results_info   = customResultsInfo;
-	currFuncTop    = 0;
-	m_pThreadProxy = pThreadProxy;
-	Parent::rdoInit();
+	m_tracer         = tracer;
+	m_resultList     = customResults;
+	m_resultListInfo = customResultsInfo;
+	m_currFuncTop    = 0;
+	m_pThreadProxy   = pThreadProxy;
+	parent_type::rdoInit();
 }
 
 void RDORuntime::onInit()
 {
-	STL_FOR_ALL(initCalcs, calcIt)
+	STL_FOR_ALL(m_initCalcList, calcIt)
 		(*calcIt)->calcValue(this);
 }
 
 void RDORuntime::onDestroy()
 {
 	/// @todo Дима, почему у первого ресурса счетчик на 1 больше, чем у других ?
-	allResourcesByTime.clear();
-	allResourcesByID.clear();
+	m_resourceListByTime.clear();
+	m_resourceListByID.clear();
 
-	if (results)
+	if (m_resultList)
 	{
-		delete results;
-		results = NULL;
+		delete m_resultList;
+		m_resultList = NULL;
 	}
-	if (results_info)
+	if (m_resultListInfo)
 	{
-		delete results_info;
-		results_info = NULL;
+		delete m_resultListInfo;
+		m_resultListInfo = NULL;
 	}
 }
 
-RDOValue RDORuntime::getFuncArgument(int numberOfParam)
+RDOValue RDORuntime::getFuncArgument(ruint paramID) const
 {
-	return funcStack.at(currFuncTop + numberOfParam);
+	ASSERT(m_currFuncTop + paramID < m_funcStack.size());
+	return m_funcStack[m_currFuncTop + paramID];
 }
 
 LPRDORuntime RDORuntime::clone() const
@@ -518,40 +529,40 @@ void RDORuntime::copyFrom(CREF(LPRDORuntime) pOther)
 {
 	ASSERT(pOther);
 
-	ruint size = pOther->allResourcesByID.size();
+	ruint size = pOther->m_resourceListByID.size();
 	for (ruint i = 0; i < size; ++i)
 	{
-		if (pOther->allResourcesByID.at(i) == LPRDOResource(NULL))
+		if (pOther->m_resourceListByID.at(i) == LPRDOResource(NULL))
 		{
-			allResourcesByID.push_back(NULL);
+			m_resourceListByID.push_back(NULL);
 		}
 		else
 		{
-			// вставка ресурса в контейнер allResourcesByID нового RDORuntime произойдет в его конструкторе
-			pOther->allResourcesByID.at(i)->clone(this);
+			// вставка ресурса в контейнер m_resourceListByID нового RDORuntime произойдет в его конструкторе
+			pOther->m_resourceListByID.at(i)->clone(this);
 			m_sizeofSim += sizeof(RDOResource) + sizeof(void*) * 2;
 		}
 	}
-	allConstants      = pOther->allConstants;
-	patternParameters = pOther->patternParameters;
-	results           = pOther->results;
+	m_constantList      = pOther->m_constantList;
+	m_patternParameterList = pOther->m_patternParameterList;
+	m_resultList           = pOther->m_resultList;
 	m_pThreadProxy    = pOther->m_pThreadProxy;
 	setCurrentTime(pOther->getCurrentTime());
 
-	Parent::copyFrom(pOther.object_parent_cast<Parent>());
+	parent_type::copyFrom(pOther.object_parent_cast<parent_type>());
 }
 
 rbool RDORuntime::equal(CREF(LPRDORuntime) pOther) const
 {
-	if (pOther->allResourcesByID.size() != allResourcesByID.size()) return false;
+	if (pOther->m_resourceListByID.size() != m_resourceListByID.size()) return false;
 
-	ruint size = allResourcesByID.size();
+	ruint size = m_resourceListByID.size();
 	for (ruint i = 0; i < size; ++i)
 	{
-		if (allResourcesByID.at(i) == LPRDOResource(NULL) && pOther->allResourcesByID.at(i) != LPRDOResource(NULL)) return false;
-		if (allResourcesByID.at(i) != LPRDOResource(NULL) && pOther->allResourcesByID.at(i) == LPRDOResource(NULL)) return false;
-		if (allResourcesByID.at(i) == LPRDOResource(NULL) && pOther->allResourcesByID.at(i) == LPRDOResource(NULL)) continue;
-		if (pOther->allResourcesByID.at(i) != allResourcesByID.at(i)) return false;
+		if (m_resourceListByID.at(i) == LPRDOResource(NULL) && pOther->m_resourceListByID.at(i) != LPRDOResource(NULL)) return false;
+		if (m_resourceListByID.at(i) != LPRDOResource(NULL) && pOther->m_resourceListByID.at(i) == LPRDOResource(NULL)) return false;
+		if (m_resourceListByID.at(i) == LPRDOResource(NULL) && pOther->m_resourceListByID.at(i) == LPRDOResource(NULL)) continue;
+		if (pOther->m_resourceListByID.at(i) != m_resourceListByID.at(i)) return false;
 	}
 	return true;
 }
@@ -590,7 +601,7 @@ void RDORuntime::error(CREF(tstring) message, CREF(LPRDOCalc) pCalc)
 {
 	if (!message.empty())
 	{
-		errors.push_back(rdoSimulator::RDOSyntaxError(rdoSimulator::RDOSyntaxError::UNKNOWN, rdo::format("Модельное время: %f. %s", getTimeNow(), message.c_str()), pCalc ? pCalc->src_pos().m_last_line : 0, pCalc ? pCalc->src_pos().m_last_pos : 0, pCalc ? pCalc->src_filetype() : rdoModelObjects::PAT));
+		m_errorList.push_back(rdoSimulator::RDOSyntaxError(rdoSimulator::RDOSyntaxError::UNKNOWN, rdo::format("Модельное время: %f. %s", getTimeNow(), message.c_str()), pCalc ? pCalc->src_pos().m_last_line : 0, pCalc ? pCalc->src_pos().m_last_pos : 0, pCalc ? pCalc->src_filetype() : rdoModelObjects::PAT));
 	}
 	throw RDORuntimeException("");
 }
@@ -600,11 +611,11 @@ void RDORuntime::onPutToTreeNode()
 	// when create TreeNode with new RDOSimulator,
 	// make all resources permanent, to avoid trace their
 	// erase when delete TreeNode
-	for (ruint i = 0; i < allResourcesByID.size(); ++i)
+	for (ruint i = 0; i < m_resourceListByID.size(); ++i)
 	{
-		if (allResourcesByID.at(i))
+		if (m_resourceListByID[i])
 		{
-			allResourcesByID.at(i)->makeTemporary(false);
+			m_resourceListByID[i]->makeTemporary(false);
 		}
 	}
 }
@@ -612,7 +623,7 @@ void RDORuntime::onPutToTreeNode()
 void RDORuntime::writeExitCode()
 {
 	tstring status;
-	switch (whyStop)
+	switch (m_whyStop)
 	{
 	case rdoSimulator::EC_OK          : status = _T("NORMAL_TERMINATION"); break;
 	case rdoSimulator::EC_NoMoreEvents: status = _T("NO_MORE_EVENTS");     break;
@@ -641,7 +652,7 @@ void RDORuntime::postProcess()
 
 	try
 	{
-		Parent::postProcess();
+		parent_type::postProcess();
 		writeExitCode();
 		getTracer()->stopWriting();
 	}
@@ -669,7 +680,7 @@ CREF(RDORuntime::FunBreakFlag) RDORuntime::getFunBreakFlag() const
 }
 
 RDORuntime::RDOHotKeyToolkit::RDOHotKeyToolkit()
-{														   
+{
 	m_keys.insert(KeySet::value_type("ESCAPE", VK_ESCAPE));
 	m_keys.insert(KeySet::value_type("TAB", VK_TAB));
 	m_keys.insert(KeySet::value_type("SHIFT", VK_SHIFT));

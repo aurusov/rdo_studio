@@ -65,8 +65,8 @@ public:
 	rbool           blocked  () const;
 
 private:
-	ErrorList m_errors;
-	rbool     m_blocked;
+	ErrorList  m_errorList;
+	rbool      m_blocked;
 };
 
 REF(Error) g_error();

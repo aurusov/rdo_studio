@@ -214,16 +214,16 @@ RDODPTActivityHotKey::RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, CREF(
 
 IKeyboard::AddHotKeyResult RDODPTActivityHotKey::addHotKey(CREF(tstring) hotKey)
 {
-	rdoRuntime::RDORuntime::RDOHotKeyToolkit::KeyCode scan_code = Converter::s_converter()->runtime()->rdoHotKeyToolkit.codeFromString( hotKey );
-	if (scan_code == rdoRuntime::RDORuntime::RDOHotKeyToolkit::UNDEFINED_KEY)
+	rdoRuntime::RDORuntime::RDOHotKeyToolkit::KeyCode scanCode = Converter::s_converter()->runtime()->m_rdoHotKeyToolkit.codeFromString( hotKey );
+	if (scanCode == rdoRuntime::RDORuntime::RDOHotKeyToolkit::UNDEFINED_KEY)
 	{
 		return IKeyboard::addhk_notfound;
 	}
-	if (std::find(m_scanCodeList.begin(), m_scanCodeList.end(), scan_code) != m_scanCodeList.end())
+	if (std::find(m_scanCodeList.begin(), m_scanCodeList.end(), scanCode) != m_scanCodeList.end())
 	{
 		return IKeyboard::addhk_already;
 	}
-	m_scanCodeList.push_back(scan_code);
+	m_scanCodeList.push_back(scanCode);
 	return IKeyboard::addhk_ok;
 }
 

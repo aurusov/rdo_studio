@@ -136,8 +136,8 @@ public:
 		RT_RUNTIME_GET_TIMENOW,                // param = result:double*
 		RT_RUNTIME_GET_FRAME,                  // param = { result:rdoSimulator::RDOFrame*, frame_number:int }*
 		RT_RUNTIME_GET_LAST_BREAKPOINT,        // param = std::string*
-		RT_RUNTIME_KEY_DOWN,                   // param = scan_code:uint*
-		RT_RUNTIME_KEY_UP,                     // param = scan_code:uint*
+		RT_RUNTIME_KEY_DOWN,                   // param = scanCode:uint*
+		RT_RUNTIME_KEY_UP,                     // param = scanCode:uint*
 		RT_RUNTIME_FRAME_AREA_DOWN,            // param = area_name:std::string*
 		RT_CODECOMP_GET_DATA,                  // param = rdoSimulator::RDOThreadCodeComp::GetCodeComp* = { file_type:rdoModelObjects::RDOFileType, pos_x:int, pos_y:int, result:std::list< std::string >& }
 		RT_DEBUG_STRING,                       // param = std::string*
@@ -287,7 +287,7 @@ public:
 	public:
 		RDOThread*   thread;
 		std::string  name;
-		unsigned int index;
+		ruint        index;
 	};
 
 	// POST: отправка сообщений без ожидани€ выполнени€

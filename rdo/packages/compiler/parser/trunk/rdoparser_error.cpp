@@ -49,7 +49,7 @@ void Error::error(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message, rdoSim
 		return;
 
 	push_only(src_info, message, error_code);
-	throw RDOSyntaxException(m_errors.back().m_message);
+	throw RDOSyntaxException(m_errorList.back().m_message);
 }
 
 void Error::warning(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message, rdoSimulator::RDOSyntaxError::ErrorCode error_code) 
@@ -57,7 +57,7 @@ void Error::warning(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message, rdoS
 	if (blocked())
 		return;
 
-	m_errors.push_back(rdoSimulator::RDOSyntaxError(error_code, message, src_info.src_pos().m_last_line, src_info.src_pos().m_last_pos, src_info.src_filetype(), true));
+	m_errorList.push_back(rdoSimulator::RDOSyntaxError(error_code, message, src_info.src_pos().m_last_line, src_info.src_pos().m_last_pos, src_info.src_filetype(), true));
 }
 
 void Error::push_only(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message, rdoSimulator::RDOSyntaxError::ErrorCode error_code)
@@ -67,7 +67,7 @@ void Error::push_only(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message, rd
 
 	if (src_info.src_pos().m_last_line != rdoRuntime::RDOSrcInfo::Position::UNDEFINE_LINE && src_info.src_pos().m_last_pos != rdoRuntime::RDOSrcInfo::Position::UNDEFINE_POS)
 	{
-		m_errors.push_back(rdoSimulator::RDOSyntaxError(error_code, message, src_info.src_pos().m_last_line, src_info.src_pos().m_last_pos, src_info.src_filetype()));
+		m_errorList.push_back(rdoSimulator::RDOSyntaxError(error_code, message, src_info.src_pos().m_last_line, src_info.src_pos().m_last_pos, src_info.src_filetype()));
 	}
 }
 
@@ -78,7 +78,7 @@ void Error::error(CREF(RDOParserSrcInfo) src_info1, CREF(RDOParserSrcInfo) src_i
 		return;
 
 	push_only(src_info1.src_pos().m_last_line != src_info2.src_pos().m_last_line ? src_info1 : src_info2, message, error_code);
-	throw RDOSyntaxException(m_errors.back().m_message);
+	throw RDOSyntaxException(m_errorList.back().m_message);
 }
 
 //! misc
@@ -87,9 +87,9 @@ void Error::push_done()
 	if (blocked())
 		return;
 
-	if (!m_errors.empty())
+	if (!m_errorList.empty())
 	{
-		throw rdoParse::RDOSyntaxException(m_errors.back().m_message);
+		throw rdoParse::RDOSyntaxException(m_errorList.back().m_message);
 	}
 }
 
@@ -98,9 +98,9 @@ void Error::modify(CREF(tstring) message)
 	if (blocked())
 		return;
 
-	if (!m_errors.empty())
+	if (!m_errorList.empty())
 	{
-		m_errors.front().m_message = message + m_errors.front().m_message;
+		m_errorList.front().m_message = message + m_errorList.front().m_message;
 		throw rdoParse::RDOSyntaxException(_T(""));
 	}
 }
@@ -110,12 +110,12 @@ void Error::clear()
 	if (blocked())
 		return;
 
-	m_errors.clear();
+	m_errorList.clear();
 }
 
 CREF(Error::ErrorList) Error::getList() const
 {
-	return m_errors;
+	return m_errorList;
 }
 
 void Error::block()

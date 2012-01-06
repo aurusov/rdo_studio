@@ -49,7 +49,7 @@ public:
 	LPIBaseOperationContainer m_pMetaLogic;
 
 protected:
-	void appendBaseOperation(LPIBaseOperationContainer logic, CREF(LPIBaseOperation) op);
+	void appendBaseOperation(LPIBaseOperationContainer pLogic, CREF(LPIBaseOperation) pBaseOperation);
 
 	// Инициализирует нерегулярные события и блоки GENERATE: задает время первого срабатывания
 	virtual void preProcess();

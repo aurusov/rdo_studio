@@ -41,12 +41,12 @@ inline REF(RDOResults) RDOResults::operator<< (CREF(T) value)
 // --------------------------------------------------------------------------------
 inline REF(RDOResults) RDORuntime::getResults()
 {
-	return *results;
+	return *m_resultList;
 }
 
 inline REF(RDOResults) RDORuntime::getResultsInfo()
 {
-	return *results_info;
+	return *m_resultListInfo;
 }
 
 inline double RDORuntime::getTimeNow()
@@ -57,7 +57,7 @@ inline double RDORuntime::getTimeNow()
 inline double RDORuntime::getSeconds()
 {
 	/// @todo использовать явный cast()
-	return (double)(time(NULL) - physic_time);
+	return (double)(time(NULL) - m_physicTime);
 }
 
 inline ruint RDORuntime::getCurrentTerm() const
@@ -87,7 +87,7 @@ inline CREF(RDORuntime::LPIPokazList) RDORuntime::getPokaz() const
 
 inline void RDORuntime::addInitCalc(CREF(LPRDOCalc) initCalc)
 {
-	initCalcs.push_back(initCalc);
+	m_initCalcList.push_back(initCalc);
 }
 
 inline REF(RDOValue) RDORuntime::getResParamValRaw(ruint resID, ruint paramID)
@@ -106,93 +106,93 @@ inline void RDORuntime::setResParamVal(ruint resID, ruint paramID, CREF(RDOValue
 
 inline LPRDOResource RDORuntime::getGroupFuncRes() const
 {
-	return groupFuncStack.back();
+	return m_groupFuncStack.back();
 }
 
 inline void RDORuntime::pushFuncArgument(RDOValue arg)
 {
-	funcStack.push_back(arg);
+	m_funcStack.push_back(arg);
 }
 
 inline void RDORuntime::pushGroupFunc(CREF(LPRDOResource) pResource)
 {
-	groupFuncStack.push_back(pResource);
+	m_groupFuncStack.push_back(pResource);
 }
 
 inline void RDORuntime::popFuncArgument()
 {
-	funcStack.pop_back();
+	m_funcStack.pop_back();
 }
 
 inline void RDORuntime::popGroupFunc()
 {
-	groupFuncStack.pop_back();
+	m_groupFuncStack.pop_back();
 }
 
 inline void RDORuntime::pushFuncTop()
 {
-	funcStack.push_back(RDOValue(currFuncTop));
+	m_funcStack.push_back(RDOValue(m_currFuncTop));
 }
 
 inline void RDORuntime::resetFuncTop(int numArg)
 {
-	currFuncTop = funcStack.size() - numArg;
+	m_currFuncTop = m_funcStack.size() - numArg;
 }
 
 inline void RDORuntime::popFuncTop()
 {
-	currFuncTop = funcStack.back().getInt();
-	funcStack.pop_back();
+	m_currFuncTop = m_funcStack.back().getInt();
+	m_funcStack.pop_back();
 }
 
-inline LPRDOResource RDORuntime::getResourceByID(const int num) const
+inline LPRDOResource RDORuntime::getResourceByID(ruint resourceID) const
 {
-	return num >= 0 ? allResourcesByID.at(num) : LPRDOResource(NULL);
+	return resourceID != ~0 ? m_resourceListByID[resourceID] : LPRDOResource(NULL);
 }
 
-inline void RDORuntime::setPatternParameter(unsigned int parNumb, RDOValue val)
+inline void RDORuntime::setPatternParameter(ruint paramID, CREF(RDOValue) paramValue)
 {
-	if (patternParameters.size() <= parNumb)
+	if (m_patternParameterList.size() <= paramID)
 	{
-		patternParameters.resize(parNumb + 1);
+		m_patternParameterList.resize(paramID + 1);
 	}
-	patternParameters.at(parNumb) = val;
+	m_patternParameterList[paramID] = paramValue;
 }
 
-inline RDOValue RDORuntime::getPatternParameter(int parNumb) 
+inline RDOValue RDORuntime::getPatternParameter(ruint paramID) const
 {
-	ASSERT((ruint)parNumb < patternParameters.size());
-	return patternParameters[parNumb];
+	ASSERT(paramID < m_patternParameterList.size());
+	return m_patternParameterList[paramID];
 }
 
 inline void RDORuntime::onNothingMoreToDo()
 {
-	whyStop = rdoSimulator::EC_NoMoreEvents;
+	m_whyStop = rdoSimulator::EC_NoMoreEvents;
 }
 
 inline void RDORuntime::onEndCondition()
 {
-	whyStop = rdoSimulator::EC_OK;
+	m_whyStop = rdoSimulator::EC_OK;
 }
 
 inline void RDORuntime::onRuntimeError()
 {
-	whyStop = rdoSimulator::EC_RunTimeError;
+	m_whyStop = rdoSimulator::EC_RunTimeError;
 }
 
 inline void RDORuntime::onUserBreak()
 {
-	whyStop = rdoSimulator::EC_UserBreak;
+	m_whyStop = rdoSimulator::EC_UserBreak;
 }
 
 inline RDORuntime::ResCIterator RDORuntime::res_begin() const
 {
-	return allResourcesByTime.begin();
+	return m_resourceListByTime.begin();
 }
 
 inline RDORuntime::ResCIterator RDORuntime::res_end() const
 {
-	return allResourcesByTime.end();
+	return m_resourceListByTime.end();
 }
 
 inline CREF(LPIThreadProxy) RDORuntime::getThreadProxy() const
@@ -203,8 +203,8 @@ inline CREF(LPIThreadProxy) RDORuntime::getThreadProxy() const
 inline RDORuntime::ResList RDORuntime::getResourcesBeforeSim() const
 {
 	ResList list;
-	ResCIterator it = allResourcesByTime.begin();
-	while (it != allResourcesByTime.end())
+	ResCIterator it = m_resourceListByTime.begin();
+	while (it != m_resourceListByTime.end())
 	{
 		list.push_back(*it);
 		++it;
@@ -214,8 +214,8 @@ inline RDORuntime::ResList RDORuntime::getResourcesBeforeSim() const
 
 inline void RDORuntime::preProcess()
 {
-	Parent::preProcess();
-	physic_time = time(NULL);
+	parent_type::preProcess();
+	m_physicTime = time(NULL);
 }
 
 // --------------------------------------------------------------------------------
