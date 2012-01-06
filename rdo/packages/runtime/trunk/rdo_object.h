@@ -146,6 +146,7 @@ public:
 	};
 
 	RDOSrcInfo();
+	virtual ~RDOSrcInfo();
 
 	void setSrcInfo(CREF(RDOSrcInfo) info);
 	void setSrcInfo(CREF(RDOSrcInfo) begin, CREF(tstring) delim, CREF(RDOSrcInfo) end);

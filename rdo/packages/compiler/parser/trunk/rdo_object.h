@@ -38,6 +38,7 @@ public:
 	RDOParserSrcInfo(CREF(YYLTYPE) pos, CREF(tstring) text);
 	RDOParserSrcInfo(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end, rbool first_align = false);
 	RDOParserSrcInfo(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end, CREF(tstring) text);
+	virtual ~RDOParserSrcInfo();
 
 	virtual void setSrcInfo(CREF(RDOParserSrcInfo) info)
 	{

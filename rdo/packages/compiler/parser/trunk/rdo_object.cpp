@@ -95,6 +95,9 @@ RDOParserSrcInfo::RDOParserSrcInfo(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_en
 	setSrcText(text);
 }
 
+RDOParserSrcInfo::~RDOParserSrcInfo()
+{}
+
 void RDOParserSrcInfo::init()
 {
 	setSrcFileType(RDOParser::getFileToParse());

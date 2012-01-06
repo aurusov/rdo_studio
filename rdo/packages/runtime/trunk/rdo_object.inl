@@ -59,6 +59,9 @@ inline RDOSrcInfo::RDOSrcInfo()
 	, m_file_type(rdoModelObjects::TRC)
 {}
 
+inline RDOSrcInfo::~RDOSrcInfo()
+{}
+
 inline void RDOSrcInfo::setSrcInfo(CREF(RDOSrcInfo) info)
 {
 	setSrcPos     (info.m_position );
