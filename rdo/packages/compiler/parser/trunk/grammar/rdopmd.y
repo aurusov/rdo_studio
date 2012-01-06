@@ -279,7 +279,6 @@ pmd_body
 	{
 		LPRDOPMDPokaz pResult = PARSER->stack().pop<RDOPMDPokaz>($2);
 		ASSERT(pResult);
-		$$ = PARSER->stack().push(pResult);
 	}
 	;
 

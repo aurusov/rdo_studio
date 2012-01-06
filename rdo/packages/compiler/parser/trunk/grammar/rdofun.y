@@ -304,6 +304,10 @@ fun_func_seq
 	: /* empty */
 	| fun_func_seq fun_func_descr
 	| fun_func_seq fun_seq_descr
+	{
+		LPRDOFUNSequence pSequence = PARSER->stack().pop<RDOFUNSequence>($2);
+		ASSERT(pSequence);
+	}
 	| fun_func_seq RDO_Constant
 	{
 		PARSER->error().error(@2, _T("Константы долны быть описаны первыми, перед функциями и последовательностями"));

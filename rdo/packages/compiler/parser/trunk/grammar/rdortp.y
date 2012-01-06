@@ -226,6 +226,10 @@ OPEN_RDO_PARSER_NAMESPACE
 type_list
 	: /* empty */
 	| type_list rtp_res_type
+	{
+		LPRDORTPResType pResourceType = PARSER->stack().pop<RDORTPResType>($2);
+		ASSERT(pResourceType);
+	}
 	| type_list ext_param_type
 	| error
 	{

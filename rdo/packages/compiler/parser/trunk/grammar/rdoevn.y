@@ -241,6 +241,10 @@ OPEN_RDO_PARSER_NAMESPACE
 pat_main
 	: /* empty */
 	| pat_main pat_pattern
+	{
+		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($2);
+		ASSERT(pPattern);
+	}
 	| error
 	{
 		PARSER->error().error(@1, _T("Неизвестная ошибка"));

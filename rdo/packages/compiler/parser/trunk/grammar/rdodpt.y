@@ -566,6 +566,10 @@ dpt_searcht_activity
 
 dpt_search_header
 	: dp_searcht_compare RDO_Activities dpt_searcht_activity
+	{
+		LPRDODPTActivity pActivity = PARSER->stack().pop<RDODPTActivity>($3);
+		ASSERT(pActivity);
+	}
 	| dp_searcht_compare error
 	{
 		PARSER->error().error(@1, @2, _T("После режима запоминания пройденных вершин ожидается ключевое слово $Activities"));
@@ -806,6 +810,10 @@ dpt_some_activity
 
 dpt_some_header
 	: dpt_some_prior RDO_Activities dpt_some_activity
+	{
+		LPRDODPTActivity pActivity = PARSER->stack().pop<RDODPTActivity>($3);
+		ASSERT(pActivity);
+	}
 	| dpt_some_prior error
 	{
 		PARSER->error().error(@1, @2, _T("Ожидается ключевое слово $Activities"));
@@ -1059,7 +1067,7 @@ dpt_prior_activity
 	: /* empty */
 	| dpt_prior_activity dpt_prior_name dpt_prior_descr_keyb dpt_prior_descr_param dpt_prior_activ_prior
 	{
-		LPRDODPTActivity pActivity = PARSER->stack().pop<RDODPTSomeActivity>($2);
+		LPRDODPTActivity pActivity = PARSER->stack().pop<RDODPTActivity>($2);
 		ASSERT(pActivity);
 		pActivity->endParam(@3);
 		$$ = PARSER->stack().push(pActivity);
@@ -1068,6 +1076,10 @@ dpt_prior_activity
 
 dpt_prior_header
 	: dpt_prior_prior RDO_Activities dpt_prior_activity
+	{
+		LPRDODPTActivity pActivity = PARSER->stack().pop<RDODPTActivity>($3);
+		ASSERT(pActivity);
+	}
 	| dpt_prior_prior error
 	{
 		PARSER->error().error(@1, @2, _T("Ожидается ключевое слово $Activities"));
