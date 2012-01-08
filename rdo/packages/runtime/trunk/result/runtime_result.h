@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      rdopokaz.h
+  \file      runtime_result.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      29.01.2007
@@ -16,7 +16,7 @@
 #include "utils/namespace.h"
 #include "simulator/runtime/rdotrace.h"
 #include "simulator/runtime/rdotrace_i.h"
-#include "simulator/runtime/rdopokaz_i.h"
+#include "simulator/runtime/result/runtime_result_i.h"
 #include "simulator/runtime/rdo_model_i.h"
 #include "simulator/runtime/rdo_value.h"
 #include "simulator/runtime/runtime_notify_i.h"
