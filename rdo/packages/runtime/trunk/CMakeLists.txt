@@ -47,10 +47,10 @@ SET(HEADER_FILES
 	rdo_operation_i.h
 	rdo_param_i.h
 	rdo_pattern.h
-	rdopokaz_group.h
-	rdopokaz_group_i.h
-	rdopokaz.h
-	rdopokaz_i.h
+	runtime_watch_group.h
+	runtime_watch_group_i.h
+	runtime_watch.h
+	runtime_watch_i.h
 	rdo_priority.h
 	rdo_priority_i.h
 	rdoprocess.h
@@ -163,8 +163,8 @@ SET(SOURCE_FILES
 	rdo_object.cpp
 	rdo_operation.cpp
 	rdo_pattern.cpp
-	rdopokaz.cpp
-	rdopokaz_group.cpp
+	runtime_watch.cpp
+	runtime_watch_group.cpp
 	rdoprocess.cpp
 	rdo_resource.cpp
 	rdo_rule.cpp
@@ -270,12 +270,12 @@ SOURCE_GROUP(".rdo_fun" FILES
 	rdo_random_distribution.inl)
 
 SOURCE_GROUP(".rdo_pokaz" FILES 
-	rdopokaz.h
-	rdopokaz.cpp
-	rdopokaz_group.h
-	rdopokaz_group.cpp
-	rdopokaz_group_i.h
-	rdopokaz_i.h)
+	runtime_watch.h
+	runtime_watch.cpp
+	runtime_watch_group.h
+	runtime_watch_group.cpp
+	runtime_watch_group_i.h
+	runtime_watch_i.h)
 
 SOURCE_GROUP(".rdo_calc" FILES 
 	calc/arithm.h

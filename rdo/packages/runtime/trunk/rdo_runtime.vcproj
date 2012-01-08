@@ -433,84 +433,30 @@
 			</File>
 		</Filter>
 		<Filter
-			Name=".rdo_pokaz"
+			Name=".watch"
 			>
 			<File
-				RelativePath="rdopokaz.cpp"
-				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug MT|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release MT|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="rdopokaz.h"
+				RelativePath=".\watch\runtime_watch.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdopokaz_group.cpp"
+				RelativePath=".\watch\runtime_watch.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdopokaz_group.h"
+				RelativePath=".\watch\runtime_watch_group.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdopokaz_group_i.h"
+				RelativePath=".\watch\runtime_watch_group.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdopokaz_i.h"
+				RelativePath=".\watch\runtime_watch_group_i.h"
+				>
+			</File>
+			<File
+				RelativePath=".\watch\runtime_watch_i.h"
 				>
 			</File>
 		</Filter>
