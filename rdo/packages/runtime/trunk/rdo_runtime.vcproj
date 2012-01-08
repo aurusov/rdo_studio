@@ -1776,6 +1776,10 @@
 					RelativePath=".\runtime_notify.h"
 					>
 				</File>
+				<File
+					RelativePath=".\runtime_notify_i.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -2285,10 +2289,6 @@
 			</File>
 			<File
 				RelativePath=".\rdo_runtime_interface_registrator.h"
-				>
-			</File>
-			<File
-				RelativePath=".\runtime_notify_i.h"
 				>
 			</File>
 		</Filter>
