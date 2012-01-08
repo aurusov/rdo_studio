@@ -21,7 +21,7 @@
 #include "simulator/runtime/rdopokaz.h"
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/rdo_runtime.h"
-#include "simulator/runtime/notify.h"
+#include "simulator/runtime/runtime_notify.h"
 // --------------------------------------------------------------------------------
 
 #if defined( ARCHITECTURES_AMD64 )

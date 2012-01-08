@@ -19,7 +19,7 @@
 #include "simulator/runtime/rdopokaz_i.h"
 #include "simulator/runtime/rdo_model_i.h"
 #include "simulator/runtime/rdo_value.h"
-#include "simulator/runtime/notify_i.h"
+#include "simulator/runtime/runtime_notify_i.h"
 #include "simulator/runtime/calc/calc_base.h"
 // --------------------------------------------------------------------------------
 

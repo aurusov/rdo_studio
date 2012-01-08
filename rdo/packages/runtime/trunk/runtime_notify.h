@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2012
-  \file      notify.h
+  \file      runtime_notify.h
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      08.01.2012
   \brief     
@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- PLATFORM
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/notify_i.h"
+#include "simulator/runtime/runtime_notify_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

@@ -30,7 +30,7 @@
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/rdo_memory.h"
 #include "simulator/runtime/thread_proxy_i.h"
-#include "simulator/runtime/notify.h"
+#include "simulator/runtime/runtime_notify.h"
 // --------------------------------------------------------------------------------
 
 class RDOThread;

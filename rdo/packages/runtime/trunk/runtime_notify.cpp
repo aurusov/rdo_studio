@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2012
-  \file      notify.cpp
+  \file      runtime_notify.cpp
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      08.01.2012
   \brief     
@@ -12,7 +12,7 @@
 #include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/notify.h"
+#include "simulator/runtime/runtime_notify.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
