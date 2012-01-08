@@ -39,6 +39,11 @@ inline REF(RDOResults) RDOResults::operator<< (CREF(T) value)
 // --------------------------------------------------------------------------------
 // -------------------- RDORuntime
 // --------------------------------------------------------------------------------
+inline REF(Notify) RDORuntime::notify()
+{
+	return m_notify;
+}
+
 inline REF(RDOResults) RDORuntime::getResults()
 {
 	return *m_resultList;

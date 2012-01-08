@@ -522,6 +522,18 @@
 				>
 			</File>
 			<File
+				RelativePath=".\notify.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\notify.h"
+				>
+			</File>
+			<File
+				RelativePath=".\notify_i.h"
+				>
+			</File>
+			<File
 				RelativePath=".\rdo_exception.h"
 				>
 			</File>

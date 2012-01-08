@@ -30,7 +30,8 @@
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/rdo_memory.h"
 #include "simulator/runtime/thread_proxy_i.h"
-// ------------------------------------------------------------------------------------
+#include "simulator/runtime/notify.h"
+// --------------------------------------------------------------------------------
 
 class RDOThread;
 
@@ -73,16 +74,8 @@ public:
 	typedef  std::vector<LPIPokazTrace>      LPIPokazTraceList;
 	typedef  std::vector<LPIPokazWatchValue> LPIPokazWatchValueList;
 
-	//! Типы сообщений
-	enum Messages
-	{
-		RO_BEFOREDELETE = 0
-	};
-
-	void connect    (PTR(INotify) pTo, ruint message);
-	void disconnect (PTR(INotify) pTo               );
-	void disconnect (PTR(INotify) pTo, ruint message);
-	void fireMessage(ruint message, PTR(void) pParam);
+	//! Подписка на внутренние сообщения
+	REF(Notify) notify();
 
 	typedef  std::vector<rdoSimulator::RDOSyntaxError>  ErrorList;
 	ErrorList m_errorList;
@@ -246,6 +239,7 @@ private:
 	FunBreakFlag        m_funBreakFlag;
 	LPIThreadProxy      m_pThreadProxy;
 	PTR(RDOThread)      m_pStudioThread;
+	Notify              m_notify;
 
 #ifdef _DEBUG
 	typedef  std::vector<ValueList>  State;
@@ -301,9 +295,6 @@ private:
 
 	rbool m_keyFound;
 	virtual rbool isKeyDown();
-
-	typedef std::multimap<ruint, PTR(INotify)> Connected;
-	Connected m_connected;
 
 	virtual void onResetPokaz();
 	virtual void onCheckPokaz();

@@ -10,7 +10,7 @@
 
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/platform.h"
-// ----------------------------------------------------------------------- SYNOPSIS
+// ----------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <limits>
@@ -70,61 +70,7 @@ void RDORuntime::init()
 
 void RDORuntime::deinit()
 {
-	m_connected.clear();
 	onDestroy();
-}
-
-void RDORuntime::connect(PTR(INotify) pTo, ruint message)
-{
-	Connected::iterator it = m_connected.find(message);
-	while (it != m_connected.end())
-	{
-		if (it->second == pTo)
-			break;
-		++it;
-	}
-	if (it == m_connected.end())
-	{
-		m_connected.insert(Connected::value_type(message, pTo));
-	}
-}
-
-void RDORuntime::disconnect(PTR(INotify) pTo)
-{
-	Connected::iterator it = m_connected.begin();
-	while (it != m_connected.end())
-	{
-		if (it->second == pTo)
-		{
-			m_connected.erase(it++);
-			if (it == m_connected.end()) break;
-		}
-		++it;
-	}
-}
-
-void RDORuntime::disconnect(PTR(INotify) pTo, ruint message)
-{
-	Connected::iterator it = m_connected.find( message );
-	while (it != m_connected.end())
-	{
-		if (it->second == pTo)
-		{
-			m_connected.erase(it++);
-			if (it == m_connected.end()) break;
-		}
-		++it;
-	}
-}
-
-void RDORuntime::fireMessage(ruint message, PTR(void) pParam)
-{
-	Connected::iterator it = m_connected.find(message);
-	while (it != m_connected.end())
-	{
-		it->second->notify(message, pParam);
-		++it;
-	}
 }
 
 void RDORuntime::setStudioThread(PTR(RDOThread) pStudioThread)

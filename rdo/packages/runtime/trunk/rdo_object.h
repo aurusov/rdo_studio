@@ -172,19 +172,6 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-/*!
-  \interface INotify
-  \brief     Èםעונפויס INotify
-*/
-class INotify
-{
-public:
-	virtual void notify(ruint message, PTR(void) pParam) = 0;
-};
-
-#define DECLARE_INotify \
-	virtual void notify(ruint message, PTR(void) pParam);
-
 #include "simulator/runtime/rdo_object.inl"
 
 #endif // _LIB_RUNTIME_OBJECT_H_
