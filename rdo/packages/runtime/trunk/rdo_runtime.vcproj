@@ -433,30 +433,30 @@
 			</File>
 		</Filter>
 		<Filter
-			Name=".watch"
+			Name=".result"
 			>
 			<File
-				RelativePath=".\watch\runtime_watch.cpp"
+				RelativePath=".\result\runtime_result.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\watch\runtime_watch.h"
+				RelativePath=".\result\runtime_result.h"
 				>
 			</File>
 			<File
-				RelativePath=".\watch\runtime_watch_group.cpp"
+				RelativePath=".\result\runtime_result_group.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\watch\runtime_watch_group.h"
+				RelativePath=".\result\runtime_result_group.h"
 				>
 			</File>
 			<File
-				RelativePath=".\watch\runtime_watch_group_i.h"
+				RelativePath=".\result\runtime_result_group_i.h"
 				>
 			</File>
 			<File
-				RelativePath=".\watch\runtime_watch_i.h"
+				RelativePath=".\result\runtime_result_i.h"
 				>
 			</File>
 		</Filter>

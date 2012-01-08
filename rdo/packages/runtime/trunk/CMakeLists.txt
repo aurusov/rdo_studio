@@ -47,10 +47,6 @@ SET(HEADER_FILES
 	rdo_operation_i.h
 	rdo_param_i.h
 	rdo_pattern.h
-	runtime_watch_group.h
-	runtime_watch_group_i.h
-	runtime_watch.h
-	runtime_watch_i.h
 	rdo_priority.h
 	rdo_priority_i.h
 	rdoprocess.h
@@ -101,7 +97,12 @@ SET(HEADER_FILES
 	calc/resource/calc_group.h
 	calc/resource/calc_relevant.h
 	calc/resource/calc_resource.h
-	calc/resource/calc_select.h)
+	calc/resource/calc_select.h
+
+	result/runtime_result_group.h
+	result/runtime_result_group_i.h
+	result/runtime_result.h
+	result/runtime_result_i.h)
 
 SET(INLINE_FILES
 	rdo_activity.inl
@@ -163,8 +164,6 @@ SET(SOURCE_FILES
 	rdo_object.cpp
 	rdo_operation.cpp
 	rdo_pattern.cpp
-	runtime_watch.cpp
-	runtime_watch_group.cpp
 	rdoprocess.cpp
 	rdo_resource.cpp
 	rdo_rule.cpp
@@ -201,7 +200,10 @@ SET(SOURCE_FILES
 	calc/resource/calc_group.cpp
 	calc/resource/calc_relevant.cpp
 	calc/resource/calc_resource.cpp
-	calc/resource/calc_select.cpp)
+	calc/resource/calc_select.cpp
+
+	result/runtime_result.cpp
+	result/runtime_result_group.cpp)
 
 ADD_LIBRARY(rdo_runtime ${HEADER_FILES} ${INLINE_FILES} ${SOURCE_FILES})
 
@@ -269,13 +271,13 @@ SOURCE_GROUP(".rdo_fun" FILES
 	rdo_random_distribution.h
 	rdo_random_distribution.inl)
 
-SOURCE_GROUP(".rdo_pokaz" FILES 
-	runtime_watch.h
-	runtime_watch.cpp
-	runtime_watch_group.h
-	runtime_watch_group.cpp
-	runtime_watch_group_i.h
-	runtime_watch_i.h)
+SOURCE_GROUP(".rdo_result" FILES 
+	result/runtime_result.h
+	result/runtime_result.cpp
+	result/runtime_result_group.h
+	result/runtime_result_group.cpp
+	result/runtime_result_group_i.h
+	result/runtime_result_i.h)
 
 SOURCE_GROUP(".rdo_calc" FILES 
 	calc/arithm.h
