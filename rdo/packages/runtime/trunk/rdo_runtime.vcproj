@@ -522,18 +522,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\notify.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\notify.h"
-				>
-			</File>
-			<File
-				RelativePath=".\notify_i.h"
-				>
-			</File>
-			<File
 				RelativePath=".\rdo_exception.h"
 				>
 			</File>
@@ -1831,6 +1819,18 @@
 					</Filter>
 				</Filter>
 			</Filter>
+			<Filter
+				Name=".notify"
+				>
+				<File
+					RelativePath=".\runtime_notify.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\runtime_notify.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name=".rdo_calc"
@@ -2339,6 +2339,10 @@
 			</File>
 			<File
 				RelativePath=".\rdo_runtime_interface_registrator.h"
+				>
+			</File>
+			<File
+				RelativePath=".\runtime_notify_i.h"
 				>
 			</File>
 		</Filter>
