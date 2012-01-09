@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2012
-  \file      runtime_notify_i.h
+  \file      notify_i.h
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      08.01.2012
   \brief     
