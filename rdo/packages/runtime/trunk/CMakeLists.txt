@@ -99,10 +99,10 @@ SET(HEADER_FILES
 	calc/resource/calc_resource.h
 	calc/resource/calc_select.h
 
-	result/runtime_result_group.h
-	result/runtime_result_group_i.h
-	result/runtime_result.h
-	result/runtime_result_i.h)
+	result/result_group.h
+	result/result_group_i.h
+	result/result.h
+	result/result_i.h)
 
 SET(INLINE_FILES
 	rdo_activity.inl
@@ -202,8 +202,8 @@ SET(SOURCE_FILES
 	calc/resource/calc_resource.cpp
 	calc/resource/calc_select.cpp
 
-	result/runtime_result.cpp
-	result/runtime_result_group.cpp)
+	result/result.cpp
+	result/result_group.cpp)
 
 ADD_LIBRARY(rdo_runtime ${HEADER_FILES} ${INLINE_FILES} ${SOURCE_FILES})
 
@@ -272,12 +272,12 @@ SOURCE_GROUP(".rdo_fun" FILES
 	rdo_random_distribution.inl)
 
 SOURCE_GROUP(".rdo_result" FILES 
-	result/runtime_result.h
-	result/runtime_result.cpp
-	result/runtime_result_group.h
-	result/runtime_result_group.cpp
-	result/runtime_result_group_i.h
-	result/runtime_result_i.h)
+	result/result.h
+	result/result.cpp
+	result/result_group.h
+	result/result_group.cpp
+	result/result_group_i.h
+	result/result_i.h)
 
 SOURCE_GROUP(".rdo_calc" FILES 
 	calc/arithm.h

@@ -436,27 +436,27 @@
 			Name=".result"
 			>
 			<File
-				RelativePath=".\result\runtime_result.cpp"
+				RelativePath=".\result\result.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\result\runtime_result.h"
+				RelativePath=".\result\result.h"
 				>
 			</File>
 			<File
-				RelativePath=".\result\runtime_result_group.cpp"
+				RelativePath=".\result\result_group.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\result\runtime_result_group.h"
+				RelativePath=".\result\result_group.h"
 				>
 			</File>
 			<File
-				RelativePath=".\result\runtime_result_group_i.h"
+				RelativePath=".\result\result_group_i.h"
 				>
 			</File>
 			<File
-				RelativePath=".\result\runtime_result_i.h"
+				RelativePath=".\result\result_i.h"
 				>
 			</File>
 		</Filter>
