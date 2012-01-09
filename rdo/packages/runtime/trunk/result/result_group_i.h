@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      runtime_result_group_i.h
+  \file      result_group_i.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      04.03.2011
   \brief     Интерфейс группы собираемых показателей
@@ -14,7 +14,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdointerface.h"
 #include "simulator/runtime/rdo_simulator.h"
-#include "simulator/runtime/result/runtime_result_i.h"
+#include "simulator/runtime/result/result_i.h"
 // --------------------------------------------------------------------------------
 
 /*!

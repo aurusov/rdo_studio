@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      runtime_result_i.h
+  \file      result_i.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      28.07.2009
   \brief     Интерфейсы собираемых показателей

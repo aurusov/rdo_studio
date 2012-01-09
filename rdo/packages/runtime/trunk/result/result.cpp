@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      runtime_result.cpp
+  \file      result.cpp
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      29.01.2007
@@ -18,7 +18,7 @@
 	#include <float.h>
 #endif // COMPILER_GCC
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/result/runtime_result.h"
+#include "simulator/runtime/result/result.h"
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/runtime/notify.h"
