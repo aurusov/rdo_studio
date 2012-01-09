@@ -32,6 +32,7 @@
 #include "simulator/runtime/thread_proxy_i.h"
 #include "simulator/runtime/notify.h"
 #include "simulator/runtime/error.h"
+#include "simulator/runtime/hotkey.h"
 // --------------------------------------------------------------------------------
 
 class RDOThread;
@@ -81,28 +82,12 @@ public:
 	//! Формирование ошибок рантайма
 	REF(Error) error();
 
+	//! Горячие клавиши
+	CREF(RDOHotKeyToolkit) hotket() const;
+
 	LPRDORuntime clone   () const;
 	void         copyFrom(CREF(LPRDORuntime) pOther);
 	rbool        equal   (CREF(LPRDORuntime) pOther) const;
-
-	//! Горячие клавиши
-	class RDOHotKeyToolkit
-	{
-	public:
-		typedef  ruint                       KeyCode;
-		typedef  std::map<tstring, KeyCode>  KeySet;
-		typedef  KeySet::const_iterator      CIterator;
-
-		enum    { UNDEFINED_KEY = ~0 };
-
-		RDOHotKeyToolkit();
-		KeyCode codeFromString(CREF(tstring) key) const;
-
-	private:
-		KeySet m_keys;
-	};
-
-	RDOHotKeyToolkit m_rdoHotKeyToolkit;
 
 	typedef  std::vector<ruint>  UsingScanCodeList;
 	UsingScanCodeList m_usingScanCodeList;
@@ -241,6 +226,7 @@ private:
 	PTR(RDOThread)      m_pStudioThread;
 	Notify              m_notify;
 	Error               m_error;
+	RDOHotKeyToolkit    m_hotKeyToolkit;
 
 #ifdef _DEBUG
 	typedef  std::vector<ValueList>  State;

@@ -214,8 +214,8 @@ RDODPTActivityHotKey::RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, CREF(
 
 IKeyboard::AddHotKeyResult RDODPTActivityHotKey::addHotKey(CREF(tstring) hotKey)
 {
-	rdoRuntime::RDORuntime::RDOHotKeyToolkit::KeyCode scanCode = Converter::s_converter()->runtime()->m_rdoHotKeyToolkit.codeFromString( hotKey );
-	if (scanCode == rdoRuntime::RDORuntime::RDOHotKeyToolkit::UNDEFINED_KEY)
+	rdoRuntime::RDOHotKeyToolkit::KeyCode scanCode = Converter::s_converter()->runtime()->hotket().codeFromString(hotKey);
+	if (scanCode == rdoRuntime::RDOHotKeyToolkit::UNDEFINED_KEY)
 	{
 		return IKeyboard::addhk_notfound;
 	}

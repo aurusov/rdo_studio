@@ -1793,6 +1793,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name=".hotkey"
+				>
+				<File
+					RelativePath=".\hotkey.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\hotkey.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name=".calc"

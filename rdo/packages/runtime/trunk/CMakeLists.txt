@@ -60,6 +60,7 @@ SET(HEADER_FILES
 	rdo_runtime.h
 	notify.h
 	error.h
+	hotkey.h
 	rdo_runtime_interface_registrator.h
 	rdo_simulator.h
 	rdotrace.h
@@ -171,6 +172,7 @@ SET(SOURCE_FILES
 	rdo_runtime.cpp
 	notify.cpp
 	error.cpp
+	hotkey.cpp
 	rdo_simulator.cpp
 	rdotrace.cpp
 	rdo_type.cpp
@@ -418,6 +420,8 @@ SOURCE_GROUP(".rdo_simulator" FILES
 	notify.cpp
 	error.h
 	error.cpp
+	hotkey.h
+	hotkey.cpp
 	rdo_simulator.h
 	rdo_simulator.inl
 	rdo_simulator.cpp

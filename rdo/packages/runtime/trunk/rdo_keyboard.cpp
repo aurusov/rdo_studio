@@ -27,17 +27,17 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // -------------------- RDOKeyboard
 // --------------------------------------------------------------------------------
 RDOKeyboard::RDOKeyboard(CREF(LPRDORuntime) pRuntime, RDOPatternKeyboard* pattern, rbool trace, CREF(tstring) name)
-	: RDOOperation(pRuntime, pattern, trace, name             )
-	, m_shift     (false                                      )
-	, m_control   (false                                      )
-	, m_scan_code (RDORuntime::RDOHotKeyToolkit::UNDEFINED_KEY)
+	: RDOOperation(pRuntime, pattern, trace, name )
+	, m_shift     (false                          )
+	, m_control   (false                          )
+	, m_scan_code (RDOHotKeyToolkit::UNDEFINED_KEY)
 {}
 
 RDOKeyboard::RDOKeyboard(CREF(LPRDORuntime) pRuntime, RDOPatternKeyboard* pattern, rbool trace, CREF(LPRDOCalc) pCondition, CREF(tstring) name)
-	: RDOOperation(pRuntime, pattern, trace, pCondition, name )
-	, m_shift     (false                                      )
-	, m_control   (false                                      )
-	, m_scan_code (RDORuntime::RDOHotKeyToolkit::UNDEFINED_KEY)
+	: RDOOperation(pRuntime, pattern, trace, pCondition, name)
+	, m_shift     (false                                     )
+	, m_control   (false                                     )
+	, m_scan_code (RDOHotKeyToolkit::UNDEFINED_KEY           )
 {}
 
 RDOKeyboard::~RDOKeyboard()
@@ -50,10 +50,10 @@ rbool RDOKeyboard::hasHotKey() const
 
 IKeyboard::AddHotKeyResult RDOKeyboard::addHotKey(CREF(LPRDORuntime) pRuntime, CREF(tstring) hotKey)
 {
-	RDORuntime::RDOHotKeyToolkit::KeyCode scanCode = pRuntime->m_rdoHotKeyToolkit.codeFromString(hotKey);
-	if (scanCode   == RDORuntime::RDOHotKeyToolkit::UNDEFINED_KEY)
+	RDOHotKeyToolkit::KeyCode scanCode = pRuntime->hotket().codeFromString(hotKey);
+	if (scanCode   == RDOHotKeyToolkit::UNDEFINED_KEY)
 		return IKeyboard::addhk_notfound;
-	if (m_scan_code != RDORuntime::RDOHotKeyToolkit::UNDEFINED_KEY && scanCode != VK_SHIFT && scanCode != VK_CONTROL)
+	if (m_scan_code != RDOHotKeyToolkit::UNDEFINED_KEY && scanCode != VK_SHIFT && scanCode != VK_CONTROL)
 		return IKeyboard::addhk_already;
 	switch (scanCode)
 	{
