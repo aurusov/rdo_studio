@@ -1769,15 +1769,15 @@
 				Name=".notify"
 				>
 				<File
-					RelativePath=".\runtime_notify.cpp"
+					RelativePath=".\notify.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\runtime_notify.h"
+					RelativePath=".\notify.h"
 					>
 				</File>
 				<File
-					RelativePath=".\runtime_notify_i.h"
+					RelativePath=".\notify_i.h"
 					>
 				</File>
 			</Filter>
