@@ -417,7 +417,7 @@
 	</References>
 	<Files>
 		<Filter
-			Name=".rdo_value"
+			Name=".value"
 			>
 			<File
 				RelativePath=".\rdo_value.cpp"
@@ -461,7 +461,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name=".rdo_simulator"
+			Name=".simulator"
 			>
 			<File
 				RelativePath=".\keyboard.h"
@@ -1783,7 +1783,7 @@
 			</Filter>
 		</Filter>
 		<Filter
-			Name=".rdo_calc"
+			Name=".calc"
 			>
 			<File
 				RelativePath=".\calc\calc_array.cpp"
@@ -2055,7 +2055,7 @@
 			</Filter>
 		</Filter>
 		<Filter
-			Name=".rdo_fun"
+			Name=".fun"
 			>
 			<File
 				RelativePath="rdo_random_distribution.h"
@@ -2067,7 +2067,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name=".rdo_trace"
+			Name=".trace"
 			>
 			<File
 				RelativePath="rdotrace.cpp"
@@ -2213,7 +2213,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name=".rdo_type"
+			Name=".type"
 			>
 			<File
 				RelativePath=".\rdo_type.cpp"
@@ -2293,7 +2293,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name=".rdo_frame"
+			Name=".frame"
 			>
 			<File
 				RelativePath="rdoframe.cpp"
