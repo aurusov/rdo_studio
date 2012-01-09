@@ -113,7 +113,7 @@ REF(RDOValue) RDOFunAlgorithmicCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 	}
 
 	// До сюда дело дойти не должно, т.к. последний conditions должен быть значением по-умолчанию
-	pRuntime->error(_T("Внутренная ошибка, RDOFunAlgorithmicCalc"), this);
+	pRuntime->error().push(_T("Внутренная ошибка, RDOFunAlgorithmicCalc"), this);
 	return m_value;
 }
 

@@ -1781,6 +1781,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name=".error"
+				>
+				<File
+					RelativePath=".\error.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\error.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name=".calc"

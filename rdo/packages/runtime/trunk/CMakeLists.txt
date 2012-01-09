@@ -59,6 +59,7 @@ SET(HEADER_FILES
 	rdo_rule_i.h
 	rdo_runtime.h
 	notify.h
+	error.h
 	rdo_runtime_interface_registrator.h
 	rdo_simulator.h
 	rdotrace.h
@@ -169,6 +170,7 @@ SET(SOURCE_FILES
 	rdo_rule.cpp
 	rdo_runtime.cpp
 	notify.cpp
+	error.cpp
 	rdo_simulator.cpp
 	rdotrace.cpp
 	rdo_type.cpp
@@ -414,6 +416,8 @@ SOURCE_GROUP(".rdo_simulator" FILES
 	notify.h
 	notify.inl
 	notify.cpp
+	error.h
+	error.cpp
 	rdo_simulator.h
 	rdo_simulator.inl
 	rdo_simulator.cpp

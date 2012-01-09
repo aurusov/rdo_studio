@@ -212,12 +212,11 @@ void RDORuntime::onEraseRes(ruint resourceID, CREF(LPRDOEraseResRelCalc) pCalc)
 	LPRDOResource res = m_resourceListByID.at(resourceID);
 	if (!res)
 	{
-		error(rdo::format("Временный ресурс уже удален. Возможно, он удален ранее в этом же образце. Имя релевантного ресурса: %s", pCalc ? pCalc->getName().c_str() : "неизвестное имя"), pCalc);
+		error().push(rdo::format(_T("Временный ресурс уже удален. Возможно, он удален ранее в этом же образце. Имя релевантного ресурса: %s"), pCalc ? pCalc->getName().c_str() : "неизвестное имя"), pCalc);
 	}
 	if (!res->canFree())
 	{
-		error("Невозможно удалить ресурс, т.к. он еще используется", pCalc);
-//		error("Try to erase used resource", fromCalc);
+		error().push(_T("Невозможно удалить ресурс, т.к. он еще используется"), pCalc);
 	}
 	else
 	{
@@ -250,7 +249,13 @@ void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
 		}
 		else
 		{
-			error("Внутренняя ошибка: insertNewResource");
+			error().push(rdoSimulator::RDOSyntaxError(
+				rdoSimulator::RDOSyntaxError::UNKNOWN,
+				_T("Внутренняя ошибка: insertNewResource"),
+				0,
+				0,
+				rdoModelObjects::PAT
+			));
 		}
 	}
 	m_resourceListByTime.push_back(pResource);
@@ -541,15 +546,6 @@ void RDORuntime::onAfterCheckPokaz()
 		(*it)->tracePokaz();
 		++it;
 	}
-}
-
-void RDORuntime::error(CREF(tstring) message, CREF(LPRDOCalc) pCalc)
-{
-	if (!message.empty())
-	{
-		m_errorList.push_back(rdoSimulator::RDOSyntaxError(rdoSimulator::RDOSyntaxError::UNKNOWN, rdo::format("Модельное время: %f. %s", getTimeNow(), message.c_str()), pCalc ? pCalc->src_pos().m_last_line : 0, pCalc ? pCalc->src_pos().m_last_pos : 0, pCalc ? pCalc->src_filetype() : rdoModelObjects::PAT));
-	}
-	throw RDORuntimeException("");
 }
 
 void RDORuntime::onPutToTreeNode()

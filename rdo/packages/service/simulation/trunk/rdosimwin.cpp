@@ -1257,7 +1257,7 @@ RDOThreadSimulator::SyntaxErrorList RDOThreadSimulator::getErrors()
 	}
 
 	res = m_pParser->error().getList();
-	res.insert(res.end(), m_pRuntime->m_errorList.begin(), m_pRuntime->m_errorList.end());
+	res.insert(res.end(), m_pRuntime->error().list().begin(), m_pRuntime->error().list().end());
 	return res;
 }
 

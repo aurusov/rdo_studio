@@ -59,15 +59,14 @@ REF(RDOValue) RDOCalc::calcValue(CREF(LPRDORuntime) pRuntime)
 	}
 	catch (REF(RDORuntimeException))
 	{
-		if (pRuntime->m_errorList.empty())
-		{
-			pRuntime->error(_T("ошибка в"), this);
-//			pRuntime->error(_T("in"),       this);
-		}
-		else
-		{
-			pRuntime->error(_T(""), this);
-		}
+		rdoSimulator::RDOSyntaxError error(
+			rdoSimulator::RDOSyntaxError::UNKNOWN,
+			rdo::format(_T("<Модельное время: %f>, '%s'"), pRuntime->getTimeNow(), src_text().c_str()),
+			src_pos().m_last_line,
+			src_pos().m_last_pos,
+			src_filetype()
+		);
+		pRuntime->error().push(error);
 	}
 	return m_value;
 }

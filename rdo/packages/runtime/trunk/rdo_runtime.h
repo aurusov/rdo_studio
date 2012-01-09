@@ -31,6 +31,7 @@
 #include "simulator/runtime/rdo_memory.h"
 #include "simulator/runtime/thread_proxy_i.h"
 #include "simulator/runtime/notify.h"
+#include "simulator/runtime/error.h"
 // --------------------------------------------------------------------------------
 
 class RDOThread;
@@ -77,9 +78,8 @@ public:
 	//! Подписка на внутренние сообщения
 	REF(Notify) notify();
 
-	typedef  std::vector<rdoSimulator::RDOSyntaxError>  ErrorList;
-	ErrorList m_errorList;
-	void error(CREF(tstring) message, CREF(LPRDOCalc) pCalc = NULL);
+	//! Формирование ошибок рантайма
+	REF(Error) error();
 
 	LPRDORuntime clone   () const;
 	void         copyFrom(CREF(LPRDORuntime) pOther);
@@ -240,6 +240,7 @@ private:
 	LPIThreadProxy      m_pThreadProxy;
 	PTR(RDOThread)      m_pStudioThread;
 	Notify              m_notify;
+	Error               m_error;
 
 #ifdef _DEBUG
 	typedef  std::vector<ValueList>  State;

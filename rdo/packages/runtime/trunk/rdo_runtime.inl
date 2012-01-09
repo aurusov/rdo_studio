@@ -44,6 +44,11 @@ inline REF(Notify) RDORuntime::notify()
 	return m_notify;
 }
 
+inline REF(Error) RDORuntime::error()
+{
+	return m_error;
+}
+
 inline REF(RDOResults) RDORuntime::getResults()
 {
 	return *m_resultList;
