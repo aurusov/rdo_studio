@@ -50,7 +50,6 @@ RDORuntime::RDORuntime()
 	, m_resultListInfo       (NULL               )
 	, m_pLastActiveBreakPoint(NULL               )
 	, m_whyStop              (rdoSimulator::EC_OK)
-	, m_keyFound             (false              )
 	, m_currentTerm          (0                  )
 	, m_funBreakFlag         (FBF_CONTINUE       )
 	, m_pStudioThread        (NULL               )
@@ -307,119 +306,9 @@ LPRDOFRMFrame RDORuntime::lastFrame() const
 	return !m_frameList.empty() ? m_frameList.front() : LPRDOFRMFrame(NULL);
 }
 
-rbool RDORuntime::keyDown(ruint scanCode)
+rbool RDORuntime::isKeyDown() const
 {
-	// Если нажаты VK_SHIFT или VK_CONTROL, то сбросим буфер клавиатуры
-	if (scanCode == VK_SHIFT || scanCode == VK_CONTROL)
-	{
-		KeyList::iterator it = m_keysDown.begin();
-		while (it != m_keysDown.end())
-		{
-			if (*it != VK_SHIFT && *it != VK_CONTROL)
-			{
-				it = m_keysDown.erase(it);
-			}
-			else
-			{
-				++it;
-			}
-		}
-	}
-	// Подсчитаем сколько раз клавиша уже в буфере
-	int cnt = 0;
-	KeyList::iterator it = m_keysDown.begin();
-	while (it != m_keysDown.end())
-	{
-		if (*it == scanCode)
-		{
-			++cnt;
-		}
-		++it;
-	}
-	// Добавим клавишу в буфер
-	if (cnt < 4)
-	{
-		m_keysDown.push_back(scanCode);
-	}
-	if (cnt == 0) m_keyFound = true;
-	return cnt > 0;
-}
-
-void RDORuntime::keyUp(ruint scanCode)
-{
-	// Если отжаты VK_SHIFT или VK_CONTROL, то сбросим удалим их из буфера
-	//if (scanCode == VK_SHIFT || scanCode == VK_CONTROL)
-	//{
-		KeyList::iterator it = m_keysDown.begin();
-		while (it != m_keysDown.end())
-		{
-			if (*it == scanCode)
-			{
-				it = m_keysDown.erase(it);
-			}
-			else
-			{
-				++it;
-			}
-		}
-	//}
-}
-
-rbool RDORuntime::checkKeyPressed(ruint scanCode, rbool shift, rbool control)
-{
-	if (scanCode == 0) return false;
-	rbool shift_found   = false;
-	rbool control_found = false;
-	// Найдем VK_SHIFT и/или VK_CONTROL в буфере
-	KeyList::iterator it = m_keysDown.begin();
-	while (it != m_keysDown.end())
-	{
-		if (*it == VK_SHIFT)
-		{
-			shift_found = true;
-			if (shift_found && control_found) break;
-		}
-		if (*it == VK_CONTROL)
-		{
-			control_found = true;
-			if (shift_found && control_found) break;
-		}
-		++it;
-	}
-	// Теперь найдем саму клавишу в буфере
-	// Удалим её из буфера перед выходом
-	if (shift_found == shift && control_found == control)
-	{
-		KeyList::iterator it = m_keysDown.begin();
-		while (it != m_keysDown.end())
-		{
-			if (*it == scanCode)
-			{
-				m_keysDown.erase(it);
-				m_keyFound = true;
-				return true;
-			}
-			++it;
-		}
-	}
-	m_keyFound = false;
-	return false;
-}
-
-rbool RDORuntime::checkAreaActivated(CREF(tstring) oprName)
-{
-	NameList::iterator it = std::find(m_activeAreasMouseClicked.begin(), m_activeAreasMouseClicked.end(), oprName);
-	if (it == m_activeAreasMouseClicked.end())
-	{
-		return false;
-	}
-	m_activeAreasMouseClicked.erase(it);
-	return true;
-}
-
-rbool RDORuntime::isKeyDown()
-{
-	return m_keyFound || !m_activeAreasMouseClicked.empty();
+	return m_hotKey.isKeyDown();
 }
 
 void RDORuntime::rdoInit(RDOTrace* tracer, RDOResults* customResults, RDOResults* customResultsInfo, CREF(LPIThreadProxy) pThreadProxy)

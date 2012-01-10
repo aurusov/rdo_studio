@@ -27,17 +27,17 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // -------------------- RDOKeyboard
 // --------------------------------------------------------------------------------
 RDOKeyboard::RDOKeyboard(CREF(LPRDORuntime) pRuntime, RDOPatternKeyboard* pattern, rbool trace, CREF(tstring) name)
-	: RDOOperation(pRuntime, pattern, trace, name )
-	, m_shift     (false                          )
-	, m_control   (false                          )
-	, m_scan_code (RDOHotKeyToolkit::UNDEFINED_KEY)
+	: RDOOperation(pRuntime, pattern, trace, name)
+	, m_shift     (false                         )
+	, m_control   (false                         )
+	, m_scan_code (RDOHotKey::UNDEFINED_KEY      )
 {}
 
 RDOKeyboard::RDOKeyboard(CREF(LPRDORuntime) pRuntime, RDOPatternKeyboard* pattern, rbool trace, CREF(LPRDOCalc) pCondition, CREF(tstring) name)
 	: RDOOperation(pRuntime, pattern, trace, pCondition, name)
 	, m_shift     (false                                     )
 	, m_control   (false                                     )
-	, m_scan_code (RDOHotKeyToolkit::UNDEFINED_KEY           )
+	, m_scan_code (RDOHotKey::UNDEFINED_KEY                  )
 {}
 
 RDOKeyboard::~RDOKeyboard()
@@ -50,24 +50,27 @@ rbool RDOKeyboard::hasHotKey() const
 
 IKeyboard::AddHotKeyResult RDOKeyboard::addHotKey(CREF(LPRDORuntime) pRuntime, CREF(tstring) hotKey)
 {
-	RDOHotKeyToolkit::KeyCode scanCode = pRuntime->hotket().codeFromString(hotKey);
-	if (scanCode   == RDOHotKeyToolkit::UNDEFINED_KEY)
+	RDOHotKey::KeyCode scanCode = pRuntime->hotkey().toolkit().codeFromString(hotKey);
+	if (scanCode   == RDOHotKey::UNDEFINED_KEY)
 		return IKeyboard::addhk_notfound;
-	if (m_scan_code != RDOHotKeyToolkit::UNDEFINED_KEY && scanCode != VK_SHIFT && scanCode != VK_CONTROL)
+	if (m_scan_code != RDOHotKey::UNDEFINED_KEY && scanCode != VK_SHIFT && scanCode != VK_CONTROL)
 		return IKeyboard::addhk_already;
 	switch (scanCode)
 	{
 	case VK_SHIFT:
 		m_shift = true;
-		pRuntime->m_usingScanCodeList.push_back(VK_SHIFT);
+		pRuntime->hotkey().keyInModel().insert(VK_SHIFT);
 		break;
 	case VK_CONTROL:
 		m_control = true;
-		pRuntime->m_usingScanCodeList.push_back(VK_CONTROL);
+		pRuntime->hotkey().keyInModel().insert(VK_CONTROL);
 		break;
 	default:
 		m_scan_code = scanCode;
-		if (m_scan_code) pRuntime->m_usingScanCodeList.push_back(scanCode);
+		if (m_scan_code)
+		{
+			pRuntime->hotkey().keyInModel().insert(scanCode);
+		}
 		break;
 	}
 	return IKeyboard::addhk_ok;
@@ -77,9 +80,9 @@ rbool RDOKeyboard::choiceFrom(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->setCurrentActivity(this);
 
-	if (!pRuntime->checkAreaActivated(m_oprName))
+	if (!pRuntime->hotkey().areaList().check(m_oprName))
 	{
-		if (!pRuntime->checkKeyPressed(m_scan_code, m_shift, m_control))
+		if (!pRuntime->hotkey().keyDown().isPressed(m_scan_code, m_shift, m_control))
 			return false;
 	}
 	return RDOOperation::choiceFrom(pRuntime);

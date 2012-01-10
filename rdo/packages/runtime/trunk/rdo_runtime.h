@@ -83,18 +83,11 @@ public:
 	REF(Error) error();
 
 	//! Горячие клавиши
-	CREF(RDOHotKeyToolkit) hotket() const;
+	REF(RDOHotKey) hotkey();
 
 	LPRDORuntime clone   () const;
 	void         copyFrom(CREF(LPRDORuntime) pOther);
 	rbool        equal   (CREF(LPRDORuntime) pOther) const;
-
-	typedef  std::vector<ruint>  UsingScanCodeList;
-	UsingScanCodeList m_usingScanCodeList;
-	rbool keyDown           (ruint scanCode);
-	void  keyUp             (ruint scanCode);
-	rbool checkKeyPressed   (ruint scanCode, rbool shift, rbool control);
-	rbool checkAreaActivated(CREF(tstring) oprName);
 
 	void     setConstValue(ruint constID, CREF(RDOValue) constValue);
 	RDOValue getConstValue(ruint constID) const;
@@ -162,13 +155,8 @@ public:
 	void     setPatternParameter(ruint paramID, CREF(RDOValue) paramValue);
 	RDOValue getPatternParameter(ruint paramID) const;
 
-	typedef std::vector<tstring>        NameList;
-	typedef std::list<ruint>            KeyList;
-	typedef std::vector<LPRDOFRMFrame>  FrameList;
-
-	NameList        m_activeAreasMouseClicked;
-	KeyList         m_keysDown;
-	FrameList       m_frameList;
+	typedef  std::vector<LPRDOFRMFrame>  FrameList;
+	FrameList m_frameList;
 
 	virtual void onPutToTreeNode();
 
@@ -226,7 +214,7 @@ private:
 	PTR(RDOThread)      m_pStudioThread;
 	Notify              m_notify;
 	Error               m_error;
-	RDOHotKeyToolkit    m_hotKeyToolkit;
+	RDOHotKey           m_hotKey;
 
 #ifdef _DEBUG
 	typedef  std::vector<ValueList>  State;
@@ -280,8 +268,7 @@ private:
 
 	void writeExitCode();
 
-	rbool m_keyFound;
-	virtual rbool isKeyDown();
+	virtual rbool isKeyDown() const;
 
 	virtual void onResetPokaz();
 	virtual void onCheckPokaz();

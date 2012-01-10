@@ -49,9 +49,9 @@ inline REF(Error) RDORuntime::error()
 	return m_error;
 }
 
-inline CREF(RDOHotKeyToolkit) RDORuntime::hotket() const
+inline REF(RDOHotKey) RDORuntime::hotkey()
 {
-	return m_hotKeyToolkit;
+	return m_hotKey;
 }
 
 inline REF(RDOResults) RDORuntime::getResults()

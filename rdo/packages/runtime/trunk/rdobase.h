@@ -121,7 +121,7 @@ protected:
 	virtual void postProcess() = 0;
 
 	// ѕроверка на нажатие клавиши или активной области
-	virtual rbool isKeyDown()   = 0;
+	virtual rbool isKeyDown() const = 0;
 
 	/// @todo не ошибочна€ ли это реализаци€ по-умолчанию?
 	// ¬ызываетс€ при увеличении модельного времени

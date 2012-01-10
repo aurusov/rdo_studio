@@ -11,6 +11,7 @@
 // ----------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/range/algorithm/find.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/hotkey.h"
 // --------------------------------------------------------------------------------
@@ -18,9 +19,9 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOHotKeyToolkit
+// -------------------- RDOHotKey::Toolkit
 // --------------------------------------------------------------------------------
-RDOHotKeyToolkit::RDOHotKeyToolkit()
+RDOHotKey::Toolkit::Toolkit()
 {
 	m_keyList.insert(KeySet::value_type("ESCAPE",   VK_ESCAPE));
 	m_keyList.insert(KeySet::value_type("TAB",      VK_TAB));
@@ -79,14 +80,217 @@ RDOHotKeyToolkit::RDOHotKeyToolkit()
 	}
 }
 
-RDOHotKeyToolkit::KeyCode RDOHotKeyToolkit::codeFromString(CREF(tstring) key) const
+RDOHotKey::Toolkit::~Toolkit()
+{}
+
+RDOHotKey::KeyCode RDOHotKey::Toolkit::codeFromString(CREF(tstring) keyName) const
 {
-	CIterator it = m_keyList.find(key);
-	if (it == m_keyList.end())
+	KeySet::const_iterator it = m_keyList.find(keyName);
+	return it == m_keyList.end() ? KeyCode(UNDEFINED_KEY) : it->second;
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOHotKey::KeyInModelList
+// --------------------------------------------------------------------------------
+rbool RDOHotKey::KeyInModelList::insert(CREF(KeyCode) keyCode)
+{
+	if (check(keyCode))
 	{
-		return KeyCode(UNDEFINED_KEY);
+		return false;
 	}
-	return (*it).second;
+	m_keyList.push_back(keyCode);
+	return true;
+}
+
+rbool RDOHotKey::KeyInModelList::check(CREF(KeyCode) keyCode) const
+{
+	return boost::find(m_keyList, keyCode) != m_keyList.end();
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOHotKey::KeyDownList
+// --------------------------------------------------------------------------------
+RDOHotKey::KeyDownList::KeyDownList()
+	: m_keyFound(false)
+{}
+
+RDOHotKey::KeyDownList::~KeyDownList()
+{}
+
+rbool RDOHotKey::KeyDownList::down(CREF(KeyCode) keyCode)
+{
+	// Если нажаты VK_SHIFT или VK_CONTROL, то сбросим буфер клавиатуры
+	if (keyCode == VK_SHIFT || keyCode == VK_CONTROL)
+	{
+		KeyList::iterator it = m_keyList.begin();
+		while (it != m_keyList.end())
+		{
+			if (*it != VK_SHIFT && *it != VK_CONTROL)
+			{
+				it = m_keyList.erase(it);
+			}
+			else
+			{
+				++it;
+			}
+		}
+	}
+	// Подсчитаем сколько раз клавиша уже в буфере
+	int cnt = 0;
+	KeyList::iterator it = m_keyList.begin();
+	while (it != m_keyList.end())
+	{
+		if (*it == keyCode)
+		{
+			++cnt;
+		}
+		++it;
+	}
+	// Добавим клавишу в буфер
+	if (cnt < 4)
+	{
+		m_keyList.push_back(keyCode);
+	}
+	if (cnt == 0) m_keyFound = true;
+	return cnt > 0;
+}
+
+void RDOHotKey::KeyDownList::up(CREF(KeyCode) keyCode)
+{
+	// Если отжаты VK_SHIFT или VK_CONTROL, то сбросим удалим их из буфера
+	//if (keyCode == VK_SHIFT || keyCode == VK_CONTROL)
+	//{
+		KeyList::iterator it = m_keyList.begin();
+		while (it != m_keyList.end())
+		{
+			if (*it == keyCode)
+			{
+				it = m_keyList.erase(it);
+			}
+			else
+			{
+				++it;
+			}
+		}
+	//}
+}
+
+rbool RDOHotKey::KeyDownList::isPressed(CREF(KeyCode) keyCode, rbool shift, rbool control)
+{
+	if (keyCode == 0) return false;
+	rbool shift_found   = false;
+	rbool control_found = false;
+	// Найдем VK_SHIFT и/или VK_CONTROL в буфере
+	KeyList::iterator it = m_keyList.begin();
+	while (it != m_keyList.end())
+	{
+		if (*it == VK_SHIFT)
+		{
+			shift_found = true;
+			if (shift_found && control_found) break;
+		}
+		if (*it == VK_CONTROL)
+		{
+			control_found = true;
+			if (shift_found && control_found) break;
+		}
+		++it;
+	}
+	// Теперь найдем саму клавишу в буфере
+	// Удалим её из буфера перед выходом
+	if (shift_found == shift && control_found == control)
+	{
+		KeyList::iterator it = m_keyList.begin();
+		while (it != m_keyList.end())
+		{
+			if (*it == keyCode)
+			{
+				m_keyList.erase(it);
+				m_keyFound = true;
+				return true;
+			}
+			++it;
+		}
+	}
+	m_keyFound = false;
+	return false;
+}
+
+rbool RDOHotKey::KeyDownList::isFound() const
+{
+	return m_keyFound;
+}
+
+void RDOHotKey::KeyDownList::clear()
+{
+	m_keyList.clear();
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOHotKey::AreaList
+// --------------------------------------------------------------------------------
+void RDOHotKey::AreaList::click(CREF(tstring) areaName)
+{
+	if (boost::find(m_activeAreasMouseClicked, areaName) != m_activeAreasMouseClicked.end())
+		return;
+
+	m_activeAreasMouseClicked.push_back(areaName);
+}
+
+rbool RDOHotKey::AreaList::check(CREF(tstring) areaName)
+{
+	NameList::iterator it = boost::find(m_activeAreasMouseClicked, areaName);
+	if (it == m_activeAreasMouseClicked.end())
+	{
+		return false;
+	}
+	m_activeAreasMouseClicked.erase(it);
+	return true;
+}
+
+rbool RDOHotKey::AreaList::empty() const
+{
+	return m_activeAreasMouseClicked.empty();
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOHotKey
+// --------------------------------------------------------------------------------
+RDOHotKey::RDOHotKey()
+{}
+
+RDOHotKey::~RDOHotKey()
+{}
+
+void RDOHotKey::clear()
+{
+	m_keyDown .clear();
+	m_areaList.clear();
+}
+
+rbool RDOHotKey::isKeyDown() const
+{
+	return m_keyDown.isFound() || !m_areaList.empty();
+}
+
+CREF(RDOHotKey::Toolkit) RDOHotKey::toolkit() const
+{
+	return m_toolkit;
+}
+
+REF(RDOHotKey::KeyInModelList) RDOHotKey::keyInModel()
+{
+	return m_keyInModel;
+}
+
+REF(RDOHotKey::KeyDownList) RDOHotKey::keyDown()
+{
+	return m_keyDown;
+}
+
+REF(RDOHotKey::AreaList) RDOHotKey::areaList()
+{
+	return m_areaList;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

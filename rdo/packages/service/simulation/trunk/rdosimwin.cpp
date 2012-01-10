@@ -583,29 +583,33 @@ void RDOThreadRunTime::proc(REF(RDOMessageInfo) msg)
 		case RT_RUNTIME_KEY_DOWN:
 		{
 			msg.lock();
-			if (std::find(m_pSimulator->m_pRuntime->m_usingScanCodeList.begin(), m_pSimulator->m_pRuntime->m_usingScanCodeList.end(), *static_cast<PTR(ruint)>(msg.param)) != m_pSimulator->m_pRuntime->m_usingScanCodeList.end())
+			RDOHotKey::KeyCode keyCode = *static_cast<PTR(RDOHotKey::KeyCode)>(msg.param);
+			msg.unlock();
+
+			if (m_pSimulator->m_pRuntime->hotkey().keyInModel().check(keyCode))
 			{
-				if (!m_pSimulator->m_pRuntime->keyDown(*static_cast<PTR(ruint)>(msg.param)))
+				if (!m_pSimulator->m_pRuntime->hotkey().keyDown().down(keyCode))
 				{
 					m_pSimulator->m_pRuntime->setShowRate(m_pSimulator->m_pRuntime->getShowRate());
 				}
 			}
-			msg.unlock();
 			break;
 		}
 		case RT_RUNTIME_KEY_UP:
 		{
 			msg.lock();
-			m_pSimulator->m_pRuntime->keyUp(*static_cast<PTR(ruint)>(msg.param));
+			RDOHotKey::KeyCode keyCode = *static_cast<PTR(RDOHotKey::KeyCode)>(msg.param);
 			msg.unlock();
+			m_pSimulator->m_pRuntime->hotkey().keyDown().up(keyCode);
 			break;
 		}
 		case RT_RUNTIME_FRAME_AREA_DOWN:
 		{
 			msg.lock();
-			m_pSimulator->m_pRuntime->m_activeAreasMouseClicked.push_back(*static_cast<PTR(tstring)>(msg.param));
-			m_pSimulator->m_pRuntime->setShowRate(m_pSimulator->m_pRuntime->getShowRate());
+			tstring areaName = *static_cast<PTR(tstring)>(msg.param);
 			msg.unlock();
+			m_pSimulator->m_pRuntime->hotkey().areaList().click(areaName);
+			m_pSimulator->m_pRuntime->setShowRate(m_pSimulator->m_pRuntime->getShowRate());
 			break;
 		}
 	}
@@ -633,8 +637,7 @@ void RDOThreadRunTime::start()
 	pResultsInfo = new rdoSimulator::RDOSimResultInformer(m_pSimulator->m_resultInfoString);
 
 	//! RDO config initialization
-	m_pSimulator->m_pRuntime->m_keysDown.clear();
-	m_pSimulator->m_pRuntime->m_activeAreasMouseClicked.clear();
+	m_pSimulator->m_pRuntime->hotkey().clear();
 	m_pSimulator->m_pRuntime->setStartTime     (m_pSimulator->m_pParser->getSMR()->getRunStartTime  ());
 	m_pSimulator->m_pRuntime->setTraceStartTime(m_pSimulator->m_pParser->getSMR()->getTraceStartTime());
 	m_pSimulator->m_pRuntime->setTraceEndTime  (m_pSimulator->m_pParser->getSMR()->getTraceEndTime  ());
