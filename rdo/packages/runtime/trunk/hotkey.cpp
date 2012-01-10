@@ -253,6 +253,11 @@ rbool RDOHotKey::AreaList::empty() const
 	return m_activeAreasMouseClicked.empty();
 }
 
+void RDOHotKey::AreaList::clear()
+{
+	m_activeAreasMouseClicked.clear();
+}
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOHotKey
 // --------------------------------------------------------------------------------
