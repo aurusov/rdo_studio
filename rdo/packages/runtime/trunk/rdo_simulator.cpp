@@ -115,8 +115,8 @@ rbool RDOSimulator::doOperation()
 			}
 		}
 	}
-	onCheckPokaz     ();
-	onAfterCheckPokaz();
+	onCheckResult     ();
+	onAfterCheckResult();
 	return res;
 }
 
@@ -124,7 +124,7 @@ void RDOSimulator::preProcess()
 {
 	LPRDORuntime pRuntime(static_cast<PTR(RDORuntime)>(this));
 	m_pMetaLogic.query_cast<IBaseOperation>()->onStart(pRuntime);
-	onResetPokaz();
+	onResetResult();
 }
 
 tstring writeActivitiesStructureRecurse(CREF(LPIBaseOperationContainer) pLogic, REF(ruint) counter)

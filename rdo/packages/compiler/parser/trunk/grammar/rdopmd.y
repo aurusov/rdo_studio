@@ -275,9 +275,9 @@ pmd_result_group
 
 pmd_body
 	: /* empty */
-	| pmd_body pmd_pokaz
+	| pmd_body pmd_result
 	{
-		LPRDOPMDPokaz pResult = PARSER->stack().pop<RDOPMDPokaz>($2);
+		LPRDOPMDResult pResult = PARSER->stack().pop<RDOPMDResult>($2);
 		ASSERT(pResult);
 	}
 	;
@@ -297,7 +297,7 @@ pmd_trace
 	}
 	;
 
-pmd_pokaz_watch_quant_begin
+pmd_result_watch_quant_begin
 	: RDO_IDENTIF_COLON pmd_trace RDO_watch_quant RDO_IDENTIF
 	{
 		LPRDOValue pName = PARSER->stack().pop<RDOValue>($1);
@@ -312,7 +312,7 @@ pmd_pokaz_watch_quant_begin
 	}
 	;
 
-pmd_pokaz_watch_value_begin
+pmd_result_watch_value_begin
 	: RDO_IDENTIF_COLON pmd_trace RDO_watch_value RDO_IDENTIF
 	{
 		LPRDOValue pName = PARSER->stack().pop<RDOValue>($1);
@@ -327,13 +327,13 @@ pmd_pokaz_watch_value_begin
 	}
 	;
 
-pmd_pokaz
+pmd_result
 	: RDO_IDENTIF_COLON pmd_trace RDO_watch_par RDO_IDENTIF '.' RDO_IDENTIF
 	{
-		LPRDOPMDWatchPar pPokaz = rdo::Factory<RDOPMDWatchPar>::create(PARSER->stack().pop<RDOValue>($1)->src_info());
-		ASSERT(pPokaz);
-		pPokaz->init($2 != 0, PARSER->stack().pop<RDOValue>($4)->src_info(), PARSER->stack().pop<RDOValue>($6)->src_info());
-		$$ = PARSER->stack().push(pPokaz);
+		LPRDOPMDWatchPar pResult = rdo::Factory<RDOPMDWatchPar>::create(PARSER->stack().pop<RDOValue>($1)->src_info());
+		ASSERT(pResult);
+		pResult->init($2 != 0, PARSER->stack().pop<RDOValue>($4)->src_info(), PARSER->stack().pop<RDOValue>($6)->src_info());
+		$$ = PARSER->stack().push(pResult);
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_par RDO_IDENTIF '.' error
 	{
@@ -365,16 +365,16 @@ pmd_pokaz
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_state fun_logic
 	{
-		LPRDOPMDWatchState pPokaz = rdo::Factory<RDOPMDWatchState>::create(PARSER->stack().pop<RDOValue>($1)->src_info());
-		ASSERT(pPokaz);
-		pPokaz->init($2 != 0, PARSER->stack().pop<RDOFUNLogic>($4));
-		$$ = PARSER->stack().push(pPokaz);
+		LPRDOPMDWatchState pResult = rdo::Factory<RDOPMDWatchState>::create(PARSER->stack().pop<RDOValue>($1)->src_info());
+		ASSERT(pResult);
+		pResult->init($2 != 0, PARSER->stack().pop<RDOFUNLogic>($4));
+		$$ = PARSER->stack().push(pResult);
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_state error
 	{
 		PARSER->error().error(@3, @4, _T("После ключевого слова watch_state ожидается логическое выражение"));
 	}
-	| pmd_pokaz_watch_quant_begin fun_logic
+	| pmd_result_watch_quant_begin fun_logic
 	{
 		LPRDOPMDWatchQuant pWatchQuant = PARSER->stack().pop<RDOPMDWatchQuant>($1);
 		ASSERT(pWatchQuant);
@@ -383,14 +383,14 @@ pmd_pokaz
 		pWatchQuant->setLogic(pLogic);
 		$$ = PARSER->stack().push(pWatchQuant);
 	}
-	| pmd_pokaz_watch_quant_begin RDO_NoCheck
+	| pmd_result_watch_quant_begin RDO_NoCheck
 	{
 		LPRDOPMDWatchQuant pWatchQuant = PARSER->stack().pop<RDOPMDWatchQuant>($1);
 		ASSERT(pWatchQuant);
 		pWatchQuant->setLogicNoCheck();
 		$$ = PARSER->stack().push(pWatchQuant);
 	}
-	| pmd_pokaz_watch_quant_begin error
+	| pmd_result_watch_quant_begin error
 	{
 		PARSER->error().error(@1, @2, _T("После имени типа ожидается логическое выражение"));
 	}
@@ -398,7 +398,7 @@ pmd_pokaz
 	{
 		PARSER->error().error(@3, @4, _T("После ключевого слова watch_quant ожидается тип ресурса"));
 	}
-	| pmd_pokaz_watch_value_begin fun_logic fun_arithm
+	| pmd_result_watch_value_begin fun_logic fun_arithm
 	{
 		LPRDOPMDWatchValue pWatchValue = PARSER->stack().pop<RDOPMDWatchValue>($1);
 		ASSERT(pWatchValue);
@@ -409,7 +409,7 @@ pmd_pokaz
 		pWatchValue->setLogic(pLogic, pArithm);
 		$$ = PARSER->stack().push(pWatchValue);
 	}
-	| pmd_pokaz_watch_value_begin RDO_NoCheck fun_arithm
+	| pmd_result_watch_value_begin RDO_NoCheck fun_arithm
 	{
 		LPRDOPMDWatchValue pWatchValue = PARSER->stack().pop<RDOPMDWatchValue>($1);
 		ASSERT(pWatchValue);
@@ -418,15 +418,15 @@ pmd_pokaz
 		pWatchValue->setLogicNoCheck(pArithm);
 		$$ = PARSER->stack().push(pWatchValue);
 	}
-	| pmd_pokaz_watch_value_begin fun_logic error
+	| pmd_result_watch_value_begin fun_logic error
 	{
 		PARSER->error().error(@2, @3, _T("После логического ожидается арифметическое выражение"));
 	}
-	| pmd_pokaz_watch_value_begin RDO_NoCheck error
+	| pmd_result_watch_value_begin RDO_NoCheck error
 	{
 		PARSER->error().error(@2, @3, _T("После логического ожидается арифметическое выражение"));
 	}
-	| pmd_pokaz_watch_value_begin error
+	| pmd_result_watch_value_begin error
 	{
 		PARSER->error().error(@1, @2, _T("После имени типа ожидается логическое выражение"));
 	}
@@ -436,10 +436,10 @@ pmd_pokaz
 	}
 	| RDO_IDENTIF_COLON RDO_get_value fun_arithm
 	{
-		LPRDOPMDGetValue pPokaz = rdo::Factory<RDOPMDGetValue>::create(PARSER->stack().pop<RDOValue>($1)->src_info());
-		ASSERT(pPokaz);
-		pPokaz->init(PARSER->stack().pop<RDOFUNArithm>($3));
-		$$ = PARSER->stack().push(pPokaz);
+		LPRDOPMDGetValue pResult = rdo::Factory<RDOPMDGetValue>::create(PARSER->stack().pop<RDOValue>($1)->src_info());
+		ASSERT(pResult);
+		pResult->init(PARSER->stack().pop<RDOFUNArithm>($3));
+		$$ = PARSER->stack().push(pResult);
 	}
 	| RDO_IDENTIF_COLON RDO_get_value error
 	{

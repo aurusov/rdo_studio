@@ -585,9 +585,9 @@ ProcGUIQueue::ProcGUIQueue(CREF(LPProcGUIProcess) pProcess, CREF(rdoParse::LPRDO
 	{
 		rtp = rssList[m_resourceName].getType();
 		rdoMBuilder::BlockForQueue::checkType(rtp, rdoParse::RDOParserSrcInfo());
-		rdoParse::LPRDOPMDWatchPar pPokaz = rdo::Factory<rdoParse::RDOPMDWatchPar>::create(rdoParse::RDOParserSrcInfo(queueName));
-		ASSERT(pPokaz);
-		pPokaz->init(false, rdoParse::RDOParserSrcInfo(m_resourceName), rdoParse::RDOParserSrcInfo(tstring(_T("длина_очереди"))));
+		rdoParse::LPRDOPMDWatchPar pResult = rdo::Factory<rdoParse::RDOPMDWatchPar>::create(rdoParse::RDOParserSrcInfo(queueName));
+		ASSERT(pResult);
+		pResult->init(false, rdoParse::RDOParserSrcInfo(m_resourceName), rdoParse::RDOParserSrcInfo(tstring(_T("длина_очереди"))));
 	}
 	else
 	{
@@ -598,9 +598,9 @@ ProcGUIQueue::ProcGUIQueue(CREF(LPProcGUIProcess) pProcess, CREF(rdoParse::LPRDO
 			if (rdoMBuilder::BlockForQueue::checkType(rtp_, rdoParse::RDOParserSrcInfo()))
 			{
 				rdoMBuilder::BlockForQueue::createRes(rtp_, m_resourceName);
-				rdoParse::LPRDOPMDWatchPar pPokaz = rdo::Factory<rdoParse::RDOPMDWatchPar>::create(rdoParse::RDOParserSrcInfo(queueName));
-				ASSERT(pPokaz);
-				pPokaz->init(false, rdoParse::RDOParserSrcInfo(m_resourceName), rdoParse::RDOParserSrcInfo(tstring(_T("длина_очереди"))));
+				rdoParse::LPRDOPMDWatchPar pResult = rdo::Factory<rdoParse::RDOPMDWatchPar>::create(rdoParse::RDOParserSrcInfo(queueName));
+				ASSERT(pResult);
+				pResult->init(false, rdoParse::RDOParserSrcInfo(m_resourceName), rdoParse::RDOParserSrcInfo(tstring(_T("длина_очереди"))));
 			}
 		}
 		else
@@ -609,9 +609,9 @@ ProcGUIQueue::ProcGUIQueue(CREF(LPProcGUIProcess) pProcess, CREF(rdoParse::LPRDO
 			if (rdoMBuilder::BlockForQueue::checkType(rtp_, rdoParse::RDOParserSrcInfo()))
 			{
 				rdoMBuilder::BlockForQueue::createRes(rtp_, m_resourceName);
-				rdoParse::LPRDOPMDWatchPar pPokaz = rdo::Factory<rdoParse::RDOPMDWatchPar>::create(rdoParse::RDOParserSrcInfo(queueName));
-				ASSERT(pPokaz);
-				pPokaz->init(false, rdoParse::RDOParserSrcInfo(m_resourceName), rdoParse::RDOParserSrcInfo(tstring(_T("длина_очереди"))));
+				rdoParse::LPRDOPMDWatchPar pResult = rdo::Factory<rdoParse::RDOPMDWatchPar>::create(rdoParse::RDOParserSrcInfo(queueName));
+				ASSERT(pResult);
+				pResult->init(false, rdoParse::RDOParserSrcInfo(m_resourceName), rdoParse::RDOParserSrcInfo(tstring(_T("длина_очереди"))));
 			}
 		}
 	}

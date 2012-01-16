@@ -23,10 +23,10 @@ CALC(RDOCalcWatchGroupStart)
 {
 DECLARE_FACTORY(RDOCalcWatchGroupStart)
 protected:
-	RDOCalcWatchGroupStart(CREF(LPIPokazGroup) pResultGroup);
+	RDOCalcWatchGroupStart(CREF(LPIResultGroup) pResultGroup);
 	virtual ~RDOCalcWatchGroupStart();
 
-	LPIPokazGroup m_pResultGroup;
+	LPIResultGroup m_pResultGroup;
 
 	DECLARE_ICalc;
 };
@@ -36,10 +36,10 @@ CALC(RDOCalcWatchGroupStop)
 {
 DECLARE_FACTORY(RDOCalcWatchGroupStop)
 protected:
-	RDOCalcWatchGroupStop(CREF(LPIPokazGroup) pResultGroup);
+	RDOCalcWatchGroupStop(CREF(LPIResultGroup) pResultGroup);
 	virtual ~RDOCalcWatchGroupStop();
 
-	LPIPokazGroup m_pResultGroup;
+	LPIResultGroup m_pResultGroup;
 
 	DECLARE_ICalc;
 };

@@ -15,3 +15,8 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/function/calc_function_internal.h"
 // --------------------------------------------------------------------------------
+
+OPEN_RDO_RUNTIME_NAMESPACE
+
+
+CLOSE_RDO_RUNTIME_NAMESPACE

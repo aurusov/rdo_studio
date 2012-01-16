@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _LIB_RUNTIME_POKAZ_I_H_
-#define _LIB_RUNTIME_POKAZ_I_H_
+#ifndef _LIB_RUNTIME_RESULT_I_H_
+#define _LIB_RUNTIME_RESULT_I_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -19,40 +19,40 @@
 // --------------------------------------------------------------------------------
 
 /*!
-  \interface IPokaz
+  \interface IResult
   \brief     Базовый интерфейс собираемого показателя
 */
-class IPokaz
+class IResult
 {
 public:
-	virtual void resetPokaz(CREF(rdoRuntime::LPRDORuntime) Runtime) = 0;
-	virtual void checkPokaz(CREF(rdoRuntime::LPRDORuntime) Runtime) = 0;
+	virtual void resetResult(CREF(rdoRuntime::LPRDORuntime) Runtime) = 0;
+	virtual void checkResult(CREF(rdoRuntime::LPRDORuntime) Runtime) = 0;
 	virtual void calcStat  (CREF(rdoRuntime::LPRDORuntime) Runtime, REF(std::ostream) stream) = 0;
 };
 
-#define DECLARE_IPokaz                                               \
-	virtual void resetPokaz(CREF(rdoRuntime::LPRDORuntime) Runtime); \
-	virtual void checkPokaz(CREF(rdoRuntime::LPRDORuntime) Runtime); \
+#define DECLARE_IResult                                               \
+	virtual void resetResult(CREF(rdoRuntime::LPRDORuntime) Runtime); \
+	virtual void checkResult(CREF(rdoRuntime::LPRDORuntime) Runtime); \
 	virtual void calcStat  (CREF(rdoRuntime::LPRDORuntime) Runtime, REF(std::ostream) stream);
 
 /*!
-  \interface IPokazWatchQuant
+  \interface IResultWatchQuant
   \brief     Интерфейс собираемого показателя WatchQuant
 */
-class IPokazWatchQuant
+class IResultWatchQuant
 {
 public:
 	virtual void setLogicCalc(CREF(rdoRuntime::LPRDOCalc) pLogicCalc) = 0;
 };
 
-#define DECLARE_IPokazWatchQuant \
+#define DECLARE_IResultWatchQuant \
 	virtual void setLogicCalc(CREF(rdoRuntime::LPRDOCalc) pLogicCalc);
 
 /*!
-  \interface IPokazWatchValue
+  \interface IResultWatchValue
   \brief     Интерфейс собираемого показателя WatchValue
 */
-class IPokazWatchValue
+class IResultWatchValue
 {
 public:
 	virtual void checkResourceErased(CREF(rdoRuntime::LPRDOResource) pResource  ) = 0;
@@ -60,22 +60,22 @@ public:
 	virtual void setArithmCalc      (CREF(rdoRuntime::LPRDOCalc)     pArithmCalc) = 0;
 };
 
-#define DECLARE_IPokazWatchValue                                                   \
+#define DECLARE_IResultWatchValue                                                   \
 	virtual void checkResourceErased(CREF(rdoRuntime::LPRDOResource) pResource  ); \
 	virtual void setLogicCalc       (CREF(rdoRuntime::LPRDOCalc)     pLogicCalc ); \
 	virtual void setArithmCalc      (CREF(rdoRuntime::LPRDOCalc)     pArithmCalc);
 
 /*!
-  \interface IPokazGetValue
+  \interface IResultGetValue
   \brief     Интерфейс собираемого показателя GetValue
 */
-class IPokazGetValue
+class IResultGetValue
 {
 public:
 	virtual CREF(rdoRuntime::RDOValue) getValue() const = 0;
 };
 
-#define DECLARE_IPokazGetValue \
+#define DECLARE_IResultGetValue \
 	CREF(rdoRuntime::RDOValue) getValue() const;
 
-#endif // _LIB_RUNTIME_POKAZ_I_H_
+#endif // _LIB_RUNTIME_RESULT_I_H_

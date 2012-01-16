@@ -59,7 +59,7 @@ class RDOEvent;
 class RDORule;
 class RDOOperation;
 class RDOPROCProcess;
-class RDOPMDPokaz;
+class RDOPMDResult;
 PREDECLARE_POINTER(RDOFRMFrame);
 class RDOCalcCreateResource;
 PREDECLARE_POINTER(RDOEraseResRelCalc);
@@ -72,9 +72,9 @@ public:
 	void init  ();
 	void deinit();
 
-	typedef  std::vector<LPIPokaz>           LPIPokazList;
-	typedef  std::vector<LPIPokazTrace>      LPIPokazTraceList;
-	typedef  std::vector<LPIPokazWatchValue> LPIPokazWatchValueList;
+	typedef  std::vector<LPIResult>           LPIResultList;
+	typedef  std::vector<LPIResultTrace>      LPIResultTraceList;
+	typedef  std::vector<LPIResultWatchValue> LPIResultWatchValueList;
 
 	//! Подписка на внутренние сообщения
 	REF(Notify) notify();
@@ -109,12 +109,12 @@ public:
 	void addRuntimeEvent    (LPIBaseOperationContainer pLogic, CREF(LPIEvent)      pEvent    );
 	void addRuntimeRule     (LPIBaseOperationContainer pLogic, CREF(LPIRule)       pRule     );
 	void addRuntimeOperation(LPIBaseOperationContainer pLogic, CREF(LPIOperation)  pOperation);
-	void addRuntimePokaz    (CREF(LPIPokaz)      pPokaz);
+	void addRuntimeResult    (CREF(LPIResult)      pResult);
 	void addRuntimeFrame    (CREF(LPRDOFRMFrame) pFrame);
 
 	LPRDOFRMFrame lastFrame() const;
 
-	CREF(LPIPokazList) getPokaz() const;
+	CREF(LPIResultList) getResult() const;
 
 	void addInitCalc(CREF(LPRDOCalc) initCalc);
 
@@ -251,9 +251,9 @@ private:
 
 	virtual ResList getResourcesBeforeSim() const;
 
-	LPIPokazList            m_pokazAllList;
-	LPIPokazTraceList       m_pokazTraceList;
-	LPIPokazWatchValueList  m_pokazWatchValueList;
+	LPIResultList            m_resultAllList;
+	LPIResultTraceList       m_resultTraceList;
+	LPIResultWatchValueList  m_resultWatchValueList;
 	LPIActivity             m_currActivity;
 	ValueList               m_patternParameterList;
 
@@ -270,9 +270,9 @@ private:
 
 	virtual rbool isKeyDown() const;
 
-	virtual void onResetPokaz();
-	virtual void onCheckPokaz();
-	virtual void onAfterCheckPokaz();
+	virtual void onResetResult();
+	virtual void onCheckResult();
+	virtual void onAfterCheckResult();
 
 	ruint m_currentTerm;
 };

@@ -387,7 +387,7 @@ tstring RDOParser::getModelStructure()
 	// PMD
 	modelStructure << std::endl << _T("$Watching") << std::endl;
 	ruint watching_max_length = 0;
-	STL_FOR_ALL_CONST(m_pRuntime->getPokaz(), watching_it)
+	STL_FOR_ALL_CONST(m_pRuntime->getResult(), watching_it)
 	{
 		LPITrace          trace     = *watching_it;
 		LPIName           name      = trace;
@@ -400,7 +400,7 @@ tstring RDOParser::getModelStructure()
 			}
 		}
 	}
-	STL_FOR_ALL_CONST(m_pRuntime->getPokaz(), watching_it)
+	STL_FOR_ALL_CONST(m_pRuntime->getResult(), watching_it)
 	{
 		LPITrace          trace     = *watching_it;
 		LPIName           name      = trace;

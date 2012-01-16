@@ -95,9 +95,9 @@ inline void RDORuntime::setCurrentActivity(CREF(LPIActivity) activity)
 	m_currActivity = activity;
 }
 
-inline CREF(RDORuntime::LPIPokazList) RDORuntime::getPokaz() const
+inline CREF(RDORuntime::LPIResultList) RDORuntime::getResult() const
 {
-	return m_pokazAllList;
+	return m_resultAllList;
 }
 
 inline void RDORuntime::addInitCalc(CREF(LPRDOCalc) initCalc)

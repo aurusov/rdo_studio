@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _LIB_RUNTIME_POKAZ_GROUP_H_
-#define _LIB_RUNTIME_POKAZ_GROUP_H_
+#ifndef _LIB_RUNTIME_RESULT_GROUP_H_
+#define _LIB_RUNTIME_RESULT_GROUP_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -18,20 +18,20 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 /*!
-  \class     RDOPMDPokazGroup
+  \class     RDOPMDResultGroup
   \brief     Группа собираемых при моделировании показателей
 */
-class RDOPMDPokazGroup: public IPokaz, public IPokazGroup
+class RDOPMDResultGroup: public IResult, public IResultGroup
 {
-DEFINE_IFACTORY(RDOPMDPokazGroup);
+DEFINE_IFACTORY(RDOPMDResultGroup);
 QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE(IPokaz     )
-	QUERY_INTERFACE(IPokazGroup)
+	QUERY_INTERFACE(IResult     )
+	QUERY_INTERFACE(IResultGroup)
 QUERY_INTERFACE_END
 
 private:
-	RDOPMDPokazGroup(CREF(tstring) name);
-	virtual ~RDOPMDPokazGroup();
+	RDOPMDResultGroup(CREF(tstring) name);
+	virtual ~RDOPMDResultGroup();
 
 	/*!
 	  \enum      State
@@ -43,7 +43,7 @@ private:
 		RGS_START
 	};
 
-	typedef std::vector<LPIPokaz> ResultList;
+	typedef std::vector<LPIResult> ResultList;
 	ResultList     m_resultList;
 	State          m_state;
 	tstring        m_name;
@@ -51,10 +51,10 @@ private:
 	std::ofstream  m_streamFull;
 	std::ofstream  m_streamTable;
 
-	DECLARE_IPokaz;
-	DECLARE_IPokazGroup;
+	DECLARE_IResult;
+	DECLARE_IResultGroup;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // _LIB_RUNTIME_POKAZ_GROUP_H_
+#endif // _LIB_RUNTIME_RESULT_GROUP_H_

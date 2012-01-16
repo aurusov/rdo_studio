@@ -219,8 +219,8 @@ void RDORuntime::onEraseRes(ruint resourceID, CREF(LPRDOEraseResRelCalc) pCalc)
 	}
 	else
 	{
-		LPIPokazWatchValueList::iterator it = m_pokazWatchValueList.begin();
-		while (it != m_pokazWatchValueList.end())
+		LPIResultWatchValueList::iterator it = m_resultWatchValueList.begin();
+		while (it != m_resultWatchValueList.end())
 		{
 			(*it)->checkResourceErased(res);
 			++it;
@@ -281,18 +281,18 @@ void RDORuntime::addRuntimeOperation(LPIBaseOperationContainer pLogic, CREF(LPIO
 	appendBaseOperation(pLogic, pOperation);
 }
 
-void RDORuntime::addRuntimePokaz(CREF(LPIPokaz) pPokaz)
+void RDORuntime::addRuntimeResult(CREF(LPIResult) pResult)
 {
-	m_pokazAllList.push_back(pPokaz);
-	LPIPokazTrace pokazTrace = pPokaz;
-	LPITrace      trace      = pPokaz;
-	if (pokazTrace && trace && trace->traceable())
+	m_resultAllList.push_back(pResult);
+	LPIResultTrace resultTrace = pResult;
+	LPITrace      trace      = pResult;
+	if (resultTrace && trace && trace->traceable())
 	{
-		m_pokazTraceList.push_back(pokazTrace);
+		m_resultTraceList.push_back(resultTrace);
 	}
-	if (pPokaz.query_cast<IPokazWatchValue>())
+	if (pResult.query_cast<IResultWatchValue>())
 	{
-		m_pokazWatchValueList.push_back(pPokaz);
+		m_resultWatchValueList.push_back(pResult);
 	}
 }
 
@@ -407,32 +407,32 @@ rbool RDORuntime::equal(CREF(LPRDORuntime) pOther) const
 	return true;
 }
 
-void RDORuntime::onResetPokaz()
+void RDORuntime::onResetResult()
 {
-	LPIPokazList::iterator it = m_pokazAllList.begin();
-	while (it != m_pokazAllList.end())
+	LPIResultList::iterator it = m_resultAllList.begin();
+	while (it != m_resultAllList.end())
 	{
-		(*it)->resetPokaz(this);
+		(*it)->resetResult(this);
 		++it;
 	}
 }
 
-void RDORuntime::onCheckPokaz()
+void RDORuntime::onCheckResult()
 {
-	LPIPokazList::iterator it = m_pokazAllList.begin();
-	while (it != m_pokazAllList.end())
+	LPIResultList::iterator it = m_resultAllList.begin();
+	while (it != m_resultAllList.end())
 	{
-		(*it)->checkPokaz(this);
+		(*it)->checkResult(this);
 		++it;
 	}
 }
 
-void RDORuntime::onAfterCheckPokaz()
+void RDORuntime::onAfterCheckResult()
 {
-	LPIPokazTraceList::iterator it = m_pokazTraceList.begin();
-	while (it != m_pokazTraceList.end())
+	LPIResultTraceList::iterator it = m_resultTraceList.begin();
+	while (it != m_resultTraceList.end())
 	{
-		(*it)->tracePokaz();
+		(*it)->traceResult();
 		++it;
 	}
 }
@@ -469,8 +469,8 @@ void RDORuntime::writeExitCode()
 void RDORuntime::postProcess()
 {
 	getTracer()->startWriting();
-	LPIPokazList::iterator it = m_pokazAllList.begin();
-	while (it != m_pokazAllList.end())
+	LPIResultList::iterator it = m_resultAllList.begin();
+	while (it != m_resultAllList.end())
 	{
 		try
 		{

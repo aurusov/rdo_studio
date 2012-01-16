@@ -402,7 +402,7 @@ void RDOTrace::writeStatus(CREF(LPRDORuntime) pRuntime, CREF(tstring) status)
 	getOStream() << "DPS_MM " << pRuntime->memory_get() << std::endl << getEOL();
 }
 
-void RDOTrace::writePokaz(CREF(LPRDORuntime) pRuntime, PTR(RDOPokazTrace) pok)
+void RDOTrace::writeResult(CREF(LPRDORuntime) pRuntime, PTR(RDOResultTrace) pok)
 {
 	if (!canTrace())
 		return;
@@ -413,9 +413,9 @@ void RDOTrace::writePokaz(CREF(LPRDORuntime) pRuntime, PTR(RDOPokazTrace) pok)
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOPokazTrace
+// -------------------- RDOResultTrace
 // --------------------------------------------------------------------------------
-RDOPokazTrace::RDOPokazTrace(CREF(LPRDORuntime) pRuntime, rbool trace)
+RDOResultTrace::RDOResultTrace(CREF(LPRDORuntime) pRuntime, rbool trace)
 	: RDOTraceableObject(trace   )
 	, m_pRuntime        (pRuntime)
 	, m_wasChanged      (true    )
@@ -423,12 +423,12 @@ RDOPokazTrace::RDOPokazTrace(CREF(LPRDORuntime) pRuntime, rbool trace)
 	ASSERT(m_pRuntime);
 }
 
-void RDOPokazTrace::tracePokaz()
+void RDOResultTrace::traceResult()
 {
 	if (!traceable() || !m_wasChanged)
 		return;
 
-	m_pRuntime->getTracer()->writePokaz(m_pRuntime, this);
+	m_pRuntime->getTracer()->writeResult(m_pRuntime, this);
 	m_wasChanged = false;
 	return;
 }

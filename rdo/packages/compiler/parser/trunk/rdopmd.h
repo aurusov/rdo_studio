@@ -28,22 +28,22 @@ int  pmdlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
 void pmderror(PTR(char) message);
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOPMDPokaz
+// -------------------- RDOPMDResult
 // --------------------------------------------------------------------------------
-OBJECT(RDOPMDPokaz) IS INSTANCE_OF(RDOParserSrcInfo)
+OBJECT(RDOPMDResult) IS INSTANCE_OF(RDOParserSrcInfo)
 {
-DECLARE_FACTORY(RDOPMDPokaz);
+DECLARE_FACTORY(RDOPMDResult);
 public:
 	CREF(tstring)  name      () const { return src_text(); }
-	CREF(LPIPokaz) getRuntime() const { return m_pPokaz;   }
+	CREF(LPIResult) getRuntime() const { return m_pResult;   }
 
 protected:
-	RDOPMDPokaz(CREF(RDOParserSrcInfo) src_info);
-	virtual ~RDOPMDPokaz();
+	RDOPMDResult(CREF(RDOParserSrcInfo) src_info);
+	virtual ~RDOPMDResult();
 
-	void endOfCreation(CREF(LPIPokaz) pPokaz);
+	void endOfCreation(CREF(LPIResult) pResult);
 
-	LPIPokaz m_pPokaz;
+	LPIResult m_pResult;
 };
 
 // --------------------------------------------------------------------------------
@@ -57,25 +57,25 @@ DECLARE_FACTORY(RDOResultGroup);
 public:
 	void                init      (CREF(RDOParserSrcInfo) src_info);
 	CREF(tstring)       name      () const;
-	CREF(LPIPokazGroup) getRuntime() const;
-	void                append    (CREF(LPRDOPMDPokaz) pResult   );
-	LPRDOPMDPokaz       find      (CREF(tstring)       resultName) const;
+	CREF(LPIResultGroup) getRuntime() const;
+	void                append    (CREF(LPRDOPMDResult) pResult   );
+	LPRDOPMDResult       find      (CREF(tstring)       resultName) const;
 
 private:
 	RDOResultGroup();
 	virtual ~RDOResultGroup();
 
-	typedef std::list<LPRDOPMDPokaz> ResultList;
+	typedef std::list<LPRDOPMDResult> ResultList;
 
 	ResultList     m_resultList;
-	LPIPokazGroup  m_pPokazGroup;
+	LPIResultGroup  m_pResultGroup;
 };
 DECLARE_POINTER(RDOResultGroup);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchPar
 // --------------------------------------------------------------------------------
-class RDOPMDWatchPar: public RDOPMDPokaz
+class RDOPMDWatchPar: public RDOPMDResult
 {
 DECLARE_FACTORY(RDOPMDWatchPar);
 public:
@@ -90,7 +90,7 @@ DECLARE_POINTER(RDOPMDWatchPar);
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchState
 // --------------------------------------------------------------------------------
-class RDOPMDWatchState: public RDOPMDPokaz
+class RDOPMDWatchState: public RDOPMDResult
 {
 DECLARE_FACTORY(RDOPMDWatchState);
 public:
@@ -105,7 +105,7 @@ DECLARE_POINTER(RDOPMDWatchState);
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchTemp
 // --------------------------------------------------------------------------------
-class RDOPMDWatchTemp: public RDOPMDPokaz
+class RDOPMDWatchTemp: public RDOPMDResult
 {
 protected:
 	RDOPMDWatchTemp(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) res_type_src_info);
@@ -149,7 +149,7 @@ DECLARE_POINTER(RDOPMDWatchValue);
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDGetValue
 // --------------------------------------------------------------------------------
-class RDOPMDGetValue: public RDOPMDPokaz
+class RDOPMDGetValue: public RDOPMDResult
 {
 DECLARE_FACTORY(RDOPMDGetValue);
 public:

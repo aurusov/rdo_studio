@@ -15,11 +15,11 @@
 #include "utils/rdointerface.h"
 // --------------------------------------------------------------------------------
 
-INTERFACE_REGISTRATOR(IPokaz,                     1);
-INTERFACE_REGISTRATOR(IPokazTrace,                2);
-INTERFACE_REGISTRATOR(IPokazTraceValue,           3);
-INTERFACE_REGISTRATOR(IPokazWatchQuant,           4);
-INTERFACE_REGISTRATOR(IPokazWatchValue,           5);
+INTERFACE_REGISTRATOR(IResult,                    1);
+INTERFACE_REGISTRATOR(IResultTrace,               2);
+INTERFACE_REGISTRATOR(IResultTraceValue,          3);
+INTERFACE_REGISTRATOR(IResultWatchQuant,          4);
+INTERFACE_REGISTRATOR(IResultWatchValue,          5);
 INTERFACE_REGISTRATOR(INotify,                    6);
 INTERFACE_REGISTRATOR(IModelStructure,            7);
 INTERFACE_REGISTRATOR(ITrace,                     8);
@@ -41,7 +41,7 @@ INTERFACE_REGISTRATOR(IOperationTrace,           23);
 INTERFACE_REGISTRATOR(IDPTSearchActivity,        24);
 INTERFACE_REGISTRATOR(IDPTSearchLogic,           25);
 INTERFACE_REGISTRATOR(IPROCProcess,              26);
-INTERFACE_REGISTRATOR(IPokazGroup,               27);
-INTERFACE_REGISTRATOR(IPokazGetValue,            28);
+INTERFACE_REGISTRATOR(IResultGroup,              27);
+INTERFACE_REGISTRATOR(IResultGetValue,           28);
 
 #endif // _LIB_RUNTIME_RUNTIME_INTERFACE_REGISTRATOR_H_

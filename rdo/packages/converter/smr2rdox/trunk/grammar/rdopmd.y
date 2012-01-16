@@ -227,7 +227,7 @@ pmd_main
 
 pmd_body
 	: /* empty */
-	| pmd_body pmd_pokaz
+	| pmd_body pmd_result
 	;
 
 pmd_trace
@@ -245,7 +245,7 @@ pmd_trace
 	}
 	;
 
-pmd_pokaz_watch_quant_begin
+pmd_result_watch_quant_begin
 	: RDO_IDENTIF_COLON pmd_trace RDO_watch_quant RDO_IDENTIF
 	{
 		LPRDOPMDWatchQuant pWatchQuant = rdo::Factory<RDOPMDWatchQuant>::create(P_RDOVALUE($1)->src_info(), $2 != 0, P_RDOVALUE($4)->src_info());
@@ -254,7 +254,7 @@ pmd_pokaz_watch_quant_begin
 	}
 	;
 
-pmd_pokaz_watch_value_begin
+pmd_result_watch_value_begin
 	: RDO_IDENTIF_COLON pmd_trace RDO_watch_value RDO_IDENTIF
 	{
 		LPRDOPMDWatchValue pWatchValue = rdo::Factory<RDOPMDWatchValue>::create(P_RDOVALUE($1)->src_info(), $2 != 0, P_RDOVALUE($4)->src_info());
@@ -263,12 +263,12 @@ pmd_pokaz_watch_value_begin
 	}
 	;
 
-pmd_pokaz
+pmd_result
 	: RDO_IDENTIF_COLON pmd_trace RDO_watch_par RDO_IDENTIF '.' RDO_IDENTIF
 	{
-		LPRDOPMDPokaz pPokaz = rdo::Factory<RDOPMDWatchPar>::create(P_RDOVALUE($1)->src_info(), $2 != 0, P_RDOVALUE($4)->src_info(), P_RDOVALUE($6)->src_info());
-		ASSERT(pPokaz);
-		$$ = CONVERTER->stack().push(pPokaz);
+		LPRDOPMDResult pResult = rdo::Factory<RDOPMDWatchPar>::create(P_RDOVALUE($1)->src_info(), $2 != 0, P_RDOVALUE($4)->src_info(), P_RDOVALUE($6)->src_info());
+		ASSERT(pResult);
+		$$ = CONVERTER->stack().push(pResult);
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_par RDO_IDENTIF '.' error
 	{
@@ -300,15 +300,15 @@ pmd_pokaz
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_state fun_logic
 	{
-		LPRDOPMDPokaz pPokaz = rdo::Factory<RDOPMDWatchState>::create(P_RDOVALUE($1)->src_info(), $2 != 0, CONVERTER->stack().pop<RDOFUNLogic>($4));
-		ASSERT(pPokaz);
-		$$ = CONVERTER->stack().push(pPokaz);
+		LPRDOPMDResult pResult = rdo::Factory<RDOPMDWatchState>::create(P_RDOVALUE($1)->src_info(), $2 != 0, CONVERTER->stack().pop<RDOFUNLogic>($4));
+		ASSERT(pResult);
+		$$ = CONVERTER->stack().push(pResult);
 	}
 	| RDO_IDENTIF_COLON pmd_trace RDO_watch_state error
 	{
 		CONVERTER->error().error(@3, @4, _T("После ключевого слова watch_state ожидается логическое выражение"));
 	}
-	| pmd_pokaz_watch_quant_begin fun_logic
+	| pmd_result_watch_quant_begin fun_logic
 	{
 		LPRDOPMDWatchQuant pWatchQuant = CONVERTER->stack().pop<RDOPMDWatchQuant>($1);
 		ASSERT(pWatchQuant);
@@ -317,14 +317,14 @@ pmd_pokaz
 		pWatchQuant->setLogic(pLogic);
 		$$ = CONVERTER->stack().push(pWatchQuant);
 	}
-	| pmd_pokaz_watch_quant_begin RDO_NoCheck
+	| pmd_result_watch_quant_begin RDO_NoCheck
 	{
 		LPRDOPMDWatchQuant pWatchQuant = CONVERTER->stack().pop<RDOPMDWatchQuant>($1);
 		ASSERT(pWatchQuant);
 		pWatchQuant->setLogicNoCheck();
 		$$ = CONVERTER->stack().push(pWatchQuant);
 	}
-	| pmd_pokaz_watch_quant_begin error
+	| pmd_result_watch_quant_begin error
 	{
 		CONVERTER->error().error(@1, @2, _T("После имени типа ожидается логическое выражение"));
 	}
@@ -332,7 +332,7 @@ pmd_pokaz
 	{
 		CONVERTER->error().error(@3, @4, _T("После ключевого слова watch_quant ожидается тип ресурса"));
 	}
-	| pmd_pokaz_watch_value_begin fun_logic fun_arithm
+	| pmd_result_watch_value_begin fun_logic fun_arithm
 	{
 		LPRDOPMDWatchValue pWatchValue = CONVERTER->stack().pop<RDOPMDWatchValue>($1);
 		ASSERT(pWatchValue);
@@ -343,7 +343,7 @@ pmd_pokaz
 		pWatchValue->setLogic(pLogic, pArithm);
 		$$ = CONVERTER->stack().push(pWatchValue);
 	}
-	| pmd_pokaz_watch_value_begin RDO_NoCheck fun_arithm
+	| pmd_result_watch_value_begin RDO_NoCheck fun_arithm
 	{
 		LPRDOPMDWatchValue pWatchValue = CONVERTER->stack().pop<RDOPMDWatchValue>($1);
 		ASSERT(pWatchValue);
@@ -352,15 +352,15 @@ pmd_pokaz
 		pWatchValue->setLogicNoCheck(pArithm);
 		$$ = CONVERTER->stack().push(pWatchValue);
 	}
-	| pmd_pokaz_watch_value_begin fun_logic error
+	| pmd_result_watch_value_begin fun_logic error
 	{
 		CONVERTER->error().error(@2, @3, _T("После логического ожидается арифметическое выражение"));
 	}
-	| pmd_pokaz_watch_value_begin RDO_NoCheck error
+	| pmd_result_watch_value_begin RDO_NoCheck error
 	{
 		CONVERTER->error().error(@2, @3, _T("После логического ожидается арифметическое выражение"));
 	}
-	| pmd_pokaz_watch_value_begin error
+	| pmd_result_watch_value_begin error
 	{
 		CONVERTER->error().error(@1, @2, _T("После имени типа ожидается логическое выражение"));
 	}
@@ -370,9 +370,9 @@ pmd_pokaz
 	}
 	| RDO_IDENTIF_COLON RDO_get_value fun_arithm
 	{
-		LPRDOPMDPokaz pPokaz = rdo::Factory<RDOPMDGetValue>::create(P_RDOVALUE($1)->src_info(), CONVERTER->stack().pop<RDOFUNArithm>($3));
-		ASSERT(pPokaz);
-		$$ = CONVERTER->stack().push(pPokaz);
+		LPRDOPMDResult pResult = rdo::Factory<RDOPMDGetValue>::create(P_RDOVALUE($1)->src_info(), CONVERTER->stack().pop<RDOFUNArithm>($3));
+		ASSERT(pResult);
+		$$ = CONVERTER->stack().push(pResult);
 	}
 	| RDO_IDENTIF_COLON RDO_get_value error
 	{

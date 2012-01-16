@@ -8,8 +8,8 @@
   \indent    4T
 */
 
-#ifndef _LIB_RUNTIME_POKAZ_H_
-#define _LIB_RUNTIME_POKAZ_H_
+#ifndef _LIB_RUNTIME_RESULT_H_
+#define _LIB_RUNTIME_RESULT_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -26,20 +26,20 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 /*!
-  \class     RDOPMDPokaz
+  \class     RDOPMDResult
   \brief     Базовый собираемый показатель
   \todo      Дать классу адекватное англоязычное имя
 */
-class RDOPMDPokaz: public RDOPokazTrace, public IName
+class RDOPMDResult: public RDOResultTrace, public IName
 {
 QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOPokazTrace)
+	QUERY_INTERFACE_PARENT(RDOResultTrace)
 	QUERY_INTERFACE       (IName        )
 QUERY_INTERFACE_END
 
 protected:
-	RDOPMDPokaz(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace);
-	virtual ~RDOPMDPokaz();
+	RDOPMDResult(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace);
+	virtual ~RDOPMDResult();
 
 	DECLARE_IName;
 
@@ -51,14 +51,14 @@ private:
   \class     RDOPMDWatchPar
   \brief     Собираемый показатель типа WatchPar
 */
-class RDOPMDWatchPar: public RDOPMDPokaz, public IPokaz, public IModelStructure, public INotify
+class RDOPMDWatchPar: public RDOPMDResult, public IResult, public IModelStructure, public INotify
 {
 DEFINE_IFACTORY(RDOPMDWatchPar);
 QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOPMDPokaz     )
-	QUERY_INTERFACE       (IPokaz          )
+	QUERY_INTERFACE_PARENT(RDOPMDResult     )
+	QUERY_INTERFACE       (IResult          )
 	QUERY_INTERFACE       (IModelStructure )
-	QUERY_INTERFACE       (IPokazTraceValue)
+	QUERY_INTERFACE       (IResultTraceValue)
 	QUERY_INTERFACE       (INotify         )
 QUERY_INTERFACE_END
 
@@ -83,8 +83,8 @@ private:
 	double        m_timeErase;
 
 	DECLARE_INotify;
-	DECLARE_IPokaz;
-	DECLARE_IPokazTraceValue;
+	DECLARE_IResult;
+	DECLARE_IResultTraceValue;
 	DECLARE_IModelStructure;
 };
 
@@ -92,14 +92,14 @@ private:
   \class     RDOPMDWatchState
   \brief     Собираемый показатель типа WatchState
 */
-class RDOPMDWatchState: public RDOPMDPokaz, public IPokaz, public IModelStructure
+class RDOPMDWatchState: public RDOPMDResult, public IResult, public IModelStructure
 {
 DEFINE_IFACTORY(RDOPMDWatchState);
 QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOPMDPokaz     )
-	QUERY_INTERFACE       (IPokaz          )
+	QUERY_INTERFACE_PARENT(RDOPMDResult     )
+	QUERY_INTERFACE       (IResult          )
 	QUERY_INTERFACE       (IModelStructure )
-	QUERY_INTERFACE       (IPokazTraceValue)
+	QUERY_INTERFACE       (IResultTraceValue)
 QUERY_INTERFACE_END
 
 private:
@@ -118,8 +118,8 @@ private:
 	double    m_timeBegin;
 	double    m_timePrev;
 
-	DECLARE_IPokaz;
-	DECLARE_IPokazTraceValue;
+	DECLARE_IResult;
+	DECLARE_IResultTraceValue;
 	DECLARE_IModelStructure;
 };
 
@@ -127,14 +127,14 @@ private:
   \class     RDOPMDWatchQuant
   \brief     Собираемый показатель типа WatchQuant
 */
-class RDOPMDWatchQuant: public RDOPMDPokaz, public IPokaz, public IPokazWatchQuant, public IModelStructure
+class RDOPMDWatchQuant: public RDOPMDResult, public IResult, public IResultWatchQuant, public IModelStructure
 {
 DEFINE_IFACTORY(RDOPMDWatchQuant);
 QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOPMDPokaz     )
-	QUERY_INTERFACE       (IPokaz          )
-	QUERY_INTERFACE       (IPokazTraceValue)
-	QUERY_INTERFACE       (IPokazWatchQuant)
+	QUERY_INTERFACE_PARENT(RDOPMDResult     )
+	QUERY_INTERFACE       (IResult          )
+	QUERY_INTERFACE       (IResultTraceValue)
+	QUERY_INTERFACE       (IResultWatchQuant)
 	QUERY_INTERFACE       (IModelStructure )
 QUERY_INTERFACE_END
 
@@ -155,9 +155,9 @@ private:
 	double    m_timeBegin;
 	double    m_timePrev;
 
-	DECLARE_IPokaz;
-	DECLARE_IPokazTraceValue;
-	DECLARE_IPokazWatchQuant;
+	DECLARE_IResult;
+	DECLARE_IResultTraceValue;
+	DECLARE_IResultWatchQuant;
 	DECLARE_IModelStructure;
 };
 
@@ -165,14 +165,14 @@ private:
   \class     RDOPMDWatchValue
   \brief     Собираемый показатель типа WatchValue
 */
-class RDOPMDWatchValue: public RDOPMDPokaz, public IPokaz, public IPokazWatchValue, public IModelStructure
+class RDOPMDWatchValue: public RDOPMDResult, public IResult, public IResultWatchValue, public IModelStructure
 {
 DEFINE_IFACTORY(RDOPMDWatchValue);
 QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOPMDPokaz     )
-	QUERY_INTERFACE       (IPokaz          )
-	QUERY_INTERFACE       (IPokazTraceValue)
-	QUERY_INTERFACE       (IPokazWatchValue)
+	QUERY_INTERFACE_PARENT(RDOPMDResult     )
+	QUERY_INTERFACE       (IResult          )
+	QUERY_INTERFACE       (IResultTraceValue)
+	QUERY_INTERFACE       (IResultWatchValue)
 	QUERY_INTERFACE       (IModelStructure )
 QUERY_INTERFACE_END
 
@@ -191,9 +191,9 @@ private:
 	RDOValue  m_minValue;
 	RDOValue  m_maxValue;
 
-	DECLARE_IPokaz;
-	DECLARE_IPokazTraceValue;
-	DECLARE_IPokazWatchValue;
+	DECLARE_IResult;
+	DECLARE_IResultTraceValue;
+	DECLARE_IResultWatchValue;
 	DECLARE_IModelStructure;
 };
 
@@ -201,15 +201,15 @@ private:
   \class     RDOPMDGetValue
   \brief     Собираемый показатель типа GetValue
 */
-class RDOPMDGetValue: public RDOPMDPokaz, public IPokaz, public IPokazGetValue, public IModelStructure
+class RDOPMDGetValue: public RDOPMDResult, public IResult, public IResultGetValue, public IModelStructure
 {
 DEFINE_IFACTORY(RDOPMDGetValue);
 QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOPMDPokaz     )
-	QUERY_INTERFACE       (IPokaz          )
+	QUERY_INTERFACE_PARENT(RDOPMDResult     )
+	QUERY_INTERFACE       (IResult          )
 	QUERY_INTERFACE       (IModelStructure )
-	QUERY_INTERFACE       (IPokazTraceValue)
-	QUERY_INTERFACE       (IPokazGetValue  )
+	QUERY_INTERFACE       (IResultTraceValue)
+	QUERY_INTERFACE       (IResultGetValue  )
 QUERY_INTERFACE_END
 
 private:
@@ -219,12 +219,12 @@ private:
 	LPRDOCalc m_pArithmCalc;
 	RDOValue  m_value;
 
-	DECLARE_IPokaz;
-	DECLARE_IPokazTraceValue;
-	DECLARE_IPokazGetValue;
+	DECLARE_IResult;
+	DECLARE_IResultTraceValue;
+	DECLARE_IResultGetValue;
 	DECLARE_IModelStructure;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#endif // _LIB_RUNTIME_POKAZ_H_
+#endif // _LIB_RUNTIME_RESULT_H_

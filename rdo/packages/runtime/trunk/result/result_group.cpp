@@ -20,17 +20,17 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOPMDPokaz
+// -------------------- RDOPMDResult
 // --------------------------------------------------------------------------------
-RDOPMDPokazGroup::RDOPMDPokazGroup(CREF(tstring) name)
+RDOPMDResultGroup::RDOPMDResultGroup(CREF(tstring) name)
 	: m_name (name                               )
 	, m_state(name.empty() ? RGS_START : RGS_STOP)
 {}
 
-RDOPMDPokazGroup::~RDOPMDPokazGroup()
+RDOPMDResultGroup::~RDOPMDResultGroup()
 {}
 
-void RDOPMDPokazGroup::resetPokaz(CREF(LPRDORuntime) pRuntime)
+void RDOPMDResultGroup::resetResult(CREF(LPRDORuntime) pRuntime)
 {
 	if (m_state == RGS_STOP)
 		return;
@@ -58,7 +58,7 @@ void RDOPMDPokazGroup::resetPokaz(CREF(LPRDORuntime) pRuntime)
 			{
 				STL_FOR_ALL_CONST(m_resultList, it)
 				{
-					LPIPokazGetValue pGetValue = (*it);
+					LPIResultGetValue pGetValue = (*it);
 					if (pGetValue)
 					{
 						LPIName pName = pGetValue;
@@ -73,22 +73,22 @@ void RDOPMDPokazGroup::resetPokaz(CREF(LPRDORuntime) pRuntime)
 
 	STL_FOR_ALL(m_resultList, it)
 	{
-		(*it)->resetPokaz(pRuntime);
+		(*it)->resetResult(pRuntime);
 	}
 }
 
-void RDOPMDPokazGroup::checkPokaz(CREF(LPRDORuntime) pRuntime)
+void RDOPMDResultGroup::checkResult(CREF(LPRDORuntime) pRuntime)
 {
 	if (m_state == RGS_STOP)
 		return;
 
 	STL_FOR_ALL(m_resultList, it)
 	{
-		(*it)->checkPokaz(pRuntime);
+		(*it)->checkResult(pRuntime);
 	}
 }
 
-void RDOPMDPokazGroup::calcStat(CREF(LPRDORuntime) pRuntime, REF(std::ostream) stream)
+void RDOPMDResultGroup::calcStat(CREF(LPRDORuntime) pRuntime, REF(std::ostream) stream)
 {
 	if (m_state == RGS_STOP)
 		return;
@@ -118,7 +118,7 @@ void RDOPMDPokazGroup::calcStat(CREF(LPRDORuntime) pRuntime, REF(std::ostream) s
 			m_streamFull << textStream.str();
 		}
 
-		LPIPokazGetValue pGetValue = (*it);
+		LPIResultGetValue pGetValue = (*it);
 		if (pGetValue)
 		{
 			if (pGetValue->getValue().typeID() != RDOType::t_real)
@@ -153,19 +153,19 @@ void RDOPMDPokazGroup::calcStat(CREF(LPRDORuntime) pRuntime, REF(std::ostream) s
 	pRuntime->getResults().flush();
 }
 
-void RDOPMDPokazGroup::onStart(CREF(LPRDORuntime) pRuntime)
+void RDOPMDResultGroup::onStart(CREF(LPRDORuntime) pRuntime)
 {
 	m_state = RGS_START;
-	resetPokaz(pRuntime);
+	resetResult(pRuntime);
 }
 
-void RDOPMDPokazGroup::onStop(CREF(LPRDORuntime) pRuntime)
+void RDOPMDResultGroup::onStop(CREF(LPRDORuntime) pRuntime)
 {
 	calcStat(pRuntime, pRuntime->getResults().getOStream());
 	m_state = RGS_STOP;
 }
 
-void RDOPMDPokazGroup::onAppend(CREF(LPIPokaz) pResult)
+void RDOPMDResultGroup::onAppend(CREF(LPIResult) pResult)
 {
 	ASSERT(pResult);
 

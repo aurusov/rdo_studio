@@ -20,7 +20,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcWatchGroupStart
 // --------------------------------------------------------------------------------
-RDOCalcWatchGroupStart::RDOCalcWatchGroupStart(CREF(LPIPokazGroup) pResultGroup)
+RDOCalcWatchGroupStart::RDOCalcWatchGroupStart(CREF(LPIResultGroup) pResultGroup)
 	: m_pResultGroup(pResultGroup)
 {
 	m_value = RDOValue(0);
@@ -39,7 +39,7 @@ REF(RDOValue) RDOCalcWatchGroupStart::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcWatchGroupStop
 // --------------------------------------------------------------------------------
-RDOCalcWatchGroupStop::RDOCalcWatchGroupStop(CREF(LPIPokazGroup) pResultGroup)
+RDOCalcWatchGroupStop::RDOCalcWatchGroupStop(CREF(LPIResultGroup) pResultGroup)
 	: m_pResultGroup(pResultGroup)
 {
 	m_value = RDOValue(0);

@@ -41,29 +41,29 @@ public:
 	virtual REF(tstring) traceId   (           ) const ;
 
 /*!
-  \interface IPokazTraceValue
-  \brief     Èםעונפויס IPokazTraceValue
+  \interface IResultTraceValue
+  \brief     Èםעונפויס IResultTraceValue
 */
-class IPokazTraceValue
+class IResultTraceValue
 {
 public:
 	virtual tstring traceValue() const = 0;
 };
 
-#define DECLARE_IPokazTraceValue \
+#define DECLARE_IResultTraceValue \
 	virtual tstring traceValue() const;
 
 /*!
-  \interface IPokazTrace
-  \brief     Èםעונפויס IPokazTrace
+  \interface IResultTrace
+  \brief     Èםעונפויס IResultTrace
 */
-class IPokazTrace
+class IResultTrace
 {
 public:
-	virtual void tracePokaz() = 0;
+	virtual void traceResult() = 0;
 };
 
-#define DECLARE_IPokazTrace \
-	virtual void tracePokaz();
+#define DECLARE_IResultTrace \
+	virtual void traceResult();
 
 #endif // _LIB_RUNTIME_TRACE_I_H_

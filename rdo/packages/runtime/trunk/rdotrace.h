@@ -29,7 +29,7 @@ class RDORule;
 class RDOOperation;
 class RDOTraceableObject;
 class TreeRootTrace;
-class RDOPokazTrace;
+class RDOResultTrace;
 class TreeNode;
 class TreeRoot;
 PREDECLARE_POINTER(RDOResource);
@@ -90,7 +90,7 @@ public:
 
 	tstring traceResourcesList( char prefix, CREF(LPRDORuntime) pRuntime, CREF(std::list<LPRDOResource>) rel_res_list);
 
-	virtual void writePokaz(CREF(LPRDORuntime) pRuntime, PTR(RDOPokazTrace) pok);
+	virtual void writeResult(CREF(LPRDORuntime) pRuntime, PTR(RDOResultTrace) pok);
 
 public:
 	virtual REF(std::ostream) getOStream();
@@ -138,24 +138,24 @@ private:
 };
 
 /*!
-  \class     RDOPokazTrace
+  \class     RDOResultTrace
   \brief     Трассируемый показатель
 */
-class RDOPokazTrace: public RDOTraceableObject, public IPokazTrace, public IPokazTraceValue
+class RDOResultTrace: public RDOTraceableObject, public IResultTrace, public IResultTraceValue
 {
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOTraceableObject)
-	QUERY_INTERFACE(IPokazTrace)
+	QUERY_INTERFACE(IResultTrace)
 QUERY_INTERFACE_END
 
 public:
-	RDOPokazTrace(CREF(LPRDORuntime) pRuntime, rbool trace);
+	RDOResultTrace(CREF(LPRDORuntime) pRuntime, rbool trace);
 
 protected:
 	LPRDORuntime m_pRuntime;
 	rbool        m_wasChanged;
 
-	DECLARE_IPokazTrace;
+	DECLARE_IResultTrace;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

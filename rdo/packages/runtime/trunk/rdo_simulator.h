@@ -54,9 +54,9 @@ protected:
 	// Инициализирует нерегулярные события и блоки GENERATE: задает время первого срабатывания
 	virtual void preProcess();
 
-	virtual void onResetPokaz     () = 0;
-	virtual void onCheckPokaz     () = 0;
-	virtual void onAfterCheckPokaz() = 0;
+	virtual void onResetResult     () = 0;
+	virtual void onCheckResult     () = 0;
+	virtual void onAfterCheckResult() = 0;
 
 	ruint m_sizeofSim;
 

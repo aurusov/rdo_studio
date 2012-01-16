@@ -33,19 +33,19 @@ typedef ruint ruint_type;
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOPMDPokaz
+// -------------------- RDOPMDResult
 // --------------------------------------------------------------------------------
-RDOPMDPokaz::RDOPMDPokaz(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace)
-	: RDOPokazTrace(pRuntime, trace)
+RDOPMDResult::RDOPMDResult(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace)
+	: RDOResultTrace(pRuntime, trace)
 	, m_name       (name           )
 {
 	setTrace(trace);
 }
 
-RDOPMDPokaz::~RDOPMDPokaz()
+RDOPMDResult::~RDOPMDResult()
 {}
 
-CREF(tstring) RDOPMDPokaz::name() const
+CREF(tstring) RDOPMDResult::name() const
 {
 	return m_name;
 }
@@ -54,7 +54,7 @@ CREF(tstring) RDOPMDPokaz::name() const
 // -------------------- RDOPMDWatchPar
 // --------------------------------------------------------------------------------
 RDOPMDWatchPar::RDOPMDWatchPar(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resName, CREF(tstring) parName, ruint resourceID, ruint paramID)
-	: RDOPMDPokaz (pRuntime, name, trace)
+	: RDOPMDResult (pRuntime, name, trace)
 	, m_resourceID(resourceID           )
 	, m_paramID   (paramID              )
 {
@@ -82,7 +82,7 @@ tstring RDOPMDWatchPar::traceValue() const
 	return rdo::toString(m_currValue);
 }
 
-void RDOPMDWatchPar::resetPokaz(CREF(LPRDORuntime) pRuntime)
+void RDOPMDWatchPar::resetResult(CREF(LPRDORuntime) pRuntime)
 {
 	ASSERT(pRuntime);
 
@@ -98,7 +98,7 @@ void RDOPMDWatchPar::resetPokaz(CREF(LPRDORuntime) pRuntime)
 	m_timePrev    = m_timeBegin = m_timeErase = pRuntime->getCurrentTime();
 }
 
-void RDOPMDWatchPar::checkPokaz(CREF(LPRDORuntime) pRuntime)
+void RDOPMDWatchPar::checkResult(CREF(LPRDORuntime) pRuntime)
 {
 	if (m_resourceID == ~0)
 	{
@@ -152,7 +152,7 @@ void RDOPMDWatchPar::calcStat(CREF(LPRDORuntime) pRuntime, REF(std::ostream) str
 // -------------------- RDOPMDWatchState
 // --------------------------------------------------------------------------------
 RDOPMDWatchState::RDOPMDWatchState(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(LPRDOCalc) pLogic)
-	: RDOPMDPokaz (pRuntime, name, trace)
+	: RDOPMDResult (pRuntime, name, trace)
 	, m_pLogicCalc(pLogic               )
 {}
 
@@ -164,7 +164,7 @@ tstring RDOPMDWatchState::traceValue() const
 	return m_currValue ? _T("TRUE") : _T("FALSE");
 }
 
-void RDOPMDWatchState::resetPokaz(CREF(LPRDORuntime) pRuntime)
+void RDOPMDWatchState::resetResult(CREF(LPRDORuntime) pRuntime)
 {
 	m_watchNumber = 0;
 	m_currValue   = fabs(m_pLogicCalc->calcValue(pRuntime).getDouble()) > DBL_EPSILON;
@@ -175,7 +175,7 @@ void RDOPMDWatchState::resetPokaz(CREF(LPRDORuntime) pRuntime)
 	m_timePrev    = m_timeBegin = pRuntime->getCurrentTime();
 }
 
-void RDOPMDWatchState::checkPokaz(CREF(LPRDORuntime) pRuntime)
+void RDOPMDWatchState::checkResult(CREF(LPRDORuntime) pRuntime)
 {
 	rbool newValue = fabs(m_pLogicCalc->calcValue(pRuntime).getDouble()) > DBL_EPSILON;
 	if (newValue && !m_currValue) //! from FALSE to TRUE
@@ -227,7 +227,7 @@ void RDOPMDWatchState::calcStat(CREF(LPRDORuntime) pRuntime, REF(std::ostream) s
 // -------------------- RDOPMDWatchQuant
 // --------------------------------------------------------------------------------
 RDOPMDWatchQuant::RDOPMDWatchQuant(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resTypeName, int rtpID)
-	: RDOPMDPokaz (pRuntime, name, trace)
+	: RDOPMDResult (pRuntime, name, trace)
 	, m_pLogicCalc(NULL                 )
 	, m_rtpID     (rtpID                )
 {
@@ -242,7 +242,7 @@ tstring RDOPMDWatchQuant::traceValue() const
 	return rdo::toString(m_currValue);
 }
 
-void RDOPMDWatchQuant::resetPokaz(CREF(LPRDORuntime) pRuntime)
+void RDOPMDWatchQuant::resetResult(CREF(LPRDORuntime) pRuntime)
 {
 	m_watchNumber = 0;
 	m_currValue   = -1;
@@ -253,7 +253,7 @@ void RDOPMDWatchQuant::resetPokaz(CREF(LPRDORuntime) pRuntime)
 	m_timePrev    = m_timeBegin = pRuntime->getCurrentTime();
 }
 
-void RDOPMDWatchQuant::checkPokaz(CREF(LPRDORuntime) pRuntime)
+void RDOPMDWatchQuant::checkResult(CREF(LPRDORuntime) pRuntime)
 {
 	int newValue = 0;
 	for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != pRuntime->res_end(); it++)
@@ -323,7 +323,7 @@ void RDOPMDWatchQuant::setLogicCalc(CREF(LPRDOCalc) pLogicCalc)
 // -------------------- RDOPMDWatchValue
 // --------------------------------------------------------------------------------
 RDOPMDWatchValue::RDOPMDWatchValue(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resTypeName, int rtpID)
-	: RDOPMDPokaz  (pRuntime, name, trace)
+	: RDOPMDResult  (pRuntime, name, trace)
 	, m_pLogicCalc (NULL                 )
 	, m_pArithmCalc(NULL                 )
 	, m_rtpID      (rtpID                )
@@ -340,7 +340,7 @@ tstring RDOPMDWatchValue::traceValue() const
 	return rdo::toString(m_currValue);
 }
 
-void RDOPMDWatchValue::resetPokaz(CREF(LPRDORuntime) pRuntime)
+void RDOPMDWatchValue::resetResult(CREF(LPRDORuntime) pRuntime)
 {
 	UNUSED(pRuntime);
 
@@ -352,7 +352,7 @@ void RDOPMDWatchValue::resetPokaz(CREF(LPRDORuntime) pRuntime)
 	m_maxValue    = DBL_MIN;
 }
 
-void RDOPMDWatchValue::checkPokaz(CREF(LPRDORuntime) pRuntime)
+void RDOPMDWatchValue::checkResult(CREF(LPRDORuntime) pRuntime)
 {
 	UNUSED(pRuntime);
 }
@@ -395,8 +395,8 @@ void RDOPMDWatchValue::checkResourceErased(CREF(rdoRuntime::LPRDOResource) pReso
 	if (m_pLogicCalc->calcValue(m_pRuntime).getAsBool())
 	{
 		m_currValue = m_pArithmCalc->calcValue(m_pRuntime);
-		tracePokaz(); /// @todo убрать отсюда ? (и перенести DECLARE_IPokazTrace в приват)
-//		pRuntime->getTracer()->writePokaz(pRuntime, this);
+		traceResult(); /// @todo убрать отсюда ? (и перенести DECLARE_IResultTrace в приват)
+//		pRuntime->getTracer()->writeResult(pRuntime, this);
 		double curr = m_currValue.getDouble();
 		m_sum    += curr;
 		m_sumSqr += curr * curr;
@@ -429,7 +429,7 @@ void RDOPMDWatchValue::setArithmCalc(CREF(LPRDOCalc) pArithmCalc)
 // -------------------- RDOPMDGetValue
 // --------------------------------------------------------------------------------
 RDOPMDGetValue::RDOPMDGetValue(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, CREF(LPRDOCalc) pArithm)
-	: RDOPMDPokaz  (pRuntime, name, false)
+	: RDOPMDResult  (pRuntime, name, false)
 	, m_pArithmCalc(pArithm              )
 {}
 
@@ -441,12 +441,12 @@ tstring RDOPMDGetValue::traceValue() const
 	return _T("ERROR");
 }
 
-void RDOPMDGetValue::resetPokaz(CREF(LPRDORuntime) pRuntime)
+void RDOPMDGetValue::resetResult(CREF(LPRDORuntime) pRuntime)
 {
 	UNUSED(pRuntime);
 }
 
-void RDOPMDGetValue::checkPokaz(CREF(LPRDORuntime) pRuntime)
+void RDOPMDGetValue::checkResult(CREF(LPRDORuntime) pRuntime)
 {
 	UNUSED(pRuntime);
 }

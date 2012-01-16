@@ -71,7 +71,7 @@ DECLARE_PARSER_OBJECT_CONTAINER(DPTSearch      );
 DECLARE_PARSER_OBJECT_CONTAINER(DPTSome        );
 DECLARE_PARSER_OBJECT_CONTAINER(DPTPrior       );
 DECLARE_PARSER_OBJECT_CONTAINER(DPTFreeActivity);
-DECLARE_PARSER_OBJECT_CONTAINER(PMDPokaz       );
+DECLARE_PARSER_OBJECT_CONTAINER(PMDResult       );
 
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME(FUNGroup   );
 DECLARE_PARSER_OBJECT_CONTAINER_NONAME(DPTFree    );
@@ -230,7 +230,7 @@ tstring Converter::getModelStructure()
 	// PMD
 	modelStructure << std::endl << _T("$Watching") << std::endl;
 	ruint watching_max_length = 0;
-	STL_FOR_ALL_CONST(m_pRuntime->getPokaz(), watching_it)
+	STL_FOR_ALL_CONST(m_pRuntime->getResult(), watching_it)
 	{
 		LPITrace          trace     = *watching_it;
 		LPIName           name      = trace;
@@ -243,7 +243,7 @@ tstring Converter::getModelStructure()
 			}
 		}
 	}
-	STL_FOR_ALL_CONST(m_pRuntime->getPokaz(), watching_it)
+	STL_FOR_ALL_CONST(m_pRuntime->getResult(), watching_it)
 	{
 		LPITrace          trace     = *watching_it;
 		LPIName           name      = trace;

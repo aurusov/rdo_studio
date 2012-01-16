@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _LIB_RUNTIME_POKAZ_GROUP_I_H_
-#define _LIB_RUNTIME_POKAZ_GROUP_I_H_
+#ifndef _LIB_RUNTIME_RESULT_GROUP_I_H_
+#define _LIB_RUNTIME_RESULT_GROUP_I_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -18,20 +18,20 @@
 // --------------------------------------------------------------------------------
 
 /*!
-  \interface IPokazGroup
+  \interface IResultGroup
   \brief     Интерфейс группы собираемых показателей
 */
-class IPokazGroup
+class IResultGroup
 {
 public:
 	virtual void onStart (CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
 	virtual void onStop  (CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
-	virtual void onAppend(CREF(LPIPokaz)                 pResult ) = 0;
+	virtual void onAppend(CREF(LPIResult)                 pResult ) = 0;
 };
 
-#define DECLARE_IPokazGroup                                 \
+#define DECLARE_IResultGroup                                 \
 	void onStart (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
 	void onStop  (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
-	void onAppend(CREF(LPIPokaz)                 pResult );
+	void onAppend(CREF(LPIResult)                 pResult );
 
-#endif // _LIB_RUNTIME_POKAZ_GROUP_I_H_
+#endif // _LIB_RUNTIME_RESULT_GROUP_I_H_

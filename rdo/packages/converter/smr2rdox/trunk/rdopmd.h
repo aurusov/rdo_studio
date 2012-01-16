@@ -26,27 +26,27 @@ int  cnv_pmdlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
 void cnv_pmderror(PTR(char) message);
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOPMDPokaz
+// -------------------- RDOPMDResult
 // --------------------------------------------------------------------------------
-OBJECT(RDOPMDPokaz) IS INSTANCE_OF(RDOParserSrcInfo)
+OBJECT(RDOPMDResult) IS INSTANCE_OF(RDOParserSrcInfo)
 {
-DECLARE_FACTORY(RDOPMDPokaz);
+DECLARE_FACTORY(RDOPMDResult);
 public:
 	CREF(tstring) name() const { return src_text(); }
 
 protected:
-	RDOPMDPokaz(CREF(RDOParserSrcInfo) src_info);
-	virtual ~RDOPMDPokaz();
+	RDOPMDResult(CREF(RDOParserSrcInfo) src_info);
+	virtual ~RDOPMDResult();
 
-	void endOfCreation(CREF(LPIPokaz) pPokaz);
+	void endOfCreation(CREF(LPIResult) pResult);
 
-	LPIPokaz m_pPokaz;
+	LPIResult m_pResult;
 };
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchPar
 // --------------------------------------------------------------------------------
-class RDOPMDWatchPar: public RDOPMDPokaz
+class RDOPMDWatchPar: public RDOPMDResult
 {
 DECLARE_FACTORY(RDOPMDWatchPar);
 private:
@@ -56,7 +56,7 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchState
 // --------------------------------------------------------------------------------
-class RDOPMDWatchState: public RDOPMDPokaz
+class RDOPMDWatchState: public RDOPMDResult
 {
 DECLARE_FACTORY(RDOPMDWatchState);
 private:
@@ -66,7 +66,7 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDWatchTemp
 // --------------------------------------------------------------------------------
-class RDOPMDWatchTemp: public RDOPMDPokaz
+class RDOPMDWatchTemp: public RDOPMDResult
 {
 protected:
 	RDOPMDWatchTemp(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) res_type_src_info);
@@ -105,7 +105,7 @@ DECLARE_POINTER(RDOPMDWatchValue);
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDGetValue
 // --------------------------------------------------------------------------------
-class RDOPMDGetValue: public RDOPMDPokaz
+class RDOPMDGetValue: public RDOPMDResult
 {
 DECLARE_FACTORY(RDOPMDGetValue);
 private:
