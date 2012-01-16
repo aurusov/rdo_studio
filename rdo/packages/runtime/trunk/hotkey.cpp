@@ -14,6 +14,7 @@
 #include <boost/range/algorithm/find.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/hotkey.h"
+#include "simulator/runtime/keyboard.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
