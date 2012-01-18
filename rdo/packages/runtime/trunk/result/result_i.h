@@ -60,7 +60,7 @@ public:
 	virtual void setArithmCalc      (CREF(rdoRuntime::LPRDOCalc)     pArithmCalc) = 0;
 };
 
-#define DECLARE_IResultWatchValue                                                   \
+#define DECLARE_IResultWatchValue                                                  \
 	virtual void checkResourceErased(CREF(rdoRuntime::LPRDOResource) pResource  ); \
 	virtual void setLogicCalc       (CREF(rdoRuntime::LPRDOCalc)     pLogicCalc ); \
 	virtual void setArithmCalc      (CREF(rdoRuntime::LPRDOCalc)     pArithmCalc);
