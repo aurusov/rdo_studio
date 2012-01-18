@@ -26,12 +26,12 @@ class IResultGroup
 public:
 	virtual void onStart (CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
 	virtual void onStop  (CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
-	virtual void onAppend(CREF(LPIResult)                 pResult ) = 0;
+	virtual void onAppend(CREF(LPIResult)                pResult ) = 0;
 };
 
-#define DECLARE_IResultGroup                                 \
+#define DECLARE_IResultGroup                                \
 	void onStart (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
 	void onStop  (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
-	void onAppend(CREF(LPIResult)                 pResult );
+	void onAppend(CREF(LPIResult)                pResult );
 
 #endif // _LIB_RUNTIME_RESULT_GROUP_I_H_

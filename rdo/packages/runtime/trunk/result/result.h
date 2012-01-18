@@ -34,7 +34,7 @@ class RDOPMDResult: public RDOResultTrace, public IName
 {
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOResultTrace)
-	QUERY_INTERFACE       (IName        )
+	QUERY_INTERFACE       (IName         )
 QUERY_INTERFACE_END
 
 protected:
@@ -57,9 +57,9 @@ DEFINE_IFACTORY(RDOPMDWatchPar);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOPMDResult     )
 	QUERY_INTERFACE       (IResult          )
-	QUERY_INTERFACE       (IModelStructure )
+	QUERY_INTERFACE       (IModelStructure  )
 	QUERY_INTERFACE       (IResultTraceValue)
-	QUERY_INTERFACE       (INotify         )
+	QUERY_INTERFACE       (INotify          )
 QUERY_INTERFACE_END
 
 private:
@@ -98,7 +98,7 @@ DEFINE_IFACTORY(RDOPMDWatchState);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOPMDResult     )
 	QUERY_INTERFACE       (IResult          )
-	QUERY_INTERFACE       (IModelStructure )
+	QUERY_INTERFACE       (IModelStructure  )
 	QUERY_INTERFACE       (IResultTraceValue)
 QUERY_INTERFACE_END
 
@@ -135,7 +135,7 @@ QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE       (IResult          )
 	QUERY_INTERFACE       (IResultTraceValue)
 	QUERY_INTERFACE       (IResultWatchQuant)
-	QUERY_INTERFACE       (IModelStructure )
+	QUERY_INTERFACE       (IModelStructure  )
 QUERY_INTERFACE_END
 
 private:
@@ -173,7 +173,7 @@ QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE       (IResult          )
 	QUERY_INTERFACE       (IResultTraceValue)
 	QUERY_INTERFACE       (IResultWatchValue)
-	QUERY_INTERFACE       (IModelStructure )
+	QUERY_INTERFACE       (IModelStructure  )
 QUERY_INTERFACE_END
 
 private:
@@ -207,7 +207,7 @@ DEFINE_IFACTORY(RDOPMDGetValue);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOPMDResult     )
 	QUERY_INTERFACE       (IResult          )
-	QUERY_INTERFACE       (IModelStructure )
+	QUERY_INTERFACE       (IModelStructure  )
 	QUERY_INTERFACE       (IResultTraceValue)
 	QUERY_INTERFACE       (IResultGetValue  )
 QUERY_INTERFACE_END

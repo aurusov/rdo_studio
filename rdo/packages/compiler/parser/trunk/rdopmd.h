@@ -34,8 +34,8 @@ OBJECT(RDOPMDResult) IS INSTANCE_OF(RDOParserSrcInfo)
 {
 DECLARE_FACTORY(RDOPMDResult);
 public:
-	CREF(tstring)  name      () const { return src_text(); }
-	CREF(LPIResult) getRuntime() const { return m_pResult;   }
+	CREF(tstring)   name      () const { return src_text(); }
+	CREF(LPIResult) getRuntime() const { return m_pResult;  }
 
 protected:
 	RDOPMDResult(CREF(RDOParserSrcInfo) src_info);
@@ -55,10 +55,10 @@ CLASS(RDOResultGroup):
 {
 DECLARE_FACTORY(RDOResultGroup);
 public:
-	void                init      (CREF(RDOParserSrcInfo) src_info);
-	CREF(tstring)       name      () const;
+	void                 init      (CREF(RDOParserSrcInfo) src_info);
+	CREF(tstring)        name      () const;
 	CREF(LPIResultGroup) getRuntime() const;
-	void                append    (CREF(LPRDOPMDResult) pResult   );
+	void                 append    (CREF(LPRDOPMDResult) pResult   );
 	LPRDOPMDResult       find      (CREF(tstring)       resultName) const;
 
 private:
@@ -67,7 +67,7 @@ private:
 
 	typedef std::list<LPRDOPMDResult> ResultList;
 
-	ResultList     m_resultList;
+	ResultList      m_resultList;
 	LPIResultGroup  m_pResultGroup;
 };
 DECLARE_POINTER(RDOResultGroup);

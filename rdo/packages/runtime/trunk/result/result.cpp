@@ -37,7 +37,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 RDOPMDResult::RDOPMDResult(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace)
 	: RDOResultTrace(pRuntime, trace)
-	, m_name       (name           )
+	, m_name        (name           )
 {
 	setTrace(trace);
 }
@@ -54,7 +54,7 @@ CREF(tstring) RDOPMDResult::name() const
 // -------------------- RDOPMDWatchPar
 // --------------------------------------------------------------------------------
 RDOPMDWatchPar::RDOPMDWatchPar(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resName, CREF(tstring) parName, ruint resourceID, ruint paramID)
-	: RDOPMDResult (pRuntime, name, trace)
+	: RDOPMDResult(pRuntime, name, trace)
 	, m_resourceID(resourceID           )
 	, m_paramID   (paramID              )
 {
@@ -152,7 +152,7 @@ void RDOPMDWatchPar::calcStat(CREF(LPRDORuntime) pRuntime, REF(std::ostream) str
 // -------------------- RDOPMDWatchState
 // --------------------------------------------------------------------------------
 RDOPMDWatchState::RDOPMDWatchState(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(LPRDOCalc) pLogic)
-	: RDOPMDResult (pRuntime, name, trace)
+	: RDOPMDResult(pRuntime, name, trace)
 	, m_pLogicCalc(pLogic               )
 {}
 
@@ -227,7 +227,7 @@ void RDOPMDWatchState::calcStat(CREF(LPRDORuntime) pRuntime, REF(std::ostream) s
 // -------------------- RDOPMDWatchQuant
 // --------------------------------------------------------------------------------
 RDOPMDWatchQuant::RDOPMDWatchQuant(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resTypeName, int rtpID)
-	: RDOPMDResult (pRuntime, name, trace)
+	: RDOPMDResult(pRuntime, name, trace)
 	, m_pLogicCalc(NULL                 )
 	, m_rtpID     (rtpID                )
 {
@@ -323,7 +323,7 @@ void RDOPMDWatchQuant::setLogicCalc(CREF(LPRDOCalc) pLogicCalc)
 // -------------------- RDOPMDWatchValue
 // --------------------------------------------------------------------------------
 RDOPMDWatchValue::RDOPMDWatchValue(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resTypeName, int rtpID)
-	: RDOPMDResult  (pRuntime, name, trace)
+	: RDOPMDResult (pRuntime, name, trace)
 	, m_pLogicCalc (NULL                 )
 	, m_pArithmCalc(NULL                 )
 	, m_rtpID      (rtpID                )
@@ -429,7 +429,7 @@ void RDOPMDWatchValue::setArithmCalc(CREF(LPRDOCalc) pArithmCalc)
 // -------------------- RDOPMDGetValue
 // --------------------------------------------------------------------------------
 RDOPMDGetValue::RDOPMDGetValue(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, CREF(LPRDOCalc) pArithm)
-	: RDOPMDResult  (pRuntime, name, false)
+	: RDOPMDResult (pRuntime, name, false)
 	, m_pArithmCalc(pArithm              )
 {}
 

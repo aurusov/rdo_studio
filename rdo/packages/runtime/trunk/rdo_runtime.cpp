@@ -285,7 +285,7 @@ void RDORuntime::addRuntimeResult(CREF(LPIResult) pResult)
 {
 	m_resultAllList.push_back(pResult);
 	LPIResultTrace resultTrace = pResult;
-	LPITrace      trace      = pResult;
+	LPITrace       trace       = pResult;
 	if (resultTrace && trace && trace->traceable())
 	{
 		m_resultTraceList.push_back(resultTrace);

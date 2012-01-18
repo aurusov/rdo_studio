@@ -109,7 +109,7 @@ public:
 	void addRuntimeEvent    (LPIBaseOperationContainer pLogic, CREF(LPIEvent)      pEvent    );
 	void addRuntimeRule     (LPIBaseOperationContainer pLogic, CREF(LPIRule)       pRule     );
 	void addRuntimeOperation(LPIBaseOperationContainer pLogic, CREF(LPIOperation)  pOperation);
-	void addRuntimeResult    (CREF(LPIResult)      pResult);
+	void addRuntimeResult   (CREF(LPIResult)     pResult);
 	void addRuntimeFrame    (CREF(LPRDOFRMFrame) pFrame);
 
 	LPRDOFRMFrame lastFrame() const;
@@ -254,8 +254,8 @@ private:
 	LPIResultList            m_resultAllList;
 	LPIResultTraceList       m_resultTraceList;
 	LPIResultWatchValueList  m_resultWatchValueList;
-	LPIActivity             m_currActivity;
-	ValueList               m_patternParameterList;
+	LPIActivity              m_currActivity;
+	ValueList                m_patternParameterList;
 
 	time_t m_physicTime;
 	virtual void preProcess();

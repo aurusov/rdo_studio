@@ -88,7 +88,7 @@ DEFINE_OBJECT_CONTAINER(DPTSearch      );
 DEFINE_OBJECT_CONTAINER(DPTSome        );
 DEFINE_OBJECT_CONTAINER(DPTPrior       );
 DEFINE_OBJECT_CONTAINER(DPTFreeActivity);
-DEFINE_OBJECT_CONTAINER(PMDResult       );
+DEFINE_OBJECT_CONTAINER(PMDResult      );
 
 DEFINE_OBJECT_CONTAINER_NONAME(FUNGroup   );
 DEFINE_OBJECT_CONTAINER_NONAME(DPTFree    );
@@ -121,7 +121,7 @@ public:
 	ruint getRTP_id     () const { return m_allRTPResType.size()  + 1; }
 	ruint getRSS_id     () const { return m_allRSSResource.size() + 0; }
 	ruint getPAT_id     () const { return m_allPATPattern.size()  + 0; }
-	ruint getPMD_id     () const { return m_allPMDResult.size()    + 1; }
+	ruint getPMD_id     () const { return m_allPMDResult.size()   + 1; }
 	ruint getFUNCONST_id() const { return m_allFUNConstant.size() + 0; }
 	ruint getNumberFrame() const { return m_allFRMFrame.size()    + 0; }
 

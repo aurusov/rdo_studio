@@ -27,13 +27,13 @@ class IResult
 public:
 	virtual void resetResult(CREF(rdoRuntime::LPRDORuntime) Runtime) = 0;
 	virtual void checkResult(CREF(rdoRuntime::LPRDORuntime) Runtime) = 0;
-	virtual void calcStat  (CREF(rdoRuntime::LPRDORuntime) Runtime, REF(std::ostream) stream) = 0;
+	virtual void calcStat   (CREF(rdoRuntime::LPRDORuntime) Runtime, REF(std::ostream) stream) = 0;
 };
 
 #define DECLARE_IResult                                               \
 	virtual void resetResult(CREF(rdoRuntime::LPRDORuntime) Runtime); \
 	virtual void checkResult(CREF(rdoRuntime::LPRDORuntime) Runtime); \
-	virtual void calcStat  (CREF(rdoRuntime::LPRDORuntime) Runtime, REF(std::ostream) stream);
+	virtual void calcStat   (CREF(rdoRuntime::LPRDORuntime) Runtime, REF(std::ostream) stream);
 
 /*!
   \interface IResultWatchQuant
