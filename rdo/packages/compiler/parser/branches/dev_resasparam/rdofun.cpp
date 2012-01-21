@@ -1354,6 +1354,14 @@ IContextFind::Result RDOFUNFunction::onFindContext(CREF(LPRDOValue) pValue) cons
 	LPRDOParam pParam = findFUNFunctionParam(pValue->value().getIdentificator());
 	if (pParam)
 	{
+		rdoRuntime::RDOType::TypeID pType = pParam->getTypeInfo()->type()->typeID();
+		if (pType)
+		{
+			if (pType == rdoRuntime::RDOType::t_identificator)
+			{
+				RDOParser::s_parser()->error().error(pValue->src_info(), rdo::format(_T("Неизвестный тип ресурса: %s"), pParam->getTypeInfo()->src_info().src_text().c_str()));
+			}
+		}
 		LPExpression pExpression = rdo::Factory<Expression>::create(
 			pParam->getTypeInfo(),
 			rdo::Factory<rdoRuntime::RDOCalcFuncParam>::create(findFUNFunctionParamNum(pValue->value().getIdentificator()), pParam->src_info()),
