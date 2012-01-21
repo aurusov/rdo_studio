@@ -25,10 +25,12 @@ RDOValue::RDOValue()
 	: RDOParserSrcInfo()
 	, m_value         (rdoRuntime::RDOValue(rdoRuntime::g_unknow.object_parent_cast<rdoRuntime::RDOType>()))
 {
-	m_pType = rdo::Factory<TypeInfo>::create(
-		rdo::Factory<RDOType__unknow>::create(),
-		RDOParserSrcInfo() /// @todo TypeInfo реально неопределён, добавить соответствующий конструктор
-	);
+	//! @todo RDOParserSrcInfo() для TypeInfo реально неопределёно, добавить соответствующий конструктор
+	LPRDOValue pValue = getUnknow(RDOParserSrcInfo());
+	ASSERT(pValue);
+
+	m_pType = pValue->m_pType;
+	m_value = pValue->m_value;
 	ASSERT(m_pType);
 }
 
@@ -174,6 +176,17 @@ rbool RDOValue::constant() const
 LPRDOValue RDOValue::getIdentificator(CREF(tstring) identificator)
 {
 	return rdo::Factory<RDOValue>::create(RDOParserSrcInfo(identificator));
+}
+
+LPRDOValue RDOValue::getUnknow(CREF(RDOParserSrcInfo) src_info)
+{
+	return rdo::Factory<RDOValue>::create(
+		rdo::Factory<TypeInfo>::create(
+			rdo::Factory<RDOType__unknow>::create(),
+			src_info
+		),
+		src_info
+	);
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

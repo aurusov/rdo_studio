@@ -131,13 +131,7 @@ LPRDOValue RDOEnumType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo
 			}
 			else
 			{
-				pToValue = rdo::Factory<RDOValue>::create(
-					rdo::Factory<TypeInfo>::create(
-						rdo::Factory<RDOType__unknow>::create(),
-						pFrom->src_info()
-					),
-					pFrom->src_info()
-				);
+				pToValue = RDOValue::getUnknow(pFrom->src_info());
 				ASSERT(pToValue);
 			}
 			break;
@@ -152,13 +146,7 @@ LPRDOValue RDOEnumType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo
 			}
 			else
 			{
-				pToValue = rdo::Factory<RDOValue>::create(
-					rdo::Factory<TypeInfo>::create(
-						rdo::Factory<RDOType__unknow>::create(),
-						pFrom->src_info()
-					),
-					pFrom->src_info()
-				);
+				pToValue = RDOValue::getUnknow(pFrom->src_info());
 				ASSERT(pToValue);
 			}
 			break;
