@@ -62,6 +62,19 @@ BOOST_AUTO_TEST_CASE(RDOCommon_FileRemove)
 	BOOST_CHECK(rdo::File::unlink(s_testFileName));
 }
 
+BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitPath)
+{
+	tstring file("/rdo/русский пробел/files/проект.smr");
+	tstring dir;
+	tstring name;
+	tstring ext;
+			
+	BOOST_CHECK(rdo::File::splitpath(file, dir, name, ext));
+	BOOST_CHECK(dir == "/rdo/русский пробел/files");
+	BOOST_CHECK(name == "проект");
+	BOOST_CHECK(ext == ".smr");
+}
+
 BOOST_AUTO_TEST_CASE(RDOCommon_GetTempFile)
 {
 	std::set<tstring> name_set;
