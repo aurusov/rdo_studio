@@ -14,46 +14,6 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-inline RDOValue::RDOValue(CREF(rdo::explicit_value<rsint>) value, CREF(RDOParserSrcInfo) src_info)
-	: RDOParserSrcInfo(src_info)
-	, m_value         (value   )
-{
-	m_pType = rdo::Factory<TypeInfo>::create(
-		rdo::Factory<RDOType__int>::create(),
-		src_info
-	);
-}
-
-inline RDOValue::RDOValue(CREF(rdo::explicit_value<ruint>) value, CREF(RDOParserSrcInfo) src_info)
-	: RDOParserSrcInfo(src_info)
-	, m_value         (value   )
-{
-	m_pType = rdo::Factory<TypeInfo>::create(
-		rdo::Factory<RDOType__int>::create(),
-		src_info
-	);
-}
-
-inline RDOValue::RDOValue(CREF(rdo::explicit_value<double>) value, CREF(RDOParserSrcInfo) src_info)
-	: RDOParserSrcInfo(src_info)
-	, m_value         (value   )
-{
-	m_pType = rdo::Factory<TypeInfo>::create(
-		rdo::Factory<RDOType__real>::create(),
-		src_info
-	);
-}
-
-inline RDOValue::RDOValue(CREF(rdo::explicit_value<tstring>) value, CREF(RDOParserSrcInfo) src_info)
-	: RDOParserSrcInfo(src_info)
-	, m_value         (value   )
-{
-	m_pType = rdo::Factory<TypeInfo>::create(
-		rdo::Factory<RDOType__string>::create(),
-		src_info
-	);
-}
-
 template <class T>
 inline RDOValue::RDOValue(CREF(LPTypeInfo) pType, CREF(rdo::intrusive_ptr<T>) pObject)
 	: RDOParserSrcInfo(pObject->src_info())

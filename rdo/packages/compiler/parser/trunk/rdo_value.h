@@ -43,24 +43,33 @@ public:
 	static LPRDOValue getIdentificator(CREF(tstring) identificator);
 
 private:
+	// Неопределенный тип
+	RDOValue();
+
+	// Для t_identificator известно только имя, но не тип
+	RDOValue(CREF(RDOParserSrcInfo) src_info);
+
+	// От копии
+	RDOValue(CREF(LPRDOValue) pValue);
+
+	// Он стандартных типов
 	RDOValue(CREF(rdo::explicit_value<rsint>)   value, CREF(RDOParserSrcInfo) src_info);
 	RDOValue(CREF(rdo::explicit_value<ruint>)   value, CREF(RDOParserSrcInfo) src_info);
 	RDOValue(CREF(rdo::explicit_value<double>)  value, CREF(RDOParserSrcInfo) src_info);
 	RDOValue(CREF(rdo::explicit_value<tstring>) value, CREF(RDOParserSrcInfo) src_info);
 
+	// От типа
+	RDOValue(CREF(LPTypeInfo) pType);
 	RDOValue(CREF(LPTypeInfo) pType, CREF(RDOParserSrcInfo) src_info);
+
+	// От типа и объекта
 	template <class T>
 	RDOValue(CREF(LPTypeInfo) pType, CREF(rdo::intrusive_ptr<T>) pObject);
 	template <class T>
 	RDOValue(CREF(LPTypeInfo) pType, CREF(rdo::intrusive_ptr<T>) pObject, CREF(RDOParserSrcInfo) src_info);
 
+	// От рантайм RDOValue
 	RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(RDOParserSrcInfo) src_info, CREF(LPTypeInfo) pType);
-	RDOValue(CREF(LPRDOValue) pValue);
-	RDOValue(CREF(LPTypeInfo) pType);
-	// Для t_identificator известно только имя, но не тип
-	RDOValue(CREF(RDOParserSrcInfo) src_info);
-	// Неопределенный тип
-	RDOValue();
 
  	template <class T>
 	void setPointer(CREF(rdo::intrusive_ptr<T>) pObject);

@@ -32,6 +32,18 @@ RDOValue::RDOValue()
 	ASSERT(m_pType);
 }
 
+// Для t_identificator известно только имя, но не тип
+RDOValue::RDOValue(CREF(RDOParserSrcInfo) src_info)
+	: RDOParserSrcInfo(src_info                                                              )
+	, m_value         (rdoRuntime::RDOValue(src_info.src_text(), rdoRuntime::g_identificator))
+{
+	m_pType = rdo::Factory<TypeInfo>::create(
+		rdo::Factory<RDOType__identificator>::create(),
+		src_info
+	);
+	ASSERT(m_pType);
+}
+
 RDOValue::RDOValue(CREF(LPRDOValue) pValue)
 	: RDOParserSrcInfo(pValue->src_info())
 	, m_value         (pValue->m_value   )
@@ -52,12 +64,44 @@ RDOValue::RDOValue(CREF(LPRDOValue) pValue)
 	}
 }
 
-RDOValue::RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(RDOParserSrcInfo) src_info, CREF(LPTypeInfo) pType)
+RDOValue::RDOValue(CREF(rdo::explicit_value<rsint>) value, CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_value         (value   )
-	, m_pType         (pType   )
 {
-	ASSERT(m_pType);
+	m_pType = rdo::Factory<TypeInfo>::create(
+		rdo::Factory<RDOType__int>::create(),
+		src_info
+	);
+}
+
+RDOValue::RDOValue(CREF(rdo::explicit_value<ruint>) value, CREF(RDOParserSrcInfo) src_info)
+	: RDOParserSrcInfo(src_info)
+	, m_value         (value   )
+{
+	m_pType = rdo::Factory<TypeInfo>::create(
+		rdo::Factory<RDOType__int>::create(),
+		src_info
+	);
+}
+
+RDOValue::RDOValue(CREF(rdo::explicit_value<double>) value, CREF(RDOParserSrcInfo) src_info)
+	: RDOParserSrcInfo(src_info)
+	, m_value         (value   )
+{
+	m_pType = rdo::Factory<TypeInfo>::create(
+		rdo::Factory<RDOType__real>::create(),
+		src_info
+	);
+}
+
+RDOValue::RDOValue(CREF(rdo::explicit_value<tstring>) value, CREF(RDOParserSrcInfo) src_info)
+	: RDOParserSrcInfo(src_info)
+	, m_value         (value   )
+{
+	m_pType = rdo::Factory<TypeInfo>::create(
+		rdo::Factory<RDOType__string>::create(),
+		src_info
+	);
 }
 
 RDOValue::RDOValue(CREF(LPTypeInfo) pType)
@@ -76,15 +120,11 @@ RDOValue::RDOValue(CREF(LPTypeInfo) pType, CREF(RDOParserSrcInfo) src_info)
 	ASSERT(m_pType);
 }
 
-// Для t_identificator известно только имя, но не тип
-RDOValue::RDOValue(CREF(RDOParserSrcInfo) src_info)
-	: RDOParserSrcInfo(src_info                                                              )
-	, m_value         (rdoRuntime::RDOValue(src_info.src_text(), rdoRuntime::g_identificator))
+RDOValue::RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(RDOParserSrcInfo) src_info, CREF(LPTypeInfo) pType)
+	: RDOParserSrcInfo(src_info)
+	, m_value         (value   )
+	, m_pType         (pType   )
 {
-	m_pType = rdo::Factory<TypeInfo>::create(
-		rdo::Factory<RDOType__identificator>::create(),
-		src_info
-	);
 	ASSERT(m_pType);
 }
 
