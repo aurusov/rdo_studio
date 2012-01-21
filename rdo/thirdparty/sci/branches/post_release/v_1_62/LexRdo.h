@@ -2,6 +2,7 @@
 #define LEXRDO_H
 
 #include <ctype.h>
+#include "utils/rdotypes.h"
 
 #define SCN_RDO_POSCHANGED    20000
 #define SCN_RDO_CLICK         20001
@@ -27,7 +28,7 @@ static inline bool isRDOLexerIdentifier( char ch )
 {
 	if ( (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') ||
 	     (ch >= 'à' && ch <= 'ÿ') || (ch >= 'À' && ch <= 'ß') || ch == '¨' || ch == '¸' ||
-	     ch == '_' || ch == '$' || isdigit(ch) ) return true;
+	     ch == '_' || ch == '$' || isdigit((rbyte)ch) ) return true;
 	return false;
 }
 
