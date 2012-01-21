@@ -491,19 +491,19 @@ frm_color
 		LPRDOFUNArithm pGreen = RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($3));
 		LPRDOFUNArithm pBlue  = RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($4));
 		{
-			LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(0, @2), rdo::Factory<RDOValue>::create(255, @2), @2);
+			LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(rdo::explicit_value<ruint>(0), @2), rdo::Factory<RDOValue>::create(rdo::explicit_value<ruint>(255), @2), @2);
 			LPRDOTypeIntRange   pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
 			LPTypeInfo          pType     = rdo::Factory<TypeInfo>::create(pIntRange, @2);
 			pRed->checkParamType(pType);
 		}
 		{
-			LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(0, @3), rdo::Factory<RDOValue>::create(255, @3), @3);
+			LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(rdo::explicit_value<ruint>(0), @3), rdo::Factory<RDOValue>::create(rdo::explicit_value<ruint>(255), @3), @3);
 			LPRDOTypeIntRange   pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
 			LPTypeInfo          pType     = rdo::Factory<TypeInfo>::create(pIntRange, @3);
 			pGreen->checkParamType(pType);
 		}
 		{
-			LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(0, @4), rdo::Factory<RDOValue>::create(255, @4), @4);
+			LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(rdo::explicit_value<ruint>(0), @4), rdo::Factory<RDOValue>::create(rdo::explicit_value<ruint>(255), @4), @4);
 			LPRDOTypeIntRange   pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
 			LPTypeInfo          pType     = rdo::Factory<TypeInfo>::create(pIntRange, @4);
 			pBlue->checkParamType(pType);
@@ -530,19 +530,19 @@ frm_color
 		LPRDOFUNArithm pGreen = PARSER->stack().pop<RDOFUNArithm>($4);
 		LPRDOFUNArithm pBlue  = PARSER->stack().pop<RDOFUNArithm>($6);
 		{
-			LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(0, @2), rdo::Factory<RDOValue>::create(255, @2), @2);
+			LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(rdo::explicit_value<ruint>(0), @2), rdo::Factory<RDOValue>::create(rdo::explicit_value<ruint>(255), @2), @2);
 			LPRDOTypeIntRange   pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
 			LPTypeInfo          pType     = rdo::Factory<TypeInfo>::create(pIntRange, @2);
 			pRed->checkParamType(pType);
 		}
 		{
-			LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(0, @4), rdo::Factory<RDOValue>::create(255, @4), @4);
+			LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(rdo::explicit_value<ruint>(0), @4), rdo::Factory<RDOValue>::create(rdo::explicit_value<ruint>(255), @4), @4);
 			LPRDOTypeIntRange   pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
 			LPTypeInfo          pType     = rdo::Factory<TypeInfo>::create(pIntRange, @4);
 			pGreen->checkParamType(pType);
 		}
 		{
-			LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(0, @6), rdo::Factory<RDOValue>::create(255, @6), @6);
+			LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(rdo::explicit_value<ruint>(0), @6), rdo::Factory<RDOValue>::create(rdo::explicit_value<ruint>(255), @6), @6);
 			LPRDOTypeIntRange   pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
 			LPTypeInfo          pType     = rdo::Factory<TypeInfo>::create(pIntRange, @6);
 			pBlue->checkParamType(pType);

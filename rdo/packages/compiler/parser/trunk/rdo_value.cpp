@@ -29,6 +29,7 @@ RDOValue::RDOValue()
 		rdo::Factory<RDOType__unknow>::create(),
 		RDOParserSrcInfo() /// @todo TypeInfo реально неопределён, добавить соответствующий конструктор
 	);
+	ASSERT(m_pType);
 }
 
 RDOValue::RDOValue(CREF(LPRDOValue) pValue)
@@ -36,6 +37,8 @@ RDOValue::RDOValue(CREF(LPRDOValue) pValue)
 	, m_value         (pValue->m_value   )
 	, m_pType         (pValue->m_pType   )
 {
+	ASSERT(m_pType);
+
 	memcpy(&m_buffer, &pValue->m_buffer, sizeof(m_buffer));
 
 	switch (typeID())
@@ -53,13 +56,25 @@ RDOValue::RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(RDOParserSrcInfo) src_
 	: RDOParserSrcInfo(src_info)
 	, m_value         (value   )
 	, m_pType         (pType   )
-{}
+{
+	ASSERT(m_pType);
+}
 
 RDOValue::RDOValue(CREF(LPTypeInfo) pType)
 	: RDOParserSrcInfo(pType->src_info(RDOParserSrcInfo()))
 	, m_value         (pType->type()->type()              )
 	, m_pType         (pType                              )
-{}
+{
+	ASSERT(m_pType);
+}
+
+RDOValue::RDOValue(CREF(LPTypeInfo) pType, CREF(RDOParserSrcInfo) src_info)
+	: RDOParserSrcInfo(src_info             )
+	, m_value         (pType->type()->type())
+	, m_pType         (pType                )
+{
+	ASSERT(m_pType);
+}
 
 // Для t_identificator известно только имя, но не тип
 RDOValue::RDOValue(CREF(RDOParserSrcInfo) src_info)
@@ -70,6 +85,7 @@ RDOValue::RDOValue(CREF(RDOParserSrcInfo) src_info)
 		rdo::Factory<RDOType__identificator>::create(),
 		src_info
 	);
+	ASSERT(m_pType);
 }
 
 CREF(LPTypeInfo) RDOValue::typeInfo() const

@@ -14,7 +14,7 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-inline RDOValue::RDOValue(CREF(rsint) value, CREF(RDOParserSrcInfo) src_info)
+inline RDOValue::RDOValue(CREF(rdo::explicit_value<rsint>) value, CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_value         (value   )
 {
@@ -24,7 +24,7 @@ inline RDOValue::RDOValue(CREF(rsint) value, CREF(RDOParserSrcInfo) src_info)
 	);
 }
 
-inline RDOValue::RDOValue(CREF(ruint) value, CREF(RDOParserSrcInfo) src_info)
+inline RDOValue::RDOValue(CREF(rdo::explicit_value<ruint>) value, CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_value         (value   )
 {
@@ -34,7 +34,7 @@ inline RDOValue::RDOValue(CREF(ruint) value, CREF(RDOParserSrcInfo) src_info)
 	);
 }
 
-inline RDOValue::RDOValue(CREF(double) value, CREF(RDOParserSrcInfo) src_info)
+inline RDOValue::RDOValue(CREF(rdo::explicit_value<double>) value, CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_value         (value   )
 {
@@ -44,7 +44,7 @@ inline RDOValue::RDOValue(CREF(double) value, CREF(RDOParserSrcInfo) src_info)
 	);
 }
 
-inline RDOValue::RDOValue(CREF(tstring) value, CREF(RDOParserSrcInfo) src_info)
+inline RDOValue::RDOValue(CREF(rdo::explicit_value<tstring>) value, CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_value         (value   )
 {

@@ -14,6 +14,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/smart_ptr/intrusive_ptr.h"
 #include "utils/smart_ptr/intrusive_ptr_interface_wrapper.h"
+#include "utils/explicit_value.h"
 #include "simulator/compiler/parser/namespace.h"
 #include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/compiler/parser/type/info.h"
@@ -42,23 +43,24 @@ public:
 	static LPRDOValue getIdentificator(CREF(tstring) identificator);
 
 private:
-	explicit RDOValue(CREF(rsint)   value, CREF(RDOParserSrcInfo) src_info);
-	explicit RDOValue(CREF(ruint)   value, CREF(RDOParserSrcInfo) src_info);
-	explicit RDOValue(CREF(double)  value, CREF(RDOParserSrcInfo) src_info);
-	explicit RDOValue(CREF(tstring) value, CREF(RDOParserSrcInfo) src_info);
+	RDOValue(CREF(rdo::explicit_value<rsint>)   value, CREF(RDOParserSrcInfo) src_info);
+	RDOValue(CREF(rdo::explicit_value<ruint>)   value, CREF(RDOParserSrcInfo) src_info);
+	RDOValue(CREF(rdo::explicit_value<double>)  value, CREF(RDOParserSrcInfo) src_info);
+	RDOValue(CREF(rdo::explicit_value<tstring>) value, CREF(RDOParserSrcInfo) src_info);
 
+	RDOValue(CREF(LPTypeInfo) pType, CREF(RDOParserSrcInfo) src_info);
 	template <class T>
 	RDOValue(CREF(LPTypeInfo) pType, CREF(rdo::intrusive_ptr<T>) pObject);
 	template <class T>
 	RDOValue(CREF(LPTypeInfo) pType, CREF(rdo::intrusive_ptr<T>) pObject, CREF(RDOParserSrcInfo) src_info);
 
-	explicit RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(RDOParserSrcInfo) src_info, CREF(LPTypeInfo) pType);
-	         RDOValue(CREF(LPRDOValue) pValue);
-	         RDOValue(CREF(LPTypeInfo) pType);
+	RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(RDOParserSrcInfo) src_info, CREF(LPTypeInfo) pType);
+	RDOValue(CREF(LPRDOValue) pValue);
+	RDOValue(CREF(LPTypeInfo) pType);
 	// Для t_identificator известно только имя, но не тип
-	explicit RDOValue(CREF(RDOParserSrcInfo) src_info);
+	RDOValue(CREF(RDOParserSrcInfo) src_info);
 	// Неопределенный тип
-	         RDOValue();
+	RDOValue();
 
  	template <class T>
 	void setPointer(CREF(rdo::intrusive_ptr<T>) pObject);

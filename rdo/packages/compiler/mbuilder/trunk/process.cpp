@@ -55,7 +55,10 @@ RDOResType BlockForQueue::createType(CREF(tstring) rtp_name, CREF(rdoParse::RDOP
 	// "длина_очереди"
 	tstring rtp_param_name = rdoRuntime::RDOPROCQueue::getQueueParamName();
 	// значение длины очереди по умолчанию
-	rdoParse::LPRDOValue pDefaultValue = rdo::Factory<rdoParse::RDOValue>::create(rdoRuntime::RDOPROCQueue::getDefaultValue(), info);
+	rdoParse::LPRDOValue pDefaultValue = rdo::Factory<rdoParse::RDOValue>::create(
+		rdo::explicit_value<ruint>(rdoRuntime::RDOPROCQueue::getDefaultValue()),
+		info
+	);
 	ASSERT(pDefaultValue);
 	// Получили список всех типов ресурсов
 	RDOResTypeList rtpList(rdoParse::RDOParser::s_parser());
@@ -126,7 +129,10 @@ RDOResType BlockForSeize::createType(CREF(tstring) rtp_name, CREF(rdoParse::RDOP
 	tstring rtp_param_name = rdoRuntime::RDOPROCBlockForSeize::getStateParamName();
 	// "Свободен"
 	tstring rtp_state_free = rdoRuntime::RDOPROCBlockForSeize::getStateEnumFree();
-	rdoParse::LPRDOValue pDefaultValue = rdo::Factory<rdoParse::RDOValue>::create(rtp_state_free, info);
+	rdoParse::LPRDOValue pDefaultValue = rdo::Factory<rdoParse::RDOValue>::create(
+		rdo::explicit_value<tstring>(rtp_state_free),
+		info
+	);
 	ASSERT(pDefaultValue);
 	pDefaultValue->setSrcText(rtp_state_free);
 	// "Занят"

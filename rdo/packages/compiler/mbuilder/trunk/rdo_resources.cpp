@@ -375,7 +375,7 @@ RDOResource::RDOResource(CREF(RDOResType) rtp, CREF(tstring) name)
 {
 	STL_FOR_ALL_CONST(m_rtp.m_params, param_it)
 	{
-		rdoParse::LPRDOValue pValue = rdo::Factory<rdoParse::RDOValue>::create(param_it->type()->type(), param_it->src_info());
+		rdoParse::LPRDOValue pValue = rdo::Factory<rdoParse::RDOValue>::create(param_it->type(), param_it->src_info());
 		ASSERT(pValue);
 		if (param_it->hasDefault())
 		{
