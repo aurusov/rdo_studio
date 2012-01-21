@@ -36,7 +36,7 @@ protected:
 	virtual ~TypeInfo();
 
 private:
-	TypeInfo(CREF(LPRDOType)  pType, CREF(RDOParserSrcInfo) srcInfo);
+	TypeInfo(CREF(LPRDOType) pType, CREF(RDOParserSrcInfo) srcInfo);
 
 	LPRDOType                         m_pType;
 	boost::optional<RDOParserSrcInfo> m_srcInfo;
