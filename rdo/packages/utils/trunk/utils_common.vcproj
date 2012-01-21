@@ -377,6 +377,10 @@
 			Name=".stuff"
 			>
 			<File
+				RelativePath=".\explicit_value.h"
+				>
+			</File>
+			<File
 				RelativePath=".\rdoidgenerator.h"
 				>
 			</File>
