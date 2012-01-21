@@ -40,7 +40,8 @@ public:
 	template <class T>
 	CREF(rdo::intrusive_ptr<T>) get() const;
 
-	static LPRDOValue getIdentificator(CREF(tstring) identificator);
+	static LPRDOValue getIdentificator(CREF(tstring)     identificator);
+	static LPRDOValue getUnknow       (CREF(RDOParserSrcInfo) src_info);
 
 private:
 	// Неопределенный тип
