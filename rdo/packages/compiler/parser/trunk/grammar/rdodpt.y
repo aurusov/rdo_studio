@@ -557,6 +557,7 @@ dpt_searcht_activity
 		LPRDODPTActivity pActivity = PARSER->stack().pop<RDODPTActivity>($2);
 		ASSERT(pActivity)
 		pActivity->endParam(@3);
+		$$ = PARSER->stack().push(pActivity);
 	}
 	| dpt_searcht_activity dpt_search_name dpt_search_descr_param error
 	{
