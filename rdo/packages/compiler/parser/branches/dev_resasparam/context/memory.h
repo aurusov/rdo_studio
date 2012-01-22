@@ -39,6 +39,10 @@ CLASS(ContextMemory):
 	AND IMPLEMENTATION_OF(IContextFind  )
 {
 DECLARE_FACTORY(ContextMemory);
+public:
+	static void push();
+	static void pop ();
+
 protected:
 	ContextMemory();
 

@@ -386,7 +386,7 @@ fun_func_params
 	;
 
 fun_func_footer
-	: RDO_Type '=' RDO_algorithmic fun_func_parameters alg_fun_Body alg_fun_statement alg_fun_End
+	: RDO_Type '=' RDO_algorithmic fun_func_parameters alg_body statement_list alg_end
 	{
 		LPExpression pExpressionFunBodyBrace = PARSER->stack().pop<Expression>($6);
 		ASSERT(pExpressionFunBodyBrace);
@@ -400,13 +400,9 @@ fun_func_footer
 
 		LPExpressionStatement pExpressionReturn = pExpressionFunBodyBrace.object_dynamic_cast<ExpressionStatement>();
 
-		rdoRuntime::LPRDOFunCalc pCalc = pExpressionFunBodyBrace->calc().object_dynamic_cast<rdoRuntime::RDOFunCalc>();
-		ASSERT(pCalc);
-
 		LPRDOFUNFunction pFunction = PARSER->getLastFUNFunction();
 		ASSERT(pFunction);
 		pExpressionReturn ? pFunction->setReturnFlag(true) : pFunction->setReturnFlag(false);
-		pFunction->setFunctionCalc(pCalc);
 		pFunction->createAlgorithmicCalc(@5);
 	}
 	| RDO_Type '=' RDO_list fun_func_parameters RDO_Body fun_func_list_body RDO_End
@@ -421,9 +417,13 @@ fun_func_footer
 		ASSERT(pFunction);
 		pFunction->createTableCalc(@6);
 	}
-	| RDO_Type '=' RDO_algorithmic fun_func_parameters alg_fun_Body alg_fun_statement error
+	| RDO_Type '=' RDO_algorithmic fun_func_parameters alg_body statement_list error
 	{
 		PARSER->error().error(@7, _T("Ожидается ключевое слово $End"));
+	}
+	| RDO_Type '=' RDO_algorithmic fun_func_parameters alg_body error
+	{
+		PARSER->error().error(@6, _T("Неверный синтаксис алгоритмической функции"));
 	}
 	| RDO_Type '=' RDO_list fun_func_parameters RDO_Body fun_func_list_body error
 	{
@@ -455,86 +455,17 @@ fun_func_footer
 	}
 	;
 
-alg_fun_statement
-	: /* empty */
-	{
-		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunBodyBrace = rdo::Factory<rdoRuntime::RDOCalcFunBodyBrace>::create();
-		ASSERT(pCalcFunBodyBrace);
-
-		rdoRuntime::LPRDOCalc pCalcOpenBrace = rdo::Factory<rdoRuntime::RDOCalcOpenBrace>::create();
-		ASSERT(pCalcOpenBrace);
-
-		pCalcFunBodyBrace->addFunCalc(pCalcOpenBrace);
-
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__void>::create(), RDOParserSrcInfo());
-		ASSERT(pType);
-
-		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalcFunBodyBrace, RDOParserSrcInfo());
-		ASSERT(pExpression);
-
-		$$ = PARSER->stack().push(pExpression);
-	}
-	| alg_fun_statement statement
-	{
-		LPExpression pExpressionFunBodyBrace = PARSER->stack().pop<Expression>($1);
-		ASSERT(pExpressionFunBodyBrace);
-
-		LPExpression pExpression = PARSER->stack().pop<Expression>($2);
-		ASSERT(pExpression);
-
-		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunBodyBrace = pExpressionFunBodyBrace->calc().object_dynamic_cast<rdoRuntime::RDOCalcFunBodyBrace>();
-		ASSERT(pCalcFunBodyBrace);
-		pCalcFunBodyBrace->addFunCalc(pExpression->calc());
-
-		pExpressionFunBodyBrace = rdo::Factory<Expression>::create(pExpressionFunBodyBrace->typeInfo(), pCalcFunBodyBrace, RDOParserSrcInfo(@1));
-		ASSERT(pExpressionFunBodyBrace);
-
-		LPExpressionStatement pExpressionReturn = pExpression.object_dynamic_cast<ExpressionStatement>();
-		if(pExpressionReturn)
-		{
-			pExpressionFunBodyBrace = rdo::Factory<ExpressionStatement>::create(pExpressionFunBodyBrace);
-		}
-
-		$$ = PARSER->stack().push(pExpressionFunBodyBrace);
-	}
-	| error
-	{
-		PARSER->error().error(@1, _T("Неверный синтаксис алгоритмической функции"));
-	}
-	;
-
-alg_fun_Body
+alg_body
 	: RDO_Body
 	{
-		LPLocalVariableList pLocalVariableList = rdo::Factory<LocalVariableList>::create();
-		ASSERT(pLocalVariableList);
-
-		LPContext pContext = PARSER->context();
-		ASSERT(pContext);
-
-		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
-		ASSERT(pContextMemory);
-
-		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
-		ASSERT(pLocalVariableListStack);
-
-		pLocalVariableListStack->push(pLocalVariableList);
+		ContextMemory::push();
 	}
 	;
 
-alg_fun_End
+alg_end
 	: RDO_End
 	{
-		LPContext pContext = PARSER->context();
-		ASSERT(pContext);
-
-		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
-		ASSERT(pContextMemory);
-
-		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
-		ASSERT(pLocalVariableListStack);
-
-		pLocalVariableListStack->pop();
+		ContextMemory::pop();
 	}
 	;
 
@@ -602,35 +533,14 @@ statement
 open_brace
 	: '{'
 	{
-		LPLocalVariableList pLocalVariableList = rdo::Factory<LocalVariableList>::create();
-		ASSERT(pLocalVariableList);
-
-		LPContext pContext = PARSER->context();
-		ASSERT(pContext);
-
-		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
-		ASSERT(pContextMemory);
-
-		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
-		ASSERT(pLocalVariableListStack);
-
-		pLocalVariableListStack->push(pLocalVariableList);
+		ContextMemory::push();
 	}
 	;
 
 close_brace
 	: '}'
 	{
-		LPContext pContext = PARSER->context();
-		ASSERT(pContext);
-
-		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
-		ASSERT(pContextMemory);
-
-		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
-		ASSERT(pLocalVariableListStack);
-
-		pLocalVariableListStack->pop();
+		ContextMemory::pop();
 	}
 	;
 
@@ -650,6 +560,23 @@ statement_list
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalcFunBodyBrace, RDOParserSrcInfo());
 		ASSERT(pExpression);
+
+		//! @todo некрасивая заточка для привязки калка как точки входа в функцию
+		//! 1. statement_list отличается от аналогичного токена в паттернах, сейчас это куда ни шло,
+		//!    т.к. паттерна не возвращает никакого значения, но стратегически можно сказать, что он
+		//!    возвращает void и свести его к функции
+		//! 2. statement_list вызывается для каждых фигурных скобор, поэтому пришлось поставить
+		//!    проверку if (!pFunction->getFunctionCalc()). решение некрасивое, м.б. стоит продумать
+		//!    механиз линковки, которому достуточно будет на этапе компиляции знать только сигнатуру,
+		//!    а точку входа будет назначаться только на этапе линковки
+		LPRDOFUNFunction pFunction = PARSER->getLastFUNFunction();
+		ASSERT(pFunction);
+		if (!pFunction->getFunctionCalc())
+		{
+			rdoRuntime::LPRDOFunCalc pCalc = pCalcFunBodyBrace.object_dynamic_cast<rdoRuntime::RDOFunCalc>();
+			ASSERT(pCalc);
+			pFunction->setFunctionCalc(pCalc);
+		}
 
 		$$ = PARSER->stack().push(pExpression);
 	}
@@ -754,8 +681,9 @@ equal_statement
 				break;
 			}
 		}
-		pCalc->setSrcText(rdo::format(_T("%s %s"), paramName.c_str(), oprStr.c_str()));
-		pCalc->setSrcPos (@1.m_first_line, @1.m_first_pos, @2.m_last_line, @2.m_last_pos);
+		pCalc->setSrcText    (rdo::format(_T("%s %s"), paramName.c_str(), oprStr.c_str()));
+		pCalc->setSrcPos     (@1.m_first_line, @1.m_first_pos, @2.m_last_line, @2.m_last_pos);
+		pCalc->setSrcFileType(PARSER->getFileToParse());
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pLocalVariable->getTypeInfo(), pCalc, RDOParserSrcInfo(@1));
 		ASSERT(pExpression);
@@ -854,8 +782,9 @@ equal_statement
 				break;
 			}
 		}
-		pCalc->setSrcText(rdo::format(_T("%s %s %s"), paramName.c_str(), oprStr.c_str(), pCalcRight->src_text().c_str()));
-		pCalc->setSrcPos (@1.m_first_line, @1.m_first_pos, @3.m_last_line, @3.m_last_pos);
+		pCalc->setSrcText    (rdo::format(_T("%s %s %s"), paramName.c_str(), oprStr.c_str(), pCalcRight->src_text().c_str()));
+		pCalc->setSrcPos     (@1.m_first_line, @1.m_first_pos, @3.m_last_line, @3.m_last_pos);
+		pCalc->setSrcFileType(PARSER->getFileToParse());
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pLocalVariable->getTypeInfo(), pCalc, RDOParserSrcInfo(@1));
 		ASSERT(pExpression);
