@@ -53,6 +53,7 @@ void RDOCalcBodyBrace::addCalc(CREF(LPRDOCalc) pCalc)
 {
 	ASSERT(pCalc);
 	m_calcList.push_back(pCalc);
+	m_value = RDOValue(m_calcList.size());
 }
 
 REF(RDOValue) RDOCalcBodyBrace::doCalc(CREF(LPRDORuntime) pRuntime)
@@ -62,7 +63,6 @@ REF(RDOValue) RDOCalcBodyBrace::doCalc(CREF(LPRDORuntime) pRuntime)
 		(*calc_it)->calcValue(pRuntime);
 	}
 
-	m_value = RDOValue(m_calcList.size());
 	return m_value;
 }
 
