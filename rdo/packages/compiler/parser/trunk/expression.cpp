@@ -21,7 +21,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- Expression
 // --------------------------------------------------------------------------------
-Expression::Expression(CREF(LPTypeInfo) pType, CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(rdoRuntime::RDOSrcInfo) src_info)
+Expression::Expression(CREF(LPTypeInfo) pType, CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(RDOParserSrcInfo) src_info)
 	: m_pType(pType)
 	, m_pCalc(pCalc)
 {
@@ -70,14 +70,9 @@ CREF(rdoRuntime::LPRDOCalc) Expression::calc() const
 	return m_pCalc;
 }
 
-CREF(rdoRuntime::RDOSrcInfo) Expression::src_info() const
+void Expression::setSrcInfo(CREF(RDOParserSrcInfo) src_info)
 {
-	ASSERT(m_pCalc);
-	return m_pCalc->src_info();
-}
-
-void Expression::setSrcInfo(CREF(rdoRuntime::RDOSrcInfo) src_info)
-{
+	RDOParserSrcInfo::setSrcInfo(src_info);
 	if (m_pCalc)
 	{
 		m_pCalc->setSrcInfo(src_info);

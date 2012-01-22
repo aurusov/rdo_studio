@@ -23,20 +23,19 @@ OPEN_RDO_PARSER_NAMESPACE
 // -------------------- Expression
 // --------------------------------------------------------------------------------
 class ExpressionStatement;
-OBJECT(Expression)
+OBJECT(Expression) IS INSTANCE_OF(RDOParserSrcInfo)
 {
 DECLARE_FACTORY(Expression);
 friend class ExpressionStatement;
 public:
 	CREF(LPTypeInfo)             typeInfo  () const;
 	CREF(rdoRuntime::LPRDOCalc)  calc      () const;
-	CREF(rdoRuntime::RDOSrcInfo) src_info  () const;
-	void                         setSrcInfo(CREF(rdoRuntime::RDOSrcInfo) src_info);
+	virtual void                 setSrcInfo(CREF(RDOParserSrcInfo) src_info);
 
 	LPRDOValue                   constant  () const;
 
 private:
-	Expression(CREF(LPTypeInfo) pType, CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(rdoRuntime::RDOSrcInfo) src_info);
+	Expression(CREF(LPTypeInfo) pType, CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(RDOParserSrcInfo) src_info);
 	Expression(CREF(LPRDOValue) pValue);
 	Expression(CREF(LPExpression) pExpression);
 	virtual ~Expression();
