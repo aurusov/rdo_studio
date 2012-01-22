@@ -400,13 +400,9 @@ fun_func_footer
 
 		LPExpressionStatement pExpressionReturn = pExpressionFunBodyBrace.object_dynamic_cast<ExpressionStatement>();
 
-		rdoRuntime::LPRDOFunCalc pCalc = pExpressionFunBodyBrace->calc().object_dynamic_cast<rdoRuntime::RDOFunCalc>();
-		ASSERT(pCalc);
-
 		LPRDOFUNFunction pFunction = PARSER->getLastFUNFunction();
 		ASSERT(pFunction);
 		pExpressionReturn ? pFunction->setReturnFlag(true) : pFunction->setReturnFlag(false);
-		pFunction->setFunctionCalc(pCalc);
 		pFunction->createAlgorithmicCalc(@5);
 	}
 	| RDO_Type '=' RDO_list fun_func_parameters RDO_Body fun_func_list_body RDO_End
@@ -564,6 +560,23 @@ statement_list
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalcFunBodyBrace, RDOParserSrcInfo());
 		ASSERT(pExpression);
+
+		//! @todo некрасива€ заточка дл€ прив€зки калка как точки входа в функцию
+		//! 1. statement_list отличаетс€ от аналогичного токена в паттернах, сейчас это куда ни шло,
+		//!    т.к. паттерна не возвращает никакого значени€, но стратегически можно сказать, что он
+		//!    возвращает void и свести его к функции
+		//! 2. statement_list вызываетс€ дл€ каждых фигурных скобор, поэтому пришлось поставить
+		//!    проверку if (!pFunction->getFunctionCalc()). решение некрасивое, м.б. стоит продумать
+		//!    механиз линковки, которому достуточно будет на этапе компил€ции знать только сигнатуру,
+		//!    а точку входа будет назначатьс€ только на этапе линковки
+		LPRDOFUNFunction pFunction = PARSER->getLastFUNFunction();
+		ASSERT(pFunction);
+		if (!pFunction->getFunctionCalc())
+		{
+			rdoRuntime::LPRDOFunCalc pCalc = pCalcFunBodyBrace.object_dynamic_cast<rdoRuntime::RDOFunCalc>();
+			ASSERT(pCalc);
+			pFunction->setFunctionCalc(pCalc);
+		}
 
 		$$ = PARSER->stack().push(pExpression);
 	}
