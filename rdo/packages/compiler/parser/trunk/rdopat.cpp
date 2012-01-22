@@ -545,6 +545,7 @@ void RDOPATPattern::end()
 			addChoiceFromCalc(pCalc);
 		}
 	}
+	ContextMemory::pop();
 	RDOParser::s_parser()->contextStack()->pop();
 	RDOParser::s_parser()->contextStack()->pop();
 }
