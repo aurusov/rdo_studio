@@ -70,7 +70,7 @@ BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitPath)
 	tstring ext;
 			
 	BOOST_CHECK(rdo::File::splitpath(file, dir, name, ext));
-	BOOST_CHECK(dir == "/rdo/русский пробел/files");
+	BOOST_CHECK(dir == "/rdo/русский пробел/files/");
 	BOOST_CHECK(name == "проект");
 	BOOST_CHECK(ext == ".smr");
 }
