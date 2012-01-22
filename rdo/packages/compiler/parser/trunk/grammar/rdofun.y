@@ -386,7 +386,7 @@ fun_func_params
 	;
 
 fun_func_footer
-	: RDO_Type '=' RDO_algorithmic fun_func_parameters alg_body alg_statement alg_end
+	: RDO_Type '=' RDO_algorithmic fun_func_parameters alg_body statement_list alg_end
 	{
 		LPExpression pExpressionFunBodyBrace = PARSER->stack().pop<Expression>($6);
 		ASSERT(pExpressionFunBodyBrace);
@@ -421,9 +421,13 @@ fun_func_footer
 		ASSERT(pFunction);
 		pFunction->createTableCalc(@6);
 	}
-	| RDO_Type '=' RDO_algorithmic fun_func_parameters alg_body alg_statement error
+	| RDO_Type '=' RDO_algorithmic fun_func_parameters alg_body statement_list error
 	{
 		PARSER->error().error(@7, _T("Ожидается ключевое слово $End"));
+	}
+	| RDO_Type '=' RDO_algorithmic fun_func_parameters alg_body error
+	{
+		PARSER->error().error(@6, _T("Неверный синтаксис алгоритмической функции"));
 	}
 	| RDO_Type '=' RDO_list fun_func_parameters RDO_Body fun_func_list_body error
 	{
@@ -452,54 +456,6 @@ fun_func_footer
 	| RDO_Type error
 	{
 		PARSER->error().error(@2, _T("После ключевого слова $Type ожидается тип функции"));
-	}
-	;
-
-alg_statement
-	: /* empty */
-	{
-		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunBodyBrace = rdo::Factory<rdoRuntime::RDOCalcFunBodyBrace>::create();
-		ASSERT(pCalcFunBodyBrace);
-
-		rdoRuntime::LPRDOCalc pCalcOpenBrace = rdo::Factory<rdoRuntime::RDOCalcOpenBrace>::create();
-		ASSERT(pCalcOpenBrace);
-
-		pCalcFunBodyBrace->addFunCalc(pCalcOpenBrace);
-
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__void>::create(), RDOParserSrcInfo());
-		ASSERT(pType);
-
-		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalcFunBodyBrace, RDOParserSrcInfo());
-		ASSERT(pExpression);
-
-		$$ = PARSER->stack().push(pExpression);
-	}
-	| alg_statement statement
-	{
-		LPExpression pExpressionFunBodyBrace = PARSER->stack().pop<Expression>($1);
-		ASSERT(pExpressionFunBodyBrace);
-
-		LPExpression pExpression = PARSER->stack().pop<Expression>($2);
-		ASSERT(pExpression);
-
-		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunBodyBrace = pExpressionFunBodyBrace->calc().object_dynamic_cast<rdoRuntime::RDOCalcFunBodyBrace>();
-		ASSERT(pCalcFunBodyBrace);
-		pCalcFunBodyBrace->addFunCalc(pExpression->calc());
-
-		pExpressionFunBodyBrace = rdo::Factory<Expression>::create(pExpressionFunBodyBrace->typeInfo(), pCalcFunBodyBrace, RDOParserSrcInfo(@1));
-		ASSERT(pExpressionFunBodyBrace);
-
-		LPExpressionStatement pExpressionReturn = pExpression.object_dynamic_cast<ExpressionStatement>();
-		if(pExpressionReturn)
-		{
-			pExpressionFunBodyBrace = rdo::Factory<ExpressionStatement>::create(pExpressionFunBodyBrace);
-		}
-
-		$$ = PARSER->stack().push(pExpressionFunBodyBrace);
-	}
-	| error
-	{
-		PARSER->error().error(@1, _T("Неверный синтаксис алгоритмической функции"));
 	}
 	;
 
