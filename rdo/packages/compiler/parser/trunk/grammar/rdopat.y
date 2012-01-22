@@ -1543,35 +1543,14 @@ statement
 open_brace
 	: '{'
 	{
-		LPLocalVariableList pLocalVariableList = rdo::Factory<LocalVariableList>::create();
-		ASSERT(pLocalVariableList);
-
-		LPContext pContext = PARSER->context();
-		ASSERT(pContext);
-
-		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
-		ASSERT(pContextMemory);
-
-		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
-		ASSERT(pLocalVariableListStack);
-
-		pLocalVariableListStack->push(pLocalVariableList);
+		ContextMemory::push();
 	}
 	;
 
 close_brace
 	: '}'
 	{
-		LPContext pContext = PARSER->context();
-		ASSERT(pContext);
-
-		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
-		ASSERT(pContextMemory);
-
-		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
-		ASSERT(pLocalVariableListStack);
-
-		pLocalVariableListStack->pop();
+		ContextMemory::pop();
 	}
 	;
 

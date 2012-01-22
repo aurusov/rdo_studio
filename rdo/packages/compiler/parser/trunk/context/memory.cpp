@@ -12,6 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/context/memory.h"
+#include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/runtime/calc/procedural/calc_locvar.h"
 // --------------------------------------------------------------------------------
 
@@ -48,6 +49,34 @@ IContextFind::Result ContextMemory::onFindContext(CREF(LPRDOValue) pValue) const
 	}
 
 	return IContextFind::Result();
+}
+
+void ContextMemory::push()
+{
+	LPContext pContext = RDOParser::s_parser()->context();
+	ASSERT(pContext);
+	LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
+	ASSERT(pContextMemory);
+
+	LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
+	ASSERT(pLocalVariableListStack);
+
+	LPLocalVariableList pLocalVariableList = rdo::Factory<LocalVariableList>::create();
+	ASSERT(pLocalVariableList);
+	pLocalVariableListStack->push(pLocalVariableList);
+}
+
+void ContextMemory::pop()
+{
+	LPContext pContext = RDOParser::s_parser()->context();
+	ASSERT(pContext);
+	LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
+	ASSERT(pContextMemory);
+
+	LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
+	ASSERT(pLocalVariableListStack);
+
+	pLocalVariableListStack->pop();
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

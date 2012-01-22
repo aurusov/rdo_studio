@@ -85,13 +85,7 @@ RDOPATPattern::RDOPATPattern(CREF(RDOParserSrcInfo) name_src_info)
 	ASSERT(m_pContextMemory);
 	RDOParser::s_parser()->contextStack()->push(m_pContextMemory);
 
-	LPLocalVariableListStack pLocalVariableListStack = m_pContextMemory->getLocalMemory();
-	ASSERT(pLocalVariableListStack);
-
-	LPLocalVariableList pLocalVariableList = rdo::Factory<LocalVariableList>::create();
-	ASSERT(pLocalVariableList);
-
-	pLocalVariableListStack->push(pLocalVariableList);
+	ContextMemory::push();
 }
 
 RDOPATPattern::~RDOPATPattern()
