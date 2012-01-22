@@ -1804,8 +1804,9 @@ equal_statement
 				{
 					pCalc = rdo::Factory<rdoRuntime::RDOSetRelResParamCalc<rdoRuntime::ET_EQUAL> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
 					ASSERT(pCalc);
-					pCalc->setSrcText(rdo::format(_T("%s.%s"), pRelRes->src_text().c_str(), paramName.c_str()));
-					pCalc->setSrcPos(@1.m_first_line, @1.m_first_pos, @1.m_last_line, @1.m_last_pos);
+					pCalc->setSrcText    (rdo::format(_T("%s.%s"), pRelRes->src_text().c_str(), paramName.c_str()));
+					pCalc->setSrcPos     (@1.m_first_line, @1.m_first_pos, @1.m_last_line, @1.m_last_pos);
+					pCalc->setSrcFileType(PARSER->getFileToParse());
 
 					LPExpression pExpressionLeft = rdo::Factory<Expression>::create(
 						pParam->getTypeInfo(),
@@ -1965,8 +1966,9 @@ set_array_item_statement
 
 			pCalc = rdo::Factory<rdoRuntime::RDOSetRelResParamCalc<rdoRuntime::ET_EQUAL> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pArrayItemCalc);
 			ASSERT(pCalc);
-			pCalc->setSrcText(rdo::format(_T("%s.%s"), pRelRes->src_text().c_str(), paramName.c_str()));
-			pCalc->setSrcPos(@1.m_first_line, @1.m_first_pos, @1.m_last_line, @1.m_last_pos);
+			pCalc->setSrcText    (rdo::format(_T("%s.%s"), pRelRes->src_text().c_str(), paramName.c_str()));
+			pCalc->setSrcPos     (@1.m_first_line, @1.m_first_pos, @1.m_last_line, @1.m_last_pos);
+			pCalc->setSrcFileType(PARSER->getFileToParse());
 		}
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pArrayArithm->typeInfo(), pCalc, RDOParserSrcInfo(@1));

@@ -678,8 +678,9 @@ equal_statement
 				break;
 			}
 		}
-		pCalc->setSrcText(rdo::format(_T("%s %s"), paramName.c_str(), oprStr.c_str()));
-		pCalc->setSrcPos (@1.m_first_line, @1.m_first_pos, @2.m_last_line, @2.m_last_pos);
+		pCalc->setSrcText    (rdo::format(_T("%s %s"), paramName.c_str(), oprStr.c_str()));
+		pCalc->setSrcPos     (@1.m_first_line, @1.m_first_pos, @2.m_last_line, @2.m_last_pos);
+		pCalc->setSrcFileType(PARSER->getFileToParse());
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pLocalVariable->getTypeInfo(), pCalc, RDOParserSrcInfo(@1));
 		ASSERT(pExpression);
@@ -775,8 +776,9 @@ equal_statement
 				break;
 			}
 		}
-		pCalc->setSrcText(rdo::format(_T("%s %s %s"), paramName.c_str(), oprStr.c_str(), pCalcRight->src_text().c_str()));
-		pCalc->setSrcPos (@1.m_first_line, @1.m_first_pos, @3.m_last_line, @3.m_last_pos);
+		pCalc->setSrcText    (rdo::format(_T("%s %s %s"), paramName.c_str(), oprStr.c_str(), pCalcRight->src_text().c_str()));
+		pCalc->setSrcPos     (@1.m_first_line, @1.m_first_pos, @3.m_last_line, @3.m_last_pos);
+		pCalc->setSrcFileType(PARSER->getFileToParse());
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pLocalVariable->getTypeInfo(), pCalc, RDOParserSrcInfo(@1));
 		ASSERT(pExpression);
@@ -845,8 +847,9 @@ set_array_item_statement
 
 			pCalc = rdo::Factory<rdoRuntime::RDOSetRelResParamCalc<rdoRuntime::ET_EQUAL> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pArrayItemCalc);
 			ASSERT(pCalc);
-			pCalc->setSrcText(rdo::format(_T("%s.%s"), pRelRes->src_text().c_str(), paramName.c_str()));
-			pCalc->setSrcPos(@1.m_first_line, @1.m_first_pos, @1.m_last_line, @1.m_last_pos);
+			pCalc->setSrcText    (rdo::format(_T("%s.%s"), pRelRes->src_text().c_str(), paramName.c_str()));
+			pCalc->setSrcPos     (@1.m_first_line, @1.m_first_pos, @1.m_last_line, @1.m_last_pos);
+			pCalc->setSrcFileType(PARSER->getFileToParse());
 		}
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pArrayArithm->typeInfo(), pCalc, RDOParserSrcInfo(@1));
