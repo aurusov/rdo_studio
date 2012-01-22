@@ -40,7 +40,8 @@ rbool File::splitpath(CREF(tstring) name, REF(tstring) fileDir, REF(tstring) fil
 {
 	boost::filesystem::path from(name);
 	fileDir = from.parent_path().string();
-	fileDir += '/';
+	if(fileDir != "/")
+		fileDir += '/';
 #ifdef COMPILER_GCC
 	fileName = from.stem();
 	fileExt  = from.extension();
