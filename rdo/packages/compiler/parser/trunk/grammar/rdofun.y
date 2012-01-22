@@ -386,7 +386,7 @@ fun_func_params
 	;
 
 fun_func_footer
-	: RDO_Type '=' RDO_algorithmic fun_func_parameters alg_fun_Body alg_fun_statement alg_fun_End
+	: RDO_Type '=' RDO_algorithmic fun_func_parameters alg_body alg_statement alg_end
 	{
 		LPExpression pExpressionFunBodyBrace = PARSER->stack().pop<Expression>($6);
 		ASSERT(pExpressionFunBodyBrace);
@@ -421,7 +421,7 @@ fun_func_footer
 		ASSERT(pFunction);
 		pFunction->createTableCalc(@6);
 	}
-	| RDO_Type '=' RDO_algorithmic fun_func_parameters alg_fun_Body alg_fun_statement error
+	| RDO_Type '=' RDO_algorithmic fun_func_parameters alg_body alg_statement error
 	{
 		PARSER->error().error(@7, _T("Ожидается ключевое слово $End"));
 	}
@@ -455,7 +455,7 @@ fun_func_footer
 	}
 	;
 
-alg_fun_statement
+alg_statement
 	: /* empty */
 	{
 		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunBodyBrace = rdo::Factory<rdoRuntime::RDOCalcFunBodyBrace>::create();
@@ -474,7 +474,7 @@ alg_fun_statement
 
 		$$ = PARSER->stack().push(pExpression);
 	}
-	| alg_fun_statement statement
+	| alg_statement statement
 	{
 		LPExpression pExpressionFunBodyBrace = PARSER->stack().pop<Expression>($1);
 		ASSERT(pExpressionFunBodyBrace);
@@ -503,7 +503,7 @@ alg_fun_statement
 	}
 	;
 
-alg_fun_Body
+alg_body
 	: RDO_Body
 	{
 		LPLocalVariableList pLocalVariableList = rdo::Factory<LocalVariableList>::create();
@@ -522,7 +522,7 @@ alg_fun_Body
 	}
 	;
 
-alg_fun_End
+alg_end
 	: RDO_End
 	{
 		LPContext pContext = PARSER->context();
