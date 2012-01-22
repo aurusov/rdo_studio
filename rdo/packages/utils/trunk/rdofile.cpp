@@ -38,17 +38,26 @@ rbool File::read_only(CREF(tstring) name)
 
 rbool File::splitpath(CREF(tstring) name, REF(tstring) fileDir, REF(tstring) fileName, REF(tstring) fileExt)
 {
+#if defined( COMPILER_VISUAL_STUDIO )
+	char _drive[_MAX_DRIVE];
+	char _dir  [_MAX_DIR  ];
+	char _name [_MAX_FNAME];
+	char _ext  [_MAX_EXT  ];
+
+	if (_splitpath_s(name.c_str(), _drive, _MAX_DRIVE, _dir, _MAX_DIR, _name, _MAX_FNAME, _ext, _MAX_EXT) != 0)
+		return false;
+
+	fileDir  = rdo::format(_T("%s%s"), _drive, _dir);
+	fileName = _name;
+	fileExt  = _ext;
+#elif defined( COMPILER_GCC )
 	boost::filesystem::path from(name);
 	fileDir = from.parent_path().string();
-	if(fileDir != "/")
-		fileDir += '/';
-#ifdef COMPILER_GCC
 	fileName = from.stem();
 	fileExt  = from.extension();
-#elif defined( COMPILER_VISUAL_STUDIO )
 	fileName = from.stem().string();
 	fileExt  = from.extension().string();
-#endif // COMPILER_GCC
+#endif // COMPILER_VISUAL_STUDIO
 	return true;
 }
 

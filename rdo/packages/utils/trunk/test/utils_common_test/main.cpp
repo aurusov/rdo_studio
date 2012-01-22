@@ -40,7 +40,7 @@ BOOST_AUTO_TEST_CASE(RDOCommon_ResourceFormat)
 	tstring str3 = rdo::format(IDS_STRING103, str1.c_str(), 33, str2.c_str());
 	BOOST_CHECK(str3 == s_resourceStr3);
 }
-#endif
+#endif // OST_WINDOWS
 
 BOOST_AUTO_TEST_CASE(RDOCommon_FileCreate)
 {
@@ -88,6 +88,7 @@ BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitByRootPathInLinux)
 	BOOST_CHECK(ext  == _T(".smr"));
 }
 
+#ifdef OST_WINDOWS
 BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitPathInWindows)
 {
 	tstring file(_T("С:/rdo/русский пробел/files/проект.smr"));
@@ -139,6 +140,7 @@ BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitByRootPathInWindows_BackSlash)
 	BOOST_CHECK(name == _T("проект"));
 	BOOST_CHECK(ext  == _T(".smr"));
 }
+#endif // #endif
 
 BOOST_AUTO_TEST_CASE(RDOCommon_GetTempFile)
 {
