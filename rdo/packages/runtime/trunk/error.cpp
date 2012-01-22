@@ -28,7 +28,7 @@ void Error::push(CREF(rdoSimulator::RDOSyntaxError) error)
 
 void Error::push(CREF(tstring) message, CREF(LPRDOCalc) pCalc)
 {
-	ASSERT(message.empty());
+	ASSERT(!message.empty());
 	ASSERT(pCalc);
 
 	rdoSimulator::RDOSyntaxError error(
