@@ -62,30 +62,82 @@ BOOST_AUTO_TEST_CASE(RDOCommon_FileRemove)
 	BOOST_CHECK(rdo::File::unlink(s_testFileName));
 }
 
-BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitPath)
+BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitPathInLinux)
 {
-	tstring file("/rdo/русский пробел/files/проект.smr");
+	tstring file(_T("/rdo/русский пробел/files/проект.smr"));
 	tstring dir;
 	tstring name;
 	tstring ext;
 
 	BOOST_CHECK(rdo::File::splitpath(file, dir, name, ext));
-	BOOST_CHECK(dir == "/rdo/русский пробел/files/");
-	BOOST_CHECK(name == "проект");
-	BOOST_CHECK(ext == ".smr");
+	BOOST_CHECK(dir  == _T("/rdo/русский пробел/files/"));
+	BOOST_CHECK(name == _T("проект"));
+	BOOST_CHECK(ext  == _T(".smr"));
 }
 
-BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitByRootPath)
+BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitByRootPathInLinux)
 {
-	tstring file("/проект.smr");
+	tstring file(_T("/проект.smr"));
 	tstring dir;
 	tstring name;
 	tstring ext;
 
 	BOOST_CHECK(rdo::File::splitpath(file, dir, name, ext));
-	BOOST_CHECK(dir == "/");
-	BOOST_CHECK(name == "проект");
-	BOOST_CHECK(ext == ".smr");
+	BOOST_CHECK(dir  == _T("/"));
+	BOOST_CHECK(name == _T("проект"));
+	BOOST_CHECK(ext  == _T(".smr"));
+}
+
+BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitPathInWindows)
+{
+	tstring file(_T("С:/rdo/русский пробел/files/проект.smr"));
+	tstring dir;
+	tstring name;
+	tstring ext;
+
+	BOOST_CHECK(rdo::File::splitpath(file, dir, name, ext));
+	BOOST_CHECK(dir  == _T("С:/rdo/русский пробел/files/"));
+	BOOST_CHECK(name == _T("проект"));
+	BOOST_CHECK(ext  == _T(".smr"));
+}
+
+BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitByRootPathInWindows)
+{
+	tstring file(_T("С:/проект.smr"));
+	tstring dir;
+	tstring name;
+	tstring ext;
+
+	BOOST_CHECK(rdo::File::splitpath(file, dir, name, ext));
+	BOOST_CHECK(dir  == _T("С:/"));
+	BOOST_CHECK(name == _T("проект"));
+	BOOST_CHECK(ext  == _T(".smr"));
+}
+
+BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitPathInWindows_BackSlash)
+{
+	tstring file(_T("С:\\rdo\\русский пробел\\files\\проект.smr"));
+	tstring dir;
+	tstring name;
+	tstring ext;
+
+	BOOST_CHECK(rdo::File::splitpath(file, dir, name, ext));
+	BOOST_CHECK(dir  == _T("С:\\rdo\\русский пробел\\files\\"));
+	BOOST_CHECK(name == _T("проект"));
+	BOOST_CHECK(ext  == _T(".smr"));
+}
+
+BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitByRootPathInWindows_BackSlash)
+{
+	tstring file(_T("С:\\проект.smr"));
+	tstring dir;
+	tstring name;
+	tstring ext;
+
+	BOOST_CHECK(rdo::File::splitpath(file, dir, name, ext));
+	BOOST_CHECK(dir  == _T("С:\\"));
+	BOOST_CHECK(name == _T("проект"));
+	BOOST_CHECK(ext  == _T(".smr"));
 }
 
 BOOST_AUTO_TEST_CASE(RDOCommon_GetTempFile)
