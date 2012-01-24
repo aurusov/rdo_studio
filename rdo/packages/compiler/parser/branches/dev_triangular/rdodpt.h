@@ -170,9 +170,9 @@ CLASS(RDODPTSome): public RDOLogicActivity<rdoRuntime::RDODPTSome, RDODPTSomeAct
 {
 DECLARE_FACTORY(RDODPTSome);
 public:
-	LPILogic      getLogic    () const                               { return m_pRuntimeLogic;  }
-	LPRDOFUNLogic getConditon () const                               { return m_pConditon;      }
-	void          setCondition(CREF(LPRDOFUNLogic) pConditon = NULL) { m_pConditon = pConditon; }
+	LPILogic      getLogic    () const                               { return        m_pRuntimeLogic; }
+	LPRDOFUNLogic getConditon () const                               { return        m_pConditon;     }
+	void          setCondition(CREF(LPRDOFUNLogic) pConditon = NULL) { m_pConditon =   pConditon;     }
 	void          end         ();
 
 private:
@@ -193,9 +193,9 @@ CLASS(RDODPTPrior): public RDOLogicActivity<rdoRuntime::RDODPTPrior, RDODPTPrior
 {
 DECLARE_FACTORY(RDODPTPrior);
 public:
-	LPILogic      getLogic    () const                               { return m_pRuntimeLogic;  }
-	LPRDOFUNLogic getConditon () const                               { return m_pConditon;      }
-	void          setCondition(CREF(LPRDOFUNLogic) pConditon = NULL) { m_pConditon = pConditon; }
+	LPILogic      getLogic    () const                               { return        m_pRuntimeLogic; }
+	LPRDOFUNLogic getConditon () const                               { return        m_pConditon;     }
+	void          setCondition(CREF(LPRDOFUNLogic) pConditon = NULL) { m_pConditon =   pConditon;     }
 	void          end         ();
 
 private:
@@ -279,9 +279,9 @@ public:
 	void  end   ();
 	rbool closed() const { return m_closed; }
 
-	void            setCondition(CREF(LPRDOFUNLogic) pConditon = NULL) { m_pConditon = pConditon; }
-	LPRDOFUNLogic   getConditon () const                               { return m_pConditon;      }
-	CREF(BlockList) getBlockList() const                               { return m_blockList;      }
+	void            setCondition(CREF(LPRDOFUNLogic) pConditon = NULL) { m_pConditon =   pConditon;      }
+	LPRDOFUNLogic   getConditon () const                               { return        m_pConditon;      }
+	CREF(BlockList) getBlockList() const                               { return        m_blockList;      }
 
 	rbool checkTransactType(CREF(tstring) name) const;
 

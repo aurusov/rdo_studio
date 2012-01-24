@@ -56,6 +56,7 @@ protected:
 	ChildList                  m_childList;
 	LPIBaseOperation           m_first;
 	LPIBaseOperationContainer  m_parent;
+	rbool                      m_Multithreading;
 
 private:
 	rbool checkSelfCondition(CREF(LPRDORuntime) pRuntime);

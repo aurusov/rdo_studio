@@ -63,8 +63,20 @@ public:
 		return false;
 	}
 
+	rbool getMultithreading () const
+	{
+		return m_Multithreading;
+	}
+
+	void setMultithreading (rbool Multithreading = false)
+	{
+		m_Multithreading = Multithreading;
+	}
+
+
 protected:
 	LPILogic     m_pRuntimeLogic;
+	rbool        m_Multithreading;
 
 private:
 	ActivityList m_activityList;
