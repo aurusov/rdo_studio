@@ -584,12 +584,12 @@ void RDOEditorEdit::OnInsertCommand( UINT nID )
 
 	switch ( nID ) {
 		case ID_INSERT_PAT_PATOPERATION     :
-		case ID_INSERT_PAT_PATIRREGULAREVENT:
+		//case ID_INSERT_PAT_PATIRREGULAREVENT:
 		case ID_INSERT_PAT_PATRULE          : incPos = 9; break;
 		case ID_INSERT_RTP_RTPPERMANENT     :
 		case ID_INSERT_RTP_RTPTEMPORARY     : incPos = 15; break;
 		case ID_INSERT_RSS_RSS              : incPos = 13; break;
-		case ID_INSERT_OPR_OPR              : incPos = 14; break;
+		//case ID_INSERT_OPR_OPR              : incPos = 14; break;
 		case ID_INSERT_FRM_FRM              : incPos = 7; break;
 		case ID_INSERT_FUN_FUN              :
 		case ID_INSERT_FUN_SQN              : incPos = 10; break;
