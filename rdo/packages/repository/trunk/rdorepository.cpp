@@ -55,6 +55,7 @@ RDOThreadRepository::RDOThreadRepository()
 	m_files[rdoModelObjects::PAT ].m_extention = _T(".pat");
 	m_files[rdoModelObjects::DPT ].m_extention = _T(".dpt");
 	m_files[rdoModelObjects::PRC ].m_extention = _T(".prc");
+	m_files[rdoModelObjects::PRCX].m_extention = _T(".prcx");
 	m_files[rdoModelObjects::FRM ].m_extention = _T(".frm");
 	m_files[rdoModelObjects::FUN ].m_extention = _T(".fun");
 	m_files[rdoModelObjects::SMR ].m_extention = _T(".smr");
