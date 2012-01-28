@@ -11,7 +11,9 @@
 #define _LIB_RUNTIME_CALC_OPERATION_NAME_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <list>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/rdotypes.h"
 #include "utils/namespace.h"
 #include "utils/rdomacros.h"
 // --------------------------------------------------------------------------------
