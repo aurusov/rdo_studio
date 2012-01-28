@@ -1043,8 +1043,11 @@ void RDOStudioModel::loadFromXML()
 	// Заводим документ:
 	pugi::xml_document doc;
 
+	rdoRepository::RDOThreadRepository::FileInfo fileInfo(rdoModelObjects::PRCX);
+	studioApp.studioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &fileInfo);
+
 	// Открываем сохраненный xml-файл и проверяем поток на ошибки ввода-вывода:
-	std::ifstream inFile("C:\\temp\\GuI.xml");
+	std::ifstream inFile(fileInfo.m_fullName.c_str());
 	if (inFile.good())
 	{
 		// Загружаем документ и проверяем на предмет ошибок парсинга и пустого узла:
