@@ -321,11 +321,11 @@
 #define ID_INSERT_RSS_TRACE             32884
 #define ID_INSERT_RSS_NOTRACE           32885
 #define ID_INSERT_RSS_END               32886
-#define ID_INSERT_PRIOR                 32887
+//#define ID_INSERT_PRIOR                 32887 // ID can be used
 #define ID_INSERT_PRC_PROCESS           32888
 #define ID_INSERT_DPT_PRIOR             32889
-//#define ID_INSERT_OPR_NOTRACE           32890
-//#define ID_INSERT_OPR_END               32891
+//#define ID_INSERT_OPR_NOTRACE           32890 // ID can be used
+//#define ID_INSERT_OPR_END               32891 // ID can be used
 #define ID_INSERT_FRM_FRM               32892
 #define ID_INSERT_FRM_FRAME             32893
 #define ID_INSERT_FRM_BACKPICTURE       32894
