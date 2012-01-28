@@ -1009,6 +1009,7 @@ BEGIN
             MENUITEM "$Term_condition",             ID_INSERT_DPT_TERMCONDITION
             MENUITEM "$Evaluate_by",                ID_INSERT_DPT_EVALUATEBY
             MENUITEM "$Compare_tops",               ID_INSERT_DPT_COMPARETOPS
+            MENUITEM "$Multithreading",             ID_INSERT_DPT_MULTITHREADING
             MENUITEM "YES",                         ID_INSERT_DPT_YES
             MENUITEM "NO",                          ID_INSERT_DPT_NO
             MENUITEM "$Activities",                 ID_INSERT_DPT_ACTIVITIES
@@ -4503,6 +4504,7 @@ BEGIN
             MENUITEM "$Term_condition",             ID_INSERT_DPT_TERMCONDITION
             MENUITEM "$Evaluate_by",                ID_INSERT_DPT_EVALUATEBY
             MENUITEM "$Compare_tops",               ID_INSERT_DPT_COMPARETOPS
+            MENUITEM "$Multithreading",             ID_INSERT_DPT_MULTITHREADING
             MENUITEM "YES",                         ID_INSERT_DPT_YES
             MENUITEM "NO",                          ID_INSERT_DPT_NO
             MENUITEM "$Activities",                 ID_INSERT_DPT_ACTIVITIES
