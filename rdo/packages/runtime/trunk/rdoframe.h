@@ -12,6 +12,8 @@
 #define _LIB_RUNTIME_FRAME_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <list>
+#include <map>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/namespace.h"
 #include "utils/rdoanimation.h"
