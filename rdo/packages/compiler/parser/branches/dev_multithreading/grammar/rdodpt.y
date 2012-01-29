@@ -713,14 +713,14 @@ dpt_some_multi
 	{
 		LPRDODPTSome pDPTSome = PARSER->stack().pop<RDODPTSome>($1);
 		ASSERT(pDPTSome);
-		pDPTSome->RDOLogicActivity::setMultithreading(FALSE);
+		pDPTSome->RDOLogic::setMultithreading(FALSE);
 		$$ = PARSER->stack().push(pDPTSome);
 	}
 	| dpt_some_condition RDO_Multithreading '=' RDO_YES
 	{
 		LPRDODPTSome pDPTSome = PARSER->stack().pop<RDODPTSome>($1);
 		ASSERT(pDPTSome);
-		pDPTSome->RDOLogicActivity::setMultithreading(TRUE);
+		pDPTSome->RDOLogic::setMultithreading(TRUE);
 		$$ = PARSER->stack().push(pDPTSome);
 	}
 	| dpt_some_condition RDO_Multithreading error
@@ -731,7 +731,7 @@ dpt_some_multi
 	{
 		LPRDODPTSome pDPTSome = PARSER->stack().pop<RDODPTSome>($1);
 		ASSERT(pDPTSome);
-		pDPTSome->RDOLogicActivity::setMultithreading(FALSE);
+		pDPTSome->RDOLogic::setMultithreading(FALSE);
 		$$ = PARSER->stack().push(pDPTSome);
 	}
 	;

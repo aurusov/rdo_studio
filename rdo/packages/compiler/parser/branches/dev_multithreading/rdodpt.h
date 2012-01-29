@@ -164,7 +164,7 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSome
 // --------------------------------------------------------------------------------
-CLASS(RDODPTSome): public RDOLogicActivity<rdoRuntime::RDODPTSome, RDODPTSomeActivity>
+CLASS(RDODPTSome): public RDOLogic<rdoRuntime::RDODPTSome, RDODPTSomeActivity>
 	AND INSTANCE_OF      (Context     )
 	AND IMPLEMENTATION_OF(IContextFind)
 {
@@ -187,7 +187,7 @@ DECLARE_POINTER(RDODPTSome);
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTPrior
 // --------------------------------------------------------------------------------
-CLASS(RDODPTPrior): public RDOLogicActivity<rdoRuntime::RDODPTPrior, RDODPTPriorActivity>
+CLASS(RDODPTPrior): public RDOLogic<rdoRuntime::RDODPTPrior, RDODPTPriorActivity>
 	AND INSTANCE_OF      (Context     )
 	AND IMPLEMENTATION_OF(IContextFind)
 {
@@ -231,7 +231,7 @@ DECLARE_POINTER(RDODPTSearchActivity);
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSearch
 // --------------------------------------------------------------------------------
-CLASS(RDODPTSearch): public RDOLogicActivity<rdoRuntime::RDODPTSearchRuntime, RDODPTSearchActivity>
+CLASS(RDODPTSearch): public RDOLogic<rdoRuntime::RDODPTSearchRuntime, RDODPTSearchActivity>
 	AND INSTANCE_OF      (Context     )
 	AND IMPLEMENTATION_OF(IContextFind)
 {

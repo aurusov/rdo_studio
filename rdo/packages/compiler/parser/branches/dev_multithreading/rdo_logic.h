@@ -22,19 +22,19 @@
 OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOLogicActivity
+// -------------------- RDOLogic
 // --------------------------------------------------------------------------------
 template<class RTLogic, class Activity>
-class RDOLogicActivity: public RDOParserSrcInfo
+class RDOLogic: public RDOParserSrcInfo
 {
 public:
 	typedef  rdo::intrusive_ptr<Activity> LPActivity;
 	typedef  std::vector<LPActivity>      ActivityList;
 
-	RDOLogicActivity(CREF(RDOParserSrcInfo) src_info)
+	RDOLogic(CREF(RDOParserSrcInfo) src_info)
 		: RDOParserSrcInfo(src_info)
 	{}
-	virtual ~RDOLogicActivity()
+	virtual ~RDOLogic()
 	{}
 
 	CREF(tstring) name() const { return src_info().src_text(); }

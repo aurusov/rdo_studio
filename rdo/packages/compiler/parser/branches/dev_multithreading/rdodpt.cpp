@@ -270,7 +270,7 @@ RDODPTPriorActivity::RDODPTPriorActivity(LPIBaseOperationContainer pDPT, CREF(RD
 // -------------------- RDODPTSome
 // --------------------------------------------------------------------------------
 RDODPTSome::RDODPTSome(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
-	: RDOLogicActivity<rdoRuntime::RDODPTSome, RDODPTSomeActivity>(src_info)
+	: RDOLogic<rdoRuntime::RDODPTSome, RDODPTSomeActivity>(src_info)
 {
 	RDOParser::s_parser()->checkDPTName(this->src_info());
 	m_pRuntimeLogic = RF(rdoRuntime::RDODPTSome)::create(RDOParser::s_parser()->runtime(), pParent);
@@ -301,7 +301,7 @@ void RDODPTSome::end()
 // -------------------- RDODPTPrior
 // --------------------------------------------------------------------------------
 RDODPTPrior::RDODPTPrior(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
-	: RDOLogicActivity<rdoRuntime::RDODPTPrior, RDODPTPriorActivity>(src_info)
+	: RDOLogic<rdoRuntime::RDODPTPrior, RDODPTPriorActivity>(src_info)
 {
 	RDOParser::s_parser()->checkDPTName(this->src_info());
 	m_pRuntimeLogic = RF(rdoRuntime::RDODPTPrior)::create(RDOParser::s_parser()->runtime(), pParent);
@@ -365,7 +365,7 @@ void RDODPTSearchActivity::setValue(IDPTSearchActivity::ValueTime value, CREF(LP
 // -------------------- RDODPTSearch
 // --------------------------------------------------------------------------------
 RDODPTSearch::RDODPTSearch(CREF(RDOParserSrcInfo) src_info, rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag trace, LPILogic pParent)
-	: RDOLogicActivity<rdoRuntime::RDODPTSearchRuntime, RDODPTSearchActivity>(src_info)
+	: RDOLogic<rdoRuntime::RDODPTSearchRuntime, RDODPTSearchActivity>(src_info)
 	, m_trace  (trace  )
 	, m_closed (false  )
 	, m_pParent(pParent)
