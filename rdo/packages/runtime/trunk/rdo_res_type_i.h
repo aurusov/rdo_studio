@@ -14,13 +14,13 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/smart_ptr/interface_ptr.h"
+#include "simulator/runtime/rdo_value.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-PREDECLARE_POINTER(RDORuntime);
+PREDECLARE_POINTER(RDORuntime );
 PREDECLARE_POINTER(RDOResource);
-PREDECLARE_POINTER(RDOValue);
 
 /*!
   \interface IResourceType
