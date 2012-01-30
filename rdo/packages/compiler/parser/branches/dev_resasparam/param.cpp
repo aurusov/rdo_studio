@@ -11,6 +11,7 @@
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/param.h"
 #include "simulator/compiler/parser/rdortp.h"
 #include "simulator/runtime/rdo_resource.h"
@@ -58,8 +59,12 @@ IContextFind::Result RDOParam::onSwitchContext(CREF(LPExpression) pSwitchExpress
 		ASSERT(pContextSwitch);
 		return pContextSwitch->onSwitchContext(pSwitchExpression, pValue);
 	}
-
-	return IContextFind::Result();
+	RDOParser::s_parser()->error().error(
+				pSwitchExpression->src_info()
+				, rdo::format(_T("Тип параметра '%s' определён неверно")
+					, pSwitchExpression->src_info().src_text().c_str()
+				)
+			);
 }
 
 CLOSE_RDO_PARSER_NAMESPACE
