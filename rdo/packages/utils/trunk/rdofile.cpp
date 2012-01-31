@@ -53,10 +53,19 @@ rbool File::splitpath(CREF(tstring) name, REF(tstring) fileDir, REF(tstring) fil
 #elif defined( COMPILER_GCC )
 	boost::filesystem::path from(name);
 	fileDir = from.parent_path().string();
+
+#if BOOST_FILESYSTEM_VERSION == 2
 	fileName = from.stem();
 	fileExt  = from.extension();
+	fileName = from.stem();
+	fileExt  = from.extension();
+#else
 	fileName = from.stem().string();
 	fileExt  = from.extension().string();
+	fileName = from.stem().string();
+	fileExt  = from.extension().string();
+#endif
+	
 #endif // COMPILER_VISUAL_STUDIO
 	return true;
 }
