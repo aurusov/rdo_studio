@@ -65,12 +65,14 @@ void LocalVariableList::append(CREF(LPLocalVariable) pVariable)
 	m_variableList.push_back(pVariable);
 }
 
-LPLocalVariable LocalVariableList::findLocalVariable(CREF(tstring) paramName) const
+LPLocalVariable LocalVariableList::findLocalVariable(CREF(tstring) name) const
 {
-	STL_FOR_ALL_CONST(m_variableList, LocalVariable_it)
+	STL_FOR_ALL_CONST(m_variableList, it)
 	{
-		if((*LocalVariable_it)->getValue()->value().getIdentificator() == paramName)
-			return (*LocalVariable_it);
+		if ((*it)->getValue()->value().getIdentificator() == name)
+		{
+			return *it;
+		}
 	}
 	return NULL;
 }
@@ -100,14 +102,16 @@ void LocalVariableListStack::append(CREF(LPLocalVariable) pVariable)
 	m_pVariableListStack.back()->append(pVariable);
 }
 
-LPLocalVariable LocalVariableListStack::findLocalVariable(CREF(tstring) paramName) const
+LPLocalVariable LocalVariableListStack::findLocalVariable(CREF(tstring) name) const
 {
-	VariableListStack::const_iterator stack_it = m_pVariableListStack.begin();
-	while(stack_it != m_pVariableListStack.end())
+	STL_FOR_ALL_CONST(m_pVariableListStack, it)
 	{
-		if((*stack_it)->findLocalVariable(paramName)) return (*stack_it)->findLocalVariable(paramName);
-		++stack_it;
+		if ((*it)->findLocalVariable(name))
+		{
+			return (*it)->findLocalVariable(name);
+		}
 	}
 	return NULL;
 }
+
 CLOSE_RDO_PARSER_NAMESPACE
