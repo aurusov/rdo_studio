@@ -1325,13 +1325,7 @@ void RDOFUNFunction::init()
 	ASSERT(m_pContextMemory);
 	RDOParser::s_parser()->contextStack()->push(m_pContextMemory);
 
-	LPLocalVariableListStack pLocalVariableListStack = m_pContextMemory->getLocalMemory();
-	ASSERT(pLocalVariableListStack);
-
-	LPLocalVariableList pLocalVariableList = rdo::Factory<LocalVariableList>::create();
-	ASSERT(pLocalVariableList);
-
-	pLocalVariableListStack->push(pLocalVariableList);
+	ContextMemory::push();
 }
 
 void RDOFUNFunction::end()
