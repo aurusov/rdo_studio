@@ -1330,6 +1330,7 @@ void RDOFUNFunction::init()
 
 void RDOFUNFunction::end()
 {
+	ContextMemory::pop();
 	RDOParser::s_parser()->contextStack()->pop();
 	RDOParser::s_parser()->contextStack()->pop();
 }
