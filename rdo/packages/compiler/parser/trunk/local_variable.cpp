@@ -102,8 +102,6 @@ void LocalVariableListStack::append(CREF(LPLocalVariable) pVariable)
 
 LPLocalVariable LocalVariableListStack::findLocalVariable(CREF(tstring) paramName) const
 {
-	ASSERT(!m_pVariableListStack.empty());
-
 	VariableListStack::const_iterator stack_it = m_pVariableListStack.begin();
 	while(stack_it != m_pVariableListStack.end())
 	{
