@@ -57,14 +57,13 @@ rbool File::splitpath(CREF(tstring) name, REF(tstring) fileDir, REF(tstring) fil
 #if BOOST_FILESYSTEM_VERSION == 2
 	fileName = from.stem();
 	fileExt  = from.extension();
-	fileName = from.stem();
-	fileExt  = from.extension();
 #else
 	fileName = from.stem().string();
 	fileExt  = from.extension().string();
-	fileName = from.stem().string();
-	fileExt  = from.extension().string();
 #endif
+	
+	if(fileDir[fileDir.size() - 1] != '/')
+		fileDir += "/";
 	
 #endif // COMPILER_VISUAL_STUDIO
 	return true;

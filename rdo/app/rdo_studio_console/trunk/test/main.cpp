@@ -131,7 +131,6 @@ void test_model(CREF(tstring) model)
 	tstring name;
 	tstring ext;
 	TEST_CHECK(rdo::File::splitpath(model, dir, name, ext), tstring("splitpath check"));
-	dir += "/"; // added directory end symbol
 	
 	tstring etalon_mark("_etalon");
 	tstring etalon_trace = dir + name + etalon_mark + ".trc";
