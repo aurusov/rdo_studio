@@ -131,11 +131,10 @@
 %token RDO_ADVANCE						367
 %token RDO_RELEASE						368
 %token RDO_if							369
-%token RDO_result						370
-%token RDO_CF							371
-%token RDO_Priority						372
-%token RDO_prior						373
-%token RDO_Parent						374
+%token RDO_CF							370
+%token RDO_Priority						371
+%token RDO_prior						372
+%token RDO_Parent						373
 
 %token RDO_Frame						400
 %token RDO_Show_if						401
@@ -427,8 +426,7 @@ fun_func_calc_if
 	;
 
 fun_func_calc_name
-	: RDO_result
-	| RDO_IDENTIF
+	: RDO_IDENTIF
 	{
 		tstring name = P_RDOVALUE($1)->value().getIdentificator();
 		if ( name != CONVERTER->getLastFUNFunction()->name() )
