@@ -26,18 +26,18 @@ RDOFRMFrame::RDOFRMColor::RDOFRMColor(ColorType type)
 	: m_type(type)
 {}
 
-RDOFRMFrame::RDOFRMColor::RDOFRMColor(int red, int green, int blue)
+RDOFRMFrame::RDOFRMColor::RDOFRMColor(rbyte red, rbyte green, rbyte blue, CREF(RDOSrcInfo) srcInfo)
 	: m_type(CT_RGB)
 {
-	m_pRedCalc   = rdo::Factory<RDOCalcConst>::create(red  );
-	m_pGreenCalc = rdo::Factory<RDOCalcConst>::create(green);
-	m_pBlueCalc  = rdo::Factory<RDOCalcConst>::create(blue );
+	m_pRedCalc   = rdo::Factory<RDOCalcConst>::create((rsint)red  );
+	m_pGreenCalc = rdo::Factory<RDOCalcConst>::create((rsint)green);
+	m_pBlueCalc  = rdo::Factory<RDOCalcConst>::create((rsint)blue );
 	ASSERT(m_pRedCalc  );
 	ASSERT(m_pGreenCalc);
 	ASSERT(m_pBlueCalc );
-	m_pRedCalc  ->setSrcText(rdo::format(_T("%d, _red")  ));
-	m_pGreenCalc->setSrcText(rdo::format(_T("%d, _green")));
-	m_pBlueCalc ->setSrcText(rdo::format(_T("%d, _blue") ));
+	m_pRedCalc  ->setSrcInfo(srcInfo);
+	m_pGreenCalc->setSrcInfo(srcInfo);
+	m_pBlueCalc ->setSrcInfo(srcInfo);
 }
 
 RDOFRMFrame::RDOFRMColor::RDOFRMColor(CREF(LPRDOCalc) pRedCalc, CREF(LPRDOCalc) pGreenCalc, CREF(LPRDOCalc) pBlueCalc)

@@ -11,6 +11,8 @@
 #define _LIB_RUNTIME_MEMORY_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <list>
+#include <map>
 #include <string>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_value.h"

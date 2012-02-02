@@ -59,7 +59,7 @@ inline RDOSelectResourceCommonCalc::RDOSelectResourceCommonCalc(CREF(SelectResou
 {
 	if (m_pCalcChoiceFrom)
 	{
-		setSrcInfo(m_pCalcChoiceFrom->src_info());
+		setSrcInfo(m_pCalcChoiceFrom->srcInfo());
 	}
 }
 

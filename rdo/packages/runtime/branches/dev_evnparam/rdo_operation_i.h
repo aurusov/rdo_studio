@@ -13,7 +13,14 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdointerface.h"
+#include "utils/smart_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
+
+OPEN_RDO_RUNTIME_NAMESPACE
+
+PREDECLARE_POINTER(RDORuntime)
+
+CLOSE_RDO_RUNTIME_NAMESPACE
 
 /*!
   \interface IOperation

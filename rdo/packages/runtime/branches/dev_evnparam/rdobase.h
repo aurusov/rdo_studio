@@ -11,6 +11,7 @@
 #define _LIB_RUNTIME_BASE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <list>
 #include <map>
 #include <boost/date_time/posix_time/posix_time.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS

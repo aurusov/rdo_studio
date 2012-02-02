@@ -125,7 +125,7 @@ LPRDOCalc RDORuntime::findBreakPoint(CREF(tstring) name)
 
 tstring RDORuntime::getLastBreakPointName() const
 {
-	return m_pLastActiveBreakPoint ? m_pLastActiveBreakPoint->getName() + _T(": ") + m_pLastActiveBreakPoint->getCalc()->src_text() : _T("");
+	return m_pLastActiveBreakPoint ? m_pLastActiveBreakPoint->getName() + _T(": ") + m_pLastActiveBreakPoint->getCalc()->srcInfo().src_text() : _T("");
 }
 
 void RDORuntime::setConstValue(ruint constID, CREF(RDOValue) constValue)

@@ -12,6 +12,8 @@
 #define _LIB_RUNTIME_FRAME_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <list>
+#include <map>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/namespace.h"
 #include "utils/rdoanimation.h"
@@ -106,7 +108,7 @@ public:
 
 	private:
 		RDOFRMColor(ColorType type = CT_NONE);
-		RDOFRMColor(int red, int green, int blue);
+		RDOFRMColor(rbyte red, rbyte green, rbyte blue, CREF(RDOSrcInfo) srcInfo);
 		RDOFRMColor(CREF(LPRDOCalc) pRedCalc, CREF(LPRDOCalc) pGreenCalc, CREF(LPRDOCalc) pBlueCalc);
 		virtual ~RDOFRMColor();
 

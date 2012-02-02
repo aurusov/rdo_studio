@@ -61,14 +61,24 @@ REF(RDOValue) RDOCalc::calcValue(CREF(LPRDORuntime) pRuntime)
 	{
 		rdoSimulator::RDOSyntaxError error(
 			rdoSimulator::RDOSyntaxError::UNKNOWN,
-			rdo::format(_T("<Модельное время: %f>, '%s'"), pRuntime->getTimeNow(), src_text().c_str()),
-			src_pos().m_last_line,
-			src_pos().m_last_pos,
-			src_filetype()
+			rdo::format(_T("<Модельное время: %f>, '%s'"), pRuntime->getTimeNow(), m_srcInfo.src_text().c_str()),
+			m_srcInfo.src_pos().m_last_line,
+			m_srcInfo.src_pos().m_last_pos,
+			m_srcInfo.src_filetype()
 		);
 		pRuntime->error().push(error);
 	}
 	return m_value;
+}
+
+CREF(RDOSrcInfo) RDOCalc::srcInfo() const
+{
+	return m_srcInfo;
+}
+
+void RDOCalc::setSrcInfo(CREF(RDOSrcInfo) srcInfo)
+{
+	m_srcInfo = srcInfo;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE
