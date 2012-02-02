@@ -202,7 +202,7 @@ void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 		{
 			STL_FOR_ALL_CONST(pEvent->getCalcList(), calcIt)
 			{
-				pParser->error().push_only((*calcIt)->src_info(), rdo::format(_T("Попытка запланировать неизвестное событие: %s"), pEvent->name().c_str()));
+				pParser->error().push_only((*calcIt)->srcInfo(), rdo::format(_T("Попытка запланировать неизвестное событие: %s"), pEvent->name().c_str()));
 			}
 			pParser->error().push_done();
 		}
@@ -210,7 +210,7 @@ void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 		{
 			STL_FOR_ALL_CONST(pEvent->getCalcList(), calcIt)
 			{
-				pParser->error().push_only((*calcIt)->src_info(), rdo::format(_T("Паттерн %s не является событием: %s"), pEvent->name().c_str()));
+				pParser->error().push_only((*calcIt)->srcInfo(), rdo::format(_T("Паттерн %s не является событием: %s"), pEvent->name().c_str()));
 			}
 			pParser->error().push_done();
 		}

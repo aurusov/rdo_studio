@@ -134,10 +134,12 @@ rdoRuntime::LPRDOCalc RDORSSResource::createCalc() const
 		paramList.push_back(it->param()->value());
 	}
 
-	rdoRuntime::LPRDOCalc calc = rdo::Factory<rdoRuntime::RDOCalcCreateResource>::create(getType()->getRuntimeResType(), paramList, getTrace(), getType()->isPermanent());
-	calc->setSrcInfo(src_info());
-	calc->setSrcText(_T("Создание ресурса ") + calc->src_text());
-	return calc;
+	rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcCreateResource>::create(getType()->getRuntimeResType(), paramList, getTrace(), getType()->isPermanent());
+	ASSERT(pCalc);
+	rdoRuntime::RDOSrcInfo srcInfo(src_info());
+	srcInfo.setSrcText(_T("Создание ресурса ") + src_text());
+	pCalc->setSrcInfo(srcInfo);
+	return pCalc;
 }
 
 // --------------------------------------------------------------------------------
@@ -158,10 +160,12 @@ rdoRuntime::LPRDOCalc RDOPROCResource::createCalc() const
 		paramList.push_back(it->param()->value());
 	}
 
-	rdoRuntime::LPRDOCalc calc = rdo::Factory<rdoRuntime::RDOCalcCreateResource>::create(getType()->getRuntimeResType(), paramList, getTrace(), getType()->isPermanent());
-	calc->setSrcInfo(src_info());
-	calc->setSrcText(_T("Создание ресурса ") + calc->src_text());
-	return calc;
+	rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcCreateResource>::create(getType()->getRuntimeResType(), paramList, getTrace(), getType()->isPermanent());
+	ASSERT(pCalc);
+	rdoRuntime::RDOSrcInfo srcInfo(src_info());
+	srcInfo.setSrcText(_T("Создание ресурса ") + src_text());
+	pCalc->setSrcInfo(srcInfo);
+	return pCalc;
 }
 
 // --------------------------------------------------------------------------------
@@ -182,10 +186,12 @@ rdoRuntime::LPRDOCalc RDOPROCTransact::createCalc() const
 		paramList.push_back(it->param()->value());
 	}
 
-	rdoRuntime::LPRDOCalc calc = rdo::Factory<rdoRuntime::RDOCalcCreateResource>::create(getType()->getRuntimeResType(), paramList, getTrace(), getType()->isPermanent());
-	calc->setSrcInfo(src_info());
-	calc->setSrcText(_T("Создание ресурса ") + calc->src_text());
-	return calc;
+	rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcCreateResource>::create(getType()->getRuntimeResType(), paramList, getTrace(), getType()->isPermanent());
+	ASSERT(pCalc);
+	rdoRuntime::RDOSrcInfo srcInfo(src_info());
+	srcInfo.setSrcText(_T("Создание ресурса ") + src_text());
+	pCalc->setSrcInfo(srcInfo);
+	return pCalc;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

@@ -71,7 +71,7 @@ RDOPATPattern::RDOPATPattern(CREF(RDOParserSrcInfo) name_src_info)
 	, m_currentRelResIndex(0            )
 	, m_useCommonChoice   (false        )
 {
-	LPRDOPATPattern pPatternExist = RDOParser::s_parser()->findPATPattern(src_info().src_text());
+	LPRDOPATPattern pPatternExist = RDOParser::s_parser()->findPATPattern(src_text());
 	if (pPatternExist)
 	{
 		rdoParse::g_error().push_only(src_info(), rdo::format(_T("Паттерн '%s' уже существует"), name().c_str()));
@@ -517,9 +517,11 @@ void RDOPATPattern::end()
 				}
 			}
 			rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOSelectResourceCommonCalc>::create(resSelectors, m_useCommonWithMax, rdoRuntime::LPRDOCalc(NULL));
-			pCalc->setSrcInfo(src_info() );
-			pCalc->setSrcText(_T("first"));
-			addChoiceFromCalc(pCalc      );
+			ASSERT(pCalc);
+			rdoRuntime::RDOSrcInfo srcInfo(src_info());
+			srcInfo.setSrcText(_T("first"));
+			pCalc->setSrcInfo(srcInfo);
+			addChoiceFromCalc(pCalc);
 		}
 		else
 		{
@@ -602,8 +604,10 @@ void RDOPatternEvent::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserS
 	if (pRelevantResource->m_statusBegin == rdoRuntime::RDOResource::CS_Erase)
 	{
 		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOEraseResRelCalc>::create(pRelevantResource->m_relResID, pRelevantResource->name());
-		pCalc->setSrcInfo(rel_info);
-		pCalc->setSrcText(rdo::format(_T("Удаление временного ресурса %s"), rel_info.src_text().c_str()));
+		ASSERT(pCalc);
+		rdoRuntime::RDOSrcInfo srcInfo(rel_info);
+		srcInfo.setSrcText(rdo::format(_T("Удаление временного ресурса %s"), rel_info.src_text().c_str()));
+		pCalc->setSrcInfo(srcInfo);
 		getPatRuntime<rdoRuntime::RDOPatternEvent>()->addEraseCalc(pCalc);
 	}
 }
@@ -641,8 +645,10 @@ rdoRuntime::LPRDOCalc RDOPATPattern::createRelRes(rbool trace) const
 		}
 	}
 	rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcCreateResource>::create(m_pCurrRelRes->getType()->getRuntimeResType(), params_default, trace, false/** @todo проверить, что ресурс временный */, m_pCurrRelRes->m_relResID);
-	pCalc->setSrcInfo(m_pCurrRelRes->src_info());
-	pCalc->setSrcText(rdo::format(_T("Создание временного ресурса %s"), m_pCurrRelRes->name().c_str()));
+	ASSERT(pCalc);
+	rdoRuntime::RDOSrcInfo srcInfo(m_pCurrRelRes->src_info());
+	srcInfo.setSrcText(rdo::format(_T("Создание временного ресурса %s"), m_pCurrRelRes->name().c_str()));
+	pCalc->setSrcInfo(srcInfo);
 	return pCalc;
 }
 
@@ -710,8 +716,10 @@ void RDOPatternRule::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSr
 	if (pRelevantResource->m_statusBegin == rdoRuntime::RDOResource::CS_Erase)
 	{
 		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOEraseResRelCalc>::create(pRelevantResource->m_relResID, pRelevantResource->name());
-		pCalc->setSrcInfo(rel_info);
-		pCalc->setSrcText(rdo::format(_T("Удаление временного ресурса %s"), rel_info.src_text().c_str()));
+		ASSERT(pCalc);
+		rdoRuntime::RDOSrcInfo srcInfo(rel_info);
+		srcInfo.setSrcText(rdo::format(_T("Удаление временного ресурса %s"), rel_info.src_text().c_str()));
+		pCalc->setSrcInfo(srcInfo);
 		getPatRuntime<rdoRuntime::RDOPatternRule>()->addEraseCalc(pCalc);
 	}
 }
@@ -847,15 +855,19 @@ void RDOPatternOperation::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOPar
 	if (pRelevantResource->m_statusBegin == rdoRuntime::RDOResource::CS_Erase)
 	{
 		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOEraseResRelCalc>::create(pRelevantResource->m_relResID, pRelevantResource->name());
-		pCalc->setSrcInfo(rel_info);
-		pCalc->setSrcText(rdo::format(_T("Удаление временного ресурса %s"), rel_info.src_text().c_str()));
+		ASSERT(pCalc);
+		rdoRuntime::RDOSrcInfo srcInfo(rel_info);
+		srcInfo.setSrcText(rdo::format(_T("Удаление временного ресурса %s"), rel_info.src_text().c_str()));
+		pCalc->setSrcInfo(srcInfo);
 		getPatRuntime<rdoRuntime::RDOPatternOperation>()->addEraseBeginCalc(pCalc);
 	}
 	if (pRelevantResource->m_statusEnd == rdoRuntime::RDOResource::CS_Erase)
 	{
 		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOEraseResRelCalc>::create(pRelevantResource->m_relResID, pRelevantResource->name());
-		pCalc->setSrcInfo(rel_info);
-		pCalc->setSrcText(rdo::format(_T("Удаление временного ресурса %s"), rel_info.src_text().c_str()));
+		ASSERT(pCalc);
+		rdoRuntime::RDOSrcInfo srcInfo(rel_info);
+		srcInfo.setSrcText(rdo::format(_T("Удаление временного ресурса %s"), rel_info.src_text().c_str()));
+		pCalc->setSrcInfo(srcInfo);
 		getPatRuntime<rdoRuntime::RDOPatternOperation>()->addEraseEndCalc(pCalc);
 	}
 }
@@ -1017,8 +1029,10 @@ rdoRuntime::RDOSelectResourceCalc::Type RDORelevantResource::getSelectType() con
 rdoRuntime::LPRDOCalc RDORelevantResourceDirect::createPreSelectRelResCalc()
 {
 	rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOSelectResourceDirectCalc>::create(m_relResID, m_pResource->getID());
-	pCalc->setSrcInfo(src_info());
-	pCalc->setSrcText(rdo::format(_T("Предварительный выбор рел. ресурса %s"), pCalc->src_text().c_str()));
+	ASSERT(pCalc);
+	rdoRuntime::RDOSrcInfo srcInfo(src_info());
+	srcInfo.setSrcText(rdo::format(_T("Предварительный выбор рел. ресурса %s"), src_text().c_str()));
+	pCalc->setSrcInfo(srcInfo);
 	return pCalc;
 }
 
@@ -1055,8 +1069,10 @@ rdoRuntime::LPRDOCalc RDORelevantResourceByType::createPreSelectRelResCalc()
 	if ((m_statusBegin != rdoRuntime::RDOResource::CS_Create) && (m_statusEnd != rdoRuntime::RDOResource::CS_Create))
 	{
 		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOSelectResourceByTypeCalc>::create(m_relResID, m_pResType->getNumber());
-		pCalc->setSrcInfo(src_info());
-		pCalc->setSrcText(rdo::format(_T("Предварительный выбор рел. ресурса %s"), pCalc->src_text().c_str()));
+		ASSERT(pCalc);
+		rdoRuntime::RDOSrcInfo srcInfo(src_info());
+		srcInfo.setSrcText(rdo::format(_T("Предварительный выбор рел. ресурса %s"), src_text().c_str()));
+		pCalc->setSrcInfo(srcInfo);
 		return pCalc;
 	}
 	else
@@ -1068,8 +1084,10 @@ rdoRuntime::LPRDOCalc RDORelevantResourceByType::createPreSelectRelResCalc()
 		else
 		{
 			rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcConst>::create(1);
-			pCalc->setSrcInfo(src_info());
-			pCalc->setSrcText(rdo::format(_T("Предварительный выбор рел. ресурса перед созданием %s"), pCalc->src_text().c_str()));
+			ASSERT(pCalc);
+			rdoRuntime::RDOSrcInfo srcInfo(src_info());
+			srcInfo.setSrcText(rdo::format(_T("Предварительный выбор рел. ресурса перед созданием %s"), src_text().c_str()));
+			pCalc->setSrcInfo(srcInfo);
 			return pCalc;
 		}
 	}
@@ -1092,8 +1110,10 @@ rdoRuntime::LPRDOCalc RDORelevantResourceByType::createSelectResourceChoiceCalc(
 		else
 		{
 			rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcConst>::create(1);
-			pCalc->setSrcInfo(src_info());
-			pCalc->setSrcText(rdo::format(_T("Перед созданием рел. ресурса %s"), pCalc->src_text().c_str()));
+			ASSERT(pCalc);
+			rdoRuntime::RDOSrcInfo srcInfo(src_info());
+			srcInfo.setSrcText(rdo::format(_T("Перед созданием рел. ресурса %s"), src_text().c_str()));
+			pCalc->setSrcInfo(srcInfo);
 			return pCalc;
 		}
 	}
