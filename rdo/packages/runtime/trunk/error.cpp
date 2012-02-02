@@ -34,9 +34,9 @@ void Error::push(CREF(tstring) message, CREF(LPRDOCalc) pCalc)
 	rdoSimulator::RDOSyntaxError error(
 		rdoSimulator::RDOSyntaxError::UNKNOWN,
 		message,
-		pCalc->src_pos().m_last_line,
-		pCalc->src_pos().m_last_pos,
-		pCalc->src_filetype()
+		pCalc->srcInfo().src_pos().m_last_line,
+		pCalc->srcInfo().src_pos().m_last_pos,
+		pCalc->srcInfo().src_filetype()
 	);
 	push(error);
 }

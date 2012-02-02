@@ -95,7 +95,7 @@ RDOSetResourceParamCalc::RDOSetResourceParamCalc(ruint resourceID, ruint paramID
 	m_value = true;
 	if (m_pCalc)
 	{
-		setSrcInfo(m_pCalc->src_info());
+		setSrcInfo(m_pCalc->srcInfo());
 	}
 }
 

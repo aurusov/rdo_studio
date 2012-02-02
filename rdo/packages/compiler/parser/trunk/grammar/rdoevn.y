@@ -290,9 +290,9 @@ pat_params
 		LPRDOPATPattern pPattern   = PARSER->stack().pop<RDOPATPattern>($1);
 		LPRDOValue      pParamName = PARSER->stack().pop<RDOValue>($2);
 		LPTypeInfo      pType      = PARSER->stack().pop<TypeInfo>($3);
-		ASSERT(pPattern);
+		ASSERT(pPattern  );
 		ASSERT(pParamName);
-		ASSERT(pType);
+		ASSERT(pType     );
 
 		LPRDOParam pParam = rdo::Factory<RDOParam>::create(pParamName->src_info(), pType, PARSER->stack().pop<RDOValue>($4));
 		ASSERT(pParam);
@@ -304,9 +304,9 @@ pat_params
 		LPRDOPATPattern pPattern   = PARSER->stack().pop<RDOPATPattern>($1);
 		LPRDOValue      pParamName = PARSER->stack().pop<RDOValue>($2);
 		LPTypeInfo      pType      = PARSER->stack().pop<TypeInfo>($3);
-		ASSERT(pPattern);
+		ASSERT(pPattern  );
 		ASSERT(pParamName);
-		ASSERT(pType);
+		ASSERT(pType     );
 
 		LPRDOParam pParam = rdo::Factory<RDOParam>::create(pParamName->src_info(), pType, PARSER->stack().pop<RDOValue>($4));
 		ASSERT(pParam);
@@ -1016,7 +1016,7 @@ pat_body
 	| pat_convert RDO_IDENTIF_RELRES
 	{
 		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
-		tstring         name    = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		tstring         name     = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		pPattern->addRelResBody(RDOParserSrcInfo(@2, name));
 		$$ = PARSER->stack().push(pPattern);
 	}
@@ -1410,7 +1410,7 @@ statement_list
 		rdoRuntime::LPRDOCalcBodyBrace pCalcBodyBrace = PARSER->stack().pop<rdoRuntime::RDOCalcBodyBrace>($1);
 		ASSERT(pCalcBodyBrace);
 
-		rdoRuntime::LPRDOCalc     pCalc     = PARSER->stack().pop<rdoRuntime::RDOCalc>($2);
+		rdoRuntime::LPRDOCalc pCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($2);
 		ASSERT(pCalc);
 
 		pCalcBodyBrace->addCalc(pCalc);
@@ -1509,9 +1509,7 @@ equal_statement
 				break;
 			}
 		}
-		pCalc->setSrcText    (rdo::format(_T("%s %s"), paramName.c_str(), oprStr.c_str()));
-		pCalc->setSrcPos     (@1.m_first_line, @1.m_first_pos, @2.m_last_line, @2.m_last_pos);
-		pCalc->setSrcFileType(PARSER->getFileToParse());
+		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @2, rdo::format(_T("%s %s"), paramName.c_str(), oprStr.c_str())));
 
 		$$ = PARSER->stack().push(pCalc);
 	}
@@ -1539,13 +1537,12 @@ equal_statement
 			{
 				pCalc = rdo::Factory<rdoRuntime::RDOSetRelResParamCalc<rdoRuntime::ET_EQUAL> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
 				ASSERT(pCalc);
-				pCalc->setSrcText(rdo::format(_T("%s.%s"), pRelRes->src_text().c_str(), paramName.c_str()));
-				pCalc->setSrcPos(@1.m_first_line, @1.m_first_pos, @1.m_last_line, @1.m_last_pos);
+				pCalc->setSrcInfo(RDOParserSrcInfo(@1, rdo::format(_T("%s.%s"), pRelRes->src_text().c_str(), paramName.c_str())));
 
 				LPExpression pExpressionLeft = rdo::Factory<Expression>::create(
 					pParam->getTypeInfo(),
 					pCalc,
-					pCalc->src_info()
+					pCalc->srcInfo()
 				);
 				ASSERT(pExpressionLeft);
 
@@ -1630,9 +1627,7 @@ equal_statement
 				break;
 			}
 		}
-		pCalc->setSrcText    (rdo::format(_T("%s %s %s"), paramName.c_str(), oprStr.c_str(), pCalcRight->src_text().c_str()));
-		pCalc->setSrcPos     (@1.m_first_line, @1.m_first_pos, @3.m_last_line, @3.m_last_pos);
-		pCalc->setSrcFileType(PARSER->getFileToParse());
+		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @3, rdo::format(_T("%s %s %s"), paramName.c_str(), oprStr.c_str(), pCalcRight->srcInfo().src_text().c_str())));
 
 		$$ = PARSER->stack().push(pCalc);
 	}

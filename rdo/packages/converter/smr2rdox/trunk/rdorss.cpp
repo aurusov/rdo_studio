@@ -98,10 +98,12 @@ rdoRuntime::LPRDOCalc RDORSSResource::createCalc() const
 		paramList.push_back(it->param().value());
 	}
 
-	rdoRuntime::LPRDOCalc calc = rdo::Factory<rdoRuntime::RDOCalcNop>::create();
-	calc->setSrcInfo(src_info());
-	calc->setSrcText(_T("Создание ресурса ") + calc->src_text());
-	return calc;
+	rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcNop>::create();
+	ASSERT(pCalc);
+	rdoRuntime::RDOSrcInfo srcInfo(src_info());
+	srcInfo.setSrcText(_T("Создание ресурса ") + src_text());
+	pCalc->setSrcInfo(srcInfo);
+	return pCalc;
 }
 
 // --------------------------------------------------------------------------------
@@ -119,10 +121,12 @@ rdoRuntime::LPRDOCalc RDOPROCResource::createCalc() const
 		paramList.push_back(it->param().value());
 	}
 
-	rdoRuntime::LPRDOCalc calc = rdo::Factory<rdoRuntime::RDOCalcNop>::create();
-	calc->setSrcInfo(src_info());
-	calc->setSrcText(_T("Создание ресурса ") + calc->src_text());
-	return calc;
+	rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcNop>::create();
+	ASSERT(pCalc);
+	rdoRuntime::RDOSrcInfo srcInfo(src_info());
+	srcInfo.setSrcText(_T("Создание ресурса ") + src_text());
+	pCalc->setSrcInfo(srcInfo);
+	return pCalc;
 }
 
 CLOSE_RDO_CONVERTER_NAMESPACE

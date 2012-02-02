@@ -1554,8 +1554,7 @@ pat_convert_cmd
 					break;
 				}
 			}
-			pCalc->setSrcText(rdo::format(_T("%s %s %s"), paramName.c_str(), oprStr.c_str(), pCalcRight->src_text().c_str()));
-			pCalc->setSrcPos (@2.m_first_line, @2.m_first_pos, @4.m_last_line, @4.m_last_pos);
+			pCalc->setSrcInfo(RDOParserSrcInfo(@2, @4, rdo::format(_T("%s %s %s"), paramName.c_str(), oprStr.c_str(), pCalcRight->srcInfo().src_text().c_str())));
 			pCmdList->insertCommand(pCalc);
 		}
 
@@ -1602,11 +1601,11 @@ pat_pattern
 		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
 		if (pPattern->getType() == RDOPATPattern::PT_IE)
 		{
-			LPDocUpdate pPlanningInsert = rdo::Factory<UpdateInsert>::create(@1.m_last_seek, _T("\r\n\t\t" + pPattern->name() + ".Planning( Time_now + " + pPattern->time->calc()->src_text() + " );"));
+			LPDocUpdate pPlanningInsert = rdo::Factory<UpdateInsert>::create(@1.m_last_seek, _T("\r\n\t\t") + pPattern->name() + _T(".Planning( Time_now + ") + pPattern->time->calc()->srcInfo().src_text() + _T(" );"));
 			ASSERT(pPlanningInsert);
 			CONVERTER->insertDocUpdate(pPlanningInsert);
 
-			LPDocUpdate pPlanningInsertSMR = rdo::Factory<UpdateInsert>::create(0, _T(pPattern->name() + ".Planning( Time_now + " + pPattern->time->calc()->src_text() + " )\r\n"), IDocument::SMR);
+			LPDocUpdate pPlanningInsertSMR = rdo::Factory<UpdateInsert>::create(0, pPattern->name() + _T(".Planning( Time_now + ") + pPattern->time->calc()->srcInfo().src_text() + _T(" )\r\n"), IDocument::SMR);
 			ASSERT(pPlanningInsertSMR);
 			CONVERTER->insertDocUpdate(pPlanningInsertSMR);
 		}

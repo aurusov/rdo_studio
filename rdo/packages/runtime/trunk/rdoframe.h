@@ -108,7 +108,7 @@ public:
 
 	private:
 		RDOFRMColor(ColorType type = CT_NONE);
-		RDOFRMColor(int red, int green, int blue);
+		RDOFRMColor(rbyte red, rbyte green, rbyte blue, CREF(RDOSrcInfo) srcInfo);
 		RDOFRMColor(CREF(LPRDOCalc) pRedCalc, CREF(LPRDOCalc) pGreenCalc, CREF(LPRDOCalc) pBlueCalc);
 		virtual ~RDOFRMColor();
 
