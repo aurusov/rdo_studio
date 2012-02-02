@@ -379,7 +379,7 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 				BOOST_AUTO(it, fileList.find(m_pParserItem->m_type));
 				if (it != fileList.end())
 				{
-					std::ifstream stream(it->second.c_str(), ios::binary);
+					std::ifstream stream(it->second.c_str(), std::ios::binary);
 					m_pParserItem->parse(this, stream);
 				}
 			}
@@ -481,7 +481,7 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 			BOOST_AUTO(fileIt, fileList.find(pParserItem->m_type));
 			if (fileIt != fileList.end())
 			{
-				std::ifstream streamIn(fileIt->second.c_str(), ios::binary);
+				std::ifstream streamIn(fileIt->second.c_str(), std::ios::binary);
 				ASSERT(streamIn.good());
 
 				m_pDocument->init(pParserItem->m_type, streamIn);

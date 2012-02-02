@@ -49,6 +49,8 @@
 %}
 %option yylineno
 %option c++
+%option nounistd
+%option noyywrap
 %x comment_rdo
 %x comment_cpp
 %x comment_line

@@ -19,7 +19,7 @@
 #ifndef __FLEX_LEXER_H
 #undef yyFlexLexer
 #define yyFlexLexer cnvFlexLexer
-#include "thirdparty/bison_flex/FlexLexer.h"
+#include "thirdparty/bison_flex/include/FlexLexer.h"
 #endif
 // --------------------------------------------------------------------------------
 
