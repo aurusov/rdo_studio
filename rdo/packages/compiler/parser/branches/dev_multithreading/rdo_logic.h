@@ -37,51 +37,27 @@ public:
 	virtual ~RDOLogic()
 	{}
 
-	CREF(tstring) name() const { return src_info().src_text(); }
+	CREF(tstring)      name              () const;
 
-	LPActivity addNewActivity(CREF(RDOParserSrcInfo) activity_src_info, CREF(RDOParserSrcInfo) pattern_src_info)
-	{
-		LPActivity pAactivity = rdo::Factory<Activity>::create(m_pRuntimeLogic, activity_src_info, pattern_src_info);
-		ASSERT(pAactivity);
-		m_activityList.push_back(pAactivity);
-		return pAactivity;
-	}
+	LPActivity         addNewActivity    (CREF(RDOParserSrcInfo) activity_src_info, CREF(RDOParserSrcInfo) pattern_src_info);
+	LPActivity         getLastActivity   () const;
+	CREF(ActivityList) getActivities     () const;
 
-	LPActivity getLastActivity() const
-	{
-		return !m_activityList.empty() ? m_activityList.back() : LPActivity(NULL);
-	}
-	CREF(ActivityList) getActivities() const { return m_activityList; }
-
-	rbool setPrior(REF(LPRDOFUNArithm) pPrior)
-	{
-		LPIPriority pPriority = m_pRuntimeLogic;
-		if (pPriority)
-		{
-			return pPriority->setPrior(pPrior->createCalc());
-		}
-		return false;
-	}
-
-	rbool getMultithreading () const
-	{
-		return m_Multithreading;
-	}
-
-	void setMultithreading (rbool Multithreading = false)
-	{
-		m_Multithreading = Multithreading;
-	}
+	rbool              setPrior          (REF(LPRDOFUNArithm) pPrior);
+	rbool              getMultithreading () const;
+	void               setMultithreading (rbool multithreading);
 
 
 protected:
 	LPILogic     m_pRuntimeLogic;
-	rbool        m_Multithreading;
+	rbool        m_multithreading;
 
 private:
 	ActivityList m_activityList;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
+
+#include "simulator/compiler/parser/rdo_logic.inl"
 
 #endif // _RDOPARSER_LOGIC_H_
