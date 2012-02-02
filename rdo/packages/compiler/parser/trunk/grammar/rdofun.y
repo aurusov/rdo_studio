@@ -528,6 +528,10 @@ statement
 
 		$$ = PARSER->stack().push(pExpressionFunBodyBrace);
 	}
+	| error
+	{
+		PARSER->error().error(@1, _T("Неизвестная инструкция"));
+	}
 	;
 
 open_brace
