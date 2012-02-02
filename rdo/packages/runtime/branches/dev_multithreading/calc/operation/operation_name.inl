@@ -8,9 +8,11 @@
 */
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <algorithm>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/namespace.h"
 #include "utils/rdomacros.h"
+#include "simulator/runtime/rdo_value.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

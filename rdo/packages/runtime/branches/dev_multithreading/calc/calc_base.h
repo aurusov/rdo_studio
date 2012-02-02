@@ -34,7 +34,7 @@ PREDECLARE_POINTER(RDORuntime);
   \details  Cкомпилированная модель состоит из последовательоности калков, так же как и скомпилированная программа состоит из ассемблеровских команд. Данный класс описывает базовый, абстрактный калк.
   \ingroup  calc calc_base
 */
-OBJECT(RDOCalc) IS INSTANCE_OF(RDOSrcInfo)
+OBJECT(RDOCalc)
 {
 //! \details Фабрика для автоматического удаления калка
 DECLARE_FACTORY(RDOCalc)
@@ -52,6 +52,11 @@ public:
 	//! \result true, если калки одинаковые. Значение по умолчанию false
 	virtual rbool compare(CREF(LPRDOCalc) pCalc) const;
 
+	//! Узнать привязку калка к исходникам
+	CREF(RDOSrcInfo) srcInfo   () const;
+	//! Привязать калк к исходникам
+	void             setSrcInfo(CREF(RDOSrcInfo) srcInfo);
+
 protected:
 	RDOCalc();
 	virtual ~RDOCalc();
@@ -66,6 +71,10 @@ protected:
 	//! \exception RDORuntimeException
 	//! \result Вычесленное калком значение
 	virtual REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime) = 0;
+
+private:
+	//! Привязка калка к исходникам
+	RDOSrcInfo m_srcInfo;
 };
 
 #define DECLARE_ICalc \

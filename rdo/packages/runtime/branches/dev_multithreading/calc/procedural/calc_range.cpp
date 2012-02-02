@@ -28,7 +28,7 @@ RDOCalcCheckRange::RDOCalcCheckRange(CREF(RDOValue) minValue, CREF(RDOValue) max
 {
 	if (m_pCalc)
 	{
-		setSrcInfo(m_pCalc->src_info());
+		setSrcInfo(m_pCalc->srcInfo());
 	}
 }
 

@@ -155,7 +155,7 @@ RDOCalcSetConst::RDOCalcSetConst(ruint constantID, CREF(LPRDOCalc) pCalc)
 	m_value = 0;
 	if (m_pCalc)
 	{
-		setSrcInfo(m_pCalc->src_info());
+		setSrcInfo(m_pCalc->srcInfo());
 	}
 }
 
