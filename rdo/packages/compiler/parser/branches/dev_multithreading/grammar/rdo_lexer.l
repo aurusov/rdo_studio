@@ -82,7 +82,6 @@ $type                          return(RDO_Type);
 algorithmic                    return(RDO_algorithmic);
 table                          return(RDO_table);
 list                           return(RDO_list);
-result                         return(RDO_result);
 $Sequence                      return(RDO_Sequence);
 $sequence                      return(RDO_Sequence);
 uniform                        return(RDO_uniform);

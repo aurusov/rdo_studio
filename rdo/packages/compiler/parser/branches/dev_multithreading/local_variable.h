@@ -48,7 +48,7 @@ public:
 	typedef std::list<LPLocalVariable> VariableList;
 
 	void            append           (CREF(LPLocalVariable) pVariable);
-	LPLocalVariable findLocalVariable(CREF(tstring)         paramName) const;
+	LPLocalVariable findLocalVariable(CREF(tstring)         name     ) const;
 
 private:
 	LocalVariableList();
@@ -69,7 +69,7 @@ public:
 	void pop ();
 
 	void            append           (CREF(LPLocalVariable) pVariable);
-	LPLocalVariable findLocalVariable(CREF(tstring)         paramName) const;
+	LPLocalVariable findLocalVariable(CREF(tstring)         name     ) const;
 
 private:
 	LocalVariableListStack();
