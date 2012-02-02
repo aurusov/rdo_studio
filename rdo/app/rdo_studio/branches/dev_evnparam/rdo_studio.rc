@@ -997,7 +997,6 @@ BEGIN
             MENUITEM "enumerative",                 ID_INSERT_FUN_ENUMERATIVE
             MENUITEM "$Parameters",                 ID_INSERT_FUN_PARAMETERS
             MENUITEM "$Body",                       ID_INSERT_FUN_BODY
-            MENUITEM "Calculate_if",                ID_INSERT_FUN_CALCULATEIF
             MENUITEM "$Sequence",                   ID_INSERT_FUN_SEQUENCE
             MENUITEM "$Constant",                   ID_INSERT_FUN_CONSTANT
             MENUITEM "$End",                        ID_INSERT_FUN_END
@@ -4531,7 +4530,6 @@ BEGIN
             MENUITEM "enumerative",                 ID_INSERT_FUN_ENUMERATIVE
             MENUITEM "$Parameters",                 ID_INSERT_FUN_PARAMETERS
             MENUITEM "$Body",                       ID_INSERT_FUN_BODY
-            MENUITEM "Calculate_if",                ID_INSERT_FUN_CALCULATEIF
             MENUITEM "$Sequence",                   ID_INSERT_FUN_SEQUENCE
             MENUITEM "$Constant",                   ID_INSERT_FUN_CONSTANT
             MENUITEM "$End",                        ID_INSERT_FUN_END
