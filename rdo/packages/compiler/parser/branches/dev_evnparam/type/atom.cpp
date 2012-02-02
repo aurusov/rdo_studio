@@ -175,7 +175,7 @@ rdoRuntime::LPRDOCalc RDOType__int::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCalc,
 {
 	if (pType->typeID() == rdoRuntime::RDOType::t_real)
 	{
-		return rdo::Factory<rdoRuntime::RDOCalcDoubleToInt>::create(pCalc->src_pos(), pCalc);
+		return rdo::Factory<rdoRuntime::RDOCalcDoubleToInt>::create(pCalc->srcInfo().src_pos(), pCalc);
 	}
 	return pCalc;
 }

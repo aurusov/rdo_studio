@@ -15,13 +15,12 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/namespace.h"
 #include "simulator/compiler/parser/grammar/rdobison.h"
-#include "simulator/compiler/parser/grammar/rdogramma.h"
 #include "utils/smart_ptr/intrusive_ptr.h"
 
 #ifndef __FLEX_LEXER_H
 #undef yyFlexLexer
 #define yyFlexLexer yyFlexLexer
-#include "thirdparty/bison_flex/FlexLexer.h"
+#include "thirdparty/bison_flex/include/FlexLexer.h"
 #endif
 // --------------------------------------------------------------------------------
 

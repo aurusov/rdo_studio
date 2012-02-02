@@ -129,7 +129,6 @@
 %token RDO_for
 %token RDO_Return
 %token RDO_Break
-%token RDO_result
 %token RDO_CF
 %token RDO_Priority
 %token RDO_prior

@@ -129,7 +129,6 @@
 %token RDO_for
 %token RDO_Return
 %token RDO_Break
-%token RDO_result
 %token RDO_CF
 %token RDO_Priority
 %token RDO_prior
@@ -1724,9 +1723,7 @@ equal_statement
 				break;
 			}
 		}
-		pCalc->setSrcText    (rdo::format(_T("%s %s"), paramName.c_str(), oprStr.c_str()));
-		pCalc->setSrcPos     (@1.m_first_line, @1.m_first_pos, @2.m_last_line, @2.m_last_pos);
-		pCalc->setSrcFileType(PARSER->getFileToParse());
+		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @2, rdo::format(_T("%s %s"), paramName.c_str(), oprStr.c_str())));
 
 		$$ = PARSER->stack().push(pCalc);
 	}
@@ -1804,14 +1801,12 @@ equal_statement
 				{
 					pCalc = rdo::Factory<rdoRuntime::RDOSetRelResParamCalc<rdoRuntime::ET_EQUAL> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
 					ASSERT(pCalc);
-					pCalc->setSrcText    (rdo::format(_T("%s.%s"), pRelRes->src_text().c_str(), paramName.c_str()));
-					pCalc->setSrcPos     (@1.m_first_line, @1.m_first_pos, @1.m_last_line, @1.m_last_pos);
-					pCalc->setSrcFileType(PARSER->getFileToParse());
+					pCalc->setSrcInfo(RDOParserSrcInfo(@1, rdo::format(_T("%s.%s"), pRelRes->src_text().c_str(), paramName.c_str())));
 
 					LPExpression pExpressionLeft = rdo::Factory<Expression>::create(
 						pParam->getTypeInfo(),
 						pCalc,
-						pCalc->src_info()
+						pCalc->srcInfo()
 					);
 					ASSERT(pExpressionLeft);
 
@@ -1897,10 +1892,7 @@ equal_statement
 				break;
 			}
 		}
-
-		pCalc->setSrcText    (rdo::format(_T("%s %s %s"), paramName.c_str(), oprStr.c_str(), pCalcRight->src_text().c_str()));
-		pCalc->setSrcPos     (@1.m_first_line, @1.m_first_pos, @3.m_last_line, @3.m_last_pos);
-		pCalc->setSrcFileType(PARSER->getFileToParse());
+		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @3, rdo::format(_T("%s %s %s"), paramName.c_str(), oprStr.c_str(), pCalcRight->srcInfo().src_text().c_str())));
 
 		$$ = PARSER->stack().push(pCalc);
 	}
@@ -1966,9 +1958,7 @@ set_array_item_statement
 
 			pCalc = rdo::Factory<rdoRuntime::RDOSetRelResParamCalc<rdoRuntime::ET_EQUAL> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pArrayItemCalc);
 			ASSERT(pCalc);
-			pCalc->setSrcText    (rdo::format(_T("%s.%s"), pRelRes->src_text().c_str(), paramName.c_str()));
-			pCalc->setSrcPos     (@1.m_first_line, @1.m_first_pos, @1.m_last_line, @1.m_last_pos);
-			pCalc->setSrcFileType(PARSER->getFileToParse());
+			pCalc->setSrcInfo(RDOParserSrcInfo(@1, rdo::format(_T("%s.%s"), pRelRes->src_text().c_str(), paramName.c_str())));
 		}
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pArrayArithm->typeInfo(), pCalc, RDOParserSrcInfo(@1));

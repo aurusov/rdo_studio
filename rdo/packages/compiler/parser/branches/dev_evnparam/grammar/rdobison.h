@@ -16,6 +16,12 @@
 #include "utils/rdotypes.h"
 // --------------------------------------------------------------------------------
 
+// Определим YYSTYPE именно в этом файле, чтобы убрать зависимость от rdogramma.h
+#ifdef YYSTYPE
+#undef YYSTYPE
+#endif
+typedef int YYSTYPE;
+
 #ifdef YYLTYPE
 #undef YYLTYPE
 #endif

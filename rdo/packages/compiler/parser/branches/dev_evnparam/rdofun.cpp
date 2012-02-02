@@ -97,11 +97,11 @@ RDOFUNLogic::RDOFUNLogic(CREF(LPExpression) pExpression, rbool hideWarning)
 		{
 			if (pConstCalc->getValue().getAsBool())
 			{
-				RDOParser::s_parser()->error().warning(pConstCalc->src_info(), rdo::format(_T("Логическое выражение всегда истинно: %s"), pConstCalc->src_text().c_str()));
+				RDOParser::s_parser()->error().warning(pConstCalc->srcInfo(), rdo::format(_T("Логическое выражение всегда истинно: %s"), pConstCalc->srcInfo().src_text().c_str()));
 			}
 			else
 			{
-				RDOParser::s_parser()->error().warning(pConstCalc->src_info(), rdo::format(_T("Логическое выражение всегда ложно: %s"), pConstCalc->src_text().c_str()));
+				RDOParser::s_parser()->error().warning(pConstCalc->srcInfo(), rdo::format(_T("Логическое выражение всегда ложно: %s"), pConstCalc->srcInfo().src_text().c_str()));
 			}
 		}
 	}
@@ -144,17 +144,17 @@ LPRDOFUNLogic RDOFUNLogic::createLogic(CREF(rdoRuntime::LPRDOCalc) pCalc)
 	LPExpression pExpression = rdo::Factory<Expression>::create(
 		rdo::Factory<TypeInfo>::create(
 			rdo::Factory<RDOType__bool>::create(),
-			pCalc->src_info()
+			pCalc->srcInfo()
 		),
 		pCalc,
-		pCalc->src_info()
+		pCalc->srcInfo()
 	);
 	ASSERT(pExpression);
 
 	LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pExpression, false);
 	ASSERT(pLogic);
 
-	pLogic->setSrcInfo(pCalc->src_info());
+	pLogic->setSrcInfo(pCalc->srcInfo());
 
 	return pLogic;
 }
@@ -368,7 +368,7 @@ LPRDOFUNArithm RDOFUNArithm::generateArithm(CREF(rdoRuntime::RDOSrcInfo::Positio
 	LPExpression pExpression = rdo::Factory<Expression>::create(
 		pType,
 		pCalc,
-		pCalc->src_info()
+		pCalc->srcInfo()
 	);
 	ASSERT(pExpression);
 
@@ -391,7 +391,7 @@ LPRDOFUNArithm RDOFUNArithm::generateArithm(CREF(LPRDOFUNArithm) pSecond, CREF(t
 	LPExpression pExpression = rdo::Factory<Expression>::create(
 		pType,
 		pCalc,
-		pCalc->src_info()
+		pCalc->srcInfo()
 	);
 	ASSERT(pExpression);
 
@@ -411,17 +411,17 @@ LPRDOFUNLogic RDOFUNArithm::generateLogic(CREF(LPRDOFUNArithm) pSecond, CREF(tst
 	LPExpression pExpression = rdo::Factory<Expression>::create(
 		rdo::Factory<TypeInfo>::create(
 			rdo::Factory<RDOType__bool>::create(),
-			pCalc->src_info()
+			pCalc->srcInfo()
 		),
 		pCalc,
-		pCalc->src_info()
+		pCalc->srcInfo()
 	);
 	ASSERT(pExpression);
 
 	LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pExpression, false);
 	ASSERT(pLogic);
 
-	pLogic->setSrcInfo(pCalc->src_info());
+	pLogic->setSrcInfo(pCalc->srcInfo());
 	pLogic->m_intOrDouble.insert(m_intOrDouble, pSecond->m_intOrDouble);
 	return pLogic;
 }
@@ -483,14 +483,14 @@ LPRDOFUNArithm RDOFUNArithm::operator/ (CREF(LPRDOFUNArithm) pSecond)
 	//! Ответ: с умножением надо делать тоже самое, только непонятно как
 	if (pType->type()->typeID() == rdoRuntime::RDOType::t_int)
 	{
-		rdoRuntime::LPRDOCalc pNewCalc_div = pCalc;
-		pCalc = rdo::Factory<rdoRuntime::RDOCalcDoubleToIntByResult>::create(pNewCalc_div);
-		pCalc->setSrcInfo(pNewCalc_div->src_info());
+		rdoRuntime::LPRDOCalc pNewCalcDiv = pCalc;
+		pCalc = rdo::Factory<rdoRuntime::RDOCalcDoubleToIntByResult>::create(pNewCalcDiv);
+		pCalc->setSrcInfo(pNewCalcDiv->srcInfo());
 	}
 	LPExpression pExpression = rdo::Factory<Expression>::create(
 		pType,
 		pCalc,
-		pCalc->src_info()
+		pCalc->srcInfo()
 	);
 	ASSERT(pExpression);
 	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
@@ -576,7 +576,8 @@ rdoRuntime::LPRDOCalc RDOFUNArithm::createCalc(CREF(LPTypeInfo) pForType)
 		else
 		{
 			m_intOrDouble.roundCalc();
-			rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcDoubleToInt>::create(m_pExpression->calc()->src_pos(), m_pExpression->calc());
+			rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcDoubleToInt>::create(m_pExpression->calc()->srcInfo().src_pos(), m_pExpression->calc());
+			ASSERT(pCalc);
 			pCalc->setSrcInfo(src_info());
 			return pCalc;
 		}
@@ -795,8 +796,9 @@ void RDOFUNSequence::initCalcSrcInfo()
 {
 	if (m_pInitCalc)
 	{
-		m_pInitCalc->setSrcInfo(m_pHeader->src_info());
-		m_pInitCalc->setSrcText(_T("Установка базы последовательности ") + m_pInitCalc->src_text());
+		rdoRuntime::RDOSrcInfo srcInfo(m_pHeader->src_info());
+		srcInfo.setSrcText(_T("Установка базы последовательности ") + m_pHeader->src_text());
+		m_pInitCalc->setSrcInfo(srcInfo);
 	}
 	m_pNextCalc->setSrcInfo(m_pHeader->src_info());
 }
@@ -1325,17 +1327,12 @@ void RDOFUNFunction::init()
 	ASSERT(m_pContextMemory);
 	RDOParser::s_parser()->contextStack()->push(m_pContextMemory);
 
-	LPLocalVariableListStack pLocalVariableListStack = m_pContextMemory->getLocalMemory();
-	ASSERT(pLocalVariableListStack);
-
-	LPLocalVariableList pLocalVariableList = rdo::Factory<LocalVariableList>::create();
-	ASSERT(pLocalVariableList);
-
-	pLocalVariableListStack->push(pLocalVariableList);
+	ContextMemory::push();
 }
 
 void RDOFUNFunction::end()
 {
+	ContextMemory::pop();
 	RDOParser::s_parser()->contextStack()->pop();
 	RDOParser::s_parser()->contextStack()->pop();
 }
@@ -1373,7 +1370,7 @@ void RDOFUNFunction::setFunctionCalc(CREF(rdoRuntime::LPRDOFunCalc) pCalc)
 {
 	ASSERT(pCalc);
 	m_pFunctionCalc = pCalc;
-	if (m_pFunctionCalc->src_empty())
+	if (m_pFunctionCalc->srcInfo().src_empty())
 	{
 		m_pFunctionCalc->setSrcInfo(src_info());
 	}
@@ -1524,8 +1521,9 @@ void RDOFUNFunction::createTableCalc(CREF(YYLTYPE) elements_pos)
 	ruint range     = 1;
 	rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcConst>::create(0);
 	ASSERT(pCalc);
-	pCalc->setSrcInfo(src_info());
-	pCalc->setSrcText(_T("0"));
+	rdoRuntime::RDOSrcInfo srcInfo(src_info());
+	srcInfo.setSrcText(_T("0"));
+	pCalc->setSrcInfo(srcInfo);
 	for (int currParam = 0; currParam < param_cnt; currParam++)
 	{
 		LPRDOParam pFunctionParam = m_paramList.at(currParam);
@@ -1691,10 +1689,10 @@ LPRDOFUNLogic RDOFUNGroupLogic::createFunLogic(REF(LPRDOFUNLogic) pCondition)
 	LPExpression pExpression = rdo::Factory<Expression>::create(
 		rdo::Factory<TypeInfo>::create(
 			rdo::Factory<RDOType__bool>::create(),
-			pCalc->src_info()
+			pCalc->srcInfo()
 		),
 		pCalc,
-		pCalc->src_info()
+		pCalc->srcInfo()
 	);
 	ASSERT(pExpression);
 
@@ -1738,10 +1736,10 @@ LPRDOFUNLogic RDOFUNSelect::createFunSelectGroup(RDOFUNGroupLogic::FunGroupType 
 	LPExpression pExpression = rdo::Factory<Expression>::create(
 		rdo::Factory<TypeInfo>::create(
 			rdo::Factory<RDOType__bool>::create(),
-			pCalc->src_info()
+			pCalc->srcInfo()
 		),
 		pCalc,
-		pCalc->src_info()
+		pCalc->srcInfo()
 	);
 	ASSERT(pExpression);
 
@@ -1765,10 +1763,10 @@ LPRDOFUNLogic RDOFUNSelect::createFunSelectEmpty(CREF(RDOParserSrcInfo) empty_in
 	LPExpression pExpression = rdo::Factory<Expression>::create(
 		rdo::Factory<TypeInfo>::create(
 			rdo::Factory<RDOType__bool>::create(),
-			pCalc->src_info()
+			pCalc->srcInfo()
 		),
 		pCalc,
-		pCalc->src_info()
+		pCalc->srcInfo()
 	);
 	ASSERT(pExpression);
 
