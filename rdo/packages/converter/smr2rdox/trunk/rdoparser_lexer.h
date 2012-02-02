@@ -15,7 +15,6 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "converter/smr2rdox/namespace.h"
 #include "converter/smr2rdox/grammar/rdobison.h"
-#include "converter/smr2rdox/grammar/rdogramma.h"
 
 #ifndef __FLEX_LEXER_H
 #undef yyFlexLexer

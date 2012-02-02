@@ -18,7 +18,6 @@
 
 #include "converter/smr2rdox/rdo_common/model_objects_convertor.h"
 #include "converter/smr2rdox/grammar/rdobison.h"
-#include "converter/smr2rdox/grammar/rdogramma.h"
 #include "converter/smr2rdox/namespace.h"
 #include "converter/smr2rdox/update/document.h"
 #include "converter/smr2rdox/update/update_i.h"

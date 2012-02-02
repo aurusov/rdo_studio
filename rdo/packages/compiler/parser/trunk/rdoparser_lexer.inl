@@ -12,7 +12,6 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/namespace.h"
 #include "simulator/compiler/parser/grammar/rdobison.h"
-#include "simulator/compiler/parser/grammar/rdogramma.h"
 
 #ifndef __FLEX_LEXER_H
 #undef yyFlexLexer
