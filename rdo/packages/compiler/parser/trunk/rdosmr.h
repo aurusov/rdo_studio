@@ -12,6 +12,7 @@
 #define _RDOSMR_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <map>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdocommon.h"
 #include "simulator/runtime/rdotrace.h"
