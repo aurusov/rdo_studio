@@ -47,7 +47,6 @@ public:
 	rbool              getMultithreading () const;
 	void               setMultithreading (rbool multithreading);
 
-
 protected:
 	LPILogic     m_pRuntimeLogic;
 	rbool        m_multithreading;

@@ -37,7 +37,7 @@ inline typename RDOLogic<RTLogic, Activity>::LPActivity RDOLogic<RTLogic,Activit
 }
 
 template<class RTLogic, class Activity>
-inline CREF(typename RDOLogic<RTLogic, Activity>::ActivityList) RDOLogic<RTLogic,Activity>::getActivities() const
+inline const typename RDOLogic<RTLogic, Activity>::ActivityList& RDOLogic<RTLogic,Activity>::getActivities() const
 {
 	return m_activityList;
 }
