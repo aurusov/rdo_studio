@@ -2539,6 +2539,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\rdo_logic_base.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_logic_base.h"
+				>
+			</File>
+			<File
 				RelativePath=".\rdodpt.cpp"
 				>
 			</File>

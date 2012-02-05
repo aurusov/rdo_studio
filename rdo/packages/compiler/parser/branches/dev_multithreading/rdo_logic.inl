@@ -16,13 +16,7 @@
 OPEN_RDO_PARSER_NAMESPACE
 
 template<class RTLogic, class Activity>
-inline CREF(tstring) RDOLogic<RTLogic,Activity>::name() const
-{
-	return src_info().src_text();
-}
-
-template<class RTLogic, class Activity>
-inline typename RDOLogic<RTLogic, Activity>::LPActivity RDOLogic<RTLogic,Activity>::addNewActivity (CREF(RDOParserSrcInfo) activity_src_info, CREF(RDOParserSrcInfo) pattern_src_info)
+inline typename RDOLogic<RTLogic, Activity>::LPActivity RDOLogic<RTLogic,Activity>::addNewActivity (CREF(RDOLogicBase) activity_src_info, CREF(RDOLogicBase) pattern_src_info)
 {
 	LPActivity pAactivity = rdo::Factory<Activity>::create(m_pRuntimeLogic, activity_src_info, pattern_src_info);
 	ASSERT(pAactivity);
@@ -40,29 +34,6 @@ template<class RTLogic, class Activity>
 inline const typename RDOLogic<RTLogic, Activity>::ActivityList& RDOLogic<RTLogic,Activity>::getActivities() const
 {
 	return m_activityList;
-}
-
-template<class RTLogic, class Activity>
-inline rbool RDOLogic<RTLogic,Activity>::setPrior(REF(LPRDOFUNArithm) pPrior)
-{
-	LPIPriority pPriority = m_pRuntimeLogic;
-	if (pPriority)
-	{
-		return pPriority->setPrior(pPrior->createCalc());
-	}
-	return false;
-}
-
-template<class RTLogic, class Activity>
-inline rbool RDOLogic<RTLogic,Activity>::getMultithreading () const
-{
-	return m_multithreading;
-}
-
-template<class RTLogic, class Activity>
-inline void RDOLogic<RTLogic,Activity>::setMultithreading (rbool multithreading)
-{
-	m_multithreading = multithreading;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE
