@@ -12,6 +12,7 @@
 #define _CONVERTOR_RDOCONVERTER_BASE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <map>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/smart_ptr/factory.h"
 #include "utils/rdocommon.h"

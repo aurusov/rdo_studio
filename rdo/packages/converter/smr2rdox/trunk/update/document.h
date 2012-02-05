@@ -11,6 +11,8 @@
 #define _CONVERTOR_DOCUMENT_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <list>
+#include <map>
 #include <fstream>
 #include <boost/shared_ptr.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS

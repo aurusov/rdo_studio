@@ -8,6 +8,9 @@
   \indent    4T
 */
 
+#include <string>
+#include "utils/rdotypes.h"
+
 #ifndef _RDOCOMMON_MODEL_OBJECTS_CONVERTOR_H_
 #define _RDOCOMMON_MODEL_OBJECTS_CONVERTOR_H_
 
