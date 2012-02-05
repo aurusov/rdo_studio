@@ -101,7 +101,6 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/type)
 SET(HEADER_FILES
 	expression.h
 	local_variable.h
-	namespace.h
 	param.h
 	pch.h
 	rdo_array.h
@@ -242,7 +241,6 @@ SOURCE_GROUP(".bison" FILES
 SOURCE_GROUP(".common" FILES 
 	local_variable.h
 	local_variable.cpp
-	namespace.h
 	rdo_object.h
 	rdo_object.cpp
 	variable_container.h
