@@ -15,7 +15,7 @@
 #include "simulator/compiler/parser/context/context.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSER_NAMESPACE
+OPEN_RDO_PARSE_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- IContextFind::Result
@@ -46,4 +46,4 @@ IContextFind::IContextFind()
 IContextFind::~IContextFind()
 {}
 
-CLOSE_RDO_PARSER_NAMESPACE
+CLOSE_RDO_PARSE_NAMESPACE

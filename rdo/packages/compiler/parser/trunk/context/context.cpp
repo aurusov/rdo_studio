@@ -16,7 +16,7 @@
 #include "simulator/compiler/parser/context/context_switch_i.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSER_NAMESPACE
+OPEN_RDO_PARSE_NAMESPACE
 
 Context::Context()
 {}
@@ -82,4 +82,4 @@ LPExpression Context::create(CREF(LPRDOValue) pValue)
 	return pExpression;
 }
 
-CLOSE_RDO_PARSER_NAMESPACE
+CLOSE_RDO_PARSE_NAMESPACE

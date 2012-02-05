@@ -18,7 +18,7 @@
 #include "simulator/compiler/parser/context/context_find_i.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSER_NAMESPACE
+OPEN_RDO_PARSE_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- Context
@@ -51,7 +51,7 @@ private:
 };
 DECLARE_POINTER(Context);
 
-CLOSE_RDO_PARSER_NAMESPACE
+CLOSE_RDO_PARSE_NAMESPACE
 
 #include "simulator/compiler/parser/context/context.inl"
 

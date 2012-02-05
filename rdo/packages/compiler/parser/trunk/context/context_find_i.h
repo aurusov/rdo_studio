@@ -16,7 +16,7 @@
 #include "simulator/compiler/parser/expression.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSER_NAMESPACE
+OPEN_RDO_PARSE_NAMESPACE
 
 PREDECLARE_POINTER(Context);
 
@@ -47,6 +47,6 @@ protected:
 #define DECLARE_IContextFind \
 	IContextFind::Result onFindContext(CREF(LPRDOValue) pValue) const;
 
-CLOSE_RDO_PARSER_NAMESPACE
+CLOSE_RDO_PARSE_NAMESPACE
 
 #endif // _RDOPARSER_CONTEXT_FIND_I_H_

@@ -29,7 +29,7 @@
 #include "simulator/runtime/calc/calc_pattern.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSER_NAMESPACE
+OPEN_RDO_PARSE_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserRDOItem
@@ -282,4 +282,4 @@ void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 	}
 }
 
-CLOSE_RDO_PARSER_NAMESPACE
+CLOSE_RDO_PARSE_NAMESPACE
