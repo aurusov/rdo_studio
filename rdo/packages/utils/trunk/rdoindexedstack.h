@@ -14,6 +14,7 @@
 #include <map>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdocommon.h"
+#include "utils/rdodebug.h"
 #include "utils/rdoidgenerator.h"
 // --------------------------------------------------------------------------------
 
