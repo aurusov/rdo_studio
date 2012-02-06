@@ -56,7 +56,7 @@ void RDORSSResource::end()
 	RDOParser::s_parser()->contextStack()->pop();
 }
 
-IContextFind::Result RDORSSResource::onSwitchContext(CREF(LPExpression) pSwitchExpression, CREF(LPRDOValue) pValue) const
+Context::FindResult RDORSSResource::onSwitchContext(CREF(LPExpression) pSwitchExpression, CREF(LPRDOValue) pValue) const
 {
 	ASSERT(pSwitchExpression);
 	ASSERT(pValue           );
@@ -77,7 +77,7 @@ IContextFind::Result RDORSSResource::onSwitchContext(CREF(LPExpression) pSwitchE
 	);
 	ASSERT(pExpression);
 
-	return IContextFind::Result(const_cast<PTR(RDORSSResource)>(this), pExpression, pValue);
+	return Context::FindResult(const_cast<PTR(RDORSSResource)>(this), pExpression, pValue);
 }
 
 void RDORSSResource::writeModelStructure(REF(std::ostream) stream) const

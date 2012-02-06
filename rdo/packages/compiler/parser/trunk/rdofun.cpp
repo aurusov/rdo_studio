@@ -1337,11 +1337,11 @@ void RDOFUNFunction::end()
 	RDOParser::s_parser()->contextStack()->pop();
 }
 
-IContextFind::Result RDOFUNFunction::onFindContext(CREF(LPRDOValue) pValue) const
+Context::FindResult RDOFUNFunction::onFindContext(CREF(LPRDOValue) pValue) const
 {
 	ASSERT(pValue);
 
-	IContextFind::Result result = m_pContextMemory->onFindContext(pValue);
+	Context::FindResult result = m_pContextMemory->onFindContext(pValue);
 	if (result.m_pContext)
 	{
 		return result;
@@ -1357,10 +1357,10 @@ IContextFind::Result RDOFUNFunction::onFindContext(CREF(LPRDOValue) pValue) cons
 			pValue->src_info()
 		);
 		ASSERT(pExpression);
-		return IContextFind::Result(const_cast<PTR(RDOFUNFunction)>(this), pExpression, pValue, pParam);
+		return Context::FindResult(const_cast<PTR(RDOFUNFunction)>(this), pExpression, pValue, pParam);
 	}
 
-	return IContextFind::Result();
+	return Context::FindResult();
 }
 
 RDOFUNFunction::~RDOFUNFunction()
@@ -1642,7 +1642,7 @@ void RDOFUNGroup::end()
 	RDOParser::s_parser()->contextStack()->pop();
 }
 
-IContextFind::Result RDOFUNGroup::onFindContext(CREF(LPRDOValue) pValue) const
+Context::FindResult RDOFUNGroup::onFindContext(CREF(LPRDOValue) pValue) const
 {
 	ASSERT(pValue);
 
@@ -1658,10 +1658,10 @@ IContextFind::Result RDOFUNGroup::onFindContext(CREF(LPRDOValue) pValue) const
 			pValue->src_info()
 		);
 		ASSERT(pExpression);
-		return IContextFind::Result(const_cast<PTR(RDOFUNGroup)>(this), pExpression, pValue, getResType());
+		return Context::FindResult(const_cast<PTR(RDOFUNGroup)>(this), pExpression, pValue, getResType());
 	}
 
-	return IContextFind::Result();
+	return Context::FindResult();
 }
 
 // --------------------------------------------------------------------------------
