@@ -176,7 +176,7 @@ void RDOParserSTDFUN::parse(CREF(LPRDOParser) pParser)
 	generate(_T("IMax"),     rdo::Factory<Function_I_II>::create<Function_I_II::function_type>(maxLocal<int>), pIntReturn,  ParamList(intType)(intType));
 	generate(_T("IMin"),     rdo::Factory<Function_I_II>::create<Function_I_II::function_type>(minLocal<int>), pIntReturn,  ParamList(intType)(intType));
 	generate(_T("Int"),      rdo::Factory<Function_I_I> ::create<Function_I_I ::function_type>(intLocal),      pIntReturn,  ParamList(realType));
-	generate(_T("IntPower"), rdo::Factory<Function_D_DI>::create<Function_D_DI::function_type>(static_cast<Function_D_DI::function_type>(pow)),
+	generate(_T("IntPower"), rdo::Factory<Function_D_DI>::create<Function_D_DI::function_type>(static_cast<Function_D_DI::function_type>(std::pow)),
 	                                                                             pRealReturn, ParamList(realType)(intType));
 	generate(_T("Ln"),       rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(log),           pRealReturn, ParamList(realType));
 	generate(_T("Log10"),    rdo::Factory<Function_D_D> ::create<Function_D_D ::function_type>(log10),         pRealReturn, ParamList(realType));
