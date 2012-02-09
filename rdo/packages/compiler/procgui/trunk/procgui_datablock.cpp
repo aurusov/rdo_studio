@@ -8,10 +8,12 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
+#include "simulator/compiler/procgui/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <algorithm>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/service/procgui_datablock.h"
+//#include "simulator/service/procgui_datablock.h"
+#include "simulator/compiler/procgui_datablock.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
