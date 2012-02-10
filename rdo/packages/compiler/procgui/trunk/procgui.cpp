@@ -8,13 +8,11 @@
 */
 
 // ---------------------------------------------------------------------------- PCH
-#include "simulator/compiler/procgui/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-//#include "simulator/service/procgui.h"
 #include "simulator/compiler/mbuilder/rdo_resources.h"
 #include "simulator/compiler/mbuilder/process.h"
-#include "simulator/compiler/procgui.h"
+#include "simulator/compiler/procgui/procgui.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_SIMULATOR_NAMESPACE
