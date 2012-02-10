@@ -16,7 +16,7 @@
 #include "simulator/runtime/rdo_resource.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSER_NAMESPACE
+OPEN_RDO_PARSE_NAMESPACE
 
 RDOParam::RDOParam(CREF(tstring) name, CREF(LPTypeInfo) pType, CREF(LPRDOValue) pDefault)
 	: RDOParserSrcInfo(name        )
@@ -46,7 +46,7 @@ void RDOParam::checkDefault()
 	}
 }
 
-IContextFind::Result RDOParam::onSwitchContext(CREF(LPExpression) pSwitchExpression, CREF(LPRDOValue) pValue) const
+Context::FindResult RDOParam::onSwitchContext(CREF(LPExpression) pSwitchExpression, CREF(LPRDOValue) pValue) const
 {
 	ASSERT(pSwitchExpression);
 	ASSERT(pValue           );
@@ -59,7 +59,7 @@ IContextFind::Result RDOParam::onSwitchContext(CREF(LPExpression) pSwitchExpress
 		return pContextSwitch->onSwitchContext(pSwitchExpression, pValue);
 	}
 
-	return IContextFind::Result();
+	return Context::FindResult();
 }
 
-CLOSE_RDO_PARSER_NAMESPACE
+CLOSE_RDO_PARSE_NAMESPACE

@@ -15,10 +15,9 @@
 #include "simulator/compiler/parser/rdo_value.h"
 #include "simulator/compiler/parser/expression.h"
 #include "simulator/compiler/parser/context/stack.h"
-#include "simulator/compiler/parser/context/context_find_i.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSER_NAMESPACE
+OPEN_RDO_PARSE_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- Context
@@ -29,6 +28,18 @@ DECLARE_FACTORY(Context);
 friend void ContextStack::push(LPContext pContext);
 
 public:
+	struct FindResult
+	{
+		LPContext     m_pContext;
+		LPExpression  m_pExpression;
+		LPRDOValue    m_pFindByValue;
+		LPContext     m_pValueContext;
+
+		FindResult();
+		FindResult(CREF(FindResult) result);
+		FindResult(CREF(LPContext) pContext, CREF(LPExpression) pExpression, CREF(LPRDOValue) pFindByParam, LPContext pValueContext = LPContext());
+	};
+
 	template <class T>
 	rdo::intrusive_ptr<T> cast();
 
@@ -44,14 +55,14 @@ protected:
 	void deinit();
 
 private:
-	LPContextStack        m_pContextStack;
-	IContextFind::Result  m_findResult;
+	LPContextStack  m_pContextStack;
+	FindResult      m_findResult;
 
 	void setContextStack(CREF(LPContextStack) pContextStack);
 };
 DECLARE_POINTER(Context);
 
-CLOSE_RDO_PARSER_NAMESPACE
+CLOSE_RDO_PARSE_NAMESPACE
 
 #include "simulator/compiler/parser/context/context.inl"
 

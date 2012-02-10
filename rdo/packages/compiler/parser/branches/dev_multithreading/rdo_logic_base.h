@@ -17,7 +17,7 @@
 #include "utils/rdomacros.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSER_NAMESPACE
+OPEN_RDO_PARSE_NAMESPACE
 
 class RDOLogicBase: public RDOParserSrcInfo
 {
@@ -38,6 +38,6 @@ protected:
 	rbool         m_multithreading;
 };
 
-CLOSE_RDO_PARSER_NAMESPACE
+CLOSE_RDO_PARSE_NAMESPACE
 
 #endif // _PARSER_LOGIC_BASE_H_

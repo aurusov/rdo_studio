@@ -15,7 +15,7 @@
 #include "simulator/compiler/parser/rdoparser.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSER_NAMESPACE
+OPEN_RDO_PARSE_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOLogicBase
@@ -46,4 +46,4 @@ void RDOLogicBase::setMultithreading (rbool multithreading)
 	m_multithreading = multithreading;
 }
 
-CLOSE_RDO_PARSER_NAMESPACE
+CLOSE_RDO_PARSE_NAMESPACE

@@ -17,7 +17,7 @@
 #include "simulator/compiler/parser/rdoparser_lexer.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSER_NAMESPACE
+OPEN_RDO_PARSE_NAMESPACE
 
 int frmlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
@@ -44,7 +44,7 @@ RDOFRMFrame::RDOFRMFrame(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic)
 	RDOParser::s_parser()->contextStack()->push(this);
 }
 
-IContextFind::Result RDOFRMFrame::onFindContext(CREF(LPRDOValue) pValue) const
+Context::FindResult RDOFRMFrame::onFindContext(CREF(LPRDOValue) pValue) const
 {
 	UNUSED(pValue);
 
@@ -59,7 +59,7 @@ IContextFind::Result RDOFRMFrame::onFindContext(CREF(LPRDOValue) pValue) const
 	//	return;
 	//}
 
-	return IContextFind::Result();
+	return Context::FindResult();
 }
 
 void RDOFRMFrame::end()
@@ -67,4 +67,4 @@ void RDOFRMFrame::end()
 	RDOParser::s_parser()->contextStack()->pop();
 }
 
-CLOSE_RDO_PARSER_NAMESPACE
+CLOSE_RDO_PARSE_NAMESPACE

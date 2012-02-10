@@ -216,7 +216,7 @@
 #define PARSER  LEXER->parser()
 #define RUNTIME PARSER->runtime()
 
-OPEN_RDO_PARSER_NAMESPACE
+OPEN_RDO_PARSE_NAMESPACE
 %}
 
 %start type_list
@@ -804,4 +804,4 @@ param_value_default
 
 %%
 
-CLOSE_RDO_PARSER_NAMESPACE
+CLOSE_RDO_PARSE_NAMESPACE

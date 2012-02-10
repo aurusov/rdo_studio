@@ -13,7 +13,7 @@
 #include "utils/rdomacros.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSER_NAMESPACE
+OPEN_RDO_PARSE_NAMESPACE
 
 template<class RTLogic, class Activity>
 inline typename RDOLogic<RTLogic, Activity>::LPActivity RDOLogic<RTLogic,Activity>::addNewActivity (CREF(RDOParserSrcInfo) activity_src_info, CREF(RDOParserSrcInfo) pattern_src_info)
@@ -36,4 +36,4 @@ inline const typename RDOLogic<RTLogic, Activity>::ActivityList& RDOLogic<RTLogi
 	return m_activityList;
 }
 
-CLOSE_RDO_PARSER_NAMESPACE
+CLOSE_RDO_PARSE_NAMESPACE
