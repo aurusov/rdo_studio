@@ -661,7 +661,10 @@ equal_statement
 				}
 			}
 		}
-		else PARSER->error().error(@1, rdo::format(_T("Неизвестный параметр: %s"), paramName.c_str()));
+		else 
+		{
+			PARSER->error().error(@1, rdo::format(_T("Неизвестный параметр: %s"), paramName.c_str()));
+		}
 		tstring oprStr;
 		switch (equalType)
 		{
@@ -742,7 +745,17 @@ equal_statement
 				}
 			}
 		}
-		else PARSER->error().error(@1, rdo::format(_T("Неизвестный параметр: %s"), paramName.c_str()));
+		else 
+		{
+			LPRDOFUNFunction pFunction = PARSER->getLastFUNFunction();
+			ASSERT(pFunction);
+			LPRDOParam pParam = pFunction->findFUNFunctionParam(paramName);
+			if(!pParam)
+			{
+				PARSER->error().error(@1, rdo::format(_T("Неизвестный идентификатор: %s"), paramName.c_str()));
+			}
+			PARSER->error().error(@1, rdo::format(_T("Функции не могут изменить свой параметр: %s"), paramName.c_str()));
+		}
 		tstring oprStr;
 		switch (equalType)
 		{
@@ -842,14 +855,11 @@ set_array_item_statement
 		else
 		{
 			LPRDOParam pParam = pFunction->findFUNFunctionParam(paramName);
-			ASSERT(pParam);
-
-			NEVER_REACH_HERE;
-
-			//pCalc = rdo::Factory<rdoRuntime::RDOSetRelResParamCalc<rdoRuntime::ET_EQUAL> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pArrayItemCalc);
-			//ASSERT(pCalc);
-			//pCalc->setSrcText(rdo::format(_T("%s.%s"), pRelRes->src_text().c_str(), paramName.c_str()));
-			//pCalc->setSrcPos(@1.m_first_line, @1.m_first_pos, @1.m_last_line, @1.m_last_pos);
+			if(!pParam)
+			{
+				PARSER->error().error(@1, rdo::format(_T("Неизвестный идентификатор: %s"), paramName.c_str()));
+			}
+			PARSER->error().error(@1, rdo::format(_T("Функции не могут изменить свой параметр: %s"), paramName.c_str()));		
 		}
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pArrayArithm->typeInfo(), pCalc, RDOParserSrcInfo(@1));

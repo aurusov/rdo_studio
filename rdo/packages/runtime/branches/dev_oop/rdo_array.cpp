@@ -102,7 +102,7 @@ CREF(RDOValue) RDOArrayValue::getItem(CREF(RDOValue) index) const
 void RDOArrayValue::setItem(CREF(RDOValue) index, CREF(RDOValue) item)
 {
 	ruint ind = index.getUInt();
-	ASSERT(m_container.size() < ind);
+	ASSERT(m_container.size() > ind);
 	m_container[ind] = item;
 }
 
