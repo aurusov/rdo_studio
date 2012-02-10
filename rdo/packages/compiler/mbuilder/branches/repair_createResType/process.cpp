@@ -116,7 +116,8 @@ void BlockForSeize::createRes(RDOResType rtp, CREF(tstring) res_name)
 	// Создадим ресурс
 	RDOResource rss(rtp, res_name);
 	// Добавим его в систему
-	rssList.append<rdoParse::RDOPROCResource>(rss);
+	rssList.append<rdoParse::RDORSSResource>(rss);
+	//! \todo сделать ресурс процессным
 }
 
 void BlockForSeize::reobjectRes(RDOResType rtp, CREF(tstring) res_name)
@@ -126,7 +127,8 @@ void BlockForSeize::reobjectRes(RDOResType rtp, CREF(tstring) res_name)
 	// Создадим ресурс
 	RDOResource rssNew(rtp, res_name);
 	// Добавим его в систему
-	rssList.replace<rdoParse::RDOPROCResource>(rssNew);
+	rssList.replace<rdoParse::RDORSSResource>(rssNew);
+	//! \todo сделать ресурс процессным
 }
 
 RDOResType BlockForSeize::createType(CREF(tstring) rtp_name, CREF(rdoParse::RDOParserSrcInfo) info)

@@ -376,7 +376,8 @@ ProcGUISeize::ProcGUISeize(CREF(LPProcGUIProcess) pProcess, CREF(rdoParse::LPRDO
 			rtp = rssList[resName].getType();
 			if (rdoMBuilder::BlockForSeize::checkType(rtp, rdoParse::RDOParserSrcInfo()))
 			{
-				if (!rssList[resName].checkParserResourceType<rdoParse::RDOPROCResource>(pParser))
+				//! \todo переделать
+				if (!rssList[resName].checkParserResourceType<rdoParse::RDORSSResource>(pParser))
 				{
 					rdoMBuilder::BlockForSeize::reobjectRes(rtp, resName);
 				}
@@ -485,7 +486,8 @@ ProcGUIRelease::ProcGUIRelease(CREF(LPProcGUIProcess) pProcess, CREF(rdoParse::L
 			rtp = rssList[resName].getType();
 			if (rdoMBuilder::BlockForSeize::checkType(rtp, rdoParse::RDOParserSrcInfo()))
 			{
-				if (!rssList[resName].checkParserResourceType<rdoParse::RDOPROCResource>(pParser))
+				//! \todo переделать
+				if (!rssList[resName].checkParserResourceType<rdoParse::RDORSSResource>(pParser))
 				{
 					rdoMBuilder::BlockForSeize::reobjectRes(rtp, resName);
 				}
