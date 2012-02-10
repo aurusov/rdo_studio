@@ -68,9 +68,15 @@ RDOResType BlockForQueue::createType(CREF(tstring) rtp_name, CREF(rdoParse::RDOP
 	RDOResType::Param param(rtp_param_name, rdo::Factory<rdoParse::RDOType__int>::create(), pDefaultValue);
 	rtp.m_params.append(param);
 	// Добавим тип ресурса
-	if (!rtpList.append<rdoRuntime::RDOResourceTypeProccess>(rtp))
+	if (!rtpList.append(rtp))
 	{
 		rdoParse::RDOParser::s_parser()->error().error(info, rdo::format(_T("Ошибка создания типа ресурса: %s"), rtp_name.c_str()));
+	}
+	else
+	{
+		rdoParse::LPRDORTPResType pResType = rdoParse::RDOParser::s_parser()->findRTPResType(rtp_name);
+		ASSERT(pResType);
+		pResType->setType(rdoParse::RDORTPResType::procRes);
 	}
 	return rtp;
 }
@@ -150,9 +156,15 @@ RDOResType BlockForSeize::createType(CREF(tstring) rtp_name, CREF(rdoParse::RDOP
 	);
 	rtp.m_params.append(param);
 	// Добавим тип ресурса
-	if (!rtpList.append<rdoRuntime::RDOResourceTypeProccess>(rtp))
+	if (!rtpList.append(rtp))
 	{
 		rdoParse::RDOParser::s_parser()->error().error(info, rdo::format(_T("Ошибка создания типа ресурса: %s"), rtp_name.c_str()));
+	}
+	else
+	{
+		rdoParse::LPRDORTPResType pResType = rdoParse::RDOParser::s_parser()->findRTPResType(rtp_name);
+		ASSERT(pResType);
+		pResType->setType(rdoParse::RDORTPResType::procRes);
 	}
 	return rtp;
 }

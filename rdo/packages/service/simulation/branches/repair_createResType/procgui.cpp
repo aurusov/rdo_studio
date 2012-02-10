@@ -240,9 +240,15 @@ ProcGUIBlockGenerate::ProcGUIBlockGenerate(CREF(LPProcGUIProcess) pProcess, CREF
 		rdoMBuilder::RDOResType::Param param(rtpParamName, rdo::Factory<rdoParse::RDOType__real>::create());
 		rtp.m_params.append(param);
 		//! Добавим тип ресурса
-		if (!rtpList.append<rdoRuntime::RDOResourceTypeTransact>(rtp))
+		if (!rtpList.append(rtp))
 		{
 			pParser->error().error(rdoParse::RDOParserSrcInfo(), rdo::format(_T("Ошибка создания типа ресурса: %s"), rtpName.c_str()));
+		}
+		else
+		{
+			rdoParse::LPRDORTPResType pResType = rdoParse::RDOParser::s_parser()->findRTPResType(rtpName);
+			ASSERT(pResType);
+			pResType->setType(rdoParse::RDORTPResType::procTran);
 		}
 	}
 

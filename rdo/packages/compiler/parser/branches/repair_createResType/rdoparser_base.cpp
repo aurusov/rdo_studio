@@ -106,6 +106,7 @@ RDOParserContainerModel::RDOParserContainerModel()
 	insert(rdoModelObjects::obPRE, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::SMR, smr_file_parse, smr_file_error, smr_file_lex));
 	insert(rdoModelObjects::obRTP, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::RTP, rtpparse, rtperror, rtplex));
 	insert(rdoModelObjects::obRTP, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PRC, proc_rtp_parse, proc_rtp_error, proc_rtp_lex));
+	insert(rdoModelObjects::obRTP, rdo::Factory<RDOParserRTPPost>::create());
 #ifdef CORBA_ENABLE
 	insert(rdoModelObjects::obRTP, rdo::Factory<RDOParserCorbaRTP>::create());
 #endif

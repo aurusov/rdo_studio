@@ -55,6 +55,7 @@ public:
 		}
 
 	private:
+		//! \todo использовать RDOCalc вместо RDOValue
 		LPRDOValue m_pValue;
 	};
 	typedef std::vector<Param> ParamList;
