@@ -3,7 +3,7 @@
   \file      simulator/compiler/parser/rdo_logic.inl
   \author    Клеванец Игорь (rdo@rk9.bmstu.ru)
   \date      31.01.2012
-  \brief     
+  \brief     Хранение описаний методов rdo_logic.h
   \indent    4T
 */
 
@@ -16,7 +16,7 @@
 OPEN_RDO_PARSER_NAMESPACE
 
 template<class RTLogic, class Activity>
-inline typename RDOLogic<RTLogic, Activity>::LPActivity RDOLogic<RTLogic,Activity>::addNewActivity (CREF(RDOLogicBase) activity_src_info, CREF(RDOLogicBase) pattern_src_info)
+inline typename RDOLogic<RTLogic, Activity>::LPActivity RDOLogic<RTLogic,Activity>::addNewActivity (CREF(RDOParserSrcInfo) activity_src_info, CREF(RDOParserSrcInfo) pattern_src_info)
 {
 	LPActivity pAactivity = rdo::Factory<Activity>::create(m_pRuntimeLogic, activity_src_info, pattern_src_info);
 	ASSERT(pAactivity);

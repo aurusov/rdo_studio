@@ -7,6 +7,9 @@
   \indent    4T
 */
 
+#ifndef _PARSER_LOGIC_BASE_H_
+#define _PARSER_LOGIC_BASE_H_
+
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdofun.h"
@@ -36,3 +39,5 @@ protected:
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
+
+#endif // _PARSER_LOGIC_BASE_H_

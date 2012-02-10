@@ -38,7 +38,7 @@ public:
 	virtual ~RDOLogic()
 	{}
 
-	LPActivity         addNewActivity    (CREF(RDOLogicBase) activity_src_info, CREF(RDOLogicBase) pattern_src_info);
+	LPActivity         addNewActivity    (CREF(RDOParserSrcInfo) activity_src_info, CREF(RDOParserSrcInfo) pattern_src_info);
 	LPActivity         getLastActivity   () const;
 	CREF(ActivityList) getActivities     () const;
 
