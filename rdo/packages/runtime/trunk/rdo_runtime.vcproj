@@ -2009,6 +2009,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\calc\resource\calc_create_resource.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\resource\calc_create_resource.h"
+					>
+				</File>
+				<File
 					RelativePath=".\calc\resource\calc_group.cpp"
 					>
 				</File>

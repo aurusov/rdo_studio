@@ -96,6 +96,7 @@ SET(HEADER_FILES
 	calc/procedural/calc_range.h
 	calc/procedural/calc_statement.h
 	calc/resource/calc_choice_from.h
+	calc/resource/calc_create_resource.h
 	calc/resource/calc_group.h
 	calc/resource/calc_relevant.h
 	calc/resource/calc_resource.h
@@ -201,6 +202,7 @@ SET(SOURCE_FILES
 	calc/procedural/calc_range.cpp
 	calc/procedural/calc_statement.cpp
 	calc/resource/calc_choice_from.cpp
+	calc/resource/calc_create_resource.cpp
 	calc/resource/calc_group.cpp
 	calc/resource/calc_relevant.cpp
 	calc/resource/calc_resource.cpp
