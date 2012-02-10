@@ -9,14 +9,14 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/compiler/parser/namespace.h"
+#include "utils/namespace.h"
 #include "utils/rdomacros.h"
 #include "utils/rdotypes.h"
 #include "simulator/runtime/calc/calc_event.h"
 #include "simulator/runtime/rdo_event.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSER_NAMESPACE
+OPEN_RDO_PARSE_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOEvent
@@ -91,4 +91,4 @@ inline CREF(LPArithmContainer) RDOEvent::getParamList() const
 	return m_pParamList;
 }
 
-CLOSE_RDO_PARSER_NAMESPACE
+CLOSE_RDO_PARSE_NAMESPACE

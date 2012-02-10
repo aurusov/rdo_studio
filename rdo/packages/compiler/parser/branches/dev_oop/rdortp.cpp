@@ -19,7 +19,7 @@
 #include "simulator/runtime/calc/resource/calc_resource.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSER_NAMESPACE
+OPEN_RDO_PARSE_NAMESPACE
 
 int rtplex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
@@ -167,7 +167,7 @@ rdoRuntime::RDOValue RDORTPResType::get_default() const
 	//return rdoRuntime::RDOValue (pResourceType,pResource);
 }
 
-IContextFind::Result RDORTPResType::onSwitchContext(CREF(LPExpression) pSwitchExpression, CREF(LPRDOValue) pValue) const
+Context::FindResult RDORTPResType::onSwitchContext(CREF(LPExpression) pSwitchExpression, CREF(LPRDOValue) pValue) const
 {
 	ASSERT(pSwitchExpression);
 	ASSERT(pValue           );
@@ -188,7 +188,7 @@ IContextFind::Result RDORTPResType::onSwitchContext(CREF(LPExpression) pSwitchEx
 	);
 	ASSERT(pExpression);
 
-	return IContextFind::Result(const_cast<PTR(RDORTPResType)>(this), pExpression, pValue);
+	return Context::FindResult(const_cast<PTR(RDORTPResType)>(this), pExpression, pValue);
 }
 
 /*
@@ -219,4 +219,4 @@ RDORTPFuzzyTerm::RDORTPFuzzyTerm(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInf
 
 }*/
 
-CLOSE_RDO_PARSER_NAMESPACE
+CLOSE_RDO_PARSE_NAMESPACE

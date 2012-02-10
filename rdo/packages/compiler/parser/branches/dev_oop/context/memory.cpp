@@ -16,7 +16,7 @@
 #include "simulator/runtime/calc/procedural/calc_locvar.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSER_NAMESPACE
+OPEN_RDO_PARSE_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- ContextMemory
@@ -32,7 +32,7 @@ LPLocalVariableListStack ContextMemory::getLocalMemory()
 	return m_pLocalVariableListStack;
 }
 
-IContextFind::Result ContextMemory::onFindContext(CREF(LPRDOValue) pValue) const
+Context::FindResult ContextMemory::onFindContext(CREF(LPRDOValue) pValue) const
 {
 	ASSERT(pValue);
 
@@ -45,10 +45,10 @@ IContextFind::Result ContextMemory::onFindContext(CREF(LPRDOValue) pValue) const
 			pValue->src_info()
 		);
 		ASSERT(pExpression);
-		return IContextFind::Result(const_cast<PTR(ContextMemory)>(this), pExpression, pValue);
+		return Context::FindResult(const_cast<PTR(ContextMemory)>(this), pExpression, pValue);
 	}
 
-	return IContextFind::Result();
+	return Context::FindResult();
 }
 
 void ContextMemory::push()
@@ -79,4 +79,4 @@ void ContextMemory::pop()
 	pLocalVariableListStack->pop();
 }
 
-CLOSE_RDO_PARSER_NAMESPACE
+CLOSE_RDO_PARSE_NAMESPACE

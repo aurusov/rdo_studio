@@ -12,6 +12,7 @@
 #define _RDOSMR_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <map>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdocommon.h"
 #include "simulator/runtime/rdotrace.h"
@@ -23,7 +24,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class RDOCalc;
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-OPEN_RDO_PARSER_NAMESPACE
+OPEN_RDO_PARSE_NAMESPACE
 
 int  smr_file_parse(PTR(void) lexer);
 int  smr_file_lex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
@@ -100,6 +101,6 @@ private:
 	BreakPointList         m_breakPointList;
 };
 
-CLOSE_RDO_PARSER_NAMESPACE
+CLOSE_RDO_PARSE_NAMESPACE
 
 #endif // _RDOSMR_H_

@@ -11,13 +11,14 @@
 #define _LOCAL_VARIABLE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <list>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdo_value.h"
 #include "simulator/compiler/parser/expression.h"
 #include "simulator/compiler/parser/type/info.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSER_NAMESPACE
+OPEN_RDO_PARSE_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- LocalVariable
@@ -77,6 +78,6 @@ private:
 	VariableListStack m_pVariableListStack;
 };
 
-CLOSE_RDO_PARSER_NAMESPACE
+CLOSE_RDO_PARSE_NAMESPACE
 
 #endif // _LOCAL_VARIABLE_H_

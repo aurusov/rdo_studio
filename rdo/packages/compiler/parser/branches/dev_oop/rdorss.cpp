@@ -17,9 +17,10 @@
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/rdoparser_lexer.h"
 #include "simulator/runtime/calc/resource/calc_resource.h"
+#include "simulator/runtime/calc/resource/calc_create_resource.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSER_NAMESPACE
+OPEN_RDO_PARSE_NAMESPACE
 
 int rsslex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
@@ -56,7 +57,7 @@ void RDORSSResource::end()
 	RDOParser::s_parser()->contextStack()->pop();
 }
 
-IContextFind::Result RDORSSResource::onSwitchContext(CREF(LPExpression) pSwitchExpression, CREF(LPRDOValue) pValue) const
+Context::FindResult RDORSSResource::onSwitchContext(CREF(LPExpression) pSwitchExpression, CREF(LPRDOValue) pValue) const
 {
 	ASSERT(pSwitchExpression);
 	ASSERT(pValue           );
@@ -77,7 +78,7 @@ IContextFind::Result RDORSSResource::onSwitchContext(CREF(LPExpression) pSwitchE
 	);
 	ASSERT(pExpression);
 
-	return IContextFind::Result(const_cast<PTR(RDORSSResource)>(this), pExpression, pValue);
+	return Context::FindResult(const_cast<PTR(RDORSSResource)>(this), pExpression, pValue);
 }
 
 void RDORSSResource::writeModelStructure(REF(std::ostream) stream) const
@@ -194,4 +195,4 @@ rdoRuntime::LPRDOCalc RDOPROCTransact::createCalc() const
 	return pCalc;
 }
 
-CLOSE_RDO_PARSER_NAMESPACE
+CLOSE_RDO_PARSE_NAMESPACE

@@ -12,15 +12,16 @@
 #define _RDOPARSER_BASE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <map>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/smart_ptr/intrusive_ptr.h"
 #include "utils/rdocommon.h"
 #include "simulator/compiler/parser/grammar/rdobison.h"
-#include "simulator/compiler/parser/namespace.h"
+#include "utils/namespace.h"
 #include "simulator/runtime/rdo_object.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSER_NAMESPACE
+OPEN_RDO_PARSE_NAMESPACE
 
 typedef int  (*t_bison_parse_fun)(PTR(void) lexer  );
 typedef void (*t_bison_error_fun)(PTR(char) message);
@@ -137,6 +138,6 @@ private:
 	RDOParserContainerCorba();
 };
 
-CLOSE_RDO_PARSER_NAMESPACE
+CLOSE_RDO_PARSE_NAMESPACE
 
 #endif // _RDOPARSER_BASE_H_

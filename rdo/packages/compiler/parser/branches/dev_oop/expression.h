@@ -17,7 +17,7 @@
 #include "simulator/runtime/calc/calc_base.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSER_NAMESPACE
+OPEN_RDO_PARSE_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- Expression
@@ -63,6 +63,6 @@ private:
 };
 DECLARE_POINTER(ExpressionStatement);
 
-CLOSE_RDO_PARSER_NAMESPACE
+CLOSE_RDO_PARSE_NAMESPACE
 
 #endif // _RDOPARSER_EXPRESSION_H_

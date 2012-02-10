@@ -22,7 +22,7 @@
 #include "simulator/runtime/calc/resource/calc_resource.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSER_NAMESPACE
+OPEN_RDO_PARSE_NAMESPACE
 
 int patlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
@@ -179,11 +179,11 @@ LPRDORelevantResource RDOPATPattern::findRelRes(CREF(LPRDOValue) pValue) const
 	return pRelevantResource;
 }
 
-IContextFind::Result RDOPATPattern::onFindContext(CREF(LPRDOValue) pValue) const
+Context::FindResult RDOPATPattern::onFindContext(CREF(LPRDOValue) pValue) const
 {
 	ASSERT(pValue);
 
-	IContextFind::Result result = m_pContextMemory->onFindContext(pValue);
+	Context::FindResult result = m_pContextMemory->onFindContext(pValue);
 	if (result.m_pContext)
 	{
 		return result;
@@ -202,7 +202,7 @@ IContextFind::Result RDOPATPattern::onFindContext(CREF(LPRDOValue) pValue) const
 			pValue->src_info()
 		);
 		ASSERT(pExpression);
-		return IContextFind::Result(const_cast<PTR(RDOPATPattern)>(this), pExpression, pValue, pRelevantResource);
+		return Context::FindResult(const_cast<PTR(RDOPATPattern)>(this), pExpression, pValue, pRelevantResource);
 	}
 
 	//! Параметры
@@ -215,10 +215,10 @@ IContextFind::Result RDOPATPattern::onFindContext(CREF(LPRDOValue) pValue) const
 			pValue->src_info()
 		);
 		ASSERT(pExpression);
-		return IContextFind::Result(const_cast<PTR(RDOPATPattern)>(this), pExpression, pValue);
+		return Context::FindResult(const_cast<PTR(RDOPATPattern)>(this), pExpression, pValue);
 	}
 
-	return IContextFind::Result();
+	return Context::FindResult();
 }
 
 tstring RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::ConvertStatus value)
@@ -950,7 +950,7 @@ RDORelevantResource::RDORelevantResource(CREF(RDOParserSrcInfo) src_info, const 
 RDORelevantResource::~RDORelevantResource()
 {}
 
-IContextFind::Result RDORelevantResource::onSwitchContext(CREF(LPExpression) pSwitchExpression, CREF(LPRDOValue) pValue) const
+Context::FindResult RDORelevantResource::onSwitchContext(CREF(LPExpression) pSwitchExpression, CREF(LPRDOValue) pValue) const
 {
 	ASSERT(pSwitchExpression);
 	ASSERT(pValue           );
@@ -997,7 +997,7 @@ IContextFind::Result RDORelevantResource::onSwitchContext(CREF(LPExpression) pSw
 	);
 	ASSERT(pExpression);
 
-	return IContextFind::Result(const_cast<PTR(RDORelevantResource)>(this), pExpression, pValue);
+	return Context::FindResult(const_cast<PTR(RDORelevantResource)>(this), pExpression, pValue);
 }
 
 rdoRuntime::LPRDOCalc RDORelevantResource::getChoiceCalc()
@@ -1146,4 +1146,4 @@ rdoRuntime::LPIRDOSelectResourceCommon RDORelevantResourceByType::createSelectRe
 	return pSelectResourceCommon;
 }
 
-CLOSE_RDO_PARSER_NAMESPACE
+CLOSE_RDO_PARSE_NAMESPACE
