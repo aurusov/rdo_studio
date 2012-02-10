@@ -9,20 +9,13 @@
   \indent    4T
 */
 
-// ----------------------------------------------------------------------- PLATFORM
-//#include "utils/platform.h"
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
-//#include <limits>
-//#ifdef COMPILER_GCC
-//	#include <float.h>
-//#endif // COMPILER_GCC
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/resource/calc_create_resource.h"
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/runtime/rdo_activity.h"
-//#include "simulator/runtime/rdoprocess.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
