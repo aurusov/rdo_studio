@@ -337,6 +337,7 @@ protected:
 private:
 	RDOPROCGenerate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pTimeCalc, CREF(rdoRuntime::LPRDOCalc) pCreateAndGoOnTransactCalc);
 };
+DECLARE_POINTER(RDOPROCGenerate);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCBlockForQueue

@@ -210,7 +210,7 @@
 #include "simulator/compiler/parser/rdortp.h"
 #include "simulator/compiler/parser/rdorss.h"
 #include "simulator/runtime/calc/calc_array.h"
-#include "simulator/runtime/calc/calc_proccess.h"
+#include "simulator/runtime/calc/calc_process.h"
 #include "simulator/runtime/calc/function/calc_function_system.h"
 #include "simulator/runtime/rdo_res_type_i.h"
 #include "simulator/compiler/mbuilder/rdo_resources.h"
@@ -359,7 +359,7 @@ dpt_process_line
 
 		rdoRuntime::LPRDOCalcCreateAndGoInTransact pCreateAndGoOnTransactCalc = rdo::Factory<rdoRuntime::RDOCalcCreateAndGoInTransact>::create(
 			pType,
-			rParamsCalcs,
+			paramList,
 			traceFlag,
 			permanentFlag
 		);
@@ -373,7 +373,8 @@ dpt_process_line
 		);
 		ASSERT(pBlock);
 
-		pCreateAndGoOnTransactCalc->setBlock(pBlock->getRunTime());
+		LPRDOPROCGenerate pBlockGenerate = pBlock.object_dynamic_cast<RDOPROCGenerate>();
+		pCreateAndGoOnTransactCalc->setBlock(pBlockGenerate->getRuntimeBlock());
 
 		$$ = PARSER->stack().push(pBlock);
 	}

@@ -252,8 +252,9 @@ ProcGUIBlockGenerate::ProcGUIBlockGenerate(CREF(LPProcGUIProcess) pProcess, CREF
 		}
 	}
 
-	//! GENERATE
-	m_pBlock = RF(rdoRuntime::RDOPROCGenerate)::create(pProcess->getProcess(), getCalc(), m_pParams->getAmount());
+	// GENERATE
+	//! \todo нужно добавить правильный калк создания и запуска транзактов
+	m_pBlock = RF(rdoRuntime::RDOPROCGenerate)::create(pProcess->getProcess(), getCalc(), getCalc(), m_pParams->getAmount());
 	ASSERT(m_pBlock);
 }
 
