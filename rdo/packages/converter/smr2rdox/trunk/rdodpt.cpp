@@ -496,10 +496,7 @@ RDOPROCOperator::~RDOPROCOperator()
 // --------------------------------------------------------------------------------
 RDOPROCGenerate::RDOPROCGenerate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pTimeCalc)
 	: RDOPROCOperator(pProcess, name)
-{
-	m_pRuntime = RF(rdoRuntime::RDOPROCGenerate)::create(Converter::s_converter()->getLastPROCProcess()->getRunTime(), pTimeCalc);
-	ASSERT(m_pRuntime);
-}
+{}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCBlockForQueue
