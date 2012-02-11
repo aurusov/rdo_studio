@@ -19,23 +19,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-//! —оздание нового ресурса
-CALC(RDOCalcCreateResource)
-{
-DECLARE_FACTORY(RDOCalcCreateResource)
-private:
-	//! relResID == 0 дл€ ресурсов, создаваемых при инициализации модели
-	RDOCalcCreateResource(CREF(LPIResourceType) pType, CREF(std::vector<RDOValue>) rParamsCalcs, rbool traceFlag, rbool permanentFlag, ruint relResID = 0);
-
-	LPIResourceType        m_pResType;
-	std::vector<RDOValue>  m_paramsCalcs;
-	rbool                  m_traceFlag;
-	rbool                  m_permanentFlag;
-	ruint                  m_relResID;
-
-	DECLARE_ICalc;
-};
-
 //! ¬ыбор ресурсов
 CALC(RDOSelectResourceCalc)
 {
