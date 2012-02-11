@@ -39,6 +39,197 @@ BOOST_AUTO_TEST_CASE(RDOValue_String)
 	BOOST_CHECK(value2.getAsString() == str1 + str2);
 }
 
+BOOST_AUTO_TEST_CASE(RDOValue_Rsint)
+{
+	const rsint int1 = 30;
+	rdoRuntime::RDOValue value1(int1);
+	BOOST_CHECK(value1.getInt() == int1);
+
+	rdoRuntime::RDOValue value2 = value1;
+	BOOST_CHECK(value2 == int1);
+	BOOST_CHECK(value2 == value1);
+
+	const rsint int2 = 20;
+	value1 += int2;
+	BOOST_CHECK(value1 == int1 + int2);
+
+	const rsint int3 = 10;
+	value1 -= int3;
+	BOOST_CHECK(value1 == int1 + int2 - int3);
+	
+	const rsint int4 = 2;
+	value2 = value1;
+	value2 *= int4;
+	BOOST_CHECK(value2 == value1 * int4);
+
+	const rsint int5 = 5;
+	value2 = value1;
+	value2 /= int5;
+	BOOST_CHECK(value2 == value1 / int5);
+	
+	value2 = value1;
+	value2 --;
+	BOOST_CHECK(value2 == value1 - 1);	
+	value2 ++;
+	BOOST_CHECK(value2 == value1);
+
+	value1 = int1;
+	value2 = int2;
+	BOOST_CHECK(value1 != value2);
+	BOOST_CHECK(value1 > value2);	
+	BOOST_CHECK(value2 < value1);
+	BOOST_CHECK(value1 >= value2);
+	BOOST_CHECK(value2 <= value1);
+	value2 = int1;
+	BOOST_CHECK(value1 >= value2);
+	BOOST_CHECK(value2 <= value1);
+
+}
+
+BOOST_AUTO_TEST_CASE(RDOValue_Ruint)
+{
+	const ruint int1 = 30;
+	rdoRuntime::RDOValue value1(int1);
+	BOOST_CHECK(value1 == int1);
+
+	rdoRuntime::RDOValue value2 = value1;
+	BOOST_CHECK(value2 == int1);
+	BOOST_CHECK(value2 == value1);
+
+	const ruint int2 = 20;
+	value1 += int2;
+	BOOST_CHECK(value1 == int1 + int2);
+
+	const ruint int3 = 10;
+	value1 -= int3;
+	BOOST_CHECK(value1 == int1 + int2 - int3);
+
+	const ruint int4 = 2;
+	value2 = value1;
+	value2 *= int4;
+	BOOST_CHECK(value2 == value1 * int4);
+
+	const ruint int5 = 5;
+	value2 = value1;
+	value2 /= int5;
+	BOOST_CHECK(value2 == value1 / int5);
+
+	value2 = value1;
+	value2 --;
+	BOOST_CHECK(value2 == value1 - 1);	
+	value2 ++;
+	BOOST_CHECK(value2 == value1);	
+
+	value1 = int1;
+	value2 = int2;
+	BOOST_CHECK(value1 != value2);
+	BOOST_CHECK(value1 > value2);	
+	BOOST_CHECK(value2 < value1);
+	BOOST_CHECK(value1 >= value2);
+	BOOST_CHECK(value2 <= value1);
+	value2 = int1;
+	BOOST_CHECK(value1 >= value2);
+	BOOST_CHECK(value2 <= value1);
+}
+
+BOOST_AUTO_TEST_CASE(RDOValue_Double)
+{
+	const double doub1 = 30.2;
+	rdoRuntime::RDOValue value1(doub1);
+	BOOST_CHECK(value1 == doub1);
+
+	rdoRuntime::RDOValue value2 = value1;
+	BOOST_CHECK(value2 == doub1);
+	BOOST_CHECK(value2 == value1);
+
+	const double doub2 = 20.5;
+	value1 += doub2;
+	BOOST_CHECK(value1 == doub1 + doub2);
+
+	const double doub3 = 10.3;
+	value1 -= doub3;
+	BOOST_CHECK(value1 == doub1 + doub2 - doub3);
+
+	const double doub4 = 2.5;
+	value2 = value1;
+	value2 *= doub4;
+	BOOST_CHECK(value2 == value1 * doub4);
+
+	const double doub5 = 5;
+	value2 = value1;
+	value2 /= doub5;
+	BOOST_CHECK(value2 == value1 / doub5);
+
+	value2 = value1;
+	value2 --;
+	BOOST_CHECK(value2 == value1 - 1);	
+	value2 ++;
+	BOOST_CHECK(value2 == value1);	
+
+	value1 = doub1;
+	value2 = doub2;
+	BOOST_CHECK(value1 != value2);
+	BOOST_CHECK(value1 > value2);	
+	BOOST_CHECK(value2 < value1);
+	BOOST_CHECK(value1 >= value2);
+	BOOST_CHECK(value2 <= value1);
+	value2 = doub1;
+	BOOST_CHECK(value1 >= value2);
+	BOOST_CHECK(value2 <= value1);
+}
+
+BOOST_AUTO_TEST_CASE(RDOValue_Bool)
+{
+	rbool bool1 = true;
+	rbool bool2 = false;
+	rbool bool3 = true;
+	rbool bool4 = false;
+
+	rdoRuntime::RDOValue value1(bool1);
+	rdoRuntime::RDOValue value2(bool2);
+	rdoRuntime::RDOValue value3(bool3);
+	rdoRuntime::RDOValue value4(bool4);
+
+	BOOST_CHECK(value1.getBool());
+	BOOST_CHECK(!value2);
+	BOOST_CHECK(value2 == value4);
+	BOOST_CHECK(value1 != value2);
+	BOOST_CHECK(!(value1 == value2));
+	BOOST_CHECK(value1 && value3);
+	BOOST_CHECK(!(value2 && value3));
+	BOOST_CHECK(value1 || value2);
+	BOOST_CHECK(!(value2 || value4));	
+}
+
+BOOST_AUTO_TEST_CASE(RDOValue_Char)
+{
+	tchar ch1 = 'a';
+	tchar ch2 = 'b';
+	rdoRuntime::RDOValue value1 = ch1;
+	rdoRuntime::RDOValue value2 = ch2;
+	BOOST_CHECK(value1 == ch1);
+	BOOST_CHECK(value1 < value2);
+	BOOST_CHECK(value2 > value1);
+	BOOST_CHECK(value1 != value2);
+	value1 = value2;
+	BOOST_CHECK(value1 == value2);
+}
+
+BOOST_AUTO_TEST_CASE(RDOValue_Enum)
+{
+	using namespace rdoRuntime;
+
+	LPRDOEnumType pEnum = rdo::Factory<RDOEnumType>::create();
+	BOOST_CHECK(pEnum);
+	pEnum->empty();	
+}
+/*
+BOOST_AUTO_TEST_CASE(RDOValue_Identificator)
+{
+	
+}
+*/
+
 BOOST_AUTO_TEST_CASE(RDOValue_Resource)
 {
 	using namespace rdoRuntime;
