@@ -12,7 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdo_logic_base.h"
-#include "simulator/compiler/parser/rdoparser.h"
+#include "simulator/runtime/rdo_priority.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSE_NAMESPACE
@@ -20,7 +20,6 @@ OPEN_RDO_PARSE_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOLogicBase
 // --------------------------------------------------------------------------------
-
 CREF(tstring) RDOLogicBase::name() const
 {
 	return src_info().src_text();
@@ -44,6 +43,21 @@ rbool RDOLogicBase::getMultithreading() const
 void RDOLogicBase::setMultithreading (rbool multithreading)
 {
 	m_multithreading = multithreading;
+}
+
+void RDOLogicBase::setCondition (CREF(LPRDOFUNLogic) pConditon)
+{
+	m_pConditon = pConditon;
+}
+
+LPRDOFUNLogic RDOLogicBase::getConditon () const
+{
+	return m_pConditon;
+}
+
+LPILogic RDOLogicBase::getLogic () const
+{
+	return m_pRuntimeLogic;
 }
 
 CLOSE_RDO_PARSE_NAMESPACE

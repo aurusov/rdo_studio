@@ -12,9 +12,9 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/compiler/parser/rdofun.h"
 #include "utils/namespace.h"
 #include "utils/rdomacros.h"
+#include "simulator/compiler/parser/rdofun.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSE_NAMESPACE
@@ -32,8 +32,12 @@ public:
 	rbool         setPrior          (REF(LPRDOFUNArithm) pPrior);
 	rbool         getMultithreading () const;
 	void          setMultithreading (rbool multithreading);
+	void          setCondition      (CREF(LPRDOFUNLogic) pConditon = NULL);
+	LPRDOFUNLogic getConditon       () const;
+	LPILogic      getLogic          () const;
 
 protected:
+	LPRDOFUNLogic m_pConditon;
 	LPILogic      m_pRuntimeLogic;
 	rbool         m_multithreading;
 };

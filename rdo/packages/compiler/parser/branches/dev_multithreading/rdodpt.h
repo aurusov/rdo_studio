@@ -170,15 +170,10 @@ CLASS(RDODPTSome): public RDOLogic<rdoRuntime::RDODPTSome, RDODPTSomeActivity>
 {
 DECLARE_FACTORY(RDODPTSome);
 public:
-	LPILogic      getLogic    () const                               { return        m_pRuntimeLogic; }
-	LPRDOFUNLogic getConditon () const                               { return        m_pConditon;     }
-	void          setCondition(CREF(LPRDOFUNLogic) pConditon = NULL) { m_pConditon =   pConditon;     }
 	void          end         ();
 
 private:
 	RDODPTSome(CREF(RDOParserSrcInfo) src_info, LPILogic pParent = NULL);
-
-	LPRDOFUNLogic m_pConditon;
 
 	DECLARE_IContextFind;
 };
@@ -193,15 +188,10 @@ CLASS(RDODPTPrior): public RDOLogic<rdoRuntime::RDODPTPrior, RDODPTPriorActivity
 {
 DECLARE_FACTORY(RDODPTPrior);
 public:
-	LPILogic      getLogic    () const                               { return        m_pRuntimeLogic; }
-	LPRDOFUNLogic getConditon () const                               { return        m_pConditon;     }
-	void          setCondition(CREF(LPRDOFUNLogic) pConditon = NULL) { m_pConditon =   pConditon;     }
 	void          end         ();
 
 private:
 	RDODPTPrior(CREF(RDOParserSrcInfo) src_info, LPILogic pParent = NULL);
-
-	LPRDOFUNLogic m_pConditon;
 
 	DECLARE_IContextFind;
 };
@@ -237,7 +227,6 @@ CLASS(RDODPTSearch): public RDOLogic<rdoRuntime::RDODPTSearchRuntime, RDODPTSear
 {
 DECLARE_FACTORY(RDODPTSearch);
 public:
-	void  setCondition    (CREF(LPRDOFUNLogic)  pConditon     = NULL) { m_pConditon     = pConditon;     }
 	void  setTermCondition(CREF(LPRDOFUNLogic)  pTermConditon = NULL) { m_pTermConditon = pTermConditon; }
 	void  setEvaluateBy   (CREF(LPRDOFUNArithm) pEvalBy             ) { m_pEvalBy       = pEvalBy;       }
 	void  setCompareTops  (rbool compTops                           ) { m_compTops      = compTops;      }
@@ -247,7 +236,6 @@ public:
 private:
 	RDODPTSearch(CREF(RDOParserSrcInfo) src_info, rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag trace = rdoRuntime::RDODPTSearchTrace::DPT_no_trace, LPILogic pParent = NULL);
 
-	LPRDOFUNLogic                                 m_pConditon;
 	LPRDOFUNLogic                                 m_pTermConditon;
 	LPRDOFUNArithm                                m_pEvalBy;
 	LPILogic                                      m_pParent;
