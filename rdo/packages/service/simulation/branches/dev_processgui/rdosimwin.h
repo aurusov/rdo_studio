@@ -34,7 +34,7 @@
 #include "kernel/rdothread.h"
 #include "simulator/compiler/procgui/procgui.h"
 #include "simulator/runtime/thread_proxy_i.h"
-#include "simulator/compiler/parser/namespace.h"
+#include "utils/namespace.h"
 #include "converter/smr2rdox/rdo_common/model_objects_convertor.h"
 // --------------------------------------------------------------------------------
 
@@ -164,9 +164,9 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 class RDOTrace;
 
-OPEN_RDO_PARSER_NAMESPACE
+OPEN_RDO_PARSE_NAMESPACE
 PREDECLARE_POINTER(RDOParser);
-CLOSE_RDO_PARSER_NAMESPACE
+CLOSE_RDO_PARSE_NAMESPACE
 
 OPEN_RDO_SIMULATOR_NAMESPACE
 
