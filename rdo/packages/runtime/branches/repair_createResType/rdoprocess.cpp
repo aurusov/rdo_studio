@@ -220,6 +220,7 @@ IBaseOperation::BOResult RDOPROCGenerate::onDoOperation(CREF(LPRDORuntime) pRunt
 	//{
 	//	tracer->getOStream() << pTransact->traceResourceState('\0', pRuntime) << tracer->getEOL();
 	//}
+	calcNextTimeInterval(pRuntime);
 	return IBaseOperation::BOR_done;
 }
 
