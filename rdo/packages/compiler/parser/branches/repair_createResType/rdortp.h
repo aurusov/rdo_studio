@@ -91,13 +91,13 @@ public:
 		switch (m_type)
 		{
 		case simple:
-			m_pRuntimeResType = rdo::Factory<rdoRuntime::RDOResourceType>::create(m_number).template interface_cast<rdoRuntime::IResourceType>();
+			m_pRuntimeResType = rdo::Factory<rdoRuntime::RDOResourceType>::create(m_number).interface_cast<rdoRuntime::IResourceType>();
 			break;
 		case procRes:
-			m_pRuntimeResType = rdo::Factory<rdoRuntime::RDOResourceTypeProccess>::create(m_number).template interface_cast<rdoRuntime::IResourceType>();
+			m_pRuntimeResType = rdo::Factory<rdoRuntime::RDOResourceTypeProccess>::create(m_number).interface_cast<rdoRuntime::IResourceType>();
 			break;
 		case procTran:
-			m_pRuntimeResType = rdo::Factory<rdoRuntime::RDOResourceTypeTransact>::create(m_number).template interface_cast<rdoRuntime::IResourceType>();
+			m_pRuntimeResType = rdo::Factory<rdoRuntime::RDOResourceTypeTransact>::create(m_number).interface_cast<rdoRuntime::IResourceType>();
 			break;
 		default:
 			NEVER_REACH_HERE;
