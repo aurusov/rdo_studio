@@ -282,6 +282,7 @@ public:
 	void            setCondition(CREF(LPRDOFUNLogic) pConditon = NULL) { m_pConditon = pConditon; }
 	LPRDOFUNLogic   getConditon () const                               { return m_pConditon;      }
 	CREF(BlockList) getBlockList() const                               { return m_blockList;      }
+	LPRDORTPResType getTransacType()                                   { return m_transactType;   }
 
 	rbool checkTransactType(CREF(tstring) name) const;
 
@@ -334,7 +335,7 @@ protected:
 	LPIPROCBlock m_pRuntime;
 
 private:
-	RDOPROCGenerate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pTimeCalc);
+	RDOPROCGenerate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pTimeCalc, CREF(rdoRuntime::LPRDOCalc) pCreateAndGoOnTransactCalc);
 };
 
 // --------------------------------------------------------------------------------

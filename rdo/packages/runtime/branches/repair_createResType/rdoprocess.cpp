@@ -213,26 +213,19 @@ rbool RDOPROCGenerate::onCheckCondition( CREF(LPRDORuntime) pRuntime )
 
 IBaseOperation::BOResult RDOPROCGenerate::onDoOperation(CREF(LPRDORuntime) pRuntime)
 {
-//	TRACE1( "%7.1f GENERATE\n", pRuntime->getCurrentTime() );
-	std::vector<RDOValue> transactParams(1);
-	transactParams.push_back(pRuntime->getCurrentTime());
-	LPRDOPROCTransact pTransact = m_process->getTranType()->createRes(pRuntime, pRuntime->getResourceId(), transactParams, true, true).object_static_cast<RDOPROCTransact>();
-	ASSERT(pTransact);
-	LPIPROCBlock pBlock(this);
-	pTransact->setBlock(pBlock);
-	m_TransCount++;
+	++m_TransCount;
+	m_pCreateAndGoOnTransactCalc->calcValue(pRuntime);
 	PTR(RDOTrace) tracer = pRuntime->getTracer();
-	if (!tracer->isNull())
-	{
-		tracer->getOStream() << pTransact->traceResourceState('\0', pRuntime) << tracer->getEOL();
-	}
-	pTransact->next();
+	//if (!tracer->isNull())
+	//{
+	//	tracer->getOStream() << pTransact->traceResourceState('\0', pRuntime) << tracer->getEOL();
+	//}
 	return IBaseOperation::BOR_done;
 }
 
 void RDOPROCGenerate::calcNextTimeInterval( CREF(LPRDORuntime) pRuntime )
 {
-	pRuntime->addTimePoint( timeNext = pTimeCalc->calcValue(pRuntime).getDouble() + pRuntime->getCurrentTime(), m_process, this );
+	pRuntime->addTimePoint( timeNext = m_pTimeCalc->calcValue(pRuntime).getDouble() + pRuntime->getCurrentTime(), m_process, this );
 }
 
 void RDOPROCGenerate::onStop(CREF(LPRDORuntime) pRuntime)

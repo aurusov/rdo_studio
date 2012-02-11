@@ -45,6 +45,39 @@ REF(RDOValue) RDOCalcProcessControl::doCalc(CREF(LPRDORuntime) pRuntime)
 }
 
 // --------------------------------------------------------------------------------
+// -------------------- RDOCalcCreateAndGoInTransact
+// --------------------------------------------------------------------------------
+RDOCalcCreateAndGoInTransact::RDOCalcCreateAndGoInTransact(CREF(LPIResourceType) pType, CREF(std::vector<RDOValue>) rParamsCalcs, rbool traceFlag, rbool permanentFlag)
+	: m_pResType     (pType        )
+	, m_traceFlag    (traceFlag    )
+	, m_permanentFlag(permanentFlag)
+{
+	m_paramsCalcs.insert(m_paramsCalcs.begin(), rParamsCalcs.begin(), rParamsCalcs.end());
+}
+
+void RDOCalcCreateAndGoInTransact::setBlock(LPIPROCBlock pBlock)
+{
+	ASSERT(pBlock);
+	m_pBlock = pBlock;
+}
+
+REF(RDOValue) RDOCalcCreateAndGoInTransact::doCalc(CREF(LPRDORuntime) pRuntime)
+{
+	ASSERT(m_pBlock);
+
+	LPRDOResource pResource = m_pResType->createRes(pRuntime, pRuntime->getResourceId(), m_paramsCalcs, m_traceFlag, m_permanentFlag);
+	ASSERT(pResource);
+
+	LPRDOPROCTransact pTransact = static_cast<PTR(RDOPROCTransact)>(pResource.get());
+	ASSERT(pTransact);
+
+	pTransact->setBlock(m_pBlock);
+	pTransact->next();
+
+	return m_value;
+}
+
+// --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetTermNow
 // --------------------------------------------------------------------------------
 REF(RDOValue) RDOCalcGetTermNow::doCalc(CREF(LPRDORuntime) pRuntime)

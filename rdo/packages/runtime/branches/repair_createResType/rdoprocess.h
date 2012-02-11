@@ -141,10 +141,11 @@ public:
 	void calcNextTimeInterval(CREF(LPRDORuntime) pRuntime);
 
 private:
-	RDOPROCGenerate(LPIPROCProcess process, CREF(LPRDOCalc) pTime, int maxTransCount = 0);
+	RDOPROCGenerate(LPIPROCProcess process, CREF(LPRDOCalc) pTime, CREF(LPRDOCalc) pCreateAndGoOnTransactCalc, int maxTransCount = 0);
 
 	double     timeNext;
-	LPRDOCalc  pTimeCalc;
+	LPRDOCalc  m_pTimeCalc;
+	LPRDOCalc  m_pCreateAndGoOnTransactCalc;
 	int        m_maxTransCount;
 	int        m_TransCount;
 
