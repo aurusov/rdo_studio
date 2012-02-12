@@ -2005,10 +2005,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\calc\resource\calc_choice_from.inl"
-					>
-				</File>
-				<File
 					RelativePath=".\calc\resource\calc_create_resource.cpp"
 					>
 				</File>
