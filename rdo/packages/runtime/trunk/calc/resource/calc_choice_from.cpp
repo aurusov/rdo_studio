@@ -193,7 +193,7 @@ void RDOSelectResourceCommonCalc::getBest(REF(ResourceIDTable) allNumbs, ruint l
 	{
 		for (ruint i = 0; i < m_resSelectorList.size(); i++)
 		{
-			if (!m_resSelectorList.at(i)->callChoice(pRuntime))
+			if (!m_resSelectorList[i]->callChoice(pRuntime))
 			{
 				return; // state not valid
 			}
@@ -202,19 +202,21 @@ void RDOSelectResourceCommonCalc::getBest(REF(ResourceIDTable) allNumbs, ruint l
 		if (!hasBest || (m_useCommonWithMax && (newVal > bestVal)) ||
 		   (!m_useCommonWithMax && (newVal < bestVal))) // found better value
 		{
+			ASSERT(res.size() != m_resSelectorList.size());
 			for (ruint i = 0; i < m_resSelectorList.size(); i++)
 			{
-				res.at(i) = pRuntime->getCurrentActivity()->getResByRelRes(i);
+				res[i] = pRuntime->getCurrentActivity()->getResByRelRes(i);
 			}
 			bestVal = newVal;
 			hasBest = true;
 		}
 		return;
 	}
-	REF(ResourceIDList) ourLevel = allNumbs.at(level);
+	ASSERT(level < allNumbs.size());
+	REF(ResourceIDList) ourLevel = allNumbs[level];
 	for (ruint i = 0; i < ourLevel.size(); i++)
 	{
-		pRuntime->getCurrentActivity()->setRelRes(level, ourLevel.at(i));
+		pRuntime->getCurrentActivity()->setRelRes(level, ourLevel[i]);
 		getBest(allNumbs, level+1, res, bestVal, pRuntime, hasBest);
 	}
 }
@@ -225,17 +227,18 @@ rbool RDOSelectResourceCommonCalc::getFirst(REF(ResourceIDTable) allNumbs, ruint
 	{
 		for (ruint i = 0; i < m_resSelectorList.size(); i++)
 		{
-			if (!m_resSelectorList.at(i)->callChoice(pRuntime))
+			if (!m_resSelectorList[i]->callChoice(pRuntime))
 			{
 				return false;
 			}
 		}
 		return true;
 	}
-	REF(ResourceIDList) ourLevel = allNumbs.at(level);
+	ASSERT(level < allNumbs.size());
+	REF(ResourceIDList) ourLevel = allNumbs[level];
 	for (ruint i = 0; i < ourLevel.size(); i++)
 	{
-		pRuntime->getCurrentActivity()->setRelRes(level, ourLevel.at(i));
+		pRuntime->getCurrentActivity()->setRelRes(level, ourLevel[i]);
 		if (getFirst(allNumbs, level+1, pRuntime)) return true;
 	}
 	return false;
@@ -245,16 +248,17 @@ rbool RDOSelectResourceCommonCalc::getFirst(REF(ResourceIDTable) allNumbs, ruint
 //{
 //	if (level <= 0) {
 //		for (ruint i = 0; i < m_resSelectorList.size(); i++) {
-//			if (!m_resSelectorList.at(i)->callChoice(pRuntime)) {
+//			if (!m_resSelectorList[i]->callChoice(pRuntime)) {
 //				return false;
 //			}
 //		}
 //		return true;
 //	} else {
 //		level--;
-//		REF(ResourceIDList) ourLevel = allNumbs.at(level);
+//		ASSERT(level < allNumbs.size());
+//		REF(ResourceIDList) ourLevel = allNumbs[level];
 //		for (ruint i = 0; i < ourLevel.size(); i++) {
-//			pRuntime->setRelRes(level, ourLevel.at(i));
+//			pRuntime->setRelRes(level, ourLevel[i]);
 //			if (getFirst(allNumbs, level, pRuntime)) return true;
 //		}
 //	}
@@ -268,7 +272,7 @@ REF(RDOValue) RDOSelectResourceCommonCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 	for (ruint i = 0; i < m_resSelectorList.size(); i++)
 	{
 		ResourceIDList resourceIDList;
-		m_resSelectorList.at(i)->getPossibleNumbers(pRuntime, resourceIDList);
+		m_resSelectorList[i]->getPossibleNumbers(pRuntime, resourceIDList);
 		allNumbs.push_back(resourceIDList);
 		res.push_back(pRuntime->getCurrentActivity()->getResByRelRes(i));
 	}
@@ -294,7 +298,7 @@ REF(RDOValue) RDOSelectResourceCommonCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 		{
 			for (ruint i = 0; i < res.size(); i++)
 			{
-				pRuntime->getCurrentActivity()->setRelRes(i, res.at(i));
+				pRuntime->getCurrentActivity()->setRelRes(i, res[i]);
 			}
 			m_value = 1;
 			return m_value;
