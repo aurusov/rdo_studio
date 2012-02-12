@@ -202,7 +202,7 @@ void RDOSelectResourceCommonCalc::getBest(REF(ResourceIDTable) allNumbs, ruint l
 		if (!hasBest || (m_useCommonWithMax && (newVal > bestVal)) ||
 		   (!m_useCommonWithMax && (newVal < bestVal))) // found better value
 		{
-			ASSERT(res.size() != m_resSelectorList.size());
+			ASSERT(res.size() == m_resSelectorList.size());
 			for (ruint i = 0; i < m_resSelectorList.size(); i++)
 			{
 				res[i] = pRuntime->getCurrentActivity()->getResByRelRes(i);
