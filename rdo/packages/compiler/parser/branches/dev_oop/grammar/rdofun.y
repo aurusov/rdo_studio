@@ -750,11 +750,14 @@ equal_statement
 			LPRDOFUNFunction pFunction = PARSER->getLastFUNFunction();
 			ASSERT(pFunction);
 			LPRDOParam pParam = pFunction->findFUNFunctionParam(paramName);
-			if(!pParam)
+			if(pParam)
+			{
+				PARSER->error().error(@1, rdo::format(_T("Функции не могут изменить свой параметр: %s"), paramName.c_str()));		
+			}
+			else
 			{
 				PARSER->error().error(@1, rdo::format(_T("Неизвестный идентификатор: %s"), paramName.c_str()));
 			}
-			PARSER->error().error(@1, rdo::format(_T("Функции не могут изменить свой параметр: %s"), paramName.c_str()));
 		}
 		tstring oprStr;
 		switch (equalType)
@@ -855,11 +858,15 @@ set_array_item_statement
 		else
 		{
 			LPRDOParam pParam = pFunction->findFUNFunctionParam(paramName);
-			if(!pParam)
+			if(pParam)
+			{
+				PARSER->error().error(@1, rdo::format(_T("Функции не могут изменить свой параметр: %s"), paramName.c_str()));		
+			}
+			else
 			{
 				PARSER->error().error(@1, rdo::format(_T("Неизвестный идентификатор: %s"), paramName.c_str()));
 			}
-			PARSER->error().error(@1, rdo::format(_T("Функции не могут изменить свой параметр: %s"), paramName.c_str()));		
+			
 		}
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pArrayArithm->typeInfo(), pCalc, RDOParserSrcInfo(@1));

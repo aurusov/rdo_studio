@@ -95,14 +95,14 @@ ruint RDOArrayValue::size() const
 CREF(RDOValue) RDOArrayValue::getItem(CREF(RDOValue) index) const
 {
 	ruint ind = index.getUInt();
-	ASSERT(m_container.size() < ind);
+	ASSERT(ind < m_container.size());
 	return m_container[ind];
 }
 
 void RDOArrayValue::setItem(CREF(RDOValue) index, CREF(RDOValue) item)
 {
 	ruint ind = index.getUInt();
-	ASSERT(m_container.size() > ind);
+	ASSERT(ind < m_container.size());
 	m_container[ind] = item;
 }
 
