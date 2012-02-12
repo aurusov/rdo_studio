@@ -29,21 +29,23 @@
 #define CPTRC(A) const A* const
 
 //! Объявление класса
-#define  CLASS(A)            class A
+#define  CLASS(A)              class A
 //! Объявление структуры
-#define STRUCT(A)            struct A
+#define STRUCT(A)              struct A
 //! Объявление интерфейса
-#define S_INTERFACE(A)       struct A
+#define S_INTERFACE(A)         struct A
 //! Наследование
 #define IS  ,
 //! Наследование
 #define AND ,
 //! Реализация интерфейса A
-#define IMPLEMENTATION_OF(A) public A
+#define IMPLEMENTATION_OF(A)   public A
 //! Объект типа A
-#define INSTANCE_OF(A)       public A
+#define INSTANCE_OF(A)         public A
+//! Объект типа виртуальный A
+#define INSTANCE_VIRTUAL_OF(A) public virtual A
 //! Класс-потомок от B
-#define  CLASS_PARENT_OF(A, B)  CLASS(A): IMPLEMENTATION_OF(B)
+#define CLASS_PARENT_OF(A, B)  CLASS(A): IMPLEMENTATION_OF(B)
 //! Структура-потомок от B
 #define STRUCT_PARENT_OF(A, B) STRUCT(A): IMPLEMENTATION_OF(B)
 
