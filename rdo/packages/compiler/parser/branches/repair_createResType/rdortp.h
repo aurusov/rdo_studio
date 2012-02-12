@@ -25,7 +25,7 @@
 #include "simulator/compiler/parser/context/context_switch_i.h"
 #include "simulator/runtime/rdo_res_type_i.h"
 #include "simulator/runtime/rdo_res_type.h"
-#include "simulator/runtime/rdoprocess.h"
+#include "simulator/runtime/process/rdoprocess.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSE_NAMESPACE

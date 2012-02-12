@@ -17,7 +17,7 @@
 #include "simulator/runtime/rdo.h"
 #include "simulator/runtime/rdo_res_type_i.h"
 #include "simulator/runtime/rdo_runtime.h"
-#include "simulator/runtime/rdoprocess.h"
+#include "simulator/runtime/process/rdoprocess.h"
 #include "simulator/runtime/rdo_logic.h"
 // --------------------------------------------------------------------------------
 

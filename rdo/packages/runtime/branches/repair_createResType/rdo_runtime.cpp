@@ -25,7 +25,7 @@
 #include "simulator/runtime/rdo_activity.h"
 #include "simulator/runtime/rdo_rule.h"
 #include "simulator/runtime/rdo_operation.h"
-#include "simulator/runtime/rdoprocess.h"
+#include "simulator/runtime/process/rdoprocess.h"
 #include "simulator/runtime/result/result.h"
 #include "simulator/runtime/rdoframe.h"
 #include "simulator/runtime/rdodptrtime.h"
