@@ -105,12 +105,13 @@ RDOParserContainerModel::RDOParserContainerModel()
 	insert(rdoModelObjects::obPRE, rdo::Factory<RDOParserSTDFUN> ::create());
 	insert(rdoModelObjects::obPRE, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::SMR, smr_file_parse, smr_file_error, smr_file_lex));
 	insert(rdoModelObjects::obRTP, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::RTP, rtpparse, rtperror, rtplex));
+	insert(rdoModelObjects::obRSS, rdo::Factory<RDOParserRSS>    ::create());
 	insert(rdoModelObjects::obRTP, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PRC, proc_rtp_parse, proc_rtp_error, proc_rtp_lex));
+	insert(rdoModelObjects::obRTP, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PRC, proc_rss_parse, proc_rss_error, proc_rss_lex));
+	insert(rdoModelObjects::obRTP, rdo::Factory<RDOParserRTPPost>::create());
 #ifdef CORBA_ENABLE
 	insert(rdoModelObjects::obRTP, rdo::Factory<RDOParserCorbaRTP>::create());
 #endif
-	insert(rdoModelObjects::obRSS, rdo::Factory<RDOParserRSS>    ::create());
-	insert(rdoModelObjects::obRSS, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::PRC, proc_rss_parse, proc_rss_error, proc_rss_lex));
 #ifdef CORBA_ENABLE
 	insert(rdoModelObjects::obRSS, rdo::Factory<RDOParserCorbaRSS>::create());
 #endif
