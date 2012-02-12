@@ -240,14 +240,21 @@ ProcGUIBlockGenerate::ProcGUIBlockGenerate(CREF(LPProcGUIProcess) pProcess, CREF
 		rdoMBuilder::RDOResType::Param param(rtpParamName, rdo::Factory<rdoParse::RDOType__real>::create());
 		rtp.m_params.append(param);
 		//! Добавим тип ресурса
-		if (!rtpList.append<rdoRuntime::RDOResourceTypeTransact>(rtp))
+		if (!rtpList.append(rtp))
 		{
 			pParser->error().error(rdoParse::RDOParserSrcInfo(), rdo::format(_T("Ошибка создания типа ресурса: %s"), rtpName.c_str()));
 		}
+		else
+		{
+			rdoParse::LPRDORTPResType pResType = rdoParse::RDOParser::s_parser()->findRTPResType(rtpName);
+			ASSERT(pResType);
+			pResType->setType(rdoParse::RDORTPResType::procTran);
+		}
 	}
 
-	//! GENERATE
-	m_pBlock = RF(rdoRuntime::RDOPROCGenerate)::create(pProcess->getProcess(), getCalc(), m_pParams->getAmount());
+	// GENERATE
+	//! \todo нужно добавить правильный калк создания и запуска транзактов
+	m_pBlock = RF(rdoRuntime::RDOPROCGenerate)::create(pProcess->getProcess(), getCalc(), getCalc(), m_pParams->getAmount());
 	ASSERT(m_pBlock);
 }
 
@@ -370,7 +377,8 @@ ProcGUISeize::ProcGUISeize(CREF(LPProcGUIProcess) pProcess, CREF(rdoParse::LPRDO
 			rtp = rssList[resName].getType();
 			if (rdoMBuilder::BlockForSeize::checkType(rtp, rdoParse::RDOParserSrcInfo()))
 			{
-				if (!rssList[resName].checkParserResourceType<rdoParse::RDOPROCResource>(pParser))
+				//! \todo переделать
+				if (!rssList[resName].checkParserResourceType<rdoParse::RDORSSResource>(pParser))
 				{
 					rdoMBuilder::BlockForSeize::reobjectRes(rtp, resName);
 				}
@@ -479,7 +487,8 @@ ProcGUIRelease::ProcGUIRelease(CREF(LPProcGUIProcess) pProcess, CREF(rdoParse::L
 			rtp = rssList[resName].getType();
 			if (rdoMBuilder::BlockForSeize::checkType(rtp, rdoParse::RDOParserSrcInfo()))
 			{
-				if (!rssList[resName].checkParserResourceType<rdoParse::RDOPROCResource>(pParser))
+				//! \todo переделать
+				if (!rssList[resName].checkParserResourceType<rdoParse::RDORSSResource>(pParser))
 				{
 					rdoMBuilder::BlockForSeize::reobjectRes(rtp, resName);
 				}
