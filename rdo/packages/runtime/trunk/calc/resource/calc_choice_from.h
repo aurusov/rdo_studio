@@ -138,6 +138,4 @@ private:
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-#include "simulator/runtime/calc/resource/calc_choice_from.inl"
-
 #endif // _LIB_RUNTIME_CALC_RESOURCE_CHOICE_FROM_H_
