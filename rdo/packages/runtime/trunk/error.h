@@ -15,7 +15,7 @@
 #include <vector>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdocommon.h"
-#include "simulator/runtime/calc/calc_base.h"
+#include "simulator/runtime/rdo_object.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -26,7 +26,7 @@ public:
 	typedef  std::vector<rdoSimulator::RDOSyntaxError>  ErrorList;
 
 	void            push(CREF(rdoSimulator::RDOSyntaxError) error);
-	void            push(CREF(tstring) message, CREF(LPRDOCalc) pCalc);
+	void            push(CREF(tstring) message, CREF(RDOSrcInfo) srcInfo);
 	CREF(ErrorList) list() const;
 
 private:
