@@ -12,6 +12,7 @@
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/rdo_logic_base.h"
 #include "simulator/runtime/rdo_priority.h"
 // --------------------------------------------------------------------------------
@@ -59,6 +60,15 @@ LPRDOFUNLogic RDOLogicBase::getConditon () const
 LPILogic RDOLogicBase::getLogic () const
 {
 	return m_pRuntimeLogic;
+}
+
+void RDOLogicBase::end ()
+{
+	if (getConditon())
+	{
+		m_pRuntimeLogic->setCondition(getConditon()->getCalc());
+	}
+	RDOParser::s_parser()->contextStack()->pop();
 }
 
 RDOLogicBase::RDOLogicBase(CREF(RDOParserSrcInfo) src_info)

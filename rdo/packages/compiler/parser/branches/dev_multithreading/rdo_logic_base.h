@@ -32,6 +32,7 @@ public:
 	void          setCondition      (CREF(LPRDOFUNLogic) pConditon = NULL);
 	LPRDOFUNLogic getConditon       () const;
 	LPILogic      getLogic          () const;
+	virtual void  end               ();
 
 protected:
 	RDOLogicBase(CREF(RDOParserSrcInfo) src_info);

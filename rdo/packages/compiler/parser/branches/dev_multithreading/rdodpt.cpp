@@ -288,15 +288,6 @@ Context::FindResult RDODPTSome::onFindContext(CREF(LPRDOValue) pValue) const
 	return Context::FindResult();
 }
 
-void RDODPTSome::end()
-{
-	if (getConditon())
-	{
-		m_pRuntimeLogic->setCondition(getConditon()->getCalc());
-	}
-	RDOParser::s_parser()->contextStack()->pop();
-}
-
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTPrior
 // --------------------------------------------------------------------------------
@@ -317,15 +308,6 @@ Context::FindResult RDODPTPrior::onFindContext(CREF(LPRDOValue) pValue) const
 
 	//! Поиск не нужен, добавлен для порядка, чтобы контекст активности был на стеке после контекста точки
 	return Context::FindResult();
-}
-
-void RDODPTPrior::end()
-{
-	if (getConditon())
-	{
-		m_pRuntimeLogic->setCondition(getConditon()->getCalc());
-	}
-	RDOParser::s_parser()->contextStack()->pop();
 }
 
 // --------------------------------------------------------------------------------

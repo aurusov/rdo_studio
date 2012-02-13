@@ -175,8 +175,6 @@ CLASS(RDODPTSome): public RDOLogic<rdoRuntime::RDODPTSome, RDODPTSomeActivity>
 	AND IMPLEMENTATION_OF(IContextFind)
 {
 DECLARE_FACTORY(RDODPTSome);
-public:
-	void          end         ();
 
 private:
 	RDODPTSome(CREF(RDOParserSrcInfo) src_info, LPILogic pParent = NULL);
@@ -193,8 +191,6 @@ CLASS(RDODPTPrior): public RDOLogic<rdoRuntime::RDODPTPrior, RDODPTPriorActivity
 	AND IMPLEMENTATION_OF(IContextFind)
 {
 DECLARE_FACTORY(RDODPTPrior);
-public:
-	void          end         ();
 
 private:
 	RDODPTPrior(CREF(RDOParserSrcInfo) src_info, LPILogic pParent = NULL);
