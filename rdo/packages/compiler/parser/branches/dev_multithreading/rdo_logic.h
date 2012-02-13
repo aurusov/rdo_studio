@@ -1,10 +1,11 @@
 /*!
-  \copyright (c) RDO-Team, 2011
+  \copyright (c) RDO-Team, 2012
   \file      simulator/compiler/parser/rdo_logic.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \author    Клеванец Игорь (impus@hotbox.ru)
+  \date      31.01.2012
+  \brief     Хранение описаний методов rdo_logic.h
   \indent    4T
 */
 
@@ -32,15 +33,16 @@ public:
 	typedef  rdo::intrusive_ptr<Activity> LPActivity;
 	typedef  std::vector<LPActivity>      ActivityList;
 
+	LPActivity         addNewActivity  (CREF(RDOParserSrcInfo) activity_src_info, CREF(RDOParserSrcInfo) pattern_src_info);
+	LPActivity         getLastActivity () const;
+	CREF(ActivityList) getActivities   () const;
+
+protected:
 	RDOLogic(CREF(RDOLogicBase) src_info)
 		: RDOLogicBase(src_info)
 	{}
 	virtual ~RDOLogic()
 	{}
-
-	LPActivity         addNewActivity    (CREF(RDOParserSrcInfo) activity_src_info, CREF(RDOParserSrcInfo) pattern_src_info);
-	LPActivity         getLastActivity   () const;
-	CREF(ActivityList) getActivities     () const;
 
 private:
 	ActivityList m_activityList;

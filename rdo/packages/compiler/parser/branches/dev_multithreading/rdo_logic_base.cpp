@@ -1,9 +1,10 @@
 /*!
   \copyright (c) RDO-Team, 2012
-  \file      simulator/compiler/parser/rdo_logic_base.cpp
-  \author    Клеванец Игорь (impus@hotbox.ru)
-  \date      05.02.2012
-  \brief     
+  \file      simulator/compiler/parser/rdo_logic_base.inl
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Клеванец Игорь (impus@hotbox.ru)
+  \date      5.02.2012
+  \brief     Базовый класс для точек принятия решений
   \indent    4T
 */
 
@@ -59,5 +60,12 @@ LPILogic RDOLogicBase::getLogic () const
 {
 	return m_pRuntimeLogic;
 }
+
+RDOLogicBase::RDOLogicBase(CREF(RDOParserSrcInfo) src_info)
+	: RDOParserSrcInfo(src_info)
+{}
+
+RDOLogicBase::~RDOLogicBase()
+{}
 
 CLOSE_RDO_PARSE_NAMESPACE

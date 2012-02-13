@@ -1,7 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      simulator/compiler/parser/rdo_logic.inl
-  \author    Клеванец Игорь (rdo@rk9.bmstu.ru)
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \author    Клеванец Игорь (impus@hotbox.ru)
   \date      31.01.2012
   \brief     Хранение описаний методов rdo_logic.h
   \indent    4T
