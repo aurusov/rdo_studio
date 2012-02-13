@@ -57,16 +57,16 @@ inline LPIBaseOperation RDOOrderMeta::sort(CREF(LPRDORuntime) pRuntime, REF(Base
 
 	STL_FOR_ALL_CONST(container, it)
 	{
-		LPIPriority pattern = *it;
-		if (pattern)
+		LPIPriority pPattern = *it;
+		if (pPattern)
 		{
-			LPRDOCalc prior = pattern->getPrior();
-			if (prior)
+			LPRDOCalc pPriorCalc = pPattern->getPrior();
+			if (pPriorCalc)
 			{
-				RDOValue value = prior->calcValue(pRuntime);
-				if (value < 0 || value > 1)
+				REF(RDOValue) value = pPriorCalc->calcValue(pRuntime);
+				if (value < 0.0 || value > 1.0)
 				{
-					pRuntime->error().push(rdo::format(_T("ѕриоритет активности вышел за пределы диапазона [0..1]: %s"), value.getAsString().c_str()), prior->srcInfo());
+					pRuntime->error().push(rdo::format(_T("ѕриоритет активности вышел за пределы диапазона [0..1]: %s"), value.getAsString().c_str()), pPriorCalc->srcInfo());
 				}
 			}
 		}
@@ -89,8 +89,8 @@ template <class Order>
 inline RDOLogic<Order>::RDOLogic(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer pParent)
 	: m_pCondition   (NULL )
 	, m_lastCondition(false)
-	, m_first        (NULL )
-	, m_parent       (pParent ? pParent : (pRuntime ? pRuntime->m_pMetaLogic : LPIBaseOperationContainer(NULL)))
+	, m_pFirst       (NULL )
+	, m_pParent      (pParent ? pParent : (pRuntime ? pRuntime->m_pMetaLogic : LPIBaseOperationContainer(NULL)))
 {}
 
 template <class Order>
@@ -102,7 +102,7 @@ inline void RDOLogic<Order>::init(CREF(LPRDORuntime) pRuntime)
 {
 	if (pRuntime)
 	{
-		pRuntime->appendLogic(rdo::UnknownPointer(this).query_cast<IBaseOperation>(), this->m_parent);
+		pRuntime->appendLogic(rdo::UnknownPointer(this).query_cast<IBaseOperation>(), m_pParent);
 	}
 }
 
@@ -149,8 +149,8 @@ inline rbool RDOLogic<Order>::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 	if (!condition)
 		return false;
 
-	m_first = Order::sort(pRuntime, m_childList);
-	return m_first ? true : false;
+	m_pFirst = Order::sort(pRuntime, m_childList);
+	return m_pFirst ? true : false;
 }
 
 template <class Order>
@@ -158,12 +158,12 @@ inline IBaseOperation::BOResult RDOLogic<Order>::onDoOperation(CREF(LPRDORuntime
 {
 	if (m_lastCondition)
 	{
-		if (!m_first)
+		if (!m_pFirst)
 			return IBaseOperation::BOR_cant_run;
 
-		IBaseOperation::BOResult result = m_first->onDoOperation(pRuntime);
+		IBaseOperation::BOResult result = m_pFirst->onDoOperation(pRuntime);
 		if (result == IBaseOperation::BOR_must_continue)
-			pRuntime->setMustContinueOpr(m_first);
+			pRuntime->setMustContinueOpr(m_pFirst);
 
 		return result;
 	}

@@ -54,8 +54,8 @@ protected:
 	LPRDOCalc                  m_pCondition;
 	rbool                      m_lastCondition;
 	ChildList                  m_childList;
-	LPIBaseOperation           m_first;
-	LPIBaseOperationContainer  m_parent;
+	LPIBaseOperation           m_pFirst;
+	LPIBaseOperationContainer  m_pParent;
 
 private:
 	rbool checkSelfCondition(CREF(LPRDORuntime) pRuntime);

@@ -34,16 +34,16 @@ inline LPIBaseOperation RDOOrderDPTPrior::sort(CREF(LPRDORuntime) pRuntime, REF(
 
 	STL_FOR_ALL_CONST(priorContainer, it)
 	{
-		LPIPriority pattern = *it;
-		if (pattern)
+		LPIPriority pPattern = *it;
+		if (pPattern)
 		{
-			LPRDOCalc prior = pattern->getPrior();
-			if (prior)
+			LPRDOCalc pPriorCalc = pPattern->getPrior();
+			if (pPriorCalc)
 			{
-				RDOValue value = prior->calcValue(pRuntime);
-				if (value < 0 || value > 1)
+				REF(RDOValue) value = pPriorCalc->calcValue(pRuntime);
+				if (value < 0.0 || value > 1.0)
 				{
-					pRuntime->error().push(rdo::format(_T("ѕриоритет активности вышел за пределы диапазона [0..1]: %s"), value.getAsString().c_str()), prior->srcInfo());
+					pRuntime->error().push(rdo::format(_T("ѕриоритет активности вышел за пределы диапазона [0..1]: %s"), value.getAsString().c_str()), pPriorCalc->srcInfo());
 				}
 			}
 		}
@@ -55,8 +55,8 @@ inline LPIBaseOperation RDOOrderDPTPrior::sort(CREF(LPRDORuntime) pRuntime, REF(
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTPrior
 // --------------------------------------------------------------------------------
-inline RDODPTPrior::RDODPTPrior( CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer parent ):
-	RDOLogicDPTPrior(pRuntime, parent)
+inline RDODPTPrior::RDODPTPrior(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer pParent)
+	: RDOLogicDPTPrior(pRuntime, pParent)
 {
 	pRuntime->getFreeDPTId();
 }
