@@ -643,56 +643,48 @@ dpt_some_begin
 		LPRDOValue pParentName = PARSER->stack().pop<RDOValue>($5);
 		ASSERT(pName);
 
-		LPRDODPTSome pDPTSome;
+		LPRDOLogicBase pLogicBase;
 		if (pParentName->defined())
 		{
-			LPRDODPTPrior  pParentDPTPrior  = PARSER->findDPTPrior (pParentName->value().getIdentificator());
-			LPRDODPTSearch pParentDPTSearch = PARSER->findDPTSearch(pParentName->value().getIdentificator());
-			LPRDODPTSome   pParentDPTSome   = PARSER->findDPTSome  (pParentName->value().getIdentificator());
-			if (!pParentDPTPrior && !pParentDPTSearch && !pParentDPTSome)
+			LPRDOLogicBase pParentLogicBase = PARSER->findLogicBase (pParentName->value().getIdentificator());
+			if (!pParentLogicBase)
 			{
 				PARSER->error().error(@1, rdo::format(_T("Не найдена родитеская точка %s"), pParentName->value().getIdentificator().c_str()));
 			}
-			if (pParentDPTSearch)
+			if (PARSER->findDPTSearch(pParentName->value().getIdentificator()))
 			{
 				PARSER->error().error(@5, @1, _T("Точка принятия решений типа search может содержать лишь активности типа rule и не может быть указана в качестве родительской точки"));
 			}
-			else if (pParentDPTPrior)
+			else if (pParentLogicBase)
 			{
-				LPILogic pParentLogic = pParentDPTPrior->getLogic();
+				LPILogic pParentLogic = pParentLogicBase->getLogic();
 				ASSERT(pParentLogic);
-				pDPTSome = rdo::Factory<RDODPTSome>::create(pName->src_info(), pParentLogic);
-			}
-			else if (pParentDPTSome)
-			{
-				LPILogic pParentLogic = pParentDPTSome->getLogic();
-				ASSERT(pParentLogic);
-				pDPTSome = rdo::Factory<RDODPTSome>::create(pName->src_info(), pParentLogic);
+				pLogicBase = rdo::Factory<RDODPTSome>::create(pName->src_info(), pParentLogic);
 			}
 		}
 		else
 		{
-			pDPTSome = rdo::Factory<RDODPTSome>::create(pName->src_info());
+			pLogicBase = rdo::Factory<RDODPTSome>::create(pName->src_info());
 		}
-		ASSERT(pDPTSome);
-		$$ = PARSER->stack().push(pDPTSome);
+		ASSERT(pLogicBase);
+		$$ = PARSER->stack().push(pLogicBase);
 	}
 	;
 
 dpt_some_condition
 	: dpt_some_begin RDO_Condition fun_logic
 	{
-		LPRDODPTSome pDPTSome = PARSER->stack().pop<RDODPTSome>($1);
-		ASSERT(pDPTSome);
-		pDPTSome->setCondition(PARSER->stack().pop<RDOFUNLogic>($3));
-		$$ = PARSER->stack().push(pDPTSome);
+		LPRDOLogicBase pLogicBase = PARSER->stack().pop<RDOLogicBase>($1);
+		ASSERT(pLogicBase);
+		pLogicBase->setCondition(PARSER->stack().pop<RDOFUNLogic>($3));
+		$$ = PARSER->stack().push(pLogicBase);
 	}
 	| dpt_some_begin RDO_Condition RDO_NoCheck
 	{
-		LPRDODPTSome pDPTSome = PARSER->stack().pop<RDODPTSome>($1);
-		ASSERT(pDPTSome);
-		pDPTSome->setCondition();
-		$$ = PARSER->stack().push(pDPTSome);
+		LPRDOLogicBase pLogicBase = PARSER->stack().pop<RDOLogicBase>($1);
+		ASSERT(pLogicBase);
+		pLogicBase->setCondition();
+		$$ = PARSER->stack().push(pLogicBase);
 	}
 	| dpt_some_begin RDO_Condition error
 	{
@@ -700,38 +692,38 @@ dpt_some_condition
 	}
 	| dpt_some_begin
 	{
-		LPRDODPTSome pDPTSome = PARSER->stack().pop<RDODPTSome>($1);
-		ASSERT(pDPTSome);
-		pDPTSome->setCondition();
-		$$ = PARSER->stack().push(pDPTSome);
+		LPRDOLogicBase pLogicBase = PARSER->stack().pop<RDOLogicBase>($1);
+		ASSERT(pLogicBase);
+		pLogicBase->setCondition();
+		$$ = PARSER->stack().push(pLogicBase);
 	}
 	;
 
 dpt_some_multi
 	: dpt_some_condition RDO_Multithreading '=' RDO_NO
 	{
-		LPRDODPTSome pDPTSome = PARSER->stack().pop<RDODPTSome>($1);
-		ASSERT(pDPTSome);
-		pDPTSome->RDOLogic::setMultithreading(FALSE);
-		$$ = PARSER->stack().push(pDPTSome);
+		LPRDOLogicBase pLogicBase = PARSER->stack().pop<RDOLogicBase>($1);
+		ASSERT(pLogicBase);
+		pLogicBase->setMultithreading(false);
+		$$ = PARSER->stack().push(pLogicBase);
 	}
 	| dpt_some_condition RDO_Multithreading '=' RDO_YES
 	{
-		LPRDODPTSome pDPTSome = PARSER->stack().pop<RDODPTSome>($1);
-		ASSERT(pDPTSome);
-		pDPTSome->RDOLogic::setMultithreading(TRUE);
-		$$ = PARSER->stack().push(pDPTSome);
+		LPRDOLogicBase pLogicBase = PARSER->stack().pop<RDOLogicBase>($1);
+		ASSERT(pLogicBase);
+		pLogicBase->setMultithreading(true);
+		$$ = PARSER->stack().push(pLogicBase);
 	}
 	| dpt_some_condition RDO_Multithreading error
 	{
 		PARSER->error().error(@2, @3, _T("После ключевого слова $Multithreading ожидается знак равенства и слово YES или NO"));
 	}
-	| dpt_some_condition error
+	| dpt_some_condition /* empty */
 	{
-		LPRDODPTSome pDPTSome = PARSER->stack().pop<RDODPTSome>($1);
-		ASSERT(pDPTSome);
-		pDPTSome->RDOLogic::setMultithreading(FALSE);
-		$$ = PARSER->stack().push(pDPTSome);
+		LPRDOLogicBase pLogicBase = PARSER->stack().pop<RDOLogicBase>($1);
+		ASSERT(pLogicBase);
+		pLogicBase->setMultithreading(false);
+		$$ = PARSER->stack().push(pLogicBase);
 	}
 	;
 
@@ -852,10 +844,10 @@ dpt_some_header
 dpt_some_end
 	: dpt_some_header RDO_End
 	{
-		LPRDODPTSome pDPTSome = PARSER->stack().pop<RDODPTSome>($1);
-		ASSERT(pDPTSome);
-		pDPTSome->end();
-		$$ = PARSER->stack().push(pDPTSome);
+		LPRDOLogicBase pLogicBase = PARSER->stack().pop<RDOLogicBase>($1);
+		ASSERT(pLogicBase);
+		pLogicBase->end();
+		$$ = PARSER->stack().push(pLogicBase);
 	}
 	| dpt_some_header
 	{
