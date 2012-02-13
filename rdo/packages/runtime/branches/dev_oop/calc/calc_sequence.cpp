@@ -73,7 +73,7 @@ RDOValue RDOCalcSeqNextUniform::getNextValue(CREF(LPRDORuntime) pRuntime)
 			rdo::format(_T("Для последовательности типа uniform нижняя граница диапазона должна быть меньше либо равна верхней, текущие значения: %s..%s")
 				, from.getAsString().c_str()
 				, to  .getAsString().c_str())
-			, this
+			, srcInfo()
 		);
 	}
 	return m_gen->next(from.getDouble(), to.getDouble());
@@ -110,7 +110,7 @@ RDOValue RDOCalcSeqNextTriangular::getNextValue(CREF(LPRDORuntime) pRuntime)
 				, from.getAsString().c_str()
 				, top.getAsString().c_str()
 				, to.getAsString().c_str())
-			, this
+			, srcInfo()
 		);
 	}
 	return m_gen->next(from.getDouble(), top.getDouble(), to.getDouble());
