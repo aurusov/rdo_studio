@@ -838,9 +838,9 @@ set_array_item_statement
 		rdoRuntime::LPRDOCalc pArrayItemCalc = rdo::Factory<rdoRuntime::RDOCalcSetArrayItem>::create(pArrayArithm->calc(), pArithmInd->calc(), pRightArithm->calc());
 		ASSERT(pArrayItemCalc);
 		
-		tstring               paramName    = pParamName->value().getIdentificator();
-		LPRDORelevantResource pRelRes      = PARSER->getLastPATPattern()->m_pCurrRelRes;
-		ASSERT(pRelRes);
+		tstring          paramName = pParamName->value().getIdentificator();
+		LPRDOFUNFunction pFunction = PARSER->getLastFUNFunction();
+		ASSERT(pFunction);
 		LPContext pContext = PARSER->context();
 		ASSERT(pContext);
 		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
@@ -857,7 +857,7 @@ set_array_item_statement
 		}
 		else
 		{
-			LPRDORTPParam pParam = pRelRes->getType()->findRTPParam(paramName);
+			LPRDOParam pParam = pFunction->findFUNFunctionParam(paramName);
 			if(pParam)
 			{
 				PARSER->error().error(@1, rdo::format(_T("Функции не могут изменить свой параметр: %s"), paramName.c_str()));		
