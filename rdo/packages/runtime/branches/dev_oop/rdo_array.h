@@ -18,6 +18,8 @@
 #include "simulator/runtime/rdo_value.h"
 #include "simulator/runtime/rdo_type.h"
 #include "simulator/runtime/rdo_object.h"
+#include "simulator/runtime/calc/calc_base.h"
+#include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -43,8 +45,8 @@ public:
 	ruint   size       () const;
 	tstring getAsString() const;
 
-	CREF(RDOValue) getItem(CREF(RDOValue) index) const;
-	void           setItem(CREF(RDOValue) index, CREF(RDOValue) item);
+	CREF(RDOValue) getItem(CREF(RDOValue) index,CREF(LPRDOCalc) pCalc,CREF(LPRDORuntime) pRuntime) const;
+	void           setItem(CREF(RDOValue) index, CREF(RDOValue) item,CREF(LPRDOCalc) pCalc,CREF(LPRDORuntime) pRuntime);
 
 private:
 	RDOArrayValue(CREF(LPRDOArrayType)  pType );
