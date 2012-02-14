@@ -416,7 +416,7 @@ dpt_seize_param
 			if (rdoMBuilder::BlockForSeize::checkType(rtp, info))
 			{
 				//! \todo принятие решения об изменении типа должно происходить в rdoproc_rtp.y
-				if (!rssList[res_name].checkParserResourceType<rdoParse::RDORSSResource>(PARSER))
+				if (!rssList[res_name].checkParserResourceType<rdoParser::RDORSSResource>(PARSER))
 				{
 					//здесь нужно переделать тип ресурса, а не ресурс
 					rdoMBuilder::BlockForSeize::reobjectRes(rtp, res_name);
@@ -461,7 +461,7 @@ dpt_seize_param
 			if (rdoMBuilder::BlockForSeize::checkType(rtp, info))
 			{
 				//! \todo принятие решения об изменении типа должно происходить в rdoproc_rtp.y
-				if (!rssList[res_name].checkParserResourceType<rdoParse::RDORSSResource>(PARSER))
+				if (!rssList[res_name].checkParserResourceType<rdoParser::RDORSSResource>(PARSER))
 				{
 					rdoMBuilder::BlockForSeize::reobjectRes(rtp, res_name);
 				}
@@ -511,7 +511,7 @@ dpt_release_param
 			if (rdoMBuilder::BlockForSeize::checkType(rtp, info))
 			{
 				//! \todo принятие решения об изменении типа должно происходить в rdoproc_rtp.y
-				if (!rssList[res_name].checkParserResourceType<rdoParse::RDORSSResource>(PARSER))
+				if (!rssList[res_name].checkParserResourceType<rdoParser::RDORSSResource>(PARSER))
 				{
 					rdoMBuilder::BlockForSeize::reobjectRes(rtp, res_name);
 				}
@@ -555,7 +555,7 @@ dpt_release_param
 			if (rdoMBuilder::BlockForSeize::checkType(rtp, info))
 			{
 				//! \todo принятие решения об изменении типа должно происходить в rdoproc_rtp.y
-				if (!rssList[res_name].checkParserResourceType<rdoParse::RDORSSResource>(PARSER))
+				if (!rssList[res_name].checkParserResourceType<rdoParser::RDORSSResource>(PARSER))
 				{
 					rdoMBuilder::BlockForSeize::reobjectRes(rtp, res_name);
 				}

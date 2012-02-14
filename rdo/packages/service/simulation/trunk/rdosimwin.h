@@ -203,7 +203,7 @@ public:
 	{};
 
 private:
-	rdoParse::LPRDOParser           m_pParser;
+	rdoParser::LPRDOParser           m_pParser;
 	rdoRuntime::LPRDORuntime        m_pRuntime;
 	rbool                           m_canTrace;
 	LPProcGUIProcess                m_pGUIProcess;
@@ -224,9 +224,9 @@ private:
 #ifdef CORBA_ENABLE
 
 //	void corbaGetRTPcount(REF(::CORBA::Long) rtp_count);
-//	void corbaGetRTPParamscount(REF(rdoParse::RDOCorba::PARAM_count) params_count);
-	void corbaGetRTP(REF(rdoParse::RDOCorba::GetRTP_var) my_rtpList);
-	void corbaGetRSS(REF(rdoParse::RDOCorba::GetRSS_var) my_rssList);
+//	void corbaGetRTPParamscount(REF(rdoParser::RDOCorba::PARAM_count) params_count);
+	void corbaGetRTP(REF(rdoParser::RDOCorba::GetRTP_var) my_rtpList);
+	void corbaGetRSS(REF(rdoParser::RDOCorba::GetRSS_var) my_rssList);
 
 #endif // CORBA_ENABLE
 
@@ -282,7 +282,7 @@ public:
 class RDOThreadCodeComp: public RDOThreadMT
 {
 protected:
-	rdoParse::LPRDOParser m_pParser;
+	rdoParser::LPRDOParser m_pParser;
 
 	virtual ~RDOThreadCodeComp(); //! „тобы нельз€ было удалить через delete помещаем его в protected
 	virtual void proc(REF(RDOMessageInfo) msg);

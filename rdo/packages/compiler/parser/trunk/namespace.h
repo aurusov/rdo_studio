@@ -17,7 +17,7 @@
 
 //! \def    OPEN_RDO_PARSER_NAMESPACE
 //! \brief  Пространство имён парсера
-#define OPEN_RDO_PARSER_NAMESPACE			namespace rdoParse {
+#define OPEN_RDO_PARSER_NAMESPACE			namespace rdoParser {
 #define CLOSE_RDO_PARSER_NAMESPACE			};
 
 #endif // _LIB_PARSER_NAMESPACE_H_

@@ -842,14 +842,14 @@ _CORBA_MODULE POA_rdoParse
 _CORBA_MODULE_BEG
 
   class RDOCorba :
-    public virtual rdoParse::_impl_RDOCorba,
+    public virtual rdoParser::_impl_RDOCorba,
     public virtual ::PortableServer::ServantBase
   {
   public:
     virtual ~RDOCorba();
 
-    inline ::rdoParse::RDOCorba_ptr _this() {
-      return (::rdoParse::RDOCorba_ptr) _do_this(::rdoParse::RDOCorba::_PD_repoId);
+    inline ::rdoParser::RDOCorba_ptr _this() {
+      return (::rdoParser::RDOCorba_ptr) _do_this(::rdoParser::RDOCorba::_PD_repoId);
     }
   };
 
@@ -869,15 +869,15 @@ _CORBA_MODULE_END
 #undef _core_attr
 #undef _dyn_attr
 
-inline void operator >>=(rdoParse::RDOCorba::TypeRTP _e, cdrStream& s) {
+inline void operator >>=(rdoParser::RDOCorba::TypeRTP _e, cdrStream& s) {
   ::operator>>=((::CORBA::ULong)_e, s);
 }
 
-inline void operator <<= (rdoParse::RDOCorba::TypeRTP& _e, cdrStream& s) {
+inline void operator <<= (rdoParser::RDOCorba::TypeRTP& _e, cdrStream& s) {
   ::CORBA::ULong _0RL_e;
   ::operator<<=(_0RL_e,s);
-  if (_0RL_e <= rdoParse::RDOCorba::rt_temporary) {
-    _e = (rdoParse::RDOCorba::TypeRTP) _0RL_e;
+  if (_0RL_e <= rdoParser::RDOCorba::rt_temporary) {
+    _e = (rdoParser::RDOCorba::TypeRTP) _0RL_e;
   }
   else {
     OMNIORB_THROW(MARSHAL,_OMNI_NS(MARSHAL_InvalidEnumValue),
@@ -885,15 +885,15 @@ inline void operator <<= (rdoParse::RDOCorba::TypeRTP& _e, cdrStream& s) {
   }
 }
 
-inline void operator >>=(rdoParse::RDOCorba::TypeParam _e, cdrStream& s) {
+inline void operator >>=(rdoParser::RDOCorba::TypeParam _e, cdrStream& s) {
   ::operator>>=((::CORBA::ULong)_e, s);
 }
 
-inline void operator <<= (rdoParse::RDOCorba::TypeParam& _e, cdrStream& s) {
+inline void operator <<= (rdoParser::RDOCorba::TypeParam& _e, cdrStream& s) {
   ::CORBA::ULong _0RL_e;
   ::operator<<=(_0RL_e,s);
-  if (_0RL_e <= rdoParse::RDOCorba::enum_type) {
-    _e = (rdoParse::RDOCorba::TypeParam) _0RL_e;
+  if (_0RL_e <= rdoParser::RDOCorba::enum_type) {
+    _e = (rdoParser::RDOCorba::TypeParam) _0RL_e;
   }
   else {
     OMNIORB_THROW(MARSHAL,_OMNI_NS(MARSHAL_InvalidEnumValue),
@@ -904,7 +904,7 @@ inline void operator <<= (rdoParse::RDOCorba::TypeParam& _e, cdrStream& s) {
 
 
 inline void
-rdoParse::RDOCorba::_marshalObjRef(::rdoParse::RDOCorba_ptr obj, cdrStream& s) {
+rdoParser::RDOCorba::_marshalObjRef(::rdoParser::RDOCorba_ptr obj, cdrStream& s) {
   omniObjRef::_marshal(obj->_PR_getobj(),s);
 }
 
