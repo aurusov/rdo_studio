@@ -19,6 +19,7 @@
 #include <vector>
 #include <sstream>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "simulator/runtime/namespace.h"
 #include "utils/namespace.h"
 #include "utils/rdotypes.h"
 #include "utils/rdomacros.h"

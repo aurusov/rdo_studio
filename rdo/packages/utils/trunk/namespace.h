@@ -19,11 +19,6 @@
 #define OPEN_RDO_NAMESPACE					namespace rdo {
 #define CLOSE_RDO_NAMESPACE					};
 
-//! \namespace rdoRuntime
-//! \brief     Пространство имён рантайма
-#define OPEN_RDO_RUNTIME_NAMESPACE			namespace rdoRuntime {
-#define CLOSE_RDO_RUNTIME_NAMESPACE			};
-
 //! \namespace rdoSimulator
 //! \brief     Пространство имён симулятора
 #define OPEN_RDO_SIMULATOR_NAMESPACE		namespace rdoSimulator {
