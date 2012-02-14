@@ -26,7 +26,7 @@
 #define file1 "C:\\RTP.txt"
 #define file2 "C:\\RSS.txt"
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 void print_RTP(REF(rdoParse::RDOCorba::GetRTP_var) my_rtpList)
 {
@@ -480,6 +480,6 @@ void RDOParserCorbaRSS::parse(CREF(LPRDOParser) pParser)
 */
 }
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // CORBA_ENABLE

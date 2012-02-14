@@ -17,7 +17,7 @@
 #include "simulator/compiler/parser/rdoparser.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- TypeInfo
@@ -63,4 +63,4 @@ LPRDOValue TypeInfo::value_cast(CREF(LPRDOValue) pValue) const
 	return m_pType->value_cast(pValue, m_srcInfo.get(), pValue->src_info());
 }
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE

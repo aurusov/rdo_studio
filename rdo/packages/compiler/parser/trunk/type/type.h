@@ -20,7 +20,7 @@
 #include "simulator/compiler/parser/rdo_object.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- IType
@@ -97,6 +97,6 @@ protected:
 };
 DECLARE_POINTER(RDOType);
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // _RDOPARSER_TYPE_H_

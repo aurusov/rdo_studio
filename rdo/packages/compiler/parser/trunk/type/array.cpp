@@ -17,7 +17,7 @@
 #include "simulator/compiler/parser/rdoparser_lexer.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
  //----------------------------------------------------------------------------
  //---------- RDOArrayType
@@ -135,4 +135,4 @@ LPTypeInfo RDOArrayType::typeInfo() const
 	return pType;
 }
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE

@@ -17,7 +17,7 @@
 #include "simulator/compiler/parser/context/context_find_i.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- IContextMemory
@@ -54,6 +54,6 @@ private:
 };
 DECLARE_POINTER(ContextMemory);
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // _CONEXT_MEMORY_H_

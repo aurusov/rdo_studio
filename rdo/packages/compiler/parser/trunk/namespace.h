@@ -8,16 +8,16 @@
   \indent    4T
 */
 
-#ifndef _LIB_RUNTIME_NAMESPACE_H_
-#define _LIB_RUNTIME_NAMESPACE_H_
+#ifndef _LIB_PARSER_NAMESPACE_H_
+#define _LIB_PARSER_NAMESPACE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
-//! \def    rdoParse
+//! \def    OPEN_RDO_PARSER_NAMESPACE
 //! \brief  Пространство имён парсера
-#define OPEN_RDO_PARSE_NAMESPACE			namespace rdoParse {
-#define CLOSE_RDO_PARSE_NAMESPACE			};
+#define OPEN_RDO_PARSER_NAMESPACE			namespace rdoParse {
+#define CLOSE_RDO_PARSER_NAMESPACE			};
 
-#endif // _LIB_RUNTIME_NAMESPACE_H_
+#endif // _LIB_PARSER_NAMESPACE_H_

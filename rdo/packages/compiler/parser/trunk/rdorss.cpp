@@ -20,7 +20,7 @@
 #include "simulator/runtime/calc/resource/calc_create_resource.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 int rsslex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
@@ -148,4 +148,4 @@ rdoRuntime::LPRDOCalc RDORSSResource::createCalc() const
 	return pCalc;
 }
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE

@@ -16,7 +16,7 @@
 #include "simulator/compiler/parser/local_variable.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- VariableContainer
@@ -35,6 +35,6 @@ private:
 	LPLocalVariable       m_pLocalVariable;
 };
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // _VARIABLE_CONTAINER_H_

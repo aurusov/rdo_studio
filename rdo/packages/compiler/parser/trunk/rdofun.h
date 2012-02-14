@@ -32,7 +32,7 @@
 #include "simulator/runtime/calc/resource/calc_select.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 int  funparse(PTR(void) lexer);
 int  funlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
@@ -692,6 +692,6 @@ private:
 };
 DECLARE_POINTER(RDOFUNSelect);
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // _RDOFUN_H_

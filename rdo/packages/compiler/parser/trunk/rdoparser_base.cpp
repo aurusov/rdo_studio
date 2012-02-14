@@ -24,7 +24,7 @@
 #include "simulator/compiler/parser/rdortp.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserContainer
@@ -151,4 +151,4 @@ RDOParserContainerCorba::RDOParserContainerCorba()
 	insert(rdoModelObjects::obSMR, rdo::Factory<RDOParserRSSPost>::create());
 }
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE

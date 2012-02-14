@@ -19,7 +19,7 @@
 #include "simulator/compiler/parser/rdo_value.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- IContextCreateCalc
@@ -39,6 +39,6 @@ protected:
 #define DECLARE_IContextCreateCalc \
 	rdoRuntime::LPRDOCalc create(CREF(RDOValue) name);
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // _RDOPARSER_CONTEXT_CREATE_CALC_I_H_

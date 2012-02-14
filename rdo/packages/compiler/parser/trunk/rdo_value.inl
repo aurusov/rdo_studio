@@ -12,7 +12,7 @@
 #include "simulator/compiler/parser/type/atom.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 template <class T>
 inline RDOValue::RDOValue(CREF(LPTypeInfo) pType, CREF(rdo::intrusive_ptr<T>) pObject)
@@ -71,4 +71,4 @@ inline CREF(rdo::intrusive_ptr<T>) RDOValue::get() const
 	return __get<rdo::intrusive_ptr_interface_wrapper<T> >();
 }
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE

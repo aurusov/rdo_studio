@@ -17,7 +17,7 @@
 #include "simulator/compiler/parser/namespace.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- ContextStack
@@ -44,6 +44,6 @@ private:
 	Container m_container;
 };
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // _RDOPARSER_CONTEXT_STACK_H_

@@ -20,7 +20,7 @@
 #include "simulator/runtime/calc/function/calc_function_internal.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserSTDFUN
@@ -199,4 +199,4 @@ void RDOParserSTDFUN::parse(CREF(LPRDOParser) pParser)
 #endif
 }
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE

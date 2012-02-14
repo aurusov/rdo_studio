@@ -16,7 +16,7 @@
 #include "simulator/compiler/parser/rdoparser_error.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOEnumType
@@ -199,4 +199,4 @@ void RDOEnumType::add(CREF(LPRDOValue) pNext)
 	getEnums()->add(pNext->value().getAsString());
 }
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE

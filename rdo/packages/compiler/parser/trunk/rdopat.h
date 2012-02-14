@@ -32,7 +32,7 @@
 #include "utils/smart_ptr/factory.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 int  patparse(PTR(void) lexer);
 int  patlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
@@ -497,6 +497,6 @@ private:
 	LPRDORTPResType m_pResType;
 };
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // _RDOPAT_H_

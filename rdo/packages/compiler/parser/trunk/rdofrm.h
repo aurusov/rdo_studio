@@ -20,7 +20,7 @@
 #include "simulator/compiler/parser/context/context_find_i.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 int  frmparse(PTR(void) lexer);
 int  frmlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
@@ -49,6 +49,6 @@ private:
 };
 DECLARE_POINTER(RDOFRMFrame);
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // _RDOFRM_H_
