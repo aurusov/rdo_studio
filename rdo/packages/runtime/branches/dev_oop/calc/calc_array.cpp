@@ -50,7 +50,7 @@ REF(RDOValue) RDOCalcArrayItem::doCalc(CREF(LPRDORuntime) pRuntime)
 	CREF(LPRDOArrayValue) pArrayValue = value.getPointerSafety<RDOArrayType>();
 	ASSERT(pArrayValue);
 
-	m_value = pArrayValue->getItem(m_pArrayInd->calcValue(pRuntime),this,pRuntime);
+	m_value = pArrayValue->getItem(m_pArrayInd->calcValue(pRuntime),this->srcInfo(),pRuntime);
 	return m_value;
 }
 
@@ -69,7 +69,7 @@ REF(RDOValue) RDOCalcSetArrayItem::doCalc(CREF(LPRDORuntime) pRuntime)
 
 	CREF(LPRDOArrayValue) pArrayValue = m_value.getPointerSafety<RDOArrayType>();
 	ASSERT(pArrayValue);
-	pArrayValue->setItem(m_pArrayInd->calcValue(pRuntime), m_pSetItem->calcValue(pRuntime),this,pRuntime);
+	pArrayValue->setItem(m_pArrayInd->calcValue(pRuntime), m_pSetItem->calcValue(pRuntime),this->srcInfo(),pRuntime);
 
 	return m_value;
 }
