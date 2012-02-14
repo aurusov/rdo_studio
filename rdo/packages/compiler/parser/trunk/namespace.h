@@ -4,7 +4,7 @@
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      14.02.2012
-  \brief     Пространство имен rdoParse
+  \brief     Пространство имен rdoParser
   \indent    4T
 */
 
