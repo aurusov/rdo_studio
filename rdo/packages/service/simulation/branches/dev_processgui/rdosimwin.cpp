@@ -33,7 +33,7 @@
 #endif // COMPILER_GCC
 
 #include "simulator/service/rdosimwin.h"
-#include "simulator/service/procgui_datablock.h"
+#include "simulator/compiler/procgui/procgui_datablock.h"
 #include "kernel/rdokernel.h"
 #include "repository/rdorepository.h"
 #include "simulator/runtime/rdotrace.h"
