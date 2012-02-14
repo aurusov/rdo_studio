@@ -63,7 +63,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="ws2_32.lib mswsock.lib advapi32.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
