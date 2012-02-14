@@ -20,7 +20,7 @@
 #include "simulator/compiler/parser/rdofun.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOEvent
@@ -55,7 +55,7 @@ private:
 	LPArithmContainer      m_pParamList;
 };
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 #include "simulator/compiler/parser/rdopatpreparse.inl"
 

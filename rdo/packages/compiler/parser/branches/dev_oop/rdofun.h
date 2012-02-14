@@ -32,7 +32,7 @@
 #include "simulator/runtime/calc/resource/calc_select.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 int  funparse(PTR(void) lexer);
 int  funlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
@@ -160,7 +160,7 @@ public:
 
 	void checkParamType(CREF(LPTypeInfo) pType);
 	
-	static void wrongVarInit(LPRDOValue pParamName,tstring paramName);
+	static void wrongVarInit(CREF(LPRDOValue) pParamName,CREF(tstring) paramName) ;
 
 	static LPRDOFUNArithm generateByConst        (CREF(LPRDOValue) pValue);
 	static LPRDOFUNArithm generateByIdentificator(CREF(LPRDOValue) pValue);
@@ -694,6 +694,6 @@ private:
 };
 DECLARE_POINTER(RDOFUNSelect);
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // _RDOFUN_H_

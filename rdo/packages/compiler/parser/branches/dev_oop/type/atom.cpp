@@ -19,7 +19,7 @@
 #include "simulator/runtime/rdo_resource.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- ATOM_TYPE_PARSER
@@ -416,4 +416,4 @@ void RDOType__bool::writeModelStructure(REF(std::ostream) stream) const
 	stream << _T("B") << std::endl;
 }
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE

@@ -223,7 +223,7 @@
 #define PARSER  LEXER->parser()
 #define RUNTIME PARSER->runtime()
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 %}
 
 %left RDO_or
@@ -631,7 +631,8 @@ empty_statement
 equal_statement
 	: RDO_IDENTIF increment_or_decrement_type
 	{
-		tstring                paramName = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+		LPRDOValue			  pParamName   = PARSER->stack().pop<RDOValue>($1);
+		tstring               paramName    = pParamName->value().getIdentificator();
 		rdoRuntime::EqualType  equalType = static_cast<rdoRuntime::EqualType>($2);
 		LPContext pContext = PARSER->context();
 		ASSERT(pContext);
@@ -663,7 +664,7 @@ equal_statement
 		}
 		else 
 		{
-			PARSER->error().error(@1, rdo::format(_T("Неизвестный параметр: %s"), paramName.c_str()));
+			RDOFUNArithm::wrongVarInit(pParamName, paramName);
 		}
 		tstring oprStr;
 		switch (equalType)
@@ -3084,4 +3085,4 @@ fun_select_arithm
 
 %%
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE

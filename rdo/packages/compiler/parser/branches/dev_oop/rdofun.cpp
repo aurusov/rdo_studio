@@ -28,7 +28,7 @@
 #include "simulator/runtime/calc/operation/calc_arithm.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 int funlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
@@ -557,7 +557,7 @@ void RDOFUNArithm::checkParamType(CREF(LPTypeInfo) pType)
 	}
 }
 
-void RDOFUNArithm::wrongVarInit(LPRDOValue pParamName,tstring paramName)
+void RDOFUNArithm::wrongVarInit(CREF(LPRDOValue) pParamName,CREF(tstring) paramName)
 {
 	LPRDOFUNFunction pFunction = RDOParser::s_parser()->getLastFUNFunction();
 	ASSERT(pFunction);
@@ -1814,4 +1814,4 @@ LPRDOFUNArithm RDOFUNSelect::createFunSelectSize(CREF(RDOParserSrcInfo) size_inf
 	return pArithm;
 }
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE

@@ -220,7 +220,7 @@
 #define PARSER  LEXER->parser()
 #define RUNTIME PARSER->runtime()
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 %}
 
 %left RDO_or
@@ -596,4 +596,4 @@ dpt_process_end
 
 %%
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE

@@ -20,9 +20,10 @@
 #include "simulator/compiler/parser/local_variable.h"
 #include "simulator/runtime/calc/calc_pattern.h"
 #include "simulator/runtime/calc/resource/calc_resource.h"
+#include "simulator/compiler/parser/namespace.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 int patlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
@@ -1146,4 +1147,4 @@ rdoRuntime::LPIRDOSelectResourceCommon RDORelevantResourceByType::createSelectRe
 	return pSelectResourceCommon;
 }
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE

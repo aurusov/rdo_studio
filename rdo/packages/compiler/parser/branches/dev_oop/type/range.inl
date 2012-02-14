@@ -14,7 +14,7 @@
 #include "simulator/runtime/calc/procedural/calc_range.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 inline RDOTypeRangeRange::RDOTypeRangeRange(CREF(LPRDOValue) pMinValue, CREF(LPRDOValue) pMaxValue, CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info )
@@ -124,4 +124,4 @@ inline rdoRuntime::RDOValue RDOTypeRange<T>::get_default() const
 	return m_range->getMin()->value();
 }
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE

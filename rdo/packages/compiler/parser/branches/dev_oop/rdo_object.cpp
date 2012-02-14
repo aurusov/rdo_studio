@@ -16,7 +16,7 @@
 #include "simulator/compiler/parser/rdoparser.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserSrcInfo
@@ -109,4 +109,4 @@ void RDOParserSrcInfo::init()
 	RDOSrcInfo::setSrcPos(pos);
 }
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE

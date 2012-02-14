@@ -18,7 +18,7 @@
 #include "simulator/compiler/parser/rdoparser_rdo.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserCorbaRTP
@@ -46,7 +46,7 @@ private:
 	virtual void parse(CREF(LPRDOParser) pParser);
 };
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // CORBA_ENABLE
 

@@ -14,12 +14,12 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdomacros.h"
 #include "utils/smart_ptr/factory.h"
-#include "utils/namespace.h"
+#include "simulator/compiler/parser/namespace.h"
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/compiler/parser/rdo_value.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- IContextCreateCalc
@@ -39,6 +39,6 @@ protected:
 #define DECLARE_IContextCreateCalc \
 	rdoRuntime::LPRDOCalc create(CREF(RDOValue) name);
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // _RDOPARSER_CONTEXT_CREATE_CALC_I_H_
