@@ -15,7 +15,7 @@
 #include "utils/smart_ptr/intrusive_ptr.h"
 #include "utils/smart_ptr/intrusive_ptr_interface_wrapper.h"
 #include "utils/explicit_value.h"
-#include "utils/namespace.h"
+#include "simulator/compiler/parser/namespace.h"
 #include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/compiler/parser/type/info.h"
 #include "simulator/runtime/rdo_value.h"

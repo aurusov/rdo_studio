@@ -14,7 +14,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdomacros.h"
 #include "utils/smart_ptr/factory.h"
-#include "utils/namespace.h"
+#include "simulator/compiler/parser/namespace.h"
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/compiler/parser/rdo_value.h"
 // --------------------------------------------------------------------------------

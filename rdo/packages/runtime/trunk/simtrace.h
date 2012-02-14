@@ -12,6 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "simulator/compiler/parser/namespace.h"
 #include "simulator/runtime/rdotrace.h"
 #include "simulator/runtime/rdo_simulator.h"
 // --------------------------------------------------------------------------------

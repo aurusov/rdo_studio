@@ -19,11 +19,6 @@
 #define OPEN_RDO_NAMESPACE					namespace rdo {
 #define CLOSE_RDO_NAMESPACE					};
 
-//! \namespace rdoParse
-//! \brief     Пространство имён парсера
-#define OPEN_RDO_PARSE_NAMESPACE			namespace rdoParse {
-#define CLOSE_RDO_PARSE_NAMESPACE			};
-
 //! \namespace rdoRuntime
 //! \brief     Пространство имён рантайма
 #define OPEN_RDO_RUNTIME_NAMESPACE			namespace rdoRuntime {

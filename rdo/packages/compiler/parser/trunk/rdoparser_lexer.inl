@@ -10,7 +10,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/namespace.h"
+#include "simulator/compiler/parser/namespace.h"
 #include "simulator/compiler/parser/grammar/rdobison.h"
 
 #ifndef __FLEX_LEXER_H

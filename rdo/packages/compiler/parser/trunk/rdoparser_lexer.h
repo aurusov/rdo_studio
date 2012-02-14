@@ -13,7 +13,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/namespace.h"
+#include "simulator/compiler/parser/namespace.h"
 #include "simulator/compiler/parser/grammar/rdobison.h"
 #include "utils/smart_ptr/intrusive_ptr.h"
 

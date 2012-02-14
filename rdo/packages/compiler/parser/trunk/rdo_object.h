@@ -14,7 +14,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdomacros.h"
-#include "utils/namespace.h"
+#include "simulator/compiler/parser/namespace.h"
 #include "utils/rdotypes.h"
 #include "utils/smart_ptr/intrusive_ptr.h"
 #include "simulator/compiler/parser/grammar/rdobison.h"
