@@ -95,7 +95,7 @@ ruint RDOArrayValue::size() const
 CREF(RDOValue) RDOArrayValue::getItem(CREF(RDOValue) index,CREF(RDOSrcInfo) srcInfo,CREF(LPRDORuntime) pRuntime) const
 {
 	ruint ind = index.getUInt();
-	if (ind > m_container.size())
+	if (ind >= m_container.size())
 	{
 		pRuntime->error().push(_T("Выход за пределы массива"), srcInfo);
 	}
@@ -105,7 +105,7 @@ CREF(RDOValue) RDOArrayValue::getItem(CREF(RDOValue) index,CREF(RDOSrcInfo) srcI
 void RDOArrayValue::setItem(CREF(RDOValue) index, CREF(RDOValue) item,CREF(RDOSrcInfo) srcInfo,CREF(LPRDORuntime) pRuntime)
 {
 	ruint ind = index.getUInt();
-	if (ind > m_container.size())
+	if (ind >= m_container.size())
 	{
 		pRuntime->error().push(_T("Выход за пределы массива"), srcInfo);
 	}
