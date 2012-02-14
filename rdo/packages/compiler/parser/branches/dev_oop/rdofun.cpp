@@ -557,6 +557,20 @@ void RDOFUNArithm::checkParamType(CREF(LPTypeInfo) pType)
 	}
 }
 
+void RDOFUNArithm::wrongVarInit(LPRDOValue pParamName,tstring paramName)
+{
+	LPRDOFUNFunction pFunction = RDOParser::s_parser()->getLastFUNFunction();
+	ASSERT(pFunction);
+	LPRDOParam pParam = pFunction->findFUNFunctionParam(paramName);
+	if(pParam)
+	{
+		RDOParser::s_parser()->error().error(pParamName->src_info(), rdo::format(_T("Функции не могут изменить свой параметр: %s"), paramName.c_str()));		
+	}
+	else
+	{
+		RDOParser::s_parser()->error().error(pParamName->src_info(), rdo::format(_T("Неизвестный идентификатор: %s"), paramName.c_str()));
+	}
+}
 rdoRuntime::LPRDOCalc RDOFUNArithm::createCalc(CREF(LPTypeInfo) pForType)
 {
 	if (typeID() != rdoRuntime::RDOType::t_identificator)

@@ -693,7 +693,8 @@ equal_statement
 	}
 	| RDO_IDENTIF param_equal_type fun_arithm
 	{
-		tstring               paramName    = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+		LPRDOValue			  pParamName   = PARSER->stack().pop<RDOValue>($1);
+		tstring               paramName    = pParamName->value().getIdentificator();
 		rdoRuntime::EqualType equalType    = static_cast<rdoRuntime::EqualType>($2);
 		LPRDOFUNArithm        pRightArithm = PARSER->stack().pop<RDOFUNArithm>($3);
 		LPContext pContext = PARSER->context();
@@ -747,17 +748,7 @@ equal_statement
 		}
 		else 
 		{
-			LPRDOFUNFunction pFunction = PARSER->getLastFUNFunction();
-			ASSERT(pFunction);
-			LPRDOParam pParam = pFunction->findFUNFunctionParam(paramName);
-			if(pParam)
-			{
-				PARSER->error().error(@1, rdo::format(_T("Функции не могут изменить свой параметр: %s"), paramName.c_str()));		
-			}
-			else
-			{
-				PARSER->error().error(@1, rdo::format(_T("Неизвестный идентификатор: %s"), paramName.c_str()));
-			}
+			RDOFUNArithm::wrongVarInit(pParamName, paramName);
 		}
 		tstring oprStr;
 		switch (equalType)
@@ -839,8 +830,6 @@ set_array_item_statement
 		ASSERT(pArrayItemCalc);
 		
 		tstring          paramName = pParamName->value().getIdentificator();
-		LPRDOFUNFunction pFunction = PARSER->getLastFUNFunction();
-		ASSERT(pFunction);
 		LPContext pContext = PARSER->context();
 		ASSERT(pContext);
 		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
@@ -857,16 +846,7 @@ set_array_item_statement
 		}
 		else
 		{
-			LPRDOParam pParam = pFunction->findFUNFunctionParam(paramName);
-			if(pParam)
-			{
-				PARSER->error().error(@1, rdo::format(_T("Функции не могут изменить свой параметр: %s"), paramName.c_str()));		
-			}
-			else
-			{
-				PARSER->error().error(@1, rdo::format(_T("Неизвестный идентификатор: %s"), paramName.c_str()));
-			}
-			
+			RDOFUNArithm::wrongVarInit(pParamName, paramName);
 		}
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pArrayArithm->typeInfo(), pCalc, RDOParserSrcInfo(@1));
