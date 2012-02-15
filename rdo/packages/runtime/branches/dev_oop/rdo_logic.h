@@ -18,7 +18,6 @@
 	#pragma warning(disable : 4786)
 #endif
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/namespace.h"
 #include "simulator/runtime/rdo.h"
 #include "simulator/runtime/rdo_runtime_interface_registrator.h"
 #include "simulator/runtime/rdo_logic_i.h"

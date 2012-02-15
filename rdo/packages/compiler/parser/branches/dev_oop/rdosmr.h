@@ -14,10 +14,10 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdocommon.h"
 #include "simulator/runtime/rdotrace.h"
 #include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/compiler/parser/rdofun.h"
+#include "simulator/service/show_mode.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

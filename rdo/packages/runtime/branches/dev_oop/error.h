@@ -14,8 +14,8 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdocommon.h"
 #include "simulator/runtime/rdo_object.h"
+#include "simulator/service/error_code.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

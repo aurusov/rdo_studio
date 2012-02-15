@@ -13,7 +13,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/namespace.h"
 #include "simulator/runtime/rdotrace.h"
 #include "simulator/runtime/rdotrace_i.h"
 #include "simulator/runtime/result/result_i.h"

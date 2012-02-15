@@ -232,7 +232,7 @@ type_list
 	| type_list ext_param_type
 	| error
 	{
-		PARSER->error().error(rdoParser::RDOParserSrcInfo(), _T("Ожидается ключевое слово $Resource_type"));
+		PARSER->error().error(RDOParserSrcInfo(), _T("Ожидается ключевое слово $Resource_type"));
 	}
 	;
 

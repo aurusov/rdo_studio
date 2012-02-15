@@ -1,24 +1,24 @@
 /*!
   \copyright (c) RDO-Team, 2012
-  \file      simulator/compiler/parser/namespace.h
+  \file      simulator/runtime/namespace.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \date      14.02.2012
-  \brief     Пространство имен rdoParser
+  \date      15.02.2012
+  \brief     Пространство имен rdoRuntime
   \indent    4T
 */
 
-#ifndef _LIB_PARSER_NAMESPACE_H_
-#define _LIB_PARSER_NAMESPACE_H_
+#ifndef _LIB_RUNTIME_NAMESPACE_H_
+#define _LIB_RUNTIME_NAMESPACE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
-//! \def    OPEN_RDO_PARSER_NAMESPACE
-//! \brief  Пространство имён парсера
-#define  OPEN_RDO_PARSER_NAMESPACE  namespace rdoParser {
-#define CLOSE_RDO_PARSER_NAMESPACE  };
+//! \namespace rdoRuntime
+//! \brief     Пространство имён рантайма
+#define  OPEN_RDO_RUNTIME_NAMESPACE  namespace rdoRuntime {
+#define CLOSE_RDO_RUNTIME_NAMESPACE  };
 
-#endif // _LIB_PARSER_NAMESPACE_H_
+#endif // _LIB_RUNTIME_NAMESPACE_H_
