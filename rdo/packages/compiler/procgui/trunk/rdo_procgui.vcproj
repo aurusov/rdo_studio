@@ -4,7 +4,7 @@
 	Version="9,00"
 	Name="rdo_procgui"
 	ProjectGUID="{977EBFEC-18C7-4851-BFB0-C7D430A1E8AA}"
-	RootNamespace="procgui"
+	RootNamespace="rdo_procgui"
 	Keyword="ManagedCProj"
 	TargetFrameworkVersion="196613"
 	>
