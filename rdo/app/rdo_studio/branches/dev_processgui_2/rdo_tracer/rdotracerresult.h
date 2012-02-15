@@ -2,6 +2,8 @@
 #define RDOTRACERRESULT_H
 #pragma once
 
+#include <vector>
+#include <string>
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracerserie.h"
 
 // --------------------------------------------------------------------------------

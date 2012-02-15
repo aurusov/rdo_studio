@@ -870,12 +870,13 @@ BEGIN
     BEGIN
         POPUP "PAT"
         BEGIN
-            MENUITEM "PAT operation",               ID_INSERT_PAT_PATOPERATION
-            MENUITEM "PAT irregular_event",         ID_INSERT_PAT_PATIRREGULAREVENT
-            MENUITEM "PAT rule",                    ID_INSERT_PAT_PATRULE
+            MENUITEM "PAT operation",               ID_INSERT_PAT_TEMPL_OPERATION
+            MENUITEM "PAT event",                   ID_INSERT_PAT_TEMPL_EVENT
+            MENUITEM "PAT rule",                    ID_INSERT_PAT_TEMPL_RULE
+            MENUITEM "PAT keyboard",                ID_INSERT_PAT_TEMPL_KEYBOARD
             MENUITEM "$Pattern",                    ID_INSERT_PAT_PATTERN
             MENUITEM "operation",                   ID_INSERT_PAT_OPERATION
-            MENUITEM "irregular_event",             ID_INSERT_PAT_IRREGULAREVENT
+            MENUITEM "event",                       ID_INSERT_PAT_EVENT
             MENUITEM "rule",                        ID_INSERT_PAT_RULE
             MENUITEM "keyboard",                    ID_INSERT_PAT_KEYBOARD
             MENUITEM "trace",                       ID_INSERT_PAT_TRACE
@@ -900,6 +901,35 @@ BEGIN
             MENUITEM "with_min",                    ID_INSERT_PAT_WITHMIN
             MENUITEM "set",                         ID_INSERT_PAT_SET
             MENUITEM "$End",                        ID_INSERT_PAT_END
+        END
+		POPUP "EVN"
+        BEGIN
+            MENUITEM "EVN",                         ID_INSERT_PAT_TEMPL_EVENT
+            MENUITEM "$Pattern",                    ID_INSERT_PAT_PATTERN
+            MENUITEM "trace",                       ID_INSERT_PAT_TRACE
+            MENUITEM "no_trace",                    ID_INSERT_PAT_NOTRACE
+            MENUITEM "$Parameters",                 ID_INSERT_PAT_PARAMETERS
+            MENUITEM "$Relevant_resources",         ID_INSERT_PAT_RELEVANTRESOURCES
+            MENUITEM "Keep",                        ID_INSERT_PAT_KEEP
+            MENUITEM "NoChange",                    ID_INSERT_PAT_NOCHANGE
+            MENUITEM "Create",                      ID_INSERT_PAT_CREATE
+            MENUITEM "Erase",                       ID_INSERT_PAT_ERASE
+            MENUITEM "NonExist",                    ID_INSERT_PAT_NONEXIST
+            MENUITEM "$Body",                       ID_INSERT_PAT_BODY
+            MENUITEM "Convert_event",               ID_INSERT_PAT_CONVERTEVENT
+            MENUITEM "$End",                        ID_INSERT_PAT_END
+        END
+        POPUP "PRC"
+        BEGIN
+            MENUITEM "$Process",                    ID_INSERT_PRC_TEMPL_PROCESS
+            MENUITEM "GENERATE",                    ID_INSERT_PRC_GENERATE
+            MENUITEM "SEIZE",                       ID_INSERT_PRC_SEIZE
+            MENUITEM "RELEASE",                     ID_INSERT_PRC_RELEASE
+            MENUITEM "ADVANCE",                     ID_INSERT_PRC_ADVANCE
+            MENUITEM "QUEUE",                       ID_INSERT_PRC_QUEUE
+            MENUITEM "DEPART",                      ID_INSERT_PRC_DEPART
+            MENUITEM "ASSIGN",                      ID_INSERT_PRC_ASSIGN
+            MENUITEM "TERMINATE",                   ID_INSERT_PRC_TERMINATE
         END
         POPUP "RTP"
         BEGIN
@@ -929,14 +959,6 @@ BEGIN
             MENUITEM "trace",                       ID_INSERT_RSS_TRACE
             MENUITEM "no_trace",                    ID_INSERT_RSS_NOTRACE
             MENUITEM "$End",                        ID_INSERT_RSS_END
-        END
-        POPUP "OPR"
-        BEGIN
-            MENUITEM "OPR",                         ID_INSERT_OPR_OPR
-            MENUITEM "$Operations",                 ID_INSERT_OPR_OPERATIONS
-            MENUITEM "trace",                       ID_INSERT_OPR_TRACE
-            MENUITEM "no_trace",                    ID_INSERT_OPR_NOTRACE
-            MENUITEM "$End",                        ID_INSERT_OPR_END
         END
         POPUP "FRM"
         BEGIN
@@ -975,19 +997,20 @@ BEGIN
             MENUITEM "enumerative",                 ID_INSERT_FUN_ENUMERATIVE
             MENUITEM "$Parameters",                 ID_INSERT_FUN_PARAMETERS
             MENUITEM "$Body",                       ID_INSERT_FUN_BODY
-            MENUITEM "Calculate_if",                ID_INSERT_FUN_CALCULATEIF
             MENUITEM "$Sequence",                   ID_INSERT_FUN_SEQUENCE
             MENUITEM "$Constant",                   ID_INSERT_FUN_CONSTANT
             MENUITEM "$End",                        ID_INSERT_FUN_END
         END
         POPUP "DPT"
         BEGIN
-            MENUITEM "DPT search",                  ID_INSERT_DPT_DPTSEARCH
-            MENUITEM "DPT some",                    ID_INSERT_DPT_DPTSOME
+            MENUITEM "DPT search",                  ID_INSERT_DPT_TEMPL_SEARCH
+            MENUITEM "DPT prior",                   ID_INSERT_DPT_TEMPL_PRIOR
+            MENUITEM "DPT some",                    ID_INSERT_DPT_TEMPL_SOME
             MENUITEM "ACTIV",                       ID_INSERT_DPT_ACTIV
             MENUITEM "$Decision_point",             ID_INSERT_DPT_DECISIONPOINT
             MENUITEM "some",                        ID_INSERT_DPT_SOME
             MENUITEM "search",                      ID_INSERT_DPT_SEARCH
+            MENUITEM "prior",                       ID_INSERT_DPT_PRIOR
             MENUITEM "no_trace",                    ID_INSERT_DPT_NOTRACE
             MENUITEM "trace_stat",                  ID_INSERT_DPT_TRACESTAT
             MENUITEM "trace_tops",                  ID_INSERT_DPT_TRACETOPS
@@ -1043,6 +1066,14 @@ BEGIN
             MENUITEM "$End",                        ID_INSERT_PMD_END
         END
         MENUITEM SEPARATOR
+        POPUP "&Алгоритмические операторы"
+        BEGIN
+            MENUITEM "if"                           ID_INSERT_ALGO_IF
+            MENUITEM "else"                         ID_INSERT_ALGO_ELSE
+            MENUITEM "if-else"                      ID_INSERT_ALGO_IF_ELSE
+            MENUITEM "for"                          ID_INSERT_ALGO_FOR
+            MENUITEM "return"                       ID_INSERT_ALGO_RETURN
+        END
         POPUP "&Функции"
         BEGIN
             MENUITEM "Abs",                         ID_INSERT_FUNCTIONS_ABS
@@ -3384,12 +3415,18 @@ END
 
 STRINGTABLE 
 BEGIN
-    ID_INSERT_PAT_PATOPERATION 
-                            "$Pattern  : operation\r\n$Relevant_resources\r\n\r\n$Time =\r\n$Body\r\n\r\n\tChoice from\r\n\tfirst\r\n\tConvert_begin\r\n\r\n\tConvert_end\r\n\r\n$End\r\n"
-    ID_INSERT_PAT_PATIRREGULAREVENT 
-                            "$Pattern  : irregular_event\r\n$Relevant_resources\r\n\r\n$Time =\r\n$Body\r\n\r\n\tConvert_event\r\n\r\n$End\r\n"
-    ID_INSERT_PAT_PATRULE   "$Pattern  : rule\r\n$Relevant_resources\r\n\r\n$Body\r\n\r\n\tChoice from\r\n\tfirst\r\n\tConvert_rule\r\n\r\n$End\r\n"
-    ID_INSERT_SMR_SMR       "Model_name     = noname\r\n\r\nResource_file  =\r\nOprIev_file    =\r\nStatistic_file =\r\nResults_file   =\r\nTrace_file     =\r\nFrame_file     =\r\nFrame_number   =\r\nShow_mode      = Animation\r\nShow_rate      = 10000.0\r\n\r\nTerminate_if Time_now >= 10*60*60.0\r\n"
+    ID_INSERT_PRC_TEMPL_PROCESS
+                            "$Process\r\n\r\n$End\r\n"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_INSERT_PAT_TEMPL_OPERATION 
+                                   "$Pattern  : operation\r\n$Relevant_resources\r\n\r\n$Time =\r\n$Body\r\n\r\n\tChoice from\r\n\tfirst\r\n\tConvert_begin\r\n\r\n\tConvert_end\r\n\r\n$End\r\n"
+    ID_INSERT_PAT_TEMPL_EVENT      "$Pattern  : event\r\n$Parameters  :\r\n$Relevant_resources\r\n\r\n$Body\r\tConvert_event\r\n\r\n$End\r\n"
+    ID_INSERT_PAT_TEMPL_RULE       "$Pattern  : rule\r\n$Relevant_resources\r\n\r\n$Body\r\n\r\n\tChoice from\r\n\tfirst\r\n\tConvert_rule\r\n\r\n$End\r\n"
+    ID_INSERT_PAT_TEMPL_KEYBOARD   "$Pattern  : keyboard\r\n$Relevant_resources\r\n\r\n$Time =\r\n$Body\r\n\r\n\tChoice from\r\n\tfirst\r\n\tConvert_begin\r\n\r\n\tConvert_end\r\n\r\n$End\r\n"
+    ID_INSERT_SMR_SMR              "Model_name     = noname\r\n\r\nResource_file  =\r\nOprIev_file    =\r\nStatistic_file =\r\nResults_file   =\r\nTrace_file     =\r\nFrame_file     =\r\nFrame_number   =\r\nShow_mode      = Animation\r\nShow_rate      = 10000.0\r\n\r\nTerminate_if Time_now >= 10*60*60.0\r\n"
 END
 
 STRINGTABLE 
@@ -3403,21 +3440,21 @@ END
 STRINGTABLE 
 BEGIN
     ID_INSERT_RSS_RSS       "$Resources\r\n\t\r\n$End\r\n"
-    ID_INSERT_OPR_OPR       "$Operations\r\n\t\r\n$End\r\n"
     ID_INSERT_FRM_FRM       "$Frame \r\n$Back_picture = <255 255 255> 800 600\r\nShow\r\n\tbitmap [, , ]\r\n\ttext [, , , , <255 255 255>, <0 0 0>, = ]\r\nShow_if\r\n\r\n$End\r\n"
 END
 
 STRINGTABLE 
 BEGIN
-    ID_INSERT_FUN_FUN       "$Function  : integer\r\n$Type = algorithmic\r\n$Parameters\r\n  \r\n$Body\r\n\tCalculate_if\r\n$End\r\n"
+    ID_INSERT_FUN_FUN       "$Function  : integer\r\n$Type = algorithmic\r\n$Parameters\r\n  \r\n$Body\r\n$End\r\n"
     ID_INSERT_FUN_SQN       "$Sequence  : real\r\n$Type = exponential 123456789\r\n$End\r\n"
     ID_INSERT_FUN_CNS       "$Constant\r\n\t : integer =\r\n$End\r\n"
 END
 
 STRINGTABLE 
 BEGIN
-    ID_INSERT_DPT_DPTSEARCH "$Decision_point  : search\r\n$Condition\r\n\r\n$Term_condition\r\n\r\n$Evaluate_by\r\n$Compare_tops = YES\r\n$Activities\r\n\t: value before\r\n\t: value after\r\n$End\r\n"
-    ID_INSERT_DPT_DPTSOME   "$Decision_point  : some\r\n$Condition NoCheck\r\n$Activities\r\n\r\n$End\r\n"
+    ID_INSERT_DPT_TEMPL_SEARCH "$Decision_point  : search\r\n$Condition\r\n\r\n$Term_condition\r\n\r\n$Evaluate_by\r\n$Compare_tops = YES\r\n$Activities\r\n\t: value before\r\n\t: value after\r\n$End\r\n"
+    ID_INSERT_DPT_TEMPL_SOME   "$Decision_point  : some\r\n$Condition NoCheck\r\n$Activities\r\n\r\n$End\r\n"
+    ID_INSERT_DPT_TEMPL_PRIOR  "$Decision_point  : prior\r\n$Condition NoCheck\r\n$Activities\r\n\r\n$End\r\n"
 END
 
 STRINGTABLE 
@@ -3428,6 +3465,26 @@ END
 STRINGTABLE 
 BEGIN
     ID_INSERT_PMD_PMD       "$Results\r\n\t: watch_par\r\n\t: watch_state\r\n\t: watch_quant\r\n\t: watch_value\r\n\t: get_value\r\n$End\r\n"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_INSERT_ALGO_FOR     "for ( ; ; )\r\n"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_INSERT_ALGO_IF     "if ( )\r\n"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_INSERT_ALGO_ELSE     "else ( )\r\n"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_INSERT_ALGO_IF_ELSE     "if ( )\r\n\telse ( )\r\n"
 END
 
 STRINGTABLE 
@@ -4347,12 +4404,13 @@ BEGIN
     BEGIN
         POPUP "PAT"
         BEGIN
-            MENUITEM "PAT operation",               ID_INSERT_PAT_PATOPERATION
-            MENUITEM "PAT irregular_event",         ID_INSERT_PAT_PATIRREGULAREVENT
-            MENUITEM "PAT rule",                    ID_INSERT_PAT_PATRULE
+            MENUITEM "PAT operation",               ID_INSERT_PAT_TEMPL_OPERATION
+            MENUITEM "PAT event",                   ID_INSERT_PAT_TEMPL_EVENT
+            MENUITEM "PAT rule",                    ID_INSERT_PAT_TEMPL_RULE
+            MENUITEM "PAT keyboard",                ID_INSERT_PAT_TEMPL_KEYBOARD
             MENUITEM "$Pattern",                    ID_INSERT_PAT_PATTERN
             MENUITEM "operation",                   ID_INSERT_PAT_OPERATION
-            MENUITEM "irregular_event",             ID_INSERT_PAT_IRREGULAREVENT
+            MENUITEM "event",                       ID_INSERT_PAT_EVENT
             MENUITEM "rule",                        ID_INSERT_PAT_RULE
             MENUITEM "keyboard",                    ID_INSERT_PAT_KEYBOARD
             MENUITEM "trace",                       ID_INSERT_PAT_TRACE
@@ -4377,6 +4435,35 @@ BEGIN
             MENUITEM "with_min",                    ID_INSERT_PAT_WITHMIN
             MENUITEM "set",                         ID_INSERT_PAT_SET
             MENUITEM "$End",                        ID_INSERT_PAT_END
+        END
+		POPUP "EVN"
+        BEGIN
+            MENUITEM "EVN",                         ID_INSERT_PAT_TEMPL_EVENT
+            MENUITEM "$Pattern",                    ID_INSERT_PAT_PATTERN
+            MENUITEM "trace",                       ID_INSERT_PAT_TRACE
+            MENUITEM "no_trace",                    ID_INSERT_PAT_NOTRACE
+            MENUITEM "$Parameters",                 ID_INSERT_PAT_PARAMETERS
+            MENUITEM "$Relevant_resources",         ID_INSERT_PAT_RELEVANTRESOURCES
+            MENUITEM "Keep",                        ID_INSERT_PAT_KEEP
+            MENUITEM "NoChange",                    ID_INSERT_PAT_NOCHANGE
+            MENUITEM "Create",                      ID_INSERT_PAT_CREATE
+            MENUITEM "Erase",                       ID_INSERT_PAT_ERASE
+            MENUITEM "NonExist",                    ID_INSERT_PAT_NONEXIST
+            MENUITEM "$Body",                       ID_INSERT_PAT_BODY
+            MENUITEM "Convert_event",               ID_INSERT_PAT_CONVERTEVENT
+            MENUITEM "$End",                        ID_INSERT_PAT_END
+        END
+		POPUP "PRC"
+        BEGIN
+            MENUITEM "$Process",                    ID_INSERT_PRC_TEMPL_PROCESS
+            MENUITEM "GENERATE",                    ID_INSERT_PRC_GENERATE
+            MENUITEM "SEIZE",                       ID_INSERT_PRC_SEIZE
+            MENUITEM "RELEASE",                     ID_INSERT_PRC_RELEASE
+            MENUITEM "ADVANCE",                     ID_INSERT_PRC_ADVANCE
+            MENUITEM "QUEUE",                       ID_INSERT_PRC_QUEUE
+            MENUITEM "DEPART",                      ID_INSERT_PRC_DEPART
+            MENUITEM "ASSIGN",                      ID_INSERT_PRC_ASSIGN
+            MENUITEM "TERMINATE",                   ID_INSERT_PRC_TERMINATE
         END
         POPUP "RTP"
         BEGIN
@@ -4405,14 +4492,6 @@ BEGIN
             MENUITEM "trace",                       ID_INSERT_RSS_TRACE
             MENUITEM "no_trace",                    ID_INSERT_RSS_NOTRACE
             MENUITEM "$End",                        ID_INSERT_RSS_END
-        END
-        POPUP "OPR"
-        BEGIN
-            MENUITEM "OPR",                         ID_INSERT_OPR_OPR
-            MENUITEM "$Operations",                 ID_INSERT_OPR_OPERATIONS
-            MENUITEM "trace",                       ID_INSERT_OPR_TRACE
-            MENUITEM "no_trace",                    ID_INSERT_OPR_NOTRACE
-            MENUITEM "$End",                        ID_INSERT_OPR_END
         END
         POPUP "FRM"
         BEGIN
@@ -4451,19 +4530,20 @@ BEGIN
             MENUITEM "enumerative",                 ID_INSERT_FUN_ENUMERATIVE
             MENUITEM "$Parameters",                 ID_INSERT_FUN_PARAMETERS
             MENUITEM "$Body",                       ID_INSERT_FUN_BODY
-            MENUITEM "Calculate_if",                ID_INSERT_FUN_CALCULATEIF
             MENUITEM "$Sequence",                   ID_INSERT_FUN_SEQUENCE
             MENUITEM "$Constant",                   ID_INSERT_FUN_CONSTANT
             MENUITEM "$End",                        ID_INSERT_FUN_END
         END
         POPUP "DPT"
         BEGIN
-            MENUITEM "DPT search",                  ID_INSERT_DPT_DPTSEARCH
-            MENUITEM "DPT some",                    ID_INSERT_DPT_DPTSOME
+            MENUITEM "DPT search",                  ID_INSERT_DPT_TEMPL_SEARCH
+            MENUITEM "DPT some",                    ID_INSERT_DPT_TEMPL_SOME
+            MENUITEM "DPT prior",                   ID_INSERT_DPT_TEMPL_PRIOR
             MENUITEM "ACTIV",                       ID_INSERT_DPT_ACTIV
             MENUITEM "$Decision_point",             ID_INSERT_DPT_DECISIONPOINT
             MENUITEM "some",                        ID_INSERT_DPT_SOME
             MENUITEM "search",                      ID_INSERT_DPT_SEARCH
+            MENUITEM "prior",                       ID_INSERT_DPT_PRIOR
             MENUITEM "no_trace",                    ID_INSERT_DPT_NOTRACE
             MENUITEM "trace_stat",                  ID_INSERT_DPT_TRACESTAT
             MENUITEM "trace_tops",                  ID_INSERT_DPT_TRACETOPS
@@ -4519,6 +4599,14 @@ BEGIN
             MENUITEM "$End",                        ID_INSERT_PMD_END
         END
         MENUITEM SEPARATOR
+        POPUP "&Algorithmic operators"
+        BEGIN
+            MENUITEM "if"                           ID_INSERT_ALGO_IF
+            MENUITEM "else"                         ID_INSERT_ALGO_ELSE
+            MENUITEM "if-else"                      ID_INSERT_ALGO_IF_ELSE
+            MENUITEM "for"                          ID_INSERT_ALGO_FOR
+            MENUITEM "return"                       ID_INSERT_ALGO_RETURN
+        END
         POPUP "&Functions"
         BEGIN
             MENUITEM "Abs",                         ID_INSERT_FUNCTIONS_ABS
@@ -4878,11 +4966,12 @@ END
 
 STRINGTABLE 
 BEGIN
-    ID_INSERT_PAT_PATOPERATION 
-                            "$Pattern  : operation\r\n$Relevant_resources\r\n\r\n$Time =\r\n$Body\r\n\r\n\tChoice from\r\n\tfirst\r\n\tConvert_begin\r\n\r\n\tConvert_end\r\n\r\n$End\r\n"
-    ID_INSERT_PAT_PATIRREGULAREVENT 
-                            "$Pattern  : irregular_event\r\n$Relevant_resources\r\n\r\n$Time =\r\n$Body\r\n\r\n\tConvert_event\r\n\r\n$End\r\n"
-    ID_INSERT_PAT_PATRULE   "$Pattern  : rule\r\n$Relevant_resources\r\n\r\n$Body\r\n\r\n\tChoice from\r\n\tfirst\r\n\tConvert_rule\r\n\r\n$End\r\n"
+    ID_INSERT_PAT_TEMPL_OPERATION 
+                                   "$Pattern  : operation\r\n$Relevant_resources\r\n\r\n$Time =\r\n$Body\r\n\r\n\tChoice from\r\n\tfirst\r\n\tConvert_begin\r\n\r\n\tConvert_end\r\n\r\n$End\r\n"
+    ID_INSERT_PAT_TEMPL_EVENT 
+                                   "$Pattern  : event\r\n$Parameters  :\r\n$Relevant_resources\r\n\$Body\r\tConvert_event\r\n\r\n$End\r\n"
+    ID_INSERT_PAT_TEMPL_RULE       "$Pattern  : rule\r\n$Relevant_resources\r\n\r\n$Body\r\n\r\n\tChoice from\r\n\tfirst\r\n\tConvert_rule\r\n\r\n$End\r\n"
+    ID_INSERT_PAT_TEMPL_KEYBOARD   "$Pattern  : keyboard\r\n$Relevant_resources\r\n\r\n$Time =\r\n$Body\r\n\r\n\tChoice from\r\n\tfirst\r\n\tConvert_begin\r\n\r\n\tConvert_end\r\n\r\n$End\r\n"
     ID_INSERT_SMR_SMR       "Model_name     = noname\r\n\r\nResource_file  =\r\nOprIev_file    =\r\nStatistic_file =\r\nResults_file   =\r\nTrace_file     =\r\nFrame_file     =\r\nFrame_number   =\r\nShow_mode      = Animation\r\nShow_rate      = 10000.0\r\n\r\nTerminate_if Time_now >= 10*60*60.0\r\n"
 END
 
@@ -4897,21 +4986,21 @@ END
 STRINGTABLE 
 BEGIN
     ID_INSERT_RSS_RSS       "$Resources\r\n\t\r\n$End\r\n"
-    ID_INSERT_OPR_OPR       "$Operations\r\n\t\r\n$End\r\n"
     ID_INSERT_FRM_FRM       "$Frame \r\n$Back_picture = <255 255 255> 800 600\r\nShow\r\n\tbitmap [, , ]\r\n\ttext [, , , , <255 255 255>, <0 0 0>, = ]\r\nShow_if\r\n\r\n$End\r\n"
 END
 
 STRINGTABLE 
 BEGIN
-    ID_INSERT_FUN_FUN       "$Function  : integer\r\n$Type = algorithmic\r\n$Parameters\r\n  \r\n$Body\r\n\tCalculate_if\r\n$End\r\n"
+    ID_INSERT_FUN_FUN       "$Function  : integer\r\n$Type = algorithmic\r\n$Parameters\r\n$Body\r\n$End\r\n"
     ID_INSERT_FUN_SQN       "$Sequence  : real\r\n$Type = exponential 123456789\r\n$End\r\n"
     ID_INSERT_FUN_CNS       "$Constant\r\n\t : integer =\r\n$End\r\n"
 END
 
 STRINGTABLE 
 BEGIN
-    ID_INSERT_DPT_DPTSEARCH "$Decision_point  : search\r\n$Condition\r\n\r\n$Term_condition\r\n\r\n$Evaluate_by\r\n$Compare_tops = YES\r\n$Activities\r\n\t: value before\r\n\t: value after\r\n$End\r\n"
-    ID_INSERT_DPT_DPTSOME   "$Decision_point  : some\r\n$Condition NoCheck\r\n$Activities\r\n\r\n$End\r\n"
+    ID_INSERT_DPT_TEMPL_SEARCH "$Decision_point  : search\r\n$Condition\r\n\r\n$Term_condition\r\n\r\n$Evaluate_by\r\n$Compare_tops = YES\r\n$Activities\r\n\t: value before\r\n\t: value after\r\n$End\r\n"
+    ID_INSERT_DPT_TEMPL_SOME   "$Decision_point  : some\r\n$Condition NoCheck\r\n$Activities\r\n\r\n$End\r\n"
+    ID_INSERT_DPT_TEMPL_PRIOR  "$Decision_point  : prior\r\n$Condition NoCheck\r\n$Activities\r\n\r\n$End\r\n"
 END
 
 STRINGTABLE 

@@ -2,8 +2,13 @@
 #define RDOBASEEDIT_H
 #pragma once
 
-#include "app/rdo_studio_mfc/edit_ctrls/rdobaseeditstyle.h"
+// ----------------------------------------------------------------------- PLATFORM
+// ----------------------------------------------------------------------- INCLUDES
+#include <vector>
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdostream.h"
+#include "app/rdo_studio_mfc/edit_ctrls/rdobaseeditstyle.h"
+// --------------------------------------------------------------------------------
 
 namespace rdoEditCtrl {
 

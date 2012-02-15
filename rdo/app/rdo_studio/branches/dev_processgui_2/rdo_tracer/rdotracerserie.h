@@ -2,6 +2,9 @@
 #define RDOTRACERSERIE_H
 #pragma once
 
+#include <vector>
+#include <list>
+#include <string>
 #include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracertreeitem.h"
 
 // --------------------------------------------------------------------------------

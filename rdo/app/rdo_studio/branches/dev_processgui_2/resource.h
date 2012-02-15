@@ -274,13 +274,13 @@
 #define ID_EDIT_COMPLETEWORD            32809
 #define ID_EDIT_COPYASRTF               32811
 #define ID_VIEW_TOGGLE_CURRENTFOLD      32812
-#define ID_INSERT_PAT_PATOPERATION      32840
-#define ID_INSERT_PAT_PATIRREGULAREVENT 32841
-#define ID_INSERT_PAT_PATRULE           32842
+#define ID_INSERT_PAT_TEMPL_OPERATION   32840
+#define ID_INSERT_PAT_TEMPL_EVENT       32841
+#define ID_INSERT_PAT_TEMPL_RULE        32842
 #define ID_INSERT_PAT_PATTERN           32843
 #define ID_INSERT_PAT_OPERATION         32844
 #define ID_INSERT_SMR_SMR               32845
-#define ID_INSERT_PAT_IRREGULAREVENT    32846
+#define ID_INSERT_PAT_EVENT             32846
 #define ID_INSERT_PAT_RULE              32847
 #define ID_INSERT_PAT_KEYBOARD          32848
 #define ID_INSERT_PAT_TRACE             32849
@@ -321,11 +321,11 @@
 #define ID_INSERT_RSS_TRACE             32884
 #define ID_INSERT_RSS_NOTRACE           32885
 #define ID_INSERT_RSS_END               32886
-#define ID_INSERT_OPR_OPR               32887
-#define ID_INSERT_OPR_OPERATIONS        32888
-#define ID_INSERT_OPR_TRACE             32889
-#define ID_INSERT_OPR_NOTRACE           32890
-#define ID_INSERT_OPR_END               32891
+//#define ID_INSERT_FUN_CALCULATEIF       32887 // можно использовать
+#define ID_INSERT_PRC_TEMPL_PROCESS     32888
+#define ID_INSERT_DPT_PRIOR             32889
+//#define ID_INSERT_PRC_PROCESS           32890 // можно использовать
+//#define ID_INSERT_PRC_GENERATE          32891 // можно использовать
 #define ID_INSERT_FRM_FRM               32892
 #define ID_INSERT_FRM_FRAME             32893
 #define ID_INSERT_FRM_BACKPICTURE       32894
@@ -356,12 +356,12 @@
 #define ID_INSERT_FUN_ENUMERATIVE       32919
 #define ID_INSERT_FUN_PARAMETERS        32920
 #define ID_INSERT_FUN_BODY              32921
-#define ID_INSERT_FUN_CALCULATEIF       32922
+#define ID_INSERT_DPT_TEMPL_PRIOR       32922
 #define ID_INSERT_FUN_SEQUENCE          32923
 #define ID_INSERT_FUN_CONSTANT          32924
 #define ID_INSERT_FUN_END               32925
-#define ID_INSERT_DPT_DPTSEARCH         32926
-#define ID_INSERT_DPT_DPTSOME           32927
+#define ID_INSERT_DPT_TEMPL_SEARCH      32926
+#define ID_INSERT_DPT_TEMPL_SOME        32927
 #define ID_INSERT_DPT_ACTIV             32928
 #define ID_INSERT_DPT_DECISIONPOINT     32929
 #define ID_INSERT_DPT_SOME              32930
@@ -453,6 +453,20 @@
 #define ID_INSERT_FRM_CIRCLE            33017
 #define ID_INSERT_FUN_TRIANGULAR        33018
 #define ID_INSERT_DPT_MULTITHREADING    33019
+#define ID_INSERT_PAT_TEMPL_KEYBOARD    33020
+#define ID_INSERT_PRC_GENERATE          33021
+#define ID_INSERT_PRC_SEIZE             33022
+#define ID_INSERT_PRC_RELEASE           33023
+#define ID_INSERT_PRC_ADVANCE           33024
+#define ID_INSERT_PRC_QUEUE             33025
+#define ID_INSERT_PRC_DEPART            33026
+#define ID_INSERT_PRC_ASSIGN            33027
+#define ID_INSERT_PRC_TERMINATE         33028
+#define ID_INSERT_ALGO_IF               33029
+#define ID_INSERT_ALGO_ELSE             33030
+#define ID_INSERT_ALGO_IF_ELSE          33031
+#define ID_INSERT_ALGO_FOR              33032
+#define ID_INSERT_ALGO_RETURN           33033
 #define ID_INSERT_BUFFER1_PASTE         33110
 #define ID_INSERT_BUFFER1_EDIT          33111
 #define ID_INSERT_BUFFER2_PASTE         33112
