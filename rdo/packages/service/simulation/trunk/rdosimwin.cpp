@@ -36,8 +36,6 @@
 #include "utils/rdotime.h"
 #include "kernel/rdokernel.h"
 #include "repository/rdorepository.h"
-#include "simulator/service/rdosimwin.h"
-#include "simulator/service/procgui_datablock.h"
 #include "simulator/runtime/rdotrace.h"
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/runtime/rdoframe.h"
@@ -46,6 +44,8 @@
 #include "simulator/compiler/parser/rdofrm.h"
 #include "simulator/compiler/parser/rdortp.h"
 #include "simulator/compiler/mbuilder/rdo_resources.h"
+#include "simulator/compiler/procgui/procgui_datablock.h"
+#include "simulator/service/rdosimwin.h"
 
 #ifndef DISABLE_CONVERTER
 	#include "converter/smr2rdox/rdoparser.h"
