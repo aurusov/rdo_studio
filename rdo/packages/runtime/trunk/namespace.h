@@ -1,6 +1,7 @@
 /*!
   \copyright (c) RDO-Team, 2012
   \file      simulator/runtime/namespace.h
+  \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      15.02.2012
