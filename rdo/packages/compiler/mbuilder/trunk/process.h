@@ -25,7 +25,7 @@ class BlockForQueue
 {
 public:
 	static rbool      checkType (RDOResType rtp,         CREF(rdoParser::RDOParserSrcInfo) info    );
-	static void       createRes (RDOResType rtp,         CREF(tstring)                    res_name);
+	static void       createRes (RDOResType rtp,         CREF(tstring)                     res_name);
 	static RDOResType createType(CREF(tstring) rtp_name, CREF(rdoParser::RDOParserSrcInfo) info    );
 };
 
@@ -36,8 +36,8 @@ class BlockForSeize
 {
 public:
 	static rbool      checkType  (RDOResType    rtp,      CREF(rdoParser::RDOParserSrcInfo) info    );
-	static void       createRes  (RDOResType    rtp,      CREF(tstring)                    res_name);
-	static void       reobjectRes(RDOResType    rtp,      CREF(tstring)                    res_name);
+	static void       createRes  (RDOResType    rtp,      CREF(tstring)                     res_name);
+	static void       reobjectRes(RDOResType    rtp,      CREF(tstring)                     res_name);
 	static RDOResType createType (CREF(tstring) rtp_name, CREF(rdoParser::RDOParserSrcInfo) info    );
 };
 

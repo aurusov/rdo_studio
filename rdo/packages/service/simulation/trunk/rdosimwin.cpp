@@ -32,11 +32,12 @@
 #   define DISABLE_CONVERTER
 #endif // COMPILER_GCC
 
-#include "simulator/service/rdosimwin.h"
-#include "simulator/service/procgui_datablock.h"
-#include "simulator/service/namespace.h"
+#include "utils/rdodebug.h"
+#include "utils/rdotime.h"
 #include "kernel/rdokernel.h"
 #include "repository/rdorepository.h"
+#include "simulator/service/rdosimwin.h"
+#include "simulator/service/procgui_datablock.h"
 #include "simulator/runtime/rdotrace.h"
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/runtime/rdoframe.h"
@@ -45,8 +46,6 @@
 #include "simulator/compiler/parser/rdofrm.h"
 #include "simulator/compiler/parser/rdortp.h"
 #include "simulator/compiler/mbuilder/rdo_resources.h"
-#include "utils/rdodebug.h"
-#include "utils/rdotime.h"
 
 #ifndef DISABLE_CONVERTER
 	#include "converter/smr2rdox/rdoparser.h"
