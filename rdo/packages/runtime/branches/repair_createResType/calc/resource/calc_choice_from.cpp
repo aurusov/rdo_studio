@@ -30,7 +30,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOSelectResourceCalc
 // --------------------------------------------------------------------------------
-RDOSelectResourceCalc::RDOSelectResourceCalc(int relResID, CREF(LPRDOCalc) pCalcChoiceFrom, CREF(LPRDOCalc) pCalcOrder, Type orderType)
+RDOSelectResourceCalc::RDOSelectResourceCalc(ResourceID relResID, CREF(LPRDOCalc) pCalcChoiceFrom, CREF(LPRDOCalc) pCalcOrder, Type orderType)
 	: m_relResID       (relResID       )
 	, m_pCalcChoiceFrom(pCalcChoiceFrom)
 	, m_pCalcOrder     (pCalcOrder     )
@@ -40,6 +40,12 @@ RDOSelectResourceCalc::RDOSelectResourceCalc(int relResID, CREF(LPRDOCalc) pCalc
 // --------------------------------------------------------------------------------
 // -------------------- RDOSelectResourceNonExistCalc
 // --------------------------------------------------------------------------------
+RDOSelectResourceNonExistCalc::RDOSelectResourceNonExistCalc(ResourceID relResID)
+	: RDOSelectResourceCalc(relResID, NULL, NULL)
+{
+	m_value = 1;
+}
+
 REF(RDOValue) RDOSelectResourceNonExistCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
@@ -49,6 +55,21 @@ REF(RDOValue) RDOSelectResourceNonExistCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOSelectResourceDirectCalc
 // --------------------------------------------------------------------------------
+RDOSelectResourceDirectCalc::RDOSelectResourceDirectCalc(ResourceID relResID, ResourceID resID, CREF(LPRDOCalc) pCalcChoiceFrom, CREF(LPRDOCalc) pCalcOrder, Type orderType)
+	: RDOSelectResourceCalc(relResID, pCalcChoiceFrom, pCalcOrder, orderType)
+	, m_resID              (resID                                           )
+{}
+
+rbool RDOSelectResourceDirectCalc::compare(CREF(LPRDOCalc) pCalc) const
+{
+	LPRDOSelectResourceDirectCalc pDirectCalc = pCalc.object_dynamic_cast<RDOSelectResourceDirectCalc>();
+	if (!pDirectCalc)
+	{
+		return false;
+	}
+	return m_relResID == pDirectCalc->m_relResID && m_resID == pDirectCalc->m_resID;
+}
+
 REF(RDOValue) RDOSelectResourceDirectCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->getCurrentActivity()->setRelRes(m_relResID, m_resID);
@@ -65,24 +86,30 @@ REF(RDOValue) RDOSelectResourceDirectCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOSelectResourceByTypeCalc
 // --------------------------------------------------------------------------------
+RDOSelectResourceByTypeCalc::RDOSelectResourceByTypeCalc(ResourceID relResID, ResourceID resTypeID, CREF(LPRDOCalc) pChoiceCalc, CREF(LPRDOCalc) pOrderCalc, Type orderType)
+	: RDOSelectResourceCalc(relResID, pChoiceCalc, pOrderCalc, orderType)
+	, m_resTypeID          (resTypeID                                   )
+{}
+
 REF(RDOValue) RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	RDOValue maxVal   = -DBL_MAX;
-	RDOValue minVal   = DBL_MAX;
-	int res_minmax_id = -1;
+	RDOValue   maxVal      = -DBL_MAX;
+	RDOValue   minVal      = DBL_MAX;
+	ResourceID resMinMaxID = ResourceID(~0);
+
 	RDORuntime::ResCIterator end = pRuntime->res_end();
 	for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != end; it++)
 	{
 		if (*it && (*it)->checkType(m_resTypeID))
 		{
-			int res_id = (*it)->getTraceID();
+			ResourceID resID = (*it)->getTraceID();
 
 			switch (m_orderType)
 			{
 			case order_empty:
 			case order_first:
 				{
-					pRuntime->getCurrentActivity()->setRelRes(m_relResID, res_id);
+					pRuntime->getCurrentActivity()->setRelRes(m_relResID, resID);
 					if (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
 					{
 						pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
@@ -93,7 +120,7 @@ REF(RDOValue) RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 				}
 			case order_with_min:
 				{
-					pRuntime->getCurrentActivity()->setRelRes(m_relResID, res_id);
+					pRuntime->getCurrentActivity()->setRelRes(m_relResID, resID);
 					if (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
 					{
 						pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
@@ -102,14 +129,14 @@ REF(RDOValue) RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 					RDOValue tmp = m_pCalcOrder->calcValue(pRuntime);
 					if (tmp < minVal)
 					{
-						minVal        = tmp;
-						res_minmax_id = res_id;
+						minVal      = tmp;
+						resMinMaxID = resID;
 					}
 					break;
 				}
 			case order_with_max:
 				{
-					pRuntime->getCurrentActivity()->setRelRes(m_relResID, res_id);
+					pRuntime->getCurrentActivity()->setRelRes(m_relResID, resID);
 					if (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
 					{
 						pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
@@ -118,8 +145,8 @@ REF(RDOValue) RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 					RDOValue tmp = m_pCalcOrder->calcValue(pRuntime);
 					if (tmp > maxVal)
 					{
-						maxVal        = tmp;
-						res_minmax_id = res_id;
+						maxVal      = tmp;
+						resMinMaxID = resID;
 					}
 					break;
 				}
@@ -127,9 +154,9 @@ REF(RDOValue) RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 		}
 	}
 
-	if (res_minmax_id != -1)
+	if (resMinMaxID != ~0)
 	{
-		pRuntime->getCurrentActivity()->setRelRes(m_relResID, res_minmax_id);
+		pRuntime->getCurrentActivity()->setRelRes(m_relResID, resMinMaxID);
 		m_value = 1;
 		return m_value;
 	}
@@ -149,13 +176,24 @@ IRDOSelectResourceCommon::~IRDOSelectResourceCommon()
 // --------------------------------------------------------------------------------
 // -------------------- RDOSelectResourceCommonCalc
 // --------------------------------------------------------------------------------
-void RDOSelectResourceCommonCalc::getBest(REF(std::vector< std::vector<int> >) allNumbs, ruint level, REF(std::vector<int>) res, REF(RDOValue) bestVal, CREF(LPRDORuntime) pRuntime, REF(rbool) hasBest) const
+RDOSelectResourceCommonCalc::RDOSelectResourceCommonCalc(CREF(SelectResourceCommonList) resSelectorList, rbool useCommonWithMax, CREF(LPRDOCalc) pCalcChoiceFrom)
+	: m_resSelectorList (resSelectorList )
+	, m_useCommonWithMax(useCommonWithMax)
+	, m_pCalcChoiceFrom (pCalcChoiceFrom )
+{
+	if (m_pCalcChoiceFrom)
+	{
+		setSrcInfo(m_pCalcChoiceFrom->srcInfo());
+	}
+}
+
+void RDOSelectResourceCommonCalc::getBest(REF(ResourceIDTable) allNumbs, ruint level, REF(ResourceIDList) res, REF(RDOValue) bestVal, CREF(LPRDORuntime) pRuntime, REF(rbool) hasBest) const
 {
 	if (level >= allNumbs.size())
 	{
 		for (ruint i = 0; i < m_resSelectorList.size(); i++)
 		{
-			if (!m_resSelectorList.at(i)->callChoice(pRuntime))
+			if (!m_resSelectorList[i]->callChoice(pRuntime))
 			{
 				return; // state not valid
 			}
@@ -164,59 +202,63 @@ void RDOSelectResourceCommonCalc::getBest(REF(std::vector< std::vector<int> >) a
 		if (!hasBest || (m_useCommonWithMax && (newVal > bestVal)) ||
 		   (!m_useCommonWithMax && (newVal < bestVal))) // found better value
 		{
+			ASSERT(res.size() == m_resSelectorList.size());
 			for (ruint i = 0; i < m_resSelectorList.size(); i++)
 			{
-				res.at(i) = pRuntime->getCurrentActivity()->getResByRelRes(i);
+				res[i] = pRuntime->getCurrentActivity()->getResByRelRes(i);
 			}
 			bestVal = newVal;
 			hasBest = true;
 		}
 		return;
 	}
-	REF(std::vector<int>) ourLevel = allNumbs.at(level);
+	ASSERT(level < allNumbs.size());
+	REF(ResourceIDList) ourLevel = allNumbs[level];
 	for (ruint i = 0; i < ourLevel.size(); i++)
 	{
-		pRuntime->getCurrentActivity()->setRelRes(level, ourLevel.at(i));
+		pRuntime->getCurrentActivity()->setRelRes(level, ourLevel[i]);
 		getBest(allNumbs, level+1, res, bestVal, pRuntime, hasBest);
 	}
 }
 
-rbool RDOSelectResourceCommonCalc::getFirst(REF(std::vector< std::vector<int> >) allNumbs, ruint level, CREF(LPRDORuntime) pRuntime) const
+rbool RDOSelectResourceCommonCalc::getFirst(REF(ResourceIDTable) allNumbs, ruint level, CREF(LPRDORuntime) pRuntime) const
 {
 	if (level >= allNumbs.size())
 	{
 		for (ruint i = 0; i < m_resSelectorList.size(); i++)
 		{
-			if (!m_resSelectorList.at(i)->callChoice(pRuntime))
+			if (!m_resSelectorList[i]->callChoice(pRuntime))
 			{
 				return false;
 			}
 		}
 		return true;
 	}
-	REF(std::vector<int>) ourLevel = allNumbs.at(level);
+	ASSERT(level < allNumbs.size());
+	REF(ResourceIDList) ourLevel = allNumbs[level];
 	for (ruint i = 0; i < ourLevel.size(); i++)
 	{
-		pRuntime->getCurrentActivity()->setRelRes(level, ourLevel.at(i));
+		pRuntime->getCurrentActivity()->setRelRes(level, ourLevel[i]);
 		if (getFirst(allNumbs, level+1, pRuntime)) return true;
 	}
 	return false;
 }
 
-//rbool RDOSelectResourceCommonCalc::getFirst(REF(std::vector< std::vector<int> >) allNumbs, int level,CREF(LPRDORuntime) pRuntime) const
+//rbool RDOSelectResourceCommonCalc::getFirst(REF(ResourceIDTable) allNumbs, int level,CREF(LPRDORuntime) pRuntime) const
 //{
 //	if (level <= 0) {
-//		for (int i = 0; i < m_resSelectorList.size(); i++) {
-//			if (!m_resSelectorList.at(i)->callChoice(pRuntime)) {
+//		for (ruint i = 0; i < m_resSelectorList.size(); i++) {
+//			if (!m_resSelectorList[i]->callChoice(pRuntime)) {
 //				return false;
 //			}
 //		}
 //		return true;
 //	} else {
 //		level--;
-//		REF(std::vector<int>) ourLevel = allNumbs.at(level);
-//		for (int i = 0; i < ourLevel.size(); i++) {
-//			pRuntime->setRelRes(level, ourLevel.at(i));
+//		ASSERT(level < allNumbs.size());
+//		REF(ResourceIDList) ourLevel = allNumbs[level];
+//		for (ruint i = 0; i < ourLevel.size(); i++) {
+//			pRuntime->setRelRes(level, ourLevel[i]);
 //			if (getFirst(allNumbs, level, pRuntime)) return true;
 //		}
 //	}
@@ -225,11 +267,13 @@ rbool RDOSelectResourceCommonCalc::getFirst(REF(std::vector< std::vector<int> >)
 
 REF(RDOValue) RDOSelectResourceCommonCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	std::vector< std::vector<int> > allNumbs;
-	std::vector<int> res;
+	ResourceIDTable allNumbs;
+	ResourceIDList res;
 	for (ruint i = 0; i < m_resSelectorList.size(); i++)
 	{
-		allNumbs.push_back(m_resSelectorList.at(i)->getPossibleNumbers(pRuntime));
+		ResourceIDList resourceIDList;
+		m_resSelectorList[i]->getPossibleNumbers(pRuntime, resourceIDList);
+		allNumbs.push_back(resourceIDList);
 		res.push_back(pRuntime->getCurrentActivity()->getResByRelRes(i));
 	}
 	if (!m_pCalcChoiceFrom)
@@ -254,7 +298,7 @@ REF(RDOValue) RDOSelectResourceCommonCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 		{
 			for (ruint i = 0; i < res.size(); i++)
 			{
-				pRuntime->getCurrentActivity()->setRelRes(i, res.at(i));
+				pRuntime->getCurrentActivity()->setRelRes(i, res[i]);
 			}
 			m_value = 1;
 			return m_value;
@@ -267,12 +311,14 @@ REF(RDOValue) RDOSelectResourceCommonCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOSelectResourceDirectCommonCalc
 // --------------------------------------------------------------------------------
-std::vector<int> RDOSelectResourceDirectCommonCalc::getPossibleNumbers(CREF(LPRDORuntime) pRuntime) const
+RDOSelectResourceDirectCommonCalc::RDOSelectResourceDirectCommonCalc(ResourceID relResID, ResourceID resID, CREF(LPRDOCalc) pCalcChoiceFrom, CREF(LPRDOCalc) pCalcOrder, Type orderType)
+	: RDOSelectResourceDirectCalc(relResID, resID, pCalcChoiceFrom, pCalcOrder, orderType)
+{}
+
+void RDOSelectResourceDirectCommonCalc::getPossibleNumbers(CREF(LPRDORuntime) pRuntime, REF(ResourceIDList) resourceIDList) const
 {
 	UNUSED(pRuntime);
-	std::vector<int> res;	
-	res.push_back(m_resID);
-	return res;
+	resourceIDList.push_back(m_resID);
 }
 
 rbool RDOSelectResourceDirectCommonCalc::callChoice(CREF(LPRDORuntime) pRuntime) const
@@ -286,9 +332,12 @@ RDOSelectResourceDirectCommonCalc::~RDOSelectResourceDirectCommonCalc()
 // --------------------------------------------------------------------------------
 // -------------------- RDOSelectResourceByTypeCommonCalc
 // --------------------------------------------------------------------------------
-std::vector<int> RDOSelectResourceByTypeCommonCalc::getPossibleNumbers(CREF(LPRDORuntime) pRuntime) const
+RDOSelectResourceByTypeCommonCalc::RDOSelectResourceByTypeCommonCalc(ResourceID relResID, ResourceID resTypeID, CREF(LPRDOCalc) pChoiceCalc, CREF(LPRDOCalc) pOrderCalc, Type orderType)
+	: RDOSelectResourceByTypeCalc(relResID, resTypeID, pChoiceCalc, pOrderCalc, orderType)
+{}
+
+void RDOSelectResourceByTypeCommonCalc::getPossibleNumbers(CREF(LPRDORuntime) pRuntime, REF(ResourceIDList) resourceIDList) const
 {
-	std::vector<int> res;
 	RDORuntime::ResCIterator end = pRuntime->res_end();
 	for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != end; it++)
 	{
@@ -298,15 +347,13 @@ std::vector<int> RDOSelectResourceByTypeCommonCalc::getPossibleNumbers(CREF(LPRD
 		if (!(*it)->checkType(m_resTypeID))
 			continue;
 
-		res.push_back((*it)->getTraceID());
+		resourceIDList.push_back((*it)->getTraceID());
 	}
-	return res;
 }
 
 rbool RDOSelectResourceByTypeCommonCalc::callChoice(CREF(LPRDORuntime) pRuntime) const
 {
-	const rbool tmp = !const_cast<PTR(RDOSelectResourceByTypeCommonCalc)>(this)->m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool();
-	return (m_pCalcChoiceFrom && tmp) ? false : true;
+	return (m_pCalcChoiceFrom && !const_cast<PTR(RDOSelectResourceByTypeCommonCalc)>(this)->m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool()) ? false : true;
 }
 
 RDOSelectResourceByTypeCommonCalc::~RDOSelectResourceByTypeCommonCalc()

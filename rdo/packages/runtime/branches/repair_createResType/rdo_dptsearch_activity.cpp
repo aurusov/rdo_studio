@@ -11,7 +11,6 @@
 #include "simulator/runtime/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/namespace.h"
 #include "simulator/runtime/rdo_dptsearch_activity.h"
 #include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------

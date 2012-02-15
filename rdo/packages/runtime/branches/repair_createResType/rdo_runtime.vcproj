@@ -2023,10 +2023,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\calc\resource\calc_choice_from.inl"
-					>
-				</File>
-				<File
 					RelativePath=".\calc\resource\calc_create_resource.cpp"
 					>
 				</File>
@@ -2409,6 +2405,18 @@
 			</File>
 			<File
 				RelativePath=".\rdoframe.inl"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name=".common"
+			>
+			<File
+				RelativePath=".\mode.h"
+				>
+			</File>
+			<File
+				RelativePath=".\namespace.h"
 				>
 			</File>
 		</Filter>
