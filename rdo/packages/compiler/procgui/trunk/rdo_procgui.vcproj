@@ -189,8 +189,7 @@
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories="../../../"
 						PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4;BOOST_TYPEOF_SILENT"
-						UsePrecompiledHeader="0"
-						PrecompiledHeaderThrough=""
+						UsePrecompiledHeader="1"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -199,8 +198,7 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						AdditionalIncludeDirectories="../../../"
-						UsePrecompiledHeader="0"
-						PrecompiledHeaderThrough=""
+						UsePrecompiledHeader="1"
 					/>
 				</FileConfiguration>
 			</File>
@@ -209,66 +207,26 @@
 				>
 			</File>
 		</Filter>
-		<File
-			RelativePath=".\procgui.cpp"
+		<Filter
+			Name=".procgui"
 			>
-			<FileConfiguration
-				Name="Debug|Win32"
+			<File
+				RelativePath=".\procgui.cpp"
 				>
-				<Tool
-					Name="VCCLCompilerTool"
-					AdditionalIncludeDirectories="../../../"
-					PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4;BOOST_TYPEOF_SILENT"
-					UsePrecompiledHeader="0"
-					PrecompiledHeaderThrough=""
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32"
+			</File>
+			<File
+				RelativePath=".\procgui.h"
 				>
-				<Tool
-					Name="VCCLCompilerTool"
-					AdditionalIncludeDirectories="../../../"
-					PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
-					UsePrecompiledHeader="0"
-					PrecompiledHeaderThrough=""
-				/>
-			</FileConfiguration>
-		</File>
-		<File
-			RelativePath=".\procgui.h"
-			>
-		</File>
-		<File
-			RelativePath=".\procgui_datablock.cpp"
-			>
-			<FileConfiguration
-				Name="Debug|Win32"
+			</File>
+			<File
+				RelativePath=".\procgui_datablock.cpp"
 				>
-				<Tool
-					Name="VCCLCompilerTool"
-					AdditionalIncludeDirectories="../../../"
-					PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4;BOOST_TYPEOF_SILENT"
-					UsePrecompiledHeader="0"
-					PrecompiledHeaderThrough=""
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32"
+			</File>
+			<File
+				RelativePath=".\procgui_datablock.h"
 				>
-				<Tool
-					Name="VCCLCompilerTool"
-					AdditionalIncludeDirectories="../../../"
-					PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
-					UsePrecompiledHeader="0"
-					PrecompiledHeaderThrough=""
-				/>
-			</FileConfiguration>
-		</File>
-		<File
-			RelativePath=".\procgui_datablock.h"
-			>
-		</File>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
