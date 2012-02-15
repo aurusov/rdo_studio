@@ -422,6 +422,10 @@
 	</References>
 	<Files>
 		<File
+			RelativePath=".\error_code.h"
+			>
+		</File>
+		<File
 			RelativePath=".\namespace.h"
 			>
 		</File>
@@ -485,6 +489,10 @@
 		</File>
 		<File
 			RelativePath="rdosimwin.h"
+			>
+		</File>
+		<File
+			RelativePath=".\show_mode.h"
 			>
 		</File>
 	</Files>

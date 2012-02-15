@@ -28,7 +28,6 @@
 	#endif
 #endif // COMPILER_VISUAL_STUDIO
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/namespace.h"
 #include "utils/rdocommon.h"
 #include "utils/rdostream.h"
 #include "kernel/rdokernel.h"
@@ -210,7 +209,7 @@ private:
 	LPProcGUIProcess                m_pGUIProcess;
 	LPProcGUIBlock                  m_pBlock;
 	rdoRuntime::LPRDOThreadRunTime  m_pThreadRuntime;
-	rdoSimulator::RDOExitCode       m_exitCode;
+	RDOExitCode                     m_exitCode;
 
 	void terminateModel();
 	void closeModel    (); 

@@ -15,7 +15,6 @@
 #include <list>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdointerface.h"
-#include "utils/namespace.h"
 #include "simulator/runtime/rdo_res_type_i.h"
 #include "simulator/runtime/rdo_runtime_interface_registrator.h"
 // --------------------------------------------------------------------------------

@@ -19,8 +19,6 @@
 #include <vector>
 #include <sstream>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/namespace.h"
-#include "simulator/service/namespace.h"
 #include "utils/namespace.h"
 #include "utils/rdotypes.h"
 #include "utils/rdomacros.h"
@@ -164,73 +162,6 @@ OPEN_RDO_NAMESPACE
 		}
 	};
 CLOSE_RDO_NAMESPACE
-
-OPEN_RDO_RUNTIME_NAMESPACE
-	//! Режимы моделирования
-	enum RunTimeMode
-	{
-		RTM_MaxSpeed,   //!< Максимальная производительность
-		RTM_Jump,       //!< Дискретная имитация
-		RTM_Sync,       //!< Синхронная имитация
-		RTM_Pause,      //!< Режим паузы
-		RTM_BreakPoint  //!< Режим точки остановки
-	};
-CLOSE_RDO_RUNTIME_NAMESPACE
-
-OPEN_RDO_SIMULATOR_NAMESPACE
-	//! Режимы анимации
-	enum ShowMode
-	{
-		SM_NoShow,    //!< Без анимации
-		SM_Animation, //!< С анимацией
-		SM_Monitor    //!< Анимация и модель на паузе
-	};
-
-	//! Код окончания компиляции или прогона модели
-	enum RDOExitCode
-	{
-		EC_OK = 0,        //!< Модель скомпилировалась или завершилась без ошибок
-		EC_ParserError,   //!< Компиляция завершилась с ошибкой
-		EC_RunTimeError,  //!< Прогон модели завершился с ошибкой
-		EC_UserBreak,     //!< Модель остановлена пользователем
-		EC_ModelNotFound, //!< Файл прогона модели не найден
-		EC_NoMoreEvents   //!< Модель завершилась потому, что больше нечего моделировать
-	};
-
-	//! Синтаксическая ошибка
-	struct RDOSyntaxError
-	{
-		//! \brief   Код ошибки
-		//! \details Сейчас вместо кода ошибки используется текстовое сообщение об ошибке
-		enum ErrorCode
-		{
-			UNKNOWN = 1, //!< Неизвестная ошибка
-		};
-
-		ErrorCode                     m_code;    //!< Код ошибки
-		tstring                       m_message; //!< Сообщение об ошибке
-		rdoModelObjects::RDOFileType  m_file;    //!< Файл, в котором найдена ошибка
-		ruint                         m_line;    //!< Номер строки с ошибкой
-		ruint                         m_pos;     //!< Позиция ошибки в строке
-		rbool                         m_warning; //!< Признак предупреждения (\b true - предупреждение, \b false - ошибка)
-
-		//! Конструктор ошибки
-		//! \param code    - код ошибки
-		//! \param message - сообщение об ошибке
-		//! \param file    - файл, в котором найдена ошибка
-		//! \param line    - номер строки с ошибкой
-		//! \param pos     - позиция ошибки в строке
-		//! \param warning - признак предупреждения, может отсутствовать. Значение по умолчанию \b false
-		RDOSyntaxError(ErrorCode code, CREF(tstring) message, ruint line, ruint pos, rdoModelObjects::RDOFileType file, rbool warning = false)
-			: m_code   (code   )
-			, m_message(message)
-			, m_line   (line   )
-			, m_pos    (pos    )
-			, m_file   (file   )
-			, m_warning(warning)
-		{}
-	};
-CLOSE_RDO_SIMULATOR_NAMESPACE
 
 #include "utils/rdocommon.inl"
 

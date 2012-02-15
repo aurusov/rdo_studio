@@ -16,6 +16,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdocommon.h"
 #include "simulator/runtime/rdotrace.h"
+#include "simulator/service/show_mode.h"
 #include "converter/smr2rdox/rdo_object.h"
 #include "converter/smr2rdox/rdofun.h"
 // --------------------------------------------------------------------------------

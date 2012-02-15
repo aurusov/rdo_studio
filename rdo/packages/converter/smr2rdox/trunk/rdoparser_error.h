@@ -17,6 +17,7 @@
 #include "converter/smr2rdox/namespace.h"
 #include "converter/smr2rdox/rdo_object.h"
 #include "simulator/runtime/rdo_exception.h"
+#include "simulator/service/error_code.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_NAMESPACE

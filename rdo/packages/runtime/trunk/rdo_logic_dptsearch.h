@@ -12,7 +12,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/namespace.h"
 #include "simulator/runtime/rdo_logic.h"
 #include "simulator/runtime/rdo_priority.h"
 #include "simulator/runtime/calc/calc_base.h"

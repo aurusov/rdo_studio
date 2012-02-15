@@ -2412,6 +2412,10 @@
 			Name=".common"
 			>
 			<File
+				RelativePath=".\mode.h"
+				>
+			</File>
+			<File
 				RelativePath=".\namespace.h"
 				>
 			</File>
