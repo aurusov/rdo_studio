@@ -96,7 +96,7 @@ BEGIN_MESSAGE_MAP( RDOEditorEdit, RDOEditorBaseEdit )
 	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
 	//}}AFX_MSG_MAP
 
-	ON_COMMAND_RANGE( ID_INSERT_PAT_PATOPERATION, ID_INSERT_DPT_MULTITHREADING, OnInsertCommand )
+	ON_COMMAND_RANGE( ID_INSERT_PAT_TEMPL_OPERATION, ID_INSERT_ALGO_RETURN, OnInsertCommand )
 
 END_MESSAGE_MAP()
 
@@ -583,22 +583,27 @@ void RDOEditorEdit::OnInsertCommand( UINT nID )
 	int incPos = -1;
 
 	switch ( nID ) {
-		case ID_INSERT_PAT_PATOPERATION     :
-		case ID_INSERT_PAT_PATIRREGULAREVENT:
-		case ID_INSERT_PAT_PATRULE          : incPos = 9; break;
+		case ID_INSERT_PAT_TEMPL_OPERATION  :
+		case ID_INSERT_PAT_TEMPL_EVENT:
+		case ID_INSERT_PAT_TEMPL_KEYBOARD:
+		case ID_INSERT_PAT_TEMPL_RULE       : incPos = 9;  break;
 		case ID_INSERT_RTP_RTPPERMANENT     :
 		case ID_INSERT_RTP_RTPTEMPORARY     : incPos = 15; break;
 		case ID_INSERT_RSS_RSS              : incPos = 13; break;
-		case ID_INSERT_OPR_OPR              : incPos = 14; break;
-		case ID_INSERT_FRM_FRM              : incPos = 7; break;
+		case ID_INSERT_ALGO_ELSE            : incPos = 6;  break;
+		case ID_INSERT_FRM_FRM              : incPos = 7;  break;
 		case ID_INSERT_FUN_FUN              :
 		case ID_INSERT_FUN_SQN              : incPos = 10; break;
 		case ID_INSERT_FUN_CNS              : incPos = 12; break;
-		case ID_INSERT_DPT_DPTSEARCH        :
-		case ID_INSERT_DPT_DPTSOME          : incPos = 16; break;
+		case ID_INSERT_DPT_TEMPL_SEARCH     :
+		case ID_INSERT_DPT_TEMPL_SOME       : incPos = 16; break;
+		case ID_INSERT_DPT_TEMPL_PRIOR      : incPos = 16; break;
 		case ID_INSERT_DPT_ACTIV            : incPos = 14; break;
 		case ID_INSERT_SMR_SMR              : incPos = 17; break;
 		case ID_INSERT_PMD_PMD              : incPos = 11; break;
+		case ID_INSERT_ALGO_FOR             : incPos = 5;  break;
+		case ID_INSERT_ALGO_IF              :
+		case ID_INSERT_ALGO_IF_ELSE         : incPos = 4;  break;
 	}
 
 	replaceCurrent( static_cast<LPCTSTR>(s), incPos );
