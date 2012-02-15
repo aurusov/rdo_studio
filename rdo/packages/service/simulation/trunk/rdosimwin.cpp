@@ -34,6 +34,7 @@
 
 #include "simulator/service/rdosimwin.h"
 #include "simulator/service/procgui_datablock.h"
+#include "simulator/service/namespace.h"
 #include "kernel/rdokernel.h"
 #include "repository/rdorepository.h"
 #include "simulator/runtime/rdotrace.h"

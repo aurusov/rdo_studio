@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_runtime.h"
+#include "simulator/service/namespace.h"
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/service/procgui_datablock.h"
 // --------------------------------------------------------------------------------

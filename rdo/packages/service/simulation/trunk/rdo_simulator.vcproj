@@ -422,6 +422,10 @@
 	</References>
 	<Files>
 		<File
+			RelativePath=".\namespace.h"
+			>
+		</File>
+		<File
 			RelativePath=".\procgui.cpp"
 			>
 		</File>

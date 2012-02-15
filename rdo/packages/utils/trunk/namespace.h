@@ -16,17 +16,12 @@
 
 //! \namespace rdo
 //! \brief     Базовое пространство имён
-#define OPEN_RDO_NAMESPACE					namespace rdo {
-#define CLOSE_RDO_NAMESPACE					};
-
-//! \namespace rdoSimulator
-//! \brief     Пространство имён симулятора
-#define OPEN_RDO_SIMULATOR_NAMESPACE		namespace rdoSimulator {
-#define CLOSE_RDO_SIMULATOR_NAMESPACE		};
+#define  OPEN_RDO_NAMESPACE  namespace rdo {
+#define CLOSE_RDO_NAMESPACE  };
 
 //! \namespace rdoAnimation
 //! \brief     Пространство имён анимации
-#define OPEN_RDO_ANIMATION_NAMESPACE		namespace rdoAnimation {
-#define CLOSE_RDO_ANIMATION_NAMESPACE		};
+#define  OPEN_RDO_ANIMATION_NAMESPACE  namespace rdoAnimation {
+#define CLOSE_RDO_ANIMATION_NAMESPACE  };
 
 #endif // _UTILS_NAMESPACE_H_

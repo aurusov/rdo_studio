@@ -11,6 +11,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/service/procgui.h"
+#include "simulator/service/namespace.h"
 #include "simulator/compiler/mbuilder/rdo_resources.h"
 #include "simulator/compiler/mbuilder/process.h"
 // --------------------------------------------------------------------------------

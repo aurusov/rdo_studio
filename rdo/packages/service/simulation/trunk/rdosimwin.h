@@ -33,6 +33,7 @@
 #include "kernel/rdokernel.h"
 #include "kernel/rdothread.h"
 #include "simulator/service/procgui.h"
+#include "simulator/service/namespace.h"
 #include "simulator/runtime/thread_proxy_i.h"
 #include "utils/namespace.h"
 #include "converter/smr2rdox/rdo_common/model_objects_convertor.h"
