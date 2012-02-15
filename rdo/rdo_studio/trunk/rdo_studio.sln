@@ -138,7 +138,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_ctrls", "ui\mfc_ctrls\r
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "utils_smart_ptr", "utils\utils_smart_ptr.vcproj", "{7861F6F8-175E-474E-8B38-82F47FF4A377}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_procgui", "simulator\compiler\procgui\procgui.vcproj", "{977EBFEC-18C7-4851-BFB0-C7D430A1E8AA}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_procgui", "simulator\compiler\procgui\rdo_procgui.vcproj", "{977EBFEC-18C7-4851-BFB0-C7D430A1E8AA}"
 	ProjectSection(ProjectDependencies) = postProject
 		{AC7C7972-A31D-4CDE-99E5-B56A19AB6457} = {AC7C7972-A31D-4CDE-99E5-B56A19AB6457}
 		{C34EF28F-1D66-4CEE-B435-7C420DAF0AD3} = {C34EF28F-1D66-4CEE-B435-7C420DAF0AD3}
