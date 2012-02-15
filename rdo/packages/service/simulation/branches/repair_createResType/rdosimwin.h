@@ -32,9 +32,9 @@
 #include "utils/rdostream.h"
 #include "kernel/rdokernel.h"
 #include "kernel/rdothread.h"
-#include "simulator/service/procgui.h"
 #include "simulator/runtime/thread_proxy_i.h"
-#include "utils/namespace.h"
+#include "simulator/compiler/procgui/procgui.h"
+#include "simulator/service/namespace.h"
 #include "converter/smr2rdox/rdo_common/model_objects_convertor.h"
 // --------------------------------------------------------------------------------
 
@@ -164,9 +164,9 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 
 class RDOTrace;
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 PREDECLARE_POINTER(RDOParser);
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 OPEN_RDO_SIMULATOR_NAMESPACE
 
@@ -203,13 +203,13 @@ public:
 	{};
 
 private:
-	rdoParse::LPRDOParser           m_pParser;
+	rdoParser::LPRDOParser          m_pParser;
 	rdoRuntime::LPRDORuntime        m_pRuntime;
 	rbool                           m_canTrace;
 	LPProcGUIProcess                m_pGUIProcess;
 	LPProcGUIBlock                  m_pBlock;
 	rdoRuntime::LPRDOThreadRunTime  m_pThreadRuntime;
-	rdoSimulator::RDOExitCode       m_exitCode;
+	RDOExitCode                     m_exitCode;
 
 	void terminateModel();
 	void closeModel    (); 
@@ -224,9 +224,9 @@ private:
 #ifdef CORBA_ENABLE
 
 //	void corbaGetRTPcount(REF(::CORBA::Long) rtp_count);
-//	void corbaGetRTPParamscount(REF(rdoParse::RDOCorba::PARAM_count) params_count);
-	void corbaGetRTP(REF(rdoParse::RDOCorba::GetRTP_var) my_rtpList);
-	void corbaGetRSS(REF(rdoParse::RDOCorba::GetRSS_var) my_rssList);
+//	void corbaGetRTPParamscount(REF(rdoParser::RDOCorba::PARAM_count) params_count);
+	void corbaGetRTP(REF(rdoParser::RDOCorba::GetRTP_var) my_rtpList);
+	void corbaGetRSS(REF(rdoParser::RDOCorba::GetRSS_var) my_rssList);
 
 #endif // CORBA_ENABLE
 
@@ -282,7 +282,7 @@ public:
 class RDOThreadCodeComp: public RDOThreadMT
 {
 protected:
-	rdoParse::LPRDOParser m_pParser;
+	rdoParser::LPRDOParser m_pParser;
 
 	virtual ~RDOThreadCodeComp(); //! „тобы нельз€ было удалить через delete помещаем его в protected
 	virtual void proc(REF(RDOMessageInfo) msg);

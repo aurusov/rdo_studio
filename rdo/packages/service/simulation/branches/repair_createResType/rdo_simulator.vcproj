@@ -422,19 +422,11 @@
 	</References>
 	<Files>
 		<File
-			RelativePath=".\procgui.cpp"
+			RelativePath=".\error_code.h"
 			>
 		</File>
 		<File
-			RelativePath=".\procgui.h"
-			>
-		</File>
-		<File
-			RelativePath=".\procgui_datablock.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\procgui_datablock.h"
+			RelativePath=".\namespace.h"
 			>
 		</File>
 		<File
@@ -497,6 +489,10 @@
 		</File>
 		<File
 			RelativePath="rdosimwin.h"
+			>
+		</File>
+		<File
+			RelativePath=".\show_mode.h"
 			>
 		</File>
 	</Files>

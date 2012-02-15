@@ -8,6 +8,7 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
 SET(HEADER_FILES
     procgui.h
+	namespace.h
     rdosimwin.h
     procgui_datablock.h)
 
