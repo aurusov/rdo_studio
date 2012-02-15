@@ -15,7 +15,7 @@
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/service/namespace.h"
 #include "simulator/compiler/parser/rdoparser.h"
-#include "simulator/service/procgui_datablock.h"
+#include "simulator/compiler/procgui/procgui_datablock.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_SIMULATOR_NAMESPACE
