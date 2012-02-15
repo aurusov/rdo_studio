@@ -14,7 +14,7 @@
 #include "simulator/compiler/parser/context/stack.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 template <class T>
 inline rdo::intrusive_ptr<T> Context::cast()
@@ -29,4 +29,4 @@ inline rdo::intrusive_ptr<T> Context::cast()
 	return pPrev ? pPrev->cast<T>() : rdo::intrusive_ptr<T>();
 }
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE

@@ -19,7 +19,7 @@
 #include "simulator/runtime/rdo_priority_i.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOLogicActivity
@@ -70,6 +70,6 @@ private:
 	ActivityList m_activityList;
 };
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // _RDOPARSER_LOGIC_H_

@@ -21,7 +21,7 @@
 #include "simulator/compiler/parser/rdoparser_lexer.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 int pmdlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
@@ -57,7 +57,7 @@ void RDOPMDResult::endOfCreation(CREF(LPIResult) pResult)
 	{
 		//! Показатель создаётся не в контексте группы
 		//! Такое может быть из rdoproc_rss.y
-		pResultGroup = rdoParse::RDOParser::s_parser()->findResultGroup(_T(""));
+		pResultGroup = rdoParser::RDOParser::s_parser()->findResultGroup(_T(""));
 		if (!pResultGroup)
 		{
 			//! Нет даже группы по-умолчанию
@@ -303,4 +303,4 @@ void RDOPMDGetValue::init(LPRDOFUNArithm pArithm)
 	endOfCreation(RF(rdoRuntime::RDOPMDGetValue)::create(RDOParser::s_parser()->runtime(), src_text(), pArithm->createCalc()));
 }
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE

@@ -16,7 +16,7 @@
 #include "simulator/compiler/parser/type/type.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- TypeInfo
@@ -44,7 +44,7 @@ private:
 	void init();
 };
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 #include "simulator/compiler/parser/type/info.inl"
 

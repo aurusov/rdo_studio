@@ -220,7 +220,7 @@
 #define PARSER  LEXER->parser()
 #define RUNTIME PARSER->runtime()
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 %}
 
 %left RDO_or
@@ -416,7 +416,7 @@ dpt_seize_param
 			if (rdoMBuilder::BlockForSeize::checkType(rtp, info))
 			{
 				//! \todo принятие решения об изменении типа должно происходить в rdoproc_rtp.y
-				if (!rssList[res_name].checkParserResourceType<rdoParse::RDORSSResource>(PARSER))
+				if (!rssList[res_name].checkParserResourceType<RDORSSResource>(PARSER))
 				{
 					//здесь нужно переделать тип ресурса, а не ресурс
 					rdoMBuilder::BlockForSeize::reobjectRes(rtp, res_name);
@@ -461,7 +461,7 @@ dpt_seize_param
 			if (rdoMBuilder::BlockForSeize::checkType(rtp, info))
 			{
 				//! \todo принятие решения об изменении типа должно происходить в rdoproc_rtp.y
-				if (!rssList[res_name].checkParserResourceType<rdoParse::RDORSSResource>(PARSER))
+				if (!rssList[res_name].checkParserResourceType<RDORSSResource>(PARSER))
 				{
 					rdoMBuilder::BlockForSeize::reobjectRes(rtp, res_name);
 				}
@@ -511,7 +511,7 @@ dpt_release_param
 			if (rdoMBuilder::BlockForSeize::checkType(rtp, info))
 			{
 				//! \todo принятие решения об изменении типа должно происходить в rdoproc_rtp.y
-				if (!rssList[res_name].checkParserResourceType<rdoParse::RDORSSResource>(PARSER))
+				if (!rssList[res_name].checkParserResourceType<RDORSSResource>(PARSER))
 				{
 					rdoMBuilder::BlockForSeize::reobjectRes(rtp, res_name);
 				}
@@ -555,7 +555,7 @@ dpt_release_param
 			if (rdoMBuilder::BlockForSeize::checkType(rtp, info))
 			{
 				//! \todo принятие решения об изменении типа должно происходить в rdoproc_rtp.y
-				if (!rssList[res_name].checkParserResourceType<rdoParse::RDORSSResource>(PARSER))
+				if (!rssList[res_name].checkParserResourceType<RDORSSResource>(PARSER))
 				{
 					rdoMBuilder::BlockForSeize::reobjectRes(rtp, res_name);
 				}
@@ -596,4 +596,4 @@ dpt_process_end
 
 %%
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE

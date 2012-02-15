@@ -16,7 +16,7 @@
 #include "simulator/compiler/parser/type/array.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOArrayValue
@@ -44,6 +44,6 @@ private:
 	LPRDOArrayType m_pArrayType;
 };
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // _RDOPARSER_VALUE_ARRAY_H_
