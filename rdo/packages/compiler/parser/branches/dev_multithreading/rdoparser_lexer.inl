@@ -10,7 +10,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/namespace.h"
+#include "simulator/compiler/parser/namespace.h"
 #include "simulator/compiler/parser/grammar/rdobison.h"
 
 #ifndef __FLEX_LEXER_H
@@ -20,7 +20,7 @@
 #endif
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOLexer
@@ -106,4 +106,4 @@ inline rsint RDOLexer::array_cnt_shw()
 {
 	return m_array_param_cnt;
 }
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE

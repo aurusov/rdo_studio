@@ -29,7 +29,7 @@
 #include "simulator/runtime/calc/calc_pattern.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 int dptlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
@@ -707,4 +707,4 @@ RDOPROCAssign::RDOPROCAssign(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name
 	ASSERT(m_pRuntime);
 }
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE

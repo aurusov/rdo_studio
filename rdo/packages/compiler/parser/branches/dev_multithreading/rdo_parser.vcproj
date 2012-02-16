@@ -2487,6 +2487,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\namespace.h"
+				>
+			</File>
+			<File
 				RelativePath=".\rdo_object.cpp"
 				>
 			</File>

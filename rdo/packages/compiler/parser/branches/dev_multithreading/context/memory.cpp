@@ -16,7 +16,7 @@
 #include "simulator/runtime/calc/procedural/calc_locvar.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- ContextMemory
@@ -79,4 +79,4 @@ void ContextMemory::pop()
 	pLocalVariableListStack->pop();
 }
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE

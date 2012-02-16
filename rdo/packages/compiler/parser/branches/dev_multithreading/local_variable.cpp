@@ -16,7 +16,7 @@
 #include "simulator/runtime/rdo_resource.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- LocalVariable
@@ -56,9 +56,9 @@ void LocalVariableList::append(CREF(LPLocalVariable) pVariable)
 	{
 		if ((*it)->getValue()->value().getIdentificator() == pVariable->getValue()->value().getIdentificator())
 		{
-			rdoParse::g_error().push_only(pVariable->getValue()->src_info(), rdo::format(_T("Переменная %s уже объявлена"), pVariable->getValue()->value().getIdentificator().c_str()));
-			rdoParse::g_error().push_only((*it)->getValue()->src_info(),     _T("См. первое описание"));
-			rdoParse::g_error().push_done();
+			rdoParser::g_error().push_only(pVariable->getValue()->src_info(), rdo::format(_T("Переменная %s уже объявлена"), pVariable->getValue()->value().getIdentificator().c_str()));
+			rdoParser::g_error().push_only((*it)->getValue()->src_info(),     _T("См. первое описание"));
+			rdoParser::g_error().push_done();
 		}
 	}
 
@@ -114,4 +114,4 @@ LPLocalVariable LocalVariableListStack::findLocalVariable(CREF(tstring) name) co
 	return NULL;
 }
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE

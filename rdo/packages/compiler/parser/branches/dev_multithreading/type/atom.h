@@ -15,7 +15,7 @@
 #include "simulator/compiler/parser/type/type.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- ATOM_TYPE_PARSER
@@ -44,6 +44,6 @@ DEFINE_ATOM_TYPE_PARSER(bool         );
 DEFINE_ATOM_TYPE_PARSER(string       );
 DEFINE_ATOM_TYPE_PARSER(void         );
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // _RDOPARSER_TYPE_ATOM_H_

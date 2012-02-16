@@ -18,7 +18,7 @@
 #include "simulator/compiler/parser/type/info.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- LocalVariable
@@ -78,6 +78,6 @@ private:
 	VariableListStack m_pVariableListStack;
 };
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // _LOCAL_VARIABLE_H_

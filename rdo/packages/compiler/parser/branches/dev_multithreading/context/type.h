@@ -16,7 +16,7 @@
 #include "simulator/compiler/parser/context/context.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- ITypeContext
@@ -46,6 +46,6 @@ private:
 };
 DECLARE_POINTER(TypeContext);
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // _RDOPARSER_CONTEXT_TYPE_H_

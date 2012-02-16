@@ -216,7 +216,7 @@
 #define PARSER  LEXER->parser()
 #define RUNTIME PARSER->runtime()
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 %}
 
 %start type_list
@@ -233,7 +233,7 @@ type_list
 	| type_list ext_param_type
 	| error
 	{
-		PARSER->error().error(rdoParse::RDOParserSrcInfo(), _T("Ожидается ключевое слово $Resource_type"));
+		PARSER->error().error(RDOParserSrcInfo(), _T("Ожидается ключевое слово $Resource_type"));
 	}
 	;
 
@@ -803,4 +803,4 @@ param_value_default
 
 %%
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE

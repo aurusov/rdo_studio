@@ -21,7 +21,7 @@
 #include "simulator/runtime/calc/function/calc_function_system.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOParser
@@ -558,4 +558,4 @@ void RDOParser::checkDPTName(CREF(RDOParserSrcInfo) src_info)
 	}
 }
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE

@@ -16,7 +16,7 @@
 #include "simulator/runtime/rdo_array.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOArrayType
@@ -40,6 +40,6 @@ private:
 };
 DECLARE_POINTER(RDOArrayType)
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // _RDOPARSER_TYPE_ARRAY_H_

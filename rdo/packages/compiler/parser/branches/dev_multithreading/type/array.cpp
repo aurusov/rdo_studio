@@ -17,7 +17,7 @@
 #include "simulator/compiler/parser/rdoparser_lexer.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
  //----------------------------------------------------------------------------
  //---------- RDOArrayType
@@ -57,14 +57,14 @@ LPRDOType RDOArrayType::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo) 
 			return pThisArrayType;
 		}
 
-		rdoParse::g_error().push_only(src_info,    rdo::format(_T("Несоответствие размерности массива")));
-		rdoParse::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
-		rdoParse::g_error().push_done();
+		rdoParser::g_error().push_only(src_info,    rdo::format(_T("Несоответствие размерности массива")));
+		rdoParser::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
+		rdoParser::g_error().push_done();
 	}
 
-	rdoParse::g_error().push_only(src_info,    rdo::format(_T("Ожидается тип массива, найдено: %s"), from_src_info.src_text().c_str()));
-	rdoParse::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
-	rdoParse::g_error().push_done();
+	rdoParser::g_error().push_only(src_info,    rdo::format(_T("Ожидается тип массива, найдено: %s"), from_src_info.src_text().c_str()));
+	rdoParser::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
+	rdoParser::g_error().push_done();
 
 	return NULL;
 }
@@ -92,9 +92,9 @@ LPRDOValue RDOArrayType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInf
 		return rdo::Factory<RDOValue>::create(pThisArrayType->typeInfo(), pThisArrayValue, pFrom->src_info());
 	}
 
-	rdoParse::g_error().push_only(src_info,    rdo::format(_T("Ожидается массив, найдено: %s"), pFrom->src_text().c_str()));
-	rdoParse::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
-	rdoParse::g_error().push_done();
+	rdoParser::g_error().push_only(src_info,    rdo::format(_T("Ожидается массив, найдено: %s"), pFrom->src_text().c_str()));
+	rdoParser::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
+	rdoParser::g_error().push_done();
 
 	return NULL;
 }
@@ -135,4 +135,4 @@ LPTypeInfo RDOArrayType::typeInfo() const
 	return pType;
 }
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE

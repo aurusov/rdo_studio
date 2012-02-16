@@ -17,7 +17,7 @@
 #include "utils/smart_ptr/factory.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOTypeRangeRange
@@ -65,7 +65,7 @@ typedef RDOTypeRange<RDOType__real> RDOTypeRealRange;
 DECLARE_POINTER(RDOTypeIntRange);
 DECLARE_POINTER(RDOTypeRealRange);
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 #include "simulator/compiler/parser/type/range.inl"
 

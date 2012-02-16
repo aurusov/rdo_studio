@@ -21,7 +21,7 @@
 #include "simulator/compiler/parser/rdopat.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserRDOItem
@@ -115,6 +115,6 @@ private:
 	virtual void parse(CREF(LPRDOParser) pParser);
 };
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // _RDOPARSER_RDO_H_

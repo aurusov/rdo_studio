@@ -28,7 +28,7 @@
 #include "simulator/runtime/process/rdoprocess.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 int  rtpparse(PTR(void) lexer);
 int  rtplex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
@@ -248,6 +248,6 @@ DECLARE_POINTER(RDORTPResType);
 //	PTR(RDORTPFuzzyTermsSet) m_set; // набор терминов параметра
 //};
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // _RDORTP_H_

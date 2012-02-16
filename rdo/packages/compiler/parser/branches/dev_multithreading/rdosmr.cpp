@@ -20,7 +20,7 @@
 #include "simulator/runtime/calc/resource/calc_resource.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 int smr_file_lex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
@@ -209,4 +209,4 @@ RDOSMR::BreakPoint::BreakPoint(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pL
 	RDOParser::s_parser()->runtime()->insertBreakPoint(src_text(), pLogic->getCalc());
 }
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE

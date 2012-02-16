@@ -13,7 +13,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/namespace.h"
+#include "simulator/compiler/parser/namespace.h"
 #include "simulator/compiler/parser/grammar/rdobison.h"
 #include "utils/smart_ptr/intrusive_ptr.h"
 
@@ -24,7 +24,7 @@
 #endif
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOLexer
@@ -67,9 +67,9 @@ private:
 	rsint             m_array_param_cnt;
 };
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
-#define LEXER     reinterpret_cast<PTR(rdoParse::RDOLexer)>(lexer)
+#define LEXER     reinterpret_cast<PTR(rdoParser::RDOLexer)>(lexer)
 #define LEXER_POS (*LEXER->m_lploc)
 
 #include "simulator/compiler/parser/rdoparser_lexer.inl"

@@ -19,7 +19,7 @@
 #include "simulator/runtime/calc/resource/calc_resource.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 int rtplex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
@@ -112,16 +112,16 @@ LPRDOType RDORTPResType::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo)
 				return pThisRTPType;
 
 			//! Типы разные, сгенерим ошибку
-			rdoParse::g_error().push_only(src_info,    _T("Несоответствие типов ресурсов"));
-			rdoParse::g_error().push_only(to_src_info, to_src_info.src_text());
-			rdoParse::g_error().push_done();
+			rdoParser::g_error().push_only(src_info,    _T("Несоответствие типов ресурсов"));
+			rdoParser::g_error().push_only(to_src_info, to_src_info.src_text());
+			rdoParser::g_error().push_done();
 			break;
 		}
 	default:
 		{
-			rdoParse::g_error().push_only(src_info,    rdo::format(_T("Ожидается тип ресурса, найдено: %s"), from_src_info.src_text().c_str()));
-			rdoParse::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
-			rdoParse::g_error().push_done();
+			rdoParser::g_error().push_only(src_info,    rdo::format(_T("Ожидается тип ресурса, найдено: %s"), from_src_info.src_text().c_str()));
+			rdoParser::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
+			rdoParser::g_error().push_done();
 			break;
 		}
 	}
@@ -143,15 +143,15 @@ LPRDOValue RDORTPResType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcIn
 			return pFrom;
 
 		//! Типы разные, сгенерим ошибку
-		rdoParse::g_error().push_only(src_info,    _T("Несоответствие типов ресурсов"));
-		rdoParse::g_error().push_only(to_src_info,  rdo::format(  _T("Ожидается: %s"), to_src_info.src_text().c_str()));
-		rdoParse::g_error().push_only(src_info,  rdo::format(  _T("Пришел: %s"), pFrom->src_text().c_str()));
-		rdoParse::g_error().push_only(to_src_info, to_src_info.src_text());
-		rdoParse::g_error().push_done();
+		rdoParser::g_error().push_only(src_info,    _T("Несоответствие типов ресурсов"));
+		rdoParser::g_error().push_only(to_src_info,  rdo::format(  _T("Ожидается: %s"), to_src_info.src_text().c_str()));
+		rdoParser::g_error().push_only(src_info,  rdo::format(  _T("Пришел: %s"), pFrom->src_text().c_str()));
+		rdoParser::g_error().push_only(to_src_info, to_src_info.src_text());
+		rdoParser::g_error().push_done();
 	}
-	rdoParse::g_error().push_only(src_info,    rdo::format(_T("Ожидается ресурс, найдено: %s"), pFrom->src_text().c_str()));
-	rdoParse::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
-	rdoParse::g_error().push_done();
+	rdoParser::g_error().push_only(src_info,    rdo::format(_T("Ожидается ресурс, найдено: %s"), pFrom->src_text().c_str()));
+	rdoParser::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
+	rdoParser::g_error().push_done();
 
 	return LPRDOValue(NULL);
 }
@@ -220,4 +220,4 @@ RDORTPFuzzyTerm::RDORTPFuzzyTerm(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInf
 
 }*/
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE

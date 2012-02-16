@@ -103,6 +103,7 @@ SET(HEADER_FILES
 	local_variable.h
 	param.h
 	pch.h
+	namespace.h
 	rdo_array.h
 	${GRAMMA_PATH}/rdobison.h
 	rdodpt.h

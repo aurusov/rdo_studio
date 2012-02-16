@@ -17,7 +17,7 @@
 #include "simulator/compiler/parser/context/stack.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- Context
@@ -61,7 +61,7 @@ private:
 	void setContextStack(CREF(LPContextStack) pContextStack);
 };
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 #include "simulator/compiler/parser/context/context.inl"
 
