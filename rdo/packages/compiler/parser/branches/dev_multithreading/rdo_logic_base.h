@@ -13,12 +13,11 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/namespace.h"
 #include "utils/rdomacros.h"
 #include "simulator/compiler/parser/rdofun.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 OBJECT_VIRTUAL(RDOLogicBase)
 	IS INSTANCE_OF(RDOParserSrcInfo)
@@ -43,6 +42,6 @@ protected:
 	rbool         m_multithreading;
 };
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // _PARSER_LOGIC_BASE_H_

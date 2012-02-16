@@ -17,7 +17,7 @@
 #include "simulator/runtime/rdo_priority.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOLogicBase
@@ -78,4 +78,4 @@ RDOLogicBase::RDOLogicBase(CREF(RDOParserSrcInfo) src_info)
 RDOLogicBase::~RDOLogicBase()
 {}
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
