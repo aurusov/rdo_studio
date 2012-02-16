@@ -42,27 +42,27 @@ rbool RDOLogicBase::getMultithreading() const
 	return m_multithreading;
 }
 
-void RDOLogicBase::setMultithreading (rbool multithreading)
+void RDOLogicBase::setMultithreading(rbool multithreading)
 {
 	m_multithreading = multithreading;
 }
 
-void RDOLogicBase::setCondition (CREF(LPRDOFUNLogic) pConditon)
+void RDOLogicBase::setCondition(CREF(LPRDOFUNLogic) pConditon)
 {
 	m_pConditon = pConditon;
 }
 
-LPRDOFUNLogic RDOLogicBase::getConditon () const
+LPRDOFUNLogic RDOLogicBase::getConditon() const
 {
 	return m_pConditon;
 }
 
-LPILogic RDOLogicBase::getLogic () const
+LPILogic RDOLogicBase::getLogic() const
 {
 	return m_pRuntimeLogic;
 }
 
-void RDOLogicBase::end ()
+void RDOLogicBase::end()
 {
 	if (getConditon())
 	{

@@ -33,9 +33,9 @@ public:
 	typedef  rdo::intrusive_ptr<Activity> LPActivity;
 	typedef  std::vector<LPActivity>      ActivityList;
 
-	LPActivity         addNewActivity  (CREF(RDOParserSrcInfo) activity_src_info, CREF(RDOParserSrcInfo) pattern_src_info);
-	LPActivity         getLastActivity () const;
-	CREF(ActivityList) getActivities   () const;
+	LPActivity         addNewActivity (CREF(RDOParserSrcInfo) activity_src_info, CREF(RDOParserSrcInfo) pattern_src_info);
+	LPActivity         getLastActivity() const;
+	CREF(ActivityList) getActivities  () const;
 
 protected:
 	RDOLogic(CREF(RDOLogicBase) src_info)

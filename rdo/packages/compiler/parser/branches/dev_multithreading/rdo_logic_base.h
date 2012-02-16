@@ -24,14 +24,14 @@ OBJECT_VIRTUAL(RDOLogicBase)
 {
 DECLARE_FACTORY(RDOLogicBase);
 public:
-	CREF(tstring) name              () const;
-	rbool         setPrior          (REF(LPRDOFUNArithm) pPrior);
-	rbool         getMultithreading () const;
-	void          setMultithreading (rbool multithreading);
-	void          setCondition      (CREF(LPRDOFUNLogic) pConditon = NULL);
-	LPRDOFUNLogic getConditon       () const;
-	LPILogic      getLogic          () const;
-	virtual void  end               ();
+	CREF(tstring) name             () const;
+	rbool         setPrior         (REF(LPRDOFUNArithm) pPrior);
+	rbool         getMultithreading() const;
+	void          setMultithreading(rbool multithreading);
+	void          setCondition     (CREF(LPRDOFUNLogic) pConditon = NULL);
+	LPRDOFUNLogic getConditon      () const;
+	LPILogic      getLogic         () const;
+	virtual void  end              ();
 
 protected:
 	RDOLogicBase(CREF(RDOParserSrcInfo) src_info);
