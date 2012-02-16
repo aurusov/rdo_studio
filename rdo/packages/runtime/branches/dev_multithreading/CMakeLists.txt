@@ -17,6 +17,7 @@ SET(HEADER_FILES
 	keyboard.h
 	equaltype.h
 	pch.h
+	namespace.h
 	rdo_activity.h
 	rdo_activity_i.h
 	rdo_array.h
@@ -246,6 +247,9 @@ SET(RDO_RUNTIME_TEST_PATH ${CMAKE_CURRENT_SOURCE_DIR}/test)
 ADD_SUBDIRECTORY(${RDO_RUNTIME_TEST_PATH})
 
 IF(MSVC) # lotions for windows #
+
+SOURCE_GROUP(".common" FILES 
+	namespace.h)
 
 SOURCE_GROUP(".keyboard" FILES 
 	keyboard.h)

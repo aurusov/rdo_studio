@@ -2408,6 +2408,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name=".common"
+			>
+			<File
+				RelativePath=".\mode.h"
+				>
+			</File>
+			<File
+				RelativePath=".\namespace.h"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

@@ -20,7 +20,6 @@
 #endif // COMPILER_VISUAL_STUDIO
 #include <time.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/namespace.h"
 #include "utils/rdocommon.h"
 #include "utils/smart_ptr/intrusive_ptr.h"
 #include "simulator/runtime/rdotrace.h"

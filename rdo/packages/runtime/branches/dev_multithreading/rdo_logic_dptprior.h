@@ -12,7 +12,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/namespace.h"
 #include "simulator/runtime/rdo_logic.h"
 #include "simulator/runtime/rdo_priority.h"
 // --------------------------------------------------------------------------------
@@ -54,11 +53,10 @@ class RDODPTPrior: public RDOLogicDPTPrior, public RDOPatternPrior
 DEFINE_IFACTORY(RDODPTPrior);
 QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_PARENT(RDOLogicDPTPrior)
-QUERY_INTERFACE_PARENT(RDOPatternPrior)
+QUERY_INTERFACE_PARENT(RDOPatternPrior )
 QUERY_INTERFACE_END
-
 private:
-	RDODPTPrior(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer parent = NULL);
+	RDODPTPrior(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer pParent = NULL);
 	virtual ~RDODPTPrior();
 };
 
