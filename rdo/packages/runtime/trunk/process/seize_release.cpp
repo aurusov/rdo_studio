@@ -94,7 +94,7 @@ IBaseOperation::BOResult RDOPROCSeize::onDoOperation(CREF(LPRDORuntime) pRuntime
 	return IBaseOperation::BOR_done;
 }
 
-void RDOPROCSeize::transactGoIn(PTR(RDOPROCTransact) pTransact)
+void RDOPROCSeize::transactGoIn(CREF(LPTransact) pTransact)
 {
 	int sizeSeizes = forRes.size();
 	for(int i = 0; i < sizeSeizes; ++i)
@@ -104,14 +104,14 @@ void RDOPROCSeize::transactGoIn(PTR(RDOPROCTransact) pTransact)
 	RDOPROCBlockForSeize::transactGoIn(pTransact);
 }
 
-void RDOPROCSeize::transactGoOut(RDOPROCTransact* _transact)
+void RDOPROCSeize::transactGoOut(CREF(LPTransact) pTransact)
 {
 	int Size_Seizes = forRes.size();
 	for(int i = 0; i < Size_Seizes; ++i)
 	{
-		forRes[i].rss->transacts.remove(_transact);
+		forRes[i].rss->transacts.remove(pTransact);
 	}
-	RDOPROCBlockForSeize::transactGoOut(_transact);
+	RDOPROCBlockForSeize::transactGoOut(pTransact);
 }
 
 void RDOPROCSeize::onStop(CREF(LPRDORuntime) pRuntime)

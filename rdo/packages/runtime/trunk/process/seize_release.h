@@ -83,8 +83,8 @@ private:
 
 	ruint index;
 
-	virtual void transactGoIn (PTR(RDOPROCTransact) pTransact);
-	virtual void transactGoOut(PTR(RDOPROCTransact) _transact);
+	virtual void transactGoIn (CREF(LPTransact) pTransact);
+	virtual void transactGoOut(CREF(LPTransact) pTransact);
 
 	DECLARE_IBaseOperation;
 };
