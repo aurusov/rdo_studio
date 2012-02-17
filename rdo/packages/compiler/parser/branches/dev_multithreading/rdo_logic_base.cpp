@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2012
-  \file      simulator/compiler/parser/rdo_logic_base.inl
+  \file      simulator/compiler/parser/rdo_logic_base.cpp
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \authors   Клеванец Игорь (impus@hotbox.ru)
   \date      5.02.2012
