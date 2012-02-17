@@ -38,4 +38,13 @@ inline const typename RDOLogic<RTLogic, Activity>::ActivityList& RDOLogic<RTLogi
 	return m_activityList;
 }
 
+template<class RTLogic, class Activity>
+inline RDOLogic::RDOLogic(CREF(RDOLogicBase) src_info)
+	: RDOLogicBase(src_info)
+{}
+
+template<class RTLogic, class Activity>
+inline RDOLogic::~RDOLogic()
+{}
+
 CLOSE_RDO_PARSER_NAMESPACE
