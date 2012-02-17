@@ -39,12 +39,12 @@ inline const typename RDOLogic<RTLogic, Activity>::ActivityList& RDOLogic<RTLogi
 }
 
 template<class RTLogic, class Activity>
-inline RDOLogic::RDOLogic(CREF(RDOLogicBase) src_info)
+inline RDOLogic<RTLogic, Activity>::RDOLogic(CREF(RDOLogicBase) src_info)
 	: RDOLogicBase(src_info)
 {}
 
 template<class RTLogic, class Activity>
-inline RDOLogic::~RDOLogic()
+inline RDOLogic<RTLogic, Activity>::~RDOLogic()
 {}
 
 CLOSE_RDO_PARSER_NAMESPACE
