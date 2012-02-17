@@ -3,6 +3,7 @@
   \file      main.cpp
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \authors   Пройдаков Евгений (lord.tiran@gmail.com)
+  \authors   Романов Ярослав (robot.xet@gmail.com)
   \date      13.07.2009
   \brief     Тест для RDOValue
   \indent    4T
@@ -39,104 +40,117 @@ BOOST_AUTO_TEST_CASE(RDOValue_String)
 	BOOST_CHECK(value2.getAsString() == str1 + str2);
 }
 
-BOOST_AUTO_TEST_CASE(RDOValue_Rsint)
+BOOST_AUTO_TEST_CASE(RDOValue_Rsint_Arifmethic)
 {
-	const rsint int1 = 30;
-	rdoRuntime::RDOValue value1(int1);
-	BOOST_CHECK(value1.getInt() == int1);
+	const rsint val1 = 30;
+	rdoRuntime::RDOValue value1(val1);
+	BOOST_CHECK(value1.getInt() == val1);
 
 	rdoRuntime::RDOValue value2 = value1;
-	BOOST_CHECK(value2 == int1);
+	BOOST_CHECK(value2 == val1);
 	BOOST_CHECK(value2 == value1);
 
-	const rsint int2 = 20;
-	value1 += int2;
-	BOOST_CHECK(value1 == int1 + int2);
+	const rsint val2 = 20;
+	value1 += val2;
+	BOOST_CHECK(value1 == val1 + val2);
 
-	const rsint int3 = 10;
-	value1 -= int3;
-	BOOST_CHECK(value1 == int1 + int2 - int3);
+	const rsint val3 = 10;
+	value1 -= val3;
+	BOOST_CHECK(value1 == val1 + val2 - val3);
 	
-	const rsint int4 = 2;
+	const rsint val4 = 2;
 	value2 = value1;
-	value2 *= int4;
-	BOOST_CHECK(value2 == value1 * int4);
+	value2 *= val4;
+	BOOST_CHECK(value2 == (val1 + val2 - val3) * val4);
 
-	const rsint int5 = 5;
+	const rsint val5 = 5;
 	value2 = value1;
-	value2 /= int5;
-	BOOST_CHECK(value2 == value1 / int5);
+	value2 /= val5;
+	BOOST_CHECK(value2 == ((val1 + val2 - val3) * val4) / val5);
 	
 	value2 = value1;
 	value2 --;
 	BOOST_CHECK(value2 == value1 - 1);	
 	value2 ++;
 	BOOST_CHECK(value2 == value1);
+}
 
-	value1 = int1;
-	value2 = int2;
+BOOST_AUTO_TEST_CASE(RDOValue_Rsint_Compare)
+{
+	const rsint val1 = 30;
+	const rsint val2 = 20;
+	rdoRuntime::RDOValue value1(val1);
+	rdoRuntime::RDOValue value2(val2);
+	
 	BOOST_CHECK(value1 != value2);
 	BOOST_CHECK(value1 > value2);	
 	BOOST_CHECK(value2 < value1);
 	BOOST_CHECK(value1 >= value2);
 	BOOST_CHECK(value2 <= value1);
-	value2 = int1;
+	value2 = val1;
 	BOOST_CHECK(value1 >= value2);
 	BOOST_CHECK(value2 <= value1);
-
 }
 
-BOOST_AUTO_TEST_CASE(RDOValue_Ruint)
+BOOST_AUTO_TEST_CASE(RDOValue_Ruint_Arifmethic)
 {
-	const ruint int1 = 30;
-	rdoRuntime::RDOValue value1(int1);
-	BOOST_CHECK(value1 == int1);
+	const ruint val1 = 30;
+	rdoRuntime::RDOValue value1(val1);
+	BOOST_CHECK(value1 == val1);
+	//BOOST_CHECK(value1.getUInt() == val1);
 
 	rdoRuntime::RDOValue value2 = value1;
-	BOOST_CHECK(value2 == int1);
+	BOOST_CHECK(value2 == val1);
 	BOOST_CHECK(value2 == value1);
 
-	const ruint int2 = 20;
-	value1 += int2;
-	BOOST_CHECK(value1 == int1 + int2);
+	const ruint val2 = 20;
+	value1 += val2;
+	BOOST_CHECK(value1 == val1 + val2);
 
-	const ruint int3 = 10;
-	value1 -= int3;
-	BOOST_CHECK(value1 == int1 + int2 - int3);
+	const ruint val3 = 10;
+	value1 -= val3;
+	BOOST_CHECK(value1 == val1 + val2 - val3);
 
-	const ruint int4 = 2;
+	const ruint val4 = 2;
 	value2 = value1;
-	value2 *= int4;
-	BOOST_CHECK(value2 == value1 * int4);
+	value2 *= val4;
+	BOOST_CHECK(value2 == (val1 + val2 - val3) * val4);
 
-	const ruint int5 = 5;
+	const ruint val5 = 5;
 	value2 = value1;
-	value2 /= int5;
-	BOOST_CHECK(value2 == value1 / int5);
+	value2 /= val5;
+	BOOST_CHECK(value2 == ((val1 + val2 - val3) * val4) / val5);
 
 	value2 = value1;
 	value2 --;
 	BOOST_CHECK(value2 == value1 - 1);	
 	value2 ++;
 	BOOST_CHECK(value2 == value1);	
+}
 
-	value1 = int1;
-	value2 = int2;
+BOOST_AUTO_TEST_CASE(RDOValue_Ruint_Compare)
+{
+	const ruint val1 = 30;
+	const ruint val2 = 20;
+	rdoRuntime::RDOValue value1(val1);
+	rdoRuntime::RDOValue value2(val2);
+	
 	BOOST_CHECK(value1 != value2);
 	BOOST_CHECK(value1 > value2);	
 	BOOST_CHECK(value2 < value1);
 	BOOST_CHECK(value1 >= value2);
 	BOOST_CHECK(value2 <= value1);
-	value2 = int1;
+	value2 = val1;
 	BOOST_CHECK(value1 >= value2);
 	BOOST_CHECK(value2 <= value1);
 }
 
-BOOST_AUTO_TEST_CASE(RDOValue_Double)
+BOOST_AUTO_TEST_CASE(RDOValue_Double_Arifmethic)
 {
 	const double doub1 = 30.2;
 	rdoRuntime::RDOValue value1(doub1);
 	BOOST_CHECK(value1 == doub1);
+	//BOOST_CHECK(value1.getDouble() == doub1);
 
 	rdoRuntime::RDOValue value2 = value1;
 	BOOST_CHECK(value2 == doub1);
@@ -153,21 +167,27 @@ BOOST_AUTO_TEST_CASE(RDOValue_Double)
 	const double doub4 = 2.5;
 	value2 = value1;
 	value2 *= doub4;
-	BOOST_CHECK(value2 == value1 * doub4);
+	BOOST_CHECK(value2 == (doub1 + doub2 - doub3) * doub4);
 
 	const double doub5 = 5;
 	value2 = value1;
 	value2 /= doub5;
-	BOOST_CHECK(value2 == value1 / doub5);
+	BOOST_CHECK(value2 == ((doub1 + doub2 - doub3) * doub4) / doub5);
 
 	value2 = value1;
 	value2 --;
 	BOOST_CHECK(value2 == value1 - 1);	
 	value2 ++;
 	BOOST_CHECK(value2 == value1);	
+}
 
-	value1 = doub1;
-	value2 = doub2;
+BOOST_AUTO_TEST_CASE(RDOValue_Double_Compare)
+{
+	const double doub1 = 30.2;
+	const double doub2 = 20.5;
+	rdoRuntime::RDOValue value1(doub1);
+	rdoRuntime::RDOValue value2(doub2);
+	
 	BOOST_CHECK(value1 != value2);
 	BOOST_CHECK(value1 > value2);	
 	BOOST_CHECK(value2 < value1);
@@ -214,22 +234,22 @@ BOOST_AUTO_TEST_CASE(RDOValue_Char)
 	value1 = value2;
 	BOOST_CHECK(value1 == value2);
 }
-
+/*
 BOOST_AUTO_TEST_CASE(RDOValue_Enum)
 {
 	using namespace rdoRuntime;
 
 	LPRDOEnumType pEnum = rdo::Factory<RDOEnumType>::create();
 	BOOST_CHECK(pEnum);
-	pEnum->empty();	
+	
 }
+*/
 /*
 BOOST_AUTO_TEST_CASE(RDOValue_Identificator)
 {
 	
 }
 */
-
 BOOST_AUTO_TEST_CASE(RDOValue_Resource)
 {
 	using namespace rdoRuntime;
