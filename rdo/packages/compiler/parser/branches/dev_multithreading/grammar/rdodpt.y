@@ -643,31 +643,40 @@ dpt_some_begin
 		LPRDOValue pParentName = PARSER->stack().pop<RDOValue>($5);
 		ASSERT(pName);
 
-		LPRDOLogicBase pLogicBase;
+		LPRDODPTSome pDPTSome;
 		if (pParentName->defined())
 		{
-			LPRDOLogicBase pParentLogicBase = PARSER->findLogicBase (pParentName->value().getIdentificator());
-			if (!pParentLogicBase)
+			//LPRDOLogicBase pParentLogicBase = PARSER->findLogicBase(pParentName->value().getIdentificator());
+			LPRDODPTPrior  pParentDPTPrior  = PARSER->findDPTPrior (pParentName->value().getIdentificator());
+			LPRDODPTSearch pParentDPTSearch = PARSER->findDPTSearch(pParentName->value().getIdentificator());
+			LPRDODPTSome   pParentDPTSome   = PARSER->findDPTSome  (pParentName->value().getIdentificator());
+			if (!pParentDPTPrior && !pParentDPTSearch && !pParentDPTSome)
 			{
 				PARSER->error().error(@1, rdo::format(_T("Не найдена родитеская точка %s"), pParentName->value().getIdentificator().c_str()));
 			}
-			if (PARSER->findDPTSearch(pParentName->value().getIdentificator()))
+			if (pParentDPTSearch)
 			{
 				PARSER->error().error(@5, @1, _T("Точка принятия решений типа search может содержать лишь активности типа rule и не может быть указана в качестве родительской точки"));
 			}
-			else if (pParentLogicBase)
+			else if (pParentDPTPrior)
 			{
-				LPILogic pParentLogic = pParentLogicBase->getLogic();
+				LPILogic pParentLogic = pParentDPTPrior->getLogic();
 				ASSERT(pParentLogic);
-				pLogicBase = rdo::Factory<RDODPTSome>::create(pName->src_info(), pParentLogic);
+				pDPTSome = rdo::Factory<RDODPTSome>::create(pName->src_info(), pParentLogic);
+			}
+			else if (pParentDPTSome)
+			{
+				LPILogic pParentLogic = pParentDPTSome->getLogic();
+				ASSERT(pParentLogic);
+				pDPTSome = rdo::Factory<RDODPTSome>::create(pName->src_info(), pParentLogic);
 			}
 		}
 		else
 		{
-			pLogicBase = rdo::Factory<RDODPTSome>::create(pName->src_info());
+			pDPTSome = rdo::Factory<RDODPTSome>::create(pName->src_info());
 		}
-		ASSERT(pLogicBase);
-		$$ = PARSER->stack().push(pLogicBase);
+		ASSERT(pDPTSome);
+		$$ = PARSER->stack().push(pDPTSome);
 	}
 	;
 
