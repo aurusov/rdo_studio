@@ -12,14 +12,9 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/compiler/parser/namespace.h"
 #include "simulator/runtime/rdotrace.h"
 #include "simulator/runtime/rdo_simulator.h"
 // --------------------------------------------------------------------------------
-
-OPEN_RDO_PARSER_NAMESPACE
-class RDODPTSome;
-CLOSE_RDO_PARSER_NAMESPACE
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
