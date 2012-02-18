@@ -12,7 +12,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/namespace.h"
 #include "utils/rdointerface.h"
 #include "simulator/runtime/rdo_rule_i.h"
 #include "simulator/runtime/rdo_runtime_interface_registrator.h"

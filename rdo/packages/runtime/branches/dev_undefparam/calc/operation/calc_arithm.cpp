@@ -28,7 +28,7 @@ REF(RDOValue) RDOCalcDiv::doCalc(CREF(LPRDORuntime) pRuntime)
 	REF(RDOValue) rVal = m_pRight->calcValue(pRuntime);
 	if (rVal == 0)
 	{
-		pRuntime->error().push(_T("Деление на ноль"), this);
+		pRuntime->error().push(_T("Деление на ноль"), srcInfo());
 	}
 	m_value = m_pLeft->calcValue(pRuntime) / rVal;
 	return m_value;

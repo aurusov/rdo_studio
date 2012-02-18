@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/error.h"
+#include "simulator/runtime/rdo_exception.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -26,17 +27,16 @@ void Error::push(CREF(rdoSimulator::RDOSyntaxError) error)
 	throw RDORuntimeException(_T(""));
 }
 
-void Error::push(CREF(tstring) message, CREF(LPRDOCalc) pCalc)
+void Error::push(CREF(tstring) message, CREF(RDOSrcInfo) srcInfo)
 {
 	ASSERT(!message.empty());
-	ASSERT(pCalc);
 
 	rdoSimulator::RDOSyntaxError error(
 		rdoSimulator::RDOSyntaxError::UNKNOWN,
 		message,
-		pCalc->srcInfo().src_pos().m_last_line,
-		pCalc->srcInfo().src_pos().m_last_pos,
-		pCalc->srcInfo().src_filetype()
+		srcInfo.src_pos().m_last_line,
+		srcInfo.src_pos().m_last_pos,
+		srcInfo.src_filetype()
 	);
 	push(error);
 }

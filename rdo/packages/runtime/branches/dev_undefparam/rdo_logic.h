@@ -18,7 +18,6 @@
 	#pragma warning(disable : 4786)
 #endif
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/namespace.h"
 #include "simulator/runtime/rdo.h"
 #include "simulator/runtime/rdo_runtime_interface_registrator.h"
 #include "simulator/runtime/rdo_logic_i.h"
@@ -54,8 +53,8 @@ protected:
 	LPRDOCalc                  m_pCondition;
 	rbool                      m_lastCondition;
 	ChildList                  m_childList;
-	LPIBaseOperation           m_first;
-	LPIBaseOperationContainer  m_parent;
+	LPIBaseOperation           m_pFirst;
+	LPIBaseOperationContainer  m_pParent;
 
 private:
 	rbool checkSelfCondition(CREF(LPRDORuntime) pRuntime);

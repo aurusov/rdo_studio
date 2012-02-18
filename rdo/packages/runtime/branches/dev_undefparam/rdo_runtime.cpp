@@ -25,7 +25,7 @@
 #include "simulator/runtime/rdo_activity.h"
 #include "simulator/runtime/rdo_rule.h"
 #include "simulator/runtime/rdo_operation.h"
-#include "simulator/runtime/rdoprocess.h"
+#include "simulator/runtime/process/rdoprocess.h"
 #include "simulator/runtime/result/result.h"
 #include "simulator/runtime/rdoframe.h"
 #include "simulator/runtime/rdodptrtime.h"
@@ -211,11 +211,11 @@ void RDORuntime::onEraseRes(ruint resourceID, CREF(LPRDOEraseResRelCalc) pCalc)
 	LPRDOResource res = m_resourceListByID.at(resourceID);
 	if (!res)
 	{
-		error().push(rdo::format(_T("Временный ресурс уже удален. Возможно, он удален ранее в этом же образце. Имя релевантного ресурса: %s"), pCalc ? pCalc->getName().c_str() : "неизвестное имя"), pCalc);
+		error().push(rdo::format(_T("Временный ресурс уже удален. Возможно, он удален ранее в этом же образце. Имя релевантного ресурса: %s"), pCalc ? pCalc->getName().c_str() : "неизвестное имя"), pCalc->srcInfo());
 	}
 	if (!res->canFree())
 	{
-		error().push(_T("Невозможно удалить ресурс, т.к. он еще используется"), pCalc);
+		error().push(_T("Невозможно удалить ресурс, т.к. он еще используется"), pCalc->srcInfo());
 	}
 	else
 	{
