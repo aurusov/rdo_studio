@@ -210,13 +210,16 @@
 #include "simulator/compiler/parser/rdortp.h"
 #include "simulator/compiler/parser/rdorss.h"
 #include "simulator/runtime/calc/calc_array.h"
+#include "simulator/runtime/calc/calc_process.h"
+#include "simulator/runtime/calc/function/calc_function_system.h"
+#include "simulator/runtime/rdo_res_type_i.h"
 #include "simulator/compiler/mbuilder/rdo_resources.h"
 // --------------------------------------------------------------------------------
 
 #define PARSER  LEXER->parser()
 #define RUNTIME PARSER->runtime()
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 %}
 
 %left RDO_or
@@ -335,8 +338,44 @@ dpt_process_line
 	{
 		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
 		ASSERT(pArithm);
-		LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCGenerate>::create(PARSER->getLastPROCProcess(), _T("GENERATE"), pArithm->createCalc());
+
+		rdoRuntime::LPRDOCalc pCalcTime = pArithm->createCalc();
+		ASSERT(pCalcTime);
+
+		LPRDOPROCProcess pProc = PARSER->getLastPROCProcess();
+		ASSERT(pProc);
+
+		LPRDORTPResType pParserType = pProc->getTransacType();
+		ASSERT(pParserType);
+		
+		rdoRuntime::LPIResourceType pType = pParserType->getRuntimeResType();
+		ASSERT(pType);
+
+		rbool permanentFlag = pParserType->isPermanent();
+		rbool traceFlag     = true;
+
+		std::vector<rdoRuntime::RDOValue> paramList;
+		paramList.push_back(rdoRuntime::RDOValue(0));
+
+		rdoRuntime::LPRDOCalcCreateAndGoInTransact pCreateAndGoOnTransactCalc = rdo::Factory<rdoRuntime::RDOCalcCreateAndGoInTransact>::create(
+			pType,
+			paramList,
+			traceFlag,
+			permanentFlag
+		);
+		ASSERT(pCreateAndGoOnTransactCalc);
+
+		LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCGenerate>::create(
+			pProc,
+			_T("GENERATE"),
+			pCalcTime,
+			pCreateAndGoOnTransactCalc
+		);
 		ASSERT(pBlock);
+
+		LPRDOPROCGenerate pBlockGenerate = pBlock.object_dynamic_cast<RDOPROCGenerate>();
+		pCreateAndGoOnTransactCalc->setBlock(pBlockGenerate->getRuntimeBlock());
+
 		$$ = PARSER->stack().push(pBlock);
 	}
 	| RDO_GENERATE error
@@ -1219,4 +1258,4 @@ fun_select_arithm
 
 %%
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE

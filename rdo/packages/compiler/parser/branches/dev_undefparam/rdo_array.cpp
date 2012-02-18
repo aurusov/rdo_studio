@@ -17,7 +17,7 @@
 #include "simulator/compiler/parser/rdoparser_lexer.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 //----------------------------------------------------------------------------
 //---------- RDOArrayValue
@@ -87,4 +87,4 @@ CREF(RDOArrayValue::Container) RDOArrayValue::getContainer() const
 	return m_container;
 }
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE

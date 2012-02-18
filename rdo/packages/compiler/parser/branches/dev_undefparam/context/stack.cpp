@@ -16,7 +16,7 @@
 #include "simulator/runtime/rdo_resource.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 ContextStack::ContextStack()
 {}
@@ -62,4 +62,4 @@ LPContext ContextStack::prev(CREF(LPContext) pContext) const
 	return it != m_container.end() ? *it : LPContext();
 }
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE

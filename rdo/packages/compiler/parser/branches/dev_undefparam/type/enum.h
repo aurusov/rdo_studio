@@ -18,7 +18,7 @@
 #include "utils/smart_ptr/factory.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOEnumType
@@ -54,6 +54,6 @@ private:
 	virtual ~RDOEnumType();
 };
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // _RDOPARSER_TYPE_ENUM_H_

@@ -18,7 +18,7 @@
 #include "simulator/compiler/parser/context/context_switch_i.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOParam
@@ -49,6 +49,6 @@ private:
 };
 DECLARE_POINTER(RDOParam);
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // _PARSER_PARAM_H_

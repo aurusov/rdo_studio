@@ -39,7 +39,7 @@
 #include "simulator/compiler/parser/rdo_array.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 class RDOTypeParam;
 class RDOArrayType;
@@ -343,6 +343,6 @@ typedef RDOParserTemplate<RDOParserContainerSMRInfo> RDOParserSMRInfo;
 // --------------------------------------------------------------------------------
 typedef RDOParserTemplate<RDOParserContainerCorba> RDOParserCorba;
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // _RDOPARSER_H_

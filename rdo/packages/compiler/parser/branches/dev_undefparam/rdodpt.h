@@ -21,7 +21,13 @@
 #include "simulator/compiler/parser/rdopat.h"
 #include "simulator/compiler/parser/context/context.h"
 #include "simulator/compiler/parser/context/context_find_i.h"
-#include "simulator/runtime/rdoprocess.h"
+#include "simulator/runtime/process/rdoprocess.h"
+#include "simulator/runtime/process/queue_depart.h"
+#include "simulator/runtime/process/advance.h"
+#include "simulator/runtime/process/seize_release.h"
+#include "simulator/runtime/process/assign.h"
+#include "simulator/runtime/process/terminate.h"
+#include "simulator/runtime/process/generate.h"
 #include "simulator/runtime/rdo_activity.h"
 #include "simulator/runtime/searchtrace.h"
 #include "simulator/runtime/rdo_dptsearch_activity_i.h"
@@ -42,7 +48,7 @@ struct parser_for_Seize;
 struct parser_for_Queue;
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 int  dptparse      (PTR(void) lexer);
 int  dptlex        (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
@@ -282,6 +288,7 @@ public:
 	void            setCondition(CREF(LPRDOFUNLogic) pConditon = NULL) { m_pConditon = pConditon; }
 	LPRDOFUNLogic   getConditon () const                               { return m_pConditon;      }
 	CREF(BlockList) getBlockList() const                               { return m_blockList;      }
+	LPRDORTPResType getTransacType()                                   { return m_transactType;   }
 
 	rbool checkTransactType(CREF(tstring) name) const;
 
@@ -334,8 +341,9 @@ protected:
 	LPIPROCBlock m_pRuntime;
 
 private:
-	RDOPROCGenerate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pTimeCalc);
+	RDOPROCGenerate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pTimeCalc, CREF(rdoRuntime::LPRDOCalc) pCreateAndGoOnTransactCalc);
 };
+DECLARE_POINTER(RDOPROCGenerate);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCBlockForQueue
@@ -495,6 +503,6 @@ private:
 	RDOPROCAssign(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pValue, int resID, int paramID);
 };
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // _RDODPT_H_

@@ -15,7 +15,7 @@
 #include "simulator/runtime/rdo_resource.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOTypeParamSuchAs
@@ -33,4 +33,4 @@ CREF(LPRDOParam) RDOTypeParamSuchAs::getParam() const
 	return m_pParam;
 }
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE

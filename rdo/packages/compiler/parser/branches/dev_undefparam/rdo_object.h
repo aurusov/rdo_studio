@@ -14,14 +14,14 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdomacros.h"
-#include "utils/namespace.h"
+#include "simulator/compiler/parser/namespace.h"
 #include "utils/rdotypes.h"
 #include "utils/smart_ptr/intrusive_ptr.h"
 #include "simulator/compiler/parser/grammar/rdobison.h"
 #include "simulator/runtime/rdo_object.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserSrcInfo
@@ -142,6 +142,6 @@ private:
 	CREF(tstring) m_name;
 };
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // _RDOPARSER_OBJECT_H_

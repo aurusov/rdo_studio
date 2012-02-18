@@ -21,7 +21,7 @@
 #include "simulator/runtime/rdo_rule.h"
 #include "simulator/runtime/rdo_operation.h"
 #include "simulator/runtime/rdo_keyboard.h"
-#include "simulator/runtime/rdoprocess.h"
+#include "simulator/runtime/process/rdoprocess.h"
 #include "simulator/runtime/rdo_logic_dptsome.h"
 #include "simulator/runtime/rdo_logic_dptprior.h"
 #include "simulator/runtime/rdodptrtime.h"
@@ -29,7 +29,7 @@
 #include "simulator/runtime/calc/calc_pattern.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 int dptlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
@@ -490,10 +490,10 @@ RDOPROCOperator::~RDOPROCOperator()
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCGenerate
 // --------------------------------------------------------------------------------
-RDOPROCGenerate::RDOPROCGenerate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pTimeCalc)
+RDOPROCGenerate::RDOPROCGenerate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pTimeCalc, CREF(rdoRuntime::LPRDOCalc) pCreateAndGoOnTransactCalc)
 	: RDOPROCOperator(pProcess, name)
 {
-	m_pRuntime = RF(rdoRuntime::RDOPROCGenerate)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), pTimeCalc);
+	m_pRuntime = RF(rdoRuntime::RDOPROCGenerate)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), pTimeCalc, pCreateAndGoOnTransactCalc);
 	ASSERT(m_pRuntime);
 }
 
@@ -725,4 +725,4 @@ RDOPROCAssign::RDOPROCAssign(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name
 	ASSERT(m_pRuntime);
 }
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE

@@ -15,13 +15,13 @@
 #include "utils/smart_ptr/intrusive_ptr.h"
 #include "utils/smart_ptr/intrusive_ptr_interface_wrapper.h"
 #include "utils/explicit_value.h"
-#include "utils/namespace.h"
+#include "simulator/compiler/parser/namespace.h"
 #include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/compiler/parser/type/info.h"
 #include "simulator/runtime/rdo_value.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOValue
@@ -89,7 +89,7 @@ private:
 	CREF(T) __get() const;
 };
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 #include "simulator/compiler/parser/rdo_value.inl"
 

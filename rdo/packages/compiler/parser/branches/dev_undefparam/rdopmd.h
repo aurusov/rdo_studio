@@ -21,7 +21,7 @@
 #include "simulator/compiler/parser/context/context.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 int  pmdparse(PTR(void) lexer);
 int  pmdlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
@@ -161,6 +161,6 @@ private:
 };
 DECLARE_POINTER(RDOPMDGetValue);
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // _RDOPMD_PMD_H_

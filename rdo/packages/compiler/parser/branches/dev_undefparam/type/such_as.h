@@ -16,7 +16,7 @@
 #include "simulator/compiler/parser/param.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOTypeParamSuchAs
@@ -35,6 +35,6 @@ private:
 };
 DECLARE_POINTER(RDOTypeParamSuchAs);
 
-CLOSE_RDO_PARSE_NAMESPACE
+CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // _RDOPARSER_TYPE_SUCH_AS_H_

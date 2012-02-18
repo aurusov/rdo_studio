@@ -21,7 +21,7 @@
 #include "simulator/compiler/parser/rdopat.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserRDOItem
@@ -96,11 +96,25 @@ private:
 	{}
 
 	ruint             m_currParam;
-	LPRDOPATPattern   m_pPattern;
 
 	virtual void parse(CREF(LPRDOParser) pParser);
 };
 
-CLOSE_RDO_PARSE_NAMESPACE
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserRTPPost
+// --------------------------------------------------------------------------------
+class RDOParserRTPPost: public RDOParserItem
+{
+	DECLARE_FACTORY(RDOParserRTPPost);
+private:
+	RDOParserRTPPost()
+		: RDOParserItem(rdoModelObjects::RTP, NULL, NULL, NULL)
+	{}
+
+	//! Cоздание типов ресурсов в runtime
+	virtual void parse(CREF(LPRDOParser) pParser);
+};
+
+CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // _RDOPARSER_RDO_H_

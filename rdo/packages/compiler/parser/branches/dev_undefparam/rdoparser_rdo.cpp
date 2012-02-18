@@ -33,7 +33,7 @@
 #include "simulator/compiler/parser/rdopat.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_PARSE_NAMESPACE
+OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserRDOItem
@@ -287,4 +287,21 @@ void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 	}
 }
 
-CLOSE_RDO_PARSE_NAMESPACE
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserRTPPost
+// --------------------------------------------------------------------------------
+void RDOParserRTPPost::parse(CREF(LPRDOParser) pParser)
+{
+	ASSERT(pParser);
+
+	STL_FOR_ALL_CONST(pParser->getRTPResTypes(), RTPResTypeIt)
+	{
+		// Взять очередной тип ресурса в парсере
+		LPRDORTPResType pResType = *RTPResTypeIt;
+
+		// Создать соответствующий тип ресурсов в рантайме
+		pResType->end();
+	}
+}
+
+CLOSE_RDO_PARSER_NAMESPACE
