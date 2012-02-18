@@ -238,16 +238,16 @@ BOOST_AUTO_TEST_CASE(RDOValue_Char)
 BOOST_AUTO_TEST_CASE(RDOValue_Enum)
 {
 	using namespace rdoRuntime;
-	RDOEnumType::EnumItem item1 = "test1";
-	BOOST_CHECK(item1 == "test1");
-	RDOEnumType::Enums enum1;
-	enum1.push_back(item1);
-	BOOST_CHECK(enum1[0] == item1);
-	
 	LPRDOEnumType pEnum = rdo::Factory<RDOEnumType>::create();
 	BOOST_CHECK(pEnum);
 	BOOST_CHECK(pEnum->empty());
-		
+	pEnum->add("test0");
+	pEnum->add("test1");
+	pEnum->add("test2");
+	pEnum->add("test3");
+
+	RDOValue value(pEnum);
+	BOOST_CHECK(value.typeID() == RDOType::t_enum);
 }
 
 /*
