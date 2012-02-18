@@ -66,7 +66,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Rsint_Arifmethic)
 	const rsint val5 = 5;
 	value2 = value1;
 	value2 /= val5;
-	BOOST_CHECK(value2 == ((val1 + val2 - val3) * val4) / val5);
+	BOOST_CHECK(value2 == ((val1 + val2 - val3) / val5));
 	
 	value2 = value1;
 	value2 --;
@@ -119,7 +119,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Ruint_Arifmethic)
 	const ruint val5 = 5;
 	value2 = value1;
 	value2 /= val5;
-	BOOST_CHECK(value2 == ((val1 + val2 - val3) * val4) / val5);
+	BOOST_CHECK(value2 == ((val1 + val2 - val3) / val5));
 
 	value2 = value1;
 	value2 --;
@@ -172,7 +172,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Double_Arifmethic)
 	const double doub5 = 5;
 	value2 = value1;
 	value2 /= doub5;
-	BOOST_CHECK(value2 == ((doub1 + doub2 - doub3) * doub4) / doub5);
+	BOOST_CHECK(value2 == ((doub1 + doub2 - doub3) / doub5));
 
 	value2 = value1;
 	value2 --;
@@ -234,16 +234,22 @@ BOOST_AUTO_TEST_CASE(RDOValue_Char)
 	value1 = value2;
 	BOOST_CHECK(value1 == value2);
 }
-/*
+
 BOOST_AUTO_TEST_CASE(RDOValue_Enum)
 {
 	using namespace rdoRuntime;
-
+	RDOEnumType::EnumItem item1 = "test1";
+	BOOST_CHECK(item1 == "test1");
+	RDOEnumType::Enums enum1;
+	enum1.push_back(item1);
+	BOOST_CHECK(enum1[0] == item1);
+	
 	LPRDOEnumType pEnum = rdo::Factory<RDOEnumType>::create();
 	BOOST_CHECK(pEnum);
-	
+	BOOST_CHECK(pEnum->empty());
+		
 }
-*/
+
 /*
 BOOST_AUTO_TEST_CASE(RDOValue_Identificator)
 {
