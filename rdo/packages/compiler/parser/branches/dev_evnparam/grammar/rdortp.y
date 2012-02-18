@@ -232,7 +232,7 @@ type_list
 	| type_list ext_param_type
 	| error
 	{
-		PARSER->error().error(rdoParse::RDOParserSrcInfo(), _T("Ожидается ключевое слово $Resource_type"));
+		PARSER->error().error(RDOParserSrcInfo(), _T("Ожидается ключевое слово $Resource_type"));
 	}
 	;
 
@@ -258,7 +258,6 @@ rtp_res_type
 		{
 			PARSER->error().warning(@2, rdo::format(_T("Тип ресурса '%s' не содежит параметров"), pResourceType->name().c_str()));
 		}
-		pResourceType->end<rdoRuntime::RDOResourceType>();
 		$$ = PARSER->stack().push(pResourceType);
 	}
 	| rtp_header RDO_Parameters rtp_body

@@ -21,7 +21,7 @@
 #include "simulator/runtime/rdo_rule.h"
 #include "simulator/runtime/rdo_operation.h"
 #include "simulator/runtime/rdo_keyboard.h"
-#include "simulator/runtime/rdoprocess.h"
+#include "simulator/runtime/process/rdoprocess.h"
 #include "simulator/runtime/rdo_logic_dptsome.h"
 #include "simulator/runtime/rdo_logic_dptprior.h"
 #include "simulator/runtime/rdodptrtime.h"
@@ -99,15 +99,15 @@ RDODPTActivity::RDODPTActivity(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSr
 RDODPTActivity::~RDODPTActivity()
 {}
 
-IContextFind::Result RDODPTActivity::onFindContext(CREF(LPRDOValue) pValue) const
+Context::FindResult RDODPTActivity::onFindContext(CREF(LPRDOValue) pValue) const
 {
 	ASSERT(pValue);
-	IContextFind::Result result = m_pPattern->onFindContext(pValue);
+	Context::FindResult result = m_pPattern->onFindContext(pValue);
 	if (result.m_pContext)
 	{
 		return result;
 	}
-	return IContextFind::Result();
+	return Context::FindResult();
 }
 
 void RDODPTActivity::addParam(CREF(LPRDOValue) pParam)
@@ -280,12 +280,12 @@ RDODPTSome::RDODPTSome(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
 	RDOParser::s_parser()->contextStack()->push(this);
 }
 
-IContextFind::Result RDODPTSome::onFindContext(CREF(LPRDOValue) pValue) const
+Context::FindResult RDODPTSome::onFindContext(CREF(LPRDOValue) pValue) const
 {
 	UNUSED(pValue);
 
 	//! Поиск не нужен, добавлен для порядка, чтобы контекст активности был на стеке после контекста точки
-	return IContextFind::Result();
+	return Context::FindResult();
 }
 
 void RDODPTSome::end()
@@ -311,12 +311,12 @@ RDODPTPrior::RDODPTPrior(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
 	RDOParser::s_parser()->contextStack()->push(this);
 }
 
-IContextFind::Result RDODPTPrior::onFindContext(CREF(LPRDOValue) pValue) const
+Context::FindResult RDODPTPrior::onFindContext(CREF(LPRDOValue) pValue) const
 {
 	UNUSED(pValue);
 
 	//! Поиск не нужен, добавлен для порядка, чтобы контекст активности был на стеке после контекста точки
-	return IContextFind::Result();
+	return Context::FindResult();
 }
 
 void RDODPTPrior::end()
@@ -375,12 +375,12 @@ RDODPTSearch::RDODPTSearch(CREF(RDOParserSrcInfo) src_info, rdoRuntime::RDODPTSe
 	RDOParser::s_parser()->contextStack()->push(this);
 }
 
-IContextFind::Result RDODPTSearch::onFindContext(CREF(LPRDOValue) pValue) const
+Context::FindResult RDODPTSearch::onFindContext(CREF(LPRDOValue) pValue) const
 {
 	UNUSED(pValue);
 
 	//! Поиск не нужен, добавлен для порядка, чтобы контекст активности был на стеке после контекста точки
-	return IContextFind::Result();
+	return Context::FindResult();
 }
 
 void RDODPTSearch::end()
@@ -490,10 +490,10 @@ RDOPROCOperator::~RDOPROCOperator()
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCGenerate
 // --------------------------------------------------------------------------------
-RDOPROCGenerate::RDOPROCGenerate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pTimeCalc)
+RDOPROCGenerate::RDOPROCGenerate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pTimeCalc, CREF(rdoRuntime::LPRDOCalc) pCreateAndGoOnTransactCalc)
 	: RDOPROCOperator(pProcess, name)
 {
-	m_pRuntime = RF(rdoRuntime::RDOPROCGenerate)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), pTimeCalc);
+	m_pRuntime = RF(rdoRuntime::RDOPROCGenerate)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), pTimeCalc, pCreateAndGoOnTransactCalc);
 	ASSERT(m_pRuntime);
 }
 

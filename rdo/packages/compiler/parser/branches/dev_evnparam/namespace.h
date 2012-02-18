@@ -1,21 +1,24 @@
 /*!
-  \copyright (c) RDO-Team, 2011
+  \copyright (c) RDO-Team, 2012
   \file      simulator/compiler/parser/namespace.h
-  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      09.02.2010
-  \brief     
+  \authors   Барс Александр
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \date      14.02.2012
+  \brief     Пространство имен rdoParser
   \indent    4T
 */
 
-#ifndef _PARSER_NAMESPACE_H_
-#define _PARSER_NAMESPACE_H_
+#ifndef _LIB_PARSER_NAMESPACE_H_
+#define _LIB_PARSER_NAMESPACE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
-#define OPEN_RDO_PARSER_NAMESPACE			namespace rdoParse {
-#define CLOSE_RDO_PARSER_NAMESPACE			};
+//! \def    OPEN_RDO_PARSER_NAMESPACE
+//! \brief  Пространство имён парсера
+#define  OPEN_RDO_PARSER_NAMESPACE  namespace rdoParser {
+#define CLOSE_RDO_PARSER_NAMESPACE  };
 
-#endif // _PARSER_NAMESPACE_H_
-
+#endif // _LIB_PARSER_NAMESPACE_H_

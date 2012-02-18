@@ -12,11 +12,11 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/namespace.h"
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/rdo.h"
+#include "simulator/runtime/rdo_res_type_i.h"
 #include "simulator/runtime/rdo_runtime.h"
-#include "simulator/runtime/rdoprocess.h"
+#include "simulator/runtime/process/rdoprocess.h"
 #include "simulator/runtime/rdo_logic.h"
 // --------------------------------------------------------------------------------
 
@@ -33,6 +33,24 @@ protected:
 private:
 	LPIPROCBlock  m_Block;
 	rsint         m_relResNum;
+};
+
+//! Создание транзакта в блоке GENERATE и его запуск в процесс
+CALC(RDOCalcCreateAndGoInTransact)
+{
+	DECLARE_FACTORY(RDOCalcCreateAndGoInTransact)
+public:
+	void setBlock(LPIPROCBlock pBlock);
+protected:
+	RDOCalcCreateAndGoInTransact(CREF(LPIResourceType) pType, CREF(std::vector<RDOValue>) rParamsCalcs, rbool traceFlag, rbool permanentFlag);
+	DECLARE_ICalc;
+private:
+	LPIPROCBlock           m_pBlock;
+	LPIResourceType        m_pResType;
+	std::vector<RDOValue>  m_paramsCalcs;
+	rbool                  m_traceFlag;
+	rbool                  m_permanentFlag;
+	ruint                  m_relResID;
 };
 
 //! Получение значения терминального счетчика

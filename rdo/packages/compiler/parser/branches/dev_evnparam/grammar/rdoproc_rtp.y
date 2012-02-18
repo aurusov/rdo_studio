@@ -209,7 +209,7 @@
 #include "simulator/compiler/parser/rdodpt.h"
 #include "simulator/compiler/parser/rdortp.h"
 #include "simulator/compiler/parser/rdorss.h"
-#include "simulator/runtime/rdoprocess.h"
+#include "simulator/runtime/process/rdoprocess.h"
 
 #include "simulator/compiler/mbuilder/rdo_resources.h"
 // --------------------------------------------------------------------------------
@@ -252,10 +252,13 @@ prc_rtp_main
 			rdoMBuilder::RDOResType::Param param(rtp_param_name, rdo::Factory<RDOType__real>::create());
 			rtp.m_params.append(param);
 			// Добавим тип ресурса
-			if (!rtpList.append<rdoRuntime::RDOResourceTypeTransact>(rtp))
+			if (!rtpList.append(rtp))
 			{
 				PARSER->error().error(@2, rdo::format(_T("Ошибка создания типа ресурса: %s"), rtp_name.c_str()));
 			}
+			LPRDORTPResType pResType = PARSER->findRTPResType(rtp_name);
+			ASSERT(pResType);
+			pResType->setType(RDORTPResType::procTran);
 		}
 		else
 		{
@@ -270,6 +273,9 @@ prc_rtp_main
 			{
 				PARSER->error().error(rtp.src_info(), rdo::format(_T("У типа ресурса '%s' параметр '%s' не является вещественным типом"), rtp.name().c_str(), rtp_param_name.c_str()));
 			}
+			// Тип ресурса подходит в качестве типа транзакта
+			LPRDORTPResType pResType = PARSER->findRTPResType(rtp_name);
+			pResType->setType(RDORTPResType::procTran);
 		}
 	}
 	;

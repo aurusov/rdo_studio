@@ -24,6 +24,8 @@
 #include "simulator/compiler/parser/context/context.h"
 #include "simulator/compiler/parser/context/context_switch_i.h"
 #include "simulator/runtime/rdo_res_type_i.h"
+#include "simulator/runtime/rdo_res_type.h"
+#include "simulator/runtime/process/rdoprocess.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -49,6 +51,12 @@ DECLARE_FACTORY(RDORTPResType);
 public:
 	typedef std::vector<LPRDORTPParam> ParamList;
 
+	enum TypeRDOResType
+	{
+		simple,
+		procRes,
+		procTran
+	};
 	enum { UNDEFINED_PARAM = ~0 };
 
 	rsint getNumber  () const   { return m_number;     };
@@ -64,15 +72,39 @@ public:
 	ruint           getRTPParamNumber(CREF(tstring) paramName) const;
 	CREF(ParamList) getParams        ()                        const { return m_params;          }
 
-	CREF(rdoRuntime::LPIResourceType) getRuntimeResType() const      { return m_pRuntimeResType; }
+	CREF(rdoRuntime::LPIResourceType) getRuntimeResType() const
+	{
+		ASSERT(m_pRuntimeResType);
+		return m_pRuntimeResType;
+	}
 
-	template<class T>
+	void setType(TypeRDOResType type)
+	{
+		//! \todo вывести ошибку вместо ASSERT()
+		ASSERT(!(m_type == procRes && type == procTran));
+		ASSERT(!(m_type == procTran && type == procRes));
+		m_type = type;
+	}
+
 	void end()
 	{
-		rdo::intrusive_ptr<T> pT = rdo::Factory<T>::create(m_number);
-		m_pRuntimeResType = pT.template interface_cast<rdoRuntime::IResourceType>();
-		m_pType = m_pRuntimeResType;
+		switch (m_type)
+		{
+		case simple:
+			m_pRuntimeResType = rdo::Factory<rdoRuntime::RDOResourceType>::create(m_number).interface_cast<rdoRuntime::IResourceType>();
+			break;
+		case procRes:
+			m_pRuntimeResType = rdo::Factory<rdoRuntime::RDOResourceTypeProccess>::create(m_number).interface_cast<rdoRuntime::IResourceType>();
+			break;
+		case procTran:
+			m_pRuntimeResType = rdo::Factory<rdoRuntime::RDOResourceTypeTransact>::create(m_number).interface_cast<rdoRuntime::IResourceType>();
+			break;
+		default:
+			NEVER_REACH_HERE;
+		}
 		ASSERT(m_pRuntimeResType);
+		m_pType = m_pRuntimeResType;
+		ASSERT(m_pType);
 	}
 
 	void writeModelStructure(REF(std::ostream) stream) const;
@@ -80,10 +112,11 @@ public:
 	DECLARE_IType;
 
 private:
-	RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent);
+	RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent, TypeRDOResType type = simple);
 	virtual ~RDORTPResType();
 
 	rdoRuntime::LPIResourceType m_pRuntimeResType;
+	TypeRDOResType              m_type;
 	const ruint                 m_number;
 	const rbool                 m_permanent;
 	ParamList                   m_params;

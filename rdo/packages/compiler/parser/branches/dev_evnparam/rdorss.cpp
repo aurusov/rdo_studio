@@ -17,6 +17,7 @@
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/rdoparser_lexer.h"
 #include "simulator/runtime/calc/resource/calc_resource.h"
+#include "simulator/runtime/calc/resource/calc_create_resource.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -56,7 +57,7 @@ void RDORSSResource::end()
 	RDOParser::s_parser()->contextStack()->pop();
 }
 
-IContextFind::Result RDORSSResource::onSwitchContext(CREF(LPExpression) pSwitchExpression, CREF(LPRDOValue) pValue) const
+Context::FindResult RDORSSResource::onSwitchContext(CREF(LPExpression) pSwitchExpression, CREF(LPRDOValue) pValue) const
 {
 	ASSERT(pSwitchExpression);
 	ASSERT(pValue           );
@@ -77,7 +78,7 @@ IContextFind::Result RDORSSResource::onSwitchContext(CREF(LPExpression) pSwitchE
 	);
 	ASSERT(pExpression);
 
-	return IContextFind::Result(const_cast<PTR(RDORSSResource)>(this), pExpression, pValue);
+	return Context::FindResult(const_cast<PTR(RDORSSResource)>(this), pExpression, pValue);
 }
 
 void RDORSSResource::writeModelStructure(REF(std::ostream) stream) const
@@ -134,59 +135,12 @@ rdoRuntime::LPRDOCalc RDORSSResource::createCalc() const
 		paramList.push_back(it->param()->value());
 	}
 
-	rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcCreateResource>::create(getType()->getRuntimeResType(), paramList, getTrace(), getType()->isPermanent());
-	ASSERT(pCalc);
-	rdoRuntime::RDOSrcInfo srcInfo(src_info());
-	srcInfo.setSrcText(_T("Создание ресурса ") + src_text());
-	pCalc->setSrcInfo(srcInfo);
-	return pCalc;
-}
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOPROCResource
-// --------------------------------------------------------------------------------
-RDOPROCResource::RDOPROCResource(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id)
-	: RDORSSResource(pParser, src_info, pResType, id)
-{}
-
-RDOPROCResource::~RDOPROCResource()
-{}
-
-rdoRuntime::LPRDOCalc RDOPROCResource::createCalc() const
-{
-	std::vector<rdoRuntime::RDOValue> paramList;
-	STL_FOR_ALL_CONST(params(), it)
-	{
-		paramList.push_back(it->param()->value());
-	}
-
-	rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcCreateResource>::create(getType()->getRuntimeResType(), paramList, getTrace(), getType()->isPermanent());
-	ASSERT(pCalc);
-	rdoRuntime::RDOSrcInfo srcInfo(src_info());
-	srcInfo.setSrcText(_T("Создание ресурса ") + src_text());
-	pCalc->setSrcInfo(srcInfo);
-	return pCalc;
-}
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOPROCTransact
-// --------------------------------------------------------------------------------
-RDOPROCTransact::RDOPROCTransact(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id)
-: RDORSSResource(pParser, src_info, pResType, id)
-{}
-
-RDOPROCTransact::~RDOPROCTransact()
-{}
-
-rdoRuntime::LPRDOCalc RDOPROCTransact::createCalc() const
-{
-	std::vector<rdoRuntime::RDOValue> paramList;
-	STL_FOR_ALL_CONST(params(), it)
-	{
-		paramList.push_back(it->param()->value());
-	}
-
-	rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcCreateResource>::create(getType()->getRuntimeResType(), paramList, getTrace(), getType()->isPermanent());
+	rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcCreateResource>::create(
+		getType()->getRuntimeResType(),
+		paramList,
+		getTrace(),
+		getType()->isPermanent()
+	);
 	ASSERT(pCalc);
 	rdoRuntime::RDOSrcInfo srcInfo(src_info());
 	srcInfo.setSrcText(_T("Создание ресурса ") + src_text());

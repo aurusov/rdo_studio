@@ -12,6 +12,7 @@
 #define _RDOPARSER_BASE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <map>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/smart_ptr/intrusive_ptr.h"
 #include "utils/rdocommon.h"

@@ -17,6 +17,7 @@ SET(HEADER_FILES
 	keyboard.h
 	equaltype.h
 	pch.h
+	namespace.h
 	rdo_activity.h
 	rdo_activity_i.h
 	rdo_array.h
@@ -49,8 +50,6 @@ SET(HEADER_FILES
 	rdo_pattern.h
 	rdo_priority.h
 	rdo_priority_i.h
-	rdoprocess.h
-	rdoprocess_i.h
 	rdo_random_distribution.h
 	rdo_resource.h
 	rdo_res_type.h
@@ -72,6 +71,15 @@ SET(HEADER_FILES
 	searchtree.h
 	simtrace.h
 	thread_proxy_i.h
+
+	process/advance.h
+	process/assign.h
+	process/generate.h
+	process/queue_depart.h
+	process/rdoprocess.h
+	process/rdoprocess_i.h
+	process/seize_release.h
+	process/terminate.h
 
 	calc/calc_array.h
 	calc/calc_base.h
@@ -96,6 +104,7 @@ SET(HEADER_FILES
 	calc/procedural/calc_range.h
 	calc/procedural/calc_statement.h
 	calc/resource/calc_choice_from.h
+	calc/resource/calc_create_resource.h
 	calc/resource/calc_group.h
 	calc/resource/calc_relevant.h
 	calc/resource/calc_resource.h
@@ -120,7 +129,6 @@ SET(INLINE_FILES
 	rdo_object.inl
 	rdo_pattern.inl
 	rdo_priority.inl
-	rdoprocess.inl
 	rdo_random_distribution.inl
 	rdo_resource.inl
 	rdo_runtime.inl
@@ -132,6 +140,15 @@ SET(INLINE_FILES
 	searchtrace.inl
 	searchtree.inl
 	simtrace.inl
+
+	process/advance.inl
+	process/assign.inl
+	process/generate.inl
+	process/queue_depart.inl
+	process/rdoprocess.inl
+	process/rdoprocess_i.inl
+	process/seize_release.inl
+	process/terminate.inl
 
 	calc/calc_base.inl
 	calc/calc_sequence.inl
@@ -166,7 +183,6 @@ SET(SOURCE_FILES
 	rdo_object.cpp
 	rdo_operation.cpp
 	rdo_pattern.cpp
-	rdoprocess.cpp
 	rdo_resource.cpp
 	rdo_rule.cpp
 	rdo_runtime.cpp
@@ -180,6 +196,15 @@ SET(SOURCE_FILES
 	searchtrace.cpp
 	searchtree.cpp
 	simtrace.cpp
+
+	process/advance.cpp
+	process/assign.cpp
+	process/generate.cpp
+	process/queue_depart.cpp
+	process/rdoprocess.cpp
+	process/rdoprocess_i.cpp
+	process/seize_release.cpp
+	process/terminate.cpp
 
 	calc/calc_array.cpp
 	calc/calc_base.cpp
@@ -201,6 +226,7 @@ SET(SOURCE_FILES
 	calc/procedural/calc_range.cpp
 	calc/procedural/calc_statement.cpp
 	calc/resource/calc_choice_from.cpp
+	calc/resource/calc_create_resource.cpp
 	calc/resource/calc_group.cpp
 	calc/resource/calc_relevant.cpp
 	calc/resource/calc_resource.cpp
@@ -221,6 +247,9 @@ SET(RDO_RUNTIME_TEST_PATH ${CMAKE_CURRENT_SOURCE_DIR}/test)
 ADD_SUBDIRECTORY(${RDO_RUNTIME_TEST_PATH})
 
 IF(MSVC) # lotions for windows #
+
+SOURCE_GROUP(".common" FILES 
+	namespace.h)
 
 SOURCE_GROUP(".keyboard" FILES 
 	keyboard.h)

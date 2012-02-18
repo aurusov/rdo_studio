@@ -36,10 +36,11 @@ void rtperror(PTR(char) message)
 // --------------------------------------------------------------------------------
 // -------------------- RDORTPResType
 // --------------------------------------------------------------------------------
-RDORTPResType::RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent)
+RDORTPResType::RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent, TypeRDOResType type)
 	: RDOParserSrcInfo(src_info            )
 	, m_number        (pParser->getRTP_id())
 	, m_permanent     (permanent           )
+	, m_type          (type                )
 {
 	pParser->insertRTPResType(LPRDORTPResType(this));
 }
@@ -111,16 +112,16 @@ LPRDOType RDORTPResType::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo)
 				return pThisRTPType;
 
 			//! Типы разные, сгенерим ошибку
-			rdoParse::g_error().push_only(src_info,    _T("Несоответствие типов ресурсов"));
-			rdoParse::g_error().push_only(to_src_info, to_src_info.src_text());
-			rdoParse::g_error().push_done();
+			rdoParser::g_error().push_only(src_info,    _T("Несоответствие типов ресурсов"));
+			rdoParser::g_error().push_only(to_src_info, to_src_info.src_text());
+			rdoParser::g_error().push_done();
 			break;
 		}
 	default:
 		{
-			rdoParse::g_error().push_only(src_info,    rdo::format(_T("Ожидается тип ресурса, найдено: %s"), from_src_info.src_text().c_str()));
-			rdoParse::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
-			rdoParse::g_error().push_done();
+			rdoParser::g_error().push_only(src_info,    rdo::format(_T("Ожидается тип ресурса, найдено: %s"), from_src_info.src_text().c_str()));
+			rdoParser::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
+			rdoParser::g_error().push_done();
 			break;
 		}
 	}
@@ -142,15 +143,15 @@ LPRDOValue RDORTPResType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcIn
 			return pFrom;
 
 		//! Типы разные, сгенерим ошибку
-		rdoParse::g_error().push_only(src_info,    _T("Несоответствие типов ресурсов"));
-		rdoParse::g_error().push_only(to_src_info,  rdo::format(  _T("Ожидается: %s"), to_src_info.src_text().c_str()));
-		rdoParse::g_error().push_only(src_info,  rdo::format(  _T("Пришел: %s"), pFrom->src_text().c_str()));
-		rdoParse::g_error().push_only(to_src_info, to_src_info.src_text());
-		rdoParse::g_error().push_done();
+		rdoParser::g_error().push_only(src_info,    _T("Несоответствие типов ресурсов"));
+		rdoParser::g_error().push_only(to_src_info,  rdo::format(  _T("Ожидается: %s"), to_src_info.src_text().c_str()));
+		rdoParser::g_error().push_only(src_info,  rdo::format(  _T("Пришел: %s"), pFrom->src_text().c_str()));
+		rdoParser::g_error().push_only(to_src_info, to_src_info.src_text());
+		rdoParser::g_error().push_done();
 	}
-	rdoParse::g_error().push_only(src_info,    rdo::format(_T("Ожидается ресурс, найдено: %s"), pFrom->src_text().c_str()));
-	rdoParse::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
-	rdoParse::g_error().push_done();
+	rdoParser::g_error().push_only(src_info,    rdo::format(_T("Ожидается ресурс, найдено: %s"), pFrom->src_text().c_str()));
+	rdoParser::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
+	rdoParser::g_error().push_done();
 
 	return LPRDOValue(NULL);
 }
@@ -167,7 +168,7 @@ rdoRuntime::RDOValue RDORTPResType::get_default() const
 	//return rdoRuntime::RDOValue (pResourceType,pResource);
 }
 
-IContextFind::Result RDORTPResType::onSwitchContext(CREF(LPExpression) pSwitchExpression, CREF(LPRDOValue) pValue) const
+Context::FindResult RDORTPResType::onSwitchContext(CREF(LPExpression) pSwitchExpression, CREF(LPRDOValue) pValue) const
 {
 	ASSERT(pSwitchExpression);
 	ASSERT(pValue           );
@@ -188,7 +189,7 @@ IContextFind::Result RDORTPResType::onSwitchContext(CREF(LPExpression) pSwitchEx
 	);
 	ASSERT(pExpression);
 
-	return IContextFind::Result(const_cast<PTR(RDORTPResType)>(this), pExpression, pValue);
+	return Context::FindResult(const_cast<PTR(RDORTPResType)>(this), pExpression, pValue);
 }
 
 /*

@@ -26,7 +26,7 @@ OBJECT_INTERFACE(IContextSwitch)
 {
 DECLARE_FACTORY(IContextSwitch)
 public:
-	virtual IContextFind::Result onSwitchContext(CREF(LPExpression) pSwitchExpression, CREF(LPRDOValue) pValue) const = 0;
+	virtual Context::FindResult onSwitchContext(CREF(LPExpression) pSwitchExpression, CREF(LPRDOValue) pValue) const = 0;
 
 protected:
 	IContextSwitch()
@@ -35,7 +35,7 @@ protected:
 	{}
 };
 #define DECLARE_IContextSwitch \
-	IContextFind::Result onSwitchContext(CREF(LPExpression) pSwitchExpression, CREF(LPRDOValue) pValue) const;
+	Context::FindResult onSwitchContext(CREF(LPExpression) pSwitchExpression, CREF(LPRDOValue) pValue) const;
 
 CLOSE_RDO_PARSER_NAMESPACE
 

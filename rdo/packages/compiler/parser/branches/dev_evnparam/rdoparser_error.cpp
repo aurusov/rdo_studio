@@ -89,7 +89,7 @@ void Error::push_done()
 
 	if (!m_errorList.empty())
 	{
-		throw rdoParse::RDOSyntaxException(m_errorList.back().m_message);
+		throw rdoParser::RDOSyntaxException(m_errorList.back().m_message);
 	}
 }
 
@@ -101,7 +101,7 @@ void Error::modify(CREF(tstring) message)
 	if (!m_errorList.empty())
 	{
 		m_errorList.front().m_message = message + m_errorList.front().m_message;
-		throw rdoParse::RDOSyntaxException(_T(""));
+		throw rdoParser::RDOSyntaxException(_T(""));
 	}
 }
 

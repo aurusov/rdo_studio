@@ -44,7 +44,7 @@ double RDOPatternEvent::getNextTimeInterval(CREF(LPRDORuntime) pRuntime)
 {
 	double time_next = m_timeCalc->calcValue(pRuntime).getDouble();
 	if (time_next >= 0) return time_next;
-	pRuntime->error().push(rdo::format(_T("ѕопытка запланировать событие в прошлом. ¬ыражение времени дл€ $Time имеет отрицательное значение: %f"), time_next), m_timeCalc);
+	pRuntime->error().push(rdo::format(_T("ѕопытка запланировать событие в прошлом. ¬ыражение времени дл€ $Time имеет отрицательное значение: %f"), time_next), m_timeCalc->srcInfo());
 	return 0;
 }
 
@@ -97,7 +97,7 @@ double RDOPatternOperation::getNextTimeInterval(CREF(LPRDORuntime) pRuntime)
 {
 	double time_next = m_timeCalc->calcValue(pRuntime).getDouble();
 	if (time_next >= 0) return time_next;
-	pRuntime->error().push(rdo::format(_T("ѕопытка запланировать окончание операции в прошлом. ¬ыражение времени дл€ $Time имеет отрицательное значение: %f"), time_next), m_timeCalc);
+	pRuntime->error().push(rdo::format(_T("ѕопытка запланировать окончание операции в прошлом. ¬ыражение времени дл€ $Time имеет отрицательное значение: %f"), time_next), m_timeCalc->srcInfo());
 	return 0;
 }
 

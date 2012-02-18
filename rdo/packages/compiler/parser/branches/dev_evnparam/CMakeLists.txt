@@ -5,6 +5,7 @@
 MESSAGE(STATUS "CREATE  RDO_PARSER  LIBRARY")
 
 INCLUDE_DIRECTORIES(${BISON_FLEX_DIRECTORY})
+INCLUDE_DIRECTORIES(${BISON_FLEX_DIRECTORY}/include)
 
 # Find Boost
 IF(MSVC)
@@ -100,9 +101,9 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/type)
 SET(HEADER_FILES
 	expression.h
 	local_variable.h
-	namespace.h
 	param.h
 	pch.h
+	namespace.h
 	rdo_array.h
 	${GRAMMA_PATH}/rdobison.h
 	rdodpt.h
@@ -241,7 +242,6 @@ SOURCE_GROUP(".bison" FILES
 SOURCE_GROUP(".common" FILES 
 	local_variable.h
 	local_variable.cpp
-	namespace.h
 	rdo_object.h
 	rdo_object.cpp
 	variable_container.h

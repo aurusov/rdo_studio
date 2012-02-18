@@ -18,6 +18,29 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
+// --------------------------------------------------------------------------------
+// -------------------- Context::FindResult
+// --------------------------------------------------------------------------------
+Context::FindResult::FindResult()
+{}
+
+Context::FindResult::FindResult(CREF(FindResult) result)
+	: m_pContext     (result.m_pContext     )
+	, m_pExpression  (result.m_pExpression  )
+	, m_pFindByValue (result.m_pFindByValue )
+	, m_pValueContext(result.m_pValueContext)
+{}
+
+Context::FindResult::FindResult(CREF(LPContext) pContext, CREF(LPExpression) pExpression, CREF(LPRDOValue) pFindByParam, LPContext pValueContext)
+	: m_pContext     (pContext     )
+	, m_pExpression  (pExpression  )
+	, m_pFindByValue (pFindByParam )
+	, m_pValueContext(pValueContext)
+{}
+
+// --------------------------------------------------------------------------------
+// -------------------- Context
+// --------------------------------------------------------------------------------
 Context::Context()
 {}
 
@@ -29,7 +52,7 @@ void Context::init()
 
 void Context::deinit()
 {
-	m_findResult = IContextFind::Result();
+	m_findResult = FindResult();
 }
 
 void Context::setContextStack(CREF(LPContextStack) pContextStack)
@@ -63,7 +86,7 @@ LPContext Context::swch(CREF(LPRDOValue) pValue) const
 
 	LPIContextSwitch pContextSwitch = m_findResult.m_pValueContext.interface_dynamic_cast<IContextSwitch>();
 	ASSERT(pContextSwitch);
-	IContextFind::Result result = pContextSwitch->onSwitchContext(m_findResult.m_pExpression, pValue);
+	FindResult result = pContextSwitch->onSwitchContext(m_findResult.m_pExpression, pValue);
 	ASSERT(result.m_pContext);
 	result.m_pContext->m_findResult = result;
 	ASSERT(result.m_pContext);

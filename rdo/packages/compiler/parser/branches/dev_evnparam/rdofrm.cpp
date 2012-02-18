@@ -44,7 +44,7 @@ RDOFRMFrame::RDOFRMFrame(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic)
 	RDOParser::s_parser()->contextStack()->push(this);
 }
 
-IContextFind::Result RDOFRMFrame::onFindContext(CREF(LPRDOValue) pValue) const
+Context::FindResult RDOFRMFrame::onFindContext(CREF(LPRDOValue) pValue) const
 {
 	UNUSED(pValue);
 
@@ -59,7 +59,7 @@ IContextFind::Result RDOFRMFrame::onFindContext(CREF(LPRDOValue) pValue) const
 	//	return;
 	//}
 
-	return IContextFind::Result();
+	return Context::FindResult();
 }
 
 void RDOFRMFrame::end()

@@ -55,6 +55,7 @@ public:
 		}
 
 	private:
+		//! \todo использовать RDOCalc вместо RDOValue
 		LPRDOValue m_pValue;
 	};
 	typedef std::vector<Param> ParamList;
@@ -92,34 +93,6 @@ private:
 	DECLARE_IContextSwitch;
 };
 DECLARE_POINTER(RDORSSResource);
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOPROCResource
-// --------------------------------------------------------------------------------
-class RDOPROCResource: public RDORSSResource
-{
-DECLARE_FACTORY(RDOPROCResource);
-private:
-	RDOPROCResource(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id = UNDEFINED_ID);
-	virtual ~RDOPROCResource();
-
-	virtual rdoRuntime::LPRDOCalc createCalc() const;
-};
-DECLARE_POINTER(RDOPROCResource);
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOPROCTransact
-// --------------------------------------------------------------------------------
-class RDOPROCTransact: public RDORSSResource
-{
-	DECLARE_FACTORY(RDOPROCTransact);
-private:
-	RDOPROCTransact(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, int id = UNDEFINED_ID);
-	virtual ~RDOPROCTransact();
-
-	virtual rdoRuntime::LPRDOCalc createCalc() const;
-};
-DECLARE_POINTER(RDOPROCTransact);
 
 CLOSE_RDO_PARSER_NAMESPACE
 

@@ -12,7 +12,16 @@
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/rdostream.h"
+
+#include "kernel/rdokernel.h"
+
+#include "repository/rdorepository.h"
+
+#include "simulator/runtime/calc/calc_pattern.h"
+#include "simulator/runtime/rdo_pattern.h"
 #include "simulator/runtime/rdo_activity_i.h"
+
 #include "simulator/compiler/parser/rdoparser_rdo.h"
 #include "simulator/compiler/parser/rdoparser_lexer.h"
 #include "simulator/compiler/parser/rdoparser.h"
@@ -22,11 +31,6 @@
 #include "simulator/compiler/parser/rdofun.h"
 #include "simulator/compiler/parser/rdosmr.h"
 #include "simulator/compiler/parser/rdopat.h"
-#include "simulator/runtime/rdo_pattern.h"
-#include "utils/rdostream.h"
-#include "kernel/rdokernel.h"
-#include "repository/rdorepository.h"
-#include "simulator/runtime/calc/calc_pattern.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -55,13 +59,13 @@ void RDOParserRDOItem::parse(CREF(LPRDOParser) pParser)
 	rdo::binarystream in_stream;
 	switch (m_from)
 	{
-		case sf_repository:
+	case sf_repository:
 		{
 			rdoRepository::RDOThreadRepository::FileData fileData(m_type, in_stream);
 			kernel->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &fileData);
 			break;
 		}
-		case sf_editor:
+	case sf_editor:
 		{
 			rdoRepository::RDOThreadRepository::FileData fileData(m_type, in_stream);
 			kernel->sendMessage(kernel->studio(), RDOThread::RT_STUDIO_MODEL_GET_TEXT, &fileData);
@@ -215,6 +219,7 @@ void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 			pParser->error().push_done();
 		}
 
+		//! \todo избавиться от рудимента getRegular()
 		if (pEvent->getRegular())
 		{
 			LPIBaseOperation pRuntimeEvent = pPattern->getPatRuntime<rdoRuntime::RDOPatternEvent>()->createActivity(pParser->runtime()->m_pMetaLogic, pParser->runtime(), pEvent->name());
@@ -279,6 +284,23 @@ void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 		{
 			NEVER_REACH_HERE; //потому что нерегулярных событий больше нет
 		}
+	}
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOParserRTPPost
+// --------------------------------------------------------------------------------
+void RDOParserRTPPost::parse(CREF(LPRDOParser) pParser)
+{
+	ASSERT(pParser);
+
+	STL_FOR_ALL_CONST(pParser->getRTPResTypes(), RTPResTypeIt)
+	{
+		// Взять очередной тип ресурса в парсере
+		LPRDORTPResType pResType = *RTPResTypeIt;
+
+		// Создать соответствующий тип ресурсов в рантайме
+		pResType->end();
 	}
 }
 

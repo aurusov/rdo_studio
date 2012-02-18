@@ -855,73 +855,91 @@
 						Name="7. rdo_process"
 						>
 						<File
-							RelativePath="rdoprocess.cpp"
-							>
-							<FileConfiguration
-								Name="Release|Win32"
-								>
-								<Tool
-									Name="VCCLCompilerTool"
-									AdditionalIncludeDirectories=""
-									PreprocessorDefinitions=""
-								/>
-							</FileConfiguration>
-							<FileConfiguration
-								Name="Debug|Win32"
-								>
-								<Tool
-									Name="VCCLCompilerTool"
-									AdditionalIncludeDirectories=""
-									PreprocessorDefinitions=""
-								/>
-							</FileConfiguration>
-							<FileConfiguration
-								Name="Debug Corba|Win32"
-								>
-								<Tool
-									Name="VCCLCompilerTool"
-									AdditionalIncludeDirectories=""
-									PreprocessorDefinitions=""
-								/>
-							</FileConfiguration>
-							<FileConfiguration
-								Name="Release Corba|Win32"
-								>
-								<Tool
-									Name="VCCLCompilerTool"
-									AdditionalIncludeDirectories=""
-									PreprocessorDefinitions=""
-								/>
-							</FileConfiguration>
-							<FileConfiguration
-								Name="Debug MT|Win32"
-								>
-								<Tool
-									Name="VCCLCompilerTool"
-									AdditionalIncludeDirectories=""
-									PreprocessorDefinitions=""
-								/>
-							</FileConfiguration>
-							<FileConfiguration
-								Name="Release MT|Win32"
-								>
-								<Tool
-									Name="VCCLCompilerTool"
-									AdditionalIncludeDirectories=""
-									PreprocessorDefinitions=""
-								/>
-							</FileConfiguration>
-						</File>
-						<File
-							RelativePath="rdoprocess.h"
+							RelativePath=".\process\advance.cpp"
 							>
 						</File>
 						<File
-							RelativePath=".\rdoprocess.inl"
+							RelativePath=".\process\advance.h"
 							>
 						</File>
 						<File
-							RelativePath=".\rdoprocess_i.h"
+							RelativePath=".\process\advance.inl"
+							>
+						</File>
+						<File
+							RelativePath=".\process\assign.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\process\assign.h"
+							>
+						</File>
+						<File
+							RelativePath=".\process\assign.inl"
+							>
+						</File>
+						<File
+							RelativePath=".\process\generate.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\process\generate.h"
+							>
+						</File>
+						<File
+							RelativePath=".\process\generate.inl"
+							>
+						</File>
+						<File
+							RelativePath=".\process\queue_depart.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\process\queue_depart.h"
+							>
+						</File>
+						<File
+							RelativePath=".\process\queue_depart.inl"
+							>
+						</File>
+						<File
+							RelativePath=".\process\rdoprocess.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\process\rdoprocess.h"
+							>
+						</File>
+						<File
+							RelativePath=".\process\rdoprocess.inl"
+							>
+						</File>
+						<File
+							RelativePath=".\process\rdoprocess_i.h"
+							>
+						</File>
+						<File
+							RelativePath=".\process\seize_release.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\process\seize_release.h"
+							>
+						</File>
+						<File
+							RelativePath=".\process\seize_release.inl"
+							>
+						</File>
+						<File
+							RelativePath=".\process\terminate.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\process\terminate.h"
+							>
+						</File>
+						<File
+							RelativePath=".\process\terminate.inl"
 							>
 						</File>
 					</Filter>
@@ -2005,7 +2023,11 @@
 					>
 				</File>
 				<File
-					RelativePath=".\calc\resource\calc_choice_from.inl"
+					RelativePath=".\calc\resource\calc_create_resource.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\calc\resource\calc_create_resource.h"
 					>
 				</File>
 				<File
@@ -2383,6 +2405,18 @@
 			</File>
 			<File
 				RelativePath=".\rdoframe.inl"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name=".common"
+			>
+			<File
+				RelativePath=".\mode.h"
+				>
+			</File>
+			<File
+				RelativePath=".\namespace.h"
 				>
 			</File>
 		</Filter>

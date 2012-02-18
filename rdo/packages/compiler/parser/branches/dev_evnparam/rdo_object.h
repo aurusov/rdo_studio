@@ -13,12 +13,12 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/compiler/parser/namespace.h"
-#include "simulator/compiler/parser/grammar/rdobison.h"
-#include "simulator/runtime/rdo_object.h"
 #include "utils/rdomacros.h"
+#include "simulator/compiler/parser/namespace.h"
 #include "utils/rdotypes.h"
 #include "utils/smart_ptr/intrusive_ptr.h"
+#include "simulator/compiler/parser/grammar/rdobison.h"
+#include "simulator/runtime/rdo_object.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

@@ -10,8 +10,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <algorithm>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/namespace.h"
-#include "utils/rdomacros.h"
+#include "simulator/runtime/rdo_value.h"
 #include "simulator/runtime/rdo_value.h"
 // --------------------------------------------------------------------------------
 

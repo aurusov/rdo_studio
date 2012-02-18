@@ -30,7 +30,7 @@ REF(RDOValue) RDOGetResourceByRelevantResourceID::doCalc(CREF(LPRDORuntime) pRun
 {
 	if (!RDOCalcGetResourceHelper::getResource(pRuntime, pRuntime->getCurrentActivity()->getResByRelRes(m_relevantResourceID), m_value))
 	{
-		pRuntime->error().push(_T("Не найден ресурс"), this);
+		pRuntime->error().push(_T("Не найден ресурс"), srcInfo());
 	}
 	return m_value;
 }

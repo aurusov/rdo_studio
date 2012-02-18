@@ -11,6 +11,7 @@
 #define _LOCAL_VARIABLE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <list>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdo_value.h"
 #include "simulator/compiler/parser/expression.h"

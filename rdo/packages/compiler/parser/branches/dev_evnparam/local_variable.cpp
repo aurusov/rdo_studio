@@ -56,9 +56,9 @@ void LocalVariableList::append(CREF(LPLocalVariable) pVariable)
 	{
 		if ((*it)->getValue()->value().getIdentificator() == pVariable->getValue()->value().getIdentificator())
 		{
-			rdoParse::g_error().push_only(pVariable->getValue()->src_info(), rdo::format(_T("Переменная %s уже объявлена"), pVariable->getValue()->value().getIdentificator().c_str()));
-			rdoParse::g_error().push_only((*it)->getValue()->src_info(),     _T("См. первое описание"));
-			rdoParse::g_error().push_done();
+			rdoParser::g_error().push_only(pVariable->getValue()->src_info(), rdo::format(_T("Переменная %s уже объявлена"), pVariable->getValue()->value().getIdentificator().c_str()));
+			rdoParser::g_error().push_only((*it)->getValue()->src_info(),     _T("См. первое описание"));
+			rdoParser::g_error().push_done();
 		}
 	}
 
