@@ -114,11 +114,12 @@ void RPShape::loadFromXML(CREF(pugi::xml_node) node)
 	LOGFONT  lf;
 	CFont    font;
 	CBrush   brush;
-	//COLORREF clr;
+	
+	COLORREF clr;
+	rbool show       = false;
 	// Переменные для проверки существования структур lb:
 	rbool colorExist = false;
 	rbool styleExist = false;
-	//rbool show       = false;
 	
 	// Поиск узла <RPShape/> в списке потомков корня поддерева:
 	for (pugi::xml_node next_node = node.first_child(); next_node; next_node = next_node.next_sibling())
@@ -150,27 +151,28 @@ void RPShape::loadFromXML(CREF(pugi::xml_node) node)
 				// Считываем атрибуты стиля текста
 				if (strcmp(sub_node.name(), _T("LOGFONT")) == 0)
 				{
+					text_font.GetLogFont(&lf);
 					for (pugi::xml_attribute attr = sub_node.first_attribute(); attr; attr = attr.next_attribute())
 					{
 						tstring attrName = attr.name();
 						if (attrName == _T("name"))
 						{
 							tstring font_name = attr.value();
-							text_font.GetLogFont(&lf);
+							//text_font.GetLogFont(&lf);				// Удаляет подчеркивания и зачеркивания текста
 							memset(lf.lfFaceName, 0, LF_FACESIZE);
 							memcpy(lf.lfFaceName, font_name.c_str(), font_name.size());
 						}
 						else if (attrName == _T("height"))
 						{
-							lf.lfHeight = attr.as_double();
+							lf.lfHeight = attr.as_uint();
 						}
 						else if (attrName == _T("color"))
 						{
-							//clr = RPObjectChart::strToColor(attr.value());
+							clr = RPObjectChart::strToColor(attr.value());
 						}
 						else if (attrName == _T("show"))
 						{
-							//rbool show = attr.as_bool();
+							show = attr.as_bool();
 						}
 					}
 				}
@@ -186,7 +188,7 @@ void RPShape::loadFromXML(CREF(pugi::xml_node) node)
 	}
 	// Текстовый стиль:
 	font.CreateFontIndirect(&lf);
-	//setTextFont(font, clr, show);
+	setTextFont(font, clr, show);
 }
 
 RPObjectChart* RPShape::find( const rp::point& global_chart_pos )
