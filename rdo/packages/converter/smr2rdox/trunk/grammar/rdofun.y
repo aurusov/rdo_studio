@@ -429,7 +429,7 @@ fun_func_calc_name
 	: RDO_IDENTIF
 	{
 		tstring name = P_RDOVALUE($1)->value().getIdentificator();
-		if ( name != CONVERTER->getLastFUNFunction()->name() )
+		if (name != CONVERTER->getLastFUNFunction()->name() && name != _T("result"))
 		{
 			CONVERTER->error().error(@1, rdo::format(_T("Ожидается имя функции '%s'"), CONVERTER->getLastFUNFunction()->name().c_str()));
 		}
