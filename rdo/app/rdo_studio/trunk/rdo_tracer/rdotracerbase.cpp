@@ -377,8 +377,19 @@ void RDOTracerBase::dispatchNextString( std::string& line )
 std::string RDOTracerBase::getNextValue( std::string& line )
 {
 	int posstart = line.find_first_not_of( ' ' );
-	int posend = line.find_first_of( ' ', posstart );
-	std::string res = line.substr( posstart, posend - posstart );
+	int posend;
+	std::string res;
+	if (line[posstart] == _T('['))
+	{
+		//! @todo Массив просто игнорируется, график по нему не строится. Заплатка.
+		posend = line.find_first_of( ']', posstart );
+		res = _T("0");
+	}
+	else
+	{
+		posend = line.find_first_of( ' ', posstart );
+		res = line.substr( posstart, posend - posstart );
+	}
 	line.erase( 0, posend + 1 );
 	rdo::trim( res );
 	return res;
