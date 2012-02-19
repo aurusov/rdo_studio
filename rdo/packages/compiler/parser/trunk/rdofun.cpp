@@ -1605,7 +1605,7 @@ void RDOFUNFunction::createAlgorithmicCalc(CREF(RDOParserSrcInfo) body_src_info)
 		else
 		{
 			//! Присвоить автоматическое значение по-умолчанию, если оно не задано в явном виде
-			rdoRuntime::LPRDOCalcConst pCalcDefault = rdo::Factory<rdoRuntime::RDOCalcConst>::create(m_pReturn->getDefault()->value());
+			rdoRuntime::LPRDOCalcConst pCalcDefault = rdo::Factory<rdoRuntime::RDOCalcConst>::create(m_pReturn->getTypeInfo()->type()->get_default());
 			ASSERT(pCalcDefault);
 			pCalcDefault->setSrcInfo(m_pReturn->getTypeInfo()->src_info());
 			m_pFunctionCalc->addRetCalc(pCalcDefault);

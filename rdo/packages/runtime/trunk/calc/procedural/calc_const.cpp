@@ -21,6 +21,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 RDOCalcConst::RDOCalcConst(CREF(RDOValue) value)
 {
+	ASSERT(value.typeID() != RDOType::t_unknow);
 	m_value = value;
 }
 
