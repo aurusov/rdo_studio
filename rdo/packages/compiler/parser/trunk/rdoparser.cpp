@@ -423,7 +423,7 @@ tstring RDOParser::getModelStructure()
 
 void RDOParser::parse()
 {
-	parse(rdoModelObjects::obPRE);
+	//parse(rdoModelObjects::obPRE);
 
 	RDOParserContainer::Iterator it = begin();
 	while (it != end())
