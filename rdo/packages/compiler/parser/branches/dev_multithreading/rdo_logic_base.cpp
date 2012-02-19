@@ -22,6 +22,13 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOLogicBase
 // --------------------------------------------------------------------------------
+RDOLogicBase::RDOLogicBase(CREF(RDOParserSrcInfo) src_info)
+	: RDOParserSrcInfo(src_info)
+{}
+
+RDOLogicBase::~RDOLogicBase()
+{}
+
 CREF(tstring) RDOLogicBase::name() const
 {
 	return src_info().src_text();
@@ -70,12 +77,5 @@ void RDOLogicBase::end()
 	}
 	RDOParser::s_parser()->contextStack()->pop();
 }
-
-RDOLogicBase::RDOLogicBase(CREF(RDOParserSrcInfo) src_info)
-	: RDOParserSrcInfo(src_info)
-{}
-
-RDOLogicBase::~RDOLogicBase()
-{}
 
 CLOSE_RDO_PARSER_NAMESPACE
