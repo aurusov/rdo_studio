@@ -45,7 +45,8 @@ void RDOTracerResParam::getCaptions( std::vector<std::string> &captions, const i
 			RDOTracerSerie::getCaptionsDouble( captions, val_count );
 			break;
 		}
-		case RDOPT_ENUMERATIVE: {
+		case RDOPT_ENUMERATIVE:
+		case RDOPT_BOOL       : {
 			RDOTracerSerie::getCaptions( captions, val_count );
 			int delta = getParamInfo()->getEnumCount();
 			minValue = 0;

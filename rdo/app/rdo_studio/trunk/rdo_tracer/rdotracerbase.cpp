@@ -62,6 +62,10 @@ RDOTracerResParamInfo* RDOTracerBase::getParamType( rdo::textstream& stream )
 	{
 		parType = RDOPT_REAL;
 	}
+	else if ( par_type == "B" )
+	{
+		parType = RDOPT_BOOL;
+	}
 	else if ( par_type == "A" )
 	{
 		parType = RDOPT_ARRAY;
@@ -78,6 +82,11 @@ RDOTracerResParamInfo* RDOTracerBase::getParamType( rdo::textstream& stream )
 			stream >> en_name;
 			param->addEnumValue( en_name );
 		}
+	}
+	else if ( parType == RDOPT_BOOL )
+	{
+		param->addEnumValue( _T("false") );
+		param->addEnumValue( _T("true" ) );
 	}
 	else if ( parType == RDOPT_ARRAY )
 	{
@@ -452,7 +461,7 @@ RDOTracerResource* RDOTracerBase::getResource( std::string& line )
 
 RDOTracerResource* RDOTracerBase::resourceCreation( std::string& line, RDOTracerTimeNow* const time  )
 {
-	ruint typeID = atoi( getNextValue( line ).c_str() - 1);
+	ruint typeID = atoi( getNextValue( line ).c_str() ) - 1;
 	ASSERT(typeID < resTypes.size());
 	RDOTracerResType* type = resTypes.at( typeID );
 	int id = atoi( getNextValue( line ).c_str() );
