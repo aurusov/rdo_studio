@@ -1365,7 +1365,19 @@ Context::FindResult RDOFUNFunction::onFindContext(CREF(LPRDOValue) pValue) const
 	LPRDOParam pParam = findFUNFunctionParam(pValue->value().getIdentificator());
 	if (pParam)
 	{
-		LPExpression pExpression = rdo::Factory<Expression>::create(
+		rdoRuntime::RDOType::TypeID typeID = pParam->getTypeInfo()->type()->typeID();
+		if (typeID == rdoRuntime::RDOType::t_identificator)
+		{
+			RDOParser::s_parser()->error().push_only(
+				pValue->src_info()
+				, rdo::format(_T("Тип параметра '%s' определён неверно")
+					, pValue->src_info().src_text().c_str()
+				)
+			);
+			RDOParser::s_parser()->error().push_only(pParam->getTypeInfo()->src_info(), _T("См. описание типа"));
+			RDOParser::s_parser()->error().push_done();
+
+		}LPExpression pExpression = rdo::Factory<Expression>::create(
 			pParam->getTypeInfo(),
 			rdo::Factory<rdoRuntime::RDOCalcFuncParam>::create(findFUNFunctionParamNum(pValue->value().getIdentificator()), pParam->src_info()),
 			pValue->src_info()
