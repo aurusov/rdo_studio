@@ -257,8 +257,8 @@ PTR(rdoAnimation::RDOFrame) RDOFRMFrame::prepareFrame(PTR(rdoAnimation::RDOFrame
 				pFrame->m_elements.push_back(pRect);
 			}
 		}
-	}
 #endif // MODEL_DOROGA_HACK
+	}
 
 	return pFrame;
 }
