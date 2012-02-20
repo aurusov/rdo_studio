@@ -92,7 +92,7 @@ ruint RDOArrayValue::size() const
 	return m_container.size();
 }
 
-CREF(RDOValue) RDOArrayValue::getItem(CREF(RDOValue) index,CREF(RDOSrcInfo) srcInfo,CREF(LPRDORuntime) pRuntime) const
+CREF(RDOValue) RDOArrayValue::getItem(CREF(RDOValue) index, CREF(RDOSrcInfo) srcInfo, CREF(LPRDORuntime) pRuntime) const
 {
 	ruint ind = index.getUInt();
 	if (ind >= m_container.size())
@@ -102,7 +102,7 @@ CREF(RDOValue) RDOArrayValue::getItem(CREF(RDOValue) index,CREF(RDOSrcInfo) srcI
 	return m_container[ind];
 }
 
-void RDOArrayValue::setItem(CREF(RDOValue) index, CREF(RDOValue) item,CREF(RDOSrcInfo) srcInfo,CREF(LPRDORuntime) pRuntime)
+void RDOArrayValue::setItem(CREF(RDOValue) index, CREF(RDOValue) item, CREF(RDOSrcInfo) srcInfo, CREF(LPRDORuntime) pRuntime)
 {
 	ruint ind = index.getUInt();
 	if (ind >= m_container.size())
