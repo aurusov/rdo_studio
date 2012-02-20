@@ -19,6 +19,8 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
+//#define MODEL_DOROGA_HACK
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOFRMColor
 // --------------------------------------------------------------------------------
@@ -225,7 +227,38 @@ PTR(rdoAnimation::RDOFrame) RDOFRMFrame::prepareFrame(PTR(rdoAnimation::RDOFrame
 				}
 			}
 		}
+
+#ifdef MODEL_DOROGA_HACK
+		RDORuntime::ResCIterator end = pRuntime->res_end();
+		for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != end; ++it)
+		{
+			if (*it && (*it)->checkType(1))
+			{
+				rdoAnimation::RDOPoint point((*it)->getParam(0).getInt(), (*it)->getParam(1).getInt());
+				rdoAnimation::RDOSize  size;
+				if ((*it)->getParam(5).getInt() == 1)
+				{
+					size.m_width  = 3;
+					size.m_height = 2;
+				}
+				else
+				{
+					size.m_width  = 2;
+					size.m_height = 3;
+				}
+
+				ruint colorRuint = (*it)->getParam(7).getUInt();
+				rdoAnimation::RDOColor color(GetBValue(colorRuint), GetGValue(colorRuint), GetRValue(colorRuint));
+
+				PTR(rdoAnimation::FrameItem) pRect = new rdoAnimation::RDORectElement(
+					rdoAnimation::RDOBoundedElement(point, size),
+					rdoAnimation::RDOColoredElement(color, color)
+				);
+				pFrame->m_elements.push_back(pRect);
+			}
+		}
 	}
+#endif // MODEL_DOROGA_HACK
 
 	return pFrame;
 }
