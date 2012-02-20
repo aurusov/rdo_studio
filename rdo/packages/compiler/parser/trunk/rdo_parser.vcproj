@@ -2582,6 +2582,14 @@
 				RelativePath=".\rdodpt.h"
 				>
 			</File>
+			<File
+				RelativePath=".\rdoprocess.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rdoprocess.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name=".function"

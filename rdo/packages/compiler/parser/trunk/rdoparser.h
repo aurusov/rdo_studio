@@ -20,8 +20,10 @@
 #include "utils/smart_ptr/intrusive_ptr.h"
 #include "utils/rdosmart_ptr_wrapper.h"
 #include "utils/rdoidgenerator.h"
+
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/runtime/rdo_object.h"
+
 #include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/compiler/parser/rdoparser_base.h"
 #include "simulator/compiler/parser/rdo_value.h"
@@ -31,6 +33,7 @@
 #include "simulator/compiler/parser/rdopat.h"
 #include "simulator/compiler/parser/rdopatpreparse.h"
 #include "simulator/compiler/parser/rdodpt.h"
+#include "simulator/compiler/parser/rdoprocess.h"
 #include "simulator/compiler/parser/rdopmd.h"
 #include "simulator/compiler/parser/rdofrm.h"
 #include "simulator/compiler/parser/rdosmr.h"
