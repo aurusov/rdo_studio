@@ -64,7 +64,7 @@ Context::FindResult RDOParam::onSwitchContext(CREF(LPExpression) pSwitchExpressi
 				, rdo::format(_T("Тип параметра '%s' определён неверно")
 					, pSwitchExpression->src_info().src_text().c_str()
 				)
-			);
+	);
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

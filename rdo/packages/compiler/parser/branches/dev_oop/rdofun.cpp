@@ -1377,7 +1377,8 @@ Context::FindResult RDOFUNFunction::onFindContext(CREF(LPRDOValue) pValue) const
 			RDOParser::s_parser()->error().push_only(pParam->getTypeInfo()->src_info(), _T("См. описание типа"));
 			RDOParser::s_parser()->error().push_done();
 
-		}LPExpression pExpression = rdo::Factory<Expression>::create(
+		}
+		LPExpression pExpression = rdo::Factory<Expression>::create(
 			pParam->getTypeInfo(),
 			rdo::Factory<rdoRuntime::RDOCalcFuncParam>::create(findFUNFunctionParamNum(pValue->value().getIdentificator()), pParam->src_info()),
 			pValue->src_info()
