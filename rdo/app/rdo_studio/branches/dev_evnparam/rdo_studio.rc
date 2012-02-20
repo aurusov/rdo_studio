@@ -871,12 +871,10 @@ BEGIN
         POPUP "PAT"
         BEGIN
             MENUITEM "PAT operation",               ID_INSERT_PAT_TEMPL_OPERATION
-            MENUITEM "PAT event",                   ID_INSERT_PAT_TEMPL_EVENT
             MENUITEM "PAT rule",                    ID_INSERT_PAT_TEMPL_RULE
             MENUITEM "PAT keyboard",                ID_INSERT_PAT_TEMPL_KEYBOARD
             MENUITEM "$Pattern",                    ID_INSERT_PAT_PATTERN
             MENUITEM "operation",                   ID_INSERT_PAT_OPERATION
-            MENUITEM "event",                       ID_INSERT_PAT_EVENT
             MENUITEM "rule",                        ID_INSERT_PAT_RULE
             MENUITEM "keyboard",                    ID_INSERT_PAT_KEYBOARD
             MENUITEM "trace",                       ID_INSERT_PAT_TRACE
@@ -892,7 +890,6 @@ BEGIN
             MENUITEM "$Body",                       ID_INSERT_PAT_BODY
             MENUITEM "Convert_begin",               ID_INSERT_PAT_CONVERTBEGIN
             MENUITEM "Convert_end",                 ID_INSERT_PAT_CONVERTEND
-            MENUITEM "Convert_event",               ID_INSERT_PAT_CONVERTEVENT
             MENUITEM "Convert_rule",                ID_INSERT_PAT_CONVERTRULE
             MENUITEM "Choice from",                 ID_INSERT_PAT_CHOICEFROM
             MENUITEM "Choice NoCheck",              ID_INSERT_PAT_CHOICENOCHECK
@@ -921,7 +918,8 @@ BEGIN
         END
         POPUP "PRC"
         BEGIN
-            MENUITEM "$Process",                    ID_INSERT_PRC_TEMPL_PROCESS
+			MENUITEM "PRC",                         ID_INSERT_PRC_TEMPL_PROCESS
+            MENUITEM "$Process",                    ID_INSERT_PRC_PROCESS
             MENUITEM "GENERATE",                    ID_INSERT_PRC_GENERATE
             MENUITEM "SEIZE",                       ID_INSERT_PRC_SEIZE
             MENUITEM "RELEASE",                     ID_INSERT_PRC_RELEASE
@@ -930,6 +928,7 @@ BEGIN
             MENUITEM "DEPART",                      ID_INSERT_PRC_DEPART
             MENUITEM "ASSIGN",                      ID_INSERT_PRC_ASSIGN
             MENUITEM "TERMINATE",                   ID_INSERT_PRC_TERMINATE
+			MENUITEM "$End"                         ID_INSERT_PRC_END
         END
         POPUP "RTP"
         BEGIN
@@ -3416,7 +3415,7 @@ END
 STRINGTABLE 
 BEGIN
     ID_INSERT_PRC_TEMPL_PROCESS
-                            "$Process\r\n\r\n$End\r\n"
+                            "$Process \r\n\r\n$End\r\n"
 END
 
 STRINGTABLE 
@@ -4405,12 +4404,10 @@ BEGIN
         POPUP "PAT"
         BEGIN
             MENUITEM "PAT operation",               ID_INSERT_PAT_TEMPL_OPERATION
-            MENUITEM "PAT event",                   ID_INSERT_PAT_TEMPL_EVENT
             MENUITEM "PAT rule",                    ID_INSERT_PAT_TEMPL_RULE
             MENUITEM "PAT keyboard",                ID_INSERT_PAT_TEMPL_KEYBOARD
             MENUITEM "$Pattern",                    ID_INSERT_PAT_PATTERN
             MENUITEM "operation",                   ID_INSERT_PAT_OPERATION
-            MENUITEM "event",                       ID_INSERT_PAT_EVENT
             MENUITEM "rule",                        ID_INSERT_PAT_RULE
             MENUITEM "keyboard",                    ID_INSERT_PAT_KEYBOARD
             MENUITEM "trace",                       ID_INSERT_PAT_TRACE
@@ -4426,7 +4423,6 @@ BEGIN
             MENUITEM "$Body",                       ID_INSERT_PAT_BODY
             MENUITEM "Convert_begin",               ID_INSERT_PAT_CONVERTBEGIN
             MENUITEM "Convert_end",                 ID_INSERT_PAT_CONVERTEND
-            MENUITEM "Convert_event",               ID_INSERT_PAT_CONVERTEVENT
             MENUITEM "Convert_rule",                ID_INSERT_PAT_CONVERTRULE
             MENUITEM "Choice from",                 ID_INSERT_PAT_CHOICEFROM
             MENUITEM "Choice NoCheck",              ID_INSERT_PAT_CHOICENOCHECK
@@ -4455,7 +4451,8 @@ BEGIN
         END
 		POPUP "PRC"
         BEGIN
-            MENUITEM "$Process",                    ID_INSERT_PRC_TEMPL_PROCESS
+            MENUITEM "PRC",                         ID_INSERT_PRC_TEMPL_PROCESS
+			MENUITEM "$Process",                    ID_INSERT_PRC_PROCESS
             MENUITEM "GENERATE",                    ID_INSERT_PRC_GENERATE
             MENUITEM "SEIZE",                       ID_INSERT_PRC_SEIZE
             MENUITEM "RELEASE",                     ID_INSERT_PRC_RELEASE
@@ -4464,6 +4461,7 @@ BEGIN
             MENUITEM "DEPART",                      ID_INSERT_PRC_DEPART
             MENUITEM "ASSIGN",                      ID_INSERT_PRC_ASSIGN
             MENUITEM "TERMINATE",                   ID_INSERT_PRC_TERMINATE
+			MENUITEM "$End"                         ID_INSERT_PRC_END 
         END
         POPUP "RTP"
         BEGIN
