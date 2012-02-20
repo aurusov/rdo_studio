@@ -45,12 +45,13 @@ RDOCalcArrayItem::RDOCalcArrayItem(CREF(LPRDOCalc) pArray, CREF(LPRDOCalc) pArra
 
 REF(RDOValue) RDOCalcArrayItem::doCalc(CREF(LPRDORuntime) pRuntime)
 {
+	setSrcInfo(m_pArrayInd->srcInfo());
 	REF(RDOValue) value = m_pArray->calcValue(pRuntime);
 
 	CREF(LPRDOArrayValue) pArrayValue = value.getPointerSafety<RDOArrayType>();
 	ASSERT(pArrayValue);
 
-	m_value = pArrayValue->getItem(m_pArrayInd->calcValue(pRuntime),this->srcInfo(),pRuntime);
+	m_value = pArrayValue->getItem(m_pArrayInd->calcValue(pRuntime), srcInfo(), pRuntime);
 	return m_value;
 }
 
@@ -66,10 +67,11 @@ RDOCalcSetArrayItem::RDOCalcSetArrayItem(CREF(LPRDOCalc) pArray, CREF(LPRDOCalc)
 REF(RDOValue) RDOCalcSetArrayItem::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_value = m_pArray->calcValue(pRuntime);
+	setSrcInfo(m_pArrayInd->srcInfo());
 
 	CREF(LPRDOArrayValue) pArrayValue = m_value.getPointerSafety<RDOArrayType>();
 	ASSERT(pArrayValue);
-	pArrayValue->setItem(m_pArrayInd->calcValue(pRuntime), m_pSetItem->calcValue(pRuntime),this->srcInfo(),pRuntime);
+	pArrayValue->setItem(m_pArrayInd->calcValue(pRuntime), m_pSetItem->calcValue(pRuntime), srcInfo(), pRuntime);
 
 	return m_value;
 }
