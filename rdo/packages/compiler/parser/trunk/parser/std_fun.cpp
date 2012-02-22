@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <cmath>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/parser/std_fun.h"
 #include "simulator/compiler/parser/param.h"
@@ -157,6 +158,8 @@ void RDOParserSTDFUN::parse(CREF(LPRDOParser) pParser)
 	typedef rdoRuntime::RDOFunCalcStd<StdFun_I_II> Function_I_II;
 	typedef rdoRuntime::RDOFunCalcStd<StdFun_I_D>  Function_I_D;
 
+	
+	
 	LPTypeInfo  intType     = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__int>::create(),  RDOParserSrcInfo());
 	LPTypeInfo  realType    = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__real>::create(), RDOParserSrcInfo());
 	LPRDOParam  pIntReturn  = rdo::Factory<RDOParam>::create(RDOParserSrcInfo(), intType );
