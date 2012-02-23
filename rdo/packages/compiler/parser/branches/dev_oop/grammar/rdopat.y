@@ -3150,12 +3150,11 @@ fun_arithm
 
 		LPRDOFUNArithm pArithmInd = PARSER->stack().pop<RDOFUNArithm>($3);
 		ASSERT(pArithmInd);
-		
+
 		LPRDOType pType = pArithm->typeInfo()->type();
 		ASSERT(pType);
 
 		LPRDOArrayType pArrayType = pType.object_dynamic_cast<RDOArrayType>();
-		
 		if (!pArrayType)
 		{
 			PARSER->error().error(@1, rdo::format(_T("'%s' не является массивом."), pValue->value().getIdentificator().c_str()));
