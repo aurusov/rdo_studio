@@ -160,7 +160,7 @@ public:
 
 	void checkParamType(CREF(LPTypeInfo) pType);
 	
-	static void wrongVarInit(CREF(LPRDOValue) pParamName,CREF(tstring) paramName) ;
+	static void wrongVarInit(CREF(LPRDOValue) pParamName ,CREF(tstring) paramName);
 
 	static LPRDOFUNArithm generateByConst        (CREF(LPRDOValue) pValue);
 	static LPRDOFUNArithm generateByIdentificator(CREF(LPRDOValue) pValue);

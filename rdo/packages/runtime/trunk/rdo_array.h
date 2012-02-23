@@ -45,8 +45,8 @@ public:
 	ruint   size       () const;
 	tstring getAsString() const;
 
-	CREF(RDOValue) getItem(CREF(RDOValue) index,CREF(RDOSrcInfo) srcInfo,CREF(LPRDORuntime) pRuntime) const;
-	void           setItem(CREF(RDOValue) index, CREF(RDOValue) item,CREF(RDOSrcInfo) srcInfo,CREF(LPRDORuntime) pRuntime);
+	CREF(RDOValue) getItem(CREF(RDOValue) index, CREF(RDOSrcInfo) srcInfo, CREF(LPRDORuntime) pRuntime) const;
+	void           setItem(CREF(RDOValue) index, CREF(RDOValue)   item,    CREF(RDOSrcInfo)   srcInfo, CREF(LPRDORuntime) pRuntime);
 
 private:
 	RDOArrayValue(CREF(LPRDOArrayType)  pType );

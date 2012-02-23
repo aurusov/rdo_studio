@@ -632,9 +632,9 @@ empty_statement
 equal_statement
 	: RDO_IDENTIF increment_or_decrement_type
 	{
-		LPRDOValue			  pParamName   = PARSER->stack().pop<RDOValue>($1);
-		tstring               paramName    = pParamName->value().getIdentificator();
-		rdoRuntime::EqualType  equalType = static_cast<rdoRuntime::EqualType>($2);
+		LPRDOValue            pParamName = PARSER->stack().pop<RDOValue>($1);
+		tstring               paramName  = pParamName->value().getIdentificator();
+		rdoRuntime::EqualType equalType  = static_cast<rdoRuntime::EqualType>($2);
 		LPContext pContext = PARSER->context();
 		ASSERT(pContext);
 		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
@@ -663,7 +663,7 @@ equal_statement
 				}
 			}
 		}
-		else 
+		else
 		{
 			RDOFUNArithm::wrongVarInit(pParamName, paramName);
 		}
@@ -695,7 +695,7 @@ equal_statement
 	}
 	| RDO_IDENTIF param_equal_type fun_arithm
 	{
-		LPRDOValue			  pParamName   = PARSER->stack().pop<RDOValue>($1);
+		LPRDOValue            pParamName   = PARSER->stack().pop<RDOValue>($1);
 		tstring               paramName    = pParamName->value().getIdentificator();
 		rdoRuntime::EqualType equalType    = static_cast<rdoRuntime::EqualType>($2);
 		LPRDOFUNArithm        pRightArithm = PARSER->stack().pop<RDOFUNArithm>($3);
@@ -748,7 +748,7 @@ equal_statement
 				}
 			}
 		}
-		else 
+		else
 		{
 			RDOFUNArithm::wrongVarInit(pParamName, paramName);
 		}
@@ -831,8 +831,8 @@ set_array_item_statement
 		rdoRuntime::LPRDOCalc pArrayItemCalc = rdo::Factory<rdoRuntime::RDOCalcSetArrayItem>::create(pArrayArithm->calc(), pArithmInd->calc(), pRightArithm->calc());
 		ASSERT(pArrayItemCalc);
 		
-		tstring          paramName = pParamName->value().getIdentificator();
-		LPContext pContext = PARSER->context();
+		tstring   paramName = pParamName->value().getIdentificator();
+		LPContext pContext  = PARSER->context();
 		ASSERT(pContext);
 		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
 		ASSERT(pContextMemory);
@@ -2799,12 +2799,11 @@ fun_arithm
 
 		LPRDOFUNArithm pArithmInd = PARSER->stack().pop<RDOFUNArithm>($3);
 		ASSERT(pArithmInd);
-		
+
 		LPRDOType pType = pArithm->typeInfo()->type();
 		ASSERT(pType);
 
 		LPRDOArrayType pArrayType = pType.object_dynamic_cast<RDOArrayType>();
-		
 		if (!pArrayType)
 		{
 			PARSER->error().error(@1, rdo::format(_T("'%s' не является массивом."), pValue->value().getIdentificator().c_str()));
