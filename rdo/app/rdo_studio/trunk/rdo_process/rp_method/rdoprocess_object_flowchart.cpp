@@ -76,6 +76,18 @@ RPObjectFlowChart::RPObjectFlowChart( RPObject* _parent ):
 
 RPObjectFlowChart::~RPObjectFlowChart()
 {
+	std::list<PTR(RPObject)>::iterator it = child.begin();
+	while (it != child.end())
+	{
+		if ((*it)->getClassInfo()->isKindOf(_T("RPConnector")))
+		{
+			delete *it;
+			it = child.begin();
+			continue;
+		}
+		++it;
+	}
+
 	if ( drag_and_drop_shape ) {
 		delete drag_and_drop_shape;
 		drag_and_drop_shape = NULL;

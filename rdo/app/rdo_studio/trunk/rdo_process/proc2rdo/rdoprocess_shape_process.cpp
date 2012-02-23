@@ -129,3 +129,68 @@ void RPShapeProcessMJ::generate()
 	studioApp.studioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_PROCESS, m_pParams.get());
 	m_pParams = NULL;
 }
+
+void RPShapeProcessMJ::saveToXML(REF(pugi::xml_node) parentNode) const
+{
+	// Записываем узел <RPShapeProcessMJ/>:
+	pugi::xml_node node = parentNode.append_child(getClassName().c_str());
+	// Соxраняем атрибуты объекта:
+	// 1) Атрибуты графики
+	RPObjectMatrix::saveToXML(node);
+	RPShape::       saveToXML(node);
+	// 2) Атрибуты симулятора
+	node.append_attribute(_T("name"))       .set_value(getName().c_str());
+	node.append_attribute(_T("base_gen"))   .set_value(base_gen         );
+	node.append_attribute(_T("exp"))        .set_value(gexp             );
+	node.append_attribute(_T("disp"))       .set_value(gdisp            );
+	node.append_attribute(_T("zakon"))      .set_value(gtype            );
+	node.append_attribute(_T("action"))     .set_value(action           );
+	node.append_attribute(_T("prior"))      .set_value(prior            );
+	node.append_attribute(_T("queue"))      .set_value(queue            );
+}
+
+void RPShapeProcessMJ::loadFromXML(CREF(pugi::xml_node) node)
+{
+	// Считываем атрибуты для загрузки сохраненного блока "Process":
+	for(pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute())
+	{
+		// Присваиваем сохраненные в xml-файле параметры:
+		// Для симулятора (диалоговые окна)
+		tstring attrName = attr.name();
+		if (attrName == _T("name"))
+		{
+			setName(attr.value());
+		}
+		else if (attrName == _T("base_gen"))
+		{
+			base_gen = attr.as_int();
+		}
+		else if (attrName == _T("exp"))
+		{
+			gexp = attr.as_double();
+		}
+		else if (attrName == _T("disp"))
+		{
+			gdisp = attr.as_double();
+		}
+		else if (attrName == _T("zakon"))
+		{
+			gtype = attr.as_int();
+		}
+		else if (attrName == _T("action"))
+		{
+			action = attr.as_int();
+		}
+		else if (attrName == _T("prior"))
+		{
+			prior = attr.as_int();
+		}
+		else if (attrName == _T("queue"))
+		{
+			queue = attr.as_int();
+		}
+	}
+	// Для отображения объекта на Flowchart'е
+	RPObjectMatrix::loadFromXML(node);
+	RPShape::       loadFromXML(node);
+}

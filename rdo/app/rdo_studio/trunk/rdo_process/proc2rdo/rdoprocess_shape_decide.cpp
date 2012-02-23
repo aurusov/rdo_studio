@@ -67,6 +67,46 @@ rp::RPXMLNode* RPShapeDecide::save( rp::RPXMLNode* parent_node )
 	return obj_node;
 }
 
+void RPShapeDecide::saveToXML(REF(pugi::xml_node) parentNode) const
+{
+	// Записываем узел <RPShapeDecide/>:
+	pugi::xml_node node = parentNode.append_child(getClassName().c_str());
+	// Соxраняем атрибуты объекта:
+	// 1) Атрибуты графики
+	RPObjectMatrix::saveToXML(node);
+	RPShape::       saveToXML(node);
+	// 2) Атрибуты симулятора
+	node.append_attribute(_T("name"))   .set_value(getName().c_str());
+	node.append_attribute(_T("true"))   .set_value(ptrue            );
+	node.append_attribute(_T("false"))  .set_value(pfalse           );
+}
+
+void RPShapeDecide::loadFromXML(CREF(pugi::xml_node) node)
+{
+	// Считываем атрибуты для загрузки сохраненного блока "Decide":
+	for(pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute())
+	{
+		// Присваиваем сохраненные в xml-файле параметры:
+		// Для симулятора (диалоговые окна)
+		tstring attrName = attr.name();
+		if (attrName == _T("name"))
+		{
+			setName(attr.value());
+		}
+		else if (attrName == _T("true"))
+		{
+			ptrue = attr.as_double();
+		}
+		else if (attrName == _T("false"))
+		{
+			pfalse = attr.as_double();
+		}
+	}
+	// Отображения объекта на Flowchart'е
+	RPObjectMatrix::loadFromXML(node);
+	RPShape::       loadFromXML(node);
+}
+
 RPObject* RPShapeDecide::newObject( RPObject* parent )
 {
 	return new RPShapeDecide( parent );

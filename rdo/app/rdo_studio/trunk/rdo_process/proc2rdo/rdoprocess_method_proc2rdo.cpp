@@ -121,6 +121,18 @@ void RPMethodProc2RDO_MJ::generate()
 	}
 }
 
+void RPMethodProc2RDO_MJ::saveToXML(pugi::xml_node &parentNode) const
+{
+	UNUSED(parentNode);
+	NEVER_REACH_HERE;
+}
+
+void RPMethodProc2RDO_MJ::loadFromXML(const pugi::xml_node &node)
+{
+	UNUSED(node);
+	NEVER_REACH_HERE;
+}
+
 bool RPMethodProc2RDO_MJ::checkModelStructure()
 {
 // Заполнили ID

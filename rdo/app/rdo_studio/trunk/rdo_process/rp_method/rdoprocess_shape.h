@@ -128,6 +128,8 @@ public:
 	virtual rp::string getClassName() const { return "RPShape"; }
 	virtual void load( rp::RPXMLNode* node );
 	virtual rp::RPXMLNode* save( rp::RPXMLNode* parent_node );
+	void saveToXML   (REF (pugi::xml_node) parentNode) const;
+	void loadFromXML (CREF(pugi::xml_node) node);
 
 	std::list< RPShape* > getNextBlock();
 

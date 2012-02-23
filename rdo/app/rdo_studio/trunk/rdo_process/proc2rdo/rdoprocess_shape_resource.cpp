@@ -155,11 +155,39 @@ RDOfiles->resourse<<std::endl<<std::endl<<"{-------ресурс ------" <<getName().c_
 
 <<"Resource_"<<getName().c_str()<<" : Resource свободен 0 1";
 
+}
 
+void RPShapeResource_MJ::saveToXML(REF(pugi::xml_node) parentNode) const
+{
+	// Записываем узел <RPShapeResource_MJ/>:
+	pugi::xml_node node = parentNode.append_child(getClassName().c_str());
+	// Соxраняем атрибуты объекта:
+	// 1) Атрибуты графики
+	RPObjectMatrix::saveToXML(node);
+	RPShape::       saveToXML(node);
+	// 2) Атрибуты симулятора
+	node.append_attribute(_T("name"))     .set_value(getName().c_str());
+	node.append_attribute(_T("amount"))   .set_value(gamount          );
+}
 
-
-
-
-
-
+void RPShapeResource_MJ::loadFromXML(CREF(pugi::xml_node) node)
+{
+	// Считываем атрибуты для загрузки сохраненного блока "Resource":
+	for(pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute())
+	{
+		// Присваиваем сохраненные в xml-файле параметры:
+		// Для симулятора (диалоговые окна)
+		tstring attrName = attr.name();
+		if (attrName == _T("name"))
+		{
+			setName(attr.value());
+		}
+		else if (attrName == _T("amount"))
+		{
+			gamount = attr.as_int();
+		}
+	}
+	// Отображения объекта на Flowchart'е
+	RPObjectMatrix::loadFromXML(node);
+	RPShape::       loadFromXML(node);
 }

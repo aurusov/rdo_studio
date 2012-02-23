@@ -32,6 +32,7 @@
 #include "utils/rdoanimation.h"
 #include "app/rdo_studio_mfc/plugins/common/rdoplugin.h"
 #include "simulator/runtime/rdo_exception.h"
+#include "thirdparty/pugixml/src/pugixml.hpp"
 // --------------------------------------------------------------------------------
 
 using namespace rdoEditor;
@@ -832,7 +833,8 @@ void RDOStudioModel::openModelFromRepository()
 		if (pMethod)
 		{
 			m_pFlowchartDocTemplate->OpenDocumentFile(NULL);
-			pMethod->makeFlowChart(rpMethod::project);
+			loadFromXML();
+			//pMethod->makeFlowChart(rpMethod::project); // Load empty flowchart.
 		}
 
 		BOOL maximize = false;
@@ -1002,6 +1004,11 @@ void RDOStudioModel::saveModelToRepository()
 	studioApp.studioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
 	setName(data.m_name);
 
+	if (getProc2rdo())
+	{
+		saveToXML();
+	}
+
 	studioApp.insertReopenItem(getFullName());
 
 	if (smr_modified)
@@ -1012,6 +1019,51 @@ void RDOStudioModel::saveModelToRepository()
 	if (wasSaved && plugins)
 	{
 		plugins->pluginProc(rdoPlugin::PM_MODEL_SAVE);
+	}
+}
+
+void RDOStudioModel::saveToXML()
+{
+	// Заводим документ:
+	pugi::xml_document doc;
+	// Пишем первый узел документа:
+	pugi::xml_node node = doc.append_child(_T("Model"));
+	// Ссылаемся на виртуальную функцию saveToXML(parentNode), которая поэтапно запишет информацию в файл:
+	rpMethod::project->saveToXML(node);
+
+	// Автоматически открываем файл при создании потока:
+	std::ofstream outFile("C:\\temp\\GuI.xml");
+	// Проверяем открытый нами поток на наличие ошибок ввода-вывода:
+	if (outFile.good())
+	{
+		doc.save(outFile);
+		outFile.close();
+	}
+}
+
+void RDOStudioModel::loadFromXML()
+{
+	// Заводим документ:
+	pugi::xml_document doc;
+
+	rdoRepository::RDOThreadRepository::FileInfo fileInfo(rdoModelObjects::PRCX);
+	studioApp.studioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &fileInfo);
+
+	// Открываем сохраненный xml-файл и проверяем поток на ошибки ввода-вывода:
+	std::ifstream inFile(fileInfo.m_fullName.c_str());
+	if (inFile.good())
+	{
+		// Загружаем документ и проверяем на предмет ошибок парсинга и пустого узла:
+		if (doc.load(inFile))
+		{
+			pugi::xml_node node = doc.child(_T("Model"));
+			if (!node.empty())
+			{
+				// Ссылаемся на виртуальную функцию loadFromXML(node), которая поэтапно загрузит графику из файла:
+				rpMethod::project->loadFromXML(node.first_child());
+			}
+		}
+		inFile.close();
 	}
 }
 

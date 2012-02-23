@@ -32,6 +32,10 @@ public:
 
     virtual void onLButtonDblClk( UINT nFlags, CPoint global_chart_pos );
 	virtual void generate();
+
+	// Переопределенная виртуальная функция saveToXML и loadFromXML для RPShapeTerminateMJ:
+	void saveToXML  (REF (pugi::xml_node) parentNode) const;
+	void loadFromXML(CREF(pugi::xml_node) node);
 };
 
 #endif // !defined(AFX_RDOPROCESS_SHAPE_TERMINATE_MJ_H__86CC09DB_DB23_4B8C_9EC4_080002103CDF__INCLUDED_)

@@ -60,6 +60,61 @@ rp::RPXMLNode* RPShapeCreateMJ::save( rp::RPXMLNode* parent_node )
 	return obj_node;
 }
 
+void RPShapeCreateMJ::saveToXML(REF(pugi::xml_node) parentNode) const
+{
+	// Записываем узел <RPShapeCreateMJ/>:
+	pugi::xml_node node = parentNode.append_child(getClassName().c_str());
+	// Соxраняем атрибуты объекта:
+	// 1) Атрибуты графики
+	RPObjectMatrix::saveToXML(node);
+	RPShape::       saveToXML(node);
+	// 2) Атрибуты симулятора
+	node.append_attribute(_T("name"))     .set_value(getName().c_str());
+	node.append_attribute(_T("amount"))   .set_value(gamount          );
+	node.append_attribute(_T("base_gen")) .set_value(base_gen         );
+	node.append_attribute(_T("exp"))      .set_value(gexp             );
+	node.append_attribute(_T("disp"))     .set_value(gdisp            );
+	node.append_attribute(_T("zakon"))    .set_value(gtype            );
+}
+
+void RPShapeCreateMJ::loadFromXML(CREF(pugi::xml_node) node)
+{
+	// Считываем атрибуты для загрузки сохраненного блока "Create":
+	for (pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute())
+	{
+		// Присваиваем сохраненные в xml-файле параметры
+		// Для симулятора (диалоговые окна)
+		tstring attrName = attr.name();
+		if (attrName == _T("name"))
+		{
+			setName(attr.value());
+		}
+		else if (attrName == _T("amount"))
+		{
+			gamount = attr.as_int();
+		}
+		else if (attrName == _T("base_gen"))
+		{
+			base_gen = attr.as_int();
+		}
+		else if (attrName == _T("exp"))
+		{
+			gexp = attr.as_double();
+		}
+		else if (attrName == _T("disp"))
+		{
+			gdisp = attr.as_double();
+		}
+		else if (attrName == _T("zakon"))
+		{
+			gtype = attr.as_int();
+		}
+	}
+	// Отображения объекта на Flowchart'е
+	RPObjectMatrix::loadFromXML(node);
+	RPShape::       loadFromXML(node);
+}
+
 RPObject* RPShapeCreateMJ::newObject( RPObject* parent )
 {
 	return new RPShapeCreateMJ( parent );

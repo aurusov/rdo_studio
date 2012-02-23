@@ -11,34 +11,25 @@
 /////////////////////////////////////////////////////////////////////////////
 // RPShapeTerminateDlg1_MJ dialog
 
-class RPShapeTerminateDlg1_MJ : public CDialog
+class RPShapeTerminateDlg1_MJ: public CDialog
 {
-// Construction
 public:
-	RPShapeTerminateDlg1_MJ(CWnd* pParent = NULL, RPShapeTerminateMJ* ppParent=NULL);   // standard constructor
-    virtual BOOL OnInitDialog();
+	RPShapeTerminateDlg1_MJ(PTR(CWnd) pWndParent = NULL, PTR(RPShapeTerminateMJ) pShape = NULL);
+	virtual BOOL OnInitDialog();
 
-	RPShapeTerminateMJ* pParentMJ; // ссылка на родителя
-// Dialog Data
+	PTR(RPShapeTerminateMJ) m_pShape;
+
 	//{{AFX_DATA(RPShapeTerminateDlg1_MJ)
 	enum { IDD = IDD_DIALOG_TERMINATE_1_MJ };
-	CString	  m_name;
-	int       m_term_inc;
+	CString    m_name;
+	int        m_terminateCounter;
 	//}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(RPShapeTerminateDlg1_MJ)
-	protected:
-	
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+protected:
+	virtual void DoDataExchange(PTR(CDataExchange) pDX); // DDX/DDV support
 	//}}AFX_VIRTUAL
 
-// Implementation
-protected:
-
-	// Generated message map functions
 	//{{AFX_MSG(RPShapeTerminateDlg1_MJ)
 	virtual void OnOK();
 	//}}AFX_MSG

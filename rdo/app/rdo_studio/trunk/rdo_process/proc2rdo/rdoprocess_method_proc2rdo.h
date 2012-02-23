@@ -36,8 +36,11 @@ public:
 	double generate_time_MJ;
 	RPCreationRDOFilesMJ* RDOfiles;
 	std::list< CString > list_pattern_names; // MJ 7.04.06 хранятся имена всех паттернов для записи в файл *.opr generate() заполняет его
-
 	
+	// Блокируем вхождение функции saveToXML и loadFromXML в RPMethod
+	// (из-за проектной ошибки - класс RPMethod не должен наследоваться от RPObject)
+	virtual void saveToXML  (REF (pugi::xml_node) parentNode) const;
+	virtual void loadFromXML(CREF(pugi::xml_node) node);
 };
 
 extern RPMethodProc2RDO_MJ* proc2rdo;

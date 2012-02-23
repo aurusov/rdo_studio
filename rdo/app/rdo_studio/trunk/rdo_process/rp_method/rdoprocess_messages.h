@@ -6,6 +6,7 @@
 #endif // _MSC_VER > 1000
 
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_object.h"
+#include "utils/rdodebug.h"
 
 // --------------------------------------------------------------------------------
 // -------------------- RPMessages
@@ -43,6 +44,11 @@ public:
 	void connect( RPObject* to, UINT message );
 	void disconnect( RPObject* to );
 	void disconnect( RPObject* to, UINT message );
+
+	// Блокируем вхождение в данный класс функции saveToXML и loadFromXML
+	// (из-за проектной ошибки - класс msg не должен наследоваться от RPObject).
+	virtual void saveToXML  (REF (pugi::xml_node) parentNode) const;
+	virtual void loadFromXML(CREF(pugi::xml_node) node);
 };
 
 } // namespace rp
