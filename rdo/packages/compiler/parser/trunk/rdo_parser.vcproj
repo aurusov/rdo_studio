@@ -2575,6 +2575,18 @@
 				>
 			</File>
 			<File
+				RelativePath=".\rdo_logic.inl"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_logic_base.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_logic_base.h"
+				>
+			</File>
+			<File
 				RelativePath=".\rdodpt.cpp"
 				>
 			</File>
@@ -2602,6 +2614,18 @@
 				RelativePath=".\rdofun.h"
 				>
 			</File>
+			<Filter
+				Name=".expression"
+				>
+				<File
+					RelativePath=".\expression.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\expression.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name=".parser"
@@ -2854,18 +2878,6 @@
 					>
 				</File>
 			</Filter>
-		</Filter>
-		<Filter
-			Name=".expression"
-			>
-			<File
-				RelativePath=".\expression.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\expression.h"
-				>
-			</File>
 		</Filter>
 	</Files>
 	<Globals>

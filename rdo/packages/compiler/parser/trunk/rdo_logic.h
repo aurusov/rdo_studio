@@ -1,10 +1,11 @@
 /*!
-  \copyright (c) RDO-Team, 2011
+  \copyright (c) RDO-Team, 2012
   \file      simulator/compiler/parser/rdo_logic.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \authors   Клеванец Игорь (impus@hotbox.ru)
+  \date      31.01.2012
+  \brief     Логика парсера
   \indent    4T
 */
 
@@ -14,6 +15,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdo_object.h"
+#include "simulator/compiler/parser/rdo_logic_base.h"
 #include "simulator/compiler/parser/rdofun.h"
 #include "simulator/runtime/rdo_logic_i.h"
 #include "simulator/runtime/rdo_priority_i.h"
@@ -22,54 +24,29 @@
 OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOLogicActivity
+// -------------------- RDOLogic
 // --------------------------------------------------------------------------------
 template<class RTLogic, class Activity>
-class RDOLogicActivity: public RDOParserSrcInfo
+class RDOLogic: public RDOLogicBase
 {
 public:
-	typedef  rdo::intrusive_ptr<Activity> LPActivity;
-	typedef  std::vector<LPActivity>      ActivityList;
+	typedef rdo::intrusive_ptr<Activity> LPActivity;
+	typedef std::vector<LPActivity>      ActivityList;
 
-	RDOLogicActivity(CREF(RDOParserSrcInfo) src_info)
-		: RDOParserSrcInfo(src_info)
-	{}
-	virtual ~RDOLogicActivity()
-	{}
-
-	CREF(tstring) name() const { return src_info().src_text(); }
-
-	LPActivity addNewActivity(CREF(RDOParserSrcInfo) activity_src_info, CREF(RDOParserSrcInfo) pattern_src_info)
-	{
-		LPActivity pAactivity = rdo::Factory<Activity>::create(m_pRuntimeLogic, activity_src_info, pattern_src_info);
-		ASSERT(pAactivity);
-		m_activityList.push_back(pAactivity);
-		return pAactivity;
-	}
-
-	LPActivity getLastActivity() const
-	{
-		return !m_activityList.empty() ? m_activityList.back() : LPActivity(NULL);
-	}
-	CREF(ActivityList) getActivities() const { return m_activityList; }
-
-	rbool setPrior(REF(LPRDOFUNArithm) pPrior)
-	{
-		LPIPriority pPriority = m_pRuntimeLogic;
-		if (pPriority)
-		{
-			return pPriority->setPrior(pPrior->createCalc());
-		}
-		return false;
-	}
+	LPActivity         addNewActivity (CREF(RDOParserSrcInfo) activity_src_info, CREF(RDOParserSrcInfo) pattern_src_info);
+	LPActivity         getLastActivity() const;
+	CREF(ActivityList) getActivities  () const;
 
 protected:
-	LPILogic     m_pRuntimeLogic;
+	RDOLogic(CREF(RDOLogicBase) src_info);
+	virtual ~RDOLogic();
 
 private:
 	ActivityList m_activityList;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
+
+#include "simulator/compiler/parser/rdo_logic.inl"
 
 #endif // _RDOPARSER_LOGIC_H_

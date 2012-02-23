@@ -194,6 +194,8 @@ $Priority                      return(RDO_Priority);
 $priority                      return(RDO_Priority);
 $Parent                        return(RDO_Parent);
 $parent                        return(RDO_Parent);
+$Multithreading                return(RDO_Multithreading);
+$multithreading                return(RDO_Multithreading);
 
 trace                          return(RDO_trace);
 no_trace                       return(RDO_no_trace);
