@@ -59,10 +59,13 @@ Context::FindResult RDOParam::onSwitchContext(CREF(LPExpression) pSwitchExpressi
 		ASSERT(pContextSwitch);
 		return pContextSwitch->onSwitchContext(pSwitchExpression, pValue);
 	}
+
 	RDOParser::s_parser()->error().error(
 		pSwitchExpression->src_info(),
 		rdo::format(_T("Тип параметра '%s' определён неверно"), pSwitchExpression->src_info().src_text().c_str())
 	);
+
+	return FindResult();
 }
 
 CLOSE_RDO_PARSER_NAMESPACE
