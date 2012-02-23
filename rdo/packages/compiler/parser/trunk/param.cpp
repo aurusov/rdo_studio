@@ -11,6 +11,7 @@
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/param.h"
 #include "simulator/compiler/parser/rdortp.h"
 #include "simulator/runtime/rdo_resource.h"
@@ -19,17 +20,17 @@
 OPEN_RDO_PARSER_NAMESPACE
 
 RDOParam::RDOParam(CREF(tstring) name, CREF(LPTypeInfo) pType, CREF(LPRDOValue) pDefault)
-	: RDOParserSrcInfo(name        )
-	, m_pType         (pType       )
-	, m_pDefault      (pDefault    )
+	: RDOParserSrcInfo(name    )
+	, m_pType         (pType   )
+	, m_pDefault      (pDefault)
 {
 	checkDefault();
 }
 
-RDOParam::RDOParam(CREF(RDOParserSrcInfo) src_info, CREF(LPTypeInfo) pType, CREF(LPRDOValue) pDefault)
-	: RDOParserSrcInfo(src_info    )
-	, m_pType         (pType       )
-	, m_pDefault      (pDefault    )
+RDOParam::RDOParam(CREF(RDOParserSrcInfo) srcInfo, CREF(LPTypeInfo) pType, CREF(LPRDOValue) pDefault)
+	: RDOParserSrcInfo(srcInfo )
+	, m_pType         (pType   )
+	, m_pDefault      (pDefault)
 {
 	checkDefault();
 }
@@ -59,7 +60,12 @@ Context::FindResult RDOParam::onSwitchContext(CREF(LPExpression) pSwitchExpressi
 		return pContextSwitch->onSwitchContext(pSwitchExpression, pValue);
 	}
 
-	return Context::FindResult();
+	RDOParser::s_parser()->error().error(
+		pSwitchExpression->src_info(),
+		rdo::format(_T("Тип параметра '%s' определён неверно"), pSwitchExpression->src_info().src_text().c_str())
+	);
+
+	return FindResult();
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

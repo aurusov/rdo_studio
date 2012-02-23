@@ -56,8 +56,8 @@ void RDOFUNDoubleToIntByResult::roundCalc()
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNBase
 // --------------------------------------------------------------------------------
-RDOFUNBase::RDOFUNBase(CREF(RDOParserSrcInfo) src_info)
-	: RDOParserSrcInfo(src_info)
+RDOFUNBase::RDOFUNBase(CREF(RDOParserSrcInfo) srcInfo)
+	: RDOParserSrcInfo(srcInfo)
 {}
 
 RDOFUNBase::RDOFUNBase(CREF(LPExpression) pExpression)
@@ -87,9 +87,9 @@ RDOFUNLogic::RDOFUNLogic(CREF(LPRDOFUNArithm) pArithm)
 RDOFUNLogic::RDOFUNLogic(CREF(LPExpression) pExpression, rbool hideWarning)
 	: RDOFUNBase(pExpression)
 {
-	rdoRuntime::RDOSrcInfo src_info = m_pExpression->src_info();
-	src_info.setSrcFileType(src_filetype());
-	m_pExpression->setSrcInfo(src_info);
+	rdoRuntime::RDOSrcInfo srcInfo = m_pExpression->src_info();
+	srcInfo.setSrcFileType(src_filetype());
+	m_pExpression->setSrcInfo(srcInfo);
 	if (!hideWarning)
 	{
 		rdoRuntime::LPRDOCalcConst pConstCalc = m_pExpression->calc().object_dynamic_cast<rdoRuntime::RDOCalcConst>();
@@ -110,15 +110,15 @@ RDOFUNLogic::RDOFUNLogic(CREF(LPExpression) pExpression, rbool hideWarning)
 RDOFUNLogic::~RDOFUNLogic()
 {}
 
-LPRDOFUNLogic RDOFUNLogic::generateTrue(CREF(RDOParserSrcInfo) src_info)
+LPRDOFUNLogic RDOFUNLogic::generateTrue(CREF(RDOParserSrcInfo) srcInfo)
 {
 	LPExpression pExpression = rdo::Factory<Expression>::create(
 		rdo::Factory<TypeInfo>::create(
 			rdo::Factory<RDOType__bool>::create(),
-			src_info
+			srcInfo
 		),
 		rdo::Factory<rdoRuntime::RDOCalcConst>::create(true),
-		src_info
+		srcInfo
 	);
 	ASSERT(pExpression);
 
@@ -196,26 +196,26 @@ LPRDOFUNLogic RDOFUNLogic::operator_not(CREF(RDOSrcInfo::Position) position)
 	return generateLogic<rdoRuntime::RDOCalcNot>(position);
 }
 
-void RDOFUNLogic::setSrcInfo(CREF(RDOParserSrcInfo) src_info)
+void RDOFUNLogic::setSrcInfo(CREF(RDOParserSrcInfo) srcInfo)
 {
-	RDOParserSrcInfo::setSrcInfo(src_info);
-	m_pExpression->setSrcInfo(src_info);
+	RDOParserSrcInfo::setSrcInfo(srcInfo);
+	m_pExpression->setSrcInfo(srcInfo);
 }
 
 void RDOFUNLogic::setSrcPos(CREF(RDOSrcInfo::Position) position)
 {
 	RDOParserSrcInfo::setSrcPos(position);
-	rdoRuntime::RDOSrcInfo src_info = m_pExpression->src_info();
-	src_info.setSrcPos(position);
-	m_pExpression->setSrcInfo(src_info);
+	rdoRuntime::RDOSrcInfo srcInfo = m_pExpression->src_info();
+	srcInfo.setSrcPos(position);
+	m_pExpression->setSrcInfo(srcInfo);
 }
 
 void RDOFUNLogic::setSrcText(CREF(tstring) value)
 {
 	RDOParserSrcInfo::setSrcText(value);
-	rdoRuntime::RDOSrcInfo src_info = m_pExpression->src_info();
-	src_info.setSrcText(value);
-	m_pExpression->setSrcInfo(src_info);
+	rdoRuntime::RDOSrcInfo srcInfo = m_pExpression->src_info();
+	srcInfo.setSrcText(value);
+	m_pExpression->setSrcInfo(srcInfo);
 }
 
 void RDOFUNLogic::setSrcPos(CREF(YYLTYPE) error_pos)
@@ -557,6 +557,20 @@ void RDOFUNArithm::checkParamType(CREF(LPTypeInfo) pType)
 	}
 }
 
+void RDOFUNArithm::wrongVarInit(CREF(LPRDOValue) pParamName,CREF(tstring) paramName)
+{
+	LPRDOFUNFunction pFunction = RDOParser::s_parser()->getLastFUNFunction();
+	ASSERT(pFunction);
+	LPRDOParam pParam = pFunction->findFUNFunctionParam(paramName);
+	if(pParam)
+	{
+		RDOParser::s_parser()->error().error(pParamName->src_info(), rdo::format(_T("Функции не могут изменить свой параметр: %s"), paramName.c_str()));		
+	}
+	else
+	{
+		RDOParser::s_parser()->error().error(pParamName->src_info(), rdo::format(_T("Неизвестный идентификатор: %s"), paramName.c_str()));
+	}
+}
 rdoRuntime::LPRDOCalc RDOFUNArithm::createCalc(CREF(LPTypeInfo) pForType)
 {
 	if (typeID() != rdoRuntime::RDOType::t_identificator)
@@ -597,26 +611,26 @@ rdoRuntime::LPRDOCalc RDOFUNArithm::createCalc(CREF(LPTypeInfo) pForType)
 	return pNewCalc;
 }
 
-void RDOFUNArithm::setSrcInfo(CREF(RDOParserSrcInfo) src_info)
+void RDOFUNArithm::setSrcInfo(CREF(RDOParserSrcInfo) srcInfo)
 {
-	RDOParserSrcInfo::setSrcInfo(src_info);
-	m_pExpression->setSrcInfo(src_info);
+	RDOParserSrcInfo::setSrcInfo(srcInfo);
+	m_pExpression->setSrcInfo(srcInfo);
 }
 
 void RDOFUNArithm::setSrcPos(CREF(RDOSrcInfo::Position) position)
 {
 	RDOParserSrcInfo::setSrcPos(position);
-	rdoRuntime::RDOSrcInfo src_info = m_pExpression->src_info();
-	src_info.setSrcPos(position);
-	m_pExpression->setSrcInfo(src_info);
+	rdoRuntime::RDOSrcInfo srcInfo = m_pExpression->src_info();
+	srcInfo.setSrcPos(position);
+	m_pExpression->setSrcInfo(srcInfo);
 }
 
 void RDOFUNArithm::setSrcText(CREF(tstring) value)
 {
 	RDOParserSrcInfo::setSrcText(value);
-	rdoRuntime::RDOSrcInfo src_info = m_pExpression->src_info();
-	src_info.setSrcText(this->src_info().src_text());
-	m_pExpression->setSrcInfo(src_info);
+	rdoRuntime::RDOSrcInfo srcInfo = m_pExpression->src_info();
+	srcInfo.setSrcText(this->src_info().src_text());
+	m_pExpression->setSrcInfo(srcInfo);
 }
 
 void RDOFUNArithm::setSrcInfo(CREF(RDOParserSrcInfo) begin, CREF(tstring) delim, CREF(RDOParserSrcInfo) end)
@@ -637,8 +651,8 @@ void RDOFUNArithm::setSrcPos(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end)
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNConstant
 // --------------------------------------------------------------------------------
-RDOFUNConstant::RDOFUNConstant(CREF(RDOParserSrcInfo) src_info, CREF(LPTypeInfo) pType, CREF(LPRDOValue) pDefault)
-	: RDOParam(src_info, pType, pDefault)
+RDOFUNConstant::RDOFUNConstant(CREF(RDOParserSrcInfo) srcInfo, CREF(LPTypeInfo) pType, CREF(LPRDOValue) pDefault)
+	: RDOParam(srcInfo, pType, pDefault)
 {
 	if (!getDefault() || !getDefault()->defined())
 	{
@@ -826,11 +840,11 @@ void RDOFUNSequenceUniform::createCalcs()
 	initResult();
 }
 
-LPRDOFUNArithm RDOFUNSequenceUniform::createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) seq_src_info) const
+LPRDOFUNArithm RDOFUNSequenceUniform::createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) seqSrcInfo) const
 {
 	if (pParamList->getParamList()->getContainer().size() != 2)
 	{
-		RDOParser::s_parser()->error().error(seq_src_info, rdo::format(_T("Для равномерного закона распределения '%s' нужно указать два параметра: минимальную и максимальную границы диапазона"), name().c_str()));
+		RDOParser::s_parser()->error().error(seqSrcInfo, rdo::format(_T("Для равномерного закона распределения '%s' нужно указать два параметра: минимальную и максимальную границы диапазона"), name().c_str()));
 	}
 
 	rdoRuntime::LPRDOCalcFunctionCaller pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCaller>::create(m_pNextCalc);
@@ -851,7 +865,7 @@ LPRDOFUNArithm RDOFUNSequenceUniform::createCallCalc(REF(LPRDOFUNParams) pParamL
 	ASSERT(pExpression);
 	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
 	ASSERT(pArithm);
-	pArithm->setSrcInfo(seq_src_info);
+	pArithm->setSrcInfo(seqSrcInfo);
 	if (pArithm->typeID() == rdoRuntime::RDOType::t_enum)
 	{
 		RDOParser::s_parser()->error().error(src_info(), _T("Внутренняя ошибка парсера"));
@@ -880,11 +894,11 @@ void RDOFUNSequenceExponential::createCalcs()
 	initResult();
 }
 
-LPRDOFUNArithm RDOFUNSequenceExponential::createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) seq_src_info) const
+LPRDOFUNArithm RDOFUNSequenceExponential::createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) seqSrcInfo) const
 {
 	if (pParamList->getParamList()->getContainer().size() != 1)
 	{
-		RDOParser::s_parser()->error().error(seq_src_info, rdo::format(_T("Для экспоненциального закона распределения '%s' нужно указать один параметр: математическое ожидание"), name().c_str()));
+		RDOParser::s_parser()->error().error(seqSrcInfo, rdo::format(_T("Для экспоненциального закона распределения '%s' нужно указать один параметр: математическое ожидание"), name().c_str()));
 	}
 
 	rdoRuntime::LPRDOCalcFunctionCaller pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCaller>::create(m_pNextCalc);
@@ -903,7 +917,7 @@ LPRDOFUNArithm RDOFUNSequenceExponential::createCallCalc(REF(LPRDOFUNParams) pPa
 	ASSERT(pExpression);
 	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
 	ASSERT(pArithm);
-	pArithm->setSrcInfo(seq_src_info);
+	pArithm->setSrcInfo(seqSrcInfo);
 	if (pArithm->typeID() == rdoRuntime::RDOType::t_enum)
 	{
 		RDOParser::s_parser()->error().error(src_info(), _T("Внутренняя ошибка парсера"));
@@ -932,11 +946,11 @@ void RDOFUNSequenceNormal::createCalcs()
 	initResult();
 }
 
-LPRDOFUNArithm RDOFUNSequenceNormal::createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) seq_src_info) const
+LPRDOFUNArithm RDOFUNSequenceNormal::createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) seqSrcInfo) const
 {
 	if (pParamList->getParamList()->getContainer().size() != 2)
 	{
-		RDOParser::s_parser()->error().error(seq_src_info, rdo::format(_T("Для нормального закона распределения '%s' нужно указать два параметра: математическое ожидание и среднее квадратическое отклонение"), name().c_str()));
+		RDOParser::s_parser()->error().error(seqSrcInfo, rdo::format(_T("Для нормального закона распределения '%s' нужно указать два параметра: математическое ожидание и среднее квадратическое отклонение"), name().c_str()));
 	}
 
 	rdoRuntime::LPRDOCalcFunctionCaller pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCaller>::create(m_pNextCalc);
@@ -957,7 +971,7 @@ LPRDOFUNArithm RDOFUNSequenceNormal::createCallCalc(REF(LPRDOFUNParams) pParamLi
 	ASSERT(pExpression);
 	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
 	ASSERT(pArithm);
-	pArithm->setSrcInfo(seq_src_info);
+	pArithm->setSrcInfo(seqSrcInfo);
 	if (pArithm->typeID() == rdoRuntime::RDOType::t_enum)
 	{
 		RDOParser::s_parser()->error().error(src_info(), _T("Внутренняя ошибка парсера"));
@@ -986,11 +1000,11 @@ void RDOFUNSequenceTriangular::createCalcs()
 	initResult();
 }
 
-LPRDOFUNArithm RDOFUNSequenceTriangular::createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) seq_src_info) const
+LPRDOFUNArithm RDOFUNSequenceTriangular::createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) seqSrcInfo) const
 {
 	if (pParamList->getParamList()->getContainer().size() != 3)
 	{
-		RDOParser::s_parser()->error().error(seq_src_info, rdo::format(_T("Для треугольного закона распределения '%s' нужно указать три параметра: левую границу, точку под высотой треугольника, правую границу"), name().c_str()));
+		RDOParser::s_parser()->error().error(seqSrcInfo, rdo::format(_T("Для треугольного закона распределения '%s' нужно указать три параметра: левую границу, точку под высотой треугольника, правую границу"), name().c_str()));
 	}
 
 	rdoRuntime::LPRDOCalcFunctionCaller pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCaller>::create(m_pNextCalc);
@@ -1013,7 +1027,7 @@ LPRDOFUNArithm RDOFUNSequenceTriangular::createCallCalc(REF(LPRDOFUNParams) pPar
 	ASSERT(pExpression);
 	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
 	ASSERT(pArithm);
-	pArithm->setSrcInfo(seq_src_info);
+	pArithm->setSrcInfo(seqSrcInfo);
 	if (pArithm->typeID() == rdoRuntime::RDOType::t_enum)
 	{
 		RDOParser::s_parser()->error().error(src_info(), _T("Внутренняя ошибка парсера"));
@@ -1030,11 +1044,11 @@ RDOFUNSequenceByHist::RDOFUNSequenceByHist(CREF(LPRDOFUNSequenceByHistHeader) pH
 	: RDOFUNSequence(pHeader->getHeader(), pHeader->getSeed())
 {}
 
-LPRDOFUNArithm RDOFUNSequenceByHist::createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) src_info) const
+LPRDOFUNArithm RDOFUNSequenceByHist::createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) srcInfo) const
 {
 	if (pParamList->getParamList()->getContainer().size() != 0)
 	{
-		RDOParser::s_parser()->error().error(src_info, rdo::format(_T("Гистограмма '%s' должна вызываться без параметров"), name().c_str()));
+		RDOParser::s_parser()->error().error(srcInfo, rdo::format(_T("Гистограмма '%s' должна вызываться без параметров"), name().c_str()));
 	}
 
 	rdoRuntime::LPRDOCalcFunctionCaller pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCaller>::create(m_pNextCalc);
@@ -1048,7 +1062,7 @@ LPRDOFUNArithm RDOFUNSequenceByHist::createCallCalc(REF(LPRDOFUNParams) pParamLi
 	ASSERT(pExpression);
 	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
 	ASSERT(pArithm);
-	pArithm->setSrcInfo(src_info);
+	pArithm->setSrcInfo(srcInfo);
 	return pArithm;
 }
 
@@ -1156,11 +1170,11 @@ void RDOFUNSequenceByHistEnum::createCalcs()
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNSequenceEnumerative
 // --------------------------------------------------------------------------------
-LPRDOFUNArithm RDOFUNSequenceEnumerative::createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) src_info) const
+LPRDOFUNArithm RDOFUNSequenceEnumerative::createCallCalc(REF(LPRDOFUNParams) pParamList, CREF(RDOParserSrcInfo) srcInfo) const
 {
 	if (pParamList->getParamList()->getContainer().size() != 0)
 	{
-		RDOParser::s_parser()->error().error(src_info, rdo::format(_T("Перечисление '%s' должно вызываться без параметров"), name().c_str()));
+		RDOParser::s_parser()->error().error(srcInfo, rdo::format(_T("Перечисление '%s' должно вызываться без параметров"), name().c_str()));
 	}
 
 	rdoRuntime::LPRDOCalcFunctionCaller pFuctionCall = rdo::Factory<rdoRuntime::RDOCalcFunctionCaller>::create(m_pNextCalc);
@@ -1174,7 +1188,7 @@ LPRDOFUNArithm RDOFUNSequenceEnumerative::createCallCalc(REF(LPRDOFUNParams) pPa
 	ASSERT(pExpression);
 	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
 	ASSERT(pArithm);
-	pArithm->setSrcInfo(src_info);
+	pArithm->setSrcInfo(srcInfo);
 	return pArithm;
 }
 
@@ -1197,8 +1211,8 @@ void RDOFUNSequenceEnumerative::createCalcs()
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNFunctionListElement
 // --------------------------------------------------------------------------------
-RDOFUNFunctionListElement::RDOFUNFunctionListElement(CREF(RDOParserSrcInfo) src_info)
-	: RDOParserSrcInfo(src_info)
+RDOFUNFunctionListElement::RDOFUNFunctionListElement(CREF(RDOParserSrcInfo) srcInfo)
+	: RDOParserSrcInfo(srcInfo)
 {}
 
 RDOFUNFunctionListElement::~RDOFUNFunctionListElement()
@@ -1213,8 +1227,8 @@ rdoRuntime::LPRDOCalcIsEqual RDOFUNFunctionListElement::createIsEqualCalc(CREF(L
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNFunctionListElementIdentif
 // --------------------------------------------------------------------------------
-RDOFUNFunctionListElementIdentif::RDOFUNFunctionListElementIdentif(CREF(RDOParserSrcInfo) src_info)
-	: RDOFUNFunctionListElement(src_info)
+RDOFUNFunctionListElementIdentif::RDOFUNFunctionListElementIdentif(CREF(RDOParserSrcInfo) srcInfo)
+	: RDOFUNFunctionListElement(srcInfo)
 {}
 
 rdoRuntime::LPRDOCalcConst RDOFUNFunctionListElementIdentif::createResultCalc(CREF(LPTypeInfo) pRetType, CREF(RDOParserSrcInfo) src_pos) const
@@ -1304,8 +1318,8 @@ RDOFUNCalculateIf::~RDOFUNCalculateIf()
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNFunction
 // --------------------------------------------------------------------------------
-RDOFUNFunction::RDOFUNFunction(CREF(RDOParserSrcInfo) src_info, CREF(LPRDOParam) pReturn)
-	: RDOParserSrcInfo(src_info)
+RDOFUNFunction::RDOFUNFunction(CREF(RDOParserSrcInfo) srcInfo, CREF(LPRDOParam) pReturn)
+	: RDOParserSrcInfo(srcInfo)
 	, m_pReturn       (pReturn )
 {
 	init();
@@ -1351,6 +1365,16 @@ Context::FindResult RDOFUNFunction::onFindContext(CREF(LPRDOValue) pValue) const
 	LPRDOParam pParam = findFUNFunctionParam(pValue->value().getIdentificator());
 	if (pParam)
 	{
+		rdoRuntime::RDOType::TypeID typeID = pParam->getTypeInfo()->type()->typeID();
+		if (typeID == rdoRuntime::RDOType::t_identificator)
+		{
+			RDOParser::s_parser()->error().push_only(
+				pValue->src_info(),
+				rdo::format(_T("Тип параметра '%s' определён неверно"), pValue->src_info().src_text().c_str())
+			);
+			RDOParser::s_parser()->error().push_only(pParam->getTypeInfo()->src_info(), _T("См. описание типа"));
+			RDOParser::s_parser()->error().push_done();
+		}
 		LPExpression pExpression = rdo::Factory<Expression>::create(
 			pParam->getTypeInfo(),
 			rdo::Factory<rdoRuntime::RDOCalcFuncParam>::create(findFUNFunctionParamNum(pValue->value().getIdentificator()), pParam->src_info()),

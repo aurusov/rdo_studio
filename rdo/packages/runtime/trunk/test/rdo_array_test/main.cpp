@@ -219,4 +219,58 @@ BOOST_AUTO_TEST_CASE(ArrayTestValuePostMinus)
 	BOOST_CHECK(result == _T("32"));
 }
 
+BOOST_AUTO_TEST_CASE(ArrayTestSetItem)
+{
+	Array array = createArray(Container()(1)(2)(3));
+	rdoRuntime::LPRDORuntime pRuntime = rdo::Factory<rdoRuntime::RDORuntime>::create();
+
+	ruint ind = 1;
+	ruint item = 48;
+	rdoRuntime::RDOValue index (ind);
+	rdoRuntime::RDOValue value (item);
+	array.first->setItem(index, value, rdoRuntime::RDOSrcInfo(), pRuntime);
+	BOOST_CHECK(array.second.getAsString() == _T("[1, 48, 3]"));
+	ind = 3;
+	index = ind;
+
+	rbool found = false;
+	try
+	{
+		array.first->setItem(index, value, rdoRuntime::RDOSrcInfo(), pRuntime);//должен сработать внутренний throw
+	}
+	catch (rdoRuntime::RDORuntimeException)
+	{
+		rdoRuntime::Error::ErrorList errorlist = pRuntime->error().list();
+		found = errorlist.back().m_message == _T("Выход за пределы массива");
+	}
+	if (!found)
+		BOOST_CHECK(FALSE);
+	
+}
+
+BOOST_AUTO_TEST_CASE(ArrayTestGetItem)
+{
+	Array array = createArray(Container()(1)(48)(3));
+	rdoRuntime::LPRDORuntime pRuntime = rdo::Factory<rdoRuntime::RDORuntime>::create();
+
+	ruint ind = 1;
+	rdoRuntime::RDOValue index (ind);
+	rdoRuntime::RDOValue value (array.first->getItem(index,rdoRuntime::RDOSrcInfo(), pRuntime));
+	BOOST_CHECK(value.getAsString() == _T("48"));
+	ind = 3;
+	index = ind;
+
+	rbool found = false;
+	try
+	{
+		array.first->getItem(index,rdoRuntime::RDOSrcInfo(), pRuntime);//должен сработать внутренний throw
+	}
+	catch (rdoRuntime::RDORuntimeException)
+	{
+		rdoRuntime::Error::ErrorList errorlist = pRuntime->error().list();
+		found = errorlist.back().m_message == _T("Выход за пределы массива");
+	}
+	if (!found)
+		BOOST_CHECK(FALSE);
+}
 BOOST_AUTO_TEST_SUITE_END() // RDORuntime_Array_Test
