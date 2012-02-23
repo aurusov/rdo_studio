@@ -310,6 +310,6 @@ void RDOTracerTreeCtrl::OnHelpKeyword()
 {
 	std::string filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return;
-	filename += "::/html/work_model_chart_main.htm";
+	filename += "::/html/work_model_chart.htm";
 	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );
 }
