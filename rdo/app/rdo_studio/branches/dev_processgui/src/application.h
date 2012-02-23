@@ -16,7 +16,7 @@
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_method_manager.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"
 
-//#define PROCGUI_ENABLE
+#define PROCGUI_ENABLE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioApp
