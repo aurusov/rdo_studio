@@ -107,6 +107,7 @@ SET(HEADER_FILES
 	rdo_array.h
 	${GRAMMA_PATH}/rdobison.h
 	rdodpt.h
+	rdoprocess.h
 	rdofrm.h
 	rdofun.h
 	rdo_logic.h
@@ -162,6 +163,7 @@ SET(SOURCE_FILES
 	pch.cpp
 	rdo_array.cpp
 	rdodpt.cpp
+	rdoprocess.cpp
 	rdofrm.cpp
 	rdofun.cpp
 	rdo_logic.cpp
@@ -265,7 +267,9 @@ SOURCE_GROUP(".context" FILES
 	
 SOURCE_GROUP(".dpt" FILES
 	rdodpt.h
+	rdoprocess.h
 	rdodpt.cpp
+	rdoprocess.cpp
 	rdo_logic.h
 	rdo_logic.cpp)	
 

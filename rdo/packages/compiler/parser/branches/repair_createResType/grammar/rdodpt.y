@@ -146,6 +146,7 @@
 %token RDO_Stopping
 %token RDO_WatchStart
 %token RDO_WatchStop
+%token RDO_Multithreading
 
 %token RDO_Frame
 %token RDO_Show_if
@@ -706,9 +707,37 @@ dpt_some_condition
 	}
 	;
 
+dpt_some_multi
+	: dpt_some_condition RDO_Multithreading '=' RDO_NO
+	{
+		LPRDODPTSome pDPTSome = PARSER->stack().pop<RDODPTSome>($1);
+		ASSERT(pDPTSome);
+		pDPTSome->RDOLogic::setMultithreading(FALSE);
+		$$ = PARSER->stack().push(pDPTSome);
+	}
+	| dpt_some_condition RDO_Multithreading '=' RDO_YES
+	{
+		LPRDODPTSome pDPTSome = PARSER->stack().pop<RDODPTSome>($1);
+		ASSERT(pDPTSome);
+		pDPTSome->RDOLogic::setMultithreading(TRUE);
+		$$ = PARSER->stack().push(pDPTSome);
+	}
+	| dpt_some_condition RDO_Multithreading error
+	{
+		PARSER->error().error(@2, @3, _T("После ключевого слова $Multithreading ожидается знак равенства и слово YES или NO"));
+	}
+	| dpt_some_condition error
+	{
+		LPRDODPTSome pDPTSome = PARSER->stack().pop<RDODPTSome>($1);
+		ASSERT(pDPTSome);
+		pDPTSome->RDOLogic::setMultithreading(FALSE);
+		$$ = PARSER->stack().push(pDPTSome);
+	}
+	;
+
 dpt_some_prior
-	: dpt_some_condition
-	| dpt_some_condition RDO_Priority fun_arithm
+	: dpt_some_multi
+	| dpt_some_multi RDO_Priority fun_arithm
 	{
 		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($3);
 		ASSERT(pArithm);
@@ -717,13 +746,13 @@ dpt_some_prior
 			PARSER->error().error(@3, _T("Точка принятия решений пока не может иметь приоритет"));
 		}
 	}
-	| dpt_some_condition RDO_Priority error
+	| dpt_some_multi RDO_Priority error
 	{
 		PARSER->error().error(@1, @2, _T("Ошибка описания приоритета точки принятия решений"))
 	}
-	| dpt_some_condition error
+	| dpt_some_multi error
 	{
-		PARSER->error().error(@1, @2, _T("Ожидается ключевое слово $Priority"))
+		PARSER->error().error(@1, @2, _T("После слова $Condition ожидается ключевое слово $Multithreading"))
 	}
 	;
 

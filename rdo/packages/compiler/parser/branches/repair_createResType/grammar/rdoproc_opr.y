@@ -145,6 +145,7 @@
 %token RDO_Stopping
 %token RDO_WatchStart
 %token RDO_WatchStop
+%token RDO_Multithreading
 
 %token RDO_Frame
 %token RDO_Show_if
@@ -334,6 +335,20 @@ dpt_process_line
 	{
 		PARSER->error().error(@1, rdo::format(_T("Неизвестный оператор '%s'"), PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str()));
 	}
+	| planning_statement
+	{
+		rdoRuntime::LPRDOCalc pCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($1);
+		ASSERT(pCalc);
+		LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCAssign>::create(
+			PARSER->getLastPROCProcess(),
+			_T("Event planning from process"),
+			pCalc,
+			0,
+			0
+		);
+		ASSERT(pBlock);
+		$$ = PARSER->stack().push(pBlock);
+	}
 	| RDO_GENERATE fun_arithm
 	{
 		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
@@ -355,6 +370,7 @@ dpt_process_line
 		rbool traceFlag     = true;
 
 		std::vector<rdoRuntime::RDOValue> paramList;
+		//! \error вместо настоящих значений параметров транзакта просто 0
 		paramList.push_back(rdoRuntime::RDOValue(0));
 
 		rdoRuntime::LPRDOCalcCreateAndGoInTransact pCreateAndGoOnTransactCalc = rdo::Factory<rdoRuntime::RDOCalcCreateAndGoInTransact>::create(
@@ -456,6 +472,88 @@ dpt_process_line
 	| RDO_ASSIGN error
 	{
 		PARSER->error().error(@1, rdo::format(_T("Ожидается строка изменения параметра")));
+	}
+	;
+
+planning_statement
+	: RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')'';'
+	{
+		tstring           eventName   = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+		LPArithmContainer pArithmList = PARSER->stack().pop<ArithmContainer>($5);
+
+		LPRDOEvent pEvent = PARSER->findEvent(eventName);
+		if (!pEvent)
+		{
+			PARSER->error().error(@1, rdo::format(_T("Попытка запланировать неизвестное событие: %s"), eventName.c_str()));
+		}
+
+		ArithmContainer::Container::const_iterator arithmIt = pArithmList->getContainer().begin();
+		if (arithmIt == pArithmList->getContainer().end())
+		{
+			PARSER->error().error(@1, rdo::format(_T("Не указано время планирования события: %s"), eventName.c_str()));
+		}
+
+		LPRDOFUNArithm pTimeArithm = *arithmIt;
+		ASSERT(pTimeArithm);
+		++arithmIt;
+
+		LPArithmContainer pParamList = rdo::Factory<ArithmContainer>::create();
+		ASSERT(pParamList);
+
+		while (arithmIt != pArithmList->getContainer().end())
+		{
+			pParamList->addItem(*arithmIt);
+			++arithmIt;
+		}
+
+		pEvent->setParamList(pParamList);
+
+		rdoRuntime::LPRDOCalc pCalcTime = pTimeArithm->createCalc(NULL);
+		ASSERT(pCalcTime);
+
+		rdoRuntime::LPRDOCalcEventPlan pCalc = rdo::Factory<rdoRuntime::RDOCalcEventPlan>::create(pCalcTime);
+		ASSERT(pCalc);
+		pEvent->attachCalc(pCalc);
+
+		$$ = PARSER->stack().push(pCalc);
+	}
+	| RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')' error
+	{
+		PARSER->error().error(@7, _T("Не найден символ окончания инструкции - точка с запятой"));
+	}
+	| RDO_IDENTIF '.' RDO_Planning '(' error
+	{
+		PARSER->error().error(@5, _T("Ошибка в арифметическом выражении"));
+	}
+	| RDO_IDENTIF '.' RDO_Planning error
+	{
+		PARSER->error().error(@4, _T("Ожидается открывающая скобка"));
+	}
+	| RDO_IDENTIF '.' RDO_Planning '(' arithm_list error
+	{
+		PARSER->error().error(@6, _T("Ожидается закрывающая скобка"));
+	}
+	;
+
+stopping_statement
+	: RDO_IDENTIF '.' RDO_Stopping '(' ')' ';'
+	{
+		tstring           eventName   = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+		LPRDOEvent        pEvent      = PARSER->findEvent(eventName);
+		if (!pEvent)
+		{
+			PARSER->error().error(@1, rdo::format(_T("Попытка остановить неизвестное событие: %s"), eventName.c_str()));
+		}
+
+		rdoRuntime::LPRDOCalcEventStop pCalc = rdo::Factory<rdoRuntime::RDOCalcEventStop>::create();
+		ASSERT(pCalc);
+		pEvent->attachCalc(pCalc);
+
+		$$ = PARSER->stack().push(pCalc);
+	}
+	| RDO_IDENTIF '.' RDO_Stopping '(' ')' error
+	{
+		PARSER->error().error(@4, _T("Не найден символ окончания инструкции - точка с запятой"));
 	}
 	;
 

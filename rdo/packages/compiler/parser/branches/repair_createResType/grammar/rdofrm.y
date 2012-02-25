@@ -146,6 +146,7 @@
 %token RDO_Stopping
 %token RDO_WatchStart
 %token RDO_WatchStop
+%token RDO_Multithreading
 
 %token RDO_Frame
 %token RDO_Show_if

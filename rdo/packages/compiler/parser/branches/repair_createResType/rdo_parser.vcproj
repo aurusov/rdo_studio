@@ -47,7 +47,7 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../../../"
+				AdditionalIncludeDirectories="../../../;../../../thirdparty/bison_flex/include"
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="simulator/compiler/parser/pch.h"
@@ -115,7 +115,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../"
+				AdditionalIncludeDirectories="../../../;../../../thirdparty/bison_flex/include"
 				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
@@ -185,7 +185,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../;../../../thirdparty/corba/include"
+				AdditionalIncludeDirectories="../../../;../../../thirdparty/corba/include;../../../thirdparty/bison_flex/include"
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4;BOOST_TYPEOF_SILENT"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -257,7 +257,7 @@
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../../../;../../../thirdparty/corba/include"
+				AdditionalIncludeDirectories="../../../;../../../thirdparty/corba/include;../../../thirdparty/bison_flex/include"
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;NDEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;__WIN32__;__x86__;BOOST_TYPEOF_SILENT"
 				StringPooling="true"
 				EnableFunctionLevelLinking="true"
@@ -327,7 +327,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../"
+				AdditionalIncludeDirectories="../../../;../../../thirdparty/bison_flex/include"
 				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
@@ -398,7 +398,7 @@
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../../../"
+				AdditionalIncludeDirectories="../../../;../../../thirdparty/bison_flex/include"
 				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				StringPooling="true"
 				EnableFunctionLevelLinking="true"
@@ -2575,11 +2575,31 @@
 				>
 			</File>
 			<File
+				RelativePath=".\rdo_logic.inl"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_logic_base.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rdo_logic_base.h"
+				>
+			</File>
+			<File
 				RelativePath=".\rdodpt.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\rdodpt.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdoprocess.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rdoprocess.h"
 				>
 			</File>
 		</Filter>
@@ -2594,6 +2614,18 @@
 				RelativePath=".\rdofun.h"
 				>
 			</File>
+			<Filter
+				Name=".expression"
+				>
+				<File
+					RelativePath=".\expression.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\expression.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name=".parser"
@@ -2846,18 +2878,6 @@
 					>
 				</File>
 			</Filter>
-		</Filter>
-		<Filter
-			Name=".expression"
-			>
-			<File
-				RelativePath=".\expression.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\expression.h"
-				>
-			</File>
 		</Filter>
 	</Files>
 	<Globals>

@@ -146,7 +146,6 @@ SET(INLINE_FILES
 	process/generate.inl
 	process/queue_depart.inl
 	process/rdoprocess.inl
-	process/rdoprocess_i.inl
 	process/seize_release.inl
 	process/terminate.inl
 
@@ -160,7 +159,6 @@ SET(INLINE_FILES
 	calc/operation/operation_name.inl
 	calc/operation/operation_type.inl
 	calc/procedural/calc_locvar.inl
-	calc/resource/calc_choice_from.inl
 	calc/resource/calc_relevant.inl)
 
 SET(SOURCE_FILES
@@ -202,7 +200,6 @@ SET(SOURCE_FILES
 	process/generate.cpp
 	process/queue_depart.cpp
 	process/rdoprocess.cpp
-	process/rdoprocess_i.cpp
 	process/seize_release.cpp
 	process/terminate.cpp
 
