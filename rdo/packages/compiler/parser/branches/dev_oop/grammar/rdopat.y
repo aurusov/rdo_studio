@@ -2165,12 +2165,20 @@ init_declaration
 		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(pVariableName, pExpression, pParam);
 		ASSERT(pLocalVariable);
 
-		rdoRuntime::LPRDOCalcCreateLocalVariable pCalcCreateLocalVariable = rdo::Factory<rdoRuntime::RDOCalcCreateLocalVariable>::create(pVariableName->value().getIdentificator());
-		ASSERT(pCalcCreateLocalVariable);
-
-		LPVariableContainer pVariableContainer = rdo::Factory<VariableContainer>::create(pCalcCreateLocalVariable, pLocalVariable);
+		rdoRuntime::RDOValue defaultValue = pParam->type()->get_default();
+		if(defaultValue.type()->typeID() != rdoRuntime::RDOType::t_unknow)
+		{
+			rdoRuntime::LPRDOCalcCreateLocalVariable pCalcCreateLocalVariable = rdo::Factory<rdoRuntime::RDOCalcCreateLocalVariable>::create(pVariableName->value().getIdentificator(), defaultValue);
+			ASSERT(pCalcCreateLocalVariable);
+			LPVariableContainer pVariableContainer = rdo::Factory<VariableContainer>::create(pCalcCreateLocalVariable, pLocalVariable);
 
 		$$ = PARSER->stack().push(pVariableContainer);
+		}
+		else
+		{
+			PARSER->error().error(@1, _T("У данного типа нет значения поумолчанию."));
+		}
+
 	}
 	| RDO_IDENTIF '=' fun_arithm
 	{
@@ -2195,9 +2203,11 @@ init_declaration
 		rdoRuntime::LPRDOCalcLocalVariableList pCalcLocalVariableList = rdo::Factory<rdoRuntime::RDOCalcLocalVariableList>::create();
 		ASSERT(pCalcLocalVariableList);
 
-		rdoRuntime::LPRDOCalcCreateLocalVariable pCalcCreateLocalVariable = rdo::Factory<rdoRuntime::RDOCalcCreateLocalVariable>::create(pVariableName->value().getIdentificator());
-		ASSERT(pCalcCreateLocalVariable);
-
+		rdoRuntime::RDOValue defaultValue = pParam->type()->get_default();
+		if(defaultValue.type()->typeID() != rdoRuntime::RDOType::t_unknow)
+		{
+			rdoRuntime::LPRDOCalcCreateLocalVariable pCalcCreateLocalVariable = rdo::Factory<rdoRuntime::RDOCalcCreateLocalVariable>::create(pVariableName->value().getIdentificator(), defaultValue);
+			ASSERT(pCalcCreateLocalVariable);
 		rdoRuntime::LPRDOCalcInitLocalVariable pCalcSetLocalVariable = rdo::Factory<rdoRuntime::RDOCalcInitLocalVariable>::create(pVariableName->value().getIdentificator(), pArithm->createCalc(pParam));
 		ASSERT(pCalcSetLocalVariable);
 
@@ -2207,6 +2217,11 @@ init_declaration
 		LPVariableContainer pVariableContainer = rdo::Factory<VariableContainer>::create(pCalcLocalVariableList, pLocalVariable);
 
 		$$ = PARSER->stack().push(pVariableContainer);
+		}
+		else
+		{
+			PARSER->error().error(@1, _T("У данного типа нет значения поумолчанию."));
+		}
 	}
 	;
 
