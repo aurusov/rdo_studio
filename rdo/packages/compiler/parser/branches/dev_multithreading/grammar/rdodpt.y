@@ -726,7 +726,7 @@ dpt_some_multi
 	{
 		PARSER->error().error(@2, @3, _T("После ключевого слова $Multithreading ожидается знак равенства и слово YES или NO"));
 	}
-	| dpt_some_condition error
+	| dpt_some_condition
 	{
 		LPRDOLogicBase pLogicBase = PARSER->stack().pop<RDOLogicBase>($1);
 		ASSERT(pLogicBase);
