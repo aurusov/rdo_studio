@@ -46,7 +46,7 @@ public:
 	tstring getAsString() const;
 
 	CREF(RDOValue) getItem(CREF(RDOValue) index) const;
-	void           setItem(CREF(RDOValue) index, CREF(RDOValue)   item);
+	void           setItem(CREF(RDOValue) index, CREF(RDOValue) item);
 
 private:
 	RDOArrayValue(CREF(LPRDOArrayType)  pType );
