@@ -26,7 +26,6 @@ private:
 	RDOCalcCreateLocalVariable(CREF(tstring) name, CREF(RDOValue) defaultValue);
 
 	tstring m_name;
-	RDOValue m_defaultValue;
 
 	DECLARE_ICalc;
 };
