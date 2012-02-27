@@ -77,11 +77,12 @@ void NewOutputDebugString(CREF(tstring) A)
 	std::cout << A;
 }
 
-#define TRACE(A)                NewOutputDebugString(A);
-#define TRACE1(A, P1)           NewOutputDebugString(rdo::format(A, P1).c_str());
-#define TRACE2(A, P1, P2)       NewOutputDebugString(rdo::format(A, P1, P2).c_str());
-#define TRACE3(A, P1, P2, P3)   NewOutputDebugString(rdo::format(A, P1, P2, P3).c_str());
-#define ASSERT(A)               assert(A);
+#define TRACE(A)                   NewOutputDebugString(A);
+#define TRACE1(A, P1)              NewOutputDebugString(rdo::format(A, P1).c_str());
+#define TRACE2(A, P1, P2)          NewOutputDebugString(rdo::format(A, P1, P2).c_str());
+#define TRACE3(A, P1, P2, P3)      NewOutputDebugString(rdo::format(A, P1, P2, P3).c_str());
+#define TRACE4(A, P1, P2, P3, P4)  NewOutputDebugString(rdo::format(A, P1, P2, P3, P4).c_str());
+#define ASSERT(A)                  assert(A);
 
 #define NEVER_REACH_HERE ASSERT(false)
 
@@ -93,6 +94,7 @@ void NewOutputDebugString(CREF(tstring) A)
 #define TRACE1(A, P1)
 #define TRACE2(A, P1, P2)
 #define TRACE3(A, P1, P2, P3)
+#define TRACE4(A, P1, P2, P3, P4)
 #define ASSERT(A)
 #define NEVER_REACH_HERE
 
