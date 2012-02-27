@@ -1378,6 +1378,7 @@ fun_arithm
 	| RDO_STRING_CONST                   { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
 	| param_array_value                  { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
 	| RDO_IDENTIF                        { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1))); }
+	| RDO_IDENTIF_RELRES                 { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1))); }
 	| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1), PARSER->stack().pop<RDOValue>($3))); }
 	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1), PARSER->stack().pop<RDOValue>($3))); }
 	| '*' 
@@ -1489,18 +1490,17 @@ fun_arithm
 		LPRDOFUNArithm pArithmInd = PARSER->stack().pop<RDOFUNArithm>($3);
 		ASSERT(pArithmInd);
 
-		if (pArithm->typeInfo()->type().object_dynamic_cast<RDOArrayType>())
+		LPRDOType pType = pArithm->typeInfo()->type();
+		ASSERT(pType);
+
+		LPRDOArrayType pArrayType = pType.object_dynamic_cast<RDOArrayType>();
+		if (!pArrayType)
 		{
 			PARSER->error().error(@1, rdo::format(_T("'%s' не является массивом."), pValue->value().getIdentificator().c_str()));
 		}
 
 		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcArrayItem>::create(pArithm->calc(), pArithmInd->calc());
 		ASSERT(pCalc);
-
-		LPRDOType pType = pArithm->typeInfo()->type();
-		ASSERT(pType);
-		LPRDOArrayType pArrayType = pType.object_dynamic_cast<RDOArrayType>();
-		ASSERT(pArrayType);
 
 		LPTypeInfo pItemType = pArrayType->getItemType();
 		ASSERT(pItemType);
