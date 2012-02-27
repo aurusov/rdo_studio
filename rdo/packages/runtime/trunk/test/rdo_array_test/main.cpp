@@ -244,7 +244,7 @@ BOOST_AUTO_TEST_CASE(ArrayTestSetItem)
 		found = errorlist.back().m_message == _T("Выход за пределы массива");
 	}
 	if (!found)
-		BOOST_CHECK(FALSE);
+		BOOST_CHECK(false);
 	
 }
 
@@ -271,6 +271,6 @@ BOOST_AUTO_TEST_CASE(ArrayTestGetItem)
 		found = errorlist.back().m_message == _T("Выход за пределы массива");
 	}
 	if (!found)
-		BOOST_CHECK(FALSE);
+		BOOST_CHECK(false);
 }
 BOOST_AUTO_TEST_SUITE_END() // RDORuntime_Array_Test
