@@ -44,8 +44,6 @@ RDOCalcArrayItem::RDOCalcArrayItem(CREF(LPRDOCalc) pArray, CREF(LPRDOCalc) pArra
 {
 	ASSERT(m_pArray   );
 	ASSERT(m_pArrayInd);
-
-	setSrcInfo(m_pArrayInd->srcInfo());
 }
 
 REF(RDOValue) RDOCalcArrayItem::doCalc(CREF(LPRDORuntime) pRuntime)
@@ -55,7 +53,7 @@ REF(RDOValue) RDOCalcArrayItem::doCalc(CREF(LPRDORuntime) pRuntime)
 	CREF(LPRDOArrayValue) pArrayValue = value.getPointerSafety<RDOArrayType>();
 	ASSERT(pArrayValue);
 
-	m_value = pArrayValue->getItem(m_pArrayInd->calcValue(pRuntime), srcInfo(), pRuntime);
+	m_value = pArrayValue->getItem(m_pArrayInd->calcValue(pRuntime));
 	return m_value;
 }
 
@@ -70,8 +68,6 @@ RDOCalcSetArrayItem::RDOCalcSetArrayItem(CREF(LPRDOCalc) pArray, CREF(LPRDOCalc)
 	ASSERT(m_pArray   );
 	ASSERT(m_pArrayInd);
 	ASSERT(m_pSetItem );
-
-	setSrcInfo(m_pArrayInd->srcInfo());
 }
 
 REF(RDOValue) RDOCalcSetArrayItem::doCalc(CREF(LPRDORuntime) pRuntime)
@@ -80,7 +76,7 @@ REF(RDOValue) RDOCalcSetArrayItem::doCalc(CREF(LPRDORuntime) pRuntime)
 
 	CREF(LPRDOArrayValue) pArrayValue = m_value.getPointerSafety<RDOArrayType>();
 	ASSERT(pArrayValue);
-	pArrayValue->setItem(m_pArrayInd->calcValue(pRuntime), m_pSetItem->calcValue(pRuntime), srcInfo(), pRuntime);
+	pArrayValue->setItem(m_pArrayInd->calcValue(pRuntime), m_pSetItem->calcValue(pRuntime));
 
 	return m_value;
 }
