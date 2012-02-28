@@ -137,6 +137,7 @@ public:
 
 protected:
 	RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info);
+	virtual ~RDODPTActivityHotKey();
 };
 DECLARE_POINTER(RDODPTActivityHotKey);
 
@@ -159,6 +160,7 @@ class RDODPTPriorActivity: public RDODPTActivityHotKey
 DECLARE_FACTORY(RDODPTPriorActivity);
 private:
 	RDODPTPriorActivity(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info);
+	virtual ~RDODPTPriorActivity();
 };
 
 // --------------------------------------------------------------------------------
@@ -172,6 +174,7 @@ DECLARE_FACTORY(RDODPTSome);
 
 private:
 	RDODPTSome(CREF(RDOParserSrcInfo) src_info, LPILogic pParent = NULL);
+	virtual ~RDODPTSome();
 
 	DECLARE_IContextFind;
 };
@@ -188,6 +191,7 @@ DECLARE_FACTORY(RDODPTPrior);
 
 private:
 	RDODPTPrior(CREF(RDOParserSrcInfo) src_info, LPILogic pParent = NULL);
+	virtual ~RDODPTPrior();
 
 	DECLARE_IContextFind;
 };
@@ -208,6 +212,7 @@ public:
 
 private:
 	RDODPTSearchActivity(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info);
+	virtual ~RDODPTSearchActivity();
 
 	IDPTSearchActivity::ValueTime  m_value;
 	LPRDOFUNArithm                 m_pRuleCost;
@@ -231,6 +236,7 @@ public:
 
 private:
 	RDODPTSearch(CREF(RDOParserSrcInfo) src_info, rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag trace = rdoRuntime::RDODPTSearchTrace::DPT_no_trace, LPILogic pParent = NULL);
+	virtual ~RDODPTSearch();
 
 	LPRDOFUNLogic                                 m_pTermConditon;
 	LPRDOFUNArithm                                m_pEvalBy;
