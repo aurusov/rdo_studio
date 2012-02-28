@@ -226,6 +226,9 @@ RDODPTSomeActivity::RDODPTSomeActivity(LPIBaseOperationContainer pDPT, CREF(RDOP
 	: RDODPTActivityHotKey(pDPT, src_info, pattern_src_info)
 {}
 
+RDODPTSomeActivity::~RDODPTSomeActivity()
+{}
+
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTPriorActivity
 // --------------------------------------------------------------------------------
