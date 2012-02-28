@@ -182,6 +182,9 @@ RDODPTActivityHotKey::RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, CREF(
 	}
 }
 
+RDODPTActivityHotKey::~RDODPTActivityHotKey()
+{}
+
 void RDODPTActivityHotKey::addHotKey(CREF(tstring) hotKey, CREF(YYLTYPE) hotkey_pos)
 {
 	if (pattern()->getType() != RDOPATPattern::PT_Keyboard)
@@ -223,11 +226,17 @@ RDODPTSomeActivity::RDODPTSomeActivity(LPIBaseOperationContainer pDPT, CREF(RDOP
 	: RDODPTActivityHotKey(pDPT, src_info, pattern_src_info)
 {}
 
+RDODPTSomeActivity::~RDODPTSomeActivity()
+{}
+
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTPriorActivity
 // --------------------------------------------------------------------------------
 RDODPTPriorActivity::RDODPTPriorActivity(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info)
 	: RDODPTActivityHotKey(pDPT, src_info, pattern_src_info)
+{}
+
+RDODPTPriorActivity::~RDODPTPriorActivity()
 {}
 
 // --------------------------------------------------------------------------------
@@ -243,6 +252,9 @@ RDODPTSome::RDODPTSome(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
 	RDOParser::s_parser()->insertDPTSome(this);
 	RDOParser::s_parser()->contextStack()->push(this);
 }
+
+RDODPTSome::~RDODPTSome()
+{}
 
 Context::FindResult RDODPTSome::onFindContext(CREF(LPRDOValue) pValue) const
 {
@@ -265,6 +277,9 @@ RDODPTPrior::RDODPTPrior(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
 	RDOParser::s_parser()->insertDPTPrior(this);
 	RDOParser::s_parser()->contextStack()->push(this);
 }
+
+RDODPTPrior::~RDODPTPrior()
+{}
 
 Context::FindResult RDODPTPrior::onFindContext(CREF(LPRDOValue) pValue) const
 {
@@ -301,6 +316,9 @@ RDODPTSearchActivity::RDODPTSearchActivity(LPIBaseOperationContainer pDPT, CREF(
 	ASSERT(m_pActivity);
 }
 
+RDODPTSearchActivity::~RDODPTSearchActivity()
+{}
+
 void RDODPTSearchActivity::setValue(IDPTSearchActivity::ValueTime value, CREF(LPRDOFUNArithm) pRuleCost)
 {
 	m_value     = value;
@@ -320,6 +338,9 @@ RDODPTSearch::RDODPTSearch(CREF(RDOParserSrcInfo) src_info, rdoRuntime::RDODPTSe
 	RDOParser::s_parser()->insertDPTSearch(this);
 	RDOParser::s_parser()->contextStack()->push(this);
 }
+
+RDODPTSearch::~RDODPTSearch()
+{}
 
 Context::FindResult RDODPTSearch::onFindContext(CREF(LPRDOValue) pValue) const
 {
@@ -360,6 +381,8 @@ void RDODPTSearch::end()
 		pSearchLogic->addActivity(pActivity);
 	}
 	m_closed = true;
+
+	//! @todo проверить, можно ли избавиться от повторения этой строки. Уже есть в RDOLogicBase::end()
 	RDOParser::s_parser()->contextStack()->pop();
 }
 

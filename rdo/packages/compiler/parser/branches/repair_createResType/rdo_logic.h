@@ -38,7 +38,7 @@ public:
 	CREF(ActivityList) getActivities  () const;
 
 protected:
-	RDOLogic(CREF(RDOLogicBase) src_info);
+	RDOLogic(CREF(RDOParserSrcInfo) src_info);
 	virtual ~RDOLogic();
 
 private:
