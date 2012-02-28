@@ -37,7 +37,7 @@ inline const typename RDOLogic<RTLogic, Activity>::ActivityList& RDOLogic<RTLogi
 }
 
 template<class RTLogic, class Activity>
-inline RDOLogic<RTLogic, Activity>::RDOLogic(CREF(RDOLogicBase) src_info)
+inline RDOLogic<RTLogic, Activity>::RDOLogic(CREF(RDOParserSrcInfo) src_info)
 	: RDOLogicBase(src_info)
 {}
 
