@@ -132,6 +132,7 @@ DECLARE_POINTER(RDODPTActivity);
 // --------------------------------------------------------------------------------
 class RDODPTActivityHotKey: public RDODPTActivity
 {
+DECLARE_FACTORY(RDODPTActivityHotKey)
 public:
 	void addHotKey(CREF(tstring) hotKey, CREF(YYLTYPE) hotkey_pos);
 
@@ -150,6 +151,7 @@ class RDODPTSomeActivity: public RDODPTActivityHotKey
 DECLARE_FACTORY(RDODPTSomeActivity);
 private:
 	RDODPTSomeActivity(LPIBaseOperationContainer pDPT, CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) pattern_src_info);
+	virtual ~RDODPTSomeActivity();
 };
 
 // --------------------------------------------------------------------------------
