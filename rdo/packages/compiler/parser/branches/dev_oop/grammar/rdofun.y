@@ -1105,18 +1105,18 @@ init_declaration
 		ASSERT(pCalcLocalVariableList);
 
 		rdoRuntime::RDOValue defaultValue = pParam->type()->get_default();
-		
+
 		if(defaultValue.type()->typeID() != rdoRuntime::RDOType::t_unknow)
 		{
 			rdoRuntime::LPRDOCalcCreateLocalVariable pCalcCreateLocalVariable = rdo::Factory<rdoRuntime::RDOCalcCreateLocalVariable>::create(pVariableName->value().getIdentificator(), defaultValue);
 			ASSERT(pCalcCreateLocalVariable);
-			
+
 			rdoRuntime::LPRDOCalcInitLocalVariable pCalcSetLocalVariable = rdo::Factory<rdoRuntime::RDOCalcInitLocalVariable>::create(pVariableName->value().getIdentificator(), pArithm->createCalc(pParam));
 			ASSERT(pCalcSetLocalVariable);
-			
+
 			pCalcLocalVariableList->addCalcLocalVariable(pCalcCreateLocalVariable);
 			pCalcLocalVariableList->addCalcLocalVariable(pCalcSetLocalVariable);
-			
+
 			LPVariableContainer pVariableContainer = rdo::Factory<VariableContainer>::create(pCalcLocalVariableList, pLocalVariable);
 			$$ = PARSER->stack().push(pVariableContainer);
 		}
