@@ -896,7 +896,6 @@ BEGIN
             MENUITEM "first",                       ID_INSERT_PAT_FIRST
             MENUITEM "with_max",                    ID_INSERT_PAT_WITHMAX
             MENUITEM "with_min",                    ID_INSERT_PAT_WITHMIN
-            MENUITEM "set",                         ID_INSERT_PAT_SET
             MENUITEM "$End",                        ID_INSERT_PAT_END
         END
 		POPUP "EVN"
@@ -911,14 +910,13 @@ BEGIN
             MENUITEM "NoChange",                    ID_INSERT_PAT_NOCHANGE
             MENUITEM "Create",                      ID_INSERT_PAT_CREATE
             MENUITEM "Erase",                       ID_INSERT_PAT_ERASE
-            MENUITEM "NonExist",                    ID_INSERT_PAT_NONEXIST
             MENUITEM "$Body",                       ID_INSERT_PAT_BODY
             MENUITEM "Convert_event",               ID_INSERT_PAT_CONVERTEVENT
             MENUITEM "$End",                        ID_INSERT_PAT_END
         END
         POPUP "PRC"
         BEGIN
-			MENUITEM "PRC",                         ID_INSERT_PRC_TEMPL_PROCESS
+			MENUITEM "PRC process",                 ID_INSERT_PRC_TEMPL_PROCESS
             MENUITEM "$Process",                    ID_INSERT_PRC_PROCESS
             MENUITEM "GENERATE",                    ID_INSERT_PRC_GENERATE
             MENUITEM "SEIZE",                       ID_INSERT_PRC_SEIZE
@@ -1005,7 +1003,6 @@ BEGIN
             MENUITEM "DPT search",                  ID_INSERT_DPT_TEMPL_SEARCH
             MENUITEM "DPT prior",                   ID_INSERT_DPT_TEMPL_PRIOR
             MENUITEM "DPT some",                    ID_INSERT_DPT_TEMPL_SOME
-            MENUITEM "ACTIV",                       ID_INSERT_DPT_ACTIV
             MENUITEM "$Decision_point",             ID_INSERT_DPT_DECISIONPOINT
             MENUITEM "some",                        ID_INSERT_DPT_SOME
             MENUITEM "search",                      ID_INSERT_DPT_SEARCH
@@ -1028,10 +1025,8 @@ BEGIN
         END
         POPUP "SMR"
         BEGIN
-            MENUITEM "SMR",                         ID_INSERT_PAT_OPERATION
+            MENUITEM "SMR",                         ID_INSERT_SMR_SMR
             MENUITEM "Model_name",                  ID_INSERT_SMR_MODELNAME
-            MENUITEM "Resource_file",               ID_INSERT_SMR_RESOURCEFILE
-            MENUITEM "OprIev_file",                 ID_INSERT_SMR_OPRIEVFILE
             MENUITEM "Statistic_file",              ID_INSERT_SMR_STATISTICFILE
             MENUITEM "Results_file",                ID_INSERT_SMR_RESULTSFILE
             MENUITEM "Trace_file",                  ID_INSERT_SMR_TRACEFILE
@@ -3425,7 +3420,7 @@ BEGIN
     ID_INSERT_PAT_TEMPL_EVENT      "$Pattern  : event\r\n$Parameters  :\r\n$Relevant_resources\r\n\r\n$Body\r\tConvert_event\r\n\r\n$End\r\n"
     ID_INSERT_PAT_TEMPL_RULE       "$Pattern  : rule\r\n$Relevant_resources\r\n\r\n$Body\r\n\r\n\tChoice from\r\n\tfirst\r\n\tConvert_rule\r\n\r\n$End\r\n"
     ID_INSERT_PAT_TEMPL_KEYBOARD   "$Pattern  : keyboard\r\n$Relevant_resources\r\n\r\n$Time =\r\n$Body\r\n\r\n\tChoice from\r\n\tfirst\r\n\tConvert_begin\r\n\r\n\tConvert_end\r\n\r\n$End\r\n"
-    ID_INSERT_SMR_SMR              "Model_name     = noname\r\n\r\nResource_file  =\r\nOprIev_file    =\r\nStatistic_file =\r\nResults_file   =\r\nTrace_file     =\r\nFrame_file     =\r\nFrame_number   =\r\nShow_mode      = Animation\r\nShow_rate      = 10000.0\r\n\r\nTerminate_if Time_now >= 10*60*60.0\r\n"
+    ID_INSERT_SMR_SMR              "Model_name     = noname\r\n\r\nStatistic_file =\r\nResults_file   =\r\nTrace_file     =\r\nFrame_file     =\r\nFrame_number   =\r\nShow_mode      = Animation\r\nShow_rate      = 10000.0\r\n\r\nTerminate_if Time_now >= 10*60*60.0\r\n"
 END
 
 STRINGTABLE 
@@ -3454,11 +3449,6 @@ BEGIN
     ID_INSERT_DPT_TEMPL_SEARCH "$Decision_point  : search\r\n$Condition\r\n\r\n$Term_condition\r\n\r\n$Evaluate_by\r\n$Compare_tops = YES\r\n$Activities\r\n\t: value before\r\n\t: value after\r\n$End\r\n"
     ID_INSERT_DPT_TEMPL_SOME   "$Decision_point  : some\r\n$Condition NoCheck\r\n$Activities\r\n\r\n$End\r\n"
     ID_INSERT_DPT_TEMPL_PRIOR  "$Decision_point  : prior\r\n$Condition NoCheck\r\n$Activities\r\n\r\n$End\r\n"
-END
-
-STRINGTABLE 
-BEGIN
-    ID_INSERT_DPT_ACTIV     "$Activities\r\n\t\r\n$End\r\n"
 END
 
 STRINGTABLE 
@@ -4429,7 +4419,6 @@ BEGIN
             MENUITEM "first",                       ID_INSERT_PAT_FIRST
             MENUITEM "with_max",                    ID_INSERT_PAT_WITHMAX
             MENUITEM "with_min",                    ID_INSERT_PAT_WITHMIN
-            MENUITEM "set",                         ID_INSERT_PAT_SET
             MENUITEM "$End",                        ID_INSERT_PAT_END
         END
 		POPUP "EVN"
@@ -4444,14 +4433,13 @@ BEGIN
             MENUITEM "NoChange",                    ID_INSERT_PAT_NOCHANGE
             MENUITEM "Create",                      ID_INSERT_PAT_CREATE
             MENUITEM "Erase",                       ID_INSERT_PAT_ERASE
-            MENUITEM "NonExist",                    ID_INSERT_PAT_NONEXIST
             MENUITEM "$Body",                       ID_INSERT_PAT_BODY
             MENUITEM "Convert_event",               ID_INSERT_PAT_CONVERTEVENT
             MENUITEM "$End",                        ID_INSERT_PAT_END
         END
 		POPUP "PRC"
         BEGIN
-            MENUITEM "PRC",                         ID_INSERT_PRC_TEMPL_PROCESS
+            MENUITEM "PRC process",                 ID_INSERT_PRC_TEMPL_PROCESS
 			MENUITEM "$Process",                    ID_INSERT_PRC_PROCESS
             MENUITEM "GENERATE",                    ID_INSERT_PRC_GENERATE
             MENUITEM "SEIZE",                       ID_INSERT_PRC_SEIZE
@@ -4537,7 +4525,6 @@ BEGIN
             MENUITEM "DPT search",                  ID_INSERT_DPT_TEMPL_SEARCH
             MENUITEM "DPT some",                    ID_INSERT_DPT_TEMPL_SOME
             MENUITEM "DPT prior",                   ID_INSERT_DPT_TEMPL_PRIOR
-            MENUITEM "ACTIV",                       ID_INSERT_DPT_ACTIV
             MENUITEM "$Decision_point",             ID_INSERT_DPT_DECISIONPOINT
             MENUITEM "some",                        ID_INSERT_DPT_SOME
             MENUITEM "search",                      ID_INSERT_DPT_SEARCH
@@ -4560,10 +4547,8 @@ BEGIN
         END
         POPUP "SMR"
         BEGIN
-            MENUITEM "SMR",                         ID_INSERT_PAT_OPERATION
+            MENUITEM "SMR",                         ID_INSERT_SMR_SMR
             MENUITEM "Model_name",                  ID_INSERT_SMR_MODELNAME
-            MENUITEM "Resource_file",               ID_INSERT_SMR_RESOURCEFILE
-            MENUITEM "OprIev_file",                 ID_INSERT_SMR_OPRIEVFILE
             MENUITEM "Statistic_file",              ID_INSERT_SMR_STATISTICFILE
             MENUITEM "Results_file",                ID_INSERT_SMR_RESULTSFILE
             MENUITEM "Trace_file",                  ID_INSERT_SMR_TRACEFILE
@@ -4970,7 +4955,7 @@ BEGIN
                                    "$Pattern  : event\r\n$Parameters  :\r\n$Relevant_resources\r\n\$Body\r\tConvert_event\r\n\r\n$End\r\n"
     ID_INSERT_PAT_TEMPL_RULE       "$Pattern  : rule\r\n$Relevant_resources\r\n\r\n$Body\r\n\r\n\tChoice from\r\n\tfirst\r\n\tConvert_rule\r\n\r\n$End\r\n"
     ID_INSERT_PAT_TEMPL_KEYBOARD   "$Pattern  : keyboard\r\n$Relevant_resources\r\n\r\n$Time =\r\n$Body\r\n\r\n\tChoice from\r\n\tfirst\r\n\tConvert_begin\r\n\r\n\tConvert_end\r\n\r\n$End\r\n"
-    ID_INSERT_SMR_SMR       "Model_name     = noname\r\n\r\nResource_file  =\r\nOprIev_file    =\r\nStatistic_file =\r\nResults_file   =\r\nTrace_file     =\r\nFrame_file     =\r\nFrame_number   =\r\nShow_mode      = Animation\r\nShow_rate      = 10000.0\r\n\r\nTerminate_if Time_now >= 10*60*60.0\r\n"
+    ID_INSERT_SMR_SMR       "Model_name     = noname\r\n\r\nStatistic_file =\r\nResults_file   =\r\nTrace_file     =\r\nFrame_file     =\r\nFrame_number   =\r\nShow_mode      = Animation\r\nShow_rate      = 10000.0\r\n\r\nTerminate_if Time_now >= 10*60*60.0\r\n"
 END
 
 STRINGTABLE 
@@ -4999,11 +4984,6 @@ BEGIN
     ID_INSERT_DPT_TEMPL_SEARCH "$Decision_point  : search\r\n$Condition\r\n\r\n$Term_condition\r\n\r\n$Evaluate_by\r\n$Compare_tops = YES\r\n$Activities\r\n\t: value before\r\n\t: value after\r\n$End\r\n"
     ID_INSERT_DPT_TEMPL_SOME   "$Decision_point  : some\r\n$Condition NoCheck\r\n$Activities\r\n\r\n$End\r\n"
     ID_INSERT_DPT_TEMPL_PRIOR  "$Decision_point  : prior\r\n$Condition NoCheck\r\n$Activities\r\n\r\n$End\r\n"
-END
-
-STRINGTABLE 
-BEGIN
-    ID_INSERT_DPT_ACTIV     "$Activities\r\n\t\r\n$End\r\n"
 END
 
 STRINGTABLE 

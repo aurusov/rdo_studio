@@ -598,7 +598,6 @@ void RDOEditorEdit::OnInsertCommand( UINT nID )
 		case ID_INSERT_DPT_TEMPL_SEARCH     :
 		case ID_INSERT_DPT_TEMPL_SOME       : incPos = 16; break;
 		case ID_INSERT_DPT_TEMPL_PRIOR      : incPos = 16; break;
-		case ID_INSERT_DPT_ACTIV            : incPos = 14; break;
 		case ID_INSERT_SMR_SMR              : incPos = 17; break;
 		case ID_INSERT_PMD_PMD              : incPos = 11; break;
 		case ID_INSERT_ALGO_FOR             : incPos = 5;  break;
