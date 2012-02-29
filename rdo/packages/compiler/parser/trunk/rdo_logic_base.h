@@ -24,6 +24,9 @@ OBJECT_VIRTUAL(RDOLogicBase)
 {
 DECLARE_FACTORY(RDOLogicBase);
 public:
+	RDOLogicBase(CREF(RDOParserSrcInfo) src_info);
+	virtual ~RDOLogicBase();
+
 	CREF(tstring) name             () const;
 	rbool         setPrior         (REF(LPRDOFUNArithm) pPrior);
 	rbool         getMultithreading() const;
@@ -34,9 +37,6 @@ public:
 	virtual void  end              ();
 
 protected:
-	RDOLogicBase(CREF(RDOParserSrcInfo) src_info);
-	virtual ~RDOLogicBase();
-
 	LPRDOFUNLogic m_pConditon;
 	LPILogic      m_pRuntimeLogic;
 	rbool         m_multithreading;
