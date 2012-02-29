@@ -53,12 +53,12 @@ ENDIF(MSVC)
 # temp
 #==============================================================================
 
-ADD_BOOST_TEST(test_rdo_studio_console test.cpp)
+#ADD_BOOST_TEST(test_rdo_studio_console test.cpp)
 
-IF(MSVC)
-    ADD_DEFINITIONS(-DRDO_TEST_APP="${EXECUTABLE_OUTPUT_PATH}/${CMAKE_BUILD_TYPE}/rdo_test.exe")
-ELSE()
-    ADD_DEFINITIONS(-DRDO_TEST_APP="${EXECUTABLE_OUTPUT_PATH}/rdo_test")
-ENDIF(MSVC)
+#IF(MSVC)
+#    ADD_DEFINITIONS(-DRDO_TEST_APP="${EXECUTABLE_OUTPUT_PATH}/${CMAKE_BUILD_TYPE}/rdo_test.exe")
+#ELSE()
+#    ADD_DEFINITIONS(-DRDO_TEST_APP="${EXECUTABLE_OUTPUT_PATH}/rdo_test")
+#ENDIF(MSVC)
 
-ADD_DEFINITIONS(-DRDO_TEST_APP_PATH="${CMAKE_CURRENT_SOURCE_DIR}/")
+#ADD_DEFINITIONS(-DRDO_TEST_APP_PATH="${CMAKE_CURRENT_SOURCE_DIR}/")
