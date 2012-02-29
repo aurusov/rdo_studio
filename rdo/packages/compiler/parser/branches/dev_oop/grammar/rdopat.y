@@ -1488,7 +1488,13 @@ pat_convert_cmd
 	| pat_convert_cmd statement
 	{
 		LPConvertCmdList      pCmdList = PARSER->stack().pop<ConvertCmdList>($1);
-		rdoRuntime::LPRDOCalc pCalc    = PARSER->stack().pop<rdoRuntime::RDOCalc>($2);
+		
+		LPExpression pExpression = PARSER->stack().pop<Expression>($2);
+		ASSERT(pExpression);
+				
+		rdoRuntime::LPRDOCalc pCalc    = pExpression->calc();
+		ASSERT(pCalc)
+
 		pCmdList->insertCommand(pCalc);
 		$$ = PARSER->stack().push(pCmdList);
 	}
@@ -1972,10 +1978,16 @@ set_array_item_statement
 local_variable_declaration
 	: type_declaration init_declaration_list
 	{
+		LPTypeInfo pType = PARSER->stack().pop<TypeInfo>($1);
+		ASSERT(pType);
+
 		rdoRuntime::LPRDOCalc pCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($2);
 		ASSERT(pCalc);
 
-		$$ = PARSER->stack().push(pCalc);
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
 
 		PARSER->contextStack()->pop();
 	}
@@ -1994,6 +2006,7 @@ type_declaration
 		ASSERT(pTypeContext);
 
 		PARSER->contextStack()->push(pTypeContext);
+		$$ = PARSER->stack().push(pType);
 	}
 	| RDO_real
 	{
@@ -2007,6 +2020,7 @@ type_declaration
 		ASSERT(pTypeContext);
 
 		PARSER->contextStack()->push(pTypeContext);
+		$$ = PARSER->stack().push(pType);
 	}
 	| RDO_string
 	{
@@ -2020,6 +2034,7 @@ type_declaration
 		ASSERT(pTypeContext);
 
 		PARSER->contextStack()->push(pTypeContext);
+		$$ = PARSER->stack().push(pType);
 	}
 	| param_type_array
 	{
@@ -2033,6 +2048,7 @@ type_declaration
 		ASSERT(pTypeContext);
 
 		PARSER->contextStack()->push(pTypeContext);
+		$$ = PARSER->stack().push(pType);
 	}
 	| RDO_bool
 	{
@@ -2046,6 +2062,7 @@ type_declaration
 		ASSERT(pTypeContext);
 
 		PARSER->contextStack()->push(pTypeContext);
+		$$ = PARSER->stack().push(pType);
 	}
 	| param_type_enum
 	{
@@ -2060,6 +2077,7 @@ type_declaration
 		ASSERT(pTypeContext);
 
 		PARSER->contextStack()->push(pTypeContext);
+		$$ = PARSER->stack().push(pType);
 	}
 	| param_type_such_as
 	{
@@ -2073,6 +2091,7 @@ type_declaration
 		ASSERT(pTypeContext);
 
 		PARSER->contextStack()->push(pTypeContext);
+		$$ = PARSER->stack().push(pType);
 	}
 	;
 
@@ -2173,13 +2192,14 @@ init_declaration
 			ASSERT(pCalcCreateLocalVariable);
 
 			LPVariableContainer pVariableContainer = rdo::Factory<VariableContainer>::create(pCalcCreateLocalVariable, pLocalVariable);
+			ASSERT(pVariableContainer);
+
 			$$ = PARSER->stack().push(pVariableContainer);
 		}
 		else
 		{
 			PARSER->error().error(@1, _T("У данного типа нет значения поумолчанию."));
 		}
-
 	}
 	| RDO_IDENTIF '=' fun_arithm
 	{
