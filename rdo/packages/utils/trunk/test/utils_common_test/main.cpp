@@ -38,7 +38,7 @@ BOOST_AUTO_TEST_CASE(RDOCommon_ResourceFormat)
 	tstring str2 = rdo::format(IDS_STRING102, 22);
 	BOOST_CHECK(str2 == s_resourceStr2);
 	tstring str3 = rdo::format(IDS_STRING103, str1.c_str(), 33, str2.c_str());
-	BOOST_CHECK(str3 == s_resourceStr3);
+	BOOST_CHECK(str3.empty());
 }
 #endif // OST_WINDOWS
 
