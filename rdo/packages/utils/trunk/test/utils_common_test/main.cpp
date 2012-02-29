@@ -72,7 +72,7 @@ BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitPathInLinux)
 	BOOST_CHECK(rdo::File::splitpath(file, dir, name, ext));
 	BOOST_CHECK(dir  == _T("/rdo/русский пробел/files/"));
 	BOOST_CHECK(name == _T("проект"));
-	BOOST_CHECK(ext  == _T(".smr2"));
+	BOOST_CHECK(ext  == _T(".smr"));
 }
 
 BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitByRootPathInLinux)
