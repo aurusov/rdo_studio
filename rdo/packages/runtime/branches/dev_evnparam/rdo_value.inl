@@ -10,11 +10,14 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <string.h>
 #include <stdlib.h>
+#include <map>
+#include <vector>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdodebug.h"
 #include "utils/static_assert.h"
 #include "simulator/runtime/rdo_enum.h"
 #include "simulator/runtime/rdo_exception.h"
+#include "simulator/runtime/rdo_fuzzy.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -159,6 +162,23 @@ inline void RDOValue::deleteValue()
 		reinterpret_cast<rdo::LPIRefCounter>(&m_value)->release();
 		break;
 	}
+}
+inline void RDOValue::fuzzyfication(CREF(RDOFuzzyType) pFuzzyVariable) const
+{
+	//if (this->type() == t_fuzzy)
+	//{
+	/*LPRDOFuzzyType::Terms termSet = pFuzzyVariable->getTerm();
+	if (pFuzzyVariable->inRange(this))
+	{
+		LPRDOFuzzyValue fuzzyValue = rdo::Factory<RDOFuzzyValue>::create(pFuzzyVariable);
+		for (Terms::const_iterator it = begin(); it != end(); it++)
+		{
+			RDOFuzzyValue::FuzzyItem item = termSet[it]->find(this);
+			fuzzyValue->append(item->second);
+		}*/
+		//return (fuzzyValue);
+	}
+	//}
 }
 
 inline rsint RDOValue::getInt() const

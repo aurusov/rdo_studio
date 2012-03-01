@@ -13,19 +13,25 @@
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
+//#include <map>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/smart_ptr/intrusive_ptr.h"
 #include "utils/smart_ptr/intrusive_ptr_interface_wrapper.h"
 #include "simulator/runtime/rdo_type.h"
+#include "simulator/runtime/rdo_fuzzy.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
 PREDECLARE_POINTER(RDOEnumType);
+PREDECLARE_POINTER(RDOFuzzyType);
+PREDECLARE_POINTER(RDOFuzzyValue);
 
 //! Значение переменных в РДО
+
 class RDOValue
 {
+	//friend class RDOFuzzyValue;
 public:
 	RDOValue();
 	~RDOValue();
@@ -70,9 +76,10 @@ public:
 	template <class T>
 	rbool isType() const;
 
-	rbool   getAsBool          () const;
-	tstring getAsString        () const;
-	tstring getAsStringForTrace() const;
+	rbool   getAsBool            ()                                  const;
+	tstring getAsString          ()                                  const;
+	tstring getAsStringForTrace  ()                                  const;
+	//void    fuzzyfication        (CREF(RDOFuzzyType) pFuzzyVariable) const; 
 
 	REF(RDOValue)  operator=  (CREF(RDOValue) rdovalue);
 	rbool          operator== (CREF(RDOValue) rdovalue) const;

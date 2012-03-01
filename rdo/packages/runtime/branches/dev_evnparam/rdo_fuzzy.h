@@ -21,8 +21,10 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 PREDECLARE_POINTER(RDOFuzzyType);
+//PREDECLARE_POINTER(RDOValue);
 
 //! Нечеткое значение
+
 OBJECT(RDOFuzzyValue)
 {
 DECLARE_FACTORY(RDOFuzzyValue);
@@ -62,7 +64,7 @@ public:
 
 	/* 3.272*/ RDOValue defuzzyfication();
 
-	tstring getAsString() const;
+	tstring getAsString  () const;
 
 private:
 	RDOFuzzyValue(CREF(LPRDOFuzzyType)  pType );
@@ -92,6 +94,7 @@ class RDOFuzzyType: public RDOType
 {
 DECLARE_FACTORY(RDOFuzzyType);
 public:
+	//Terms    getTerm           ()                    const;
 	virtual tstring  name      ()                    const;
 	virtual RDOValue value_cast(CREF(RDOValue) from) const;
 
@@ -116,7 +119,7 @@ DECLARE_POINTER(RDOFuzzyType);
 //! Нечеткое множество
 OBJECT(RDOFuzzySetDefinition)
 {
-DECLARE_FACTORY(RDOFuzzySetDefinition)
+	DECLARE_FACTORY(RDOFuzzySetDefinition)
 public:
 	virtual rbool           inRange      (CREF(RDOValue)        rdovalue) const = 0;
 	virtual LPRDOFuzzyValue getSupplement(CREF(LPRDOFuzzyValue) pValue  ) const = 0;
