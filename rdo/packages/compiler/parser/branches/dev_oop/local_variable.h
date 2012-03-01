@@ -27,16 +27,18 @@ OBJECT(LocalVariable)
 {
 DECLARE_FACTORY(LocalVariable);
 public:
-	CREF(LPRDOValue)   getValue     () const;
-	CREF(LPExpression) getExpression() const;
-	CREF(LPTypeInfo)   getTypeInfo  () const;
+	CREF(LPRDOValue)             getValue        () const;
+	CREF(LPExpression)           getExpression   () const;
+	CREF(LPTypeInfo)             getTypeInfo     () const;
+	CREF(rdoRuntime::RDOValue)   getDefaultValue () const;
 
 private:
 	LocalVariable(CREF(LPRDOValue) pValue, CREF(LPExpression) pExpression, CREF(LPTypeInfo) pType);
 
-	LPRDOValue    m_pValue;
-	LPExpression  m_pExpression;
-	LPTypeInfo    m_pType;
+	LPRDOValue           m_pValue;
+	LPExpression         m_pExpression;
+	LPTypeInfo           m_pType;
+	rdoRuntime::RDOValue m_pDefaultValue;
 };
 
 // --------------------------------------------------------------------------------

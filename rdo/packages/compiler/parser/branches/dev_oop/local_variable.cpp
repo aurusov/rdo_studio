@@ -25,7 +25,18 @@ LocalVariable::LocalVariable(CREF(LPRDOValue) pValue, CREF(LPExpression) pExpres
 	: m_pValue     (pValue     )
 	, m_pExpression(pExpression)
 	, m_pType      (pType      )
-{}
+{
+	ASSERT(m_pValue);
+	ASSERT(m_pExpression);
+	ASSERT(m_pType);
+
+	m_pDefaultValue = m_pType->type()->get_default();
+
+	if(m_pDefaultValue.type()->typeID() == rdoRuntime::RDOType::t_unknow)
+	{
+		rdoParser::g_error().error(pValue->src_info(), _T("У данного типа нет значения поумолчанию."));
+	}
+}
 
 CREF(LPRDOValue) LocalVariable::getValue() const
 {
@@ -40,6 +51,11 @@ CREF(LPExpression) LocalVariable::getExpression() const
 CREF(LPTypeInfo) LocalVariable::getTypeInfo() const
 {
 	return m_pType;
+}
+
+CREF(rdoRuntime::RDOValue) LocalVariable::getDefaultValue () const
+{
+	return m_pDefaultValue;
 }
 
 // --------------------------------------------------------------------------------
