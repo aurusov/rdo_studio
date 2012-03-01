@@ -44,6 +44,8 @@ RDOCalcArrayItem::RDOCalcArrayItem(CREF(LPRDOCalc) pArray, CREF(LPRDOCalc) pArra
 {
 	ASSERT(m_pArray   );
 	ASSERT(m_pArrayInd);
+
+	setSrcInfo(m_pArrayInd->srcInfo());
 }
 
 REF(RDOValue) RDOCalcArrayItem::doCalc(CREF(LPRDORuntime) pRuntime)
@@ -68,6 +70,8 @@ RDOCalcSetArrayItem::RDOCalcSetArrayItem(CREF(LPRDOCalc) pArray, CREF(LPRDOCalc)
 	ASSERT(m_pArray   );
 	ASSERT(m_pArrayInd);
 	ASSERT(m_pSetItem );
+
+	setSrcInfo(m_pArrayInd->srcInfo());
 }
 
 REF(RDOValue) RDOCalcSetArrayItem::doCalc(CREF(LPRDORuntime) pRuntime)
