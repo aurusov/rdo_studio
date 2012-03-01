@@ -24,7 +24,6 @@ BOOST_AUTO_TEST_CASE(RDOCommonAnimationFrame)
 	rdoAnimation::FrameItem frameItem(frameItemType);
 
 	BOOST_CHECK(frameItem.getType() == frameItemType);
-        BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(RDOCommonAnimationColor)
