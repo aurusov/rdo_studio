@@ -71,10 +71,26 @@ inline LPRDOFuzzyValue RDOFuzzyValue::supplement() const
 {
 	return type()->getSupplement(LPRDOFuzzyValue(const_cast<PTR(RDOFuzzyValue)>(this)));
 }
-
 inline LPRDOFuzzyValue RDOFuzzyValue::a_con     () const { return a_pow(2.0);                   }
 inline LPRDOFuzzyValue RDOFuzzyValue::a_dil     () const { return a_pow(0.5);                   }
 
+inline void RDOValue::fuzzyfication(CREF(RDOFuzzyType) pFuzzyVariable) const
+{
+	//if (this->type() == t_fuzzy)
+	//{
+	LPRDOFuzzyType::Terms termSet = pFuzzyVariable->m_terms;
+	if (pFuzzyVariable->inRange(this))
+	{
+		LPRDOFuzzyValue fuzzyValue = rdo::Factory<RDOFuzzyValue>::create(pFuzzyVariable);
+		for (Terms::const_iterator it = begin(); it != end(); it++)
+		{
+			RDOFuzzyValue::FuzzyItem item = termSet[it]->find(this);
+			fuzzyValue->append(item->second);
+		}
+		return (fuzzyValue);
+	//}
+	}
+}
 // --------------------------------------------------------------------------------
 // -------------------- RDOFuzzyType
 // --------------------------------------------------------------------------------
@@ -120,6 +136,10 @@ inline LPRDOFuzzyValue RDOFuzzyType::getSupplement(CREF(LPRDOFuzzyValue) pFuzzyV
 {
 	return m_fuzzySetDefinition->getSupplement(pFuzzyValue);
 }
+//inline Terms RDOFuzzyType::getTerm() const
+//{
+//	return (m_terms);
+//}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFuzzySetDefinition

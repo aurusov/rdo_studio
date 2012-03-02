@@ -386,10 +386,4 @@ LPRDOFuzzyValue RDOFuzzySetDefinitionRangeDiscret::getSupplement(CREF(LPRDOFuzzy
 // --------------------------------------------------------------------------------
 PTR(RDOFuzzyEmptyType) RDOFuzzyEmptyType::s_emptyType = NULL;
 
-
-//Terms RDOFuzzyType::getTerm() const
-//{
-//	return (m_terms);
-//}
-
 CLOSE_RDO_RUNTIME_NAMESPACE

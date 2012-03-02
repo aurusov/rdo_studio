@@ -18,6 +18,7 @@
 #include "simulator/runtime/rdo_enum.h"
 #include "simulator/runtime/rdo_exception.h"
 #include "simulator/runtime/rdo_fuzzy.h"
+#include "simulator/runtime/rdo_value.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -163,8 +164,8 @@ inline void RDOValue::deleteValue()
 		break;
 	}
 }
-inline void RDOValue::fuzzyfication(CREF(RDOFuzzyType) pFuzzyVariable) const
-{
+//inline void RDOValue::fuzzyfication(CREF(RDOFuzzyType) pFuzzyVariable) const
+//{
 	//if (this->type() == t_fuzzy)
 	//{
 	/*LPRDOFuzzyType::Terms termSet = pFuzzyVariable->getTerm();
@@ -175,11 +176,11 @@ inline void RDOValue::fuzzyfication(CREF(RDOFuzzyType) pFuzzyVariable) const
 		{
 			RDOFuzzyValue::FuzzyItem item = termSet[it]->find(this);
 			fuzzyValue->append(item->second);
-		}*/
+		}
 		//return (fuzzyValue);
 	}
 	//}
-}
+}*/
 
 inline rsint RDOValue::getInt() const
 {
