@@ -99,17 +99,17 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/context)
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/type)
 
 SET(HEADER_FILES
+	${GRAMMA_PATH}/rdobison.h
 	expression.h
 	local_variable.h
+	namespace.h
 	param.h
 	pch.h
-	namespace.h
 	rdo_array.h
-	${GRAMMA_PATH}/rdobison.h
 	rdodpt.h
-	rdoprocess.h
 	rdofrm.h
 	rdofun.h
+	rdo_logic_base.h
 	rdo_logic.h
 	rdo_object.h
 	rdoparser_base.h
@@ -121,6 +121,7 @@ SET(HEADER_FILES
 	rdopat.h
 	rdopatpreparse.h
 	rdopmd.h
+	rdoprocess.h
 	rdorss.h
 	rdortp.h
 	rdortp_param.h
@@ -147,6 +148,7 @@ SET(HEADER_FILES
 	type/type.h)
 
 SET(INLITE_FILES
+	rdo_logic.inl
 	rdoparser_lexer.inl
 	rdopatpreparse.inl
 	rdo_value.inl
@@ -163,9 +165,9 @@ SET(SOURCE_FILES
 	pch.cpp
 	rdo_array.cpp
 	rdodpt.cpp
-	rdoprocess.cpp
 	rdofrm.cpp
 	rdofun.cpp
+	rdo_logic_base.cpp
 	rdo_logic.cpp
 	rdo_object.cpp
 	rdoparser_base.cpp
@@ -176,6 +178,7 @@ SET(SOURCE_FILES
 	rdoparser_rdo.cpp
 	rdopat.cpp
 	rdopmd.cpp
+	rdoprocess.cpp
 	rdorss.cpp
 	rdortp.cpp
 	rdortp_param.cpp
