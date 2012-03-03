@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE(RDORuntime_Fuzzy_Test)
 	pValue1->operator[](0) = 0.5;
 	BOOST_CHECK(pValue1->getAsString() == _T("<0/0.50> <1/1.00> <2/1.00> <4/1.00> <5/1.00> <6/1.00> <7/1.00> <8/1.00> <9/1.00> <23/1.00>"));
 
-	pValue1->operator[](14) = 0.7;
+ 	pValue1->operator[](14) = 0.7;
 	BOOST_CHECK(pValue1->getAsString() == _T("<0/0.50> <1/1.00> <2/1.00> <4/1.00> <5/1.00> <6/1.00> <7/1.00> <8/1.00> <9/1.00> <14/0.70> <23/1.00>"));
 
 	LPRDOValue pNotFuzzyValue1 = rdo::Factory<RDOValue>::create(24)

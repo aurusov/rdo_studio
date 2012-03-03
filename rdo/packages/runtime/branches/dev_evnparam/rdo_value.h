@@ -18,7 +18,7 @@
 #include "utils/smart_ptr/intrusive_ptr.h"
 #include "utils/smart_ptr/intrusive_ptr_interface_wrapper.h"
 #include "simulator/runtime/rdo_type.h"
-#include "simulator/runtime/rdo_fuzzy.h"
+//#include "simulator/runtime/rdo_fuzzy.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

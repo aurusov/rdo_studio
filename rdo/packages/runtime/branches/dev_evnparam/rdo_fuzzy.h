@@ -22,12 +22,14 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 PREDECLARE_POINTER(RDOFuzzyType);
 PREDECLARE_POINTER(RDOValue);
+PREDECLARE_POINTER(RDOFuzzyValue);
 
 //! Нечеткое значение
 
 OBJECT(RDOFuzzyValue)
 {
 DECLARE_FACTORY(RDOFuzzyValue);
+friend class RDOFuzzyType;
 
 public:
 	typedef  std::pair<RDOValue, double>                              FuzzyItem;
@@ -62,7 +64,7 @@ public:
 	/* 3.78 */  LPRDOFuzzyValue a_con     () const;
 	/* 3.79 */  LPRDOFuzzyValue a_dil     () const;
 
-				LPRDOFuzzyValue fuzzyfication(CREF(RDOFuzzyType) pFuzzyVariable, CREF(RDOValue) rValue) const; 
+				//LPRDOFuzzyValue fuzzyfication(CREF(RDOFuzzyType) pFuzzyVariable, CREF(RDOValue) rValue) const; 
 	/* 3.272*/	RDOValue        defuzzyfication();
 
 	tstring getAsString  () const;
@@ -94,7 +96,13 @@ PREDECLARE_POINTER(RDOFuzzySetDefinition);
 class RDOFuzzyType: public RDOType
 {
 DECLARE_FACTORY(RDOFuzzyType);
+
 public:
+
+	typedef std::map<tstring, LPRDOFuzzySetDefinition> Terms;
+
+	Terms::const_iterator begin() const;
+	Terms::const_iterator end()   const;
 	//Terms   getTerm            ()                    const;
 	virtual tstring  name      ()                    const;
 	virtual RDOValue value_cast(CREF(RDOValue) from) const;
@@ -102,19 +110,21 @@ public:
 	rbool operator== (CREF(RDOFuzzyType) type) const;
 	rbool operator!= (CREF(RDOFuzzyType) type) const;
 
+	LPRDOFuzzyValue fuzzyfication(CREF(RDOValue));
+
 	rbool           inRange      (CREF(RDOValue)        rdovalue) const;
 	LPRDOFuzzyValue getSupplement(CREF(LPRDOFuzzyValue) pValue  ) const;
 
-	typedef std::map< tstring, LPRDOFuzzyValue > Terms;
-	Terms                    m_terms;
-
 protected:
+
 	RDOFuzzyType(CREF(LPRDOFuzzySetDefinition) pFuzzySetDefinition);
 	virtual ~RDOFuzzyType();
 
 private:
 
+	Terms                    m_terms;
 	LPRDOFuzzySetDefinition  m_fuzzySetDefinition;
+
 };
 DECLARE_POINTER(RDOFuzzyType);
 
