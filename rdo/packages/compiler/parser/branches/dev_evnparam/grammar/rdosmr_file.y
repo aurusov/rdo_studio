@@ -221,6 +221,22 @@ OPEN_RDO_PARSER_NAMESPACE
 
 smr_main
 	: smr_descr
+	| smr_model
+	;
+
+smr_model
+	: RDO_Model_name '=' RDO_IDENTIF 
+	{
+		PARSER->error().error( @2, @3, "В РДО больше нельзя явно указывать имя модели");
+	}
+	| RDO_Model_name '=' error
+	{
+		PARSER->error().error( @2, @3, "В РДО больше нельзя явно указывать имя модели");
+	}
+	| RDO_Model_name error
+	{
+		PARSER->error().error( @1, @2, "В РДО больше нельзя явно указывать имя модели");
+	}
 	;
 
 smr_descr
