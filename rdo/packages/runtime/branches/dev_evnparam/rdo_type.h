@@ -43,8 +43,7 @@ public:
 		t_bool,
 		t_string,
 		t_enum,
-		t_pointer,
-	//	t_fuzzy
+		t_pointer
 	};
 
 	RDOType(TypeID typeID);

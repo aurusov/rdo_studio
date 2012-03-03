@@ -71,26 +71,10 @@ inline LPRDOFuzzyValue RDOFuzzyValue::supplement() const
 {
 	return type()->getSupplement(LPRDOFuzzyValue(const_cast<PTR(RDOFuzzyValue)>(this)));
 }
+
 inline LPRDOFuzzyValue RDOFuzzyValue::a_con     () const { return a_pow(2.0);                   }
 inline LPRDOFuzzyValue RDOFuzzyValue::a_dil     () const { return a_pow(0.5);                   }
 
-//inline LPRDOFuzzyValue RDOFuzzyValue::fuzzyfication(CREF(RDOFuzzyType) pFuzzyVariable, CREF(RDOValue) rValue) const
-//{
-	//if (this->type() == t_fuzzy)
-	//{
-//	RDOFuzzyType::Terms::const_iterator it = begin();
-//	if (pFuzzyVariable.inRange(rValue))
-//	{
-//		LPRDOFuzzyValue fuzzyValue = rdo::Factory<RDOFuzzyValue>::create(pFuzzyVariable);
-//		for (it = begin(); it != end(); it++)
-//		{
-//			RDOFuzzyValue::FuzzyItem item = termSet[it]->find(this);
-//			fuzzyValue->append(item->second);
-//		}
-//		return (fuzzyValue);
-//	//}
-//	}
-//}
 // --------------------------------------------------------------------------------
 // -------------------- RDOFuzzyType
 // --------------------------------------------------------------------------------
@@ -109,26 +93,6 @@ inline RDOFuzzyType::~RDOFuzzyType()
 inline tstring RDOFuzzyType::name() const
 {
 	return _T("RDOFuzzyType");
-}
-
-inline LPRDOFuzzyValue RDOFuzzyType::fuzzyfication(CREF(RDOValue) value)
-{
-	//if (this->type() == t_fuzzy)
-	//{
-	Terms::const_iterator it = begin();
-	//Terms mTerm = this->getTerm();
-	if (this->inRange(value))
-	{
-		rdo::intrusive_ptr<RDOFuzzyType> pThis(this);
-		LPRDOFuzzyValue fuzzyValue = rdo::Factory<RDOFuzzyValue>::create(pThis);
-		for (it = begin(); it != end(); it++)
-		{
-			//RDOFuzzyValue::FuzzyItem item = this->m_terms.find(this);
-			//fuzzyValue.append(item->second);
-		}
-		return (fuzzyValue);
-	//}
-	}
 }
 
 inline RDOValue RDOFuzzyType::value_cast(CREF(RDOValue) from) const
@@ -156,10 +120,6 @@ inline LPRDOFuzzyValue RDOFuzzyType::getSupplement(CREF(LPRDOFuzzyValue) pFuzzyV
 {
 	return m_fuzzySetDefinition->getSupplement(pFuzzyValue);
 }
-//inline Terms RDOFuzzyType::getTerm() const
-//{
-//	return (m_terms);
-//}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFuzzySetDefinition
