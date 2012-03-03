@@ -82,6 +82,14 @@
 %token RDO_IDENTIF_NoChange_NoChange
 %token RDO_Operations
 
+%token RDO_Model_name
+%token RDO_Resource_file
+%token RDO_OprIev_file
+%token RDO_Frame_file
+%token RDO_Statistic_file
+%token RDO_Results_file
+%token RDO_Trace_file
+
 %token RDO_Results
 %token RDO_watch_par
 %token RDO_watch_state
@@ -222,6 +230,7 @@ OPEN_RDO_PARSER_NAMESPACE
 smr_main
 	: smr_descr
 	| smr_model
+	| smr_res
 	;
 
 smr_model
@@ -239,6 +248,21 @@ smr_model
 	}
 	;
 
+smr_res
+	: RDO_Resource_file '=' RDO_IDENTIF
+	{
+		PARSER->error().error( @2, @3, "В РДО больше нельзя писать имя файла ресурсов");
+	}
+	| RDO_Resource_file '=' error
+	{
+		PARSER->error().error( @2, @3, "В РДО больше нельзя писать имя файла ресурсов");
+	}
+	| RDO_Resource_file error
+	{
+		PARSER->error().error( @1, @2, "В РДО больше нельзя писать имя файла ресурсов");
+	}
+	;
+	
 smr_descr
 	: /* empty */
 	| smr_descr RDO_External_Model RDO_IDENTIF '=' RDO_IDENTIF
