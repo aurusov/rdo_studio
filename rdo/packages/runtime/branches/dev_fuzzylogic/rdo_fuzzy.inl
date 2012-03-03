@@ -121,6 +121,11 @@ inline LPRDOFuzzyValue RDOFuzzyType::getSupplement(CREF(LPRDOFuzzyValue) pFuzzyV
 	return m_fuzzySetDefinition->getSupplement(pFuzzyValue);
 }
 
+inline CREF(RDOFuzzyType::Terms) RDOFuzzyType::getTerm() const
+{
+	return m_terms;
+}
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOFuzzySetDefinition
 // --------------------------------------------------------------------------------
