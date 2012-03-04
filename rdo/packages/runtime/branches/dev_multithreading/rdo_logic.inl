@@ -113,6 +113,12 @@ inline void RDOLogic<Order>::setCondition(CREF(LPRDOCalc) pCondition)
 }
 
 template <class Order>
+inline void RDOLogic<Order>::setMultithreading(rbool multithreading)
+{
+	m_multithreading = multithreading;
+}
+
+template <class Order>
 inline void RDOLogic<Order>::onStart(CREF(LPRDORuntime) pRuntime)
 {
 	m_lastCondition = checkSelfCondition(pRuntime);

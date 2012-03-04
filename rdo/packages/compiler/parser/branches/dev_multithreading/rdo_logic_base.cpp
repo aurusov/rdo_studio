@@ -75,6 +75,7 @@ void RDOLogicBase::end()
 	{
 		m_pRuntimeLogic->setCondition(getConditon()->getCalc());
 	}
+	m_pRuntimeLogic->setMultithreading(m_multithreading);
 	RDOParser::s_parser()->contextStack()->pop();
 }
 
