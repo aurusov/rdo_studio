@@ -834,7 +834,6 @@ void RDOStudioModel::openModelFromRepository()
 		{
 			m_pFlowchartDocTemplate->OpenDocumentFile(NULL);
 			loadFromXML();
-			//pMethod->makeFlowChart(rpMethod::project); // Load empty flowchart.
 		}
 
 		BOOL maximize = false;
@@ -1031,8 +1030,12 @@ void RDOStudioModel::saveToXML()
 	// Ссылаемся на виртуальную функцию saveToXML(parentNode), которая поэтапно запишет информацию в файл:
 	rpMethod::project->saveToXML(node);
 
+	// Создаем файл '.prcx' с помощью репозитария:
+	rdoRepository::RDOThreadRepository::FileInfo fileInfo(rdoModelObjects::PRCX);
+	studioApp.studioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &fileInfo);
+
 	// Автоматически открываем файл при создании потока:
-	std::ofstream outFile("C:\\temp\\GuI.xml");
+	std::ofstream outFile(fileInfo.m_fullName.c_str());
 	// Проверяем открытый нами поток на наличие ошибок ввода-вывода:
 	if (outFile.good())
 	{
@@ -1064,6 +1067,11 @@ void RDOStudioModel::loadFromXML()
 			}
 		}
 		inFile.close();
+	}
+	else
+	{
+		PTR(RPMethodProc2RDO_MJ) pMethod = getProc2rdo();
+		pMethod->makeFlowChart(rpMethod::project);
 	}
 }
 

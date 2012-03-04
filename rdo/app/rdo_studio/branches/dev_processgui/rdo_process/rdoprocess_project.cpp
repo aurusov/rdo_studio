@@ -95,7 +95,7 @@ void RPProjectMFC::saveToXML(REF(pugi::xml_node) parentNode) const
 	// »нициализируем первую ноду именем класса первого встретившегос€ потомка:
 	pugi::xml_node node = parentNode.append_child(getClassName().c_str());
 	// јтрибуты <RPProjectMFC>:
-	node.append_attribute(_T("path")).set_value(getFullName().c_str());
+	node.append_attribute(_T("name")).set_value(getName().c_str());
 
 	// —сылаемс€ на первого потомка RPObject (RPObjectFlowChart_MJ), использу€ контейнер "list":
 	std::list<PTR(RPObject)> childList;
@@ -117,7 +117,7 @@ void RPProjectMFC::loadFromXML(CREF(pugi::xml_node) node)
 		{
 			if (strcmp(next_node.name(), "RPObjectFlowChart_MJ") == 0)
 			{
-				// √енерируем FlowChart:
+				// √енерируем FlowChart
 				PTR(RPObjectFlowChart) pFlowChart = static_cast<PTR(RPObjectFlowChart)>(rpMethod::factory->getNewObject(next_node.name(), rpMethod::project));
 				ASSERT(pFlowChart);
 				pFlowChart->loadFromXML(next_node);
