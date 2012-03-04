@@ -222,7 +222,6 @@ BOOST_AUTO_TEST_CASE(ArrayTestValuePostMinus)
 BOOST_AUTO_TEST_CASE(ArrayTestSetItem)
 {
 	Array array = createArray(Container()(1)(2)(3));
-	rdoRuntime::LPRDORuntime pRuntime = rdo::Factory<rdoRuntime::RDORuntime>::create();
 
 	ruint ind  = 1;
 	ruint item = 48;
@@ -257,7 +256,6 @@ BOOST_AUTO_TEST_CASE(ArrayTestSetItem)
 BOOST_AUTO_TEST_CASE(ArrayTestGetItem)
 {
 	Array array = createArray(Container()(1)(48)(3));
-	rdoRuntime::LPRDORuntime pRuntime = rdo::Factory<rdoRuntime::RDORuntime>::create();
 
 	ruint ind = 1;
 	rdoRuntime::RDOValue index(ind);
@@ -286,4 +284,5 @@ BOOST_AUTO_TEST_CASE(ArrayTestGetItem)
 		BOOST_CHECK(false);
 	}
 }
+
 BOOST_AUTO_TEST_SUITE_END() // RDORuntime_Array_Test
