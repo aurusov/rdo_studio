@@ -236,16 +236,18 @@ PTR(rdoAnimation::RDOFrame) RDOFRMFrame::prepareFrame(PTR(rdoAnimation::RDOFrame
 			{
 				rdoAnimation::RDOPoint point((*it)->getParam(0).getInt(), (*it)->getParam(1).getInt());
 				rdoAnimation::RDOSize  size;
-				if ((*it)->getParam(5).getInt() == 1)
+				if ((*it)->getParam(5).getInt() == 1 || (*it)->getParam(5).getInt() == 3)
 				{
-					size.m_width  = 3;
-					size.m_height = 2;
+					size.m_width  = (*it)->getParam(8).getInt();
+					size.m_height = (*it)->getParam(9).getInt();
 				}
 				else
 				{
-					size.m_width  = 2;
-					size.m_height = 3;
+					size.m_width  = (*it)->getParam(9).getInt();
+					size.m_height = (*it)->getParam(8).getInt();
 				}
+				point.m_x -= size.m_width  / 2;
+				point.m_y -= size.m_height / 2;
 
 				ruint colorRuint = (*it)->getParam(7).getUInt();
 				rdoAnimation::RDOColor color(GetBValue(colorRuint), GetGValue(colorRuint), GetRValue(colorRuint));
