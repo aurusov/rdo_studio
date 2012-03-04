@@ -168,10 +168,10 @@ BOOST_AUTO_TEST_CASE(RDOValue_Ruint_Compare)
 	const ruint val2 = 20;
 	RDOValue value1(val1);
 	RDOValue value2(val2);
-	
+
 	BOOST_CHECK(value1 != value2);
-	BOOST_CHECK(value1 > value2);	
-	BOOST_CHECK(value2 < value1);
+	BOOST_CHECK(value1 >  value2);	
+	BOOST_CHECK(value2 <  value1);
 	BOOST_CHECK(value1 >= value2);
 	BOOST_CHECK(value2 <= value1);
 	value2 = val1;
@@ -184,11 +184,11 @@ BOOST_AUTO_TEST_CASE(RDOValue_Double_Arifmethic)
 	const double doub1 = 30.2;
 	RDOValue value1(doub1);
 	BOOST_CHECK(value1 == doub1);
-	BOOST_CHECK(value1.getInt() == 30);
-	BOOST_CHECK(value1.getUInt() == 30);
-	BOOST_CHECK(value1.getDouble() == doub1);
-	BOOST_CHECK(value1.getAsString() == "30.2");
-	BOOST_CHECK(value1.getEnumAsInt() == 30);
+	BOOST_CHECK(value1.getInt      () == 30    );
+	BOOST_CHECK(value1.getUInt     () == 30    );
+	BOOST_CHECK(value1.getDouble   () == doub1 );
+	BOOST_CHECK(value1.getAsString () == "30.2");
+	BOOST_CHECK(value1.getEnumAsInt() == 30    );
 
 	RDOValue value2 = value1;
 	BOOST_CHECK(value2 == doub1);
@@ -261,6 +261,10 @@ BOOST_AUTO_TEST_CASE(RDOValue_Bool)
 	RDOValue value4(bool4);
 
 	BOOST_CHECK(value1.getBool());
+	BOOST_CHECK(value1.getInt() == 1);
+	BOOST_CHECK(value1.getUInt() == 1);
+	BOOST_CHECK(value1.getEnumAsInt() == 1);
+	BOOST_CHECK(value1.getDouble() == 1);
 	BOOST_CHECK(!value2);
 	BOOST_CHECK(value2 == value4);
 	BOOST_CHECK(value1 != value2);
@@ -290,7 +294,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Enum)
 	LPRDOEnumType pEnum = rdo::Factory<RDOEnumType>::create();
 	BOOST_CHECK(pEnum);
 	BOOST_CHECK(pEnum->empty());
-	pEnum->add("test0");
+	pEnum->add(_T("test0"));
 	pEnum->add("test1");
 	pEnum->add("test2");
 	pEnum->add("test3");
