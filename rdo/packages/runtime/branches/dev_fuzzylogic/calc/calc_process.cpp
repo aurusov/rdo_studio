@@ -68,13 +68,13 @@ REF(RDOValue) RDOCalcCreateAndGoInTransact::doCalc(CREF(LPRDORuntime) pRuntime)
 	LPRDOResource pResource = m_pResType->createRes(pRuntime, pRuntime->getResourceId(), m_paramsCalcs, m_traceFlag, m_permanentFlag);
 	ASSERT(pResource);
 
-	LPRDOPROCTransact pTransact = static_cast<PTR(RDOPROCTransact)>(pResource.get());
-	ASSERT(pTransact);
+        LPRDOType pType = m_pResType;
+        ASSERT(pType);
 
-	pTransact->setBlock(m_pBlock);
-	pTransact->next();
+        m_value = RDOValue(pType, pResource);
+        ASSERT(m_value);
 
-	return m_value;
+        return m_value;
 }
 
 // --------------------------------------------------------------------------------
