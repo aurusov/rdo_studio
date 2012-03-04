@@ -50,20 +50,12 @@ rbool RDOPROCGenerate::onCheckCondition( CREF(LPRDORuntime) pRuntime )
 IBaseOperation::BOResult RDOPROCGenerate::onDoOperation(CREF(LPRDORuntime) pRuntime)
 {
 	++m_TransCount;
-
-        RDOValue pValue = m_pCreateAndGoOnTransactCalc->calcValue(pRuntime);
-
-        LPRDOPROCTransact pTransact = pValue.getPointer<RDOPROCTransact>();
-
-        pTransact->setBlock(this);
-        pTransact->next();
-
-        PTR(RDOTrace) tracer = pRuntime->getTracer();
-        if (!tracer->isNull())
-        {
-                tracer->getOStream() << pTransact->traceResourceState('\0', pRuntime) << tracer->getEOL();
-        }
-
+	m_pCreateAndGoOnTransactCalc->calcValue(pRuntime);
+	PTR(RDOTrace) tracer = pRuntime->getTracer();
+	//if (!tracer->isNull())
+	//{
+	//	tracer->getOStream() << pTransact->traceResourceState('\0', pRuntime) << tracer->getEOL();
+	//}
 	calcNextTimeInterval(pRuntime);
 	return IBaseOperation::BOR_done;
 }
