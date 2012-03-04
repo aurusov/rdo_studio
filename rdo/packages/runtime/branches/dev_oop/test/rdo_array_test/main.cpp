@@ -189,7 +189,7 @@ BOOST_AUTO_TEST_CASE(ArrayTestValuePreMinus)
 	BOOST_CHECK(it != begin);
 	BOOST_CHECK(it == end  );
 
-	do 
+	do
 	{
 		result += getString(--it, end);
 	}
@@ -224,32 +224,34 @@ BOOST_AUTO_TEST_CASE(ArrayTestSetItem)
 	Array array = createArray(Container()(1)(2)(3));
 	rdoRuntime::LPRDORuntime pRuntime = rdo::Factory<rdoRuntime::RDORuntime>::create();
 
-	ruint ind = 1;
+	ruint ind  = 1;
 	ruint item = 48;
-	rdoRuntime::RDOValue index (ind);
-	rdoRuntime::RDOValue value (item);
+	rdoRuntime::RDOValue index(ind);
+	rdoRuntime::RDOValue value(item);
 	array.first->setItem(index, value);
-	
+
 	BOOST_CHECK(array.second.getAsString() == _T("[1, 48, 3]"));
-	
-	ind = 3;
-	index = ind;
+
+	ind         = 3;
+	index       = ind;
 	rbool found = false;
-	
+
 	try
 	{
 		array.first->setItem(index, value);
 	}
-	catch (rdoRuntime::RDORuntimeException ex)
+	catch (CREF(rdoRuntime::RDORuntimeException) ex)
 	{
-		if (! ex.message().empty())
+		if (!ex.message().empty())
 		{
 			found = ex.message() == _T("Выход за пределы массива");
 		}
 	}
-	
+
 	if (!found)
-		BOOST_CHECK(false);	
+	{
+		BOOST_CHECK(false);
+	}
 }
 
 BOOST_AUTO_TEST_CASE(ArrayTestGetItem)
@@ -258,28 +260,30 @@ BOOST_AUTO_TEST_CASE(ArrayTestGetItem)
 	rdoRuntime::LPRDORuntime pRuntime = rdo::Factory<rdoRuntime::RDORuntime>::create();
 
 	ruint ind = 1;
-	rdoRuntime::RDOValue index (ind);
-	rdoRuntime::RDOValue value (array.first->getItem(index));
+	rdoRuntime::RDOValue index(ind);
+	rdoRuntime::RDOValue value(array.first->getItem(index));
 
 	BOOST_CHECK(value.getAsString() == _T("48"));
 
-	ind = 3;
-	index = ind;
+	ind         = 3;
+	index       = ind;
 	rbool found = false;
 
 	try
 	{
 		array.first->getItem(index);
 	}
-	catch (rdoRuntime::RDORuntimeException ex)
+	catch (CREF(rdoRuntime::RDORuntimeException) ex)
 	{
-		if (! ex.message().empty())
+		if (!ex.message().empty())
 		{
 			found = ex.message() == _T("Выход за пределы массива");
 		}
 	}
 
 	if (!found)
+	{
 		BOOST_CHECK(false);
+	}
 }
 BOOST_AUTO_TEST_SUITE_END() // RDORuntime_Array_Test
