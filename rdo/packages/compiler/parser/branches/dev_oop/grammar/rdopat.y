@@ -2265,13 +2265,19 @@ if_statement
 		rdoRuntime::LPRDOCalc pConditionCalc = pCondition->getCalc();
 		ASSERT(pConditionCalc);
 
-		rdoRuntime::LPRDOCalc pStatementCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($5);
-		ASSERT(pStatementCalc);
+		LPExpression pIfExpression = PARSER->stack().pop<Expression>($5);
+		ASSERT(pIfExpression);
 
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcIf>::create(pConditionCalc, pStatementCalc);
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__void>::create(), RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcIf>::create(pConditionCalc, pIfExpression->calc());
 		ASSERT(pCalc);
 
-		$$ = PARSER->stack().push(pCalc);
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
 	}
 	| RDO_if '(' fun_logic ')' statement RDO_else statement
 	{
@@ -2280,17 +2286,23 @@ if_statement
 		
 		rdoRuntime::LPRDOCalc pConditionCalc = pCondition->getCalc();
 		ASSERT(pConditionCalc);
-
-		rdoRuntime::LPRDOCalc pIfStatementCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($5);
-		ASSERT(pIfStatementCalc);
-
-		rdoRuntime::LPRDOCalc pElseStatementCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($7);
-		ASSERT(pElseStatementCalc);
-
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcIfElse>::create(pConditionCalc, pIfStatementCalc, pElseStatementCalc);
-		ASSERT(pCalc);
 		
-		$$ = PARSER->stack().push(pCalc);
+		LPExpression pIfExpression = PARSER->stack().pop<Expression>($5);
+		ASSERT(pIfExpression);
+		
+		LPExpression pElseExpression = PARSER->stack().pop<Expression>($7);
+		ASSERT(pElseExpression);
+
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__void>::create(), RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcIfElse>::create(pConditionCalc, pIfExpression->calc(), pElseExpression->calc());
+		ASSERT(pCalc);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+		
+		$$ = PARSER->stack().push(pExpression);
 	}
 	| RDO_if error fun_logic
 	{

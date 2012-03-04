@@ -1128,11 +1128,9 @@ if_statement
 
 		rdoRuntime::LPRDOCalc pConditionCalc = pCondition->getCalc();
 		ASSERT(pConditionCalc);
-		rdoRuntime::LPRDOCalcConst pConstCalc = pConditionCalc.object_dynamic_cast<rdoRuntime::RDOCalcConst>();
 
 		LPExpression pIfExpression = PARSER->stack().pop<Expression>($5);
 		ASSERT(pIfExpression);
-		LPExpressionStatement pExpressionReturn = pIfExpression.object_dynamic_cast<ExpressionStatement>();
 
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__void>::create(), RDOParserSrcInfo(@1));
 		ASSERT(pType);
@@ -1142,6 +1140,10 @@ if_statement
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
 		ASSERT(pExpression);
+
+		rdoRuntime::LPRDOCalcConst pConstCalc        = pConditionCalc.object_dynamic_cast<rdoRuntime::RDOCalcConst>();
+		LPExpressionStatement      pExpressionReturn = pIfExpression.object_dynamic_cast<ExpressionStatement>();
+
 		if (pConstCalc && pExpressionReturn && pConstCalc->getValue().getAsBool())
 		{
 			pExpression = rdo::Factory<ExpressionStatement>::create(pType, pCalc, RDOParserSrcInfo(@1));
@@ -1156,15 +1158,12 @@ if_statement
 		
 		rdoRuntime::LPRDOCalc pConditionCalc = pCondition->getCalc();
 		ASSERT(pConditionCalc);
-		rdoRuntime::LPRDOCalcConst pConstCalc = pConditionCalc.object_dynamic_cast<rdoRuntime::RDOCalcConst>();
-
+		
 		LPExpression pIfExpression = PARSER->stack().pop<Expression>($5);
 		ASSERT(pIfExpression);
-		LPExpressionStatement pIfExpressionReturn = pIfExpression.object_dynamic_cast<ExpressionStatement>();
-
+		
 		LPExpression pElseExpression = PARSER->stack().pop<Expression>($7);
 		ASSERT(pElseExpression);
-		LPExpressionStatement pElseExpressionReturn = pElseExpression.object_dynamic_cast<ExpressionStatement>();
 
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__void>::create(), RDOParserSrcInfo(@1));
 		ASSERT(pType);
@@ -1174,6 +1173,11 @@ if_statement
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
 		ASSERT(pExpression);
+		
+		rdoRuntime::LPRDOCalcConst pConstCalc            = pConditionCalc.object_dynamic_cast<rdoRuntime::RDOCalcConst>();
+		LPExpressionStatement      pIfExpressionReturn   = pIfExpression.object_dynamic_cast<ExpressionStatement>();
+		LPExpressionStatement      pElseExpressionReturn = pElseExpression.object_dynamic_cast<ExpressionStatement>();
+		
 		if(pIfExpressionReturn&&pElseExpressionReturn)
 		{
 			pExpression = rdo::Factory<ExpressionStatement>::create(pType, pCalc, RDOParserSrcInfo(@1));
