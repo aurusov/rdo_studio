@@ -492,41 +492,40 @@ statement
 	}
 	| if_statement
 	| for_statement
-	| return_statement ';'
-	| return_statement error
-	{
-		PARSER->error().error(@1, _T("Не найден символ окончания инструкции - точка с запятой"));
-	}
 	| break_statement ';'
 	| break_statement error
 	{
 		PARSER->error().error(@1, _T("Не найден символ окончания инструкции - точка с запятой"));
 	}
+	| return_statement ';'
+	| return_statement error
+	{
+		PARSER->error().error(@1, _T("Не найден символ окончания инструкции - точка с запятой"));
+	}
 	| open_brace statement_list close_brace
 	{
-		LPExpression pExpressionFunBodyBrace = PARSER->stack().pop<Expression>($2);
-		ASSERT(pExpressionFunBodyBrace);
+		LPExpression pExpressionBodyBrace = PARSER->stack().pop<Expression>($2);
+		ASSERT(pExpressionBodyBrace);
 
 		rdoRuntime::LPRDOCalc pCalcCloseBrace = rdo::Factory<rdoRuntime::RDOCalcCloseBrace>::create();
 		ASSERT(pCalcCloseBrace);
 
-		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunBodyBrace = pExpressionFunBodyBrace->calc().object_dynamic_cast<rdoRuntime::RDOCalcFunBodyBrace>();
-		ASSERT(pCalcFunBodyBrace);
-		pCalcFunBodyBrace->addFunCalc(pCalcCloseBrace);
+		rdoRuntime::LPRDOCalcFunBodyBrace pCalcBodyBrace = pExpressionBodyBrace->calc().object_dynamic_cast<rdoRuntime::RDOCalcFunBodyBrace>();
+		ASSERT(pCalcBodyBrace);
 
-		LPExpressionStatement pExpressionReturn = pExpressionFunBodyBrace.object_dynamic_cast<ExpressionStatement>();
+		pCalcBodyBrace->addFunCalc(pCalcCloseBrace);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pExpressionBodyBrace->typeInfo(), pCalcBodyBrace, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		LPExpressionStatement pExpressionReturn = pExpressionBodyBrace.object_dynamic_cast<ExpressionStatement>();
 		if(pExpressionReturn)
 		{
-			pExpressionFunBodyBrace = rdo::Factory<ExpressionStatement>::create(pExpressionFunBodyBrace->typeInfo(), pCalcFunBodyBrace, RDOParserSrcInfo(@1));
-			ASSERT(pExpressionFunBodyBrace);
+			pExpression = rdo::Factory<ExpressionStatement>::create(pExpressionBodyBrace->typeInfo(), pCalcBodyBrace, RDOParserSrcInfo(@1));
+			ASSERT(pExpression);
 		}
-		else
-		{
-			pExpressionFunBodyBrace = rdo::Factory<Expression>::create(pExpressionFunBodyBrace->typeInfo(), pCalcFunBodyBrace, RDOParserSrcInfo(@1));
-			ASSERT(pExpressionFunBodyBrace);
-		}
-
-		$$ = PARSER->stack().push(pExpressionFunBodyBrace);
+				
+		$$ = PARSER->stack().push(pExpression);
 	}
 	| error
 	{
@@ -594,12 +593,14 @@ statement_list
 
 		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunBodyBrace = pExpressionFunBodyBrace->calc().object_dynamic_cast<rdoRuntime::RDOCalcFunBodyBrace>();
 		ASSERT(pCalcFunBodyBrace);
+		
 		pCalcFunBodyBrace->addFunCalc(pExpression->calc());
 
 		pExpressionFunBodyBrace = rdo::Factory<Expression>::create(pExpressionFunBodyBrace->typeInfo(), pCalcFunBodyBrace, RDOParserSrcInfo(@1));
 		ASSERT(pExpressionFunBodyBrace);
 
 		LPExpressionStatement pExpressionReturn = pExpression.object_dynamic_cast<ExpressionStatement>();
+		
 		if(pExpressionReturn)
 		{
 			pExpressionFunBodyBrace = rdo::Factory<ExpressionStatement>::create(pExpressionFunBodyBrace);
@@ -1298,6 +1299,25 @@ for_statement
 	}
 	;
 
+break_statement
+	:RDO_Break
+	{
+		rdoRuntime::LPRDOCalc pCalcBreak = rdo::Factory<rdoRuntime::RDOCalcFunBreak>::create();
+		ASSERT(pCalcBreak);
+
+		LPRDOType pBaseType = rdo::Factory<RDOType__void>::create();
+		ASSERT(pBaseType);
+
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pBaseType, RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalcBreak, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	;
+
 increment_or_decrement_type
 	: RDO_IncrEqual
 	{
@@ -1352,25 +1372,6 @@ return_statement
 		ASSERT(pCalcReturn);
 
 		LPExpressionStatement pExpression = rdo::Factory<ExpressionStatement>::create(pType, pCalcReturn, RDOParserSrcInfo(@1));
-		ASSERT(pExpression);
-
-		$$ = PARSER->stack().push(pExpression);
-	}
-	;
-
-break_statement
-	:RDO_Break
-	{
-		rdoRuntime::LPRDOCalc pCalcBreak = rdo::Factory<rdoRuntime::RDOCalcFunBreak>::create();
-		ASSERT(pCalcBreak);
-
-		LPRDOType pBaseType = rdo::Factory<RDOType__void>::create();
-		ASSERT(pBaseType);
-
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pBaseType, RDOParserSrcInfo(@1));
-		ASSERT(pType);
-
-		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalcBreak, RDOParserSrcInfo(@1));
 		ASSERT(pExpression);
 
 		$$ = PARSER->stack().push(pExpression);
