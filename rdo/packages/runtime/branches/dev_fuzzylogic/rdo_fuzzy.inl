@@ -87,6 +87,9 @@ inline RDOFuzzyType::RDOFuzzyType(CREF(LPRDOFuzzySetDefinition) pFuzzySetDefinit
 	/// @todo для порядку перевести на умные указатели
 }
 
+inline RDOFuzzyType::TermSet::const_iterator       RDOFuzzyType::begin()       { return m_termSet.begin(); }
+inline RDOFuzzyType::TermSet::const_iterator       RDOFuzzyType::end  ()       { return m_termSet.end();   }
+
 inline RDOFuzzyType::~RDOFuzzyType()
 {}
 
@@ -121,9 +124,9 @@ inline LPRDOFuzzyValue RDOFuzzyType::getSupplement(CREF(LPRDOFuzzyValue) pFuzzyV
 	return m_fuzzySetDefinition->getSupplement(pFuzzyValue);
 }
 
-inline CREF(RDOFuzzyType::Terms) RDOFuzzyType::getTerm() const
+inline CREF(RDOFuzzyType::TermSet) RDOFuzzyType::getTermSet() const
 {
-	return m_terms;
+	return m_termSet;
 }
 
 // --------------------------------------------------------------------------------

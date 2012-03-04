@@ -94,11 +94,11 @@ class RDOFuzzyType: public RDOType
 {
 DECLARE_FACTORY(RDOFuzzyType);
 public:
-	typedef std::map<tstring, LPRDOFuzzySetDefinition> Terms;
+	typedef std::map<tstring, LPRDOFuzzySetDefinition> TermSet;
 
-	Terms::const_iterator begin     () const;
-	Terms::const_iterator end       () const;
-	CREF(Terms)           getTerm   () const;
+	TermSet::const_iterator begin     ();
+	TermSet::const_iterator end       ();
+	CREF(TermSet)         getTermSet  () const;
 	virtual tstring       name      () const;
 	virtual RDOValue      value_cast(CREF(RDOValue) from) const;
 
@@ -115,7 +115,7 @@ protected:
 	virtual ~RDOFuzzyType();
 
 private:
-	Terms                    m_terms;
+	TermSet                  m_termSet;
 	LPRDOFuzzySetDefinition  m_fuzzySetDefinition;
 };
 DECLARE_POINTER(RDOFuzzyType);

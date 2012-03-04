@@ -349,7 +349,7 @@ LPRDOFuzzyValue RDOFuzzyType::fuzzyfication(CREF(RDOValue) rdovalue)
 {
 	//if (this->type() == t_fuzzy)
 	//{
-	Terms::const_iterator it = begin();
+	TermSet::const_iterator it = begin();
 	//Terms mTerm = this->getTerm();
 	if (this->inRange(rdovalue))
 	{
