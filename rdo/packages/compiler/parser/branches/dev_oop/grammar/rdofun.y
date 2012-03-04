@@ -643,8 +643,11 @@ equal_statement
 		ASSERT(pLocalVariableListStack);
 		LPLocalVariable pLocalVariable = pLocalVariableListStack->findLocalVariable(paramName);
 		rdoRuntime::LPRDOCalc pCalc;
+		LPTypeInfo pLeftArithmType;
 		if(pLocalVariable)
 		{
+			pLeftArithmType = pLocalVariable->getTypeInfo();
+
 			switch (equalType)
 			{
 				case rdoRuntime::ET_INCR:
@@ -688,7 +691,7 @@ equal_statement
 		}
 		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @2, rdo::format(_T("%s %s"), paramName.c_str(), oprStr.c_str())));
 
-		LPExpression pExpression = rdo::Factory<Expression>::create(pLocalVariable->getTypeInfo(), pCalc, RDOParserSrcInfo(@1));
+		LPExpression pExpression = rdo::Factory<Expression>::create(pLeftArithmType, pCalc, RDOParserSrcInfo(@1));
 		ASSERT(pExpression);
 
 		$$ = PARSER->stack().push(pExpression);
@@ -708,8 +711,11 @@ equal_statement
 		LPLocalVariable pLocalVariable = pLocalVariableListStack->findLocalVariable(paramName);
 		rdoRuntime::LPRDOCalc pCalc;
 		rdoRuntime::LPRDOCalc pCalcRight;
+		LPTypeInfo pLeftArithmType;
 		if (pLocalVariable)
 		{
+			pLeftArithmType = pLocalVariable->getTypeInfo();
+
 			pCalcRight = pRightArithm->createCalc(pLocalVariable->getTypeInfo());
 			switch (equalType)
 			{
@@ -788,7 +794,7 @@ equal_statement
 		}
 		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @3, rdo::format(_T("%s %s %s"), paramName.c_str(), oprStr.c_str(), pCalcRight->srcInfo().src_text().c_str())));
 
-		LPExpression pExpression = rdo::Factory<Expression>::create(pLocalVariable->getTypeInfo(), pCalc, RDOParserSrcInfo(@1));
+		LPExpression pExpression = rdo::Factory<Expression>::create(pLeftArithmType, pCalc, RDOParserSrcInfo(@1));
 		ASSERT(pExpression);
 
 		$$ = PARSER->stack().push(pExpression);

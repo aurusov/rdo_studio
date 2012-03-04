@@ -1591,7 +1591,14 @@ empty_statement
 	{
 		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcNoChange>::create();
 		ASSERT(pCalc);
-		$$ = PARSER->stack().push(pCalc);
+
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__void>::create(), RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
 	}
 	| error ';'
 	{
@@ -1639,8 +1646,9 @@ member_statement
 equal_statement
 	: RDO_IDENTIF increment_or_decrement_type
 	{
-		tstring                paramName = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
-		rdoRuntime::EqualType  equalType = static_cast<rdoRuntime::EqualType>($2);
+		LPRDOValue            pParamName = PARSER->stack().pop<RDOValue>($1);
+		tstring               paramName  = pParamName->value().getIdentificator();
+		rdoRuntime::EqualType equalType  = static_cast<rdoRuntime::EqualType>($2);
 		LPRDORelevantResource  pRelRes   = PARSER->getLastPATPattern()->m_pCurrRelRes;
 		ASSERT(pRelRes);
 		LPContext pContext = PARSER->context();
@@ -1651,8 +1659,11 @@ equal_statement
 		ASSERT(pLocalVariableListStack);
 		LPLocalVariable pLocalVariable = pLocalVariableListStack->findLocalVariable(paramName);
 		rdoRuntime::LPRDOCalc pCalc;
+		LPTypeInfo pLeftArithmType;
 		if(pLocalVariable)
 		{
+			pLeftArithmType = pLocalVariable->getTypeInfo();
+
 			switch (equalType)
 			{
 				case rdoRuntime::ET_INCR:
@@ -1678,6 +1689,9 @@ equal_statement
 			{
 				PARSER->error().error(@1, rdo::format(_T("Неизвестный параметр: %s"), paramName.c_str()));
 			}
+
+			pLeftArithmType = pParam->getTypeInfo();
+			
 			switch (equalType)
 			{
 				case rdoRuntime::ET_INCR:
@@ -1710,7 +1724,6 @@ equal_statement
 				pCalc = rdo::Factory<rdoRuntime::RDOCalcCheckRange>::create(pTypeRealRange->range()->getMin()->value(), pTypeRealRange->range()->getMax()->value(), pCalc);
 			}
 		}
-
 		tstring oprStr;
 		switch (equalType)
 		{
@@ -1732,11 +1745,15 @@ equal_statement
 		}
 		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @2, rdo::format(_T("%s %s"), paramName.c_str(), oprStr.c_str())));
 
-		$$ = PARSER->stack().push(pCalc);
+		LPExpression pExpression = rdo::Factory<Expression>::create(pLeftArithmType, pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
 	}
 	| RDO_IDENTIF param_equal_type fun_arithm
 	{
-		tstring               paramName    = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+		LPRDOValue            pParamName   = PARSER->stack().pop<RDOValue>($1);
+		tstring               paramName    = pParamName->value().getIdentificator();
 		rdoRuntime::EqualType equalType    = static_cast<rdoRuntime::EqualType>($2);
 		LPRDOFUNArithm        pRightArithm = PARSER->stack().pop<RDOFUNArithm>($3);
 		LPRDORelevantResource pRelRes      = PARSER->getLastPATPattern()->m_pCurrRelRes;
@@ -1750,8 +1767,11 @@ equal_statement
 		LPLocalVariable pLocalVariable = pLocalVariableListStack->findLocalVariable(paramName);
 		rdoRuntime::LPRDOCalc pCalc;
 		rdoRuntime::LPRDOCalc pCalcRight;
+		LPTypeInfo pLeftArithmType;
 		if (pLocalVariable)
 		{
+			pLeftArithmType = pLocalVariable->getTypeInfo();
+
 			pCalcRight = pRightArithm->createCalc(pLocalVariable->getTypeInfo());
 			switch (equalType)
 			{
@@ -1797,6 +1817,9 @@ equal_statement
 			{
 				PARSER->error().error(@1, rdo::format(_T("Неизвестный параметр: %s"), paramName.c_str()));
 			}
+			
+			pLeftArithmType = pParam->getTypeInfo();
+			
 			pCalcRight = pRightArithm->createCalc(pParam->getTypeInfo());
 			switch (equalType)
 			{
@@ -1864,7 +1887,6 @@ equal_statement
 				pCalc = rdo::Factory<rdoRuntime::RDOCalcCheckRange>::create(pTypeRealRange->range()->getMin()->value(), pTypeRealRange->range()->getMax()->value(), pCalc);
 			}
 		}
-
 		tstring oprStr;
 		switch (equalType)
 		{
@@ -1901,7 +1923,10 @@ equal_statement
 		}
 		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @3, rdo::format(_T("%s %s %s"), paramName.c_str(), oprStr.c_str(), pCalcRight->srcInfo().src_text().c_str())));
 
-		$$ = PARSER->stack().push(pCalc);
+		LPExpression pExpression = rdo::Factory<Expression>::create(pLeftArithmType, pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
 	}
 	| RDO_IDENTIF param_equal_type error
 	{
