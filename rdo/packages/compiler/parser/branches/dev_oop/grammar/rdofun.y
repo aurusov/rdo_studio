@@ -1168,7 +1168,10 @@ if_statement
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__void>::create(), RDOParserSrcInfo(@1));
 		ASSERT(pType);
 
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcIfElse>::create(pConditionCalc, pIfExpression->calc(), pElseExpression->calc());
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcIfElse>::create(
+			pConditionCalc,
+			pIfExpression->calc(),
+			pElseExpression->calc());
 		ASSERT(pCalc);
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
@@ -1232,7 +1235,6 @@ for_statement
 
 		LPExpression pStatementExpression = PARSER->stack().pop<Expression>($9);
 		ASSERT(pStatementExpression);
-		LPExpressionStatement pStatementExpressionReturn = pStatementExpression.object_dynamic_cast<ExpressionStatement>();
 
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__void>::create(), RDOParserSrcInfo(@1));
 		ASSERT(pType);
@@ -1245,6 +1247,9 @@ for_statement
 		ASSERT(pCalc);
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
+		
+		LPExpressionStatement pStatementExpressionReturn = pStatementExpression.object_dynamic_cast<ExpressionStatement>();
+
 		if(pStatementExpressionReturn)
 		{
 			pExpression = rdo::Factory<ExpressionStatement>::create(pType, pCalc, RDOParserSrcInfo(@1));
@@ -1269,7 +1274,6 @@ for_statement
 
 		LPExpression pStatementExpression = PARSER->stack().pop<Expression>($9);
 		ASSERT(pStatementExpression);
-		LPExpressionStatement pStatementExpressionReturn = pStatementExpression.object_dynamic_cast<ExpressionStatement>();
 
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__void>::create(), RDOParserSrcInfo(@1));
 		ASSERT(pType);
@@ -1280,6 +1284,8 @@ for_statement
 			pEqualExpression->calc()    ,
 			pStatementExpression->calc());
 		ASSERT(pCalc);
+
+		LPExpressionStatement pStatementExpressionReturn = pStatementExpression.object_dynamic_cast<ExpressionStatement>();
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
 		if(pStatementExpressionReturn)
