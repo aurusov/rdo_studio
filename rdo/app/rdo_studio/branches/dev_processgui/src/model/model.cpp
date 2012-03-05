@@ -196,7 +196,7 @@ RDOStudioModel::RDOStudioModel()
 RDOStudioModel::~RDOStudioModel()
 {
 	model = NULL;
-//	closeModel();
+	//closeModel();
 }
 
 void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
@@ -291,6 +291,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			}
 			msg.unlock();
 			rbool res = canCloseModel();
+			m_pFlowchartDocTemplate->CloseAllDocuments(true);
 			msg.lock();
 			if (*static_cast<PTR(rbool)>(msg.param) == true)
 			{
