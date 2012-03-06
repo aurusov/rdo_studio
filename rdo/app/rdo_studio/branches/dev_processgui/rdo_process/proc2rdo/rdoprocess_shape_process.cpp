@@ -66,8 +66,15 @@ void RPShapeProcessMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 	UNUSED(nFlags          );
 	UNUSED(global_chart_pos);
 
-	RPShapeProcessDlg1_MJ dlg( AfxGetMainWnd(), this );
-	dlg.DoModal();
+	if(GetKeyState(VK_SHIFT))
+	{
+		can_delete();
+	}
+	else
+	{
+		RPShapeProcessDlg1_MJ dlg( AfxGetMainWnd(), this );
+		dlg.DoModal();
+	}
 }
 
 void RPShapeProcessMJ::generate()
