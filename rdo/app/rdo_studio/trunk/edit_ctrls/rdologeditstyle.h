@@ -1,8 +1,19 @@
-#ifndef RDOLOGEDITSTYLE_H
-#define RDOLOGEDITSTYLE_H
-#pragma once
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdologeditstyle.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      28.02.2003
+  \brief     
+  \indent    4T
+*/
 
+#ifndef _RDO_STUDIO_MFC_EDIT_CTRLS_RDOLOGEDITSTYLE_H_
+#define _RDO_STUDIO_MFC_EDIT_CTRLS_RDOLOGEDITSTYLE_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/edit_ctrls/rdobaseeditstyle.h"
+// --------------------------------------------------------------------------------
 
 namespace rdoEditCtrl {
 
@@ -49,4 +60,4 @@ public:
 
 }; // namespace rdoEditCtrl
 
-#endif // RDOLOGEDITSTYLE_H
+#endif // _RDO_STUDIO_MFC_EDIT_CTRLS_RDOLOGEDITSTYLE_H_

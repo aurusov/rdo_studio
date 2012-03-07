@@ -1,6 +1,14 @@
-#ifndef RDOBASEEDIT_H
-#define RDOBASEEDIT_H
-#pragma once
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdobaseedit.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      28.02.2003
+  \brief     
+  \indent    4T
+*/
+
+#ifndef _RDO_STUDIO_MFC_EDIT_CTRLS_RDOBASEEDIT_H_
+#define _RDO_STUDIO_MFC_EDIT_CTRLS_RDOBASEEDIT_H_
 
 // ----------------------------------------------------------------------- PLATFORM
 // ----------------------------------------------------------------------- INCLUDES
@@ -239,4 +247,4 @@ public:
 
 //{{AFX_INSERT_LOCATION}}
 
-#endif // RDOBASEEDIT_H
+#endif // _RDO_STUDIO_MFC_EDIT_CTRLS_RDOBASEEDIT_H_

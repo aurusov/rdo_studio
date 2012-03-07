@@ -1,6 +1,18 @@
-#ifndef RDOTRACERTREEITEM_H
-#define RDOTRACERTREEITEM_H
-#pragma once
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdotracertreeitem.h
+  \author    Захаров Павел
+  \date      12.03.2003
+  \brief     
+  \indent    4T
+*/
+
+#ifndef _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOTRACERTREEITEM_H_
+#define _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOTRACERTREEITEM_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOTracerTreeItem
@@ -18,4 +30,4 @@ public:
 	const bool isDrawable() const { return drawable; };
 };
 
-#endif // RDOTRACERTREEITEM_H
+#endif // _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOTRACERTREEITEM_H_

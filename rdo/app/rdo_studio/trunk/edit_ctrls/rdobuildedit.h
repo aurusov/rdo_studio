@@ -1,9 +1,21 @@
-#ifndef RDOBUILDEDIT_H
-#define RDOBUILDEDIT_H
-#pragma once
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdobuildedit.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      28.02.2003
+  \brief     
+  \indent    4T
+*/
 
-#include "app/rdo_studio_mfc/edit_ctrls/rdologedit.h"
+#ifndef _RDO_STUDIO_MFC_EDIT_CTRLS_RDOBUILDEDIT_H_
+#define _RDO_STUDIO_MFC_EDIT_CTRLS_RDOBUILDEDIT_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+#include <vector>
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdocommon.h"
+#include "app/rdo_studio_mfc/edit_ctrls/rdologedit.h"
+// --------------------------------------------------------------------------------
 
 namespace rdoEditCtrl {
 
@@ -56,4 +68,4 @@ public:
 
 //{{AFX_INSERT_LOCATION}}
 
-#endif // RDOBUILDEDIT_H
+#endif // _RDO_STUDIO_MFC_EDIT_CTRLS_RDOBUILDEDIT_H_

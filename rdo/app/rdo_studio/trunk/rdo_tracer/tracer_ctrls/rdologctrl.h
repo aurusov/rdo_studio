@@ -1,8 +1,19 @@
-#ifndef RDOLOGCTRL_H
-#define RDOLOGCTRL_H
-#pragma once
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdologctrl.h
+  \author    Захаров Павел
+  \date      12.03.2003
+  \brief     
+  \indent    4T
+*/
 
+#ifndef _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOLOGCTRL_H_
+#define _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOLOGCTRL_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdologstyle.h"
+// --------------------------------------------------------------------------------
 
 namespace rdoTracerLog {
 
@@ -143,7 +154,4 @@ public:
 
 }; // namespace rdoTracerLog
 
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // RDOLOGCTRL_H
+#endif // _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOLOGCTRL_H_

@@ -1,10 +1,23 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdologedit.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      28.02.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/edit_ctrls/rdologedit.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
-#include "thirdparty/sci/Scintilla.h"
 #include "app/rdo_studio_mfc/resource.h"
+#include "thirdparty/sci/Scintilla.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

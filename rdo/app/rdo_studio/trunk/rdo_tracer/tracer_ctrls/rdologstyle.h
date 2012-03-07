@@ -1,8 +1,19 @@
-#ifndef RDOLOGSTYLE_H
-#define RDOLOGSTYLE_H
-#pragma once
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdologstyle.h
+  \author    Захаров Павел
+  \date      12.03.2003
+  \brief     
+  \indent    4T
+*/
 
+#ifndef _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOLOGSTYLE_H_
+#define _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOLOGSTYLE_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/style.h"
+// --------------------------------------------------------------------------------
 
 namespace rdoTracerLog {
 
@@ -99,4 +110,4 @@ public:
 
 }; // namespace rdoTracerLog
 
-#endif // RDOLOGSTYLE_H
+#endif // _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOLOGSTYLE_H_

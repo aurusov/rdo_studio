@@ -1,10 +1,21 @@
-#ifndef RDOLOGEDIT_H
-#define RDOLOGEDIT_H
-#pragma once
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdologedit.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      28.02.2003
+  \brief     
+  \indent    4T
+*/
 
+#ifndef _RDO_STUDIO_MFC_EDIT_CTRLS_RDOLOGEDIT_H_
+#define _RDO_STUDIO_MFC_EDIT_CTRLS_RDOLOGEDIT_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
+#include "simulator/service/rdosimwin.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdobaseedit.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdologeditstyle.h"
-#include "simulator/service/rdosimwin.h"
+// --------------------------------------------------------------------------------
 
 namespace rdoEditor {
 class RDOEditorEdit;
@@ -80,4 +91,4 @@ public:
 
 //{{AFX_INSERT_LOCATION}}
 
-#endif // RDOLOGEDIT_H
+#endif // _RDO_STUDIO_MFC_EDIT_CTRLS_RDOLOGEDIT_H_

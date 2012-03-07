@@ -1,9 +1,20 @@
-#ifndef RDOBASEEDITSTYLE_H
-#define RDOBASEEDITSTYLE_H
-#pragma once
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdobaseeditstyle.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      28.02.2003
+  \brief     
+  \indent    4T
+*/
 
+#ifndef _RDO_STUDIO_MFC_EDIT_CTRLS_RDOBASEEDITSTYLE_H_
+#define _RDO_STUDIO_MFC_EDIT_CTRLS_RDOBASEEDITSTYLE_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/style.h"
 #include "thirdparty/sci/Scintilla.h"
+// --------------------------------------------------------------------------------
 
 namespace rdoEditCtrl {
 
@@ -125,4 +136,4 @@ public:
 
 }; // namespace rdoEditCtrl
 
-#endif // RDOBASEEDITSTYLE_H
+#endif // _RDO_STUDIO_MFC_EDIT_CTRLS_RDOBASEEDITSTYLE_H_
