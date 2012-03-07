@@ -1,18 +1,25 @@
-#ifndef RDOSTUDIOCHARTDOC_H
-#define RDOSTUDIOCHARTDOC_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      /app/rdo_studio_mfc/src/chart/document.h
+  \author    Захаров Павел
+  \date      20.02.2003
+  \brief     
+  \indent    4T
+*/
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
+#ifndef _RDO_STUDIO_MFC_CHART_DOCUMENT_H_
+#define _RDO_STUDIO_MFC_CHART_DOCUMENT_H_
 
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/chart/doc_serie.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracerserie.h"
+// --------------------------------------------------------------------------------
 
 #define WM_USER_UPDATE_CHART_VIEW WM_USER + 0x156
 #define UPDATE_NEWSERIE  0x000
 #define UPDATE_NEWVALUE  0x001
 #define UPDATE_TIMETICKS 0x002
-
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioChartDoc
@@ -94,7 +101,4 @@ public:
 
 };
 
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // RDOSTUDIOCHARTDOC_H
+#endif // _RDO_STUDIO_MFC_CHART_DOCUMENT_H_

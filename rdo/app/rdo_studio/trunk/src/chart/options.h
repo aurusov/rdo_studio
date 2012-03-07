@@ -1,13 +1,21 @@
-#ifndef RDOSTUDIOCHARTOPTIONS_H
-#define RDOSTUDIOCHARTOPTIONS_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      /app/rdo_studio_mfc/src/chart/options.h
+  \author    Захаров Павел
+  \date      31.03.2003
+  \brief     
+  \indent    4T
+*/
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
+#ifndef _RDO_STUDIO_MFC_CHART_OPTIONS_H_
+#define _RDO_STUDIO_MFC_CHART_OPTIONS_H_
 
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "ui/mfc_ctrls/rdocolorcombobox.h"
 #include "app/rdo_studio_mfc/src/chart/document.h"
 #include "app/rdo_studio_mfc/resource.h"
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioChartOptionsChart
@@ -143,4 +151,4 @@ public:
 
 //{{AFX_INSERT_LOCATION}}
 
-#endif // RDOSTUDIOCHARTOPTIONS_H
+#endif // _RDO_STUDIO_MFC_CHART_OPTIONS_H_

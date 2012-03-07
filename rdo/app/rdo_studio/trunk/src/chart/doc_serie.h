@@ -1,11 +1,19 @@
-#ifndef RDOSTUDIODOCSERIE_H
-#define RDOSTUDIODOCSERIE_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      doc_serie.h
+  \author    Захаров Павел
+  \date      31.03.2003
+  \brief     
+  \indent    4T
+*/
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
+#ifndef _RDO_STUDIO_MFC_CHART_DOC_SERIE_H_
+#define _RDO_STUDIO_MFC_CHART_DOC_SERIE_H_
 
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracerserie.h"
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioDocSerie
@@ -42,7 +50,4 @@ public:
 	bool empty() const { return serie->empty(); };
 };
 
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // RDOSTUDIODOCSERIE_H
+#endif // _RDO_STUDIO_MFC_CHART_DOC_SERIE_H_

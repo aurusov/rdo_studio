@@ -1,13 +1,21 @@
-#ifndef RDOSTUDIOCHARTVIEW_H
-#define RDOSTUDIOCHARTVIEW_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      /app/rdo_studio_mfc/src/chart/view.h
+  \author    Захаров Павел
+  \date      20.02.2003
+  \brief     
+  \indent    4T
+*/
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
+#ifndef _RDO_STUDIO_MFC_CHART_VIEW_H_
+#define _RDO_STUDIO_MFC_CHART_VIEW_H_
 
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/view.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracervalues.h"
 #include "app/rdo_studio_mfc/src/chart/document.h"
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioChartView
@@ -168,4 +176,4 @@ inline RDOStudioChartDoc* RDOStudioChartView::GetDocument()
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
-#endif // RDOSTUDIOCHARTVIEW_H
+#endif // _RDO_STUDIO_MFC_CHART_VIEW_H_

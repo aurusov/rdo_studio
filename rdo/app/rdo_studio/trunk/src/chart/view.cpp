@@ -1,4 +1,16 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      /app/rdo_studio_mfc/src/chart/view.cpp
+  \author    Захаров Павел
+  \date      20.02.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/chart/view.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
 #include "app/rdo_studio_mfc/src/application.h"
@@ -8,6 +20,7 @@
 #include "app/rdo_studio_mfc/src/chart/doc_serie.h"
 #include "app/rdo_studio_mfc/src/chart/options.h"
 #include "app/rdo_studio_mfc/htmlhelp.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
