@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      /app/rdo_studio_mfc/src/chart/document.cpp
+  \file      app/rdo_studio_mfc/src/chart/document.cpp
   \author    Захаров Павел
   \date      20.02.2003
   \brief     
