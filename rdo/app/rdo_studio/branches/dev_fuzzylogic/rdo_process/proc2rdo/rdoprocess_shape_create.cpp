@@ -1,6 +1,3 @@
-// rdoprocess_shape_create_MJ.cpp: implementation of the RPShapeCreateMJ class.
-//
-//////////////////////////////////////////////////////////////////////
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/stdafx.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_create.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_create_dlg1.h"
@@ -13,10 +10,6 @@
 static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
-
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
 
 RPShapeCreateMJ::RPShapeCreateMJ(PTR(RPObject) _parent)
 	: RPShape_MJ(_parent, _T("Create"))
@@ -158,7 +151,7 @@ void RPShapeCreateMJ::generate()
 	m_pParams->setExp(gexp);
 	m_pParams->setMax(gmax);
 
-	studioApp.studioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_CREATE, m_pParams.get());
+	studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_CREATE, m_pParams.get());
 
 	m_pParams = NULL;
 }

@@ -1,9 +1,20 @@
-#ifndef RDOTRACERLOGCTRL_H
-#define RDOTRACERLOGCTRL_H
-#pragma once
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdotracerlogctrl.h
+  \author    Захаров Павел
+  \date      12.03.2003
+  \brief     
+  \indent    4T
+*/
 
+#ifndef _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOTRACERLOGCTRL_H_
+#define _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOTRACERLOGCTRL_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdologctrl.h"
 #include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracerlogstyle.h"
+// --------------------------------------------------------------------------------
 
 namespace rdoTracer {
 class RDOTracerBase;
@@ -21,15 +32,15 @@ DECLARE_DYNCREATE( RDOTracerLogCtrl )
 protected:
 	typedef std::map< int, RDOLogColorPair* > RDOColorMap;
 	RDOColorMap subitemColors;
-	bool addingSubitems;
+	rbool addingSubitems;
 	RDOLogColorPair* itemColor;
-	virtual bool getItemColors( const int index, RDOLogColorPair* &colors ) const;
-	void showFindError( std::string& findStr );
+	virtual rbool getItemColors( const int index, RDOLogColorPair* &colors ) const;
+	void showFindError( tstring& findStr );
 
 	CMenu popupMenu;
-	bool bShowMenu;
-	
-	//{{AFX_MSG(RDOTracerLogCtrl)
+	rbool bShowMenu;
+
+private:
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
 	afx_msg void OnFind();
 	afx_msg void OnFindNext();
@@ -42,32 +53,25 @@ protected:
 	afx_msg void OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu );
 	afx_msg void OnContextMenu( CWnd* pWnd, CPoint pos );
 	afx_msg void OnHelpKeyword();
-	//}}AFX_MSG
 	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );
 	DECLARE_MESSAGE_MAP()
 	
-	//{{AFX_VIRTUAL(RDOTracerLogCtrl)
-	//}}AFX_VIRTUAL
-
 public:
 	RDOTracerLogCtrl();
 	virtual ~RDOTracerLogCtrl();
 
-	virtual void addStringToLog( const std::string logStr );
+	virtual void addStringToLog( const tstring logStr );
 
-	virtual void setStyle( RDOTracerLogStyle* style, const bool needRedraw = true );
+	virtual void setStyle( RDOTracerLogStyle* style, const rbool needRedraw = true );
 
 	virtual void clear();
 
-	bool getShowMenu() const             { return bShowMenu;  };
-	void setShowMenu( const bool value ) { bShowMenu = value; };
+	rbool getShowMenu() const              { return bShowMenu;  };
+	void  setShowMenu( const rbool value ) { bShowMenu = value; };
 
 };
 
 }; // namespace rdoTracerLog
 
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // RDOTRACERLOGCTRL_H
+#endif // _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOTRACERLOGCTRL_H_

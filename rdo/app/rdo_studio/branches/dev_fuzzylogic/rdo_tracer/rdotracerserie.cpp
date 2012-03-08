@@ -22,12 +22,12 @@ class RDOTracerSerieFindValue
 	RDOStudioChartView* view;
 public:
 	RDOTracerSerieFindValue( RDOStudioChartView* _view ): view( _view ) {};
-	bool operator ()( RDOTracerValue* val );
+	rbool operator ()( RDOTracerValue* val );
 };
 
-bool RDOTracerSerieFindValue::operator ()( RDOTracerValue* val )
+rbool RDOTracerSerieFindValue::operator ()( RDOTracerValue* val )
 {
-	bool res = val && val->modeltime->time >= view->drawFromX.time;
+	rbool res = val && val->modeltime->time >= view->drawFromX.time;
 	if ( view->doUnwrapTime() && res && ( val->modeltime->time == view->drawFromX.time ) )
 		res = val->eventIndex >= view->drawFromEventIndex;
 	return res;
@@ -60,17 +60,17 @@ RDOTracerSerie::~RDOTracerSerie()
 	mutex.Unlock();
 };
 
-bool RDOTracerSerie::isTemporaryResourceParam() const
+rbool RDOTracerSerie::isTemporaryResourceParam() const
 {
 	return serieKind == RDOST_RESPARAM && ((RDOTracerResParam*)this)->getResource()->getType()->getResTypeKind() == RDOTK_TEMPORARY;
 };
 
-std::string RDOTracerSerie::getTitle() const
+tstring RDOTracerSerie::getTitle() const
 {
 	return title;
 }
 
-void RDOTracerSerie::setTitle( const std::string& value )
+void RDOTracerSerie::setTitle( CREF(tstring) value )
 {
 	if ( title != value )
 		title = value;
@@ -110,7 +110,7 @@ void RDOTracerSerie::getValueCount( int& count ) const
 	const_cast<CMutex&>(mutex).Unlock();
 }
 
-void RDOTracerSerie::getCaptions( std::vector<std::string> &captions, const int val_count ) const
+void RDOTracerSerie::getCaptions( std::vector<tstring> &captions, const int val_count ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
@@ -119,7 +119,7 @@ void RDOTracerSerie::getCaptions( std::vector<std::string> &captions, const int 
 	if ( serieKind == RDOST_PREVIEW ) {
 		double valoffset = ( maxValue - minValue ) / (double)( val_count - 1 );
 		double valo = minValue;
-		std::string formatstr = "%.3f";
+		tstring formatstr = "%.3f";
 		if ( value_count > 1 ) {
 			for ( int i = 0; i < val_count; i++ ) {
 				captions.push_back( rdo::format( formatstr.c_str(), valo ) );
@@ -133,7 +133,7 @@ void RDOTracerSerie::getCaptions( std::vector<std::string> &captions, const int 
 	const_cast<CMutex&>(mutex).Unlock();
 }
 
-void RDOTracerSerie::getCaptionsInt( std::vector<std::string> &captions, const int val_count ) const
+void RDOTracerSerie::getCaptionsInt( std::vector<tstring> &captions, const int val_count ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
@@ -148,7 +148,7 @@ void RDOTracerSerie::getCaptionsInt( std::vector<std::string> &captions, const i
 	}
 	int valo = (int)minValue;
 	int valoffset = (int)(( maxValue - minValue ) / ( real_val_count - 1 ));
-	std::string formatstr = "%d";
+	tstring formatstr = "%d";
 	for ( int i = 0; i < real_val_count; i++ ) {
 		captions.push_back( rdo::format( formatstr.c_str(), valo ) );
 		valo += valoffset;
@@ -157,7 +157,7 @@ void RDOTracerSerie::getCaptionsInt( std::vector<std::string> &captions, const i
 	const_cast<CMutex&>(mutex).Unlock();
 }
 
-void RDOTracerSerie::getCaptionsDouble( std::vector<std::string> &captions, const int val_count ) const
+void RDOTracerSerie::getCaptionsDouble( std::vector<tstring> &captions, const int val_count ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
@@ -165,7 +165,7 @@ void RDOTracerSerie::getCaptionsDouble( std::vector<std::string> &captions, cons
 	
 	double valoffset = ( maxValue - minValue ) / (double)( val_count - 1 );
 	double valo = minValue;
-	std::string formatstr = "%.3f";
+	tstring formatstr = "%.3f";
 	if ( value_count > 1 ) {
 		for ( int i = 0; i < val_count; i++ ) {
 			captions.push_back( rdo::format( formatstr.c_str(), valo ) );
@@ -178,7 +178,7 @@ void RDOTracerSerie::getCaptionsDouble( std::vector<std::string> &captions, cons
 	const_cast<CMutex&>(mutex).Unlock();
 }
 
-void RDOTracerSerie::getCaptionsBool( std::vector<std::string> &captions, const int val_count ) const
+void RDOTracerSerie::getCaptionsBool( std::vector<tstring> &captions, const int val_count ) const
 {
 	RDOTracerSerie::getCaptions( captions, val_count );
 	captions.push_back( "FALSE" );
@@ -197,7 +197,7 @@ void RDOTracerSerie::getLastValue( RDOTracerValue*& val ) const
 	const_cast<CMutex&>(mutex).Unlock();
 }
 
-void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, HDC &dc, CRect &rect, const COLORREF color, RDOTracerSerieMarker marker, const int marker_size, const bool draw_marker, const bool transparent_marker ) const
+void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, HDC &dc, CRect &rect, const COLORREF color, RDOTracerSerieMarker marker, const int marker_size, const rbool draw_marker, const rbool transparent_marker ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 	
@@ -209,7 +209,7 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, HDC &dc, CRect &
 			it --;
 		}
 		
-		bool flag = it != values.end();
+		rbool flag = it != values.end();
 		if ( flag && !view->doUnwrapTime() ) {
 			flag = !( it == values.begin() && (*it)->modeltime->time > view->drawToX.time );
 		} else if ( flag ) {
@@ -309,8 +309,8 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, HDC &dc, CRect &
 					}
 				}
 				
-				bool tempres_erased = ( serieKind == RDOST_RESPARAM && ((RDOTracerResParam*)this)->getResource()->isErased() );
-				bool need_continue = !view->doUnwrapTime() ? ( values.size() > 1 ) : true;
+				rbool tempres_erased = ( serieKind == RDOST_RESPARAM && ((RDOTracerResParam*)this)->getResource()->isErased() );
+				rbool need_continue = !view->doUnwrapTime() ? ( values.size() > 1 ) : true;
 				if ( tempres_erased ) {
 					if ( !view->doUnwrapTime() ) {
 						need_continue = ( it != values.end() && (*it)->modeltime->time > view->drawToX.time );
@@ -421,11 +421,11 @@ void RDOTracerSerie::removeFromDoc( RDOStudioChartDoc* const doc )
 	mutex.Unlock();
 }
 
-bool RDOTracerSerie::activateFirstDoc() const
+rbool RDOTracerSerie::activateFirstDoc() const
 {
 	const_cast<CMutex&>(mutex).Lock();
 	
-	bool res = false;
+	rbool res = false;
 	if ( !documents.empty() ) {
 		RDOStudioChartDoc* doc = documents.front();
 		if ( doc ) {
@@ -434,7 +434,7 @@ bool RDOTracerSerie::activateFirstDoc() const
 			if ( pos )
 				view = static_cast<RDOStudioChartView*>(doc->GetNextView( pos ));
 			if ( view ) {
-				studioApp.mainFrame->MDIActivate( view->GetParentFrame() );
+				studioApp.m_pMainFrame->MDIActivate( view->GetParentFrame() );
 				res = true;
 			}
 		}

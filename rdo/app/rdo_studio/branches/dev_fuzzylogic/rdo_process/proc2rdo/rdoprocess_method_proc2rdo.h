@@ -1,10 +1,6 @@
 #ifndef RDO_PROCESS_METHOD_PROC2RDO_H
 #define RDO_PROCESS_METHOD_PROC2RDO_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_method.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_creation_RDO_files.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape.h"
@@ -27,7 +23,7 @@ protected:
 public:
 	RPMethodProc2RDO_MJ( RPObject* _parent );
 	static rpMethod::RPMethod* registerMethod();
-	bool checkModelStructure();
+	rbool checkModelStructure();
 	virtual rp::string getVersionDesc() const { return "альфа"; }
 	virtual rp::string getDescription() const { return "Переводит квадратики в паттерны"; }
 	virtual rp::string getClassName() const { return "RPMethodProc2RDO_MJ"; }

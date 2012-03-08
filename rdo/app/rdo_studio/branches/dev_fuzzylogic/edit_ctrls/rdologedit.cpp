@@ -1,10 +1,23 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdologedit.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      28.02.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/edit_ctrls/rdologedit.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
-#include "thirdparty/sci/Scintilla.h"
 #include "app/rdo_studio_mfc/resource.h"
+#include "thirdparty/sci/Scintilla.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -17,7 +30,7 @@ using namespace rdoEditCtrl;
 // --------------------------------------------------------------------------------
 // -------------------- RDOLogEditLineInfo
 // --------------------------------------------------------------------------------
-RDOLogEditLineInfo::RDOLogEditLineInfo( const std::string& _message, const rdoModelObjects::RDOFileType _fileType, const int _lineNumber, const int _posInLine ):
+RDOLogEditLineInfo::RDOLogEditLineInfo( CREF(tstring) _message, const rdoModelObjects::RDOFileType _fileType, const int _lineNumber, const int _posInLine ):
 	fileType( _fileType ),
 	lineNumber( _lineNumber ),
 	posInLine( _posInLine ),
@@ -30,9 +43,9 @@ RDOLogEditLineInfo::~RDOLogEditLineInfo()
 {
 }
 
-std::string RDOLogEditLineInfo::getMessage() const
+tstring RDOLogEditLineInfo::getMessage() const
 {
-	std::string file;
+	tstring file;
 	switch ( fileType ) {
 		case rdoModelObjects::RTP : file = "RTP" ; break;
 		case rdoModelObjects::RSS : file = "RSS" ; break;
@@ -58,11 +71,9 @@ std::string RDOLogEditLineInfo::getMessage() const
 // -------------------- RDOLogEdit
 // ---------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP( RDOLogEdit, RDOBaseEdit )
-	//{{AFX_MSG_MAP(RDOLogEdit)
 	ON_WM_CREATE()
 	ON_COMMAND(ID_BUILDFINDLOG_GOTO_NEXT, OnGotoNext)
 	ON_COMMAND(ID_BUILDFINDLOG_GOTO_PREV, OnGotoPrev)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOLogEdit::RDOLogEdit():
@@ -218,7 +229,7 @@ void RDOLogEdit::OnGotoPrev()
 	gotoPrev();
 }
 
-void RDOLogEdit::setSelectLine( const int line, const RDOLogEditLineInfo* lineInfo, const bool useScroll )
+void RDOLogEdit::setSelectLine( const int line, const RDOLogEditLineInfo* lineInfo, const rbool useScroll )
 {
 	if ( lineInfo->lineNumber != -1 ) {
 		if ( sendEditor( SCI_MARKERNEXT, 0, 1 << sci_MARKER_LINE ) != line ) {
@@ -263,7 +274,7 @@ void RDOLogEdit::clearSelectLine()
 	}
 }
 
-bool RDOLogEdit::hasSelectLine() const
+rbool RDOLogEdit::hasSelectLine() const
 {
 	int nextLine = sendEditor( SCI_MARKERNEXT, 0, 1 << sci_MARKER_LINE );
 	return nextLine >= 0;
@@ -289,11 +300,11 @@ void RDOLogEdit::clearAll()
 void RDOLogEdit::appendLine( RDOLogEditLineInfo* line )
 {
 	lines.push_back( line );
-	bool readOnly = isReadOnly();
+	rbool readOnly = isReadOnly();
 	if ( readOnly ) {
 		setReadOnly( false );
 	}
-	std::string str = line->getMessage();
+	tstring str = line->getMessage();
 	rdo::trimRight( str );
 	str += "\r\n";
 	setCurrentPos( getLength() );

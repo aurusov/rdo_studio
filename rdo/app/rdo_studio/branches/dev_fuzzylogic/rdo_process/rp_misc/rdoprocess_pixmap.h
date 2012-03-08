@@ -1,10 +1,6 @@
 #ifndef RDO_PROCESS_CTRL_PIXMAP_H
 #define RDO_PROCESS_CTRL_PIXMAP_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
-
 #include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_string.h"
 
 // --------------------------------------------------------------------------------

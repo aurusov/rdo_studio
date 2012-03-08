@@ -1,6 +1,19 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdofindeditstyle.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      28.02.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/edit_ctrls/rdofindeditstyle.h"
 #include "thirdparty/sci/SciLexer.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -34,21 +47,21 @@ RDOFindEditTheme& RDOFindEditTheme::operator =( const RDOFindEditTheme& theme )
 	return *this;
 }
 
-bool RDOFindEditTheme::operator ==( const RDOFindEditTheme& theme ) const
+rbool RDOFindEditTheme::operator ==( const RDOFindEditTheme& theme ) const
 {
-	bool flag = RDOLogEditTheme::operator==( theme );
+	rbool flag = RDOLogEditTheme::operator==( theme );
 
 	if ( flag ) flag &= keywordColor == theme.keywordColor &&
 	                    keywordStyle == theme.keywordStyle;
 	return flag;
 }
 
-bool RDOFindEditTheme::operator !=( const RDOFindEditTheme& theme ) const
+rbool RDOFindEditTheme::operator !=( const RDOFindEditTheme& theme ) const
 {
 	return !(*this == theme);
 }
 
-void RDOFindEditTheme::load( std::string regPath )
+void RDOFindEditTheme::load( tstring regPath )
 {
 	RDOLogEditTheme::load( regPath );
 
@@ -57,7 +70,7 @@ void RDOFindEditTheme::load( std::string regPath )
 	keywordStyle = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "keywordStyle", keywordStyle ));
 }
 
-void RDOFindEditTheme::save( std::string regPath ) const
+void RDOFindEditTheme::save( tstring regPath ) const
 {
 	RDOLogEditTheme::save( regPath );
 
@@ -66,17 +79,17 @@ void RDOFindEditTheme::save( std::string regPath ) const
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "keywordStyle", keywordStyle );
 }
 
-bool RDOFindEditTheme::styleDefault( const int styleType ) const
+rbool RDOFindEditTheme::styleDefault( const int styleType ) const
 {
 	return styleType == SCE_FIND_DEFAULT;
 }
 
-bool RDOFindEditTheme::styleUsing( const int styleType ) const
+rbool RDOFindEditTheme::styleUsing( const int styleType ) const
 {
 	return styleType == SCE_FIND_DEFAULT || styleType == SCE_FIND_KEYWORD;
 }
 
-bool RDOFindEditTheme::styleBold( const int styleType ) const
+rbool RDOFindEditTheme::styleBold( const int styleType ) const
 {
 	switch ( styleType ) {
 		case SCE_FIND_DEFAULT: return defaultStyle & RDOStyleFont::BOLD ? true : false;
@@ -85,7 +98,7 @@ bool RDOFindEditTheme::styleBold( const int styleType ) const
 	return false;
 }
 
-bool RDOFindEditTheme::styleItalic( const int styleType ) const
+rbool RDOFindEditTheme::styleItalic( const int styleType ) const
 {
 	switch ( styleType ) {
 		case SCE_FIND_DEFAULT: return defaultStyle & RDOStyleFont::ITALIC ? true : false;
@@ -94,7 +107,7 @@ bool RDOFindEditTheme::styleItalic( const int styleType ) const
 	return false;
 }
 
-std::string RDOFindEditTheme::styleFGColorToHEX( const int styleType ) const
+tstring RDOFindEditTheme::styleFGColorToHEX( const int styleType ) const
 {
 	switch ( styleType ) {
 		case SCE_FIND_DEFAULT: return colorToHEX( defaultColor );
@@ -166,14 +179,14 @@ RDOFindEditStyle& RDOFindEditStyle::operator =( const RDOFindEditStyle& style )
 	return *this;
 }
 
-bool RDOFindEditStyle::operator ==( const RDOFindEditStyle& style ) const
+rbool RDOFindEditStyle::operator ==( const RDOFindEditStyle& style ) const
 {
-	bool flag = RDOLogEditStyle::operator==( style );
+	rbool flag = RDOLogEditStyle::operator==( style );
 	if ( theme && style.theme && flag ) flag &= *static_cast<RDOFindEditTheme*>(theme) == *static_cast<RDOFindEditTheme*>(style.theme);
 	return flag;
 }
 
-bool RDOFindEditStyle::operator !=( const RDOFindEditStyle& style ) const
+rbool RDOFindEditStyle::operator !=( const RDOFindEditStyle& style ) const
 {
 	return !(*this == style);
 }

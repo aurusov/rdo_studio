@@ -1,4 +1,16 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      output.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      20.02.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/output.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"
@@ -10,6 +22,7 @@
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
 #include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracerlogctrl.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -24,9 +37,7 @@ using namespace rdoEditCtrl;
 // -------------------- RDOStudioOutput
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioOutput, RDOStudioDockWnd)
-	//{{AFX_MSG_MAP(RDOStudioOutput)
 	ON_WM_CREATE()
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioOutput::RDOStudioOutput()
@@ -52,7 +63,7 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
 
 	BOOL maximized;
-	studioApp.mainFrame->MDIGetActive( &maximized );
+	studioApp.m_pMainFrame->MDIGetActive( &maximized );
 	int delta = maximized ? 1 : 0;
 
 	appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );
@@ -80,18 +91,18 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	results->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), 0 );
 	find->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), 0 );
 
-	build->setEditorStyle( &studioApp.mainFrame->style_build );
+	build->setEditorStyle( &studioApp.m_pMainFrame->style_build );
 	build->setPopupMenu( &popupMenu );
 
-	debug->setEditorStyle( &studioApp.mainFrame->style_debug );
+	debug->setEditorStyle( &studioApp.m_pMainFrame->style_debug );
 	debug->setPopupMenu( &popupMenu );
 
-	trace->setStyle( &studioApp.mainFrame->style_trace );
+	trace->setStyle( &studioApp.m_pMainFrame->style_trace );
 
-	results->setEditorStyle( &studioApp.mainFrame->style_results );
+	results->setEditorStyle( &studioApp.m_pMainFrame->style_results );
 	results->setPopupMenu( &popupMenu );
 
-	find->setEditorStyle( &studioApp.mainFrame->style_find );
+	find->setEditorStyle( &studioApp.m_pMainFrame->style_find );
 	find->setPopupMenu( &popupMenu );
 
 	tab.insertItem( build, rdo::format( IDS_TAB_BUILD ).c_str() );
@@ -100,18 +111,18 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	tab.insertItem( results, rdo::format( IDS_TAB_RESULT ).c_str() );
 	tab.insertItem( find, rdo::format( IDS_TAB_FIND ).c_str() );
 
-	studioApp.mainFrame->registerCmdWnd( build, build->getSCIHWND() );
-	studioApp.mainFrame->registerCmdWnd( debug, debug->getSCIHWND() );
-	studioApp.mainFrame->registerCmdWnd( trace );
-	studioApp.mainFrame->registerCmdWnd( results, results->getSCIHWND() );
-	studioApp.mainFrame->registerCmdWnd( find, find->getSCIHWND() );
+	studioApp.m_pMainFrame->registerCmdWnd( build, build->getSCIHWND() );
+	studioApp.m_pMainFrame->registerCmdWnd( debug, debug->getSCIHWND() );
+	studioApp.m_pMainFrame->registerCmdWnd( trace );
+	studioApp.m_pMainFrame->registerCmdWnd( results, results->getSCIHWND() );
+	studioApp.m_pMainFrame->registerCmdWnd( find, find->getSCIHWND() );
 
 	return 0;
 }
 
 void RDOStudioOutput::showBuild()
 {
-	studioApp.mainFrame->showOutput();
+	studioApp.m_pMainFrame->showOutput();
 	tab.setCurrentItem( 0 );
 	if ( plugins->studioIsShow() ) {
 		build->SetFocus();
@@ -121,7 +132,7 @@ void RDOStudioOutput::showBuild()
 
 void RDOStudioOutput::showDebug()
 {
-	studioApp.mainFrame->showOutput();
+	studioApp.m_pMainFrame->showOutput();
 	tab.setCurrentItem( 1 );
 	if ( plugins->studioIsShow() ) {
 		debug->SetFocus();
@@ -131,7 +142,7 @@ void RDOStudioOutput::showDebug()
 
 void RDOStudioOutput::showTrace()
 {
-	studioApp.mainFrame->showOutput();
+	studioApp.m_pMainFrame->showOutput();
 	tab.setCurrentItem( 2 );
 	if ( plugins->studioIsShow() ) {
 		trace->SetFocus();
@@ -141,7 +152,7 @@ void RDOStudioOutput::showTrace()
 
 void RDOStudioOutput::showResults()
 {
-	studioApp.mainFrame->showOutput();
+	studioApp.m_pMainFrame->showOutput();
 	tab.setCurrentItem( 3 );
 	if ( plugins->studioIsShow() ) {
 		results->SetFocus();
@@ -151,7 +162,7 @@ void RDOStudioOutput::showResults()
 
 void RDOStudioOutput::showFind()
 {
-	studioApp.mainFrame->showOutput();
+	studioApp.m_pMainFrame->showOutput();
 	tab.setCurrentItem( 4 );
 	if ( plugins->studioIsShow() ) {
 		find->SetFocus();
@@ -179,26 +190,26 @@ void RDOStudioOutput::clearFind()
 	if ( find ) find->clearAll();
 }
 
-void RDOStudioOutput::appendStringToBuild( const std::string& str ) const
+void RDOStudioOutput::appendStringToBuild( CREF(tstring) str ) const
 {
 	RDOBuildEditLineInfo* line = new RDOBuildEditLineInfo( str );
 	build->appendLine( line );
 }
 
-void RDOStudioOutput::appendStringToBuild( rdoSimulator::RDOSyntaxError::ErrorCode error_code, const std::string& str, const rdoModelObjects::RDOFileType fileType, const int lineNumber, const int posInLine, const bool warning ) const
+void RDOStudioOutput::appendStringToBuild( rdoSimulator::RDOSyntaxError::ErrorCode error_code, CREF(tstring) str, const rdoModelObjects::RDOFileType fileType, const int lineNumber, const int posInLine, const rbool warning ) const
 {
-	if ( !warning || (warning && static_cast<RDOBuildEditTheme*>(studioApp.mainFrame->style_build.theme)->warning) ) {
+	if ( !warning || (warning && static_cast<RDOBuildEditTheme*>(studioApp.m_pMainFrame->style_build.theme)->warning) ) {
 		RDOBuildEditLineInfo* line = new RDOBuildEditLineInfo( error_code, str, fileType, lineNumber, posInLine, warning );
 		build->appendLine( line );
 	}
 }
 
-void RDOStudioOutput::appendStringToDebug( const std::string& str ) const
+void RDOStudioOutput::appendStringToDebug( CREF(tstring) str ) const
 {
 	debug->appendLine( str );
 }
 
-void RDOStudioOutput::appendStringToResults( const std::string& str ) const
+void RDOStudioOutput::appendStringToResults( CREF(tstring) str ) const
 {
 	int pos = results->getCurrentPos();
 	results->setCurrentPos(results->getLength());
@@ -208,7 +219,7 @@ void RDOStudioOutput::appendStringToResults( const std::string& str ) const
 	results->setCurrentPos(pos  );
 }
 
-void RDOStudioOutput::appendStringToFind( const std::string& str, const rdoModelObjects::RDOFileType fileType, const int lineNumber, const int posInLine ) const
+void RDOStudioOutput::appendStringToFind( CREF(tstring) str, const rdoModelObjects::RDOFileType fileType, const int lineNumber, const int posInLine ) const
 {
 	RDOLogEditLineInfo* line = new RDOLogEditLineInfo( str, fileType, lineNumber, posInLine );
 	find->appendLine( line );
@@ -216,7 +227,7 @@ void RDOStudioOutput::appendStringToFind( const std::string& str, const rdoModel
 
 void RDOStudioOutput::Tab::changeCurrentItem()
 {
-	studioApp.mainFrame->output.updateLogConnection();
+	studioApp.m_pMainFrame->output.updateLogConnection();
 }
 
 void RDOStudioOutput::updateLogConnection() const
@@ -240,9 +251,9 @@ void RDOStudioOutput::updateLogConnection() const
 
 void RDOStudioOutput::updateStyles() const
 {
-	build->setEditorStyle( &studioApp.mainFrame->style_build );
-	debug->setEditorStyle( &studioApp.mainFrame->style_debug );
-	trace->setStyle( &studioApp.mainFrame->style_trace );
-	results->setEditorStyle( &studioApp.mainFrame->style_results );
-	find->setEditorStyle( &studioApp.mainFrame->style_find );
+	build->setEditorStyle( &studioApp.m_pMainFrame->style_build );
+	debug->setEditorStyle( &studioApp.m_pMainFrame->style_debug );
+	trace->setStyle( &studioApp.m_pMainFrame->style_trace );
+	results->setEditorStyle( &studioApp.m_pMainFrame->style_results );
+	find->setEditorStyle( &studioApp.m_pMainFrame->style_find );
 }

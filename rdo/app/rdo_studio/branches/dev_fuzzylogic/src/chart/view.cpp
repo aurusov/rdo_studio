@@ -1,4 +1,16 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      app/rdo_studio_mfc/src/chart/view.cpp
+  \author    Захаров Павел
+  \date      20.02.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/chart/view.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
 #include "app/rdo_studio_mfc/src/application.h"
@@ -8,6 +20,7 @@
 #include "app/rdo_studio_mfc/src/chart/doc_serie.h"
 #include "app/rdo_studio_mfc/src/chart/options.h"
 #include "app/rdo_studio_mfc/htmlhelp.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -25,7 +38,6 @@ IMPLEMENT_DYNCREATE(RDOStudioChartView, RDOStudioView)
 // ON_UPDATE_COMMAND_UI сделано
 
 BEGIN_MESSAGE_MAP(RDOStudioChartView, RDOStudioView)
-	//{{AFX_MSG_MAP(RDOStudioChartView)
 	ON_WM_CREATE()
 	ON_WM_ERASEBKGND()
 	ON_WM_SIZE()
@@ -49,11 +61,10 @@ BEGIN_MESSAGE_MAP(RDOStudioChartView, RDOStudioView)
 	ON_COMMAND(ID_VIEW_ZOOMAUTO, OnViewZoomauto)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_ZOOMAUTO, OnUpdateViewZoomauto)
 	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
-	//}}AFX_MSG_MAP
 	ON_MESSAGE(WM_USER_UPDATE_CHART_VIEW, OnUserUpdateChartView)
 END_MESSAGE_MAP()
 
-RDOStudioChartView::RDOStudioChartView( const bool preview )
+RDOStudioChartView::RDOStudioChartView( const rbool preview )
 	: RDOStudioView(),
 	bmpRect( 0, 0, 0, 0 ),
 	newClientRect( 0, 0, 0, 0 ),
@@ -142,7 +153,7 @@ int RDOStudioChartView::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	hbmpInit  = (HBITMAP)::GetCurrentObject( hmemdc, OBJ_BITMAP );
 
 	if ( !previewMode )
-		setStyle( &studioApp.mainFrame->style_chart, false );
+		setStyle( &studioApp.m_pMainFrame->style_chart, false );
 
 	if ( GetDocument() ) {
 		recalcLayout();
@@ -154,7 +165,7 @@ int RDOStudioChartView::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
 	
 	BOOL maximized;
-	studioApp.mainFrame->MDIGetActive( &maximized );
+	studioApp.m_pMainFrame->MDIGetActive( &maximized );
 	int delta = maximized ? 1 : 0;
 
 	appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );
@@ -182,7 +193,7 @@ void RDOStudioChartView::recalcLayout()
 	
 	CRect tmprect;
 	tmprect.CopyRect( &newClientRect );
-	std::string str = doc->getTitle();
+	tstring str = doc->getTitle();
 	::DrawText( hmemdc, str.c_str(), str.length(), tmprect, DT_WORDBREAK | DT_CENTER | DT_CALCRECT );
 	chartRect.top = tmprect.Height() + 5;
 
@@ -194,7 +205,7 @@ void RDOStudioChartView::recalcLayout()
 	size_max.cy = 0;
 	if ( yAxis ) {
 		yAxis->getCaptions( captions, valueCountY );
-		for ( std::vector<std::string>::iterator it = captions.begin(); it != captions.end(); it++ ) {
+		for ( std::vector<tstring>::iterator it = captions.begin(); it != captions.end(); it++ ) {
 			::GetTextExtentPoint32( hmemdc, (*it).c_str(), (*it).length(), &sz );
 			if ( sz.cx > size_max.cx ) size_max.cx = sz.cx;
 		}
@@ -261,7 +272,7 @@ void RDOStudioChartView::recalcLayout()
 	doc->mutex.Unlock();
 }
 
-void RDOStudioChartView::setScrollPos( UINT nSBCode, UINT nPos, const bool need_update )
+void RDOStudioChartView::setScrollPos( UINT nSBCode, UINT nPos, const rbool need_update )
 {
 	if ( nSBCode == SB_HORZ )
 		xPos = nPos;
@@ -278,7 +289,7 @@ void RDOStudioChartView::setScrollPos( UINT nSBCode, UINT nPos, const bool need_
 	}
 }
 
-void RDOStudioChartView::updateScrollBars( const bool need_update )
+void RDOStudioChartView::updateScrollBars( const rbool need_update )
 {
 	RDOStudioChartDoc* doc = GetDocument();
 	doc->mutex.Lock();
@@ -307,9 +318,9 @@ void RDOStudioChartView::updateScrollBars( const bool need_update )
 	doc->mutex.Unlock();
 }
 
-bool RDOStudioChartView::setTo( const int from_max_pos )
+rbool RDOStudioChartView::setTo( const int from_max_pos )
 {
-	bool res = true;
+	rbool res = true;
 	int delta = ( from_max_pos - xPos - chartRect.Width() ) / style->fonts_ticks->tickWidth;
 	if ( delta >= 0 ) {
 		res = false;
@@ -344,7 +355,7 @@ void RDOStudioChartView::setFromTo()
 	} else {
 		int it_pos = 0;
 		int it_max_pos = 0;
-		bool need_search_to = true;
+		rbool need_search_to = true;
 		int ticks = 0;
 		timesList::iterator it;
 		for( it = doc->docTimes.begin(); it != doc->docTimes.end(); it++ ) {
@@ -426,7 +437,7 @@ void RDOStudioChartView::drawTitle( CRect& chartRect )
 	::SelectObject( hmemdc, hfontTitle );
 	::SetTextColor( hmemdc, style->getTheme()->titleFGColor );
 	
-	std::string str = GetDocument()->getTitle();
+	tstring str = GetDocument()->getTitle();
 	::DrawText( hmemdc, str.c_str(), str.length(), tmprect, DT_CENTER | DT_WORDBREAK );
 }
 
@@ -461,7 +472,7 @@ void RDOStudioChartView::drawYAxis( CRect& chartRect, const RDOStudioDocSerie* a
 			int heightoffset = roundDouble( (double)chartRect.Height() / (double)( count - 1 ) );
 			tmprect.top = chartRect.bottom;
 			int index = 0;
-			for ( std::vector<std::string>::iterator it = captions.begin(); it != captions.end(); it++ ) {
+			for ( std::vector<tstring>::iterator it = captions.begin(); it != captions.end(); it++ ) {
 				index ++;
 				::DrawText( hmemdc, (*it).c_str(), (*it).length(), tmprect, DT_RIGHT );
 				if ( index != 1 && index < count ) {
@@ -488,7 +499,7 @@ void RDOStudioChartView::drawXAxis( CRect& chartRect )
 	
 	RDOStudioChartDoc* doc = GetDocument();
 	if ( !doc->docTimes.empty() ) {
-		std::string formatstr = "%.3f";
+		tstring formatstr = "%.3f";
 		
 		::SelectObject( hmemdc, hfontAxis );
 		::SetTextColor( hmemdc, style->getTheme()->axisFgColor );
@@ -501,7 +512,7 @@ void RDOStudioChartView::drawXAxis( CRect& chartRect )
 			}
 			double valo = drawFromX.time;
 			int x = chartRect.left;
-			std::string str = rdo::format( formatstr.c_str(), valo );
+			tstring str = rdo::format( formatstr.c_str(), valo );
 			tmprect.left = x;
 			::DrawText( hmemdc, str.c_str(), str.length(), tmprect, DT_LEFT );
 			valo += valoffset;
@@ -521,7 +532,7 @@ void RDOStudioChartView::drawXAxis( CRect& chartRect )
 			}
 		} else {
 			int ticks = 0;
-			std::string str;
+			tstring str;
 			int lastx = 0;
 			SIZE sz;
 			for( timesList::iterator it = unwrapTimesList.begin(); it != unwrapTimesList.end(); it++ ) {
@@ -645,7 +656,7 @@ void RDOStudioChartView::copyToClipboard()
 	mutex.Unlock();
 }
 
-void RDOStudioChartView::setZoom( double new_zoom, const bool force_update )
+void RDOStudioChartView::setZoom( double new_zoom, const rbool force_update )
 {
 	UNUSED(force_update);
 
@@ -936,8 +947,8 @@ void RDOStudioChartView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 	WORD scrollNotify = 0xFFFF;
 	UINT msg = WM_VSCROLL;
-	bool ctrl = ( ( ::GetKeyState( VK_CONTROL ) & 0x80000000 ) != 0 );
-	bool side = false;
+	rbool ctrl = ( ( ::GetKeyState( VK_CONTROL ) & 0x80000000 ) != 0 );
+	rbool side = false;
 	int pos = 0;
 	
 	switch ( nChar ) {
@@ -1046,7 +1057,7 @@ int RDOStudioChartView::OnMouseActivate( CWnd* pDesktopWnd, UINT nHitTest, UINT 
 	}
 }
 
-void RDOStudioChartView::setFonts( const bool needRedraw )
+void RDOStudioChartView::setFonts( const rbool needRedraw )
 {
 	UNUSED(needRedraw);
 
@@ -1107,7 +1118,7 @@ void RDOStudioChartView::setFonts( const bool needRedraw )
 	mutex.Unlock();
 }
 
-void RDOStudioChartView::setStyle( RDOStudioChartViewStyle* _style, const bool needRedraw )
+void RDOStudioChartView::setStyle( RDOStudioChartViewStyle* _style, const rbool needRedraw )
 {
 	style = _style;
 
@@ -1143,7 +1154,7 @@ void RDOStudioChartView::updateWindow()
 void RDOStudioChartView::updateView()
 {
 	GetDocument()->lock();
-	bool lastvisible = maxXVisible();
+	rbool lastvisible = maxXVisible();
 	recalcLayout();
 	updateScrollBars( false );
 	if ( lastvisible  && !maxXVisible() ) {
@@ -1228,7 +1239,7 @@ void RDOStudioChartView::OnUpdateViewZoomauto(CCmdUI* pCmdUI)
 
 void RDOStudioChartView::OnHelpKeyword()
 {
-	std::string filename = studioApp.getFullHelpFileName();
+	tstring filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return;
 	filename += "::/html/work_model_chart.htm";
 	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );

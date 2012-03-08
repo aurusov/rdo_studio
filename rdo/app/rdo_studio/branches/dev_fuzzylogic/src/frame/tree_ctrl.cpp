@@ -19,11 +19,9 @@ static char THIS_FILE[] = __FILE__;
 // -------------------- RDOStudioFrameTreeCtrl
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioFrameTreeCtrl, RDOTreeCtrl)
-	//{{AFX_MSG_MAP(RDOStudioFrameTreeCtrl)
 	ON_WM_CREATE()
 	ON_WM_LBUTTONDBLCLK()
 	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioFrameTreeCtrl::RDOStudioFrameTreeCtrl()
@@ -77,7 +75,7 @@ void RDOStudioFrameTreeCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 				if ( !doc ) {
 					model->m_frameManager.connectFrameDoc( index );
 				} else {
-					studioApp.mainFrame->MDIActivate( doc->getView()->GetParentFrame() );
+					studioApp.m_pMainFrame->MDIActivate( doc->getView()->GetParentFrame() );
 				}
 			}
 		}
@@ -86,7 +84,7 @@ void RDOStudioFrameTreeCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 
 void RDOStudioFrameTreeCtrl::OnHelpKeyword()
 {
-	std::string filename = studioApp.getFullHelpFileName();
+	tstring filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return;
 	filename += "::/html/work_model_frame.htm#frame";
 	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );

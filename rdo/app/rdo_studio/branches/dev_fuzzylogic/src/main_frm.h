@@ -1,11 +1,19 @@
-#ifndef RDOSTUDIOMAINFRM_H
-#define RDOSTUDIOMAINFRM_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      main_frm.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      20.02.2003
+  \brief     
+  \indent    4T
+*/
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
+#ifndef _RDO_STUDIO_MFC_MAIN_FRM_H_
+#define _RDO_STUDIO_MFC_MAIN_FRM_H_
 
+// ----------------------------------------------------------------------- INCLUDES
 #include <math.h>
+// ----------------------------------------------------------------------- SYNOPSIS
+#include "kernel/rdokernel.h"
 #include "app/rdo_studio_mfc/src/workspace.h"
 #include "app/rdo_studio_mfc/src/output.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoreditstyle.h"
@@ -18,7 +26,7 @@
 #include "app/rdo_studio_mfc/src/chart/view_style.h"
 #include "app/rdo_studio_mfc/src/status_bar.h"
 #include "app/rdo_studio_mfc/src/frame/style.h"
-#include "kernel/rdokernel.h"
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOToolBar
@@ -76,7 +84,7 @@ private:
 	UINT m_updateTimer;
 
 	// Используется при закрытии модели. Задается вопрос.
-	static bool close_mode;
+	static rbool close_mode;
 
 public:
 	RDOStudioMainFrame();
@@ -123,23 +131,17 @@ public:
 	void update_start();
 	void update_stop();
 
-	static bool is_close_mode() { return close_mode; }
+	static rbool is_close_mode() { return close_mode; }
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
-protected:
-	//{{AFX_VIRTUAL(RDOStudioMainFrame)
-	public:
+private:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	protected:
 	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
-	//}}AFX_VIRTUAL
 
-protected:
-	//{{AFX_MSG(RDOStudioMainFrame)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnViewFileToolbar();
 	afx_msg void OnViewEditToolbar();
@@ -183,7 +185,6 @@ protected:
 	afx_msg void OnEnterMenuLoop( BOOL bIsTrackPopupMenu );
 	afx_msg void OnExitMenuLoop( BOOL bIsTrackPopupMenu );
 	afx_msg void OnEnterIdle(UINT nWhy, CWnd* pWho);
-	//}}AFX_MSG
 	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateInsertOverwriteStatusBar( CCmdUI *pCmdUI );
@@ -198,6 +199,4 @@ protected:
 	DECLARE_MESSAGE_MAP()
 };
 
-//{{AFX_INSERT_LOCATION}}
-
-#endif // RDOSTUDIOMAINFRM_H
+#endif // _RDO_STUDIO_MFC_MAIN_FRM_H_

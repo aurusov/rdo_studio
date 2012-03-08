@@ -21,7 +21,6 @@ static char THIS_FILE[] = __FILE__;
 IMPLEMENT_DYNCREATE(RDOStudioFrameView, RDOStudioView)
 
 BEGIN_MESSAGE_MAP(RDOStudioFrameView, RDOStudioView)
-	//{{AFX_MSG_MAP(RDOStudioFrameView)
 	ON_WM_CREATE()
 	ON_WM_DESTROY()
 	ON_WM_SIZE()
@@ -37,7 +36,6 @@ BEGIN_MESSAGE_MAP(RDOStudioFrameView, RDOStudioView)
 	ON_WM_NCRBUTTONDOWN()
 	ON_WM_NCMOUSEMOVE()
 	ON_WM_MOUSEMOVE()
-	//}}AFX_MSG_MAP
 	ON_COMMAND(ID_FILE_PRINT, RDOStudioView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, RDOStudioView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, RDOStudioView::OnFilePrintPreview)
@@ -49,7 +47,7 @@ RDOStudioFrameView::RDOStudioFrameView():
 	newClientRect( 0, 0, 0, 0 ),
 	xPos( 0 ),
 	yPos( 0 ),
-	bgColor( studioApp.mainFrame->style_frame.theme->backgroundColor ),
+	bgColor( studioApp.m_pMainFrame->style_frame.theme->backgroundColor ),
 	mustBeInit( true ),
 	hwnd( NULL ),
 	hdc( NULL ),
@@ -131,7 +129,7 @@ void RDOStudioFrameView::updateFont()
 
 	LOGFONT lf;
 	memset( &lf, 0, sizeof(lf) );
-	RDOStudioFrameStyle* style = &studioApp.mainFrame->style_frame;
+	RDOStudioFrameStyle* style = &studioApp.m_pMainFrame->style_frame;
 	lf.lfHeight    = -MulDiv( style->font->size, ::GetDeviceCaps( hmemdc, LOGPIXELSY ), 72 );
 	lf.lfWeight    = style->theme->defaultStyle & rdoStyle::RDOStyleFont::BOLD ? FW_BOLD : FW_NORMAL;
 	lf.lfItalic    = style->theme->defaultStyle & rdoStyle::RDOStyleFont::ITALIC;
@@ -480,7 +478,7 @@ void RDOStudioFrameView::onDraw()
 
 void RDOStudioFrameView::OnHelpKeyword()
 {
-	std::string filename = studioApp.getFullHelpFileName();
+	tstring filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return;
 	filename += "::/html/work_model_frame.htm";
 	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );

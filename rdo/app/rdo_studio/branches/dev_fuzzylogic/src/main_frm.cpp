@@ -1,5 +1,17 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      main_frm.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      20.02.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
 #include <limits>
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
@@ -9,6 +21,7 @@
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_project.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_method.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -77,7 +90,6 @@ const ruint update_timer_ID = 1;
 IMPLEMENT_DYNAMIC(RDOStudioMainFrame, CMDIFrameWnd)
 
 BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
-	//{{AFX_MSG_MAP(RDOStudioMainFrame)
 	ON_WM_CREATE()
 	ON_COMMAND(ID_VIEW_TOOLBAR_FILE_TOOLBAR, OnViewFileToolbar)
 	ON_COMMAND(ID_VIEW_TOOLBAR_EDIT_TOOLBAR, OnViewEditToolbar)
@@ -121,7 +133,6 @@ BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
 	ON_WM_ENTERMENULOOP()
 	ON_WM_EXITMENULOOP()
 	ON_WM_ENTERIDLE()
-	//}}AFX_MSG_MAP
 	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR           , OnUpdateCoordStatusBar )
 	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR          , OnUpdateModifyStatusBar )
 	ON_UPDATE_COMMAND_UI( ID_INSERTOVERWRITE_STATUSBAR , OnUpdateInsertOverwriteStatusBar )
@@ -142,7 +153,7 @@ static UINT indicators[] = {
 	ID_PROGRESSSTATUSBAR
 };
 
-bool RDOStudioMainFrame::close_mode = false;
+rbool RDOStudioMainFrame::close_mode = false;
 
 RDOStudioMainFrame::RDOStudioMainFrame()
 	: CMDIFrameWnd (    )
@@ -239,7 +250,7 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 void RDOStudioMainFrame::OnDestroy()
 {
-	studioApp.mainFrame = NULL;
+	studioApp.m_pMainFrame = NULL;
 
 	update_stop();
 	style_editor.save();
@@ -434,7 +445,7 @@ void RDOStudioMainFrame::OnUpdateModelTimeStatusBar( CCmdUI *pCmdUI )
 void RDOStudioMainFrame::OnUpdateModelRunTypeStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
-	std::string s = "";
+	tstring s = "";
 	if ( model->isRunning() ) {
 		switch ( model->getRuntimeMode() ) {
 			case rdoRuntime::RTM_MaxSpeed  : s = rdo::format( ID_STATUSBAR_MODEL_RUNTIME_MAXSPEED ); break;
@@ -473,7 +484,7 @@ void RDOStudioMainFrame::OnUpdateModelShowRateStatusBar( CCmdUI *pCmdUI )
 				break;
 			}
 			case rdoRuntime::RTM_Sync: {
-				std::string s;
+				tstring s;
 				double showRate = model->getShowRate();
 				if ( showRate < 1e-10 || showRate > 1e10 ) {
 					s = rdo::format( IDS_MODEL_SHOWRATE_E, showRate );
@@ -519,7 +530,7 @@ void RDOStudioMainFrame::endProgress()
 
 void RDOStudioMainFrame::OnHelpContents()
 {
-	std::string filename = studioApp.getFullHelpFileName();
+	tstring filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return;
 
 	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );
@@ -547,28 +558,28 @@ void RDOStudioMainFrame::OnModelRuntimePause()
 
 void RDOStudioMainFrame::OnUpdateModelRuntimeMaxSpeed( CCmdUI* pCmdUI )
 {
-	bool runing = model->isRunning();
+	rbool runing = model->isRunning();
 	pCmdUI->Enable( runing );
 	pCmdUI->SetCheck( runing && model->getRuntimeMode() == rdoRuntime::RTM_MaxSpeed ? 1 : 0 );
 }
 
 void RDOStudioMainFrame::OnUpdateModelRuntimeJump( CCmdUI* pCmdUI )
 {
-	bool runing = model->isRunning();
+	rbool runing = model->isRunning();
 	pCmdUI->Enable( runing );
 	pCmdUI->SetCheck( runing && model->getRuntimeMode() == rdoRuntime::RTM_Jump ? 1 : 0 );
 }
 
 void RDOStudioMainFrame::OnUpdateModelRuntimeSync( CCmdUI* pCmdUI )
 {
-	bool runing = model->isRunning();
+	rbool runing = model->isRunning();
 	pCmdUI->Enable( runing );
 	pCmdUI->SetCheck( runing && model->getRuntimeMode() == rdoRuntime::RTM_Sync ? 1 : 0 );
 }
 
 void RDOStudioMainFrame::OnUpdateModelRuntimePause( CCmdUI* pCmdUI )
 {
-	bool runing = model->isRunning();
+	rbool runing = model->isRunning();
 	pCmdUI->Enable( runing );
 	pCmdUI->SetCheck( runing && (model->getRuntimeMode() == rdoRuntime::RTM_Pause || model->getRuntimeMode() == rdoRuntime::RTM_BreakPoint) ? 1 : 0 );
 }

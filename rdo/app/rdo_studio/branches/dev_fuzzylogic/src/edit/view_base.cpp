@@ -1,9 +1,22 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      app/rdo_studio_mfc/src/edit/view_base.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      20.02.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/edit/view_base.h"
 #include "app/rdo_studio_mfc/src/edit/document_base.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoredit.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -24,11 +37,9 @@ using namespace rdoEditor;
 IMPLEMENT_DYNCREATE(RDOStudioEditBaseView, RDOStudioView)
 
 BEGIN_MESSAGE_MAP(RDOStudioEditBaseView, RDOStudioView)
-	//{{AFX_MSG_MAP(RDOStudioEditBaseView)
 	ON_WM_CREATE()
 	ON_WM_DESTROY()
 	ON_WM_TIMER()
-	//}}AFX_MSG_MAP
 	ON_COMMAND(ID_FILE_PRINT, RDOStudioView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, RDOStudioView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, RDOStudioView::OnFilePrintPreview)
@@ -77,7 +88,7 @@ int RDOStudioEditBaseView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
 
 	BOOL maximized;
-	studioApp.mainFrame->MDIGetActive( &maximized );
+	studioApp.m_pMainFrame->MDIGetActive( &maximized );
 	int delta = maximized ? 1 : 0;
 
 	appendMenu( mainMenu, 4 + delta, &popupMenu );
@@ -134,8 +145,8 @@ RDOStudioEditBaseDoc* RDOStudioEditBaseView::GetDocument()
 
 void RDOStudioEditBaseView::restartBufTimer( const int bufIndex )
 {
-	bool canClear = studioApp.mainFrame->style_editor.buffer->canClearBuffer;
-	int  delay    = studioApp.mainFrame->style_editor.buffer->clearBufferDelay * 1000;
+	rbool canClear = studioApp.m_pMainFrame->style_editor.buffer->canClearBuffer;
+	int   delay    = studioApp.m_pMainFrame->style_editor.buffer->clearBufferDelay * 1000;
 	if ( delay < 0 ) delay = 0;
 	switch ( bufIndex ) {
 		case 1: stopTimer( timerBuf1 ); if ( canClear ) timerBuf1 = SetTimer( timerBuf1_ID, delay, NULL ); break;

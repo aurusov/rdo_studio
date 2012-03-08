@@ -1,10 +1,6 @@
 #ifndef RDO_PROCESS_CONNECTOR_H
 #define RDO_PROCESS_CONNECTOR_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
 #include <list>
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_object_matrix.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_shape.h"
@@ -34,32 +30,32 @@ private:
 
 #ifdef CON_DEBUG
 	void makeConnector( CDC& dc, const rp::point& p1, const rp::point& p2, double norm1, double norm2, rp::polyline& pa );
-	bool getShortLine( CDC& dc, const rp::polyline& pa, const rp::point& from, const rp::point& to, double& lengthA2, rp::point& B1, rp::point& B2, rp::point& interborder );
-	bool isVectoreIntersect( CDC& dc, RPShape* shape, const rp::point& vect_begin, const rp::point& vect_end ) const;
+	rbool getShortLine( CDC& dc, const rp::polyline& pa, const rp::point& from, const rp::point& to, double& lengthA2, rp::point& B1, rp::point& B2, rp::point& interborder );
+	rbool isVectoreIntersect( CDC& dc, RPShape* shape, const rp::point& vect_begin, const rp::point& vect_end ) const;
 #else if
 	void makeConnector( const rp::point& p1, const rp::point& p2, double norm1, double norm2, rp::polyline& pa );
-	bool getShortLine( const rp::polyline& pa, const rp::point& from, const rp::point& to, double& lengthA2, rp::point& B1, rp::point& B2, rp::point& interborder );
-	bool isVectoreIntersect( RPShape* shape, const rp::point& vect_begin, const rp::point& vect_end ) const;
+	rbool getShortLine( const rp::polyline& pa, const rp::point& from, const rp::point& to, double& lengthA2, rp::point& B1, rp::point& B2, rp::point& interborder );
+	rbool isVectoreIntersect( RPShape* shape, const rp::point& vect_begin, const rp::point& vect_end ) const;
 #endif
 
 	// Перевод всех элементов фигуры в глобальные координаты
 	virtual void transformToGlobal() {};
 
 	// Находится ли точка внутри фигуры
-	virtual bool pointInPolygon( const rp::point& global_chart_pos )
+	virtual rbool pointInPolygon( const rp::point& global_chart_pos )
 	{
 		UNUSED(global_chart_pos);
 		return false;
 	};
 	// Находится ли точка в служебной (неклиентской) части фигуры (прямоугольник выделения, к примеру)
-	virtual bool pointInNCArea( const rp::point& global_chart_pos )
+	virtual rbool pointInNCArea( const rp::point& global_chart_pos )
 	{
 		UNUSED(global_chart_pos);
 		return false;
 	};
 
 	// Габориты фигуры
-	virtual rp::rect getBoundingRect( bool global = true ) const
+	virtual rp::rect getBoundingRect( rbool global = true ) const
 	{
 		UNUSED(global);
 		return rp::rect();
@@ -68,7 +64,7 @@ private:
 	// Отрисовка фигуры
 	virtual void draw( CDC& dc );
 
-	virtual bool isConnector() const   { return true; }
+	virtual rbool isConnector() const   { return true; }
 
 private:
 	static RPObject* newObject( RPObject* parent );
@@ -121,7 +117,7 @@ public:
 	std::list< RPConnector* > connectors;
 
 	int getIndex() const                                            { return obj->getDockIndex( this ); }
-	virtual bool can_connect( RPConnectorDock* dock = NULL ) const  {
+	virtual rbool can_connect( RPConnectorDock* dock = NULL ) const {
 		if ( !dock ) return true;
 		if ( alreadyConnected( dock ) ) return false;
 		if ( &dock->object() == &object() ) return false;
@@ -129,7 +125,7 @@ public:
 	}
 	virtual COLORREF color() const                                  { return RGB(0xF0, 0xFF, 0x00);     }
 	Type getType() const                                            { return type;                      }
-	bool isType( Type _type ) const {
+	rbool isType( Type _type ) const {
 		switch ( _type ) {
 			case fly  : return type & fly ? true : false;
 			case in   : return type & in  ? true : false;
@@ -139,21 +135,21 @@ public:
 		}
 		return false;
 	}
-	bool isIn() const  { return type & in  ? true : false; }
-	bool isOut() const { return type & out ? true : false; }
+	rbool isIn() const  { return type & in  ? true : false; }
+	rbool isOut() const { return type & out ? true : false; }
 	const RPShape& object() const {
 		return *obj;
 	}
-	rp::point getPosition( bool global = true ) const {
+	rp::point getPosition( rbool global = true ) const {
 		return global && obj->isMatrix() ? obj->globalMatrix() * point : point;
 	}
-	double getNorm( bool global = true ) const {
+	double getNorm( rbool global = true ) const {
 		double res = global && obj->isMatrix() ? obj->getRotationGlobal() + norm : norm;
 		while ( res >= 360 ) res -= 360;
 		while ( res <    0 ) res += 360;
 		return res;
 	}
-	rp::point getDeltaPosition( bool global = true ) const {
+	rp::point getDeltaPosition( rbool global = true ) const {
 		rp::point pos    = getPosition( global );
 		double    rotate = getNorm( global );
 		double    cos_a, sin_a;
@@ -166,7 +162,7 @@ public:
 		rp::rect rect = obj->getBoundingRectNoRotateOuter().extendByPerimetr( RPConnectorDock::delta );
 		double len = 1e20;
 		double l;
-		bool null;
+		rbool null;
 		rp::point p = rp::math::getPerpendicular( rect.p0(), rect.p1(), pos, null );
 		if ( !null ) {
 			l = rp::math::getLength( p, pos );
@@ -204,7 +200,7 @@ public:
 	virtual RPConnector* make_connector( RPObject* _parent ) {
 		return static_cast<RPConnector*>(rpMethod::factory->getNewObject( "RPConnector", _parent ));
 	}
-	bool alreadyConnected( RPConnectorDock* dock ) const {
+	rbool alreadyConnected( RPConnectorDock* dock ) const {
 		if ( !dock ) return false;
 		std::list< RPConnector* >::const_iterator it = connectors.begin();
 		while ( it != connectors.end() ) {
@@ -216,11 +212,11 @@ public:
 
 	const std::vector< rp::string >& getTypes() const { return types;            }
 	void insertType( const rp::string& type )         { types.push_back( type ); }
-	bool hasType( const rp::string& type ) const      {
+	rbool hasType( const rp::string& type ) const     {
 		if ( types.empty() ) return true;
 		return std::find( types.begin(), types.end(), type ) != types.end();
 	}
-	bool hasType( const std::vector< rp::string >& type ) const      {
+	rbool hasType( const std::vector< rp::string >& type ) const {
 		if ( types.empty() && type.empty() ) return true;
 		if ( (!types.empty() && type.empty()) || (types.empty() && !type.empty()) ) return false;
 		std::vector< rp::string >::const_iterator it = type.begin();
@@ -241,7 +237,7 @@ public:
 	RPConnectorDockOne( RPShape* _parent, Type _type, const rp::point& _point, double _norm, const rp::string& type = "" ): RPConnectorDock( _parent, _type, _point, _norm, type ) {};
 	virtual ~RPConnectorDockOne() {};
 
-	virtual bool can_connect( RPConnectorDock* dock = NULL ) const {
+	virtual rbool can_connect( RPConnectorDock* dock = NULL ) const {
 		if ( !RPConnectorDock::can_connect( dock ) ) return false;
 		return connectors.empty();
 	}

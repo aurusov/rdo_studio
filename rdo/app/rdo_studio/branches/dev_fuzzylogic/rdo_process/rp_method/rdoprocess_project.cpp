@@ -43,7 +43,7 @@ RPProject::~RPProject()
 RPObject* RPProject::findObject( rp::string fullname )
 {
 	if ( fullname.empty() ) return NULL;
-	std::string::size_type pos = fullname.find( "/project" );
+	tstring::size_type pos = fullname.find( "/project" );
 	if ( pos != 0 ) return NULL;
 	fullname.erase( 0, 8 );
 	if ( fullname.empty() ) return this;
@@ -52,8 +52,8 @@ RPObject* RPProject::findObject( rp::string fullname )
 		rp::string obj_name = "";
 		fullname.erase( 0, 1 );
 		pos = fullname.find( '/' );
-		bool last = false;
-		if ( pos != std::string::npos ) {
+		rbool last = false;
+		if ( pos != tstring::npos ) {
 			obj_name = fullname.substr( 0, pos );
 			fullname.erase( 0, pos );
 		} else {

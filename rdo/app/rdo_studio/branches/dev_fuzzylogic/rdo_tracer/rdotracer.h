@@ -1,6 +1,5 @@
 #ifndef RDOTRACER_H
 #define RDOTRACER_H
-#pragma once
 
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracerbase.h"
 #include "simulator/service/rdosimwin.h"

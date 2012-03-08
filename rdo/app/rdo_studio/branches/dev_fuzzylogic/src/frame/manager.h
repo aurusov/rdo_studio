@@ -1,10 +1,6 @@
 #ifndef RDOSTUDIOFRAMEMANAGER_H
 #define RDOSTUDIOFRAMEMANAGER_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
-
 #include <vector>
 #include <map>
 #include "app/rdo_studio_mfc/src/frame/document.h"
@@ -42,7 +38,7 @@ private:
 	friend class RDOStudioFrameManager;
 	friend class RDOStudioFrameView;
 	private:
-		std::string name;
+		tstring name;
 		int x;
 		int y;
 		int w;
@@ -56,7 +52,7 @@ private:
 		Frame(): hitem( 0 ), doc( NULL ), view( NULL ), timer( false, true ) {};
 		~Frame() { areas_sim_clear(); };
 		HTREEITEM            hitem;
-		std::string          name;
+		tstring              name;
 		RDOStudioFrameDoc*   doc;
 		RDOStudioFrameView*  view;
 		CMutex               used;
@@ -82,19 +78,19 @@ private:
 		int w;
 		int h;
 	};
-	std::map< std::string, BMP* > bitmaps;
+	std::map< tstring, BMP* > bitmaps;
 	CDC dcBmp;
 	CDC dcMask;
 
 	int lastShowedFrame;
 	int currentShowingFrame;
-	bool changed;
+	rbool changed;
 
 public:
 	RDOStudioFrameManager();
 	virtual ~RDOStudioFrameManager();
 
-	void insertItem( const std::string& name );
+	void insertItem( CREF(tstring) name );
 	int findFrameIndex( const HTREEITEM hitem ) const {
 		std::vector< Frame* >::const_iterator it = frames.begin();
 		int index = 0;
@@ -133,7 +129,7 @@ public:
 	}
 	RDOStudioFrameDoc* connectFrameDoc( const int index );
 	void disconnectFrameDoc( const RDOStudioFrameDoc* doc );
-	const std::string&  getFrameName( const int index ) const       { return frames[index]->name;   };
+	CREF(tstring)       getFrameName( const int index ) const       { return frames[index]->name;   };
 	RDOStudioFrameDoc*  getFrameDoc( const int index ) const        { return frames[index]->doc;    };
 	RDOStudioFrameView* getFrameView( const int index ) const       { return frames[index]->view;   };
 	CMutex*             getFrameMutexUsed( const int index ) const  { return &frames[index]->used;  };
@@ -141,32 +137,30 @@ public:
 	CEvent*             getFrameEventTimer( const int index ) const { return &frames[index]->timer; };
 	CEvent*             getFrameEventClose( const int index ) const { return &frames[index]->close; };
 	int count() const                                               { return frames.size();         };
-	bool isChanged()                                                { bool res = changed; changed = false; return res; }
+	rbool isChanged()                                               { rbool res = changed; changed = false; return res; }
 	RDOStudioFrameDoc* getFirstExistDoc() const;
 	void closeAll();
 	void clear();
 
-	void bmp_insert( const std::string& name );
+	void bmp_insert( CREF(tstring) name );
 	void bmp_clear();
 
 	void expand() const;
 
-	bool isValidFrameDoc( const RDOStudioFrameDoc* const frame ) const;
+	rbool isValidFrameDoc( const RDOStudioFrameDoc* const frame ) const;
 
-	int getLastShowedFrame() const              { return lastShowedFrame; };
-	void setLastShowedFrame( const int value );
-	void setCurrentShowingFrame( const int value );
-	void resetCurrentShowingFrame( const int value );
-	void showFrame( const rdoAnimation::RDOFrame* const frame, const int index );
-	void showNextFrame();
-	void showPrevFrame();
-	void showFrame( const int index );
-	bool canShowNextFrame() const;
-	bool canShowPrevFrame() const;
+	int   getLastShowedFrame() const              { return lastShowedFrame; };
+	void  setLastShowedFrame( const int value );
+	void  setCurrentShowingFrame( const int value );
+	void  resetCurrentShowingFrame( const int value );
+	void  showFrame( const rdoAnimation::RDOFrame* const frame, const int index );
+	void  showNextFrame();
+	void  showPrevFrame();
+	void  showFrame( const int index );
+	rbool canShowNextFrame() const;
+	rbool canShowPrevFrame() const;
 
 	void updateStyles() const;
 };
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // RDOSTUDIOFRAMEMANAGER_H

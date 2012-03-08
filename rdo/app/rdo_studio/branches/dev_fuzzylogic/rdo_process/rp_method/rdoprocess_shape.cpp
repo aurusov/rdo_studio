@@ -271,7 +271,7 @@ RPProject::Cursor RPShape::getCursor( const rp::point& global_chart_pos )
 	return RPProject::cursor_flow_select;
 }
 
-bool RPShape::pointInNCArea( const rp::point& global_chart_pos )
+rbool RPShape::pointInNCArea( const rp::point& global_chart_pos )
 {
 	// Проверяем на попадание в док
 	if ( rpMethod::project->getFlowState() == RPProject::flow_connector ) {
@@ -313,7 +313,7 @@ void RPShape::transformToGlobal()
 	std::transform( pa_src.begin(), pa_src.end(), pa_global.begin(), tr );
 }
 
-rp::rect RPShape::getBoundingRect( bool global ) const
+rp::rect RPShape::getBoundingRect( rbool global ) const
 {
 	rp::rect bound_rect;
 	if ( !pa_src.empty() ) {
@@ -514,7 +514,7 @@ void RPShape::draw_selected( CDC& dc )
 	}
 }
 
-void RPShape::command_before( const rp::point& global_chart_pos, bool first_click )
+void RPShape::command_before( const rp::point& global_chart_pos, rbool first_click )
 {
 	RPObjectMatrix::command_before( global_chart_pos, first_click );
 	pcmd = ((rpMethod::project->getFlowState() == RPProject::flow_select || rpMethod::project->getFlowState() == RPProject::flow_rotate) && first_click) ? RPShape::pcmd_move : getPossibleCommand( global_chart_pos );
@@ -616,7 +616,7 @@ int RPShape::getDockIndex( const RPConnectorDock* dock ) const
 	return index;
 }
 
-RPShape::PossibleCommand RPShape::getPossibleCommand( const rp::point& global_chart_pos, bool for_cursor )
+RPShape::PossibleCommand RPShape::getPossibleCommand( const rp::point& global_chart_pos, rbool for_cursor )
 {
 	// Отдельно проверим на перемещение центра вращения. Он отрисовывается поверх выделения, значит и проверяться должен первым.
 	if ( rpMethod::project->getFlowState() == RPProject::flow_rotate && isSelected() && isRotateCenter( global_chart_pos ) ) return RPShape::pcmd_rotate_center;
@@ -735,7 +735,7 @@ RPShape::PossibleCommand RPShape::getPossibleCommand( const rp::point& global_ch
 			}
 		}
 	}
-	bool select_or_rotate = rpMethod::project->getFlowState() == RPProject::flow_select || rpMethod::project->getFlowState() == RPProject::flow_rotate;
+	rbool select_or_rotate = rpMethod::project->getFlowState() == RPProject::flow_select || rpMethod::project->getFlowState() == RPProject::flow_rotate;
 	// Общая часть и для перемещения и для вращения
 	if ( select_or_rotate ) {
 		// Отдельно проверим на растяжение за нижний центр, т.к. фигуру, сжатую в горизонтальную линию, лучше растягивать вниз за него, а не вверх
@@ -1358,7 +1358,7 @@ void RPShape::setBgBrush( const CBrush& brush )
 	}
 }
 
-void RPShape::setTextFont( const CFont& font, COLORREF color, bool show )
+void RPShape::setTextFont( const CFont& font, COLORREF color, rbool show )
 {
 	if ( show ) {
 		LOGFONT lf;

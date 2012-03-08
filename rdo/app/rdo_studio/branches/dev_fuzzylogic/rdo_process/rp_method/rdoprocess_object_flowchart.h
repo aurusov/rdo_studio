@@ -1,10 +1,6 @@
 #ifndef RDO_PROCESS_OBJECT_FLOWCHART_H
 #define RDO_PROCESS_OBJECT_FLOWCHART_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_object_matrix.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_connector.h"
 
@@ -18,7 +14,7 @@ class RPObjectFlowChart: public RPObjectMatrix
 friend class RPFlowChart;
 
 private:
-	bool init_ok;
+	rbool init_ok;
 	int border_w;
 	int border_h;
 	int paper_border_w;
@@ -68,10 +64,10 @@ protected:
 	RPFlowChart* flowchart;
 	void after_constructor();
 
-	virtual void notify( RPObject* from, UINT message, void* param = NULL );
-	virtual void modify();
-	virtual void update();
-	virtual bool isFlowChart() const { return true; }
+	virtual void  notify( RPObject* from, UINT message, void* param = NULL );
+	virtual void  modify();
+	virtual void  update();
+	virtual rbool isFlowChart() const { return true; }
 	void makeNewPixmap();
 	void init();
 
@@ -91,11 +87,11 @@ protected:
 	RPConnector* drag_and_drop_connector;
 	void findAutoConnector();
 
-	bool            trash_show;
-	bool            trash_over;
+	rbool           trash_show;
+	rbool           trash_over;
 	CRect           trash_rect;
 	RPObjectPixmap* trash_bmp;
-	bool            is_trash_over( const rp::point& global_chart_pos ) const { return trash_rect.PtInRect( CPoint(static_cast<int>(global_chart_pos.x), static_cast<int>(global_chart_pos.y)) ) ? true : false; }
+	rbool           is_trash_over( const rp::point& global_chart_pos ) const { return trash_rect.PtInRect( CPoint(static_cast<int>(global_chart_pos.x), static_cast<int>(global_chart_pos.y)) ) ? true : false; }
 
 public:
 	RPObjectFlowChart( RPObject* parent );
@@ -105,14 +101,14 @@ public:
 	virtual void load( rp::RPXMLNode* node );
 	virtual rp::RPXMLNode* save( rp::RPXMLNode* parent_node );
 	virtual rpMethod::RPMethod* getMethod() = 0;
-	virtual bool setName( const rp::string& value );
+	virtual rbool setName( const rp::string& value );
 
 	virtual void onDragEnter( const RPObjectClassInfo* classInfo, const rp::point& point );
 	virtual void onDragOver( const rp::point& point );
 	virtual void onDragLeave();
 	virtual void onDrop( const rp::point& point );
 
-	virtual void setActive( bool value );
+	virtual void setActive( rbool value );
 
 	void snapToGrid( RPObjectMatrix* shape );
 
@@ -136,14 +132,14 @@ public:
 	// Отрисовка фигуры
 	virtual void draw( CDC& dc );
 	// Габориты фигуры
-	virtual rp::rect getBoundingRect( bool global = true ) const;
+	virtual rp::rect getBoundingRect( rbool global = true ) const;
 	virtual rp::rect getMaxRect();
 	// Перевод всех элементов фигуры в глобальные координаты
 	virtual void transformToGlobal() {};
 	// Находится ли точка внутри фигуры
-	virtual bool pointInPolygon( const rp::point& global_chart_pos );
+	virtual rbool pointInPolygon( const rp::point& global_chart_pos );
 	// Находится ли точка в служебной (неклиентской) части фигуры (прямоугольник выделения, к примеру)
-	virtual bool pointInNCArea( const rp::point& global_chart_pos ) { return !pointInPolygon( global_chart_pos ); }
+	virtual rbool pointInNCArea( const rp::point& global_chart_pos ) { return !pointInPolygon( global_chart_pos ); }
 
 	void clientToZero( CPoint& point ) const {
 		point.x -= border_w + paper_border_w;
@@ -154,8 +150,5 @@ public:
 		point.y -= border_h + paper_border_h;
 	}
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
 #endif // RDO_PROCESS_OBJECT_FLOWCHART_H

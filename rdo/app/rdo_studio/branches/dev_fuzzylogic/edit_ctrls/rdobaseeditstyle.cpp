@@ -1,5 +1,18 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdobaseeditstyle.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      28.02.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/edit_ctrls/rdobaseeditstyle.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -49,7 +62,7 @@ RDOBaseEditTheme& RDOBaseEditTheme::operator =( const RDOBaseEditTheme& theme )
 	return *this;
 }
 
-bool RDOBaseEditTheme::operator ==( const RDOBaseEditTheme& theme ) const
+rbool RDOBaseEditTheme::operator ==( const RDOBaseEditTheme& theme ) const
 {
 	return defaultColor    == theme.defaultColor &&
 	       backgroundColor == theme.backgroundColor &&
@@ -64,12 +77,12 @@ bool RDOBaseEditTheme::operator ==( const RDOBaseEditTheme& theme ) const
 	       bookmarkStyle == theme.bookmarkStyle;
 }
 
-bool RDOBaseEditTheme::operator !=( const RDOBaseEditTheme& theme ) const
+rbool RDOBaseEditTheme::operator !=( const RDOBaseEditTheme& theme ) const
 {
 	return !(*this == theme);
 }
 
-void RDOBaseEditTheme::load( std::string regPath )
+void RDOBaseEditTheme::load( tstring regPath )
 {
 	regPath += "theme";
 	defaultColor     = AfxGetApp()->GetProfileInt( regPath.c_str(), "defaultColor", defaultColor );
@@ -82,7 +95,7 @@ void RDOBaseEditTheme::load( std::string regPath )
 	bookmarkStyle    = static_cast<RDOBookmarkStyle>(AfxGetApp()->GetProfileInt( regPath.c_str(), "bookmarkStyle", bookmarkStyle ));
 }
 
-void RDOBaseEditTheme::save( std::string regPath ) const
+void RDOBaseEditTheme::save( tstring regPath ) const
 {
 	regPath += "theme";
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "defaultColor", defaultColor );
@@ -95,32 +108,32 @@ void RDOBaseEditTheme::save( std::string regPath ) const
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "bookmarkStyle", bookmarkStyle );
 }
 
-bool RDOBaseEditTheme::styleDefault( const int styleType ) const
+rbool RDOBaseEditTheme::styleDefault( const int styleType ) const
 {
 	return styleType == STYLE_DEFAULT;
 }
 
-bool RDOBaseEditTheme::styleUsing( const int styleType ) const
+rbool RDOBaseEditTheme::styleUsing( const int styleType ) const
 {
 	return styleType == STYLE_DEFAULT;
 }
 
-bool RDOBaseEditTheme::styleBold( const int /*styleType*/ ) const
+rbool RDOBaseEditTheme::styleBold( const int /*styleType*/ ) const
 {
 	return defaultStyle & RDOStyleFont::BOLD ? true : false;
 }
 
-bool RDOBaseEditTheme::styleItalic( const int /*styleType*/ ) const
+rbool RDOBaseEditTheme::styleItalic( const int /*styleType*/ ) const
 {
 	return defaultStyle & RDOStyleFont::ITALIC ? true : false;
 }
 
-std::string RDOBaseEditTheme::styleFGColorToHEX( const int /*styleType*/ ) const
+tstring RDOBaseEditTheme::styleFGColorToHEX( const int /*styleType*/ ) const
 {
 	return colorToHEX( defaultColor );
 }
 
-std::string RDOBaseEditTheme::styleBGColorToHEX( const int /*styleType*/ ) const
+tstring RDOBaseEditTheme::styleBGColorToHEX( const int /*styleType*/ ) const
 {
 	return colorToHEX( backgroundColor );
 }
@@ -188,7 +201,7 @@ RDOBaseEditTheme RDOBaseEditTheme::getOceanTheme()
 	return theme;
 }
 
-std::string RDOBaseEditTheme::colorToHEX( const COLORREF color )
+tstring RDOBaseEditTheme::colorToHEX( const COLORREF color )
 {
 	return rdo::format( "#%02X%02X%02X", GetRValue( color ), GetGValue( color ), GetBValue( color ) );
 }
@@ -222,7 +235,7 @@ RDOBaseEditTab& RDOBaseEditTab::operator =( const RDOBaseEditTab& tab )
 	return *this;
 }
 
-bool RDOBaseEditTab::operator ==( const RDOBaseEditTab& tab ) const
+rbool RDOBaseEditTab::operator ==( const RDOBaseEditTab& tab ) const
 {
 	return tabSize         == tab.tabSize &&
 	       indentSize      == tab.indentSize &&
@@ -232,12 +245,12 @@ bool RDOBaseEditTab::operator ==( const RDOBaseEditTab& tab ) const
 	       autoIndent      == tab.autoIndent;
 }
 
-bool RDOBaseEditTab::operator !=( const RDOBaseEditTab& tab ) const
+rbool RDOBaseEditTab::operator !=( const RDOBaseEditTab& tab ) const
 {
 	return !(*this == tab);
 }
 
-void RDOBaseEditTab::load( std::string regPath )
+void RDOBaseEditTab::load( tstring regPath )
 {
 	regPath += "tab";
 	tabSize         = AfxGetApp()->GetProfileInt( regPath.c_str(), "tabSize", tabSize );
@@ -248,7 +261,7 @@ void RDOBaseEditTab::load( std::string regPath )
 	autoIndent      = AfxGetApp()->GetProfileInt( regPath.c_str(), "autoIndent", autoIndent ) ? true : false;
 }
 
-void RDOBaseEditTab::save( std::string regPath ) const
+void RDOBaseEditTab::save( tstring regPath ) const
 {
 	regPath += "tab";
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "tabSize", tabSize );
@@ -280,25 +293,25 @@ RDOBaseEditWindow& RDOBaseEditWindow::operator =( const RDOBaseEditWindow& windo
 	return *this;
 }
 
-bool RDOBaseEditWindow::operator ==( const RDOBaseEditWindow& window ) const
+rbool RDOBaseEditWindow::operator ==( const RDOBaseEditWindow& window ) const
 {
 	return wordWrap          == window.wordWrap &&
 	       showHorzScrollBar == window.showHorzScrollBar;
 }
 
-bool RDOBaseEditWindow::operator !=( const RDOBaseEditWindow& window ) const
+rbool RDOBaseEditWindow::operator !=( const RDOBaseEditWindow& window ) const
 {
 	return !(*this == window);
 }
 
-void RDOBaseEditWindow::load( std::string regPath )
+void RDOBaseEditWindow::load( tstring regPath )
 {
 	regPath += "window";
 	wordWrap          = AfxGetApp()->GetProfileInt( regPath.c_str(), "wordWrap", wordWrap ) ? true : false;
 	showHorzScrollBar = AfxGetApp()->GetProfileInt( regPath.c_str(), "showHorzScrollBar", showHorzScrollBar ) ? true : false;
 }
 
-void RDOBaseEditWindow::save( std::string regPath ) const
+void RDOBaseEditWindow::save( tstring regPath ) const
 {
 	regPath += "window";
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "wordWrap", wordWrap );
@@ -346,28 +359,28 @@ RDOBaseEditStyle& RDOBaseEditStyle::operator =( const RDOBaseEditStyle& style )
 	return *this;
 }
 
-bool RDOBaseEditStyle::operator ==( const RDOBaseEditStyle& style ) const
+rbool RDOBaseEditStyle::operator ==( const RDOBaseEditStyle& style ) const
 {
-	bool flag = RDOStyleWithTheme::operator==( style );
+	rbool flag = RDOStyleWithTheme::operator==( style );
 	if ( theme  && style.theme  && flag ) flag &= *static_cast<RDOBaseEditTheme*>(theme) == *static_cast<RDOBaseEditTheme*>(style.theme);
 	if ( tab    && style.tab    && flag ) flag &= *tab    == *style.tab;
 	if ( window && style.window && flag ) flag &= *window == *style.window;
 	return flag;
 }
 
-bool RDOBaseEditStyle::operator !=( const RDOBaseEditStyle& style ) const
+rbool RDOBaseEditStyle::operator !=( const RDOBaseEditStyle& style ) const
 {
 	return !(*this == style);
 }
 
-void RDOBaseEditStyle::init( const std::string& _regPath )
+void RDOBaseEditStyle::init( CREF(tstring) _regPath )
 {
 	RDOStyleWithTheme::init( _regPath );
 	initTab();
 	initWindow();
 }
 
-bool RDOBaseEditStyle::load()
+rbool RDOBaseEditStyle::load()
 {
 	if ( RDOStyleWithTheme::load() ) {
 		if ( tab )    tab->load( regPath );
@@ -377,7 +390,7 @@ bool RDOBaseEditStyle::load()
 	return false;
 }
 
-bool RDOBaseEditStyle::save() const
+rbool RDOBaseEditStyle::save() const
 {
 	if ( RDOStyleWithTheme::save() ) {
 		if ( tab )    tab->save( regPath );

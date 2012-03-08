@@ -190,9 +190,9 @@ void RPObjectChart::draw_after( CDC& dc )
 	if ( isSelected() ) draw_selected( dc );
 }
 
-void RPObjectChart::setSelected( bool value )
+void RPObjectChart::setSelected( rbool value )
 {
-	bool _sel = isSelected();
+	rbool _sel = isSelected();
 	RPObject::setSelected( value );
 	if ( _sel != value ) {
 		update();

@@ -1,6 +1,5 @@
 #ifndef RDOTRACERTBASE_H
 #define RDOTRACERTBASE_H
-#pragma once
 
 #include "app/rdo_studio_mfc/resource.h"
 #include "kernel/rdothread.h"
@@ -40,39 +39,39 @@ private:
 	RDOTracerResParamInfo* getParam( rdo::textstream& stream );
 	RDOTracerResParamInfo* getParamType( rdo::textstream& stream );
 	std::vector <RDOTracerResType*> resTypes;
-	void addResourceType( std::string& s, rdo::textstream& stream );
+	void addResourceType( REF(tstring) s, rdo::textstream& stream );
 	std::vector <RDOTracerResource*> resources;
-	void addResource( std::string& s, rdo::textstream& stream );
+	void addResource( REF(tstring) s, rdo::textstream& stream );
 	std::vector <RDOTracerPattern*> patterns;
-	void addPattern( std::string& s, rdo::textstream& stream );
+	void addPattern( REF(tstring) s, rdo::textstream& stream );
 	std::vector <RDOTracerOperationBase*> operations;
 	std::vector <RDOTracerEvent*> irregularEvents;
-	void addOperation( std::string& s, rdo::textstream& stream );
-	//void addIrregularEvent( std::string& s, rdo::textstream& stream );
+	void addOperation( REF(tstring) s, rdo::textstream& stream );
+	//void addIrregularEvent( REF(tstring) s, rdo::textstream& stream );
 	std::vector <RDOTracerResult*> results;
-	void addResult( std::string& s, rdo::textstream& stream );
+	void addResult( REF(tstring) s, rdo::textstream& stream );
 	
-	void dispatchNextString( std::string& line );
+	void dispatchNextString( REF(tstring) line );
 
-	RDOTracerTimeNow* addTime( const std::string& time );
+	RDOTracerTimeNow* addTime( CREF(tstring) time );
 	int eventIndex;
 	
-	RDOTracerOperationBase* getOperation( std::string& line );
-	void startAction( std::string& line, RDOTracerTimeNow* const time );
-	void accomplishAction( std::string& line, RDOTracerTimeNow* const time  );
-	void irregularEvent( std::string& line, RDOTracerTimeNow* const time  );
-	void productionRule( std::string& line, RDOTracerTimeNow* const time  );
+	RDOTracerOperationBase* getOperation( REF(tstring) line );
+	void startAction( REF(tstring) line, RDOTracerTimeNow* const time );
+	void accomplishAction( REF(tstring) line, RDOTracerTimeNow* const time  );
+	void irregularEvent( REF(tstring) line, RDOTracerTimeNow* const time  );
+	void productionRule( REF(tstring) line, RDOTracerTimeNow* const time  );
 
-	RDOTracerResource* getResource( std::string& line );
-	RDOTracerResource* resourceCreation( std::string& line, RDOTracerTimeNow* const time  );
-	RDOTracerResource* resourceElimination( std::string& line, RDOTracerTimeNow* const time  );
+	RDOTracerResource* getResource( REF(tstring) line );
+	RDOTracerResource* resourceCreation( REF(tstring) line, RDOTracerTimeNow* const time  );
+	RDOTracerResource* resourceElimination( REF(tstring) line, RDOTracerTimeNow* const time  );
 	enum RDOTracerResUpdateAction { RUA_NONE, RUA_ADD, RUA_UPDATE };
 	RDOTracerResUpdateAction action;
 	RDOTracerResource* resource;
-	RDOTracerResource* resourceChanging( std::string& line, RDOTracerTimeNow* const time  );
+	RDOTracerResource* resourceChanging( REF(tstring) line, RDOTracerTimeNow* const time  );
 	
-	RDOTracerResult* getResult( std::string& line );
-	void resultChanging( std::string& line, RDOTracerTimeNow* const time  );
+	RDOTracerResult* getResult( REF(tstring) line );
+	void resultChanging( REF(tstring) line, RDOTracerTimeNow* const time  );
 
 	std::list< RDOTracerTimeNow* > timeList;
 	
@@ -84,10 +83,10 @@ private:
 	CMultiDocTemplate* chartDocTemplate;
 	std::vector <RDOStudioChartDoc*> charts;
 
-	bool drawTrace;
+	rbool drawTrace;
 
 protected:
-	RDOTracerBase( const std::string& _thread_name, RDOKernelGUI* _kernel_gui );
+	RDOTracerBase( CREF(tstring) _thread_name, RDOKernelGUI* _kernel_gui );
 	virtual ~RDOTracerBase();
 
 public:
@@ -97,8 +96,8 @@ public:
 
 	void startTrace();
 	void getModelStructure( rdo::textstream& stream );
-	void getTraceString( std::string trace_string );
-	std::string getNextValue( std::string& line );
+	void getTraceString( tstring trace_string );
+	tstring getNextValue( REF(tstring) line );
 	void registerClipboardFormat() { clipboardFormat = ::RegisterClipboardFormat( rdo::format(ID_RAO_CLIPBRD).c_str() ); }
 	UINT const getClipboardFormat() const { return clipboardFormat; }
 	RDOStudioChartDoc* createNewChart();
@@ -107,9 +106,9 @@ public:
 	RDOStudioChartDoc* addSerieToChart( RDOTracerSerie* const serie, RDOStudioChartDoc* chart = NULL );
 	void updateChartsStyles() const;
 	void clear();
-	void setModelName( std::string name ) const;
-	void setDrawTrace( const bool value );
-	bool getDrawTrace() const { return drawTrace; };
+	void setModelName( tstring name ) const;
+	void setDrawTrace( const rbool value );
+	rbool getDrawTrace() const { return drawTrace; };
 	void lock()   { mutex.Lock(); };
 	void unlock() { mutex.Unlock(); };
 };

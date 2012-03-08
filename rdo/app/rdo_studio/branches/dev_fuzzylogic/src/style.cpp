@@ -1,5 +1,18 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      app/rdo_studio_mfc/src/style.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      27.03.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/style.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -37,7 +50,7 @@ RDOStyleFont& RDOStyleFont::operator =( const RDOStyleFont& font )
 	return *this;
 }
 
-bool RDOStyleFont::operator ==( const RDOStyleFont& font ) const
+rbool RDOStyleFont::operator ==( const RDOStyleFont& font ) const
 {
 	return name         == font.name &&
 	       size         == font.size &&
@@ -45,12 +58,12 @@ bool RDOStyleFont::operator ==( const RDOStyleFont& font ) const
 	       characterSet == font.characterSet;
 }
 
-bool RDOStyleFont::operator !=( const RDOStyleFont& font ) const
+rbool RDOStyleFont::operator !=( const RDOStyleFont& font ) const
 {
 	return !(*this == font);
 }
 
-void RDOStyleFont::load( std::string regPath )
+void RDOStyleFont::load( tstring regPath )
 {
 	regPath += "font";
 	name         = AfxGetApp()->GetProfileString( regPath.c_str(), "name", name.c_str() );
@@ -59,7 +72,7 @@ void RDOStyleFont::load( std::string regPath )
 	characterSet = AfxGetApp()->GetProfileInt( regPath.c_str(), "characterSet", characterSet );
 }
 
-void RDOStyleFont::save( std::string regPath ) const
+void RDOStyleFont::save( tstring regPath ) const
 {
 	regPath += "font";
 	AfxGetApp()->WriteProfileString( regPath.c_str(), "name", name.c_str() );
@@ -135,7 +148,7 @@ RDOStyleTheme& RDOStyleTheme::operator =( const RDOStyleTheme& theme )
 	return *this;
 }
 
-bool RDOStyleTheme::operator ==( const RDOStyleTheme& theme ) const
+rbool RDOStyleTheme::operator ==( const RDOStyleTheme& theme ) const
 {
 	return defaultColor    == theme.defaultColor &&
 	       backgroundColor == theme.backgroundColor &&
@@ -143,12 +156,12 @@ bool RDOStyleTheme::operator ==( const RDOStyleTheme& theme ) const
 	       defaultStyle == theme.defaultStyle;
 }
 
-bool RDOStyleTheme::operator !=( const RDOStyleTheme& theme ) const
+rbool RDOStyleTheme::operator !=( const RDOStyleTheme& theme ) const
 {
 	return !(*this == theme);
 }
 
-void RDOStyleTheme::load( std::string regPath )
+void RDOStyleTheme::load( tstring regPath )
 {
 	regPath += "theme";
 	defaultColor    = AfxGetApp()->GetProfileInt( regPath.c_str(), "defaultColor", defaultColor );
@@ -156,7 +169,7 @@ void RDOStyleTheme::load( std::string regPath )
 	defaultStyle    = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "defaultStyle", defaultStyle ));
 }
 
-void RDOStyleTheme::save( std::string regPath ) const
+void RDOStyleTheme::save( tstring regPath ) const
 {
 	regPath += "theme";
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "defaultColor", defaultColor );
@@ -190,19 +203,19 @@ RDOStyle& RDOStyle::operator =( const RDOStyle& style )
 	return *this;
 }
 
-bool RDOStyle::operator ==( const RDOStyle& style ) const
+rbool RDOStyle::operator ==( const RDOStyle& style ) const
 {
-	bool flag = true;
+	rbool flag = true;
 	if ( font && style.font && flag ) flag &= *font == *style.font;
 	return flag;
 }
 
-bool RDOStyle::operator !=( const RDOStyle& style ) const
+rbool RDOStyle::operator !=( const RDOStyle& style ) const
 {
 	return !(*this == style);
 }
 
-void RDOStyle::init( const std::string& _regPath )
+void RDOStyle::init( CREF(tstring) _regPath )
 {
 	regPath = _regPath;
 	rdo::trim( regPath );
@@ -215,7 +228,7 @@ void RDOStyle::init( const std::string& _regPath )
 	initFont();
 }
 
-bool RDOStyle::load()
+rbool RDOStyle::load()
 {
 	if ( !regPath.empty() ) {
 		if ( font ) font->load( regPath );
@@ -224,7 +237,7 @@ bool RDOStyle::load()
 	return false;
 }
 
-bool RDOStyle::save() const
+rbool RDOStyle::save() const
 {
 	if ( !regPath.empty() ) {
 		if ( font ) font->save( regPath );
@@ -260,25 +273,25 @@ RDOStyleWithTheme& RDOStyleWithTheme::operator =( const RDOStyleWithTheme& style
 	return *this;
 }
 
-bool RDOStyleWithTheme::operator ==( const RDOStyleWithTheme& style ) const
+rbool RDOStyleWithTheme::operator ==( const RDOStyleWithTheme& style ) const
 {
-	bool flag = RDOStyle::operator==( style );
+	rbool flag = RDOStyle::operator==( style );
 	if ( theme && style.theme && flag ) flag &= *theme == *style.theme;
 	return flag;
 }
 
-bool RDOStyleWithTheme::operator !=( const RDOStyleWithTheme& style ) const
+rbool RDOStyleWithTheme::operator !=( const RDOStyleWithTheme& style ) const
 {
 	return !(*this == style);
 }
 
-void RDOStyleWithTheme::init( const std::string& _regPath )
+void RDOStyleWithTheme::init( CREF(tstring) _regPath )
 {
 	RDOStyle::init( _regPath );
 	initTheme();
 }
 
-bool RDOStyleWithTheme::load()
+rbool RDOStyleWithTheme::load()
 {
 	if ( RDOStyle::load() ) {
 		if ( theme ) theme->load( regPath );
@@ -287,7 +300,7 @@ bool RDOStyleWithTheme::load()
 	return false;
 }
 
-bool RDOStyleWithTheme::save() const
+rbool RDOStyleWithTheme::save() const
 {
 	if ( RDOStyle::save() ) {
 		if ( theme ) theme->save( regPath );

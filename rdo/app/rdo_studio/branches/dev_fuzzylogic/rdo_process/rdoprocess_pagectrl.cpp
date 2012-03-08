@@ -14,13 +14,11 @@ static char THIS_FILE[] = __FILE__;
 // -------------------- RPPageCtrl
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RPPageCtrl, CWnd)
-	//{{AFX_MSG_MAP(RPPageCtrl)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
 	ON_WM_TIMER()
 	ON_WM_DESTROY()
 	ON_WM_PAINT()
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RPPageCtrl::RPPageCtrl():
@@ -164,7 +162,7 @@ void RPPageCtrl::removePage( RPPageCtrlItem* page )
 {
 	std::list< RPPageCtrlItem* >::iterator it = std::find( items.begin(), items.end(), page );
 	if ( it != items.end() ) {
-		bool current_flag = it_current == it;
+		rbool current_flag = it_current == it;
 		std::list< RPPageCtrlItem* >::iterator it_next = items.erase( it );
 		if ( current_flag ) {
 			it_current = it_next;
@@ -224,7 +222,7 @@ void RPPageCtrl::OnTimer( UINT nIDEvent )
 			if ( it != items.end() ) {
 				it = items.end();
 				it--;
-				bool last = true;
+				rbool last = true;
 				while ( it != it_current ) {
 					RPPageCtrlItem* item = *it;
 					item->fly = true;
@@ -291,13 +289,11 @@ void RPPageCtrl::OnTimer( UINT nIDEvent )
 // -------------------- RPPageCtrlItemLabel
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RPPageCtrlItemLabel, CWnd)
-	//{{AFX_MSG_MAP(RPPageCtrlItemLabel)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
 	ON_WM_PAINT()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_MOUSEMOVE()
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RPPageCtrlItemLabel::RPPageCtrlItemLabel():
@@ -431,7 +427,7 @@ void RPPageCtrlItemLabel::OnMouseMove( UINT nFlags, CPoint point )
 
 void RPPageCtrlItemLabel::updateOver( const CPoint& point )
 {
-	bool prev = over_close_button;
+	rbool prev = over_close_button;
 	over_close_button = getCloseBMPRect().PtInRect( point ) ? true : false;
 	if ( over_close_button != prev ) {
 		Invalidate();
@@ -444,11 +440,9 @@ void RPPageCtrlItemLabel::updateOver( const CPoint& point )
 // -------------------- RPPageCtrlItem
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RPPageCtrlItem, CWnd)
-	//{{AFX_MSG_MAP(RPPageCtrlItem)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
 	ON_NOTIFY(LVN_BEGINDRAG, 1, RPPageCtrlItem::OnListCtrlBeginDrag)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RPPageCtrlItem::RPPageCtrlItem():

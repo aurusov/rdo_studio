@@ -1,10 +1,21 @@
-#ifndef RDOEDITOREDIT_H
-#define RDOEDITOREDIT_H
-#pragma once
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdoeditoredit.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      20.02.2003
+  \brief     
+  \indent    4T
+*/
 
+#ifndef _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITOREDIT_H_
+#define _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITOREDIT_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorbaseedit.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoreditstyle.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdologedit.h"
+// --------------------------------------------------------------------------------
 
 class RDOStudioEditBaseView;
 
@@ -25,7 +36,7 @@ protected:
 
 	rdoEditCtrl::RDOLogEdit* log;
 
-	void expand( int& line, bool doExpand, bool force = false, int visLevels = 0, int level = -1 ) const;
+	void expand( int& line, rbool doExpand, rbool force = false, int visLevels = 0, int level = -1 ) const;
 	void foldChanged( int line, int levelNow, int levelPrev ) const;
 	void toggleCurrentFold() const;
 	void toggleAllFolds() const;
@@ -37,11 +48,13 @@ protected:
 	void onBufferAppend( const int bufIndex );
 	void onBufferEdit( const int bufIndex );
 
-	bool canClearErrorLine;
-	void clearErrorLine();
-	bool hasErrorLine() const;
+	rbool canClearErrorLine;
+	void  clearErrorLine();
+	rbool hasErrorLine  () const;
 
-	//{{AFX_MSG(RDOEditorEdit)
+private:
+	virtual BOOL OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult );
+
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
 	afx_msg void OnEditCommentSelection();
 	afx_msg void OnEditCompleteWord();
@@ -79,14 +92,8 @@ protected:
 	afx_msg void OnToggleCurrentFold();
 	afx_msg void OnUpdateFold(CCmdUI* pCmdUI);
 	afx_msg void OnHelpKeyword();
-	//}}AFX_MSG
 	afx_msg void OnInsertCommand( UINT nID );
 	DECLARE_MESSAGE_MAP()
-
-	//{{AFX_VIRTUAL(RDOEditorEdit)
-	protected:
-	virtual BOOL OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult );
-	//}}AFX_VIRTUAL
 
 public:
 	RDOEditorEdit( RDOStudioEditBaseView* _view = NULL );
@@ -99,11 +106,9 @@ public:
 	void setLog( rdoEditCtrl::RDOLogEdit& _log );
 	const rdoEditCtrl::RDOLogEdit* getLog() const;
 
-	void setCanClearErrorLine( bool value ) { canClearErrorLine = value; }
+	void setCanClearErrorLine( rbool value ) { canClearErrorLine = value; }
 };
 
 }; // namespace rdoEditor
 
-//{{AFX_INSERT_LOCATION}}
-
-#endif // RDOEDITOREDIT_H
+#endif // _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITOREDIT_H_

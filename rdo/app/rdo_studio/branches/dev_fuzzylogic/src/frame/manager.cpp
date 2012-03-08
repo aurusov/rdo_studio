@@ -57,10 +57,10 @@ RDOStudioFrameManager::~RDOStudioFrameManager()
 	};
 }
 
-void RDOStudioFrameManager::insertItem( const std::string& name )
+void RDOStudioFrameManager::insertItem( CREF(tstring) name )
 {
 	Frame* item = new Frame;
-	item->hitem = studioApp.mainFrame->workspace.frames->InsertItem( name.c_str(), 1, 1, studioApp.mainFrame->workspace.frames->GetRootItem() );
+	item->hitem = studioApp.m_pMainFrame->workspace.frames->InsertItem( name.c_str(), 1, 1, studioApp.m_pMainFrame->workspace.frames->GetRootItem() );
 	item->name  = name;
 	item->doc   = NULL;
 	item->view  = NULL;
@@ -122,7 +122,7 @@ void RDOStudioFrameManager::closeAll()
 
 void RDOStudioFrameManager::clear()
 {
-	studioApp.mainFrame->workspace.frames->deleteChildren( studioApp.mainFrame->workspace.frames->GetRootItem() );
+	studioApp.m_pMainFrame->workspace.frames->deleteChildren( studioApp.m_pMainFrame->workspace.frames->GetRootItem() );
 	std::vector< Frame* >::iterator it = frames.begin();
 	while ( it != frames.end() ) {
 		RDOStudioFrameDoc* doc = (*it)->doc;
@@ -152,10 +152,10 @@ RDOStudioFrameDoc* RDOStudioFrameManager::getFirstExistDoc() const
 
 void RDOStudioFrameManager::expand() const
 {
-	studioApp.mainFrame->workspace.frames->expand();
+	studioApp.m_pMainFrame->workspace.frames->expand();
 }
 
-bool RDOStudioFrameManager::isValidFrameDoc( const RDOStudioFrameDoc* const frame ) const
+rbool RDOStudioFrameManager::isValidFrameDoc( const RDOStudioFrameDoc* const frame ) const
 {
 	POSITION pos = frameDocTemplate->GetFirstDocPosition();
 	while ( pos ) {
@@ -179,7 +179,7 @@ void RDOStudioFrameManager::setCurrentShowingFrame( const int value )
 {
 	if ( value == -1 || (value >= 0 && value < count()) ) {
 		currentShowingFrame = value;
-		CTreeCtrl* tree = studioApp.mainFrame->workspace.frames;
+		CTreeCtrl* tree = studioApp.m_pMainFrame->workspace.frames;
 		if ( currentShowingFrame != -1 ) {
 			HTREEITEM hitem = frames[currentShowingFrame]->hitem;
 			tree->SelectItem( hitem );
@@ -194,11 +194,11 @@ void RDOStudioFrameManager::resetCurrentShowingFrame( const int value )
 	if ( value == currentShowingFrame ) setCurrentShowingFrame( -1 );
 }
 
-void RDOStudioFrameManager::bmp_insert( const std::string& name )
+void RDOStudioFrameManager::bmp_insert( CREF(tstring) name )
 {
 	if ( bitmaps.find( name ) == bitmaps.end() ) {
 
-		RDOStudioOutput* output = &studioApp.mainFrame->output;
+		RDOStudioOutput* output = &studioApp.m_pMainFrame->output;
 		output->appendStringToDebug( rdo::format( IDS_MODEL_RESOURCE_LOADING_NAME, name.c_str() ) );
 		const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
 
@@ -291,7 +291,7 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 
 void RDOStudioFrameManager::bmp_clear()
 {
-	std::map< std::string, BMP* >::iterator it = bitmaps.begin();
+	std::map< tstring, BMP* >::iterator it = bitmaps.begin();
 	while ( it != bitmaps.end() ) {
 		delete it->second;
 		it++;
@@ -314,7 +314,7 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 
 			RDOStudioFrameView* view = getFrameView( index );
 			if ( view->mustBeInit ) {
-				bool show_fillrect = true;
+				rbool show_fillrect = true;
 				if ( frame->hasBgImage() ) {
 					BMP* bmp = bitmaps[frame->m_bgImageName];
 					if ( bmp ) {
@@ -345,7 +345,7 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 
 			HDC hdc = view->hmemdc;
 
-			bool show_fillrect = true;
+			rbool show_fillrect = true;
 			if ( frame->hasBgImage() ) {
 				BMP* bmp = bitmaps[frame->m_bgImageName];
 				if ( bmp ) {
@@ -356,14 +356,14 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 				}
 			}
 			if ( frame->m_bgColor.m_transparent ) {
-				view->bgColor = studioApp.mainFrame->style_frame.theme->backgroundColor;
+				view->bgColor = studioApp.m_pMainFrame->style_frame.theme->backgroundColor;
 			} else {
 				view->bgColor = RGB( frame->m_bgColor.m_r, frame->m_bgColor.m_g, frame->m_bgColor.m_b );
 			}
 			if ( show_fillrect ) {
 				HBRUSH brush     = ::CreateSolidBrush( view->bgColor );
 				HBRUSH pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
-				HPEN pen     = ::CreatePen( PS_SOLID, 0, studioApp.mainFrame->style_frame.theme->defaultColor );
+				HPEN pen     = ::CreatePen( PS_SOLID, 0, studioApp.m_pMainFrame->style_frame.theme->defaultColor );
 				HPEN pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
 				::FillRect( hdc, view->frameBmpRect, brush );
 				::Polyline( hdc, view->points, 5 );
@@ -376,7 +376,7 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 			if( !frame->hasBackPicture ) {
 				HBRUSH brush     = ::CreateSolidBrush( RGB( frame->r, frame->g, frame->b ) );
 				HBRUSH pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
-				HPEN pen     = ::CreatePen( PS_SOLID, 0, studioApp.mainFrame->style_frame.theme->defaultColor );
+				HPEN pen     = ::CreatePen( PS_SOLID, 0, studioApp.m_pMainFrame->style_frame.theme->defaultColor );
 				HPEN pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
 				::FillRect( hdc, view->frameBmpRect, brush );
 				::Polyline( hdc, view->points, 5 );
@@ -384,7 +384,7 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 				::SelectObject( hdc, pOldPen );
 				::DeleteObject( brush );
 				::DeleteObject( pen );
-				view->bgColor = studioApp.mainFrame->style_frame.theme->backgroundColor;
+				view->bgColor = studioApp.m_pMainFrame->style_frame.theme->backgroundColor;
 
 //				HBRUSH brush     = ::CreateSolidBrush( RGB( frame->r, frame->g, frame->b ) );
 //				HBRUSH pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
@@ -748,13 +748,13 @@ void RDOStudioFrameManager::showFrame( const int index )
 	}
 }
 
-bool RDOStudioFrameManager::canShowNextFrame() const
+rbool RDOStudioFrameManager::canShowNextFrame() const
 {
 	int cnt = count();
 	return model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && ( currentShowingFrame == -1 || currentShowingFrame < cnt-1 );
 }
 
-bool RDOStudioFrameManager::canShowPrevFrame() const
+rbool RDOStudioFrameManager::canShowPrevFrame() const
 {
 	int cnt = count();
 	return model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && currentShowingFrame > 0;

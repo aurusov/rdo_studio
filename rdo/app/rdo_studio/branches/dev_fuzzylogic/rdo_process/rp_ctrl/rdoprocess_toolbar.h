@@ -4,10 +4,6 @@
 #include "utils/rdomacros.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_string.h"
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
 // --------------------------------------------------------------------------------
 // -------------------- RPCtrlToolbar
 // --------------------------------------------------------------------------------
@@ -25,9 +21,9 @@ public:
 	virtual void setCaption  (CREF(rp::string) caption) = 0;
 	
 	struct ButtonUpdate {
-		int  id;
-		bool enable;
-		ButtonUpdate( int _id, bool _enable = true ): id(_id), enable( _enable ) {}
+		int   id;
+		rbool enable;
+		ButtonUpdate( int _id, rbool _enable = true ): id(_id), enable( _enable ) {}
 	};
 };
 

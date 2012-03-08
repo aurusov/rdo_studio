@@ -2,8 +2,6 @@
 // or project specific include files that are used frequently, but
 // are changed infrequently
 
-#pragma once
-
 #if _MSC_VER > 1200
 #ifndef WINVER				// Allow use of features specific to Windows XP or later.
 #define WINVER 0x0501		// Change this to the appropriate value to target other versions of Windows.
