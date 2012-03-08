@@ -1,9 +1,20 @@
-#ifndef RDOEDITORTABCTRL_H
-#define RDOEDITORTABCTRL_H
-#pragma once
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdoeditortabctrl.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      20.02.2003
+  \brief     
+  \indent    4T
+*/
 
+#ifndef _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITORTABCTRL_H_
+#define _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITORTABCTRL_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoredit.h"
 #include "ui/mfc_ctrls/rdotabctrl.h"
+// --------------------------------------------------------------------------------
 
 class RDOStudioEditBaseView;
 
@@ -49,4 +60,4 @@ public:
 
 //{{AFX_INSERT_LOCATION}}
 
-#endif // RDOEDITORTABCTRL_H
+#endif // _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITORTABCTRL_H_

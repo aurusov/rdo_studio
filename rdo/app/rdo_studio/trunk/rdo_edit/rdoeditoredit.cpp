@@ -1,13 +1,26 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdoeditoredit.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      20.02.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoredit.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/src/edit/view_base.h"
-#include "thirdparty/sci/LexRdo.h"
-#include "thirdparty/sci/PropSet.h"
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/htmlhelp.h"
+#include "thirdparty/sci/LexRdo.h"
+#include "thirdparty/sci/PropSet.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

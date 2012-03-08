@@ -1,10 +1,23 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdoeditorbaseedit.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      14.03.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorbaseedit.h"
-#include "thirdparty/sci/SciLexer.h"
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/res/ac_function.xpm"
 #include "app/rdo_studio_mfc/res/ac_data.xpm"
 #include "app/rdo_studio_mfc/res/ac_trace.xpm"
+#include "thirdparty/sci/SciLexer.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

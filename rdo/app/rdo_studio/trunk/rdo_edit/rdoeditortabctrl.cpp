@@ -1,9 +1,22 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdoeditortabctrl.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      20.02.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/src/edit/view_base.h"
 #include "app/rdo_studio_mfc/resource.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -1,10 +1,21 @@
-#ifndef RDOEDITOREDIT_H
-#define RDOEDITOREDIT_H
-#pragma once
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdoeditoredit.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      20.02.2003
+  \brief     
+  \indent    4T
+*/
 
+#ifndef _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITOREDIT_H_
+#define _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITOREDIT_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorbaseedit.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoreditstyle.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdologedit.h"
+// --------------------------------------------------------------------------------
 
 class RDOStudioEditBaseView;
 
@@ -106,4 +117,4 @@ public:
 
 //{{AFX_INSERT_LOCATION}}
 
-#endif // RDOEDITOREDIT_H
+#endif // _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITOREDIT_H_

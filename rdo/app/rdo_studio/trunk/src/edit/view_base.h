@@ -1,11 +1,19 @@
-#ifndef RDOSTUDIOEDITBASEVIEW_H
-#define RDOSTUDIOEDITBASEVIEW_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      app/rdo_studio_mfc/src/edit/view_base.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      20.02.2003
+  \brief     
+  \indent    4T
+*/
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
+#ifndef _RDO_STUDIO_MFC_EDIT_VIEW_BASE_H_
+#define _RDO_STUDIO_MFC_EDIT_VIEW_BASE_H_
 
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/view.h"
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioEditBaseView
@@ -79,4 +87,4 @@ inline RDOStudioEditBaseDoc* RDOStudioEditBaseView::GetDocument()
 
 //{{AFX_INSERT_LOCATION}}
 
-#endif // RDOSTUDIOEDITBASEVIEW_H
+#endif // _RDO_STUDIO_MFC_EDIT_VIEW_BASE_H_

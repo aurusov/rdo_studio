@@ -1,11 +1,19 @@
-#ifndef RDOSTUDIOEDITDOC_H
-#define RDOSTUDIOEDITDOC_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      app/rdo_studio_mfc/src/edit/document.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      20.02.2003
+  \brief     
+  \indent    4T
+*/
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
+#ifndef _RDO_STUDIO_MFC_EDIT_DOCUMENT_H_
+#define _RDO_STUDIO_MFC_EDIT_DOCUMENT_H_
 
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/edit/document_base.h"
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioEditDoc
@@ -42,4 +50,4 @@ public:
 
 //{{AFX_INSERT_LOCATION}}
 
-#endif // RDOSTUDIOEDITDOC_H
+#endif // _RDO_STUDIO_MFC_EDIT_DOCUMENT_H_
