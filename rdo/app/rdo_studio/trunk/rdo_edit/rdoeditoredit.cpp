@@ -466,10 +466,10 @@ void RDOEditorEdit::completeWord()
 	tstring s;
 	RDOEditorTabCtrl* tab = model->getTab();
 	if ( tab ) {
-//		studioApp.studioGUI->sendMessage( kernel->simulator(), RDOThread::RT_CODECOMP_GET_DATA, &rdoSimulator::RDOThreadCodeComp::GetCodeComp( tab->getCurrentRDOItem(), getCurrentPos(), getCurrentLineNumber(), s ) );
+//		studioApp.m_pStudioGUI->sendMessage( kernel->simulator(), RDOThread::RT_CODECOMP_GET_DATA, &rdoSimulator::RDOThreadCodeComp::GetCodeComp( tab->getCurrentRDOItem(), getCurrentPos(), getCurrentLineNumber(), s ) );
 
 		rdoSimulator::RDOThreadSimulator::GetRTP RTPList;
-		studioApp.studioGUI->sendMessage( kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RTP, &RTPList );
+		studioApp.m_pStudioGUI->sendMessage( kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RTP, &RTPList );
 		std::vector< rdoSimulator::RDOThreadSimulator::RTP >::iterator rtp_it = RTPList.begin();
 		while ( rtp_it != RTPList.end() )
 		{
@@ -478,7 +478,7 @@ void RDOEditorEdit::completeWord()
 		}
 
 		rdoSimulator::RDOThreadSimulator::GetRSS RSSList;
-		studioApp.studioGUI->sendMessage( kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RSS, &RSSList );
+		studioApp.m_pStudioGUI->sendMessage( kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RSS, &RSSList );
 		std::vector< rdoSimulator::RDOThreadSimulator::RSS >::iterator rss_it = RSSList.begin();
 		while ( rss_it != RSSList.end() )
 		{

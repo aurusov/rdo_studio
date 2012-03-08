@@ -103,7 +103,7 @@ int RDOTracerTreeCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
 	
 	BOOL maximized;
-	studioApp.mainFrame->MDIGetActive( &maximized );
+	studioApp.m_pMainFrame->MDIGetActive( &maximized );
 	int delta = maximized ? 1 : 0;
 
 	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 0, &popupMenu );

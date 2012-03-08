@@ -250,7 +250,7 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 void RDOStudioMainFrame::OnDestroy()
 {
-	studioApp.mainFrame = NULL;
+	studioApp.m_pMainFrame = NULL;
 
 	update_stop();
 	style_editor.save();

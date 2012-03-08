@@ -54,7 +54,7 @@ END_MESSAGE_MAP()
 IMPLEMENT_DYNCREATE( RDOTracerLogCtrl, RDOLogCtrl )
 
 RDOTracerLogCtrl::RDOTracerLogCtrl() :
-	RDOLogCtrl( &studioApp.mainFrame->style_trace ),
+	RDOLogCtrl( &studioApp.m_pMainFrame->style_trace ),
 	addingSubitems( false ),
 	bShowMenu( true )
 {
@@ -73,7 +73,7 @@ int RDOTracerLogCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
 	
 	BOOL maximized;
-	studioApp.mainFrame->MDIGetActive( &maximized );
+	studioApp.m_pMainFrame->MDIGetActive( &maximized );
 	int delta = maximized ? 1 : 0;
 
 	appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );

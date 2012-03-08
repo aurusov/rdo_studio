@@ -37,7 +37,7 @@ RPProjectMFC::~RPProjectMFC()
 
 std::ofstream& RPProjectMFC::log() const
 {
-	return studioApp.log;
+	return studioApp.log();
 }
 
 RPPixmap* RPProjectMFC::createBitmap( char* xpm[] )
@@ -74,7 +74,7 @@ void RPProjectMFC::open()
 			load( project_node );
 		}
 	} catch ( rp::RPXMLException& ex ) {
-		studioApp.mainFrame->MessageBox( ex.getError().c_str(), NULL, MB_ICONERROR );
+		studioApp.m_pMainFrame->MessageBox( ex.getError().c_str(), NULL, MB_ICONERROR );
 	}
 }
 
@@ -86,7 +86,7 @@ void RPProjectMFC::save()
 		save_child( project_node );
 		xml_doc.save( "c:\\sample.xml" );
 	} catch ( rp::RPXMLException& ex ) {
-		studioApp.mainFrame->MessageBox( ex.getError().c_str(), NULL, MB_ICONERROR );
+		studioApp.m_pMainFrame->MessageBox( ex.getError().c_str(), NULL, MB_ICONERROR );
 	}
 }
 
@@ -142,7 +142,7 @@ void RPProjectMFC::load( rp::RPXMLNode* node )
 void RPProjectMFC::makeFlowChartWnd( RPObjectFlowChart* flowobj )
 {
 	BOOL maximized = false;
-	studioApp.mainFrame->MDIGetActive( &maximized );
+	studioApp.m_pMainFrame->MDIGetActive( &maximized );
 	PTR(RPDoc) doc = model->getFlowchartDoc();
 	PTR(RPChildFrame) mdi = static_cast<PTR(RPChildFrame)>(doc->getView()->GetParent());
 	mdi->SetIcon( flowobj->getMethod()->getPixmap()->getIcon(), true );

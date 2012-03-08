@@ -210,7 +210,7 @@ RDOLogCtrl::RDOLogCtrl( RDOLogStyle* style ):
 {
 	//if no style specified default style will be used
 	if ( !logStyle ) {
-		logStyle = &studioApp.mainFrame->style_trace;
+		logStyle = &studioApp.m_pMainFrame->style_trace;
 	}
 }
 

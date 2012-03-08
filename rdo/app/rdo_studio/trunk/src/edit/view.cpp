@@ -103,7 +103,7 @@ int RDOStudioEditView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (RDOStudioEditBaseView::OnCreate(lpCreateStruct) == -1) return -1;
 
-	edit->setEditorStyle( &studioApp.mainFrame->style_editor );
+	edit->setEditorStyle( &studioApp.m_pMainFrame->style_editor );
 	edit->Create( NULL, NULL, WS_VISIBLE, CRect(0, 0, 100, 100), this, 0 );
 	edit->setPopupMenu( &popupMenu );
 

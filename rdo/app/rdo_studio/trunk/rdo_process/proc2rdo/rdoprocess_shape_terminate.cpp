@@ -51,7 +51,7 @@ void RPShapeTerminateMJ::generate()
 {
 	m_pParams = rdo::Factory<RPShapeDataBlockTerminate>::create(m_name);
 	m_pParams->setTermInc(m_term_inc);
-	studioApp.studioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_TERMINATE, m_pParams.get());
+	studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_TERMINATE, m_pParams.get());
 	m_pParams = NULL;
 }
 

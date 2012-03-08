@@ -153,7 +153,7 @@ int RDOStudioChartView::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	hbmpInit  = (HBITMAP)::GetCurrentObject( hmemdc, OBJ_BITMAP );
 
 	if ( !previewMode )
-		setStyle( &studioApp.mainFrame->style_chart, false );
+		setStyle( &studioApp.m_pMainFrame->style_chart, false );
 
 	if ( GetDocument() ) {
 		recalcLayout();
@@ -165,7 +165,7 @@ int RDOStudioChartView::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
 	
 	BOOL maximized;
-	studioApp.mainFrame->MDIGetActive( &maximized );
+	studioApp.m_pMainFrame->MDIGetActive( &maximized );
 	int delta = maximized ? 1 : 0;
 
 	appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );

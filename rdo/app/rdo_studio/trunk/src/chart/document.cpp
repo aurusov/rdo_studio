@@ -59,7 +59,7 @@ void RDOStudioChartDocInsertTime::operator ()( RDOTracerValue* val )
 				doc->minTimeOffset = minoff;
 		}
 	}
-	//studioApp.mainFrame->stepProgress();
+	//studioApp.m_pMainFrame->stepProgress();
 }
 
 // --------------------------------------------------------------------------------
@@ -234,11 +234,11 @@ void RDOStudioChartDoc::addSerie( RDOTracerSerie* const serie )
 			
 			//int count;
 			//serie->getValueCount( count );
-			//studioApp.mainFrame->beginProgress( 0, count );
+			//studioApp.m_pMainFrame->beginProgress( 0, count );
 
 			std::for_each( serie->begin(), serie->end(), RDOStudioChartDocInsertTime( this ) );
 
-			//studioApp.mainFrame->endProgress();
+			//studioApp.m_pMainFrame->endProgress();
 			studioApp.EndWaitCursor();
 		} catch( ... ) {
 			studioApp.EndWaitCursor();

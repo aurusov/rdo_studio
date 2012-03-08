@@ -810,7 +810,7 @@ void RDOTracerBase::updateChartsStyles() const
 		while ( pos != NULL ) {
 			CView* pView = (*it)->GetNextView( pos );
 			if ( pView && pView->IsKindOf(RUNTIME_CLASS(RDOStudioChartView)) ) {
-				((RDOStudioChartView*)pView)->setStyle( &studioApp.mainFrame->style_chart );
+				((RDOStudioChartView*)pView)->setStyle( &studioApp.m_pMainFrame->style_chart );
 			}
 		}
 	}

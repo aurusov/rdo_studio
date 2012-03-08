@@ -119,7 +119,7 @@ void RPShapeProcessMJ::generate()
 		it++;
 	}
 
-	studioApp.studioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_PROCESS, m_pParams.get());
+	studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_PROCESS, m_pParams.get());
 	m_pParams = NULL;
 }
 

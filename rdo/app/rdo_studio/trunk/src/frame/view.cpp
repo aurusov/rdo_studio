@@ -47,7 +47,7 @@ RDOStudioFrameView::RDOStudioFrameView():
 	newClientRect( 0, 0, 0, 0 ),
 	xPos( 0 ),
 	yPos( 0 ),
-	bgColor( studioApp.mainFrame->style_frame.theme->backgroundColor ),
+	bgColor( studioApp.m_pMainFrame->style_frame.theme->backgroundColor ),
 	mustBeInit( true ),
 	hwnd( NULL ),
 	hdc( NULL ),
@@ -129,7 +129,7 @@ void RDOStudioFrameView::updateFont()
 
 	LOGFONT lf;
 	memset( &lf, 0, sizeof(lf) );
-	RDOStudioFrameStyle* style = &studioApp.mainFrame->style_frame;
+	RDOStudioFrameStyle* style = &studioApp.m_pMainFrame->style_frame;
 	lf.lfHeight    = -MulDiv( style->font->size, ::GetDeviceCaps( hmemdc, LOGPIXELSY ), 72 );
 	lf.lfWeight    = style->theme->defaultStyle & rdoStyle::RDOStyleFont::BOLD ? FW_BOLD : FW_NORMAL;
 	lf.lfItalic    = style->theme->defaultStyle & rdoStyle::RDOStyleFont::ITALIC;

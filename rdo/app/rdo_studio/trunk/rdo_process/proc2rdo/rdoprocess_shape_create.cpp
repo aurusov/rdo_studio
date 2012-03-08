@@ -151,7 +151,7 @@ void RPShapeCreateMJ::generate()
 	m_pParams->setExp(gexp);
 	m_pParams->setMax(gmax);
 
-	studioApp.studioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_CREATE, m_pParams.get());
+	studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_CREATE, m_pParams.get());
 
 	m_pParams = NULL;
 }

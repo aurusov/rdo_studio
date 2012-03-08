@@ -143,13 +143,13 @@ LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM /*wParam*/, LPARAM lParam )
 	CFindReplaceDialog* pDialog = CFindReplaceDialog::GetNotifier( lParam );
 
 	if ( !pDialog->IsTerminating() ) {
-		studioApp.mainFrame->output.clearFind();
-		studioApp.mainFrame->output.showFind();
+		studioApp.m_pMainFrame->output.clearFind();
+		studioApp.m_pMainFrame->output.showFind();
 		tstring findStr  = pDialog->GetFindString();
 		rbool bMatchCase      = pDialog->MatchCase() ? true : false;
 		rbool bMatchWholeWord = pDialog->MatchWholeWord() ? true : false;
-		studioApp.mainFrame->output.getFind()->setKeyword( findStr, bMatchCase );
-		studioApp.mainFrame->output.appendStringToFind( rdo::format( ID_FINDINMODEL_BEGINMSG, findStr.c_str() ) );
+		studioApp.m_pMainFrame->output.getFind()->setKeyword( findStr, bMatchCase );
+		studioApp.m_pMainFrame->output.appendStringToFind( rdo::format( ID_FINDINMODEL_BEGINMSG, findStr.c_str() ) );
 		int count = 0;
 		for ( int i = 0; i < tab->getItemCount(); i++ ) {
 			RDOEditorEdit* edit = tab->getItemEdit( i );
@@ -159,7 +159,7 @@ LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM /*wParam*/, LPARAM lParam )
 				pos = edit->findPos( findStr, line, bMatchCase, bMatchWholeWord );
 				if ( pos != -1 ) {
 					line = edit->getLineFromPosition( pos );
-					studioApp.mainFrame->output.appendStringToFind( edit->getLine( line ), tab->indexToType( i ), line, pos - edit->getPositionFromLine( line ) );
+					studioApp.m_pMainFrame->output.appendStringToFind( edit->getLine( line ), tab->indexToType( i ), line, pos - edit->getPositionFromLine( line ) );
 					line++;
 					count++;
 				}
@@ -172,7 +172,7 @@ LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM /*wParam*/, LPARAM lParam )
 		} else {
 			s = rdo::format( ID_FINDINMODEL_ENDMSG_NOTFOUND, findStr.c_str() );
 		}
-		studioApp.mainFrame->output.appendStringToFind( s );
+		studioApp.m_pMainFrame->output.appendStringToFind( s );
 	}
 	return 0;
 }

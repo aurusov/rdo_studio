@@ -26,7 +26,7 @@ static rbool clear_after_stop = false;
 // --------------------------------------------------------------------------------
 // -------------------- RDOTracer
 // --------------------------------------------------------------------------------
-RDOTracer::RDOTracer(): RDOTracerBase( "RDOStudioTracerGUI", static_cast<RDOKernelGUI*>(studioApp.studioGUI) )
+RDOTracer::RDOTracer(): RDOTracerBase( "RDOStudioTracerGUI", static_cast<RDOKernelGUI*>(studioApp.m_pStudioGUI) )
 {
 	clear_after_stop = false;
 
@@ -62,13 +62,13 @@ void RDOTracer::proc( RDOThread::RDOMessageInfo& msg )
 			clear();
 			try {
 				setModelName( model->getName() );
-				studioApp.mainFrame->output.appendStringToDebug( rdo::format( IDS_TRACER_GETTING_MODEL_STRUCTURE ) );
+				studioApp.m_pMainFrame->output.appendStringToDebug( rdo::format( IDS_TRACER_GETTING_MODEL_STRUCTURE ) );
 				rdo::textstream model_structure;
 				sendMessage( kernel->simulator(), RT_SIMULATOR_GET_MODEL_STRUCTURE, &model_structure );
 				getModelStructure( model_structure );
-				studioApp.mainFrame->output.appendStringToDebug( rdo::format( IDS_MODEL_RESOURCE_LOADING_NAME_OK ) );
+				studioApp.m_pMainFrame->output.appendStringToDebug( rdo::format( IDS_MODEL_RESOURCE_LOADING_NAME_OK ) );
 			} catch ( ... ) {
-				studioApp.mainFrame->output.appendStringToDebug( rdo::format( IDS_MODEL_RESOURCE_LOADING_NAME_FAILED ) );
+				studioApp.m_pMainFrame->output.appendStringToDebug( rdo::format( IDS_MODEL_RESOURCE_LOADING_NAME_FAILED ) );
 			}
 			break;
 		}
