@@ -26,15 +26,11 @@ protected:
 public:
 	virtual void updateModify() {};
 
-	//{{AFX_VIRTUAL(RDOStudioEditBaseDoc)
-	public:
-	virtual void Serialize(CArchive& ar);
-	virtual BOOL OnNewDocument();
-	//}}AFX_VIRTUAL
-
 protected:
-	//{{AFX_MSG(RDOStudioEditBaseDoc)
-	//}}AFX_MSG
+	virtual BOOL OnNewDocument();
+
+private:
+	virtual void Serialize(CArchive& ar);
 	DECLARE_MESSAGE_MAP()
 
 public:
@@ -46,7 +42,5 @@ public:
 #endif
 
 };
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // _RDO_STUDIO_MFC_EDIT_DOCUMENT_BASE_H_

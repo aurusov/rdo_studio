@@ -46,24 +46,17 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
-public:
-	//{{AFX_VIRTUAL(RDOStudioEditView)
-	public:
+private:
 	virtual void OnDraw(CDC* pDC);  // overridden to draw this view
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
-	protected:
 	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
 	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
 	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
-	//}}AFX_VIRTUAL
 
-protected:
-	//{{AFX_MSG(RDOStudioEditView)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
 
@@ -71,7 +64,5 @@ protected:
 inline RDOStudioEditDoc* RDOStudioEditView::GetDocument()
    { return (RDOStudioEditDoc*)m_pDocument; }
 #endif
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // _RDO_STUDIO_MFC_EDIT_VIEW_H_

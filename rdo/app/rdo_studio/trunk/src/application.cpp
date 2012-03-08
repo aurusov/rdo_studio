@@ -135,7 +135,6 @@ RDOStudioApp studioApp;
 // ON_UPDATE_COMMAND_UI сделано
 
 BEGIN_MESSAGE_MAP(RDOStudioApp, CWinApp)
-	//{{AFX_MSG_MAP(RDOStudioApp)
 	ON_COMMAND(ID_FILE_NEW, OnFileNew)
 	ON_COMMAND(ID_FILE_OPEN, OnFileOpen)
 	ON_COMMAND(ID_FILE_MODEL_SAVE, OnFileSave)
@@ -155,7 +154,6 @@ BEGIN_MESSAGE_MAP(RDOStudioApp, CWinApp)
 	ON_COMMAND(ID_APP_ABOUT, OnAppAbout)
 	ON_UPDATE_COMMAND_UI(ID_FILE_NEW, OnUpdateFileNew)
 	ON_UPDATE_COMMAND_UI(ID_FILE_OPEN, OnUpdateFileOpen)
-	//}}AFX_MSG_MAP
 	ON_COMMAND_RANGE( ID_FILE_REOPEN_1, ID_FILE_REOPEN_10, OnProjectReopen )
 	ON_COMMAND(ID_FILE_PRINT_SETUP, CWinApp::OnFilePrintSetup)
 END_MESSAGE_MAP()
@@ -860,19 +858,15 @@ BOOL RDOStudioApp::ProcessMessageFilter( int code, LPMSG lpMsg )
 // -------------------- RDOAboutDlg
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP( RDOAboutDlg, CDialog )
-	//{{AFX_MSG_MAP(RDOAboutDlg)
 	ON_BN_CLICKED(IDC_ABOUT_EMAIL, OnAboutEmail)
 	ON_BN_CLICKED(IDC_ABOUT_WEB, OnAboutWeb)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOAboutDlg::RDOAboutDlg():
 	CDialog( IDD )
 {
-	//{{AFX_DATA_INIT(RDOAboutDlg)
 	m_caption = _T("");
 	m_developer = _T("");
-	//}}AFX_DATA_INIT
 	CString s;
 	s.Format( IDS_DEVELOPERS );
 	m_developer = s;
@@ -926,12 +920,10 @@ RDOAboutDlg::~RDOAboutDlg()
 void RDOAboutDlg::DoDataExchange( CDataExchange* pDX )
 {
 	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(RDOAboutDlg)
 	DDX_Control(pDX, IDC_ABOUT_WEB, m_web);
 	DDX_Control(pDX, IDC_ABOUT_EMAIL, m_email);
 	DDX_Text(pDX, IDC_ABOUT_CAPTION, m_caption);
 	DDX_Text(pDX, IDC_DEVELOPERS, m_developer);
-	//}}AFX_DATA_MAP
 }
 
 void RDOAboutDlg::OnAboutEmail() 

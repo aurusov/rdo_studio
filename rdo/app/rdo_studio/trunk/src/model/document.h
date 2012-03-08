@@ -19,18 +19,10 @@ private:
 
 	RDOStudioModelDoc();
 
-public:
-	//{{AFX_VIRTUAL(RDOStudioModelDoc)
-	public:
+private:
 	virtual BOOL OnNewDocument();
 	virtual void Serialize(CArchive& ar);
-	protected:
 	virtual BOOL SaveModified();
-	//}}AFX_VIRTUAL
-
-protected:
-	//{{AFX_MSG(RDOStudioModelDoc)
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
 public:
@@ -51,7 +43,5 @@ public:
 #endif
 
 };
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // RDOSTUDIOMODELDOC_H

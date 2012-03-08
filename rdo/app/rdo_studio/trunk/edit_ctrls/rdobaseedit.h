@@ -110,8 +110,15 @@ protected:
 	void updateAllGUI();
 	void updateBookmarksGUI();
 
-	//{{AFX_MSG(RDOBaseEdit)
+protected:
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
+	afx_msg void OnIsSelected(CCmdUI* pCmdUI);
+	virtual BOOL OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult );
+
+private:
+	virtual BOOL PreCreateWindow( CREATESTRUCT& cs );
+	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
+
 	afx_msg void OnSetFocus( CWnd *pOldWnd );
 	afx_msg void OnSize( UINT nType, int cx, int cy );
 	afx_msg void OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu );
@@ -156,18 +163,9 @@ protected:
 	afx_msg void OnUpdateZoomIn( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateZoomOut( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateZoomReset( CCmdUI *pCmdUI );
-	afx_msg void OnIsSelected(CCmdUI* pCmdUI);
 	afx_msg void OnSearchGotoLine();
-	//}}AFX_MSG
 	afx_msg LRESULT OnFindReplaceMsg( WPARAM wParam, LPARAM lParam );
 	DECLARE_MESSAGE_MAP()
-
-	//{{AFX_VIRTUAL(RDOBaseEdit)
-	protected:
-	virtual BOOL PreCreateWindow( CREATESTRUCT& cs );
-	virtual BOOL OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult );
-	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
-	//}}AFX_VIRTUAL
 
 public:
 	RDOBaseEdit();
@@ -244,7 +242,5 @@ public:
 };
 
 }; // namespace rdoEditCtrl
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // _RDO_STUDIO_MFC_EDIT_CTRLS_RDOBASEEDIT_H_

@@ -163,6 +163,4 @@ public:
 	void updateStyles() const;
 };
 
-//{{AFX_INSERT_LOCATION}}
-
 #endif // RDOSTUDIOFRAMEMANAGER_H

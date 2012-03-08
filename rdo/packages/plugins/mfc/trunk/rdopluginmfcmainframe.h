@@ -68,7 +68,9 @@ protected:
 	HWND  hwnd;
 	HFONT font;
 
-	//{{AFX_MSG(RDOPluginMFCLogCtrl)
+private:
+	virtual BOOL PreCreateWindow( CREATESTRUCT& cs );
+
 	afx_msg int  OnCreate( LPCREATESTRUCT lpCreateStruct );
 	afx_msg void OnSize( UINT nType, int cx, int cy );
 	afx_msg void OnPaint();
@@ -82,12 +84,7 @@ protected:
 	afx_msg BOOL OnMouseWheel( UINT nFlags, short zDelta, CPoint pt );
 	afx_msg void OnLButtonDown( UINT nFlags, CPoint point );
 	afx_msg void OnDestroy();
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
-
-	//{{AFX_VIRTUAL(RDOPluginMFCLogCtrl)
-	virtual BOOL PreCreateWindow( CREATESTRUCT& cs );
-	//}}AFX_VIRTUAL
 
 public:
 	RDOPluginMFCLogCtrl();
@@ -124,15 +121,10 @@ public:
 
 	void insertLine( const char* line );
 
-protected:
-	//{{AFX_VIRTUAL(RDOPluginMFCMainFrame)
-	public:
+private:
 	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
-	protected:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(RDOPluginMFCMainFrame)
 	afx_msg void OnPluginClose();
 	afx_msg void OnModelBuild();
 	afx_msg void OnModelRun();
@@ -169,10 +161,7 @@ protected:
 	afx_msg void OnUpdateModelClose(CCmdUI* pCmdUI);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnClose();
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // RDOPLUGINMFCMAINFRAME_H

@@ -26,17 +26,11 @@ public:
 	virtual ~RDOStudioDockWnd();
 
 protected:
-	//{{AFX_VIRTUAL(RDOStudioDockWnd)
-	protected:
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	//}}AFX_VIRTUAL
-
-	//{{AFX_MSG(RDOStudioDockWnd)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	//}}AFX_MSG
+
+private:
+	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	DECLARE_MESSAGE_MAP()
 };
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // _RDO_STUDIO_MFC_DOCK_WND_H_

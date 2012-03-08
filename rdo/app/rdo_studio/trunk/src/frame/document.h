@@ -34,19 +34,10 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
-public:
-	//{{AFX_VIRTUAL(RDOStudioFrameDoc)
-	public:
+private:
 	virtual void Serialize(CArchive& ar);
 	virtual BOOL OnNewDocument();
-	//}}AFX_VIRTUAL
-
-protected:
-	//{{AFX_MSG(RDOStudioFrameDoc)
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // RDOSTUDIOFRAMEDOC_H

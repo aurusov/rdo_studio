@@ -40,9 +40,7 @@ static char* wordCharacters = "0123456789_$abcdefghijklmnopqrstuvwxyzABCDEFGHIJK
 // ---------------
 
 BEGIN_MESSAGE_MAP( RDOEditorBaseEdit, RDOBaseEdit )
-	//{{AFX_MSG_MAP(RDOEditorBaseEdit)
 	ON_WM_CREATE()
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOEditorBaseEdit::RDOEditorBaseEdit():

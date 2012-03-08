@@ -39,8 +39,8 @@ protected:
 
 	CMenu popupMenu;
 	bool bShowMenu;
-	
-	//{{AFX_MSG(RDOTracerLogCtrl)
+
+private:
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
 	afx_msg void OnFind();
 	afx_msg void OnFindNext();
@@ -53,14 +53,10 @@ protected:
 	afx_msg void OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu );
 	afx_msg void OnContextMenu( CWnd* pWnd, CPoint pos );
 	afx_msg void OnHelpKeyword();
-	//}}AFX_MSG
 	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );
 	DECLARE_MESSAGE_MAP()
 	
-	//{{AFX_VIRTUAL(RDOTracerLogCtrl)
-	//}}AFX_VIRTUAL
-
 public:
 	RDOTracerLogCtrl();
 	virtual ~RDOTracerLogCtrl();

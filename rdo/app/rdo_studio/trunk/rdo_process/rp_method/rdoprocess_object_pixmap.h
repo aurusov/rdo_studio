@@ -28,7 +28,4 @@ public:
 	void loadFromXML(CREF(pugi::xml_node) node);
 };
 
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
 #endif // RDO_PROCESS_OBJECT_PIXMAP_H

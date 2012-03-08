@@ -60,6 +60,4 @@ public:
 
 }; // namespace rdoEditCtrl
 
-//{{AFX_INSERT_LOCATION}}
-
 #endif // _RDO_STUDIO_MFC_EDIT_CTRLS_RDOBUILDEDITSTYLE_H_

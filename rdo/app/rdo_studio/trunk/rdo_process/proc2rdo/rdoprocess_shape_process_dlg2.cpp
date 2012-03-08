@@ -18,9 +18,7 @@ static char THIS_FILE[] = __FILE__;
 RPShapeProcessDlg2_MJ::RPShapeProcessDlg2_MJ(CWnd* pParent,RPShapeProcessMJ* ppParent,RPShapeProcessDlg1_MJ* pParentDlg)
 	: CDialog(RPShapeProcessDlg2_MJ::IDD, pParent)
 {
-	//{{AFX_DATA_INIT(RPShapeProcessDlg2_MJ)
 	m_combo_res_value = _T("");
-	//}}AFX_DATA_INIT
 	pParentMJ = ppParent;
 	pParentDlgMJ = pParentDlg;
 }
@@ -38,17 +36,12 @@ BOOL RPShapeProcessDlg2_MJ::OnInitDialog()
 void RPShapeProcessDlg2_MJ::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(RPShapeProcessDlg2_MJ)
 	DDX_Control(pDX, IDC_COMBO1, m_combo_res_control);
 	DDX_CBString(pDX, IDC_COMBO1, m_combo_res_value);
-	//}}AFX_DATA_MAP
 }
 
-
 BEGIN_MESSAGE_MAP(RPShapeProcessDlg2_MJ, CDialog)
-	//{{AFX_MSG_MAP(RPShapeProcessDlg2_MJ)
 	ON_CBN_CLOSEUP(IDC_COMBO1, OnCloseupCombo1)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////

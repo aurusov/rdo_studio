@@ -32,26 +32,21 @@ static char THIS_FILE[] = __FILE__;
 // -------------------- RDOStudioChartOptionsChart
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioChartOptionsChart, CPropertyPage)
-	//{{AFX_MSG_MAP(RDOStudioChartOptionsChart)
 	ON_EN_CHANGE(IDC_CHART_TITLE_EDIT, OnUpdateModify)
 	ON_BN_CLICKED(IDC_DRAW_LEGEND_CHECK, OnUpdateModify)
 	ON_CBN_SELCHANGE(IDC_AXIS_SERIES, OnUpdateModify)
 	ON_EN_CHANGE(IDC_IDC_VAL_COUNT_Y_EDIT, OnUpdateModify)
 	ON_EN_CHANGE(IDC_IDC_VAL_COUNT_X_EDIT, OnUpdateModify)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioChartOptionsChart::RDOStudioChartOptionsChart( RDOStudioChartOptions& _sheet ):
 	CPropertyPage( IDD ),
 	sheet( &_sheet )
 {
-
-	//{{AFX_DATA_INIT(RDOStudioChartOptionsChart)
 	m_ValCountX = sheet->view->valueCountX;
 	m_ValCountY = sheet->view->valueCountY;
 	m_ChartTitle = sheet->view->GetDocument()->getTitle().c_str();
 	m_AxisSerie = -1;
-	//}}AFX_DATA_INIT
 
 	m_psp.dwFlags |= PSP_HASHELP;
 }
@@ -64,14 +59,12 @@ void RDOStudioChartOptionsChart::DoDataExchange(CDataExchange* pDX)
 {
 	CPropertyPage::DoDataExchange(pDX);
 
-	//{{AFX_DATA_MAP(RDOStudioChartOptionsChart)
 	DDX_Control(pDX, IDC_AXIS_SERIES, m_AxisSerieCombo);
 	DDX_Control(pDX, IDC_DRAW_LEGEND_CHECK, m_DrawLegend);
 	DDX_Text(pDX, IDC_IDC_VAL_COUNT_X_EDIT, m_ValCountX);
 	DDX_Text(pDX, IDC_IDC_VAL_COUNT_Y_EDIT, m_ValCountY);
 	DDX_Text(pDX, IDC_CHART_TITLE_EDIT, m_ChartTitle);
 	DDX_CBIndex(pDX, IDC_AXIS_SERIES, m_AxisSerie);
-	//}}AFX_DATA_MAP
 }
 
 BOOL RDOStudioChartOptionsChart::OnInitDialog()
@@ -199,7 +192,6 @@ void RDOStudioChartOptionsChart::apply() const
 // -------------------- RDOStudioChartOptionsSeries
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioChartOptionsSeries, CPropertyPage)
-	//{{AFX_MSG_MAP(RDOStudioChartOptionsSeries)
 	ON_EN_CHANGE(IDC_SERIE_TITLE_EDIT, OnUpdateModify)
 	ON_BN_CLICKED(IDC_COLOR_BUTTON, OnColorButton)
 	ON_CBN_SELCHANGE(IDC_SERIES_COMBO, OnSelchangeSeriesCombo)
@@ -209,7 +201,6 @@ BEGIN_MESSAGE_MAP(RDOStudioChartOptionsSeries, CPropertyPage)
 	ON_EN_CHANGE(IDC_MARKER_SIZE_EDIT, OnUpdateModify)
 	ON_BN_CLICKED(IDC_LEGEND_CHECK, OnUpdateModify)
 	ON_BN_CLICKED(IDC_TRANSP_MARKER_CHECK, OnUpdateModify)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioChartOptionsSeries::RDOStudioChartOptionsSeries( RDOStudioChartOptions& _sheet ):
@@ -217,10 +208,7 @@ RDOStudioChartOptionsSeries::RDOStudioChartOptionsSeries( RDOStudioChartOptions&
 	sheet( &_sheet ),
 	serie( NULL )
 {
-
-	//{{AFX_DATA_INIT(RDOStudioChartOptionsSeries)
 	m_sizeMarker = 2;
-	//}}AFX_DATA_INIT
 
 	m_psp.dwFlags |= PSP_HASHELP;
 }
@@ -247,7 +235,6 @@ void RDOStudioChartOptionsSeries::DoDataExchange(CDataExchange* pDX)
 {
 	CPropertyPage::DoDataExchange(pDX);
 
-	//{{AFX_DATA_MAP(RDOStudioChartOptionsSeries)
 	DDX_Control(pDX, IDC_TRANSP_MARKER_CHECK, m_TranspMarker);
 	DDX_Control(pDX, IDC_SERIES_COMBO, m_SerieCombo);
 	DDX_Control(pDX, IDC_LEGEND_CHECK, m_DrawInLegend);
@@ -256,7 +243,6 @@ void RDOStudioChartOptionsSeries::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_MARKER_COMBO, m_Marker);
 	DDX_Control(pDX, IDC_SERIE_TITLE_EDIT, m_SerieTitle);
 	DDX_Text(pDX, IDC_MARKER_SIZE_EDIT, m_sizeMarker);
-	//}}AFX_DATA_MAP
 
 	DDX_Control( pDX, IDC_COLOR_COMBO, ColorCB );
 }
@@ -427,9 +413,7 @@ void RDOStudioChartOptionsSeries::OnColorButton()
 // -------------------- RDOStudioChartOptions
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioChartOptions, CPropertySheet)
-	//{{AFX_MSG_MAP(RDOStudioChartOptions)
 	ON_WM_HELPINFO()
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioChartOptions::RDOStudioChartOptions( RDOStudioChartView* _view ):

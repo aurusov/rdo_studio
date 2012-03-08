@@ -24,19 +24,10 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
-public:
-	//{{AFX_VIRTUAL(RDOStudioFrameOptionsCtrl)
-	public:
+private:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	//}}AFX_VIRTUAL
-
-protected:
-	//{{AFX_MSG(RDOStudioFrameOptionsCtrl)
 	afx_msg void OnPaint();
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // RDOSTUDIOFRAMEOPTIONSCTRL_H

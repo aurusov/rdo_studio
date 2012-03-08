@@ -20,17 +20,10 @@ public:
 	RDOPluginMFCMainFrame* frame;
 //	CMutex closeMutex;
 
-protected:
-	//{{AFX_VIRTUAL(RDOPluginMFC)
-	//}}AFX_VIRTUAL
-
-	//{{AFX_MSG(RDOPluginMFC)
-	//}}AFX_MSG
+private:
 	DECLARE_MESSAGE_MAP()
 };
 
 extern RDOPluginMFC pluginMFCApp;
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // RDOPLUGINMFC_H

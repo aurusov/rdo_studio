@@ -17,11 +17,9 @@ static char THIS_FILE[] = __FILE__;
 RPShapeDecideDlg1::RPShapeDecideDlg1(CWnd* pParent,RPShapeDecide* ppParent)
 	: CDialog(RPShapeDecideDlg1::IDD, pParent)
 {
-	//{{AFX_DATA_INIT(RPShapeDecideDlg1)
 	m_name = _T("");
 	mp_true = 0.9;
 	mp_false = 0.1;
-	//}}AFX_DATA_INIT
 
 	pParentMJ = ppParent;
 }
@@ -45,17 +43,13 @@ return TRUE;
 void RPShapeDecideDlg1::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(RPShapeDecideDlg1)
 	DDX_Text(pDX, IDC_EDIT1, m_name);
 	DDX_Text(pDX, IDC_EDIT2, mp_true);
 	DDX_Text(pDX, IDC_EDIT3, mp_false);
-	//}}AFX_DATA_MAP
 }
 
 
 BEGIN_MESSAGE_MAP(RPShapeDecideDlg1, CDialog)
-	//{{AFX_MSG_MAP(RPShapeDecideDlg1)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////

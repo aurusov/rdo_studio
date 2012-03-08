@@ -15,9 +15,7 @@ static char THIS_FILE[] = __FILE__;
 // -------------------- RDOStudioFrameOptionsCtrl
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioFrameOptionsCtrl, CWnd)
-	//{{AFX_MSG_MAP(RDOStudioFrameOptionsCtrl)
 	ON_WM_PAINT()
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioFrameOptionsCtrl::RDOStudioFrameOptionsCtrl():

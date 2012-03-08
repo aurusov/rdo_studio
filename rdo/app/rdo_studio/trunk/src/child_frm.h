@@ -30,19 +30,12 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
-public:
-	//{{AFX_VIRTUAL(RDOStudioChildFrame)
-	public:
+private:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
-	//}}AFX_VIRTUAL
 
 protected:
-	//{{AFX_MSG(RDOStudioChildFrame)
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // _RDO_STUDIO_MFC_CHILD_FRM_H_

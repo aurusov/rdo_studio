@@ -26,10 +26,8 @@ static char THIS_FILE[] = __FILE__;
 IMPLEMENT_DYNAMIC(RDOStudioStatusBar, CStatusBar)
 
 BEGIN_MESSAGE_MAP(RDOStudioStatusBar, CStatusBar)
-	//{{AFX_MSG_MAP(RDOStudioStatusBar)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioStatusBar::RDOStudioStatusBar():

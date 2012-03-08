@@ -44,7 +44,4 @@ void appendMenu (PTR(CMenu) pFrom, const int from_index, PTR(CMenu) pTo);
 void eraseMenu  (PTR(CMenu) pFrom, const int from_index = -1 );
 int  roundDouble(const double val);
 
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
 #endif // !defined(AFX_STDAFX_H__CC79E6D9_586A_4A94_BC75_BA68368A3C59__INCLUDED_)

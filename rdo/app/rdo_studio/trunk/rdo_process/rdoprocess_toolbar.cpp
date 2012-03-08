@@ -14,9 +14,7 @@ static char THIS_FILE[] = __FILE__;
 // -------------------- RPToolbarToolTip
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RPToolbarToolTip, CToolBar)
-	//{{AFX_MSG_MAP(RPToolbarToolTip)
 	ON_WM_SIZE()
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 void RPToolbarToolTip::updateToolTips()
@@ -126,9 +124,7 @@ void RDOProcToolBar::init( CWnd* parent, unsigned int tbResID, unsigned int tbDi
 // -------------------- RPToolBar
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RPToolBar, RDOProcToolBar)
-	//{{AFX_MSG_MAP(RPToolBar)
 	ON_WM_PAINT()
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RPToolBar::RPToolBar():

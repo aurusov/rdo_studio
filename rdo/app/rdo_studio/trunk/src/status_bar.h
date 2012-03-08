@@ -44,17 +44,10 @@ public:
 	int setStep( const int step = 1 ) { return progress.SetStep( step ); };
 	int stepIt() { return progress.StepIt(); };
 
-protected:
-	//{{AFX_VIRTUAL(RDOStudioStatusBar)
-	//}}AFX_VIRTUAL
-
-	//{{AFX_MSG(RDOStudioStatusBar)
+private:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // _RDO_STUDIO_MFC_STATUS_BAR_H_

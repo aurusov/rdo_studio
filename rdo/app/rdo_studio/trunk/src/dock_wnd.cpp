@@ -24,9 +24,7 @@ static char THIS_FILE[] = __FILE__;
 // -------------------- RDOStudioDockWnd
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioDockWnd, CSizingControlBarG)
-	//{{AFX_MSG_MAP(RDOStudioDockWnd)
 	ON_WM_CREATE()
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioDockWnd::RDOStudioDockWnd()

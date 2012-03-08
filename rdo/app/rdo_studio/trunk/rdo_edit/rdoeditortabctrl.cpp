@@ -30,9 +30,7 @@ using namespace rdoEditor;
 // -------------------- RDOEditorTabCtrl
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP( RDOEditorTabCtrl, RDOTabCtrl )
-	//{{AFX_MSG_MAP(RDOEditorTabCtrl)
 	ON_WM_CREATE()
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOEditorTabCtrl::RDOEditorTabCtrl( RDOStudioEditBaseView* _view ):

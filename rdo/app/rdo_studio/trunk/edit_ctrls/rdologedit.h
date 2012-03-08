@@ -62,17 +62,15 @@ protected:
 	void clearSelectLine();
 	bool hasSelectLine() const;
 
-	//{{AFX_MSG(RDOLogEdit)
+protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+
+private:
+	virtual BOOL OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult );
+
 	afx_msg void OnGotoNext();
 	afx_msg void OnGotoPrev();
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
-
-	//{{AFX_VIRTUAL(RDOLogEdit)
-	protected:
-	virtual BOOL OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult );
-	//}}AFX_VIRTUAL
 
 public:
 	RDOLogEdit();
@@ -88,7 +86,5 @@ public:
 };
 
 }; // namespace rdoEditCtrl
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // _RDO_STUDIO_MFC_EDIT_CTRLS_RDOLOGEDIT_H_

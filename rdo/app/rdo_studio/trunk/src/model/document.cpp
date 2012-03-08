@@ -21,8 +21,6 @@ static char THIS_FILE[] = __FILE__;
 IMPLEMENT_DYNCREATE(RDOStudioModelDoc, RDOStudioEditBaseDoc)
 
 BEGIN_MESSAGE_MAP(RDOStudioModelDoc, RDOStudioEditBaseDoc)
-	//{{AFX_MSG_MAP(RDOStudioModelDoc)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioModelDoc::RDOStudioModelDoc():

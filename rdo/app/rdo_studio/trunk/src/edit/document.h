@@ -26,16 +26,9 @@ protected:
 
 	DECLARE_DYNCREATE(RDOStudioEditDoc)
 
-public:
-	//{{AFX_VIRTUAL(RDOStudioEditDoc)
-	public:
+private:
 	virtual BOOL OnNewDocument();
 	virtual void Serialize(CArchive& ar);
-	//}}AFX_VIRTUAL
-
-protected:
-	//{{AFX_MSG(RDOStudioEditDoc)
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
 public:
@@ -47,7 +40,5 @@ public:
 #endif
 
 };
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // _RDO_STUDIO_MFC_EDIT_DOCUMENT_H_

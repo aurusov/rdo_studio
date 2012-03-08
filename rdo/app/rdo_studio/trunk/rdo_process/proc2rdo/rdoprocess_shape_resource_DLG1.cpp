@@ -17,10 +17,8 @@ static char THIS_FILE[] = __FILE__;
 RPShapeResourceDLG1_MJ::RPShapeResourceDLG1_MJ (CWnd* pParent, RPShapeResource_MJ* ppParent)
 	: CDialog(RPShapeResourceDLG1_MJ::IDD, pParent)
 {
-	//{{AFX_DATA_INIT(RPShapeResourceDLG1_MJ)
 	m_name = _T("");
 	m_dlgamount = 0;
-	//}}AFX_DATA_INIT
 	pParentMJ = ppParent;
 }
 
@@ -28,12 +26,9 @@ RPShapeResourceDLG1_MJ::RPShapeResourceDLG1_MJ (CWnd* pParent, RPShapeResource_M
 void RPShapeResourceDLG1_MJ::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(RPShapeResourceDLG1_MJ)
 	DDX_Text(pDX, IDC_EDIT1, m_name);
 	DDX_Text(pDX, IDC_EDIT2, m_dlgamount);
-	//}}AFX_DATA_MAP
 }
-
 
 BOOL RPShapeResourceDLG1_MJ::OnInitDialog()
 {
@@ -51,8 +46,6 @@ return TRUE;
 
 
 BEGIN_MESSAGE_MAP(RPShapeResourceDLG1_MJ, CDialog)
-	//{{AFX_MSG_MAP(RPShapeResourceDLG1_MJ)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////

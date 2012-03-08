@@ -29,16 +29,11 @@ private:
 	RDOStudioEditBaseView*        view;
 	rdoEditCtrl::RDOBaseEditGroup group;
 
-protected:
-	//{{AFX_MSG(RDOEditorTabCtrl)
-	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-
-	//{{AFX_VIRTUAL(RDOEditorTabCtrl)
-	protected:
+private:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	//}}AFX_VIRTUAL
+
+	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
+	DECLARE_MESSAGE_MAP()
 
 public:
 	RDOEditorTabCtrl( RDOStudioEditBaseView* _view );
@@ -57,7 +52,5 @@ public:
 };
 
 }; // namespace rdoEditor
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITORTABCTRL_H_

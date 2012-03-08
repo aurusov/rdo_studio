@@ -31,7 +31,6 @@ public:
 	virtual void OnOK();
 
 protected:
-	//{{AFX_DATA(RDOStudioModelNew)
 	enum { IDD = IDD_MODEL_NEW };
 	CButton  m_ok;
 	CString  m_modelName;
@@ -39,22 +38,16 @@ protected:
 	CString  m_info;
 	BOOL     m_comment;
 	int      m_modelTemplate;
-	//}}AFX_DATA
-
-	//{{AFX_VIRTUAL(RDOStudioModelNew)
 
 private:
 	virtual void DoDataExchange(PTR(CDataExchange) pDX);
 	virtual BOOL OnNotify      (WPARAM wParam, LPARAM lParam, PTR(LRESULT) pResult);
-	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(RDOStudioModelNew)
 	afx_msg void   OnModelPathButton();
 	afx_msg void   OnChangeModelName();
 	virtual BOOL   OnInitDialog     ();
 	afx_msg void   OnModelEmpty     ();
 	afx_msg HBRUSH OnCtlColor       (PTR(CDC) pDC, PTR(CWnd) pWnd, UINT nCtlColor);
-	//}}AFX_MSG
 
 	CString getMyDocFolder() const;
 	void    updateInfo    ();
@@ -67,7 +60,5 @@ private:
 
 	DECLARE_MESSAGE_MAP()
 };
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // _RDOSTUDIOMODEL_NEW_H_

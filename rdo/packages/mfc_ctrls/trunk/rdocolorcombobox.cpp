@@ -11,8 +11,6 @@ static char THIS_FILE[] = __FILE__;
 // -------------------- RDOColorComboBox
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP( RDOColorComboBox, CComboBox )
-	//{{AFX_MSG_MAP(RDOColorComboBox)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOColorComboBox::RDOColorComboBox(): CComboBox()

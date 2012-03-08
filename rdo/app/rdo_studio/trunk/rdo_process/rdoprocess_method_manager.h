@@ -102,24 +102,18 @@ protected:
 	rpMethod::RPMethod* method_last;
 	CImageList im_list;
 
-	//{{AFX_DATA(RPMethodNewDlg)
 	CListCtrlDraw methods;
 	CStatic       desc;
-	//}}AFX_DATA
 
-	//{{AFX_VIRTUAL(RPMethodNewDlg)
-	protected:
+private:
 	virtual void DoDataExchange( CDataExchange* pDX );
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
-	//}}AFX_VIRTUAL
 
-protected:
-	//{{AFX_MSG(RPMethodNewDlg)
 	afx_msg void OnAboutEmail();
 	afx_msg void OnAboutWeb();
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
+
 public:
 	afx_msg void OnMethodListItemChanged(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnMethodListDblClick(NMHDR *pNMHDR, LRESULT *pResult);

@@ -101,8 +101,12 @@ protected:
 	HFONT hfontLog;
 	void setFont( const bool needRedraw = true );
 
-	//{{AFX_MSG(RDOLogCtrl)
+protected:
 	afx_msg int  OnCreate( LPCREATESTRUCT lpCreateStruct );
+
+private:
+	virtual BOOL PreCreateWindow( CREATESTRUCT& cs );
+
 	afx_msg void OnSize( UINT nType, int cx, int cy );
 	afx_msg void OnPaint();
 	afx_msg void OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar );
@@ -115,12 +119,7 @@ protected:
 	afx_msg BOOL OnMouseWheel( UINT nFlags, short zDelta, CPoint pt );
 	afx_msg void OnLButtonDown( UINT nFlags, CPoint point );
 	afx_msg void OnDestroy();
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
-
-	//{{AFX_VIRTUAL(RDOLogCtrl)
-	virtual BOOL PreCreateWindow( CREATESTRUCT& cs );
-	//}}AFX_VIRTUAL
 
 public:
 	RDOLogCtrl( RDOLogStyle* style = NULL );

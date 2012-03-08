@@ -138,16 +138,10 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
-protected:
-	//{{AFX_VIRTUAL(RDOStudioMainFrame)
-	public:
+private:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	protected:
 	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
-	//}}AFX_VIRTUAL
 
-protected:
-	//{{AFX_MSG(RDOStudioMainFrame)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnViewFileToolbar();
 	afx_msg void OnViewEditToolbar();
@@ -191,7 +185,6 @@ protected:
 	afx_msg void OnEnterMenuLoop( BOOL bIsTrackPopupMenu );
 	afx_msg void OnExitMenuLoop( BOOL bIsTrackPopupMenu );
 	afx_msg void OnEnterIdle(UINT nWhy, CWnd* pWho);
-	//}}AFX_MSG
 	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateInsertOverwriteStatusBar( CCmdUI *pCmdUI );
@@ -205,7 +198,5 @@ protected:
 	afx_msg void OnMethodUpdateRange( CCmdUI* pCmdUI );
 	DECLARE_MESSAGE_MAP()
 };
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // _RDO_STUDIO_MFC_MAIN_FRM_H_

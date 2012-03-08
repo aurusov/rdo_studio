@@ -21,11 +21,9 @@
 // --------------------------------------------------------------------------------
 class RDODropSource : public COleDropSource
 {
-protected:
-
-	//{{AFX_VIRTUAL(RDODropSource)
+private:
 	virtual SCODE GiveFeedback( DROPEFFECT dropEffect );
-	//}}AFX_VIRTUAL
+
 public:
 	RDODropSource() : COleDropSource() {};
 	virtual ~RDODropSource() {};
@@ -63,11 +61,9 @@ protected:
 	void addToNewChart( const HTREEITEM hitem ) const;
 	bool findInCharts( const HTREEITEM hitem ) const;
 
-	//{{AFX_VIRTUAL(RDOTracerTreeCtrl)
+private:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(RDOTracerTreeCtrl)
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
 	afx_msg void OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu );
 	afx_msg void OnAddToNewChart();
@@ -78,7 +74,6 @@ protected:
 	afx_msg void OnUpdateChartFindincharts(CCmdUI* pCmdUI);
 	afx_msg void OnChartFindincharts();
 	afx_msg void OnHelpKeyword();
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
 public:
@@ -96,8 +91,5 @@ public:
 	void deleteChildren( const RDOTracerTreeItem* parent );
 	void clear();
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
 #endif // _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOTRACERTREECTRL_H_

@@ -16,24 +16,14 @@ public:
 
 	PTR(RPShapeTerminateMJ) m_pShape;
 
-	//{{AFX_DATA(RPShapeTerminateDlg1_MJ)
 	enum { IDD = IDD_DIALOG_TERMINATE_1_MJ };
 	CString    m_name;
 	int        m_terminateCounter;
-	//}}AFX_DATA
 
-	//{{AFX_VIRTUAL(RPShapeTerminateDlg1_MJ)
-protected:
+private:
 	virtual void DoDataExchange(PTR(CDataExchange) pDX); // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-	//{{AFX_MSG(RPShapeTerminateDlg1_MJ)
 	virtual void OnOK();
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
 #endif // !defined(AFX_RDOPROCESS_SHAPE_TERMINATE_DLG1_MJ_H__0B17943D_987C_48BF_AEDD_79F2B8DB6275__INCLUDED_)

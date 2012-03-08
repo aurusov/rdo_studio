@@ -11,16 +11,12 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 BEGIN_MESSAGE_MAP(RPShapeTerminateDlg1_MJ, CDialog)
-	//{{AFX_MSG_MAP(RPShapeTerminateDlg1_MJ)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RPShapeTerminateDlg1_MJ::RPShapeTerminateDlg1_MJ(PTR(CWnd) pWndParent, PTR(RPShapeTerminateMJ) pShape)
 	: CDialog(RPShapeTerminateDlg1_MJ::IDD, pWndParent)
 {
-	//{{AFX_DATA_INIT(RPShapeTerminateDlg1_MJ)
 	m_name = _T("");
-	//}}AFX_DATA_INIT
 	m_pShape = pShape;
 	ASSERT(m_pShape);
 }
@@ -28,10 +24,8 @@ RPShapeTerminateDlg1_MJ::RPShapeTerminateDlg1_MJ(PTR(CWnd) pWndParent, PTR(RPSha
 void RPShapeTerminateDlg1_MJ::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(RPShapeTerminateDlg1_MJ)
 	DDX_Text(pDX, IDC_EDIT1, m_name            );
 	DDX_Text(pDX, IDC_EDIT3, m_terminateCounter);
-	//}}AFX_DATA_MAP
 }
 
 BOOL RPShapeTerminateDlg1_MJ::OnInitDialog()

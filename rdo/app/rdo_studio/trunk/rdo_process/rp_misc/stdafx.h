@@ -26,7 +26,4 @@
 #include "utils/rdotypes.h"
 #include "utils/rdomacros.h"
 
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
 #endif // !defined(AFX_STDAFX_H__82A34CDB_C337_4E96_8424_3C8870BB3D4C__INCLUDED_)

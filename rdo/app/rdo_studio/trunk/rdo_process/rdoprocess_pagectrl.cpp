@@ -14,13 +14,11 @@ static char THIS_FILE[] = __FILE__;
 // -------------------- RPPageCtrl
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RPPageCtrl, CWnd)
-	//{{AFX_MSG_MAP(RPPageCtrl)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
 	ON_WM_TIMER()
 	ON_WM_DESTROY()
 	ON_WM_PAINT()
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RPPageCtrl::RPPageCtrl():
@@ -291,13 +289,11 @@ void RPPageCtrl::OnTimer( UINT nIDEvent )
 // -------------------- RPPageCtrlItemLabel
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RPPageCtrlItemLabel, CWnd)
-	//{{AFX_MSG_MAP(RPPageCtrlItemLabel)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
 	ON_WM_PAINT()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_MOUSEMOVE()
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RPPageCtrlItemLabel::RPPageCtrlItemLabel():
@@ -444,11 +440,9 @@ void RPPageCtrlItemLabel::updateOver( const CPoint& point )
 // -------------------- RPPageCtrlItem
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RPPageCtrlItem, CWnd)
-	//{{AFX_MSG_MAP(RPPageCtrlItem)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
 	ON_NOTIFY(LVN_BEGINDRAG, 1, RPPageCtrlItem::OnListCtrlBeginDrag)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RPPageCtrlItem::RPPageCtrlItem():

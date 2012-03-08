@@ -12,18 +12,11 @@ public:
 	RPDockWnd();
 	virtual ~RPDockWnd();
 
-protected:
-	//{{AFX_VIRTUAL(RPDockWnd)
-	protected:
+private:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(RPDockWnd)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // RDO_PROCESS_DOCKWND_H

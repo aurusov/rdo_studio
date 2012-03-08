@@ -36,24 +36,20 @@ using namespace rdoTracerLog;
 // -------------------- RDOStudioOptionsGeneral
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioOptionsGeneral, CPropertyPage)
-	//{{AFX_MSG_MAP(RDOStudioOptionsGeneral)
 	ON_BN_CLICKED(IDC_FILEASSOCIATION_SETUP_CHECK, OnUpdateModify)
 	ON_BN_CLICKED(IDC_FILEASSOCIATION_CHECKINFUTURE_CHECK, OnUpdateModify)
 	ON_BN_CLICKED(IDC_OPENLASTPROJECT_CHECK, OnUpdateModify)
 	ON_BN_CLICKED(IDC_SHOWCAPTIONFULLNAME_CHECK, OnUpdateModify)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioOptionsGeneral::RDOStudioOptionsGeneral( RDOStudioOptions& _sheet ):
 	CPropertyPage( IDD ),
 	sheet( &_sheet )
 {
-	//{{AFX_DATA_INIT(RDOStudioOptionsGeneral)
 	m_setup = FALSE;
 	m_checkInFuture = FALSE;
 	m_openLastProject = FALSE;
 	m_showFullName = FALSE;
-	//}}AFX_DATA_INIT
 
 	m_setup           = studioApp.getFileAssociationSetup();
 	m_checkInFuture   = studioApp.getFileAssociationCheckInFuture();
@@ -70,12 +66,10 @@ RDOStudioOptionsGeneral::~RDOStudioOptionsGeneral()
 void RDOStudioOptionsGeneral::DoDataExchange(CDataExchange* pDX) 
 {
 	CPropertyPage::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(RDOStudioOptionsGeneral)
 	DDX_Check(pDX, IDC_FILEASSOCIATION_SETUP_CHECK, m_setup);
 	DDX_Check(pDX, IDC_FILEASSOCIATION_CHECKINFUTURE_CHECK, m_checkInFuture);
 	DDX_Check(pDX, IDC_OPENLASTPROJECT_CHECK, m_openLastProject);
 	DDX_Check(pDX, IDC_SHOWCAPTIONFULLNAME_CHECK, m_showFullName);
-	//}}AFX_DATA_MAP
 }
 
 void RDOStudioOptionsGeneral::OnOK() 
@@ -103,7 +97,6 @@ void RDOStudioOptionsGeneral::OnUpdateModify()
 // -------------------- RDOStudioOptionsEditor
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioOptionsEditor, CPropertyPage)
-	//{{AFX_MSG_MAP(RDOStudioOptionsEditor)
 	ON_BN_CLICKED(IDC_USEAUTOCOMPLETE_CHECK, OnUseAutoCompleteCheck)
 	ON_BN_CLICKED(IDC_SHOWFULLLIST_RADIO, OnUpdateModify)
 	ON_BN_CLICKED(IDC_CLEARAUTO_CHECK, OnClearAutoCheck)
@@ -112,14 +105,12 @@ BEGIN_MESSAGE_MAP(RDOStudioOptionsEditor, CPropertyPage)
 	ON_BN_CLICKED(IDC_MARGIN_FOLD_CHECK, OnUpdateModify)
 	ON_BN_CLICKED(IDC_MARGIN_BOOKMARK_CHECK, OnUpdateModify)
 	ON_BN_CLICKED(IDC_MARGIN_LINENUMBER_CHECK, OnUpdateModify)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioOptionsEditor::RDOStudioOptionsEditor( RDOStudioOptions& _sheet ):
 	CPropertyPage( IDD ),
 	sheet( &_sheet )
 {
-	//{{AFX_DATA_INIT(RDOStudioOptionsEditor)
 	m_bufferClearAuto = FALSE;
 	m_bufferDelay = 0;
 	m_codecompUse = FALSE;
@@ -127,7 +118,6 @@ RDOStudioOptionsEditor::RDOStudioOptionsEditor( RDOStudioOptions& _sheet ):
 	m_marginFold = FALSE;
 	m_marginBookmark = FALSE;
 	m_marginLineNumber = FALSE;
-	//}}AFX_DATA_INIT
 
 	m_bufferClearAuto = sheet->style_editor.buffer->canClearBuffer ? 1 : 0;
 	m_bufferDelay     = sheet->style_editor.buffer->clearBufferDelay;
@@ -150,7 +140,6 @@ void RDOStudioOptionsEditor::DoDataExchange(CDataExchange* pDX)
 {
 	CPropertyPage::DoDataExchange(pDX);
 
-	//{{AFX_DATA_MAP(RDOStudioOptionsEditor)
 	DDX_Check(pDX, IDC_CLEARAUTO_CHECK, m_bufferClearAuto);
 	DDX_Text(pDX, IDC_CLEARAUTO_EDIT, m_bufferDelay);
 	DDV_MinMaxInt(pDX, m_bufferDelay, 1, 100);
@@ -159,7 +148,6 @@ void RDOStudioOptionsEditor::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_MARGIN_FOLD_CHECK, m_marginFold);
 	DDX_Check(pDX, IDC_MARGIN_BOOKMARK_CHECK, m_marginBookmark);
 	DDX_Check(pDX, IDC_MARGIN_LINENUMBER_CHECK, m_marginLineNumber);
-	//}}AFX_DATA_MAP
 }
 
 BOOL RDOStudioOptionsEditor::OnInitDialog()
@@ -229,7 +217,6 @@ void RDOStudioOptionsEditor::OnUpdateModify()
 // -------------------- RDOStudioOptionsTabs
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioOptionsTabs, CPropertyPage)
-	//{{AFX_MSG_MAP(RDOStudioOptionsTabs)
 	ON_BN_CLICKED(IDC_USETABS_CHECK, OnUpdateModify)
 	ON_EN_CHANGE(IDC_TABSIZE_EDIT, OnUpdateModify)
 	ON_BN_CLICKED(IDC_TABINDENTS_CHECK, OnUpdateModify)
@@ -237,21 +224,18 @@ BEGIN_MESSAGE_MAP(RDOStudioOptionsTabs, CPropertyPage)
 	ON_BN_CLICKED(IDC_BACKSPACEUNTABS_RADIO, OnUpdateModify)
 	ON_BN_CLICKED(IDC_BACKSPACEUNINDENTS_RADIO, OnUpdateModify)
 	ON_BN_CLICKED(IDC_AUTOINDENT_CHECK, OnUpdateModify)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioOptionsTabs::RDOStudioOptionsTabs( RDOStudioOptions& _sheet ):
 	CPropertyPage( IDD ),
 	sheet( &_sheet )
 {
-	//{{AFX_DATA_INIT(RDOStudioOptionsTabs)
 	m_tabUse = FALSE;
 	m_tabSize = 0;
 	m_tabUseTabIndent = FALSE;
 	m_tabIndentSize = 0;
 	m_tabBackspaceUntabs = -1;
 	m_tabAutoIndent = FALSE;
-	//}}AFX_DATA_INIT
 
 	m_tabUse             = sheet->style_editor.tab->useTabs ? 1 : 0;
 	m_tabSize            = sheet->style_editor.tab->tabSize;
@@ -271,7 +255,6 @@ void RDOStudioOptionsTabs::DoDataExchange(CDataExchange* pDX)
 {
 	CPropertyPage::DoDataExchange(pDX);
 
-	//{{AFX_DATA_MAP(RDOStudioOptionsTabs)
 	DDX_Check(pDX, IDC_USETABS_CHECK, m_tabUse);
 	DDX_Text(pDX, IDC_TABSIZE_EDIT, m_tabSize);
 	DDV_MinMaxInt(pDX, m_tabSize, 1, 100);
@@ -280,7 +263,6 @@ void RDOStudioOptionsTabs::DoDataExchange(CDataExchange* pDX)
 	DDV_MinMaxInt(pDX, m_tabIndentSize, 1, 100);
 	DDX_Check(pDX, IDC_AUTOINDENT_CHECK, m_tabAutoIndent);
 	DDX_Check(pDX, IDC_TABINDENTS_CHECK, m_tabUseTabIndent);
-	//}}AFX_DATA_MAP
 }
 
 void RDOStudioOptionsTabs::OnOK()
@@ -332,7 +314,6 @@ RDOBookmarkStyle RDOStudioOptionsColorsStyles::null_bookmarkstyle = RDOBOOKMARKS
 RDOFoldStyle     RDOStudioOptionsColorsStyles::null_foldstyle     = RDOFOLDS_NONE;
 
 BEGIN_MESSAGE_MAP(RDOStudioOptionsColorsStyles, CPropertyPage)
-	//{{AFX_MSG_MAP(RDOStudioOptionsColorsStyles)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_STYLEITEM_TREE, OnStyleItemChanged)
 	ON_CBN_SELCHANGE(IDC_PREVIEWAS_COMBO, OnPreviewAsChanged)
 	ON_CBN_SELCHANGE(IDC_FONTNAME_COMBO, OnFontNameChanged)
@@ -356,7 +337,6 @@ BEGIN_MESSAGE_MAP(RDOStudioOptionsColorsStyles, CPropertyPage)
 	ON_CBN_SELCHANGE(IDC_LEGEND_FONTSIZE_COMBO, OnUpdateModify)
 	ON_EN_CHANGE(IDC_TICKWIDTH_EDIT, OnUpdateModify)
 	ON_BN_CLICKED(IDC_WARNING_CHECK, OnWarningCheck)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioOptionsColorsStyles::RDOStudioOptionsColorsStyles( RDOStudioOptions& _sheet ):
@@ -372,9 +352,6 @@ RDOStudioOptionsColorsStyles::RDOStudioOptionsColorsStyles( RDOStudioOptions& _s
 	use_all_bg_color( false ),
 	null_font_style( RDOStyleFont::NONE )
 {
-	//{{AFX_DATA_INIT(RDOStudioOptionsColorsStyles)
-	//}}AFX_DATA_INIT
-
 	STYLEObject* object;
 	object = new STYLEObject( STYLEObject::all, all_font_name, all_font_size );
 	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_ALLWINDOW ), null_font_style, all_fg_color, all_bg_color ) );
@@ -510,7 +487,6 @@ void RDOStudioOptionsColorsStyles::DoDataExchange(CDataExchange* pDX)
 {
 	CPropertyPage::DoDataExchange(pDX);
 
-	//{{AFX_DATA_MAP(RDOStudioOptionsColorsStyles)
 	DDX_Control(pDX, IDC_WARNING_CHECK, m_warning);
 	DDX_Control(pDX, IDC_COMMENTGROUP_CHECK, m_commentGroupButton);
 	DDX_Control(pDX, IDC_TITLE_FONTSIZE_STATIC, m_title_fontSizeStatic);
@@ -542,7 +518,6 @@ void RDOStudioOptionsColorsStyles::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_PREVIEWAS_COMBO, m_previewAs);
 	DDX_Control(pDX, IDC_FONTNAME_COMBO, m_fontName);
 	DDX_Control(pDX, IDC_STYLEITEM_TREE, m_styleItem);
-	//}}AFX_DATA_MAP
 
 	DDX_Control( pDX, IDC_FGCOLOR_COMBO, fgColorCB );
 	DDX_Control( pDX, IDC_BGCOLOR_COMBO, bgColorCB );
@@ -1667,7 +1642,6 @@ void RDOStudioOptionsColorsStyles::updatePropOfAllObject()
 // -------------------- RDOStudioOptionsPlugins
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioOptionsPlugins, CPropertyPage)
-	//{{AFX_MSG_MAP(RDOStudioOptionsPlugins)
 	ON_NOTIFY(LVN_COLUMNCLICK, IDC_PLUGIN_LIST, OnPluginListColumnClick)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_PLUGIN_LIST, OnPluginListSelectChanged)
 	ON_CBN_SELCHANGE(IDC_PLUGIN_RUNMODE_COMBOBOX, OnPluginRunModeComboBoxChanged)
@@ -1677,7 +1651,6 @@ BEGIN_MESSAGE_MAP(RDOStudioOptionsPlugins, CPropertyPage)
 	ON_BN_CLICKED(IDC_PLUGIN_RESTORESTATE_CHECKBOX, OnPluginRestoreStateCheckBoxClicked)
 	ON_WM_TIMER()
 	ON_WM_DESTROY()
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioOptionsPlugins::RDOStudioOptionsPlugins( RDOStudioOptions& _sheet ):
@@ -1690,9 +1663,6 @@ RDOStudioOptionsPlugins::RDOStudioOptionsPlugins( RDOStudioOptions& _sheet ):
 	sortPluginDescriptionAsceding( true ),
 	timer( 0 )
 {
-	//{{AFX_DATA_INIT(RDOStudioOptionsPlugins)
-	//}}AFX_DATA_INIT
-
 	m_psp.dwFlags |= PSP_HASHELP;
 }
 
@@ -1703,7 +1673,6 @@ RDOStudioOptionsPlugins::~RDOStudioOptionsPlugins()
 void RDOStudioOptionsPlugins::DoDataExchange(CDataExchange* pDX) 
 {
 	CPropertyPage::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(RDOStudioOptionsPlugins)
 	DDX_Control(pDX, IDC_PLUGIN_RESTORESTATE_CHECKBOX, m_restoreStateCheckBox);
 	DDX_Control(pDX, IDC_PLUGIN_STOP, m_stopButton);
 	DDX_Control(pDX, IDC_PLUGIN_START, m_startButton);
@@ -1711,7 +1680,6 @@ void RDOStudioOptionsPlugins::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_PLUGIN_RUNMODE_BUTTON, m_runModeButton);
 	DDX_Control(pDX, IDC_PLUGIN_RUNMODE_STATIC, m_runModeStatic);
 	DDX_Control(pDX, IDC_PLUGIN_LIST, m_pluginList);
-	//}}AFX_DATA_MAP
 }
 
 static int CALLBACK ComparePluginName( LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort )
@@ -2082,9 +2050,7 @@ void RDOStudioOptionsPlugins::OnTimer( UINT nIDEvent )
 // -------------------- RDOStudioOptions
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioOptions, CPropertySheet)
-	//{{AFX_MSG_MAP(RDOStudioOptions)
 	ON_WM_HELPINFO()
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioOptions::RDOStudioOptions():

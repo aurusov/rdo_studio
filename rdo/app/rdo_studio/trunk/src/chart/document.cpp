@@ -68,8 +68,6 @@ void RDOStudioChartDocInsertTime::operator ()( RDOTracerValue* val )
 IMPLEMENT_DYNCREATE(RDOStudioChartDoc, CDocument)
 
 BEGIN_MESSAGE_MAP(RDOStudioChartDoc, CDocument)
-	//{{AFX_MSG_MAP(RDOStudioChartDoc)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioChartDoc::RDOStudioChartDoc( const bool preview )

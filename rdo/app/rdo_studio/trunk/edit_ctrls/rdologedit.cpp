@@ -71,11 +71,9 @@ std::string RDOLogEditLineInfo::getMessage() const
 // -------------------- RDOLogEdit
 // ---------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP( RDOLogEdit, RDOBaseEdit )
-	//{{AFX_MSG_MAP(RDOLogEdit)
 	ON_WM_CREATE()
 	ON_COMMAND(ID_BUILDFINDLOG_GOTO_NEXT, OnGotoNext)
 	ON_COMMAND(ID_BUILDFINDLOG_GOTO_PREV, OnGotoPrev)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOLogEdit::RDOLogEdit():

@@ -11,12 +11,10 @@ static char THIS_FILE[] = __FILE__;
 // -------------------- RDOLink
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP( RDOLink, CWnd )
-	//{{AFX_MSG_MAP(RDOLink)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_MOUSEMOVE()
 	ON_WM_PAINT()
 	ON_WM_KILLFOCUS()
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOLink::RDOLink():

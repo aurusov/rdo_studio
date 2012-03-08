@@ -67,16 +67,12 @@ protected:
 	std::string title;
 
 public:
-	//{{AFX_VIRTUAL(RDOStudioChartDoc)
-	public:
+	virtual void SetTitle( LPCTSTR lpszTitle );
+
+private:
 	virtual void Serialize(CArchive& ar);
 	virtual BOOL OnNewDocument();
-	virtual void SetTitle( LPCTSTR lpszTitle );
-	//}}AFX_VIRTUAL
 
-protected:
-	//{{AFX_MSG(RDOStudioChartDoc)
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
 public:

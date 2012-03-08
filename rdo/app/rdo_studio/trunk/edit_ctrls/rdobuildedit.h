@@ -46,16 +46,11 @@ class RDOBuildEdit: public RDOLogEdit
 protected:
 	virtual void updateEdit( rdoEditor::RDOEditorEdit* edit, const RDOLogEditLineInfo* lineInfo );
 
-protected:
-	//{{AFX_MSG(RDOBuildEdit)
+private:
 	afx_msg void OnHelpKeyword();
-	//}}AFX_MSG
 	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );
 	DECLARE_MESSAGE_MAP()
-
-	//{{AFX_VIRTUAL(RDOBuildEdit)
-	//}}AFX_VIRTUAL
 
 public:
 	RDOBuildEdit();
@@ -65,7 +60,5 @@ public:
 };
 
 }; // namespace rdoEditCtrl
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // _RDO_STUDIO_MFC_EDIT_CTRLS_RDOBUILDEDIT_H_

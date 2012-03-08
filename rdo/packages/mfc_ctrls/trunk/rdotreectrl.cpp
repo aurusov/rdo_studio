@@ -13,8 +13,6 @@ static char THIS_FILE[] = __FILE__;
 IMPLEMENT_DYNAMIC( RDOTreeCtrl, CTreeCtrl )
 
 BEGIN_MESSAGE_MAP( RDOTreeCtrl, CTreeCtrl )
-	//{{AFX_MSG_MAP(RDOTreeCtrl)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOTreeCtrl::RDOTreeCtrl(): CTreeCtrl()

@@ -109,16 +109,13 @@ public:
 	static std::string getFullHelpFileName( std::string str = "RAO-studio.chm" );
 	static bool shortToLongPath( const std::string& shortPath, std::string& longPath );
 
-	//{{AFX_VIRTUAL(RDOStudioApp)
-	public:
+private:
 	virtual BOOL InitInstance();
 	virtual int ExitInstance();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual BOOL OnIdle(LONG lCount);
 	virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
-	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(RDOStudioApp)
 	afx_msg void OnFileNew();
 	afx_msg void OnWindowNew();
 	afx_msg void OnFileOpen();
@@ -139,7 +136,6 @@ public:
 	afx_msg void OnAppAbout();
 	afx_msg void OnUpdateFileNew(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateFileOpen(CCmdUI* pCmdUI);
-	//}}AFX_MSG
 	afx_msg void OnProjectReopen( UINT nID );
 	DECLARE_MESSAGE_MAP()
 };
@@ -154,30 +150,22 @@ public:
 	virtual ~RDOAboutDlg();
 
 protected:
-	//{{AFX_DATA(RDOAboutDlg)
 	enum { IDD = IDD_ABOUT };
 	RDOLink	m_web;
 	RDOLink	m_email;
 	CString	m_caption;
 	CString	m_developer;
-	//}}AFX_DATA
 
-	//{{AFX_VIRTUAL(RDOAboutDlg)
-	protected:
+private:
 	virtual void DoDataExchange( CDataExchange* pDX );
-	//}}AFX_VIRTUAL
 
 protected:
-	//{{AFX_MSG(RDOAboutDlg)
 	afx_msg void OnAboutEmail();
 	afx_msg void OnAboutWeb();
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
 
 // --------------------------------------------------------------------------------
 extern RDOStudioApp studioApp;
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // _RDO_STUDIO_MFC_APPLICATION_H_

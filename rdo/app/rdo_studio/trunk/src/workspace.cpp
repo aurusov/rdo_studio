@@ -28,9 +28,7 @@ static char THIS_FILE[] = __FILE__;
 // -------------------- RDOStudioWorkspace
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioWorkspace, RDOStudioDockWnd)
-	//{{AFX_MSG_MAP(RDOStudioWorkspace)
 	ON_WM_CREATE()
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioWorkspace::RDOStudioWorkspace():

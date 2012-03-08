@@ -33,10 +33,8 @@ using namespace rdoEditCtrl;
 // ON_UPDATE_COMMAND_UI сделано
 
 BEGIN_MESSAGE_MAP( RDODebugEdit, RDOBaseEdit )
-	//{{AFX_MSG_MAP(RDODebugEdit)
 	ON_WM_CREATE()
 	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
-	//}}AFX_MSG_MAP
 	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR , OnUpdateCoordStatusBar )
 	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar )
 END_MESSAGE_MAP()

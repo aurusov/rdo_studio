@@ -19,11 +19,9 @@ static char THIS_FILE[] = __FILE__;
 // -------------------- RDOStudioFrameTreeCtrl
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioFrameTreeCtrl, RDOTreeCtrl)
-	//{{AFX_MSG_MAP(RDOStudioFrameTreeCtrl)
 	ON_WM_CREATE()
 	ON_WM_LBUTTONDBLCLK()
 	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioFrameTreeCtrl::RDOStudioFrameTreeCtrl()

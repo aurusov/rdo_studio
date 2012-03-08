@@ -19,7 +19,6 @@ public:
 	RPShapeCreateDlg1_MJ(CWnd* pParent = NULL,RPShapeCreateMJ* ppParent=NULL);   // standard constructor
 virtual BOOL OnInitDialog();
 // Dialog Data
-	//{{AFX_DATA(RPShapeCreateDlg1_MJ)
 	enum { IDD = IDD_DIALOG_CREATE_1_MJ };
 	CEdit		m_create_dlg1_exp_control_MJ;
 	CEdit		m_create_dlg1_disp_control_MJ;
@@ -35,30 +34,14 @@ virtual BOOL OnInitDialog();
 	double		m_dlgdisp;
 	double		m_dlgmax;
 	int			m_dlgbase_gen;
-	//}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(RPShapeCreateDlg1_MJ)
-	protected:
+private:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	
-	//}}AFX_VIRTUAL
 
-// Implementation
-protected:
-
-	// Generated message map functions
-	//{{AFX_MSG(RPShapeCreateDlg1_MJ)
 	afx_msg void OnCbnSelchange1();
 	afx_msg void OnButton1();
 	virtual void OnOK();
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
 #endif // !defined(AFX_RDOPROCESS_SHAPE_CREATE_DLG1_MJ_H__CBBEC246_A9B1_4006_BBD0_AD6A6ED903F2__INCLUDED_)

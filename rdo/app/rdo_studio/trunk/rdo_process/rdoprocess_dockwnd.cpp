@@ -11,9 +11,7 @@ static char THIS_FILE[] = __FILE__;
 // -------------------- RPDockWnd
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RPDockWnd, CSizingControlBarG)
-	//{{AFX_MSG_MAP(RPDockWnd)
 	ON_WM_CREATE()
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RPDockWnd::RPDockWnd()

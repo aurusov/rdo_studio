@@ -63,15 +63,11 @@ public:
 	RPObjectFlowChart& getObjectFlowChart() const { return *flowobj; }
 	void setName( const rp::string& value );
 
-	//{{AFX_VIRTUAL(RPFlowChart)
-	public:
 	virtual BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
-	protected:
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	//}}AFX_VIRTUAL
 
-protected:
-	//{{AFX_MSG(RPFlowChart)
+private:
+	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+
 	afx_msg void OnPaint();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
@@ -85,11 +81,7 @@ protected:
 	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
 #endif // RDO_PROCESS_FLOWCHART_H

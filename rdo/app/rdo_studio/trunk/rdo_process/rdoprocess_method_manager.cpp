@@ -217,8 +217,6 @@ void RPMethodManager::close()
 // -------------------- RPMethodNewDlg
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP( RPMethodNewDlg, CDialog )
-	//{{AFX_MSG_MAP(RPMethodNewDlg)
-	//}}AFX_MSG_MAP
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_METHOD_LIST, RPMethodNewDlg::OnMethodListItemChanged)
 	ON_NOTIFY(NM_DBLCLK, IDC_METHOD_LIST, RPMethodNewDlg::OnMethodListDblClick)
 	ON_NOTIFY(NM_CLICK, IDC_METHOD_LIST, RPMethodNewDlg::OnMethodListClick)
@@ -228,8 +226,6 @@ RPMethodNewDlg::RPMethodNewDlg():
 	CDialog( IDD_METHOD_NEW ),
 	method_last( NULL )
 {
-	//{{AFX_DATA_INIT(RPMethodNewDlg)
-	//}}AFX_DATA_INIT
 }
 
 RPMethodNewDlg::~RPMethodNewDlg()
@@ -239,10 +235,8 @@ RPMethodNewDlg::~RPMethodNewDlg()
 void RPMethodNewDlg::DoDataExchange( CDataExchange* pDX )
 {
 	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(RPMethodNewDlg)
 	DDX_Control(pDX, IDC_METHOD_LIST, methods);
 	DDX_Control(pDX, IDC_METHOD_DESC, desc);
-	//}}AFX_DATA_MAP
 }
 
 static int CALLBACK MethodsCompareProc( LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort )

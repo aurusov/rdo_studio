@@ -38,19 +38,14 @@ public:
 
 	void selectFirst();
 
-protected:
-	//{{AFX_VIRTUAL(RPPageCtrl)
-	protected:
+private:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(RPPageCtrl)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnTimer(UINT nIDEvent);
 	afx_msg void OnDestroy();
 	afx_msg void OnPaint();
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
 
@@ -74,19 +69,14 @@ protected:
 	CRect getCloseBMPRect();
 	void  updateOver( const CPoint& point );
 
-protected:
-	//{{AFX_VIRTUAL(RPPageCtrlItemLabel)
-	protected:
+private:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(RPPageCtrlItemLabel)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnPaint();
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
 
@@ -111,22 +101,14 @@ protected:
 public:
 	void setPixmap( RPPixmap& bmp );
 
-protected:
-	//{{AFX_VIRTUAL(RPPageCtrlItem)
-	public:
+private:
 	virtual BOOL DestroyWindow();
-	protected:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(RPPageCtrlItem)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnListCtrlBeginDrag(NMHDR *pNMHDR, LRESULT *pResult);
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // RDO_PROCESS_PAGECTRL_H

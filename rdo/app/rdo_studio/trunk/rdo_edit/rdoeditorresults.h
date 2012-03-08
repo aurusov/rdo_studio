@@ -23,17 +23,12 @@ namespace rdoEditor {
 // --------------------------------------------------------------------------------
 class RDOEditorResults: public RDOEditorBaseEdit
 {
-protected:
-	//{{AFX_MSG(RDOEditorResults)
+private:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnHelpKeyword();
-	//}}AFX_MSG
 	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );
 	DECLARE_MESSAGE_MAP()
-
-	//{{AFX_VIRTUAL(RDOEditorResults)
-	//}}AFX_VIRTUAL
 
 public:
 	RDOEditorResults();
@@ -45,7 +40,5 @@ public:
 };
 
 }; // namespace rdoEditor
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITORRESULTS_H_

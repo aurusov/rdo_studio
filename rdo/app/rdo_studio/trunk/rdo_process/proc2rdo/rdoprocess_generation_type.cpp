@@ -15,25 +15,19 @@ static char THIS_FILE[] = __FILE__;
 RP_GENERATION_TYPE_MJ::RP_GENERATION_TYPE_MJ(CWnd* pParent /*=NULL*/)
 	: CDialog(RP_GENERATION_TYPE_MJ::IDD, pParent)
 {
-	//{{AFX_DATA_INIT(RP_GENERATION_TYPE_MJ)
 	m_time_value = 0.0;
-	//}}AFX_DATA_INIT
 }
 
 void RP_GENERATION_TYPE_MJ::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(RP_GENERATION_TYPE_MJ)
 	DDX_Control(pDX, IDC_COMBO1, m_combo);
 	DDX_Control(pDX, IDC_EDIT1, m_time);
 	DDX_Text(pDX, IDC_EDIT1, m_time_value);
-	//}}AFX_DATA_MAP
 }
 
 BEGIN_MESSAGE_MAP(RP_GENERATION_TYPE_MJ, CDialog)
-	//{{AFX_MSG_MAP(RP_GENERATION_TYPE_MJ)
 	ON_CBN_CLOSEUP(IDC_COMBO1, OnCloseupCombo1)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////

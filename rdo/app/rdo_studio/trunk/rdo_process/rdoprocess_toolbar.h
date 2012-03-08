@@ -19,9 +19,8 @@ private:
 		}
 		return CToolBar::PreTranslateMessage( pMsg );
 	}
-	//{{AFX_MSG(RPToolBar)
+
 	afx_msg void OnSize( UINT nType, int cx, int cy );
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
 
@@ -71,16 +70,9 @@ public:
 	bool     empty_pen;
 	bool     empty_text;
 
-protected:
-	//{{AFX_VIRTUAL(RPToolBar)
-	//}}AFX_VIRTUAL
-
-	//{{AFX_MSG(RPToolBar)
+private:
 	afx_msg void OnPaint();
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // RDO_PROCESS_TOOLBAR_H

@@ -32,10 +32,8 @@ using namespace rdoEditor;
 // ON_UPDATE_COMMAND_UI сделано
 
 BEGIN_MESSAGE_MAP( RDOEditorResults, RDOEditorBaseEdit )
-	//{{AFX_MSG_MAP(RDOEditorResults)
 	ON_WM_CREATE()
 	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
-	//}}AFX_MSG_MAP
 	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR , OnUpdateCoordStatusBar )
 	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar )
 END_MESSAGE_MAP()

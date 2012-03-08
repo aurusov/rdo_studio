@@ -10,16 +10,7 @@
 
 class RPListBox: public CListBox
 {
-public:
-	//{{AFX_DATA(RPListBox)
-	//}}AFX_DATA
-
-	//{{AFX_VIRTUAL(RPListBox)
-	//}}AFX_VIRTUAL
-
-protected:
-	//{{AFX_MSG(RPListBox)
-	//}}AFX_MSG
+private:
 	DECLARE_MESSAGE_MAP()
 };
 
@@ -32,7 +23,7 @@ public:
 
 	RPShapeProcessMJ* pParentMJ; // ссылка на родителя
 // Dialog Data
-	//{{AFX_DATA(RPShapeProcessDlg1_MJ)
+
 	enum { IDD = IDD_DIALOG_PROCESS_1_MJ };
 	CComboBox	m_gtype;
 	CComboBox	m_gqueque;
@@ -55,23 +46,16 @@ public:
 	double	m_gmin;
 	double	m_gmax;
 	int		m_gbase_gen;
-	//}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(RPShapeProcessDlg1_MJ)
-	protected:
+private:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
 
 // Implementation
 protected:
 	CBrush brush1;
 	CBrush brush2;
 
-	// Generated message map functions
-	//{{AFX_MSG(RPShapeProcessDlg1_MJ)
+private:
 	afx_msg void OnCbnSelchange1();
 	afx_msg void OnCbnSelchange3();
 	afx_msg void OnButton1();
@@ -79,11 +63,7 @@ protected:
 	afx_msg void OnCbnSelchange2();
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnButton2();
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
 #endif // !defined(AFX_RDOPROCESS_SHAPE_PROCESS_DLG1_MJ_H__0DF5DDB9_3E18_409E_A23C_A0A0F476FFFB__INCLUDED_)

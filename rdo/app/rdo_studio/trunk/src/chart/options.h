@@ -28,7 +28,6 @@ private:
 	RDOStudioChartOptions* sheet;
 
 protected:
-	//{{AFX_DATA(RDOStudioChartOptionsChart)
 	enum { IDD = IDD_CHART_OPTIONS_CHART };
 	CComboBox	m_AxisSerieCombo;
 	CButton	m_DrawLegend;
@@ -36,24 +35,18 @@ protected:
 	int		m_ValCountY;
 	CString	m_ChartTitle;
 	int		m_AxisSerie;
-	//}}AFX_DATA
 
-	//{{AFX_VIRTUAL(RDOStudioChartOptionsChart)
-	public:
+private:
+	bool checkValues() const;
+
 	virtual void OnOK();
 	virtual BOOL OnInitDialog();
 	virtual BOOL OnKillActive();
-	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
-	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(RDOStudioChartOptionsChart)
 	afx_msg void OnUpdateModify();
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
-
-	bool checkValues() const;
 
 public:
 	RDOStudioChartOptionsChart( RDOStudioChartOptions& _sheet );
@@ -78,7 +71,6 @@ protected:
 	bool getModified() const;
 	void restoreValues();
 
-	//{{AFX_DATA(RDOStudioChartOptionsSeries)
 	enum { IDD = IDD_CHART_OPTIONS_SERIES };
 	CButton	m_TranspMarker;
 	CComboBox	m_SerieCombo;
@@ -88,26 +80,20 @@ protected:
 	CComboBox	m_Marker;
 	CEdit	m_SerieTitle;
 	int		m_sizeMarker;
-	//}}AFX_DATA
 
-	//{{AFX_VIRTUAL(RDOStudioChartOptionsSeries)
-	public:
+private:
+	bool checkValues() const;
+
 	virtual void OnOK();
 	virtual BOOL OnInitDialog();
 	virtual BOOL OnKillActive();
-	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
-	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(RDOStudioChartOptionsSeries)
 	afx_msg void OnUpdateModify();
 	afx_msg void OnColorButton();
 	afx_msg void OnSelchangeSeriesCombo();
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
-
-	bool checkValues() const;
 
 public:
 	RDOStudioChartOptionsSeries( RDOStudioChartOptions& _sheet );
@@ -135,20 +121,13 @@ private:
 	static int CALLBACK AddContextHelpProc(HWND hwnd, UINT message, LPARAM lParam);
 	void onHelpButton();
 
-protected:
-	//{{AFX_VIRTUAL(RDOStudioChartOptions)
-	//}}AFX_VIRTUAL
-
-	//{{AFX_MSG(RDOStudioChartOptions)
+private:
 	afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
 public:
 	RDOStudioChartOptions( RDOStudioChartView* _view );
 	virtual ~RDOStudioChartOptions();
 };
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // _RDO_STUDIO_MFC_CHART_OPTIONS_H_

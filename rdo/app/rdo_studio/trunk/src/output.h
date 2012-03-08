@@ -82,16 +82,9 @@ public:
 	void updateLogConnection() const;
 	void updateStyles() const;
 
-public:
-	//{{AFX_VIRTUAL(RDOStudioOutput)
-	//}}AFX_VIRTUAL
-
-	//{{AFX_MSG(RDOStudioOutput)
+private:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // _RDO_STUDIO_MFC_OUTPUT_H_

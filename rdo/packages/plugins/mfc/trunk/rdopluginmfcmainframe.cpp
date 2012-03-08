@@ -57,7 +57,6 @@ static int vertBorder = 1;
 static int horzBorder = 1;
 
 BEGIN_MESSAGE_MAP( RDOPluginMFCLogCtrl, CWnd )
-	//{{AFX_MSG_MAP(RDOPluginMFCLogCtrl)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
 	ON_WM_PAINT()
@@ -71,7 +70,6 @@ BEGIN_MESSAGE_MAP( RDOPluginMFCLogCtrl, CWnd )
 	ON_WM_MOUSEWHEEL()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_DESTROY()
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOPluginMFCLogCtrl::RDOPluginMFCLogCtrl():
@@ -983,7 +981,6 @@ void RDOPluginMFCLogCtrl::OnDestroy()
 IMPLEMENT_DYNAMIC(RDOPluginMFCMainFrame, CFrameWnd)
 
 BEGIN_MESSAGE_MAP(RDOPluginMFCMainFrame, CFrameWnd)
-	//{{AFX_MSG_MAP(RDOPluginMFCMainFrame)
 	ON_COMMAND(ID_PLUGIN_CLOSE, OnPluginClose)
 	ON_COMMAND(ID_MODEL_BUILD, OnModelBuild)
 	ON_COMMAND(ID_MODEL_RUN, OnModelRun)
@@ -1020,7 +1017,6 @@ BEGIN_MESSAGE_MAP(RDOPluginMFCMainFrame, CFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_MODEL_CLOSE, OnUpdateModelClose)
 	ON_WM_SIZE()
 	ON_WM_CLOSE()
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOPluginMFCMainFrame::RDOPluginMFCMainFrame():

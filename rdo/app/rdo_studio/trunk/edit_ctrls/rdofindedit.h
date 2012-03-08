@@ -23,17 +23,12 @@ namespace rdoEditCtrl {
 // --------------------------------------------------------------------------------
 class RDOFindEdit: public RDOLogEdit
 {
-protected:
-	//{{AFX_MSG(RDOFindEdit)
+private:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnHelpKeyword();
-	//}}AFX_MSG
 	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );
 	DECLARE_MESSAGE_MAP()
-
-	//{{AFX_VIRTUAL(RDOFindEdit)
-	//}}AFX_VIRTUAL
 
 public:
 	RDOFindEdit();
@@ -45,7 +40,5 @@ public:
 };
 
 }; // namespace rdoEditCtrl
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // _RDO_STUDIO_MFC_EDIT_CTRLS_RDOFINDEDIT_H_

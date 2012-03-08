@@ -26,8 +26,6 @@ static char THIS_FILE[] = __FILE__;
 IMPLEMENT_DYNAMIC(RDOStudioView, CView)
 
 BEGIN_MESSAGE_MAP(RDOStudioView, CView)
-	//{{AFX_MSG_MAP(RDOStudioView)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioView::RDOStudioView(): CView()

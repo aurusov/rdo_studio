@@ -37,9 +37,7 @@ using namespace rdoEditCtrl;
 // -------------------- RDOStudioOutput
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioOutput, RDOStudioDockWnd)
-	//{{AFX_MSG_MAP(RDOStudioOutput)
 	ON_WM_CREATE()
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioOutput::RDOStudioOutput()

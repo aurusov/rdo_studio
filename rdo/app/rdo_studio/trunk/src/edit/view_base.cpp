@@ -37,11 +37,9 @@ using namespace rdoEditor;
 IMPLEMENT_DYNCREATE(RDOStudioEditBaseView, RDOStudioView)
 
 BEGIN_MESSAGE_MAP(RDOStudioEditBaseView, RDOStudioView)
-	//{{AFX_MSG_MAP(RDOStudioEditBaseView)
 	ON_WM_CREATE()
 	ON_WM_DESTROY()
 	ON_WM_TIMER()
-	//}}AFX_MSG_MAP
 	ON_COMMAND(ID_FILE_PRINT, RDOStudioView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, RDOStudioView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, RDOStudioView::OnFilePrintPreview)

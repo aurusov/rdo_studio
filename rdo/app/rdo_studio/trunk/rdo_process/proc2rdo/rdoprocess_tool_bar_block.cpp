@@ -25,9 +25,7 @@ RPToolBarBlockMJ::~RPToolBarBlockMJ()
 
 
 BEGIN_MESSAGE_MAP(RPToolBarBlockMJ, CStatusBarCtrl)
-	//{{AFX_MSG_MAP(RPToolBarBlockMJ)
 	ON_COMMAND(ID_BUTTON32779, OnButton32779)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////

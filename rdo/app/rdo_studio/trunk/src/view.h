@@ -31,16 +31,8 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
-public:
-	//{{AFX_VIRTUAL(RDOStudioView)
-	//}}AFX_VIRTUAL
-
-protected:
-	//{{AFX_MSG(RDOStudioView)
-	//}}AFX_MSG
+private:
 	DECLARE_MESSAGE_MAP()
 };
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // _RDO_STUDIO_MFC_VIEW_H_

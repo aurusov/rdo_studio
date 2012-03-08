@@ -158,7 +158,6 @@ bool RDOLogCtrlFindInList::operator()( std::string nextstr )
 IMPLEMENT_DYNAMIC( RDOLogCtrl, CWnd )
 
 BEGIN_MESSAGE_MAP( RDOLogCtrl, CWnd )
-	//{{AFX_MSG_MAP(RDOLogCtrl)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
 	ON_WM_PAINT()
@@ -172,7 +171,6 @@ BEGIN_MESSAGE_MAP( RDOLogCtrl, CWnd )
 	ON_WM_MOUSEWHEEL()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_DESTROY()
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOLogCtrl::RDOLogCtrl( RDOLogStyle* style ):

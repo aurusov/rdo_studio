@@ -49,9 +49,11 @@ protected:
 		return -1;
 	}
 
-	//{{AFX_MSG(RDOTab)
+private:
+	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
+
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
-	//}}AFX_MSG
 	afx_msg void OnSelChanged(NMHDR* pNMHDR, LRESULT* pResult)
 	{
 		UNUSED(pNMHDR );
@@ -61,13 +63,6 @@ protected:
 		changeCurrentItem();
 	}
 	DECLARE_MESSAGE_MAP()
-
-	//{{AFX_VIRTUAL(RDOTab)
-	public:
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	protected:
-	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
-	//}}AFX_VIRTUAL
 };
 
 // --------------------------------------------------------------------------------
@@ -84,20 +79,16 @@ protected:
 
 	virtual void changeCurrentItem() {};
 
-	//{{AFX_MSG(RDOTabCtrl)
+	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
+
+private:
 	afx_msg void OnDestroy();
 	afx_msg void OnShowWindow( BOOL bShow, UINT nStatus );
 	afx_msg void OnSetFocus( CWnd *pOldWnd );
 	afx_msg void OnSize( UINT nType, int cx, int cy );
 	afx_msg void OnEnable( BOOL bEnable );
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
-
-	//{{AFX_VIRTUAL(RDOTabCtrl)
-	protected:
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	//}}AFX_VIRTUAL
 
 public:
 	RDOTabCtrl();

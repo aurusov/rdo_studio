@@ -22,32 +22,15 @@ public:
 	std::list< RPObject* > list_resource_MJ;
 
 // Dialog Data
-	//{{AFX_DATA(RPShapeProcessDlg2_MJ)
 	enum { IDD = IDD_DIALOG_PROCESS_2_MJ };
 	CComboBox	m_combo_res_control;
 	CString	m_combo_res_value;
-	//}}AFX_DATA
 
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(RPShapeProcessDlg2_MJ)
-	protected:
+private:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
-protected:
-
-	// Generated message map functions
-	//{{AFX_MSG(RPShapeProcessDlg2_MJ)
 	afx_msg void OnCloseupCombo1();
 	virtual void OnOK();
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
 #endif // !defined(AFX_RDOPROCESS_SHAPE_PROCESS_DLG2_MJ_H__CDF27E31_27E6_4234_B896_4E8D70947E9F__INCLUDED_)

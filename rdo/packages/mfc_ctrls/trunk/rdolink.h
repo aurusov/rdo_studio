@@ -27,18 +27,14 @@ protected:
 	CFont fontOver;
 	bool isMouseCaptionOver;
 
-	//{{AFX_MSG(RDOLink)
+private:
+	virtual BOOL Create( const CString& text, const RECT& rect, CWnd* pParentWnd, UINT nID );
+
 	afx_msg void OnLButtonDown( UINT nFlags, CPoint point );
 	afx_msg void OnMouseMove( UINT nFlags, CPoint point );
 	afx_msg void OnPaint();
 	afx_msg void OnKillFocus( CWnd* pNewWnd );
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
-
-	//{{AFX_VIRTUAL(RDOLink)
-	public:
-	virtual BOOL Create( const CString& text, const RECT& rect, CWnd* pParentWnd, UINT nID );
-	//}}AFX_VIRTUAL
 
 public:
 	RDOLink();

@@ -28,8 +28,6 @@ static char THIS_FILE[] = __FILE__;
 IMPLEMENT_DYNCREATE(RDOStudioChildFrame, CMDIChildWnd)
 
 BEGIN_MESSAGE_MAP(RDOStudioChildFrame, CMDIChildWnd)
-	//{{AFX_MSG_MAP(RDOStudioChildFrame)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioChildFrame::RDOStudioChildFrame(): CMDIChildWnd()

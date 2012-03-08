@@ -18,8 +18,6 @@ static char THIS_FILE[] = __FILE__;
 RDOPluginMFC pluginMFCApp;
 
 BEGIN_MESSAGE_MAP(RDOPluginMFC, CWinApp)
-	//{{AFX_MSG_MAP(RDOPluginMFC)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOPluginMFC::RDOPluginMFC():

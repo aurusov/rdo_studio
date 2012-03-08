@@ -48,25 +48,18 @@ private:
 	RDOStudioOptions* sheet;
 
 protected:
-	//{{AFX_DATA(RDOStudioOptionsGeneral)
 	enum { IDD = IDD_OPTIONS_GENERAL };
 	BOOL	m_setup;
 	BOOL	m_checkInFuture;
 	BOOL	m_openLastProject;
 	BOOL	m_showFullName;
-	//}}AFX_DATA
 
-	//{{AFX_VIRTUAL(RDOStudioOptionsGeneral)
-	public:
+private:
 	virtual void OnOK();
-	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
-	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(RDOStudioOptionsGeneral)
 	afx_msg void OnUpdateModify();
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
 public:
@@ -83,7 +76,6 @@ private:
 	RDOStudioOptions* sheet;
 
 protected:
-	//{{AFX_DATA(RDOStudioOptionsEditor)
 	enum { IDD = IDD_OPTIONS_EDITOR };
 	BOOL	m_bufferClearAuto;
 	int		m_bufferDelay;
@@ -92,22 +84,16 @@ protected:
 	BOOL	m_marginFold;
 	BOOL	m_marginBookmark;
 	BOOL	m_marginLineNumber;
-	//}}AFX_DATA
 
-	//{{AFX_VIRTUAL(RDOStudioOptionsEditor)
-	public:
+private:
 	virtual void OnOK();
-	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
-	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(RDOStudioOptionsEditor)
 	afx_msg void OnUseAutoCompleteCheck();
 	virtual BOOL OnInitDialog();
 	afx_msg void OnUpdateModify();
 	afx_msg void OnClearAutoCheck();
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
 public:
@@ -124,7 +110,6 @@ private:
 	RDOStudioOptions* sheet;
 
 protected:
-	//{{AFX_DATA(RDOStudioOptionsTabs)
 	enum { IDD = IDD_OPTIONS_TABS };
 	BOOL	m_tabUse;
 	int		m_tabSize;
@@ -132,19 +117,13 @@ protected:
 	int		m_tabIndentSize;
 	int		m_tabBackspaceUntabs;
 	BOOL	m_tabAutoIndent;
-	//}}AFX_DATA
 
-	//{{AFX_VIRTUAL(RDOStudioOptionsTabs)
-	public:
+private:
 	virtual void OnOK();
-	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
-	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(RDOStudioOptionsTabs)
 	afx_msg void OnUpdateModify();
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
 public:
@@ -262,7 +241,6 @@ private:
 	void updateTheme();
 
 protected:
-	//{{AFX_DATA(RDOStudioOptionsColorsStyles)
 	enum { IDD = IDD_OPTIONS_STYLESANDCOLORS };
 	CButton	m_warning;
 	CButton	m_commentGroupButton;
@@ -295,17 +273,12 @@ protected:
 	CComboBox	m_previewAs;
 	CComboBox	m_fontName;
 	CTreeCtrl	m_styleItem;
-	//}}AFX_DATA
 
-	//{{AFX_VIRTUAL(RDOStudioOptionsColorsStyles)
-	public:
+private:
 	virtual void OnOK();
-	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
-	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(RDOStudioOptionsColorsStyles)
 	virtual BOOL OnInitDialog();
 	afx_msg void OnStyleItemChanged(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnPreviewAsChanged();
@@ -326,7 +299,6 @@ protected:
 	afx_msg void OnUpdateModify();
 	afx_msg void OnCommentGroupCheck();
 	afx_msg void OnWarningCheck();
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
 public:
@@ -357,7 +329,6 @@ private:
 	void updateControls( const RDOStudioPlugin* plugin );
 
 protected:
-	//{{AFX_DATA(RDOStudioOptionsPlugins)
 	enum { IDD = IDD_OPTIONS_PLUGINS };
 	CButton	m_restoreStateCheckBox;
 	CButton	m_stopButton;
@@ -366,17 +337,12 @@ protected:
 	CButton	m_runModeButton;
 	CStatic	m_runModeStatic;
 	CListCtrl	m_pluginList;
-	//}}AFX_DATA
 
-	//{{AFX_VIRTUAL(RDOStudioOptionsPlugins)
-	public:
+private:
 	virtual void OnOK();
-	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
-	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(RDOStudioOptionsPlugins)
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPluginListColumnClick(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnPluginListSelectChanged(NMHDR* pNMHDR, LRESULT* pResult);
@@ -387,7 +353,6 @@ protected:
 	afx_msg void OnPluginRestoreStateCheckBoxClicked();
 	afx_msg void OnTimer(UINT nIDEvent);
 	afx_msg void OnDestroy();
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
 public:
@@ -442,22 +407,15 @@ private:
 	static int CALLBACK AddContextHelpProc(HWND hwnd, UINT message, LPARAM lParam);
 	void onHelpButton();
 
-protected:
-	//{{AFX_VIRTUAL(RDOStudioOptions)
-	public:
+private:
 	virtual BOOL ContinueModal();
-	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(RDOStudioOptions)
 	afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
 public:
 	RDOStudioOptions();
 	virtual ~RDOStudioOptions();
 };
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // _RDO_STUDIO_MFC_OPTIONS_H_

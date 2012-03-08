@@ -37,16 +37,9 @@ public:
 	void removePage( RPPageCtrlItem* page )                          { pagectrl->removePage( page );              }
 	void selectFirst()                                               { pagectrl->selectFirst();                   }
 
-protected:
-	//{{AFX_VIRTUAL(RDOStudioWorkspace)
-	//}}AFX_VIRTUAL
-
-	//{{AFX_MSG(RDOStudioWorkspace)
+private:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // _RDO_STUDIO_MFC_WORKSPACE_H_

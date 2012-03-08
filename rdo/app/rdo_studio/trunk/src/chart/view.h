@@ -117,10 +117,8 @@ public:
 	const RDOStudioChartViewStyle& getStyle() const;
 	void setStyle( RDOStudioChartViewStyle* _style, const bool needRedraw = true );
 
-	//{{AFX_VIRTUAL(RDOStudioChartView)
-	public:
+private:
 	virtual void OnInitialUpdate();
-	protected:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual void OnDraw(CDC* pDC);
 	virtual BOOL OnPreparePrinting( CPrintInfo* pInfo );
@@ -131,7 +129,6 @@ public:
 	virtual DROPEFFECT OnDragOver( COleDataObject* pDataObject, DWORD dwKeyState, CPoint point );
 	virtual BOOL OnDrop( COleDataObject* pDataObject, DROPEFFECT dropEffect, CPoint point );
 	virtual void OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint);
-	//}}AFX_VIRTUAL
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;
@@ -139,7 +136,6 @@ public:
 #endif
 
 protected:
-	//{{AFX_MSG(RDOStudioChartView)
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
@@ -163,7 +159,6 @@ protected:
 	afx_msg void OnViewZoomauto();
 	afx_msg void OnUpdateViewZoomauto(CCmdUI* pCmdUI);
 	afx_msg void OnHelpKeyword();
-	//}}AFX_MSG
 	afx_msg LRESULT OnUserUpdateChartView(WPARAM wParam = 0, LPARAM lParam = 0);
 	DECLARE_MESSAGE_MAP()
 };
@@ -172,8 +167,5 @@ protected:
 inline RDOStudioChartDoc* RDOStudioChartView::GetDocument()
    { return (RDOStudioChartDoc*)m_pDocument; }
 #endif
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
 #endif // _RDO_STUDIO_MFC_CHART_VIEW_H_

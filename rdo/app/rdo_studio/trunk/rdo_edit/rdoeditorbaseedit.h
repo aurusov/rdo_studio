@@ -31,13 +31,10 @@ protected:
 	std::string getAllKW() const;
 	static std::string convertToLexer( const std::string& kw );
 
-	//{{AFX_MSG(RDOEditorBaseEdit)
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
 
-	//{{AFX_VIRTUAL(RDOEditorBaseEdit)
-	//}}AFX_VIRTUAL
+private:
+	DECLARE_MESSAGE_MAP()
 
 public:
 	RDOEditorBaseEdit();
@@ -51,7 +48,5 @@ public:
 };
 
 }; // namespace rdoEditor
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITORBASEEDIT_H_

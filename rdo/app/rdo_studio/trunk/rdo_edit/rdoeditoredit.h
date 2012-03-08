@@ -52,7 +52,9 @@ protected:
 	void clearErrorLine();
 	bool hasErrorLine() const;
 
-	//{{AFX_MSG(RDOEditorEdit)
+private:
+	virtual BOOL OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult );
+
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
 	afx_msg void OnEditCommentSelection();
 	afx_msg void OnEditCompleteWord();
@@ -90,14 +92,8 @@ protected:
 	afx_msg void OnToggleCurrentFold();
 	afx_msg void OnUpdateFold(CCmdUI* pCmdUI);
 	afx_msg void OnHelpKeyword();
-	//}}AFX_MSG
 	afx_msg void OnInsertCommand( UINT nID );
 	DECLARE_MESSAGE_MAP()
-
-	//{{AFX_VIRTUAL(RDOEditorEdit)
-	protected:
-	virtual BOOL OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult );
-	//}}AFX_VIRTUAL
 
 public:
 	RDOEditorEdit( RDOStudioEditBaseView* _view = NULL );
@@ -114,7 +110,5 @@ public:
 };
 
 }; // namespace rdoEditor
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITOREDIT_H_
