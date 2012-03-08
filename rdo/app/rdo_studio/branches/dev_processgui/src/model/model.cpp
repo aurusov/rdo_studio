@@ -1125,6 +1125,7 @@ void RDOStudioModel::closeModelFromRepository()
 		m_showCanNotCloseModelMessage = true;
 	}
 	m_modelClosed = true;
+	getFlowchartDoc()->OnCloseDocument();
 }
 
 void RDOStudioModel::setName(CREF(tstring) str)
