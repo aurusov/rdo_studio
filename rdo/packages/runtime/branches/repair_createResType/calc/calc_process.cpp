@@ -72,7 +72,6 @@ REF(RDOValue) RDOCalcCreateAndGoInTransact::doCalc(CREF(LPRDORuntime) pRuntime)
 	ASSERT(pType);
 
 	m_value = RDOValue(pType, pResource);
-	ASSERT(m_value);
 
 	return m_value;
 }
