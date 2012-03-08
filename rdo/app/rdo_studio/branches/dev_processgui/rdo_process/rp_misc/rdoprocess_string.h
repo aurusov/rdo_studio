@@ -1,17 +1,13 @@
 #ifndef RDO_PROCESS_GLOBAL_H
 #define RDO_PROCESS_GLOBAL_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
 #include <string>
 #include <locale>
 #include <algorithm>
 
 namespace rp {
 
-class string: public std::string
+class string: public tstring
 {
 protected:
 	//! Структура (функторал), которая используется для перевода символа в нижний регистр
@@ -43,14 +39,14 @@ public:
 	//! Создает строку по указателю.
 	string( const char* str ): std::basic_string< char >( str ) {};
 	//! Конструктор копии.
-	string( const std::string& str ): std::basic_string< char >( str ) {};
+	string( CREF(tstring) str ): std::basic_string< char >( str ) {};
 
 	int      toint() const    { return atoi( c_str() );                     }
 	long int tolong() const   { return atol( c_str() );                     }
 	float    tofloat() const  { return static_cast<float>(atof( c_str() )); }
 	double   todouble() const { return strtod( c_str(), NULL );             }
 	int      tohex() const;
-	bool     tobool() const   { return tolower() == "true";                 }
+	rbool    tobool() const   { return tolower() == "true";                 }
 
 	//! Переводит целое число в строчку.
 	/*! \param value - целое число для перевода в строку.
@@ -90,7 +86,7 @@ rp::string str = rp::string::fromdouble( 20.2 );
 		return str;
 	}
 
-	static rp::string frombool( bool value ) {
+	static rp::string frombool( rbool value ) {
 		return value ? "true" : "false";
 	}
 
@@ -121,12 +117,12 @@ rp::string str = rp::string::fromdouble( 20.2 );
 	}
 	void trim_right() {
 		static char szDelims[] = " \t\n\r";
-		erase( find_last_not_of( szDelims ) + 1, std::string::npos );
+		erase( find_last_not_of( szDelims ) + 1, tstring::npos );
 	}
 	void trim() {
 		static char szDelims[] = " \t\n\r";
 		erase( 0, find_first_not_of( szDelims ) );
-		erase( find_last_not_of( szDelims ) + 1, std::string::npos );
+		erase( find_last_not_of( szDelims ) + 1, tstring::npos );
 	}
 
 };

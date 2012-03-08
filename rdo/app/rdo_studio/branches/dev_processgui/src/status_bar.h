@@ -1,9 +1,14 @@
-#ifndef RDOSTUDIOSTATUSBAR_H
-#define RDOSTUDIOSTATUSBAR_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      status_bar.h
+  \author    Захаров Павел
+  \date      09.04.2003
+  \brief     
+  \indent    4T
+*/
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
+#ifndef _RDO_STUDIO_MFC_STATUS_BAR_H_
+#define _RDO_STUDIO_MFC_STATUS_BAR_H_
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioStatusBar
@@ -17,9 +22,9 @@ private:
 
 	UINT indicator;
 
-	bool visible;
+	rbool visible;
 
-	void repositionProgressCtrl( const bool redraw = true );
+	void repositionProgressCtrl( const rbool redraw = true );
 
 public:
 	RDOStudioStatusBar();
@@ -28,8 +33,8 @@ public:
 	void setProgressIndicator( const UINT ind ) { indicator = ind; };
 	UINT getProgressIndicator() const { return indicator; };
 
-	void setProgressVisible( const bool _visible );
-	bool getProgressVisible() { return visible; };
+	void  setProgressVisible( const rbool _visible );
+	rbool getProgressVisible() { return visible; };
 
 	void setRange( const int lower = 0, const int upper = 100 ) { progress.SetRange32( lower, upper ); };
 	void getRange( int& lower, int& upper ) const { const_cast<CProgressCtrl&>(progress).GetRange( lower, upper ); };
@@ -39,17 +44,10 @@ public:
 	int setStep( const int step = 1 ) { return progress.SetStep( step ); };
 	int stepIt() { return progress.StepIt(); };
 
-protected:
-	//{{AFX_VIRTUAL(RDOStudioStatusBar)
-	//}}AFX_VIRTUAL
-
-	//{{AFX_MSG(RDOStudioStatusBar)
+private:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
 
-//{{AFX_INSERT_LOCATION}}
-
-#endif // RDOSTUDIOSTATUSBAR_H
+#endif // _RDO_STUDIO_MFC_STATUS_BAR_H_

@@ -1,10 +1,6 @@
 #ifndef RDO_PROCESS_OBJECT_PIXMAP_H
 #define RDO_PROCESS_OBJECT_PIXMAP_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_shape.h"
 
 // --------------------------------------------------------------------------------
@@ -31,8 +27,5 @@ public:
 	void saveToXML  (REF (pugi::xml_node) parentNode) const;
 	void loadFromXML(CREF(pugi::xml_node) node);
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
 #endif // RDO_PROCESS_OBJECT_PIXMAP_H

@@ -1,5 +1,18 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      app/rdo_studio_mfc/src/chart/view_style.cpp
+  \author    Захаров Павел
+  \date      28.03.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/chart/view_style.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -49,9 +62,9 @@ RDOStudioChartViewTheme& RDOStudioChartViewTheme::operator =( const RDOStudioCha
 	return *this;
 }
 
-bool RDOStudioChartViewTheme::operator ==( const RDOStudioChartViewTheme& theme ) const
+rbool RDOStudioChartViewTheme::operator ==( const RDOStudioChartViewTheme& theme ) const
 {
-	bool flag = RDOStyleTheme::operator==( theme );
+	rbool flag = RDOStyleTheme::operator==( theme );
 	
 	if ( flag ) flag &= axisFgColor   == theme.axisFgColor &&
 	                    titleFGColor  == theme.titleFGColor &&
@@ -64,12 +77,12 @@ bool RDOStudioChartViewTheme::operator ==( const RDOStudioChartViewTheme& theme 
 	return flag;
 }
 
-bool RDOStudioChartViewTheme::operator !=( const RDOStudioChartViewTheme& theme ) const
+rbool RDOStudioChartViewTheme::operator !=( const RDOStudioChartViewTheme& theme ) const
 {
 	return !(*this == theme);
 }
 
-void RDOStudioChartViewTheme::load( std::string regPath )
+void RDOStudioChartViewTheme::load( tstring regPath )
 {
 	RDOStyleTheme::load( regPath );
 	regPath += "theme";
@@ -83,7 +96,7 @@ void RDOStudioChartViewTheme::load( std::string regPath )
 	legendStyle   = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "legendStyle", legendStyle ));
 }
 
-void RDOStudioChartViewTheme::save( std::string regPath ) const
+void RDOStudioChartViewTheme::save( tstring regPath ) const
 {
 	RDOStyleTheme::save( regPath );
 
@@ -126,19 +139,19 @@ RDOStudioChartViewFontsTicks& RDOStudioChartViewFontsTicks::operator =( const RD
 	return *this;
 }
 
-bool RDOStudioChartViewFontsTicks::operator ==( const RDOStudioChartViewFontsTicks& fonts_ticks ) const
+rbool RDOStudioChartViewFontsTicks::operator ==( const RDOStudioChartViewFontsTicks& fonts_ticks ) const
 {
 	return titleFontSize  == fonts_ticks.titleFontSize &&
 	       legendFontSize == fonts_ticks.legendFontSize &&
 		   tickWidth      == fonts_ticks.tickWidth;
 }
 
-bool RDOStudioChartViewFontsTicks::operator !=( const RDOStudioChartViewFontsTicks& fonts_ticks ) const
+rbool RDOStudioChartViewFontsTicks::operator !=( const RDOStudioChartViewFontsTicks& fonts_ticks ) const
 {
 	return !(*this == fonts_ticks);
 }
 
-void RDOStudioChartViewFontsTicks::load( std::string regPath )
+void RDOStudioChartViewFontsTicks::load( tstring regPath )
 {
 	regPath += "fonts_ticks";
 	titleFontSize  = AfxGetApp()->GetProfileInt( regPath.c_str(), "titleFontSize", titleFontSize );
@@ -146,7 +159,7 @@ void RDOStudioChartViewFontsTicks::load( std::string regPath )
 	tickWidth      = AfxGetApp()->GetProfileInt( regPath.c_str(), "tickWidth", tickWidth );
 }
 
-void RDOStudioChartViewFontsTicks::save( std::string regPath ) const
+void RDOStudioChartViewFontsTicks::save( tstring regPath ) const
 {
 	regPath += "fonts_ticks";
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "titleFontSize", titleFontSize );
@@ -184,27 +197,27 @@ RDOStudioChartViewStyle& RDOStudioChartViewStyle::operator =( const RDOStudioCha
 	return *this;
 }
 
-bool RDOStudioChartViewStyle::operator ==( const RDOStudioChartViewStyle& style ) const
+rbool RDOStudioChartViewStyle::operator ==( const RDOStudioChartViewStyle& style ) const
 {
-	bool flag = RDOStyleWithTheme::operator==( style );
+	rbool flag = RDOStyleWithTheme::operator==( style );
 	if ( theme  && style.theme  && flag ) flag &= *static_cast<RDOStudioChartViewTheme*>(theme) == *static_cast<RDOStudioChartViewTheme*>(style.theme);
 	if ( fonts_ticks  && style.fonts_ticks && flag ) flag &= *fonts_ticks == *style.fonts_ticks;
 	return flag;
 }
 
-bool RDOStudioChartViewStyle::operator !=( const RDOStudioChartViewStyle& style ) const
+rbool RDOStudioChartViewStyle::operator !=( const RDOStudioChartViewStyle& style ) const
 {
 	return !(*this == style);
 }
 
-void RDOStudioChartViewStyle::init( const std::string& _regPath )
+void RDOStudioChartViewStyle::init( CREF(tstring) _regPath )
 {
 	RDOStyleWithTheme::init( _regPath );
 	*font = rdoStyle::RDOStyleFont::getChartViewFont();
 	initFontsTicks();
 }
 
-bool RDOStudioChartViewStyle::load()
+rbool RDOStudioChartViewStyle::load()
 {
 	if ( RDOStyleWithTheme::load() ) {
 		if ( fonts_ticks ) fonts_ticks->load( regPath );
@@ -213,7 +226,7 @@ bool RDOStudioChartViewStyle::load()
 	return false;
 }
 
-bool RDOStudioChartViewStyle::save() const
+rbool RDOStudioChartViewStyle::save() const
 {
 	if ( RDOStyleWithTheme::save() ) {
 		if ( fonts_ticks ) fonts_ticks->save( regPath );

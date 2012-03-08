@@ -1,10 +1,6 @@
 #ifndef RDO_PROCESS_TOOLBAR_H
 #define RDO_PROCESS_TOOLBAR_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
-
 #include "app/rdo_studio_mfc/rdo_process/rp_ctrl/rdoprocess_toolbar.h"
 
 // --------------------------------------------------------------------------------
@@ -23,9 +19,8 @@ private:
 		}
 		return CToolBar::PreTranslateMessage( pMsg );
 	}
-	//{{AFX_MSG(RPToolBar)
+
 	afx_msg void OnSize( UINT nType, int cx, int cy );
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
 
@@ -71,20 +66,13 @@ public:
 	COLORREF color_brush;
 	COLORREF color_pen;
 	COLORREF color_text;
-	bool     empty_brush;
-	bool     empty_pen;
-	bool     empty_text;
+	rbool    empty_brush;
+	rbool    empty_pen;
+	rbool    empty_text;
 
-protected:
-	//{{AFX_VIRTUAL(RPToolBar)
-	//}}AFX_VIRTUAL
-
-	//{{AFX_MSG(RPToolBar)
+private:
 	afx_msg void OnPaint();
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // RDO_PROCESS_TOOLBAR_H

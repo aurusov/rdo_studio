@@ -1,11 +1,24 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdobaseedit.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      28.02.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/edit_ctrls/rdobaseedit.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"
+#include "app/rdo_studio_mfc/resource.h"
 #include "thirdparty/sci/SciLexer.h"
 #include "thirdparty/sci/PropSet.h"
 #include "thirdparty/sci/Scintilla.h"
-#include "app/rdo_studio_mfc/resource.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -60,7 +73,6 @@ static const UINT FIND_REPLASE_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 // ON_UPDATE_COMMAND_UI сделано
 
 BEGIN_MESSAGE_MAP( RDOBaseEdit, CWnd )
-	//{{AFX_MSG_MAP(RDOBaseEdit)
 	ON_WM_CREATE()
 	ON_WM_SETFOCUS()
 	ON_WM_SIZE()
@@ -114,7 +126,6 @@ BEGIN_MESSAGE_MAP( RDOBaseEdit, CWnd )
 	ON_UPDATE_COMMAND_UI( ID_SEARCH_FIND_PREVIOUS, OnUpdateSearchFindNextPrev )
 	ON_UPDATE_COMMAND_UI( ID_EDIT_COPY, OnIsSelected )
 	ON_COMMAND(ID_SEARCH_GOTO_LINE, OnSearchGotoLine)
-	//}}AFX_MSG_MAP
 
 	ON_REGISTERED_MESSAGE( FIND_REPLASE_MSG, OnFindReplaceMsg )
 
@@ -422,7 +433,7 @@ void RDOBaseEdit::OnSelectAll( CCmdUI* pCmdUI )
 	pCmdUI->Enable( !GUI_IS_EMPTY );
 }
 
-std::string RDOBaseEdit::getCurrentWord() const
+tstring RDOBaseEdit::getCurrentWord() const
 {
 	int pos_begin = sendEditor( SCI_WORDSTARTPOSITION, getCurrentPos(), true );
 	int pos_end   = sendEditor( SCI_WORDENDPOSITION, getCurrentPos(), true );
@@ -433,22 +444,22 @@ std::string RDOBaseEdit::getCurrentWord() const
 	tr.chrg.cpMin = pos_begin;
 	tr.chrg.cpMax = pos_end;
 	sendEditor( SCI_GETTEXTRANGE, 0, (long)&tr );
-	std::string str( tr.lpstrText );
+	tstring str( tr.lpstrText );
 	delete[] word;
 	return str;
 }
 
-std::string RDOBaseEdit::getSelection() const
+tstring RDOBaseEdit::getSelection() const
 {
 	CharacterRange cr = getSelectionRange();
 	char* selection = new char[ cr.cpMax - cr.cpMin + 1 ];
 	sendEditor( SCI_GETSELTEXT, 0, (long)selection );
-	std::string str( selection );
+	tstring str( selection );
 	delete[] selection;
 	return str;
 }
 
-std::string RDOBaseEdit::getCurrentOrSelectedWord() const
+tstring RDOBaseEdit::getCurrentOrSelectedWord() const
 {
 	if ( isSelected() ) {
 		return getSelection();
@@ -457,7 +468,7 @@ std::string RDOBaseEdit::getCurrentOrSelectedWord() const
 	}
 }
 
-std::string RDOBaseEdit::getWordForFind() const
+tstring RDOBaseEdit::getWordForFind() const
 {
 	if ( isSelected() ) {
 		return getSelection();
@@ -482,7 +493,7 @@ void RDOBaseEdit::gotoLineEnsureVisible( int line ) const
 	sendEditor( SCI_GOTOLINE, line );
 }
 
-void RDOBaseEdit::ensureRangeVisible( int posStart, int posEnd, bool enforcePolicy ) const
+void RDOBaseEdit::ensureRangeVisible( int posStart, int posEnd, rbool enforcePolicy ) const
 {
 	int lineStart = getLineFromPosition( posStart < posEnd ? posStart : posEnd );
 	int lineEnd   = getLineFromPosition( posStart > posEnd ? posStart : posEnd );
@@ -556,9 +567,9 @@ LRESULT RDOBaseEdit::OnFindReplaceMsg( WPARAM /*wParam*/, LPARAM lParam )
 		SetFocus();
 		return 0;
 	} else {
-		bool newSearchDown     = pDialog->SearchDown() ? true : false;
-		bool newMatchCase      = pDialog->MatchCase() ? true : false;
-		bool newMatchWholeWord = pDialog->MatchWholeWord() ? true : false;
+		rbool newSearchDown     = pDialog->SearchDown() ? true : false;
+		rbool newMatchCase      = pDialog->MatchCase() ? true : false;
+		rbool newMatchWholeWord = pDialog->MatchWholeWord() ? true : false;
 		if ( newSearchDown != group->bSearchDown || newMatchCase != group->bMatchCase || newMatchWholeWord != group->bMatchWholeWord ) {
 			firstFoundPos = -1;
 		}
@@ -600,7 +611,7 @@ void RDOBaseEdit::OnUpdateSearchReplace(CCmdUI* pCmdUI)
 	pCmdUI->Enable( !GUI_IS_READONLY && !GUI_IS_EMPTY );
 }
 
-void RDOBaseEdit::findNext( std::string& findWhat, const bool searchDown, const bool matchCase, const bool matchWholeWord )
+void RDOBaseEdit::findNext( REF(tstring) findWhat, const rbool searchDown, const rbool matchCase, const rbool matchWholeWord )
 {
 	int findLen = findWhat.length();
 	if ( !findLen ) return;
@@ -654,7 +665,7 @@ void RDOBaseEdit::findNext( std::string& findWhat, const bool searchDown, const 
 	}
 }
 
-void RDOBaseEdit::replace( std::string& findWhat, std::string& replaceWhat, const bool searchDown, const bool matchCase, const bool matchWholeWord )
+void RDOBaseEdit::replace( REF(tstring) findWhat, REF(tstring) replaceWhat, const rbool searchDown, const rbool matchCase, const rbool matchWholeWord )
 {
 	if ( bHaveFound ) {
 		int replaceLen = replaceWhat.length();
@@ -669,7 +680,7 @@ void RDOBaseEdit::replace( std::string& findWhat, std::string& replaceWhat, cons
 	findNext( findWhat, searchDown, matchCase, matchWholeWord );
 }
 
-void RDOBaseEdit::replaceAll( std::string& findWhat, std::string& replaceWhat, const bool matchCase, const bool matchWholeWord )
+void RDOBaseEdit::replaceAll( REF(tstring) findWhat, REF(tstring) replaceWhat, const rbool matchCase, const rbool matchWholeWord )
 {
 	int findLen = findWhat.length();
 	if ( !findLen ) return;
@@ -709,13 +720,13 @@ void RDOBaseEdit::replaceAll( std::string& findWhat, std::string& replaceWhat, c
 
 void RDOBaseEdit::clearAll()
 {
-	bool readOnly = isReadOnly();
+	rbool readOnly = isReadOnly();
 	setReadOnly( false );
 	sendEditor( SCI_CLEARALL );
 	setReadOnly( readOnly );
 }
 
-bool RDOBaseEdit::bookmarkToggle( int line ) const
+rbool RDOBaseEdit::bookmarkToggle( int line ) const
 {
 	if ( line == -1 ) line = getCurrentLineNumber();
 	int state = sendEditor( SCI_MARKERGET, line );
@@ -728,10 +739,10 @@ bool RDOBaseEdit::bookmarkToggle( int line ) const
 	}
 }
 
-bool RDOBaseEdit::bookmarkNext( const bool canLoop, const bool fromCurrentLine, bool* wasLoop ) const
+rbool RDOBaseEdit::bookmarkNext( const rbool canLoop, const rbool fromCurrentLine, rbool* wasLoop ) const
 {
-	bool wasFound = false;
-	bool was_loop = false;
+	rbool wasFound = false;
+	rbool was_loop = false;
 
 	int line = -1;
 	if ( fromCurrentLine ) line = getCurrentLineNumber();
@@ -749,10 +760,10 @@ bool RDOBaseEdit::bookmarkNext( const bool canLoop, const bool fromCurrentLine, 
 	return wasFound;
 }
 
-bool RDOBaseEdit::bookmarkPrev( const bool canLoop, const bool fromCurrentLine, bool* wasLoop ) const
+rbool RDOBaseEdit::bookmarkPrev( const rbool canLoop, const rbool fromCurrentLine, rbool* wasLoop ) const
 {
-	bool wasFound = false;
-	bool was_loop = false;
+	rbool wasFound = false;
+	rbool was_loop = false;
 
 	int lineCount = getLineCount();
 	int line = lineCount + 1;
@@ -776,7 +787,7 @@ void RDOBaseEdit::bookmarkClearAll() const
 	sendEditor( SCI_MARKERDELETEALL, sci_MARKER_BOOKMARK );
 }
 
-bool RDOBaseEdit::hasBookmarks() const
+rbool RDOBaseEdit::hasBookmarks() const
 {
 	int nextLine = sendEditor( SCI_MARKERNEXT, 0, 1 << sci_MARKER_BOOKMARK );
 	return nextLine >= 0;
@@ -968,7 +979,7 @@ void RDOBaseEdit::saveAsRTF( CFile& file, int start, int end ) const
 	int colorCount = 1;
 	int i;
 
-	std::string saveStr;
+	tstring saveStr;
 
 	saveStr = "";
 	saveStr += RTF_HEADEROPEN;
@@ -998,8 +1009,8 @@ void RDOBaseEdit::saveAsRTF( CFile& file, int start, int end ) const
 #pragma warning(disable: 4996)
 			strncpy( colors[colorCount++], theme->styleFGColorToHEX( istyle ).c_str(), MAX_COLORDEF );
 #pragma warning(default: 4996)
-			bool bold   = theme->styleBold( istyle );
-			bool italic = theme->styleItalic( istyle );
+			rbool bold   = theme->styleBold( istyle );
+			rbool italic = theme->styleItalic( istyle );
 #pragma warning(disable: 4996)
 			sprintf( lastStyle + strlen(lastStyle), RTF_SETCOLOR "%d", colorCount-1 );
 			sprintf( lastStyle + strlen(lastStyle), RTF_SETBACKGROUND "%d", 1 );
@@ -1022,7 +1033,7 @@ void RDOBaseEdit::saveAsRTF( CFile& file, int start, int end ) const
 	sprintf( lastStyle, RTF_SETFONTFACE "0" RTF_SETFONTSIZE "%d" RTF_SETCOLOR "0" RTF_SETBACKGROUND "0" RTF_BOLD_OFF RTF_ITALIC_OFF, style->font->size * 2 );
 #pragma warning(default: 4996)
 
-	bool prevCR = false;
+	rbool prevCR = false;
 	int styleCurrent = -1;
 	for ( i = start; i < end; i++ ) {
 		char ch   = (char)sendEditor( SCI_GETCHARAT, i );
@@ -1054,12 +1065,12 @@ void RDOBaseEdit::setCurrentPos( const int value ) const
 	sendEditor( SCI_SETSELECTIONEND, value );
 }
 
-void RDOBaseEdit::setCurrentPos( const int line, int pos_in_line, const bool convert_rdo_tab ) const
+void RDOBaseEdit::setCurrentPos( const int line, int pos_in_line, const rbool convert_rdo_tab ) const
 {
 	int pos = getPositionFromLine( line );
 	int line_length = sendEditor( SCI_LINELENGTH, line );
 	char currentLine[8000];
-	bool canUseLine = false;
+	rbool canUseLine = false;
 	if ( line_length < 8000 ) {
 		sendEditor( SCI_GETLINE, line, (long)currentLine );
 		while ( currentLine[line_length-1] == 0x0A || currentLine[line_length-1] == 0x0D ) {
@@ -1102,14 +1113,14 @@ void RDOBaseEdit::setCurrentPos( const int line, int pos_in_line, const bool con
 	setCurrentPos( pos );
 }
 
-bool RDOBaseEdit::isLineVisible( const int line ) const
+rbool RDOBaseEdit::isLineVisible( const int line ) const
 {
 	int first_line = sendEditor( SCI_GETFIRSTVISIBLELINE );
 	int last_line = first_line + sendEditor( SCI_LINESONSCREEN );
 	return line >= first_line && line <= last_line;
 }
 
-void RDOBaseEdit::appendText( const std::string& str ) const
+void RDOBaseEdit::appendText( CREF(tstring) str ) const
 {
 	sendEditorString( SCI_ADDTEXT, str.length(), str.c_str() );
 }
@@ -1138,7 +1149,7 @@ void RDOBaseEdit::horzScrollToCurrentPos() const
 
 void RDOBaseEdit::load( rdo::stream& stream )
 {
-	bool readOnly = isReadOnly();
+	rbool readOnly = isReadOnly();
 	setReadOnly( false );
 
 	sendEditorString( SCI_ADDTEXT, stream.str().length(), &stream.str()[0] );
@@ -1233,8 +1244,8 @@ void RDOBaseEdit::OnBookmarkNext()
 		}
 		if ( !(*it) ) return;
 
-		bool allItem = false;
-		bool wasLoop = true;
+		rbool allItem = false;
+		rbool wasLoop = true;
 		while ( !allItem && *it && wasLoop ) {
 			it++;
 			if ( it == group->end() ) {
@@ -1271,8 +1282,8 @@ void RDOBaseEdit::OnBookmarkPrev()
 		}
 		if ( !(*it) ) return;
 
-		bool allItem = false;
-		bool wasLoop = true;
+		rbool allItem = false;
+		rbool wasLoop = true;
 		while ( !allItem && *it && wasLoop ) {
 			if ( it == group->begin() ) {
 				it = group->end();
@@ -1420,7 +1431,7 @@ void RDOBaseEdit::OnUpdateZoomReset( CCmdUI *pCmdUI )
 	pCmdUI->Enable( getZoom() );
 }
 
-int RDOBaseEdit::findPos( std::string& findWhat, const int startFromLine, const bool matchCase, const bool matchWholeWord ) const
+int RDOBaseEdit::findPos( REF(tstring) findWhat, const int startFromLine, const rbool matchCase, const rbool matchWholeWord ) const
 {
 	int findLen = findWhat.length();
 	if ( !findLen ) return -1;
@@ -1436,10 +1447,10 @@ int RDOBaseEdit::findPos( std::string& findWhat, const int startFromLine, const 
 	return sendEditorString( SCI_SEARCHINTARGET, findLen, findWhat.c_str() );
 }
 
-std::string RDOBaseEdit::getLine( const int line ) const
+tstring RDOBaseEdit::getLine( const int line ) const
 {
 	int length = sendEditor( SCI_LINELENGTH, line );
-	std::string str;
+	tstring str;
 	str.resize( length );
 	sendEditor( SCI_GETLINE, line, (long)str.data() );
 	return str;

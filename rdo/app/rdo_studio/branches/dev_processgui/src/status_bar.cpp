@@ -1,5 +1,18 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      status_bar.cpp
+  \author    Захаров Павел
+  \date      09.04.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/status_bar.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -13,10 +26,8 @@ static char THIS_FILE[] = __FILE__;
 IMPLEMENT_DYNAMIC(RDOStudioStatusBar, CStatusBar)
 
 BEGIN_MESSAGE_MAP(RDOStudioStatusBar, CStatusBar)
-	//{{AFX_MSG_MAP(RDOStudioStatusBar)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioStatusBar::RDOStudioStatusBar():
@@ -39,14 +50,14 @@ int RDOStudioStatusBar::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	return 0;
 }
 
-void RDOStudioStatusBar::repositionProgressCtrl( const bool redraw )
+void RDOStudioStatusBar::repositionProgressCtrl( const rbool redraw )
 {
 	CRect rect;
 	GetItemRect( CommandToIndex( indicator ), rect );
 	progress.MoveWindow( rect, redraw );
 }
 
-void RDOStudioStatusBar::setProgressVisible( const bool _visible )
+void RDOStudioStatusBar::setProgressVisible( const rbool _visible )
 {
 	if ( visible != _visible && GetSafeHwnd() ) {
 		visible = _visible;

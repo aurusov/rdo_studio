@@ -1,9 +1,20 @@
-#ifndef RDOEDITORTABCTRL_H
-#define RDOEDITORTABCTRL_H
-#pragma once
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdoeditortabctrl.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      20.02.2003
+  \brief     
+  \indent    4T
+*/
 
+#ifndef _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITORTABCTRL_H_
+#define _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITORTABCTRL_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoredit.h"
 #include "ui/mfc_ctrls/rdotabctrl.h"
+// --------------------------------------------------------------------------------
 
 class RDOStudioEditBaseView;
 
@@ -18,16 +29,11 @@ private:
 	RDOStudioEditBaseView*        view;
 	rdoEditCtrl::RDOBaseEditGroup group;
 
-protected:
-	//{{AFX_MSG(RDOEditorTabCtrl)
-	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-
-	//{{AFX_VIRTUAL(RDOEditorTabCtrl)
-	protected:
+private:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	//}}AFX_VIRTUAL
+
+	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
+	DECLARE_MESSAGE_MAP()
 
 public:
 	RDOEditorTabCtrl( RDOStudioEditBaseView* _view );
@@ -35,7 +41,7 @@ public:
 
 	rdoModelObjects::RDOFileType indexToType( const int index ) const;
 	int typeToIndex( const rdoModelObjects::RDOFileType type ) const;
-	bool typeSupported( const rdoModelObjects::RDOFileType type ) const { return typeToIndex( type ) != -1;        }
+	rbool typeSupported( const rdoModelObjects::RDOFileType type ) const { return typeToIndex( type ) != -1;        }
 
 	rdoModelObjects::RDOFileType getCurrentRDOItem() const              { return indexToType( getCurrentIndex() ); }
 	void setCurrentRDOItem( const rdoModelObjects::RDOFileType type );
@@ -47,6 +53,4 @@ public:
 
 }; // namespace rdoEditor
 
-//{{AFX_INSERT_LOCATION}}
-
-#endif // RDOEDITORTABCTRL_H
+#endif // _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITORTABCTRL_H_

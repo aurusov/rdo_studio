@@ -32,7 +32,7 @@ RDOTracerResParamInfo* RDOTracerResParam::getParamInfo() const
 		return NULL;
 }
 
-void RDOTracerResParam::getCaptions( std::vector<std::string> &captions, const int val_count ) const
+void RDOTracerResParam::getCaptions( std::vector<tstring> &captions, const int val_count ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
@@ -74,7 +74,7 @@ void RDOTracerResParam::getCaptions( std::vector<std::string> &captions, const i
 // --------------------------------------------------------------------------------
 // -------------------- RDOTracerResource
 // --------------------------------------------------------------------------------
-RDOTracerResource::RDOTracerResource( RDOTracerResType* const type, const std::string& name ) :
+RDOTracerResource::RDOTracerResource( RDOTracerResType* const type, CREF(tstring) name ) :
 	RDOTracerTreeItem(),
 	erased( false ),
 	resType( type ),
@@ -130,7 +130,7 @@ int RDOTracerResource::getParamIndex( const RDOTracerResParam* const param ) con
 	return -1;
 }
 
-void RDOTracerResource::setParams( std::string& line, RDOTracerTimeNow* const time, const int eventIndex, const bool erasing )
+void RDOTracerResource::setParams( tstring& line, RDOTracerTimeNow* const time, const int eventIndex, const rbool erasing )
 {
 	int count = params.size();
 	for ( int i = 0; i < count; i++ ) {
@@ -162,7 +162,7 @@ void RDOTracerResource::setParams( std::string& line, RDOTracerTimeNow* const ti
 	}
 }
 
-void RDOTracerResource::setErased( const bool value )
+void RDOTracerResource::setErased( const rbool value )
 {
 	if ( erased != value )
 		erased = value;

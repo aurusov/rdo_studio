@@ -1,10 +1,6 @@
 #ifndef RDO_PROCESS_METHOD_MANAGER_H
 #define RDO_PROCESS_METHOD_MANAGER_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
 namespace rpMethod {
 class RPMethod;
 }
@@ -31,7 +27,7 @@ public:
 	rpMethod::RPMethod* getMethod() const { return method; }
 	HMODULE getLib() const                { return lib;    }
 
-	static bool isMethod( const std::string& file_name );
+	static rbool isMethod( CREF(tstring) file_name );
 };
 #endif
 
@@ -49,7 +45,7 @@ public:
 
 protected:
 #ifdef RDO_METHOD_DLL
-	void enumPlugins( const std::string& mask );
+	void enumPlugins( CREF(tstring) mask );
 #else
 	void insertMethod( rpMethod::RPMethod* method );
 #endif
@@ -106,24 +102,18 @@ protected:
 	rpMethod::RPMethod* method_last;
 	CImageList im_list;
 
-	//{{AFX_DATA(RPMethodNewDlg)
 	CListCtrlDraw methods;
 	CStatic       desc;
-	//}}AFX_DATA
 
-	//{{AFX_VIRTUAL(RPMethodNewDlg)
-	protected:
+private:
 	virtual void DoDataExchange( CDataExchange* pDX );
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
-	//}}AFX_VIRTUAL
 
-protected:
-	//{{AFX_MSG(RPMethodNewDlg)
 	afx_msg void OnAboutEmail();
 	afx_msg void OnAboutWeb();
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
+
 public:
 	afx_msg void OnMethodListItemChanged(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnMethodListDblClick(NMHDR *pNMHDR, LRESULT *pResult);

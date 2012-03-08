@@ -1,4 +1,16 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdotracertreectrl.cpp
+  \author    Захаров Павел
+  \date      12.03.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracertreectrl.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracerrestype.h"
@@ -11,6 +23,7 @@
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/src/chart/document.h"
 #include "app/rdo_studio_mfc/htmlhelp.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -31,7 +44,6 @@ IMPLEMENT_DYNCREATE( RDOTracerTreeCtrl, RDOTreeCtrl )
 // ON_UPDATE_COMMAND_UI сделано
 
 BEGIN_MESSAGE_MAP( RDOTracerTreeCtrl, RDOTreeCtrl )
-	//{{AFX_MSG_MAP(RDOTracerTreeCtrl)
 	ON_WM_CREATE()
 	ON_WM_INITMENUPOPUP()
 	ON_COMMAND( ID_CHART_ADDTONEWCHART, OnAddToNewChart )
@@ -42,7 +54,6 @@ BEGIN_MESSAGE_MAP( RDOTracerTreeCtrl, RDOTreeCtrl )
 	ON_UPDATE_COMMAND_UI(ID_CHART_FINDINCHARTS, OnUpdateChartFindincharts)
 	ON_COMMAND(ID_CHART_FINDINCHARTS, OnChartFindincharts)
 	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOTracerTreeCtrl::RDOTracerTreeCtrl(): RDOTreeCtrl()
@@ -92,7 +103,7 @@ int RDOTracerTreeCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
 	
 	BOOL maximized;
-	studioApp.mainFrame->MDIGetActive( &maximized );
+	studioApp.m_pMainFrame->MDIGetActive( &maximized );
 	int delta = maximized ? 1 : 0;
 
 	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 0, &popupMenu );
@@ -108,7 +119,7 @@ void RDOTracerTreeCtrl::OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL bS
 	if( pwndFrame ) pwndFrame->SendMessage( WM_INITMENUPOPUP, WPARAM(pPopupMenu->m_hMenu), MAKELPARAM(nIndex, bSysMenu) );
 }
 
-void RDOTracerTreeCtrl::setHasChildren( const RDOTracerTreeItem* item, const bool hasChildren )
+void RDOTracerTreeCtrl::setHasChildren( const RDOTracerTreeItem* item, const rbool hasChildren )
 {
 	TVITEM tvitem;
 	tvitem.hItem = item->getTreeItem();
@@ -149,7 +160,7 @@ void RDOTracerTreeCtrl::OnDragDrop ( NMHDR * pNotifyStruct, LRESULT* result )
 	*result = 0;
 }
 
-BOOL RDOTracerTreeCtrl::setModelName( const std::string& modelName )
+BOOL RDOTracerTreeCtrl::setModelName( CREF(tstring) modelName )
 {
 	return SetItemText( rootItem.getTreeItem(), rdo::format( ID_MODEL, modelName.c_str() ).c_str() );
 }
@@ -232,11 +243,11 @@ void RDOTracerTreeCtrl::addToNewChart( const HTREEITEM hitem ) const
 	}
 }
 
-bool RDOTracerTreeCtrl::findInCharts( const HTREEITEM hitem ) const
+rbool RDOTracerTreeCtrl::findInCharts( const HTREEITEM hitem ) const
 {
 	UNUSED(hitem);
 
-	bool res = false;
+	rbool res = false;
 	RDOTracerTreeItem* item = getIfItemIsDrawable( GetSelectedItem() );
 	RDOTracerSerie* serie = NULL;
 	if ( item ) {
@@ -289,7 +300,7 @@ void RDOTracerTreeCtrl::OnRButtonDown(UINT _nFlags, CPoint point)
 
 void RDOTracerTreeCtrl::OnUpdateChartFindincharts(CCmdUI* pCmdUI) 
 {
-	bool enable = false;
+	rbool enable = false;
 	if ( tracer->getDrawTrace() ) {
 		RDOTracerTreeItem* item = getIfItemIsDrawable( GetSelectedItem() );
 		RDOTracerSerie* serie = NULL;
@@ -308,7 +319,7 @@ void RDOTracerTreeCtrl::OnChartFindincharts()
 
 void RDOTracerTreeCtrl::OnHelpKeyword()
 {
-	std::string filename = studioApp.getFullHelpFileName();
+	tstring filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return;
 	filename += "::/html/work_model_chart.htm";
 	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );

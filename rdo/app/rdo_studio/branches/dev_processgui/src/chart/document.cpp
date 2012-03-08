@@ -1,4 +1,16 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      app/rdo_studio_mfc/src/chart/document.cpp
+  \author    Захаров Павел
+  \date      20.02.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/chart/document.h"
 #include "app/rdo_studio_mfc/src/chart/view.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
@@ -6,6 +18,7 @@
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracervalues.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -46,7 +59,7 @@ void RDOStudioChartDocInsertTime::operator ()( RDOTracerValue* val )
 				doc->minTimeOffset = minoff;
 		}
 	}
-	//studioApp.mainFrame->stepProgress();
+	//studioApp.m_pMainFrame->stepProgress();
 }
 
 // --------------------------------------------------------------------------------
@@ -55,11 +68,9 @@ void RDOStudioChartDocInsertTime::operator ()( RDOTracerValue* val )
 IMPLEMENT_DYNCREATE(RDOStudioChartDoc, CDocument)
 
 BEGIN_MESSAGE_MAP(RDOStudioChartDoc, CDocument)
-	//{{AFX_MSG_MAP(RDOStudioChartDoc)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-RDOStudioChartDoc::RDOStudioChartDoc( const bool preview )
+RDOStudioChartDoc::RDOStudioChartDoc( const rbool preview )
 	: CDocument(),
 	minTimeOffset( 1.7E+308 ),
 	ticksCount( 0 ),
@@ -125,7 +136,7 @@ void RDOStudioChartDoc::incTimeEventsCount( RDOTracerTimeNow* time )
 	//mutex.Unlock();
 }
 
-bool RDOStudioChartDoc::newValueToSerieAdded( RDOTracerValue* val )
+rbool RDOStudioChartDoc::newValueToSerieAdded( RDOTracerValue* val )
 {
 	//mutex.Lock(); Document is locked from RDOTracerSerie::addValue
 	
@@ -223,11 +234,11 @@ void RDOStudioChartDoc::addSerie( RDOTracerSerie* const serie )
 			
 			//int count;
 			//serie->getValueCount( count );
-			//studioApp.mainFrame->beginProgress( 0, count );
+			//studioApp.m_pMainFrame->beginProgress( 0, count );
 
 			std::for_each( serie->begin(), serie->end(), RDOStudioChartDocInsertTime( this ) );
 
-			//studioApp.mainFrame->endProgress();
+			//studioApp.m_pMainFrame->endProgress();
 			studioApp.EndWaitCursor();
 		} catch( ... ) {
 			studioApp.EndWaitCursor();
@@ -303,11 +314,11 @@ RDOTracerSerieMarker RDOStudioChartDoc::selectMarker()
 	return res;
 }
 
-bool RDOStudioChartDoc::serieExists( const RDOTracerSerie* serie ) const
+rbool RDOStudioChartDoc::serieExists( const RDOTracerSerie* serie ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
-	bool res = std::find_if( series.begin(), series.end(), std::bind2nd( std::mem_fun1(&RDOStudioDocSerie::isTracerSerie), serie ) ) != series.end();
+	rbool res = std::find_if( series.begin(), series.end(), std::bind2nd( std::mem_fun1(&RDOStudioDocSerie::isTracerSerie), serie ) ) != series.end();
 
 	const_cast<CMutex&>(mutex).Unlock();
 

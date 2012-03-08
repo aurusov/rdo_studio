@@ -1,7 +1,3 @@
-// rdoprocess_shape_create_MJ.cpp: implementation of the RPShapeDecide class.
-//
-//////////////////////////////////////////////////////////////////////
-
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/stdafx.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_decide.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_decide_dlg1.h"
@@ -14,16 +10,13 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
 class RPConnectorDockTrue: public RPConnectorDock
 {
 public:
 	RPConnectorDockTrue( RPShape* _parent, Type _type, const rp::point& _point, double _norm, const rp::string& type = "" ): RPConnectorDock( _parent, _type, _point, _norm, type ) {};
 	virtual ~RPConnectorDockTrue() {};
 
-	virtual bool can_connect( RPConnectorDock* dock = NULL ) const {
+	virtual rbool can_connect( RPConnectorDock* dock = NULL ) const {
 		if ( !RPConnectorDock::can_connect( dock ) ) return false;
 		return connectors.empty();
 	}
@@ -34,7 +27,7 @@ public:
 	RPConnectorDockFalse( RPShape* _parent, Type _type, const rp::point& _point, double _norm, const rp::string& type = "" ): RPConnectorDock( _parent, _type, _point, _norm, type ) {};
 	virtual ~RPConnectorDockFalse() {};
 
-	virtual bool can_connect( RPConnectorDock* dock = NULL ) const {
+	virtual rbool can_connect( RPConnectorDock* dock = NULL ) const {
 		if ( !RPConnectorDock::can_connect( dock ) ) return false;
 		return connectors.empty();
 	}

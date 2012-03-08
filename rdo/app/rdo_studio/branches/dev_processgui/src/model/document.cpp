@@ -21,8 +21,6 @@ static char THIS_FILE[] = __FILE__;
 IMPLEMENT_DYNCREATE(RDOStudioModelDoc, RDOStudioEditBaseDoc)
 
 BEGIN_MESSAGE_MAP(RDOStudioModelDoc, RDOStudioEditBaseDoc)
-	//{{AFX_MSG_MAP(RDOStudioModelDoc)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioModelDoc::RDOStudioModelDoc():
@@ -89,7 +87,7 @@ BOOL RDOStudioModelDoc::SaveModified()
 		AfxGetMainWnd()->MessageBox( rdo::format( ID_MSG_MODEL_NEED_STOPED_FOR_CLOSE ).c_str(), NULL, MB_ICONWARNING | MB_OK );
 		return false;
 	}
-	bool flag = true;
+	rbool flag = true;
 	if ( isModify() ) {
 		switch ( AfxGetMainWnd()->MessageBox( rdo::format( ID_MSG_MODELSAVE_QUERY ).c_str(), NULL, MB_ICONQUESTION | MB_YESNOCANCEL ) ) {
 			case IDYES   : flag = model->saveModel(); break;
@@ -111,7 +109,7 @@ BOOL RDOStudioModelDoc::SaveModified()
 	return flag;
 }
 
-void RDOStudioModelDoc::setName( const std::string& str )
+void RDOStudioModelDoc::setName( CREF(tstring) str )
 {
 	name = str;
 	rdo::trim( name );
@@ -122,7 +120,7 @@ void RDOStudioModelDoc::setName( const std::string& str )
 	}
 }
 
-bool RDOStudioModelDoc::isModify()
+rbool RDOStudioModelDoc::isModify()
 {
 	updateModify();
 	return IsModified() ? true : false;

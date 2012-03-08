@@ -1,10 +1,23 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdoeditorbaseedit.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      14.03.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorbaseedit.h"
-#include "thirdparty/sci/SciLexer.h"
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/res/ac_function.xpm"
 #include "app/rdo_studio_mfc/res/ac_data.xpm"
 #include "app/rdo_studio_mfc/res/ac_trace.xpm"
+#include "thirdparty/sci/SciLexer.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -27,9 +40,7 @@ static char* wordCharacters = "0123456789_$abcdefghijklmnopqrstuvwxyzABCDEFGHIJK
 // ---------------
 
 BEGIN_MESSAGE_MAP( RDOEditorBaseEdit, RDOBaseEdit )
-	//{{AFX_MSG_MAP(RDOEditorBaseEdit)
 	ON_WM_CREATE()
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOEditorBaseEdit::RDOEditorBaseEdit():
@@ -69,20 +80,20 @@ BOOL RDOEditorBaseEdit::DestroyWindow()
 	return RDOBaseEdit::DestroyWindow();
 }
 
-std::string RDOEditorBaseEdit::getAllKW() const
+tstring RDOEditorBaseEdit::getAllKW() const
 {
 	return rdo::format( "%s %s %s %s", kw0.c_str(), kw1.c_str(), kw2.c_str(), kw3.c_str() );
 }
 
-std::string RDOEditorBaseEdit::convertToLexer( const std::string& kw )
+tstring RDOEditorBaseEdit::convertToLexer( CREF(tstring) kw )
 {
-	std::string s = kw;
-	while ( s.find( '?' ) != std::string::npos ) {
-		std::string::size_type pos1 = s.find( '?' );
-		std::string::size_type pos2 = s.find( ' ', pos1 );
+	tstring s = kw;
+	while ( s.find( '?' ) != tstring::npos ) {
+		tstring::size_type pos1 = s.find( '?' );
+		tstring::size_type pos2 = s.find( ' ', pos1 );
 		s.erase( pos1, pos2 - pos1 );
 	}
-	std::string str_big = s;
+	tstring str_big = s;
 	rdo::toLower(s);
 	return str_big + " " + s;
 }
@@ -222,7 +233,7 @@ void RDOEditorBaseEdit::setEditorStyle( RDOEditorBaseEditStyle* _style )
 	sendEditor( SCI_STYLESETCHARACTERSET, SCE_RDO_OPERATOR, style->font->characterSet );
 }
 
-void RDOEditorBaseEdit::replaceCurrent( const std::string str, const int changePosValue ) const
+void RDOEditorBaseEdit::replaceCurrent( const tstring str, const int changePosValue ) const
 {
 	int pos = 0;
 	if ( changePosValue != -1 ) pos = getCurrentPos();

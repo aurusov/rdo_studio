@@ -1,10 +1,6 @@
 #ifndef RDO_PROCESS_OBJECT_CHART_H
 #define RDO_PROCESS_OBJECT_CHART_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_object.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_project.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_rect.h"
@@ -21,7 +17,7 @@ private:
 	CPen main_pen;
 
 protected:
-	bool can_update;
+	rbool can_update;
 	RPObjectChart* chartParent() const { return !isFlowChart() && parent && parent->isChartObject() ? static_cast<RPObjectChart*>(parent) : NULL; }
 
 	int  main_pen_width;
@@ -37,9 +33,9 @@ protected:
 	virtual void transformToGlobal() = 0;
 
 	// Находится ли точка внутри фигуры
-	virtual bool pointInPolygon( const rp::point& global_chart_pos ) = 0;
+	virtual rbool pointInPolygon( const rp::point& global_chart_pos ) = 0;
 	// Находится ли точка в служебной (неклиентской) части фигуры (прямоугольник выделения, к примеру)
-	virtual bool pointInNCArea( const rp::point& global_chart_pos ) = 0;
+	virtual rbool pointInNCArea( const rp::point& global_chart_pos ) = 0;
 
 	// Отрисовка фигуры
 	virtual void draw_selected( CDC& dc )
@@ -57,8 +53,8 @@ public:
 
 	RPObjectFlowChart* flowChart() const;
 
-	virtual bool setName( const rp::string& value ) {
-		bool res = RPObject::setName( value );
+	virtual rbool setName( const rp::string& value ) {
+		rbool res = RPObject::setName( value );
 		if ( res ) update();
 		return res;
 	}
@@ -69,11 +65,11 @@ public:
 
 	virtual void update();
 
-	virtual bool isChartObject() const { return true;  }
-	virtual bool isFlowChart() const   { return false; }
-	virtual bool isMatrix() const      { return false; }
-	virtual bool isShape() const       { return false; }
-	virtual bool isConnector() const   { return false; }
+	virtual rbool isChartObject() const { return true;  }
+	virtual rbool isFlowChart() const   { return false; }
+	virtual rbool isMatrix() const      { return false; }
+	virtual rbool isShape() const       { return false; }
+	virtual rbool isConnector() const   { return false; }
 
 	void getChartObjects( std::list< RPObjectChart* >& objects ) const {
 		std::list< RPObject* >::const_iterator it = begin();
@@ -120,10 +116,10 @@ public:
 	}
 
 	// Выделить/снять выделение с фигуры
-	virtual void setSelected( bool value );
+	virtual void setSelected( rbool value );
 
 	// Находится ли точка внутри фигуры
-	bool pointInShape( const rp::point& global_chart_pos ) {
+	rbool pointInShape( const rp::point& global_chart_pos ) {
 		return pointInPolygon( global_chart_pos ) || pointInNCArea( global_chart_pos );
 	}
 
@@ -134,13 +130,13 @@ public:
 	virtual void draw_after( CDC& dc );
 
 	// Габориты фигуры
-	virtual rp::rect getBoundingRect( bool global = true ) const = 0;
+	virtual rp::rect getBoundingRect( rbool global = true ) const = 0;
 	virtual rp::rect getMaxRect()                   { return getBoundingRect(); }
 	virtual rp::rect getBoundingRectNoRotateOuter() { return getBoundingRect(); }
 	virtual rp::rect getBoundingRectNoRotateIner()  { return getBoundingRect(); }
 
 	// Перед выполнение команды (объект должен подготовить команду)
-	virtual void command_before( const rp::point& global_chart_pos, bool first_click )
+	virtual void command_before( const rp::point& global_chart_pos, rbool first_click )
 	{
 		UNUSED(global_chart_pos);
 		UNUSED(first_click     );
@@ -151,7 +147,7 @@ public:
 		UNUSED(global_chart_pos);
 	}
 
-	virtual bool can_delete() const { return true; }
+	virtual rbool can_delete() const { return true; }
 
 	static rp::string colorToStr( COLORREF color );
 	static COLORREF strToColor( const rp::string& color );

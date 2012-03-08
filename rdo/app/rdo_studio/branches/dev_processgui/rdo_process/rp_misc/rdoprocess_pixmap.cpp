@@ -30,7 +30,7 @@ RPPixmap::RPPixmap( char* _xpm[] ):
 	int line_index = 1;
 	while ( true ) {
 		line = xpm[line_index++];
-		if ( line.find( " c ", char_per_pixel ) != std::string::npos || line.find( "\tc ", char_per_pixel ) != std::string::npos ) {
+		if ( line.find( " c ", char_per_pixel ) != tstring::npos || line.find( "\tc ", char_per_pixel ) != tstring::npos ) {
 			rp::string color_name = getNextColor( line );
 			getNextStr( line );
 			Pixel color_value = getNextPixel( line );
@@ -134,7 +134,7 @@ RPPixmap::RPPixmap( char* _xpm[] ):
 int RPPixmap::getNextInt( rp::string& line ) const
 {
 	line.trim_left();
-	std::string::size_type pos = line.find( ' ' );
+	tstring::size_type pos = line.find( ' ' );
 	rp::string str = line.substr( 0, pos );
 	line.erase( 0, pos + 1 );
 	return str.toint();
@@ -143,7 +143,7 @@ int RPPixmap::getNextInt( rp::string& line ) const
 rp::string RPPixmap::getNextStr( rp::string& line ) const
 {
 	line.trim_left();
-	std::string::size_type pos = line.find( ' ' );
+	tstring::size_type pos = line.find( ' ' );
 	rp::string str = line.substr( 0, pos );
 	line.erase( 0, pos + 1 );
 	return str;
@@ -159,7 +159,7 @@ rp::string RPPixmap::getNextColor( rp::string& line ) const
 RPPixmap::Pixel RPPixmap::getNextPixel( rp::string& line )
 {
 	line.trim_left();
-//	std::string::size_type pos = line.find( ' ' );
+//	tstring::size_type pos = line.find( ' ' );
 //	rp::string str = line.substr( 0, pos );
 //	line.erase( 0, pos + 1 );
 	rp::string str = line;

@@ -1,5 +1,18 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdologeditstyle.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      28.02.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/edit_ctrls/rdologeditstyle.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -29,19 +42,19 @@ RDOLogEditTheme& RDOLogEditTheme::operator =( const RDOLogEditTheme& theme )
 	return *this;
 }
 
-bool RDOLogEditTheme::operator ==( const RDOLogEditTheme& theme ) const
+rbool RDOLogEditTheme::operator ==( const RDOLogEditTheme& theme ) const
 {
-	bool flag = RDOBaseEditTheme::operator==( theme );
+	rbool flag = RDOBaseEditTheme::operator==( theme );
 	if ( flag )	flag &= selectLineBgColor == theme.selectLineBgColor ? true : false;
 	return flag;
 }
 
-bool RDOLogEditTheme::operator !=( const RDOLogEditTheme& theme ) const
+rbool RDOLogEditTheme::operator !=( const RDOLogEditTheme& theme ) const
 {
 	return !(*this == theme);
 }
 
-void RDOLogEditTheme::load( std::string regPath )
+void RDOLogEditTheme::load( tstring regPath )
 {
 	RDOBaseEditTheme::load( regPath );
 
@@ -49,7 +62,7 @@ void RDOLogEditTheme::load( std::string regPath )
 	selectLineBgColor = AfxGetApp()->GetProfileInt( regPath.c_str(), "selectLineBgColor", selectLineBgColor );
 }
 
-void RDOLogEditTheme::save( std::string regPath ) const
+void RDOLogEditTheme::save( tstring regPath ) const
 {
 	RDOBaseEditTheme::save( regPath );
 
@@ -117,14 +130,14 @@ RDOLogEditStyle& RDOLogEditStyle::operator =( const RDOLogEditStyle& style )
 	return *this;
 }
 
-bool RDOLogEditStyle::operator ==( const RDOLogEditStyle& style ) const
+rbool RDOLogEditStyle::operator ==( const RDOLogEditStyle& style ) const
 {
-	bool flag = RDOBaseEditStyle::operator==( style );
+	rbool flag = RDOBaseEditStyle::operator==( style );
 	if ( theme && style.theme && flag ) flag &= *static_cast<RDOLogEditTheme*>(theme) == *static_cast<RDOLogEditTheme*>(style.theme);
 	return flag;
 }
 
-bool RDOLogEditStyle::operator !=( const RDOLogEditStyle& style ) const
+rbool RDOLogEditStyle::operator !=( const RDOLogEditStyle& style ) const
 {
 	return !(*this == style);
 }

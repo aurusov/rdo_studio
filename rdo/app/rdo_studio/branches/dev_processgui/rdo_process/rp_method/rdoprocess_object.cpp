@@ -90,7 +90,7 @@ rp::string RPObject::getFullName() const
 	return str;
 }
 
-bool RPObject::setName( const rp::string& value )
+rbool RPObject::setName( const rp::string& value )
 {
 	if ( !value.empty() ) {
 		rp::string prev_name = name;
@@ -109,7 +109,7 @@ bool RPObject::setName( const rp::string& value )
 	return true;
 }
 
-bool RPObject::isChildNameCorrect( const RPObject* obj ) const
+rbool RPObject::isChildNameCorrect( const RPObject* obj ) const
 {
 	std::list< RPObject* >::const_iterator it = begin();
 	while ( it != end() ) {
@@ -143,7 +143,7 @@ void RPObject::setCorrectName( const rp::string& value )
 	if ( rpMethod::project ) rpMethod::project->sendMessage( this, rp::msg::RP_OBJ_NAMECHANGED );
 }
 
-void RPObject::setSelected( bool value )
+void RPObject::setSelected( rbool value )
 {
 	if ( selected != value ) {
 		selected = value;
@@ -163,7 +163,7 @@ void RPObject::selectChildOff( RPObject* withoutObj )
 	}
 }
 
-void RPObject::getAllChild( std::list< RPObject* >& all_child, bool recursive ) const
+void RPObject::getAllChild( std::list< RPObject* >& all_child, rbool recursive ) const
 {
 	all_child.insert( all_child.end(), child.begin(), child.end() );
 	if ( recursive ) {
@@ -175,7 +175,7 @@ void RPObject::getAllChild( std::list< RPObject* >& all_child, bool recursive ) 
 	}
 }
 
-void RPObject::getAllChildByClass( std::list< RPObject* >& all_child, const rp::string& class_name, bool recursive ) const
+void RPObject::getAllChildByClass( std::list< RPObject* >& all_child, const rp::string& class_name, rbool recursive ) const
 {
 	std::list< RPObject* >::const_iterator it = child.begin();
 	while ( it != child.end() ) {
@@ -193,7 +193,7 @@ void RPObject::getAllChildByClass( std::list< RPObject* >& all_child, const rp::
 	}
 }
 
-void RPObject::getAllChildByClasses( std::list< RPObject* >& all_child, const std::list< rp::string >& class_names, bool recursive ) const
+void RPObject::getAllChildByClasses( std::list< RPObject* >& all_child, const std::list< rp::string >& class_names, rbool recursive ) const
 {
 	std::list< RPObject* >::const_iterator it = child.begin();
 	while ( it != child.end() ) {
@@ -216,7 +216,7 @@ void RPObject::getAllChildByClasses( std::list< RPObject* >& all_child, const st
 	}
 }
 
-void RPObject::getAllChildNotByClass( std::list< RPObject* >& all_child, const rp::string& class_name, bool recursive ) const
+void RPObject::getAllChildNotByClass( std::list< RPObject* >& all_child, const rp::string& class_name, rbool recursive ) const
 {
 	std::list< RPObject* >::const_iterator it = child.begin();
 	while ( it != child.end() ) {

@@ -24,9 +24,6 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
 RPMethodProc2RDO_MJ* proc2rdo = NULL;
 
 RPMethodProc2RDO_MJ::RPMethodProc2RDO_MJ( RPObject* _parent ):
@@ -133,7 +130,7 @@ void RPMethodProc2RDO_MJ::loadFromXML(const pugi::xml_node &node)
 	NEVER_REACH_HERE;
 }
 
-bool RPMethodProc2RDO_MJ::checkModelStructure()
+rbool RPMethodProc2RDO_MJ::checkModelStructure()
 {
 // Заполнили ID
 	std::list< RPObject* > all_child;

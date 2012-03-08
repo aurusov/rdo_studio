@@ -1,18 +1,25 @@
-#ifndef RDOSTUDIOCHARTDOC_H
-#define RDOSTUDIOCHARTDOC_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      app/rdo_studio_mfc/src/chart/document.h
+  \author    Захаров Павел
+  \date      20.02.2003
+  \brief     
+  \indent    4T
+*/
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
+#ifndef _RDO_STUDIO_MFC_CHART_DOCUMENT_H_
+#define _RDO_STUDIO_MFC_CHART_DOCUMENT_H_
 
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/chart/doc_serie.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracerserie.h"
+// --------------------------------------------------------------------------------
 
 #define WM_USER_UPDATE_CHART_VIEW WM_USER + 0x156
 #define UPDATE_NEWSERIE  0x000
 #define UPDATE_NEWVALUE  0x001
 #define UPDATE_TIMETICKS 0x002
-
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioChartDoc
@@ -47,7 +54,7 @@ protected:
 	double minTimeOffset;
 	int ticksCount;
 
-	bool previewMode;
+	rbool previewMode;
 
 	int getMaxMarkerSize() const;
 
@@ -57,35 +64,31 @@ protected:
 
 	void updateChartViews( const UINT update_type ) const;
 
-	std::string title;
+	tstring title;
 
 public:
-	//{{AFX_VIRTUAL(RDOStudioChartDoc)
-	public:
+	virtual void SetTitle( LPCTSTR lpszTitle );
+
+private:
 	virtual void Serialize(CArchive& ar);
 	virtual BOOL OnNewDocument();
-	virtual void SetTitle( LPCTSTR lpszTitle );
-	//}}AFX_VIRTUAL
 
-protected:
-	//{{AFX_MSG(RDOStudioChartDoc)
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
 public:
-	RDOStudioChartDoc( const bool preview = false );
+	RDOStudioChartDoc( const rbool preview = false );
 	virtual ~RDOStudioChartDoc();
 
 	void addSerie( RDOTracerSerie* const serie );
 	//void removeSerie( RDOTracerSerie* const serie );
-	bool serieExists( const RDOTracerSerie* serie ) const;
+	rbool serieExists( const RDOTracerSerie* serie ) const;
 
-	std::string getTitle() const { return title; };
+	tstring getTitle() const { return title; };
 	
 	void lock() { mutex.Lock(); };
 	void unlock() { mutex.Unlock(); };
 	void incTimeEventsCount( RDOTracerTimeNow* time );
-	bool newValueToSerieAdded( RDOTracerValue* val );
+	rbool newValueToSerieAdded( RDOTracerValue* val );
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;
@@ -94,7 +97,4 @@ public:
 
 };
 
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // RDOSTUDIOCHARTDOC_H
+#endif // _RDO_STUDIO_MFC_CHART_DOCUMENT_H_

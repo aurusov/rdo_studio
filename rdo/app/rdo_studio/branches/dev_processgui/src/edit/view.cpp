@@ -1,10 +1,23 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      app/rdo_studio_mfc/src/edit/view.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      20.02.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/edit/view.h"
 #include "app/rdo_studio_mfc/src/edit/document.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoredit.h"
 #include "app/rdo_studio_mfc/resource.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -20,11 +33,9 @@ using namespace rdoEditor;
 IMPLEMENT_DYNCREATE(RDOStudioEditView, RDOStudioEditBaseView)
 
 BEGIN_MESSAGE_MAP(RDOStudioEditView, RDOStudioEditBaseView)
-	//{{AFX_MSG_MAP(RDOStudioEditView)
 	ON_WM_CREATE()
 	ON_WM_SETFOCUS()
 	ON_WM_SIZE()
-	//}}AFX_MSG_MAP
 	ON_COMMAND(ID_FILE_PRINT, RDOStudioEditBaseView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, RDOStudioEditBaseView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, RDOStudioEditBaseView::OnFilePrintPreview)
@@ -92,7 +103,7 @@ int RDOStudioEditView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (RDOStudioEditBaseView::OnCreate(lpCreateStruct) == -1) return -1;
 
-	edit->setEditorStyle( &studioApp.mainFrame->style_editor );
+	edit->setEditorStyle( &studioApp.m_pMainFrame->style_editor );
 	edit->Create( NULL, NULL, WS_VISIBLE, CRect(0, 0, 100, 100), this, 0 );
 	edit->setPopupMenu( &popupMenu );
 

@@ -1,6 +1,19 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdotracerlogstyle.cpp
+  \author    Захаров Павел
+  \date      12.03.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracerlogstyle.h"
 #include "app/rdo_studio_mfc/src/application.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -128,9 +141,9 @@ RDOTracerLogTheme& RDOTracerLogTheme::operator =( const RDOTracerLogTheme& theme
 	return *this;
 }
 
-bool RDOTracerLogTheme::operator ==( const RDOTracerLogTheme& theme ) const
+rbool RDOTracerLogTheme::operator ==( const RDOTracerLogTheme& theme ) const
 {
-	bool flag = RDOLogTheme::operator==( theme );
+	rbool flag = RDOLogTheme::operator==( theme );
 	if ( flag )	flag &= es  == theme.es;
 	if ( flag )	flag &= eb  == theme.eb;
 	if ( flag )	flag &= ef  == theme.ef;
@@ -159,12 +172,12 @@ bool RDOTracerLogTheme::operator ==( const RDOTracerLogTheme& theme ) const
 	return flag;
 }
 
-bool RDOTracerLogTheme::operator !=( const RDOTracerLogTheme& theme ) const
+rbool RDOTracerLogTheme::operator !=( const RDOTracerLogTheme& theme ) const
 {
 	return !(*this == theme);
 }
 
-void RDOTracerLogTheme::load( std::string regPath )
+void RDOTracerLogTheme::load( tstring regPath )
 {
 	RDOLogTheme::load( regPath );
 
@@ -196,7 +209,7 @@ void RDOTracerLogTheme::load( std::string regPath )
 	seu.load( regPath, "seu" );
 }
 
-void RDOTracerLogTheme::save( std::string regPath ) const
+void RDOTracerLogTheme::save( tstring regPath ) const
 {
 	RDOLogTheme::save( regPath );
 
@@ -257,15 +270,15 @@ void RDOTracerLogStyle::initBorders()
 	borders->horzBorder = 2;
 }
 
-bool RDOTracerLogStyle::getItemColors( const std::string& item, RDOLogColorPair* &colors ) const
+rbool RDOTracerLogStyle::getItemColors( CREF(tstring) item, RDOLogColorPair* &colors ) const
 {
 	if ( item.empty() )
 		return RDOLogStyle::getItemColors( "", colors );
 	int posstart = item.find_first_not_of( ' ' );
 	int posend = item.find_first_of( ' ', posstart );
-	std::string key = item.substr( posstart, posend - posstart );
+	tstring key = item.substr( posstart, posend - posstart );
 	rdo::trim( key );
-	bool res = true;
+	rbool res = true;
 	if ( theme ) {
 		RDOTracerLogTheme* _theme = static_cast<RDOTracerLogTheme*>(theme);
 		if ( key == "ES" ) {
@@ -288,7 +301,7 @@ bool RDOTracerLogStyle::getItemColors( const std::string& item, RDOLogColorPair*
 			colors = &_theme->v;
 		} else if ( key == "$Status" ) {
 			colors = &_theme->s;
-		} else if ( key.find( "DPS" ) != std::string::npos ) {
+		} else if ( key.find( "DPS" ) != tstring::npos ) {
 			colors = &_theme->dps;
 		} else if ( key == "SB" ) {
 			colors = &_theme->sb;
@@ -335,19 +348,19 @@ RDOTracerLogStyle& RDOTracerLogStyle::operator =( const RDOTracerLogStyle& style
 	return *this;
 }
 
-bool RDOTracerLogStyle::operator ==( const RDOTracerLogStyle& style ) const
+rbool RDOTracerLogStyle::operator ==( const RDOTracerLogStyle& style ) const
 {
-	bool flag = RDOLogStyle::operator==( style );
+	rbool flag = RDOLogStyle::operator==( style );
 	if ( theme && style.theme && flag ) flag &= *static_cast<RDOTracerLogTheme*>(theme) == *static_cast<RDOTracerLogTheme*>(style.theme);
 	return flag;
 }
 
-bool RDOTracerLogStyle::operator !=( const RDOTracerLogStyle& style ) const
+rbool RDOTracerLogStyle::operator !=( const RDOTracerLogStyle& style ) const
 {
 	return !(*this == style);
 }
 
-void RDOTracerLogStyle::init( const std::string& _regPath )
+void RDOTracerLogStyle::init( CREF(tstring) _regPath )
 {
 	RDOLogStyle::init( _regPath );
 	*font = rdoStyle::RDOStyleFont::getTracerLogFont();

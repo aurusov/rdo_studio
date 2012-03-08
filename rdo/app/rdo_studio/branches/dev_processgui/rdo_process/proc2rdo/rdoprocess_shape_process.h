@@ -1,13 +1,5 @@
-// rdoprocess_shape_process_MJ.h: interface for the RPShapeProcessMJ class.
-//
-//////////////////////////////////////////////////////////////////////
-
 #if !defined(AFX_RDOPROCESS_SHAPE_PROCESS_MJ_H__A5AEB64C_2CE8_46D3_9E6B_86368CB68269__INCLUDED_)
 #define AFX_RDOPROCESS_SHAPE_PROCESS_MJ_H__A5AEB64C_2CE8_46D3_9E6B_86368CB68269__INCLUDED_
-
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
 
 #include <list>
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape.h"

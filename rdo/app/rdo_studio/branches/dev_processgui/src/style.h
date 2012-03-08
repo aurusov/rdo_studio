@@ -1,6 +1,14 @@
-#ifndef RDOSTUDIOSTYLE_H
-#define RDOSTUDIOSTYLE_H
-#pragma once
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      app/rdo_studio_mfc/src/style.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      27.03.2003
+  \brief     
+  \indent    4T
+*/
+
+#ifndef _RDO_STUDIO_MFC_STYLE_H_
+#define _RDO_STUDIO_MFC_STYLE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <string>
@@ -19,15 +27,15 @@ public:
 	virtual ~RDOStyleFont();
 
 	RDOStyleFont& operator =( const RDOStyleFont& font );
-	bool operator ==( const RDOStyleFont& font ) const;
-	bool operator !=( const RDOStyleFont& font ) const;
+	rbool operator ==( const RDOStyleFont& font ) const;
+	rbool operator !=( const RDOStyleFont& font ) const;
 
-	virtual void load( std::string regPath );
-	virtual void save( std::string regPath ) const;
+	virtual void load( tstring regPath );
+	virtual void save( tstring regPath ) const;
 
 	enum style { NONE = 0x00, BOLD = 0x01, ITALIC = 0x02, UNDERLINE = 0x04 };
 
-	std::string name;
+	tstring     name;
 	int         size;
 	int         codepage;
 	int         characterSet;
@@ -49,11 +57,11 @@ public:
 	virtual ~RDOStyleTheme();
 
 	RDOStyleTheme& operator =( const RDOStyleTheme& theme );
-	bool operator ==( const RDOStyleTheme& theme ) const;
-	bool operator !=( const RDOStyleTheme& theme ) const;
+	rbool operator ==( const RDOStyleTheme& theme ) const;
+	rbool operator !=( const RDOStyleTheme& theme ) const;
 
-	virtual void load( std::string regPath );
-	virtual void save( std::string regPath ) const;
+	virtual void load( tstring regPath );
+	virtual void save( tstring regPath ) const;
 
 	COLORREF defaultColor;
 	COLORREF backgroundColor;
@@ -67,7 +75,7 @@ public:
 class RDOStyle
 {
 protected:
-	std::string regPath;
+	tstring regPath;
 
 	virtual void initFont();
 
@@ -76,12 +84,12 @@ public:
 	virtual ~RDOStyle();
 
 	RDOStyle& operator =( const RDOStyle& style );
-	bool operator ==( const RDOStyle& style ) const;
-	bool operator !=( const RDOStyle& style ) const;
+	rbool operator ==( const RDOStyle& style ) const;
+	rbool operator !=( const RDOStyle& style ) const;
 
-	virtual void init( const std::string& _regPath = "" );
-	virtual bool load();
-	virtual bool save() const;
+	virtual void  init( CREF(tstring) _regPath = "" );
+	virtual rbool load();
+	virtual rbool save() const;
 
 	RDOStyleFont* font;
 };
@@ -99,16 +107,16 @@ public:
 	virtual ~RDOStyleWithTheme();
 
 	RDOStyleWithTheme& operator =( const RDOStyleWithTheme& style );
-	bool operator ==( const RDOStyleWithTheme& style ) const;
-	bool operator !=( const RDOStyleWithTheme& style ) const;
+	rbool operator ==( const RDOStyleWithTheme& style ) const;
+	rbool operator !=( const RDOStyleWithTheme& style ) const;
 
-	virtual void init( const std::string& _regPath = "" );
-	virtual bool load();
-	virtual bool save() const;
+	virtual void  init( CREF(tstring) _regPath = "" );
+	virtual rbool load();
+	virtual rbool save() const;
 
 	RDOStyleTheme* theme;
 };
 
 }; // namespace rdoStyle
 
-#endif // RDOSTUDIOSTYLE_H
+#endif // _RDO_STUDIO_MFC_STYLE_H_

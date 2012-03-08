@@ -1,10 +1,23 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      workspace.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      20.02.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/workspace.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
 #include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracertreectrl.h"
 #include "app/rdo_studio_mfc/resource.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -15,9 +28,7 @@ static char THIS_FILE[] = __FILE__;
 // -------------------- RDOStudioWorkspace
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioWorkspace, RDOStudioDockWnd)
-	//{{AFX_MSG_MAP(RDOStudioWorkspace)
 	ON_WM_CREATE()
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioWorkspace::RDOStudioWorkspace():
@@ -53,10 +64,10 @@ int RDOStudioWorkspace::OnCreate(LPCREATESTRUCT lpCreateStruct)
 #ifdef PROCGUI_ENABLE
 	tab.insertItem( pagectrl, rdo::format( IDS_TAB_PAGECTRL ).c_str() );
 #endif
-	studioApp.mainFrame->registerCmdWnd( trace );
-	studioApp.mainFrame->registerCmdWnd( frames );
+	studioApp.m_pMainFrame->registerCmdWnd( trace );
+	studioApp.m_pMainFrame->registerCmdWnd( frames );
 #ifdef PROCGUI_ENABLE
-	studioApp.mainFrame->registerCmdWnd( pagectrl );
+	studioApp.m_pMainFrame->registerCmdWnd( pagectrl );
 #endif
 	return 0;
 }

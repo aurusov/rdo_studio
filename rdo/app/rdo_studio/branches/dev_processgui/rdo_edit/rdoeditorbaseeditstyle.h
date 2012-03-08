@@ -1,8 +1,19 @@
-#ifndef RDOEDITORBASEEDITSTYLE_H
-#define RDOEDITORBASEEDITSTYLE_H
-#pragma once
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdoeditorbaseeditstyle.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      14.03.2003
+  \brief     
+  \indent    4T
+*/
 
+#ifndef _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITORBASEEDITSTYLE_H_
+#define _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITORBASEEDITSTYLE_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/edit_ctrls/rdobaseeditstyle.h"
+// --------------------------------------------------------------------------------
 
 namespace rdoEditor {
 
@@ -16,11 +27,11 @@ public:
 	virtual ~RDOEditorBaseEditTheme();
 
 	RDOEditorBaseEditTheme& operator =( const RDOEditorBaseEditTheme& theme );
-	bool operator ==( const RDOEditorBaseEditTheme& theme ) const;
-	bool operator !=( const RDOEditorBaseEditTheme& theme ) const;
+	rbool operator ==( const RDOEditorBaseEditTheme& theme ) const;
+	rbool operator !=( const RDOEditorBaseEditTheme& theme ) const;
 
-	virtual void load( std::string regPath );
-	virtual void save( std::string regPath ) const;
+	virtual void load( tstring regPath );
+	virtual void save( tstring regPath ) const;
 
 	COLORREF identifierColor;
 	COLORREF keywordColor;
@@ -42,11 +53,11 @@ public:
 	rdoStyle::RDOStyleFont::style stringStyle;
 	rdoStyle::RDOStyleFont::style operatorStyle;
 
-	virtual bool styleDefault( const int styleType ) const;
-	virtual bool styleUsing( const int styleType ) const;
-	virtual bool styleBold( const int styleType = STYLE_DEFAULT ) const;
-	virtual bool styleItalic( const int styleType = STYLE_DEFAULT ) const;
-	virtual std::string styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
+	virtual rbool styleDefault( const int styleType ) const;
+	virtual rbool styleUsing( const int styleType ) const;
+	virtual rbool styleBold( const int styleType = STYLE_DEFAULT ) const;
+	virtual rbool styleItalic( const int styleType = STYLE_DEFAULT ) const;
+	virtual tstring styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
 
 	static RDOEditorBaseEditTheme getDefaultTheme();
 	static RDOEditorBaseEditTheme getCppTheme();
@@ -70,10 +81,10 @@ public:
 	virtual ~RDOEditorBaseEditStyle();
 
 	RDOEditorBaseEditStyle& operator =( const RDOEditorBaseEditStyle& style );
-	bool operator ==( const RDOEditorBaseEditStyle& style ) const;
-	bool operator !=( const RDOEditorBaseEditStyle& style ) const;
+	rbool operator ==( const RDOEditorBaseEditStyle& style ) const;
+	rbool operator !=( const RDOEditorBaseEditStyle& style ) const;
 };
 
 }; // namespace rdoEditor
 
-#endif // RDOEDITORBASEEDITSTYLE_H
+#endif // _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITORBASEEDITSTYLE_H_

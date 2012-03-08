@@ -1,5 +1,18 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdobuildeditstyle.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      25.02.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/edit_ctrls/rdobuildeditstyle.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -29,19 +42,19 @@ RDOBuildEditTheme& RDOBuildEditTheme::operator =( const RDOBuildEditTheme& theme
 	return *this;
 }
 
-bool RDOBuildEditTheme::operator ==( const RDOBuildEditTheme& theme ) const
+rbool RDOBuildEditTheme::operator ==( const RDOBuildEditTheme& theme ) const
 {
-	bool flag = RDOLogEditTheme::operator==( theme );
+	rbool flag = RDOLogEditTheme::operator==( theme );
 	if ( flag )	flag &= warning == theme.warning ? true : false;
 	return flag;
 }
 
-bool RDOBuildEditTheme::operator !=( const RDOBuildEditTheme& theme ) const
+rbool RDOBuildEditTheme::operator !=( const RDOBuildEditTheme& theme ) const
 {
 	return !(*this == theme);
 }
 
-void RDOBuildEditTheme::load( std::string regPath )
+void RDOBuildEditTheme::load( tstring regPath )
 {
 	RDOLogEditTheme::load( regPath );
 
@@ -49,7 +62,7 @@ void RDOBuildEditTheme::load( std::string regPath )
 	warning = AfxGetApp()->GetProfileInt( regPath.c_str(), "warning", warning ) ? true : false;
 }
 
-void RDOBuildEditTheme::save( std::string regPath ) const
+void RDOBuildEditTheme::save( tstring regPath ) const
 {
 	RDOLogEditTheme::save( regPath );
 
@@ -111,14 +124,14 @@ RDOBuildEditStyle& RDOBuildEditStyle::operator =( const RDOBuildEditStyle& style
 	return *this;
 }
 
-bool RDOBuildEditStyle::operator ==( const RDOBuildEditStyle& style ) const
+rbool RDOBuildEditStyle::operator ==( const RDOBuildEditStyle& style ) const
 {
-	bool flag = RDOLogEditStyle::operator==( style );
+	rbool flag = RDOLogEditStyle::operator==( style );
 	if ( theme && style.theme && flag ) flag &= *static_cast<RDOBuildEditTheme*>(theme) == *static_cast<RDOBuildEditTheme*>(style.theme);
 	return flag;
 }
 
-bool RDOBuildEditStyle::operator !=( const RDOBuildEditStyle& style ) const
+rbool RDOBuildEditStyle::operator !=( const RDOBuildEditStyle& style ) const
 {
 	return !(*this == style);
 }

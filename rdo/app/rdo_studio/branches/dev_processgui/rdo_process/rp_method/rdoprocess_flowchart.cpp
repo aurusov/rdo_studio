@@ -22,7 +22,6 @@ const int grid_dy_plus = 2;
 const int grid_timer_id = 1;
 
 BEGIN_MESSAGE_MAP( RPFlowChart, CWnd )
-	//{{AFX_MSG_MAP(RPFlowChart)
 	ON_WM_PAINT()
 	ON_WM_SIZE()
 	ON_WM_HSCROLL()
@@ -37,7 +36,6 @@ BEGIN_MESSAGE_MAP( RPFlowChart, CWnd )
 	ON_WM_RBUTTONUP()
 	ON_WM_LBUTTONDBLCLK()
 	ON_WM_NCHITTEST()
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RPFlowChart::RPFlowChart( RPObjectFlowChart* _flowobj, CDocument* _doc ):

@@ -1,8 +1,19 @@
-#ifndef RDOTRACERLOGSTYLE_H
-#define RDOTRACERLOGSTYLE_H
-#pragma once
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdotracerlogstyle.h
+  \author    Захаров Павел
+  \date      12.03.2003
+  \brief     
+  \indent    4T
+*/
 
+#ifndef _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOTRACERLOGSTYLE_H_
+#define _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOTRACERLOGSTYLE_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdologstyle.h"
+// --------------------------------------------------------------------------------
 
 class RDOStudioOptionsStylesAndColors;
 
@@ -18,11 +29,11 @@ public:
 	virtual ~RDOTracerLogTheme();
 
 	RDOTracerLogTheme& operator =( const RDOTracerLogTheme& theme );
-	bool operator ==( const RDOTracerLogTheme& theme ) const;
-	bool operator !=( const RDOTracerLogTheme& theme ) const;
+	rbool operator ==( const RDOTracerLogTheme& theme ) const;
+	rbool operator !=( const RDOTracerLogTheme& theme ) const;
 
-	virtual void load( std::string regPath );
-	virtual void save( std::string regPath ) const;
+	virtual void load( tstring regPath );
+	virtual void save( tstring regPath ) const;
 
 	RDOLogColorPair es;
 	RDOLogColorPair eb;
@@ -68,15 +79,15 @@ public:
 	RDOTracerLogStyle();
 	virtual ~RDOTracerLogStyle();
 
-	bool getItemColors( const std::string& item, RDOLogColorPair* &colors ) const;
+	rbool getItemColors( CREF(tstring) item, RDOLogColorPair* &colors ) const;
 
 	RDOTracerLogStyle& operator =( const RDOTracerLogStyle& style );
-	bool operator ==( const RDOTracerLogStyle& style ) const;
-	bool operator !=( const RDOTracerLogStyle& style ) const;
+	rbool operator ==( const RDOTracerLogStyle& style ) const;
+	rbool operator !=( const RDOTracerLogStyle& style ) const;
 
-	virtual void init( const std::string& _regPath = "" );
+	virtual void init( CREF(tstring) _regPath = "" );
 };
 
 }; // namespace rdoTracerLog
 
-#endif // RDOTRACERLOGSTYLE_H
+#endif // _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOTRACERLOGSTYLE_H_
