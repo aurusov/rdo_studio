@@ -12,6 +12,7 @@ enum RDOTracerResParamType {
 	RDOPT_INTEGER   = 0,
 	RDOPT_REAL,
 	RDOPT_ENUMERATIVE,
+	RDOPT_BOOL,
 	RDOPT_ARRAY
 };
 	

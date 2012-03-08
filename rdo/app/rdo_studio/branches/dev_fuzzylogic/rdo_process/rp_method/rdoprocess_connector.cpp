@@ -54,6 +54,59 @@ rp::RPXMLNode* RPConnector::save( rp::RPXMLNode* parent_node )
 	return obj_node;
 }
 
+void RPConnector::saveToXML(REF(pugi::xml_node) parentNode) const
+{
+	// Записываем узел <RPConnector/>:
+	pugi::xml_node node = parentNode.append_child(getClassName().c_str());
+	// Соxраняем атрибуты объекта:
+	node.append_attribute("obj_from")        .set_value(dock_begin->object().getFullName().c_str());
+	node.append_attribute("obj_to")          .set_value(dock_end->  object().getFullName().c_str());
+	node.append_attribute("index_from")      .set_value(dock_begin->getIndex()                    );
+	node.append_attribute("index_to")        .set_value(dock_end->  getIndex()                    );
+}
+
+void RPConnector::loadFromXML(CREF(pugi::xml_node) node)
+{
+	PTR(RPObject) pObjFrom = NULL;
+	PTR(RPObject) pObjTo   = NULL;
+	
+	// Считываем атрибуты для загрузки сохраненного блока "Connector":
+	for (pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute())
+	{
+		// Присваиваем сохраненные в xml-файле параметры:
+		// Для отображения объекта на Flowchart'е
+		tstring attrName = attr.name();
+		if (attrName == _T("obj_from"))
+		{
+			pObjFrom = rpMethod::project->findObject(attr.value());
+			// Для блока Resource восстанавливаем его коннектор (отличен от других):
+			if (pObjFrom->getClassInfo()->isKindOf("RPShapeResource_MJ"))
+			{
+				main_pen_width = 1;
+				main_pen_default.DeleteObject();
+				main_pen_default.CreatePen( PS_DASHDOTDOT, 1, RGB(0x00, 0x00, 0xFF) );
+				can_update = false;
+				setPen( main_pen_default );
+				can_update = true;
+			}
+		}
+		else if (attrName == _T("obj_to" ))
+		{
+			pObjTo = rpMethod::project->findObject(attr.value());
+		}
+		else if (attrName == _T("index_from"))
+		{
+			ASSERT(pObjFrom && pObjFrom->getClassInfo()->isKindOf("RPShape"));
+			dock_begin = static_cast<RPShape*>(pObjFrom)->getDock(attr.as_uint());
+		}
+		else if (attrName == _T("index_to"))
+		{
+			ASSERT(pObjTo && pObjTo->getClassInfo()->isKindOf("RPShape"));
+			dock_end = static_cast<RPShape*>(pObjTo)->getDock(attr.as_uint());
+		}
+	}
+}
+
 void RPConnector::registerObject()
 {
 	rpMethod::factory->insertFactory( new RPObjectClassInfo( "RPConnector", "RPObjectChart", RPConnector::newObject ) );
@@ -466,7 +519,7 @@ void RPConnector::makeConnector( const rp::point& p1, const rp::point& p2, doubl
 //				pa.putPoints( pa.size(), 1, dir.x(), dir.y() );
 				borders.push_back( interborder );
 				borders.push_back( dir );
-				TRACE( "around border: x1 = %f, y1 = %f, x2 = %f, y2 = %f\n", interborder.x, interborder.y, dir.x, dir.y );
+				TRACE4( "around border: x1 = %f, y1 = %f, x2 = %f, y2 = %f\n", interborder.x, interborder.y, dir.x, dir.y );
 				TRACE( "around border: next\n" );
 #ifdef CON_DEBUG
 				makeConnector( dc, dir, p2, norm1, norm2, pa );
@@ -474,7 +527,7 @@ void RPConnector::makeConnector( const rp::point& p1, const rp::point& p2, doubl
 				makeConnector( dir, p2, norm1, norm2, pa );
 #endif
 			} else {
-				TRACE( "border: loop found for (%f,%f)\n", dir.x, dir.y );
+				TRACE2( "border: loop found for (%f,%f)\n", dir.x, dir.y );
 			}
 		} else {
 #ifdef CON_DEBUG
@@ -486,7 +539,7 @@ void RPConnector::makeConnector( const rp::point& p1, const rp::point& p2, doubl
 			dc.Ellipse( inter.x - 3, inter.y - 3, inter.x + 3, inter.y + 3 );
 			dc.RestoreDC( -1 );
 #endif
-			TRACE( "red, x = %f, y = %f\n", inter.x, inter.y );
+			TRACE2( "red, x = %f, y = %f\n", inter.x, inter.y );
 			pa.push_back( inter );
 //			pa.putPoints( pa.size(), 1, inter.x(), inter.y() );
 			norm1 += 90;
@@ -558,7 +611,7 @@ bool RPConnector::getShortLine( const rp::polyline& pa, const rp::point& from, c
 				if ( fabs(K) > 0 ) {
 					if ( !rect.pointInRect( from ) ) {
 						if ( Ua >= 0.0 && Ua <= 1.0 && Ub >= 0.0 && Ub <= 1.0 ) {
-							TRACE( "K = %g, Ua = %g, Ub = %g\n", K, Ua, Ub );
+							TRACE3( "K = %g, Ua = %g, Ub = %g\n", K, Ua, Ub );
 							double len = rp::math::getLength( from, _inter );
 							if ( lengthA2 >= len ) {
 								bool vect_inter = true;
@@ -594,20 +647,20 @@ bool RPConnector::getShortLine( const rp::polyline& pa, const rp::point& from, c
 //									CBDFlowChartScrollView::correctPoint( pa, B2 );
 									interborder = _inter;
 									flag = true;
-									TRACE( "new lengthA2 = %g, (%f,%f)\n", lengthA2, interborder.x, interborder.y );
+									TRACE3( "new lengthA2 = %g, (%f,%f)\n", lengthA2, interborder.x, interborder.y );
 								} else {
-									TRACE( "skip lengthA2 (no intersection of shape) = %g, (%f,%f)\n", lengthA2, interborder.x, interborder.y );
+									TRACE3( "skip lengthA2 (no intersection of shape) = %g, (%f,%f)\n", lengthA2, interborder.x, interborder.y );
 								}
 							} else {
-								TRACE( "no new lengthA2: %g < %g, x= %f, y = %f\n", lengthA2, len, _inter.x, _inter.y );
+								TRACE4( "no new lengthA2: %g < %g, x= %f, y = %f\n", lengthA2, len, _inter.x, _inter.y );
 							}
 						} else {
-							TRACE( "_K = %g, Ua = %g, Ub = %g\n", K, Ua, Ub );
+							TRACE3( "_K = %g, Ua = %g, Ub = %g\n", K, Ua, Ub );
 						}
 					} else {
 						TRACE( "rect.contains( from )\n" );
 						if ( Ub >= 0.0 && Ub <= 1.0 ) {
-							TRACE( "K = %g, Ua = %g, Ub = %g\n", K, Ua, Ub );
+							TRACE3( "K = %g, Ua = %g, Ub = %g\n", K, Ua, Ub );
 							double len = rp::math::getLength( from, _inter );
 							if ( lengthBorder >= len ) {
 #ifdef CON_DEBUG
@@ -629,16 +682,16 @@ bool RPConnector::getShortLine( const rp::polyline& pa, const rp::point& from, c
 //								CBDFlowChartScrollView::correctPoint( pa, B2 );
 								interborder = _inter;
 								flag = true;
-								TRACE( "new lengthA2 = %g, (%f,%f)\n", lengthA2, interborder.x, interborder.y );
+								TRACE3( "new lengthA2 = %g, (%f,%f)\n", lengthA2, interborder.x, interborder.y );
 							} else {
-								TRACE( "skip lengthA2 (no intersection of shape) = %g, (%f,%f)\n", lengthA2, interborder.x, interborder.y );
+								TRACE3( "skip lengthA2 (no intersection of shape) = %g, (%f,%f)\n", lengthA2, interborder.x, interborder.y );
 							}
 						} else {
-							TRACE( "_K = %g, Ua = %g, Ub = %g\n", K, Ua, Ub );
+							TRACE3( "_K = %g, Ua = %g, Ub = %g\n", K, Ua, Ub );
 						}
 					}
 				} else {
-					TRACE( "K = %g\n", K );
+					TRACE1( "K = %g\n", K );
 				}
 			}
 		}

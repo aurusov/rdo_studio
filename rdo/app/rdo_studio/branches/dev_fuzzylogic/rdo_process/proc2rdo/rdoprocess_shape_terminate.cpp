@@ -62,3 +62,38 @@ void RPShapeTerminateMJ::generate()
 	studioApp.studioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_TERMINATE, m_pParams.get());
 	m_pParams = NULL;
 }
+
+void RPShapeTerminateMJ::saveToXML(REF(pugi::xml_node) parentNode) const
+{
+	// Записываем узел <RShapeTerminateMJ/>:
+	pugi::xml_node node = parentNode.append_child(getClassName().c_str());
+	// Соxраняем атрибуты объекта:
+	// 1) Атрибуты графики
+	RPObjectMatrix::saveToXML(node);
+	RPShape::       saveToXML(node);
+	// 2) Атрибуты симулятора
+	node.append_attribute(_T("name"))                .set_value(getName().c_str());
+	node.append_attribute(_T("terminateCounter"))    .set_value(m_term_inc       );
+}
+
+void RPShapeTerminateMJ::loadFromXML(CREF(pugi::xml_node) node)
+{
+	// Считываем атрибуты для загрузки сохраненного блока "Terminate":
+	for (pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute())
+	{
+		// Присваиваем сохраненные в xml-файле параметры:
+		// Для симулятора (диалоговые окна)
+		tstring attrName = attr.name();
+		if (attrName == _T("name"))
+		{
+			setName(attr.value());
+		}
+		else if (attrName == _T("terminateCounter"))
+		{
+			m_term_inc = attr.as_int();
+		}
+	}
+	// Отображения объекта на Flowchart'е
+	RPObjectMatrix::loadFromXML(node);
+	RPShape::       loadFromXML(node);
+}

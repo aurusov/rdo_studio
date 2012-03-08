@@ -14,7 +14,7 @@ RDOTracerResParamInfo::RDOTracerResParamInfo( const RDOTracerResParamType type )
 	paramType( type ),
 	enumValues( NULL )
 {
-	if ( paramType == RDOPT_ENUMERATIVE )
+	if ( paramType == RDOPT_ENUMERATIVE || paramType == RDOPT_BOOL )
 		enumValues = new RDOStringVector();
 }
 

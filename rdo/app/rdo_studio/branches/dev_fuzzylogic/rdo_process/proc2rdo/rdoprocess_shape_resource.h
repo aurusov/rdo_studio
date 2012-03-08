@@ -28,6 +28,10 @@ public:
 	virtual void generate();
 
 	int gamount;
+
+	// Переопределенная виртуальная функция saveToXML и loadFromXML для RPShapeResource_MJ:
+	void saveToXML  (REF (pugi::xml_node) parentNode) const;
+	void loadFromXML(CREF(pugi::xml_node) node);
 };
 
 #endif // !defined(AFX_RDOPROCESS_SHAPE_RESOURCE_H__108AB1F9_8742_446F_9CB2_ABD461A09C12__INCLUDED_)
