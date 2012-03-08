@@ -1,8 +1,19 @@
-#ifndef RDOSTUDIOCHARTVIEWSTYLE_H
-#define RDOSTUDIOCHARTVIEWSTYLE_H
-#pragma once
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      app/rdo_studio_mfc/src/chart/view_style.h
+  \author    Захаров Павел
+  \date      28.03.2003
+  \brief     
+  \indent    4T
+*/
 
+#ifndef _RDO_STUDIO_MFC_CHART_VIEW_STYLE_H_
+#define _RDO_STUDIO_MFC_CHART_VIEW_STYLE_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/style.h"
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioChartViewTheme
@@ -14,11 +25,11 @@ public:
 	virtual ~RDOStudioChartViewTheme();
 
 	RDOStudioChartViewTheme& operator =( const RDOStudioChartViewTheme& theme );
-	bool operator ==( const RDOStudioChartViewTheme& theme ) const;
-	bool operator !=( const RDOStudioChartViewTheme& theme ) const;
+	rbool operator ==( const RDOStudioChartViewTheme& theme ) const;
+	rbool operator !=( const RDOStudioChartViewTheme& theme ) const;
 
-	virtual void load( std::string regPath );
-	virtual void save( std::string regPath ) const;
+	virtual void load( tstring regPath );
+	virtual void save( tstring regPath ) const;
 
 	COLORREF axisFgColor;
 	COLORREF titleFGColor;
@@ -42,11 +53,11 @@ public:
 	virtual ~RDOStudioChartViewFontsTicks();
 
 	RDOStudioChartViewFontsTicks& operator =( const RDOStudioChartViewFontsTicks& fonts_ticks );
-	bool operator ==( const RDOStudioChartViewFontsTicks& fonts_ticks ) const;
-	bool operator !=( const RDOStudioChartViewFontsTicks& fonts_ticks ) const;
+	rbool operator ==( const RDOStudioChartViewFontsTicks& fonts_ticks ) const;
+	rbool operator !=( const RDOStudioChartViewFontsTicks& fonts_ticks ) const;
 
-	virtual void load( std::string regPath );
-	virtual void save( std::string regPath ) const;
+	virtual void load( tstring regPath );
+	virtual void save( tstring regPath ) const;
 
 	int titleFontSize;
 	int legendFontSize;
@@ -67,16 +78,16 @@ public:
 	virtual ~RDOStudioChartViewStyle();
 
 	RDOStudioChartViewStyle& operator =( const RDOStudioChartViewStyle& style );
-	bool operator ==( const RDOStudioChartViewStyle& style ) const;
-	bool operator !=( const RDOStudioChartViewStyle& style ) const;
+	rbool operator ==( const RDOStudioChartViewStyle& style ) const;
+	rbool operator !=( const RDOStudioChartViewStyle& style ) const;
 
-	virtual void init( const std::string& _regPath = "" );
-	virtual bool load();
-	virtual bool save() const;
+	virtual void  init( CREF(tstring) _regPath = "" );
+	virtual rbool load();
+	virtual rbool save() const;
 	
 	RDOStudioChartViewTheme* getTheme() { return static_cast<RDOStudioChartViewTheme*>(theme); }
 
 	RDOStudioChartViewFontsTicks* fonts_ticks;
 };
 
-#endif // RDOSTUDIOCHARTVIEWSTYLE_H
+#endif // _RDO_STUDIO_MFC_CHART_VIEW_STYLE_H_

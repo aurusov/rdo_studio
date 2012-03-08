@@ -1,10 +1,6 @@
 #ifndef RDO_PROCESS_POLYLINE_H
 #define RDO_PROCESS_POLYLINE_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
 #include <vector>
 #include <algorithm>
 #include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_point.h"
@@ -73,11 +69,11 @@ public:
 	rp::point getCenter() const {
 		return rp::point( (getMaxX() + getMinX()) / 2, (getMaxY() + getMinY()) / 2 );
 	}
-	bool isPolygon() const {
+	rbool isPolygon() const {
 		if ( size() < 3 ) return false;
 		return (*begin() == *(end()-1)) ? true : false;
 	}
-	bool pointInPolygon( const rp::point& point ) const;
+	rbool pointInPolygon( const rp::point& point ) const;
 //	void extendFromCenter( double delta );
 	polyline& extendByPerimetr( double delta );
 

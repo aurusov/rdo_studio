@@ -1,8 +1,19 @@
-#ifndef RDOLOGCTRL_H
-#define RDOLOGCTRL_H
-#pragma once
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdologctrl.h
+  \author    Захаров Павел
+  \date      12.03.2003
+  \brief     
+  \indent    4T
+*/
 
+#ifndef _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOLOGCTRL_H_
+#define _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOLOGCTRL_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdologstyle.h"
+// --------------------------------------------------------------------------------
 
 namespace rdoTracerLog {
 
@@ -11,7 +22,7 @@ namespace rdoTracerLog {
 // --------------------------------------------------------------------------------
 #define WM_LOGSELCHANGE WM_USER + 1
 
-typedef std::list< std::string > stringList;
+typedef std::list< tstring > stringList;
 
 class RDOLogCtrl: public CWnd  
 {
@@ -39,10 +50,10 @@ protected:
 	CRect prevWindowRect;
 	
 	int lastViewableLine;
-	bool hasFocus;
+	rbool hasFocus;
 	int selectedLine;
 	int fullRepaintLines;
-	bool focusOnly;
+	rbool focusOnly;
 
 	stringList strings;
 	int stringsCount;
@@ -53,45 +64,49 @@ protected:
 	stringList::const_iterator const_findString( int index ) const;
 	stringList::const_reverse_iterator const_reverse_findString( int index ) const;
 
-	int  firstFoundLine;
-	int  posFind;
-	bool bHaveFound;
-	bool bSearchDown;
-	bool bMatchCase;
-	bool bMatchWholeWord;
-	std::string findStr;
-	void find( int& result, const bool searchDown, const bool matchCase, const bool matchWholeWord );
+	int   firstFoundLine;
+	int   posFind;
+	rbool bHaveFound;
+	rbool bSearchDown;
+	rbool bMatchCase;
+	rbool bMatchWholeWord;
+	tstring findStr;
+	void find( int& result, const rbool searchDown, const rbool matchCase, const rbool matchWholeWord );
 
-	RDOLogStyle* logStyle;
-	virtual bool getItemColors( const int index, RDOLogColorPair* &colors ) const;
-	virtual bool getItemColors( const std::string& item, RDOLogColorPair* &colors ) const;
+	RDOLogStyle*  logStyle;
+	virtual rbool getItemColors( const int index, RDOLogColorPair* &colors ) const;
+	virtual rbool getItemColors( CREF(tstring) item, RDOLogColorPair* &colors ) const;
 	
-	void recalcWidth( const int newMaxStrWidth );
-	void updateScrollBars();
-	bool scrollVertically( int inc );
-	bool scrollHorizontally( int inc );
+	void  recalcWidth( const int newMaxStrWidth );
+	void  updateScrollBars();
+	rbool scrollVertically( int inc );
+	rbool scrollHorizontally( int inc );
 	
-	bool isVisible( const int index ) const;
-	bool isFullyVisible( const int index ) const;
+	rbool isVisible( const int index ) const;
+	rbool isFullyVisible( const int index ) const;
 
-	void getLineRect( const int index, CRect* rect ) const;
-	void repaintLine ( const int index );
+	void  getLineRect( const int index, CRect* rect ) const;
+	void  repaintLine ( const int index );
 
-	bool canCopy() const { return selectedLine != -1; };
+	rbool canCopy() const { return selectedLine != -1; };
 
-	void updateWindow();
+	void  updateWindow();
 
-	bool drawLog;
+	rbool drawLog;
 
 	HDC   hdc;
 	int   saved_hdc;
 	HWND  hwnd;
 	HFONT fontInit;
 	HFONT hfontLog;
-	void setFont( const bool needRedraw = true );
+	void setFont( const rbool needRedraw = true );
 
-	//{{AFX_MSG(RDOLogCtrl)
+protected:
 	afx_msg int  OnCreate( LPCREATESTRUCT lpCreateStruct );
+
+private:
+	virtual BOOL PreCreateWindow( CREATESTRUCT& cs );
+
 	afx_msg void OnSize( UINT nType, int cx, int cy );
 	afx_msg void OnPaint();
 	afx_msg void OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar );
@@ -104,26 +119,21 @@ protected:
 	afx_msg BOOL OnMouseWheel( UINT nFlags, short zDelta, CPoint pt );
 	afx_msg void OnLButtonDown( UINT nFlags, CPoint point );
 	afx_msg void OnDestroy();
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
-
-	//{{AFX_VIRTUAL(RDOLogCtrl)
-	virtual BOOL PreCreateWindow( CREATESTRUCT& cs );
-	//}}AFX_VIRTUAL
 
 public:
 	RDOLogCtrl( RDOLogStyle* style = NULL );
 	virtual ~RDOLogCtrl();
 
-	virtual void addStringToLog( const std::string logStr );
+	virtual void addStringToLog( const tstring logStr );
 	
-	bool getFocusOnly() const { return focusOnly; }
-	virtual void setFocusOnly( const bool value ) { focusOnly = value; }
+	rbool getFocusOnly() const { return focusOnly; }
+	virtual void setFocusOnly( const rbool value ) { focusOnly = value; }
 
-	virtual void getString( const int index, std::string& str ) const;
+	virtual void getString( const int index, tstring& str ) const;
 	virtual int getSelectedIndex() const;
-	virtual void getSelected( std::string& str ) const;
-	virtual bool makeLineVisible( const int index );
+	virtual void getSelected( tstring& str ) const;
+	virtual rbool makeLineVisible( const int index );
 	virtual void selectLine( const int index );
 	virtual void copy();
 	virtual void findNext()     { int res; find( res, bSearchDown, bMatchCase, bMatchWholeWord ); selectLine( res );  };
@@ -131,19 +141,16 @@ public:
 	virtual void clear();
 	
 	virtual const RDOLogStyle& getStyle() const;
-	virtual void setStyle( RDOLogStyle* style, const bool needRedraw = true );
+	virtual void setStyle( RDOLogStyle* style, const rbool needRedraw = true );
 
-	void setText( std::string text );
+	void setText( tstring text );
 
-	void setDrawLog( const bool value );
-	bool getDrawLog() const { return drawLog; };
+	void  setDrawLog( const rbool value );
+	rbool getDrawLog() const { return drawLog; };
 
 	int getStringsCount() const { return stringsCount; };
 };
 
 }; // namespace rdoTracerLog
 
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // RDOLOGCTRL_H
+#endif // _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOLOGCTRL_H_

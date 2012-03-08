@@ -1,8 +1,21 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdoeditorresults.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      14.03.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorresults.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/htmlhelp.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -19,10 +32,8 @@ using namespace rdoEditor;
 // ON_UPDATE_COMMAND_UI сделано
 
 BEGIN_MESSAGE_MAP( RDOEditorResults, RDOEditorBaseEdit )
-	//{{AFX_MSG_MAP(RDOEditorResults)
 	ON_WM_CREATE()
 	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
-	//}}AFX_MSG_MAP
 	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR , OnUpdateCoordStatusBar )
 	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar )
 END_MESSAGE_MAP()
@@ -63,13 +74,13 @@ void RDOEditorResults::setEditorStyle( RDOEditorResultsStyle* _style )
 
 void RDOEditorResults::OnHelpKeyword()
 {
-	std::string filename = studioApp.getFullHelpFileName();
+	tstring filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return;
 
-	std::string keyword = getCurrentOrSelectedWord();
-	std::string s = getAllKW();
+	tstring keyword = getCurrentOrSelectedWord();
+	tstring s = getAllKW();
 
-	if ( s.find_first_of( keyword ) == std::string::npos || keyword.empty() ) {
+	if ( s.find_first_of( keyword ) == tstring::npos || keyword.empty() ) {
 		keyword = "pmv";
 	}
 

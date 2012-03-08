@@ -1,6 +1,5 @@
 #ifndef RDOTRACERVALUES_H
 #define RDOTRACERVALUES_H
-#pragma once
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOTracerTimeNow
@@ -16,10 +15,10 @@ public:
 	int eventCount;
 	
 	RDOTracerTimeNow& operator =( const RDOTracerTimeNow& timenow );
-	bool operator ==( const RDOTracerTimeNow& timenow ) const;
-	bool operator !=( const RDOTracerTimeNow& timenow ) const;
+	rbool operator ==( const RDOTracerTimeNow& timenow ) const;
+	rbool operator !=( const RDOTracerTimeNow& timenow ) const;
 
-	bool compareTimes( const RDOTracerTimeNow* timenow );
+	rbool compareTimes( const RDOTracerTimeNow* timenow );
 };
 
 // --------------------------------------------------------------------------------

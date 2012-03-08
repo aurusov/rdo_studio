@@ -1,9 +1,22 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdoeditortabctrl.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      20.02.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/src/edit/view_base.h"
 #include "app/rdo_studio_mfc/resource.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -17,9 +30,7 @@ using namespace rdoEditor;
 // -------------------- RDOEditorTabCtrl
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP( RDOEditorTabCtrl, RDOTabCtrl )
-	//{{AFX_MSG_MAP(RDOEditorTabCtrl)
 	ON_WM_CREATE()
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOEditorTabCtrl::RDOEditorTabCtrl( RDOStudioEditBaseView* _view ):
@@ -64,16 +75,16 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	page9->Create ( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
 	page10->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), getTabAsParent(), 0 );
 
-	page1->setEditorStyle ( &studioApp.mainFrame->style_editor );
-	page2->setEditorStyle ( &studioApp.mainFrame->style_editor );
-	page3->setEditorStyle ( &studioApp.mainFrame->style_editor );
-	page4->setEditorStyle ( &studioApp.mainFrame->style_editor );
-	page5->setEditorStyle ( &studioApp.mainFrame->style_editor );
-	page6->setEditorStyle ( &studioApp.mainFrame->style_editor );
-	page7->setEditorStyle ( &studioApp.mainFrame->style_editor );
-	page8->setEditorStyle ( &studioApp.mainFrame->style_editor );
-	page9->setEditorStyle ( &studioApp.mainFrame->style_editor );
-	page10->setEditorStyle( &studioApp.mainFrame->style_editor );
+	page1->setEditorStyle ( &studioApp.m_pMainFrame->style_editor );
+	page2->setEditorStyle ( &studioApp.m_pMainFrame->style_editor );
+	page3->setEditorStyle ( &studioApp.m_pMainFrame->style_editor );
+	page4->setEditorStyle ( &studioApp.m_pMainFrame->style_editor );
+	page5->setEditorStyle ( &studioApp.m_pMainFrame->style_editor );
+	page6->setEditorStyle ( &studioApp.m_pMainFrame->style_editor );
+	page7->setEditorStyle ( &studioApp.m_pMainFrame->style_editor );
+	page8->setEditorStyle ( &studioApp.m_pMainFrame->style_editor );
+	page9->setEditorStyle ( &studioApp.m_pMainFrame->style_editor );
+	page10->setEditorStyle( &studioApp.m_pMainFrame->style_editor );
 
 	page1->setPopupMenu ( &view->popupMenu );
 	page2->setPopupMenu ( &view->popupMenu );

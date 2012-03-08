@@ -1,5 +1,18 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      dock_wnd.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      20.02.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/dock_wnd.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -11,9 +24,7 @@ static char THIS_FILE[] = __FILE__;
 // -------------------- RDOStudioDockWnd
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioDockWnd, CSizingControlBarG)
-	//{{AFX_MSG_MAP(RDOStudioDockWnd)
 	ON_WM_CREATE()
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioDockWnd::RDOStudioDockWnd()

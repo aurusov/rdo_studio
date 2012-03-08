@@ -1,12 +1,20 @@
-#ifndef RDO_STUDIO_THREAD_H
-#define RDO_STUDIO_THREAD_H
+/*!
+  \copyright (c) RDO-Team, 2006-2012
+  \file      app/rdo_studio_mfc/src/thread.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      15.07.2006
+  \brief     
+  \indent    4T
+*/
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
+#ifndef _RDO_STUDIO_MFC_THREAD_H_
+#define _RDO_STUDIO_MFC_THREAD_H_
 
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
 #include "kernel/rdokernel.h"
+// --------------------------------------------------------------------------------
 
 #ifdef RDO_MT
 // --------------------------------------------------------------------------------
@@ -59,4 +67,4 @@ protected:
 };
 */
 
-#endif // RDO_STUDIO_THREAD_H
+#endif // _RDO_STUDIO_MFC_THREAD_H_

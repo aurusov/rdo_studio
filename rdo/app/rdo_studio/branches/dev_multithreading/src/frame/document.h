@@ -1,10 +1,6 @@
 #ifndef RDOSTUDIOFRAMEDOC_H
 #define RDOSTUDIOFRAMEDOC_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
-
 #include "app/rdo_studio_mfc/src/frame/view.h"
 
 // --------------------------------------------------------------------------------
@@ -38,19 +34,10 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
-public:
-	//{{AFX_VIRTUAL(RDOStudioFrameDoc)
-	public:
+private:
 	virtual void Serialize(CArchive& ar);
 	virtual BOOL OnNewDocument();
-	//}}AFX_VIRTUAL
-
-protected:
-	//{{AFX_MSG(RDOStudioFrameDoc)
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // RDOSTUDIOFRAMEDOC_H

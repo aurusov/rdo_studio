@@ -1,10 +1,23 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdofindedit.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      28.02.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/edit_ctrls/rdofindedit.h"
-#include "thirdparty/sci/SciLexer.h"
-#include "thirdparty/sci/LexFind.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/htmlhelp.h"
+#include "thirdparty/sci/SciLexer.h"
+#include "thirdparty/sci/LexFind.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -24,10 +37,8 @@ static char* wordCharacters = "0123456789_$abcdefghijklmnopqrstuvwxyzABCDEFGHIJK
 // ON_UPDATE_COMMAND_UI сделано
 
 BEGIN_MESSAGE_MAP( RDOFindEdit, RDOLogEdit )
-	//{{AFX_MSG_MAP(RDOFindEdit)
 	ON_WM_CREATE()
 	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
-	//}}AFX_MSG_MAP
 	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR , OnUpdateCoordStatusBar )
 	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar )
 END_MESSAGE_MAP()
@@ -90,7 +101,7 @@ void RDOFindEdit::setEditorStyle( RDOFindEditStyle* _style )
 	sendEditor( SCI_STYLESETCHARACTERSET, SCE_FIND_KEYWORD, style->font->characterSet );
 }
 
-void RDOFindEdit::setKeyword( const std::string& keyword, const bool matchCase ) const
+void RDOFindEdit::setKeyword( CREF(tstring) keyword, const rbool matchCase ) const
 {
 	sendEditorString( SCI_SETPROPERTY, reinterpret_cast<unsigned long>("find_matchcase"), matchCase ? "1" : "0" );
 	sendEditorString( SCI_SETKEYWORDS, SCI_RDO_ENDOFLINEONLY_KEYWORDSINDEX, keyword.c_str() );
@@ -110,7 +121,7 @@ void RDOFindEdit::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
 
 void RDOFindEdit::OnHelpKeyword()
 {
-	std::string filename = studioApp.getFullHelpFileName();
+	tstring filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return;
 	filename += "::/html/work_run.htm#output_find";
 	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );

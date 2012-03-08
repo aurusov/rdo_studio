@@ -1,10 +1,17 @@
-#ifndef RDOSTUDIOOPTIONS_H
-#define RDOSTUDIOOPTIONS_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      app/rdo_studio_mfc/src/options.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      13.03.2003
+  \brief     
+  \indent    4T
+*/
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
+#ifndef _RDO_STUDIO_MFC_OPTIONS_H_
+#define _RDO_STUDIO_MFC_OPTIONS_H_
 
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "ui/mfc_ctrls/rdocolorcombobox.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoredit.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorresults.h"
@@ -26,6 +33,7 @@
 #include "app/rdo_studio_mfc/src/frame/style.h"
 #include "app/rdo_studio_mfc/src/frame/options_ctrl.h"
 #include "app/rdo_studio_mfc/resource.h"
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioOptionsGeneral
@@ -40,25 +48,18 @@ private:
 	RDOStudioOptions* sheet;
 
 protected:
-	//{{AFX_DATA(RDOStudioOptionsGeneral)
 	enum { IDD = IDD_OPTIONS_GENERAL };
 	BOOL	m_setup;
 	BOOL	m_checkInFuture;
 	BOOL	m_openLastProject;
 	BOOL	m_showFullName;
-	//}}AFX_DATA
 
-	//{{AFX_VIRTUAL(RDOStudioOptionsGeneral)
-	public:
+private:
 	virtual void OnOK();
-	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
-	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(RDOStudioOptionsGeneral)
 	afx_msg void OnUpdateModify();
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
 public:
@@ -75,7 +76,6 @@ private:
 	RDOStudioOptions* sheet;
 
 protected:
-	//{{AFX_DATA(RDOStudioOptionsEditor)
 	enum { IDD = IDD_OPTIONS_EDITOR };
 	BOOL	m_bufferClearAuto;
 	int		m_bufferDelay;
@@ -84,22 +84,16 @@ protected:
 	BOOL	m_marginFold;
 	BOOL	m_marginBookmark;
 	BOOL	m_marginLineNumber;
-	//}}AFX_DATA
 
-	//{{AFX_VIRTUAL(RDOStudioOptionsEditor)
-	public:
+private:
 	virtual void OnOK();
-	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
-	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(RDOStudioOptionsEditor)
 	afx_msg void OnUseAutoCompleteCheck();
 	virtual BOOL OnInitDialog();
 	afx_msg void OnUpdateModify();
 	afx_msg void OnClearAutoCheck();
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
 public:
@@ -116,7 +110,6 @@ private:
 	RDOStudioOptions* sheet;
 
 protected:
-	//{{AFX_DATA(RDOStudioOptionsTabs)
 	enum { IDD = IDD_OPTIONS_TABS };
 	BOOL	m_tabUse;
 	int		m_tabSize;
@@ -124,19 +117,13 @@ protected:
 	int		m_tabIndentSize;
 	int		m_tabBackspaceUntabs;
 	BOOL	m_tabAutoIndent;
-	//}}AFX_DATA
 
-	//{{AFX_VIRTUAL(RDOStudioOptionsTabs)
-	public:
+private:
 	virtual void OnOK();
-	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
-	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(RDOStudioOptionsTabs)
 	afx_msg void OnUpdateModify();
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
 public:
@@ -156,7 +143,7 @@ private:
 	class STYLEProperty {
 	public:
 		STYLEObject* object;
-		std::string name;
+		tstring name;
 
 		rdoStyle::RDOStyleFont::style& font_style;
 
@@ -165,26 +152,26 @@ private:
 		COLORREF& fg_disable_color;
 		COLORREF& bg_disable_color;
 
-		STYLEProperty( STYLEObject* _object, std::string _name, rdoStyle::RDOStyleFont::style& _font_style, COLORREF& _fg_color, COLORREF& _bg_color, COLORREF& _fg_disable_color = null_fg_color, COLORREF& _bg_disable_color = null_bg_color ): object( _object ), name( _name ), font_style( _font_style ), fg_color( _fg_color ), bg_color( _bg_color ), fg_disable_color( _fg_disable_color ), bg_disable_color( _bg_disable_color ) {};
+		STYLEProperty( STYLEObject* _object, tstring _name, rdoStyle::RDOStyleFont::style& _font_style, COLORREF& _fg_color, COLORREF& _bg_color, COLORREF& _fg_disable_color = null_fg_color, COLORREF& _bg_disable_color = null_bg_color ): object( _object ), name( _name ), font_style( _font_style ), fg_color( _fg_color ), bg_color( _bg_color ), fg_disable_color( _fg_disable_color ), bg_disable_color( _bg_disable_color ) {};
 	};
 
 	class STYLEObject {
 	public:
 		enum Type { none = 0, all, source, build, debug, trace, results, find, chart, frame } type;
-		std::string&                   font_name;
+		tstring&                       font_name;
 		int&                           font_size;
-		bool                           font_fixed;
-		bool&                          wordwrap;
-		bool&                          horzscrollbar;
-		bool&                          warning;
+		rbool                          font_fixed;
+		rbool&                         wordwrap;
+		rbool&                         horzscrollbar;
+		rbool&                         warning;
 		rdoEditCtrl::RDOBookmarkStyle& bookmarkstyle;
 		rdoEditor::RDOFoldStyle&       foldstyle;
-		bool&                          commentfold;
+		rbool&                         commentfold;
 
-		std::list< std::string > themes;
+		std::list< tstring > themes;
 		std::list< STYLEProperty* > properties;
 
-		STYLEObject( const Type _type, std::string& _font_name, int& _font_size, const bool _font_fixed = true, bool& _wordwrap = null_wordwrap, bool& _horzscrollbar = null_horzscrollbar, rdoEditCtrl::RDOBookmarkStyle& _bookmarkstyle = null_bookmarkstyle, rdoEditor::RDOFoldStyle& _foldstyle = null_foldstyle, bool& _commentfold = null_commentfold, bool& _warning = null_warning ):
+		STYLEObject( const Type _type, tstring& _font_name, int& _font_size, const rbool _font_fixed = true, rbool& _wordwrap = null_wordwrap, rbool& _horzscrollbar = null_horzscrollbar, rdoEditCtrl::RDOBookmarkStyle& _bookmarkstyle = null_bookmarkstyle, rdoEditor::RDOFoldStyle& _foldstyle = null_foldstyle, rbool& _commentfold = null_commentfold, rbool& _warning = null_warning ):
 			type( _type ),
 			font_name( _font_name ),
 			font_size( _font_size ),
@@ -207,18 +194,18 @@ private:
 
 	class STYLEFont {
 	public:
-		std::string name;
-		bool fixed;
+		tstring name;
+		rbool   fixed;
 
 		STYLEFont(): name( "" ), fixed( true ) {};
-		STYLEFont( std::string _name, bool _fixed = true ): name( _name ), fixed( _fixed ) {};
+		STYLEFont( tstring _name, rbool _fixed = true ): name( _name ), fixed( _fixed ) {};
 	};
 
 	std::list< STYLEObject* > objects;
 	std::list< STYLEFont > fonts;
-	bool isCurrentFixed;
+	rbool isCurrentFixed;
 	static int CALLBACK EnumFontFamExProc( ENUMLOGFONTEX* lpelfe, NEWTEXTMETRICEX* lpntme, DWORD FontType, LPARAM lParam );
-	void loadFontsIntoCombo( bool fixed = true );
+	void loadFontsIntoCombo( rbool fixed = true );
 
 	RDOStudioOptions* sheet;
 
@@ -232,21 +219,21 @@ private:
 	STYLEObject::Type previewAs;
 	void setPreviewAsCombo( STYLEObject::Type type );
 
-	std::string all_font_name;
+	tstring     all_font_name;
 	int         all_font_size;
 	COLORREF    all_fg_color;
 	COLORREF    all_bg_color;
-	bool        use_all_fg_color;
-	bool        use_all_bg_color;
+	rbool       use_all_fg_color;
+	rbool       use_all_bg_color;
 	void updatePropOfAllObject();
 
 	rdoStyle::RDOStyleFont::style        null_font_style;
 	static COLORREF                      null_fg_color;
 	static COLORREF                      null_bg_color;
-	static bool                          null_wordwrap;
-	static bool                          null_horzscrollbar;
-	static bool                          null_warning;
-	static bool                          null_commentfold;
+	static rbool                         null_wordwrap;
+	static rbool                         null_horzscrollbar;
+	static rbool                         null_warning;
+	static rbool                         null_commentfold;
 	static rdoEditCtrl::RDOBookmarkStyle null_bookmarkstyle;
 	static rdoEditor::RDOFoldStyle       null_foldstyle;
 
@@ -254,7 +241,6 @@ private:
 	void updateTheme();
 
 protected:
-	//{{AFX_DATA(RDOStudioOptionsColorsStyles)
 	enum { IDD = IDD_OPTIONS_STYLESANDCOLORS };
 	CButton	m_warning;
 	CButton	m_commentGroupButton;
@@ -287,17 +273,12 @@ protected:
 	CComboBox	m_previewAs;
 	CComboBox	m_fontName;
 	CTreeCtrl	m_styleItem;
-	//}}AFX_DATA
 
-	//{{AFX_VIRTUAL(RDOStudioOptionsColorsStyles)
-	public:
+private:
 	virtual void OnOK();
-	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
-	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(RDOStudioOptionsColorsStyles)
 	virtual BOOL OnInitDialog();
 	afx_msg void OnStyleItemChanged(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnPreviewAsChanged();
@@ -318,7 +299,6 @@ protected:
 	afx_msg void OnUpdateModify();
 	afx_msg void OnCommentGroupCheck();
 	afx_msg void OnWarningCheck();
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
 public:
@@ -336,11 +316,11 @@ class RDOStudioOptionsPlugins: public CPropertyPage
 private:
 	RDOStudioOptions* sheet;
 
-	bool sortPluginNameAsceding;
-	bool sortPluginVersionAsceding;
-	bool sortPluginRunModeAsceding;
-	bool sortPluginStateAsceding;
-	bool sortPluginDescriptionAsceding;
+	rbool sortPluginNameAsceding;
+	rbool sortPluginVersionAsceding;
+	rbool sortPluginRunModeAsceding;
+	rbool sortPluginStateAsceding;
+	rbool sortPluginDescriptionAsceding;
 
 	UINT timer;
 
@@ -349,7 +329,6 @@ private:
 	void updateControls( const RDOStudioPlugin* plugin );
 
 protected:
-	//{{AFX_DATA(RDOStudioOptionsPlugins)
 	enum { IDD = IDD_OPTIONS_PLUGINS };
 	CButton	m_restoreStateCheckBox;
 	CButton	m_stopButton;
@@ -358,17 +337,12 @@ protected:
 	CButton	m_runModeButton;
 	CStatic	m_runModeStatic;
 	CListCtrl	m_pluginList;
-	//}}AFX_DATA
 
-	//{{AFX_VIRTUAL(RDOStudioOptionsPlugins)
-	public:
+private:
 	virtual void OnOK();
-	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
-	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(RDOStudioOptionsPlugins)
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPluginListColumnClick(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnPluginListSelectChanged(NMHDR* pNMHDR, LRESULT* pResult);
@@ -379,7 +353,6 @@ protected:
 	afx_msg void OnPluginRestoreStateCheckBoxClicked();
 	afx_msg void OnTimer(UINT nIDEvent);
 	afx_msg void OnDestroy();
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
 public:
@@ -421,7 +394,7 @@ private:
 	rdoEditor::RDOEditorResults    preview_results;
 	rdoEditCtrl::RDOFindEdit       preview_find;
 
-	bool                           chart_need_delete;
+	rbool                          chart_need_delete;
 	RDOStudioChartDoc*             preview_chart_doc;
 	RDOStudioChartView*            preview_chart;
 	std::vector<RDOTracerTimeNow>  preview_times;
@@ -434,15 +407,10 @@ private:
 	static int CALLBACK AddContextHelpProc(HWND hwnd, UINT message, LPARAM lParam);
 	void onHelpButton();
 
-protected:
-	//{{AFX_VIRTUAL(RDOStudioOptions)
-	public:
+private:
 	virtual BOOL ContinueModal();
-	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(RDOStudioOptions)
 	afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
 public:
@@ -450,6 +418,4 @@ public:
 	virtual ~RDOStudioOptions();
 };
 
-//{{AFX_INSERT_LOCATION}}
-
-#endif // RDOSTUDIOOPTIONS_H
+#endif // _RDO_STUDIO_MFC_OPTIONS_H_

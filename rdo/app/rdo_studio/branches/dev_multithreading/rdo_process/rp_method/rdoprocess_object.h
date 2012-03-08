@@ -1,10 +1,6 @@
 #ifndef RDO_PROCESS_OBJECT_H
 #define RDO_PROCESS_OBJECT_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
 #include <list>
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_factory.h"
 #include "thirdparty/pugixml/src/pugixml.hpp"
@@ -26,7 +22,7 @@ protected:
 	// --> manager
 	RPObject*              parent;
 	std::list< RPObject* > child;
-	bool isChildNameCorrect( const RPObject* obj ) const;
+	rbool isChildNameCorrect( const RPObject* obj ) const;
 	void setCorrectChildName( RPObject* obj );
 
 	std::list< RPObject* >::const_iterator begin() const { return child.begin(); }
@@ -39,8 +35,8 @@ protected:
 	// <-- manager
 
 	rp::string name;
-	bool       selected;
-	bool       can_modify;
+	rbool      selected;
+	rbool      can_modify;
 
 	virtual void notify( RPObject* from, UINT message, void* param = NULL )
 	{
@@ -65,27 +61,27 @@ public:
 	// Чистая виртуальная функция для загрузки графики из xml-файла:
 	virtual void loadFromXML(CREF(pugi::xml_node) node) = 0;
 
-	bool hasChild() const { return !child.empty(); }
+	rbool hasChild() const { return !child.empty(); }
 	std::list< RPObject* >::const_iterator find_child( const RPObject* object ) {
 		return std::find( child.begin(), child.end(), object );
 	};
 	RPObject* find_child( const rp::string& name ) const;
 
 	const std::list< RPObject* >& getChild() const { return child; }
-	void getAllChild( std::list< RPObject* >& all_child, bool recursive = false ) const;
-	void getAllChildByClass( std::list< RPObject* >& all_child, const rp::string& class_name, bool recursive = false ) const;
-	void getAllChildByClasses( std::list< RPObject* >& all_child, const std::list< rp::string >& class_names, bool recursive = false ) const;
-	void getAllChildNotByClass( std::list< RPObject* >& all_child, const rp::string& class_name, bool recursive = false ) const;
+	void getAllChild( std::list< RPObject* >& all_child, rbool recursive = false ) const;
+	void getAllChildByClass( std::list< RPObject* >& all_child, const rp::string& class_name, rbool recursive = false ) const;
+	void getAllChildByClasses( std::list< RPObject* >& all_child, const std::list< rp::string >& class_names, rbool recursive = false ) const;
+	void getAllChildNotByClass( std::list< RPObject* >& all_child, const rp::string& class_name, rbool recursive = false ) const;
 
 	rp::string getName() const { return name; }
 	rp::string getFullName() const;
-	virtual bool setName( const rp::string& value );
+	virtual rbool setName( const rp::string& value );
 	void setCorrectName( const rp::string& value );
 
-	bool isSelected() const { return selected; }
-	virtual void setSelected( bool value );
+	rbool isSelected() const { return selected; }
+	virtual void setSelected( rbool value );
 
-	virtual bool isChartObject() const { return false; }
+	virtual rbool isChartObject() const { return false; }
 };
 
 #endif // RDO_PROCESS_OBJECT_H

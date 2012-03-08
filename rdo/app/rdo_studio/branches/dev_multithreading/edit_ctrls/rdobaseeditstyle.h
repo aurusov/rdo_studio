@@ -1,9 +1,20 @@
-#ifndef RDOBASEEDITSTYLE_H
-#define RDOBASEEDITSTYLE_H
-#pragma once
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdobaseeditstyle.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      28.02.2003
+  \brief     
+  \indent    4T
+*/
 
+#ifndef _RDO_STUDIO_MFC_EDIT_CTRLS_RDOBASEEDITSTYLE_H_
+#define _RDO_STUDIO_MFC_EDIT_CTRLS_RDOBASEEDITSTYLE_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/style.h"
 #include "thirdparty/sci/Scintilla.h"
+// --------------------------------------------------------------------------------
 
 namespace rdoEditCtrl {
 
@@ -25,11 +36,11 @@ public:
 	virtual ~RDOBaseEditTheme();
 
 	RDOBaseEditTheme& operator =( const RDOBaseEditTheme& theme );
-	bool operator ==( const RDOBaseEditTheme& theme ) const;
-	bool operator !=( const RDOBaseEditTheme& theme ) const;
+	rbool operator ==( const RDOBaseEditTheme& theme ) const;
+	rbool operator !=( const RDOBaseEditTheme& theme ) const;
 
-	virtual void load( std::string regPath );
-	virtual void save( std::string regPath ) const;
+	virtual void load( tstring regPath );
+	virtual void save( tstring regPath ) const;
 
 	COLORREF caretColor;
 	COLORREF selectionBgColor;
@@ -38,19 +49,19 @@ public:
 
 	RDOBookmarkStyle bookmarkStyle;
 
-	virtual bool styleDefault( const int styleType ) const;
-	virtual bool styleUsing( const int styleType ) const;
-	virtual bool styleBold( const int styleType = STYLE_DEFAULT ) const;
-	virtual bool styleItalic( const int styleType = STYLE_DEFAULT ) const;
-	virtual std::string styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
-	virtual std::string styleBGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
+	virtual rbool styleDefault( const int styleType ) const;
+	virtual rbool styleUsing( const int styleType ) const;
+	virtual rbool styleBold( const int styleType = STYLE_DEFAULT ) const;
+	virtual rbool styleItalic( const int styleType = STYLE_DEFAULT ) const;
+	virtual tstring styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
+	virtual tstring styleBGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
 
 	static RDOBaseEditTheme getDefaultTheme();
 	static RDOBaseEditTheme getClassicTheme();
 	static RDOBaseEditTheme getTwilightTheme();
 	static RDOBaseEditTheme getOceanTheme();
 
-	static std::string colorToHEX( const COLORREF color );
+	static tstring colorToHEX( const COLORREF color );
 };
 
 // --------------------------------------------------------------------------------
@@ -63,18 +74,18 @@ public:
 	virtual ~RDOBaseEditTab();
 
 	RDOBaseEditTab& operator =( const RDOBaseEditTab& tab );
-	bool operator ==( const RDOBaseEditTab& tab ) const;
-	bool operator !=( const RDOBaseEditTab& tab ) const;
+	rbool operator ==( const RDOBaseEditTab& tab ) const;
+	rbool operator !=( const RDOBaseEditTab& tab ) const;
 
-	virtual void load( std::string regPath );
-	virtual void save( std::string regPath ) const;
+	virtual void load( tstring regPath );
+	virtual void save( tstring regPath ) const;
 
 	int tabSize;
 	int indentSize;
-	bool useTabs;
-	bool tabIndents;
-	bool backspaceUntabs;
-	bool autoIndent;
+	rbool useTabs;
+	rbool tabIndents;
+	rbool backspaceUntabs;
+	rbool autoIndent;
 };
 
 // --------------------------------------------------------------------------------
@@ -87,14 +98,14 @@ public:
 	virtual ~RDOBaseEditWindow();
 
 	RDOBaseEditWindow& operator =( const RDOBaseEditWindow& window );
-	bool operator ==( const RDOBaseEditWindow& window ) const;
-	bool operator !=( const RDOBaseEditWindow& window ) const;
+	rbool operator ==( const RDOBaseEditWindow& window ) const;
+	rbool operator !=( const RDOBaseEditWindow& window ) const;
 
-	virtual void load( std::string regPath );
-	virtual void save( std::string regPath ) const;
+	virtual void load( tstring regPath );
+	virtual void save( tstring regPath ) const;
 
-	bool wordWrap;
-	bool showHorzScrollBar;
+	rbool wordWrap;
+	rbool showHorzScrollBar;
 };
 
 // --------------------------------------------------------------------------------
@@ -112,12 +123,12 @@ public:
 	virtual ~RDOBaseEditStyle();
 
 	RDOBaseEditStyle& operator =( const RDOBaseEditStyle& style );
-	bool operator ==( const RDOBaseEditStyle& style ) const;
-	bool operator !=( const RDOBaseEditStyle& style ) const;
+	rbool operator ==( const RDOBaseEditStyle& style ) const;
+	rbool operator !=( const RDOBaseEditStyle& style ) const;
 
-	virtual void init( const std::string& _regPath = "" );
-	virtual bool load();
-	virtual bool save() const;
+	virtual void  init( CREF(tstring) _regPath = "" );
+	virtual rbool load();
+	virtual rbool save() const;
 
 	RDOBaseEditTab*    tab;
 	RDOBaseEditWindow* window;
@@ -125,4 +136,4 @@ public:
 
 }; // namespace rdoEditCtrl
 
-#endif // RDOBASEEDITSTYLE_H
+#endif // _RDO_STUDIO_MFC_EDIT_CTRLS_RDOBASEEDITSTYLE_H_

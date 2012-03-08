@@ -3,9 +3,6 @@
 
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_project.h"
 #include "utils/rdodebug.h"
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
 
 // --------------------------------------------------------------------------------
 // ---------- RPProjectMFC

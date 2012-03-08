@@ -1,9 +1,22 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdodebugedit.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      28.02.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/edit_ctrls/rdodebugedit.h"
-#include "thirdparty/sci/SciLexer.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/htmlhelp.h"
+#include "thirdparty/sci/SciLexer.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -20,10 +33,8 @@ using namespace rdoEditCtrl;
 // ON_UPDATE_COMMAND_UI сделано
 
 BEGIN_MESSAGE_MAP( RDODebugEdit, RDOBaseEdit )
-	//{{AFX_MSG_MAP(RDODebugEdit)
 	ON_WM_CREATE()
 	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
-	//}}AFX_MSG_MAP
 	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR , OnUpdateCoordStatusBar )
 	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar )
 END_MESSAGE_MAP()
@@ -45,11 +56,11 @@ int RDODebugEdit::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	return 0;
 }
 
-void RDODebugEdit::appendLine( const std::string& str )
+void RDODebugEdit::appendLine( CREF(tstring) str )
 {
-	bool readOnly = isReadOnly();
+	rbool readOnly = isReadOnly();
 	setReadOnly( false );
-	bool scroll = isLineVisible( getLineCount() - 1 );
+	rbool scroll = isLineVisible( getLineCount() - 1 );
 	setCurrentPos( getLength() );
 	appendText( str );
 	if ( scroll ) {
@@ -76,7 +87,7 @@ void RDODebugEdit::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
 
 void RDODebugEdit::OnHelpKeyword()
 {
-	std::string filename = studioApp.getFullHelpFileName();
+	tstring filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return;
 	filename += "::/html/work_run.htm#output_debug";
 	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );

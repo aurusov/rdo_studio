@@ -1,10 +1,6 @@
 #ifndef RDOSTUDIOFRAMEVIEW_H
 #define RDOSTUDIOFRAMEVIEW_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
-
 #include "app/rdo_studio_mfc/src/view.h"
 
 // --------------------------------------------------------------------------------
@@ -25,7 +21,7 @@ private:
 	int xPos;
 	int yPos;
 	COLORREF bgColor;
-	bool mustBeInit;
+	rbool mustBeInit;
 
 	HWND    hwnd;
 	HDC     hdc;
@@ -37,7 +33,7 @@ private:
 //	HBITMAP hbmpInit;
 	HBITMAP hbmp;
 
-	bool mouseOnHScroll;
+	rbool mouseOnHScroll;
 
 	void onDraw();
 	void updateFont();
@@ -56,20 +52,14 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
-public:
-	//{{AFX_VIRTUAL(RDOStudioFrameView)
-	public:
+private:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	protected:
 	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
 	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
 	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
 	virtual void OnActivateView(BOOL bActivate, CView* pActivateView, CView* pDeactiveView);
 	virtual void OnDraw(CDC* pDC);
-	//}}AFX_VIRTUAL
 
-protected:
-	//{{AFX_MSG(RDOStudioFrameView)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnDestroy();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
@@ -85,7 +75,6 @@ protected:
 	afx_msg void OnNcRButtonDown(UINT nHitTest, CPoint point);
 	afx_msg void OnNcMouseMove(UINT nHitTest, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
 
@@ -93,7 +82,5 @@ protected:
 inline RDOStudioFrameDoc* RDOStudioFrameView::GetDocument()
    { return (RDOStudioFrameDoc*)m_pDocument; }
 #endif
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // RDOSTUDIOFRAMEVIEW_H

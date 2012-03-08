@@ -1,10 +1,6 @@
 #ifndef RDOSTUDIOMODELDOC_H
 #define RDOSTUDIOMODELDOC_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
-
 #include "app/rdo_studio_mfc/src/edit/document_base.h"
 
 // --------------------------------------------------------------------------------
@@ -19,22 +15,14 @@ friend class RDOStudioModel;
 DECLARE_DYNCREATE(RDOStudioModelDoc)
 
 private:
-	std::string name;
+	tstring name;
 
 	RDOStudioModelDoc();
 
-public:
-	//{{AFX_VIRTUAL(RDOStudioModelDoc)
-	public:
+private:
 	virtual BOOL OnNewDocument();
 	virtual void Serialize(CArchive& ar);
-	protected:
 	virtual BOOL SaveModified();
-	//}}AFX_VIRTUAL
-
-protected:
-	//{{AFX_MSG(RDOStudioModelDoc)
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
 public:
@@ -44,10 +32,10 @@ public:
 
 	RDOStudioModelView* getView() const;
 
-	std::string getName() const { return name; }
-	void setName( const std::string& str );
+	tstring getName() const { return name; }
+	void setName( CREF(tstring) str );
 
-	bool isModify();
+	rbool isModify();
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;
@@ -55,7 +43,5 @@ public:
 #endif
 
 };
-
-//{{AFX_INSERT_LOCATION}}
 
 #endif // RDOSTUDIOMODELDOC_H

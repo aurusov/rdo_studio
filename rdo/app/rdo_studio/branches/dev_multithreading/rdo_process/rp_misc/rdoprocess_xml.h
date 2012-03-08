@@ -1,10 +1,6 @@
 #ifndef RDO_PROCESS_XML_H
 #define RDO_PROCESS_XML_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
 #include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_string.h"
 #import <msxml3.dll> raw_interfaces_only
 

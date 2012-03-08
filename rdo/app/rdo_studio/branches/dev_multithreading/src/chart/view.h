@@ -1,13 +1,21 @@
-#ifndef RDOSTUDIOCHARTVIEW_H
-#define RDOSTUDIOCHARTVIEW_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      app/rdo_studio_mfc/src/chart/view.h
+  \author    Захаров Павел
+  \date      20.02.2003
+  \brief     
+  \indent    4T
+*/
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
+#ifndef _RDO_STUDIO_MFC_CHART_VIEW_H_
+#define _RDO_STUDIO_MFC_CHART_VIEW_H_
 
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/view.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracervalues.h"
 #include "app/rdo_studio_mfc/src/chart/document.h"
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioChartView
@@ -33,22 +41,22 @@ protected:
 	CRect newClientRect;
 
 	int valueCountX;
-	std::vector<std::string> captions;
+	std::vector<tstring> captions;
 	int valueCountY;
 	
-	bool timeWrap;
-	bool canUnwrapTime() const { return scale_koeff >= 1 && !zoomAuto; };
-	bool doUnwrapTime() const { return canUnwrapTime() && !timeWrap; };
+	rbool timeWrap;
+	rbool canUnwrapTime() const { return scale_koeff >= 1 && !zoomAuto; };
+	rbool doUnwrapTime() const { return canUnwrapTime() && !timeWrap; };
 
 	CRect chartRect;
 	void recalcLayout();
 
 	int xMax;
 	int xPos;
-	bool minXVisible() const { return xPos == 0; };
-	bool maxXVisible() const { return xPos == xMax; };
-	void setScrollPos( UINT nSBCode, UINT nPos, const bool need_update = true );
-	void updateScrollBars( const bool need_update = true );
+	rbool minXVisible() const { return xPos == 0; };
+	rbool maxXVisible() const { return xPos == xMax; };
+	void  setScrollPos( UINT nSBCode, UINT nPos, const rbool need_update = true );
+	void  updateScrollBars( const rbool need_update = true );
 
 	long double timeScale;
 	RDOTracerTimeNow drawFromX;
@@ -56,7 +64,7 @@ protected:
 	RDOTracerTimeNow drawToX;
 	int drawToEventCount;
 	int chartShift;
-	bool setTo( const int from_max_pos );
+	rbool setTo( const int from_max_pos );
 	void setFromTo();
 	timesList unwrapTimesList;
 	
@@ -74,14 +82,14 @@ protected:
 	double old_zoom;
 	double auto_zoom;
 	double scale_koeff;
-	void setZoom( double new_zoom, const bool force_update = false );
-	bool zoomAuto;
+	void  setZoom( double new_zoom, const rbool force_update = false );
+	rbool zoomAuto;
 
-	bool previewMode;
+	rbool previewMode;
 	RDOStudioChartViewStyle* style;
 
 	RDOStudioDocSerie* yAxis;
-	bool needDrawLegend;
+	rbool needDrawLegend;
 
 	void updateWindow();
 	void updateView();
@@ -97,22 +105,20 @@ protected:
 	HDC     hmemdc;
 	int     saved_hmemdc;
 	HWND    hwnd;
-	void setFonts( const bool needRedraw = true );
+	void setFonts( const rbool needRedraw = true );
 
 	void onDraw();
 
 public:
-	RDOStudioChartView( const bool preview = false);
+	RDOStudioChartView( const rbool preview = false);
 	virtual ~RDOStudioChartView();
 	RDOStudioChartDoc* GetDocument();
 
 	const RDOStudioChartViewStyle& getStyle() const;
-	void setStyle( RDOStudioChartViewStyle* _style, const bool needRedraw = true );
+	void setStyle( RDOStudioChartViewStyle* _style, const rbool needRedraw = true );
 
-	//{{AFX_VIRTUAL(RDOStudioChartView)
-	public:
+private:
 	virtual void OnInitialUpdate();
-	protected:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual void OnDraw(CDC* pDC);
 	virtual BOOL OnPreparePrinting( CPrintInfo* pInfo );
@@ -123,7 +129,6 @@ public:
 	virtual DROPEFFECT OnDragOver( COleDataObject* pDataObject, DWORD dwKeyState, CPoint point );
 	virtual BOOL OnDrop( COleDataObject* pDataObject, DROPEFFECT dropEffect, CPoint point );
 	virtual void OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint);
-	//}}AFX_VIRTUAL
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;
@@ -131,7 +136,6 @@ public:
 #endif
 
 protected:
-	//{{AFX_MSG(RDOStudioChartView)
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
@@ -155,7 +159,6 @@ protected:
 	afx_msg void OnViewZoomauto();
 	afx_msg void OnUpdateViewZoomauto(CCmdUI* pCmdUI);
 	afx_msg void OnHelpKeyword();
-	//}}AFX_MSG
 	afx_msg LRESULT OnUserUpdateChartView(WPARAM wParam = 0, LPARAM lParam = 0);
 	DECLARE_MESSAGE_MAP()
 };
@@ -165,7 +168,4 @@ inline RDOStudioChartDoc* RDOStudioChartView::GetDocument()
    { return (RDOStudioChartDoc*)m_pDocument; }
 #endif
 
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // RDOSTUDIOCHARTVIEW_H
+#endif // _RDO_STUDIO_MFC_CHART_VIEW_H_

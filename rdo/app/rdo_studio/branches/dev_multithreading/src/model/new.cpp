@@ -25,7 +25,6 @@ static char THIS_FILE[] = __FILE__;
 // -------------------- RDOStudioModelNew
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioModelNew, CDialog)
-	//{{AFX_MSG_MAP(RDOStudioModelNew)
 	ON_BN_CLICKED (IDC_MODEL_PATH_BUTTON, OnModelPathButton)
 	ON_EN_CHANGE  (IDC_MODEL_NAME,        OnChangeModelName)
 	ON_BN_CLICKED (IDC_MODEL_EMPTY,       OnModelEmpty     )
@@ -34,7 +33,6 @@ BEGIN_MESSAGE_MAP(RDOStudioModelNew, CDialog)
 	ON_BN_CLICKED (IDC_MODEL_BARBER2,     OnModelEmpty     )
 	ON_BN_CLICKED (IDC_COMMENT,           OnModelEmpty     )
 	ON_WM_CTLCOLOR()
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioModelNew::RDOStudioModelNew()
@@ -42,13 +40,11 @@ RDOStudioModelNew::RDOStudioModelNew()
 	, m_colorRed(RGB(0xFF, 0x00, 0x00))
 	, m_needRed (false                )
 {
-	//{{AFX_DATA_INIT(RDOStudioModelNew)
 	m_modelName     = _T("mymodel");
 	m_modelPath     = getMyDocFolder();
 	m_info          = _T("");
 	m_comment       = FALSE;
 	m_modelTemplate = 1;
-	//}}AFX_DATA_INIT
 }
 
 RDOStudioModelNew::~RDOStudioModelNew()
@@ -57,14 +53,12 @@ RDOStudioModelNew::~RDOStudioModelNew()
 void RDOStudioModelNew::DoDataExchange(PTR(CDataExchange) pDX) 
 {
 	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(RDOStudioModelNew)
 	DDX_Control(pDX, IDOK,            m_ok           );
 	DDX_Text   (pDX, IDC_MODEL_NAME,  m_modelName    );
 	DDX_Text   (pDX, IDC_MODEL_PATH,  m_modelPath    );
 	DDX_Text   (pDX, IDC_INFO,        m_info         );
 	DDX_Check  (pDX, IDC_COMMENT,     m_comment      );
 	DDX_Radio  (pDX, IDC_MODEL_EMPTY, m_modelTemplate);
-	//}}AFX_DATA_MAP
 }
 
 void RDOStudioModelNew::OnOK() 

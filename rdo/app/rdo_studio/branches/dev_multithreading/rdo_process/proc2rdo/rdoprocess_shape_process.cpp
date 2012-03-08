@@ -1,7 +1,3 @@
-// rdoprocess_shape_process_MJ.cpp: implementation of the RPShapeProcessMJ class.
-//
-//////////////////////////////////////////////////////////////////////
-
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/stdafx.h"
 #include <list>
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_process.h"
@@ -15,9 +11,6 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
 RPShapeProcessMJ::RPShapeProcessMJ( RPObject* _parent ):
 	RPShape_MJ( _parent, _T("Process") )
 {
@@ -126,7 +119,7 @@ void RPShapeProcessMJ::generate()
 		it++;
 	}
 
-	studioApp.studioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_PROCESS, m_pParams.get());
+	studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_PROCESS, m_pParams.get());
 	m_pParams = NULL;
 }
 

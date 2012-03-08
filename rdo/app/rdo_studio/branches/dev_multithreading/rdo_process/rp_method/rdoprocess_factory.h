@@ -1,10 +1,6 @@
 #ifndef RDO_PROCESS_FACTORY_H
 #define RDO_PROCESS_FACTORY_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
 #include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_string.h"
 #include <list>
 #include <map>
@@ -40,11 +36,11 @@ public:
 	void multiParent( RPObjectClassInfo* _parent );
 	void multiParent( const rp::string& _parent );
 	rp::string getClassName() const                    { return class_name;          }
-	bool isAbstract() const                            { return makeObject == NULL;  }
-	bool haveMethod() const                            { return method     != NULL;  }
+	rbool isAbstract() const                           { return makeObject == NULL;  }
+	rbool haveMethod() const                           { return method     != NULL;  }
 	const rpMethod::RPMethod* getMethod() const        { return method;              }
 	rp::string getLabel() const                        { return label;               }
-	bool isKindOf( const rp::string& _class_name ) const {
+	rbool isKindOf( const rp::string& _class_name ) const {
 		if ( class_name == _class_name ) return true;
 		std::list< RPObjectClassInfo* >::const_iterator it = parent.begin();
 		while ( it != parent.end() ) {

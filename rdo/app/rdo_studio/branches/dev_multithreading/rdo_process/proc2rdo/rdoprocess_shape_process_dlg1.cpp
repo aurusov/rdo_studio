@@ -1,6 +1,3 @@
-// rdoprocess_shape_process_dlg1_MJ.cpp : implementation file
-//
-
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/stdafx.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_process_dlg1.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_process_dlg2.h"
@@ -12,20 +9,13 @@ static char THIS_FILE[] = __FILE__;
 #include<list>
 
 BEGIN_MESSAGE_MAP(RPListBox, CListBox)
-	//{{AFX_MSG_MAP(RPListBox)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
-// RPShapeProcessDlg1_MJ dialog
-
 
 RPShapeProcessDlg1_MJ::RPShapeProcessDlg1_MJ(CWnd* pParent /*=NULL*/,RPShapeProcessMJ* ppParent)
 	: CDialog(RPShapeProcessDlg1_MJ::IDD, pParent),
 	brush1( RGB(0xFF, 0x00, 0x00) ),
 	brush2( RGB(0x00, 0xFF, 0x00) )
 {
-	//{{AFX_DATA_INIT(RPShapeProcessDlg1_MJ)
 	m_name = _T("");
 	m_list_text = _T("");
 	m_gprior = 0;
@@ -34,7 +24,6 @@ RPShapeProcessDlg1_MJ::RPShapeProcessDlg1_MJ(CWnd* pParent /*=NULL*/,RPShapeProc
 	m_gmin = 0.0;
 	m_gmax = 0.0;
 	m_gbase_gen = 0;
-	//}}AFX_DATA_INIT
 
     pParentMJ = ppParent;
 }
@@ -43,7 +32,6 @@ RPShapeProcessDlg1_MJ::RPShapeProcessDlg1_MJ(CWnd* pParent /*=NULL*/,RPShapeProc
 void RPShapeProcessDlg1_MJ::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(RPShapeProcessDlg1_MJ)
 	DDX_Control(pDX, IDC_COMBO1, m_gtype);
 	DDX_Control(pDX, IDC_COMBO3, m_gqueque);
 	DDX_Control(pDX, IDC_LIST1, m_ResList);
@@ -65,9 +53,7 @@ void RPShapeProcessDlg1_MJ::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT7, m_gmax);
 	DDX_Text(pDX, IDC_EDIT8, m_gbase_gen);
 	DDV_MinMaxInt(pDX, m_gbase_gen, -2147483647, 2147483647);
-	//}}AFX_DATA_MAP
 }
-
 
 BOOL RPShapeProcessDlg1_MJ::OnInitDialog()
 {
@@ -113,18 +99,13 @@ OnCbnSelchange1();
 
 
 BEGIN_MESSAGE_MAP(RPShapeProcessDlg1_MJ, CDialog)
-	//{{AFX_MSG_MAP(RPShapeProcessDlg1_MJ)
 	ON_CBN_SELCHANGE(IDC_COMBO1, OnCbnSelchange1)
 	ON_CBN_SELCHANGE(IDC_COMBO3, OnCbnSelchange3)
 	ON_BN_CLICKED(IDC_BUTTON1, OnButton1)
 	ON_CBN_SELCHANGE(IDC_COMBO2, OnCbnSelchange2)
 	ON_WM_CTLCOLOR()
 	ON_BN_CLICKED(IDC_BUTTON2, OnButton2)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
-// RPShapeProcessDlg1_MJ message handlers
 
 void RPShapeProcessDlg1_MJ::OnCbnSelchange1() 
 {
@@ -206,7 +187,7 @@ void RPShapeProcessDlg1_MJ::OnOK()
 {
 	// вывод и ввод имени блока
 	UpdateData(TRUE);
-	pParentMJ->setName(std::string(m_name));
+	pParentMJ->setName(tstring(m_name));
 
 	
 // инициализация из вызвавшего объекта

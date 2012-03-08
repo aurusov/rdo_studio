@@ -25,12 +25,10 @@ IMPLEMENT_DYNCREATE(RDOStudioModelView, RDOStudioEditBaseView)
 // ON_UPDATE_COMMAND_UI сделано
 
 BEGIN_MESSAGE_MAP(RDOStudioModelView, RDOStudioEditBaseView)
-	//{{AFX_MSG_MAP(RDOStudioModelView)
 	ON_WM_CREATE()
 	ON_WM_SETFOCUS()
 	ON_WM_SIZE()
 	ON_COMMAND(ID_SEARCH_FIND_INMODEL, OnSearchFindInModel)
-	//}}AFX_MSG_MAP
 	ON_REGISTERED_MESSAGE( FINDINMODEL_MSG, OnFindInModelMsg )
 	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR          , OnUpdateCoordStatusBar )
 	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR         , OnUpdateModifyStatusBar )
@@ -145,13 +143,13 @@ LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM /*wParam*/, LPARAM lParam )
 	CFindReplaceDialog* pDialog = CFindReplaceDialog::GetNotifier( lParam );
 
 	if ( !pDialog->IsTerminating() ) {
-		studioApp.mainFrame->output.clearFind();
-		studioApp.mainFrame->output.showFind();
-		std::string findStr  = pDialog->GetFindString();
-		bool bMatchCase      = pDialog->MatchCase() ? true : false;
-		bool bMatchWholeWord = pDialog->MatchWholeWord() ? true : false;
-		studioApp.mainFrame->output.getFind()->setKeyword( findStr, bMatchCase );
-		studioApp.mainFrame->output.appendStringToFind( rdo::format( ID_FINDINMODEL_BEGINMSG, findStr.c_str() ) );
+		studioApp.m_pMainFrame->output.clearFind();
+		studioApp.m_pMainFrame->output.showFind();
+		tstring findStr  = pDialog->GetFindString();
+		rbool bMatchCase      = pDialog->MatchCase() ? true : false;
+		rbool bMatchWholeWord = pDialog->MatchWholeWord() ? true : false;
+		studioApp.m_pMainFrame->output.getFind()->setKeyword( findStr, bMatchCase );
+		studioApp.m_pMainFrame->output.appendStringToFind( rdo::format( ID_FINDINMODEL_BEGINMSG, findStr.c_str() ) );
 		int count = 0;
 		for ( int i = 0; i < tab->getItemCount(); i++ ) {
 			RDOEditorEdit* edit = tab->getItemEdit( i );
@@ -161,20 +159,20 @@ LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM /*wParam*/, LPARAM lParam )
 				pos = edit->findPos( findStr, line, bMatchCase, bMatchWholeWord );
 				if ( pos != -1 ) {
 					line = edit->getLineFromPosition( pos );
-					studioApp.mainFrame->output.appendStringToFind( edit->getLine( line ), tab->indexToType( i ), line, pos - edit->getPositionFromLine( line ) );
+					studioApp.m_pMainFrame->output.appendStringToFind( edit->getLine( line ), tab->indexToType( i ), line, pos - edit->getPositionFromLine( line ) );
 					line++;
 					count++;
 				}
 			}
 		}
 		pDialog->SendMessage( WM_CLOSE );
-		std::string s;
+		tstring s;
 		if ( count ) {
 			s = rdo::format( ID_FINDINMODEL_ENDMSG_COUNT, count );
 		} else {
 			s = rdo::format( ID_FINDINMODEL_ENDMSG_NOTFOUND, findStr.c_str() );
 		}
-		studioApp.mainFrame->output.appendStringToFind( s );
+		studioApp.m_pMainFrame->output.appendStringToFind( s );
 	}
 	return 0;
 }

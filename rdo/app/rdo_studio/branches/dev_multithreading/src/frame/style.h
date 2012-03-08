@@ -1,6 +1,5 @@
 #ifndef RDOSTUDIOFRAMESTYLE_H
 #define RDOSTUDIOFRAMESTYLE_H
-#pragma once
 
 #include "app/rdo_studio_mfc/src/style.h"
 
@@ -14,8 +13,8 @@ public:
 	virtual ~RDOStudioFrameTheme();
 
 	RDOStudioFrameTheme& operator =( const RDOStudioFrameTheme& theme );
-	bool operator ==( const RDOStudioFrameTheme& theme ) const;
-	bool operator !=( const RDOStudioFrameTheme& theme ) const;
+	rbool operator ==( const RDOStudioFrameTheme& theme ) const;
+	rbool operator !=( const RDOStudioFrameTheme& theme ) const;
 
 	static RDOStudioFrameTheme getDefaultTheme();
 };
@@ -33,10 +32,10 @@ public:
 	virtual ~RDOStudioFrameStyle();
 
 	RDOStudioFrameStyle& operator =( const RDOStudioFrameStyle& style );
-	bool operator ==( const RDOStudioFrameStyle& style ) const;
-	bool operator !=( const RDOStudioFrameStyle& style ) const;
+	rbool operator ==( const RDOStudioFrameStyle& style ) const;
+	rbool operator !=( const RDOStudioFrameStyle& style ) const;
 
-	virtual void init( const std::string& _regPath = "" );
+	virtual void init( CREF(tstring) _regPath = "" );
 };
 
 #endif // RDOSTUDIOFRAMESTYLE_H

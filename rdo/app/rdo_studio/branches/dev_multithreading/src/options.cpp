@@ -1,10 +1,23 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      app/rdo_studio_mfc/src/options.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      13.03.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/options.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/src/plugins.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/htmlhelp.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -23,24 +36,20 @@ using namespace rdoTracerLog;
 // -------------------- RDOStudioOptionsGeneral
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioOptionsGeneral, CPropertyPage)
-	//{{AFX_MSG_MAP(RDOStudioOptionsGeneral)
 	ON_BN_CLICKED(IDC_FILEASSOCIATION_SETUP_CHECK, OnUpdateModify)
 	ON_BN_CLICKED(IDC_FILEASSOCIATION_CHECKINFUTURE_CHECK, OnUpdateModify)
 	ON_BN_CLICKED(IDC_OPENLASTPROJECT_CHECK, OnUpdateModify)
 	ON_BN_CLICKED(IDC_SHOWCAPTIONFULLNAME_CHECK, OnUpdateModify)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioOptionsGeneral::RDOStudioOptionsGeneral( RDOStudioOptions& _sheet ):
 	CPropertyPage( IDD ),
 	sheet( &_sheet )
 {
-	//{{AFX_DATA_INIT(RDOStudioOptionsGeneral)
 	m_setup = FALSE;
 	m_checkInFuture = FALSE;
 	m_openLastProject = FALSE;
 	m_showFullName = FALSE;
-	//}}AFX_DATA_INIT
 
 	m_setup           = studioApp.getFileAssociationSetup();
 	m_checkInFuture   = studioApp.getFileAssociationCheckInFuture();
@@ -57,12 +66,10 @@ RDOStudioOptionsGeneral::~RDOStudioOptionsGeneral()
 void RDOStudioOptionsGeneral::DoDataExchange(CDataExchange* pDX) 
 {
 	CPropertyPage::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(RDOStudioOptionsGeneral)
 	DDX_Check(pDX, IDC_FILEASSOCIATION_SETUP_CHECK, m_setup);
 	DDX_Check(pDX, IDC_FILEASSOCIATION_CHECKINFUTURE_CHECK, m_checkInFuture);
 	DDX_Check(pDX, IDC_OPENLASTPROJECT_CHECK, m_openLastProject);
 	DDX_Check(pDX, IDC_SHOWCAPTIONFULLNAME_CHECK, m_showFullName);
-	//}}AFX_DATA_MAP
 }
 
 void RDOStudioOptionsGeneral::OnOK() 
@@ -90,7 +97,6 @@ void RDOStudioOptionsGeneral::OnUpdateModify()
 // -------------------- RDOStudioOptionsEditor
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioOptionsEditor, CPropertyPage)
-	//{{AFX_MSG_MAP(RDOStudioOptionsEditor)
 	ON_BN_CLICKED(IDC_USEAUTOCOMPLETE_CHECK, OnUseAutoCompleteCheck)
 	ON_BN_CLICKED(IDC_SHOWFULLLIST_RADIO, OnUpdateModify)
 	ON_BN_CLICKED(IDC_CLEARAUTO_CHECK, OnClearAutoCheck)
@@ -99,14 +105,12 @@ BEGIN_MESSAGE_MAP(RDOStudioOptionsEditor, CPropertyPage)
 	ON_BN_CLICKED(IDC_MARGIN_FOLD_CHECK, OnUpdateModify)
 	ON_BN_CLICKED(IDC_MARGIN_BOOKMARK_CHECK, OnUpdateModify)
 	ON_BN_CLICKED(IDC_MARGIN_LINENUMBER_CHECK, OnUpdateModify)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioOptionsEditor::RDOStudioOptionsEditor( RDOStudioOptions& _sheet ):
 	CPropertyPage( IDD ),
 	sheet( &_sheet )
 {
-	//{{AFX_DATA_INIT(RDOStudioOptionsEditor)
 	m_bufferClearAuto = FALSE;
 	m_bufferDelay = 0;
 	m_codecompUse = FALSE;
@@ -114,7 +118,6 @@ RDOStudioOptionsEditor::RDOStudioOptionsEditor( RDOStudioOptions& _sheet ):
 	m_marginFold = FALSE;
 	m_marginBookmark = FALSE;
 	m_marginLineNumber = FALSE;
-	//}}AFX_DATA_INIT
 
 	m_bufferClearAuto = sheet->style_editor.buffer->canClearBuffer ? 1 : 0;
 	m_bufferDelay     = sheet->style_editor.buffer->clearBufferDelay;
@@ -137,7 +140,6 @@ void RDOStudioOptionsEditor::DoDataExchange(CDataExchange* pDX)
 {
 	CPropertyPage::DoDataExchange(pDX);
 
-	//{{AFX_DATA_MAP(RDOStudioOptionsEditor)
 	DDX_Check(pDX, IDC_CLEARAUTO_CHECK, m_bufferClearAuto);
 	DDX_Text(pDX, IDC_CLEARAUTO_EDIT, m_bufferDelay);
 	DDV_MinMaxInt(pDX, m_bufferDelay, 1, 100);
@@ -146,7 +148,6 @@ void RDOStudioOptionsEditor::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_MARGIN_FOLD_CHECK, m_marginFold);
 	DDX_Check(pDX, IDC_MARGIN_BOOKMARK_CHECK, m_marginBookmark);
 	DDX_Check(pDX, IDC_MARGIN_LINENUMBER_CHECK, m_marginLineNumber);
-	//}}AFX_DATA_MAP
 }
 
 BOOL RDOStudioOptionsEditor::OnInitDialog()
@@ -176,7 +177,7 @@ BOOL RDOStudioOptionsEditor::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pRe
 
 void RDOStudioOptionsEditor::OnClearAutoCheck() 
 {
-	bool use = static_cast<CButton*>(GetDlgItem( IDC_CLEARAUTO_CHECK ))->GetCheck() ? true : false;
+	rbool use = static_cast<CButton*>(GetDlgItem( IDC_CLEARAUTO_CHECK ))->GetCheck() ? true : false;
 	GetDlgItem( IDC_CLEARAUTO_STATIC1 )->EnableWindow( use );
 	GetDlgItem( IDC_CLEARAUTO_EDIT )->EnableWindow( use );
 	GetDlgItem( IDC_CLEARAUTO_STATIC2 )->EnableWindow( use );
@@ -185,7 +186,7 @@ void RDOStudioOptionsEditor::OnClearAutoCheck()
 
 void RDOStudioOptionsEditor::OnUseAutoCompleteCheck() 
 {
-	bool use = static_cast<CButton*>(GetDlgItem( IDC_USEAUTOCOMPLETE_CHECK ))->GetCheck() ? true : false;
+	rbool use = static_cast<CButton*>(GetDlgItem( IDC_USEAUTOCOMPLETE_CHECK ))->GetCheck() ? true : false;
 	GetDlgItem( IDC_SHOWFULLLIST_RADIO )->EnableWindow( use );
 	GetDlgItem( IDC_SHOWNEARESTWORDSONLY_RADIO )->EnableWindow( use );
 	OnUpdateModify();
@@ -209,14 +210,13 @@ void RDOStudioOptionsEditor::OnUpdateModify()
 		sheet->preview_editor.setEditorStyle( &sheet->style_editor );
 	}
 
-	SetModified( *sheet->style_editor.buffer != *studioApp.mainFrame->style_editor.buffer || *sheet->style_editor.autoComplete != *studioApp.mainFrame->style_editor.autoComplete || *sheet->style_editor.margin != *studioApp.mainFrame->style_editor.margin );
+	SetModified( *sheet->style_editor.buffer != *studioApp.m_pMainFrame->style_editor.buffer || *sheet->style_editor.autoComplete != *studioApp.m_pMainFrame->style_editor.autoComplete || *sheet->style_editor.margin != *studioApp.m_pMainFrame->style_editor.margin );
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioOptionsTabs
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioOptionsTabs, CPropertyPage)
-	//{{AFX_MSG_MAP(RDOStudioOptionsTabs)
 	ON_BN_CLICKED(IDC_USETABS_CHECK, OnUpdateModify)
 	ON_EN_CHANGE(IDC_TABSIZE_EDIT, OnUpdateModify)
 	ON_BN_CLICKED(IDC_TABINDENTS_CHECK, OnUpdateModify)
@@ -224,21 +224,18 @@ BEGIN_MESSAGE_MAP(RDOStudioOptionsTabs, CPropertyPage)
 	ON_BN_CLICKED(IDC_BACKSPACEUNTABS_RADIO, OnUpdateModify)
 	ON_BN_CLICKED(IDC_BACKSPACEUNINDENTS_RADIO, OnUpdateModify)
 	ON_BN_CLICKED(IDC_AUTOINDENT_CHECK, OnUpdateModify)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioOptionsTabs::RDOStudioOptionsTabs( RDOStudioOptions& _sheet ):
 	CPropertyPage( IDD ),
 	sheet( &_sheet )
 {
-	//{{AFX_DATA_INIT(RDOStudioOptionsTabs)
 	m_tabUse = FALSE;
 	m_tabSize = 0;
 	m_tabUseTabIndent = FALSE;
 	m_tabIndentSize = 0;
 	m_tabBackspaceUntabs = -1;
 	m_tabAutoIndent = FALSE;
-	//}}AFX_DATA_INIT
 
 	m_tabUse             = sheet->style_editor.tab->useTabs ? 1 : 0;
 	m_tabSize            = sheet->style_editor.tab->tabSize;
@@ -258,7 +255,6 @@ void RDOStudioOptionsTabs::DoDataExchange(CDataExchange* pDX)
 {
 	CPropertyPage::DoDataExchange(pDX);
 
-	//{{AFX_DATA_MAP(RDOStudioOptionsTabs)
 	DDX_Check(pDX, IDC_USETABS_CHECK, m_tabUse);
 	DDX_Text(pDX, IDC_TABSIZE_EDIT, m_tabSize);
 	DDV_MinMaxInt(pDX, m_tabSize, 1, 100);
@@ -267,7 +263,6 @@ void RDOStudioOptionsTabs::DoDataExchange(CDataExchange* pDX)
 	DDV_MinMaxInt(pDX, m_tabIndentSize, 1, 100);
 	DDX_Check(pDX, IDC_AUTOINDENT_CHECK, m_tabAutoIndent);
 	DDX_Check(pDX, IDC_TABINDENTS_CHECK, m_tabUseTabIndent);
-	//}}AFX_DATA_MAP
 }
 
 void RDOStudioOptionsTabs::OnOK()
@@ -303,7 +298,7 @@ void RDOStudioOptionsTabs::OnUpdateModify()
 
 	sheet->updateStyles();
 
-	SetModified( *sheet->style_editor.tab != *studioApp.mainFrame->style_editor.tab );
+	SetModified( *sheet->style_editor.tab != *studioApp.m_pMainFrame->style_editor.tab );
 }
 
 // --------------------------------------------------------------------------------
@@ -311,15 +306,14 @@ void RDOStudioOptionsTabs::OnUpdateModify()
 // --------------------------------------------------------------------------------
 COLORREF RDOStudioOptionsColorsStyles::null_fg_color = RGB( 0x00, 0x00, 0x00 );
 COLORREF RDOStudioOptionsColorsStyles::null_bg_color = RGB( 0xFF, 0xFF, 0xFF );
-bool RDOStudioOptionsColorsStyles::null_wordwrap      = false;
-bool RDOStudioOptionsColorsStyles::null_horzscrollbar = true;
-bool RDOStudioOptionsColorsStyles::null_warning       = true;
-bool RDOStudioOptionsColorsStyles::null_commentfold   = false;
+rbool RDOStudioOptionsColorsStyles::null_wordwrap      = false;
+rbool RDOStudioOptionsColorsStyles::null_horzscrollbar = true;
+rbool RDOStudioOptionsColorsStyles::null_warning       = true;
+rbool RDOStudioOptionsColorsStyles::null_commentfold   = false;
 RDOBookmarkStyle RDOStudioOptionsColorsStyles::null_bookmarkstyle = RDOBOOKMARKS_NONE;
 RDOFoldStyle     RDOStudioOptionsColorsStyles::null_foldstyle     = RDOFOLDS_NONE;
 
 BEGIN_MESSAGE_MAP(RDOStudioOptionsColorsStyles, CPropertyPage)
-	//{{AFX_MSG_MAP(RDOStudioOptionsColorsStyles)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_STYLEITEM_TREE, OnStyleItemChanged)
 	ON_CBN_SELCHANGE(IDC_PREVIEWAS_COMBO, OnPreviewAsChanged)
 	ON_CBN_SELCHANGE(IDC_FONTNAME_COMBO, OnFontNameChanged)
@@ -343,7 +337,6 @@ BEGIN_MESSAGE_MAP(RDOStudioOptionsColorsStyles, CPropertyPage)
 	ON_CBN_SELCHANGE(IDC_LEGEND_FONTSIZE_COMBO, OnUpdateModify)
 	ON_EN_CHANGE(IDC_TICKWIDTH_EDIT, OnUpdateModify)
 	ON_BN_CLICKED(IDC_WARNING_CHECK, OnWarningCheck)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioOptionsColorsStyles::RDOStudioOptionsColorsStyles( RDOStudioOptions& _sheet ):
@@ -359,9 +352,6 @@ RDOStudioOptionsColorsStyles::RDOStudioOptionsColorsStyles( RDOStudioOptions& _s
 	use_all_bg_color( false ),
 	null_font_style( RDOStyleFont::NONE )
 {
-	//{{AFX_DATA_INIT(RDOStudioOptionsColorsStyles)
-	//}}AFX_DATA_INIT
-
 	STYLEObject* object;
 	object = new STYLEObject( STYLEObject::all, all_font_name, all_font_size );
 	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_ALLWINDOW ), null_font_style, all_fg_color, all_bg_color ) );
@@ -497,7 +487,6 @@ void RDOStudioOptionsColorsStyles::DoDataExchange(CDataExchange* pDX)
 {
 	CPropertyPage::DoDataExchange(pDX);
 
-	//{{AFX_DATA_MAP(RDOStudioOptionsColorsStyles)
 	DDX_Control(pDX, IDC_WARNING_CHECK, m_warning);
 	DDX_Control(pDX, IDC_COMMENTGROUP_CHECK, m_commentGroupButton);
 	DDX_Control(pDX, IDC_TITLE_FONTSIZE_STATIC, m_title_fontSizeStatic);
@@ -529,7 +518,6 @@ void RDOStudioOptionsColorsStyles::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_PREVIEWAS_COMBO, m_previewAs);
 	DDX_Control(pDX, IDC_FONTNAME_COMBO, m_fontName);
 	DDX_Control(pDX, IDC_STYLEITEM_TREE, m_styleItem);
-	//}}AFX_DATA_MAP
 
 	DDX_Control( pDX, IDC_FGCOLOR_COMBO, fgColorCB );
 	DDX_Control( pDX, IDC_BGCOLOR_COMBO, bgColorCB );
@@ -538,7 +526,7 @@ void RDOStudioOptionsColorsStyles::DoDataExchange(CDataExchange* pDX)
 int CALLBACK RDOStudioOptionsColorsStyles::EnumFontFamExProc( ENUMLOGFONTEX* lpelfe, NEWTEXTMETRICEX* /*lpntme*/, DWORD /*FontType*/, LPARAM lParam )
 {
 	std::list< STYLEFont >* fonts = reinterpret_cast< std::list< STYLEFont >* >(lParam);
-	bool can_insert = true;
+	rbool can_insert = true;
 	std::list< STYLEFont >::iterator font_it = fonts->begin();
 	while ( font_it != fonts->end() ) {
 		if ( font_it->name == lpelfe->elfLogFont.lfFaceName ) {
@@ -748,7 +736,7 @@ void RDOStudioOptionsColorsStyles::updateStyleItem()
 			loadFontsIntoCombo( prop->object->font_fixed );
 		}
 		std::list< STYLEFont >::const_iterator it = fonts.begin();
-		bool flag = false;
+		rbool flag = false;
 		while ( it != fonts.end() ) {
 			if ( it->name == prop->object->font_name ) {
 				int index = m_fontName.FindStringExact( -1, prop->object->font_name.c_str() );
@@ -773,7 +761,7 @@ void RDOStudioOptionsColorsStyles::updateStyleItem()
 		}
 
 		// Update font style checkboxs
-		bool flag_font_style = &prop->font_style != &null_font_style;
+		rbool flag_font_style = &prop->font_style != &null_font_style;
 		m_fontStyleBold.EnableWindow( flag_font_style );
 		m_fontStyleItalic.EnableWindow( flag_font_style );
 		m_fontStyleUnderline.EnableWindow( flag_font_style );
@@ -782,7 +770,7 @@ void RDOStudioOptionsColorsStyles::updateStyleItem()
 		m_fontStyleUnderline.SetCheck( prop->font_style & RDOStyleFont::UNDERLINE );
 
 		// Update FG color combobox
-		bool flag_fg_color = &prop->fg_color != &null_fg_color;
+		rbool flag_fg_color = &prop->fg_color != &null_fg_color;
 		fgColorCB.EnableWindow( flag_fg_color );
 		m_fgColorStatic.EnableWindow( flag_fg_color );
 		m_fgColorButton.EnableWindow( flag_fg_color );
@@ -797,7 +785,7 @@ void RDOStudioOptionsColorsStyles::updateStyleItem()
 		}
 
 		// Update BG color combobox
-		bool flag_bg_color = &prop->bg_color != &null_bg_color;
+		rbool flag_bg_color = &prop->bg_color != &null_bg_color;
 		bgColorCB.EnableWindow( flag_bg_color );
 		m_bgColorStatic.EnableWindow( flag_bg_color );
 		m_bgColorButton.EnableWindow( flag_bg_color );
@@ -812,7 +800,7 @@ void RDOStudioOptionsColorsStyles::updateStyleItem()
 		}
 
 		// Update wordwrap
-		bool flag_wordwrap = type == STYLEObject::source || type == STYLEObject::build || type == STYLEObject::debug || type == STYLEObject::results || type == STYLEObject::find;
+		rbool flag_wordwrap = type == STYLEObject::source || type == STYLEObject::build || type == STYLEObject::debug || type == STYLEObject::results || type == STYLEObject::find;
 		m_wordWrap.ShowWindow( flag_wordwrap ? SW_SHOW : SW_HIDE );
 		m_horzScrollBar.ShowWindow( flag_wordwrap ? SW_SHOW : SW_HIDE );
 		m_wordWrap.SetCheck( prop->object->wordwrap ? 1 : 0 );
@@ -820,20 +808,20 @@ void RDOStudioOptionsColorsStyles::updateStyleItem()
 		OnWordWrapClicked();
 
 		// Update warning
-		bool flag_worning = type == STYLEObject::build;
+		rbool flag_worning = type == STYLEObject::build;
 		m_warning.ShowWindow( flag_worning ? SW_SHOW : SW_HIDE );
 		m_warning.SetCheck( prop->object->warning ? 1 : 0 );
 		OnWordWrapClicked();
 
 		// Update borders
-		bool flag_border = type == STYLEObject::trace;
+		rbool flag_border = type == STYLEObject::trace;
 		m_vertBorder.ShowWindow( flag_border ? SW_SHOW : SW_HIDE );
 		m_vertBorderStatic.ShowWindow( flag_border ? SW_SHOW : SW_HIDE );
 		m_horzBorder.ShowWindow( flag_border ? SW_SHOW : SW_HIDE );
 		m_horzBorderStatic.ShowWindow( flag_border ? SW_SHOW : SW_HIDE );
 
 		// Update fonts and ticks
-		bool flag_fonts_ticks = type == STYLEObject::chart;
+		rbool flag_fonts_ticks = type == STYLEObject::chart;
 		m_title_fontSizeStatic.ShowWindow( flag_fonts_ticks ? SW_SHOW : SW_HIDE );
 		m_leg_fontSizeStatic.ShowWindow( flag_fonts_ticks ? SW_SHOW : SW_HIDE );
 		m_leg_fontSizeCombo.ShowWindow( flag_fonts_ticks ? SW_SHOW : SW_HIDE );
@@ -842,13 +830,13 @@ void RDOStudioOptionsColorsStyles::updateStyleItem()
 		m_tickWidthStatic.ShowWindow( flag_fonts_ticks ? SW_SHOW : SW_HIDE );
 
 		// Update bookmark
-		bool flag_bookmark = type == STYLEObject::source;
+		rbool flag_bookmark = type == STYLEObject::source;
 		m_bookmark.ShowWindow( flag_bookmark ? SW_SHOW : SW_HIDE );
 		m_bookmarkStatic.ShowWindow( flag_bookmark ? SW_SHOW : SW_HIDE );
 		m_bookmark.SetCurSel( prop->object->bookmarkstyle );
 
 		// Update fold
-		bool flag_fold = type == STYLEObject::source;
+		rbool flag_fold = type == STYLEObject::source;
 		m_fold.ShowWindow( flag_fold ? SW_SHOW : SW_HIDE );
 		m_foldStatic.ShowWindow( flag_fold ? SW_SHOW : SW_HIDE );
 		m_commentGroupButton.ShowWindow( flag_fold ? SW_SHOW : SW_HIDE );
@@ -857,7 +845,7 @@ void RDOStudioOptionsColorsStyles::updateStyleItem()
 		OnFoldChanged();
 
 		// Update preview
-		bool flag_preview = type == STYLEObject::all;
+		rbool flag_preview = type == STYLEObject::all;
 		m_previewAs.ShowWindow( flag_preview ? SW_SHOW : SW_HIDE );
 		m_previewAsStatic.ShowWindow( flag_preview ? SW_SHOW : SW_HIDE );
 		setPreviewAsCombo( type );
@@ -1487,32 +1475,32 @@ void RDOStudioOptionsColorsStyles::OnUpdateModify()
 
 	sheet->updateStyles();
 
-	SetModified( *sheet->style_editor.font  != *studioApp.mainFrame->style_editor.font ||
-	             *sheet->style_build.font   != *studioApp.mainFrame->style_build.font ||
-	             *sheet->style_debug.font   != *studioApp.mainFrame->style_debug.font ||
-	             *sheet->style_trace.font   != *studioApp.mainFrame->style_trace.font ||
-	             *sheet->style_results.font != *studioApp.mainFrame->style_results.font ||
-	             *sheet->style_find.font    != *studioApp.mainFrame->style_find.font ||
-				 *sheet->style_chart.font   != *studioApp.mainFrame->style_chart.font ||
-				 *sheet->style_frame.font   != *studioApp.mainFrame->style_frame.font ||
-	             *static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme) != *static_cast<RDOEditorEditTheme*>(studioApp.mainFrame->style_editor.theme) ||
-	             *static_cast<RDOBuildEditTheme*>(sheet->style_build.theme) != *static_cast<RDOBuildEditTheme*>(studioApp.mainFrame->style_build.theme) ||
-	             *static_cast<RDOBaseEditTheme*>(sheet->style_debug.theme) != *static_cast<RDOBaseEditTheme*>(studioApp.mainFrame->style_debug.theme) ||
-	             *static_cast<RDOTracerLogTheme*>(sheet->style_trace.theme) != *static_cast<RDOTracerLogTheme*>(studioApp.mainFrame->style_trace.theme) ||
-	             *static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme) != *static_cast<RDOEditorBaseEditTheme*>(studioApp.mainFrame->style_results.theme) ||
-	             *static_cast<RDOFindEditTheme*>(sheet->style_find.theme) != *static_cast<RDOFindEditTheme*>(studioApp.mainFrame->style_find.theme) ||
-				 *static_cast<RDOStudioChartViewTheme*>(sheet->style_chart.theme) != *static_cast<RDOStudioChartViewTheme*>(studioApp.mainFrame->style_chart.theme) ||
-				 *static_cast<RDOStudioFrameTheme*>(sheet->style_frame.theme) != *static_cast<RDOStudioFrameTheme*>(studioApp.mainFrame->style_frame.theme) ||
-	             *sheet->style_editor.window     != *studioApp.mainFrame->style_editor.window ||
-	             *sheet->style_build.window      != *studioApp.mainFrame->style_build.window ||
-	             *sheet->style_debug.window      != *studioApp.mainFrame->style_debug.window ||
-	             *sheet->style_results.window    != *studioApp.mainFrame->style_results.window ||
-	             *sheet->style_find.window       != *studioApp.mainFrame->style_find.window ||
-	             *sheet->style_trace.borders     != *studioApp.mainFrame->style_trace.borders || 
-				 *sheet->style_chart.fonts_ticks != *studioApp.mainFrame->style_chart.fonts_ticks );
+	SetModified( *sheet->style_editor.font  != *studioApp.m_pMainFrame->style_editor.font ||
+	             *sheet->style_build.font   != *studioApp.m_pMainFrame->style_build.font ||
+	             *sheet->style_debug.font   != *studioApp.m_pMainFrame->style_debug.font ||
+	             *sheet->style_trace.font   != *studioApp.m_pMainFrame->style_trace.font ||
+	             *sheet->style_results.font != *studioApp.m_pMainFrame->style_results.font ||
+	             *sheet->style_find.font    != *studioApp.m_pMainFrame->style_find.font ||
+				 *sheet->style_chart.font   != *studioApp.m_pMainFrame->style_chart.font ||
+				 *sheet->style_frame.font   != *studioApp.m_pMainFrame->style_frame.font ||
+	             *static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme) != *static_cast<RDOEditorEditTheme*>(studioApp.m_pMainFrame->style_editor.theme) ||
+	             *static_cast<RDOBuildEditTheme*>(sheet->style_build.theme) != *static_cast<RDOBuildEditTheme*>(studioApp.m_pMainFrame->style_build.theme) ||
+	             *static_cast<RDOBaseEditTheme*>(sheet->style_debug.theme) != *static_cast<RDOBaseEditTheme*>(studioApp.m_pMainFrame->style_debug.theme) ||
+	             *static_cast<RDOTracerLogTheme*>(sheet->style_trace.theme) != *static_cast<RDOTracerLogTheme*>(studioApp.m_pMainFrame->style_trace.theme) ||
+	             *static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme) != *static_cast<RDOEditorBaseEditTheme*>(studioApp.m_pMainFrame->style_results.theme) ||
+	             *static_cast<RDOFindEditTheme*>(sheet->style_find.theme) != *static_cast<RDOFindEditTheme*>(studioApp.m_pMainFrame->style_find.theme) ||
+				 *static_cast<RDOStudioChartViewTheme*>(sheet->style_chart.theme) != *static_cast<RDOStudioChartViewTheme*>(studioApp.m_pMainFrame->style_chart.theme) ||
+				 *static_cast<RDOStudioFrameTheme*>(sheet->style_frame.theme) != *static_cast<RDOStudioFrameTheme*>(studioApp.m_pMainFrame->style_frame.theme) ||
+	             *sheet->style_editor.window     != *studioApp.m_pMainFrame->style_editor.window ||
+	             *sheet->style_build.window      != *studioApp.m_pMainFrame->style_build.window ||
+	             *sheet->style_debug.window      != *studioApp.m_pMainFrame->style_debug.window ||
+	             *sheet->style_results.window    != *studioApp.m_pMainFrame->style_results.window ||
+	             *sheet->style_find.window       != *studioApp.m_pMainFrame->style_find.window ||
+	             *sheet->style_trace.borders     != *studioApp.m_pMainFrame->style_trace.borders || 
+				 *sheet->style_chart.fonts_ticks != *studioApp.m_pMainFrame->style_chart.fonts_ticks );
 }
 
-void RDOStudioOptionsColorsStyles::loadFontsIntoCombo( bool fixed )
+void RDOStudioOptionsColorsStyles::loadFontsIntoCombo( rbool fixed )
 {
 	if ( isCurrentFixed != fixed ) {
 		m_fontName.ResetContent();
@@ -1609,9 +1597,9 @@ void RDOStudioOptionsColorsStyles::updatePropOfAllObject()
 	if ( it != objects.end() ) {
 		it++;
 		if ( it != objects.end() ) {
-			all_font_name  = (*it)->font_name;
-			all_font_size  = (*it)->font_size;
-			bool use_color = false;
+			all_font_name   = (*it)->font_name;
+			all_font_size   = (*it)->font_size;
+			rbool use_color = false;
 			std::list< STYLEProperty* >::const_iterator prop = (*it)->properties.begin();
 			if ( prop != (*it)->properties.end() ) {
 				all_fg_color = (*prop)->fg_color;
@@ -1619,10 +1607,10 @@ void RDOStudioOptionsColorsStyles::updatePropOfAllObject()
 				use_color    = true;
 			}
 			it++;
-			bool flag_font_name = true;
-			bool flag_font_size = true;
-			bool flag_fg_clor   = true;
-			bool flag_bg_clor   = true;
+			rbool flag_font_name = true;
+			rbool flag_font_size = true;
+			rbool flag_fg_clor   = true;
+			rbool flag_bg_clor   = true;
 			while ( it != objects.end() ) {
 				if ( flag_font_name && (*it)->font_name != all_font_name ) {
 					flag_font_name = false;
@@ -1654,7 +1642,6 @@ void RDOStudioOptionsColorsStyles::updatePropOfAllObject()
 // -------------------- RDOStudioOptionsPlugins
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioOptionsPlugins, CPropertyPage)
-	//{{AFX_MSG_MAP(RDOStudioOptionsPlugins)
 	ON_NOTIFY(LVN_COLUMNCLICK, IDC_PLUGIN_LIST, OnPluginListColumnClick)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_PLUGIN_LIST, OnPluginListSelectChanged)
 	ON_CBN_SELCHANGE(IDC_PLUGIN_RUNMODE_COMBOBOX, OnPluginRunModeComboBoxChanged)
@@ -1664,7 +1651,6 @@ BEGIN_MESSAGE_MAP(RDOStudioOptionsPlugins, CPropertyPage)
 	ON_BN_CLICKED(IDC_PLUGIN_RESTORESTATE_CHECKBOX, OnPluginRestoreStateCheckBoxClicked)
 	ON_WM_TIMER()
 	ON_WM_DESTROY()
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioOptionsPlugins::RDOStudioOptionsPlugins( RDOStudioOptions& _sheet ):
@@ -1677,9 +1663,6 @@ RDOStudioOptionsPlugins::RDOStudioOptionsPlugins( RDOStudioOptions& _sheet ):
 	sortPluginDescriptionAsceding( true ),
 	timer( 0 )
 {
-	//{{AFX_DATA_INIT(RDOStudioOptionsPlugins)
-	//}}AFX_DATA_INIT
-
 	m_psp.dwFlags |= PSP_HASHELP;
 }
 
@@ -1690,7 +1673,6 @@ RDOStudioOptionsPlugins::~RDOStudioOptionsPlugins()
 void RDOStudioOptionsPlugins::DoDataExchange(CDataExchange* pDX) 
 {
 	CPropertyPage::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(RDOStudioOptionsPlugins)
 	DDX_Control(pDX, IDC_PLUGIN_RESTORESTATE_CHECKBOX, m_restoreStateCheckBox);
 	DDX_Control(pDX, IDC_PLUGIN_STOP, m_stopButton);
 	DDX_Control(pDX, IDC_PLUGIN_START, m_startButton);
@@ -1698,7 +1680,6 @@ void RDOStudioOptionsPlugins::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_PLUGIN_RUNMODE_BUTTON, m_runModeButton);
 	DDX_Control(pDX, IDC_PLUGIN_RUNMODE_STATIC, m_runModeStatic);
 	DDX_Control(pDX, IDC_PLUGIN_LIST, m_pluginList);
-	//}}AFX_DATA_MAP
 }
 
 static int CALLBACK ComparePluginName( LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort )
@@ -1817,7 +1798,7 @@ BOOL RDOStudioOptionsPlugins::OnInitDialog()
 		RDOStudioPlugin* plugin = *it;
 		int index = m_pluginList.InsertItem( i, plugin->getName().c_str() );
 		if ( index != -1 ) {
-			std::string version = rdo::format( "%d.%d (build %d)", plugin->getVersionMajor(), plugin->getVersionMinor(), plugin->getVersionBuild() );
+			tstring version = rdo::format( "%d.%d (build %d)", plugin->getVersionMajor(), plugin->getVersionMinor(), plugin->getVersionBuild() );
 			if ( !plugin->getVersionInfo().empty() ) {
 				version += " " + plugin->getVersionInfo();
 			}
@@ -1877,7 +1858,7 @@ void RDOStudioOptionsPlugins::OnPluginListSelectChanged( NMHDR* pNMHDR, LRESULT*
 {
 	NM_LISTVIEW* pNMListView = reinterpret_cast<NM_LISTVIEW*>(pNMHDR);
 
-	bool useItem = true;
+	rbool useItem = true;
 	if ( !(pNMListView->uChanged & LVIF_STATE) ) {
 		useItem = false;
 	}
@@ -1886,7 +1867,7 @@ void RDOStudioOptionsPlugins::OnPluginListSelectChanged( NMHDR* pNMHDR, LRESULT*
 		useItem = false;
 	}
 
-	bool havePlugin = false;
+	rbool havePlugin = false;
 	if ( useItem ) {
 		RDOStudioPlugin* plugin = reinterpret_cast<RDOStudioPlugin*>(pNMListView->lParam);
 		if ( plugin ) {
@@ -1927,7 +1908,7 @@ void RDOStudioOptionsPlugins::OnPluginListColumnClick( NMHDR* pNMHDR, LRESULT* p
 
 void RDOStudioOptionsPlugins::updateRunModeInGrid( const RDOStudioPlugin* plugin, const int index )
 {
-	std::string runMode;
+	tstring runMode;
 	if ( plugin->getRunMode() == rdoPlugin::prmStudioStartUp ) {
 		runMode = rdo::format( IDS_PLUGIN_RUNMODE_STUDIOSTARTUP );
 	} else if ( plugin->getRunMode() == rdoPlugin::prmModelStartUp ) {
@@ -1950,8 +1931,8 @@ void RDOStudioOptionsPlugins::updateControls( const RDOStudioPlugin* plugin )
 		m_runModeComboBox.EnableWindow( true );
 		m_runModeButton.EnableWindow( plugin->getRunMode() != plugin->getDefaultRunMode() );
 		m_runModeComboBox.SetCurSel( plugin->getRunMode() );
-		bool startPlugin = plugin->getState() == rdoPlugin::psStoped && (plugin->getRunMode() == rdoPlugin::prmNoAuto || plugin->getRunMode() == rdoPlugin::prmStudioStartUp || (plugin->getRunMode() == rdoPlugin::prmModelStartUp && model->isRunning()) );
-		bool stopPlugin  = plugin->getState() == rdoPlugin::psActive && (plugin->getRunMode() == rdoPlugin::prmNoAuto || plugin->getRunMode() == rdoPlugin::prmStudioStartUp || (plugin->getRunMode() == rdoPlugin::prmModelStartUp && model->isRunning()) );
+		rbool startPlugin = plugin->getState() == rdoPlugin::psStoped && (plugin->getRunMode() == rdoPlugin::prmNoAuto || plugin->getRunMode() == rdoPlugin::prmStudioStartUp || (plugin->getRunMode() == rdoPlugin::prmModelStartUp && model->isRunning()) );
+		rbool stopPlugin  = plugin->getState() == rdoPlugin::psActive && (plugin->getRunMode() == rdoPlugin::prmNoAuto || plugin->getRunMode() == rdoPlugin::prmStudioStartUp || (plugin->getRunMode() == rdoPlugin::prmModelStartUp && model->isRunning()) );
 		m_startButton.EnableWindow( startPlugin );
 		m_stopButton.EnableWindow( stopPlugin );
 		m_restoreStateCheckBox.EnableWindow( plugin->getRunMode() == rdoPlugin::prmNoAuto );
@@ -2047,7 +2028,7 @@ void RDOStudioOptionsPlugins::OnTimer( UINT nIDEvent )
 		for ( int i = 0; i < cnt; i++ ) {
 			RDOStudioPlugin* plugin = reinterpret_cast<RDOStudioPlugin*>(m_pluginList.GetItemData( i ));
 			if ( plugin ) {
-				std::string state = rdo::format( plugin->getState() == rdoPlugin::psStoped ? IDS_PLUGIN_STATE_STOPED : IDS_PLUGIN_STATE_ACTIVE );
+				tstring state = rdo::format( plugin->getState() == rdoPlugin::psStoped ? IDS_PLUGIN_STATE_STOPED : IDS_PLUGIN_STATE_ACTIVE );
 				if ( m_pluginList.GetItemText( i, 3 ).Compare( state.c_str() ) ) {
 					updateStateInGrid( plugin, i );
 				}
@@ -2069,9 +2050,7 @@ void RDOStudioOptionsPlugins::OnTimer( UINT nIDEvent )
 // -------------------- RDOStudioOptions
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioOptions, CPropertySheet)
-	//{{AFX_MSG_MAP(RDOStudioOptions)
 	ON_WM_HELPINFO()
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioOptions::RDOStudioOptions():
@@ -2094,14 +2073,14 @@ RDOStudioOptions::RDOStudioOptions():
 	style_chart.init();
 	style_frame.init();
 
-	style_editor  = studioApp.mainFrame->style_editor;
-	style_build   = studioApp.mainFrame->style_build;
-	style_debug   = studioApp.mainFrame->style_debug;
-	style_trace   = studioApp.mainFrame->style_trace;
-	style_results = studioApp.mainFrame->style_results;
-	style_find    = studioApp.mainFrame->style_find;
-	style_chart   = studioApp.mainFrame->style_chart;
-	style_frame   = studioApp.mainFrame->style_frame;
+	style_editor  = studioApp.m_pMainFrame->style_editor;
+	style_build   = studioApp.m_pMainFrame->style_build;
+	style_debug   = studioApp.m_pMainFrame->style_debug;
+	style_trace   = studioApp.m_pMainFrame->style_trace;
+	style_results = studioApp.m_pMainFrame->style_results;
+	style_find    = studioApp.m_pMainFrame->style_find;
+	style_chart   = studioApp.m_pMainFrame->style_chart;
+	style_frame   = studioApp.m_pMainFrame->style_frame;
 
 	general = new RDOStudioOptionsGeneral( *this );
 	editor  = new RDOStudioOptionsEditor( *this );
@@ -2168,15 +2147,15 @@ void RDOStudioOptions::updateStyles()
 
 void RDOStudioOptions::apply() const
 {
-	studioApp.mainFrame->style_editor  = style_editor;
-	studioApp.mainFrame->style_build   = style_build;
-	studioApp.mainFrame->style_debug   = style_debug;
-	studioApp.mainFrame->style_trace   = style_trace;
-	studioApp.mainFrame->style_results = style_results;
-	studioApp.mainFrame->style_find    = style_find;
-	studioApp.mainFrame->style_chart   = style_chart;
-	studioApp.mainFrame->style_frame   = style_frame;
-	studioApp.mainFrame->updateAllStyles();
+	studioApp.m_pMainFrame->style_editor  = style_editor;
+	studioApp.m_pMainFrame->style_build   = style_build;
+	studioApp.m_pMainFrame->style_debug   = style_debug;
+	studioApp.m_pMainFrame->style_trace   = style_trace;
+	studioApp.m_pMainFrame->style_results = style_results;
+	studioApp.m_pMainFrame->style_find    = style_find;
+	studioApp.m_pMainFrame->style_chart   = style_chart;
+	studioApp.m_pMainFrame->style_frame   = style_frame;
+	studioApp.m_pMainFrame->updateAllStyles();
 	studioApp.setFileAssociationSetup( general->m_setup ? true : false );
 	studioApp.setFileAssociationCheckInFuture( general->m_checkInFuture ? true : false );
 	studioApp.setOpenLastProject( general->m_openLastProject ? true : false );
@@ -2197,7 +2176,7 @@ int CALLBACK RDOStudioOptions::AddContextHelpProc(HWND hwnd, UINT message, LPARA
 
 void RDOStudioOptions::onHelpButton()
 {
-	std::string filename = studioApp.getFullHelpFileName();
+	tstring filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return;
 
 	CPropertyPage* page = GetActivePage( );
@@ -2217,7 +2196,7 @@ void RDOStudioOptions::onHelpButton()
 
 BOOL RDOStudioOptions::OnHelpInfo(HELPINFO* pHelpInfo) 
 {
-	std::string filename = studioApp.getFullHelpFileName();
+	tstring filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return TRUE;
 
 	if ( pHelpInfo->iContextType == HELPINFO_WINDOW )

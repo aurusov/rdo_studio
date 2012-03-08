@@ -1,9 +1,22 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdotracerlogctrl.cpp
+  \author    Захаров Павел
+  \date      12.03.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracerlogctrl.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/htmlhelp.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -21,7 +34,6 @@ static const UINT FIND_REPLASE_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 // ON_UPDATE_COMMAND_UI сделано
 
 BEGIN_MESSAGE_MAP( RDOTracerLogCtrl, RDOLogCtrl )
-	//{{AFX_MSG_MAP(RDOTracerLogCtrl)
 	ON_WM_CREATE()
 	ON_COMMAND( ID_SEARCH_FIND, OnFind )
 	ON_COMMAND( ID_SEARCH_FIND_NEXT    , OnFindNext )
@@ -35,7 +47,6 @@ BEGIN_MESSAGE_MAP( RDOTracerLogCtrl, RDOLogCtrl )
 	ON_WM_INITMENUPOPUP()
 	ON_WM_CONTEXTMENU()
 	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
-	//}}AFX_MSG_MAP
 	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR , OnUpdateCoordStatusBar )
 	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar )
 END_MESSAGE_MAP()
@@ -43,7 +54,7 @@ END_MESSAGE_MAP()
 IMPLEMENT_DYNCREATE( RDOTracerLogCtrl, RDOLogCtrl )
 
 RDOTracerLogCtrl::RDOTracerLogCtrl() :
-	RDOLogCtrl( &studioApp.mainFrame->style_trace ),
+	RDOLogCtrl( &studioApp.m_pMainFrame->style_trace ),
 	addingSubitems( false ),
 	bShowMenu( true )
 {
@@ -62,7 +73,7 @@ int RDOTracerLogCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
 	
 	BOOL maximized;
-	studioApp.mainFrame->MDIGetActive( &maximized );
+	studioApp.m_pMainFrame->MDIGetActive( &maximized );
 	int delta = maximized ? 1 : 0;
 
 	appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );
@@ -75,11 +86,11 @@ int RDOTracerLogCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 }
 
 
-bool RDOTracerLogCtrl::getItemColors( const int index, RDOLogColorPair* &colors ) const
+rbool RDOTracerLogCtrl::getItemColors( const int index, RDOLogColorPair* &colors ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
-	bool res = true;
+	rbool res = true;
 	RDOColorMap::const_iterator it = subitemColors.find( index );
 	if( it != subitemColors.end() ) {
 		colors = (*it).second;
@@ -91,7 +102,7 @@ bool RDOTracerLogCtrl::getItemColors( const int index, RDOLogColorPair* &colors 
 	return res;
 }
 
-void RDOTracerLogCtrl::showFindError( std::string& findStr )
+void RDOTracerLogCtrl::showFindError( tstring& findStr )
 {
 	MessageBox( rdo::format( ID_MSG_CANTFIND, findStr.c_str() ).c_str(), NULL, MB_OK | MB_ICONWARNING );
 	SetFocus();
@@ -107,14 +118,14 @@ void RDOTracerLogCtrl::clear()
 	mutex.Unlock();
 }
 
-void RDOTracerLogCtrl::addStringToLog( const std::string logStr )
+void RDOTracerLogCtrl::addStringToLog( const tstring logStr )
 {
 	mutex.Lock();
 	
 	if ( !logStr.empty() ) {
 		int posstart = logStr.find_first_not_of( ' ' );
 		int posend = logStr.find_first_of( ' ', posstart );
-		std::string key = logStr.substr( posstart, posend - posstart );
+		tstring key = logStr.substr( posstart, posend - posstart );
 		rdo::trim( key );
 
 		RDOLogColorPair* colors = NULL;
@@ -136,7 +147,7 @@ void RDOTracerLogCtrl::addStringToLog( const std::string logStr )
 	mutex.Unlock();
 }
 
-void RDOTracerLogCtrl::setStyle( RDOTracerLogStyle* style, const bool needRedraw )
+void RDOTracerLogCtrl::setStyle( RDOTracerLogStyle* style, const rbool needRedraw )
 {
 	logStyle = style;
 	RDOLogCtrl::setStyle( style, needRedraw );
@@ -152,7 +163,7 @@ void RDOTracerLogCtrl::OnFind()
 	firstFoundLine = -1;
 	CFindReplaceDialog* pDlg = new CFindReplaceDialog();
 	DWORD flag = (bSearchDown ? FR_DOWN : 0) | (bMatchCase ? FR_MATCHCASE : 0) | (bMatchWholeWord ? FR_WHOLEWORD : 0);
-	std::string str;
+	tstring str;
 	getSelected( str );
 	pDlg->Create( true, str.c_str(), NULL, flag, this );
 }
@@ -188,9 +199,9 @@ LRESULT RDOTracerLogCtrl::OnFindReplaceMsg( WPARAM wParam, LPARAM lParam )
 		SetFocus();
 		return 0;
 	} else {
-		bool newSearchDown     = pDialog->SearchDown() ? true : false;
-		bool newMatchCase      = pDialog->MatchCase() ? true : false;
-		bool newMatchWholeWord = pDialog->MatchWholeWord() ? true : false;
+		rbool newSearchDown     = pDialog->SearchDown() ? true : false;
+		rbool newMatchCase      = pDialog->MatchCase() ? true : false;
+		rbool newMatchWholeWord = pDialog->MatchWholeWord() ? true : false;
 		if ( newSearchDown != bSearchDown || newMatchCase != bMatchCase || newMatchWholeWord != bMatchWholeWord ) {
 			firstFoundLine = -1;
 		}
@@ -239,14 +250,14 @@ void RDOTracerLogCtrl::OnUpdateFind( CCmdUI* pCmdUI )
 
 void RDOTracerLogCtrl::OnHelpKeyword()
 {
-	std::string filename = studioApp.getFullHelpFileName();
+	tstring filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return;
 
-	std::string line;
+	tstring line;
 
 	getSelected( line );
 
-	std::string keyword = "trc";
+	tstring keyword = "trc";
 	if ( !line.empty() ) {
 		int posstart = line.find_first_not_of( ' ' );
 		int posend = line.find_first_of( ' ', posstart );

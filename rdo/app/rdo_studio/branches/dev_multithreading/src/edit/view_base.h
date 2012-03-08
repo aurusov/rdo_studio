@@ -1,11 +1,19 @@
-#ifndef RDOSTUDIOEDITBASEVIEW_H
-#define RDOSTUDIOEDITBASEVIEW_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      app/rdo_studio_mfc/src/edit/view_base.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      20.02.2003
+  \brief     
+  \indent    4T
+*/
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
+#ifndef _RDO_STUDIO_MFC_EDIT_VIEW_BASE_H_
+#define _RDO_STUDIO_MFC_EDIT_VIEW_BASE_H_
 
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/view.h"
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioEditBaseView
@@ -36,14 +44,14 @@ public:
 
 	CMenu popupMenu;
 
-	std::string buf1;
-	std::string buf2;
-	std::string buf3;
-	std::string buf4;
-	bool resetBuf1;
-	bool resetBuf2;
-	bool resetBuf3;
-	bool resetBuf4;
+	tstring buf1;
+	tstring buf2;
+	tstring buf3;
+	tstring buf4;
+	rbool resetBuf1;
+	rbool resetBuf2;
+	rbool resetBuf3;
+	rbool resetBuf4;
 	int  currentBuffer;
 	void restartBufTimer( const int bufIndex );
 
@@ -52,23 +60,18 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
-public:
-	//{{AFX_VIRTUAL(RDOStudioEditBaseView)
-	public:
-	virtual void OnDraw(CDC* pDC);  // overridden to draw this view
+protected:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	protected:
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+
+private:
+	virtual void OnDraw(CDC* pDC);  // overridden to draw this view
 	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
 	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
 	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
-	//}}AFX_VIRTUAL
 
-protected:
-	//{{AFX_MSG(RDOStudioEditBaseView)
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnDestroy();
 	afx_msg void OnTimer(UINT nIDEvent);
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
 
@@ -77,6 +80,4 @@ inline RDOStudioEditBaseDoc* RDOStudioEditBaseView::GetDocument()
    { return (RDOStudioEditBaseDoc*)m_pDocument; }
 #endif
 
-//{{AFX_INSERT_LOCATION}}
-
-#endif // RDOSTUDIOEDITBASEVIEW_H
+#endif // _RDO_STUDIO_MFC_EDIT_VIEW_BASE_H_

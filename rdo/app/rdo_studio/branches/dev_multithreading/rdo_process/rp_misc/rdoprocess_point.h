@@ -21,10 +21,10 @@ public:
 		y = point.y;
 		return *this;
 	}
-	bool operator== ( const rp::point& point ) const {
+	rbool operator== ( const rp::point& point ) const {
 		return fabs(x - point.x) < 1.0 && fabs(y - point.y) < 1.0;
 	}
-	bool softCompare( const rp::point& point ) const {
+	rbool softCompare( const rp::point& point ) const {
 		return fabs(x - point.x) < 2.0 && fabs(y - point.y) < 2.0;
 	}
 //	operator CPoint() { return CPoint( x, y ); }

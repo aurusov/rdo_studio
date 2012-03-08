@@ -11,7 +11,7 @@ namespace rp {
 
 double math::pi = 3.14159265358979323846;
 
-bool math::getPlanarData( const rp::point& p1, const rp::point& p2, double& len, double& cos_a, double& sin_a )
+rbool math::getPlanarData( const rp::point& p1, const rp::point& p2, double& len, double& cos_a, double& sin_a )
 {
 	len = math::getLength( p1, p2 );
 	if ( len != -1 ) {
@@ -28,7 +28,7 @@ bool math::getPlanarData( const rp::point& p1, const rp::point& p2, double& len,
 	}
 }
 
-bool math::getPlanarData( const rp::point& p1, const rp::point& p2, const rp::point& p3, double& cos_b, double& sin_b, double& koef )
+rbool math::getPlanarData( const rp::point& p1, const rp::point& p2, const rp::point& p3, double& cos_b, double& sin_b, double& koef )
 {
 	double len1 = math::getLength( p1, p2 );
 	double len2 = math::getLength( p2, p3 );
@@ -68,9 +68,9 @@ bool math::getPlanarData( const rp::point& p1, const rp::point& p2, const rp::po
 	}
 }
 
-double math::getDistance( const rp::point& line_point1, const rp::point& line_point2, const rp::point& point, bool* inside )
+double math::getDistance( const rp::point& line_point1, const rp::point& line_point2, const rp::point& point, rbool* inside )
 {
-	bool null;
+	rbool null;
 	rp::point p = math::getPerpendicular( line_point1, line_point2, point, null, inside );
 	if ( !null ) return math::getLength( p, point );
 	return -1.0;
@@ -113,7 +113,7 @@ double math::getAlpha( const rp::point& p1, const rp::point& p2_center, const rp
 	return 0;
 }
 
-rp::point math::getPerpendicular( const rp::point& line_point1, const rp::point& line_point2, const rp::point& point, bool& null, bool* inside )
+rp::point math::getPerpendicular( const rp::point& line_point1, const rp::point& line_point2, const rp::point& point, rbool& null, rbool* inside )
 {
 	double l1 = line_point2.x - line_point1.x;
 	double l2 = line_point2.y - line_point1.y;

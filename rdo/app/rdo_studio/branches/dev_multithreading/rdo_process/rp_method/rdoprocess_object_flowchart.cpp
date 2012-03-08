@@ -206,9 +206,9 @@ void RPObjectFlowChart::notify( RPObject* from, UINT message, void* param )
 	}
 }
 
-bool RPObjectFlowChart::setName( const rp::string& value )
+rbool RPObjectFlowChart::setName( const rp::string& value )
 {
-	bool result = RPObjectMatrix::setName( value );
+	rbool result = RPObjectMatrix::setName( value );
 	if ( result ) {
 		flowchart->setName( value );
 	}
@@ -384,7 +384,7 @@ void RPObjectFlowChart::update()
 	}
 }
 
-void RPObjectFlowChart::setActive( bool value )
+void RPObjectFlowChart::setActive( rbool value )
 {
 	if ( value ) setSelected( true );
 	rpMethod::project->setActiveFlowChart( value ? this : NULL );
@@ -414,12 +414,12 @@ RPProject::Cursor RPObjectFlowChart::getCursor( const rp::point& global_chart_po
 	return RPProject::cursor_flow_select;
 }
 
-bool RPObjectFlowChart::pointInPolygon( const rp::point& global_chart_pos )
+rbool RPObjectFlowChart::pointInPolygon( const rp::point& global_chart_pos )
 {
 	return global_chart_pos.x >= 0 && global_chart_pos.y >= 0 && global_chart_pos.x <= pixmap_w_show && global_chart_pos.y <= pixmap_h_show;
 }
 
-rp::rect RPObjectFlowChart::getBoundingRect( bool global ) const
+rp::rect RPObjectFlowChart::getBoundingRect( rbool global ) const
 {
 	UNUSED(global);
 
@@ -718,7 +718,7 @@ void RPObjectFlowChart::snapToGrid( RPObjectMatrix* shape )
 		}
 		int c_x = ((center.x - paper_border_w) / grid_step);
 		int c_y = ((center.y - paper_border_h) / grid_step);
-		bool makeNewGrid = false;
+		rbool makeNewGrid = false;
 		const int point_cnt = 4;
 		std::vector< CPoint > c_pa;
 		c_pa.resize( point_cnt );
@@ -841,7 +841,7 @@ void RPObjectFlowChart::onLButtonDown( UINT nFlags, CPoint local_win_pos )
 	}
 	if ( one_object ) {
 		// Нашли фигуру
-		bool selected = one_object->isSelected();
+		rbool selected = one_object->isSelected();
 		if ( rpMethod::project->getFlowState() == RPProject::flow_select || rpMethod::project->getFlowState() == RPProject::flow_rotate ) {
 			one_object->onLButtonDown( nFlags, CPoint( static_cast<int>(global_chart_pos.x), static_cast<int>(global_chart_pos.y) ) );
 		}

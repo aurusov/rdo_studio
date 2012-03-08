@@ -1,9 +1,22 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      app/rdo_studio_mfc/src/chart/options.cpp
+  \author    Захаров Павел
+  \date      31.03.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/chart/options.h"
 #include "app/rdo_studio_mfc/src/chart/view.h"
 #include "app/rdo_studio_mfc/src/chart/document.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/htmlhelp.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -19,26 +32,21 @@ static char THIS_FILE[] = __FILE__;
 // -------------------- RDOStudioChartOptionsChart
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioChartOptionsChart, CPropertyPage)
-	//{{AFX_MSG_MAP(RDOStudioChartOptionsChart)
 	ON_EN_CHANGE(IDC_CHART_TITLE_EDIT, OnUpdateModify)
 	ON_BN_CLICKED(IDC_DRAW_LEGEND_CHECK, OnUpdateModify)
 	ON_CBN_SELCHANGE(IDC_AXIS_SERIES, OnUpdateModify)
 	ON_EN_CHANGE(IDC_IDC_VAL_COUNT_Y_EDIT, OnUpdateModify)
 	ON_EN_CHANGE(IDC_IDC_VAL_COUNT_X_EDIT, OnUpdateModify)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioChartOptionsChart::RDOStudioChartOptionsChart( RDOStudioChartOptions& _sheet ):
 	CPropertyPage( IDD ),
 	sheet( &_sheet )
 {
-
-	//{{AFX_DATA_INIT(RDOStudioChartOptionsChart)
 	m_ValCountX = sheet->view->valueCountX;
 	m_ValCountY = sheet->view->valueCountY;
 	m_ChartTitle = sheet->view->GetDocument()->getTitle().c_str();
 	m_AxisSerie = -1;
-	//}}AFX_DATA_INIT
 
 	m_psp.dwFlags |= PSP_HASHELP;
 }
@@ -51,14 +59,12 @@ void RDOStudioChartOptionsChart::DoDataExchange(CDataExchange* pDX)
 {
 	CPropertyPage::DoDataExchange(pDX);
 
-	//{{AFX_DATA_MAP(RDOStudioChartOptionsChart)
 	DDX_Control(pDX, IDC_AXIS_SERIES, m_AxisSerieCombo);
 	DDX_Control(pDX, IDC_DRAW_LEGEND_CHECK, m_DrawLegend);
 	DDX_Text(pDX, IDC_IDC_VAL_COUNT_X_EDIT, m_ValCountX);
 	DDX_Text(pDX, IDC_IDC_VAL_COUNT_Y_EDIT, m_ValCountY);
 	DDX_Text(pDX, IDC_CHART_TITLE_EDIT, m_ChartTitle);
 	DDX_CBIndex(pDX, IDC_AXIS_SERIES, m_AxisSerie);
-	//}}AFX_DATA_MAP
 }
 
 BOOL RDOStudioChartOptionsChart::OnInitDialog()
@@ -84,7 +90,7 @@ void RDOStudioChartOptionsChart::OnOK()
 	CPropertyPage::OnOK();
 }
 
-bool RDOStudioChartOptionsChart::checkValues() const
+rbool RDOStudioChartOptionsChart::checkValues() const
 {
 	int valCount_Y = GetDlgItemInt(IDC_IDC_VAL_COUNT_Y_EDIT);
 	CEdit* edit_Y = (CEdit*) GetDlgItem(IDC_IDC_VAL_COUNT_Y_EDIT);
@@ -164,7 +170,7 @@ void RDOStudioChartOptionsChart::OnUpdateModify()
 	UpdateData();
 	
 	RDOStudioChartView* view = sheet->view;
-	bool legend = m_DrawLegend.GetCheck() ? true : false;
+	rbool legend = m_DrawLegend.GetCheck() ? true : false;
 
 	SetModified( legend != view->needDrawLegend || m_ValCountX != view->valueCountX || m_ValCountY != view->valueCountY || m_ChartTitle != view->GetDocument()->getTitle().c_str() || m_AxisSerie != view->GetDocument()->getSerieIndex( view->yAxis ) );
 }
@@ -175,7 +181,7 @@ void RDOStudioChartOptionsChart::apply() const
 		sheet->view->yAxis = sheet->view->GetDocument()->series.at( m_AxisSerie );
 	else
 		sheet->view->yAxis = NULL;
-	bool legend = m_DrawLegend.GetCheck() ? true : false;
+	rbool legend = m_DrawLegend.GetCheck() ? true : false;
 	sheet->view->needDrawLegend = legend;
 	sheet->view->valueCountX = m_ValCountX;
 	sheet->view->valueCountY = m_ValCountY;
@@ -186,7 +192,6 @@ void RDOStudioChartOptionsChart::apply() const
 // -------------------- RDOStudioChartOptionsSeries
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioChartOptionsSeries, CPropertyPage)
-	//{{AFX_MSG_MAP(RDOStudioChartOptionsSeries)
 	ON_EN_CHANGE(IDC_SERIE_TITLE_EDIT, OnUpdateModify)
 	ON_BN_CLICKED(IDC_COLOR_BUTTON, OnColorButton)
 	ON_CBN_SELCHANGE(IDC_SERIES_COMBO, OnSelchangeSeriesCombo)
@@ -196,7 +201,6 @@ BEGIN_MESSAGE_MAP(RDOStudioChartOptionsSeries, CPropertyPage)
 	ON_EN_CHANGE(IDC_MARKER_SIZE_EDIT, OnUpdateModify)
 	ON_BN_CLICKED(IDC_LEGEND_CHECK, OnUpdateModify)
 	ON_BN_CLICKED(IDC_TRANSP_MARKER_CHECK, OnUpdateModify)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioChartOptionsSeries::RDOStudioChartOptionsSeries( RDOStudioChartOptions& _sheet ):
@@ -204,10 +208,7 @@ RDOStudioChartOptionsSeries::RDOStudioChartOptionsSeries( RDOStudioChartOptions&
 	sheet( &_sheet ),
 	serie( NULL )
 {
-
-	//{{AFX_DATA_INIT(RDOStudioChartOptionsSeries)
 	m_sizeMarker = 2;
-	//}}AFX_DATA_INIT
 
 	m_psp.dwFlags |= PSP_HASHELP;
 }
@@ -216,15 +217,15 @@ RDOStudioChartOptionsSeries::~RDOStudioChartOptionsSeries()
 {
 }
 
-bool RDOStudioChartOptionsSeries::getModified() const
+rbool RDOStudioChartOptionsSeries::getModified() const
 {
-	bool res = false;
+	rbool res = false;
 	if ( serie ) {
 		CString title;
 		m_SerieTitle.GetWindowText( title );
-		bool marker = m_DrawMarker.GetCheck() ? true : false;
-		bool legend = m_DrawInLegend.GetCheck() ? true : false;
-		bool transp = m_TranspMarker.GetCheck() ? true : false;
+		rbool marker = m_DrawMarker.GetCheck() ? true : false;
+		rbool legend = m_DrawInLegend.GetCheck() ? true : false;
+		rbool transp = m_TranspMarker.GetCheck() ? true : false;
 		res = title != serie->docSerieTitle.c_str() || ColorCB.getCurrentColor() != serie->color || m_Marker.GetCurSel() != serie->marker || marker != serie->needDrawMarker || m_sizeMarker != serie->marker_size || legend != serie->showInLegend || transp != serie->transparentMarker;
 	}
 	return res;
@@ -234,7 +235,6 @@ void RDOStudioChartOptionsSeries::DoDataExchange(CDataExchange* pDX)
 {
 	CPropertyPage::DoDataExchange(pDX);
 
-	//{{AFX_DATA_MAP(RDOStudioChartOptionsSeries)
 	DDX_Control(pDX, IDC_TRANSP_MARKER_CHECK, m_TranspMarker);
 	DDX_Control(pDX, IDC_SERIES_COMBO, m_SerieCombo);
 	DDX_Control(pDX, IDC_LEGEND_CHECK, m_DrawInLegend);
@@ -243,7 +243,6 @@ void RDOStudioChartOptionsSeries::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_MARKER_COMBO, m_Marker);
 	DDX_Control(pDX, IDC_SERIE_TITLE_EDIT, m_SerieTitle);
 	DDX_Text(pDX, IDC_MARKER_SIZE_EDIT, m_sizeMarker);
-	//}}AFX_DATA_MAP
 
 	DDX_Control( pDX, IDC_COLOR_COMBO, ColorCB );
 }
@@ -283,7 +282,7 @@ BOOL RDOStudioChartOptionsSeries::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT
 	return CPropertyPage::OnNotify(wParam, lParam, pResult);
 }
 
-bool RDOStudioChartOptionsSeries::checkValues() const
+rbool RDOStudioChartOptionsSeries::checkValues() const
 {
 	int marker_size = GetDlgItemInt(IDC_MARKER_SIZE_EDIT);
 	CEdit* edit_marker_size = (CEdit*) GetDlgItem(IDC_MARKER_SIZE_EDIT);
@@ -340,12 +339,12 @@ void RDOStudioChartOptionsSeries::apply() const
 		serie->docSerieTitle = title;
 		serie->color = ColorCB.getCurrentColor();
 		serie->marker = static_cast<RDOTracerSerieMarker>(m_Marker.GetCurSel());
-		bool marker = m_DrawMarker.GetCheck() ? true : false;
+		rbool marker = m_DrawMarker.GetCheck() ? true : false;
 		serie->needDrawMarker = marker;
 		serie->marker_size = m_sizeMarker;
-		bool legend = m_DrawInLegend.GetCheck() ? true : false;
+		rbool legend = m_DrawInLegend.GetCheck() ? true : false;
 		serie->showInLegend = legend;
-		bool transp = m_TranspMarker.GetCheck() ? true : false;
+		rbool transp = m_TranspMarker.GetCheck() ? true : false;
 		serie->transparentMarker = transp;
 	}
 }
@@ -371,7 +370,7 @@ void RDOStudioChartOptionsSeries::OnSelchangeSeriesCombo()
 		return;
 	}
 	int ser = m_SerieCombo.GetCurSel();
-	bool enable = ser != -1;
+	rbool enable = ser != -1;
 	m_SerieTitle.EnableWindow( enable );
 	ColorCB.EnableWindow( enable );
 	m_Marker.EnableWindow( enable );
@@ -382,7 +381,7 @@ void RDOStudioChartOptionsSeries::OnSelchangeSeriesCombo()
 	if ( enable ) {
 		if ( serie && getModified() ) {
 			int res = AfxGetMainWnd()->MessageBox( rdo::format( IDS_CHART_OPTIONS_APPLY ).c_str(), NULL, MB_ICONQUESTION | MB_YESNOCANCEL );
-			bool continue_flag = true;  
+			rbool continue_flag = true;  
 			switch ( res ) {
 				case IDYES   : sheet->apply(); break;
 				case IDNO    : restoreValues(); break;
@@ -414,9 +413,7 @@ void RDOStudioChartOptionsSeries::OnColorButton()
 // -------------------- RDOStudioChartOptions
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP(RDOStudioChartOptions, CPropertySheet)
-	//{{AFX_MSG_MAP(RDOStudioChartOptions)
 	ON_WM_HELPINFO()
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioChartOptions::RDOStudioChartOptions( RDOStudioChartView* _view ):
@@ -479,7 +476,7 @@ void RDOStudioChartOptions::onHelpButton()
 
 BOOL RDOStudioChartOptions::OnHelpInfo(HELPINFO* pHelpInfo) 
 {
-	std::string filename = studioApp.getFullHelpFileName();
+	tstring filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return TRUE;
 
 	if ( pHelpInfo->iContextType == HELPINFO_WINDOW )

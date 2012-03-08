@@ -1,10 +1,6 @@
 #ifndef RDO_PROCESS_MESSAGES_H
 #define RDO_PROCESS_MESSAGES_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_object.h"
 #include "utils/rdodebug.h"
 
@@ -23,7 +19,7 @@ public:
 	enum Messages {
 		RP_OBJ_BEFOREDELETE = 0,   // from - удаляемый объект                        / param не используется
 		RP_OBJ_NAMECHANGED,        // from - объект, у которого сменилось имя        / param не используется
-		RP_OBJ_SELCHANGED,         // from - объект, у которого изменилось выделение / param = bool*
+		RP_OBJ_SELCHANGED,         // from - объект, у которого изменилось выделение / param = rbool*
 		RP_FLOWSTATE_CHANGED       // from - указатель но проект                     / param = RPProject::FlowState*
 	};
 

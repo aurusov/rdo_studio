@@ -46,9 +46,9 @@ RPMethodPlugin::~RPMethodPlugin()
 	}
 }
 
-bool RPMethodPlugin::isMethod( const std::string& file_name )
+rbool RPMethodPlugin::isMethod( CREF(tstring) file_name )
 {
-	bool res = false;
+	rbool res = false;
 	HMODULE local_lib = ::LoadLibrary( file_name.c_str() );
 	if ( local_lib ) {
 		rpMethod::PFunRegisterMethod registerMethod = reinterpret_cast<rpMethod::PFunRegisterMethod>(::GetProcAddress( local_lib, "registerMethod" ));
@@ -80,7 +80,7 @@ RPMethodManager::~RPMethodManager()
 void RPMethodManager::init()
 {
 #ifdef RDO_METHOD_DLL
-	std::string path = "";
+	tstring path = "";
 	TCHAR szExeName[ MAX_PATH + 1 ];
 	if ( ::GetModuleFileName( NULL, szExeName, MAX_PATH ) ) {
 		path = rp::extractFilePath( szExeName );
@@ -112,7 +112,7 @@ static int CALLBACK BlocksCompareProc( LPARAM lParam1, LPARAM lParam2, LPARAM lP
 }
 
 #ifdef RDO_METHOD_DLL
-void RPMethodManager::enumPlugins( const std::string& mask )
+void RPMethodManager::enumPlugins( CREF(tstring) mask )
 {
 	CFileFind finder;
 	if ( finder.FindFile( mask.c_str() ) ) {
@@ -120,13 +120,13 @@ void RPMethodManager::enumPlugins( const std::string& mask )
 		while ( flag ) {
 			flag = finder.FindNextFile();
 			if ( finder.IsDirectory() && !finder.IsDots() ) {
-				std::string subDir = finder.GetFilePath();
+				tstring subDir = finder.GetFilePath();
 				subDir += "\\*.*";
 				enumPlugins( subDir );
 			} else if ( !finder.IsDots() ) {
-				std::string fullname = finder.GetFilePath();
+				tstring fullname = finder.GetFilePath();
 				if ( fullname.rfind( ".dll" ) == fullname.length() - 4 ) {
-					std::string modulName = finder.GetFilePath();
+					tstring modulName = finder.GetFilePath();
 					if ( RPMethodPlugin::isMethod( modulName ) ) {
 						RPMethodPlugin* plugin = new RPMethodPlugin( modulName );
 						methods.push_back( plugin );
@@ -134,7 +134,7 @@ void RPMethodManager::enumPlugins( const std::string& mask )
 							plugin->method->setPixmap( new RPPixmapMFC( IDB_FLOWCHART_DEFAULT, RGB(0xFF,0xFF,0xFF) ) );
 						}
 						CListCtrl* listctrl = new CListCtrl();
-						listctrl->Create( WS_CHILD | LVS_SORTASCENDING | LVS_AUTOARRANGE | LVS_ICON | LVS_SINGLESEL | LVS_NOLABELWRAP, CRect(0,0,1,1), studioApp.mainFrame->workspace.pagectrl->prepareNewPage(), 1 );
+						listctrl->Create( WS_CHILD | LVS_SORTASCENDING | LVS_AUTOARRANGE | LVS_ICON | LVS_SINGLESEL | LVS_NOLABELWRAP, CRect(0,0,1,1), studioApp.m_pMainFrame->workspace.pagectrl->prepareNewPage(), 1 );
 						CImageList* im_list = new CImageList();
 						im_lists.push_back( im_list );
 						im_list->Create( 32, 32, ILC_MASK | ILC_COLOR32, 0, 1 );
@@ -153,7 +153,7 @@ void RPMethodManager::enumPlugins( const std::string& mask )
 							}
 							it++;
 						}
-						RPPageCtrlItem* page = studioApp.mainFrame->workspace.pagectrl->insertPage( listctrl, plugin->getMethod()->getName() );
+						RPPageCtrlItem* page = studioApp.m_pMainFrame->workspace.pagectrl->insertPage( listctrl, plugin->getMethod()->getName() );
 						page->setPixmap( *static_cast<RPPixmapMFC*>(plugin->getMethod()->getPixmap()) );
 						listctrl->SortItems( BlocksCompareProc, NULL );
 					}
@@ -171,7 +171,7 @@ void RPMethodManager::insertMethod( rpMethod::RPMethod* method )
 		method->setPixmap( new RPPixmap( IDB_FLOWCHART_DEFAULT, RGB(0xFF,0xFF,0xFF) ) );
 	}
 	CListCtrl* listctrl = new CListCtrl();
-	listctrl->Create( WS_CHILD | LVS_SORTASCENDING | LVS_AUTOARRANGE | LVS_ICON | LVS_SINGLESEL | LVS_NOLABELWRAP, CRect(0,0,1,1), studioApp.mainFrame->workspace.pagectrl->prepareNewPage(), 1 );
+	listctrl->Create( WS_CHILD | LVS_SORTASCENDING | LVS_AUTOARRANGE | LVS_ICON | LVS_SINGLESEL | LVS_NOLABELWRAP, CRect(0,0,1,1), studioApp.m_pMainFrame->workspace.pagectrl->prepareNewPage(), 1 );
 	CImageList* im_list = new CImageList();
 	im_lists.push_back( im_list );
 	im_list->Create( 32, 32, ILC_MASK | ILC_COLOR32, 0, 1 );
@@ -194,7 +194,7 @@ void RPMethodManager::insertMethod( rpMethod::RPMethod* method )
 		}
 		it++;
 	}
-	RPPageCtrlItem* page = studioApp.mainFrame->workspace.pagectrl->insertPage( listctrl, method->getName() );
+	RPPageCtrlItem* page = studioApp.m_pMainFrame->workspace.pagectrl->insertPage( listctrl, method->getName() );
 	page->setPixmap( *method->getPixmap() );
 	listctrl->SortItems( BlocksCompareProc, NULL );
 }
@@ -217,8 +217,6 @@ void RPMethodManager::close()
 // -------------------- RPMethodNewDlg
 // --------------------------------------------------------------------------------
 BEGIN_MESSAGE_MAP( RPMethodNewDlg, CDialog )
-	//{{AFX_MSG_MAP(RPMethodNewDlg)
-	//}}AFX_MSG_MAP
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_METHOD_LIST, RPMethodNewDlg::OnMethodListItemChanged)
 	ON_NOTIFY(NM_DBLCLK, IDC_METHOD_LIST, RPMethodNewDlg::OnMethodListDblClick)
 	ON_NOTIFY(NM_CLICK, IDC_METHOD_LIST, RPMethodNewDlg::OnMethodListClick)
@@ -228,8 +226,6 @@ RPMethodNewDlg::RPMethodNewDlg():
 	CDialog( IDD_METHOD_NEW ),
 	method_last( NULL )
 {
-	//{{AFX_DATA_INIT(RPMethodNewDlg)
-	//}}AFX_DATA_INIT
 }
 
 RPMethodNewDlg::~RPMethodNewDlg()
@@ -239,10 +235,8 @@ RPMethodNewDlg::~RPMethodNewDlg()
 void RPMethodNewDlg::DoDataExchange( CDataExchange* pDX )
 {
 	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(RPMethodNewDlg)
 	DDX_Control(pDX, IDC_METHOD_LIST, methods);
 	DDX_Control(pDX, IDC_METHOD_DESC, desc);
-	//}}AFX_DATA_MAP
 }
 
 static int CALLBACK MethodsCompareProc( LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort )

@@ -1,7 +1,20 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      app/rdo_studio_mfc/src/child_frm.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      20.02.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/child_frm.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -15,8 +28,6 @@ static char THIS_FILE[] = __FILE__;
 IMPLEMENT_DYNCREATE(RDOStudioChildFrame, CMDIChildWnd)
 
 BEGIN_MESSAGE_MAP(RDOStudioChildFrame, CMDIChildWnd)
-	//{{AFX_MSG_MAP(RDOStudioChildFrame)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 RDOStudioChildFrame::RDOStudioChildFrame(): CMDIChildWnd()
@@ -48,7 +59,7 @@ void RDOStudioChildFrame::Dump(CDumpContext& dc) const
 
 BOOL RDOStudioChildFrame::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
 {
-	if ( studioApp.mainFrame->OnCmdMsgForDockOnly( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
+	if ( studioApp.m_pMainFrame->OnCmdMsgForDockOnly( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
 	if ( CMDIChildWnd::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo) ) return TRUE;
 	return FALSE;
 }
