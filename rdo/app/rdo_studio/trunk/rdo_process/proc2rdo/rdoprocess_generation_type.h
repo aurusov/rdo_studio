@@ -1,9 +1,6 @@
 #if !defined(AFX_RDOPROCESS_GENERATION_TYPE_MJ_H__6E103D6A_16C3_4ADD_869A_70505FA8090B__INCLUDED_)
 #define AFX_RDOPROCESS_GENERATION_TYPE_MJ_H__6E103D6A_16C3_4ADD_869A_70505FA8090B__INCLUDED_
 #include "app/rdo_studio_mfc/resource.h"
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
 // rdoprocess_generation_type_MJ.h : header file
 //
 

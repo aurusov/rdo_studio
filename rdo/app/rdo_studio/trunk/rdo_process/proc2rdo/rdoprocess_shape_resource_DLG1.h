@@ -1,9 +1,6 @@
 #if !defined(AFX_RDOPROCESS_SHAPE_RESOURCE_DLG1_MJ_H__08926353_FF43_421C_8D32_681628748E52__INCLUDED_)
 #define AFX_RDOPROCESS_SHAPE_RESOURCE_DLG1_MJ_H__08926353_FF43_421C_8D32_681628748E52__INCLUDED_
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
 // rdoprocess_shape_resource_DLG1_MJ.h : header file
 //
 #include "app/rdo_studio_mfc/resource.h"

@@ -3,10 +3,6 @@
 
 #include <fstream>
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_shape.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_object_flowchart.h"
 

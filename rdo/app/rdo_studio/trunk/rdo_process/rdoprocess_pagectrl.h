@@ -4,10 +4,6 @@
 #include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_string.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_pixmap.h"
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
-
 // --------------------------------------------------------------------------------
 // -------------------- RPPageCtrl
 // --------------------------------------------------------------------------------

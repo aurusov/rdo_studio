@@ -1,10 +1,6 @@
 #ifndef RDOPLUGINMFCMAINFRAME_H
 #define RDOPLUGINMFCMAINFRAME_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
-
 #pragma warning( disable : 4786 )
 
 #include <afxmt.h>

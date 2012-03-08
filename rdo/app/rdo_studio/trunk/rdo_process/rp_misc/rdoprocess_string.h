@@ -1,10 +1,6 @@
 #ifndef RDO_PROCESS_GLOBAL_H
 #define RDO_PROCESS_GLOBAL_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
 #include <string>
 #include <locale>
 #include <algorithm>

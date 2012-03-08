@@ -1,10 +1,6 @@
 #ifndef RDO_PROCESS_FLOWCHART_H
 #define RDO_PROCESS_FLOWCHART_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
 #define TEST_SPEED TRUE
 #undef TEST_SPEED
 

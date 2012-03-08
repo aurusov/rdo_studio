@@ -1,6 +1,5 @@
 #ifndef RDOCOLORCOMBOBOX_H
 #define RDOCOLORCOMBOBOX_H
-#pragma once
 
 #include <afxwin.h>
 

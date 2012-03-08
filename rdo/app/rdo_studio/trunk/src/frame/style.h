@@ -1,6 +1,5 @@
 #ifndef RDOSTUDIOFRAMESTYLE_H
 #define RDOSTUDIOFRAMESTYLE_H
-#pragma once
 
 #include "app/rdo_studio_mfc/src/style.h"
 

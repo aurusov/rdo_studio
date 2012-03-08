@@ -10,9 +10,6 @@
 #include <boost/noncopyable.hpp>
 
 #ifdef COMPILER_VISUAL_STUDIO
-	#if _MSC_VER > 1000
-		#pragma once
-	#endif
 	#pragma warning( disable : 4786 )
 #endif // COMPILER_VISUAL_STUDIO
 // ----------------------------------------------------------------------- SYNOPSIS

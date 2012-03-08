@@ -1,6 +1,5 @@
 #ifndef RDOTABCTRL_H
 #define RDOTABCTRL_H
-#pragma once
 
 #include <afxcmn.h>
 #include <afxwin.h>

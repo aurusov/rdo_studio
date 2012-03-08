@@ -1,10 +1,6 @@
 #ifndef RDOSTUDIOFRAMETREECTRL_H
 #define RDOSTUDIOFRAMETREECTRL_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
-
 #include "ui/mfc_ctrls/rdotreectrl.h"
 
 // --------------------------------------------------------------------------------

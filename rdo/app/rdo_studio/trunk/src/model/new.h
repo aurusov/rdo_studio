@@ -10,10 +10,6 @@
 #ifndef _RDOSTUDIOMODEL_NEW_H_
 #define _RDOSTUDIOMODEL_NEW_H_
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
-
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/resource.h"

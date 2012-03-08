@@ -1,6 +1,5 @@
 #ifndef RDOLINK_H
 #define RDOLINK_H
-#pragma once
 
 #include <afxwin.h>
 

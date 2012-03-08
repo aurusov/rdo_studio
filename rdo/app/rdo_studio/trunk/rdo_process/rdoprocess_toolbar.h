@@ -1,10 +1,6 @@
 #ifndef RDO_PROCESS_TOOLBAR_H
 #define RDO_PROCESS_TOOLBAR_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
-
 #include "app/rdo_studio_mfc/rdo_process/rp_ctrl/rdoprocess_toolbar.h"
 
 // --------------------------------------------------------------------------------

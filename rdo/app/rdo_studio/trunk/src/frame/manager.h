@@ -1,10 +1,6 @@
 #ifndef RDOSTUDIOFRAMEMANAGER_H
 #define RDOSTUDIOFRAMEMANAGER_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
-
 #include <vector>
 #include <map>
 #include "app/rdo_studio_mfc/src/frame/document.h"

@@ -9,7 +9,6 @@
 
 #ifndef _RDO_STUDIO_MFC_EDIT_CTRLS_RDOBUILDEDITSTYLE_H_
 #define _RDO_STUDIO_MFC_EDIT_CTRLS_RDOBUILDEDITSTYLE_H_
-#pragma once
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS

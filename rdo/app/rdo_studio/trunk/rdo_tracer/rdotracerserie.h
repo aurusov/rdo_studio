@@ -1,6 +1,5 @@
 #ifndef RDOTRACERSERIE_H
 #define RDOTRACERSERIE_H
-#pragma once
 
 #include <vector>
 #include <list>

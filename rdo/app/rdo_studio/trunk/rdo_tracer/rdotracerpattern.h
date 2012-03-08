@@ -1,6 +1,5 @@
 #ifndef RDOTRACERPATTERN_H
 #define RDOTRACERPATTERN_H
-#pragma once
 
 #include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracertreeitem.h"
 

@@ -1,6 +1,5 @@
 #ifndef RDOTRACERVALUES_H
 #define RDOTRACERVALUES_H
-#pragma once
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOTracerTimeNow

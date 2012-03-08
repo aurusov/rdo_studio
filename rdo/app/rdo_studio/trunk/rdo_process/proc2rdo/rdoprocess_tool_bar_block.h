@@ -1,9 +1,6 @@
 #if !defined(AFX_RDOPROCESS_TOOL_BAR_BLOCKMJ_H__A579FF78_0970_421C_9967_9099CF841FB4__INCLUDED_)
 #define AFX_RDOPROCESS_TOOL_BAR_BLOCKMJ_H__A579FF78_0970_421C_9967_9099CF841FB4__INCLUDED_
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
 // rdoprocess_tool_bar_blockMJ.h : header file
 //
 

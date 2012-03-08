@@ -1,10 +1,6 @@
 #ifndef RDO_PROCESS_OBJECT_MATRIX_H
 #define RDO_PROCESS_OBJECT_MATRIX_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
 #include <vector>
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_object_chart.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_math.h"

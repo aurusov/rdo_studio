@@ -1,6 +1,5 @@
 #ifndef RDOTRACERRESULT_H
 #define RDOTRACERRESULT_H
-#pragma once
 
 #include <vector>
 #include <string>

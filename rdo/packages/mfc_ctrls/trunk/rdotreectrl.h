@@ -1,6 +1,5 @@
 #ifndef RDOTREECTRL_H
 #define RDOTREECTRL_H
-#pragma once
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOTreeCtrl

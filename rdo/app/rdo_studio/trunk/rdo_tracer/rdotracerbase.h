@@ -1,6 +1,5 @@
 #ifndef RDOTRACERTBASE_H
 #define RDOTRACERTBASE_H
-#pragma once
 
 #include "app/rdo_studio_mfc/resource.h"
 #include "kernel/rdothread.h"

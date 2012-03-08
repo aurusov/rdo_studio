@@ -1,6 +1,5 @@
 #ifndef RDOTRACEROPERATION_H
 #define RDOTRACEROPERATION_H
-#pragma once
 
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracerserie.h"
 

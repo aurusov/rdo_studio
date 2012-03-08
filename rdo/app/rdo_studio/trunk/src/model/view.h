@@ -1,10 +1,6 @@
 #ifndef RDOSTUDIOMODELVIEW_H
 #define RDOSTUDIOMODELVIEW_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
-
 #include "app/rdo_studio_mfc/src/edit/view_base.h"
 
 // --------------------------------------------------------------------------------

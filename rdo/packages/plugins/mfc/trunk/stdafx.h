@@ -6,10 +6,6 @@
 #if !defined(AFX_STDAFX_H__B30E7E66_4B80_494F_B974_665CDD4194F3__INCLUDED_)
 #define AFX_STDAFX_H__B30E7E66_4B80_494F_B974_665CDD4194F3__INCLUDED_
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
 #ifndef WINVER               // Allow use of features specific to Windows XP or later.
 #define WINVER 0x0501        // Change this to the appropriate value to target other versions of Windows.
 #endif

@@ -1,10 +1,6 @@
 #ifndef RDO_PROCESS_METHOD_H
 #define RDO_PROCESS_METHOD_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_object.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_ctrl/rdoprocess_toolbar.h"
 

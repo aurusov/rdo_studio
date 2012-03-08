@@ -1,10 +1,6 @@
 #ifndef RDO_PROCESS_OBJECT_H
 #define RDO_PROCESS_OBJECT_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
 #include <list>
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_factory.h"
 #include "thirdparty/pugixml/src/pugixml.hpp"

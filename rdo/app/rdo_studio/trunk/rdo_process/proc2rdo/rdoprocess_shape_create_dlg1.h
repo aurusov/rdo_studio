@@ -1,9 +1,6 @@
 #if !defined(AFX_RDOPROCESS_SHAPE_CREATE_DLG1_MJ_H__CBBEC246_A9B1_4006_BBD0_AD6A6ED903F2__INCLUDED_)
 #define AFX_RDOPROCESS_SHAPE_CREATE_DLG1_MJ_H__CBBEC246_A9B1_4006_BBD0_AD6A6ED903F2__INCLUDED_
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
 // rdoprocess_shape_create_dlg1_MJ.h : header file
 //
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_create.h"

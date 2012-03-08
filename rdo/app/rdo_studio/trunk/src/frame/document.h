@@ -1,10 +1,6 @@
 #ifndef RDOSTUDIOFRAMEDOC_H
 #define RDOSTUDIOFRAMEDOC_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
-
 #include "app/rdo_studio_mfc/src/frame/view.h"
 
 // --------------------------------------------------------------------------------

@@ -1,10 +1,6 @@
 #ifndef RDO_PROCESS_METHOD_MANAGER_H
 #define RDO_PROCESS_METHOD_MANAGER_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
 namespace rpMethod {
 class RPMethod;
 }

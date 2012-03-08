@@ -1,10 +1,6 @@
 #ifndef RDO_PROCESS_MATRIX_H
 #define RDO_PROCESS_MATRIX_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
 #include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_point.h"
 
 namespace rp {

@@ -10,20 +10,12 @@
 #ifndef _RDOREPOSITORYFILE_H_
 #define _RDOREPOSITORYFILE_H_
 
-// ----------------------------------------------------------------------- PLATFORM
-#include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
 #include <string>
 #include <fstream>
 #include <boost/date_time/posix_time/posix_time_types.hpp>
 #include <boost/noncopyable.hpp>
-
-#ifdef COMPILER_VISUAL_STUDIO
-	#if _MSC_VER > 1000
-		#pragma once
-	#endif
-#endif // COMPILER_VISUAL_STUDIO
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
 #include "utils/rdostream.h"

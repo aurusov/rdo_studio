@@ -1,9 +1,6 @@
 #ifndef RDO_PROCESS_CHILDFRM_H
 #define RDO_PROCESS_CHILDFRM_H
 #include "app/rdo_studio_mfc/src/child_frm.h"
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
 
 // --------------------------------------------------------------------------------
 // -------------------- RPChildFrame
