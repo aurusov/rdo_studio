@@ -913,14 +913,10 @@ void RPObjectFlowChart::onLButtonDblClk( UINT nFlags, CPoint local_win_pos )
 	CPoint global_chart_pos = local_win_pos;
 	clientToZero( global_chart_pos );
 	// Проверим корзину
-	if ( is_trash_over(global_chart_pos) )
-	{
-	}
-	else
-	{
+	if ( is_trash_over(global_chart_pos) ) {
+	} else {
 		RPObjectChart* obj = find( global_chart_pos );
-		if ( obj )
-			obj->onLButtonDblClk( nFlags, global_chart_pos );
+		if ( obj ) obj->onLButtonDblClk( nFlags, global_chart_pos );
 	}
 }
 
