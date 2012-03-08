@@ -1,14 +1,21 @@
-#ifndef RDOSTUDIOOUTPUT_H
-#define RDOSTUDIOOUTPUT_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      output.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      20.02.2003
+  \brief     
+  \indent    4T
+*/
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
+#ifndef _RDO_STUDIO_MFC_OUTPUT_H_
+#define _RDO_STUDIO_MFC_OUTPUT_H_
 
-#include "app/rdo_studio_mfc/src/dock_wnd.h"
-
-#include "ui/mfc_ctrls/rdotabctrl.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/service/rdosimwin.h"
+#include "ui/mfc_ctrls/rdotabctrl.h"
+#include "app/rdo_studio_mfc/src/dock_wnd.h"
+// --------------------------------------------------------------------------------
 
 namespace rdoEditor {
 	class RDOEditorEdit;
@@ -87,4 +94,4 @@ public:
 
 //{{AFX_INSERT_LOCATION}}
 
-#endif // RDOSTUDIOOUTPUT_H
+#endif // _RDO_STUDIO_MFC_OUTPUT_H_

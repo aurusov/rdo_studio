@@ -1,9 +1,18 @@
-#ifndef RDOSTUDIOVIEW_H
-#define RDOSTUDIOVIEW_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      app/rdo_studio_mfc/src/view.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      21.04.2003
+  \brief     
+  \indent    4T
+*/
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
+#ifndef _RDO_STUDIO_MFC_VIEW_H_
+#define _RDO_STUDIO_MFC_VIEW_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioView
@@ -34,4 +43,4 @@ protected:
 
 //{{AFX_INSERT_LOCATION}}
 
-#endif // RDOSTUDIOVIEW_H
+#endif // _RDO_STUDIO_MFC_VIEW_H_

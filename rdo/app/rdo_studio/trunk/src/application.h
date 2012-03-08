@@ -1,20 +1,24 @@
-#ifndef RDOSTUDIOAPP_H
-#define RDOSTUDIOAPP_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      application.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      20.02.2003
+  \brief     
+  \indent    4T
+*/
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
+#ifndef _RDO_STUDIO_MFC_APPLICATION_H_
+#define _RDO_STUDIO_MFC_APPLICATION_H_
 
-#ifndef __AFXWIN_H__
-	#error include 'stdafx.h' before including this file for PCH
-#endif
-
+// ----------------------------------------------------------------------- INCLUDES
 #include <fstream>
-#include "ui/mfc_ctrls/rdolink.h"
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
+#include "ui/mfc_ctrls/rdolink.h"
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_method_manager.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"
+// --------------------------------------------------------------------------------
 
 //#define PROCGUI_ENABLE
 
@@ -176,4 +180,4 @@ extern RDOStudioApp studioApp;
 
 //{{AFX_INSERT_LOCATION}}
 
-#endif // RDOSTUDIOAPP_H
+#endif // _RDO_STUDIO_MFC_APPLICATION_H_

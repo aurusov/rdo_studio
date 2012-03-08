@@ -1,9 +1,18 @@
-#ifndef RDOSTUDIOCHILDFRM_H
-#define RDOSTUDIOCHILDFRM_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      app/rdo_studio_mfc/src/child_frm.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      20.02.2003
+  \brief     
+  \indent    4T
+*/
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
+#ifndef _RDO_STUDIO_MFC_CHILD_FRM_H_
+#define _RDO_STUDIO_MFC_CHILD_FRM_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioChildFrame
@@ -36,4 +45,4 @@ protected:
 
 //{{AFX_INSERT_LOCATION}}
 
-#endif // RDOSTUDIOCHILDFRM_H
+#endif // _RDO_STUDIO_MFC_CHILD_FRM_H_

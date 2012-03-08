@@ -1,13 +1,21 @@
-#ifndef RDOSTUDIOPLUGINS_H
-#define RDOSTUDIOPLUGINS_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      plugins.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      08.10.2003
+  \brief     
+  \indent    4T
+*/
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
+#ifndef _RDO_STUDIO_MFC_PLUGINS_H_
+#define _RDO_STUDIO_MFC_PLUGINS_H_
 
+// ----------------------------------------------------------------------- INCLUDES
 #include <string>
 #include <vector>
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/plugins/common/rdoplugin.h"
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioPlugin
@@ -167,4 +175,4 @@ public:
 // --------------------------------------------------------------------------------
 extern RDOStudioPlugins* plugins;
 
-#endif // RDOSTUDIOPLUGINS_H
+#endif // _RDO_STUDIO_MFC_PLUGINS_H_

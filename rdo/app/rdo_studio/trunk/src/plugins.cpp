@@ -1,8 +1,21 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      plugins.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      08.10.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/plugins.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

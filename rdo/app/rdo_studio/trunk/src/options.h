@@ -1,10 +1,17 @@
-#ifndef RDOSTUDIOOPTIONS_H
-#define RDOSTUDIOOPTIONS_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      app/rdo_studio_mfc/src/options.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      13.03.2003
+  \brief     
+  \indent    4T
+*/
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
+#ifndef _RDO_STUDIO_MFC_OPTIONS_H_
+#define _RDO_STUDIO_MFC_OPTIONS_H_
 
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "ui/mfc_ctrls/rdocolorcombobox.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoredit.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorresults.h"
@@ -26,6 +33,7 @@
 #include "app/rdo_studio_mfc/src/frame/style.h"
 #include "app/rdo_studio_mfc/src/frame/options_ctrl.h"
 #include "app/rdo_studio_mfc/resource.h"
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioOptionsGeneral
@@ -452,4 +460,4 @@ public:
 
 //{{AFX_INSERT_LOCATION}}
 
-#endif // RDOSTUDIOOPTIONS_H
+#endif // _RDO_STUDIO_MFC_OPTIONS_H_

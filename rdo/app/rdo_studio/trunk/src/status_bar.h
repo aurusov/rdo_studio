@@ -1,9 +1,14 @@
-#ifndef RDOSTUDIOSTATUSBAR_H
-#define RDOSTUDIOSTATUSBAR_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      status_bar.h
+  \author    Захаров Павел
+  \date      09.04.2003
+  \brief     
+  \indent    4T
+*/
 
-#if _MSC_VER > 1000
-#pragma once
-#endif
+#ifndef _RDO_STUDIO_MFC_STATUS_BAR_H_
+#define _RDO_STUDIO_MFC_STATUS_BAR_H_
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioStatusBar
@@ -52,4 +57,4 @@ protected:
 
 //{{AFX_INSERT_LOCATION}}
 
-#endif // RDOSTUDIOSTATUSBAR_H
+#endif // _RDO_STUDIO_MFC_STATUS_BAR_H_
