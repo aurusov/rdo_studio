@@ -1,10 +1,6 @@
 #ifndef RDOPLUGINMFC_H
 #define RDOPLUGINMFC_H
 
-#ifndef __AFXWIN_H__
-	#error include 'stdafx.h' before including this file for PCH
-#endif
-
 #define RDOPLUGIN_EXPORTS
 #include "app/rdo_studio_mfc/plugins/common/rdoplugin.h"
 
