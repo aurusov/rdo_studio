@@ -547,1533 +547,1505 @@
 			Name=".controls"
 			>
 			<Filter
-				Name="Editor"
+				Name=".editor"
 				>
-				<Filter
-					Name="Source Files"
+				<File
+					RelativePath="edit_ctrls\rdobaseedit.cpp"
 					>
-					<File
-						RelativePath="edit_ctrls\rdobaseedit.cpp"
+					<FileConfiguration
+						Name="Debug|Win32"
 						>
-						<FileConfiguration
-							Name="Debug|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Debug Corba|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release Corba|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Debug MT|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release MT|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath="edit_ctrls\rdobaseeditstyle.cpp"
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
 						>
-						<FileConfiguration
-							Name="Debug|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Debug Corba|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release Corba|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Debug MT|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release MT|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath="edit_ctrls\rdobuildedit.cpp"
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
 						>
-						<FileConfiguration
-							Name="Debug|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Debug Corba|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release Corba|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Debug MT|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release MT|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath="edit_ctrls\rdobuildeditstyle.cpp"
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
 						>
-						<FileConfiguration
-							Name="Debug|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Debug Corba|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release Corba|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Debug MT|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release MT|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath="edit_ctrls\rdodebugedit.cpp"
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug MT|Win32"
 						>
-						<FileConfiguration
-							Name="Debug|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Debug Corba|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release Corba|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Debug MT|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release MT|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath="edit_ctrls\rdofindedit.cpp"
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release MT|Win32"
 						>
-						<FileConfiguration
-							Name="Debug|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Debug Corba|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release Corba|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Debug MT|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release MT|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath="edit_ctrls\rdofindeditstyle.cpp"
-						>
-						<FileConfiguration
-							Name="Debug|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Debug Corba|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release Corba|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Debug MT|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release MT|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath="edit_ctrls\rdologedit.cpp"
-						>
-						<FileConfiguration
-							Name="Debug|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Debug Corba|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release Corba|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Debug MT|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release MT|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath="edit_ctrls\rdologeditstyle.cpp"
-						>
-						<FileConfiguration
-							Name="Debug|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Debug Corba|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release Corba|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Debug MT|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release MT|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-					</File>
-				</Filter>
-				<Filter
-					Name="Headers Files"
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="edit_ctrls\rdobaseedit.h"
 					>
-					<File
-						RelativePath="edit_ctrls\rdobaseedit.h"
+				</File>
+				<File
+					RelativePath="edit_ctrls\rdobaseeditstyle.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
 						>
-					</File>
-					<File
-						RelativePath="edit_ctrls\rdobaseeditstyle.h"
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
 						>
-					</File>
-					<File
-						RelativePath="edit_ctrls\rdobuildedit.h"
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
 						>
-					</File>
-					<File
-						RelativePath="edit_ctrls\rdobuildeditstyle.h"
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
 						>
-					</File>
-					<File
-						RelativePath="edit_ctrls\rdodebugedit.h"
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug MT|Win32"
 						>
-					</File>
-					<File
-						RelativePath="edit_ctrls\rdofindedit.h"
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release MT|Win32"
 						>
-					</File>
-					<File
-						RelativePath="edit_ctrls\rdofindeditstyle.h"
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="edit_ctrls\rdobaseeditstyle.h"
+					>
+				</File>
+				<File
+					RelativePath="edit_ctrls\rdobuildedit.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
 						>
-					</File>
-					<File
-						RelativePath="edit_ctrls\rdologedit.h"
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
 						>
-					</File>
-					<File
-						RelativePath="edit_ctrls\rdologeditstyle.h"
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
 						>
-					</File>
-				</Filter>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="edit_ctrls\rdobuildedit.h"
+					>
+				</File>
+				<File
+					RelativePath="edit_ctrls\rdobuildeditstyle.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="edit_ctrls\rdobuildeditstyle.h"
+					>
+				</File>
+				<File
+					RelativePath="edit_ctrls\rdodebugedit.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="edit_ctrls\rdodebugedit.h"
+					>
+				</File>
+				<File
+					RelativePath="edit_ctrls\rdofindedit.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="edit_ctrls\rdofindedit.h"
+					>
+				</File>
+				<File
+					RelativePath="edit_ctrls\rdofindeditstyle.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="edit_ctrls\rdofindeditstyle.h"
+					>
+				</File>
+				<File
+					RelativePath="edit_ctrls\rdologedit.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="edit_ctrls\rdologedit.h"
+					>
+				</File>
+				<File
+					RelativePath="edit_ctrls\rdologeditstyle.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="edit_ctrls\rdologeditstyle.h"
+					>
+				</File>
 			</Filter>
 			<Filter
-				Name="Tracer Ctrls"
+				Name=".tracer"
 				>
-				<Filter
-					Name="Source Files"
-					Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
+				<File
+					RelativePath="rdo_tracer\tracer_ctrls\rdologctrl.cpp"
 					>
-					<File
-						RelativePath="rdo_tracer\tracer_ctrls\rdologctrl.cpp"
+					<FileConfiguration
+						Name="Debug|Win32"
 						>
-						<FileConfiguration
-							Name="Debug|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Debug Corba|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release Corba|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Debug MT|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release MT|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath="rdo_tracer\tracer_ctrls\rdologstyle.cpp"
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
 						>
-						<FileConfiguration
-							Name="Debug|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Debug Corba|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release Corba|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Debug MT|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release MT|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath="rdo_tracer\tracer_ctrls\rdotracerlogctrl.cpp"
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
 						>
-						<FileConfiguration
-							Name="Debug|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Debug Corba|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release Corba|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Debug MT|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release MT|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath="rdo_tracer\tracer_ctrls\rdotracerlogstyle.cpp"
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
 						>
-						<FileConfiguration
-							Name="Debug|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Debug Corba|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release Corba|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Debug MT|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release MT|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath="rdo_tracer\tracer_ctrls\rdotracertreectrl.cpp"
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug MT|Win32"
 						>
-						<FileConfiguration
-							Name="Debug|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Debug Corba|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release Corba|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Debug MT|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release MT|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath="rdo_tracer\tracer_ctrls\rdotracertreeitem.cpp"
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release MT|Win32"
 						>
-						<FileConfiguration
-							Name="Debug|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Debug Corba|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release Corba|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Debug MT|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release MT|Win32"
-							>
-							<Tool
-								Name="VCCLCompilerTool"
-								AdditionalIncludeDirectories=""
-								PreprocessorDefinitions=""
-							/>
-						</FileConfiguration>
-					</File>
-				</Filter>
-				<Filter
-					Name="Header Files"
-					Filter="h;hpp;hxx;hm;inl"
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="rdo_tracer\tracer_ctrls\rdologctrl.h"
 					>
-					<File
-						RelativePath="rdo_tracer\tracer_ctrls\rdologctrl.h"
+				</File>
+				<File
+					RelativePath="rdo_tracer\tracer_ctrls\rdologstyle.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
 						>
-					</File>
-					<File
-						RelativePath="rdo_tracer\tracer_ctrls\rdologstyle.h"
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
 						>
-					</File>
-					<File
-						RelativePath="rdo_tracer\tracer_ctrls\rdotracerlogctrl.h"
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
 						>
-					</File>
-					<File
-						RelativePath="rdo_tracer\tracer_ctrls\rdotracerlogstyle.h"
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
 						>
-					</File>
-					<File
-						RelativePath="rdo_tracer\tracer_ctrls\rdotracertreectrl.h"
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug MT|Win32"
 						>
-					</File>
-					<File
-						RelativePath="rdo_tracer\tracer_ctrls\rdotracertreeitem.h"
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release MT|Win32"
 						>
-					</File>
-				</Filter>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="rdo_tracer\tracer_ctrls\rdologstyle.h"
+					>
+				</File>
+				<File
+					RelativePath="rdo_tracer\tracer_ctrls\rdotracerlogctrl.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="rdo_tracer\tracer_ctrls\rdotracerlogctrl.h"
+					>
+				</File>
+				<File
+					RelativePath="rdo_tracer\tracer_ctrls\rdotracerlogstyle.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="rdo_tracer\tracer_ctrls\rdotracerlogstyle.h"
+					>
+				</File>
+				<File
+					RelativePath="rdo_tracer\tracer_ctrls\rdotracertreectrl.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="rdo_tracer\tracer_ctrls\rdotracertreectrl.h"
+					>
+				</File>
+				<File
+					RelativePath="rdo_tracer\tracer_ctrls\rdotracertreeitem.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="rdo_tracer\tracer_ctrls\rdotracertreeitem.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
 			Name=".tracer"
 			>
-			<Filter
-				Name="Source Files"
-				Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
+			<File
+				RelativePath="rdo_tracer\rdotracer.cpp"
 				>
-				<File
-					RelativePath="rdo_tracer\rdotracer.cpp"
+				<FileConfiguration
+					Name="Debug|Win32"
 					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="rdo_tracer\rdotracerbase.cpp"
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
 					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="rdo_tracer\rdotraceroperation.cpp"
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug Corba|Win32"
 					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="rdo_tracer\rdotracerpattern.cpp"
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release Corba|Win32"
 					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="rdo_tracer\rdotracerresource.cpp"
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug MT|Win32"
 					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="rdo_tracer\rdotracerrestype.cpp"
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release MT|Win32"
 					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="rdo_tracer\rdotracerresult.cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="rdo_tracer\rdotracerserie.cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="rdo_tracer\rdotracervalues.cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release MT|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-				</File>
-			</Filter>
-			<Filter
-				Name="Header Files"
-				Filter="h;hpp;hxx;hm;inl"
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rdo_tracer\rdotracer.h"
 				>
-				<File
-					RelativePath="rdo_tracer\rdotracer.h"
+			</File>
+			<File
+				RelativePath="rdo_tracer\rdotracerbase.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
 					>
-				</File>
-				<File
-					RelativePath="rdo_tracer\rdotracerbase.h"
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
 					>
-				</File>
-				<File
-					RelativePath="rdo_tracer\rdotraceroperation.h"
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug Corba|Win32"
 					>
-				</File>
-				<File
-					RelativePath="rdo_tracer\rdotracerpattern.h"
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release Corba|Win32"
 					>
-				</File>
-				<File
-					RelativePath="rdo_tracer\rdotracerresource.h"
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug MT|Win32"
 					>
-				</File>
-				<File
-					RelativePath="rdo_tracer\rdotracerrestype.h"
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release MT|Win32"
 					>
-				</File>
-				<File
-					RelativePath="rdo_tracer\rdotracerresult.h"
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rdo_tracer\rdotracerbase.h"
+				>
+			</File>
+			<File
+				RelativePath="rdo_tracer\rdotraceroperation.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
 					>
-				</File>
-				<File
-					RelativePath="rdo_tracer\rdotracerserie.h"
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
 					>
-				</File>
-				<File
-					RelativePath="rdo_tracer\rdotracervalues.h"
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug Corba|Win32"
 					>
-				</File>
-			</Filter>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release Corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rdo_tracer\rdotraceroperation.h"
+				>
+			</File>
+			<File
+				RelativePath="rdo_tracer\rdotracerpattern.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug Corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release Corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rdo_tracer\rdotracerpattern.h"
+				>
+			</File>
+			<File
+				RelativePath="rdo_tracer\rdotracerresource.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug Corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release Corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rdo_tracer\rdotracerresource.h"
+				>
+			</File>
+			<File
+				RelativePath="rdo_tracer\rdotracerrestype.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug Corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release Corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rdo_tracer\rdotracerrestype.h"
+				>
+			</File>
+			<File
+				RelativePath="rdo_tracer\rdotracerresult.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug Corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release Corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rdo_tracer\rdotracerresult.h"
+				>
+			</File>
+			<File
+				RelativePath="rdo_tracer\rdotracerserie.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug Corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release Corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rdo_tracer\rdotracerserie.h"
+				>
+			</File>
+			<File
+				RelativePath="rdo_tracer\rdotracervalues.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug Corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release Corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rdo_tracer\rdotracervalues.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name=".frame"
@@ -2585,7 +2557,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name=".main"
+			Name=".application"
 			>
 			<File
 				RelativePath=".\src\application.cpp"
@@ -3226,142 +3198,8 @@
 		<Filter
 			Name=".editor"
 			>
-			<File
-				RelativePath=".\src\edit\document.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\document_editor"
-						BrowseInformationFile="$(IntDir)\document_editor"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\document_editor"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\document_editor"
-						BrowseInformationFile="$(IntDir)\document_editor"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\document_editor"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug MT|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\document_editor"
-						BrowseInformationFile="$(IntDir)\document_editor"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release MT|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\document_editor"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\src\edit\document.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\edit\document_base.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\edit\document_base.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\edit\view.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\view_edit"
-						BrowseInformationFile="$(IntDir)\view_edit"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\view_edit"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\view_edit"
-						BrowseInformationFile="$(IntDir)\view_edit"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\view_edit"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug MT|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\view_edit"
-						BrowseInformationFile="$(IntDir)\view_edit"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release MT|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\view_edit"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\src\edit\view.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\edit\view_base.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\edit\view_base.h"
-				>
-			</File>
 			<Filter
-				Name="Source Files"
+				Name=".control"
 				>
 				<File
 					RelativePath="rdo_edit\rdoeditorbaseedit.cpp"
@@ -3422,6 +3260,10 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="rdo_edit\rdoeditorbaseedit.h"
+					>
+				</File>
+				<File
 					RelativePath="rdo_edit\rdoeditorbaseeditstyle.cpp"
 					>
 					<FileConfiguration
@@ -3478,6 +3320,10 @@
 							PreprocessorDefinitions=""
 						/>
 					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="rdo_edit\rdoeditorbaseeditstyle.h"
+					>
 				</File>
 				<File
 					RelativePath="rdo_edit\rdoeditoredit.cpp"
@@ -3538,6 +3384,10 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="rdo_edit\rdoeditoredit.h"
+					>
+				</File>
+				<File
 					RelativePath="rdo_edit\rdoeditoreditstyle.cpp"
 					>
 					<FileConfiguration
@@ -3594,6 +3444,10 @@
 							PreprocessorDefinitions=""
 						/>
 					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="rdo_edit\rdoeditoreditstyle.h"
+					>
 				</File>
 				<File
 					RelativePath="rdo_edit\rdoeditorresults.cpp"
@@ -3654,6 +3508,10 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="rdo_edit\rdoeditorresults.h"
+					>
+				</File>
+				<File
 					RelativePath="rdo_edit\rdoeditorresultsstyle.cpp"
 					>
 					<FileConfiguration
@@ -3710,6 +3568,10 @@
 							PreprocessorDefinitions=""
 						/>
 					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="rdo_edit\rdoeditorresultsstyle.h"
+					>
 				</File>
 				<File
 					RelativePath="rdo_edit\rdoeditortabctrl.cpp"
@@ -3769,36 +3631,146 @@
 						/>
 					</FileConfiguration>
 				</File>
-			</Filter>
-			<Filter
-				Name="Header Files"
-				>
-				<File
-					RelativePath="rdo_edit\rdoeditorbaseedit.h"
-					>
-				</File>
-				<File
-					RelativePath="rdo_edit\rdoeditorbaseeditstyle.h"
-					>
-				</File>
-				<File
-					RelativePath="rdo_edit\rdoeditoredit.h"
-					>
-				</File>
-				<File
-					RelativePath="rdo_edit\rdoeditoreditstyle.h"
-					>
-				</File>
-				<File
-					RelativePath="rdo_edit\rdoeditorresults.h"
-					>
-				</File>
-				<File
-					RelativePath="rdo_edit\rdoeditorresultsstyle.h"
-					>
-				</File>
 				<File
 					RelativePath="rdo_edit\rdoeditortabctrl.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name=".doc.view"
+				>
+				<File
+					RelativePath=".\src\edit\document.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\document_editor"
+							BrowseInformationFile="$(IntDir)\document_editor"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\document_editor"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\document_editor"
+							BrowseInformationFile="$(IntDir)\document_editor"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\document_editor"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\document_editor"
+							BrowseInformationFile="$(IntDir)\document_editor"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\document_editor"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\src\edit\document.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\edit\document_base.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\edit\document_base.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\edit\view.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\view_edit"
+							BrowseInformationFile="$(IntDir)\view_edit"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\view_edit"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\view_edit"
+							BrowseInformationFile="$(IntDir)\view_edit"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release Corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\view_edit"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\view_edit"
+							BrowseInformationFile="$(IntDir)\view_edit"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release MT|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\view_edit"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\src\edit\view.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\edit\view_base.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\edit\view_base.h"
 					>
 				</File>
 			</Filter>
