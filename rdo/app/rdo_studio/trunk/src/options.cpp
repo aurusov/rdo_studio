@@ -177,7 +177,7 @@ BOOL RDOStudioOptionsEditor::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pRe
 
 void RDOStudioOptionsEditor::OnClearAutoCheck() 
 {
-	bool use = static_cast<CButton*>(GetDlgItem( IDC_CLEARAUTO_CHECK ))->GetCheck() ? true : false;
+	rbool use = static_cast<CButton*>(GetDlgItem( IDC_CLEARAUTO_CHECK ))->GetCheck() ? true : false;
 	GetDlgItem( IDC_CLEARAUTO_STATIC1 )->EnableWindow( use );
 	GetDlgItem( IDC_CLEARAUTO_EDIT )->EnableWindow( use );
 	GetDlgItem( IDC_CLEARAUTO_STATIC2 )->EnableWindow( use );
@@ -186,7 +186,7 @@ void RDOStudioOptionsEditor::OnClearAutoCheck()
 
 void RDOStudioOptionsEditor::OnUseAutoCompleteCheck() 
 {
-	bool use = static_cast<CButton*>(GetDlgItem( IDC_USEAUTOCOMPLETE_CHECK ))->GetCheck() ? true : false;
+	rbool use = static_cast<CButton*>(GetDlgItem( IDC_USEAUTOCOMPLETE_CHECK ))->GetCheck() ? true : false;
 	GetDlgItem( IDC_SHOWFULLLIST_RADIO )->EnableWindow( use );
 	GetDlgItem( IDC_SHOWNEARESTWORDSONLY_RADIO )->EnableWindow( use );
 	OnUpdateModify();
@@ -306,10 +306,10 @@ void RDOStudioOptionsTabs::OnUpdateModify()
 // --------------------------------------------------------------------------------
 COLORREF RDOStudioOptionsColorsStyles::null_fg_color = RGB( 0x00, 0x00, 0x00 );
 COLORREF RDOStudioOptionsColorsStyles::null_bg_color = RGB( 0xFF, 0xFF, 0xFF );
-bool RDOStudioOptionsColorsStyles::null_wordwrap      = false;
-bool RDOStudioOptionsColorsStyles::null_horzscrollbar = true;
-bool RDOStudioOptionsColorsStyles::null_warning       = true;
-bool RDOStudioOptionsColorsStyles::null_commentfold   = false;
+rbool RDOStudioOptionsColorsStyles::null_wordwrap      = false;
+rbool RDOStudioOptionsColorsStyles::null_horzscrollbar = true;
+rbool RDOStudioOptionsColorsStyles::null_warning       = true;
+rbool RDOStudioOptionsColorsStyles::null_commentfold   = false;
 RDOBookmarkStyle RDOStudioOptionsColorsStyles::null_bookmarkstyle = RDOBOOKMARKS_NONE;
 RDOFoldStyle     RDOStudioOptionsColorsStyles::null_foldstyle     = RDOFOLDS_NONE;
 
@@ -526,7 +526,7 @@ void RDOStudioOptionsColorsStyles::DoDataExchange(CDataExchange* pDX)
 int CALLBACK RDOStudioOptionsColorsStyles::EnumFontFamExProc( ENUMLOGFONTEX* lpelfe, NEWTEXTMETRICEX* /*lpntme*/, DWORD /*FontType*/, LPARAM lParam )
 {
 	std::list< STYLEFont >* fonts = reinterpret_cast< std::list< STYLEFont >* >(lParam);
-	bool can_insert = true;
+	rbool can_insert = true;
 	std::list< STYLEFont >::iterator font_it = fonts->begin();
 	while ( font_it != fonts->end() ) {
 		if ( font_it->name == lpelfe->elfLogFont.lfFaceName ) {
@@ -736,7 +736,7 @@ void RDOStudioOptionsColorsStyles::updateStyleItem()
 			loadFontsIntoCombo( prop->object->font_fixed );
 		}
 		std::list< STYLEFont >::const_iterator it = fonts.begin();
-		bool flag = false;
+		rbool flag = false;
 		while ( it != fonts.end() ) {
 			if ( it->name == prop->object->font_name ) {
 				int index = m_fontName.FindStringExact( -1, prop->object->font_name.c_str() );
@@ -761,7 +761,7 @@ void RDOStudioOptionsColorsStyles::updateStyleItem()
 		}
 
 		// Update font style checkboxs
-		bool flag_font_style = &prop->font_style != &null_font_style;
+		rbool flag_font_style = &prop->font_style != &null_font_style;
 		m_fontStyleBold.EnableWindow( flag_font_style );
 		m_fontStyleItalic.EnableWindow( flag_font_style );
 		m_fontStyleUnderline.EnableWindow( flag_font_style );
@@ -770,7 +770,7 @@ void RDOStudioOptionsColorsStyles::updateStyleItem()
 		m_fontStyleUnderline.SetCheck( prop->font_style & RDOStyleFont::UNDERLINE );
 
 		// Update FG color combobox
-		bool flag_fg_color = &prop->fg_color != &null_fg_color;
+		rbool flag_fg_color = &prop->fg_color != &null_fg_color;
 		fgColorCB.EnableWindow( flag_fg_color );
 		m_fgColorStatic.EnableWindow( flag_fg_color );
 		m_fgColorButton.EnableWindow( flag_fg_color );
@@ -785,7 +785,7 @@ void RDOStudioOptionsColorsStyles::updateStyleItem()
 		}
 
 		// Update BG color combobox
-		bool flag_bg_color = &prop->bg_color != &null_bg_color;
+		rbool flag_bg_color = &prop->bg_color != &null_bg_color;
 		bgColorCB.EnableWindow( flag_bg_color );
 		m_bgColorStatic.EnableWindow( flag_bg_color );
 		m_bgColorButton.EnableWindow( flag_bg_color );
@@ -800,7 +800,7 @@ void RDOStudioOptionsColorsStyles::updateStyleItem()
 		}
 
 		// Update wordwrap
-		bool flag_wordwrap = type == STYLEObject::source || type == STYLEObject::build || type == STYLEObject::debug || type == STYLEObject::results || type == STYLEObject::find;
+		rbool flag_wordwrap = type == STYLEObject::source || type == STYLEObject::build || type == STYLEObject::debug || type == STYLEObject::results || type == STYLEObject::find;
 		m_wordWrap.ShowWindow( flag_wordwrap ? SW_SHOW : SW_HIDE );
 		m_horzScrollBar.ShowWindow( flag_wordwrap ? SW_SHOW : SW_HIDE );
 		m_wordWrap.SetCheck( prop->object->wordwrap ? 1 : 0 );
@@ -808,20 +808,20 @@ void RDOStudioOptionsColorsStyles::updateStyleItem()
 		OnWordWrapClicked();
 
 		// Update warning
-		bool flag_worning = type == STYLEObject::build;
+		rbool flag_worning = type == STYLEObject::build;
 		m_warning.ShowWindow( flag_worning ? SW_SHOW : SW_HIDE );
 		m_warning.SetCheck( prop->object->warning ? 1 : 0 );
 		OnWordWrapClicked();
 
 		// Update borders
-		bool flag_border = type == STYLEObject::trace;
+		rbool flag_border = type == STYLEObject::trace;
 		m_vertBorder.ShowWindow( flag_border ? SW_SHOW : SW_HIDE );
 		m_vertBorderStatic.ShowWindow( flag_border ? SW_SHOW : SW_HIDE );
 		m_horzBorder.ShowWindow( flag_border ? SW_SHOW : SW_HIDE );
 		m_horzBorderStatic.ShowWindow( flag_border ? SW_SHOW : SW_HIDE );
 
 		// Update fonts and ticks
-		bool flag_fonts_ticks = type == STYLEObject::chart;
+		rbool flag_fonts_ticks = type == STYLEObject::chart;
 		m_title_fontSizeStatic.ShowWindow( flag_fonts_ticks ? SW_SHOW : SW_HIDE );
 		m_leg_fontSizeStatic.ShowWindow( flag_fonts_ticks ? SW_SHOW : SW_HIDE );
 		m_leg_fontSizeCombo.ShowWindow( flag_fonts_ticks ? SW_SHOW : SW_HIDE );
@@ -830,13 +830,13 @@ void RDOStudioOptionsColorsStyles::updateStyleItem()
 		m_tickWidthStatic.ShowWindow( flag_fonts_ticks ? SW_SHOW : SW_HIDE );
 
 		// Update bookmark
-		bool flag_bookmark = type == STYLEObject::source;
+		rbool flag_bookmark = type == STYLEObject::source;
 		m_bookmark.ShowWindow( flag_bookmark ? SW_SHOW : SW_HIDE );
 		m_bookmarkStatic.ShowWindow( flag_bookmark ? SW_SHOW : SW_HIDE );
 		m_bookmark.SetCurSel( prop->object->bookmarkstyle );
 
 		// Update fold
-		bool flag_fold = type == STYLEObject::source;
+		rbool flag_fold = type == STYLEObject::source;
 		m_fold.ShowWindow( flag_fold ? SW_SHOW : SW_HIDE );
 		m_foldStatic.ShowWindow( flag_fold ? SW_SHOW : SW_HIDE );
 		m_commentGroupButton.ShowWindow( flag_fold ? SW_SHOW : SW_HIDE );
@@ -845,7 +845,7 @@ void RDOStudioOptionsColorsStyles::updateStyleItem()
 		OnFoldChanged();
 
 		// Update preview
-		bool flag_preview = type == STYLEObject::all;
+		rbool flag_preview = type == STYLEObject::all;
 		m_previewAs.ShowWindow( flag_preview ? SW_SHOW : SW_HIDE );
 		m_previewAsStatic.ShowWindow( flag_preview ? SW_SHOW : SW_HIDE );
 		setPreviewAsCombo( type );
@@ -1500,7 +1500,7 @@ void RDOStudioOptionsColorsStyles::OnUpdateModify()
 				 *sheet->style_chart.fonts_ticks != *studioApp.mainFrame->style_chart.fonts_ticks );
 }
 
-void RDOStudioOptionsColorsStyles::loadFontsIntoCombo( bool fixed )
+void RDOStudioOptionsColorsStyles::loadFontsIntoCombo( rbool fixed )
 {
 	if ( isCurrentFixed != fixed ) {
 		m_fontName.ResetContent();
@@ -1597,9 +1597,9 @@ void RDOStudioOptionsColorsStyles::updatePropOfAllObject()
 	if ( it != objects.end() ) {
 		it++;
 		if ( it != objects.end() ) {
-			all_font_name  = (*it)->font_name;
-			all_font_size  = (*it)->font_size;
-			bool use_color = false;
+			all_font_name   = (*it)->font_name;
+			all_font_size   = (*it)->font_size;
+			rbool use_color = false;
 			std::list< STYLEProperty* >::const_iterator prop = (*it)->properties.begin();
 			if ( prop != (*it)->properties.end() ) {
 				all_fg_color = (*prop)->fg_color;
@@ -1607,10 +1607,10 @@ void RDOStudioOptionsColorsStyles::updatePropOfAllObject()
 				use_color    = true;
 			}
 			it++;
-			bool flag_font_name = true;
-			bool flag_font_size = true;
-			bool flag_fg_clor   = true;
-			bool flag_bg_clor   = true;
+			rbool flag_font_name = true;
+			rbool flag_font_size = true;
+			rbool flag_fg_clor   = true;
+			rbool flag_bg_clor   = true;
 			while ( it != objects.end() ) {
 				if ( flag_font_name && (*it)->font_name != all_font_name ) {
 					flag_font_name = false;
@@ -1858,7 +1858,7 @@ void RDOStudioOptionsPlugins::OnPluginListSelectChanged( NMHDR* pNMHDR, LRESULT*
 {
 	NM_LISTVIEW* pNMListView = reinterpret_cast<NM_LISTVIEW*>(pNMHDR);
 
-	bool useItem = true;
+	rbool useItem = true;
 	if ( !(pNMListView->uChanged & LVIF_STATE) ) {
 		useItem = false;
 	}
@@ -1867,7 +1867,7 @@ void RDOStudioOptionsPlugins::OnPluginListSelectChanged( NMHDR* pNMHDR, LRESULT*
 		useItem = false;
 	}
 
-	bool havePlugin = false;
+	rbool havePlugin = false;
 	if ( useItem ) {
 		RDOStudioPlugin* plugin = reinterpret_cast<RDOStudioPlugin*>(pNMListView->lParam);
 		if ( plugin ) {
@@ -1931,8 +1931,8 @@ void RDOStudioOptionsPlugins::updateControls( const RDOStudioPlugin* plugin )
 		m_runModeComboBox.EnableWindow( true );
 		m_runModeButton.EnableWindow( plugin->getRunMode() != plugin->getDefaultRunMode() );
 		m_runModeComboBox.SetCurSel( plugin->getRunMode() );
-		bool startPlugin = plugin->getState() == rdoPlugin::psStoped && (plugin->getRunMode() == rdoPlugin::prmNoAuto || plugin->getRunMode() == rdoPlugin::prmStudioStartUp || (plugin->getRunMode() == rdoPlugin::prmModelStartUp && model->isRunning()) );
-		bool stopPlugin  = plugin->getState() == rdoPlugin::psActive && (plugin->getRunMode() == rdoPlugin::prmNoAuto || plugin->getRunMode() == rdoPlugin::prmStudioStartUp || (plugin->getRunMode() == rdoPlugin::prmModelStartUp && model->isRunning()) );
+		rbool startPlugin = plugin->getState() == rdoPlugin::psStoped && (plugin->getRunMode() == rdoPlugin::prmNoAuto || plugin->getRunMode() == rdoPlugin::prmStudioStartUp || (plugin->getRunMode() == rdoPlugin::prmModelStartUp && model->isRunning()) );
+		rbool stopPlugin  = plugin->getState() == rdoPlugin::psActive && (plugin->getRunMode() == rdoPlugin::prmNoAuto || plugin->getRunMode() == rdoPlugin::prmStudioStartUp || (plugin->getRunMode() == rdoPlugin::prmModelStartUp && model->isRunning()) );
 		m_startButton.EnableWindow( startPlugin );
 		m_stopButton.EnableWindow( stopPlugin );
 		m_restoreStateCheckBox.EnableWindow( plugin->getRunMode() == rdoPlugin::prmNoAuto );

@@ -17,7 +17,7 @@ protected:
 	CBrush   bg_brush;
 	CFont    text_font;
 	COLORREF text_color;
-	bool     text_show;
+	rbool    text_show;
 
 	std::vector< RPConnectorDock* > docks;
 	RPConnectorDock* find_dock( const rp::point& global_chart_pos );
@@ -68,7 +68,7 @@ protected:
 	PossibleCommand pcmd;
 
 	// Возможная команда над объектом
-	PossibleCommand getPossibleCommand( const rp::point& global_chart_pos, bool for_cursor = false );
+	PossibleCommand getPossibleCommand( const rp::point& global_chart_pos, rbool for_cursor = false );
 
 	// Вернуть дискретный угол поворота (дискрета 90 градусов)
 	angle90 getAngle90() const {
@@ -112,7 +112,7 @@ protected:
 
 	virtual RPProject::Cursor getCursor( const rp::point& global_chart_pos );
 
-	virtual bool isShape() const { return true; }
+	virtual rbool isShape() const { return true; }
 	virtual RPObjectChart* find( const rp::point& global_chart_pos );
 
 	virtual void onRButtonDown( UINT nFlags, CPoint global_chart_pos );
@@ -141,7 +141,7 @@ public:
 		color = text_color;
 		return text_font;
 	}
-	void setTextFont( const CFont& font, COLORREF color, bool show );
+	void setTextFont( const CFont& font, COLORREF color, rbool show );
 
 //	const CPoint& getSnapToPoint() const { return snap_to_point; }
 
@@ -149,7 +149,7 @@ public:
 	virtual void draw_selected( CDC& dc );
 
 	// Габориты фигуры
-	virtual rp::rect getBoundingRect( bool global = true ) const;
+	virtual rp::rect getBoundingRect( rbool global = true ) const;
 	virtual rp::rect getMaxRect();
 	virtual rp::rect getBoundingRectNoRotateOuter() {
 		transformToGlobal();
@@ -164,19 +164,19 @@ public:
 	virtual void transformToGlobal();
 
 	// Находится ли точка внутри фигуры
-	virtual bool pointInPolygon( const rp::point& global_chart_pos ) {
+	virtual rbool pointInPolygon( const rp::point& global_chart_pos ) {
 		transformToGlobal();
 		return pa_global.extendByPerimetr( static_cast<double>(main_pen_width) / 2.0 ).pointInPolygon( global_chart_pos );
 	}
 	// Находится ли точка в служебной (неклиентской) части фигуры (прямоугольник выделения, к примеру)
-	virtual bool pointInNCArea( const rp::point& global_chart_pos );
+	virtual rbool pointInNCArea( const rp::point& global_chart_pos );
 
 	// Перед выполнение команды (объект должен подготовить команду)
-	virtual void command_before( const rp::point& global_chart_pos, bool first_click );
+	virtual void command_before( const rp::point& global_chart_pos, rbool first_click );
 	// Выполнить команду над объектом
 	virtual void command_make( const rp::point& global_chart_pos );
 
-	virtual bool can_delete() const { return pcmd == pcmd_move; }
+	virtual rbool can_delete() const { return pcmd == pcmd_move; }
 };
 
 #endif // RDO_PROCESS_SHAPE_H

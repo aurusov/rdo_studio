@@ -69,11 +69,11 @@ public:
 	rp::point getCenter() const {
 		return rp::point( (getMaxX() + getMinX()) / 2, (getMaxY() + getMinY()) / 2 );
 	}
-	bool isPolygon() const {
+	rbool isPolygon() const {
 		if ( size() < 3 ) return false;
 		return (*begin() == *(end()-1)) ? true : false;
 	}
-	bool pointInPolygon( const rp::point& point ) const;
+	rbool pointInPolygon( const rp::point& point ) const;
 //	void extendFromCenter( double delta );
 	polyline& extendByPerimetr( double delta );
 

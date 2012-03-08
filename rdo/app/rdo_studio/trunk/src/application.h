@@ -56,19 +56,19 @@ private:
 	void loadReopen();
 	void saveReopen() const;
 
-	bool        fileAssociationSetup;
-	bool        fileAssociationCheckInFuture;
-	bool        openLastProject;
-	tstring lastProjectName;
+	rbool       fileAssociationSetup;
+	rbool       fileAssociationCheckInFuture;
+	rbool       openLastProject;
+	tstring     lastProjectName;
 	ULONG_PTR   m_gdiplusToken;
 
-	bool showCaptionFullName;
+	rbool showCaptionFullName;
 
 	void setupFileAssociation();
 
-	bool autoRun;
-	bool autoExitByModel;
-	bool dontCloseIfError;
+	rbool autoRun;
+	rbool autoExitByModel;
+	rbool dontCloseIfError;
 	rdoSimulator::RDOExitCode exitCode;
 	tstring openModelName;
 
@@ -87,28 +87,28 @@ public:
 
 	void insertReopenItem( CREF(tstring) item );
 
-	bool getFileAssociationSetup() const              { return fileAssociationSetup;         }
-	void setFileAssociationSetup( const bool value );
+	rbool getFileAssociationSetup() const              { return fileAssociationSetup;         }
+	void setFileAssociationSetup( const rbool value );
 
-	bool getFileAssociationCheckInFuture() const      { return fileAssociationCheckInFuture; }
-	void setFileAssociationCheckInFuture( const bool value );
+	rbool getFileAssociationCheckInFuture() const      { return fileAssociationCheckInFuture; }
+	void setFileAssociationCheckInFuture( const rbool value );
 
-	bool getOpenLastProject() const                   { return openLastProject;              }
-	void setOpenLastProject( const bool value );
+	rbool getOpenLastProject() const                   { return openLastProject;              }
+	void setOpenLastProject( const rbool value );
 
 	tstring getLastProjectName() const            { return lastProjectName;              }
 	void setLastProjectName( CREF(tstring) projectName );
 
-	bool getShowCaptionFullName() const               { return showCaptionFullName;          }
-	void setShowCaptionFullName( const bool value );
+	rbool getShowCaptionFullName() const               { return showCaptionFullName;          }
+	void setShowCaptionFullName( const rbool value );
 
 	void autoCloseByModel();
 	void autoCloseByPlugin( RDOStudioPlugin* plugin );
-	bool isPluginAutoStart( RDOStudioPlugin* plugin ) const;
+	rbool isPluginAutoStart( RDOStudioPlugin* plugin ) const;
 
 	static tstring getFullFileName();
 	static tstring getFullHelpFileName( tstring str = "RAO-studio.chm" );
-	static bool shortToLongPath( CREF(tstring) shortPath, tstring& longPath );
+	static rbool shortToLongPath( CREF(tstring) shortPath, tstring& longPath );
 
 private:
 	virtual BOOL InitInstance();

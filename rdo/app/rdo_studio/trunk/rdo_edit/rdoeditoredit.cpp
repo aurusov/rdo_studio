@@ -305,7 +305,7 @@ void RDOEditorEdit::OnEditCompleteWord()
 	completeWord();
 }
 
-void RDOEditorEdit::expand( int& line, bool doExpand, bool force, int visLevels, int level ) const
+void RDOEditorEdit::expand( int& line, rbool doExpand, rbool force, int visLevels, int level ) const
 {
 	int lineMaxSubord = sendEditor( SCI_GETLASTCHILD, line, level & SC_FOLDLEVELNUMBERMASK );
 	line++;
@@ -363,7 +363,7 @@ void RDOEditorEdit::toggleAllFolds() const
 {
 	sendEditor( SCI_COLOURISE, 0, -1 );
 	int maxLine = getLineCount();
-	bool expanding = true;
+	rbool expanding = true;
 	for ( int lineSeek = 0; lineSeek < maxLine; lineSeek++ ) {
 		if ( sendEditor(SCI_GETFOLDLEVEL, lineSeek) & SC_FOLDLEVELHEADERFLAG ) {
 			expanding = !sendEditor( SCI_GETFOLDEXPANDED, lineSeek );
@@ -442,7 +442,7 @@ void RDOEditorEdit::commentSelection() const
 		int startCommentLength = startComment.length();
 		CharacterRange cr = getSelectionRange();
 		int caretPosition = getCurrentPos();
-		bool moveCaret = caretPosition < cr.cpMax;
+		rbool moveCaret = caretPosition < cr.cpMax;
 		sendEditor( SCI_BEGINUNDOACTION );
 		sendEditorString( SCI_INSERTTEXT, cr.cpMin, startComment.c_str() );
 		cr.cpMax += startCommentLength;
@@ -534,7 +534,7 @@ void RDOEditorEdit::completeWord()
 
 		tstring startKeyWord       = "";
 		tstring startKeyWordScroll = wl.wordsNoCase[ wl.len-1 ];
-		bool useReplace = false;
+		rbool useReplace = false;
 		if ( words ) {
 			wl.Clear();
 			wl.Set( words );
@@ -578,7 +578,7 @@ void RDOEditorEdit::clearErrorLine()
 	}
 }
 
-bool RDOEditorEdit::hasErrorLine() const
+rbool RDOEditorEdit::hasErrorLine() const
 {
 	int nextLine = sendEditor( SCI_MARKERNEXT, 0, 1 << sci_MARKER_ERROR );
 	return nextLine >= 0;
@@ -698,7 +698,7 @@ void RDOEditorEdit::onBufferAppend( const int bufIndex )
 
 	int pos = getCurrentPos();
 	if ( pos == getLength() ) return;
-	bool canUseSelected = false;
+	rbool canUseSelected = false;
 	if ( bufSelStart == -1 ) {
 		CharacterRange cr = getSelectionRange();
 		bufSelStart       = cr.cpMin;

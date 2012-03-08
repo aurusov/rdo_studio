@@ -99,10 +99,10 @@ public:
 	rp::point  p_l() const { return rp::point( (pa[0].x + pa[3].x) / 2, (pa[0].y + pa[3].y) / 2 ); }
 	rp::point  p_r() const { return rp::point( (pa[1].x + pa[2].x) / 2, (pa[1].y + pa[2].y) / 2 ); }
 
-	bool pointInRect( const rp::point& point ) const;
+	rbool pointInRect( const rp::point& point ) const;
 //	void extendFromCenter( double delta );
 	rect& extendByPerimetr( double delta );
-	bool isIntersection( const rp::point& p1, const rp::point& p2, std::list< rp::point >& inter );
+	rbool isIntersection( const rp::point& p1, const rp::point& p2, std::list< rp::point >& inter );
 
 	void draw( CDC& dc ) const {
 		dc.MoveTo( static_cast<int>(pa[0].x), static_cast<int>(pa[0].y) );

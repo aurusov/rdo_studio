@@ -14,6 +14,7 @@
 #include <sstream>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/namespace.h"
+#include "utils/rdotypes.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE
@@ -27,7 +28,7 @@ public:
 	stream(ios_base::openmode mode)
 		: std::stringstream(mode)
 	{}
-	virtual bool isBinary() const = 0;
+	virtual rbool isBinary() const = 0;
 };
 
 // --------------------------------------------------------------------------------
@@ -39,7 +40,7 @@ public:
 	binarystream()
 		: stream(ios_base::in | ios_base::out | ios_base::binary)
 	{}
-	virtual bool isBinary() const { return true; }
+	virtual rbool isBinary() const { return true; }
 };
 
 // --------------------------------------------------------------------------------
@@ -51,7 +52,7 @@ public:
 	textstream()
 		: stream(ios_base::in | ios_base::out)
 	{}
-	virtual bool isBinary() const { return false; }
+	virtual rbool isBinary() const { return false; }
 };
 
 CLOSE_RDO_NAMESPACE

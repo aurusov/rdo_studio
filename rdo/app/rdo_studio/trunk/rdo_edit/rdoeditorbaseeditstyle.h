@@ -27,8 +27,8 @@ public:
 	virtual ~RDOEditorBaseEditTheme();
 
 	RDOEditorBaseEditTheme& operator =( const RDOEditorBaseEditTheme& theme );
-	bool operator ==( const RDOEditorBaseEditTheme& theme ) const;
-	bool operator !=( const RDOEditorBaseEditTheme& theme ) const;
+	rbool operator ==( const RDOEditorBaseEditTheme& theme ) const;
+	rbool operator !=( const RDOEditorBaseEditTheme& theme ) const;
 
 	virtual void load( tstring regPath );
 	virtual void save( tstring regPath ) const;
@@ -53,10 +53,10 @@ public:
 	rdoStyle::RDOStyleFont::style stringStyle;
 	rdoStyle::RDOStyleFont::style operatorStyle;
 
-	virtual bool styleDefault( const int styleType ) const;
-	virtual bool styleUsing( const int styleType ) const;
-	virtual bool styleBold( const int styleType = STYLE_DEFAULT ) const;
-	virtual bool styleItalic( const int styleType = STYLE_DEFAULT ) const;
+	virtual rbool styleDefault( const int styleType ) const;
+	virtual rbool styleUsing( const int styleType ) const;
+	virtual rbool styleBold( const int styleType = STYLE_DEFAULT ) const;
+	virtual rbool styleItalic( const int styleType = STYLE_DEFAULT ) const;
 	virtual tstring styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
 
 	static RDOEditorBaseEditTheme getDefaultTheme();
@@ -81,8 +81,8 @@ public:
 	virtual ~RDOEditorBaseEditStyle();
 
 	RDOEditorBaseEditStyle& operator =( const RDOEditorBaseEditStyle& style );
-	bool operator ==( const RDOEditorBaseEditStyle& style ) const;
-	bool operator !=( const RDOEditorBaseEditStyle& style ) const;
+	rbool operator ==( const RDOEditorBaseEditStyle& style ) const;
+	rbool operator !=( const RDOEditorBaseEditStyle& style ) const;
 };
 
 }; // namespace rdoEditor

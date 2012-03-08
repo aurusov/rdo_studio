@@ -90,7 +90,7 @@ void RDOStudioChartOptionsChart::OnOK()
 	CPropertyPage::OnOK();
 }
 
-bool RDOStudioChartOptionsChart::checkValues() const
+rbool RDOStudioChartOptionsChart::checkValues() const
 {
 	int valCount_Y = GetDlgItemInt(IDC_IDC_VAL_COUNT_Y_EDIT);
 	CEdit* edit_Y = (CEdit*) GetDlgItem(IDC_IDC_VAL_COUNT_Y_EDIT);
@@ -170,7 +170,7 @@ void RDOStudioChartOptionsChart::OnUpdateModify()
 	UpdateData();
 	
 	RDOStudioChartView* view = sheet->view;
-	bool legend = m_DrawLegend.GetCheck() ? true : false;
+	rbool legend = m_DrawLegend.GetCheck() ? true : false;
 
 	SetModified( legend != view->needDrawLegend || m_ValCountX != view->valueCountX || m_ValCountY != view->valueCountY || m_ChartTitle != view->GetDocument()->getTitle().c_str() || m_AxisSerie != view->GetDocument()->getSerieIndex( view->yAxis ) );
 }
@@ -181,7 +181,7 @@ void RDOStudioChartOptionsChart::apply() const
 		sheet->view->yAxis = sheet->view->GetDocument()->series.at( m_AxisSerie );
 	else
 		sheet->view->yAxis = NULL;
-	bool legend = m_DrawLegend.GetCheck() ? true : false;
+	rbool legend = m_DrawLegend.GetCheck() ? true : false;
 	sheet->view->needDrawLegend = legend;
 	sheet->view->valueCountX = m_ValCountX;
 	sheet->view->valueCountY = m_ValCountY;
@@ -217,15 +217,15 @@ RDOStudioChartOptionsSeries::~RDOStudioChartOptionsSeries()
 {
 }
 
-bool RDOStudioChartOptionsSeries::getModified() const
+rbool RDOStudioChartOptionsSeries::getModified() const
 {
-	bool res = false;
+	rbool res = false;
 	if ( serie ) {
 		CString title;
 		m_SerieTitle.GetWindowText( title );
-		bool marker = m_DrawMarker.GetCheck() ? true : false;
-		bool legend = m_DrawInLegend.GetCheck() ? true : false;
-		bool transp = m_TranspMarker.GetCheck() ? true : false;
+		rbool marker = m_DrawMarker.GetCheck() ? true : false;
+		rbool legend = m_DrawInLegend.GetCheck() ? true : false;
+		rbool transp = m_TranspMarker.GetCheck() ? true : false;
 		res = title != serie->docSerieTitle.c_str() || ColorCB.getCurrentColor() != serie->color || m_Marker.GetCurSel() != serie->marker || marker != serie->needDrawMarker || m_sizeMarker != serie->marker_size || legend != serie->showInLegend || transp != serie->transparentMarker;
 	}
 	return res;
@@ -282,7 +282,7 @@ BOOL RDOStudioChartOptionsSeries::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT
 	return CPropertyPage::OnNotify(wParam, lParam, pResult);
 }
 
-bool RDOStudioChartOptionsSeries::checkValues() const
+rbool RDOStudioChartOptionsSeries::checkValues() const
 {
 	int marker_size = GetDlgItemInt(IDC_MARKER_SIZE_EDIT);
 	CEdit* edit_marker_size = (CEdit*) GetDlgItem(IDC_MARKER_SIZE_EDIT);
@@ -339,12 +339,12 @@ void RDOStudioChartOptionsSeries::apply() const
 		serie->docSerieTitle = title;
 		serie->color = ColorCB.getCurrentColor();
 		serie->marker = static_cast<RDOTracerSerieMarker>(m_Marker.GetCurSel());
-		bool marker = m_DrawMarker.GetCheck() ? true : false;
+		rbool marker = m_DrawMarker.GetCheck() ? true : false;
 		serie->needDrawMarker = marker;
 		serie->marker_size = m_sizeMarker;
-		bool legend = m_DrawInLegend.GetCheck() ? true : false;
+		rbool legend = m_DrawInLegend.GetCheck() ? true : false;
 		serie->showInLegend = legend;
-		bool transp = m_TranspMarker.GetCheck() ? true : false;
+		rbool transp = m_TranspMarker.GetCheck() ? true : false;
 		serie->transparentMarker = transp;
 	}
 }
@@ -370,7 +370,7 @@ void RDOStudioChartOptionsSeries::OnSelchangeSeriesCombo()
 		return;
 	}
 	int ser = m_SerieCombo.GetCurSel();
-	bool enable = ser != -1;
+	rbool enable = ser != -1;
 	m_SerieTitle.EnableWindow( enable );
 	ColorCB.EnableWindow( enable );
 	m_Marker.EnableWindow( enable );
@@ -381,7 +381,7 @@ void RDOStudioChartOptionsSeries::OnSelchangeSeriesCombo()
 	if ( enable ) {
 		if ( serie && getModified() ) {
 			int res = AfxGetMainWnd()->MessageBox( rdo::format( IDS_CHART_OPTIONS_APPLY ).c_str(), NULL, MB_ICONQUESTION | MB_YESNOCANCEL );
-			bool continue_flag = true;  
+			rbool continue_flag = true;  
 			switch ( res ) {
 				case IDYES   : sheet->apply(); break;
 				case IDNO    : restoreValues(); break;

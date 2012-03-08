@@ -58,9 +58,9 @@ int RDODebugEdit::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 void RDODebugEdit::appendLine( CREF(tstring) str )
 {
-	bool readOnly = isReadOnly();
+	rbool readOnly = isReadOnly();
 	setReadOnly( false );
-	bool scroll = isLineVisible( getLineCount() - 1 );
+	rbool scroll = isLineVisible( getLineCount() - 1 );
 	setCurrentPos( getLength() );
 	appendText( str );
 	if ( scroll ) {

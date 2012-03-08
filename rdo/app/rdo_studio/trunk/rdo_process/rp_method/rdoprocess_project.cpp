@@ -52,7 +52,7 @@ RPObject* RPProject::findObject( rp::string fullname )
 		rp::string obj_name = "";
 		fullname.erase( 0, 1 );
 		pos = fullname.find( '/' );
-		bool last = false;
+		rbool last = false;
 		if ( pos != tstring::npos ) {
 			obj_name = fullname.substr( 0, pos );
 			fullname.erase( 0, pos );

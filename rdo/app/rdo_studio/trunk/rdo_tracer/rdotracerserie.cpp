@@ -22,12 +22,12 @@ class RDOTracerSerieFindValue
 	RDOStudioChartView* view;
 public:
 	RDOTracerSerieFindValue( RDOStudioChartView* _view ): view( _view ) {};
-	bool operator ()( RDOTracerValue* val );
+	rbool operator ()( RDOTracerValue* val );
 };
 
-bool RDOTracerSerieFindValue::operator ()( RDOTracerValue* val )
+rbool RDOTracerSerieFindValue::operator ()( RDOTracerValue* val )
 {
-	bool res = val && val->modeltime->time >= view->drawFromX.time;
+	rbool res = val && val->modeltime->time >= view->drawFromX.time;
 	if ( view->doUnwrapTime() && res && ( val->modeltime->time == view->drawFromX.time ) )
 		res = val->eventIndex >= view->drawFromEventIndex;
 	return res;
@@ -60,7 +60,7 @@ RDOTracerSerie::~RDOTracerSerie()
 	mutex.Unlock();
 };
 
-bool RDOTracerSerie::isTemporaryResourceParam() const
+rbool RDOTracerSerie::isTemporaryResourceParam() const
 {
 	return serieKind == RDOST_RESPARAM && ((RDOTracerResParam*)this)->getResource()->getType()->getResTypeKind() == RDOTK_TEMPORARY;
 };
@@ -197,7 +197,7 @@ void RDOTracerSerie::getLastValue( RDOTracerValue*& val ) const
 	const_cast<CMutex&>(mutex).Unlock();
 }
 
-void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, HDC &dc, CRect &rect, const COLORREF color, RDOTracerSerieMarker marker, const int marker_size, const bool draw_marker, const bool transparent_marker ) const
+void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, HDC &dc, CRect &rect, const COLORREF color, RDOTracerSerieMarker marker, const int marker_size, const rbool draw_marker, const rbool transparent_marker ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 	
@@ -209,7 +209,7 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, HDC &dc, CRect &
 			it --;
 		}
 		
-		bool flag = it != values.end();
+		rbool flag = it != values.end();
 		if ( flag && !view->doUnwrapTime() ) {
 			flag = !( it == values.begin() && (*it)->modeltime->time > view->drawToX.time );
 		} else if ( flag ) {
@@ -309,8 +309,8 @@ void RDOTracerSerie::drawSerie( RDOStudioChartView* const view, HDC &dc, CRect &
 					}
 				}
 				
-				bool tempres_erased = ( serieKind == RDOST_RESPARAM && ((RDOTracerResParam*)this)->getResource()->isErased() );
-				bool need_continue = !view->doUnwrapTime() ? ( values.size() > 1 ) : true;
+				rbool tempres_erased = ( serieKind == RDOST_RESPARAM && ((RDOTracerResParam*)this)->getResource()->isErased() );
+				rbool need_continue = !view->doUnwrapTime() ? ( values.size() > 1 ) : true;
 				if ( tempres_erased ) {
 					if ( !view->doUnwrapTime() ) {
 						need_continue = ( it != values.end() && (*it)->modeltime->time > view->drawToX.time );
@@ -421,11 +421,11 @@ void RDOTracerSerie::removeFromDoc( RDOStudioChartDoc* const doc )
 	mutex.Unlock();
 }
 
-bool RDOTracerSerie::activateFirstDoc() const
+rbool RDOTracerSerie::activateFirstDoc() const
 {
 	const_cast<CMutex&>(mutex).Lock();
 	
-	bool res = false;
+	rbool res = false;
 	if ( !documents.empty() ) {
 		RDOStudioChartDoc* doc = documents.front();
 		if ( doc ) {

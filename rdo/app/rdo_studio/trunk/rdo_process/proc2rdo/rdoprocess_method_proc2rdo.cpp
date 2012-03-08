@@ -130,7 +130,7 @@ void RPMethodProc2RDO_MJ::loadFromXML(const pugi::xml_node &node)
 	NEVER_REACH_HERE;
 }
 
-bool RPMethodProc2RDO_MJ::checkModelStructure()
+rbool RPMethodProc2RDO_MJ::checkModelStructure()
 {
 // Заполнили ID
 	std::list< RPObject* > all_child;

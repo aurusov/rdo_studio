@@ -46,9 +46,9 @@ RPMethodPlugin::~RPMethodPlugin()
 	}
 }
 
-bool RPMethodPlugin::isMethod( CREF(tstring) file_name )
+rbool RPMethodPlugin::isMethod( CREF(tstring) file_name )
 {
-	bool res = false;
+	rbool res = false;
 	HMODULE local_lib = ::LoadLibrary( file_name.c_str() );
 	if ( local_lib ) {
 		rpMethod::PFunRegisterMethod registerMethod = reinterpret_cast<rpMethod::PFunRegisterMethod>(::GetProcAddress( local_lib, "registerMethod" ));

@@ -83,7 +83,7 @@ private:
 	CMultiDocTemplate* chartDocTemplate;
 	std::vector <RDOStudioChartDoc*> charts;
 
-	bool drawTrace;
+	rbool drawTrace;
 
 protected:
 	RDOTracerBase( CREF(tstring) _thread_name, RDOKernelGUI* _kernel_gui );
@@ -107,8 +107,8 @@ public:
 	void updateChartsStyles() const;
 	void clear();
 	void setModelName( tstring name ) const;
-	void setDrawTrace( const bool value );
-	bool getDrawTrace() const { return drawTrace; };
+	void setDrawTrace( const rbool value );
+	rbool getDrawTrace() const { return drawTrace; };
 	void lock()   { mutex.Lock(); };
 	void unlock() { mutex.Unlock(); };
 };

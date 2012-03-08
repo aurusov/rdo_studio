@@ -34,19 +34,19 @@ class RDOLogCtrlFindInList
 {
 	RDOLogCtrl* log;
 	tstring strToFind;
-	bool matchCase;
-	bool matchWholeWord;
+	rbool matchCase;
+	rbool matchWholeWord;
 	
-	bool scan( tstring::iterator &wildCards, tstring::iterator &wildend, tstring::iterator &str, tstring::iterator &strend ) const;
-	bool match( tstring::iterator &wildcards, tstring::iterator &wildend, tstring::iterator &strcomp, tstring::iterator &strend ) const;
+	rbool scan( tstring::iterator &wildCards, tstring::iterator &wildend, tstring::iterator &str, tstring::iterator &strend ) const;
+	rbool match( tstring::iterator &wildcards, tstring::iterator &wildend, tstring::iterator &strcomp, tstring::iterator &strend ) const;
 public:
-	RDOLogCtrlFindInList( RDOLogCtrl* _log, tstring _strToFind, bool _matchCase, bool _matchWholeWord );
-	bool operator()( tstring nextstr );
+	RDOLogCtrlFindInList( RDOLogCtrl* _log, tstring _strToFind, rbool _matchCase, rbool _matchWholeWord );
+	rbool operator()( tstring nextstr );
 };
 
 }; // namespace rdoTracerLog
 
-RDOLogCtrlFindInList::RDOLogCtrlFindInList( RDOLogCtrl* _log, tstring _strToFind, bool _matchCase, bool _matchWholeWord )
+RDOLogCtrlFindInList::RDOLogCtrlFindInList( RDOLogCtrl* _log, tstring _strToFind, rbool _matchCase, rbool _matchWholeWord )
 	: log( _log ),
 	strToFind( _strToFind ),
 	matchCase( _matchCase ),
@@ -54,7 +54,7 @@ RDOLogCtrlFindInList::RDOLogCtrlFindInList( RDOLogCtrl* _log, tstring _strToFind
 {
 }
 
-bool RDOLogCtrlFindInList::scan( tstring::iterator &wildCards, tstring::iterator &wildend, tstring::iterator &str, tstring::iterator &strend ) const
+rbool RDOLogCtrlFindInList::scan( tstring::iterator &wildCards, tstring::iterator &wildend, tstring::iterator &str, tstring::iterator &strend ) const
 {
 	// remove the '?' and '*'
 	for( wildCards ++; str != strend && ( *wildCards == '?' || *wildCards == '*' ); wildCards ++ )
@@ -70,7 +70,7 @@ bool RDOLogCtrlFindInList::scan( tstring::iterator &wildCards, tstring::iterator
 	{
 		tstring::iterator wdsCopy = wildCards;
 		tstring::iterator strCopy = str;
-		bool res = 1;
+		rbool res = 1;
 		do 
 		{
 			if ( !match( wildCards, wildend, str, strend ) ) strCopy ++;
@@ -87,9 +87,9 @@ bool RDOLogCtrlFindInList::scan( tstring::iterator &wildCards, tstring::iterator
 	}
 }
 
-bool RDOLogCtrlFindInList::match( tstring::iterator &wildcards, tstring::iterator &wildend, tstring::iterator &strcomp, tstring::iterator &strend ) const
+rbool RDOLogCtrlFindInList::match( tstring::iterator &wildcards, tstring::iterator &wildend, tstring::iterator &strcomp, tstring::iterator &strend ) const
 {
-	bool res = true;
+	rbool res = true;
 	
 	tstring strWild;
 	tstring strComp;
@@ -126,7 +126,7 @@ bool RDOLogCtrlFindInList::match( tstring::iterator &wildcards, tstring::iterato
 	return res && strCompb == strCompe && strWildb == strWilde;
 }
 
-bool RDOLogCtrlFindInList::operator()( tstring nextstr )
+rbool RDOLogCtrlFindInList::operator()( tstring nextstr )
 {
 	if ( !matchWholeWord && strToFind.find_first_of( "*?" ) == tstring::npos ) {
 		strToFind.insert( 0, "*");
@@ -277,16 +277,16 @@ void RDOLogCtrl::OnSize( UINT nType, int cx, int cy )
 
 		//isFullyVisible() uses newClientRect so call it
 		//after setting up newClientRect
-		bool lastLineVisible = isFullyVisible( stringsCount - 1 );
-		bool lastCharVisible = maxStrWidth == xPos + newClientRect.Width() / charWidth;
+		rbool lastLineVisible = isFullyVisible( stringsCount - 1 );
+		rbool lastCharVisible = maxStrWidth == xPos + newClientRect.Width() / charWidth;
 		
-		bool fullVisibleVert = !yPos && lastLineVisible;
-		bool fullVisibleHorz = !xPos && lastCharVisible;
+		rbool fullVisibleVert = !yPos && lastLineVisible;
+		rbool fullVisibleHorz = !xPos && lastCharVisible;
 		
-		bool needShiftVert = yPos < prevYPos && !fullVisibleVert;
-		bool needShiftHorz = xPos < prevXPos && !fullVisibleHorz;
+		rbool needShiftVert = yPos < prevYPos && !fullVisibleVert;
+		rbool needShiftHorz = xPos < prevXPos && !fullVisibleHorz;
 		
-		bool topChanged = prevWindowRect.top != newWindowRect.top;
+		rbool topChanged = prevWindowRect.top != newWindowRect.top;
 		int dx = newClientRect.right - prevClientRect.right;
 		int dy = newClientRect.bottom - prevClientRect.bottom;
 		
@@ -384,12 +384,12 @@ void RDOLogCtrl::OnSize( UINT nType, int cx, int cy )
 		}
 }
 
-bool RDOLogCtrl::getItemColors( const int index, RDOLogColorPair* &colors ) const
+rbool RDOLogCtrl::getItemColors( const int index, RDOLogColorPair* &colors ) const
 {
 	return logStyle->getItemColors( index, colors );
 }
 
-bool RDOLogCtrl::getItemColors( CREF(tstring) item, RDOLogColorPair* &colors ) const
+rbool RDOLogCtrl::getItemColors( CREF(tstring) item, RDOLogColorPair* &colors ) const
 {
 	return logStyle->getItemColors( item, colors );
 }
@@ -712,9 +712,9 @@ void RDOLogCtrl::updateScrollBars()
 	}
 }
 
-bool RDOLogCtrl::scrollVertically( int inc )
+rbool RDOLogCtrl::scrollVertically( int inc )
 {
-	bool res = false;
+	rbool res = false;
 	if ( !inc ) return res;
 
 	// If applying the vertical scrolling increment does not
@@ -777,9 +777,9 @@ bool RDOLogCtrl::scrollVertically( int inc )
 	return res;
 }
 
-bool RDOLogCtrl::scrollHorizontally( int inc )
+rbool RDOLogCtrl::scrollHorizontally( int inc )
 {
-	bool res = false;
+	rbool res = false;
 	if ( !inc ) return res;
 
 	// If applying the horizontal scrolling increment does not 
@@ -811,12 +811,12 @@ bool RDOLogCtrl::scrollHorizontally( int inc )
 	return res;
 }
 
-bool RDOLogCtrl::isVisible( const int index ) const
+rbool RDOLogCtrl::isVisible( const int index ) const
 {
 	return index <= lastViewableLine && index >= yPos;
 }
 
-bool RDOLogCtrl::isFullyVisible( const int index ) const
+rbool RDOLogCtrl::isFullyVisible( const int index ) const
 {
 	int lastVisible = yPos + newClientRect.Height() / lineHeight - 1;
 	return index <= lastVisible && index >= yPos;
@@ -835,7 +835,7 @@ void RDOLogCtrl::selectLine( const int index )
 		//makeLineVisible() scrolls to the line and repaints
 		//it and nearby line if scrolling occurs.
 		//If no scrolling is done repaint line
-		bool needrepaint = !makeLineVisible( selectedLine );
+		rbool needrepaint = !makeLineVisible( selectedLine );
 		if ( needrepaint )
 			repaintLine( selectedLine );
 
@@ -872,9 +872,9 @@ void RDOLogCtrl::updateWindow()
 		SendNotifyMessage( WM_PAINT, 0, 0 );
 }
 
-bool RDOLogCtrl::makeLineVisible( const int index )
+rbool RDOLogCtrl::makeLineVisible( const int index )
 {
-	bool res = false;
+	rbool res = false;
 	
 	if ( isFullyVisible( index ) )
 		return res;
@@ -901,7 +901,7 @@ void RDOLogCtrl::addStringToLog( const tstring logStr )
 	mutex.Lock();
 
 	if ( hwnd ) {
-		bool prevVisible = isVisible( stringsCount - 1 );
+		rbool prevVisible = isVisible( stringsCount - 1 );
 
 		strings.push_back( logStr );
 		if ( !stringsCount )
@@ -948,7 +948,7 @@ const RDOLogStyle& RDOLogCtrl::getStyle() const
 	return (*logStyle);
 }
 
-void RDOLogCtrl::setStyle( RDOLogStyle* style, const bool needRedraw )
+void RDOLogCtrl::setStyle( RDOLogStyle* style, const rbool needRedraw )
 {
 	logStyle = style;
 	setFont( false );
@@ -962,7 +962,7 @@ void RDOLogCtrl::setStyle( RDOLogStyle* style, const bool needRedraw )
 	}
 }
 
-void RDOLogCtrl::setFont( const bool needRedraw )
+void RDOLogCtrl::setFont( const rbool needRedraw )
 {
 	if ( !logStyle ) return;
 
@@ -1183,7 +1183,7 @@ stringList::const_reverse_iterator RDOLogCtrl::const_reverse_findString( int ind
 	return rit;
 }
 
-void RDOLogCtrl::find( int& result, const bool searchDown, const bool matchCase, const bool matchWholeWord )
+void RDOLogCtrl::find( int& result, const rbool searchDown, const rbool matchCase, const rbool matchWholeWord )
 {
 	mutex.Lock();
 
@@ -1276,7 +1276,7 @@ void RDOLogCtrl::setText( tstring text )
 	}
 }
 
-void RDOLogCtrl::setDrawLog( const bool value )
+void RDOLogCtrl::setDrawLog( const rbool value )
 {
 	if ( drawLog != value ) {
 		drawLog = value;

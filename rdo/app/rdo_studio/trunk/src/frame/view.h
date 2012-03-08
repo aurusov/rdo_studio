@@ -21,7 +21,7 @@ private:
 	int xPos;
 	int yPos;
 	COLORREF bgColor;
-	bool mustBeInit;
+	rbool mustBeInit;
 
 	HWND    hwnd;
 	HDC     hdc;
@@ -33,7 +33,7 @@ private:
 //	HBITMAP hbmpInit;
 	HBITMAP hbmp;
 
-	bool mouseOnHScroll;
+	rbool mouseOnHScroll;
 
 	void onDraw();
 	void updateFont();

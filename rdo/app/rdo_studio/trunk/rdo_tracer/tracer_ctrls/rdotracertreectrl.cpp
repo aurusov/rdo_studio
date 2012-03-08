@@ -119,7 +119,7 @@ void RDOTracerTreeCtrl::OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL bS
 	if( pwndFrame ) pwndFrame->SendMessage( WM_INITMENUPOPUP, WPARAM(pPopupMenu->m_hMenu), MAKELPARAM(nIndex, bSysMenu) );
 }
 
-void RDOTracerTreeCtrl::setHasChildren( const RDOTracerTreeItem* item, const bool hasChildren )
+void RDOTracerTreeCtrl::setHasChildren( const RDOTracerTreeItem* item, const rbool hasChildren )
 {
 	TVITEM tvitem;
 	tvitem.hItem = item->getTreeItem();
@@ -243,11 +243,11 @@ void RDOTracerTreeCtrl::addToNewChart( const HTREEITEM hitem ) const
 	}
 }
 
-bool RDOTracerTreeCtrl::findInCharts( const HTREEITEM hitem ) const
+rbool RDOTracerTreeCtrl::findInCharts( const HTREEITEM hitem ) const
 {
 	UNUSED(hitem);
 
-	bool res = false;
+	rbool res = false;
 	RDOTracerTreeItem* item = getIfItemIsDrawable( GetSelectedItem() );
 	RDOTracerSerie* serie = NULL;
 	if ( item ) {
@@ -300,7 +300,7 @@ void RDOTracerTreeCtrl::OnRButtonDown(UINT _nFlags, CPoint point)
 
 void RDOTracerTreeCtrl::OnUpdateChartFindincharts(CCmdUI* pCmdUI) 
 {
-	bool enable = false;
+	rbool enable = false;
 	if ( tracer->getDrawTrace() ) {
 		RDOTracerTreeItem* item = getIfItemIsDrawable( GetSelectedItem() );
 		RDOTracerSerie* serie = NULL;

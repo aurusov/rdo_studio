@@ -60,7 +60,7 @@ public:
 			case pm_small: pixmap_small = pixmap; break;
 		}
 	}
-	bool hasPixmap( PMSize size = pm_small ) const {
+	rbool hasPixmap( PMSize size = pm_small ) const {
 		switch ( size ) {
 			case pm_big  : return pixmap_big   ? true : false;
 			case pm_small: return pixmap_small ? true : false;

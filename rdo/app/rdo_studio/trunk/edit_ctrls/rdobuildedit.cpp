@@ -29,7 +29,7 @@ using namespace rdoEditCtrl;
 // --------------------------------------------------------------------------------
 // -------------------- RDOBuildEditLineInfo
 // --------------------------------------------------------------------------------
-RDOBuildEditLineInfo::RDOBuildEditLineInfo( rdoSimulator::RDOSyntaxError::ErrorCode _error_code, CREF(tstring) _message, const rdoModelObjects::RDOFileType _fileType, const int _lineNumber, const int _posInLine, bool _warning ):
+RDOBuildEditLineInfo::RDOBuildEditLineInfo( rdoSimulator::RDOSyntaxError::ErrorCode _error_code, CREF(tstring) _message, const rdoModelObjects::RDOFileType _fileType, const int _lineNumber, const int _posInLine, rbool _warning ):
 	RDOLogEditLineInfo( _message, _fileType, _lineNumber, _posInLine ),
 	error_code( _error_code ),
 	warning( _warning )

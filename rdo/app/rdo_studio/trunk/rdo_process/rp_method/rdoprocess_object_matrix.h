@@ -43,7 +43,7 @@ protected:
 		if ( mask & m_sc ) m = m * matrix_scale;
 		return m;
 	}
-	rp::matrix parentMatrix( int mask = m_all, bool first = true ) const {
+	rp::matrix parentMatrix( int mask = m_all, rbool first = true ) const {
 		RPObjectMatrix* matrix_parent = matrixParent();
 		if ( first ) {
 			return matrix_parent ? matrix_parent->parentMatrix( mask, false ) : rp::matrix();
@@ -58,7 +58,7 @@ protected:
 		RPObjectMatrix* flowchart = reinterpret_cast<RPObjectMatrix*>(flowChart());
 		return flowchart ? flowchart->selfMatrix() : rp::matrix();
 	}
-	rp::matrix parentRotate( bool first = true ) const {
+	rp::matrix parentRotate( rbool first = true ) const {
 		RPObjectMatrix* matrix_parent = matrixParent();
 		if ( first ) {
 			return matrix_parent ? matrix_parent->parentRotate( false ) : rp::matrix();
@@ -101,7 +101,7 @@ protected:
 	rp::matrix selfMatrix_noScale() const {
 		return matrix_transform * matrix_rotate * matrix_transform_post;
 	}
-	rp::matrix parentMatrix_noScale( bool first = true ) const {
+	rp::matrix parentMatrix_noScale( rbool first = true ) const {
 		RPObjectMatrix* matrix_parent = matrixParent();
 		if ( first ) {
 			return matrix_parent ? matrix_parent->parentMatrix_noScale( false ) : rp::matrix();
@@ -112,7 +112,7 @@ protected:
 	rp::matrix rotateCenterMatrix() const {
 		return parentMatrix_noScale() * matrix_transform;
 	}
-	rp::matrix globalMatrix( bool first = true ) const {
+	rp::matrix globalMatrix( rbool first = true ) const {
 		RPObjectMatrix* matrix_parent = matrixParent();
 		if ( first ) {
 			return matrix_parent ? matrix_parent->globalMatrix( false ) * selfMatrix() : selfMatrix();
@@ -150,7 +150,7 @@ protected:
 	// Изменить центр поворота в локальных координатах
 	void setRotateCenterLocalDelta( double dx, double dy );
 	// Совпадает ли точка на центре вращения фигуры
-	bool isRotateCenter( const rp::point& global_chart_pos ) const;
+	rbool isRotateCenter( const rp::point& global_chart_pos ) const;
 
 	// Центр в глобальных координатах
 	rp::point getCenter() const { return globalMatrix() * getBoundingRect( false ).getCenter(); }
@@ -166,14 +166,14 @@ public:
 	void saveToXML   (REF (pugi::xml_node) parentNode) const;
 	void loadFromXML (CREF(pugi::xml_node) node);
 
-	virtual bool isMatrix() const { return true; }
+	virtual rbool isMatrix() const { return true; }
 
 	rp::matrix globalMatrix( int mask_parent = m_all & ~m_sc, int mask_self = m_all ) const {
 		RPObjectMatrix* matrix_parent = matrixParent();
 		return matrix_parent ? matrix_parent->parentMatrix( mask_parent, false ) * selfMatrix( mask_self ) : selfMatrix( mask_self );
 	}
 
-	double getRotationGlobal( bool first = true ) const {
+	double getRotationGlobal( rbool first = true ) const {
 		RPObjectMatrix* matrix_parent = matrixParent();
 		if ( first ) {
 			double alpha = matrix_parent ? matrix_parent->getRotationGlobal( false ) + rotation_alpha : rotation_alpha;

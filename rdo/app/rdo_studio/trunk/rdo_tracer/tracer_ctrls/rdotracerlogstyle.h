@@ -29,8 +29,8 @@ public:
 	virtual ~RDOTracerLogTheme();
 
 	RDOTracerLogTheme& operator =( const RDOTracerLogTheme& theme );
-	bool operator ==( const RDOTracerLogTheme& theme ) const;
-	bool operator !=( const RDOTracerLogTheme& theme ) const;
+	rbool operator ==( const RDOTracerLogTheme& theme ) const;
+	rbool operator !=( const RDOTracerLogTheme& theme ) const;
 
 	virtual void load( tstring regPath );
 	virtual void save( tstring regPath ) const;
@@ -79,11 +79,11 @@ public:
 	RDOTracerLogStyle();
 	virtual ~RDOTracerLogStyle();
 
-	bool getItemColors( CREF(tstring) item, RDOLogColorPair* &colors ) const;
+	rbool getItemColors( CREF(tstring) item, RDOLogColorPair* &colors ) const;
 
 	RDOTracerLogStyle& operator =( const RDOTracerLogStyle& style );
-	bool operator ==( const RDOTracerLogStyle& style ) const;
-	bool operator !=( const RDOTracerLogStyle& style ) const;
+	rbool operator ==( const RDOTracerLogStyle& style ) const;
+	rbool operator !=( const RDOTracerLogStyle& style ) const;
 
 	virtual void init( CREF(tstring) _regPath = "" );
 };

@@ -36,8 +36,8 @@ public:
 	virtual ~RDOBaseEditTheme();
 
 	RDOBaseEditTheme& operator =( const RDOBaseEditTheme& theme );
-	bool operator ==( const RDOBaseEditTheme& theme ) const;
-	bool operator !=( const RDOBaseEditTheme& theme ) const;
+	rbool operator ==( const RDOBaseEditTheme& theme ) const;
+	rbool operator !=( const RDOBaseEditTheme& theme ) const;
 
 	virtual void load( tstring regPath );
 	virtual void save( tstring regPath ) const;
@@ -49,10 +49,10 @@ public:
 
 	RDOBookmarkStyle bookmarkStyle;
 
-	virtual bool styleDefault( const int styleType ) const;
-	virtual bool styleUsing( const int styleType ) const;
-	virtual bool styleBold( const int styleType = STYLE_DEFAULT ) const;
-	virtual bool styleItalic( const int styleType = STYLE_DEFAULT ) const;
+	virtual rbool styleDefault( const int styleType ) const;
+	virtual rbool styleUsing( const int styleType ) const;
+	virtual rbool styleBold( const int styleType = STYLE_DEFAULT ) const;
+	virtual rbool styleItalic( const int styleType = STYLE_DEFAULT ) const;
 	virtual tstring styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
 	virtual tstring styleBGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
 
@@ -74,18 +74,18 @@ public:
 	virtual ~RDOBaseEditTab();
 
 	RDOBaseEditTab& operator =( const RDOBaseEditTab& tab );
-	bool operator ==( const RDOBaseEditTab& tab ) const;
-	bool operator !=( const RDOBaseEditTab& tab ) const;
+	rbool operator ==( const RDOBaseEditTab& tab ) const;
+	rbool operator !=( const RDOBaseEditTab& tab ) const;
 
 	virtual void load( tstring regPath );
 	virtual void save( tstring regPath ) const;
 
 	int tabSize;
 	int indentSize;
-	bool useTabs;
-	bool tabIndents;
-	bool backspaceUntabs;
-	bool autoIndent;
+	rbool useTabs;
+	rbool tabIndents;
+	rbool backspaceUntabs;
+	rbool autoIndent;
 };
 
 // --------------------------------------------------------------------------------
@@ -98,14 +98,14 @@ public:
 	virtual ~RDOBaseEditWindow();
 
 	RDOBaseEditWindow& operator =( const RDOBaseEditWindow& window );
-	bool operator ==( const RDOBaseEditWindow& window ) const;
-	bool operator !=( const RDOBaseEditWindow& window ) const;
+	rbool operator ==( const RDOBaseEditWindow& window ) const;
+	rbool operator !=( const RDOBaseEditWindow& window ) const;
 
 	virtual void load( tstring regPath );
 	virtual void save( tstring regPath ) const;
 
-	bool wordWrap;
-	bool showHorzScrollBar;
+	rbool wordWrap;
+	rbool showHorzScrollBar;
 };
 
 // --------------------------------------------------------------------------------
@@ -123,12 +123,12 @@ public:
 	virtual ~RDOBaseEditStyle();
 
 	RDOBaseEditStyle& operator =( const RDOBaseEditStyle& style );
-	bool operator ==( const RDOBaseEditStyle& style ) const;
-	bool operator !=( const RDOBaseEditStyle& style ) const;
+	rbool operator ==( const RDOBaseEditStyle& style ) const;
+	rbool operator !=( const RDOBaseEditStyle& style ) const;
 
-	virtual void init( CREF(tstring) _regPath = "" );
-	virtual bool load();
-	virtual bool save() const;
+	virtual void  init( CREF(tstring) _regPath = "" );
+	virtual rbool load();
+	virtual rbool save() const;
 
 	RDOBaseEditTab*    tab;
 	RDOBaseEditWindow* window;

@@ -174,16 +174,16 @@ void RDOPluginMFCLogCtrl::OnSize( UINT nType, int cx, int cy )
 
 		//isFullyVisible() uses newClientRect so call it
 		//after setting up newClientRect
-		bool lastLineVisible = isFullyVisible( stringsCount - 1 );
-		bool lastCharVisible = maxStrWidth == xPos + newClientRect.Width() / charWidth;
+		rbool lastLineVisible = isFullyVisible( stringsCount - 1 );
+		rbool lastCharVisible = maxStrWidth == xPos + newClientRect.Width() / charWidth;
 		
-		bool fullVisibleVert = !yPos && lastLineVisible;
-		bool fullVisibleHorz = !xPos && lastCharVisible;
+		rbool fullVisibleVert = !yPos && lastLineVisible;
+		rbool fullVisibleHorz = !xPos && lastCharVisible;
 		
-		bool needShiftVert = yPos < prevYPos && !fullVisibleVert;
-		bool needShiftHorz = xPos < prevXPos && !fullVisibleHorz;
+		rbool needShiftVert = yPos < prevYPos && !fullVisibleVert;
+		rbool needShiftHorz = xPos < prevXPos && !fullVisibleHorz;
 		
-		bool topChanged = prevWindowRect.top != newWindowRect.top;
+		rbool topChanged = prevWindowRect.top != newWindowRect.top;
 		int dx = newClientRect.right - prevClientRect.right;
 		int dy = newClientRect.bottom - prevClientRect.bottom;
 		
@@ -591,9 +591,9 @@ void RDOPluginMFCLogCtrl::updateScrollBars()
 	}
 }
 
-bool RDOPluginMFCLogCtrl::scrollVertically( int inc )
+rbool RDOPluginMFCLogCtrl::scrollVertically( int inc )
 {
-	bool res = false;
+	rbool res = false;
 	if ( !inc ) return res;
 
 	// If applying the vertical scrolling increment does not
@@ -656,9 +656,9 @@ bool RDOPluginMFCLogCtrl::scrollVertically( int inc )
 	return res;
 }
 
-bool RDOPluginMFCLogCtrl::scrollHorizontally( int inc )
+rbool RDOPluginMFCLogCtrl::scrollHorizontally( int inc )
 {
-	bool res = false;
+	rbool res = false;
 	if ( !inc ) return res;
 
 	// If applying the horizontal scrolling increment does not 
@@ -690,12 +690,12 @@ bool RDOPluginMFCLogCtrl::scrollHorizontally( int inc )
 	return res;
 }
 
-bool RDOPluginMFCLogCtrl::isVisible( const int index ) const
+rbool RDOPluginMFCLogCtrl::isVisible( const int index ) const
 {
 	return index <= lastViewableLine && index >= yPos;
 }
 
-bool RDOPluginMFCLogCtrl::isFullyVisible( const int index ) const
+rbool RDOPluginMFCLogCtrl::isFullyVisible( const int index ) const
 {
 	int lastVisible = yPos + newClientRect.Height() / lineHeight - 1;
 	return index <= lastVisible && index >= yPos;
@@ -714,7 +714,7 @@ void RDOPluginMFCLogCtrl::selectLine( const int index )
 		//makeLineVisible() scrolls to the line and repaints
 		//it and nearby line if scrolling occurs.
 		//If no scrolling is done repaint line
-		bool needrepaint = !makeLineVisible( selectedLine );
+		rbool needrepaint = !makeLineVisible( selectedLine );
 		if ( needrepaint )
 			repaintLine( selectedLine );
 
@@ -748,9 +748,9 @@ void RDOPluginMFCLogCtrl::updateWindow()
 		SendNotifyMessage( WM_PAINT, 0, 0 );
 }
 
-bool RDOPluginMFCLogCtrl::makeLineVisible( const int index )
+rbool RDOPluginMFCLogCtrl::makeLineVisible( const int index )
 {
-	bool res = false;
+	rbool res = false;
 	
 	if ( isFullyVisible( index ) )
 		return res;
@@ -782,7 +782,7 @@ void RDOPluginMFCLogCtrl::addStringToLog( tstring logStr )
 
 		replace_with( logStr, "\t", "    " );
 
-		bool prevVisible = isVisible( stringsCount - 1 );
+		rbool prevVisible = isVisible( stringsCount - 1 );
 
 		strings.push_back( logStr );
 		if ( !stringsCount )
@@ -1126,28 +1126,28 @@ void RDOPluginMFCMainFrame::OnModelRunPause()
 
 void RDOPluginMFCMainFrame::OnUpdateModelRunMaxSpeed(CCmdUI* pCmdUI) 
 {
-	bool flag = pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.frame.isDescribed();
+	rbool flag = pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.frame.isDescribed();
 	pCmdUI->Enable( flag );
 	pCmdUI->SetCheck( flag ? pluginMFCApp.studio.model.getRuntimeMode() == rdoPlugin::MRTM_MaxSpeed : 0 );
 }
 
 void RDOPluginMFCMainFrame::OnUpdateModelRunJump(CCmdUI* pCmdUI) 
 {
-	bool flag = pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.frame.isDescribed();
+	rbool flag = pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.frame.isDescribed();
 	pCmdUI->Enable( flag );
 	pCmdUI->SetCheck( flag ? pluginMFCApp.studio.model.getRuntimeMode() == rdoPlugin::MRTM_Jump : 0 );
 }
 
 void RDOPluginMFCMainFrame::OnUpdateModelRunSync(CCmdUI* pCmdUI) 
 {
-	bool flag = pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.frame.isDescribed();
+	rbool flag = pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.frame.isDescribed();
 	pCmdUI->Enable( flag );
 	pCmdUI->SetCheck( flag ? pluginMFCApp.studio.model.getRuntimeMode() == rdoPlugin::MRTM_Sync : 0 );
 }
 
 void RDOPluginMFCMainFrame::OnUpdateModelRunPause(CCmdUI* pCmdUI) 
 {
-	bool flag = pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.frame.isDescribed();
+	rbool flag = pluginMFCApp.studio.model.isRunning() && pluginMFCApp.studio.frame.isDescribed();
 	pCmdUI->Enable( flag );
 	pCmdUI->SetCheck( flag ? pluginMFCApp.studio.model.getRuntimeMode() == rdoPlugin::MRTM_Pause || pluginMFCApp.studio.model.getRuntimeMode() == rdoPlugin::MRTM_BreakPoint : 0 );
 }

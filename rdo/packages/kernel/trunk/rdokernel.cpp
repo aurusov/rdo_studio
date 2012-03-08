@@ -151,7 +151,7 @@ protected:
 	ruint thread_id;
 public:
 	CheckThreadID( ruint _thread_id ): thread_id( _thread_id ) {}
-	bool operator() ( RDOThread* thread ) { return thread->getID() == thread_id; }
+	rbool operator() ( RDOThread* thread ) { return thread->getID() == thread_id; }
 };
 
 void RDOKernel::registration( RDOThread* thread )
@@ -233,7 +233,7 @@ void RDOKernel::method_registration( RDOTreadMethod& msg )
 {
 	methods_mutex.Lock();
 	msg.index = 0;
-	bool insert = true;
+	rbool insert = true;
 	std::list< RDOTreadMethod >::iterator it = methods.begin();
 	while ( it != methods.end() ) {
 		if ( it->thread == msg.thread && it->name == msg.name ) {

@@ -87,7 +87,7 @@ BOOL RDOStudioModelDoc::SaveModified()
 		AfxGetMainWnd()->MessageBox( rdo::format( ID_MSG_MODEL_NEED_STOPED_FOR_CLOSE ).c_str(), NULL, MB_ICONWARNING | MB_OK );
 		return false;
 	}
-	bool flag = true;
+	rbool flag = true;
 	if ( isModify() ) {
 		switch ( AfxGetMainWnd()->MessageBox( rdo::format( ID_MSG_MODELSAVE_QUERY ).c_str(), NULL, MB_ICONQUESTION | MB_YESNOCANCEL ) ) {
 			case IDYES   : flag = model->saveModel(); break;
@@ -120,7 +120,7 @@ void RDOStudioModelDoc::setName( CREF(tstring) str )
 	}
 }
 
-bool RDOStudioModelDoc::isModify()
+rbool RDOStudioModelDoc::isModify()
 {
 	updateModify();
 	return IsModified() ? true : false;

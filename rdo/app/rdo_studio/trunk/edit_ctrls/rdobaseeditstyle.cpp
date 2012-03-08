@@ -62,7 +62,7 @@ RDOBaseEditTheme& RDOBaseEditTheme::operator =( const RDOBaseEditTheme& theme )
 	return *this;
 }
 
-bool RDOBaseEditTheme::operator ==( const RDOBaseEditTheme& theme ) const
+rbool RDOBaseEditTheme::operator ==( const RDOBaseEditTheme& theme ) const
 {
 	return defaultColor    == theme.defaultColor &&
 	       backgroundColor == theme.backgroundColor &&
@@ -77,7 +77,7 @@ bool RDOBaseEditTheme::operator ==( const RDOBaseEditTheme& theme ) const
 	       bookmarkStyle == theme.bookmarkStyle;
 }
 
-bool RDOBaseEditTheme::operator !=( const RDOBaseEditTheme& theme ) const
+rbool RDOBaseEditTheme::operator !=( const RDOBaseEditTheme& theme ) const
 {
 	return !(*this == theme);
 }
@@ -108,22 +108,22 @@ void RDOBaseEditTheme::save( tstring regPath ) const
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "bookmarkStyle", bookmarkStyle );
 }
 
-bool RDOBaseEditTheme::styleDefault( const int styleType ) const
+rbool RDOBaseEditTheme::styleDefault( const int styleType ) const
 {
 	return styleType == STYLE_DEFAULT;
 }
 
-bool RDOBaseEditTheme::styleUsing( const int styleType ) const
+rbool RDOBaseEditTheme::styleUsing( const int styleType ) const
 {
 	return styleType == STYLE_DEFAULT;
 }
 
-bool RDOBaseEditTheme::styleBold( const int /*styleType*/ ) const
+rbool RDOBaseEditTheme::styleBold( const int /*styleType*/ ) const
 {
 	return defaultStyle & RDOStyleFont::BOLD ? true : false;
 }
 
-bool RDOBaseEditTheme::styleItalic( const int /*styleType*/ ) const
+rbool RDOBaseEditTheme::styleItalic( const int /*styleType*/ ) const
 {
 	return defaultStyle & RDOStyleFont::ITALIC ? true : false;
 }
@@ -235,7 +235,7 @@ RDOBaseEditTab& RDOBaseEditTab::operator =( const RDOBaseEditTab& tab )
 	return *this;
 }
 
-bool RDOBaseEditTab::operator ==( const RDOBaseEditTab& tab ) const
+rbool RDOBaseEditTab::operator ==( const RDOBaseEditTab& tab ) const
 {
 	return tabSize         == tab.tabSize &&
 	       indentSize      == tab.indentSize &&
@@ -245,7 +245,7 @@ bool RDOBaseEditTab::operator ==( const RDOBaseEditTab& tab ) const
 	       autoIndent      == tab.autoIndent;
 }
 
-bool RDOBaseEditTab::operator !=( const RDOBaseEditTab& tab ) const
+rbool RDOBaseEditTab::operator !=( const RDOBaseEditTab& tab ) const
 {
 	return !(*this == tab);
 }
@@ -293,13 +293,13 @@ RDOBaseEditWindow& RDOBaseEditWindow::operator =( const RDOBaseEditWindow& windo
 	return *this;
 }
 
-bool RDOBaseEditWindow::operator ==( const RDOBaseEditWindow& window ) const
+rbool RDOBaseEditWindow::operator ==( const RDOBaseEditWindow& window ) const
 {
 	return wordWrap          == window.wordWrap &&
 	       showHorzScrollBar == window.showHorzScrollBar;
 }
 
-bool RDOBaseEditWindow::operator !=( const RDOBaseEditWindow& window ) const
+rbool RDOBaseEditWindow::operator !=( const RDOBaseEditWindow& window ) const
 {
 	return !(*this == window);
 }
@@ -359,16 +359,16 @@ RDOBaseEditStyle& RDOBaseEditStyle::operator =( const RDOBaseEditStyle& style )
 	return *this;
 }
 
-bool RDOBaseEditStyle::operator ==( const RDOBaseEditStyle& style ) const
+rbool RDOBaseEditStyle::operator ==( const RDOBaseEditStyle& style ) const
 {
-	bool flag = RDOStyleWithTheme::operator==( style );
+	rbool flag = RDOStyleWithTheme::operator==( style );
 	if ( theme  && style.theme  && flag ) flag &= *static_cast<RDOBaseEditTheme*>(theme) == *static_cast<RDOBaseEditTheme*>(style.theme);
 	if ( tab    && style.tab    && flag ) flag &= *tab    == *style.tab;
 	if ( window && style.window && flag ) flag &= *window == *style.window;
 	return flag;
 }
 
-bool RDOBaseEditStyle::operator !=( const RDOBaseEditStyle& style ) const
+rbool RDOBaseEditStyle::operator !=( const RDOBaseEditStyle& style ) const
 {
 	return !(*this == style);
 }
@@ -380,7 +380,7 @@ void RDOBaseEditStyle::init( CREF(tstring) _regPath )
 	initWindow();
 }
 
-bool RDOBaseEditStyle::load()
+rbool RDOBaseEditStyle::load()
 {
 	if ( RDOStyleWithTheme::load() ) {
 		if ( tab )    tab->load( regPath );
@@ -390,7 +390,7 @@ bool RDOBaseEditStyle::load()
 	return false;
 }
 
-bool RDOBaseEditStyle::save() const
+rbool RDOBaseEditStyle::save() const
 {
 	if ( RDOStyleWithTheme::save() ) {
 		if ( tab )    tab->save( regPath );

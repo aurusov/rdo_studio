@@ -50,14 +50,14 @@ int RDOStudioStatusBar::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	return 0;
 }
 
-void RDOStudioStatusBar::repositionProgressCtrl( const bool redraw )
+void RDOStudioStatusBar::repositionProgressCtrl( const rbool redraw )
 {
 	CRect rect;
 	GetItemRect( CommandToIndex( indicator ), rect );
 	progress.MoveWindow( rect, redraw );
 }
 
-void RDOStudioStatusBar::setProgressVisible( const bool _visible )
+void RDOStudioStatusBar::setProgressVisible( const rbool _visible )
 {
 	if ( visible != _visible && GetSafeHwnd() ) {
 		visible = _visible;

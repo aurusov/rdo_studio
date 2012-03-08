@@ -2,6 +2,7 @@
 #define RDOLINK_H
 
 #include <afxwin.h>
+#include "utils/rdotypes.h"
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOLink
@@ -11,21 +12,21 @@
 class RDOLink: public CWnd
 {
 protected:
-	bool mustInit;
+	rbool mustInit;
 	void init();
 
 	HCURSOR cursor;
 
 	COLORREF textColor;
 	COLORREF bgColor;
-	bool bold;
+	rbool bold;
 
-	bool useTextColor;
-	bool useBgColor;
+	rbool useTextColor;
+	rbool useBgColor;
 
 	CFont fontNormal;
 	CFont fontOver;
-	bool isMouseCaptionOver;
+	rbool isMouseCaptionOver;
 
 private:
 	virtual BOOL Create( const CString& text, const RECT& rect, CWnd* pParentWnd, UINT nID );
@@ -45,7 +46,7 @@ public:
 
 	void setTextColor( const COLORREF color );
 	void setBgColor( const COLORREF color );
-	void setFontBold( const bool value );
+	void setFontBold( const rbool value );
 };
 
 #endif // RDOLINK_H

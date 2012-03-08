@@ -153,7 +153,7 @@ static UINT indicators[] = {
 	ID_PROGRESSSTATUSBAR
 };
 
-bool RDOStudioMainFrame::close_mode = false;
+rbool RDOStudioMainFrame::close_mode = false;
 
 RDOStudioMainFrame::RDOStudioMainFrame()
 	: CMDIFrameWnd (    )
@@ -558,28 +558,28 @@ void RDOStudioMainFrame::OnModelRuntimePause()
 
 void RDOStudioMainFrame::OnUpdateModelRuntimeMaxSpeed( CCmdUI* pCmdUI )
 {
-	bool runing = model->isRunning();
+	rbool runing = model->isRunning();
 	pCmdUI->Enable( runing );
 	pCmdUI->SetCheck( runing && model->getRuntimeMode() == rdoRuntime::RTM_MaxSpeed ? 1 : 0 );
 }
 
 void RDOStudioMainFrame::OnUpdateModelRuntimeJump( CCmdUI* pCmdUI )
 {
-	bool runing = model->isRunning();
+	rbool runing = model->isRunning();
 	pCmdUI->Enable( runing );
 	pCmdUI->SetCheck( runing && model->getRuntimeMode() == rdoRuntime::RTM_Jump ? 1 : 0 );
 }
 
 void RDOStudioMainFrame::OnUpdateModelRuntimeSync( CCmdUI* pCmdUI )
 {
-	bool runing = model->isRunning();
+	rbool runing = model->isRunning();
 	pCmdUI->Enable( runing );
 	pCmdUI->SetCheck( runing && model->getRuntimeMode() == rdoRuntime::RTM_Sync ? 1 : 0 );
 }
 
 void RDOStudioMainFrame::OnUpdateModelRuntimePause( CCmdUI* pCmdUI )
 {
-	bool runing = model->isRunning();
+	rbool runing = model->isRunning();
 	pCmdUI->Enable( runing );
 	pCmdUI->SetCheck( runing && (model->getRuntimeMode() == rdoRuntime::RTM_Pause || model->getRuntimeMode() == rdoRuntime::RTM_BreakPoint) ? 1 : 0 );
 }

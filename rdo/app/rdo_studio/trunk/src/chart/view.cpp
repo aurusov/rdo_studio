@@ -64,7 +64,7 @@ BEGIN_MESSAGE_MAP(RDOStudioChartView, RDOStudioView)
 	ON_MESSAGE(WM_USER_UPDATE_CHART_VIEW, OnUserUpdateChartView)
 END_MESSAGE_MAP()
 
-RDOStudioChartView::RDOStudioChartView( const bool preview )
+RDOStudioChartView::RDOStudioChartView( const rbool preview )
 	: RDOStudioView(),
 	bmpRect( 0, 0, 0, 0 ),
 	newClientRect( 0, 0, 0, 0 ),
@@ -272,7 +272,7 @@ void RDOStudioChartView::recalcLayout()
 	doc->mutex.Unlock();
 }
 
-void RDOStudioChartView::setScrollPos( UINT nSBCode, UINT nPos, const bool need_update )
+void RDOStudioChartView::setScrollPos( UINT nSBCode, UINT nPos, const rbool need_update )
 {
 	if ( nSBCode == SB_HORZ )
 		xPos = nPos;
@@ -289,7 +289,7 @@ void RDOStudioChartView::setScrollPos( UINT nSBCode, UINT nPos, const bool need_
 	}
 }
 
-void RDOStudioChartView::updateScrollBars( const bool need_update )
+void RDOStudioChartView::updateScrollBars( const rbool need_update )
 {
 	RDOStudioChartDoc* doc = GetDocument();
 	doc->mutex.Lock();
@@ -318,9 +318,9 @@ void RDOStudioChartView::updateScrollBars( const bool need_update )
 	doc->mutex.Unlock();
 }
 
-bool RDOStudioChartView::setTo( const int from_max_pos )
+rbool RDOStudioChartView::setTo( const int from_max_pos )
 {
-	bool res = true;
+	rbool res = true;
 	int delta = ( from_max_pos - xPos - chartRect.Width() ) / style->fonts_ticks->tickWidth;
 	if ( delta >= 0 ) {
 		res = false;
@@ -355,7 +355,7 @@ void RDOStudioChartView::setFromTo()
 	} else {
 		int it_pos = 0;
 		int it_max_pos = 0;
-		bool need_search_to = true;
+		rbool need_search_to = true;
 		int ticks = 0;
 		timesList::iterator it;
 		for( it = doc->docTimes.begin(); it != doc->docTimes.end(); it++ ) {
@@ -656,7 +656,7 @@ void RDOStudioChartView::copyToClipboard()
 	mutex.Unlock();
 }
 
-void RDOStudioChartView::setZoom( double new_zoom, const bool force_update )
+void RDOStudioChartView::setZoom( double new_zoom, const rbool force_update )
 {
 	UNUSED(force_update);
 
@@ -947,8 +947,8 @@ void RDOStudioChartView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 	WORD scrollNotify = 0xFFFF;
 	UINT msg = WM_VSCROLL;
-	bool ctrl = ( ( ::GetKeyState( VK_CONTROL ) & 0x80000000 ) != 0 );
-	bool side = false;
+	rbool ctrl = ( ( ::GetKeyState( VK_CONTROL ) & 0x80000000 ) != 0 );
+	rbool side = false;
 	int pos = 0;
 	
 	switch ( nChar ) {
@@ -1057,7 +1057,7 @@ int RDOStudioChartView::OnMouseActivate( CWnd* pDesktopWnd, UINT nHitTest, UINT 
 	}
 }
 
-void RDOStudioChartView::setFonts( const bool needRedraw )
+void RDOStudioChartView::setFonts( const rbool needRedraw )
 {
 	UNUSED(needRedraw);
 
@@ -1118,7 +1118,7 @@ void RDOStudioChartView::setFonts( const bool needRedraw )
 	mutex.Unlock();
 }
 
-void RDOStudioChartView::setStyle( RDOStudioChartViewStyle* _style, const bool needRedraw )
+void RDOStudioChartView::setStyle( RDOStudioChartViewStyle* _style, const rbool needRedraw )
 {
 	style = _style;
 
@@ -1154,7 +1154,7 @@ void RDOStudioChartView::updateWindow()
 void RDOStudioChartView::updateView()
 {
 	GetDocument()->lock();
-	bool lastvisible = maxXVisible();
+	rbool lastvisible = maxXVisible();
 	recalcLayout();
 	updateScrollBars( false );
 	if ( lastvisible  && !maxXVisible() ) {

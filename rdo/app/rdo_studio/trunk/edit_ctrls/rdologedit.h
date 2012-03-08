@@ -57,10 +57,10 @@ protected:
 	void clearLines();
 
 	void setSelectLine();
-	void setSelectLine( const int line, const RDOLogEditLineInfo* lineInfo, const bool useScroll = false );
+	void setSelectLine( const int line, const RDOLogEditLineInfo* lineInfo, const rbool useScroll = false );
 	virtual void updateEdit( rdoEditor::RDOEditorEdit* edit, const RDOLogEditLineInfo* lineInfo );
 	void clearSelectLine();
-	bool hasSelectLine() const;
+	rbool hasSelectLine() const;
 
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

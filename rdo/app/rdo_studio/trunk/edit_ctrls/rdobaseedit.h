@@ -35,9 +35,9 @@ private:
 	RDOBaseEditList list;
 
 public:
-	bool bMatchCase;
-	bool bMatchWholeWord;
-	bool bSearchDown;
+	rbool bMatchCase;
+	rbool bMatchWholeWord;
+	rbool bSearchDown;
 	tstring findStr;
 	tstring replaceStr;
 
@@ -64,16 +64,16 @@ private:
 	int markerCount;
 
 protected:
-	bool GUI_ID_EDIT_UNDO;
-	bool GUI_ID_EDIT_REDO;
-	bool GUI_ID_EDIT_CUT;
-	bool GUI_IS_SELECTED;
-	bool GUI_IS_EMPTY;
-	bool GUI_IS_READONLY;
-	bool GUI_IS_MODIFY;
-	bool GUI_HAS_BOOKMARK;
-	bool GUI_ID_VIEW_WHITESPACE;
-	bool GUI_ID_VIEW_ENDOFLINE;
+	rbool GUI_ID_EDIT_UNDO;
+	rbool GUI_ID_EDIT_REDO;
+	rbool GUI_ID_EDIT_CUT;
+	rbool GUI_IS_SELECTED;
+	rbool GUI_IS_EMPTY;
+	rbool GUI_IS_READONLY;
+	rbool GUI_IS_MODIFY;
+	rbool GUI_HAS_BOOKMARK;
+	rbool GUI_ID_VIEW_WHITESPACE;
+	rbool GUI_ID_VIEW_ENDOFLINE;
 
 	HWND       sciHWND;
 	long       sciEditor;
@@ -90,16 +90,16 @@ protected:
 	void setSelection( int anchor, int currentPos ) const { sendEditor( SCI_SETSEL, anchor, currentPos ); };
 	CharacterRange getSelectionRange() const;
 	void gotoLineEnsureVisible( int line ) const;
-	void ensureRangeVisible( int posStart, int posEnd, bool enforcePolicy = true ) const;
+	void ensureRangeVisible( int posStart, int posEnd, rbool enforcePolicy = true ) const;
 
 	RDOBaseEditStyle* style;
 	RDOBaseEditGroup* group;
 
 	int  firstFoundPos;
-	bool bHaveFound;
-	void findNext( REF(tstring) findWhat, const bool searchDown = true, const bool matchCase = false, const bool matchWholeWord = false );
-	void replace( REF(tstring) findWhat, REF(tstring) replaceWhat, const bool searchDown = true, const bool matchCase = false, const bool matchWholeWord = false );
-	void replaceAll( REF(tstring) findWhat, REF(tstring) replaceWhat, const bool matchCase = false, const bool matchWholeWord = false );
+	rbool bHaveFound;
+	void findNext( REF(tstring) findWhat, const rbool searchDown = true, const rbool matchCase = false, const rbool matchWholeWord = false );
+	void replace( REF(tstring) findWhat, REF(tstring) replaceWhat, const rbool searchDown = true, const rbool matchCase = false, const rbool matchWholeWord = false );
+	void replaceAll( REF(tstring) findWhat, REF(tstring) replaceWhat, const rbool matchCase = false, const rbool matchWholeWord = false );
 
 	void copyAsRTF();
 
@@ -179,25 +179,25 @@ public:
 	void setGroup( RDOBaseEditGroup* _group );
 	void setPopupMenu( CMenu* const value )                { popupMenu = value; };
 
-	bool isEmpty() const                                   { return getLength() == 0;                                                         };
-	bool isSelected() const                                { return sendEditor( SCI_GETSELECTIONSTART ) != sendEditor( SCI_GETSELECTIONEND ); };
-	bool isOverwrite() const                               { return sendEditor( SCI_GETOVERTYPE ) ? true : false;                             };
+	rbool isEmpty() const                                  { return getLength() == 0;                                                         };
+	rbool isSelected() const                               { return sendEditor( SCI_GETSELECTIONSTART ) != sendEditor( SCI_GETSELECTIONEND ); };
+	rbool isOverwrite() const                              { return sendEditor( SCI_GETOVERTYPE ) ? true : false;                             };
 
 	void updateEditGUI();
-	bool isModify() const                                  { return GUI_IS_MODIFY;                                  };
+	rbool isModify() const                                 { return GUI_IS_MODIFY;                                  };
 	void setModifyFalse()                                  { GUI_IS_MODIFY = false; sendEditor( SCI_SETSAVEPOINT ); };
 
 	virtual void clearAll();
 	void clearUndoBuffer() const                           { sendEditor( SCI_EMPTYUNDOBUFFER ); };
 
-	bool isReadOnly() const                                { return sendEditor( SCI_GETREADONLY ) ? true : false;           };
-	void setReadOnly( const bool value )                   { GUI_IS_READONLY = value; sendEditor( SCI_SETREADONLY, value ); };
+	rbool isReadOnly() const                               { return sendEditor( SCI_GETREADONLY ) ? true : false;           };
+	void setReadOnly( const rbool value )                  { GUI_IS_READONLY = value; sendEditor( SCI_SETREADONLY, value ); };
 
-	bool isViewWhiteSpace() const                          { return sendEditor( SCI_GETVIEWWS ) != SCWS_INVISIBLE;                                                     };
-	void setViewWhiteSpace( const bool value )             { GUI_ID_VIEW_WHITESPACE = value; sendEditor( SCI_SETVIEWWS, value ? SCWS_VISIBLEALWAYS : SCWS_INVISIBLE ); };
+	rbool isViewWhiteSpace() const                         { return sendEditor( SCI_GETVIEWWS ) != SCWS_INVISIBLE;                                                     };
+	void setViewWhiteSpace( const rbool value )            { GUI_ID_VIEW_WHITESPACE = value; sendEditor( SCI_SETVIEWWS, value ? SCWS_VISIBLEALWAYS : SCWS_INVISIBLE ); };
 
-	bool isViewEndOfLine() const                           { return sendEditor( SCI_GETVIEWEOL ) ? true : false;                 };
-	void setEndOfLine( const bool value )                  { GUI_ID_VIEW_ENDOFLINE = value; sendEditor( SCI_SETVIEWEOL, value ); };
+	rbool isViewEndOfLine() const                          { return sendEditor( SCI_GETVIEWEOL ) ? true : false;                 };
+	void setEndOfLine( const rbool value )                 { GUI_ID_VIEW_ENDOFLINE = value; sendEditor( SCI_SETVIEWEOL, value ); };
 
 	void appendText( CREF(tstring) str ) const;
 
@@ -207,11 +207,11 @@ public:
 	void zoomOut() const                                   { sendEditor( SCI_ZOOMOUT );        };
 	void resetZoom() const                                 { sendEditor( SCI_SETZOOM, 0 );     };
 
-	bool bookmarkToggle( int line = -1 ) const;
-	bool bookmarkNext( const bool canLoop = true, const bool fromCurrentLine = true, bool* wasLoop = NULL ) const;
-	bool bookmarkPrev( const bool canLoop = true, const bool fromCurrentLine = true, bool* wasLoop = NULL ) const;
-	void bookmarkClearAll() const;
-	bool hasBookmarks() const;
+	rbool bookmarkToggle( int line = -1 ) const;
+	rbool bookmarkNext( const rbool canLoop = true, const rbool fromCurrentLine = true, rbool* wasLoop = NULL ) const;
+	rbool bookmarkPrev( const rbool canLoop = true, const rbool fromCurrentLine = true, rbool* wasLoop = NULL ) const;
+	void  bookmarkClearAll() const;
+	rbool hasBookmarks() const;
 
 	int getLength() const                           { return sendEditor( SCI_GETLENGTH );                  };
 	int getLineCount() const                        { return sendEditor( SCI_GETLINECOUNT );               };
@@ -219,10 +219,10 @@ public:
 	int getPositionFromLine( const int line ) const { return sendEditor( SCI_POSITIONFROMLINE, line );     };
 	int getLineFromPosition( const int pos ) const  { return sendEditor( SCI_LINEFROMPOSITION, pos );      };
 	void setCurrentPos( const int value ) const;
-	void setCurrentPos( const int line, int pos_in_line, const bool convert_rdo_tab = false ) const;
+	void setCurrentPos( const int line, int pos_in_line, const rbool convert_rdo_tab = false ) const;
 	int getCurrentLineNumber() const                { return getLineFromPosition( getCurrentPos() );       };
 	int getCurrentColumnNumber() const              { return sendEditor( SCI_GETCOLUMN, getCurrentPos() ); };
-	bool isLineVisible( const int line ) const;
+	rbool isLineVisible( const int line ) const;
 	void scrollToLine( const int line ) const;
 	void scrollToLine2( const int line ) const;
 	void scrollToCarret() const;
@@ -233,7 +233,7 @@ public:
 	tstring getCurrentOrSelectedWord() const;
 	tstring getWordForFind() const;
 
-	int findPos( REF(tstring) findWhat, const int startFromLine = 0, const bool matchCase = false, const bool matchWholeWord = false ) const;
+	int findPos( REF(tstring) findWhat, const int startFromLine = 0, const rbool matchCase = false, const rbool matchWholeWord = false ) const;
 	tstring getLine( const int line ) const;
 
 	void load( rdo::stream& stream );

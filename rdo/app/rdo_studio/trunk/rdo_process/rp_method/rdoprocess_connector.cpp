@@ -172,9 +172,9 @@ void RPConnector::next_step( CDC& dc, const rp::point& p1, const rp::point& p2, 
 */
 	double Ka, Kb, K, Ua, Ub;
 	rp::point inter = rp::math::getIntersection( p1, p12, p2, p22, Ka, Kb, K, Ua, Ub );
-	bool intersect  = Ua >= 0 && Ua <= 1 && Ub >= 0 && Ub <= 1;
-	//bool parallel   = fabs(K) == 0.0;
-	//bool same       = fabs(K) == 0.0 && fabs(Ka) == 0.0 && fabs(Kb) == 0.0;
+	rbool intersect  = Ua >= 0 && Ua <= 1 && Ub >= 0 && Ub <= 1;
+	//rbool parallel   = fabs(K) == 0.0;
+	//rbool same       = fabs(K) == 0.0 && fabs(Ka) == 0.0 && fabs(Kb) == 0.0;
 	if ( intersect ) {
 		// Всё нормально, фигуры пересекаются своими прямыми под углом в 90-то градусов
 		pa.push_back( inter );
@@ -187,8 +187,8 @@ void RPConnector::next_step( CDC& dc, const rp::point& p1, const rp::point& p2, 
 		rp::rect rect1_big   = rect1_small.extendByPerimetr( RPConnectorDock::delta );
 		rp::rect rect2_big   = rect2_small.extendByPerimetr( RPConnectorDock::delta );
 		std::list< rp::point > inter1_big_point, inter2_big_point, inter1_small_point, inter2_small_point;
-		bool inter1_flag = rect1_big.isIntersection( p1, p2, inter1_big_point );
-		bool inter2_flag = rect2_big.isIntersection( p1, p2, inter2_big_point );
+		rbool inter1_flag = rect1_big.isIntersection( p1, p2, inter1_big_point );
+		rbool inter2_flag = rect2_big.isIntersection( p1, p2, inter2_big_point );
 
 		double a  = rp::math::getAlpha( p1, p2 );
 		double a1 = a - norm1;
@@ -283,7 +283,7 @@ void RPConnector::next_step( CDC& dc, const rp::point& p1, const rp::point& p2, 
 			p12.x = p1.x + len * k_cos1;
 			p12.y = p1.y - len * k_sin1;
 			inter1_big_point.clear();
-			bool flag1 = rect1_big.isIntersection( p1, p12, inter1_big_point );
+			rbool flag1 = rect1_big.isIntersection( p1, p12, inter1_big_point );
 			if ( flag1 ) {
 				pa.push_back( inter1_big_point.front() );
 			}
@@ -293,7 +293,7 @@ void RPConnector::next_step( CDC& dc, const rp::point& p1, const rp::point& p2, 
 			p22.x = p2.x + len * k_cos2;
 			p22.y = p2.y - len * k_sin2;
 			inter2_big_point.clear();
-			bool flag2 = rect2_big.isIntersection( p2, p22, inter2_big_point );
+			rbool flag2 = rect2_big.isIntersection( p2, p22, inter2_big_point );
 			if ( flag2 ) {
 				pa_post.push_back( inter2_big_point.front() );
 			}
@@ -441,10 +441,10 @@ void RPConnector::makeConnector( const rp::point& p1, const rp::point& p2, doubl
 	// K = 0                      : the two lines are parallel
 	// K = 0 and Ka = 0 and Kb = 0: the two lines are coincident
 	// Ua and Ub = [0..1]         : the intersection point is within both line segments
-	bool parallel   = fabs(K) == 0.0;
-	bool same       = fabs(K) == 0.0 && fabs(Ka) == 0.0 && fabs(Kb) == 0.0;
-//	bool inetrsect  = Ua >= 0 && Ua <= 1 && Ub >= 0 && Ub <= 1;
-	bool intersectA = Ua >= 0 && Ua <= 1;
+	rbool parallel   = fabs(K) == 0.0;
+	rbool same       = fabs(K) == 0.0 && fabs(Ka) == 0.0 && fabs(Kb) == 0.0;
+//	rbool inetrsect  = Ua >= 0 && Ua <= 1 && Ub >= 0 && Ub <= 1;
+	rbool intersectA = Ua >= 0 && Ua <= 1;
 #ifdef CON_DEBUG
 	TRACE( "from A(%f,%f) to B(%f,%f)\n", p1.x, p1.y, p2.x, p2.y );
 	if ( same ) {
@@ -497,16 +497,16 @@ void RPConnector::makeConnector( const rp::point& p1, const rp::point& p2, doubl
 		double lengthA2 = lengthA1;
 		rp::point B1, B2, interborder;
 #ifdef CON_DEBUG
-		bool truncate = getShortLine( dc, pa, p1, inter, lengthA2, B1, B2, interborder );
+		rbool truncate = getShortLine( dc, pa, p1, inter, lengthA2, B1, B2, interborder );
 #else if
-		bool truncate = getShortLine( pa, p1, inter, lengthA2, B1, B2, interborder );
+		rbool truncate = getShortLine( pa, p1, inter, lengthA2, B1, B2, interborder );
 #endif
 		if ( p2 == interborder ) {
 			TRACE( "found !!! p2 == interborder\n" );
 			return;
 		}
 		if ( truncate ) {
-			bool null;
+			rbool null;
 			rp::point B3 = rp::math::getPerpendicular( B1, B2, p2, null );
 //			CBDFlowChartScrollView::correctPoint( pa, B3 );
 			double len1 = rp::math::getLength( B1, B3 );
@@ -554,14 +554,14 @@ void RPConnector::makeConnector( const rp::point& p1, const rp::point& p2, doubl
 }
 
 #ifdef CON_DEBUG
-bool RPConnector::getShortLine( CDC& dc, const rp::polyline& pa, const rp::point& from, const rp::point& to, double& lengthA2, rp::point& B1, rp::point& B2, rp::point& interborder )
+rbool RPConnector::getShortLine( CDC& dc, const rp::polyline& pa, const rp::point& from, const rp::point& to, double& lengthA2, rp::point& B1, rp::point& B2, rp::point& interborder )
 #else if
-bool RPConnector::getShortLine( const rp::polyline& pa, const rp::point& from, const rp::point& to, double& lengthA2, rp::point& B1, rp::point& B2, rp::point& interborder )
+rbool RPConnector::getShortLine( const rp::polyline& pa, const rp::point& from, const rp::point& to, double& lengthA2, rp::point& B1, rp::point& B2, rp::point& interborder )
 #endif
 {
 	UNUSED(pa);
 
-	bool flag = false;
+	rbool flag = false;
 	double lengthBorder = 1e10;
 	RPObjectFlowChart* flowchart = flowChart();
 	std::list< RPObjectChart* > objects;
@@ -614,7 +614,7 @@ bool RPConnector::getShortLine( const rp::polyline& pa, const rp::point& from, c
 							TRACE3( "K = %g, Ua = %g, Ub = %g\n", K, Ua, Ub );
 							double len = rp::math::getLength( from, _inter );
 							if ( lengthA2 >= len ) {
-								bool vect_inter = true;
+								rbool vect_inter = true;
 								if ( border_rect.pointInRect( from ) ) {
 #ifdef CON_DEBUG
 									vect_inter = isVectoreIntersect( dc, shape, from, to );
@@ -701,9 +701,9 @@ bool RPConnector::getShortLine( const rp::polyline& pa, const rp::point& from, c
 }
 
 #ifdef CON_DEBUG
-bool RPConnector::isVectoreIntersect( CDC& dc, RPShape* shape, const rp::point& vect_begin, const rp::point& vect_end ) const
+rbool RPConnector::isVectoreIntersect( CDC& dc, RPShape* shape, const rp::point& vect_begin, const rp::point& vect_end ) const
 #else if
-bool RPConnector::isVectoreIntersect( RPShape* shape, const rp::point& vect_begin, const rp::point& vect_end ) const
+rbool RPConnector::isVectoreIntersect( RPShape* shape, const rp::point& vect_begin, const rp::point& vect_end ) const
 #endif
 {
 	rp::rect rect = shape->getBoundingRectNoRotateOuter();

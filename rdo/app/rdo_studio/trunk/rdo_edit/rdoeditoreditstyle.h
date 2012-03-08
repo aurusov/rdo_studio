@@ -37,8 +37,8 @@ public:
 	virtual ~RDOEditorEditTheme();
 
 	RDOEditorEditTheme& operator =( const RDOEditorEditTheme& theme );
-	bool operator ==( const RDOEditorEditTheme& theme ) const;
-	bool operator !=( const RDOEditorEditTheme& theme ) const;
+	rbool operator ==( const RDOEditorEditTheme& theme ) const;
+	rbool operator !=( const RDOEditorEditTheme& theme ) const;
 
 	virtual void load( tstring regPath );
 	virtual void save( tstring regPath ) const;
@@ -49,7 +49,7 @@ public:
 	COLORREF errorBgColor;
 
 	RDOFoldStyle foldStyle;
-	bool         commentFold;
+	rbool        commentFold;
 
 	static RDOEditorEditTheme getDefaultTheme();
 	static RDOEditorEditTheme getCppTheme();
@@ -70,14 +70,14 @@ public:
 	virtual ~RDOEditorEditAutoComplete();
 
 	RDOEditorEditAutoComplete& operator =( const RDOEditorEditAutoComplete& autoComplete );
-	bool operator ==( const RDOEditorEditAutoComplete& autoComplete ) const;
-	bool operator !=( const RDOEditorEditAutoComplete& autoComplete ) const;
+	rbool operator ==( const RDOEditorEditAutoComplete& autoComplete ) const;
+	rbool operator !=( const RDOEditorEditAutoComplete& autoComplete ) const;
 
 	virtual void load( tstring regPath );
 	virtual void save( tstring regPath ) const;
 
-	bool useAutoComplete;
-	bool showFullList;
+	rbool useAutoComplete;
+	rbool showFullList;
 };
 
 // --------------------------------------------------------------------------------
@@ -90,14 +90,14 @@ public:
 	virtual ~RDOEditorEditBuffer();
 
 	RDOEditorEditBuffer& operator =( const RDOEditorEditBuffer& buffer );
-	bool operator ==( const RDOEditorEditBuffer& buffer ) const;
-	bool operator !=( const RDOEditorEditBuffer& buffer ) const;
+	rbool operator ==( const RDOEditorEditBuffer& buffer ) const;
+	rbool operator !=( const RDOEditorEditBuffer& buffer ) const;
 
 	virtual void load( tstring regPath );
 	virtual void save( tstring regPath ) const;
 
-	bool canClearBuffer;
-	int  clearBufferDelay;
+	rbool canClearBuffer;
+	int   clearBufferDelay;
 };
 
 // --------------------------------------------------------------------------------
@@ -110,15 +110,15 @@ public:
 	virtual ~RDOEditorEditMargin();
 
 	RDOEditorEditMargin& operator =( const RDOEditorEditMargin& margin );
-	bool operator ==( const RDOEditorEditMargin& margin ) const;
-	bool operator !=( const RDOEditorEditMargin& margin ) const;
+	rbool operator ==( const RDOEditorEditMargin& margin ) const;
+	rbool operator !=( const RDOEditorEditMargin& margin ) const;
 
 	virtual void load( tstring regPath );
 	virtual void save( tstring regPath ) const;
 
-	bool fold;
-	bool bookmark;
-	bool lineNumber;
+	rbool fold;
+	rbool bookmark;
+	rbool lineNumber;
 };
 
 // --------------------------------------------------------------------------------
@@ -137,12 +137,12 @@ public:
 	virtual ~RDOEditorEditStyle();
 
 	RDOEditorEditStyle& operator =( const RDOEditorEditStyle& style );
-	bool operator ==( const RDOEditorEditStyle& style ) const;
-	bool operator !=( const RDOEditorEditStyle& style ) const;
+	rbool operator ==( const RDOEditorEditStyle& style ) const;
+	rbool operator !=( const RDOEditorEditStyle& style ) const;
 
-	virtual void init( CREF(tstring) _regPath = "" );
-	virtual bool load();
-	virtual bool save() const;
+	virtual void  init( CREF(tstring) _regPath = "" );
+	virtual rbool load();
+	virtual rbool save() const;
 
 	RDOEditorEditAutoComplete* autoComplete;
 	RDOEditorEditBuffer*       buffer;

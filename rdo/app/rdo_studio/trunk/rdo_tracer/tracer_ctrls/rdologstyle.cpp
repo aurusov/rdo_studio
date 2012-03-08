@@ -44,13 +44,13 @@ RDOLogColorPair& RDOLogColorPair::operator =( const RDOLogColorPair& colors )
 	return *this;
 }
 
-bool RDOLogColorPair::operator ==( const RDOLogColorPair& colors ) const
+rbool RDOLogColorPair::operator ==( const RDOLogColorPair& colors ) const
 {
 	return foregroundColor == colors.foregroundColor &&
 	       backgroundColor == colors.backgroundColor;
 }
 
-bool RDOLogColorPair::operator !=( const RDOLogColorPair& colors ) const
+rbool RDOLogColorPair::operator !=( const RDOLogColorPair& colors ) const
 {
 	return !(*this == colors);
 }
@@ -90,14 +90,14 @@ RDOLogTheme& RDOLogTheme::operator =( const RDOLogTheme& theme )
 	return *this;
 }
 
-bool RDOLogTheme::operator ==( const RDOLogTheme& theme ) const
+rbool RDOLogTheme::operator ==( const RDOLogTheme& theme ) const
 {
 	return defaultColor == theme.defaultColor &&
 
 	       style == theme.style;
 }
 
-bool RDOLogTheme::operator !=( const RDOLogTheme& theme ) const
+rbool RDOLogTheme::operator !=( const RDOLogTheme& theme ) const
 {
 	return !(*this == theme);
 }
@@ -137,13 +137,13 @@ RDOLogBorders& RDOLogBorders::operator =( const RDOLogBorders& borders )
 	return *this;
 }
 
-bool RDOLogBorders::operator ==( const RDOLogBorders& borders ) const
+rbool RDOLogBorders::operator ==( const RDOLogBorders& borders ) const
 {
 	return vertBorder == borders.vertBorder &&
 	       horzBorder == borders.horzBorder;
 }
 
-bool RDOLogBorders::operator !=( const RDOLogBorders& borders ) const
+rbool RDOLogBorders::operator !=( const RDOLogBorders& borders ) const
 {
 	return !(*this == borders);
 }
@@ -188,7 +188,7 @@ void RDOLogStyle::initBorders()
 	borders = new RDOLogBorders;
 }
 
-bool RDOLogStyle::getItemColors( const int index, RDOLogColorPair* &colors ) const
+rbool RDOLogStyle::getItemColors( const int index, RDOLogColorPair* &colors ) const
 {
 	UNUSED(index);
 
@@ -198,7 +198,7 @@ bool RDOLogStyle::getItemColors( const int index, RDOLogColorPair* &colors ) con
 	return false;
 }
 
-bool RDOLogStyle::getItemColors( CREF(tstring) item, RDOLogColorPair* &colors ) const
+rbool RDOLogStyle::getItemColors( CREF(tstring) item, RDOLogColorPair* &colors ) const
 {
 	UNUSED(item);
 
@@ -217,15 +217,15 @@ RDOLogStyle& RDOLogStyle::operator =( const RDOLogStyle& style )
 	return *this;
 }
 
-bool RDOLogStyle::operator ==( const RDOLogStyle& style ) const
+rbool RDOLogStyle::operator ==( const RDOLogStyle& style ) const
 {
-	bool flag = RDOStyle::operator==( style );
+	rbool flag = RDOStyle::operator==( style );
 	if ( theme   && style.theme   && flag ) flag &= *theme   == *style.theme;
 	if ( borders && style.borders && flag ) flag &= *borders == *style.borders;
 	return flag;
 }
 
-bool RDOLogStyle::operator !=( const RDOLogStyle& style ) const
+rbool RDOLogStyle::operator !=( const RDOLogStyle& style ) const
 {
 	return !(*this == style);
 }
@@ -243,7 +243,7 @@ void RDOLogStyle::init( CREF(tstring) _regPath )
 	initBorders();
 }
 
-bool RDOLogStyle::load()
+rbool RDOLogStyle::load()
 {
 	if ( RDOStyle::load() ) {
 		if ( theme )   theme->load( regPath );
@@ -253,7 +253,7 @@ bool RDOLogStyle::load()
 	return false;
 }
 
-bool RDOLogStyle::save() const
+rbool RDOLogStyle::save() const
 {
 	if ( RDOStyle::save() ) {
 		if ( theme )   theme->save( regPath );

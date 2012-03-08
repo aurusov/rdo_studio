@@ -145,7 +145,7 @@ RDOStudioEditBaseDoc* RDOStudioEditBaseView::GetDocument()
 
 void RDOStudioEditBaseView::restartBufTimer( const int bufIndex )
 {
-	bool canClear = studioApp.mainFrame->style_editor.buffer->canClearBuffer;
+	rbool canClear = studioApp.mainFrame->style_editor.buffer->canClearBuffer;
 	int  delay    = studioApp.mainFrame->style_editor.buffer->clearBufferDelay * 1000;
 	if ( delay < 0 ) delay = 0;
 	switch ( bufIndex ) {

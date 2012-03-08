@@ -120,7 +120,7 @@ void RDOLink::setBgColor( const COLORREF color )
 	useBgColor = true;
 }
 
-void RDOLink::setFontBold( const bool value )
+void RDOLink::setFontBold( const rbool value )
 {
 	bold = value;
 }
@@ -157,7 +157,7 @@ void RDOLink::OnMouseMove( UINT nFlags, CPoint point )
 	GetWindowText( s );
 	dc->DrawText( s, rectCaption, DT_SINGLELINE | DT_RIGHT | DT_CALCRECT );
 	r.DeflateRect( (r.Width() - rectCaption.Width())/2, (r.Height() - rectCaption.Height())/2 );
-	bool isMouseCaptionOverPrev = isMouseCaptionOver;
+	rbool isMouseCaptionOverPrev = isMouseCaptionOver;
 	isMouseCaptionOver = r.PtInRect( point ) ? true : false;
 	if ( isMouseCaptionOverPrev != isMouseCaptionOver ) {
 		if ( isMouseCaptionOver ) {

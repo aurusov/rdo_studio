@@ -27,8 +27,8 @@ public:
 	virtual ~RDOLogColorPair();
 
 	RDOLogColorPair& operator =( const RDOLogColorPair& colors );
-	bool operator ==( const RDOLogColorPair& colors ) const;
-	bool operator !=( const RDOLogColorPair& colors ) const;
+	rbool operator ==( const RDOLogColorPair& colors ) const;
+	rbool operator !=( const RDOLogColorPair& colors ) const;
 
 	virtual void load( tstring regPath, tstring regParam );
 	virtual void save( tstring regPath, tstring regParam ) const;
@@ -47,8 +47,8 @@ public:
 	virtual ~RDOLogTheme();
 
 	RDOLogTheme& operator =( const RDOLogTheme& theme );
-	bool operator ==( const RDOLogTheme& theme ) const;
-	bool operator !=( const RDOLogTheme& theme ) const;
+	rbool operator ==( const RDOLogTheme& theme ) const;
+	rbool operator !=( const RDOLogTheme& theme ) const;
 
 	virtual void load( tstring regPath );
 	virtual void save( tstring regPath ) const;
@@ -68,8 +68,8 @@ public:
 	virtual ~RDOLogBorders();
 
 	RDOLogBorders& operator =( const RDOLogBorders& borders );
-	bool operator ==( const RDOLogBorders& borders ) const;
-	bool operator !=( const RDOLogBorders& borders ) const;
+	rbool operator ==( const RDOLogBorders& borders ) const;
+	rbool operator !=( const RDOLogBorders& borders ) const;
 
 	virtual void load( tstring regPath );
 	virtual void save( tstring regPath ) const;
@@ -91,16 +91,16 @@ public:
 	RDOLogStyle();
 	virtual ~RDOLogStyle();
 
-	virtual bool getItemColors( const int index, RDOLogColorPair* &colors ) const;
-	virtual bool getItemColors( CREF(tstring) item, RDOLogColorPair* &colors ) const;
+	virtual rbool getItemColors( const int index, RDOLogColorPair* &colors ) const;
+	virtual rbool getItemColors( CREF(tstring) item, RDOLogColorPair* &colors ) const;
 
 	RDOLogStyle& operator =( const RDOLogStyle& style );
-	bool operator ==( const RDOLogStyle& style ) const;
-	bool operator !=( const RDOLogStyle& style ) const;
+	rbool operator ==( const RDOLogStyle& style ) const;
+	rbool operator !=( const RDOLogStyle& style ) const;
 
-	virtual void init( CREF(tstring) _regPath = "" );
-	virtual bool load();
-	virtual bool save() const;
+	virtual void  init( CREF(tstring) _regPath = "" );
+	virtual rbool load();
+	virtual rbool save() const;
 
 	RDOLogTheme*   theme;
 	RDOLogBorders* borders;

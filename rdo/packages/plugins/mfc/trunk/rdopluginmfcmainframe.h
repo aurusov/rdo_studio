@@ -35,10 +35,10 @@ protected:
 	CRect prevWindowRect;
 	
 	int lastViewableLine;
-	bool hasFocus;
+	rbool hasFocus;
 	int selectedLine;
 	int fullRepaintLines;
-	bool focusOnly;
+	rbool focusOnly;
 
 	stringList strings;
 	int stringsCount;
@@ -49,20 +49,20 @@ protected:
 
 	void recalcWidth( const int newMaxStrWidth );
 	void updateScrollBars();
-	bool scrollVertically( int inc );
-	bool scrollHorizontally( int inc );
+	rbool scrollVertically( int inc );
+	rbool scrollHorizontally( int inc );
 	
-	bool isVisible( const int index ) const;
-	bool isFullyVisible( const int index ) const;
+	rbool isVisible( const int index ) const;
+	rbool isFullyVisible( const int index ) const;
 
 	void getLineRect( const int index, CRect* rect ) const;
 	void repaintLine ( const int index );
 
-	bool canCopy() const { return selectedLine != -1; };
+	rbool canCopy() const { return selectedLine != -1; };
 
 	void updateWindow();
 
-	bool drawLog;
+	rbool drawLog;
 
 	HDC   hdc;
 	int   saved_hdc;
@@ -93,13 +93,13 @@ public:
 
 	virtual void addStringToLog( tstring logStr );
 
-	bool getFocusOnly() const { return focusOnly; }
-	virtual void setFocusOnly( const bool value ) { focusOnly = value; }
+	rbool getFocusOnly() const { return focusOnly; }
+	virtual void setFocusOnly( const rbool value ) { focusOnly = value; }
 
 	virtual void getString( const int index, tstring& str ) const;
 	virtual int getSelectedIndex() const;
 	virtual void getSelected( tstring& str ) const;
-	virtual bool makeLineVisible( const int index );
+	virtual rbool makeLineVisible( const int index );
 	virtual void selectLine( const int index );
 	virtual void clear();
 

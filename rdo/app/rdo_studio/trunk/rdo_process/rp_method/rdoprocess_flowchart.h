@@ -17,7 +17,7 @@ private:
 	enum GridType { gtPoints, gtSolidLines, dtDotLines };
 
 	int    saved_dc;
-	bool   scroll_inited;
+	rbool  scroll_inited;
 	CPoint scroll_delta;
 	CPoint scroll_size;
 
@@ -26,9 +26,9 @@ private:
 /*
 	GridMode grid_mode;
 	GridType grid_type;
-	bool     grid_show;
+	rbool    grid_show;
 	int      grid_step;
-//	bool     grid_wasMouseMoving;
+//	rbool    grid_wasMouseMoving;
 	UINT     grid_timer;
 	int      grid_cnt_x;
 	int      grid_cnt_y;
@@ -42,8 +42,8 @@ private:
 */
 	void makeGrid();
 
-//	bool showShapeName;
-//	bool showConnectorPoint;
+//	rbool showShapeName;
+//	rbool showConnectorPoint;
 
 	RPObjectFlowChart* flowobj;
 	CDocument*         doc;

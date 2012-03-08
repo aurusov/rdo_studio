@@ -36,7 +36,7 @@ public:
 
 	void setEditorStyle( RDOFindEditStyle* _style );
 
-	void setKeyword( CREF(tstring) keyword, const bool matchCase = false ) const;
+	void setKeyword( CREF(tstring) keyword, const rbool matchCase = false ) const;
 };
 
 }; // namespace rdoEditCtrl

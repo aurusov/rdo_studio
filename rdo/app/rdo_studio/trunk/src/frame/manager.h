@@ -84,7 +84,7 @@ private:
 
 	int lastShowedFrame;
 	int currentShowingFrame;
-	bool changed;
+	rbool changed;
 
 public:
 	RDOStudioFrameManager();
@@ -137,7 +137,7 @@ public:
 	CEvent*             getFrameEventTimer( const int index ) const { return &frames[index]->timer; };
 	CEvent*             getFrameEventClose( const int index ) const { return &frames[index]->close; };
 	int count() const                                               { return frames.size();         };
-	bool isChanged()                                                { bool res = changed; changed = false; return res; }
+	rbool isChanged()                                               { rbool res = changed; changed = false; return res; }
 	RDOStudioFrameDoc* getFirstExistDoc() const;
 	void closeAll();
 	void clear();
@@ -147,18 +147,18 @@ public:
 
 	void expand() const;
 
-	bool isValidFrameDoc( const RDOStudioFrameDoc* const frame ) const;
+	rbool isValidFrameDoc( const RDOStudioFrameDoc* const frame ) const;
 
-	int getLastShowedFrame() const              { return lastShowedFrame; };
-	void setLastShowedFrame( const int value );
-	void setCurrentShowingFrame( const int value );
-	void resetCurrentShowingFrame( const int value );
-	void showFrame( const rdoAnimation::RDOFrame* const frame, const int index );
-	void showNextFrame();
-	void showPrevFrame();
-	void showFrame( const int index );
-	bool canShowNextFrame() const;
-	bool canShowPrevFrame() const;
+	int   getLastShowedFrame() const              { return lastShowedFrame; };
+	void  setLastShowedFrame( const int value );
+	void  setCurrentShowingFrame( const int value );
+	void  resetCurrentShowingFrame( const int value );
+	void  showFrame( const rdoAnimation::RDOFrame* const frame, const int index );
+	void  showNextFrame();
+	void  showPrevFrame();
+	void  showFrame( const int index );
+	rbool canShowNextFrame() const;
+	rbool canShowPrevFrame() const;
 
 	void updateStyles() const;
 };

@@ -146,8 +146,8 @@ LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM /*wParam*/, LPARAM lParam )
 		studioApp.mainFrame->output.clearFind();
 		studioApp.mainFrame->output.showFind();
 		tstring findStr  = pDialog->GetFindString();
-		bool bMatchCase      = pDialog->MatchCase() ? true : false;
-		bool bMatchWholeWord = pDialog->MatchWholeWord() ? true : false;
+		rbool bMatchCase      = pDialog->MatchCase() ? true : false;
+		rbool bMatchWholeWord = pDialog->MatchWholeWord() ? true : false;
 		studioApp.mainFrame->output.getFind()->setKeyword( findStr, bMatchCase );
 		studioApp.mainFrame->output.appendStringToFind( rdo::format( ID_FINDINMODEL_BEGINMSG, findStr.c_str() ) );
 		int count = 0;

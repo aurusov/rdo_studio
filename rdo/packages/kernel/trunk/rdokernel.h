@@ -33,7 +33,7 @@ class RDOThreadRepository;
 
 class RDOKernel: public RDOThreadMT
 {
-friend void RDOThread::broadcastMessage( RDOTreadMessage message, void* param, bool lock );
+friend void RDOThread::broadcastMessage( RDOTreadMessage message, void* param, rbool lock );
 friend class RDOStudioApp;
 
 protected:
@@ -100,7 +100,7 @@ public:
 //
 class RDOKernelGUI: public RDOThread
 {
-friend virtual bool RDOThreadGUI::processMessages();
+friend virtual rbool RDOThreadGUI::processMessages();
 
 protected:
 	RDOKernelGUI( CREF(tstring) _thread_name ); // Создание и удаление через потомков

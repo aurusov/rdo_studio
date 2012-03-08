@@ -84,7 +84,7 @@ private:
 	UINT m_updateTimer;
 
 	// Используется при закрытии модели. Задается вопрос.
-	static bool close_mode;
+	static rbool close_mode;
 
 public:
 	RDOStudioMainFrame();
@@ -131,7 +131,7 @@ public:
 	void update_start();
 	void update_stop();
 
-	static bool is_close_mode() { return close_mode; }
+	static rbool is_close_mode() { return close_mode; }
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;

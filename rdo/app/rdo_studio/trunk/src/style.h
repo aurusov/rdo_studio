@@ -27,8 +27,8 @@ public:
 	virtual ~RDOStyleFont();
 
 	RDOStyleFont& operator =( const RDOStyleFont& font );
-	bool operator ==( const RDOStyleFont& font ) const;
-	bool operator !=( const RDOStyleFont& font ) const;
+	rbool operator ==( const RDOStyleFont& font ) const;
+	rbool operator !=( const RDOStyleFont& font ) const;
 
 	virtual void load( tstring regPath );
 	virtual void save( tstring regPath ) const;
@@ -57,8 +57,8 @@ public:
 	virtual ~RDOStyleTheme();
 
 	RDOStyleTheme& operator =( const RDOStyleTheme& theme );
-	bool operator ==( const RDOStyleTheme& theme ) const;
-	bool operator !=( const RDOStyleTheme& theme ) const;
+	rbool operator ==( const RDOStyleTheme& theme ) const;
+	rbool operator !=( const RDOStyleTheme& theme ) const;
 
 	virtual void load( tstring regPath );
 	virtual void save( tstring regPath ) const;
@@ -84,12 +84,12 @@ public:
 	virtual ~RDOStyle();
 
 	RDOStyle& operator =( const RDOStyle& style );
-	bool operator ==( const RDOStyle& style ) const;
-	bool operator !=( const RDOStyle& style ) const;
+	rbool operator ==( const RDOStyle& style ) const;
+	rbool operator !=( const RDOStyle& style ) const;
 
-	virtual void init( CREF(tstring) _regPath = "" );
-	virtual bool load();
-	virtual bool save() const;
+	virtual void  init( CREF(tstring) _regPath = "" );
+	virtual rbool load();
+	virtual rbool save() const;
 
 	RDOStyleFont* font;
 };
@@ -107,12 +107,12 @@ public:
 	virtual ~RDOStyleWithTheme();
 
 	RDOStyleWithTheme& operator =( const RDOStyleWithTheme& style );
-	bool operator ==( const RDOStyleWithTheme& style ) const;
-	bool operator !=( const RDOStyleWithTheme& style ) const;
+	rbool operator ==( const RDOStyleWithTheme& style ) const;
+	rbool operator !=( const RDOStyleWithTheme& style ) const;
 
-	virtual void init( CREF(tstring) _regPath = "" );
-	virtual bool load();
-	virtual bool save() const;
+	virtual void  init( CREF(tstring) _regPath = "" );
+	virtual rbool load();
+	virtual rbool save() const;
 
 	RDOStyleTheme* theme;
 };

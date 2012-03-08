@@ -27,8 +27,8 @@ public:
 	virtual ~RDOFindEditTheme();
 
 	RDOFindEditTheme& operator =( const RDOFindEditTheme& theme );
-	bool operator ==( const RDOFindEditTheme& theme ) const;
-	bool operator !=( const RDOFindEditTheme& theme ) const;
+	rbool operator ==( const RDOFindEditTheme& theme ) const;
+	rbool operator !=( const RDOFindEditTheme& theme ) const;
 
 	virtual void load( tstring regPath );
 	virtual void save( tstring regPath ) const;
@@ -37,10 +37,10 @@ public:
 
 	rdoStyle::RDOStyleFont::style keywordStyle;
 
-	virtual bool styleDefault( const int styleType ) const;
-	virtual bool styleUsing( const int styleType ) const;
-	virtual bool styleBold( const int styleType = STYLE_DEFAULT ) const;
-	virtual bool styleItalic( const int styleType = STYLE_DEFAULT ) const;
+	virtual rbool styleDefault( const int styleType ) const;
+	virtual rbool styleUsing( const int styleType ) const;
+	virtual rbool styleBold( const int styleType = STYLE_DEFAULT ) const;
+	virtual rbool styleItalic( const int styleType = STYLE_DEFAULT ) const;
 	virtual tstring styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
 
 	static RDOFindEditTheme getDefaultTheme();
@@ -62,8 +62,8 @@ public:
 	virtual ~RDOFindEditStyle();
 
 	RDOFindEditStyle& operator =( const RDOFindEditStyle& style );
-	bool operator ==( const RDOFindEditStyle& style ) const;
-	bool operator !=( const RDOFindEditStyle& style ) const;
+	rbool operator ==( const RDOFindEditStyle& style ) const;
+	rbool operator !=( const RDOFindEditStyle& style ) const;
 };
 
 }; // namespace rdoEditCtrl

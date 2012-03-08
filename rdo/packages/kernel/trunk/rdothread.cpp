@@ -342,7 +342,7 @@ RDOThread* RDOThreadGUI::getKernel()
 	return kernel_gui;
 }
 
-bool RDOThreadGUI::processMessages()
+rbool RDOThreadGUI::processMessages()
 {
 	return kernel_gui->processMessages();
 }

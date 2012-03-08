@@ -41,7 +41,7 @@ public:
 
 	rdoModelObjects::RDOFileType indexToType( const int index ) const;
 	int typeToIndex( const rdoModelObjects::RDOFileType type ) const;
-	bool typeSupported( const rdoModelObjects::RDOFileType type ) const { return typeToIndex( type ) != -1;        }
+	rbool typeSupported( const rdoModelObjects::RDOFileType type ) const { return typeToIndex( type ) != -1;        }
 
 	rdoModelObjects::RDOFileType getCurrentRDOItem() const              { return indexToType( getCurrentIndex() ); }
 	void setCurrentRDOItem( const rdoModelObjects::RDOFileType type );

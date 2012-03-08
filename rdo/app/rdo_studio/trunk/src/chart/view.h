@@ -44,19 +44,19 @@ protected:
 	std::vector<tstring> captions;
 	int valueCountY;
 	
-	bool timeWrap;
-	bool canUnwrapTime() const { return scale_koeff >= 1 && !zoomAuto; };
-	bool doUnwrapTime() const { return canUnwrapTime() && !timeWrap; };
+	rbool timeWrap;
+	rbool canUnwrapTime() const { return scale_koeff >= 1 && !zoomAuto; };
+	rbool doUnwrapTime() const { return canUnwrapTime() && !timeWrap; };
 
 	CRect chartRect;
 	void recalcLayout();
 
 	int xMax;
 	int xPos;
-	bool minXVisible() const { return xPos == 0; };
-	bool maxXVisible() const { return xPos == xMax; };
-	void setScrollPos( UINT nSBCode, UINT nPos, const bool need_update = true );
-	void updateScrollBars( const bool need_update = true );
+	rbool minXVisible() const { return xPos == 0; };
+	rbool maxXVisible() const { return xPos == xMax; };
+	void  setScrollPos( UINT nSBCode, UINT nPos, const rbool need_update = true );
+	void  updateScrollBars( const rbool need_update = true );
 
 	long double timeScale;
 	RDOTracerTimeNow drawFromX;
@@ -64,7 +64,7 @@ protected:
 	RDOTracerTimeNow drawToX;
 	int drawToEventCount;
 	int chartShift;
-	bool setTo( const int from_max_pos );
+	rbool setTo( const int from_max_pos );
 	void setFromTo();
 	timesList unwrapTimesList;
 	
@@ -82,14 +82,14 @@ protected:
 	double old_zoom;
 	double auto_zoom;
 	double scale_koeff;
-	void setZoom( double new_zoom, const bool force_update = false );
-	bool zoomAuto;
+	void  setZoom( double new_zoom, const rbool force_update = false );
+	rbool zoomAuto;
 
-	bool previewMode;
+	rbool previewMode;
 	RDOStudioChartViewStyle* style;
 
 	RDOStudioDocSerie* yAxis;
-	bool needDrawLegend;
+	rbool needDrawLegend;
 
 	void updateWindow();
 	void updateView();
@@ -105,17 +105,17 @@ protected:
 	HDC     hmemdc;
 	int     saved_hmemdc;
 	HWND    hwnd;
-	void setFonts( const bool needRedraw = true );
+	void setFonts( const rbool needRedraw = true );
 
 	void onDraw();
 
 public:
-	RDOStudioChartView( const bool preview = false);
+	RDOStudioChartView( const rbool preview = false);
 	virtual ~RDOStudioChartView();
 	RDOStudioChartDoc* GetDocument();
 
 	const RDOStudioChartViewStyle& getStyle() const;
-	void setStyle( RDOStudioChartViewStyle* _style, const bool needRedraw = true );
+	void setStyle( RDOStudioChartViewStyle* _style, const rbool needRedraw = true );
 
 private:
 	virtual void OnInitialUpdate();

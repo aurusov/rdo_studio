@@ -120,7 +120,7 @@ CWnd* RDOTab::getItem( const int index ) const
 	return (CWnd*)tci.lParam;
 }
 
-CWnd* RDOTab::getItemNext( const CWnd* const currentItem, const bool direction, const bool loop ) const
+CWnd* RDOTab::getItemNext( const CWnd* const currentItem, const rbool direction, const rbool loop ) const
 {
 	if ( !getItemCount() ) return NULL;
 	int index;
@@ -218,7 +218,7 @@ void RDOTabCtrl::OnDestroy()
 		for ( ; i >= 0; i-- ) {
 			CWnd* pWnd = getItem( i );
 			if ( pWnd ) {
-				bool mustbedelete = true;
+				rbool mustbedelete = true;
 				CRuntimeClass* runtimeinfo = pWnd->GetRuntimeClass();
 				if ( runtimeinfo && (runtimeinfo->IsDerivedFrom(RUNTIME_CLASS(CFrameWnd)) || runtimeinfo->IsDerivedFrom(RUNTIME_CLASS(CView))) ) {
 					mustbedelete = false;

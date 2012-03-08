@@ -46,7 +46,7 @@ private:
 	RDOTracerTreeItem patItem;
 	RDOTracerTreeItem pmvItem;
 
-	void setHasChildren( const RDOTracerTreeItem* item, const bool hasChildren = true );
+	void setHasChildren( const RDOTracerTreeItem* item, const rbool hasChildren = true );
 
 protected:
 	COleDataSource source;
@@ -58,8 +58,8 @@ protected:
 
 	CMenu popupMenu;
 
-	void addToNewChart( const HTREEITEM hitem ) const;
-	bool findInCharts( const HTREEITEM hitem ) const;
+	void  addToNewChart( const HTREEITEM hitem ) const;
+	rbool findInCharts( const HTREEITEM hitem ) const;
 
 private:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);

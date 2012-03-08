@@ -54,7 +54,7 @@ protected:
 	double minTimeOffset;
 	int ticksCount;
 
-	bool previewMode;
+	rbool previewMode;
 
 	int getMaxMarkerSize() const;
 
@@ -76,19 +76,19 @@ private:
 	DECLARE_MESSAGE_MAP()
 
 public:
-	RDOStudioChartDoc( const bool preview = false );
+	RDOStudioChartDoc( const rbool preview = false );
 	virtual ~RDOStudioChartDoc();
 
 	void addSerie( RDOTracerSerie* const serie );
 	//void removeSerie( RDOTracerSerie* const serie );
-	bool serieExists( const RDOTracerSerie* serie ) const;
+	rbool serieExists( const RDOTracerSerie* serie ) const;
 
 	tstring getTitle() const { return title; };
 	
 	void lock() { mutex.Lock(); };
 	void unlock() { mutex.Unlock(); };
 	void incTimeEventsCount( RDOTracerTimeNow* time );
-	bool newValueToSerieAdded( RDOTracerValue* val );
+	rbool newValueToSerieAdded( RDOTracerValue* val );
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;

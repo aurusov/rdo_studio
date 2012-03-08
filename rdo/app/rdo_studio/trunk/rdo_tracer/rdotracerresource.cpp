@@ -130,7 +130,7 @@ int RDOTracerResource::getParamIndex( const RDOTracerResParam* const param ) con
 	return -1;
 }
 
-void RDOTracerResource::setParams( tstring& line, RDOTracerTimeNow* const time, const int eventIndex, const bool erasing )
+void RDOTracerResource::setParams( tstring& line, RDOTracerTimeNow* const time, const int eventIndex, const rbool erasing )
 {
 	int count = params.size();
 	for ( int i = 0; i < count; i++ ) {
@@ -162,7 +162,7 @@ void RDOTracerResource::setParams( tstring& line, RDOTracerTimeNow* const time, 
 	}
 }
 
-void RDOTracerResource::setErased( const bool value )
+void RDOTracerResource::setErased( const rbool value )
 {
 	if ( erased != value )
 		erased = value;

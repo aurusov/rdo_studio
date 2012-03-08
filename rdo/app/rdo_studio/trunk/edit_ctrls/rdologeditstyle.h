@@ -27,8 +27,8 @@ public:
 	virtual ~RDOLogEditTheme();
 
 	RDOLogEditTheme& operator =( const RDOLogEditTheme& theme );
-	bool operator ==( const RDOLogEditTheme& theme ) const;
-	bool operator !=( const RDOLogEditTheme& theme ) const;
+	rbool operator ==( const RDOLogEditTheme& theme ) const;
+	rbool operator !=( const RDOLogEditTheme& theme ) const;
 
 	virtual void load( tstring regPath );
 	virtual void save( tstring regPath ) const;
@@ -54,8 +54,8 @@ public:
 	virtual ~RDOLogEditStyle();
 
 	RDOLogEditStyle& operator =( const RDOLogEditStyle& style );
-	bool operator ==( const RDOLogEditStyle& style ) const;
-	bool operator !=( const RDOLogEditStyle& style ) const;
+	rbool operator ==( const RDOLogEditStyle& style ) const;
+	rbool operator !=( const RDOLogEditStyle& style ) const;
 };
 
 }; // namespace rdoEditCtrl

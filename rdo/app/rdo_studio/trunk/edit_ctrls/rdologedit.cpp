@@ -229,7 +229,7 @@ void RDOLogEdit::OnGotoPrev()
 	gotoPrev();
 }
 
-void RDOLogEdit::setSelectLine( const int line, const RDOLogEditLineInfo* lineInfo, const bool useScroll )
+void RDOLogEdit::setSelectLine( const int line, const RDOLogEditLineInfo* lineInfo, const rbool useScroll )
 {
 	if ( lineInfo->lineNumber != -1 ) {
 		if ( sendEditor( SCI_MARKERNEXT, 0, 1 << sci_MARKER_LINE ) != line ) {
@@ -274,7 +274,7 @@ void RDOLogEdit::clearSelectLine()
 	}
 }
 
-bool RDOLogEdit::hasSelectLine() const
+rbool RDOLogEdit::hasSelectLine() const
 {
 	int nextLine = sendEditor( SCI_MARKERNEXT, 0, 1 << sci_MARKER_LINE );
 	return nextLine >= 0;
@@ -300,7 +300,7 @@ void RDOLogEdit::clearAll()
 void RDOLogEdit::appendLine( RDOLogEditLineInfo* line )
 {
 	lines.push_back( line );
-	bool readOnly = isReadOnly();
+	rbool readOnly = isReadOnly();
 	if ( readOnly ) {
 		setReadOnly( false );
 	}

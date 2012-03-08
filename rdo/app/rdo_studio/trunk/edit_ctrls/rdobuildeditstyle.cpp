@@ -42,14 +42,14 @@ RDOBuildEditTheme& RDOBuildEditTheme::operator =( const RDOBuildEditTheme& theme
 	return *this;
 }
 
-bool RDOBuildEditTheme::operator ==( const RDOBuildEditTheme& theme ) const
+rbool RDOBuildEditTheme::operator ==( const RDOBuildEditTheme& theme ) const
 {
-	bool flag = RDOLogEditTheme::operator==( theme );
+	rbool flag = RDOLogEditTheme::operator==( theme );
 	if ( flag )	flag &= warning == theme.warning ? true : false;
 	return flag;
 }
 
-bool RDOBuildEditTheme::operator !=( const RDOBuildEditTheme& theme ) const
+rbool RDOBuildEditTheme::operator !=( const RDOBuildEditTheme& theme ) const
 {
 	return !(*this == theme);
 }
@@ -124,14 +124,14 @@ RDOBuildEditStyle& RDOBuildEditStyle::operator =( const RDOBuildEditStyle& style
 	return *this;
 }
 
-bool RDOBuildEditStyle::operator ==( const RDOBuildEditStyle& style ) const
+rbool RDOBuildEditStyle::operator ==( const RDOBuildEditStyle& style ) const
 {
-	bool flag = RDOLogEditStyle::operator==( style );
+	rbool flag = RDOLogEditStyle::operator==( style );
 	if ( theme && style.theme && flag ) flag &= *static_cast<RDOBuildEditTheme*>(theme) == *static_cast<RDOBuildEditTheme*>(style.theme);
 	return flag;
 }
 
-bool RDOBuildEditStyle::operator !=( const RDOBuildEditStyle& style ) const
+rbool RDOBuildEditStyle::operator !=( const RDOBuildEditStyle& style ) const
 {
 	return !(*this == style);
 }

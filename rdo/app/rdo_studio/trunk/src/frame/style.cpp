@@ -30,12 +30,12 @@ RDOStudioFrameTheme& RDOStudioFrameTheme::operator =( const RDOStudioFrameTheme&
 	return *this;
 }
 
-bool RDOStudioFrameTheme::operator ==( const RDOStudioFrameTheme& theme ) const
+rbool RDOStudioFrameTheme::operator ==( const RDOStudioFrameTheme& theme ) const
 {
 	return RDOStyleTheme::operator==( theme );
 }
 
-bool RDOStudioFrameTheme::operator !=( const RDOStudioFrameTheme& theme ) const
+rbool RDOStudioFrameTheme::operator !=( const RDOStudioFrameTheme& theme ) const
 {
 	return !(*this == theme);
 }
@@ -70,14 +70,14 @@ RDOStudioFrameStyle& RDOStudioFrameStyle::operator =( const RDOStudioFrameStyle&
 	return *this;
 }
 
-bool RDOStudioFrameStyle::operator ==( const RDOStudioFrameStyle& style ) const
+rbool RDOStudioFrameStyle::operator ==( const RDOStudioFrameStyle& style ) const
 {
-	bool flag = RDOStyleWithTheme::operator==( style );
+	rbool flag = RDOStyleWithTheme::operator==( style );
 	if ( theme  && style.theme && flag ) flag &= *static_cast<RDOStudioFrameTheme*>(theme) == *static_cast<RDOStudioFrameTheme*>(style.theme);
 	return flag;
 }
 
-bool RDOStudioFrameStyle::operator !=( const RDOStudioFrameStyle& style ) const
+rbool RDOStudioFrameStyle::operator !=( const RDOStudioFrameStyle& style ) const
 {
 	return !(*this == style);
 }

@@ -64,7 +64,7 @@ protected:
 	CBitmap label_bmp;
 	CBitmap close_bmp;
 	CBitmap close_bmp_over;
-	bool    over_close_button;
+	rbool   over_close_button;
 	CRect getLabelBMPRect();
 	CRect getCloseBMPRect();
 	void  updateOver( const CPoint& point );
@@ -90,7 +90,7 @@ friend class RPPageCtrl;
 protected:
 	RPPageCtrlItemLabel label;
 	CWnd*               wnd;
-	bool                fly;
+	rbool               fly;
 
 	RPPageCtrlItem();
 	virtual ~RPPageCtrlItem();

@@ -42,14 +42,14 @@ RDOLogEditTheme& RDOLogEditTheme::operator =( const RDOLogEditTheme& theme )
 	return *this;
 }
 
-bool RDOLogEditTheme::operator ==( const RDOLogEditTheme& theme ) const
+rbool RDOLogEditTheme::operator ==( const RDOLogEditTheme& theme ) const
 {
-	bool flag = RDOBaseEditTheme::operator==( theme );
+	rbool flag = RDOBaseEditTheme::operator==( theme );
 	if ( flag )	flag &= selectLineBgColor == theme.selectLineBgColor ? true : false;
 	return flag;
 }
 
-bool RDOLogEditTheme::operator !=( const RDOLogEditTheme& theme ) const
+rbool RDOLogEditTheme::operator !=( const RDOLogEditTheme& theme ) const
 {
 	return !(*this == theme);
 }
@@ -130,14 +130,14 @@ RDOLogEditStyle& RDOLogEditStyle::operator =( const RDOLogEditStyle& style )
 	return *this;
 }
 
-bool RDOLogEditStyle::operator ==( const RDOLogEditStyle& style ) const
+rbool RDOLogEditStyle::operator ==( const RDOLogEditStyle& style ) const
 {
-	bool flag = RDOBaseEditStyle::operator==( style );
+	rbool flag = RDOBaseEditStyle::operator==( style );
 	if ( theme && style.theme && flag ) flag &= *static_cast<RDOLogEditTheme*>(theme) == *static_cast<RDOLogEditTheme*>(style.theme);
 	return flag;
 }
 
-bool RDOLogEditStyle::operator !=( const RDOLogEditStyle& style ) const
+rbool RDOLogEditStyle::operator !=( const RDOLogEditStyle& style ) const
 {
 	return !(*this == style);
 }

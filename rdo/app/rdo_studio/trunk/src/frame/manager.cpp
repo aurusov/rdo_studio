@@ -155,7 +155,7 @@ void RDOStudioFrameManager::expand() const
 	studioApp.mainFrame->workspace.frames->expand();
 }
 
-bool RDOStudioFrameManager::isValidFrameDoc( const RDOStudioFrameDoc* const frame ) const
+rbool RDOStudioFrameManager::isValidFrameDoc( const RDOStudioFrameDoc* const frame ) const
 {
 	POSITION pos = frameDocTemplate->GetFirstDocPosition();
 	while ( pos ) {
@@ -314,7 +314,7 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 
 			RDOStudioFrameView* view = getFrameView( index );
 			if ( view->mustBeInit ) {
-				bool show_fillrect = true;
+				rbool show_fillrect = true;
 				if ( frame->hasBgImage() ) {
 					BMP* bmp = bitmaps[frame->m_bgImageName];
 					if ( bmp ) {
@@ -345,7 +345,7 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 
 			HDC hdc = view->hmemdc;
 
-			bool show_fillrect = true;
+			rbool show_fillrect = true;
 			if ( frame->hasBgImage() ) {
 				BMP* bmp = bitmaps[frame->m_bgImageName];
 				if ( bmp ) {
@@ -748,13 +748,13 @@ void RDOStudioFrameManager::showFrame( const int index )
 	}
 }
 
-bool RDOStudioFrameManager::canShowNextFrame() const
+rbool RDOStudioFrameManager::canShowNextFrame() const
 {
 	int cnt = count();
 	return model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && ( currentShowingFrame == -1 || currentShowingFrame < cnt-1 );
 }
 
-bool RDOStudioFrameManager::canShowPrevFrame() const
+rbool RDOStudioFrameManager::canShowPrevFrame() const
 {
 	int cnt = count();
 	return model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && currentShowingFrame > 0;

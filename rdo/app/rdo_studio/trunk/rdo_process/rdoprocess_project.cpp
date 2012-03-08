@@ -45,7 +45,7 @@ RPPixmap* RPProjectMFC::createBitmap( char* xpm[] )
 	return new RPPixmap( xpm );
 }
 /*
-bool RPProjectMFC::lockResource( rpMethod::RPMethod* method )
+rbool RPProjectMFC::lockResource( rpMethod::RPMethod* method )
 {
 	RPMethodPlugin* plugin = studioApp.getMethodManager().find( method );
 	if ( plugin ) {

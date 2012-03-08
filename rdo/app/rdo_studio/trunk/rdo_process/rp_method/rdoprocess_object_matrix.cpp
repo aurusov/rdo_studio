@@ -179,7 +179,7 @@ void RPObjectMatrix::setRotateCenterLocalDelta( double dx, double dy )
 	setRotateCenter( point );
 }
 
-bool RPObjectMatrix::isRotateCenter( const rp::point& global_chart_pos ) const
+rbool RPObjectMatrix::isRotateCenter( const rp::point& global_chart_pos ) const
 {
 	return rp::math::getLength( getRotateCenter(), global_chart_pos ) <= RPObjectFlowChart::getSensitivity();
 }

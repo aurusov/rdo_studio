@@ -56,9 +56,9 @@ RDOEditorEditTheme& RDOEditorEditTheme::operator =( const RDOEditorEditTheme& th
 	return *this;
 }
 
-bool RDOEditorEditTheme::operator ==( const RDOEditorEditTheme& theme ) const
+rbool RDOEditorEditTheme::operator ==( const RDOEditorEditTheme& theme ) const
 {
-	bool flag = RDOEditorBaseEditTheme::operator==( theme );
+	rbool flag = RDOEditorBaseEditTheme::operator==( theme );
 
 	if ( flag ) flag &= foldFgColor == theme.foldFgColor &&
 	                    foldBgColor == theme.foldBgColor &&
@@ -70,7 +70,7 @@ bool RDOEditorEditTheme::operator ==( const RDOEditorEditTheme& theme ) const
 	return flag;
 }
 
-bool RDOEditorEditTheme::operator !=( const RDOEditorEditTheme& theme ) const
+rbool RDOEditorEditTheme::operator !=( const RDOEditorEditTheme& theme ) const
 {
 	return !(*this == theme);
 }
@@ -216,13 +216,13 @@ RDOEditorEditAutoComplete& RDOEditorEditAutoComplete::operator =( const RDOEdito
 	return *this;
 }
 
-bool RDOEditorEditAutoComplete::operator ==( const RDOEditorEditAutoComplete& autoComplete ) const
+rbool RDOEditorEditAutoComplete::operator ==( const RDOEditorEditAutoComplete& autoComplete ) const
 {
 	return useAutoComplete == autoComplete.useAutoComplete &&
 	       showFullList    == autoComplete.showFullList;
 }
 
-bool RDOEditorEditAutoComplete::operator !=( const RDOEditorEditAutoComplete& autoComplete ) const
+rbool RDOEditorEditAutoComplete::operator !=( const RDOEditorEditAutoComplete& autoComplete ) const
 {
 	return !(*this == autoComplete);
 }
@@ -262,13 +262,13 @@ RDOEditorEditBuffer& RDOEditorEditBuffer::operator =( const RDOEditorEditBuffer&
 	return *this;
 }
 
-bool RDOEditorEditBuffer::operator ==( const RDOEditorEditBuffer& buffer ) const
+rbool RDOEditorEditBuffer::operator ==( const RDOEditorEditBuffer& buffer ) const
 {
 	return canClearBuffer   == buffer.canClearBuffer &&
 	       clearBufferDelay == buffer.clearBufferDelay;
 }
 
-bool RDOEditorEditBuffer::operator !=( const RDOEditorEditBuffer& buffer ) const
+rbool RDOEditorEditBuffer::operator !=( const RDOEditorEditBuffer& buffer ) const
 {
 	return !(*this == buffer);
 }
@@ -310,14 +310,14 @@ RDOEditorEditMargin& RDOEditorEditMargin::operator =( const RDOEditorEditMargin&
 	return *this;
 }
 
-bool RDOEditorEditMargin::operator ==( const RDOEditorEditMargin& margin ) const
+rbool RDOEditorEditMargin::operator ==( const RDOEditorEditMargin& margin ) const
 {
 	return fold       == margin.fold &&
 	       bookmark   == margin.bookmark &&
 	       lineNumber == margin.lineNumber;
 }
 
-bool RDOEditorEditMargin::operator !=( const RDOEditorEditMargin& margin ) const
+rbool RDOEditorEditMargin::operator !=( const RDOEditorEditMargin& margin ) const
 {
 	return !(*this == margin);
 }
@@ -387,9 +387,9 @@ RDOEditorEditStyle& RDOEditorEditStyle::operator =( const RDOEditorEditStyle& st
 	return *this;
 }
 
-bool RDOEditorEditStyle::operator ==( const RDOEditorEditStyle& style ) const
+rbool RDOEditorEditStyle::operator ==( const RDOEditorEditStyle& style ) const
 {
-	bool flag = RDOEditorBaseEditStyle::operator==( style );
+	rbool flag = RDOEditorBaseEditStyle::operator==( style );
 	if ( theme        && style.theme        && flag ) flag &= *static_cast<RDOEditorEditTheme*>(theme) == *static_cast<RDOEditorEditTheme*>(style.theme);
 	if ( autoComplete && style.autoComplete && flag ) flag &= *autoComplete == *style.autoComplete;
 	if ( buffer       && style.buffer       && flag ) flag &= *buffer       == *style.buffer;
@@ -397,7 +397,7 @@ bool RDOEditorEditStyle::operator ==( const RDOEditorEditStyle& style ) const
 	return flag;
 }
 
-bool RDOEditorEditStyle::operator !=( const RDOEditorEditStyle& style ) const
+rbool RDOEditorEditStyle::operator !=( const RDOEditorEditStyle& style ) const
 {
 	return !(*this == style);
 }
@@ -410,7 +410,7 @@ void RDOEditorEditStyle::init( CREF(tstring) _regPath )
 	initMargin();
 }
 
-bool RDOEditorEditStyle::load()
+rbool RDOEditorEditStyle::load()
 {
 	if ( RDOEditorBaseEditStyle::load() ) {
 		if ( autoComplete ) autoComplete->load( regPath );
@@ -421,7 +421,7 @@ bool RDOEditorEditStyle::load()
 	return false;
 }
 
-bool RDOEditorEditStyle::save() const
+rbool RDOEditorEditStyle::save() const
 {
 	if ( RDOEditorBaseEditStyle::save() ) {
 		if ( autoComplete ) autoComplete->save(  regPath );

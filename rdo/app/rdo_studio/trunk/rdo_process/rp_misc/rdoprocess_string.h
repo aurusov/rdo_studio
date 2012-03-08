@@ -46,7 +46,7 @@ public:
 	float    tofloat() const  { return static_cast<float>(atof( c_str() )); }
 	double   todouble() const { return strtod( c_str(), NULL );             }
 	int      tohex() const;
-	bool     tobool() const   { return tolower() == "true";                 }
+	rbool    tobool() const   { return tolower() == "true";                 }
 
 	//! Переводит целое число в строчку.
 	/*! \param value - целое число для перевода в строку.
@@ -86,7 +86,7 @@ rp::string str = rp::string::fromdouble( 20.2 );
 		return str;
 	}
 
-	static rp::string frombool( bool value ) {
+	static rp::string frombool( rbool value ) {
 		return value ? "true" : "false";
 	}
 

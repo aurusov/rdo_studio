@@ -34,7 +34,7 @@ private:
 	tstring     version_info;
 	tstring     description;
 	rdoPlugin::PluginState state;
-	bool restoreState;
+	rbool restoreState;
 	rdoPlugin::PluginRunMode defaultRunMode;
 	rdoPlugin::PluginRunMode runMode;
 
@@ -43,7 +43,7 @@ private:
 	rdoPlugin::PFunResults    results;
 
 	CMutex mutex;
-	bool closed;
+	rbool closed;
 
 	tstring getProfilePath() const;
 
@@ -51,7 +51,7 @@ public:
 	RDOStudioPlugin( CREF(tstring) modulName );
 	virtual ~RDOStudioPlugin();
 
-	static bool isRDOStudioPlugin( CREF(tstring) modulName );
+	static rbool isRDOStudioPlugin( CREF(tstring) modulName );
 
 	tstring getName() const        { return name;          }
 
@@ -65,8 +65,8 @@ public:
 	rdoPlugin::PluginState getState() const     { return state; }
 	void setState( const rdoPlugin::PluginState value );
 
-	bool getRestoreState() const                { return restoreState; }
-	void setRestoreState( const bool value );
+	rbool getRestoreState() const               { return restoreState; }
+	void  setRestoreState( const rbool value );
 
 	rdoPlugin::PluginRunMode getRunMode() const { return runMode; }
 	void setRunMode( const rdoPlugin::PluginRunMode value );
@@ -110,43 +110,43 @@ private:
 
 	std::list< rdoPlugin::ModelActionType > actionDisabled;
 
-	static void __stdcall pluginStop( const HMODULE lib );
-	static bool __stdcall pluginIsStoped( const HMODULE lib );
+	static void  __stdcall pluginStop( const HMODULE lib );
+	static rbool __stdcall pluginIsStoped( const HMODULE lib );
 
 	int lastCmdShow;
 	static void __stdcall studioShow( int cmdShow );
 	static HWND __stdcall studioGetMainFrame();
 
-	static void __stdcall actionEnable( rdoPlugin::ModelActionType action );
-	static void __stdcall actionDisable( rdoPlugin::ModelActionType action );
-	static bool __stdcall actionState( rdoPlugin::ModelActionType action );
-	static bool __stdcall newModel( const char* modelName, const char* modelPath );
-	static bool __stdcall openModel( const char* modelName );
-	static bool __stdcall saveModel();
-	static bool __stdcall closeModel();
-	static bool __stdcall hasModel();
-	static bool __stdcall isModelModify();
-	static bool __stdcall buildModel();
-	static bool __stdcall runModel();
-	static bool __stdcall stopModel();
-	static bool __stdcall isModelRunning();
+	static void  __stdcall actionEnable( rdoPlugin::ModelActionType action );
+	static void  __stdcall actionDisable( rdoPlugin::ModelActionType action );
+	static rbool __stdcall actionState( rdoPlugin::ModelActionType action );
+	static rbool __stdcall newModel( const char* modelName, const char* modelPath );
+	static rbool __stdcall openModel( const char* modelName );
+	static rbool __stdcall saveModel();
+	static rbool __stdcall closeModel();
+	static rbool __stdcall hasModel();
+	static rbool __stdcall isModelModify();
+	static rbool __stdcall buildModel();
+	static rbool __stdcall runModel();
+	static rbool __stdcall stopModel();
+	static rbool __stdcall isModelRunning();
 	static rdoPlugin::ModelRuntimeMode __stdcall getModelRuntimeMode();
 	static void __stdcall setModelRuntimeMode( rdoPlugin::ModelRuntimeMode runtimeMode );
 	static const char* __stdcall getModelStructure();
-	static bool __stdcall readFile( rdoPlugin::ModelFileType file_type, char** data );
-	static bool __stdcall writeFile( rdoPlugin::ModelFileType file_type, const char* data );
+	static rbool __stdcall readFile( rdoPlugin::ModelFileType file_type, char** data );
+	static rbool __stdcall writeFile( rdoPlugin::ModelFileType file_type, const char* data );
 
-	static bool __stdcall isFrameDescribed();
+	static rbool __stdcall isFrameDescribed();
 	static double __stdcall getFrameShowRate();
-	static void __stdcall setFrameShowRate( double value );
-	static void __stdcall showNextFrame();
-	static void __stdcall showPrevFrame();
-	static bool __stdcall canShowNextFrame();
-	static bool __stdcall canShowPrevFrame();
-	static int __stdcall getFrameCount();
+	static void  __stdcall setFrameShowRate( double value );
+	static void  __stdcall showNextFrame();
+	static void  __stdcall showPrevFrame();
+	static rbool __stdcall canShowNextFrame();
+	static rbool __stdcall canShowPrevFrame();
+	static int   __stdcall getFrameCount();
 	static const char* __stdcall getFrameName( int index );
-	static void __stdcall showFrame( int index );
-	static void __stdcall closeAllFrame();
+	static void  __stdcall showFrame( int index );
+	static void  __stdcall closeAllFrame();
 
 public:
 	RDOStudioPlugins();
@@ -156,12 +156,12 @@ public:
 
 	void stopPluginByStudio( const HMODULE lib );
 	void modelStart();
-	void modelStop( bool model_no_error = true );
+	void modelStop( rbool model_no_error = true );
 	void traceProc( CREF(tstring) str );
 	void pluginProc( const int message, void* param1 = NULL );
-	static bool __stdcall studioIsShow();
+	static rbool __stdcall studioIsShow();
 
-	bool canAction( rdoPlugin::ModelActionType action );
+	rbool canAction( rdoPlugin::ModelActionType action );
 
 	void saveMainFrameState( int cmdShow );
 

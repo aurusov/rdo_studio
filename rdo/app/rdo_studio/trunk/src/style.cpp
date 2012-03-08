@@ -50,7 +50,7 @@ RDOStyleFont& RDOStyleFont::operator =( const RDOStyleFont& font )
 	return *this;
 }
 
-bool RDOStyleFont::operator ==( const RDOStyleFont& font ) const
+rbool RDOStyleFont::operator ==( const RDOStyleFont& font ) const
 {
 	return name         == font.name &&
 	       size         == font.size &&
@@ -58,7 +58,7 @@ bool RDOStyleFont::operator ==( const RDOStyleFont& font ) const
 	       characterSet == font.characterSet;
 }
 
-bool RDOStyleFont::operator !=( const RDOStyleFont& font ) const
+rbool RDOStyleFont::operator !=( const RDOStyleFont& font ) const
 {
 	return !(*this == font);
 }
@@ -148,7 +148,7 @@ RDOStyleTheme& RDOStyleTheme::operator =( const RDOStyleTheme& theme )
 	return *this;
 }
 
-bool RDOStyleTheme::operator ==( const RDOStyleTheme& theme ) const
+rbool RDOStyleTheme::operator ==( const RDOStyleTheme& theme ) const
 {
 	return defaultColor    == theme.defaultColor &&
 	       backgroundColor == theme.backgroundColor &&
@@ -156,7 +156,7 @@ bool RDOStyleTheme::operator ==( const RDOStyleTheme& theme ) const
 	       defaultStyle == theme.defaultStyle;
 }
 
-bool RDOStyleTheme::operator !=( const RDOStyleTheme& theme ) const
+rbool RDOStyleTheme::operator !=( const RDOStyleTheme& theme ) const
 {
 	return !(*this == theme);
 }
@@ -203,14 +203,14 @@ RDOStyle& RDOStyle::operator =( const RDOStyle& style )
 	return *this;
 }
 
-bool RDOStyle::operator ==( const RDOStyle& style ) const
+rbool RDOStyle::operator ==( const RDOStyle& style ) const
 {
-	bool flag = true;
+	rbool flag = true;
 	if ( font && style.font && flag ) flag &= *font == *style.font;
 	return flag;
 }
 
-bool RDOStyle::operator !=( const RDOStyle& style ) const
+rbool RDOStyle::operator !=( const RDOStyle& style ) const
 {
 	return !(*this == style);
 }
@@ -228,7 +228,7 @@ void RDOStyle::init( CREF(tstring) _regPath )
 	initFont();
 }
 
-bool RDOStyle::load()
+rbool RDOStyle::load()
 {
 	if ( !regPath.empty() ) {
 		if ( font ) font->load( regPath );
@@ -237,7 +237,7 @@ bool RDOStyle::load()
 	return false;
 }
 
-bool RDOStyle::save() const
+rbool RDOStyle::save() const
 {
 	if ( !regPath.empty() ) {
 		if ( font ) font->save( regPath );
@@ -273,14 +273,14 @@ RDOStyleWithTheme& RDOStyleWithTheme::operator =( const RDOStyleWithTheme& style
 	return *this;
 }
 
-bool RDOStyleWithTheme::operator ==( const RDOStyleWithTheme& style ) const
+rbool RDOStyleWithTheme::operator ==( const RDOStyleWithTheme& style ) const
 {
-	bool flag = RDOStyle::operator==( style );
+	rbool flag = RDOStyle::operator==( style );
 	if ( theme && style.theme && flag ) flag &= *theme == *style.theme;
 	return flag;
 }
 
-bool RDOStyleWithTheme::operator !=( const RDOStyleWithTheme& style ) const
+rbool RDOStyleWithTheme::operator !=( const RDOStyleWithTheme& style ) const
 {
 	return !(*this == style);
 }
@@ -291,7 +291,7 @@ void RDOStyleWithTheme::init( CREF(tstring) _regPath )
 	initTheme();
 }
 
-bool RDOStyleWithTheme::load()
+rbool RDOStyleWithTheme::load()
 {
 	if ( RDOStyle::load() ) {
 		if ( theme ) theme->load( regPath );
@@ -300,7 +300,7 @@ bool RDOStyleWithTheme::load()
 	return false;
 }
 
-bool RDOStyleWithTheme::save() const
+rbool RDOStyleWithTheme::save() const
 {
 	if ( RDOStyle::save() ) {
 		if ( theme ) theme->save( regPath );

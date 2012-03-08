@@ -160,18 +160,18 @@ private:
 		enum Type { none = 0, all, source, build, debug, trace, results, find, chart, frame } type;
 		tstring&                       font_name;
 		int&                           font_size;
-		bool                           font_fixed;
-		bool&                          wordwrap;
-		bool&                          horzscrollbar;
-		bool&                          warning;
+		rbool                          font_fixed;
+		rbool&                         wordwrap;
+		rbool&                         horzscrollbar;
+		rbool&                         warning;
 		rdoEditCtrl::RDOBookmarkStyle& bookmarkstyle;
 		rdoEditor::RDOFoldStyle&       foldstyle;
-		bool&                          commentfold;
+		rbool&                         commentfold;
 
 		std::list< tstring > themes;
 		std::list< STYLEProperty* > properties;
 
-		STYLEObject( const Type _type, tstring& _font_name, int& _font_size, const bool _font_fixed = true, bool& _wordwrap = null_wordwrap, bool& _horzscrollbar = null_horzscrollbar, rdoEditCtrl::RDOBookmarkStyle& _bookmarkstyle = null_bookmarkstyle, rdoEditor::RDOFoldStyle& _foldstyle = null_foldstyle, bool& _commentfold = null_commentfold, bool& _warning = null_warning ):
+		STYLEObject( const Type _type, tstring& _font_name, int& _font_size, const rbool _font_fixed = true, rbool& _wordwrap = null_wordwrap, rbool& _horzscrollbar = null_horzscrollbar, rdoEditCtrl::RDOBookmarkStyle& _bookmarkstyle = null_bookmarkstyle, rdoEditor::RDOFoldStyle& _foldstyle = null_foldstyle, rbool& _commentfold = null_commentfold, rbool& _warning = null_warning ):
 			type( _type ),
 			font_name( _font_name ),
 			font_size( _font_size ),
@@ -195,17 +195,17 @@ private:
 	class STYLEFont {
 	public:
 		tstring name;
-		bool fixed;
+		rbool   fixed;
 
 		STYLEFont(): name( "" ), fixed( true ) {};
-		STYLEFont( tstring _name, bool _fixed = true ): name( _name ), fixed( _fixed ) {};
+		STYLEFont( tstring _name, rbool _fixed = true ): name( _name ), fixed( _fixed ) {};
 	};
 
 	std::list< STYLEObject* > objects;
 	std::list< STYLEFont > fonts;
-	bool isCurrentFixed;
+	rbool isCurrentFixed;
 	static int CALLBACK EnumFontFamExProc( ENUMLOGFONTEX* lpelfe, NEWTEXTMETRICEX* lpntme, DWORD FontType, LPARAM lParam );
-	void loadFontsIntoCombo( bool fixed = true );
+	void loadFontsIntoCombo( rbool fixed = true );
 
 	RDOStudioOptions* sheet;
 
@@ -223,17 +223,17 @@ private:
 	int         all_font_size;
 	COLORREF    all_fg_color;
 	COLORREF    all_bg_color;
-	bool        use_all_fg_color;
-	bool        use_all_bg_color;
+	rbool       use_all_fg_color;
+	rbool       use_all_bg_color;
 	void updatePropOfAllObject();
 
 	rdoStyle::RDOStyleFont::style        null_font_style;
 	static COLORREF                      null_fg_color;
 	static COLORREF                      null_bg_color;
-	static bool                          null_wordwrap;
-	static bool                          null_horzscrollbar;
-	static bool                          null_warning;
-	static bool                          null_commentfold;
+	static rbool                         null_wordwrap;
+	static rbool                         null_horzscrollbar;
+	static rbool                         null_warning;
+	static rbool                         null_commentfold;
 	static rdoEditCtrl::RDOBookmarkStyle null_bookmarkstyle;
 	static rdoEditor::RDOFoldStyle       null_foldstyle;
 
@@ -316,11 +316,11 @@ class RDOStudioOptionsPlugins: public CPropertyPage
 private:
 	RDOStudioOptions* sheet;
 
-	bool sortPluginNameAsceding;
-	bool sortPluginVersionAsceding;
-	bool sortPluginRunModeAsceding;
-	bool sortPluginStateAsceding;
-	bool sortPluginDescriptionAsceding;
+	rbool sortPluginNameAsceding;
+	rbool sortPluginVersionAsceding;
+	rbool sortPluginRunModeAsceding;
+	rbool sortPluginStateAsceding;
+	rbool sortPluginDescriptionAsceding;
 
 	UINT timer;
 
@@ -394,7 +394,7 @@ private:
 	rdoEditor::RDOEditorResults    preview_results;
 	rdoEditCtrl::RDOFindEdit       preview_find;
 
-	bool                           chart_need_delete;
+	rbool                          chart_need_delete;
 	RDOStudioChartDoc*             preview_chart_doc;
 	RDOStudioChartView*            preview_chart;
 	std::vector<RDOTracerTimeNow>  preview_times;

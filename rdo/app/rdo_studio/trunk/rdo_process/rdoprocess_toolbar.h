@@ -66,9 +66,9 @@ public:
 	COLORREF color_brush;
 	COLORREF color_pen;
 	COLORREF color_text;
-	bool     empty_brush;
-	bool     empty_pen;
-	bool     empty_text;
+	rbool    empty_brush;
+	rbool    empty_pen;
+	rbool    empty_text;
 
 private:
 	afx_msg void OnPaint();

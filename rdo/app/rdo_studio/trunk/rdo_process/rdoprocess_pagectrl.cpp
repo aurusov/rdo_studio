@@ -162,7 +162,7 @@ void RPPageCtrl::removePage( RPPageCtrlItem* page )
 {
 	std::list< RPPageCtrlItem* >::iterator it = std::find( items.begin(), items.end(), page );
 	if ( it != items.end() ) {
-		bool current_flag = it_current == it;
+		rbool current_flag = it_current == it;
 		std::list< RPPageCtrlItem* >::iterator it_next = items.erase( it );
 		if ( current_flag ) {
 			it_current = it_next;
@@ -222,7 +222,7 @@ void RPPageCtrl::OnTimer( UINT nIDEvent )
 			if ( it != items.end() ) {
 				it = items.end();
 				it--;
-				bool last = true;
+				rbool last = true;
 				while ( it != it_current ) {
 					RPPageCtrlItem* item = *it;
 					item->fly = true;
@@ -427,7 +427,7 @@ void RPPageCtrlItemLabel::OnMouseMove( UINT nFlags, CPoint point )
 
 void RPPageCtrlItemLabel::updateOver( const CPoint& point )
 {
-	bool prev = over_close_button;
+	rbool prev = over_close_button;
 	over_close_button = getCloseBMPRect().PtInRect( point ) ? true : false;
 	if ( over_close_button != prev ) {
 		Invalidate();

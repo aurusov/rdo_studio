@@ -28,10 +28,10 @@ friend class RDOBuildEdit;
 
 protected:
 	rdoSimulator::RDOSyntaxError::ErrorCode error_code;
-	bool warning;
+	rbool warning;
 
 public:
-	RDOBuildEditLineInfo( rdoSimulator::RDOSyntaxError::ErrorCode _error_code, CREF(tstring) _message, const rdoModelObjects::RDOFileType _fileType = rdoModelObjects::PAT, const int _lineNumber = -1, const int _posInLine = 0, bool _warning = false );
+	RDOBuildEditLineInfo( rdoSimulator::RDOSyntaxError::ErrorCode _error_code, CREF(tstring) _message, const rdoModelObjects::RDOFileType _fileType = rdoModelObjects::PAT, const int _lineNumber = -1, const int _posInLine = 0, rbool _warning = false );
 	RDOBuildEditLineInfo( CREF(tstring) _message );
 	~RDOBuildEditLineInfo();
 

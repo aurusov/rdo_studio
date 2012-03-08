@@ -22,9 +22,9 @@ private:
 
 	UINT indicator;
 
-	bool visible;
+	rbool visible;
 
-	void repositionProgressCtrl( const bool redraw = true );
+	void repositionProgressCtrl( const rbool redraw = true );
 
 public:
 	RDOStudioStatusBar();
@@ -33,8 +33,8 @@ public:
 	void setProgressIndicator( const UINT ind ) { indicator = ind; };
 	UINT getProgressIndicator() const { return indicator; };
 
-	void setProgressVisible( const bool _visible );
-	bool getProgressVisible() { return visible; };
+	void  setProgressVisible( const rbool _visible );
+	rbool getProgressVisible() { return visible; };
 
 	void setRange( const int lower = 0, const int upper = 100 ) { progress.SetRange32( lower, upper ); };
 	void getRange( int& lower, int& upper ) const { const_cast<CProgressCtrl&>(progress).GetRange( lower, upper ); };

@@ -32,13 +32,13 @@ DECLARE_DYNCREATE( RDOTracerLogCtrl )
 protected:
 	typedef std::map< int, RDOLogColorPair* > RDOColorMap;
 	RDOColorMap subitemColors;
-	bool addingSubitems;
+	rbool addingSubitems;
 	RDOLogColorPair* itemColor;
-	virtual bool getItemColors( const int index, RDOLogColorPair* &colors ) const;
+	virtual rbool getItemColors( const int index, RDOLogColorPair* &colors ) const;
 	void showFindError( tstring& findStr );
 
 	CMenu popupMenu;
-	bool bShowMenu;
+	rbool bShowMenu;
 
 private:
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
@@ -63,12 +63,12 @@ public:
 
 	virtual void addStringToLog( const tstring logStr );
 
-	virtual void setStyle( RDOTracerLogStyle* style, const bool needRedraw = true );
+	virtual void setStyle( RDOTracerLogStyle* style, const rbool needRedraw = true );
 
 	virtual void clear();
 
-	bool getShowMenu() const             { return bShowMenu;  };
-	void setShowMenu( const bool value ) { bShowMenu = value; };
+	rbool getShowMenu() const              { return bShowMenu;  };
+	void  setShowMenu( const rbool value ) { bShowMenu = value; };
 
 };
 

@@ -25,8 +25,8 @@ public:
 	virtual ~RDOStudioChartViewTheme();
 
 	RDOStudioChartViewTheme& operator =( const RDOStudioChartViewTheme& theme );
-	bool operator ==( const RDOStudioChartViewTheme& theme ) const;
-	bool operator !=( const RDOStudioChartViewTheme& theme ) const;
+	rbool operator ==( const RDOStudioChartViewTheme& theme ) const;
+	rbool operator !=( const RDOStudioChartViewTheme& theme ) const;
 
 	virtual void load( tstring regPath );
 	virtual void save( tstring regPath ) const;
@@ -53,8 +53,8 @@ public:
 	virtual ~RDOStudioChartViewFontsTicks();
 
 	RDOStudioChartViewFontsTicks& operator =( const RDOStudioChartViewFontsTicks& fonts_ticks );
-	bool operator ==( const RDOStudioChartViewFontsTicks& fonts_ticks ) const;
-	bool operator !=( const RDOStudioChartViewFontsTicks& fonts_ticks ) const;
+	rbool operator ==( const RDOStudioChartViewFontsTicks& fonts_ticks ) const;
+	rbool operator !=( const RDOStudioChartViewFontsTicks& fonts_ticks ) const;
 
 	virtual void load( tstring regPath );
 	virtual void save( tstring regPath ) const;
@@ -78,12 +78,12 @@ public:
 	virtual ~RDOStudioChartViewStyle();
 
 	RDOStudioChartViewStyle& operator =( const RDOStudioChartViewStyle& style );
-	bool operator ==( const RDOStudioChartViewStyle& style ) const;
-	bool operator !=( const RDOStudioChartViewStyle& style ) const;
+	rbool operator ==( const RDOStudioChartViewStyle& style ) const;
+	rbool operator !=( const RDOStudioChartViewStyle& style ) const;
 
-	virtual void init( CREF(tstring) _regPath = "" );
-	virtual bool load();
-	virtual bool save() const;
+	virtual void  init( CREF(tstring) _regPath = "" );
+	virtual rbool load();
+	virtual rbool save() const;
 	
 	RDOStudioChartViewTheme* getTheme() { return static_cast<RDOStudioChartViewTheme*>(theme); }
 

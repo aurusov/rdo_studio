@@ -37,7 +37,7 @@ protected:
 	int		m_AxisSerie;
 
 private:
-	bool checkValues() const;
+	rbool checkValues() const;
 
 	virtual void OnOK();
 	virtual BOOL OnInitDialog();
@@ -68,8 +68,8 @@ private:
 
 protected:
 	
-	bool getModified() const;
-	void restoreValues();
+	rbool getModified() const;
+	void  restoreValues();
 
 	enum { IDD = IDD_CHART_OPTIONS_SERIES };
 	CButton	m_TranspMarker;
@@ -82,7 +82,7 @@ protected:
 	int		m_sizeMarker;
 
 private:
-	bool checkValues() const;
+	rbool checkValues() const;
 
 	virtual void OnOK();
 	virtual BOOL OnInitDialog();

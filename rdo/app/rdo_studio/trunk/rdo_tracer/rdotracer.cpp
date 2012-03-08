@@ -21,7 +21,7 @@ using namespace rdoTracer;
 
 RDOTracer* tracer = NULL;
 
-static bool clear_after_stop = false;
+static rbool clear_after_stop = false;
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOTracer

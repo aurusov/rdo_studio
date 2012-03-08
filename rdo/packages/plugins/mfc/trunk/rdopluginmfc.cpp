@@ -41,7 +41,7 @@ void __stdcall getPluginInfo( rdoPlugin::PluginInfo* info )
 	info->defaultRunMode = rdoPlugin::prmNoAuto;
 }
 
-bool __stdcall startPlugin( const rdoPlugin::Studio* _studio )
+rbool __stdcall startPlugin( const rdoPlugin::Studio* _studio )
 {
 	TRACE( "2. %d, %d, %d, %d\n", ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId() );
 	pluginMFCApp.studio = *_studio;

@@ -85,8 +85,8 @@ void RDOFileAssociationDlg::OnCancel()
 class RDOStudioCommandLineInfo: public CCommandLineInfo
 {
 protected:
-	bool plugin_start_found;
-	bool plugin_exit_found;
+	rbool plugin_start_found;
+	rbool plugin_exit_found;
 	virtual void ParseParam( LPCTSTR lpszParam, BOOL bFlag, BOOL bLast );
 
 public:
@@ -294,8 +294,8 @@ BOOL RDOStudioApp::InitInstance()
 	// Создаем менеджер плагинов после создания главного окна и парсера командной строки
 	plugins = new RDOStudioPlugins;
 
-	bool newModel  = true;
-	bool autoModel = false;
+	rbool newModel  = true;
+	rbool autoModel = false;
 	if ( !openModelName.empty() ) {
 		if ( !rdo::extractFilePath( openModelName ).empty() ) {
 			tstring longFileName;
@@ -341,7 +341,7 @@ BOOL RDOStudioApp::InitInstance()
 	return TRUE;
 }
 
-bool RDOStudioApp::shortToLongPath( CREF(tstring) shortPath, tstring& longPath )
+rbool RDOStudioApp::shortToLongPath( CREF(tstring) shortPath, tstring& longPath )
 {
 	USES_CONVERSION;
 
@@ -667,7 +667,7 @@ tstring RDOStudioApp::getFullHelpFileName( tstring str )
 	return str;
 }
 
-void RDOStudioApp::setFileAssociationSetup( const bool value )
+void RDOStudioApp::setFileAssociationSetup( const rbool value )
 {
 	fileAssociationSetup = value;
 	WriteProfileInt( "fileAssociation", "setup", fileAssociationSetup );
@@ -676,7 +676,7 @@ void RDOStudioApp::setFileAssociationSetup( const bool value )
 	}
 }
 
-void RDOStudioApp::setFileAssociationCheckInFuture( const bool value )
+void RDOStudioApp::setFileAssociationCheckInFuture( const rbool value )
 {
 	if ( fileAssociationCheckInFuture != value ) {
 		fileAssociationCheckInFuture = value;
@@ -684,7 +684,7 @@ void RDOStudioApp::setFileAssociationCheckInFuture( const bool value )
 	}
 }
 
-void RDOStudioApp::setOpenLastProject( const bool value )
+void RDOStudioApp::setOpenLastProject( const rbool value )
 {
 	if ( openLastProject != value ) {
 		openLastProject = value;
@@ -701,7 +701,7 @@ void RDOStudioApp::setLastProjectName( CREF(tstring) projectName )
 	}
 }
 
-void RDOStudioApp::setShowCaptionFullName( const bool value )
+void RDOStudioApp::setShowCaptionFullName( const rbool value )
 {
 	if ( showCaptionFullName != value ) {
 		showCaptionFullName = value;
@@ -721,7 +721,7 @@ void RDOStudioApp::setupFileAssociation()
 	tstring strFileTypeIdOld = _T("RAO.FileInfo");
 	tstring strRAOExtOld     = _T(".smr");
 
-	bool win2000 = false;
+	rbool win2000 = false;
 	OSVERSIONINFO osvi;
 	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
 	if ( ::GetVersionEx( &osvi ) ) {
@@ -740,7 +740,7 @@ void RDOStudioApp::setupFileAssociation()
 	}
 	if ( hCurUserSoftClasses ) {
 		if ( ::RegCreateKeyEx( hCurUserSoftClasses, strFileTypeId.c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey, &result ) == ERROR_SUCCESS ) {
-			bool mustBeRegistered = true;
+			rbool mustBeRegistered = true;
 			DWORD size;
 			if ( ::RegQueryValueEx( hKey, _T(""), NULL, NULL, NULL, &size ) == ERROR_SUCCESS ) {
 				if ( size > 0 ) {
@@ -832,7 +832,7 @@ void RDOStudioApp::autoCloseByPlugin( RDOStudioPlugin* plugin )
 	}
 }
 
-bool RDOStudioApp::isPluginAutoStart( RDOStudioPlugin* plugin ) const
+rbool RDOStudioApp::isPluginAutoStart( RDOStudioPlugin* plugin ) const
 {
 	return std::find( plugin_start_name.begin(), plugin_start_name.end(), plugin->getFileName() ) != plugin_start_name.end();
 }

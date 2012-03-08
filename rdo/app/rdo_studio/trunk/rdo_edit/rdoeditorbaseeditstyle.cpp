@@ -83,9 +83,9 @@ RDOEditorBaseEditTheme& RDOEditorBaseEditTheme::operator =( const RDOEditorBaseE
 	return *this;
 }
 
-bool RDOEditorBaseEditTheme::operator ==( const RDOEditorBaseEditTheme& theme ) const
+rbool RDOEditorBaseEditTheme::operator ==( const RDOEditorBaseEditTheme& theme ) const
 {
-	bool flag = RDOBaseEditTheme::operator==( theme );
+	rbool flag = RDOBaseEditTheme::operator==( theme );
 
 	if ( flag ) flag &= identifierColor == theme.identifierColor &&
 	                    keywordColor    == theme.keywordColor &&
@@ -109,7 +109,7 @@ bool RDOEditorBaseEditTheme::operator ==( const RDOEditorBaseEditTheme& theme ) 
 	return flag;
 }
 
-bool RDOEditorBaseEditTheme::operator !=( const RDOEditorBaseEditTheme& theme ) const
+rbool RDOEditorBaseEditTheme::operator !=( const RDOEditorBaseEditTheme& theme ) const
 {
 	return !(*this == theme);
 }
@@ -164,12 +164,12 @@ void RDOEditorBaseEditTheme::save( tstring regPath ) const
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "operatorStyle", operatorStyle );
 }
 
-bool RDOEditorBaseEditTheme::styleDefault( const int styleType ) const
+rbool RDOEditorBaseEditTheme::styleDefault( const int styleType ) const
 {
 	return styleType == SCE_RDO_DEFAULT;
 }
 
-bool RDOEditorBaseEditTheme::styleUsing( const int styleType ) const
+rbool RDOEditorBaseEditTheme::styleUsing( const int styleType ) const
 {
 	return styleType == SCE_RDO_DEFAULT      || styleType == SCE_RDO_IDENTIFIER   ||
 	       styleType == SCE_RDO_KEYWORD      || styleType == SCE_RDO_FUNCTION     ||
@@ -179,7 +179,7 @@ bool RDOEditorBaseEditTheme::styleUsing( const int styleType ) const
 	       styleType == SCE_RDO_FRAME_COLOR;
 }
 
-bool RDOEditorBaseEditTheme::styleBold( const int styleType ) const
+rbool RDOEditorBaseEditTheme::styleBold( const int styleType ) const
 {
 	switch ( styleType ) {
 		case SCE_RDO_DEFAULT     : return defaultStyle    & RDOStyleFont::BOLD ? true : false;
@@ -197,7 +197,7 @@ bool RDOEditorBaseEditTheme::styleBold( const int styleType ) const
 	return false;
 }
 
-bool RDOEditorBaseEditTheme::styleItalic( const int styleType ) const
+rbool RDOEditorBaseEditTheme::styleItalic( const int styleType ) const
 {
 	switch ( styleType ) {
 		case SCE_RDO_DEFAULT     : return defaultStyle    & RDOStyleFont::ITALIC ? true : false;
@@ -431,14 +431,14 @@ RDOEditorBaseEditStyle& RDOEditorBaseEditStyle::operator =( const RDOEditorBaseE
 	return *this;
 }
 
-bool RDOEditorBaseEditStyle::operator ==( const RDOEditorBaseEditStyle& style ) const
+rbool RDOEditorBaseEditStyle::operator ==( const RDOEditorBaseEditStyle& style ) const
 {
-	bool flag = RDOBaseEditStyle::operator==( style );
+	rbool flag = RDOBaseEditStyle::operator==( style );
 	if ( theme && style.theme && flag ) flag &= *static_cast<RDOEditorBaseEditTheme*>(theme) == *static_cast<RDOEditorBaseEditTheme*>(style.theme);
 	return flag;
 }
 
-bool RDOEditorBaseEditStyle::operator !=( const RDOEditorBaseEditStyle& style ) const
+rbool RDOEditorBaseEditStyle::operator !=( const RDOEditorBaseEditStyle& style ) const
 {
 	return !(*this == style);
 }

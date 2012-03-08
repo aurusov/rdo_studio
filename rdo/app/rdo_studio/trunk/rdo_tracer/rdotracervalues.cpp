@@ -29,20 +29,20 @@ RDOTracerTimeNow& RDOTracerTimeNow::operator =( const RDOTracerTimeNow& timenow 
 	return *this;
 }
 
-bool RDOTracerTimeNow::operator ==( const RDOTracerTimeNow& timenow ) const
+rbool RDOTracerTimeNow::operator ==( const RDOTracerTimeNow& timenow ) const
 {
 	return time         == timenow.time &&
 	       eventCount   == timenow.eventCount;
 }
 
-bool RDOTracerTimeNow::operator !=( const RDOTracerTimeNow& timenow ) const
+rbool RDOTracerTimeNow::operator !=( const RDOTracerTimeNow& timenow ) const
 {
 	return !(*this == timenow);
 }
 
-bool RDOTracerTimeNow::compareTimes( const RDOTracerTimeNow* timenow )
+rbool RDOTracerTimeNow::compareTimes( const RDOTracerTimeNow* timenow )
 {
-	bool res = false;
+	rbool res = false;
 	if( timenow ) {
 		res = ( time >= timenow->time );
 	}

@@ -35,7 +35,7 @@ public:
 	tstring getName() const { return name; }
 	void setName( CREF(tstring) str );
 
-	bool isModify();
+	rbool isModify();
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;

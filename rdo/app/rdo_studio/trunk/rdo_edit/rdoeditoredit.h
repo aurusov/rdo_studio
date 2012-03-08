@@ -36,7 +36,7 @@ protected:
 
 	rdoEditCtrl::RDOLogEdit* log;
 
-	void expand( int& line, bool doExpand, bool force = false, int visLevels = 0, int level = -1 ) const;
+	void expand( int& line, rbool doExpand, rbool force = false, int visLevels = 0, int level = -1 ) const;
 	void foldChanged( int line, int levelNow, int levelPrev ) const;
 	void toggleCurrentFold() const;
 	void toggleAllFolds() const;
@@ -48,9 +48,9 @@ protected:
 	void onBufferAppend( const int bufIndex );
 	void onBufferEdit( const int bufIndex );
 
-	bool canClearErrorLine;
-	void clearErrorLine();
-	bool hasErrorLine() const;
+	rbool canClearErrorLine;
+	void  clearErrorLine();
+	rbool hasErrorLine  () const;
 
 private:
 	virtual BOOL OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult );
@@ -106,7 +106,7 @@ public:
 	void setLog( rdoEditCtrl::RDOLogEdit& _log );
 	const rdoEditCtrl::RDOLogEdit* getLog() const;
 
-	void setCanClearErrorLine( bool value ) { canClearErrorLine = value; }
+	void setCanClearErrorLine( rbool value ) { canClearErrorLine = value; }
 };
 
 }; // namespace rdoEditor

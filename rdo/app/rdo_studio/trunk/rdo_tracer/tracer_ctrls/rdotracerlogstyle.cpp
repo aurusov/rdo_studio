@@ -141,9 +141,9 @@ RDOTracerLogTheme& RDOTracerLogTheme::operator =( const RDOTracerLogTheme& theme
 	return *this;
 }
 
-bool RDOTracerLogTheme::operator ==( const RDOTracerLogTheme& theme ) const
+rbool RDOTracerLogTheme::operator ==( const RDOTracerLogTheme& theme ) const
 {
-	bool flag = RDOLogTheme::operator==( theme );
+	rbool flag = RDOLogTheme::operator==( theme );
 	if ( flag )	flag &= es  == theme.es;
 	if ( flag )	flag &= eb  == theme.eb;
 	if ( flag )	flag &= ef  == theme.ef;
@@ -172,7 +172,7 @@ bool RDOTracerLogTheme::operator ==( const RDOTracerLogTheme& theme ) const
 	return flag;
 }
 
-bool RDOTracerLogTheme::operator !=( const RDOTracerLogTheme& theme ) const
+rbool RDOTracerLogTheme::operator !=( const RDOTracerLogTheme& theme ) const
 {
 	return !(*this == theme);
 }
@@ -270,7 +270,7 @@ void RDOTracerLogStyle::initBorders()
 	borders->horzBorder = 2;
 }
 
-bool RDOTracerLogStyle::getItemColors( CREF(tstring) item, RDOLogColorPair* &colors ) const
+rbool RDOTracerLogStyle::getItemColors( CREF(tstring) item, RDOLogColorPair* &colors ) const
 {
 	if ( item.empty() )
 		return RDOLogStyle::getItemColors( "", colors );
@@ -278,7 +278,7 @@ bool RDOTracerLogStyle::getItemColors( CREF(tstring) item, RDOLogColorPair* &col
 	int posend = item.find_first_of( ' ', posstart );
 	tstring key = item.substr( posstart, posend - posstart );
 	rdo::trim( key );
-	bool res = true;
+	rbool res = true;
 	if ( theme ) {
 		RDOTracerLogTheme* _theme = static_cast<RDOTracerLogTheme*>(theme);
 		if ( key == "ES" ) {
@@ -348,14 +348,14 @@ RDOTracerLogStyle& RDOTracerLogStyle::operator =( const RDOTracerLogStyle& style
 	return *this;
 }
 
-bool RDOTracerLogStyle::operator ==( const RDOTracerLogStyle& style ) const
+rbool RDOTracerLogStyle::operator ==( const RDOTracerLogStyle& style ) const
 {
-	bool flag = RDOLogStyle::operator==( style );
+	rbool flag = RDOLogStyle::operator==( style );
 	if ( theme && style.theme && flag ) flag &= *static_cast<RDOTracerLogTheme*>(theme) == *static_cast<RDOTracerLogTheme*>(style.theme);
 	return flag;
 }
 
-bool RDOTracerLogStyle::operator !=( const RDOTracerLogStyle& style ) const
+rbool RDOTracerLogStyle::operator !=( const RDOTracerLogStyle& style ) const
 {
 	return !(*this == style);
 }

@@ -14,12 +14,12 @@ namespace rp {
 // --------------------------------------------------------------------------------
 // -------------------- polyline
 // --------------------------------------------------------------------------------
-bool polyline::pointInPolygon( const rp::point& point ) const
+rbool polyline::pointInPolygon( const rp::point& point ) const
 {
 	if ( size() > 2 ) {
 		int counter  = 0;
 		ruint i, j;
-		bool polygon     = isPolygon();
+		rbool polygon     = isPolygon();
 		ruint cnt = polygon ? size() - 1 : size();
 		for ( i = 0, j = 1; i < cnt; i++, j++ ) {
 			if ( !polygon && j == cnt ) {
@@ -47,14 +47,14 @@ bool polyline::pointInPolygon( const rp::point& point ) const
 }
 
 /*
-bool polyline::pointInPolygon( const rp::point& point ) const
+rbool polyline::pointInPolygon( const rp::point& point ) const
 {
 	if ( size() > 2 ) {
 		ruint i;
 		ruint j;
 		double k0 = 0;
-		bool flag = true;
-		bool polygon = isPolygon();
+		rbool flag = true;
+		rbool polygon = isPolygon();
 		int  cnt     = polygon ? size() - 1 : size();
 		for ( i = 0, j = 1; i < cnt; i++, j++ ) {
 			if ( !polygon && j == cnt ) {
@@ -87,13 +87,13 @@ bool polyline::pointInPolygon( const rp::point& point ) const
 }
 
 
-bool polyline::pointInPolygon( const rp::point& point ) const
+rbool polyline::pointInPolygon( const rp::point& point ) const
 {
 	if ( size() > 2 ) {
 		ruint i;
 		ruint j;
-		bool flag = false;
-		bool polygon = isPolygon();
+		rbool flag = false;
+		rbool polygon = isPolygon();
 		int  cnt     = polygon ? size() - 1 : size();
 		for ( i = 0, j = 1; i < cnt; i++, j++ ) {
 			if ( !polygon && j == cnt ) {
@@ -132,7 +132,7 @@ void polyline::extendFromCenter( double delta )
 polyline& polyline::extendByPerimetr( double delta )
 {
 	if ( size() < 3 ) return *this;
-	bool polygon = isPolygon();
+	rbool polygon = isPolygon();
 	std::vector< rp::point >::iterator it = begin();          // текущая точка
 	rp::point p_left        = *(end() - (polygon ? 2 : 1));   // левая точка
 	rp::point p_right       = *(begin() + 1);                 // правая точка

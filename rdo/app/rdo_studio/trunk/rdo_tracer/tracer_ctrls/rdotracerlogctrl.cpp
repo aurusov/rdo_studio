@@ -86,11 +86,11 @@ int RDOTracerLogCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 }
 
 
-bool RDOTracerLogCtrl::getItemColors( const int index, RDOLogColorPair* &colors ) const
+rbool RDOTracerLogCtrl::getItemColors( const int index, RDOLogColorPair* &colors ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
-	bool res = true;
+	rbool res = true;
 	RDOColorMap::const_iterator it = subitemColors.find( index );
 	if( it != subitemColors.end() ) {
 		colors = (*it).second;
@@ -147,7 +147,7 @@ void RDOTracerLogCtrl::addStringToLog( const tstring logStr )
 	mutex.Unlock();
 }
 
-void RDOTracerLogCtrl::setStyle( RDOTracerLogStyle* style, const bool needRedraw )
+void RDOTracerLogCtrl::setStyle( RDOTracerLogStyle* style, const rbool needRedraw )
 {
 	logStyle = style;
 	RDOLogCtrl::setStyle( style, needRedraw );
@@ -199,9 +199,9 @@ LRESULT RDOTracerLogCtrl::OnFindReplaceMsg( WPARAM wParam, LPARAM lParam )
 		SetFocus();
 		return 0;
 	} else {
-		bool newSearchDown     = pDialog->SearchDown() ? true : false;
-		bool newMatchCase      = pDialog->MatchCase() ? true : false;
-		bool newMatchWholeWord = pDialog->MatchWholeWord() ? true : false;
+		rbool newSearchDown     = pDialog->SearchDown() ? true : false;
+		rbool newMatchCase      = pDialog->MatchCase() ? true : false;
+		rbool newMatchWholeWord = pDialog->MatchWholeWord() ? true : false;
 		if ( newSearchDown != bSearchDown || newMatchCase != bMatchCase || newMatchWholeWord != bMatchWholeWord ) {
 			firstFoundLine = -1;
 		}

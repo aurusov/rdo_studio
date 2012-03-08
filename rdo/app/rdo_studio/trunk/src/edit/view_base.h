@@ -48,10 +48,10 @@ public:
 	tstring buf2;
 	tstring buf3;
 	tstring buf4;
-	bool resetBuf1;
-	bool resetBuf2;
-	bool resetBuf3;
-	bool resetBuf4;
+	rbool resetBuf1;
+	rbool resetBuf2;
+	rbool resetBuf3;
+	rbool resetBuf4;
 	int  currentBuffer;
 	void restartBufTimer( const int bufIndex );
 

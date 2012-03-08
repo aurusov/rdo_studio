@@ -3,6 +3,7 @@
 
 #include <afxcmn.h>
 #include <afxwin.h>
+#include "utils/rdotypes.h"
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOTab
@@ -22,7 +23,7 @@ protected:
 
 	int   getItemCount() const              { return GetItemCount();               };
 	CWnd* getItem( const int index ) const;
-	CWnd* getItemNext( const CWnd* const currentItem = NULL, const bool direction = true, const bool loop = true ) const;
+	CWnd* getItemNext( const CWnd* const currentItem = NULL, const rbool direction = true, const rbool loop = true ) const;
 	CWnd* getItemCurrent() const            { return getItem( getCurrentIndex() ); };
 	int   getCurrentIndex() const           { return GetCurSel();                  };
 
@@ -75,7 +76,7 @@ friend class RDOTab;
 
 protected:
 	RDOTab* tab;
-	bool autoDelete;
+	rbool autoDelete;
 
 	virtual void changeCurrentItem() {};
 
@@ -96,7 +97,7 @@ public:
 
 	int   getItemCount() const             { return tab->getItemCount();   }
 	CWnd* getItem( const int index ) const { return tab->getItem( index ); }
-	CWnd* getItemNext( const CWnd* const currentItem = NULL, const bool direction = true, const bool loop = true ) const {
+	CWnd* getItemNext( const CWnd* const currentItem = NULL, const rbool direction = true, const rbool loop = true ) const {
 		return tab->getItemNext( currentItem, direction, loop );
 	}
 	CWnd* getItemCurrent() const                   { return tab->getItemCurrent();    }
@@ -105,7 +106,7 @@ public:
 	void  insertItem( CWnd* pWnd, LPCTSTR lpName ) { tab->insertItem( pWnd, lpName ); }
 	void  setCurrentItem( const int index )        { tab->setCurrentItem( index );    }
 
-	void setAutoDelete( const bool value )         { autoDelete = value;              }
+	void setAutoDelete( const rbool value )        { autoDelete = value;              }
 
 	void modifyTabStyle( DWORD dwRemove, DWORD dwAdd, UINT nFlags = 0 ) {
 		tab->ModifyStyle( dwRemove, dwAdd, nFlags );

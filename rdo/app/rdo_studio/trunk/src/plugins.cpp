@@ -83,12 +83,12 @@ RDOStudioPlugin::~RDOStudioPlugin()
 	setState( rdoPlugin::psStoped );
 }
 
-bool RDOStudioPlugin::isRDOStudioPlugin( CREF(tstring) modulName )
+rbool RDOStudioPlugin::isRDOStudioPlugin( CREF(tstring) modulName )
 {
 	UNUSED(modulName);
 	return true;
 
-	//bool res = false;
+	//rbool res = false;
 	//HMODULE local_lib = ::LoadLibrary( modulName.c_str() );
 	//if ( local_lib ) {
 	//	rdoPlugin::PFunGetPluginInfo getPluginInfo = reinterpret_cast<rdoPlugin::PFunGetPluginInfo>(::GetProcAddress( local_lib, "getPluginInfo" ));
@@ -183,7 +183,7 @@ void RDOStudioPlugin::setState( const rdoPlugin::PluginState value )
 	mutex.Unlock();
 }
 
-void RDOStudioPlugin::setRestoreState( const bool value )
+void RDOStudioPlugin::setRestoreState( const rbool value )
 {
 	if ( restoreState != value ) {
 		restoreState = value;
@@ -332,7 +332,7 @@ void RDOStudioPlugins::setMessageReflect( const int message, RDOStudioPlugin* pl
 {
 	mutex.Lock();
 	if ( message && plugin ) {
-		bool flag = true;
+		rbool flag = true;
 		messageList::iterator it = messages.find( message );
 		while ( it != messages.end() ) {
 			if ( (*it).second == plugin ) {
@@ -453,10 +453,10 @@ void RDOStudioPlugins::pluginStop( const HMODULE lib )
 	plugins->mutex.Unlock();
 }
 
-bool RDOStudioPlugins::pluginIsStoped( const HMODULE lib )
+rbool RDOStudioPlugins::pluginIsStoped( const HMODULE lib )
 {
 	plugins->mutex.Lock();
-	bool res = false;
+	rbool res = false;
 	std::vector< RDOStudioPlugin* >::const_iterator it = plugins->list.begin();
 	while ( it != plugins->list.end() ) {
 		RDOStudioPlugin* plugin = *it;
@@ -476,7 +476,7 @@ void RDOStudioPlugins::studioShow( int cmdShow )
 	if ( plugins ) plugins->saveMainFrameState( cmdShow );
 }
 
-bool RDOStudioPlugins::studioIsShow()
+rbool RDOStudioPlugins::studioIsShow()
 {
 	return plugins ? plugins->lastCmdShow == SW_SHOWNORMAL || plugins->lastCmdShow == SW_NORMAL || plugins->lastCmdShow == SW_SHOW || plugins->lastCmdShow == SW_RESTORE || plugins->lastCmdShow == SW_SHOWMAXIMIZED || plugins->lastCmdShow == SW_SHOWNA || plugins->lastCmdShow == SW_SHOWNOACTIVATE : true;
 }
@@ -548,7 +548,7 @@ void RDOStudioPlugins::actionDisable( rdoPlugin::ModelActionType action )
 	}
 }
 
-bool RDOStudioPlugins::actionState( rdoPlugin::ModelActionType action )
+rbool RDOStudioPlugins::actionState( rdoPlugin::ModelActionType action )
 {
 	if ( plugins ) {
 		return std::find( plugins->actionDisabled.begin(), plugins->actionDisabled.end(), action ) == plugins->actionDisabled.end();
@@ -556,7 +556,7 @@ bool RDOStudioPlugins::actionState( rdoPlugin::ModelActionType action )
 	return false;
 }
 
-bool RDOStudioPlugins::canAction( rdoPlugin::ModelActionType action )
+rbool RDOStudioPlugins::canAction( rdoPlugin::ModelActionType action )
 {
 	if ( plugins ) {
 		return std::find( actionDisabled.begin(), actionDisabled.end(), action ) == actionDisabled.end();
@@ -564,52 +564,52 @@ bool RDOStudioPlugins::canAction( rdoPlugin::ModelActionType action )
 	return false;
 }
 
-bool RDOStudioPlugins::newModel( const char* modelName, const char* modelPath )
+rbool RDOStudioPlugins::newModel( const char* modelName, const char* modelPath )
 {
 	return model->newModel( modelName, modelPath );
 }
 
-bool RDOStudioPlugins::openModel( const char* modelName )
+rbool RDOStudioPlugins::openModel( const char* modelName )
 {
 	return model->openModel( modelName ? modelName : "" );
 }
 
-bool RDOStudioPlugins::saveModel()
+rbool RDOStudioPlugins::saveModel()
 {
 	return model->saveModel();
 }
 
-bool RDOStudioPlugins::closeModel()
+rbool RDOStudioPlugins::closeModel()
 {
 	return model->closeModel();
 }
 
-bool RDOStudioPlugins::hasModel()
+rbool RDOStudioPlugins::hasModel()
 {
 	return model->hasModel();
 }
 
-bool RDOStudioPlugins::isModelModify()
+rbool RDOStudioPlugins::isModelModify()
 {
 	return model->isModify();
 }
 
-bool RDOStudioPlugins::buildModel()
+rbool RDOStudioPlugins::buildModel()
 {
 	return model->buildModel();
 }
 
-bool RDOStudioPlugins::runModel()
+rbool RDOStudioPlugins::runModel()
 {
 	return model->runModel();
 }
 
-bool RDOStudioPlugins::stopModel()
+rbool RDOStudioPlugins::stopModel()
 {
 	return model->stopModel();
 }
 
-bool RDOStudioPlugins::isModelRunning()
+rbool RDOStudioPlugins::isModelRunning()
 {
 	return model->isRunning();
 }
@@ -649,7 +649,7 @@ const char* RDOStudioPlugins::getModelStructure()
 	return plugins->modelStructure.c_str();
 }
 
-bool RDOStudioPlugins::readFile( rdoPlugin::ModelFileType file_type, char** data )
+rbool RDOStudioPlugins::readFile( rdoPlugin::ModelFileType file_type, char** data )
 {
 	if ( model->hasModel() ) {
 		rdoEditor::RDOEditorTabCtrl* tab = model->getTab();
@@ -685,7 +685,7 @@ bool RDOStudioPlugins::readFile( rdoPlugin::ModelFileType file_type, char** data
 	return false;
 }
 
-bool RDOStudioPlugins::writeFile( rdoPlugin::ModelFileType file_type, const char* data )
+rbool RDOStudioPlugins::writeFile( rdoPlugin::ModelFileType file_type, const char* data )
 {
 	if ( model->hasModel() ) {
 		rdoEditor::RDOEditorTabCtrl* tab = model->getTab();
@@ -713,7 +713,7 @@ bool RDOStudioPlugins::writeFile( rdoPlugin::ModelFileType file_type, const char
 //				size_t size = strlen(data);
 //				stream.resize( size );
 //				memcpy( stream.data(), data, strlen(data) );
-				bool readonly = edit->isReadOnly();
+				rbool readonly = edit->isReadOnly();
 				if ( readonly ) edit->setReadOnly( false );
 				edit->clearAll();
 				edit->load( stream );
@@ -727,7 +727,7 @@ bool RDOStudioPlugins::writeFile( rdoPlugin::ModelFileType file_type, const char
 	return false;
 }
 
-bool RDOStudioPlugins::isFrameDescribed()
+rbool RDOStudioPlugins::isFrameDescribed()
 {
 	return model->isFrmDescribed();
 }
@@ -752,12 +752,12 @@ void RDOStudioPlugins::showPrevFrame()
 	model->showPrevFrame();
 }
 
-bool RDOStudioPlugins::canShowNextFrame()
+rbool RDOStudioPlugins::canShowNextFrame()
 {
 	return model->canShowNextFrame();
 }
 
-bool RDOStudioPlugins::canShowPrevFrame()
+rbool RDOStudioPlugins::canShowPrevFrame()
 {
 	return model->canShowPrevFrame();
 }
@@ -798,7 +798,7 @@ void RDOStudioPlugins::modelStart()
 	}
 }
 
-void RDOStudioPlugins::modelStop( bool model_no_error )
+void RDOStudioPlugins::modelStop( rbool model_no_error )
 {
 	if ( plugins ) {
 		if ( model_no_error ) {

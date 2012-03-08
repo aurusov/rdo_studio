@@ -27,7 +27,7 @@ public:
 	rpMethod::RPMethod* getMethod() const { return method; }
 	HMODULE getLib() const                { return lib;    }
 
-	static bool isMethod( CREF(tstring) file_name );
+	static rbool isMethod( CREF(tstring) file_name );
 };
 #endif
 

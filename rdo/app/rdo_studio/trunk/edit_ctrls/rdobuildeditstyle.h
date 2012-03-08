@@ -27,13 +27,13 @@ public:
 	virtual ~RDOBuildEditTheme();
 
 	RDOBuildEditTheme& operator =( const RDOBuildEditTheme& theme );
-	bool operator ==( const RDOBuildEditTheme& theme ) const;
-	bool operator !=( const RDOBuildEditTheme& theme ) const;
+	rbool operator ==( const RDOBuildEditTheme& theme ) const;
+	rbool operator !=( const RDOBuildEditTheme& theme ) const;
 
 	virtual void load( tstring regPath );
 	virtual void save( tstring regPath ) const;
 
-	bool warning;
+	rbool warning;
 
 	static RDOBuildEditTheme getDefaultTheme();
 	static RDOBuildEditTheme getClassicTheme();
@@ -54,8 +54,8 @@ public:
 	virtual ~RDOBuildEditStyle();
 
 	RDOBuildEditStyle& operator =( const RDOBuildEditStyle& style );
-	bool operator ==( const RDOBuildEditStyle& style ) const;
-	bool operator !=( const RDOBuildEditStyle& style ) const;
+	rbool operator ==( const RDOBuildEditStyle& style ) const;
+	rbool operator !=( const RDOBuildEditStyle& style ) const;
 };
 
 }; // namespace rdoEditCtrl

@@ -16,7 +16,7 @@ public:
 	RPConnectorDockTrue( RPShape* _parent, Type _type, const rp::point& _point, double _norm, const rp::string& type = "" ): RPConnectorDock( _parent, _type, _point, _norm, type ) {};
 	virtual ~RPConnectorDockTrue() {};
 
-	virtual bool can_connect( RPConnectorDock* dock = NULL ) const {
+	virtual rbool can_connect( RPConnectorDock* dock = NULL ) const {
 		if ( !RPConnectorDock::can_connect( dock ) ) return false;
 		return connectors.empty();
 	}
@@ -27,7 +27,7 @@ public:
 	RPConnectorDockFalse( RPShape* _parent, Type _type, const rp::point& _point, double _norm, const rp::string& type = "" ): RPConnectorDock( _parent, _type, _point, _norm, type ) {};
 	virtual ~RPConnectorDockFalse() {};
 
-	virtual bool can_connect( RPConnectorDock* dock = NULL ) const {
+	virtual rbool can_connect( RPConnectorDock* dock = NULL ) const {
 		if ( !RPConnectorDock::can_connect( dock ) ) return false;
 		return connectors.empty();
 	}

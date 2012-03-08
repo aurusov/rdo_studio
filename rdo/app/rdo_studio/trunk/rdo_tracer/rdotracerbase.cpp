@@ -343,7 +343,7 @@ void RDOTracerBase::dispatchNextString( REF(tstring) line )
 		}
 #else
 	} else if ( key == "RK" || key == "SRK" || key == "RE" || key == "SRE" ) {
-		bool re = key == "RE" || key == "SRE";
+		rbool re = key == "RE" || key == "SRE";
 		tstring copy1 = line;
 		RDOTracerResource* res = resourceChanging( line, timeNow );
 		if ( !res ) {
@@ -397,8 +397,8 @@ tstring RDOTracerBase::getNextValue( REF(tstring) line )
 
 RDOTracerTimeNow* RDOTracerBase::addTime( CREF(tstring) time )
 {
-	double val = atof( time.c_str() );
-	bool empty = timeList.empty();
+	double val   = atof( time.c_str() );
+	rbool  empty = timeList.empty();
 	RDOTracerTimeNow* last = NULL;
 	if ( !empty ) last = timeList.back();
 	if ( empty || last->time != val ) {
@@ -823,7 +823,7 @@ void RDOTracerBase::setModelName( tstring name ) const
 	if ( tree ) tree->setModelName( name );
 }
 
-void RDOTracerBase::setDrawTrace( const bool value )
+void RDOTracerBase::setDrawTrace( const rbool value )
 {
 	if ( drawTrace != value ) {
 		drawTrace = value;

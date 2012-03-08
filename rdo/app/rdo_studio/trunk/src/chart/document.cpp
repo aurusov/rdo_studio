@@ -70,7 +70,7 @@ IMPLEMENT_DYNCREATE(RDOStudioChartDoc, CDocument)
 BEGIN_MESSAGE_MAP(RDOStudioChartDoc, CDocument)
 END_MESSAGE_MAP()
 
-RDOStudioChartDoc::RDOStudioChartDoc( const bool preview )
+RDOStudioChartDoc::RDOStudioChartDoc( const rbool preview )
 	: CDocument(),
 	minTimeOffset( 1.7E+308 ),
 	ticksCount( 0 ),
@@ -136,7 +136,7 @@ void RDOStudioChartDoc::incTimeEventsCount( RDOTracerTimeNow* time )
 	//mutex.Unlock();
 }
 
-bool RDOStudioChartDoc::newValueToSerieAdded( RDOTracerValue* val )
+rbool RDOStudioChartDoc::newValueToSerieAdded( RDOTracerValue* val )
 {
 	//mutex.Lock(); Document is locked from RDOTracerSerie::addValue
 	
@@ -314,11 +314,11 @@ RDOTracerSerieMarker RDOStudioChartDoc::selectMarker()
 	return res;
 }
 
-bool RDOStudioChartDoc::serieExists( const RDOTracerSerie* serie ) const
+rbool RDOStudioChartDoc::serieExists( const RDOTracerSerie* serie ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
-	bool res = std::find_if( series.begin(), series.end(), std::bind2nd( std::mem_fun1(&RDOStudioDocSerie::isTracerSerie), serie ) ) != series.end();
+	rbool res = std::find_if( series.begin(), series.end(), std::bind2nd( std::mem_fun1(&RDOStudioDocSerie::isTracerSerie), serie ) ) != series.end();
 
 	const_cast<CMutex&>(mutex).Unlock();
 

@@ -47,16 +47,16 @@ RDOFindEditTheme& RDOFindEditTheme::operator =( const RDOFindEditTheme& theme )
 	return *this;
 }
 
-bool RDOFindEditTheme::operator ==( const RDOFindEditTheme& theme ) const
+rbool RDOFindEditTheme::operator ==( const RDOFindEditTheme& theme ) const
 {
-	bool flag = RDOLogEditTheme::operator==( theme );
+	rbool flag = RDOLogEditTheme::operator==( theme );
 
 	if ( flag ) flag &= keywordColor == theme.keywordColor &&
 	                    keywordStyle == theme.keywordStyle;
 	return flag;
 }
 
-bool RDOFindEditTheme::operator !=( const RDOFindEditTheme& theme ) const
+rbool RDOFindEditTheme::operator !=( const RDOFindEditTheme& theme ) const
 {
 	return !(*this == theme);
 }
@@ -79,17 +79,17 @@ void RDOFindEditTheme::save( tstring regPath ) const
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "keywordStyle", keywordStyle );
 }
 
-bool RDOFindEditTheme::styleDefault( const int styleType ) const
+rbool RDOFindEditTheme::styleDefault( const int styleType ) const
 {
 	return styleType == SCE_FIND_DEFAULT;
 }
 
-bool RDOFindEditTheme::styleUsing( const int styleType ) const
+rbool RDOFindEditTheme::styleUsing( const int styleType ) const
 {
 	return styleType == SCE_FIND_DEFAULT || styleType == SCE_FIND_KEYWORD;
 }
 
-bool RDOFindEditTheme::styleBold( const int styleType ) const
+rbool RDOFindEditTheme::styleBold( const int styleType ) const
 {
 	switch ( styleType ) {
 		case SCE_FIND_DEFAULT: return defaultStyle & RDOStyleFont::BOLD ? true : false;
@@ -98,7 +98,7 @@ bool RDOFindEditTheme::styleBold( const int styleType ) const
 	return false;
 }
 
-bool RDOFindEditTheme::styleItalic( const int styleType ) const
+rbool RDOFindEditTheme::styleItalic( const int styleType ) const
 {
 	switch ( styleType ) {
 		case SCE_FIND_DEFAULT: return defaultStyle & RDOStyleFont::ITALIC ? true : false;
@@ -179,14 +179,14 @@ RDOFindEditStyle& RDOFindEditStyle::operator =( const RDOFindEditStyle& style )
 	return *this;
 }
 
-bool RDOFindEditStyle::operator ==( const RDOFindEditStyle& style ) const
+rbool RDOFindEditStyle::operator ==( const RDOFindEditStyle& style ) const
 {
-	bool flag = RDOLogEditStyle::operator==( style );
+	rbool flag = RDOLogEditStyle::operator==( style );
 	if ( theme && style.theme && flag ) flag &= *static_cast<RDOFindEditTheme*>(theme) == *static_cast<RDOFindEditTheme*>(style.theme);
 	return flag;
 }
 
-bool RDOFindEditStyle::operator !=( const RDOFindEditStyle& style ) const
+rbool RDOFindEditStyle::operator !=( const RDOFindEditStyle& style ) const
 {
 	return !(*this == style);
 }
