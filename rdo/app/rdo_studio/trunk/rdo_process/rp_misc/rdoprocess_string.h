@@ -7,7 +7,7 @@
 
 namespace rp {
 
-class string: public std::string
+class string: public tstring
 {
 protected:
 	//! Структура (функторал), которая используется для перевода символа в нижний регистр
@@ -39,7 +39,7 @@ public:
 	//! Создает строку по указателю.
 	string( const char* str ): std::basic_string< char >( str ) {};
 	//! Конструктор копии.
-	string( const std::string& str ): std::basic_string< char >( str ) {};
+	string( CREF(tstring) str ): std::basic_string< char >( str ) {};
 
 	int      toint() const    { return atoi( c_str() );                     }
 	long int tolong() const   { return atol( c_str() );                     }
@@ -117,12 +117,12 @@ rp::string str = rp::string::fromdouble( 20.2 );
 	}
 	void trim_right() {
 		static char szDelims[] = " \t\n\r";
-		erase( find_last_not_of( szDelims ) + 1, std::string::npos );
+		erase( find_last_not_of( szDelims ) + 1, tstring::npos );
 	}
 	void trim() {
 		static char szDelims[] = " \t\n\r";
 		erase( 0, find_first_not_of( szDelims ) );
-		erase( find_last_not_of( szDelims ) + 1, std::string::npos );
+		erase( find_last_not_of( szDelims ) + 1, tstring::npos );
 	}
 
 };

@@ -40,8 +40,8 @@ public:
 	bool operator ==( const RDOEditorEditTheme& theme ) const;
 	bool operator !=( const RDOEditorEditTheme& theme ) const;
 
-	virtual void load( std::string regPath );
-	virtual void save( std::string regPath ) const;
+	virtual void load( tstring regPath );
+	virtual void save( tstring regPath ) const;
 
 	COLORREF foldFgColor;
 	COLORREF foldBgColor;
@@ -73,8 +73,8 @@ public:
 	bool operator ==( const RDOEditorEditAutoComplete& autoComplete ) const;
 	bool operator !=( const RDOEditorEditAutoComplete& autoComplete ) const;
 
-	virtual void load( std::string regPath );
-	virtual void save( std::string regPath ) const;
+	virtual void load( tstring regPath );
+	virtual void save( tstring regPath ) const;
 
 	bool useAutoComplete;
 	bool showFullList;
@@ -93,8 +93,8 @@ public:
 	bool operator ==( const RDOEditorEditBuffer& buffer ) const;
 	bool operator !=( const RDOEditorEditBuffer& buffer ) const;
 
-	virtual void load( std::string regPath );
-	virtual void save( std::string regPath ) const;
+	virtual void load( tstring regPath );
+	virtual void save( tstring regPath ) const;
 
 	bool canClearBuffer;
 	int  clearBufferDelay;
@@ -113,8 +113,8 @@ public:
 	bool operator ==( const RDOEditorEditMargin& margin ) const;
 	bool operator !=( const RDOEditorEditMargin& margin ) const;
 
-	virtual void load( std::string regPath );
-	virtual void save( std::string regPath ) const;
+	virtual void load( tstring regPath );
+	virtual void save( tstring regPath ) const;
 
 	bool fold;
 	bool bookmark;
@@ -140,7 +140,7 @@ public:
 	bool operator ==( const RDOEditorEditStyle& style ) const;
 	bool operator !=( const RDOEditorEditStyle& style ) const;
 
-	virtual void init( const std::string& _regPath = "" );
+	virtual void init( CREF(tstring) _regPath = "" );
 	virtual bool load();
 	virtual bool save() const;
 

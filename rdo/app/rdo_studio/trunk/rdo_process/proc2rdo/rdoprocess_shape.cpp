@@ -20,14 +20,14 @@ RPObjectFlowChart_MJ::RPObjectFlowChart_MJ( RPObject* parent ):
 	shape_create->setPosition( 100, 100 );
 	shape_create->gamount = 1000;
 	shape_create->gname   = "Входной_склад";
-	shape_create->setName( std::string("Входной_склад") );
+	shape_create->setName( tstring("Входной_склад") );
 	shape_create->gtype = 2;
 	shape_create->gmin  = 10;
 	shape_create->gmax  = 30;
 	
 	RPShapeProcessMJ* shape_process = new RPShapeProcessMJ( this );
 	shape_process->setPosition( 100, 150 );
-	shape_process->setName( std::string("Перевозка_станок") );
+	shape_process->setName( tstring("Перевозка_станок") );
 	shape_process->gtype = 3;
 	shape_process->gexp  = 7;
 
@@ -39,13 +39,13 @@ RPObjectFlowChart_MJ::RPObjectFlowChart_MJ( RPObject* parent ):
 
 	shape_process = new RPShapeProcessMJ( this );
 	shape_process->setPosition( 100, 250 );
-	shape_process->setName( std::string("Перевозка_склад") );
+	shape_process->setName( tstring("Перевозка_склад") );
 	shape_process->gtype = 3;
 	shape_process->gexp  = 5;
 
 	RPShapeTerminateMJ* shape_terminate = new RPShapeTerminateMJ( this );
 	shape_terminate->setPosition( 100, 200 );
-	shape_terminate->setName( std::string("Склад") );
+	shape_terminate->setName( tstring("Склад") );
 
 	RPShapeResource_MJ* shape_resource = new RPShapeResource_MJ( this );
 	shape_resource->setPosition( 100, 250 );

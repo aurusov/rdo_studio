@@ -29,14 +29,14 @@ using namespace rdoEditCtrl;
 // --------------------------------------------------------------------------------
 // -------------------- RDOBuildEditLineInfo
 // --------------------------------------------------------------------------------
-RDOBuildEditLineInfo::RDOBuildEditLineInfo( rdoSimulator::RDOSyntaxError::ErrorCode _error_code, const std::string& _message, const rdoModelObjects::RDOFileType _fileType, const int _lineNumber, const int _posInLine, bool _warning ):
+RDOBuildEditLineInfo::RDOBuildEditLineInfo( rdoSimulator::RDOSyntaxError::ErrorCode _error_code, CREF(tstring) _message, const rdoModelObjects::RDOFileType _fileType, const int _lineNumber, const int _posInLine, bool _warning ):
 	RDOLogEditLineInfo( _message, _fileType, _lineNumber, _posInLine ),
 	error_code( _error_code ),
 	warning( _warning )
 {
 }
 
-RDOBuildEditLineInfo::RDOBuildEditLineInfo( const std::string& _message ):
+RDOBuildEditLineInfo::RDOBuildEditLineInfo( CREF(tstring) _message ):
 	RDOLogEditLineInfo( _message ),
 	error_code( rdoSimulator::RDOSyntaxError::UNKNOWN ),
 	warning( false )
@@ -47,9 +47,9 @@ RDOBuildEditLineInfo::~RDOBuildEditLineInfo()
 {
 }
 
-std::string RDOBuildEditLineInfo::getMessage() const
+tstring RDOBuildEditLineInfo::getMessage() const
 {
-	std::string file;
+	tstring file;
 	switch ( fileType ) {
 		case rdoModelObjects::RTP : file = "RTP" ; break;
 		case rdoModelObjects::RSS : file = "RSS" ; break;
@@ -67,7 +67,7 @@ std::string RDOBuildEditLineInfo::getMessage() const
 	if ( lineNumber < 0 || file.empty() ) {
 		return message;
 	} else {
-		std::string s_error = warning ? rdo::format( IDS_WARNING, error_code ) : rdo::format( IDS_ERROR, error_code );
+		tstring s_error = warning ? rdo::format( IDS_WARNING, error_code ) : rdo::format( IDS_ERROR, error_code );
 		return rdo::format( "%s (%d): %s: %s", file.c_str(), lineNumber + 1, s_error.c_str(), message.c_str() );
 	}
 }
@@ -160,7 +160,7 @@ void RDOBuildEdit::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
 
 void RDOBuildEdit::OnHelpKeyword()
 {
-	std::string filename = studioApp.getFullHelpFileName();
+	tstring filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return;
 	filename += "::/html/work_run.htm#output_build";
 	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );

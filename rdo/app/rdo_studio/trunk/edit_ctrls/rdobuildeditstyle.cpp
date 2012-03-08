@@ -54,7 +54,7 @@ bool RDOBuildEditTheme::operator !=( const RDOBuildEditTheme& theme ) const
 	return !(*this == theme);
 }
 
-void RDOBuildEditTheme::load( std::string regPath )
+void RDOBuildEditTheme::load( tstring regPath )
 {
 	RDOLogEditTheme::load( regPath );
 
@@ -62,7 +62,7 @@ void RDOBuildEditTheme::load( std::string regPath )
 	warning = AfxGetApp()->GetProfileInt( regPath.c_str(), "warning", warning ) ? true : false;
 }
 
-void RDOBuildEditTheme::save( std::string regPath ) const
+void RDOBuildEditTheme::save( tstring regPath ) const
 {
 	RDOLogEditTheme::save( regPath );
 

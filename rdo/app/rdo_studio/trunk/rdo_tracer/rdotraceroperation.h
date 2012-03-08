@@ -12,7 +12,7 @@ class RDOTracerOperationBase: public RDOTracerSerie
 {
 protected:
 	RDOTracerPattern* pattern;
-	std::string Name;
+	tstring Name;
 	void incOperationsCount( RDOTracerTimeNow* const time, const int eventIndex );
 public:
 	RDOTracerOperationBase( RDOTracerPattern* const pat );
@@ -21,9 +21,9 @@ public:
 	RDOTracerPattern* getPattern() const { return pattern; };
 	//void start( RDOTracerTimeNow* const time, const int eventIndex );
 	//void accomplish( RDOTracerTimeNow* const time, const int eventIndex );
-	void setName( const std::string& name ) { Name = name; if ( title.empty() ) title = Name; };
-	const std::string getName() const { return Name; };
-	virtual void getCaptions( std::vector<std::string> &captions, const int val_count ) const;
+	void setName( CREF(tstring) name ) { Name = name; if ( title.empty() ) title = Name; };
+	const tstring getName() const { return Name; };
+	virtual void getCaptions( std::vector<tstring> &captions, const int val_count ) const;
 	virtual void monitorTime( RDOTracerTimeNow* const time, const int eventIndex );
 };
 

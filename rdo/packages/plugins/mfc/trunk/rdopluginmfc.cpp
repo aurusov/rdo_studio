@@ -122,16 +122,16 @@ void __stdcall pluginProc( const int message, void* param1 )
 		}
 		case rdoPlugin::PM_MODEL_BEFORE_START: {
 			pluginMFCApp.frame->insertLine( "PM_MODEL_BEFORE_START" );
-			std::string str = pluginMFCApp.studio.model.getStructure();
-			std::string::size_type pos = str.find( '\n' );
-			if ( pos != std::string::npos ) {
-				while ( pos != std::string::npos ) {
-					std::string str2( &str[0], 0, pos );
+			tstring str = pluginMFCApp.studio.model.getStructure();
+			tstring::size_type pos = str.find( '\n' );
+			if ( pos != tstring::npos ) {
+				while ( pos != tstring::npos ) {
+					tstring str2( &str[0], 0, pos );
 					pluginMFCApp.frame->insertLine( str2.c_str() );
 					str.erase( 0, pos + 1 );
 					pos = str.find( '\n' );
 				}
-				std::string str2( &str[0], 0, pos );
+				tstring str2( &str[0], 0, pos );
 				if ( !str2.empty() ) {
 					pluginMFCApp.frame->insertLine( str2.c_str() );
 				}
@@ -172,16 +172,16 @@ void __stdcall trace( const char* line )
 void __stdcall results( const char* lines )
 {
 	TRACE( "7. %d, %d, %d, %d\n", ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId() );
-	std::string str = lines;
-	std::string::size_type pos = str.find( '\n' );
-	if ( pos != std::string::npos ) {
-		while ( pos != std::string::npos ) {
-			std::string str2( &str[0], 0, pos );
+	tstring str = lines;
+	tstring::size_type pos = str.find( '\n' );
+	if ( pos != tstring::npos ) {
+		while ( pos != tstring::npos ) {
+			tstring str2( &str[0], 0, pos );
 			pluginMFCApp.frame->insertLine( str2.c_str() );
 			str.erase( 0, pos + 1 );
 			pos = str.find( '\n' );
 		}
-		std::string str2( &str[0], 0, pos );
+		tstring str2( &str[0], 0, pos );
 		if ( !str2.empty() ) {
 			pluginMFCApp.frame->insertLine( str2.c_str() );
 		}

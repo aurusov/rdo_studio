@@ -54,7 +54,7 @@ bool RDOLogEditTheme::operator !=( const RDOLogEditTheme& theme ) const
 	return !(*this == theme);
 }
 
-void RDOLogEditTheme::load( std::string regPath )
+void RDOLogEditTheme::load( tstring regPath )
 {
 	RDOBaseEditTheme::load( regPath );
 
@@ -62,7 +62,7 @@ void RDOLogEditTheme::load( std::string regPath )
 	selectLineBgColor = AfxGetApp()->GetProfileInt( regPath.c_str(), "selectLineBgColor", selectLineBgColor );
 }
 
-void RDOLogEditTheme::save( std::string regPath ) const
+void RDOLogEditTheme::save( tstring regPath ) const
 {
 	RDOBaseEditTheme::save( regPath );
 

@@ -114,7 +114,7 @@ bool RDOEditorBaseEditTheme::operator !=( const RDOEditorBaseEditTheme& theme ) 
 	return !(*this == theme);
 }
 
-void RDOEditorBaseEditTheme::load( std::string regPath )
+void RDOEditorBaseEditTheme::load( tstring regPath )
 {
 	RDOBaseEditTheme::load( regPath );
 
@@ -139,7 +139,7 @@ void RDOEditorBaseEditTheme::load( std::string regPath )
 	operatorStyle          = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "operatorStyle", operatorStyle ));
 }
 
-void RDOEditorBaseEditTheme::save( std::string regPath ) const
+void RDOEditorBaseEditTheme::save( tstring regPath ) const
 {
 	RDOBaseEditTheme::save( regPath );
 
@@ -215,7 +215,7 @@ bool RDOEditorBaseEditTheme::styleItalic( const int styleType ) const
 	return false;
 }
 
-std::string RDOEditorBaseEditTheme::styleFGColorToHEX( const int styleType ) const
+tstring RDOEditorBaseEditTheme::styleFGColorToHEX( const int styleType ) const
 {
 	switch ( styleType ) {
 		case SCE_RDO_DEFAULT     : return colorToHEX( defaultColor );

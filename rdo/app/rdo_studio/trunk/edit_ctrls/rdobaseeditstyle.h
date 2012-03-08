@@ -39,8 +39,8 @@ public:
 	bool operator ==( const RDOBaseEditTheme& theme ) const;
 	bool operator !=( const RDOBaseEditTheme& theme ) const;
 
-	virtual void load( std::string regPath );
-	virtual void save( std::string regPath ) const;
+	virtual void load( tstring regPath );
+	virtual void save( tstring regPath ) const;
 
 	COLORREF caretColor;
 	COLORREF selectionBgColor;
@@ -53,15 +53,15 @@ public:
 	virtual bool styleUsing( const int styleType ) const;
 	virtual bool styleBold( const int styleType = STYLE_DEFAULT ) const;
 	virtual bool styleItalic( const int styleType = STYLE_DEFAULT ) const;
-	virtual std::string styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
-	virtual std::string styleBGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
+	virtual tstring styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
+	virtual tstring styleBGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
 
 	static RDOBaseEditTheme getDefaultTheme();
 	static RDOBaseEditTheme getClassicTheme();
 	static RDOBaseEditTheme getTwilightTheme();
 	static RDOBaseEditTheme getOceanTheme();
 
-	static std::string colorToHEX( const COLORREF color );
+	static tstring colorToHEX( const COLORREF color );
 };
 
 // --------------------------------------------------------------------------------
@@ -77,8 +77,8 @@ public:
 	bool operator ==( const RDOBaseEditTab& tab ) const;
 	bool operator !=( const RDOBaseEditTab& tab ) const;
 
-	virtual void load( std::string regPath );
-	virtual void save( std::string regPath ) const;
+	virtual void load( tstring regPath );
+	virtual void save( tstring regPath ) const;
 
 	int tabSize;
 	int indentSize;
@@ -101,8 +101,8 @@ public:
 	bool operator ==( const RDOBaseEditWindow& window ) const;
 	bool operator !=( const RDOBaseEditWindow& window ) const;
 
-	virtual void load( std::string regPath );
-	virtual void save( std::string regPath ) const;
+	virtual void load( tstring regPath );
+	virtual void save( tstring regPath ) const;
 
 	bool wordWrap;
 	bool showHorzScrollBar;
@@ -126,7 +126,7 @@ public:
 	bool operator ==( const RDOBaseEditStyle& style ) const;
 	bool operator !=( const RDOBaseEditStyle& style ) const;
 
-	virtual void init( const std::string& _regPath = "" );
+	virtual void init( CREF(tstring) _regPath = "" );
 	virtual bool load();
 	virtual bool save() const;
 

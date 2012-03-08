@@ -63,7 +63,7 @@ bool RDOStyleFont::operator !=( const RDOStyleFont& font ) const
 	return !(*this == font);
 }
 
-void RDOStyleFont::load( std::string regPath )
+void RDOStyleFont::load( tstring regPath )
 {
 	regPath += "font";
 	name         = AfxGetApp()->GetProfileString( regPath.c_str(), "name", name.c_str() );
@@ -72,7 +72,7 @@ void RDOStyleFont::load( std::string regPath )
 	characterSet = AfxGetApp()->GetProfileInt( regPath.c_str(), "characterSet", characterSet );
 }
 
-void RDOStyleFont::save( std::string regPath ) const
+void RDOStyleFont::save( tstring regPath ) const
 {
 	regPath += "font";
 	AfxGetApp()->WriteProfileString( regPath.c_str(), "name", name.c_str() );
@@ -161,7 +161,7 @@ bool RDOStyleTheme::operator !=( const RDOStyleTheme& theme ) const
 	return !(*this == theme);
 }
 
-void RDOStyleTheme::load( std::string regPath )
+void RDOStyleTheme::load( tstring regPath )
 {
 	regPath += "theme";
 	defaultColor    = AfxGetApp()->GetProfileInt( regPath.c_str(), "defaultColor", defaultColor );
@@ -169,7 +169,7 @@ void RDOStyleTheme::load( std::string regPath )
 	defaultStyle    = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "defaultStyle", defaultStyle ));
 }
 
-void RDOStyleTheme::save( std::string regPath ) const
+void RDOStyleTheme::save( tstring regPath ) const
 {
 	regPath += "theme";
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "defaultColor", defaultColor );
@@ -215,7 +215,7 @@ bool RDOStyle::operator !=( const RDOStyle& style ) const
 	return !(*this == style);
 }
 
-void RDOStyle::init( const std::string& _regPath )
+void RDOStyle::init( CREF(tstring) _regPath )
 {
 	regPath = _regPath;
 	rdo::trim( regPath );
@@ -285,7 +285,7 @@ bool RDOStyleWithTheme::operator !=( const RDOStyleWithTheme& style ) const
 	return !(*this == style);
 }
 
-void RDOStyleWithTheme::init( const std::string& _regPath )
+void RDOStyleWithTheme::init( CREF(tstring) _regPath )
 {
 	RDOStyle::init( _regPath );
 	initTheme();

@@ -33,7 +33,7 @@ public:
 	RDODebugEdit();
 	virtual ~RDODebugEdit();
 
-	void appendLine( const std::string& str );
+	void appendLine( CREF(tstring) str );
 };
 
 }; // namespace rdoEditCtrl

@@ -177,7 +177,7 @@ bool RDOTracerLogTheme::operator !=( const RDOTracerLogTheme& theme ) const
 	return !(*this == theme);
 }
 
-void RDOTracerLogTheme::load( std::string regPath )
+void RDOTracerLogTheme::load( tstring regPath )
 {
 	RDOLogTheme::load( regPath );
 
@@ -209,7 +209,7 @@ void RDOTracerLogTheme::load( std::string regPath )
 	seu.load( regPath, "seu" );
 }
 
-void RDOTracerLogTheme::save( std::string regPath ) const
+void RDOTracerLogTheme::save( tstring regPath ) const
 {
 	RDOLogTheme::save( regPath );
 
@@ -270,13 +270,13 @@ void RDOTracerLogStyle::initBorders()
 	borders->horzBorder = 2;
 }
 
-bool RDOTracerLogStyle::getItemColors( const std::string& item, RDOLogColorPair* &colors ) const
+bool RDOTracerLogStyle::getItemColors( CREF(tstring) item, RDOLogColorPair* &colors ) const
 {
 	if ( item.empty() )
 		return RDOLogStyle::getItemColors( "", colors );
 	int posstart = item.find_first_not_of( ' ' );
 	int posend = item.find_first_of( ' ', posstart );
-	std::string key = item.substr( posstart, posend - posstart );
+	tstring key = item.substr( posstart, posend - posstart );
 	rdo::trim( key );
 	bool res = true;
 	if ( theme ) {
@@ -301,7 +301,7 @@ bool RDOTracerLogStyle::getItemColors( const std::string& item, RDOLogColorPair*
 			colors = &_theme->v;
 		} else if ( key == "$Status" ) {
 			colors = &_theme->s;
-		} else if ( key.find( "DPS" ) != std::string::npos ) {
+		} else if ( key.find( "DPS" ) != tstring::npos ) {
 			colors = &_theme->dps;
 		} else if ( key == "SB" ) {
 			colors = &_theme->sb;
@@ -360,7 +360,7 @@ bool RDOTracerLogStyle::operator !=( const RDOTracerLogStyle& style ) const
 	return !(*this == style);
 }
 
-void RDOTracerLogStyle::init( const std::string& _regPath )
+void RDOTracerLogStyle::init( CREF(tstring) _regPath )
 {
 	RDOLogStyle::init( _regPath );
 	*font = rdoStyle::RDOStyleFont::getTracerLogFont();

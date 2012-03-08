@@ -64,7 +64,7 @@ protected:
 
 	void updateChartViews( const UINT update_type ) const;
 
-	std::string title;
+	tstring title;
 
 public:
 	virtual void SetTitle( LPCTSTR lpszTitle );
@@ -83,7 +83,7 @@ public:
 	//void removeSerie( RDOTracerSerie* const serie );
 	bool serieExists( const RDOTracerSerie* serie ) const;
 
-	std::string getTitle() const { return title; };
+	tstring getTitle() const { return title; };
 	
 	void lock() { mutex.Lock(); };
 	void unlock() { mutex.Unlock(); };

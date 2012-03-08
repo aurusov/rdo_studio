@@ -15,7 +15,7 @@ friend class RDOStudioModel;
 DECLARE_DYNCREATE(RDOStudioModelDoc)
 
 private:
-	std::string name;
+	tstring name;
 
 	RDOStudioModelDoc();
 
@@ -32,8 +32,8 @@ public:
 
 	RDOStudioModelView* getView() const;
 
-	std::string getName() const { return name; }
-	void setName( const std::string& str );
+	tstring getName() const { return name; }
+	void setName( CREF(tstring) str );
 
 	bool isModify();
 

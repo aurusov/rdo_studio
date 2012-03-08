@@ -80,7 +80,7 @@ public:
 	RDOTracerTreeCtrl();
 	virtual ~RDOTracerTreeCtrl();
 
-	BOOL setModelName( const std::string& modelName );
+	BOOL setModelName( CREF(tstring) modelName );
 	void addResourceType( RDOTracerResType* resType );
 	void addResource( RDOTracerResource* res );
 	void updateResource( RDOTracerResource* const res );

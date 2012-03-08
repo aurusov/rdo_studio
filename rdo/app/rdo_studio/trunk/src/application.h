@@ -51,7 +51,7 @@ private:
 
 	CMultiDocTemplate* editDocTemplate;
 
-	std::vector< std::string > reopenList;
+	std::vector< tstring > reopenList;
 	void updateReopenSubMenu() const;
 	void loadReopen();
 	void saveReopen() const;
@@ -59,7 +59,7 @@ private:
 	bool        fileAssociationSetup;
 	bool        fileAssociationCheckInFuture;
 	bool        openLastProject;
-	std::string lastProjectName;
+	tstring lastProjectName;
 	ULONG_PTR   m_gdiplusToken;
 
 	bool showCaptionFullName;
@@ -70,10 +70,10 @@ private:
 	bool autoExitByModel;
 	bool dontCloseIfError;
 	rdoSimulator::RDOExitCode exitCode;
-	std::string openModelName;
+	tstring openModelName;
 
-	std::list< std::string > plugin_start_name;
-	std::list< std::string > plugin_exit_name;
+	std::list< tstring > plugin_start_name;
+	std::list< tstring > plugin_exit_name;
 
 public:
 	RDOStudioApp();
@@ -85,7 +85,7 @@ public:
 
 	void broadcastMessage( RDOThread::RDOTreadMessage message, void* param = NULL );
 
-	void insertReopenItem( const std::string& item );
+	void insertReopenItem( CREF(tstring) item );
 
 	bool getFileAssociationSetup() const              { return fileAssociationSetup;         }
 	void setFileAssociationSetup( const bool value );
@@ -96,8 +96,8 @@ public:
 	bool getOpenLastProject() const                   { return openLastProject;              }
 	void setOpenLastProject( const bool value );
 
-	std::string getLastProjectName() const            { return lastProjectName;              }
-	void setLastProjectName( const std::string& projectName );
+	tstring getLastProjectName() const            { return lastProjectName;              }
+	void setLastProjectName( CREF(tstring) projectName );
 
 	bool getShowCaptionFullName() const               { return showCaptionFullName;          }
 	void setShowCaptionFullName( const bool value );
@@ -106,9 +106,9 @@ public:
 	void autoCloseByPlugin( RDOStudioPlugin* plugin );
 	bool isPluginAutoStart( RDOStudioPlugin* plugin ) const;
 
-	static std::string getFullFileName();
-	static std::string getFullHelpFileName( std::string str = "RAO-studio.chm" );
-	static bool shortToLongPath( const std::string& shortPath, std::string& longPath );
+	static tstring getFullFileName();
+	static tstring getFullHelpFileName( tstring str = "RAO-studio.chm" );
+	static bool shortToLongPath( CREF(tstring) shortPath, tstring& longPath );
 
 private:
 	virtual BOOL InitInstance();

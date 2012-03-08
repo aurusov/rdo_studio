@@ -32,8 +32,8 @@ public:
 	bool operator ==( const RDOTracerLogTheme& theme ) const;
 	bool operator !=( const RDOTracerLogTheme& theme ) const;
 
-	virtual void load( std::string regPath );
-	virtual void save( std::string regPath ) const;
+	virtual void load( tstring regPath );
+	virtual void save( tstring regPath ) const;
 
 	RDOLogColorPair es;
 	RDOLogColorPair eb;
@@ -79,13 +79,13 @@ public:
 	RDOTracerLogStyle();
 	virtual ~RDOTracerLogStyle();
 
-	bool getItemColors( const std::string& item, RDOLogColorPair* &colors ) const;
+	bool getItemColors( CREF(tstring) item, RDOLogColorPair* &colors ) const;
 
 	RDOTracerLogStyle& operator =( const RDOTracerLogStyle& style );
 	bool operator ==( const RDOTracerLogStyle& style ) const;
 	bool operator !=( const RDOTracerLogStyle& style ) const;
 
-	virtual void init( const std::string& _regPath = "" );
+	virtual void init( CREF(tstring) _regPath = "" );
 };
 
 }; // namespace rdoTracerLog

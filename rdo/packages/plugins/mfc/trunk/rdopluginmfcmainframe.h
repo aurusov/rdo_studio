@@ -6,11 +6,12 @@
 #include <afxmt.h>
 #include <list>
 #include <string>
+#include "utils/rdotypes.h"
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPluginMFCLogCtrl
 // --------------------------------------------------------------------------------
-typedef std::list< std::string > stringList;
+typedef std::list< tstring > stringList;
 
 class RDOPluginMFCLogCtrl: public CWnd  
 {
@@ -90,14 +91,14 @@ public:
 	RDOPluginMFCLogCtrl();
 	virtual ~RDOPluginMFCLogCtrl();
 
-	virtual void addStringToLog( std::string logStr );
+	virtual void addStringToLog( tstring logStr );
 
 	bool getFocusOnly() const { return focusOnly; }
 	virtual void setFocusOnly( const bool value ) { focusOnly = value; }
 
-	virtual void getString( const int index, std::string& str ) const;
+	virtual void getString( const int index, tstring& str ) const;
 	virtual int getSelectedIndex() const;
-	virtual void getSelected( std::string& str ) const;
+	virtual void getSelected( tstring& str ) const;
 	virtual bool makeLineVisible( const int index );
 	virtual void selectLine( const int index );
 	virtual void clear();

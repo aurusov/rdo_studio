@@ -26,7 +26,7 @@ static char THIS_FILE[] = __FILE__;
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioPlugin
 // --------------------------------------------------------------------------------
-RDOStudioPlugin::RDOStudioPlugin( const std::string& _modulName ):
+RDOStudioPlugin::RDOStudioPlugin( CREF(tstring) _modulName ):
 	modulName( _modulName ),
 	lib( NULL ),
 	name( "" ),
@@ -83,7 +83,7 @@ RDOStudioPlugin::~RDOStudioPlugin()
 	setState( rdoPlugin::psStoped );
 }
 
-bool RDOStudioPlugin::isRDOStudioPlugin( const std::string& modulName )
+bool RDOStudioPlugin::isRDOStudioPlugin( CREF(tstring) modulName )
 {
 	UNUSED(modulName);
 	return true;
@@ -100,7 +100,7 @@ bool RDOStudioPlugin::isRDOStudioPlugin( const std::string& modulName )
 	//return res;
 }
 
-std::string RDOStudioPlugin::getProfilePath() const
+tstring RDOStudioPlugin::getProfilePath() const
 {
 	return rdo::format( "plugins\\%s_%d.%d.%d", name.c_str(), version_major, version_minor, version_build );
 }
@@ -203,22 +203,22 @@ void RDOStudioPlugin::setRunMode( const rdoPlugin::PluginRunMode value )
 	}
 }
 
-std::string RDOStudioPlugin::getFileName() const
+tstring RDOStudioPlugin::getFileName() const
 {
-	std::string name = modulName;
-	std::string::size_type pos = name.find_last_of( '.' );
-	if ( pos != std::string::npos ) {
-		std::string s;
+	tstring name = modulName;
+	tstring::size_type pos = name.find_last_of( '.' );
+	if ( pos != tstring::npos ) {
+		tstring s;
 		s.assign( &name[0], pos );
 		name = s;
 	}
 	static char szDelims[] = " \t\n\r";
 	pos = name.find_last_of( '\\' );
-	if ( pos == std::string::npos ) {
+	if ( pos == tstring::npos ) {
 		pos = name.find_last_of( '/' );
 	}
-	if ( pos != std::string::npos ) {
-		std::string s( name, pos + 1, name.length() - pos );
+	if ( pos != tstring::npos ) {
+		tstring s( name, pos + 1, name.length() - pos );
 		name = s;
 	}
 	return name;
@@ -288,7 +288,7 @@ RDOStudioPlugins::~RDOStudioPlugins()
 	plugins = NULL;
 }
 
-void RDOStudioPlugins::enumPlugins( const std::string& mask )
+void RDOStudioPlugins::enumPlugins( CREF(tstring) mask )
 {
 	CFileFind finder;
 	if ( finder.FindFile( mask.c_str() ) ) {
@@ -296,13 +296,13 @@ void RDOStudioPlugins::enumPlugins( const std::string& mask )
 		while ( flag ) {
 			flag = finder.FindNextFile();
 			if ( finder.IsDirectory() && !finder.IsDots() ) {
-				std::string subDir = finder.GetFilePath();
+				tstring subDir = finder.GetFilePath();
 				subDir += "\\*.*";
 				enumPlugins( subDir );
 			} else if ( !finder.IsDots() ) {
-				std::string fullname = finder.GetFilePath();
+				tstring fullname = finder.GetFilePath();
 				if ( fullname.rfind( ".rsp" ) == fullname.length() - 4 ) {
-					std::string modulName = finder.GetFilePath();
+					tstring modulName = finder.GetFilePath();
 					if ( RDOStudioPlugin::isRDOStudioPlugin( modulName ) ) {
 						RDOStudioPlugin* plugin = new RDOStudioPlugin( modulName );
 						mutex.Lock();
@@ -318,7 +318,7 @@ void RDOStudioPlugins::enumPlugins( const std::string& mask )
 
 void RDOStudioPlugins::init()
 {
-	std::string path = "";
+	tstring path = "";
 	TCHAR szExeName[ MAX_PATH + 1 ];
 	if ( ::GetModuleFileName( NULL, szExeName, MAX_PATH ) ) {
 		path = rdo::extractFilePath( szExeName );
@@ -397,7 +397,7 @@ void RDOStudioPlugins::clearTrace( RDOStudioPlugin* plugin )
 	mutex.Unlock();
 }
 
-void RDOStudioPlugins::traceProc( const std::string& str )
+void RDOStudioPlugins::traceProc( CREF(tstring) str )
 {
 	plugins->mutex.Lock();
 	std::vector< RDOStudioPlugin* >::const_iterator it = plugins->trace.begin();
@@ -674,7 +674,7 @@ bool RDOStudioPlugins::readFile( rdoPlugin::ModelFileType file_type, char** data
 				rdoEditor::RDOEditorEdit* edit = tab->getItemEdit( edit_type );
 				rdo::binarystream stream;
 				edit->save( stream );
-				std::string::size_type size = stream.str().size();
+				tstring::size_type size = stream.str().size();
 				*data = new char[size + 1];
 				(*data)[size] = '\0';
 				stream.str( *data );//.copy( *data, size );
@@ -805,7 +805,7 @@ void RDOStudioPlugins::modelStop( bool model_no_error )
 			plugins->mutex.Lock();
 			rdo::textstream model_results;
 			model->sendMessage( kernel->simulator(), RDOThread::RT_SIMULATOR_GET_MODEL_RESULTS, &model_results );
-			std::string str = model_results.str();
+			tstring str = model_results.str();
 			std::vector< RDOStudioPlugin* >::const_iterator it = plugins->results.begin();
 			while ( it != plugins->results.end() ) {
 				RDOStudioPlugin* plugin = *it;

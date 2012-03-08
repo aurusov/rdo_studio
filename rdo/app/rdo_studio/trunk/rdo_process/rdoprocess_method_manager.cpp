@@ -46,7 +46,7 @@ RPMethodPlugin::~RPMethodPlugin()
 	}
 }
 
-bool RPMethodPlugin::isMethod( const std::string& file_name )
+bool RPMethodPlugin::isMethod( CREF(tstring) file_name )
 {
 	bool res = false;
 	HMODULE local_lib = ::LoadLibrary( file_name.c_str() );
@@ -80,7 +80,7 @@ RPMethodManager::~RPMethodManager()
 void RPMethodManager::init()
 {
 #ifdef RDO_METHOD_DLL
-	std::string path = "";
+	tstring path = "";
 	TCHAR szExeName[ MAX_PATH + 1 ];
 	if ( ::GetModuleFileName( NULL, szExeName, MAX_PATH ) ) {
 		path = rp::extractFilePath( szExeName );
@@ -112,7 +112,7 @@ static int CALLBACK BlocksCompareProc( LPARAM lParam1, LPARAM lParam2, LPARAM lP
 }
 
 #ifdef RDO_METHOD_DLL
-void RPMethodManager::enumPlugins( const std::string& mask )
+void RPMethodManager::enumPlugins( CREF(tstring) mask )
 {
 	CFileFind finder;
 	if ( finder.FindFile( mask.c_str() ) ) {
@@ -120,13 +120,13 @@ void RPMethodManager::enumPlugins( const std::string& mask )
 		while ( flag ) {
 			flag = finder.FindNextFile();
 			if ( finder.IsDirectory() && !finder.IsDots() ) {
-				std::string subDir = finder.GetFilePath();
+				tstring subDir = finder.GetFilePath();
 				subDir += "\\*.*";
 				enumPlugins( subDir );
 			} else if ( !finder.IsDots() ) {
-				std::string fullname = finder.GetFilePath();
+				tstring fullname = finder.GetFilePath();
 				if ( fullname.rfind( ".dll" ) == fullname.length() - 4 ) {
-					std::string modulName = finder.GetFilePath();
+					tstring modulName = finder.GetFilePath();
 					if ( RPMethodPlugin::isMethod( modulName ) ) {
 						RPMethodPlugin* plugin = new RPMethodPlugin( modulName );
 						methods.push_back( plugin );

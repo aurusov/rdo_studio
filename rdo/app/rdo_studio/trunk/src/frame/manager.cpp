@@ -57,7 +57,7 @@ RDOStudioFrameManager::~RDOStudioFrameManager()
 	};
 }
 
-void RDOStudioFrameManager::insertItem( const std::string& name )
+void RDOStudioFrameManager::insertItem( CREF(tstring) name )
 {
 	Frame* item = new Frame;
 	item->hitem = studioApp.mainFrame->workspace.frames->InsertItem( name.c_str(), 1, 1, studioApp.mainFrame->workspace.frames->GetRootItem() );
@@ -194,7 +194,7 @@ void RDOStudioFrameManager::resetCurrentShowingFrame( const int value )
 	if ( value == currentShowingFrame ) setCurrentShowingFrame( -1 );
 }
 
-void RDOStudioFrameManager::bmp_insert( const std::string& name )
+void RDOStudioFrameManager::bmp_insert( CREF(tstring) name )
 {
 	if ( bitmaps.find( name ) == bitmaps.end() ) {
 
@@ -291,7 +291,7 @@ void RDOStudioFrameManager::bmp_insert( const std::string& name )
 
 void RDOStudioFrameManager::bmp_clear()
 {
-	std::map< std::string, BMP* >::iterator it = bitmaps.begin();
+	std::map< tstring, BMP* >::iterator it = bitmaps.begin();
 	while ( it != bitmaps.end() ) {
 		delete it->second;
 		it++;

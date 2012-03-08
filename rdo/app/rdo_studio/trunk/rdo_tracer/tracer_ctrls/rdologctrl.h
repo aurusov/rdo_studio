@@ -22,7 +22,7 @@ namespace rdoTracerLog {
 // --------------------------------------------------------------------------------
 #define WM_LOGSELCHANGE WM_USER + 1
 
-typedef std::list< std::string > stringList;
+typedef std::list< tstring > stringList;
 
 class RDOLogCtrl: public CWnd  
 {
@@ -70,12 +70,12 @@ protected:
 	bool bSearchDown;
 	bool bMatchCase;
 	bool bMatchWholeWord;
-	std::string findStr;
+	tstring findStr;
 	void find( int& result, const bool searchDown, const bool matchCase, const bool matchWholeWord );
 
 	RDOLogStyle* logStyle;
 	virtual bool getItemColors( const int index, RDOLogColorPair* &colors ) const;
-	virtual bool getItemColors( const std::string& item, RDOLogColorPair* &colors ) const;
+	virtual bool getItemColors( CREF(tstring) item, RDOLogColorPair* &colors ) const;
 	
 	void recalcWidth( const int newMaxStrWidth );
 	void updateScrollBars();
@@ -125,14 +125,14 @@ public:
 	RDOLogCtrl( RDOLogStyle* style = NULL );
 	virtual ~RDOLogCtrl();
 
-	virtual void addStringToLog( const std::string logStr );
+	virtual void addStringToLog( const tstring logStr );
 	
 	bool getFocusOnly() const { return focusOnly; }
 	virtual void setFocusOnly( const bool value ) { focusOnly = value; }
 
-	virtual void getString( const int index, std::string& str ) const;
+	virtual void getString( const int index, tstring& str ) const;
 	virtual int getSelectedIndex() const;
-	virtual void getSelected( std::string& str ) const;
+	virtual void getSelected( tstring& str ) const;
 	virtual bool makeLineVisible( const int index );
 	virtual void selectLine( const int index );
 	virtual void copy();
@@ -143,7 +143,7 @@ public:
 	virtual const RDOLogStyle& getStyle() const;
 	virtual void setStyle( RDOLogStyle* style, const bool needRedraw = true );
 
-	void setText( std::string text );
+	void setText( tstring text );
 
 	void setDrawLog( const bool value );
 	bool getDrawLog() const { return drawLog; };

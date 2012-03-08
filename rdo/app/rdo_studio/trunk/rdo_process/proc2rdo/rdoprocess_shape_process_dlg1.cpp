@@ -187,7 +187,7 @@ void RPShapeProcessDlg1_MJ::OnOK()
 {
 	// вывод и ввод имени блока
 	UpdateData(TRUE);
-	pParentMJ->setName(std::string(m_name));
+	pParentMJ->setName(tstring(m_name));
 
 	
 // инициализация из вызвавшего объекта

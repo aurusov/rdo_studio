@@ -144,7 +144,7 @@ void RPShapeCreateDlg1_MJ::OnButton1()
 void RPShapeCreateDlg1_MJ::OnOK() 
 {
 	UpdateData(TRUE);
-	pParentMJ->setName( std::string(m_name) );
+	pParentMJ->setName( tstring(m_name) );
 //	pParentMJ->update_modify();	
 	CDialog::OnOK();
 

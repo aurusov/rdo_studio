@@ -75,7 +75,7 @@ bool RDOEditorEditTheme::operator !=( const RDOEditorEditTheme& theme ) const
 	return !(*this == theme);
 }
 
-void RDOEditorEditTheme::load( std::string regPath )
+void RDOEditorEditTheme::load( tstring regPath )
 {
 	RDOEditorBaseEditTheme::load( regPath );
 
@@ -87,7 +87,7 @@ void RDOEditorEditTheme::load( std::string regPath )
 	commentFold  = AfxGetApp()->GetProfileInt( regPath.c_str(), "commentFold", commentFold ) ? true : false;
 }
 
-void RDOEditorEditTheme::save( std::string regPath ) const
+void RDOEditorEditTheme::save( tstring regPath ) const
 {
 	RDOEditorBaseEditTheme::save( regPath );
 
@@ -227,14 +227,14 @@ bool RDOEditorEditAutoComplete::operator !=( const RDOEditorEditAutoComplete& au
 	return !(*this == autoComplete);
 }
 
-void RDOEditorEditAutoComplete::load( std::string regPath )
+void RDOEditorEditAutoComplete::load( tstring regPath )
 {
 	regPath += "autoComplete";
 	useAutoComplete = AfxGetApp()->GetProfileInt( regPath.c_str(), "useAutoComplete", useAutoComplete ) ? true : false;
 	showFullList    = AfxGetApp()->GetProfileInt( regPath.c_str(), "showFullList", showFullList ) ? true : false;
 }
 
-void RDOEditorEditAutoComplete::save( std::string regPath ) const
+void RDOEditorEditAutoComplete::save( tstring regPath ) const
 {
 	regPath += "autoComplete";
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "useAutoComplete", useAutoComplete );
@@ -273,14 +273,14 @@ bool RDOEditorEditBuffer::operator !=( const RDOEditorEditBuffer& buffer ) const
 	return !(*this == buffer);
 }
 
-void RDOEditorEditBuffer::load( std::string regPath )
+void RDOEditorEditBuffer::load( tstring regPath )
 {
 	regPath += "buffer";
 	canClearBuffer   = AfxGetApp()->GetProfileInt( regPath.c_str(), "canClearBuffer", canClearBuffer ) ? true : false;
 	clearBufferDelay = AfxGetApp()->GetProfileInt( regPath.c_str(), "clearBufferDelay", clearBufferDelay );
 }
 
-void RDOEditorEditBuffer::save( std::string regPath ) const
+void RDOEditorEditBuffer::save( tstring regPath ) const
 {
 	regPath += "buffer";
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "canClearBuffer", canClearBuffer );
@@ -322,7 +322,7 @@ bool RDOEditorEditMargin::operator !=( const RDOEditorEditMargin& margin ) const
 	return !(*this == margin);
 }
 
-void RDOEditorEditMargin::load( std::string regPath )
+void RDOEditorEditMargin::load( tstring regPath )
 {
 	regPath += "margin";
 	fold       = AfxGetApp()->GetProfileInt( regPath.c_str(), "fold", fold ) ? true : false;
@@ -330,7 +330,7 @@ void RDOEditorEditMargin::load( std::string regPath )
 	lineNumber = AfxGetApp()->GetProfileInt( regPath.c_str(), "lineNumber", lineNumber ) ? true : false;
 }
 
-void RDOEditorEditMargin::save( std::string regPath ) const
+void RDOEditorEditMargin::save( tstring regPath ) const
 {
 	regPath += "margin";
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "fold", fold );
@@ -402,7 +402,7 @@ bool RDOEditorEditStyle::operator !=( const RDOEditorEditStyle& style ) const
 	return !(*this == style);
 }
 
-void RDOEditorEditStyle::init( const std::string& _regPath )
+void RDOEditorEditStyle::init( CREF(tstring) _regPath )
 {
 	RDOEditorBaseEditStyle::init( _regPath );
 	initAutoComplete();

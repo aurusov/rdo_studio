@@ -28,8 +28,8 @@ public:
 	bool operator ==( const RDOStudioChartViewTheme& theme ) const;
 	bool operator !=( const RDOStudioChartViewTheme& theme ) const;
 
-	virtual void load( std::string regPath );
-	virtual void save( std::string regPath ) const;
+	virtual void load( tstring regPath );
+	virtual void save( tstring regPath ) const;
 
 	COLORREF axisFgColor;
 	COLORREF titleFGColor;
@@ -56,8 +56,8 @@ public:
 	bool operator ==( const RDOStudioChartViewFontsTicks& fonts_ticks ) const;
 	bool operator !=( const RDOStudioChartViewFontsTicks& fonts_ticks ) const;
 
-	virtual void load( std::string regPath );
-	virtual void save( std::string regPath ) const;
+	virtual void load( tstring regPath );
+	virtual void save( tstring regPath ) const;
 
 	int titleFontSize;
 	int legendFontSize;
@@ -81,7 +81,7 @@ public:
 	bool operator ==( const RDOStudioChartViewStyle& style ) const;
 	bool operator !=( const RDOStudioChartViewStyle& style ) const;
 
-	virtual void init( const std::string& _regPath = "" );
+	virtual void init( CREF(tstring) _regPath = "" );
 	virtual bool load();
 	virtual bool save() const;
 	

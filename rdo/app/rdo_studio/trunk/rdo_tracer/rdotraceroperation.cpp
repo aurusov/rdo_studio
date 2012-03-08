@@ -30,7 +30,7 @@ void RDOTracerOperationBase::incOperationsCount( RDOTracerTimeNow* const time, c
 	addValue( newval );
 }
 
-void RDOTracerOperationBase::getCaptions( std::vector<std::string> &captions, const int val_count ) const
+void RDOTracerOperationBase::getCaptions( std::vector<tstring> &captions, const int val_count ) const
 {
 	RDOTracerSerie::getCaptionsInt( captions, val_count );
 }

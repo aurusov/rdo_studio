@@ -24,12 +24,12 @@ namespace rdoEditor {
 class RDOEditorBaseEdit: public rdoEditCtrl::RDOBaseEdit
 {
 protected:
-	std::string kw0;
-	std::string kw1;
-	std::string kw2;
-	std::string kw3;
-	std::string getAllKW() const;
-	static std::string convertToLexer( const std::string& kw );
+	tstring kw0;
+	tstring kw1;
+	tstring kw2;
+	tstring kw3;
+	tstring getAllKW() const;
+	static tstring convertToLexer( CREF(tstring) kw );
 
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
 
@@ -44,7 +44,7 @@ public:
 
 	void setEditorStyle( RDOEditorBaseEditStyle* _style );
 
-	void replaceCurrent( const std::string str, const int changePosValue = -1 ) const;
+	void replaceCurrent( const tstring str, const int changePosValue = -1 ) const;
 };
 
 }; // namespace rdoEditor

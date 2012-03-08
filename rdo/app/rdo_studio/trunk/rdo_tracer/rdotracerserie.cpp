@@ -65,12 +65,12 @@ bool RDOTracerSerie::isTemporaryResourceParam() const
 	return serieKind == RDOST_RESPARAM && ((RDOTracerResParam*)this)->getResource()->getType()->getResTypeKind() == RDOTK_TEMPORARY;
 };
 
-std::string RDOTracerSerie::getTitle() const
+tstring RDOTracerSerie::getTitle() const
 {
 	return title;
 }
 
-void RDOTracerSerie::setTitle( const std::string& value )
+void RDOTracerSerie::setTitle( CREF(tstring) value )
 {
 	if ( title != value )
 		title = value;
@@ -110,7 +110,7 @@ void RDOTracerSerie::getValueCount( int& count ) const
 	const_cast<CMutex&>(mutex).Unlock();
 }
 
-void RDOTracerSerie::getCaptions( std::vector<std::string> &captions, const int val_count ) const
+void RDOTracerSerie::getCaptions( std::vector<tstring> &captions, const int val_count ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
@@ -119,7 +119,7 @@ void RDOTracerSerie::getCaptions( std::vector<std::string> &captions, const int 
 	if ( serieKind == RDOST_PREVIEW ) {
 		double valoffset = ( maxValue - minValue ) / (double)( val_count - 1 );
 		double valo = minValue;
-		std::string formatstr = "%.3f";
+		tstring formatstr = "%.3f";
 		if ( value_count > 1 ) {
 			for ( int i = 0; i < val_count; i++ ) {
 				captions.push_back( rdo::format( formatstr.c_str(), valo ) );
@@ -133,7 +133,7 @@ void RDOTracerSerie::getCaptions( std::vector<std::string> &captions, const int 
 	const_cast<CMutex&>(mutex).Unlock();
 }
 
-void RDOTracerSerie::getCaptionsInt( std::vector<std::string> &captions, const int val_count ) const
+void RDOTracerSerie::getCaptionsInt( std::vector<tstring> &captions, const int val_count ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
@@ -148,7 +148,7 @@ void RDOTracerSerie::getCaptionsInt( std::vector<std::string> &captions, const i
 	}
 	int valo = (int)minValue;
 	int valoffset = (int)(( maxValue - minValue ) / ( real_val_count - 1 ));
-	std::string formatstr = "%d";
+	tstring formatstr = "%d";
 	for ( int i = 0; i < real_val_count; i++ ) {
 		captions.push_back( rdo::format( formatstr.c_str(), valo ) );
 		valo += valoffset;
@@ -157,7 +157,7 @@ void RDOTracerSerie::getCaptionsInt( std::vector<std::string> &captions, const i
 	const_cast<CMutex&>(mutex).Unlock();
 }
 
-void RDOTracerSerie::getCaptionsDouble( std::vector<std::string> &captions, const int val_count ) const
+void RDOTracerSerie::getCaptionsDouble( std::vector<tstring> &captions, const int val_count ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
@@ -165,7 +165,7 @@ void RDOTracerSerie::getCaptionsDouble( std::vector<std::string> &captions, cons
 	
 	double valoffset = ( maxValue - minValue ) / (double)( val_count - 1 );
 	double valo = minValue;
-	std::string formatstr = "%.3f";
+	tstring formatstr = "%.3f";
 	if ( value_count > 1 ) {
 		for ( int i = 0; i < val_count; i++ ) {
 			captions.push_back( rdo::format( formatstr.c_str(), valo ) );
@@ -178,7 +178,7 @@ void RDOTracerSerie::getCaptionsDouble( std::vector<std::string> &captions, cons
 	const_cast<CMutex&>(mutex).Unlock();
 }
 
-void RDOTracerSerie::getCaptionsBool( std::vector<std::string> &captions, const int val_count ) const
+void RDOTracerSerie::getCaptionsBool( std::vector<tstring> &captions, const int val_count ) const
 {
 	RDOTracerSerie::getCaptions( captions, val_count );
 	captions.push_back( "FALSE" );

@@ -45,7 +45,7 @@ void RPShapeResourceDLG1_MJ::OnOK()
 {
 
 	UpdateData(TRUE);
-	pParentMJ->setName(std::string(m_name));
+	pParentMJ->setName(tstring(m_name));
 
 	pParentMJ->gamount = m_dlgamount;	
 	CDialog::OnOK();

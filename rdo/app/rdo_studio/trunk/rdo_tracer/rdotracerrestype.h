@@ -15,7 +15,7 @@ enum RDOTracerResParamType {
 	RDOPT_ARRAY
 };
 	
-typedef std::vector <std::string> RDOStringVector;
+typedef std::vector <tstring> RDOStringVector;
 
 class RDOTracerResParamInfo
 {
@@ -26,10 +26,10 @@ public:
 	RDOTracerResParamInfo( const RDOTracerResParamType type );
 	virtual ~RDOTracerResParamInfo();
 
-	std::string Name;
+	tstring Name;
 	RDOTracerResParamType getParamType() const { return paramType; };
-	int addEnumValue( const std::string& value );
-	std::string getEnumValue( unsigned int index ) const;
+	int addEnumValue( CREF(tstring) value );
+	tstring getEnumValue( unsigned int index ) const;
 	int getEnumCount() const { return enumValues ? enumValues->size() : 0; };
 };
 
@@ -50,7 +50,7 @@ public:
 	RDOTracerResType( const RDOTracerResTypeKind kind );
 	virtual ~RDOTracerResType();
 
-	std::string Name;
+	tstring Name;
 	RDOTracerResTypeKind getResTypeKind() const { return restypeKind; };
 	int addParamInfo( RDOTracerResParamInfo* const value );
 	RDOTracerResParamInfo* getParamInfo( unsigned int index ) const;

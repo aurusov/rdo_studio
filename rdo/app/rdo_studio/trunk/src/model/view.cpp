@@ -145,7 +145,7 @@ LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM /*wParam*/, LPARAM lParam )
 	if ( !pDialog->IsTerminating() ) {
 		studioApp.mainFrame->output.clearFind();
 		studioApp.mainFrame->output.showFind();
-		std::string findStr  = pDialog->GetFindString();
+		tstring findStr  = pDialog->GetFindString();
 		bool bMatchCase      = pDialog->MatchCase() ? true : false;
 		bool bMatchWholeWord = pDialog->MatchWholeWord() ? true : false;
 		studioApp.mainFrame->output.getFind()->setKeyword( findStr, bMatchCase );
@@ -166,7 +166,7 @@ LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM /*wParam*/, LPARAM lParam )
 			}
 		}
 		pDialog->SendMessage( WM_CLOSE );
-		std::string s;
+		tstring s;
 		if ( count ) {
 			s = rdo::format( ID_FINDINMODEL_ENDMSG_COUNT, count );
 		} else {

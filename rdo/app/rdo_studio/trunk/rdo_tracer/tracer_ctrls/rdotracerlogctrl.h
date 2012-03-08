@@ -35,7 +35,7 @@ protected:
 	bool addingSubitems;
 	RDOLogColorPair* itemColor;
 	virtual bool getItemColors( const int index, RDOLogColorPair* &colors ) const;
-	void showFindError( std::string& findStr );
+	void showFindError( tstring& findStr );
 
 	CMenu popupMenu;
 	bool bShowMenu;
@@ -61,7 +61,7 @@ public:
 	RDOTracerLogCtrl();
 	virtual ~RDOTracerLogCtrl();
 
-	virtual void addStringToLog( const std::string logStr );
+	virtual void addStringToLog( const tstring logStr );
 
 	virtual void setStyle( RDOTracerLogStyle* style, const bool needRedraw = true );
 

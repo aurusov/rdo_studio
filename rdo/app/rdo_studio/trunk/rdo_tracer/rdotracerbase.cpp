@@ -26,7 +26,7 @@ using namespace rdoTracerLog;
 // --------------------------------------------------------------------------------
 // -------------------- RDOTracerBase
 // --------------------------------------------------------------------------------
-RDOTracerBase::RDOTracerBase( const std::string& _thread_name, RDOKernelGUI* _kernel_gui ):
+RDOTracerBase::RDOTracerBase( CREF(tstring) _thread_name, RDOKernelGUI* _kernel_gui ):
 	RDOThreadGUI( _thread_name, _kernel_gui ),
 	log( NULL ),
 	tree( NULL ),
@@ -45,7 +45,7 @@ RDOTracerBase::~RDOTracerBase()
 
 RDOTracerResParamInfo* RDOTracerBase::getParamType( rdo::textstream& stream )
 {
-	std::string            par_type;
+	tstring                par_type;
 	RDOTracerResParamType  parType = RDOPT_UNDEFINED;
 	ruint                  enum_count = 0;
 	stream >> par_type;
@@ -75,7 +75,7 @@ RDOTracerResParamInfo* RDOTracerBase::getParamType( rdo::textstream& stream )
 	RDOTracerResParamInfo* param = new RDOTracerResParamInfo( parType );
 	if ( parType == RDOPT_ENUMERATIVE )
 	{
-		std::string en_name;
+		tstring en_name;
 		for ( ruint j = 0; j < enum_count; j++ )
 		{
 			stream >> en_name;
@@ -98,8 +98,8 @@ RDOTracerResParamInfo* RDOTracerBase::getParamType( rdo::textstream& stream )
 
 RDOTracerResParamInfo* RDOTracerBase::getParam( rdo::textstream& stream )
 {
-	std::string par_type;
-	std::string par_name;
+	tstring par_type;
+	tstring par_name;
 	stream >> par_type;
 	stream >> par_name;
 	RDOTracerResParamInfo* param = getParamType(stream);
@@ -107,7 +107,7 @@ RDOTracerResParamInfo* RDOTracerBase::getParam( rdo::textstream& stream )
 	return param;
 }
 
-void RDOTracerBase::addResourceType( std::string& s, rdo::textstream& stream )
+void RDOTracerBase::addResourceType( REF(tstring) s, rdo::textstream& stream )
 {
 	UNUSED(s);
 
@@ -123,10 +123,10 @@ void RDOTracerBase::addResourceType( std::string& s, rdo::textstream& stream )
 	tree->addResourceType( type );
 }
 
-void RDOTracerBase::addResource( std::string& s, rdo::textstream& stream )
+void RDOTracerBase::addResource( REF(tstring) s, rdo::textstream& stream )
 {
 	int rtp;
-	std::string res_name;
+	tstring res_name;
 	stream >> res_name;
 	stream >> rtp;
 	RDOTracerResource* res = new RDOTracerResource( resTypes.at( rtp - 1 ), res_name );
@@ -146,13 +146,13 @@ void RDOTracerBase::addResource( std::string& s, rdo::textstream& stream )
 	tree->addResource( res );
 }
 
-void RDOTracerBase::addPattern( std::string& s, rdo::textstream& stream )
+void RDOTracerBase::addPattern( REF(tstring) s, rdo::textstream& stream )
 {
 	UNUSED(s);
 
-	std::string pat_name;
+	tstring pat_name;
 	stream >> pat_name;
-	std::string pat_type;
+	tstring pat_type;
 	stream >> pat_type;
 	RDOTracerPatternKind kind;
 	if ( pat_type == "A" )
@@ -187,17 +187,17 @@ void RDOTracerBase::addPattern( std::string& s, rdo::textstream& stream )
 	patterns.push_back( pat );
 	tree->addPattern( pat );
 	int rel_res_count;
-	std::string dummy;
+	tstring dummy;
 	stream >> rel_res_count;
 	for( int i = 0; i < rel_res_count; i++ )
 		stream >> dummy;
 }
 
-void RDOTracerBase::addOperation( std::string& s, rdo::textstream& stream )
+void RDOTracerBase::addOperation( REF(tstring) s, rdo::textstream& stream )
 {
 	UNUSED(s);
 
-	std::string opr_name;
+	tstring opr_name;
 	stream >> opr_name;
 	int pat_id;
 	stream >> pat_id;
@@ -241,7 +241,7 @@ void RDOTracerBase::addOperation( std::string& s, rdo::textstream& stream )
 	tree->addOperation( opr );*/
 }
 
-/*void RDOTracerBase::addIrregularEvent( std::string& s, rdo::textstream& stream )
+/*void RDOTracerBase::addIrregularEvent( REF(tstring) s, rdo::textstream& stream )
 {
 	int pos = s.find( ' ' );
 	int endpos = s.rfind( ' ' );
@@ -257,11 +257,11 @@ void RDOTracerBase::addOperation( std::string& s, rdo::textstream& stream )
 	tree->addOperation( event );
 }*/
 
-void RDOTracerBase::addResult( std::string& s, rdo::textstream& stream )
+void RDOTracerBase::addResult( REF(tstring) s, rdo::textstream& stream )
 {
 	int resid;
 	stream >> resid;
-	std::string res_kind;
+	tstring res_kind;
 	stream >> res_kind;
 	RDOTracerResultKind resKind;
 	if ( res_kind == "watch_par" )
@@ -299,14 +299,14 @@ void RDOTracerBase::addResult( std::string& s, rdo::textstream& stream )
 	tree->addResult( res );
 }
 
-void RDOTracerBase::dispatchNextString( std::string& line )
+void RDOTracerBase::dispatchNextString( REF(tstring) line )
 {
 	if ( line.empty() )
 		return;
 
-	std::string key = getNextValue( line );
+	tstring key = getNextValue( line );
 	RDOTracerTimeNow* timeNow;
-	if ( key != "SO" && key.find( "ST" ) == std::string::npos && key != "SD" && key.find( "SE" ) == std::string::npos )
+	if ( key != "SO" && key.find( "ST" ) == tstring::npos && key != "SD" && key.find( "SE" ) == tstring::npos )
 		timeNow = addTime( getNextValue( line ) );
 	else
 		timeNow = timeList.back();
@@ -325,17 +325,17 @@ void RDOTracerBase::dispatchNextString( std::string& line )
 		action = RUA_ADD;
 #ifdef RDOSIM_COMPATIBLE
 	} else if ( key == "RE" || key == "SRE" ) {
-		std::string copy1 = line;
+		tstring copy1 = line;
 		resource = resourceElimination( line, timeNow );
 		if ( !resource ) {
-			std::string copy2 = copy1;
+			tstring copy2 = copy1;
 			resource = resourceCreation( copy1, timeNow );
 			tree->addResource( resource );
 			resource = resourceElimination( copy2, timeNow );
 		}
 		action = RUA_UPDATE;
 	} else if ( key == "RK" || key == "SRK" ) {
-		std::string copy = line;
+		tstring copy = line;
 		RDOTracerResource* res = resourceChanging( line, timeNow );
 		if ( !res ) {
 			resource = resourceCreation( copy, timeNow );
@@ -344,10 +344,10 @@ void RDOTracerBase::dispatchNextString( std::string& line )
 #else
 	} else if ( key == "RK" || key == "SRK" || key == "RE" || key == "SRE" ) {
 		bool re = key == "RE" || key == "SRE";
-		std::string copy1 = line;
+		tstring copy1 = line;
 		RDOTracerResource* res = resourceChanging( line, timeNow );
 		if ( !res ) {
-			std::string copy2 = copy1;
+			tstring copy2 = copy1;
 			resource = resourceCreation( copy2, timeNow );
 			tree->addResource( resource );
 		}
@@ -374,11 +374,11 @@ void RDOTracerBase::dispatchNextString( std::string& line )
 	}*/
 }
 
-std::string RDOTracerBase::getNextValue( std::string& line )
+tstring RDOTracerBase::getNextValue( REF(tstring) line )
 {
 	int posstart = line.find_first_not_of( ' ' );
 	int posend;
-	std::string res;
+	tstring res;
 	if (line[posstart] == _T('['))
 	{
 		//! @todo Массив просто игнорируется, график по нему не строится. Заплатка.
@@ -395,7 +395,7 @@ std::string RDOTracerBase::getNextValue( std::string& line )
 	return res;
 }
 
-RDOTracerTimeNow* RDOTracerBase::addTime( const std::string& time )
+RDOTracerTimeNow* RDOTracerBase::addTime( CREF(tstring) time )
 {
 	double val = atof( time.c_str() );
 	bool empty = timeList.empty();
@@ -423,23 +423,23 @@ RDOTracerTimeNow* RDOTracerBase::addTime( const std::string& time )
 	return timeList.back();
 }
 
-RDOTracerOperationBase* RDOTracerBase::getOperation( std::string& line )
+RDOTracerOperationBase* RDOTracerBase::getOperation( REF(tstring) line )
 {
 	getNextValue( line );
 	return operations.at( atoi( getNextValue( line ).c_str() ) - 1 );
 }
 
-void RDOTracerBase::startAction( std::string& line, RDOTracerTimeNow* const time  )
+void RDOTracerBase::startAction( REF(tstring) line, RDOTracerTimeNow* const time  )
 {
 	static_cast<RDOTracerOperation*>(getOperation( line ))->start( time, eventIndex );
 }
 
-void RDOTracerBase::accomplishAction( std::string& line, RDOTracerTimeNow* const time  )
+void RDOTracerBase::accomplishAction( REF(tstring) line, RDOTracerTimeNow* const time  )
 {
 	static_cast<RDOTracerOperation*>(getOperation( line ))->accomplish( time, eventIndex );
 }
 
-void RDOTracerBase::irregularEvent( std::string& line, RDOTracerTimeNow* const time  )
+void RDOTracerBase::irregularEvent( REF(tstring) line, RDOTracerTimeNow* const time  )
 {
 #ifdef RDOSIM_COMPATIBLE
 	irregularEvents.at( atoi( getNextValue( line ).c_str() ) - 1 )->occurs( time, eventIndex );
@@ -448,12 +448,12 @@ void RDOTracerBase::irregularEvent( std::string& line, RDOTracerTimeNow* const t
 #endif
 }
 
-void RDOTracerBase::productionRule( std::string& line, RDOTracerTimeNow* const time  )
+void RDOTracerBase::productionRule( REF(tstring) line, RDOTracerTimeNow* const time  )
 {
 	static_cast<RDOTracerEvent*>(getOperation( line ))->occurs( time, eventIndex );
 }
 
-RDOTracerResource* RDOTracerBase::getResource( std::string& line )
+RDOTracerResource* RDOTracerBase::getResource( REF(tstring) line )
 {
 	getNextValue( line );
 	RDOTracerResource* res = NULL;
@@ -470,7 +470,7 @@ RDOTracerResource* RDOTracerBase::getResource( std::string& line )
 	return res;
 }
 
-RDOTracerResource* RDOTracerBase::resourceCreation( std::string& line, RDOTracerTimeNow* const time  )
+RDOTracerResource* RDOTracerBase::resourceCreation( REF(tstring) line, RDOTracerTimeNow* const time  )
 {
 	ruint typeID = atoi( getNextValue( line ).c_str() ) - 1;
 	ASSERT(typeID < resTypes.size());
@@ -485,7 +485,7 @@ RDOTracerResource* RDOTracerBase::resourceCreation( std::string& line, RDOTracer
 	return res;
 }
 
-RDOTracerResource* RDOTracerBase::resourceElimination( std::string& line, RDOTracerTimeNow* const time  )
+RDOTracerResource* RDOTracerBase::resourceElimination( REF(tstring) line, RDOTracerTimeNow* const time  )
 {
 	RDOTracerResource* res = getResource( line );
 	if ( !res ) return NULL;
@@ -499,7 +499,7 @@ RDOTracerResource* RDOTracerBase::resourceElimination( std::string& line, RDOTra
 	return res;
 }
 
-RDOTracerResource* RDOTracerBase::resourceChanging( std::string& line, RDOTracerTimeNow* const time  )
+RDOTracerResource* RDOTracerBase::resourceChanging( REF(tstring) line, RDOTracerTimeNow* const time  )
 {
 	RDOTracerResource* res = getResource( line );
 	if ( res ) {
@@ -508,7 +508,7 @@ RDOTracerResource* RDOTracerBase::resourceChanging( std::string& line, RDOTracer
 	return res;
 }
 
-RDOTracerResult* RDOTracerBase::getResult( std::string& line )
+RDOTracerResult* RDOTracerBase::getResult( REF(tstring) line )
 {
 	RDOTracerResult* res = NULL;
 	int findid = atoi( getNextValue( line ).c_str() );
@@ -521,7 +521,7 @@ RDOTracerResult* RDOTracerBase::getResult( std::string& line )
 	return res;
 }
 
-void RDOTracerBase::resultChanging( std::string& line, RDOTracerTimeNow* const time  )
+void RDOTracerBase::resultChanging( REF(tstring) line, RDOTracerTimeNow* const time  )
 {
 	getResult( line )->setValue( line, time, eventIndex );
 }
@@ -619,51 +619,51 @@ void RDOTracerBase::getModelStructure( rdo::textstream& stream )
 {
 	mutex.Lock();
 
-	std::string s;
+	tstring s;
 
 	while( !stream.eof() ) {
 		stream >> s;
 		if ( !s.empty() ) {
-			std::string::size_type pos = std::string::npos;
-			if ( s.find( "$Resource_type" ) != std::string::npos ) {
+			tstring::size_type pos = tstring::npos;
+			if ( s.find( "$Resource_type" ) != tstring::npos ) {
 				do {
 					stream >> s;
 					pos = s.find( "$Resources" );
 
 					// AB if model has no $Resources at all,
 					// we get endless cycle here
-					if(pos == std::string::npos)
+					if(pos == tstring::npos)
 						pos = s.find( "$Pattern" );
 
-					if ( !s.empty() && pos == std::string::npos )
+					if ( !s.empty() && pos == tstring::npos )
 						addResourceType( s, stream );
-				} while ( pos == std::string::npos && !stream.eof() );
+				} while ( pos == tstring::npos && !stream.eof() );
 			}
-			if ( s.find( "$Resources" ) != std::string::npos ) {
+			if ( s.find( "$Resources" ) != tstring::npos ) {
 				do {
 					stream >> s;
 					pos = s.find( "$Pattern" );
-					if ( !s.empty() && pos == std::string::npos )
+					if ( !s.empty() && pos == tstring::npos )
 						addResource( s, stream );
-				} while ( pos == std::string::npos && !stream.eof() );
+				} while ( pos == tstring::npos && !stream.eof() );
 			}
-			if ( s.find( "$Pattern" ) != std::string::npos ) {
+			if ( s.find( "$Pattern" ) != tstring::npos ) {
 				do {
 					stream >> s;
 					pos = s.find( "$Activities" );
-					if ( !s.empty() && pos == std::string::npos )
+					if ( !s.empty() && pos == tstring::npos )
 						addPattern( s, stream );
-				} while ( pos == std::string::npos && !stream.eof() );
+				} while ( pos == tstring::npos && !stream.eof() );
 			}
-			if ( s.find( "$Activities" ) != std::string::npos ) {
+			if ( s.find( "$Activities" ) != tstring::npos ) {
 				do {
 					stream >> s;
 					pos = s.find( "$Watching" );
-					if ( !s.empty() && pos == std::string::npos )
+					if ( !s.empty() && pos == tstring::npos )
 						addOperation( s, stream );
-				} while ( pos == std::string::npos && !stream.eof() );
+				} while ( pos == tstring::npos && !stream.eof() );
 			}
-			if ( s.find( "$Watching" ) != std::string::npos && !stream.eof() ) {
+			if ( s.find( "$Watching" ) != tstring::npos && !stream.eof() ) {
 				do {
 					s = "";
 					stream >> s;
@@ -724,7 +724,7 @@ void RDOTracerBase::getModelStructure( rdo::textstream& stream )
 	}*/
 }
 
-void RDOTracerBase::getTraceString( std::string trace_string )
+void RDOTracerBase::getTraceString( tstring trace_string )
 {
 	mutex.Lock();
 
@@ -818,7 +818,7 @@ void RDOTracerBase::updateChartsStyles() const
 	const_cast<CMutex&>(mutex).Unlock();
 }
 
-void RDOTracerBase::setModelName( std::string name ) const
+void RDOTracerBase::setModelName( tstring name ) const
 {
 	if ( tree ) tree->setModelName( name );
 }

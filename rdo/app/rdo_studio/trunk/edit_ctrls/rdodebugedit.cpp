@@ -56,7 +56,7 @@ int RDODebugEdit::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	return 0;
 }
 
-void RDODebugEdit::appendLine( const std::string& str )
+void RDODebugEdit::appendLine( CREF(tstring) str )
 {
 	bool readOnly = isReadOnly();
 	setReadOnly( false );
@@ -87,7 +87,7 @@ void RDODebugEdit::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
 
 void RDODebugEdit::OnHelpKeyword()
 {
-	std::string filename = studioApp.getFullHelpFileName();
+	tstring filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return;
 	filename += "::/html/work_run.htm#output_debug";
 	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );

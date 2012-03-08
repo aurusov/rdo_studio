@@ -143,7 +143,7 @@ private:
 	class STYLEProperty {
 	public:
 		STYLEObject* object;
-		std::string name;
+		tstring name;
 
 		rdoStyle::RDOStyleFont::style& font_style;
 
@@ -152,13 +152,13 @@ private:
 		COLORREF& fg_disable_color;
 		COLORREF& bg_disable_color;
 
-		STYLEProperty( STYLEObject* _object, std::string _name, rdoStyle::RDOStyleFont::style& _font_style, COLORREF& _fg_color, COLORREF& _bg_color, COLORREF& _fg_disable_color = null_fg_color, COLORREF& _bg_disable_color = null_bg_color ): object( _object ), name( _name ), font_style( _font_style ), fg_color( _fg_color ), bg_color( _bg_color ), fg_disable_color( _fg_disable_color ), bg_disable_color( _bg_disable_color ) {};
+		STYLEProperty( STYLEObject* _object, tstring _name, rdoStyle::RDOStyleFont::style& _font_style, COLORREF& _fg_color, COLORREF& _bg_color, COLORREF& _fg_disable_color = null_fg_color, COLORREF& _bg_disable_color = null_bg_color ): object( _object ), name( _name ), font_style( _font_style ), fg_color( _fg_color ), bg_color( _bg_color ), fg_disable_color( _fg_disable_color ), bg_disable_color( _bg_disable_color ) {};
 	};
 
 	class STYLEObject {
 	public:
 		enum Type { none = 0, all, source, build, debug, trace, results, find, chart, frame } type;
-		std::string&                   font_name;
+		tstring&                       font_name;
 		int&                           font_size;
 		bool                           font_fixed;
 		bool&                          wordwrap;
@@ -168,10 +168,10 @@ private:
 		rdoEditor::RDOFoldStyle&       foldstyle;
 		bool&                          commentfold;
 
-		std::list< std::string > themes;
+		std::list< tstring > themes;
 		std::list< STYLEProperty* > properties;
 
-		STYLEObject( const Type _type, std::string& _font_name, int& _font_size, const bool _font_fixed = true, bool& _wordwrap = null_wordwrap, bool& _horzscrollbar = null_horzscrollbar, rdoEditCtrl::RDOBookmarkStyle& _bookmarkstyle = null_bookmarkstyle, rdoEditor::RDOFoldStyle& _foldstyle = null_foldstyle, bool& _commentfold = null_commentfold, bool& _warning = null_warning ):
+		STYLEObject( const Type _type, tstring& _font_name, int& _font_size, const bool _font_fixed = true, bool& _wordwrap = null_wordwrap, bool& _horzscrollbar = null_horzscrollbar, rdoEditCtrl::RDOBookmarkStyle& _bookmarkstyle = null_bookmarkstyle, rdoEditor::RDOFoldStyle& _foldstyle = null_foldstyle, bool& _commentfold = null_commentfold, bool& _warning = null_warning ):
 			type( _type ),
 			font_name( _font_name ),
 			font_size( _font_size ),
@@ -194,11 +194,11 @@ private:
 
 	class STYLEFont {
 	public:
-		std::string name;
+		tstring name;
 		bool fixed;
 
 		STYLEFont(): name( "" ), fixed( true ) {};
-		STYLEFont( std::string _name, bool _fixed = true ): name( _name ), fixed( _fixed ) {};
+		STYLEFont( tstring _name, bool _fixed = true ): name( _name ), fixed( _fixed ) {};
 	};
 
 	std::list< STYLEObject* > objects;
@@ -219,7 +219,7 @@ private:
 	STYLEObject::Type previewAs;
 	void setPreviewAsCombo( STYLEObject::Type type );
 
-	std::string all_font_name;
+	tstring     all_font_name;
 	int         all_font_size;
 	COLORREF    all_fg_color;
 	COLORREF    all_bg_color;

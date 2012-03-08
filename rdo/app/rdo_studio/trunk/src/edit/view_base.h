@@ -44,10 +44,10 @@ public:
 
 	CMenu popupMenu;
 
-	std::string buf1;
-	std::string buf2;
-	std::string buf3;
-	std::string buf4;
+	tstring buf1;
+	tstring buf2;
+	tstring buf3;
+	tstring buf4;
 	bool resetBuf1;
 	bool resetBuf2;
 	bool resetBuf3;

@@ -102,7 +102,7 @@ bool RDOTracerLogCtrl::getItemColors( const int index, RDOLogColorPair* &colors 
 	return res;
 }
 
-void RDOTracerLogCtrl::showFindError( std::string& findStr )
+void RDOTracerLogCtrl::showFindError( tstring& findStr )
 {
 	MessageBox( rdo::format( ID_MSG_CANTFIND, findStr.c_str() ).c_str(), NULL, MB_OK | MB_ICONWARNING );
 	SetFocus();
@@ -118,14 +118,14 @@ void RDOTracerLogCtrl::clear()
 	mutex.Unlock();
 }
 
-void RDOTracerLogCtrl::addStringToLog( const std::string logStr )
+void RDOTracerLogCtrl::addStringToLog( const tstring logStr )
 {
 	mutex.Lock();
 	
 	if ( !logStr.empty() ) {
 		int posstart = logStr.find_first_not_of( ' ' );
 		int posend = logStr.find_first_of( ' ', posstart );
-		std::string key = logStr.substr( posstart, posend - posstart );
+		tstring key = logStr.substr( posstart, posend - posstart );
 		rdo::trim( key );
 
 		RDOLogColorPair* colors = NULL;
@@ -163,7 +163,7 @@ void RDOTracerLogCtrl::OnFind()
 	firstFoundLine = -1;
 	CFindReplaceDialog* pDlg = new CFindReplaceDialog();
 	DWORD flag = (bSearchDown ? FR_DOWN : 0) | (bMatchCase ? FR_MATCHCASE : 0) | (bMatchWholeWord ? FR_WHOLEWORD : 0);
-	std::string str;
+	tstring str;
 	getSelected( str );
 	pDlg->Create( true, str.c_str(), NULL, flag, this );
 }
@@ -250,14 +250,14 @@ void RDOTracerLogCtrl::OnUpdateFind( CCmdUI* pCmdUI )
 
 void RDOTracerLogCtrl::OnHelpKeyword()
 {
-	std::string filename = studioApp.getFullHelpFileName();
+	tstring filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return;
 
-	std::string line;
+	tstring line;
 
 	getSelected( line );
 
-	std::string keyword = "trc";
+	tstring keyword = "trc";
 	if ( !line.empty() ) {
 		int posstart = line.find_first_not_of( ' ' );
 		int posend = line.find_first_of( ' ', posstart );

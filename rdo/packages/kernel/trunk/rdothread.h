@@ -81,8 +81,8 @@ public:
 		RT_THREAD_REGISTERED,                  // param = thread:RDOThread*
 		RT_THREAD_UNREGISTERED,                // param = thread:RDOThread*
 		RT_THREAD_STOP_AFTER,
-		RT_STUDIO_MODEL_NEW,                   // param = rdoRepository::RDOThreadRepository::NewModel* = { model_name:std::string&, model_path:std::string&      }
-		RT_STUDIO_MODEL_OPEN,                  // param = rdoRepository::RDOThreadRepository::OpenFile* = { model_name:std::string&, result:bool&, readonly:bool& }
+		RT_STUDIO_MODEL_NEW,                   // param = rdoRepository::RDOThreadRepository::NewModel* = { model_name:tstring&, model_path:tstring&      }
+		RT_STUDIO_MODEL_OPEN,                  // param = rdoRepository::RDOThreadRepository::OpenFile* = { model_name:tstring&, result:bool&, readonly:bool& }
 		RT_STUDIO_MODEL_SAVE,
 		RT_STUDIO_MODEL_SAVE_AS,
 		RT_STUDIO_MODEL_CLOSE,
@@ -90,25 +90,25 @@ public:
 		RT_STUDIO_MODEL_RUN,
 		RT_STUDIO_MODEL_STOP,
 		RT_STUDIO_MODEL_GET_TEXT,              // param = rdoRepository::RDOThreadRepository::FileData* = { file_type:rdoModelObjects::RDOFileType, result:rdo::binarystream& }
-		RT_REPOSITORY_MODEL_NEW,               // param = rdoRepository::RDOThreadRepository::NewModel* = { model_name:std::string&, model_path:std::string&   }
+		RT_REPOSITORY_MODEL_NEW,               // param = rdoRepository::RDOThreadRepository::NewModel* = { model_name:tstring&, model_path:tstring&   }
 		RT_REPOSITORY_MODEL_OPEN,
-		RT_REPOSITORY_MODEL_OPEN_ERROR,        // param = model_name:std::string*
+		RT_REPOSITORY_MODEL_OPEN_ERROR,        // param = model_name:tstring*
 		RT_REPOSITORY_MODEL_SAVE,
-		RT_REPOSITORY_MODEL_OPEN_GET_NAME,     // param = rdoRepository::RDOThreadRepository::OpenFile* = { model_name:std::string, readonly:bool, result:bool }
-		RT_REPOSITORY_MODEL_SAVE_GET_NAME,     // param = rdoRepository::RDOThreadRepository::OpenFile* = { model_name:std::string, readonly:bool, result:bool }
+		RT_REPOSITORY_MODEL_OPEN_GET_NAME,     // param = rdoRepository::RDOThreadRepository::OpenFile* = { model_name:tstring, readonly:bool, result:bool }
+		RT_REPOSITORY_MODEL_SAVE_GET_NAME,     // param = rdoRepository::RDOThreadRepository::OpenFile* = { model_name:tstring, readonly:bool, result:bool }
 		RT_REPOSITORY_MODEL_CLOSE,
 		RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE,   // param = result:bool*, работает как И
 		RT_REPOSITORY_MODEL_CLOSE_ERROR,
-		RT_REPOSITORY_MODEL_GET_FILEINFO,      // param = rdoRepository::RDOThreadRepository::FileInfo* = { type:rdoModelObjects::RDOFileType, name:std::string, full_name:std::string, extention:std::string, readonly:bool, described:bool }
+		RT_REPOSITORY_MODEL_GET_FILEINFO,      // param = rdoRepository::RDOThreadRepository::FileInfo* = { type:rdoModelObjects::RDOFileType, name:tstring, full_name:tstring, extention:tstring, readonly:bool, described:bool }
 		RT_REPOSITORY_LOAD,                    // param = rdoRepository::RDOThreadRepository::FileData* = { file_type:rdoModelObjects::RDOFileType, result:rdo::binarystream& }
 		RT_REPOSITORY_SAVE,                    // param = rdoRepository::RDOThreadRepository::FileData* = { file_type:rdoModelObjects::RDOFileType, stream:rdo::binarystream& }
-		RT_REPOSITORY_LOAD_BINARY,             // param = rdoRepository::RDOThreadRepository::BinaryFile* = { name:std::string, result:rdo::binarystream& }
+		RT_REPOSITORY_LOAD_BINARY,             // param = rdoRepository::RDOThreadRepository::BinaryFile* = { name:tstring, result:rdo::binarystream& }
 		RT_REPOSITORY_CREATE_FILE,             // param = rdoRepository::RDOThreadRepository::CreateFile*
 		RT_SIMULATOR_PARSE_OK,
 		RT_SIMULATOR_PARSE_ERROR,
 		RT_SIMULATOR_PARSE_ERROR_SMR,
 		RT_SIMULATOR_PARSE_ERROR_SMR_EMPTY,
-		RT_SIMULATOR_PARSE_STRING,             // param = std::string*
+		RT_SIMULATOR_PARSE_STRING,             // param = tstring*
 		RT_SIMULATOR_MODEL_STOP_OK,
 		RT_SIMULATOR_MODEL_STOP_BY_USER,
 		RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR,
@@ -117,13 +117,13 @@ public:
 		RT_SIMULATOR_GET_MODEL_RESULTS,        // param = result:rdo::textstream*
 		RT_SIMULATOR_GET_MODEL_RESULTS_INFO,   // param = result:rdo::textstream*
 		RT_SIMULATOR_GET_MODEL_EXITCODE,       // param = result:rdoSimulator::RDOExitCode*
-		RT_SIMULATOR_GET_LIST,                 // param = rdoSimulator::RDOThreadSimulator::GetList* = { type:GetList::Type, result:std::list< std::string >* }
+		RT_SIMULATOR_GET_LIST,                 // param = rdoSimulator::RDOThreadSimulator::GetList* = { type:GetList::Type, result:std::list< tstring >* }
 		RT_SIMULATOR_GET_ERRORS,               // param = result:std::vector< RDOSyntaxError >*
 		RT_RUNTIME_MODEL_START_BEFORE,
 		RT_RUNTIME_MODEL_START_AFTER,
 		RT_RUNTIME_MODEL_STOP_BEFORE,
 		RT_RUNTIME_MODEL_STOP_AFTER,
-		RT_RUNTIME_TRACE_STRING,               // param = std::string*
+		RT_RUNTIME_TRACE_STRING,               // param = tstring*
 		RT_RUNTIME_GET_MODE,                   // param = result:rdoRuntime::RunTimeMode*
 		RT_RUNTIME_SET_MODE,                   // param = mode:rdoRuntime::RunTimeMode*
 		RT_RUNTIME_GET_SPEED,                  // param = result:double[0..1]%*
@@ -132,13 +132,13 @@ public:
 		RT_RUNTIME_SET_SHOWRATE,               // param = show_rate:double[0..+max_double]*
 		RT_RUNTIME_GET_TIMENOW,                // param = result:double*
 		RT_RUNTIME_GET_FRAME,                  // param = { result:rdoSimulator::RDOFrame*, frame_number:int }*
-		RT_RUNTIME_GET_LAST_BREAKPOINT,        // param = std::string*
+		RT_RUNTIME_GET_LAST_BREAKPOINT,        // param = tstring*
 		RT_RUNTIME_KEY_DOWN,                   // param = scanCode:uint*
 		RT_RUNTIME_KEY_UP,                     // param = scanCode:uint*
-		RT_RUNTIME_FRAME_AREA_DOWN,            // param = area_name:std::string*
-		RT_CODECOMP_GET_DATA,                  // param = rdoSimulator::RDOThreadCodeComp::GetCodeComp* = { file_type:rdoModelObjects::RDOFileType, pos_x:int, pos_y:int, result:std::list< std::string >& }
-		RT_DEBUG_STRING,                       // param = std::string*
-		RT_RESULT_STRING,                      // param = std::string*
+		RT_RUNTIME_FRAME_AREA_DOWN,            // param = area_name:tstring*
+		RT_CODECOMP_GET_DATA,                  // param = rdoSimulator::RDOThreadCodeComp::GetCodeComp* = { file_type:rdoModelObjects::RDOFileType, pos_x:int, pos_y:int, result:std::list< tstring >& }
+		RT_DEBUG_STRING,                       // param = tstring*
+		RT_RESULT_STRING,                      // param = tstring*
 		RT_CORBA_PARSER_GET_RTP,
 		RT_CORBA_PARSER_GET_RSS,
 		RT_CORBA_PARSER_GET_RTP_COUNT,
@@ -147,7 +147,7 @@ public:
 		RT_PROCGUI_BLOCK_PROCESS,
 		RT_PROCGUI_BLOCK_TERMINATE
 	};
-	std::string messageToString(RDOTreadMessage message) {
+	tstring messageToString(RDOTreadMessage message) {
 		switch ( message ) {
 			case RT_THREAD_CLOSE                      : return _T("RT_THREAD_CLOSE");
 			case RT_THREAD_CONNECTION                 : return _T("RT_THREAD_CONNECTION");
@@ -283,7 +283,7 @@ public:
 	class RDOTreadMethod {
 	public:
 		RDOThread*   thread;
-		std::string  name;
+		tstring  name;
 		ruint        index;
 	};
 

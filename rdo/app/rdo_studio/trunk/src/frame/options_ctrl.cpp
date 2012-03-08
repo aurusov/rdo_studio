@@ -94,7 +94,7 @@ void RDOStudioFrameOptionsCtrl::OnPaint()
 		CFont* pOldFont = dc.SelectObject( &font );
 		dc.SetBkMode( TRANSPARENT );
 		dc.SetTextColor( RGB( 0xFF, 0xFF, 0 ) );
-		std::string str = "Sample of drawing text";
+		tstring str = "Sample of drawing text";
 		dc.DrawText( str.c_str(), str.length(), CRect( 3, 12, bmpInfo.bmWidth + 1, bmpInfo.bmHeight + 1 ), DT_LEFT );
 
 		CPen pen( PS_SOLID, 0, style->theme->defaultColor );

@@ -12,7 +12,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-std::string format( const char* str, ... )
+tstring format( const char* str, ... )
 {
 	std::vector< char > s;
 	s.resize( 256 );
@@ -27,23 +27,23 @@ std::string format( const char* str, ... )
 		}
 	}
 	s.resize( size );
-	return std::string( s.begin(), s.end() );
+	return tstring( s.begin(), s.end() );
 }
 
-void replace_with( std::string& src, const std::string& what, const std::string& with )
+void replace_with( tstring& src, CREF(tstring) what, CREF(tstring) with )
 {
 	if ( what != with ) {
-		std::string temp;
-		std::string::size_type prev_pos = 0;
-		std::string::size_type pos = src.find( what, 0 );
-		while ( std::string::npos != pos ) {
-			temp += std::string( src.begin() + prev_pos, src.begin() + pos ) + with;
+		tstring temp;
+		tstring::size_type prev_pos = 0;
+		tstring::size_type pos = src.find( what, 0 );
+		while ( tstring::npos != pos ) {
+			temp += tstring( src.begin() + prev_pos, src.begin() + pos ) + with;
 			prev_pos = pos + what.size();
 			pos = src.find( what, prev_pos );
 		}
 		if ( !temp.empty() ) {
-			src = temp + std::string( src.begin() + prev_pos, src.end() );
-			if ( std::string::npos == with.find( what ) ) {
+			src = temp + tstring( src.begin() + prev_pos, src.end() );
+			if ( tstring::npos == with.find( what ) ) {
 				replace_with( src, what, with );
 			}
 		}
@@ -772,7 +772,7 @@ bool RDOPluginMFCLogCtrl::makeLineVisible( const int index )
 	return res;
 }
 
-void RDOPluginMFCLogCtrl::addStringToLog( std::string logStr )
+void RDOPluginMFCLogCtrl::addStringToLog( tstring logStr )
 {
 	if ( hwnd ) {
 
@@ -824,11 +824,11 @@ void RDOPluginMFCLogCtrl::addStringToLog( std::string logStr )
 	}
 }
 
-void RDOPluginMFCLogCtrl::getString( const int index, std::string& str ) const
+void RDOPluginMFCLogCtrl::getString( const int index, tstring& str ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
-	std::string res = "";
+	tstring res = "";
 
 	if ( index >= 0 && index < stringsCount )
 		str.assign( *const_findString( index ) );
@@ -841,7 +841,7 @@ int RDOPluginMFCLogCtrl::getSelectedIndex() const
 	return selectedLine;
 }
 
-void RDOPluginMFCLogCtrl::getSelected( std::string& str ) const
+void RDOPluginMFCLogCtrl::getSelected( tstring& str ) const
 {
 	getString( selectedLine, str );
 }

@@ -445,7 +445,7 @@ void RDOStudioMainFrame::OnUpdateModelTimeStatusBar( CCmdUI *pCmdUI )
 void RDOStudioMainFrame::OnUpdateModelRunTypeStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
-	std::string s = "";
+	tstring s = "";
 	if ( model->isRunning() ) {
 		switch ( model->getRuntimeMode() ) {
 			case rdoRuntime::RTM_MaxSpeed  : s = rdo::format( ID_STATUSBAR_MODEL_RUNTIME_MAXSPEED ); break;
@@ -484,7 +484,7 @@ void RDOStudioMainFrame::OnUpdateModelShowRateStatusBar( CCmdUI *pCmdUI )
 				break;
 			}
 			case rdoRuntime::RTM_Sync: {
-				std::string s;
+				tstring s;
 				double showRate = model->getShowRate();
 				if ( showRate < 1e-10 || showRate > 1e10 ) {
 					s = rdo::format( IDS_MODEL_SHOWRATE_E, showRate );
@@ -530,7 +530,7 @@ void RDOStudioMainFrame::endProgress()
 
 void RDOStudioMainFrame::OnHelpContents()
 {
-	std::string filename = studioApp.getFullHelpFileName();
+	tstring filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return;
 
 	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );

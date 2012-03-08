@@ -433,7 +433,7 @@ void RDOBaseEdit::OnSelectAll( CCmdUI* pCmdUI )
 	pCmdUI->Enable( !GUI_IS_EMPTY );
 }
 
-std::string RDOBaseEdit::getCurrentWord() const
+tstring RDOBaseEdit::getCurrentWord() const
 {
 	int pos_begin = sendEditor( SCI_WORDSTARTPOSITION, getCurrentPos(), true );
 	int pos_end   = sendEditor( SCI_WORDENDPOSITION, getCurrentPos(), true );
@@ -444,22 +444,22 @@ std::string RDOBaseEdit::getCurrentWord() const
 	tr.chrg.cpMin = pos_begin;
 	tr.chrg.cpMax = pos_end;
 	sendEditor( SCI_GETTEXTRANGE, 0, (long)&tr );
-	std::string str( tr.lpstrText );
+	tstring str( tr.lpstrText );
 	delete[] word;
 	return str;
 }
 
-std::string RDOBaseEdit::getSelection() const
+tstring RDOBaseEdit::getSelection() const
 {
 	CharacterRange cr = getSelectionRange();
 	char* selection = new char[ cr.cpMax - cr.cpMin + 1 ];
 	sendEditor( SCI_GETSELTEXT, 0, (long)selection );
-	std::string str( selection );
+	tstring str( selection );
 	delete[] selection;
 	return str;
 }
 
-std::string RDOBaseEdit::getCurrentOrSelectedWord() const
+tstring RDOBaseEdit::getCurrentOrSelectedWord() const
 {
 	if ( isSelected() ) {
 		return getSelection();
@@ -468,7 +468,7 @@ std::string RDOBaseEdit::getCurrentOrSelectedWord() const
 	}
 }
 
-std::string RDOBaseEdit::getWordForFind() const
+tstring RDOBaseEdit::getWordForFind() const
 {
 	if ( isSelected() ) {
 		return getSelection();
@@ -611,7 +611,7 @@ void RDOBaseEdit::OnUpdateSearchReplace(CCmdUI* pCmdUI)
 	pCmdUI->Enable( !GUI_IS_READONLY && !GUI_IS_EMPTY );
 }
 
-void RDOBaseEdit::findNext( std::string& findWhat, const bool searchDown, const bool matchCase, const bool matchWholeWord )
+void RDOBaseEdit::findNext( REF(tstring) findWhat, const bool searchDown, const bool matchCase, const bool matchWholeWord )
 {
 	int findLen = findWhat.length();
 	if ( !findLen ) return;
@@ -665,7 +665,7 @@ void RDOBaseEdit::findNext( std::string& findWhat, const bool searchDown, const 
 	}
 }
 
-void RDOBaseEdit::replace( std::string& findWhat, std::string& replaceWhat, const bool searchDown, const bool matchCase, const bool matchWholeWord )
+void RDOBaseEdit::replace( REF(tstring) findWhat, REF(tstring) replaceWhat, const bool searchDown, const bool matchCase, const bool matchWholeWord )
 {
 	if ( bHaveFound ) {
 		int replaceLen = replaceWhat.length();
@@ -680,7 +680,7 @@ void RDOBaseEdit::replace( std::string& findWhat, std::string& replaceWhat, cons
 	findNext( findWhat, searchDown, matchCase, matchWholeWord );
 }
 
-void RDOBaseEdit::replaceAll( std::string& findWhat, std::string& replaceWhat, const bool matchCase, const bool matchWholeWord )
+void RDOBaseEdit::replaceAll( REF(tstring) findWhat, REF(tstring) replaceWhat, const bool matchCase, const bool matchWholeWord )
 {
 	int findLen = findWhat.length();
 	if ( !findLen ) return;
@@ -979,7 +979,7 @@ void RDOBaseEdit::saveAsRTF( CFile& file, int start, int end ) const
 	int colorCount = 1;
 	int i;
 
-	std::string saveStr;
+	tstring saveStr;
 
 	saveStr = "";
 	saveStr += RTF_HEADEROPEN;
@@ -1120,7 +1120,7 @@ bool RDOBaseEdit::isLineVisible( const int line ) const
 	return line >= first_line && line <= last_line;
 }
 
-void RDOBaseEdit::appendText( const std::string& str ) const
+void RDOBaseEdit::appendText( CREF(tstring) str ) const
 {
 	sendEditorString( SCI_ADDTEXT, str.length(), str.c_str() );
 }
@@ -1431,7 +1431,7 @@ void RDOBaseEdit::OnUpdateZoomReset( CCmdUI *pCmdUI )
 	pCmdUI->Enable( getZoom() );
 }
 
-int RDOBaseEdit::findPos( std::string& findWhat, const int startFromLine, const bool matchCase, const bool matchWholeWord ) const
+int RDOBaseEdit::findPos( REF(tstring) findWhat, const int startFromLine, const bool matchCase, const bool matchWholeWord ) const
 {
 	int findLen = findWhat.length();
 	if ( !findLen ) return -1;
@@ -1447,10 +1447,10 @@ int RDOBaseEdit::findPos( std::string& findWhat, const int startFromLine, const 
 	return sendEditorString( SCI_SEARCHINTARGET, findLen, findWhat.c_str() );
 }
 
-std::string RDOBaseEdit::getLine( const int line ) const
+tstring RDOBaseEdit::getLine( const int line ) const
 {
 	int length = sendEditor( SCI_LINELENGTH, line );
-	std::string str;
+	tstring str;
 	str.resize( length );
 	sendEditor( SCI_GETLINE, line, (long)str.data() );
 	return str;

@@ -55,14 +55,14 @@ bool RDOLogColorPair::operator !=( const RDOLogColorPair& colors ) const
 	return !(*this == colors);
 }
 
-void RDOLogColorPair::load( std::string regPath, std::string regParam )
+void RDOLogColorPair::load( tstring regPath, tstring regParam )
 {
 	regParam += "_%s";
 	foregroundColor = AfxGetApp()->GetProfileInt( regPath.c_str(), rdo::format( regParam.c_str(), "foregroundColor" ).c_str(), foregroundColor );
 	backgroundColor = AfxGetApp()->GetProfileInt( regPath.c_str(), rdo::format( regParam.c_str(), "backgroundColor" ).c_str(), backgroundColor );
 }
 
-void RDOLogColorPair::save( std::string regPath, std::string regParam ) const
+void RDOLogColorPair::save( tstring regPath, tstring regParam ) const
 {
 	regParam += "_%s";
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), rdo::format( regParam.c_str(), "foregroundColor" ).c_str(), foregroundColor );
@@ -102,14 +102,14 @@ bool RDOLogTheme::operator !=( const RDOLogTheme& theme ) const
 	return !(*this == theme);
 }
 
-void RDOLogTheme::load( std::string regPath )
+void RDOLogTheme::load( tstring regPath )
 {
 	regPath += "theme";
 	defaultColor.load( regPath, "defaultColor" );
 	style = static_cast<RDOStyleFont::style>(AfxGetApp()->GetProfileInt( regPath.c_str(), "style", style ));
 }
 
-void RDOLogTheme::save( std::string regPath ) const
+void RDOLogTheme::save( tstring regPath ) const
 {
 	regPath += "theme";
 	defaultColor.save( regPath, "defaultColor" );
@@ -148,14 +148,14 @@ bool RDOLogBorders::operator !=( const RDOLogBorders& borders ) const
 	return !(*this == borders);
 }
 
-void RDOLogBorders::load( std::string regPath )
+void RDOLogBorders::load( tstring regPath )
 {
 	regPath += "borders";
 	vertBorder = AfxGetApp()->GetProfileInt( regPath.c_str(), "vertBorder", vertBorder );
 	horzBorder = AfxGetApp()->GetProfileInt( regPath.c_str(), "horzBorder", horzBorder );
 }
 
-void RDOLogBorders::save( std::string regPath ) const
+void RDOLogBorders::save( tstring regPath ) const
 {
 	regPath += "borders";
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "vertBorder", vertBorder );
@@ -198,7 +198,7 @@ bool RDOLogStyle::getItemColors( const int index, RDOLogColorPair* &colors ) con
 	return false;
 }
 
-bool RDOLogStyle::getItemColors( const std::string& item, RDOLogColorPair* &colors ) const
+bool RDOLogStyle::getItemColors( CREF(tstring) item, RDOLogColorPair* &colors ) const
 {
 	UNUSED(item);
 
@@ -236,7 +236,7 @@ bool RDOLogStyle::operator !=( const RDOLogStyle& style ) const
 	return style;
 }*/
 
-void RDOLogStyle::init( const std::string& _regPath )
+void RDOLogStyle::init( CREF(tstring) _regPath )
 {
 	RDOStyle::init( _regPath );
 	initTheme();

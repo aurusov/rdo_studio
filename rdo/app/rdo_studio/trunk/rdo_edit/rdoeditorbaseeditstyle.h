@@ -30,8 +30,8 @@ public:
 	bool operator ==( const RDOEditorBaseEditTheme& theme ) const;
 	bool operator !=( const RDOEditorBaseEditTheme& theme ) const;
 
-	virtual void load( std::string regPath );
-	virtual void save( std::string regPath ) const;
+	virtual void load( tstring regPath );
+	virtual void save( tstring regPath ) const;
 
 	COLORREF identifierColor;
 	COLORREF keywordColor;
@@ -57,7 +57,7 @@ public:
 	virtual bool styleUsing( const int styleType ) const;
 	virtual bool styleBold( const int styleType = STYLE_DEFAULT ) const;
 	virtual bool styleItalic( const int styleType = STYLE_DEFAULT ) const;
-	virtual std::string styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
+	virtual tstring styleFGColorToHEX( const int styleType = STYLE_DEFAULT ) const;
 
 	static RDOEditorBaseEditTheme getDefaultTheme();
 	static RDOEditorBaseEditTheme getCppTheme();

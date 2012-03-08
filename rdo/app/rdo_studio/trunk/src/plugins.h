@@ -25,14 +25,14 @@ class RDOStudioPlugin
 friend class RDOStudioPlugins;
 
 private:
-	std::string modulName;
+	tstring     modulName;
 	HMODULE     lib;
-	std::string name;
+	tstring     name;
 	int version_major;
 	int version_minor;
 	int version_build;
-	std::string version_info;
-	std::string description;
+	tstring     version_info;
+	tstring     description;
 	rdoPlugin::PluginState state;
 	bool restoreState;
 	rdoPlugin::PluginRunMode defaultRunMode;
@@ -45,22 +45,22 @@ private:
 	CMutex mutex;
 	bool closed;
 
-	std::string getProfilePath() const;
+	tstring getProfilePath() const;
 
 public:
-	RDOStudioPlugin( const std::string& modulName );
+	RDOStudioPlugin( CREF(tstring) modulName );
 	virtual ~RDOStudioPlugin();
 
-	static bool isRDOStudioPlugin( const std::string& modulName );
+	static bool isRDOStudioPlugin( CREF(tstring) modulName );
 
-	std::string getName() const        { return name;          }
+	tstring getName() const        { return name;          }
 
-	int getVersionMajor() const        { return version_major; }
-	int getVersionMinor() const        { return version_minor; }
-	int getVersionBuild() const        { return version_build; }
-	std::string getVersionInfo() const { return version_info;  }
+	int     getVersionMajor() const { return version_major; }
+	int     getVersionMinor() const { return version_minor; }
+	int     getVersionBuild() const { return version_build; }
+	tstring getVersionInfo () const { return version_info;  }
 
-	std::string getDescription() const { return description;   }
+	tstring getDescription () const { return description;   }
 
 	rdoPlugin::PluginState getState() const     { return state; }
 	void setState( const rdoPlugin::PluginState value );
@@ -72,7 +72,7 @@ public:
 	void setRunMode( const rdoPlugin::PluginRunMode value );
 	rdoPlugin::PluginRunMode getDefaultRunMode() const { return defaultRunMode; }
 
-	std::string getFileName() const;
+	tstring getFileName() const;
 };
 
 // --------------------------------------------------------------------------------
@@ -86,7 +86,7 @@ friend class RDOStudioPlugin;
 
 private:
 	std::vector< RDOStudioPlugin* > list;
-	void enumPlugins( const std::string& mask );
+	void enumPlugins( CREF(tstring) mask );
 
 	void init();
 
@@ -106,7 +106,7 @@ private:
 	void setResults( RDOStudioPlugin* plugin );
 	void clearResults( RDOStudioPlugin* plugin );
 
-	std::string modelStructure;
+	tstring modelStructure;
 
 	std::list< rdoPlugin::ModelActionType > actionDisabled;
 
@@ -157,7 +157,7 @@ public:
 	void stopPluginByStudio( const HMODULE lib );
 	void modelStart();
 	void modelStop( bool model_no_error = true );
-	void traceProc( const std::string& str );
+	void traceProc( CREF(tstring) str );
 	void pluginProc( const int message, void* param1 = NULL );
 	static bool __stdcall studioIsShow();
 

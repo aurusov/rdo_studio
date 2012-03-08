@@ -82,7 +82,7 @@ bool RDOStudioFrameStyle::operator !=( const RDOStudioFrameStyle& style ) const
 	return !(*this == style);
 }
 
-void RDOStudioFrameStyle::init( const std::string& _regPath )
+void RDOStudioFrameStyle::init( CREF(tstring) _regPath )
 {
 	RDOStyleWithTheme::init( _regPath );
 	*font = rdoStyle::RDOStyleFont::getFrameFont();

@@ -74,13 +74,13 @@ void RDOEditorResults::setEditorStyle( RDOEditorResultsStyle* _style )
 
 void RDOEditorResults::OnHelpKeyword()
 {
-	std::string filename = studioApp.getFullHelpFileName();
+	tstring filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return;
 
-	std::string keyword = getCurrentOrSelectedWord();
-	std::string s = getAllKW();
+	tstring keyword = getCurrentOrSelectedWord();
+	tstring s = getAllKW();
 
-	if ( s.find_first_of( keyword ) == std::string::npos || keyword.empty() ) {
+	if ( s.find_first_of( keyword ) == tstring::npos || keyword.empty() ) {
 		keyword = "pmv";
 	}
 

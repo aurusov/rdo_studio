@@ -31,16 +31,16 @@ class RDOLogEdit;
 class RDOLogEditLineInfo
 {
 public:
-	RDOLogEditLineInfo( const std::string& _message, const rdoModelObjects::RDOFileType _fileType = rdoModelObjects::PAT, const int _lineNumber = -1, const int _posInLine = 0 );
+	RDOLogEditLineInfo( CREF(tstring) _message, const rdoModelObjects::RDOFileType _fileType = rdoModelObjects::PAT, const int _lineNumber = -1, const int _posInLine = 0 );
 	~RDOLogEditLineInfo();
 
 	rdoModelObjects::RDOFileType fileType;
 	int                          lineNumber;
 	int                          posInLine;
-	std::string                  message;
+	tstring                      message;
 	int                          posInLog;
 
-	virtual std::string getMessage() const;
+	virtual tstring getMessage() const;
 };
 
 // --------------------------------------------------------------------------------

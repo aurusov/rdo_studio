@@ -1798,7 +1798,7 @@ BOOL RDOStudioOptionsPlugins::OnInitDialog()
 		RDOStudioPlugin* plugin = *it;
 		int index = m_pluginList.InsertItem( i, plugin->getName().c_str() );
 		if ( index != -1 ) {
-			std::string version = rdo::format( "%d.%d (build %d)", plugin->getVersionMajor(), plugin->getVersionMinor(), plugin->getVersionBuild() );
+			tstring version = rdo::format( "%d.%d (build %d)", plugin->getVersionMajor(), plugin->getVersionMinor(), plugin->getVersionBuild() );
 			if ( !plugin->getVersionInfo().empty() ) {
 				version += " " + plugin->getVersionInfo();
 			}
@@ -1908,7 +1908,7 @@ void RDOStudioOptionsPlugins::OnPluginListColumnClick( NMHDR* pNMHDR, LRESULT* p
 
 void RDOStudioOptionsPlugins::updateRunModeInGrid( const RDOStudioPlugin* plugin, const int index )
 {
-	std::string runMode;
+	tstring runMode;
 	if ( plugin->getRunMode() == rdoPlugin::prmStudioStartUp ) {
 		runMode = rdo::format( IDS_PLUGIN_RUNMODE_STUDIOSTARTUP );
 	} else if ( plugin->getRunMode() == rdoPlugin::prmModelStartUp ) {
@@ -2028,7 +2028,7 @@ void RDOStudioOptionsPlugins::OnTimer( UINT nIDEvent )
 		for ( int i = 0; i < cnt; i++ ) {
 			RDOStudioPlugin* plugin = reinterpret_cast<RDOStudioPlugin*>(m_pluginList.GetItemData( i ));
 			if ( plugin ) {
-				std::string state = rdo::format( plugin->getState() == rdoPlugin::psStoped ? IDS_PLUGIN_STATE_STOPED : IDS_PLUGIN_STATE_ACTIVE );
+				tstring state = rdo::format( plugin->getState() == rdoPlugin::psStoped ? IDS_PLUGIN_STATE_STOPED : IDS_PLUGIN_STATE_ACTIVE );
 				if ( m_pluginList.GetItemText( i, 3 ).Compare( state.c_str() ) ) {
 					updateStateInGrid( plugin, i );
 				}
@@ -2176,7 +2176,7 @@ int CALLBACK RDOStudioOptions::AddContextHelpProc(HWND hwnd, UINT message, LPARA
 
 void RDOStudioOptions::onHelpButton()
 {
-	std::string filename = studioApp.getFullHelpFileName();
+	tstring filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return;
 
 	CPropertyPage* page = GetActivePage( );
@@ -2196,7 +2196,7 @@ void RDOStudioOptions::onHelpButton()
 
 BOOL RDOStudioOptions::OnHelpInfo(HELPINFO* pHelpInfo) 
 {
-	std::string filename = studioApp.getFullHelpFileName();
+	tstring filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return TRUE;
 
 	if ( pHelpInfo->iContextType == HELPINFO_WINDOW )

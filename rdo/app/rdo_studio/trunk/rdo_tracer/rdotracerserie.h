@@ -39,7 +39,7 @@ protected:
 	CMutex mutex;
 
 	RDOTracerSerieKind serieKind;
-	std::string title;
+	tstring title;
 
 	valuesList values;
 	mutable double minValue;
@@ -50,9 +50,9 @@ protected:
 
 	std::vector< RDOStudioChartDoc* > documents;
 
-	void getCaptionsInt( std::vector<std::string> &captions, const int val_count ) const;
-	void getCaptionsDouble( std::vector<std::string> &captions, const int val_count ) const;
-	void getCaptionsBool( std::vector<std::string> &captions, const int val_count ) const;
+	void getCaptionsInt( std::vector<tstring> &captions, const int val_count ) const;
+	void getCaptionsDouble( std::vector<tstring> &captions, const int val_count ) const;
+	void getCaptionsBool( std::vector<tstring> &captions, const int val_count ) const;
 
 public:
 	RDOTracerSerie( RDOTracerSerieKind _serieKind = RDOST_PREVIEW );
@@ -60,8 +60,8 @@ public:
 	
 	RDOTracerSerieKind getSerieKind() const { return serieKind; };
 
-	std::string getTitle() const;
-	void setTitle( const std::string& value );
+	tstring getTitle() const;
+	void setTitle( CREF(tstring) value );
 
 	void addValue( RDOTracerValue* const value );
 	void getValueCount( int& count ) const;
@@ -71,7 +71,7 @@ public:
 	void getLastValue( RDOTracerValue*& val ) const;
 	//double getMinValue() const { return minValue; };
 	//double getMaxValue() const { return maxValue; };
-	virtual void getCaptions( std::vector<std::string> &captions, const int val_count ) const;
+	virtual void getCaptions( std::vector<tstring> &captions, const int val_count ) const;
 
 	void drawSerie( RDOStudioChartView* const view, HDC &dc, CRect &rect, const COLORREF color, RDOTracerSerieMarker marker, const int marker_size, const bool draw_marker, const bool transparent_marker ) const;
 	void drawMarker( HDC &dc, const int x, const int y, RDOTracerSerieMarker marker, const int marker_size ) const;

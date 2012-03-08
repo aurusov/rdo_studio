@@ -298,7 +298,7 @@ BOOL RDOStudioApp::InitInstance()
 	bool autoModel = false;
 	if ( !openModelName.empty() ) {
 		if ( !rdo::extractFilePath( openModelName ).empty() ) {
-			std::string longFileName;
+			tstring longFileName;
 			if ( shortToLongPath( openModelName, longFileName ) ) {
 				openModelName = longFileName;
 			}
@@ -341,7 +341,7 @@ BOOL RDOStudioApp::InitInstance()
 	return TRUE;
 }
 
-bool RDOStudioApp::shortToLongPath( const std::string& shortPath, std::string& longPath )
+bool RDOStudioApp::shortToLongPath( CREF(tstring) shortPath, tstring& longPath )
 {
 	USES_CONVERSION;
 
@@ -499,8 +499,8 @@ void RDOStudioApp::OnProjectReopen( UINT nID )
 		case ID_FILE_REOPEN_10: i = 9; break;
 	}
 	if ( !model->openModel( reopenList[i] ) && model->isPrevModelClosed() ) {
-		std::string item = reopenList[i];
-		for ( std::vector< std::string >::iterator it = reopenList.begin(); it != reopenList.end(); it++ ) {
+		tstring item = reopenList[i];
+		for ( std::vector< tstring >::iterator it = reopenList.begin(); it != reopenList.end(); it++ ) {
 			if ( *it == item ) {
 				reopenList.erase( it );
 				break;
@@ -510,11 +510,11 @@ void RDOStudioApp::OnProjectReopen( UINT nID )
 	}
 }
 
-void RDOStudioApp::insertReopenItem( const std::string& item )
+void RDOStudioApp::insertReopenItem( CREF(tstring) item )
 {
 	if ( !item.empty() ) {
 
-		for ( std::vector< std::string >::iterator it = reopenList.begin(); it != reopenList.end(); it++ ) {
+		for ( std::vector< tstring >::iterator it = reopenList.begin(); it != reopenList.end(); it++ ) {
 			if ( *it == item ) {
 				reopenList.erase( it );
 				break;
@@ -524,7 +524,7 @@ void RDOStudioApp::insertReopenItem( const std::string& item )
 		reopenList.insert( reopenList.begin(), item );
 
 		while ( reopenList.size() > 10 ) {
-			std::vector< std::string >::iterator it = reopenList.end();
+			std::vector< tstring >::iterator it = reopenList.end();
 			it--;
 			reopenList.erase( it );
 		}
@@ -547,7 +547,7 @@ void RDOStudioApp::updateReopenSubMenu() const
 
 	if ( !reopenList.empty() ) {
 		AfxGetMainWnd()->GetMenu()->GetSubMenu( delta )->EnableMenuItem( 2, MF_BYPOSITION | MF_ENABLED );
-		for ( std::vector< std::string >::size_type i = 0; i < reopenList.size(); i++ ) {
+		for ( std::vector< tstring >::size_type i = 0; i < reopenList.size(); i++ ) {
 			if ( i == 4 ) reopenMenu->AppendMenu( MF_SEPARATOR );
 			int id = ID_FILE_MRU_FILE1;
 			switch( i ) {
@@ -575,14 +575,14 @@ void RDOStudioApp::loadReopen()
 {
 	reopenList.clear();
 	for ( int i = 0; i < 10; i++ ) {
-		std::string sec;
+		tstring sec;
 		if ( i+1 < 10 ) {
 			sec = rdo::format( "0%d", i+1 );
 		} else {
 			sec = rdo::format( "%d", i+1 );
 		}
 		TRY {
-			std::string s = AfxGetApp()->GetProfileString( "reopen", sec.c_str(), "" );
+			tstring s = AfxGetApp()->GetProfileString( "reopen", sec.c_str(), "" );
 			if ( !s.empty() ) {
 				reopenList.insert( reopenList.end(), s );
 			}
@@ -594,14 +594,14 @@ void RDOStudioApp::loadReopen()
 
 void RDOStudioApp::saveReopen() const
 {
-	for ( std::vector< std::string >::size_type i = 0; i < 10; i++ ) {
-		std::string sec;
+	for ( std::vector< tstring >::size_type i = 0; i < 10; i++ ) {
+		tstring sec;
 		if ( i+1 < 10 ) {
 			sec = rdo::format( "0%d", i+1 );
 		} else {
 			sec = rdo::format( "%d", i+1 );
 		}
-		std::string s;
+		tstring s;
 		if ( i < reopenList.size() ) {
 			s = reopenList[i];
 		} else {
@@ -645,9 +645,9 @@ void RDOStudioApp::OnUpdateModelStop(CCmdUI* pCmdUI)
 	pCmdUI->Enable( model->isRunning() );
 }
 
-std::string RDOStudioApp::getFullFileName()
+tstring RDOStudioApp::getFullFileName()
 {
-	std::string fileName = "";
+	tstring fileName = "";
 	TCHAR szExeName[ MAX_PATH + 1 ];
 	if ( ::GetModuleFileName( NULL, szExeName, MAX_PATH ) ) {
 		fileName = szExeName;
@@ -655,7 +655,7 @@ std::string RDOStudioApp::getFullFileName()
 	return fileName;
 }
 
-std::string RDOStudioApp::getFullHelpFileName( std::string str )
+tstring RDOStudioApp::getFullHelpFileName( tstring str )
 {
 	str.insert( 0, rdo::extractFilePath( RDOStudioApp::getFullFileName() ) );
 	
@@ -692,7 +692,7 @@ void RDOStudioApp::setOpenLastProject( const bool value )
 	}
 }
 
-void RDOStudioApp::setLastProjectName( const std::string& projectName )
+void RDOStudioApp::setLastProjectName( CREF(tstring) projectName )
 {
 	insertReopenItem( projectName );
 	if ( lastProjectName != projectName ) {
@@ -712,14 +712,14 @@ void RDOStudioApp::setShowCaptionFullName( const bool value )
 
 void RDOStudioApp::setupFileAssociation()
 {
-	std::string strFileTypeId    = _T("RAO.Project");
-	std::string strFileTypeName  = _T("RAO Project");
-	std::string strParam         = _T(" \"%1\"");
-	std::string strPathName      = RDOStudioApp::getFullFileName();
-	std::string strRAOExt        = _T(".rdox");
+	tstring strFileTypeId    = _T("RAO.Project");
+	tstring strFileTypeName  = _T("RAO Project");
+	tstring strParam         = _T(" \"%1\"");
+	tstring strPathName      = RDOStudioApp::getFullFileName();
+	tstring strRAOExt        = _T(".rdox");
 
-	std::string strFileTypeIdOld = _T("RAO.FileInfo");
-	std::string strRAOExtOld     = _T(".smr");
+	tstring strFileTypeIdOld = _T("RAO.FileInfo");
+	tstring strRAOExtOld     = _T(".smr");
 
 	bool win2000 = false;
 	OSVERSIONINFO osvi;
@@ -770,34 +770,34 @@ void RDOStudioApp::setupFileAssociation()
 			}
 			if ( mustBeRegistered ) {
 				DeleteRegistryKey(hCurUserSoftClasses, strFileTypeIdOld.c_str());
-				DeleteRegistryKey(hCurUserSoftClasses, std::string(strFileTypeIdOld + _T("\\DefaultIcon")).c_str());
-				DeleteRegistryKey(hCurUserSoftClasses, std::string(strFileTypeIdOld + _T("\\shell\\open\\command")).c_str());
-				DeleteRegistryKey(hCurUserSoftClasses, std::string(strRAOExtOld + _T("\\ShellNew")).c_str());
+				DeleteRegistryKey(hCurUserSoftClasses, tstring(strFileTypeIdOld + _T("\\DefaultIcon")).c_str());
+				DeleteRegistryKey(hCurUserSoftClasses, tstring(strFileTypeIdOld + _T("\\shell\\open\\command")).c_str());
+				DeleteRegistryKey(hCurUserSoftClasses, tstring(strRAOExtOld + _T("\\ShellNew")).c_str());
 				DeleteRegistryKey(hCurUserSoftClasses, strRAOExtOld.c_str());
 
 				HKEY hKey_tmp;
 				if ( ::RegCreateKeyEx( hCurUserSoftClasses, strFileTypeId.c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey_tmp, &result ) == ERROR_SUCCESS ) {
-					std::string s = strFileTypeName;
+					tstring s = strFileTypeName;
 					::RegSetValueEx( hKey_tmp, _T(""), 0, REG_SZ, (LPBYTE)s.c_str(), s.length() );
 					::RegCloseKey( hKey_tmp );
 				}
-				if ( ::RegCreateKeyEx( hCurUserSoftClasses, std::string(strFileTypeId + _T("\\DefaultIcon")).c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey_tmp, &result ) == ERROR_SUCCESS ) {
-					std::string s = strPathName + _T(",0");
+				if ( ::RegCreateKeyEx( hCurUserSoftClasses, tstring(strFileTypeId + _T("\\DefaultIcon")).c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey_tmp, &result ) == ERROR_SUCCESS ) {
+					tstring s = strPathName + _T(",0");
 					::RegSetValueEx( hKey_tmp, _T(""), 0, REG_SZ, (LPBYTE)s.c_str(), s.length() );
 					::RegCloseKey( hKey_tmp );
 				}
-				if ( ::RegCreateKeyEx( hCurUserSoftClasses, std::string(strFileTypeId + _T("\\shell\\open\\command")).c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey_tmp, &result ) == ERROR_SUCCESS ) {
-					std::string s = strPathName + strParam;
+				if ( ::RegCreateKeyEx( hCurUserSoftClasses, tstring(strFileTypeId + _T("\\shell\\open\\command")).c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey_tmp, &result ) == ERROR_SUCCESS ) {
+					tstring s = strPathName + strParam;
 					::RegSetValueEx( hKey_tmp, _T(""), 0, REG_SZ, (LPBYTE)s.c_str(), s.length() );
 					::RegCloseKey( hKey_tmp );
 				}
 				if ( ::RegCreateKeyEx( hCurUserSoftClasses, strRAOExt.c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey_tmp, &result ) == ERROR_SUCCESS ) {
-					std::string s = strFileTypeId;
+					tstring s = strFileTypeId;
 					::RegSetValueEx( hKey_tmp, _T(""), 0, REG_SZ, (LPBYTE)s.c_str(), s.length() );
 					::RegCloseKey( hKey_tmp );
 				}
-				if ( ::RegCreateKeyEx( hCurUserSoftClasses, std::string(strRAOExt + _T("\\ShellNew")).c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey_tmp, &result ) == ERROR_SUCCESS ) {
-					std::string s = "";
+				if ( ::RegCreateKeyEx( hCurUserSoftClasses, tstring(strRAOExt + _T("\\ShellNew")).c_str(), 0, _T(""), REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey_tmp, &result ) == ERROR_SUCCESS ) {
+					tstring s = "";
 					::RegSetValueEx( hKey_tmp, _T("NullFile"), 0, REG_SZ, (LPBYTE)s.c_str(), s.length() );
 					::RegCloseKey( hKey_tmp );
 				}

@@ -38,7 +38,7 @@ private:
 	friend class RDOStudioFrameManager;
 	friend class RDOStudioFrameView;
 	private:
-		std::string name;
+		tstring name;
 		int x;
 		int y;
 		int w;
@@ -52,7 +52,7 @@ private:
 		Frame(): hitem( 0 ), doc( NULL ), view( NULL ), timer( false, true ) {};
 		~Frame() { areas_sim_clear(); };
 		HTREEITEM            hitem;
-		std::string          name;
+		tstring              name;
 		RDOStudioFrameDoc*   doc;
 		RDOStudioFrameView*  view;
 		CMutex               used;
@@ -78,7 +78,7 @@ private:
 		int w;
 		int h;
 	};
-	std::map< std::string, BMP* > bitmaps;
+	std::map< tstring, BMP* > bitmaps;
 	CDC dcBmp;
 	CDC dcMask;
 
@@ -90,7 +90,7 @@ public:
 	RDOStudioFrameManager();
 	virtual ~RDOStudioFrameManager();
 
-	void insertItem( const std::string& name );
+	void insertItem( CREF(tstring) name );
 	int findFrameIndex( const HTREEITEM hitem ) const {
 		std::vector< Frame* >::const_iterator it = frames.begin();
 		int index = 0;
@@ -129,7 +129,7 @@ public:
 	}
 	RDOStudioFrameDoc* connectFrameDoc( const int index );
 	void disconnectFrameDoc( const RDOStudioFrameDoc* doc );
-	const std::string&  getFrameName( const int index ) const       { return frames[index]->name;   };
+	CREF(tstring)       getFrameName( const int index ) const       { return frames[index]->name;   };
 	RDOStudioFrameDoc*  getFrameDoc( const int index ) const        { return frames[index]->doc;    };
 	RDOStudioFrameView* getFrameView( const int index ) const       { return frames[index]->view;   };
 	CMutex*             getFrameMutexUsed( const int index ) const  { return &frames[index]->used;  };
@@ -142,7 +142,7 @@ public:
 	void closeAll();
 	void clear();
 
-	void bmp_insert( const std::string& name );
+	void bmp_insert( CREF(tstring) name );
 	void bmp_clear();
 
 	void expand() const;

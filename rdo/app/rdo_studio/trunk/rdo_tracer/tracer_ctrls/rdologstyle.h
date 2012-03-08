@@ -30,8 +30,8 @@ public:
 	bool operator ==( const RDOLogColorPair& colors ) const;
 	bool operator !=( const RDOLogColorPair& colors ) const;
 
-	virtual void load( std::string regPath, std::string regParam );
-	virtual void save( std::string regPath, std::string regParam ) const;
+	virtual void load( tstring regPath, tstring regParam );
+	virtual void save( tstring regPath, tstring regParam ) const;
 
 	COLORREF foregroundColor;
 	COLORREF backgroundColor;
@@ -50,8 +50,8 @@ public:
 	bool operator ==( const RDOLogTheme& theme ) const;
 	bool operator !=( const RDOLogTheme& theme ) const;
 
-	virtual void load( std::string regPath );
-	virtual void save( std::string regPath ) const;
+	virtual void load( tstring regPath );
+	virtual void save( tstring regPath ) const;
 
 	rdoStyle::RDOStyleFont::style style;
 
@@ -71,8 +71,8 @@ public:
 	bool operator ==( const RDOLogBorders& borders ) const;
 	bool operator !=( const RDOLogBorders& borders ) const;
 
-	virtual void load( std::string regPath );
-	virtual void save( std::string regPath ) const;
+	virtual void load( tstring regPath );
+	virtual void save( tstring regPath ) const;
 
 	int vertBorder;
 	int horzBorder;
@@ -92,13 +92,13 @@ public:
 	virtual ~RDOLogStyle();
 
 	virtual bool getItemColors( const int index, RDOLogColorPair* &colors ) const;
-	virtual bool getItemColors( const std::string& item, RDOLogColorPair* &colors ) const;
+	virtual bool getItemColors( CREF(tstring) item, RDOLogColorPair* &colors ) const;
 
 	RDOLogStyle& operator =( const RDOLogStyle& style );
 	bool operator ==( const RDOLogStyle& style ) const;
 	bool operator !=( const RDOLogStyle& style ) const;
 
-	virtual void init( const std::string& _regPath = "" );
+	virtual void init( CREF(tstring) _regPath = "" );
 	virtual bool load();
 	virtual bool save() const;
 

@@ -27,7 +27,7 @@ public:
 	rpMethod::RPMethod* getMethod() const { return method; }
 	HMODULE getLib() const                { return lib;    }
 
-	static bool isMethod( const std::string& file_name );
+	static bool isMethod( CREF(tstring) file_name );
 };
 #endif
 
@@ -45,7 +45,7 @@ public:
 
 protected:
 #ifdef RDO_METHOD_DLL
-	void enumPlugins( const std::string& mask );
+	void enumPlugins( CREF(tstring) mask );
 #else
 	void insertMethod( rpMethod::RPMethod* method );
 #endif

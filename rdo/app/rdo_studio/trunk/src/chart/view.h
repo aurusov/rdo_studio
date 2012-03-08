@@ -41,7 +41,7 @@ protected:
 	CRect newClientRect;
 
 	int valueCountX;
-	std::vector<std::string> captions;
+	std::vector<tstring> captions;
 	int valueCountY;
 	
 	bool timeWrap;

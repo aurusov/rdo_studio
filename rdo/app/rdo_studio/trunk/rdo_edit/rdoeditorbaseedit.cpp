@@ -80,20 +80,20 @@ BOOL RDOEditorBaseEdit::DestroyWindow()
 	return RDOBaseEdit::DestroyWindow();
 }
 
-std::string RDOEditorBaseEdit::getAllKW() const
+tstring RDOEditorBaseEdit::getAllKW() const
 {
 	return rdo::format( "%s %s %s %s", kw0.c_str(), kw1.c_str(), kw2.c_str(), kw3.c_str() );
 }
 
-std::string RDOEditorBaseEdit::convertToLexer( const std::string& kw )
+tstring RDOEditorBaseEdit::convertToLexer( CREF(tstring) kw )
 {
-	std::string s = kw;
-	while ( s.find( '?' ) != std::string::npos ) {
-		std::string::size_type pos1 = s.find( '?' );
-		std::string::size_type pos2 = s.find( ' ', pos1 );
+	tstring s = kw;
+	while ( s.find( '?' ) != tstring::npos ) {
+		tstring::size_type pos1 = s.find( '?' );
+		tstring::size_type pos2 = s.find( ' ', pos1 );
 		s.erase( pos1, pos2 - pos1 );
 	}
-	std::string str_big = s;
+	tstring str_big = s;
 	rdo::toLower(s);
 	return str_big + " " + s;
 }
@@ -233,7 +233,7 @@ void RDOEditorBaseEdit::setEditorStyle( RDOEditorBaseEditStyle* _style )
 	sendEditor( SCI_STYLESETCHARACTERSET, SCE_RDO_OPERATOR, style->font->characterSet );
 }
 
-void RDOEditorBaseEdit::replaceCurrent( const std::string str, const int changePosValue ) const
+void RDOEditorBaseEdit::replaceCurrent( const tstring str, const int changePosValue ) const
 {
 	int pos = 0;
 	if ( changePosValue != -1 ) pos = getCurrentPos();

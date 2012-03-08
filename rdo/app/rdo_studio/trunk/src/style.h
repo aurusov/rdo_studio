@@ -30,12 +30,12 @@ public:
 	bool operator ==( const RDOStyleFont& font ) const;
 	bool operator !=( const RDOStyleFont& font ) const;
 
-	virtual void load( std::string regPath );
-	virtual void save( std::string regPath ) const;
+	virtual void load( tstring regPath );
+	virtual void save( tstring regPath ) const;
 
 	enum style { NONE = 0x00, BOLD = 0x01, ITALIC = 0x02, UNDERLINE = 0x04 };
 
-	std::string name;
+	tstring     name;
 	int         size;
 	int         codepage;
 	int         characterSet;
@@ -60,8 +60,8 @@ public:
 	bool operator ==( const RDOStyleTheme& theme ) const;
 	bool operator !=( const RDOStyleTheme& theme ) const;
 
-	virtual void load( std::string regPath );
-	virtual void save( std::string regPath ) const;
+	virtual void load( tstring regPath );
+	virtual void save( tstring regPath ) const;
 
 	COLORREF defaultColor;
 	COLORREF backgroundColor;
@@ -75,7 +75,7 @@ public:
 class RDOStyle
 {
 protected:
-	std::string regPath;
+	tstring regPath;
 
 	virtual void initFont();
 
@@ -87,7 +87,7 @@ public:
 	bool operator ==( const RDOStyle& style ) const;
 	bool operator !=( const RDOStyle& style ) const;
 
-	virtual void init( const std::string& _regPath = "" );
+	virtual void init( CREF(tstring) _regPath = "" );
 	virtual bool load();
 	virtual bool save() const;
 
@@ -110,7 +110,7 @@ public:
 	bool operator ==( const RDOStyleWithTheme& style ) const;
 	bool operator !=( const RDOStyleWithTheme& style ) const;
 
-	virtual void init( const std::string& _regPath = "" );
+	virtual void init( CREF(tstring) _regPath = "" );
 	virtual bool load();
 	virtual bool save() const;
 

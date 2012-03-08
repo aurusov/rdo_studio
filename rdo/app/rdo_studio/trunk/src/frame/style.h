@@ -35,7 +35,7 @@ public:
 	bool operator ==( const RDOStudioFrameStyle& style ) const;
 	bool operator !=( const RDOStudioFrameStyle& style ) const;
 
-	virtual void init( const std::string& _regPath = "" );
+	virtual void init( CREF(tstring) _regPath = "" );
 };
 
 #endif // RDOSTUDIOFRAMESTYLE_H

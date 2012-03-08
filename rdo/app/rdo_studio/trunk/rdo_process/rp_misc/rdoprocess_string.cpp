@@ -55,7 +55,7 @@ string format( const char* str, ... )
 		if ( s.size() > 10000 ) return "";
 	}
 	s.resize( size );
-	return std::string( s.begin(), s.end() );
+	return tstring( s.begin(), s.end() );
 }
 
 string format( ruint resource, ... )
@@ -75,7 +75,7 @@ string format( ruint resource, ... )
 			}
 		}
 		s.resize( size );
-		return std::string( s.begin(), s.end() );
+		return tstring( s.begin(), s.end() );
 	}
 	return "";
 }
@@ -83,23 +83,23 @@ string format( ruint resource, ... )
 rp::string extractFilePath( const rp::string& fileName )
 {
 	rp::string s;
-	std::string::size_type pos = fileName.find_last_of( '\\' );
-	if ( pos == std::string::npos ) {
+	tstring::size_type pos = fileName.find_last_of( '\\' );
+	if ( pos == tstring::npos ) {
 		pos = fileName.find_last_of( '/' );
 	}
-	if ( pos == std::string::npos ) {
+	if ( pos == tstring::npos ) {
 		return "";
 	}
-	if ( pos != std::string::npos && pos < fileName.length() - 1 ) {
+	if ( pos != tstring::npos && pos < fileName.length() - 1 ) {
 		s.assign( &fileName[0], pos + 1 );
 		static char szDelims[] = " \t\n\r";
 		s.erase( 0, s.find_first_not_of( szDelims ) );
-		s.erase( s.find_last_not_of( szDelims ) + 1, std::string::npos );
+		s.erase( s.find_last_not_of( szDelims ) + 1, tstring::npos );
 	} else {
 		s = fileName;
 	}
 	pos = s.find_last_of( '\\' );
-	if ( pos == std::string::npos ) {
+	if ( pos == tstring::npos ) {
 		pos = s.find_last_of( '/' );
 	}
 	if ( pos != s.length() - 1 && s.length() ) {

@@ -30,7 +30,7 @@ using namespace rdoEditCtrl;
 // --------------------------------------------------------------------------------
 // -------------------- RDOLogEditLineInfo
 // --------------------------------------------------------------------------------
-RDOLogEditLineInfo::RDOLogEditLineInfo( const std::string& _message, const rdoModelObjects::RDOFileType _fileType, const int _lineNumber, const int _posInLine ):
+RDOLogEditLineInfo::RDOLogEditLineInfo( CREF(tstring) _message, const rdoModelObjects::RDOFileType _fileType, const int _lineNumber, const int _posInLine ):
 	fileType( _fileType ),
 	lineNumber( _lineNumber ),
 	posInLine( _posInLine ),
@@ -43,9 +43,9 @@ RDOLogEditLineInfo::~RDOLogEditLineInfo()
 {
 }
 
-std::string RDOLogEditLineInfo::getMessage() const
+tstring RDOLogEditLineInfo::getMessage() const
 {
-	std::string file;
+	tstring file;
 	switch ( fileType ) {
 		case rdoModelObjects::RTP : file = "RTP" ; break;
 		case rdoModelObjects::RSS : file = "RSS" ; break;
@@ -304,7 +304,7 @@ void RDOLogEdit::appendLine( RDOLogEditLineInfo* line )
 	if ( readOnly ) {
 		setReadOnly( false );
 	}
-	std::string str = line->getMessage();
+	tstring str = line->getMessage();
 	rdo::trimRight( str );
 	str += "\r\n";
 	setCurrentPos( getLength() );

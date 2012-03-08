@@ -278,9 +278,9 @@ void RDOEditorEdit::setEditorStyle( RDOEditorEditStyle* _style )
 			defineMarker( SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_LCORNER    , foldFgColor, foldBgColor );
 			break;
 	}
-	std::string cf_prop( "CommentFold" );
-	std::string cf_val_1( "1" );
-	std::string cf_val_0( "0" );
+	tstring cf_prop( "CommentFold" );
+	tstring cf_val_1( "1" );
+	tstring cf_val_0( "0" );
 	sendEditorString( SCI_SETPROPERTY, reinterpret_cast<unsigned long>(cf_prop.c_str()), theme->commentFold ? cf_val_1.c_str() : cf_val_0.c_str() );
 	sendEditor( SCI_COLOURISE, 0, -1 );
 
@@ -437,8 +437,8 @@ void RDOEditorEdit::OnUpdateFold(CCmdUI* pCmdUI)
 void RDOEditorEdit::commentSelection() const
 {
 	if ( GUI_IS_SELECTED ) {
-		std::string startComment( "/*" );
-		std::string endComment( "*/" );
+		tstring startComment( "/*" );
+		tstring endComment( "*/" );
 		int startCommentLength = startComment.length();
 		CharacterRange cr = getSelectionRange();
 		int caretPosition = getCurrentPos();
@@ -463,7 +463,7 @@ void RDOEditorEdit::completeWord()
 	if ( !static_cast<RDOEditorEditStyle*>(style)->autoComplete->useAutoComplete ) return;
 
 	SetFocus();
-	std::string s;
+	tstring s;
 	RDOEditorTabCtrl* tab = model->getTab();
 	if ( tab ) {
 //		studioApp.studioGUI->sendMessage( kernel->simulator(), RDOThread::RT_CODECOMP_GET_DATA, &rdoSimulator::RDOThreadCodeComp::GetCodeComp( tab->getCurrentRDOItem(), getCurrentPos(), getCurrentLineNumber(), s ) );
@@ -532,8 +532,8 @@ void RDOEditorEdit::completeWord()
 
 	if ( list ) {
 
-		std::string startKeyWord       = "";
-		std::string startKeyWordScroll = wl.wordsNoCase[ wl.len-1 ];
+		tstring startKeyWord       = "";
+		tstring startKeyWordScroll = wl.wordsNoCase[ wl.len-1 ];
 		bool useReplace = false;
 		if ( words ) {
 			wl.Clear();
@@ -544,9 +544,9 @@ void RDOEditorEdit::completeWord()
 				useReplace = true;
 			}
 		}
-		while ( startKeyWord.find( '?' ) != std::string::npos ) {
-			std::string::size_type pos1 = startKeyWord.find( '?' );
-			std::string::size_type pos2 = startKeyWord.find( ' ', pos1 );
+		while ( startKeyWord.find( '?' ) != tstring::npos ) {
+			tstring::size_type pos1 = startKeyWord.find( '?' );
+			tstring::size_type pos2 = startKeyWord.find( ' ', pos1 );
 			startKeyWord.erase( pos1, pos2 - pos1 );
 		}
 		if ( useReplace ) {
@@ -705,7 +705,7 @@ void RDOEditorEdit::onBufferAppend( const int bufIndex )
 		pos               = cr.cpMax;
 		canUseSelected    = cr.cpMin != cr.cpMax;
 	}
-	std::string s = "";
+	tstring s = "";
 	switch ( bufIndex ) {
 		case 1: {
 			if ( view->resetBuf1 ) {
@@ -797,8 +797,8 @@ void RDOEditorEdit::onBufferEdit( const int bufIndex )
 {
 	if ( !view ) return;
 
-	std::string bufName;
-	std::string bufValue;
+	tstring bufName;
+	tstring bufValue;
 
 	bufName = rdo::format( ID_BUFFER_NAME );
 
@@ -919,13 +919,13 @@ void RDOEditorEdit::OnUpdateGotoPrev(CCmdUI* pCmdUI)
 
 void RDOEditorEdit::OnHelpKeyword()
 {
-	std::string filename = studioApp.getFullHelpFileName();
+	tstring filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return;
 
-	std::string keyword = getCurrentOrSelectedWord();
-	std::string s = getAllKW();
+	tstring keyword = getCurrentOrSelectedWord();
+	tstring s = getAllKW();
 
-	if ( s.find_first_of( keyword ) == std::string::npos || keyword.empty() ) {
+	if ( s.find_first_of( keyword ) == tstring::npos || keyword.empty() ) {
 		RDOEditorTabCtrl* tab = model->getTab();
 		if ( tab ) {
 			switch( tab->getCurrentRDOItem() ) {

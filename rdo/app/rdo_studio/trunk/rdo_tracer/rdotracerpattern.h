@@ -22,7 +22,7 @@ public:
 	RDOTracerPattern( const RDOTracerPatternKind kind );
 	virtual ~RDOTracerPattern();
 
-	std::string Name;
+	tstring Name;
 	RDOTracerPatternKind getPatternKind() const { return patKind; };
 };
 

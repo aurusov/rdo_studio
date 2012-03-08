@@ -38,8 +38,8 @@ public:
 	bool bMatchCase;
 	bool bMatchWholeWord;
 	bool bSearchDown;
-	std::string findStr;
-	std::string replaceStr;
+	tstring findStr;
+	tstring replaceStr;
 
 	RDOBaseEditGroup():
 		bMatchCase( false ),
@@ -97,9 +97,9 @@ protected:
 
 	int  firstFoundPos;
 	bool bHaveFound;
-	void findNext( std::string& findWhat, const bool searchDown = true, const bool matchCase = false, const bool matchWholeWord = false );
-	void replace( std::string& findWhat, std::string& replaceWhat, const bool searchDown = true, const bool matchCase = false, const bool matchWholeWord = false );
-	void replaceAll( std::string& findWhat, std::string& replaceWhat, const bool matchCase = false, const bool matchWholeWord = false );
+	void findNext( REF(tstring) findWhat, const bool searchDown = true, const bool matchCase = false, const bool matchWholeWord = false );
+	void replace( REF(tstring) findWhat, REF(tstring) replaceWhat, const bool searchDown = true, const bool matchCase = false, const bool matchWholeWord = false );
+	void replaceAll( REF(tstring) findWhat, REF(tstring) replaceWhat, const bool matchCase = false, const bool matchWholeWord = false );
 
 	void copyAsRTF();
 
@@ -199,7 +199,7 @@ public:
 	bool isViewEndOfLine() const                           { return sendEditor( SCI_GETVIEWEOL ) ? true : false;                 };
 	void setEndOfLine( const bool value )                  { GUI_ID_VIEW_ENDOFLINE = value; sendEditor( SCI_SETVIEWEOL, value ); };
 
-	void appendText( const std::string& str ) const;
+	void appendText( CREF(tstring) str ) const;
 
 	int getZoom() const                                    { return sendEditor( SCI_GETZOOM ); };
 	void setZoom( const int value ) const                  { sendEditor( SCI_SETZOOM, value ); };
@@ -228,13 +228,13 @@ public:
 	void scrollToCarret() const;
 	void horzScrollToCurrentPos() const;
 
-	std::string getCurrentWord() const;
-	std::string getSelection() const;
-	std::string getCurrentOrSelectedWord() const;
-	std::string getWordForFind() const;
+	tstring getCurrentWord() const;
+	tstring getSelection() const;
+	tstring getCurrentOrSelectedWord() const;
+	tstring getWordForFind() const;
 
-	int findPos( std::string& findWhat, const int startFromLine = 0, const bool matchCase = false, const bool matchWholeWord = false ) const;
-	std::string getLine( const int line ) const;
+	int findPos( REF(tstring) findWhat, const int startFromLine = 0, const bool matchCase = false, const bool matchWholeWord = false ) const;
+	tstring getLine( const int line ) const;
 
 	void load( rdo::stream& stream );
 	void save( rdo::stream& stream ) const;

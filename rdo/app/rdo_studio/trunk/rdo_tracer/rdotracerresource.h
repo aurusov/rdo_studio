@@ -21,7 +21,7 @@ public:
 	RDOTracerResource* getResource() const { return resource; };
 	RDOTracerResParamInfo* getParamInfo() const;
 
-	virtual void getCaptions( std::vector<std::string> &captions, const int val_count ) const;
+	virtual void getCaptions( std::vector<tstring> &captions, const int val_count ) const;
 };
 
 // --------------------------------------------------------------------------------
@@ -37,16 +37,16 @@ protected:
 	RDOTracerResType* resType;
 	bool erased;
 public:
-	RDOTracerResource( RDOTracerResType* const type, const std::string& name );
+	RDOTracerResource( RDOTracerResType* const type, CREF(tstring) name );
 	virtual ~RDOTracerResource();
 
-	std::string Name;
+	tstring Name;
 	int id;
 	RDOTracerResType* getType() const { return resType; };
 	void addParam( RDOTracerResParam* const value );
 	RDOTracerResParam* getParam( unsigned int index ) const;
 	int getParamIndex( const RDOTracerResParam* const param ) const;
-	void setParams( std::string& line, RDOTracerTimeNow* const time, const int eventIndex, const bool erasing = false );
+	void setParams( tstring& line, RDOTracerTimeNow* const time, const int eventIndex, const bool erasing = false );
 	void setErased( const bool value );
 	bool isErased() { return erased; };
 };

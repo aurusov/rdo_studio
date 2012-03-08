@@ -190,13 +190,13 @@ void RDOStudioOutput::clearFind()
 	if ( find ) find->clearAll();
 }
 
-void RDOStudioOutput::appendStringToBuild( const std::string& str ) const
+void RDOStudioOutput::appendStringToBuild( CREF(tstring) str ) const
 {
 	RDOBuildEditLineInfo* line = new RDOBuildEditLineInfo( str );
 	build->appendLine( line );
 }
 
-void RDOStudioOutput::appendStringToBuild( rdoSimulator::RDOSyntaxError::ErrorCode error_code, const std::string& str, const rdoModelObjects::RDOFileType fileType, const int lineNumber, const int posInLine, const bool warning ) const
+void RDOStudioOutput::appendStringToBuild( rdoSimulator::RDOSyntaxError::ErrorCode error_code, CREF(tstring) str, const rdoModelObjects::RDOFileType fileType, const int lineNumber, const int posInLine, const bool warning ) const
 {
 	if ( !warning || (warning && static_cast<RDOBuildEditTheme*>(studioApp.mainFrame->style_build.theme)->warning) ) {
 		RDOBuildEditLineInfo* line = new RDOBuildEditLineInfo( error_code, str, fileType, lineNumber, posInLine, warning );
@@ -204,12 +204,12 @@ void RDOStudioOutput::appendStringToBuild( rdoSimulator::RDOSyntaxError::ErrorCo
 	}
 }
 
-void RDOStudioOutput::appendStringToDebug( const std::string& str ) const
+void RDOStudioOutput::appendStringToDebug( CREF(tstring) str ) const
 {
 	debug->appendLine( str );
 }
 
-void RDOStudioOutput::appendStringToResults( const std::string& str ) const
+void RDOStudioOutput::appendStringToResults( CREF(tstring) str ) const
 {
 	int pos = results->getCurrentPos();
 	results->setCurrentPos(results->getLength());
@@ -219,7 +219,7 @@ void RDOStudioOutput::appendStringToResults( const std::string& str ) const
 	results->setCurrentPos(pos  );
 }
 
-void RDOStudioOutput::appendStringToFind( const std::string& str, const rdoModelObjects::RDOFileType fileType, const int lineNumber, const int posInLine ) const
+void RDOStudioOutput::appendStringToFind( CREF(tstring) str, const rdoModelObjects::RDOFileType fileType, const int lineNumber, const int posInLine ) const
 {
 	RDOLogEditLineInfo* line = new RDOLogEditLineInfo( str, fileType, lineNumber, posInLine );
 	find->appendLine( line );

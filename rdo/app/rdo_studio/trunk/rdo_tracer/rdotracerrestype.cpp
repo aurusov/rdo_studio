@@ -24,7 +24,7 @@ RDOTracerResParamInfo::~RDOTracerResParamInfo()
 		delete enumValues;
 };
 
-int RDOTracerResParamInfo::addEnumValue( const std::string& value )
+int RDOTracerResParamInfo::addEnumValue( CREF(tstring) value )
 {
 	if ( !enumValues )
 		return -1;
@@ -32,9 +32,9 @@ int RDOTracerResParamInfo::addEnumValue( const std::string& value )
 	return enumValues->size() - 1;
 }
 
-static std::string nullStr = "";
+static tstring nullStr = "";
 
-std::string RDOTracerResParamInfo::getEnumValue( unsigned int index ) const
+tstring RDOTracerResParamInfo::getEnumValue( unsigned int index ) const
 {
 	if ( !enumValues )
 		return nullStr;

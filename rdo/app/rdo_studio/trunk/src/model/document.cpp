@@ -109,7 +109,7 @@ BOOL RDOStudioModelDoc::SaveModified()
 	return flag;
 }
 
-void RDOStudioModelDoc::setName( const std::string& str )
+void RDOStudioModelDoc::setName( CREF(tstring) str )
 {
 	name = str;
 	rdo::trim( name );

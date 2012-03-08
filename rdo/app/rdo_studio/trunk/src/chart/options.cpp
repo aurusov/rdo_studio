@@ -476,7 +476,7 @@ void RDOStudioChartOptions::onHelpButton()
 
 BOOL RDOStudioChartOptions::OnHelpInfo(HELPINFO* pHelpInfo) 
 {
-	std::string filename = studioApp.getFullHelpFileName();
+	tstring filename = studioApp.getFullHelpFileName();
 	if ( filename.empty() ) return TRUE;
 
 	if ( pHelpInfo->iContextType == HELPINFO_WINDOW )
