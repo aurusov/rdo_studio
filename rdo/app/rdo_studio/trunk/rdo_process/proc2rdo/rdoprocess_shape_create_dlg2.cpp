@@ -1,6 +1,3 @@
-// rdoprocess_shape_create_dlg2_MJ.cpp : implementation file
-//
-
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/stdafx.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_create_dlg2.h"
 
@@ -9,10 +6,6 @@
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
-/////////////////////////////////////////////////////////////////////////////
-// RPShapeCreateDlg2_MJ dialog
-
 
 RPShapeCreateDlg2_MJ::RPShapeCreateDlg2_MJ(CWnd* pParent,RPShapeCreateMJ* ppParent)
 	: CDialog(RPShapeCreateDlg2_MJ::IDD, pParent)
@@ -57,9 +50,6 @@ UpdateData(FALSE);
 
 BEGIN_MESSAGE_MAP(RPShapeCreateDlg2_MJ, CDialog)
 END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
-// RPShapeCreateDlg2_MJ message handlers
 
 void RPShapeCreateDlg2_MJ::OnOK() 
 {

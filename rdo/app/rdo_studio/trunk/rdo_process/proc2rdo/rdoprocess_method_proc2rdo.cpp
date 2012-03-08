@@ -24,9 +24,6 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
 RPMethodProc2RDO_MJ* proc2rdo = NULL;
 
 RPMethodProc2RDO_MJ::RPMethodProc2RDO_MJ( RPObject* _parent ):

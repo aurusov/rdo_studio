@@ -1,7 +1,3 @@
-// rdoprocess_shape_resource.h: interface for the RPShapeResource_MJ class.
-//
-//////////////////////////////////////////////////////////////////////
-
 #if !defined(AFX_RDOPROCESS_SHAPE_RESOURCE_H__108AB1F9_8742_446F_9CB2_ABD461A09C12__INCLUDED_)
 #define AFX_RDOPROCESS_SHAPE_RESOURCE_H__108AB1F9_8742_446F_9CB2_ABD461A09C12__INCLUDED_
 

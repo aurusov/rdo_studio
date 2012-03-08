@@ -1,6 +1,3 @@
-// rdoprocess_generation_type_MJ.cpp : implementation file
-//
-
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/stdafx.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_generation_type.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_method_proc2rdo.h"
@@ -10,8 +7,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-/////////////////////////////////////////////////////////////////////////////
-// RP_GENERATION_TYPE_MJ dialog
 RP_GENERATION_TYPE_MJ::RP_GENERATION_TYPE_MJ(CWnd* pParent /*=NULL*/)
 	: CDialog(RP_GENERATION_TYPE_MJ::IDD, pParent)
 {
@@ -29,9 +24,6 @@ void RP_GENERATION_TYPE_MJ::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(RP_GENERATION_TYPE_MJ, CDialog)
 	ON_CBN_CLOSEUP(IDC_COMBO1, OnCloseupCombo1)
 END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
-// RP_GENERATION_TYPE_MJ message handlers
 
 void RP_GENERATION_TYPE_MJ::OnCloseupCombo1() 
 {

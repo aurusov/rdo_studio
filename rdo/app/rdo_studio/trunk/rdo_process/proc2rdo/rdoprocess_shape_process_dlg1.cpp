@@ -1,6 +1,3 @@
-// rdoprocess_shape_process_dlg1_MJ.cpp : implementation file
-//
-
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/stdafx.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_process_dlg1.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_process_dlg2.h"
@@ -13,10 +10,6 @@ static char THIS_FILE[] = __FILE__;
 
 BEGIN_MESSAGE_MAP(RPListBox, CListBox)
 END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
-// RPShapeProcessDlg1_MJ dialog
-
 
 RPShapeProcessDlg1_MJ::RPShapeProcessDlg1_MJ(CWnd* pParent /*=NULL*/,RPShapeProcessMJ* ppParent)
 	: CDialog(RPShapeProcessDlg1_MJ::IDD, pParent),
@@ -113,9 +106,6 @@ BEGIN_MESSAGE_MAP(RPShapeProcessDlg1_MJ, CDialog)
 	ON_WM_CTLCOLOR()
 	ON_BN_CLICKED(IDC_BUTTON2, OnButton2)
 END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
-// RPShapeProcessDlg1_MJ message handlers
 
 void RPShapeProcessDlg1_MJ::OnCbnSelchange1() 
 {

@@ -1,7 +1,3 @@
-// rdoprocess_shape_terminate_MJ.cpp: implementation of the RPShapeTerminate_MJ class.
-//
-//////////////////////////////////////////////////////////////////////
-
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/stdafx.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_terminate.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_terminate_dlg1.h"
@@ -13,10 +9,6 @@
 static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
-
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
 
 RPShapeTerminateMJ::RPShapeTerminateMJ( RPObject* _parent ):
 	RPShape_MJ( _parent, _T("Terminate") )

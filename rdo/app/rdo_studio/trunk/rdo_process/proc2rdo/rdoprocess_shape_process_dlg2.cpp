@@ -1,6 +1,3 @@
-// rdoprocess_shape_process_dlg2_MJ.cpp : implementation file
-//
-
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/stdafx.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_process_dlg2.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_method_proc2rdo.h"
@@ -10,10 +7,6 @@
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
-/////////////////////////////////////////////////////////////////////////////
-// RPShapeProcessDlg2_MJ dialog
-
 
 RPShapeProcessDlg2_MJ::RPShapeProcessDlg2_MJ(CWnd* pParent,RPShapeProcessMJ* ppParent,RPShapeProcessDlg1_MJ* pParentDlg)
 	: CDialog(RPShapeProcessDlg2_MJ::IDD, pParent)
@@ -43,9 +36,6 @@ void RPShapeProcessDlg2_MJ::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(RPShapeProcessDlg2_MJ, CDialog)
 	ON_CBN_CLOSEUP(IDC_COMBO1, OnCloseupCombo1)
 END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
-// RPShapeProcessDlg2_MJ message handlers
 
 void RPShapeProcessDlg2_MJ::OnCloseupCombo1() 
 {

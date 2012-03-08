@@ -1,6 +1,3 @@
-// rdoprocess_shape_terminate_dlg1_MJ.cpp : implementation file
-//
-
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/stdafx.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_decide_dlg1.h"
 
@@ -9,10 +6,6 @@
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
-/////////////////////////////////////////////////////////////////////////////
-// RPShapeDecideDlg1 dialog
-
 
 RPShapeDecideDlg1::RPShapeDecideDlg1(CWnd* pParent,RPShapeDecide* ppParent)
 	: CDialog(RPShapeDecideDlg1::IDD, pParent)
@@ -51,9 +44,6 @@ void RPShapeDecideDlg1::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(RPShapeDecideDlg1, CDialog)
 END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
-// RPShapeDecideDlg1 message handlers
 
 void RPShapeDecideDlg1::OnOK() 
 {

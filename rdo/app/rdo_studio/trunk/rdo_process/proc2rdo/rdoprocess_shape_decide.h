@@ -1,7 +1,3 @@
-// rdoprocess_shape_create_MJ.h: interface for the RPShapeDecide class.
-//
-//////////////////////////////////////////////////////////////////////
-
 #if !defined(AFX_RDOPROCESS_SHAPE_DECIDE_H__B043A584_EC30_4198_83AE_4C54E356FDAF__INCLUDED_)
 #define AFX_RDOPROCESS_SHAPE_DECIDE_H__B043A584_EC30_4198_83AE_4C54E356FDAF__INCLUDED_
 

@@ -1,6 +1,3 @@
-// rdoprocess_shape_create_dlg1_MJ.cpp : implementation file
-//
-
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/stdafx.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_create_dlg1.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_create_dlg2.h"
@@ -10,10 +7,6 @@
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
-/////////////////////////////////////////////////////////////////////////////
-// RPShapeCreateDlg1_MJ dialog
-
 
 RPShapeCreateDlg1_MJ::RPShapeCreateDlg1_MJ(CWnd* pParent /*=NULL*/,RPShapeCreateMJ* ppParent)
 	: CDialog(RPShapeCreateDlg1_MJ::IDD, pParent)
@@ -91,9 +84,6 @@ BEGIN_MESSAGE_MAP(RPShapeCreateDlg1_MJ, CDialog)
 	ON_CBN_SELCHANGE(IDC_COMBO1, OnCbnSelchange1)
 	ON_BN_CLICKED(IDC_BUTTON1, OnButton1)
 END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
-// RPShapeCreateDlg1_MJ message handlers
 
 void RPShapeCreateDlg1_MJ::OnCbnSelchange1() 
 {

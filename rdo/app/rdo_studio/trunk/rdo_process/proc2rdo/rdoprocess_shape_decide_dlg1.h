@@ -4,18 +4,14 @@
 //
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_decide.h"
-/////////////////////////////////////////////////////////////////////////////
-// RPShapeDecideDlg1 dialog
 
 class RPShapeDecideDlg1 : public CDialog
 {
-// Construction
 public:
-	RPShapeDecideDlg1(CWnd* pParent = NULL, RPShapeDecide* ppParent=NULL);   // standard constructor
+	RPShapeDecideDlg1(CWnd* pParent = NULL, RPShapeDecide* ppParent=NULL);
     virtual BOOL OnInitDialog();
 
 	RPShapeDecide* pParentMJ; // ссылка на родителя
-// Dialog Data
 
 	enum { IDD = IDD_DIALOG_DECIDE_1 };
 	CString	m_name;
@@ -23,7 +19,7 @@ public:
 	double	mp_false;
 
 private:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX);
 	virtual void OnOK();
 	DECLARE_MESSAGE_MAP()
 };

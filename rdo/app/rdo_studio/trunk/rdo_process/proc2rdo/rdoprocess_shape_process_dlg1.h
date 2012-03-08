@@ -1,12 +1,8 @@
 #if !defined(AFX_RDOPROCESS_SHAPE_PROCESS_DLG1_MJ_H__0DF5DDB9_3E18_409E_A23C_A0A0F476FFFB__INCLUDED_)
 #define AFX_RDOPROCESS_SHAPE_PROCESS_DLG1_MJ_H__0DF5DDB9_3E18_409E_A23C_A0A0F476FFFB__INCLUDED_
 
-// rdoprocess_shape_process_dlg1_MJ.h : header file
-//
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_process.h"
-/////////////////////////////////////////////////////////////////////////////
-// RPShapeProcessDlg1_MJ dialog
 
 class RPListBox: public CListBox
 {
@@ -16,13 +12,11 @@ private:
 
 class RPShapeProcessDlg1_MJ : public CDialog
 {
-// Construction
 public:
-	RPShapeProcessDlg1_MJ(CWnd* pParent = NULL,RPShapeProcessMJ* ppParent=NULL);   // standard constructor
+	RPShapeProcessDlg1_MJ(CWnd* pParent = NULL,RPShapeProcessMJ* ppParent=NULL);
     virtual BOOL OnInitDialog();
 
 	RPShapeProcessMJ* pParentMJ; // ссылка на родителя
-// Dialog Data
 
 	enum { IDD = IDD_DIALOG_PROCESS_1_MJ };
 	CComboBox	m_gtype;
@@ -48,9 +42,8 @@ public:
 	int		m_gbase_gen;
 
 private:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX);
 
-// Implementation
 protected:
 	CBrush brush1;
 	CBrush brush2;

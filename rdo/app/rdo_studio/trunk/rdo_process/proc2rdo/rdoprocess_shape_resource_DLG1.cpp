@@ -1,6 +1,3 @@
-// rdoprocess_shape_resource_DLG1_MJ.cpp : implementation file
-//
-
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/stdafx.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_resource_DLG1.h"
 
@@ -9,10 +6,6 @@
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
-/////////////////////////////////////////////////////////////////////////////
-// RPShapeResourceDLG1_MJ dialog
-
 
 RPShapeResourceDLG1_MJ::RPShapeResourceDLG1_MJ (CWnd* pParent, RPShapeResource_MJ* ppParent)
 	: CDialog(RPShapeResourceDLG1_MJ::IDD, pParent)
@@ -47,9 +40,6 @@ return TRUE;
 
 BEGIN_MESSAGE_MAP(RPShapeResourceDLG1_MJ, CDialog)
 END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
-// RPShapeResourceDLG1_MJ message handlers
 
 void RPShapeResourceDLG1_MJ::OnOK() 
 {
