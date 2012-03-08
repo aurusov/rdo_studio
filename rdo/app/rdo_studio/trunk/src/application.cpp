@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <gdiplus.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdofile.h"
 #include "kernel/rdothread.h"
@@ -205,6 +206,9 @@ BOOL RDOStudioApp::InitInstance()
 	openLastProject              = GetProfileInt( "general", "openLastProject", true ) ? true : false;
 	lastProjectName              = GetProfileString( "general", "lastProject", "" );
 	showCaptionFullName          = GetProfileInt( "general", "showCaptionFullName", false ) ? true : false;
+
+	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+	Gdiplus::GdiplusStartup(&m_gdiplusToken, &gdiplusStartupInput, NULL);
 
 	editDocTemplate = new CMultiDocTemplate( IDR_EDIT_TYPE, RUNTIME_CLASS(RDOStudioEditDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioEditView) );
 	AddDocTemplate( editDocTemplate );
@@ -404,6 +408,8 @@ int RDOStudioApp::ExitInstance()
 	RDOKernel::close();
 
 	::HtmlHelp( NULL, NULL, HH_CLOSE_ALL, 0 );
+
+	Gdiplus::GdiplusShutdown(m_gdiplusToken);
 
 	if ( autoExitByModel || !plugin_exit_name.empty() ) {
 		CWinApp::ExitInstance();

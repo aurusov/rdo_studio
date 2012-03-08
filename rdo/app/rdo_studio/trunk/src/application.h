@@ -56,10 +56,11 @@ private:
 	void loadReopen();
 	void saveReopen() const;
 
-	bool fileAssociationSetup;
-	bool fileAssociationCheckInFuture;
-	bool openLastProject;
+	bool        fileAssociationSetup;
+	bool        fileAssociationCheckInFuture;
+	bool        openLastProject;
 	std::string lastProjectName;
+	ULONG_PTR   m_gdiplusToken;
 
 	bool showCaptionFullName;
 
