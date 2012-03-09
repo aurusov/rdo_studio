@@ -210,7 +210,7 @@ protected:
 	rbool   isMustExist    (rdoModelObjects::RDOFileType type) const;
 	rbool   isDeleteIfEmpty(rdoModelObjects::RDOFileType type) const;
 
-	void loadBMP(CREF(tstring) name, REF(rdo::stream) stream) const;
+	void loadBMP(REF(tstring) name, REF(rdo::stream) stream) const;
 };
 
 CLOSE_RDO_REPOSITORY_NAMESPACE

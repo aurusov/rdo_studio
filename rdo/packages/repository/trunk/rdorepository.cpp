@@ -592,7 +592,7 @@ void RDOThreadRepository::save(rdoModelObjects::RDOFileType type, REF(rdo::strea
 	}
 }
 
-void RDOThreadRepository::loadBMP(CREF(tstring) name, REF(rdo::stream) stream) const
+void RDOThreadRepository::loadBMP(REF(tstring) name, REF(rdo::stream) stream) const
 {
 	tstring file_name = m_modelPath + name + _T(".bmp");
 	if (rdo::File::exist(file_name))
@@ -600,6 +600,7 @@ void RDOThreadRepository::loadBMP(CREF(tstring) name, REF(rdo::stream) stream) c
 		std::ifstream file(file_name.c_str(), std::ios::in | std::ios::binary);
 		stream << file.rdbuf();
 		file.close();
+		name = file_name;
 	}
 	else
 	{
