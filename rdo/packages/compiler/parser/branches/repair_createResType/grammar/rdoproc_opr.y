@@ -373,7 +373,7 @@ dpt_process_line
 		//! \error вместо настоящих значений параметров транзакта просто 0
 		paramList.push_back(rdoRuntime::RDOValue(0));
 
-		rdoRuntime::LPRDOCalcCreateAndGoInTransact pCreateAndGoOnTransactCalc = rdo::Factory<rdoRuntime::RDOCalcCreateAndGoInTransact>::create(
+		rdoRuntime::LPRDOCalcCreateResource pCreateAndGoOnTransactCalc = rdo::Factory<rdoRuntime::RDOCalcCreateResource>::create(
 			pType,
 			paramList,
 			traceFlag,
@@ -388,9 +388,6 @@ dpt_process_line
 			pCreateAndGoOnTransactCalc
 		);
 		ASSERT(pBlock);
-
-		LPRDOPROCGenerate pBlockGenerate = pBlock.object_dynamic_cast<RDOPROCGenerate>();
-		pCreateAndGoOnTransactCalc->setBlock(pBlockGenerate->getRuntimeBlock());
 
 		$$ = PARSER->stack().push(pBlock);
 	}
