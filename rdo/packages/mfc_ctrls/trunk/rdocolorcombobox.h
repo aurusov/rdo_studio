@@ -1,7 +1,19 @@
-#ifndef RDOCOLORCOMBOBOX_H
-#define RDOCOLORCOMBOBOX_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdocolorcombobox.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      20.02.2003
+  \brief     
+  \indent    4T
+*/
 
+#ifndef _UI_MFC_CTRLS_RDOCOLORCOMBOBOX_H_
+#define _UI_MFC_CTRLS_RDOCOLORCOMBOBOX_H_
+
+// ----------------------------------------------------------------------- INCLUDES
 #include <afxwin.h>
+// ----------------------------------------------------------------------- SYNOPSIS
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOColorComboBox
@@ -32,4 +44,4 @@ public:
 	void setCurrentColor( const COLORREF color );
 };
 
-#endif // RDOCOLORCOMBOBOX_H
+#endif // _UI_MFC_CTRLS_RDOCOLORCOMBOBOX_H_

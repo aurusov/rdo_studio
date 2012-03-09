@@ -1,8 +1,20 @@
-#ifndef RDOLINK_H
-#define RDOLINK_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdolink.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      20.02.2003
+  \brief     
+  \indent    4T
+*/
 
+#ifndef _UI_MFC_CTRLS_RDOLINK_H_
+#define _UI_MFC_CTRLS_RDOLINK_H_
+
+// ----------------------------------------------------------------------- INCLUDES
 #include <afxwin.h>
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdotypes.h"
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOLink
@@ -49,4 +61,4 @@ public:
 	void setFontBold( const rbool value );
 };
 
-#endif // RDOLINK_H
+#endif // _UI_MFC_CTRLS_RDOLINK_H_

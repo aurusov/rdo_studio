@@ -1,9 +1,21 @@
-#ifndef RDOTABCTRL_H
-#define RDOTABCTRL_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdotabctrl.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      20.02.2003
+  \brief     
+  \indent    4T
+*/
 
+#ifndef _UI_MFC_CTRLS_RDOTABCTRL_H_
+#define _UI_MFC_CTRLS_RDOTABCTRL_H_
+
+// ----------------------------------------------------------------------- INCLUDES
 #include <afxcmn.h>
 #include <afxwin.h>
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdotypes.h"
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOTab
@@ -115,4 +127,4 @@ public:
 	CWnd* getTabAsParent() const { return reinterpret_cast<CWnd*>(tab); };
 };
 
-#endif // RDOTABCTRL_H
+#endif // _UI_MFC_CTRLS_RDOTABCTRL_H_
