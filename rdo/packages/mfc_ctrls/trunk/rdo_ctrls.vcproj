@@ -272,9 +272,7 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Source Files"
-			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
+			Name=".pch"
 			>
 			<File
 				RelativePath=".\rdo_ctrls_pch.cpp"
@@ -313,29 +311,15 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\rdocolorcombobox.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\rdolink.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\rdotabctrl.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\rdotreectrl.cpp"
+				RelativePath=".\rdo_ctrls_pch.h"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
+			Name=".ctrls"
 			>
 			<File
-				RelativePath=".\rdo_ctrls_pch.h"
+				RelativePath=".\rdocolorcombobox.cpp"
 				>
 			</File>
 			<File
@@ -343,11 +327,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\rdolink.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\rdolink.h"
 				>
 			</File>
 			<File
+				RelativePath=".\rdotabctrl.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\rdotabctrl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\rdotreectrl.cpp"
 				>
 			</File>
 			<File
