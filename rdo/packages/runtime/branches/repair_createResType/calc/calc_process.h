@@ -35,24 +35,6 @@ private:
 	rsint         m_relResNum;
 };
 
-//! Создание транзакта в блоке GENERATE и его запуск в процесс
-CALC(RDOCalcCreateAndGoInTransact)
-{
-	DECLARE_FACTORY(RDOCalcCreateAndGoInTransact)
-public:
-	void setBlock(LPIPROCBlock pBlock);
-protected:
-	RDOCalcCreateAndGoInTransact(CREF(LPIResourceType) pType, CREF(std::vector<RDOValue>) rParamsCalcs, rbool traceFlag, rbool permanentFlag);
-	DECLARE_ICalc;
-private:
-	LPIPROCBlock           m_pBlock;
-	LPIResourceType        m_pResType;
-	std::vector<RDOValue>  m_paramsCalcs;
-	rbool                  m_traceFlag;
-	rbool                  m_permanentFlag;
-	ruint                  m_relResID;
-};
-
 //! Получение значения терминального счетчика
 CALC(RDOCalcGetTermNow)
 {
