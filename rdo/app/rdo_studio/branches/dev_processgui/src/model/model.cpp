@@ -1032,7 +1032,7 @@ void RDOStudioModel::saveToXML()
 
 	// Создаем файл '.prcx' с помощью репозитария:
 	rdoRepository::RDOThreadRepository::FileInfo fileInfo(rdoModelObjects::PRCX);
-	studioApp.studioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &fileInfo);
+	sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &fileInfo);
 
 	// Автоматически открываем файл при создании потока:
 	std::ofstream outFile(fileInfo.m_fullName.c_str());
@@ -1118,13 +1118,17 @@ void RDOStudioModel::closeModelFromRepository()
 			pDoc->OnCloseDocument();
 		}
 	}
+	PTR(RPDoc) pFlowchartDoc = getFlowchartDoc();
+	if (pFlowchartDoc)
+	{
+		pFlowchartDoc->OnCloseDocument();
+	}
 	m_GUI_HAS_MODEL = false;
 	if (!m_showCanNotCloseModelMessage)
 	{
 		m_showCanNotCloseModelMessage = true;
 	}
 	m_modelClosed = true;
-	getFlowchartDoc()->OnCloseDocument();
 }
 
 void RDOStudioModel::setName(CREF(tstring) str)
