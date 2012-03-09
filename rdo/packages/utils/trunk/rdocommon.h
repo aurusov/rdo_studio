@@ -97,6 +97,11 @@ OPEN_RDO_NAMESPACE
 	//! \result Строка без пустот в конце
 	void trimRight(REF(tstring) str);
 
+	//! Переводит строку в unicode
+	//! \param str - строка в ansi
+	//! \result Строка в unicode
+	wstring toUnicode(CREF(astring) str);
+
 	//! Получение пути файла по его имени
 	//! \param fileName - полное имя файла
 	//! \result Путь к файлу, заканчивающийся '/'

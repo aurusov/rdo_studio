@@ -18,6 +18,7 @@
 #include <stdarg.h>
 #include <algorithm>
 #include <boost/algorithm/string.hpp>
+#include <boost/range/algorithm/copy.hpp>
 
 #ifdef COMPILER_VISUAL_STUDIO
 #   include <windows.h>
@@ -123,6 +124,13 @@ void trimRight( REF(tstring) str )
 {
 	static tchar szDelims[] = _T(" \t\n\r");
 	str.erase( str.find_last_not_of( szDelims ) + 1, tstring::npos );
+}
+
+wstring toUnicode(CREF(astring) str)
+{
+	std::wstring wtext(str.length(), L' ');
+	boost::copy(str, wtext.begin());
+	return wtext;
 }
 
 tstring extractFilePath( CREF(tstring) fileName )
