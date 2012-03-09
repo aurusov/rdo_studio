@@ -1,4 +1,18 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      app/rdo_studio_mfc/src/frame/view.cpp
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      06.03.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
+#include "kernel/rdokernel.h"
+#include "simulator/service/rdosimwin.h"
 #include "app/rdo_studio_mfc/src/frame/view.h"
 #include "app/rdo_studio_mfc/src/frame/document.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
@@ -6,8 +20,7 @@
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/htmlhelp.h"
-#include "kernel/rdokernel.h"
-#include "simulator/service/rdosimwin.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

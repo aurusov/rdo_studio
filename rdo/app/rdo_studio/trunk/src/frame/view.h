@@ -1,7 +1,19 @@
-#ifndef RDOSTUDIOFRAMEVIEW_H
-#define RDOSTUDIOFRAMEVIEW_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      app/rdo_studio_mfc/src/frame/view.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      06.03.2003
+  \brief     
+  \indent    4T
+*/
 
+#ifndef _RDO_STUDIO_MFC_FRAME_VIEW_H_
+#define _RDO_STUDIO_MFC_FRAME_VIEW_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/view.h"
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioFrameView
@@ -83,4 +95,4 @@ inline RDOStudioFrameDoc* RDOStudioFrameView::GetDocument()
    { return (RDOStudioFrameDoc*)m_pDocument; }
 #endif
 
-#endif // RDOSTUDIOFRAMEVIEW_H
+#endif // _RDO_STUDIO_MFC_FRAME_VIEW_H_
