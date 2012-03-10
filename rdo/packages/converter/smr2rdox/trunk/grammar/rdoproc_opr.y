@@ -434,7 +434,8 @@ dpt_depart_param
 dpt_term_param
 	: /* empty */
 	{
-		LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCTerminate>::create(CONVERTER->getLastPROCProcess(), _T("TERMINATE"), 0);
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcConst>::create(rdoRuntime::RDOValue(0));
+		LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCTerminate>::create(CONVERTER->getLastPROCProcess(), _T("TERMINATE"), pCalc);
 		ASSERT(pBlock);
 		$$ = CONVERTER->stack().push(pBlock);
 	}
@@ -444,8 +445,8 @@ dpt_term_param
 		ASSERT(pArithm);
 		if (pArithm->createCalc()->calcValue(RUNTIME).type()->typeID()==rdoRuntime::RDOType::t_int)
 		{
-			int term = pArithm->createCalc()->calcValue(RUNTIME).getInt();
-			LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCTerminate>::create(CONVERTER->getLastPROCProcess(), _T("TERMINATE"), term);
+			rdoRuntime::LPRDOCalc pCalc = pArithm->createCalc(NULL);
+			LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCTerminate>::create(CONVERTER->getLastPROCProcess(), _T("TERMINATE"), pCalc);
 			ASSERT(pBlock);
 			$$ = CONVERTER->stack().push(pBlock);
 		}

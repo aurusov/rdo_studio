@@ -601,10 +601,10 @@ RDOPROCAdvance::RDOPROCAdvance(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) na
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCTerminate
 // --------------------------------------------------------------------------------
-RDOPROCTerminate::RDOPROCTerminate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(ruint) term)
+RDOPROCTerminate::RDOPROCTerminate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pCalc)
 	: RDOPROCOperator(pProcess, name)
 {
-	m_pRuntime = RF(rdoRuntime::RDOPROCTerminate)::create(Converter::s_converter()->getLastPROCProcess()->getRunTime(), term);
+	m_pRuntime = RF(rdoRuntime::RDOPROCTerminate)::create(Converter::s_converter()->getLastPROCProcess()->getRunTime(), pCalc);
 	ASSERT(m_pRuntime);
 }
 
