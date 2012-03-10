@@ -562,10 +562,12 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 					case rdoAnimation::FrameItem::FIT_ACTIVE:
 					{
 						rdoAnimation::RDOActiveElement* pElement = static_cast<rdoAnimation::RDOActiveElement*>(pCurrElement);
-						std::vector< Area* >::const_iterator it = m_frameList[index]->areas_sim.begin();
-						while ( it != m_frameList[index]->areas_sim.end() ) {
-							if ( (*it)->name == pElement->m_opr_name ) break;
-							it++;
+						AreaList::const_iterator it = m_frameList[index]->areas_sim.begin();
+						while (it != m_frameList[index]->areas_sim.end())
+						{
+							if ((*it)->name == pElement->m_opr_name)
+								break;
+							++it;
 						}
 						if ( it == m_frameList[index]->areas_sim.end() ) {
 							Area* area = new Area;

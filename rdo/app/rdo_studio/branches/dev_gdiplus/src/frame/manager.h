@@ -60,18 +60,30 @@ private:
 	friend class RDOStudioFrameManager;
 	friend class RDOStudioFrameView;
 	private:
-		Frame(): hitem( 0 ), doc( NULL ), view( NULL ) {};
-		~Frame() { areas_sim_clear(); };
-		HTREEITEM            hitem;
-		tstring              name;
-		RDOStudioFrameDoc*   doc;
-		RDOStudioFrameView*  view;
-		std::vector< Area* > areas_sim;
-		void areas_sim_clear() {
-			std::vector< Area* >::iterator it = areas_sim.begin();
-			while ( it != areas_sim.end() ) {
-				delete *it++;
-			};
+		Frame()
+			: hitem( 0 )
+			, doc( NULL )
+			, view( NULL )
+		{}
+		~Frame()
+		{
+			areas_sim_clear();
+		}
+
+		typedef  std::vector<PTR(Area)>  AreaList;
+
+		HTREEITEM               hitem;
+		tstring                 name;
+		PTR(RDOStudioFrameDoc)  doc;
+		PTR(RDOStudioFrameView) view;
+		AreaList                areas_sim;
+
+		void areas_sim_clear()
+		{
+			STL_FOR_ALL(areas_sim, it)
+			{
+				delete *it;
+			}
 			areas_sim.clear();
 		}
 	};
