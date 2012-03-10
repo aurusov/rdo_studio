@@ -20,14 +20,9 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCTerminate
 // --------------------------------------------------------------------------------
-inline RDOPROCTerminate::RDOPROCTerminate(LPIPROCProcess process, ruint _term)
-	: RDOPROCBlock(process)
-	, term        (_term  )
+inline RDOPROCTerminate::RDOPROCTerminate(CREF(LPIPROCProcess) pProcess, CREF(LPRDOCalc) pCalc)
+	: RDOPROCBlock(pProcess)
+	, pTermCalc   (pCalc   )
 {}
-
-inline int RDOPROCTerminate::getTerm()
-{
-	return term;
-}
 
 CLOSE_RDO_RUNTIME_NAMESPACE

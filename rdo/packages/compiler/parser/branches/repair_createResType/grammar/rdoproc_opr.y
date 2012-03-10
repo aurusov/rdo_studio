@@ -588,7 +588,8 @@ dpt_depart_param
 dpt_term_param
 	: /* empty */
 	{
-		LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCTerminate>::create(PARSER->getLastPROCProcess(), _T("TERMINATE"), 0);
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcConst>::create(rdoRuntime::RDOValue(0));
+		LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCTerminate>::create(PARSER->getLastPROCProcess(), _T("TERMINATE"), pCalc);
 		ASSERT(pBlock);
 		$$ = PARSER->stack().push(pBlock);
 	}
@@ -596,21 +597,21 @@ dpt_term_param
 	{
 		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($1);
 		ASSERT(pArithm);
-		if (pArithm->createCalc()->calcValue(RUNTIME).type()->typeID()==rdoRuntime::RDOType::t_int)
+		if (pArithm->createCalc()->calcValue(RUNTIME).type()->typeID() == rdoRuntime::RDOType::t_int)
 		{
-			int term = pArithm->createCalc()->calcValue(RUNTIME).getInt();
-			LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCTerminate>::create(PARSER->getLastPROCProcess(), _T("TERMINATE"), term);
+			rdoRuntime::LPRDOCalc pCalc = pArithm->createCalc(NULL);
+			LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCTerminate>::create(PARSER->getLastPROCProcess(), _T("TERMINATE"), pCalc);
 			ASSERT(pBlock);
 			$$ = PARSER->stack().push(pBlock);
 		}
 		else
 		{
-			PARSER->error().error(@1, _T("Ошибка, для оператора TERMINATE можно использовать только целое значение"));
+			PARSER->error().error(@1, _T("Ошибка, для оператора TERMINATE можно использовать только арифметические выражения целого типа"));
 		}
 	}
-	| fun_arithm  error
+	| fun_arithm error
 	{
-		PARSER->error().error(@1, _T("Ошибка, после оператора TERMINATE может быть указано только одно целое положительное число"))
+		PARSER->error().error(@1, _T("Ошибка, после оператора TERMINATE может быть указано только арифметическое выражение целого типа"))
 	}
 	;
 

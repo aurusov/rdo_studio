@@ -285,7 +285,7 @@ protected:
 	LPIPROCBlock m_pRuntime;
 
 private:
-	RDOPROCTerminate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(ruint) term);
+	RDOPROCTerminate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pCalc);
 };
 
 // --------------------------------------------------------------------------------

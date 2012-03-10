@@ -35,12 +35,11 @@ QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE       (IBaseOperation)
 QUERY_INTERFACE_END
 
-public:
-	int getTerm();
-
 private:
-	RDOPROCTerminate(LPIPROCProcess process, ruint _term);
-	const ruint term; 
+	RDOPROCTerminate(CREF(LPIPROCProcess) pProcess, CREF(LPRDOCalc) pCalc);
+
+	LPRDOCalc pTermCalc;
+
 	DECLARE_IBaseOperation;
 };
 
