@@ -285,7 +285,7 @@ protected:
 	LPIPROCBlock m_pRuntime;
 
 private:
-	RDOPROCTerminate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(ruint) term);
+	RDOPROCTerminate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pCalc);
 };
 
 // --------------------------------------------------------------------------------
@@ -300,7 +300,7 @@ protected:
 	LPIPROCBlock m_pRuntime;
 
 private:
-	RDOPROCAssign(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pValue, int resID, int paramID);
+	RDOPROCAssign(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pCalc);
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

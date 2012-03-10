@@ -45,34 +45,26 @@ REF(RDOValue) RDOCalcProcessControl::doCalc(CREF(LPRDORuntime) pRuntime)
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOCalcCreateAndGoInTransact
+// -------------------- RDOCalcProcAssign
 // --------------------------------------------------------------------------------
-RDOCalcCreateAndGoInTransact::RDOCalcCreateAndGoInTransact(CREF(LPIResourceType) pType, CREF(std::vector<RDOValue>) rParamsCalcs, rbool traceFlag, rbool permanentFlag)
-	: m_pResType     (pType        )
-	, m_traceFlag    (traceFlag    )
-	, m_permanentFlag(permanentFlag)
+RDOCalcProcAssign::RDOCalcProcAssign(CREF(LPRDOCalc) pCalc, ruint res, ruint param)
+	: m_pCalc(pCalc)
+	, m_res  (res  )
+	, m_param(param)
 {
-	m_paramsCalcs.insert(m_paramsCalcs.begin(), rParamsCalcs.begin(), rParamsCalcs.end());
+	ASSERT(m_pCalc);
+	ASSERT(m_res   != ~0);
+	ASSERT(m_param != ~0);
 }
 
-void RDOCalcCreateAndGoInTransact::setBlock(LPIPROCBlock pBlock)
+REF(RDOValue) RDOCalcProcAssign::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	ASSERT(pBlock);
-	m_pBlock = pBlock;
-}
+	LPRDOResource pRes = pRuntime->getResourceByID(m_res);
+	ASSERT(pRes);
 
-REF(RDOValue) RDOCalcCreateAndGoInTransact::doCalc(CREF(LPRDORuntime) pRuntime)
-{
-	ASSERT(m_pBlock);
+	m_value = m_pCalc->calcValue(pRuntime);
 
-	LPRDOResource pResource = m_pResType->createRes(pRuntime, pRuntime->getResourceId(), m_paramsCalcs, m_traceFlag, m_permanentFlag);
-	ASSERT(pResource);
-
-	LPRDOPROCTransact pTransact = static_cast<PTR(RDOPROCTransact)>(pResource.get());
-	ASSERT(pTransact);
-
-	pTransact->setBlock(m_pBlock);
-	pTransact->next();
+	pRes->setParam(m_param, m_value);
 
 	return m_value;
 }
