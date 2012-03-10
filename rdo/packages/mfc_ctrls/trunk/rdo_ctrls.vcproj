@@ -62,6 +62,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				AdditionalDependencies="gdiplus.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -125,6 +126,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				AdditionalDependencies="gdiplus.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -187,6 +189,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				AdditionalDependencies="gdiplus.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -250,6 +253,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				AdditionalDependencies="gdiplus.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -271,6 +275,18 @@
 	<References>
 	</References>
 	<Files>
+		<Filter
+			Name=".memdc"
+			>
+			<File
+				RelativePath=".\memdc.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\memdc.h"
+				>
+			</File>
+		</Filter>
 		<Filter
 			Name=".pch"
 			>
