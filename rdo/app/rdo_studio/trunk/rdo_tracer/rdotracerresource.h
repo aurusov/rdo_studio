@@ -1,7 +1,19 @@
-#ifndef RDOTRACERRESOURCE_H
-#define RDOTRACERRESOURCE_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdotracerresource.h
+  \author    Захаров Павел
+  \date      11.03.2003
+  \brief     
+  \indent    4T
+*/
 
+#ifndef _RDO_STUDIO_MFC_TRACER_RDOTRACERRESOURCE_H_
+#define _RDO_STUDIO_MFC_TRACER_RDOTRACERRESOURCE_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracerserie.h"
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOTracerResParam
@@ -51,4 +63,4 @@ public:
 	rbool isErased() { return erased; };
 };
 
-#endif // RDOTRACERRESOURCE_H
+#endif // _RDO_STUDIO_MFC_TRACER_RDOTRACERRESOURCE_H_

@@ -1,6 +1,21 @@
+/*!
+  \copyright (c) RDO-Team, 2006-2012
+  \file      rdoprocess_project.cpp
+  \authors   Манжай Игорь (daynin@gmail.com)
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Шувалов Андрей (dronbas@gmail.com)
+  \date      10.02.2006
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
-#include "app/rdo_studio_mfc/rdo_process/rdoprocess_project.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/application.h"
+#include "app/rdo_studio_mfc/src/model/model.h"
+#include "app/rdo_studio_mfc/rdo_process/rdoprocess_project.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_childfrm.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_docview.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_toolbar.h"
@@ -8,8 +23,7 @@
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_object_flowchart.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_method.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_xml.h"
-
-#include "app/rdo_studio_mfc/src/model/model.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

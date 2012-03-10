@@ -1,17 +1,19 @@
 /*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdostudiomodel.h
+  \copyright (c) RDO-Team, 2003-2012
+  \file      app/rdo_studio_mfc/src/model/model.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
+  \date      20.02.2003
   \brief     
   \indent    4T
 */
 
-#ifndef _RDOSTUDIOMODEL_H_
-#define _RDOSTUDIOMODEL_H_
+#ifndef _RDO_STUDIO_MFC_MODEL_MODEL_H_
+#define _RDO_STUDIO_MFC_MODEL_MODEL_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "kernel/rdothread.h"
+#include "simulator/service/rdosimwin.h"
 #include "app/rdo_studio_mfc/src/frame/manager.h"
 #include "app/rdo_studio_mfc/src/model/document.h"
 #include "app/rdo_studio_mfc/src/model/view.h"
@@ -21,8 +23,6 @@
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_project.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_method_proc2rdo.h"
 #include "app/rdo_studio_mfc/src/application.h"
-#include "kernel/rdothread.h"
-#include "simulator/service/rdosimwin.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
@@ -239,4 +239,4 @@ public:
 // --------------------------------------------------------------------------------
 extern PTR(RDOStudioModel) model;
 
-#endif // _RDOSTUDIOMODEL_H_
+#endif // _RDO_STUDIO_MFC_MODEL_MODEL_H_

@@ -1,5 +1,19 @@
-#ifndef RDO_PROCESS_METHOD_MANAGER_H
-#define RDO_PROCESS_METHOD_MANAGER_H
+/*!
+  \copyright (c) RDO-Team, 2006-2012
+  \file      rdoprocess_method_manager.h
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Шувалов Андрей (dronbas@gmail.com)
+  \date      23.08.2006
+  \brief     
+  \indent    4T
+*/
+
+#ifndef _RDO_STUDIO_MFC_RDO_PROCESS_METHOD_MANAGER_H_
+#define _RDO_STUDIO_MFC_RDO_PROCESS_METHOD_MANAGER_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
+// --------------------------------------------------------------------------------
 
 namespace rpMethod {
 class RPMethod;
@@ -120,4 +134,4 @@ public:
 	afx_msg void OnMethodListClick(NMHDR *pNMHDR, LRESULT *pResult);
 };
 
-#endif // RDO_PROCESS_METHOD_MANAGER_H
+#endif // _RDO_STUDIO_MFC_RDO_PROCESS_METHOD_MANAGER_H_

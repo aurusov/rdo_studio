@@ -1,8 +1,22 @@
-#ifndef RDO_PROCESS_PROJECT_MFC_H
-#define RDO_PROCESS_PROJECT_MFC_H
+/*!
+  \copyright (c) RDO-Team, 2006-2012
+  \file      rdoprocess_project.h
+  \authors   Манжай Игорь (daynin@gmail.com)
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Шувалов Андрей (dronbas@gmail.com)
+  \date      10.02.2006
+  \brief     
+  \indent    4T
+*/
 
-#include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_project.h"
+#ifndef _RDO_STUDIO_MFC_RDO_PROCESS_PROJECT_H_
+#define _RDO_STUDIO_MFC_RDO_PROCESS_PROJECT_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdodebug.h"
+#include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_project.h"
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // ---------- RPProjectMFC
@@ -30,4 +44,4 @@ public:
 	void loadFromXML(CREF(pugi::xml_node) node);
 };
 
-#endif // RDO_PROCESS_PROJECT_MFC_H
+#endif // _RDO_STUDIO_MFC_RDO_PROCESS_PROJECT_H_

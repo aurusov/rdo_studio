@@ -1,9 +1,21 @@
-#ifndef RDOTRACERRESULT_H
-#define RDOTRACERRESULT_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdotracerresult.h
+  \author    Захаров Павел
+  \date      11.03.2003
+  \brief     
+  \indent    4T
+*/
 
+#ifndef _RDO_STUDIO_MFC_TRACER_RDOTRACERRESULT_H_
+#define _RDO_STUDIO_MFC_TRACER_RDOTRACERRESULT_H_
+
+// ----------------------------------------------------------------------- INCLUDES
 #include <vector>
 #include <string>
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracerserie.h"
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOTracerResult
@@ -33,4 +45,4 @@ public:
 	void setValue( tstring& line, RDOTracerTimeNow* const time, const int eventIndex );
 };
 
-#endif // RDOTRACERRESULT_H
+#endif // _RDO_STUDIO_MFC_TRACER_RDOTRACERRESULT_H_
