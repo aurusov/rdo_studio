@@ -22,12 +22,6 @@
 #include "app/rdo_studio_mfc/htmlhelp.h"
 // --------------------------------------------------------------------------------
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioFrameView
 // --------------------------------------------------------------------------------
@@ -54,25 +48,17 @@ BEGIN_MESSAGE_MAP(RDOStudioFrameView, RDOStudioView)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, RDOStudioView::OnFilePrintPreview)
 END_MESSAGE_MAP()
 
-RDOStudioFrameView::RDOStudioFrameView():
-	RDOStudioView(),
-	frameBmpRect( 0, 0, 0, 0 ),
-	newClientRect( 0, 0, 0, 0 ),
-	xPos( 0 ),
-	yPos( 0 ),
-	bgColor( studioApp.m_pMainFrame->style_frame.theme->backgroundColor ),
-	mustBeInit( true ),
-	hwnd( NULL ),
-	hdc( NULL ),
-	hmemdc( NULL ),
-	saved_hdc( 0 ),
-	saved_hmemdc( 0 ),
-	hfontInit( NULL ),
-	hfontCurrent( NULL ),
-//	hbmpInit( NULL ),
-	hbmp( NULL ),
-	mouseOnHScroll( false )
+RDOStudioFrameView::RDOStudioFrameView()
+	: RDOStudioView()
+	, frameBmpRect( 0, 0, 0, 0 )
+	, newClientRect( 0, 0, 0, 0 )
+	, mustBeInit( true )
+	, m_hwnd( NULL )
+	, hfontInit( NULL )
+	, hfontCurrent( NULL )
+	, mouseOnHScroll( false )
 {
+	m_bgColor.SetFromCOLORREF(studioApp.m_pMainFrame->style_frame.theme->backgroundColor);
 }
 
 RDOStudioFrameView::~RDOStudioFrameView()
@@ -92,33 +78,15 @@ BOOL RDOStudioFrameView::PreCreateWindow(CREATESTRUCT& cs)
 
 int RDOStudioFrameView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
-	if ( RDOStudioView::OnCreate(lpCreateStruct) == -1 ) return -1;
+	if (RDOStudioView::OnCreate(lpCreateStruct) == -1)
+		return -1;
 
-	// Remembering handle to the window in hwnd member
-	hwnd = GetSafeHwnd();
-	// Remembering handle to the private device context in hdc member
-	if ( hwnd ) hdc = ::GetDC( hwnd );
-	if ( !hdc ) return -1;
+	m_hwnd = GetSafeHwnd();
+//	m_pGraphics.reset(new Gdiplus::Graphics(m_hwnd));
+//	if (!m_pGraphics.get() || m_pGraphics->GetLastStatus() != Gdiplus::Ok)
+//		return -1;
 
-	// Creating memory device context to draw on bitmap
-	hmemdc = ::CreateCompatibleDC( hdc );
-	if ( !hmemdc ) return -1;
-
-	// Saving the own DC and memory DC states to restore them
-	// before deleting the memory DC or destroying window
-	saved_hdc    = ::SaveDC( hdc );
-	saved_hmemdc = ::SaveDC( hmemdc );
-	if ( !saved_hdc || !saved_hmemdc ) return -1;
-	// Setting background mode one time in initialization.
-	// We have private DC, so we needn't to reset it each time
-	// we paint
-	::SetBkMode( hmemdc, TRANSPARENT );
-	// Remembering default font to select it into DC
-	// when destroying window or setting new font
-	hfontInit = static_cast<HFONT>(::GetCurrentObject( hmemdc, OBJ_FONT ));
-	// Remembering default bmp to select it into DC
-	// when resizing window
-//	hbmpInit  = static_cast<HBITMAP>(::GetCurrentObject( hmemdc, OBJ_BITMAP ));
+//	hfontInit = static_cast<HFONT>(::GetCurrentObject( hmemdc, OBJ_FONT ));
 
 	updateFont();
 	updateScrollBars();
@@ -128,22 +96,16 @@ int RDOStudioFrameView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 void RDOStudioFrameView::updateFont()
 {
-	int index = model->m_frameManager.findFrameIndex( this );
-	if ( index != -1 )
-	{
-		model->m_frameManager.getFrameMutexDraw( index )->Lock();
-	}
-
 	if ( hfontCurrent )
 	{
-		::SelectObject( hmemdc, hfontInit );
+//		::SelectObject( hmemdc, hfontInit );
 		::DeleteObject( hfontCurrent );
 	}
 
 	LOGFONT lf;
 	memset( &lf, 0, sizeof(lf) );
 	RDOStudioFrameStyle* style = &studioApp.m_pMainFrame->style_frame;
-	lf.lfHeight    = -MulDiv( style->font->size, ::GetDeviceCaps( hmemdc, LOGPIXELSY ), 72 );
+//	lf.lfHeight    = -MulDiv( style->font->size, ::GetDeviceCaps( hmemdc, LOGPIXELSY ), 72 );
 	lf.lfWeight    = style->theme->defaultStyle & rdoStyle::RDOStyleFont::BOLD ? FW_BOLD : FW_NORMAL;
 	lf.lfItalic    = style->theme->defaultStyle & rdoStyle::RDOStyleFont::ITALIC;
 	lf.lfUnderline = style->theme->defaultStyle & rdoStyle::RDOStyleFont::UNDERLINE;
@@ -153,12 +115,7 @@ void RDOStudioFrameView::updateFont()
 #pragma warning(default: 4996)
 
 	hfontCurrent = ::CreateFontIndirect( &lf );
-	::SelectObject( hmemdc, hfontCurrent );
-
-	if ( index != -1 )
-	{
-		model->m_frameManager.getFrameMutexDraw( index )->Unlock();
-	}
+//	::SelectObject( hmemdc, hfontCurrent );
 }
 
 BOOL RDOStudioFrameView::OnPreparePrinting(CPrintInfo* pInfo)
@@ -192,23 +149,12 @@ RDOStudioFrameDoc* RDOStudioFrameView::GetDocument()
 }
 #endif
 
-void RDOStudioFrameView::OnDestroy() 
+void RDOStudioFrameView::OnDestroy()
 {
 	int index = model->m_frameManager.findFrameIndex( this );
 	if ( index != -1 ) {
-		model->m_frameManager.getFrameEventClose( index )->SetEvent();
 		model->m_frameManager.disconnectFrameDoc( GetDocument() );
 		model->m_frameManager.resetCurrentShowingFrame( index );
-	}
-	if ( hdc ) {
-		::RestoreDC( hdc, saved_hdc );
-	}
-	if ( hmemdc ) {
-		::RestoreDC( hmemdc, saved_hmemdc );
-		::DeleteDC( hmemdc );
-	}
-	if ( hbmp ) {
-		::DeleteObject( hbmp );
 	}
 
 	RDOStudioView::OnDestroy();
@@ -229,20 +175,20 @@ void RDOStudioFrameView::updateScrollBars()
 	si.cbSize = sizeof( si );
 	si.fMask  = SIF_RANGE | SIF_PAGE | SIF_POS;
 
-	if ( xPos > frameBmpRect.right - newClientRect.right ) xPos = frameBmpRect.right - newClientRect.right;
-	if ( xPos < 0 ) xPos = 0;
-	si.nMin   = 0;
-	si.nMax   = frameBmpRect.right - 1;
-	si.nPos   = xPos;
-	si.nPage  = newClientRect.right;
+	if ( m_pos.X > frameBmpRect.GetRight() - newClientRect.right ) m_pos.X = frameBmpRect.GetRight() - newClientRect.right;
+	if ( m_pos.X < 0 ) m_pos.X = 0;
+	si.nMin  = 0;
+	si.nMax  = frameBmpRect.GetRight() - 1;
+	si.nPos  = m_pos.X;
+	si.nPage = newClientRect.right;
 	SetScrollInfo( SB_HORZ, &si, TRUE );
 
-	if ( yPos > frameBmpRect.bottom - newClientRect.bottom ) yPos = frameBmpRect.bottom - newClientRect.bottom;
-	if ( yPos < 0 ) yPos = 0;
-	si.nMin   = 0;
-	si.nMax   = frameBmpRect.bottom - 1;
-	si.nPos   = yPos;
-	si.nPage  = newClientRect.bottom;
+	if ( m_pos.Y > frameBmpRect.GetBottom() - newClientRect.bottom ) m_pos.Y = frameBmpRect.GetBottom() - newClientRect.bottom;
+	if ( m_pos.Y < 0 ) m_pos.Y = 0;
+	si.nMin  = 0;
+	si.nMax  = frameBmpRect.GetBottom() - 1;
+	si.nPos  = m_pos.Y;
+	si.nPage = newClientRect.bottom;
 	SetScrollInfo( SB_VERT, &si, TRUE );
 }
 
@@ -258,41 +204,41 @@ void RDOStudioFrameView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollB
 	si.cbSize = sizeof( si );
 	switch( nSBCode ) {
 		case SB_LEFT:
-			xPos = 0;
+			m_pos.X = 0;
 			break;
 
 		case SB_RIGHT:
-			xPos = frameBmpRect.right - newClientRect.right;
+			m_pos.X = frameBmpRect.GetRight() - newClientRect.right;
 			break;
 
 		case SB_PAGELEFT:
 			GetScrollInfo( SB_HORZ, &si, SIF_PAGE );
-			xPos -= si.nPage;
+			m_pos.X -= si.nPage;
 			break; 
 
 		case SB_PAGERIGHT:
 			GetScrollInfo( SB_HORZ, &si, SIF_PAGE );
-			xPos += si.nPage;
+			m_pos.X += si.nPage;
 			break;
 
 		case SB_LINELEFT:
-			xPos--;
+			m_pos.X--;
 			break;
 
 		case SB_LINERIGHT:
-			xPos++;
+			m_pos.X++;
 			break;
 
 		case SB_THUMBTRACK: {
 			GetScrollInfo( SB_HORZ, &si, SIF_TRACKPOS );
-			xPos += si.nTrackPos - xPos;
+			m_pos.X += si.nTrackPos - m_pos.X;
 			break;
 		}
 	}
-	if ( xPos > frameBmpRect.right - newClientRect.right ) xPos = frameBmpRect.right - newClientRect.right;
-	if ( xPos < 0 ) xPos = 0;
+	if ( m_pos.X > frameBmpRect.GetRight() - newClientRect.right ) m_pos.X = frameBmpRect.GetRight() - newClientRect.right;
+	if ( m_pos.X < 0 ) m_pos.X = 0;
 	si.fMask = SIF_POS;
-	si.nPos  = xPos;
+	si.nPos  = m_pos.X;
 	SetScrollInfo( SB_HORZ, &si, TRUE );
 	InvalidateRect( NULL );
 	UpdateWindow();
@@ -310,41 +256,41 @@ void RDOStudioFrameView::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollB
 	si.cbSize = sizeof( si );
 	switch( nSBCode ) {
 		case SB_TOP:
-			yPos = 0;
+			m_pos.Y = 0;
 			break;
 
 		case SB_BOTTOM:
-			yPos = frameBmpRect.bottom - newClientRect.bottom;
+			m_pos.Y = frameBmpRect.GetBottom() - newClientRect.bottom;
 			break;
 
 		case SB_PAGEUP:
 			GetScrollInfo( SB_VERT, &si, SIF_PAGE );
-			yPos -= si.nPage;
+			m_pos.Y -= si.nPage;
 			break; 
 
 		case SB_PAGEDOWN:
 			GetScrollInfo( SB_VERT, &si, SIF_PAGE );
-			yPos += si.nPage;
+			m_pos.Y += si.nPage;
 			break;
 
 		case SB_LINEUP:
-			yPos--;
+			m_pos.Y--;
 			break;
 
 		case SB_LINEDOWN:
-			yPos++;
+			m_pos.Y++;
 			break;
 
 		case SB_THUMBTRACK: {
 			GetScrollInfo( SB_VERT, &si, SIF_TRACKPOS );
-			yPos += si.nTrackPos - yPos;
+			m_pos.Y += si.nTrackPos - m_pos.Y;
 			break;
 		}
 	}
-	if ( yPos > frameBmpRect.bottom - newClientRect.bottom ) yPos = frameBmpRect.bottom - newClientRect.bottom;
-	if ( yPos < 0 ) yPos = 0;
+	if ( m_pos.Y > frameBmpRect.GetBottom() - newClientRect.bottom ) m_pos.Y = frameBmpRect.GetBottom() - newClientRect.bottom;
+	if ( m_pos.Y < 0 ) m_pos.Y = 0;
 	si.fMask = SIF_POS;
-	si.nPos  = yPos;
+	si.nPos  = m_pos.Y;
 	SetScrollInfo( SB_VERT, &si, TRUE );
 	InvalidateRect( NULL );
 	UpdateWindow();
@@ -354,11 +300,9 @@ void RDOStudioFrameView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	RDOStudioFrameManager* frameManager = &model->m_frameManager;
 	int index = frameManager->findFrameIndex( this );
-	CSingleLock lock_draw( frameManager->getFrameMutexDraw( index ) );
-	lock_draw.Lock();
 
-	point.Offset( xPos, yPos );
-	std::vector< RDOStudioFrameManager::Area* >* areas_sim = &frameManager->frames[index]->areas_sim;
+	point.Offset( m_pos.X, m_pos.Y );
+	std::vector< RDOStudioFrameManager::Area* >* areas_sim = &frameManager->m_frameList[index]->areas_sim;
 	std::vector< RDOStudioFrameManager::Area* >::iterator it = areas_sim->begin();
 	while ( it != areas_sim->end() ) {
 		RDOStudioFrameManager::Area* area = *it;
@@ -367,8 +311,6 @@ void RDOStudioFrameView::OnLButtonDown(UINT nFlags, CPoint point)
 		}
 		it++;
 	};
-
-	lock_draw.Unlock();
 
 	RDOStudioView::OnLButtonDown( nFlags, point );
 }
@@ -404,16 +346,16 @@ BOOL RDOStudioFrameView::OnMouseWheel( UINT nFlags, short zDelta, CPoint pt )
 	si.cbSize = sizeof( si );
 	si.fMask  = SIF_POS;
 	if ( mouseOnHScroll ) {
-		xPos      -= newClientRect.right / 4 * (zDelta >= 0 ? 1 : -1);
-		if ( xPos > frameBmpRect.right - newClientRect.right ) xPos = frameBmpRect.right - newClientRect.right;
-		if ( xPos < 0 ) xPos = 0;
-		si.nPos   = xPos;
+		m_pos.X -= newClientRect.right / 4 * (zDelta >= 0 ? 1 : -1);
+		if ( m_pos.X > frameBmpRect.GetRight() - newClientRect.right ) m_pos.X = frameBmpRect.GetRight() - newClientRect.right;
+		if ( m_pos.X < 0 ) m_pos.X = 0;
+		si.nPos = m_pos.X;
 		SetScrollInfo( SB_HORZ, &si, TRUE );
 	} else {
-		yPos      -= newClientRect.bottom / 4 * (zDelta >= 0 ? 1 : -1);
-		if ( yPos > frameBmpRect.bottom - newClientRect.bottom ) yPos = frameBmpRect.bottom - newClientRect.bottom;
-		if ( yPos < 0 ) yPos = 0;
-		si.nPos   = yPos;
+		m_pos.Y -= newClientRect.bottom / 4 * (zDelta >= 0 ? 1 : -1);
+		if ( m_pos.Y > frameBmpRect.GetBottom() - newClientRect.bottom ) m_pos.Y = frameBmpRect.GetBottom() - newClientRect.bottom;
+		if ( m_pos.Y < 0 ) m_pos.Y = 0;
+		si.nPos = m_pos.Y;
 		SetScrollInfo( SB_VERT, &si, TRUE );
 	}
 	InvalidateRect( NULL );
@@ -423,17 +365,10 @@ BOOL RDOStudioFrameView::OnMouseWheel( UINT nFlags, short zDelta, CPoint pt )
 
 void RDOStudioFrameView::OnPaint()
 {
-	int index = model->m_frameManager.findFrameIndex( this );
-	CSingleLock lock_draw( model->m_frameManager.getFrameMutexDraw( index ) );
-	lock_draw.Lock();
-
 	PAINTSTRUCT ps;
-	::BeginPaint( hwnd, &ps );
+	::BeginPaint( m_hwnd, &ps );
 	onDraw();
-	::EndPaint( hwnd, &ps );
-
-	lock_draw.Unlock();
-	model->m_frameManager.getFrameEventTimer( index )->SetEvent();
+	::EndPaint( m_hwnd, &ps );
 }
 
 void RDOStudioFrameView::OnDraw( CDC* pDC )
@@ -448,17 +383,22 @@ void RDOStudioFrameView::onDraw()
 
 //	GetClientRect( &newClientRect );
 
-	if ( !mustBeInit ) {
-		::BitBlt( hdc, 0, 0, newClientRect.right, newClientRect.bottom, hmemdc, xPos, yPos, SRCCOPY );
+	if (!mustBeInit)
+	{
+		m_pGraphics.reset(new Gdiplus::Graphics(m_hwnd));
+		if (!m_pGraphics.get() || m_pGraphics->GetLastStatus() != Gdiplus::Ok)
+			return;
+
+		m_pGraphics->DrawImage(&m_memDC.buffer(), m_pos.X, m_pos.Y);
 /*
 		pDC->SetStretchBltMode( HALFTONE );
-		double k1 = (double)newClientRect.bottom / frameBmpRect.bottom;
-		double k2 = (double)newClientRect.right / frameBmpRect.right;
+		double k1 = (double)newClientRect.bottom / frameBmpRect.GetBottom();
+		double k2 = (double)newClientRect.right / frameBmpRect.GetRight();
 		double k = min( k1, k2 );
 		if ( k > 1 ) k = 1;
-		CRect rect( 0, 0, frameBmpRect.right * k, frameBmpRect.bottom * k );
+		CRect rect( 0, 0, frameBmpRect.GetRight() * k, frameBmpRect.GetBottom() * k );
 		rect.OffsetRect( (newClientRect.right - rect.right) / 2, (newClientRect.bottom - rect.bottom) / 2 );
-		pDC->StretchBlt( rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, &dc, 0, 0, frameBmpRect.right, frameBmpRect.bottom, SRCCOPY );
+		pDC->StretchBlt( rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, &dc, 0, 0, frameBmpRect.GetRight(), frameBmpRect.GetBottom(), SRCCOPY );
 		if ( rect.left ) {
 			pDC->FillSolidRect( 0, 0, rect.left, newClientRect.bottom, bgColor );
 			pDC->FillSolidRect( rect.right, 0, newClientRect.right, newClientRect.bottom, bgColor );
@@ -468,24 +408,22 @@ void RDOStudioFrameView::onDraw()
 			pDC->FillSolidRect( 0, rect.bottom, newClientRect.right, newClientRect.bottom, bgColor );
 		}
 */
-		if ( newClientRect.right - frameBmpRect.right > 0 ) {
-//			dc.FillSolidRect( frameBmpRect.right, 0, newClientRect.right - frameBmpRect.right, newClientRect.bottom, bgColor );
-			HBRUSH brush = ::CreateSolidBrush( bgColor );
-			RECT r = { frameBmpRect.right, 0, newClientRect.right, newClientRect.bottom };
-			::FillRect( hdc, &r, brush );
-			::DeleteObject( brush );
+		if (newClientRect.right - frameBmpRect.GetRight() > 0)
+		{
+			Gdiplus::SolidBrush brush(m_bgColor);
+			m_pGraphics->FillRectangle(&brush, frameBmpRect.GetRight(), 0, newClientRect.right - frameBmpRect.GetRight(), newClientRect.bottom);
 		}
-		if ( newClientRect.bottom - frameBmpRect.bottom > 0 ) {
-//			dc.FillSolidRect( 0, frameBmpRect.bottom, newClientRect.right, newClientRect.bottom - frameBmpRect.bottom, bgColor );
-			HBRUSH brush = ::CreateSolidBrush( bgColor );
-			RECT r = { 0, frameBmpRect.bottom, frameBmpRect.right, newClientRect.bottom };
-			::FillRect( hdc, &r, brush );
-			::DeleteObject( brush );
+		if (newClientRect.bottom - frameBmpRect.GetBottom() > 0)
+		{
+			Gdiplus::SolidBrush brush(m_bgColor);
+			m_pGraphics->FillRectangle(&brush, 0, frameBmpRect.GetBottom(), newClientRect.right, newClientRect.bottom - frameBmpRect.GetBottom());
 		}
-	} else {
-		HBRUSH brush = ::CreateSolidBrush( bgColor );
-		::FillRect( hdc, &newClientRect, brush );
-		::DeleteObject( brush );
+	}
+	else
+	{
+		Gdiplus::SolidBrush brush(m_bgColor);
+		if (m_pGraphics.get())
+			m_pGraphics->FillRectangle(&brush, newClientRect.left, newClientRect.top, newClientRect.Width(), newClientRect.Height());
 	}
 }
 

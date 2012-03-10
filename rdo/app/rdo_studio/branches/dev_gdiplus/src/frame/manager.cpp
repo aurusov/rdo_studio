@@ -11,6 +11,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <gdiplus.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdostream.h"
 #include "utils/rdoanimation.h"
@@ -28,12 +29,6 @@
 #include "app/rdo_studio_mfc/edit_ctrls/rdodebugedit.h"
 #include "app/rdo_studio_mfc/resource.h"
 // --------------------------------------------------------------------------------
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioFrameManager
@@ -55,10 +50,11 @@ RDOStudioFrameManager::RDOStudioFrameManager():
 RDOStudioFrameManager::~RDOStudioFrameManager()
 {
 	bmp_clear();
-	std::vector< Frame* >::iterator it = frames.begin();
-	while ( it != frames.end() ) {
-		delete *it++;
-	};
+
+	STL_FOR_ALL(m_frameList, it)
+	{
+		delete *it;
+	}
 }
 
 void RDOStudioFrameManager::insertItem( CREF(tstring) name )
@@ -68,26 +64,23 @@ void RDOStudioFrameManager::insertItem( CREF(tstring) name )
 	item->name  = name;
 	item->doc   = NULL;
 	item->view  = NULL;
-	frames.push_back( item );
+	m_frameList.push_back(item);
 }
 
 RDOStudioFrameDoc* RDOStudioFrameManager::connectFrameDoc( const int index )
 {
 	RDOStudioFrameDoc* doc = NULL;
-	if ( index != -1 ) {
-		CSingleLock lock( getFrameMutexUsed( index ) );
-		lock.Lock();
-
+	if ( index != -1 )
+	{
 		doc = static_cast<RDOStudioFrameDoc*>(frameDocTemplate->OpenDocumentFile( NULL ));
-		if ( doc ) {
-			frames[index]->doc  = doc;
-			frames[index]->view = doc->getView();
-			lastShowedFrame     = index;
+		if ( doc )
+		{
+			m_frameList[index]->doc  = doc;
+			m_frameList[index]->view = doc->getView();
+			lastShowedFrame          = index;
 			doc->SetTitle( rdo::format( IDS_FRAME_NAME, getFrameName( index ).c_str() ).c_str()  );
 			setCurrentShowingFrame( index );
 		}
-
-		lock.Unlock();
 	}
 	return doc;
 }
@@ -95,15 +88,10 @@ RDOStudioFrameDoc* RDOStudioFrameManager::connectFrameDoc( const int index )
 void RDOStudioFrameManager::disconnectFrameDoc( const RDOStudioFrameDoc* doc )
 {
 	int index = findFrameIndex( doc );
-	if ( index != -1 ) {
-
-		CSingleLock lock( getFrameMutexUsed( index ) );
-		lock.Lock();
-
-		frames[index]->doc  = NULL;
-		frames[index]->view = NULL;
-
-		lock.Unlock();
+	if ( index != -1 )
+	{
+		m_frameList[index]->doc  = NULL;
+		m_frameList[index]->view = NULL;
 	}
 	changed = true;
 }
@@ -111,46 +99,49 @@ void RDOStudioFrameManager::disconnectFrameDoc( const RDOStudioFrameDoc* doc )
 void RDOStudioFrameManager::closeAll()
 {
 	int backup = lastShowedFrame;
-	std::vector< Frame* >::iterator it = frames.begin();
-	while ( it != frames.end() ) {
-		RDOStudioFrameDoc* doc = (*it)->doc;
-		if ( isValidFrameDoc( doc ) ) {
-			if ( doc->frame && doc->frame->GetSafeHwnd() ) {
-				doc->frame->SendNotifyMessage( WM_CLOSE, 0, 0 );
+	STL_FOR_ALL(m_frameList, it)
+	{
+		PTR(RDOStudioFrameDoc) pFrameDoc = (*it)->doc;
+		if (isValidFrameDoc(pFrameDoc))
+		{
+			if (pFrameDoc->frame && pFrameDoc->frame->GetSafeHwnd())
+			{
+				pFrameDoc->frame->SendNotifyMessage(WM_CLOSE, 0, 0);
 			}
 		}
-		it++;
-	};
+	}
 	lastShowedFrame = backup;
 }
 
 void RDOStudioFrameManager::clear()
 {
-	studioApp.m_pMainFrame->workspace.frames->deleteChildren( studioApp.m_pMainFrame->workspace.frames->GetRootItem() );
-	std::vector< Frame* >::iterator it = frames.begin();
-	while ( it != frames.end() ) {
-		RDOStudioFrameDoc* doc = (*it)->doc;
-		if ( isValidFrameDoc( doc ) ) {
-			if ( doc->frame && doc->frame->GetSafeHwnd() ) {
-				doc->frame->SendMessage( WM_CLOSE, 0, 0 );
+	studioApp.m_pMainFrame->workspace.frames->deleteChildren(studioApp.m_pMainFrame->workspace.frames->GetRootItem());
+	STL_FOR_ALL(m_frameList, it)
+	{
+		PTR(RDOStudioFrameDoc) pFrameDoc = (*it)->doc;
+		if (isValidFrameDoc(pFrameDoc))
+		{
+			if (pFrameDoc->frame && pFrameDoc->frame->GetSafeHwnd())
+			{
+				pFrameDoc->frame->SendMessage(WM_CLOSE, 0, 0);
 			}
 		}
-		delete *it++;
-	};
-	frames.clear();
+		delete *it;
+	}
+	m_frameList.clear();
 	lastShowedFrame = -1;
-	setCurrentShowingFrame( -1 );
+	setCurrentShowingFrame(-1);
 }
 
 RDOStudioFrameDoc* RDOStudioFrameManager::getFirstExistDoc() const
 {
-	std::vector< Frame* >::const_iterator it = frames.begin();
-	while ( it != frames.end() ) {
-		if ( isValidFrameDoc( (*it)->doc ) ) {
+	STL_FOR_ALL_CONST(m_frameList, it)
+	{
+		if (isValidFrameDoc((*it)->doc))
+		{
 			return (*it)->doc;
 		}
-		it++;
-	};
+	}
 	return NULL;
 }
 
@@ -185,7 +176,7 @@ void RDOStudioFrameManager::setCurrentShowingFrame( const int value )
 		currentShowingFrame = value;
 		CTreeCtrl* tree = studioApp.m_pMainFrame->workspace.frames;
 		if ( currentShowingFrame != -1 ) {
-			HTREEITEM hitem = frames[currentShowingFrame]->hitem;
+			HTREEITEM hitem = m_frameList[currentShowingFrame]->hitem;
 			tree->SelectItem( hitem );
 		} else {
 			tree->SelectItem( NULL );
@@ -198,324 +189,231 @@ void RDOStudioFrameManager::resetCurrentShowingFrame( const int value )
 	if ( value == currentShowingFrame ) setCurrentShowingFrame( -1 );
 }
 
-void RDOStudioFrameManager::bmp_insert( CREF(tstring) name )
+void RDOStudioFrameManager::bmp_insert(CREF(tstring) name)
 {
-	if ( bitmaps.find( name ) == bitmaps.end() ) {
+	if (m_bitmapList.find(name) != m_bitmapList.end())
+		return;
 
-		RDOStudioOutput* output = &studioApp.m_pMainFrame->output;
-		output->appendStringToDebug( rdo::format( IDS_MODEL_RESOURCE_LOADING_NAME, name.c_str() ) );
-		const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
+	PTR(RDOStudioOutput) pOutput = &studioApp.m_pMainFrame->output;
+	ASSERT(pOutput);
+	pOutput->appendStringToDebug(rdo::format(IDS_MODEL_RESOURCE_LOADING_NAME, name.c_str()));
+	const_cast<PTR(rdoEditCtrl::RDODebugEdit)>(pOutput->getDebug())->UpdateWindow();
 
-		bitmaps[name] = NULL;
+	rdo::binarystream stream;
+	rdoRepository::RDOThreadRepository::BinaryFile data(name, stream);
+	model->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD_BINARY, &data);
 
-		rdo::binarystream stream;
-		rdoRepository::RDOThreadRepository::BinaryFile data( name, stream );
-		model->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_LOAD_BINARY, &data );
-
-		char* bmInfo   = NULL;
-		char* pBits    = NULL;
-		CDC* desktopDC = NULL;
-
-		try {
-			// ¬ потоке, перед битовой картой, идет заголовок файла битовой карты
-			BITMAPFILEHEADER bmFileHeader;
-			stream.read( reinterpret_cast<char*>(&bmFileHeader), sizeof(bmFileHeader) );
-			if ( !stream.good() ) throw BMPReadError();
-
-			// ѕровер€ем заголовок битовой карты на магическое число "BM"
-			if ( bmFileHeader.bfType != 0x4D42 ) throw BMPReadError();
-
-			// ¬от теперь читаем сам заголовок битовой карты
-			BITMAPINFOHEADER bmInfoHeader;
-			stream.read( reinterpret_cast<char*>(&bmInfoHeader), sizeof(bmInfoHeader) );
-			if ( !stream.good() ) throw BMPReadError();
-			if ( bmInfoHeader.biSize == sizeof(BITMAPCOREHEADER) ) throw BMPReadError();
-
-			WORD nNumColors = static_cast<WORD>(bmInfoHeader.biClrUsed);
-			if ( !nNumColors && bmInfoHeader.biBitCount != 24 ) {
-				nNumColors = 1 << bmInfoHeader.biBitCount;
-			}
-			if ( !bmInfoHeader.biClrUsed ) {
-				bmInfoHeader.biClrUsed = nNumColors;
-			}
-
-			if ( !bmInfoHeader.biSizeImage ) {
-				bmInfoHeader.biSizeImage = ((((bmInfoHeader.biWidth * static_cast<WORD>(bmInfoHeader.biBitCount)) + 31) & ~31) >> 3) * bmInfoHeader.biHeight;
-			}
-
-			RGBQUAD rgb_q[256];
-			memset( &rgb_q, 0, sizeof(rgb_q) );
-			stream.read( reinterpret_cast<char*>(&rgb_q), nNumColors * sizeof(RGBQUAD) );
-			if ( !stream.good() ) throw BMPReadError();
-
-			bmInfo = new char[ sizeof(bmInfoHeader) + nNumColors * sizeof(RGBQUAD) ];
-			memcpy( bmInfo, &bmInfoHeader, sizeof(bmInfoHeader) );
-			memcpy( bmInfo + sizeof(bmInfoHeader), &rgb_q, nNumColors * sizeof(RGBQUAD) );
-
-			pBits = new char[ bmInfoHeader.biSizeImage ];
-			stream.seekg( bmFileHeader.bfOffBits, std::ios::beg );
-			if ( !stream.good() ) throw BMPReadError();
-			stream.read( pBits, bmInfoHeader.biSizeImage );
-			if ( !(stream.good() || stream.eof()) ) throw BMPReadError();
-
-			CDC* desktopDC = CWnd::GetDesktopWindow()->GetDC();
-			CDC memDC;
-			memDC.CreateCompatibleDC( desktopDC );
-			CBitmap memBMP;
-			memBMP.CreateCompatibleBitmap( desktopDC, bmInfoHeader.biWidth, bmInfoHeader.biHeight );
-			::SetDIBits( desktopDC->m_hDC, static_cast<HBITMAP>(memBMP), 0, bmInfoHeader.biHeight, pBits, reinterpret_cast<BITMAPINFO*>(bmInfo), DIB_RGB_COLORS );
-			CBitmap* hOldBitmap1 = memDC.SelectObject( &memBMP );
-
-			CDC dc;
-			dc.CreateCompatibleDC( desktopDC );
-			BMP* bmp = new BMP;
-			bitmaps[name] = bmp;
-			bitmaps[name]->w = bmInfoHeader.biWidth;
-			bitmaps[name]->h = bmInfoHeader.biHeight;
-			bitmaps[name]->bmp.CreateCompatibleBitmap( desktopDC, bmInfoHeader.biWidth, bmInfoHeader.biHeight );
-			CBitmap* hOldBitmap2 = dc.SelectObject( &bitmaps[name]->bmp );
-			dc.BitBlt( 0, 0, bmInfoHeader.biWidth, bmInfoHeader.biHeight, &memDC, 0, 0, SRCCOPY );
-
-			memDC.SelectObject( hOldBitmap1 );
-			dc.SelectObject( hOldBitmap2 );
-
-			output->appendStringToDebug( rdo::format( IDS_MODEL_RESOURCE_LOADING_NAME_OK ) );
-			const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
-
-		} catch ( BMPReadError ) {
-			output->appendStringToDebug( rdo::format( IDS_MODEL_RESOURCE_LOADING_NAME_FAILED ) );
-			const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
+	rbool ok = false;
+	PTR(Gdiplus::Bitmap) pBitmap = new Gdiplus::Bitmap(rdo::toUnicode(data.m_name).c_str());
+	if (pBitmap && pBitmap->GetLastStatus() == Gdiplus::Ok)
+	{
+		std::pair<BitmapList::const_iterator, rbool> result = m_bitmapList.insert(BitmapList::value_type(name, pBitmap));
+		if (result.second)
+		{
+			ok = true;
 		}
-
-		if ( bmInfo ) delete bmInfo;
-		if ( pBits ) delete pBits;
-		if ( desktopDC ) CWnd::GetDesktopWindow()->ReleaseDC( desktopDC );
 	}
+
+	pOutput->appendStringToDebug(rdo::format(ok ? IDS_MODEL_RESOURCE_LOADING_NAME_OK : IDS_MODEL_RESOURCE_LOADING_NAME_FAILED));
+	const_cast<PTR(rdoEditCtrl::RDODebugEdit)>(pOutput->getDebug())->UpdateWindow();
 }
 
 void RDOStudioFrameManager::bmp_clear()
 {
-	std::map< tstring, BMP* >::iterator it = bitmaps.begin();
-	while ( it != bitmaps.end() ) {
+	STL_FOR_ALL(m_bitmapList, it)
+	{
 		delete it->second;
-		it++;
-	};
-	bitmaps.clear();
+	}
+	m_bitmapList.clear();
 }
 
 void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame, const int index )
 {
-	if ( index < count() ) {
-
-		CSingleLock lock_used( getFrameMutexUsed( index ) );
-		lock_used.Lock();
-
-		RDOStudioFrameDoc* doc = getFrameDoc( index );
-		if ( doc ) {
-
-			CSingleLock lock_draw( getFrameMutexDraw( index ) );
-			lock_draw.Lock();
-
-			RDOStudioFrameView* view = getFrameView( index );
-			if ( view->mustBeInit ) {
-				rbool show_fillrect = true;
-				if ( frame->hasBgImage() ) {
-					BMP* bmp = bitmaps[frame->m_bgImageName];
-					if ( bmp ) {
-						view->frameBmpRect.right  = bmp->w;
-						view->frameBmpRect.bottom = bmp->h;
-						show_fillrect = false;
+	if (index < count())
+	{
+		PTR(RDOStudioFrameDoc) pFrameDoc = getFrameDoc(index);
+		if (pFrameDoc)
+		{
+			PTR(RDOStudioFrameView) pFrameView = getFrameView(index);
+			if (pFrameView->mustBeInit)
+			{
+				rbool showFillrect = true;
+				if (frame->hasBgImage())
+				{
+					BitmapList::const_iterator bmpIt = m_bitmapList.find(frame->m_bgImageName);
+					if (bmpIt != m_bitmapList.end())
+					{
+						pFrameView->frameBmpRect.Width  = bmpIt->second->GetWidth ();
+						pFrameView->frameBmpRect.Height = bmpIt->second->GetHeight();
+						showFillrect = false;
 					}
 				}
-				if ( show_fillrect ) {
-					view->frameBmpRect.right  = (ruint)frame->m_size.m_width;
-					view->frameBmpRect.bottom = (ruint)frame->m_size.m_height;
+				if (showFillrect)
+				{
+					pFrameView->frameBmpRect.Width  = (ruint)frame->m_size.m_width;
+					pFrameView->frameBmpRect.Height = (ruint)frame->m_size.m_height;
 				}
-				view->points[0].x = 0;
-				view->points[0].y = 0;
-				view->points[1].x = view->frameBmpRect.right - 1;
-				view->points[1].y = 0;
-				view->points[2].x = view->frameBmpRect.right - 1;
-				view->points[2].y = view->frameBmpRect.bottom - 1;
-				view->points[3].x = 0;
-				view->points[3].y = view->frameBmpRect.bottom - 1;
-				view->points[4].x = 0;
-				view->points[4].y = 0;
-				view->hbmp = ::CreateCompatibleBitmap( view->hdc, view->frameBmpRect.right, view->frameBmpRect.bottom );
-				::SelectObject( view->hmemdc, view->hbmp );
-				view->mustBeInit = false;
-				view->updateScrollBars();
+				pFrameView->points[0].X = 0;
+				pFrameView->points[0].Y = 0;
+				pFrameView->points[1].X = pFrameView->frameBmpRect.GetRight() - 1;
+				pFrameView->points[1].Y = 0;
+				pFrameView->points[2].X = pFrameView->frameBmpRect.GetRight() - 1;
+				pFrameView->points[2].Y = pFrameView->frameBmpRect.GetBottom() - 1;
+				pFrameView->points[3].X = 0;
+				pFrameView->points[3].Y = pFrameView->frameBmpRect.GetBottom() - 1;
+				pFrameView->points[4].X = 0;
+				pFrameView->points[4].Y = 0;
+				pFrameView->m_memDC.resize(pFrameView->frameBmpRect.GetRight(), pFrameView->frameBmpRect.GetBottom());
+				pFrameView->mustBeInit = false;
+				pFrameView->updateScrollBars();
 			}
 
-			HDC hdc = view->hmemdc;
+			Gdiplus::Status status;
 
-			rbool show_fillrect = true;
-			if ( frame->hasBgImage() ) {
-				BMP* bmp = bitmaps[frame->m_bgImageName];
-				if ( bmp ) {
-					CBitmap* pOldBitmap = dcBmp.SelectObject( &bmp->bmp );
-					::BitBlt( hdc, 0, 0, bmp->w, bmp->h, dcBmp.m_hDC, 0, 0, SRCCOPY );
-					dcBmp.SelectObject( pOldBitmap );
-					show_fillrect = false;
+			rbool showFillrect = true;
+			if (frame->hasBgImage())
+			{
+				BitmapList::const_iterator bmpIt = m_bitmapList.find(frame->m_bgImageName);
+				if (bmpIt != m_bitmapList.end())
+				{
+					status = pFrameView->m_memDC.dc().DrawImage(bmpIt->second, 0, 0, bmpIt->second->GetWidth(), bmpIt->second->GetHeight());
+					showFillrect = false;
 				}
 			}
-			if ( frame->m_bgColor.m_transparent ) {
-				view->bgColor = studioApp.m_pMainFrame->style_frame.theme->backgroundColor;
-			} else {
-				view->bgColor = RGB( frame->m_bgColor.m_r, frame->m_bgColor.m_g, frame->m_bgColor.m_b );
+			if (frame->m_bgColor.m_transparent)
+			{
+				pFrameView->m_bgColor.SetFromCOLORREF(studioApp.m_pMainFrame->style_frame.theme->backgroundColor);
 			}
-			if ( show_fillrect ) {
-				HBRUSH brush     = ::CreateSolidBrush( view->bgColor );
-				HBRUSH pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
-				HPEN pen     = ::CreatePen( PS_SOLID, 0, studioApp.m_pMainFrame->style_frame.theme->defaultColor );
-				HPEN pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
-				::FillRect( hdc, view->frameBmpRect, brush );
-				::Polyline( hdc, view->points, 5 );
-				::SelectObject( hdc, pOldBrush );
-				::SelectObject( hdc, pOldPen );
-				::DeleteObject( brush );
-				::DeleteObject( pen );
+			else
+			{
+				pFrameView->m_bgColor.SetFromCOLORREF(RGB(frame->m_bgColor.m_r, frame->m_bgColor.m_g, frame->m_bgColor.m_b));
 			}
-/*
-			if( !frame->hasBackPicture ) {
-				HBRUSH brush     = ::CreateSolidBrush( RGB( frame->r, frame->g, frame->b ) );
-				HBRUSH pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
-				HPEN pen     = ::CreatePen( PS_SOLID, 0, studioApp.m_pMainFrame->style_frame.theme->defaultColor );
-				HPEN pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
-				::FillRect( hdc, view->frameBmpRect, brush );
-				::Polyline( hdc, view->points, 5 );
-				::SelectObject( hdc, pOldBrush );
-				::SelectObject( hdc, pOldPen );
-				::DeleteObject( brush );
-				::DeleteObject( pen );
-				view->bgColor = studioApp.m_pMainFrame->style_frame.theme->backgroundColor;
+			if (showFillrect)
+			{
+				Gdiplus::SolidBrush brush(pFrameView->m_bgColor);
+				status = pFrameView->m_memDC.dc().FillRectangle(&brush, pFrameView->frameBmpRect);
 
-//				HBRUSH brush     = ::CreateSolidBrush( RGB( frame->r, frame->g, frame->b ) );
-//				HBRUSH pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
-//				HPEN pen     = ::CreatePen( PS_SOLID, 0, RGB( 0x00, 0x00, 0x00 ) );
-//				HPEN pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
-//				::Rectangle( hdc, 0, 0, frame->width, frame->height );
-//				::SelectObject( hdc, pOldBrush );
-//				::SelectObject( hdc, pOldPen );
-//				::DeleteObject( brush );
-//				::DeleteObject( pen );
-
-			} else {
-				BMP* bmp = bitmaps[frame->picFileName];
-				if ( bmp ) {
-					CBitmap* pOldBitmap = dcBmp.SelectObject( &bmp->bmp );
-					::BitBlt( hdc, 0, 0, bmp->w, bmp->h, dcBmp.m_hDC, 0, 0, SRCCOPY );
-					dcBmp.SelectObject( pOldBitmap );
-				}
-				view->bgColor = RGB( frame->r, frame->g, frame->b );
+				//! @todo проверить ыцет карандаша. возможен кос€к без SetFromCOLORREF
+				Gdiplus::Pen pen(studioApp.m_pMainFrame->style_frame.theme->defaultColor, 1.0);
+				status = pFrameView->m_memDC.dc().DrawPolygon(&pen, pFrameView->points, 5);
 			}
-*/
+
 			ruint size = frame->m_elements.size();
 			for (ruint i = 0; i < size; i++)
 			{
-				rdoAnimation::FrameItem* currElement = frame->m_elements.at(i);
-				switch( currElement->getType() )
+				PTR(rdoAnimation::FrameItem) pCurrElement = frame->m_elements[i];
+				ASSERT(pCurrElement);
+				switch (pCurrElement->getType())
 				{
 					case rdoAnimation::FrameItem::FIT_TEXT:
 					{
-						rdoAnimation::RDOTextElement* element = static_cast<rdoAnimation::RDOTextElement*>(currElement);
-						if( !element->m_background.m_transparent ) {
-							::SetBkMode( hdc, OPAQUE );
-							::SetBkColor( hdc, RGB(element->m_background.m_r, element->m_background.m_g, element->m_background.m_b) );
-						} else {
-							::SetBkMode( hdc, TRANSPARENT );
+						Gdiplus::Color color(0, 0, 0);
+						PTR(rdoAnimation::RDOTextElement) pElement = static_cast<PTR(rdoAnimation::RDOTextElement)>(pCurrElement);
+						if (!pElement->m_background.m_transparent)
+						{
+//							::SetBkMode( hdc, OPAQUE );
+//							::SetBkColor( hdc, RGB(pElement->m_background.m_r, pElement->m_background.m_g, pElement->m_background.m_b) );
+//							color = Gdiplus::Color(pElement->m_background.m_r, pElement->m_background.m_g, pElement->m_background.m_b);
+						}
+						else
+						{
+//							::SetBkMode( hdc, TRANSPARENT );
 						}
 
-						if( !element->m_foreground.m_transparent ) {
-							::SetTextColor( hdc, RGB(element->m_foreground.m_r, element->m_foreground.m_g, element->m_foreground.m_b) );
+						if(!pElement->m_foreground.m_transparent)
+						{
+//							::SetTextColor( hdc, RGB(pElement->m_foreground.m_r, pElement->m_foreground.m_g, pElement->m_foreground.m_b) );
 						}
+
+						Gdiplus::StringFormat sformat;
+						Gdiplus::SolidBrush   brush(color);
 
 						UINT nFormat = DT_SINGLELINE | DT_VCENTER;
-						switch( element->m_align )
+						switch (pElement->m_align)
 						{
-						case rdoAnimation::RDOTextElement::TETA_LEFT  : nFormat |= DT_LEFT;   break;
-						case rdoAnimation::RDOTextElement::TETA_RIGHT : nFormat |= DT_RIGHT;  break;
-						case rdoAnimation::RDOTextElement::TETA_CENTER: nFormat |= DT_CENTER; break;
+						case rdoAnimation::RDOTextElement::TETA_LEFT  : nFormat |= DT_LEFT;   sformat.SetAlignment(Gdiplus::StringAlignmentNear  ); break;
+						case rdoAnimation::RDOTextElement::TETA_RIGHT : nFormat |= DT_RIGHT;  sformat.SetAlignment(Gdiplus::StringAlignmentFar   ); break;
+						case rdoAnimation::RDOTextElement::TETA_CENTER: nFormat |= DT_CENTER; sformat.SetAlignment(Gdiplus::StringAlignmentCenter); break;
 						}
 
-						::DrawText( hdc, element->m_text.c_str(), element->m_text.length(), CRect( (int)element->m_point.m_x, (int)element->m_point.m_y, (int)(element->m_point.m_x + element->m_size.m_width), (int)(element->m_point.m_y + element->m_size.m_height) ), nFormat );
+						std::wstring wtext = rdo::toUnicode(pElement->m_text);
+
+						HDC hDC = pFrameView->m_memDC.dc().GetHDC();
+						Gdiplus::Font  font(hDC, pFrameView->hfontCurrent);
+						pFrameView->m_memDC.dc().ReleaseHDC(hDC);
+
+						if (font.GetLastStatus() == Gdiplus::Ok)
+						{
+							Gdiplus::RectF rect(
+								Gdiplus::REAL(pElement->m_point.m_x),
+								Gdiplus::REAL(pElement->m_point.m_y),
+								Gdiplus::REAL(pElement->m_size.m_width),
+								Gdiplus::REAL(pElement->m_size.m_height)
+							);
+
+							wtext = L"text";
+
+							status = pFrameView->m_memDC.dc().DrawString(wtext.c_str(), wtext.length(), &font, rect, &sformat, &brush);
+//							::DrawText( hdc, pElement->m_text.c_str(), pElement->m_text.length(), CRect( (int)pElement->m_point.m_x, (int)pElement->m_point.m_y, (int)(pElement->m_point.m_x + pElement->m_size.m_width), (int)(pElement->m_point.m_y + pElement->m_size.m_height) ), nFormat );
+						}
 
 						break;
 					}
 
 					case rdoAnimation::FrameItem::FIT_RECT:
 					{
-						rdoAnimation::RDORectElement* element = static_cast<rdoAnimation::RDORectElement*>(currElement);
-						HBRUSH brush = ::CreateSolidBrush( RGB(element->m_background.m_r, element->m_background.m_g, element->m_background.m_b) );
-						HBRUSH pOldBrush;
-						if( !element->m_background.m_transparent ) {
-							pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
-						} else {
-							pOldBrush = static_cast<HBRUSH>(::GetStockObject( NULL_BRUSH ));
+						PTR(rdoAnimation::RDORectElement) pElement = static_cast<PTR(rdoAnimation::RDORectElement)>(pCurrElement);
+						Gdiplus::Color bgColor;
+						if (!pElement->m_background.m_transparent)
+						{
+							bgColor = Gdiplus::Color(pElement->m_background.m_r, pElement->m_background.m_g, pElement->m_background.m_b);
 						}
-
-						HPEN pen     = NULL;
-						HPEN pOldPen = NULL;
-						if( !element->m_foreground.m_transparent ) {
-							pen     = ::CreatePen( PS_SOLID, 0, RGB(element->m_foreground.m_r, element->m_foreground.m_g, element->m_foreground.m_b) );
-							pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
+						else
+						{
+							bgColor.SetValue(0);
 						}
+						Gdiplus::SolidBrush brush(bgColor);
 
-						::Rectangle( hdc, (int)element->m_point.m_x, (int)element->m_point.m_y, (int)(element->m_point.m_x + element->m_size.m_width), (int)(element->m_point.m_y + element->m_size.m_height) );
-
-						::SelectObject( hdc, pOldBrush );
-						::DeleteObject( brush );
-						if ( pen ) {
-							::SelectObject( hdc, pOldPen );
-							::DeleteObject( pen );
-						}
+						status = pFrameView->m_memDC.dc().FillRectangle(&brush, (int)pElement->m_point.m_x, (int)pElement->m_point.m_y, (int)pElement->m_size.m_width, (int)pElement->m_size.m_height);
+						//! @todo добавить вывод линии вокруг пр€моугольника
 
 						break;
 					}
 
 					case rdoAnimation::FrameItem::FIT_R_RECT:
 					{
-						rdoAnimation::RDORRectElement* element = static_cast<rdoAnimation::RDORRectElement*>(currElement);
-						HBRUSH brush = ::CreateSolidBrush( RGB(element->m_background.m_r, element->m_background.m_g, element->m_background.m_b) );
-						HBRUSH pOldBrush;
-						if( !element->m_background.m_transparent ) {
-							pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
-						} else {
-							pOldBrush = static_cast<HBRUSH>(::GetStockObject( NULL_BRUSH ));
+						PTR(rdoAnimation::RDORRectElement) pElement = static_cast<PTR(rdoAnimation::RDORRectElement)>(pCurrElement);
+						Gdiplus::Color bgColor;
+						if (!pElement->m_background.m_transparent)
+						{
+							bgColor = Gdiplus::Color(pElement->m_background.m_r, pElement->m_background.m_g, pElement->m_background.m_b);
 						}
-
-						HPEN pen     = NULL;
-						HPEN pOldPen = NULL;
-						if( !element->m_foreground.m_transparent ) {
-							pen     = ::CreatePen( PS_SOLID, 0, RGB(element->m_foreground.m_r, element->m_foreground.m_g, element->m_foreground.m_b) );
-							pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
+						else
+						{
+							bgColor.SetValue(0);
 						}
+						Gdiplus::SolidBrush brush(bgColor);
 
-						int w = (int)(std::min<double>( element->m_size.m_width, element->m_size.m_height ) / 3);
-						RoundRect( hdc, (int)(element->m_point.m_x), (int)(element->m_point.m_y), (int)(element->m_point.m_x + element->m_size.m_width), (int)(element->m_point.m_y + element->m_size.m_height), w, w );
-
-						::SelectObject( hdc, pOldBrush );
-						::DeleteObject( brush );
-						if ( pen ) {
-							::SelectObject( hdc, pOldPen );
-							::DeleteObject( pen );
-						}
+						//! @todo gdi+ не умеет выводить roundrect :(
+						status = pFrameView->m_memDC.dc().FillRectangle(&brush, (int)pElement->m_point.m_x, (int)pElement->m_point.m_y, (int)pElement->m_size.m_width, (int)pElement->m_size.m_height);
+						//! @todo добавить вывод линии вокруг пр€моугольника
 
 						break;
 					}
 
 					case rdoAnimation::FrameItem::FIT_LINE:
 					{
-						rdoAnimation::RDOLineElement* element = static_cast<rdoAnimation::RDOLineElement*>(currElement);
-						if( !element->m_color.m_transparent ) {
-							HPEN pen     = ::CreatePen( PS_SOLID, 0, RGB(element->m_color.m_r, element->m_color.m_g, element->m_color.m_b) );
-							HPEN pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
-
-							::MoveToEx( hdc, (int)(element->m_point1.m_x), (int)(element->m_point1.m_y), NULL );
-							::LineTo( hdc, (int)(element->m_point2.m_x), (int)(element->m_point2.m_y) );
-
-							::SelectObject( hdc, pOldPen );
-							::DeleteObject( pen );
+						PTR(rdoAnimation::RDOLineElement) pElement = static_cast<PTR(rdoAnimation::RDOLineElement)>(pCurrElement);
+						if (!pElement->m_color.m_transparent)
+						{
+							Gdiplus::Color color;
+							color.SetFromCOLORREF(RGB(pElement->m_color.m_r, pElement->m_color.m_g, pElement->m_color.m_b));
+							Gdiplus::Pen pen(color);
+							pFrameView->m_memDC.dc().DrawLine(
+								&pen,
+								(int)(pElement->m_point1.m_x), (int)(pElement->m_point1.m_y),
+								(int)(pElement->m_point2.m_x), (int)(pElement->m_point2.m_y)
+							);
 						}
 
 						break;
@@ -523,36 +421,31 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 
 					case rdoAnimation::FrameItem::FIT_TRIANG:
 					{
-						rdoAnimation::RDOTriangElement* element = static_cast<rdoAnimation::RDOTriangElement*>(currElement);
-						HBRUSH brush = ::CreateSolidBrush( RGB(element->m_background.m_r, element->m_background.m_g, element->m_background.m_b) );
-						HBRUSH pOldBrush;
-						if( !element->m_background.m_transparent ) {
-							pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
-						} else {
-							pOldBrush = static_cast<HBRUSH>(::GetStockObject( NULL_BRUSH ));
+						PTR(rdoAnimation::RDOTriangElement) pElement = static_cast<PTR(rdoAnimation::RDOTriangElement)>(pCurrElement);
+
+						const ruint pountListCount = 3;
+						Gdiplus::Point pointList[pountListCount];
+						pointList[0].X = (int)(pElement->m_point1.m_x);
+						pointList[0].Y = (int)(pElement->m_point1.m_y);
+						pointList[1].X = (int)(pElement->m_point2.m_x);
+						pointList[1].Y = (int)(pElement->m_point2.m_y);
+						pointList[2].X = (int)(pElement->m_point3.m_x);
+						pointList[2].Y = (int)(pElement->m_point3.m_y);
+
+						if (!pElement->m_background.m_transparent)
+						{
+							Gdiplus::Color color;
+							color.SetFromCOLORREF(RGB(pElement->m_background.m_r, pElement->m_background.m_g, pElement->m_background.m_b));
+							Gdiplus::SolidBrush brush(color);
+							pFrameView->m_memDC.dc().FillPolygon(&brush, &pointList[0], pountListCount);
 						}
 
-						HPEN pen     = NULL;
-						HPEN pOldPen = NULL;
-						if( !element->m_foreground.m_transparent ) {
-							pen     = ::CreatePen( PS_SOLID, 0, RGB(element->m_foreground.m_r, element->m_foreground.m_g, element->m_foreground.m_b) );
-							pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
-						}
-
-						CPoint pts[3];
-						pts[0].x = (int)(element->m_point1.m_x);
-						pts[0].y = (int)(element->m_point1.m_y);
-						pts[1].x = (int)(element->m_point2.m_x);
-						pts[1].y = (int)(element->m_point2.m_y);
-						pts[2].x = (int)(element->m_point3.m_x);
-						pts[2].y = (int)(element->m_point3.m_y);
-						::Polygon( hdc, pts, 3 );
-
-						::SelectObject( hdc, pOldBrush );
-						::DeleteObject( brush );
-						if ( pen ) {
-							::SelectObject( hdc, pOldPen );
-							::DeleteObject( pen );
+						if (!pElement->m_foreground.m_transparent)
+						{
+							Gdiplus::Color color;
+							color.SetFromCOLORREF(RGB(pElement->m_foreground.m_r, pElement->m_foreground.m_g, pElement->m_foreground.m_b));
+							Gdiplus::Pen pen(color);
+							pFrameView->m_memDC.dc().DrawPolygon(&pen, &pointList[0], pountListCount);
 						}
 
 						break;
@@ -560,29 +453,29 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 
 					case rdoAnimation::FrameItem::FIT_CIRCLE:
 					{
-						rdoAnimation::RDOCircleElement* element = static_cast<rdoAnimation::RDOCircleElement*>(currElement);
-						HBRUSH brush = ::CreateSolidBrush( RGB(element->m_background.m_r, element->m_background.m_g, element->m_background.m_b) );
-						HBRUSH pOldBrush;
-						if( !element->m_background.m_transparent ) {
-							pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
-						} else {
-							pOldBrush = static_cast<HBRUSH>(::GetStockObject( NULL_BRUSH ));
+						PTR(rdoAnimation::RDOCircleElement) pElement = static_cast<PTR(rdoAnimation::RDOCircleElement)>(pCurrElement);
+
+						Gdiplus::Rect rect(
+							(int)(pElement->m_center.m_x - pElement->m_radius.m_radius),
+							(int)(pElement->m_center.m_y - pElement->m_radius.m_radius),
+							(int)(pElement->m_center.m_x + pElement->m_radius.m_radius),
+							(int)(pElement->m_center.m_y + pElement->m_radius.m_radius)
+						);
+
+						if (!pElement->m_background.m_transparent)
+						{
+							Gdiplus::Color color;
+							color.SetFromCOLORREF(RGB(pElement->m_background.m_r, pElement->m_background.m_g, pElement->m_background.m_b));
+							Gdiplus::SolidBrush brush(color);
+							pFrameView->m_memDC.dc().FillEllipse(&brush, rect);
 						}
 
-						HPEN pen     = NULL;
-						HPEN pOldPen = NULL;
-						if( !element->m_foreground.m_transparent ) {
-							pen     = ::CreatePen( PS_SOLID, 0, RGB(element->m_foreground.m_r, element->m_foreground.m_g, element->m_foreground.m_b) );
-							pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
-						}
-
-						::Ellipse( hdc, (int)(element->m_center.m_x - element->m_radius.m_radius), (int)(element->m_center.m_y - element->m_radius.m_radius), (int)(element->m_center.m_x + element->m_radius.m_radius), (int)(element->m_center.m_y + element->m_radius.m_radius) );
-
-						::SelectObject( hdc, pOldBrush );
-						::DeleteObject( brush );
-						if ( pen ) {
-							::SelectObject( hdc, pOldPen );
-							::DeleteObject( pen );
+						if (!pElement->m_foreground.m_transparent)
+						{
+							Gdiplus::Color color;
+							color.SetFromCOLORREF(RGB(pElement->m_foreground.m_r, pElement->m_foreground.m_g, pElement->m_foreground.m_b));
+							Gdiplus::Pen pen(color);
+							pFrameView->m_memDC.dc().DrawEllipse(&pen, rect);
 						}
 
 						break;
@@ -590,29 +483,29 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 
 					case rdoAnimation::FrameItem::FIT_ELLIPSE:
 					{
-						rdoAnimation::RDOEllipseElement* element = static_cast<rdoAnimation::RDOEllipseElement*>(currElement);
-						HBRUSH brush = ::CreateSolidBrush( RGB(element->m_background.m_r, element->m_background.m_g, element->m_background.m_b) );
-						HBRUSH pOldBrush;
-						if( !element->m_background.m_transparent ) {
-							pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
-						} else {
-							pOldBrush = static_cast<HBRUSH>(::GetStockObject( NULL_BRUSH ));
+						PTR(rdoAnimation::RDOEllipseElement) pElement = static_cast<PTR(rdoAnimation::RDOEllipseElement)>(pCurrElement);
+
+						Gdiplus::Rect rect(
+							(int)(pElement->m_point.m_x),
+							(int)(pElement->m_point.m_y),
+							(int)(pElement->m_point.m_x + pElement->m_size.m_width),
+							(int)(pElement->m_point.m_y + pElement->m_size.m_height)
+						);
+
+						if (!pElement->m_background.m_transparent)
+						{
+							Gdiplus::Color color;
+							color.SetFromCOLORREF(RGB(pElement->m_background.m_r, pElement->m_background.m_g, pElement->m_background.m_b));
+							Gdiplus::SolidBrush brush(color);
+							pFrameView->m_memDC.dc().FillEllipse(&brush, rect);
 						}
 
-						HPEN pen     = NULL;
-						HPEN pOldPen = NULL;
-						if( !element->m_foreground.m_transparent ) {
-							pen     = ::CreatePen( PS_SOLID, 0, RGB(element->m_foreground.m_r, element->m_foreground.m_g, element->m_foreground.m_b) );
-							pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
-						}
-
-						::Ellipse( hdc, (int)(element->m_point.m_x), (int)(element->m_point.m_y), (int)(element->m_point.m_x + element->m_size.m_width), (int)(element->m_point.m_y + element->m_size.m_height) );
-
-						::SelectObject( hdc, pOldBrush );
-						::DeleteObject( brush );
-						if ( pen ) {
-							::SelectObject( hdc, pOldPen );
-							::DeleteObject( pen );
+						if (!pElement->m_foreground.m_transparent)
+						{
+							Gdiplus::Color color;
+							color.SetFromCOLORREF(RGB(pElement->m_foreground.m_r, pElement->m_foreground.m_g, pElement->m_foreground.m_b));
+							Gdiplus::Pen pen(color);
+							pFrameView->m_memDC.dc().DrawEllipse(&pen, rect);
 						}
 
 						break;
@@ -620,88 +513,82 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 
 					case rdoAnimation::FrameItem::FIT_BMP:
 					{
-						rdoAnimation::RDOBmpElement* element = static_cast<rdoAnimation::RDOBmpElement*>(currElement);
-						BMP* bmp = bitmaps[element->m_bmp_name];
-						if ( bmp ) {
-							BMP* mask = element->hasMask() ? bitmaps[element->m_mask_name] : NULL;
-							CBitmap* pOldBitmap = dcBmp.SelectObject( &bmp->bmp );
-							if ( mask ) {
-								CBitmap* pOldMask = dcMask.SelectObject( &mask->bmp );
-								::BitBlt( hdc, (int)(element->m_point.m_x), (int)(element->m_point.m_y), mask->w, mask->h, dcMask.m_hDC, 0, 0, SRCAND );
-								::BitBlt( hdc, (int)(element->m_point.m_x), (int)(element->m_point.m_y), bmp->w, bmp->h, dcBmp.m_hDC, 0, 0, SRCPAINT );
-								dcMask.SelectObject( pOldMask );
-							} else {
-								::BitBlt( hdc, (int)(element->m_point.m_x), (int)(element->m_point.m_y), bmp->w, bmp->h, dcBmp.m_hDC, 0, 0, SRCCOPY );
+						PTR(rdoAnimation::RDOBmpElement) pElement = static_cast<PTR(rdoAnimation::RDOBmpElement)>(pCurrElement);
+						BitmapList::const_iterator bmpIt = m_bitmapList.find(pElement->m_bmp_name);
+						if (bmpIt != m_bitmapList.end())
+						{
+							rbool maskDraw = false;
+							if (pElement->hasMask())
+							{
+								BitmapList::const_iterator maskIt = m_bitmapList.find(pElement->m_mask_name);
+								if (maskIt != m_bitmapList.end())
+								{
+//									NEVER_REACH_HERE;
+//									maskDraw = true;
+								}
 							}
-							dcBmp.SelectObject( pOldBitmap );
+							if (!maskDraw)
+							{
+								status = pFrameView->m_memDC.dc().DrawImage(bmpIt->second, (int)(pElement->m_point.m_x), (int)(pElement->m_point.m_y));
+							}
 						}
 						break;
 					}
 
 					case rdoAnimation::FrameItem::FIT_S_BMP:
 					{
-						rdoAnimation::RDOSBmpElement* element = static_cast<rdoAnimation::RDOSBmpElement*>(currElement);
-						BMP* bmp = bitmaps[element->m_bmp_name];
-						if ( bmp ) {
-							BMP* mask = element->hasMask() ? bitmaps[element->m_mask_name] : NULL;
-							CBitmap* pOldBitmap = dcBmp.SelectObject( &bmp->bmp );
-							if ( mask ) {
-								CBitmap* pOldMask = dcMask.SelectObject( &mask->bmp );
-								::StretchBlt( hdc, (int)(element->m_point.m_x), (int)(element->m_point.m_y), (int)(element->m_size.m_width), (int)(element->m_size.m_height), dcMask.m_hDC, 0, 0, mask->w, mask->h, SRCAND );
-								::StretchBlt( hdc, (int)(element->m_point.m_x), (int)(element->m_point.m_y), (int)(element->m_size.m_width), (int)(element->m_size.m_height), dcBmp.m_hDC, 0, 0, bmp->w, bmp->h, SRCPAINT );
-								dcMask.SelectObject( pOldMask );
-							} else {
-								::StretchBlt( hdc, (int)(element->m_point.m_x), (int)(element->m_point.m_y), (int)(element->m_size.m_width), (int)(element->m_size.m_height), dcBmp.m_hDC, 0, 0, bmp->w, bmp->h, SRCCOPY );
+						PTR(rdoAnimation::RDOSBmpElement) pElement = static_cast<PTR(rdoAnimation::RDOSBmpElement)>(pCurrElement);
+						BitmapList::const_iterator bmpIt = m_bitmapList.find(pElement->m_bmp_name);
+						if (bmpIt != m_bitmapList.end())
+						{
+							rbool maskDraw = false;
+							if (pElement->hasMask())
+							{
+								BitmapList::const_iterator maskIt = m_bitmapList.find(pElement->m_mask_name);
+								if (maskIt != m_bitmapList.end())
+								{
+//									NEVER_REACH_HERE;
+//									maskDraw = true;
+								}
 							}
-							dcBmp.SelectObject( pOldBitmap );
+							if (!maskDraw)
+							{
+								status = pFrameView->m_memDC.dc().DrawImage(bmpIt->second, (int)(pElement->m_point.m_x), (int)(pElement->m_point.m_y), (int)(pElement->m_size.m_width), (int)(pElement->m_size.m_height));
+							}
 						}
 						break;
 					}
 
 					case rdoAnimation::FrameItem::FIT_ACTIVE:
 					{
-						rdoAnimation::RDOActiveElement* element = static_cast<rdoAnimation::RDOActiveElement*>(currElement);
-						std::vector< Area* >::const_iterator it = frames[index]->areas_sim.begin();
-						while ( it != frames[index]->areas_sim.end() ) {
-							if ( (*it)->name == element->m_opr_name ) break;
+						rdoAnimation::RDOActiveElement* pElement = static_cast<rdoAnimation::RDOActiveElement*>(pCurrElement);
+						std::vector< Area* >::const_iterator it = m_frameList[index]->areas_sim.begin();
+						while ( it != m_frameList[index]->areas_sim.end() ) {
+							if ( (*it)->name == pElement->m_opr_name ) break;
 							it++;
 						}
-						if ( it == frames[index]->areas_sim.end() ) {
+						if ( it == m_frameList[index]->areas_sim.end() ) {
 							Area* area = new Area;
-							area->name = element->m_opr_name;
-							area->x    = (int)(element->m_point.m_x);
-							area->y    = (int)(element->m_point.m_y);
-							area->w    = (int)(element->m_size.m_width);
-							area->h    = (int)(element->m_size.m_height);
-							frames[index]->areas_sim.push_back( area );
+							area->name = pElement->m_opr_name;
+							area->x    = (int)(pElement->m_point.m_x);
+							area->y    = (int)(pElement->m_point.m_y);
+							area->w    = (int)(pElement->m_size.m_width);
+							area->h    = (int)(pElement->m_size.m_height);
+							m_frameList[index]->areas_sim.push_back( area );
 						} else {
-							(*it)->x    = (int)(element->m_point.m_x);
-							(*it)->y    = (int)(element->m_point.m_y);
-							(*it)->w    = (int)(element->m_size.m_width);
-							(*it)->h    = (int)(element->m_size.m_height);
+							(*it)->x    = (int)(pElement->m_point.m_x);
+							(*it)->y    = (int)(pElement->m_point.m_y);
+							(*it)->w    = (int)(pElement->m_size.m_width);
+							(*it)->h    = (int)(pElement->m_size.m_height);
 						}
 						break;
 					}
 				}
 			}
 
-			lock_draw.Unlock();
-
-			getFrameEventTimer( index )->ResetEvent();
-
-//			CRect rect;
-//			view->GetClientRect( rect );
-			view->InvalidateRect( NULL );
-			view->SendNotifyMessage( WM_PAINT, 0, 0 );
-
-			CONST HANDLE events[2] = { getFrameEventTimer( index )->m_hObject, getFrameEventClose( index )->m_hObject };
-			DWORD res = ::WaitForMultipleObjects( 2, events, FALSE, INFINITE );
-			if ( res == WAIT_OBJECT_0 ) {               // timer
-			} else if ( res == WAIT_OBJECT_0 + 1 ) {    // close
-			} else {
-			}
+			//pFrameView->InvalidateRect( NULL );
+			//pFrameView->SendNotifyMessage( WM_PAINT, 0, 0 );
 		}
-		lock_used.Unlock();
 	}
 }
 
@@ -766,13 +653,14 @@ rbool RDOStudioFrameManager::canShowPrevFrame() const
 
 void RDOStudioFrameManager::updateStyles() const
 {
-	std::vector< Frame* >::const_iterator it = frames.begin();
-	while ( it != frames.end() ) {
-		RDOStudioFrameView* view = (*it++)->view;
-		if ( view ) {
-			view->updateFont();
-			view->InvalidateRect( NULL );
-			view->UpdateWindow();
+	STL_FOR_ALL_CONST(m_frameList, it)
+	{
+		PTR(RDOStudioFrameView) pFrameView = (*it)->view;
+		if (pFrameView)
+		{
+			pFrameView->updateFont    ();
+			pFrameView->InvalidateRect(NULL);
+			pFrameView->UpdateWindow  ();
 		}
 	}
 }

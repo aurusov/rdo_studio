@@ -11,7 +11,9 @@
 #define _RDO_STUDIO_MFC_FRAME_VIEW_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <gdiplus.h>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "ui/mfc_ctrls/memdc.h"
 #include "app/rdo_studio_mfc/src/view.h"
 // --------------------------------------------------------------------------------
 
@@ -27,25 +29,21 @@ friend class RDOStudioFrameManager;
 DECLARE_DYNCREATE(RDOStudioFrameView)
 
 private:
-	CRect frameBmpRect;
-	CPoint points[5];
-	CRect newClientRect;
-	int xPos;
-	int yPos;
-	COLORREF bgColor;
+	typedef  std::auto_ptr<Gdiplus::Graphics>  TDC;
+
+	Gdiplus::Rect   frameBmpRect;
+	Gdiplus::Point  points[5];
+	CRect           newClientRect;
+	Gdiplus::Point  m_pos;
+	Gdiplus::Color  m_bgColor;
 	rbool mustBeInit;
 
-	HWND    hwnd;
-	HDC     hdc;
-	HDC     hmemdc;
-	int     saved_hdc;
-	int     saved_hmemdc;
-	HFONT   hfontInit;
-	HFONT   hfontCurrent;
-//	HBITMAP hbmpInit;
-	HBITMAP hbmp;
-
-	rbool mouseOnHScroll;
+	HWND   m_hwnd;
+	TDC    m_pGraphics; // hdc
+	HFONT  hfontInit;
+	HFONT  hfontCurrent;
+	MemDC  m_memDC; // hmemdc, hbmp
+	rbool  mouseOnHScroll;
 
 	void onDraw();
 	void updateFont();

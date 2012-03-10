@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
 #include <map>
+#include <memory>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/frame/document.h"
 #include "app/rdo_studio_mfc/src/frame/view.h"
@@ -43,9 +44,6 @@ private:
 	};
 	FrameDocTemplate* frameDocTemplate;
 
-	class BMPReadError {
-	};
-
 	class Area {
 	friend class RDOStudioFrameManager;
 	friend class RDOStudioFrameView;
@@ -57,20 +55,17 @@ private:
 		int h;
 	};
 
-	class Frame {
+	class Frame
+	{
 	friend class RDOStudioFrameManager;
 	friend class RDOStudioFrameView;
 	private:
-		Frame(): hitem( 0 ), doc( NULL ), view( NULL ), timer( false, true ) {};
+		Frame(): hitem( 0 ), doc( NULL ), view( NULL ) {};
 		~Frame() { areas_sim_clear(); };
 		HTREEITEM            hitem;
 		tstring              name;
 		RDOStudioFrameDoc*   doc;
 		RDOStudioFrameView*  view;
-		CMutex               used;
-		CMutex               draw;
-		CEvent               timer;
-		CEvent               close;
 		std::vector< Area* > areas_sim;
 		void areas_sim_clear() {
 			std::vector< Area* >::iterator it = areas_sim.begin();
@@ -80,17 +75,13 @@ private:
 			areas_sim.clear();
 		}
 	};
-	std::vector< Frame* > frames;
 
-	class BMP {
-	friend class RDOStudioFrameManager;
-	private:
-		BMP(): w( 0 ), h( 0 ) {};
-		CBitmap bmp;
-		int w;
-		int h;
-	};
-	std::map< tstring, BMP* > bitmaps;
+	typedef  std::vector<PTR(Frame)>                  FrameList;
+	typedef  std::map<tstring, PTR(Gdiplus::Bitmap)>  BitmapList;
+
+	FrameList  m_frameList;
+	BitmapList m_bitmapList;
+
 	CDC dcBmp;
 	CDC dcMask;
 
@@ -103,52 +94,50 @@ public:
 	virtual ~RDOStudioFrameManager();
 
 	void insertItem( CREF(tstring) name );
-	int findFrameIndex( const HTREEITEM hitem ) const {
-		std::vector< Frame* >::const_iterator it = frames.begin();
+	int findFrameIndex( const HTREEITEM hitem ) const
+	{
 		int index = 0;
-		while ( it != frames.end() ) {
-			if ( (*it)->hitem == hitem ) {
+		STL_FOR_ALL_CONST(m_frameList, it)
+		{
+			if ((*it)->hitem == hitem)
+			{
 				return index;
 			}
-			it++;
 			index++;
-		};
+		}
 		return -1;
 	}
-	int findFrameIndex( const RDOStudioFrameDoc* doc ) const {
-		std::vector< Frame* >::const_iterator it = frames.begin();
+	int findFrameIndex( const RDOStudioFrameDoc* doc ) const
+	{
 		int index = 0;
-		while ( it != frames.end() ) {
-			if ( (*it)->doc == doc ) {
+		STL_FOR_ALL_CONST(m_frameList, it)
+		{
+			if ((*it)->doc == doc)
+			{
 				return index;
 			}
-			it++;
 			index++;
-		};
+		}
 		return -1;
 	}
 	int findFrameIndex( const RDOStudioFrameView* view ) const {
-		std::vector< Frame* >::const_iterator it = frames.begin();
 		int index = 0;
-		while ( it != frames.end() ) {
-			if ( (*it)->view == view ) {
+		STL_FOR_ALL_CONST(m_frameList, it)
+		{
+			if ((*it)->view == view)
+			{
 				return index;
 			}
-			it++;
 			index++;
-		};
+		}
 		return -1;
 	}
 	RDOStudioFrameDoc* connectFrameDoc( const int index );
 	void disconnectFrameDoc( const RDOStudioFrameDoc* doc );
-	CREF(tstring)       getFrameName( const int index ) const       { return frames[index]->name;   };
-	RDOStudioFrameDoc*  getFrameDoc( const int index ) const        { return frames[index]->doc;    };
-	RDOStudioFrameView* getFrameView( const int index ) const       { return frames[index]->view;   };
-	CMutex*             getFrameMutexUsed( const int index ) const  { return &frames[index]->used;  };
-	CMutex*             getFrameMutexDraw( const int index ) const  { return &frames[index]->draw;  };
-	CEvent*             getFrameEventTimer( const int index ) const { return &frames[index]->timer; };
-	CEvent*             getFrameEventClose( const int index ) const { return &frames[index]->close; };
-	int count() const                                               { return frames.size();         };
+	CREF(tstring)       getFrameName( const int index ) const       { return m_frameList[index]->name;   };
+	RDOStudioFrameDoc*  getFrameDoc( const int index ) const        { return m_frameList[index]->doc;    };
+	RDOStudioFrameView* getFrameView( const int index ) const       { return m_frameList[index]->view;   };
+	int count() const                                               { return m_frameList.size();         };
 	rbool isChanged()                                               { rbool res = changed; changed = false; return res; }
 	RDOStudioFrameDoc* getFirstExistDoc() const;
 	void closeAll();
