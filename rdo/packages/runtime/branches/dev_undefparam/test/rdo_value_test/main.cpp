@@ -516,7 +516,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Double_ruint)
 	BOOST_CHECK(value1.typeID() == RDOType::t_real);
 }
 
-/*BOOST_AUTO_TEST_CASE(RDOValue_Rsint_String)
+BOOST_AUTO_TEST_CASE(RDOValue_Rsint_String)
 {
 	rsint   val1 = 10       ;
 	tstring str1 = _T("abc");
@@ -526,15 +526,13 @@ BOOST_AUTO_TEST_CASE(RDOValue_Double_ruint)
 	try 
 	{
 		value1 += value2;
-		throw "Wrong types";
 	} 
-	catch(tstring str)
+	catch(CREF(RDOValueException))
 	{
-		std::cout << str << std::endl;
+		// Суда должны попасть
 	}
-   
 }
-*/
+
 /*
 BOOST_AUTO_TEST_CASE(RDOValue_Identificator)
 {
