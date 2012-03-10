@@ -35,6 +35,19 @@ private:
 	rsint         m_relResNum;
 };
 
+//! Выполнение блока ASSIGN в процессе
+CALC(RDOCalcProcAssign)
+{
+DECLARE_FACTORY(RDOCalcProcAssign)
+protected:
+	RDOCalcProcAssign(CREF(LPRDOCalc) pCalc, ruint res, ruint param);
+	DECLARE_ICalc;
+private:
+	LPRDOCalc m_pCalc;
+	ruint     m_res;
+	ruint     m_param;
+};
+
 //! Получение значения терминального счетчика
 CALC(RDOCalcGetTermNow)
 {

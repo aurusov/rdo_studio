@@ -45,6 +45,31 @@ REF(RDOValue) RDOCalcProcessControl::doCalc(CREF(LPRDORuntime) pRuntime)
 }
 
 // --------------------------------------------------------------------------------
+// -------------------- RDOCalcProcAssign
+// --------------------------------------------------------------------------------
+RDOCalcProcAssign::RDOCalcProcAssign(CREF(LPRDOCalc) pCalc, ruint res, ruint param)
+	: m_pCalc(pCalc)
+	, m_res  (res  )
+	, m_param(param)
+{
+	ASSERT(m_pCalc);
+	ASSERT(m_res   != ~0);
+	ASSERT(m_param != ~0);
+}
+
+REF(RDOValue) RDOCalcProcAssign::doCalc(CREF(LPRDORuntime) pRuntime)
+{
+	LPRDOResource pRes = pRuntime->getResourceByID(m_res);
+	ASSERT(pRes);
+
+	m_value = m_pCalc->calcValue(pRuntime);
+
+	pRes->setParam(m_param, m_value);
+
+	return m_value;
+}
+
+// --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetTermNow
 // --------------------------------------------------------------------------------
 REF(RDOValue) RDOCalcGetTermNow::doCalc(CREF(LPRDORuntime) pRuntime)

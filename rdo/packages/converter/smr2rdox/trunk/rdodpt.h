@@ -449,7 +449,7 @@ protected:
 	LPIPROCBlock m_pRuntime;
 
 private:
-	RDOPROCAssign(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pValue, int resID, int paramID);
+	RDOPROCAssign(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pValue);
 };
 
 CLOSE_RDO_CONVERTER_NAMESPACE

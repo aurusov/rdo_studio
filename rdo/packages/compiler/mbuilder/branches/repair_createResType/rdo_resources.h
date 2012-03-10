@@ -152,7 +152,7 @@ public:
 		const rdoRuntime::RDOType::TypeID  typeID () const { return m_pType->type()->typeID(); }
 		tstring                            typeStr() const { return m_pType->type()->name();   }
 
-		rsint                       id() const          { return m_id;  }
+		ruint                       id() const          { return m_id;  }
 
 		rbool                       hasRange() const    { return (m_pMin && m_pMax) ? m_pMin->typeID() != rdoRuntime::RDOType::t_unknow && m_pMax->typeID() != rdoRuntime::RDOType::t_unknow : false; }
 		CREF(rdoParser::LPRDOValue) getMin  () const    { return m_pMin; }
@@ -176,7 +176,7 @@ public:
 		rdoParser::LPRDOValue  m_pMin;
 		rdoParser::LPRDOValue  m_pMax;
 		rdoParser::LPRDOValue  m_pDefault;
-		rsint                  m_id;
+		ruint                  m_id;
 
 		template <class T>
 		void initType(CREF(T) pType)
@@ -209,11 +209,11 @@ public:
 
 	Type   getType    () const { return m_type;                 }
 	rbool  isPermanent() const { return m_type == rt_permanent; }
-	rsint  id         () const { return m_id;                   }
+	ruint  id         () const { return m_id;                   }
 
 private:
 	Type   m_type;
-	rsint  m_id;
+	ruint  m_id;
 };
 	
 // --------------------------------------------------------------------------------

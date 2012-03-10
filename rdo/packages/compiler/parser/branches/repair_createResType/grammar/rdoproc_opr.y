@@ -204,6 +204,7 @@
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/rdotypes.h"
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/rdoparser_lexer.h"
 #include "simulator/compiler/parser/rdofun.h"
@@ -342,9 +343,7 @@ dpt_process_line
 		LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCAssign>::create(
 			PARSER->getLastPROCProcess(),
 			_T("Event planning from process"),
-			pCalc,
-			0,
-			0
+			pCalc
 		);
 		ASSERT(pBlock);
 		$$ = PARSER->stack().push(pBlock);
@@ -681,17 +680,27 @@ dpt_assign_param
 			}
 		
 			LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($5);
-			if (pArithm)
-			{
-				LPRDORSSResource pResource = PARSER->findRSSResource(res);
-				ASSERT(pResource);
-				LPRDORTPResType pResType = pResource->getType();
-				LPRDORTPParam   pParam   = pResType->findRTPParam(param);
-				pArithm->checkParamType(pParam->getTypeInfo());
-				LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCAssign>::create(PARSER->getLastPROCProcess(), _T("ASSIGN"), pArithm->createCalc(pParam->getTypeInfo()), pResource->getID(), rtp.m_params[param].id());
-				ASSERT(pBlock);
-				$$ = PARSER->stack().push(pBlock);
-			}
+			ASSERT(pArithm);
+
+			LPRDORSSResource pResource = PARSER->findRSSResource(res);
+			ASSERT(pResource);
+
+			LPRDORTPResType pResType = pResource->getType();
+			LPRDORTPParam   pParam   = pResType->findRTPParam(param);
+			pArithm->checkParamType(pParam->getTypeInfo());
+
+			ruint res = pResource->getID();
+			ruint par = rtp.m_params[param].id();
+
+			rdoRuntime::LPRDOCalc pCalc = pArithm->createCalc(pParam->getTypeInfo());
+			ASSERT(pCalc);
+
+			rdoRuntime::LPRDOCalcProcAssign pAssignCalc = rdo::Factory<rdoRuntime::RDOCalcProcAssign>::create(pCalc, res, par);
+			ASSERT(pAssignCalc);
+
+			LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCAssign>::create(PARSER->getLastPROCProcess(), _T("ASSIGN"), pAssignCalc);
+			ASSERT(pBlock);
+			$$ = PARSER->stack().push(pBlock);
 		}
 		else
 		{
