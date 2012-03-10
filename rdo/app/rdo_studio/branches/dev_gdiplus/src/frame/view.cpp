@@ -389,7 +389,7 @@ void RDOStudioFrameView::onDraw()
 		if (!m_pGraphics.get() || m_pGraphics->GetLastStatus() != Gdiplus::Ok)
 			return;
 
-		m_pGraphics->DrawImage(&m_memDC.buffer(), m_pos.X, m_pos.Y);
+		m_pGraphics->DrawImage(&m_memDC.buffer(), -m_pos.X, -m_pos.Y);
 /*
 		pDC->SetStretchBltMode( HALFTONE );
 		double k1 = (double)newClientRect.bottom / frameBmpRect.GetBottom();
