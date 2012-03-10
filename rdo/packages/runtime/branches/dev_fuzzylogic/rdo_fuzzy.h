@@ -27,8 +27,6 @@ PREDECLARE_POINTER(RDOFuzzyValue);
 OBJECT(RDOFuzzyValue)
 {
 DECLARE_FACTORY(RDOFuzzyValue);
-friend class RDOFuzzyType; //! @todo убрать friend
-
 public:
 	typedef  std::pair<RDOValue, double>                              FuzzyItem;
 	typedef  std::map<FuzzyItem::first_type, FuzzyItem::second_type>  FuzzySet;
@@ -88,13 +86,15 @@ private:
 };
 
 PREDECLARE_POINTER(RDOFuzzySetDefinition);
+PREDECLARE_POINTER(RDOActivatedValue);
+PREDECLARE_POINTER(RDOValue);
 
 //! Тип нечеткой переменной
 class RDOFuzzyType: public RDOType
 {
 DECLARE_FACTORY(RDOFuzzyType);
 public:
-	typedef std::map<tstring, LPRDOFuzzySetDefinition> TermSet;
+	typedef std::map<tstring, LPRDOFuzzyValue> TermSet;
 
 	TermSet::const_iterator begin     ();
 	TermSet::const_iterator end       ();
@@ -105,7 +105,7 @@ public:
 	rbool operator== (CREF(RDOFuzzyType) type) const;
 	rbool operator!= (CREF(RDOFuzzyType) type) const;
 
-	LPRDOFuzzyValue fuzzyfication(CREF(RDOValue) rdovalue);
+	LPRDOActivatedValue fuzzyfication(CREF(RDOValue) rdovalue);
 
 	rbool           inRange      (CREF(RDOValue)        rdovalue) const;
 	LPRDOFuzzyValue getSupplement(CREF(LPRDOFuzzyValue) pValue  ) const;
@@ -119,6 +119,24 @@ private:
 	LPRDOFuzzySetDefinition  m_fuzzySetDefinition;
 };
 DECLARE_POINTER(RDOFuzzyType);
+
+OBJECT (RDOActivatedValue)
+{
+DECLARE_FACTORY(RDOActivatedValue)
+public:
+	typedef std::map<tstring,double>ActivatedValue;
+	
+	ActivatedValue::const_iterator begin ();
+	ActivatedValue::const_iterator end   ();
+
+	REF(RDOActivatedValue)         append(tstring term, double appertain);
+
+private:
+	RDOActivatedValue();
+
+	ActivatedValue m_actValue;
+	LPRDOFuzzyType m_pType;
+};
 
 //! Нечеткое множество
 OBJECT(RDOFuzzySetDefinition)

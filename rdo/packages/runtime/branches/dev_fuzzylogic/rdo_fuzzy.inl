@@ -128,6 +128,18 @@ inline CREF(RDOFuzzyType::TermSet) RDOFuzzyType::getTermSet() const
 {
 	return m_termSet;
 }
+// --------------------------------------------------------------------------------
+// -------------------- RDOActivatedValue
+// --------------------------------------------------------------------------------
+inline RDOActivatedValue::ActivatedValue::const_iterator           RDOActivatedValue::begin()     {return m_actValue.begin();}
+inline RDOActivatedValue::ActivatedValue::const_iterator           RDOActivatedValue::end  ()     {return m_actValue.end  ();}
+inline RDOActivatedValue::RDOActivatedValue()
+{}
+inline REF(RDOActivatedValue) RDOActivatedValue::append(tstring term, double appertain)
+{
+	m_actValue[term] = appertain;
+	return *this;
+}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFuzzySetDefinition
