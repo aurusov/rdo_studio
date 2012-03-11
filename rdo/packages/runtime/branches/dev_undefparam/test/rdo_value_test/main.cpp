@@ -309,6 +309,24 @@ BOOST_AUTO_TEST_CASE(RDOValue_Enum)
 	BOOST_CHECK(value.getEnumAsInt() == 0              );
 	BOOST_CHECK(!value.getAsBool  ()                   );
 	BOOST_CHECK(value.getAsString () == "test0"        );
+
+	RDOValue value1(pEnum, "test2");
+	BOOST_CHECK(value1.typeID      () == RDOType::t_enum);
+	BOOST_CHECK(value1.getEnum     () == pEnum          );
+	BOOST_CHECK(value1.getInt      () == 2              );
+	BOOST_CHECK(value1.getDouble   () == 2              );
+	BOOST_CHECK(value1.getEnumAsInt() == 2              );
+	BOOST_CHECK(value1.getAsBool   ()                   );
+	BOOST_CHECK(value1.getAsString () == "test2"        );
+
+	RDOValue value2(pEnum, 2);
+	BOOST_CHECK(value2.typeID      () == RDOType::t_enum);
+	BOOST_CHECK(value2.getEnum     () == pEnum          );
+	BOOST_CHECK(value2.getInt      () == 2              );
+	BOOST_CHECK(value2.getDouble   () == 2              );
+	BOOST_CHECK(value2.getEnumAsInt() == 2              );
+	BOOST_CHECK(value2.getAsBool   ()                   );
+	BOOST_CHECK(value2.getAsString () == "test2"        );
 	
 }
 
@@ -527,12 +545,279 @@ BOOST_AUTO_TEST_CASE(RDOValue_Rsint_String)
 	{
 		value1 += value2;
 	} 
-	catch(CREF(RDOValueException))
+	catch(CREF(RDOValueException)){}
+	try
 	{
-		// Суда должны попасть
+		value1 -= value2;
 	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		value1 *= value2;
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		value1 /= value2;
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		if(value1 >  value2);		
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		if(value1 <  value2);	
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		if(value1 >= value2);		
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		if(value1 <= value2);		
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		if(value1 == value2);		
+	}
+	catch(CREF(RDOValueException)){}
 }
 
+BOOST_AUTO_TEST_CASE(RDOValue_Ruint_String)
+{
+	ruint   val1 = 10       ;
+	tstring str1 = _T("abc");
+	RDOValue value1(val1);
+	RDOValue value2(str1);
+
+	try 
+	{
+		value1 += value2;
+	} 
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		value1 -= value2;
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		value1 *= value2;
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		value1 /= value2;
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		if(value1 >  value2);		
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		if(value1 <  value2);	
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		if(value1 >= value2);		
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		if(value1 <= value2);		
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		if(value1 == value2);		
+	}
+	catch(CREF(RDOValueException)){}
+}
+
+BOOST_AUTO_TEST_CASE(RDOValue_Double_String)
+{
+	double  val1 = 10       ;
+	tstring str1 = _T("abc");
+	RDOValue value1(val1);
+	RDOValue value2(str1);
+
+	try 
+	{
+		value1 += value2;
+	} 
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		value1 -= value2;
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		value1 *= value2;
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		value1 /= value2;
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		if(value1 >  value2);		
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		if(value1 <  value2);	
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		if(value1 >= value2);		
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		if(value1 <= value2);		
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		if(value1 == value2);		
+	}
+	catch(CREF(RDOValueException)){}
+}
+
+BOOST_AUTO_TEST_CASE(RDOValue_Char_Rsint)
+{
+	rsint  val1 = 10     ;
+	tchar  ch1  = _T('a');
+	RDOValue value1(val1);
+	RDOValue value2(ch1 );
+	
+	value1 += value2;
+	BOOST_CHECK(value1 == val1 + ch1);
+	value1 -= value2;
+	BOOST_CHECK(value1 == val1      );
+	value1 *= value2;
+	BOOST_CHECK(value1 == val1 * ch1);
+	value1 /= value2;
+	BOOST_CHECK(value1 == val1      );
+
+	BOOST_CHECK(  value1 <  value2 );
+	BOOST_CHECK(  value1 <= value2 );
+	BOOST_CHECK(  value2 >  value1 );
+	BOOST_CHECK(  value1 >= value1 );
+	BOOST_CHECK(!(value1 == value2));
+}
+
+BOOST_AUTO_TEST_CASE(RDOValue_Char_Ruint)
+{
+	ruint  val1 = 10     ;
+	tchar  ch1  = _T('a');
+	RDOValue value1(val1);
+	RDOValue value2(ch1 );
+
+	value1 += value2;
+	BOOST_CHECK(value1 == val1 + ch1);
+	value1 -= value2;
+	BOOST_CHECK(value1 == val1      );
+	value1 *= value2;
+	BOOST_CHECK(value1 == val1 * ch1);
+	value1 /= value2;
+	BOOST_CHECK(value1 == val1      );
+
+	BOOST_CHECK(  value1 <  value2 );
+	BOOST_CHECK(  value1 <= value2 );
+	BOOST_CHECK(  value2 >  value1 );
+	BOOST_CHECK(  value1 >= value1 );
+	BOOST_CHECK(!(value1 == value2));
+}
+
+BOOST_AUTO_TEST_CASE(RDOValue_Char_Double)
+{
+	double val1 = 10     ;
+	tchar  ch1  = _T('a');
+	RDOValue value1(val1);
+	RDOValue value2(ch1 );
+
+	value1 += value2;
+	BOOST_CHECK(value1 == val1 + ch1);
+	value1 -= value2;
+	BOOST_CHECK(value1 == val1      );
+	value1 *= value2;
+	BOOST_CHECK(value1 == val1 * ch1);
+	value1 /= value2;
+	BOOST_CHECK(value1 == val1      );
+
+	BOOST_CHECK(  value1 <  value2 );
+	BOOST_CHECK(  value1 <= value2 );
+	BOOST_CHECK(  value2 >  value1 );
+	BOOST_CHECK(  value1 >= value1 );
+	BOOST_CHECK(!(value1 == value2));
+}
+
+BOOST_AUTO_TEST_CASE(RDOValue_String_Char)
+{
+	tstring  str1 = _T("abc");
+	tchar    ch1  = _T('a'  );
+	RDOValue value1(str1);
+	RDOValue value2(ch1 );
+	
+	try
+	{
+		value1 += value2;
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		value1 -= value2;
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		value1 *= value2;
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		value1 /= value2;
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		if(value1 >  value2);		
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		if(value1 <  value2);	
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		if(value1 >= value2);		
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		if(value1 <= value2);		
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		if(value1 == value2);		
+	}
+	catch(CREF(RDOValueException)){}
+}
 /*
 BOOST_AUTO_TEST_CASE(RDOValue_Identificator)
 {
