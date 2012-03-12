@@ -1160,10 +1160,14 @@ void RDOStudioModel::afterModelStart()
 			m_frameManager.insertItem(*frame_it);
 		}
 		m_frameManager.expand();
-		int initFrameNumber = kernel->simulator()->getInitialFrameNumber() - 1;
 		m_timeNow = 0;
+		ruint initFrameNumber = kernel->simulator()->getInitialFrameNumber();
+		if (initFrameNumber != ruint(~0))
+		{
+			--initFrameNumber;
+		}
 		m_frameManager.setLastShowedFrame(initFrameNumber);
-		if (getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && initFrameNumber >= 0 && initFrameNumber < m_frameManager.count())
+		if (getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && initFrameNumber < m_frameManager.count())
 		{
 			PTR(RDOStudioFrameDoc) pDoc = m_frameManager.connectFrameDoc(initFrameNumber);
 			if (pDoc)
@@ -1177,7 +1181,7 @@ void RDOStudioModel::afterModelStart()
 	else
 	{
 		m_timeNow = 0;
-		m_frameManager.setLastShowedFrame(-1);
+		m_frameManager.setLastShowedFrame(ruint(~0));
 	}
 }
 
