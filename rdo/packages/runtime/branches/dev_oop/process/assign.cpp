@@ -33,16 +33,8 @@ rbool RDOPROCAssign::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 
 IBaseOperation::BOResult RDOPROCAssign::onDoOperation(CREF(LPRDORuntime) pRuntime)
 {
-	if (t_resId && t_parId)
-	{
-		LPRDOResource res = pRuntime->getResourceByID(t_resId);
-		res->setParam(t_parId, pParamValue->calcValue(pRuntime));
-		TRACE1(_T("%7.1f ASSIGN\n"), pRuntime->getCurrentTime());
-	}
-	else
-	{
-		pParamValue->calcValue(pRuntime);
-	}
+	pAssignCalc->calcValue(pRuntime);
+	TRACE1(_T("%7.1f ASSIGN\n"), pRuntime->getCurrentTime());
 	m_transacts.front()->next();
 	return IBaseOperation::BOR_done;
 }

@@ -35,22 +35,17 @@ private:
 	rsint         m_relResNum;
 };
 
-//! Создание транзакта в блоке GENERATE и его запуск в процесс
-CALC(RDOCalcCreateAndGoInTransact)
+//! Выполнение блока ASSIGN в процессе
+CALC(RDOCalcProcAssign)
 {
-	DECLARE_FACTORY(RDOCalcCreateAndGoInTransact)
-public:
-	void setBlock(LPIPROCBlock pBlock);
+DECLARE_FACTORY(RDOCalcProcAssign)
 protected:
-	RDOCalcCreateAndGoInTransact(CREF(LPIResourceType) pType, CREF(std::vector<RDOValue>) rParamsCalcs, rbool traceFlag, rbool permanentFlag);
+	RDOCalcProcAssign(CREF(LPRDOCalc) pCalc, ruint res, ruint param);
 	DECLARE_ICalc;
 private:
-	LPIPROCBlock           m_pBlock;
-	LPIResourceType        m_pResType;
-	std::vector<RDOValue>  m_paramsCalcs;
-	rbool                  m_traceFlag;
-	rbool                  m_permanentFlag;
-	ruint                  m_relResID;
+	LPRDOCalc m_pCalc;
+	ruint     m_res;
+	ruint     m_param;
 };
 
 //! Получение значения терминального счетчика

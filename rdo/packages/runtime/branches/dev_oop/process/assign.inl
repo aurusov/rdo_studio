@@ -21,11 +21,9 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCAssign
 // --------------------------------------------------------------------------------
-inline RDOPROCAssign::RDOPROCAssign(LPIPROCProcess process, CREF(LPRDOCalc) pValue, int Id_res, int Id_param)
-	: RDOPROCBlock(process )
-	, pParamValue (pValue  )
-	, t_resId     (Id_res  )
-	, t_parId     (Id_param)
+inline RDOPROCAssign::RDOPROCAssign(LPIPROCProcess pProcess, CREF(LPRDOCalc) pCalc)
+	: RDOPROCBlock(pProcess)
+	, pAssignCalc (pCalc   )
 {}
 
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -23,7 +23,13 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcCreateResource
 // --------------------------------------------------------------------------------
-RDOCalcCreateResource::RDOCalcCreateResource(CREF(LPIResourceType) pType, CREF(std::vector<RDOValue>) rParamsCalcs, rbool traceFlag, rbool permanentFlag, ruint relResID)
+RDOCalcCreateResource::RDOCalcCreateResource(
+	CREF(LPIResourceType) pType,
+	CREF(std::vector<RDOValue>) rParamsCalcs,
+	rbool traceFlag,
+	rbool permanentFlag,
+	ruint relResID
+)
 	: m_pResType     (pType        )
 	, m_traceFlag    (traceFlag    )
 	, m_permanentFlag(permanentFlag)
@@ -31,17 +37,25 @@ RDOCalcCreateResource::RDOCalcCreateResource(CREF(LPIResourceType) pType, CREF(s
 {
 	m_paramsCalcs.insert(m_paramsCalcs.begin(), rParamsCalcs.begin(), rParamsCalcs.end());
 	// попытка создавать постоянные ресурсы динамически
-	ASSERT(!(m_permanentFlag && m_relResID > 0));
+	ASSERT(m_relResID == ~0 || (m_relResID != ~0 && !m_permanentFlag));
 }
 
 REF(RDOValue) RDOCalcCreateResource::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	LPRDOResource pResource = m_pResType->createRes(pRuntime, pRuntime->getResourceId(), m_paramsCalcs, m_traceFlag, m_permanentFlag);
-	if (m_relResID)
+	ASSERT(pResource);
+
+	if (m_relResID != ~0)
 	{
 		pRuntime->getCurrentActivity()->setRelRes(m_relResID, pResource->getTraceID());
 	}
-	return m_value; // just to return something
+
+	LPRDOType pType = m_pResType;
+	ASSERT(pType);
+
+	m_value = RDOValue(pType, pResource);
+
+	return m_value;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

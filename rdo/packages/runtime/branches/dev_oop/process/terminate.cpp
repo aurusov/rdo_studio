@@ -32,19 +32,19 @@ rbool RDOPROCTerminate::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 
 IBaseOperation::BOResult RDOPROCTerminate::onDoOperation(CREF(LPRDORuntime) pRuntime)
 {
-//	TRACE1(_T("%7.1f TERMINATE\n"), pRuntime->getCurrentTime());
+	TRACE1(_T("%7.1f TERMINATE\n"), pRuntime->getCurrentTime());
 	LPRDOPROCTransact transact = m_transacts.front();
 	ASSERT(transact);
 	transact->setState(RDOResource::CS_Erase);
-	RDOTrace* tracer = pRuntime->getTracer();
+	PTR(RDOTrace) tracer = pRuntime->getTracer();
 	if (!tracer->isNull())
 	{
 		tracer->getOStream() << transact->traceResourceState('\0', pRuntime) << tracer->getEOL();
 	}
 	pRuntime->onEraseRes(transact->getTraceID(), NULL);
 	m_transacts.erase(m_transacts.begin());
-	int termNow = pRuntime->getCurrentTerm();
-	termNow += getTerm();
+	ruint termNow = pRuntime->getCurrentTerm();
+	termNow += pTermCalc->calcValue(pRuntime).getInt();
 	pRuntime->setCurrentTerm(termNow);
 	return IBaseOperation::BOR_done;
 }
