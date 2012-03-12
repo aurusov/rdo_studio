@@ -31,16 +31,51 @@
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
+// -------------------- RDOStudioFrameManager::Frame
+// --------------------------------------------------------------------------------
+RDOStudioFrameManager::Frame::Frame()
+	: m_hitem(0   )
+	, m_pDoc (NULL)
+	, m_pView(NULL)
+{}
+
+RDOStudioFrameManager::Frame::~Frame()
+{
+	clear();
+}
+
+void RDOStudioFrameManager::Frame::clear()
+{
+	STL_FOR_ALL(m_areaList, it)
+	{
+		delete *it;
+	}
+	m_areaList.clear();
+}
+
+// --------------------------------------------------------------------------------
 // -------------------- RDOStudioFrameManager
 // --------------------------------------------------------------------------------
-//std::vector< RDOStudioFrameManager::Frame* > RDOStudioFrameManager::frames;
+RDOStudioFrameManager::FrameDocTemplate::FrameDocTemplate(UINT nIDResource, PTR(CRuntimeClass) pDocClass, PTR(CRuntimeClass) pFrameClass, PTR(CRuntimeClass) pViewClass)
+	: CMultiDocTemplate(nIDResource, pDocClass, pFrameClass, pViewClass)
+{}
 
+PTR(CFrameWnd) RDOStudioFrameManager::FrameDocTemplate::CreateNewFrame(PTR(CDocument) pDoc, PTR(CFrameWnd) pOther)
+{
+	PTR(CFrameWnd) pFrame = CMultiDocTemplate::CreateNewFrame(pDoc, pOther);
+	static_cast<PTR(RDOStudioFrameDoc)>(pDoc)->frame = pFrame;
+	return pFrame;
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOStudioFrameManager
+// --------------------------------------------------------------------------------
 RDOStudioFrameManager::RDOStudioFrameManager():
 	frameDocTemplate( NULL ),
-	lastShowedFrame( -1 ),
-	currentShowingFrame( -1 )
+	lastShowedFrame(ruint(~0)),
+	currentShowingFrame(ruint(~0))
 {
-	frameDocTemplate = new FrameDocTemplate( IDR_FRAME_TYPE, RUNTIME_CLASS(RDOStudioFrameDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioFrameView) );
+	frameDocTemplate = new FrameDocTemplate(IDR_FRAME_TYPE, RUNTIME_CLASS(RDOStudioFrameDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioFrameView));
 	AfxGetApp()->AddDocTemplate( frameDocTemplate );
 
 	dcBmp.CreateCompatibleDC( NULL );
@@ -59,49 +94,135 @@ RDOStudioFrameManager::~RDOStudioFrameManager()
 
 void RDOStudioFrameManager::insertItem( CREF(tstring) name )
 {
-	Frame* item = new Frame;
-	item->hitem = studioApp.m_pMainFrame->workspace.frames->InsertItem( name.c_str(), 1, 1, studioApp.m_pMainFrame->workspace.frames->GetRootItem() );
-	item->name  = name;
-	item->doc   = NULL;
-	item->view  = NULL;
+	PTR(Frame) item = new Frame();
+	item->m_hitem = studioApp.m_pMainFrame->workspace.frames->InsertItem(name.c_str(), 1, 1, studioApp.m_pMainFrame->workspace.frames->GetRootItem());
+	item->m_name  = name;
+	item->m_pDoc  = NULL;
+	item->m_pView = NULL;
 	m_frameList.push_back(item);
 }
 
-RDOStudioFrameDoc* RDOStudioFrameManager::connectFrameDoc( const int index )
+ruint RDOStudioFrameManager::findFrameIndex(const HTREEITEM hitem) const
 {
-	RDOStudioFrameDoc* doc = NULL;
-	if ( index != -1 )
+	ruint index = 0;
+	STL_FOR_ALL_CONST(m_frameList, it)
 	{
-		doc = static_cast<RDOStudioFrameDoc*>(frameDocTemplate->OpenDocumentFile( NULL ));
-		if ( doc )
+		if ((*it)->m_hitem == hitem)
 		{
-			m_frameList[index]->doc  = doc;
-			m_frameList[index]->view = doc->getView();
-			lastShowedFrame          = index;
-			doc->SetTitle( rdo::format( IDS_FRAME_NAME, getFrameName( index ).c_str() ).c_str()  );
+			return index;
+		}
+		index++;
+	}
+	return ruint(~0);
+}
+
+ruint RDOStudioFrameManager::findFrameIndex(CPTR(RDOStudioFrameDoc) pDoc) const
+{
+	ruint index = 0;
+	STL_FOR_ALL_CONST(m_frameList, it)
+	{
+		if ((*it)->m_pDoc == pDoc)
+		{
+			return index;
+		}
+		index++;
+	}
+	return ruint(~0);
+}
+
+ruint RDOStudioFrameManager::findFrameIndex(CPTR(RDOStudioFrameView) pView) const
+{
+	ruint index = 0;
+	STL_FOR_ALL_CONST(m_frameList, it)
+	{
+		if ((*it)->m_pView == pView)
+		{
+			return index;
+		}
+		index++;
+	}
+	return ruint(~0);
+}
+
+CREF(tstring) RDOStudioFrameManager::getFrameName(ruint index) const
+{
+	ASSERT(index < m_frameList.size());
+	return m_frameList[index]->m_name;
+}
+
+PTR(RDOStudioFrameDoc) RDOStudioFrameManager::getFrameDoc(ruint index) const
+{
+	ASSERT(index < m_frameList.size());
+	return m_frameList[index]->m_pDoc;
+}
+
+PTR(RDOStudioFrameView) RDOStudioFrameManager::getFrameView(ruint index) const
+{
+	ASSERT(index < m_frameList.size());
+	return m_frameList[index]->m_pView;
+}
+
+ruint RDOStudioFrameManager::count() const
+{
+	return m_frameList.size();
+}
+
+rbool RDOStudioFrameManager::isChanged()
+{
+	rbool res = changed;
+	changed = false;
+	return res;
+}
+
+void RDOStudioFrameManager::areaDown(ruint frameIndex, CREF(Gdiplus::Point) point) const
+{
+	ASSERT(frameIndex != ruint(~0) && frameIndex < m_frameList.size());
+
+	CREF(RDOStudioFrameManager::Frame::AreaList) areaList = m_frameList[frameIndex]->m_areaList;
+	STL_FOR_ALL_CONST(areaList, it)
+	{
+		if ((*it)->m_rect.Contains(point))
+		{
+			model->sendMessage(kernel->runtime(), RDOThread::RT_RUNTIME_FRAME_AREA_DOWN, &(*it)->m_name);
+		}
+	}
+}
+
+PTR(RDOStudioFrameDoc) RDOStudioFrameManager::connectFrameDoc(ruint index)
+{
+	PTR(RDOStudioFrameDoc) pDoc = NULL;
+	if ( index != ~0 )
+	{
+		pDoc = static_cast<RDOStudioFrameDoc*>(frameDocTemplate->OpenDocumentFile( NULL ));
+		if ( pDoc )
+		{
+			m_frameList[index]->m_pDoc  = pDoc;
+			m_frameList[index]->m_pView = pDoc->getView();
+			lastShowedFrame             = index;
+			pDoc->SetTitle( rdo::format( IDS_FRAME_NAME, getFrameName( index ).c_str() ).c_str()  );
 			setCurrentShowingFrame( index );
 		}
 	}
-	return doc;
+	return pDoc;
 }
 
-void RDOStudioFrameManager::disconnectFrameDoc( const RDOStudioFrameDoc* doc )
+void RDOStudioFrameManager::disconnectFrameDoc(CPTR(RDOStudioFrameDoc) pDoc)
 {
-	int index = findFrameIndex( doc );
-	if ( index != -1 )
+	ruint index = findFrameIndex(pDoc);
+	if (index != ~0)
 	{
-		m_frameList[index]->doc  = NULL;
-		m_frameList[index]->view = NULL;
+		m_frameList[index]->m_pDoc  = NULL;
+		m_frameList[index]->m_pView = NULL;
 	}
 	changed = true;
 }
 
 void RDOStudioFrameManager::closeAll()
 {
-	int backup = lastShowedFrame;
+	ruint backup = lastShowedFrame;
 	STL_FOR_ALL(m_frameList, it)
 	{
-		PTR(RDOStudioFrameDoc) pFrameDoc = (*it)->doc;
+		PTR(RDOStudioFrameDoc) pFrameDoc = (*it)->m_pDoc;
 		if (isValidFrameDoc(pFrameDoc))
 		{
 			if (pFrameDoc->frame && pFrameDoc->frame->GetSafeHwnd())
@@ -118,7 +239,7 @@ void RDOStudioFrameManager::clear()
 	studioApp.m_pMainFrame->workspace.frames->deleteChildren(studioApp.m_pMainFrame->workspace.frames->GetRootItem());
 	STL_FOR_ALL(m_frameList, it)
 	{
-		PTR(RDOStudioFrameDoc) pFrameDoc = (*it)->doc;
+		PTR(RDOStudioFrameDoc) pFrameDoc = (*it)->m_pDoc;
 		if (isValidFrameDoc(pFrameDoc))
 		{
 			if (pFrameDoc->frame && pFrameDoc->frame->GetSafeHwnd())
@@ -129,17 +250,17 @@ void RDOStudioFrameManager::clear()
 		delete *it;
 	}
 	m_frameList.clear();
-	lastShowedFrame = -1;
-	setCurrentShowingFrame(-1);
+	lastShowedFrame = ruint(~0);
+	setCurrentShowingFrame(ruint(~0));
 }
 
 RDOStudioFrameDoc* RDOStudioFrameManager::getFirstExistDoc() const
 {
 	STL_FOR_ALL_CONST(m_frameList, it)
 	{
-		if (isValidFrameDoc((*it)->doc))
+		if (isValidFrameDoc((*it)->m_pDoc))
 		{
-			return (*it)->doc;
+			return (*it)->m_pDoc;
 		}
 	}
 	return NULL;
@@ -154,8 +275,8 @@ rbool RDOStudioFrameManager::isValidFrameDoc( const RDOStudioFrameDoc* const fra
 {
 	POSITION pos = frameDocTemplate->GetFirstDocPosition();
 	while ( pos ) {
-		RDOStudioFrameDoc* doc = static_cast<RDOStudioFrameDoc*>(frameDocTemplate->GetNextDoc( pos ));
-		if ( frame == doc ) {
+		RDOStudioFrameDoc* pDoc = static_cast<RDOStudioFrameDoc*>(frameDocTemplate->GetNextDoc( pos ));
+		if ( frame == pDoc ) {
 			return true;
 		}
 	}
@@ -163,30 +284,38 @@ rbool RDOStudioFrameManager::isValidFrameDoc( const RDOStudioFrameDoc* const fra
 	return false;
 }
 
-void RDOStudioFrameManager::setLastShowedFrame( const int value )
+void RDOStudioFrameManager::setLastShowedFrame(ruint value)
 {
-	if ( value >= 0 && value < count() ) {
+	if (value != ruint(~0) && value < count())
+	{
 		lastShowedFrame = value;
 	}
 }
 
-void RDOStudioFrameManager::setCurrentShowingFrame( const int value )
+void RDOStudioFrameManager::setCurrentShowingFrame(ruint value)
 {
-	if ( value == -1 || (value >= 0 && value < count()) ) {
+	if (value == ruint(~0) || (value != ruint(~0) && value < count()))
+	{
 		currentShowingFrame = value;
-		CTreeCtrl* tree = studioApp.m_pMainFrame->workspace.frames;
-		if ( currentShowingFrame != -1 ) {
-			HTREEITEM hitem = m_frameList[currentShowingFrame]->hitem;
-			tree->SelectItem( hitem );
-		} else {
-			tree->SelectItem( NULL );
+		PTR(CTreeCtrl) pTree = studioApp.m_pMainFrame->workspace.frames;
+		if (currentShowingFrame != ruint(~0))
+		{
+			HTREEITEM hitem = m_frameList[currentShowingFrame]->m_hitem;
+			pTree->SelectItem(hitem);
+		}
+		else
+		{
+			pTree->SelectItem(NULL);
 		}
 	}
 }
 
-void RDOStudioFrameManager::resetCurrentShowingFrame( const int value )
+void RDOStudioFrameManager::resetCurrentShowingFrame(ruint value)
 {
-	if ( value == currentShowingFrame ) setCurrentShowingFrame( -1 );
+	if (value == currentShowingFrame)
+	{
+		setCurrentShowingFrame(ruint(~0));
+	}
 }
 
 void RDOStudioFrameManager::bmp_insert(CREF(tstring) name)
@@ -227,7 +356,7 @@ void RDOStudioFrameManager::bmp_clear()
 	m_bitmapList.clear();
 }
 
-void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame, const int index )
+void RDOStudioFrameManager::showFrame(CPTRC(rdoAnimation::RDOFrame) pFrame, ruint index)
 {
 	if (index < count())
 	{
@@ -235,73 +364,64 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 		if (pFrameDoc)
 		{
 			PTR(RDOStudioFrameView) pFrameView = getFrameView(index);
-			if (pFrameView->mustBeInit)
+			if (!pFrameView->valid())
 			{
-				rbool showFillrect = true;
-				if (frame->hasBgImage())
+				Gdiplus::Size size;
+				rbool imageFound = false;
+				if (pFrame->hasBgImage())
 				{
-					BitmapList::const_iterator bmpIt = m_bitmapList.find(frame->m_bgImageName);
+					BitmapList::const_iterator bmpIt = m_bitmapList.find(pFrame->m_bgImageName);
 					if (bmpIt != m_bitmapList.end())
 					{
-						pFrameView->frameBmpRect.Width  = bmpIt->second->GetWidth ();
-						pFrameView->frameBmpRect.Height = bmpIt->second->GetHeight();
-						showFillrect = false;
+						size.Width  = bmpIt->second->GetWidth ();
+						size.Height = bmpIt->second->GetHeight();
+						imageFound  = true;
 					}
 				}
-				if (showFillrect)
+				if (!imageFound)
 				{
-					pFrameView->frameBmpRect.Width  = (ruint)frame->m_size.m_width;
-					pFrameView->frameBmpRect.Height = (ruint)frame->m_size.m_height;
+					size.Width  = (ruint)pFrame->m_size.m_width;
+					size.Height = (ruint)pFrame->m_size.m_height;
 				}
-				pFrameView->points[0].X = 0;
-				pFrameView->points[0].Y = 0;
-				pFrameView->points[1].X = pFrameView->frameBmpRect.GetRight() - 1;
-				pFrameView->points[1].Y = 0;
-				pFrameView->points[2].X = pFrameView->frameBmpRect.GetRight() - 1;
-				pFrameView->points[2].Y = pFrameView->frameBmpRect.GetBottom() - 1;
-				pFrameView->points[3].X = 0;
-				pFrameView->points[3].Y = pFrameView->frameBmpRect.GetBottom() - 1;
-				pFrameView->points[4].X = 0;
-				pFrameView->points[4].Y = 0;
-				pFrameView->m_memDC.resize(pFrameView->frameBmpRect.GetRight(), pFrameView->frameBmpRect.GetBottom());
-				pFrameView->mustBeInit = false;
-				pFrameView->updateScrollBars();
+				pFrameView->init(size);
 			}
 
 			Gdiplus::Status status;
 
 			rbool showFillrect = true;
-			if (frame->hasBgImage())
+			if (pFrame->hasBgImage())
 			{
-				BitmapList::const_iterator bmpIt = m_bitmapList.find(frame->m_bgImageName);
+				BitmapList::const_iterator bmpIt = m_bitmapList.find(pFrame->m_bgImageName);
 				if (bmpIt != m_bitmapList.end())
 				{
-					status = pFrameView->m_memDC.dc().DrawImage(bmpIt->second, 0, 0, bmpIt->second->GetWidth(), bmpIt->second->GetHeight());
+					status = pFrameView->dc().DrawImage(bmpIt->second, 0, 0, bmpIt->second->GetWidth(), bmpIt->second->GetHeight());
 					showFillrect = false;
 				}
 			}
-			if (frame->m_bgColor.m_transparent)
+			Gdiplus::Color bgColor;
+			if (pFrame->m_bgColor.m_transparent)
 			{
-				pFrameView->m_bgColor.SetFromCOLORREF(studioApp.m_pMainFrame->style_frame.theme->backgroundColor);
+				bgColor.SetFromCOLORREF(studioApp.m_pMainFrame->style_frame.theme->backgroundColor);
 			}
 			else
 			{
-				pFrameView->m_bgColor.SetFromCOLORREF(RGB(frame->m_bgColor.m_r, frame->m_bgColor.m_g, frame->m_bgColor.m_b));
+				bgColor.SetFromCOLORREF(RGB(pFrame->m_bgColor.m_r, pFrame->m_bgColor.m_g, pFrame->m_bgColor.m_b));
 			}
-			if (showFillrect)
-			{
-				Gdiplus::SolidBrush brush(pFrameView->m_bgColor);
-				status = pFrameView->m_memDC.dc().FillRectangle(&brush, pFrameView->frameBmpRect);
+			pFrameView->setBGColor(bgColor);
+			//if (showFillrect)
+			//{
+			//	Gdiplus::SolidBrush brush(bgColor);
+			//	status = pFrameView->dc().FillRectangle(&brush, pFrameView->m_frameBmpRect);
 
-				//! @todo проверить ыцет карандаша. возможен косяк без SetFromCOLORREF
-				Gdiplus::Pen pen(studioApp.m_pMainFrame->style_frame.theme->defaultColor, 1.0);
-				status = pFrameView->m_memDC.dc().DrawPolygon(&pen, pFrameView->points, 5);
-			}
+			//	//! @todo проверить цвет карандаша. возможен косяк без SetFromCOLORREF
+			//	Gdiplus::Pen pen(studioApp.m_pMainFrame->style_frame.theme->defaultColor, 1.0);
+			//	status = pFrameView->dc().DrawPolygon(&pen, pFrameView->points, 5);
+			//}
 
-			ruint size = frame->m_elements.size();
+			ruint size = pFrame->m_elements.size();
 			for (ruint i = 0; i < size; i++)
 			{
-				PTR(rdoAnimation::FrameItem) pCurrElement = frame->m_elements[i];
+				PTR(rdoAnimation::FrameItem) pCurrElement = pFrame->m_elements[i];
 				ASSERT(pCurrElement);
 				switch (pCurrElement->getType())
 				{
@@ -338,24 +458,24 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 
 						std::wstring wtext = rdo::toUnicode(pElement->m_text);
 
-						HDC hDC = pFrameView->m_memDC.dc().GetHDC();
-						Gdiplus::Font  font(hDC, pFrameView->hfontCurrent);
-						pFrameView->m_memDC.dc().ReleaseHDC(hDC);
+						//HDC hDC = pFrameView->dc().GetHDC();
+						//Gdiplus::Font  font(hDC, pFrameView->hfontCurrent);
+						//pFrameView->dc().ReleaseHDC(hDC);
 
-						if (font.GetLastStatus() == Gdiplus::Ok)
-						{
-							Gdiplus::RectF rect(
-								Gdiplus::REAL(pElement->m_point.m_x),
-								Gdiplus::REAL(pElement->m_point.m_y),
-								Gdiplus::REAL(pElement->m_size.m_width),
-								Gdiplus::REAL(pElement->m_size.m_height)
-							);
+						//if (font.GetLastStatus() == Gdiplus::Ok)
+						//{
+						//	Gdiplus::RectF rect(
+						//		Gdiplus::REAL(pElement->m_point.m_x),
+						//		Gdiplus::REAL(pElement->m_point.m_y),
+						//		Gdiplus::REAL(pElement->m_size.m_width),
+						//		Gdiplus::REAL(pElement->m_size.m_height)
+						//	);
 
-							wtext = L"text";
+						//	wtext = L"text";
 
-							status = pFrameView->m_memDC.dc().DrawString(wtext.c_str(), wtext.length(), &font, rect, &sformat, &brush);
+						//	status = pFrameView->dc().DrawString(wtext.c_str(), wtext.length(), &font, rect, &sformat, &brush);
 //							::DrawText( hdc, pElement->m_text.c_str(), pElement->m_text.length(), CRect( (int)pElement->m_point.m_x, (int)pElement->m_point.m_y, (int)(pElement->m_point.m_x + pElement->m_size.m_width), (int)(pElement->m_point.m_y + pElement->m_size.m_height) ), nFormat );
-						}
+						//}
 
 						break;
 					}
@@ -374,7 +494,7 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 						}
 						Gdiplus::SolidBrush brush(bgColor);
 
-						status = pFrameView->m_memDC.dc().FillRectangle(&brush, (int)pElement->m_point.m_x, (int)pElement->m_point.m_y, (int)pElement->m_size.m_width, (int)pElement->m_size.m_height);
+						status = pFrameView->dc().FillRectangle(&brush, (int)pElement->m_point.m_x, (int)pElement->m_point.m_y, (int)pElement->m_size.m_width, (int)pElement->m_size.m_height);
 						//! @todo добавить вывод линии вокруг прямоугольника
 
 						break;
@@ -395,7 +515,7 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 						Gdiplus::SolidBrush brush(bgColor);
 
 						//! @todo gdi+ не умеет выводить roundrect :(
-						status = pFrameView->m_memDC.dc().FillRectangle(&brush, (int)pElement->m_point.m_x, (int)pElement->m_point.m_y, (int)pElement->m_size.m_width, (int)pElement->m_size.m_height);
+						status = pFrameView->dc().FillRectangle(&brush, (int)pElement->m_point.m_x, (int)pElement->m_point.m_y, (int)pElement->m_size.m_width, (int)pElement->m_size.m_height);
 						//! @todo добавить вывод линии вокруг прямоугольника
 
 						break;
@@ -409,7 +529,7 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 							Gdiplus::Color color;
 							color.SetFromCOLORREF(RGB(pElement->m_color.m_r, pElement->m_color.m_g, pElement->m_color.m_b));
 							Gdiplus::Pen pen(color);
-							pFrameView->m_memDC.dc().DrawLine(
+							pFrameView->dc().DrawLine(
 								&pen,
 								(int)(pElement->m_point1.m_x), (int)(pElement->m_point1.m_y),
 								(int)(pElement->m_point2.m_x), (int)(pElement->m_point2.m_y)
@@ -437,7 +557,7 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 							Gdiplus::Color color;
 							color.SetFromCOLORREF(RGB(pElement->m_background.m_r, pElement->m_background.m_g, pElement->m_background.m_b));
 							Gdiplus::SolidBrush brush(color);
-							pFrameView->m_memDC.dc().FillPolygon(&brush, &pointList[0], pountListCount);
+							pFrameView->dc().FillPolygon(&brush, &pointList[0], pountListCount);
 						}
 
 						if (!pElement->m_foreground.m_transparent)
@@ -445,7 +565,7 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 							Gdiplus::Color color;
 							color.SetFromCOLORREF(RGB(pElement->m_foreground.m_r, pElement->m_foreground.m_g, pElement->m_foreground.m_b));
 							Gdiplus::Pen pen(color);
-							pFrameView->m_memDC.dc().DrawPolygon(&pen, &pointList[0], pountListCount);
+							pFrameView->dc().DrawPolygon(&pen, &pointList[0], pountListCount);
 						}
 
 						break;
@@ -467,7 +587,7 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 							Gdiplus::Color color;
 							color.SetFromCOLORREF(RGB(pElement->m_background.m_r, pElement->m_background.m_g, pElement->m_background.m_b));
 							Gdiplus::SolidBrush brush(color);
-							pFrameView->m_memDC.dc().FillEllipse(&brush, rect);
+							pFrameView->dc().FillEllipse(&brush, rect);
 						}
 
 						if (!pElement->m_foreground.m_transparent)
@@ -475,7 +595,7 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 							Gdiplus::Color color;
 							color.SetFromCOLORREF(RGB(pElement->m_foreground.m_r, pElement->m_foreground.m_g, pElement->m_foreground.m_b));
 							Gdiplus::Pen pen(color);
-							pFrameView->m_memDC.dc().DrawEllipse(&pen, rect);
+							pFrameView->dc().DrawEllipse(&pen, rect);
 						}
 
 						break;
@@ -497,7 +617,7 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 							Gdiplus::Color color;
 							color.SetFromCOLORREF(RGB(pElement->m_background.m_r, pElement->m_background.m_g, pElement->m_background.m_b));
 							Gdiplus::SolidBrush brush(color);
-							pFrameView->m_memDC.dc().FillEllipse(&brush, rect);
+							pFrameView->dc().FillEllipse(&brush, rect);
 						}
 
 						if (!pElement->m_foreground.m_transparent)
@@ -505,7 +625,7 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 							Gdiplus::Color color;
 							color.SetFromCOLORREF(RGB(pElement->m_foreground.m_r, pElement->m_foreground.m_g, pElement->m_foreground.m_b));
 							Gdiplus::Pen pen(color);
-							pFrameView->m_memDC.dc().DrawEllipse(&pen, rect);
+							pFrameView->dc().DrawEllipse(&pen, rect);
 						}
 
 						break;
@@ -529,7 +649,7 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 							}
 							if (!maskDraw)
 							{
-								status = pFrameView->m_memDC.dc().DrawImage(bmpIt->second, (int)(pElement->m_point.m_x), (int)(pElement->m_point.m_y));
+								status = pFrameView->dc().DrawImage(bmpIt->second, (int)(pElement->m_point.m_x), (int)(pElement->m_point.m_y));
 							}
 						}
 						break;
@@ -553,7 +673,7 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 							}
 							if (!maskDraw)
 							{
-								status = pFrameView->m_memDC.dc().DrawImage(bmpIt->second, (int)(pElement->m_point.m_x), (int)(pElement->m_point.m_y), (int)(pElement->m_size.m_width), (int)(pElement->m_size.m_height));
+								status = pFrameView->dc().DrawImage(bmpIt->second, (int)(pElement->m_point.m_x), (int)(pElement->m_point.m_y), (int)(pElement->m_size.m_width), (int)(pElement->m_size.m_height));
 							}
 						}
 						break;
@@ -561,90 +681,100 @@ void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame
 
 					case rdoAnimation::FrameItem::FIT_ACTIVE:
 					{
-						rdoAnimation::RDOActiveElement* pElement = static_cast<rdoAnimation::RDOActiveElement*>(pCurrElement);
-						AreaList::const_iterator it = m_frameList[index]->areas_sim.begin();
-						while (it != m_frameList[index]->areas_sim.end())
+						PTR(rdoAnimation::RDOActiveElement) pElement = static_cast<PTR(rdoAnimation::RDOActiveElement)>(pCurrElement);
+						Frame::AreaList::const_iterator it = m_frameList[index]->m_areaList.begin();
+						while (it != m_frameList[index]->m_areaList.end())
 						{
-							if ((*it)->name == pElement->m_opr_name)
+							if ((*it)->m_name == pElement->m_opr_name)
 								break;
 							++it;
 						}
-						if ( it == m_frameList[index]->areas_sim.end() ) {
-							Area* area = new Area;
-							area->name = pElement->m_opr_name;
-							area->x    = (int)(pElement->m_point.m_x);
-							area->y    = (int)(pElement->m_point.m_y);
-							area->w    = (int)(pElement->m_size.m_width);
-							area->h    = (int)(pElement->m_size.m_height);
-							m_frameList[index]->areas_sim.push_back( area );
-						} else {
-							(*it)->x    = (int)(pElement->m_point.m_x);
-							(*it)->y    = (int)(pElement->m_point.m_y);
-							(*it)->w    = (int)(pElement->m_size.m_width);
-							(*it)->h    = (int)(pElement->m_size.m_height);
+						if (it == m_frameList[index]->m_areaList.end())
+						{
+							PTR(Frame::Area) pArea = new Frame::Area();
+							pArea->m_name = pElement->m_opr_name;
+							m_frameList[index]->m_areaList.push_back(pArea);
+							it = m_frameList[index]->m_areaList.end();
+							--it;
 						}
+						(*it)->m_rect.X      = (int)(pElement->m_point.m_x);
+						(*it)->m_rect.Y      = (int)(pElement->m_point.m_y);
+						(*it)->m_rect.Width  = (int)(pElement->m_size.m_width);
+						(*it)->m_rect.Height = (int)(pElement->m_size.m_height);
 						break;
 					}
 				}
 			}
 
-			//pFrameView->InvalidateRect( NULL );
-			//pFrameView->SendNotifyMessage( WM_PAINT, 0, 0 );
+			pFrameView->InvalidateRect   (NULL);
+			pFrameView->SendNotifyMessage(WM_PAINT, 0, 0);
 		}
 	}
 }
 
 void RDOStudioFrameManager::showNextFrame()
 {
-	int cnt = count();
-	if ( model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && currentShowingFrame < cnt-1 ) {
-		int index = currentShowingFrame + 1;
-		RDOStudioFrameDoc* doc = getFrameDoc( index );
-		if ( !doc ) {
-			doc = connectFrameDoc( index );
-		} else {
-			doc->frame->ActivateFrame();
-			setLastShowedFrame( index );
-			setCurrentShowingFrame( index );
+	ruint cnt = count();
+	if (model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && currentShowingFrame < cnt-1)
+	{
+		ruint index = currentShowingFrame + 1;
+		PTR(RDOStudioFrameDoc) pDoc = getFrameDoc(index);
+		if (!pDoc)
+		{
+			pDoc = connectFrameDoc(index);
+		}
+		else
+		{
+			pDoc->frame->ActivateFrame();
+			setLastShowedFrame    (index);
+			setCurrentShowingFrame(index);
 		}
 	}
 }
 
 void RDOStudioFrameManager::showPrevFrame()
 {
-	int cnt = count();
-	if ( model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && currentShowingFrame > 0 ) {
-		int index = currentShowingFrame - 1;
-		RDOStudioFrameDoc* doc = getFrameDoc( index );
-		if ( !doc ) {
-			doc = connectFrameDoc( index );
-		} else {
-			doc->frame->ActivateFrame();
-			setLastShowedFrame( index );
-			setCurrentShowingFrame( index );
+	ruint cnt = count();
+	if (model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && currentShowingFrame > 0)
+	{
+		ruint index = currentShowingFrame - 1;
+		PTR(RDOStudioFrameDoc) pDoc = getFrameDoc(index);
+		if (!pDoc)
+		{
+			pDoc = connectFrameDoc(index);
+		}
+		else
+		{
+			pDoc->frame->ActivateFrame();
+			setLastShowedFrame    (index);
+			setCurrentShowingFrame(index);
 		}
 	}
 }
 
-void RDOStudioFrameManager::showFrame( const int index )
+void RDOStudioFrameManager::showFrame(ruint index)
 {
-	int cnt = count();
-	if ( model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && index >= 0 && index < cnt ) {
-		RDOStudioFrameDoc* doc = getFrameDoc( index );
-		if ( !doc ) {
-			doc = connectFrameDoc( index );
-		} else {
-			doc->frame->ActivateFrame();
-			setLastShowedFrame( index );
-			setCurrentShowingFrame( index );
+	ruint cnt = count();
+	if (model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && index >= 0 && index < cnt )
+	{
+		PTR(RDOStudioFrameDoc) pDoc = getFrameDoc(index);
+		if (!pDoc)
+		{
+			pDoc = connectFrameDoc(index);
+		}
+		else
+		{
+			pDoc->frame->ActivateFrame();
+			setLastShowedFrame    (index);
+			setCurrentShowingFrame(index);
 		}
 	}
 }
 
 rbool RDOStudioFrameManager::canShowNextFrame() const
 {
-	int cnt = count();
-	return model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && ( currentShowingFrame == -1 || currentShowingFrame < cnt-1 );
+	ruint cnt = count();
+	return model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && (currentShowingFrame == ruint(~0) || currentShowingFrame < cnt-1);
 }
 
 rbool RDOStudioFrameManager::canShowPrevFrame() const
@@ -657,7 +787,7 @@ void RDOStudioFrameManager::updateStyles() const
 {
 	STL_FOR_ALL_CONST(m_frameList, it)
 	{
-		PTR(RDOStudioFrameView) pFrameView = (*it)->view;
+		PTR(RDOStudioFrameView) pFrameView = (*it)->m_pView;
 		if (pFrameView)
 		{
 			pFrameView->updateFont    ();

@@ -24,38 +24,20 @@ class RDOStudioFrameDoc;
 
 class RDOStudioFrameView: public RDOStudioView
 {
-friend class RDOStudioFrameManager;
-
 DECLARE_DYNCREATE(RDOStudioFrameView)
-
-private:
-	typedef  std::auto_ptr<Gdiplus::Graphics>  TDC;
-
-	Gdiplus::Rect   frameBmpRect;
-	Gdiplus::Point  points[5];
-	CRect           newClientRect;
-	Gdiplus::Point  m_pos;
-	Gdiplus::Color  m_bgColor;
-	rbool mustBeInit;
-
-	HWND   m_hwnd;
-	TDC    m_pGraphics; // hdc
-	HFONT  hfontInit;
-	HFONT  hfontCurrent;
-	MemDC  m_memDC; // hmemdc, hbmp
-	rbool  mouseOnHScroll;
-
-	void onDraw();
-	void updateFont();
-	void updateScrollBars();
-
 public:
 	RDOStudioFrameView();
 	virtual ~RDOStudioFrameView();
 
-	PTR(RDOStudioFrameDoc) GetDocument();
+	rbool                  valid        ();
+	void                   init         (CREF(Gdiplus::Size) size);
+	REF(Gdiplus::Graphics) dc           ();
 
-	CREF(CRect) getClientRect() const { return newClientRect; }
+	void                   setBGColor   (CREF(Gdiplus::Color) color);
+	void                   updateFont   ();
+
+	PTR(RDOStudioFrameDoc) GetDocument  ();
+	CREF(CRect)            getClientRect() const;
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;
@@ -63,6 +45,19 @@ public:
 #endif
 
 private:
+	Gdiplus::Point  m_points[5];
+	CRect           m_newClientRect;
+	Gdiplus::Point  m_pos;
+	Gdiplus::Color  m_bgColor;
+	HWND            m_hwnd;
+	HFONT           m_hfontInit;
+	HFONT           m_hfontCurrent;
+	MemDC           m_memDC; // hmemdc, hbmp
+	rbool           m_mouseOnHScroll;
+
+	void onDraw          (REF(Gdiplus::Graphics) graphics);
+	void updateScrollBars();
+
 	virtual BOOL PreCreateWindow  (REF(CREATESTRUCT) cs);
 	virtual BOOL OnPreparePrinting(PTR(CPrintInfo) pInfo);
 	virtual void OnBeginPrinting  (PTR(CDC) pDC, PTR(CPrintInfo) pInfo);
@@ -87,12 +82,5 @@ private:
 	afx_msg void OnNcMouseMove  (UINT nHitTest, CPoint point);
 	DECLARE_MESSAGE_MAP()
 };
-
-#ifndef _DEBUG
-inline PTR(RDOStudioFrameDoc) RDOStudioFrameView::GetDocument()
-{
-	return static_cast<PTR(RDOStudioFrameDoc)>(m_pDocument);
-}
-#endif
 
 #endif // _RDO_STUDIO_MFC_FRAME_VIEW_H_

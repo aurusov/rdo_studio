@@ -49,20 +49,51 @@ BEGIN_MESSAGE_MAP(RDOStudioFrameView, RDOStudioView)
 END_MESSAGE_MAP()
 
 RDOStudioFrameView::RDOStudioFrameView()
-	: RDOStudioView()
-	, frameBmpRect  (0, 0, 0, 0)
-	, newClientRect (0, 0, 0, 0)
-	, mustBeInit    (true )
-	, m_hwnd        (NULL )
-	, hfontInit     (NULL )
-	, hfontCurrent  (NULL )
-	, mouseOnHScroll(false)
+	: RDOStudioView   ()
+	, m_newClientRect (0, 0, 0, 0)
+	, m_hwnd          (NULL )
+	, m_hfontInit     (NULL )
+	, m_hfontCurrent  (NULL )
+	, m_mouseOnHScroll(false)
 {
 	m_bgColor.SetFromCOLORREF(studioApp.m_pMainFrame->style_frame.theme->backgroundColor);
 }
 
 RDOStudioFrameView::~RDOStudioFrameView()
 {}
+
+rbool RDOStudioFrameView::valid()
+{
+	return m_memDC.valid();
+}
+
+void RDOStudioFrameView::init(CREF(Gdiplus::Size) size)
+{
+	m_memDC.resize(size.Width, size.Height);
+
+	m_points[0].X = 0;
+	m_points[0].Y = 0;
+	m_points[1].X = m_memDC.width () - 1;
+	m_points[1].Y = 0;
+	m_points[2].X = m_memDC.width () - 1;
+	m_points[2].Y = m_memDC.height() - 1;
+	m_points[3].X = 0;
+	m_points[3].Y = m_memDC.height() - 1;
+	m_points[4].X = 0;
+	m_points[4].Y = 0;
+
+	updateScrollBars();
+}
+
+REF(Gdiplus::Graphics) RDOStudioFrameView::dc()
+{
+	return m_memDC.dc();
+}
+
+void RDOStudioFrameView::setBGColor(CREF(Gdiplus::Color) color)
+{
+	m_bgColor = color;
+}
 
 BOOL RDOStudioFrameView::PreCreateWindow(REF(CREATESTRUCT) cs)
 {
@@ -82,11 +113,8 @@ int RDOStudioFrameView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 
 	m_hwnd = GetSafeHwnd();
-//	m_pGraphics.reset(new Gdiplus::Graphics(m_hwnd));
-//	if (!m_pGraphics.get() || m_pGraphics->GetLastStatus() != Gdiplus::Ok)
-//		return -1;
 
-//	hfontInit = static_cast<HFONT>(::GetCurrentObject(hmemdc, OBJ_FONT));
+//	m_hfontInit = static_cast<HFONT>(::GetCurrentObject(hmemdc, OBJ_FONT));
 
 	updateFont      ();
 	updateScrollBars();
@@ -94,12 +122,24 @@ int RDOStudioFrameView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	return 0;
 }
 
+void RDOStudioFrameView::OnDestroy()
+{
+	ruint index = model->m_frameManager.findFrameIndex(this);
+	if (index != ruint(~0))
+	{
+		model->m_frameManager.disconnectFrameDoc(GetDocument());
+		model->m_frameManager.resetCurrentShowingFrame(index);
+	}
+
+	RDOStudioView::OnDestroy();
+}
+
 void RDOStudioFrameView::updateFont()
 {
-	if (hfontCurrent)
+	if (m_hfontCurrent)
 	{
-//		::SelectObject(hmemdc, hfontInit);
-		::DeleteObject(hfontCurrent);
+//		::SelectObject(hmemdc, m_hfontInit);
+		::DeleteObject(m_hfontCurrent);
 	}
 
 	LOGFONT lf;
@@ -114,8 +154,8 @@ void RDOStudioFrameView::updateFont()
 	strcpy(lf.lfFaceName, pStyle->font->name.c_str());
 #pragma warning(default: 4996)
 
-	hfontCurrent = ::CreateFontIndirect(&lf);
-//	::SelectObject(hmemdc, hfontCurrent);
+	m_hfontCurrent = ::CreateFontIndirect(&lf);
+//	::SelectObject(hmemdc, m_hfontCurrent);
 }
 
 BOOL RDOStudioFrameView::OnPreparePrinting(PTR(CPrintInfo) pInfo)
@@ -145,31 +185,24 @@ void RDOStudioFrameView::Dump(REF(CDumpContext) dc) const
 {
 	RDOStudioView::Dump(dc);
 }
+#endif
 
 PTR(RDOStudioFrameDoc) RDOStudioFrameView::GetDocument()
 {
 	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(RDOStudioFrameDoc)));
 	return static_cast<PTR(RDOStudioFrameDoc)>(m_pDocument);
 }
-#endif
 
-void RDOStudioFrameView::OnDestroy()
+CREF(CRect) RDOStudioFrameView::getClientRect() const
 {
-	int index = model->m_frameManager.findFrameIndex(this);
-	if (index != -1)
-	{
-		model->m_frameManager.disconnectFrameDoc(GetDocument());
-		model->m_frameManager.resetCurrentShowingFrame(index);
-	}
-
-	RDOStudioView::OnDestroy();
+	return m_newClientRect;
 }
 
 void RDOStudioFrameView::OnSize(UINT nType, int cx, int cy)
 {
 	RDOStudioView::OnSize(nType, cx, cy);
 
-	GetClientRect(&newClientRect);
+	GetClientRect(&m_newClientRect);
 
 	updateScrollBars();
 }
@@ -180,32 +213,32 @@ void RDOStudioFrameView::updateScrollBars()
 	si.cbSize = sizeof(si);
 	si.fMask  = SIF_RANGE | SIF_PAGE | SIF_POS;
 
-	if (m_pos.X > frameBmpRect.GetRight() - newClientRect.right)
+	if (m_pos.X > rsint(m_memDC.width()) - m_newClientRect.right)
 	{
-		m_pos.X = frameBmpRect.GetRight() - newClientRect.right;
+		m_pos.X = m_memDC.width() - m_newClientRect.right;
 	}
 	if (m_pos.X < 0)
 	{
 		m_pos.X = 0;
 	}
 	si.nMin  = 0;
-	si.nMax  = frameBmpRect.GetRight() - 1;
+	si.nMax  = m_memDC.width() - 1;
 	si.nPos  = m_pos.X;
-	si.nPage = newClientRect.right;
+	si.nPage = m_newClientRect.right;
 	SetScrollInfo(SB_HORZ, &si, TRUE);
 
-	if (m_pos.Y > frameBmpRect.GetBottom() - newClientRect.bottom)
+	if (m_pos.Y > rsint(m_memDC.height()) - m_newClientRect.bottom)
 	{
-		m_pos.Y = frameBmpRect.GetBottom() - newClientRect.bottom;
+		m_pos.Y = m_memDC.height() - m_newClientRect.bottom;
 	}
 	if (m_pos.Y < 0)
 	{
 		m_pos.Y = 0;
 	}
 	si.nMin  = 0;
-	si.nMax  = frameBmpRect.GetBottom() - 1;
+	si.nMax  = m_memDC.height() - 1;
 	si.nPos  = m_pos.Y;
-	si.nPage = newClientRect.bottom;
+	si.nPage = m_newClientRect.bottom;
 	SetScrollInfo(SB_VERT, &si, TRUE);
 }
 
@@ -227,7 +260,7 @@ void RDOStudioFrameView::OnHScroll(UINT nSBCode, UINT nPos, PTR(CScrollBar) pScr
 		break;
 
 	case SB_RIGHT:
-		m_pos.X = frameBmpRect.GetRight() - newClientRect.right;
+		m_pos.X = m_memDC.width() - m_newClientRect.right;
 		break;
 
 	case SB_PAGELEFT:
@@ -253,9 +286,9 @@ void RDOStudioFrameView::OnHScroll(UINT nSBCode, UINT nPos, PTR(CScrollBar) pScr
 		m_pos.X += si.nTrackPos - m_pos.X;
 		break;
 	}
-	if (m_pos.X > frameBmpRect.GetRight() - newClientRect.right)
+	if (m_pos.X > rsint(m_memDC.width()) - m_newClientRect.right)
 	{
-		m_pos.X = frameBmpRect.GetRight() - newClientRect.right;
+		m_pos.X = m_memDC.width() - m_newClientRect.right;
 	}
 	if (m_pos.X < 0)
 	{
@@ -286,7 +319,7 @@ void RDOStudioFrameView::OnVScroll(UINT nSBCode, UINT nPos, PTR(CScrollBar) pScr
 		break;
 
 	case SB_BOTTOM:
-		m_pos.Y = frameBmpRect.GetBottom() - newClientRect.bottom;
+		m_pos.Y = m_memDC.height() - m_newClientRect.bottom;
 		break;
 
 	case SB_PAGEUP:
@@ -312,9 +345,9 @@ void RDOStudioFrameView::OnVScroll(UINT nSBCode, UINT nPos, PTR(CScrollBar) pScr
 		m_pos.Y += si.nTrackPos - m_pos.Y;
 		break;
 	}
-	if (m_pos.Y > frameBmpRect.GetBottom() - newClientRect.bottom)
+	if (m_pos.Y > rsint(m_memDC.height()) - m_newClientRect.bottom)
 	{
-		m_pos.Y = frameBmpRect.GetBottom() - newClientRect.bottom;
+		m_pos.Y = m_memDC.height() - m_newClientRect.bottom;
 	}
 	if (m_pos.Y < 0)
 	{
@@ -329,20 +362,11 @@ void RDOStudioFrameView::OnVScroll(UINT nSBCode, UINT nPos, PTR(CScrollBar) pScr
 
 void RDOStudioFrameView::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	PTR(RDOStudioFrameManager) frameManager = &model->m_frameManager;
-	int index = frameManager->findFrameIndex(this);
-
-	point.Offset(m_pos.X, m_pos.Y);
-	PTR(RDOStudioFrameManager::Frame::AreaList) areas_sim = &frameManager->m_frameList[index]->areas_sim;
-	RDOStudioFrameManager::Frame::AreaList::iterator it = areas_sim->begin();
-	while (it != areas_sim->end())
+	PTR(RDOStudioFrameManager) pFrameManager = &model->m_frameManager;
+	ruint index = pFrameManager->findFrameIndex(this);
+	if (index != ruint(~0))
 	{
-		PTR(RDOStudioFrameManager::Area) pArea = *it;
-		if (CRect(pArea->x, pArea->y, pArea->x + pArea->w, pArea->y + pArea->h).PtInRect(point))
-		{
-			model->sendMessage(kernel->runtime(), RDOThread::RT_RUNTIME_FRAME_AREA_DOWN, &pArea->name);
-		}
-		++it;
+		pFrameManager->areaDown(index, Gdiplus::Point(point.x + m_pos.X, point.y + m_pos.Y));
 	}
 
 	RDOStudioView::OnLButtonDown(nFlags, point);
@@ -364,8 +388,8 @@ void RDOStudioFrameView::OnActivateView(BOOL bActivate, PTR(CView) pActivateView
 {
 	if (bActivate)
 	{
-		int index = model->m_frameManager.findFrameIndex(this);
-		model->m_frameManager.setLastShowedFrame(index);
+		ruint index = model->m_frameManager.findFrameIndex(this);
+		model->m_frameManager.setLastShowedFrame    (index);
 		model->m_frameManager.setCurrentShowingFrame(index);
 	}
 	RDOStudioView::OnActivateView(bActivate, pActivateView, pDeactiveView);
@@ -379,12 +403,12 @@ BOOL RDOStudioFrameView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 	SCROLLINFO si;
 	si.cbSize = sizeof(si);
 	si.fMask  = SIF_POS;
-	if (mouseOnHScroll)
+	if (m_mouseOnHScroll)
 	{
-		m_pos.X -= newClientRect.right / 4 * (zDelta >= 0 ? 1 : -1);
-		if (m_pos.X > frameBmpRect.GetRight() - newClientRect.right)
+		m_pos.X -= m_newClientRect.right / 4 * (zDelta >= 0 ? 1 : -1);
+		if (m_pos.X > rsint(m_memDC.width()) - m_newClientRect.right)
 		{
-			m_pos.X = frameBmpRect.GetRight() - newClientRect.right;
+			m_pos.X = rsint(m_memDC.width()) - m_newClientRect.right;
 		}
 		if (m_pos.X < 0)
 		{
@@ -395,10 +419,10 @@ BOOL RDOStudioFrameView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 	}
 	else
 	{
-		m_pos.Y -= newClientRect.bottom / 4 * (zDelta >= 0 ? 1 : -1);
-		if (m_pos.Y > frameBmpRect.GetBottom() - newClientRect.bottom)
+		m_pos.Y -= m_newClientRect.bottom / 4 * (zDelta >= 0 ? 1 : -1);
+		if (m_pos.Y > rsint(m_memDC.height()) - m_newClientRect.bottom)
 		{
-			m_pos.Y = frameBmpRect.GetBottom() - newClientRect.bottom;
+			m_pos.Y = rsint(m_memDC.height()) - m_newClientRect.bottom;
 		}
 		if (m_pos.Y < 0)
 		{
@@ -414,9 +438,11 @@ BOOL RDOStudioFrameView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 
 void RDOStudioFrameView::OnPaint()
 {
+	Gdiplus::Graphics graphics(m_hwnd);
+
 	PAINTSTRUCT ps;
 	::BeginPaint(m_hwnd, &ps);
-	onDraw      ();
+	onDraw      (graphics);
 	::EndPaint  (m_hwnd, &ps);
 }
 
@@ -425,37 +451,32 @@ void RDOStudioFrameView::OnDraw(PTR(CDC) pDC)
 	RDOStudioView::OnDraw(pDC);
 }
 
-void RDOStudioFrameView::onDraw()
+void RDOStudioFrameView::onDraw(REF(Gdiplus::Graphics) graphics)
 {
 //	PTR(RDOStudioFrameDoc) pDoc = GetDocument();
 //	ASSERT_VALID(pDoc);
 
-//	GetClientRect(&newClientRect);
+//	GetClientRect(&m_newClientRect);
 
-	if (!mustBeInit)
+	if (valid())
 	{
-		m_pGraphics.reset(new Gdiplus::Graphics(m_hwnd));
-		if (!m_pGraphics.get() || m_pGraphics->GetLastStatus() != Gdiplus::Ok)
-			return;
+		graphics.DrawImage(&m_memDC.buffer(), -m_pos.X, -m_pos.Y);
 
-		m_pGraphics->DrawImage(&m_memDC.buffer(), -m_pos.X, -m_pos.Y);
-
-		if (newClientRect.right - frameBmpRect.GetRight() > 0)
+		if (m_newClientRect.right - m_memDC.width() > 0)
 		{
 			Gdiplus::SolidBrush brush(m_bgColor);
-			m_pGraphics->FillRectangle(&brush, frameBmpRect.GetRight(), 0, newClientRect.right - frameBmpRect.GetRight(), newClientRect.bottom);
+			graphics.FillRectangle(&brush, m_memDC.width(), 0, m_newClientRect.right - m_memDC.width(), m_newClientRect.bottom);
 		}
-		if (newClientRect.bottom - frameBmpRect.GetBottom() > 0)
+		if (m_newClientRect.bottom - m_memDC.height() > 0)
 		{
 			Gdiplus::SolidBrush brush(m_bgColor);
-			m_pGraphics->FillRectangle(&brush, 0, frameBmpRect.GetBottom(), newClientRect.right, newClientRect.bottom - frameBmpRect.GetBottom());
+			graphics.FillRectangle(&brush, 0, m_memDC.height(), m_newClientRect.right, m_newClientRect.bottom - m_memDC.height());
 		}
 	}
 	else
 	{
 		Gdiplus::SolidBrush brush(m_bgColor);
-		if (m_pGraphics.get())
-			m_pGraphics->FillRectangle(&brush, newClientRect.left, newClientRect.top, newClientRect.Width(), newClientRect.Height());
+		graphics.FillRectangle(&brush, m_newClientRect.left, m_newClientRect.top, m_newClientRect.Width(), m_newClientRect.Height());
 	}
 }
 
@@ -483,12 +504,12 @@ void RDOStudioFrameView::OnNcRButtonDown(UINT nHitTest, CPoint point)
 
 void RDOStudioFrameView::OnNcMouseMove(UINT nHitTest, CPoint point)
 {
-	mouseOnHScroll = nHitTest == HTHSCROLL;
+	m_mouseOnHScroll = nHitTest == HTHSCROLL;
 	RDOStudioView::OnNcMouseMove(nHitTest, point);
 }
 
 void RDOStudioFrameView::OnMouseMove(UINT nFlags, CPoint point)
 {
-	mouseOnHScroll = false;
+	m_mouseOnHScroll = false;
 	RDOStudioView::OnMouseMove(nFlags, point);
 }
