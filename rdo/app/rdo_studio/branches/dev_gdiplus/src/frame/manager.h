@@ -66,6 +66,7 @@ private:
 
 	FrameList  m_frameList;
 	BitmapList m_bitmapList;
+	BitmapList m_bitmapMaskInvertList;
 
 	CDC dcBmp;
 	CDC dcMask;

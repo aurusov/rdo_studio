@@ -353,7 +353,43 @@ void RDOStudioFrameManager::bmp_clear()
 	{
 		delete it->second;
 	}
-	m_bitmapList.clear();
+	STL_FOR_ALL(m_bitmapMaskInvertList, maskIt)
+	{
+		delete maskIt->second;
+	}
+	m_bitmapList          .clear();
+	m_bitmapMaskInvertList.clear();
+}
+
+int GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
+{
+   UINT  num = 0;          // number of image encoders
+   UINT  size = 0;         // size of the image encoder array in bytes
+
+   Gdiplus::ImageCodecInfo* pImageCodecInfo = NULL;
+
+   Gdiplus::GetImageEncodersSize(&num, &size);
+   if(size == 0)
+      return -1;  // Failure
+
+   pImageCodecInfo = (Gdiplus::ImageCodecInfo*)(malloc(size));
+   if(pImageCodecInfo == NULL)
+      return -1;  // Failure
+
+   Gdiplus::GetImageEncoders(num, size, pImageCodecInfo);
+
+   for(UINT j = 0; j < num; ++j)
+   {
+      if( wcscmp(pImageCodecInfo[j].MimeType, format) == 0 )
+      {
+         *pClsid = pImageCodecInfo[j].Clsid;
+         free(pImageCodecInfo);
+         return j;  // Success
+      }    
+   }
+
+   free(pImageCodecInfo);
+   return -1;  // Failure
 }
 
 void RDOStudioFrameManager::showFrame(CPTRC(rdoAnimation::RDOFrame) pFrame, ruint index)
@@ -386,7 +422,7 @@ void RDOStudioFrameManager::showFrame(CPTRC(rdoAnimation::RDOFrame) pFrame, ruin
 				pFrameView->init(size);
 			}
 
-			Gdiplus::Status status;
+			//Gdiplus::Status status;
 
 			rbool showFillrect = true;
 			if (pFrame->hasBgImage())
@@ -394,7 +430,7 @@ void RDOStudioFrameManager::showFrame(CPTRC(rdoAnimation::RDOFrame) pFrame, ruin
 				BitmapList::const_iterator bmpIt = m_bitmapList.find(pFrame->m_bgImageName);
 				if (bmpIt != m_bitmapList.end())
 				{
-					status = pFrameView->dc().DrawImage(bmpIt->second, 0, 0, bmpIt->second->GetWidth(), bmpIt->second->GetHeight());
+					pFrameView->dc().DrawImage(bmpIt->second, 0, 0, bmpIt->second->GetWidth(), bmpIt->second->GetHeight());
 					showFillrect = false;
 				}
 			}
@@ -411,11 +447,11 @@ void RDOStudioFrameManager::showFrame(CPTRC(rdoAnimation::RDOFrame) pFrame, ruin
 			//if (showFillrect)
 			//{
 			//	Gdiplus::SolidBrush brush(bgColor);
-			//	status = pFrameView->dc().FillRectangle(&brush, pFrameView->m_frameBmpRect);
+			//	pFrameView->dc().FillRectangle(&brush, pFrameView->m_frameBmpRect);
 
 			//	//! @todo проверить цвет карандаша. возможен косяк без SetFromCOLORREF
 			//	Gdiplus::Pen pen(studioApp.m_pMainFrame->style_frame.theme->defaultColor, 1.0);
-			//	status = pFrameView->dc().DrawPolygon(&pen, pFrameView->points, 5);
+			//	pFrameView->dc().DrawPolygon(&pen, pFrameView->points, 5);
 			//}
 
 			ruint size = pFrame->m_elements.size();
@@ -494,7 +530,7 @@ void RDOStudioFrameManager::showFrame(CPTRC(rdoAnimation::RDOFrame) pFrame, ruin
 						}
 						Gdiplus::SolidBrush brush(bgColor);
 
-						status = pFrameView->dc().FillRectangle(&brush, (int)pElement->m_point.m_x, (int)pElement->m_point.m_y, (int)pElement->m_size.m_width, (int)pElement->m_size.m_height);
+						pFrameView->dc().FillRectangle(&brush, (int)pElement->m_point.m_x, (int)pElement->m_point.m_y, (int)pElement->m_size.m_width, (int)pElement->m_size.m_height);
 						//! @todo добавить вывод линии вокруг прямоугольника
 
 						break;
@@ -515,7 +551,7 @@ void RDOStudioFrameManager::showFrame(CPTRC(rdoAnimation::RDOFrame) pFrame, ruin
 						Gdiplus::SolidBrush brush(bgColor);
 
 						//! @todo gdi+ не умеет выводить roundrect :(
-						status = pFrameView->dc().FillRectangle(&brush, (int)pElement->m_point.m_x, (int)pElement->m_point.m_y, (int)pElement->m_size.m_width, (int)pElement->m_size.m_height);
+						pFrameView->dc().FillRectangle(&brush, (int)pElement->m_point.m_x, (int)pElement->m_point.m_y, (int)pElement->m_size.m_width, (int)pElement->m_size.m_height);
 						//! @todo добавить вывод линии вокруг прямоугольника
 
 						break;
@@ -643,13 +679,114 @@ void RDOStudioFrameManager::showFrame(CPTRC(rdoAnimation::RDOFrame) pFrame, ruin
 								BitmapList::const_iterator maskIt = m_bitmapList.find(pElement->m_mask_name);
 								if (maskIt != m_bitmapList.end())
 								{
+									BitmapList::const_iterator maskInvertIt = m_bitmapMaskInvertList.find(pElement->m_mask_name);
+									if (maskInvertIt == m_bitmapMaskInvertList.end())
+									{
+										PTR(Gdiplus::Bitmap) pMaskInvert = NULL;
+										{
+											Gdiplus::Graphics graphics(maskIt->second);
+											pMaskInvert = new Gdiplus::Bitmap(
+												maskIt->second->GetWidth (),
+												maskIt->second->GetHeight(),
+												&graphics
+											);
+										}
+										if (pMaskInvert)
+										{
+											if (pMaskInvert->GetLastStatus() == Gdiplus::Ok)
+											{
+												std::pair<BitmapList::const_iterator, rbool> result = m_bitmapMaskInvertList.insert(BitmapList::value_type(pElement->m_mask_name, pMaskInvert));
+												if (result.second)
+												{
+													maskInvertIt = result.first;
+
+													Gdiplus::ColorMatrix colorMatrix = {
+														-1,  0,  0, 0, 0,
+														 0, -1,  0, 0, 0,
+														 0,  0, -1, 0, 0,
+														 0,  0,  0, 1, 0,
+														 1,  1,  1, 0, 1
+													};
+													Gdiplus::ImageAttributes imageAttributes;
+													imageAttributes.SetColorMatrix(&colorMatrix);
+
+													Gdiplus::Graphics graphics(maskInvertIt->second);
+													graphics.DrawImage(
+														maskIt->second,
+														Gdiplus::RectF(
+															0.0,
+															0.0,
+															Gdiplus::REAL(maskIt->second->GetWidth()),
+															Gdiplus::REAL(maskIt->second->GetHeight())
+														),
+														0.0,
+														0.0,
+														Gdiplus::REAL(maskIt->second->GetWidth()),
+														Gdiplus::REAL(maskIt->second->GetHeight()),
+														Gdiplus::UnitPixel,
+														&imageAttributes
+													);
+													//CLSID pngClsid;
+													//GetEncoderClsid(L"image/png", &pngClsid);
+													//pMaskInvert->Save(L"Mosaic2.png", &pngClsid, NULL);
+												}
+											}
+											else
+											{
+												delete pMaskInvert;
+											}
+										}
+									}
+
+									if (maskInvertIt != m_bitmapMaskInvertList.end())
+									{
+										//Gdiplus::Graphics graphics(maskInvertIt->second);
+										pFrameView->dc().DrawImage(maskInvertIt->second, 0, 0);
+										break;
+									}
+
+									Gdiplus::ImageAttributes imageAttributes;
+									imageAttributes.SetColorKey(
+										Gdiplus::ARGB(Gdiplus::Color::Black),
+										Gdiplus::ARGB(Gdiplus::Color::Black)
+									);
+									pFrameView->dc().DrawImage(
+										maskIt->second,
+										Gdiplus::RectF(
+											Gdiplus::REAL(pElement->m_point.m_x),
+											Gdiplus::REAL(pElement->m_point.m_y),
+											Gdiplus::REAL(maskIt->second->GetWidth()),
+											Gdiplus::REAL(maskIt->second->GetHeight())
+										),
+										0.0,
+										0.0,
+										Gdiplus::REAL(maskIt->second->GetWidth()),
+										Gdiplus::REAL(maskIt->second->GetHeight()),
+										Gdiplus::UnitPixel,
+										&imageAttributes
+									);
+									maskDraw = true;
+
+									//MemDC bg;
+									//if (bg.create(maskIt->second->GetWidth(), maskIt->second->GetHeight(), pFrameView->dc()))
+									//{
+									//	Gdiplus::RectF bgRect    (0.0, 0.0, Gdiplus::REAL(bg.width()), Gdiplus::REAL(bg.height()));
+									//	Gdiplus::RectF bufferRect(Gdiplus::REAL(pElement->m_point.m_x), Gdiplus::REAL(pElement->m_point.m_y), Gdiplus::REAL(bg.width()), Gdiplus::REAL(bg.height()));
+									//	Gdiplus::ImageAttributes imageAttributes;
+									//	bg.dc().DrawImage(&pFrameView->buffer(), 0, 0, Gdiplus::REAL(pElement->m_point.m_x), Gdiplus::REAL(pElement->m_point.m_y), Gdiplus::REAL(bg.width()), Gdiplus::REAL(bg.height()));
+									//}
+									//CBitmap* pOldMask = dcMask.SelectObject( &mask->bmp );
+									//::BitBlt( hdc, (int)(element->m_point.m_x), (int)(element->m_point.m_y), mask->w, mask->h, dcMask.m_hDC, 0, 0, SRCAND );
+									//::BitBlt( hdc, (int)(element->m_point.m_x), (int)(element->m_point.m_y), bmp->w, bmp->h, dcBmp.m_hDC, 0, 0, SRCPAINT );
+									//dcMask.SelectObject( pOldMask );
+
 //									NEVER_REACH_HERE;
 //									maskDraw = true;
 								}
 							}
 							if (!maskDraw)
 							{
-								status = pFrameView->dc().DrawImage(bmpIt->second, (int)(pElement->m_point.m_x), (int)(pElement->m_point.m_y));
+								pFrameView->dc().DrawImage(bmpIt->second, (int)(pElement->m_point.m_x), (int)(pElement->m_point.m_y));
 							}
 						}
 						break;
@@ -673,7 +810,7 @@ void RDOStudioFrameManager::showFrame(CPTRC(rdoAnimation::RDOFrame) pFrame, ruin
 							}
 							if (!maskDraw)
 							{
-								status = pFrameView->dc().DrawImage(bmpIt->second, (int)(pElement->m_point.m_x), (int)(pElement->m_point.m_y), (int)(pElement->m_size.m_width), (int)(pElement->m_size.m_height));
+								pFrameView->dc().DrawImage(bmpIt->second, (int)(pElement->m_point.m_x), (int)(pElement->m_point.m_y), (int)(pElement->m_size.m_width), (int)(pElement->m_size.m_height));
 							}
 						}
 						break;
