@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <gdiplus.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "ui/mfc_ctrls/memdc.h"
+#include "ui/gdiplus/headers/memdc/memdc.h"
 #include "app/rdo_studio_mfc/src/view.h"
 // --------------------------------------------------------------------------------
 
