@@ -52,7 +52,7 @@ private:
 	HWND            m_hwnd;
 	HFONT           m_hfontInit;
 	HFONT           m_hfontCurrent;
-	MemDC           m_memDC; // hmemdc, hbmp
+	rdo::gui::MemDC m_memDC; // hmemdc, hbmp
 	rbool           m_mouseOnHScroll;
 
 	void onDraw          (REF(Gdiplus::Graphics) graphics);
