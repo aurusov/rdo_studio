@@ -14,6 +14,7 @@
 #include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/typeof/typeof.hpp>
+#include <boost/preprocessor/cat.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
@@ -55,15 +56,18 @@
 //! Макрос подавляет предупреждения компилятора о неиспользуемых переменных
 #define UNUSED(A) ((void)A);
 
+//! Условно-уникальное имя, основанное на номере строки
+#define RDO_UNIQUE_NAME(NAME) BOOST_PP_CAT(NAME, __LINE__)
+
 //! Итерирование контейнера
-#define STL_FOR_ALL(CONTAINER, IT)                       \
-typedef BOOST_TYPEOF(CONTAINER) CONTAINER_TYPE_FOR_##IT; \
-for (CONTAINER_TYPE_FOR_##IT::iterator IT = CONTAINER.begin(); IT != CONTAINER.end(); ++IT)
+#define STL_FOR_ALL(CONTAINER, IT)                                \
+typedef BOOST_TYPEOF(CONTAINER) RDO_UNIQUE_NAME(CONTAINER_TYPE_); \
+for (RDO_UNIQUE_NAME(CONTAINER_TYPE_)::iterator IT = CONTAINER.begin(); IT != CONTAINER.end(); ++IT)
 
 //! Итерирование константного контейнера
-#define STL_FOR_ALL_CONST(CONTAINER, IT)                 \
-typedef BOOST_TYPEOF(CONTAINER) CONTAINER_TYPE_FOR_##IT; \
-for (CONTAINER_TYPE_FOR_##IT::const_iterator IT = CONTAINER.begin(); IT != CONTAINER.end(); ++IT)
+#define STL_FOR_ALL_CONST(CONTAINER, IT)                          \
+typedef BOOST_TYPEOF(CONTAINER) RDO_UNIQUE_NAME(CONTAINER_TYPE_); \
+for (RDO_UNIQUE_NAME(CONTAINER_TYPE_)::const_iterator IT = CONTAINER.begin(); IT != CONTAINER.end(); ++IT)
 
 //! Автоматическое определение типа для паременной
 #define AUTO BOOST_AUTO
