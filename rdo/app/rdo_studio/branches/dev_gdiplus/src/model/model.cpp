@@ -346,7 +346,6 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			studioApp.m_pMainFrame->update_stop();
 			sendMessage(kernel->runtime(), RT_RUNTIME_GET_TIMENOW, &m_timeNow);
 			m_frameManager.clear();
-			m_frameManager.bmp_clear();
 			SYSTEMTIME time_stop;
 			::GetSystemTime(&time_stop);
 			ruint delay = ruint(~0);
@@ -1136,7 +1135,6 @@ void RDOStudioModel::setName(CREF(tstring) str)
 void RDOStudioModel::afterModelStart()
 {
 	m_frameManager.clear();
-	m_frameManager.bmp_clear();
 
 	if (isFrmDescribed())
 	{
@@ -1153,11 +1151,11 @@ void RDOStudioModel::afterModelStart()
 		sendMessage(kernel->simulator(), RT_SIMULATOR_GET_LIST, &getListBitmaps);
 		STL_FOR_ALL_CONST(bitmaps, bmp_it)
 		{
-			m_frameManager.bmp_insert(*bmp_it);
+			m_frameManager.insertBitmap(*bmp_it);
 		}
 		STL_FOR_ALL_CONST(frames, frame_it)
 		{
-			m_frameManager.insertItem(*frame_it);
+			m_frameManager.insertFrame(*frame_it);
 		}
 		m_frameManager.expand();
 		m_timeNow = 0;

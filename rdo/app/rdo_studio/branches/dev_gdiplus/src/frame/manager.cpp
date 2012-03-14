@@ -70,21 +70,20 @@ PTR(CFrameWnd) RDOStudioFrameManager::FrameDocTemplate::CreateNewFrame(PTR(CDocu
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioFrameManager
 // --------------------------------------------------------------------------------
-RDOStudioFrameManager::RDOStudioFrameManager():
-	frameDocTemplate( NULL ),
-	lastShowedFrame(ruint(~0)),
-	currentShowingFrame(ruint(~0))
+RDOStudioFrameManager::RDOStudioFrameManager()
+	: m_pFrameDocTemplate  (NULL     )
+	, m_lastShowedFrame    (ruint(~0))
+	, m_currentShowingFrame(ruint(~0))
+	, m_changed            (false    )
 {
-	frameDocTemplate = new FrameDocTemplate(IDR_FRAME_TYPE, RUNTIME_CLASS(RDOStudioFrameDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioFrameView));
-	AfxGetApp()->AddDocTemplate( frameDocTemplate );
-
-	dcBmp.CreateCompatibleDC( NULL );
-	dcMask.CreateCompatibleDC( NULL );
+	//! @todo А почему объект не удаляется ? Это происходит автоматически ?
+	m_pFrameDocTemplate = new FrameDocTemplate(IDR_FRAME_TYPE, RUNTIME_CLASS(RDOStudioFrameDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioFrameView));
+	AfxGetApp()->AddDocTemplate(m_pFrameDocTemplate);
 }
 
 RDOStudioFrameManager::~RDOStudioFrameManager()
 {
-	bmp_clear();
+	clear();
 
 	STL_FOR_ALL(m_frameList, it)
 	{
@@ -92,11 +91,11 @@ RDOStudioFrameManager::~RDOStudioFrameManager()
 	}
 }
 
-void RDOStudioFrameManager::insertItem( CREF(tstring) name )
+void RDOStudioFrameManager::insertFrame(CREF(tstring) frameName)
 {
 	PTR(Frame) item = new Frame();
-	item->m_hitem = studioApp.m_pMainFrame->workspace.frames->InsertItem(name.c_str(), 1, 1, studioApp.m_pMainFrame->workspace.frames->GetRootItem());
-	item->m_name  = name;
+	item->m_hitem = studioApp.m_pMainFrame->workspace.frames->InsertItem(frameName.c_str(), 1, 1, studioApp.m_pMainFrame->workspace.frames->GetRootItem());
+	item->m_name  = frameName;
 	item->m_pDoc  = NULL;
 	item->m_pView = NULL;
 	m_frameList.push_back(item);
@@ -169,8 +168,8 @@ ruint RDOStudioFrameManager::count() const
 
 rbool RDOStudioFrameManager::isChanged()
 {
-	rbool res = changed;
-	changed = false;
+	rbool res = m_changed;
+	m_changed = false;
 	return res;
 }
 
@@ -193,12 +192,12 @@ PTR(RDOStudioFrameDoc) RDOStudioFrameManager::connectFrameDoc(ruint index)
 	PTR(RDOStudioFrameDoc) pDoc = NULL;
 	if ( index != ~0 )
 	{
-		pDoc = static_cast<RDOStudioFrameDoc*>(frameDocTemplate->OpenDocumentFile( NULL ));
+		pDoc = static_cast<PTR(RDOStudioFrameDoc)>(m_pFrameDocTemplate->OpenDocumentFile( NULL ));
 		if ( pDoc )
 		{
 			m_frameList[index]->m_pDoc  = pDoc;
 			m_frameList[index]->m_pView = pDoc->getView();
-			lastShowedFrame             = index;
+			m_lastShowedFrame           = index;
 			pDoc->SetTitle( rdo::format( IDS_FRAME_NAME, getFrameName( index ).c_str() ).c_str()  );
 			setCurrentShowingFrame( index );
 		}
@@ -214,12 +213,12 @@ void RDOStudioFrameManager::disconnectFrameDoc(CPTR(RDOStudioFrameDoc) pDoc)
 		m_frameList[index]->m_pDoc  = NULL;
 		m_frameList[index]->m_pView = NULL;
 	}
-	changed = true;
+	m_changed = true;
 }
 
 void RDOStudioFrameManager::closeAll()
 {
-	ruint backup = lastShowedFrame;
+	ruint backup = m_lastShowedFrame;
 	STL_FOR_ALL(m_frameList, it)
 	{
 		PTR(RDOStudioFrameDoc) pFrameDoc = (*it)->m_pDoc;
@@ -231,7 +230,7 @@ void RDOStudioFrameManager::closeAll()
 			}
 		}
 	}
-	lastShowedFrame = backup;
+	m_lastShowedFrame = backup;
 }
 
 void RDOStudioFrameManager::clear()
@@ -249,12 +248,26 @@ void RDOStudioFrameManager::clear()
 		}
 		delete *it;
 	}
-	m_frameList.clear();
-	lastShowedFrame = ruint(~0);
+
+	STL_FOR_ALL(m_bitmapList, it)
+	{
+		delete it->second;
+	}
+
+	STL_FOR_ALL(m_bitmapMaskInvertList, it)
+	{
+		delete it->second;
+	}
+
+	m_frameList           .clear();
+	m_bitmapList          .clear();
+	m_bitmapMaskInvertList.clear();
+
+	m_lastShowedFrame = ruint(~0);
 	setCurrentShowingFrame(ruint(~0));
 }
 
-RDOStudioFrameDoc* RDOStudioFrameManager::getFirstExistDoc() const
+PTR(RDOStudioFrameDoc) RDOStudioFrameManager::getFirstExistDoc() const
 {
 	STL_FOR_ALL_CONST(m_frameList, it)
 	{
@@ -271,12 +284,12 @@ void RDOStudioFrameManager::expand() const
 	studioApp.m_pMainFrame->workspace.frames->expand();
 }
 
-rbool RDOStudioFrameManager::isValidFrameDoc( const RDOStudioFrameDoc* const frame ) const
+rbool RDOStudioFrameManager::isValidFrameDoc(CPTRC(RDOStudioFrameDoc) pFrame) const
 {
-	POSITION pos = frameDocTemplate->GetFirstDocPosition();
+	POSITION pos = m_pFrameDocTemplate->GetFirstDocPosition();
 	while ( pos ) {
-		RDOStudioFrameDoc* pDoc = static_cast<RDOStudioFrameDoc*>(frameDocTemplate->GetNextDoc( pos ));
-		if ( frame == pDoc ) {
+		PTR(RDOStudioFrameDoc) pDoc = static_cast<PTR(RDOStudioFrameDoc)>(m_pFrameDocTemplate->GetNextDoc( pos ));
+		if ( pFrame == pDoc ) {
 			return true;
 		}
 	}
@@ -284,11 +297,16 @@ rbool RDOStudioFrameManager::isValidFrameDoc( const RDOStudioFrameDoc* const fra
 	return false;
 }
 
+ruint RDOStudioFrameManager::getLastShowedFrame() const
+{
+	return m_lastShowedFrame;
+}
+
 void RDOStudioFrameManager::setLastShowedFrame(ruint value)
 {
 	if (value != ruint(~0) && value < count())
 	{
-		lastShowedFrame = value;
+		m_lastShowedFrame = value;
 	}
 }
 
@@ -296,11 +314,11 @@ void RDOStudioFrameManager::setCurrentShowingFrame(ruint value)
 {
 	if (value == ruint(~0) || (value != ruint(~0) && value < count()))
 	{
-		currentShowingFrame = value;
+		m_currentShowingFrame = value;
 		PTR(CTreeCtrl) pTree = studioApp.m_pMainFrame->workspace.frames;
-		if (currentShowingFrame != ruint(~0))
+		if (m_currentShowingFrame != ruint(~0))
 		{
-			HTREEITEM hitem = m_frameList[currentShowingFrame]->m_hitem;
+			HTREEITEM hitem = m_frameList[m_currentShowingFrame]->m_hitem;
 			pTree->SelectItem(hitem);
 		}
 		else
@@ -312,31 +330,31 @@ void RDOStudioFrameManager::setCurrentShowingFrame(ruint value)
 
 void RDOStudioFrameManager::resetCurrentShowingFrame(ruint value)
 {
-	if (value == currentShowingFrame)
+	if (value == m_currentShowingFrame)
 	{
 		setCurrentShowingFrame(ruint(~0));
 	}
 }
 
-void RDOStudioFrameManager::bmp_insert(CREF(tstring) name)
+void RDOStudioFrameManager::insertBitmap(CREF(tstring) bitmapName)
 {
-	if (m_bitmapList.find(name) != m_bitmapList.end())
+	if (m_bitmapList.find(bitmapName) != m_bitmapList.end())
 		return;
 
 	PTR(RDOStudioOutput) pOutput = &studioApp.m_pMainFrame->output;
 	ASSERT(pOutput);
-	pOutput->appendStringToDebug(rdo::format(IDS_MODEL_RESOURCE_LOADING_NAME, name.c_str()));
+	pOutput->appendStringToDebug(rdo::format(IDS_MODEL_RESOURCE_LOADING_NAME, bitmapName.c_str()));
 	const_cast<PTR(rdoEditCtrl::RDODebugEdit)>(pOutput->getDebug())->UpdateWindow();
 
 	rdo::binarystream stream;
-	rdoRepository::RDOThreadRepository::BinaryFile data(name, stream);
+	rdoRepository::RDOThreadRepository::BinaryFile data(bitmapName, stream);
 	model->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD_BINARY, &data);
 
 	rbool ok = false;
 	PTR(Gdiplus::Bitmap) pBitmap = new Gdiplus::Bitmap(rdo::toUnicode(data.m_name).c_str());
 	if (pBitmap && pBitmap->GetLastStatus() == Gdiplus::Ok)
 	{
-		std::pair<BitmapList::const_iterator, rbool> result = m_bitmapList.insert(BitmapList::value_type(name, pBitmap));
+		std::pair<BitmapList::const_iterator, rbool> result = m_bitmapList.insert(BitmapList::value_type(bitmapName, pBitmap));
 		if (result.second)
 		{
 			ok = true;
@@ -345,20 +363,6 @@ void RDOStudioFrameManager::bmp_insert(CREF(tstring) name)
 
 	pOutput->appendStringToDebug(rdo::format(ok ? IDS_MODEL_RESOURCE_LOADING_NAME_OK : IDS_MODEL_RESOURCE_LOADING_NAME_FAILED));
 	const_cast<PTR(rdoEditCtrl::RDODebugEdit)>(pOutput->getDebug())->UpdateWindow();
-}
-
-void RDOStudioFrameManager::bmp_clear()
-{
-	STL_FOR_ALL(m_bitmapList, it)
-	{
-		delete it->second;
-	}
-	STL_FOR_ALL(m_bitmapMaskInvertList, maskIt)
-	{
-		delete maskIt->second;
-	}
-	m_bitmapList          .clear();
-	m_bitmapMaskInvertList.clear();
 }
 
 int GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
@@ -852,9 +856,9 @@ void RDOStudioFrameManager::showFrame(CPTRC(rdoAnimation::RDOFrame) pFrame, ruin
 void RDOStudioFrameManager::showNextFrame()
 {
 	ruint cnt = count();
-	if (model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && currentShowingFrame < cnt-1)
+	if (model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && m_currentShowingFrame < cnt-1)
 	{
-		ruint index = currentShowingFrame + 1;
+		ruint index = m_currentShowingFrame + 1;
 		PTR(RDOStudioFrameDoc) pDoc = getFrameDoc(index);
 		if (!pDoc)
 		{
@@ -872,9 +876,9 @@ void RDOStudioFrameManager::showNextFrame()
 void RDOStudioFrameManager::showPrevFrame()
 {
 	ruint cnt = count();
-	if (model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && currentShowingFrame > 0)
+	if (model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && m_currentShowingFrame != ruint(~0))
 	{
-		ruint index = currentShowingFrame - 1;
+		ruint index = m_currentShowingFrame - 1;
 		PTR(RDOStudioFrameDoc) pDoc = getFrameDoc(index);
 		if (!pDoc)
 		{
@@ -911,13 +915,13 @@ void RDOStudioFrameManager::showFrame(ruint index)
 rbool RDOStudioFrameManager::canShowNextFrame() const
 {
 	ruint cnt = count();
-	return model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && (currentShowingFrame == ruint(~0) || currentShowingFrame < cnt-1);
+	return model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && (m_currentShowingFrame == ruint(~0) || m_currentShowingFrame < cnt-1);
 }
 
 rbool RDOStudioFrameManager::canShowPrevFrame() const
 {
 	int cnt = count();
-	return model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && currentShowingFrame > 0;
+	return model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && (m_currentShowingFrame != ruint(~0) && m_currentShowingFrame > 0);
 }
 
 void RDOStudioFrameManager::updateStyles() const
