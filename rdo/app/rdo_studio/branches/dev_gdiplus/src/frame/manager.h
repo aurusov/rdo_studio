@@ -28,6 +28,46 @@ CLOSE_RDO_ANIMATION_NAMESPACE
 
 class RDOStudioFrameManager
 {
+public:
+	RDOStudioFrameManager();
+	virtual ~RDOStudioFrameManager();
+
+	void insertFrame (CREF(tstring) frameName );
+	void insertBitmap(CREF(tstring) bitmapName);
+
+	ruint findFrameIndex(const HTREEITEM          hitem) const;
+	ruint findFrameIndex(CPTR(RDOStudioFrameDoc)  pDoc ) const;
+	ruint findFrameIndex(CPTR(RDOStudioFrameView) pView) const;
+
+	CREF(tstring)           getFrameName      (ruint index) const;
+	PTR(RDOStudioFrameDoc)  getFrameDoc       (ruint index) const;
+	PTR(RDOStudioFrameView) getFrameView      (ruint index) const;
+	ruint                   count             () const;
+	rbool                   isChanged         ();
+
+	void                    areaDown          (ruint frameIndex, CREF(Gdiplus::Point) point) const;
+
+	PTR(RDOStudioFrameDoc)  connectFrameDoc   (ruint index);
+	void                    disconnectFrameDoc(CPTR(RDOStudioFrameDoc) pDoc);
+	PTR(RDOStudioFrameDoc)  getFirstExistDoc  () const;
+	void                    closeAll          ();
+	void                    clear             ();
+
+	void expand() const;
+
+	rbool isValidFrameDoc         (CPTRC(RDOStudioFrameDoc) pFrame) const;
+	ruint getLastShowedFrame      () const;
+	void  setLastShowedFrame      (ruint value);
+	void  setCurrentShowingFrame  (ruint value );
+	void  resetCurrentShowingFrame(ruint value);
+	void  showFrame               (CPTRC(rdoAnimation::RDOFrame) pFrame, ruint index);
+	void  showNextFrame           ();
+	void  showPrevFrame           ();
+	void  showFrame               (ruint index);
+	rbool canShowNextFrame        () const;
+	rbool canShowPrevFrame        () const;
+	void  updateStyles            () const;
+
 private:
 	class FrameDocTemplate: public CMultiDocTemplate
 	{
@@ -69,46 +109,6 @@ private:
 	ruint                 m_lastShowedFrame;
 	ruint                 m_currentShowingFrame;
 	rbool                 m_changed;
-
-public:
-	RDOStudioFrameManager();
-	virtual ~RDOStudioFrameManager();
-
-	void insertFrame (CREF(tstring) frameName );
-	void insertBitmap(CREF(tstring) bitmapName);
-
-	ruint findFrameIndex(const HTREEITEM          hitem) const;
-	ruint findFrameIndex(CPTR(RDOStudioFrameDoc)  pDoc ) const;
-	ruint findFrameIndex(CPTR(RDOStudioFrameView) pView) const;
-
-	CREF(tstring)           getFrameName      (ruint index) const;
-	PTR(RDOStudioFrameDoc)  getFrameDoc       (ruint index) const;
-	PTR(RDOStudioFrameView) getFrameView      (ruint index) const;
-	ruint                   count             () const;
-	rbool                   isChanged         ();
-
-	void                    areaDown          (ruint frameIndex, CREF(Gdiplus::Point) point) const;
-
-	PTR(RDOStudioFrameDoc)  connectFrameDoc   (ruint index);
-	void                    disconnectFrameDoc(CPTR(RDOStudioFrameDoc) pDoc);
-	PTR(RDOStudioFrameDoc)  getFirstExistDoc  () const;
-	void                    closeAll          ();
-	void                    clear             ();
-
-	void expand() const;
-
-	rbool isValidFrameDoc         (CPTRC(RDOStudioFrameDoc) pFrame) const;
-	ruint getLastShowedFrame      () const;
-	void  setLastShowedFrame      (ruint value);
-	void  setCurrentShowingFrame  (ruint value );
-	void  resetCurrentShowingFrame(ruint value);
-	void  showFrame               (CPTRC(rdoAnimation::RDOFrame) pFrame, ruint index);
-	void  showNextFrame           ();
-	void  showPrevFrame           ();
-	void  showFrame               (ruint index);
-	rbool canShowNextFrame        () const;
-	rbool canShowPrevFrame        () const;
-	void  updateStyles            () const;
 };
 
 #endif // _RDO_STUDIO_MFC_FRAME_MANAGER_H_
