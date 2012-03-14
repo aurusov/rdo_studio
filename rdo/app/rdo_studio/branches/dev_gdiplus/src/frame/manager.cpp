@@ -19,6 +19,7 @@
 #include "kernel/rdothread.h"
 #include "simulator/service/rdosimwin.h"
 #include "repository/rdorepository.h"
+#include "ui/gdiplus/headers/bitmap/bitmap.h"
 #include "app/rdo_studio_mfc/src/frame/manager.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/src/application.h"
@@ -352,8 +353,8 @@ void RDOStudioFrameManager::insertBitmap(CREF(tstring) bitmapName)
 	model->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD_BINARY, &data);
 
 	rbool ok = false;
-	PTR(Gdiplus::Bitmap) pBitmap = new Gdiplus::Bitmap(rdo::toUnicode(data.m_name).c_str());
-	if (pBitmap && pBitmap->GetLastStatus() == Gdiplus::Ok)
+	PTR(Gdiplus::Bitmap) pBitmap = rdo::gui::Bitmap::load(data.m_name);
+	if (pBitmap)
 	{
 		std::pair<BitmapList::const_iterator, rbool> result = m_bitmapList.insert(BitmapList::value_type(bitmapName, pBitmap));
 		if (result.second)
@@ -364,37 +365,6 @@ void RDOStudioFrameManager::insertBitmap(CREF(tstring) bitmapName)
 
 	pOutput->appendStringToDebug(rdo::format(ok ? IDS_MODEL_RESOURCE_LOADING_NAME_OK : IDS_MODEL_RESOURCE_LOADING_NAME_FAILED));
 	const_cast<PTR(rdoEditCtrl::RDODebugEdit)>(pOutput->getDebug())->UpdateWindow();
-}
-
-int GetEncoderClsid(CPTR(WCHAR) pFormat, PTR(CLSID) pClsid)
-{
-   UINT num  = 0; // number of image encoders
-   UINT size = 0; // size of the image encoder array in bytes
-
-   PTR(Gdiplus::ImageCodecInfo) pImageCodecInfo = NULL;
-
-   Gdiplus::GetImageEncodersSize(&num, &size);
-   if (size == 0)
-      return -1;  // Failure
-
-   pImageCodecInfo = (PTR(Gdiplus::ImageCodecInfo))(malloc(size));
-   if (pImageCodecInfo == NULL)
-      return -1;  // Failure
-
-   Gdiplus::GetImageEncoders(num, size, pImageCodecInfo);
-
-   for (UINT j = 0; j < num; ++j)
-   {
-      if (wcscmp(pImageCodecInfo[j].MimeType, pFormat) == 0)
-      {
-         *pClsid = pImageCodecInfo[j].Clsid;
-         free(pImageCodecInfo);
-         return j; // Success
-      }
-   }
-
-   free(pImageCodecInfo);
-   return -1;  // Failure
 }
 
 void RDOStudioFrameManager::showFrame(CPTRC(rdoAnimation::RDOFrame) pFrame, ruint index)
@@ -720,9 +690,6 @@ void RDOStudioFrameManager::showFrame(CPTRC(rdoAnimation::RDOFrame) pFrame, ruin
 														Gdiplus::UnitPixel,
 														&imageAttributes
 													);
-													//CLSID pngClsid;
-													//GetEncoderClsid(L"image/png", &pngClsid);
-													//pMaskInvert->Save(L"Mosaic2.png", &pngClsid, NULL);
 												}
 											}
 											else
