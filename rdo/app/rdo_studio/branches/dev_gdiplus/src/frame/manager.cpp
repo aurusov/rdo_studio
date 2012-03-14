@@ -190,16 +190,16 @@ void RDOStudioFrameManager::areaDown(ruint frameIndex, CREF(Gdiplus::Point) poin
 PTR(RDOStudioFrameDoc) RDOStudioFrameManager::connectFrameDoc(ruint index)
 {
 	PTR(RDOStudioFrameDoc) pDoc = NULL;
-	if ( index != ~0 )
+	if (index != ~0)
 	{
-		pDoc = static_cast<PTR(RDOStudioFrameDoc)>(m_pFrameDocTemplate->OpenDocumentFile( NULL ));
-		if ( pDoc )
+		pDoc = static_cast<PTR(RDOStudioFrameDoc)>(m_pFrameDocTemplate->OpenDocumentFile(NULL));
+		if (pDoc)
 		{
 			m_frameList[index]->m_pDoc  = pDoc;
 			m_frameList[index]->m_pView = pDoc->getView();
 			m_lastShowedFrame           = index;
-			pDoc->SetTitle( rdo::format( IDS_FRAME_NAME, getFrameName( index ).c_str() ).c_str()  );
-			setCurrentShowingFrame( index );
+			pDoc->SetTitle(rdo::format(IDS_FRAME_NAME, getFrameName(index).c_str()).c_str());
+			setCurrentShowingFrame(index);
 		}
 	}
 	return pDoc;
@@ -287,13 +287,14 @@ void RDOStudioFrameManager::expand() const
 rbool RDOStudioFrameManager::isValidFrameDoc(CPTRC(RDOStudioFrameDoc) pFrame) const
 {
 	POSITION pos = m_pFrameDocTemplate->GetFirstDocPosition();
-	while ( pos ) {
-		PTR(RDOStudioFrameDoc) pDoc = static_cast<PTR(RDOStudioFrameDoc)>(m_pFrameDocTemplate->GetNextDoc( pos ));
-		if ( pFrame == pDoc ) {
+	while (pos)
+	{
+		PTR(RDOStudioFrameDoc) pDoc = static_cast<PTR(RDOStudioFrameDoc)>(m_pFrameDocTemplate->GetNextDoc(pos));
+		if (pFrame == pDoc)
+		{
 			return true;
 		}
 	}
-
 	return false;
 }
 
@@ -302,19 +303,19 @@ ruint RDOStudioFrameManager::getLastShowedFrame() const
 	return m_lastShowedFrame;
 }
 
-void RDOStudioFrameManager::setLastShowedFrame(ruint value)
+void RDOStudioFrameManager::setLastShowedFrame(ruint index)
 {
-	if (value != ruint(~0) && value < count())
+	if (index != ruint(~0) && index < count())
 	{
-		m_lastShowedFrame = value;
+		m_lastShowedFrame = index;
 	}
 }
 
-void RDOStudioFrameManager::setCurrentShowingFrame(ruint value)
+void RDOStudioFrameManager::setCurrentShowingFrame(ruint index)
 {
-	if (value == ruint(~0) || (value != ruint(~0) && value < count()))
+	if (index == ruint(~0) || (index != ruint(~0) && index < count()))
 	{
-		m_currentShowingFrame = value;
+		m_currentShowingFrame = index;
 		PTR(CTreeCtrl) pTree = studioApp.m_pMainFrame->workspace.frames;
 		if (m_currentShowingFrame != ruint(~0))
 		{
@@ -328,9 +329,9 @@ void RDOStudioFrameManager::setCurrentShowingFrame(ruint value)
 	}
 }
 
-void RDOStudioFrameManager::resetCurrentShowingFrame(ruint value)
+void RDOStudioFrameManager::resetCurrentShowingFrame(ruint index)
 {
-	if (value == m_currentShowingFrame)
+	if (index == m_currentShowingFrame)
 	{
 		setCurrentShowingFrame(ruint(~0));
 	}
@@ -365,31 +366,31 @@ void RDOStudioFrameManager::insertBitmap(CREF(tstring) bitmapName)
 	const_cast<PTR(rdoEditCtrl::RDODebugEdit)>(pOutput->getDebug())->UpdateWindow();
 }
 
-int GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
+int GetEncoderClsid(CPTR(WCHAR) pFormat, PTR(CLSID) pClsid)
 {
-   UINT  num = 0;          // number of image encoders
-   UINT  size = 0;         // size of the image encoder array in bytes
+   UINT num  = 0; // number of image encoders
+   UINT size = 0; // size of the image encoder array in bytes
 
-   Gdiplus::ImageCodecInfo* pImageCodecInfo = NULL;
+   PTR(Gdiplus::ImageCodecInfo) pImageCodecInfo = NULL;
 
    Gdiplus::GetImageEncodersSize(&num, &size);
-   if(size == 0)
+   if (size == 0)
       return -1;  // Failure
 
-   pImageCodecInfo = (Gdiplus::ImageCodecInfo*)(malloc(size));
-   if(pImageCodecInfo == NULL)
+   pImageCodecInfo = (PTR(Gdiplus::ImageCodecInfo))(malloc(size));
+   if (pImageCodecInfo == NULL)
       return -1;  // Failure
 
    Gdiplus::GetImageEncoders(num, size, pImageCodecInfo);
 
-   for(UINT j = 0; j < num; ++j)
+   for (UINT j = 0; j < num; ++j)
    {
-      if( wcscmp(pImageCodecInfo[j].MimeType, format) == 0 )
+      if (wcscmp(pImageCodecInfo[j].MimeType, pFormat) == 0)
       {
          *pClsid = pImageCodecInfo[j].Clsid;
          free(pImageCodecInfo);
-         return j;  // Success
-      }    
+         return j; // Success
+      }
    }
 
    free(pImageCodecInfo);
@@ -426,8 +427,6 @@ void RDOStudioFrameManager::showFrame(CPTRC(rdoAnimation::RDOFrame) pFrame, ruin
 				pFrameView->init(size);
 			}
 
-			//Gdiplus::Status status;
-
 			rbool showFillrect = true;
 			if (pFrame->hasBgImage())
 			{
@@ -448,15 +447,6 @@ void RDOStudioFrameManager::showFrame(CPTRC(rdoAnimation::RDOFrame) pFrame, ruin
 				bgColor.SetFromCOLORREF(RGB(pFrame->m_bgColor.m_r, pFrame->m_bgColor.m_g, pFrame->m_bgColor.m_b));
 			}
 			pFrameView->setBGColor(bgColor);
-			//if (showFillrect)
-			//{
-			//	Gdiplus::SolidBrush brush(bgColor);
-			//	pFrameView->dc().FillRectangle(&brush, pFrameView->m_frameBmpRect);
-
-			//	//! @todo проверить цвет карандаша. возможен косяк без SetFromCOLORREF
-			//	Gdiplus::Pen pen(studioApp.m_pMainFrame->style_frame.theme->defaultColor, 1.0);
-			//	pFrameView->dc().DrawPolygon(&pen, pFrameView->points, 5);
-			//}
 
 			ruint size = pFrame->m_elements.size();
 			for (ruint i = 0; i < size; i++)
@@ -471,18 +461,18 @@ void RDOStudioFrameManager::showFrame(CPTRC(rdoAnimation::RDOFrame) pFrame, ruin
 						PTR(rdoAnimation::RDOTextElement) pElement = static_cast<PTR(rdoAnimation::RDOTextElement)>(pCurrElement);
 						if (!pElement->m_background.m_transparent)
 						{
-//							::SetBkMode( hdc, OPAQUE );
-//							::SetBkColor( hdc, RGB(pElement->m_background.m_r, pElement->m_background.m_g, pElement->m_background.m_b) );
+//							::SetBkMode(hdc, OPAQUE);
+//							::SetBkColor(hdc, RGB(pElement->m_background.m_r, pElement->m_background.m_g, pElement->m_background.m_b));
 //							color = Gdiplus::Color(pElement->m_background.m_r, pElement->m_background.m_g, pElement->m_background.m_b);
 						}
 						else
 						{
-//							::SetBkMode( hdc, TRANSPARENT );
+//							::SetBkMode(hdc, TRANSPARENT);
 						}
 
 						if(!pElement->m_foreground.m_transparent)
 						{
-//							::SetTextColor( hdc, RGB(pElement->m_foreground.m_r, pElement->m_foreground.m_g, pElement->m_foreground.m_b) );
+//							::SetTextColor(hdc, RGB(pElement->m_foreground.m_r, pElement->m_foreground.m_g, pElement->m_foreground.m_b));
 						}
 
 						Gdiplus::StringFormat sformat;
@@ -514,7 +504,7 @@ void RDOStudioFrameManager::showFrame(CPTRC(rdoAnimation::RDOFrame) pFrame, ruin
 						//	wtext = L"text";
 
 						//	status = pFrameView->dc().DrawString(wtext.c_str(), wtext.length(), &font, rect, &sformat, &brush);
-//							::DrawText( hdc, pElement->m_text.c_str(), pElement->m_text.length(), CRect( (int)pElement->m_point.m_x, (int)pElement->m_point.m_y, (int)(pElement->m_point.m_x + pElement->m_size.m_width), (int)(pElement->m_point.m_y + pElement->m_size.m_height) ), nFormat );
+//							::DrawText(hdc, pElement->m_text.c_str(), pElement->m_text.length(), CRect((int)pElement->m_point.m_x, (int)pElement->m_point.m_y, (int)(pElement->m_point.m_x + pElement->m_size.m_width), (int)(pElement->m_point.m_y + pElement->m_size.m_height)), nFormat);
 						//}
 
 						break;
@@ -779,10 +769,10 @@ void RDOStudioFrameManager::showFrame(CPTRC(rdoAnimation::RDOFrame) pFrame, ruin
 									//	Gdiplus::ImageAttributes imageAttributes;
 									//	bg.dc().DrawImage(&pFrameView->buffer(), 0, 0, Gdiplus::REAL(pElement->m_point.m_x), Gdiplus::REAL(pElement->m_point.m_y), Gdiplus::REAL(bg.width()), Gdiplus::REAL(bg.height()));
 									//}
-									//CBitmap* pOldMask = dcMask.SelectObject( &mask->bmp );
-									//::BitBlt( hdc, (int)(element->m_point.m_x), (int)(element->m_point.m_y), mask->w, mask->h, dcMask.m_hDC, 0, 0, SRCAND );
-									//::BitBlt( hdc, (int)(element->m_point.m_x), (int)(element->m_point.m_y), bmp->w, bmp->h, dcBmp.m_hDC, 0, 0, SRCPAINT );
-									//dcMask.SelectObject( pOldMask );
+									//CBitmap* pOldMask = dcMask.SelectObject(&mask->bmp);
+									//::BitBlt(hdc, (int)(element->m_point.m_x), (int)(element->m_point.m_y), mask->w, mask->h, dcMask.m_hDC, 0, 0, SRCAND);
+									//::BitBlt(hdc, (int)(element->m_point.m_x), (int)(element->m_point.m_y), bmp->w, bmp->h, dcBmp.m_hDC, 0, 0, SRCPAINT);
+									//dcMask.SelectObject(pOldMask);
 
 //									NEVER_REACH_HERE;
 //									maskDraw = true;
@@ -896,7 +886,7 @@ void RDOStudioFrameManager::showPrevFrame()
 void RDOStudioFrameManager::showFrame(ruint index)
 {
 	ruint cnt = count();
-	if (model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && index >= 0 && index < cnt )
+	if (model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && index >= 0 && index < cnt)
 	{
 		PTR(RDOStudioFrameDoc) pDoc = getFrameDoc(index);
 		if (!pDoc)

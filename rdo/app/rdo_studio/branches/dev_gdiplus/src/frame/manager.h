@@ -52,14 +52,12 @@ public:
 	PTR(RDOStudioFrameDoc)  getFirstExistDoc  () const;
 	void                    closeAll          ();
 	void                    clear             ();
+	void                    expand            () const;
 
-	void expand() const;
-
-	rbool isValidFrameDoc         (CPTRC(RDOStudioFrameDoc) pFrame) const;
 	ruint getLastShowedFrame      () const;
-	void  setLastShowedFrame      (ruint value);
-	void  setCurrentShowingFrame  (ruint value );
-	void  resetCurrentShowingFrame(ruint value);
+	void  setLastShowedFrame      (ruint index);
+	void  setCurrentShowingFrame  (ruint index);
+	void  resetCurrentShowingFrame(ruint index);
 	void  showFrame               (CPTRC(rdoAnimation::RDOFrame) pFrame, ruint index);
 	void  showNextFrame           ();
 	void  showPrevFrame           ();
@@ -109,6 +107,8 @@ private:
 	ruint                 m_lastShowedFrame;
 	ruint                 m_currentShowingFrame;
 	rbool                 m_changed;
+
+	rbool isValidFrameDoc(CPTRC(RDOStudioFrameDoc) pFrame) const;
 };
 
 #endif // _RDO_STUDIO_MFC_FRAME_MANAGER_H_
