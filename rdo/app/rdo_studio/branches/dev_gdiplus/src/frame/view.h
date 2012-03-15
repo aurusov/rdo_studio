@@ -13,7 +13,9 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <gdiplus.h>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/rdoanimation.h"
 #include "ui/gdiplus/headers/memdc/memdc.h"
+#include "ui/gdiplus/headers/bitmap/bitmap.h"
 #include "app/rdo_studio_mfc/src/view.h"
 // --------------------------------------------------------------------------------
 
@@ -29,9 +31,21 @@ public:
 	RDOStudioFrameView();
 	virtual ~RDOStudioFrameView();
 
+	struct Area
+	{
+		tstring        m_name;
+		Gdiplus::Rect  m_rect;
+	};
+	typedef  std::vector<PTR(Area)>  AreaList;
+
 	rbool                  valid        ();
 	void                   init         (CREF(Gdiplus::Size) size);
 	REF(Gdiplus::Graphics) dc           ();
+
+	void                   update       (CPTRC(rdoAnimation::RDOFrame) pFrame,
+	                                      CREF(rdo::gui::BitmapList)   bitmapList,
+	                                       REF(rdo::gui::BitmapList)   bitmapMaskInvertList,
+	                                       REF(AreaList)               areaList);
 
 	void                   setBGColor   (CREF(Gdiplus::Color) color);
 	void                   updateFont   ();

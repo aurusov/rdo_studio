@@ -14,7 +14,9 @@
 #include <vector>
 #include <map>
 #include <memory>
+#include <gdiplus.h>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "ui/gdiplus/headers/bitmap/bitmap.h"
 #include "app/rdo_studio_mfc/src/frame/document.h"
 #include "app/rdo_studio_mfc/src/frame/view.h"
 // --------------------------------------------------------------------------------
@@ -77,32 +79,24 @@ private:
 
 	struct Frame
 	{
-		struct Area
-		{
-			tstring        m_name;
-			Gdiplus::Rect  m_rect;
-		};
-		typedef  std::vector<PTR(Area)>  AreaList;
-
 		 Frame();
 		~Frame();
 
-		HTREEITEM               m_hitem;
-		tstring                 m_name;
-		PTR(RDOStudioFrameDoc)  m_pDoc;
-		PTR(RDOStudioFrameView) m_pView;
-		AreaList                m_areaList;
+		HTREEITEM                     m_hitem;
+		tstring                       m_name;
+		PTR(RDOStudioFrameDoc)        m_pDoc;
+		PTR(RDOStudioFrameView)       m_pView;
+		RDOStudioFrameView::AreaList  m_areaList;
 
 	private:
 		void clear();
 	};
 
-	typedef  std::vector<PTR(Frame)>                  FrameList;
-	typedef  std::map<tstring, PTR(Gdiplus::Bitmap)>  BitmapList;
+	typedef  std::vector<PTR(Frame)>  FrameList;
 
 	FrameList             m_frameList;
-	BitmapList            m_bitmapList;
-	BitmapList            m_bitmapMaskInvertList;
+	rdo::gui::BitmapList  m_bitmapList;
+	rdo::gui::BitmapList  m_bitmapMaskInvertList;
 	PTR(FrameDocTemplate) m_pFrameDocTemplate;
 	ruint                 m_lastShowedFrame;
 	ruint                 m_currentShowingFrame;
