@@ -38,18 +38,11 @@ public:
 	};
 	typedef  std::map<tstring, Area>  AreaList;
 
-	rbool                  valid        ();
-	void                   init         (CREF(Gdiplus::Size) size);
-	REF(Gdiplus::Graphics) dc           ();
-
 	void                   update       (CPTRC(rdoAnimation::RDOFrame) pFrame,
 	                                      CREF(rdo::gui::BitmapList)   bitmapList,
 	                                       REF(rdo::gui::BitmapList)   bitmapMaskInvertList,
 	                                       REF(AreaList)               areaList);
-
-	void                   setBGColor   (CREF(Gdiplus::Color) color);
 	void                   updateFont   ();
-
 	PTR(RDOStudioFrameDoc) GetDocument  ();
 	CREF(CRect)            getClientRect() const;
 
@@ -69,8 +62,11 @@ private:
 	rdo::gui::MemDC m_memDC; // hmemdc, hbmp
 	rbool           m_mouseOnHScroll;
 
-	void onDraw          (REF(Gdiplus::Graphics) graphics);
-	void updateScrollBars();
+	rbool valid           ();
+	void  init            (CREF(Gdiplus::Size) size);
+	void  setBGColor      (CREF(Gdiplus::Color) color);
+	void  onDraw          (REF(Gdiplus::Graphics) graphics);
+	void  updateScrollBars();
 
 	virtual BOOL PreCreateWindow  (REF(CREATESTRUCT) cs);
 	virtual BOOL OnPreparePrinting(PTR(CPrintInfo) pInfo);

@@ -85,11 +85,6 @@ void RDOStudioFrameView::init(CREF(Gdiplus::Size) size)
 	updateScrollBars();
 }
 
-REF(Gdiplus::Graphics) RDOStudioFrameView::dc()
-{
-	return m_memDC.dc();
-}
-
 void RDOStudioFrameView::setBGColor(CREF(Gdiplus::Color) color)
 {
 	m_bgColor = color;
@@ -549,7 +544,7 @@ void RDOStudioFrameView::update(
 		rdo::gui::BitmapList::const_iterator bmpIt = bitmapList.find(pFrame->m_bgImageName);
 		if (bmpIt != bitmapList.end())
 		{
-			dc().DrawImage(bmpIt->second, 0, 0, bmpIt->second->GetWidth(), bmpIt->second->GetHeight());
+			m_memDC.dc().DrawImage(bmpIt->second, 0, 0, bmpIt->second->GetWidth(), bmpIt->second->GetHeight());
 			showFillrect = false;
 		}
 	}
@@ -604,9 +599,9 @@ void RDOStudioFrameView::update(
 
 				std::wstring wtext = rdo::toUnicode(pElement->m_text);
 
-				//HDC hDC = dc().GetHDC();
+				//HDC hDC = m_memDC.dc().GetHDC();
 				//Gdiplus::Font  font(hDC, hfontCurrent);
-				//dc().ReleaseHDC(hDC);
+				//m_memDC.dc().ReleaseHDC(hDC);
 
 				//if (font.GetLastStatus() == Gdiplus::Ok)
 				//{
@@ -619,7 +614,7 @@ void RDOStudioFrameView::update(
 
 				//	wtext = L"text";
 
-				//	status = dc().DrawString(wtext.c_str(), wtext.length(), &font, rect, &sformat, &brush);
+				//	status = m_memDC.dc().DrawString(wtext.c_str(), wtext.length(), &font, rect, &sformat, &brush);
 //							::DrawText(hdc, pElement->m_text.c_str(), pElement->m_text.length(), CRect((int)pElement->m_point.m_x, (int)pElement->m_point.m_y, (int)(pElement->m_point.m_x + pElement->m_size.m_width), (int)(pElement->m_point.m_y + pElement->m_size.m_height)), nFormat);
 				//}
 
@@ -640,7 +635,7 @@ void RDOStudioFrameView::update(
 				}
 				Gdiplus::SolidBrush brush(bgColor);
 
-				dc().FillRectangle(&brush, (int)pElement->m_point.m_x, (int)pElement->m_point.m_y, (int)pElement->m_size.m_width, (int)pElement->m_size.m_height);
+				m_memDC.dc().FillRectangle(&brush, (int)pElement->m_point.m_x, (int)pElement->m_point.m_y, (int)pElement->m_size.m_width, (int)pElement->m_size.m_height);
 				//! @todo добавить вывод линии вокруг прямоугольника
 
 				break;
@@ -661,7 +656,7 @@ void RDOStudioFrameView::update(
 				Gdiplus::SolidBrush brush(bgColor);
 
 				//! @todo gdi+ не умеет выводить roundrect :(
-				dc().FillRectangle(&brush, (int)pElement->m_point.m_x, (int)pElement->m_point.m_y, (int)pElement->m_size.m_width, (int)pElement->m_size.m_height);
+				m_memDC.dc().FillRectangle(&brush, (int)pElement->m_point.m_x, (int)pElement->m_point.m_y, (int)pElement->m_size.m_width, (int)pElement->m_size.m_height);
 				//! @todo добавить вывод линии вокруг прямоугольника
 
 				break;
@@ -675,7 +670,7 @@ void RDOStudioFrameView::update(
 					Gdiplus::Color color;
 					color.SetFromCOLORREF(RGB(pElement->m_color.m_r, pElement->m_color.m_g, pElement->m_color.m_b));
 					Gdiplus::Pen pen(color);
-					dc().DrawLine(
+					m_memDC.dc().DrawLine(
 						&pen,
 						(int)(pElement->m_point1.m_x), (int)(pElement->m_point1.m_y),
 						(int)(pElement->m_point2.m_x), (int)(pElement->m_point2.m_y)
@@ -703,7 +698,7 @@ void RDOStudioFrameView::update(
 					Gdiplus::Color color;
 					color.SetFromCOLORREF(RGB(pElement->m_background.m_r, pElement->m_background.m_g, pElement->m_background.m_b));
 					Gdiplus::SolidBrush brush(color);
-					dc().FillPolygon(&brush, &pointList[0], pountListCount);
+					m_memDC.dc().FillPolygon(&brush, &pointList[0], pountListCount);
 				}
 
 				if (!pElement->m_foreground.m_transparent)
@@ -711,7 +706,7 @@ void RDOStudioFrameView::update(
 					Gdiplus::Color color;
 					color.SetFromCOLORREF(RGB(pElement->m_foreground.m_r, pElement->m_foreground.m_g, pElement->m_foreground.m_b));
 					Gdiplus::Pen pen(color);
-					dc().DrawPolygon(&pen, &pointList[0], pountListCount);
+					m_memDC.dc().DrawPolygon(&pen, &pointList[0], pountListCount);
 				}
 
 				break;
@@ -733,7 +728,7 @@ void RDOStudioFrameView::update(
 					Gdiplus::Color color;
 					color.SetFromCOLORREF(RGB(pElement->m_background.m_r, pElement->m_background.m_g, pElement->m_background.m_b));
 					Gdiplus::SolidBrush brush(color);
-					dc().FillEllipse(&brush, rect);
+					m_memDC.dc().FillEllipse(&brush, rect);
 				}
 
 				if (!pElement->m_foreground.m_transparent)
@@ -741,7 +736,7 @@ void RDOStudioFrameView::update(
 					Gdiplus::Color color;
 					color.SetFromCOLORREF(RGB(pElement->m_foreground.m_r, pElement->m_foreground.m_g, pElement->m_foreground.m_b));
 					Gdiplus::Pen pen(color);
-					dc().DrawEllipse(&pen, rect);
+					m_memDC.dc().DrawEllipse(&pen, rect);
 				}
 
 				break;
@@ -763,7 +758,7 @@ void RDOStudioFrameView::update(
 					Gdiplus::Color color;
 					color.SetFromCOLORREF(RGB(pElement->m_background.m_r, pElement->m_background.m_g, pElement->m_background.m_b));
 					Gdiplus::SolidBrush brush(color);
-					dc().FillEllipse(&brush, rect);
+					m_memDC.dc().FillEllipse(&brush, rect);
 				}
 
 				if (!pElement->m_foreground.m_transparent)
@@ -771,7 +766,7 @@ void RDOStudioFrameView::update(
 					Gdiplus::Color color;
 					color.SetFromCOLORREF(RGB(pElement->m_foreground.m_r, pElement->m_foreground.m_g, pElement->m_foreground.m_b));
 					Gdiplus::Pen pen(color);
-					dc().DrawEllipse(&pen, rect);
+					m_memDC.dc().DrawEllipse(&pen, rect);
 				}
 
 				break;
@@ -848,7 +843,7 @@ void RDOStudioFrameView::update(
 							if (maskInvertIt != bitmapMaskInvertList.end())
 							{
 								//Gdiplus::Graphics graphics(maskInvertIt->second);
-								dc().DrawImage(maskInvertIt->second, 0, 0);
+								m_memDC.dc().DrawImage(maskInvertIt->second, 0, 0);
 								break;
 							}
 
@@ -857,7 +852,7 @@ void RDOStudioFrameView::update(
 								Gdiplus::ARGB(Gdiplus::Color::Black),
 								Gdiplus::ARGB(Gdiplus::Color::Black)
 							);
-							dc().DrawImage(
+							m_memDC.dc().DrawImage(
 								maskIt->second,
 								Gdiplus::RectF(
 									Gdiplus::REAL(pElement->m_point.m_x),
@@ -880,7 +875,7 @@ void RDOStudioFrameView::update(
 							//	Gdiplus::RectF bgRect    (0.0, 0.0, Gdiplus::REAL(bg.width()), Gdiplus::REAL(bg.height()));
 							//	Gdiplus::RectF bufferRect(Gdiplus::REAL(pElement->m_point.m_x), Gdiplus::REAL(pElement->m_point.m_y), Gdiplus::REAL(bg.width()), Gdiplus::REAL(bg.height()));
 							//	Gdiplus::ImageAttributes imageAttributes;
-							//	bg.dc().DrawImage(&buffer(), 0, 0, Gdiplus::REAL(pElement->m_point.m_x), Gdiplus::REAL(pElement->m_point.m_y), Gdiplus::REAL(bg.width()), Gdiplus::REAL(bg.height()));
+							//	bg.m_memDC.dc().DrawImage(&buffer(), 0, 0, Gdiplus::REAL(pElement->m_point.m_x), Gdiplus::REAL(pElement->m_point.m_y), Gdiplus::REAL(bg.width()), Gdiplus::REAL(bg.height()));
 							//}
 							//CBitmap* pOldMask = dcMask.SelectObject(&mask->bmp);
 							//::BitBlt(hdc, (int)(element->m_point.m_x), (int)(element->m_point.m_y), mask->w, mask->h, dcMask.m_hDC, 0, 0, SRCAND);
@@ -893,7 +888,7 @@ void RDOStudioFrameView::update(
 					}
 					if (!maskDraw)
 					{
-						dc().DrawImage(bmpIt->second, (int)(pElement->m_point.m_x), (int)(pElement->m_point.m_y));
+						m_memDC.dc().DrawImage(bmpIt->second, (int)(pElement->m_point.m_x), (int)(pElement->m_point.m_y));
 					}
 				}
 				break;
@@ -917,7 +912,7 @@ void RDOStudioFrameView::update(
 					}
 					if (!maskDraw)
 					{
-						dc().DrawImage(bmpIt->second, (int)(pElement->m_point.m_x), (int)(pElement->m_point.m_y), (int)(pElement->m_size.m_width), (int)(pElement->m_size.m_height));
+						m_memDC.dc().DrawImage(bmpIt->second, (int)(pElement->m_point.m_x), (int)(pElement->m_point.m_y), (int)(pElement->m_size.m_width), (int)(pElement->m_size.m_height));
 					}
 				}
 				break;
