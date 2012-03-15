@@ -44,10 +44,6 @@ RDOStudioFrameManager::Frame::~Frame()
 
 void RDOStudioFrameManager::Frame::clear()
 {
-	STL_FOR_ALL(m_areaList, it)
-	{
-		delete *it;
-	}
 	m_areaList.clear();
 }
 
@@ -178,9 +174,10 @@ void RDOStudioFrameManager::areaDown(ruint frameIndex, CREF(Gdiplus::Point) poin
 	CREF(RDOStudioFrameView::AreaList) areaList = m_frameList[frameIndex]->m_areaList;
 	STL_FOR_ALL_CONST(areaList, it)
 	{
-		if ((*it)->m_rect.Contains(point))
+		if (it->second.m_rect.Contains(point))
 		{
-			model->sendMessage(kernel->runtime(), RDOThread::RT_RUNTIME_FRAME_AREA_DOWN, &(*it)->m_name);
+			tstring areaName = it->first;
+			model->sendMessage(kernel->runtime(), RDOThread::RT_RUNTIME_FRAME_AREA_DOWN, &areaName);
 		}
 	}
 }

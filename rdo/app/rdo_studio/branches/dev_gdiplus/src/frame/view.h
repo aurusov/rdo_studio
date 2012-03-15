@@ -11,6 +11,7 @@
 #define _RDO_STUDIO_MFC_FRAME_VIEW_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <map>
 #include <gdiplus.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdoanimation.h"
@@ -33,10 +34,9 @@ public:
 
 	struct Area
 	{
-		tstring        m_name;
 		Gdiplus::Rect  m_rect;
 	};
-	typedef  std::vector<PTR(Area)>  AreaList;
+	typedef  std::map<tstring, Area>  AreaList;
 
 	rbool                  valid        ();
 	void                   init         (CREF(Gdiplus::Size) size);

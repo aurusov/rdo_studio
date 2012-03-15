@@ -926,25 +926,18 @@ void RDOStudioFrameView::update(
 			case rdoAnimation::FrameItem::FIT_ACTIVE:
 			{
 				PTR(rdoAnimation::RDOActiveElement) pElement = static_cast<PTR(rdoAnimation::RDOActiveElement)>(pCurrElement);
-				AreaList::const_iterator it = areaList.begin();
-				while (it != areaList.end())
-				{
-					if ((*it)->m_name == pElement->m_opr_name)
-						break;
-					++it;
-				}
+				AreaList::iterator it = areaList.find(pElement->m_opr_name);
 				if (it == areaList.end())
 				{
-					PTR(Area) pArea = new Area();
-					pArea->m_name = pElement->m_opr_name;
-					areaList.push_back(pArea);
-					it = areaList.end();
-					--it;
+					std::pair<AreaList::iterator, rbool> result =
+						areaList.insert(AreaList::value_type(pElement->m_opr_name, Area()));
+					ASSERT(result.second);
+					it = result.first;
 				}
-				(*it)->m_rect.X      = (int)(pElement->m_point.m_x);
-				(*it)->m_rect.Y      = (int)(pElement->m_point.m_y);
-				(*it)->m_rect.Width  = (int)(pElement->m_size.m_width);
-				(*it)->m_rect.Height = (int)(pElement->m_size.m_height);
+				it->second.m_rect.X      = (int)(pElement->m_point.m_x);
+				it->second.m_rect.Y      = (int)(pElement->m_point.m_y);
+				it->second.m_rect.Width  = (int)(pElement->m_size.m_width);
+				it->second.m_rect.Height = (int)(pElement->m_size.m_height);
 				break;
 			}
 		}
