@@ -272,7 +272,10 @@ ProcGUIBlockTerminate::ProcGUIBlockTerminate(CREF(LPProcGUIProcess) pProcess, CR
 	ASSERT(pProcess );
 	ASSERT(m_pParams);
 
-	m_pBlock = RF(rdoRuntime::RDOPROCTerminate)::create(pProcess->getProcess(), static_cast<ruint>(m_pParams->getTermInc()));
+	//! \todo добавить поддержку арифметических выражений
+	rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcConst>::create(rdoRuntime::RDOValue(static_cast<ruint>(m_pParams->getTermInc())));
+	ASSERT(pCalc);
+	m_pBlock = RF(rdoRuntime::RDOPROCTerminate)::create(pProcess->getProcess(), pCalc);
 	ASSERT(m_pBlock);
 }
 
