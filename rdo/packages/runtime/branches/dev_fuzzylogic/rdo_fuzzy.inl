@@ -87,8 +87,8 @@ inline RDOFuzzyType::RDOFuzzyType(CREF(LPRDOFuzzySetDefinition) pFuzzySetDefinit
 	/// @todo для порядку перевести на умные указатели
 }
 
-inline RDOFuzzyType::TermSet::const_iterator       RDOFuzzyType::begin()       { return m_termSet.begin(); }
-inline RDOFuzzyType::TermSet::const_iterator       RDOFuzzyType::end  ()       { return m_termSet.end();   }
+//inline RDOFuzzyType::TermSet::const_iterator       RDOFuzzyType::begin()       { return m_termSet.begin(); }
+//inline RDOFuzzyType::TermSet::const_iterator       RDOFuzzyType::end  ()       { return m_termSet.end();   }
 
 inline RDOFuzzyType::~RDOFuzzyType()
 {}
@@ -129,15 +129,15 @@ inline CREF(RDOFuzzyType::TermSet) RDOFuzzyType::getTermSet() const
 	return m_termSet;
 }
 // --------------------------------------------------------------------------------
-// -------------------- RDOActivatedValue
+// -------------------- RDOLingvoVariable
 // --------------------------------------------------------------------------------
-inline RDOActivatedValue::ActivatedValue::const_iterator           RDOActivatedValue::begin()     {return m_actValue.begin();}
-inline RDOActivatedValue::ActivatedValue::const_iterator           RDOActivatedValue::end  ()     {return m_actValue.end  ();}
-inline RDOActivatedValue::RDOActivatedValue()
+inline RDOLingvoVariable::Set::const_iterator           RDOLingvoVariable::begin()     {return m_set.begin();}
+inline RDOLingvoVariable::Set::const_iterator           RDOLingvoVariable::end  ()     {return m_set.end  ();}
+inline RDOLingvoVariable::RDOLingvoVariable()
 {}
-inline REF(RDOActivatedValue) RDOActivatedValue::append(tstring term, double appertain)
+inline REF(RDOLingvoVariable) RDOLingvoVariable::append(tstring term, CREF(LPRDOFuzzyValue) value)
 {
-	m_actValue[term] = appertain;
+	m_set[term] = value;
 	return *this;
 }
 

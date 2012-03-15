@@ -89,15 +89,16 @@ PREDECLARE_POINTER(RDOFuzzySetDefinition);
 PREDECLARE_POINTER(RDOActivatedValue);
 PREDECLARE_POINTER(RDOValue);
 
-//! Тип нечеткой переменной
+//! Нечеткая переменная
+
 class RDOFuzzyType: public RDOType
 {
 DECLARE_FACTORY(RDOFuzzyType);
 public:
-	typedef std::map<tstring, LPRDOFuzzyValue> TermSet;
+	typedef std::pair<tstring, LPRDOFuzzyValue> TermSet;
 
-	TermSet::const_iterator begin     ();
-	TermSet::const_iterator end       ();
+	//TermSet::const_iterator begin     ();
+	//TermSet::const_iterator end       ();
 	CREF(TermSet)         getTermSet  () const;
 	virtual tstring       name      () const;
 	virtual RDOValue      value_cast(CREF(RDOValue) from) const;
@@ -105,7 +106,7 @@ public:
 	rbool operator== (CREF(RDOFuzzyType) type) const;
 	rbool operator!= (CREF(RDOFuzzyType) type) const;
 
-	LPRDOActivatedValue fuzzyfication(CREF(RDOValue) rdovalue);
+//	LPRDOActivatedValue fuzzyfication(CREF(RDOValue) rdovalue);
 
 	rbool           inRange      (CREF(RDOValue)        rdovalue) const;
 	LPRDOFuzzyValue getSupplement(CREF(LPRDOFuzzyValue) pValue  ) const;
@@ -120,21 +121,23 @@ private:
 };
 DECLARE_POINTER(RDOFuzzyType);
 
-OBJECT (RDOActivatedValue)
-{
-DECLARE_FACTORY(RDOActivatedValue)
-public:
-	typedef std::map<tstring,double>ActivatedValue;
-	
-	ActivatedValue::const_iterator begin ();
-	ActivatedValue::const_iterator end   ();
+// !Лингвистическая переменная
 
-	REF(RDOActivatedValue)         append(tstring term, double appertain);
+OBJECT (RDOLingvoVariable)
+{
+DECLARE_FACTORY(RDOLingvoVariable)
+public:
+	typedef std::map<RDOFuzzyType::TermSet::first_type,RDOFuzzyType::TermSet::second_type>Set;
+	
+	Set::const_iterator            begin ();
+	Set::const_iterator            end   ();
+
+	REF(RDOLingvoVariable)         append(tstring term, CREF(LPRDOFuzzyValue) value);
 
 private:
-	RDOActivatedValue();
+	RDOLingvoVariable();
 
-	ActivatedValue m_actValue;
+	Set m_set;
 	LPRDOFuzzyType m_pType;
 };
 

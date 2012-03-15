@@ -345,21 +345,21 @@ LPRDOFuzzyValue RDOFuzzyValue::clone() const
 // --------------------------------------------------------------------------------
 // -------------------- RDOFuzzyType
 // --------------------------------------------------------------------------------
-LPRDOActivatedValue RDOFuzzyType::fuzzyfication(CREF(RDOValue) rdovalue)
-{
-	TermSet::const_iterator it = begin();
-	if (this->inRange(rdovalue))
-	{
-		LPRDOActivatedValue pValue = rdo::Factory<RDOActivatedValue>::create();
-		for (it = begin(); it != end(); it++)
-		{
-			LPRDOFuzzyValue fuzzySet = it->second;
-			RDOFuzzyValue::FuzzyItem item = fuzzySet->findValue(rdovalue);
- 			pValue->append(it->first,item.second);
-		}
-		return (pValue);
-	}
-}
+//LPRDOActivatedValue RDOFuzzyType::fuzzyfication(CREF(RDOValue) rdovalue)
+//{
+//	TermSet::const_iterator it = begin();
+//	if (this->inRange(rdovalue))
+//	{
+//		LPRDOActivatedValue pValue = rdo::Factory<RDOActivatedValue>::create();
+//		for (it = begin(); it != end(); it++)
+//		{
+//			LPRDOFuzzyValue fuzzySet = it->second;
+//			RDOFuzzyValue::FuzzyItem item = fuzzySet->findValue(rdovalue);
+// 			pValue->append(it->first,item.second);
+//		}
+//		return (pValue);
+//	}
+//}
 // --------------------------------------------------------------------------------
 // -------------------- RDOFuzzySetDefinitionFixed
 // --------------------------------------------------------------------------------
