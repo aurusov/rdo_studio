@@ -1,7 +1,19 @@
-#ifndef RDOTRACEROPERATION_H
-#define RDOTRACEROPERATION_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdotraceroperation.h
+  \author    Захаров Павел
+  \date      11.03.2003
+  \brief     
+  \indent    4T
+*/
 
+#ifndef _RDO_STUDIO_MFC_TRACER_RDOTRACEROPERATION_H_
+#define _RDO_STUDIO_MFC_TRACER_RDOTRACEROPERATION_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracerserie.h"
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOTracerOperationBase
@@ -53,4 +65,4 @@ public:
 	virtual void monitorTime( RDOTracerTimeNow* const time, const int eventIndex );
 };
 
-#endif // RDOTRACEROPERATION_H
+#endif // _RDO_STUDIO_MFC_TRACER_RDOTRACEROPERATION_H_

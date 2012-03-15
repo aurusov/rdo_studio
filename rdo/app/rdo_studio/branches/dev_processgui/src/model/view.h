@@ -1,7 +1,19 @@
-#ifndef RDOSTUDIOMODELVIEW_H
-#define RDOSTUDIOMODELVIEW_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      app/rdo_studio_mfc/src/model/view.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      20.02.2003
+  \brief     
+  \indent    4T
+*/
 
+#ifndef _RDO_STUDIO_MFC_MODEL_VIEW_H_
+#define _RDO_STUDIO_MFC_MODEL_VIEW_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/edit/view_base.h"
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioModelView

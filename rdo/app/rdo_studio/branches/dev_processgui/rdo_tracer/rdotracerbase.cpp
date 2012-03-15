@@ -1,4 +1,16 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdotracerbase.cpp
+  \author    Захаров Павел
+  \date      01.04.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracerbase.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracerrestype.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracerresource.h"
@@ -13,6 +25,7 @@
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/child_frm.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -1,10 +1,22 @@
-#ifndef RDOTRACERSERIE_H
-#define RDOTRACERSERIE_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdotracerserie.h
+  \author    Захаров Павел
+  \date      11.03.2003
+  \brief     
+  \indent    4T
+*/
 
+#ifndef _RDO_STUDIO_MFC_TRACER_RDOTRACERSERIE_H_
+#define _RDO_STUDIO_MFC_TRACER_RDOTRACERSERIE_H_
+
+// ----------------------------------------------------------------------- INCLUDES
 #include <vector>
 #include <list>
 #include <string>
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracertreeitem.h"
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOTracerSerie
@@ -82,4 +94,4 @@ public:
 	rbool activateFirstDoc() const;
 };
 
-#endif // RDOTRACERSERIE_H
+#endif // _RDO_STUDIO_MFC_TRACER_RDOTRACERSERIE_H_

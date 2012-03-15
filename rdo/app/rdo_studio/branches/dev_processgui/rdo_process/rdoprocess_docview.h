@@ -1,5 +1,19 @@
-#ifndef RDO_PROCESS_DOCVIEW_H
-#define RDO_PROCESS_DOCVIEW_H
+/*!
+  \copyright (c) RDO-Team, 2006-2012
+  \file      rdoprocess_docview.h
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Шувалов Андрей (dronbas@gmail.com)
+  \date      29.08.2006
+  \brief     
+  \indent    4T
+*/
+
+#ifndef _RDO_STUDIO_MFC_RDO_PROCESS_DOCVIEW_H_
+#define _RDO_STUDIO_MFC_RDO_PROCESS_DOCVIEW_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RPDoc
@@ -84,4 +98,4 @@ inline RPDoc* RPView::GetDocument() const
    { return reinterpret_cast<RPDoc*>(m_pDocument); }
 #endif
 
-#endif // RDO_PROCESS_DOCVIEW_H
+#endif // _RDO_STUDIO_MFC_RDO_PROCESS_DOCVIEW_H_

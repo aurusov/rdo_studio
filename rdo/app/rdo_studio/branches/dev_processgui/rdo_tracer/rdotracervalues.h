@@ -1,5 +1,18 @@
-#ifndef RDOTRACERVALUES_H
-#define RDOTRACERVALUES_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdotracervalues.h
+  \author    Захаров Павел
+  \date      11.03.2003
+  \brief     
+  \indent    4T
+*/
+
+#ifndef _RDO_STUDIO_MFC_TRACER_RDOTRACERVALUES_H_
+#define _RDO_STUDIO_MFC_TRACER_RDOTRACERVALUES_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOTracerTimeNow
@@ -42,4 +55,4 @@ public:
 	RDOTracerTimeNow* const getModelTime() const { return modeltime; };
 };
 
-#endif // RDOTRACERVALUES_H
+#endif // _RDO_STUDIO_MFC_TRACER_RDOTRACERVALUES_H_

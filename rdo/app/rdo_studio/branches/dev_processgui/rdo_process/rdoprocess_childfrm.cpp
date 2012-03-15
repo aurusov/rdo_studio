@@ -1,8 +1,22 @@
+/*!
+  \copyright (c) RDO-Team, 2006-2012
+  \file      rdoprocess_childfrm.cpp
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Шувалов Андрей (dronbas@gmail.com)
+  \date      10.01.2006
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_childfrm.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_docview.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_object_flowchart.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_flowchart.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -1,7 +1,19 @@
-#ifndef RDOTRACERPATTERN_H
-#define RDOTRACERPATTERN_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdotracerpattern.h
+  \author    Захаров Павел
+  \date      11.03.2003
+  \brief     
+  \indent    4T
+*/
 
+#ifndef _RDO_STUDIO_MFC_TRACER_RDOTRACERPATTERN_H_
+#define _RDO_STUDIO_MFC_TRACER_RDOTRACERPATTERN_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracertreeitem.h"
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOTracerPattern
@@ -26,4 +38,4 @@ public:
 	RDOTracerPatternKind getPatternKind() const { return patKind; };
 };
 
-#endif // RDOTRACERPATTERN_H
+#endif // _RDO_STUDIO_MFC_TRACER_RDOTRACERPATTERN_H_

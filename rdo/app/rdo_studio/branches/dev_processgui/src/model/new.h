@@ -1,14 +1,14 @@
 /*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdostudiomodelnew.h
+  \copyright (c) RDO-Team, 2007-2012
+  \file      app/rdo_studio_mfc/src/model/new.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
+  \date      12.01.2007
   \brief     
   \indent    4T
 */
 
-#ifndef _RDOSTUDIOMODEL_NEW_H_
-#define _RDOSTUDIOMODEL_NEW_H_
+#ifndef _RDO_STUDIO_MFC_MODEL_NEW_H_
+#define _RDO_STUDIO_MFC_MODEL_NEW_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -61,4 +61,4 @@ private:
 	DECLARE_MESSAGE_MAP()
 };
 
-#endif // _RDOSTUDIOMODEL_NEW_H_
+#endif // _RDO_STUDIO_MFC_MODEL_NEW_H_

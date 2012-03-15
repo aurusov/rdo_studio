@@ -1,7 +1,19 @@
-#ifndef RDOSTUDIOMODELDOC_H
-#define RDOSTUDIOMODELDOC_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      app/rdo_studio_mfc/src/model/document.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      20.02.2003
+  \brief     
+  \indent    4T
+*/
 
+#ifndef _RDO_STUDIO_MFC_MODEL_DOCUMENT_H_
+#define _RDO_STUDIO_MFC_MODEL_DOCUMENT_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/edit/document_base.h"
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioModelDoc
@@ -44,4 +56,4 @@ public:
 
 };
 
-#endif // RDOSTUDIOMODELDOC_H
+#endif // _RDO_STUDIO_MFC_MODEL_DOCUMENT_H_

@@ -1,12 +1,25 @@
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdotracer.cpp
+  \author    Захаров Павел
+  \date      01.04.2003
+  \brief     
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
+#include "kernel/rdokernel.h"
+#include "repository/rdorepository.h"
+#include "simulator/service/rdosimwin.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/thread.h"
-#include "kernel/rdokernel.h"
-#include "repository/rdorepository.h"
-#include "simulator/service/rdosimwin.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

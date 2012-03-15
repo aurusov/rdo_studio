@@ -1,10 +1,22 @@
-#ifndef RDOTRACERTBASE_H
-#define RDOTRACERTBASE_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdotracerbase.h
+  \author    Захаров Павел
+  \date      01.04.2003
+  \brief     
+  \indent    4T
+*/
 
-#include "app/rdo_studio_mfc/resource.h"
+#ifndef _RDO_STUDIO_MFC_TRACER_RDOTRACERBASE_H_
+#define _RDO_STUDIO_MFC_TRACER_RDOTRACERBASE_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/rdostream.h"
 #include "kernel/rdothread.h"
 #include "kernel/rdokernel.h"
-#include "utils/rdostream.h"
+#include "app/rdo_studio_mfc/resource.h"
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOTracerBase
@@ -115,4 +127,4 @@ public:
 
 }; // namespace rdoTracer
 
-#endif // RDOTRACERTBASE_H
+#endif // _RDO_STUDIO_MFC_TRACER_RDOTRACERBASE_H_

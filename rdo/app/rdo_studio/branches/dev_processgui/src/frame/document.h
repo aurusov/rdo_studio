@@ -1,7 +1,19 @@
-#ifndef RDOSTUDIOFRAMEDOC_H
-#define RDOSTUDIOFRAMEDOC_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      app/rdo_studio_mfc/src/frame/document.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      06.03.2003
+  \brief     
+  \indent    4T
+*/
 
+#ifndef _RDO_STUDIO_MFC_FRAME_DOCUMENT_H_
+#define _RDO_STUDIO_MFC_FRAME_DOCUMENT_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/frame/view.h"
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioFrameDoc
@@ -40,4 +52,4 @@ private:
 	DECLARE_MESSAGE_MAP()
 };
 
-#endif // RDOSTUDIOFRAMEDOC_H
+#endif // _RDO_STUDIO_MFC_FRAME_DOCUMENT_H_
