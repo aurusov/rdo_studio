@@ -109,6 +109,8 @@ void RPConnector::loadFromXML(CREF(pugi::xml_node) node)
 	{
 		dock_begin = static_cast<RPShape*>(pObjFrom)->getDock(iFrom);
 		dock_end   = static_cast<RPShape*>(pObjTo)  ->getDock(iTo);
+		dock_begin->connectors.push_back(this);
+		dock_end  ->connectors.push_back(this);
 	}
 }
 
