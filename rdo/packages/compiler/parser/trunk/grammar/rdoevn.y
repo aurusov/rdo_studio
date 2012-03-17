@@ -1657,6 +1657,7 @@ stopping_statement
 		}
 
 		rdoRuntime::LPRDOCalcEventStop pCalc = rdo::Factory<rdoRuntime::RDOCalcEventStop>::create();
+		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @6, rdo::format(_T("Остановка события %s"), eventName.c_str())));
 		ASSERT(pCalc);
 		pEvent->attachCalc(pCalc);
 
@@ -1742,6 +1743,7 @@ planning_statement
 		ASSERT(pCalcTime);
 
 		rdoRuntime::LPRDOCalcEventPlan pCalc = rdo::Factory<rdoRuntime::RDOCalcEventPlan>::create(pCalcTime);
+		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @7, rdo::format(_T("Планирование события %s"), eventName.c_str())));
 		ASSERT(pCalc);
 		pEvent->attachCalc(pCalc);
 
