@@ -538,14 +538,12 @@ void RDOStudioFrameView::update(
 		init(size);
 	}
 
-	rbool showFillrect = true;
 	if (pFrame->hasBgImage())
 	{
 		rdo::gui::BitmapList::const_iterator bmpIt = bitmapList.find(pFrame->m_bgImageName);
 		if (bmpIt != bitmapList.end())
 		{
 			m_memDC.dc().DrawImage(bmpIt->second, 0, 0, bmpIt->second->GetWidth(), bmpIt->second->GetHeight());
-			showFillrect = false;
 		}
 	}
 	Gdiplus::Color bgColor;
