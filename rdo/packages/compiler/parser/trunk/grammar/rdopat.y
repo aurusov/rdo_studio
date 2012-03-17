@@ -2392,7 +2392,7 @@ planning_statement
 		ASSERT(pCalcTime);
 
 		rdoRuntime::LPRDOCalcEventPlan pCalc = rdo::Factory<rdoRuntime::RDOCalcEventPlan>::create(pCalcTime);
-		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @7, rdo::format(_T("Планирование события %s"), eventName.c_str())));
+		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @7, rdo::format(_T("Планирование события %s в момент времени %s"), eventName.c_str(), pCalcTime->srcInfo())));
 		ASSERT(pCalc);
 		pEvent->attachCalc(pCalc);
 

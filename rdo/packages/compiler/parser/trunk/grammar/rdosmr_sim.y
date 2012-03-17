@@ -286,7 +286,7 @@ smr_cond
 		ASSERT(pBaseOperation);
 
 		rdoRuntime::LPRDOCalcEventPlan pEventPlan = rdo::Factory<rdoRuntime::RDOCalcEventPlan>::create(pCalcTime);
-		pEventPlan->setSrcInfo(RDOParserSrcInfo(@1, @7, rdo::format(_T("Планирование события %s"), eventName.c_str())));
+		pEventPlan->setSrcInfo(RDOParserSrcInfo(@1, @7, rdo::format(_T("Планирование события %s в момент времени %s"), eventName.c_str(), pCalcTime->srcInfo())));
 		ASSERT(pEventPlan);
 		pEvent->setParamList(pParamList);
 		pEventPlan->setEvent(pBaseOperation);
