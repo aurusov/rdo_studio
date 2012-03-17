@@ -1,5 +1,5 @@
 /*!
-  \copyright (c) RDO-Team, 2012
+  \copyright (c) RDO-Team, 2009-2012
   \file      main.cpp
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \authors   Пройдаков Евгений (lord.tiran@gmail.com)
