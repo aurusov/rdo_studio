@@ -504,11 +504,12 @@ planning_statement
 
 		pEvent->setParamList(pParamList);
 
-		rdoRuntime::LPRDOCalc pCalcTime = pTimeArithm->createCalc(NULL);
+		rdoRuntime::LPRDOCalc pCalcTime = pTimeArithm->createCalc();
+		pCalcTime->setSrcInfo(pTimeArithm->src_info());
 		ASSERT(pCalcTime);
 
 		rdoRuntime::LPRDOCalcEventPlan pCalc = rdo::Factory<rdoRuntime::RDOCalcEventPlan>::create(pCalcTime);
-		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @7, rdo::format(_T("Планирование события %s в момент времени %s"), eventName.c_str(), pCalcTime->srcInfo())));
+		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @7, rdo::format(_T("Планирование события %s в момент времени %s"), eventName.c_str(), pCalcTime->srcInfo().src_text().c_str())));
 		ASSERT(pCalc);
 		pEvent->attachCalc(pCalc);
 

@@ -280,13 +280,15 @@ smr_cond
 			++arithmIt;
 		}
 
-		rdoRuntime::LPRDOCalc pCalcTime = pTimeArithm->createCalc(NULL);
+		rdoRuntime::LPRDOCalc pCalcTime = pTimeArithm->createCalc();
+		pCalcTime->setSrcInfo(pTimeArithm->src_info());
 		ASSERT(pCalcTime);
+
 		LPIBaseOperation pBaseOperation = pEvent->getRuntimeEvent();
 		ASSERT(pBaseOperation);
 
 		rdoRuntime::LPRDOCalcEventPlan pEventPlan = rdo::Factory<rdoRuntime::RDOCalcEventPlan>::create(pCalcTime);
-		pEventPlan->setSrcInfo(RDOParserSrcInfo(@1, @7, rdo::format(_T("Планирование события %s в момент времени %s"), eventName.c_str(), pCalcTime->srcInfo())));
+		pEventPlan->setSrcInfo(RDOParserSrcInfo(@1, @7, rdo::format(_T("Планирование события %s в момент времени %s"), eventName.c_str(), pCalcTime->srcInfo().src_text().c_str())));
 		ASSERT(pEventPlan);
 		pEvent->setParamList(pParamList);
 		pEventPlan->setEvent(pBaseOperation);
