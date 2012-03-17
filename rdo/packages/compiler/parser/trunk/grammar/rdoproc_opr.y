@@ -370,7 +370,7 @@ dpt_process_line
 
 		std::vector<rdoRuntime::RDOValue> paramList;
 		//! \error вместо настоящих значений параметров транзакта просто 0
-		paramList.push_back(rdoRuntime::RDOValue(0));
+		paramList.push_back(rdoRuntime::RDOValue(0.0));
 
 		rdoRuntime::LPRDOCalcCreateResource pCreateAndGoOnTransactCalc = rdo::Factory<rdoRuntime::RDOCalcCreateResource>::create(
 			pType,
