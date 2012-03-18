@@ -52,7 +52,6 @@ public:
 #endif
 
 private:
-	Gdiplus::Point  m_points[5];
 	CRect           m_newClientRect;
 	Gdiplus::Point  m_pos;
 	Gdiplus::Color  m_bgColor;

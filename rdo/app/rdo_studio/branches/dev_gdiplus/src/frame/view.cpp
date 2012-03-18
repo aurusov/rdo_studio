@@ -106,18 +106,6 @@ void RDOStudioFrameView::init(CPTRC(rdoAnimation::RDOFrame) pFrame, CREF(rdo::gu
 void RDOStudioFrameView::init(CREF(Gdiplus::Size) size)
 {
 	m_memDC.resize(size.Width, size.Height);
-
-	m_points[0].X = 0;
-	m_points[0].Y = 0;
-	m_points[1].X = m_memDC.width () - 1;
-	m_points[1].Y = 0;
-	m_points[2].X = m_memDC.width () - 1;
-	m_points[2].Y = m_memDC.height() - 1;
-	m_points[3].X = 0;
-	m_points[3].Y = m_memDC.height() - 1;
-	m_points[4].X = 0;
-	m_points[4].Y = 0;
-
 	updateScrollBars();
 }
 
@@ -588,18 +576,38 @@ void RDOStudioFrameView::drawBackground(CPTRC(rdoAnimation::RDOFrame) pFrame, CR
 {
 	ASSERT(pFrame);
 
+	rbool bgImage = false;
 	if (pFrame->hasBgImage())
 	{
 		rdo::gui::BitmapList::const_iterator bmpIt = bitmapList.find(pFrame->m_bgImageName);
 		if (bmpIt != bitmapList.end())
 		{
 			m_memDC.dc().DrawImage(bmpIt->second, 0, 0, bmpIt->second->GetWidth(), bmpIt->second->GetHeight());
+			bgImage = true;
 		}
 	}
-	else
+	
+	if (!bgImage)
 	{
 		Gdiplus::SolidBrush brush(m_bgColor);
 		m_memDC.dc().FillRectangle(&brush, 0, 0, m_memDC.width(), m_memDC.height());
+
+		Gdiplus::Color penColor;
+		penColor.SetFromCOLORREF(studioApp.m_pMainFrame->style_frame.theme->defaultColor);
+		Gdiplus::Pen pen(penColor);
+
+		const ruint pountListCount = 4;
+		Gdiplus::Point pointList[pountListCount];
+		pointList[0].X = 0;
+		pointList[0].Y = 0;
+		pointList[1].X = m_memDC.width () - 1;
+		pointList[1].Y = 0;
+		pointList[2].X = m_memDC.width () - 1;
+		pointList[2].Y = m_memDC.height() - 1;
+		pointList[3].X = 0;
+		pointList[3].Y = m_memDC.height() - 1;
+
+		m_memDC.dc().DrawPolygon(&pen, &pointList[0], pountListCount);
 	}
 }
 
