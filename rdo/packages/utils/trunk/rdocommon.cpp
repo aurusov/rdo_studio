@@ -128,9 +128,22 @@ void trimRight( REF(tstring) str )
 
 wstring toUnicode(CREF(astring) str)
 {
-	std::wstring wtext(str.length(), L' ');
-	boost::copy(str, wtext.begin());
-	return wtext;
+	try
+	{
+		std::wostringstream wstm;
+		//! @todo А что делать с не русскими буквами ? М.б. запросить системную ?
+		wstm.imbue(std::locale("rus"));
+		CREF(std::ctype<wchar_t>) ctfacet =	std::use_facet<std::ctype<wchar_t> >(wstm.getloc());
+		for (std::size_t i = 0; i < str.size(); ++i)
+		{
+			wstm << ctfacet.widen(str[i]);
+		}
+		return wstm.str();
+	}
+	catch (CREF(std::runtime_error))
+	{
+		return wstring();
+	}
 }
 
 tstring extractFilePath( CREF(tstring) fileName )
