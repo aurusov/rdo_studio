@@ -845,56 +845,12 @@ void RDOStudioFrameView::elementBMP(
 				rdo::gui::BitmapList::const_iterator maskInvertIt = bitmapMaskInvertList.find(pElement->m_mask_name);
 				if (maskInvertIt == bitmapMaskInvertList.end())
 				{
-					PTR(Gdiplus::Bitmap) pMaskInvert = NULL;
-					{
-						Gdiplus::Graphics graphics(maskIt->second);
-						pMaskInvert = new Gdiplus::Bitmap(
-							maskIt->second->GetWidth (),
-							maskIt->second->GetHeight(),
-							&graphics
-						);
-					}
+					PTR(Gdiplus::Bitmap) pMaskInvert = rdo::gui::Bitmap::invert(*maskIt->second);
 					if (pMaskInvert)
 					{
-						if (pMaskInvert->GetLastStatus() == Gdiplus::Ok)
-						{
-							std::pair<rdo::gui::BitmapList::const_iterator, rbool> result = bitmapMaskInvertList.insert(rdo::gui::BitmapList::value_type(pElement->m_mask_name, pMaskInvert));
-							if (result.second)
-							{
-								maskInvertIt = result.first;
-
-								Gdiplus::ColorMatrix colorMatrix = {
-									-1,  0,  0, 0, 0,
-									 0, -1,  0, 0, 0,
-									 0,  0, -1, 0, 0,
-									 0,  0,  0, 1, 0,
-									 1,  1,  1, 0, 1
-								};
-								Gdiplus::ImageAttributes imageAttributes;
-								imageAttributes.SetColorMatrix(&colorMatrix);
-
-								Gdiplus::Graphics graphics(maskInvertIt->second);
-								graphics.DrawImage(
-									maskIt->second,
-									Gdiplus::RectF(
-										0.0,
-										0.0,
-										Gdiplus::REAL(maskIt->second->GetWidth()),
-										Gdiplus::REAL(maskIt->second->GetHeight())
-									),
-									0.0,
-									0.0,
-									Gdiplus::REAL(maskIt->second->GetWidth()),
-									Gdiplus::REAL(maskIt->second->GetHeight()),
-									Gdiplus::UnitPixel,
-									&imageAttributes
-								);
-							}
-						}
-						else
-						{
-							delete pMaskInvert;
-						}
+						std::pair<rdo::gui::BitmapList::const_iterator, rbool> result = bitmapMaskInvertList.insert(rdo::gui::BitmapList::value_type(pElement->m_mask_name, pMaskInvert));
+						ASSERT(result.second);
+						maskInvertIt = result.first;
 					}
 				}
 
