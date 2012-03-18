@@ -63,10 +63,23 @@ private:
 	rbool           m_mouseOnHScroll;
 
 	rbool valid           ();
+	void  init            (CPTRC(rdoAnimation::RDOFrame) pFrame, CREF(rdo::gui::BitmapList) bitmapList);
 	void  init            (CREF(Gdiplus::Size) size);
 	void  setBGColor      (CREF(Gdiplus::Color) color);
 	void  onDraw          (REF(Gdiplus::Graphics) graphics);
 	void  updateScrollBars();
+
+	void  drawBackground  (CPTRC(rdoAnimation::RDOFrame) pFrame, CREF(rdo::gui::BitmapList) bitmapList);
+	void  elementText     (PTR(rdoAnimation::RDOTextElement)    pElement);
+	void  elementRect     (PTR(rdoAnimation::RDORectElement)    pElement);
+	void  elementRoundRect(PTR(rdoAnimation::RDORRectElement)   pElement);
+	void  elementLine     (PTR(rdoAnimation::RDOLineElement)    pElement);
+	void  elementTriang   (PTR(rdoAnimation::RDOTriangElement)  pElement);
+	void  elementCircle   (PTR(rdoAnimation::RDOCircleElement)  pElement);
+	void  elementEllipse  (PTR(rdoAnimation::RDOEllipseElement) pElement);
+	void  elementBMP      (PTR(rdoAnimation::RDOBmpElement)     pElement, CREF(rdo::gui::BitmapList) bitmapList, REF(rdo::gui::BitmapList) bitmapMaskInvertList);
+	void  elementSBMP     (PTR(rdoAnimation::RDOSBmpElement)    pElement, CREF(rdo::gui::BitmapList) bitmapList, REF(rdo::gui::BitmapList) bitmapMaskInvertList);
+	void  elementActive   (PTR(rdoAnimation::RDOActiveElement)  pElement, REF(AreaList) areaList);
 
 	virtual BOOL PreCreateWindow  (REF(CREATESTRUCT) cs);
 	virtual BOOL OnPreparePrinting(PTR(CPrintInfo) pInfo);
