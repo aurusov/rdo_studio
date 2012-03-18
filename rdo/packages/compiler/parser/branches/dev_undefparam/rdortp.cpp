@@ -3,15 +3,14 @@
   \file      rdortp.cpp
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
-  \brief     
+  \date      11.06.2006
+  \brief     Типы ресурсов
   \indent    4T
 */
 
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
-
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdortp.h"
 #include "simulator/compiler/parser/rdoparser.h"

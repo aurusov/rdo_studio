@@ -204,6 +204,7 @@
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/rdotypes.h"
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/rdoparser_lexer.h"
 #include "simulator/compiler/parser/rdofun.h"
@@ -342,9 +343,7 @@ dpt_process_line
 		LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCAssign>::create(
 			PARSER->getLastPROCProcess(),
 			_T("Event planning from process"),
-			pCalc,
-			0,
-			0
+			pCalc
 		);
 		ASSERT(pBlock);
 		$$ = PARSER->stack().push(pBlock);
@@ -371,9 +370,9 @@ dpt_process_line
 
 		std::vector<rdoRuntime::RDOValue> paramList;
 		//! \error вместо настоящих значений параметров транзакта просто 0
-		paramList.push_back(rdoRuntime::RDOValue(0));
+		paramList.push_back(rdoRuntime::RDOValue(0.0));
 
-		rdoRuntime::LPRDOCalcCreateAndGoInTransact pCreateAndGoOnTransactCalc = rdo::Factory<rdoRuntime::RDOCalcCreateAndGoInTransact>::create(
+		rdoRuntime::LPRDOCalcCreateResource pCreateAndGoOnTransactCalc = rdo::Factory<rdoRuntime::RDOCalcCreateResource>::create(
 			pType,
 			paramList,
 			traceFlag,
@@ -388,9 +387,6 @@ dpt_process_line
 			pCreateAndGoOnTransactCalc
 		);
 		ASSERT(pBlock);
-
-		LPRDOPROCGenerate pBlockGenerate = pBlock.object_dynamic_cast<RDOPROCGenerate>();
-		pCreateAndGoOnTransactCalc->setBlock(pBlockGenerate->getRuntimeBlock());
 
 		$$ = PARSER->stack().push(pBlock);
 	}
@@ -508,10 +504,12 @@ planning_statement
 
 		pEvent->setParamList(pParamList);
 
-		rdoRuntime::LPRDOCalc pCalcTime = pTimeArithm->createCalc(NULL);
+		rdoRuntime::LPRDOCalc pCalcTime = pTimeArithm->createCalc();
+		pCalcTime->setSrcInfo(pTimeArithm->src_info());
 		ASSERT(pCalcTime);
 
 		rdoRuntime::LPRDOCalcEventPlan pCalc = rdo::Factory<rdoRuntime::RDOCalcEventPlan>::create(pCalcTime);
+		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @7, rdo::format(_T("Планирование события %s в момент времени %s"), eventName.c_str(), pCalcTime->srcInfo().src_text().c_str())));
 		ASSERT(pCalc);
 		pEvent->attachCalc(pCalc);
 
@@ -546,6 +544,7 @@ stopping_statement
 		}
 
 		rdoRuntime::LPRDOCalcEventStop pCalc = rdo::Factory<rdoRuntime::RDOCalcEventStop>::create();
+		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @6, rdo::format(_T("Остановка события %s"), eventName.c_str())));
 		ASSERT(pCalc);
 		pEvent->attachCalc(pCalc);
 
@@ -592,7 +591,8 @@ dpt_depart_param
 dpt_term_param
 	: /* empty */
 	{
-		LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCTerminate>::create(PARSER->getLastPROCProcess(), _T("TERMINATE"), 0);
+		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcConst>::create(rdoRuntime::RDOValue(0));
+		LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCTerminate>::create(PARSER->getLastPROCProcess(), _T("TERMINATE"), pCalc);
 		ASSERT(pBlock);
 		$$ = PARSER->stack().push(pBlock);
 	}
@@ -600,21 +600,21 @@ dpt_term_param
 	{
 		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($1);
 		ASSERT(pArithm);
-		if (pArithm->createCalc()->calcValue(RUNTIME).type()->typeID()==rdoRuntime::RDOType::t_int)
+		if (pArithm->createCalc()->calcValue(RUNTIME).type()->typeID() == rdoRuntime::RDOType::t_int)
 		{
-			int term = pArithm->createCalc()->calcValue(RUNTIME).getInt();
-			LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCTerminate>::create(PARSER->getLastPROCProcess(), _T("TERMINATE"), term);
+			rdoRuntime::LPRDOCalc pCalc = pArithm->createCalc(NULL);
+			LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCTerminate>::create(PARSER->getLastPROCProcess(), _T("TERMINATE"), pCalc);
 			ASSERT(pBlock);
 			$$ = PARSER->stack().push(pBlock);
 		}
 		else
 		{
-			PARSER->error().error(@1, _T("Ошибка, для оператора TERMINATE можно использовать только целое значение"));
+			PARSER->error().error(@1, _T("Ошибка, для оператора TERMINATE можно использовать только арифметические выражения целого типа"));
 		}
 	}
-	| fun_arithm  error
+	| fun_arithm error
 	{
-		PARSER->error().error(@1, _T("Ошибка, после оператора TERMINATE может быть указано только одно целое положительное число"))
+		PARSER->error().error(@1, _T("Ошибка, после оператора TERMINATE может быть указано только арифметическое выражение целого типа"))
 	}
 	;
 
@@ -684,17 +684,27 @@ dpt_assign_param
 			}
 		
 			LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($5);
-			if (pArithm)
-			{
-				LPRDORSSResource pResource = PARSER->findRSSResource(res);
-				ASSERT(pResource);
-				LPRDORTPResType pResType = pResource->getType();
-				LPRDORTPParam   pParam   = pResType->findRTPParam(param);
-				pArithm->checkParamType(pParam->getTypeInfo());
-				LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCAssign>::create(PARSER->getLastPROCProcess(), _T("ASSIGN"), pArithm->createCalc(pParam->getTypeInfo()), pResource->getID(), rtp.m_params[param].id());
-				ASSERT(pBlock);
-				$$ = PARSER->stack().push(pBlock);
-			}
+			ASSERT(pArithm);
+
+			LPRDORSSResource pResource = PARSER->findRSSResource(res);
+			ASSERT(pResource);
+
+			LPRDORTPResType pResType = pResource->getType();
+			LPRDORTPParam   pParam   = pResType->findRTPParam(param);
+			pArithm->checkParamType(pParam->getTypeInfo());
+
+			ruint res = pResource->getID();
+			ruint par = rtp.m_params[param].id();
+
+			rdoRuntime::LPRDOCalc pCalc = pArithm->createCalc(pParam->getTypeInfo());
+			ASSERT(pCalc);
+
+			rdoRuntime::LPRDOCalcProcAssign pAssignCalc = rdo::Factory<rdoRuntime::RDOCalcProcAssign>::create(pCalc, res, par);
+			ASSERT(pAssignCalc);
+
+			LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCAssign>::create(PARSER->getLastPROCProcess(), _T("ASSIGN"), pAssignCalc);
+			ASSERT(pBlock);
+			$$ = PARSER->stack().push(pBlock);
 		}
 		else
 		{
