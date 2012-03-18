@@ -230,7 +230,10 @@ void RDOStudioFrameManager::closeAll()
 
 void RDOStudioFrameManager::clear()
 {
-	studioApp.m_pMainFrame->workspace.frames->deleteChildren(studioApp.m_pMainFrame->workspace.frames->GetRootItem());
+	if (studioApp.m_pMainFrame)
+	{
+		studioApp.m_pMainFrame->workspace.frames->deleteChildren(studioApp.m_pMainFrame->workspace.frames->GetRootItem());
+	}
 	STL_FOR_ALL(m_frameList, it)
 	{
 		PTR(RDOStudioFrameDoc) pFrameDoc = (*it)->m_pDoc;
@@ -311,15 +314,18 @@ void RDOStudioFrameManager::setCurrentShowingFrame(ruint index)
 	if (index == ruint(~0) || (index != ruint(~0) && index < count()))
 	{
 		m_currentShowingFrame = index;
-		PTR(CTreeCtrl) pTree = studioApp.m_pMainFrame->workspace.frames;
-		if (m_currentShowingFrame != ruint(~0))
+		if (studioApp.m_pMainFrame)
 		{
-			HTREEITEM hitem = m_frameList[m_currentShowingFrame]->m_hitem;
-			pTree->SelectItem(hitem);
-		}
-		else
-		{
-			pTree->SelectItem(NULL);
+			PTR(CTreeCtrl) pTree = studioApp.m_pMainFrame->workspace.frames;
+			if (m_currentShowingFrame != ruint(~0))
+			{
+				HTREEITEM hitem = m_frameList[m_currentShowingFrame]->m_hitem;
+				pTree->SelectItem(hitem);
+			}
+			else
+			{
+				pTree->SelectItem(NULL);
+			}
 		}
 	}
 }
