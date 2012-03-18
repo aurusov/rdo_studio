@@ -596,6 +596,11 @@ void RDOStudioFrameView::drawBackground(CPTRC(rdoAnimation::RDOFrame) pFrame, CR
 			m_memDC.dc().DrawImage(bmpIt->second, 0, 0, bmpIt->second->GetWidth(), bmpIt->second->GetHeight());
 		}
 	}
+	else
+	{
+		Gdiplus::SolidBrush brush(m_bgColor);
+		m_memDC.dc().FillRectangle(&brush, 0, 0, m_memDC.width(), m_memDC.height());
+	}
 }
 
 void RDOStudioFrameView::elementText(PTR(rdoAnimation::RDOTextElement) pElement)
