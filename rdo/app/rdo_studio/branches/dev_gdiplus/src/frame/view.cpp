@@ -669,19 +669,26 @@ void RDOStudioFrameView::elementRect(PTR(rdoAnimation::RDORectElement) pElement)
 {
 	ASSERT(pElement);
 
-	Gdiplus::Color bgColor;
+	Gdiplus::Rect rect(
+		(int)pElement->m_point.m_x,
+		(int)pElement->m_point.m_y,
+		(int)pElement->m_size.m_width,
+		(int)pElement->m_size.m_height
+	);
+
 	if (!pElement->m_background.m_transparent)
 	{
-		bgColor = Gdiplus::Color(pElement->m_background.m_r, pElement->m_background.m_g, pElement->m_background.m_b);
+		Gdiplus::Color bgColor(pElement->m_background.m_r, pElement->m_background.m_g, pElement->m_background.m_b);
+		Gdiplus::SolidBrush brush(bgColor);
+		m_memDC.dc().FillRectangle(&brush, rect);
 	}
-	else
-	{
-		bgColor.SetValue(0);
-	}
-	Gdiplus::SolidBrush brush(bgColor);
 
-	m_memDC.dc().FillRectangle(&brush, (int)pElement->m_point.m_x, (int)pElement->m_point.m_y, (int)pElement->m_size.m_width, (int)pElement->m_size.m_height);
-	//! @todo добавить вывод линии вокруг пр€моугольника
+	if (!pElement->m_foreground.m_transparent)
+	{
+		Gdiplus::Color penColor(pElement->m_foreground.m_r, pElement->m_foreground.m_g, pElement->m_foreground.m_b);
+		Gdiplus::Pen pen(penColor);
+		m_memDC.dc().DrawRectangle(&pen, rect);
+	}
 }
 
 void RDOStudioFrameView::elementRoundRect(PTR(rdoAnimation::RDORRectElement) pElement)
