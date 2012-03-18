@@ -695,20 +695,39 @@ void RDOStudioFrameView::elementRoundRect(PTR(rdoAnimation::RDORRectElement) pEl
 {
 	ASSERT(pElement);
 
-	Gdiplus::Color bgColor;
+	int radius = (int)(std::min<double>(pElement->m_size.m_width, pElement->m_size.m_height) / 3.0);
+
+	Gdiplus::Rect rect(
+		(int)pElement->m_point.m_x,
+		(int)pElement->m_point.m_y,
+		(int)pElement->m_size.m_width,
+		(int)pElement->m_size.m_height
+	);
+
+	Gdiplus::GraphicsPath gpath;
+	gpath.AddLine(rect.X + radius, rect.Y, rect.X + rect.Width - (radius * 2), rect.Y);
+	gpath.AddArc (rect.X + rect.Width - (radius * 2), rect.Y, radius * 2, radius * 2, 270, 90);
+	gpath.AddLine(rect.X + rect.Width, rect.Y + radius, rect.X + rect.Width, rect.Y + rect.Height - (radius * 2));
+	gpath.AddArc (rect.X + rect.Width - (radius * 2), rect.Y + rect.Height - (radius * 2), radius * 2, radius * 2, 0, 90);
+	gpath.AddLine(rect.X + rect.Width - (radius * 2), rect.Y + rect.Height, rect.X + radius, rect.Y + rect.Height);
+	gpath.AddArc (rect.X, rect.Y + rect.Height - (radius * 2), radius * 2, radius * 2, 90, 90);
+	gpath.AddLine(rect.X, rect.Y + rect.Height - (radius * 2), rect.X, rect.Y + radius);
+	gpath.AddArc (rect.X, rect.Y, radius * 2, radius * 2, 180, 90);
+	gpath.CloseFigure();
+
 	if (!pElement->m_background.m_transparent)
 	{
-		bgColor = Gdiplus::Color(pElement->m_background.m_r, pElement->m_background.m_g, pElement->m_background.m_b);
+		Gdiplus::Color bgColor(pElement->m_background.m_r, pElement->m_background.m_g, pElement->m_background.m_b);
+		Gdiplus::SolidBrush brush(bgColor);
+		m_memDC.dc().FillPath(&brush, &gpath);
 	}
-	else
-	{
-		bgColor.SetValue(0);
-	}
-	Gdiplus::SolidBrush brush(bgColor);
 
-	//! @todo gdi+ не умеет выводить roundrect :(
-	m_memDC.dc().FillRectangle(&brush, (int)pElement->m_point.m_x, (int)pElement->m_point.m_y, (int)pElement->m_size.m_width, (int)pElement->m_size.m_height);
-	//! @todo добавить вывод линии вокруг прямоугольника
+	if (!pElement->m_foreground.m_transparent)
+	{
+		Gdiplus::Color penColor(pElement->m_foreground.m_r, pElement->m_foreground.m_g, pElement->m_foreground.m_b);
+		Gdiplus::Pen pen(penColor);
+		m_memDC.dc().DrawPath(&pen, &gpath);
+	}
 }
 
 void RDOStudioFrameView::elementLine(PTR(rdoAnimation::RDOLineElement) pElement)
