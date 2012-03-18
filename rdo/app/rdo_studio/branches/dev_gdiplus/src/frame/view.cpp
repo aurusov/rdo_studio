@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/bind.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
 #include "simulator/service/rdosimwin.h"
@@ -665,6 +666,34 @@ void RDOStudioFrameView::elementText(PTR(rdoAnimation::RDOTextElement) pElement)
 	//}
 }
 
+template <class F, class D>
+void RDOStudioFrameView::drawColoredElement(CREF(rdoAnimation::RDOColoredElement) coloredElement, F fillBinder, D drawBinder)
+{
+	if (!coloredElement.m_background.m_transparent)
+	{
+		Gdiplus::SolidBrush brush(
+			Gdiplus::Color(
+				coloredElement.m_background.m_r,
+				coloredElement.m_background.m_g,
+				coloredElement.m_background.m_b
+			)
+		);
+		fillBinder(&m_memDC.dc(), &brush);
+	}
+
+	if (!coloredElement.m_foreground.m_transparent)
+	{
+		Gdiplus::Pen pen(
+			Gdiplus::Color(
+				coloredElement.m_foreground.m_r,
+				coloredElement.m_foreground.m_g,
+				coloredElement.m_foreground.m_b
+			)
+		);
+		drawBinder(&m_memDC.dc(), &pen);
+	}
+}
+
 void RDOStudioFrameView::elementRect(PTR(rdoAnimation::RDORectElement) pElement)
 {
 	ASSERT(pElement);
@@ -676,19 +705,13 @@ void RDOStudioFrameView::elementRect(PTR(rdoAnimation::RDORectElement) pElement)
 		(int)pElement->m_size.m_height
 	);
 
-	if (!pElement->m_background.m_transparent)
-	{
-		Gdiplus::Color bgColor(pElement->m_background.m_r, pElement->m_background.m_g, pElement->m_background.m_b);
-		Gdiplus::SolidBrush brush(bgColor);
-		m_memDC.dc().FillRectangle(&brush, rect);
-	}
+	Gdiplus::Status (Gdiplus::Graphics::*pBrush)(CPTR(Gdiplus::Brush), CREF(Gdiplus::Rect)) = &Gdiplus::Graphics::FillRectangle;
+	Gdiplus::Status (Gdiplus::Graphics::*pPen  )(CPTR(Gdiplus::Pen),   CREF(Gdiplus::Rect)) = &Gdiplus::Graphics::DrawRectangle;
 
-	if (!pElement->m_foreground.m_transparent)
-	{
-		Gdiplus::Color penColor(pElement->m_foreground.m_r, pElement->m_foreground.m_g, pElement->m_foreground.m_b);
-		Gdiplus::Pen pen(penColor);
-		m_memDC.dc().DrawRectangle(&pen, rect);
-	}
+	drawColoredElement(*pElement,
+		boost::bind(pBrush, _1, _2, rect),
+		boost::bind(pPen,   _1, _2, rect)
+	);
 }
 
 void RDOStudioFrameView::elementRoundRect(PTR(rdoAnimation::RDORRectElement) pElement)
@@ -715,19 +738,13 @@ void RDOStudioFrameView::elementRoundRect(PTR(rdoAnimation::RDORRectElement) pEl
 	gpath.AddArc (rect.X, rect.Y, radius * 2, radius * 2, 180, 90);
 	gpath.CloseFigure();
 
-	if (!pElement->m_background.m_transparent)
-	{
-		Gdiplus::Color bgColor(pElement->m_background.m_r, pElement->m_background.m_g, pElement->m_background.m_b);
-		Gdiplus::SolidBrush brush(bgColor);
-		m_memDC.dc().FillPath(&brush, &gpath);
-	}
+	Gdiplus::Status (Gdiplus::Graphics::*pBrush)(CPTR(Gdiplus::Brush), CPTR(Gdiplus::GraphicsPath)) = &Gdiplus::Graphics::FillPath;
+	Gdiplus::Status (Gdiplus::Graphics::*pPen  )(CPTR(Gdiplus::Pen),   CPTR(Gdiplus::GraphicsPath)) = &Gdiplus::Graphics::DrawPath;
 
-	if (!pElement->m_foreground.m_transparent)
-	{
-		Gdiplus::Color penColor(pElement->m_foreground.m_r, pElement->m_foreground.m_g, pElement->m_foreground.m_b);
-		Gdiplus::Pen pen(penColor);
-		m_memDC.dc().DrawPath(&pen, &gpath);
-	}
+	drawColoredElement(*pElement,
+		boost::bind(pBrush, _1, _2, &gpath),
+		boost::bind(pPen,   _1, _2, &gpath)
+	);
 }
 
 void RDOStudioFrameView::elementLine(PTR(rdoAnimation::RDOLineElement) pElement)
@@ -760,21 +777,13 @@ void RDOStudioFrameView::elementTriang(PTR(rdoAnimation::RDOTriangElement) pElem
 	pointList[2].X = (int)(pElement->m_point3.m_x);
 	pointList[2].Y = (int)(pElement->m_point3.m_y);
 
-	if (!pElement->m_background.m_transparent)
-	{
-		Gdiplus::Color color;
-		color.SetFromCOLORREF(RGB(pElement->m_background.m_r, pElement->m_background.m_g, pElement->m_background.m_b));
-		Gdiplus::SolidBrush brush(color);
-		m_memDC.dc().FillPolygon(&brush, &pointList[0], pountListCount);
-	}
+	Gdiplus::Status (Gdiplus::Graphics::*pBrush)(CPTR(Gdiplus::Brush), CPTR(Gdiplus::Point), int) = &Gdiplus::Graphics::FillPolygon;
+	Gdiplus::Status (Gdiplus::Graphics::*pPen  )(CPTR(Gdiplus::Pen),   CPTR(Gdiplus::Point), int) = &Gdiplus::Graphics::DrawPolygon;
 
-	if (!pElement->m_foreground.m_transparent)
-	{
-		Gdiplus::Color color;
-		color.SetFromCOLORREF(RGB(pElement->m_foreground.m_r, pElement->m_foreground.m_g, pElement->m_foreground.m_b));
-		Gdiplus::Pen pen(color);
-		m_memDC.dc().DrawPolygon(&pen, &pointList[0], pountListCount);
-	}
+	drawColoredElement(*pElement,
+		boost::bind(pBrush, _1, _2, &pointList[0], pountListCount),
+		boost::bind(pPen,   _1, _2, &pointList[0], pountListCount)
+	);
 }
 
 void RDOStudioFrameView::elementCircle(PTR(rdoAnimation::RDOCircleElement) pElement)
@@ -788,21 +797,13 @@ void RDOStudioFrameView::elementCircle(PTR(rdoAnimation::RDOCircleElement) pElem
 		(int)(pElement->m_center.m_y + pElement->m_radius.m_radius)
 	);
 
-	if (!pElement->m_background.m_transparent)
-	{
-		Gdiplus::Color color;
-		color.SetFromCOLORREF(RGB(pElement->m_background.m_r, pElement->m_background.m_g, pElement->m_background.m_b));
-		Gdiplus::SolidBrush brush(color);
-		m_memDC.dc().FillEllipse(&brush, rect);
-	}
+	Gdiplus::Status (Gdiplus::Graphics::*pBrush)(CPTR(Gdiplus::Brush), CREF(Gdiplus::Rect)) = &Gdiplus::Graphics::FillEllipse;
+	Gdiplus::Status (Gdiplus::Graphics::*pPen  )(CPTR(Gdiplus::Pen),   CREF(Gdiplus::Rect)) = &Gdiplus::Graphics::DrawEllipse;
 
-	if (!pElement->m_foreground.m_transparent)
-	{
-		Gdiplus::Color color;
-		color.SetFromCOLORREF(RGB(pElement->m_foreground.m_r, pElement->m_foreground.m_g, pElement->m_foreground.m_b));
-		Gdiplus::Pen pen(color);
-		m_memDC.dc().DrawEllipse(&pen, rect);
-	}
+	drawColoredElement(*pElement,
+		boost::bind(pBrush, _1, _2, rect),
+		boost::bind(pPen,   _1, _2, rect)
+	);
 }
 
 void RDOStudioFrameView::elementEllipse(PTR(rdoAnimation::RDOEllipseElement) pElement)
@@ -816,21 +817,13 @@ void RDOStudioFrameView::elementEllipse(PTR(rdoAnimation::RDOEllipseElement) pEl
 		(int)(pElement->m_point.m_y + pElement->m_size.m_height)
 	);
 
-	if (!pElement->m_background.m_transparent)
-	{
-		Gdiplus::Color color;
-		color.SetFromCOLORREF(RGB(pElement->m_background.m_r, pElement->m_background.m_g, pElement->m_background.m_b));
-		Gdiplus::SolidBrush brush(color);
-		m_memDC.dc().FillEllipse(&brush, rect);
-	}
+	Gdiplus::Status (Gdiplus::Graphics::*pBrush)(CPTR(Gdiplus::Brush), CREF(Gdiplus::Rect)) = &Gdiplus::Graphics::FillEllipse;
+	Gdiplus::Status (Gdiplus::Graphics::*pPen  )(CPTR(Gdiplus::Pen),   CREF(Gdiplus::Rect)) = &Gdiplus::Graphics::DrawEllipse;
 
-	if (!pElement->m_foreground.m_transparent)
-	{
-		Gdiplus::Color color;
-		color.SetFromCOLORREF(RGB(pElement->m_foreground.m_r, pElement->m_foreground.m_g, pElement->m_foreground.m_b));
-		Gdiplus::Pen pen(color);
-		m_memDC.dc().DrawEllipse(&pen, rect);
-	}
+	drawColoredElement(*pElement,
+		boost::bind(pBrush, _1, _2, rect),
+		boost::bind(pPen,   _1, _2, rect)
+	);
 }
 
 void RDOStudioFrameView::elementBMP(
