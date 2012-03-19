@@ -778,10 +778,14 @@ inline RDOValue RDOValue::operator/ (CREF(RDOValue) rdovalue) const
 
 inline void RDOValue::setUndefined(CREF(double) undefined)
 {
+	ASSERT(
+		undefined >= 0 &&
+		undefined <= 1
+	);
 	m_undefined = undefined;
 }
 
-inline CREF(double) RDOValue::getUndefined() const 
+inline CREF(double) RDOValue::getUndefined() const
 {
 	return m_undefined;
 }
