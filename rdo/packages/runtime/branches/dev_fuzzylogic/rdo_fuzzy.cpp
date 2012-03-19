@@ -343,23 +343,26 @@ LPRDOFuzzyValue RDOFuzzyValue::clone() const
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOFuzzyType
+// -------------------- RDOLingvoVariable
 // --------------------------------------------------------------------------------
-//LPRDOActivatedValue RDOFuzzyType::fuzzyfication(CREF(RDOValue) rdovalue)
-//{
-//	TermSet::const_iterator it = begin();
-//	if (this->inRange(rdovalue))
-//	{
-//		LPRDOActivatedValue pValue = rdo::Factory<RDOActivatedValue>::create();
-//		for (it = begin(); it != end(); it++)
-//		{
-//			LPRDOFuzzyValue fuzzySet = it->second;
-//			RDOFuzzyValue::FuzzyItem item = fuzzySet->findValue(rdovalue);
-// 			pValue->append(it->first,item.second);
-//		}
-//		return (pValue);
-//	}
-//}
+LPRDOLingvoVariable RDOLingvoVariable::fuzzyfication(CREF(RDOValue) value)
+{
+	Set::const_iterator itTerm      = begin();
+	LPRDOLingvoVariable actVariable = rdo::Factory<RDOLingvoVariable>::create(*this);
+
+	for (itTerm = begin();itTerm != end(); itTerm++)
+	{
+		LPRDOFuzzyValue          currValue    = itTerm->second;
+		RDOFuzzyValue::FuzzyItem findItem     = currValue->findValue(value);
+		LPRDOFuzzySetDefinition  newSet       = rdo::Factory<RDOFuzzySetDefinitionRangeDiscret>::create();
+		LPRDOFuzzyType           newVariable  = rdo::Factory<RDOFuzzyType>::create(newSet);
+		LPRDOFuzzyValue          newValue     = rdo::Factory<RDOFuzzyValue>::create(newVariable);
+		newValue->append(findItem.first, findItem.second);
+		CREF(RDOFuzzyType::TermSet) forAppend = newValue->type()->getTermSet();
+		actVariable->append(forAppend);
+	}
+	return(actVariable);
+}
 // --------------------------------------------------------------------------------
 // -------------------- RDOFuzzySetDefinitionFixed
 // --------------------------------------------------------------------------------

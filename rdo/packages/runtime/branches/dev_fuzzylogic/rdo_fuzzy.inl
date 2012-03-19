@@ -16,6 +16,11 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOFuzzyValue
 // --------------------------------------------------------------------------------
+//inline RDOFuzzyValue::RDOFuzzyValue(CREF(LPRDOFuzzySetDefinition) pSetDefinition)
+//{
+//	m_pType = rdo::Factory<RDOFuzzyType>::create(pSetDefinition);
+//}
+
 inline RDOFuzzyValue::RDOFuzzyValue(CREF(LPRDOFuzzyType) pType)
 	: m_pType(pType)
 {}
@@ -42,8 +47,8 @@ inline REF(RDOFuzzyValue) RDOFuzzyValue::operator() (CREF(RDOValue) rdovalue, do
 
 inline REF(double) RDOFuzzyValue::operator[] (CREF(RDOValue) rdovalue)
 {
-	if (!type()->inRange(rdovalue))
-		throw RDOValueException();
+//	if (!type()->inRange(rdovalue))
+//		throw RDOValueException();
 
 	return m_fuzzySet[rdovalue];
 }
@@ -74,22 +79,25 @@ inline LPRDOFuzzyValue RDOFuzzyValue::supplement() const
 
 inline LPRDOFuzzyValue RDOFuzzyValue::a_con     () const { return a_pow(2.0);                   }
 inline LPRDOFuzzyValue RDOFuzzyValue::a_dil     () const { return a_pow(0.5);                   }
+inline           rbool RDOFuzzyValue::inRange   (CREF(RDOValue) rdovalue)
+{
+	return m_fuzzySet.find(rdovalue) != m_fuzzySet.end();
+}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFuzzyType
 // --------------------------------------------------------------------------------
-inline RDOFuzzyType::RDOFuzzyType(CREF(LPRDOFuzzySetDefinition) pFuzzySetDefinition)
-	: RDOType             (t_pointer          )
-	, m_fuzzySetDefinition(pFuzzySetDefinition)
+inline RDOFuzzyType::RDOFuzzyType(CREF(LPRDOFuzzySetDefinition) pSetDefinition)
+	: RDOType             (t_pointer  )
+	, m_fuzzySetDefinition(pSetDefinition)
 {
 	//! Было
 	//! m_fuzzySetDefinition->reparent(this);
 	/// @todo для порядку перевести на умные указатели
 }
-
-//inline RDOFuzzyType::TermSet::const_iterator       RDOFuzzyType::begin()       { return m_termSet.begin(); }
-//inline RDOFuzzyType::TermSet::const_iterator       RDOFuzzyType::end  ()       { return m_termSet.end();   }
-
+inline RDOFuzzyType::RDOFuzzyType()
+	: RDOType (t_pointer)
+{}
 inline RDOFuzzyType::~RDOFuzzyType()
 {}
 
@@ -114,11 +122,6 @@ inline rbool RDOFuzzyType::operator!= (CREF(RDOFuzzyType) type) const
 	return !operator==(type);
 }
 
-inline rbool RDOFuzzyType::inRange(CREF(RDOValue) rdovalue) const
-{
-	return m_fuzzySetDefinition->inRange(rdovalue);
-}
-
 inline LPRDOFuzzyValue RDOFuzzyType::getSupplement(CREF(LPRDOFuzzyValue) pFuzzyValue) const
 {
 	return m_fuzzySetDefinition->getSupplement(pFuzzyValue);
@@ -135,10 +138,19 @@ inline RDOLingvoVariable::Set::const_iterator           RDOLingvoVariable::begin
 inline RDOLingvoVariable::Set::const_iterator           RDOLingvoVariable::end  ()     {return m_set.end  ();}
 inline RDOLingvoVariable::RDOLingvoVariable()
 {}
-inline REF(RDOLingvoVariable) RDOLingvoVariable::append(tstring term, CREF(LPRDOFuzzyValue) value)
+inline RDOLingvoVariable::RDOLingvoVariable(LPRDOFuzzyType typeOfVariable)
 {
-	m_set[term] = value;
+	this->append(typeOfVariable->getTermSet());
+}
+
+inline RDOLingvoVariable RDOLingvoVariable::append(CREF(RDOFuzzyType::TermSet) pair)
+{
+	m_set.insert(pair);
 	return *this;
+}
+inline RDOLingvoVariable::RDOLingvoVariable(CREF(RDOLingvoVariable) variable) 
+{
+	m_set = variable.m_set;
 }
 
 // --------------------------------------------------------------------------------
