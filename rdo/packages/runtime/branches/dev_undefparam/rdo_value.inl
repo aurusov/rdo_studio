@@ -776,6 +776,16 @@ inline RDOValue RDOValue::operator/ (CREF(RDOValue) rdovalue) const
 //	throw RDOValueException();
 //}
 
+inline void RDOValue::setUndefined(CREF(double) undefined)
+{
+	m_undefined = undefined;
+}
+
+inline CREF(double) RDOValue::getUndefined() const 
+{
+	return m_undefined;
+}
+
 inline CREF(LPRDOType) RDOValue::type() const
 {
 	return m_pType;
