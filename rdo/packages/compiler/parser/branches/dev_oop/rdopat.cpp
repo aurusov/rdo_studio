@@ -314,6 +314,37 @@ void RDOPATPattern::addRelResConvert(rbool trace, CREF(LPConvertCmdList) command
 	ASSERT(m_pCurrRelRes);
 }
 
+void RDOPATPattern::addRelResConvert(rbool trace, CREF(LPExpression) pCommands, CREF(YYLTYPE) convertor_pos, CREF(YYLTYPE) trace_pos, rdoRuntime::RDOResource::ConvertStatus status)
+{
+	if (status == rdoRuntime::RDOResource::CS_NoChange || status == rdoRuntime::RDOResource::CS_NonExist)
+	{
+		rdoParser::g_error().error(convertor_pos, getErrorMessage_NotNeedConvertor(m_pCurrRelRes->name(), status));
+	}
+
+	if (status == rdoRuntime::RDOResource::CS_Create)
+	{
+		addParamSetCalc(createRelRes(trace));
+	}
+	else
+	{
+		if (trace)
+		{
+			rdoParser::g_error().error(trace_pos, _T("Признак трассировки в данном месте возможен только для создаваемого ресурса"));
+		}
+	}
+
+	/*if (commands->commands().empty() && status == rdoRuntime::RDOResource::CS_Keep)
+	{
+		rdoParser::g_error().warning(convertor_pos, getWarningMessage_EmptyConvertor(m_pCurrRelRes->name(), status));
+	}
+	*/
+	rdoRuntime::LPRDOCalc pCalc = pCommands->calc();
+	ASSERT(pCalc)
+
+	addParamSetCalc(pCalc);
+
+	ASSERT(m_pCurrRelRes);
+}
 void RDOPATPattern::addParamSetCalc(CREF(rdoRuntime::LPRDOCalc) pCalc)
 {
 	switch (getType())

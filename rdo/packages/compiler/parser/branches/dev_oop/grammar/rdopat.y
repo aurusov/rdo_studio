@@ -4,6 +4,7 @@
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   Поподьянец Евгений (pop4ikxp@mail.ru)
   \date      20.02.2003
   \brief     Синтаксис образцов активностей
   \indent    4T
@@ -1390,7 +1391,7 @@ pat_convert
 		pPattern.object_static_cast<RDOPatternOperation>()->addRelResConvertBeginEnd($3 != 0, pCmdListBegin, $6 != 0, pCmdListEnd, @2, @5, @3, @6);
 		$$ = PARSER->stack().push(pPattern);
 	}
-	| pat_res_usage convert_rule pat_trace pat_convert_cmd
+	| pat_res_usage convert_rule pat_trace statement_list
 	{
 		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
 		ASSERT(pPattern);
@@ -1412,9 +1413,14 @@ pat_convert
 			}
 			PARSER->error().error(@2, rdo::format(_T("Ключевое слово Convert_rule может быть использовано в продукционном правиле, но не в %s '%s'"), type.c_str(), pPattern->name().c_str()));
 		}
-		LPConvertCmdList pCmdList = PARSER->stack().pop<ConvertCmdList>($4);
-		ASSERT(pPattern->m_pCurrRelRes);
-		pPattern->addRelResConvert($3 != 0, pCmdList, @2, @3, pPattern->m_pCurrRelRes->m_statusBegin);
+
+		LPRDORelevantResource pRelRes = pPattern->m_pCurrRelRes;
+		ASSERT(pRelRes);
+
+		LPExpression pExpression = PARSER->stack().pop<Expression>($4);
+		ASSERT(pExpression);
+
+		pPattern->addRelResConvert($3 != 0, pExpression, @2, @3, pRelRes->m_statusBegin);
 		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_res_usage convert_event pat_trace pat_convert_cmd
@@ -1543,10 +1549,10 @@ statement
 		rdoRuntime::LPRDOCalc pCalcCloseBrace = rdo::Factory<rdoRuntime::RDOCalcCloseBrace>::create();
 		ASSERT(pCalcCloseBrace);
 
-		rdoRuntime::LPRDOCalcBodyBrace pCalcBodyBrace = pExpressionBodyBrace->calc().object_dynamic_cast<rdoRuntime::RDOCalcBodyBrace>();
+		rdoRuntime::LPRDOCalcFunBodyBrace pCalcBodyBrace = pExpressionBodyBrace->calc().object_dynamic_cast<rdoRuntime::RDOCalcFunBodyBrace>();
 		ASSERT(pCalcBodyBrace);
 
-		pCalcBodyBrace->addCalc(pCalcCloseBrace);
+		pCalcBodyBrace->addFunCalc(pCalcCloseBrace);
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pExpressionBodyBrace->typeInfo(), pCalcBodyBrace, RDOParserSrcInfo(@1));
 		ASSERT(pExpression);
@@ -1576,13 +1582,13 @@ close_brace
 statement_list
 	: /* empty */
 	{
-		rdoRuntime::LPRDOCalcBodyBrace pCalcBodyBrace = rdo::Factory<rdoRuntime::RDOCalcBodyBrace>::create();
+		rdoRuntime::LPRDOCalcFunBodyBrace pCalcBodyBrace = rdo::Factory<rdoRuntime::RDOCalcFunBodyBrace>::create();
 		ASSERT(pCalcBodyBrace);
 
 		rdoRuntime::LPRDOCalc pCalcOpenBrace = rdo::Factory<rdoRuntime::RDOCalcOpenBrace>::create();
 		ASSERT(pCalcOpenBrace);
 
-		pCalcBodyBrace->addCalc(pCalcOpenBrace);
+		pCalcBodyBrace->addFunCalc(pCalcOpenBrace);
 
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__void>::create(), RDOParserSrcInfo());
 		ASSERT(pType);
@@ -1594,21 +1600,21 @@ statement_list
 	}
 	| statement_list statement
 	{
-		LPExpression pExpressionBodyBrace = PARSER->stack().pop<Expression>($1);
-		ASSERT(pExpressionBodyBrace);
+		LPExpression pExpressionStatementList = PARSER->stack().pop<Expression>($1);
+		ASSERT(pExpressionStatementList);
 
-		LPExpression pExpression = PARSER->stack().pop<Expression>($2);
-		ASSERT(pExpression);
+		LPExpression pExpressionStatement = PARSER->stack().pop<Expression>($2);
+		ASSERT(pExpressionStatement);
 
-		rdoRuntime::LPRDOCalcBodyBrace pCalcBodyBrace = pExpressionBodyBrace->calc().object_dynamic_cast<rdoRuntime::RDOCalcBodyBrace>();
+		rdoRuntime::LPRDOCalcFunBodyBrace pCalcBodyBrace = pExpressionStatementList->calc().object_dynamic_cast<rdoRuntime::RDOCalcFunBodyBrace>();
 		ASSERT(pCalcBodyBrace);
 		
-		pCalcBodyBrace->addCalc(pExpression->calc());
+		pCalcBodyBrace->addFunCalc(pExpressionStatement->calc());
 
-		pExpressionBodyBrace = rdo::Factory<Expression>::create(pExpressionBodyBrace->typeInfo(), pCalcBodyBrace, RDOParserSrcInfo(@1));
-		ASSERT(pExpressionBodyBrace);
+		LPExpression pExpression = rdo::Factory<Expression>::create(pExpressionStatementList->typeInfo(), pCalcBodyBrace, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
 
-		$$ = PARSER->stack().push(pExpressionBodyBrace);
+		$$ = PARSER->stack().push(pExpression);
 	}
 	;
 

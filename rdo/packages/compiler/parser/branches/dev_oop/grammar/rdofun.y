@@ -3,6 +3,7 @@
   \file      rdofun.y
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Поподьянец Евгений (pop4ikxp@mail.ru)
   \date      20.02.2003
   \brief     Синтаксис функций, констант и последовательностей
   \indent    4T
