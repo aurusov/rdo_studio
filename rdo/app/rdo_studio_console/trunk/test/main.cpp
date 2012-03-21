@@ -31,8 +31,6 @@ namespace fs = boost::filesystem;
 
 ruint g_state = TERMINATION_NORMAL;
 
-const tstring RDO_STUDIO_CONSOLE_APP_STRING = RDO_STUDIO_CONSOLE_APP;
-
 typedef std::list<tstring> file_data_list;
 
 void TEST_ERROR(CREF(tstring) message)
@@ -141,11 +139,6 @@ int main(int argc, PTR(char) argv[])
 	options_controller.parseOptions();
 	if(options_controller.helpQuery())
 		return TERMINATION_NORMAL;
-	
-	if(RDO_STUDIO_CONSOLE_APP_STRING == "NULL") 
-	{
-		TEST_ERROR(_T("Invalid compile app"));
-	}
 	
 	tstring etalon_trace, etalon_result, simulation_trace, simulation_result;
 	
