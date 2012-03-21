@@ -134,7 +134,9 @@ int RDOStudioFrameView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	m_hwnd = GetSafeHwnd();
 
-//	m_hfontInit = static_cast<HFONT>(::GetCurrentObject(hmemdc, OBJ_FONT));
+	HDC hDC = ::GetDC(m_hwnd);
+	m_hfontInit = static_cast<HFONT>(::GetCurrentObject(hDC, OBJ_FONT));
+	::ReleaseDC(m_hwnd, hDC);
 
 	updateFont      ();
 	updateScrollBars();
@@ -156,16 +158,18 @@ void RDOStudioFrameView::OnDestroy()
 
 void RDOStudioFrameView::updateFont()
 {
+	HDC hDC = ::GetDC(m_hwnd);
+
 	if (m_hfontCurrent)
 	{
-//		::SelectObject(hmemdc, m_hfontInit);
+		::SelectObject(hDC, m_hfontInit);
 		::DeleteObject(m_hfontCurrent);
 	}
 
 	LOGFONT lf;
 	memset(&lf, 0, sizeof(lf));
 	PTR(RDOStudioFrameStyle) pStyle = &studioApp.m_pMainFrame->style_frame;
-//	lf.lfHeight    = -MulDiv(pStyle->font->size, ::GetDeviceCaps(hmemdc, LOGPIXELSY), 72);
+	lf.lfHeight    = -MulDiv(pStyle->font->size, ::GetDeviceCaps(hDC, LOGPIXELSY), 72);
 	lf.lfWeight    = pStyle->theme->defaultStyle & rdoStyle::RDOStyleFont::BOLD ? FW_BOLD : FW_NORMAL;
 	lf.lfItalic    = pStyle->theme->defaultStyle & rdoStyle::RDOStyleFont::ITALIC;
 	lf.lfUnderline = pStyle->theme->defaultStyle & rdoStyle::RDOStyleFont::UNDERLINE;
@@ -175,7 +179,8 @@ void RDOStudioFrameView::updateFont()
 #pragma warning(default: 4996)
 
 	m_hfontCurrent = ::CreateFontIndirect(&lf);
-//	::SelectObject(hmemdc, m_hfontCurrent);
+	::SelectObject(hDC, m_hfontCurrent);
+	::ReleaseDC(m_hwnd, hDC);
 }
 
 BOOL RDOStudioFrameView::OnPreparePrinting(PTR(CPrintInfo) pInfo)
@@ -616,54 +621,33 @@ void RDOStudioFrameView::elementText(PTR(rdoAnimation::RDOTextElement) pElement)
 {
 	ASSERT(pElement);
 
-	Gdiplus::Color color(0, 0, 0);
+	HDC hDC = m_memDC.dc().GetHDC();
+
 	if (!pElement->m_background.m_transparent)
 	{
-//		::SetBkMode(hdc, OPAQUE);
-//		::SetBkColor(hdc, RGB(pElement->m_background.m_r, pElement->m_background.m_g, pElement->m_background.m_b));
-//		color = Gdiplus::Color(pElement->m_background.m_r, pElement->m_background.m_g, pElement->m_background.m_b);
+		::SetBkMode(hDC, OPAQUE);
+		::SetBkColor(hDC, RGB(pElement->m_background.m_r, pElement->m_background.m_g, pElement->m_background.m_b));
 	}
 	else
 	{
-//		::SetBkMode(hdc, TRANSPARENT);
+		::SetBkMode(hDC, TRANSPARENT);
 	}
 
 	if(!pElement->m_foreground.m_transparent)
 	{
-//		::SetTextColor(hdc, RGB(pElement->m_foreground.m_r, pElement->m_foreground.m_g, pElement->m_foreground.m_b));
+		::SetTextColor(hDC, RGB(pElement->m_foreground.m_r, pElement->m_foreground.m_g, pElement->m_foreground.m_b));
 	}
-
-	Gdiplus::StringFormat sformat;
-	Gdiplus::SolidBrush   brush(color);
 
 	UINT nFormat = DT_SINGLELINE | DT_VCENTER;
 	switch (pElement->m_align)
 	{
-	case rdoAnimation::RDOTextElement::TETA_LEFT  : nFormat |= DT_LEFT;   sformat.SetAlignment(Gdiplus::StringAlignmentNear  ); break;
-	case rdoAnimation::RDOTextElement::TETA_RIGHT : nFormat |= DT_RIGHT;  sformat.SetAlignment(Gdiplus::StringAlignmentFar   ); break;
-	case rdoAnimation::RDOTextElement::TETA_CENTER: nFormat |= DT_CENTER; sformat.SetAlignment(Gdiplus::StringAlignmentCenter); break;
+	case rdoAnimation::RDOTextElement::TETA_LEFT  : nFormat |= DT_LEFT;   break;
+	case rdoAnimation::RDOTextElement::TETA_RIGHT : nFormat |= DT_RIGHT;  break;
+	case rdoAnimation::RDOTextElement::TETA_CENTER: nFormat |= DT_CENTER; break;
 	}
 
-	std::wstring wtext = rdo::toUnicode(pElement->m_text);
-
-	//HDC hDC = m_memDC.dc().GetHDC();
-	//Gdiplus::Font  font(hDC, hfontCurrent);
-	//m_memDC.dc().ReleaseHDC(hDC);
-
-	//if (font.GetLastStatus() == Gdiplus::Ok)
-	//{
-	//	Gdiplus::RectF rect(
-	//		Gdiplus::REAL(pElement->m_point.m_x),
-	//		Gdiplus::REAL(pElement->m_point.m_y),
-	//		Gdiplus::REAL(pElement->m_size.m_width),
-	//		Gdiplus::REAL(pElement->m_size.m_height)
-	//	);
-
-	//	wtext = L"text";
-
-	//	status = m_memDC.dc().DrawString(wtext.c_str(), wtext.length(), &font, rect, &sformat, &brush);
-	//	::DrawText(hdc, pElement->m_text.c_str(), pElement->m_text.length(), CRect((int)pElement->m_point.m_x, (int)pElement->m_point.m_y, (int)(pElement->m_point.m_x + pElement->m_size.m_width), (int)(pElement->m_point.m_y + pElement->m_size.m_height)), nFormat);
-	//}
+	::DrawText(hDC, pElement->m_text.c_str(), pElement->m_text.length(), CRect((int)pElement->m_point.m_x, (int)pElement->m_point.m_y, (int)(pElement->m_point.m_x + pElement->m_size.m_width), (int)(pElement->m_point.m_y + pElement->m_size.m_height)), nFormat);
+	m_memDC.dc().ReleaseHDC(hDC);
 }
 
 template <class F, class D>
