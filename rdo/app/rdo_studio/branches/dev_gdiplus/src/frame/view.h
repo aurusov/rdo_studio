@@ -82,6 +82,11 @@ private:
 	void  elementSBMP       ( PTR(rdoAnimation::RDOSBmpElement)     pElement, CREF(rdo::gui::BitmapList) bitmapList, REF(rdo::gui::BitmapList) bitmapGeneratedList);
 	void  elementActive     ( PTR(rdoAnimation::RDOActiveElement)   pElement, REF(AreaList) areaList);
 
+	static PTR(Gdiplus::Bitmap) getBitmap(CREF(tstring)              bitmapName,
+	                                      CREF(tstring)              maskName,
+	                                      CREF(rdo::gui::BitmapList) bitmapList,
+	                                       REF(rdo::gui::BitmapList) bitmapGeneratedList);
+
 	virtual BOOL PreCreateWindow  (REF(CREATESTRUCT) cs);
 	virtual BOOL OnPreparePrinting(PTR(CPrintInfo) pInfo);
 	virtual void OnBeginPrinting  (PTR(CDC) pDC, PTR(CPrintInfo) pInfo);

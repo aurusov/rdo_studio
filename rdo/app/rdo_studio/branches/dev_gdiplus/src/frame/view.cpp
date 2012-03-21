@@ -833,43 +833,13 @@ void RDOStudioFrameView::elementBMP(
 {
 	ASSERT(pElement);
 
-	rdo::gui::BitmapList::const_iterator bmpIt = bitmapList.find(pElement->m_bmp_name);
-	if (bmpIt == bitmapList.end())
-		return;
+	PTR(Gdiplus::Bitmap) pBitmap = RDOStudioFrameView::getBitmap(
+		pElement->m_bmp_name,
+		pElement->hasMask() ? pElement->m_mask_name : tstring(),
+		bitmapList,
+		bitmapGeneratedList
+	);
 
-	PTR(Gdiplus::Bitmap) pBitmap = bmpIt->second;
-	if (pElement->hasMask())
-	{
-		tstring maskedBitmapName(rdo::format(_T("%s%s"), pElement->m_bmp_name.c_str(), pElement->m_mask_name.c_str()));
-		rdo::gui::BitmapList::const_iterator generatedIt = bitmapList.find(maskedBitmapName);
-		if (generatedIt != bitmapList.end())
-		{
-			pBitmap = generatedIt->second;
-		}
-		else
-		{
-			generatedIt = bitmapGeneratedList.find(maskedBitmapName);
-			if (generatedIt != bitmapGeneratedList.end())
-			{
-				pBitmap = generatedIt->second;
-			}
-			else
-			{
-				rdo::gui::BitmapList::const_iterator maskIt = bitmapList.find(pElement->m_mask_name);
-				if (maskIt != bitmapList.end())
-				{
-					PTR(Gdiplus::Bitmap) pGenerated = rdo::gui::Bitmap::transparent(*bmpIt->second, *maskIt->second);
-					if (pGenerated)
-					{
-						std::pair<rdo::gui::BitmapList::const_iterator, rbool> result =
-							bitmapGeneratedList.insert(rdo::gui::BitmapList::value_type(maskedBitmapName, pGenerated));
-						ASSERT(result.second);
-						pBitmap = pGenerated;
-					}
-				}
-			}
-		}
-	}
 	if (pBitmap)
 	{
 		m_memDC.dc().DrawImage(pBitmap, (int)(pElement->m_point.m_x), (int)(pElement->m_point.m_y));
@@ -883,26 +853,60 @@ void RDOStudioFrameView::elementSBMP(
 {
 	ASSERT(pElement);
 
-	UNUSED(bitmapGeneratedList);
+	PTR(Gdiplus::Bitmap) pBitmap = RDOStudioFrameView::getBitmap(
+		pElement->m_bmp_name,
+		pElement->hasMask() ? pElement->m_mask_name : tstring(),
+		bitmapList,
+		bitmapGeneratedList
+	);
 
-	rdo::gui::BitmapList::const_iterator bmpIt = bitmapList.find(pElement->m_bmp_name);
-	if (bmpIt != bitmapList.end())
+	if (pBitmap)
 	{
-		rbool maskDraw = false;
-		if (pElement->hasMask())
+		m_memDC.dc().DrawImage(pBitmap, (int)(pElement->m_point.m_x), (int)(pElement->m_point.m_y), (int)(pElement->m_size.m_width), (int)(pElement->m_size.m_height));
+	}
+}
+
+PTR(Gdiplus::Bitmap) RDOStudioFrameView::getBitmap(
+	CREF(tstring)              bitmapName,
+	CREF(tstring)              maskName,
+	CREF(rdo::gui::BitmapList) bitmapList,
+	 REF(rdo::gui::BitmapList) bitmapGeneratedList)
+{
+	rdo::gui::BitmapList::const_iterator bmpIt = bitmapList.find(bitmapName);
+	if (bmpIt == bitmapList.end())
+		return NULL;
+
+	if (!maskName.empty())
+	{
+		tstring maskedBitmapName(rdo::format(_T("%s%s"), bitmapName.c_str(), maskName.c_str()));
+
+		rdo::gui::BitmapList::const_iterator generatedIt = bitmapList.find(maskedBitmapName);
+		if (generatedIt != bitmapList.end())
 		{
-			rdo::gui::BitmapList::const_iterator maskIt = bitmapList.find(pElement->m_mask_name);
-			if (maskIt != bitmapList.end())
+			return generatedIt->second;
+		}
+
+		generatedIt = bitmapGeneratedList.find(maskedBitmapName);
+		if (generatedIt != bitmapGeneratedList.end())
+		{
+			return generatedIt->second;
+		}
+
+		rdo::gui::BitmapList::const_iterator maskIt = bitmapList.find(maskName);
+		if (maskIt != bitmapList.end())
+		{
+			PTR(Gdiplus::Bitmap) pGenerated = rdo::gui::Bitmap::transparent(*bmpIt->second, *maskIt->second);
+			if (pGenerated)
 			{
-//				NEVER_REACH_HERE;
-//				maskDraw = true;
+				std::pair<rdo::gui::BitmapList::const_iterator, rbool> result =
+					bitmapGeneratedList.insert(rdo::gui::BitmapList::value_type(maskedBitmapName, pGenerated));
+				ASSERT(result.second);
+				return pGenerated;
 			}
 		}
-		if (!maskDraw)
-		{
-			m_memDC.dc().DrawImage(bmpIt->second, (int)(pElement->m_point.m_x), (int)(pElement->m_point.m_y), (int)(pElement->m_size.m_width), (int)(pElement->m_size.m_height));
-		}
 	}
+
+	return bmpIt->second;
 }
 
 void RDOStudioFrameView::elementActive(PTR(rdoAnimation::RDOActiveElement) pElement, REF(AreaList) areaList)
