@@ -123,44 +123,16 @@ void compare_result(CREF(tstring) etalon_result, CREF(tstring) result)
 	TEST_CHECK(etalon_result_list == result_list, _T("etalon_result_list != result_list"));
 }
 
-void test_model(CREF(tstring) model)
+void test_model(CREF(tstring) etalon_trace, CREF(tstring) etalon_result, CREF(tstring) simulation_trace, CREF(tstring) simulation_result)
 {	
-	TEST_CHECK(fs::exists(model), "model " + model + " not found");
-	
-	tstring dir;
-	tstring name;
-	tstring ext;
-	TEST_CHECK(rdo::File::splitpath(model, dir, name, ext), tstring("splitpath check"));
-	
-	tstring etalon_mark("_etalon");
-	tstring etalon_trace = dir + name + etalon_mark + ".trc";
-	tstring etalon_result = dir + name + etalon_mark + ".pmv";
-	
 	TEST_CHECK(fs::exists(etalon_trace), _T("etalon_trace not found"));
 	TEST_CHECK(fs::exists(etalon_result), _T("etalon_result not found"));
-	
-	tstring simulation_trace = dir + name + ".trc";
-	tstring simulation_result = dir + name + ".pmv";
-	
-	boost::filesystem::remove(simulation_trace);
-	boost::filesystem::remove(simulation_result);
-	
-	tstring command(RDO_STUDIO_CONSOLE_APP_STRING + tstring(" -i ") + model);
-	system(command.c_str());
 	
 	TEST_CHECK(fs::exists(simulation_trace), _T("simulation_trace not found"));
 	TEST_CHECK(fs::exists(simulation_result), _T("simulation_result not found"));
 	
 	compare_trace(etalon_trace, simulation_trace);
 	compare_result(etalon_result, simulation_result);
-	
-	boost::filesystem::remove(simulation_trace);
-	boost::filesystem::remove(simulation_result);
-	
-	if(!g_state) 
-	{
-		std::cout << "test ok" << std::endl;
-	}
 }
 
 int main(int argc, PTR(char) argv[])
@@ -175,10 +147,33 @@ int main(int argc, PTR(char) argv[])
 		TEST_ERROR(_T("Invalid compile app"));
 	}
 	
-	tstring model_name;
-	options_controller.getModelName(model_name);
+	tstring etalon_trace, etalon_result, simulation_trace, simulation_result;
 	
-	test_model(model_name);
+	bool res = true;
+	
+	res *= options_controller.getEtalonTraceFileName(etalon_trace);
+	res *= options_controller.getEtalonResultFileName(etalon_result);
+	res *= options_controller.getTraceFileName(simulation_trace);
+	res *= options_controller.getResultFileName(simulation_result);
+	
+	if(res) 
+	{
+		test_model(etalon_trace, etalon_result, simulation_trace, simulation_result);
+	}
+	else
+	{
+		std::cout << _T("Not enough of input data") << std::endl;
+		g_state = TERMINATION_ERROR;
+	}
+	
+	if(!g_state)
+	{
+		std::cout <<  _T("Test is completed successfully") << std::endl;
+	}
+	else
+	{
+		std::cout <<  _T("Test is completed with an error") << std::endl;
+	}
 	
 	return g_state;
 }

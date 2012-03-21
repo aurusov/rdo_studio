@@ -59,15 +59,24 @@ void RDOControllerConsoleOptions::parseOptions()
 	}
 }
 
-void RDOControllerConsoleOptions::getModelName(REF(tstring) modelName)
+rbool RDOControllerConsoleOptions::getEtalonTraceFileName(REF(tstring) name)
 {
-	if(m_variables.count(INPUT_MODEL_COMMAND))
-	{
-		///! @todo added control input data
-		modelName = m_variables[INPUT_MODEL_COMMAND].as<tstring>();
-		return;
-	}
-	modelName = _T("");
+	return getParameter(name, ETALON_TRACE_COMMAND);
+}
+
+rbool RDOControllerConsoleOptions::getEtalonResultFileName(REF(tstring) name)
+{
+	return getParameter(name, ETALON_RESULT_COMMAND);
+}
+
+rbool RDOControllerConsoleOptions::getTraceFileName(REF(tstring) name)
+{
+	return getParameter(name, TRACE_COMMAND);
+}
+
+rbool RDOControllerConsoleOptions::getResultFileName(REF(tstring) name)
+{
+	return getParameter(name, RESULT_COMMAND);
 }
 
 rbool RDOControllerConsoleOptions::helpQuery()
@@ -78,7 +87,10 @@ rbool RDOControllerConsoleOptions::helpQuery()
 void RDOControllerConsoleOptions::createGeneralOptions(REF(po::options_description) options)
 {
 	options.add_options()
-			((INPUT_MODEL_COMMAND + COMMA_STRING + INPUT_MODEL_COMMAND_SHORT).c_str(), po::value<tstring>(), MODEL_COMMENT.c_str())
+			((ETALON_TRACE_COMMAND + COMMA_STRING + ETALON_TRACE_COMMAND_SHORT).c_str(), po::value<tstring>(), ETALON_TRACE_COMMENT.c_str())
+			((ETALON_RESULT_COMMAND + COMMA_STRING + ETALON_RESULT_COMMAND_SHORT).c_str(), po::value<tstring>(), ETALON_TRACE_COMMENT.c_str())
+			((TRACE_COMMAND + COMMA_STRING + TRACE_COMMAND_SHORT).c_str(), po::value<tstring>(), TRACE_COMMENT.c_str())
+			((RESULT_COMMAND + COMMA_STRING + RESULT_COMMAND_SHORT).c_str(), po::value<tstring>(), RESULT_COMMENT.c_str())
 			((VERSION_COMMAND + COMMA_STRING + VERSION_COMMAND_SHORT).c_str(), VERSION_COMMENT.c_str())
 			((CHELP_COMMAND + COMMA_STRING + HELP_COMMAND_SHORT).c_str(), HELP_COMMENT.c_str());
 }

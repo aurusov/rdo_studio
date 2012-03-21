@@ -31,11 +31,17 @@ public:
 	~RDOControllerConsoleOptions();
 	
 	void parseOptions();
-	void getModelName(REF(tstring) modelName);
+	
+	rbool getEtalonTraceFileName(REF(tstring) name);
+	rbool getEtalonResultFileName(REF(tstring) name);
+	rbool getTraceFileName(REF(tstring) name);
+	rbool getResultFileName(REF(tstring) name);
 	
 	rbool helpQuery();
 	
 private:
+	template<class T>
+	rbool getParameter(REF(T) name, CREF(tstring) parameter);
 	void createGeneralOptions(REF(po::options_description) options);
 	
 private:
@@ -48,5 +54,7 @@ private:
 #ifdef COMPILER_VISUAL_STUDIO
 #	pragma warning (default:4512)
 #endif // COMPILER_VISUAL_STUDIO
+
+#include "app/rdo_studio_console/test/controller_console_options.inl"
 
 #endif // _RDO_CONTROLLER_CONSOLE_OPTIONS_H_

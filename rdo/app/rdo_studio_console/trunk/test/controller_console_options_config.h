@@ -18,21 +18,30 @@
 // --------------------------------------------------------------------------------
 
 // Input param constant
-const tstring INPUT_MODEL_COMMAND           = _T("input");
+const tstring ETALON_TRACE_COMMAND          = _T("etalon-trace");
+const tstring ETALON_RESULT_COMMAND         = _T("etalon-result");
+const tstring TRACE_COMMAND                 = _T("trace");
+const tstring RESULT_COMMAND                = _T("result");
 const tstring CHELP_COMMAND                 = _T("help");
 const tstring VERSION_COMMAND               = _T("version");
 
-const tstring INPUT_MODEL_COMMAND_SHORT     = _T("i");
+const tstring ETALON_TRACE_COMMAND_SHORT    = _T("T");
+const tstring ETALON_RESULT_COMMAND_SHORT   = _T("R");
+const tstring TRACE_COMMAND_SHORT           = _T("t");
+const tstring RESULT_COMMAND_SHORT          = _T("r");
 const tstring HELP_COMMAND_SHORT            = _T("h");
 const tstring VERSION_COMMAND_SHORT         = _T("v");
 
 // Input param comment
-const tstring MODEL_COMMENT                 = _T(": path to test model");
+const tstring ETALON_TRACE_COMMENT          = _T(": path to the etalon trace");
+const tstring ETALON_RESULT_COMMENT         = _T(": path to the etalon result");
+const tstring TRACE_COMMENT                 = _T(": path to the trace");
+const tstring RESULT_COMMENT                = _T(": path to the result");
 const tstring HELP_COMMENT                  = _T(": display help message");
 const tstring VERSION_COMMENT               = _T(": display program version");
 
 // Auxiliary constants
-const tstring PROGRAM_VERSION               = _T("0.3");
+const tstring PROGRAM_VERSION               = _T("0.4.1");
 const tstring PROGRAM_NAME                  = _T("rdo test");
 
 const tstring NOP_STRING                    = _T(" ");
