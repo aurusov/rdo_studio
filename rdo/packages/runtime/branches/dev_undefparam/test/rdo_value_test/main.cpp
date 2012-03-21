@@ -26,51 +26,96 @@ BOOST_AUTO_TEST_SUITE(RDOValue_Test)
 
 void testing(RDOValue value1, RDOValue value2)
 {
+	bool flag = false;
 	try
 	{
 		value1 += value2;
 	}
-	catch(CREF(RDOValueException)){}
+	catch(CREF(RDOValueException))
+	{
+		flag = true;
+	}
+	BOOST_CHECK(flag);
+	flag = false;
 	try
 	{
 		value1 -= value2;
 	}
-	catch(CREF(RDOValueException)){}
+	catch(CREF(RDOValueException))
+	{
+		flag = true;
+	}
+	BOOST_CHECK(flag);
+	flag = false;
 	try
 	{
 		value1 *= value2;
 	}
-	catch(CREF(RDOValueException)){}
+	catch(CREF(RDOValueException))
+	{
+		flag = true;
+	}
+	BOOST_CHECK(flag);
+	flag = false;
 	try
 	{
 		value1 /= value2;
 	}
-	catch(CREF(RDOValueException)){}
+	catch(CREF(RDOValueException))
+	{
+		flag = true;
+	}
+	BOOST_CHECK(flag);
+	flag = false;
 	try
 	{
 		if(value1 >  value2);
 	}
-	catch(CREF(RDOValueException)){}
+	catch(CREF(RDOValueException))
+	{
+		flag = true;
+	}
+	BOOST_CHECK(flag);
+	flag = false;
 	try
 	{
 		if(value1 <  value2);
 	}
-	catch(CREF(RDOValueException)){}
+	catch(CREF(RDOValueException))
+	{
+		flag = true;
+	}
+	BOOST_CHECK(flag);
+	flag = false;
 	try
 	{
 		if(value1 >= value2);
 	}
-	catch(CREF(RDOValueException)){}
+	catch(CREF(RDOValueException))
+	{
+		flag = true;
+	}
+	BOOST_CHECK(flag);
+	flag = false;
 	try
 	{
 		if(value1 <= value2);
 	}
-	catch(CREF(RDOValueException)){}
+	catch(CREF(RDOValueException))
+	{
+		flag = true;
+	}
+	BOOST_CHECK(flag);
+	flag = false;
 	try
 	{
 		if(value1 == value2);
 	}
-	catch(CREF(RDOValueException)){}
+	catch(CREF(RDOValueException))
+	{
+		flag = true;
+	}
+	BOOST_CHECK(flag);
 }
 
 void compare(RDOValue value1, RDOValue value2)
@@ -664,12 +709,25 @@ BOOST_AUTO_TEST_CASE(RDOValue_String_Char)
 	
 	testing(value1, value2);
 }
-/*
+
 BOOST_AUTO_TEST_CASE(RDOValue_Identificator)
 {
-	
+	tstring str = _T("abc");
+	RDOValue value1(str, g_identificator);
+	BOOST_CHECK(value1.typeID() == RDOType::t_identificator);
+	tstring iden = value1.getIdentificator();
+	BOOST_CHECK(iden == str);
+	iden = value1.getAsString();
+	BOOST_CHECK(iden == str);
+
+	tstring str2 =_T("dba");
+	RDOValue value2(str2, g_identificator);
+	BOOST_CHECK(value1 != value2);
+
+	RDOValue value3(str, g_identificator);
+	BOOST_CHECK(value1 == value3);
 }
-*/
+
 BOOST_AUTO_TEST_CASE(RDOValue_Resource)
 {
 	LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create();
