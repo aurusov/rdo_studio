@@ -111,9 +111,10 @@ print 'Find RDO executables    : ', executables
 # parse xml and start tests
 
 print '\nSTARTED TEST CYCLE'
-print dividing_line
 
 for task in files:
+  print dividing_line
+  
   dom = xml.dom.minidom.parse(task)
   
   dirname = os.path.dirname(task) + '/'
@@ -144,14 +145,15 @@ for task in files:
   if target == TARGET_CONSOLE:
     simulation_code = os.system(rdo_ex + ' -i ' + model)
     
-    print "SIMYLATION EXIT CODE   :", simulation_code
+    print "SIMYLATION EXIT CODE :", simulation_code
     
     exit_code_string = ''
     if cmp(simulation_code, exit_code):
       exit_code_string = "OK"
     else:
       exit_code_string = "ERROR"
-    print "CHECK EXIT CODE - " + exit_code_string
+      
+    print "CHECK EXIT CODE      :", exit_code_string
     
     if simulation_code == EXIT_CODE_TERMINATION_NORMAL:
       test_code = os.system(rdo_test_ex + ' -T ' + etalon_trace + ' -R ' + etalon_result + ' -t ' + simulation_trace + ' -r ' + simulation_result)
@@ -164,7 +166,7 @@ for task in files:
   # remove temp file
   os.remove(simulation_trace)
   os.remove(simulation_result)
-  
-  print dividing_line
+
+print
 
 sys.exit(G_EXIT_CODE)
