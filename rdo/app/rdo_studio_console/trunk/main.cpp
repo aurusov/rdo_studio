@@ -51,7 +51,7 @@ int main(int argc, PTR(char) argv[])
 
 			if (pAppController->errorOccurred())
 			{
-				std::cerr << _T("  run-time error  ") << std::endl;
+				std::cerr << _T("Run-time error") << std::endl;
 				exit(TERMINATION_WITH_AN_ERROR_RUNTIME_ERROR);
 			}
 		}
@@ -63,16 +63,16 @@ int main(int argc, PTR(char) argv[])
 
 		if (simulationResult)
 		{
-			std::cout << _T("simulation finished successfully") << std::endl;
+			std::cout << _T("Simulation finished successfully") << std::endl;
 		}
 		else
 		{
-			std::cout << _T("simulation completed with errors") << std::endl;		
+			std::cout << _T("Simulation completed with errors") << std::endl;		
 		}
 	}
 	else if(!options_controller.helpQuery())
 	{
-		std::cout << _T("model does not exist") << std::endl;
+		std::cout << _T("Model does not exist") << std::endl;
 		return TERMINATION_WITH_AN_ERROR_NO_MODEL;
 	}
 	return TERMINATION_NORMAL;
