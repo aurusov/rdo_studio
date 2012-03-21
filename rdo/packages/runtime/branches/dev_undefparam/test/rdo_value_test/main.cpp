@@ -728,6 +728,16 @@ BOOST_AUTO_TEST_CASE(RDOValue_Identificator)
 	BOOST_CHECK(value1 == value3);
 }
 
+BOOST_AUTO_TEST_CASE(RDOValue_Undefined)
+{
+	rsint val1 = 10;
+	RDOValue value1(val1);
+	BOOST_CHECK(value1);
+	value1.setUndefined(1);
+	double undefined = value1.getUndefined();
+	BOOST_CHECK(undefined == 1  );
+}
+
 BOOST_AUTO_TEST_CASE(RDOValue_Resource)
 {
 	LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create();
