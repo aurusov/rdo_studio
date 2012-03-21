@@ -98,6 +98,8 @@ print "STARTED SCRIPT :", sys.argv[0]
 files = get_test_files(model_directory)
 executables = get_executables(directory)
 
+files.sort()
+
 rdo_ex = executables[0]
 rdo_test_ex = executables[1]
 
@@ -164,7 +166,5 @@ for task in files:
   os.remove(simulation_result)
   
   print dividing_line
-    
-print 'G_EXIT_CODE', G_EXIT_CODE
 
 sys.exit(G_EXIT_CODE)
