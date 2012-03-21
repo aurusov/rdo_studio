@@ -53,8 +53,6 @@ RDOStudioFrameView::RDOStudioFrameView()
 	: RDOStudioView   ()
 	, m_newClientRect (0, 0, 0, 0)
 	, m_hwnd          (NULL )
-	, m_hfontInit     (NULL )
-	, m_hfontCurrent  (NULL )
 	, m_mouseOnHScroll(false)
 {
 	m_bgColor.SetFromCOLORREF(studioApp.m_pMainFrame->style_frame.theme->backgroundColor);
@@ -134,10 +132,6 @@ int RDOStudioFrameView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	m_hwnd = GetSafeHwnd();
 
-	HDC hDC = ::GetDC(m_hwnd);
-	m_hfontInit = static_cast<HFONT>(::GetCurrentObject(hDC, OBJ_FONT));
-	::ReleaseDC(m_hwnd, hDC);
-
 	updateFont      ();
 	updateScrollBars();
 
@@ -158,18 +152,10 @@ void RDOStudioFrameView::OnDestroy()
 
 void RDOStudioFrameView::updateFont()
 {
-	HDC hDC = ::GetDC(m_hwnd);
-
-	if (m_hfontCurrent)
-	{
-		::SelectObject(hDC, m_hfontInit);
-		::DeleteObject(m_hfontCurrent);
-	}
-
 	LOGFONT lf;
 	memset(&lf, 0, sizeof(lf));
 	PTR(RDOStudioFrameStyle) pStyle = &studioApp.m_pMainFrame->style_frame;
-	lf.lfHeight    = -MulDiv(pStyle->font->size, ::GetDeviceCaps(hDC, LOGPIXELSY), 72);
+//	lf.lfHeight    = -MulDiv(pStyle->font->size, ::GetDeviceCaps(hDC, LOGPIXELSY), 72);
 	lf.lfWeight    = pStyle->theme->defaultStyle & rdoStyle::RDOStyleFont::BOLD ? FW_BOLD : FW_NORMAL;
 	lf.lfItalic    = pStyle->theme->defaultStyle & rdoStyle::RDOStyleFont::ITALIC;
 	lf.lfUnderline = pStyle->theme->defaultStyle & rdoStyle::RDOStyleFont::UNDERLINE;
@@ -178,9 +164,8 @@ void RDOStudioFrameView::updateFont()
 	strcpy(lf.lfFaceName, pStyle->font->name.c_str());
 #pragma warning(default: 4996)
 
-	m_hfontCurrent = ::CreateFontIndirect(&lf);
-	::SelectObject(hDC, m_hfontCurrent);
-	::ReleaseDC(m_hwnd, hDC);
+	std::wstring fontName = rdo::toUnicode(pStyle->font->name);
+	m_pFont.reset(new Gdiplus::Font(fontName.c_str(), 8));
 }
 
 BOOL RDOStudioFrameView::OnPreparePrinting(PTR(CPrintInfo) pInfo)
@@ -621,33 +606,44 @@ void RDOStudioFrameView::elementText(PTR(rdoAnimation::RDOTextElement) pElement)
 {
 	ASSERT(pElement);
 
-	HDC hDC = m_memDC.dc().GetHDC();
+	Gdiplus::RectF rect(
+		Gdiplus::REAL(pElement->m_point.m_x),
+		Gdiplus::REAL(pElement->m_point.m_y),
+		Gdiplus::REAL(pElement->m_size.m_width),
+		Gdiplus::REAL(pElement->m_size.m_height)
+	);
 
 	if (!pElement->m_background.m_transparent)
 	{
-		::SetBkMode(hDC, OPAQUE);
-		::SetBkColor(hDC, RGB(pElement->m_background.m_r, pElement->m_background.m_g, pElement->m_background.m_b));
-	}
-	else
-	{
-		::SetBkMode(hDC, TRANSPARENT);
+		Gdiplus::SolidBrush brush(Gdiplus::Color(pElement->m_background.m_r, pElement->m_background.m_g, pElement->m_background.m_b));
+		m_memDC.dc().FillRectangle(&brush, rect);
 	}
 
-	if(!pElement->m_foreground.m_transparent)
-	{
-		::SetTextColor(hDC, RGB(pElement->m_foreground.m_r, pElement->m_foreground.m_g, pElement->m_foreground.m_b));
-	}
+	if (pElement->m_foreground.m_transparent)
+		return;
 
-	UINT nFormat = DT_SINGLELINE | DT_VCENTER;
+	if (!m_pFont.get() || m_pFont->GetLastStatus() != Gdiplus::Ok)
+		return;
+
+	Gdiplus::StringFormat sformat;
+
 	switch (pElement->m_align)
 	{
-	case rdoAnimation::RDOTextElement::TETA_LEFT  : nFormat |= DT_LEFT;   break;
-	case rdoAnimation::RDOTextElement::TETA_RIGHT : nFormat |= DT_RIGHT;  break;
-	case rdoAnimation::RDOTextElement::TETA_CENTER: nFormat |= DT_CENTER; break;
+	case rdoAnimation::RDOTextElement::TETA_LEFT  : sformat.SetAlignment(Gdiplus::StringAlignmentNear  ); break;
+	case rdoAnimation::RDOTextElement::TETA_RIGHT : sformat.SetAlignment(Gdiplus::StringAlignmentFar   ); break;
+	case rdoAnimation::RDOTextElement::TETA_CENTER: sformat.SetAlignment(Gdiplus::StringAlignmentCenter); break;
 	}
 
-	::DrawText(hDC, pElement->m_text.c_str(), pElement->m_text.length(), CRect((int)pElement->m_point.m_x, (int)pElement->m_point.m_y, (int)(pElement->m_point.m_x + pElement->m_size.m_width), (int)(pElement->m_point.m_y + pElement->m_size.m_height)), nFormat);
-	m_memDC.dc().ReleaseHDC(hDC);
+	std::wstring wtext = rdo::toUnicode(pElement->m_text);
+
+	Gdiplus::SolidBrush brush(
+		Gdiplus::Color(
+			pElement->m_foreground.m_r,
+			pElement->m_foreground.m_g,
+			pElement->m_foreground.m_b
+		)
+	);
+	m_memDC.dc().DrawString(wtext.c_str(), wtext.length(), m_pFont.get(), rect, &sformat, &brush);
 }
 
 template <class F, class D>
