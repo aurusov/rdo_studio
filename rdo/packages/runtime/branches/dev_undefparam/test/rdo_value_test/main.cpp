@@ -24,6 +24,64 @@ using namespace rdoRuntime;
 
 BOOST_AUTO_TEST_SUITE(RDOValue_Test)
 
+void testing(RDOValue value1, RDOValue value2)
+{
+	try
+	{
+		value1 += value2;
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		value1 -= value2;
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		value1 *= value2;
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		value1 /= value2;
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		if(value1 >  value2);
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		if(value1 <  value2);
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		if(value1 >= value2);
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		if(value1 <= value2);
+	}
+	catch(CREF(RDOValueException)){}
+	try
+	{
+		if(value1 == value2);
+	}
+	catch(CREF(RDOValueException)){}
+}
+
+void compare(RDOValue value1, RDOValue value2)
+{
+	BOOST_CHECK(value1 != value2);
+	BOOST_CHECK(value1 <  value2);
+	BOOST_CHECK(value2 >  value1);
+	BOOST_CHECK(value1 <= value2);
+	BOOST_CHECK(value2 >= value1);
+}
+
 BOOST_AUTO_TEST_CASE(RDOValue_String)
 {
 	const tstring str1 = _T("qqq");
@@ -88,7 +146,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Rsint_Arifmethic)
 	
 	value2 = value1;
 	value2 --;
-	BOOST_CHECK(value2 == value1 - 1);	
+	BOOST_CHECK(value2 == value1 - 1);
 	value2 ++;
 	BOOST_CHECK(value2 == value1);
 }
@@ -101,7 +159,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Rsint_Compare)
 	RDOValue value2(val2);
 	
 	BOOST_CHECK(value1 != value2);
-	BOOST_CHECK(value1 >  value2);	
+	BOOST_CHECK(value1 >  value2);
 	BOOST_CHECK(value2 <  value1);
 	BOOST_CHECK(value1 >= value2);
 	BOOST_CHECK(value2 <= value1);
@@ -157,9 +215,9 @@ BOOST_AUTO_TEST_CASE(RDOValue_Ruint_Arifmethic)
 
 	value2 = value1;
 	value2 --;
-	BOOST_CHECK(value2 == value1 - 1);	
+	BOOST_CHECK(value2 == value1 - 1);
 	value2 ++;
-	BOOST_CHECK(value2 == value1);	
+	BOOST_CHECK(value2 == value1);
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Ruint_Compare)
@@ -170,7 +228,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Ruint_Compare)
 	RDOValue value2(val2);
 
 	BOOST_CHECK(value1 != value2);
-	BOOST_CHECK(value1 >  value2);	
+	BOOST_CHECK(value1 >  value2);
 	BOOST_CHECK(value2 <  value1);
 	BOOST_CHECK(value1 >= value2);
 	BOOST_CHECK(value2 <= value1);
@@ -226,9 +284,9 @@ BOOST_AUTO_TEST_CASE(RDOValue_Double_Arifmethic)
 
 	value2 = value1;
 	value2 --;
-	BOOST_CHECK(value2 == value1 - 1);	
+	BOOST_CHECK(value2 == value1 - 1);
 	value2 ++;
-	BOOST_CHECK(value2 == value1);	
+	BOOST_CHECK(value2 == value1);
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Double_Compare)
@@ -239,7 +297,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Double_Compare)
 	RDOValue value2(doub2);
 	
 	BOOST_CHECK(value1 != value2);
-	BOOST_CHECK(value1 >  value2);	
+	BOOST_CHECK(value1 >  value2);
 	BOOST_CHECK(value2 <  value1);
 	BOOST_CHECK(value1 >= value2);
 	BOOST_CHECK(value2 <= value1);
@@ -272,7 +330,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Bool)
 	BOOST_CHECK(  value1 && value3 );
 	BOOST_CHECK(!(value2 && value3));
 	BOOST_CHECK(  value1 || value2 );
-	BOOST_CHECK(!(value2 || value4));	
+	BOOST_CHECK(!(value2 || value4));
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Char)
@@ -337,11 +395,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Rsint_Ruint)
 	RDOValue value1(val1);
 	RDOValue value2(val2);
 
-	BOOST_CHECK(value1 != value2);
-	BOOST_CHECK(value1 <  value2);
-	BOOST_CHECK(value2 >  value1);
-	BOOST_CHECK(value1 <= value2);
-	BOOST_CHECK(value2 >= value1);
+	compare(value1, value2);
 
 	ruint val3 = 10;
 	value2 = val3;
@@ -371,11 +425,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Ruint_Rsint)
 	RDOValue value1(val1);
 	RDOValue value2(val2);
 
-	BOOST_CHECK(value1 != value2);
-	BOOST_CHECK(value1 <  value2);
-	BOOST_CHECK(value2 >  value1);
-	BOOST_CHECK(value1 <= value2);
-	BOOST_CHECK(value2 >= value1);
+	compare(value1, value2);
 
 	rsint val3 = 10;
 	value2 = val3;
@@ -405,11 +455,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Rsint_Double)
 	RDOValue value1(val1);
 	RDOValue value2(val2);
 
-	BOOST_CHECK(value1 != value2);
-	BOOST_CHECK(value1 <  value2);
-	BOOST_CHECK(value2 >  value1);
-	BOOST_CHECK(value1 <= value2);
-	BOOST_CHECK(value2 >= value1);
+	compare(value1, value2);
 
 	double val3 = 10;
 	value2 = val3;
@@ -439,11 +485,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Double_rsint)
 	RDOValue value1(val1);
 	RDOValue value2(val2);
 
-	BOOST_CHECK(value1 != value2);
-	BOOST_CHECK(value1 <  value2);
-	BOOST_CHECK(value2 >  value1);
-	BOOST_CHECK(value1 <= value2);
-	BOOST_CHECK(value2 >= value1);
+	compare(value1, value2);
 
 	double val3 = 15;
 	value1 = val3;
@@ -473,11 +515,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Ruint_Double)
 	RDOValue value1(val1);
 	RDOValue value2(val2);
 
-	BOOST_CHECK(value1 != value2);
-	BOOST_CHECK(value1 <  value2);
-	BOOST_CHECK(value2 >  value1);
-	BOOST_CHECK(value1 <= value2);
-	BOOST_CHECK(value2 >= value1);
+	compare(value1, value2);
 
 	double val3 = 10;
 	value2 = val3;
@@ -507,11 +545,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Double_ruint)
 	RDOValue value1(val1);
 	RDOValue value2(val2);
 
-	BOOST_CHECK(value1 != value2);
-	BOOST_CHECK(value1 <  value2);
-	BOOST_CHECK(value2 >  value1);
-	BOOST_CHECK(value1 <= value2);
-	BOOST_CHECK(value2 >= value1);
+	compare(value1, value2);
 
 	double val3 = 15;
 	value1 = val3;
@@ -541,51 +575,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Rsint_String)
 	RDOValue value1(val1);
 	RDOValue value2(str1);
 
-	try 
-	{
-		value1 += value2;
-	} 
-	catch(CREF(RDOValueException)){}
-	try
-	{
-		value1 -= value2;
-	}
-	catch(CREF(RDOValueException)){}
-	try
-	{
-		value1 *= value2;
-	}
-	catch(CREF(RDOValueException)){}
-	try
-	{
-		value1 /= value2;
-	}
-	catch(CREF(RDOValueException)){}
-	try
-	{
-		if(value1 >  value2);		
-	}
-	catch(CREF(RDOValueException)){}
-	try
-	{
-		if(value1 <  value2);	
-	}
-	catch(CREF(RDOValueException)){}
-	try
-	{
-		if(value1 >= value2);		
-	}
-	catch(CREF(RDOValueException)){}
-	try
-	{
-		if(value1 <= value2);		
-	}
-	catch(CREF(RDOValueException)){}
-	try
-	{
-		if(value1 == value2);		
-	}
-	catch(CREF(RDOValueException)){}
+	testing(value1, value2);
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Ruint_String)
@@ -595,51 +585,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Ruint_String)
 	RDOValue value1(val1);
 	RDOValue value2(str1);
 
-	try 
-	{
-		value1 += value2;
-	} 
-	catch(CREF(RDOValueException)){}
-	try
-	{
-		value1 -= value2;
-	}
-	catch(CREF(RDOValueException)){}
-	try
-	{
-		value1 *= value2;
-	}
-	catch(CREF(RDOValueException)){}
-	try
-	{
-		value1 /= value2;
-	}
-	catch(CREF(RDOValueException)){}
-	try
-	{
-		if(value1 >  value2);		
-	}
-	catch(CREF(RDOValueException)){}
-	try
-	{
-		if(value1 <  value2);	
-	}
-	catch(CREF(RDOValueException)){}
-	try
-	{
-		if(value1 >= value2);		
-	}
-	catch(CREF(RDOValueException)){}
-	try
-	{
-		if(value1 <= value2);		
-	}
-	catch(CREF(RDOValueException)){}
-	try
-	{
-		if(value1 == value2);		
-	}
-	catch(CREF(RDOValueException)){}
+	testing(value1, value2);
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Double_String)
@@ -649,51 +595,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Double_String)
 	RDOValue value1(val1);
 	RDOValue value2(str1);
 
-	try 
-	{
-		value1 += value2;
-	} 
-	catch(CREF(RDOValueException)){}
-	try
-	{
-		value1 -= value2;
-	}
-	catch(CREF(RDOValueException)){}
-	try
-	{
-		value1 *= value2;
-	}
-	catch(CREF(RDOValueException)){}
-	try
-	{
-		value1 /= value2;
-	}
-	catch(CREF(RDOValueException)){}
-	try
-	{
-		if(value1 >  value2);		
-	}
-	catch(CREF(RDOValueException)){}
-	try
-	{
-		if(value1 <  value2);	
-	}
-	catch(CREF(RDOValueException)){}
-	try
-	{
-		if(value1 >= value2);		
-	}
-	catch(CREF(RDOValueException)){}
-	try
-	{
-		if(value1 <= value2);		
-	}
-	catch(CREF(RDOValueException)){}
-	try
-	{
-		if(value1 == value2);		
-	}
-	catch(CREF(RDOValueException)){}
+	testing(value1, value2);
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Char_Rsint)
@@ -712,11 +614,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Char_Rsint)
 	value1 /= value2;
 	BOOST_CHECK(value1 == val1      );
 
-	BOOST_CHECK(  value1 <  value2 );
-	BOOST_CHECK(  value1 <= value2 );
-	BOOST_CHECK(  value2 >  value1 );
-	BOOST_CHECK(  value1 >= value1 );
-	BOOST_CHECK(!(value1 == value2));
+	compare(value1, value2);
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Char_Ruint)
@@ -735,11 +633,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Char_Ruint)
 	value1 /= value2;
 	BOOST_CHECK(value1 == val1      );
 
-	BOOST_CHECK(  value1 <  value2 );
-	BOOST_CHECK(  value1 <= value2 );
-	BOOST_CHECK(  value2 >  value1 );
-	BOOST_CHECK(  value1 >= value1 );
-	BOOST_CHECK(!(value1 == value2));
+	compare(value1, value2);
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Char_Double)
@@ -758,11 +652,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Char_Double)
 	value1 /= value2;
 	BOOST_CHECK(value1 == val1      );
 
-	BOOST_CHECK(  value1 <  value2 );
-	BOOST_CHECK(  value1 <= value2 );
-	BOOST_CHECK(  value2 >  value1 );
-	BOOST_CHECK(  value1 >= value1 );
-	BOOST_CHECK(!(value1 == value2));
+	compare(value1, value2);
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_String_Char)
@@ -772,51 +662,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_String_Char)
 	RDOValue value1(str1);
 	RDOValue value2(ch1 );
 	
-	try
-	{
-		value1 += value2;
-	}
-	catch(CREF(RDOValueException)){}
-	try
-	{
-		value1 -= value2;
-	}
-	catch(CREF(RDOValueException)){}
-	try
-	{
-		value1 *= value2;
-	}
-	catch(CREF(RDOValueException)){}
-	try
-	{
-		value1 /= value2;
-	}
-	catch(CREF(RDOValueException)){}
-	try
-	{
-		if(value1 >  value2);		
-	}
-	catch(CREF(RDOValueException)){}
-	try
-	{
-		if(value1 <  value2);	
-	}
-	catch(CREF(RDOValueException)){}
-	try
-	{
-		if(value1 >= value2);		
-	}
-	catch(CREF(RDOValueException)){}
-	try
-	{
-		if(value1 <= value2);		
-	}
-	catch(CREF(RDOValueException)){}
-	try
-	{
-		if(value1 == value2);		
-	}
-	catch(CREF(RDOValueException)){}
+	testing(value1, value2);
 }
 /*
 BOOST_AUTO_TEST_CASE(RDOValue_Identificator)
