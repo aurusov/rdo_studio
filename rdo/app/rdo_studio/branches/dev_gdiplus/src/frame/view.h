@@ -40,7 +40,7 @@ public:
 
 	void                   update       (CPTRC(rdoAnimation::RDOFrame) pFrame,
 	                                      CREF(rdo::gui::BitmapList)   bitmapList,
-	                                       REF(rdo::gui::BitmapList)   bitmapMaskInvertList,
+	                                       REF(rdo::gui::BitmapList)   bitmapGeneratedList,
 	                                       REF(AreaList)               areaList);
 	void                   updateFont   ();
 	PTR(RDOStudioFrameDoc) GetDocument  ();
@@ -78,8 +78,8 @@ private:
 	void  elementTriang     ( PTR(rdoAnimation::RDOTriangElement)   pElement);
 	void  elementCircle     ( PTR(rdoAnimation::RDOCircleElement)   pElement);
 	void  elementEllipse    ( PTR(rdoAnimation::RDOEllipseElement)  pElement);
-	void  elementBMP        ( PTR(rdoAnimation::RDOBmpElement)      pElement, CREF(rdo::gui::BitmapList) bitmapList, REF(rdo::gui::BitmapList) bitmapMaskInvertList);
-	void  elementSBMP       ( PTR(rdoAnimation::RDOSBmpElement)     pElement, CREF(rdo::gui::BitmapList) bitmapList, REF(rdo::gui::BitmapList) bitmapMaskInvertList);
+	void  elementBMP        ( PTR(rdoAnimation::RDOBmpElement)      pElement, CREF(rdo::gui::BitmapList) bitmapList, REF(rdo::gui::BitmapList) bitmapGeneratedList);
+	void  elementSBMP       ( PTR(rdoAnimation::RDOSBmpElement)     pElement, CREF(rdo::gui::BitmapList) bitmapList, REF(rdo::gui::BitmapList) bitmapGeneratedList);
 	void  elementActive     ( PTR(rdoAnimation::RDOActiveElement)   pElement, REF(AreaList) areaList);
 
 	virtual BOOL PreCreateWindow  (REF(CREATESTRUCT) cs);

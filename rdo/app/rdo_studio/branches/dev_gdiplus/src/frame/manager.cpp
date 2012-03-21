@@ -252,14 +252,8 @@ void RDOStudioFrameManager::clear()
 		delete it->second;
 	}
 
-	STL_FOR_ALL(m_bitmapMaskInvertList, it)
-	{
-		delete it->second;
-	}
-
-	m_frameList           .clear();
-	m_bitmapList          .clear();
-	m_bitmapMaskInvertList.clear();
+	m_frameList .clear();
+	m_bitmapList.clear();
 
 	m_lastShowedFrame = ruint(~0);
 	setCurrentShowingFrame(ruint(~0));
@@ -377,7 +371,12 @@ void RDOStudioFrameManager::showFrame(CPTRC(rdoAnimation::RDOFrame) pFrame, ruin
 		{
 			PTR(RDOStudioFrameView) pFrameView = getFrameView(index);
 			ASSERT(pFrameView);
-			pFrameView->update(pFrame, m_bitmapList, m_bitmapMaskInvertList, m_frameList[index]->m_areaList);
+			rdo::gui::BitmapList bitmapGeneratedList;
+			pFrameView->update(pFrame, m_bitmapList, bitmapGeneratedList, m_frameList[index]->m_areaList);
+			if (!bitmapGeneratedList.empty())
+			{
+				std::copy(bitmapGeneratedList.begin(), bitmapGeneratedList.end(), std::inserter(m_bitmapList, m_bitmapList.begin()));
+			}
 		}
 	}
 }

@@ -537,7 +537,7 @@ void RDOStudioFrameView::OnMouseMove(UINT nFlags, CPoint point)
 void RDOStudioFrameView::update(
 	CPTRC(rdoAnimation::RDOFrame) pFrame,
 	 CREF(rdo::gui::BitmapList)   bitmapList,
-	  REF(rdo::gui::BitmapList)   bitmapMaskInvertList,
+	  REF(rdo::gui::BitmapList)   bitmapGeneratedList,
 	  REF(AreaList)               areaList
 )
 {
@@ -563,8 +563,8 @@ void RDOStudioFrameView::update(
 		case rdoAnimation::FrameItem::FIT_TRIANG : elementTriang   (static_cast<PTR(rdoAnimation::RDOTriangElement )>(pCurrElement)); break;
 		case rdoAnimation::FrameItem::FIT_CIRCLE : elementCircle   (static_cast<PTR(rdoAnimation::RDOCircleElement )>(pCurrElement)); break;
 		case rdoAnimation::FrameItem::FIT_ELLIPSE: elementEllipse  (static_cast<PTR(rdoAnimation::RDOEllipseElement)>(pCurrElement)); break;
-		case rdoAnimation::FrameItem::FIT_BMP    : elementBMP      (static_cast<PTR(rdoAnimation::RDOBmpElement    )>(pCurrElement), bitmapList, bitmapMaskInvertList); break;
-		case rdoAnimation::FrameItem::FIT_S_BMP  : elementSBMP     (static_cast<PTR(rdoAnimation::RDOSBmpElement   )>(pCurrElement), bitmapList, bitmapMaskInvertList); break;
+		case rdoAnimation::FrameItem::FIT_BMP    : elementBMP      (static_cast<PTR(rdoAnimation::RDOBmpElement    )>(pCurrElement), bitmapList, bitmapGeneratedList); break;
+		case rdoAnimation::FrameItem::FIT_S_BMP  : elementSBMP     (static_cast<PTR(rdoAnimation::RDOSBmpElement   )>(pCurrElement), bitmapList, bitmapGeneratedList); break;
 		case rdoAnimation::FrameItem::FIT_ACTIVE : elementActive   (static_cast<PTR(rdoAnimation::RDOActiveElement )>(pCurrElement), areaList); break;
 		}
 	}
@@ -829,92 +829,61 @@ void RDOStudioFrameView::elementEllipse(PTR(rdoAnimation::RDOEllipseElement) pEl
 void RDOStudioFrameView::elementBMP(
 	 PTR(rdoAnimation::RDOBmpElement) pElement,
 	CREF(rdo::gui::BitmapList)        bitmapList,
-	 REF(rdo::gui::BitmapList)        bitmapMaskInvertList)
+	 REF(rdo::gui::BitmapList)        bitmapGeneratedList)
 {
 	ASSERT(pElement);
 
 	rdo::gui::BitmapList::const_iterator bmpIt = bitmapList.find(pElement->m_bmp_name);
-	if (bmpIt != bitmapList.end())
+	if (bmpIt == bitmapList.end())
+		return;
+
+	PTR(Gdiplus::Bitmap) pBitmap = bmpIt->second;
+	if (pElement->hasMask())
 	{
-		rbool maskDraw = false;
-		if (pElement->hasMask())
+		tstring maskedBitmapName(rdo::format(_T("%s%s"), pElement->m_bmp_name.c_str(), pElement->m_mask_name.c_str()));
+		rdo::gui::BitmapList::const_iterator generatedIt = bitmapList.find(maskedBitmapName);
+		if (generatedIt != bitmapList.end())
 		{
-			rdo::gui::BitmapList::const_iterator maskIt = bitmapList.find(pElement->m_mask_name);
-			if (maskIt != bitmapList.end())
+			pBitmap = generatedIt->second;
+		}
+		else
+		{
+			generatedIt = bitmapGeneratedList.find(maskedBitmapName);
+			if (generatedIt != bitmapGeneratedList.end())
 			{
-				rdo::gui::BitmapList::const_iterator maskInvertIt = bitmapMaskInvertList.find(pElement->m_mask_name);
-				if (maskInvertIt == bitmapMaskInvertList.end())
+				pBitmap = generatedIt->second;
+			}
+			else
+			{
+				rdo::gui::BitmapList::const_iterator maskIt = bitmapList.find(pElement->m_mask_name);
+				if (maskIt != bitmapList.end())
 				{
-					PTR(Gdiplus::Bitmap) pMaskInvert = rdo::gui::Bitmap::invert(*maskIt->second);
-					if (pMaskInvert)
+					PTR(Gdiplus::Bitmap) pGenerated = rdo::gui::Bitmap::transparent(*bmpIt->second, *maskIt->second);
+					if (pGenerated)
 					{
-						std::pair<rdo::gui::BitmapList::const_iterator, rbool> result = bitmapMaskInvertList.insert(rdo::gui::BitmapList::value_type(pElement->m_mask_name, pMaskInvert));
+						std::pair<rdo::gui::BitmapList::const_iterator, rbool> result =
+							bitmapGeneratedList.insert(rdo::gui::BitmapList::value_type(maskedBitmapName, pGenerated));
 						ASSERT(result.second);
-						maskInvertIt = result.first;
+						pBitmap = pGenerated;
 					}
 				}
-
-				if (maskInvertIt != bitmapMaskInvertList.end())
-				{
-					//Gdiplus::Graphics graphics(maskInvertIt->second);
-					m_memDC.dc().DrawImage(maskInvertIt->second, 0, 0);
-					return;
-				}
-
-				Gdiplus::ImageAttributes imageAttributes;
-				imageAttributes.SetColorKey(
-					Gdiplus::ARGB(Gdiplus::Color::Black),
-					Gdiplus::ARGB(Gdiplus::Color::Black)
-				);
-				m_memDC.dc().DrawImage(
-					maskIt->second,
-					Gdiplus::RectF(
-						Gdiplus::REAL(pElement->m_point.m_x),
-						Gdiplus::REAL(pElement->m_point.m_y),
-						Gdiplus::REAL(maskIt->second->GetWidth()),
-						Gdiplus::REAL(maskIt->second->GetHeight())
-					),
-					0.0,
-					0.0,
-					Gdiplus::REAL(maskIt->second->GetWidth()),
-					Gdiplus::REAL(maskIt->second->GetHeight()),
-					Gdiplus::UnitPixel,
-					&imageAttributes
-				);
-				maskDraw = true;
-
-				//MemDC bg;
-				//if (bg.create(maskIt->second->GetWidth(), maskIt->second->GetHeight(), dc()))
-				//{
-				//	Gdiplus::RectF bgRect    (0.0, 0.0, Gdiplus::REAL(bg.width()), Gdiplus::REAL(bg.height()));
-				//	Gdiplus::RectF bufferRect(Gdiplus::REAL(pElement->m_point.m_x), Gdiplus::REAL(pElement->m_point.m_y), Gdiplus::REAL(bg.width()), Gdiplus::REAL(bg.height()));
-				//	Gdiplus::ImageAttributes imageAttributes;
-				//	bg.m_memDC.dc().DrawImage(&buffer(), 0, 0, Gdiplus::REAL(pElement->m_point.m_x), Gdiplus::REAL(pElement->m_point.m_y), Gdiplus::REAL(bg.width()), Gdiplus::REAL(bg.height()));
-				//}
-				//CBitmap* pOldMask = dcMask.SelectObject(&mask->bmp);
-				//::BitBlt(hdc, (int)(element->m_point.m_x), (int)(element->m_point.m_y), mask->w, mask->h, dcMask.m_hDC, 0, 0, SRCAND);
-				//::BitBlt(hdc, (int)(element->m_point.m_x), (int)(element->m_point.m_y), bmp->w, bmp->h, dcBmp.m_hDC, 0, 0, SRCPAINT);
-				//dcMask.SelectObject(pOldMask);
-
-//				NEVER_REACH_HERE;
-//				maskDraw = true;
 			}
 		}
-		if (!maskDraw)
-		{
-			m_memDC.dc().DrawImage(bmpIt->second, (int)(pElement->m_point.m_x), (int)(pElement->m_point.m_y));
-		}
+	}
+	if (pBitmap)
+	{
+		m_memDC.dc().DrawImage(pBitmap, (int)(pElement->m_point.m_x), (int)(pElement->m_point.m_y));
 	}
 }
 
 void RDOStudioFrameView::elementSBMP(
 	 PTR(rdoAnimation::RDOSBmpElement) pElement,
 	CREF(rdo::gui::BitmapList)         bitmapList,
-	 REF(rdo::gui::BitmapList)         bitmapMaskInvertList)
+	 REF(rdo::gui::BitmapList)         bitmapGeneratedList)
 {
 	ASSERT(pElement);
 
-	UNUSED(bitmapMaskInvertList);
+	UNUSED(bitmapGeneratedList);
 
 	rdo::gui::BitmapList::const_iterator bmpIt = bitmapList.find(pElement->m_bmp_name);
 	if (bmpIt != bitmapList.end())

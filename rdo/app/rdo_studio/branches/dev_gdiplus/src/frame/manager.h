@@ -96,7 +96,6 @@ private:
 
 	FrameList             m_frameList;
 	rdo::gui::BitmapList  m_bitmapList;
-	rdo::gui::BitmapList  m_bitmapMaskInvertList;
 	PTR(FrameDocTemplate) m_pFrameDocTemplate;
 	ruint                 m_lastShowedFrame;
 	ruint                 m_currentShowingFrame;
