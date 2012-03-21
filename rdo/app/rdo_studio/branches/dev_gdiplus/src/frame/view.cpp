@@ -625,25 +625,32 @@ void RDOStudioFrameView::elementText(PTR(rdoAnimation::RDOTextElement) pElement)
 	if (!m_pFont.get() || m_pFont->GetLastStatus() != Gdiplus::Ok)
 		return;
 
-	Gdiplus::StringFormat sformat;
+	int wlength = ::MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, pElement->m_text.c_str(), pElement->m_text.length(), NULL, 0);
+	if (!wlength)
+		return;
 
-	switch (pElement->m_align)
+	std::wstring wtext(wlength, 0);
+
+	if (::MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, pElement->m_text.c_str(), pElement->m_text.length(), &wtext[0], wlength) == wlength)
 	{
-	case rdoAnimation::RDOTextElement::TETA_LEFT  : sformat.SetAlignment(Gdiplus::StringAlignmentNear  ); break;
-	case rdoAnimation::RDOTextElement::TETA_RIGHT : sformat.SetAlignment(Gdiplus::StringAlignmentFar   ); break;
-	case rdoAnimation::RDOTextElement::TETA_CENTER: sformat.SetAlignment(Gdiplus::StringAlignmentCenter); break;
+		Gdiplus::StringFormat sformat;
+		switch (pElement->m_align)
+		{
+		case rdoAnimation::RDOTextElement::TETA_LEFT  : sformat.SetAlignment(Gdiplus::StringAlignmentNear  ); break;
+		case rdoAnimation::RDOTextElement::TETA_RIGHT : sformat.SetAlignment(Gdiplus::StringAlignmentFar   ); break;
+		case rdoAnimation::RDOTextElement::TETA_CENTER: sformat.SetAlignment(Gdiplus::StringAlignmentCenter); break;
+		}
+
+		Gdiplus::SolidBrush brush(
+			Gdiplus::Color(
+				pElement->m_foreground.m_r,
+				pElement->m_foreground.m_g,
+				pElement->m_foreground.m_b
+			)
+		);
+
+		m_memDC.dc().DrawString(wtext.c_str(), wtext.length(), m_pFont.get(), rect, &sformat, &brush);
 	}
-
-	std::wstring wtext = rdo::toUnicode(pElement->m_text);
-
-	Gdiplus::SolidBrush brush(
-		Gdiplus::Color(
-			pElement->m_foreground.m_r,
-			pElement->m_foreground.m_g,
-			pElement->m_foreground.m_b
-		)
-	);
-	m_memDC.dc().DrawString(wtext.c_str(), wtext.length(), m_pFont.get(), rect, &sformat, &brush);
 }
 
 template <class F, class D>
