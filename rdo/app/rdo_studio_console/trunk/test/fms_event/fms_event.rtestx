@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<test>
+  <model>fms_event.rdox</model>
+  <target>CONSOLE</target>
+  <exit_code>0</exit_code>
+  <trace>fms_event.trc</trace>
+  <result>fms_event.pmv</result>
+</test>

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<test>
+  <model>multichannel_qs.rdox</model>
+  <target>CONSOLE</target>
+  <exit_code>0</exit_code>
+  <trace>multichannel_qs.trc</trace>
+  <result>multichannel_qs.pmv</result>
+</test>
