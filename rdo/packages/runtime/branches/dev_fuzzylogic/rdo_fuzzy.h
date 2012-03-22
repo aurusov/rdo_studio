@@ -102,9 +102,10 @@ public:
 
 	typedef std::pair<tstring, LPRDOFuzzyValue> TermSet;
 
-	CREF(TermSet)         getTermSet() const;
-	virtual tstring       name      () const;
-	virtual RDOValue      value_cast(CREF(RDOValue) from) const;
+	CREF(TermSet)           getTermSet() const;
+	virtual tstring         name      () const;
+	virtual RDOValue        value_cast(CREF(RDOValue) from) const;
+	LPRDOFuzzySetDefinition getDefinition() const;
 
 	rbool operator== (CREF(RDOFuzzyType) type) const;
 	rbool operator!= (CREF(RDOFuzzyType) type) const;
@@ -140,6 +141,8 @@ private:
 	RDOLingvoVariable();
 	RDOLingvoVariable(LPRDOFuzzyType typeOfVariable);
 	RDOLingvoVariable(CREF(RDOLingvoVariable));
+
+	LPRDOFuzzySetDefinition m_setDefinition;
 	Set m_set;
 	tstring name;
 };

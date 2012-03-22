@@ -127,6 +127,10 @@ inline LPRDOFuzzyValue RDOFuzzyType::getSupplement(CREF(LPRDOFuzzyValue) pFuzzyV
 	return m_fuzzySetDefinition->getSupplement(pFuzzyValue);
 }
 
+inline LPRDOFuzzySetDefinition RDOFuzzyType::getDefinition() const
+{
+	return m_fuzzySetDefinition;
+}
 inline CREF(RDOFuzzyType::TermSet) RDOFuzzyType::getTermSet() const
 {
 	return m_termSet;
@@ -139,6 +143,7 @@ inline RDOLingvoVariable::Set::const_iterator           RDOLingvoVariable::end  
 inline RDOLingvoVariable::RDOLingvoVariable()
 {}
 inline RDOLingvoVariable::RDOLingvoVariable(LPRDOFuzzyType typeOfVariable)
+	:m_setDefinition (typeOfVariable->getDefinition())
 {
 	this->append(typeOfVariable->getTermSet());
 }
