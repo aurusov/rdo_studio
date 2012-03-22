@@ -54,6 +54,28 @@ private:
 };
 DECLARE_POINTER(ContextMemory);
 
+// --------------------------------------------------------------------------------
+// -------------------- ContextStatement
+// --------------------------------------------------------------------------------
+CLASS(ContextStatement):
+	    INSTANCE_OF      (ContextMemory)
+{
+DECLARE_FACTORY(ContextStatement);
+public:
+	rbool is_for_statement();
+	
+	ContextStatement(CREF(rdoRuntime::LPRDOCalc) pCalc);
+
+protected:
+	ContextStatement();
+
+private:
+	
+	rdoRuntime::LPRDOCalc m_pStatement;
+	DECLARE_IContextFind;
+};
+DECLARE_POINTER(ContextStatement);
+
 CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // _CONEXT_MEMORY_H_

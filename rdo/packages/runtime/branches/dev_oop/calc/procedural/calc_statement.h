@@ -60,8 +60,12 @@ private:
 CALC(RDOCalcFor)
 {
 	DECLARE_FACTORY(RDOCalcFor)
+public:
+	void addCalcStatement(CREF(LPRDOCalc) pStatement);
+
 private:
 	RDOCalcFor(CREF(LPRDOCalc) pDeclaration, CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pExpression, CREF(LPRDOCalc) pStatement);
+	RDOCalcFor::RDOCalcFor(CREF(LPRDOCalc) pDeclaration, CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pExpression);
 
 	LPRDOCalc m_pDeclaration;
 	LPRDOCalc m_pCondition;

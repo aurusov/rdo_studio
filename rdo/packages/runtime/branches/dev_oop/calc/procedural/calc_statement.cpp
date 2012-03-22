@@ -80,6 +80,22 @@ RDOCalcFor::RDOCalcFor(CREF(LPRDOCalc) pDeclaration, CREF(LPRDOCalc) pCondition,
 	ASSERT(m_pStatement  );
 }
 
+RDOCalcFor::RDOCalcFor(CREF(LPRDOCalc) pDeclaration, CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pExpression)
+	: m_pDeclaration(pDeclaration)
+	, m_pCondition  (pCondition  )
+	, m_pExpression (pExpression )
+{
+	ASSERT(m_pDeclaration);
+	ASSERT(m_pCondition  );
+	ASSERT(m_pExpression );
+}
+
+void RDOCalcFor::addCalcStatement(CREF(LPRDOCalc) pStatement)
+{
+	ASSERT(pStatement);
+	m_pStatement = pStatement;
+}
+
 REF(RDOValue) RDOCalcFor::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	if(pRuntime->getFunBreakFlag() == RDORuntime::FBF_CONTINUE)

@@ -14,6 +14,7 @@
 #include "simulator/compiler/parser/context/memory.h"
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/runtime/calc/procedural/calc_locvar.h"
+#include "simulator/runtime/calc/procedural/calc_statement.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -77,6 +78,52 @@ void ContextMemory::pop()
 	ASSERT(pLocalVariableListStack);
 
 	pLocalVariableListStack->pop();
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- ContextStatement
+// --------------------------------------------------------------------------------
+ContextStatement::ContextStatement(CREF(rdoRuntime::LPRDOCalc) pCalc)
+	: m_pStatement(pCalc)
+{}
+
+rbool ContextStatement::is_for_statement()
+{
+	return ((m_pStatement.object_dynamic_cast<rdoRuntime::RDOCalcFor>()) ? true : false);
+}
+
+Context::FindResult ContextStatement::onFindContext(CREF(LPRDOValue) pValue) const
+{
+	ASSERT(pValue);
+	//Оператор for
+	if(const_cast<PTR(ContextStatement)>(this)->is_for_statement())
+	{
+		tstring statement = pValue->value().getIdentificator();
+		
+		if(statement == "break")
+		{
+			rdoRuntime::LPRDOCalc pCalcBreak = rdo::Factory<rdoRuntime::RDOCalcFunBreak>::create();
+			ASSERT(pCalcBreak);
+
+			LPRDOType pBaseType = rdo::Factory<RDOType__void>::create();
+			ASSERT(pBaseType);
+
+			LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pBaseType, pValue->src_info());
+			ASSERT(pType);
+
+			LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalcBreak, pValue->src_info());
+			ASSERT(pExpression);
+
+			return Context::FindResult(const_cast<PTR(ContextStatement)>(this), pExpression, pValue);
+		}
+		else
+		{
+			rdoParser::g_error().error(pValue->src_info(), _T("Данный оператор используется неверно"));
+		}
+
+		rdoParser::g_error().error(pValue->src_info(), _T("Данный оператор нельзя использовать без объемлющего оператора"));
+	}
+	return Context::FindResult();
 }
 
 CLOSE_RDO_PARSER_NAMESPACE
