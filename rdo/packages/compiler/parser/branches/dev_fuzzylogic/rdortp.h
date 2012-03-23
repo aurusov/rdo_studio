@@ -14,6 +14,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/noncopyable.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/rdomacros.h"
 #include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/compiler/parser/rdo_value.h"
 #include "simulator/compiler/parser/type/type.h"
@@ -59,9 +60,9 @@ public:
 	};
 	enum { UNDEFINED_PARAM = ~0 };
 
-	rsint getNumber  () const   { return m_number;     };
-	rbool isPermanent() const   { return m_permanent;  };
-	rbool isTemporary() const   { return !m_permanent; };
+	rsint getNumber  () const;
+	rbool isPermanent() const;
+	rbool isTemporary() const;
 
 	LPRDORSSResource createRes(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info);
 
@@ -70,42 +71,13 @@ public:
 	LPRDORTPParam findRTPParam(CREF(tstring) paramName) const;
 
 	ruint           getRTPParamNumber(CREF(tstring) paramName) const;
-	CREF(ParamList) getParams        ()                        const { return m_params;          }
+	CREF(ParamList) getParams() const;
 
-	CREF(rdoRuntime::LPIResourceType) getRuntimeResType() const
-	{
-		ASSERT(m_pRuntimeResType);
-		return m_pRuntimeResType;
-	}
+	CREF(rdoRuntime::LPIResourceType) getRuntimeResType() const;
 
-	void setType(TypeRDOResType type)
-	{
-		//! \todo вывести ошибку вместо ASSERT()
-		ASSERT(!(m_type == procRes && type == procTran));
-		ASSERT(!(m_type == procTran && type == procRes));
-		m_type = type;
-	}
+	void setType(TypeRDOResType type);
 
-	void end()
-	{
-		switch (m_type)
-		{
-		case simple:
-			m_pRuntimeResType = rdo::Factory<rdoRuntime::RDOResourceType>::create(m_number).interface_cast<rdoRuntime::IResourceType>();
-			break;
-		case procRes:
-			m_pRuntimeResType = rdo::Factory<rdoRuntime::RDOResourceTypeProccess>::create(m_number).interface_cast<rdoRuntime::IResourceType>();
-			break;
-		case procTran:
-			m_pRuntimeResType = rdo::Factory<rdoRuntime::RDOResourceTypeTransact>::create(m_number).interface_cast<rdoRuntime::IResourceType>();
-			break;
-		default:
-			NEVER_REACH_HERE;
-		}
-		ASSERT(m_pRuntimeResType);
-		m_pType = m_pRuntimeResType;
-		ASSERT(m_pType);
-	}
+	void end();
 
 	void writeModelStructure(REF(std::ostream) stream) const;
 
@@ -249,5 +221,7 @@ DECLARE_POINTER(RDORTPResType);
 //};
 
 CLOSE_RDO_PARSER_NAMESPACE
+
+#include "simulator/compiler/parser/rdortp.inl"
 
 #endif // _RDORTP_H_

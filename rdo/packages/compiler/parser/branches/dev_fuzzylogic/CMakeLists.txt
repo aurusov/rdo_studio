@@ -152,6 +152,7 @@ SET(INLITE_FILES
 	rdoparser_lexer.inl
 	rdopatpreparse.inl
 	rdo_value.inl
+	rdortp.inl
 	# context path
 	context/context.inl
 	# type path
@@ -324,6 +325,7 @@ SOURCE_GROUP(".resorces" FILES
 	rdortp_param.cpp
 	rdortp.h
 	rdortp.cpp
+	rdortp.inl
 	rdorss.h
 	rdorss.cpp)
 

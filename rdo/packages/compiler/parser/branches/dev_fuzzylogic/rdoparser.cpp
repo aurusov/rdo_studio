@@ -431,8 +431,6 @@ void RDOParser::parse()
 		m_parser_item = NULL;
 		it++;
 	}
-
-	parse(rdoModelObjects::obPOST);
 }
 
 void RDOParser::parse(rdoModelObjects::RDOParseType file)
