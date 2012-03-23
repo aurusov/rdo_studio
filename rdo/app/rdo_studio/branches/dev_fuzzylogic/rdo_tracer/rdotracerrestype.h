@@ -1,7 +1,19 @@
-#ifndef RDOTRACERRESTYPE_H
-#define RDOTRACERRESTYPE_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      rdotracerrestype.h
+  \author    Захаров Павел
+  \date      11.03.2003
+  \brief     
+  \indent    4T
+*/
 
+#ifndef _RDO_STUDIO_MFC_TRACER_RDOTRACERRESTYPE_H_
+#define _RDO_STUDIO_MFC_TRACER_RDOTRACERRESTYPE_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracertreeitem.h"
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOTracerResParamInfo
@@ -57,4 +69,4 @@ public:
 	const int getParamsCount() const { return paramsInfo.size(); };
 };
 
-#endif // RDOTRACERRESTYPE_H
+#endif // _RDO_STUDIO_MFC_TRACER_RDOTRACERRESTYPE_H_

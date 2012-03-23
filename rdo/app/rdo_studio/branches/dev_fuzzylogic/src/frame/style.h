@@ -1,7 +1,19 @@
-#ifndef RDOSTUDIOFRAMESTYLE_H
-#define RDOSTUDIOFRAMESTYLE_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      app/rdo_studio_mfc/src/frame/style.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      18.04.2003
+  \brief     
+  \indent    4T
+*/
 
+#ifndef _RDO_STUDIO_MFC_FRAME_STYLE_H_
+#define _RDO_STUDIO_MFC_FRAME_STYLE_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/style.h"
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioFrameTheme
@@ -38,4 +50,4 @@ public:
 	virtual void init( CREF(tstring) _regPath = "" );
 };
 
-#endif // RDOSTUDIOFRAMESTYLE_H
+#endif // _RDO_STUDIO_MFC_FRAME_STYLE_H_

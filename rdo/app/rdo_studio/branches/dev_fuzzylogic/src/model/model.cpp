@@ -1,8 +1,8 @@
 /*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdostudiomodel.cpp
+  \copyright (c) RDO-Team, 2003-2012
+  \file      app/rdo_studio_mfc/src/model/model.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
+  \date      20.02.2003
   \brief     
   \indent    4T
 */
@@ -12,6 +12,12 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <limits>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/rdostream.h"
+#include "utils/rdoanimation.h"
+#include "kernel/rdokernel.h"
+#include "kernel/rdothread.h"
+#include "repository/rdorepository.h"
+#include "simulator/runtime/rdo_exception.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/src/thread.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"
@@ -25,13 +31,7 @@
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorresults.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
 #include "app/rdo_studio_mfc/resource.h"
-#include "kernel/rdokernel.h"
-#include "kernel/rdothread.h"
-#include "repository/rdorepository.h"
-#include "utils/rdostream.h"
-#include "utils/rdoanimation.h"
 #include "app/rdo_studio_mfc/plugins/common/rdoplugin.h"
-#include "simulator/runtime/rdo_exception.h"
 #include "thirdparty/pugixml/src/pugixml.hpp"
 // --------------------------------------------------------------------------------
 

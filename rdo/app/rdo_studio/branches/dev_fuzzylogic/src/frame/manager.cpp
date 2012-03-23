@@ -1,14 +1,23 @@
 /*!
-  \copyright (c) RDO-Team, 2011
-  \file      rdostudioframemanager.cpp
+  \copyright (c) RDO-Team, 2003-2012
+  \file      app/rdo_studio_mfc/src/frame/manager.cpp
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \authors   Копнин Андрей (kopninandrey@gmail.com)
-  \date      23.03.2003
+  \date      28.03.2003
   \brief     Отрисовка кадров анимации
   \indent    4T
 */
 
+// ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/rdostream.h"
+#include "utils/rdoanimation.h"
+#include "kernel/rdokernel.h"
+#include "kernel/rdothread.h"
+#include "simulator/service/rdosimwin.h"
+#include "repository/rdorepository.h"
 #include "app/rdo_studio_mfc/src/frame/manager.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/src/application.h"
@@ -18,12 +27,7 @@
 #include "app/rdo_studio_mfc/src/frame/tree_ctrl.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdodebugedit.h"
 #include "app/rdo_studio_mfc/resource.h"
-#include "kernel/rdokernel.h"
-#include "kernel/rdothread.h"
-#include "simulator/service/rdosimwin.h"
-#include "repository/rdorepository.h"
-#include "utils/rdostream.h"
-#include "utils/rdoanimation.h"
+// --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

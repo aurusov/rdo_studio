@@ -1,10 +1,22 @@
-#ifndef RDOSTUDIOFRAMEMANAGER_H
-#define RDOSTUDIOFRAMEMANAGER_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      app/rdo_studio_mfc/src/frame/manager.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      28.03.2003
+  \brief     
+  \indent    4T
+*/
 
+#ifndef _RDO_STUDIO_MFC_FRAME_MANAGER_H_
+#define _RDO_STUDIO_MFC_FRAME_MANAGER_H_
+
+// ----------------------------------------------------------------------- INCLUDES
 #include <vector>
 #include <map>
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/frame/document.h"
 #include "app/rdo_studio_mfc/src/frame/view.h"
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioFrameManager
@@ -163,4 +175,4 @@ public:
 	void updateStyles() const;
 };
 
-#endif // RDOSTUDIOFRAMEMANAGER_H
+#endif // _RDO_STUDIO_MFC_FRAME_MANAGER_H_

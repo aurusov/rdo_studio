@@ -1,7 +1,19 @@
-#ifndef RDOSTUDIOFRAMETREECTRL_H
-#define RDOSTUDIOFRAMETREECTRL_H
+/*!
+  \copyright (c) RDO-Team, 2003-2012
+  \file      app/rdo_studio_mfc/src/frame/tree_ctrl.h
+  \author    Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      28.03.2003
+  \brief     
+  \indent    4T
+*/
 
+#ifndef _RDO_STUDIO_MFC_FRAME_TREE_CTRL_H_
+#define _RDO_STUDIO_MFC_FRAME_TREE_CTRL_H_
+
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "ui/mfc_ctrls/rdotreectrl.h"
+// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioFrameTreeCtrl
@@ -25,4 +37,4 @@ private:
 	DECLARE_MESSAGE_MAP()
 };
 
-#endif // RDOSTUDIOFRAMETREECTRL_H
+#endif // _RDO_STUDIO_MFC_FRAME_TREE_CTRL_H_
