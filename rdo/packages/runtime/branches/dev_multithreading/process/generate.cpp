@@ -51,18 +51,18 @@ IBaseOperation::BOResult RDOPROCGenerate::onDoOperation(CREF(LPRDORuntime) pRunt
 {
 	++m_TransCount;
 
-        RDOValue pValue = m_pCreateAndGoOnTransactCalc->calcValue(pRuntime);
+	RDOValue pValue = m_pCreateAndGoOnTransactCalc->calcValue(pRuntime);
 
-        LPRDOPROCTransact pTransact = pValue.getPointer<RDOPROCTransact>();
+	LPRDOPROCTransact pTransact = pValue.getPointer<RDOPROCTransact>();
 
-        pTransact->setBlock(this);
-        pTransact->next();
+	pTransact->setBlock(this);
+	pTransact->next();
 
-        PTR(RDOTrace) tracer = pRuntime->getTracer();
-        if (!tracer->isNull())
-        {
-                tracer->getOStream() << pTransact->traceResourceState('\0', pRuntime) << tracer->getEOL();
-        }
+	PTR(RDOTrace) tracer = pRuntime->getTracer();
+	if (!tracer->isNull())
+	{
+		tracer->getOStream() << pTransact->traceResourceState('\0', pRuntime) << tracer->getEOL();
+	}
 
 	calcNextTimeInterval(pRuntime);
 	return IBaseOperation::BOR_done;

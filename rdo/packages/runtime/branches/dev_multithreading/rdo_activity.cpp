@@ -139,6 +139,7 @@ void RDOActivity::incrementRelevantResourceReference(CREF(LPRDORuntime) pRuntime
 
 void RDOActivity::decrementRelevantResourceReference(CREF(LPRDORuntime) pRuntime)
 {
+	//! \todo исправить
 	for (ruint i = 0; i < m_relResID.size(); ++i)
 	{
 		LPRDOResource res = pRuntime->getResourceByID(m_relResID.at(i));

@@ -36,11 +36,9 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 private:
-	RDOPROCAssign(LPIPROCProcess process, CREF(LPRDOCalc) pValue, int Id_res, int Id_param);
+	RDOPROCAssign(LPIPROCProcess pProcess, CREF(LPRDOCalc) pCalc);
 
-	LPRDOCalc pParamValue;
-	int       t_resId;
-	int       t_parId;
+	LPRDOCalc pAssignCalc;
 
 	DECLARE_IBaseOperation;
 };
