@@ -27,18 +27,18 @@ OBJECT(LocalVariable)
 {
 DECLARE_FACTORY(LocalVariable);
 public:
-	CREF(LPRDOValue)             getValue        () const;
-	CREF(LPExpression)           getExpression   () const;
-	CREF(LPTypeInfo)             getTypeInfo     () const;
-	CREF(rdoRuntime::RDOValue)   getDefaultValue () const;
+	CREF(tstring)          getName        () const;
+	CREF(RDOParserSrcInfo) getSrcInfo     () const;
+	CREF(LPExpression)     getExpression  () const;
+	CREF(LPTypeInfo)       getTypeInfo    () const;
+	rdoRuntime::RDOValue   getDefaultValue() const;
 
 private:
-	LocalVariable(CREF(LPRDOValue) pValue, CREF(LPExpression) pExpression, CREF(LPTypeInfo) pType);
+	LocalVariable(CREF(LPRDOValue) pName, CREF(LPExpression) pExpression);
+	virtual ~LocalVariable();
 
-	LPRDOValue           m_pValue;
-	LPExpression         m_pExpression;
-	LPTypeInfo           m_pType;
-	rdoRuntime::RDOValue m_pDefaultValue;
+	LPRDOValue    m_pName;
+	LPExpression  m_pExpression;
 };
 
 // --------------------------------------------------------------------------------
@@ -48,15 +48,16 @@ OBJECT(LocalVariableList)
 {
 DECLARE_FACTORY(LocalVariableList);
 public:
-	typedef std::list<LPLocalVariable> VariableList;
+	typedef  std::map<tstring, LPLocalVariable>  VariableList;
 
 	void            append           (CREF(LPLocalVariable) pVariable);
 	LPLocalVariable findLocalVariable(CREF(tstring)         name     ) const;
 
 private:
 	LocalVariableList();
+	virtual ~LocalVariableList();
 
-	VariableList m_variableList;
+	VariableList  m_variableList;
 };
 
 // --------------------------------------------------------------------------------

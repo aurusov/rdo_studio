@@ -1059,20 +1059,17 @@ init_declaration
 		LPTypeContext pTypeContext = pContext.object_static_cast<TypeContext>();
 		ASSERT(pTypeContext);
 
-		LPTypeInfo pParam = pTypeContext->getTypeInfo();
-		ASSERT(pParam);
+		LPTypeInfo pTypeInfo = pTypeContext->getTypeInfo();
+		ASSERT(pTypeInfo);
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(
-			rdo::Factory<TypeInfo>::create(
-				pParam->type(),
-				pParam->src_info()
-			),
-			rdo::Factory<rdoRuntime::RDOCalcConst>::create(pVariableName->value()),
+			pTypeInfo,
+			rdo::Factory<rdoRuntime::RDOCalcConst>::create(pTypeInfo->type()->get_default()),
 			pVariableName->src_info()
 		);
 		ASSERT(pExpression);
 
-		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(pVariableName, pExpression, pParam);
+		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(pVariableName, pExpression);
 		ASSERT(pLocalVariable);
 
 		rdoRuntime::LPRDOCalcCreateLocalVariable pCalcCreateLocalVariable = rdo::Factory<rdoRuntime::RDOCalcCreateLocalVariable>::create(pVariableName->value().getIdentificator(), pLocalVariable->getDefaultValue ());
@@ -1100,7 +1097,7 @@ init_declaration
 		LPTypeInfo pParam = pTypeContext->getTypeInfo();
 		ASSERT(pParam);
 
-		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(pVariableName, pArithm->expression(), pParam);
+		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(pVariableName, pArithm->expression());
 		ASSERT(pLocalVariable);
 
 		rdoRuntime::LPRDOCalcCreateLocalVariable pCalcCreateLocalVariable = rdo::Factory<rdoRuntime::RDOCalcCreateLocalVariable>::create(pVariableName->value().getIdentificator(), pLocalVariable->getDefaultValue ());

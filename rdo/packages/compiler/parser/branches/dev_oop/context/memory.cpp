@@ -42,7 +42,7 @@ Context::FindResult ContextMemory::onFindContext(CREF(LPRDOValue) pValue) const
 	{
 		LPExpression pExpression = rdo::Factory<Expression>::create(
 			pLocalVariable->getExpression()->typeInfo(),
-			rdo::Factory<rdoRuntime::RDOCalcGetLocalVariable>::create(pLocalVariable->getValue()->value().getIdentificator()),
+			rdo::Factory<rdoRuntime::RDOCalcGetLocalVariable>::create(pLocalVariable->getName()),
 			pValue->src_info()
 		);
 		ASSERT(pExpression);

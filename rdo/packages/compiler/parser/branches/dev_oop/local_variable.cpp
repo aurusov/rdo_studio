@@ -21,26 +21,30 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- LocalVariable
 // --------------------------------------------------------------------------------
-LocalVariable::LocalVariable(CREF(LPRDOValue) pValue, CREF(LPExpression) pExpression, CREF(LPTypeInfo) pType)
-	: m_pValue     (pValue     )
+LocalVariable::LocalVariable(CREF(LPRDOValue) pName, CREF(LPExpression) pExpression)
+	: m_pName      (pName      )
 	, m_pExpression(pExpression)
-	, m_pType      (pType      )
 {
-	ASSERT(m_pValue);
+	ASSERT(m_pName      );
 	ASSERT(m_pExpression);
-	ASSERT(m_pType);
 
-	m_pDefaultValue = m_pType->type()->get_default();
-
-	if(m_pDefaultValue.type()->typeID() == rdoRuntime::RDOType::t_unknow)
+	if (m_pExpression->typeInfo()->type()->typeID() == rdoRuntime::RDOType::t_unknow)
 	{
-		rdoParser::g_error().error(pValue->src_info(), _T("У данного типа нет значения поумолчанию."));
+		rdoParser::g_error().error(m_pExpression->typeInfo()->src_info(), _T("У данного типа нет значения поумолчанию"));
 	}
 }
 
-CREF(LPRDOValue) LocalVariable::getValue() const
+LocalVariable::~LocalVariable()
+{}
+
+CREF(tstring) LocalVariable::getName() const
 {
-	return m_pValue;
+	return m_pName->value().getIdentificator();
+}
+
+CREF(RDOParserSrcInfo) LocalVariable::getSrcInfo() const
+{
+	return *m_pName;
 }
 
 CREF(LPExpression) LocalVariable::getExpression() const
@@ -50,12 +54,12 @@ CREF(LPExpression) LocalVariable::getExpression() const
 
 CREF(LPTypeInfo) LocalVariable::getTypeInfo() const
 {
-	return m_pType;
+	return m_pExpression->typeInfo();
 }
 
-CREF(rdoRuntime::RDOValue) LocalVariable::getDefaultValue () const
+rdoRuntime::RDOValue LocalVariable::getDefaultValue() const
 {
-	return m_pDefaultValue;
+	return m_pExpression->typeInfo()->type()->get_default();
 }
 
 // --------------------------------------------------------------------------------
@@ -64,33 +68,29 @@ CREF(rdoRuntime::RDOValue) LocalVariable::getDefaultValue () const
 LocalVariableList::LocalVariableList()
 {}
 
+LocalVariableList::~LocalVariableList()
+{}
+
 void LocalVariableList::append(CREF(LPLocalVariable) pVariable)
 {
 	ASSERT(pVariable);
 
-	STL_FOR_ALL_CONST(m_variableList, it)
+	LPLocalVariable pExistItem = findLocalVariable(pVariable->getName());
+
+	if (pExistItem)
 	{
-		if ((*it)->getValue()->value().getIdentificator() == pVariable->getValue()->value().getIdentificator())
-		{
-			rdoParser::g_error().push_only(pVariable->getValue()->src_info(), rdo::format(_T("Переменная %s уже объявлена"), pVariable->getValue()->value().getIdentificator().c_str()));
-			rdoParser::g_error().push_only((*it)->getValue()->src_info(),     _T("См. первое описание"));
-			rdoParser::g_error().push_done();
-		}
+		rdoParser::g_error().push_only(pVariable->getSrcInfo(),  rdo::format(_T("Переменная %s уже объявлена"), pVariable->getName().c_str()));
+		rdoParser::g_error().push_only(pExistItem->getSrcInfo(), _T("См. первое описание"));
+		rdoParser::g_error().push_done();
 	}
 
-	m_variableList.push_back(pVariable);
+	m_variableList.insert(VariableList::value_type(pVariable->getName(), pVariable));
 }
 
 LPLocalVariable LocalVariableList::findLocalVariable(CREF(tstring) name) const
 {
-	STL_FOR_ALL_CONST(m_variableList, it)
-	{
-		if ((*it)->getValue()->value().getIdentificator() == name)
-		{
-			return *it;
-		}
-	}
-	return NULL;
+	VariableList::const_iterator it = m_variableList.find(name);
+	return it != m_variableList.end() ? it->second : NULL;
 }
 
 // --------------------------------------------------------------------------------
