@@ -53,6 +53,8 @@ public:
 	operator rbool     () const;
 	 PTR(T) operator-> () const;
 	 PTR(T) operator-> ();
+	CREF(T) operator*  () const;
+	 REF(T) operator*  ();
 
 	template <class P>
 	operator intrusive_ptr<P>() const;

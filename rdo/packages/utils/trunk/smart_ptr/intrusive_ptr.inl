@@ -110,6 +110,18 @@ FORCE_INLINE PTR(T) intrusive_ptr<T>::operator-> ()
 }
 
 template<class T>
+FORCE_INLINE CREF(T) intrusive_ptr<T>::operator* () const
+{
+	return *m_object;
+}
+
+template<class T>
+FORCE_INLINE REF(T) intrusive_ptr<T>::operator* ()
+{
+	return *m_object;
+}
+
+template<class T>
 template<class P>
 inline intrusive_ptr<T>::operator intrusive_ptr<P>() const
 {
