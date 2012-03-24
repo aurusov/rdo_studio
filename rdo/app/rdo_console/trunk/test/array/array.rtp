@@ -1,6 +1,0 @@
-$Resource_type тип_ресурса_1 : permanent
-$Parameters
-	параметр_1 : integer = 1
-	параметр_2 : array<integer> = [1,2,3]
-	параметр_3 : (свободен, занят)
-$End
