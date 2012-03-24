@@ -2154,10 +2154,10 @@ type_declaration
 init_declaration_list
 	: init_declaration
 	{
-		LPVariableContainer pVariableContainer = PARSER->stack().pop<VariableContainer>($1);
-		ASSERT(pVariableContainer);
+		LPVariableWrapper pVariableWrapper = PARSER->stack().pop<VariableWrapper>($1);
+		ASSERT(pVariableWrapper);
 
-		LPLocalVariable pLocalVariable = pVariableContainer->getSecond();
+		LPLocalVariable pLocalVariable = pVariableWrapper->getSecond();
 		ASSERT(pLocalVariable);
 
 		LPContext pContext = PARSER->context();
@@ -2171,7 +2171,7 @@ init_declaration_list
 
 		pLocalVariableListStack->append(pLocalVariable);
 
-		rdoRuntime::LPRDOCalc pCalc = pVariableContainer->getFirst();
+		rdoRuntime::LPRDOCalc pCalc = pVariableWrapper->getFirst();
 		ASSERT(pCalc);
 
 		rdoRuntime::LPRDOCalcLocalVariableList pCalcLocalVariableList = rdo::Factory<rdoRuntime::RDOCalcLocalVariableList>::create();
@@ -2183,10 +2183,10 @@ init_declaration_list
 	}
 	| init_declaration_list ',' init_declaration
 	{
-		LPVariableContainer pVariableContainer = PARSER->stack().pop<VariableContainer>($3);
-		ASSERT(pVariableContainer);
+		LPVariableWrapper pVariableWrapper = PARSER->stack().pop<VariableWrapper>($3);
+		ASSERT(pVariableWrapper);
 
-		LPLocalVariable pLocalVariable = pVariableContainer->getSecond();
+		LPLocalVariable pLocalVariable = pVariableWrapper->getSecond();
 		ASSERT(pLocalVariable);
 
 		LPContext pContext = PARSER->context();
@@ -2200,7 +2200,7 @@ init_declaration_list
 
 		pLocalVariableListStack->append(pLocalVariable);
 
-		rdoRuntime::LPRDOCalc pCalc = pVariableContainer->getFirst();
+		rdoRuntime::LPRDOCalc pCalc = pVariableWrapper->getFirst();
 		ASSERT(pCalc);
 
 		rdoRuntime::LPRDOCalcLocalVariableList pCalcLocalVariableList = PARSER->stack().pop<rdoRuntime::RDOCalcLocalVariableList>($1);
@@ -2240,10 +2240,10 @@ init_declaration
 		rdoRuntime::LPRDOCalcCreateLocalVariable pCalcCreateLocalVariable = rdo::Factory<rdoRuntime::RDOCalcCreateLocalVariable>::create(pLocalVariable->getName(), pLocalVariable->getExpression()->calc());
 		ASSERT(pCalcCreateLocalVariable);
 
-		LPVariableContainer pVariableContainer = rdo::Factory<VariableContainer>::create(pCalcCreateLocalVariable, pLocalVariable);
-		ASSERT(pVariableContainer);
+		LPVariableWrapper pVariableWrapper = rdo::Factory<VariableWrapper>::create(pCalcCreateLocalVariable, pLocalVariable);
+		ASSERT(pVariableWrapper);
 
-		$$ = PARSER->stack().push(pVariableContainer);
+		$$ = PARSER->stack().push(pVariableWrapper);
 	}
 	| RDO_IDENTIF '=' fun_arithm
 	{
@@ -2253,34 +2253,16 @@ init_declaration
 		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($3);
 		ASSERT(pArithm);
 
-		LPContext pContext = PARSER->context();
-		ASSERT(pContext);
-
-		LPTypeContext pTypeContext = pContext.object_static_cast<TypeContext>();
-		ASSERT(pTypeContext);
-
-		LPTypeInfo pParam = pTypeContext->getTypeInfo();
-		ASSERT(pParam);
-
 		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(pVariableName, pArithm->expression());
 		ASSERT(pLocalVariable);
 
 		rdoRuntime::LPRDOCalcCreateLocalVariable pCalcCreateLocalVariable = rdo::Factory<rdoRuntime::RDOCalcCreateLocalVariable>::create(pLocalVariable->getName(), pLocalVariable->getExpression()->calc());
 		ASSERT(pCalcCreateLocalVariable);
 
-		rdoRuntime::LPRDOCalcInitLocalVariable pCalcSetLocalVariable = rdo::Factory<rdoRuntime::RDOCalcInitLocalVariable>::create(pVariableName->value().getIdentificator(), pArithm->createCalc(pParam));
-		ASSERT(pCalcSetLocalVariable);
+		LPVariableWrapper pVariableWrapper = rdo::Factory<VariableWrapper>::create(pCalcCreateLocalVariable, pLocalVariable);
+		ASSERT(pVariableWrapper);
 
-		rdoRuntime::LPRDOCalcLocalVariableList pCalcLocalVariableList = rdo::Factory<rdoRuntime::RDOCalcLocalVariableList>::create();
-		ASSERT(pCalcLocalVariableList);
-
-		pCalcLocalVariableList->addCalcLocalVariable(pCalcCreateLocalVariable);
-		pCalcLocalVariableList->addCalcLocalVariable(pCalcSetLocalVariable);
-
-		LPVariableContainer pVariableContainer = rdo::Factory<VariableContainer>::create(pCalcLocalVariableList, pLocalVariable);
-		ASSERT(pVariableContainer);
-
-		$$ = PARSER->stack().push(pVariableContainer);
+		$$ = PARSER->stack().push(pVariableWrapper);
 	}
 	;
 

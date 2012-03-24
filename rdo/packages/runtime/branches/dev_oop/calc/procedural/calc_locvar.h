@@ -31,19 +31,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! »нициализаци€ локальной переменной
-CALC(RDOCalcInitLocalVariable)
-{
-DECLARE_FACTORY(RDOCalcInitLocalVariable)
-private:
-	RDOCalcInitLocalVariable(CREF(tstring) name, CREF(LPRDOCalc) pCalc);
-
-	tstring   m_name;
-	LPRDOCalc m_pCalc;
-
-	DECLARE_ICalc;
-};
-
 //! ѕолучение значени€ локальной переменной
 CALC(RDOCalcGetLocalVariable)
 {

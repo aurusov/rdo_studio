@@ -42,8 +42,8 @@ private:
 	LPExpression  m_pExpression;
 };
 
-typedef BisonValuePair<rdoRuntime::LPRDOCalc, LPLocalVariable> VariableContainer;
-DECLARE_POINTER(VariableContainer);
+typedef BisonValuePair<rdoRuntime::LPRDOCalc, LPLocalVariable> VariableWrapper;
+DECLARE_POINTER(VariableWrapper);
 
 // --------------------------------------------------------------------------------
 // -------------------- LocalVariableList
