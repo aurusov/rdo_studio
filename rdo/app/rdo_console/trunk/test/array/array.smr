@@ -1,0 +1,5 @@
+Frame_number   = 1
+Show_mode      = Animation
+Show_rate      = 3600.0
+
+Terminate_if ресурс_1.параметр_1 == 8

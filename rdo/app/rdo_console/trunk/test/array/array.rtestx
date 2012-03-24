@@ -3,6 +3,6 @@
   <model>array.rdox</model>
   <target>CONSOLE</target>
   <exit_code>0</exit_code>
-  <trace>array.trc</trace>
-  <result>array.pmv</result>
+  <trace>array_etalon.trc</trace>
+  <result>array_etalon.pmv</result>
 </test>
