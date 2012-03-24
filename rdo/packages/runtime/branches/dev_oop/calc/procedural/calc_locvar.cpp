@@ -19,14 +19,16 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcCreateLocalVariable
 // --------------------------------------------------------------------------------
-RDOCalcCreateLocalVariable::RDOCalcCreateLocalVariable(CREF(tstring) name, CREF(RDOValue) defaultValue)
-	: m_name(name)
+RDOCalcCreateLocalVariable::RDOCalcCreateLocalVariable(CREF(tstring) name, CREF(LPRDOCalc) pValueCalc)
+	: m_name      (name      )
+	, m_pValueCalc(pValueCalc)
 {
-	m_value = defaultValue;
+	ASSERT(m_pValueCalc);
 }
 
 REF(RDOValue) RDOCalcCreateLocalVariable::doCalc(CREF(LPRDORuntime) pRuntime)
 {
+	m_value = m_pValueCalc->calcValue(pRuntime);
 	pRuntime->getMemoryStack()->create(m_name, m_value);
 	return m_value;
 }
