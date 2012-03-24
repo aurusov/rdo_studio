@@ -15,6 +15,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdo_value.h"
 #include "simulator/compiler/parser/expression.h"
+#include "simulator/compiler/parser/bison_value_pair.h"
 #include "simulator/compiler/parser/type/info.h"
 // --------------------------------------------------------------------------------
 
@@ -40,6 +41,9 @@ private:
 	LPRDOValue    m_pName;
 	LPExpression  m_pExpression;
 };
+
+typedef BisonValuePair<rdoRuntime::LPRDOCalc, LPLocalVariable> VariableContainer;
+DECLARE_POINTER(VariableContainer);
 
 // --------------------------------------------------------------------------------
 // -------------------- LocalVariableList

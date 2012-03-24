@@ -217,7 +217,6 @@
 #include "simulator/compiler/parser/type/such_as.h"
 #include "simulator/compiler/parser/context/type.h"
 #include "simulator/compiler/parser/context/memory.h"
-#include "simulator/compiler/parser/variable_container.h"
 
 #include "simulator/runtime/rdotrace.h"
 #include "simulator/runtime/calc/calc_event.h"
@@ -2158,7 +2157,7 @@ init_declaration_list
 		LPVariableContainer pVariableContainer = PARSER->stack().pop<VariableContainer>($1);
 		ASSERT(pVariableContainer);
 
-		LPLocalVariable pLocalVariable = pVariableContainer->getLocalVariable();
+		LPLocalVariable pLocalVariable = pVariableContainer->getSecond();
 		ASSERT(pLocalVariable);
 
 		LPContext pContext = PARSER->context();
@@ -2172,7 +2171,7 @@ init_declaration_list
 
 		pLocalVariableListStack->append(pLocalVariable);
 
-		rdoRuntime::LPRDOCalc pCalc = pVariableContainer->getCalc();
+		rdoRuntime::LPRDOCalc pCalc = pVariableContainer->getFirst();
 		ASSERT(pCalc);
 
 		rdoRuntime::LPRDOCalcLocalVariableList pCalcLocalVariableList = rdo::Factory<rdoRuntime::RDOCalcLocalVariableList>::create();
@@ -2187,7 +2186,7 @@ init_declaration_list
 		LPVariableContainer pVariableContainer = PARSER->stack().pop<VariableContainer>($3);
 		ASSERT(pVariableContainer);
 
-		LPLocalVariable pLocalVariable = pVariableContainer->getLocalVariable();
+		LPLocalVariable pLocalVariable = pVariableContainer->getSecond();
 		ASSERT(pLocalVariable);
 
 		LPContext pContext = PARSER->context();
@@ -2201,7 +2200,7 @@ init_declaration_list
 
 		pLocalVariableListStack->append(pLocalVariable);
 
-		rdoRuntime::LPRDOCalc pCalc = pVariableContainer->getCalc();
+		rdoRuntime::LPRDOCalc pCalc = pVariableContainer->getFirst();
 		ASSERT(pCalc);
 
 		rdoRuntime::LPRDOCalcLocalVariableList pCalcLocalVariableList = PARSER->stack().pop<rdoRuntime::RDOCalcLocalVariableList>($1);

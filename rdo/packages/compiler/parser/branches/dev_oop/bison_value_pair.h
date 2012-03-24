@@ -1,40 +1,49 @@
 /*!
-  \copyright (c) RDO-Team, 2011
-  \file      variable_container.h
-  \author    Чирков Михаил
+  \copyright (c) RDO-Team, 2011-2012
+  \file      bison_value_pair.h
+  \authors   Чирков Михаил
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      02.12.2010
   \brief     
   \indent    4T
 */
 
-#ifndef _VARIABLE_CONTAINER_H_
-#define _VARIABLE_CONTAINER_H_
+#ifndef _SIMULATOR_COMPILER_PARSER_BISON_VALUE_PAIR_H_
+#define _SIMULATOR_COMPILER_PARSER_BISON_VALUE_PAIR_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <utility>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/calc/calc_base.h"
-#include "simulator/compiler/parser/local_variable.h"
+#include "utils/smart_ptr/intrusive_ptr.h"
+#include "simulator/compiler/parser/namespace.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
-// -------------------- VariableContainer
+// -------------------- BisonValuePair
 // --------------------------------------------------------------------------------
-OBJECT(VariableContainer)
+template <class T1, class T2>
+class BisonValuePair: INSTANCE_OF(rdo::counter_reference)
 {
-DECLARE_FACTORY(VariableContainer);
 public:
-	CREF(rdoRuntime::LPRDOCalc) getCalc        () const;
-	CREF(LPLocalVariable)       getLocalVariable() const;
+	CREF(T1) getFirst () const;
+	CREF(T2) getSecond() const;
 
 private:
-	VariableContainer(CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(LPLocalVariable) pLocalVariable);
+	typedef  BisonValuePair<T1, T2>  this_type;
+	DECLARE_FACTORY(this_type);
 
-	rdoRuntime::LPRDOCalc m_pCalc;
-	LPLocalVariable       m_pLocalVariable;
+	BisonValuePair(CREF(T1) first, CREF(T2) second);
+	virtual ~BisonValuePair();
+
+	typedef  std::pair<T1, T2>  Value;
+
+	Value m_value;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
 
-#endif // _VARIABLE_CONTAINER_H_
+#include "simulator/compiler/parser/bison_value_pair.inl"
+
+#endif // _SIMULATOR_COMPILER_PARSER_BISON_VALUE_PAIR_H_

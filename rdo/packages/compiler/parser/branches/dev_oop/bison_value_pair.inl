@@ -1,38 +1,41 @@
 /*!
-  \copyright (c) RDO-Team, 2011
-  \file      local_variable.cpp
-  \author    Чирков Михаил
+  \copyright (c) RDO-Team, 2011-2012
+  \file      bison_value_pair.inl
+  \authors   Чирков Михаил
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      02.12.2010
   \brief     
   \indent    4T
 */
 
-// ---------------------------------------------------------------------------- PCH
-#include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/compiler/parser/variable_container.h"
-#include "simulator/runtime/rdo_resource.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
-// -------------------- VariableContainer
+// -------------------- BisonValuePair
 // --------------------------------------------------------------------------------
-VariableContainer::VariableContainer(CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(LPLocalVariable) pLocalVariable)
-	: m_pCalc        (pCalc        )
-	, m_pLocalVariable(pLocalVariable)
+template <class T1, class T2>
+inline BisonValuePair<T1, T2>::BisonValuePair(CREF(T1) first, CREF(T2) second)
+	: m_value(std::make_pair(first, second))
 {}
 
-CREF(rdoRuntime::LPRDOCalc) VariableContainer::getCalc() const
+template <class T1, class T2>
+inline BisonValuePair<T1, T2>::~BisonValuePair()
+{}
+
+template <class T1, class T2>
+inline CREF(T1) BisonValuePair<T1, T2>::getFirst() const
 {
-	return m_pCalc;
+	return m_value.first;
 }
 
-CREF(LPLocalVariable) VariableContainer::getLocalVariable() const
+template <class T1, class T2>
+inline CREF(T2) BisonValuePair<T1, T2>::getSecond() const
 {
-	return m_pLocalVariable;
+	return m_value.second;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE
