@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<test>
-  <model>fms_planing.rdox</model>
-  <target>CONSOLE</target>
-  <exit_code>0</exit_code>
-  <trace>fms_planing.trc</trace>
-  <result>fms_planing.pmv</result>
-</test>
