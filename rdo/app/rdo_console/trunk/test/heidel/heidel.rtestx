@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<test>
-  <model>heidel.rdox</model>
-  <target>CONSOLE</target>
-  <exit_code>0</exit_code>
-  <trace>heidel_etalon.trc</trace>
-  <result>heidel_etalon.pmv</result>
-</test>
