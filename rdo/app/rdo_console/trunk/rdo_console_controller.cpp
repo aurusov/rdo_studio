@@ -11,7 +11,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/thread/locks.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_console/rdo_studio_console_controller.h"
+#include "app/rdo_console/rdo_console_controller.h"
 // --------------------------------------------------------------------------------
 
 #define MUTEXT_PROTECTION(A) boost::lock_guard<boost::mutex> lg_##__LINE__(A);

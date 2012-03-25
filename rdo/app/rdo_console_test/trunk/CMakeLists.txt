@@ -1,8 +1,6 @@
 #==============================================================================
 # Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>
 #==============================================================================
-# Cmake for RDO  STUDIO  CONSOLE  TEST
-#==============================================================================
 
 MESSAGE(STATUS "CREATE  RDO  STUDIO  CONSOLE  TEST  EXECUTABLE")
 

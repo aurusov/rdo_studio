@@ -1,8 +1,6 @@
 #==============================================================================
 # Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>
 #==============================================================================
-# Cmake for RDO  STUDIO  CONSOLE  EXECUTABLE
-#==============================================================================
 
 MESSAGE(STATUS "CREATE  RDO  STUDIO  CONSOLE  EXECUTABLE")
 
@@ -22,12 +20,12 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 SET(HEADER_FILES
 	terminate_codes.h
     controller_console_options.h
-    rdo_studio_console_controller.h
-    controller_console_options_config.h)
+    controller_console_options_config.h
+    rdo_console_controller.h)
 
 SET(SOURCE_FILES
     controller_console_options.cpp
-    rdo_studio_console_controller.cpp)
+    rdo_console_controller.cpp)
 
 SET(MAIN_FILES
     main.cpp)
