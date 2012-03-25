@@ -3,6 +3,6 @@
   <model>fms_event.rdox</model>
   <target>CONSOLE</target>
   <exit_code>0</exit_code>
-  <trace>fms_event.trc</trace>
-  <result>fms_event.pmv</result>
+  <trace>fms_event_etalon.trc</trace>
+  <result>fms_event_etalon.pmv</result>
 </test>

@@ -3,6 +3,6 @@
   <model>multichannel_qs.rdox</model>
   <target>CONSOLE</target>
   <exit_code>0</exit_code>
-  <trace>multichannel_qs.trc</trace>
-  <result>multichannel_qs.pmv</result>
+  <trace>multichannel_qs_etalon.trc</trace>
+  <result>multichannel_qs_etalon.pmv</result>
 </test>

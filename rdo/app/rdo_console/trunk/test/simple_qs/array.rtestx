@@ -3,6 +3,6 @@
   <model>simple_qs.rdox</model>
   <target>CONSOLE</target>
   <exit_code>0</exit_code>
-  <trace>simple_qs.trc</trace>
-  <result>simple_qs.pmv</result>
+  <trace>simple_qs_etalon.trc</trace>
+  <result>simple_qs_etalon.pmv</result>
 </test>
