@@ -507,7 +507,6 @@ RDOThreadRunTime::RDOThreadRunTime()
 	notifies.push_back(RT_RUNTIME_KEY_DOWN                  );
 	notifies.push_back(RT_RUNTIME_KEY_UP                    );
 	notifies.push_back(RT_RUNTIME_FRAME_AREA_DOWN           );
-	notifies.push_back(RT_RUNTIME_TRANSACT_COUNTER          );
 	after_constructor();
 }
 
@@ -611,14 +610,6 @@ void RDOThreadRunTime::proc(REF(RDOMessageInfo) msg)
 			msg.unlock();
 			m_pSimulator->m_pRuntime->hotkey().areaList().click(areaName);
 			m_pSimulator->m_pRuntime->setShowRate(m_pSimulator->m_pRuntime->getShowRate());
-			break;
-		}
-		case RT_RUNTIME_TRANSACT_COUNTER:
-		{
-			//broadcastMessage();
-			msg.lock();
-			//...
-			msg.unlock();
 			break;
 		}
 	}
@@ -849,6 +840,7 @@ void RDOThreadRunTime::sendMessage(ThreadID threadID, ruint messageID, PTR(void)
 	switch (threadID)
 	{
 	case TID_REPOSITORY: pThread = kernel->repository(); break;
+	case TID_GUI       : pThread = kernel->studio();     break;
 	default            : pThread = NULL; break;
 	}
 
