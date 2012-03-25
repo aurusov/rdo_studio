@@ -12,9 +12,9 @@
 #include <iostream>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdomacros.h"
-#include "app/rdo_studio_console/terminate_codes.h"
-#include "app/rdo_studio_console/controller_console_options.h"
-#include "app/rdo_studio_console/controller_console_options_config.h"
+#include "app/rdo_console/terminate_codes.h"
+#include "app/rdo_console/controller_console_options.h"
+#include "app/rdo_console/controller_console_options_config.h"
 // --------------------------------------------------------------------------------
 
 const tstring program_description = PROGRAM_NAME + NOP_STRING + VERSION_COMMAND_SHORT +

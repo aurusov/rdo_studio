@@ -14,9 +14,9 @@ namespace fs = boost::filesystem;
 #include "utils/rdocommon.h"
 #include "repository/rdorepository.h"
 #include "simulator/service/rdosimwin.h"
-#include "app/rdo_studio_console/terminate_codes.h"
-#include "app/rdo_studio_console/controller_console_options.h"
-#include "app/rdo_studio_console/rdo_studio_console_controller.h"
+#include "app/rdo_console/terminate_codes.h"
+#include "app/rdo_console/controller_console_options.h"
+#include "app/rdo_console/rdo_studio_console_controller.h"
 // --------------------------------------------------------------------------------
 
 int main(int argc, PTR(char) argv[])

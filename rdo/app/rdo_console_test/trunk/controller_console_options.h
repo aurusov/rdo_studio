@@ -55,6 +55,6 @@ private:
 #	pragma warning (default:4512)
 #endif // COMPILER_VISUAL_STUDIO
 
-#include "app/rdo_studio_console/test/controller_console_options.inl"
+#include "app/rdo_console_test/controller_console_options.inl"
 
 #endif // _RDO_CONTROLLER_CONSOLE_OPTIONS_H_
