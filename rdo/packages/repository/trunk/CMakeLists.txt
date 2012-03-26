@@ -2,16 +2,9 @@
 # Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>
 #==============================================================================
 
-MESSAGE(STATUS "CREATE RDO_REPOSITORY LIBRARY")
+MESSAGE(STATUS "CREATE  RDO_REPOSITORY LIBRARY")
 
-# Find Boost
-IF(MSVC)
-	SET(Boost_USE_STATIC_LIBS   ON)
-	SET(Boost_USE_MULTITHREADED ON)
-ENDIF(MSVC)
 FIND_PACKAGE(Boost COMPONENTS system filesystem thread REQUIRED)
-
-# Find Boost
 LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 

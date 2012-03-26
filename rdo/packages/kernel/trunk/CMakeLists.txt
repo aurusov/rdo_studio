@@ -2,19 +2,13 @@
 # Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>
 #==============================================================================
 
-MESSAGE(STATUS "CREATE RDO_KERNEL LIBRARY")
+MESSAGE(STATUS "CREATE  RDO_KERNEL LIBRARY")
 
-# Find Boost
-IF(MSVC)
-	SET(Boost_USE_STATIC_LIBS   ON)
-	SET(Boost_USE_MULTITHREADED ON)
-ENDIF(MSVC)
-FIND_PACKAGE(Boost COMPONENTS system filesystem thread REQUIRED)
 IF(PROJECT_OS_LINUX)
 	FIND_LIBRARY(PTHREAD pthread $ENV{LD_LIBRARY_PATH})
 ENDIF(PROJECT_OS_LINUX)
 
-# Find Boost
+FIND_PACKAGE(Boost COMPONENTS system filesystem thread REQUIRED)
 LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
