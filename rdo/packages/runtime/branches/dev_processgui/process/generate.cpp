@@ -51,6 +51,10 @@ IBaseOperation::BOResult RDOPROCGenerate::onDoOperation(CREF(LPRDORuntime) pRunt
 {
 	++m_TransCount;
 
+	LPIThreadProxy pThreadProxy = pRuntime->getThreadProxy();
+	ASSERT(pThreadProxy);
+	pThreadProxy->sendMessage(IThreadProxy::TID_GUI, RDOThread::RT_RUNTIME_TRANSACT_COUNTER, &m_TransCount);
+	
 	RDOValue pValue = m_pCreateAndGoOnTransactCalc->calcValue(pRuntime);
 
 	LPRDOPROCTransact pTransact = pValue.getPointer<RDOPROCTransact>();
