@@ -80,7 +80,8 @@ void testing(RDOValue value1, RDOValue value2)
 	flag = false;
 	try
 	{
-		if(value1 <  value2);
+		if(value1 <  value2)
+		{}
 	}
 	catch(CREF(RDOValueException))
 	{
@@ -90,7 +91,8 @@ void testing(RDOValue value1, RDOValue value2)
 	flag = false;
 	try
 	{
-		if(value1 >= value2);
+		if(value1 >= value2)
+		{}
 	}
 	catch(CREF(RDOValueException))
 	{
@@ -100,7 +102,8 @@ void testing(RDOValue value1, RDOValue value2)
 	flag = false;
 	try
 	{
-		if(value1 <= value2);
+		if(value1 <= value2)
+		{}
 	}
 	catch(CREF(RDOValueException))
 	{
@@ -110,7 +113,8 @@ void testing(RDOValue value1, RDOValue value2)
 	flag = false;
 	try
 	{
-		if(value1 == value2);
+		if(value1 == value2)
+		{}
 	}
 	catch(CREF(RDOValueException))
 	{
@@ -126,6 +130,83 @@ void compare(RDOValue value1, RDOValue value2)
 	BOOST_CHECK(value2 >  value1);
 	BOOST_CHECK(value1 <= value2);
 	BOOST_CHECK(value2 >= value1);
+}
+
+template <class T1>
+void compareOne(CREF(T1) param1, CREF(T1) param2)
+{
+	const T1 val1 = param1;
+	const T1 val2 = param2;
+	RDOValue value1(val1);
+	RDOValue value2(val2);
+
+	BOOST_CHECK(value1 != value2);
+	BOOST_CHECK(value1 >  value2);
+	BOOST_CHECK(value2 <  value1);
+	BOOST_CHECK(value1 >= value2);
+	BOOST_CHECK(value2 <= value1);
+	value2 = val1;
+	BOOST_CHECK(value1 >= value2);
+	BOOST_CHECK(value2 <= value1);
+}
+
+template <class T1, class T2>
+void compareValue(CREF(T1) param1, CREF(T2) param2, CREF(RDOType::TypeID) type1, CREF(RDOType::TypeID) type2)
+{
+	T1 val1 = param1;
+	T2 val2 = param2;
+	RDOValue value1(val1);
+	RDOValue value2(val2);
+
+	compare(value1, value2);
+
+	value1 = value2;
+	BOOST_CHECK(value1 == value2);
+
+	value1 = val1;
+	value2 = val2;
+	value1 += value2;
+	BOOST_CHECK(value1          == T1(param1 + param2));
+	BOOST_CHECK(value1.typeID() == type1);
+	value1 -= value2;
+	BOOST_CHECK(value1 == param1);
+	value1 *= value2;
+	BOOST_CHECK(value1 == param1 * param2);
+	value1 /= value2;
+	BOOST_CHECK(value1 == param1);
+
+	BOOST_CHECK(value1.typeID() == type2);
+}
+
+template <class T1, class T2>
+void compareStr(CREF(T1) param1, CREF(T2) param2)
+{
+	T1 val1 = param1;
+	T2 str1 = param2;
+	RDOValue value1(val1);
+	RDOValue value2(str1);
+
+	testing(value1, value2);
+}
+
+template <class T1, class T2>
+void compareChr(CREF(T1) param1, CREF(T2) param2)
+{
+	T1  val1 = param1;
+	T2  ch1  = param2;
+	RDOValue value1(val1);
+	RDOValue value2(ch1 );
+
+	value1 += value2;
+	BOOST_CHECK(value1 == val1 + ch1);
+	value1 -= value2;
+	BOOST_CHECK(value1 == val1      );
+	value1 *= value2;
+	BOOST_CHECK(value1 == val1 * ch1);
+	value1 /= value2;
+	BOOST_CHECK(value1 == val1      );
+
+	compare(value1, value2);
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_String)
@@ -199,19 +280,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Rsint_Arifmethic)
 
 BOOST_AUTO_TEST_CASE(RDOValue_Rsint_Compare)
 {
-	const rsint val1 = 30;
-	const rsint val2 = 20;
-	RDOValue value1(val1);
-	RDOValue value2(val2);
-	
-	BOOST_CHECK(value1 != value2);
-	BOOST_CHECK(value1 >  value2);
-	BOOST_CHECK(value2 <  value1);
-	BOOST_CHECK(value1 >= value2);
-	BOOST_CHECK(value2 <= value1);
-	value2 = val1;
-	BOOST_CHECK(value1 >= value2);
-	BOOST_CHECK(value2 <= value1);
+	compareOne<rsint>(30, 20);
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Ruint_Arifmethic)
@@ -268,19 +337,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Ruint_Arifmethic)
 
 BOOST_AUTO_TEST_CASE(RDOValue_Ruint_Compare)
 {
-	const ruint val1 = 30;
-	const ruint val2 = 20;
-	RDOValue value1(val1);
-	RDOValue value2(val2);
-
-	BOOST_CHECK(value1 != value2);
-	BOOST_CHECK(value1 >  value2);
-	BOOST_CHECK(value2 <  value1);
-	BOOST_CHECK(value1 >= value2);
-	BOOST_CHECK(value2 <= value1);
-	value2 = val1;
-	BOOST_CHECK(value1 >= value2);
-	BOOST_CHECK(value2 <= value1);
+	compareOne<ruint>(30, 20);
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Double_Arifmethic)
@@ -337,19 +394,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Double_Arifmethic)
 
 BOOST_AUTO_TEST_CASE(RDOValue_Double_Compare)
 {
-	const double doub1 = 30.2;
-	const double doub2 = 20.5;
-	RDOValue value1(doub1);
-	RDOValue value2(doub2);
-	
-	BOOST_CHECK(value1 != value2);
-	BOOST_CHECK(value1 >  value2);
-	BOOST_CHECK(value2 <  value1);
-	BOOST_CHECK(value1 >= value2);
-	BOOST_CHECK(value2 <= value1);
-	value2 = doub1;
-	BOOST_CHECK(value1 >= value2);
-	BOOST_CHECK(value2 <= value1);
+	compareOne<double>(30.2, 20.5);
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Bool)
@@ -434,212 +479,69 @@ BOOST_AUTO_TEST_CASE(RDOValue_Enum)
 	
 }
 
-template <class T1, class T2>
-void compareValue(CREF(T1) param1, CREF(T2) param2, CREF(T2) param3, CREF(RDOType::TypeID) type1, CREF(RDOType::TypeID) type2)
-{
-	T1 val1 = param1;
-	T2 val2 = param2;
-	RDOValue value1(val1);
-	RDOValue value2(val2);
-
-	compare(value1, value2);
-
-	T2 val3 = param3;
-	value2 = val3;
-	BOOST_CHECK(value1 == value2);
-	value1 = value2;
-	BOOST_CHECK(value1 == value2);
-
-	value1 = val1;
-	value2 = val2;
-	value1 += value2;
-	BOOST_CHECK(value1          == T1(param1 + param2));
-	BOOST_CHECK(value1.typeID() == type1);
-	value1 -= value2;
-	BOOST_CHECK(value1 == param1);
-	value1 *= value2;
-	BOOST_CHECK(value1 == param1 * param2);
-	value1 /= value2;
-	BOOST_CHECK(value1 == param1);
-
-	BOOST_CHECK(value1.typeID() == type2);
-}
-
 BOOST_AUTO_TEST_CASE(RDOValue_Rsint_Ruint)
 {
-	compareValue<rsint, ruint>(10, 15, 10, RDOType::t_int, RDOType::t_real);
+	compareValue<rsint, ruint>(10, 15, RDOType::t_int, RDOType::t_real);
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Ruint_Rsint)
 {
-	compareValue<ruint, rsint>(10, 15, 10, RDOType::t_int, RDOType::t_real);
+	compareValue<ruint, rsint>(10, 15, RDOType::t_int, RDOType::t_real);
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Rsint_Double)
 {
-	compareValue<rsint, double>(10, 15.2, 10, RDOType::t_int, RDOType::t_real);
+	compareValue<rsint, double>(10, 15.2, RDOType::t_int, RDOType::t_real);
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Double_rsint)
 {
-	compareValue<double, rsint>(10.2, 15, 15, RDOType::t_real, RDOType::t_real);
+	compareValue<double, rsint>(10.2, 15, RDOType::t_real, RDOType::t_real);
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Ruint_Double)
 {
-	ruint  val1 = 10  ;
-	double val2 = 15.2;
-	RDOValue value1(val1);
-	RDOValue value2(val2);
-
-	compare(value1, value2);
-
-	double val3 = 10;
-	value2 = val3;
-	BOOST_CHECK(value1 == value2);
-	value1 = value2;
-	BOOST_CHECK(value1 == value2);
-
-	value1 = val1;
-	value2 = val2;
-	value1 += value2;
-	BOOST_CHECK(value1          == 25            );
-	BOOST_CHECK(value1.typeID() == RDOType::t_int);
-	value1 -= value2;
-	BOOST_CHECK(value1 == 10 );
-	value1 *= value2;
-	BOOST_CHECK(value1 == 152);
-	value1 /= value2;
-	BOOST_CHECK(value1 == 10 );
-
-	BOOST_CHECK(value1.typeID() == RDOType::t_real);
+	compareValue<ruint, double>(10, 15.2, RDOType::t_int, RDOType::t_real);
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Double_ruint)
 {
-	double val1 = 10.2;
-	ruint  val2 = 15  ;
-	RDOValue value1(val1);
-	RDOValue value2(val2);
-
-	compare(value1, value2);
-
-	double val3 = 15;
-	value1 = val3;
-	BOOST_CHECK(value1 == value2);
-	value1 = value2;
-	BOOST_CHECK(value1 == value2);
-
-	value1 = val1;
-	value2 = val2;
-	value1 += value2;
-	BOOST_CHECK(value1          == 25.2           );
-	BOOST_CHECK(value1.typeID() == RDOType::t_real);
-	value1 -= value2;
-	BOOST_CHECK(value1 == 10.2 );
-	value1 *= value2;
-	BOOST_CHECK(value1 == 153  );
-	value1 /= value2;
-	BOOST_CHECK(value1 == 10.2 );
-
-	BOOST_CHECK(value1.typeID() == RDOType::t_real);
+	compareValue<double, ruint>(10.2, 15, RDOType::t_real, RDOType::t_real);
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Rsint_String)
 {
-	rsint   val1 = 10       ;
-	tstring str1 = _T("abc");
-	RDOValue value1(val1);
-	RDOValue value2(str1);
-
-	testing(value1, value2);
+	compareStr<rsint, tstring>(10, _T("abc"));
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Ruint_String)
 {
-	ruint   val1 = 10       ;
-	tstring str1 = _T("abc");
-	RDOValue value1(val1);
-	RDOValue value2(str1);
-
-	testing(value1, value2);
+	compareStr<ruint, tstring>(10, _T("abc"));
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Double_String)
 {
-	double  val1 = 10       ;
-	tstring str1 = _T("abc");
-	RDOValue value1(val1);
-	RDOValue value2(str1);
-
-	testing(value1, value2);
+	compareStr<double, tstring>(10, _T("abc"));
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Char_Rsint)
 {
-	rsint  val1 = 10     ;
-	tchar  ch1  = _T('a');
-	RDOValue value1(val1);
-	RDOValue value2(ch1 );
-	
-	value1 += value2;
-	BOOST_CHECK(value1 == val1 + ch1);
-	value1 -= value2;
-	BOOST_CHECK(value1 == val1      );
-	value1 *= value2;
-	BOOST_CHECK(value1 == val1 * ch1);
-	value1 /= value2;
-	BOOST_CHECK(value1 == val1      );
-
-	compare(value1, value2);
+	compareChr<rsint, tchar>(10, _T('a'));
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Char_Ruint)
 {
-	ruint  val1 = 10     ;
-	tchar  ch1  = _T('a');
-	RDOValue value1(val1);
-	RDOValue value2(ch1 );
-
-	value1 += value2;
-	BOOST_CHECK(value1 == val1 + ch1);
-	value1 -= value2;
-	BOOST_CHECK(value1 == val1      );
-	value1 *= value2;
-	BOOST_CHECK(value1 == val1 * ch1);
-	value1 /= value2;
-	BOOST_CHECK(value1 == val1      );
-
-	compare(value1, value2);
+	compareChr<ruint, tchar>(10, _T('a'));
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Char_Double)
 {
-	double val1 = 10     ;
-	tchar  ch1  = _T('a');
-	RDOValue value1(val1);
-	RDOValue value2(ch1 );
-
-	value1 += value2;
-	BOOST_CHECK(value1 == val1 + ch1);
-	value1 -= value2;
-	BOOST_CHECK(value1 == val1      );
-	value1 *= value2;
-	BOOST_CHECK(value1 == val1 * ch1);
-	value1 /= value2;
-	BOOST_CHECK(value1 == val1      );
-
-	compare(value1, value2);
+	compareChr<double, tchar>(10, _T('a'));
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_String_Char)
 {
-	tstring  str1 = _T("abc");
-	tchar    ch1  = _T('a'  );
-	RDOValue value1(str1);
-	RDOValue value2(ch1 );
-	
-	testing(value1, value2);
+	compareStr<tchar, tstring>(_T('a'), _T("abc"));
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Identificator)
