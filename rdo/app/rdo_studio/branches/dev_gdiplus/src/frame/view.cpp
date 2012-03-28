@@ -649,6 +649,8 @@ void RDOStudioFrameView::elementText(PTR(rdoAnimation::RDOTextElement) pElement)
 		case rdoAnimation::RDOTextElement::TETA_RIGHT : sformat.SetAlignment(Gdiplus::StringAlignmentFar   ); break;
 		case rdoAnimation::RDOTextElement::TETA_CENTER: sformat.SetAlignment(Gdiplus::StringAlignmentCenter); break;
 		}
+		sformat.SetFormatFlags(Gdiplus::StringFormatFlagsNoWrap);
+		sformat.SetTrimming   (Gdiplus::StringTrimmingNone);
 
 		Gdiplus::SolidBrush brush(
 			Gdiplus::Color(
