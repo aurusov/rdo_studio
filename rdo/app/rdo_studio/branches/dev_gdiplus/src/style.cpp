@@ -118,7 +118,8 @@ RDOStyleFont RDOStyleFont::getFrameFont()
 {
 	RDOStyleFont font;
 
-	font.name = "System";
+	font.name = _T("Verdana");
+	font.size = 8;
 
 	return font;
 }

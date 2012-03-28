@@ -30,7 +30,7 @@ RDOStudioFrameTheme::RDOStudioFrameTheme(): RDOStyleTheme()
 	defaultColor    = RGB( 0x00, 0x00, 0x00 );
 	backgroundColor = RGB( 0x00, 0x80, 0x80 );
 
-	defaultStyle = RDOStyleFont::NONE;
+	defaultStyle = RDOStyleFont::BOLD;
 }
 
 RDOStudioFrameTheme::~RDOStudioFrameTheme()
