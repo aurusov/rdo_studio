@@ -164,8 +164,17 @@ void RDOStudioFrameView::updateFont()
 	strcpy(lf.lfFaceName, pStyle->font->name.c_str());
 #pragma warning(default: 4996)
 
+	Gdiplus::FontStyle style;
+	switch (pStyle->theme->defaultStyle)
+	{
+	case rdoStyle::RDOStyleFont::BOLD     : style = Gdiplus::FontStyleBold;      break;
+	case rdoStyle::RDOStyleFont::ITALIC   : style = Gdiplus::FontStyleItalic;    break;
+	case rdoStyle::RDOStyleFont::UNDERLINE: style = Gdiplus::FontStyleUnderline; break;
+	default                               : style = Gdiplus::FontStyleRegular;   break;
+	}
+
 	std::wstring fontName = rdo::toUnicode(pStyle->font->name);
-	m_pFont.reset(new Gdiplus::Font(fontName.c_str(), 8));
+	m_pFont.reset(new Gdiplus::Font(fontName.c_str(), Gdiplus::REAL(pStyle->font->size), style));
 }
 
 BOOL RDOStudioFrameView::OnPreparePrinting(PTR(CPrintInfo) pInfo)
