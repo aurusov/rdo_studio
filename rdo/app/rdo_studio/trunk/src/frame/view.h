@@ -11,7 +11,12 @@
 #define _RDO_STUDIO_MFC_FRAME_VIEW_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <map>
+#include <gdiplus.h>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/rdoanimation.h"
+#include "ui/gdiplus/headers/memdc/memdc.h"
+#include "ui/gdiplus/headers/bitmap/bitmap.h"
 #include "app/rdo_studio_mfc/src/view.h"
 // --------------------------------------------------------------------------------
 
@@ -22,77 +27,88 @@ class RDOStudioFrameDoc;
 
 class RDOStudioFrameView: public RDOStudioView
 {
-friend class RDOStudioFrameManager;
-
 DECLARE_DYNCREATE(RDOStudioFrameView)
-
-private:
-	CRect frameBmpRect;
-	CPoint points[5];
-	CRect newClientRect;
-	int xPos;
-	int yPos;
-	COLORREF bgColor;
-	rbool mustBeInit;
-
-	HWND    hwnd;
-	HDC     hdc;
-	HDC     hmemdc;
-	int     saved_hdc;
-	int     saved_hmemdc;
-	HFONT   hfontInit;
-	HFONT   hfontCurrent;
-//	HBITMAP hbmpInit;
-	HBITMAP hbmp;
-
-	rbool mouseOnHScroll;
-
-	void onDraw();
-	void updateFont();
-	void updateScrollBars();
-
 public:
 	RDOStudioFrameView();
 	virtual ~RDOStudioFrameView();
 
-	RDOStudioFrameDoc* GetDocument();
+	struct Area
+	{
+		Gdiplus::Rect  m_rect;
+	};
+	typedef  std::map<tstring, Area>  AreaList;
 
-	const CRect& getClientRect() const { return newClientRect; }
+	void                   update       (CPTRC(rdoAnimation::RDOFrame) pFrame,
+	                                      CREF(rdo::gui::BitmapList)   bitmapList,
+	                                       REF(rdo::gui::BitmapList)   bitmapGeneratedList,
+	                                       REF(AreaList)               areaList);
+	void                   updateFont   ();
+	PTR(RDOStudioFrameDoc) GetDocument  ();
+	CREF(CRect)            getClientRect() const;
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+	virtual void Dump       (REF(CDumpContext) dc) const;
 #endif
 
 private:
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
-	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
-	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
-	virtual void OnActivateView(BOOL bActivate, CView* pActivateView, CView* pDeactiveView);
-	virtual void OnDraw(CDC* pDC);
+	CRect                         m_newClientRect;
+	Gdiplus::Point                m_pos;
+	Gdiplus::Color                m_bgColor;
+	std::auto_ptr<Gdiplus::Font>  m_pFont;
+	rdo::gui::MemDC               m_memDC;
+	HWND                          m_hwnd;
+	rbool                         m_mouseOnHScroll;
 
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnDestroy();
-	afx_msg void OnSize(UINT nType, int cx, int cy);
-	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
-	afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
-	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
-	afx_msg void OnPaint();
-	afx_msg void OnHelpKeyword();
+	rbool valid           ();
+	void  init            (CPTRC(rdoAnimation::RDOFrame) pFrame, CREF(rdo::gui::BitmapList) bitmapList);
+	void  init            (CREF(Gdiplus::Size) size);
+	void  setBGColor      (CREF(Gdiplus::Color) color);
+	void  onDraw          (REF(Gdiplus::Graphics) graphics);
+	void  updateScrollBars();
+
+	void  drawBackground    (CPTRC(rdoAnimation::RDOFrame) pFrame, CREF(rdo::gui::BitmapList) bitmapList);
+	template <class F, class D>
+	void  drawColoredElement(CREF(rdoAnimation::RDOColoredElement)  coloredElement, F fillBinder, D drawBinder);
+	void  elementText       ( PTR(rdoAnimation::RDOTextElement)     pElement);
+	void  elementRect       ( PTR(rdoAnimation::RDORectElement)     pElement);
+	void  elementRoundRect  ( PTR(rdoAnimation::RDORRectElement)    pElement);
+	void  elementLine       ( PTR(rdoAnimation::RDOLineElement)     pElement);
+	void  elementTriang     ( PTR(rdoAnimation::RDOTriangElement)   pElement);
+	void  elementCircle     ( PTR(rdoAnimation::RDOCircleElement)   pElement);
+	void  elementEllipse    ( PTR(rdoAnimation::RDOEllipseElement)  pElement);
+	void  elementBMP        ( PTR(rdoAnimation::RDOBmpElement)      pElement, CREF(rdo::gui::BitmapList) bitmapList, REF(rdo::gui::BitmapList) bitmapGeneratedList);
+	void  elementSBMP       ( PTR(rdoAnimation::RDOSBmpElement)     pElement, CREF(rdo::gui::BitmapList) bitmapList, REF(rdo::gui::BitmapList) bitmapGeneratedList);
+	void  elementActive     ( PTR(rdoAnimation::RDOActiveElement)   pElement, REF(AreaList) areaList);
+
+	static PTR(Gdiplus::Bitmap) getBitmap(CREF(tstring)              bitmapName,
+	                                      CREF(tstring)              maskName,
+	                                      CREF(rdo::gui::BitmapList) bitmapList,
+	                                       REF(rdo::gui::BitmapList) bitmapGeneratedList);
+
+	virtual BOOL PreCreateWindow  (REF(CREATESTRUCT) cs);
+	virtual BOOL OnPreparePrinting(PTR(CPrintInfo) pInfo);
+	virtual void OnBeginPrinting  (PTR(CDC) pDC, PTR(CPrintInfo) pInfo);
+	virtual void OnEndPrinting    (PTR(CDC) pDC, PTR(CPrintInfo) pInfo);
+	virtual void OnDraw           (PTR(CDC) pDC);
+	virtual void OnActivateView   (BOOL bActivate, PTR(CView) pActivateView, PTR(CView) pDeactiveView);
+
+	afx_msg int  OnCreate       (LPCREATESTRUCT lpCreateStruct);
+	afx_msg void OnDestroy      ();
+	afx_msg void OnPaint        ();
+	afx_msg void OnHelpKeyword  ();
+	afx_msg void OnSize         (UINT nType,    int    cx,      int cy);
+	afx_msg void OnHScroll      (UINT nSBCode,  UINT   nPos,    PTR(CScrollBar) pScrollBar);
+	afx_msg void OnVScroll      (UINT nSBCode,  UINT   nPos,    PTR(CScrollBar) pScrollBar);
+	afx_msg void OnKeyDown      (UINT nChar,    UINT   nRepCnt, UINT nFlags);
+	afx_msg void OnKeyUp        (UINT nChar,    UINT   nRepCnt, UINT nFlags);
+	afx_msg BOOL OnMouseWheel   (UINT nFlags,   short  zDelta,  CPoint pt);
+	afx_msg void OnLButtonDown  (UINT nFlags,   CPoint point);
+	afx_msg void OnMouseMove    (UINT nFlags,   CPoint point);
 	afx_msg void OnNcLButtonDown(UINT nHitTest, CPoint point);
 	afx_msg void OnNcRButtonDown(UINT nHitTest, CPoint point);
-	afx_msg void OnNcMouseMove(UINT nHitTest, CPoint point);
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg void OnNcMouseMove  (UINT nHitTest, CPoint point);
 	DECLARE_MESSAGE_MAP()
 };
-
-#ifndef _DEBUG
-inline RDOStudioFrameDoc* RDOStudioFrameView::GetDocument()
-   { return (RDOStudioFrameDoc*)m_pDocument; }
-#endif
 
 #endif // _RDO_STUDIO_MFC_FRAME_VIEW_H_

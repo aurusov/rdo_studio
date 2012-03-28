@@ -13,7 +13,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdostream.h"
-#include "utils/rdoanimation.h"
 #include "kernel/rdokernel.h"
 #include "kernel/rdothread.h"
 #include "simulator/service/rdosimwin.h"
@@ -29,128 +28,246 @@
 #include "app/rdo_studio_mfc/resource.h"
 // --------------------------------------------------------------------------------
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
+// --------------------------------------------------------------------------------
+// -------------------- RDOStudioFrameManager::Frame
+// --------------------------------------------------------------------------------
+RDOStudioFrameManager::Frame::Frame()
+	: m_hitem(0   )
+	, m_pDoc (NULL)
+	, m_pView(NULL)
+{}
+
+RDOStudioFrameManager::Frame::~Frame()
+{
+	clear();
+}
+
+void RDOStudioFrameManager::Frame::clear()
+{
+	m_areaList.clear();
+}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioFrameManager
 // --------------------------------------------------------------------------------
-//std::vector< RDOStudioFrameManager::Frame* > RDOStudioFrameManager::frames;
+RDOStudioFrameManager::FrameDocTemplate::FrameDocTemplate(UINT nIDResource, PTR(CRuntimeClass) pDocClass, PTR(CRuntimeClass) pFrameClass, PTR(CRuntimeClass) pViewClass)
+	: CMultiDocTemplate(nIDResource, pDocClass, pFrameClass, pViewClass)
+{}
 
-RDOStudioFrameManager::RDOStudioFrameManager():
-	frameDocTemplate( NULL ),
-	lastShowedFrame( -1 ),
-	currentShowingFrame( -1 )
+PTR(CFrameWnd) RDOStudioFrameManager::FrameDocTemplate::CreateNewFrame(PTR(CDocument) pDoc, PTR(CFrameWnd) pOther)
 {
-	frameDocTemplate = new FrameDocTemplate( IDR_FRAME_TYPE, RUNTIME_CLASS(RDOStudioFrameDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioFrameView) );
-	AfxGetApp()->AddDocTemplate( frameDocTemplate );
+	PTR(CFrameWnd) pFrame = CMultiDocTemplate::CreateNewFrame(pDoc, pOther);
+	static_cast<PTR(RDOStudioFrameDoc)>(pDoc)->frame = pFrame;
+	return pFrame;
+}
 
-	dcBmp.CreateCompatibleDC( NULL );
-	dcMask.CreateCompatibleDC( NULL );
+// --------------------------------------------------------------------------------
+// -------------------- RDOStudioFrameManager
+// --------------------------------------------------------------------------------
+RDOStudioFrameManager::RDOStudioFrameManager()
+	: m_pFrameDocTemplate  (NULL     )
+	, m_lastShowedFrame    (ruint(~0))
+	, m_currentShowingFrame(ruint(~0))
+	, m_changed            (false    )
+{
+	//! @todo А почему объект не удаляется ? Это происходит автоматически ?
+	m_pFrameDocTemplate = new FrameDocTemplate(IDR_FRAME_TYPE, RUNTIME_CLASS(RDOStudioFrameDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioFrameView));
+	AfxGetApp()->AddDocTemplate(m_pFrameDocTemplate);
 }
 
 RDOStudioFrameManager::~RDOStudioFrameManager()
 {
-	bmp_clear();
-	std::vector< Frame* >::iterator it = frames.begin();
-	while ( it != frames.end() ) {
-		delete *it++;
-	};
+	clear();
+
+	STL_FOR_ALL(m_frameList, it)
+	{
+		delete *it;
+	}
 }
 
-void RDOStudioFrameManager::insertItem( CREF(tstring) name )
+void RDOStudioFrameManager::insertFrame(CREF(tstring) frameName)
 {
-	Frame* item = new Frame;
-	item->hitem = studioApp.m_pMainFrame->workspace.frames->InsertItem( name.c_str(), 1, 1, studioApp.m_pMainFrame->workspace.frames->GetRootItem() );
-	item->name  = name;
-	item->doc   = NULL;
-	item->view  = NULL;
-	frames.push_back( item );
+	PTR(Frame) item = new Frame();
+	item->m_hitem = studioApp.m_pMainFrame->workspace.frames->InsertItem(frameName.c_str(), 1, 1, studioApp.m_pMainFrame->workspace.frames->GetRootItem());
+	item->m_name  = frameName;
+	item->m_pDoc  = NULL;
+	item->m_pView = NULL;
+	m_frameList.push_back(item);
 }
 
-RDOStudioFrameDoc* RDOStudioFrameManager::connectFrameDoc( const int index )
+ruint RDOStudioFrameManager::findFrameIndex(const HTREEITEM hitem) const
 {
-	RDOStudioFrameDoc* doc = NULL;
-	if ( index != -1 ) {
-		CSingleLock lock( getFrameMutexUsed( index ) );
-		lock.Lock();
-
-		doc = static_cast<RDOStudioFrameDoc*>(frameDocTemplate->OpenDocumentFile( NULL ));
-		if ( doc ) {
-			frames[index]->doc  = doc;
-			frames[index]->view = doc->getView();
-			lastShowedFrame     = index;
-			doc->SetTitle( rdo::format( IDS_FRAME_NAME, getFrameName( index ).c_str() ).c_str()  );
-			setCurrentShowingFrame( index );
+	ruint index = 0;
+	STL_FOR_ALL_CONST(m_frameList, it)
+	{
+		if ((*it)->m_hitem == hitem)
+		{
+			return index;
 		}
-
-		lock.Unlock();
+		index++;
 	}
-	return doc;
+	return ruint(~0);
 }
 
-void RDOStudioFrameManager::disconnectFrameDoc( const RDOStudioFrameDoc* doc )
+ruint RDOStudioFrameManager::findFrameIndex(CPTR(RDOStudioFrameDoc) pDoc) const
 {
-	int index = findFrameIndex( doc );
-	if ( index != -1 ) {
-
-		CSingleLock lock( getFrameMutexUsed( index ) );
-		lock.Lock();
-
-		frames[index]->doc  = NULL;
-		frames[index]->view = NULL;
-
-		lock.Unlock();
+	ruint index = 0;
+	STL_FOR_ALL_CONST(m_frameList, it)
+	{
+		if ((*it)->m_pDoc == pDoc)
+		{
+			return index;
+		}
+		index++;
 	}
-	changed = true;
+	return ruint(~0);
+}
+
+ruint RDOStudioFrameManager::findFrameIndex(CPTR(RDOStudioFrameView) pView) const
+{
+	ruint index = 0;
+	STL_FOR_ALL_CONST(m_frameList, it)
+	{
+		if ((*it)->m_pView == pView)
+		{
+			return index;
+		}
+		index++;
+	}
+	return ruint(~0);
+}
+
+CREF(tstring) RDOStudioFrameManager::getFrameName(ruint index) const
+{
+	ASSERT(index < m_frameList.size());
+	return m_frameList[index]->m_name;
+}
+
+PTR(RDOStudioFrameDoc) RDOStudioFrameManager::getFrameDoc(ruint index) const
+{
+	ASSERT(index < m_frameList.size());
+	return m_frameList[index]->m_pDoc;
+}
+
+PTR(RDOStudioFrameView) RDOStudioFrameManager::getFrameView(ruint index) const
+{
+	ASSERT(index < m_frameList.size());
+	return m_frameList[index]->m_pView;
+}
+
+ruint RDOStudioFrameManager::count() const
+{
+	return m_frameList.size();
+}
+
+rbool RDOStudioFrameManager::isChanged()
+{
+	rbool res = m_changed;
+	m_changed = false;
+	return res;
+}
+
+void RDOStudioFrameManager::areaDown(ruint frameIndex, CREF(Gdiplus::Point) point) const
+{
+	ASSERT(frameIndex != ruint(~0) && frameIndex < m_frameList.size());
+
+	CREF(RDOStudioFrameView::AreaList) areaList = m_frameList[frameIndex]->m_areaList;
+	STL_FOR_ALL_CONST(areaList, it)
+	{
+		if (it->second.m_rect.Contains(point))
+		{
+			tstring areaName = it->first;
+			model->sendMessage(kernel->runtime(), RDOThread::RT_RUNTIME_FRAME_AREA_DOWN, &areaName);
+		}
+	}
+}
+
+PTR(RDOStudioFrameDoc) RDOStudioFrameManager::connectFrameDoc(ruint index)
+{
+	PTR(RDOStudioFrameDoc) pDoc = NULL;
+	if (index != ~0)
+	{
+		pDoc = static_cast<PTR(RDOStudioFrameDoc)>(m_pFrameDocTemplate->OpenDocumentFile(NULL));
+		if (pDoc)
+		{
+			m_frameList[index]->m_pDoc  = pDoc;
+			m_frameList[index]->m_pView = pDoc->getView();
+			m_lastShowedFrame           = index;
+			pDoc->SetTitle(rdo::format(IDS_FRAME_NAME, getFrameName(index).c_str()).c_str());
+			setCurrentShowingFrame(index);
+		}
+	}
+	return pDoc;
+}
+
+void RDOStudioFrameManager::disconnectFrameDoc(CPTR(RDOStudioFrameDoc) pDoc)
+{
+	ruint index = findFrameIndex(pDoc);
+	if (index != ~0)
+	{
+		m_frameList[index]->m_pDoc  = NULL;
+		m_frameList[index]->m_pView = NULL;
+	}
+	m_changed = true;
 }
 
 void RDOStudioFrameManager::closeAll()
 {
-	int backup = lastShowedFrame;
-	std::vector< Frame* >::iterator it = frames.begin();
-	while ( it != frames.end() ) {
-		RDOStudioFrameDoc* doc = (*it)->doc;
-		if ( isValidFrameDoc( doc ) ) {
-			if ( doc->frame && doc->frame->GetSafeHwnd() ) {
-				doc->frame->SendNotifyMessage( WM_CLOSE, 0, 0 );
+	ruint backup = m_lastShowedFrame;
+	STL_FOR_ALL(m_frameList, it)
+	{
+		PTR(RDOStudioFrameDoc) pFrameDoc = (*it)->m_pDoc;
+		if (isValidFrameDoc(pFrameDoc))
+		{
+			if (pFrameDoc->frame && pFrameDoc->frame->GetSafeHwnd())
+			{
+				pFrameDoc->frame->SendNotifyMessage(WM_CLOSE, 0, 0);
 			}
 		}
-		it++;
-	};
-	lastShowedFrame = backup;
+	}
+	m_lastShowedFrame = backup;
 }
 
 void RDOStudioFrameManager::clear()
 {
-	studioApp.m_pMainFrame->workspace.frames->deleteChildren( studioApp.m_pMainFrame->workspace.frames->GetRootItem() );
-	std::vector< Frame* >::iterator it = frames.begin();
-	while ( it != frames.end() ) {
-		RDOStudioFrameDoc* doc = (*it)->doc;
-		if ( isValidFrameDoc( doc ) ) {
-			if ( doc->frame && doc->frame->GetSafeHwnd() ) {
-				doc->frame->SendMessage( WM_CLOSE, 0, 0 );
+	if (studioApp.m_pMainFrame)
+	{
+		studioApp.m_pMainFrame->workspace.frames->deleteChildren(studioApp.m_pMainFrame->workspace.frames->GetRootItem());
+	}
+	STL_FOR_ALL(m_frameList, it)
+	{
+		PTR(RDOStudioFrameDoc) pFrameDoc = (*it)->m_pDoc;
+		if (isValidFrameDoc(pFrameDoc))
+		{
+			if (pFrameDoc->frame && pFrameDoc->frame->GetSafeHwnd())
+			{
+				pFrameDoc->frame->SendMessage(WM_CLOSE, 0, 0);
 			}
 		}
-		delete *it++;
-	};
-	frames.clear();
-	lastShowedFrame = -1;
-	setCurrentShowingFrame( -1 );
+		delete *it;
+	}
+
+	STL_FOR_ALL(m_bitmapList, it)
+	{
+		delete it->second;
+	}
+
+	m_frameList .clear();
+	m_bitmapList.clear();
+
+	m_lastShowedFrame = ruint(~0);
+	setCurrentShowingFrame(ruint(~0));
 }
 
-RDOStudioFrameDoc* RDOStudioFrameManager::getFirstExistDoc() const
+PTR(RDOStudioFrameDoc) RDOStudioFrameManager::getFirstExistDoc() const
 {
-	std::vector< Frame* >::const_iterator it = frames.begin();
-	while ( it != frames.end() ) {
-		if ( isValidFrameDoc( (*it)->doc ) ) {
-			return (*it)->doc;
+	STL_FOR_ALL_CONST(m_frameList, it)
+	{
+		if (isValidFrameDoc((*it)->m_pDoc))
+		{
+			return (*it)->m_pDoc;
 		}
-		it++;
-	};
+	}
 	return NULL;
 }
 
@@ -159,620 +276,192 @@ void RDOStudioFrameManager::expand() const
 	studioApp.m_pMainFrame->workspace.frames->expand();
 }
 
-rbool RDOStudioFrameManager::isValidFrameDoc( const RDOStudioFrameDoc* const frame ) const
+rbool RDOStudioFrameManager::isValidFrameDoc(CPTRC(RDOStudioFrameDoc) pFrame) const
 {
-	POSITION pos = frameDocTemplate->GetFirstDocPosition();
-	while ( pos ) {
-		RDOStudioFrameDoc* doc = static_cast<RDOStudioFrameDoc*>(frameDocTemplate->GetNextDoc( pos ));
-		if ( frame == doc ) {
+	POSITION pos = m_pFrameDocTemplate->GetFirstDocPosition();
+	while (pos)
+	{
+		PTR(RDOStudioFrameDoc) pDoc = static_cast<PTR(RDOStudioFrameDoc)>(m_pFrameDocTemplate->GetNextDoc(pos));
+		if (pFrame == pDoc)
+		{
 			return true;
 		}
 	}
-
 	return false;
 }
 
-void RDOStudioFrameManager::setLastShowedFrame( const int value )
+ruint RDOStudioFrameManager::getLastShowedFrame() const
 {
-	if ( value >= 0 && value < count() ) {
-		lastShowedFrame = value;
+	return m_lastShowedFrame;
+}
+
+void RDOStudioFrameManager::setLastShowedFrame(ruint index)
+{
+	if (index != ruint(~0) && index < count())
+	{
+		m_lastShowedFrame = index;
 	}
 }
 
-void RDOStudioFrameManager::setCurrentShowingFrame( const int value )
+void RDOStudioFrameManager::setCurrentShowingFrame(ruint index)
 {
-	if ( value == -1 || (value >= 0 && value < count()) ) {
-		currentShowingFrame = value;
-		CTreeCtrl* tree = studioApp.m_pMainFrame->workspace.frames;
-		if ( currentShowingFrame != -1 ) {
-			HTREEITEM hitem = frames[currentShowingFrame]->hitem;
-			tree->SelectItem( hitem );
-		} else {
-			tree->SelectItem( NULL );
-		}
-	}
-}
-
-void RDOStudioFrameManager::resetCurrentShowingFrame( const int value )
-{
-	if ( value == currentShowingFrame ) setCurrentShowingFrame( -1 );
-}
-
-void RDOStudioFrameManager::bmp_insert( CREF(tstring) name )
-{
-	if ( bitmaps.find( name ) == bitmaps.end() ) {
-
-		RDOStudioOutput* output = &studioApp.m_pMainFrame->output;
-		output->appendStringToDebug( rdo::format( IDS_MODEL_RESOURCE_LOADING_NAME, name.c_str() ) );
-		const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
-
-		bitmaps[name] = NULL;
-
-		rdo::binarystream stream;
-		rdoRepository::RDOThreadRepository::BinaryFile data( name, stream );
-		model->sendMessage( kernel->repository(), RDOThread::RT_REPOSITORY_LOAD_BINARY, &data );
-
-		char* bmInfo   = NULL;
-		char* pBits    = NULL;
-		CDC* desktopDC = NULL;
-
-		try {
-			// В потоке, перед битовой картой, идет заголовок файла битовой карты
-			BITMAPFILEHEADER bmFileHeader;
-			stream.read( reinterpret_cast<char*>(&bmFileHeader), sizeof(bmFileHeader) );
-			if ( !stream.good() ) throw BMPReadError();
-
-			// Проверяем заголовок битовой карты на магическое число "BM"
-			if ( bmFileHeader.bfType != 0x4D42 ) throw BMPReadError();
-
-			// Вот теперь читаем сам заголовок битовой карты
-			BITMAPINFOHEADER bmInfoHeader;
-			stream.read( reinterpret_cast<char*>(&bmInfoHeader), sizeof(bmInfoHeader) );
-			if ( !stream.good() ) throw BMPReadError();
-			if ( bmInfoHeader.biSize == sizeof(BITMAPCOREHEADER) ) throw BMPReadError();
-
-			WORD nNumColors = static_cast<WORD>(bmInfoHeader.biClrUsed);
-			if ( !nNumColors && bmInfoHeader.biBitCount != 24 ) {
-				nNumColors = 1 << bmInfoHeader.biBitCount;
-			}
-			if ( !bmInfoHeader.biClrUsed ) {
-				bmInfoHeader.biClrUsed = nNumColors;
-			}
-
-			if ( !bmInfoHeader.biSizeImage ) {
-				bmInfoHeader.biSizeImage = ((((bmInfoHeader.biWidth * static_cast<WORD>(bmInfoHeader.biBitCount)) + 31) & ~31) >> 3) * bmInfoHeader.biHeight;
-			}
-
-			RGBQUAD rgb_q[256];
-			memset( &rgb_q, 0, sizeof(rgb_q) );
-			stream.read( reinterpret_cast<char*>(&rgb_q), nNumColors * sizeof(RGBQUAD) );
-			if ( !stream.good() ) throw BMPReadError();
-
-			bmInfo = new char[ sizeof(bmInfoHeader) + nNumColors * sizeof(RGBQUAD) ];
-			memcpy( bmInfo, &bmInfoHeader, sizeof(bmInfoHeader) );
-			memcpy( bmInfo + sizeof(bmInfoHeader), &rgb_q, nNumColors * sizeof(RGBQUAD) );
-
-			pBits = new char[ bmInfoHeader.biSizeImage ];
-			stream.seekg( bmFileHeader.bfOffBits, std::ios::beg );
-			if ( !stream.good() ) throw BMPReadError();
-			stream.read( pBits, bmInfoHeader.biSizeImage );
-			if ( !(stream.good() || stream.eof()) ) throw BMPReadError();
-
-			CDC* desktopDC = CWnd::GetDesktopWindow()->GetDC();
-			CDC memDC;
-			memDC.CreateCompatibleDC( desktopDC );
-			CBitmap memBMP;
-			memBMP.CreateCompatibleBitmap( desktopDC, bmInfoHeader.biWidth, bmInfoHeader.biHeight );
-			::SetDIBits( desktopDC->m_hDC, static_cast<HBITMAP>(memBMP), 0, bmInfoHeader.biHeight, pBits, reinterpret_cast<BITMAPINFO*>(bmInfo), DIB_RGB_COLORS );
-			CBitmap* hOldBitmap1 = memDC.SelectObject( &memBMP );
-
-			CDC dc;
-			dc.CreateCompatibleDC( desktopDC );
-			BMP* bmp = new BMP;
-			bitmaps[name] = bmp;
-			bitmaps[name]->w = bmInfoHeader.biWidth;
-			bitmaps[name]->h = bmInfoHeader.biHeight;
-			bitmaps[name]->bmp.CreateCompatibleBitmap( desktopDC, bmInfoHeader.biWidth, bmInfoHeader.biHeight );
-			CBitmap* hOldBitmap2 = dc.SelectObject( &bitmaps[name]->bmp );
-			dc.BitBlt( 0, 0, bmInfoHeader.biWidth, bmInfoHeader.biHeight, &memDC, 0, 0, SRCCOPY );
-
-			memDC.SelectObject( hOldBitmap1 );
-			dc.SelectObject( hOldBitmap2 );
-
-			output->appendStringToDebug( rdo::format( IDS_MODEL_RESOURCE_LOADING_NAME_OK ) );
-			const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
-
-		} catch ( BMPReadError ) {
-			output->appendStringToDebug( rdo::format( IDS_MODEL_RESOURCE_LOADING_NAME_FAILED ) );
-			const_cast<rdoEditCtrl::RDODebugEdit*>(output->getDebug())->UpdateWindow();
-		}
-
-		if ( bmInfo ) delete bmInfo;
-		if ( pBits ) delete pBits;
-		if ( desktopDC ) CWnd::GetDesktopWindow()->ReleaseDC( desktopDC );
-	}
-}
-
-void RDOStudioFrameManager::bmp_clear()
-{
-	std::map< tstring, BMP* >::iterator it = bitmaps.begin();
-	while ( it != bitmaps.end() ) {
-		delete it->second;
-		it++;
-	};
-	bitmaps.clear();
-}
-
-void RDOStudioFrameManager::showFrame( const rdoAnimation::RDOFrame* const frame, const int index )
-{
-	if ( index < count() ) {
-
-		CSingleLock lock_used( getFrameMutexUsed( index ) );
-		lock_used.Lock();
-
-		RDOStudioFrameDoc* doc = getFrameDoc( index );
-		if ( doc ) {
-
-			CSingleLock lock_draw( getFrameMutexDraw( index ) );
-			lock_draw.Lock();
-
-			RDOStudioFrameView* view = getFrameView( index );
-			if ( view->mustBeInit ) {
-				rbool show_fillrect = true;
-				if ( frame->hasBgImage() ) {
-					BMP* bmp = bitmaps[frame->m_bgImageName];
-					if ( bmp ) {
-						view->frameBmpRect.right  = bmp->w;
-						view->frameBmpRect.bottom = bmp->h;
-						show_fillrect = false;
-					}
-				}
-				if ( show_fillrect ) {
-					view->frameBmpRect.right  = (ruint)frame->m_size.m_width;
-					view->frameBmpRect.bottom = (ruint)frame->m_size.m_height;
-				}
-				view->points[0].x = 0;
-				view->points[0].y = 0;
-				view->points[1].x = view->frameBmpRect.right - 1;
-				view->points[1].y = 0;
-				view->points[2].x = view->frameBmpRect.right - 1;
-				view->points[2].y = view->frameBmpRect.bottom - 1;
-				view->points[3].x = 0;
-				view->points[3].y = view->frameBmpRect.bottom - 1;
-				view->points[4].x = 0;
-				view->points[4].y = 0;
-				view->hbmp = ::CreateCompatibleBitmap( view->hdc, view->frameBmpRect.right, view->frameBmpRect.bottom );
-				::SelectObject( view->hmemdc, view->hbmp );
-				view->mustBeInit = false;
-				view->updateScrollBars();
-			}
-
-			HDC hdc = view->hmemdc;
-
-			rbool show_fillrect = true;
-			if ( frame->hasBgImage() ) {
-				BMP* bmp = bitmaps[frame->m_bgImageName];
-				if ( bmp ) {
-					CBitmap* pOldBitmap = dcBmp.SelectObject( &bmp->bmp );
-					::BitBlt( hdc, 0, 0, bmp->w, bmp->h, dcBmp.m_hDC, 0, 0, SRCCOPY );
-					dcBmp.SelectObject( pOldBitmap );
-					show_fillrect = false;
-				}
-			}
-			if ( frame->m_bgColor.m_transparent ) {
-				view->bgColor = studioApp.m_pMainFrame->style_frame.theme->backgroundColor;
-			} else {
-				view->bgColor = RGB( frame->m_bgColor.m_r, frame->m_bgColor.m_g, frame->m_bgColor.m_b );
-			}
-			if ( show_fillrect ) {
-				HBRUSH brush     = ::CreateSolidBrush( view->bgColor );
-				HBRUSH pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
-				HPEN pen     = ::CreatePen( PS_SOLID, 0, studioApp.m_pMainFrame->style_frame.theme->defaultColor );
-				HPEN pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
-				::FillRect( hdc, view->frameBmpRect, brush );
-				::Polyline( hdc, view->points, 5 );
-				::SelectObject( hdc, pOldBrush );
-				::SelectObject( hdc, pOldPen );
-				::DeleteObject( brush );
-				::DeleteObject( pen );
-			}
-/*
-			if( !frame->hasBackPicture ) {
-				HBRUSH brush     = ::CreateSolidBrush( RGB( frame->r, frame->g, frame->b ) );
-				HBRUSH pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
-				HPEN pen     = ::CreatePen( PS_SOLID, 0, studioApp.m_pMainFrame->style_frame.theme->defaultColor );
-				HPEN pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
-				::FillRect( hdc, view->frameBmpRect, brush );
-				::Polyline( hdc, view->points, 5 );
-				::SelectObject( hdc, pOldBrush );
-				::SelectObject( hdc, pOldPen );
-				::DeleteObject( brush );
-				::DeleteObject( pen );
-				view->bgColor = studioApp.m_pMainFrame->style_frame.theme->backgroundColor;
-
-//				HBRUSH brush     = ::CreateSolidBrush( RGB( frame->r, frame->g, frame->b ) );
-//				HBRUSH pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
-//				HPEN pen     = ::CreatePen( PS_SOLID, 0, RGB( 0x00, 0x00, 0x00 ) );
-//				HPEN pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
-//				::Rectangle( hdc, 0, 0, frame->width, frame->height );
-//				::SelectObject( hdc, pOldBrush );
-//				::SelectObject( hdc, pOldPen );
-//				::DeleteObject( brush );
-//				::DeleteObject( pen );
-
-			} else {
-				BMP* bmp = bitmaps[frame->picFileName];
-				if ( bmp ) {
-					CBitmap* pOldBitmap = dcBmp.SelectObject( &bmp->bmp );
-					::BitBlt( hdc, 0, 0, bmp->w, bmp->h, dcBmp.m_hDC, 0, 0, SRCCOPY );
-					dcBmp.SelectObject( pOldBitmap );
-				}
-				view->bgColor = RGB( frame->r, frame->g, frame->b );
-			}
-*/
-			ruint size = frame->m_elements.size();
-			for (ruint i = 0; i < size; i++)
+	if (index == ruint(~0) || (index != ruint(~0) && index < count()))
+	{
+		m_currentShowingFrame = index;
+		if (studioApp.m_pMainFrame)
+		{
+			PTR(CTreeCtrl) pTree = studioApp.m_pMainFrame->workspace.frames;
+			if (m_currentShowingFrame != ruint(~0))
 			{
-				rdoAnimation::FrameItem* currElement = frame->m_elements.at(i);
-				switch( currElement->getType() )
-				{
-					case rdoAnimation::FrameItem::FIT_TEXT:
-					{
-						rdoAnimation::RDOTextElement* element = static_cast<rdoAnimation::RDOTextElement*>(currElement);
-						if( !element->m_background.m_transparent ) {
-							::SetBkMode( hdc, OPAQUE );
-							::SetBkColor( hdc, RGB(element->m_background.m_r, element->m_background.m_g, element->m_background.m_b) );
-						} else {
-							::SetBkMode( hdc, TRANSPARENT );
-						}
-
-						if( !element->m_foreground.m_transparent ) {
-							::SetTextColor( hdc, RGB(element->m_foreground.m_r, element->m_foreground.m_g, element->m_foreground.m_b) );
-						}
-
-						UINT nFormat = DT_SINGLELINE | DT_VCENTER;
-						switch( element->m_align )
-						{
-						case rdoAnimation::RDOTextElement::TETA_LEFT  : nFormat |= DT_LEFT;   break;
-						case rdoAnimation::RDOTextElement::TETA_RIGHT : nFormat |= DT_RIGHT;  break;
-						case rdoAnimation::RDOTextElement::TETA_CENTER: nFormat |= DT_CENTER; break;
-						}
-
-						::DrawText( hdc, element->m_text.c_str(), element->m_text.length(), CRect( (int)element->m_point.m_x, (int)element->m_point.m_y, (int)(element->m_point.m_x + element->m_size.m_width), (int)(element->m_point.m_y + element->m_size.m_height) ), nFormat );
-
-						break;
-					}
-
-					case rdoAnimation::FrameItem::FIT_RECT:
-					{
-						rdoAnimation::RDORectElement* element = static_cast<rdoAnimation::RDORectElement*>(currElement);
-						HBRUSH brush = ::CreateSolidBrush( RGB(element->m_background.m_r, element->m_background.m_g, element->m_background.m_b) );
-						HBRUSH pOldBrush;
-						if( !element->m_background.m_transparent ) {
-							pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
-						} else {
-							pOldBrush = static_cast<HBRUSH>(::GetStockObject( NULL_BRUSH ));
-						}
-
-						HPEN pen     = NULL;
-						HPEN pOldPen = NULL;
-						if( !element->m_foreground.m_transparent ) {
-							pen     = ::CreatePen( PS_SOLID, 0, RGB(element->m_foreground.m_r, element->m_foreground.m_g, element->m_foreground.m_b) );
-							pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
-						}
-
-						::Rectangle( hdc, (int)element->m_point.m_x, (int)element->m_point.m_y, (int)(element->m_point.m_x + element->m_size.m_width), (int)(element->m_point.m_y + element->m_size.m_height) );
-
-						::SelectObject( hdc, pOldBrush );
-						::DeleteObject( brush );
-						if ( pen ) {
-							::SelectObject( hdc, pOldPen );
-							::DeleteObject( pen );
-						}
-
-						break;
-					}
-
-					case rdoAnimation::FrameItem::FIT_R_RECT:
-					{
-						rdoAnimation::RDORRectElement* element = static_cast<rdoAnimation::RDORRectElement*>(currElement);
-						HBRUSH brush = ::CreateSolidBrush( RGB(element->m_background.m_r, element->m_background.m_g, element->m_background.m_b) );
-						HBRUSH pOldBrush;
-						if( !element->m_background.m_transparent ) {
-							pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
-						} else {
-							pOldBrush = static_cast<HBRUSH>(::GetStockObject( NULL_BRUSH ));
-						}
-
-						HPEN pen     = NULL;
-						HPEN pOldPen = NULL;
-						if( !element->m_foreground.m_transparent ) {
-							pen     = ::CreatePen( PS_SOLID, 0, RGB(element->m_foreground.m_r, element->m_foreground.m_g, element->m_foreground.m_b) );
-							pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
-						}
-
-						int w = (int)(std::min<double>( element->m_size.m_width, element->m_size.m_height ) / 3);
-						RoundRect( hdc, (int)(element->m_point.m_x), (int)(element->m_point.m_y), (int)(element->m_point.m_x + element->m_size.m_width), (int)(element->m_point.m_y + element->m_size.m_height), w, w );
-
-						::SelectObject( hdc, pOldBrush );
-						::DeleteObject( brush );
-						if ( pen ) {
-							::SelectObject( hdc, pOldPen );
-							::DeleteObject( pen );
-						}
-
-						break;
-					}
-
-					case rdoAnimation::FrameItem::FIT_LINE:
-					{
-						rdoAnimation::RDOLineElement* element = static_cast<rdoAnimation::RDOLineElement*>(currElement);
-						if( !element->m_color.m_transparent ) {
-							HPEN pen     = ::CreatePen( PS_SOLID, 0, RGB(element->m_color.m_r, element->m_color.m_g, element->m_color.m_b) );
-							HPEN pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
-
-							::MoveToEx( hdc, (int)(element->m_point1.m_x), (int)(element->m_point1.m_y), NULL );
-							::LineTo( hdc, (int)(element->m_point2.m_x), (int)(element->m_point2.m_y) );
-
-							::SelectObject( hdc, pOldPen );
-							::DeleteObject( pen );
-						}
-
-						break;
-					}
-
-					case rdoAnimation::FrameItem::FIT_TRIANG:
-					{
-						rdoAnimation::RDOTriangElement* element = static_cast<rdoAnimation::RDOTriangElement*>(currElement);
-						HBRUSH brush = ::CreateSolidBrush( RGB(element->m_background.m_r, element->m_background.m_g, element->m_background.m_b) );
-						HBRUSH pOldBrush;
-						if( !element->m_background.m_transparent ) {
-							pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
-						} else {
-							pOldBrush = static_cast<HBRUSH>(::GetStockObject( NULL_BRUSH ));
-						}
-
-						HPEN pen     = NULL;
-						HPEN pOldPen = NULL;
-						if( !element->m_foreground.m_transparent ) {
-							pen     = ::CreatePen( PS_SOLID, 0, RGB(element->m_foreground.m_r, element->m_foreground.m_g, element->m_foreground.m_b) );
-							pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
-						}
-
-						CPoint pts[3];
-						pts[0].x = (int)(element->m_point1.m_x);
-						pts[0].y = (int)(element->m_point1.m_y);
-						pts[1].x = (int)(element->m_point2.m_x);
-						pts[1].y = (int)(element->m_point2.m_y);
-						pts[2].x = (int)(element->m_point3.m_x);
-						pts[2].y = (int)(element->m_point3.m_y);
-						::Polygon( hdc, pts, 3 );
-
-						::SelectObject( hdc, pOldBrush );
-						::DeleteObject( brush );
-						if ( pen ) {
-							::SelectObject( hdc, pOldPen );
-							::DeleteObject( pen );
-						}
-
-						break;
-					}
-
-					case rdoAnimation::FrameItem::FIT_CIRCLE:
-					{
-						rdoAnimation::RDOCircleElement* element = static_cast<rdoAnimation::RDOCircleElement*>(currElement);
-						HBRUSH brush = ::CreateSolidBrush( RGB(element->m_background.m_r, element->m_background.m_g, element->m_background.m_b) );
-						HBRUSH pOldBrush;
-						if( !element->m_background.m_transparent ) {
-							pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
-						} else {
-							pOldBrush = static_cast<HBRUSH>(::GetStockObject( NULL_BRUSH ));
-						}
-
-						HPEN pen     = NULL;
-						HPEN pOldPen = NULL;
-						if( !element->m_foreground.m_transparent ) {
-							pen     = ::CreatePen( PS_SOLID, 0, RGB(element->m_foreground.m_r, element->m_foreground.m_g, element->m_foreground.m_b) );
-							pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
-						}
-
-						::Ellipse( hdc, (int)(element->m_center.m_x - element->m_radius.m_radius), (int)(element->m_center.m_y - element->m_radius.m_radius), (int)(element->m_center.m_x + element->m_radius.m_radius), (int)(element->m_center.m_y + element->m_radius.m_radius) );
-
-						::SelectObject( hdc, pOldBrush );
-						::DeleteObject( brush );
-						if ( pen ) {
-							::SelectObject( hdc, pOldPen );
-							::DeleteObject( pen );
-						}
-
-						break;
-					}
-
-					case rdoAnimation::FrameItem::FIT_ELLIPSE:
-					{
-						rdoAnimation::RDOEllipseElement* element = static_cast<rdoAnimation::RDOEllipseElement*>(currElement);
-						HBRUSH brush = ::CreateSolidBrush( RGB(element->m_background.m_r, element->m_background.m_g, element->m_background.m_b) );
-						HBRUSH pOldBrush;
-						if( !element->m_background.m_transparent ) {
-							pOldBrush = static_cast<HBRUSH>(::SelectObject( hdc, brush ));
-						} else {
-							pOldBrush = static_cast<HBRUSH>(::GetStockObject( NULL_BRUSH ));
-						}
-
-						HPEN pen     = NULL;
-						HPEN pOldPen = NULL;
-						if( !element->m_foreground.m_transparent ) {
-							pen     = ::CreatePen( PS_SOLID, 0, RGB(element->m_foreground.m_r, element->m_foreground.m_g, element->m_foreground.m_b) );
-							pOldPen = static_cast<HPEN>(::SelectObject( hdc, pen ));
-						}
-
-						::Ellipse( hdc, (int)(element->m_point.m_x), (int)(element->m_point.m_y), (int)(element->m_point.m_x + element->m_size.m_width), (int)(element->m_point.m_y + element->m_size.m_height) );
-
-						::SelectObject( hdc, pOldBrush );
-						::DeleteObject( brush );
-						if ( pen ) {
-							::SelectObject( hdc, pOldPen );
-							::DeleteObject( pen );
-						}
-
-						break;
-					}
-
-					case rdoAnimation::FrameItem::FIT_BMP:
-					{
-						rdoAnimation::RDOBmpElement* element = static_cast<rdoAnimation::RDOBmpElement*>(currElement);
-						BMP* bmp = bitmaps[element->m_bmp_name];
-						if ( bmp ) {
-							BMP* mask = element->hasMask() ? bitmaps[element->m_mask_name] : NULL;
-							CBitmap* pOldBitmap = dcBmp.SelectObject( &bmp->bmp );
-							if ( mask ) {
-								CBitmap* pOldMask = dcMask.SelectObject( &mask->bmp );
-								::BitBlt( hdc, (int)(element->m_point.m_x), (int)(element->m_point.m_y), mask->w, mask->h, dcMask.m_hDC, 0, 0, SRCAND );
-								::BitBlt( hdc, (int)(element->m_point.m_x), (int)(element->m_point.m_y), bmp->w, bmp->h, dcBmp.m_hDC, 0, 0, SRCPAINT );
-								dcMask.SelectObject( pOldMask );
-							} else {
-								::BitBlt( hdc, (int)(element->m_point.m_x), (int)(element->m_point.m_y), bmp->w, bmp->h, dcBmp.m_hDC, 0, 0, SRCCOPY );
-							}
-							dcBmp.SelectObject( pOldBitmap );
-						}
-						break;
-					}
-
-					case rdoAnimation::FrameItem::FIT_S_BMP:
-					{
-						rdoAnimation::RDOSBmpElement* element = static_cast<rdoAnimation::RDOSBmpElement*>(currElement);
-						BMP* bmp = bitmaps[element->m_bmp_name];
-						if ( bmp ) {
-							BMP* mask = element->hasMask() ? bitmaps[element->m_mask_name] : NULL;
-							CBitmap* pOldBitmap = dcBmp.SelectObject( &bmp->bmp );
-							if ( mask ) {
-								CBitmap* pOldMask = dcMask.SelectObject( &mask->bmp );
-								::StretchBlt( hdc, (int)(element->m_point.m_x), (int)(element->m_point.m_y), (int)(element->m_size.m_width), (int)(element->m_size.m_height), dcMask.m_hDC, 0, 0, mask->w, mask->h, SRCAND );
-								::StretchBlt( hdc, (int)(element->m_point.m_x), (int)(element->m_point.m_y), (int)(element->m_size.m_width), (int)(element->m_size.m_height), dcBmp.m_hDC, 0, 0, bmp->w, bmp->h, SRCPAINT );
-								dcMask.SelectObject( pOldMask );
-							} else {
-								::StretchBlt( hdc, (int)(element->m_point.m_x), (int)(element->m_point.m_y), (int)(element->m_size.m_width), (int)(element->m_size.m_height), dcBmp.m_hDC, 0, 0, bmp->w, bmp->h, SRCCOPY );
-							}
-							dcBmp.SelectObject( pOldBitmap );
-						}
-						break;
-					}
-
-					case rdoAnimation::FrameItem::FIT_ACTIVE:
-					{
-						rdoAnimation::RDOActiveElement* element = static_cast<rdoAnimation::RDOActiveElement*>(currElement);
-						std::vector< Area* >::const_iterator it = frames[index]->areas_sim.begin();
-						while ( it != frames[index]->areas_sim.end() ) {
-							if ( (*it)->name == element->m_opr_name ) break;
-							it++;
-						}
-						if ( it == frames[index]->areas_sim.end() ) {
-							Area* area = new Area;
-							area->name = element->m_opr_name;
-							area->x    = (int)(element->m_point.m_x);
-							area->y    = (int)(element->m_point.m_y);
-							area->w    = (int)(element->m_size.m_width);
-							area->h    = (int)(element->m_size.m_height);
-							frames[index]->areas_sim.push_back( area );
-						} else {
-							(*it)->x    = (int)(element->m_point.m_x);
-							(*it)->y    = (int)(element->m_point.m_y);
-							(*it)->w    = (int)(element->m_size.m_width);
-							(*it)->h    = (int)(element->m_size.m_height);
-						}
-						break;
-					}
-				}
+				HTREEITEM hitem = m_frameList[m_currentShowingFrame]->m_hitem;
+				pTree->SelectItem(hitem);
 			}
-
-			lock_draw.Unlock();
-
-			getFrameEventTimer( index )->ResetEvent();
-
-//			CRect rect;
-//			view->GetClientRect( rect );
-			view->InvalidateRect( NULL );
-			view->SendNotifyMessage( WM_PAINT, 0, 0 );
-
-			CONST HANDLE events[2] = { getFrameEventTimer( index )->m_hObject, getFrameEventClose( index )->m_hObject };
-			DWORD res = ::WaitForMultipleObjects( 2, events, FALSE, INFINITE );
-			if ( res == WAIT_OBJECT_0 ) {               // timer
-			} else if ( res == WAIT_OBJECT_0 + 1 ) {    // close
-			} else {
+			else
+			{
+				pTree->SelectItem(NULL);
 			}
 		}
-		lock_used.Unlock();
+	}
+}
+
+void RDOStudioFrameManager::resetCurrentShowingFrame(ruint index)
+{
+	if (index == m_currentShowingFrame)
+	{
+		setCurrentShowingFrame(ruint(~0));
+	}
+}
+
+void RDOStudioFrameManager::insertBitmap(CREF(tstring) bitmapName)
+{
+	if (m_bitmapList.find(bitmapName) != m_bitmapList.end())
+		return;
+
+	PTR(RDOStudioOutput) pOutput = &studioApp.m_pMainFrame->output;
+	ASSERT(pOutput);
+	pOutput->appendStringToDebug(rdo::format(IDS_MODEL_RESOURCE_LOADING_NAME, bitmapName.c_str()));
+	const_cast<PTR(rdoEditCtrl::RDODebugEdit)>(pOutput->getDebug())->UpdateWindow();
+
+	rdo::binarystream stream;
+	rdoRepository::RDOThreadRepository::BinaryFile data(bitmapName, stream);
+	model->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD_BINARY, &data);
+
+	rbool ok = false;
+	PTR(Gdiplus::Bitmap) pBitmap = rdo::gui::Bitmap::load(data.m_name);
+	if (pBitmap)
+	{
+		std::pair<rdo::gui::BitmapList::const_iterator, rbool> result =
+			m_bitmapList.insert(rdo::gui::BitmapList::value_type(bitmapName, pBitmap));
+		if (result.second)
+		{
+			ok = true;
+		}
+	}
+
+	pOutput->appendStringToDebug(rdo::format(ok ? IDS_MODEL_RESOURCE_LOADING_NAME_OK : IDS_MODEL_RESOURCE_LOADING_NAME_FAILED));
+	const_cast<PTR(rdoEditCtrl::RDODebugEdit)>(pOutput->getDebug())->UpdateWindow();
+}
+
+void RDOStudioFrameManager::showFrame(CPTRC(rdoAnimation::RDOFrame) pFrame, ruint index)
+{
+	if (index < count())
+	{
+		PTR(RDOStudioFrameDoc) pFrameDoc = getFrameDoc(index);
+		if (pFrameDoc)
+		{
+			PTR(RDOStudioFrameView) pFrameView = getFrameView(index);
+			ASSERT(pFrameView);
+			rdo::gui::BitmapList bitmapGeneratedList;
+			pFrameView->update(pFrame, m_bitmapList, bitmapGeneratedList, m_frameList[index]->m_areaList);
+			if (!bitmapGeneratedList.empty())
+			{
+				std::copy(bitmapGeneratedList.begin(), bitmapGeneratedList.end(), std::inserter(m_bitmapList, m_bitmapList.begin()));
+			}
+		}
 	}
 }
 
 void RDOStudioFrameManager::showNextFrame()
 {
-	int cnt = count();
-	if ( model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && currentShowingFrame < cnt-1 ) {
-		int index = currentShowingFrame + 1;
-		RDOStudioFrameDoc* doc = getFrameDoc( index );
-		if ( !doc ) {
-			doc = connectFrameDoc( index );
-		} else {
-			doc->frame->ActivateFrame();
-			setLastShowedFrame( index );
-			setCurrentShowingFrame( index );
+	ruint cnt = count();
+	if (model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && m_currentShowingFrame < cnt-1)
+	{
+		ruint index = m_currentShowingFrame + 1;
+		PTR(RDOStudioFrameDoc) pDoc = getFrameDoc(index);
+		if (!pDoc)
+		{
+			pDoc = connectFrameDoc(index);
+		}
+		else
+		{
+			pDoc->frame->ActivateFrame();
+			setLastShowedFrame    (index);
+			setCurrentShowingFrame(index);
 		}
 	}
 }
 
 void RDOStudioFrameManager::showPrevFrame()
 {
-	int cnt = count();
-	if ( model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && currentShowingFrame > 0 ) {
-		int index = currentShowingFrame - 1;
-		RDOStudioFrameDoc* doc = getFrameDoc( index );
-		if ( !doc ) {
-			doc = connectFrameDoc( index );
-		} else {
-			doc->frame->ActivateFrame();
-			setLastShowedFrame( index );
-			setCurrentShowingFrame( index );
+	ruint cnt = count();
+	if (model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && m_currentShowingFrame != ruint(~0))
+	{
+		ruint index = m_currentShowingFrame - 1;
+		PTR(RDOStudioFrameDoc) pDoc = getFrameDoc(index);
+		if (!pDoc)
+		{
+			pDoc = connectFrameDoc(index);
+		}
+		else
+		{
+			pDoc->frame->ActivateFrame();
+			setLastShowedFrame    (index);
+			setCurrentShowingFrame(index);
 		}
 	}
 }
 
-void RDOStudioFrameManager::showFrame( const int index )
+void RDOStudioFrameManager::showFrame(ruint index)
 {
-	int cnt = count();
-	if ( model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && index >= 0 && index < cnt ) {
-		RDOStudioFrameDoc* doc = getFrameDoc( index );
-		if ( !doc ) {
-			doc = connectFrameDoc( index );
-		} else {
-			doc->frame->ActivateFrame();
-			setLastShowedFrame( index );
-			setCurrentShowingFrame( index );
+	ruint cnt = count();
+	if (model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && index >= 0 && index < cnt)
+	{
+		PTR(RDOStudioFrameDoc) pDoc = getFrameDoc(index);
+		if (!pDoc)
+		{
+			pDoc = connectFrameDoc(index);
+		}
+		else
+		{
+			pDoc->frame->ActivateFrame();
+			setLastShowedFrame    (index);
+			setCurrentShowingFrame(index);
 		}
 	}
 }
 
 rbool RDOStudioFrameManager::canShowNextFrame() const
 {
-	int cnt = count();
-	return model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && ( currentShowingFrame == -1 || currentShowingFrame < cnt-1 );
+	ruint cnt = count();
+	return model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && (m_currentShowingFrame == ruint(~0) || m_currentShowingFrame < cnt-1);
 }
 
 rbool RDOStudioFrameManager::canShowPrevFrame() const
 {
 	int cnt = count();
-	return model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && currentShowingFrame > 0;
+	return model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && (m_currentShowingFrame != ruint(~0) && m_currentShowingFrame > 0);
 }
 
 void RDOStudioFrameManager::updateStyles() const
 {
-	std::vector< Frame* >::const_iterator it = frames.begin();
-	while ( it != frames.end() ) {
-		RDOStudioFrameView* view = (*it++)->view;
-		if ( view ) {
-			view->updateFont();
-			view->InvalidateRect( NULL );
-			view->UpdateWindow();
+	STL_FOR_ALL_CONST(m_frameList, it)
+	{
+		PTR(RDOStudioFrameView) pFrameView = (*it)->m_pView;
+		if (pFrameView)
+		{
+			pFrameView->updateFont    ();
+			pFrameView->InvalidateRect(NULL);
+			pFrameView->UpdateWindow  ();
 		}
 	}
 }
