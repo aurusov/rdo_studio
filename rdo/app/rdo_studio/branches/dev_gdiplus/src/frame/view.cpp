@@ -704,19 +704,23 @@ void RDOStudioFrameView::elementRect(PTR(rdoAnimation::RDORectElement) pElement)
 {
 	ASSERT(pElement);
 
-	Gdiplus::Rect rect(
+	Gdiplus::Rect brushRect(
 		(int)pElement->m_point.m_x,
 		(int)pElement->m_point.m_y,
-		(int)pElement->m_size.m_width  - 1,
-		(int)pElement->m_size.m_height - 1
+		(int)pElement->m_size.m_width,
+		(int)pElement->m_size.m_height 
 	);
+
+	Gdiplus::Rect penRect(brushRect);
+	--penRect.Width;
+	--penRect.Height;
 
 	Gdiplus::Status (Gdiplus::Graphics::*pBrush)(CPTR(Gdiplus::Brush), CREF(Gdiplus::Rect)) = &Gdiplus::Graphics::FillRectangle;
 	Gdiplus::Status (Gdiplus::Graphics::*pPen  )(CPTR(Gdiplus::Pen),   CREF(Gdiplus::Rect)) = &Gdiplus::Graphics::DrawRectangle;
 
 	drawColoredElement(*pElement,
-		boost::bind(pBrush, _1, _2, rect),
-		boost::bind(pPen,   _1, _2, rect)
+		boost::bind(pBrush, _1, _2, brushRect),
+		boost::bind(pPen,   _1, _2, penRect  )
 	);
 }
 
