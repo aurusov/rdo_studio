@@ -615,19 +615,6 @@ void RDOStudioFrameView::elementText(PTR(rdoAnimation::RDOTextElement) pElement)
 {
 	ASSERT(pElement);
 
-	Gdiplus::RectF rect(
-		Gdiplus::REAL(pElement->m_point.m_x),
-		Gdiplus::REAL(pElement->m_point.m_y),
-		Gdiplus::REAL(pElement->m_size.m_width),
-		Gdiplus::REAL(pElement->m_size.m_height)
-	);
-
-	if (!pElement->m_background.m_transparent)
-	{
-		Gdiplus::SolidBrush brush(Gdiplus::Color(pElement->m_background.m_r, pElement->m_background.m_g, pElement->m_background.m_b));
-		m_memDC.dc().FillRectangle(&brush, rect);
-	}
-
 	if (pElement->m_foreground.m_transparent)
 		return;
 
@@ -649,8 +636,29 @@ void RDOStudioFrameView::elementText(PTR(rdoAnimation::RDOTextElement) pElement)
 		case rdoAnimation::RDOTextElement::TETA_RIGHT : sformat.SetAlignment(Gdiplus::StringAlignmentFar   ); break;
 		case rdoAnimation::RDOTextElement::TETA_CENTER: sformat.SetAlignment(Gdiplus::StringAlignmentCenter); break;
 		}
-		sformat.SetFormatFlags(Gdiplus::StringFormatFlagsNoWrap);
-		sformat.SetTrimming   (Gdiplus::StringTrimmingNone     );
+		sformat.SetLineAlignment(Gdiplus::StringAlignmentNear    );
+		sformat.SetFormatFlags  (Gdiplus::StringFormatFlagsNoWrap);
+		sformat.SetTrimming     (Gdiplus::StringTrimmingNone     );
+
+		Gdiplus::RectF layoutRect(
+			Gdiplus::REAL(pElement->m_point.m_x),
+			Gdiplus::REAL(pElement->m_point.m_y),
+			Gdiplus::REAL(pElement->m_size.m_width),
+			Gdiplus::REAL(pElement->m_size.m_height)
+		);
+
+		Gdiplus::RectF boundingBox;
+		int            codepointsFitted;
+		int            linesFilled;
+
+		if (m_memDC.dc().MeasureString(wtext.c_str(), wtext.length(), m_pFont.get(), layoutRect, &sformat, &boundingBox, &codepointsFitted, &linesFilled) != Gdiplus::Ok)
+			return;
+
+		if (!pElement->m_background.m_transparent)
+		{
+			Gdiplus::SolidBrush brush(Gdiplus::Color(pElement->m_background.m_r, pElement->m_background.m_g, pElement->m_background.m_b));
+			m_memDC.dc().FillRectangle(&brush, boundingBox);
+		}
 
 		Gdiplus::SolidBrush brush(
 			Gdiplus::Color(
@@ -660,7 +668,7 @@ void RDOStudioFrameView::elementText(PTR(rdoAnimation::RDOTextElement) pElement)
 			)
 		);
 
-		m_memDC.dc().DrawString(wtext.c_str(), wtext.length(), m_pFont.get(), rect, &sformat, &brush);
+		m_memDC.dc().DrawString(wtext.c_str(), wtext.length(), m_pFont.get(), boundingBox, &sformat, &brush);
 	}
 }
 
