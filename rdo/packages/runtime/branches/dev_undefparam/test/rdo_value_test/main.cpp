@@ -562,14 +562,32 @@ BOOST_AUTO_TEST_CASE(RDOValue_Identificator)
 	BOOST_CHECK(value1 == value3);
 }
 
+template <class T1>
+void testUndef(CREF(T1) param1)
+{
+	T1 val = param1;
+	RDOValue value(val);
+	BOOST_CHECK(value.getUndefined() == 1);
+}
+
 BOOST_AUTO_TEST_CASE(RDOValue_Undefined)
 {
+	testUndef<rsint>  (10       );
+	testUndef<ruint>  (10       );
+	testUndef<double> (10.5     );
+	testUndef<tstring>(_T("abc"));
+	testUndef<tchar>  (_T('a')  );
+	testUndef<rbool>  (true     );
+
 	rsint val1 = 10;
 	RDOValue value1(val1);
 	BOOST_CHECK(value1);
-	value1.setUndefined(1);
-	double undefined = value1.getUndefined();
-	BOOST_CHECK(undefined == 1  );
+
+	BOOST_CHECK(value1.getUndefined() == 1);
+	value1.setUndefined(0);
+	BOOST_CHECK(value1.getUndefined() == 0);
+	value1.setUndefined(0.5);
+	BOOST_CHECK(value1.getUndefined() == 0.5);
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Resource)
