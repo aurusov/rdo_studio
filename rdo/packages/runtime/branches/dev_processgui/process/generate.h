@@ -14,6 +14,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/noncopyable.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "kernel/rdokernel.h"
 #include "simulator/runtime/rdo.h"
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/runtime/process/rdoprocess.h"
