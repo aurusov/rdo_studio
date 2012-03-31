@@ -58,16 +58,14 @@ DECLARE_POINTER(ContextMemory);
 // -------------------- ContextStatement
 // --------------------------------------------------------------------------------
 CLASS(ContextStatement):
-	    INSTANCE_OF      (ContextMemory)
+	    INSTANCE_OF      (Context     )
+	AND IMPLEMENTATION_OF(IContextFind)
 {
 DECLARE_FACTORY(ContextStatement);
 public:
 	rbool is_for_statement();
 	
 	ContextStatement(CREF(rdoRuntime::LPRDOCalc) pCalc);
-
-protected:
-	ContextStatement();
 
 private:
 	
