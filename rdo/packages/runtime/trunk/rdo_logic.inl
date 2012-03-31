@@ -87,10 +87,11 @@ inline LPIBaseOperation RDOOrderMeta::sort(CREF(LPRDORuntime) pRuntime, REF(Base
 // --------------------------------------------------------------------------------
 template <class Order>
 inline RDOLogic<Order>::RDOLogic(CREF(LPRDORuntime) pRuntime, LPIBaseOperationContainer pParent)
-	: m_pCondition   (NULL )
-	, m_lastCondition(false)
-	, m_pFirst       (NULL )
-	, m_pParent      (pParent ? pParent : (pRuntime ? pRuntime->m_pMetaLogic : LPIBaseOperationContainer(NULL)))
+	: m_pCondition    (NULL )
+	, m_lastCondition (false)
+	, m_pFirst        (NULL )
+	, m_pParent       (pParent ? pParent : (pRuntime ? pRuntime->m_pMetaLogic : LPIBaseOperationContainer(NULL)))
+	, m_multithreading(false)
 {}
 
 template <class Order>
