@@ -50,11 +50,12 @@ protected:
 
 	DECLARE_IBaseOperationContainer;
 
-	LPRDOCalc                  m_pCondition;
-	rbool                      m_lastCondition;
-	ChildList                  m_childList;
-	LPIBaseOperation           m_pFirst;
-	LPIBaseOperationContainer  m_pParent;
+	LPRDOCalc                 m_pCondition;
+	rbool                     m_lastCondition;
+	ChildList                 m_childList;
+	LPIBaseOperation          m_pFirst;
+	LPIBaseOperationContainer m_pParent;
+	rbool                     m_multithreading;
 
 private:
 	rbool checkSelfCondition(CREF(LPRDORuntime) pRuntime);
