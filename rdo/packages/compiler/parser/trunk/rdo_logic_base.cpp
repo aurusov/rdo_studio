@@ -24,6 +24,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 RDOLogicBase::RDOLogicBase(CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
+	, m_multithreading(false   )
 {}
 
 RDOLogicBase::~RDOLogicBase()
