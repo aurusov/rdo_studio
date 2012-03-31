@@ -24,7 +24,7 @@ LPRDOFuzzyValue RDOFuzzyValue::operator&& (CREF(LPRDOFuzzyValue) pFuzzyValue) co
 	if (type() != pFuzzyValue->type())
 		throw RDOValueException();
 
-	LPRDOFuzzyValue pFuzzyValueResult = rdo::Factory<RDOFuzzyValue>::create(type());
+	LPRDOFuzzyValue pFuzzyValueResult = rdo::Factory<RDOFuzzyValue>::create(pFuzzyValue->m_range);
 	ASSERT(pFuzzyValueResult);
 	// Найдем только пересекающие элементы и выберем минимальную функцию принадлежности
 	FuzzySet::const_iterator it1 = begin();
@@ -45,7 +45,7 @@ LPRDOFuzzyValue RDOFuzzyValue::operator|| (CREF(LPRDOFuzzyValue) pFuzzyValue) co
 	if (type() != pFuzzyValue->type())
 		throw RDOValueException();
 
-	LPRDOFuzzyValue pFuzzyValueResult = rdo::Factory<RDOFuzzyValue>::create(type());
+	LPRDOFuzzyValue pFuzzyValueResult = rdo::Factory<RDOFuzzyValue>::create(pFuzzyValue->m_range);
 	ASSERT(pFuzzyValueResult);
 	// Объединим элементы двух множеств
 	// Если элемент одновременно принадлежит обоим множествам, то выберем максимальную функцию принадлежности
@@ -78,8 +78,8 @@ LPRDOFuzzyValue RDOFuzzyValue::operator|| (CREF(LPRDOFuzzyValue) pFuzzyValue) co
 	return pFuzzyValueResult;
 }
 
-/// @todo комментарии в *.h
-//! Декартово произведение (попарное) элементов двух множест с применением произвольной функции fun
+// @todo комментарии в *.h
+// ! Декартово произведение (попарное) элементов двух множест с применением произвольной функции fun
 LPRDOFuzzyValue RDOFuzzyValue::ext_binary(ExtBinaryFun fun, CREF(LPRDOFuzzyValue) pFuzzyValue) const
 {
 	FuzzySet values;
@@ -105,13 +105,7 @@ LPRDOFuzzyValue RDOFuzzyValue::ext_binary(ExtBinaryFun fun, CREF(LPRDOFuzzyValue
 	}
 	if (!values.empty())
 	{
-		LPRDOFuzzySetDefinitionRangeDiscret pFuzzySetDefinition = rdo::Factory<RDOFuzzySetDefinitionRangeDiscret>::create(values.begin()->first, values.rbegin()->first);
-		ASSERT(pFuzzySetDefinition);
-
-		LPRDOFuzzyType pFuzzyType = rdo::Factory<RDOFuzzyType>::create(pFuzzySetDefinition);
-		ASSERT(pFuzzyType);
-
-		LPRDOFuzzyValue pFuzzyValueResult = rdo::Factory<RDOFuzzyValue>::create(pFuzzyType);
+		LPRDOFuzzyValue pFuzzyValueResult = rdo::Factory<RDOFuzzyValue>::create(pFuzzyValue->m_Range);
 		ASSERT(pFuzzyValueResult);
 		pFuzzyValueResult->m_fuzzySet = values;
 
@@ -123,7 +117,7 @@ LPRDOFuzzyValue RDOFuzzyValue::ext_binary(ExtBinaryFun fun, CREF(LPRDOFuzzyValue
 	}
 }
 
-//! Преобразование элементов через произвольную функцию fun
+// ! Преобразование элементов через произвольную функцию fun
 LPRDOFuzzyValue RDOFuzzyValue::ext_unary(ExtUnaryFun fun) const
 {
 	FuzzySet values;
@@ -144,12 +138,6 @@ LPRDOFuzzyValue RDOFuzzyValue::ext_unary(ExtUnaryFun fun) const
 	}
 	if (!values.empty())
 	{
-		LPRDOFuzzySetDefinitionRangeDiscret pFuzzySetDefinition = rdo::Factory<RDOFuzzySetDefinitionRangeDiscret>::create(values.begin()->first, values.rbegin()->first);
-		ASSERT(pFuzzySetDefinition);
-
-		LPRDOFuzzyType pFuzzyType = rdo::Factory<RDOFuzzyType>::create(pFuzzySetDefinition);
-		ASSERT(pFuzzyType);
-
 		LPRDOFuzzyValue pFuzzyValueResult = rdo::Factory<RDOFuzzyValue>::create(pFuzzyType);
 		ASSERT(pFuzzyValueResult);
 		pFuzzyValueResult->m_fuzzySet = values;
@@ -182,12 +170,6 @@ LPRDOFuzzyValue RDOFuzzyValue::ext_unary(ExtUnaryFunP fun, PTR(void) pParam) con
 	}
 	if (!values.empty())
 	{
-		LPRDOFuzzySetDefinitionRangeDiscret pFuzzySetDefinition = rdo::Factory<RDOFuzzySetDefinitionRangeDiscret>::create(values.begin()->first, values.rbegin()->first);
-		ASSERT(pFuzzySetDefinition);
-
-		LPRDOFuzzyType pFuzzyType = rdo::Factory<RDOFuzzyType>::create(pFuzzySetDefinition);
-		ASSERT(pFuzzyType);
-
 		LPRDOFuzzyValue pFuzzyValueResult = rdo::Factory<RDOFuzzyValue>::create(pFuzzyType);
 		ASSERT(pFuzzyValueResult);
 		pFuzzyValueResult->m_fuzzySet = values;
@@ -347,64 +329,7 @@ LPRDOFuzzyValue RDOFuzzyValue::clone() const
 // --------------------------------------------------------------------------------
 LPRDOLingvoVariable RDOLingvoVariable::fuzzyfication(CREF(RDOValue) value)
 {
-	Set::const_iterator itTerm      = begin();
-	LPRDOLingvoVariable actVariable = rdo::Factory<RDOLingvoVariable>::create(*this);
-
-	for (itTerm = begin();itTerm != end(); itTerm++)
-	{
-		LPRDOFuzzyValue          currValue    = itTerm->second;
-		RDOFuzzyValue::FuzzyItem findItem     = currValue->findValue(value);
-		LPRDOFuzzySetDefinition  newSet       = rdo::Factory<RDOFuzzySetDefinitionRangeDiscret>::create();
-		LPRDOFuzzyType           newVariable  = rdo::Factory<RDOFuzzyType>::create(newSet);
-		LPRDOFuzzyValue          newValue     = rdo::Factory<RDOFuzzyValue>::create(newVariable);
-		newValue->append(findItem.first, findItem.second);
-		CREF(RDOFuzzyType::TermSet) forAppend = newValue->type()->getTermSet();
-		actVariable->append(forAppend);
-	}
-	return(actVariable);
+	
 }
-// --------------------------------------------------------------------------------
-// -------------------- RDOFuzzySetDefinitionFixed
-// --------------------------------------------------------------------------------
-LPRDOFuzzyValue RDOFuzzySetDefinitionFixed::getSupplement(CREF(LPRDOFuzzyValue) pFuzzyValue) const
-{
-	LPRDOFuzzyValue pFuzzyValueResult = rdo::Factory<RDOFuzzyValue>::create(pFuzzyValue->type());
-	ASSERT(pFuzzyValueResult);
-
-	RDOFuzzyValue::FuzzySet::const_iterator rangeItemIt = m_items.begin();
-	while (rangeItemIt != m_items.end())
-	{
-		RDOFuzzyValue::FuzzyItem found = pFuzzyValue->findValue(rangeItemIt->first);
-		pFuzzyValueResult->operator[](found.first) = 1.0 - found.second;
-		++rangeItemIt;
-	}
-	return pFuzzyValueResult;
-}
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOFuzzySetDefinitionRangeDiscret
-// --------------------------------------------------------------------------------
-rbool RDOFuzzySetDefinitionRangeDiscret::inRange(CREF(RDOValue) rdovalue) const
-{
-	return rdovalue >= m_from && rdovalue <= m_till;
-}
-
-LPRDOFuzzyValue RDOFuzzySetDefinitionRangeDiscret::getSupplement(CREF(LPRDOFuzzyValue) pFuzzyValue) const
-{
-	LPRDOFuzzyValue pFuzzyValueResult = rdo::Factory<RDOFuzzyValue>::create(pFuzzyValue->type());
-	ASSERT(pFuzzyValueResult);
-
-	for (RDOValue ritem = m_from; ritem <= m_till; ritem += m_step)
-	{
-		RDOFuzzyValue::FuzzyItem found = pFuzzyValue->findValue(ritem);
-		pFuzzyValueResult->operator[](found.first) = 1.0 - found.second;
-	}
-	return pFuzzyValueResult;
-}
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOFuzzyEmptyType
-// --------------------------------------------------------------------------------
-PTR(RDOFuzzyEmptyType) RDOFuzzyEmptyType::s_emptyType = NULL;
 
 CLOSE_RDO_RUNTIME_NAMESPACE
