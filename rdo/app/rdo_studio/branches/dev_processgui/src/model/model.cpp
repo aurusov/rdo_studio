@@ -370,7 +370,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		case RDOThread::RT_RUNTIME_TRANSACT_COUNTER:
 		{
 			msg.lock();
-			int count = *static_cast<int>(msg.param);
+			int count = *static_cast<PTR(int)>(msg.param);
 			PTR(RPShapeDataBlockCreate) pRawParam = static_cast<PTR(RPShapeDataBlockCreate)>(msg.param);
 			pRawParam->setAmount(count);
 			msg.unlock();
