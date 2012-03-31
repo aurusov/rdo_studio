@@ -1,0 +1,655 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<!-- Sitemap 1.0 -->
+</HEAD><BODY>
+<UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="code completion">
+		<param name="Name" value="Меню Правка">
+		<param name="Local" value="html\work_menu_edit.htm">
+		<param name="Name" value="Автозавершение (code completion)">
+		<param name="Local" value="html\work_model_complete.htm">
+		<param name="Name" value="Настройки">
+		<param name="Local" value="html\work_options_editor.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="DPT">
+		<param name="Name" value="Запуск программного комплекса">
+		<param name="Local" value="html\work_run.htm">
+		<param name="Name" value="Закладки окна модели">
+		<param name="Local" value="html\work_model_tabsheets.htm">
+		<param name="Name" value="Меню Вставка">
+		<param name="Local" value="html\work_menu_insert.htm">
+		<param name="Name" value="Шаблоны и вставка синтаксических конструкций">
+		<param name="Local" value="html\work_model_insert.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="FRM">
+		<param name="Name" value="Запуск программного комплекса">
+		<param name="Local" value="html\work_run.htm">
+		<param name="Name" value="Закладки окна модели">
+		<param name="Local" value="html\work_model_tabsheets.htm">
+		<param name="Name" value="Меню Вставка">
+		<param name="Local" value="html\work_menu_insert.htm">
+		<param name="Name" value="Шаблоны и вставка синтаксических конструкций">
+		<param name="Local" value="html\work_model_insert.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="FUN">
+		<param name="Name" value="Запуск программного комплекса">
+		<param name="Local" value="html\work_run.htm">
+		<param name="Name" value="Закладки окна модели">
+		<param name="Local" value="html\work_model_tabsheets.htm">
+		<param name="Name" value="Меню Вставка">
+		<param name="Local" value="html\work_menu_insert.htm">
+		<param name="Name" value="Шаблоны и вставка синтаксических конструкций">
+		<param name="Local" value="html\work_model_insert.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="OPR">
+		<param name="Name" value="Запуск программного комплекса">
+		<param name="Local" value="html\work_run.htm">
+		<param name="Name" value="Закладки окна модели">
+		<param name="Local" value="html\work_model_tabsheets.htm">
+		<param name="Name" value="Меню Вставка">
+		<param name="Local" value="html\work_menu_insert.htm">
+		<param name="Name" value="Шаблоны и вставка синтаксических конструкций">
+		<param name="Local" value="html\work_model_insert.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="PAT">
+		<param name="Name" value="Запуск программного комплекса">
+		<param name="Local" value="html\work_run.htm">
+		<param name="Name" value="Закладки окна модели">
+		<param name="Local" value="html\work_model_tabsheets.htm">
+		<param name="Name" value="Меню Вставка">
+		<param name="Local" value="html\work_menu_insert.htm">
+		<param name="Name" value="Шаблоны и вставка синтаксических конструкций">
+		<param name="Local" value="html\work_model_insert.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="PMD">
+		<param name="Name" value="Запуск программного комплекса">
+		<param name="Local" value="html\work_run.htm">
+		<param name="Name" value="Закладки окна модели">
+		<param name="Local" value="html\work_model_tabsheets.htm">
+		<param name="Name" value="Меню Вставка">
+		<param name="Local" value="html\work_menu_insert.htm">
+		<param name="Name" value="Шаблоны и вставка синтаксических конструкций">
+		<param name="Local" value="html\work_model_insert.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="PMV">
+		<param name="Name" value="Результаты моделирования">
+		<param name="Local" value="html\work_model_results.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="RAO-studio">
+		<param name="Name" value="Общие сведения">
+		<param name="Local" value="html\intro.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="RSS">
+		<param name="Name" value="Запуск программного комплекса">
+		<param name="Local" value="html\work_run.htm">
+		<param name="Name" value="Закладки окна модели">
+		<param name="Local" value="html\work_model_tabsheets.htm">
+		<param name="Name" value="Меню Вставка">
+		<param name="Local" value="html\work_menu_insert.htm">
+		<param name="Name" value="Шаблоны и вставка синтаксических конструкций">
+		<param name="Local" value="html\work_model_insert.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="RTP">
+		<param name="Name" value="Запуск программного комплекса">
+		<param name="Local" value="html\work_run.htm">
+		<param name="Name" value="Закладки окна модели">
+		<param name="Local" value="html\work_model_tabsheets.htm">
+		<param name="Name" value="Меню Вставка">
+		<param name="Local" value="html\work_menu_insert.htm">
+		<param name="Name" value="Шаблоны и вставка синтаксических конструкций">
+		<param name="Local" value="html\work_model_insert.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="SMR">
+		<param name="Name" value="Запуск программного комплекса">
+		<param name="Local" value="html\work_run.htm">
+		<param name="Name" value="Закладки окна модели">
+		<param name="Local" value="html\work_model_tabsheets.htm">
+		<param name="Name" value="Меню Вставка">
+		<param name="Local" value="html\work_menu_insert.htm">
+		<param name="Name" value="Шаблоны и вставка синтаксических конструкций">
+		<param name="Local" value="html\work_model_insert.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="TRC">
+		<param name="Name" value="Результаты моделирования">
+		<param name="Local" value="html\work_model_results.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="warnings">
+		<param name="Local" value="html\work_options_styles_and_color.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&agrave;&acirc;&ograve;&icirc;&ccedil;&agrave;&acirc;&aring;&eth;&oslash;&aring;&iacute;&egrave;&aring;">
+		<param name="Name" value="Меню Правка">
+		<param name="Local" value="html\work_menu_edit.htm">
+		<param name="Name" value="Автозавершение (code completion)">
+		<param name="Local" value="html\work_model_complete.htm">
+		<param name="Name" value="Настройки">
+		<param name="Local" value="html\work_options_editor.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&agrave;&iacute;&egrave;&igrave;&agrave;&ouml;&egrave;&yuml;">
+		<param name="Name" value="Режимы моделирования">
+		<param name="Local" value="html\work_model_frame.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&aacute;&icirc;&eth;&auml;&thorn;&eth;">
+		<param name="Name" value="Настройки">
+		<param name="Local" value="html\work_options_editor.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&aacute;&oacute;&ocirc;&aring;&eth;&ucirc;">
+		<param name="Name" value="Меню Вставка">
+		<param name="Local" value="html\work_menu_insert.htm">
+		<param name="Name" value="Дополнительные буферы обмена">
+		<param name="Local" value="html\work_model_buffer.htm">
+		<param name="Name" value="Настройки">
+		<param name="Local" value="html\work_options_editor.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&acirc;&ntilde;&ograve;&agrave;&acirc;&ecirc;&agrave;">
+		<param name="Name" value="Меню Правка">
+		<param name="Local" value="html\work_menu_edit.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&acirc;&ucirc;&auml;&aring;&euml;&aring;&iacute;&egrave;&aring; &ograve;&aring;&ecirc;&ntilde;&ograve;&agrave;">
+		<param name="Name" value="Меню Правка">
+		<param name="Local" value="html\work_menu_edit.htm">
+		<param name="Name" value="Редактирование модели">
+		<param name="Local" value="html\work_model_edit.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&acirc;&ucirc;&eth;&aring;&ccedil;&agrave;&iacute;&egrave;&aring;">
+		<param name="Name" value="Меню Правка">
+		<param name="Local" value="html\work_menu_edit.htm">
+		<param name="Name" value="Редактирование модели">
+		<param name="Local" value="html\work_model_edit.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&atilde;&eth;&agrave;&ocirc;&egrave;&ecirc;&egrave;">
+		<param name="Name" value="Автоматическое построение графиков">
+		<param name="Local" value="html\work_model_chart.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&ccedil;&agrave;&acirc;&aring;&eth;&oslash;&aring;&iacute;&egrave;&aring; &eth;&agrave;&aacute;&icirc;&ograve;&ucirc;">
+		<param name="Name" value="Меню Файл">
+		<param name="Local" value="html\work_menu_file.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&ccedil;&agrave;&auml;&agrave;&divide;&egrave;">
+		<param name="Name" value="Общие сведения">
+		<param name="Local" value="html\intro.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&ccedil;&agrave;&ecirc;&euml;&agrave;&auml;&ecirc;&egrave;">
+		<param name="Name" value="Меню Поиск">
+		<param name="Local" value="html\work_menu_search.htm">
+		<param name="Name" value="Навигация с помощью закладок">
+		<param name="Local" value="html\work_model_bookmarks.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&ccedil;&agrave;&ecirc;&icirc;&igrave;&igrave;&aring;&iacute;&ograve;&egrave;&eth;&icirc;&acirc;&agrave;&ograve;&uuml;">
+		<param name="Name" value="Меню Правка">
+		<param name="Local" value="html\work_menu_edit.htm">
+		<param name="Name" value="Редактирование модели">
+		<param name="Local" value="html\work_model_edit.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&ccedil;&agrave;&iuml;&oacute;&ntilde;&ecirc;">
+		<param name="Name" value="Запуск программного комплекса">
+		<param name="Local" value="html\work_run.htm">
+		<param name="Name" value="Запуск, настройка запуска">
+		<param name="Local" value="html\work_model_run.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&ccedil;&agrave;&iuml;&oacute;&ntilde;&ecirc; &igrave;&icirc;&auml;&aring;&euml;&egrave;">
+		<param name="Name" value="Меню Модель">
+		<param name="Local" value="html\work_menu_model.htm">
+		<param name="Name" value="Запуск, настройка запуска">
+		<param name="Local" value="html\work_model_run.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&ccedil;&agrave;&iuml;&oacute;&ntilde;&ecirc; &iuml;&eth;&icirc;&atilde;&icirc;&iacute;&agrave;">
+		<param name="Name" value="Меню Модель">
+		<param name="Local" value="html\work_menu_model.htm">
+		<param name="Name" value="Запуск, настройка запуска">
+		<param name="Local" value="html\work_model_run.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&ecirc;&icirc;&iuml;&egrave;&eth;&icirc;&acirc;&agrave;&iacute;&egrave;&aring;">
+		<param name="Name" value="Меню Правка">
+		<param name="Local" value="html\work_menu_edit.htm">
+		<param name="Name" value="Редактирование модели">
+		<param name="Local" value="html\work_model_edit.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&ecirc;&icirc;&iuml;&egrave;&eth;&icirc;&acirc;&agrave;&ograve;&uuml; &acirc; RTF">
+		<param name="Name" value="Меню Правка">
+		<param name="Local" value="html\work_menu_edit.htm">
+		<param name="Name" value="Редактирование модели">
+		<param name="Local" value="html\work_model_edit.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&igrave;&agrave;&eth;&ecirc;&aring;&eth;">
+		<param name="Name" value="Навигация с помощью закладок">
+		<param name="Local" value="html\work_model_bookmarks.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&Igrave;&Atilde;&Ograve;&Oacute; &egrave;&igrave;. &Iacute;.&Yacute;. &Aacute;&agrave;&oacute;&igrave;&agrave;&iacute;&agrave;">
+		<param name="Name" value="Разработчики">
+		<param name="Local" value="html\about.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&igrave;&aring;&iacute;&thorn;">
+		<param name="Name" value="Главное меню">
+		<param name="Local" value="html\work_menu_intro.htm">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="RAO">
+			<param name="Name" value="Запуск, настройка запуска">
+			<param name="Local" value="html\work_model_run.htm">
+			<param name="Name" value="Меню Модель">
+			<param name="Local" value="html\work_menu_model.htm">
+			<param name="Name" value="Результаты моделирования">
+			<param name="Local" value="html\work_model_results.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&Acirc;&ntilde;&ograve;&agrave;&acirc;&ecirc;&agrave;">
+			<param name="Name" value="Меню Вставка">
+			<param name="Local" value="html\work_menu_insert.htm">
+			<param name="Name" value="Шаблоны и вставка синтаксических конструкций">
+			<param name="Local" value="html\work_model_insert.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&Iuml;&icirc;&egrave;&ntilde;&ecirc;">
+			<param name="Name" value="Меню Поиск">
+			<param name="Local" value="html\work_menu_search.htm">
+			<param name="Name" value="Навигация с помощью закладок">
+			<param name="Local" value="html\work_model_bookmarks.htm">
+			<param name="Name" value="Поиск и замена подстрок">
+			<param name="Local" value="html\work_model_search_replace.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&Iuml;&icirc;&igrave;&icirc;&ugrave;&uuml;">
+			<param name="Name" value="Меню Помощь">
+			<param name="Local" value="html\work_menu_help.htm">
+			<param name="Name" value="Получение справочной информации">
+			<param name="Local" value="html\work_help.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&Iuml;&eth;&agrave;&acirc;&ecirc;&agrave;">
+			<param name="Name" value="Автозавершение (code completion)">
+			<param name="Local" value="html\work_model_complete.htm">
+			<param name="Name" value="Меню Правка">
+			<param name="Local" value="html\work_menu_edit.htm">
+			<param name="Name" value="Редактирование модели">
+			<param name="Local" value="html\work_model_edit.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&Iuml;&eth;&icirc;&ntilde;&igrave;&icirc;&ograve;&eth;">
+			<param name="Name" value="Меню Просмотр">
+			<param name="Local" value="html\work_menu_view.htm">
+			<param name="Name" value="Настройки">
+			<param name="Local" value="html\work_options.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&Ocirc;&agrave;&eacute;&euml;">
+			<param name="Name" value="Меню Файл">
+			<param name="Local" value="html\work_menu_file.htm">
+			<param name="Name" value="Открытие модели">
+			<param name="Local" value="html\work_model_open.htm">
+			<param name="Name" value="Создание модели">
+			<param name="Local" value="html\work_model_creation.htm">
+			<param name="Name" value="Сохранение модели">
+			<param name="Local" value="html\work_model_save.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&igrave;&icirc;&auml;&aring;&euml;&uuml;">
+		<param name="See Also" value="модель">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&agrave;&acirc;&ograve;&icirc;&ccedil;&agrave;&acirc;&aring;&eth;&oslash;&aring;&iacute;&egrave;&aring;">
+			<param name="Name" value="Меню Правка">
+			<param name="Local" value="html\work_menu_edit.htm">
+			<param name="Name" value="Автозавершение (code completion)">
+			<param name="Local" value="html\work_model_complete.htm">
+			<param name="Name" value="Настройки">
+			<param name="Local" value="html\work_options_editor.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&agrave;&iacute;&egrave;&igrave;&agrave;&ouml;&egrave;&yuml;">
+			<param name="Name" value="Режимы моделирования">
+			<param name="Local" value="html\work_model_frame.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&aacute;&oacute;&ocirc;&aring;&eth;&ucirc;">
+			<param name="Name" value="Меню Вставка">
+			<param name="Local" value="html\work_menu_insert.htm">
+			<param name="Name" value="Дополнительные буферы обмена">
+			<param name="Local" value="html\work_model_buffer.htm">
+			<param name="Name" value="Настройки">
+			<param name="Local" value="html\work_options_editor.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&ccedil;&agrave;&ecirc;&euml;&agrave;&auml;&ecirc;&egrave;">
+			<param name="Name" value="Меню Поиск">
+			<param name="Local" value="html\work_menu_search.htm">
+			<param name="Name" value="Навигация с помощью закладок">
+			<param name="Local" value="html\work_model_bookmarks.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&ccedil;&agrave;&iuml;&oacute;&ntilde;&ecirc;">
+			<param name="Name" value="Меню Модель">
+			<param name="Local" value="html\work_menu_model.htm">
+			<param name="Name" value="Запуск, настройка запуска">
+			<param name="Local" value="html\work_model_run.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&icirc;&ograve;&ecirc;&eth;&ucirc;&ograve;&egrave;&aring;">
+			<param name="Name" value="Меню Файл">
+			<param name="Local" value="html\work_menu_file.htm">
+			<param name="Name" value="Открытие модели">
+			<param name="Local" value="html\work_model_open.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&icirc;&ograve;&icirc;&aacute;&eth;&agrave;&aelig;&aring;&iacute;&egrave;&aring; &ograve;&aring;&ecirc;&ntilde;&ograve;&agrave;">
+			<param name="Name" value="Меню Просмотр">
+			<param name="Local" value="html\work_menu_view.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&iuml;&icirc;&egrave;&ntilde;&ecirc; &egrave; &ccedil;&agrave;&igrave;&aring;&iacute;&agrave;">
+			<param name="Name" value="Меню Поиск">
+			<param name="Local" value="html\work_menu_search.htm">
+			<param name="Name" value="Поиск и замена подстрок">
+			<param name="Local" value="html\work_model_search_replace.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&eth;&aring;&auml;&agrave;&ecirc;&ograve;&egrave;&eth;&icirc;&acirc;&agrave;&iacute;&egrave;&aring;">
+			<param name="Name" value="Меню Правка">
+			<param name="Local" value="html\work_menu_edit.htm">
+			<param name="Name" value="Редактирование модели">
+			<param name="Local" value="html\work_model_edit.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&eth;&aring;&aelig;&egrave;&igrave;&ucirc; &igrave;&icirc;&auml;&aring;&euml;&egrave;&eth;&icirc;&acirc;&agrave;&iacute;&egrave;&yuml;">
+			<param name="Name" value="Режимы моделирования">
+			<param name="Local" value="html\work_model_frame.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&eth;&aring;&ccedil;&oacute;&euml;&uuml;&ograve;&agrave;&ograve;&ucirc;">
+			<param name="Name" value="Результаты моделирования">
+			<param name="Local" value="html\work_model_results.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&ntilde;&ecirc;&icirc;&eth;&icirc;&ntilde;&ograve;&uuml;">
+			<param name="Name" value="Режимы моделирования">
+			<param name="Local" value="html\work_model_frame.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&ntilde;&ecirc;&eth;&ucirc;&ograve;&egrave;&aring; &ocirc;&eth;&agrave;&atilde;&igrave;&aring;&iacute;&ograve;&icirc;&acirc; &ograve;&aring;&ecirc;&ntilde;&ograve;&agrave;">
+			<param name="Name" value="Меню Просмотр">
+			<param name="Local" value="html\work_menu_view.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&ntilde;&icirc;&ccedil;&auml;&agrave;&iacute;&egrave;&aring;">
+			<param name="Name" value="Меню Файл">
+			<param name="Local" value="html\work_menu_file.htm">
+			<param name="Name" value="Создание модели">
+			<param name="Local" value="html\work_model_creation.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&ntilde;&icirc;&otilde;&eth;&agrave;&iacute;&aring;&iacute;&egrave;&aring;">
+			<param name="Name" value="Меню Файл">
+			<param name="Local" value="html\work_menu_file.htm">
+			<param name="Name" value="Сохранение модели">
+			<param name="Local" value="html\work_model_save.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&oslash;&agrave;&aacute;&euml;&icirc;&iacute;&ucirc;">
+			<param name="Name" value="Меню Вставка">
+			<param name="Local" value="html\work_menu_insert.htm">
+			<param name="Name" value="Шаблоны и вставка синтаксических конструкций">
+			<param name="Local" value="html\work_model_insert.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&iacute;&agrave;&ntilde;&ograve;&eth;&icirc;&eacute;&ecirc;&egrave;">
+		<param name="Name" value="Настройки">
+		<param name="Local" value="html\work_options.htm">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="warnings">
+			<param name="Name" value="Настройки">
+			<param name="Local" value="html\work_options_styles_and_color.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&agrave;&acirc;&ograve;&icirc;&ccedil;&agrave;&acirc;&aring;&eth;&oslash;&aring;&iacute;&egrave;&aring;">
+			<param name="Name" value="Настройки">
+			<param name="Local" value="html\work_options_editor.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&aacute;&icirc;&eth;&auml;&thorn;&eth;">
+			<param name="Name" value="Настройки">
+			<param name="Local" value="html\work_options_editor.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&aacute;&oacute;&ocirc;&aring;&eth;&ucirc;">
+			<param name="Name" value="Настройки">
+			<param name="Local" value="html\work_options_editor.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&iuml;&aring;&eth;&aring;&iacute;&icirc;&ntilde; &iuml;&icirc; &ntilde;&euml;&icirc;&acirc;&agrave;&igrave;">
+			<param name="Name" value="Настройки">
+			<param name="Local" value="html\work_options_styles_and_color.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&ograve;&agrave;&aacute;&oacute;&euml;&yuml;&ouml;&egrave;&yuml;">
+			<param name="Name" value="Закладка Табуляция">
+			<param name="Local" value="html\work_options_tabs.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&ograve;&aring;&igrave;&agrave;">
+			<param name="Name" value="Настройки">
+			<param name="Local" value="html\work_options_styles_and_color.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="&ouml;&acirc;&aring;&ograve;&agrave;">
+			<param name="Name" value="Настройки">
+			<param name="Local" value="html\work_options_styles_and_color.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&icirc; &iuml;&eth;&icirc;&atilde;&eth;&agrave;&igrave;&igrave;&aring;">
+		<param name="Name" value="Разработчики">
+		<param name="Local" value="html\about.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&icirc;&ntilde;&ograve;&agrave;&iacute;&icirc;&acirc;&ecirc;&agrave; &iuml;&eth;&icirc;&atilde;&icirc;&iacute;&agrave;">
+		<param name="Name" value="Меню Модель">
+		<param name="Local" value="html\work_menu_model.htm">
+		<param name="Name" value="Запуск, настройка запуска">
+		<param name="Local" value="html\work_model_run.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&icirc;&ograve;&ecirc;&agrave;&ograve; &egrave;&ccedil;&igrave;&aring;&iacute;&aring;&iacute;&egrave;&eacute;">
+		<param name="Name" value="Меню Правка">
+		<param name="Local" value="html\work_menu_edit.htm">
+		<param name="Name" value="Редактирование модели">
+		<param name="Local" value="html\work_model_edit.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&icirc;&ograve;&ecirc;&eth;&ucirc;&ograve;&egrave;&aring; &igrave;&icirc;&auml;&aring;&euml;&egrave;">
+		<param name="Name" value="Меню Файл">
+		<param name="Local" value="html\work_menu_file.htm">
+		<param name="Name" value="Открытие модели">
+		<param name="Local" value="html\work_model_open.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&iuml;&aring;&eth;&aring;&iacute;&icirc;&ntilde; &iuml;&icirc; &ntilde;&euml;&icirc;&acirc;&agrave;&igrave;">
+		<param name="Name" value="Настройки">
+		<param name="Local" value="html\work_options_styles_and_color.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&iuml;&icirc;&egrave;&ntilde;&ecirc; &egrave; &ccedil;&agrave;&igrave;&aring;&iacute;&agrave;">
+		<param name="Name" value="Меню Поиск">
+		<param name="Local" value="html\work_menu_search.htm">
+		<param name="Name" value="Поиск и замена подстрок">
+		<param name="Local" value="html\work_model_search_replace.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&iuml;&icirc;&euml;&aring;">
+		<param name="Name" value="Закладки окна модели">
+		<param name="Local" value="html\work_model_tabsheets.htm">
+		<param name="Name" value="Меню Просмотр">
+		<param name="Local" value="html\work_menu_view.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&eth;&agrave;&ccedil;&eth;&agrave;&aacute;&icirc;&ograve;&divide;&egrave;&ecirc;&egrave;">
+		<param name="Name" value="Разработчики">
+		<param name="Local" value="html\about.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&Dstrok;&Auml;&Icirc;">
+		<param name="Name" value="Общие сведения">
+		<param name="Local" value="html\intro.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&Dstrok;&Auml;&Icirc;-&egrave;&igrave;&egrave;&ograve;&agrave;&ograve;&icirc;&eth;">
+		<param name="Name" value="Общие сведения">
+		<param name="Local" value="html\intro.htm">
+		<param name="Name" value="Меню Модель">
+		<param name="Local" value="html\work_menu_model.htm">
+		<param name="Name" value="Запуск, настройка запуска">
+		<param name="Local" value="html\work_model_run.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&eth;&aring;&atilde;&egrave;&ntilde;&ograve;&eth;">
+		<param name="Name" value="Меню Правка">
+		<param name="Local" value="html\work_menu_edit.htm">
+		<param name="Name" value="Редактирование модели">
+		<param name="Local" value="html\work_model_edit.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&eth;&aring;&auml;&agrave;&ecirc;&ograve;&egrave;&eth;&icirc;&acirc;&agrave;&iacute;&egrave;&aring; &igrave;&icirc;&auml;&aring;&euml;&egrave;">
+		<param name="Name" value="Меню Правка">
+		<param name="Local" value="html\work_menu_edit.htm">
+		<param name="Name" value="Редактирование модели">
+		<param name="Local" value="html\work_model_edit.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&eth;&aring;&aelig;&egrave;&igrave;&ucirc; &igrave;&icirc;&auml;&aring;&euml;&egrave;&eth;&icirc;&acirc;&agrave;&iacute;&egrave;&yuml;">
+		<param name="Name" value="Режимы моделирования">
+		<param name="Local" value="html\work_model_frame.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&eth;&aring;&ccedil;&oacute;&euml;&uuml;&ograve;&agrave;&ograve;&ucirc; &igrave;&icirc;&auml;&aring;&euml;&egrave;&eth;&icirc;&acirc;&agrave;&iacute;&egrave;&yuml;">
+		<param name="Name" value="Результаты моделирования">
+		<param name="Local" value="html\work_model_results.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&ntilde;&ecirc;&icirc;&eth;&icirc;&ntilde;&ograve;&uuml;">
+		<param name="Name" value="Режимы моделирования">
+		<param name="Local" value="html\work_model_frame.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&ntilde;&ecirc;&eth;&ucirc;&ograve;&egrave;&aring; &ocirc;&eth;&agrave;&atilde;&igrave;&aring;&iacute;&ograve;&icirc;&acirc; &ograve;&aring;&ecirc;&ntilde;&ograve;&agrave;">
+		<param name="Name" value="Меню Просмотр">
+		<param name="Local" value="html\work_menu_view.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&ntilde;&icirc;&ccedil;&auml;&agrave;&iacute;&egrave;&aring; &igrave;&icirc;&auml;&aring;&euml;&egrave;">
+		<param name="Name" value="Меню Файл">
+		<param name="Local" value="html\work_menu_file.htm">
+		<param name="Name" value="Создание модели">
+		<param name="Local" value="html\work_model_creation.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&ntilde;&icirc;&ntilde;&ograve;&agrave;&acirc; &iuml;&eth;&icirc;&atilde;&eth;&agrave;&igrave;&igrave;&iacute;&icirc;&atilde;&icirc; &ecirc;&icirc;&igrave;&iuml;&euml;&aring;&ecirc;&ntilde;&agrave;">
+		<param name="Name" value="Работа с программным комплексом">
+		<param name="Local" value="html\work_intro.htm">
+		<param name="Name" value="Общие сведения">
+		<param name="Local" value="html\intro.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&ntilde;&icirc;&otilde;&eth;&agrave;&iacute;&aring;&iacute;&egrave;&aring; &igrave;&icirc;&auml;&aring;&euml;&egrave;">
+		<param name="Name" value="Меню Файл">
+		<param name="Local" value="html\work_menu_file.htm">
+		<param name="Name" value="Сохранение модели">
+		<param name="Local" value="html\work_model_save.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&ntilde;&iuml;&eth;&agrave;&acirc;&ecirc;&agrave;">
+		<param name="Name" value="Меню Помощь">
+		<param name="Local" value="html\work_menu_help.htm">
+		<param name="Name" value="Получение справочной информации">
+		<param name="Local" value="html\work_help.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&ograve;&agrave;&aacute;&oacute;&euml;&yuml;&ouml;&egrave;&yuml;">
+		<param name="Name" value="Закладка Табуляция">
+		<param name="Local" value="html\work_options_tabs.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&ograve;&aring;&euml;&aring;&ocirc;&icirc;&iacute;">
+		<param name="Name" value="Разработчики">
+		<param name="Local" value="html\about.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&ograve;&aring;&igrave;&agrave;">
+		<param name="Name" value="Настройки">
+		<param name="Local" value="html\work_options_styles_and_color.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&ograve;&eth;&aring;&aacute;&icirc;&acirc;&agrave;&iacute;&egrave;&yuml;">
+		<param name="Name" value="Общие сведения">
+		<param name="Local" value="html\intro.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&oacute;&auml;&agrave;&euml;&aring;&iacute;&egrave;&aring;">
+		<param name="Name" value="Меню Правка">
+		<param name="Local" value="html\work_menu_edit.htm">
+		<param name="Name" value="Редактирование модели">
+		<param name="Local" value="html\work_model_edit.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&oacute;&iuml;&eth;&agrave;&acirc;&euml;&aring;&iacute;&egrave;&aring; &icirc;&ograve;&icirc;&aacute;&eth;&agrave;&aelig;&aring;&iacute;&egrave;&aring;&igrave; &ograve;&aring;&ecirc;&ntilde;&ograve;&agrave;">
+		<param name="Name" value="Меню Просмотр">
+		<param name="Local" value="html\work_menu_view.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&ocirc;&agrave;&ecirc;&ntilde;">
+		<param name="Name" value="Разработчики">
+		<param name="Local" value="html\about.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&ouml;&acirc;&aring;&ograve;&agrave;">
+		<param name="Name" value="Настройки">
+		<param name="Local" value="html\work_options_styles_and_color.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="&oslash;&agrave;&aacute;&euml;&icirc;&iacute;&ucirc;">
+		<param name="Name" value="Меню Вставка">
+		<param name="Local" value="html\work_menu_insert.htm">
+		<param name="Name" value="Шаблоны и вставка синтаксических конструкций">
+		<param name="Local" value="html\work_model_insert.htm">
+		</OBJECT>
+</UL>
+</BODY></HTML>

@@ -1,0 +1,116 @@
+<HTML>
+<HEAD>
+<TITLE>Автоматическое построение графиков</TITLE>
+<LINK rel = "stylesheet" type = "text/css" href = "../styles.css">
+</HEAD>
+<SCRIPT language="JavaScript" src="../sections.js"></SCRIPT>
+<BODY>
+	<DIV>
+		<H1>АВТОМАТИЧЕСКОЕ ПОСТРОЕНИЕ ГРАФИКОВ</H1>
+		<P>В данной версии программного комплекса имеется возможность визуально отображать процессы, происходящие в модели, в виде графиков. Добавление графиков состояния ресурса становится возможным только после запуска модели. Графики состояния <A href="ms-its:RAO-language.chm::/html/rdo_base_resources.htm">ресурса</A> можно добавлять как в процессе работы модели в режиме анимации, так и после завершения моделирования. График состояния ресурса может быть отображен только в том случае, если конкретный ресурс трассируется.<BR>Для добавления графика, во вкладке <FONT class="syntax">Графики</FONT> <A href="work_run.htm#workspace">окна объектов</A> в дереве модели найдите необходимый вам параметр ресурса . Далее, чтобы создать новое окно графика, нужно щелкнуть два раза по выбранному параметру ресурса левой кнопкой мыши или один раз правой и в выпадающем меню выбрать команду <FONT class="syntax">Добавить&nbsp;на&nbsp;новый&nbsp;график</FONT>. По оси абсцисс графика откладывается время наступления событий, при которых изменяется значение параметра выбранного ресурса.</P>
+		<P class="image"><IMG src="../images/chart_main_view1.png"></P>
+		<P>При первом построении графика, масштаб по оси ординат устанавливается автоматически. Для изменения масштаба по оси абсцисс можно воспользоваться панелью инструментов <FONT class="syntax">Масштаб</FONT> или использовать выпадающее меню при правом щелчке мышки по области графика. Основными функциями масштабирования являются:</P>
+		<TABLE class="visible" style="width: 95.5%">
+			<TR valign="top">
+				<TH align=left width=20%>Пункт меню</TH>
+				<TH align=left width=10%>Комбинация клавиш</TH>
+				<TH align=left width=5%>Кнопка</TH>
+				<TH align=left width=65%>Функция</TH>
+			</TR>
+			<TR valign="top"><A name="view_zoom"></A>
+				<TD class="visible"><FONT class="syntax">Увеличить&nbsp;масштаб</FONT></TD>
+				<TD class="visible"><FONT class="syntax">Ctrl+Num +</FONT></TD>
+				<TD class="image"><IMG src="../images/view_zoom_in.gif"></TD>
+				<TD class="visible">Увеличение масштаба</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible"><FONT class="syntax">Уменьшить&nbsp;масштаб</FONT></TD>
+				<TD class="visible"><FONT class="syntax">Ctrl+Num -</FONT></TD>
+				<TD class="image"><IMG src="../images/view_zoom_out.gif"></TD>
+				<TD class="visible">Уменьшение масштаба</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible"><FONT class="syntax">Автоматический&nbsp;масштаб</FONT></TD>
+				<TD class="visible"><FONT class="syntax">Ctrl+Num *</FONT></TD>
+				<TD class="image"><IMG src="../images/view_zoom_auto.gif"></TD>
+				<TD class="visible">Автоматический подбор масштаба по ширине области графика</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible"><FONT class="syntax">Восстановить&nbsp;масштаб</FONT></TD>
+				<TD class="visible"><FONT class="syntax">Ctrl+Num /</FONT></TD>
+				<TD class="image"><IMG src="../images/view_zoom_reset.gif"></TD>
+				<TD class="visible">Восстановление начального масштаба</TD>
+			</TR>
+		</TABLE>
+		<P>Имеется возможность добавлять на уже существующий график другие. Для этого необходимо мышкой перетащить имя параметра ресурса на область уже построенного графика.</P>
+		<P class="image"><IMG src="../images/chart_main_view2.png"></P>
+		<A name="options"></A><P>Основные свойства графика можно изменить используя <A href="work_menu_chart.htm#chart_options">пункт меню</A> <FONT class="syntax">График/Настройки</FONT> или команду выпадающего меню <FONT class="syntax">Настройки</FONT>:</P>
+		<P class="image"><IMG src="../images/chart_main_view3.png"></P>
+		<P>Свойства расположены на двух закладках. На первой перечислены свойства, относящиеся к области отображения графика:</P>
+		<P class="image"><IMG src="../images/chart_option_chart.png"></P>
+		<TABLE class="visible" style="width: 95.5%">
+			<TR valign="top">
+				<TH align=left width=20%>Наименование настройки</TH>
+				<TH align=left width="80%">Назначение</TH>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" width=20%><FONT class="syntax">Заголовок</FONT></TD>
+				<TD class="visible" width="80%">Заголовок графика</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" width=20%><FONT class="syntax">Кол-во&nbsp;значений&nbsp;по&nbsp;Y, Кол-во&nbsp;значений&nbsp;по&nbsp;X</FONT></TD>
+				<TD class="visible" width="80%">Максимальное количество подписей данных на осях абсцисс и ординат соответственно</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" width=20%><FONT class="syntax">Показать&nbsp;легенду</FONT></TD>
+				<TD class="visible" width="80%">Отображать соответствие формы графика к названию параметра</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" width=20%><FONT class="syntax">По&nbsp;Y&nbsp;откладывать</FONT></TD>
+				<TD class="visible" width="80%">Если на одной области построено несколько графиков, то этим параметром определяется значения какого из выбранных ресурсов будут отображены на оси ординат</TD>
+			</TR>
+		</TABLE>
+		<P>На второй закладке перечислены свойства, относящиеся к свойствам конкретного графика:</P>
+		<P class="image"><IMG src="../images/chart_option_series.png"></P>
+		<TABLE class="visible" style="width: 95.5%">
+			<TR valign="top">
+				<TH align=left width=20%>Наименование настройки</TH>
+				<TH align=left width="80%">Назначение</TH>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" width=20%><FONT class="syntax">Значение</FONT></TD>
+				<TD class="visible" width="80%">Позволяет выбрать график, настройки которого будут изменены</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" width=20%><FONT class="syntax">Заголовок</FONT></TD>
+				<TD class="visible" width="80%">Название графика, которое пишется в легенде</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" width=20%><FONT class="syntax">Выводить&nbsp;в&nbsp;легенде</FONT></TD>
+				<TD class="visible" width="80%">Отображать в легенде название графика</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" width=20%><FONT class="syntax">Цвет</FONT></TD>
+				<TD class="visible" width="80%">Цвет графика</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" width=20%><FONT class="syntax">Маркер</FONT></TD>
+				<TD class="visible" width="80%">Тип маркера</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" width=20%><FONT class="syntax">Размер&nbsp;маркера</FONT></TD>
+				<TD class="visible" width="80%">Размер маркера</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" width=20%><FONT class="syntax">Показать</FONT></TD>
+				<TD class="visible" width="80%">Отображать маркеры на графике</TD>
+			</TR>
+			<TR valign="top">
+				<TD class="visible" width=20%><FONT class="syntax">Прозрачный&nbsp;маркер</FONT></TD>
+				<TD class="visible" width="80%">Оставить маркер прозрачным (если маркер имеет замкнутую форму, то его можно залить цветом)</TD>
+			</TR>
+		</TABLE>
+	</DIV>
+	<SCRIPT src="../footer_raostudio.js"></SCRIPT>
+</BODY>
+</HTML>
