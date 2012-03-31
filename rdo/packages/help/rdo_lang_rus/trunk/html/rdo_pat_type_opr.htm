@@ -1,0 +1,56 @@
+<HTML>
+<HEAD>
+<TITLE>Тип образца "Операция"</TITLE>
+<LINK rel = "stylesheet" type = "text/css" href = "../styles.css">
+</HEAD>
+<BODY>
+<DIV>
+<H1>ТИП ОБРАЗЦА "ОПЕРАЦИЯ"</H1>
+		<P>Образцы типа <A name="operation"><B>operation</B></A> описывают модифицированные продукционные правила, учитывающие временные связи. Операция описывает предусловия, которым должно удовлетворять состояние участвующих в операции ресурсов и правила изменения состояния ресурсов в начале и конце соответствующего действия.</P>
+		<P>Образец типа <A name="operation"><B>operation</B></A> содержит список релевантных ресурсов (то есть ресурсов, участвующих в описываемой образцом операции), предусловия начала операции (задаваемые по значениям параметров релевантных ресурсов) и конверторы преобразования образцов,участвующих в операции, в ее начале и в конце. В данном типе образцов имеются также выражения, по которым вычисляются длительности выполнения операций, описываемых данными образцами.</P>
+		<P>Формат образца: </P>
+		 <PRE class = "syntax">$Pattern <A class="syntax" href="../html/rdo_obj_pat.htm#pat_name">&lt;имя_образца&gt;</A> : operation [ <A class="syntax" href="..\html\rdo_res_trace_descr.htm">&lt;признак_трассировки&gt;</A> ]
+[ $Parameters <A class="syntax" href="../html/rdo_obj_pat.htm#param_desc">&lt;описание_параметров_образца&gt;</A> ]
+$Relevant_resources <A class="syntax" href="../html/rdo_obj_pat.htm#rel_res_desc">&lt;описание_релевантных_ресурсов_образца&gt;
+[ <A class="syntax" href="../html/rdo_obj_pat.htm#pat_choice_type" style="color: FF0000">&lt;способ_выбора&gt;</A> ]
+$Time = <A class="syntax" href="../html/rdo_obj_pat.htm#time_expr">&lt;выражение_времени&gt;</A>
+$Body <A class="syntax" href="../html/rdo_obj_pat_body.htm#body">&lt;тело_образца&gt;</A>
+$End</Pre>
+		 <P><B>Пример:</B></P>
+		<PRE class="samples">
+$Pattern Образец_обслуживания_клиента : operation
+$Relevant_resources
+    _Парикмахерская: Парикмахерская Keep NoChange
+    _Клиент        : Клиенты        Keep Erase
+    _Парикмахер    : Парикмахеры    Keep Keep
+$Time = Длительность_обслуживания( _Парикмахер.длительность_min, _Парикмахер.длительность_max )
+$Body
+_Парикмахерская
+    Choice from _Парикмахерская.количество_в_очереди > 0
+    Convert_begin
+        количество_в_очереди--;
+
+_Клиент
+    Choice from _Клиент.состояние == Пришел
+    Convert_begin
+        состояние = Начал_стрижку;
+
+_Парикмахер
+    Choice from _Парикмахер.состояние_парикмахера == Свободен and _Парикмахер.тип_клиента == _Клиент.тип
+    with_min( _Парикмахер.количество_обслуженных )
+    Convert_begin
+        состояние_парикмахера  = Занят;
+    Convert_end
+        состояние_парикмахера  = Свободен;
+        количество_обслуженных++;
+$End</PRE>
+<H4>См. также</H4>
+<P><A href="../html/rdo_obj_pat.htm">Описание образцов</A></P>
+	<P><A href="../html/rdo_obj_const_fun_sec.htm">Описание символьных констант, функций и последовательностей</A></P>
+	<P><A href="../html/rdo_pat_type_rule.htm">Тип образца "Продукционное правило"</A></P>
+	<P><A href="../html/rdo_pat_type_keyboard.htm">Тип образца "Клавиатурная операция"</A></P>
+	<P><A href="../html/rdo_res_trace_descr.htm">Трассировка состояния объектов РДО</A></P>
+</DIV>
+	<BR><SCRIPT src="../navbar.js"></SCRIPT>
+</BODY>
+</HTML>
