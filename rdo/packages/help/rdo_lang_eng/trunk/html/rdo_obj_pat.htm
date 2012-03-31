@@ -1,0 +1,341 @@
+<HTML>
+<HEAD>
+<TITLE>Patterns description</TITLE>
+<LINK rel = "stylesheet" type = "text/css" href = "../styles.css">
+</HEAD>
+<BODY>
+	<DIV>
+		<H1>PATTERNS DESCRIPTION</H1>
+		<P>Together with <A href="../html/rdo_obj_opr.htm">operations</A>, <B>patterns</B> constitute the procedure part of an RAO program. They present knowledge about the modeled system's functioning (the knowledge on the object field), written as modified production rules in accordance with the language syntax. All the patterns are described in the pattern <A href="../html/rdo_terms.htm#object">object</A> (with extension <FONT class="syntax">.pat</FONT>). The format of describing a pattern is as follows:</P>
+		<PRE class="syntax">$Pattern <A class="syntax" href="#pat_name">&lt;pattern_name&gt;</A> : <A class="syntax" href="#pat_type">&lt;pattern_type&gt;</A> [ <A class="syntax" href="#trace_feat">&lt;tracing_sign&gt;</A> ]
+[ $Parameters <A class="syntax" href="#param_desc">&lt;pattern_parameters_description&gt;</A> ]
+$Relevant_resources <A class="syntax" href="#rel_res_desc">&lt;pattern_relevant_resources_description&gt;</A>
+[ <A class="syntax" href="#pat_choice_type" style="color: FF0000">&lt;selection_method&gt;</A> ]
+$Time = <A class="syntax" href="#time_expr">&lt;time_expression&gt;</A>
+$Body <A class="syntax" href="#body">&lt;pattern_body&gt;</A>
+$End</PRE>
+		<DL class="syntax">
+			<DT class="syntax"><A name="pat_name"></A><I>pattern_name</I></DT>
+			<DD class="syntax">A pattern name is a <A href="../html/rdo_lex_div_names.htm">simple name</A>. Names should be different for different patterns, they should not coincide with any names determined before.</DD>
+			<DT class="syntax"><A name="pat_type"></A><I>pattern_type</I></DT>
+			<DD class="syntax">In the language version presented here, the following types of patterns are allowed:
+				<TABLE class="visible" cols="2">
+					<TR valign="top">
+						<TH align="left" width="20%">Pattern type</TH>
+						<TH align="left" width="80%">Description</TH>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">operation</FONT></TD>
+						<TD class="visible" width="80%">A pattern describing an operation</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">irregular_event</FONT></TD>
+						<TD class="visible" width="80%">A pattern describing an irregular event</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">rule</FONT></TD>
+						<TD class="visible" width="80%">A pattern describing a production rule</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">keyboard</FONT></TD>
+						<TD class="visible" width="80%">A pattern describing a keyboard operation (an operation to be fulfilled if certain key is pressed and certain preconditions are satisfied)</TD>
+					</TR>
+				</TABLE>
+			</DD>
+			<DT class="syntax"><A name="trace_feat"></A><A name="trace_feat_no"><A name="trace_feat_yes"></A></A><I>tracing_sign</I></DT>
+			<DD class="syntax">After the pattern type, there may be tracing sign (see details in the description of <A href="../html/rdo_res_trc.htm">tracing object</A>). That sign is determined by one of the two reserved words:
+				<TABLE class="visible" cols="2">
+					<TR valign="top">
+						<TH align="left" width="20%">Value</TH>
+						<TH align="left" width="80%">Description</TH>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">trace</FONT></TD>
+						<TD class="visible" width="80%">To trace the events related to the pattern</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">no_trace</FONT></TD>
+						<TD class="visible" width="80%">To do no tracing at all</TD>
+					</TR>
+				</TABLE>
+				By default the tracing sign is <FONT class="syntax">no_trace</FONT>, so it is not necessary to specify that value.
+			</DD>
+			<DT class="syntax"><A name="param_desc"></A><I>pattern_parameters_description</I></DT>
+			<DD class="syntax">Pattern parameters description has the following format:
+				<PRE class="syntax"><A class="syntax" href="#param_name">&lt;parameter_name&gt;</A> : <A class="syntax" href="#param_type">&lt;parameter_type&gt;</A> [ = <A class="syntax" href="#param_def_val">&lt;default_value&gt;</A> ]
+{ &lt;parameter_name&gt; : &lt;parameter_type&gt; [ = &lt;default_value&gt; ] }</PRE>
+				<DL class="syntax">
+					<DT class="syntax"><A name="param_name"></A><I>parameter_name</I></DT>
+					<DD class="syntax">A pattern parameter name is a <A href="../html/rdo_lex_div_names.htm">simple name</A>. Names should be different for different parameters, they should not coincide with any names determined before. A parameter name may coincide with another pattern's parameter name.</DD>
+					<DT class="syntax"><A name="param_type"></A><I>parameter_type</I></DT>
+					<DD class="syntax">Parameter type is one of the <A href="../html/rdo_base_types.htm">data types</A> allowed. When describing pattern parameter types, references are allowed on <A href="../html/rdo_base_res_types.htm#param_type">resource parameter types</A> or <A href="../html/rdo_obj_const_fun_sec.htm#const_type">symbol constant types</A>.</DD>
+					<DT class="syntax"><A name="param_def_val"></A><I>default_value</I></DT>
+					<DD class="syntax">For a parameter of any type, default value may be determined. That value is written after equality sign as integer or real <A href="../html/rdo_lex_div_numeric_const.htm">constant</A>, or as a value name for enumerative parameter. When determining a type with reference, it is also possible to determine default value. In that case the value so determined may differ from the default value of the parameter which type is referred to.</DD>
+				</DL>
+				<P>In pattern of any type there may be no parameters at all. In that case reserved word <FONT class="syntax">$Parameters</FONT> is not written either.</P>
+			</DD>
+			<DT class="syntax"><A name="rel_res_desc"></A><I>pattern_relevant_resources_description</I></DT>
+			<DD class="syntax">The description of a pattern's relevant resources for <A href="#pat_type">operation</A> or <A href="#pat_type">keyboard operation</A> patterns has the following format:
+				<PRE class="syntax"><A class="syntax" href="#rel_res_name">&lt;relevant_resource_name&gt;</A> : <A class="syntax" href="#rel_res_describer">&lt;descriptor&gt;</A>
+<A class="syntax" href="#conv_beg_stat">&lt;start_convertor_status&gt;</A> <A class="syntax" href="#conv_end_stat">&lt;final_convertor_status&gt;</A></PRE>
+				<P>The description of a pattern's relevant resources for <A href="#pat_type">irregular event</A> or <A href="#pat_type">production rule</A> patterns has the following format:</P>
+				<PRE class="syntax"><A class="syntax" href="#rel_res_name">&lt;relevant_resource_name&gt;</A> : <A class="syntax" href="#rel_res_describer">&lt;descriptor&gt;</A> <A class="syntax" href="#conv_stat">&lt;convertor_status&gt;</A></PRE>
+				<DL class="syntax">
+					<DT class="syntax"><A name="rel_res_name"></A><I>relevant_resource_name</I></DT>
+					<DD class="syntax">A pattern relevant resource name is a <A href="../html/rdo_lex_div_names.htm">simple name</A>. Names should be different for different relevant resources, they should not coincide with any previously determined names of resource types, or resources, or symbol constants, or functions, or sequences, or patterns. A relevant resource name may coincide with the name of another pattern's relevant resource.</DD>
+					<DT class="syntax"><A name="rel_res_describer"></A><I>descriptor</I></DT>
+					<DD class="syntax">Resource descriptor is either a <A href="../html/rdo_base_res_types.htm">resource type</A> name or a <A href="../html/rdo_base_resources.htm">resource</A> name. In the first case, any resource of the type indicated can be used as relevant once its state satisfies the <A href="#init_cond">precondition</A>. In the second case, only the indicated resource is used if its state satisfies the precondition.</DD>
+					<DT class="syntax"><A name="conv_stat"></A><I>convertor_status</I></DT>
+					<DD class="syntax">Convertor status describes what happens with the relevant resource as a whole when the <A href="#init_cond">precondition</A> is satisfied.</DD>
+					<DT class="syntax"><A name="conv_beg_stat"></A><I>start_convertor_status</I></DT>
+					<DD class="syntax">Start convertor status describes what happens with the relevant resource in the beginning of the operation.</DD>
+					<DT class="syntax"><A name="conv_end_stat"></A><I>final_convertor_status</I></DT>
+					<DD class="syntax">Final convertor status describes what happens  with the relevant resource in the finishing of the operation.</DD>
+				</DL>
+				<P><A name="conv_stats"></A><A name="conv_stats_nc"></A>In the language version presented here, the following convertor statuses and the corresponding keywords are allowed:</P>
+				<TABLE class="visible" cols="2">
+					<TR valign="top">
+						<TH align="left" width="20%">Convertor status</TH>
+						<TH align="left" width="80%">Description</TH>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">Keep</FONT></TD>
+						<TD class="visible" width="80%">The relevant resource is retained but its state (the parameter values) is changed</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">Create</FONT></TD>
+						<TD class="visible" width="80%">The relevant resource is created</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">Erase</FONT></TD>
+						<TD class="visible" width="80%">The relevant resource is eliminated</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">NonExist</FONT></TD>
+						<TD class="visible" width="80%">The relevant resource does not exist</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">NoChange</FONT></TD>
+						<TD class="visible" width="80%">The relevant resource's state does not change</TD>
+					</TR>
+				</TABLE>
+				<P>Statuses of <FONT class="syntax">Create</FONT>, <FONT class="syntax">Erase</FONT> and <FONT class="syntax">NonExist</FONT> are only allowed for <A href="../html/rdo_base_res_types.htm#temporary">temporary resources</A>. Status <FONT class="syntax">Create</FONT> is only allowed when the descriptor is a <A href="../html/rdo_base_res_types.htm">resource type</A> name. Statuses <FONT class="syntax">NonExist</FONT> and <FONT class="syntax">NoChange</FONT> are forbidden for irregular event patterns. In irregular event patterns, statuses <FONT class="syntax">Keep</FONT> and <FONT class="syntax">Erase</FONT> are only allowed when the descriptor is a <A href="../html/rdo_base_resources.htm">resource</A> name. Status <FONT class="syntax">NonExist</FONT> is not allowed for production rule patterns.</P>
+				<P><A name="conv_comp"></A>In <A href="#pat_type">operation</A> or <A href="#pat_type">keyboard operation</A> patterns, the following combinations are possible of the start and the final statuses:</P>
+				<TABLE class="visible" cols="2">
+					<TR valign="top">
+						<TH align="left" width="50%">Start convertor status</TH>
+						<TH align="left" width="50%">Final convertor status</TH>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="50%"><FONT class="syntax">Keep</FONT></TD>
+						<TD class="visible" NOWRAP width="50%"><FONT class="syntax">Keep<BR>Erase<BR>NoChange</FONT></TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="50%"><FONT class="syntax">Create</FONT></TD>
+						<TD class="visible" NOWRAP width="50%"><FONT class="syntax">Keep<BR>Erase<BR>NoChange</FONT></TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="50%"><FONT class="syntax">Erase</FONT></TD>
+						<TD class="visible" NOWRAP width="50%"><FONT class="syntax">NonExist</FONT></TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="50%"><FONT class="syntax">NonExist</FONT></TD>
+						<TD class="visible" NOWRAP width="50%"><FONT class="syntax">Create</FONT></TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="50%"><FONT class="syntax">NoChange</FONT></TD>
+						<TD class="visible" NOWRAP width="50%"><FONT class="syntax">Keep<BR>Erase<BR>NoChange</FONT></TD>
+					</TR>
+				</TABLE>
+			</DD>
+			<DT class="syntax"><A name="pat_choice_type"></A><I>selection_method</I></DT>
+			<DD class="syntax">Selection method determines what <A href="../html/rdo_base_resources.htm">resource</A> will be used as relevant if the relevant resource <A href="#rel_res_describer">descriptor</A> is a <A href="../html/rdo_base_res_types.htm">type name</A> and there are more than one resource satisfying the <A href="#init_cond">precondition</A>. In RAO language the following selection methods are envisaged:
+				<TABLE class="visible" cols="2">
+					<TR valign="top">
+						<TH align="left" width="20%">Selection method</TH>
+						<TH align="left" width="80%">Description</TH>
+					</TR>
+					<TR valign="top"><A name="first"></A>
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">first</FONT></TD>
+						<TD class="visible" width="80%">To use the first resource encountered satisfying the precondition</TD>
+					</TR>
+					<TR valign="top"><A name="with_max"></A>
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">with_max &lt;arithmetic_expression&gt;</FONT></TD>
+						<TD class="visible" width="80%">To use the combination of resources for which the arithmetic expression reaches its maximum</TD>
+					</TR>
+					<TR valign="top"><A name="with_min"></A>
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">with_min &lt;arithmetic_expression&gt;</FONT></TD>
+						<TD class="visible" width="80%">To use the combination of resources for which the arithmetic expression reaches its minimum</TD>
+					</TR>
+				</TABLE>
+				<P>The <A href="../html/rdo_base_equations.htm#arith_expr">arithmetic expression</A> in a selection method has to be either integer or real. In this expression all parameters of all <A href="#rel_res_desc">relevant resources</A> can be used because the expression is calculated after the selection of all relevant resources of the combination.</P>
+				<P><FONT style="color: FF0000">Specifying of the relevant resources selection method <B>after pattern's relevant resources description</B> is not compulsory. If it is specified, RAO-simulator performs <A href="#init_cond">precondition</A> analysis and <B>selection of relevant resources combinations</B>. If the selection method is not specified, it must be specified in the pattern's body for each relevant resource. In this case RAO-simulator selects not combinations of resources, but each relevant resource individually, probably with different selection methods. In this case parameters of relevant resources, which follow this relevant resource in the relevant resources description, cannot be used in arithmetic expression for selection method. Relevant resources are selected consequently with no returns, i.e. a resource selected before cannot be changed if when selecting the next resource it turns out that the operation cannot be fulfilled because of wrong selections of the previous resources. The operation will not be fulfilled, despite the opportunity to fulfill it with another relevant resources combination.</FONT></P>
+				<P>Specifying of the relevant resources selection method at this place of pattern description allows avoiding situations like described above. This give also an opportunity to select the most preferable combinations of resources. However it takes bigger computational power because all possible by preconditions combinations are analysed for it. Therefore this way is recommended to use when it is really needed.</P>
+			</DD>
+			<DT class="syntax"><A name="time_expr"></A><I>time_expression</I></DT>
+			<DD class="syntax">Time expression is <A href="../html/rdo_base_equations.htm#arith_expr">arithmetic expression</A> of integer or real type, used for calculating the <B>duration</B> of an <A href="#pat_type">operation</A> or a <A href="#pat_type">keyboard operation</A>. In <A href="#pat_type">erregular event</A> patterns time expression determins the <B>interval between occurance of events</B> described by this pattern. In <A href="#pat_type">rule</A> patterns, time expression, reserved word <FONT class="syntax">$Time</FONT> and equality sign are not written.
+			<DT class="syntax"><A name="body"></A><I>pattern_body</I></DT>
+			<DD class="syntax">Pattern body has the following format:
+				<PRE class="syntax"><A class="syntax" href="#body_rel_res_name">&lt;relevant_resource_name&gt;</A> <A class="syntax" href="#body_use_rule">&lt;rule_of_using&gt;</A>
+{ &lt;relevant_resource_name&gt; &lt;rule_of_using&gt; }</PRE>
+				<DL class="syntax">
+					<DT class="syntax"><A name="body_rel_res_name"></A><I>relevant_resource_name</I></DT>
+					<DD class="syntax">Relevant resources names must follow in the order in which they were written in the pattern's <A href="#rel_res_desc">relevant resources</A> description.</DD>
+					<DT class="syntax"><A name="body_use_rule"></A><I>rule_of_using</I></DT>
+					<DD class="syntax">For each resource, the rule for using it has to be there. Depending on the pattern type, that rule has formats as follows:
+						<P>for a pattern of <FONT class="syntax">operation</FONT> or <FONT class="syntax">keyboard</FONT> type:</P>
+						<PRE class="syntax"><A class="syntax" href="#init_cond">&lt;precondition&gt;</A> [ Convert_begin <A class="syntax" href="#conv">&lt;convertor&gt;</A> ] [ Convert_end &lt;convertor&gt; ]</PRE>
+						<P>for a pattern of <FONT class="syntax">irregular_event</FONT> type:</P>
+						<PRE class="syntax">Convert_event <A class="syntax" href="#conv">&lt;convertor&gt;</A></PRE>
+						<P>For a pattern of <FONT class="syntax">rule</FONT> type:</P>
+						<PRE class="syntax"><A class="syntax" href="#init_cond">&lt;precondition&gt;</A> [ Convert_rule <A class="syntax" href="#conv">&lt;convertor&gt;</A> ]</PRE>
+						<DL class="syntax">
+							<DT class="syntax"><A name="init_cond"></A><A name="init_cond_nchk"></A><I>precondition</I></DT>
+							<DD class="syntax">The precondition has the following format:
+								<PRE class="syntax">Choice from <A class="syntax" href="#cond_log_expr">&lt;logical_expression&gt;</A> [ <A class="syntax" href="#cond_choice_type">&lt;selection_method&gt;</A> ]
+или
+Choice NoCheck [ &lt;selection_method&gt; ]</PRE>
+								<DL class="syntax">
+									<DT class="syntax"><A name="cond_log_expr"></A><I>logical_expression</I></DT>
+									<DD class="syntax">The <A href="../html/rdo_base_equations.htm#log_expr">logical expression</A> determines the precondition for using the resource (whether it is possible to fulfill the operation or to apply the rule). If there is no necessary precondition, reserved word <FONT class="syntax">NoCheck</FONT> indicates that.</DD>
+									<DT class="syntax"><A name="cond_choice_type"></A><I>selection_method</I></DT>
+									<DD class="syntax">Selection method can be specified the same way as <A href="#pat_choice_type">after pattern's relevant resources description</A>. If it is not specified after pattern's relevant resources description, it must be specified in the pattern's body for each relevant resource after the <A href="../html/rdo_base_equations.htm#log_expr">logical expression</A>. Selection method is also necessary when a relevant resource descriptor is some specific resource's name and there is no alternative for the selection. Any selection method may be used in that case (<FONT class="syntax">first</FONT> is preferable because it allows to avoid calculating the arithmetic expression) with one and the same result. If the resource's state satisfies the precondition, the resource can be used no matter what selection method has been applied; if the precondition is not satisfied, the resource will not be used in any case.
+										<P>If the selection method is specified after pattern's relevant resources description, it must not be present in the pattern's body for any relevant resources.</P>
+									</DD>
+								</DL>
+							</DD>
+							<DT class="syntax"><A name="conv"></A><I>convertor</I></DT>
+							<DD class="syntax">Convertor and the reserved word specified before the convertor must present in pattern if the corresponding <A href="#rel_res_desc">convertor status</A> in relevant resource description is either <FONT class="syntax">Keep</FONT> or <FONT class="syntax">Create</FONT>. <A name="temp_trace_feat"></A>If the status is <FONT class="syntax">Create</FONT>, then tracing sign for the created resource can be specified. That sign is determined by one of the two reserved words:
+								<TABLE class="visible" cols="2" style="width: 80%">
+									<TR valign="top">
+										<TH align="left" width="20%">Value</TH>
+										<TH align="left" width="80%">Description</TH>
+									</TR>
+									<TR valign="top">
+										<TD class="visible" NOWRAP width="20%"><FONT class="syntax">trace</FONT></TD>
+										<TD class="visible" width="80%">Means to do the tracing of resources states</TD>
+									</TR>
+									<TR valign="top">
+										<TD class="visible" NOWRAP width="20%"><FONT class="syntax">no_trace</FONT></TD>
+										<TD class="visible" width="80%">Means not to do the tracing of resources states</TD>
+									</TR>
+								</TABLE>
+								<P>By default, <FONT class="syntax">no_trace</FONT> case is accepted, so that reserved word should not compulsorily be printed.</P>
+								<P>The following format is used for writing a convertor:</P>
+								<PRE class="syntax"><A class="syntax" href="#rel_res_conv">&lt;relevant_resource_parameter_convertor&gt;</A>
+{ &lt;relevant_resource_parameter_convertor&gt; }</PRE>
+								<DL class="syntax">
+									<DT class="syntax"><A name="rel_res_conv"></A><A name="rel_res_conv_nc"></A><I>relevant_resource_parameter_convertor</I></DT>
+									<DD class="syntax">Relevant resource parameter convertor has a format as follows:
+										<PRE class="syntax">&lt;parameter_name&gt; set <A class="syntax" href="#arith_expr">&lt;arithmetic_expression&gt;</A>
+или
+&lt;parameter_name&gt; NoChange</PRE>
+										<DL class="syntax">
+											<DT class="syntax"><A name="arith_expr"></A><I>arithmetic_expression</I></DT>
+											<DD class="syntax">The <A href="../html/rdo_base_equations.htm#arith_expr">arithmetic expression</A> and the parameter to be assigned a value have to belong to one and the same type. For a real parameter the expression may be integer. Reserved word <FONT class="syntax">NoChange</FONT> indicates that the parameter's value does not change.</DD>
+										</DL>
+										<P>Parameter convertors may be written in any order and not for each parameter. New parameter values, however, are calculated in the order they are described in <A href="../html/rdo_base_res_types.htm">resource type</A> description. So, to avoid errors with order of parameter values calculation, it is recommended to write convertors in the order of description of parameters in the resource type description. If there is no convertor for some parameter, it is implied that the parameter's value does not change. For convertors with <FONT class="syntax">Create</FONT> status, specifying new value for each parameter is compulsory.</P>
+									</DD>
+								</DL>
+							</DD>
+						</DL>
+					</DD>
+				</DL>
+			</DD>
+		</DL>
+		<H4>Examples</H4>
+		<PRE class="samples">$Pattern Pattern_1 : operation
+$Parameters
+  Quantity : integer = 10
+$Relevant_resources
+  Rel_resource_1 : Resource_1      NoChange    NoChange
+  Rel_resource_2 : Resource_2      NoChange    Keep
+  Rel_resource_3 : Type_1          Keep        Keep
+$Time =  Quantity * 0.5 + Function_1(Quantity + 1, 5.0) +
+         2.0 * (Resource_1.Parameter_2 + Rel_resource_3.Parameter_1)
+$Body
+  Rel_resource_1
+    Choice from    Rel_resource_1.Parameter_1 &gt; 0 and
+                   Rel_resource_1.Parameter_5 = Free
+    first
+  Rel_resource_2
+    Choice NoCheck first
+    Convert_end
+      Parameter_1 set Rel_resource_2.Parameter_1 + Quantity
+      Parameter_3 set Table_2(Value_4, 2)
+      Parameter_6 NoChange
+  Rel_resource_3
+    Choice from
+         Rel_resource_3.Parameter_1 + Rel_resource_2.Parameter_1 &gt;=
+         Quantity and [Rel_resource_1.Parameter_5 = Free or
+         Rel_resource_1.Parameter_5 = Unloading]
+    with_max (Rel_resource_3.Parameter_1 * Rel_resource_3.Parameter_4)
+    Convert_begin
+      Parameter_1 set Rel_resource_3.Parameter_1 +
+                      Rel_resource_2.Parameter_1 + Rel_resource_1.Parameter_1
+      Parameter_5 set Busy
+    Convert_end
+      Parameter_4 set Sequence_3(Rel_resource_3.Parameter_2, 0.2)
+      Parameter_5 set Free
+$End
+
+$Pattern Pattern_2 : rule
+$Parameters
+  Quantity : integer
+  Number : real = 2.5
+$Relevant_resources
+  Rel_resource_1 : Resource_1      NoChange
+  Rel_resource_2 : Type_1          Keep
+$Body
+  Rel_resource_1
+    Choice from    Rel_resource_1.Parameter_1 &gt; 0 and
+                   Rel_resource_1.Parameter_5 = Free
+    first
+  Rel_resource_2
+    Choice from    Rel_resource_2.Parameter_1 &gt;= Quantity and
+                   [Rel_resource_1.Parameter_5 = Free or
+                   Rel_resource_1.Parameter_5 = Unloading]
+    with_max (Rel_resource_2.Parameter_1 * Rel_resource_2.Parameter_4)
+    Convert_rule
+      Parameter_4 set Number +
+                      Sequence_3(Rel_resource_2.Parameter_2, 0.2)
+      Parameter_5 set Free
+$End
+
+$Pattern Pattern_3 : rule
+$Parameters
+  Quantity : integer
+$Relevant_resources
+  Rel_resource_1 : Type_1      NoChange
+  Rel_resource_2 : Type_2      Keep
+  with_max (Rel_resource_1.Parameter_1 * Quantity +
+            Rel_resource_2.Parameter_1 * Rel_resource_2.Parameter_4)
+$Body
+  Rel_resource_1
+    Choice from    Rel_resource_1.Parameter_1 &gt; 0 and
+                   Rel_resource_1.Parameter_5 = Free
+  Rel_resource_2
+    Choice from    Rel_resource_2.Parameter_1 &gt;= Quantity and
+                   [Rel_resource_1.Parameter_5 = Free or
+                    Rel_resource_1.Parameter_5 = Unloading]
+    Convert_rule
+      Parameter_4 set Function_1(Rel_resource_2.Parameter_2, 0.2)
+      Parameter_5 set Free
+$End</PRE>
+	<H4>See Also</H4>
+	<P><A href="../html/rdo_base_res_types.htm">Resource types</A></P>
+	<P><A href="../html/rdo_base_resources.htm">Resources description</A></P>
+	<P><A href="../html/rdo_obj_const_fun_sec.htm">Symbol constants, functions and sequences description</A></P>
+	<P><A href="../html/rdo_obj_opr.htm">Operations description</A></P>
+	<P><A href="../html/rdo_obj_dpt.htm">Decision points description</A></P>
+	<P><A href="../html/rdo_res_trc.htm">Tracing object</A></P>
+	</DIV>
+	<A name="prev_section;../html/rdo_obj_const_fun_sec.htm;Symbol constants, functions and sequences description">
+	<A name="next_section;../html/rdo_res_intro.htm;Simulation results">
+	<A name="section_top;../html/rdo_obj_intro.htm;Certain constructions of the language">
+	<A name="section;Certain constructions of the language;">
+	<A name="prev_topic;../html/rdo_obj_sec.htm;Sequence syntax">
+	<A name="next_topic;../html/rdo_obj_opr.htm;Operations description">
+	<A name="title;RAO language help"><BR><SCRIPT src="../navbar.js"></SCRIPT>
+</BODY>
+</HTML>

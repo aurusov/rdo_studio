@@ -1,0 +1,232 @@
+<HTML>
+<HEAD>
+<TITLE>Sequence syntax</TITLE>
+<LINK rel = "stylesheet" type = "text/css" href = "../styles.css">
+</HEAD>
+<BODY>
+	<DIV>
+		<H1>SEQUENCE SYNTAX</H1>
+		<P>Unlike <A href="../html/rdo_obj_fun.htm">functions</A> which value is evaluated on basis of their parameter values using some algorithm, <B>sequences</B> return values determined by a pseudorandom numbers generator with the corresponding distribution law or is selected from values that are specified when describing a sequence.</P>
+		<P>Sequences are described after constants in a <A href="../html/rdo_obj_const_fun_sec.htm">symbol constants, functions and sequences description object</A> (with extension <FONT class="syntax">.fun</FONT>). The following format is used for describing sequences:</P>
+		<PRE class="syntax">$Sequence <A class="syntax" href="#sec_name">&lt;sequence_name&gt;</A> :
+  <A class="syntax" href="#val_type">&lt;sequence_value_type&gt;</A>
+$Type = <A class="syntax" href="#sec_type">&lt;sequence_type&gt;</A>
+  <A class="syntax" href="#seed_val">&lt;generator_base_value&gt;</A>
+$Body <A class="syntax" href="#body">&lt;sequence_body&gt;</A> $End</PRE>
+		<DL class="syntax">
+			<DT class="syntax"><A name="sec_name"></A><I>sequence_name</I></DT>
+			<DD class="syntax">A sequence name is a <A href="../html/rdo_lex_div_names.htm">simple name</A>. Names should be different for different sequences; they should not coincide with any names defined before.</DD>
+			<DT class="syntax"><A name="val_type"></A><I>sequence_value_type</I></DT>
+			<DD class="syntax">A sequence value type is one of the <A href="../html/rdo_base_types.htm">data types</A> allowed in the language. When describing sequence value types, references are allowed on <A href="../html/rdo_base_res_types.htm#param_type">resource parameter types</A> or <A href="../html/rdo_obj_const_fun_sec.htm#const_type">symbol constant types</A>.</DD>
+			<DT class="syntax"><A name="sec_type"></A><I>sequence_type</I></DT>
+			<DD class="syntax">In the language version presented here, sequences of the following types are determined:
+				<TABLE class="visible" cols="2">
+					<TR valign="top">
+						<TH align="left" width="20%">Sequence type</TH>
+						<TH align="left" width="80%">Description</TH>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">uniform</FONT></TD>
+						<TD class="visible" width="80%">A sequence of uniformly distributed pseudorandom numbers</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">exponential</FONT></TD>
+						<TD class="visible" width="80%">A sequence of exponentially distributed pseudorandom numbers</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">normal</FONT></TD>
+						<TD class="visible" width="80%">A sequence of normally distributed pseudorandom numbers</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">triangular</FONT></TD>
+						<TD class="visible" width="80%">A sequence of triangular type distributed pseudorandom numbers</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">by_hist</FONT></TD>
+						<TD class="visible" width="80%">A sequence of random numbers distributed in accordance with a given histogram (arbitrary distribution)</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">enumerative</FONT></TD>
+						<TD class="visible" width="80%">A sequence of values explicitly enumerated in the sequence description</TD>
+					</TR>
+				</TABLE>
+			</DD>
+			<DT class="syntax"><A name="seed_val"></A><I>generator_base_value</I></DT>
+			<DD class="syntax">A value of the generator's base is an integer number within the range -2147483648 to +2147483647. The value can be missing and in this case the default value determined in the language is used. Values of the generator's base can be changed in a <A href="../html/rdo_obj_smr.htm#seed_new">run object</A>.</DD>
+			<BR>
+			<P><BR><A name="call"></A><B>Calling a sequence</B> has the following format:</P>
+			<PRE class="syntax">&lt;sequence_name&gt; [ ( <A class="syntax" href="#call_expr">&lt;arithmetic_expression&gt;</A> { , &lt;arithmetic_expression&gt; } ) ]</PRE>
+			<DL class="syntax">
+				<DT class="syntax"><A name="call_expr"></A><I>arithmetic_expression</I></DT>
+				<DD class="syntax">After the name of sequence come the <A href="../html/rdo_base_equations.htm#arith_expr">arithmetic expressions</A>, in brackets and separated by a comma, to calculate the values of parameters. The order of expressions, their quantity and type are determined by the parameters of the sequence. The quantity and type of parameters depend on the type of sequence and the type of value of the sequence. Allowed types of sequence values and parameter types for different types of sequences are tabulated below:
+					<TABLE class="visible" cols="4">
+						<TR valign="top">
+							<TH align="left" width="20%">Sequence type</TH>
+							<TH align="left" width="20%">Sequence value type</TH>
+							<TH align="left" width="20%">First parameter type</TH>
+							<TH align="left" width="20%">Second parameter type</TH>
+							<TH align="left" width="20%">Third parameter type</TH>
+						</TR>
+						<TR valign="top">
+							<TD class="visible" NOWRAP width="20%"><FONT class="syntax">uniform</FONT></TD>
+							<TD class="visible" width="20%">Integer<BR>Real</TD>
+							<TD class="visible" width="20%">Integer<BR>Real</TD>
+							<TD class="visible" width="20%">Integer<BR>Real</TD>
+							<TD class="visible" width="20%" align="center">&mdash;<BR>&mdash;</TD>
+						</TR>
+						<TR valign="top">
+							<TD class="visible" NOWRAP width="20%"><FONT class="syntax">exponential</FONT></TD>
+							<TD class="visible" width="20%">Integer<BR>Real</TD>
+							<TD class="visible" width="20%">Real<BR>Real</TD>
+							<TD class="visible" width="20%" align="center">&mdash;<BR>&mdash;</TD>
+							<TD class="visible" width="20%" align="center">&mdash;<BR>&mdash;</TD>
+						</TR>
+						<TR valign="top">
+							<TD class="visible" NOWRAP width="20%"><FONT class="syntax">normal</FONT></TD>
+							<TD class="visible" width="20%">Integer<BR>Real</TD>
+							<TD class="visible" width="20%">Real<BR>Real</TD>
+							<TD class="visible" width="20%">Real<BR>Real</TD>
+							<TD class="visible" width="20%" align="center">&mdash;<BR>&mdash;</TD>
+						</TR>
+						<TR valign="top">
+							<TD class="visible" NOWRAP width="20%"><FONT class="syntax">triangular</FONT></TD>
+							<TD class="visible" width="20%">Integer<BR>Real</TD>
+							<TD class="visible" width="20%">Real<BR>Real</TD>
+							<TD class="visible" width="20%">Real<BR>Real</TD>
+							<TD class="visible" width="20%">Real<BR>Real</TD>
+						</TR>
+						<TR valign="top">
+							<TD class="visible" NOWRAP width="20%"><FONT class="syntax">by_hist</FONT></TD>
+							<TD class="visible" width="20%">Integer<BR>Real<BR>Enumerative</TD>
+							<TD class="visible" width="20%" align="center">&mdash;<BR>&mdash;<BR>&mdash;</TD>
+							<TD class="visible" width="20%" align="center">&mdash;<BR>&mdash;<BR>&mdash;</TD>
+							<TD class="visible" width="20%" align="center">&mdash;<BR>&mdash;<BR>&mdash;</TD>
+						</TR>
+						<TR valign="top">
+							<TD class="visible" NOWRAP width="20%"><FONT class="syntax">enumerative</FONT></TD>
+							<TD class="visible" width="20%">Integer<BR>Real<BR>Enumerative</TD>
+							<TD class="visible" width="20%" align="center">&mdash;<BR>&mdash;<BR>&mdash;</TD>
+							<TD class="visible" width="20%" align="center">&mdash;<BR>&mdash;<BR>&mdash;</TD>
+							<TD class="visible" width="20%" align="center">&mdash;<BR>&mdash;<BR>&mdash;</TD>
+						</TR>
+					</TABLE>
+					<P>Looking at the table one can see that sequences of <FONT class="syntax">uniform</FONT>, <FONT class="syntax">exponential</FONT>, <FONT class="syntax">normal</FONT> and <FONT class="syntax">triangular</FONT> types cannot have values of enumerative type. Sequences of <FONT class="syntax">uniform</FONT> and <FONT class="syntax">normal</FONT> types have two parameters while sequences of <FONT class="syntax">exponential</FONT> type have one parameter; sequences of <FONT class="syntax">triangular</FONT> type have tree parameters; sequences of <FONT class="syntax">by_hist</FONT> and <FONT class="syntax">enumerative</FONT> types have no parameters at all (when referring to a sequence with no parameters, there should be no brackets after the sequence's name). For determining a value of a real parameter, integer arithmetic expression may be used.</P>
+					<P>The first parameter of a sequence having the type <FONT class="syntax">uniform</FONT> is the lower limit of the range of distribution, the second parameter - the upper limit. The single parameter of a sequence of the type <FONT class="syntax">exponential</FONT> is a mean value of the exponential distribution. The first parameter of a sequence of the type <FONT class="syntax">normal</FONT> is a mean value and the second - a standard deviation of normal distribution. Parameters of sequences of <FONT class="syntax">triangular</FONT> type: first - left limit of the range of disttribution, second - point under the top of triangle, third - right limit.<BR><BR></P>
+				</DD>
+			</DL>
+			<DT class="syntax"><A name="body"></A><I>sequence_body</I></DT>
+			<DD class="syntax">Sequence body syntax depends on the sequence type.
+				<P><FONT class="syntax">Uniform</FONT>, <FONT class="syntax">normal</FONT>, <FONT class="syntax">exponential</FONT> and <FONT class="syntax">triangular</FONT> sequences have no bodies.</P>
+				<P>The format of a <FONT class="syntax">by_hist</FONT> sequence is as follows:</P>
+				<PRE class="syntax"><A class="syntax" href="#range_limit">&lt;range_boundaries&gt;</A> <A class="syntax" href="#rel_freq">&lt;relative_frequency&gt;</A>
+{ &lt;range_boundaries&gt; &lt;relative_frequency&gt; }</PRE>
+				<DL class="syntax">
+					<DT class="syntax"><A name="range_limit"></A><I>range_boundaries</I></DT>
+					<DD class="syntax">For integer or real sequences, the range boundaries are indicated with integer or real <A href="../html/rdo_lex_div_numeric_const.htm">numerical constants</A>, and the lower boundary of a range (except the first range) should be equal to the top boundary of the previous range. For enumerative sequences, not ranges are determined but the names of enumerative type values.</DD>
+					<DT class="syntax"><A name="rel_freq"></A><I>relative_frequency</I></DT>
+					<DD class="syntax">Relative frequencies are defined by real <A href="../html/rdo_lex_div_numeric_const.htm">numerical constants</A> indicating how often the sequence values fall within the specified interval (relative frequency of given value appearance for enumerative sequences). The sum of relative frequencies for all the histogram intervals should not compulsorily be 1. Using symbol constants or expressions for determining range boundaries and relative frequencies is not allowed.</DD>
+				</DL>
+				<P>An <FONT class="syntax">enumerative</FONT> sequence's body has a format as follows:</P>
+				<PRE class="syntax"><A class="syntax" href="#sec_val">&lt;sequence_value&gt;</A> { &lt;sequence_value&gt; }</PRE>
+				<DL class="syntax">
+					<DT class="syntax"><A name="sec_val"></A><I>sequence_value</I></DT>
+					<DD class="syntax">A sequence value may be determined either by real or integer <A href="../html/rdo_lex_div_numeric_const.htm">numerical constant</A> or by the value's name according to the sequence values type. The maximum number of values in the version considered is 1024.</DD>
+				</DL>
+			</DD>
+		</DL>
+		<H4>Examples</H4>
+		<PRE class="samples">$Sequence Sequence_1 : real
+$Type = uniform 11111111
+$End
+
+$Sequence Sequence_2 : real [0.0..10.0]
+$Type = exponential 2147483647
+$End
+
+$Sequence Sequence_3 : real [0.0..10.0]
+$Type = normal
+$End
+
+$Sequence Sequence_4 : real [0.0..10.0]
+$Type = triangular
+$End
+
+$Sequence Sequence_5 : real
+$Type = by_hist 11111
+$Body
+  1.0   2.0   0.0423
+  2.0   4.0   0.4239
+  4.0   5.75  0.2756
+  5.75  10.0  0.3072
+$End
+
+$Sequence Sequence_6 : integer [0..30]
+$Type = by_hist 11111
+$Body
+  0   2   0.11
+  2   5   0.12
+  5   6   0.17
+  6   11  0.20
+  11  20  0.34
+  20  30  0.06
+$End
+
+$Sequence Sequence_7 : such_as Constant_9
+$Type = by_hist 11111
+$Body
+  Value_1  0.11
+  Value_2  0.12
+  Value_3  0.17
+  Value_4  0.20
+  Value_5  0.34
+$End
+
+$Sequence Sequence_8 : real
+$Type = enumerative
+$Body
+  0.5253   0.7363   0.1642   0.2543   0.9126
+$End
+
+$Sequence Sequence_9 : integer
+$Type = enumerative
+$Body
+  42   745   78   745   82   94   19   31
+$End
+
+$Sequence Sequence_10 : such_as Constant_10
+$Type = enumerative
+$Body
+  Value_2  Value_3  Value_5  Value_2  Value_3
+  Value_4  Value_1  Value_4  Value_1  Value_5
+$End</PRE>
+		<P>Here are some examples of calling the sequence:</P>
+		<PRE class="samples">Sequence_1(1.0, 1 + 5 / 2.0)
+Sequence_2(2.5)
+Sequence_3(2.0, 1 / 5.0)
+Sequence_4(2.0, 5, 7 + 1/2.0)
+Sequence_6
+Sequence_9</PRE>
+		<H4>Remarks</H4>
+		<P class="remarks">The simulator calculates the values of sequences in the following way. First it calculates the values of parameters, if they are present.</P>
+		<P class="remarks">The values of a sequence of the type <FONT class="syntax">uniform</FONT> are calculated, on the basis of a pseudorandom numbers generator, as uniformly distributed within the given range whether integer or real (depending on the type of sequence value) numbers.</P>
+		<P class="remarks">For a sequence of the type <FONT class="syntax">normal</FONT> values are calculated, on the basis of a pseudorandom numbers generator, as normally distributed real numbers with a given mean value and standard deviation. If the sequence has values of the integer type, an integer number is calculated by rounding to the nearest integer.</P>
+		<P class="remarks">The values of a sequence of the type <FONT class="syntax">exponential</FONT> are calculated, on the basis of a pseudorandom numbers generator, as exponentially distributed real numbers with a given mean value. For sequences of the integer type, the value is obtained by rounding to the nearest lower integer value.</P>
+		<P class="remarks">The values of a sequence of the type <FONT class="syntax">triangular</FONT> are calculated, on the basis of a pseudorandom numbers generator, as triangular type distributed real numbers with a given limits of the distribution and point under the top of triangle. For sequences of the integer type, the value is obtained by rounding to the nearest lower integer value.</P>
+		<P class="remarks">The values of a sequence of the type <FONT class="syntax">by_hist</FONT> are calculated in the following way. First, the range of the histogram is determined according to relative frequencies, then the value is obtained as uniformly distributed in this interval. For sequences with enumerative values the values will appear with given probability.</P>
+		<P class="remarks">The values enumerated in the body of the sequence of the type <FONT class="syntax">enumerative</FONT> are given out as the values of the sequence in the order in which they are enumerated. The first call to the sequence gives out the first value, the second call - the second value etc. After the last value is used, the first value is given out again etc.</P>
+		<P class="remarks">After calculation of sequence value by the way described above in the case of specification of allowed sequence value range, simulator checks if the value of sequence is within the range. If the value obtained from the pseudorandom numbers generator is outside of the range, the simulator rounds the value to the nearest limit.</P>
+		<P class="remarks">All sequences give independent flows of pseudorandom numbers. Changing the generator's base allows us to obtain different realisations of pseudorandom sequences.</P>
+		<H4>See Also</H4>
+		<P><A href="../html/rdo_base_types.htm">Data types. Types correspondence</A></P>
+		<P><A href="../html/rdo_obj_const_fun_sec.htm">Symbol constants, functions and sequences description</A></P>
+		<P><A href="../html/rdo_obj_fun.htm">Function syntax</A></P>
+	</DIV>
+	<A name="prev_section;../html/rdo_obj_intro.htm;Certain constructions of the language">
+	<A name="next_section;../html/rdo_res_intro.htm;Simulation results">
+	<A name="section_top;../html/rdo_obj_const_fun_sec.htm;Symbol constants, functions and sequences description">
+	<A name="section;Symbol constants, functions and sequences description;">
+	<A name="prev_topic;../html/rdo_obj_fun.htm;Function syntax">
+	<A name="next_topic;../html/rdo_obj_pat.htm;Patterns description">
+	<A name="title;RAO language help"><BR><SCRIPT src="../navbar.js"></SCRIPT>
+</BODY>
+</HTML>
