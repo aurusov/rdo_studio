@@ -1,51 +1,51 @@
-<HTML>
+п»ї<HTML>
 <HEAD>
-<TITLE>Трассировка показателей</TITLE>
+<TITLE>РўСЂР°СЃСЃРёСЂРѕРІРєР° РїРѕРєР°Р·Р°С‚РµР»РµР№</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../styles.css">
 </HEAD>
 <BODY>
 	<DIV>
-		<H1>ТРАССИРОВКА ПОКАЗАТЕЛЕЙ</H1>
-		<P>Строка <B>трассировки показателя</B> имеет следующий формат:</P>
-		<PRE class="syntax">V <A class="syntax" href="#time">&lt;время&gt;</A> <A class="syntax" href="#pmv_num">&lt;номер_показателя&gt;</A> <A class="syntax" href="#value">&lt;значение&gt;</A></PRE>
+		<H1>РўР РђРЎРЎРР РћР’РљРђ РџРћРљРђР—РђРўР•Р›Р•Р™</H1>
+		<P>РЎС‚СЂРѕРєР° <B>С‚СЂР°СЃСЃРёСЂРѕРІРєРё РїРѕРєР°Р·Р°С‚РµР»СЏ</B> РёРјРµРµС‚ СЃР»РµРґСѓСЋС‰РёР№ С„РѕСЂРјР°С‚:</P>
+		<PRE class="syntax">V <A class="syntax" href="#time">&lt;РІСЂРµРјСЏ&gt;</A> <A class="syntax" href="#pmv_num">&lt;РЅРѕРјРµСЂ_РїРѕРєР°Р·Р°С‚РµР»СЏ&gt;</A> <A class="syntax" href="#value">&lt;Р·РЅР°С‡РµРЅРёРµ&gt;</A></PRE>
 		<DL class="syntax">
-			<DT class="syntax"><A name="time"></A><I>время</I></DT>
-			<DD class="syntax">Время изменения показателя в формате вещественного числа.</DD>
-			<DT class="syntax"><A name="pmv_num"></A><I>номер_показателя</I></DT>
-			<DD class="syntax">Номер показателя - это номер, указанный для трассируемых показателей в секции <FONT class="syntax">$Watching</FONT> <A href="../html/rdo_res_trc.htm#watching">объекта трассировки</A>.</DD>
-			<DT class="syntax"><A name="value"></A><I>значение</I></DT>
-			<DD class="syntax">Трассировка показателей производится в момент изменения значения параметра, количества временных ресурсов, значения логического выражения (для показателя вида <FONT class="syntax">watch_state</FONT>) или в момент уничтожения ресурса (для показателя вида <FONT class="syntax">watch_value</FONT>).
-			<P>Значение зависит от вида показателя. Ниже приведены значения для всех видов показателей:</P>
+			<DT class="syntax"><A name="time"></A><I>РІСЂРµРјСЏ</I></DT>
+			<DD class="syntax">Р’СЂРµРјСЏ РёР·РјРµРЅРµРЅРёСЏ РїРѕРєР°Р·Р°С‚РµР»СЏ РІ С„РѕСЂРјР°С‚Рµ РІРµС‰РµСЃС‚РІРµРЅРЅРѕРіРѕ С‡РёСЃР»Р°.</DD>
+			<DT class="syntax"><A name="pmv_num"></A><I>РЅРѕРјРµСЂ_РїРѕРєР°Р·Р°С‚РµР»СЏ</I></DT>
+			<DD class="syntax">РќРѕРјРµСЂ РїРѕРєР°Р·Р°С‚РµР»СЏ - СЌС‚Рѕ РЅРѕРјРµСЂ, СѓРєР°Р·Р°РЅРЅС‹Р№ РґР»СЏ С‚СЂР°СЃСЃРёСЂСѓРµРјС‹С… РїРѕРєР°Р·Р°С‚РµР»РµР№ РІ СЃРµРєС†РёРё <FONT class="syntax">$Watching</FONT> <A href="../html/rdo_res_trc.htm#watching">РѕР±СЉРµРєС‚Р° С‚СЂР°СЃСЃРёСЂРѕРІРєРё</A>.</DD>
+			<DT class="syntax"><A name="value"></A><I>Р·РЅР°С‡РµРЅРёРµ</I></DT>
+			<DD class="syntax">РўСЂР°СЃСЃРёСЂРѕРІРєР° РїРѕРєР°Р·Р°С‚РµР»РµР№ РїСЂРѕРёР·РІРѕРґРёС‚СЃСЏ РІ РјРѕРјРµРЅС‚ РёР·РјРµРЅРµРЅРёСЏ Р·РЅР°С‡РµРЅРёСЏ РїР°СЂР°РјРµС‚СЂР°, РєРѕР»РёС‡РµСЃС‚РІР° РІСЂРµРјРµРЅРЅС‹С… СЂРµСЃСѓСЂСЃРѕРІ, Р·РЅР°С‡РµРЅРёСЏ Р»РѕРіРёС‡РµСЃРєРѕРіРѕ РІС‹СЂР°Р¶РµРЅРёСЏ (РґР»СЏ РїРѕРєР°Р·Р°С‚РµР»СЏ РІРёРґР° <FONT class="syntax">watch_state</FONT>) РёР»Рё РІ РјРѕРјРµРЅС‚ СѓРЅРёС‡С‚РѕР¶РµРЅРёСЏ СЂРµСЃСѓСЂСЃР° (РґР»СЏ РїРѕРєР°Р·Р°С‚РµР»СЏ РІРёРґР° <FONT class="syntax">watch_value</FONT>).
+			<P>Р—РЅР°С‡РµРЅРёРµ Р·Р°РІРёСЃРёС‚ РѕС‚ РІРёРґР° РїРѕРєР°Р·Р°С‚РµР»СЏ. РќРёР¶Рµ РїСЂРёРІРµРґРµРЅС‹ Р·РЅР°С‡РµРЅРёСЏ РґР»СЏ РІСЃРµС… РІРёРґРѕРІ РїРѕРєР°Р·Р°С‚РµР»РµР№:</P>
 				<TABLE class="visible">
 					<TR valign="top">
-						<TH align="left" width="20%">Вид показателя</TH>
-						<TH align="left" width="80%">Описание значения трассировки</TH>
+						<TH align="left" width="20%">Р’РёРґ РїРѕРєР°Р·Р°С‚РµР»СЏ</TH>
+						<TH align="left" width="80%">РћРїРёСЃР°РЅРёРµ Р·РЅР°С‡РµРЅРёСЏ С‚СЂР°СЃСЃРёСЂРѕРІРєРё</TH>
 					</TR>
 					<TR valign="top">
 						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">watch_par</FONT></TD>
-						<TD class="visible" width="80%">Новое значение параметра</TD>
+						<TD class="visible" width="80%">РќРѕРІРѕРµ Р·РЅР°С‡РµРЅРёРµ РїР°СЂР°РјРµС‚СЂР°</TD>
 					</TR>
 					<TR valign="top">
 						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">watch_state</FONT></TD>
-						<TD class="visible" width="80%">Новое значение логического выражения</TD>
+						<TD class="visible" width="80%">РќРѕРІРѕРµ Р·РЅР°С‡РµРЅРёРµ Р»РѕРіРёС‡РµСЃРєРѕРіРѕ РІС‹СЂР°Р¶РµРЅРёСЏ</TD>
 					</TR>
 					<TR valign="top">
 						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">watch_quant</FONT></TD>
-						<TD class="visible" width="80%">Новое значение количества ресурсов</TD>
+						<TD class="visible" width="80%">РќРѕРІРѕРµ Р·РЅР°С‡РµРЅРёРµ РєРѕР»РёС‡РµСЃС‚РІР° СЂРµСЃСѓСЂСЃРѕРІ</TD>
 					</TR>
 					<TR valign="top">
 						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">watch_value</FONT></TD>
-						<TD class="visible" width="80%">Значение арифметического выражения</TD>
+						<TD class="visible" width="80%">Р—РЅР°С‡РµРЅРёРµ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРѕРіРѕ РІС‹СЂР°Р¶РµРЅРёСЏ</TD>
 					</TR>
 				</TABLE>
-				<P>Трассировка показателя вида <FONT class="syntax">get_value</FONT> не производится.</P>
+				<P>РўСЂР°СЃСЃРёСЂРѕРІРєР° РїРѕРєР°Р·Р°С‚РµР»СЏ РІРёРґР° <FONT class="syntax">get_value</FONT> РЅРµ РїСЂРѕРёР·РІРѕРґРёС‚СЃСЏ.</P>
 			</DD>
 		</DL>
-		<H4>См. также</H4>
-		<P><A href="../html/rdo_res_trc.htm">Объект трассировки</A></P>
-		<P><A href="../html/rdo_res_trc_events.htm">Трассировка событий</A></P>
-		<P><A href="../html/rdo_res_trc_resourses.htm">Трассировка состояния ресурсов</A></P>
-		<P><A href="../html/rdo_res_trc_decisionpt.htm">Трассировка точек принятия решений</A></P>
+		<H4>РЎРј. С‚Р°РєР¶Рµ</H4>
+		<P><A href="../html/rdo_res_trc.htm">РћР±СЉРµРєС‚ С‚СЂР°СЃСЃРёСЂРѕРІРєРё</A></P>
+		<P><A href="../html/rdo_res_trc_events.htm">РўСЂР°СЃСЃРёСЂРѕРІРєР° СЃРѕР±С‹С‚РёР№</A></P>
+		<P><A href="../html/rdo_res_trc_resourses.htm">РўСЂР°СЃСЃРёСЂРѕРІРєР° СЃРѕСЃС‚РѕСЏРЅРёСЏ СЂРµСЃСѓСЂСЃРѕРІ</A></P>
+		<P><A href="../html/rdo_res_trc_decisionpt.htm">РўСЂР°СЃСЃРёСЂРѕРІРєР° С‚РѕС‡РµРє РїСЂРёРЅСЏС‚РёСЏ СЂРµС€РµРЅРёР№</A></P>
 	</DIV>
 	<BR><SCRIPT src="../navbar.js"></SCRIPT>
 </BODY>

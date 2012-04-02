@@ -1,299 +1,299 @@
-<HTML>
+п»ї<HTML>
 <HEAD>
-<TITLE>Глобальные переменные и стандартные функции</TITLE>
+<TITLE>Р“Р»РѕР±Р°Р»СЊРЅС‹Рµ РїРµСЂРµРјРµРЅРЅС‹Рµ Рё СЃС‚Р°РЅРґР°СЂС‚РЅС‹Рµ С„СѓРЅРєС†РёРё</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../styles.css">
 </HEAD>
 <BODY>
 	<DIV>
-		<H1>ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ И СТАНДАРТНЫЕ ФУНКЦИИ</H1>
-		<P><A name="glob"></A>Глобальные переменные и стандартные арифметические функции используются в <A href="../html/rdo_base_equations.htm#arith_expr">арифметических выражениях</A>.</P>
-		<P><B>Глобальных переменных</B> в данной версии языка три:</P>
+		<H1>Р“Р›РћР‘РђР›Р¬РќР«Р• РџР•Р Р•РњР•РќРќР«Р• Р РЎРўРђРќР”РђР РўРќР«Р• Р¤РЈРќРљР¦РР</H1>
+		<P><A name="glob"></A>Р“Р»РѕР±Р°Р»СЊРЅС‹Рµ РїРµСЂРµРјРµРЅРЅС‹Рµ Рё СЃС‚Р°РЅРґР°СЂС‚РЅС‹Рµ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРёРµ С„СѓРЅРєС†РёРё РёСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ РІ <A href="../html/rdo_base_equations.htm#arith_expr">Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРёС… РІС‹СЂР°Р¶РµРЅРёСЏС…</A>.</P>
+		<P><B>Р“Р»РѕР±Р°Р»СЊРЅС‹С… РїРµСЂРµРјРµРЅРЅС‹С…</B> РІ РґР°РЅРЅРѕР№ РІРµСЂСЃРёРё СЏР·С‹РєР° С‚СЂРё:</P>
 		<TABLE class="visible">
 			<TR valign="top">
-				<TH align="left" width="20%">Имя переменной</TH>
-				<TH align="left" width="20%">Тип переменной</TH>
-				<TH align="left" width="60%">Описание</TH>
+				<TH align="left" width="20%">РРјСЏ РїРµСЂРµРјРµРЅРЅРѕР№</TH>
+				<TH align="left" width="20%">РўРёРї РїРµСЂРµРјРµРЅРЅРѕР№</TH>
+				<TH align="left" width="60%">РћРїРёСЃР°РЅРёРµ</TH>
 			</TR>
 			<TR valign="top"><A name="sec"></A>
 				<TD class="visible" width="20%"><FONT class="syntax">Seconds</FONT></TD>
-				<TD class="visible" width="20%">вещественный</TD>
-				<TD class="visible" width="60%">Содержит количество секунд, прошедших с момента начала моделирования</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
+				<TD class="visible" width="60%">РЎРѕРґРµСЂР¶РёС‚ РєРѕР»РёС‡РµСЃС‚РІРѕ СЃРµРєСѓРЅРґ, РїСЂРѕС€РµРґС€РёС… СЃ РјРѕРјРµРЅС‚Р° РЅР°С‡Р°Р»Р° РјРѕРґРµР»РёСЂРѕРІР°РЅРёСЏ</TD>
 			</TR>
 			<TR valign="top"><A name="time_now"></A>
 				<TD class="visible" width="20%"><FONT class="syntax">Time_now</FONT></TD>
-				<TD class="visible" width="20%">вещественный</TD>
-				<TD class="visible" width="60%">Содержит значение текущего модельного времени (времени в моделируемой системе) в единицах времени.</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
+				<TD class="visible" width="60%">РЎРѕРґРµСЂР¶РёС‚ Р·РЅР°С‡РµРЅРёРµ С‚РµРєСѓС‰РµРіРѕ РјРѕРґРµР»СЊРЅРѕРіРѕ РІСЂРµРјРµРЅРё (РІСЂРµРјРµРЅРё РІ РјРѕРґРµР»РёСЂСѓРµРјРѕР№ СЃРёСЃС‚РµРјРµ) РІ РµРґРёРЅРёС†Р°С… РІСЂРµРјРµРЅРё.</TD>
 			</TR>
 			<TR valign="top"><A name="terminate_counter"></A>
 				<TD class="visible" width="20%"><FONT class="syntax">Terminate_counter</FONT></TD>
-				<TD class="visible" width="20%">целый</TD>
-				<TD class="visible" width="60%">Содержит значение терминального счетчика <A href="../html/rdo_obj_proc.htm">процессного подхода</A>.</TD>
+				<TD class="visible" width="20%">С†РµР»С‹Р№</TD>
+				<TD class="visible" width="60%">РЎРѕРґРµСЂР¶РёС‚ Р·РЅР°С‡РµРЅРёРµ С‚РµСЂРјРёРЅР°Р»СЊРЅРѕРіРѕ СЃС‡РµС‚С‡РёРєР° <A href="../html/rdo_obj_proc.htm">РїСЂРѕС†РµСЃСЃРЅРѕРіРѕ РїРѕРґС…РѕРґР°</A>.</TD>
 			</TR>
 		</TABLE>
-		<P><B>Стандартные <A name="arith"></A>арифметические функции</B>, включенные в данную версию языка, приведены в следующей таблице с соответствующими пояснениями:</P>
+		<P><B>РЎС‚Р°РЅРґР°СЂС‚РЅС‹Рµ <A name="arith"></A>Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРёРµ С„СѓРЅРєС†РёРё</B>, РІРєР»СЋС‡РµРЅРЅС‹Рµ РІ РґР°РЅРЅСѓСЋ РІРµСЂСЃРёСЋ СЏР·С‹РєР°, РїСЂРёРІРµРґРµРЅС‹ РІ СЃР»РµРґСѓСЋС‰РµР№ С‚Р°Р±Р»РёС†Рµ СЃ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёРјРё РїРѕСЏСЃРЅРµРЅРёСЏРјРё:</P>
 		<TABLE class="visible">
 			<TR valign="top">
-				<TH align="left" width="10%">Имя функции</TH>
-				<TH align="left" width="20%">Тип значения</TH>
-				<TH align="left" width="20%">Тип первого аргумента</TH>
-				<TH align="left" width="20%">Тип второго аргумента</TH>
-				<TH align="left" width="30%">Описание</TH>
+				<TH align="left" width="10%">РРјСЏ С„СѓРЅРєС†РёРё</TH>
+				<TH align="left" width="20%">РўРёРї Р·РЅР°С‡РµРЅРёСЏ</TH>
+				<TH align="left" width="20%">РўРёРї РїРµСЂРІРѕРіРѕ Р°СЂРіСѓРјРµРЅС‚Р°</TH>
+				<TH align="left" width="20%">РўРёРї РІС‚РѕСЂРѕРіРѕ Р°СЂРіСѓРјРµРЅС‚Р°</TH>
+				<TH align="left" width="30%">РћРїРёСЃР°РЅРёРµ</TH>
 			</TR>
 			<TR valign="top"><A name="abs"></A>
 				<TD class="visible" NOWRAP width="10%"><FONT class="syntax">Abs(x)</FONT></TD>
-				<TD class="visible" width="20%">вещественный</TD>
-				<TD class="visible" width="20%">вещественный</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
 				<TD class="visible" width="20%"></TD>
-				<TD class="visible" width="30%">Вычисляет абсолютную величину вещественного аргумента <FONT class="syntax">x</FONT></TD>
+				<TD class="visible" width="30%">Р’С‹С‡РёСЃР»СЏРµС‚ Р°Р±СЃРѕР»СЋС‚РЅСѓСЋ РІРµР»РёС‡РёРЅСѓ РІРµС‰РµСЃС‚РІРµРЅРЅРѕРіРѕ Р°СЂРіСѓРјРµРЅС‚Р° <FONT class="syntax">x</FONT></TD>
 			</TR>
 			<TR valign="top"><A name="arccos"></A>
 				<TD class="visible" NOWRAP width="10%"><FONT class="syntax">ArcCos(x)</FONT></TD>
-				<TD class="visible" width="20%">вещественный</TD>
-				<TD class="visible" width="20%">вещественный</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
 				<TD class="visible" width="20%"></TD>
-				<TD class="visible" width="30%">Вычисляет арккосинус аргумента <FONT class="syntax">x</FONT>, заданного в радианах</TD>
+				<TD class="visible" width="30%">Р’С‹С‡РёСЃР»СЏРµС‚ Р°СЂРєРєРѕСЃРёРЅСѓСЃ Р°СЂРіСѓРјРµРЅС‚Р° <FONT class="syntax">x</FONT>, Р·Р°РґР°РЅРЅРѕРіРѕ РІ СЂР°РґРёР°РЅР°С…</TD>
 			</TR>
 			<TR valign="top"><A name="arcsin"></A>
 				<TD class="visible" NOWRAP width="10%"><FONT class="syntax">ArcSin(x)</FONT></TD>
-				<TD class="visible" width="20%">вещественный</TD>
-				<TD class="visible" width="20%">вещественный</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
 				<TD class="visible" width="20%"></TD>
-				<TD class="visible" width="30%">Вычисляет арксинус аргумента <FONT class="syntax">x</FONT>, заданного в радианах</TD>
+				<TD class="visible" width="30%">Р’С‹С‡РёСЃР»СЏРµС‚ Р°СЂРєСЃРёРЅСѓСЃ Р°СЂРіСѓРјРµРЅС‚Р° <FONT class="syntax">x</FONT>, Р·Р°РґР°РЅРЅРѕРіРѕ РІ СЂР°РґРёР°РЅР°С…</TD>
 			</TR>
 			<TR valign="top"><A name="arctan"></A>
 				<TD class="visible" NOWRAP width="10%"><FONT class="syntax">ArcTan(x)</FONT></TD>
-				<TD class="visible" width="20%">вещественный</TD>
-				<TD class="visible" width="20%">вещественный</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
 				<TD class="visible" width="20%"></TD>
-				<TD class="visible" width="30%">Вычисляет арктангенс аргумента <FONT class="syntax">x</FONT>, заданного в радианах</TD>
+				<TD class="visible" width="30%">Р’С‹С‡РёСЃР»СЏРµС‚ Р°СЂРєС‚Р°РЅРіРµРЅСЃ Р°СЂРіСѓРјРµРЅС‚Р° <FONT class="syntax">x</FONT>, Р·Р°РґР°РЅРЅРѕРіРѕ РІ СЂР°РґРёР°РЅР°С…</TD>
 			</TR>
 			<TR valign="top"><A name="cos"></A>
 				<TD class="visible" NOWRAP width="10%"><FONT class="syntax">Cos(x)</FONT></TD>
-				<TD class="visible" width="20%">вещественный</TD>
-				<TD class="visible" width="20%">вещественный</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
 				<TD class="visible" width="20%"></TD>
-				<TD class="visible" width="30%">Вычисляет косинус аргумента <FONT class="syntax">x</FONT>, заданного в радианах</TD>
+				<TD class="visible" width="30%">Р’С‹С‡РёСЃР»СЏРµС‚ РєРѕСЃРёРЅСѓСЃ Р°СЂРіСѓРјРµРЅС‚Р° <FONT class="syntax">x</FONT>, Р·Р°РґР°РЅРЅРѕРіРѕ РІ СЂР°РґРёР°РЅР°С…</TD>
 			</TR>
 			<TR valign="top"><A name="cotan"></A>
 				<TD class="visible" NOWRAP width="10%"><FONT class="syntax">Cotan(x)</FONT></TD>
-				<TD class="visible" width="20%">вещественный</TD>
-				<TD class="visible" width="20%">вещественный</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
 				<TD class="visible" width="20%"></TD>
-				<TD class="visible" width="30%">Вычисляет котангенс аргумента <FONT class="syntax">x</FONT>, заданного в радианах</TD>
+				<TD class="visible" width="30%">Р’С‹С‡РёСЃР»СЏРµС‚ РєРѕС‚Р°РЅРіРµРЅСЃ Р°СЂРіСѓРјРµРЅС‚Р° <FONT class="syntax">x</FONT>, Р·Р°РґР°РЅРЅРѕРіРѕ РІ СЂР°РґРёР°РЅР°С…</TD>
 			</TR>
 			<TR valign="top"><A name="exp"></A>
 				<TD class="visible" NOWRAP width="10%"><FONT class="syntax">Exp(x)</FONT></TD>
-				<TD class="visible" width="20%">вещественный</TD>
-				<TD class="visible" width="20%">вещественный</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
 				<TD class="visible" width="20%"></TD>
-				<TD class="visible" width="30%">Вычисляет значение <FONT class="syntax">е</FONT> в степени <FONT class="syntax">x</FONT></TD>
+				<TD class="visible" width="30%">Р’С‹С‡РёСЃР»СЏРµС‚ Р·РЅР°С‡РµРЅРёРµ <FONT class="syntax">Рµ</FONT> РІ СЃС‚РµРїРµРЅРё <FONT class="syntax">x</FONT></TD>
 			</TR>
 			<TR valign="top"><A name="floor"></A>
 				<TD class="visible" NOWRAP width="10%"><FONT class="syntax">Floor(x)</FONT></TD>
-				<TD class="visible" width="20%">целый</TD>
-				<TD class="visible" width="20%">вещественный</TD>
+				<TD class="visible" width="20%">С†РµР»С‹Р№</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
 				<TD class="visible" width="20%"></TD>
-				<TD class="visible" width="30%">Результат функции - наибольшее целое число, не превосходящее <FONT class="syntax">x</FONT></TD>
+				<TD class="visible" width="30%">Р РµР·СѓР»СЊС‚Р°С‚ С„СѓРЅРєС†РёРё - РЅР°РёР±РѕР»СЊС€РµРµ С†РµР»РѕРµ С‡РёСЃР»Рѕ, РЅРµ РїСЂРµРІРѕСЃС…РѕРґСЏС‰РµРµ <FONT class="syntax">x</FONT></TD>
 			</TR>
 			<TR valign="top"><A name="frac"></A>
 				<TD class="visible" NOWRAP width="10%"><FONT class="syntax">Frac(x)</FONT></TD>
-				<TD class="visible" width="20%">вещественный</TD>
-				<TD class="visible" width="20%">вещественный</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
 				<TD class="visible" width="20%"></TD>
-				<TD class="visible" width="30%">Возвращает дробную часть вещественного аргумента <FONT class="syntax">x</FONT></TD>
+				<TD class="visible" width="30%">Р’РѕР·РІСЂР°С‰Р°РµС‚ РґСЂРѕР±РЅСѓСЋ С‡Р°СЃС‚СЊ РІРµС‰РµСЃС‚РІРµРЅРЅРѕРіРѕ Р°СЂРіСѓРјРµРЅС‚Р° <FONT class="syntax">x</FONT></TD>
 			</TR>
 			<TR valign="top"><A name="iabs"></A>
 				<TD class="visible" NOWRAP width="10%"><FONT class="syntax">IAbs(x)</FONT></TD>
-				<TD class="visible" width="20%">целый</TD>
-				<TD class="visible" width="20%">целый</TD>
+				<TD class="visible" width="20%">С†РµР»С‹Р№</TD>
+				<TD class="visible" width="20%">С†РµР»С‹Р№</TD>
 				<TD class="visible" width="20%"></TD>
-				<TD class="visible" width="30%">Вычисляет абсолютную величину целого аргумента <FONT class="syntax">x</FONT></TD>
+				<TD class="visible" width="30%">Р’С‹С‡РёСЃР»СЏРµС‚ Р°Р±СЃРѕР»СЋС‚РЅСѓСЋ РІРµР»РёС‡РёРЅСѓ С†РµР»РѕРіРѕ Р°СЂРіСѓРјРµРЅС‚Р° <FONT class="syntax">x</FONT></TD>
 			</TR>
 			<TR valign="top"><A name="imax"></A>
 				<TD class="visible" NOWRAP width="10%"><FONT class="syntax">IMax(x,y)</FONT></TD>
-				<TD class="visible" width="20%">целый</TD>
-				<TD class="visible" width="20%">целый</TD>
-				<TD class="visible" width="20%">целый</TD>
-				<TD class="visible" width="30%">Возвращает максимальное из значений двух целых аргументов <FONT class="syntax">x</FONT> и <FONT class="syntax">y</FONT></TD>
+				<TD class="visible" width="20%">С†РµР»С‹Р№</TD>
+				<TD class="visible" width="20%">С†РµР»С‹Р№</TD>
+				<TD class="visible" width="20%">С†РµР»С‹Р№</TD>
+				<TD class="visible" width="30%">Р’РѕР·РІСЂР°С‰Р°РµС‚ РјР°РєСЃРёРјР°Р»СЊРЅРѕРµ РёР· Р·РЅР°С‡РµРЅРёР№ РґРІСѓС… С†РµР»С‹С… Р°СЂРіСѓРјРµРЅС‚РѕРІ <FONT class="syntax">x</FONT> Рё <FONT class="syntax">y</FONT></TD>
 			</TR>
 			<TR valign="top"><A name="imin"></A>
 				<TD class="visible" NOWRAP width="10%"><FONT class="syntax">IMin(x,y)</FONT></TD>
-				<TD class="visible" width="20%">целый</TD>
-				<TD class="visible" width="20%">целый</TD>
-				<TD class="visible" width="20%">целый</TD>
-				<TD class="visible" width="30%">Возвращает минимальное из значений двух целых аргументов <FONT class="syntax">x</FONT> и <FONT class="syntax">y</FONT></TD>
+				<TD class="visible" width="20%">С†РµР»С‹Р№</TD>
+				<TD class="visible" width="20%">С†РµР»С‹Р№</TD>
+				<TD class="visible" width="20%">С†РµР»С‹Р№</TD>
+				<TD class="visible" width="30%">Р’РѕР·РІСЂР°С‰Р°РµС‚ РјРёРЅРёРјР°Р»СЊРЅРѕРµ РёР· Р·РЅР°С‡РµРЅРёР№ РґРІСѓС… С†РµР»С‹С… Р°СЂРіСѓРјРµРЅС‚РѕРІ <FONT class="syntax">x</FONT> Рё <FONT class="syntax">y</FONT></TD>
 			</TR>
 			<TR valign="top"><A name="int"></A>
 				<TD class="visible" NOWRAP width="10%"><FONT class="syntax">Int(x)</FONT></TD>
-				<TD class="visible" width="20%">целый</TD>
-				<TD class="visible" width="20%">вещественный</TD>
+				<TD class="visible" width="20%">С†РµР»С‹Р№</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
 				<TD class="visible" width="20%"></TD>
-				<TD class="visible" width="30%">Результат функции - наибольшее целое число, не превосходящее <FONT class="syntax">x</FONT></TD>
+				<TD class="visible" width="30%">Р РµР·СѓР»СЊС‚Р°С‚ С„СѓРЅРєС†РёРё - РЅР°РёР±РѕР»СЊС€РµРµ С†РµР»РѕРµ С‡РёСЃР»Рѕ, РЅРµ РїСЂРµРІРѕСЃС…РѕРґСЏС‰РµРµ <FONT class="syntax">x</FONT></TD>
 			</TR>
 			<TR valign="top"><A name="intpower"></A>
 				<TD class="visible" NOWRAP width="10%"><FONT class="syntax">IntPower(x,y)</FONT></TD>
-				<TD class="visible" width="20%">вещественный</TD>
-				<TD class="visible" width="20%">вещественный</TD>
-				<TD class="visible" width="20%">целый</TD>
-				<TD class="visible" width="30%">Вычисляет значение <FONT class="syntax">x</FONT> в целой степени <FONT class="syntax">y</FONT> с учетом знака <FONT class="syntax">x</FONT>. Если <FONT class="syntax">x</FONT> отрицателен и <FONT class="syntax">y</FONT> - нечетная, то результат отрицателен</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
+				<TD class="visible" width="20%">С†РµР»С‹Р№</TD>
+				<TD class="visible" width="30%">Р’С‹С‡РёСЃР»СЏРµС‚ Р·РЅР°С‡РµРЅРёРµ <FONT class="syntax">x</FONT> РІ С†РµР»РѕР№ СЃС‚РµРїРµРЅРё <FONT class="syntax">y</FONT> СЃ СѓС‡РµС‚РѕРј Р·РЅР°РєР° <FONT class="syntax">x</FONT>. Р•СЃР»Рё <FONT class="syntax">x</FONT> РѕС‚СЂРёС†Р°С‚РµР»РµРЅ Рё <FONT class="syntax">y</FONT> - РЅРµС‡РµС‚РЅР°СЏ, С‚Рѕ СЂРµР·СѓР»СЊС‚Р°С‚ РѕС‚СЂРёС†Р°С‚РµР»РµРЅ</TD>
 			</TR>
 			<TR valign="top"><A name="ln"></A>
 				<TD class="visible" NOWRAP width="10%"><FONT class="syntax">Ln(x)</FONT></TD>
-				<TD class="visible" width="20%">вещественный</TD>
-				<TD class="visible" width="20%">вещественный</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
 				<TD class="visible" width="20%"></TD>
-				<TD class="visible" width="30%">Вычисляет натуральный логарифм положительного аргумента <FONT class="syntax">x</FONT></TD>
+				<TD class="visible" width="30%">Р’С‹С‡РёСЃР»СЏРµС‚ РЅР°С‚СѓСЂР°Р»СЊРЅС‹Р№ Р»РѕРіР°СЂРёС„Рј РїРѕР»РѕР¶РёС‚РµР»СЊРЅРѕРіРѕ Р°СЂРіСѓРјРµРЅС‚Р° <FONT class="syntax">x</FONT></TD>
 			</TR>
 			<TR valign="top"><A name="log10"></A>
 				<TD class="visible" NOWRAP width="10%"><FONT class="syntax">Log10(x)</FONT></TD>
-				<TD class="visible" width="20%">вещественный</TD>
-				<TD class="visible" width="20%">вещественный</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
 				<TD class="visible" width="20%"></TD>
-				<TD class="visible" width="30%">Вычисляет логарифм по основанию 10 положительного аргумента <FONT class="syntax">x</FONT></TD>
+				<TD class="visible" width="30%">Р’С‹С‡РёСЃР»СЏРµС‚ Р»РѕРіР°СЂРёС„Рј РїРѕ РѕСЃРЅРѕРІР°РЅРёСЋ 10 РїРѕР»РѕР¶РёС‚РµР»СЊРЅРѕРіРѕ Р°СЂРіСѓРјРµРЅС‚Р° <FONT class="syntax">x</FONT></TD>
 			</TR>
 			<TR valign="top"><A name="log2"></A>
 				<TD class="visible" NOWRAP width="10%"><FONT class="syntax">Log2(x)</FONT></TD>
-				<TD class="visible" width="20%">вещественный</TD>
-				<TD class="visible" width="20%">вещественный</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
 				<TD class="visible" width="20%"></TD>
-				<TD class="visible" width="30%">Вычисляет логарифм по основанию 2 положительного аргумента <FONT class="syntax">x</FONT></TD>
+				<TD class="visible" width="30%">Р’С‹С‡РёСЃР»СЏРµС‚ Р»РѕРіР°СЂРёС„Рј РїРѕ РѕСЃРЅРѕРІР°РЅРёСЋ 2 РїРѕР»РѕР¶РёС‚РµР»СЊРЅРѕРіРѕ Р°СЂРіСѓРјРµРЅС‚Р° <FONT class="syntax">x</FONT></TD>
 			</TR>
 			<TR valign="top"><A name="logn"></A>
 				<TD class="visible" NOWRAP width="10%"><FONT class="syntax">LogN(x,y)</FONT></TD>
-				<TD class="visible" width="20%">вещественный</TD>
-				<TD class="visible" width="20%">вещественный</TD>
-				<TD class="visible" width="20%">вещественный</TD>
-				<TD class="visible" width="30%">Вычисляет логарифм по основанию <FONT class="syntax">y</FONT> положительного аргумента <FONT class="syntax">x</FONT>. Аргумент <FONT class="syntax">y</FONT> должен быть положителен</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
+				<TD class="visible" width="30%">Р’С‹С‡РёСЃР»СЏРµС‚ Р»РѕРіР°СЂРёС„Рј РїРѕ РѕСЃРЅРѕРІР°РЅРёСЋ <FONT class="syntax">y</FONT> РїРѕР»РѕР¶РёС‚РµР»СЊРЅРѕРіРѕ Р°СЂРіСѓРјРµРЅС‚Р° <FONT class="syntax">x</FONT>. РђСЂРіСѓРјРµРЅС‚ <FONT class="syntax">y</FONT> РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РїРѕР»РѕР¶РёС‚РµР»РµРЅ</TD>
 			</TR>
 			<TR valign="top"><A name="max"></A>
 				<TD class="visible" NOWRAP width="10%"><FONT class="syntax">Max(x,y)</FONT></TD>
-				<TD class="visible" width="20%">вещественный</TD>
-				<TD class="visible" width="20%">вещественный</TD>
-				<TD class="visible" width="20%">вещественный</TD>
-				<TD class="visible" width="30%">Возвращает максимальное из значений двух вещественных аргументов <FONT class="syntax">x</FONT> и <FONT class="syntax">y</FONT></TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
+				<TD class="visible" width="30%">Р’РѕР·РІСЂР°С‰Р°РµС‚ РјР°РєСЃРёРјР°Р»СЊРЅРѕРµ РёР· Р·РЅР°С‡РµРЅРёР№ РґРІСѓС… РІРµС‰РµСЃС‚РІРµРЅРЅС‹С… Р°СЂРіСѓРјРµРЅС‚РѕРІ <FONT class="syntax">x</FONT> Рё <FONT class="syntax">y</FONT></TD>
 			</TR>
 			<TR valign="top"><A name="min"></A>
 				<TD class="visible" NOWRAP width="10%"><FONT class="syntax">Min(x,y)</FONT></TD>
-				<TD class="visible" width="20%">вещественный</TD>
-				<TD class="visible" width="20%">вещественный</TD>
-				<TD class="visible" width="20%">вещественный</TD>
-				<TD class="visible" width="30%">Возвращает минимальное из значений двух вещественных аргументов <FONT class="syntax">x</FONT> и <FONT class="syntax">y</FONT></TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
+				<TD class="visible" width="30%">Р’РѕР·РІСЂР°С‰Р°РµС‚ РјРёРЅРёРјР°Р»СЊРЅРѕРµ РёР· Р·РЅР°С‡РµРЅРёР№ РґРІСѓС… РІРµС‰РµСЃС‚РІРµРЅРЅС‹С… Р°СЂРіСѓРјРµРЅС‚РѕРІ <FONT class="syntax">x</FONT> Рё <FONT class="syntax">y</FONT></TD>
 			</TR>
 			<TR valign="top"><A name="power"></A>
 				<TD class="visible" NOWRAP width="10%"><FONT class="syntax">Power(x,y)</FONT></TD>
-				<TD class="visible" width="20%">вещественный</TD>
-				<TD class="visible" width="20%">вещественный</TD>
-				<TD class="visible" width="20%">вещественный</TD>
-				<TD class="visible" width="30%">Вычисляет значение <FONT class="syntax">x</FONT> в степени <FONT class="syntax">y</FONT>. <FONT class="syntax">x</FONT> должен быть неотрицателен</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
+				<TD class="visible" width="30%">Р’С‹С‡РёСЃР»СЏРµС‚ Р·РЅР°С‡РµРЅРёРµ <FONT class="syntax">x</FONT> РІ СЃС‚РµРїРµРЅРё <FONT class="syntax">y</FONT>. <FONT class="syntax">x</FONT> РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РЅРµРѕС‚СЂРёС†Р°С‚РµР»РµРЅ</TD>
 			</TR>
 			<TR valign="top"><A name="round"></A>
 				<TD class="visible" NOWRAP width="10%"><FONT class="syntax">Round(x)</FONT></TD>
-				<TD class="visible" width="20%">целый</TD>
-				<TD class="visible" width="20%">вещественный</TD>
+				<TD class="visible" width="20%">С†РµР»С‹Р№</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
 				<TD class="visible" width="20%"></TD>
-				<TD class="visible" width="30%">Округляет значение вещественного аргумента <FONT class="syntax">x</FONT> к ближайшему целому числу</TD>
+				<TD class="visible" width="30%">РћРєСЂСѓРіР»СЏРµС‚ Р·РЅР°С‡РµРЅРёРµ РІРµС‰РµСЃС‚РІРµРЅРЅРѕРіРѕ Р°СЂРіСѓРјРµРЅС‚Р° <FONT class="syntax">x</FONT> Рє Р±Р»РёР¶Р°Р№С€РµРјСѓ С†РµР»РѕРјСѓ С‡РёСЃР»Сѓ</TD>
 			</TR>
 			<TR valign="top"><A name="sin"></A>
 				<TD class="visible" NOWRAP width="10%"><FONT class="syntax">Sin(x)</FONT></TD>
-				<TD class="visible" width="20%">вещественный</TD>
-				<TD class="visible" width="20%">вещественный</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
 				<TD class="visible" width="20%"></TD>
-				<TD class="visible" width="30%">Вычисляет синус аргумента <FONT class="syntax">x</FONT>, заданного в радианах</TD>
+				<TD class="visible" width="30%">Р’С‹С‡РёСЃР»СЏРµС‚ СЃРёРЅСѓСЃ Р°СЂРіСѓРјРµРЅС‚Р° <FONT class="syntax">x</FONT>, Р·Р°РґР°РЅРЅРѕРіРѕ РІ СЂР°РґРёР°РЅР°С…</TD>
 			</TR>
 			<TR valign="top"><A name="sqrt"></A>
 				<TD class="visible" NOWRAP width="10%"><FONT class="syntax">Sqrt(x)</FONT></TD>
-				<TD class="visible" width="20%">вещественный</TD>
-				<TD class="visible" width="20%">вещественный</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
 				<TD class="visible" width="20%"></TD>
-				<TD class="visible" width="30%">Вычисляет значение корня квадратного из <FONT class="syntax">x</FONT>. <FONT class="syntax">x</FONT> должен быть неотрицателен</TD>
+				<TD class="visible" width="30%">Р’С‹С‡РёСЃР»СЏРµС‚ Р·РЅР°С‡РµРЅРёРµ РєРѕСЂРЅСЏ РєРІР°РґСЂР°С‚РЅРѕРіРѕ РёР· <FONT class="syntax">x</FONT>. <FONT class="syntax">x</FONT> РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РЅРµРѕС‚СЂРёС†Р°С‚РµР»РµРЅ</TD>
 			</TR>
 			<TR valign="top"><A name="tan"></A>
 				<TD class="visible" NOWRAP width="10%"><FONT class="syntax">Tan(x)</FONT></TD>
-				<TD class="visible" width="20%">вещественный</TD>
-				<TD class="visible" width="20%">вещественный</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
+				<TD class="visible" width="20%">РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№</TD>
 				<TD class="visible" width="20%"></TD>
-				<TD class="visible" width="30%">Вычисляет тангенс аргумента <FONT class="syntax">x</FONT>, заданного в радианах</TD>
+				<TD class="visible" width="30%">Р’С‹С‡РёСЃР»СЏРµС‚ С‚Р°РЅРіРµРЅСЃ Р°СЂРіСѓРјРµРЅС‚Р° <FONT class="syntax">x</FONT>, Р·Р°РґР°РЅРЅРѕРіРѕ РІ СЂР°РґРёР°РЅР°С…</TD>
 			</TR>
 		</TABLE>
 		<A name="log"></A>
-		<P>Кроме стандартных арифметических функций в языке определены четыре стандартные функции, значением которых является ИСТИНА или ЛОЖЬ. Синтаксис вызова этих функций следующий:</P>
-		<PRE class="syntax">&lt;имя_функции&gt; ( &lt;имя_типа_ресурсов&gt; :
-(&lt;логическое_выражение&gt; | NoCheck) )</PRE>
-		<P><B>Стандартные логические функции</B> используются в <A href="../html/rdo_base_equations.htm">логических выражениях</A>. Ниже приведены их имена и способы вычисления их значений:</P>
+		<P>РљСЂРѕРјРµ СЃС‚Р°РЅРґР°СЂС‚РЅС‹С… Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРёС… С„СѓРЅРєС†РёР№ РІ СЏР·С‹РєРµ РѕРїСЂРµРґРµР»РµРЅС‹ С‡РµС‚С‹СЂРµ СЃС‚Р°РЅРґР°СЂС‚РЅС‹Рµ С„СѓРЅРєС†РёРё, Р·РЅР°С‡РµРЅРёРµРј РєРѕС‚РѕСЂС‹С… СЏРІР»СЏРµС‚СЃСЏ РРЎРўРРќРђ РёР»Рё Р›РћР–Р¬. РЎРёРЅС‚Р°РєСЃРёСЃ РІС‹Р·РѕРІР° СЌС‚РёС… С„СѓРЅРєС†РёР№ СЃР»РµРґСѓСЋС‰РёР№:</P>
+		<PRE class="syntax">&lt;РёРјСЏ_С„СѓРЅРєС†РёРё&gt; ( &lt;РёРјСЏ_С‚РёРїР°_СЂРµСЃСѓСЂСЃРѕРІ&gt; :
+(&lt;Р»РѕРіРёС‡РµСЃРєРѕРµ_РІС‹СЂР°Р¶РµРЅРёРµ&gt; | NoCheck) )</PRE>
+		<P><B>РЎС‚Р°РЅРґР°СЂС‚РЅС‹Рµ Р»РѕРіРёС‡РµСЃРєРёРµ С„СѓРЅРєС†РёРё</B> РёСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ РІ <A href="../html/rdo_base_equations.htm">Р»РѕРіРёС‡РµСЃРєРёС… РІС‹СЂР°Р¶РµРЅРёСЏС…</A>. РќРёР¶Рµ РїСЂРёРІРµРґРµРЅС‹ РёС… РёРјРµРЅР° Рё СЃРїРѕСЃРѕР±С‹ РІС‹С‡РёСЃР»РµРЅРёСЏ РёС… Р·РЅР°С‡РµРЅРёР№:</P>
 		<TABLE class="visible">
 			<TR valign="top">
-				<TH align="left" width="20%">Имя функции</TH>
-				<TH align="left" width="80%">Значение</TH>
+				<TH align="left" width="20%">РРјСЏ С„СѓРЅРєС†РёРё</TH>
+				<TH align="left" width="80%">Р—РЅР°С‡РµРЅРёРµ</TH>
 			</TR>
 			<TR valign="top"><A name="exist"></A>
 				<TD class="visible" width="20%"><FONT class="syntax">Exist</FONT></TD>
-				<TD class="visible" width="80%">Если существует хотя бы один ресурс указанного типа, состояние которого удовлетворяет заданному логическому выражению, функция выдает значение ИСТИНА, в противном случае - ЛОЖЬ</TD>
+				<TD class="visible" width="80%">Р•СЃР»Рё СЃСѓС‰РµСЃС‚РІСѓРµС‚ С…РѕС‚СЏ Р±С‹ РѕРґРёРЅ СЂРµСЃСѓСЂСЃ СѓРєР°Р·Р°РЅРЅРѕРіРѕ С‚РёРїР°, СЃРѕСЃС‚РѕСЏРЅРёРµ РєРѕС‚РѕСЂРѕРіРѕ СѓРґРѕРІР»РµС‚РІРѕСЂСЏРµС‚ Р·Р°РґР°РЅРЅРѕРјСѓ Р»РѕРіРёС‡РµСЃРєРѕРјСѓ РІС‹СЂР°Р¶РµРЅРёСЋ, С„СѓРЅРєС†РёСЏ РІС‹РґР°РµС‚ Р·РЅР°С‡РµРЅРёРµ РРЎРўРРќРђ, РІ РїСЂРѕС‚РёРІРЅРѕРј СЃР»СѓС‡Р°Рµ - Р›РћР–Р¬</TD>
 			</TR>
 			<TR valign="top"><A name="not_exist"></A>
 				<TD class="visible" width="20%"><FONT class="syntax">Not_Exist</FONT></TD>
-				<TD class="visible" width="80%">Если не существует ни одного ресурса указанного типа, состояние которого удовлетворяет заданному логическому выражению, функция выдает значение ИСТИНА, в противном случае - ЛОЖЬ</TD>
+				<TD class="visible" width="80%">Р•СЃР»Рё РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚ РЅРё РѕРґРЅРѕРіРѕ СЂРµСЃСѓСЂСЃР° СѓРєР°Р·Р°РЅРЅРѕРіРѕ С‚РёРїР°, СЃРѕСЃС‚РѕСЏРЅРёРµ РєРѕС‚РѕСЂРѕРіРѕ СѓРґРѕРІР»РµС‚РІРѕСЂСЏРµС‚ Р·Р°РґР°РЅРЅРѕРјСѓ Р»РѕРіРёС‡РµСЃРєРѕРјСѓ РІС‹СЂР°Р¶РµРЅРёСЋ, С„СѓРЅРєС†РёСЏ РІС‹РґР°РµС‚ Р·РЅР°С‡РµРЅРёРµ РРЎРўРРќРђ, РІ РїСЂРѕС‚РёРІРЅРѕРј СЃР»СѓС‡Р°Рµ - Р›РћР–Р¬</TD>
 			</TR>
 			<TR valign="top"><A name="for_all"></A>
 				<TD class="visible" width="20%"><FONT class="syntax">For_All</FONT></TD>
-				<TD class="visible" width="80%">Если состояние всех ресурсов указанного типа удовлетворяет заданному логическому выражению, функция выдает значение ИСТИНА, в противном случае - ЛОЖЬ</TD>
+				<TD class="visible" width="80%">Р•СЃР»Рё СЃРѕСЃС‚РѕСЏРЅРёРµ РІСЃРµС… СЂРµСЃСѓСЂСЃРѕРІ СѓРєР°Р·Р°РЅРЅРѕРіРѕ С‚РёРїР° СѓРґРѕРІР»РµС‚РІРѕСЂСЏРµС‚ Р·Р°РґР°РЅРЅРѕРјСѓ Р»РѕРіРёС‡РµСЃРєРѕРјСѓ РІС‹СЂР°Р¶РµРЅРёСЋ, С„СѓРЅРєС†РёСЏ РІС‹РґР°РµС‚ Р·РЅР°С‡РµРЅРёРµ РРЎРўРРќРђ, РІ РїСЂРѕС‚РёРІРЅРѕРј СЃР»СѓС‡Р°Рµ - Р›РћР–Р¬</TD>
 			</TR>
 			<TR valign="top"><A name="not_for_all"></A>
 				<TD class="visible" width="20%"><FONT class="syntax">Not_For_All</FONT></TD>
-				<TD class="visible" width="80%">Если состояние не всех ресурсов указанного типа удовлетворяет заданному логическому выражению, функция выдает значение ИСТИНА, в противном случае - ЛОЖЬ</TD>
+				<TD class="visible" width="80%">Р•СЃР»Рё СЃРѕСЃС‚РѕСЏРЅРёРµ РЅРµ РІСЃРµС… СЂРµСЃСѓСЂСЃРѕРІ СѓРєР°Р·Р°РЅРЅРѕРіРѕ С‚РёРїР° СѓРґРѕРІР»РµС‚РІРѕСЂСЏРµС‚ Р·Р°РґР°РЅРЅРѕРјСѓ Р»РѕРіРёС‡РµСЃРєРѕРјСѓ РІС‹СЂР°Р¶РµРЅРёСЋ, С„СѓРЅРєС†РёСЏ РІС‹РґР°РµС‚ Р·РЅР°С‡РµРЅРёРµ РРЎРўРРќРђ, РІ РїСЂРѕС‚РёРІРЅРѕРј СЃР»СѓС‡Р°Рµ - Р›РћР–Р¬</TD>
 			</TR>
 		</TABLE>
-		<P>Если вместо логического выражения указано зарезервированное слово <A name="nocheck"></A><FONT class="syntax">NoCheck</FONT>, то рассматриваются все ресурсы указанного типа. В этом случае функция <FONT class="syntax">Exist</FONT> определяет, существует ли хотя бы один ресурс указанного типа, функция <FONT class="syntax">For_All</FONT> всегда выдает значение ИСТИНА (даже если нет ни одного ресурса указанного типа), а функция <FONT class="syntax">Not_For_All</FONT> всегда выдает значение ЛОЖЬ.</P>
+		<P>Р•СЃР»Рё РІРјРµСЃС‚Рѕ Р»РѕРіРёС‡РµСЃРєРѕРіРѕ РІС‹СЂР°Р¶РµРЅРёСЏ СѓРєР°Р·Р°РЅРѕ Р·Р°СЂРµР·РµСЂРІРёСЂРѕРІР°РЅРЅРѕРµ СЃР»РѕРІРѕ <A name="nocheck"></A><FONT class="syntax">NoCheck</FONT>, С‚Рѕ СЂР°СЃСЃРјР°С‚СЂРёРІР°СЋС‚СЃСЏ РІСЃРµ СЂРµСЃСѓСЂСЃС‹ СѓРєР°Р·Р°РЅРЅРѕРіРѕ С‚РёРїР°. Р’ СЌС‚РѕРј СЃР»СѓС‡Р°Рµ С„СѓРЅРєС†РёСЏ <FONT class="syntax">Exist</FONT> РѕРїСЂРµРґРµР»СЏРµС‚, СЃСѓС‰РµСЃС‚РІСѓРµС‚ Р»Рё С…РѕС‚СЏ Р±С‹ РѕРґРёРЅ СЂРµСЃСѓСЂСЃ СѓРєР°Р·Р°РЅРЅРѕРіРѕ С‚РёРїР°, С„СѓРЅРєС†РёСЏ <FONT class="syntax">For_All</FONT> РІСЃРµРіРґР° РІС‹РґР°РµС‚ Р·РЅР°С‡РµРЅРёРµ РРЎРўРРќРђ (РґР°Р¶Рµ РµСЃР»Рё РЅРµС‚ РЅРё РѕРґРЅРѕРіРѕ СЂРµСЃСѓСЂСЃР° СѓРєР°Р·Р°РЅРЅРѕРіРѕ С‚РёРїР°), Р° С„СѓРЅРєС†РёСЏ <FONT class="syntax">Not_For_All</FONT> РІСЃРµРіРґР° РІС‹РґР°РµС‚ Р·РЅР°С‡РµРЅРёРµ Р›РћР–Р¬.</P>
 		<A name="select"></A>
-		<P>В языке определена еще одна стандартная функция, позволяющая работать со <B>списком ресурсов</B>. Она позволяет отобрать только часть ресурсов указанного типа и проверить их состояния. Синтаксис:</P>
-		<PRE class="syntax">Select( &lt;имя_типа_ресурсов&gt;:
-(&lt;логическое_выражение&gt; | NoCheck) ).&lt;метод_списка&gt;</PRE>
-		<P>Список методов приведен в таблице:</P>
+		<P>Р’ СЏР·С‹РєРµ РѕРїСЂРµРґРµР»РµРЅР° РµС‰Рµ РѕРґРЅР° СЃС‚Р°РЅРґР°СЂС‚РЅР°СЏ С„СѓРЅРєС†РёСЏ, РїРѕР·РІРѕР»СЏСЋС‰Р°СЏ СЂР°Р±РѕС‚Р°С‚СЊ СЃРѕ <B>СЃРїРёСЃРєРѕРј СЂРµСЃСѓСЂСЃРѕРІ</B>. РћРЅР° РїРѕР·РІРѕР»СЏРµС‚ РѕС‚РѕР±СЂР°С‚СЊ С‚РѕР»СЊРєРѕ С‡Р°СЃС‚СЊ СЂРµСЃСѓСЂСЃРѕРІ СѓРєР°Р·Р°РЅРЅРѕРіРѕ С‚РёРїР° Рё РїСЂРѕРІРµСЂРёС‚СЊ РёС… СЃРѕСЃС‚РѕСЏРЅРёСЏ. РЎРёРЅС‚Р°РєСЃРёСЃ:</P>
+		<PRE class="syntax">Select( &lt;РёРјСЏ_С‚РёРїР°_СЂРµСЃСѓСЂСЃРѕРІ&gt;:
+(&lt;Р»РѕРіРёС‡РµСЃРєРѕРµ_РІС‹СЂР°Р¶РµРЅРёРµ&gt; | NoCheck) ).&lt;РјРµС‚РѕРґ_СЃРїРёСЃРєР°&gt;</PRE>
+		<P>РЎРїРёСЃРѕРє РјРµС‚РѕРґРѕРІ РїСЂРёРІРµРґРµРЅ РІ С‚Р°Р±Р»РёС†Рµ:</P>
 		<TABLE class="visible">
 			<TR valign="top">
-				<TH align="left" width="20%">Имя метода</TH>
-				<TH align="left" width="70%">Описание</TH>
-				<TH align="left" width="10%">Значение</TH>
+				<TH align="left" width="20%">РРјСЏ РјРµС‚РѕРґР°</TH>
+				<TH align="left" width="70%">РћРїРёСЃР°РЅРёРµ</TH>
+				<TH align="left" width="10%">Р—РЅР°С‡РµРЅРёРµ</TH>
 			</TR>
 			<TR valign="top"><A name="select_exist"></A>
 				<TD class="visible" width="20%"><FONT class="syntax">Exist</FONT></TD>
-				<TD class="visible" width="70%">Описание аналогично <A href="../html/rdo_base_std_var_func.htm#exist">приведённому</A>, но проверяются не все, ресурсы, а только отобранные в список. Формат использования: <PRE class="syntax">Exist( &lt;логическое_выражение&gt; | NoCheck )</PRE></TD>
-				<TD class="visible" width="10%">Логическое</TD>
+				<TD class="visible" width="70%">РћРїРёСЃР°РЅРёРµ Р°РЅР°Р»РѕРіРёС‡РЅРѕ <A href="../html/rdo_base_std_var_func.htm#exist">РїСЂРёРІРµРґС‘РЅРЅРѕРјСѓ</A>, РЅРѕ РїСЂРѕРІРµСЂСЏСЋС‚СЃСЏ РЅРµ РІСЃРµ, СЂРµСЃСѓСЂСЃС‹, Р° С‚РѕР»СЊРєРѕ РѕС‚РѕР±СЂР°РЅРЅС‹Рµ РІ СЃРїРёСЃРѕРє. Р¤РѕСЂРјР°С‚ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ: <PRE class="syntax">Exist( &lt;Р»РѕРіРёС‡РµСЃРєРѕРµ_РІС‹СЂР°Р¶РµРЅРёРµ&gt; | NoCheck )</PRE></TD>
+				<TD class="visible" width="10%">Р›РѕРіРёС‡РµСЃРєРѕРµ</TD>
 			</TR>
 			<TR valign="top"><A name="select_not_exist"></A>
 				<TD class="visible" width="20%"><FONT class="syntax">Not_Exist</FONT></TD>
-				<TD class="visible" width="70%">Описание аналогично <A href="../html/rdo_base_std_var_func.htm#not_exist">приведённому</A>, но проверяются не все, ресурсы, а только отобранные в список. Формат использования: <PRE class="syntax">Not_Exist( &lt;логическое_выражение&gt; | NoCheck )</PRE></TD>
-				<TD class="visible" width="10%">Логическое</TD>
+				<TD class="visible" width="70%">РћРїРёСЃР°РЅРёРµ Р°РЅР°Р»РѕРіРёС‡РЅРѕ <A href="../html/rdo_base_std_var_func.htm#not_exist">РїСЂРёРІРµРґС‘РЅРЅРѕРјСѓ</A>, РЅРѕ РїСЂРѕРІРµСЂСЏСЋС‚СЃСЏ РЅРµ РІСЃРµ, СЂРµСЃСѓСЂСЃС‹, Р° С‚РѕР»СЊРєРѕ РѕС‚РѕР±СЂР°РЅРЅС‹Рµ РІ СЃРїРёСЃРѕРє. Р¤РѕСЂРјР°С‚ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ: <PRE class="syntax">Not_Exist( &lt;Р»РѕРіРёС‡РµСЃРєРѕРµ_РІС‹СЂР°Р¶РµРЅРёРµ&gt; | NoCheck )</PRE></TD>
+				<TD class="visible" width="10%">Р›РѕРіРёС‡РµСЃРєРѕРµ</TD>
 			</TR>
 			<TR valign="top"><A name="select_for_all"></A>
 				<TD class="visible" width="20%"><FONT class="syntax">For_All</FONT></TD>
-				<TD class="visible" width="70%">Описание аналогично приведённому, но проверяются не все, ресурсы, а только отобранные в список. Формат использования: <PRE class="syntax">For_All( &lt;логическое_выражение&gt; | NoCheck )</PRE></TD>
-				<TD class="visible" width="10%">Логическое</TD>
+				<TD class="visible" width="70%">РћРїРёСЃР°РЅРёРµ Р°РЅР°Р»РѕРіРёС‡РЅРѕ РїСЂРёРІРµРґС‘РЅРЅРѕРјСѓ, РЅРѕ РїСЂРѕРІРµСЂСЏСЋС‚СЃСЏ РЅРµ РІСЃРµ, СЂРµСЃСѓСЂСЃС‹, Р° С‚РѕР»СЊРєРѕ РѕС‚РѕР±СЂР°РЅРЅС‹Рµ РІ СЃРїРёСЃРѕРє. Р¤РѕСЂРјР°С‚ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ: <PRE class="syntax">For_All( &lt;Р»РѕРіРёС‡РµСЃРєРѕРµ_РІС‹СЂР°Р¶РµРЅРёРµ&gt; | NoCheck )</PRE></TD>
+				<TD class="visible" width="10%">Р›РѕРіРёС‡РµСЃРєРѕРµ</TD>
 			</TR>
 			<TR valign="top"><A name="select_not_for_all"></A>
 				<TD class="visible" width="20%"><FONT class="syntax">Not_For_All</FONT></TD>
-				<TD class="visible" width="70%">Описание аналогично приведённому, но проверяются не все, ресурсы, а только отобранные в список. Формат использования: <PRE class="syntax">Not_For_All( &lt;логическое_выражение&gt; | NoCheck )</PRE></TD>
-				<TD class="visible" width="10%">Логическое</TD>
+				<TD class="visible" width="70%">РћРїРёСЃР°РЅРёРµ Р°РЅР°Р»РѕРіРёС‡РЅРѕ РїСЂРёРІРµРґС‘РЅРЅРѕРјСѓ, РЅРѕ РїСЂРѕРІРµСЂСЏСЋС‚СЃСЏ РЅРµ РІСЃРµ, СЂРµСЃСѓСЂСЃС‹, Р° С‚РѕР»СЊРєРѕ РѕС‚РѕР±СЂР°РЅРЅС‹Рµ РІ СЃРїРёСЃРѕРє. Р¤РѕСЂРјР°С‚ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ: <PRE class="syntax">Not_For_All( &lt;Р»РѕРіРёС‡РµСЃРєРѕРµ_РІС‹СЂР°Р¶РµРЅРёРµ&gt; | NoCheck )</PRE></TD>
+				<TD class="visible" width="10%">Р›РѕРіРёС‡РµСЃРєРѕРµ</TD>
 			</TR>
 			<TR valign="top"><A name="select_empty"></A>
 				<TD class="visible" width="20%"><FONT class="syntax">Empty</FONT></TD>
-				<TD class="visible" width="70%">Возвращает значение ИСТИНА, если список отобранных ресурсов пуст, в противном случае - ЛОЖЬ. Формат использования: <PRE class="syntax">Empty()</PRE></TD>
-				<TD class="visible" width="10%">Логическое</TD>
+				<TD class="visible" width="70%">Р’РѕР·РІСЂР°С‰Р°РµС‚ Р·РЅР°С‡РµРЅРёРµ РРЎРўРРќРђ, РµСЃР»Рё СЃРїРёСЃРѕРє РѕС‚РѕР±СЂР°РЅРЅС‹С… СЂРµСЃСѓСЂСЃРѕРІ РїСѓСЃС‚, РІ РїСЂРѕС‚РёРІРЅРѕРј СЃР»СѓС‡Р°Рµ - Р›РћР–Р¬. Р¤РѕСЂРјР°С‚ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ: <PRE class="syntax">Empty()</PRE></TD>
+				<TD class="visible" width="10%">Р›РѕРіРёС‡РµСЃРєРѕРµ</TD>
 			</TR>
 			<TR valign="top"><A name="select_size"></A>
 				<TD class="visible" width="20%"><FONT class="syntax">Size</FONT></TD>
-				<TD class="visible" width="70%">Возвращает размер списка ресурсов, целое число. Если список пусто, то вовращается ноль. Формат использования: <PRE class="syntax">Size()</PRE></TD>
-				<TD class="visible" width="10%">Арифметическое</TD>
+				<TD class="visible" width="70%">Р’РѕР·РІСЂР°С‰Р°РµС‚ СЂР°Р·РјРµСЂ СЃРїРёСЃРєР° СЂРµСЃСѓСЂСЃРѕРІ, С†РµР»РѕРµ С‡РёСЃР»Рѕ. Р•СЃР»Рё СЃРїРёСЃРѕРє РїСѓСЃС‚Рѕ, С‚Рѕ РІРѕРІСЂР°С‰Р°РµС‚СЃСЏ РЅРѕР»СЊ. Р¤РѕСЂРјР°С‚ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ: <PRE class="syntax">Size()</PRE></TD>
+				<TD class="visible" width="10%">РђСЂРёС„РјРµС‚РёС‡РµСЃРєРѕРµ</TD>
 			</TR>
 		</TABLE>
-		<H4>Примеры</H4>
-		<PRE class="samples">Exist(Заявки : Заявки.Состояние = ожидает)</PRE>
-		<PRE class="samples">Not_Exist(Тип_1 : NoCheck)</PRE>
-		<PRE class="samples">Not_For_All(Станок : Станок.Количество &gt; 3 and
-            Станок.Состояние = свободен)</PRE>
-		<PRE class="samples">Select(Заявка: Заявка.Время_прихода &gt;= 480 and
-       Заявка.Состояние = в_очереди).For_All(Заявка.Время_в_очереди &gt; 20)</PRE>
-		<H4>См. также</H4>
-		<P><A href="../html/rdo_base_types.htm">Типы данных. Соответствие типов</A></P>
+		<H4>РџСЂРёРјРµСЂС‹</H4>
+		<PRE class="samples">Exist(Р—Р°СЏРІРєРё : Р—Р°СЏРІРєРё.РЎРѕСЃС‚РѕСЏРЅРёРµ = РѕР¶РёРґР°РµС‚)</PRE>
+		<PRE class="samples">Not_Exist(РўРёРї_1 : NoCheck)</PRE>
+		<PRE class="samples">Not_For_All(РЎС‚Р°РЅРѕРє : РЎС‚Р°РЅРѕРє.РљРѕР»РёС‡РµСЃС‚РІРѕ &gt; 3 and
+            РЎС‚Р°РЅРѕРє.РЎРѕСЃС‚РѕСЏРЅРёРµ = СЃРІРѕР±РѕРґРµРЅ)</PRE>
+		<PRE class="samples">Select(Р—Р°СЏРІРєР°: Р—Р°СЏРІРєР°.Р’СЂРµРјСЏ_РїСЂРёС…РѕРґР° &gt;= 480 and
+       Р—Р°СЏРІРєР°.РЎРѕСЃС‚РѕСЏРЅРёРµ = РІ_РѕС‡РµСЂРµРґРё).For_All(Р—Р°СЏРІРєР°.Р’СЂРµРјСЏ_РІ_РѕС‡РµСЂРµРґРё &gt; 20)</PRE>
+		<H4>РЎРј. С‚Р°РєР¶Рµ</H4>
+		<P><A href="../html/rdo_base_types.htm">РўРёРїС‹ РґР°РЅРЅС‹С…. РЎРѕРѕС‚РІРµС‚СЃС‚РІРёРµ С‚РёРїРѕРІ</A></P>
 	</DIV>
 	<BR><SCRIPT src="../navbar.js"></SCRIPT>
 </BODY>

@@ -1,101 +1,101 @@
-<HTML>
+п»ї<HTML>
 <HEAD>
-<TITLE>Трассировка событий</TITLE>
+<TITLE>РўСЂР°СЃСЃРёСЂРѕРІРєР° СЃРѕР±С‹С‚РёР№</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../styles.css">
 </HEAD>
 <BODY>
 	<DIV>
-		<H1>ТРАССИРОВКА СОБЫТИЙ</H1>
-		<P><B>Информация о событии</B> располагается на отдельной строке, которая имеет следующий формат:</P>
-		<PRE class="syntax">E<A class="syntax" href="#ev_type">&lt;тип_события&gt;</A> <A class="syntax" href="#ev_time">&lt;время&gt;</A> <A class="syntax" href="#ev_info">&lt;информация_о_событии&gt;</A></PRE>
-		<P>Строка трассировки события начинается символом "E".</P>
+		<H1>РўР РђРЎРЎРР РћР’РљРђ РЎРћР‘Р«РўРР™</H1>
+		<P><B>РРЅС„РѕСЂРјР°С†РёСЏ Рѕ СЃРѕР±С‹С‚РёРё</B> СЂР°СЃРїРѕР»Р°РіР°РµС‚СЃСЏ РЅР° РѕС‚РґРµР»СЊРЅРѕР№ СЃС‚СЂРѕРєРµ, РєРѕС‚РѕСЂР°СЏ РёРјРµРµС‚ СЃР»РµРґСѓСЋС‰РёР№ С„РѕСЂРјР°С‚:</P>
+		<PRE class="syntax">E<A class="syntax" href="#ev_type">&lt;С‚РёРї_СЃРѕР±С‹С‚РёСЏ&gt;</A> <A class="syntax" href="#ev_time">&lt;РІСЂРµРјСЏ&gt;</A> <A class="syntax" href="#ev_info">&lt;РёРЅС„РѕСЂРјР°С†РёСЏ_Рѕ_СЃРѕР±С‹С‚РёРё&gt;</A></PRE>
+		<P>РЎС‚СЂРѕРєР° С‚СЂР°СЃСЃРёСЂРѕРІРєРё СЃРѕР±С‹С‚РёСЏ РЅР°С‡РёРЅР°РµС‚СЃСЏ СЃРёРјРІРѕР»РѕРј "E".</P>
 		<DL class="syntax">
-			<DT class="syntax"><A name="ev_type"></A><I>тип_события</I></DT>
-			<DD class="syntax">Второй символ строки определяет тип события. Возможны следующие типы и соответствующие им символы:
+			<DT class="syntax"><A name="ev_type"></A><I>С‚РёРї_СЃРѕР±С‹С‚РёСЏ</I></DT>
+			<DD class="syntax">Р’С‚РѕСЂРѕР№ СЃРёРјРІРѕР» СЃС‚СЂРѕРєРё РѕРїСЂРµРґРµР»СЏРµС‚ С‚РёРї СЃРѕР±С‹С‚РёСЏ. Р’РѕР·РјРѕР¶РЅС‹ СЃР»РµРґСѓСЋС‰РёРµ С‚РёРїС‹ Рё СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёРµ РёРј СЃРёРјРІРѕР»С‹:
 				<TABLE class="visible">
 					<TR valign="top">
-						<TH align="left" width="20%">Тип события</TH>
-						<TH align="left" width="80%">Описание</TH>
+						<TH align="left" width="20%">РўРёРї СЃРѕР±С‹С‚РёСЏ</TH>
+						<TH align="left" width="80%">РћРїРёСЃР°РЅРёРµ</TH>
 					</TR>
 					<TR valign="top">
 						<TD class="visible" NOWRAP width="20%"><A name="es"></A><FONT class="syntax">S</FONT></TD>
-						<TD class="visible" width="80%">Служебное событие</TD>
+						<TD class="visible" width="80%">РЎР»СѓР¶РµР±РЅРѕРµ СЃРѕР±С‹С‚РёРµ</TD>
 					</TR>
 					<TR valign="top">
 						<TD class="visible" NOWRAP width="20%"><A name="eb"></A><FONT class="syntax">B</FONT></TD>
-						<TD class="visible" width="80%">Начало действия</TD>
+						<TD class="visible" width="80%">РќР°С‡Р°Р»Рѕ РґРµР№СЃС‚РІРёСЏ</TD>
 					</TR>
 					<TR valign="top">
 						<TD class="visible" NOWRAP width="20%"><A name="ef"></A><FONT class="syntax">F</FONT></TD>
-						<TD class="visible" width="80%">Окончание действия</TD>
+						<TD class="visible" width="80%">РћРєРѕРЅС‡Р°РЅРёРµ РґРµР№СЃС‚РІРёСЏ</TD>
 					</TR>
 					<TR valign="top">
 						<TD class="visible" NOWRAP width="20%"><A name="ei"></A><FONT class="syntax">I</FONT></TD>
-						<TD class="visible" width="80%">Нерегулярное событие</TD>
+						<TD class="visible" width="80%">РќРµСЂРµРіСѓР»СЏСЂРЅРѕРµ СЃРѕР±С‹С‚РёРµ</TD>
 					</TR>
 					<TR valign="top">
 						<TD class="visible" NOWRAP width="20%"><A name="ei"></A><FONT class="syntax">E</FONT></TD>
-						<TD class="visible" width="80%">Событие</TD>
+						<TD class="visible" width="80%">РЎРѕР±С‹С‚РёРµ</TD>
 					</TR>
 					<TR valign="top">
 						<TD class="visible" NOWRAP width="20%"><A name="er"></A><FONT class="syntax">R</FONT></TD>
-						<TD class="visible" width="80%">Продукционное правило</TD>
+						<TD class="visible" width="80%">РџСЂРѕРґСѓРєС†РёРѕРЅРЅРѕРµ РїСЂР°РІРёР»Рѕ</TD>
 					</TR>
 				</TABLE>
 			</DD>
-			<DT class="syntax"><A name="ev_time"></A><I>время</I></DT>
-			<DD class="syntax">Время наступления события в формате вещественного числа.</DD>
-			<DT class="syntax"><A name="ev_info"></A><I>информация_о_событии</I></DT>
-			<DD class="syntax">Далее следует информация о событии, которая зависит от типа события:
-				<P><BR><A name="ser_ev"></A><B>Для служебных событий</B> эта информация включает в себя только номер служебного события. В данной версии системы имеется только четыре служебных события:</P>
+			<DT class="syntax"><A name="ev_time"></A><I>РІСЂРµРјСЏ</I></DT>
+			<DD class="syntax">Р’СЂРµРјСЏ РЅР°СЃС‚СѓРїР»РµРЅРёСЏ СЃРѕР±С‹С‚РёСЏ РІ С„РѕСЂРјР°С‚Рµ РІРµС‰РµСЃС‚РІРµРЅРЅРѕРіРѕ С‡РёСЃР»Р°.</DD>
+			<DT class="syntax"><A name="ev_info"></A><I>РёРЅС„РѕСЂРјР°С†РёСЏ_Рѕ_СЃРѕР±С‹С‚РёРё</I></DT>
+			<DD class="syntax">Р”Р°Р»РµРµ СЃР»РµРґСѓРµС‚ РёРЅС„РѕСЂРјР°С†РёСЏ Рѕ СЃРѕР±С‹С‚РёРё, РєРѕС‚РѕСЂР°СЏ Р·Р°РІРёСЃРёС‚ РѕС‚ С‚РёРїР° СЃРѕР±С‹С‚РёСЏ:
+				<P><BR><A name="ser_ev"></A><B>Р”Р»СЏ СЃР»СѓР¶РµР±РЅС‹С… СЃРѕР±С‹С‚РёР№</B> СЌС‚Р° РёРЅС„РѕСЂРјР°С†РёСЏ РІРєР»СЋС‡Р°РµС‚ РІ СЃРµР±СЏ С‚РѕР»СЊРєРѕ РЅРѕРјРµСЂ СЃР»СѓР¶РµР±РЅРѕРіРѕ СЃРѕР±С‹С‚РёСЏ. Р’ РґР°РЅРЅРѕР№ РІРµСЂСЃРёРё СЃРёСЃС‚РµРјС‹ РёРјРµРµС‚СЃСЏ С‚РѕР»СЊРєРѕ С‡РµС‚С‹СЂРµ СЃР»СѓР¶РµР±РЅС‹С… СЃРѕР±С‹С‚РёСЏ:</P>
 				<TABLE class="visible">
 					<TR valign="top">
-						<TH align="left" width="20%">Номер служебного события</TH>
-						<TH align="left" width="80%">Описание</TH>
+						<TH align="left" width="20%">РќРѕРјРµСЂ СЃР»СѓР¶РµР±РЅРѕРіРѕ СЃРѕР±С‹С‚РёСЏ</TH>
+						<TH align="left" width="80%">РћРїРёСЃР°РЅРёРµ</TH>
 					</TR>
 					<TR valign="top">
 						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">1</FONT></TD>
-						<TD class="visible" width="80%">Начало трассировки</TD>
+						<TD class="visible" width="80%">РќР°С‡Р°Р»Рѕ С‚СЂР°СЃСЃРёСЂРѕРІРєРё</TD>
 					</TR>
 					<TR valign="top">
 						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">2</FONT></TD>
-						<TD class="visible" width="80%">Конец трассировки</TD>
+						<TD class="visible" width="80%">РљРѕРЅРµС† С‚СЂР°СЃСЃРёСЂРѕРІРєРё</TD>
 					</TR>
 					<TR valign="top">
 						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">3</FONT></TD>
-						<TD class="visible" width="80%">Начало моделирования</TD>
+						<TD class="visible" width="80%">РќР°С‡Р°Р»Рѕ РјРѕРґРµР»РёСЂРѕРІР°РЅРёСЏ</TD>
 					</TR>
 					<TR valign="top">
 						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">4</FONT></TD>
-						<TD class="visible" width="80%">Завершение процесса поиска на графе состояний в точке принятия решений</TD>
+						<TD class="visible" width="80%">Р—Р°РІРµСЂС€РµРЅРёРµ РїСЂРѕС†РµСЃСЃР° РїРѕРёСЃРєР° РЅР° РіСЂР°С„Рµ СЃРѕСЃС‚РѕСЏРЅРёР№ РІ С‚РѕС‡РєРµ РїСЂРёРЅСЏС‚РёСЏ СЂРµС€РµРЅРёР№</TD>
 					</TR>
 				</TABLE>
-				<P><BR><A name="start_end"></A><B>Для событий начала и окончания действий</B> информация о событии имеет следующий формат:</P>
-				<PRE class="syntax"><A class="syntax" href="#ev_num">&lt;номер_действия&gt;</A> <A class="syntax" href="#ev_opr_num">&lt;номер_операции&gt;</A> <A class="syntax" href="#ev_pat_num">&lt;номер_образца&gt;</A>
-<A class="syntax" href="#ev_rel_res_num">&lt;количество_релевантных_ресурсов&gt;</A> <A class="syntax" href="#ev_rel_res_list">&lt;список_номеров&gt;</A></PRE>
+				<P><BR><A name="start_end"></A><B>Р”Р»СЏ СЃРѕР±С‹С‚РёР№ РЅР°С‡Р°Р»Р° Рё РѕРєРѕРЅС‡Р°РЅРёСЏ РґРµР№СЃС‚РІРёР№</B> РёРЅС„РѕСЂРјР°С†РёСЏ Рѕ СЃРѕР±С‹С‚РёРё РёРјРµРµС‚ СЃР»РµРґСѓСЋС‰РёР№ С„РѕСЂРјР°С‚:</P>
+				<PRE class="syntax"><A class="syntax" href="#ev_num">&lt;РЅРѕРјРµСЂ_РґРµР№СЃС‚РІРёСЏ&gt;</A> <A class="syntax" href="#ev_opr_num">&lt;РЅРѕРјРµСЂ_РѕРїРµСЂР°С†РёРё&gt;</A> <A class="syntax" href="#ev_pat_num">&lt;РЅРѕРјРµСЂ_РѕР±СЂР°Р·С†Р°&gt;</A>
+<A class="syntax" href="#ev_rel_res_num">&lt;РєРѕР»РёС‡РµСЃС‚РІРѕ_СЂРµР»РµРІР°РЅС‚РЅС‹С…_СЂРµСЃСѓСЂСЃРѕРІ&gt;</A> <A class="syntax" href="#ev_rel_res_list">&lt;СЃРїРёСЃРѕРє_РЅРѕРјРµСЂРѕРІ&gt;</A></PRE>
 				<DL class="syntax">
-					<DT class="syntax"><A name="ev_num"></A><I>номер_действия</I></DT>
-					<DD class="syntax">Номер действия - это внутренний номер, который имеет действие в имитаторе. Этот номер необходим, чтобы связать события начала и окончания одного и того же действия, другой полезной информации он не несет.</DD>
-					<DT class="syntax"><A name="ev_opr_num"></A><A name="ev_pat_num"></A><I>номер_операции, номер_образца</I></DT>
-					<DD class="syntax">Эти два поля содержат номер <A href="../html/rdo_obj_opr.htm">
-                        точки принятия решения</A>, которая выполнялась в действии, и номер <A href="../html/rdo_obj_pat.htm">образца</A> этой 
-                        точки.</DD>
-					<DT class="syntax"><A name="ev_rel_res_num"></A><A name="ev_rel_res_list"></A><I>количество_релевантных_ресурсов, список_номеров</I></DT>
-					<DD class="syntax">Количество <A href="../html/rdo_obj_pat.htm#rel_res_desc">релевантных ресурсов</A> действия и список их номеров.</DD>
+					<DT class="syntax"><A name="ev_num"></A><I>РЅРѕРјРµСЂ_РґРµР№СЃС‚РІРёСЏ</I></DT>
+					<DD class="syntax">РќРѕРјРµСЂ РґРµР№СЃС‚РІРёСЏ - СЌС‚Рѕ РІРЅСѓС‚СЂРµРЅРЅРёР№ РЅРѕРјРµСЂ, РєРѕС‚РѕСЂС‹Р№ РёРјРµРµС‚ РґРµР№СЃС‚РІРёРµ РІ РёРјРёС‚Р°С‚РѕСЂРµ. Р­С‚РѕС‚ РЅРѕРјРµСЂ РЅРµРѕР±С…РѕРґРёРј, С‡С‚РѕР±С‹ СЃРІСЏР·Р°С‚СЊ СЃРѕР±С‹С‚РёСЏ РЅР°С‡Р°Р»Р° Рё РѕРєРѕРЅС‡Р°РЅРёСЏ РѕРґРЅРѕРіРѕ Рё С‚РѕРіРѕ Р¶Рµ РґРµР№СЃС‚РІРёСЏ, РґСЂСѓРіРѕР№ РїРѕР»РµР·РЅРѕР№ РёРЅС„РѕСЂРјР°С†РёРё РѕРЅ РЅРµ РЅРµСЃРµС‚.</DD>
+					<DT class="syntax"><A name="ev_opr_num"></A><A name="ev_pat_num"></A><I>РЅРѕРјРµСЂ_РѕРїРµСЂР°С†РёРё, РЅРѕРјРµСЂ_РѕР±СЂР°Р·С†Р°</I></DT>
+					<DD class="syntax">Р­С‚Рё РґРІР° РїРѕР»СЏ СЃРѕРґРµСЂР¶Р°С‚ РЅРѕРјРµСЂ <A href="../html/rdo_obj_opr.htm">
+                        С‚РѕС‡РєРё РїСЂРёРЅСЏС‚РёСЏ СЂРµС€РµРЅРёСЏ</A>, РєРѕС‚РѕСЂР°СЏ РІС‹РїРѕР»РЅСЏР»Р°СЃСЊ РІ РґРµР№СЃС‚РІРёРё, Рё РЅРѕРјРµСЂ <A href="../html/rdo_obj_pat.htm">РѕР±СЂР°Р·С†Р°</A> СЌС‚РѕР№ 
+                        С‚РѕС‡РєРё.</DD>
+					<DT class="syntax"><A name="ev_rel_res_num"></A><A name="ev_rel_res_list"></A><I>РєРѕР»РёС‡РµСЃС‚РІРѕ_СЂРµР»РµРІР°РЅС‚РЅС‹С…_СЂРµСЃСѓСЂСЃРѕРІ, СЃРїРёСЃРѕРє_РЅРѕРјРµСЂРѕРІ</I></DT>
+					<DD class="syntax">РљРѕР»РёС‡РµСЃС‚РІРѕ <A href="../html/rdo_obj_pat.htm#rel_res_desc">СЂРµР»РµРІР°РЅС‚РЅС‹С… СЂРµСЃСѓСЂСЃРѕРІ</A> РґРµР№СЃС‚РІРёСЏ Рё СЃРїРёСЃРѕРє РёС… РЅРѕРјРµСЂРѕРІ.</DD>
 				</DL>
-				<P><BR><A name="ir_ev"></A><B>Для событий и нерегулярных событий</B> информация о событиях имеет следующий формат:</P>
-				<PRE class="syntax">&lt;номер_события&gt; &lt;номер_образца&gt;
-&lt;количество_релевантных_ресурсов&gt; &lt;список_номеров&gt;</PRE>
-				<P><BR><A name="rule"></A><B>Для продукционных правил</B> информация о событии имеет следующий формат:</P>
-				<PRE class="syntax">&lt;номер_действия&gt; &lt;номер_правила&gt; &lt;номер_образца&gt;
-&lt;количество_релевантных_ресурсов&gt; &lt;список_номеров&gt;</PRE>
+				<P><BR><A name="ir_ev"></A><B>Р”Р»СЏ СЃРѕР±С‹С‚РёР№ Рё РЅРµСЂРµРіСѓР»СЏСЂРЅС‹С… СЃРѕР±С‹С‚РёР№</B> РёРЅС„РѕСЂРјР°С†РёСЏ Рѕ СЃРѕР±С‹С‚РёСЏС… РёРјРµРµС‚ СЃР»РµРґСѓСЋС‰РёР№ С„РѕСЂРјР°С‚:</P>
+				<PRE class="syntax">&lt;РЅРѕРјРµСЂ_СЃРѕР±С‹С‚РёСЏ&gt; &lt;РЅРѕРјРµСЂ_РѕР±СЂР°Р·С†Р°&gt;
+&lt;РєРѕР»РёС‡РµСЃС‚РІРѕ_СЂРµР»РµРІР°РЅС‚РЅС‹С…_СЂРµСЃСѓСЂСЃРѕРІ&gt; &lt;СЃРїРёСЃРѕРє_РЅРѕРјРµСЂРѕРІ&gt;</PRE>
+				<P><BR><A name="rule"></A><B>Р”Р»СЏ РїСЂРѕРґСѓРєС†РёРѕРЅРЅС‹С… РїСЂР°РІРёР»</B> РёРЅС„РѕСЂРјР°С†РёСЏ Рѕ СЃРѕР±С‹С‚РёРё РёРјРµРµС‚ СЃР»РµРґСѓСЋС‰РёР№ С„РѕСЂРјР°С‚:</P>
+				<PRE class="syntax">&lt;РЅРѕРјРµСЂ_РґРµР№СЃС‚РІРёСЏ&gt; &lt;РЅРѕРјРµСЂ_РїСЂР°РІРёР»Р°&gt; &lt;РЅРѕРјРµСЂ_РѕР±СЂР°Р·С†Р°&gt;
+&lt;РєРѕР»РёС‡РµСЃС‚РІРѕ_СЂРµР»РµРІР°РЅС‚РЅС‹С…_СЂРµСЃСѓСЂСЃРѕРІ&gt; &lt;СЃРїРёСЃРѕРє_РЅРѕРјРµСЂРѕРІ&gt;</PRE>
 			</DD>
 		</DL>
-		<H4>См. также</H4>
-		<P><A href="../html/rdo_res_trc.htm">Объект трассировки</A></P>
-		<P><A href="../html/rdo_res_trc_resourses.htm">Трассировка состояния ресурсов</A></P>
-		<P><A href="../html/rdo_res_trc_results.htm">Трассировка показателей</A></P>
-		<P><A href="../html/rdo_res_trc_decisionpt.htm">Трассировка точек принятия решений</A></P>
+		<H4>РЎРј. С‚Р°РєР¶Рµ</H4>
+		<P><A href="../html/rdo_res_trc.htm">РћР±СЉРµРєС‚ С‚СЂР°СЃСЃРёСЂРѕРІРєРё</A></P>
+		<P><A href="../html/rdo_res_trc_resourses.htm">РўСЂР°СЃСЃРёСЂРѕРІРєР° СЃРѕСЃС‚РѕСЏРЅРёСЏ СЂРµСЃСѓСЂСЃРѕРІ</A></P>
+		<P><A href="../html/rdo_res_trc_results.htm">РўСЂР°СЃСЃРёСЂРѕРІРєР° РїРѕРєР°Р·Р°С‚РµР»РµР№</A></P>
+		<P><A href="../html/rdo_res_trc_decisionpt.htm">РўСЂР°СЃСЃРёСЂРѕРІРєР° С‚РѕС‡РµРє РїСЂРёРЅСЏС‚РёСЏ СЂРµС€РµРЅРёР№</A></P>
 	</DIV>
 	<BR><SCRIPT src="../navbar.js"></SCRIPT>
 </BODY>
