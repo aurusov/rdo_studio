@@ -67,10 +67,10 @@ inline RDOFuzzyValue::FuzzySet::iterator       RDOFuzzyValue::end  ()       { re
 inline rbool                                   RDOFuzzyValue::empty() const { return m_fuzzySet.empty(); }
 inline CREF(LPRDOFuzzyType)                    RDOFuzzyValue::type () const { return m_pType;            }
 
-inline LPRDOFuzzyValue RDOFuzzyValue::supplement() const
-{
+//inline LPRDOFuzzyValue RDOFuzzyValue::supplement() const
+//{
 //	return type()->getSupplement(LPRDOFuzzyValue(const_cast<PTR(RDOFuzzyValue)>(this)));
-}
+//}
 
 inline LPRDOFuzzyValue RDOFuzzyValue::a_con     () const { return a_pow(2.0);                   }
 inline LPRDOFuzzyValue RDOFuzzyValue::a_dil     () const { return a_pow(0.5);                   }

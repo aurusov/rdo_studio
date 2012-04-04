@@ -57,7 +57,7 @@ public:
 
 	/* 3.39 */  LPRDOFuzzyValue a_mult    (CREF(LPRDOFuzzyValue) pFuzzyValue) const;
 	/* 3.48 */  LPRDOFuzzyValue alpha     (double appertain) const;
-	/* 3.62 */  LPRDOFuzzyValue supplement() const;
+//	/* 3.62 */  LPRDOFuzzyValue supplement() const;
 	/* 3.78 */  LPRDOFuzzyValue a_con     () const;
 	/* 3.79 */  LPRDOFuzzyValue a_dil     () const;
 
