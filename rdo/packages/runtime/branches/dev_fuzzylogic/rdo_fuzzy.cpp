@@ -24,7 +24,7 @@ LPRDOFuzzyValue RDOFuzzyValue::operator&& (CREF(LPRDOFuzzyValue) pFuzzyValue) co
 	if (type() != pFuzzyValue->type())
 		throw RDOValueException();
 
-	LPRDOFuzzyValue pFuzzyValueResult = rdo::Factory<RDOFuzzyValue>::create(pFuzzyValue->m_range);
+	LPRDOFuzzyValue pFuzzyValueResult = rdo::Factory<RDOFuzzyValue>::create(type());
 	ASSERT(pFuzzyValueResult);
 	// Найдем только пересекающие элементы и выберем минимальную функцию принадлежности
 	FuzzySet::const_iterator it1 = begin();
@@ -45,7 +45,7 @@ LPRDOFuzzyValue RDOFuzzyValue::operator|| (CREF(LPRDOFuzzyValue) pFuzzyValue) co
 	if (type() != pFuzzyValue->type())
 		throw RDOValueException();
 
-	LPRDOFuzzyValue pFuzzyValueResult = rdo::Factory<RDOFuzzyValue>::create(pFuzzyValue->m_range);
+	LPRDOFuzzyValue pFuzzyValueResult = rdo::Factory<RDOFuzzyValue>::create(type());
 	ASSERT(pFuzzyValueResult);
 	// Объединим элементы двух множеств
 	// Если элемент одновременно принадлежит обоим множествам, то выберем максимальную функцию принадлежности
@@ -78,8 +78,8 @@ LPRDOFuzzyValue RDOFuzzyValue::operator|| (CREF(LPRDOFuzzyValue) pFuzzyValue) co
 	return pFuzzyValueResult;
 }
 
-// @todo комментарии в *.h
-// ! Декартово произведение (попарное) элементов двух множест с применением произвольной функции fun
+/// @todo комментарии в *.h
+//! Декартово произведение (попарное) элементов двух множест с применением произвольной функции fun
 LPRDOFuzzyValue RDOFuzzyValue::ext_binary(ExtBinaryFun fun, CREF(LPRDOFuzzyValue) pFuzzyValue) const
 {
 	FuzzySet values;
@@ -105,19 +105,22 @@ LPRDOFuzzyValue RDOFuzzyValue::ext_binary(ExtBinaryFun fun, CREF(LPRDOFuzzyValue
 	}
 	if (!values.empty())
 	{
-		LPRDOFuzzyValue pFuzzyValueResult = rdo::Factory<RDOFuzzyValue>::create(pFuzzyValue->m_Range);
+		LPRDOFuzzyType pFuzzyType = rdo::Factory<RDOFuzzyType>::create();
+		ASSERT(pFuzzyType);
+
+		LPRDOFuzzyValue pFuzzyValueResult = rdo::Factory<RDOFuzzyValue>::create(pFuzzyType);
 		ASSERT(pFuzzyValueResult);
 		pFuzzyValueResult->m_fuzzySet = values;
 
 		return pFuzzyValueResult;
 	}
-	else
-	{
-		return rdo::Factory<RDOFuzzyValue>::create(RDOFuzzyEmptyType::getInstance());
-	}
+	//else
+	//{
+	//	return rdo::Factory<RDOFuzzyValue>::create(RDOFuzzyEmptyType::getInstance());
+	//}
 }
 
-// ! Преобразование элементов через произвольную функцию fun
+//! Преобразование элементов через произвольную функцию fun
 LPRDOFuzzyValue RDOFuzzyValue::ext_unary(ExtUnaryFun fun) const
 {
 	FuzzySet values;
@@ -138,16 +141,20 @@ LPRDOFuzzyValue RDOFuzzyValue::ext_unary(ExtUnaryFun fun) const
 	}
 	if (!values.empty())
 	{
+
+		LPRDOFuzzyType pFuzzyType = rdo::Factory<RDOFuzzyType>::create();
+		ASSERT(pFuzzyType);
+
 		LPRDOFuzzyValue pFuzzyValueResult = rdo::Factory<RDOFuzzyValue>::create(pFuzzyType);
 		ASSERT(pFuzzyValueResult);
 		pFuzzyValueResult->m_fuzzySet = values;
 
 		return pFuzzyValueResult;
 	}
-	else
-	{
-		return rdo::Factory<RDOFuzzyValue>::create(RDOFuzzyEmptyType::getInstance());
-	}
+	//else
+	//{
+	//	return rdo::Factory<RDOFuzzyValue>::create(RDOFuzzyEmptyType::getInstance());
+	//}
 }
 
 LPRDOFuzzyValue RDOFuzzyValue::ext_unary(ExtUnaryFunP fun, PTR(void) pParam) const
@@ -170,15 +177,14 @@ LPRDOFuzzyValue RDOFuzzyValue::ext_unary(ExtUnaryFunP fun, PTR(void) pParam) con
 	}
 	if (!values.empty())
 	{
+		LPRDOFuzzyType pFuzzyType = rdo::Factory<RDOFuzzyType>::create();
+		ASSERT(pFuzzyType);
+
 		LPRDOFuzzyValue pFuzzyValueResult = rdo::Factory<RDOFuzzyValue>::create(pFuzzyType);
 		ASSERT(pFuzzyValueResult);
 		pFuzzyValueResult->m_fuzzySet = values;
 
 		return pFuzzyValueResult;
-	}
-	else
-	{
-		return rdo::Factory<RDOFuzzyValue>::create(RDOFuzzyEmptyType::getInstance());
 	}
 }
 
@@ -327,9 +333,6 @@ LPRDOFuzzyValue RDOFuzzyValue::clone() const
 // --------------------------------------------------------------------------------
 // -------------------- RDOLingvoVariable
 // --------------------------------------------------------------------------------
-LPRDOLingvoVariable RDOLingvoVariable::fuzzyfication(CREF(RDOValue) value)
-{
-	
-}
-
+//LPRDOLingvoVariable RDOLingvoVariable::fuzzyfication(CREF(RDOValue) value)
+//{}
 CLOSE_RDO_RUNTIME_NAMESPACE
