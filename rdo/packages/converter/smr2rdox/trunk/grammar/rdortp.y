@@ -480,18 +480,6 @@ param_type
 		$$ = CONVERTER->stack().push(pType);
 	}
 	;
-	//| RDO_integer error
-	//{
-	//	CONVERTER->error().error(@2, _T("Ошибка после ключевого слова integer. Возможно, не хватает значения по-умолчанию."));
-	//}
-	//| RDO_real error
-	//{
-	//	CONVERTER->error().error(@2, _T("Ошибка после ключевого слова real. Возможно, не хватает значения по-умолчанию."));
-	//}
-	//| param_type_enum error
-	//{
-	//	CONVERTER->error().error(@2, _T("Ошибка после перечислимого типа. Возможно, не хватает значения по-умолчанию."));
-	//}
 
 param_type_range
 	: /* empty */
