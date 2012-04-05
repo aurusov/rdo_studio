@@ -12,6 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
+#include <boost/icl/interval.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_value.h"
 #include "simulator/runtime/rdo_type.h"
@@ -30,6 +31,8 @@ DECLARE_FACTORY(RDOFuzzyValue);
 public:
 	typedef  std::pair<RDOValue, double>                              FuzzyItem;
 	typedef  std::map<FuzzyItem::first_type, FuzzyItem::second_type>  FuzzySet;
+
+	typedef  boost::icl::discrete_interval<RDOValue>                  Domain;
 
 	REF(RDOFuzzyValue)         append     (CREF(RDOValue) rdovalue, double appertain);
 	REF(RDOFuzzyValue)         operator() (CREF(RDOValue) rdovalue, double appertain);
@@ -74,6 +77,7 @@ private:
 
 	FuzzySet        m_fuzzySet;
 	LPRDOFuzzyType  m_pType;
+	Domain          m_Domain;
 
 	FuzzySet::iterator  begin();
 	FuzzySet::iterator  end  ();
@@ -88,7 +92,6 @@ private:
 	/* 3.83 */  LPRDOFuzzyValue ext_binary(ExtBinaryFun fun, CREF(LPRDOFuzzyValue) pFuzzyValue) const;
 };
 
-PREDECLARE_POINTER(RDOActivatedValue);
 PREDECLARE_POINTER(RDOValue);
 
 //! Нечеткая переменная
