@@ -29,7 +29,7 @@
 #include <boost/noncopyable.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #ifdef COMPILER_GCC
-#   define DISABLE_CONVERTER
+//#   define DISABLE_CONVERTER
 #endif // COMPILER_GCC
 
 #include "utils/rdodebug.h"
