@@ -210,9 +210,6 @@ protected:
 		return getContainer()->find(index);
 	}
 
-	typedef std::vector<PTR(RDOValue)> ValueList;
-
-	ValueList                m_allValues;
 	rdoRuntime::LPRDORuntime m_pRuntime;
 
 private:
