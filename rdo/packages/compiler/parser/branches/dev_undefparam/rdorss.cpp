@@ -120,7 +120,7 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 				RDOParser::s_parser()->error().push_done();
 			}
 			pParam->value().setUndefined(0);
-			m_paramList.push_back(Param((*m_currParam)->getDefault());
+			m_paramList.push_back(Param((*m_currParam)->getDefault()));
 			m_currParam++;
 		}
 		else
