@@ -32,7 +32,6 @@
 #include "converter/smr2rdox/rdopmd.h"
 #include "converter/smr2rdox/rdofrm.h"
 #include "converter/smr2rdox/rdosmr.h"
-#include "converter/smr2rdox/context/stack.h"
 #include "converter/smr2rdox/update/update_i.h"
 #include "converter/smr2rdox/update/document.h"
 
@@ -181,9 +180,6 @@ public:
 		m_preCastTypeList.push_back(type);
 	}
 
-	REF(ContextStack) contextStack();
-	LPContext         context     () const;
-
 	void insertDocUpdate(CREF(LPDocUpdate) pDocUpdate);
 
 	static rdoModelObjectsConvertor::RDOFileTypeIn getFileToParse();
@@ -219,7 +215,6 @@ private:
 	Error           m_error;
 	Stack           m_movementObjectList;
 	PreCastTypeList m_preCastTypeList;
-	ContextStack    m_contextStack;
 	rbool           m_pattern;
 
 	template <class T>

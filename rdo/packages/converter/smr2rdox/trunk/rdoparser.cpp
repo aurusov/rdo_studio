@@ -124,16 +124,6 @@ Converter::~Converter()
 	s_parserStack.remove(this);
 }
 
-REF(ContextStack) Converter::contextStack()
-{
-	return m_contextStack;
-}
-
-LPContext Converter::context() const
-{
-	return m_contextStack.top();
-}
-
 void Converter::insertDocUpdate(CREF(LPDocUpdate) pDocUpdate)
 {
 	ASSERT(m_pParserItem);

@@ -2346,26 +2346,6 @@
 			</File>
 		</Filter>
 		<Filter
-			Name=".context"
-			>
-			<File
-				RelativePath=".\context\context.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\context\context.h"
-				>
-			</File>
-			<File
-				RelativePath=".\context\stack.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\context\stack.h"
-				>
-			</File>
-		</Filter>
-		<Filter
 			Name=".dpt"
 			>
 			<File
