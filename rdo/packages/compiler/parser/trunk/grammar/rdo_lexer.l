@@ -331,7 +331,7 @@ $term                          return(RDO_Fuzzy_Term);
 }
 
 (\'[^\']*\n\r) {
-	LEXER->setvalue(NULL);
+	LEXER->setvalue(0);
 	return RDO_STRING_CONST_BAD;
 }
 
