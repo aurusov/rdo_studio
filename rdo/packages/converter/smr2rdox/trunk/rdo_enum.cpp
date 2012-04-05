@@ -123,13 +123,13 @@ LPRDOValue RDOEnumType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo
 		case rdoRuntime::RDOType::t_identificator:
 			pToValue = (getEnums()->findEnum(pFrom->value().getIdentificator()) != rdoRuntime::RDOEnumType::END) ?
 				rdo::Factory<RDOValue>::create(rdoRuntime::RDOValue(getEnums(), pFrom->value().getIdentificator()), pEnum, pFrom->src_info()) :
-				rdo::Factory<RDOValue>::create(rdo::Factory<RDOType__unknow>::create(), pFrom->src_info());
+				rdo::Factory<RDOValue>::create(rdo::Factory<RDOType__unknow>::create().object_parent_cast<RDOType>(), pFrom->src_info());
 			break;
 
 		case rdoRuntime::RDOType::t_string:
 			pToValue = (getEnums()->findEnum(pFrom->value().getAsString()) != rdoRuntime::RDOEnumType::END) ?
 				rdo::Factory<RDOValue>::create(rdoRuntime::RDOValue(getEnums(), pFrom->value().getAsString()), pEnum, pFrom->src_info()) :
-				rdo::Factory<RDOValue>::create(rdo::Factory<RDOType__unknow>::create(), pFrom->src_info());
+				rdo::Factory<RDOValue>::create(rdo::Factory<RDOType__unknow>::create().object_parent_cast<RDOType>(), pFrom->src_info());
 			break;
 
 		case rdoRuntime::RDOType::t_enum:
