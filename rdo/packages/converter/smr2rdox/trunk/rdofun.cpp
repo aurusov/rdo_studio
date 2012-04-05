@@ -1349,7 +1349,7 @@ RDOFUNFunctionListElementInt::RDOFUNFunctionListElementInt(CREF(YYLTYPE) positio
 rdoRuntime::LPRDOCalcConst RDOFUNFunctionListElementInt::createResultCalc(CREF(LPRDOTypeParam) pRetType, CREF(RDOParserSrcInfo) src_pos) const
 {
 	rdoRuntime::LPRDOCalcConst pCalcConst = rdo::Factory<rdoRuntime::RDOCalcConst>::create(
-		pRetType->value_cast(rdo::Factory<RDOValue>::create(m_value, rdo::Factory<RDOType__int>::create(), src_pos))->value()
+		pRetType->value_cast(rdo::Factory<RDOValue>::create(m_value, rdo::Factory<RDOType__int>::create().object_parent_cast<RDOType>(), src_pos))->value()
 	);
 	pCalcConst->setSrcInfo(src_pos);
 	return pCalcConst;
@@ -1786,7 +1786,7 @@ LPRDOFUNArithm RDOFUNSelect::createFunSelectSize(CREF(RDOParserSrcInfo) size_inf
 	setSrcText(src_text() + _T(".") + size_info.src_text());
 	Converter::s_converter()->getFUNGroupStack().pop_back();
 	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(
-		rdo::Factory<RDOValue>::create(rdo::Factory<RDOType__int>::create(), size_info),
+		rdo::Factory<RDOValue>::create(rdo::Factory<RDOType__int>::create().object_parent_cast<RDOType>(), size_info),
 		rdo::Factory<rdoRuntime::RDOFunCalcSelectSize>::create(m_pCalcSelect).object_parent_cast<rdoRuntime::RDOCalc>()
 	);
 	pArithm->setSrcInfo(size_info);
