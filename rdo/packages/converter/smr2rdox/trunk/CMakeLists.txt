@@ -134,9 +134,6 @@ SET(HEADER_FILES
     rdo_type_range.h
     rdo_value.h
 
-    context/stack.h
-    context/context.h
-
     runtime/rdo_ie.h
     runtime/rdo_logic_dptfree.h
 
@@ -179,9 +176,6 @@ SET(SOURCE_FILES
     rdo_type_param.cpp
     rdo_type_param_suchas.cpp
     rdo_value.cpp
-
-    context/stack.cpp
-    context/context.cpp
 
     runtime/rdo_ie.cpp
     runtime/rdo_logic_dptfree.cpp
@@ -230,12 +224,6 @@ SOURCE_GROUP(".common" FILES
     rdo_object.h
     rdo_object.cpp)	
 
-SOURCE_GROUP(".context" FILES 
-    context/context.h
-    context/context.cpp
-    context/stack.h
-    context/stack.cpp)
-	
 SOURCE_GROUP(".converter" FILES 
     ${GRAMMA_PATH}/rdobison.h
     rdoparser.cpp
