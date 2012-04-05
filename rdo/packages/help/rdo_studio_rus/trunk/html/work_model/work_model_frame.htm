@@ -1,7 +1,7 @@
 ﻿<HTML>
 <HEAD>
 <TITLE>Режимы моделирования</TITLE>
-<LINK rel = "stylesheet" type = "text/css" href = "../styles.css">
+<LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
 </HEAD>
 <SCRIPT language="JavaScript" src="../sections.js"></SCRIPT>
 <BODY>
@@ -16,22 +16,22 @@
 			</TR>
 			<TR valign="top"><A name="progon_maxspeed"></A>
 				<TD class="visible"><FONT class="syntax">Максимальная производительность</FONT></TD>
-				<TD class="progon"><IMG align="absmiddle" src="../images/progon_maxspeed.gif"></TD>
+				<TD class="progon"><IMG align="absmiddle" src="../../images/progon_maxspeed.gif"></TD>
 				<TD class="visible">Режим максимальной производительности системы моделирования. Скорость моделирования определяется производительностью компьютера. Масштабный коэффициент не учитывается, регулятор скорости тоже. Отключается вывод анимации, графиков и трассировки на экран (данные по трассировке продолжают собираться).</TD>
 			</TR>
 			<TR valign="top"><A name="progon_jump"></A>
 				<TD class="visible"><FONT class="syntax">Дискретная имитация</FONT></TD>
-				<TD class="progon"><IMG align="absmiddle" src="../images/progon_jump.gif"></TD>
+				<TD class="progon"><IMG align="absmiddle" src="../../images/progon_jump.gif"></TD>
 				<TD class="visible">В режиме дискретной имитации переходы между событиями осуществляются как можно быстрее без синхронизации с таймером операционной системы, т.е. интервалы времени между событиями в модели учитываются в расчетах модельного времени, но никак не проявляются в анимации и считаются равными друг другу (с точностью до сложности расчета каждого события). Скорость моделирования определяется производительностью компьютера и регулятором скорости имитатора. Если модель содержит кадры анимации, то они могут быть выведены на экран. Доступно построение графиков и просмотр данных трассировки в режиме реального времени. Если сравнивать с режимом синхронной имитации, то для дискретной имитации масштабный коэффициент времени равен бесконечности. Т.е. модель в этом режиме работает с максимальным быстродействием, учитывающим регулятор скорости имитатора, и позволяет отображать анимацию.</TD>
 			</TR>
 			<TR valign="top"><A name="progon_sync"></A>
 				<TD class="visible"><FONT class="syntax">Синхронная имитация</FONT></TD>
-				<TD class="progon"><IMG align="absmiddle" src="../images/progon_sync.gif"></TD>
+				<TD class="progon"><IMG align="absmiddle" src="../../images/progon_sync.gif"></TD>
 				<TD class="visible">В режиме синхронной имитации переходы между событиями осуществляются по синхронизации с таймером операционной системы, т.е. интервалы времени между событиями в модели учитываются не только в расчетах, но и при выводе анимации. Скорость моделирования определяется пользователем через масштабный коэффициент. Масштабный коэффициент устанавливает отношение единицы модельного времени к одному часу реального времени, который рассчитывается по таймеру операционной системы. Изменяется с помощью соответствующих команд. Регулятор скорости работы имитатора тоже учитывается. Если модель содержит кадры анимации, то они могут быть выведены на экран. Доступно построение графиков и просмотр данных трассировки в режиме реального времени. При большом значении масштабного коэффициента стирается разница между дискретным и синхронным режимами моделирования, и быстродействие модели начинает определяться мощностью компьютера.</TD>
 			</TR>
 			<TR valign="top"><A name="progon_pause"></A>
 				<TD class="visible"><FONT class="syntax">Пауза</FONT></TD>
-				<TD class="progon"><IMG align="absmiddle" src="../images/progon_pause.gif"></TD>
+				<TD class="progon"><IMG align="absmiddle" src="../../images/progon_pause.gif"></TD>
 				<TD class="visible">Режим паузы. Процесс моделирования приостанавливается. Чтобы его продолжить, достаточно переключиться на любой другой режим моделирования.</TD>
 			</TR>
 		</TABLE>
@@ -44,34 +44,34 @@
 			</TR>
 			<TR valign="top">
 				<TD class="visible"><FONT class="syntax">Увеличить&nbsp;масштаб</FONT></TD>
-				<TD class="progon"><IMG align="absmiddle" src="../images/tempo_plus.gif"></TD>
+				<TD class="progon"><IMG align="absmiddle" src="../../images/tempo_plus.gif"></TD>
 				<TD class="visible">Увеличить скорость анимации на 50% процентов. Используется только в режиме синхронной имитации.</TD>
 			</TR>
 			<TR valign="top">
 				<TD class="visible"><FONT class="syntax">Увеличить&nbsp;масштаб&nbsp;в&nbsp;4-ре&nbsp;раза</FONT></TD>
-				<TD class="progon"><IMG align="absmiddle" src="../images/tempo_plus4.gif"></TD>
+				<TD class="progon"><IMG align="absmiddle" src="../../images/tempo_plus4.gif"></TD>
 				<TD class="visible">Увеличить скорость анимации в 4 раза. Используется только в режиме синхронной имитации.</TD>
 			</TR>
 			<TR valign="top">
 				<TD class="visible"><FONT class="syntax">Уменьшить&nbsp;масштаб&nbsp;в&nbsp;4-ре&nbsp;раза</FONT></TD>
-				<TD class="progon"><IMG align="absmiddle" src="../images/tempo_minus4.gif"></TD>
+				<TD class="progon"><IMG align="absmiddle" src="../../images/tempo_minus4.gif"></TD>
 				<TD class="visible">Уменьшить скорость анимации в 4 раза. Используется только в режиме синхронной имитации.</TD>
 			</TR>
 			<TR valign="top">
 				<TD class="visible"><FONT class="syntax">Уменьшить&nbsp;масштаб</FONT></TD>
-				<TD class="progon"><IMG align="absmiddle" src="../images/tempo_minus.gif"></TD>
+				<TD class="progon"><IMG align="absmiddle" src="../../images/tempo_minus.gif"></TD>
 				<TD class="visible">Уменьшить скорость анимации на 50% процентов. Используется только в режиме синхронной имитации.</TD>
 			</TR>
 			<TR valign="top">
 				<TD class="visible"><FONT class="syntax">Скорость&nbsp;имитатора</FONT></TD>
-				<TD class="progon"><IMG align="absmiddle" src="../images/progon_speed.gif"></TD>
+				<TD class="progon"><IMG align="absmiddle" src="../../images/progon_speed.gif"></TD>
 				<TD class="visible">Логарифмическая шкала, регулирующая общую скорость имитатор. Используется в моделях, основанных на продукционных правилах, в которых модельное время остается равным нулю, но имеется анимация. Снизив значение скорости можно подробнее рассмотреть процесс моделирования. Используется в режимах дискретной и синхронной имитации, не используется в режиме максимального быстродействия.</TD>
 			</TR>
 		</TABLE>
 		<P>Текущее модельное время, режим моделирования, скорость и масштабный коэффициент отображаются в строке состояния:</P>
-		<P class="image"><IMG src="../images/progon_statusbar.png"></P>
-		<A name="frame"></A><P>В режиме анимации, пользователь может перемещаться по кадрам анимации, выбирая нужный из списка кадров на закладке <FONT class="syntax">Анимация</FONT> <A href="work_run.htm#workspace">окна объектов:</A></P>
-		<P class="image"><IMG src="../images/frame_list.png"></P>
+		<P class="image"><IMG src="../../images/progon_statusbar.png"></P>
+		<A name="frame"></A><P>В режиме анимации, пользователь может перемещаться по кадрам анимации, выбирая нужный из списка кадров на закладке <FONT class="syntax">Анимация</FONT> <A href="../work_run.htm#workspace">окна объектов:</A></P>
+		<P class="image"><IMG src="../../images/frame_list.png"></P>
 		<P>Или с помощью команд:</P>
 		<TABLE class="visible" style="width: 95.5%">
 			<TR valign="top">
@@ -81,18 +81,18 @@
 			</TR>
 			<TR valign="top">
 				<TD class="visible"><FONT class="syntax">След.&nbsp;кадр&nbsp;анимации</FONT></TD>
-				<TD class="progon"><IMG align="absmiddle" src="../images/frame_next.gif"></TD>
+				<TD class="progon"><IMG align="absmiddle" src="../../images/frame_next.gif"></TD>
 				<TD class="visible">Перейти к следующему кадру анимации</TD>
 			</TR>
 			<TR valign="top">
 				<TD class="visible"><FONT class="syntax">Пред.&nbsp;кадр&nbsp;анимации</FONT></TD>
-				<TD class="progon"><IMG align="absmiddle" src="../images/frame_prev.gif"></TD>
+				<TD class="progon"><IMG align="absmiddle" src="../../images/frame_prev.gif"></TD>
 				<TD class="visible">Перейти к предыдущему кадру анимации</TD>
 			</TR>
 		</TABLE>
 		<H4>См. также</H4>
-		<P><A href="work_menu_model.htm">Меню Модель</A></P>
+		<P><A href="../work_menu/work_menu_model.htm">Меню Модель</A></P>
 	</DIV>
-	<SCRIPT src="../footer_raostudio.js"></SCRIPT>
+	<SCRIPT src="../../../shared/scripts/footer_raostudio.js"></SCRIPT>
 </BODY>
 </HTML>
