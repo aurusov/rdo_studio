@@ -12,12 +12,6 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/namespace.h"
 #include "simulator/compiler/parser/grammar/rdobison.h"
-
-#ifndef __FLEX_LEXER_H
-#undef yyFlexLexer
-#define yyFlexLexer yyFlexLexer
-#include "thirdparty/bison_flex/FlexLexer.h"
-#endif
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
