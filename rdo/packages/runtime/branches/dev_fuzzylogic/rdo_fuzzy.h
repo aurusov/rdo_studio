@@ -71,8 +71,8 @@ public:
 	virtual ~RDOFuzzyValue();
 
 private:
-//	RDOFuzzyValue(CREF(LPRDOFuzzySetDefinition)  pSetDefinition);
 	RDOFuzzyValue(CREF(LPRDOFuzzyType)  pType );
+	RDOFuzzyValue(CREF(RDOValue),CREF(RDOValue));
 	RDOFuzzyValue(CREF(LPRDOFuzzyValue) pValue);
 
 	FuzzySet        m_fuzzySet;

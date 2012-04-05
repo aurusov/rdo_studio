@@ -24,6 +24,12 @@ inline RDOFuzzyValue::RDOFuzzyValue(CREF(LPRDOFuzzyValue) pFuzzyValue)
 	: m_pType(pFuzzyValue->m_pType)
 {
 	m_fuzzySet = pFuzzyValue->m_fuzzySet;
+	m_Domain   = pFuzzyValue->m_Domain;
+}
+inline RDOFuzzyValue::RDOFuzzyValue(CREF(RDOValue) range1,CREF(RDOValue) range2)
+	: m_pType()
+{
+	m_Domain = boost::icl::construct<Domain>(range1,range2,boost::icl::interval_bounds::closed());
 }
 
 inline RDOFuzzyValue::~RDOFuzzyValue()
@@ -83,7 +89,7 @@ inline           rbool RDOFuzzyValue::inRange   (CREF(RDOValue) rdovalue)
 // -------------------- RDOFuzzyType
 // --------------------------------------------------------------------------------
 inline RDOFuzzyType::RDOFuzzyType()
-	: RDOType             (t_pointer  )
+	: RDOType (t_pointer)
 {
 	//! Áûכמ
 	//! m_fuzzySetDefinition->reparent(this);
