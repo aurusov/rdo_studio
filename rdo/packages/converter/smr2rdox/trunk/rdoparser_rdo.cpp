@@ -286,7 +286,7 @@ void RDOParserSTDFUN::parse(PTR(Converter) pParser)
 	fun->add(param);
 	param = rdo::Factory<RDOParam>::create(_T("p2"), intType);
 	fun->add(param);
-	fun->setFunctionCalc(rdo::Factory<Function_D_DI>::create<Function_D_DI::function_type>(static_cast<Function_D_DI::function_type>(pow)));
+	fun->setFunctionCalc(rdo::Factory<Function_D_DI>::create<Function_D_DI::function_type>(static_cast<Function_D_DI::function_type>(std::pow)));
 
 	fun   = rdo::Factory<RDOFUNFunction>::create(_T("Ln"), pRealReturn);
 	param = rdo::Factory<RDOParam>::create(_T("p1"), realType);
@@ -428,7 +428,7 @@ void RDOParserSTDFUN::parse(PTR(Converter) pParser)
 	fun->add(param);
 	param = rdo::Factory<RDOParam>::create(_T("p2"), intType);
 	fun->add(param);
-	fun->setFunctionCalc(rdo::Factory<Function_D_DI>::create<Function_D_DI::function_type>(static_cast<Function_D_DI::function_type>(pow)));
+	fun->setFunctionCalc(rdo::Factory<Function_D_DI>::create<Function_D_DI::function_type>(static_cast<Function_D_DI::function_type>(std::pow)));
 
 	fun   = rdo::Factory<RDOFUNFunction>::create(_T("ln"), pRealReturn);
 	param = rdo::Factory<RDOParam>::create(_T("p1"), realType);
