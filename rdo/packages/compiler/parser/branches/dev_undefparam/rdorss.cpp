@@ -110,6 +110,19 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 			m_paramList.push_back(Param((*m_currParam)->getDefault()));
 			m_currParam++;
 		}
+		else if (pParam->value().getAsString() == _T("#"))
+		{
+			if (!(*m_currParam)->getDefault()->defined())
+			{
+				RDOParser::s_parser()->error().push_only(pParam->src_info(), _T("Ќевозможно использовать '#', к.т. отсутствует значение по-умолчанию"));
+				/// @todo src_info() без параметра RDOParserSrcInfo()
+				RDOParser::s_parser()->error().push_only((*m_currParam)->getTypeInfo()->src_info(RDOParserSrcInfo()), _T("—м. описание параметра"));
+				RDOParser::s_parser()->error().push_done();
+			}
+			pParam->value().setUndefined(0);
+			m_paramList.push_back(Param((*m_currParam)->getTypeInfo()->value_cast(pParam)));
+			m_currParam++;
+		}
 		else
 		{
 			m_paramList.push_back(Param((*m_currParam)->getTypeInfo()->value_cast(pParam)));
