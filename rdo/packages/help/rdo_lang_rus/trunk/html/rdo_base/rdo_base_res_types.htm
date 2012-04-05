@@ -1,12 +1,12 @@
 ﻿<HTML>
 <HEAD>
 <TITLE>Типы ресурсов</TITLE>
-<LINK rel = "stylesheet" type = "text/css" href = "../styles.css">
+<LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
 </HEAD>
 <BODY>
 	<DIV>
 		<H1>ТИПЫ РЕСУРСОВ</H1>
-		<P><B>Типы ресурсов</B> определяют структуру глобальной базы данных программы (<A href="../html/rdo_terms.htm">модели</A>) и их описывают в отдельном <A href="../html/rdo_terms.htm#object">объекте</A> (имеет расширение <FONT class="syntax">.rtp</FONT>).</P>
+		<P><B>Типы ресурсов</B> определяют структуру глобальной базы данных программы (<A href="../rdo_terms.htm">модели</A>) и их описывают в отдельном <A href="../rdo_terms.htm#object">объекте</A> (имеет расширение <FONT class="syntax">.rtp</FONT>).</P>
 		<P><A name="res_type"></A>Описание каждого типа ресурса имеет следующий формат:</P>
 		<PRE class="syntax">$Resource_type <A class="syntax" href="#type_name">&lt;имя_типа&gt;</A> : <A class="syntax" href="#res_kind">&lt;вид_ресурсов&gt;</A>
 $Parameters
@@ -14,7 +14,7 @@ $Parameters
 $End</PRE>
 		<DL class="syntax">
 			<DT class="syntax"><A name="type_name"></A><I>имя_типа</I></DT>
-			<DD class="syntax">Имя типа представляет собой <A href="../html/rdo_lex_div_names.htm">простое имя</A>. Имена типов должны быть различными для всех типов и не должны совпадать с предопределенными и ранее использованными именами.</DD>
+			<DD class="syntax">Имя типа представляет собой <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Имена типов должны быть различными для всех типов и не должны совпадать с предопределенными и ранее использованными именами.</DD>
 			<DT class="syntax"><A name="res_kind"></A><I>вид_ресурсов</I></DT>
 			<DD class="syntax">Вид ресурсов данного типа может быть одним из следующих:
 				<TABLE class="visible">
@@ -37,9 +37,9 @@ $End</PRE>
 				<PRE class="syntax"><A class="syntax" href="#param_name">&lt;имя_параметра&gt;</A> : <A class="syntax" href="#param_type">&lt;тип_параметра&gt;</A> [ = <A class="syntax" href="#def_value">&lt;значение_по_умолчанию&gt;</A> ]</PRE>
 				<DL class="syntax">
 					<DT class="syntax"><A name="param_name"></A><I>имя_параметра</I></DT>
-					<DD class="syntax">Имя параметра - это <A href="../html/rdo_lex_div_names.htm">простое имя</A>. Имена параметров должны быть различными для всех параметров данного типа и не должны совпадать предопределенными и ранее использованными именами. Имя параметра может совпадать с именем параметра другого типа ресурсов.</DD>
+					<DD class="syntax">Имя параметра - это <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Имена параметров должны быть различными для всех параметров данного типа и не должны совпадать предопределенными и ранее использованными именами. Имя параметра может совпадать с именем параметра другого типа ресурсов.</DD>
 					<DT class="syntax"><A name="param_type"></A><I>тип_параметра</I></DT>
-					<DD class="syntax">Тип параметра - это один из возможных <A href="../html/rdo_base_types.htm">типов данных языка</A>. Ссылки возможны на параметры ранее описанных типов ресурсов и на ранее описанные параметры данного типа ресурсов.</DD>
+					<DD class="syntax">Тип параметра - это один из возможных <A href="rdo_base_types.htm">типов данных языка</A>. Ссылки возможны на параметры ранее описанных типов ресурсов и на ранее описанные параметры данного типа ресурсов.</DD>
 					<DT class="syntax"><A name="def_value"></A><I>значение_по_умолчанию</I></DT>
 					<DD class="syntax">Для параметра любого типа может быть задано значение по умолчанию. Это значение указывают после знака равенства целой или вещественной численной константой, либо именем значения для перечислимого параметра. При указании типа ссылкой также возможно задание значения по умолчанию. При этом задаваемое значение может отличаться от значения по умолчанию того параметра, на тип которого проводится ссылка.</DD>
 				</DL>
@@ -64,9 +64,9 @@ $Parameters
 $End
 </PRE>
 	<H4>См. также</H4>
-	<P><A href="../html/rdo_base_types.htm">Типы данных. Соответствие типов</A></P>
-	<P><A href="../html/rdo_base_resources.htm">Описание ресурсов</A></P>
+	<P><A href="rdo_base_types.htm">Типы данных. Соответствие типов</A></P>
+	<P><A href="rdo_base_resources.htm">Описание ресурсов</A></P>
 	</DIV>
-	<BR><SCRIPT src="../navbar.js"></SCRIPT>
+	<BR><SCRIPT src="../../../shared/scripts/navbar.js"></SCRIPT>
 </BODY>
 </HTML>

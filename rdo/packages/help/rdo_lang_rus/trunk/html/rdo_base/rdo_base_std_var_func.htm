@@ -1,12 +1,12 @@
 ﻿<HTML>
 <HEAD>
 <TITLE>Глобальные переменные и стандартные функции</TITLE>
-<LINK rel = "stylesheet" type = "text/css" href = "../styles.css">
+<LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
 </HEAD>
 <BODY>
 	<DIV>
 		<H1>ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ И СТАНДАРТНЫЕ ФУНКЦИИ</H1>
-		<P><A name="glob"></A>Глобальные переменные и стандартные арифметические функции используются в <A href="../html/rdo_base_equations.htm#arith_expr">арифметических выражениях</A>.</P>
+		<P><A name="glob"></A>Глобальные переменные и стандартные арифметические функции используются в <A href="rdo_base_equations.htm#arith_expr">арифметических выражениях</A>.</P>
 		<P><B>Глобальных переменных</B> в данной версии языка три:</P>
 		<TABLE class="visible">
 			<TR valign="top">
@@ -27,7 +27,7 @@
 			<TR valign="top"><A name="terminate_counter"></A>
 				<TD class="visible" width="20%"><FONT class="syntax">Terminate_counter</FONT></TD>
 				<TD class="visible" width="20%">целый</TD>
-				<TD class="visible" width="60%">Содержит значение терминального счетчика <A href="../html/rdo_obj_proc.htm">процессного подхода</A>.</TD>
+				<TD class="visible" width="60%">Содержит значение терминального счетчика <A href="../rdo_obj/rdo_obj_proc.htm">процессного подхода</A>.</TD>
 			</TR>
 		</TABLE>
 		<P><B>Стандартные <A name="arith"></A>арифметические функции</B>, включенные в данную версию языка, приведены в следующей таблице с соответствующими пояснениями:</P>
@@ -219,7 +219,7 @@
 		<P>Кроме стандартных арифметических функций в языке определены четыре стандартные функции, значением которых является ИСТИНА или ЛОЖЬ. Синтаксис вызова этих функций следующий:</P>
 		<PRE class="syntax">&lt;имя_функции&gt; ( &lt;имя_типа_ресурсов&gt; :
 (&lt;логическое_выражение&gt; | NoCheck) )</PRE>
-		<P><B>Стандартные логические функции</B> используются в <A href="../html/rdo_base_equations.htm">логических выражениях</A>. Ниже приведены их имена и способы вычисления их значений:</P>
+		<P><B>Стандартные логические функции</B> используются в <A href="rdo_base_equations.htm">логических выражениях</A>. Ниже приведены их имена и способы вычисления их значений:</P>
 		<TABLE class="visible">
 			<TR valign="top">
 				<TH align="left" width="20%">Имя функции</TH>
@@ -256,12 +256,12 @@
 			</TR>
 			<TR valign="top"><A name="select_exist"></A>
 				<TD class="visible" width="20%"><FONT class="syntax">Exist</FONT></TD>
-				<TD class="visible" width="70%">Описание аналогично <A href="../html/rdo_base_std_var_func.htm#exist">приведённому</A>, но проверяются не все, ресурсы, а только отобранные в список. Формат использования: <PRE class="syntax">Exist( &lt;логическое_выражение&gt; | NoCheck )</PRE></TD>
+				<TD class="visible" width="70%">Описание аналогично <A href="rdo_base_std_var_func.htm#exist">приведённому</A>, но проверяются не все, ресурсы, а только отобранные в список. Формат использования: <PRE class="syntax">Exist( &lt;логическое_выражение&gt; | NoCheck )</PRE></TD>
 				<TD class="visible" width="10%">Логическое</TD>
 			</TR>
 			<TR valign="top"><A name="select_not_exist"></A>
 				<TD class="visible" width="20%"><FONT class="syntax">Not_Exist</FONT></TD>
-				<TD class="visible" width="70%">Описание аналогично <A href="../html/rdo_base_std_var_func.htm#not_exist">приведённому</A>, но проверяются не все, ресурсы, а только отобранные в список. Формат использования: <PRE class="syntax">Not_Exist( &lt;логическое_выражение&gt; | NoCheck )</PRE></TD>
+				<TD class="visible" width="70%">Описание аналогично <A href="rdo_base_std_var_func.htm#not_exist">приведённому</A>, но проверяются не все, ресурсы, а только отобранные в список. Формат использования: <PRE class="syntax">Not_Exist( &lt;логическое_выражение&gt; | NoCheck )</PRE></TD>
 				<TD class="visible" width="10%">Логическое</TD>
 			</TR>
 			<TR valign="top"><A name="select_for_all"></A>
@@ -293,8 +293,8 @@
 		<PRE class="samples">Select(Заявка: Заявка.Время_прихода &gt;= 480 and
        Заявка.Состояние = в_очереди).For_All(Заявка.Время_в_очереди &gt; 20)</PRE>
 		<H4>См. также</H4>
-		<P><A href="../html/rdo_base_types.htm">Типы данных. Соответствие типов</A></P>
+		<P><A href="rdo_base_types.htm">Типы данных. Соответствие типов</A></P>
 	</DIV>
-	<BR><SCRIPT src="../navbar.js"></SCRIPT>
+	<BR><SCRIPT src="../../../shared/scripts/navbar.js"></SCRIPT>
 </BODY>
 </HTML>

@@ -1,12 +1,12 @@
 ﻿<HTML>
 <HEAD>
 <TITLE>Описание событий</TITLE>
-<LINK rel = "stylesheet" type = "text/css" href = "../styles.css">
+<LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
 </HEAD>
     <BODY>
         <DIV>
             <H1>ОПИСАНИЕ СОБЫТИЙ</H1>
-		<P><B>События</B> описываются в отдельном <A href="../html/rdo_terms.htm">объекте</A> с расширением <B>.evn</B>
+		<P><B>События</B> описываются в отдельном <A href="../rdo_terms.htm">объекте</A> с расширением <B>.evn</B>
 		<PRE class="syntax">$Pattern <A class="syntax" href="#event_name">&lt;имя_события&gt;</A> : event [ <A class="syntax" href="#sign_of_the_trace">&lt;признак_трассировки&gt;</A> ]
 [ $Parameters <A class="syntax" href="#param_descr">&lt;описание_параметров_события&gt;</A> ]
 $Relevant_resources <A class="syntax" href="#rel_res_desc">&lt;описание_релевантных_ресурсов_события&gt;</A>
@@ -14,20 +14,20 @@ $Body <A class="syntax" href="#body">&lt;тело_события&gt;</A>
 $End</PRE>
         <DL class="syntax">
 			<DT class="syntax"><A name="event_name"></A><I>имя_события</I></DT>
-			<DD class="syntax">Имя события представляет собой <A href="../html/rdo_lex_div_names.htm">простое имя</A>. Имена должны быть различными для всех событий и не должны совпадать с ранее определенными именами.</DD>
+			<DD class="syntax">Имя события представляет собой <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Имена должны быть различными для всех событий и не должны совпадать с ранее определенными именами.</DD>
 			<DT class="syntax"><A name ="sign_of_the_trace"><I>признак_трассировки</I></DT>
-			<DD class="syntax">Событие может иметь признак трассировки (подробнее смотри описание <A class="syntax" href="../html/rdo_res_trace_descr.htm">&lt;трассировка состояния объектов РДО&gt;</A>).
+			<DD class="syntax">Событие может иметь признак трассировки (подробнее смотри описание <A class="syntax" href="../rdo_res/rdo_res_trace_descr.htm">&lt;трассировка состояния объектов РДО&gt;</A>).
 			<DT class="syntax"><A name="param_descr"></A><I>описание_параметров_события</I></DT>
 			<DD class="syntax">Описание параметров события имеет следующий формат:
 				<PRE class="syntax"><A class="syntax" href="#param_name">&lt;имя_параметра&gt;</A> : <A class="syntax" href="#param_type">&lt;тип_параметра&gt;</A> [ = <A class="syntax" href="#param_def_val">&lt;значение_по_умолчанию&gt;</A> ]
 { &lt;имя_параметра&gt; : &lt;тип_параметра&gt; [ = &lt;значение_по_умолчанию&gt; ] }</PRE>
 				<DL class="syntax">
 					<DT class="syntax"><A name="param_name"></A><I>имя_параметра</I></DT>
-					<DD class="syntax">Имя параметра события представляет собой <A href="../html/rdo_lex_div_names.htm">простое имя</A>. Область видимости имени параметра события - это данное событие. Поэтому имена всех параметров одного события должны быть различными.</DD>
+					<DD class="syntax">Имя параметра события представляет собой <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Область видимости имени параметра события - это данное событие. Поэтому имена всех параметров одного события должны быть различными.</DD>
 					<DT class="syntax"><A name="param_type"></A><I>тип_параметра</I></DT>
-					<DD class="syntax">Тип параметра - это один из возможных <A href="../html/rdo_base_types.htm">типов данных</A>. При описании типов параметров события возможны ссылки на <A href="../html/rdo_base_res_types.htm#param_type">типы параметров ресурсов</A> и <A href="../html/rdo_obj_const_fun_sec.htm#const_type">типы символьных констант</A>.</DD>
+					<DD class="syntax">Тип параметра - это один из возможных <A href="../rdo_base/rdo_base_types.htm">типов данных</A>. При описании типов параметров события возможны ссылки на <A href="../rdo_base/rdo_base_res_types.htm#param_type">типы параметров ресурсов</A> и <A href="rdo_obj_const_fun_sec.htm#const_type">типы символьных констант</A>.</DD>
 					<DT class="syntax"><A name="param_def_val"></A><I>значение_по_умолчанию</I></DT>
-					<DD class="syntax">Для параметра любого типа может быть задано значение по умолчанию. Это значение указывают после знака равенства целой или вещественной <A href="../html/rdo_lex_div_numeric_const.htm">численной константой</A>, либо именем значения для перечислимого параметра. При указании типа ссылкой также возможно задание значения по умолчанию. При этом задаваемое значение может отличаться от значения по умолчанию того параметра, на тип которого производится ссылка.</DD>
+					<DD class="syntax">Для параметра любого типа может быть задано значение по умолчанию. Это значение указывают после знака равенства целой или вещественной <A href="../rdo_lex_div/rdo_lex_div_numeric_const.htm">численной константой</A>, либо именем значения для перечислимого параметра. При указании типа ссылкой также возможно задание значения по умолчанию. При этом задаваемое значение может отличаться от значения по умолчанию того параметра, на тип которого производится ссылка.</DD>
 				</DL>
 				<P>Параметры в событии могут отсутствовать, в этом случае зарезервированное слово <FONT class="syntax">$Parameters</FONT> не указывают.</P>
 			</DD>
@@ -36,9 +36,9 @@ $End</PRE>
 				<PRE class="syntax"><A class="syntax" href="#rel_res_name">&lt;имя_релевантного_ресурса&gt;</A> : <A class="syntax" href="#rel_res_describer">&lt;описатель&gt;</A> <A class="syntax" href="#event_conv_stat">&lt;статус_конвертора&gt;</A></PRE>
 				<DL class="syntax">
 					<DT class="syntax"><A name="rel_res_name"></A><I>имя_релевантного_ресурса</I></DT>
-					<DD class="syntax">Имя релевантного ресурса образца представляет собой <A href="../html/rdo_lex_div_names.htm">простое имя</A>. Область видимости имени релевантного ресурса события - это данное событие. Поэтому имена всех релевантных ресурсов одного события должны быть различными.</DD>
+					<DD class="syntax">Имя релевантного ресурса образца представляет собой <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Область видимости имени релевантного ресурса события - это данное событие. Поэтому имена всех релевантных ресурсов одного события должны быть различными.</DD>
 					<DT class="syntax"><A name="rel_res_describer"></A><I>описатель</I></DT>
-					<DD class="syntax">Описатель ресурса - это либо имя <A href="../html/rdo_base_res_types.htm">типа ресурса</A>, либо имя <A href="../html/rdo_base_resources.htm">ресурса</A>. В первом случае в качестве релевантного может быть использован любой ресурс указанного типа, состояние которого удовлетворяет <A href="#init_cond">предусловию</A>. Во втором случае может быть использован только указанный ресурс, если его состояние удовлетворяет предусловию.</DD>
+					<DD class="syntax">Описатель ресурса - это либо имя <A href="../rdo_base/rdo_base_res_types.htm">типа ресурса</A>, либо имя <A href="../rdo_base/rdo_base_resources.htm">ресурса</A>. В первом случае в качестве релевантного может быть использован любой ресурс указанного типа, состояние которого удовлетворяет <A href="#init_cond">предусловию</A>. Во втором случае может быть использован только указанный ресурс, если его состояние удовлетворяет предусловию.</DD>
 					<DT class="syntax"><A name="event_conv_stat"></A><I>статус_конвертора</I></DT>
 					<DD class="syntax">Статус конвертора описывает, что происходит с релевантным ресурсом в целом при наступлении события.
 					<P><A name="event_conv_stats"></A><A name="event_conv_stats_nc"></A>В данной версии языка для событий определены следующие статусы конверторов:</P>
@@ -60,12 +60,12 @@ $End</PRE>
 							<TD class="visible" width="80%">Релевантный ресурс уничтожается</TD>
 						</TR>
 					</TABLE>
-					<P>Статусы конверторов <FONT class="syntax">Keep</FONT> и <FONT class="syntax">Erase</FONT> требуют в качестве описателя исключительно имя <A href="../html/rdo_base_resources.htm">ресурса</A>, а статус <FONT class="syntax">Create</FONT> - имя <A href="../html/rdo_base_res_types.htm">типа ресурса</A>.</P>
+					<P>Статусы конверторов <FONT class="syntax">Keep</FONT> и <FONT class="syntax">Erase</FONT> требуют в качестве описателя исключительно имя <A href="../rdo_base/rdo_base_resources.htm">ресурса</A>, а статус <FONT class="syntax">Create</FONT> - имя <A href="../rdo_base/rdo_base_res_types.htm">типа ресурса</A>.</P>
 					</DD>
 				</DL>
 			</DD>
 			<DT class="syntax"><A name="body"></A><I>тело_события</I></DT>
-			<DD class="syntax">Тело события описывает суть изменений, которые происходят в системе в момент времени наступления соответствующего события (подробнее смотри описание <A class="syntax" href="../html/rdo_obj_pat_body.htm">тела событий и образцов активностей</A>).</DD>
+			<DD class="syntax">Тело события описывает суть изменений, которые происходят в системе в момент времени наступления соответствующего события (подробнее смотри описание <A class="syntax" href="rdo_obj_pat_body.htm">тела событий и образцов активностей</A>).</DD>
 		</DL>
 		<H4>Примеры</H4>
 	<PRE class="samples">
@@ -83,12 +83,12 @@ $Body
 $End
     </PRE>
         <H4>См. также</H4>
-	<P><A href="../html/rdo_base_res_types.htm">Типы ресурсов</A></P>
-	<P><A href="../html/rdo_base_resources.htm">Описание ресурсов</A></P>
-	<P><A href="../html/rdo_obj_const_fun_sec.htm">Описание символьных констант, функций и последовательностей</A></P>
-	<P><A href="../html/rdo_obj_dpt.htm">Описание точек принятия решений</A></P>
-	<P><A href="../html/rdo_res_trc.htm">Объект трассировки</A></P>
+	<P><A href="../rdo_base/rdo_base_res_types.htm">Типы ресурсов</A></P>
+	<P><A href="../rdo_base/rdo_base_resources.htm">Описание ресурсов</A></P>
+	<P><A href="rdo_obj_const_fun_sec.htm">Описание символьных констант, функций и последовательностей</A></P>
+	<P><A href="rdo_obj_dpt.htm">Описание точек принятия решений</A></P>
+	<P><A href="../rdo_res/rdo_res_trc.htm">Объект трассировки</A></P>
 	</DIV>
-	<BR><SCRIPT src="../navbar.js"></SCRIPT>
+	<BR><SCRIPT src="../../../shared/scripts/navbar.js"></SCRIPT>
 </BODY>
 </HTML>

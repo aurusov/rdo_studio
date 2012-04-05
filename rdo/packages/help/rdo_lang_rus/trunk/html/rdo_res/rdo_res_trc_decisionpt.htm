@@ -1,26 +1,26 @@
 ﻿<HTML>
 <HEAD>
 <TITLE>Трассировка точек принятия решений</TITLE>
-<LINK rel = "stylesheet" type = "text/css" href = "../styles.css">
+<LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
 </HEAD>
 <BODY>
 	<DIV>
 		<H1>ТРАССИРОВКА ТОЧЕК ПРИНЯТИЯ РЕШЕНИЙ</H1>
-		<P>Статистика по поиску на графе для каждой точки принятия решений типа <A href="../html/rdo_dpt_search.htm">search</A> приводится в <A href="../html/rdo_res_trc.htm#graph_stat">конце объекта трассировки</A>.</P>
+		<P>Статистика по поиску на графе для каждой точки принятия решений типа <A href="../rdo_dpt/rdo_dpt_search.htm">search</A> приводится в <A href=rdo_res_trc.htm#graph_stat">конце объекта трассировки</A>.</P>
 		<P><B>Трассировка процесса поиска на графе</B> в точке принятия решений типа <FONT class="syntax">search</FONT> позволяет полностью восстановить картину поиска и полученный граф.</P>
 		<P>Формат трассировки имеет следующий вид:</P>
 		<PRE class="syntax"><A class="syntax" href="#start_search">&lt;начало_поиска&gt;</A>
 [ <A class="syntax" href="#search_info">&lt;информация_о_поиске&gt;</A> ]
 [ <A class="syntax" href="#decision">&lt;решение&gt;</A> ]
 <A class="syntax" href="#end_search">&lt;окончание_поиска&gt;</A></PRE>
-		<P>Трассировка начала и окончания поиска и трассировка решения присутствуют в <A href="../html/rdo_res_trc.htm">объекте трассировки</A>, если в <A href="../html/rdo_obj_dpt.htm">описании точки принятия решений</A> указан любой <A href="../html/rdo_res_trace_descr.htm#dpt_trace">признак трассировки</A> кроме <FONT class="syntax">no_trace</FONT>.</P>
+		<P>Трассировка начала и окончания поиска и трассировка решения присутствуют в <A href=rdo_res_trc.htm">объекте трассировки</A>, если в <A href="../rdo_obj/rdo_obj_dpt.htm">описании точки принятия решений</A> указан любой <A href=rdo_res_trace_descr.htm#dpt_trace">признак трассировки</A> кроме <FONT class="syntax">no_trace</FONT>.</P>
 		<DL class="syntax">
 			<DT class="syntax"><A name="sb"></A><A name="start_search"></A><I>начало_поиска</I></DT>
 			<DD class="syntax">Формат информации о начале поиска следующий:
 				<PRE class="syntax">SB &lt;модельное_время&gt; &lt;номер_точки_принятия_решения&gt;</PRE>
 			</DD>
 			<DT class="syntax"><A name="search_info"></A><I>информация_о_поиске</I></DT>
-			<DD class="syntax">Информация о поиске включает данные о вершинах графа поиска, порожденных в процессе поиска. Она выводится в <A href="../html/rdo_res_trc.htm">объект трассировки</A> если <A href="../html/rdo_res_trace_descr.htm#dpt_trace">признак трассировки</A> для данной точки принятия решений есть <FONT class="syntax">trace_tops</FONT> или <FONT class="syntax">trace_all</FONT> и состоит из блоков следующего вида:
+			<DD class="syntax">Информация о поиске включает данные о вершинах графа поиска, порожденных в процессе поиска. Она выводится в <A href=rdo_res_trc.htm">объект трассировки</A> если <A href=rdo_res_trace_descr.htm#dpt_trace">признак трассировки</A> для данной точки принятия решений есть <FONT class="syntax">trace_tops</FONT> или <FONT class="syntax">trace_all</FONT> и состоит из блоков следующего вида:
 				<PRE class="syntax"><A class="syntax" href="#trace_open">&lt;трассировка_раскрываемой_вершины&gt;</A>
 { <A class="syntax" href="#new_top">&lt;порожденная_вершина&gt;</A> [ <A class="syntax" href="#trace_res">&lt;трассировка_измененных_ресурсов&gt;</A> ] }</PRE>
 				<DL class="syntax">
@@ -71,7 +71,7 @@
 						</DL>
 					</DD>
 					<DT class="syntax"><A name="src"></A><A name="sre"></A><A name="srk"></A><A name="trace_res"></A><I>трассировка_измененных_ресурсов</I></DT>
-					<DD class="syntax">Трассировка измененных ресурсов для порождаемых вершин происходит в том случае, если <A href="../html/rdo_res_trace_descr.htm#dpt_trace">признак трассировки</A> для данной точки принятия решений есть <FONT class="syntax">trace_all</FONT>. Новое состояние ресурса выдается в формате, описанном в <A href="../html/rdo_res_trc_resourses.htm">трассировке состояния ресурсов</A>. Отличие состоит в том, что строка, содержащая новое состояние ресурса, начинается с префикса <FONT class="syntax">S</FONT>.</DD>
+					<DD class="syntax">Трассировка измененных ресурсов для порождаемых вершин происходит в том случае, если <A href=rdo_res_trace_descr.htm#dpt_trace">признак трассировки</A> для данной точки принятия решений есть <FONT class="syntax">trace_all</FONT>. Новое состояние ресурса выдается в формате, описанном в <A href=rdo_res_trc_resourses.htm">трассировке состояния ресурсов</A>. Отличие состоит в том, что строка, содержащая новое состояние ресурса, начинается с префикса <FONT class="syntax">S</FONT>.</DD>
 				</DL>
 			</DD>
 			<DT class="syntax"><A name="sd"></A><A name="decision"></A><I>решение</I></DT>
@@ -128,12 +128,12 @@
 			</DD>
 		</DL>
 		<H4>См. также</H4>
-		<P><A href="../html/rdo_res_trc.htm">Объект трассировки</A></P>
-		<P><A href="../html/rdo_res_trace_descr.htm">Трассировка состояния объектов РДО</A></P>
-		<P><A href="../html/rdo_res_trc_events.htm">Трассировка событий</A></P>
-		<P><A href="../html/rdo_res_trc_resourses.htm">Трассировка состояния ресурсов</A></P>
-		<P><A href="../html/rdo_res_trc_results.htm">Трассировка показателей</A></P>
+		<P><A href=rdo_res_trc.htm">Объект трассировки</A></P>
+		<P><A href=rdo_res_trace_descr.htm">Трассировка состояния объектов РДО</A></P>
+		<P><A href=rdo_res_trc_events.htm">Трассировка событий</A></P>
+		<P><A href=rdo_res_trc_resourses.htm">Трассировка состояния ресурсов</A></P>
+		<P><A href=rdo_res_trc_results.htm">Трассировка показателей</A></P>
 	</DIV>
-	<BR><SCRIPT src="../navbar.js"></SCRIPT>
+	<BR><SCRIPT src="../../../shared/scripts/navbar.js"></SCRIPT>
 </BODY>
 </HTML>

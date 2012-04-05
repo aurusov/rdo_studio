@@ -1,7 +1,7 @@
 ﻿<HTML>
 <HEAD>
 <TITLE>Описание процессов обслуживания</TITLE>
-<LINK rel = "stylesheet" type = "text/css" href = "../styles.css">
+<LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
 <script type="text/javascript">
 function toggle_display(e)
 {
@@ -16,7 +16,7 @@ function toggle_display(e)
 <BODY>
 	<DIV>
 		<H1>ОПИСАНИЕ ПРОЦЕССОВ ОБСЛУЖИВАНИЯ</H1>
-		<P><A name="rdo_proc"></A><B>Процессы обслуживания</B> описываются в отдельном <A href="../html/rdo_terms.htm#object">объекте</A> (с расширением <FONT class="syntax">.prc</FONT>).</P>
+		<P><A name="rdo_proc"></A><B>Процессы обслуживания</B> описываются в отдельном <A href="../rdo_terms.htm#object">объекте</A> (с расширением <FONT class="syntax">.prc</FONT>).</P>
 		<P>За основу описания <B>процесса</B> взят синтаксис языка GPSS. Каждый процесс имеет следующий формат:</P>
 		<PRE class="syntax">
 $Process <A class="syntax" href="#process_name">&lt;имя_процесса&gt;</A> &lt; <A class="syntax" href="#transact_name">&lt;имя_транзактов&gt;</A> &gt;
@@ -24,14 +24,14 @@ $Process <A class="syntax" href="#process_name">&lt;имя_процесса&gt;<
 $End</PRE>
 		<DL class="syntax">
 			<DT class="syntax"><A name="process_name"></A><I>имя_процесса</I></DT>
-			<DD class="syntax">Имя процесса представляет собой <A href="../html/rdo_lex_div_names.htm">простое имя</A>. Имена должны быть различными для всех процессов и не должны совпадать с ранее определенными именами.</DD>
+			<DD class="syntax">Имя процесса представляет собой <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Имена должны быть различными для всех процессов и не должны совпадать с ранее определенными именами.</DD>
 			<DT class="syntax"><A name="transact_name"></A><I>имя_транзактов</I></DT>
 			<DD class="syntax">Имя транзактов - это имя типа ресурсов, который должны иметь транзакты, обрабатываемые в данном процессе обслуживания.</DD>
 			<DT class="syntax"><A name="process_block"></A><I>процессный_блок</I></DT>
 			<DD class="syntax">Процессный блок имеет формат:
 				<PRE class="syntax"><A class="syntax" href="#proc_operator">&lt;процессный_оператор&gt;</A>
-| <A class="syntax" href="../html/rdo_obj_pat_body.htm#statement_planning">&lt;инструкция_планирования_событий&gt;</A>
-| <A class="syntax" href="../html/rdo_obj_pat_body.htm#statement_stop">&lt;инструкция_планирования_событий&gt;</A></PRE>
+| <A class="syntax" href="rdo_obj_pat_body.htm#statement_planning">&lt;инструкция_планирования_событий&gt;</A>
+| <A class="syntax" href="rdo_obj_pat_body.htm#statement_stop">&lt;инструкция_планирования_событий&gt;</A></PRE>
 				<DL class="syntax">
 					<DT class="syntax"><A name="proc_operator"></A><I>процессный_оператор</I></DT>
 					<DD class="syntax">Процессный оператор имеет формат:
@@ -49,7 +49,7 @@ $End</PRE>
 								<PRE class="syntax">GENERATE <A class="syntax" href="#gen_arifm">&lt;выражение_времени&gt;</A></PRE> 
 								<DL class="syntax">
 									<DT class="syntax"><A name="gen_arifm"></A><I>выражение_времени</I></DT>
-									<DD class="syntax">Выражение времени представляет собой <A href="../html/rdo_base_equations.htm">арифметическое выражение</A> целого или вещественного типа, по которому рассчитывается интервал времени между создаваемыми транзактами.</DD>
+									<DD class="syntax">Выражение времени представляет собой <A href="../rdo_base/rdo_base_equations.htm">арифметическое выражение</A> целого или вещественного типа, по которому рассчитывается интервал времени между создаваемыми транзактами.</DD>
 								</DL>
 							</DD>
 							<DT class="syntax"><A name="seize"></A><I>оператор_захвата_ресурса</I></DT>
@@ -58,7 +58,7 @@ $End</PRE>
 								<DL class="syntax">
 									<DT class="syntax"><A name="res_name_seize"></A><I>имя_ресурса</I></DT>
 									<DD class="syntax">
-										<P>Если <A href="../html/rdo_base_resources.htm">ресурс</A> с таким именем уже заведен и имеет произвольный <A href="../html/rdo_base_res_types.htm">тип</A> с параметром – <FONT class="syntax">Состояние</FONT>, который является перечислимым со значениями <FONT class="syntax">Свободен</FONT> и <FONT class="syntax">Занят</FONT>, то блок будет работать с этим ресурсом.</P>
+										<P>Если <A href="../rdo_base/rdo_base_resources.htm">ресурс</A> с таким именем уже заведен и имеет произвольный <A href="../rdo_base/rdo_base_res_types.htm">тип</A> с параметром – <FONT class="syntax">Состояние</FONT>, который является перечислимым со значениями <FONT class="syntax">Свободен</FONT> и <FONT class="syntax">Занят</FONT>, то блок будет работать с этим ресурсом.</P>
 										<P>Иначе будут автоматически созданы ресурс с указанным именем и тип для него с именем <FONT class="syntax">имя_ресурсаs</FONT> и параметром <FONT class="syntax">Состояние</FONT>, либо будет выдано сообщение об ошибке.</P>
 										<P>Если после оператора определен список ресурсов, то в момент поступления транзакта в блок будет заниматься первый свободный.</P>
 									</DD>
@@ -80,7 +80,7 @@ $End</PRE>
 								<PRE class="syntax">ADVANCE <A class="syntax" href="#adv_arifm">&lt;выражение_времени&gt;</A></PRE> 
 								<DL class="syntax">
 									<DT class="syntax"><A  name="adv_arifm"></A><I>выражение_времени</I></DT>
-									<DD class="syntax">Выражение времени представляет собой <A href="../html/rdo_base_equations.htm">арифметическое выражение</A> целого или вещественного типа, по которому рассчитывается длительность задержки транзакта в блоке.</DD>
+									<DD class="syntax">Выражение времени представляет собой <A href="../rdo_base/rdo_base_equations.htm">арифметическое выражение</A> целого или вещественного типа, по которому рассчитывается длительность задержки транзакта в блоке.</DD>
 								</DL>
 							</DD>
 							<DT class="syntax"><A name="queue"></A><I>оператор_постановки_в_очередь</I></DT>
@@ -89,7 +89,7 @@ $End</PRE>
 								<DL class="syntax">
 									<DT class="syntax""><A name="queue"></A><I>очередь</I></DT>
 									<DD class="syntax">
-										<P>Это имя <A href="../html/rdo_base_resources.htm#res_name">имя ресурса</A> определенного <A href="../html/rdo_base_res_types.htm">типа</A> - <FONT class="syntax">QDEPART</FONT> с параметром целого типа - <FONT class="syntax">длина_очереди</FONT>. У разработчика модели есть два варианта работы с блоком:</P>
+										<P>Это имя <A href="../rdo_base/rdo_base_resources.htm#res_name">имя ресурса</A> определенного <A href="../rdo_base/rdo_base_res_types.htm">типа</A> - <FONT class="syntax">QDEPART</FONT> с параметром целого типа - <FONT class="syntax">длина_очереди</FONT>. У разработчика модели есть два варианта работы с блоком:</P>
 										<P>1) Завести тип <FONT class="syntax">QDEPART</FONT> и ресурс от этого типа самостоятельно в закладках RTP и RSS, и использовать его в качестве параметра оператора.</P>
 										<P>2) Система сама заведет тип <FONT class="syntax">QDEPART</FONT> и ресурс от этого типа с именем, указанным в качестве параметра оператора.</P>
 										<P>При поступлении транзакта в блок, значение параметра <FONT class="syntax">длина_очереди</FONT> увеличится на единицу.</P>
@@ -112,11 +112,11 @@ $End</PRE>
 								<PRE class="syntax">ASSIGN <A class="syntax" href="#res_name_assign">&lt;имя_ресурса&gt;</A>.<A class="syntax" href="#par_name">&lt;имя_параметра&gt;</A> = <A class="syntax" href="#ass_arifm">&lt;арифметическое_выражение&gt;</A></PRE>
 								<DL class="syntax">
 									<DT class="syntax"><A name="res_name_assign"></A><I>имя_ресурса</I></DT>
-									<DD class="syntax"><A href="../html/rdo_base_resources.htm#res_name">Имя</A> изменяемого ресурса.</DD>
+									<DD class="syntax"><A href="../rdo_base/rdo_base_resources.htm#res_name">Имя</A> изменяемого ресурса.</DD>
 								</DL>
 								<DL class="syntax">
 									<DT class="syntax""><A name="par_name"></A><I>имя_параметра</I></DT>
-									<DD class="syntax"><A href="../html/rdo_base_res_types.htm#param_name">Имя</A> изменяемого параметра.</DD>
+									<DD class="syntax"><A href="../rdo_base/rdo_base_res_types.htm#param_name">Имя</A> изменяемого параметра.</DD>
 								</DL>
 								<DL class="syntax">
 									<DT class="syntax"><A name="ass_arifm"></A><I>арифметическое выражение</I></DT>
@@ -128,7 +128,7 @@ $End</PRE>
 								<PRE class="syntax">TERMINATE <A class="syntax" href="#term_arifm">&lt;дельта&gt;</A> </PRE>
 								<DL class="syntax">
 									<DT class="syntax"><A name="term_arifm"></A><I>дельта</I></DT>
-									<DD class="syntax">Дельта представляет собой <A href="../html/rdo_base_equations.htm">арифметическое выражение</A> целого типа, по которому рассчитывается приращение значения <A href="../html/rdo_base_std_var_func.htm#terminate_counter">терминального счетчика</A>. Это может понадобиться для того, чтобы связать <A href="../html/rdo_obj_smr.htm#term_cond">остановку моделирования</A> с числом удаленных транзактов.</DD>
+									<DD class="syntax">Дельта представляет собой <A href="../rdo_base/rdo_base_equations.htm">арифметическое выражение</A> целого типа, по которому рассчитывается приращение значения <A href="../rdo_base/rdo_base_std_var_func.htm#terminate_counter">терминального счетчика</A>. Это может понадобиться для того, чтобы связать <A href="rdo_obj_smr.htm#term_cond">остановку моделирования</A> с числом удаленных транзактов.</DD>
 								</DL>
 							</DD>
 						</DL>
@@ -227,6 +227,6 @@ $End
 </PRE>
 	</DIV>
 	</DIV>
-	<BR><SCRIPT src="../navbar.js"></SCRIPT>
+	<BR><SCRIPT src="../../../shared/scripts/navbar.js"></SCRIPT>
 </BODY>
 </HTML>

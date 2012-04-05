@@ -1,17 +1,17 @@
 ﻿<HTML>
 <HEAD>
 <TITLE>Тип образца "Продукционное правило"</TITLE>
-<LINK rel = "stylesheet" type = "text/css" href = "../styles.css">
+<LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
 </HEAD>
 <BODY>
 <DIV>
 <H1>ТИП ОБРАЗЦА "ПРОДУКЦИОННОЕ ПРАВИЛО"</H1>
 		<P>Образцы типа <A name="rule"><B>rule</B></A> описывают обычные продукционные правила. Они служат для изменения состояния ресурса в зависимости от того, какое действие он выполняет. В отличие от образцов типа operation этот образец не имеет выражения для вычисления времени операции. Это связано с тем, что действие выполняется мгновенно, как только выполняются предусловия образца по всем релевантным ресурсам.</P>
 		<P>Образец типа rule содержит список релевантных ресурсов, предусловия начала операции (задаваемые по значениям релевантных ресурсов) и конвертор преобразования состояния ресурсов,участвующих в операции. Описание имеет следующий формат:</P>
-		<Pre class="syntax">$Pattern <A class="syntax" href="../html/rdo_obj_pat.htm#pat_name">&lt;имя_образца&gt;</A> :&nbsp;rule&nbsp; [ <A class="syntax" href="../html/rdo_res_trace_descr.htm">&lt;признак_трассировки&gt;</A> ]
-[ $Parameters <A class="syntax" href="../html/rdo_obj_pat.htm#param_desc">&lt;описание_параметров_образца&gt;</A> ]
-$Relevant_resources <A class="syntax" href="../html/rdo_obj_pat.htm#rel_res_desc">&lt;описание_релевантных_ресурсов_образца&gt;</A><br />[ <A class="syntax" href="../html/rdo_obj_pat.htm#pat_choice_type" style="color: FF0000">&lt;способ_выбора&gt;</A> ]
-$Body <A class="syntax" href="../html/rdo_obj_pat_body.htm#body">&lt;тело_образца&gt;</A>
+		<Pre class="syntax">$Pattern <A class="syntax" href="../rdo_obj/rdo_obj_pat.htm#pat_name">&lt;имя_образца&gt;</A> :&nbsp;rule&nbsp; [ <A class="syntax" href="../rdo_res/rdo_res_trace_descr.htm">&lt;признак_трассировки&gt;</A> ]
+[ $Parameters <A class="syntax" href="../rdo_obj/rdo_obj_pat.htm#param_desc">&lt;описание_параметров_образца&gt;</A> ]
+$Relevant_resources <A class="syntax" href="../rdo_obj/rdo_obj_pat.htm#rel_res_desc">&lt;описание_релевантных_ресурсов_образца&gt;</A><br />[ <A class="syntax" href="../rdo_obj/rdo_obj_pat.htm#pat_choice_type" style="color: FF0000">&lt;способ_выбора&gt;</A> ]
+$Body <A class="syntax" href="../rdo_obj/rdo_obj_pat_body.htm#body">&lt;тело_образца&gt;</A>
 $End</PRE>
 	<P><B>Пример:</B></P>
 	<PRE class="samples">$Pattern Образец_1 : rule
@@ -33,12 +33,12 @@ $Body
 $End</a>
 </PRE>
 	<H4>См. также</H4>
-	<P><A href="../html/rdo_obj_pat.htm">Описание образцов</A></P>
-	<P><A href="../html/rdo_obj_const_fun_sec.htm">Описание символьных констант, функций и последовательностей</A></P>
-	<P><A href="../html/rdo_pat_type_opr.htm">Тип образца "Операция"</A></P>
-	<P><A href="../html/rdo_pat_type_keyboard.htm">Тип образца "Клавиатурная операция"</A></P>
-	<P><A href="../html/rdo_res_trace_descr.htm">Трассировка состояния объектов РДО</A></P>
+	<P><A href="../rdo_obj/rdo_obj_pat.htm">Описание образцов</A></P>
+	<P><A href="../rdo_obj/rdo_obj_const_fun_sec.htm">Описание символьных констант, функций и последовательностей</A></P>
+	<P><A href=rdo_pat_type_opr.htm">Тип образца "Операция"</A></P>
+	<P><A href=rdo_pat_type_keyboard.htm">Тип образца "Клавиатурная операция"</A></P>
+	<P><A href="../rdo_res/rdo_res_trace_descr.htm">Трассировка состояния объектов РДО</A></P>
 </DIV>
-	<BR><SCRIPT src="../navbar.js"></SCRIPT>
+	<BR><SCRIPT src="../../../shared/scripts/navbar.js"></SCRIPT>
 </BODY>
 </HTML>

@@ -1,24 +1,24 @@
 ﻿<HTML>
 <HEAD>
 <TITLE>Арифметические и логические выражения</TITLE>
-<LINK rel = "stylesheet" type = "text/css" href = "../styles.css">
+<LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
 </HEAD>
 <BODY>
 	<DIV>
 		<H1>АРИФМЕТИЧЕСКИЕ И ЛОГИЧЕСКИЕ ВЫРАЖЕНИЯ</H1>
 		<P><A name="arith_expr"></A><B>Арифметические выражения</B> в данной версии языка могут быть целого, вещественного, перечислимого типов 
-            а также иметь <A href="../html/rdo_base_res_types.htm">тип ресурса</A>, описанный в модели. Выражения целого и вещественного типов состоят из операндов, знаков арифметических операций и круглых скобок.</P>
+            а также иметь <A href="rdo_base_res_types.htm">тип ресурса</A>, описанный в модели. Выражения целого и вещественного типов состоят из операндов, знаков арифметических операций и круглых скобок.</P>
 		<P><A name="oper"></A><B>Операндами</B> арифметического выражения служат:</P>
 		<UL>
-			<LI><A href="../html/rdo_obj_const_fun_sec.htm#const_desc">численные константы</A>;</LI>
-			<LI><A href="../html/rdo_obj_const_fun_sec.htm#const_desc">символьные константы</A>;</LI>
-			<LI><A href="../html/rdo_base_std_var_func.htm">глобальные переменные и функции</A>;</LI>
-			<LI><A href="../html/rdo_obj_fun.htm">функции</A>;</LI>
-			<LI><A href="../html/rdo_obj_sec.htm">последовательности</A>;</LI>
-			<LI><A href="../html/rdo_base_res_types.htm">параметры ресурсов</A>;</LI>
-			<LI><A href="../html/rdo_obj_pat.htm">параметры релевантных ресурсов</A>;</LI>
-			<LI><A href="../html/rdo_obj_pat.htm#param_desc">параметры образцов</A>;</LI>
-			<LI><A href="../html/rdo_obj_fun.htm#param_desc">параметры функций</A>.</LI>
+			<LI><A href="../rdo_obj/rdo_obj_const_fun_sec.htm#const_desc">численные константы</A>;</LI>
+			<LI><A href="../rdo_obj/rdo_obj_const_fun_sec.htm#const_desc">символьные константы</A>;</LI>
+			<LI><A href="rdo_base_std_var_func.htm">глобальные переменные и функции</A>;</LI>
+			<LI><A href="../rdo_obj/rdo_obj_fun.htm">функции</A>;</LI>
+			<LI><A href="../rdo_obj/rdo_obj_sec/rdo_obj_sec.htm">последовательности</A>;</LI>
+			<LI><A href="rdo_base_res_types.htm">параметры ресурсов</A>;</LI>
+			<LI><A href="../rdo_obj/rdo_obj_pat.htm">параметры релевантных ресурсов</A>;</LI>
+			<LI><A href="../rdo_obj/rdo_obj_pat.htm#param_desc">параметры образцов</A>;</LI>
+			<LI><A href="../rdo_obj/rdo_obj_fun.htm#param_desc">параметры функций</A>.</LI>
 		</UL>
 		<P>Возможность использования операндов зависит от контекста. Так, параметры функции можно использовать в арифметических выражениях лишь в теле алгоритмических функций, а параметры образца и параметры релевантных ресурсов - в теле образцов.</P>
 		<P><A name="operations"></A><A name="operations_plus"></A><A name="operations_minus"></A><A name="operations_star"></A><A name="operations_div"></A>В выражениях целого и вещественного типа допустимы следующие арифметические операции: сложение (+), вычитание (-), умножение (*), деление (/). Порядок вычисления значения выражения определяется старшинством арифметических операций и скобками. Сначала выполняется вычисление значений в скобках, затем умножение и деление и, наконец, сложение и вычитание.</P>
@@ -96,8 +96,8 @@
 		<PRE class="samples">not 1 &gt; 2 and 10 &gt; 3 - ИСТИНА</PRE>
 		<PRE class="samples">not(1 &gt; 2 or 10 &gt; 3) - ЛОЖЬ</PRE>
 		<H4>См. также</H4>
-		<P><A href="../html/rdo_base_types.htm">Типы данных. Соответствие типов</A></P>
+		<P><A href="rdo_base_types.htm">Типы данных. Соответствие типов</A></P>
 	</DIV>
-	<BR><SCRIPT src="../navbar.js"></SCRIPT>
+	<BR><SCRIPT src="../../../shared/scripts/navbar.js"></SCRIPT>
 </BODY>
 </HTML>

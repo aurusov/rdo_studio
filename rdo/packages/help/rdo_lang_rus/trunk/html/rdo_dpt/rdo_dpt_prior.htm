@@ -1,7 +1,7 @@
 ﻿<HTML>
 <HEAD>
 <TITLE>ОПИСАНИЕ ТОЧКИ ПРИНЯТИЯ РЕШЕНИЙ ТИПА PRIOR</TITLE>
-<LINK rel = "stylesheet" type = "text/css" href = "../styles.css">
+<LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
 <script type="text/javascript">
 function toggle_display(e)
 {
@@ -17,25 +17,25 @@ function toggle_display(e)
 <DIV>
 	<H1>ТОЧКА ПРИНЯТИЯ РЕШЕНИЙ ТИПА PRIOR</H1>
 		<P>Алгоритм обработки точек принятия решений типа prior следующий. При каждом событии после изменения состояния системы и сбора статистической информации проверяются предусловия точек принятия решений в порядке убывания их приоритетов.</P>
-		<P>Описание точек принятия решений типа prior аналогично <A href="../html/rdo_dpt_some.htm">some</A>:</P>
-		<PRE class="syntax">$Decision_point <A class="syntax" href="#dpt_some_pat">&lt;имя_точки&gt;</A> : prior [ <A class="syntax" href="../html/rdo_res_trace_descr.htm#dpt_trace">&lt;признак_трассировки&gt;</A> ]
-$Condition <A class="syntax" href="../html/rdo_obj_dpt.htm#init_cond">&lt;условие_активизации_точки&gt;</A>
-$Activities <A class="syntax" href="../html/rdo_obj_dpt.htm">&lt;описание_активности&gt;</A> { &lt;описание_активности&gt; }
+		<P>Описание точек принятия решений типа prior аналогично <A href="rdo_dpt_some.htm">some</A>:</P>
+		<PRE class="syntax">$Decision_point <A class="syntax" href="#dpt_some_pat">&lt;имя_точки&gt;</A> : prior [ <A class="syntax" href="../rdo_res/rdo_res_trace_descr.htm#dpt_trace">&lt;признак_трассировки&gt;</A> ]
+$Condition <A class="syntax" href="../rdo_obj/rdo_obj_dpt.htm#init_cond">&lt;условие_активизации_точки&gt;</A>
+$Activities <A class="syntax" href="../rdo_obj/rdo_obj_dpt.htm">&lt;описание_активности&gt;</A> { &lt;описание_активности&gt; }
 $End</PRE>
 <DL class="syntax">
 					<DT class="syntax"><A name="rest_eval"></A><I>оценка_стоимости_оставшегося_пути_на_графе</I></DT>
-					<DD class="syntax">Эвристическая оценочная функция стоимости оставшегося пути до целевой вершины задается <A href="../html/rdo_base_equations.htm">арифметическим выражением</A> целого либо вещественного типа.</DD>
+					<DD class="syntax">Эвристическая оценочная функция стоимости оставшегося пути до целевой вершины задается <A href="../rdo_base/rdo_base_equations.htm">арифметическим выражением</A> целого либо вещественного типа.</DD>
 					<DT class="syntax"><A name="comp_feat"></A><I>признак_сравнения_вершин</I></DT>
 					<DD class="syntax">Признак сравнения вершин задается зарезервированным словом <FONT class="syntax">YES</FONT>, если необходимо сравнивать каждую вновь порожденную в процессе поиска вершину с вершинами, уже находящимися в графе, и зарезервированным словом <FONT class="syntax">NO</FONT>, если сравнивать не нужно. Необходимость в сравнении вершин зависит от конкретной задачи, решаемой поиском на графе.</DD>
 		<DT class="syntax"><A class="syntax" name="search_act_desc"></A><I>описание активности</I></DT>
-		<PRE class="syntax"><A class="syntax" href="../html/rdo_obj_dpt.htm#dpt_act_name">&lt;имя_активности&gt;</A> : <A class="syntax" href="#dpt_search_pat">&lt;имя_образца&gt;</A> [ <A class="syntax" href="../html/rdo_obj_dpt.htm#dpt_act_key">&lt;код_клавиши&gt;</A> ]
-[ <A class="syntax" href="../html/rdo_obj_dpt.htm#dpt_act_params">&lt;значения_параметров_образца&gt;</A> ]
+		<PRE class="syntax"><A class="syntax" href="../rdo_obj/rdo_obj_dpt.htm#dpt_act_name">&lt;имя_активности&gt;</A> : <A class="syntax" href="#dpt_search_pat">&lt;имя_образца&gt;</A> [ <A class="syntax" href="../rdo_obj/rdo_obj_dpt.htm#dpt_act_key">&lt;код_клавиши&gt;</A> ]
+[ <A class="syntax" href="../rdo_obj/rdo_obj_dpt.htm#dpt_act_params">&lt;значения_параметров_образца&gt;</A> ]
 [ <A class="syntax" href="#dpt_act_prior">&lt;приоритет_активности&gt;</A> ]</PRE>
 		<DT class="syntax"><A name="dpt_some_pat"></A><I>имя_образца</I></DT>
 			<P>При написании активности типа prior допустимо использовать все существующие типы образцов</P>
 		<DT class="syntax"><A name="dpt_act_priot"></A><I>приоритет активности</I>
 			<P>Приоритет активности имеет следующий формат:
-			<PRE class="syntax">CF = <<a href=../html/rdo_base_equations.htm>арифметическое выражение</a>></PRE>
+			<PRE class="syntax">CF = <<a href=rdo_base/rdo_base_equations.htm>арифметическое выражение</a>></PRE>
 			<DL class="syntax">
 				<DT class="syntax"><I>арифметическое_выражение</I></DT>
 				<DD class="syntax">Арифметическое выражение должно иметь целый или вещественный тип, и его значение должно лежать в диапазоне [0; 1].</DD>
@@ -57,10 +57,10 @@ $Activities
 $End</PRE>
 		</DIV>
 		<H4>См. также</H4>
-		<P><A href="../html/rdo_dpt_some.htm">Точка принятия решений типа some</A></P>
-		<P><A href="../html/rdo_dpt_search.htm">Точка принятия решений типа search</A></P>
-		<P><A href="../html/rdo_obj_dpt.htm">Описание точек принятия решений в РДО</A></P>
+		<P><A href="rdo_dpt_some.htm">Точка принятия решений типа some</A></P>
+		<P><A href="rdo_dpt_search.htm">Точка принятия решений типа search</A></P>
+		<P><A href="../rdo_obj/rdo_obj_dpt.htm">Описание точек принятия решений в РДО</A></P>
 	</DIV>
-	<BR><SCRIPT src="../navbar.js"></SCRIPT>
+	<BR><SCRIPT src="../../../shared/scripts/navbar.js"></SCRIPT>
 </BODY>
 </HTML>
