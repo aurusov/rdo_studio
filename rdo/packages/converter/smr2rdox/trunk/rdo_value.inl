@@ -13,34 +13,34 @@
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
-inline RDOValue::RDOValue(CREF(rsint) value)
-	: RDOParserSrcInfo(rdoRuntime::RDOValue(value).getAsString())
+inline RDOValue::RDOValue(CREF(rsint) value, CREF(RDOParserSrcInfo) src_info)
+	: RDOParserSrcInfo(src_info)
 	, m_value(value)
 	, m_type (rdo::Factory<RDOType__int>::create())
 {}
 
-inline RDOValue::RDOValue(CREF(ruint) value)
-	: RDOParserSrcInfo(rdoRuntime::RDOValue(value).getAsString())
+inline RDOValue::RDOValue(CREF(ruint) value, CREF(RDOParserSrcInfo) src_info)
+	: RDOParserSrcInfo(src_info)
 	, m_value(value)
 	, m_type (rdo::Factory<RDOType__int>::create())
 {}
 
-inline RDOValue::RDOValue(CREF(double) value)
-	: RDOParserSrcInfo(rdoRuntime::RDOValue(value).getAsString())
+inline RDOValue::RDOValue(CREF(double) value, CREF(RDOParserSrcInfo) src_info)
+	: RDOParserSrcInfo(src_info)
 	, m_value(value )
 	, m_type (rdo::Factory<RDOType__real>::create())
 {}
 
-inline RDOValue::RDOValue(CREF(tstring) value)
-	: RDOParserSrcInfo(value   )
+inline RDOValue::RDOValue(CREF(tstring) value, CREF(RDOParserSrcInfo) src_info)
+	: RDOParserSrcInfo(src_info)
 	, m_value         (value   )
 	, m_type          (rdo::Factory<RDOType__string>::create())
 {}
 
-inline RDOValue::RDOValue(CREF(RDOValue) value)
-	: RDOParserSrcInfo(value.src_info())
-	, m_value         (value.value()   )
-	, m_type          (value.type()    )
+inline RDOValue::RDOValue(CREF(LPRDOValue) pValue)
+	: RDOParserSrcInfo(pValue->src_info())
+	, m_value         (pValue->m_value   )
+	, m_type          (pValue->m_type    )
 {}
 
 CLOSE_RDO_CONVERTER_NAMESPACE

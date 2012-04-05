@@ -42,17 +42,17 @@ public:
 	class Param
 	{
 	public:
-		explicit Param(CREF(RDOValue) value)
-			: m_value(value)
+		explicit Param(CREF(LPRDOValue) pValue)
+			: m_pValue(pValue)
 		{}
 
-		CREF(RDOValue) param() const
+		CREF(LPRDOValue) param() const
 		{
-			return m_value;
+			return m_pValue;
 		}
 
 	private:
-		RDOValue m_value;
+		LPRDOValue m_pValue;
 	};
 	typedef std::vector<Param> ParamList;
 	enum { UNDEFINED_ID = ~0 };
@@ -66,7 +66,7 @@ public:
 
 	CREF(ParamList)  params () const { return m_paramList;           }
 
-	void  addParam(CREF(RDOValue) param);
+	void  addParam(CREF(LPRDOValue) pParam);
 	rbool getTrace() const      { return trace;  }
 	void  setTrace(rbool value) { trace = value; }
 	rbool defined () const;

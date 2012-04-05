@@ -135,13 +135,6 @@ public:
 	CREF(Error) error() const { return m_error; }
 	 REF(Error) error()       { return m_error; }
 
-	PTR(RDOValue) addValue(PTR(RDOValue) value)
-	{
-		runtime()->memory_insert(sizeof(rdoConverter::RDOValue));
-		m_allValues.push_back(value);
-		return value;
-	}
-
 	class Stack: private rdo::IndexedStack<rdo::LPISmartPtrWrapper>
 	{
 	friend class Converter;

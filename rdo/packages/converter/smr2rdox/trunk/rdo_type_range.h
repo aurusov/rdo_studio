@@ -28,17 +28,17 @@ OBJECT(RDOTypeRangeRange) IS INSTANCE_OF(RDOParserSrcInfo)
 {
 DECLARE_FACTORY(RDOTypeRangeRange);
 public:
-	void           checkRange()                     const;
-	void           checkValue(CREF(RDOValue) value) const;
-	CREF(RDOValue) getMin    () const;
-	CREF(RDOValue) getMax    () const;
+	void             checkRange()                        const;
+	void             checkValue(CREF(LPRDOValue) pValue) const;
+	CREF(LPRDOValue) getMin    () const;
+	CREF(LPRDOValue) getMax    () const;
 
 private:
-	RDOTypeRangeRange(CREF(RDOValue) min_value, CREF(RDOValue) max_value, CREF(RDOParserSrcInfo) src_info);
+	RDOTypeRangeRange(CREF(LPRDOValue) pMinValue, CREF(LPRDOValue) pMaxValue, CREF(RDOParserSrcInfo) src_info);
 	virtual ~RDOTypeRangeRange();
 
-	RDOValue m_min_value;
-	RDOValue m_max_value;
+	LPRDOValue m_pMinValue;
+	LPRDOValue m_pMaxValue;
 };
 DECLARE_POINTER(RDOTypeRangeRange);
 
@@ -58,7 +58,7 @@ private:
 	RDOTypeRange(CREF(LPRDOTypeRangeRange) range);
 	virtual ~RDOTypeRange();
 
-	LPRDOTypeRangeRange m_range;
+	LPRDOTypeRangeRange m_pRange;
 
 	DECLARE_ITypeConverter;
 };

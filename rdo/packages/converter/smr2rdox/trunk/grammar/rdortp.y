@@ -205,9 +205,6 @@
 #define CONVERTER LEXER->converter()
 #define RUNTIME   CONVERTER->runtime()
 
-#define P_RDOVALUE(A) reinterpret_cast<PTR(RDOValue)>(A)
-#define RDOVALUE(A)   (*P_RDOVALUE(A))
-
 OPEN_RDO_CONVERTER_NAMESPACE
 %}
 
@@ -264,38 +261,38 @@ rtp_header
 	: RDO_Resource_type RDO_IDENTIF_COLON rtp_vid_res
 	{
 		LEXER->enumReset();
-		PTR(RDOValue)       type_name = P_RDOVALUE($2);
-		tstring             name      = type_name->value().getIdentificator();
-		LPRDORTPResType     _rtp      = CONVERTER->findRTPResType(name);
+		LPRDOValue       pTypeName = CONVERTER->stack().pop<RDOValue>($2);
+		tstring          name      = pTypeName->value().getIdentificator();
+		LPRDORTPResType  _rtp      = CONVERTER->findRTPResType(name);
 		if (_rtp)
 		{
-			CONVERTER->error().push_only(type_name->src_info(), rdo::format(_T("Тип ресурса уже существует: %s"), name.c_str()));
+			CONVERTER->error().push_only(pTypeName->src_info(), rdo::format(_T("Тип ресурса уже существует: %s"), name.c_str()));
 			CONVERTER->error().push_only(_rtp->src_info(), _T("См. первое определение"));
 			CONVERTER->error().push_done();
 		}
-		LPRDORTPResType pResourceType = rdo::Factory<RDORTPResType>::create(CONVERTER, type_name->src_info(), $3 != 0);
+		LPRDORTPResType pResourceType = rdo::Factory<RDORTPResType>::create(CONVERTER, pTypeName->src_info(), $3 != 0);
 		ASSERT(pResourceType);
 		$$ = CONVERTER->stack().push(pResourceType);
 	}
 	|	RDO_Resource_type RDO_IDENTIF_COLON RDO_IDENTIF_COLON rtp_vid_res
 	{
 		LEXER->enumReset();
-		PTR(RDOValue)       type_name = P_RDOVALUE($2);
-		tstring             name      = type_name->value().getIdentificator();
-		LPRDORTPResType     _rtp      = CONVERTER->findRTPResType(name);
+		LPRDOValue       pTypeName = CONVERTER->stack().pop<RDOValue>($2);
+		tstring          name      = pTypeName->value().getIdentificator();
+		LPRDORTPResType  _rtp      = CONVERTER->findRTPResType(name);
 		if (_rtp)
 		{
-			CONVERTER->error().push_only(type_name->src_info(), rdo::format(_T("Тип ресурса уже существует: %s"), name.c_str()));
+			CONVERTER->error().push_only(pTypeName->src_info(), rdo::format(_T("Тип ресурса уже существует: %s"), name.c_str()));
 			CONVERTER->error().push_only(_rtp->src_info(), _T("См. первое определение"));
 			CONVERTER->error().push_done();
 		}
-		PTR(RDOValue)       prnt_type_name = P_RDOVALUE($3);
-		tstring             prnt_name      = prnt_type_name->value().getIdentificator();
-		LPRDORTPResType     _rtp_prnt      = CONVERTER->findRTPResType(prnt_name);
+		LPRDOValue       pPrntTypeName = CONVERTER->stack().pop<RDOValue>($3);
+		tstring          prnt_name     = pPrntTypeName->value().getIdentificator();
+		LPRDORTPResType  _rtp_prnt     = CONVERTER->findRTPResType(prnt_name);
 
 		if (_rtp_prnt)
 		{
-			LPRDORTPResType pResourceType = rdo::Factory<RDORTPResType>::create(CONVERTER, type_name->src_info(), $4 != 0);
+			LPRDORTPResType pResourceType = rdo::Factory<RDORTPResType>::create(CONVERTER, pTypeName->src_info(), $4 != 0);
 			ASSERT(pResourceType);
 			ruint t_ind   = 0;
 			ruint col_par = _rtp_prnt->getParams().size();
@@ -346,19 +343,19 @@ rtp_body
 rtp_param
 	: RDO_IDENTIF_COLON param_type param_value_default
 	{
-		PTR(RDOValue)  param_name = P_RDOVALUE($1);
-		LPRDOTypeParam pParamType = CONVERTER->stack().pop<RDOTypeParam>($2);
-		RDOValue       defaultValue = RDOVALUE($3);
-		if (!defaultValue.defined())
+		LPRDOValue     pParamName    = CONVERTER->stack().pop<RDOValue>($1);
+		LPRDOTypeParam pParamType    = CONVERTER->stack().pop<RDOTypeParam>($2);
+		LPRDOValue     pDefaultValue = CONVERTER->stack().pop<RDOValue>($3);
+		if (!pDefaultValue->defined())
 		{
 			LPRDOTypeParamSuchAs pTypeSuchAs = pParamType.object_dynamic_cast<RDOTypeParamSuchAs>();
 			if (pTypeSuchAs)
 			{
-				defaultValue = pTypeSuchAs->getParam()->getDefault();
+				pDefaultValue = pTypeSuchAs->getParam()->getDefault();
 			}
 		}
 
-		LPRDORTPParam pParam = rdo::Factory<RDORTPParam>::create(pParamType, defaultValue, param_name->src_info());
+		LPRDORTPParam pParam = rdo::Factory<RDORTPParam>::create(pParamType, pDefaultValue, pParamName->src_info());
 
 		rdoConverter::LPDocUpdate pColonDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(
 			@1.m_last_seek - 1,
@@ -369,7 +366,7 @@ rtp_param
 
 		rdoConverter::LPDocUpdate pNameTypeSwap = rdo::Factory<rdoConverter::UpdateSwap>::create(
 			@1.m_first_seek,
-			@1.m_first_seek + param_name->value().getIdentificator().length(),
+			@1.m_first_seek + pParamName->value().getIdentificator().length(),
 			@2.m_first_seek,
 			@2.m_last_seek
 		);
@@ -417,8 +414,8 @@ param_type
 		LPRDOTypeParam pType;
 		if (pRange)
 		{
-			if (pRange->getMin().typeID() != rdoRuntime::RDOType::t_int ||
-			    pRange->getMax().typeID() != rdoRuntime::RDOType::t_int)
+			if (pRange->getMin()->typeID() != rdoRuntime::RDOType::t_int ||
+			    pRange->getMax()->typeID() != rdoRuntime::RDOType::t_int)
 			{
 				CONVERTER->error().error(@2, _T("Диапазон целого типа должен быть целочисленным"));
 			}
@@ -488,28 +485,28 @@ param_type_range
 	}
 	| '[' RDO_INT_CONST RDO_dblpoint RDO_INT_CONST ']'
 	{
-		LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(RDOVALUE($2), RDOVALUE($4), RDOParserSrcInfo(@1, @5));
+		LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($4), RDOParserSrcInfo(@1, @5));
 		ASSERT(pRange);
 		pRange->checkRange();
 		$$ = CONVERTER->stack().push(pRange);
 	}
 	| '[' RDO_REAL_CONST RDO_dblpoint RDO_REAL_CONST ']'
 	{
-		LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(RDOVALUE($2), RDOVALUE($4), RDOParserSrcInfo(@1, @5));
+		LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($4), RDOParserSrcInfo(@1, @5));
 		ASSERT(pRange);
 		pRange->checkRange();
 		$$ = CONVERTER->stack().push(pRange);
 	}
 	| '[' RDO_REAL_CONST RDO_dblpoint RDO_INT_CONST ']'
 	{
-		LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(RDOVALUE($2), RDOVALUE($4), RDOParserSrcInfo(@1, @5));
+		LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($4), RDOParserSrcInfo(@1, @5));
 		ASSERT(pRange);
 		pRange->checkRange();
 		$$ = CONVERTER->stack().push(pRange);
 	}
 	| '[' RDO_INT_CONST RDO_dblpoint RDO_REAL_CONST ']'
 	{
-		LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(RDOVALUE($2), RDOVALUE($4), RDOParserSrcInfo(@1, @5));
+		LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($4), RDOParserSrcInfo(@1, @5));
 		ASSERT(pRange);
 		pRange->checkRange();
 		$$ = CONVERTER->stack().push(pRange);
@@ -577,7 +574,7 @@ param_type_enum_list
 	{
 		LPRDOEnumType pEnum = rdo::Factory<RDOEnumType>::create();
 		ASSERT(pEnum);
-		pEnum->add(RDOVALUE($1));
+		pEnum->add(CONVERTER->stack().pop<RDOValue>($1));
 		LEXER->enumBegin();
 		$$ = CONVERTER->stack().push(pEnum);
 	}
@@ -587,7 +584,7 @@ param_type_enum_list
 		{
 			LPRDOEnumType pEnum = CONVERTER->stack().pop<RDOEnumType>($1);
 			ASSERT(pEnum);
-			pEnum->add(RDOVALUE($3));
+			pEnum->add(CONVERTER->stack().pop<RDOValue>($3));
 			$$ = CONVERTER->stack().push(pEnum);
 		}
 		else
@@ -601,9 +598,9 @@ param_type_enum_list
 		{
 			LPRDOEnumType pEnum = CONVERTER->stack().pop<RDOEnumType>($1);
 			ASSERT(pEnum);
-			pEnum->add(RDOVALUE($2));
+			pEnum->add(CONVERTER->stack().pop<RDOValue>($2));
 			$$ = CONVERTER->stack().push(pEnum);
-			CONVERTER->error().warning(@1, rdo::format(_T("Пропущена запятая перед: %s"), RDOVALUE($2)->getIdentificator().c_str()));
+			CONVERTER->error().warning(@1, rdo::format(_T("Пропущена запятая перед: %s"), CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator().c_str()));
 		}
 		else
 		{
@@ -639,8 +636,8 @@ param_type_enum_list
 param_type_such_as
 	: RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF
 	{
-		tstring type  = RDOVALUE($2)->getIdentificator();
-		tstring param = RDOVALUE($4)->getIdentificator();
+		tstring type  = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		tstring param = CONVERTER->stack().pop<RDOValue>($4)->value().getIdentificator();
 		LPRDORTPResType pResType = CONVERTER->findRTPResType(type);
 		if (!pResType)
 		{
@@ -659,7 +656,7 @@ param_type_such_as
 	}
 	| RDO_such_as RDO_IDENTIF
 	{
-		tstring constName = RDOVALUE($2)->getIdentificator();
+		tstring constName = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		LPRDOFUNConstant pConstant = CONVERTER->findFUNConstant(constName);
 		if (!pConstant)
 		{
@@ -673,7 +670,7 @@ param_type_such_as
 	}
 	| RDO_such_as RDO_IDENTIF '.' error
 	{
-		tstring type = RDOVALUE($2)->getIdentificator();
+		tstring type = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		LPRDORTPResType pResType = CONVERTER->findRTPResType(type);
 		if (!pResType)
 		{
@@ -693,7 +690,7 @@ param_type_such_as
 param_value_default
 	: /* empty */
 	{
-		$$ = (int)CONVERTER->addValue(new rdoConverter::RDOValue());
+		$$ = CONVERTER->stack().push(rdo::Factory<rdoConverter::RDOValue>::create());
 	}
 	| '=' RDO_INT_CONST
 	{

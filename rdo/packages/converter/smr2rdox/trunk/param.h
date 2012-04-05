@@ -26,18 +26,18 @@ OBJECT(RDOParam) IS INSTANCE_OF(RDOParserSrcInfo)
 {
 DECLARE_FACTORY(RDOParam)
 public:
-	CREF(tstring)  name      () const { return src_info().src_text(); }
-	LPRDOTypeParam getType   () const { return m_pType;               }
-	CREF(RDOValue) getDefault() const { return m_default;             }
+	CREF(tstring)    name      () const { return src_info().src_text(); }
+	LPRDOTypeParam   getType   () const { return m_pType;               }
+	CREF(LPRDOValue) getDefault() const { return m_pDefault;            }
 
 protected:
-	RDOParam(CREF(tstring)          name,     CREF(LPRDOTypeParam) pType, RDOValue defaultValue = RDOValue());
-	RDOParam(CREF(RDOParserSrcInfo) src_info, CREF(LPRDOTypeParam) pType, RDOValue defaultValue = RDOValue());
+	RDOParam(CREF(tstring)          name,     CREF(LPRDOTypeParam) pType, CREF(LPRDOValue) pDefault = LPRDOValue(NULL));
+	RDOParam(CREF(RDOParserSrcInfo) src_info, CREF(LPRDOTypeParam) pType, CREF(LPRDOValue) pDefault = LPRDOValue(NULL));
 	virtual ~RDOParam();
 
 private:
 	LPRDOTypeParam m_pType;
-	RDOValue       m_default;
+	LPRDOValue     m_pDefault;
 
 	void checkDefault();
 };

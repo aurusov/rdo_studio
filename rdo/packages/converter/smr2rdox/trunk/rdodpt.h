@@ -75,8 +75,8 @@ public:
 	CREF(tstring)   name   () const { return src_info().src_text(); }
 	LPRDOPATPattern pattern() const { return m_pPattern;            }
 
-	void addParam(CREF(RDOValue) param    );
-	void endParam(CREF(YYLTYPE)  param_pos);
+	void addParam(CREF(LPRDOValue) pParam   );
+	void endParam(CREF(YYLTYPE)    param_pos);
 
 	rbool setPrior(REF(LPRDOFUNArithm) pPrior);
 

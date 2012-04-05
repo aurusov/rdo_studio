@@ -52,21 +52,23 @@ void RDORSSResource::writeModelStructure(REF(std::ostream) stream) const
 	stream << (getID() + 1) << _T(" ") << name() << _T(" ") << getType()->getNumber() << std::endl;
 }
 
-void RDORSSResource::addParam(CREF(RDOValue) param)
+void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 {
+	ASSERT(pParam);
+
 	if (m_currParam == getType()->getParams().end())
 	{
-		Converter::s_converter()->error().push_only(param.src_info(), _T("—лишком много параметров"));
+		Converter::s_converter()->error().push_only(pParam->src_info(), _T("—лишком много параметров"));
 		Converter::s_converter()->error().push_only(getType()->src_info(), _T("—м. тип ресурса"));
 		Converter::s_converter()->error().push_done();
 	}
 	try
 	{
-		if (param->getAsString() == _T("*"))
+		if (pParam->value().getAsString() == _T("*"))
 		{
-			if (!(*m_currParam)->getDefault().defined())
+			if (!(*m_currParam)->getDefault()->defined())
 			{
-				Converter::s_converter()->error().push_only(param.src_info(), _T("Ќевозможно использовать '*', к.т. отсутствует значение по-умолчанию"));
+				Converter::s_converter()->error().push_only(pParam->src_info(), _T("Ќевозможно использовать '*', к.т. отсутствует значение по-умолчанию"));
 				Converter::s_converter()->error().push_only((*m_currParam)->getType()->src_info(), _T("—м. описание параметра"));
 				Converter::s_converter()->error().push_done();
 			}
@@ -75,7 +77,7 @@ void RDORSSResource::addParam(CREF(RDOValue) param)
 		}
 		else
 		{
-			m_paramList.push_back(Param((*m_currParam)->getType()->value_cast(param)));
+			m_paramList.push_back(Param((*m_currParam)->getType()->value_cast(pParam)));
 			m_currParam++;
 		}
 	}
@@ -95,7 +97,7 @@ rdoRuntime::LPRDOCalc RDORSSResource::createCalc() const
 	std::vector<rdoRuntime::RDOValue> paramList;
 	STL_FOR_ALL_CONST(params(), it)
 	{
-		paramList.push_back(it->param().value());
+		paramList.push_back(it->param()->value());
 	}
 
 	rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcNop>::create();
@@ -118,7 +120,7 @@ rdoRuntime::LPRDOCalc RDOPROCResource::createCalc() const
 	std::vector<rdoRuntime::RDOValue> paramList;
 	STL_FOR_ALL_CONST(params(), it)
 	{
-		paramList.push_back(it->param().value());
+		paramList.push_back(it->param()->value());
 	}
 
 	rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcNop>::create();

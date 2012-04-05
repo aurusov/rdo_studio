@@ -201,9 +201,6 @@
 #define CONVERTER LEXER->converter()
 #define RUNTIME   CONVERTER->runtime()
 
-#define P_RDOVALUE(A) reinterpret_cast<PTR(RDOValue)>(A)
-#define RDOVALUE(A)   (*P_RDOVALUE(A))
-
 OPEN_RDO_CONVERTER_NAMESPACE
 %}
 
@@ -218,7 +215,7 @@ smr_main
 smr_model
 	: RDO_Model_name '=' RDO_IDENTIF 
 	{
-		LPRDOSMR pSMR = rdo::Factory<RDOSMR>::create(P_RDOVALUE($3)->value().getIdentificator());
+		LPRDOSMR pSMR = rdo::Factory<RDOSMR>::create(CONVERTER->stack().pop<RDOValue>($3)->value().getIdentificator());
 		ASSERT(pSMR);
 		$$ = CONVERTER->stack().push(pSMR);
 	}
@@ -238,7 +235,7 @@ smr_descr
 	{
 		LPRDOSMR pSMR = CONVERTER->getSMR();
 		ASSERT(pSMR);
-		pSMR->setFile( "Resource_file", P_RDOVALUE($4)->value().getIdentificator() );
+		pSMR->setFile( "Resource_file", CONVERTER->stack().pop<RDOValue>($4)->value().getIdentificator() );
 	}
 	| smr_descr RDO_Resource_file '=' error
 	{
@@ -252,7 +249,7 @@ smr_descr
 	{
 		LPRDOSMR pSMR = CONVERTER->getSMR();
 		ASSERT(pSMR);
-		pSMR->setFile( "OprIev_file", P_RDOVALUE($4)->value().getIdentificator() );
+		pSMR->setFile( "OprIev_file", CONVERTER->stack().pop<RDOValue>($4)->value().getIdentificator() );
 	}
 	| smr_descr RDO_OprIev_file '=' error
 	{
@@ -266,7 +263,7 @@ smr_descr
 	{
 		LPRDOSMR pSMR = CONVERTER->getSMR();
 		ASSERT(pSMR);
-		pSMR->setFile( "Frame_file", P_RDOVALUE($4)->value().getIdentificator() );
+		pSMR->setFile( "Frame_file", CONVERTER->stack().pop<RDOValue>($4)->value().getIdentificator() );
 	}
 	| smr_descr RDO_Frame_file '=' error
 	{
@@ -280,7 +277,7 @@ smr_descr
 	{
 		LPRDOSMR pSMR = CONVERTER->getSMR();
 		ASSERT(pSMR);
-		pSMR->setFile( "Statistic_file", P_RDOVALUE($4)->value().getIdentificator() );
+		pSMR->setFile( "Statistic_file", CONVERTER->stack().pop<RDOValue>($4)->value().getIdentificator() );
 	}
 	| smr_descr RDO_Statistic_file '=' error
 	{
@@ -294,7 +291,7 @@ smr_descr
 	{
 		LPRDOSMR pSMR = CONVERTER->getSMR();
 		ASSERT(pSMR);
-		pSMR->setFile( "Results_file", P_RDOVALUE($4)->value().getIdentificator() );
+		pSMR->setFile( "Results_file", CONVERTER->stack().pop<RDOValue>($4)->value().getIdentificator() );
 	}
 	| smr_descr RDO_Results_file '=' error
 	{
@@ -308,7 +305,7 @@ smr_descr
 	{
 		LPRDOSMR pSMR = CONVERTER->getSMR();
 		ASSERT(pSMR);
-		pSMR->setFile( "Trace_file", P_RDOVALUE($4)->value().getIdentificator() );
+		pSMR->setFile( "Trace_file", CONVERTER->stack().pop<RDOValue>($4)->value().getIdentificator() );
 	}
 	| smr_descr RDO_Trace_file '=' error
 	{
@@ -320,8 +317,8 @@ smr_descr
 	}
 	| smr_descr RDO_External_Model RDO_IDENTIF '=' RDO_IDENTIF
 	{
-		tstring alias = P_RDOVALUE($3)->value().getIdentificator();
-		tstring model = P_RDOVALUE($5)->value().getIdentificator();
+		tstring alias = CONVERTER->stack().pop<RDOValue>($3)->value().getIdentificator();
+		tstring model = CONVERTER->stack().pop<RDOValue>($5)->value().getIdentificator();
 		LPRDOSMR pSMR = CONVERTER->getSMR();
 		ASSERT(pSMR);
 		pSMR->setExternalModelName(alias, model);

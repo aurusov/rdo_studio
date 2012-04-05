@@ -112,8 +112,8 @@ public:
 
 	rdoRuntime::LPRDOCalc       createCalc(CREF(LPRDOTypeParam) pForType = NULL);
 	rdoRuntime::LPRDOCalc       calc      () const { return m_pCalc;                    }
-	CREF(RDOValue)              value     () const { return m_value;                    }
-	LPRDOType                   type      () const { return m_value.type();             }
+	CREF(LPRDOValue)            value     () const { return m_pValue;                   }
+	LPRDOType                   type      () const { return m_pValue->type();           }
 	LPRDOEnumType               enumType  () const { return type().object_static_cast<RDOEnumType>(); }
 	rdoRuntime::RDOType::TypeID typeID    () const { return type()->type()->typeID();   }
 
@@ -127,17 +127,17 @@ public:
 	void checkParamType(CREF(LPRDOTypeParam) pType);
 
 private:
-	RDOFUNArithm(CREF(RDOValue) value);
-	RDOFUNArithm(CREF(RDOValue) value, CREF(rdoRuntime::LPRDOCalc) pCalc);
-	RDOFUNArithm(CREF(RDOValue) resName, CREF(RDOValue) parName);
+	RDOFUNArithm(CREF(LPRDOValue) pValue);
+	RDOFUNArithm(CREF(LPRDOValue) pValue, CREF(rdoRuntime::LPRDOCalc) pCalc);
+	RDOFUNArithm(CREF(LPRDOValue) pResName, CREF(LPRDOValue) pParName);
 	virtual ~RDOFUNArithm();
 
-	RDOValue                   m_value;
+	LPRDOValue                 m_pValue;
 	rdoRuntime::LPRDOCalc      m_pCalc;
 	RDOFUNDoubleToIntByResult  m_intOrDouble;
 
-	void init(CREF(RDOValue) value);
-	void init(CREF(RDOValue) resName, CREF(RDOValue) parName);
+	void init(CREF(LPRDOValue) pValue);
+	void init(CREF(LPRDOValue) pResName, CREF(LPRDOValue) pParName);
 
 	enum CastResult
 	{
@@ -158,7 +158,7 @@ public:
 	int getNumber() const { return m_number; }
 
 private:
-	RDOFUNConstant(CREF(RDOParserSrcInfo) src_info, CREF(LPRDOTypeParam) pType, CREF(RDOValue) defaultValue);
+	RDOFUNConstant(CREF(RDOParserSrcInfo) src_info, CREF(LPRDOTypeParam) pType, CREF(LPRDOValue) pDefault);
 	virtual ~RDOFUNConstant();
 
 	int m_number;
@@ -320,10 +320,10 @@ DECLARE_FACTORY(RDOFUNSequenceByHistReal);
 public:
 	typedef std::vector<rdoRuntime::RDOValue> ValueList;
 
-	void addReal(CREF(RDOValue) from, CREF(RDOValue) to, CREF(RDOValue) freq);
+	void addReal(CREF(LPRDOValue) pFrom, CREF(LPRDOValue) pTo, CREF(LPRDOValue) pFreq);
 
 private:
-	RDOFUNSequenceByHistReal(CREF(LPRDOFUNSequenceByHistHeader) pHeader, CREF(RDOValue) from, CREF(RDOValue) to, CREF(RDOValue) freq);
+	RDOFUNSequenceByHistReal(CREF(LPRDOFUNSequenceByHistHeader) pHeader, CREF(LPRDOValue) pFrom, CREF(LPRDOValue) pTo, CREF(LPRDOValue) pFreq);
 	virtual void createCalcs();
 
 	ValueList m_from;
@@ -341,10 +341,10 @@ DECLARE_FACTORY(RDOFUNSequenceByHistEnum);
 public:
 	typedef std::vector<rdoRuntime::RDOValue> ValueList;
 
-	void addEnum(CREF(RDOValue) value, CREF(RDOValue) freq);
+	void addEnum(CREF(LPRDOValue) pValue, CREF(LPRDOValue) pFreq);
 
 private:
-	RDOFUNSequenceByHistEnum(CREF(LPRDOFUNSequenceByHistHeader) pHeader, CREF(RDOValue) value, CREF(RDOValue) freq);
+	RDOFUNSequenceByHistEnum(CREF(LPRDOFUNSequenceByHistHeader) pHeader, CREF(LPRDOValue) pValue, CREF(LPRDOValue) pFreq);
 	virtual void createCalcs();
 
 	ValueList m_values;
@@ -361,21 +361,21 @@ class RDOFUNSequenceEnumerative: public RDOFUNSequence
 {
 DECLARE_FACTORY(RDOFUNSequenceEnumerative);
 public:
-	void addValue(CREF(RDOValue) value)
+	void addValue(CREF(LPRDOValue) pValue)
 	{
-		m_valueList.push_back(m_pHeader->getType()->value_cast(value));
+		m_valueList.push_back(m_pHeader->getType()->value_cast(pValue));
 	}
 
 private:
-	RDOFUNSequenceEnumerative(CREF(LPRDOFUNSequenceHeader) pHeader, CREF(RDOValue) value)
+	RDOFUNSequenceEnumerative(CREF(LPRDOFUNSequenceHeader) pHeader, CREF(LPRDOValue) pValue)
 		: RDOFUNSequence(pHeader, 0)
 	{
-		addValue(value);
+		addValue(pValue);
 	}
 	virtual ~RDOFUNSequenceEnumerative()
 	{}
 
-	typedef std::vector<RDOValue> ValueList;
+	typedef std::vector<LPRDOValue> ValueList;
 	ValueList m_valueList;
 
 	virtual void           createCalcs   ();

@@ -210,9 +210,6 @@
 #define CONVERTER LEXER->converter()
 #define RUNTIME   CONVERTER->runtime()
 
-#define P_RDOVALUE(A) reinterpret_cast<PTR(RDOValue)>(A)
-#define RDOVALUE(A)   (*P_RDOVALUE(A))
-
 OPEN_RDO_CONVERTER_NAMESPACE
 
 typedef rdoRuntime::RDOFRMFrame::RDOFRMColor      RDOFRMColor;
@@ -273,13 +270,13 @@ frm_main
 frm_begin
 	: RDO_Frame RDO_IDENTIF
 	{
-		LPRDOFRMFrame pFrame = rdo::Factory<RDOFRMFrame>::create(P_RDOVALUE($2)->src_info());
+		LPRDOFRMFrame pFrame = rdo::Factory<RDOFRMFrame>::create(CONVERTER->stack().pop<RDOValue>($2)->src_info());
 		ASSERT(pFrame);
 		$$ = CONVERTER->stack().push(pFrame);
 	}
 	| RDO_Frame RDO_IDENTIF RDO_Show_if fun_logic
 	{
-		LPRDOFRMFrame pFrame = rdo::Factory<RDOFRMFrame>::create(P_RDOVALUE($2)->src_info(), CONVERTER->stack().pop<RDOFUNLogic>($4));
+		LPRDOFRMFrame pFrame = rdo::Factory<RDOFRMFrame>::create(CONVERTER->stack().pop<RDOValue>($2)->src_info(), CONVERTER->stack().pop<RDOFUNLogic>($4));
 		ASSERT(pFrame);
 		$$ = CONVERTER->stack().push(pFrame);
 	}
@@ -324,14 +321,14 @@ frm_backpicture
 	{
 		LPRDOFRMFrame pFrame = CONVERTER->stack().pop<RDOFRMFrame>($1);
 		ASSERT(pFrame);
-		pFrame->frame()->setBackPicture(P_RDOVALUE($2)->value().getIdentificator());
+		pFrame->frame()->setBackPicture(CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator());
 		$$ = CONVERTER->stack().push(pFrame);
 	}
 	| frm_background RDO_INT_CONST RDO_INT_CONST
 	{
 		LPRDOFRMFrame pFrame = CONVERTER->stack().pop<RDOFRMFrame>($1);
 		ASSERT(pFrame);
-		pFrame->frame()->setBackPicture(P_RDOVALUE($2)->value().getInt(), P_RDOVALUE($3)->value().getInt());
+		pFrame->frame()->setBackPicture(CONVERTER->stack().pop<RDOValue>($2)->value().getInt(), CONVERTER->stack().pop<RDOValue>($3)->value().getInt());
 		$$ = CONVERTER->stack().push(pFrame);
 	}
 	| frm_background RDO_INT_CONST RDO_INT_CONST error
@@ -466,10 +463,10 @@ frm_color
 	}
 	| '<' RDO_INT_CONST RDO_INT_CONST RDO_INT_CONST '>'
 	{
-		LPRDOFUNArithm pRed   = rdo::Factory<RDOFUNArithm>::create(RDOVALUE($2));
-		LPRDOFUNArithm pGreen = rdo::Factory<RDOFUNArithm>::create(RDOVALUE($3));
-		LPRDOFUNArithm pBlue  = rdo::Factory<RDOFUNArithm>::create(RDOVALUE($4));
-		LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(RDOValue(0), RDOValue(255), RDOParserSrcInfo());
+		LPRDOFUNArithm pRed   = rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($2));
+		LPRDOFUNArithm pGreen = rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($3));
+		LPRDOFUNArithm pBlue  = rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($4));
+		LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(ruint(0), RDOParserSrcInfo()), rdo::Factory<RDOValue>::create(ruint(255), RDOParserSrcInfo()), RDOParserSrcInfo());
 		LPRDOTypeIntRange   pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
 		LPRDOTypeParam      pType     = rdo::Factory<RDOTypeParam>::create(pIntRange, RDOParserSrcInfo());
 		pRed->checkParamType  (pType);
@@ -497,7 +494,7 @@ frm_color
 		LPRDOFUNArithm pRed   = CONVERTER->stack().pop<RDOFUNArithm>($2);
 		LPRDOFUNArithm pGreen = CONVERTER->stack().pop<RDOFUNArithm>($4);
 		LPRDOFUNArithm pBlue  = CONVERTER->stack().pop<RDOFUNArithm>($6);
-		LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(RDOValue(0), RDOValue(255), RDOParserSrcInfo());
+		LPRDOTypeRangeRange pRange    = rdo::Factory<RDOTypeRangeRange>::create(rdo::Factory<RDOValue>::create(ruint(0), RDOParserSrcInfo()), rdo::Factory<RDOValue>::create(ruint(255), RDOParserSrcInfo()), RDOParserSrcInfo());
 		LPRDOTypeIntRange   pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
 		LPRDOTypeParam      pType     = rdo::Factory<RDOTypeParam>::create(pIntRange, RDOParserSrcInfo());
 		pRed->checkParamType  (pType);
@@ -549,7 +546,7 @@ frm_postype
 	}
 	| '#' RDO_INT_CONST
 	{
-		int rilet_id = P_RDOVALUE($2)->value().getInt();
+		int rilet_id = CONVERTER->stack().pop<RDOValue>($2)->value().getInt();
 		if (rilet_id <= 0)
 		{
 			CONVERTER->error().error(@2, _T("Номер рулетки должен быть больше нуля"));
@@ -623,10 +620,10 @@ frm_position_wh
 frm_ruler
 	: RDO_ruler '[' RDO_INT_CONST ',' frm_position_xy ',' frm_position_xy ']'
 	{
-		LPRDOFRMRulet pRulet = RUNTIME->lastFrame()->findRulet(P_RDOVALUE($3)->value().getInt());
+		LPRDOFRMRulet pRulet = RUNTIME->lastFrame()->findRulet(CONVERTER->stack().pop<RDOValue>($3)->value().getInt());
 		if (pRulet)
 		{
-			CONVERTER->error().push_only(@3, rdo::format(_T("Рулетка с номером '%d' уже существует"), P_RDOVALUE($3)->value().getInt()));
+			CONVERTER->error().push_only(@3, rdo::format(_T("Рулетка с номером '%d' уже существует"), CONVERTER->stack().pop<RDOValue>($3)->value().getInt()));
 			CONVERTER->error().push_only(pRulet->src_info(), _T("См. первое определение"));
 			CONVERTER->error().push_done();
 		}
@@ -642,7 +639,7 @@ frm_ruler
 		{
 			CONVERTER->error().error(@7, _T("Координаты рулетки должны быть абсолютными"));
 		}
-		pRulet = rdo::Factory<RDOFRMRulet>::create(RDOParserSrcInfo(@1), P_RDOVALUE($3)->value().getInt(), pX, pY);
+		pRulet = rdo::Factory<RDOFRMRulet>::create(RDOParserSrcInfo(@1), CONVERTER->stack().pop<RDOValue>($3)->value().getInt(), pX, pY);
 		ASSERT(pRulet);
 		$$ = CONVERTER->stack().push(pRulet);
 	}
@@ -865,7 +862,7 @@ frm_text
 	{
 		LPRDOFRMText pText = CONVERTER->stack().pop<RDOFRMText>($1);
 		ASSERT(pText);
-		pText->setText((rdoAnimation::RDOTextElement::TextAlign)$2, P_RDOVALUE($3)->value().getString());
+		pText->setText((rdoAnimation::RDOTextElement::TextAlign)$2, CONVERTER->stack().pop<RDOValue>($3)->value().getString());
 		$$ = CONVERTER->stack().push(pText);
 	}
 	| frm_text_common frm_text_align fun_arithm error
@@ -889,7 +886,7 @@ frm_bitmap
 		LPRDOFRMPosition pY = CONVERTER->stack().pop<RDOFRMPosition>($5);
 		ASSERT(pX);
 		ASSERT(pY);
-		LPRDOFRMBitmap pBitmap = rdo::Factory<RDOFRMBitmap>::create(RUNTIME->lastFrame(), pX, pY, P_RDOVALUE($7)->value().getIdentificator());
+		LPRDOFRMBitmap pBitmap = rdo::Factory<RDOFRMBitmap>::create(RUNTIME->lastFrame(), pX, pY, CONVERTER->stack().pop<RDOValue>($7)->value().getIdentificator());
 		ASSERT(pBitmap);
 		$$ = CONVERTER->stack().push(pBitmap);
 	}
@@ -899,7 +896,7 @@ frm_bitmap
 		LPRDOFRMPosition pY = CONVERTER->stack().pop<RDOFRMPosition>($5);
 		ASSERT(pX);
 		ASSERT(pY);
-		LPRDOFRMBitmap pBitmap = rdo::Factory<RDOFRMBitmap>::create(RUNTIME->lastFrame(), pX, pY, P_RDOVALUE($7)->value().getIdentificator(), P_RDOVALUE($9)->value().getIdentificator());
+		LPRDOFRMBitmap pBitmap = rdo::Factory<RDOFRMBitmap>::create(RUNTIME->lastFrame(), pX, pY, CONVERTER->stack().pop<RDOValue>($7)->value().getIdentificator(), CONVERTER->stack().pop<RDOValue>($9)->value().getIdentificator());
 		ASSERT(pBitmap);
 		$$ = CONVERTER->stack().push(pBitmap);
 	}
@@ -952,7 +949,7 @@ frm_s_bmp
 		ASSERT(pY     );
 		ASSERT(pWidth );
 		ASSERT(pHeight);
-		LPRDOFRMBitmapStretch pBitmap = rdo::Factory<RDOFRMBitmapStretch>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, P_RDOVALUE($11)->value().getIdentificator());
+		LPRDOFRMBitmapStretch pBitmap = rdo::Factory<RDOFRMBitmapStretch>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, CONVERTER->stack().pop<RDOValue>($11)->value().getIdentificator());
 		ASSERT(pBitmap);
 		$$ = CONVERTER->stack().push(pBitmap);
 	}
@@ -966,7 +963,7 @@ frm_s_bmp
 		ASSERT(pY     );
 		ASSERT(pWidth );
 		ASSERT(pHeight);
-		LPRDOFRMBitmapStretch pBitmap = rdo::Factory<RDOFRMBitmapStretch>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, P_RDOVALUE($11)->value().getIdentificator(), P_RDOVALUE($13)->value().getIdentificator());
+		LPRDOFRMBitmapStretch pBitmap = rdo::Factory<RDOFRMBitmapStretch>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, CONVERTER->stack().pop<RDOValue>($11)->value().getIdentificator(), CONVERTER->stack().pop<RDOValue>($13)->value().getIdentificator());
 		ASSERT(pBitmap);
 		$$ = CONVERTER->stack().push(pBitmap);
 	}
@@ -1491,7 +1488,7 @@ frm_triang
 frm_active
 	: RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ']'
 	{
-		tstring oprName = P_RDOVALUE($2)->value().getIdentificator();
+		tstring oprName = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		LPRDOOPROperation pOperation = CONVERTER->findOPROperation(oprName);
 		if (!pOperation)
 		{
@@ -1726,13 +1723,13 @@ fun_logic
 // -------------------- Арифметические выражения
 // --------------------------------------------------------------------------------
 fun_arithm
-	: RDO_INT_CONST                      { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
-	| RDO_REAL_CONST                     { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
-	| RDO_BOOL_CONST                     { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
-	| RDO_STRING_CONST                   { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
-	| RDO_IDENTIF                        { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
-	| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1), RDOVALUE($3))); }
-	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1), RDOVALUE($3))); }
+	: RDO_INT_CONST                      { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($1))); }
+	| RDO_REAL_CONST                     { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($1))); }
+	| RDO_BOOL_CONST                     { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($1))); }
+	| RDO_STRING_CONST                   { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($1))); }
+	| RDO_IDENTIF                        { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($1))); }
+	| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($1), CONVERTER->stack().pop<RDOValue>($3))); }
+	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($1), CONVERTER->stack().pop<RDOValue>($3))); }
 	| fun_arithm '+' fun_arithm
 	{
 		LPRDOFUNArithm pArithm1 = CONVERTER->stack().pop<RDOFUNArithm>($1);
@@ -1790,7 +1787,12 @@ fun_arithm
 		RDOParserSrcInfo info;
 		info.setSrcPos (@1, @2);
 		info.setSrcText(_T("-") + pArithm->src_text());
-		$$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOValue(pArithm->type(), info), rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(info.src_pos(), pArithm->createCalc())));
+		$$ = CONVERTER->stack().push(
+			rdo::Factory<RDOFUNArithm>::create(
+				rdo::Factory<RDOValue>::create(pArithm->type(), info),
+				rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(info.src_pos(), pArithm->createCalc()).object_parent_cast<rdoRuntime::RDOCalc>()
+			)
+		);
 	}
 	;
 
@@ -1802,7 +1804,7 @@ fun_arithm_func_call
 	{
 		LPRDOFUNParams pFunParams = rdo::Factory<RDOFUNParams>::create();
 		ASSERT(pFunParams);
-		tstring funName = RDOVALUE($1)->getIdentificator();
+		tstring funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @3);
 		pFunParams->setSrcText(funName + _T("()"));
@@ -1814,7 +1816,7 @@ fun_arithm_func_call
 	{
 		LPRDOFUNParams pFunParams = CONVERTER->stack().pop<RDOFUNParams>($3);
 		ASSERT(pFunParams);
-		tstring funName = RDOVALUE($1)->getIdentificator();
+		tstring funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @4);
 		pFunParams->setSrcText(funName + _T("(") + pFunParams->src_text() + _T(")"));
@@ -1872,8 +1874,9 @@ fun_group_keyword
 fun_group_header
 	: fun_group_keyword '(' RDO_IDENTIF_COLON
 	{
-		PTR(RDOValue) type_name = P_RDOVALUE($3);
-		$$ = CONVERTER->stack().push(rdo::Factory<RDOFUNGroupLogic>::create((RDOFUNGroupLogic::FunGroupType)$1, type_name->src_info()));
+		LPRDOValue pValue = CONVERTER->stack().pop<RDOValue>($3);
+		ASSERT(pValue);
+		$$ = CONVERTER->stack().push(rdo::Factory<RDOFUNGroupLogic>::create((RDOFUNGroupLogic::FunGroupType)$1, pValue->src_info()));
 	}
 	| fun_group_keyword '(' error
 	{
@@ -1926,10 +1929,11 @@ fun_group
 fun_select_header
 	: RDO_Select '(' RDO_IDENTIF_COLON
 	{
-		PTR(RDOValue)  type_name = P_RDOVALUE($3);
-		LPRDOFUNSelect pSelect   = rdo::Factory<RDOFUNSelect>::create(type_name->src_info());
+		LPRDOValue pValue = CONVERTER->stack().pop<RDOValue>($3);
+		ASSERT(pValue);
+		LPRDOFUNSelect pSelect = rdo::Factory<RDOFUNSelect>::create(pValue->src_info());
 		ASSERT(pSelect);
-		pSelect->setSrcText(_T("Select(") + type_name->value().getIdentificator() + _T(": "));
+		pSelect->setSrcText(_T("Select(") + pValue->value().getIdentificator() + _T(": "));
 		$$ = CONVERTER->stack().push(pSelect);
 	}
 	| RDO_Select '(' error

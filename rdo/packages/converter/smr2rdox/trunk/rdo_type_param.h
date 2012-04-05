@@ -30,17 +30,17 @@ OBJECT(RDOTypeParam)
 {
 DECLARE_FACTORY(RDOTypeParam);
 public:
-	LPRDOType type      ()                     const;
-	RDOValue  value_cast(CREF(RDOValue) value) const;
+	LPRDOType   type      ()                        const;
+	LPRDOValue  value_cast(CREF(LPRDOValue) pValue) const;
 
 	DECLARE_IModelStructure;
 
 protected:
-	RDOTypeParam(CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info);
+	RDOTypeParam(CREF(LPRDOType) pType, CREF(RDOParserSrcInfo) src_info);
 	virtual ~RDOTypeParam();
 
 private:
-	LPRDOType m_type;
+	LPRDOType m_pType;
 };
 
 CLOSE_RDO_CONVERTER_NAMESPACE

@@ -206,9 +206,6 @@
 #define CONVERTER LEXER->converter()
 #define RUNTIME   CONVERTER->runtime()
 
-#define P_RDOVALUE(A) reinterpret_cast<PTR(RDOValue)>(A)
-#define RDOVALUE(A)   (*P_RDOVALUE(A))
-
 OPEN_RDO_CONVERTER_NAMESPACE
 %}
 
@@ -262,13 +259,13 @@ fun_const_body
 fun_const_param_desc
 	: RDO_IDENTIF_COLON param_type param_value_default
 	{
-		PTR(RDOValue) name = P_RDOVALUE($1);
-		CONVERTER->checkFunctionName(name->src_info());
+		LPRDOValue pName = CONVERTER->stack().pop<RDOValue>($1);
+		CONVERTER->checkFunctionName(pName->src_info());
 		LPRDOTypeParam pParamType = CONVERTER->stack().pop<RDOTypeParam>($2);
 		ASSERT(pParamType);
-		LPRDOFUNConstant pConstant = rdo::Factory<RDOFUNConstant>::create(name->src_info(), pParamType, RDOVALUE($3));
+		LPRDOFUNConstant pConstant = rdo::Factory<RDOFUNConstant>::create(pName->src_info(), pParamType, CONVERTER->stack().pop<RDOValue>($3));
 		ASSERT(pConstant);
-		RUNTIME->setConstValue(pConstant->getNumber(), pConstant->getDefault().value());
+		RUNTIME->setConstValue(pConstant->getNumber(), pConstant->getDefault()->value());
 		$$ = CONVERTER->stack().push(pConstant);
 	}
 	| RDO_IDENTIF_COLON
@@ -310,19 +307,19 @@ fun_func_descr
 fun_func_header
 	: RDO_Function RDO_IDENTIF_COLON param_type param_value_default
 	{
-		PTR(RDOValue) name = reinterpret_cast<PTR(RDOValue)>($2);
-		CONVERTER->checkFunctionName(name->src_info());
+		LPRDOValue pName = CONVERTER->stack().pop<RDOValue>($2);
+		CONVERTER->checkFunctionName(pName->src_info());
 		LPRDOTypeParam pRetType = CONVERTER->stack().pop<RDOTypeParam>($3);
 		ASSERT(pRetType);
-		LPRDOParam pReturn = rdo::Factory<RDOParam>::create(name->src_info(), pRetType, RDOVALUE($4));
+		LPRDOParam pReturn = rdo::Factory<RDOParam>::create(pName->src_info(), pRetType, CONVERTER->stack().pop<RDOValue>($4));
 		ASSERT(pReturn);
-		LPRDOFUNFunction pFunction = rdo::Factory<RDOFUNFunction>::create(name->src_info(), pReturn);
+		LPRDOFUNFunction pFunction = rdo::Factory<RDOFUNFunction>::create(pName->src_info(), pReturn);
 		ASSERT(pFunction);
 		$$ = CONVERTER->stack().push(pFunction);
 	}
 	| RDO_Function RDO_IDENTIF_COLON error
 	{
-		tstring name = P_RDOVALUE($2)->value().getIdentificator();
+		tstring name = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		CONVERTER->error().error(@3, rdo::format(_T("Ожидается тип возвращаемого значения функции '%s'"), name.c_str()));
 	}
 	| RDO_Function error
@@ -340,10 +337,10 @@ fun_func_params
 	: /* empty */
 	| fun_func_params RDO_IDENTIF_COLON param_type param_value_default
 	{
-		PTR(RDOValue)  name  = P_RDOVALUE($2);
+		LPRDOValue     pName = CONVERTER->stack().pop<RDOValue>($2);
 		LPRDOTypeParam pType = CONVERTER->stack().pop<RDOTypeParam>($3);
 		ASSERT(pType);
-		LPRDOParam pParam = rdo::Factory<RDOParam>::create(name->src_info(), pType, RDOVALUE($4));
+		LPRDOParam pParam = rdo::Factory<RDOParam>::create(pName->src_info(), pType, CONVERTER->stack().pop<RDOValue>($4));
 		ASSERT(pParam);
 		CONVERTER->getLastFUNFunction()->add(pParam);
 	}
@@ -428,7 +425,7 @@ fun_func_calc_if
 fun_func_calc_name
 	: RDO_IDENTIF
 	{
-		tstring name = P_RDOVALUE($1)->value().getIdentificator();
+		tstring name = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		if (name != CONVERTER->getLastFUNFunction()->name() && name != _T("result"))
 		{
 			CONVERTER->error().error(@1, rdo::format(_T("Ожидается имя функции '%s'"), CONVERTER->getLastFUNFunction()->name().c_str()));
@@ -537,7 +534,7 @@ fun_func_list_body
 fun_func_list_value
 	: RDO_IDENTIF
 	{
-		tstring str = P_RDOVALUE($1)->value().getIdentificator();
+		tstring str = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		LPRDOFUNFunctionListElementIdentif pValue = rdo::Factory<RDOFUNFunctionListElementIdentif>::create(RDOParserSrcInfo(@1, str));
 		ASSERT(pValue);
 		CONVERTER->getLastFUNFunction()->add(pValue.object_parent_cast<RDOFUNFunctionListElement>());
@@ -545,14 +542,14 @@ fun_func_list_value
 	}
 	| RDO_REAL_CONST
 	{
-		LPRDOFUNFunctionListElementReal pValue = rdo::Factory<RDOFUNFunctionListElementReal>::create(@1, P_RDOVALUE($1)->value().getDouble());
+		LPRDOFUNFunctionListElementReal pValue = rdo::Factory<RDOFUNFunctionListElementReal>::create(@1, CONVERTER->stack().pop<RDOValue>($1)->value().getDouble());
 		ASSERT(pValue);
 		CONVERTER->getLastFUNFunction()->add(pValue.object_parent_cast<RDOFUNFunctionListElement>());
 		$$ = CONVERTER->stack().push(pValue);
 	}
 	| RDO_INT_CONST
 	{
-		LPRDOFUNFunctionListElementInt pValue = rdo::Factory<RDOFUNFunctionListElementInt>::create(@1, P_RDOVALUE($1)->value().getInt());
+		LPRDOFUNFunctionListElementInt pValue = rdo::Factory<RDOFUNFunctionListElementInt>::create(@1, CONVERTER->stack().pop<RDOValue>($1)->value().getInt());
 		ASSERT(pValue);
 		CONVERTER->getLastFUNFunction()->add(pValue.object_parent_cast<RDOFUNFunctionListElement>());
 		$$ = CONVERTER->stack().push(pValue);
@@ -580,11 +577,11 @@ fun_seq_descr
 fun_seq_header
 	: RDO_Sequence RDO_IDENTIF_COLON param_type RDO_Type '='
 	{
-		PTR(RDOValue) name = P_RDOVALUE($2);
-		CONVERTER->checkFunctionName( name->src_info() );
+		LPRDOValue pName = CONVERTER->stack().pop<RDOValue>($2);
+		CONVERTER->checkFunctionName(pName->src_info());
 		LPRDOTypeParam pType = CONVERTER->stack().pop<RDOTypeParam>($3);
 		ASSERT(pType);
-		RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = rdo::Factory<RDOFUNSequence::RDOFUNSequenceHeader>::create(pType, name->src_info());
+		RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = rdo::Factory<RDOFUNSequence::RDOFUNSequenceHeader>::create(pType, pName->src_info());
 		ASSERT(pHeader);
 		$$ = CONVERTER->stack().push(pHeader);
 	}
@@ -627,7 +624,7 @@ fun_seq_uniform
 	{
 		RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = CONVERTER->stack().pop<RDOFUNSequence::RDOFUNSequenceHeader>($1);
 		ASSERT(pHeader);
-		LPRDOFUNSequence pSequence = rdo::Factory<RDOFUNSequenceUniform>::create(pHeader, P_RDOVALUE($3)->value().getInt());
+		LPRDOFUNSequence pSequence = rdo::Factory<RDOFUNSequenceUniform>::create(pHeader, CONVERTER->stack().pop<RDOValue>($3)->value().getInt());
 		ASSERT(pSequence);
 		pSequence->createCalcs();
 		$$ = CONVERTER->stack().push(pSequence);
@@ -656,7 +653,7 @@ fun_seq_exponential
 	{
 		RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = CONVERTER->stack().pop<RDOFUNSequence::RDOFUNSequenceHeader>($1);
 		ASSERT(pHeader);
-		LPRDOFUNSequence pSequence = rdo::Factory<RDOFUNSequenceExponential>::create(pHeader, P_RDOVALUE($3)->value().getInt());
+		LPRDOFUNSequence pSequence = rdo::Factory<RDOFUNSequenceExponential>::create(pHeader, CONVERTER->stack().pop<RDOValue>($3)->value().getInt());
 		ASSERT(pSequence);
 		pSequence->createCalcs();
 		$$ = CONVERTER->stack().push(pSequence);
@@ -685,7 +682,7 @@ fun_seq_normal
 	{
 		RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = CONVERTER->stack().pop<RDOFUNSequence::RDOFUNSequenceHeader>($1);
 		ASSERT(pHeader);
-		LPRDOFUNSequence pSequence = rdo::Factory<RDOFUNSequenceNormal>::create(pHeader, P_RDOVALUE($3)->value().getInt());
+		LPRDOFUNSequence pSequence = rdo::Factory<RDOFUNSequenceNormal>::create(pHeader, CONVERTER->stack().pop<RDOValue>($3)->value().getInt());
 		ASSERT(pSequence);
 		pSequence->createCalcs();
 		$$ = CONVERTER->stack().push(pSequence);
@@ -716,7 +713,7 @@ fun_seq_by_hist_header
 	{
 		RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = CONVERTER->stack().pop<RDOFUNSequence::RDOFUNSequenceHeader>($1);
 		ASSERT(pHeader);
-		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pByHistHeader = rdo::Factory<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>::create(pHeader, P_RDOVALUE($3)->value().getInt());
+		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pByHistHeader = rdo::Factory<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>::create(pHeader, CONVERTER->stack().pop<RDOValue>($3)->value().getInt());
 		ASSERT(pByHistHeader);
 		$$ = CONVERTER->stack().push(pByHistHeader);
 	}
@@ -743,7 +740,7 @@ fun_seq_by_hist_body_real
 		{
 			CONVERTER->error().error( @2, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->getHeader()->src_text().c_str()) );
 		}
-		LPRDOFUNSequenceByHistReal pSequence = rdo::Factory<RDOFUNSequenceByHistReal>::create(pHeader, RDOVALUE($2), RDOVALUE($3), RDOVALUE($4));
+		LPRDOFUNSequenceByHistReal pSequence = rdo::Factory<RDOFUNSequenceByHistReal>::create(pHeader, CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3), CONVERTER->stack().pop<RDOValue>($4));
 		ASSERT(pSequence);
 		$$ = CONVERTER->stack().push(pSequence);
 	}
@@ -759,7 +756,7 @@ fun_seq_by_hist_body_real
 		{
 			CONVERTER->error().error( @3, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->getHeader()->src_text().c_str()) );
 		}
-		LPRDOFUNSequenceByHistReal pSequence = rdo::Factory<RDOFUNSequenceByHistReal>::create(pHeader, RDOVALUE($2), RDOVALUE($3), RDOVALUE($4));
+		LPRDOFUNSequenceByHistReal pSequence = rdo::Factory<RDOFUNSequenceByHistReal>::create(pHeader, CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3), CONVERTER->stack().pop<RDOValue>($4));
 		ASSERT(pSequence);
 		$$ = CONVERTER->stack().push(pSequence);
 	}
@@ -775,7 +772,7 @@ fun_seq_by_hist_body_real
 		{
 			CONVERTER->error().error( @2, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->getHeader()->src_text().c_str()) );
 		}
-		LPRDOFUNSequenceByHistReal pSequence = rdo::Factory<RDOFUNSequenceByHistReal>::create(pHeader, RDOVALUE($2), RDOVALUE($3), RDOVALUE($4));
+		LPRDOFUNSequenceByHistReal pSequence = rdo::Factory<RDOFUNSequenceByHistReal>::create(pHeader, CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3), CONVERTER->stack().pop<RDOValue>($4));
 		ASSERT(pSequence);
 		$$ = CONVERTER->stack().push(pSequence);
 	}
@@ -791,7 +788,7 @@ fun_seq_by_hist_body_real
 		{
 			CONVERTER->error().error( @2, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->getHeader()->src_text().c_str()) );
 		}
-		LPRDOFUNSequenceByHistReal pSequence = rdo::Factory<RDOFUNSequenceByHistReal>::create(pHeader, RDOVALUE($2), RDOVALUE($3), RDOVALUE($4));
+		LPRDOFUNSequenceByHistReal pSequence = rdo::Factory<RDOFUNSequenceByHistReal>::create(pHeader, CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3), CONVERTER->stack().pop<RDOValue>($4));
 		ASSERT(pSequence);
 		$$ = CONVERTER->stack().push(pSequence);
 	}
@@ -803,7 +800,7 @@ fun_seq_by_hist_body_real
 		{
 			CONVERTER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
 		}
-		LPRDOFUNSequenceByHistReal pSequence = rdo::Factory<RDOFUNSequenceByHistReal>::create(pHeader, RDOVALUE($2), RDOVALUE($3), RDOVALUE($4));
+		LPRDOFUNSequenceByHistReal pSequence = rdo::Factory<RDOFUNSequenceByHistReal>::create(pHeader, CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3), CONVERTER->stack().pop<RDOValue>($4));
 		ASSERT(pSequence);
 		$$ = CONVERTER->stack().push(pSequence);
 	}
@@ -819,7 +816,7 @@ fun_seq_by_hist_body_real
 		{
 			CONVERTER->error().error( @2, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->getHeader()->src_text().c_str()) );
 		}
-		LPRDOFUNSequenceByHistReal pSequence = rdo::Factory<RDOFUNSequenceByHistReal>::create(pHeader, RDOVALUE($2), RDOVALUE($3), RDOVALUE($4));
+		LPRDOFUNSequenceByHistReal pSequence = rdo::Factory<RDOFUNSequenceByHistReal>::create(pHeader, CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3), CONVERTER->stack().pop<RDOValue>($4));
 		ASSERT(pSequence);
 		$$ = CONVERTER->stack().push(pSequence);
 	}
@@ -835,7 +832,7 @@ fun_seq_by_hist_body_real
 		{
 			CONVERTER->error().error( @3, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->getHeader()->src_text().c_str()) );
 		}
-		LPRDOFUNSequenceByHistReal pSequence = rdo::Factory<RDOFUNSequenceByHistReal>::create(pHeader, RDOVALUE($2), RDOVALUE($3), RDOVALUE($4));
+		LPRDOFUNSequenceByHistReal pSequence = rdo::Factory<RDOFUNSequenceByHistReal>::create(pHeader, CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3), CONVERTER->stack().pop<RDOValue>($4));
 		ASSERT(pSequence);
 		$$ = CONVERTER->stack().push(pSequence);
 	}
@@ -847,7 +844,7 @@ fun_seq_by_hist_body_real
 		{
 			CONVERTER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
 		}
-		LPRDOFUNSequenceByHistReal pSequence = rdo::Factory<RDOFUNSequenceByHistReal>::create(pHeader, RDOVALUE($2), RDOVALUE($3), RDOVALUE($4));
+		LPRDOFUNSequenceByHistReal pSequence = rdo::Factory<RDOFUNSequenceByHistReal>::create(pHeader, CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3), CONVERTER->stack().pop<RDOValue>($4));
 		ASSERT(pSequence);
 		$$ = CONVERTER->stack().push(pSequence);
 	}
@@ -861,7 +858,7 @@ fun_seq_by_hist_body_real
 		{
 			CONVERTER->error().error( @2, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->src_text().c_str()) );
 		}
-		pSequence->addReal(RDOVALUE($2), RDOVALUE($3), RDOVALUE($4));
+		pSequence->addReal(CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3), CONVERTER->stack().pop<RDOValue>($4));
 		$$ = CONVERTER->stack().push(pSequence);
 	}
 	| fun_seq_by_hist_body_real RDO_INT_CONST RDO_REAL_CONST RDO_REAL_CONST
@@ -874,7 +871,7 @@ fun_seq_by_hist_body_real
 		{
 			CONVERTER->error().error( @3, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->src_text().c_str()) );
 		}
-		pSequence->addReal(RDOVALUE($2), RDOVALUE($3), RDOVALUE($4));
+		pSequence->addReal(CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3), CONVERTER->stack().pop<RDOValue>($4));
 		$$ = CONVERTER->stack().push(pSequence);
 	}
 	| fun_seq_by_hist_body_real RDO_REAL_CONST RDO_INT_CONST RDO_REAL_CONST
@@ -887,7 +884,7 @@ fun_seq_by_hist_body_real
 		{
 			CONVERTER->error().error( @2, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->src_text().c_str()) );
 		}
-		pSequence->addReal(RDOVALUE($2), RDOVALUE($3), RDOVALUE($4));
+		pSequence->addReal(CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3), CONVERTER->stack().pop<RDOValue>($4));
 		$$ = CONVERTER->stack().push(pSequence);
 	}
 	| fun_seq_by_hist_body_real RDO_REAL_CONST RDO_REAL_CONST RDO_INT_CONST
@@ -900,14 +897,14 @@ fun_seq_by_hist_body_real
 		{
 			CONVERTER->error().error( @2, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->src_text().c_str()) );
 		}
-		pSequence->addReal(RDOVALUE($2), RDOVALUE($3), RDOVALUE($4));
+		pSequence->addReal(CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3), CONVERTER->stack().pop<RDOValue>($4));
 		$$ = CONVERTER->stack().push(pSequence);
 	}
 	| fun_seq_by_hist_body_real RDO_INT_CONST RDO_INT_CONST RDO_REAL_CONST
 	{
 		LPRDOFUNSequenceByHistReal pSequence = CONVERTER->stack().pop<RDOFUNSequenceByHistReal>($1);
 		ASSERT(pSequence);
-		pSequence->addReal(RDOVALUE($2), RDOVALUE($3), RDOVALUE($4));
+		pSequence->addReal(CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3), CONVERTER->stack().pop<RDOValue>($4));
 		$$ = CONVERTER->stack().push(pSequence);
 	}
 	| fun_seq_by_hist_body_real RDO_REAL_CONST RDO_INT_CONST RDO_INT_CONST
@@ -920,7 +917,7 @@ fun_seq_by_hist_body_real
 		{
 			CONVERTER->error().error( @2, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->src_text().c_str()) );
 		}
-		pSequence->addReal(RDOVALUE($2), RDOVALUE($3), RDOVALUE($4));
+		pSequence->addReal(CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3), CONVERTER->stack().pop<RDOValue>($4));
 		$$ = CONVERTER->stack().push(pSequence);
 	}
 	| fun_seq_by_hist_body_real RDO_INT_CONST RDO_REAL_CONST RDO_INT_CONST
@@ -933,14 +930,14 @@ fun_seq_by_hist_body_real
 		{
 			CONVERTER->error().error( @3, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->src_text().c_str()) );
 		}
-		pSequence->addReal(RDOVALUE($2), RDOVALUE($3), RDOVALUE($4));
+		pSequence->addReal(CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3), CONVERTER->stack().pop<RDOValue>($4));
 		$$ = CONVERTER->stack().push(pSequence);
 	}
 	| fun_seq_by_hist_body_real RDO_INT_CONST RDO_INT_CONST RDO_INT_CONST
 	{
 		LPRDOFUNSequenceByHistReal pSequence = CONVERTER->stack().pop<RDOFUNSequenceByHistReal>($1);
 		ASSERT(pSequence);
-		pSequence->addReal(RDOVALUE($2), RDOVALUE($3), RDOVALUE($4));
+		pSequence->addReal(CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3), CONVERTER->stack().pop<RDOValue>($4));
 		$$ = CONVERTER->stack().push(pSequence);
 	}
 	| fun_seq_by_hist_header RDO_REAL_CONST error
@@ -1044,7 +1041,7 @@ fun_seq_by_hist_body_enum
 		{
 			CONVERTER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
 		}
-		LPRDOFUNSequenceByHistEnum pSequence = rdo::Factory<RDOFUNSequenceByHistEnum>::create(pHeader, RDOVALUE($2), RDOVALUE($3));
+		LPRDOFUNSequenceByHistEnum pSequence = rdo::Factory<RDOFUNSequenceByHistEnum>::create(pHeader, CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3));
 		ASSERT(pSequence);
 		$$ = CONVERTER->stack().push(pSequence);
 	}
@@ -1056,7 +1053,7 @@ fun_seq_by_hist_body_enum
 		{
 			CONVERTER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
 		}
-		LPRDOFUNSequenceByHistEnum pSequence = rdo::Factory<RDOFUNSequenceByHistEnum>::create(pHeader, RDOVALUE($2), RDOVALUE($3));
+		LPRDOFUNSequenceByHistEnum pSequence = rdo::Factory<RDOFUNSequenceByHistEnum>::create(pHeader, CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3));
 		ASSERT(pSequence);
 		$$ = CONVERTER->stack().push(pSequence);
 	}
@@ -1064,14 +1061,14 @@ fun_seq_by_hist_body_enum
 	{
 		LPRDOFUNSequenceByHistEnum pSequence = CONVERTER->stack().pop<RDOFUNSequenceByHistEnum>($1);
 		ASSERT(pSequence);
-		pSequence->addEnum(RDOVALUE($2), RDOVALUE($3));
+		pSequence->addEnum(CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3));
 		$$ = CONVERTER->stack().push(pSequence);
 	}
 	| fun_seq_by_hist_body_enum RDO_IDENTIF RDO_INT_CONST
 	{
 		LPRDOFUNSequenceByHistEnum pSequence = CONVERTER->stack().pop<RDOFUNSequenceByHistEnum>($1);
 		ASSERT(pSequence);
-		pSequence->addEnum(RDOVALUE($2), RDOVALUE($3));
+		pSequence->addEnum(CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($3));
 		$$ = CONVERTER->stack().push(pSequence);
 	}
 	| fun_seq_by_hist_header RDO_IDENTIF error
@@ -1082,11 +1079,11 @@ fun_seq_by_hist_body_enum
 		{
 			CONVERTER->error().error( @2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getType()->src_text().c_str()) );
 		}
-		CONVERTER->error().error( @2, @3, rdo::format(_T("Ожидается относительная вероятность для значения: %s"), P_RDOVALUE($2)->value().getIdentificator().c_str()) );
+		CONVERTER->error().error( @2, @3, rdo::format(_T("Ожидается относительная вероятность для значения: %s"), CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator().c_str()) );
 	}
 	| fun_seq_by_hist_body_enum RDO_IDENTIF error
 	{
-		CONVERTER->error().error( @2, @3, rdo::format(_T("Ожидается относительная вероятность для значения: %s"), P_RDOVALUE($2)->value().getIdentificator().c_str()) );
+		CONVERTER->error().error( @2, @3, rdo::format(_T("Ожидается относительная вероятность для значения: %s"), CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator().c_str()) );
 	}
 	| fun_seq_by_hist_body_enum RDO_REAL_CONST error
 	{
@@ -1175,7 +1172,7 @@ fun_seq_enumerative_body
 	{
 		RDOFUNSequenceEnumerative::LPRDOFUNSequenceHeader pHeader = CONVERTER->stack().pop<RDOFUNSequenceEnumerative::RDOFUNSequenceHeader>($1);
 		ASSERT(pHeader);
-		LPRDOFUNSequenceEnumerative pSequence = rdo::Factory<RDOFUNSequenceEnumerative>::create(pHeader, RDOVALUE($2));
+		LPRDOFUNSequenceEnumerative pSequence = rdo::Factory<RDOFUNSequenceEnumerative>::create(pHeader, CONVERTER->stack().pop<RDOValue>($2));
 		ASSERT(pSequence);
 		$$ = CONVERTER->stack().push(pSequence);
 	}
@@ -1183,7 +1180,7 @@ fun_seq_enumerative_body
 	{
 		RDOFUNSequenceEnumerative::LPRDOFUNSequenceHeader pHeader = CONVERTER->stack().pop<RDOFUNSequenceEnumerative::RDOFUNSequenceHeader>($1);
 		ASSERT(pHeader);
-		LPRDOFUNSequenceEnumerative pSequence = rdo::Factory<RDOFUNSequenceEnumerative>::create(pHeader, RDOVALUE($2));
+		LPRDOFUNSequenceEnumerative pSequence = rdo::Factory<RDOFUNSequenceEnumerative>::create(pHeader, CONVERTER->stack().pop<RDOValue>($2));
 		ASSERT(pSequence);
 		$$ = CONVERTER->stack().push(pSequence);
 	}
@@ -1191,7 +1188,7 @@ fun_seq_enumerative_body
 	{
 		RDOFUNSequenceEnumerative::LPRDOFUNSequenceHeader pHeader = CONVERTER->stack().pop<RDOFUNSequenceEnumerative::RDOFUNSequenceHeader>($1);
 		ASSERT(pHeader);
-		LPRDOFUNSequenceEnumerative pSequence = rdo::Factory<RDOFUNSequenceEnumerative>::create(pHeader, RDOVALUE($2));
+		LPRDOFUNSequenceEnumerative pSequence = rdo::Factory<RDOFUNSequenceEnumerative>::create(pHeader, CONVERTER->stack().pop<RDOValue>($2));
 		ASSERT(pSequence);
 		$$ = CONVERTER->stack().push(pSequence);
 	}
@@ -1199,7 +1196,7 @@ fun_seq_enumerative_body
 	{
 		RDOFUNSequenceEnumerative::LPRDOFUNSequenceHeader pHeader = CONVERTER->stack().pop<RDOFUNSequenceEnumerative::RDOFUNSequenceHeader>($1);
 		ASSERT(pHeader);
-		LPRDOFUNSequenceEnumerative pSequence = rdo::Factory<RDOFUNSequenceEnumerative>::create(pHeader, RDOVALUE($2));
+		LPRDOFUNSequenceEnumerative pSequence = rdo::Factory<RDOFUNSequenceEnumerative>::create(pHeader, CONVERTER->stack().pop<RDOValue>($2));
 		ASSERT(pSequence);
 		$$ = CONVERTER->stack().push(pSequence);
 	}
@@ -1207,7 +1204,7 @@ fun_seq_enumerative_body
 	{
 		RDOFUNSequenceEnumerative::LPRDOFUNSequenceHeader pHeader = CONVERTER->stack().pop<RDOFUNSequenceEnumerative::RDOFUNSequenceHeader>($1);
 		ASSERT(pHeader);
-		LPRDOFUNSequenceEnumerative pSequence = rdo::Factory<RDOFUNSequenceEnumerative>::create(pHeader, RDOVALUE($2));
+		LPRDOFUNSequenceEnumerative pSequence = rdo::Factory<RDOFUNSequenceEnumerative>::create(pHeader, CONVERTER->stack().pop<RDOValue>($2));
 		ASSERT(pSequence);
 		$$ = CONVERTER->stack().push(pSequence);
 	}
@@ -1215,35 +1212,35 @@ fun_seq_enumerative_body
 	{
 		LPRDOFUNSequenceEnumerative pSequence = CONVERTER->stack().pop<RDOFUNSequenceEnumerative>($1);
 		ASSERT(pSequence);
-		pSequence->addValue(RDOVALUE($2));
+		pSequence->addValue(CONVERTER->stack().pop<RDOValue>($2));
 		$$ = CONVERTER->stack().push(pSequence);
 	}
 	| fun_seq_enumerative_body RDO_REAL_CONST
 	{
 		LPRDOFUNSequenceEnumerative pSequence = CONVERTER->stack().pop<RDOFUNSequenceEnumerative>($1);
 		ASSERT(pSequence);
-		pSequence->addValue(RDOVALUE($2));
+		pSequence->addValue(CONVERTER->stack().pop<RDOValue>($2));
 		$$ = CONVERTER->stack().push(pSequence);
 	}
 	| fun_seq_enumerative_body RDO_BOOL_CONST
 	{
 		LPRDOFUNSequenceEnumerative pSequence = CONVERTER->stack().pop<RDOFUNSequenceEnumerative>($1);
 		ASSERT(pSequence);
-		pSequence->addValue(RDOVALUE($2));
+		pSequence->addValue(CONVERTER->stack().pop<RDOValue>($2));
 		$$ = CONVERTER->stack().push(pSequence);
 	}
 	| fun_seq_enumerative_body RDO_STRING_CONST
 	{
 		LPRDOFUNSequenceEnumerative pSequence = CONVERTER->stack().pop<RDOFUNSequenceEnumerative>($1);
 		ASSERT(pSequence);
-		pSequence->addValue(RDOVALUE($2));
+		pSequence->addValue(CONVERTER->stack().pop<RDOValue>($2));
 		$$ = CONVERTER->stack().push(pSequence);
 	}
 	| fun_seq_enumerative_body RDO_IDENTIF
 	{
 		LPRDOFUNSequenceEnumerative pSequence = CONVERTER->stack().pop<RDOFUNSequenceEnumerative>($1);
 		ASSERT(pSequence);
-		pSequence->addValue(RDOVALUE($2));
+		pSequence->addValue(CONVERTER->stack().pop<RDOValue>($2));
 		$$ = CONVERTER->stack().push(pSequence);
 	}
 	| fun_seq_enumerative_body error
@@ -1266,8 +1263,8 @@ param_type
 		LPRDOTypeParam pType;
 		if (pRange)
 		{
-			if (pRange->getMin().typeID() != rdoRuntime::RDOType::t_int ||
-			    pRange->getMax().typeID() != rdoRuntime::RDOType::t_int)
+			if (pRange->getMin()->typeID() != rdoRuntime::RDOType::t_int ||
+			    pRange->getMax()->typeID() != rdoRuntime::RDOType::t_int)
 			{
 				CONVERTER->error().error(@2, _T("Диапазон целого типа должен быть целочисленным"));
 			}
@@ -1337,28 +1334,28 @@ param_type_range
 	}
 	| '[' RDO_INT_CONST RDO_dblpoint RDO_INT_CONST ']'
 	{
-		LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(RDOVALUE($2), RDOVALUE($4), RDOParserSrcInfo(@1, @5));
+		LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($4), RDOParserSrcInfo(@1, @5));
 		ASSERT(pRange);
 		pRange->checkRange();
 		$$ = CONVERTER->stack().push(pRange);
 	}
 	| '[' RDO_REAL_CONST RDO_dblpoint RDO_REAL_CONST ']'
 	{
-		LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(RDOVALUE($2), RDOVALUE($4), RDOParserSrcInfo(@1, @5));
+		LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($4), RDOParserSrcInfo(@1, @5));
 		ASSERT(pRange);
 		pRange->checkRange();
 		$$ = CONVERTER->stack().push(pRange);
 	}
 	| '[' RDO_REAL_CONST RDO_dblpoint RDO_INT_CONST ']'
 	{
-		LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(RDOVALUE($2), RDOVALUE($4), RDOParserSrcInfo(@1, @5));
+		LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($4), RDOParserSrcInfo(@1, @5));
 		ASSERT(pRange);
 		pRange->checkRange();
 		$$ = CONVERTER->stack().push(pRange);
 	}
 	| '[' RDO_INT_CONST RDO_dblpoint RDO_REAL_CONST ']'
 	{
-		LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(RDOVALUE($2), RDOVALUE($4), RDOParserSrcInfo(@1, @5));
+		LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($4), RDOParserSrcInfo(@1, @5));
 		ASSERT(pRange);
 		pRange->checkRange();
 		$$ = CONVERTER->stack().push(pRange);
@@ -1411,7 +1408,7 @@ param_type_enum_list
 	{
 		LPRDOEnumType pEnum = rdo::Factory<RDOEnumType>::create();
 		ASSERT(pEnum);
-		pEnum->add(RDOVALUE($1));
+		pEnum->add(CONVERTER->stack().pop<RDOValue>($1));
 		LEXER->enumBegin();
 		$$ = CONVERTER->stack().push(pEnum);
 	}
@@ -1421,7 +1418,7 @@ param_type_enum_list
 		{
 			LPRDOEnumType pEnum = CONVERTER->stack().pop<RDOEnumType>($1);
 			ASSERT(pEnum);
-			pEnum->add(RDOVALUE($3));
+			pEnum->add(CONVERTER->stack().pop<RDOValue>($3));
 			$$ = CONVERTER->stack().push(pEnum);
 		}
 		else
@@ -1435,9 +1432,9 @@ param_type_enum_list
 		{
 			LPRDOEnumType pEnum = CONVERTER->stack().pop<RDOEnumType>($1);
 			ASSERT(pEnum);
-			pEnum->add(RDOVALUE($2));
+			pEnum->add(CONVERTER->stack().pop<RDOValue>($2));
 			$$ = CONVERTER->stack().push(pEnum);
-			CONVERTER->error().warning(@1, rdo::format(_T("Пропущена запятая перед: %s"), RDOVALUE($2)->getIdentificator().c_str()));
+			CONVERTER->error().warning(@1, rdo::format(_T("Пропущена запятая перед: %s"), CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator().c_str()));
 		}
 		else
 		{
@@ -1473,8 +1470,8 @@ param_type_enum_list
 param_type_such_as
 	: RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF
 	{
-		tstring type  = RDOVALUE($2)->getIdentificator();
-		tstring param = RDOVALUE($4)->getIdentificator();
+		tstring type  = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		tstring param = CONVERTER->stack().pop<RDOValue>($4)->value().getIdentificator();
 		LPRDORTPResType pResType = CONVERTER->findRTPResType(type);
 		if (!pResType)
 		{
@@ -1493,7 +1490,7 @@ param_type_such_as
 	}
 	| RDO_such_as RDO_IDENTIF
 	{
-		tstring constName = RDOVALUE($2)->getIdentificator();
+		tstring constName = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		LPRDOFUNConstant pConstant = CONVERTER->findFUNConstant(constName);
 		if (!pConstant)
 		{
@@ -1507,7 +1504,7 @@ param_type_such_as
 	}
 	| RDO_such_as RDO_IDENTIF '.' error
 	{
-		tstring type = RDOVALUE($2)->getIdentificator();
+		tstring type = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		LPRDORTPResType pResType = CONVERTER->findRTPResType(type);
 		if (!pResType)
 		{
@@ -1527,7 +1524,7 @@ param_type_such_as
 param_value_default
 	: /* empty */
 	{
-		$$ = (int)CONVERTER->addValue(new rdoConverter::RDOValue());
+		$$ = CONVERTER->stack().push(rdo::Factory<rdoConverter::RDOValue>::create());
 	}
 	| '=' RDO_INT_CONST
 	{
@@ -1714,13 +1711,13 @@ fun_logic
 // -------------------- Арифметические выражения
 // --------------------------------------------------------------------------------
 fun_arithm
-	: RDO_INT_CONST                      { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
-	| RDO_REAL_CONST                     { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
-	| RDO_BOOL_CONST                     { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
-	| RDO_STRING_CONST                   { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
-	| RDO_IDENTIF                        { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
-	| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1), RDOVALUE($3))); }
-	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1), RDOVALUE($3))); }
+	: RDO_INT_CONST                      { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($1))); }
+	| RDO_REAL_CONST                     { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($1))); }
+	| RDO_BOOL_CONST                     { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($1))); }
+	| RDO_STRING_CONST                   { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($1))); }
+	| RDO_IDENTIF                        { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($1))); }
+	| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($1), CONVERTER->stack().pop<RDOValue>($3))); }
+	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($1), CONVERTER->stack().pop<RDOValue>($3))); }
 	| fun_arithm '+' fun_arithm
 	{
 		LPRDOFUNArithm pArithm1 = CONVERTER->stack().pop<RDOFUNArithm>($1);
@@ -1778,7 +1775,12 @@ fun_arithm
 		RDOParserSrcInfo info;
 		info.setSrcPos (@1, @2);
 		info.setSrcText(_T("-") + pArithm->src_text());
-		$$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOValue(pArithm->type(), info), rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(info.src_pos(), pArithm->createCalc())));
+		$$ = CONVERTER->stack().push(
+			rdo::Factory<RDOFUNArithm>::create(
+				rdo::Factory<RDOValue>::create(pArithm->type(), info),
+				rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(info.src_pos(), pArithm->createCalc()).object_parent_cast<rdoRuntime::RDOCalc>()
+			)
+		);
 	}
 	;
 
@@ -1790,7 +1792,7 @@ fun_arithm_func_call
 	{
 		LPRDOFUNParams pFunParams = rdo::Factory<RDOFUNParams>::create();
 		ASSERT(pFunParams);
-		tstring funName = RDOVALUE($1)->getIdentificator();
+		tstring funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @3);
 		pFunParams->setSrcText(funName + _T("()"));
@@ -1802,7 +1804,7 @@ fun_arithm_func_call
 	{
 		LPRDOFUNParams pFunParams = CONVERTER->stack().pop<RDOFUNParams>($3);
 		ASSERT(pFunParams);
-		tstring funName = RDOVALUE($1)->getIdentificator();
+		tstring funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @4);
 		pFunParams->setSrcText(funName + _T("(") + pFunParams->src_text() + _T(")"));
@@ -1860,8 +1862,9 @@ fun_group_keyword
 fun_group_header
 	: fun_group_keyword '(' RDO_IDENTIF_COLON
 	{
-		PTR(RDOValue) type_name = P_RDOVALUE($3);
-		$$ = CONVERTER->stack().push(rdo::Factory<RDOFUNGroupLogic>::create((RDOFUNGroupLogic::FunGroupType)$1, type_name->src_info()));
+		LPRDOValue pValue = CONVERTER->stack().pop<RDOValue>($3);
+		ASSERT(pValue);
+		$$ = CONVERTER->stack().push(rdo::Factory<RDOFUNGroupLogic>::create((RDOFUNGroupLogic::FunGroupType)$1, pValue->src_info()));
 	}
 	| fun_group_keyword '(' error
 	{
@@ -1914,10 +1917,11 @@ fun_group
 fun_select_header
 	: RDO_Select '(' RDO_IDENTIF_COLON
 	{
-		PTR(RDOValue)  type_name = P_RDOVALUE($3);
-		LPRDOFUNSelect pSelect   = rdo::Factory<RDOFUNSelect>::create(type_name->src_info());
+		LPRDOValue pValue = CONVERTER->stack().pop<RDOValue>($3);
+		ASSERT(pValue);
+		LPRDOFUNSelect pSelect = rdo::Factory<RDOFUNSelect>::create(pValue->src_info());
 		ASSERT(pSelect);
-		pSelect->setSrcText(_T("Select(") + type_name->value().getIdentificator() + _T(": "));
+		pSelect->setSrcText(_T("Select(") + pValue->value().getIdentificator() + _T(": "));
 		$$ = CONVERTER->stack().push(pSelect);
 	}
 	| RDO_Select '(' error

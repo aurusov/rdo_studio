@@ -21,8 +21,8 @@ OPEN_RDO_CONVERTER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDORTPParam
 // --------------------------------------------------------------------------------
-RDORTPParam::RDORTPParam(CREF(LPRDOTypeParam) pParamType, CREF(RDOValue) defaultValue, CREF(RDOParserSrcInfo) src_info)
-	: RDOParam(src_info, pParamType, defaultValue)
+RDORTPParam::RDORTPParam(CREF(LPRDOTypeParam) pParamType, CREF(LPRDOValue) pDefault, CREF(RDOParserSrcInfo) src_info)
+	: RDOParam(src_info, pParamType, pDefault)
 {}
 
 RDORTPParam::~RDORTPParam()

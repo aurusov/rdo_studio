@@ -205,9 +205,6 @@
 #define CONVERTER LEXER->converter()
 #define RUNTIME   CONVERTER->runtime()
 
-#define P_RDOVALUE(A) reinterpret_cast<PTR(RDOValue)>(A)
-#define RDOVALUE(A)   (*P_RDOVALUE(A))
-
 OPEN_RDO_CONVERTER_NAMESPACE
 %}
 
@@ -296,17 +293,17 @@ dpt_search_parent
 dpt_search_begin
 	: RDO_Decision_point RDO_IDENTIF_COLON RDO_search dpt_search_parent dpt_search_trace
 	{
-		PTR(RDOValue)  name        = P_RDOVALUE($2);
-		PTR(RDOValue)  parent_name = P_RDOVALUE($4);
+		LPRDOValue  pName       = CONVERTER->stack().pop<RDOValue>($2);
+		LPRDOValue  pParentName = CONVERTER->stack().pop<RDOValue>($4);
 		LPRDODPTSearch pDPTSearch;
-		if (parent_name)
+		if (pParentName)
 		{
-			LPRDODPTPrior  pParentDPTPrior  = CONVERTER->findDPTPrior (parent_name->value().getIdentificator());
-			LPRDODPTSearch pParentDPTSearch = CONVERTER->findDPTSearch(parent_name->value().getIdentificator());
-			LPRDODPTSome   pParentDPTSome   = CONVERTER->findDPTSome  (parent_name->value().getIdentificator());
+			LPRDODPTPrior  pParentDPTPrior  = CONVERTER->findDPTPrior (pParentName->value().getIdentificator());
+			LPRDODPTSearch pParentDPTSearch = CONVERTER->findDPTSearch(pParentName->value().getIdentificator());
+			LPRDODPTSome   pParentDPTSome   = CONVERTER->findDPTSome  (pParentName->value().getIdentificator());
 			if (!pParentDPTPrior && !pParentDPTSearch && !pParentDPTSome)
 			{
-				CONVERTER->error().error(@1, rdo::format(_T("Не найдена родитеская точка %s"), parent_name->value().getIdentificator().c_str()));
+				CONVERTER->error().error(@1, rdo::format(_T("Не найдена родитеская точка %s"), pParentName->value().getIdentificator().c_str()));
 			}
 			if (pParentDPTSearch)
 			{
@@ -316,18 +313,18 @@ dpt_search_begin
 			{
 				LPILogic pParent = pParentDPTPrior->getLogic();
 				ASSERT(pParent);
-				pDPTSearch = rdo::Factory<RDODPTSearch>::create(name->src_info(), *reinterpret_cast<PTR(rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5), pParent);
+				pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<PTR(rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5), pParent);
 			}
 			else if (pParentDPTSome)
 			{
 				LPILogic pParent = pParentDPTSome->getLogic();
 				ASSERT(pParent);
-				pDPTSearch = rdo::Factory<RDODPTSearch>::create(name->src_info(), *reinterpret_cast<PTR(rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5), pParent);
+				pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<PTR(rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5), pParent);
 			}
 		}
 		else
 		{
-			pDPTSearch = rdo::Factory<RDODPTSearch>::create(name->src_info(), *reinterpret_cast<PTR(rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5));
+			pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<PTR(rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5));
 		}
 		ASSERT(pDPTSearch);
 		$$ = CONVERTER->stack().push(pDPTSearch);
@@ -468,7 +465,9 @@ dpt_search_descr_param
 	: /* empty */
 	| dpt_search_descr_param '*'
 	{
-		CONVERTER->getLastDPTSearch()->getLastActivity()->addParam(RDOValue(RDOParserSrcInfo(@2, _T("*"))));
+		CONVERTER->getLastDPTSearch()->getLastActivity()->addParam(
+			rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@2, _T("*")))
+		);
 	}
 	| dpt_search_descr_param fun_arithm
 	{
@@ -508,9 +507,9 @@ dpt_search_name
 	{
 		LPRDODPTSearch pDPTSearch = CONVERTER->getLastDPTSearch();
 		ASSERT(pDPTSearch);
-		PTR(RDOValue) name    = P_RDOVALUE($1);
-		PTR(RDOValue) pattern = P_RDOVALUE($2);
-		LPRDODPTActivity pActivity = pDPTSearch->addNewActivity(name->src_info(), pattern->src_info());
+		LPRDOValue pName    = CONVERTER->stack().pop<RDOValue>($1);
+		LPRDOValue pPattern = CONVERTER->stack().pop<RDOValue>($2);
+		LPRDODPTActivity pActivity = pDPTSearch->addNewActivity(pName->src_info(), pPattern->src_info());
 		ASSERT(pActivity);
 		$$ = CONVERTER->stack().push(pActivity);
 	}
@@ -613,17 +612,17 @@ dpt_some_begin
 	: RDO_Decision_point RDO_IDENTIF_COLON RDO_some dpt_some_parent dpt_some_trace
 	{
 		/// @todo а где признак трассировки для some ?
-		PTR(RDOValue) name        = P_RDOVALUE($2);
-		PTR(RDOValue) parent_name = P_RDOVALUE($4);
+		LPRDOValue pName       = CONVERTER->stack().pop<RDOValue>($2);
+		LPRDOValue pParentName = CONVERTER->stack().pop<RDOValue>($4);
 		LPRDODPTSome  pDPTSome;
-		if (parent_name)
+		if (pParentName)
 		{
-			LPRDODPTPrior  pParentDPTPrior  = CONVERTER->findDPTPrior (parent_name->value().getIdentificator());
-			LPRDODPTSearch pParentDPTSearch = CONVERTER->findDPTSearch(parent_name->value().getIdentificator());
-			LPRDODPTSome   pParentDPTSome   = CONVERTER->findDPTSome  (parent_name->value().getIdentificator());
+			LPRDODPTPrior  pParentDPTPrior  = CONVERTER->findDPTPrior (pParentName->value().getIdentificator());
+			LPRDODPTSearch pParentDPTSearch = CONVERTER->findDPTSearch(pParentName->value().getIdentificator());
+			LPRDODPTSome   pParentDPTSome   = CONVERTER->findDPTSome  (pParentName->value().getIdentificator());
 			if (!pParentDPTPrior && !pParentDPTSearch && !pParentDPTSome)
 			{
-				CONVERTER->error().error(@1, rdo::format(_T("Не найдена родитеская точка %s"), parent_name->value().getIdentificator().c_str()));
+				CONVERTER->error().error(@1, rdo::format(_T("Не найдена родитеская точка %s"), pParentName->value().getIdentificator().c_str()));
 			}
 			if (pParentDPTSearch)
 			{
@@ -633,18 +632,18 @@ dpt_some_begin
 			{
 				LPILogic pParentLogic = pParentDPTPrior->getLogic();
 				ASSERT(pParentLogic);
-				pDPTSome = rdo::Factory<RDODPTSome>::create(name->src_info(), pParentLogic);
+				pDPTSome = rdo::Factory<RDODPTSome>::create(pName->src_info(), pParentLogic);
 			}
 			else if (pParentDPTSome)
 			{
 				LPILogic pParentLogic = pParentDPTSome->getLogic();
 				ASSERT(pParentLogic);
-				pDPTSome = rdo::Factory<RDODPTSome>::create(name->src_info(), pParentLogic);
+				pDPTSome = rdo::Factory<RDODPTSome>::create(pName->src_info(), pParentLogic);
 			}
 		}
 		else
 		{
-			pDPTSome = rdo::Factory<RDODPTSome>::create(name->src_info());
+			pDPTSome = rdo::Factory<RDODPTSome>::create(pName->src_info());
 		}
 		ASSERT(pDPTSome);
 		$$ = CONVERTER->stack().push(pDPTSome);
@@ -705,9 +704,9 @@ dpt_some_name
 	{
 		LPRDODPTSome pDPTSome = CONVERTER->getLastDPTSome();
 		ASSERT(pDPTSome);
-		PTR(RDOValue) name    = P_RDOVALUE($1);
-		PTR(RDOValue) pattern = P_RDOVALUE($2);
-		LPRDODPTActivity pActivity = pDPTSome->addNewActivity(name->src_info(), pattern->src_info());
+		LPRDOValue pName    = CONVERTER->stack().pop<RDOValue>($1);
+		LPRDOValue pPattern = CONVERTER->stack().pop<RDOValue>($2);
+		LPRDODPTActivity pActivity = pDPTSome->addNewActivity(pName->src_info(), pPattern->src_info());
 		ASSERT(pActivity);
 		$$ = CONVERTER->stack().push(pActivity);
 	}
@@ -731,14 +730,14 @@ dpt_some_descr_keyb
 	{
 		LPRDODPTActivityHotKey pActivityHotKey = CONVERTER->getLastDPTSome()->getLastActivity();
 		ASSERT(pActivityHotKey);
-		tstring key = P_RDOVALUE($3)->value().getString();
+		tstring key = CONVERTER->stack().pop<RDOValue>($3)->value().getString();
 		pActivityHotKey->addHotKey(key, @3);
 	}
 	| RDO_STRING_CONST
 	{
 		LPRDODPTActivityHotKey pActivityHotKey = CONVERTER->getLastDPTSome()->getLastActivity();
 		ASSERT(pActivityHotKey);
-		tstring key = P_RDOVALUE($1)->value().getString();
+		tstring key = CONVERTER->stack().pop<RDOValue>($1)->value().getString();
 		pActivityHotKey->addHotKey(key, @1);
 	}
 	;
@@ -747,7 +746,9 @@ dpt_some_descr_param
 	: /* empty */
 	| dpt_some_descr_param '*'
 	{
-		CONVERTER->getLastDPTSome()->getLastActivity()->addParam(RDOValue(RDOParserSrcInfo(@2, _T("*"))));
+		CONVERTER->getLastDPTSome()->getLastActivity()->addParam(
+			rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@2, _T("*")))
+		);
 	}
 	| dpt_some_descr_param fun_arithm
 	{
@@ -841,17 +842,17 @@ dpt_prior_begin
 	: RDO_Decision_point RDO_IDENTIF_COLON RDO_prior dpt_prior_parent dpt_prior_trace
 	{
 		/// @todo а где признак трассировки для prior ?
-		PTR(RDOValue) name        = P_RDOVALUE($2);
-		PTR(RDOValue) parent_name = P_RDOVALUE($4);
+		LPRDOValue pName       = CONVERTER->stack().pop<RDOValue>($2);
+		LPRDOValue pParentName = CONVERTER->stack().pop<RDOValue>($4);
 		LPRDODPTPrior pDPTPrior;
-		if (parent_name)
+		if (pParentName)
 		{
-			LPRDODPTPrior  pParentDPTPrior  = CONVERTER->findDPTPrior (parent_name->value().getIdentificator());
-			LPRDODPTSearch pParentDPTSearch = CONVERTER->findDPTSearch(parent_name->value().getIdentificator());
-			LPRDODPTSome   pParentDPTSome   = CONVERTER->findDPTSome  (parent_name->value().getIdentificator());
+			LPRDODPTPrior  pParentDPTPrior  = CONVERTER->findDPTPrior (pParentName->value().getIdentificator());
+			LPRDODPTSearch pParentDPTSearch = CONVERTER->findDPTSearch(pParentName->value().getIdentificator());
+			LPRDODPTSome   pParentDPTSome   = CONVERTER->findDPTSome  (pParentName->value().getIdentificator());
 			if (!pParentDPTPrior && !pParentDPTSome && !pParentDPTSearch)
 			{
-				CONVERTER->error().error(@1, rdo::format(_T("Не найдена родитеская точка %s"), parent_name->value().getIdentificator().c_str()));
+				CONVERTER->error().error(@1, rdo::format(_T("Не найдена родитеская точка %s"), pParentName->value().getIdentificator().c_str()));
 			}
 			if (pParentDPTSearch)
 			{
@@ -861,18 +862,18 @@ dpt_prior_begin
 			{
 				LPILogic pParentLogic = pParentDPTPrior->getLogic();
 				ASSERT(pParentLogic);
-				pDPTPrior = rdo::Factory<RDODPTPrior>::create(name->src_info(), pParentLogic);
+				pDPTPrior = rdo::Factory<RDODPTPrior>::create(pName->src_info(), pParentLogic);
 			}
 			else if (pParentDPTSome)
 			{
 				LPILogic pParentLogic = pParentDPTSome->getLogic();
 				ASSERT(pParentLogic);
-				pDPTPrior = rdo::Factory<RDODPTPrior>::create(name->src_info(), pParentLogic);
+				pDPTPrior = rdo::Factory<RDODPTPrior>::create(pName->src_info(), pParentLogic);
 			}
 		}
 		else
 		{
-			pDPTPrior = rdo::Factory<RDODPTPrior>::create(name->src_info());
+			pDPTPrior = rdo::Factory<RDODPTPrior>::create(pName->src_info());
 		}
 		ASSERT(pDPTPrior);
 		$$ = CONVERTER->stack().push(pDPTPrior);
@@ -933,9 +934,9 @@ dpt_prior_name
 	{
 		LPRDODPTPrior pDPTPrior = CONVERTER->getLastDPTPrior();
 		ASSERT(pDPTPrior);
-		PTR(RDOValue) name    = P_RDOVALUE($1);
-		PTR(RDOValue) pattern = P_RDOVALUE($2);
-		LPRDODPTActivity pActivity = pDPTPrior->addNewActivity(name->src_info(), pattern->src_info());
+		LPRDOValue pName    = CONVERTER->stack().pop<RDOValue>($1);
+		LPRDOValue pPattern = CONVERTER->stack().pop<RDOValue>($2);
+		LPRDODPTActivity pActivity = pDPTPrior->addNewActivity(pName->src_info(), pPattern->src_info());
 		ASSERT(pActivity);
 		$$ = CONVERTER->stack().push(pActivity);
 	}
@@ -959,14 +960,14 @@ dpt_prior_descr_keyb
 	{
 		LPRDODPTActivityHotKey pActivityHotKey = CONVERTER->getLastDPTPrior()->getLastActivity();
 		ASSERT(pActivityHotKey);
-		tstring key = P_RDOVALUE($3)->value().getString();
+		tstring key = CONVERTER->stack().pop<RDOValue>($3)->value().getString();
 		pActivityHotKey->addHotKey(key, @3);
 	}
 	| RDO_STRING_CONST
 	{
 		LPRDODPTActivityHotKey pActivityHotKey = CONVERTER->getLastDPTPrior()->getLastActivity();
 		ASSERT(pActivityHotKey);
-		tstring key = P_RDOVALUE($1)->value().getString();
+		tstring key = CONVERTER->stack().pop<RDOValue>($1)->value().getString();
 		pActivityHotKey->addHotKey(key, @1);
 	}
 	;
@@ -975,7 +976,9 @@ dpt_prior_descr_param
 	: /* empty */
 	| dpt_prior_descr_param '*'
 	{
-		CONVERTER->getLastDPTPrior()->getLastActivity()->addParam(RDOValue(RDOParserSrcInfo(@2, _T("*"))));
+		CONVERTER->getLastDPTPrior()->getLastActivity()->addParam(
+			rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@2, _T("*")))
+		);
 	}
 	| dpt_prior_descr_param fun_arithm
 	{
@@ -1084,9 +1087,9 @@ dpt_free_activity_name
 	{
 		LPRDODPTFree pDPTFree = CONVERTER->getLastDPTFree();
 		ASSERT(pDPTFree);
-		PTR(RDOValue) name    = P_RDOVALUE($1);
-		PTR(RDOValue) pattern = P_RDOVALUE($2);
-		LPRDODPTActivity pActivity = pDPTFree->addNewActivity(name->src_info(), pattern->src_info());
+		LPRDOValue pName    = CONVERTER->stack().pop<RDOValue>($1);
+		LPRDOValue pPattern = CONVERTER->stack().pop<RDOValue>($2);
+		LPRDODPTActivity pActivity = pDPTFree->addNewActivity(pName->src_info(), pPattern->src_info());
 		ASSERT(pActivity);
 		$$ = CONVERTER->stack().push(pActivity);
 	}
@@ -1108,7 +1111,9 @@ dpt_free_activity_param
 	: /* empty */
 	| dpt_free_activity_param '*'
 	{
-		CONVERTER->getLastDPTFree()->getLastActivity()->addParam(RDOValue(RDOParserSrcInfo(@2, _T("*"))));
+		CONVERTER->getLastDPTFree()->getLastActivity()->addParam(
+			rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@2, _T("*")))
+		);
 	}
 	| dpt_free_activity_param fun_arithm
 	{
@@ -1126,14 +1131,14 @@ dpt_free_activity_keys
 	{
 		LPRDODPTActivityHotKey pActivityHotKey = CONVERTER->getLastDPTFree()->getLastActivity();
 		ASSERT(pActivityHotKey);
-		tstring key = P_RDOVALUE($2)->value().getString();
+		tstring key = CONVERTER->stack().pop<RDOValue>($2)->value().getString();
 		pActivityHotKey->addHotKey(key, @2);
 	}
 	| dpt_free_activity_keys '+' RDO_STRING_CONST
 	{
 		LPRDODPTActivityHotKey pActivityHotKey = CONVERTER->getLastDPTFree()->getLastActivity();
 		ASSERT(pActivityHotKey);
-		tstring key = P_RDOVALUE($3)->value().getString();
+		tstring key = CONVERTER->stack().pop<RDOValue>($3)->value().getString();
 		pActivityHotKey->addHotKey(key, @3);
 	}
 	;
@@ -1304,13 +1309,13 @@ fun_logic
 // -------------------- Арифметические выражения
 // --------------------------------------------------------------------------------
 fun_arithm
-	: RDO_INT_CONST                      { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
-	| RDO_REAL_CONST                     { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
-	| RDO_BOOL_CONST                     { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
-	| RDO_STRING_CONST                   { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
-	| RDO_IDENTIF                        { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
-	| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1), RDOVALUE($3))); }
-	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1), RDOVALUE($3))); }
+	: RDO_INT_CONST                      { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($1))); }
+	| RDO_REAL_CONST                     { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($1))); }
+	| RDO_BOOL_CONST                     { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($1))); }
+	| RDO_STRING_CONST                   { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($1))); }
+	| RDO_IDENTIF                        { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($1))); }
+	| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($1), CONVERTER->stack().pop<RDOValue>($3))); }
+	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($1), CONVERTER->stack().pop<RDOValue>($3))); }
 	| fun_arithm '+' fun_arithm
 	{
 		LPRDOFUNArithm pArithm1 = CONVERTER->stack().pop<RDOFUNArithm>($1);
@@ -1368,7 +1373,12 @@ fun_arithm
 		RDOParserSrcInfo info;
 		info.setSrcPos (@1, @2);
 		info.setSrcText(_T("-") + pArithm->src_text());
-		$$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOValue(pArithm->type(), info), rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(info.src_pos(), pArithm->createCalc())));
+		$$ = CONVERTER->stack().push(
+			rdo::Factory<RDOFUNArithm>::create(
+				rdo::Factory<RDOValue>::create(pArithm->type(), info),
+				rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(info.src_pos(), pArithm->createCalc()).object_parent_cast<rdoRuntime::RDOCalc>()
+			)
+		);
 	}
 	;
 
@@ -1380,7 +1390,7 @@ fun_arithm_func_call
 	{
 		LPRDOFUNParams pFunParams = rdo::Factory<RDOFUNParams>::create();
 		ASSERT(pFunParams);
-		tstring funName = RDOVALUE($1)->getIdentificator();
+		tstring funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @3);
 		pFunParams->setSrcText(funName + _T("()"));
@@ -1392,7 +1402,7 @@ fun_arithm_func_call
 	{
 		LPRDOFUNParams pFunParams = CONVERTER->stack().pop<RDOFUNParams>($3);
 		ASSERT(pFunParams);
-		tstring funName = RDOVALUE($1)->getIdentificator();
+		tstring funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @4);
 		pFunParams->setSrcText(funName + _T("(") + pFunParams->src_text() + _T(")"));
@@ -1450,8 +1460,9 @@ fun_group_keyword
 fun_group_header
 	: fun_group_keyword '(' RDO_IDENTIF_COLON
 	{
-		PTR(RDOValue) type_name = P_RDOVALUE($3);
-		$$ = CONVERTER->stack().push(rdo::Factory<RDOFUNGroupLogic>::create((RDOFUNGroupLogic::FunGroupType)$1, type_name->src_info()));
+		LPRDOValue pValue = CONVERTER->stack().pop<RDOValue>($3);
+		ASSERT(pValue);
+		$$ = CONVERTER->stack().push(rdo::Factory<RDOFUNGroupLogic>::create((RDOFUNGroupLogic::FunGroupType)$1, pValue->src_info()));
 	}
 	| fun_group_keyword '(' error
 	{
@@ -1504,10 +1515,11 @@ fun_group
 fun_select_header
 	: RDO_Select '(' RDO_IDENTIF_COLON
 	{
-		PTR(RDOValue)  type_name = P_RDOVALUE($3);
-		LPRDOFUNSelect pSelect   = rdo::Factory<RDOFUNSelect>::create(type_name->src_info());
+		LPRDOValue pValue = CONVERTER->stack().pop<RDOValue>($3);
+		ASSERT(pValue);
+		LPRDOFUNSelect pSelect = rdo::Factory<RDOFUNSelect>::create(pValue->src_info());
 		ASSERT(pSelect);
-		pSelect->setSrcText(_T("Select(") + type_name->value().getIdentificator() + _T(": "));
+		pSelect->setSrcText(_T("Select(") + pValue->value().getIdentificator() + _T(": "));
 		$$ = CONVERTER->stack().push(pSelect);
 	}
 	| RDO_Select '(' error

@@ -480,7 +480,7 @@ rdoRuntime::LPRDOCalc RDOPATPattern::createRelRes(rbool trace) const
 	std::vector<rdoRuntime::RDOValue> params_default;
 	STL_FOR_ALL_CONST(m_pCurrRelRes->getType()->getParams(), it)
 	{
-		if (!(*it)->getDefault().defined())
+		if (!(*it)->getDefault()->defined())
 		{
 			params_default.push_back(rdoRuntime::RDOValue(0));
 			if (!m_pCurrRelRes->getParamSetList().find((*it)->name()))
@@ -490,7 +490,7 @@ rdoRuntime::LPRDOCalc RDOPATPattern::createRelRes(rbool trace) const
 		}
 		else
 		{
-			params_default.push_back((*it)->getDefault().value());
+			params_default.push_back((*it)->getDefault()->value());
 		}
 	}
 	rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcNop>::create();

@@ -202,9 +202,6 @@
 #define CONVERTER LEXER->converter()
 #define RUNTIME   CONVERTER->runtime()
 
-#define P_RDOVALUE(A) reinterpret_cast<PTR(RDOValue)>(A)
-#define RDOVALUE(A)   (*P_RDOVALUE(A))
-
 OPEN_RDO_CONVERTER_NAMESPACE
 %}
 
@@ -277,21 +274,21 @@ rss_res_descr
 rss_res_type
 	: RDO_IDENTIF_COLON RDO_IDENTIF
 	{
-		PTR(RDOValue) name = P_RDOVALUE($1);
-		PTR(RDOValue) type = P_RDOVALUE($2);
-		LPRDORTPResType pResType = CONVERTER->findRTPResType(type->value().getIdentificator());
+		LPRDOValue pName = CONVERTER->stack().pop<RDOValue>($1);
+		LPRDOValue pType = CONVERTER->stack().pop<RDOValue>($2);
+		LPRDORTPResType pResType = CONVERTER->findRTPResType(pType->value().getIdentificator());
 		if (!pResType)
 		{
-			CONVERTER->error().error(@2, rdo::format(_T("Неизвестный тип ресурса: %s"), type->value().getIdentificator().c_str()));
+			CONVERTER->error().error(@2, rdo::format(_T("Неизвестный тип ресурса: %s"), pType->value().getIdentificator().c_str()));
 		}
-		LPRDORSSResource pResourceExist = CONVERTER->findRSSResource(name->value().getIdentificator());
+		LPRDORSSResource pResourceExist = CONVERTER->findRSSResource(pName->value().getIdentificator());
 		if (pResourceExist)
 		{
-			CONVERTER->error().push_only(name->src_info(), rdo::format(_T("Ресурс '%s' уже существует"), name->value().getIdentificator().c_str()));
+			CONVERTER->error().push_only(pName->src_info(), rdo::format(_T("Ресурс '%s' уже существует"), pName->value().getIdentificator().c_str()));
 			CONVERTER->error().push_only(pResourceExist->src_info(), _T("См. первое определение"));
 			CONVERTER->error().push_done();
 		}
-		LPRDORSSResource pResource = rdo::Factory<RDORSSResource>::create(CONVERTER, name->src_info(), pResType);
+		LPRDORSSResource pResource = rdo::Factory<RDORSSResource>::create(CONVERTER, pName->src_info(), pResType);
 		$$ = CONVERTER->stack().push(pResource);
 	}
 	| RDO_IDENTIF_COLON error
@@ -320,12 +317,12 @@ rss_values
 	;
 
 rss_value
-	: '*'               {CONVERTER->getLastRSSResource()->addParam(RDOValue(RDOParserSrcInfo(@1, _T("*"))));}
-	| RDO_INT_CONST     {CONVERTER->getLastRSSResource()->addParam(RDOVALUE($1));}
-	| RDO_REAL_CONST    {CONVERTER->getLastRSSResource()->addParam(RDOVALUE($1));}
-	| RDO_BOOL_CONST    {CONVERTER->getLastRSSResource()->addParam(RDOVALUE($1));}
-	| RDO_STRING_CONST  {CONVERTER->getLastRSSResource()->addParam(RDOVALUE($1));}
-	| RDO_IDENTIF       {CONVERTER->getLastRSSResource()->addParam(RDOVALUE($1));}
+	: '*'               {CONVERTER->getLastRSSResource()->addParam(rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@1, _T("*"))));}
+	| RDO_INT_CONST     {CONVERTER->getLastRSSResource()->addParam(CONVERTER->stack().pop<RDOValue>($1));}
+	| RDO_REAL_CONST    {CONVERTER->getLastRSSResource()->addParam(CONVERTER->stack().pop<RDOValue>($1));}
+	| RDO_BOOL_CONST    {CONVERTER->getLastRSSResource()->addParam(CONVERTER->stack().pop<RDOValue>($1));}
+	| RDO_STRING_CONST  {CONVERTER->getLastRSSResource()->addParam(CONVERTER->stack().pop<RDOValue>($1));}
+	| RDO_IDENTIF       {CONVERTER->getLastRSSResource()->addParam(CONVERTER->stack().pop<RDOValue>($1));}
 	| error
 	{
 		CONVERTER->error().error(@1, rdo::format(_T("Неправильное значение параметра: %s"), LEXER->YYText()));

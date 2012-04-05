@@ -21,15 +21,15 @@ OPEN_RDO_CONVERTER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOTypeParam
 // --------------------------------------------------------------------------------
-RDOTypeParam::RDOTypeParam(CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info)
+RDOTypeParam::RDOTypeParam(CREF(LPRDOType) pType, CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
-	, m_type          (type    )
+	, m_pType         (pType   )
 {
-	ASSERT(m_type);
-	setSrcText(m_type->name());
+	ASSERT(m_pType);
+	setSrcText(m_pType->name());
 
-	if (m_type->type()->typeID() == rdoRuntime::RDOType::t_enum ||
-		m_type->type().object_dynamic_cast<rdoRuntime::RDOFuzzyType>())
+	if (m_pType->type()->typeID() == rdoRuntime::RDOType::t_enum ||
+		m_pType->type().object_dynamic_cast<rdoRuntime::RDOFuzzyType>())
 	{
 		Converter::s_converter()->insertPreCastType(this);
 	}
@@ -40,17 +40,18 @@ RDOTypeParam::~RDOTypeParam()
 
 LPRDOType RDOTypeParam::type() const
 {
-	return m_type;
+	return m_pType;
 }
 
 void RDOTypeParam::writeModelStructure(REF(std::ostream) stream) const
 {
-	m_type->writeModelStructure(stream);
+	m_pType->writeModelStructure(stream);
 }
 
-RDOValue RDOTypeParam::value_cast(CREF(RDOValue) value) const
+LPRDOValue RDOTypeParam::value_cast(CREF(LPRDOValue) pValue) const
 {
-	return m_type->value_cast(value, src_info(), value.src_info());
+	ASSERT(pValue);
+	return m_pType->value_cast(pValue, src_info(), pValue->src_info());
 }
 
 CLOSE_RDO_CONVERTER_NAMESPACE

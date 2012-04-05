@@ -99,19 +99,21 @@ RDODPTActivity::RDODPTActivity(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSr
 RDODPTActivity::~RDODPTActivity()
 {}
 
-void RDODPTActivity::addParam(CREF(RDOValue) param)
+void RDODPTActivity::addParam(CREF(LPRDOValue) pParam)
 {
+	ASSERT(pParam);
+
 	if (m_pPattern->m_paramList.size() <= m_currParam)
 	{
-		if (param.src_pos().m_first_line == src_pos().m_first_line)
+		if (pParam->src_pos().m_first_line == src_pos().m_first_line)
 		{
 			if (dynamic_cast<PTR(RDOOPROperation)>(this))
 			{
-				Converter::s_converter()->error().push_only(param, rdo::format(_T("Слишком много параметров для образца '%s' при описании операции '%s'"), m_pPattern->name().c_str(), name().c_str()));
+				Converter::s_converter()->error().push_only(pParam->src_info(), rdo::format(_T("Слишком много параметров для образца '%s' при описании операции '%s'"), m_pPattern->name().c_str(), name().c_str()));
 			}
 			else
 			{
-				Converter::s_converter()->error().push_only(param, rdo::format(_T("Слишком много параметров для образца '%s' при описании активности '%s'"), m_pPattern->name().c_str(), name().c_str()));
+				Converter::s_converter()->error().push_only(pParam->src_info(), rdo::format(_T("Слишком много параметров для образца '%s' при описании активности '%s'"), m_pPattern->name().c_str(), name().c_str()));
 			}
 			Converter::s_converter()->error().push_only(m_pPattern->src_info(), _T("См. образец"));
 			Converter::s_converter()->error().push_done();
@@ -120,29 +122,29 @@ void RDODPTActivity::addParam(CREF(RDOValue) param)
 		{
 			if (dynamic_cast<PTR(RDOOPROperation)>(this))
 			{
-				Converter::s_converter()->error().error(param, _T("Имя операции должно заканчиваться двоеточием"));
+				Converter::s_converter()->error().error(pParam->src_info(), _T("Имя операции должно заканчиваться двоеточием"));
 			}
 			else
 			{
-				Converter::s_converter()->error().error(param, _T("Имя активности должно заканчиваться двоеточием"));
+				Converter::s_converter()->error().error(pParam->src_info(), _T("Имя активности должно заканчиваться двоеточием"));
 			}
 		}
 	}
 	rdoRuntime::RDOValue val;
 	LPRDOParam pPatternParam = m_pPattern->m_paramList.at(m_currParam);
-	if (param->getAsString() == _T("*"))
+	if (pParam->value().getAsString() == _T("*"))
 	{
-		if (!pPatternParam->getDefault().defined())
+		if (!pPatternParam->getDefault()->defined())
 		{
-			Converter::s_converter()->error().push_only(param, rdo::format(_T("Нет значения по-умолчанию для параметра '%s'"), pPatternParam->src_text().c_str()));
-			Converter::s_converter()->error().push_only(pPatternParam->src_info(), rdo::format(_T("См. параметр '%s', тип '%s'"), pPatternParam->src_text().c_str(), pPatternParam->getType()->src_text().c_str()));
+			Converter::s_converter()->error().push_only(pParam->src_pos(), rdo::format(_T("Нет значения по-умолчанию для параметра '%s'"), pPatternParam->src_text().c_str()));
+			Converter::s_converter()->error().push_only(pPatternParam->src_info(), rdo::format(_T("См. параметр '%s', тип '%s'"), pPatternParam->src_text().c_str(), pPatternParam->getType()->src_info().src_text().c_str()));
 			Converter::s_converter()->error().push_done();
 		}
-		val = pPatternParam->getDefault().value();
+		val = pPatternParam->getDefault()->value();
 	}
 	else
 	{
-		val = pPatternParam->getType()->value_cast(param).value();
+		val = pPatternParam->getType()->value_cast(pParam)->value();
 	}
 
 	rdoRuntime::LPRDOCalc pSetParamCalc = rdo::Factory<rdoRuntime::RDOSetPatternParamCalc>::create(
@@ -150,7 +152,7 @@ void RDODPTActivity::addParam(CREF(RDOValue) param)
 		rdo::Factory<rdoRuntime::RDOCalcConst>::create(val)
 	);
 	ASSERT(pSetParamCalc);
-	pSetParamCalc->setSrcInfo(RDOParserSrcInfo(param.getPosAsYY(), rdo::format(_T("Параметр образца %s.%s = %s"), m_pPattern->name().c_str(), pPatternParam->name().c_str(), param->getAsString().c_str())));
+	pSetParamCalc->setSrcInfo(RDOParserSrcInfo(pParam->getPosAsYY(), rdo::format(_T("Параметр образца %s.%s = %s"), m_pPattern->name().c_str(), pPatternParam->name().c_str(), pParam->value().getAsString().c_str())));
 	m_currParam++;
 }
 

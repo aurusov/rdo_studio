@@ -208,9 +208,6 @@
 #define CONVERTER LEXER->converter()
 #define RUNTIME   CONVERTER->runtime()
 
-#define P_RDOVALUE(A) reinterpret_cast<PTR(RDOValue)>(A)
-#define RDOVALUE(A)   (*P_RDOVALUE(A))
-
 OPEN_RDO_CONVERTER_NAMESPACE
 %}
 
@@ -262,15 +259,17 @@ pat_main
 pat_header
 	: RDO_Pattern RDO_IDENTIF_COLON RDO_operation pat_trace 
 	{
-		PTR(RDOValue) name = P_RDOVALUE($2);
-		LPRDOPATPattern pPattern = rdo::Factory<RDOPatternOperation>::create(name->src_info(), $4 != 0);
+		LPRDOValue pName = CONVERTER->stack().pop<RDOValue>($2);
+		ASSERT(pName);
+		LPRDOPATPattern pPattern = rdo::Factory<RDOPatternOperation>::create(pName->src_info(), $4 != 0);
 		ASSERT(pPattern);
 		$$ = CONVERTER->stack().push(pPattern);
 	}
 	| RDO_Pattern RDO_IDENTIF_COLON RDO_irregular_event pat_trace
 	{
-		PTR(RDOValue) name = P_RDOVALUE($2);
-		LPRDOPATPattern pPattern = rdo::Factory<RDOPatternIrregEvent>::create(name->src_info(), $4 != 0);
+		LPRDOValue pName = CONVERTER->stack().pop<RDOValue>($2);
+		ASSERT(pName);
+		LPRDOPATPattern pPattern = rdo::Factory<RDOPatternIrregEvent>::create(pName->src_info(), $4 != 0);
 		ASSERT(pPattern);
 
 		rdoConverter::LPDocUpdate pIEReplace = rdo::Factory<rdoConverter::UpdateReplace>::create(
@@ -285,15 +284,17 @@ pat_header
 	}
 	| RDO_Pattern RDO_IDENTIF_COLON RDO_rule pat_trace
 	{
-		PTR(RDOValue) name = P_RDOVALUE($2);
-		LPRDOPATPattern pPattern = rdo::Factory<RDOPatternRule>::create(name->src_info(), $4 != 0);
+		LPRDOValue pName = CONVERTER->stack().pop<RDOValue>($2);
+		ASSERT(pName);
+		LPRDOPATPattern pPattern = rdo::Factory<RDOPatternRule>::create(pName->src_info(), $4 != 0);
 		ASSERT(pPattern);
 		$$ = CONVERTER->stack().push(pPattern);
 	}
 	| RDO_Pattern RDO_IDENTIF_COLON RDO_keyboard pat_trace
 	{
-		PTR(RDOValue) name = P_RDOVALUE($2);
-		LPRDOPATPattern pPattern = rdo::Factory<RDOPatternKeyboard>::create(name->src_info(), $4 != 0);
+		LPRDOValue pName = CONVERTER->stack().pop<RDOValue>($2);
+		ASSERT(pName);
+		LPRDOPATPattern pPattern = rdo::Factory<RDOPatternKeyboard>::create(pName->src_info(), $4 != 0);
 		ASSERT(pPattern);
 		$$ = CONVERTER->stack().push(pPattern);
 	}
@@ -327,9 +328,9 @@ pat_params
 	{
 		LPRDOPATPattern pPattern   = CONVERTER->stack().pop<RDOPATPattern>($1);
 		ASSERT(pPattern);
-		PTR(RDOValue)   param_name = P_RDOVALUE($2);
-		LPRDOTypeParam  param_type = CONVERTER->stack().pop<RDOTypeParam>($3);
-		LPRDOParam      pParam     = rdo::Factory<RDOParam>::create(param_name->src_info(), param_type, RDOVALUE($4));
+		LPRDOValue      pParamName = CONVERTER->stack().pop<RDOValue>($2);
+		LPRDOTypeParam  pParamType = CONVERTER->stack().pop<RDOTypeParam>($3);
+		LPRDOParam      pParam     = rdo::Factory<RDOParam>::create(pParamName->src_info(), pParamType, CONVERTER->stack().pop<RDOValue>($4));
 		pPattern->add(pParam);
 		$$ = CONVERTER->stack().push(pPattern);
 	}
@@ -337,9 +338,9 @@ pat_params
 	{
 		LPRDOPATPattern pPattern   = CONVERTER->stack().pop<RDOPATPattern>($1);
 		ASSERT(pPattern);
-		PTR(RDOValue)   param_name = P_RDOVALUE($2);
-		LPRDOTypeParam  param_type = CONVERTER->stack().pop<RDOTypeParam>($3);
-		LPRDOParam      pParam     = rdo::Factory<RDOParam>::create(param_name->src_info(), param_type, RDOVALUE($4));
+		LPRDOValue      pParamName = CONVERTER->stack().pop<RDOValue>($2);
+		LPRDOTypeParam  pParamType = CONVERTER->stack().pop<RDOTypeParam>($3);
+		LPRDOParam      pParam     = rdo::Factory<RDOParam>::create(pParamName->src_info(), pParamType, CONVERTER->stack().pop<RDOValue>($4));
 		pPattern->add(pParam);
 		$$ = CONVERTER->stack().push(pPattern);
 	}
@@ -437,9 +438,9 @@ pat_rel_res
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
 			{
-				PTR(RDOValue) rel_name  = P_RDOVALUE($2);
-				PTR(RDOValue) type_name = P_RDOVALUE($3);
-				pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(rel_name->src_info(), type_name->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, (rdoRuntime::RDOResource::ConvertStatus)$5, @4, @5);
+				LPRDOValue pRelName  = CONVERTER->stack().pop<RDOValue>($2);
+				LPRDOValue pTypeName = CONVERTER->stack().pop<RDOValue>($3);
+				pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, (rdoRuntime::RDOResource::ConvertStatus)$5, @4, @5);
 				break;
 			}
 			case RDOPATPattern::PT_IE:
@@ -465,9 +466,9 @@ pat_rel_res
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
 			{
-				PTR(RDOValue) rel_name  = P_RDOVALUE($2);
-				PTR(RDOValue) type_name = P_RDOVALUE($3);
-				pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(rel_name->src_info(), type_name->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, (rdoRuntime::RDOResource::ConvertStatus)$5, @4, @5);
+				LPRDOValue pRelName  = CONVERTER->stack().pop<RDOValue>($2);
+				LPRDOValue pTypeName = CONVERTER->stack().pop<RDOValue>($3);
+				pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, (rdoRuntime::RDOResource::ConvertStatus)$5, @4, @5);
 				break;
 			}
 			case RDOPATPattern::PT_IE:
@@ -499,9 +500,9 @@ pat_rel_res
 			case RDOPATPattern::PT_IE  :
 			case RDOPATPattern::PT_Rule:
 			{
-				PTR(RDOValue) rel_name  = P_RDOVALUE($2);
-				PTR(RDOValue) type_name = P_RDOVALUE($3);
-				pPattern->addRelRes(rel_name->src_info(), type_name->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, @4);
+				LPRDOValue pRelName  = CONVERTER->stack().pop<RDOValue>($2);
+				LPRDOValue pTypeName = CONVERTER->stack().pop<RDOValue>($3);
+				pPattern->addRelRes(pRelName->src_info(), pTypeName->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, @4);
 				break;
 			}
 		}
@@ -523,9 +524,9 @@ pat_rel_res
 			case RDOPATPattern::PT_IE  :
 			case RDOPATPattern::PT_Rule:
 			{
-				PTR(RDOValue) rel_name  = P_RDOVALUE($2);
-				PTR(RDOValue) type_name = P_RDOVALUE($3);
-				pPattern->addRelRes(rel_name->src_info(), type_name->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, @4);
+				LPRDOValue pRelName  = CONVERTER->stack().pop<RDOValue>($2);
+				LPRDOValue pTypeName = CONVERTER->stack().pop<RDOValue>($3);
+				pPattern->addRelRes(pRelName->src_info(), pTypeName->src_info(), (rdoRuntime::RDOResource::ConvertStatus)$4, @4);
 				break;
 			}
 		}
@@ -541,13 +542,13 @@ pat_rel_res
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
 			{
-				PTR(RDOValue) rel_name  = P_RDOVALUE($2);
-				PTR(RDOValue) type_name = P_RDOVALUE($3);
+				LPRDOValue pRelName  = CONVERTER->stack().pop<RDOValue>($2);
+				LPRDOValue pTypeName = CONVERTER->stack().pop<RDOValue>($3);
 				YYLTYPE convertor_pos = @3;
 				convertor_pos.m_first_line = convertor_pos.m_last_line;
 				convertor_pos.m_first_pos  = convertor_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
 				convertor_pos.m_first_seek = convertor_pos.m_last_seek - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-				pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, (rdoRuntime::RDOResource::ConvertStatus)$4, convertor_pos, @4);
+				pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdoRuntime::RDOResource::CS_NoChange, (rdoRuntime::RDOResource::ConvertStatus)$4, convertor_pos, @4);
 				break;
 			}
 			case RDOPATPattern::PT_IE:
@@ -573,13 +574,13 @@ pat_rel_res
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
 			{
-				PTR(RDOValue) rel_name  = P_RDOVALUE($2);
-				PTR(RDOValue) type_name = P_RDOVALUE($3);
+				LPRDOValue pRelName  = CONVERTER->stack().pop<RDOValue>($2);
+				LPRDOValue pTypeName = CONVERTER->stack().pop<RDOValue>($3);
 				YYLTYPE convertor_pos = @3;
 				convertor_pos.m_first_line = convertor_pos.m_last_line;
 				convertor_pos.m_first_pos  = convertor_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
 				convertor_pos.m_first_seek = convertor_pos.m_last_seek - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-				pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, (rdoRuntime::RDOResource::ConvertStatus)$4, convertor_pos, @4);
+				pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdoRuntime::RDOResource::CS_NoChange, (rdoRuntime::RDOResource::ConvertStatus)$4, convertor_pos, @4);
 				break;
 			}
 			case RDOPATPattern::PT_IE:
@@ -605,8 +606,8 @@ pat_rel_res
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
 			{
-				PTR(RDOValue) rel_name  = P_RDOVALUE($2);
-				PTR(RDOValue) type_name = P_RDOVALUE($3);
+				LPRDOValue pRelName  = CONVERTER->stack().pop<RDOValue>($2);
+				LPRDOValue pTypeName = CONVERTER->stack().pop<RDOValue>($3);
 				YYLTYPE convertor_begin_pos = @3;
 				tstring str = LEXER->YYText();
 				rdo::toLower(str);
@@ -636,7 +637,7 @@ pat_rel_res
 				convertor_end_pos.m_first_line = convertor_end_pos.m_last_line;
 				convertor_end_pos.m_first_pos  = convertor_end_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
 				convertor_end_pos.m_first_seek = convertor_end_pos.m_last_seek - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-				pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
+				pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdoRuntime::RDOResource::CS_NoChange, rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
 				break;
 			}
 			case RDOPATPattern::PT_IE:
@@ -662,8 +663,8 @@ pat_rel_res
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
 			{
-				PTR(RDOValue) rel_name  = P_RDOVALUE($2);
-				PTR(RDOValue) type_name = P_RDOVALUE($3);
+				LPRDOValue pRelName  = CONVERTER->stack().pop<RDOValue>($2);
+				LPRDOValue pTypeName = CONVERTER->stack().pop<RDOValue>($3);
 				YYLTYPE convertor_begin_pos = @3;
 				tstring str = LEXER->YYText();
 				rdo::toLower(str);
@@ -693,7 +694,7 @@ pat_rel_res
 				convertor_end_pos.m_first_line = convertor_end_pos.m_last_line;
 				convertor_end_pos.m_first_pos  = convertor_end_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
 				convertor_end_pos.m_first_seek = convertor_end_pos.m_last_seek - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-				pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
+				pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdoRuntime::RDOResource::CS_NoChange, rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
 				break;
 			}
 			case RDOPATPattern::PT_IE:
@@ -725,13 +726,13 @@ pat_rel_res
 			case RDOPATPattern::PT_IE  :
 			case RDOPATPattern::PT_Rule:
 			{
-				PTR(RDOValue) rel_name  = P_RDOVALUE($2);
-				PTR(RDOValue) type_name = P_RDOVALUE($3);
+				LPRDOValue pRelName  = CONVERTER->stack().pop<RDOValue>($2);
+				LPRDOValue pTypeName = CONVERTER->stack().pop<RDOValue>($3);
 				YYLTYPE convertor_pos = @3;
 				convertor_pos.m_first_line = convertor_pos.m_last_line;
 				convertor_pos.m_first_pos  = convertor_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
 				convertor_pos.m_first_seek = convertor_pos.m_last_seek - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-				pPattern->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, convertor_pos);
+				pPattern->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdoRuntime::RDOResource::CS_NoChange, convertor_pos);
 				break;
 			}
 		}
@@ -753,13 +754,13 @@ pat_rel_res
 			case RDOPATPattern::PT_IE   :
 			case RDOPATPattern::PT_Rule :
 			{
-				PTR(RDOValue) rel_name  = P_RDOVALUE($2);
-				PTR(RDOValue) type_name = P_RDOVALUE($3);
+				LPRDOValue pRelName  = CONVERTER->stack().pop<RDOValue>($2);
+				LPRDOValue pTypeName = CONVERTER->stack().pop<RDOValue>($3);
 				YYLTYPE convertor_pos = @3;
 				convertor_pos.m_first_line = convertor_pos.m_last_line;
 				convertor_pos.m_first_pos  = convertor_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
 				convertor_pos.m_first_seek = convertor_pos.m_last_seek - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-				pPattern->addRelRes(rel_name->src_info(), type_name->src_info(), rdoRuntime::RDOResource::CS_NoChange, convertor_pos);
+				pPattern->addRelRes(pRelName->src_info(), pTypeName->src_info(), rdoRuntime::RDOResource::CS_NoChange, convertor_pos);
 				break;
 			}
 		}
@@ -775,9 +776,9 @@ pat_rel_res
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
 			{
-				PTR(RDOValue) rel_name  = P_RDOVALUE($2);
-				PTR(RDOValue) type_name = P_RDOVALUE($3);
-				tstring convert_begin = RDOVALUE($4)->getIdentificator();
+				LPRDOValue pRelName  = CONVERTER->stack().pop<RDOValue>($2);
+				LPRDOValue pTypeName = CONVERTER->stack().pop<RDOValue>($3);
+				tstring convert_begin = CONVERTER->stack().pop<RDOValue>($4)->value().getIdentificator();
 				YYLTYPE convertor_begin_pos = @4;
 				convertor_begin_pos.m_last_line = convertor_begin_pos.m_first_line;
 				convertor_begin_pos.m_last_pos  = convertor_begin_pos.m_first_pos  + convert_begin.length();
@@ -786,7 +787,7 @@ pat_rel_res
 				convertor_end_pos.m_first_line = convertor_end_pos.m_last_line;
 				convertor_end_pos.m_first_pos  = convertor_end_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
 				convertor_end_pos.m_first_seek = convertor_end_pos.m_last_seek - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-				pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(rel_name->src_info(), type_name->src_info(), pPattern->StrToStatus(convert_begin, convertor_begin_pos), rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
+				pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), pPattern->StrToStatus(convert_begin, convertor_begin_pos), rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
 				break;
 			}
 			case RDOPATPattern::PT_IE:
@@ -812,9 +813,9 @@ pat_rel_res
 			case RDOPATPattern::PT_Operation:
 			case RDOPATPattern::PT_Keyboard :
 			{
-				PTR(RDOValue) rel_name  = P_RDOVALUE($2);
-				PTR(RDOValue) type_name = P_RDOVALUE($3);
-				tstring convert_begin = RDOVALUE($4)->getIdentificator();
+				LPRDOValue pRelName  = CONVERTER->stack().pop<RDOValue>($2);
+				LPRDOValue pTypeName = CONVERTER->stack().pop<RDOValue>($3);
+				tstring convert_begin = CONVERTER->stack().pop<RDOValue>($4)->value().getIdentificator();
 				YYLTYPE convertor_begin_pos = @4;
 				convertor_begin_pos.m_last_line = convertor_begin_pos.m_first_line;
 				convertor_begin_pos.m_last_pos  = convertor_begin_pos.m_first_pos  + convert_begin.length();
@@ -823,7 +824,7 @@ pat_rel_res
 				convertor_end_pos.m_first_line = convertor_end_pos.m_last_line;
 				convertor_end_pos.m_first_pos  = convertor_end_pos.m_last_pos  - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
 				convertor_end_pos.m_first_seek = convertor_end_pos.m_last_seek - RDOPATPattern::StatusToStr(rdoRuntime::RDOResource::CS_NoChange).length();
-				pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(rel_name->src_info(), type_name->src_info(), pPattern->StrToStatus(convert_begin, convertor_begin_pos), rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
+				pPattern.object_static_cast<RDOPatternOperation>()->addRelRes(pRelName->src_info(), pTypeName->src_info(), pPattern->StrToStatus(convert_begin, convertor_begin_pos), rdoRuntime::RDOResource::CS_NoChange, convertor_begin_pos, convertor_end_pos);
 				break;
 			}
 			case RDOPATPattern::PT_IE:
@@ -1122,14 +1123,14 @@ pat_body
 	: pat_time RDO_IDENTIF_RELRES
 	{
 		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
-		tstring         name     = RDOVALUE($2)->getIdentificator();
+		tstring         name     = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		pPattern->addRelResBody(RDOParserSrcInfo(@2, name));
 		$$ = CONVERTER->stack().push(pPattern);
 	}
 	| pat_convert RDO_IDENTIF_RELRES
 	{
 		LPRDOPATPattern pPattern = CONVERTER->stack().pop<RDOPATPattern>($1);
-		tstring         name    = RDOVALUE($2)->getIdentificator();
+		tstring         name     = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		pPattern->addRelResBody(RDOParserSrcInfo(@2, name));
 		$$ = CONVERTER->stack().push(pPattern);
 	}
@@ -1512,7 +1513,7 @@ pat_convert_cmd
 	| pat_convert_cmd RDO_IDENTIF param_equal_type fun_arithm
 	{
 		LPConvertCmdList         pCmdList     = CONVERTER->stack().pop<ConvertCmdList>($1);
-		tstring                  paramName    = RDOVALUE($2)->getIdentificator();
+		tstring                  paramName    = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		rdoRuntime::EqualType    equalType    = static_cast<rdoRuntime::EqualType>($3);
 		LPRDOFUNArithm           pRightArithm = CONVERTER->stack().pop<RDOFUNArithm>($4);
 		LPRDORelevantResource    pRelRes      = CONVERTER->getLastPATPattern()->m_pCurrRelRes;
@@ -1640,8 +1641,8 @@ param_type
 		LPRDOTypeParam pType;
 		if (pRange)
 		{
-			if (pRange->getMin().typeID() != rdoRuntime::RDOType::t_int ||
-			    pRange->getMax().typeID() != rdoRuntime::RDOType::t_int)
+			if (pRange->getMin()->typeID() != rdoRuntime::RDOType::t_int ||
+			    pRange->getMax()->typeID() != rdoRuntime::RDOType::t_int)
 			{
 				CONVERTER->error().error(@2, _T("Диапазон целого типа должен быть целочисленным"));
 			}
@@ -1711,28 +1712,28 @@ param_type_range
 	}
 	| '[' RDO_INT_CONST RDO_dblpoint RDO_INT_CONST ']'
 	{
-		LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(RDOVALUE($2), RDOVALUE($4), RDOParserSrcInfo(@1, @5));
+		LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($4), RDOParserSrcInfo(@1, @5));
 		ASSERT(pRange);
 		pRange->checkRange();
 		$$ = CONVERTER->stack().push(pRange);
 	}
 	| '[' RDO_REAL_CONST RDO_dblpoint RDO_REAL_CONST ']'
 	{
-		LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(RDOVALUE($2), RDOVALUE($4), RDOParserSrcInfo(@1, @5));
+		LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($4), RDOParserSrcInfo(@1, @5));
 		ASSERT(pRange);
 		pRange->checkRange();
 		$$ = CONVERTER->stack().push(pRange);
 	}
 	| '[' RDO_REAL_CONST RDO_dblpoint RDO_INT_CONST ']'
 	{
-		LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(RDOVALUE($2), RDOVALUE($4), RDOParserSrcInfo(@1, @5));
+		LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($4), RDOParserSrcInfo(@1, @5));
 		ASSERT(pRange);
 		pRange->checkRange();
 		$$ = CONVERTER->stack().push(pRange);
 	}
 	| '[' RDO_INT_CONST RDO_dblpoint RDO_REAL_CONST ']'
 	{
-		LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(RDOVALUE($2), RDOVALUE($4), RDOParserSrcInfo(@1, @5));
+		LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(CONVERTER->stack().pop<RDOValue>($2), CONVERTER->stack().pop<RDOValue>($4), RDOParserSrcInfo(@1, @5));
 		ASSERT(pRange);
 		pRange->checkRange();
 		$$ = CONVERTER->stack().push(pRange);
@@ -1785,7 +1786,7 @@ param_type_enum_list
 	{
 		LPRDOEnumType pEnum = rdo::Factory<RDOEnumType>::create();
 		ASSERT(pEnum);
-		pEnum->add(RDOVALUE($1));
+		pEnum->add(CONVERTER->stack().pop<RDOValue>($1));
 		LEXER->enumBegin();
 		$$ = CONVERTER->stack().push(pEnum);
 	}
@@ -1795,7 +1796,7 @@ param_type_enum_list
 		{
 			LPRDOEnumType pEnum = CONVERTER->stack().pop<RDOEnumType>($1);
 			ASSERT(pEnum);
-			pEnum->add(RDOVALUE($3));
+			pEnum->add(CONVERTER->stack().pop<RDOValue>($3));
 			$$ = CONVERTER->stack().push(pEnum);
 		}
 		else
@@ -1809,9 +1810,9 @@ param_type_enum_list
 		{
 			LPRDOEnumType pEnum = CONVERTER->stack().pop<RDOEnumType>($1);
 			ASSERT(pEnum);
-			pEnum->add(RDOVALUE($2));
+			pEnum->add(CONVERTER->stack().pop<RDOValue>($2));
 			$$ = CONVERTER->stack().push(pEnum);
-			CONVERTER->error().warning(@1, rdo::format(_T("Пропущена запятая перед: %s"), RDOVALUE($2)->getIdentificator().c_str()));
+			CONVERTER->error().warning(@1, rdo::format(_T("Пропущена запятая перед: %s"), CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator().c_str()));
 		}
 		else
 		{
@@ -1847,8 +1848,8 @@ param_type_enum_list
 param_type_such_as
 	: RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF
 	{
-		tstring type  = RDOVALUE($2)->getIdentificator();
-		tstring param = RDOVALUE($4)->getIdentificator();
+		tstring type  = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		tstring param = CONVERTER->stack().pop<RDOValue>($4)->value().getIdentificator();
 		LPRDORTPResType pResType = CONVERTER->findRTPResType(type);
 		if (!pResType)
 		{
@@ -1867,7 +1868,7 @@ param_type_such_as
 	}
 	| RDO_such_as RDO_IDENTIF
 	{
-		tstring constName = RDOVALUE($2)->getIdentificator();
+		tstring constName = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		LPRDOFUNConstant pConstant = CONVERTER->findFUNConstant(constName);
 		if (!pConstant)
 		{
@@ -1881,7 +1882,7 @@ param_type_such_as
 	}
 	| RDO_such_as RDO_IDENTIF '.' error
 	{
-		tstring type = RDOVALUE($2)->getIdentificator();
+		tstring type = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		LPRDORTPResType pResType = CONVERTER->findRTPResType(type);
 		if (!pResType)
 		{
@@ -1901,7 +1902,7 @@ param_type_such_as
 param_value_default
 	: /* empty */
 	{
-		$$ = (int)CONVERTER->addValue(new rdoConverter::RDOValue());
+		$$ = CONVERTER->stack().push(rdo::Factory<rdoConverter::RDOValue>::create());
 	}
 	| '=' RDO_INT_CONST
 	{
@@ -2088,13 +2089,13 @@ fun_logic
 // -------------------- Арифметические выражения
 // --------------------------------------------------------------------------------
 fun_arithm
-	: RDO_INT_CONST                      { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
-	| RDO_REAL_CONST                     { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
-	| RDO_BOOL_CONST                     { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
-	| RDO_STRING_CONST                   { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
-	| RDO_IDENTIF                        { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1))); }
-	| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1), RDOVALUE($3))); }
-	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOVALUE($1), RDOVALUE($3))); }
+	: RDO_INT_CONST                      { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($1))); }
+	| RDO_REAL_CONST                     { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($1))); }
+	| RDO_BOOL_CONST                     { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($1))); }
+	| RDO_STRING_CONST                   { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($1))); }
+	| RDO_IDENTIF                        { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($1))); }
+	| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($1), CONVERTER->stack().pop<RDOValue>($3))); }
+	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(CONVERTER->stack().pop<RDOValue>($1), CONVERTER->stack().pop<RDOValue>($3))); }
 	| fun_arithm '+' fun_arithm
 	{
 		LPRDOFUNArithm pArithm1 = CONVERTER->stack().pop<RDOFUNArithm>($1);
@@ -2152,7 +2153,12 @@ fun_arithm
 		RDOParserSrcInfo info;
 		info.setSrcPos (@1, @2);
 		info.setSrcText(_T("-") + pArithm->src_text());
-		$$ = CONVERTER->stack().push(rdo::Factory<RDOFUNArithm>::create(RDOValue(pArithm->type(), info), rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(info.src_pos(), pArithm->createCalc())));
+		$$ = CONVERTER->stack().push(
+			rdo::Factory<RDOFUNArithm>::create(
+				rdo::Factory<RDOValue>::create(pArithm->type(), info),
+				rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(info.src_pos(), pArithm->createCalc()).object_parent_cast<rdoRuntime::RDOCalc>()
+			)
+		);
 	}
 	;
 
@@ -2164,7 +2170,7 @@ fun_arithm_func_call
 	{
 		LPRDOFUNParams pFunParams = rdo::Factory<RDOFUNParams>::create();
 		ASSERT(pFunParams);
-		tstring funName = RDOVALUE($1)->getIdentificator();
+		tstring funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @3);
 		pFunParams->setSrcText(funName + _T("()"));
@@ -2176,7 +2182,7 @@ fun_arithm_func_call
 	{
 		LPRDOFUNParams pFunParams = CONVERTER->stack().pop<RDOFUNParams>($3);
 		ASSERT(pFunParams);
-		tstring funName = RDOVALUE($1)->getIdentificator();
+		tstring funName = CONVERTER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @4);
 		pFunParams->setSrcText(funName + _T("(") + pFunParams->src_text() + _T(")"));
@@ -2234,8 +2240,9 @@ fun_group_keyword
 fun_group_header
 	: fun_group_keyword '(' RDO_IDENTIF_COLON
 	{
-		PTR(RDOValue) type_name = P_RDOVALUE($3);
-		$$ = CONVERTER->stack().push(rdo::Factory<RDOFUNGroupLogic>::create((RDOFUNGroupLogic::FunGroupType)$1, type_name->src_info()));
+		LPRDOValue pValue = CONVERTER->stack().pop<RDOValue>($3);
+		ASSERT(pValue);
+		$$ = CONVERTER->stack().push(rdo::Factory<RDOFUNGroupLogic>::create((RDOFUNGroupLogic::FunGroupType)$1, pValue->src_info()));
 	}
 	| fun_group_keyword '(' error
 	{
@@ -2288,10 +2295,11 @@ fun_group
 fun_select_header
 	: RDO_Select '(' RDO_IDENTIF_COLON
 	{
-		PTR(RDOValue)  type_name = P_RDOVALUE($3);
-		LPRDOFUNSelect pSelect   = rdo::Factory<RDOFUNSelect>::create(type_name->src_info());
+		LPRDOValue pValue = CONVERTER->stack().pop<RDOValue>($3);
+		ASSERT(pValue);
+		LPRDOFUNSelect pSelect = rdo::Factory<RDOFUNSelect>::create(pValue->src_info());
 		ASSERT(pSelect);
-		pSelect->setSrcText(_T("Select(") + type_name->value().getIdentificator() + _T(": "));
+		pSelect->setSrcText(_T("Select(") + pValue->value().getIdentificator() + _T(": "));
 		$$ = CONVERTER->stack().push(pSelect);
 	}
 	| RDO_Select '(' error

@@ -25,21 +25,21 @@ OPEN_RDO_CONVERTER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- IType
 // --------------------------------------------------------------------------------
-class RDOValue;
-PREDECLARE_POINTER(RDOType);
+PREDECLARE_POINTER(RDOValue);
+PREDECLARE_POINTER(RDOType );
 
 class IType
 {
 public:
-	virtual tstring   name() const = 0;
-	virtual LPRDOType type_cast(
+	virtual tstring    name() const = 0;
+	virtual LPRDOType  type_cast(
 		CREF(LPRDOType)        pFrom,
 		CREF(RDOParserSrcInfo) from_src_info,
 		CREF(RDOParserSrcInfo) to_src_info,
 		CREF(RDOParserSrcInfo) src_info
 	) const = 0;
-	virtual RDOValue  value_cast(
-		CREF(RDOValue)         from,
+	virtual LPRDOValue value_cast(
+		CREF(LPRDOValue)       pFrom,
 		CREF(RDOParserSrcInfo) to_src_info,
 		CREF(RDOParserSrcInfo) src_info
 	) const = 0;
@@ -48,14 +48,14 @@ public:
 		CREF(rdoRuntime::LPRDOCalc) pCalc,
 		CREF(LPRDOType)             pType
 	) const = 0;
-	virtual RDOValue get_default() const = 0;
+	virtual LPRDOValue get_default() const = 0;
 };
-#define DECLARE_ITypeConverter                                                                                                                                                          \
-	virtual tstring                name       () const;                                                                                                                                 \
-	virtual LPRDOType              type_cast  (CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const; \
-	virtual RDOValue               value_cast (CREF(RDOValue)  from, CREF(RDOParserSrcInfo) to_src_info,   CREF(RDOParserSrcInfo) src_info)                                     const;  \
-	virtual rdoRuntime::LPRDOCalc  calc_cast  (CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const;                                                                         \
-	virtual RDOValue               get_default() const;
+#define DECLARE_ITypeConverter                                                                                                                                                           \
+	virtual tstring                name       () const;                                                                                                                                  \
+	virtual LPRDOType              type_cast  (CREF(LPRDOType)  pFrom, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const; \
+	virtual LPRDOValue             value_cast (CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo) to_src_info,   CREF(RDOParserSrcInfo) src_info)                                     const; \
+	virtual rdoRuntime::LPRDOCalc  calc_cast  (CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const;                                                                          \
+	virtual LPRDOValue             get_default() const;
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOType
