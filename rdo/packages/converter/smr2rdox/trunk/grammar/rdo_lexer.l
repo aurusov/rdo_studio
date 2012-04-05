@@ -325,7 +325,7 @@ set					return(RDO_set);
 }
 
 (\'[^\']*\n\r) {
-	LEXER->setvalue(NULL);
+	LEXER->setvalue(0);
 	return RDO_STRING_CONST_BAD;
 }
 
