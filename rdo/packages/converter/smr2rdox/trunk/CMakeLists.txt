@@ -74,6 +74,7 @@ IF(PROJECT_OS_LINUX)
         ${BISON_rdoevn_preparse_OUTPUTS}
         ${BISON_rdofrm_OUTPUTS}
         ${BISON_rdofun_OUTPUTS}
+        ${BISON_rdoopr_OUTPUTS}
         ${BISON_rdopat_OUTPUTS}
         ${BISON_rdopmd_OUTPUTS}
         ${BISON_rdoproc_opr_OUTPUTS}
