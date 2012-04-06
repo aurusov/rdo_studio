@@ -831,6 +831,17 @@ inline CREF(rdo::intrusive_ptr<typename T::value_type>) RDOValue::getPointerSafe
 }
 
 template <class T>
+inline CREF(rdo::intrusive_ptr<typename T::value_type>) RDOValue::getPointerByInterfaceSafety() const
+{
+#ifdef _DEBUG
+	rdo::interface_ptr<T> pType = type().interface_dynamic_cast<T>();
+	ASSERT(pType);
+#endif // _DEBUG
+
+	return getPointer<typename T::value_type>();
+}
+
+template <class T>
 inline rbool RDOValue::isType() const
 {
 	return type().object_dynamic_cast<T>();

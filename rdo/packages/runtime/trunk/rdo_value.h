@@ -58,14 +58,14 @@ public:
 	CREF(tstring)     getString       () const;
 	CREF(tstring)     getIdentificator() const;
 
-	template <class T>
-	REF(rdo::intrusive_ptr<T>) getPointer();
-
-	template <class T>
-	CREF(rdo::intrusive_ptr<T>) getPointer() const;
+	template <class T>  REF(rdo::intrusive_ptr<T>) getPointer  ();
+	template <class T> CREF(rdo::intrusive_ptr<T>) getPointer  () const;
 
 	template <class T>
 	CREF(rdo::intrusive_ptr<typename T::value_type>) getPointerSafety() const;
+
+	template <class T>
+	CREF(rdo::intrusive_ptr<typename T::value_type>) getPointerByInterfaceSafety() const;
 
 	template <class T>
 	rbool isType() const;
