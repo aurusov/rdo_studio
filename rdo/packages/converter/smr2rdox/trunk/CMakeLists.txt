@@ -46,7 +46,7 @@ IF(PROJECT_OS_LINUX)
     BISON_TARGET(rdofrm ${GRAMMA_PATH}/rdofrm.y ${GRAMMA_PATH}/rdogramfrm.cpp COMPILE_FLAGS "-g -v -pcnv_frm")
     BISON_TARGET(rdodpt ${GRAMMA_PATH}/rdodpt.y ${GRAMMA_PATH}/rdogramdpt.cpp COMPILE_FLAGS "-g -v -pcnv_dpt")
 
-    FLEX_TARGET(lexer_scaner ${GRAMMA_PATH}/rdo_lexer.l ${GRAMMA_PATH}/rdolex.cpp COMPILE_FLAGS "-+")
+    FLEX_TARGET(lexer_scaner ${GRAMMA_PATH}/rdo_lexer.l ${GRAMMA_PATH}/rdolex.cpp COMPILE_FLAGS "-Pcnv -+")
 
     ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdosmr_sim)
     ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdosmr_file)
