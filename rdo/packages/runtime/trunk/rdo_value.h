@@ -58,9 +58,6 @@ public:
 	CREF(tstring)     getString       () const;
 	CREF(tstring)     getIdentificator() const;
 
-	template <class T>  REF(rdo::intrusive_ptr<T>) getPointer  ();
-	template <class T> CREF(rdo::intrusive_ptr<T>) getPointer  () const;
-
 	template <class T>
 	CREF(rdo::intrusive_ptr<typename T::value_type>) getPointerSafety() const;
 
@@ -138,6 +135,9 @@ private:
 	LPRDOEnumType    __enumT   () const;
 	 REF(tstring)    __stringV ();
 	CREF(tstring)    __stringV () const;
+
+	template <class T>  REF(rdo::intrusive_ptr<T>) getPointer();
+	template <class T> CREF(rdo::intrusive_ptr<T>) getPointer() const;
 
 	RDOValue clone() const;
 
