@@ -2,7 +2,7 @@
 # Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>
 #==============================================================================
 
-MESSAGE(STATUS "CREATE CONVERTER SMR2RDOX LIBRARY")
+MESSAGE(STATUS "CREATE  CONVERTER SMR2RDOX  LIBRARY")
 
 INCLUDE_DIRECTORIES(${BISON_FLEX_DIRECTORY})
 INCLUDE_DIRECTORIES(${BISON_FLEX_DIRECTORY}/include)
