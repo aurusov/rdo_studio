@@ -281,7 +281,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Resource)
 	LPRDOResourceType pType = value1.type().object_dynamic_cast<RDOResourceType>();
 	BOOST_CHECK(pType);
 
-	LPRDOResource pResource1 = value1.getPointer<RDOResource>();
+	LPRDOResource pResource1 = value1.getPointerSafety<RDOResourceType>();
 
 	pRuntime   = NULL;
 	value1     = RDOValue();
