@@ -24,6 +24,28 @@ OPEN_RDO_RUNTIME_NAMESPACE
 PREDECLARE_POINTER(RDOFuzzyType);
 PREDECLARE_POINTER(RDOFuzzyValue);
 
+OBJECT (FuzzyMembershipType)
+{
+DECLARE_FACTORY(FuzzyMembershipType)
+public:
+	enum TypeOfFunction
+	{
+		t_unknown = 0,
+		t_zFunction,
+		t_pFunction,
+		t_sFunction
+	};
+	FuzzyMembershipType();
+	FuzzyMembershipType(TypeOfFunction typeOfFunction);
+	virtual ~FuzzyMembershipType();
+
+	TypeOfFunction typeOfFunction();
+
+private:
+	TypeOfFunction m_typeOfMembershipFunction;
+};
+
+
 //! Нечеткое значение
 OBJECT(RDOFuzzyValue)
 {
@@ -45,6 +67,10 @@ public:
 	CREF(LPRDOFuzzyType)       type       () const;
 	LPRDOFuzzyValue            clone      () const;
 	rbool                      inRange    (CREF(RDOValue) rdovalue);
+
+	double FuzzyMembershipFormZ(CREF(RDOValue) range1, CREF(RDOValue) range2){}; // форма фп
+	double FuzzyMembershipFormP(CREF(RDOValue) range1, CREF(RDOValue) range2,CREF(RDOValue) range3, CREF(RDOValue) range4){};
+	double FuzzyMembershipFormS(CREF(RDOValue) range1, CREF(RDOValue) range2){};
 
 	/* 3.37 */  LPRDOFuzzyValue operator&& (CREF(LPRDOFuzzyValue) pFuzzyValue) const;
 	/* 3.40 */  LPRDOFuzzyValue operator|| (CREF(LPRDOFuzzyValue) pFuzzyValue) const;
@@ -71,13 +97,14 @@ public:
 	virtual ~RDOFuzzyValue();
 
 private:
-	RDOFuzzyValue(CREF(LPRDOFuzzyType)  pType );
+	RDOFuzzyValue(CREF(LPRDOFuzzyType)pType);
 	RDOFuzzyValue(CREF(RDOValue),CREF(RDOValue));
 	RDOFuzzyValue(CREF(LPRDOFuzzyValue) pValue);
 
-	FuzzySet        m_fuzzySet;
-	LPRDOFuzzyType  m_pType;
-	Domain          m_Domain;
+	FuzzySet            m_fuzzySet;
+	LPRDOFuzzyType      m_pType;
+	Domain              m_Domain;
+	FuzzyMembershipType m_Form;
 
 	FuzzySet::iterator  begin();
 	FuzzySet::iterator  end  ();

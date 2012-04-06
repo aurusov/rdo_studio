@@ -14,6 +14,24 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // --------------------------------------------------------------------------------
+// -------------------- FuzzyMembershipType
+// --------------------------------------------------------------------------------
+inline FuzzyMembershipType::FuzzyMembershipType(TypeOfFunction typeOfFunction)
+	:m_typeOfMembershipFunction(typeOfFunction)
+{}
+
+inline FuzzyMembershipType::~FuzzyMembershipType()
+{}
+inline FuzzyMembershipType::TypeOfFunction FuzzyMembershipType::typeOfFunction()
+{
+	return m_typeOfMembershipFunction;
+}
+FuzzyMembershipType::FuzzyMembershipType()
+{
+	m_typeOfMembershipFunction = t_unknown;
+}
+
+// --------------------------------------------------------------------------------
 // -------------------- RDOFuzzyValue
 // --------------------------------------------------------------------------------
 inline RDOFuzzyValue::RDOFuzzyValue(CREF(LPRDOFuzzyType) pType)
