@@ -26,7 +26,7 @@ inline FuzzyMembershipType::TypeOfFunction FuzzyMembershipType::typeOfFunction()
 {
 	return m_typeOfMembershipFunction;
 }
-FuzzyMembershipType::FuzzyMembershipType()
+inline FuzzyMembershipType::FuzzyMembershipType()
 {
 	m_typeOfMembershipFunction = t_unknown;
 }
