@@ -187,7 +187,6 @@ RDOStudioModel::RDOStudioModel()
 	notifies.push_back(RT_RUNTIME_MODEL_START_BEFORE        );
 	notifies.push_back(RT_RUNTIME_MODEL_START_AFTER         );
 	notifies.push_back(RT_RUNTIME_MODEL_STOP_BEFORE         );
-	//notifies.push_back(RT_RUNTIME_TRANSACT_COUNTER          );
 	notifies.push_back(RT_DEBUG_STRING                      );
 	notifies.push_back(RT_RESULT_STRING                     );
 
@@ -364,15 +363,6 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			}
 			m_GUI_CAN_RUN   = true;
 			m_GUI_IS_RUNING = false;
-			break;
-		}
-		case RDOThread::RT_RUNTIME_TRANSACT_COUNTER:
-		{
-			msg.lock();
-			int count = *static_cast<PTR(int)>(msg.param);
-			PTR(RPShapeDataBlockCreate) pRawParam = static_cast<PTR(RPShapeDataBlockCreate)>(msg.param);
-			pRawParam->setAmount(count);
-			msg.unlock();
 			break;
 		}
 		case RDOThread::RT_SIMULATOR_MODEL_STOP_OK:
