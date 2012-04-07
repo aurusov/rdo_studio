@@ -32,7 +32,7 @@ DECLARE_FACTORY(RDOValue);
 public:
 	CREF(LPTypeInfo)             typeInfo() const;
 	rdoRuntime::RDOType::TypeID  typeID  () const;
-	REF(rdoRuntime::RDOValue)    value   ()      ;
+	 REF(rdoRuntime::RDOValue)   value   ();
 	CREF(rdoRuntime::RDOValue)   value   () const;
 
 	rbool defined () const;

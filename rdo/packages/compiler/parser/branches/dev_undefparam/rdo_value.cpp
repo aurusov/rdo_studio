@@ -139,6 +139,7 @@ rdoRuntime::RDOType::TypeID RDOValue::typeID() const
 {
 	return m_pType->type()->typeID();
 }
+
 REF(rdoRuntime::RDOValue) RDOValue::value()
 {
 	return m_value;
