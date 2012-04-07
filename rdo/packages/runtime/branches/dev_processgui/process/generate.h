@@ -14,7 +14,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/noncopyable.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "kernel/rdokernel.h"
+#include "simulator/compiler/procgui/procgui.h"
 #include "simulator/runtime/rdo.h"
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/runtime/process/rdoprocess.h"
@@ -47,6 +47,23 @@ private:
 	int        m_TransCount;
 
 	DECLARE_IBaseOperation;
+};
+
+/*!
+  \interface IProcAnimation
+  \brief     Èםעונפויס IProcAnimation
+*/
+OBJECT_INTERFACE(IProcAnimation)
+{
+DECLARE_FACTORY(IProcAnimation)
+public:
+	virtual void setTransCount(int count) = 0;
+	
+protected:
+	IProcAnimation()
+	{}
+	virtual ~IProcAnimation()
+	{}
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
