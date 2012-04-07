@@ -5,10 +5,9 @@
 #include "simulator/compiler/procgui/procgui_datablock.h"
 #include "simulator/runtime/process/generate.h"
 
-class RPShapeCreateMJ : public RPShape_MJ  
+class RPShapeCreateMJ : public RPShape_MJ, public IProcAnimation
 {
 friend class RPMethodProc2RDO_MJ;
-friend class IProcAnimation;
 
 private:
 	static RPObject* newObject( RPObject* parent );
