@@ -96,6 +96,9 @@ public:
 	RDOValue       operator*  (CREF(RDOValue) rdovalue) const;
 	RDOValue       operator/  (CREF(RDOValue) rdovalue) const;
 
+	void         setUndefined (CREF(double) undefined);
+	CREF(double) getUndefined () const;
+
 	CREF(LPRDOType) type  () const;
 	RDOType::TypeID typeID() const;
 
@@ -118,8 +121,9 @@ private:
 	//! Тип контейнера значения, размер определяется по максимальному размеру типа данных
 	typedef rbyte Value[sizeof(rdo::intrusive_ptr_interface_wrapper<string_class>)];
 
-	Value      m_value; //!< контейнер значения
-	LPRDOType  m_pType; //!< тип значения
+	Value        m_value;     //!< контейнер значения
+	LPRDOType    m_pType;     //!< тип значения
+	double       m_undefined; //!< неопределенность значения
 
 	void set        (CREF(RDOValue) rdovalue);
 	void deleteValue();
