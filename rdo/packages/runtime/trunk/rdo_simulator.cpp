@@ -83,16 +83,18 @@ rbool RDOSimulator::doOperation()
 					LPIBaseOperation pOperation = pList->front().m_opr;
 					PTR(void)        pParam     = pList->front().m_param;
 					pList->pop_front();
-#endif
+#endif // RDOSIM_COMPATIBLE
 					if (pList->empty())
 					{
 						delete pList;
 						m_timePoints.erase(m_timePoints.begin());
 					}
+#ifndef RDO_703_COMPATIBLE
 					else
 					{
 						m_checkOperation = false;
 					}
+#endif // not RDO_703_COMPATIBLE
 					pOperation->onMakePlaned(pRuntime, pParam);
 					foundPlaned = true;
 				}
