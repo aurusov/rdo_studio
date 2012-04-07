@@ -840,7 +840,6 @@ void RDOThreadRunTime::sendMessage(ThreadID threadID, ruint messageID, PTR(void)
 	switch (threadID)
 	{
 	case TID_REPOSITORY: pThread = kernel->repository(); break;
-	case TID_GUI       : pThread = kernel->studio();     break;
 	default            : pThread = NULL; break;
 	}
 
