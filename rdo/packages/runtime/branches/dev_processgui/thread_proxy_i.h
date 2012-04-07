@@ -26,8 +26,7 @@ DECLARE_FACTORY(IThreadProxy)
 public:
 	enum ThreadID
 	{
-		TID_REPOSITORY,
-		TID_GUI
+		TID_REPOSITORY
 	};
 	virtual void sendMessage(ThreadID threadID, ruint messageID, PTR(void) pParam) = 0;
 
