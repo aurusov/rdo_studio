@@ -27,9 +27,7 @@ RDOCalcArraySize::RDOCalcArraySize(CREF(LPRDOCalc) pCalc)
 REF(RDOValue) RDOCalcArraySize::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	REF(RDOValue) value = m_pCalc->calcValue(pRuntime);
-	LPRDOArrayType pArrayType = value.type().object_dynamic_cast<RDOArrayType>();
-	ASSERT(pArrayType);
-	CREF(LPRDOArrayValue) pArrayValue = value.getPointer<RDOArrayValue>();
+	CREF(LPRDOArrayValue) pArrayValue = value.getPointerSafety<RDOArrayType>();
 	ASSERT(pArrayValue);
 	m_value = RDOValue(pArrayValue->size());
 	return m_value;
