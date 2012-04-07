@@ -3,10 +3,12 @@
 
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape.h"
 #include "simulator/compiler/procgui/procgui_datablock.h"
+#include "simulator/runtime/process/generate.h"
 
 class RPShapeCreateMJ : public RPShape_MJ  
 {
 friend class RPMethodProc2RDO_MJ;
+friend class IProcAnimation;
 
 private:
 	static RPObject* newObject( RPObject* parent );
@@ -25,6 +27,8 @@ public:
 	virtual void onLButtonDblClk( UINT nFlags, CPoint global_chart_pos );
 	//virtual void list_name();
 	virtual void generate();
+
+	virtual void setTransCount(int count);
 
 	//параметры для симулятора
 	LPRPShapeDataBlockCreate m_pParams;

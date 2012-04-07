@@ -67,16 +67,12 @@ rpMethod::RPMethod* RPObjectFlowChart_MJ::getMethod()
 
 void RPObjectFlowChart_MJ::saveToXML(REF(pugi::xml_node) parentNode) const
 {
-	// Создаем узел FlowChart'а:
 	pugi::xml_node node = parentNode.append_child(getClassName().c_str());
-	// Атрибуты <RPObjectFlowChart_MJ>:
 	node.append_attribute(_T("name")).set_value(getName().c_str());
 
-	// Заносим в список потомков FlowChart'а:
 	std::list<PTR(RPObject)> all_child;
 	getAllChild(all_child);
 
-	// Пробегая по листу, вызываем для каждого его элемента соответствующую функцию-потомок saveToXML(node):
 	STL_FOR_ALL_CONST(all_child, it)
 	{
 		(*it)->saveToXML(node);
@@ -86,10 +82,8 @@ void RPObjectFlowChart_MJ::saveToXML(REF(pugi::xml_node) parentNode) const
 void RPObjectFlowChart_MJ::loadFromXML(CREF(pugi::xml_node) node)
 {
 	setName(node.first_attribute().value());
-	// Пробегаем по потомкам узла <RPObjectFlowChart_MJ>:
 	for(pugi::xml_node child = node.first_child(); child; child = child.next_sibling())
 	{
-		// В класс RPObjectPixmap не заходим, т.к. он абстрактный:
 		if (strcmp(child.name(), "RPObjectPixmap") != 0)
 		{
 			PTR(RPObject) pFlowObject = static_cast<PTR(RPObject)>(rpMethod::factory->getNewObject(child.name(), this));

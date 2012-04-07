@@ -155,3 +155,8 @@ void RPShapeCreateMJ::generate()
 
 	m_pParams = NULL;
 }
+
+void RPShapeCreateMJ::setTransCount(int count)
+{
+	gamount = count;
+}
