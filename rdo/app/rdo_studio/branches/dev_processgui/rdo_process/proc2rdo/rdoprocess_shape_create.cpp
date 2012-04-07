@@ -155,6 +155,14 @@ void RPShapeCreateMJ::generate()
 	studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_CREATE, m_pParams.get());
 
 	m_pParams = NULL;
+
+	LPRPShapeCreateMJ pThis(this);
+	ASSERT(pThis);
+
+	rdoRuntime::LPIProcAnimation pIProcAnimation = pThis.interface_cast<rdoRuntime::IProcAnimation>();
+	ASSERT(pIProcAnimation);
+
+	pIProcAnimation->setTransCount(3);
 }
 
 void RPShapeCreateMJ::setTransCount(int count)
