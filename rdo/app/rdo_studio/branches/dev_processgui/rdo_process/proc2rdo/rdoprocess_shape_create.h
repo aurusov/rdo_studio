@@ -5,7 +5,9 @@
 #include "simulator/compiler/procgui/procgui_datablock.h"
 #include "simulator/runtime/process/generate.h"
 
-class RPShapeCreateMJ : public RPShape_MJ, public rdoRuntime::IProcAnimation
+OBJECT(RPShapeCreateMJ)
+	IS  INSTANCE_OF      (RPShape_MJ                )
+	AND IMPLEMENTATION_OF(rdoRuntime::IProcAnimation)
 {
 friend class RPMethodProc2RDO_MJ;
 
