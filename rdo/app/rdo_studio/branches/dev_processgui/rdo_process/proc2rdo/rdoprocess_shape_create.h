@@ -38,6 +38,7 @@ public:
 	int gamount; // кол-во создаваемых
 	int gtype; // закон прибытия
 	int base_gen;
+	ruint m_currentTransactCount;
 	
 	//атрибуты законов
 	double gexp;

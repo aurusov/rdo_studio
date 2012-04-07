@@ -13,6 +13,7 @@ static char THIS_FILE[]=__FILE__;
 
 RPShapeCreateMJ::RPShapeCreateMJ(PTR(RPObject) _parent)
 	: RPShape_MJ(_parent, _T("Create"))
+	, m_currentTransactCount(0)
 {
 	pa_src.push_back( rp::point(-50, -25) );
 	pa_src.push_back( rp::point(25, -25) );
@@ -158,5 +159,5 @@ void RPShapeCreateMJ::generate()
 
 void RPShapeCreateMJ::setTransCount(int count)
 {
-	gamount = count;
+	m_currentTransactCount = count;
 }
