@@ -82,8 +82,9 @@ void RDOStudioFrameTreeCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 		HTREEITEM hitem = HitTest( point, &uFlags );
 
 		if ( hitem && ( TVHT_ONITEM & uFlags ) && hitem != GetRootItem() ) {
-			int index = model->m_frameManager.findFrameIndex( hitem );
-			if ( index != -1 ) {
+			ruint index = model->m_frameManager.findFrameIndex( hitem );
+			if (index != ruint(~0))
+			{
 				RDOStudioFrameDoc* doc = model->m_frameManager.getFrameDoc( index );
 				if ( !doc ) {
 					model->m_frameManager.connectFrameDoc( index );

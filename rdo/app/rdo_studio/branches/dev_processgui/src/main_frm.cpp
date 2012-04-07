@@ -670,11 +670,14 @@ void RDOStudioMainFrame::update_stop()
 
 void RDOStudioMainFrame::OnTimer( UINT nIDEvent )
 {
+	CMDIFrameWnd::OnTimer(nIDEvent);
+
 	if (nIDEvent == m_updateTimer)
 	{
+		update_stop();
 		model->update();
+		update_start();
 	}
-	CMDIFrameWnd::OnTimer(nIDEvent);
 }
 
 void RDOStudioMainFrame::OnClose()

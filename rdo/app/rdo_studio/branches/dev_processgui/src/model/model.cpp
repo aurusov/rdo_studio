@@ -347,7 +347,6 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			studioApp.m_pMainFrame->update_stop();
 			sendMessage(kernel->runtime(), RT_RUNTIME_GET_TIMENOW, &m_timeNow);
 			m_frameManager.clear();
-			m_frameManager.bmp_clear();
 			SYSTEMTIME time_stop;
 			::GetSystemTime(&time_stop);
 			ruint delay = ruint(~0);
@@ -1159,7 +1158,6 @@ void RDOStudioModel::setName(CREF(tstring) str)
 void RDOStudioModel::afterModelStart()
 {
 	m_frameManager.clear();
-	m_frameManager.bmp_clear();
 
 	if (isFrmDescribed())
 	{
@@ -1176,17 +1174,21 @@ void RDOStudioModel::afterModelStart()
 		sendMessage(kernel->simulator(), RT_SIMULATOR_GET_LIST, &getListBitmaps);
 		STL_FOR_ALL_CONST(bitmaps, bmp_it)
 		{
-			m_frameManager.bmp_insert(*bmp_it);
+			m_frameManager.insertBitmap(*bmp_it);
 		}
 		STL_FOR_ALL_CONST(frames, frame_it)
 		{
-			m_frameManager.insertItem(*frame_it);
+			m_frameManager.insertFrame(*frame_it);
 		}
 		m_frameManager.expand();
-		int initFrameNumber = kernel->simulator()->getInitialFrameNumber() - 1;
 		m_timeNow = 0;
+		ruint initFrameNumber = kernel->simulator()->getInitialFrameNumber();
+		if (initFrameNumber != ruint(~0))
+		{
+			--initFrameNumber;
+		}
 		m_frameManager.setLastShowedFrame(initFrameNumber);
-		if (getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && initFrameNumber >= 0 && initFrameNumber < m_frameManager.count())
+		if (getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && initFrameNumber < m_frameManager.count())
 		{
 			PTR(RDOStudioFrameDoc) pDoc = m_frameManager.connectFrameDoc(initFrameNumber);
 			if (pDoc)
@@ -1200,7 +1202,7 @@ void RDOStudioModel::afterModelStart()
 	else
 	{
 		m_timeNow = 0;
-		m_frameManager.setLastShowedFrame(-1);
+		m_frameManager.setLastShowedFrame(ruint(~0));
 	}
 }
 
