@@ -23,7 +23,7 @@ CALC(RDOCalcCreateLocalVariable)
 {
 DECLARE_FACTORY(RDOCalcCreateLocalVariable)
 private:
-	RDOCalcCreateLocalVariable(CREF(tstring) name, CREF(RDOValue) defaultValue);
+	RDOCalcCreateLocalVariable(CREF(tstring) name);
 
 	tstring m_name;
 

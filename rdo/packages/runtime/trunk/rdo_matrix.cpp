@@ -95,20 +95,14 @@ ruint RDOMatrixValue::size() const
 CREF(RDOValue) RDOMatrixValue::getItem(CREF(RDOValue) index) const
 {
 	ruint ind = index.getUInt();
-	if (ind >= m_container.size())
-	{
-		throw RDORuntimeException(_T("Выход за пределы матрицы"));
-	}
+	ASSERT(m_container.size() < ind);
 	return m_container[ind];
 }
 
 void RDOMatrixValue::setItem(CREF(RDOValue) index, CREF(RDOValue) item)
 {
 	ruint ind = index.getUInt();
-	if (ind >= m_container.size())
-	{
-		throw RDORuntimeException(_T("Выход за пределы матрицы"));
-	}
+	ASSERT(m_container.size() < ind);
 	m_container[ind] = item;
 }
 

@@ -189,7 +189,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestValuePreMinus)
 	BOOST_CHECK(it != begin);
 	BOOST_CHECK(it == end  );
 
-	do
+	do 
 	{
 		result += getString(--it, end);
 	}
@@ -211,78 +211,12 @@ BOOST_AUTO_TEST_CASE(MatrixTestValuePostMinus)
 	BOOST_CHECK(it != begin);
 	BOOST_CHECK(it == end  );
 
-	do
+	do 
 	{
 		result += getString(it--, end);
 	}
 	while (it != begin);
 	BOOST_CHECK(result == _T("32"));
-}
-
-BOOST_AUTO_TEST_CASE(MatrixTestSetItem)
-{
-	Matrix matrix = createMatrix(Container()(1)(2)(3));
-
-	ruint ind  = 1;
-	ruint item = 48;
-	rdo::runtime::RDOValue index(ind);
-	rdo::runtime::RDOValue value(item);
-	matrix.first->setItem(index, value);
-
-	BOOST_CHECK(matrix.second.getAsString() == _T("[1, 48, 3]"));
-
-	ind         = 3;
-	index       = ind;
-	rbool found = false;
-
-	try
-	{
-		matrix.first->setItem(index, value);
-	}
-	catch (CREF(rdo::runtime::RDORuntimeException) ex)
-	{
-		if (!ex.message().empty())
-		{
-			found = ex.message() == _T("Выход за пределы матрицы");
-		}
-	}
-
-	if (!found)
-	{
-		BOOST_CHECK(false);
-	}
-}
-
-BOOST_AUTO_TEST_CASE(MatrixTestGetItem)
-{
-	Matrix matrix = createMatrix(Container()(1)(48)(3));
-
-	ruint ind = 1;
-	rdo::runtime::RDOValue index(ind);
-	rdo::runtime::RDOValue value(matrix.first->getItem(index));
-
-	BOOST_CHECK(value.getAsString() == _T("48"));
-
-	ind         = 3;
-	index       = ind;
-	rbool found = false;
-
-	try
-	{
-		matrix.first->getItem(index);
-	}
-	catch (CREF(rdo::runtime::RDORuntimeException) ex)
-	{
-		if (!ex.message().empty())
-		{
-			found = ex.message() == _T("Выход за пределы матрицы");
-		}
-	}
-
-	if (!found)
-	{
-		BOOST_CHECK(false);
-	}
 }
 
 BOOST_AUTO_TEST_SUITE_END() // RDORuntime_Matrix_Test
