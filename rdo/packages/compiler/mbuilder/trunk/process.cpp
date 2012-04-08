@@ -16,7 +16,7 @@
 #include "simulator/compiler/parser/rdoparser.h"
 // --------------------------------------------------------------------------------
 
-OPEN_MBUILDER_NAMESPACE
+OPEN_COMPILER_MBUILDER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- BlockForQueue
@@ -175,4 +175,4 @@ RDOResType BlockForSeize::createType(CREF(tstring) rtp_name, CREF(rdoParser::RDO
 	return rtp;
 }
 
-CLOSE_MBUILDER_NAMESPACE
+CLOSE_COMPILER_MBUILDER_NAMESPACE

@@ -17,7 +17,7 @@
 #include "simulator/compiler/parser/type/range.h"
 // --------------------------------------------------------------------------------
 
-OPEN_MBUILDER_NAMESPACE
+OPEN_COMPILER_MBUILDER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // --------------------  онструкторы копий и операторы присваивани€
@@ -404,4 +404,4 @@ RDOResourceList::RDOResourceList(CREF(rdoParser::LPRDOParser) pParser)
 	}
 }
 
-CLOSE_MBUILDER_NAMESPACE
+CLOSE_COMPILER_MBUILDER_NAMESPACE

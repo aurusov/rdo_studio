@@ -31,7 +31,7 @@ class RDORTPResType;
 class RDORSSResource;
 CLOSE_RDO_PARSER_NAMESPACE
 
-OPEN_MBUILDER_NAMESPACE
+OPEN_COMPILER_MBUILDER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOList
@@ -339,6 +339,6 @@ public:
 	}
 };
 
-CLOSE_MBUILDER_NAMESPACE
+CLOSE_COMPILER_MBUILDER_NAMESPACE
 
 #endif // _MBUILDER_RESOURCES_H_

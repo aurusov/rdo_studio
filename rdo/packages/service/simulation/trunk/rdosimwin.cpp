@@ -1300,10 +1300,10 @@ void RDOThreadSimulator::corbaGetRTP(REF(rdoParser::RDOCorba::GetRTP_var) my_rtp
 	::CORBA::Long i = 0, j = 0;
 
 	//! Пробежались по всем типам и переписали в RTPList
-	rdoMBuilder::RDOResTypeList rtpList(&parser);
+	rdo::compiler::mbuilder::RDOResTypeList rtpList(&parser);
 	
 	//! Считаем количество типов ресурсов
-	rdoMBuilder::RDOResTypeList::List::const_iterator rtp_it = rtpList.begin();
+	rdo::compiler::mbuilder::RDOResTypeList::List::const_iterator rtp_it = rtpList.begin();
 	
 	::CORBA::Long rtp_count = 0;
 
@@ -1325,13 +1325,13 @@ void RDOThreadSimulator::corbaGetRTP(REF(rdoParser::RDOCorba::GetRTP_var) my_rtp
 
 		my_rtpList[i].m_name = CORBA::string_dup(rtp_it->name().c_str());
 		
-		if ((rtp_it->getType()) == rdoMBuilder::RDOResType::rt_permanent)
+		if ((rtp_it->getType()) == rdo::compiler::mbuilder::RDOResType::rt_permanent)
 			my_rtpList[i].m_type=rdoParser::RDOCorba::rt_permanent;
 		else
 			my_rtpList[i].m_type=rdoParser::RDOCorba::rt_temporary;
 
 		//! Считаем количество параметров i-го типа ресурса
-		rdoMBuilder::RDOResType::ParamList::List::const_iterator param_it = rtp_it->m_params.begin();
+		rdo::compiler::mbuilder::RDOResType::ParamList::List::const_iterator param_it = rtp_it->m_params.begin();
 		my_rtpList[i].m_param_count = 0;
 
 		while (param_it != rtp_it->m_params.end())
@@ -1462,8 +1462,8 @@ void RDOThreadSimulator::corbaGetRSS(REF(rdoParser::RDOCorba::GetRSS_var) my_rss
 	{}
 
 	//! Пробежались по всем ресурсам и переписали в RSSList
-	rdoMBuilder::RDOResourceList rssList(&parser);
-	rdoMBuilder::RDOResourceList::List::const_iterator rss_it = rssList.begin();
+	rdo::compiler::mbuilder::RDOResourceList rssList(&parser);
+	rdo::compiler::mbuilder::RDOResourceList::List::const_iterator rss_it = rssList.begin();
 
 	::CORBA::Long i = 0, j = 0;
 	::CORBA::Long rss_count = 0;
@@ -1488,7 +1488,7 @@ void RDOThreadSimulator::corbaGetRSS(REF(rdoParser::RDOCorba::GetRSS_var) my_rss
 		my_rssList[i].m_type = CORBA::string_dup(rss_it->getType().name().c_str());
 		
 		//! Считаем количество параметров i-го типа ресурса
-		rdoMBuilder::RDOResource::Params::const_iterator param_it = rss_it->begin();
+		rdo::compiler::mbuilder::RDOResource::Params::const_iterator param_it = rss_it->begin();
 		
 		my_rssList[i].m_param_count = 0;
 
@@ -1559,8 +1559,8 @@ void RDOThreadSimulator::corbaGetRSS(REF(rdoParser::RDOCorba::GetRSS_var) my_rss
 	{}
 
 	//! Пробежались по всем ресурсам и переписали в RSSList
-	rdoMBuilder::RDOResourceList rssList(&parser);
-	rdoMBuilder::RDOResourceList::List::const_iterator rss_it = rssList.begin();
+	rdo::compiler::mbuilder::RDOResourceList rssList(&parser);
+	rdo::compiler::mbuilder::RDOResourceList::List::const_iterator rss_it = rssList.begin();
 	/*while (rss_it != rssList.end())
 	{
 		//! Создаем текстовую структуру

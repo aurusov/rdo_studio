@@ -7,14 +7,14 @@
   \indent    4T
 */
 
-#ifndef _MBUILDER_NAMESPACE_H_
-#define _MBUILDER_NAMESPACE_H_
+#ifndef _SIMULATOR_COMPILER_MBUILDER_NAMESPACE_H_
+#define _SIMULATOR_COMPILER_MBUILDER_NAMESPACE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
-#define OPEN_MBUILDER_NAMESPACE    namespace rdoMBuilder {
-#define CLOSE_MBUILDER_NAMESPACE   };
+#define  OPEN_COMPILER_MBUILDER_NAMESPACE  namespace rdo { namespace compiler { namespace mbuilder {
+#define CLOSE_COMPILER_MBUILDER_NAMESPACE  }}};
 
-#endif // _MBUILDER_NAMESPACE_H_
+#endif // _SIMULATOR_COMPILER_MBUILDER_NAMESPACE_H_

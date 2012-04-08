@@ -163,9 +163,9 @@ void RDOPROCQueue::createRuntime()
 	{
 		tstring res_name = pResource->name();
 		//! Получили список всех ресурсов
-		rdoMBuilder::RDOResourceList rssList(RDOParser::s_parser());
+		rdo::compiler::mbuilder::RDOResourceList rssList(RDOParser::s_parser());
 		//! Создадим тип ресурса
-		rdoMBuilder::RDOResType rtp = rssList[res_name].getType();
+		rdo::compiler::mbuilder::RDOResType rtp = rssList[res_name].getType();
 		//! "длина_очереди"
 		tstring rtp_param_name      = rdo::runtime::RDOPROCQueue::getQueueParamName();
 		m_parserForRuntime.Id_res   = pResource->getID();
@@ -201,9 +201,9 @@ void RDOPROCDepart::createRuntime()
 	{
 		tstring res_name = pResource->name();
 		//! Получили список всех ресурсов
-		rdoMBuilder::RDOResourceList rssList(RDOParser::s_parser());
+		rdo::compiler::mbuilder::RDOResourceList rssList(RDOParser::s_parser());
 		//! Создадим тип ресурса
-		rdoMBuilder::RDOResType rtp = rssList[res_name].getType();
+		rdo::compiler::mbuilder::RDOResType rtp = rssList[res_name].getType();
 		//! "длина_очереди"
 		tstring rtp_param_name      = rdo::runtime::RDOPROCDepart::getDepartParamName();
 		m_parserForRuntime.Id_res   = pResource->getID();
@@ -248,9 +248,9 @@ void RDOPROCSeize::createRuntime()
 		{
 			tstring res_name = pResource->name();
 			// Получили список всех ресурсов
-			rdoMBuilder::RDOResourceList rssList(RDOParser::s_parser());
+			rdo::compiler::mbuilder::RDOResourceList rssList(RDOParser::s_parser());
 			// Создадим тип ресурса
-			rdoMBuilder::RDOResType rtp = rssList[res_name].getType();
+			rdo::compiler::mbuilder::RDOResType rtp = rssList[res_name].getType();
 			// "Состояние"
 			tstring rtp_param_name = rdo::runtime::RDOPROCBlockForSeize::getStateParamName();
 			// проверим его на наличие перечислимого параметра
@@ -302,9 +302,9 @@ void RDOPROCRelease::createRuntime()
 		{
 			tstring res_name = pResource->name();
 			//! Получили список всех ресурсов
-			rdoMBuilder::RDOResourceList rssList(RDOParser::s_parser());
+			rdo::compiler::mbuilder::RDOResourceList rssList(RDOParser::s_parser());
 			//! Создадим тип ресурса
-			rdoMBuilder::RDOResType rtp = rssList[res_name].getType();
+			rdo::compiler::mbuilder::RDOResType rtp = rssList[res_name].getType();
 			//! "Состояние"
 			tstring rtp_param_name = rdo::runtime::RDOPROCBlockForSeize::getStateParamName();
 			//! проверим его на наличие перечислимого параметра

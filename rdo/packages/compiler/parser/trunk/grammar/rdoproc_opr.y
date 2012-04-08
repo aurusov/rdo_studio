@@ -669,10 +669,10 @@ dpt_assign_param
 	{
 		tstring res   = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		tstring param = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator();
-		rdoMBuilder::RDOResType rtp;
+		rdo::compiler::mbuilder::RDOResType rtp;
 
 		// ѕолучили список всех ресурсов
-		rdoMBuilder::RDOResourceList rssList(PARSER);
+		rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 
 		// ≈сли ресурс существует, берем его тип и провер€ем наличие параметра
 		if (rssList[res].exist())
