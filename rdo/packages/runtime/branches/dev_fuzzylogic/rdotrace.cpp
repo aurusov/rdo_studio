@@ -217,7 +217,7 @@ void RDOTrace::writeEvent(CREF(LPIBaseOperation) opr, CREF(LPRDORuntime) pRuntim
 		LPIActivityPatternTrace activityPatternTrace = opr;
 		ASSERT(activityPatternTrace);
 
-		getOStream() << "EE " << pRuntime->getCurrentTime()
+		getOStream() << "EI " << pRuntime->getCurrentTime()
 		             << " "   << trace->traceId() 
 		             << " "   << activityPatternTrace->tracePatternId() 
 		             << " "   << activityTrace->traceResourcesListNumbers(pRuntime, true)

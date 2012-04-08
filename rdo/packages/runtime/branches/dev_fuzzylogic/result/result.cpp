@@ -385,7 +385,7 @@ void RDOPMDWatchValue::calcStat(CREF(LPRDORuntime) pRuntime, REF(std::ostream) s
 		<< _T("\t") << m_maxValue << _T('\n');
 }
 
-void RDOPMDWatchValue::checkResourceErased(CREF(rdoRuntime::LPRDOResource) pResource)
+void RDOPMDWatchValue::checkResourceErased(CREF(LPRDOResource) pResource)
 {
 	if (!pResource->checkType(m_rtpID))
 	{

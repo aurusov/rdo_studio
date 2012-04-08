@@ -45,14 +45,14 @@ void RDOPMDResultGroup::resetResult(CREF(LPRDORuntime) pRuntime)
 		{
 			LPIThreadProxy pThreadProxy = pRuntime->getThreadProxy();
 			ASSERT(pThreadProxy);
-			rdoRepository::RDOThreadRepository::CreateFileInfo file(rdo::format(_T("- %s - full"), m_name.c_str()), _T("txt"), m_streamFull);
+			rdo::repository::RDOThreadRepository::CreateFileInfo file(rdo::format(_T("- %s - full"), m_name.c_str()), _T("txt"), m_streamFull);
 			pThreadProxy->sendMessage(IThreadProxy::TID_REPOSITORY, RDOThread::RT_REPOSITORY_CREATE_FILE, &file);
 		}
 		if (!m_streamTable.is_open())
 		{
 			LPIThreadProxy pThreadProxy = pRuntime->getThreadProxy();
 			ASSERT(pThreadProxy);
-			rdoRepository::RDOThreadRepository::CreateFileInfo file(rdo::format(_T("- %s - table"), m_name.c_str()), _T("txt"), m_streamTable);
+			rdo::repository::RDOThreadRepository::CreateFileInfo file(rdo::format(_T("- %s - table"), m_name.c_str()), _T("txt"), m_streamTable);
 			pThreadProxy->sendMessage(IThreadProxy::TID_REPOSITORY, RDOThread::RT_REPOSITORY_CREATE_FILE, &file);
 			if (m_streamTable.is_open())
 			{

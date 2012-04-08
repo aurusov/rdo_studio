@@ -18,7 +18,7 @@
 #include "simulator/runtime/rdo_fuzzy.h"
 // --------------------------------------------------------------------------------
 
-using namespace rdoRuntime;
+OPEN_RDO_RUNTIME_NAMESPACE
 
 BOOST_AUTO_TEST_SUITE(RDORuntime_Fuzzy_Test)
 
@@ -62,3 +62,5 @@ BOOST_AUTO_TEST_CASE(RDORuntime_Fuzzy_Test)
 }
 
 BOOST_AUTO_TEST_SUITE_END() // RDORuntime_Fuzzy_Test
+
+CLOSE_RDO_RUNTIME_NAMESPACE

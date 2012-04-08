@@ -31,13 +31,15 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 class ILogic
 {
 public:
-	virtual void init        (CREF(rdoRuntime::LPRDORuntime) pRuntime  ) = 0;
-	virtual void setCondition(CREF(rdoRuntime::LPRDOCalc)    pCondition) = 0;
+	virtual void init             (CREF(rdo::runtime::LPRDORuntime) pRuntime      ) = 0;
+	virtual void setCondition     (CREF(rdo::runtime::LPRDOCalc)    pCondition    ) = 0;
+	virtual void setMultithreading(rbool                            multithreading) = 0;
 };
 
-#define DECLARE_ILogic                                                       \
-	virtual void init        (CREF(rdoRuntime::LPRDORuntime) pRuntime  ); \
-	virtual void setCondition(CREF(rdoRuntime::LPRDOCalc)    pCondition);
+#define DECLARE_ILogic                                                              \
+	virtual void init             (CREF(rdo::runtime::LPRDORuntime) pRuntime      ); \
+	virtual void setCondition     (CREF(rdo::runtime::LPRDOCalc)    pCondition    ); \
+	virtual void setMultithreading(rbool                            multithreading);
 
 /*!
   \interface IBaseOperationContainer

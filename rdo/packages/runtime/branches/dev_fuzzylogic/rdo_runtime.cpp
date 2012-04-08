@@ -49,7 +49,7 @@ RDORuntime::RDORuntime()
 	, m_resultList           (NULL               )
 	, m_resultListInfo       (NULL               )
 	, m_pLastActiveBreakPoint(NULL               )
-	, m_whyStop              (rdoSimulator::EC_OK)
+	, m_whyStop              (rdo::service::simulation::EC_OK)
 	, m_currentTerm          (0                  )
 	, m_funBreakFlag         (FBF_CONTINUE       )
 	, m_pStudioThread        (NULL               )
@@ -64,7 +64,7 @@ RDORuntime::~RDORuntime()
 
 void RDORuntime::init()
 {
-	memory_insert(sizeof(rdoRuntime::RDORuntime));
+	memory_insert(sizeof(RDORuntime));
 }
 
 void RDORuntime::deinit()
@@ -228,6 +228,7 @@ void RDORuntime::onEraseRes(ruint resourceID, CREF(LPRDOEraseResRelCalc) pCalc)
 		m_resourceListByID.at(resourceID) = NULL;
 		// ƒиструктор ресурса вызываетс€ в std::list::erase, который вызываетс€ из std::list::remove
 		m_resourceListByTime.remove(res);
+		notify().fireMessage(Notify::RO_BEFOREDELETE, (void*)res->getTraceID());
 		onResourceErase(res);
 	}
 }
@@ -248,8 +249,8 @@ void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
 		}
 		else
 		{
-			error().push(rdoSimulator::RDOSyntaxError(
-				rdoSimulator::RDOSyntaxError::UNKNOWN,
+			error().push(rdo::service::simulation::RDOSyntaxError(
+				rdo::service::simulation::RDOSyntaxError::UNKNOWN,
 				_T("¬нутренн€€ ошибка: insertNewResource"),
 				0,
 				0,
@@ -456,10 +457,10 @@ void RDORuntime::writeExitCode()
 	tstring status;
 	switch (m_whyStop)
 	{
-	case rdoSimulator::EC_OK          : status = _T("NORMAL_TERMINATION"); break;
-	case rdoSimulator::EC_NoMoreEvents: status = _T("NO_MORE_EVENTS");     break;
-	case rdoSimulator::EC_RunTimeError: status = _T("RUN_TIME_ERROR");     break;
-	case rdoSimulator::EC_UserBreak   : status = _T("USER_BREAK");         break;
+	case rdo::service::simulation::EC_OK          : status = _T("NORMAL_TERMINATION"); break;
+	case rdo::service::simulation::EC_NoMoreEvents: status = _T("NO_MORE_EVENTS");     break;
+	case rdo::service::simulation::EC_RunTimeError: status = _T("RUN_TIME_ERROR");     break;
+	case rdo::service::simulation::EC_UserBreak   : status = _T("USER_BREAK");         break;
 	default: NEVER_REACH_HERE;
 	}
 
