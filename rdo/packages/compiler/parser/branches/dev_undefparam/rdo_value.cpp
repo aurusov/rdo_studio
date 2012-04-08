@@ -140,6 +140,11 @@ rdo::runtime::RDOType::TypeID RDOValue::typeID() const
 	return m_pType->type()->typeID();
 }
 
+REF(rdo::runtime::RDOValue) RDOValue::value()
+{
+	return m_value;
+}
+
 CREF(rdo::runtime::RDOValue) RDOValue::value() const
 {
 	return m_value;
