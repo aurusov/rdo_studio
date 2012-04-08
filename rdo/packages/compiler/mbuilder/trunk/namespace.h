@@ -3,7 +3,7 @@
   \file      namespace.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      07.08.2010
-  \brief     
+  \brief     Пространство имен rdo::compiler::mbuilder
   \indent    4T
 */
 
@@ -14,6 +14,8 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
+//! \def    OPEN_COMPILER_MBUILDER_NAMESPACE
+//! \brief  Пространство имен rdo::compiler::mbuilder
 #define  OPEN_COMPILER_MBUILDER_NAMESPACE  namespace rdo { namespace compiler { namespace mbuilder {
 #define CLOSE_COMPILER_MBUILDER_NAMESPACE  }}};
 
