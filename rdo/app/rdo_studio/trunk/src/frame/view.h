@@ -38,10 +38,10 @@ public:
 	};
 	typedef  std::map<tstring, Area>  AreaList;
 
-	void                   update       (CPTRC(rdoAnimation::RDOFrame) pFrame,
-	                                      CREF(rdo::gui::BitmapList)   bitmapList,
-	                                       REF(rdo::gui::BitmapList)   bitmapGeneratedList,
-	                                       REF(AreaList)               areaList);
+	void                   update       (CPTRC(rdo::animation::RDOFrame) pFrame,
+	                                      CREF(rdo::gui::BitmapList)     bitmapList,
+	                                       REF(rdo::gui::BitmapList)     bitmapGeneratedList,
+	                                       REF(AreaList)                 areaList);
 	void                   updateFont   ();
 	PTR(RDOStudioFrameDoc) GetDocument  ();
 	CREF(CRect)            getClientRect() const;
@@ -61,25 +61,25 @@ private:
 	rbool                         m_mouseOnHScroll;
 
 	rbool valid           ();
-	void  init            (CPTRC(rdoAnimation::RDOFrame) pFrame, CREF(rdo::gui::BitmapList) bitmapList);
+	void  init            (CPTRC(rdo::animation::RDOFrame) pFrame, CREF(rdo::gui::BitmapList) bitmapList);
 	void  init            (CREF(Gdiplus::Size) size);
 	void  setBGColor      (CREF(Gdiplus::Color) color);
 	void  onDraw          (REF(Gdiplus::Graphics) graphics);
 	void  updateScrollBars();
 
-	void  drawBackground    (CPTRC(rdoAnimation::RDOFrame) pFrame, CREF(rdo::gui::BitmapList) bitmapList);
+	void  drawBackground    (CPTRC(rdo::animation::RDOFrame) pFrame, CREF(rdo::gui::BitmapList) bitmapList);
 	template <class F, class D>
-	void  drawColoredElement(CREF(rdoAnimation::RDOColoredElement)  coloredElement, F fillBinder, D drawBinder);
-	void  elementText       ( PTR(rdoAnimation::RDOTextElement)     pElement);
-	void  elementRect       ( PTR(rdoAnimation::RDORectElement)     pElement);
-	void  elementRoundRect  ( PTR(rdoAnimation::RDORRectElement)    pElement);
-	void  elementLine       ( PTR(rdoAnimation::RDOLineElement)     pElement);
-	void  elementTriang     ( PTR(rdoAnimation::RDOTriangElement)   pElement);
-	void  elementCircle     ( PTR(rdoAnimation::RDOCircleElement)   pElement);
-	void  elementEllipse    ( PTR(rdoAnimation::RDOEllipseElement)  pElement);
-	void  elementBMP        ( PTR(rdoAnimation::RDOBmpElement)      pElement, CREF(rdo::gui::BitmapList) bitmapList, REF(rdo::gui::BitmapList) bitmapGeneratedList);
-	void  elementSBMP       ( PTR(rdoAnimation::RDOSBmpElement)     pElement, CREF(rdo::gui::BitmapList) bitmapList, REF(rdo::gui::BitmapList) bitmapGeneratedList);
-	void  elementActive     ( PTR(rdoAnimation::RDOActiveElement)   pElement, REF(AreaList) areaList);
+	void  drawColoredElement(CREF(rdo::animation::RDOColoredElement)  coloredElement, F fillBinder, D drawBinder);
+	void  elementText       ( PTR(rdo::animation::RDOTextElement)     pElement);
+	void  elementRect       ( PTR(rdo::animation::RDORectElement)     pElement);
+	void  elementRoundRect  ( PTR(rdo::animation::RDORRectElement)    pElement);
+	void  elementLine       ( PTR(rdo::animation::RDOLineElement)     pElement);
+	void  elementTriang     ( PTR(rdo::animation::RDOTriangElement)   pElement);
+	void  elementCircle     ( PTR(rdo::animation::RDOCircleElement)   pElement);
+	void  elementEllipse    ( PTR(rdo::animation::RDOEllipseElement)  pElement);
+	void  elementBMP        ( PTR(rdo::animation::RDOBmpElement)      pElement, CREF(rdo::gui::BitmapList) bitmapList, REF(rdo::gui::BitmapList) bitmapGeneratedList);
+	void  elementSBMP       ( PTR(rdo::animation::RDOSBmpElement)     pElement, CREF(rdo::gui::BitmapList) bitmapList, REF(rdo::gui::BitmapList) bitmapGeneratedList);
+	void  elementActive     ( PTR(rdo::animation::RDOActiveElement)   pElement, REF(AreaList) areaList);
 
 	static PTR(Gdiplus::Bitmap) getBitmap(CREF(tstring)              bitmapName,
 	                                      CREF(tstring)              maskName,

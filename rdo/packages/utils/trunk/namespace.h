@@ -19,9 +19,9 @@
 #define  OPEN_RDO_NAMESPACE  namespace rdo {
 #define CLOSE_RDO_NAMESPACE  };
 
-//! \namespace rdoAnimation
+//! \namespace rdo::animation
 //! \brief     Пространство имён анимации
-#define  OPEN_RDO_ANIMATION_NAMESPACE  namespace rdoAnimation {
-#define CLOSE_RDO_ANIMATION_NAMESPACE  };
+#define  OPEN_RDO_ANIMATION_NAMESPACE  namespace rdo { namespace animation {
+#define CLOSE_RDO_ANIMATION_NAMESPACE  }};
 
 #endif // _UTILS_NAMESPACE_H_

@@ -60,7 +60,7 @@ public:
 	void  setLastShowedFrame      (ruint index);
 	void  setCurrentShowingFrame  (ruint index);
 	void  resetCurrentShowingFrame(ruint index);
-	void  showFrame               (CPTRC(rdoAnimation::RDOFrame) pFrame, ruint index);
+	void  showFrame               (CPTRC(rdo::animation::RDOFrame) pFrame, ruint index);
 	void  showNextFrame           ();
 	void  showPrevFrame           ();
 	void  showFrame               (ruint index);

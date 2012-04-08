@@ -120,10 +120,10 @@ public:
 
 	struct GetFrame
 	{
-		PTR(rdoAnimation::RDOFrame) m_pFrame;
-		ruint                       m_number;
+		PTR(rdo::animation::RDOFrame) m_pFrame;
+		ruint                         m_number;
 
-		GetFrame(PTR(rdoAnimation::RDOFrame) pFrame, ruint number)
+		GetFrame(PTR(rdo::animation::RDOFrame) pFrame, ruint number)
 			: m_pFrame(pFrame)
 			, m_number(number)
 		{}

@@ -727,10 +727,10 @@ frm_space
 	;
 
 frm_text_align
-	: /* empty */ {$$ = rdoAnimation::RDOTextElement::TETA_LEFT;  }
-	| '<'         {$$ = rdoAnimation::RDOTextElement::TETA_LEFT;  }
-	| '='         {$$ = rdoAnimation::RDOTextElement::TETA_CENTER;}
-	| '>'         {$$ = rdoAnimation::RDOTextElement::TETA_RIGHT; }
+	: /* empty */ {$$ = rdo::animation::RDOTextElement::TETA_LEFT;  }
+	| '<'         {$$ = rdo::animation::RDOTextElement::TETA_LEFT;  }
+	| '='         {$$ = rdo::animation::RDOTextElement::TETA_CENTER;}
+	| '>'         {$$ = rdo::animation::RDOTextElement::TETA_RIGHT; }
 	;
 
 frm_text_common
@@ -855,14 +855,14 @@ frm_text
 	{
 		LPRDOFRMText pText = CONVERTER->stack().pop<RDOFRMText>($1);
 		ASSERT(pText);
-		pText->setText((rdoAnimation::RDOTextElement::TextAlign)$2, CONVERTER->stack().pop<RDOFUNArithm>($3)->createCalc());
+		pText->setText((rdo::animation::RDOTextElement::TextAlign)$2, CONVERTER->stack().pop<RDOFUNArithm>($3)->createCalc());
 		$$ = CONVERTER->stack().push(pText);
 	}
 	| frm_text_common frm_text_align RDO_STRING_CONST ']'
 	{
 		LPRDOFRMText pText = CONVERTER->stack().pop<RDOFRMText>($1);
 		ASSERT(pText);
-		pText->setText((rdoAnimation::RDOTextElement::TextAlign)$2, CONVERTER->stack().pop<RDOValue>($3)->value().getString());
+		pText->setText((rdo::animation::RDOTextElement::TextAlign)$2, CONVERTER->stack().pop<RDOValue>($3)->value().getString());
 		$$ = CONVERTER->stack().push(pText);
 	}
 	| frm_text_common frm_text_align fun_arithm error
