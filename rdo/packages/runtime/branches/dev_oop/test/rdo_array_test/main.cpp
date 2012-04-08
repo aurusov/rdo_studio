@@ -211,7 +211,7 @@ BOOST_AUTO_TEST_CASE(ArrayTestValuePostMinus)
 	BOOST_CHECK(it != begin);
 	BOOST_CHECK(it == end  );
 
-	do 
+	do
 	{
 		result += getString(it--, end);
 	}
@@ -225,8 +225,8 @@ BOOST_AUTO_TEST_CASE(ArrayTestSetItem)
 
 	ruint ind  = 1;
 	ruint item = 48;
-	rdoRuntime::RDOValue index(ind);
-	rdoRuntime::RDOValue value(item);
+	rdo::runtime::RDOValue index(ind);
+	rdo::runtime::RDOValue value(item);
 	array.first->setItem(index, value);
 
 	BOOST_CHECK(array.second.getAsString() == _T("[1, 48, 3]"));
@@ -239,7 +239,7 @@ BOOST_AUTO_TEST_CASE(ArrayTestSetItem)
 	{
 		array.first->setItem(index, value);
 	}
-	catch (CREF(rdoRuntime::RDORuntimeException) ex)
+	catch (CREF(rdo::runtime::RDORuntimeException) ex)
 	{
 		if (!ex.message().empty())
 		{
@@ -258,8 +258,8 @@ BOOST_AUTO_TEST_CASE(ArrayTestGetItem)
 	Array array = createArray(Container()(1)(48)(3));
 
 	ruint ind = 1;
-	rdoRuntime::RDOValue index(ind);
-	rdoRuntime::RDOValue value(array.first->getItem(index));
+	rdo::runtime::RDOValue index(ind);
+	rdo::runtime::RDOValue value(array.first->getItem(index));
 
 	BOOST_CHECK(value.getAsString() == _T("48"));
 
@@ -271,7 +271,7 @@ BOOST_AUTO_TEST_CASE(ArrayTestGetItem)
 	{
 		array.first->getItem(index);
 	}
-	catch (CREF(rdoRuntime::RDORuntimeException) ex)
+	catch (CREF(rdo::runtime::RDORuntimeException) ex)
 	{
 		if (!ex.message().empty())
 		{
