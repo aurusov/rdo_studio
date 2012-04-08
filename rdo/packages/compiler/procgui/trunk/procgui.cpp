@@ -245,17 +245,36 @@ ProcGUIBlockGenerate::ProcGUIBlockGenerate(CREF(LPProcGUIProcess) pProcess, CREF
 		{
 			pParser->error().error(rdoParser::RDOParserSrcInfo(), rdo::format(_T("Ошибка создания типа ресурса: %s"), rtpName.c_str()));
 		}
-		else
-		{
-			rdoParser::LPRDORTPResType pResType = rdoParser::RDOParser::s_parser()->findRTPResType(rtpName);
-			ASSERT(pResType);
-			pResType->setType(rdoParser::RDORTPResType::procTran);
-		}
 	}
 
-	// GENERATE
-	//! \todo нужно добавить правильный калк создания и запуска транзактов
-	m_pBlock = RF(rdo::runtime::RDOPROCGenerate)::create(pProcess->getProcess(), getCalc(), getCalc(), m_pParams->getAmount());
+	rdoParser::LPRDORTPResType pResType = rdoParser::RDOParser::s_parser()->findRTPResType(rtpName);
+	ASSERT(pResType);
+	pResType->setType(rdoParser::RDORTPResType::procTran);
+	pResType->end();
+
+	rdo::runtime::LPIResourceType pType = pResType->getRuntimeResType();
+	ASSERT(pType);
+
+	std::vector<rdo::runtime::RDOValue> paramList;
+	paramList.push_back(rdo::runtime::RDOValue(0.0));
+
+	rdo::runtime::LPRDOCalc pCreateTransactCalc = rdo::Factory<rdo::runtime::RDOCalcCreateResource>::create(
+		pType,
+		paramList,
+		true,
+		pResType->isPermanent()
+	);
+	ASSERT(pCreateTransactCalc);
+
+	rdo::runtime::LPRDOCalc pTimeCalc = getCalc();
+	ASSERT(pTimeCalc);
+
+	m_pBlock = RF(rdo::runtime::RDOPROCGenerate)::create(
+		pProcess->getProcess(),
+		pTimeCalc,
+		pCreateTransactCalc,
+		m_pParams->getAmount()
+	);
 	ASSERT(m_pBlock);
 }
 
