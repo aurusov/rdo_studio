@@ -4,7 +4,7 @@
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      07.06.2011
-  \brief     Типы ресурсов в rdoRuntime
+  \brief     Типы ресурсов в rdo::runtime
   \indent    4T
 */
 

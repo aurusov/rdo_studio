@@ -81,7 +81,7 @@ void RDOCalcFunBodyBrace::addFunCalc(CREF(LPRDOCalc) pCalc)
 void RDOCalcFunBodyBrace::addRetCalc(CREF(LPRDOCalc) pCalc)
 {
 	ASSERT(pCalc);
-	LPRDOCalc pCalcReturn = rdo::Factory<rdoRuntime::RDOCalcFunReturn>::create(pCalc);
+	LPRDOCalc pCalcReturn = rdo::Factory<RDOCalcFunReturn>::create(pCalc);
 	m_calcFunList.insert(--m_calcFunList.end(), pCalcReturn);
 }
 

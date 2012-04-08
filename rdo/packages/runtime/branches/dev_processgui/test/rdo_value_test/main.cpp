@@ -20,13 +20,13 @@
 #include "simulator/runtime/rdo_res_type.h"
 // --------------------------------------------------------------------------------
 
-using namespace rdoRuntime;
+OPEN_RDO_RUNTIME_NAMESPACE
 
 BOOST_AUTO_TEST_SUITE(RDOValue_Test)
 
 void testing(RDOValue value1, RDOValue value2)
 {
-	bool flag = false;
+	rbool flag = false;
 	try
 	{
 		value1 += value2;
@@ -625,3 +625,5 @@ BOOST_AUTO_TEST_CASE(RDOValue_Resource)
 }
 
 BOOST_AUTO_TEST_SUITE_END() // RDOValue_Test
+
+CLOSE_RDO_RUNTIME_NAMESPACE

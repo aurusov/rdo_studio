@@ -30,18 +30,18 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 class IRule
 {
 public:
-	virtual void  onBeforeChoiceFrom(CREF(rdoRuntime::LPRDORuntime) pRuntime)                 = 0;
-	virtual rbool choiceFrom        (CREF(rdoRuntime::LPRDORuntime) pRuntime)                 = 0;
-	virtual void  onBeforeRule      (CREF(rdoRuntime::LPRDORuntime) pRuntime)                 = 0;
-	virtual void  convertRule       (CREF(rdoRuntime::LPRDORuntime) pRuntime)                 = 0;
-	virtual void  onAfterRule       (CREF(rdoRuntime::LPRDORuntime) pRuntime, rbool inSearch) = 0;
+	virtual void  onBeforeChoiceFrom(CREF(rdo::runtime::LPRDORuntime) pRuntime)                 = 0;
+	virtual rbool choiceFrom        (CREF(rdo::runtime::LPRDORuntime) pRuntime)                 = 0;
+	virtual void  onBeforeRule      (CREF(rdo::runtime::LPRDORuntime) pRuntime)                 = 0;
+	virtual void  convertRule       (CREF(rdo::runtime::LPRDORuntime) pRuntime)                 = 0;
+	virtual void  onAfterRule       (CREF(rdo::runtime::LPRDORuntime) pRuntime, rbool inSearch) = 0;
 };
 
 #define DECLARE_IRule \
-	virtual void  onBeforeChoiceFrom(CREF(rdoRuntime::LPRDORuntime) pRuntime); \
-	virtual rbool choiceFrom        (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
-	virtual void  onBeforeRule      (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
-	virtual void  convertRule       (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
-	virtual void  onAfterRule       (CREF(rdoRuntime::LPRDORuntime) pRuntime, rbool inSearch);
+	virtual void  onBeforeChoiceFrom(CREF(rdo::runtime::LPRDORuntime) pRuntime); \
+	virtual rbool choiceFrom        (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
+	virtual void  onBeforeRule      (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
+	virtual void  convertRule       (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
+	virtual void  onAfterRule       (CREF(rdo::runtime::LPRDORuntime) pRuntime, rbool inSearch);
 
 #endif // _LIB_RUNTIME_RULE_I_H_
