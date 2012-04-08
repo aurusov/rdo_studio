@@ -138,15 +138,15 @@ public:
 		explicit Param(CREF(tstring) name, CREF(rdoParser::LPTypeInfo) pType,  CREF(rdoParser::LPRDOValue) pDefault);
 		explicit Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<rdoParser::RDOType__int>)  pType, CREF(rdoParser::LPRDOValue) pDefault = rdoParser::LPRDOValue(NULL));
 		explicit Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<rdoParser::RDOType__real>) pType, CREF(rdoParser::LPRDOValue) pDefault = rdoParser::LPRDOValue(NULL));
-		explicit Param(CREF(tstring) name, CREF(rdoRuntime::RDOEnumType::Enums)               enums, CREF(rdoParser::LPRDOValue) pDefault = rdoParser::LPRDOValue(NULL));
+		explicit Param(CREF(tstring) name, CREF(rdo::runtime::RDOEnumType::Enums)               enums, CREF(rdoParser::LPRDOValue) pDefault = rdoParser::LPRDOValue(NULL));
 
-		CREF(rdoParser::LPTypeInfo)        type   () const { return m_pType;                   }
-		const rdoRuntime::RDOType::TypeID  typeID () const { return m_pType->type()->typeID(); }
-		tstring                            typeStr() const { return m_pType->type()->name();   }
+		CREF(rdoParser::LPTypeInfo)          type   () const { return m_pType;                   }
+		const rdo::runtime::RDOType::TypeID  typeID () const { return m_pType->type()->typeID(); }
+		tstring                              typeStr() const { return m_pType->type()->name();   }
 
 		rsint                       id() const          { return m_id;  }
 
-		rbool                       hasRange() const    { return (m_pMin && m_pMax) ? m_pMin->typeID() != rdoRuntime::RDOType::t_unknow && m_pMax->typeID() != rdoRuntime::RDOType::t_unknow : false; }
+		rbool                       hasRange() const    { return (m_pMin && m_pMax) ? m_pMin->typeID() != rdo::runtime::RDOType::t_unknow && m_pMax->typeID() != rdo::runtime::RDOType::t_unknow : false; }
 		CREF(rdoParser::LPRDOValue) getMin  () const    { return m_pMin; }
 		CREF(rdoParser::LPRDOValue) getMax  () const    { return m_pMax; }
 		void                        setRange(CREF(rdoParser::LPRDOValue) pMin, CREF(rdoParser::LPRDOValue) pMax);
@@ -157,7 +157,7 @@ public:
 
 		rdoParser::LPRDOEnumType    getEnum() const
 		{
-			ASSERT(typeID() == rdoRuntime::RDOType::t_enum);
+			ASSERT(typeID() == rdo::runtime::RDOType::t_enum);
 			return type()->type().object_static_cast<rdoParser::RDOEnumType>();
 		}
 
@@ -179,7 +179,7 @@ public:
 #ifdef COMPILER_VISUAL_STUDIO
 		template <>
 #endif
-		void initType(CREF(rdoRuntime::RDOEnumType::Enums) pType)
+		void initType(CREF(rdo::runtime::RDOEnumType::Enums) pType)
 		{
 			rdoParser::LPRDOEnumType pEnum = rdo::Factory<rdoParser::RDOEnumType>::create();
 			ASSERT(pEnum)

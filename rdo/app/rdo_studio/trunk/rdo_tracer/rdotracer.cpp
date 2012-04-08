@@ -86,7 +86,7 @@ void RDOTracer::proc( RDOThread::RDOMessageInfo& msg )
 			break;
 		}
 		case RDOThread::RT_RUNTIME_MODEL_START_AFTER: {
-			rdoRuntime::RunTimeMode runtimeMode;
+			rdo::runtime::RunTimeMode runtimeMode;
 			sendMessage( kernel->runtime(), RT_RUNTIME_GET_MODE, &runtimeMode );
 			setRuntimeMode( runtimeMode );
 			break;
@@ -111,9 +111,9 @@ void RDOTracer::proc( RDOThread::RDOMessageInfo& msg )
 	}
 }
 
-void RDOTracer::setRuntimeMode( const rdoRuntime::RunTimeMode value )
+void RDOTracer::setRuntimeMode( const rdo::runtime::RunTimeMode value )
 {
-	if ( value == rdoRuntime::RTM_MaxSpeed ) {
+	if ( value == rdo::runtime::RTM_MaxSpeed ) {
 		setDrawTrace( false );
 	} else {
 		setDrawTrace( true );

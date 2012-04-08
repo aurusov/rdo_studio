@@ -124,8 +124,8 @@ public:
 		RT_RUNTIME_MODEL_STOP_BEFORE,
 		RT_RUNTIME_MODEL_STOP_AFTER,
 		RT_RUNTIME_TRACE_STRING,               // param = tstring*
-		RT_RUNTIME_GET_MODE,                   // param = result:rdoRuntime::RunTimeMode*
-		RT_RUNTIME_SET_MODE,                   // param = mode:rdoRuntime::RunTimeMode*
+		RT_RUNTIME_GET_MODE,                   // param = result:rdo::runtime::RunTimeMode*
+		RT_RUNTIME_SET_MODE,                   // param = mode:rdo::runtime::RunTimeMode*
 		RT_RUNTIME_GET_SPEED,                  // param = result:double[0..1]%*
 		RT_RUNTIME_SET_SPEED,                  // param = speed:double[0..1]%*
 		RT_RUNTIME_GET_SHOWRATE,               // param = result:double[0..+max_double]*

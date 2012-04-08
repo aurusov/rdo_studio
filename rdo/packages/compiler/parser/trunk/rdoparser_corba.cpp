@@ -286,7 +286,7 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 					case rdoParser::RDOCorba::enum_type:
 					{
 						//! Создадим список значений параметра перечислимого типа
-						rdoRuntime::RDOEnumType::Enums enumList;
+						rdo::runtime::RDOEnumType::Enums enumList;
 
 						for (CORBA::Long k = 0; k < my_rtpList[i].m_param[j].m_var_enum_count ; k++)
 						{
@@ -340,7 +340,7 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 					}
 					TRACE1(_T("%s\n"), info.c_str());
 
-					if (param_it->typeID() ==  rdoRuntime::RDOType::t_enum)
+					if (param_it->typeID() ==  rdo::runtime::RDOType::t_enum)
 					{
 						STL_FOR_ALL_CONST(param_it->getEnum()->getEnums(), enum_it)
 						{

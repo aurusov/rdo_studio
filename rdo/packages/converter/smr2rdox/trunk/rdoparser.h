@@ -98,7 +98,7 @@ public:
 	Converter();
 	virtual ~Converter();
 
-	rdoRuntime::LPRDORuntime runtime() { return m_pRuntime; }
+	rdo::runtime::LPRDORuntime runtime() { return m_pRuntime; }
 
 	rbool             isPattern       () const { return m_pattern;     }
 	REF(FUNGroupList) getFUNGroupStack()       { return m_allFUNGroup; }
@@ -206,7 +206,7 @@ protected:
 		return getContainer()->find(index);
 	}
 
-	rdoRuntime::LPRDORuntime m_pRuntime;
+	rdo::runtime::LPRDORuntime m_pRuntime;
 
 private:
 	LPRDOSMR        m_pSMR;

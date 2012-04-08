@@ -175,7 +175,7 @@ OPEN_RDO_SIMULATOR_NAMESPACE
 // --------------------------------------------------------------------------------
 class RDOThreadSimulator: public RDOThreadMT
 {
-friend class rdoRuntime::RDOThreadRunTime;
+friend class rdo::runtime::RDOThreadRunTime;
 friend class RDORuntimeTracer;
 friend class RDOSimResulter;
 
@@ -203,13 +203,13 @@ public:
 	{};
 
 private:
-	rdoParser::LPRDOParser          m_pParser;
-	rdoRuntime::LPRDORuntime        m_pRuntime;
-	rbool                           m_canTrace;
-	LPProcGUIProcess                m_pGUIProcess;
-	LPProcGUIBlock                  m_pBlock;
-	rdoRuntime::LPRDOThreadRunTime  m_pThreadRuntime;
-	RDOExitCode                     m_exitCode;
+	rdoParser::LPRDOParser            m_pParser;
+	rdo::runtime::LPRDORuntime        m_pRuntime;
+	rbool                             m_canTrace;
+	LPProcGUIProcess                  m_pGUIProcess;
+	LPProcGUIBlock                    m_pBlock;
+	rdo::runtime::LPRDOThreadRunTime  m_pThreadRuntime;
+	RDOExitCode                       m_exitCode;
 
 	void terminateModel();
 	void closeModel    (); 

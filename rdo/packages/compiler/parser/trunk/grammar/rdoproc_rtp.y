@@ -270,7 +270,7 @@ prc_rtp_main
 				PARSER->error().error(rtp.src_info(), rdo::format(_T("” типа ресурса '%s' нет требуемого параметра '%s'"), rtp.name().c_str(), rtp_param_name.c_str()));
 			}
 			// ѕараметр есть, надо проверить на тип
-			if (rtp.m_params[rtp_param_name].typeID() != rdoRuntime::RDOType::t_real)
+			if (rtp.m_params[rtp_param_name].typeID() != rdo::runtime::RDOType::t_real)
 			{
 				PARSER->error().error(rtp.src_info(), rdo::format(_T("” типа ресурса '%s' параметр '%s' не €вл€етс€ вещественным типом"), rtp.name().c_str(), rtp_param_name.c_str()));
 			}

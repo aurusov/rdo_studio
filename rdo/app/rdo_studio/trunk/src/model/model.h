@@ -79,8 +79,8 @@ private:
 	double                    m_speed;
 	double                    m_showRate;
 	rbool                     m_tempPause;
-	rdoRuntime::RunTimeMode   m_runtimeMode;
-	rdoRuntime::RunTimeMode   m_runtimeModePrev;
+	rdo::runtime::RunTimeMode m_runtimeMode;
+	rdo::runtime::RunTimeMode m_runtimeModePrev;
 	rdoSimulator::RDOExitCode m_exitCode;
 	mutable rbool             m_prevModify;
 
@@ -200,8 +200,8 @@ public:
 	double getTimeNow    () const { return m_timeNow;                                                            }
 
 	rdoSimulator::RDOExitCode getExitCode   () const { return m_exitCode;    }
-	rdoRuntime::RunTimeMode   getRuntimeMode() const { return m_runtimeMode; }
-	void    setRuntimeMode       (const rdoRuntime::RunTimeMode value);
+	rdo::runtime::RunTimeMode getRuntimeMode() const { return m_runtimeMode; }
+	void    setRuntimeMode       (const rdo::runtime::RunTimeMode value);
 	tstring getLastBreakPointName();
 	double  getSpeed             () const            { return m_speed;       }
 	void    setSpeed             (double persent);

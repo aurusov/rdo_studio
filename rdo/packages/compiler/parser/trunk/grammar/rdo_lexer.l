@@ -399,7 +399,7 @@ true {
 	);
 	ASSERT(pType);
 	/// @todo TypeInfo, убрать rdoParser::RDOParserSrcInfo()
-	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdoParser::RDOValue>::create(rdoRuntime::RDOValue(true), pType->src_info(rdoParser::RDOParserSrcInfo()), pType)));
+	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdoParser::RDOValue>::create(rdo::runtime::RDOValue(true), pType->src_info(rdoParser::RDOParserSrcInfo()), pType)));
 	return RDO_BOOL_CONST;
 }
 
@@ -410,7 +410,7 @@ false {
 	);
 	ASSERT(pType);
 	/// @todo TypeInfo, убрать rdoParser::RDOParserSrcInfo()
-	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdoParser::RDOValue>::create(rdoRuntime::RDOValue(false), pType->src_info(rdoParser::RDOParserSrcInfo()), pType)));
+	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdoParser::RDOValue>::create(rdo::runtime::RDOValue(false), pType->src_info(rdoParser::RDOParserSrcInfo()), pType)));
 	return RDO_BOOL_CONST;
 }
 

@@ -212,32 +212,32 @@
 
 OPEN_RDO_CONVERTER_NAMESPACE
 
-typedef rdoRuntime::RDOFRMFrame::RDOFRMColor      RDOFRMColor;
-typedef rdoRuntime::RDOFRMFrame::LPRDOFRMColor    LPRDOFRMColor;
-typedef rdoRuntime::RDOFRMFrame::RDOFRMPosition   RDOFRMPosition;
-typedef rdoRuntime::RDOFRMFrame::LPRDOFRMPosition LPRDOFRMPosition;
-typedef rdoRuntime::RDOFRMFrame::RDOFRMRulet      RDOFRMRulet;
-typedef rdoRuntime::RDOFRMFrame::LPRDOFRMRulet    LPRDOFRMRulet;
-typedef rdoRuntime::RDOFRMText                    RDOFRMText;
-typedef rdoRuntime::LPRDOFRMText                  LPRDOFRMText;
-typedef rdoRuntime::RDOFRMBitmap                  RDOFRMBitmap;
-typedef rdoRuntime::LPRDOFRMBitmap                LPRDOFRMBitmap;
-typedef rdoRuntime::RDOFRMBitmapStretch           RDOFRMBitmapStretch;
-typedef rdoRuntime::LPRDOFRMBitmapStretch         LPRDOFRMBitmapStretch;
-typedef rdoRuntime::RDOFRMRect                    RDOFRMRect;
-typedef rdoRuntime::LPRDOFRMRect                  LPRDOFRMRect;
-typedef rdoRuntime::RDOFRMRectRound               RDOFRMRectRound;
-typedef rdoRuntime::LPRDOFRMRectRound             LPRDOFRMRectRound;
-typedef rdoRuntime::RDOFRMEllipse                 RDOFRMEllipse;
-typedef rdoRuntime::LPRDOFRMEllipse               LPRDOFRMEllipse;
-typedef rdoRuntime::RDOFRMLine                    RDOFRMLine;
-typedef rdoRuntime::LPRDOFRMLine                  LPRDOFRMLine;
-typedef rdoRuntime::RDOFRMTriang                  RDOFRMTriang;
-typedef rdoRuntime::LPRDOFRMTriang                LPRDOFRMTriang;
-typedef rdoRuntime::RDOFRMActive                  RDOFRMActive;
-typedef rdoRuntime::LPRDOFRMActive                LPRDOFRMActive;
-typedef rdoRuntime::RDOFRMSpace                   RDOFRMSpace;
-typedef rdoRuntime::LPRDOFRMSpace                 LPRDOFRMSpace;
+typedef rdo::runtime::RDOFRMFrame::RDOFRMColor      RDOFRMColor;
+typedef rdo::runtime::RDOFRMFrame::LPRDOFRMColor    LPRDOFRMColor;
+typedef rdo::runtime::RDOFRMFrame::RDOFRMPosition   RDOFRMPosition;
+typedef rdo::runtime::RDOFRMFrame::LPRDOFRMPosition LPRDOFRMPosition;
+typedef rdo::runtime::RDOFRMFrame::RDOFRMRulet      RDOFRMRulet;
+typedef rdo::runtime::RDOFRMFrame::LPRDOFRMRulet    LPRDOFRMRulet;
+typedef rdo::runtime::RDOFRMText                    RDOFRMText;
+typedef rdo::runtime::LPRDOFRMText                  LPRDOFRMText;
+typedef rdo::runtime::RDOFRMBitmap                  RDOFRMBitmap;
+typedef rdo::runtime::LPRDOFRMBitmap                LPRDOFRMBitmap;
+typedef rdo::runtime::RDOFRMBitmapStretch           RDOFRMBitmapStretch;
+typedef rdo::runtime::LPRDOFRMBitmapStretch         LPRDOFRMBitmapStretch;
+typedef rdo::runtime::RDOFRMRect                    RDOFRMRect;
+typedef rdo::runtime::LPRDOFRMRect                  LPRDOFRMRect;
+typedef rdo::runtime::RDOFRMRectRound               RDOFRMRectRound;
+typedef rdo::runtime::LPRDOFRMRectRound             LPRDOFRMRectRound;
+typedef rdo::runtime::RDOFRMEllipse                 RDOFRMEllipse;
+typedef rdo::runtime::LPRDOFRMEllipse               LPRDOFRMEllipse;
+typedef rdo::runtime::RDOFRMLine                    RDOFRMLine;
+typedef rdo::runtime::LPRDOFRMLine                  LPRDOFRMLine;
+typedef rdo::runtime::RDOFRMTriang                  RDOFRMTriang;
+typedef rdo::runtime::LPRDOFRMTriang                LPRDOFRMTriang;
+typedef rdo::runtime::RDOFRMActive                  RDOFRMActive;
+typedef rdo::runtime::LPRDOFRMActive                LPRDOFRMActive;
+typedef rdo::runtime::RDOFRMSpace                   RDOFRMSpace;
+typedef rdo::runtime::LPRDOFRMSpace                 LPRDOFRMSpace;
 
 %}
 
@@ -582,7 +582,7 @@ frm_postype_wh
 frm_position_xy
 	: fun_arithm frm_postype_xy
 	{
-		rdoRuntime::LPRDOCalc pCalc = CONVERTER->stack().pop<RDOFUNArithm>($1)->createCalc();
+		rdo::runtime::LPRDOCalc pCalc = CONVERTER->stack().pop<RDOFUNArithm>($1)->createCalc();
 		if ($2 >= RDOFRMPosition::PT_RULET)
 		{
 			LPRDOFRMPosition pPosition = rdo::Factory<RDOFRMPosition>::create(pCalc, RDOFRMPosition::PT_RULET, $2 - RDOFRMPosition::PT_RULET);
@@ -601,7 +601,7 @@ frm_position_xy
 frm_position_wh
 	: fun_arithm frm_postype_wh
 	{
-		rdoRuntime::LPRDOCalc pCalc = CONVERTER->stack().pop<RDOFUNArithm>($1)->createCalc();
+		rdo::runtime::LPRDOCalc pCalc = CONVERTER->stack().pop<RDOFUNArithm>($1)->createCalc();
 		if ($2 >= RDOFRMPosition::PT_RULET)
 		{
 			LPRDOFRMPosition pPosition = rdo::Factory<RDOFRMPosition>::create(pCalc, RDOFRMPosition::PT_RULET, $2 - RDOFRMPosition::PT_RULET);
@@ -1087,7 +1087,7 @@ frm_rect
 		LPRDOFRMPosition pX      = CONVERTER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = CONVERTER->stack().pop<RDOFRMPosition>($5);
 		LPRDOFRMPosition pWidth  = CONVERTER->stack().pop<RDOFRMPosition>($7);
-		LPRDOFRMPosition pHeight = rdo::Factory<RDOFRMPosition>::create(rdo::Factory<rdoRuntime::RDOCalcConst>::create(0), RDOFRMPosition::PT_DELTA);
+		LPRDOFRMPosition pHeight = rdo::Factory<RDOFRMPosition>::create(rdo::Factory<rdo::runtime::RDOCalcConst>::create(0), RDOFRMPosition::PT_DELTA);
 		ASSERT(pX     );
 		ASSERT(pY     );
 		ASSERT(pWidth );
@@ -1106,8 +1106,8 @@ frm_rect
 	{
 		LPRDOFRMPosition pX      = CONVERTER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = CONVERTER->stack().pop<RDOFRMPosition>($5);
-		LPRDOFRMPosition pWidth  = rdo::Factory<RDOFRMPosition>::create(rdo::Factory<rdoRuntime::RDOCalcConst>::create(0), RDOFRMPosition::PT_DELTA);
-		LPRDOFRMPosition pHeight = rdo::Factory<RDOFRMPosition>::create(rdo::Factory<rdoRuntime::RDOCalcConst>::create(0), RDOFRMPosition::PT_DELTA);
+		LPRDOFRMPosition pWidth  = rdo::Factory<RDOFRMPosition>::create(rdo::Factory<rdo::runtime::RDOCalcConst>::create(0), RDOFRMPosition::PT_DELTA);
+		LPRDOFRMPosition pHeight = rdo::Factory<RDOFRMPosition>::create(rdo::Factory<rdo::runtime::RDOCalcConst>::create(0), RDOFRMPosition::PT_DELTA);
 		ASSERT(pX     );
 		ASSERT(pY     );
 		ASSERT(pWidth );
@@ -1790,7 +1790,7 @@ fun_arithm
 		$$ = CONVERTER->stack().push(
 			rdo::Factory<RDOFUNArithm>::create(
 				rdo::Factory<RDOValue>::create(pArithm->type(), info),
-				rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(info.src_pos(), pArithm->createCalc()).object_parent_cast<rdoRuntime::RDOCalc>()
+				rdo::Factory<rdo::runtime::RDOCalcUMinus>::create(info.src_pos(), pArithm->createCalc()).object_parent_cast<rdo::runtime::RDOCalc>()
 			)
 		);
 	}
@@ -1903,7 +1903,7 @@ fun_group
 		LPRDOFUNGroupLogic pGroupFun = CONVERTER->stack().pop<RDOFUNGroupLogic>($1);
 		ASSERT(pGroupFun);
 		pGroupFun->setSrcPos(@1, @3);
-		LPRDOFUNLogic pTrueLogic = rdo::Factory<RDOFUNLogic>::create(rdo::Factory<rdoRuntime::RDOCalcConst>::create(1), false);
+		LPRDOFUNLogic pTrueLogic = rdo::Factory<RDOFUNLogic>::create(rdo::Factory<rdo::runtime::RDOCalcConst>::create(1), false);
 		ASSERT(pTrueLogic);
 		pTrueLogic->setSrcPos (@2);
 		pTrueLogic->setSrcText(_T("NoCheck"));
@@ -1963,7 +1963,7 @@ fun_select_body
 		ASSERT(pSelect);
 		RDOParserSrcInfo logicInfo(@2, _T("NoCheck"));
 		pSelect->setSrcText(pSelect->src_text() + logicInfo.src_text() + _T(")"));
-		rdoRuntime::LPRDOCalcConst pCalc  = rdo::Factory<rdoRuntime::RDOCalcConst>::create(1);
+		rdo::runtime::LPRDOCalcConst pCalc = rdo::Factory<rdo::runtime::RDOCalcConst>::create(1);
 		ASSERT(pCalc);
 		LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pCalc, true);
 		ASSERT(pLogic);

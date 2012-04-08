@@ -51,7 +51,7 @@ public:
 	rbool         isTemporary() const   { return !m_permanent; };
 
 	void addParam(CREF(LPRDORTPParam) param);
-	void addParam(CREF(tstring) param_name, rdoRuntime::RDOType::TypeID param_typeID);
+	void addParam(CREF(tstring) param_name, rdo::runtime::RDOType::TypeID param_typeID);
 	LPRDORTPParam findRTPParam(CREF(tstring) paramName) const;
 	void finish  ();
 

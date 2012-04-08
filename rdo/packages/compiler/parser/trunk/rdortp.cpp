@@ -61,7 +61,7 @@ void RDORTPResType::addParam(CREF(LPRDORTPParam) param)
 	m_params.push_back(param);
 }
 
-void RDORTPResType::addParam(CREF(tstring) param_name, rdoRuntime::RDOType::TypeID param_typeID)
+void RDORTPResType::addParam(CREF(tstring) param_name, rdo::runtime::RDOType::TypeID param_typeID)
 {
 	UNUSED(param_name  );
 	UNUSED(param_typeID);
@@ -102,7 +102,7 @@ LPRDOType RDORTPResType::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo)
 
 	switch (pFrom->typeID())
 	{
-	case rdoRuntime::RDOType::t_pointer:
+	case rdo::runtime::RDOType::t_pointer:
 		{	
 			LPRDOType pThisRTPType(const_cast<PTR(RDORTPResType)>(this));
 
@@ -155,16 +155,16 @@ LPRDOValue RDORTPResType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcIn
 	return LPRDOValue(NULL);
 }
 
-rdoRuntime::LPRDOCalc RDORTPResType::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
+rdo::runtime::LPRDOCalc RDORTPResType::calc_cast(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
 {
 	return RDOType::calc_cast(pCalc, pType);
 }
 
-rdoRuntime::RDOValue RDORTPResType::get_default() const
+rdo::runtime::RDOValue RDORTPResType::get_default() const
 {
 	NEVER_REACH_HERE;
-	return rdoRuntime::RDOValue();
-	//return rdoRuntime::RDOValue (pResourceType,pResource);
+	return rdo::runtime::RDOValue();
+	//return rdo::runtime::RDOValue (pResourceType,pResource);
 }
 
 Context::FindResult RDORTPResType::onSwitchContext(CREF(LPExpression) pSwitchExpression, CREF(LPRDOValue) pValue) const
@@ -183,7 +183,7 @@ Context::FindResult RDORTPResType::onSwitchContext(CREF(LPExpression) pSwitchExp
 
 	LPExpression pExpression = rdo::Factory<Expression>::create(
 		pParam->getTypeInfo(),
-		rdo::Factory<rdoRuntime::RDOCalcGetResourceParam>::create(pSwitchExpression->calc(), parNumb),
+		rdo::Factory<rdo::runtime::RDOCalcGetResourceParam>::create(pSwitchExpression->calc(), parNumb),
 		pValue->src_info()
 	);
 	ASSERT(pExpression);

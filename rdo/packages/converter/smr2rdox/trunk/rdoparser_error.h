@@ -25,7 +25,7 @@ OPEN_RDO_CONVERTER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOSyntaxException
 // --------------------------------------------------------------------------------
-class RDOSyntaxException: public rdoRuntime::RDOException
+class RDOSyntaxException: public rdo::runtime::RDOException
 {
 public:
    RDOSyntaxException(CREF(tstring) message)

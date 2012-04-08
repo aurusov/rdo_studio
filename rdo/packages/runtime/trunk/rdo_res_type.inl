@@ -3,7 +3,7 @@
   \file      rdo_res_type.inl
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      24.09.2011
-  \brief     Типы ресурсов в rdoRuntime
+  \brief     Типы ресурсов в rdo::runtime
   \indent    4T
 */
 

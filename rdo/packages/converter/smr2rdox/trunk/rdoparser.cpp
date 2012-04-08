@@ -106,7 +106,7 @@ Converter::Converter()
 {
 	s_parserStack.push_back(this);
 
-	m_pRuntime = rdo::Factory<rdoRuntime::RDORuntime>::create();
+	m_pRuntime = rdo::Factory<rdo::runtime::RDORuntime>::create();
 	ASSERT(m_pRuntime);
 	m_pRuntime->memory_insert(sizeof(Converter));
 	m_pRuntime->init();
@@ -346,7 +346,7 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 		{
 			return CNV_NONE;
 		}
-		catch (REF(rdoRuntime::RDORuntimeException))
+		catch (REF(rdo::runtime::RDORuntimeException))
 		{
 			return CNV_NONE;
 		}
@@ -384,7 +384,7 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 	{
 		return CNV_NONE;
 	}
-	catch (REF(rdoRuntime::RDORuntimeException))
+	catch (REF(rdo::runtime::RDORuntimeException))
 	{
 		return CNV_NONE;
 	}
@@ -450,7 +450,7 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 	{
 		return CNV_ERROR;
 	}
-	catch (REF(rdoRuntime::RDORuntimeException))
+	catch (REF(rdo::runtime::RDORuntimeException))
 	{
 		return CNV_ERROR;
 	}

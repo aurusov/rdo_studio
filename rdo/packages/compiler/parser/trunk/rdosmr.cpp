@@ -53,9 +53,9 @@ RDOSMR::RDOSMR()
 	: m_frameNumber   (1 )
 	, m_showRate      (60)
 	, m_runStartTime  (0 )
-	, m_traceStartTime(rdoRuntime::RDOSimulatorTrace::UNDEFINE_TIME)
-	, m_traceEndTime  (rdoRuntime::RDOSimulatorTrace::UNDEFINE_TIME)
-	, m_showMode      (rdoSimulator::SM_NoShow                     )
+	, m_traceStartTime(rdo::runtime::RDOSimulatorTrace::UNDEFINE_TIME)
+	, m_traceEndTime  (rdo::runtime::RDOSimulatorTrace::UNDEFINE_TIME)
+	, m_showMode      (rdoSimulator::SM_NoShow                       )
 {}
 
 void RDOSMR::setShowMode(rdoSimulator::ShowMode showMode)
@@ -100,7 +100,7 @@ void RDOSMR::setTraceStartTime(double value, CREF(YYLTYPE) pos)
 	{
 		RDOParser::s_parser()->error().error(pos, _T("Ќачальное врем€ трассировки должно быть больше нул€"));
 	}
-	if (getTraceEndTime() != rdoRuntime::RDOSimulatorTrace::UNDEFINE_TIME && getTraceEndTime() <= value)
+	if (getTraceEndTime() != rdo::runtime::RDOSimulatorTrace::UNDEFINE_TIME && getTraceEndTime() <= value)
 	{
 		RDOParser::s_parser()->error().push_only(pos, _T("Ќачальное врем€ трассировки должно быть меньше конечного"));
 		RDOParser::s_parser()->error().push_only(m_traceEndTime_pos, _T("—м. конечное врем€ трассировки"));
@@ -116,7 +116,7 @@ void RDOSMR::setTraceEndTime(double value, CREF(YYLTYPE) pos)
 	{
 		RDOParser::s_parser()->error().error(pos, _T(" онечное врем€ трассировки должно быть больше нул€"));
 	}
-	if (getTraceStartTime() != rdoRuntime::RDOSimulatorTrace::UNDEFINE_TIME && getTraceStartTime() >= value)
+	if (getTraceStartTime() != rdo::runtime::RDOSimulatorTrace::UNDEFINE_TIME && getTraceStartTime() >= value)
 	{
 		RDOParser::s_parser()->error().push_only(pos, _T(" онечное врем€ трассировки должно быть больше начального"));
 		RDOParser::s_parser()->error().push_only(m_traceStartTime_pos, _T("—м. начальное врем€ трассировки"));
@@ -147,8 +147,8 @@ void RDOSMR::setConstValue(CREF(RDOParserSrcInfo) const_info, REF(LPRDOFUNArithm
 	}
 	ASSERT(pArithm);
 	pArithm->checkParamType(pConstant->getTypeInfo());
-	rdoRuntime::LPRDOCalc pCalc = pArithm->createCalc(pConstant->getTypeInfo());
-	RDOParser::s_parser()->runtime()->addInitCalc(rdo::Factory<rdoRuntime::RDOCalcSetConst>::create(pConstant->getNumber(), pCalc));
+	rdo::runtime::LPRDOCalc pCalc = pArithm->createCalc(pConstant->getTypeInfo());
+	RDOParser::s_parser()->runtime()->addInitCalc(rdo::Factory<rdo::runtime::RDOCalcSetConst>::create(pConstant->getNumber(), pCalc));
 	RDOParser::s_parser()->insertChanges(pConstant->src_text(), pArithm->src_text());
 }
 
@@ -170,8 +170,8 @@ void RDOSMR::setResParValue(CREF(RDOParserSrcInfo) res_info, CREF(RDOParserSrcIn
 	ASSERT(pArithm);
 	pArithm->checkParamType(pParam->getTypeInfo());
 	ruint                 parNumb = pResource->getType()->getRTPParamNumber(par_info.src_text());
-	rdoRuntime::LPRDOCalc pCalc   = pArithm->createCalc(pParam->getTypeInfo());
-	RDOParser::s_parser()->runtime()->addInitCalc(rdo::Factory<rdoRuntime::RDOSetResourceParamCalc>::create(pResource->getID(), parNumb, pCalc));
+	rdo::runtime::LPRDOCalc pCalc   = pArithm->createCalc(pParam->getTypeInfo());
+	RDOParser::s_parser()->runtime()->addInitCalc(rdo::Factory<rdo::runtime::RDOSetResourceParamCalc>::create(pResource->getID(), parNumb, pCalc));
 	RDOParser::s_parser()->insertChanges(res_info.src_text() + _T(".") + par_info.src_text(), pArithm->src_text());
 }
 

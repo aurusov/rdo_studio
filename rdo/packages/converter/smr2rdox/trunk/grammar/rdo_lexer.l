@@ -420,7 +420,7 @@ true {
 
 	LEXER->setvalue(CONVERTER->stack().push(
 		rdo::Factory<rdoConverter::RDOValue>::create(
-			rdoRuntime::RDOValue(true),
+			rdo::runtime::RDOValue(true),
 			rdo::Factory<rdoConverter::RDOType__bool>::create(),
 			LEXER->m_lploc
 				? rdoConverter::RDOParserSrcInfo(LEXER_POS, YYText())
@@ -435,7 +435,7 @@ false {
 
 	LEXER->setvalue(CONVERTER->stack().push(
 		rdo::Factory<rdoConverter::RDOValue>::create(
-			rdoRuntime::RDOValue(false),
+			rdo::runtime::RDOValue(false),
 			rdo::Factory<rdoConverter::RDOType__bool>::create(),
 			LEXER->m_lploc
 				? rdoConverter::RDOParserSrcInfo(LEXER_POS, YYText())

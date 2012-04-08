@@ -156,9 +156,9 @@ inline RDOValue::RDOValue(CREF(LPRDOType) pType, CREF(rdo::intrusive_ptr<T>) pOb
 
 	ASSERT(m_pType);
 	ASSERT(
-		typeID() == rdoRuntime::RDOType::t_string        ||
-		typeID() == rdoRuntime::RDOType::t_identificator ||
-		typeID() == rdoRuntime::RDOType::t_pointer
+		typeID() == RDOType::t_string        ||
+		typeID() == RDOType::t_identificator ||
+		typeID() == RDOType::t_pointer
 	);
 	new (&m_value) rdo::intrusive_ptr_interface_wrapper<T>(pObject);
 	setUndefined(1);
@@ -287,7 +287,7 @@ inline tstring RDOValue::getAsString() const
 	case RDOType::t_identificator: return __stringV();
 	case RDOType::t_pointer      : return onPointerAsString();
 	}
-	throw RDOValueException(_T("Для rdoRuntime::RDOValue не определен метод getAsString()"));
+	throw RDOValueException(_T("Для rdo::runtime::RDOValue не определен метод getAsString()"));
 }
 
 inline tstring RDOValue::getAsStringForTrace() const
@@ -301,7 +301,7 @@ inline tstring RDOValue::getAsStringForTrace() const
 	case RDOType::t_string : return __stringV();
 	case RDOType::t_pointer: return onPointerAsString();
 	}
-	throw RDOValueException(_T("Для rdoRuntime::RDOValue не определен метод getAsStringForTrace()"));
+	throw RDOValueException(_T("Для rdo::runtime::RDOValue не определен метод getAsStringForTrace()"));
 }
 
 inline void RDOValue::set(CREF(RDOValue) rdovalue)

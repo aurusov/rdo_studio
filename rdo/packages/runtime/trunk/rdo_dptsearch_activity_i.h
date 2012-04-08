@@ -37,14 +37,14 @@ public:
 		vt_after   //!< после выполнения активности
 	};
 
-	virtual REF(LPIRule) rule     ()                                        = 0;
-	virtual double       cost     (CREF(rdoRuntime::LPRDORuntime) pRuntime) = 0;
-	virtual ValueTime    valueTime() const                                  = 0;
+	virtual REF(LPIRule) rule     ()                                          = 0;
+	virtual double       cost     (CREF(rdo::runtime::LPRDORuntime) pRuntime) = 0;
+	virtual ValueTime    valueTime() const                                    = 0;
 };
 
 #define DECLARE_IDPTSearchActivity \
-	virtual REF(LPIRule) rule     ();                                        \
-	virtual double       cost     (CREF(rdoRuntime::LPRDORuntime) pRuntime); \
+	virtual REF(LPIRule) rule     ();                                          \
+	virtual double       cost     (CREF(rdo::runtime::LPRDORuntime) pRuntime); \
 	virtual ValueTime    valueTime() const;
 
 #endif // _LIB_RUNTIME_DPTSEARCH_ACTIVITY_I_H_

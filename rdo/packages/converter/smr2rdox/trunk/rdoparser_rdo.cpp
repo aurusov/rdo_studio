@@ -78,7 +78,7 @@ ruint RDOParserRDOItem::lexer_loc_line()
 	}
 	else
 	{
-		return ruint(rdoRuntime::RDOSrcInfo::Position::UNDEFINE_LINE);
+		return ruint(rdo::runtime::RDOSrcInfo::Position::UNDEFINE_LINE);
 	}
 }
 
@@ -126,7 +126,7 @@ void RDOParserRSSPost::parse(PTR(Converter) pParser)
 			if ((*rss_it)->getType() == *rtp_it)
 			{
 #endif
-				rdoRuntime::LPRDOCalc calc = (*rss_it)->createCalc();
+				rdo::runtime::LPRDOCalc calc = (*rss_it)->createCalc();
 				pParser->runtime()->addInitCalc(calc);
 #ifdef RDOSIM_COMPATIBLE
 			}
@@ -193,19 +193,19 @@ void RDOParserSTDFUN::parse(PTR(Converter) pParser)
 {
 	UNUSED(pParser);
 
-	typedef rdoRuntime::std_fun1<double, double>         StdFun_D_D;
-	typedef rdoRuntime::std_fun2<double, double, double> StdFun_D_DD;
-	typedef rdoRuntime::std_fun2<double, double, int>    StdFun_D_DI;
-	typedef rdoRuntime::std_fun1<int,    int>            StdFun_I_I;
-	typedef rdoRuntime::std_fun2<int,    int, int>       StdFun_I_II;
-	typedef rdoRuntime::std_fun1<int,    double>         StdFun_I_D;
+	typedef rdo::runtime::std_fun1<double, double>         StdFun_D_D;
+	typedef rdo::runtime::std_fun2<double, double, double> StdFun_D_DD;
+	typedef rdo::runtime::std_fun2<double, double, int>    StdFun_D_DI;
+	typedef rdo::runtime::std_fun1<int,    int>            StdFun_I_I;
+	typedef rdo::runtime::std_fun2<int,    int, int>       StdFun_I_II;
+	typedef rdo::runtime::std_fun1<int,    double>         StdFun_I_D;
 
-	typedef rdoRuntime::RDOFunCalcStd<StdFun_D_D>  Function_D_D;
-	typedef rdoRuntime::RDOFunCalcStd<StdFun_D_DD> Function_D_DD;
-	typedef rdoRuntime::RDOFunCalcStd<StdFun_D_DI> Function_D_DI;
-	typedef rdoRuntime::RDOFunCalcStd<StdFun_I_I>  Function_I_I;
-	typedef rdoRuntime::RDOFunCalcStd<StdFun_I_II> Function_I_II;
-	typedef rdoRuntime::RDOFunCalcStd<StdFun_I_D>  Function_I_D;
+	typedef rdo::runtime::RDOFunCalcStd<StdFun_D_D>  Function_D_D;
+	typedef rdo::runtime::RDOFunCalcStd<StdFun_D_DD> Function_D_DD;
+	typedef rdo::runtime::RDOFunCalcStd<StdFun_D_DI> Function_D_DI;
+	typedef rdo::runtime::RDOFunCalcStd<StdFun_I_I>  Function_I_I;
+	typedef rdo::runtime::RDOFunCalcStd<StdFun_I_II> Function_I_II;
+	typedef rdo::runtime::RDOFunCalcStd<StdFun_I_D>  Function_I_D;
 
 	LPRDOTypeParam intType     = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__int>::create(),  RDOParserSrcInfo());
 	LPRDOTypeParam realType    = rdo::Factory<RDOTypeParam>::create(rdo::Factory<RDOType__real>::create(), RDOParserSrcInfo());

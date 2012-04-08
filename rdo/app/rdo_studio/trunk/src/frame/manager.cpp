@@ -384,7 +384,7 @@ void RDOStudioFrameManager::showFrame(CPTRC(rdoAnimation::RDOFrame) pFrame, ruin
 void RDOStudioFrameManager::showNextFrame()
 {
 	ruint cnt = count();
-	if (model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && m_currentShowingFrame < cnt-1)
+	if (model->isRunning() && model->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && m_currentShowingFrame < cnt-1)
 	{
 		ruint index = m_currentShowingFrame + 1;
 		PTR(RDOStudioFrameDoc) pDoc = getFrameDoc(index);
@@ -404,7 +404,7 @@ void RDOStudioFrameManager::showNextFrame()
 void RDOStudioFrameManager::showPrevFrame()
 {
 	ruint cnt = count();
-	if (model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && m_currentShowingFrame != ruint(~0))
+	if (model->isRunning() && model->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && m_currentShowingFrame != ruint(~0))
 	{
 		ruint index = m_currentShowingFrame - 1;
 		PTR(RDOStudioFrameDoc) pDoc = getFrameDoc(index);
@@ -424,7 +424,7 @@ void RDOStudioFrameManager::showPrevFrame()
 void RDOStudioFrameManager::showFrame(ruint index)
 {
 	ruint cnt = count();
-	if (model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && index >= 0 && index < cnt)
+	if (model->isRunning() && model->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && index >= 0 && index < cnt)
 	{
 		PTR(RDOStudioFrameDoc) pDoc = getFrameDoc(index);
 		if (!pDoc)
@@ -443,13 +443,13 @@ void RDOStudioFrameManager::showFrame(ruint index)
 rbool RDOStudioFrameManager::canShowNextFrame() const
 {
 	ruint cnt = count();
-	return model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && (m_currentShowingFrame == ruint(~0) || m_currentShowingFrame < cnt-1);
+	return model->isRunning() && model->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && (m_currentShowingFrame == ruint(~0) || m_currentShowingFrame < cnt-1);
 }
 
 rbool RDOStudioFrameManager::canShowPrevFrame() const
 {
 	int cnt = count();
-	return model->isRunning() && model->getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && cnt > 1 && (m_currentShowingFrame != ruint(~0) && m_currentShowingFrame > 0);
+	return model->isRunning() && model->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && cnt > 1 && (m_currentShowingFrame != ruint(~0) && m_currentShowingFrame > 0);
 }
 
 void RDOStudioFrameManager::updateStyles() const

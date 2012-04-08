@@ -74,27 +74,27 @@ int roundLocal(double value)
 #ifdef SPEED_TEST
 #include "simulator/runtime/rdobase.h"
 
-class MaxCalc: public rdoRuntime::RDOFunCalc
+class MaxCalc: public rdo::runtime::RDOFunCalc
 {
 private:
-	REF(rdoRuntime::RDOValue) doCalc(PTR(rdoRuntime::RDORuntime) pRuntime)
+	REF(rdo::runtime::RDOValue) doCalc(PTR(rdo::runtime::RDORuntime) pRuntime)
 	{
 		m_value = max(pRuntime->getFuncArgument(0).getDouble(), pRuntime->getFuncArgument(1).getDouble());
 		return m_value;
 	}
 };
 
-class Test: public rdoRuntime::RDOFunCalc
+class Test: public rdo::runtime::RDOFunCalc
 {
 public:
-	REF(rdoRuntime::RDOValue) doCalc(PTR(rdoRuntime::RDORuntime) runtime)
+	REF(rdo::runtime::RDOValue) doCalc(PTR(rdo::runtime::RDORuntime) runtime)
 	{
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<MaxCalc>::create();
+		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<MaxCalc>::create();
 		ASSERT(pCalc);
 
 
 		boost::posix_time::ptime tnow = boost::posix_time::microsec_clock::local_time();
-		ruint tnow1 = rdoRuntime::RDOSimulatorBase::getMSec(tnow);
+		ruint tnow1 = rdo::runtime::RDOSimulatorBase::getMSec(tnow);
 
 		for (ruint i = 0; i < 10000000; i++)
 		{
@@ -102,7 +102,7 @@ public:
 		}
 
 		tnow = boost::posix_time::microsec_clock::local_time();
-		ruint tnow2 = rdoRuntime::RDOSimulatorBase::getMSec(tnow);
+		ruint tnow2 = rdo::runtime::RDOSimulatorBase::getMSec(tnow);
 		ruint delta = tnow2 - tnow1;
 		YYLTYPE pos = {1, 1, 1, 1, 1, 1};
 		RDOParser::s_parser()->error().error(RDOParserSrcInfo(pos), rdo::format(_T("delay %d"), delta));
@@ -112,7 +112,7 @@ public:
 };
 #endif
 
-void RDOParserSTDFUN::generate(CREF(tstring) name, CREF(rdoRuntime::LPRDOFunCalc) pCalc, CREF(LPRDOParam) pReturnType, CREF(ParamList) paramList) const
+void RDOParserSTDFUN::generate(CREF(tstring) name, CREF(rdo::runtime::LPRDOFunCalc) pCalc, CREF(LPRDOParam) pReturnType, CREF(ParamList) paramList) const
 {
 	tstring nameLower = name;
 	rdo::toLower(nameLower);
@@ -120,7 +120,7 @@ void RDOParserSTDFUN::generate(CREF(tstring) name, CREF(rdoRuntime::LPRDOFunCalc
 	generateReal(nameLower, pCalc, pReturnType, paramList);
 }
 
-void RDOParserSTDFUN::generateReal(CREF(tstring) name, CREF(rdoRuntime::LPRDOFunCalc) pCalc, CREF(LPRDOParam) pReturnType, CREF(ParamList) paramList) const
+void RDOParserSTDFUN::generateReal(CREF(tstring) name, CREF(rdo::runtime::LPRDOFunCalc) pCalc, CREF(LPRDOParam) pReturnType, CREF(ParamList) paramList) const
 {
 	ASSERT(pCalc);
 
@@ -144,19 +144,19 @@ void RDOParserSTDFUN::parse(CREF(LPRDOParser) pParser)
 {
 	UNUSED(pParser);
 
-	typedef rdoRuntime::std_fun1<double, double>         StdFun_D_D;
-	typedef rdoRuntime::std_fun2<double, double, double> StdFun_D_DD;
-	typedef rdoRuntime::std_fun2<double, double, int>    StdFun_D_DI;
-	typedef rdoRuntime::std_fun1<int,    int>            StdFun_I_I;
-	typedef rdoRuntime::std_fun2<int,    int, int>       StdFun_I_II;
-	typedef rdoRuntime::std_fun1<int,    double>         StdFun_I_D;
+	typedef rdo::runtime::std_fun1<double, double>         StdFun_D_D;
+	typedef rdo::runtime::std_fun2<double, double, double> StdFun_D_DD;
+	typedef rdo::runtime::std_fun2<double, double, int>    StdFun_D_DI;
+	typedef rdo::runtime::std_fun1<int,    int>            StdFun_I_I;
+	typedef rdo::runtime::std_fun2<int,    int, int>       StdFun_I_II;
+	typedef rdo::runtime::std_fun1<int,    double>         StdFun_I_D;
 
-	typedef rdoRuntime::RDOFunCalcStd<StdFun_D_D>  Function_D_D;
-	typedef rdoRuntime::RDOFunCalcStd<StdFun_D_DD> Function_D_DD;
-	typedef rdoRuntime::RDOFunCalcStd<StdFun_D_DI> Function_D_DI;
-	typedef rdoRuntime::RDOFunCalcStd<StdFun_I_I>  Function_I_I;
-	typedef rdoRuntime::RDOFunCalcStd<StdFun_I_II> Function_I_II;
-	typedef rdoRuntime::RDOFunCalcStd<StdFun_I_D>  Function_I_D;
+	typedef rdo::runtime::RDOFunCalcStd<StdFun_D_D>  Function_D_D;
+	typedef rdo::runtime::RDOFunCalcStd<StdFun_D_DD> Function_D_DD;
+	typedef rdo::runtime::RDOFunCalcStd<StdFun_D_DI> Function_D_DI;
+	typedef rdo::runtime::RDOFunCalcStd<StdFun_I_I>  Function_I_I;
+	typedef rdo::runtime::RDOFunCalcStd<StdFun_I_II> Function_I_II;
+	typedef rdo::runtime::RDOFunCalcStd<StdFun_I_D>  Function_I_D;
 
 	LPTypeInfo  intType     = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__int>::create(),  RDOParserSrcInfo());
 	LPTypeInfo  realType    = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__real>::create(), RDOParserSrcInfo());

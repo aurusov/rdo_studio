@@ -25,15 +25,15 @@
 class IResult
 {
 public:
-	virtual void resetResult(CREF(rdoRuntime::LPRDORuntime) Runtime) = 0;
-	virtual void checkResult(CREF(rdoRuntime::LPRDORuntime) Runtime) = 0;
-	virtual void calcStat   (CREF(rdoRuntime::LPRDORuntime) Runtime, REF(std::ostream) stream) = 0;
+	virtual void resetResult(CREF(rdo::runtime::LPRDORuntime) Runtime) = 0;
+	virtual void checkResult(CREF(rdo::runtime::LPRDORuntime) Runtime) = 0;
+	virtual void calcStat   (CREF(rdo::runtime::LPRDORuntime) Runtime, REF(std::ostream) stream) = 0;
 };
 
-#define DECLARE_IResult                                               \
-	virtual void resetResult(CREF(rdoRuntime::LPRDORuntime) Runtime); \
-	virtual void checkResult(CREF(rdoRuntime::LPRDORuntime) Runtime); \
-	virtual void calcStat   (CREF(rdoRuntime::LPRDORuntime) Runtime, REF(std::ostream) stream);
+#define DECLARE_IResult                                                 \
+	virtual void resetResult(CREF(rdo::runtime::LPRDORuntime) Runtime); \
+	virtual void checkResult(CREF(rdo::runtime::LPRDORuntime) Runtime); \
+	virtual void calcStat   (CREF(rdo::runtime::LPRDORuntime) Runtime, REF(std::ostream) stream);
 
 /*!
   \interface IResultWatchQuant
@@ -42,11 +42,11 @@ public:
 class IResultWatchQuant
 {
 public:
-	virtual void setLogicCalc(CREF(rdoRuntime::LPRDOCalc) pLogicCalc) = 0;
+	virtual void setLogicCalc(CREF(rdo::runtime::LPRDOCalc) pLogicCalc) = 0;
 };
 
 #define DECLARE_IResultWatchQuant \
-	virtual void setLogicCalc(CREF(rdoRuntime::LPRDOCalc) pLogicCalc);
+	virtual void setLogicCalc(CREF(rdo::runtime::LPRDOCalc) pLogicCalc);
 
 /*!
   \interface IResultWatchValue
@@ -55,15 +55,15 @@ public:
 class IResultWatchValue
 {
 public:
-	virtual void checkResourceErased(CREF(rdoRuntime::LPRDOResource) pResource  ) = 0;
-	virtual void setLogicCalc       (CREF(rdoRuntime::LPRDOCalc)     pLogicCalc ) = 0;
-	virtual void setArithmCalc      (CREF(rdoRuntime::LPRDOCalc)     pArithmCalc) = 0;
+	virtual void checkResourceErased(CREF(rdo::runtime::LPRDOResource) pResource  ) = 0;
+	virtual void setLogicCalc       (CREF(rdo::runtime::LPRDOCalc)     pLogicCalc ) = 0;
+	virtual void setArithmCalc      (CREF(rdo::runtime::LPRDOCalc)     pArithmCalc) = 0;
 };
 
-#define DECLARE_IResultWatchValue                                                  \
-	virtual void checkResourceErased(CREF(rdoRuntime::LPRDOResource) pResource  ); \
-	virtual void setLogicCalc       (CREF(rdoRuntime::LPRDOCalc)     pLogicCalc ); \
-	virtual void setArithmCalc      (CREF(rdoRuntime::LPRDOCalc)     pArithmCalc);
+#define DECLARE_IResultWatchValue                                                    \
+	virtual void checkResourceErased(CREF(rdo::runtime::LPRDOResource) pResource  ); \
+	virtual void setLogicCalc       (CREF(rdo::runtime::LPRDOCalc)     pLogicCalc ); \
+	virtual void setArithmCalc      (CREF(rdo::runtime::LPRDOCalc)     pArithmCalc);
 
 /*!
   \interface IResultGetValue
@@ -72,10 +72,10 @@ public:
 class IResultGetValue
 {
 public:
-	virtual CREF(rdoRuntime::RDOValue) getValue() const = 0;
+	virtual CREF(rdo::runtime::RDOValue) getValue() const = 0;
 };
 
 #define DECLARE_IResultGetValue \
-	CREF(rdoRuntime::RDOValue) getValue() const;
+	CREF(rdo::runtime::RDOValue) getValue() const;
 
 #endif // _LIB_RUNTIME_RESULT_I_H_

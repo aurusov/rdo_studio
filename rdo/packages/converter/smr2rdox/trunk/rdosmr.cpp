@@ -53,9 +53,9 @@ RDOSMR::RDOSMR(CREF(tstring) modelName)
 	: m_frameNumber   (1 )
 	, m_showRate      (60)
 	, m_runStartTime  (0 )
-	, m_traceStartTime(rdoRuntime::RDOSimulatorTrace::UNDEFINE_TIME)
-	, m_traceEndTime  (rdoRuntime::RDOSimulatorTrace::UNDEFINE_TIME)
-	, m_showMode      (rdoSimulator::SM_NoShow                     )
+	, m_traceStartTime(rdo::runtime::RDOSimulatorTrace::UNDEFINE_TIME)
+	, m_traceEndTime  (rdo::runtime::RDOSimulatorTrace::UNDEFINE_TIME)
+	, m_showMode      (rdoSimulator::SM_NoShow                       )
 {
 	setFile(_T("Model_name"), modelName);
 	Converter::s_converter()->setSMR(this);
@@ -103,7 +103,7 @@ void RDOSMR::setTraceStartTime(double value, CREF(YYLTYPE) pos)
 	{
 		Converter::s_converter()->error().error(pos, _T("Ќачальное врем€ трассировки должно быть больше нул€"));
 	}
-	if (getTraceEndTime() != rdoRuntime::RDOSimulatorTrace::UNDEFINE_TIME && getTraceEndTime() <= value)
+	if (getTraceEndTime() != rdo::runtime::RDOSimulatorTrace::UNDEFINE_TIME && getTraceEndTime() <= value)
 	{
 		Converter::s_converter()->error().push_only(pos, _T("Ќачальное врем€ трассировки должно быть меньше конечного"));
 		Converter::s_converter()->error().push_only(m_traceEndTime_pos, _T("—м. конечное врем€ трассировки"));
@@ -119,7 +119,7 @@ void RDOSMR::setTraceEndTime(double value, CREF(YYLTYPE) pos)
 	{
 		Converter::s_converter()->error().error(pos, _T(" онечное врем€ трассировки должно быть больше нул€"));
 	}
-	if (getTraceStartTime() != rdoRuntime::RDOSimulatorTrace::UNDEFINE_TIME && getTraceStartTime() >= value)
+	if (getTraceStartTime() != rdo::runtime::RDOSimulatorTrace::UNDEFINE_TIME && getTraceStartTime() >= value)
 	{
 		Converter::s_converter()->error().push_only(pos, _T(" онечное врем€ трассировки должно быть больше начального"));
 		Converter::s_converter()->error().push_only(m_traceStartTime_pos, _T("—м. начальное врем€ трассировки"));
@@ -150,8 +150,8 @@ void RDOSMR::setConstValue(CREF(RDOParserSrcInfo) const_info, REF(LPRDOFUNArithm
 	}
 	ASSERT(pArithm);
 	pArithm->checkParamType(pConstant->getType());
-	rdoRuntime::LPRDOCalc pCalc = pArithm->createCalc(pConstant->getType());
-	Converter::s_converter()->runtime()->addInitCalc(rdo::Factory<rdoRuntime::RDOCalcSetConst>::create(pConstant->getNumber(), pCalc));
+	rdo::runtime::LPRDOCalc pCalc = pArithm->createCalc(pConstant->getType());
+	Converter::s_converter()->runtime()->addInitCalc(rdo::Factory<rdo::runtime::RDOCalcSetConst>::create(pConstant->getNumber(), pCalc));
 	Converter::s_converter()->insertChanges(pConstant->src_text(), pArithm->src_text());
 }
 
@@ -173,8 +173,8 @@ void RDOSMR::setResParValue(CREF(RDOParserSrcInfo) res_info, CREF(RDOParserSrcIn
 	ASSERT(pArithm);
 	pArithm->checkParamType(pParam->getType());
 	ruint                 parNumb = pResource->getType()->getRTPParamNumber(par_info.src_text());
-	rdoRuntime::LPRDOCalc pCalc   = pArithm->createCalc(pParam->getType());
-	Converter::s_converter()->runtime()->addInitCalc(rdo::Factory<rdoRuntime::RDOSetResourceParamCalc>::create(pResource->getID(), parNumb, pCalc));
+	rdo::runtime::LPRDOCalc pCalc   = pArithm->createCalc(pParam->getType());
+	Converter::s_converter()->runtime()->addInitCalc(rdo::Factory<rdo::runtime::RDOSetResourceParamCalc>::create(pResource->getID(), parNumb, pCalc));
 	Converter::s_converter()->insertChanges(res_info.src_text() + _T(".") + par_info.src_text(), pArithm->src_text());
 }
 

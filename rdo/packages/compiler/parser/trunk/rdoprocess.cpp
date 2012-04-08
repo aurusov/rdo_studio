@@ -75,7 +75,7 @@ RDOPROCProcess::RDOPROCProcess(CREF(RDOParserSrcInfo) info, CREF(tstring) name, 
 	, m_transactType  (transactType)
 {
 	RDOParser::s_parser()->insertPROCProcess(this);
-	m_pRuntime = RF(rdoRuntime::RDOPROCProcess)::create(info.src_text(), RDOParser::s_parser()->runtime());
+	m_pRuntime = RF(rdo::runtime::RDOPROCProcess)::create(info.src_text(), RDOParser::s_parser()->runtime());
 	ASSERT(m_pRuntime);
 	m_pRuntime.query_cast<ILogic>()->init(RDOParser::s_parser()->runtime());
 }
@@ -135,10 +135,10 @@ RDOPROCOperator::~RDOPROCOperator()
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCGenerate
 // --------------------------------------------------------------------------------
-RDOPROCGenerate::RDOPROCGenerate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pTimeCalc, CREF(rdoRuntime::LPRDOCalc) pCreateAndGoOnTransactCalc)
+RDOPROCGenerate::RDOPROCGenerate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdo::runtime::LPRDOCalc) pTimeCalc, CREF(rdo::runtime::LPRDOCalc) pCreateAndGoOnTransactCalc)
 	: RDOPROCOperator(pProcess, name)
 {
-	m_pRuntime = RF(rdoRuntime::RDOPROCGenerate)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), pTimeCalc, pCreateAndGoOnTransactCalc);
+	m_pRuntime = RF(rdo::runtime::RDOPROCGenerate)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), pTimeCalc, pCreateAndGoOnTransactCalc);
 	ASSERT(m_pRuntime);
 }
 
@@ -167,7 +167,7 @@ void RDOPROCQueue::createRuntime()
 		//! Создадим тип ресурса
 		rdoMBuilder::RDOResType rtp = rssList[res_name].getType();
 		//! "длина_очереди"
-		tstring rtp_param_name      = rdoRuntime::RDOPROCQueue::getQueueParamName();
+		tstring rtp_param_name      = rdo::runtime::RDOPROCQueue::getQueueParamName();
 		m_parserForRuntime.Id_res   = pResource->getID();
 		m_parserForRuntime.Id_param = rtp.m_params[rtp_param_name].id();
 	}
@@ -175,7 +175,7 @@ void RDOPROCQueue::createRuntime()
 	{
 		RDOParser::s_parser()->error().error(RDOParserSrcInfo(), rdo::format(_T("Внутренняя ошибка RDOPROCQueue: не нашли parser-ресурс '%s'"), m_resourceName.c_str()));
 	}
-	m_pRuntime = RF(rdoRuntime::RDOPROCQueue)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), m_parserForRuntime);
+	m_pRuntime = RF(rdo::runtime::RDOPROCQueue)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), m_parserForRuntime);
 	ASSERT(m_pRuntime);
 }
 
@@ -205,7 +205,7 @@ void RDOPROCDepart::createRuntime()
 		//! Создадим тип ресурса
 		rdoMBuilder::RDOResType rtp = rssList[res_name].getType();
 		//! "длина_очереди"
-		tstring rtp_param_name      = rdoRuntime::RDOPROCDepart::getDepartParamName();
+		tstring rtp_param_name      = rdo::runtime::RDOPROCDepart::getDepartParamName();
 		m_parserForRuntime.Id_res   = pResource->getID();
 		m_parserForRuntime.Id_param = rtp.m_params[rtp_param_name].id(); 
 	}	
@@ -213,7 +213,7 @@ void RDOPROCDepart::createRuntime()
 	{
 		RDOParser::s_parser()->error().error(RDOParserSrcInfo(), rdo::format(_T("Внутренняя ошибка RDOPROCQueue: не нашли parser-ресурс '%s'"), m_resourceName.c_str()));
 	}
-	m_pRuntime = RF(rdoRuntime::RDOPROCDepart)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), m_parserForRuntime);
+	m_pRuntime = RF(rdo::runtime::RDOPROCDepart)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), m_parserForRuntime);
 	ASSERT(m_pRuntime);
 }
 
@@ -252,13 +252,13 @@ void RDOPROCSeize::createRuntime()
 			// Создадим тип ресурса
 			rdoMBuilder::RDOResType rtp = rssList[res_name].getType();
 			// "Состояние"
-			tstring rtp_param_name = rdoRuntime::RDOPROCBlockForSeize::getStateParamName();
+			tstring rtp_param_name = rdo::runtime::RDOPROCBlockForSeize::getStateParamName();
 			// проверим его на наличие перечислимого параметра
 			if (!rtp.m_params[rtp_param_name].exist())
 			{
 				RDOParser::s_parser()->error().error(rtp.src_info(), rdo::format(_T("У типа ресурса '%s' нет параметра перечислимого типа '%s'"), rtp.name().c_str(), rtp_param_name.c_str()));
 			}
-			rdoRuntime::parser_for_Seize bbb;
+			rdo::runtime::parser_for_Seize bbb;
 			bbb.Id_res   = pResource->getID();
 			bbb.Id_param = rtp.m_params[rtp_param_name].id(); 
 			m_parserForRuntime.push_back(bbb);
@@ -271,7 +271,7 @@ void RDOPROCSeize::createRuntime()
 
 	if (!m_parserForRuntime.empty())
 	{
-		m_pRuntime = RF(rdoRuntime::RDOPROCSeize)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), m_parserForRuntime);
+		m_pRuntime = RF(rdo::runtime::RDOPROCSeize)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), m_parserForRuntime);
 		ASSERT(m_pRuntime);
 	}
 	else
@@ -306,13 +306,13 @@ void RDOPROCRelease::createRuntime()
 			//! Создадим тип ресурса
 			rdoMBuilder::RDOResType rtp = rssList[res_name].getType();
 			//! "Состояние"
-			tstring rtp_param_name = rdoRuntime::RDOPROCBlockForSeize::getStateParamName();
+			tstring rtp_param_name = rdo::runtime::RDOPROCBlockForSeize::getStateParamName();
 			//! проверим его на наличие перечислимого параметра
 			if (!rtp.m_params[rtp_param_name].exist())
 			{
 				RDOParser::s_parser()->error().error(rtp.src_info(), rdo::format(_T("У типа ресурса '%s' нет параметра перечислимого типа '%s'"), rtp.name().c_str(), rtp_param_name.c_str()));
 			}
-			rdoRuntime::parser_for_Seize bbb;
+			rdo::runtime::parser_for_Seize bbb;
 			bbb.Id_res   = pResource->getID();
 			bbb.Id_param = rtp.m_params[rtp_param_name].id(); 
 			m_parserForRuntime.push_back(bbb);
@@ -325,7 +325,7 @@ void RDOPROCRelease::createRuntime()
 
 	if (!m_parserForRuntime.empty())
 	{
-		m_pRuntime = RF(rdoRuntime::RDOPROCRelease)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), m_parserForRuntime);
+		m_pRuntime = RF(rdo::runtime::RDOPROCRelease)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), m_parserForRuntime);
 		ASSERT(m_pRuntime);
 	}
 	else
@@ -343,30 +343,30 @@ void RDOPROCRelease::addResource(CREF(tstring) name)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCAdvance
 // --------------------------------------------------------------------------------
-RDOPROCAdvance::RDOPROCAdvance(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pTimeCalc)
+RDOPROCAdvance::RDOPROCAdvance(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdo::runtime::LPRDOCalc) pTimeCalc)
 	: RDOPROCOperator(pProcess, name)
 {
-	m_pRuntime = RF(rdoRuntime::RDOPROCAdvance)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), pTimeCalc);
+	m_pRuntime = RF(rdo::runtime::RDOPROCAdvance)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), pTimeCalc);
 	ASSERT(m_pRuntime);
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCTerminate
 // --------------------------------------------------------------------------------
-RDOPROCTerminate::RDOPROCTerminate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pCalc)
+RDOPROCTerminate::RDOPROCTerminate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdo::runtime::LPRDOCalc) pCalc)
 	: RDOPROCOperator(pProcess, name)
 {
-	m_pRuntime = RF(rdoRuntime::RDOPROCTerminate)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), pCalc);
+	m_pRuntime = RF(rdo::runtime::RDOPROCTerminate)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), pCalc);
 	ASSERT(m_pRuntime);
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCAssign
 // --------------------------------------------------------------------------------
-RDOPROCAssign::RDOPROCAssign(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pCalc)
+RDOPROCAssign::RDOPROCAssign(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdo::runtime::LPRDOCalc) pCalc)
 	: RDOPROCOperator(pProcess, name)
 {
-	m_pRuntime = RF(rdoRuntime::RDOPROCAssign)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), pCalc);
+	m_pRuntime = RF(rdo::runtime::RDOPROCAssign)::create(RDOParser::s_parser()->getLastPROCProcess()->getRunTime(), pCalc);
 	ASSERT(m_pRuntime);
 }
 

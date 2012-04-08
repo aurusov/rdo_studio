@@ -64,7 +64,7 @@ RDORuntime::~RDORuntime()
 
 void RDORuntime::init()
 {
-	memory_insert(sizeof(rdoRuntime::RDORuntime));
+	memory_insert(sizeof(RDORuntime));
 }
 
 void RDORuntime::deinit()

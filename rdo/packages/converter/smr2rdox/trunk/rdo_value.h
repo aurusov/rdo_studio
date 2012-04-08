@@ -27,10 +27,10 @@ OBJECT(RDOValue) IS INSTANCE_OF(RDOParserSrcInfo)
 {
 DECLARE_FACTORY(RDOValue);
 public:
-	CREF(LPRDOType)                   type() const;
-	rdoRuntime::RDOType::TypeID     typeID() const;
-	CREF(rdoRuntime::RDOValue)       value() const;
-	CPTR(rdoRuntime::RDOValue) operator-> () const;
+	CREF(LPRDOType)                     type() const;
+	rdo::runtime::RDOType::TypeID     typeID() const;
+	CREF(rdo::runtime::RDOValue)       value() const;
+	CPTR(rdo::runtime::RDOValue) operator-> () const;
 
 	rbool defined () const;
 	rbool constant() const;
@@ -43,7 +43,7 @@ private:
 	explicit RDOValue(CREF(double)  value, CREF(RDOParserSrcInfo) src_info);
 	explicit RDOValue(CREF(tstring) value, CREF(RDOParserSrcInfo) src_info);
 
-	explicit RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info);
+	explicit RDOValue(CREF(rdo::runtime::RDOValue) value, CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info);
 	         RDOValue(CREF(LPRDOValue) pValue);
 	         RDOValue(CREF(LPRDOType) type, CREF(RDOParserSrcInfo) src_info = RDOParserSrcInfo());
 	// Для t_identificator известно только имя, но не тип
@@ -51,8 +51,8 @@ private:
 	// Неопределенный тип
 	         RDOValue();
 
-	rdoRuntime::RDOValue m_value;
-	LPRDOType            m_type;
+	rdo::runtime::RDOValue m_value;
+	LPRDOType              m_type;
 };
 
 CLOSE_RDO_CONVERTER_NAMESPACE

@@ -177,7 +177,7 @@ void RDOKernel::registration( RDOThread* thread )
 			threads.push_back( thread );
 		}
 	}
-	if ( !thread_runtime    && thread->getName() == "RDOThreadRunTime"    ) thread_runtime    = static_cast<rdoRuntime::RDOThreadRunTime*>(thread);
+	if ( !thread_runtime    && thread->getName() == "RDOThreadRunTime"    ) thread_runtime    = static_cast<rdo::runtime::RDOThreadRunTime*>(thread);
 	if ( !thread_simulator  && thread->getName() == "RDOThreadSimulator"  ) thread_simulator  = static_cast<rdoSimulator::RDOThreadSimulator*>(thread);
 	if ( !thread_codecomp   && thread->getName() == "RDOThreadCodeComp"   ) thread_codecomp   = static_cast<rdoSimulator::RDOThreadCodeComp*>(thread);
 	if ( !thread_repository && thread->getName() == "RDOThreadRepository" ) thread_repository = static_cast<rdoRepository::RDOThreadRepository*>(thread);

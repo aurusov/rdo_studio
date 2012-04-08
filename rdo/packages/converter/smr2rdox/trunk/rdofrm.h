@@ -31,13 +31,13 @@ OBJECT(RDOFRMFrame) IS INSTANCE_OF(RDOParserSrcInfo)
 {
 DECLARE_FACTORY(RDOFRMFrame);
 public:
-	CREF(tstring)                   name () const  { return src_info().src_text(); }
-	CREF(rdoRuntime::LPRDOFRMFrame) frame() const  { return m_pFrame;              }
+	CREF(tstring)                     name () const  { return src_info().src_text(); }
+	CREF(rdo::runtime::LPRDOFRMFrame) frame() const  { return m_pFrame;              }
 
 private:
 	RDOFRMFrame(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic = NULL);
 
-	rdoRuntime::LPRDOFRMFrame m_pFrame;
+	rdo::runtime::LPRDOFRMFrame m_pFrame;
 };
 
 CLOSE_RDO_CONVERTER_NAMESPACE

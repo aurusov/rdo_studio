@@ -4,6 +4,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
+#include "simulator/runtime/namespace.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
@@ -23,9 +24,9 @@ class RDOThreadSimulator;
 class RDOThreadCodeComp;
 }
 
-namespace rdoRuntime {
+OPEN_RDO_RUNTIME_NAMESPACE
 class RDOThreadRunTime;
-}
+CLOSE_RDO_RUNTIME_NAMESPACE
 
 namespace rdoRepository {
 class RDOThreadRepository;
@@ -53,7 +54,7 @@ protected:
 //	void method_registration( RDOTreadMethod& msg ); // thread-safety
 
 	RDOThread*                          thread_studio;
-	rdoRuntime::RDOThreadRunTime*       thread_runtime;
+	rdo::runtime::RDOThreadRunTime*     thread_runtime;
 	rdoSimulator::RDOThreadSimulator*   thread_simulator;
 	rdoSimulator::RDOThreadCodeComp*    thread_codecomp;
 	rdoRepository::RDOThreadRepository* thread_repository;
@@ -76,7 +77,7 @@ public:
 #endif
 
 	RDOThread*                          studio() const     { return thread_studio;     }
-	rdoRuntime::RDOThreadRunTime*       runtime() const    { return thread_runtime;    }
+	rdo::runtime::RDOThreadRunTime*     runtime() const    { return thread_runtime;    }
 	rdoSimulator::RDOThreadSimulator*   simulator() const  { return thread_simulator;  }
 	rdoSimulator::RDOThreadCodeComp*    codecomp() const   { return thread_codecomp;   }
 	rdoRepository::RDOThreadRepository* repository() const { return thread_repository; }

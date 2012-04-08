@@ -45,7 +45,7 @@ RDOOPROperation::RDOOPROperation(LPIBaseOperationContainer pDPT, CREF(RDOParserS
 // -------------------- RDOOperations
 // --------------------------------------------------------------------------------
 RDOOperations::RDOOperations(CREF(RDOParserSrcInfo) src_info)
-	: RDOLogicActivity<rdoRuntime::RDOOperations, RDOOPROperation>(src_info)
+	: RDOLogicActivity<rdo::runtime::RDOOperations, RDOOPROperation>(src_info)
 {
 	Converter::s_converter()->insertOperations(this);
 }

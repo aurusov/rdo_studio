@@ -29,12 +29,12 @@ public:
 
 	void insertItem(CREF(LPRDOValue) pValue);
 
-	CREF(LPRDOArrayType)        getArrayType      () const;
-	 REF(LPRDOArrayType)        getArrayType      ();
-	rdoRuntime::RDOValue        getRArray         () const;
-	rdoRuntime::LPRDOArrayValue createRuntimeValue() const;
-	tstring                     getAsString       () const;
-	CREF(Container)             getContainer      () const;
+	CREF(LPRDOArrayType)          getArrayType      () const;
+	 REF(LPRDOArrayType)          getArrayType      ();
+	rdo::runtime::RDOValue        getRArray         () const;
+	rdo::runtime::LPRDOArrayValue createRuntimeValue() const;
+	tstring                       getAsString       () const;
+	CREF(Container)               getContainer      () const;
 
 private:
 	RDOArrayValue(CREF(LPRDOArrayType) pArrayType);

@@ -130,7 +130,7 @@ void RDODPTActivity::addParam(CREF(LPRDOValue) pParam)
 			}
 		}
 	}
-	rdoRuntime::RDOValue val;
+	rdo::runtime::RDOValue val;
 	LPRDOParam pPatternParam = m_pPattern->m_paramList.at(m_currParam);
 	if (pParam->value().getAsString() == _T("*"))
 	{
@@ -147,9 +147,9 @@ void RDODPTActivity::addParam(CREF(LPRDOValue) pParam)
 		val = pPatternParam->getType()->value_cast(pParam)->value();
 	}
 
-	rdoRuntime::LPRDOCalc pSetParamCalc = rdo::Factory<rdoRuntime::RDOSetPatternParamCalc>::create(
+	rdo::runtime::LPRDOCalc pSetParamCalc = rdo::Factory<rdo::runtime::RDOSetPatternParamCalc>::create(
 		m_currParam,
-		rdo::Factory<rdoRuntime::RDOCalcConst>::create(val)
+		rdo::Factory<rdo::runtime::RDOCalcConst>::create(val)
 	);
 	ASSERT(pSetParamCalc);
 	pSetParamCalc->setSrcInfo(RDOParserSrcInfo(pParam->getPosAsYY(), rdo::format(_T("Параметр образца %s.%s = %s"), m_pPattern->name().c_str(), pPatternParam->name().c_str(), pParam->value().getAsString().c_str())));
@@ -216,8 +216,8 @@ RDODPTActivityHotKey::RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, CREF(
 
 IKeyboard::AddHotKeyResult RDODPTActivityHotKey::addHotKey(CREF(tstring) hotKey)
 {
-	rdoRuntime::RDOHotKey::KeyCode scanCode = Converter::s_converter()->runtime()->hotkey().toolkit().codeFromString(hotKey);
-	if (scanCode == rdoRuntime::RDOHotKey::UNDEFINED_KEY)
+	rdo::runtime::RDOHotKey::KeyCode scanCode = Converter::s_converter()->runtime()->hotkey().toolkit().codeFromString(hotKey);
+	if (scanCode == rdo::runtime::RDOHotKey::UNDEFINED_KEY)
 	{
 		return IKeyboard::addhk_notfound;
 	}
@@ -252,10 +252,10 @@ void RDODPTActivityHotKey::addHotKey(CREF(tstring) hotKey, CREF(YYLTYPE) hotkey_
 
 	switch (addHotKey(hotKey))
 	{
-	case rdoRuntime::RDOKeyboard::addhk_ok:
+	case rdo::runtime::RDOKeyboard::addhk_ok:
 		break;
 
-	case rdoRuntime::RDOKeyboard::addhk_already:
+	case rdo::runtime::RDOKeyboard::addhk_already:
 		if (dynamic_cast<PTR(RDOOPROperation)>(this))
 		{
 			Converter::s_converter()->error().error(hotkey_pos, rdo::format(_T("Для операции '%s' клавиша уже назначена"), src_text().c_str()));
@@ -266,11 +266,11 @@ void RDODPTActivityHotKey::addHotKey(CREF(tstring) hotKey, CREF(YYLTYPE) hotkey_
 		}
 		break;
 
-	case rdoRuntime::RDOKeyboard::addhk_notfound:
+	case rdo::runtime::RDOKeyboard::addhk_notfound:
 		Converter::s_converter()->error().error(hotkey_pos, rdo::format(_T("Неизвестная клавиша: %s"), hotKey.c_str()));
 		break;
 
-	case rdoRuntime::RDOKeyboard::addhk_dont:
+	case rdo::runtime::RDOKeyboard::addhk_dont:
 		Converter::s_converter()->error().push_only(src_info(), rdo::format(_T("Операция '%s' не является клавиатурной"), src_text().c_str()));
 		Converter::s_converter()->error().push_only(pattern()->src_info(), _T("См. образец"));
 		Converter::s_converter()->error().push_done();
@@ -294,10 +294,10 @@ RDODPTFreeActivity::RDODPTFreeActivity(LPIBaseOperationContainer pDPT, CREF(RDOP
 // -------------------- RDODPTFree
 // --------------------------------------------------------------------------------
 RDODPTFree::RDODPTFree(CREF(RDOParserSrcInfo) src_info)
-	: RDOLogicActivity<rdoRuntime::RDODPTFree, RDODPTFreeActivity>(src_info)
+	: RDOLogicActivity<rdo::runtime::RDODPTFree, RDODPTFreeActivity>(src_info)
 {
 	Converter::s_converter()->checkDPTName(this->src_info());
-	m_pRuntimeLogic = RF(rdoRuntime::RDODPTFree)::create(Converter::s_converter()->runtime());
+	m_pRuntimeLogic = RF(rdo::runtime::RDODPTFree)::create(Converter::s_converter()->runtime());
 	ASSERT(m_pRuntimeLogic);
 	m_pRuntimeLogic->init(Converter::s_converter()->runtime());
 	Converter::s_converter()->insertDPTFree(this);
@@ -321,10 +321,10 @@ RDODPTPriorActivity::RDODPTPriorActivity(LPIBaseOperationContainer pDPT, CREF(RD
 // -------------------- RDODPTSome
 // --------------------------------------------------------------------------------
 RDODPTSome::RDODPTSome(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
-	: RDOLogicActivity<rdoRuntime::RDODPTSome, RDODPTSomeActivity>(src_info)
+	: RDOLogicActivity<rdo::runtime::RDODPTSome, RDODPTSomeActivity>(src_info)
 {
 	Converter::s_converter()->checkDPTName(this->src_info());
-	m_pRuntimeLogic = RF(rdoRuntime::RDODPTSome)::create(Converter::s_converter()->runtime(), pParent);
+	m_pRuntimeLogic = RF(rdo::runtime::RDODPTSome)::create(Converter::s_converter()->runtime(), pParent);
 	ASSERT(m_pRuntimeLogic);
 	m_pRuntimeLogic->init(Converter::s_converter()->runtime());
 	Converter::s_converter()->insertDPTSome(this);
@@ -342,10 +342,10 @@ void RDODPTSome::end()
 // -------------------- RDODPTPrior
 // --------------------------------------------------------------------------------
 RDODPTPrior::RDODPTPrior(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
-	: RDOLogicActivity<rdoRuntime::RDODPTPrior, RDODPTPriorActivity>(src_info)
+	: RDOLogicActivity<rdo::runtime::RDODPTPrior, RDODPTPriorActivity>(src_info)
 {
 	Converter::s_converter()->checkDPTName(this->src_info());
-	m_pRuntimeLogic = RF(rdoRuntime::RDODPTPrior)::create(Converter::s_converter()->runtime(), pParent);
+	m_pRuntimeLogic = RF(rdo::runtime::RDODPTPrior)::create(Converter::s_converter()->runtime(), pParent);
 	ASSERT(m_pRuntimeLogic);
 	m_pRuntimeLogic->init(Converter::s_converter()->runtime());
 	Converter::s_converter()->insertDPTPrior(this);
@@ -374,7 +374,7 @@ RDODPTSearchActivity::RDODPTSearchActivity(LPIBaseOperationContainer pDPT, CREF(
 	}
 	for (RDOPATPattern::RelResList::const_iterator it = pattern()->rel_res_begin(); it != pattern()->rel_res_end(); ++it)
 	{
-		if (((*it)->m_statusBegin == rdoRuntime::RDOResource::CS_Create) || ((*it)->m_statusBegin == rdoRuntime::RDOResource::CS_Erase))
+		if (((*it)->m_statusBegin == rdo::runtime::RDOResource::CS_Create) || ((*it)->m_statusBegin == rdo::runtime::RDOResource::CS_Erase))
 		{
 			Converter::s_converter()->error().push_only(this->src_info(), rdo::format(_T("В продукционном правиле '%s' нельзя создавать или удалять ресурсы, т.к. оно используется в точке типа search"), src_text().c_str()));
 			Converter::s_converter()->error().push_only(pattern()->src_info(), _T("См. образец"));
@@ -394,8 +394,8 @@ void RDODPTSearchActivity::setValue(IDPTSearchActivity::ValueTime value, CREF(LP
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSearch
 // --------------------------------------------------------------------------------
-RDODPTSearch::RDODPTSearch(CREF(RDOParserSrcInfo) src_info, rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag trace, LPILogic pParent)
-	: RDOLogicActivity<rdoRuntime::RDODPTSearchRuntime, RDODPTSearchActivity>(src_info)
+RDODPTSearch::RDODPTSearch(CREF(RDOParserSrcInfo) src_info, rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag trace, LPILogic pParent)
+	: RDOLogicActivity<rdo::runtime::RDODPTSearchRuntime, RDODPTSearchActivity>(src_info)
 	, m_trace  (trace  )
 	, m_closed (false  )
 	, m_pParent(pParent)
@@ -406,10 +406,10 @@ RDODPTSearch::RDODPTSearch(CREF(RDOParserSrcInfo) src_info, rdoRuntime::RDODPTSe
 
 void RDODPTSearch::end()
 {
-	rdoRuntime::LPRDOCalc pCalcCondition = m_pConditon     ? m_pConditon->getCalc()     : rdo::Factory<rdoRuntime::RDOCalcConst>::create(1).object_parent_cast<rdoRuntime::RDOCalc>();
-	rdoRuntime::LPRDOCalc pCalcTerminate = m_pTermConditon ? m_pTermConditon->getCalc() : rdo::Factory<rdoRuntime::RDOCalcConst>::create(1).object_parent_cast<rdoRuntime::RDOCalc>();
+	rdo::runtime::LPRDOCalc pCalcCondition = m_pConditon     ? m_pConditon->getCalc()     : rdo::Factory<rdo::runtime::RDOCalcConst>::create(1).object_parent_cast<rdo::runtime::RDOCalc>();
+	rdo::runtime::LPRDOCalc pCalcTerminate = m_pTermConditon ? m_pTermConditon->getCalc() : rdo::Factory<rdo::runtime::RDOCalcConst>::create(1).object_parent_cast<rdo::runtime::RDOCalc>();
 
-	m_pRuntimeLogic = RF(rdoRuntime::RDODPTSearchRuntime)::create(Converter::s_converter()->runtime(),
+	m_pRuntimeLogic = RF(rdo::runtime::RDODPTSearchRuntime)::create(Converter::s_converter()->runtime(),
 		m_pParent,
 		pCalcCondition,
 		pCalcTerminate,
@@ -441,7 +441,7 @@ RDOPROCProcess::RDOPROCProcess(CREF(RDOParserSrcInfo) info)
 	, m_closed        (false)
 {
 	Converter::s_converter()->insertPROCProcess(this);
-	m_pRuntime = RF(rdoRuntime::RDOPROCProcess)::create(info.src_text(), Converter::s_converter()->runtime());
+	m_pRuntime = RF(rdo::runtime::RDOPROCProcess)::create(info.src_text(), Converter::s_converter()->runtime());
 	ASSERT(m_pRuntime);
 	m_pRuntime.query_cast<ILogic>()->init(Converter::s_converter()->runtime());
 }
@@ -496,7 +496,7 @@ RDOPROCOperator::~RDOPROCOperator()
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCGenerate
 // --------------------------------------------------------------------------------
-RDOPROCGenerate::RDOPROCGenerate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pTimeCalc)
+RDOPROCGenerate::RDOPROCGenerate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdo::runtime::LPRDOCalc) pTimeCalc)
 	: RDOPROCOperator(pProcess, name)
 {}
 
@@ -593,30 +593,30 @@ void RDOPROCRelease::addResource(CREF(tstring) name)
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCAdvance
 // --------------------------------------------------------------------------------
-RDOPROCAdvance::RDOPROCAdvance(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pTimeCalc)
+RDOPROCAdvance::RDOPROCAdvance(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdo::runtime::LPRDOCalc) pTimeCalc)
 	: RDOPROCOperator(pProcess, name)
 {
-	m_pRuntime = RF(rdoRuntime::RDOPROCAdvance)::create(Converter::s_converter()->getLastPROCProcess()->getRunTime(), pTimeCalc);
+	m_pRuntime = RF(rdo::runtime::RDOPROCAdvance)::create(Converter::s_converter()->getLastPROCProcess()->getRunTime(), pTimeCalc);
 	ASSERT(m_pRuntime);
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCTerminate
 // --------------------------------------------------------------------------------
-RDOPROCTerminate::RDOPROCTerminate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pCalc)
+RDOPROCTerminate::RDOPROCTerminate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdo::runtime::LPRDOCalc) pCalc)
 	: RDOPROCOperator(pProcess, name)
 {
-	m_pRuntime = RF(rdoRuntime::RDOPROCTerminate)::create(Converter::s_converter()->getLastPROCProcess()->getRunTime(), pCalc);
+	m_pRuntime = RF(rdo::runtime::RDOPROCTerminate)::create(Converter::s_converter()->getLastPROCProcess()->getRunTime(), pCalc);
 	ASSERT(m_pRuntime);
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCAssign
 // --------------------------------------------------------------------------------
-RDOPROCAssign::RDOPROCAssign(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pValue)
+RDOPROCAssign::RDOPROCAssign(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdo::runtime::LPRDOCalc) pValue)
 	: RDOPROCOperator(pProcess, name)
 {
-	m_pRuntime = RF(rdoRuntime::RDOPROCAssign)::create(Converter::s_converter()->getLastPROCProcess()->getRunTime(), pValue);
+	m_pRuntime = RF(rdo::runtime::RDOPROCAssign)::create(Converter::s_converter()->getLastPROCProcess()->getRunTime(), pValue);
 	ASSERT(m_pRuntime);
 }
 

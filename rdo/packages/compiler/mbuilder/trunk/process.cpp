@@ -36,13 +36,13 @@ rbool BlockForQueue::checkType(RDOResType rtp, CREF(rdoParser::RDOParserSrcInfo)
 	UNUSED(info);
 
 	// "длина_очереди"
-	tstring rtp_param_name = rdoRuntime::RDOPROCQueue::getQueueParamName();
+	tstring rtp_param_name = rdo::runtime::RDOPROCQueue::getQueueParamName();
 	// Тип найден, проверим его на наличие параметра "длина_очереди"
 	if (!rtp.m_params[rtp_param_name].exist())
 		rdoParser::RDOParser::s_parser()->error().error(rtp.src_info(), rdo::format(_T("У типа ресурса '%s' нет параметра integer '%s'"), rtp.name().c_str(), rtp_param_name.c_str()));
 
 	CREF(RDOResType::Param) param = rtp.m_params[rtp_param_name];
-	if (param.typeID() != rdoRuntime::RDOType::t_int)
+	if (param.typeID() != rdo::runtime::RDOType::t_int)
 		rdoParser::RDOParser::s_parser()->error().error(param.src_info(), rdo::format(_T("У типа ресурса '%s' параметр '%s' не является параметром int"), rtp.name().c_str(), rtp_param_name.c_str()));
 
 	rdoParser::LPRDORTPResType pResType = rdoParser::RDOParser::s_parser()->findRTPResType(rtp.name());
@@ -55,10 +55,10 @@ rbool BlockForQueue::checkType(RDOResType rtp, CREF(rdoParser::RDOParserSrcInfo)
 RDOResType BlockForQueue::createType(CREF(tstring) rtp_name, CREF(rdoParser::RDOParserSrcInfo) info)
 {
 	// "длина_очереди"
-	tstring rtp_param_name = rdoRuntime::RDOPROCQueue::getQueueParamName();
+	tstring rtp_param_name = rdo::runtime::RDOPROCQueue::getQueueParamName();
 	// значение длины очереди по умолчанию
 	rdoParser::LPRDOValue pDefaultValue = rdo::Factory<rdoParser::RDOValue>::create(
-		rdo::explicit_value<ruint>(rdoRuntime::RDOPROCQueue::getDefaultValue()),
+		rdo::explicit_value<ruint>(rdo::runtime::RDOPROCQueue::getDefaultValue()),
 		info
 	);
 	ASSERT(pDefaultValue);
@@ -89,11 +89,11 @@ RDOResType BlockForQueue::createType(CREF(tstring) rtp_name, CREF(rdoParser::RDO
 rbool BlockForSeize::checkType(RDOResType rtp, CREF(rdoParser::RDOParserSrcInfo) info)
 {
 	// "Состояние"
-	tstring rtp_param_name = rdoRuntime::RDOPROCBlockForSeize::getStateParamName();
+	tstring rtp_param_name = rdo::runtime::RDOPROCBlockForSeize::getStateParamName();
 	// "Свободен"
-	tstring rtp_state_free = rdoRuntime::RDOPROCBlockForSeize::getStateEnumFree();
+	tstring rtp_state_free = rdo::runtime::RDOPROCBlockForSeize::getStateEnumFree();
 	// "Занят"
-	tstring rtp_state_buzy = rdoRuntime::RDOPROCBlockForSeize::getStateEnumBuzy();
+	tstring rtp_state_buzy = rdo::runtime::RDOPROCBlockForSeize::getStateEnumBuzy();
 	// Тип найден, проверим его на наличие перечислимого параметра
 	if (!rtp.m_params[rtp_param_name].exist())
 		rdoParser::RDOParser::s_parser()->error().error(info, rdo::format(_T("У типа ресурса '%s' нет параметра перечислимого типа '%s'"), rtp.name().c_str(), rtp_param_name.c_str()));
@@ -101,7 +101,7 @@ rbool BlockForSeize::checkType(RDOResType rtp, CREF(rdoParser::RDOParserSrcInfo)
 	CREF(RDOResType::Param) param = rtp.m_params[rtp_param_name];
 	// Параметр Состояние есть, надо проверить, чтобы в нем были значения Свободен и Занят
 	// Для начала проверим тип параметра
-	if (param.typeID() != rdoRuntime::RDOType::t_enum)
+	if (param.typeID() != rdo::runtime::RDOType::t_enum)
 		rdoParser::RDOParser::s_parser()->error().error(param.src_info(), rdo::format(_T("У типа ресурса '%s' параметр '%s' не является параметром перечислимого типа"), rtp.name().c_str(), rtp_param_name.c_str()));
 
 	// Теперь проверим сами значения
@@ -138,9 +138,9 @@ void BlockForSeize::reobjectRes(RDOResType rtp, CREF(tstring) res_name)
 RDOResType BlockForSeize::createType(CREF(tstring) rtp_name, CREF(rdoParser::RDOParserSrcInfo) info)
 {
 	// "Состояние"
-	tstring rtp_param_name = rdoRuntime::RDOPROCBlockForSeize::getStateParamName();
+	tstring rtp_param_name = rdo::runtime::RDOPROCBlockForSeize::getStateParamName();
 	// "Свободен"
-	tstring rtp_state_free = rdoRuntime::RDOPROCBlockForSeize::getStateEnumFree();
+	tstring rtp_state_free = rdo::runtime::RDOPROCBlockForSeize::getStateEnumFree();
 	rdoParser::LPRDOValue pDefaultValue = rdo::Factory<rdoParser::RDOValue>::create(
 		rdo::explicit_value<tstring>(rtp_state_free),
 		info
@@ -148,7 +148,7 @@ RDOResType BlockForSeize::createType(CREF(tstring) rtp_name, CREF(rdoParser::RDO
 	ASSERT(pDefaultValue);
 	pDefaultValue->setSrcText(rtp_state_free);
 	// "Занят"
-	tstring rtp_state_buzy = rdoRuntime::RDOPROCBlockForSeize::getStateEnumBuzy();
+	tstring rtp_state_buzy = rdo::runtime::RDOPROCBlockForSeize::getStateEnumBuzy();
 
 	// Получили список всех типов ресурсов
 	RDOResTypeList rtpList(rdoParser::RDOParser::s_parser());
@@ -157,7 +157,7 @@ RDOResType BlockForSeize::createType(CREF(tstring) rtp_name, CREF(rdoParser::RDO
 	// Создадим параметр перечислимого типа - "Состояние"
 	RDOResType::Param param(
 		rtp_param_name,
-		rdoRuntime::RDOEnumType::Enums(rtp_state_free)(rtp_state_buzy),
+		rdo::runtime::RDOEnumType::Enums(rtp_state_free)(rtp_state_buzy),
 		pDefaultValue
 	);
 	rtp.m_params.append(param);

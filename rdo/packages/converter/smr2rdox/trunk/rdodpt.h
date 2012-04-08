@@ -123,7 +123,7 @@ DECLARE_POINTER(RDODPTFreeActivity);
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTFree
 // --------------------------------------------------------------------------------
-OBJECT(RDODPTFree) IS public RDOLogicActivity<rdoRuntime::RDODPTFree, RDODPTFreeActivity>
+OBJECT(RDODPTFree) IS public RDOLogicActivity<rdo::runtime::RDODPTFree, RDODPTFreeActivity>
 {
 DECLARE_FACTORY(RDODPTFree);
 private:
@@ -153,7 +153,7 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSome
 // --------------------------------------------------------------------------------
-OBJECT(RDODPTSome) IS public RDOLogicActivity<rdoRuntime::RDODPTSome, RDODPTSomeActivity>
+OBJECT(RDODPTSome) IS public RDOLogicActivity<rdo::runtime::RDODPTSome, RDODPTSomeActivity>
 {
 DECLARE_FACTORY(RDODPTSome);
 public:
@@ -172,7 +172,7 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTPrior
 // --------------------------------------------------------------------------------
-OBJECT(RDODPTPrior) IS public RDOLogicActivity<rdoRuntime::RDODPTPrior, RDODPTPriorActivity>
+OBJECT(RDODPTPrior) IS public RDOLogicActivity<rdo::runtime::RDODPTPrior, RDODPTPriorActivity>
 {
 DECLARE_FACTORY(RDODPTPrior);
 public:
@@ -213,7 +213,7 @@ DECLARE_POINTER(RDODPTSearchActivity);
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSearch
 // --------------------------------------------------------------------------------
-OBJECT(RDODPTSearch) IS public RDOLogicActivity<rdoRuntime::RDODPTSearchRuntime, RDODPTSearchActivity>
+OBJECT(RDODPTSearch) IS public RDOLogicActivity<rdo::runtime::RDODPTSearchRuntime, RDODPTSearchActivity>
 {
 DECLARE_FACTORY(RDODPTSearch);
 public:
@@ -226,15 +226,15 @@ public:
 	rbool closed() const { return m_closed; }
 
 private:
-	RDODPTSearch(CREF(RDOParserSrcInfo) src_info, rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag trace = rdoRuntime::RDODPTSearchTrace::DPT_no_trace, LPILogic pParent = NULL);
+	RDODPTSearch(CREF(RDOParserSrcInfo) src_info, rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag trace = rdo::runtime::RDODPTSearchTrace::DPT_no_trace, LPILogic pParent = NULL);
 
-	LPRDOFUNLogic                                 m_pConditon;
-	LPRDOFUNLogic                                 m_pTermConditon;
-	LPRDOFUNArithm                                m_pEvalBy;
-	LPILogic                                      m_pParent;
-	rbool                                         m_compTops;
-	rbool                                         m_closed;
-	rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag  m_trace;
+	LPRDOFUNLogic                                   m_pConditon;
+	LPRDOFUNLogic                                   m_pTermConditon;
+	LPRDOFUNArithm                                  m_pEvalBy;
+	LPILogic                                        m_pParent;
+	rbool                                           m_compTops;
+	rbool                                           m_closed;
+	rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag  m_trace;
 };
 
 // --------------------------------------------------------------------------------
@@ -301,7 +301,7 @@ protected:
 	LPIPROCBlock m_pRuntime;
 
 private:
-	RDOPROCGenerate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pTimeCalc);
+	RDOPROCGenerate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdo::runtime::LPRDOCalc) pTimeCalc);
 };
 
 // --------------------------------------------------------------------------------
@@ -313,7 +313,7 @@ protected:
 	RDOPROCBlockForQueue(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name);
 
 	//! m_parserForRuntime служит для передачи информации о параметре "Состояние" ресурса
-	rdoRuntime::parser_for_Queue m_parserForRuntime;
+	rdo::runtime::parser_for_Queue m_parserForRuntime;
 };
 
 // --------------------------------------------------------------------------------
@@ -363,7 +363,7 @@ protected:
 	RDOPROCBlockForSeize(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name);
 
 	//! m_parserForRuntime служит для передачи информации о параметре "Состояние" ресурса
-	rdoRuntime::parser_for_Seize m_parserForRuntime;
+	rdo::runtime::parser_for_Seize m_parserForRuntime;
 };
 
 // --------------------------------------------------------------------------------
@@ -378,7 +378,7 @@ public:
 
 protected:
 	typedef std::list  <tstring>                      ResourceList;
-	typedef std::vector<rdoRuntime::parser_for_Seize> ParserForRuntime;
+	typedef std::vector<rdo::runtime::parser_for_Seize> ParserForRuntime;
 
 	ResourceList     m_resourceList;
 	ParserForRuntime m_parserForRuntime;
@@ -401,7 +401,7 @@ public:
 
 protected:
 	typedef std::list  <tstring>                      ResourceList;
-	typedef std::vector<rdoRuntime::parser_for_Seize> ParserForRuntime;
+	typedef std::vector<rdo::runtime::parser_for_Seize> ParserForRuntime;
 
 	ResourceList     m_resourceList;
 	ParserForRuntime m_parserForRuntime;
@@ -422,7 +422,7 @@ protected:
 	LPIPROCBlock m_pRuntime;
 
 private:
-	RDOPROCAdvance(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pTimeCalc);
+	RDOPROCAdvance(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdo::runtime::LPRDOCalc) pTimeCalc);
 };
 
 // --------------------------------------------------------------------------------
@@ -436,7 +436,7 @@ protected:
 	LPIPROCBlock m_pRuntime;
 
 private:
-	RDOPROCTerminate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pCalc);
+	RDOPROCTerminate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdo::runtime::LPRDOCalc) pCalc);
 };
 
 // --------------------------------------------------------------------------------
@@ -449,7 +449,7 @@ protected:
 	LPIPROCBlock m_pRuntime;
 
 private:
-	RDOPROCAssign(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pValue);
+	RDOPROCAssign(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdo::runtime::LPRDOCalc) pValue);
 };
 
 CLOSE_RDO_CONVERTER_NAMESPACE

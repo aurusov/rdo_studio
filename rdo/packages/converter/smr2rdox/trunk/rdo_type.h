@@ -44,18 +44,18 @@ public:
 		CREF(RDOParserSrcInfo) src_info
 	) const = 0;
 	//! calc_cast вызывается строго после type_cast, поэтому никаких RDOParserSrcInfo не передается
-	virtual rdoRuntime::LPRDOCalc calc_cast(
-		CREF(rdoRuntime::LPRDOCalc) pCalc,
-		CREF(LPRDOType)             pType
+	virtual rdo::runtime::LPRDOCalc calc_cast(
+		CREF(rdo::runtime::LPRDOCalc) pCalc,
+		CREF(LPRDOType)               pType
 	) const = 0;
 	virtual LPRDOValue get_default() const = 0;
 };
 #define DECLARE_ITypeConverter                                                                                                                                                           \
-	virtual tstring                name       () const;                                                                                                                                  \
-	virtual LPRDOType              type_cast  (CREF(LPRDOType)  pFrom, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const; \
-	virtual LPRDOValue             value_cast (CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo) to_src_info,   CREF(RDOParserSrcInfo) src_info)                                     const; \
-	virtual rdoRuntime::LPRDOCalc  calc_cast  (CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const;                                                                          \
-	virtual LPRDOValue             get_default() const;
+	virtual tstring                 name       () const;                                                                                                                                  \
+	virtual LPRDOType               type_cast  (CREF(LPRDOType)  pFrom, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const; \
+	virtual LPRDOValue              value_cast (CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo) to_src_info,   CREF(RDOParserSrcInfo) src_info)                                     const; \
+	virtual rdo::runtime::LPRDOCalc calc_cast  (CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const;                                                                          \
+	virtual LPRDOValue              get_default() const;
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOType
@@ -66,19 +66,19 @@ OBJECT(RDOType)
 {
 DECLARE_FACTORY(RDOType)
 public:
-	CREF(rdoRuntime::LPRDOType)        type() const { return m_pType;           }
-	CREF(rdoRuntime::LPRDOType) operator-> () const { return m_pType;           }
+	CREF(rdo::runtime::LPRDOType)        type() const { return m_pType;           }
+	CREF(rdo::runtime::LPRDOType) operator-> () const { return m_pType;           }
 
-	rdoRuntime::RDOType::TypeID      typeID() const { return m_pType->typeID(); }
+	rdo::runtime::RDOType::TypeID      typeID() const { return m_pType->typeID(); }
 
-	virtual rdoRuntime::LPRDOCalc calc_cast(CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
+	virtual rdo::runtime::LPRDOCalc calc_cast(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
 	{
 		UNUSED(pType);
 		return pCalc;
 	}
 
 protected:
-	RDOType(CREF(rdoRuntime::LPRDOType) pType)
+	RDOType(CREF(rdo::runtime::LPRDOType) pType)
 		: m_pType(pType)
 	{
 		ASSERT(m_pType);
@@ -86,7 +86,7 @@ protected:
 	virtual ~RDOType()
 	{}
 
-	rdoRuntime::LPRDOType m_pType;
+	rdo::runtime::LPRDOType m_pType;
 };
 
 // --------------------------------------------------------------------------------
@@ -99,7 +99,7 @@ private:                                 \
 typedef RDOType parent_type;             \
 public:                                  \
 	RDOType__##Type():                   \
-		RDOType(rdoRuntime::g_##Type)    \
+		RDOType(rdo::runtime::g_##Type)  \
 	{}                                   \
 	~RDOType__##Type()                   \
 	{}                                   \

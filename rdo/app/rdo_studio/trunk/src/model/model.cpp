@@ -73,8 +73,8 @@ RDOStudioModel::RDOStudioModel()
 	, m_speed            (1                             )
 	, m_showRate         (60                            )
 	, m_tempPause        (false                         )
-	, m_runtimeMode      (rdoRuntime::RTM_MaxSpeed      )
-	, m_runtimeModePrev  (rdoRuntime::RTM_MaxSpeed      )
+	, m_runtimeMode      (rdo::runtime::RTM_MaxSpeed    )
+	, m_runtimeModePrev  (rdo::runtime::RTM_MaxSpeed    )
 	, m_exitCode         (rdoSimulator::EC_ModelNotFound)
 	, m_prevModify       (false                         )
 	, m_buildState       (BS_UNDEFINED                  )
@@ -1165,7 +1165,7 @@ void RDOStudioModel::afterModelStart()
 			--initFrameNumber;
 		}
 		m_frameManager.setLastShowedFrame(initFrameNumber);
-		if (getRuntimeMode() != rdoRuntime::RTM_MaxSpeed && initFrameNumber < m_frameManager.count())
+		if (getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && initFrameNumber < m_frameManager.count())
 		{
 			PTR(RDOStudioFrameDoc) pDoc = m_frameManager.connectFrameDoc(initFrameNumber);
 			if (pDoc)
@@ -1198,13 +1198,13 @@ void RDOStudioModel::updateStyleOfAllModel() const
 	m_frameManager.updateStyles();
 }
 
-void RDOStudioModel::setRuntimeMode(const rdoRuntime::RunTimeMode value)
+void RDOStudioModel::setRuntimeMode(const rdo::runtime::RunTimeMode value)
 {
 	if (isRunning())
 	{
 		if (m_tempPause)
 		{
-			rdoRuntime::RunTimeMode _value = value;
+			rdo::runtime::RunTimeMode _value = value;
 			sendMessage(kernel->runtime(), RT_RUNTIME_SET_MODE, &_value);
 			return;
 		}
@@ -1217,7 +1217,7 @@ void RDOStudioModel::setRuntimeMode(const rdoRuntime::RunTimeMode value)
 		}
 		switch (m_runtimeMode)
 		{
-			case rdoRuntime::RTM_MaxSpeed: closeAllFrame(); break;
+			case rdo::runtime::RTM_MaxSpeed: closeAllFrame(); break;
 			default:
 			{
 				PTR(RDOStudioFrameDoc) pDoc = m_frameManager.getFirstExistDoc();
@@ -1265,18 +1265,18 @@ void RDOStudioModel::setShowRate(double value)
 void RDOStudioModel::update()
 {
 	sendMessage(kernel->runtime(), RT_RUNTIME_GET_TIMENOW, &m_timeNow);
-	rdoRuntime::RunTimeMode rm;
+	rdo::runtime::RunTimeMode rm;
 	sendMessage(kernel->runtime(), RT_RUNTIME_GET_MODE, &rm);
 	if (rm != m_runtimeMode)
 	{
-		if (rm == rdoRuntime::RTM_BreakPoint)
+		if (rm == rdo::runtime::RTM_BreakPoint)
 		{
 			PTR(RDOStudioOutput) output = &studioApp.m_pMainFrame->output;
 			output->appendStringToDebug(rdo::format(_T("Пауза в %f из-за точки '%s'\n"), getTimeNow(), getLastBreakPointName().c_str()));
 		}
 		setRuntimeMode(rm);
 	}
-	if (getRuntimeMode() == rdoRuntime::RTM_MaxSpeed)
+	if (getRuntimeMode() == rdo::runtime::RTM_MaxSpeed)
 	{
 		return;
 	}
@@ -1297,11 +1297,11 @@ void RDOStudioModel::update()
 				try
 				{
 					rdoAnimation::RDOFrame frame;
-					rdoRuntime::RDOThreadRunTime::GetFrame getFrame(&frame, i);
+					rdo::runtime::RDOThreadRunTime::GetFrame getFrame(&frame, i);
 					sendMessage(kernel->runtime(), RT_RUNTIME_GET_FRAME, &getFrame);
 					m_frameManager.showFrame(&frame, i);
 				}
-				catch (REF(rdoRuntime::RDORuntimeException))
+				catch (REF(rdo::runtime::RDORuntimeException))
 				{
 					sendMessage(kernel->runtime(), RT_SIMULATOR_MODEL_STOP_RUNTIME_DELAY);
 					return;
@@ -1321,7 +1321,7 @@ void RDOStudioModel::setGUIPause()
 	if (isRunning())
 	{
 		sendMessage(kernel->runtime(), RT_RUNTIME_GET_MODE, &m_runtimeModePrev);
-		setRuntimeMode(rdoRuntime::RTM_Pause);
+		setRuntimeMode(rdo::runtime::RTM_Pause);
 	}
 }
 

@@ -21,7 +21,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- Expression
 // --------------------------------------------------------------------------------
-Expression::Expression(CREF(LPTypeInfo) pType, CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(RDOParserSrcInfo) src_info)
+Expression::Expression(CREF(LPTypeInfo) pType, CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(RDOParserSrcInfo) src_info)
 	: m_pType(pType)
 	, m_pCalc(pCalc)
 {
@@ -29,7 +29,7 @@ Expression::Expression(CREF(LPTypeInfo) pType, CREF(rdoRuntime::LPRDOCalc) pCalc
 	
 	if (m_pCalc)
 	{
-		rdoRuntime::LPRDOCalcConst pConstCalc = m_pCalc.object_dynamic_cast<rdoRuntime::RDOCalcConst>();
+		rdo::runtime::LPRDOCalcConst pConstCalc = m_pCalc.object_dynamic_cast<rdo::runtime::RDOCalcConst>();
 		if (pConstCalc)
 		{
 			m_pValue = rdo::Factory<RDOValue>::create(pConstCalc->getValue(), src_info, m_pType);
@@ -45,7 +45,7 @@ Expression::Expression(CREF(LPRDOValue) pValue)
 	ASSERT(pValue);
 	ASSERT(pValue->constant());
 
-	m_pCalc = rdo::Factory<rdoRuntime::RDOCalcConst>::create(pValue->value());
+	m_pCalc = rdo::Factory<rdo::runtime::RDOCalcConst>::create(pValue->value());
 	ASSERT(m_pCalc);
 
 	setSrcInfo(pValue->src_info());
@@ -65,7 +65,7 @@ CREF(LPTypeInfo) Expression::typeInfo() const
 	return m_pType;
 }
 
-CREF(rdoRuntime::LPRDOCalc) Expression::calc() const
+CREF(rdo::runtime::LPRDOCalc) Expression::calc() const
 {
 	return m_pCalc;
 }
@@ -90,7 +90,7 @@ LPRDOValue Expression::constant() const
 // --------------------------------------------------------------------------------
 // -------------------- ExpressionStatement
 // --------------------------------------------------------------------------------
-ExpressionStatement::ExpressionStatement(CREF(LPTypeInfo) pType, CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(rdoRuntime::RDOSrcInfo) src_info)
+ExpressionStatement::ExpressionStatement(CREF(LPTypeInfo) pType, CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(rdo::runtime::RDOSrcInfo) src_info)
 	:Expression  (pType, pCalc, src_info),
 	 m_returnFlag(true                  )
 {}

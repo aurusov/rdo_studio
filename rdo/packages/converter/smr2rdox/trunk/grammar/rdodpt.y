@@ -251,11 +251,11 @@ dpt_main
 dpt_search_trace
 	: /* empty */
 	{
-		$$ = rdoRuntime::RDODPTSearchTrace::DPT_no_trace;
+		$$ = rdo::runtime::RDODPTSearchTrace::DPT_no_trace;
 	}
 	| RDO_no_trace
 	{
-		$$ = rdoRuntime::RDODPTSearchTrace::DPT_no_trace;
+		$$ = rdo::runtime::RDODPTSearchTrace::DPT_no_trace;
 	}
 	| RDO_trace
 	{
@@ -263,15 +263,15 @@ dpt_search_trace
 	}
 	| RDO_trace_stat
 	{
-		$$ = rdoRuntime::RDODPTSearchTrace::DPT_trace_stat;
+		$$ = rdo::runtime::RDODPTSearchTrace::DPT_trace_stat;
 	}
 	| RDO_trace_tops
 	{
-		$$ = rdoRuntime::RDODPTSearchTrace::DPT_trace_tops;
+		$$ = rdo::runtime::RDODPTSearchTrace::DPT_trace_tops;
 	}
 	| RDO_trace_all
 	{
-		$$ = rdoRuntime::RDODPTSearchTrace::DPT_trace_all;
+		$$ = rdo::runtime::RDODPTSearchTrace::DPT_trace_all;
 	}
 	;
 
@@ -313,18 +313,18 @@ dpt_search_begin
 			{
 				LPILogic pParent = pParentDPTPrior->getLogic();
 				ASSERT(pParent);
-				pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<PTR(rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5), pParent);
+				pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<PTR(rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5), pParent);
 			}
 			else if (pParentDPTSome)
 			{
 				LPILogic pParent = pParentDPTSome->getLogic();
 				ASSERT(pParent);
-				pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<PTR(rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5), pParent);
+				pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<PTR(rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5), pParent);
 			}
 		}
 		else
 		{
-			pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<PTR(rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5));
+			pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<PTR(rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5));
 		}
 		ASSERT(pDPTSearch);
 		$$ = CONVERTER->stack().push(pDPTSearch);
@@ -1376,7 +1376,7 @@ fun_arithm
 		$$ = CONVERTER->stack().push(
 			rdo::Factory<RDOFUNArithm>::create(
 				rdo::Factory<RDOValue>::create(pArithm->type(), info),
-				rdo::Factory<rdoRuntime::RDOCalcUMinus>::create(info.src_pos(), pArithm->createCalc()).object_parent_cast<rdoRuntime::RDOCalc>()
+				rdo::Factory<rdo::runtime::RDOCalcUMinus>::create(info.src_pos(), pArithm->createCalc()).object_parent_cast<rdo::runtime::RDOCalc>()
 			)
 		);
 	}
@@ -1489,7 +1489,7 @@ fun_group
 		LPRDOFUNGroupLogic pGroupFun = CONVERTER->stack().pop<RDOFUNGroupLogic>($1);
 		ASSERT(pGroupFun);
 		pGroupFun->setSrcPos(@1, @3);
-		LPRDOFUNLogic pTrueLogic = rdo::Factory<RDOFUNLogic>::create(rdo::Factory<rdoRuntime::RDOCalcConst>::create(1), false);
+		LPRDOFUNLogic pTrueLogic = rdo::Factory<RDOFUNLogic>::create(rdo::Factory<rdo::runtime::RDOCalcConst>::create(1), false);
 		ASSERT(pTrueLogic);
 		pTrueLogic->setSrcPos (@2);
 		pTrueLogic->setSrcText(_T("NoCheck"));
@@ -1549,7 +1549,7 @@ fun_select_body
 		ASSERT(pSelect);
 		RDOParserSrcInfo logicInfo(@2, _T("NoCheck"));
 		pSelect->setSrcText(pSelect->src_text() + logicInfo.src_text() + _T(")"));
-		rdoRuntime::LPRDOCalcConst pCalc  = rdo::Factory<rdoRuntime::RDOCalcConst>::create(1);
+		rdo::runtime::LPRDOCalcConst pCalc = rdo::Factory<rdo::runtime::RDOCalcConst>::create(1);
 		ASSERT(pCalc);
 		LPRDOFUNLogic pLogic = rdo::Factory<RDOFUNLogic>::create(pCalc, true);
 		ASSERT(pLogic);
