@@ -63,8 +63,8 @@ REF(RDOValue) RDOCalc::calcValue(CREF(LPRDORuntime) pRuntime)
 		{
 			message = rdo::format(_T("%s: %s"), message.c_str(), ex.message().c_str());
 		}
-		rdo::service::simulation::RDOSyntaxError error(
-			rdo::service::simulation::RDOSyntaxError::UNKNOWN,
+		rdoSimulator::RDOSyntaxError error(
+			rdoSimulator::RDOSyntaxError::UNKNOWN,
 			message,
 			m_srcInfo.src_pos().m_last_line,
 			m_srcInfo.src_pos().m_last_pos,
