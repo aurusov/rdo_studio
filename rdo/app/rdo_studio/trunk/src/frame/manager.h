@@ -25,7 +25,7 @@
 // -------------------- RDOStudioFrameManager
 // --------------------------------------------------------------------------------
 OPEN_RDO_ANIMATION_NAMESPACE
-struct RDOFrame;
+struct Frame;
 CLOSE_RDO_ANIMATION_NAMESPACE
 
 class RDOStudioFrameManager
@@ -60,7 +60,7 @@ public:
 	void  setLastShowedFrame      (ruint index);
 	void  setCurrentShowingFrame  (ruint index);
 	void  resetCurrentShowingFrame(ruint index);
-	void  showFrame               (CPTRC(rdo::animation::RDOFrame) pFrame, ruint index);
+	void  showFrame               (CPTRC(rdo::animation::Frame) pFrame, ruint index);
 	void  showNextFrame           ();
 	void  showPrevFrame           ();
 	void  showFrame               (ruint index);

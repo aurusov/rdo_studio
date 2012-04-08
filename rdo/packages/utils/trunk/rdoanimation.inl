@@ -25,160 +25,160 @@ inline FrameItem::Type FrameItem::getType() const
 	return m_type;
 }
 
-inline RDOColor::RDOColor()
+inline Color::Color()
 	: m_transparent(true)
 {}
 
-inline RDOColor::RDOColor(CREF(RDOColor) color)
+inline Color::Color(CREF(Color) color)
 	: m_r          (color.m_r          )
 	, m_g          (color.m_g          )
 	, m_b          (color.m_b          )
 	, m_transparent(color.m_transparent)
 {}
 
-inline RDOColor::RDOColor(rbyte r, rbyte g, rbyte b, rbool transparent)
+inline Color::Color(rbyte r, rbyte g, rbyte b, rbool transparent)
 	: m_r          (r          )
 	, m_g          (g          )
 	, m_b          (b          )
 	, m_transparent(transparent)
 {}
 
-inline RDOColoredElement::RDOColoredElement(CREF(RDOColoredElement) color)
+inline ColoredElement::ColoredElement(CREF(ColoredElement) color)
 	: m_background(color.m_background)
 	, m_foreground(color.m_foreground)
 {}
 
-inline RDOColoredElement::RDOColoredElement(CREF(RDOColor) background, CREF(RDOColor) foreground)
+inline ColoredElement::ColoredElement(CREF(Color) background, CREF(Color) foreground)
 	: m_background(background)
 	, m_foreground(foreground)
 {}
 
-inline RDOPoint::RDOPoint(CREF(RDOPoint) point)
+inline Point::Point(CREF(Point) point)
 	: m_x(point.m_x)
 	, m_y(point.m_y)
 {}
 
-inline RDOPoint::RDOPoint(double x, double y)
+inline Point::Point(double x, double y)
 	: m_x(x)
 	, m_y(y)
 {}
 
-inline RDOSize::RDOSize()
+inline Size::Size()
 	: m_width (0)
 	, m_height(0)
 {}
 
-inline RDOSize::RDOSize(CREF(RDOSize) size)
+inline Size::Size(CREF(Size) size)
 	: m_width (size.m_width )
 	, m_height(size.m_height)
 {}
 
-inline RDOSize::RDOSize(double width, double height)
+inline Size::Size(double width, double height)
 	: m_width (width )
 	, m_height(height)
 {}
 
-inline RDOBoundedElement::RDOBoundedElement(CREF(RDOBoundedElement) rect)
+inline BoundedElement::BoundedElement(CREF(BoundedElement) rect)
 	: m_point(rect.m_point)
 	, m_size (rect.m_size )
 {}
 
-inline RDOBoundedElement::RDOBoundedElement(CREF(RDOPoint) point, CREF(RDOSize) size)
+inline BoundedElement::BoundedElement(CREF(Point) point, CREF(Size) size)
 	: m_point(point)
 	, m_size (size )
 {}
 
-inline RDORadius::RDORadius(CREF(RDORadius) radius)
+inline Radius::Radius(CREF(Radius) radius)
 	: m_radius(radius.m_radius)
 {}
 
-inline RDORadius::RDORadius(double radius)
+inline Radius::Radius(double radius)
 	: m_radius(radius)
 {}
 
-inline RDOTextElement::RDOTextElement(CREF(RDOBoundedElement) rect, CREF(RDOColoredElement) color, CREF(tstring) text, TextAlign align)
-	: FrameItem        (FIT_TEXT)
-	, RDOBoundedElement(rect    )
-	, RDOColoredElement(color   )
-	, m_text           (text    )
-	, m_align          (align   )
+inline TextElement::TextElement(CREF(BoundedElement) rect, CREF(ColoredElement) color, CREF(tstring) text, TextAlign align)
+	: FrameItem     (FIT_TEXT)
+	, BoundedElement(rect    )
+	, ColoredElement(color   )
+	, m_text        (text    )
+	, m_align       (align   )
 {}
 
-inline RDOLineElement::RDOLineElement(CREF(RDOPoint) point1, CREF(RDOPoint) point2, CREF(RDOColor) color)
+inline LineElement::LineElement(CREF(Point) point1, CREF(Point) point2, CREF(Color) color)
 	: FrameItem(FIT_LINE)
 	, m_point1 (point1  )
 	, m_point2 (point2  )
 	, m_color  (color   )
 {}
 
-inline RDOTriangElement::RDOTriangElement(CREF(RDOPoint) point1, CREF(RDOPoint) point2, CREF(RDOPoint) point3, CREF(RDOColoredElement) color)
-	: FrameItem        (FIT_TRIANG)
-	, RDOColoredElement(color     )
-	, m_point1         (point1    )
-	, m_point2         (point2    )
-	, m_point3         (point3    )
+inline TriangElement::TriangElement(CREF(Point) point1, CREF(Point) point2, CREF(Point) point3, CREF(ColoredElement) color)
+	: FrameItem     (FIT_TRIANG)
+	, ColoredElement(color     )
+	, m_point1      (point1    )
+	, m_point2      (point2    )
+	, m_point3      (point3    )
 {}
 
-inline RDORectElement::RDORectElement(CREF(RDOBoundedElement) rect, CREF(RDOColoredElement) color)
-	: FrameItem        (FIT_RECT)
-	, RDOBoundedElement(rect    )
-	, RDOColoredElement(color   )
+inline RectElement::RectElement(CREF(BoundedElement) rect, CREF(ColoredElement) color)
+	: FrameItem     (FIT_RECT)
+	, BoundedElement(rect    )
+	, ColoredElement(color   )
 {}
 
-inline RDORRectElement::RDORRectElement(CREF(RDOBoundedElement) rect, CREF(RDOColoredElement) color)
-	: FrameItem        (FIT_R_RECT)
-	, RDOBoundedElement(rect      )
-	, RDOColoredElement(color     )
+inline RoundRectElement::RoundRectElement(CREF(BoundedElement) rect, CREF(ColoredElement) color)
+	: FrameItem     (FIT_R_RECT)
+	, BoundedElement(rect      )
+	, ColoredElement(color     )
 {}
 
-inline RDOCircleElement::RDOCircleElement(CREF(RDOPoint) center, CREF(RDORadius) radius, CREF(RDOColoredElement) color)
-	: FrameItem        (FIT_CIRCLE)
-	, RDOColoredElement(color     )
-	, m_center         (center    )
-	, m_radius         (radius    )
+inline CircleElement::CircleElement(CREF(Point) center, CREF(Radius) radius, CREF(ColoredElement) color)
+	: FrameItem     (FIT_CIRCLE)
+	, ColoredElement(color     )
+	, m_center      (center    )
+	, m_radius      (radius    )
 {}
 
-inline RDOEllipseElement::RDOEllipseElement(CREF(RDOBoundedElement) rect, CREF(RDOColoredElement) color)
-	: FrameItem        (FIT_ELLIPSE)
-	, RDOBoundedElement(rect       )
-	, RDOColoredElement(color      )
+inline EllipseElement::EllipseElement(CREF(BoundedElement) rect, CREF(ColoredElement) color)
+	: FrameItem     (FIT_ELLIPSE)
+	, BoundedElement(rect       )
+	, ColoredElement(color      )
 {}
 
-inline RDOBmpElement::RDOBmpElement(CREF(RDOPoint) point, CREF(tstring) bmp_name, CREF(tstring) mask_name)
+inline BmpElement::BmpElement(CREF(Point) point, CREF(tstring) bmp_name, CREF(tstring) mask_name)
 	: FrameItem  (FIT_BMP  )
 	, m_point    (point    )
 	, m_bmp_name (bmp_name )
 	, m_mask_name(mask_name)
 {}
 
-inline rbool RDOBmpElement::hasMask() const
+inline rbool BmpElement::hasMask() const
 {
 	return !m_mask_name.empty();
 }
 
-inline RDOSBmpElement::RDOSBmpElement(CREF(RDOBoundedElement) rect, CREF(tstring) bmp_name, CREF(tstring) mask_name)
-	: FrameItem        (FIT_S_BMP)
-	, RDOBoundedElement(rect     )
-	, m_bmp_name       (bmp_name )
-	, m_mask_name      (mask_name)
+inline ScaledBmpElement::ScaledBmpElement(CREF(BoundedElement) rect, CREF(tstring) bmp_name, CREF(tstring) mask_name)
+	: FrameItem     (FIT_S_BMP)
+	, BoundedElement(rect     )
+	, m_bmp_name    (bmp_name )
+	, m_mask_name   (mask_name)
 {}
 
-inline rbool RDOSBmpElement::hasMask() const
+inline rbool ScaledBmpElement::hasMask() const
 {
 	return !m_mask_name.empty();
 }
 
-inline RDOActiveElement::RDOActiveElement(CREF(RDOBoundedElement) rect, CREF(tstring) opr_name)
-	: FrameItem        (FIT_ACTIVE)
-	, RDOBoundedElement(rect      )
-	, m_opr_name       (opr_name  )
+inline ActiveElement::ActiveElement(CREF(BoundedElement) rect, CREF(tstring) opr_name)
+	: FrameItem     (FIT_ACTIVE)
+	, BoundedElement(rect      )
+	, m_opr_name    (opr_name  )
 {}
 
-inline RDONullElement::RDONullElement()
+inline NullElement::NullElement()
 	: FrameItem(FIT_NULL)
 {}
 
-inline RDOFrame::~RDOFrame()
+inline Frame::~Frame()
 {
 	STL_FOR_ALL(m_elements, it)
 		delete (*it);
@@ -186,7 +186,7 @@ inline RDOFrame::~RDOFrame()
 	m_elements.clear();
 }
 
-inline rbool RDOFrame::hasBgImage() const
+inline rbool Frame::hasBgImage() const
 {
 	return !m_bgImageName.empty();
 }

@@ -362,7 +362,7 @@ void RDOStudioFrameManager::insertBitmap(CREF(tstring) bitmapName)
 	const_cast<PTR(rdoEditCtrl::RDODebugEdit)>(pOutput->getDebug())->UpdateWindow();
 }
 
-void RDOStudioFrameManager::showFrame(CPTRC(rdo::animation::RDOFrame) pFrame, ruint index)
+void RDOStudioFrameManager::showFrame(CPTRC(rdo::animation::Frame) pFrame, ruint index)
 {
 	if (index < count())
 	{

@@ -131,7 +131,7 @@ public:
 		RT_RUNTIME_GET_SHOWRATE,               // param = result:double[0..+max_double]*
 		RT_RUNTIME_SET_SHOWRATE,               // param = show_rate:double[0..+max_double]*
 		RT_RUNTIME_GET_TIMENOW,                // param = result:double*
-		RT_RUNTIME_GET_FRAME,                  // param = { result:rdoSimulator::RDOFrame*, frame_number:int }*
+		RT_RUNTIME_GET_FRAME,                  // param = { result:rdo::animation::Frame*, frame_number:int }*
 		RT_RUNTIME_GET_LAST_BREAKPOINT,        // param = tstring*
 		RT_RUNTIME_KEY_DOWN,                   // param = scanCode:uint*
 		RT_RUNTIME_KEY_UP,                     // param = scanCode:uint*

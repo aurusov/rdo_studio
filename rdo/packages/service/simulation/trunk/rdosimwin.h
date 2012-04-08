@@ -41,7 +41,7 @@
 //#define DISABLE_CORBA
 //#ifndef DISABLE_CORBA
 OPEN_RDO_ANIMATION_NAMESPACE
-struct RDOFrame;
+struct Frame;
 CLOSE_RDO_ANIMATION_NAMESPACE
 
 #define DISABLE_CORBA
@@ -120,10 +120,10 @@ public:
 
 	struct GetFrame
 	{
-		PTR(rdo::animation::RDOFrame) m_pFrame;
-		ruint                         m_number;
+		PTR(rdo::animation::Frame) m_pFrame;
+		ruint                      m_number;
 
-		GetFrame(PTR(rdo::animation::RDOFrame) pFrame, ruint number)
+		GetFrame(PTR(rdo::animation::Frame) pFrame, ruint number)
 			: m_pFrame(pFrame)
 			, m_number(number)
 		{}

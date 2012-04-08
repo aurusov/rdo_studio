@@ -100,7 +100,7 @@ public:
 			CT_LAST_FG_TEXT
 		};
 
-		rdo::animation::RDOColor getColor(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
+		rdo::animation::Color getColor(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
 
 		ColorType getType() const;
 		void setType(ColorType type);
@@ -154,13 +154,13 @@ public:
 	void          addRulet          (CREF(LPRDOFRMRulet) pRulet     );
 	rbool         checkCondition    (CREF(LPRDORuntime)  pRuntime   );
 
-	PTR(rdo::animation::RDOFrame) createFrame(CREF(LPRDORuntime) pRuntime);
-	PTR(rdo::animation::RDOFrame) prepareFrame(PTR(rdo::animation::RDOFrame) pFrame, CREF(LPRDORuntime) pRuntime);
+	PTR(rdo::animation::Frame) createFrame (CREF(LPRDORuntime) pRuntime);
+	PTR(rdo::animation::Frame) prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORuntime) pRuntime);
 
-	void setColorLastBG    (RDOFRMColor::ColorType type, CREF(rdo::animation::RDOColor) lastBg);
-	void setColorLastFG    (RDOFRMColor::ColorType type, CREF(rdo::animation::RDOColor) lastFg);
-	void setColorLastBGText(RDOFRMColor::ColorType type, CREF(rdo::animation::RDOColor) lastBgText);
-	void setColorLastFGText(RDOFRMColor::ColorType type, CREF(rdo::animation::RDOColor) lastFgText);
+	void setColorLastBG    (RDOFRMColor::ColorType type, CREF(rdo::animation::Color) lastBg);
+	void setColorLastFG    (RDOFRMColor::ColorType type, CREF(rdo::animation::Color) lastFg);
+	void setColorLastBGText(RDOFRMColor::ColorType type, CREF(rdo::animation::Color) lastBgText);
+	void setColorLastFGText(RDOFRMColor::ColorType type, CREF(rdo::animation::Color) lastFgText);
 	void setLastXY         (double x, double y);
 	void setLastXYWH       (double x, double y, double width, double height);
 
@@ -175,21 +175,21 @@ private:
 	typedef std::list<LPRDOFRMShow>        ShowList;
 	typedef std::map<ruint, LPRDOFRMRulet> RuletList;
 
-	LPRDOCalc                 m_pConditionCalc;
-	LPRDOFRMColor             m_pBgColor;
-	tstring                   m_picFileName;
-	ruint                     m_width;
-	ruint                     m_height;
-	ShowList                  m_showList;
-	rdo::animation::RDOColor  m_colorLastBg;
-	rdo::animation::RDOColor  m_colorLastFg;
-	rdo::animation::RDOColor  m_colorLastBgText;
-	rdo::animation::RDOColor  m_colorLastFgText;
-	double                    m_lastX;
-	double                    m_lastY;
-	double                    m_lastWidth;
-	double                    m_lastHeight;
-	RuletList                 m_ruletList;
+	LPRDOCalc              m_pConditionCalc;
+	LPRDOFRMColor          m_pBgColor;
+	tstring                m_picFileName;
+	ruint                  m_width;
+	ruint                  m_height;
+	ShowList               m_showList;
+	rdo::animation::Color  m_colorLastBg;
+	rdo::animation::Color  m_colorLastFg;
+	rdo::animation::Color  m_colorLastBgText;
+	rdo::animation::Color  m_colorLastFgText;
+	double                 m_lastX;
+	double                 m_lastY;
+	double                 m_lastWidth;
+	double                 m_lastHeight;
+	RuletList              m_ruletList;
 };
 
 /*!
@@ -228,8 +228,8 @@ public:
 	CREF(RDOFRMFrame::LPRDOFRMColor) getBgColor() const;
 	CREF(RDOFRMFrame::LPRDOFRMColor) getFgColor() const;
 
-	rdo::animation::RDOColor getBg(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
-	rdo::animation::RDOColor getFg(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
+	rdo::animation::Color getBg(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
+	rdo::animation::Color getFg(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
 
 protected:
 	RDOFRMColoredItem(CREF(RDOFRMFrame::LPRDOFRMColor) pBgColor, CREF(RDOFRMFrame::LPRDOFRMColor) pFgColor);
@@ -288,7 +288,7 @@ RDOFRM_ITEM(RDOFRMText)
 {
 DECLARE_FACTORY(RDOFRMText)
 public:
-	typedef rdo::animation::RDOTextElement::TextAlign Align;
+	typedef rdo::animation::TextElement::TextAlign Align;
 
 	void setText(Align align, CREF(LPRDOCalc) pValue);
 	void setText(Align align, CREF(tstring)   text  );

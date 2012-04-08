@@ -1296,7 +1296,7 @@ void RDOStudioModel::update()
 				pView->ReleaseDC(dc);
 				try
 				{
-					rdo::animation::RDOFrame frame;
+					rdo::animation::Frame frame;
 					rdo::runtime::RDOThreadRunTime::GetFrame getFrame(&frame, i);
 					sendMessage(kernel->runtime(), RT_RUNTIME_GET_FRAME, &getFrame);
 					m_frameManager.showFrame(&frame, i);
