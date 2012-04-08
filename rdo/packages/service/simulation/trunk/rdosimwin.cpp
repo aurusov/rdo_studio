@@ -1219,7 +1219,7 @@ void RDOThreadSimulator::parseSMRFileInfo(REF(rdo::textstream) smr, REF(rdoModel
 	try
 	{
 		rdo::converter::smr2rdox::RDOParserModel converter;
-		rdoRepository::RDOThreadRepository::FileInfo fileInfo(rdoModelObjects::SMR);
+		rdo::repository::RDOThreadRepository::FileInfo fileInfo(rdoModelObjects::SMR);
 		kernel->sendMessage(kernel->repository(), RT_REPOSITORY_MODEL_GET_FILEINFO, &fileInfo);
 		switch (converter.convert(fileInfo.m_fullName, info))
 		{
@@ -1599,7 +1599,7 @@ void RDOThreadCodeComp::proc(REF(RDOMessageInfo) msg)
 			msg.lock();
 			PTR(GetCodeComp) data = static_cast<PTR(GetCodeComp)>(msg.param);
 //			rdo::binarystream stream;
-//			sendMessage(kernel->studio(), RDOThread::RT_STUDIO_MODEL_GET_TEXT, &rdoRepository::RDOThreadRepository::FileData(data->file, stream));
+//			sendMessage(kernel->studio(), RDOThread::RT_STUDIO_MODEL_GET_TEXT, &rdo::repository::RDOThreadRepository::FileData(data->file, stream));
 //			data->result = stream.data();
 			CREF(rdoParser::RDOParser::RTPResTypeList) rtp_list = m_pParser->getRTPResTypes(); 
 			STL_FOR_ALL_CONST(rtp_list, rtp_it)

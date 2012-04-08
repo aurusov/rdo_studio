@@ -20,10 +20,8 @@
 #include "kernel/rdothread.h"
 #include "utils/rdostream.h"
 #include "utils/rdocommon.h"
+#include "repository/namespace.h"
 // --------------------------------------------------------------------------------
-
-#define OPEN_RDO_REPOSITORY_NAMESPACE  namespace rdoRepository {
-#define CLOSE_RDO_REPOSITORY_NAMESPACE };
 
 OPEN_RDO_REPOSITORY_NAMESPACE
 

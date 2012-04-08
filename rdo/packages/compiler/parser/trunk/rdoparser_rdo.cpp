@@ -61,13 +61,13 @@ void RDOParserRDOItem::parse(CREF(LPRDOParser) pParser)
 	{
 	case sf_repository:
 		{
-			rdoRepository::RDOThreadRepository::FileData fileData(m_type, in_stream);
+			rdo::repository::RDOThreadRepository::FileData fileData(m_type, in_stream);
 			kernel->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &fileData);
 			break;
 		}
 	case sf_editor:
 		{
-			rdoRepository::RDOThreadRepository::FileData fileData(m_type, in_stream);
+			rdo::repository::RDOThreadRepository::FileData fileData(m_type, in_stream);
 			kernel->sendMessage(kernel->studio(), RDOThread::RT_STUDIO_MODEL_GET_TEXT, &fileData);
 			break;
 		}

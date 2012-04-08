@@ -10,13 +10,15 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 
-SET(HEADER_FILES	
+SET(HEADER_FILES
+	namespace.h
 	rdorepository.h)
 
 SET(SOURCE_FILES
 	rdorepository.cpp)
 
 SOURCE_GROUP(".repository" FILES 
+	namespace.h
 	rdorepository.h
 	rdorepository.cpp)
 

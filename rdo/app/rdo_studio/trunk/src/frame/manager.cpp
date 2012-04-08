@@ -343,7 +343,7 @@ void RDOStudioFrameManager::insertBitmap(CREF(tstring) bitmapName)
 	const_cast<PTR(rdoEditCtrl::RDODebugEdit)>(pOutput->getDebug())->UpdateWindow();
 
 	rdo::binarystream stream;
-	rdoRepository::RDOThreadRepository::BinaryFile data(bitmapName, stream);
+	rdo::repository::RDOThreadRepository::BinaryFile data(bitmapName, stream);
 	model->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD_BINARY, &data);
 
 	rbool ok = false;

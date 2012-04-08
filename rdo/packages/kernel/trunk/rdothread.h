@@ -81,29 +81,29 @@ public:
 		RT_THREAD_REGISTERED,                  // param = thread:RDOThread*
 		RT_THREAD_UNREGISTERED,                // param = thread:RDOThread*
 		RT_THREAD_STOP_AFTER,
-		RT_STUDIO_MODEL_NEW,                   // param = rdoRepository::RDOThreadRepository::NewModel* = { model_name:tstring&, model_path:tstring&      }
-		RT_STUDIO_MODEL_OPEN,                  // param = rdoRepository::RDOThreadRepository::OpenFile* = { model_name:tstring&, result:rbool&, readonly:rbool& }
+		RT_STUDIO_MODEL_NEW,                   // param = rdo::repository::RDOThreadRepository::NewModel* = { model_name:tstring&, model_path:tstring&      }
+		RT_STUDIO_MODEL_OPEN,                  // param = rdo::repository::RDOThreadRepository::OpenFile* = { model_name:tstring&, result:rbool&, readonly:rbool& }
 		RT_STUDIO_MODEL_SAVE,
 		RT_STUDIO_MODEL_SAVE_AS,
 		RT_STUDIO_MODEL_CLOSE,
 		RT_STUDIO_MODEL_BUILD,
 		RT_STUDIO_MODEL_RUN,
 		RT_STUDIO_MODEL_STOP,
-		RT_STUDIO_MODEL_GET_TEXT,              // param = rdoRepository::RDOThreadRepository::FileData* = { file_type:rdoModelObjects::RDOFileType, result:rdo::binarystream& }
-		RT_REPOSITORY_MODEL_NEW,               // param = rdoRepository::RDOThreadRepository::NewModel* = { model_name:tstring&, model_path:tstring&   }
+		RT_STUDIO_MODEL_GET_TEXT,              // param = rdo::repository::RDOThreadRepository::FileData* = { file_type:rdoModelObjects::RDOFileType, result:rdo::binarystream& }
+		RT_REPOSITORY_MODEL_NEW,               // param = rdo::repository::RDOThreadRepository::NewModel* = { model_name:tstring&, model_path:tstring&   }
 		RT_REPOSITORY_MODEL_OPEN,
 		RT_REPOSITORY_MODEL_OPEN_ERROR,        // param = model_name:tstring*
 		RT_REPOSITORY_MODEL_SAVE,
-		RT_REPOSITORY_MODEL_OPEN_GET_NAME,     // param = rdoRepository::RDOThreadRepository::OpenFile* = { model_name:tstring, readonly:rbool, result:rbool }
-		RT_REPOSITORY_MODEL_SAVE_GET_NAME,     // param = rdoRepository::RDOThreadRepository::OpenFile* = { model_name:tstring, readonly:rbool, result:rbool }
+		RT_REPOSITORY_MODEL_OPEN_GET_NAME,     // param = rdo::repository::RDOThreadRepository::OpenFile* = { model_name:tstring, readonly:rbool, result:rbool }
+		RT_REPOSITORY_MODEL_SAVE_GET_NAME,     // param = rdo::repository::RDOThreadRepository::OpenFile* = { model_name:tstring, readonly:rbool, result:rbool }
 		RT_REPOSITORY_MODEL_CLOSE,
 		RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE,   // param = result:rbool*, работает как И
 		RT_REPOSITORY_MODEL_CLOSE_ERROR,
-		RT_REPOSITORY_MODEL_GET_FILEINFO,      // param = rdoRepository::RDOThreadRepository::FileInfo* = { type:rdoModelObjects::RDOFileType, name:tstring, full_name:tstring, extention:tstring, readonly:rbool, described:rbool }
-		RT_REPOSITORY_LOAD,                    // param = rdoRepository::RDOThreadRepository::FileData* = { file_type:rdoModelObjects::RDOFileType, result:rdo::binarystream& }
-		RT_REPOSITORY_SAVE,                    // param = rdoRepository::RDOThreadRepository::FileData* = { file_type:rdoModelObjects::RDOFileType, stream:rdo::binarystream& }
-		RT_REPOSITORY_LOAD_BINARY,             // param = rdoRepository::RDOThreadRepository::BinaryFile* = { name:tstring, result:rdo::binarystream& }
-		RT_REPOSITORY_CREATE_FILE,             // param = rdoRepository::RDOThreadRepository::CreateFile*
+		RT_REPOSITORY_MODEL_GET_FILEINFO,      // param = rdo::repository::RDOThreadRepository::FileInfo* = { type:rdoModelObjects::RDOFileType, name:tstring, full_name:tstring, extention:tstring, readonly:rbool, described:rbool }
+		RT_REPOSITORY_LOAD,                    // param = rdo::repository::RDOThreadRepository::FileData* = { file_type:rdoModelObjects::RDOFileType, result:rdo::binarystream& }
+		RT_REPOSITORY_SAVE,                    // param = rdo::repository::RDOThreadRepository::FileData* = { file_type:rdoModelObjects::RDOFileType, stream:rdo::binarystream& }
+		RT_REPOSITORY_LOAD_BINARY,             // param = rdo::repository::RDOThreadRepository::BinaryFile* = { name:tstring, result:rdo::binarystream& }
+		RT_REPOSITORY_CREATE_FILE,             // param = rdo::repository::RDOThreadRepository::CreateFile*
 		RT_SIMULATOR_PARSE_OK,
 		RT_SIMULATOR_PARSE_ERROR,
 		RT_SIMULATOR_PARSE_ERROR_SMR,

@@ -4,6 +4,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
+#include "repository/namespace.h"
 #include "simulator/runtime/namespace.h"
 // --------------------------------------------------------------------------------
 
@@ -28,9 +29,9 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class RDOThreadRunTime;
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-namespace rdoRepository {
+OPEN_RDO_REPOSITORY_NAMESPACE
 class RDOThreadRepository;
-}
+CLOSE_RDO_REPOSITORY_NAMESPACE
 
 class RDOKernel: public RDOThreadMT
 {
@@ -53,11 +54,11 @@ protected:
 //	CMutex                      methods_mutex;
 //	void method_registration( RDOTreadMethod& msg ); // thread-safety
 
-	RDOThread*                          thread_studio;
-	rdo::runtime::RDOThreadRunTime*     thread_runtime;
-	rdoSimulator::RDOThreadSimulator*   thread_simulator;
-	rdoSimulator::RDOThreadCodeComp*    thread_codecomp;
-	rdoRepository::RDOThreadRepository* thread_repository;
+	RDOThread*                            thread_studio;
+	rdo::runtime::RDOThreadRunTime*       thread_runtime;
+	rdoSimulator::RDOThreadSimulator*     thread_simulator;
+	rdoSimulator::RDOThreadCodeComp*      thread_codecomp;
+	rdo::repository::RDOThreadRepository* thread_repository;
 	
 	
 #ifdef CORBA_ENABLE
@@ -76,14 +77,14 @@ public:
 	virtual void idle();
 #endif
 
-	RDOThread*                          studio() const     { return thread_studio;     }
-	rdo::runtime::RDOThreadRunTime*     runtime() const    { return thread_runtime;    }
-	rdoSimulator::RDOThreadSimulator*   simulator() const  { return thread_simulator;  }
-	rdoSimulator::RDOThreadCodeComp*    codecomp() const   { return thread_codecomp;   }
-	rdoRepository::RDOThreadRepository* repository() const { return thread_repository; }
+	RDOThread*                            studio    () const { return thread_studio;     }
+	rdo::runtime::RDOThreadRunTime*       runtime   () const { return thread_runtime;    }
+	rdoSimulator::RDOThreadSimulator*     simulator () const { return thread_simulator;  }
+	rdoSimulator::RDOThreadCodeComp*      codecomp  () const { return thread_codecomp;   }
+	rdo::repository::RDOThreadRepository* repository() const { return thread_repository; }
 
 #ifdef CORBA_ENABLE
-	rdoCorba::RDOThreadCorba*           corba() const      { return thread_corba;      }
+	rdoCorba::RDOThreadCorba*             corba     () const { return thread_corba;      }
 #endif
 };
 

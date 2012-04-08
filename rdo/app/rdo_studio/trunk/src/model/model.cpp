@@ -206,7 +206,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		case RDOThread::RT_STUDIO_MODEL_GET_TEXT:
 		{
 			msg.lock();
-			PTR(rdoRepository::RDOThreadRepository::FileData) fdata = static_cast<PTR(rdoRepository::RDOThreadRepository::FileData)>(msg.param);
+			PTR(rdo::repository::RDOThreadRepository::FileData) fdata = static_cast<PTR(rdo::repository::RDOThreadRepository::FileData)>(msg.param);
 			PTR(RDOEditorTabCtrl) pTab = getTab();
 			if (pTab)
 			{
@@ -250,7 +250,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		case RDOThread::RT_REPOSITORY_MODEL_OPEN_GET_NAME:
 		{
 			msg.lock();
-			PTR(rdoRepository::RDOThreadRepository::OpenFile) data = static_cast<PTR(rdoRepository::RDOThreadRepository::OpenFile)>(msg.param);
+			PTR(rdo::repository::RDOThreadRepository::OpenFile) data = static_cast<PTR(rdo::repository::RDOThreadRepository::OpenFile)>(msg.param);
 			CString filter;
 			filter.LoadString(ID_MODEL_FILETYPE);
 			CFileDialog dlg(true, _T(""), _T(""), 0, filter, AfxGetMainWnd());
@@ -263,7 +263,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		case RDOThread::RT_REPOSITORY_MODEL_SAVE_GET_NAME:
 		{
 			msg.lock();
-			PTR(rdoRepository::RDOThreadRepository::OpenFile) data = static_cast<PTR(rdoRepository::RDOThreadRepository::OpenFile)>(msg.param);
+			PTR(rdo::repository::RDOThreadRepository::OpenFile) data = static_cast<PTR(rdo::repository::RDOThreadRepository::OpenFile)>(msg.param);
 			CString filter;
 			filter.LoadString(ID_MODEL_FILETYPE);
 			CFileDialog dlg(false, _T("smr"), _T(""), OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, filter, AfxGetMainWnd());
@@ -548,7 +548,7 @@ void RDOStudioModel::show_result()
 	if (!str.empty())
 	{
 		PTR(RDOStudioOutput) output = &studioApp.m_pMainFrame->output;
-		rdoRepository::RDOThreadRepository::FileInfo data(rdoModelObjects::PMV);
+		rdo::repository::RDOThreadRepository::FileInfo data(rdoModelObjects::PMV);
 		studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
 		if (!data.m_described)
 		{
@@ -571,7 +571,7 @@ rbool RDOStudioModel::newModel(tstring _model_name, tstring _model_path, const i
 	output->clearDebug();
 	output->clearResults();
 	output->clearFind();
-	rdoRepository::RDOThreadRepository::NewModel data;
+	rdo::repository::RDOThreadRepository::NewModel data;
 	data.m_name = _model_name;
 	data.m_path = _model_path;
 	studioApp.broadcastMessage(RDOThread::RT_STUDIO_MODEL_NEW, &data);
@@ -604,12 +604,12 @@ rbool RDOStudioModel::openModel(CREF(tstring) modelName) const
 	m_openError     = false;
 	m_smrEmptyError = false;
 	m_modelClosed   = false;
-	rdoRepository::RDOThreadRepository::OpenFile data(modelName);
+	rdo::repository::RDOThreadRepository::OpenFile data(modelName);
 	studioApp.broadcastMessage(RDOThread::RT_STUDIO_MODEL_OPEN, &data);
 	if (data.m_result && !m_openError && !m_smrEmptyError)
 	{
 		rdo::binarystream stream;
-		rdoRepository::RDOThreadRepository::FileData fileData(rdoModelObjects::PMV, stream);
+		rdo::repository::RDOThreadRepository::FileData fileData(rdoModelObjects::PMV, stream);
 		studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &fileData);
 		output->appendStringToResults(stream.str());
 		output->updateLogConnection();
@@ -744,7 +744,7 @@ void RDOStudioModel::newModelFromRepository()
 		}
 
 		m_pModelDocTemplate->OpenDocumentFile(NULL);
-		rdoRepository::RDOThreadRepository::FileInfo data_smr(rdoModelObjects::RDOX);
+		rdo::repository::RDOThreadRepository::FileInfo data_smr(rdoModelObjects::RDOX);
 		studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data_smr);
 		setName(data_smr.m_name);
 
@@ -844,7 +844,7 @@ void RDOStudioModel::openModelFromRepository()
 
 		PTR(CWnd) active = CWnd::GetActiveWindow();
 		m_pModelDocTemplate->OpenDocumentFile(NULL);
-		rdoRepository::RDOThreadRepository::FileInfo data_smr(rdoModelObjects::RDOX);
+		rdo::repository::RDOThreadRepository::FileInfo data_smr(rdoModelObjects::RDOX);
 		studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data_smr);
 		setName(data_smr.m_name);
 
@@ -865,7 +865,7 @@ void RDOStudioModel::openModelFromRepository()
 				rdoModelObjects::RDOFileType type = pTab->indexToType(i);
 				if (pTab->typeSupported(type))
 				{
-					rdoRepository::RDOThreadRepository::FileData fileData(type, stream);
+					rdo::repository::RDOThreadRepository::FileData fileData(type, stream);
 					studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &fileData);
 				}
 				else
@@ -875,7 +875,7 @@ void RDOStudioModel::openModelFromRepository()
 				studioApp.m_pMainFrame->stepProgress();
 				if (canLoad)
 				{
-					rdoRepository::RDOThreadRepository::FileInfo data(type);
+					rdo::repository::RDOThreadRepository::FileInfo data(type);
 					studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
 					rbool stream_error = stream.rdstate() & std::ios_base::failbit ? true : false;
 					if (!stream_error)
@@ -942,7 +942,7 @@ void RDOStudioModel::saveModelToRepository()
 			rdo::binarystream stream;
 			smr_edit->save(stream);
 			m_smrEmptyError = false;
-			rdoRepository::RDOThreadRepository::FileData fileData(rdoModelObjects::SMR, stream);
+			rdo::repository::RDOThreadRepository::FileData fileData(rdoModelObjects::SMR, stream);
 			studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_SAVE, &fileData);
 			if (m_smrEmptyError)
 			{
@@ -985,7 +985,7 @@ void RDOStudioModel::saveModelToRepository()
 					case rdoModelObjects::FUN:
 					case rdoModelObjects::PMD:
 						{
-							rdoRepository::RDOThreadRepository::FileData fileData(type, stream);
+							rdo::repository::RDOThreadRepository::FileData fileData(type, stream);
 							studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_SAVE, &fileData);
 							break;
 						}
@@ -999,7 +999,7 @@ void RDOStudioModel::saveModelToRepository()
 			wasSaved = true;
 		}
 	}
-	rdoRepository::RDOThreadRepository::FileInfo data(rdoModelObjects::RDOX);
+	rdo::repository::RDOThreadRepository::FileInfo data(rdoModelObjects::RDOX);
 	studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
 	setName(data.m_name);
 
@@ -1045,7 +1045,7 @@ void RDOStudioModel::loadFromXML()
 	// Заводим документ:
 	pugi::xml_document doc;
 
-	rdoRepository::RDOThreadRepository::FileInfo fileInfo(rdoModelObjects::PRCX);
+	rdo::repository::RDOThreadRepository::FileInfo fileInfo(rdoModelObjects::PRCX);
 	studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &fileInfo);
 
 	// Открываем сохраненный xml-файл и проверяем поток на ошибки ввода-вывода:
@@ -1068,7 +1068,7 @@ void RDOStudioModel::loadFromXML()
 
 tstring RDOStudioModel::getFullName() const
 {
-	rdoRepository::RDOThreadRepository::FileInfo data(rdoModelObjects::RDOX);
+	rdo::repository::RDOThreadRepository::FileInfo data(rdoModelObjects::RDOX);
 	studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
 	return data.m_fullName;
 }

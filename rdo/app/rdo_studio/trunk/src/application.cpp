@@ -238,7 +238,7 @@ BOOL RDOStudioApp::InitInstance()
 #endif
 	new rdoSimulator::RDOThreadSimulator();
 	new rdoSimulator::RDOThreadCodeComp();
-	new rdoRepository::RDOThreadRepository();
+	new rdo::repository::RDOThreadRepository();
 
 //#define CORBA_ENABLE
 #ifdef CORBA_ENABLE

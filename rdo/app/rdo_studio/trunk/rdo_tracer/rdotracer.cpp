@@ -28,7 +28,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 
-using namespace rdoRepository;
+using namespace rdo::repository;
 using namespace rdoSimulator;
 using namespace rdoTracer;
 
