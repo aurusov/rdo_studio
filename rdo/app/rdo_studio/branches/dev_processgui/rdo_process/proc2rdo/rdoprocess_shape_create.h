@@ -6,8 +6,8 @@
 #include "simulator/runtime/process/generate.h"
 
 OBJECT(RPShapeCreateMJ)
-	IS  INSTANCE_OF      (RPShape_MJ                )
-	AND IMPLEMENTATION_OF(rdoRuntime::IProcAnimation)
+	IS  INSTANCE_OF      (RPShape_MJ                  )
+	AND IMPLEMENTATION_OF(rdo::runtime::IProcAnimation)
 {
 friend class RPMethodProc2RDO_MJ;
 

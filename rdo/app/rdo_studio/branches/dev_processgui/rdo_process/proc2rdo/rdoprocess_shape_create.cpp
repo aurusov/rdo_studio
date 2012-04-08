@@ -159,7 +159,7 @@ void RPShapeCreateMJ::generate()
 	LPRPShapeCreateMJ pThis(this);
 	ASSERT(pThis);
 
-	rdoRuntime::LPIProcAnimation pIProcAnimation = pThis.interface_cast<rdoRuntime::IProcAnimation>();
+	rdo::runtime::LPIProcAnimation pIProcAnimation = pThis.interface_cast<rdo::runtime::IProcAnimation>();
 	ASSERT(pIProcAnimation);
 
 	pIProcAnimation->setTransCount(3);
