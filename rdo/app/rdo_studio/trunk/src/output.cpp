@@ -196,7 +196,7 @@ void RDOStudioOutput::appendStringToBuild( CREF(tstring) str ) const
 	build->appendLine( line );
 }
 
-void RDOStudioOutput::appendStringToBuild( rdoSimulator::RDOSyntaxError::ErrorCode error_code, CREF(tstring) str, const rdoModelObjects::RDOFileType fileType, const int lineNumber, const int posInLine, const rbool warning ) const
+void RDOStudioOutput::appendStringToBuild( rdo::service::simulation::RDOSyntaxError::ErrorCode error_code, CREF(tstring) str, const rdoModelObjects::RDOFileType fileType, const int lineNumber, const int posInLine, const rbool warning ) const
 {
 	if ( !warning || (warning && static_cast<RDOBuildEditTheme*>(studioApp.m_pMainFrame->style_build.theme)->warning) ) {
 		RDOBuildEditLineInfo* line = new RDOBuildEditLineInfo( error_code, str, fileType, lineNumber, posInLine, warning );

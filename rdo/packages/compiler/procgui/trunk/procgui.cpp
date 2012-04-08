@@ -16,7 +16,7 @@
 #include "simulator/compiler/mbuilder/process.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_SIMULATOR_NAMESPACE
+OPEN_RDO_SERVICE_SIMULATION_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- ProcGUICalc
@@ -733,4 +733,4 @@ void ProcGUIDepart::createRuntime(CREF(LPProcGUIProcess) pProcess, CREF(rdoParse
 	ASSERT(m_pBlock);
 }
 
-CLOSE_RDO_SIMULATOR_NAMESPACE
+CLOSE_RDO_SERVICE_SIMULATION_NAMESPACE

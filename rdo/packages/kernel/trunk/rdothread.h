@@ -116,8 +116,8 @@ public:
 		RT_SIMULATOR_GET_MODEL_STRUCTURE,      // param = result:rdo::textstream*
 		RT_SIMULATOR_GET_MODEL_RESULTS,        // param = result:rdo::textstream*
 		RT_SIMULATOR_GET_MODEL_RESULTS_INFO,   // param = result:rdo::textstream*
-		RT_SIMULATOR_GET_MODEL_EXITCODE,       // param = result:rdoSimulator::RDOExitCode*
-		RT_SIMULATOR_GET_LIST,                 // param = rdoSimulator::RDOThreadSimulator::GetList* = { type:GetList::Type, result:std::list< tstring >* }
+		RT_SIMULATOR_GET_MODEL_EXITCODE,       // param = result:rdo::service::simulation::RDOExitCode*
+		RT_SIMULATOR_GET_LIST,                 // param = rdo::service::simulation::RDOThreadSimulator::GetList* = { type:GetList::Type, result:std::list< tstring >* }
 		RT_SIMULATOR_GET_ERRORS,               // param = result:std::vector< RDOSyntaxError >*
 		RT_RUNTIME_MODEL_START_BEFORE,
 		RT_RUNTIME_MODEL_START_AFTER,
@@ -136,7 +136,7 @@ public:
 		RT_RUNTIME_KEY_DOWN,                   // param = scanCode:uint*
 		RT_RUNTIME_KEY_UP,                     // param = scanCode:uint*
 		RT_RUNTIME_FRAME_AREA_DOWN,            // param = area_name:tstring*
-		RT_CODECOMP_GET_DATA,                  // param = rdoSimulator::RDOThreadCodeComp::GetCodeComp* = { file_type:rdoModelObjects::RDOFileType, pos_x:int, pos_y:int, result:std::list< tstring >& }
+		RT_CODECOMP_GET_DATA,                  // param = rdo::service::simulation::RDOThreadCodeComp::GetCodeComp* = { file_type:rdoModelObjects::RDOFileType, pos_x:int, pos_y:int, result:std::list< tstring >& }
 		RT_DEBUG_STRING,                       // param = tstring*
 		RT_RESULT_STRING,                      // param = tstring*
 		RT_CORBA_PARSER_GET_RTP,

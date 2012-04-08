@@ -16,7 +16,7 @@
 #include "simulator/service/namespace.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_SIMULATOR_NAMESPACE
+OPEN_RDO_SERVICE_SIMULATION_NAMESPACE
 
 //! Код окончания компиляции или прогона модели
 enum RDOExitCode
@@ -63,6 +63,6 @@ struct RDOSyntaxError
 	{}
 };
 
-CLOSE_RDO_SIMULATOR_NAMESPACE
+CLOSE_RDO_SERVICE_SIMULATION_NAMESPACE
 
 #endif // _SIMULATOR_SERVICE_ERROR_CODE_H_

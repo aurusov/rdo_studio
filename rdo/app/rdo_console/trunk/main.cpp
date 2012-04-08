@@ -34,7 +34,7 @@ int main(int argc, PTR(char) argv[])
 	{
 		// Init
 		RDOKernel::init();
-		new rdoSimulator::RDOThreadSimulator();
+		new rdo::service::simulation::RDOThreadSimulator();
 		new rdo::repository::RDOThreadRepository();
 
 		PTR(RDOStudioConsoleController) pAppController = new RDOStudioConsoleController();

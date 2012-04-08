@@ -99,9 +99,9 @@ private:
 
 #endif // CORBA_ENABLE
 
-OPEN_RDO_SIMULATOR_NAMESPACE
+OPEN_RDO_SERVICE_SIMULATION_NAMESPACE
 class RDOThreadSimulator;
-CLOSE_RDO_SIMULATOR_NAMESPACE
+CLOSE_RDO_SERVICE_SIMULATION_NAMESPACE
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
@@ -141,9 +141,9 @@ public:
 	};
 
 private:
-	PTR(rdoSimulator::RDOThreadSimulator) m_pSimulator;
-	rbool                                 m_runtimeError;
-	ruint64                               m_timeStart;
+	PTR(rdo::service::simulation::RDOThreadSimulator)  m_pSimulator;
+	rbool                                              m_runtimeError;
+	ruint64                                            m_timeStart;
 
 	RDOThreadRunTime();
 	virtual ~RDOThreadRunTime() //! Чтобы нельзя было удалить через delete
@@ -168,7 +168,7 @@ OPEN_RDO_PARSER_NAMESPACE
 PREDECLARE_POINTER(RDOParser);
 CLOSE_RDO_PARSER_NAMESPACE
 
-OPEN_RDO_SIMULATOR_NAMESPACE
+OPEN_RDO_SERVICE_SIMULATION_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOThreadSimulator
@@ -306,6 +306,6 @@ public:
 	};
 };
 
-CLOSE_RDO_SIMULATOR_NAMESPACE
+CLOSE_RDO_SERVICE_SIMULATION_NAMESPACE
 
 #endif // _RDOSIMWIN_H_

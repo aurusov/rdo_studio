@@ -226,15 +226,15 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 smr_show_mode
 	: RDO_NoShow
 	{
-		$$ = rdoSimulator::SM_NoShow;
+		$$ = rdo::service::simulation::SM_NoShow;
 	}
 	| RDO_Monitor
 	{
-		$$ = rdoSimulator::SM_Monitor;
+		$$ = rdo::service::simulation::SM_Monitor;
 	}
 	| RDO_Animation
 	{
-		$$ = rdoSimulator::SM_Animation;
+		$$ = rdo::service::simulation::SM_Animation;
 	}
 	;
 
@@ -287,7 +287,7 @@ smr_cond
 	{
 		LPRDOSMR pSMR = CONVERTER->getSMR();
 		ASSERT(pSMR);
-		pSMR->setShowMode((rdoSimulator::ShowMode)$4);
+		pSMR->setShowMode((rdo::service::simulation::ShowMode)$4);
 	}
 	| smr_cond RDO_Show_mode '=' error
 	{

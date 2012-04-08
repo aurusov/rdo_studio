@@ -356,7 +356,7 @@ void RDOThreadCorba::stop()
 #endif // CORBA_ENABLE
 
 
-OPEN_RDO_SIMULATOR_NAMESPACE
+OPEN_RDO_SERVICE_SIMULATION_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDORuntimeTracer
@@ -477,7 +477,7 @@ private:
 	}
 };
 
-CLOSE_RDO_SIMULATOR_NAMESPACE
+CLOSE_RDO_SERVICE_SIMULATION_NAMESPACE
 
 OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
@@ -628,13 +628,13 @@ void RDOThreadRunTime::start()
 	PTR(rdo::runtime::RDOResults) pResultsInfo;
 
 	//! Creating tracer and results
-	pTracer = new rdoSimulator::RDORuntimeTracer(m_pSimulator);
+	pTracer = new rdo::service::simulation::RDORuntimeTracer(m_pSimulator);
 
 	m_pSimulator->m_resultString.str(_T(""));
-	pResults = new rdoSimulator::RDOSimResulter(m_pSimulator, m_pSimulator->m_resultString);
+	pResults = new rdo::service::simulation::RDOSimResulter(m_pSimulator, m_pSimulator->m_resultString);
 
 	m_pSimulator->m_resultInfoString.str(_T(""));
-	pResultsInfo = new rdoSimulator::RDOSimResultInformer(m_pSimulator->m_resultInfoString);
+	pResultsInfo = new rdo::service::simulation::RDOSimResultInformer(m_pSimulator->m_resultInfoString);
 
 	//! RDO config initialization
 	m_pSimulator->m_pRuntime->hotkey().clear();
@@ -648,13 +648,13 @@ void RDOThreadRunTime::start()
 	try
 	{
 		LPRDOThreadRunTime pThis(this);
-		m_pSimulator->m_exitCode = rdoSimulator::EC_OK;
+		m_pSimulator->m_exitCode = rdo::service::simulation::EC_OK;
 		m_pSimulator->m_pRuntime->rdoInit(pTracer, pResults, pResultsInfo, pThis.interface_cast<IThreadProxy>());
 		switch (m_pSimulator->m_pParser->getSMR()->getShowMode())
 		{
-			case rdoSimulator::SM_NoShow   : m_pSimulator->m_pRuntime->setMode(rdo::runtime::RTM_MaxSpeed); break;
-			case rdoSimulator::SM_Animation: m_pSimulator->m_pRuntime->setMode(rdo::runtime::RTM_Sync    ); break;
-			case rdoSimulator::SM_Monitor  : m_pSimulator->m_pRuntime->setMode(rdo::runtime::RTM_Pause   ); break;
+			case rdo::service::simulation::SM_NoShow   : m_pSimulator->m_pRuntime->setMode(rdo::runtime::RTM_MaxSpeed); break;
+			case rdo::service::simulation::SM_Animation: m_pSimulator->m_pRuntime->setMode(rdo::runtime::RTM_Sync    ); break;
+			case rdo::service::simulation::SM_Monitor  : m_pSimulator->m_pRuntime->setMode(rdo::runtime::RTM_Pause   ); break;
 		}
 		m_pSimulator->m_pRuntime->setShowRate(m_pSimulator->m_pParser->getSMR()->getShowRate());
 	}
@@ -722,16 +722,16 @@ void RDOThreadRunTime::writeResultsInfo()
 {
 	switch (m_pSimulator->m_pRuntime->m_whyStop)
 	{
-		case rdoSimulator::EC_OK:
+		case rdo::service::simulation::EC_OK:
 			m_pSimulator->m_pRuntime->getResultsInfo() << _T("$Status = ") << _T("NORMAL_TERMINATION");
 			break;
-		case rdoSimulator::EC_NoMoreEvents:
+		case rdo::service::simulation::EC_NoMoreEvents:
 			m_pSimulator->m_pRuntime->getResultsInfo() << _T("$Status = ") << _T("NO_MORE_EVENTS");
 			break;
-		case rdoSimulator::EC_RunTimeError:
+		case rdo::service::simulation::EC_RunTimeError:
 			m_pSimulator->m_pRuntime->getResultsInfo() << _T("$Status = ") << _T("RUN_TIME_ERROR");
 			break;
-		case rdoSimulator::EC_UserBreak:
+		case rdo::service::simulation::EC_UserBreak:
 			m_pSimulator->m_pRuntime->getResultsInfo() << _T("$Status = ") << _T("USER_BREAK");
 			break;
 	}
@@ -851,14 +851,14 @@ void RDOThreadRunTime::sendMessage(ThreadID threadID, ruint messageID, PTR(void)
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-OPEN_RDO_SIMULATOR_NAMESPACE
+OPEN_RDO_SERVICE_SIMULATION_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOThreadSimulator
 // --------------------------------------------------------------------------------
 RDOThreadSimulator::RDOThreadSimulator()
-	: RDOThreadMT     (_T("RDOThreadSimulator"))
-	, m_pThreadRuntime(NULL                    )
-	, m_exitCode      (rdoSimulator::EC_OK     )
+	: RDOThreadMT     (_T("RDOThreadSimulator")       )
+	, m_pThreadRuntime(NULL                           )
+	, m_exitCode      (rdo::service::simulation::EC_OK)
 {
 	notifies.push_back(RT_STUDIO_MODEL_BUILD              );
 	notifies.push_back(RT_STUDIO_MODEL_RUN                );
@@ -932,7 +932,7 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 		case RT_SIMULATOR_GET_MODEL_EXITCODE:
 		{
 			msg.lock();
-			*static_cast<PTR(rdoSimulator::RDOExitCode)>(msg.param) = m_exitCode;
+			*static_cast<PTR(rdo::service::simulation::RDOExitCode)>(msg.param) = m_exitCode;
 			msg.unlock();
 			break;
 		}
@@ -1052,9 +1052,9 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 		{
 			if (msg.from == m_pThreadRuntime.get())
 			{
-				//! rdoSimulator::EC_ParserError   - Не используется в run-time
-				//! rdoSimulator::EC_ModelNotFound - Не используется в run-time
-				//! rdoSimulator::EC_UserBreak     - Устанавливается в m_pSimulator, перехват RT_THREAD_STOP_AFTER не срабатывает
+				//! rdo::service::simulation::EC_ParserError   - Не используется в run-time
+				//! rdo::service::simulation::EC_ModelNotFound - Не используется в run-time
+				//! rdo::service::simulation::EC_UserBreak     - Устанавливается в m_pSimulator, перехват RT_THREAD_STOP_AFTER не срабатывает
 				m_exitCode = m_pRuntime->m_whyStop;
 				if (!m_pThreadRuntime->runtimeError())
 				{
@@ -1094,12 +1094,12 @@ rbool RDOThreadSimulator::parseModel()
 
 	try
 	{
-		m_exitCode = rdoSimulator::EC_OK;
+		m_exitCode = rdo::service::simulation::EC_OK;
 		m_pParser->parse();
 	}
 	catch (REF(rdoParser::RDOSyntaxException))
 	{
-		m_exitCode = rdoSimulator::EC_ParserError;
+		m_exitCode = rdo::service::simulation::EC_ParserError;
 		broadcastMessage(RT_SIMULATOR_PARSE_ERROR);
 		closeModel();
 		return false;
@@ -1108,7 +1108,7 @@ rbool RDOThreadSimulator::parseModel()
 	{
 		tstring mess = ex.getType() + _T(" : ") + ex.message();
 		broadcastMessage(RT_SIMULATOR_PARSE_STRING, &mess);
-		m_exitCode = rdoSimulator::EC_ParserError;
+		m_exitCode = rdo::service::simulation::EC_ParserError;
 		broadcastMessage(RT_SIMULATOR_PARSE_ERROR);
 		closeModel();
 		return false;
@@ -1128,7 +1128,7 @@ void RDOThreadSimulator::runModel()
 	ASSERT(m_pRuntime);
 
 	m_pParser->error().clear();
-	m_exitCode = rdoSimulator::EC_OK;
+	m_exitCode = rdo::service::simulation::EC_OK;
 	m_pRuntime->setStudioThread(kernel->studio());
 	m_pThreadRuntime = rdo::Factory<rdo::runtime::RDOThreadRunTime>::create();
 }
@@ -1136,12 +1136,12 @@ void RDOThreadSimulator::runModel()
 void RDOThreadSimulator::stopModel()
 {
 	m_pRuntime->onUserBreak();
-	m_exitCode = rdoSimulator::EC_UserBreak;
+	m_exitCode = rdo::service::simulation::EC_UserBreak;
 	terminateModel();
 	m_canTrace = false;
 	broadcastMessage(RT_SIMULATOR_MODEL_STOP_BY_USER);
 	closeModel();
-//	kernel.callback(RDOKernel::modelExit, rdoSimulator::EC_UserBreak);
+//	kernel.callback(RDOKernel::modelExit, rdo::service::simulation::EC_UserBreak);
 }
 
 void RDOThreadSimulator::terminateModel()
@@ -1620,4 +1620,4 @@ void RDOThreadCodeComp::proc(REF(RDOMessageInfo) msg)
 	}
 }
 
-CLOSE_RDO_SIMULATOR_NAMESPACE
+CLOSE_RDO_SERVICE_SIMULATION_NAMESPACE

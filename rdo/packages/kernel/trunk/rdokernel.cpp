@@ -178,8 +178,8 @@ void RDOKernel::registration( RDOThread* thread )
 		}
 	}
 	if ( !thread_runtime    && thread->getName() == "RDOThreadRunTime"    ) thread_runtime    = static_cast<rdo::runtime::RDOThreadRunTime*>(thread);
-	if ( !thread_simulator  && thread->getName() == "RDOThreadSimulator"  ) thread_simulator  = static_cast<rdoSimulator::RDOThreadSimulator*>(thread);
-	if ( !thread_codecomp   && thread->getName() == "RDOThreadCodeComp"   ) thread_codecomp   = static_cast<rdoSimulator::RDOThreadCodeComp*>(thread);
+	if ( !thread_simulator  && thread->getName() == "RDOThreadSimulator"  ) thread_simulator  = static_cast<rdo::service::simulation::RDOThreadSimulator*>(thread);
+	if ( !thread_codecomp   && thread->getName() == "RDOThreadCodeComp"   ) thread_codecomp   = static_cast<rdo::service::simulation::RDOThreadCodeComp*>(thread);
 	if ( !thread_repository && thread->getName() == "RDOThreadRepository" ) thread_repository = static_cast<rdo::repository::RDOThreadRepository*>(thread);
 
 #ifdef CORBA_ENABLE

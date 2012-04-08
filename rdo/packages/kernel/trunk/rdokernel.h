@@ -6,6 +6,7 @@
 #include "kernel/rdothread.h"
 #include "repository/namespace.h"
 #include "simulator/runtime/namespace.h"
+#include "simulator/service/namespace.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
@@ -20,10 +21,10 @@ class RDOThreadCorba;
 
 #endif
 
-namespace rdoSimulator {
+OPEN_RDO_SERVICE_SIMULATION_NAMESPACE
 class RDOThreadSimulator;
 class RDOThreadCodeComp;
-}
+CLOSE_RDO_SERVICE_SIMULATION_NAMESPACE
 
 OPEN_RDO_RUNTIME_NAMESPACE
 class RDOThreadRunTime;
@@ -54,11 +55,11 @@ protected:
 //	CMutex                      methods_mutex;
 //	void method_registration( RDOTreadMethod& msg ); // thread-safety
 
-	RDOThread*                            thread_studio;
-	rdo::runtime::RDOThreadRunTime*       thread_runtime;
-	rdoSimulator::RDOThreadSimulator*     thread_simulator;
-	rdoSimulator::RDOThreadCodeComp*      thread_codecomp;
-	rdo::repository::RDOThreadRepository* thread_repository;
+	RDOThread*                                     thread_studio;
+	rdo::runtime::RDOThreadRunTime*                thread_runtime;
+	rdo::service::simulation::RDOThreadSimulator*  thread_simulator;
+	rdo::service::simulation::RDOThreadCodeComp*   thread_codecomp;
+	rdo::repository::RDOThreadRepository*          thread_repository;
 	
 	
 #ifdef CORBA_ENABLE
@@ -77,14 +78,14 @@ public:
 	virtual void idle();
 #endif
 
-	RDOThread*                            studio    () const { return thread_studio;     }
-	rdo::runtime::RDOThreadRunTime*       runtime   () const { return thread_runtime;    }
-	rdoSimulator::RDOThreadSimulator*     simulator () const { return thread_simulator;  }
-	rdoSimulator::RDOThreadCodeComp*      codecomp  () const { return thread_codecomp;   }
-	rdo::repository::RDOThreadRepository* repository() const { return thread_repository; }
+	RDOThread*                                     studio    () const { return thread_studio;     }
+	rdo::runtime::RDOThreadRunTime*                runtime   () const { return thread_runtime;    }
+	rdo::service::simulation::RDOThreadSimulator*  simulator () const { return thread_simulator;  }
+	rdo::service::simulation::RDOThreadCodeComp*   codecomp  () const { return thread_codecomp;   }
+	rdo::repository::RDOThreadRepository*          repository() const { return thread_repository; }
 
 #ifdef CORBA_ENABLE
-	rdoCorba::RDOThreadCorba*             corba     () const { return thread_corba;      }
+	rdoCorba::RDOThreadCorba*                      corba     () const { return thread_corba;      }
 #endif
 };
 

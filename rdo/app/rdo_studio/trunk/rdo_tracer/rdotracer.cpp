@@ -29,7 +29,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 using namespace rdo::repository;
-using namespace rdoSimulator;
+using namespace rdo::service::simulation;
 using namespace rdoTracer;
 
 RDOTracer* tracer = NULL;

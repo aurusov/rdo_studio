@@ -187,7 +187,7 @@ RDOStudioApp::RDOStudioApp()
 	, m_autoRun                     (false )
 	, m_autoExitByModel             (false )
 	, m_dontCloseIfError            (false )
-	, m_exitCode                    (rdoSimulator::EC_OK)
+	, m_exitCode                    (rdo::service::simulation::EC_OK)
 	, m_openModelName               (_T(""))
 	, m_pMainFrame                  (NULL  )
 {
@@ -236,8 +236,8 @@ BOOL RDOStudioApp::InitInstance()
 #else
 	m_pStudioGUI = kernel;
 #endif
-	new rdoSimulator::RDOThreadSimulator();
-	new rdoSimulator::RDOThreadCodeComp();
+	new rdo::service::simulation::RDOThreadSimulator();
+	new rdo::service::simulation::RDOThreadCodeComp();
 	new rdo::repository::RDOThreadRepository();
 
 //#define CORBA_ENABLE
@@ -334,7 +334,7 @@ BOOL RDOStudioApp::InitInstance()
 			}
 			else
 			{
-				m_exitCode = rdoSimulator::EC_ModelNotFound;
+				m_exitCode = rdo::service::simulation::EC_ModelNotFound;
 				return false;
 			}
 		}
@@ -389,7 +389,7 @@ int RDOStudioApp::ExitInstance()
 		rpMethod::project = NULL;
 	}
 #endif
-	if (m_exitCode != rdoSimulator::EC_ModelNotFound)
+	if (m_exitCode != rdo::service::simulation::EC_ModelNotFound)
 	{
 		m_exitCode = model->getExitCode();
 	}
@@ -962,7 +962,7 @@ void RDOStudioApp::autoCloseByModel()
 {
 	if (m_autoExitByModel)
 	{
-		if (!m_dontCloseIfError || !model || (m_dontCloseIfError && (model->getExitCode() == rdoSimulator::EC_OK || model->getExitCode() == rdoSimulator::EC_NoMoreEvents)))
+		if (!m_dontCloseIfError || !model || (m_dontCloseIfError && (model->getExitCode() == rdo::service::simulation::EC_OK || model->getExitCode() == rdo::service::simulation::EC_NoMoreEvents)))
 		{
 			m_pMainFrame->SendMessage(WM_CLOSE);
 		}

@@ -244,7 +244,7 @@ rss_main
 			}
 			else
 			{
-				PARSER->error().error(@1, rdoSimulator::RDOSyntaxError::UNKNOWN);
+				PARSER->error().error(@1, rdo::service::simulation::RDOSyntaxError::UNKNOWN);
 			}
 		}
 	}

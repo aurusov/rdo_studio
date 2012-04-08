@@ -18,7 +18,7 @@
 #include "simulator/compiler/procgui/procgui_datablock.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_SIMULATOR_NAMESPACE
+OPEN_RDO_SERVICE_SIMULATION_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- ProcGUICalc
@@ -232,6 +232,6 @@ private:
 	rdo::runtime::parser_for_Queue m_parserForRuntime;
 };
 
-CLOSE_RDO_SIMULATOR_NAMESPACE
+CLOSE_RDO_SERVICE_SIMULATION_NAMESPACE
 
 #endif // _PROCGUI_H_

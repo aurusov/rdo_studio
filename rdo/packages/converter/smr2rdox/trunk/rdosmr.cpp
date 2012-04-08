@@ -55,13 +55,13 @@ RDOSMR::RDOSMR(CREF(tstring) modelName)
 	, m_runStartTime  (0 )
 	, m_traceStartTime(rdo::runtime::RDOSimulatorTrace::UNDEFINE_TIME)
 	, m_traceEndTime  (rdo::runtime::RDOSimulatorTrace::UNDEFINE_TIME)
-	, m_showMode      (rdoSimulator::SM_NoShow                       )
+	, m_showMode      (rdo::service::simulation::SM_NoShow           )
 {
 	setFile(_T("Model_name"), modelName);
 	Converter::s_converter()->setSMR(this);
 }
 
-void RDOSMR::setShowMode(rdoSimulator::ShowMode showMode)
+void RDOSMR::setShowMode(rdo::service::simulation::ShowMode showMode)
 {
 	m_showMode = showMode;
 }

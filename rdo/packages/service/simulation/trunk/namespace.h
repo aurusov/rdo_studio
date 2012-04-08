@@ -5,20 +5,20 @@
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
   \date      15.02.2012
-  \brief     Пространство имен rdoSimulator
+  \brief     Пространство имен rdo::service::simulation
   \indent    4T
 */
 
-#ifndef _LIB_SERVICE_SIMULATOR_NAMESPACE_H_
-#define _LIB_SERVICE_SIMULATOR_NAMESPACE_H_
+#ifndef _LIB_SERVICE_SIMULATION_NAMESPACE_H_
+#define _LIB_SERVICE_SIMULATION_NAMESPACE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
-//! \namespace rdoSimulator
+//! \namespace rdo::service::simulation
 //! \brief     Пространство имён симулятора
-#define  OPEN_RDO_SIMULATOR_NAMESPACE  namespace rdoSimulator {
-#define CLOSE_RDO_SIMULATOR_NAMESPACE  };
+#define  OPEN_RDO_SERVICE_SIMULATION_NAMESPACE  namespace rdo { namespace service { namespace simulation {
+#define CLOSE_RDO_SERVICE_SIMULATION_NAMESPACE  }}};
 
-#endif // _LIB_SERVICE_SIMULATOR_NAMESPACE_H_
+#endif // _LIB_SERVICE_SIMULATION_NAMESPACE_H_

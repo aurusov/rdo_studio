@@ -57,14 +57,14 @@ public:
 		return m_extModelList;
 	}
 
-	rdoSimulator::ShowMode getShowMode      () const { return m_showMode;       }
-	int                    getFrameNumber   () const { return m_frameNumber;    }
-	double                 getShowRate      () const { return m_showRate;       }
-	double                 getRunStartTime  () const { return m_runStartTime;   }
-	double                 getTraceStartTime() const { return m_traceStartTime; }
-	double                 getTraceEndTime  () const { return m_traceEndTime;   }
+	rdo::service::simulation::ShowMode getShowMode      () const { return m_showMode;       }
+	int                                getFrameNumber   () const { return m_frameNumber;    }
+	double                             getShowRate      () const { return m_showRate;       }
+	double                             getRunStartTime  () const { return m_runStartTime;   }
+	double                             getTraceStartTime() const { return m_traceStartTime; }
+	double                             getTraceEndTime  () const { return m_traceEndTime;   }
 
-	void setShowMode      (rdoSimulator::ShowMode showMode);
+	void setShowMode      (rdo::service::simulation::ShowMode showMode);
 	void setFrameNumber   (int value,    CREF(YYLTYPE) pos);
 	void setShowRate      (double value, CREF(YYLTYPE) pos);
 	void setRunStartTime  (double value, CREF(YYLTYPE) pos);
@@ -88,17 +88,17 @@ private:
 	};
 	typedef std::vector<LPBreakPoint> BreakPointList;
 
-	StringTable            m_extModelList;
-	rdoSimulator::ShowMode m_showMode;
-	int                    m_frameNumber;
-	double                 m_showRate;
-	double                 m_runStartTime;
-	double                 m_traceStartTime;
-	double                 m_traceEndTime;
-	YYLTYPE                m_traceStartTime_pos;
-	YYLTYPE                m_traceEndTime_pos;
-	LPRDOFUNLogic          m_pTerminateIf;
-	BreakPointList         m_breakPointList;
+	StringTable                         m_extModelList;
+	rdo::service::simulation::ShowMode  m_showMode;
+	int                                 m_frameNumber;
+	double                              m_showRate;
+	double                              m_runStartTime;
+	double                              m_traceStartTime;
+	double                              m_traceEndTime;
+	YYLTYPE                             m_traceStartTime_pos;
+	YYLTYPE                             m_traceEndTime_pos;
+	LPRDOFUNLogic                       m_pTerminateIf;
+	BreakPointList                      m_breakPointList;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

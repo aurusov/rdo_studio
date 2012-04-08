@@ -55,10 +55,10 @@ RDOSMR::RDOSMR()
 	, m_runStartTime  (0 )
 	, m_traceStartTime(rdo::runtime::RDOSimulatorTrace::UNDEFINE_TIME)
 	, m_traceEndTime  (rdo::runtime::RDOSimulatorTrace::UNDEFINE_TIME)
-	, m_showMode      (rdoSimulator::SM_NoShow                       )
+	, m_showMode      (rdo::service::simulation::SM_NoShow           )
 {}
 
-void RDOSMR::setShowMode(rdoSimulator::ShowMode showMode)
+void RDOSMR::setShowMode(rdo::service::simulation::ShowMode showMode)
 {
 	m_showMode = showMode;
 }

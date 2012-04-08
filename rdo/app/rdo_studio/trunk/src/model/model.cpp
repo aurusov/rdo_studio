@@ -36,7 +36,7 @@
 // --------------------------------------------------------------------------------
 
 using namespace rdoEditor;
-using namespace rdoSimulator;
+using namespace rdo::service::simulation;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -51,33 +51,33 @@ PTR(RDOStudioModel) model = NULL;
 
 RDOStudioModel::RDOStudioModel()
 	: RDOThreadGUI(_T("RDOThreadModelGUI"), static_cast<PTR(RDOKernelGUI)>(studioApp.m_pStudioGUI))
-	, m_pModelDocTemplate(NULL                          )
-	, m_pFlowchartDocTemplate( NULL                     )
-	, m_useTemplate      (-1                            )
-	, m_autoDeleteDoc    (true                          )
-	, m_showCanNotCloseModelMessage(true                )
-	, m_GUI_HAS_MODEL    (false                         )
-	, m_GUI_CAN_RUN      (true                          )
-	, m_GUI_IS_RUNING    (false                         )
-	, m_GUI_ACTION_NEW   (true                          )
-	, m_GUI_ACTION_OPEN  (true                          )
-	, m_GUI_ACTION_SAVE  (true                          )
-	, m_GUI_ACTION_CLOSE (true                          )
-	, m_GUI_ACTION_BUILD (true                          )
-	, m_GUI_ACTION_RUN   (true                          )
-	, m_openError        (false                         )
-	, m_smrEmptyError    (false                         )
-	, m_modelClosed      (true                          )
-	, m_frmDescribed     (false                         )
-	, m_timeNow          (0                             )
-	, m_speed            (1                             )
-	, m_showRate         (60                            )
-	, m_tempPause        (false                         )
-	, m_runtimeMode      (rdo::runtime::RTM_MaxSpeed    )
-	, m_runtimeModePrev  (rdo::runtime::RTM_MaxSpeed    )
-	, m_exitCode         (rdoSimulator::EC_ModelNotFound)
-	, m_prevModify       (false                         )
-	, m_buildState       (BS_UNDEFINED                  )
+	, m_pModelDocTemplate(NULL                      )
+	, m_pFlowchartDocTemplate( NULL                 )
+	, m_useTemplate      (-1                        )
+	, m_autoDeleteDoc    (true                      )
+	, m_showCanNotCloseModelMessage(true            )
+	, m_GUI_HAS_MODEL    (false                     )
+	, m_GUI_CAN_RUN      (true                      )
+	, m_GUI_IS_RUNING    (false                     )
+	, m_GUI_ACTION_NEW   (true                      )
+	, m_GUI_ACTION_OPEN  (true                      )
+	, m_GUI_ACTION_SAVE  (true                      )
+	, m_GUI_ACTION_CLOSE (true                      )
+	, m_GUI_ACTION_BUILD (true                      )
+	, m_GUI_ACTION_RUN   (true                      )
+	, m_openError        (false                     )
+	, m_smrEmptyError    (false                     )
+	, m_modelClosed      (true                      )
+	, m_frmDescribed     (false                     )
+	, m_timeNow          (0                         )
+	, m_speed            (1                         )
+	, m_showRate         (60                        )
+	, m_tempPause        (false                     )
+	, m_runtimeMode      (rdo::runtime::RTM_MaxSpeed)
+	, m_runtimeModePrev  (rdo::runtime::RTM_MaxSpeed)
+	, m_exitCode         (rdo::service::simulation::EC_ModelNotFound)
+	, m_prevModify       (false                     )
+	, m_buildState       (BS_UNDEFINED              )
 {
 	m_pModelDocTemplate = new CMultiDocTemplate(IDR_MODEL_TYPE, RUNTIME_CLASS(RDOStudioModelDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioModelView));
 	AfxGetApp()->AddDocTemplate(m_pModelDocTemplate);
@@ -1145,8 +1145,8 @@ void RDOStudioModel::afterModelStart()
 
 		std::list< tstring > frames;
 		std::list< tstring > bitmaps;
-		rdoSimulator::RDOThreadSimulator::GetList getListFrames (rdoSimulator::RDOThreadSimulator::GetList::frames,  &frames );
-		rdoSimulator::RDOThreadSimulator::GetList getListBitmaps(rdoSimulator::RDOThreadSimulator::GetList::bitmaps, &bitmaps);
+		rdo::service::simulation::RDOThreadSimulator::GetList getListFrames (rdo::service::simulation::RDOThreadSimulator::GetList::frames,  &frames );
+		rdo::service::simulation::RDOThreadSimulator::GetList getListBitmaps(rdo::service::simulation::RDOThreadSimulator::GetList::bitmaps, &bitmaps);
 		sendMessage(kernel->simulator(), RT_SIMULATOR_GET_LIST, &getListFrames );
 		sendMessage(kernel->simulator(), RT_SIMULATOR_GET_LIST, &getListBitmaps);
 		STL_FOR_ALL_CONST(bitmaps, bmp_it)

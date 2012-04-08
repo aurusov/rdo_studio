@@ -49,40 +49,40 @@ private:
 		BS_ERROR
 	};
 
-	PTR(CMultiDocTemplate)    m_pModelDocTemplate;
-	PTR(CMultiDocTemplate)    m_pFlowchartDocTemplate;
-	RDOStudioFrameManager     m_frameManager;
+	PTR(CMultiDocTemplate)                 m_pModelDocTemplate;
+	PTR(CMultiDocTemplate)                 m_pFlowchartDocTemplate;
+	RDOStudioFrameManager                  m_frameManager;
 
-	int                       m_useTemplate;
-	rbool                     m_autoDeleteDoc;
-	rbool                     m_showCanNotCloseModelMessage;
+	int                                    m_useTemplate;
+	rbool                                  m_autoDeleteDoc;
+	rbool                                  m_showCanNotCloseModelMessage;
 
-	rbool                     m_GUI_HAS_MODEL;
-	rbool                     m_GUI_CAN_RUN;
-	rbool                     m_GUI_IS_RUNING;
-	rbool                     m_GUI_ACTION_NEW;
-	rbool                     m_GUI_ACTION_OPEN;
-	rbool                     m_GUI_ACTION_SAVE;
-	rbool                     m_GUI_ACTION_CLOSE;
-	rbool                     m_GUI_ACTION_BUILD;
-	rbool                     m_GUI_ACTION_RUN;
+	rbool                                  m_GUI_HAS_MODEL;
+	rbool                                  m_GUI_CAN_RUN;
+	rbool                                  m_GUI_IS_RUNING;
+	rbool                                  m_GUI_ACTION_NEW;
+	rbool                                  m_GUI_ACTION_OPEN;
+	rbool                                  m_GUI_ACTION_SAVE;
+	rbool                                  m_GUI_ACTION_CLOSE;
+	rbool                                  m_GUI_ACTION_BUILD;
+	rbool                                  m_GUI_ACTION_RUN;
 
-	SYSTEMTIME                m_timeStart;
-	BuildState                m_buildState;
+	SYSTEMTIME                             m_timeStart;
+	BuildState                             m_buildState;
 
-	mutable rbool             m_openError;
-	mutable rbool             m_smrEmptyError;
-	mutable rbool             m_modelClosed;
+	mutable rbool                          m_openError;
+	mutable rbool                          m_smrEmptyError;
+	mutable rbool                          m_modelClosed;
 
-	rbool                     m_frmDescribed;
-	double                    m_timeNow;
-	double                    m_speed;
-	double                    m_showRate;
-	rbool                     m_tempPause;
-	rdo::runtime::RunTimeMode m_runtimeMode;
-	rdo::runtime::RunTimeMode m_runtimeModePrev;
-	rdoSimulator::RDOExitCode m_exitCode;
-	mutable rbool             m_prevModify;
+	rbool                                  m_frmDescribed;
+	double                                 m_timeNow;
+	double                                 m_speed;
+	double                                 m_showRate;
+	rbool                                  m_tempPause;
+	rdo::runtime::RunTimeMode              m_runtimeMode;
+	rdo::runtime::RunTimeMode              m_runtimeModePrev;
+	rdo::service::simulation::RDOExitCode  m_exitCode;
+	mutable rbool                          m_prevModify;
 
 	void  updateFrmDescribed      ();
 	void  newModelFromRepository  ();
@@ -199,8 +199,8 @@ public:
 	rbool  isFrmDescribed() const { return m_frmDescribed;                                                       }
 	double getTimeNow    () const { return m_timeNow;                                                            }
 
-	rdoSimulator::RDOExitCode getExitCode   () const { return m_exitCode;    }
-	rdo::runtime::RunTimeMode getRuntimeMode() const { return m_runtimeMode; }
+	rdo::service::simulation::RDOExitCode getExitCode   () const { return m_exitCode;    }
+	rdo::runtime::RunTimeMode             getRuntimeMode() const { return m_runtimeMode; }
 	void    setRuntimeMode       (const rdo::runtime::RunTimeMode value);
 	tstring getLastBreakPointName();
 	double  getSpeed             () const            { return m_speed;       }
