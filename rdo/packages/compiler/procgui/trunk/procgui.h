@@ -7,18 +7,19 @@
   \indent    4T
 */
 
-#ifndef _PROCGUI_H_
-#define _PROCGUI_H_
+#ifndef _SIMULATOR_COMPILER_GUI_PROCGUI_H_
+#define _SIMULATOR_COMPILER_GUI_PROCGUI_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/service/namespace.h"
 #include "simulator/compiler/parser/rdoparser.h"
+#include "simulator/compiler/procgui/namespace.h"
 #include "simulator/compiler/procgui/procgui_datablock.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_SERVICE_SIMULATION_NAMESPACE
+OPEN_COMPILER_GUI_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- ProcGUICalc
@@ -232,6 +233,6 @@ private:
 	rdo::runtime::parser_for_Queue m_parserForRuntime;
 };
 
-CLOSE_RDO_SERVICE_SIMULATION_NAMESPACE
+CLOSE_COMPILER_GUI_NAMESPACE
 
-#endif // _PROCGUI_H_
+#endif // _SIMULATOR_COMPILER_GUI_PROCGUI_H_

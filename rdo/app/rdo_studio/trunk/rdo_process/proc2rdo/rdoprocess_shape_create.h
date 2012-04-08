@@ -27,7 +27,7 @@ public:
 	virtual void generate();
 
 	//параметры для симулятора
-	LPRPShapeDataBlockCreate m_pParams;
+	rdo::compiler::gui::LPRPShapeDataBlockCreate m_pParams;
 	//переменные для генерации
 	tstring gname; // имя
 	double gfirst; // время первого

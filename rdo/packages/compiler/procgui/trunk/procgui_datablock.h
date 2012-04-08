@@ -7,14 +7,17 @@
   \indent    4T
 */
 
-#ifndef _PROCGUI_DATABLOCK_H_
-#define _PROCGUI_DATABLOCK_H_
+#ifndef _SIMULATOR_COMPILER_GUI_DATABLOCK_H_
+#define _SIMULATOR_COMPILER_GUI_DATABLOCK_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <list>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/smart_ptr/intrusive_ptr.h"
+#include "simulator/compiler/procgui/namespace.h"
 // --------------------------------------------------------------------------------
+
+OPEN_COMPILER_GUI_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RPShapeDataBlock
@@ -126,4 +129,6 @@ private:
 };
 DECLARE_POINTER(RPShapeDataBlockProcess);
 
-#endif // _PROCGUI_DATABLOCK_H_
+CLOSE_COMPILER_GUI_NAMESPACE
+
+#endif // _SIMULATOR_COMPILER_GUI_DATABLOCK_H_

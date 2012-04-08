@@ -65,27 +65,27 @@ void RPShapeProcessMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 
 void RPShapeProcessMJ::generate()
 {
-	RPShapeDataBlock::zakonRaspr zakon;
+	rdo::compiler::gui::RPShapeDataBlock::zakonRaspr zakon;
 	switch(gtype)
 	{
 		case 0: // константа
-			zakon = RPShapeDataBlock::Const;
+			zakon = rdo::compiler::gui::RPShapeDataBlock::Const;
 			break;	
 		case 1: // нормальный
-			zakon = RPShapeDataBlock::Normal;
+			zakon = rdo::compiler::gui::RPShapeDataBlock::Normal;
 			break;
 		case 2: // равномерный закон
-			zakon = RPShapeDataBlock::Uniform;
+			zakon = rdo::compiler::gui::RPShapeDataBlock::Uniform;
 			break;
 		case 3: // треугольный
-			zakon = RPShapeDataBlock::Triangular;
+			zakon = rdo::compiler::gui::RPShapeDataBlock::Triangular;
 			break;
 		case 4: // экспоненциальный
-			zakon = RPShapeDataBlock::Exp;
+			zakon = rdo::compiler::gui::RPShapeDataBlock::Exp;
 			break;
 	}
 
-	m_pParams = rdo::Factory<RPShapeDataBlockProcess>::create(zakon, gname);
+	m_pParams = rdo::Factory<rdo::compiler::gui::RPShapeDataBlockProcess>::create(zakon, gname);
 	ASSERT(m_pParams);
 	m_pParams->setBase(base_gen);
 	m_pParams->setDisp(gdisp);
@@ -95,20 +95,20 @@ void RPShapeProcessMJ::generate()
 	switch(action)
 	{
 		case 0://advance
-			m_pParams->addAction(RPShapeDataBlockProcess::A_ADVANCE);
+			m_pParams->addAction(rdo::compiler::gui::RPShapeDataBlockProcess::A_ADVANCE);
 			break;
 		case 1://sieze,advance,release
-			m_pParams->addAction(RPShapeDataBlockProcess::A_SEIZE  );
-			m_pParams->addAction(RPShapeDataBlockProcess::A_ADVANCE);
-			m_pParams->addAction(RPShapeDataBlockProcess::A_RELEASE);
+			m_pParams->addAction(rdo::compiler::gui::RPShapeDataBlockProcess::A_SEIZE  );
+			m_pParams->addAction(rdo::compiler::gui::RPShapeDataBlockProcess::A_ADVANCE);
+			m_pParams->addAction(rdo::compiler::gui::RPShapeDataBlockProcess::A_RELEASE);
 			break;
 		case 2://seize,advance
-			m_pParams->addAction(RPShapeDataBlockProcess::A_SEIZE  );
-			m_pParams->addAction(RPShapeDataBlockProcess::A_ADVANCE);
+			m_pParams->addAction(rdo::compiler::gui::RPShapeDataBlockProcess::A_SEIZE  );
+			m_pParams->addAction(rdo::compiler::gui::RPShapeDataBlockProcess::A_ADVANCE);
 			break;
 		case 3://seize,advance
-			m_pParams->addAction(RPShapeDataBlockProcess::A_ADVANCE);
-			m_pParams->addAction(RPShapeDataBlockProcess::A_RELEASE);
+			m_pParams->addAction(rdo::compiler::gui::RPShapeDataBlockProcess::A_ADVANCE);
+			m_pParams->addAction(rdo::compiler::gui::RPShapeDataBlockProcess::A_RELEASE);
 			break;
 	}
 

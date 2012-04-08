@@ -203,13 +203,13 @@ public:
 	{};
 
 private:
-	rdoParser::LPRDOParser            m_pParser;
-	rdo::runtime::LPRDORuntime        m_pRuntime;
-	rbool                             m_canTrace;
-	LPProcGUIProcess                  m_pGUIProcess;
-	LPProcGUIBlock                    m_pBlock;
-	rdo::runtime::LPRDOThreadRunTime  m_pThreadRuntime;
-	RDOExitCode                       m_exitCode;
+	rdoParser::LPRDOParser                m_pParser;
+	rdo::runtime::LPRDORuntime            m_pRuntime;
+	rbool                                 m_canTrace;
+	rdo::compiler::gui::LPProcGUIProcess  m_pGUIProcess;
+	rdo::compiler::gui::LPProcGUIBlock    m_pBlock;
+	rdo::runtime::LPRDOThreadRunTime      m_pThreadRuntime;
+	RDOExitCode                           m_exitCode;
 
 	void terminateModel();
 	void closeModel    (); 

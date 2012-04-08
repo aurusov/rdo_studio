@@ -15,6 +15,8 @@
 #include "simulator/compiler/procgui/procgui_datablock.h"
 // --------------------------------------------------------------------------------
 
+OPEN_COMPILER_GUI_NAMESPACE
+
 // --------------------------------------------------------------------------------
 // -------------------- RPShapeDataBlock
 // --------------------------------------------------------------------------------
@@ -104,3 +106,5 @@ CREF(RPShapeDataBlockProcess::ResNameList) RPShapeDataBlockProcess::getResNameLi
 {
 	return m_resNameList;
 }
+
+CLOSE_COMPILER_GUI_NAMESPACE
