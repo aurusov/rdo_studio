@@ -125,27 +125,27 @@ void RPShapeCreateMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 
 void RPShapeCreateMJ::generate()
 {
-	RPShapeDataBlock::zakonRaspr zakon;
+	rdo::compiler::gui::RPShapeDataBlock::zakonRaspr zakon;
 	switch(gtype)
 	{
 		case 0: // константа
-			zakon = RPShapeDataBlock::Const;
+			zakon = rdo::compiler::gui::RPShapeDataBlock::Const;
 			break;	
 		case 1: // нормальный
-			zakon = RPShapeDataBlock::Normal;
+			zakon = rdo::compiler::gui::RPShapeDataBlock::Normal;
 			break;
 		case 2: // равномерный закон
-			zakon = RPShapeDataBlock::Uniform;
+			zakon = rdo::compiler::gui::RPShapeDataBlock::Uniform;
 			break;
 		case 3: // треугольный
-			zakon = RPShapeDataBlock::Triangular;
+			zakon = rdo::compiler::gui::RPShapeDataBlock::Triangular;
 			break;
 		case 4: // экспоненциальный
-			zakon = RPShapeDataBlock::Exp;
+			zakon = rdo::compiler::gui::RPShapeDataBlock::Exp;
 			break;
 	}
 
-	m_pParams = rdo::Factory<RPShapeDataBlockCreate>::create(zakon, gname);
+	m_pParams = rdo::Factory<rdo::compiler::gui::RPShapeDataBlockCreate>::create(zakon, gname);
 	m_pParams->setBase(base_gen);
 	m_pParams->setAmount(gamount);
 	m_pParams->setDisp(gdisp);

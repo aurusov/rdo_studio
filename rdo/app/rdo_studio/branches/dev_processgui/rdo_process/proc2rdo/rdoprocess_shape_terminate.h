@@ -15,7 +15,7 @@ public:
 	tstring m_name;
 	int     m_term_inc;
 
-	LPRPShapeDataBlockTerminate m_pParams;
+	rdo::compiler::gui::LPRPShapeDataBlockTerminate m_pParams;
 
 	RPShapeTerminateMJ( RPObject* parent );
 	virtual ~RPShapeTerminateMJ();

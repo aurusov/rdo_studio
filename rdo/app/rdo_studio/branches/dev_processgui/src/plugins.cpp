@@ -617,11 +617,11 @@ rbool RDOStudioPlugins::isModelRunning()
 rdoPlugin::ModelRuntimeMode RDOStudioPlugins::getModelRuntimeMode()
 {
 	switch ( model->getRuntimeMode() ) {
-		case rdoRuntime::RTM_MaxSpeed  : return rdoPlugin::MRTM_MaxSpeed;
-		case rdoRuntime::RTM_Jump      : return rdoPlugin::MRTM_Jump;
-		case rdoRuntime::RTM_Sync      : return rdoPlugin::MRTM_Sync;
-		case rdoRuntime::RTM_Pause     : return rdoPlugin::MRTM_Pause;
-		case rdoRuntime::RTM_BreakPoint: return rdoPlugin::MRTM_BreakPoint;
+		case rdo::runtime::RTM_MaxSpeed  : return rdoPlugin::MRTM_MaxSpeed;
+		case rdo::runtime::RTM_Jump      : return rdoPlugin::MRTM_Jump;
+		case rdo::runtime::RTM_Sync      : return rdoPlugin::MRTM_Sync;
+		case rdo::runtime::RTM_Pause     : return rdoPlugin::MRTM_Pause;
+		case rdo::runtime::RTM_BreakPoint: return rdoPlugin::MRTM_BreakPoint;
 	}
 	return rdoPlugin::MRTM_MaxSpeed;
 }
@@ -629,11 +629,11 @@ rdoPlugin::ModelRuntimeMode RDOStudioPlugins::getModelRuntimeMode()
 void RDOStudioPlugins::setModelRuntimeMode( rdoPlugin::ModelRuntimeMode runtimeMode )
 {
 	switch ( runtimeMode ) {
-		case rdoPlugin::MRTM_MaxSpeed  : model->setRuntimeMode( rdoRuntime::RTM_MaxSpeed ); break;
-		case rdoPlugin::MRTM_Jump      : model->setRuntimeMode( rdoRuntime::RTM_Jump ); break;
-		case rdoPlugin::MRTM_Sync      : model->setRuntimeMode( rdoRuntime::RTM_Sync ); break;
-		case rdoPlugin::MRTM_Pause     : model->setRuntimeMode( rdoRuntime::RTM_Pause ); break;
-		case rdoPlugin::MRTM_BreakPoint: model->setRuntimeMode( rdoRuntime::RTM_BreakPoint ); break;
+		case rdoPlugin::MRTM_MaxSpeed  : model->setRuntimeMode( rdo::runtime::RTM_MaxSpeed ); break;
+		case rdoPlugin::MRTM_Jump      : model->setRuntimeMode( rdo::runtime::RTM_Jump ); break;
+		case rdoPlugin::MRTM_Sync      : model->setRuntimeMode( rdo::runtime::RTM_Sync ); break;
+		case rdoPlugin::MRTM_Pause     : model->setRuntimeMode( rdo::runtime::RTM_Pause ); break;
+		case rdoPlugin::MRTM_BreakPoint: model->setRuntimeMode( rdo::runtime::RTM_BreakPoint ); break;
 	}
 }
 

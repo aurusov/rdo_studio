@@ -27,11 +27,11 @@ class RDOBuildEditLineInfo: public RDOLogEditLineInfo
 friend class RDOBuildEdit;
 
 protected:
-	rdoSimulator::RDOSyntaxError::ErrorCode error_code;
+	rdo::service::simulation::RDOSyntaxError::ErrorCode error_code;
 	rbool warning;
 
 public:
-	RDOBuildEditLineInfo( rdoSimulator::RDOSyntaxError::ErrorCode _error_code, CREF(tstring) _message, const rdoModelObjects::RDOFileType _fileType = rdoModelObjects::PAT, const int _lineNumber = -1, const int _posInLine = 0, rbool _warning = false );
+	RDOBuildEditLineInfo( rdo::service::simulation::RDOSyntaxError::ErrorCode _error_code, CREF(tstring) _message, const rdoModelObjects::RDOFileType _fileType = rdoModelObjects::PAT, const int _lineNumber = -1, const int _posInLine = 0, rbool _warning = false );
 	RDOBuildEditLineInfo( CREF(tstring) _message );
 	~RDOBuildEditLineInfo();
 
