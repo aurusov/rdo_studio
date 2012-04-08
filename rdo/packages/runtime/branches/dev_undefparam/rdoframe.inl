@@ -152,9 +152,9 @@ inline CREF(tstring) RDOFRMFrame::name() const
 	return src_text();
 }
 
-inline PTR(rdoAnimation::RDOFrame) RDOFRMFrame::createFrame(CREF(LPRDORuntime) pRuntime)
+inline PTR(rdo::animation::Frame) RDOFRMFrame::createFrame(CREF(LPRDORuntime) pRuntime)
 {
-	PTR(rdoAnimation::RDOFrame) pFrame = new rdoAnimation::RDOFrame();
+	PTR(rdo::animation::Frame) pFrame = new rdo::animation::Frame();
 	return prepareFrame(pFrame, pRuntime);
 }
 
@@ -253,12 +253,12 @@ inline CREF(RDOFRMFrame::LPRDOFRMColor) RDOFRMColoredItem::getFgColor() const
 	return m_pFgColor;
 }
 
-inline rdoAnimation::RDOColor RDOFRMColoredItem::getBg(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const
+inline rdo::animation::Color RDOFRMColoredItem::getBg(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const
 {
 	return m_pBgColor->getColor(pRuntime, pFrame);
 }
 
-inline rdoAnimation::RDOColor RDOFRMColoredItem::getFg(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const
+inline rdo::animation::Color RDOFRMColoredItem::getFg(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const
 {
 	return m_pFgColor->getColor(pRuntime, pFrame);
 }

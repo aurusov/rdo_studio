@@ -29,12 +29,12 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 class IPriority
 {
 public:
-	virtual rdoRuntime::LPRDOCalc getPrior()                                   = 0;
-	virtual rbool                 setPrior(CREF(rdoRuntime::LPRDOCalc) pPrior) = 0;
+	virtual rdo::runtime::LPRDOCalc getPrior()                                   = 0;
+	virtual rbool                   setPrior(CREF(rdo::runtime::LPRDOCalc) pPrior) = 0;
 };
 
-#define DECLARE_IPriority \
-	virtual rdoRuntime::LPRDOCalc getPrior(); \
-	virtual rbool                 setPrior(CREF(rdoRuntime::LPRDOCalc) pPrior);
+#define DECLARE_IPriority                       \
+	virtual rdo::runtime::LPRDOCalc getPrior(); \
+	virtual rbool                   setPrior(CREF(rdo::runtime::LPRDOCalc) pPrior);
 
 #endif // _LIB_RUNTIME_PRIORITY_I_H_

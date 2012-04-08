@@ -30,9 +30,9 @@ CLOSE_RDO_RUNTIME_NAMESPACE
 class IPROCBlock
 {
 public:
-	typedef  rdoRuntime::LPRDOPROCTransact  LPTransact;
-	typedef  std::list<LPTransact>          TransactList;
-	typedef  TransactList::iterator         TransactIt;
+	typedef  rdo::runtime::LPRDOPROCTransact  LPTransact;
+	typedef  std::list<LPTransact>            TransactList;
+	typedef  TransactList::iterator           TransactIt;
 
 	virtual TransactIt     transactFind (CREF(LPTransact) pTransact) = 0;
 	virtual TransactIt     transactEnd  ()                           = 0;
@@ -55,16 +55,16 @@ public:
 class IPROCProcess
 {
 public:
-	virtual void  insertChild(LPIPROCProcess                      pProcess ) = 0;
-	virtual void  setParent  (LPIPROCProcess                      pProcess ) = 0;
-	virtual void  next       (CREF(rdoRuntime::LPRDOPROCTransact) pTransact) = 0;
-	virtual rdoRuntime::LPIResourceType getTranType() const                  = 0;
+	virtual void  insertChild(LPIPROCProcess                        pProcess ) = 0;
+	virtual void  setParent  (LPIPROCProcess                        pProcess ) = 0;
+	virtual void  next       (CREF(rdo::runtime::LPRDOPROCTransact) pTransact) = 0;
+	virtual rdo::runtime::LPIResourceType getTranType() const                  = 0;
 };
 
-#define DECLARE_IPROCProcess                                                  \
-	virtual void  insertChild(LPIPROCProcess                      pProcess ); \
-	virtual void  setParent  (LPIPROCProcess                      pProcess ); \
-	virtual void  next       (CREF(rdoRuntime::LPRDOPROCTransact) pTransact); \
-	virtual rdoRuntime::LPIResourceType getTranType() const;
+#define DECLARE_IPROCProcess                                                    \
+	virtual void  insertChild(LPIPROCProcess                        pProcess ); \
+	virtual void  setParent  (LPIPROCProcess                        pProcess ); \
+	virtual void  next       (CREF(rdo::runtime::LPRDOPROCTransact) pTransact); \
+	virtual rdo::runtime::LPIResourceType getTranType() const;
 
 #endif // _LIB_RUNTIME_PROCESS_I_H_
