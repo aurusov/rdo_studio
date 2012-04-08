@@ -73,7 +73,7 @@ Context::FindResult RDORSSResource::onSwitchContext(CREF(LPExpression) pSwitchEx
 
 	LPExpression pExpression = rdo::Factory<Expression>::create(
 		pParam->getTypeInfo(),
-		rdo::Factory<rdoRuntime::RDOCalcGetResourceParam>::create(pSwitchExpression->calc(), parNumb),
+		rdo::Factory<rdo::runtime::RDOCalcGetResourceParam>::create(pSwitchExpression->calc(), parNumb),
 		pValue->src_info()
 	);
 	ASSERT(pExpression);
@@ -127,22 +127,22 @@ rbool RDORSSResource::defined() const
 	return m_currParam == getType()->getParams().end();
 }
 
-rdoRuntime::LPRDOCalc RDORSSResource::createCalc() const
+rdo::runtime::LPRDOCalc RDORSSResource::createCalc() const
 {
-	std::vector<rdoRuntime::RDOValue> paramList;
+	std::vector<rdo::runtime::RDOValue> paramList;
 	STL_FOR_ALL_CONST(params(), it)
 	{
 		paramList.push_back(it->param()->value());
 	}
 
-	rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcCreateResource>::create(
+	rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcCreateResource>::create(
 		getType()->getRuntimeResType(),
 		paramList,
 		getTrace(),
 		getType()->isPermanent()
 	);
 	ASSERT(pCalc);
-	rdoRuntime::RDOSrcInfo srcInfo(src_info());
+	rdo::runtime::RDOSrcInfo srcInfo(src_info());
 	srcInfo.setSrcText(_T("Создание ресурса ") + src_text());
 	pCalc->setSrcInfo(srcInfo);
 	return pCalc;

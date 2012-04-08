@@ -34,14 +34,14 @@ RDOParserSrcInfo::RDOParserSrcInfo(CREF(YYLTYPE) pos)
 	setSrcPos(pos);
 }
 
-RDOParserSrcInfo::RDOParserSrcInfo(CREF(rdoRuntime::RDOSrcInfo) info)
+RDOParserSrcInfo::RDOParserSrcInfo(CREF(rdo::runtime::RDOSrcInfo) info)
 	: RDOSrcInfo()
 {
 	init();
 	RDOSrcInfo::setSrcInfo(info);
 }
 
-RDOParserSrcInfo::RDOParserSrcInfo(CREF(rdoRuntime::RDOSrcInfo::Position) pos)
+RDOParserSrcInfo::RDOParserSrcInfo(CREF(rdo::runtime::RDOSrcInfo::Position) pos)
 	: RDOSrcInfo()
 {
 	init();
@@ -101,7 +101,7 @@ RDOParserSrcInfo::~RDOParserSrcInfo()
 void RDOParserSrcInfo::init()
 {
 	setSrcFileType(RDOParser::getFileToParse());
-	rdoRuntime::RDOSrcInfo::Position pos;
+	rdo::runtime::RDOSrcInfo::Position pos;
 	pos.m_first_pos  = RDOParser::lexer_loc_pos();
 	pos.m_last_pos   = pos.m_first_pos;
 	pos.m_first_line = RDOParser::lexer_loc_line();

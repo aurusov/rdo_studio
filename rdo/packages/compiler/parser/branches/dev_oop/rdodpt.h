@@ -168,7 +168,7 @@ private:
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSome
 // --------------------------------------------------------------------------------
-CLASS(RDODPTSome): public RDOLogic<rdoRuntime::RDODPTSome, RDODPTSomeActivity>
+CLASS(RDODPTSome): public RDOLogic<rdo::runtime::RDODPTSome, RDODPTSomeActivity>
 	AND INSTANCE_OF      (Context     )
 	AND IMPLEMENTATION_OF(IContextFind)
 {
@@ -185,7 +185,7 @@ DECLARE_POINTER(RDODPTSome);
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTPrior
 // --------------------------------------------------------------------------------
-CLASS(RDODPTPrior): public RDOLogic<rdoRuntime::RDODPTPrior, RDODPTPriorActivity>
+CLASS(RDODPTPrior): public RDOLogic<rdo::runtime::RDODPTPrior, RDODPTPriorActivity>
 	AND INSTANCE_OF      (Context     )
 	AND IMPLEMENTATION_OF(IContextFind)
 {
@@ -224,7 +224,7 @@ DECLARE_POINTER(RDODPTSearchActivity);
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSearch
 // --------------------------------------------------------------------------------
-CLASS(RDODPTSearch): public RDOLogic<rdoRuntime::RDODPTSearchRuntime, RDODPTSearchActivity>
+CLASS(RDODPTSearch): public RDOLogic<rdo::runtime::RDODPTSearchRuntime, RDODPTSearchActivity>
 	AND INSTANCE_OF      (Context     )
 	AND IMPLEMENTATION_OF(IContextFind)
 {
@@ -237,15 +237,15 @@ public:
 	rbool closed          () const                                    { return m_closed;                 }
 
 private:
-	RDODPTSearch(CREF(RDOParserSrcInfo) src_info, rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag trace = rdoRuntime::RDODPTSearchTrace::DPT_no_trace, LPILogic pParent = NULL);
+	RDODPTSearch(CREF(RDOParserSrcInfo) src_info, rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag trace = rdo::runtime::RDODPTSearchTrace::DPT_no_trace, LPILogic pParent = NULL);
 	virtual ~RDODPTSearch();
 
-	LPRDOFUNLogic                                 m_pTermConditon;
-	LPRDOFUNArithm                                m_pEvalBy;
-	LPILogic                                      m_pParent;
-	rbool                                         m_compTops;
-	rbool                                         m_closed;
-	rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag  m_trace;
+	LPRDOFUNLogic                                   m_pTermConditon;
+	LPRDOFUNArithm                                  m_pEvalBy;
+	LPILogic                                        m_pParent;
+	rbool                                           m_compTops;
+	rbool                                           m_closed;
+	rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag  m_trace;
 
 	DECLARE_IContextFind;
 };

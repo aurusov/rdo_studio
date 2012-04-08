@@ -107,9 +107,9 @@ inline LPRDOValue RDOTypeRange<T>::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOPa
 }
 
 template<class T>
-inline rdoRuntime::LPRDOCalc RDOTypeRange<T>::calc_cast(CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
+inline rdo::runtime::LPRDOCalc RDOTypeRange<T>::calc_cast(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
 {
-	return rdo::Factory<rdoRuntime::RDOCalcCheckRange>::create(range()->getMin()->value(), range()->getMax()->value(), T::calc_cast(pCalc, pType));
+	return rdo::Factory<rdo::runtime::RDOCalcCheckRange>::create(range()->getMin()->value(), range()->getMax()->value(), T::calc_cast(pCalc, pType));
 }
 
 template<class T>
@@ -119,7 +119,7 @@ inline CREF(LPRDOTypeRangeRange) RDOTypeRange<T>::range() const
 }
 
 template<class T>
-inline rdoRuntime::RDOValue RDOTypeRange<T>::get_default() const
+inline rdo::runtime::RDOValue RDOTypeRange<T>::get_default() const
 {
 	return m_range->getMin()->value();
 }

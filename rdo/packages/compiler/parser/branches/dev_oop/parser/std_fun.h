@@ -35,8 +35,8 @@ private:
 	virtual void parse(CREF(LPRDOParser) pParser);
 
 	typedef rdo::vector<LPTypeInfo> ParamList;
-	void generate    (CREF(tstring) name, CREF(rdoRuntime::LPRDOFunCalc) pCalc, CREF(LPRDOParam) pReturnType, CREF(ParamList) paramList) const;
-	void generateReal(CREF(tstring) name, CREF(rdoRuntime::LPRDOFunCalc) pCalc, CREF(LPRDOParam) pReturnType, CREF(ParamList) paramList) const;
+	void generate    (CREF(tstring) name, CREF(rdo::runtime::LPRDOFunCalc) pCalc, CREF(LPRDOParam) pReturnType, CREF(ParamList) paramList) const;
+	void generateReal(CREF(tstring) name, CREF(rdo::runtime::LPRDOFunCalc) pCalc, CREF(LPRDOParam) pReturnType, CREF(ParamList) paramList) const;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

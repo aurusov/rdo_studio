@@ -24,6 +24,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 RDOLogicBase::RDOLogicBase(CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
+	, m_multithreading(false   )
 {}
 
 RDOLogicBase::~RDOLogicBase()
@@ -75,6 +76,7 @@ void RDOLogicBase::end()
 	{
 		m_pRuntimeLogic->setCondition(getConditon()->getCalc());
 	}
+	m_pRuntimeLogic->setMultithreading(m_multithreading);
 	RDOParser::s_parser()->contextStack()->pop();
 }
 

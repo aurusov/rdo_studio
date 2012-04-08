@@ -98,7 +98,7 @@ void RDOResultGroup::init(CREF(RDOParserSrcInfo) src_info)
 		RDOParser::s_parser()->error().push_done();
 	}
 	RDOParser::s_parser()->insertResultGroup(this);
-	m_pResultGroup = RF(rdoRuntime::RDOPMDResultGroup)::create(name());
+	m_pResultGroup = RF(rdo::runtime::RDOPMDResultGroup)::create(name());
 	ASSERT(m_pResultGroup);
 	RDOParser::s_parser()->runtime()->addRuntimeResult(m_pResultGroup);
 }
@@ -173,14 +173,14 @@ void RDOPMDWatchPar::init(rbool trace, CREF(RDOParserSrcInfo) res_src_info, CREF
 		RDOParser::s_parser()->error().push_only(pResource->getType()->src_info(), _T("См. тип ресурса"));
 		RDOParser::s_parser()->error().push_done();
 	}
-	rdoRuntime::RDOType::TypeID typeID = pParam->getTypeInfo()->type()->typeID();
-	if (typeID != rdoRuntime::RDOType::t_int && typeID != rdoRuntime::RDOType::t_real)
+	rdo::runtime::RDOType::TypeID typeID = pParam->getTypeInfo()->type()->typeID();
+	if (typeID != rdo::runtime::RDOType::t_int && typeID != rdo::runtime::RDOType::t_real)
 	{
 		RDOParser::s_parser()->error().push_only(par_src_info, _T("Наблюдать можно только за параметром целого или вещественного типа"));
 		RDOParser::s_parser()->error().push_only(pParam->getTypeInfo()->src_info(), _T("См. тип параметра"));
 		RDOParser::s_parser()->error().push_done();
 	}
-	endOfCreation(RF(rdoRuntime::RDOPMDWatchPar)::create(RDOParser::s_parser()->runtime(), src_text(), trace, res_src_info.src_text(), par_src_info.src_text(), pResource->getID(), pResource->getType()->getRTPParamNumber(par_src_info.src_text())));
+	endOfCreation(RF(rdo::runtime::RDOPMDWatchPar)::create(RDOParser::s_parser()->runtime(), src_text(), trace, res_src_info.src_text(), par_src_info.src_text(), pResource->getID(), pResource->getType()->getRTPParamNumber(par_src_info.src_text())));
 }
 
 // --------------------------------------------------------------------------------
@@ -195,7 +195,7 @@ RDOPMDWatchState::~RDOPMDWatchState()
 
 void RDOPMDWatchState::init(rbool trace, LPRDOFUNLogic pLogic)
 {
-	endOfCreation(RF(rdoRuntime::RDOPMDWatchState)::create(RDOParser::s_parser()->runtime(), src_text(), trace, pLogic->getCalc()));
+	endOfCreation(RF(rdo::runtime::RDOPMDWatchState)::create(RDOParser::s_parser()->runtime(), src_text(), trace, pLogic->getCalc()));
 }
 
 // --------------------------------------------------------------------------------
@@ -234,7 +234,7 @@ void RDOPMDWatchQuant::init(rbool trace, CREF(RDOParserSrcInfo) res_type_src_inf
 {
 	LPRDOFUNGroupLogic pGroupLogic = rdo::Factory<RDOFUNGroupLogic>::create(RDOFUNGroupLogic::fgt_unknow, RDOParserSrcInfo(res_type_src_info.src_text()));
 	ASSERT(pGroupLogic);
-	endOfCreation(RF(rdoRuntime::RDOPMDWatchQuant)::create(RDOParser::s_parser()->runtime(), src_text(), trace, res_type_src_info.src_text(), pGroupLogic->getResType()->getNumber()));
+	endOfCreation(RF(rdo::runtime::RDOPMDWatchQuant)::create(RDOParser::s_parser()->runtime(), src_text(), trace, res_type_src_info.src_text(), pGroupLogic->getResType()->getNumber()));
 }
 
 void RDOPMDWatchQuant::setLogic(REF(LPRDOFUNLogic) pLogic)
@@ -249,7 +249,7 @@ void RDOPMDWatchQuant::setLogicNoCheck()
 {
 	LPIResultWatchQuant pQuant = m_pResult;
 	ASSERT(pQuant);
-	pQuant->setLogicCalc(rdo::Factory<rdoRuntime::RDOCalcConst>::create(1));
+	pQuant->setLogicCalc(rdo::Factory<rdo::runtime::RDOCalcConst>::create(1));
 	RDOParser::s_parser()->getFUNGroupStack().pop_back();
 }
 
@@ -267,7 +267,7 @@ void RDOPMDWatchValue::init(rbool trace, CREF(RDOParserSrcInfo) res_type_src_inf
 {
 	LPRDOFUNGroupLogic pGroupLogic = rdo::Factory<RDOFUNGroupLogic>::create(RDOFUNGroupLogic::fgt_unknow, RDOParserSrcInfo(res_type_src_info.src_text()));
 	ASSERT(pGroupLogic);
-	endOfCreation(RF(rdoRuntime::RDOPMDWatchValue)::create(RDOParser::s_parser()->runtime(), src_text(), trace, res_type_src_info.src_text(), pGroupLogic->getResType()->getNumber()));
+	endOfCreation(RF(rdo::runtime::RDOPMDWatchValue)::create(RDOParser::s_parser()->runtime(), src_text(), trace, res_type_src_info.src_text(), pGroupLogic->getResType()->getNumber()));
 }
 
 void RDOPMDWatchValue::setLogic(REF(LPRDOFUNLogic) pLogic, REF(LPRDOFUNArithm) pArithm)
@@ -283,7 +283,7 @@ void RDOPMDWatchValue::setLogicNoCheck(REF(LPRDOFUNArithm) pArithm)
 {
 	LPIResultWatchValue pWatch = m_pResult;
 	ASSERT(pWatch);
-	pWatch->setLogicCalc (rdo::Factory<rdoRuntime::RDOCalcConst>::create(1));
+	pWatch->setLogicCalc (rdo::Factory<rdo::runtime::RDOCalcConst>::create(1));
 	pWatch->setArithmCalc(pArithm->createCalc());
 	RDOParser::s_parser()->getFUNGroupStack().pop_back();
 }
@@ -300,7 +300,7 @@ RDOPMDGetValue::~RDOPMDGetValue()
 
 void RDOPMDGetValue::init(LPRDOFUNArithm pArithm)
 {
-	endOfCreation(RF(rdoRuntime::RDOPMDGetValue)::create(RDOParser::s_parser()->runtime(), src_text(), pArithm->createCalc()));
+	endOfCreation(RF(rdo::runtime::RDOPMDGetValue)::create(RDOParser::s_parser()->runtime(), src_text(), pArithm->createCalc()));
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

@@ -27,7 +27,7 @@ public:
 	CREF(tstring) name             () const;
 	rbool         setPrior         (REF(LPRDOFUNArithm) pPrior);
 	rbool         getMultithreading() const;
-	void          setMultithreading(rbool multithreading);
+	void          setMultithreading(rbool multithreading = false);
 	void          setCondition     (CREF(LPRDOFUNLogic) pConditon = NULL);
 	LPRDOFUNLogic getConditon      () const;
 	LPILogic      getLogic         () const;

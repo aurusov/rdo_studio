@@ -36,14 +36,14 @@ CLASS(RDOFRMFrame):
 {
 DECLARE_FACTORY(RDOFRMFrame);
 public:
-	CREF(tstring)                   name () const  { return src_info().src_text(); }
-	CREF(rdoRuntime::LPRDOFRMFrame) frame() const  { return m_pFrame;              }
-	void                            end  ();
+	CREF(tstring)                     name () const  { return src_info().src_text(); }
+	CREF(rdo::runtime::LPRDOFRMFrame) frame() const  { return m_pFrame;              }
+	void                              end  ();
 
 private:
 	RDOFRMFrame(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic = NULL);
 
-	rdoRuntime::LPRDOFRMFrame m_pFrame;
+	rdo::runtime::LPRDOFRMFrame m_pFrame;
 
 	DECLARE_IContextFind;
 };

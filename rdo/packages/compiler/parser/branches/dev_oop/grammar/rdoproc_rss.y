@@ -309,17 +309,17 @@ dpt_queue_param
 		tstring                res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
 		CREF(RDOParserSrcInfo) info     = @1;
 		// ѕолучили список всех ресурсов
-		rdoMBuilder::RDOResourceList rssList(PARSER);
+		rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 		//! ѕолучили список всех типов ресурсов
-		rdoMBuilder::RDOResTypeList rtpList(PARSER);
-		rdoMBuilder::RDOResType rtp;
+		rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
+		rdo::compiler::mbuilder::RDOResType rtp;
 		tstring rtp_name = _T("QDEPART");
 		tstring q_name   = _T("ќчередь_") + res_name;
 		//! ≈сли ресурс существует, берем его тип и провер€ем
 		if (rssList[res_name].exist())
 		{
 			rtp = rssList[res_name].getType();
-			rdoMBuilder::BlockForQueue::checkType(rtp, info);
+			rdo::compiler::mbuilder::BlockForQueue::checkType(rtp, info);
 			LPRDOPMDWatchPar pResult = rdo::Factory<RDOPMDWatchPar>::create(RDOParserSrcInfo(q_name));
 			ASSERT(pResult);
 			pResult->init(false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(tstring(_T("длина_очереди"))));
@@ -329,10 +329,10 @@ dpt_queue_param
 			//! ≈сли тип "QDEPART" существует
 			if (rtpList[rtp_name].exist())
 			{
-				rdoMBuilder::RDOResType rtp_ = rtpList[rtp_name];
-				if (rdoMBuilder::BlockForQueue::checkType(rtp_, info))
+				rdo::compiler::mbuilder::RDOResType rtp_ = rtpList[rtp_name];
+				if (rdo::compiler::mbuilder::BlockForQueue::checkType(rtp_, info))
 				{
-					rdoMBuilder::BlockForQueue::createRes(rtp_, res_name);
+					rdo::compiler::mbuilder::BlockForQueue::createRes(rtp_, res_name);
 					LPRDOPMDWatchPar pResult = rdo::Factory<RDOPMDWatchPar>::create(RDOParserSrcInfo(q_name));
 					ASSERT(pResult);
 					pResult->init(false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(tstring(_T("длина_очереди"))));
@@ -340,10 +340,10 @@ dpt_queue_param
 			}
 			else
 			{
-				rdoMBuilder::RDOResType rtp_ = rdoMBuilder::BlockForQueue::createType(rtp_name, info);
-				if (rdoMBuilder::BlockForQueue::checkType(rtp_, info))
+				rdo::compiler::mbuilder::RDOResType rtp_ = rdo::compiler::mbuilder::BlockForQueue::createType(rtp_name, info);
+				if (rdo::compiler::mbuilder::BlockForQueue::checkType(rtp_, info))
 				{
-					rdoMBuilder::BlockForQueue::createRes(rtp_, res_name);
+					rdo::compiler::mbuilder::BlockForQueue::createRes(rtp_, res_name);
 					LPRDOPMDWatchPar pResult = rdo::Factory<RDOPMDWatchPar>::create(RDOParserSrcInfo(q_name));
 					ASSERT(pResult);
 					pResult->init(false, RDOParserSrcInfo(res_name), RDOParserSrcInfo(tstring(_T("длина_очереди"))));
@@ -364,33 +364,33 @@ dpt_depart_param
 		tstring                res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
 		CREF(RDOParserSrcInfo) info     = @1;
 		//! ѕолучили список всех ресурсов
-		rdoMBuilder::RDOResourceList rssList(PARSER);
+		rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 		//! ѕолучили список всех типов ресурсов
-		rdoMBuilder::RDOResTypeList rtpList(PARSER);
-		rdoMBuilder::RDOResType rtp;
+		rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
+		rdo::compiler::mbuilder::RDOResType rtp;
 		tstring rtp_name = _T("QDEPART");
 		//! ≈сли ресурс существует, берем его тип и провер€ем
 		if (rssList[res_name].exist())
 		{
 			rtp = rssList[res_name].getType();
-			rdoMBuilder::BlockForQueue::checkType(rtp, info);
+			rdo::compiler::mbuilder::BlockForQueue::checkType(rtp, info);
 		}
 		else
 		{
 			if (rtpList[rtp_name].exist())
 			{
-				rdoMBuilder::RDOResType rtp_ = rtpList[rtp_name];
-				if (rdoMBuilder::BlockForQueue::checkType(rtp_, info))
+				rdo::compiler::mbuilder::RDOResType rtp_ = rtpList[rtp_name];
+				if (rdo::compiler::mbuilder::BlockForQueue::checkType(rtp_, info))
 				{
-					rdoMBuilder::BlockForQueue::createRes(rtp_, res_name);
+					rdo::compiler::mbuilder::BlockForQueue::createRes(rtp_, res_name);
 				}
 			}
 			else
 			{
-				rdoMBuilder::RDOResType rtp_ = rdoMBuilder::BlockForQueue::createType(rtp_name, info);
-				if (rdoMBuilder::BlockForQueue::checkType(rtp_, info))
+				rdo::compiler::mbuilder::RDOResType rtp_ = rdo::compiler::mbuilder::BlockForQueue::createType(rtp_name, info);
+				if (rdo::compiler::mbuilder::BlockForQueue::checkType(rtp_, info))
 				{
-					rdoMBuilder::BlockForQueue::createRes(rtp_, res_name);
+					rdo::compiler::mbuilder::BlockForQueue::createRes(rtp_, res_name);
 				}
 			}
 		}
@@ -408,19 +408,19 @@ dpt_seize_param
 		tstring                res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
 		CREF(RDOParserSrcInfo) info     = @1;
 		//! ѕолучили список всех ресурсов
-		rdoMBuilder::RDOResourceList rssList(PARSER);
-		rdoMBuilder::RDOResType rtp;
+		rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
+		rdo::compiler::mbuilder::RDOResType rtp;
 		//! ≈сли ресурс существует, берем его тип и провер€ем
 		if (rssList[res_name].exist())
 		{
 			rtp = rssList[res_name].getType();
-			if (rdoMBuilder::BlockForSeize::checkType(rtp, info))
+			if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp, info))
 			{
 				//! \todo прин€тие решени€ об изменении типа должно происходить в rdoproc_rtp.y
 				if (!rssList[res_name].checkParserResourceType<RDORSSResource>(PARSER))
 				{
 					//здесь нужно переделать тип ресурса, а не ресурс
-					rdoMBuilder::BlockForSeize::reobjectRes(rtp, res_name);
+					rdo::compiler::mbuilder::BlockForSeize::reobjectRes(rtp, res_name);
 				}
 			}
 		}
@@ -430,20 +430,20 @@ dpt_seize_param
 			//! —формировать им€ типа по имени ресурса
 			tstring rtp_name(RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix);
 			//! ѕолучили список всех типов ресурсов
-			rdoMBuilder::RDOResTypeList rtpList(PARSER);
+			rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
 			//! Ќашли тип ресурса
 			if (rtpList[rtp_name].exist())
 			{
-				rdoMBuilder::RDOResType rtp_ = rtpList[rtp_name];
-				if (rdoMBuilder::BlockForSeize::checkType(rtp_, info))
+				rdo::compiler::mbuilder::RDOResType rtp_ = rtpList[rtp_name];
+				if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp_, info))
 				{
-					rdoMBuilder::BlockForSeize::createRes(rtp_, res_name);
+					rdo::compiler::mbuilder::BlockForSeize::createRes(rtp_, res_name);
 				}
 			}
 			else
 			{
-				rtp = rdoMBuilder::BlockForSeize::createType(rtp_name, info);
-				rdoMBuilder::BlockForSeize::createRes(rtp, res_name);
+				rtp = rdo::compiler::mbuilder::BlockForSeize::createType(rtp_name, info);
+				rdo::compiler::mbuilder::BlockForSeize::createRes(rtp, res_name);
 			}
 		}
 	}
@@ -453,18 +453,18 @@ dpt_seize_param
 		tstring                res_name = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator().c_str();
 		CREF(RDOParserSrcInfo) info     = @3;
 		//! ѕолучили список всех ресурсов
-		rdoMBuilder::RDOResourceList rssList(PARSER);
-		rdoMBuilder::RDOResType rtp;
+		rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
+		rdo::compiler::mbuilder::RDOResType rtp;
 		//! ≈сли ресурс существует, берем его тип и провер€ем
 		if (rssList[res_name].exist())
 		{
 			rtp = rssList[res_name].getType();
-			if (rdoMBuilder::BlockForSeize::checkType(rtp, info))
+			if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp, info))
 			{
 				//! \todo прин€тие решени€ об изменении типа должно происходить в rdoproc_rtp.y
 				if (!rssList[res_name].checkParserResourceType<RDORSSResource>(PARSER))
 				{
-					rdoMBuilder::BlockForSeize::reobjectRes(rtp, res_name);
+					rdo::compiler::mbuilder::BlockForSeize::reobjectRes(rtp, res_name);
 				}
 			}
 		}
@@ -474,20 +474,20 @@ dpt_seize_param
 			//! —формировать им€ типа по имени ресурса
 			tstring rtp_name(RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix);
 			//! ѕолучили список всех типов ресурсов
-			rdoMBuilder::RDOResTypeList rtpList(PARSER);
+			rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
 			//! Ќашли тип ресурса
 			if (rtpList[rtp_name].exist())
 			{
-				rdoMBuilder::RDOResType rtp_ = rtpList[rtp_name];
-				if (rdoMBuilder::BlockForSeize::checkType(rtp_, info))
+				rdo::compiler::mbuilder::RDOResType rtp_ = rtpList[rtp_name];
+				if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp_, info))
 				{
-					rdoMBuilder::BlockForSeize::createRes(rtp_, res_name);
+					rdo::compiler::mbuilder::BlockForSeize::createRes(rtp_, res_name);
 				}
 			}
 			else
 			{
-				rtp = rdoMBuilder::BlockForSeize::createType(rtp_name, info);
-				rdoMBuilder::BlockForSeize::createRes(rtp, res_name);
+				rtp = rdo::compiler::mbuilder::BlockForSeize::createType(rtp_name, info);
+				rdo::compiler::mbuilder::BlockForSeize::createRes(rtp, res_name);
 			}
 		}
 	}
@@ -504,17 +504,17 @@ dpt_release_param
 		tstring                res_name = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator().c_str();
 		CREF(RDOParserSrcInfo) info     = @1;
 		//! ѕолучили список всех ресурсов
-		rdoMBuilder::RDOResourceList rssList(PARSER);
-		rdoMBuilder::RDOResType rtp;
+		rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
+		rdo::compiler::mbuilder::RDOResType rtp;
 		if (rssList[res_name].exist())
 		{
 			rtp = rssList[res_name].getType();
-			if (rdoMBuilder::BlockForSeize::checkType(rtp, info))
+			if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp, info))
 			{
 				//! \todo прин€тие решени€ об изменении типа должно происходить в rdoproc_rtp.y
 				if (!rssList[res_name].checkParserResourceType<RDORSSResource>(PARSER))
 				{
-					rdoMBuilder::BlockForSeize::reobjectRes(rtp, res_name);
+					rdo::compiler::mbuilder::BlockForSeize::reobjectRes(rtp, res_name);
 				}
 			}
 		}
@@ -524,20 +524,20 @@ dpt_release_param
 			//! —формировать им€ типа по имени ресурса
 			tstring rtp_name(RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix);
 			//! ѕолучили список всех типов ресурсов
-			rdoMBuilder::RDOResTypeList rtpList(PARSER);
+			rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
 			//! Ќашли тип ресурса
 			if (rtpList[rtp_name].exist())
 			{
-				rdoMBuilder::RDOResType rtp_ = rtpList[rtp_name];
-				if (rdoMBuilder::BlockForSeize::checkType(rtp_, info))
+				rdo::compiler::mbuilder::RDOResType rtp_ = rtpList[rtp_name];
+				if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp_, info))
 				{
-					rdoMBuilder::BlockForSeize::createRes(rtp_, res_name);
+					rdo::compiler::mbuilder::BlockForSeize::createRes(rtp_, res_name);
 				}
 			}
 			else
 			{
-				rtp = rdoMBuilder::BlockForSeize::createType(rtp_name, info);
-				rdoMBuilder::BlockForSeize::createRes(rtp, res_name);
+				rtp = rdo::compiler::mbuilder::BlockForSeize::createType(rtp_name, info);
+				rdo::compiler::mbuilder::BlockForSeize::createRes(rtp, res_name);
 			}
 		}
 	}
@@ -547,18 +547,18 @@ dpt_release_param
 		tstring                res_name = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator().c_str();
 		CREF(RDOParserSrcInfo) info     = @3;
 		//! ѕолучили список всех ресурсов
-		rdoMBuilder::RDOResourceList rssList(PARSER);
-		rdoMBuilder::RDOResType rtp;
+		rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
+		rdo::compiler::mbuilder::RDOResType rtp;
 		//! ≈сли ресурс существует берем его тип и провер€ем
 		if (rssList[res_name].exist())
 		{
 			rtp = rssList[res_name].getType();
-			if (rdoMBuilder::BlockForSeize::checkType(rtp, info))
+			if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp, info))
 			{
 				//! \todo прин€тие решени€ об изменении типа должно происходить в rdoproc_rtp.y
 				if (!rssList[res_name].checkParserResourceType<RDORSSResource>(PARSER))
 				{
-					rdoMBuilder::BlockForSeize::reobjectRes(rtp, res_name);
+					rdo::compiler::mbuilder::BlockForSeize::reobjectRes(rtp, res_name);
 				}
 			}
 		}
@@ -568,20 +568,20 @@ dpt_release_param
 			//! —формировать им€ типа по имени ресурса
 			tstring rtp_name(RDOPROCProcess::s_name_prefix + res_name + RDOPROCProcess::s_name_sufix);
 			//! ѕолучили список всех типов ресурсов
-			rdoMBuilder::RDOResTypeList rtpList(PARSER);
+			rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
 			//! Ќашли тип ресурса
 			if (rtpList[rtp_name].exist())
 			{
-				rdoMBuilder::RDOResType rtp_ = rtpList[rtp_name];
-				if (rdoMBuilder::BlockForSeize::checkType(rtp_, info))
+				rdo::compiler::mbuilder::RDOResType rtp_ = rtpList[rtp_name];
+				if (rdo::compiler::mbuilder::BlockForSeize::checkType(rtp_, info))
 				{
-					rdoMBuilder::BlockForSeize::createRes(rtp_, res_name);
+					rdo::compiler::mbuilder::BlockForSeize::createRes(rtp_, res_name);
 				}
 			}
 			else
 			{
-				rtp = rdoMBuilder::BlockForSeize::createType(rtp_name, info);
-				rdoMBuilder::BlockForSeize::createRes(rtp, res_name);
+				rtp = rdo::compiler::mbuilder::BlockForSeize::createType(rtp_name, info);
+				rdo::compiler::mbuilder::BlockForSeize::createRes(rtp, res_name);
 			}
 		}
 	}

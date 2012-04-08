@@ -26,7 +26,7 @@ Error::Error()
 {}
 
 //! 1
-void Error::error(CREF(RDOParserSrcInfo) src_info, rdoSimulator::RDOSyntaxError::ErrorCode error_code)
+void Error::error(CREF(RDOParserSrcInfo) src_info, rdo::service::simulation::RDOSyntaxError::ErrorCode error_code)
 {
 	if (blocked())
 		return;
@@ -34,7 +34,7 @@ void Error::error(CREF(RDOParserSrcInfo) src_info, rdoSimulator::RDOSyntaxError:
 	error(src_info, _T(""), error_code);
 }
 
-void Error::push_only(CREF(RDOParserSrcInfo) src_info, rdoSimulator::RDOSyntaxError::ErrorCode error_code)
+void Error::push_only(CREF(RDOParserSrcInfo) src_info, rdo::service::simulation::RDOSyntaxError::ErrorCode error_code)
 {
 	if (blocked())
 		return;
@@ -43,7 +43,7 @@ void Error::push_only(CREF(RDOParserSrcInfo) src_info, rdoSimulator::RDOSyntaxEr
 }
 
 //! 2
-void Error::error(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message, rdoSimulator::RDOSyntaxError::ErrorCode error_code)
+void Error::error(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message, rdo::service::simulation::RDOSyntaxError::ErrorCode error_code)
 {
 	if (blocked())
 		return;
@@ -52,27 +52,27 @@ void Error::error(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message, rdoSim
 	throw RDOSyntaxException(m_errorList.back().m_message);
 }
 
-void Error::warning(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message, rdoSimulator::RDOSyntaxError::ErrorCode error_code) 
+void Error::warning(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message, rdo::service::simulation::RDOSyntaxError::ErrorCode error_code) 
 {
 	if (blocked())
 		return;
 
-	m_errorList.push_back(rdoSimulator::RDOSyntaxError(error_code, message, src_info.src_pos().m_last_line, src_info.src_pos().m_last_pos, src_info.src_filetype(), true));
+	m_errorList.push_back(rdo::service::simulation::RDOSyntaxError(error_code, message, src_info.src_pos().m_last_line, src_info.src_pos().m_last_pos, src_info.src_filetype(), true));
 }
 
-void Error::push_only(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message, rdoSimulator::RDOSyntaxError::ErrorCode error_code)
+void Error::push_only(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message, rdo::service::simulation::RDOSyntaxError::ErrorCode error_code)
 {
 	if (blocked())
 		return;
 
-	if (src_info.src_pos().m_last_line != rdoRuntime::RDOSrcInfo::Position::UNDEFINE_LINE && src_info.src_pos().m_last_pos != rdoRuntime::RDOSrcInfo::Position::UNDEFINE_POS)
+	if (src_info.src_pos().m_last_line != rdo::runtime::RDOSrcInfo::Position::UNDEFINE_LINE && src_info.src_pos().m_last_pos != rdo::runtime::RDOSrcInfo::Position::UNDEFINE_POS)
 	{
-		m_errorList.push_back(rdoSimulator::RDOSyntaxError(error_code, message, src_info.src_pos().m_last_line, src_info.src_pos().m_last_pos, src_info.src_filetype()));
+		m_errorList.push_back(rdo::service::simulation::RDOSyntaxError(error_code, message, src_info.src_pos().m_last_line, src_info.src_pos().m_last_pos, src_info.src_filetype()));
 	}
 }
 
 //! 3
-void Error::error(CREF(RDOParserSrcInfo) src_info1, CREF(RDOParserSrcInfo) src_info2, CREF(tstring) message, rdoSimulator::RDOSyntaxError::ErrorCode error_code)
+void Error::error(CREF(RDOParserSrcInfo) src_info1, CREF(RDOParserSrcInfo) src_info2, CREF(tstring) message, rdo::service::simulation::RDOSyntaxError::ErrorCode error_code)
 {
 	if (blocked())
 		return;

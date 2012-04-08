@@ -338,7 +338,7 @@ dpt_process_line
 	}
 	| planning_statement
 	{
-		rdoRuntime::LPRDOCalc pCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($1);
+		rdo::runtime::LPRDOCalc pCalc = PARSER->stack().pop<rdo::runtime::RDOCalc>($1);
 		ASSERT(pCalc);
 		LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCAssign>::create(
 			PARSER->getLastPROCProcess(),
@@ -353,7 +353,7 @@ dpt_process_line
 		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
 		ASSERT(pArithm);
 
-		rdoRuntime::LPRDOCalc pCalcTime = pArithm->createCalc();
+		rdo::runtime::LPRDOCalc pCalcTime = pArithm->createCalc();
 		ASSERT(pCalcTime);
 
 		LPRDOPROCProcess pProc = PARSER->getLastPROCProcess();
@@ -362,17 +362,17 @@ dpt_process_line
 		LPRDORTPResType pParserType = pProc->getTransacType();
 		ASSERT(pParserType);
 		
-		rdoRuntime::LPIResourceType pType = pParserType->getRuntimeResType();
+		rdo::runtime::LPIResourceType pType = pParserType->getRuntimeResType();
 		ASSERT(pType);
 
 		rbool permanentFlag = pParserType->isPermanent();
 		rbool traceFlag     = true;
 
-		std::vector<rdoRuntime::RDOValue> paramList;
+		std::vector<rdo::runtime::RDOValue> paramList;
 		//! \error вместо настоящих значений параметров транзакта просто 0
-		paramList.push_back(rdoRuntime::RDOValue(0.0));
+		paramList.push_back(rdo::runtime::RDOValue(0.0));
 
-		rdoRuntime::LPRDOCalcCreateResource pCreateAndGoOnTransactCalc = rdo::Factory<rdoRuntime::RDOCalcCreateResource>::create(
+		rdo::runtime::LPRDOCalcCreateResource pCreateAndGoOnTransactCalc = rdo::Factory<rdo::runtime::RDOCalcCreateResource>::create(
 			pType,
 			paramList,
 			traceFlag,
@@ -504,11 +504,11 @@ planning_statement
 
 		pEvent->setParamList(pParamList);
 
-		rdoRuntime::LPRDOCalc pCalcTime = pTimeArithm->createCalc();
+		rdo::runtime::LPRDOCalc pCalcTime = pTimeArithm->createCalc();
 		pCalcTime->setSrcInfo(pTimeArithm->src_info());
 		ASSERT(pCalcTime);
 
-		rdoRuntime::LPRDOCalcEventPlan pCalc = rdo::Factory<rdoRuntime::RDOCalcEventPlan>::create(pCalcTime);
+		rdo::runtime::LPRDOCalcEventPlan pCalc = rdo::Factory<rdo::runtime::RDOCalcEventPlan>::create(pCalcTime);
 		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @7, rdo::format(_T("Планирование события %s в момент времени %s"), eventName.c_str(), pCalcTime->srcInfo().src_text().c_str())));
 		ASSERT(pCalc);
 		pEvent->attachCalc(pCalc);
@@ -543,7 +543,7 @@ stopping_statement
 			PARSER->error().error(@1, rdo::format(_T("Попытка остановить неизвестное событие: %s"), eventName.c_str()));
 		}
 
-		rdoRuntime::LPRDOCalcEventStop pCalc = rdo::Factory<rdoRuntime::RDOCalcEventStop>::create();
+		rdo::runtime::LPRDOCalcEventStop pCalc = rdo::Factory<rdo::runtime::RDOCalcEventStop>::create();
 		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @6, rdo::format(_T("Остановка события %s"), eventName.c_str())));
 		ASSERT(pCalc);
 		pEvent->attachCalc(pCalc);
@@ -591,7 +591,7 @@ dpt_depart_param
 dpt_term_param
 	: /* empty */
 	{
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcConst>::create(rdoRuntime::RDOValue(0));
+		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(0));
 		LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCTerminate>::create(PARSER->getLastPROCProcess(), _T("TERMINATE"), pCalc);
 		ASSERT(pBlock);
 		$$ = PARSER->stack().push(pBlock);
@@ -600,9 +600,9 @@ dpt_term_param
 	{
 		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($1);
 		ASSERT(pArithm);
-		if (pArithm->createCalc()->calcValue(RUNTIME).type()->typeID() == rdoRuntime::RDOType::t_int)
+		if (pArithm->createCalc()->calcValue(RUNTIME).type()->typeID() == rdo::runtime::RDOType::t_int)
 		{
-			rdoRuntime::LPRDOCalc pCalc = pArithm->createCalc(NULL);
+			rdo::runtime::LPRDOCalc pCalc = pArithm->createCalc(NULL);
 			LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCTerminate>::create(PARSER->getLastPROCProcess(), _T("TERMINATE"), pCalc);
 			ASSERT(pBlock);
 			$$ = PARSER->stack().push(pBlock);
@@ -669,10 +669,10 @@ dpt_assign_param
 	{
 		tstring res   = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
 		tstring param = PARSER->stack().pop<RDOValue>($3)->value().getIdentificator();
-		rdoMBuilder::RDOResType rtp;
+		rdo::compiler::mbuilder::RDOResType rtp;
 
 		// Получили список всех ресурсов
-		rdoMBuilder::RDOResourceList rssList(PARSER);
+		rdo::compiler::mbuilder::RDOResourceList rssList(PARSER);
 
 		// Если ресурс существует, берем его тип и проверяем наличие параметра
 		if (rssList[res].exist())
@@ -696,10 +696,10 @@ dpt_assign_param
 			ruint res = pResource->getID();
 			ruint par = rtp.m_params[param].id();
 
-			rdoRuntime::LPRDOCalc pCalc = pArithm->createCalc(pParam->getTypeInfo());
+			rdo::runtime::LPRDOCalc pCalc = pArithm->createCalc(pParam->getTypeInfo());
 			ASSERT(pCalc);
 
-			rdoRuntime::LPRDOCalcProcAssign pAssignCalc = rdo::Factory<rdoRuntime::RDOCalcProcAssign>::create(pCalc, res, par);
+			rdo::runtime::LPRDOCalcProcAssign pAssignCalc = rdo::Factory<rdo::runtime::RDOCalcProcAssign>::create(pCalc, res, par);
 			ASSERT(pAssignCalc);
 
 			LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCAssign>::create(PARSER->getLastPROCProcess(), _T("ASSIGN"), pAssignCalc);
@@ -1048,10 +1048,10 @@ fun_arithm
 		LPRDOFUNArithm pArithm = RDOFUNArithm::generateByIdentificator(pValue);
 		ASSERT(pArithm);
 
-		rdoRuntime::LPRDOCalc pCalc;
+		rdo::runtime::LPRDOCalc pCalc;
 		if (pArithm->typeInfo()->type().object_dynamic_cast<RDOArrayType>())
 		{
-			pCalc = rdo::Factory<rdoRuntime::RDOCalcArraySize>::create(pArithm->calc());
+			pCalc = rdo::Factory<rdo::runtime::RDOCalcArraySize>::create(pArithm->calc());
 			ASSERT(pCalc);
 		}
 		else
@@ -1090,7 +1090,7 @@ fun_arithm
 			PARSER->error().error(@1, rdo::format(_T("'%s' не является массивом."), pValue->value().getIdentificator().c_str()));
 		}
 
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcArrayItem>::create(pArithm->calc(), pArithmInd->calc());
+		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcArrayItem>::create(pArithm->calc(), pArithmInd->calc());
 		ASSERT(pCalc);
 
 		LPTypeInfo pItemType = pArrayType->getItemType();

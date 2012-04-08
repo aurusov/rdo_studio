@@ -61,7 +61,7 @@ public:
 	typedef std::vector<Param> ParamList;
 	enum { UNDEFINED_ID = ~0 };
 
-	virtual rdoRuntime::LPRDOCalc createCalc() const;
+	virtual rdo::runtime::LPRDOCalc createCalc() const;
 
 	CREF(tstring)    name   () const { return src_info().src_text(); }
 	LPRDORTPResType  getType() const { return m_pResType;            }

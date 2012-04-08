@@ -91,7 +91,7 @@ void RDODPTActivity::addParam(CREF(LPRDOValue) pParam)
 			RDOParser::s_parser()->error().error(pParam->src_pos(), _T("Имя активности должно заканчиваться двоеточием"));
 		}
 	}
-	rdoRuntime::RDOValue val;
+	rdo::runtime::RDOValue val;
 	LPRDOParam pPatternParam = m_pPattern->m_paramList.at(m_currParam);
 	if (pParam->value().getAsString() == _T("*"))
 	{
@@ -108,9 +108,9 @@ void RDODPTActivity::addParam(CREF(LPRDOValue) pParam)
 		val = pPatternParam->getTypeInfo()->value_cast(pParam)->value();
 	}
 
-	rdoRuntime::LPRDOCalc pSetParamCalc = rdo::Factory<rdoRuntime::RDOSetPatternParamCalc>::create(
+	rdo::runtime::LPRDOCalc pSetParamCalc = rdo::Factory<rdo::runtime::RDOSetPatternParamCalc>::create(
 		m_currParam,
-		rdo::Factory<rdoRuntime::RDOCalcConst>::create(val)
+		rdo::Factory<rdo::runtime::RDOCalcConst>::create(val)
 	);
 	ASSERT(pSetParamCalc);
 	pSetParamCalc->setSrcInfo(RDOParserSrcInfo(pParam->getPosAsYY(), rdo::format(_T("Параметр образца %s.%s = %s"), m_pPattern->name().c_str(), pPatternParam->name().c_str(), pParam->value().getAsString().c_str())));
@@ -164,15 +164,15 @@ RDODPTActivityHotKey::RDODPTActivityHotKey(LPIBaseOperationContainer pDPT, CREF(
 	switch (pattern()->getType())
 	{
 	case RDOPATPattern::PT_Rule:
-		m_pActivity = pattern()->getPatRuntime<rdoRuntime::RDOPatternRule>()->createActivity(pDPT, RDOParser::s_parser()->runtime(), name());
+		m_pActivity = pattern()->getPatRuntime<rdo::runtime::RDOPatternRule>()->createActivity(pDPT, RDOParser::s_parser()->runtime(), name());
 		break;
 
 	case RDOPATPattern::PT_Operation:
-		m_pActivity = pattern()->getPatRuntime<rdoRuntime::RDOPatternOperation>()->createActivity(pDPT, RDOParser::s_parser()->runtime(), name());
+		m_pActivity = pattern()->getPatRuntime<rdo::runtime::RDOPatternOperation>()->createActivity(pDPT, RDOParser::s_parser()->runtime(), name());
 		break;
 
 	case RDOPATPattern::PT_Keyboard:
-		m_pActivity = pattern()->getPatRuntime<rdoRuntime::RDOPatternKeyboard>()->createActivity(pDPT, RDOParser::s_parser()->runtime(), name());
+		m_pActivity = pattern()->getPatRuntime<rdo::runtime::RDOPatternKeyboard>()->createActivity(pDPT, RDOParser::s_parser()->runtime(), name());
 		break;
 
 	default:
@@ -197,18 +197,18 @@ void RDODPTActivityHotKey::addHotKey(CREF(tstring) hotKey, CREF(YYLTYPE) hotkey_
 	ASSERT(pKeyboard);
 	switch (pKeyboard->addHotKey(RDOParser::s_parser()->runtime(), hotKey))
 	{
-	case rdoRuntime::RDOKeyboard::addhk_ok:
+	case rdo::runtime::RDOKeyboard::addhk_ok:
 		break;
 
-	case rdoRuntime::RDOKeyboard::addhk_already:
+	case rdo::runtime::RDOKeyboard::addhk_already:
 		RDOParser::s_parser()->error().error(hotkey_pos, rdo::format(_T("Для активности '%s' клавиша уже назначена"), src_text().c_str()));
 		break;
 
-	case rdoRuntime::RDOKeyboard::addhk_notfound:
+	case rdo::runtime::RDOKeyboard::addhk_notfound:
 		RDOParser::s_parser()->error().error(hotkey_pos, rdo::format(_T("Неизвестная клавиша: %s"), hotKey.c_str()));
 		break;
 
-	case rdoRuntime::RDOKeyboard::addhk_dont:
+	case rdo::runtime::RDOKeyboard::addhk_dont:
 		RDOParser::s_parser()->error().push_only(src_info(), rdo::format(_T("Операция '%s' не является клавиатурной"), src_text().c_str()));
 		RDOParser::s_parser()->error().push_only(pattern()->src_info(), _T("См. образец"));
 		RDOParser::s_parser()->error().push_done();
@@ -243,10 +243,10 @@ RDODPTPriorActivity::~RDODPTPriorActivity()
 // -------------------- RDODPTSome
 // --------------------------------------------------------------------------------
 RDODPTSome::RDODPTSome(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
-	: RDOLogic<rdoRuntime::RDODPTSome, RDODPTSomeActivity>(src_info)
+	: RDOLogic<rdo::runtime::RDODPTSome, RDODPTSomeActivity>(src_info)
 {
 	RDOParser::s_parser()->checkDPTName(this->src_info());
-	m_pRuntimeLogic = RF(rdoRuntime::RDODPTSome)::create(RDOParser::s_parser()->runtime(), pParent);
+	m_pRuntimeLogic = RF(rdo::runtime::RDODPTSome)::create(RDOParser::s_parser()->runtime(), pParent);
 	ASSERT(m_pRuntimeLogic);
 	m_pRuntimeLogic->init(RDOParser::s_parser()->runtime());
 	RDOParser::s_parser()->insertDPTSome(this);
@@ -268,10 +268,10 @@ Context::FindResult RDODPTSome::onFindContext(CREF(LPRDOValue) pValue) const
 // -------------------- RDODPTPrior
 // --------------------------------------------------------------------------------
 RDODPTPrior::RDODPTPrior(CREF(RDOParserSrcInfo) src_info, LPILogic pParent)
-	: RDOLogic<rdoRuntime::RDODPTPrior, RDODPTPriorActivity>(src_info)
+	: RDOLogic<rdo::runtime::RDODPTPrior, RDODPTPriorActivity>(src_info)
 {
 	RDOParser::s_parser()->checkDPTName(this->src_info());
-	m_pRuntimeLogic = RF(rdoRuntime::RDODPTPrior)::create(RDOParser::s_parser()->runtime(), pParent);
+	m_pRuntimeLogic = RF(rdo::runtime::RDODPTPrior)::create(RDOParser::s_parser()->runtime(), pParent);
 	ASSERT(m_pRuntimeLogic);
 	m_pRuntimeLogic->init(RDOParser::s_parser()->runtime());
 	RDOParser::s_parser()->insertDPTPrior(this);
@@ -304,7 +304,7 @@ RDODPTSearchActivity::RDODPTSearchActivity(LPIBaseOperationContainer pDPT, CREF(
 	}
 	for (RDOPATPattern::RelResList::const_iterator it = pattern()->rel_res_begin(); it != pattern()->rel_res_end(); ++it)
 	{
-		if (((*it)->m_statusBegin == rdoRuntime::RDOResource::CS_Create) || ((*it)->m_statusBegin == rdoRuntime::RDOResource::CS_Erase))
+		if (((*it)->m_statusBegin == rdo::runtime::RDOResource::CS_Create) || ((*it)->m_statusBegin == rdo::runtime::RDOResource::CS_Erase))
 		{
 			RDOParser::s_parser()->error().push_only(this->src_info(), rdo::format(_T("В продукционном правиле '%s' нельзя создавать или удалять ресурсы, т.к. оно используется в точке типа search"), src_text().c_str()));
 			RDOParser::s_parser()->error().push_only(pattern()->src_info(), _T("См. образец"));
@@ -312,7 +312,7 @@ RDODPTSearchActivity::RDODPTSearchActivity(LPIBaseOperationContainer pDPT, CREF(
 			RDOParser::s_parser()->error().push_done();
 		}
 	}
-	m_pActivity = RF(rdoRuntime::RDORule)::create(RDOParser::s_parser()->runtime(), pattern()->getPatRuntime<rdoRuntime::RDOPatternRule>(), true, name());
+	m_pActivity = RF(rdo::runtime::RDORule)::create(RDOParser::s_parser()->runtime(), pattern()->getPatRuntime<rdo::runtime::RDOPatternRule>(), true, name());
 	ASSERT(m_pActivity);
 }
 
@@ -328,8 +328,8 @@ void RDODPTSearchActivity::setValue(IDPTSearchActivity::ValueTime value, CREF(LP
 // --------------------------------------------------------------------------------
 // -------------------- RDODPTSearch
 // --------------------------------------------------------------------------------
-RDODPTSearch::RDODPTSearch(CREF(RDOParserSrcInfo) src_info, rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag trace, LPILogic pParent)
-	: RDOLogic<rdoRuntime::RDODPTSearchRuntime, RDODPTSearchActivity>(src_info)
+RDODPTSearch::RDODPTSearch(CREF(RDOParserSrcInfo) src_info, rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag trace, LPILogic pParent)
+	: RDOLogic<rdo::runtime::RDODPTSearchRuntime, RDODPTSearchActivity>(src_info)
 	, m_trace  (trace  )
 	, m_closed (false  )
 	, m_pParent(pParent)
@@ -352,10 +352,10 @@ Context::FindResult RDODPTSearch::onFindContext(CREF(LPRDOValue) pValue) const
 
 void RDODPTSearch::end()
 {
-	rdoRuntime::LPRDOCalc pCalcCondition = m_pConditon     ? m_pConditon->getCalc()     : rdo::Factory<rdoRuntime::RDOCalcConst>::create(1).object_parent_cast<rdoRuntime::RDOCalc>();
-	rdoRuntime::LPRDOCalc pCalcTerminate = m_pTermConditon ? m_pTermConditon->getCalc() : rdo::Factory<rdoRuntime::RDOCalcConst>::create(1).object_parent_cast<rdoRuntime::RDOCalc>();
+	rdo::runtime::LPRDOCalc pCalcCondition = m_pConditon     ? m_pConditon->getCalc()     : rdo::Factory<rdo::runtime::RDOCalcConst>::create(1).object_parent_cast<rdo::runtime::RDOCalc>();
+	rdo::runtime::LPRDOCalc pCalcTerminate = m_pTermConditon ? m_pTermConditon->getCalc() : rdo::Factory<rdo::runtime::RDOCalcConst>::create(1).object_parent_cast<rdo::runtime::RDOCalc>();
 
-	m_pRuntimeLogic = RF(rdoRuntime::RDODPTSearchRuntime)::create(RDOParser::s_parser()->runtime(),
+	m_pRuntimeLogic = RF(rdo::runtime::RDODPTSearchRuntime)::create(RDOParser::s_parser()->runtime(),
 		m_pParent,
 		pCalcCondition,
 		pCalcTerminate,
@@ -370,7 +370,7 @@ void RDODPTSearch::end()
 	{
 		LPRDODPTSearchActivity pSearchActivity = getActivities().at(i);
 		ASSERT(pSearchActivity);
-		LPIDPTSearchActivity pActivity = RF(rdoRuntime::RDODPTSearchActivity)::create(
+		LPIDPTSearchActivity pActivity = RF(rdo::runtime::RDODPTSearchActivity)::create(
 			pSearchActivity->activity(),
 			pSearchActivity->getValue(),
 			pSearchActivity->getRuleCost()->createCalc()
