@@ -208,7 +208,7 @@
 #define CONVERTER LEXER->converter()
 #define RUNTIME   CONVERTER->runtime()
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 %}
 
 %left RDO_or
@@ -230,19 +230,19 @@ pat_main
 		{
 			case RDOPATPattern::PT_IE:
 			{
-				rdoConverter::LPDocUpdate pEventMove = rdo::Factory<rdoConverter::UpdateMove>::create(
+				LPDocUpdate pEventMove = rdo::Factory<UpdateMove>::create(
 					@2.m_first_seek,
 					@2.m_last_seek,
 					IDocUpdate::Position::POSITION_END,
-					rdoConverter::IDocument::EVN
+					IDocument::EVN
 				);
 				ASSERT(pEventMove);
 				CONVERTER->insertDocUpdate(pEventMove);
 
-				rdoConverter::LPDocUpdate pReturnInsert = rdo::Factory<rdoConverter::UpdateInsert>::create(
+				LPDocUpdate pReturnInsert = rdo::Factory<UpdateInsert>::create(
 					IDocUpdate::Position::POSITION_END,
 					_T("\r\n\r\n"),
-					rdoConverter::IDocument::EVN
+					IDocument::EVN
 				);
 				ASSERT(pReturnInsert);
 				CONVERTER->insertDocUpdate(pReturnInsert);
@@ -272,7 +272,7 @@ pat_header
 		LPRDOPATPattern pPattern = rdo::Factory<RDOPatternIrregEvent>::create(pName->src_info(), $4 != 0);
 		ASSERT(pPattern);
 
-		rdoConverter::LPDocUpdate pIEReplace = rdo::Factory<rdoConverter::UpdateReplace>::create(
+		LPDocUpdate pIEReplace = rdo::Factory<UpdateReplace>::create(
 			@3.m_first_seek,
 			@3.m_last_seek,
 			_T("event")
@@ -1633,7 +1633,7 @@ pat_pattern
 param_type
 	: RDO_integer param_type_range
 	{
-		rdoConverter::LPDocUpdate pReplace = rdo::Factory<rdoConverter::UpdateReplace>::create(@1.m_first_seek, @1.m_last_seek, _T("int"));
+		LPDocUpdate pReplace = rdo::Factory<UpdateReplace>::create(@1.m_first_seek, @1.m_last_seek, _T("int"));
 		ASSERT(pReplace);
 		//CONVERTER->insertDocUpdate(pReplace);
 
@@ -1902,7 +1902,7 @@ param_type_such_as
 param_value_default
 	: /* empty */
 	{
-		$$ = CONVERTER->stack().push(rdo::Factory<rdoConverter::RDOValue>::create());
+		$$ = CONVERTER->stack().push(rdo::Factory<RDOValue>::create());
 	}
 	| '=' RDO_INT_CONST
 	{
@@ -2429,4 +2429,4 @@ fun_select_arithm
 
 %%
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

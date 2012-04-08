@@ -24,7 +24,7 @@
 #include "simulator/runtime/rdo_value.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 int  cnv_rtpparse(PTR(void) lexer);
 int  cnv_rtplex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
@@ -193,6 +193,6 @@ DECLARE_POINTER(RDORTPResType);
 //	PTR(RDORTPFuzzyTermsSet) m_set; // набор терминов параметра
 //};
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 #endif // _CONVERTOR_RDORTP_H_

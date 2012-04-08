@@ -206,7 +206,7 @@
 #define CONVERTER LEXER->converter()
 #define RUNTIME   CONVERTER->runtime()
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 %}
 
 %left RDO_or
@@ -436,7 +436,7 @@ fun_func_calc_name
 fun_func_algorithmic_calc_if
 	: fun_func_calc_if fun_logic fun_func_calc_name '=' fun_arithm
 	{
-		rdoConverter::LPDocUpdate pIFReplace = rdo::Factory<rdoConverter::UpdateReplace>::create(
+		LPDocUpdate pIFReplace = rdo::Factory<UpdateReplace>::create(
 			@1.m_first_seek,
 			@1.m_last_seek,
 			_T("if")
@@ -444,21 +444,21 @@ fun_func_algorithmic_calc_if
 		ASSERT(pIFReplace);
 		CONVERTER->insertDocUpdate(pIFReplace);
 
-		rdoConverter::LPDocUpdate pIFInsertOpenBrace = rdo::Factory<rdoConverter::UpdateInsert>::create(
+		LPDocUpdate pIFInsertOpenBrace = rdo::Factory<UpdateInsert>::create(
 			@2.m_first_seek,
 			_T("(")
 		);
 		ASSERT(pIFInsertOpenBrace);
 		CONVERTER->insertDocUpdate(pIFInsertOpenBrace);
 
-		rdoConverter::LPDocUpdate pIFInsertCloseBrace = rdo::Factory<rdoConverter::UpdateInsert>::create(
+		LPDocUpdate pIFInsertCloseBrace = rdo::Factory<UpdateInsert>::create(
 			@2.m_last_seek,
 			_T(")")
 		);
 		ASSERT(pIFInsertCloseBrace);
 		CONVERTER->insertDocUpdate(pIFInsertCloseBrace);
 
-		rdoConverter::LPDocUpdate pReturnReplace = rdo::Factory<rdoConverter::UpdateReplace>::create(
+		LPDocUpdate pReturnReplace = rdo::Factory<UpdateReplace>::create(
 			@3.m_first_seek,
 			@4.m_last_seek,
 			_T("return")
@@ -466,7 +466,7 @@ fun_func_algorithmic_calc_if
 		ASSERT(pReturnReplace);
 		CONVERTER->insertDocUpdate(pReturnReplace);
 
-		rdoConverter::LPDocUpdate pSemicolonInsert = rdo::Factory<rdoConverter::UpdateInsert>::create(
+		LPDocUpdate pSemicolonInsert = rdo::Factory<UpdateInsert>::create(
 			@5.m_last_seek,
 			_T(";")
 		);
@@ -1255,7 +1255,7 @@ fun_seq_enumerative_body
 param_type
 	: RDO_integer param_type_range
 	{
-		rdoConverter::LPDocUpdate pReplace = rdo::Factory<rdoConverter::UpdateReplace>::create(@1.m_first_seek, @1.m_last_seek, _T("int"));
+		LPDocUpdate pReplace = rdo::Factory<UpdateReplace>::create(@1.m_first_seek, @1.m_last_seek, _T("int"));
 		ASSERT(pReplace);
 		//CONVERTER->insertDocUpdate(pReplace);
 
@@ -1524,7 +1524,7 @@ param_type_such_as
 param_value_default
 	: /* empty */
 	{
-		$$ = CONVERTER->stack().push(rdo::Factory<rdoConverter::RDOValue>::create());
+		$$ = CONVERTER->stack().push(rdo::Factory<RDOValue>::create());
 	}
 	| '=' RDO_INT_CONST
 	{
@@ -2051,4 +2051,4 @@ fun_select_arithm
 
 %%
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

@@ -19,7 +19,7 @@
 #include "simulator/runtime/rdo_priority_i.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOLogicActivity
@@ -70,6 +70,6 @@ private:
 	ActivityList m_activityList;
 };
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 #endif // _CONVERTOR_RDOCONVERTER_LOGIC_H_

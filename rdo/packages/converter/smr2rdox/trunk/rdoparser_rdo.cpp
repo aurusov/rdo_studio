@@ -28,7 +28,7 @@
 #include "simulator/runtime/calc/function/calc_function_internal.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserRDOItem
@@ -494,4 +494,4 @@ void RDOParserSTDFUN::parse(PTR(Converter) pParser)
 	fun->setFunctionCalc(rdo::Factory<Function_D_D>::create<Function_D_D::function_type>(tan));
 }
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

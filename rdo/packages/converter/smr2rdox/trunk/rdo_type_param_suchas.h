@@ -16,7 +16,7 @@
 #include "converter/smr2rdox/param.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOTypeParamSuchAs
@@ -35,6 +35,6 @@ private:
 };
 DECLARE_POINTER(RDOTypeParamSuchAs);
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 #endif // _CONVERTOR_RDO_TYPE_PARAM_SUCHAS_H_

@@ -18,7 +18,7 @@
 #include "converter/smr2rdox/rdoparser_lexer.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 int cnv_oprlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
@@ -50,4 +50,4 @@ RDOOperations::RDOOperations(CREF(RDOParserSrcInfo) src_info)
 	Converter::s_converter()->insertOperations(this);
 }
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

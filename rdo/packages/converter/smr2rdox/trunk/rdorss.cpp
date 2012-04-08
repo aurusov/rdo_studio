@@ -19,7 +19,7 @@
 #include "simulator/runtime/calc/procedural/calc_nop.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 int cnv_rsslex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
@@ -131,4 +131,4 @@ rdo::runtime::LPRDOCalc RDOPROCResource::createCalc() const
 	return pCalc;
 }
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

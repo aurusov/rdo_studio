@@ -21,7 +21,7 @@
 #include "utils/smart_ptr/intrusive_ptr.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserSrcInfo
@@ -141,6 +141,6 @@ private:
 	CREF(tstring) m_name;
 };
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 #endif // _CONVERTOR_RDOCONVERTER_OBJECT_H_

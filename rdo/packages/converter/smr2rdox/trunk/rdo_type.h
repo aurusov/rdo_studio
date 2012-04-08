@@ -20,7 +20,7 @@
 #include "converter/smr2rdox/rdo_object.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- IType
@@ -115,6 +115,6 @@ DEFINE_ATOM_TYPE_CONVERTER(real         );
 DEFINE_ATOM_TYPE_CONVERTER(bool         );
 DEFINE_ATOM_TYPE_CONVERTER(string       );
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 #endif // _CONVERTOR_RDOCONVERTER_TYPE_H_

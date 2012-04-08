@@ -27,7 +27,7 @@
 #include "simulator/runtime/calc/resource/calc_select.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 int  cnv_funparse(PTR(void) lexer);
 int  cnv_funlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
@@ -598,6 +598,6 @@ private:
 };
 DECLARE_POINTER(RDOFUNSelect);
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 #endif // _CONVERTOR_RDOFUN_H_

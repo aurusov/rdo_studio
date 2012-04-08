@@ -18,7 +18,7 @@
 #include "simulator/runtime/rdo_value.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOValue
@@ -55,7 +55,7 @@ private:
 	LPRDOType              m_type;
 };
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 #include "converter/smr2rdox/rdo_value.inl"
 

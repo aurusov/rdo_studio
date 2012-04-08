@@ -205,7 +205,7 @@
 #define CONVERTER LEXER->converter()
 #define RUNTIME   CONVERTER->runtime()
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 %}
 
 %left RDO_or
@@ -230,11 +230,11 @@ dpt_main
 	| dpt_main dpt_free_end
 	| dpt_main dpt_process_end
 	{
-		rdoConverter::LPDocUpdate pProcessMove = rdo::Factory<rdoConverter::UpdateMove>::create(
+		LPDocUpdate pProcessMove = rdo::Factory<UpdateMove>::create(
 			@2.m_first_seek,
 			@2.m_last_seek,
 			0,
-			rdoConverter::IDocument::PRC
+			IDocument::PRC
 		);
 		ASSERT(pProcessMove);
 		CONVERTER->insertDocUpdate(pProcessMove);
@@ -1649,4 +1649,4 @@ fun_select_arithm
 
 %%
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

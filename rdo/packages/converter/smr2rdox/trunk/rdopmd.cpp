@@ -20,7 +20,7 @@
 #include "converter/smr2rdox/rdoparser_lexer.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 int cnv_pmdlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
@@ -195,4 +195,4 @@ RDOPMDGetValue::RDOPMDGetValue(CREF(RDOParserSrcInfo) src_info, LPRDOFUNArithm p
 	endOfCreation(RF(rdo::runtime::RDOPMDGetValue)::create(Converter::s_converter()->runtime(), src_text(), pArithm->createCalc()));
 }
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

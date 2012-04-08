@@ -15,7 +15,7 @@
 #include "converter/smr2rdox/rdoparser.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- DocUpdate
@@ -446,4 +446,4 @@ void UpdateSwap::remove(CREF(Position) from, CREF(Position) to, REF(Position) po
 	}
 }
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

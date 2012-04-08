@@ -18,7 +18,7 @@
 #include "converter/smr2rdox/update/update_i.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- UpdateInsert
@@ -110,6 +110,6 @@ private:
 	DECLARE_IDocUpdate;
 };
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 #endif // _CONVERTOR_UPDATE_H_

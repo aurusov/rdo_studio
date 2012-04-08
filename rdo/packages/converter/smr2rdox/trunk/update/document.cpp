@@ -15,7 +15,7 @@
 #include "converter/smr2rdox/update/document.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 //#define DUMP_DOCUMENT
 
@@ -307,4 +307,4 @@ tstring Document::MemoryStream::get(ruint from, ruint to)
 	return result;
 }
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

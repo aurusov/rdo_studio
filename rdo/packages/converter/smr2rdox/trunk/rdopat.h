@@ -28,7 +28,7 @@
 #include "utils/smart_ptr/factory.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 int  cnv_patparse(PTR(void) lexer);
 int  cnv_patlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
@@ -491,6 +491,6 @@ private:
 	LPRDORTPResType m_pResType;
 };
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 #endif // _CONVERTOR_RDOPAT_H_

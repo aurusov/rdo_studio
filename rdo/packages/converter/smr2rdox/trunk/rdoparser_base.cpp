@@ -23,7 +23,7 @@
 #include "converter/smr2rdox/rdortp.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserItem
@@ -150,4 +150,4 @@ RDOParserContainerSMRInfo::RDOParserContainerSMRInfo()
 	insert(rdoModelObjectsConvertor::obPRE, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjectsConvertor::SMR_IN, cnv_smr_file_parse, cnv_smr_file_error, cnv_smr_file_lex));
 }
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

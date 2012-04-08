@@ -29,7 +29,7 @@
 #include "thirdparty/pugixml/src/pugixml.hpp"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- Converter
@@ -380,7 +380,7 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 			++it;
 		}
 	}
-	catch (REF(rdoConverter::RDOSyntaxException))
+	catch (REF(rdo::converter::smr2rdox::RDOSyntaxException))
 	{
 		return CNV_NONE;
 	}
@@ -446,7 +446,7 @@ RDOParserModel::Result RDOParserModel::convert(CREF(tstring) smrFullFileName, RE
 			it->second = to.string();
 		}
 	}
-	catch (REF(rdoConverter::RDOSyntaxException))
+	catch (REF(rdo::converter::smr2rdox::RDOSyntaxException))
 	{
 		return CNV_ERROR;
 	}
@@ -614,4 +614,4 @@ void Converter::checkDPTName(CREF(RDOParserSrcInfo) src_info)
 	}
 }
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

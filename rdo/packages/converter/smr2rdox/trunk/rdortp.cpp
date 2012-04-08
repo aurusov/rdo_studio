@@ -19,7 +19,7 @@
 #include "simulator/runtime/calc/calc_base.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 int cnv_rtplex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
@@ -116,4 +116,4 @@ RDORTPFuzzyTerm::RDORTPFuzzyTerm(PTR(Converter) pParser, CREF(RDOParserSrcInfo) 
 
 }*/
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

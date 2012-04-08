@@ -205,7 +205,7 @@
 #define CONVERTER LEXER->converter()
 #define RUNTIME   CONVERTER->runtime()
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 %}
 
 %start type_list
@@ -218,7 +218,7 @@ type_list
 	| type_list ext_param_type
 	| error
 	{
-		CONVERTER->error().error(rdoConverter::RDOParserSrcInfo(), _T("Ожидается ключевое слово $Resource_type"));
+		CONVERTER->error().error(RDOParserSrcInfo(), _T("Ожидается ключевое слово $Resource_type"));
 	}
 	;
 
@@ -357,14 +357,14 @@ rtp_param
 
 		LPRDORTPParam pParam = rdo::Factory<RDORTPParam>::create(pParamType, pDefaultValue, pParamName->src_info());
 
-		rdoConverter::LPDocUpdate pColonDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(
+		LPDocUpdate pColonDelete = rdo::Factory<UpdateDelete>::create(
 			@1.m_last_seek - 1,
 			@1.m_last_seek
 		);
 		ASSERT(pColonDelete);
 		//CONVERTER->insertDocUpdate(pColonDelete);
 
-		rdoConverter::LPDocUpdate pNameTypeSwap = rdo::Factory<rdoConverter::UpdateSwap>::create(
+		LPDocUpdate pNameTypeSwap = rdo::Factory<UpdateSwap>::create(
 			@1.m_first_seek,
 			@1.m_first_seek + pParamName->value().getIdentificator().length(),
 			@2.m_first_seek,
@@ -373,7 +373,7 @@ rtp_param
 		ASSERT(pNameTypeSwap);
 		//CONVERTER->insertDocUpdate(pNameTypeSwap);
 
-		rdoConverter::LPDocUpdate pSemicolonInsert = rdo::Factory<rdoConverter::UpdateInsert>::create(
+		LPDocUpdate pSemicolonInsert = rdo::Factory<UpdateInsert>::create(
 			@3.m_last_seek,
 			_T(";")
 		);
@@ -406,7 +406,7 @@ rtp_param
 param_type
 	: RDO_integer param_type_range
 	{
-		rdoConverter::LPDocUpdate pReplace = rdo::Factory<rdoConverter::UpdateReplace>::create(@1.m_first_seek, @1.m_last_seek, _T("int"));
+		LPDocUpdate pReplace = rdo::Factory<UpdateReplace>::create(@1.m_first_seek, @1.m_last_seek, _T("int"));
 		ASSERT(pReplace);
 		//CONVERTER->insertDocUpdate(pReplace);
 
@@ -544,18 +544,18 @@ param_type_range
 param_type_enum
 	: '(' param_type_enum_list ')'
 	{
-		rdoConverter::LPDocUpdate pEnumInsert = rdo::Factory<rdoConverter::UpdateInsert>::create(
+		LPDocUpdate pEnumInsert = rdo::Factory<UpdateInsert>::create(
 			@1.m_first_seek,
 			_T("enum ")
 		);
 		ASSERT(pEnumInsert);
 		//CONVERTER->insertDocUpdate(pEnumInsert);
 
-		rdoConverter::LPDocUpdate pOpenBracketReplace = rdo::Factory<rdoConverter::UpdateReplace>::create(@1.m_first_seek, @1.m_last_seek, _T("{"));
+		LPDocUpdate pOpenBracketReplace = rdo::Factory<UpdateReplace>::create(@1.m_first_seek, @1.m_last_seek, _T("{"));
 		ASSERT(pOpenBracketReplace);
 		//CONVERTER->insertDocUpdate(pOpenBracketReplace);
 
-		rdoConverter::LPDocUpdate pCloseBracketReplace = rdo::Factory<rdoConverter::UpdateReplace>::create(@3.m_first_seek, @3.m_last_seek, _T("}"));
+		LPDocUpdate pCloseBracketReplace = rdo::Factory<UpdateReplace>::create(@3.m_first_seek, @3.m_last_seek, _T("}"));
 		ASSERT(pCloseBracketReplace);
 		//CONVERTER->insertDocUpdate(pCloseBracketReplace);
 
@@ -690,7 +690,7 @@ param_type_such_as
 param_value_default
 	: /* empty */
 	{
-		$$ = CONVERTER->stack().push(rdo::Factory<rdoConverter::RDOValue>::create());
+		$$ = CONVERTER->stack().push(rdo::Factory<RDOValue>::create());
 	}
 	| '=' RDO_INT_CONST
 	{
@@ -728,4 +728,4 @@ param_value_default
 
 %%
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

@@ -18,7 +18,7 @@
 #include "utils/smart_ptr/factory.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDORTPParam
@@ -41,6 +41,6 @@ private:
 };
 DECLARE_POINTER(RDORTPParam);
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 #endif // _CONVERTOR_RDORTP_PARAM_H_

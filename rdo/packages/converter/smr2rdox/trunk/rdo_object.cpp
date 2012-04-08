@@ -17,7 +17,7 @@
 #include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserSrcInfo
@@ -107,4 +107,4 @@ void RDOParserSrcInfo::init()
 	RDOSrcInfo::setSrcPos(pos);
 }
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

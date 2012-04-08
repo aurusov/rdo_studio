@@ -17,7 +17,7 @@
 #include "converter/smr2rdox/namespace.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- IDocument
@@ -49,6 +49,6 @@ protected:
 	void    remove(Type type, ruint from, ruint to);          \
 	tstring get   (Type type, ruint from, ruint to);
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 #endif // _CONVERTOR_DOCUMENT_I_H_

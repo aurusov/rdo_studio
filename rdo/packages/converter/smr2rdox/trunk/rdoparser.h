@@ -39,7 +39,7 @@
 #include "simulator/runtime/rdo_object.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 class RDOTypeParam;
 
@@ -316,6 +316,6 @@ private:
 	                    CREF(tstring)                           fileExt);
 };
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 #endif // _CONVERTOR_RDOCONVERTER_H_

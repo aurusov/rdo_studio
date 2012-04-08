@@ -31,7 +31,7 @@
 #undef LEXER_POS
 #endif
 
-#define LEXER     reinterpret_cast<PTR(rdoConverter::RDOLexer)>(this)
+#define LEXER     reinterpret_cast<PTR(rdo::converter::smr2rdox::RDOLexer)>(this)
 #define LEXER_POS (*LEXER->m_lploc)
 #define CONVERTER LEXER->converter()
 #define RUNTIME   CONVERTER->runtime()
@@ -313,12 +313,12 @@ set					return(RDO_set);
 	int len = n1.length();
 	tstring name(n1, 1, len-2);
 	LEXER->setvalue(CONVERTER->stack().push(
-		rdo::Factory<rdoConverter::RDOValue>::create(
+		rdo::Factory<rdo::converter::smr2rdox::RDOValue>::create(
 			name,
-			rdo::Factory<rdoConverter::RDOType__string>::create(),
+			rdo::Factory<rdo::converter::smr2rdox::RDOType__string>::create(),
 			LEXER->m_lploc
-				? rdoConverter::RDOParserSrcInfo(LEXER_POS, name)
-				: rdoConverter::RDOParserSrcInfo(name)
+				? rdo::converter::smr2rdox::RDOParserSrcInfo(LEXER_POS, name)
+				: rdo::converter::smr2rdox::RDOParserSrcInfo(name)
 		)
 	));
 	return RDO_STRING_CONST;
@@ -332,7 +332,7 @@ set					return(RDO_set);
 "{"						{
 	BEGIN(comment_rdo);
 
-	rdoConverter::LPDocUpdate pReplace = rdo::Factory<rdoConverter::UpdateReplace>::create(LEXER_POS.m_first_seek, LEXER_POS.m_first_seek + 1, _T("/*"));
+	rdo::converter::smr2rdox::LPDocUpdate pReplace = rdo::Factory<rdo::converter::smr2rdox::UpdateReplace>::create(LEXER_POS.m_first_seek, LEXER_POS.m_first_seek + 1, _T("/*"));
 	ASSERT(pReplace);
 	CONVERTER->insertDocUpdate(pReplace);
 };
@@ -342,7 +342,7 @@ set					return(RDO_set);
 <comment_rdo>"}"		{
 	BEGIN(INITIAL);
 
-	rdoConverter::LPDocUpdate pReplace = rdo::Factory<rdoConverter::UpdateReplace>::create(LEXER_POS.m_first_seek, LEXER_POS.m_first_seek + 1, _T("*/"));
+	rdo::converter::smr2rdox::LPDocUpdate pReplace = rdo::Factory<rdo::converter::smr2rdox::UpdateReplace>::create(LEXER_POS.m_first_seek, LEXER_POS.m_first_seek + 1, _T("*/"));
 	ASSERT(pReplace);
 	CONVERTER->insertDocUpdate(pReplace);
 };
@@ -357,7 +357,7 @@ set					return(RDO_set);
 
 "}"|"*/"				{
 	LEXER->loc_delta_pos(YYLeng());
-	CONVERTER->error().error(rdoConverter::RDOParserSrcInfo(), _T("Не найдено начало комментария"));
+	CONVERTER->error().error(rdo::converter::smr2rdox::RDOParserSrcInfo(), _T("Не найдено начало комментария"));
 }
 
 [\r\n\t ]+
@@ -374,12 +374,12 @@ set					return(RDO_set);
 	LEXER->loc_delta_pos(-2);
 
 	LEXER->setvalue(CONVERTER->stack().push(
-		rdo::Factory<rdoConverter::RDOValue>::create(
+		rdo::Factory<rdo::converter::smr2rdox::RDOValue>::create(
 			atoi(value.c_str()),
-			rdo::Factory<rdoConverter::RDOType__int>::create(),
+			rdo::Factory<rdo::converter::smr2rdox::RDOType__int>::create(),
 			LEXER->m_lploc
-				? rdoConverter::RDOParserSrcInfo(LEXER_POS, value)
-				: rdoConverter::RDOParserSrcInfo(value)
+				? rdo::converter::smr2rdox::RDOParserSrcInfo(LEXER_POS, value)
+				: rdo::converter::smr2rdox::RDOParserSrcInfo(value)
 		)
 	));
 
@@ -389,12 +389,12 @@ set					return(RDO_set);
 ([+-]?[0-9]+"."[0-9]*([Ee][+-]?[0-9]+)?) {
 
 	LEXER->setvalue(CONVERTER->stack().push(
-		rdo::Factory<rdoConverter::RDOValue>::create(
+		rdo::Factory<rdo::converter::smr2rdox::RDOValue>::create(
 			atof(YYText()),
-			rdo::Factory<rdoConverter::RDOType__real>::create(),
+			rdo::Factory<rdo::converter::smr2rdox::RDOType__real>::create(),
 			LEXER->m_lploc
-				? rdoConverter::RDOParserSrcInfo(LEXER_POS, YYText())
-				: rdoConverter::RDOParserSrcInfo(YYText())
+				? rdo::converter::smr2rdox::RDOParserSrcInfo(LEXER_POS, YYText())
+				: rdo::converter::smr2rdox::RDOParserSrcInfo(YYText())
 		)
 	));
 
@@ -404,12 +404,12 @@ set					return(RDO_set);
 [+-]?[0-9]+ {
 
 	LEXER->setvalue(CONVERTER->stack().push(
-		rdo::Factory<rdoConverter::RDOValue>::create(
+		rdo::Factory<rdo::converter::smr2rdox::RDOValue>::create(
 			atoi(YYText()),
-			rdo::Factory<rdoConverter::RDOType__int>::create(),
+			rdo::Factory<rdo::converter::smr2rdox::RDOType__int>::create(),
 			LEXER->m_lploc
-				? rdoConverter::RDOParserSrcInfo(LEXER_POS, YYText())
-				: rdoConverter::RDOParserSrcInfo(YYText())
+				? rdo::converter::smr2rdox::RDOParserSrcInfo(LEXER_POS, YYText())
+				: rdo::converter::smr2rdox::RDOParserSrcInfo(YYText())
 		)
 	));
 
@@ -419,12 +419,12 @@ set					return(RDO_set);
 true {
 
 	LEXER->setvalue(CONVERTER->stack().push(
-		rdo::Factory<rdoConverter::RDOValue>::create(
+		rdo::Factory<rdo::converter::smr2rdox::RDOValue>::create(
 			rdo::runtime::RDOValue(true),
-			rdo::Factory<rdoConverter::RDOType__bool>::create(),
+			rdo::Factory<rdo::converter::smr2rdox::RDOType__bool>::create(),
 			LEXER->m_lploc
-				? rdoConverter::RDOParserSrcInfo(LEXER_POS, YYText())
-				: rdoConverter::RDOParserSrcInfo(YYText())
+				? rdo::converter::smr2rdox::RDOParserSrcInfo(LEXER_POS, YYText())
+				: rdo::converter::smr2rdox::RDOParserSrcInfo(YYText())
 		)
 	));
 
@@ -434,12 +434,12 @@ true {
 false {
 
 	LEXER->setvalue(CONVERTER->stack().push(
-		rdo::Factory<rdoConverter::RDOValue>::create(
+		rdo::Factory<rdo::converter::smr2rdox::RDOValue>::create(
 			rdo::runtime::RDOValue(false),
-			rdo::Factory<rdoConverter::RDOType__bool>::create(),
+			rdo::Factory<rdo::converter::smr2rdox::RDOType__bool>::create(),
 			LEXER->m_lploc
-				? rdoConverter::RDOParserSrcInfo(LEXER_POS, YYText())
-				: rdoConverter::RDOParserSrcInfo(YYText())
+				? rdo::converter::smr2rdox::RDOParserSrcInfo(LEXER_POS, YYText())
+				: rdo::converter::smr2rdox::RDOParserSrcInfo(YYText())
 		)
 	));
 
@@ -457,18 +457,18 @@ false {
 	tstring::size_type pos = n1.find_first_of("\r\n\t :");
 	tstring name(n1, 0, pos);
 	RUNTIME->memory_insert(name.length() + sizeof(tstring));
-	rdoConverter::LPRDOValue pValue;
+	rdo::converter::smr2rdox::LPRDOValue pValue;
 	if (LEXER->m_lploc)
 	{
 		YYLTYPE pos     = LEXER_POS;
 		pos.m_last_line = pos.m_first_line;
 		pos.m_last_pos  = pos.m_first_pos  + name.length();
 		pos.m_last_seek = pos.m_first_seek + name.length();
-		pValue = rdo::Factory<rdoConverter::RDOValue>::create(rdoConverter::RDOParserSrcInfo(pos, name));
+		pValue = rdo::Factory<rdo::converter::smr2rdox::RDOValue>::create(rdo::converter::smr2rdox::RDOParserSrcInfo(pos, name));
 	}
 	else
 	{
-		pValue = rdo::Factory<rdoConverter::RDOValue>::create(rdoConverter::RDOParserSrcInfo(name));
+		pValue = rdo::Factory<rdo::converter::smr2rdox::RDOValue>::create(rdo::converter::smr2rdox::RDOParserSrcInfo(name));
 	}
 
 	LEXER->setvalue(CONVERTER->stack().push(pValue));
@@ -481,18 +481,18 @@ false {
 	tstring::size_type pos = n1.find_first_of("\r\n\t :");
 	tstring name(n1, 0, pos);
 	RUNTIME->memory_insert(name.length() + sizeof(tstring));
-	rdoConverter::LPRDOValue pValue;
+	rdo::converter::smr2rdox::LPRDOValue pValue;
 	if (LEXER->m_lploc)
 	{
 		YYLTYPE pos     = LEXER_POS;
 		pos.m_last_line = pos.m_first_line;
 		pos.m_last_pos  = pos.m_first_pos  + name.length();
 		pos.m_last_seek = pos.m_first_seek + name.length();
-		pValue = rdo::Factory<rdoConverter::RDOValue>::create(rdoConverter::RDOParserSrcInfo(pos, name));
+		pValue = rdo::Factory<rdo::converter::smr2rdox::RDOValue>::create(rdo::converter::smr2rdox::RDOParserSrcInfo(pos, name));
 	}
 	else
 	{
-		pValue = rdo::Factory<rdoConverter::RDOValue>::create(rdoConverter::RDOParserSrcInfo(name));
+		pValue = rdo::Factory<rdo::converter::smr2rdox::RDOValue>::create(rdo::converter::smr2rdox::RDOParserSrcInfo(name));
 	}
 
 	LEXER->setvalue(CONVERTER->stack().push(pValue));
@@ -505,18 +505,18 @@ false {
 	tstring::size_type pos = n1.find_first_of("\r\n\t :");
 	tstring name(n1, 0, pos);
 	RUNTIME->memory_insert(name.length() + sizeof(tstring));
-	rdoConverter::LPRDOValue pValue;
+	rdo::converter::smr2rdox::LPRDOValue pValue;
 	if (LEXER->m_lploc)
 	{
 		YYLTYPE pos     = LEXER_POS;
 		pos.m_last_line = pos.m_first_line;
 		pos.m_last_pos  = pos.m_first_pos  + name.length();
 		pos.m_last_seek = pos.m_first_seek + name.length();
-		pValue = rdo::Factory<rdoConverter::RDOValue>::create(rdoConverter::RDOParserSrcInfo(pos, name));
+		pValue = rdo::Factory<rdo::converter::smr2rdox::RDOValue>::create(rdo::converter::smr2rdox::RDOParserSrcInfo(pos, name));
 	}
 	else
 	{
-		pValue = rdo::Factory<rdoConverter::RDOValue>::create(rdoConverter::RDOParserSrcInfo(name));
+		pValue = rdo::Factory<rdo::converter::smr2rdox::RDOValue>::create(rdo::converter::smr2rdox::RDOParserSrcInfo(name));
 	}
 
 	LEXER->setvalue(CONVERTER->stack().push(pValue));
@@ -529,10 +529,10 @@ false {
 	RUNTIME->memory_insert(name.length() + sizeof(tstring));
 
 	LEXER->setvalue(CONVERTER->stack().push(
-		rdo::Factory<rdoConverter::RDOValue>::create(
+		rdo::Factory<rdo::converter::smr2rdox::RDOValue>::create(
 			LEXER->m_lploc
-				? rdoConverter::RDOParserSrcInfo(LEXER_POS, name)
-				: rdoConverter::RDOParserSrcInfo(name)
+				? rdo::converter::smr2rdox::RDOParserSrcInfo(LEXER_POS, name)
+				: rdo::converter::smr2rdox::RDOParserSrcInfo(name)
 		)
 	));
 
@@ -541,12 +541,12 @@ false {
 	case rdoModelObjectsConvertor::PAT_IN:
 		if (CONVERTER->isPattern())
 		{
-			rdoConverter::LPRDOPATPattern pPattern = CONVERTER->getLastPATPattern();
+			rdo::converter::smr2rdox::LPRDOPATPattern pPattern = CONVERTER->getLastPATPattern();
 			ASSERT(pPattern);
-			rdoConverter::LPRDORelevantResource pCurrRelRes = pPattern->m_pCurrRelRes;
+			rdo::converter::smr2rdox::LPRDORelevantResource pCurrRelRes = pPattern->m_pCurrRelRes;
 			if (pCurrRelRes)
 			{
-				rdoConverter::LPRDORTPResType pResType = pCurrRelRes->getType();
+				rdo::converter::smr2rdox::LPRDORTPResType pResType = pCurrRelRes->getType();
 				ASSERT(pResType);
 				if (pResType->findRTPParam(name))
 				{

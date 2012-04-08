@@ -16,7 +16,7 @@
 #include "converter/smr2rdox/rdoparser.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- Error
@@ -89,7 +89,7 @@ void Error::push_done()
 
 	if (!m_errors.empty())
 	{
-		throw rdoConverter::RDOSyntaxException(m_errors.back().m_message);
+		throw rdo::converter::smr2rdox::RDOSyntaxException(m_errors.back().m_message);
 	}
 }
 
@@ -101,7 +101,7 @@ void Error::modify(CREF(tstring) message)
 	if (!m_errors.empty())
 	{
 		m_errors.front().m_message = message + m_errors.front().m_message;
-		throw rdoConverter::RDOSyntaxException(_T(""));
+		throw rdo::converter::smr2rdox::RDOSyntaxException(_T(""));
 	}
 }
 
@@ -138,4 +138,4 @@ REF(Error) g_error()
 	return Converter::s_converter()->error();
 }
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

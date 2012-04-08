@@ -25,7 +25,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class RDOCalc;
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 int  cnv_smr_file_parse(PTR(void) lexer);
 int  cnv_smr_file_lex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
@@ -120,6 +120,6 @@ private:
 	BreakPointList         m_breakPointList;
 };
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 #endif // _CONVERTOR_RDOSMR_H_

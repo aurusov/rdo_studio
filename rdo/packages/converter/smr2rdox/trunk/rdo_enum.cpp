@@ -16,7 +16,7 @@
 #include "converter/smr2rdox/rdoparser_error.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOEnumType
@@ -76,20 +76,20 @@ LPRDOType RDOEnumType::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo) f
 			//! “ипы разные, сгенерим ошибку
 			if (pEnum.compare(pFrom.object_static_cast<RDOEnumType>()))
 			{
-				rdoConverter::g_error().push_only(src_info,     _T("»спользуютс€ различные перечислимые типы с одинаковыми значени€ми"));
-				rdoConverter::g_error().push_only(to_src_info,   to_src_info.src_text());
-				rdoConverter::g_error().push_only(src_info,     _T("и"));
-				rdoConverter::g_error().push_only(from_src_info, from_src_info.src_text());
-				rdoConverter::g_error().push_only(src_info,     _T("¬озможно, удобнее использовать первый из них как перечислимый, а второй как such_as на него, тогда параметры можно будет сравнивать и присваивать"));
+				rdo::converter::smr2rdox::g_error().push_only(src_info,     _T("»спользуютс€ различные перечислимые типы с одинаковыми значени€ми"));
+				rdo::converter::smr2rdox::g_error().push_only(to_src_info,   to_src_info.src_text());
+				rdo::converter::smr2rdox::g_error().push_only(src_info,     _T("и"));
+				rdo::converter::smr2rdox::g_error().push_only(from_src_info, from_src_info.src_text());
+				rdo::converter::smr2rdox::g_error().push_only(src_info,     _T("¬озможно, удобнее использовать первый из них как перечислимый, а второй как such_as на него, тогда параметры можно будет сравнивать и присваивать"));
 			}
 			else
 			{
-				rdoConverter::g_error().push_only(src_info,     _T("Ќесоответствие перечислимых типов"));
-				rdoConverter::g_error().push_only(to_src_info,   to_src_info.src_text());
-				rdoConverter::g_error().push_only(src_info,     _T("и"));
-				rdoConverter::g_error().push_only(from_src_info, from_src_info.src_text());
+				rdo::converter::smr2rdox::g_error().push_only(src_info,     _T("Ќесоответствие перечислимых типов"));
+				rdo::converter::smr2rdox::g_error().push_only(to_src_info,   to_src_info.src_text());
+				rdo::converter::smr2rdox::g_error().push_only(src_info,     _T("и"));
+				rdo::converter::smr2rdox::g_error().push_only(from_src_info, from_src_info.src_text());
 			}
-			rdoConverter::g_error().push_done();
+			rdo::converter::smr2rdox::g_error().push_done();
 			break;
 		}
 		case rdo::runtime::RDOType::t_string       :
@@ -100,13 +100,13 @@ LPRDOType RDOEnumType::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo) f
 				LPRDOEnumType pEnum(const_cast<PTR(RDOEnumType)>(this));
 				return pEnum;
 			}
-			rdoConverter::g_error().error(src_info, rdo::format(_T("«начение '%s' не €вл€етс€ элементом перечислимого типа %s"), from_src_info.src_text().c_str(), to_src_info.src_text().c_str()));
+			rdo::converter::smr2rdox::g_error().error(src_info, rdo::format(_T("«начение '%s' не €вл€етс€ элементом перечислимого типа %s"), from_src_info.src_text().c_str(), to_src_info.src_text().c_str()));
 			break;
 		}
 		default:
-			rdoConverter::g_error().push_only(src_info,    rdo::format(_T("ќжидаетс€ значение перечислимого типа, найдено: %s"), from_src_info.src_text().c_str()));
-			rdoConverter::g_error().push_only(to_src_info, rdo::format(_T("—м. тип: %s"), to_src_info.src_text().c_str()));
-			rdoConverter::g_error().push_done();
+			rdo::converter::smr2rdox::g_error().push_only(src_info,    rdo::format(_T("ќжидаетс€ значение перечислимого типа, найдено: %s"), from_src_info.src_text().c_str()));
+			rdo::converter::smr2rdox::g_error().push_only(to_src_info, rdo::format(_T("—м. тип: %s"), to_src_info.src_text().c_str()));
+			rdo::converter::smr2rdox::g_error().push_done();
 			break;
 	}
 	return NULL;
@@ -143,9 +143,9 @@ LPRDOValue RDOEnumType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo
 
 	if (!pToValue || pToValue->typeID() == rdo::runtime::RDOType::t_unknow)
 	{
-		rdoConverter::g_error().push_only(src_info,    rdo::format(_T("Ќеверное значение параметра перечислимого типа: %s"), pFrom->src_info().src_text().c_str()));
-		rdoConverter::g_error().push_only(to_src_info, rdo::format(_T("¬озможные значени€: %s"), name().c_str()));
-		rdoConverter::g_error().push_done();
+		rdo::converter::smr2rdox::g_error().push_only(src_info,    rdo::format(_T("Ќеверное значение параметра перечислимого типа: %s"), pFrom->src_info().src_text().c_str()));
+		rdo::converter::smr2rdox::g_error().push_only(to_src_info, rdo::format(_T("¬озможные значени€: %s"), name().c_str()));
+		rdo::converter::smr2rdox::g_error().push_done();
 	}
 	return pToValue;
 }
@@ -176,9 +176,9 @@ void RDOEnumType::add(CREF(LPRDOValue) pNext)
 
 	if (getEnums()->findEnum(pNext->value().getAsString()) != rdo::runtime::RDOEnumType::END)
 	{
-		rdoConverter::g_error().error(pNext->src_info(), rdo::format(_T("«начение перечислимого типа уже существует: %s"), pNext->src_text().c_str()));
+		rdo::converter::smr2rdox::g_error().error(pNext->src_info(), rdo::format(_T("«начение перечислимого типа уже существует: %s"), pNext->src_text().c_str()));
 	}
 	getEnums()->add(pNext->value().getAsString());
 }
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

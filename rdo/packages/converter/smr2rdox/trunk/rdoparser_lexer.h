@@ -24,7 +24,7 @@
 #endif
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOLexer
@@ -67,9 +67,9 @@ private:
 	rsint             m_array_param_cnt;
 };
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
-#define LEXER     reinterpret_cast<PTR(rdoConverter::RDOLexer)>(lexer)
+#define LEXER     reinterpret_cast<PTR(rdo::converter::smr2rdox::RDOLexer)>(lexer)
 #define LEXER_POS (*LEXER->m_lploc)
 
 #include "converter/smr2rdox/rdoparser_lexer.inl"

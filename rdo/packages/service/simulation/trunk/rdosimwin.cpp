@@ -1218,18 +1218,18 @@ void RDOThreadSimulator::parseSMRFileInfo(REF(rdo::textstream) smr, REF(rdoModel
 #else
 	try
 	{
-		rdoConverter::RDOParserModel converter;
+		rdo::converter::smr2rdox::RDOParserModel converter;
 		rdoRepository::RDOThreadRepository::FileInfo fileInfo(rdoModelObjects::SMR);
 		kernel->sendMessage(kernel->repository(), RT_REPOSITORY_MODEL_GET_FILEINFO, &fileInfo);
 		switch (converter.convert(fileInfo.m_fullName, info))
 		{
-		case rdoConverter::RDOParserModel::CNV_NONE : break;
-		case rdoConverter::RDOParserModel::CNV_OK   : break;
-		case rdoConverter::RDOParserModel::CNV_ERROR:
+		case rdo::converter::smr2rdox::RDOParserModel::CNV_NONE : break;
+		case rdo::converter::smr2rdox::RDOParserModel::CNV_OK   : break;
+		case rdo::converter::smr2rdox::RDOParserModel::CNV_ERROR:
 			{
 				tstring mess(_T("Ошибка конвертора\n"));
 				broadcastMessage(RT_DEBUG_STRING, &mess);
-				CREF(rdoConverter::Error::ErrorList) errorList = converter.error().getList();
+				CREF(rdo::converter::smr2rdox::Error::ErrorList) errorList = converter.error().getList();
 				BOOST_AUTO(it, errorList.begin());
 				while (it != errorList.end())
 				{
@@ -1241,7 +1241,7 @@ void RDOThreadSimulator::parseSMRFileInfo(REF(rdo::textstream) smr, REF(rdoModel
 		default: NEVER_REACH_HERE;
 		}
 	}
-	catch (REF(rdoConverter::RDOSyntaxException))
+	catch (REF(rdo::converter::smr2rdox::RDOSyntaxException))
 	{}
 	catch (REF(rdo::runtime::RDORuntimeException))
 	{}

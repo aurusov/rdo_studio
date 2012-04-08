@@ -18,7 +18,7 @@
 #include "converter/smr2rdox/update/document_i.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- IDocUpdate
@@ -80,7 +80,7 @@ protected:
 	IDocument::Type getCurrentType() const;
 };
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 #include "converter/smr2rdox/update/update_i.inl"
 

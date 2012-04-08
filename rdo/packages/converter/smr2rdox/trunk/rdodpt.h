@@ -47,7 +47,7 @@ struct parser_for_Seize;
 struct parser_for_Queue;
 CLOSE_RDO_RUNTIME_NAMESPACE
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 int  cnv_dptparse      (PTR(void) lexer);
 int  cnv_dptlex        (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
@@ -452,6 +452,6 @@ private:
 	RDOPROCAssign(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdo::runtime::LPRDOCalc) pValue);
 };
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 #endif // _CONVERTOR_RDODPT_H_

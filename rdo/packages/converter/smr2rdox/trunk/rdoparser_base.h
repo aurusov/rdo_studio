@@ -26,7 +26,7 @@
 #include "simulator/runtime/rdo_object.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 typedef int  (*t_bison_parse_fun)(PTR(void) lexer  );
 typedef void (*t_bison_error_fun)(PTR(char) message);
@@ -124,6 +124,6 @@ private:
 	RDOParserContainerSMRInfo();
 };
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 #endif // _CONVERTOR_RDOCONVERTER_BASE_H_

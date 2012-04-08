@@ -209,7 +209,7 @@
 #define CONVERTER LEXER->converter()
 #define RUNTIME   CONVERTER->runtime()
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 %}
 
 %left RDO_or
@@ -242,43 +242,43 @@ smr_cond
 	: /* empty */
 	| smr_cond RDO_Model_name '=' RDO_IDENTIF
 	{
-		rdoConverter::LPDocUpdate pDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(@2.m_first_seek, @4.m_last_seek);
+		LPDocUpdate pDelete = rdo::Factory<UpdateDelete>::create(@2.m_first_seek, @4.m_last_seek);
 		ASSERT(pDelete);
 		CONVERTER->insertDocUpdate(pDelete);
 	}
 	| smr_cond RDO_Resource_file '=' RDO_IDENTIF
 	{
-		rdoConverter::LPDocUpdate pDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(@2.m_first_seek, @4.m_last_seek);
+		LPDocUpdate pDelete = rdo::Factory<UpdateDelete>::create(@2.m_first_seek, @4.m_last_seek);
 		ASSERT(pDelete);
 		CONVERTER->insertDocUpdate(pDelete);
 	}
 	| smr_cond RDO_OprIev_file '=' RDO_IDENTIF
 	{
-		rdoConverter::LPDocUpdate pDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(@2.m_first_seek, @4.m_last_seek);
+		LPDocUpdate pDelete = rdo::Factory<UpdateDelete>::create(@2.m_first_seek, @4.m_last_seek);
 		ASSERT(pDelete);
 		CONVERTER->insertDocUpdate(pDelete);
 	}
 	| smr_cond RDO_Frame_file '=' RDO_IDENTIF
 	{
-		rdoConverter::LPDocUpdate pDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(@2.m_first_seek, @4.m_last_seek);
+		LPDocUpdate pDelete = rdo::Factory<UpdateDelete>::create(@2.m_first_seek, @4.m_last_seek);
 		ASSERT(pDelete);
 		CONVERTER->insertDocUpdate(pDelete);
 	}
 	| smr_cond RDO_Statistic_file '=' RDO_IDENTIF
 	{
-		rdoConverter::LPDocUpdate pDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(@2.m_first_seek, @4.m_last_seek);
+		LPDocUpdate pDelete = rdo::Factory<UpdateDelete>::create(@2.m_first_seek, @4.m_last_seek);
 		ASSERT(pDelete);
 		CONVERTER->insertDocUpdate(pDelete);
 	}
 	| smr_cond RDO_Results_file '=' RDO_IDENTIF
 	{
-		rdoConverter::LPDocUpdate pDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(@2.m_first_seek, @4.m_last_seek);
+		LPDocUpdate pDelete = rdo::Factory<UpdateDelete>::create(@2.m_first_seek, @4.m_last_seek);
 		ASSERT(pDelete);
 		CONVERTER->insertDocUpdate(pDelete);
 	}
 	| smr_cond RDO_Trace_file '=' RDO_IDENTIF
 	{
-		rdoConverter::LPDocUpdate pDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(@2.m_first_seek, @4.m_last_seek);
+		LPDocUpdate pDelete = rdo::Factory<UpdateDelete>::create(@2.m_first_seek, @4.m_last_seek);
 		ASSERT(pDelete);
 		CONVERTER->insertDocUpdate(pDelete);
 	}
@@ -977,4 +977,4 @@ fun_select_arithm
 
 %%
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

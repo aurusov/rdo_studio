@@ -16,7 +16,7 @@
 #include "converter/smr2rdox/rdoparser.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOTypeParam
@@ -54,4 +54,4 @@ LPRDOValue RDOTypeParam::value_cast(CREF(LPRDOValue) pValue) const
 	return m_pType->value_cast(pValue, src_info(), pValue->src_info());
 }
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

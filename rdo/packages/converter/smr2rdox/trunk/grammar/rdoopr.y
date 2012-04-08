@@ -205,7 +205,7 @@
 #define CONVERTER  LEXER->converter()
 #define RUNTIME    CONVERTER->runtime()
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 %}
 
 %%
@@ -214,11 +214,11 @@ opr_main
 	: /* empty */
 	| opr_end
 	{
-		rdoConverter::LPDocUpdate pOperationsMove = rdo::Factory<rdoConverter::UpdateMove>::create(
+		LPDocUpdate pOperationsMove = rdo::Factory<UpdateMove>::create(
 			@1.m_first_seek,
 			@1.m_last_seek,
 			0,
-			rdoConverter::IDocument::DPT
+			IDocument::DPT
 		);
 		ASSERT(pOperationsMove);
 		CONVERTER->insertDocUpdate(pOperationsMove);
@@ -232,7 +232,7 @@ opr_main
 opr_header
 	: RDO_Operations
 	{
-		rdoConverter::LPDocUpdate pOperationsReplace = rdo::Factory<rdoConverter::UpdateReplace>::create(
+		LPDocUpdate pOperationsReplace = rdo::Factory<UpdateReplace>::create(
 			@1.m_first_seek,
 			@1.m_last_seek,
 			_T("$Decision_point Operations: some\n$Activities")
@@ -258,7 +258,7 @@ opr_body
 
 		if (pOperation->pattern()->getType() == RDOPATPattern::PT_IE)
 		{
-			rdoConverter::LPDocUpdate pIEDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(
+			LPDocUpdate pIEDelete = rdo::Factory<UpdateDelete>::create(
 				@2.m_first_seek,
 				@3.m_last_seek
 			);
@@ -283,7 +283,7 @@ opr_body
 
 		if (pOperation->pattern()->getType() == RDOPATPattern::PT_IE)
 		{
-			rdoConverter::LPDocUpdate pIEDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(
+			LPDocUpdate pIEDelete = rdo::Factory<UpdateDelete>::create(
 				@2.m_first_seek,
 				@3.m_last_seek
 			);
@@ -335,7 +335,7 @@ opr_param
 
 		if (pOperation->pattern()->getType() == RDOPATPattern::PT_IE)
 		{
-			rdoConverter::LPDocUpdate pIEParamDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(
+			LPDocUpdate pIEParamDelete = rdo::Factory<UpdateDelete>::create(
 				@2.m_first_seek,
 				@2.m_last_seek
 			);
@@ -353,7 +353,7 @@ opr_param
 
 		if (pOperation->pattern()->getType() == RDOPATPattern::PT_IE)
 		{
-			rdoConverter::LPDocUpdate pIEParamDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(
+			LPDocUpdate pIEParamDelete = rdo::Factory<UpdateDelete>::create(
 				@2.m_first_seek,
 				@2.m_last_seek
 			);
@@ -371,7 +371,7 @@ opr_param
 
 		if (pOperation->pattern()->getType() == RDOPATPattern::PT_IE)
 		{
-			rdoConverter::LPDocUpdate pIEParamDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(
+			LPDocUpdate pIEParamDelete = rdo::Factory<UpdateDelete>::create(
 				@2.m_first_seek,
 				@2.m_last_seek
 			);
@@ -389,7 +389,7 @@ opr_param
 
 		if (pOperation->pattern()->getType() == RDOPATPattern::PT_IE)
 		{
-			rdoConverter::LPDocUpdate pIEParamDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(
+			LPDocUpdate pIEParamDelete = rdo::Factory<UpdateDelete>::create(
 				@2.m_first_seek,
 				@2.m_last_seek
 			);
@@ -407,7 +407,7 @@ opr_param
 
 		if (pOperation->pattern()->getType() == RDOPATPattern::PT_IE)
 		{
-			rdoConverter::LPDocUpdate pIEParamDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(
+			LPDocUpdate pIEParamDelete = rdo::Factory<UpdateDelete>::create(
 				@2.m_first_seek,
 				@2.m_last_seek
 			);
@@ -425,7 +425,7 @@ opr_param
 
 		if (pOperation->pattern()->getType() == RDOPATPattern::PT_IE)
 		{
-			rdoConverter::LPDocUpdate pIEParamDelete = rdo::Factory<rdoConverter::UpdateDelete>::create(
+			LPDocUpdate pIEParamDelete = rdo::Factory<UpdateDelete>::create(
 				@2.m_first_seek,
 				@2.m_last_seek
 			);
@@ -940,4 +940,4 @@ fun_select_arithm
 
 %%
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

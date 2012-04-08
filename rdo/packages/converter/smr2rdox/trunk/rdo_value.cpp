@@ -16,7 +16,7 @@
 #include "simulator/runtime/rdo_resource.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOValue
@@ -86,4 +86,4 @@ LPRDOValue RDOValue::getIdentificator(CREF(tstring) identificator)
 	return rdo::Factory<RDOValue>::create(RDOParserSrcInfo(identificator));
 }
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

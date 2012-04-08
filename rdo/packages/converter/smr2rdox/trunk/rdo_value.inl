@@ -11,7 +11,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 inline RDOValue::RDOValue(CREF(rsint) value, CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
@@ -43,4 +43,4 @@ inline RDOValue::RDOValue(CREF(LPRDOValue) pValue)
 	, m_type          (pValue->m_type    )
 {}
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

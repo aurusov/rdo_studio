@@ -21,7 +21,7 @@
 #include "simulator/runtime/calc/procedural/calc_nop.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 int cnv_patlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 {
@@ -61,9 +61,9 @@ RDOPATPattern::RDOPATPattern(CREF(RDOParserSrcInfo) name_src_info)
 	LPRDOPATPattern pPatternExist = Converter::s_converter()->findPATPattern(src_info().src_text());
 	if (pPatternExist)
 	{
-		rdoConverter::g_error().push_only(src_info(), rdo::format(_T("Паттерн '%s' уже существует"), name().c_str()));
-		rdoConverter::g_error().push_only(pPatternExist->src_info(), _T("См. первое определение"));
-		rdoConverter::g_error().push_done();
+		rdo::converter::smr2rdox::g_error().push_only(src_info(), rdo::format(_T("Паттерн '%s' уже существует"), name().c_str()));
+		rdo::converter::smr2rdox::g_error().push_only(pPatternExist->src_info(), _T("См. первое определение"));
+		rdo::converter::smr2rdox::g_error().push_done();
 	}
 	Converter::s_converter()->insertPATPattern(this);
 }
@@ -104,7 +104,7 @@ rdo::runtime::RDOResource::ConvertStatus RDOPATPattern::StrToStatus(CREF(tstring
 	{
 		return rdo::runtime::RDOResource::CS_NoChange;
 	}
-	rdoConverter::g_error().error(convertor_pos, rdo::format(_T("Неверный статус конвертора: %s"), value.c_str()));
+	rdo::converter::smr2rdox::g_error().error(convertor_pos, rdo::format(_T("Неверный статус конвертора: %s"), value.c_str()));
 	return rdo::runtime::RDOResource::CS_Keep;
 }
 
@@ -112,7 +112,7 @@ void RDOPATPattern::beforeRelRensert(CREF(RDOParserSrcInfo) rel_info)
 {
 	if (findRelevantResource(rel_info.src_text()))
 	{
-		rdoConverter::g_error().error(rel_info, rdo::format(_T("Релевантный ресурс '%s' уже определен"), rel_info.src_text().c_str()));
+		rdo::converter::smr2rdox::g_error().error(rel_info, rdo::format(_T("Релевантный ресурс '%s' уже определен"), rel_info.src_text().c_str()));
 	}
 }
 
@@ -125,7 +125,7 @@ void RDOPATPattern::rel_res_insert(CREF(LPRDORelevantResource) pRelevantResource
 	case PT_Rule     : getPatRuntime<rdo::runtime::RDOPatternRule      >()->addConvertorStatus     (pRelevantResource->m_statusBegin); break;
 	case PT_Operation: getPatRuntime<rdo::runtime::RDOPatternOperation >()->addConvertorBeginStatus(pRelevantResource->m_statusBegin); break;
 	case PT_Keyboard : getPatRuntime<rdo::runtime::RDOPatternKeyboard  >()->addConvertorBeginStatus(pRelevantResource->m_statusBegin); break;
-	default          : rdoConverter::g_error().error(src_info(), _T("Неизвестный тип образца"));
+	default          : rdo::converter::smr2rdox::g_error().error(src_info(), _T("Неизвестный тип образца"));
 	}
 	m_relResList.push_back(pRelevantResource);
 }
@@ -134,7 +134,7 @@ void RDOPATPattern::addRelResConvert(rbool trace, CREF(LPConvertCmdList) command
 {
 	if (status == rdo::runtime::RDOResource::CS_NoChange || status == rdo::runtime::RDOResource::CS_NonExist)
 	{
-		rdoConverter::g_error().error(convertor_pos, getErrorMessage_NotNeedConvertor(m_pCurrRelRes->name(), status));
+		rdo::converter::smr2rdox::g_error().error(convertor_pos, getErrorMessage_NotNeedConvertor(m_pCurrRelRes->name(), status));
 	}
 
 	if (status == rdo::runtime::RDOResource::CS_Create)
@@ -145,13 +145,13 @@ void RDOPATPattern::addRelResConvert(rbool trace, CREF(LPConvertCmdList) command
 	{
 		if (trace)
 		{
-			rdoConverter::g_error().error(trace_pos, _T("Признак трассировки в данном месте возможен только для создаваемого ресурса"));
+			rdo::converter::smr2rdox::g_error().error(trace_pos, _T("Признак трассировки в данном месте возможен только для создаваемого ресурса"));
 		}
 	}
 
 	if (commands->commands().empty() && status == rdo::runtime::RDOResource::CS_Keep)
 	{
-		rdoConverter::g_error().warning(convertor_pos, getWarningMessage_EmptyConvertor(m_pCurrRelRes->name(), status));
+		rdo::converter::smr2rdox::g_error().warning(convertor_pos, getWarningMessage_EmptyConvertor(m_pCurrRelRes->name(), status));
 	}
 
 	STL_FOR_ALL_CONST(commands->commands(), cmdIt)
@@ -169,7 +169,7 @@ void RDOPATPattern::addParamSetCalc(CREF(rdo::runtime::LPRDOCalc) pCalc)
 	case PT_Rule     : getPatRuntime<rdo::runtime::RDOPatternRule      >()->addConvertorCalc(pCalc); break;
 	case PT_Operation: NEVER_REACH_HERE;
 	case PT_Keyboard : NEVER_REACH_HERE;
-	default          : rdoConverter::g_error().error(src_info(), _T("Неизвестный тип образца"));
+	default          : rdo::converter::smr2rdox::g_error().error(src_info(), _T("Неизвестный тип образца"));
 	}
 }
 
@@ -218,9 +218,9 @@ void RDOPATPattern::add(CREF(LPRDOParam) pParam)
 	LPRDOParam pParamExist = findPATPatternParam(pParam->name());
 	if (pParamExist)
 	{
-		rdoConverter::g_error().push_only(pParam->src_info(), rdo::format(_T("Параметр '%s' уже определен"), pParam->src_text().c_str()));
-		rdoConverter::g_error().push_only(pParamExist->src_info(), _T("См. первое определение"));
-		rdoConverter::g_error().push_done();
+		rdo::converter::smr2rdox::g_error().push_only(pParam->src_info(), rdo::format(_T("Параметр '%s' уже определен"), pParam->src_text().c_str()));
+		rdo::converter::smr2rdox::g_error().push_only(pParamExist->src_info(), _T("См. первое определение"));
+		rdo::converter::smr2rdox::g_error().push_done();
 	}
 	m_paramList.push_back(pParam);
 }
@@ -229,7 +229,7 @@ void RDOPATPattern::setCommonChoiceFirst()
 {
 	m_useCommonChoice = true;
 	m_pCommonChoice   = NULL;
-//	rdoConverter::g_error().error(_T("Вызывать нельзя, т.к. в сообщениях об ошибках используется m_pCommonChoice"));
+//	rdo::converter::smr2rdox::g_error().error(_T("Вызывать нельзя, т.к. в сообщениях об ошибках используется m_pCommonChoice"));
 }
 
 void RDOPATPattern::setCommonChoiceWithMin(CREF(LPRDOFUNArithm) arithm)
@@ -253,7 +253,7 @@ void RDOPATPattern::setTime(REF(LPRDOFUNArithm) arithm)
 	case PT_IE       : getPatRuntime<rdo::runtime::RDOPatternIrregEvent>()->setTime(arithm->createCalc(NULL)); time = arithm; break;
 	case PT_Operation: getPatRuntime<rdo::runtime::RDOPatternOperation >()->setTime(arithm->createCalc(NULL)); break;
 	case PT_Keyboard : getPatRuntime<rdo::runtime::RDOPatternKeyboard  >()->setTime(arithm->createCalc(NULL)); break;
-	default          : rdoConverter::g_error().error(src_info(), rdo::format(_T("Для образца типа %s недопустимо использование выражения времени"), typeToString(getType()).c_str()));
+	default          : rdo::converter::smr2rdox::g_error().error(src_info(), rdo::format(_T("Для образца типа %s недопустимо использование выражения времени"), typeToString(getType()).c_str()));
 	}
 }
 
@@ -265,7 +265,7 @@ void RDOPATPattern::addChoiceFromCalc(CREF(rdo::runtime::LPRDOCalc) pCalc)
 	case PT_Rule     : getPatRuntime<rdo::runtime::RDOPatternRule      >()->addChoiceFromCalc (pCalc); break;
 	case PT_Operation: getPatRuntime<rdo::runtime::RDOPatternOperation >()->addChoiceFromCalc (pCalc); break;
 	case PT_Keyboard : getPatRuntime<rdo::runtime::RDOPatternKeyboard  >()->addChoiceFromCalc (pCalc); break;
-	default          : rdoConverter::g_error().error(src_info(), rdo::format(_T("Для образца типа %s недопустимо использование условния выбора"), typeToString(getType()).c_str()));
+	default          : rdo::converter::smr2rdox::g_error().error(src_info(), rdo::format(_T("Для образца типа %s недопустимо использование условния выбора"), typeToString(getType()).c_str()));
 	}
 }
 
@@ -274,16 +274,16 @@ void RDOPATPattern::addRelResBody(CREF(RDOParserSrcInfo) body_name)
 	RelResList::const_iterator it = std::find_if(m_relResList.begin(), m_relResList.end(), compareName<RDORelevantResource>(body_name.src_text()));
 	if (it == m_relResList.end())
 	{
-		rdoConverter::g_error().error(body_name.src_info(), rdo::format(_T("Неизвестный релевантный ресурс: %s"), body_name.src_text().c_str()));
+		rdo::converter::smr2rdox::g_error().error(body_name.src_info(), rdo::format(_T("Неизвестный релевантный ресурс: %s"), body_name.src_text().c_str()));
 	}
 	if (findRelevantResourceNum(body_name.src_text()) != m_currentRelResIndex)
 	{
 		tstring rel_res_waiting = m_currentRelResIndex < m_relResList.size() ? m_relResList[m_currentRelResIndex]->name().c_str() : _T("");
-		rdoConverter::g_error().error(body_name.src_info(), rdo::format(_T("Ожидается описание релевантного ресурса '%s', вместо него найдено: %s"), rel_res_waiting.c_str(), body_name.src_text().c_str()));
+		rdo::converter::smr2rdox::g_error().error(body_name.src_info(), rdo::format(_T("Ожидается описание релевантного ресурса '%s', вместо него найдено: %s"), rel_res_waiting.c_str(), body_name.src_text().c_str()));
 	}
 	if ((*it)->m_alreadyHaveConverter)
 	{
-		rdoConverter::g_error().error(body_name.src_info(), rdo::format(_T("Релевантный ресурс уже используется: %s"), body_name.src_text().c_str()));
+		rdo::converter::smr2rdox::g_error().error(body_name.src_info(), rdo::format(_T("Релевантный ресурс уже используется: %s"), body_name.src_text().c_str()));
 	}
 	m_pCurrRelRes = (*it);
 	m_pCurrRelRes->m_bodySrcInfo = body_name;
@@ -304,19 +304,19 @@ void RDOPATPattern::addRelResUsage(CREF(LPRDOPATChoiceFrom) pChoiceFrom, CREF(LP
 		}
 		else if (m_pCurrRelRes->isDirect())
 		{
-			rdoConverter::g_error().warning(pChoiceOrder->src_info(), rdo::format(_T("Правило выбора '%s' релевантного ресурса '%s' не имеет смысла, т.к. релевантный ресурс определен через имя, а не тип, и не может быть связан с каким-либо другим ресурсом"), pChoiceOrder->src_text().c_str(), m_pCurrRelRes->name().c_str()));
+			rdo::converter::smr2rdox::g_error().warning(pChoiceOrder->src_info(), rdo::format(_T("Правило выбора '%s' релевантного ресурса '%s' не имеет смысла, т.к. релевантный ресурс определен через имя, а не тип, и не может быть связан с каким-либо другим ресурсом"), pChoiceOrder->src_text().c_str(), m_pCurrRelRes->name().c_str()));
 		}
 	}
 	else
 	{
 		if (pChoiceOrder->m_type != rdo::runtime::RDOSelectResourceCalc::order_empty)
 		{
-			rdoConverter::g_error().push_only(pChoiceOrder->src_info(), _T("Нельзя указать способ выбора релевантного ресурса, т.к. используется единый для всех релевантных ресурсов способ, указанный до ключевого слова $Body"));
+			rdo::converter::smr2rdox::g_error().push_only(pChoiceOrder->src_info(), _T("Нельзя указать способ выбора релевантного ресурса, т.к. используется единый для всех релевантных ресурсов способ, указанный до ключевого слова $Body"));
 			if (m_pCommonChoice)
 			{
-				rdoConverter::g_error().push_only(m_pCommonChoice->src_info(), rdo::format(_T("См. '%s'"), m_pCommonChoice->src_text().c_str()));
+				rdo::converter::smr2rdox::g_error().push_only(m_pCommonChoice->src_info(), rdo::format(_T("См. '%s'"), m_pCommonChoice->src_text().c_str()));
 			}
-			rdoConverter::g_error().push_done();
+			rdo::converter::smr2rdox::g_error().push_done();
 		}
 	}
 
@@ -324,11 +324,11 @@ void RDOPATPattern::addRelResUsage(CREF(LPRDOPATChoiceFrom) pChoiceFrom, CREF(LP
 	{
 		if (pChoiceFrom->m_type != RDOPATChoiceFrom::ch_empty)
 		{
-			rdoConverter::g_error().error(pChoiceFrom->src_info(), _T("Релевантный ресурс создается, для него нельзя использовать Choice from или Choice NoCheck"));
+			rdo::converter::smr2rdox::g_error().error(pChoiceFrom->src_info(), _T("Релевантный ресурс создается, для него нельзя использовать Choice from или Choice NoCheck"));
 		}
 		if (pChoiceOrder->m_type != rdo::runtime::RDOSelectResourceCalc::order_empty)
 		{
-			rdoConverter::g_error().error(pChoiceOrder->src_info(), rdo::format(_T("Релевантный ресурс создается, для него нельзя использовать правило выбора '%s'"), pChoiceOrder->asString().c_str()));
+			rdo::converter::smr2rdox::g_error().error(pChoiceOrder->src_info(), rdo::format(_T("Релевантный ресурс создается, для него нельзя использовать правило выбора '%s'"), pChoiceOrder->asString().c_str()));
 		}
 	}
 
@@ -345,7 +345,7 @@ void RDOPATPattern::end()
 		if (!pCurrRelRes->m_alreadyHaveConverter)
 		{
 			/// @todo А почему нельзя сделать warning ? Возможно, есть жесткое требование недопустить пустого рел. ресурса.
-			rdoConverter::g_error().error(pCurrRelRes->src_info(), rdo::format(_T("Релевантный ресурс '%s' не используется в образце '%s'"), pCurrRelRes->name().c_str(), name().c_str()));
+			rdo::converter::smr2rdox::g_error().error(pCurrRelRes->src_info(), rdo::format(_T("Релевантный ресурс '%s' не используется в образце '%s'"), pCurrRelRes->name().c_str(), name().c_str()));
 		}
 		m_pPatRuntime->addPreSelectRelRes(pCurrRelRes->createPreSelectRelResCalc());
 	}
@@ -414,7 +414,7 @@ void RDOPatternIrregEvent::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOPa
 	beforeRelRensert(rel_info);
 	if (beg == rdo::runtime::RDOResource::CS_NonExist || beg == rdo::runtime::RDOResource::CS_NoChange)
 	{
-		rdoConverter::g_error().error(convertor_pos, _T("Статусы конверторов NonExist и NoChange не могут быть использованы в нерегулярном событии"));
+		rdo::converter::smr2rdox::g_error().error(convertor_pos, _T("Статусы конверторов NonExist и NoChange не могут быть использованы в нерегулярном событии"));
 	}
 
 	LPRDORelevantResource pRelevantResource;
@@ -423,8 +423,8 @@ void RDOPatternIrregEvent::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOPa
 	{
 		switch (beg)
 		{
-		case rdo::runtime::RDOResource::CS_Create: rdoConverter::g_error().error(type_info, rdo::format(_T("При создания ресурса '%s' требуется указать его тип, но указан просто ресурс (%s)"), rel_info.src_text().c_str(), type_info.src_text().c_str())); break;
-		case rdo::runtime::RDOResource::CS_Erase : rdoConverter::g_error().error(convertor_pos, _T("Удалять ресурсы в нерегулярном событии нельзя")); break;
+		case rdo::runtime::RDOResource::CS_Create: rdo::converter::smr2rdox::g_error().error(type_info, rdo::format(_T("При создания ресурса '%s' требуется указать его тип, но указан просто ресурс (%s)"), rel_info.src_text().c_str(), type_info.src_text().c_str())); break;
+		case rdo::runtime::RDOResource::CS_Erase : rdo::converter::smr2rdox::g_error().error(convertor_pos, _T("Удалять ресурсы в нерегулярном событии нельзя")); break;
 		}
 		pRelevantResource = rdo::Factory<RDORelevantResourceDirect>::create(rel_info, rel_res_count(), res, beg);
 		ASSERT(pRelevantResource);
@@ -435,13 +435,13 @@ void RDOPatternIrregEvent::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOPa
 		LPRDORTPResType pResType = Converter::s_converter()->findRTPResType(type_info.src_text());
 		if (!pResType)
 		{
-			rdoConverter::g_error().error(type_info, rdo::format(_T("Неизвестный тип ресурса: %s"), type_info.src_text().c_str()));
+			rdo::converter::smr2rdox::g_error().error(type_info, rdo::format(_T("Неизвестный тип ресурса: %s"), type_info.src_text().c_str()));
 		}
 		switch (beg)
 		{
-		case rdo::runtime::RDOResource::CS_Create: if (!pResType->isTemporary()) rdoConverter::g_error().error(type_info, rdo::format(_T("Тип ресурса '%s' постоянный. Динамически создавать от него ресурсы нельзя"), type_info.src_text().c_str())); break;
+		case rdo::runtime::RDOResource::CS_Create: if (!pResType->isTemporary()) rdo::converter::smr2rdox::g_error().error(type_info, rdo::format(_T("Тип ресурса '%s' постоянный. Динамически создавать от него ресурсы нельзя"), type_info.src_text().c_str())); break;
 		case rdo::runtime::RDOResource::CS_Keep  :
-		case rdo::runtime::RDOResource::CS_Erase : rdoConverter::g_error().error(convertor_pos, _T("Статусы конверторов Keep и Erase могут быть использованы в нерегулярном событии с описателем в виде ресурса, но не типа ресурса")); break;
+		case rdo::runtime::RDOResource::CS_Erase : rdo::converter::smr2rdox::g_error().error(convertor_pos, _T("Статусы конверторов Keep и Erase могут быть использованы в нерегулярном событии с описателем в виде ресурса, но не типа ресурса")); break;
 		}
 		pRelevantResource = rdo::Factory<RDORelevantResourceByType>::create(rel_info, rel_res_count(), pResType, beg);
 		ASSERT(pRelevantResource);
@@ -463,11 +463,11 @@ void RDOPatternIrregEvent::addRelResUsage(CREF(LPRDOPATChoiceFrom) pChoiceFrom, 
 {
 	if (pChoiceFrom->m_type != RDOPATChoiceFrom::ch_empty)
 	{
-		rdoConverter::g_error().error(pChoiceFrom->src_info(), _T("Релевантные ресурсы нерегулярного события нельзя выбирать с помощью Choice from или Choice NoCheck"));
+		rdo::converter::smr2rdox::g_error().error(pChoiceFrom->src_info(), _T("Релевантные ресурсы нерегулярного события нельзя выбирать с помощью Choice from или Choice NoCheck"));
 	}
 	if (pChoiceOrder->m_type != rdo::runtime::RDOSelectResourceCalc::order_empty)
 	{
-		rdoConverter::g_error().error(pChoiceFrom->src_info(), rdo::format(_T("Для релевантных ресурсов нерегулярного события нельзя использовать правило выбора '%s'"), pChoiceOrder->asString().c_str()));
+		rdo::converter::smr2rdox::g_error().error(pChoiceFrom->src_info(), rdo::format(_T("Для релевантных ресурсов нерегулярного события нельзя использовать правило выбора '%s'"), pChoiceOrder->asString().c_str()));
 	}
 	m_pCurrRelRes->m_pChoiceFrom  = pChoiceFrom;
 	m_pCurrRelRes->m_pChoiceOrder = pChoiceOrder;
@@ -485,7 +485,7 @@ rdo::runtime::LPRDOCalc RDOPATPattern::createRelRes(rbool trace) const
 			params_default.push_back(rdo::runtime::RDOValue(0));
 			if (!m_pCurrRelRes->getParamSetList().find((*it)->name()))
 			{
-				rdoConverter::g_error().error(m_pCurrRelRes->src_info(), rdo::format(_T("При создании ресурса необходимо определить все его параметры. Не найдено определение параметра: %s"), (*it)->name().c_str()));
+				rdo::converter::smr2rdox::g_error().error(m_pCurrRelRes->src_info(), rdo::format(_T("При создании ресурса необходимо определить все его параметры. Не найдено определение параметра: %s"), (*it)->name().c_str()));
 			}
 		}
 		else
@@ -528,7 +528,7 @@ void RDOPatternRule::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSr
 	beforeRelRensert(rel_info);
 	if (beg == rdo::runtime::RDOResource::CS_NonExist)
 	{
-		rdoConverter::g_error().error(convertor_pos, rdo::format(_T("Нельзя использовать статус конвертора '%s' в продукционном правиле"), RDOPATPattern::StatusToStr(beg).c_str()));
+		rdo::converter::smr2rdox::g_error().error(convertor_pos, rdo::format(_T("Нельзя использовать статус конвертора '%s' в продукционном правиле"), RDOPATPattern::StatusToStr(beg).c_str()));
 	}
 
 	LPRDORelevantResource pRelevantResource;
@@ -537,11 +537,11 @@ void RDOPatternRule::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSr
 	{
 		if (beg == rdo::runtime::RDOResource::CS_Create)
 		{
-			rdoConverter::g_error().error(type_info, rdo::format(_T("При создания ресурса '%s' требуется указать его тип, но указан просто ресурс (%s)"), rel_info.src_text().c_str(), type_info.src_text().c_str()));
+			rdo::converter::smr2rdox::g_error().error(type_info, rdo::format(_T("При создания ресурса '%s' требуется указать его тип, но указан просто ресурс (%s)"), rel_info.src_text().c_str(), type_info.src_text().c_str()));
 		}
 		if (beg == rdo::runtime::RDOResource::CS_Erase)
 		{
-			rdoConverter::g_error().error(convertor_pos, rdo::format(_T("Недопустимый статус конвертора для ресурса: %s"), RDOPATPattern::StatusToStr(beg).c_str()));
+			rdo::converter::smr2rdox::g_error().error(convertor_pos, rdo::format(_T("Недопустимый статус конвертора для ресурса: %s"), RDOPATPattern::StatusToStr(beg).c_str()));
 		}
 		pRelevantResource = rdo::Factory<RDORelevantResourceDirect>::create(rel_info, rel_res_count(), res, beg);
 		ASSERT(pRelevantResource);
@@ -552,11 +552,11 @@ void RDOPatternRule::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSr
 		LPRDORTPResType pResType = Converter::s_converter()->findRTPResType(type_info.src_text());
 		if (!pResType)
 		{
-			rdoConverter::g_error().error(type_info, rdo::format(_T("Неизвестный тип ресурса: %s"), type_info.src_text().c_str()));
+			rdo::converter::smr2rdox::g_error().error(type_info, rdo::format(_T("Неизвестный тип ресурса: %s"), type_info.src_text().c_str()));
 		}
 		if (!pResType->isTemporary() && (beg == rdo::runtime::RDOResource::CS_Create || beg == rdo::runtime::RDOResource::CS_Erase))
 		{
-			rdoConverter::g_error().error(type_info, rdo::format(_T("Для создании или удалении ресурса его тип должен быть временным (temporary), а не постоянным (permanent), как у '%s'"), type_info.src_text().c_str()));
+			rdo::converter::smr2rdox::g_error().error(type_info, rdo::format(_T("Для создании или удалении ресурса его тип должен быть временным (temporary), а не постоянным (permanent), как у '%s'"), type_info.src_text().c_str()));
 		}
 		pRelevantResource = rdo::Factory<RDORelevantResourceByType>::create(rel_info, rel_res_count(), pResType, beg);
 		ASSERT(pRelevantResource);
@@ -615,7 +615,7 @@ void RDOPatternOperation::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOPar
 	UNUSED(type_info);
 	UNUSED(beg      );
 
-	rdoConverter::g_error().error(convertor_pos, _T("Внутренняя ошибка парсера"));
+	rdo::converter::smr2rdox::g_error().error(convertor_pos, _T("Внутренняя ошибка парсера"));
 }
 
 void RDOPatternOperation::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSrcInfo) type_info, rdo::runtime::RDOResource::ConvertStatus beg, rdo::runtime::RDOResource::ConvertStatus end, CREF(YYLTYPE) convertor_begin_pos, CREF(YYLTYPE) convertor_end_pos)
@@ -626,31 +626,31 @@ void RDOPatternOperation::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOPar
 	case rdo::runtime::RDOResource::CS_Keep:
 		if (end != rdo::runtime::RDOResource::CS_Keep && end != rdo::runtime::RDOResource::CS_Erase && end != rdo::runtime::RDOResource::CS_NoChange)
 		{
-			rdoConverter::g_error().error(convertor_end_pos, rdo::format(_T("Статус конвертора конца несовместим со статусом конвертора начала: %s и %s"), RDOPATPattern::StatusToStr(beg).c_str(), RDOPATPattern::StatusToStr(end).c_str()));
+			rdo::converter::smr2rdox::g_error().error(convertor_end_pos, rdo::format(_T("Статус конвертора конца несовместим со статусом конвертора начала: %s и %s"), RDOPATPattern::StatusToStr(beg).c_str(), RDOPATPattern::StatusToStr(end).c_str()));
 		}
 		break;
 	case rdo::runtime::RDOResource::CS_Create:
 		if (end != rdo::runtime::RDOResource::CS_Keep && end != rdo::runtime::RDOResource::CS_Erase && end != rdo::runtime::RDOResource::CS_NoChange)
 		{
-			rdoConverter::g_error().error(convertor_end_pos, rdo::format(_T("Статус конвертора конца несовместим со статусом конвертора начала: %s и %s"), RDOPATPattern::StatusToStr(beg).c_str(), RDOPATPattern::StatusToStr(end).c_str()));
+			rdo::converter::smr2rdox::g_error().error(convertor_end_pos, rdo::format(_T("Статус конвертора конца несовместим со статусом конвертора начала: %s и %s"), RDOPATPattern::StatusToStr(beg).c_str(), RDOPATPattern::StatusToStr(end).c_str()));
 		}
 		break;
 	case rdo::runtime::RDOResource::CS_Erase:
 		if (end != rdo::runtime::RDOResource::CS_NonExist)
 		{
-			rdoConverter::g_error().error(convertor_end_pos, rdo::format(_T("Статус конвертора конца несовместим со статусом конвертора начала: %s и %s"), RDOPATPattern::StatusToStr(beg).c_str(), RDOPATPattern::StatusToStr(end).c_str()));
+			rdo::converter::smr2rdox::g_error().error(convertor_end_pos, rdo::format(_T("Статус конвертора конца несовместим со статусом конвертора начала: %s и %s"), RDOPATPattern::StatusToStr(beg).c_str(), RDOPATPattern::StatusToStr(end).c_str()));
 		}
 		break;
 	case rdo::runtime::RDOResource::CS_NonExist:
 		if (end != rdo::runtime::RDOResource::CS_Create)
 		{
-			rdoConverter::g_error().error(convertor_end_pos, rdo::format(_T("Статус конвертора конца несовместим со статусом конвертора начала: %s и %s"), RDOPATPattern::StatusToStr(beg).c_str(), RDOPATPattern::StatusToStr(end).c_str()));
+			rdo::converter::smr2rdox::g_error().error(convertor_end_pos, rdo::format(_T("Статус конвертора конца несовместим со статусом конвертора начала: %s и %s"), RDOPATPattern::StatusToStr(beg).c_str(), RDOPATPattern::StatusToStr(end).c_str()));
 		}
 		break;
 	case rdo::runtime::RDOResource::CS_NoChange:
 		if (end != rdo::runtime::RDOResource::CS_Keep && end != rdo::runtime::RDOResource::CS_Erase && end != rdo::runtime::RDOResource::CS_NoChange)
 		{
-			rdoConverter::g_error().error(convertor_end_pos, rdo::format(_T("Статус конвертора конца несовместим со статусом конвертора начала: %s и %s"), RDOPATPattern::StatusToStr(beg).c_str(), RDOPATPattern::StatusToStr(end).c_str()));
+			rdo::converter::smr2rdox::g_error().error(convertor_end_pos, rdo::format(_T("Статус конвертора конца несовместим со статусом конвертора начала: %s и %s"), RDOPATPattern::StatusToStr(beg).c_str(), RDOPATPattern::StatusToStr(end).c_str()));
 		}
 		break;
 	};
@@ -661,19 +661,19 @@ void RDOPatternOperation::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOPar
 	{
 		if (beg == rdo::runtime::RDOResource::CS_Create)
 		{
-			rdoConverter::g_error().error(convertor_begin_pos, rdo::format(_T("При создания ресурса '%s' требуется указать его тип, но указан просто ресурс (%s)"), rel_info.src_text().c_str(), type_info.src_text().c_str()));
+			rdo::converter::smr2rdox::g_error().error(convertor_begin_pos, rdo::format(_T("При создания ресурса '%s' требуется указать его тип, но указан просто ресурс (%s)"), rel_info.src_text().c_str(), type_info.src_text().c_str()));
 		}
 		if (end == rdo::runtime::RDOResource::CS_Create)
 		{
-			rdoConverter::g_error().error(convertor_end_pos, rdo::format(_T("При создания ресурса '%s' требуется указать его тип, но указан просто ресурс (%s)"), rel_info.src_text().c_str(), type_info.src_text().c_str()));
+			rdo::converter::smr2rdox::g_error().error(convertor_end_pos, rdo::format(_T("При создания ресурса '%s' требуется указать его тип, но указан просто ресурс (%s)"), rel_info.src_text().c_str(), type_info.src_text().c_str()));
 		}
 		if (beg == rdo::runtime::RDOResource::CS_Erase || beg == rdo::runtime::RDOResource::CS_NonExist)
 		{
-			rdoConverter::g_error().error(convertor_begin_pos, rdo::format(_T("Недопустимый статус конвертора начала для ресурса: %s"), RDOPATPattern::StatusToStr(beg).c_str()));
+			rdo::converter::smr2rdox::g_error().error(convertor_begin_pos, rdo::format(_T("Недопустимый статус конвертора начала для ресурса: %s"), RDOPATPattern::StatusToStr(beg).c_str()));
 		}
 		if (end == rdo::runtime::RDOResource::CS_Erase || end == rdo::runtime::RDOResource::CS_NonExist)
 		{
-			rdoConverter::g_error().error(convertor_end_pos, rdo::format(_T("Недопустимый статус конвертора конца для ресурса: %s"), RDOPATPattern::StatusToStr(end).c_str()));
+			rdo::converter::smr2rdox::g_error().error(convertor_end_pos, rdo::format(_T("Недопустимый статус конвертора конца для ресурса: %s"), RDOPATPattern::StatusToStr(end).c_str()));
 		}
 		pRelevantResource = rdo::Factory<RDORelevantResourceDirect>::create(rel_info, rel_res_count(), res, beg, end);
 		ASSERT(pRelevantResource);
@@ -684,17 +684,17 @@ void RDOPatternOperation::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOPar
 		LPRDORTPResType pResType = Converter::s_converter()->findRTPResType(type_info.src_text());
 		if (!pResType)
 		{
-			rdoConverter::g_error().error(type_info, rdo::format(_T("Неизвестный тип ресурса: %s"), type_info.src_text().c_str()));
+			rdo::converter::smr2rdox::g_error().error(type_info, rdo::format(_T("Неизвестный тип ресурса: %s"), type_info.src_text().c_str()));
 		}
 		if (pResType->isPermanent())
 		{
 			if (beg == rdo::runtime::RDOResource::CS_Create || beg == rdo::runtime::RDOResource::CS_Erase || beg == rdo::runtime::RDOResource::CS_NonExist)
 			{
-				rdoConverter::g_error().error(convertor_begin_pos, rdo::format(_T("Недопустимый статус конвертора начала для постоянного типа: %s"), RDOPATPattern::StatusToStr(beg).c_str()));
+				rdo::converter::smr2rdox::g_error().error(convertor_begin_pos, rdo::format(_T("Недопустимый статус конвертора начала для постоянного типа: %s"), RDOPATPattern::StatusToStr(beg).c_str()));
 			}
 			if (end == rdo::runtime::RDOResource::CS_Create || end == rdo::runtime::RDOResource::CS_Erase || end == rdo::runtime::RDOResource::CS_NonExist)
 			{
-				rdoConverter::g_error().error(convertor_end_pos, rdo::format(_T("Недопустимый статус конвертора конца для постоянного типа: %s"), RDOPATPattern::StatusToStr(end).c_str()));
+				rdo::converter::smr2rdox::g_error().error(convertor_end_pos, rdo::format(_T("Недопустимый статус конвертора конца для постоянного типа: %s"), RDOPATPattern::StatusToStr(end).c_str()));
 			}
 		}
 		pRelevantResource = rdo::Factory<RDORelevantResourceByType>::create(rel_info, rel_res_count(), pResType, beg, end);
@@ -787,7 +787,7 @@ RDOPatternKeyboard::RDOPatternKeyboard(CREF(RDOParserSrcInfo) name_src_info, rbo
 // --------------------------------------------------------------------------------
 rdo::runtime::LPRDOCalc RDORelevantResource::getChoiceCalc()
 {
-	if (m_pChoiceFrom && m_pChoiceFrom->m_type == rdoConverter::RDOPATChoiceFrom::ch_from)
+	if (m_pChoiceFrom && m_pChoiceFrom->m_type == RDOPATChoiceFrom::ch_from)
 	{
 		return m_pChoiceFrom->m_pLogic->getCalc(rdo::runtime::RDOType::t_int);
 	}
@@ -931,4 +931,4 @@ rdo::runtime::LPIRDOSelectResourceCommon RDORelevantResourceByType::createSelect
 	return pSelectResourceCommon;
 }
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

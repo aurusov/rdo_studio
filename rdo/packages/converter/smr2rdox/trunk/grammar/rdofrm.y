@@ -210,7 +210,7 @@
 #define CONVERTER LEXER->converter()
 #define RUNTIME   CONVERTER->runtime()
 
-OPEN_RDO_CONVERTER_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 typedef rdo::runtime::RDOFRMFrame::RDOFRMColor      RDOFRMColor;
 typedef rdo::runtime::RDOFRMFrame::LPRDOFRMColor    LPRDOFRMColor;
@@ -2063,4 +2063,4 @@ fun_select_arithm
 
 %%
 
-CLOSE_RDO_CONVERTER_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
