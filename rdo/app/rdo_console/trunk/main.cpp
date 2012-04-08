@@ -35,12 +35,12 @@ int main(int argc, PTR(char) argv[])
 		// Init
 		RDOKernel::init();
 		new rdoSimulator::RDOThreadSimulator();
-		new rdoRepository::RDOThreadRepository();
+		new rdo::repository::RDOThreadRepository();
 
 		PTR(RDOStudioConsoleController) pAppController = new RDOStudioConsoleController();
 		ASSERT(pAppController);
 
-		rdoRepository::RDOThreadRepository::OpenFile data(model_name);
+		rdo::repository::RDOThreadRepository::OpenFile data(model_name);
 		pAppController->broadcastMessage(RDOThread::RT_STUDIO_MODEL_OPEN, &data);
 		pAppController->broadcastMessage(RDOThread::RT_STUDIO_MODEL_BUILD      );
 		pAppController->broadcastMessage(RDOThread::RT_STUDIO_MODEL_RUN        );
