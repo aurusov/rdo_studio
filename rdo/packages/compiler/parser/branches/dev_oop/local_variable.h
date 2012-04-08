@@ -28,11 +28,11 @@ OBJECT(LocalVariable)
 {
 DECLARE_FACTORY(LocalVariable);
 public:
-	CREF(tstring)          getName        () const;
-	CREF(RDOParserSrcInfo) getSrcInfo     () const;
-	CREF(LPExpression)     getExpression  () const;
-	CREF(LPTypeInfo)       getTypeInfo    () const;
-	rdoRuntime::RDOValue   getDefaultValue() const;
+	CREF(tstring)           getName        () const;
+	CREF(RDOParserSrcInfo)  getSrcInfo     () const;
+	CREF(LPExpression)      getExpression  () const;
+	CREF(LPTypeInfo)        getTypeInfo    () const;
+	rdo::runtime::RDOValue  getDefaultValue() const;
 
 private:
 	LocalVariable(CREF(LPRDOValue) pName, CREF(LPExpression) pExpression);
@@ -42,7 +42,7 @@ private:
 	LPExpression  m_pExpression;
 };
 
-typedef BisonValuePair<rdoRuntime::LPRDOCalc, LPLocalVariable> VariableWrapper;
+typedef BisonValuePair<rdo::runtime::LPRDOCalc, LPLocalVariable> VariableWrapper;
 DECLARE_POINTER(VariableWrapper);
 
 // --------------------------------------------------------------------------------

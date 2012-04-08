@@ -1366,8 +1366,8 @@ Context::FindResult RDOFUNFunction::onFindContext(CREF(LPRDOValue) pValue) const
 	LPRDOParam pParam = findFUNFunctionParam(pValue->value().getIdentificator());
 	if (pParam)
 	{
-		rdoRuntime::RDOType::TypeID typeID = pParam->getTypeInfo()->type()->typeID();
-		if (typeID == rdoRuntime::RDOType::t_identificator || typeID == rdoRuntime::RDOType::t_unknow)
+		rdo::runtime::RDOType::TypeID typeID = pParam->getTypeInfo()->type()->typeID();
+		if (typeID == rdo::runtime::RDOType::t_identificator || typeID == rdo::runtime::RDOType::t_unknow)
 		{
 			RDOParser::s_parser()->error().push_only(
 				pValue->src_info(),

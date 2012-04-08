@@ -314,14 +314,14 @@ void RDOPATPattern::addRelResConvert(rbool trace, CREF(LPConvertCmdList) command
 	ASSERT(m_pCurrRelRes);
 }
 
-void RDOPATPattern::addRelResConvert(rbool trace, CREF(LPExpression) pCommands, CREF(YYLTYPE) convertor_pos, CREF(YYLTYPE) trace_pos, rdoRuntime::RDOResource::ConvertStatus status)
+void RDOPATPattern::addRelResConvert(rbool trace, CREF(LPExpression) pCommands, CREF(YYLTYPE) convertor_pos, CREF(YYLTYPE) trace_pos, rdo::runtime::RDOResource::ConvertStatus status)
 {
-	if (status == rdoRuntime::RDOResource::CS_NoChange || status == rdoRuntime::RDOResource::CS_NonExist)
+	if (status == rdo::runtime::RDOResource::CS_NoChange || status == rdo::runtime::RDOResource::CS_NonExist)
 	{
 		rdoParser::g_error().error(convertor_pos, getErrorMessage_NotNeedConvertor(m_pCurrRelRes->name(), status));
 	}
 
-	if (status == rdoRuntime::RDOResource::CS_Create)
+	if (status == rdo::runtime::RDOResource::CS_Create)
 	{
 		addParamSetCalc(createRelRes(trace));
 	}
@@ -333,19 +333,19 @@ void RDOPATPattern::addRelResConvert(rbool trace, CREF(LPExpression) pCommands, 
 		}
 	}
 
-	/*if (commands->commands().empty() && status == rdoRuntime::RDOResource::CS_Keep)
+	/*if (commands->commands().empty() && status == rdo::runtime::RDOResource::CS_Keep)
 	{
 		rdoParser::g_error().warning(convertor_pos, getWarningMessage_EmptyConvertor(m_pCurrRelRes->name(), status));
 	}
 	*/
-	rdoRuntime::LPRDOCalc pCalc = pCommands->calc();
+	rdo::runtime::LPRDOCalc pCalc = pCommands->calc();
 	ASSERT(pCalc)
 
 	addParamSetCalc(pCalc);
 
 	ASSERT(m_pCurrRelRes);
 }
-void RDOPATPattern::addParamSetCalc(CREF(rdoRuntime::LPRDOCalc) pCalc)
+void RDOPATPattern::addParamSetCalc(CREF(rdo::runtime::LPRDOCalc) pCalc)
 {
 	switch (getType())
 	{

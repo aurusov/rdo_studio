@@ -510,7 +510,7 @@ statement
 		rdo::runtime::LPRDOCalc pCalcCloseBrace = rdo::Factory<rdo::runtime::RDOCalcCloseBrace>::create();
 		ASSERT(pCalcCloseBrace);
 
-		rdoRuntime::LPRDOCalcFunBodyBrace pCalcBodyBrace = pExpressionBodyBrace->calc().object_dynamic_cast<rdoRuntime::RDOCalcFunBodyBrace>();
+		rdo::runtime::LPRDOCalcFunBodyBrace pCalcBodyBrace = pExpressionBodyBrace->calc().object_dynamic_cast<rdo::runtime::RDOCalcFunBodyBrace>();
 		ASSERT(pCalcBodyBrace);
 
 		pCalcBodyBrace->addFunCalc(pCalcCloseBrace);
@@ -1005,7 +1005,7 @@ init_declaration_list
 
 		pLocalVariableListStack->append(pLocalVariable);
 
-		rdoRuntime::LPRDOCalc pCalc = pVariableWrapper->getFirst();
+		rdo::runtime::LPRDOCalc pCalc = pVariableWrapper->getFirst();
 		ASSERT(pCalc);
 
 		rdo::runtime::LPRDOCalcLocalVariableList pCalcLocalVariableList = rdo::Factory<rdo::runtime::RDOCalcLocalVariableList>::create();
@@ -1034,7 +1034,7 @@ init_declaration_list
 
 		pLocalVariableListStack->append(pLocalVariable);
 
-		rdoRuntime::LPRDOCalc pCalc = pVariableWrapper->getFirst();
+		rdo::runtime::LPRDOCalc pCalc = pVariableWrapper->getFirst();
 		ASSERT(pCalc);
 
 		rdo::runtime::LPRDOCalcLocalVariableList pCalcLocalVariableList = PARSER->stack().pop<rdo::runtime::RDOCalcLocalVariableList>($1);
@@ -1063,7 +1063,7 @@ init_declaration
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(
 			pTypeInfo,
-			rdo::Factory<rdoRuntime::RDOCalcConst>::create(pTypeInfo->type()->get_default()),
+			rdo::Factory<rdo::runtime::RDOCalcConst>::create(pTypeInfo->type()->get_default()),
 			pVariableName->src_info()
 		);
 		ASSERT(pExpression);
@@ -1071,7 +1071,7 @@ init_declaration
 		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(pVariableName, pExpression);
 		ASSERT(pLocalVariable);
 
-		rdoRuntime::LPRDOCalcCreateLocalVariable pCalcCreateLocalVariable = rdo::Factory<rdoRuntime::RDOCalcCreateLocalVariable>::create(pLocalVariable->getName(), pLocalVariable->getExpression()->calc());
+		rdo::runtime::LPRDOCalcCreateLocalVariable pCalcCreateLocalVariable = rdo::Factory<rdo::runtime::RDOCalcCreateLocalVariable>::create(pLocalVariable->getName(), pLocalVariable->getExpression()->calc());
 		ASSERT(pCalcCreateLocalVariable);
 
 		LPVariableWrapper pVariableWrapper = rdo::Factory<VariableWrapper>::create(pCalcCreateLocalVariable, pLocalVariable);
@@ -1090,7 +1090,7 @@ init_declaration
 		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(pVariableName, pArithm->expression());
 		ASSERT(pLocalVariable);
 
-		rdoRuntime::LPRDOCalcCreateLocalVariable pCalcCreateLocalVariable = rdo::Factory<rdoRuntime::RDOCalcCreateLocalVariable>::create(pLocalVariable->getName(), pLocalVariable->getExpression()->calc());
+		rdo::runtime::LPRDOCalcCreateLocalVariable pCalcCreateLocalVariable = rdo::Factory<rdo::runtime::RDOCalcCreateLocalVariable>::create(pLocalVariable->getName(), pLocalVariable->getExpression()->calc());
 		ASSERT(pCalcCreateLocalVariable);
 
 		LPVariableWrapper pVariableWrapper = rdo::Factory<VariableWrapper>::create(pCalcCreateLocalVariable, pLocalVariable);
@@ -1121,8 +1121,8 @@ if_statement
 		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
 		ASSERT(pExpression);
 
-		rdoRuntime::LPRDOCalcConst pConstCalc        = pConditionCalc.object_dynamic_cast<rdoRuntime::RDOCalcConst>();
-		LPExpressionStatement      pExpressionReturn = pIfExpression.object_dynamic_cast<ExpressionStatement>();
+		rdo::runtime::LPRDOCalcConst pConstCalc        = pConditionCalc.object_dynamic_cast<rdo::runtime::RDOCalcConst>();
+		LPExpressionStatement        pExpressionReturn = pIfExpression.object_dynamic_cast<ExpressionStatement>();
 
 		if (pConstCalc && pExpressionReturn && pConstCalc->getValue().getAsBool())
 		{
@@ -1148,7 +1148,7 @@ if_statement
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__void>::create(), RDOParserSrcInfo(@1));
 		ASSERT(pType);
 
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcIfElse>::create(
+		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcIfElse>::create(
 			pConditionCalc,
 			pIfExpression->calc(),
 			pElseExpression->calc());
@@ -1157,9 +1157,9 @@ if_statement
 		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
 		ASSERT(pExpression);
 		
-		rdoRuntime::LPRDOCalcConst pConstCalc            = pConditionCalc.object_dynamic_cast<rdoRuntime::RDOCalcConst>();
-		LPExpressionStatement      pIfExpressionReturn   = pIfExpression.object_dynamic_cast<ExpressionStatement>();
-		LPExpressionStatement      pElseExpressionReturn = pElseExpression.object_dynamic_cast<ExpressionStatement>();
+		rdo::runtime::LPRDOCalcConst pConstCalc            = pConditionCalc.object_dynamic_cast<rdo::runtime::RDOCalcConst>();
+		LPExpressionStatement        pIfExpressionReturn   = pIfExpression.object_dynamic_cast<ExpressionStatement>();
+		LPExpressionStatement        pElseExpressionReturn = pElseExpression.object_dynamic_cast<ExpressionStatement>();
 		
 		if(pIfExpressionReturn&&pElseExpressionReturn)
 		{
@@ -1209,13 +1209,13 @@ for_statement
 
 		ContextMemory::push();
 
-		rdoRuntime::LPRDOCalc pCalcOpenBrace = rdo::Factory<rdoRuntime::RDOCalcOpenBrace>::create();
+		rdo::runtime::LPRDOCalc pCalcOpenBrace = rdo::Factory<rdo::runtime::RDOCalcOpenBrace>::create();
 		ASSERT(pCalcOpenBrace);
 
-		rdoRuntime::LPRDOCalc pCalcCloseBrace = rdo::Factory<rdoRuntime::RDOCalcCloseBrace>::create();
+		rdo::runtime::LPRDOCalc pCalcCloseBrace = rdo::Factory<rdo::runtime::RDOCalcCloseBrace>::create();
 		ASSERT(pCalcCloseBrace);
 
-		rdoRuntime::LPRDOCalcFunBodyBrace pCalcBodyBrace = rdo::Factory<rdoRuntime::RDOCalcFunBodyBrace>::create();
+		rdo::runtime::LPRDOCalcFunBodyBrace pCalcBodyBrace = rdo::Factory<rdo::runtime::RDOCalcFunBodyBrace>::create();
 		ASSERT(pCalcBodyBrace);
 
 		pCalcBodyBrace->addFunCalc(pCalcOpenBrace);
@@ -1224,7 +1224,7 @@ for_statement
 
 		ContextMemory::pop();
 
-		rdoRuntime::LPRDOCalcFor pCalc = pHeaderExpression->calc().object_dynamic_cast<rdoRuntime::RDOCalcFor>();
+		rdo::runtime::LPRDOCalcFor pCalc = pHeaderExpression->calc().object_dynamic_cast<rdo::runtime::RDOCalcFor>();
 		
 		if(pCalc)
 		{
@@ -1259,7 +1259,7 @@ for_header
 		LPExpression pEqualExpression = PARSER->stack().pop<Expression>($7);
 		ASSERT(pEqualExpression);
 
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcFor>::create(
+		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcFor>::create(
 			pDeclarationExpression->calc(),
 			pConditionCalc                ,
 			pEqualExpression->calc()      );
@@ -1286,13 +1286,13 @@ for_header
 		LPRDOFUNLogic pCondition = PARSER->stack().pop<RDOFUNLogic>($5);
 		ASSERT(pCondition);
 		
-		rdoRuntime::LPRDOCalc pConditionCalc = pCondition->getCalc();
+		rdo::runtime::LPRDOCalc pConditionCalc = pCondition->getCalc();
 		ASSERT(pConditionCalc);
 
 		LPExpression pEqualExpression = PARSER->stack().pop<Expression>($7);
 		ASSERT(pEqualExpression);
 
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcFor>::create(
+		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcFor>::create(
 			pDeclarationExpression->calc(),
 			pConditionCalc                ,
 			pEqualExpression->calc()      );
@@ -1304,13 +1304,13 @@ for_header
 		LPContextStatement pContextStatement = rdo::Factory<ContextStatement>::create(pCalc);
 		ASSERT(pContextStatement)
 
-		rdoRuntime::LPRDOCalc pCalcOpenBrace = rdo::Factory<rdoRuntime::RDOCalcOpenBrace>::create();
+		rdo::runtime::LPRDOCalc pCalcOpenBrace = rdo::Factory<rdo::runtime::RDOCalcOpenBrace>::create();
 		ASSERT(pCalcOpenBrace);
 
-		rdoRuntime::LPRDOCalc pCalcCloseBrace = rdo::Factory<rdoRuntime::RDOCalcCloseBrace>::create();
+		rdo::runtime::LPRDOCalc pCalcCloseBrace = rdo::Factory<rdo::runtime::RDOCalcCloseBrace>::create();
 		ASSERT(pCalcCloseBrace);
 
-		rdoRuntime::LPRDOCalcFunBodyBrace pCalcBodyBrace = rdo::Factory<rdoRuntime::RDOCalcFunBodyBrace>::create();
+		rdo::runtime::LPRDOCalcFunBodyBrace pCalcBodyBrace = rdo::Factory<rdo::runtime::RDOCalcFunBodyBrace>::create();
 		ASSERT(pCalcBodyBrace);
 
 		pCalcBodyBrace->addFunCalc(pCalcOpenBrace);
@@ -1377,7 +1377,7 @@ for_header
 break_statement
 	:RDO_Break
 	{
-		rdoRuntime::LPRDOCalc pCalcBreak = rdo::Factory<rdoRuntime::RDOCalcFunBreak>::create();
+		rdo::runtime::LPRDOCalc pCalcBreak = rdo::Factory<rdo::runtime::RDOCalcFunBreak>::create();
 		ASSERT(pCalcBreak);
 
 		LPRDOType pBaseType = rdo::Factory<RDOType__void>::create();

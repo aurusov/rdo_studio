@@ -42,7 +42,7 @@ Context::FindResult ContextMemory::onFindContext(CREF(LPRDOValue) pValue) const
 	{
 		LPExpression pExpression = rdo::Factory<Expression>::create(
 			pLocalVariable->getExpression()->typeInfo(),
-			rdo::Factory<rdoRuntime::RDOCalcGetLocalVariable>::create(pLocalVariable->getName()),
+			rdo::Factory<rdo::runtime::RDOCalcGetLocalVariable>::create(pLocalVariable->getName()),
 			pValue->src_info()
 		);
 		ASSERT(pExpression);
@@ -83,13 +83,13 @@ void ContextMemory::pop()
 // --------------------------------------------------------------------------------
 // -------------------- ContextStatement
 // --------------------------------------------------------------------------------
-ContextStatement::ContextStatement(CREF(rdoRuntime::LPRDOCalc) pCalc)
+ContextStatement::ContextStatement(CREF(rdo::runtime::LPRDOCalc) pCalc)
 	: m_pStatement(pCalc)
 {}
 
 rbool ContextStatement::is_for_statement()
 {
-	return ((m_pStatement.object_dynamic_cast<rdoRuntime::RDOCalcFor>()) ? true : false);
+	return ((m_pStatement.object_dynamic_cast<rdo::runtime::RDOCalcFor>()) ? true : false);
 }
 
 Context::FindResult ContextStatement::onFindContext(CREF(LPRDOValue) pValue) const
@@ -102,7 +102,7 @@ Context::FindResult ContextStatement::onFindContext(CREF(LPRDOValue) pValue) con
 		
 		if(statement == "break")
 		{
-			rdoRuntime::LPRDOCalc pCalcBreak = rdo::Factory<rdoRuntime::RDOCalcFunBreak>::create();
+			rdo::runtime::LPRDOCalc pCalcBreak = rdo::Factory<rdo::runtime::RDOCalcFunBreak>::create();
 			ASSERT(pCalcBreak);
 
 			LPRDOType pBaseType = rdo::Factory<RDOType__void>::create();

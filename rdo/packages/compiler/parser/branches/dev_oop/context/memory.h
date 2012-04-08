@@ -65,11 +65,10 @@ DECLARE_FACTORY(ContextStatement);
 public:
 	rbool is_for_statement();
 	
-	ContextStatement(CREF(rdoRuntime::LPRDOCalc) pCalc);
+	ContextStatement(CREF(rdo::runtime::LPRDOCalc) pCalc);
 
 private:
-	
-	rdoRuntime::LPRDOCalc m_pStatement;
+	rdo::runtime::LPRDOCalc m_pStatement;
 	DECLARE_IContextFind;
 };
 DECLARE_POINTER(ContextStatement);
