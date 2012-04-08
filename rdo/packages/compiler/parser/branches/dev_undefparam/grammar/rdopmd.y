@@ -774,10 +774,10 @@ fun_arithm
 		LPRDOFUNArithm pArithm = RDOFUNArithm::generateByIdentificator(pValue);
 		ASSERT(pArithm);
 
-		rdoRuntime::LPRDOCalc pCalc;
+		rdo::runtime::LPRDOCalc pCalc;
 		if (pArithm->typeInfo()->type().object_dynamic_cast<RDOArrayType>())
 		{
-			pCalc = rdo::Factory<rdoRuntime::RDOCalcArraySize>::create(pArithm->calc());
+			pCalc = rdo::Factory<rdo::runtime::RDOCalcArraySize>::create(pArithm->calc());
 			ASSERT(pCalc);
 		}
 		else
@@ -812,7 +812,7 @@ fun_arithm
 			PARSER->error().error(@1, rdo::format(_T("'%s' не является массивом."), pValue->value().getIdentificator().c_str()));
 		}
 
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcArrayItem>::create(pArithm->calc(), pArithmInd->calc());
+		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcArrayItem>::create(pArithm->calc(), pArithmInd->calc());
 		ASSERT(pCalc);
 
 		LPRDOType pType = pArithm->typeInfo()->type();

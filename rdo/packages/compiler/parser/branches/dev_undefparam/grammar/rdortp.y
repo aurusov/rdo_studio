@@ -414,8 +414,8 @@ param_type
 		LPTypeInfo pType;
 		if (pRange)
 		{
-			if (pRange->getMin()->typeID() != rdoRuntime::RDOType::t_int ||
-			    pRange->getMax()->typeID() != rdoRuntime::RDOType::t_int)
+			if (pRange->getMin()->typeID() != rdo::runtime::RDOType::t_int ||
+			    pRange->getMax()->typeID() != rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, _T("ƒиапазон целого типа должен быть целочисленным"));
 			}

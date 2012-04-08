@@ -112,7 +112,7 @@ public:
 	virtual void init  ();
 	virtual void deinit();
 
-	CREF(rdoRuntime::LPRDORuntime) runtime() const { return m_pRuntime; }
+	CREF(rdo::runtime::LPRDORuntime) runtime() const { return m_pRuntime; }
 
 	rbool             isPattern       () const { return m_pattern;     }
 	REF(FUNGroupList) getFUNGroupStack()       { return m_allFUNGroup; }
@@ -238,7 +238,7 @@ protected:
 		return getContainer()->find(index);
 	}
 
-	rdoRuntime::LPRDORuntime m_pRuntime;
+	rdo::runtime::LPRDORuntime m_pRuntime;
 
 	void parse(rdoModelObjects::RDOParseType file);
 

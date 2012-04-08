@@ -25,9 +25,9 @@ class RDOArrayType: public RDOType, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOArrayType);
 public:
-	CREF(LPTypeInfo)           getItemType        () const;
-	rdoRuntime::LPRDOArrayType getRuntimeArrayType() const;
-	LPTypeInfo                 typeInfo           () const;
+	CREF(LPTypeInfo)             getItemType        () const;
+	rdo::runtime::LPRDOArrayType getRuntimeArrayType() const;
+	LPTypeInfo                   typeInfo           () const;
 
 private:
 	RDOArrayType         (CREF(LPTypeInfo) pItemType, CREF(RDOParserSrcInfo) src_info);

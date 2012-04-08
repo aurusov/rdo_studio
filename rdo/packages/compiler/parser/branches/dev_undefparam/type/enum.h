@@ -31,9 +31,9 @@ DECLARE_FACTORY(RDOEnumType);
 public:
 	void add(CREF(LPRDOValue) pNext);
 
-	rdoRuntime::LPRDOEnumType getEnums() const
+	rdo::runtime::LPRDOEnumType getEnums() const
 	{
-		return m_pType.object_static_cast<rdoRuntime::RDOEnumType>();
+		return m_pType.object_static_cast<rdo::runtime::RDOEnumType>();
 	}
 
 	rbool operator== (CREF(RDOEnumType) pEnumType) const
@@ -50,7 +50,7 @@ public:
 
 private:
 	RDOEnumType         ();
-	RDOEnumType         (CREF(rdoRuntime::LPRDOEnumType) pEnumType);
+	RDOEnumType         (CREF(rdo::runtime::LPRDOEnumType) pEnumType);
 	virtual ~RDOEnumType();
 };
 

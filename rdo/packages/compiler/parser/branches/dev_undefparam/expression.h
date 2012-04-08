@@ -28,21 +28,21 @@ OBJECT(Expression) IS INSTANCE_OF(RDOParserSrcInfo)
 DECLARE_FACTORY(Expression);
 friend class ExpressionStatement;
 public:
-	CREF(LPTypeInfo)             typeInfo  () const;
-	CREF(rdoRuntime::LPRDOCalc)  calc      () const;
-	virtual void                 setSrcInfo(CREF(RDOParserSrcInfo) src_info);
+	CREF(LPTypeInfo)               typeInfo  () const;
+	CREF(rdo::runtime::LPRDOCalc)  calc      () const;
+	virtual void                   setSrcInfo(CREF(RDOParserSrcInfo) src_info);
 
 	LPRDOValue                   constant  () const;
 
 private:
-	Expression(CREF(LPTypeInfo) pType, CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(RDOParserSrcInfo) src_info);
+	Expression(CREF(LPTypeInfo) pType, CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(RDOParserSrcInfo) src_info);
 	Expression(CREF(LPRDOValue) pValue);
 	Expression(CREF(LPExpression) pExpression);
 	virtual ~Expression();
 
-	LPTypeInfo             m_pType;
-	LPRDOValue             m_pValue; //! < Используется или m_pValue или m_pCalc
-	rdoRuntime::LPRDOCalc  m_pCalc;  //! < Более красивое решение: завести парсеровский калк
+	LPTypeInfo               m_pType;
+	LPRDOValue               m_pValue; //! < Используется или m_pValue или m_pCalc
+	rdo::runtime::LPRDOCalc  m_pCalc;  //! < Более красивое решение: завести парсеровский калк
 };
 
 // --------------------------------------------------------------------------------
@@ -55,7 +55,7 @@ public:
 	rbool getReturn();
 
 private:
-	ExpressionStatement(CREF(LPTypeInfo) pType, CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(rdoRuntime::RDOSrcInfo) src_info);
+	ExpressionStatement(CREF(LPTypeInfo) pType, CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(rdo::runtime::RDOSrcInfo) src_info);
 	ExpressionStatement(CREF(LPExpression) pExpression);
 	virtual ~ExpressionStatement();
 

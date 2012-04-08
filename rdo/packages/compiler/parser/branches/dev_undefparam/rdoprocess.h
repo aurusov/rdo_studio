@@ -141,7 +141,7 @@ protected:
 	LPIPROCBlock m_pRuntime;
 
 private:
-	RDOPROCGenerate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pTimeCalc, CREF(rdoRuntime::LPRDOCalc) pCreateAndGoOnTransactCalc);
+	RDOPROCGenerate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdo::runtime::LPRDOCalc) pTimeCalc, CREF(rdo::runtime::LPRDOCalc) pCreateAndGoOnTransactCalc);
 };
 DECLARE_POINTER(RDOPROCGenerate);
 
@@ -154,7 +154,7 @@ protected:
 	RDOPROCBlockForQueue(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name);
 
 	//! m_parserForRuntime служит для передачи информации о параметре "Состояние" ресурса
-	rdoRuntime::parser_for_Queue m_parserForRuntime;
+	rdo::runtime::parser_for_Queue m_parserForRuntime;
 };
 
 // --------------------------------------------------------------------------------
@@ -206,7 +206,7 @@ protected:
 	RDOPROCBlockForSeize(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name);
 
 	//! m_parserForRuntime служит для передачи информации о параметре "Состояние" ресурса
-	rdoRuntime::parser_for_Seize m_parserForRuntime;
+	rdo::runtime::parser_for_Seize m_parserForRuntime;
 };
 
 // --------------------------------------------------------------------------------
@@ -221,8 +221,8 @@ public:
 	void addResource  (CREF(tstring) name);
 
 protected:
-	typedef std::list  <tstring>                      ResourceList;
-	typedef std::vector<rdoRuntime::parser_for_Seize> ParserForRuntime;
+	typedef std::list  <tstring>                        ResourceList;
+	typedef std::vector<rdo::runtime::parser_for_Seize> ParserForRuntime;
 
 	ResourceList     m_resourceList;
 	ParserForRuntime m_parserForRuntime;
@@ -245,8 +245,8 @@ public:
 	void addResource  (CREF(tstring) name);
 
 protected:
-	typedef std::list  <tstring>                      ResourceList;
-	typedef std::vector<rdoRuntime::parser_for_Seize> ParserForRuntime;
+	typedef std::list  <tstring>                        ResourceList;
+	typedef std::vector<rdo::runtime::parser_for_Seize> ParserForRuntime;
 
 	ResourceList     m_resourceList;
 	ParserForRuntime m_parserForRuntime;
@@ -269,7 +269,7 @@ protected:
 	LPIPROCBlock m_pRuntime;
 
 private:
-	RDOPROCAdvance(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pTimeCalc);
+	RDOPROCAdvance(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdo::runtime::LPRDOCalc) pTimeCalc);
 };
 
 // --------------------------------------------------------------------------------
@@ -285,7 +285,7 @@ protected:
 	LPIPROCBlock m_pRuntime;
 
 private:
-	RDOPROCTerminate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pCalc);
+	RDOPROCTerminate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdo::runtime::LPRDOCalc) pCalc);
 };
 
 // --------------------------------------------------------------------------------
@@ -300,7 +300,7 @@ protected:
 	LPIPROCBlock m_pRuntime;
 
 private:
-	RDOPROCAssign(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdoRuntime::LPRDOCalc) pCalc);
+	RDOPROCAssign(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdo::runtime::LPRDOCalc) pCalc);
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

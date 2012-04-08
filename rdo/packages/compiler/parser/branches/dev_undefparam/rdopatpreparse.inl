@@ -36,13 +36,13 @@ inline CREF(tstring) RDOEvent::name() const
 	return m_name;
 }
 
-inline void RDOEvent::attachCalc(CREF(rdoRuntime::LPRDOCalcEventStop) pCalc)
+inline void RDOEvent::attachCalc(CREF(rdo::runtime::LPRDOCalcEventStop) pCalc)
 {
 	ASSERT(pCalc);
 	m_calcList.push_back(pCalc);
 }
 
-inline void RDOEvent::attachCalc(CREF(rdoRuntime::LPRDOCalcEventPlan) pCalc)
+inline void RDOEvent::attachCalc(CREF(rdo::runtime::LPRDOCalcEventPlan) pCalc)
 {
 	ASSERT(pCalc);
 	m_calcList.push_back(pCalc);
@@ -69,12 +69,12 @@ inline REF(RDOEvent::CalcList) RDOEvent::getCalcList()
 	return m_calcList;
 }
 
-inline rdoRuntime::LPRDOCalc RDOEvent::getInitCalc() const
+inline rdo::runtime::LPRDOCalc RDOEvent::getInitCalc() const
 {
 	return m_pInitCalc;
 }
 
-inline void RDOEvent::setInitCalc(CREF(rdoRuntime::LPRDOCalc) pCalc)
+inline void RDOEvent::setInitCalc(CREF(rdo::runtime::LPRDOCalc) pCalc)
 {
 	ASSERT(pCalc);
 	m_pInitCalc = pCalc;

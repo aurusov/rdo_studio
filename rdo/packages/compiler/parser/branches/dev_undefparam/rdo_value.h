@@ -30,9 +30,9 @@ OBJECT(RDOValue) IS INSTANCE_OF(RDOParserSrcInfo)
 {
 DECLARE_FACTORY(RDOValue);
 public:
-	CREF(LPTypeInfo)             typeInfo() const;
-	rdoRuntime::RDOType::TypeID  typeID  () const;
-	 REF(rdoRuntime::RDOValue)   value   ();
+	CREF(LPTypeInfo)               typeInfo() const;
+	rdo::runtime::RDOType::TypeID  typeID  () const;
+	CREF(rdo::runtime::RDOValue)   value   () const;
 	CREF(rdoRuntime::RDOValue)   value   () const;
 
 	rbool defined () const;
@@ -71,7 +71,7 @@ private:
 	RDOValue(CREF(LPTypeInfo) pType, CREF(rdo::intrusive_ptr<T>) pObject, CREF(RDOParserSrcInfo) src_info);
 
 	// От рантайм RDOValue
-	RDOValue(CREF(rdoRuntime::RDOValue) value, CREF(RDOParserSrcInfo) src_info, CREF(LPTypeInfo) pType);
+	RDOValue(CREF(rdo::runtime::RDOValue) value, CREF(RDOParserSrcInfo) src_info, CREF(LPTypeInfo) pType);
 
  	template <class T>
 	void setPointer(CREF(rdo::intrusive_ptr<T>) pObject);
@@ -79,9 +79,9 @@ private:
 	//! Тип контейнера значения, размер определяется по максимальному размеру типа данных
 	typedef rbyte Value[sizeof(rdo::intrusive_ptr_interface_wrapper<RDOValue>)];
 
-	Value                m_buffer;
-	rdoRuntime::RDOValue m_value;
-	LPTypeInfo           m_pType;
+	Value                  m_buffer;
+	rdo::runtime::RDOValue m_value;
+	LPTypeInfo             m_pType;
 
 	template <class T>
 	REF(T) __get();
