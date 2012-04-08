@@ -23,25 +23,25 @@
 
 BOOST_AUTO_TEST_SUITE(RDORuntime_Matrix_Test)
 
-typedef  rdo::vector<rsint>                                            Container;
-typedef  std::pair<rdoRuntime::LPRDOMatrixValue, rdoRuntime::RDOValue>  Matrix;
+typedef  rdo::vector<rsint>                                                 Container;
+typedef  std::pair<rdo::runtime::LPRDOMatrixValue, rdo::runtime::RDOValue>  Matrix;
 
 Matrix createMatrix(CREF(Container) data)
 {
-	rdoRuntime::LPRDOMatrixType  pType  = rdo::Factory<rdoRuntime::RDOMatrixType>::create(rdoRuntime::g_int);
+	rdo::runtime::LPRDOMatrixType  pType  = rdo::Factory<rdo::runtime::RDOMatrixType>::create(rdo::runtime::g_int);
 	ASSERT(pType);
-	rdoRuntime::LPRDOMatrixValue pValue = rdo::Factory<rdoRuntime::RDOMatrixValue>::create(pType);
+	rdo::runtime::LPRDOMatrixValue pValue = rdo::Factory<rdo::runtime::RDOMatrixValue>::create(pType);
 	ASSERT(pValue);
 
 	STL_FOR_ALL_CONST(data, it)
 	{
-		pValue->push_back(rdoRuntime::RDOValue(*it));
+		pValue->push_back(rdo::runtime::RDOValue(*it));
 	}
 
-	return std::make_pair(pValue, rdoRuntime::RDOValue(pType, pValue));
+	return std::make_pair(pValue, rdo::runtime::RDOValue(pType, pValue));
 }
 
-tstring getString(CREF(rdoRuntime::LPRDOMatrixValue) pMatrix, CREF(rdoRuntime::LPRDOMatrixIterator) pIt)
+tstring getString(CREF(rdo::runtime::LPRDOMatrixValue) pMatrix, CREF(rdo::runtime::LPRDOMatrixIterator) pIt)
 {
 	if (!pIt->equal(pMatrix->end()))
 	{
@@ -50,7 +50,7 @@ tstring getString(CREF(rdoRuntime::LPRDOMatrixValue) pMatrix, CREF(rdoRuntime::L
 	return _T("");
 }
 
-tstring getString(CREF(rdoRuntime::RDOValue) it, CREF(rdoRuntime::RDOValue) end)
+tstring getString(CREF(rdo::runtime::RDOValue) it, CREF(rdo::runtime::RDOValue) end)
 {
 	if (it != end)
 	{
@@ -88,7 +88,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestIteratorPrePlus)
 	Matrix matrix = createMatrix(Container()(1)(2)(3));
 
 	tstring result;
-	rdoRuntime::LPRDOMatrixIterator pIt = matrix.first->begin();
+	rdo::runtime::LPRDOMatrixIterator pIt = matrix.first->begin();
 	while (!pIt->equal(matrix.first->end()))
 	{
 		result += getString(matrix.first, pIt->preInc(1));
@@ -101,7 +101,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestIteratorPostPlus)
 	Matrix matrix = createMatrix(Container()(1)(2)(3));
 
 	tstring result;
-	rdoRuntime::LPRDOMatrixIterator pIt = matrix.first->begin();
+	rdo::runtime::LPRDOMatrixIterator pIt = matrix.first->begin();
 	while (!pIt->equal(matrix.first->end()))
 	{
 		result += getString(matrix.first, pIt->postInc(1));
@@ -114,7 +114,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestIteratorPreMinus)
 	Matrix matrix = createMatrix(Container()(1)(2)(3));
 
 	tstring result;
-	rdoRuntime::LPRDOMatrixIterator pIt = matrix.first->end();
+	rdo::runtime::LPRDOMatrixIterator pIt = matrix.first->end();
 	do
 	{
 		result += getString(matrix.first, pIt->preInc(-1));
@@ -129,7 +129,7 @@ BOOST_AUTO_TEST_CASE(MatrixTestIteratorPostMinus)
 	Matrix matrix = createMatrix(Container()(1)(2)(3));
 
 	tstring result;
-	rdoRuntime::LPRDOMatrixIterator pIt = matrix.first->end();
+	rdo::runtime::LPRDOMatrixIterator pIt = matrix.first->end();
 	do
 	{
 		result += getString(matrix.first, pIt->postInc(-1));
@@ -144,10 +144,10 @@ BOOST_AUTO_TEST_CASE(MatrixTestValuePrePlus)
 	Matrix matrix = createMatrix(Container()(1)(2)(3));
 
 	tstring result;
-	rdoRuntime::LPRDOMatrixIterator pIt  = matrix.first->begin();
-	rdoRuntime::LPRDOMatrixIterator pEnd = matrix.first->end  ();
-	rdoRuntime::RDOValue it (pIt,  pIt );
-	rdoRuntime::RDOValue end(pEnd, pEnd);
+	rdo::runtime::LPRDOMatrixIterator pIt  = matrix.first->begin();
+	rdo::runtime::LPRDOMatrixIterator pEnd = matrix.first->end  ();
+	rdo::runtime::RDOValue it (pIt,  pIt );
+	rdo::runtime::RDOValue end(pEnd, pEnd);
 	BOOST_CHECK(it != end);
 
 	while (it != end)
@@ -162,10 +162,10 @@ BOOST_AUTO_TEST_CASE(MatrixTestValuePostPlus)
 	Matrix matrix = createMatrix(Container()(1)(2)(3));
 
 	tstring result;
-	rdoRuntime::LPRDOMatrixIterator pIt  = matrix.first->begin();
-	rdoRuntime::LPRDOMatrixIterator pEnd = matrix.first->end  ();
-	rdoRuntime::RDOValue it (pIt,  pIt );
-	rdoRuntime::RDOValue end(pEnd, pEnd);
+	rdo::runtime::LPRDOMatrixIterator pIt  = matrix.first->begin();
+	rdo::runtime::LPRDOMatrixIterator pEnd = matrix.first->end  ();
+	rdo::runtime::RDOValue it (pIt,  pIt );
+	rdo::runtime::RDOValue end(pEnd, pEnd);
 	BOOST_CHECK(it != end);
 
 	while (it != end)
@@ -180,12 +180,12 @@ BOOST_AUTO_TEST_CASE(MatrixTestValuePreMinus)
 	Matrix matrix = createMatrix(Container()(1)(2)(3));
 
 	tstring result;
-	rdoRuntime::LPRDOMatrixIterator pIt    = matrix.first->end  ();
-	rdoRuntime::LPRDOMatrixIterator pBegin = matrix.first->begin();
-	rdoRuntime::LPRDOMatrixIterator pEnd   = matrix.first->end  ();
-	rdoRuntime::RDOValue it   (pIt,    pIt   );
-	rdoRuntime::RDOValue begin(pBegin, pBegin);
-	rdoRuntime::RDOValue end  (pEnd,   pEnd  );
+	rdo::runtime::LPRDOMatrixIterator pIt    = matrix.first->end  ();
+	rdo::runtime::LPRDOMatrixIterator pBegin = matrix.first->begin();
+	rdo::runtime::LPRDOMatrixIterator pEnd   = matrix.first->end  ();
+	rdo::runtime::RDOValue it   (pIt,    pIt   );
+	rdo::runtime::RDOValue begin(pBegin, pBegin);
+	rdo::runtime::RDOValue end  (pEnd,   pEnd  );
 	BOOST_CHECK(it != begin);
 	BOOST_CHECK(it == end  );
 
@@ -202,12 +202,12 @@ BOOST_AUTO_TEST_CASE(MatrixTestValuePostMinus)
 	Matrix matrix = createMatrix(Container()(1)(2)(3));
 
 	tstring result;
-	rdoRuntime::LPRDOMatrixIterator pIt    = matrix.first->end  ();
-	rdoRuntime::LPRDOMatrixIterator pBegin = matrix.first->begin();
-	rdoRuntime::LPRDOMatrixIterator pEnd   = matrix.first->end  ();
-	rdoRuntime::RDOValue it   (pIt,    pIt   );
-	rdoRuntime::RDOValue begin(pBegin, pBegin);
-	rdoRuntime::RDOValue end  (pEnd,   pEnd  );
+	rdo::runtime::LPRDOMatrixIterator pIt    = matrix.first->end  ();
+	rdo::runtime::LPRDOMatrixIterator pBegin = matrix.first->begin();
+	rdo::runtime::LPRDOMatrixIterator pEnd   = matrix.first->end  ();
+	rdo::runtime::RDOValue it   (pIt,    pIt   );
+	rdo::runtime::RDOValue begin(pBegin, pBegin);
+	rdo::runtime::RDOValue end  (pEnd,   pEnd  );
 	BOOST_CHECK(it != begin);
 	BOOST_CHECK(it == end  );
 

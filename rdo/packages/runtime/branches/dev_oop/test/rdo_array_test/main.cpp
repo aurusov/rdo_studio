@@ -23,25 +23,25 @@
 
 BOOST_AUTO_TEST_SUITE(RDORuntime_Array_Test)
 
-typedef  rdo::vector<rsint>                                            Container;
-typedef  std::pair<rdoRuntime::LPRDOArrayValue, rdoRuntime::RDOValue>  Array;
+typedef  rdo::vector<rsint>                                                Container;
+typedef  std::pair<rdo::runtime::LPRDOArrayValue, rdo::runtime::RDOValue>  Array;
 
 Array createArray(CREF(Container) data)
 {
-	rdoRuntime::LPRDOArrayType  pType  = rdo::Factory<rdoRuntime::RDOArrayType>::create(rdoRuntime::g_int);
+	rdo::runtime::LPRDOArrayType  pType  = rdo::Factory<rdo::runtime::RDOArrayType>::create(rdo::runtime::g_int);
 	ASSERT(pType);
-	rdoRuntime::LPRDOArrayValue pValue = rdo::Factory<rdoRuntime::RDOArrayValue>::create(pType);
+	rdo::runtime::LPRDOArrayValue pValue = rdo::Factory<rdo::runtime::RDOArrayValue>::create(pType);
 	ASSERT(pValue);
 
 	STL_FOR_ALL_CONST(data, it)
 	{
-		pValue->push_back(rdoRuntime::RDOValue(*it));
+		pValue->push_back(rdo::runtime::RDOValue(*it));
 	}
 
-	return std::make_pair(pValue, rdoRuntime::RDOValue(pType, pValue));
+	return std::make_pair(pValue, rdo::runtime::RDOValue(pType, pValue));
 }
 
-tstring getString(CREF(rdoRuntime::LPRDOArrayValue) pArray, CREF(rdoRuntime::LPRDOArrayIterator) pIt)
+tstring getString(CREF(rdo::runtime::LPRDOArrayValue) pArray, CREF(rdo::runtime::LPRDOArrayIterator) pIt)
 {
 	if (!pIt->equal(pArray->end()))
 	{
@@ -50,7 +50,7 @@ tstring getString(CREF(rdoRuntime::LPRDOArrayValue) pArray, CREF(rdoRuntime::LPR
 	return _T("");
 }
 
-tstring getString(CREF(rdoRuntime::RDOValue) it, CREF(rdoRuntime::RDOValue) end)
+tstring getString(CREF(rdo::runtime::RDOValue) it, CREF(rdo::runtime::RDOValue) end)
 {
 	if (it != end)
 	{
@@ -88,7 +88,7 @@ BOOST_AUTO_TEST_CASE(ArrayTestIteratorPrePlus)
 	Array array = createArray(Container()(1)(2)(3));
 
 	tstring result;
-	rdoRuntime::LPRDOArrayIterator pIt = array.first->begin();
+	rdo::runtime::LPRDOArrayIterator pIt = array.first->begin();
 	while (!pIt->equal(array.first->end()))
 	{
 		result += getString(array.first, pIt->preInc(1));
@@ -101,7 +101,7 @@ BOOST_AUTO_TEST_CASE(ArrayTestIteratorPostPlus)
 	Array array = createArray(Container()(1)(2)(3));
 
 	tstring result;
-	rdoRuntime::LPRDOArrayIterator pIt = array.first->begin();
+	rdo::runtime::LPRDOArrayIterator pIt = array.first->begin();
 	while (!pIt->equal(array.first->end()))
 	{
 		result += getString(array.first, pIt->postInc(1));
@@ -114,7 +114,7 @@ BOOST_AUTO_TEST_CASE(ArrayTestIteratorPreMinus)
 	Array array = createArray(Container()(1)(2)(3));
 
 	tstring result;
-	rdoRuntime::LPRDOArrayIterator pIt = array.first->end();
+	rdo::runtime::LPRDOArrayIterator pIt = array.first->end();
 	do
 	{
 		result += getString(array.first, pIt->preInc(-1));
@@ -129,7 +129,7 @@ BOOST_AUTO_TEST_CASE(ArrayTestIteratorPostMinus)
 	Array array = createArray(Container()(1)(2)(3));
 
 	tstring result;
-	rdoRuntime::LPRDOArrayIterator pIt = array.first->end();
+	rdo::runtime::LPRDOArrayIterator pIt = array.first->end();
 	do
 	{
 		result += getString(array.first, pIt->postInc(-1));
@@ -144,10 +144,10 @@ BOOST_AUTO_TEST_CASE(ArrayTestValuePrePlus)
 	Array array = createArray(Container()(1)(2)(3));
 
 	tstring result;
-	rdoRuntime::LPRDOArrayIterator pIt  = array.first->begin();
-	rdoRuntime::LPRDOArrayIterator pEnd = array.first->end  ();
-	rdoRuntime::RDOValue it (pIt,  pIt );
-	rdoRuntime::RDOValue end(pEnd, pEnd);
+	rdo::runtime::LPRDOArrayIterator pIt  = array.first->begin();
+	rdo::runtime::LPRDOArrayIterator pEnd = array.first->end  ();
+	rdo::runtime::RDOValue it (pIt,  pIt );
+	rdo::runtime::RDOValue end(pEnd, pEnd);
 	BOOST_CHECK(it != end);
 
 	while (it != end)
@@ -162,10 +162,10 @@ BOOST_AUTO_TEST_CASE(ArrayTestValuePostPlus)
 	Array array = createArray(Container()(1)(2)(3));
 
 	tstring result;
-	rdoRuntime::LPRDOArrayIterator pIt  = array.first->begin();
-	rdoRuntime::LPRDOArrayIterator pEnd = array.first->end  ();
-	rdoRuntime::RDOValue it (pIt,  pIt );
-	rdoRuntime::RDOValue end(pEnd, pEnd);
+	rdo::runtime::LPRDOArrayIterator pIt  = array.first->begin();
+	rdo::runtime::LPRDOArrayIterator pEnd = array.first->end  ();
+	rdo::runtime::RDOValue it (pIt,  pIt );
+	rdo::runtime::RDOValue end(pEnd, pEnd);
 	BOOST_CHECK(it != end);
 
 	while (it != end)
@@ -180,12 +180,12 @@ BOOST_AUTO_TEST_CASE(ArrayTestValuePreMinus)
 	Array array = createArray(Container()(1)(2)(3));
 
 	tstring result;
-	rdoRuntime::LPRDOArrayIterator pIt    = array.first->end  ();
-	rdoRuntime::LPRDOArrayIterator pBegin = array.first->begin();
-	rdoRuntime::LPRDOArrayIterator pEnd   = array.first->end  ();
-	rdoRuntime::RDOValue it   (pIt,    pIt   );
-	rdoRuntime::RDOValue begin(pBegin, pBegin);
-	rdoRuntime::RDOValue end  (pEnd,   pEnd  );
+	rdo::runtime::LPRDOArrayIterator pIt    = array.first->end  ();
+	rdo::runtime::LPRDOArrayIterator pBegin = array.first->begin();
+	rdo::runtime::LPRDOArrayIterator pEnd   = array.first->end  ();
+	rdo::runtime::RDOValue it   (pIt,    pIt   );
+	rdo::runtime::RDOValue begin(pBegin, pBegin);
+	rdo::runtime::RDOValue end  (pEnd,   pEnd  );
 	BOOST_CHECK(it != begin);
 	BOOST_CHECK(it == end  );
 
@@ -202,12 +202,12 @@ BOOST_AUTO_TEST_CASE(ArrayTestValuePostMinus)
 	Array array = createArray(Container()(1)(2)(3));
 
 	tstring result;
-	rdoRuntime::LPRDOArrayIterator pIt    = array.first->end  ();
-	rdoRuntime::LPRDOArrayIterator pBegin = array.first->begin();
-	rdoRuntime::LPRDOArrayIterator pEnd   = array.first->end  ();
-	rdoRuntime::RDOValue it   (pIt,    pIt   );
-	rdoRuntime::RDOValue begin(pBegin, pBegin);
-	rdoRuntime::RDOValue end  (pEnd,   pEnd  );
+	rdo::runtime::LPRDOArrayIterator pIt    = array.first->end  ();
+	rdo::runtime::LPRDOArrayIterator pBegin = array.first->begin();
+	rdo::runtime::LPRDOArrayIterator pEnd   = array.first->end  ();
+	rdo::runtime::RDOValue it   (pIt,    pIt   );
+	rdo::runtime::RDOValue begin(pBegin, pBegin);
+	rdo::runtime::RDOValue end  (pEnd,   pEnd  );
 	BOOST_CHECK(it != begin);
 	BOOST_CHECK(it == end  );
 

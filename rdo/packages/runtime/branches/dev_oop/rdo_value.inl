@@ -24,7 +24,9 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 inline RDOValue::RDOValue()
 	: m_pType(g_unknow)
-{}
+{
+	setUndefined(1);
+}
 
 inline RDOValue::~RDOValue()
 {
@@ -35,6 +37,7 @@ inline RDOValue::RDOValue(CREF(RDOValue) rdovalue)
 	: m_pType(g_unknow)
 {
 	set(rdovalue);
+	setUndefined(1);
 }
 
 inline RDOValue::RDOValue(CREF(LPRDOType) pType)
@@ -51,18 +54,21 @@ inline RDOValue::RDOValue(CREF(LPRDOType) pType)
 	case RDOType::t_identificator : new (&m_value) rdo::intrusive_ptr_interface_wrapper<string_class>(new string_class(_T(""))); break;
 	default                       : throw RDOValueException();
 	}
+	setUndefined(1);
 }
 
 inline RDOValue::RDOValue(rsint value)
 	: m_pType(g_int)
 {
 	__get<int>() = value;
+	setUndefined(1);
 }
 
 inline RDOValue::RDOValue(ruint value)
 	: m_pType(g_int)
 {
 	__get<int>() = value;
+	setUndefined(1);
 }
 
 #ifdef ARCHITECTURES_AMD64
@@ -77,12 +83,14 @@ inline RDOValue::RDOValue(double value)
 	: m_pType(g_real)
 {
 	__get<double>() = value;
+	setUndefined(1);
 }
 
 inline RDOValue::RDOValue(rbool value)
 	: m_pType(g_bool)
 {
 	__get<rbool>() = value;
+	setUndefined(1);
 }
 
 inline RDOValue::RDOValue(CREF(LPRDOEnumType) pEnum)
@@ -92,12 +100,14 @@ inline RDOValue::RDOValue(CREF(LPRDOEnumType) pEnum)
 		RDOValueException();
 
 	__get<int>() = pEnum->findEnum(pEnum->getValues()[0]);
+	setUndefined(1);
 }
 
 inline RDOValue::RDOValue(CREF(LPRDOEnumType) pEnum, CREF(tstring) value)
 	: m_pType(pEnum)
 {
 	__get<int>() = pEnum->findEnum(value);
+	setUndefined(1);
 	if (__get<int>() == RDOEnumType::END)
 		RDOValueException();
 }
@@ -109,6 +119,7 @@ inline RDOValue::RDOValue(CREF(LPRDOEnumType) pEnum, ruint index)
 		RDOValueException();
 
 	__get<int>() = index;
+	setUndefined(1);
 }
 
 inline RDOValue::RDOValue(CREF(tstring) value)
@@ -117,12 +128,14 @@ inline RDOValue::RDOValue(CREF(tstring) value)
 	STATIC_ASSERT(sizeof(rdo::intrusive_ptr_interface_wrapper<string_class>) >= sizeof(double));
 
 	new (&m_value) rdo::intrusive_ptr_interface_wrapper<string_class>(new string_class(value));
+	setUndefined(1);
 }
 
 inline RDOValue::RDOValue(CPTR(tchar) value)
 	: m_pType(g_string)
 {
 	new (&m_value) rdo::intrusive_ptr_interface_wrapper<string_class>(new string_class(value));
+	setUndefined(1);
 }
 
 inline RDOValue::RDOValue(CREF(tstring) value, CREF(LPRDOType) pType)
@@ -132,6 +145,7 @@ inline RDOValue::RDOValue(CREF(tstring) value, CREF(LPRDOType) pType)
 		RDOValueException();
 
 	new (&m_value) rdo::intrusive_ptr_interface_wrapper<string_class>(new string_class(value));
+	setUndefined(1);
 }
 
 template <class T>
@@ -142,11 +156,12 @@ inline RDOValue::RDOValue(CREF(LPRDOType) pType, CREF(rdo::intrusive_ptr<T>) pOb
 
 	ASSERT(m_pType);
 	ASSERT(
-		typeID() == rdoRuntime::RDOType::t_string        ||
-		typeID() == rdoRuntime::RDOType::t_identificator ||
-		typeID() == rdoRuntime::RDOType::t_pointer
+		typeID() == RDOType::t_string        ||
+		typeID() == RDOType::t_identificator ||
+		typeID() == RDOType::t_pointer
 	);
 	new (&m_value) rdo::intrusive_ptr_interface_wrapper<T>(pObject);
+	setUndefined(1);
 }
 
 inline void RDOValue::deleteValue()
@@ -272,7 +287,7 @@ inline tstring RDOValue::getAsString() const
 	case RDOType::t_identificator: return __stringV();
 	case RDOType::t_pointer      : return onPointerAsString();
 	}
-	throw RDOValueException(_T("Для rdoRuntime::RDOValue не определен метод getAsString()"));
+	throw RDOValueException(_T("Для rdo::runtime::RDOValue не определен метод getAsString()"));
 }
 
 inline tstring RDOValue::getAsStringForTrace() const
@@ -286,7 +301,7 @@ inline tstring RDOValue::getAsStringForTrace() const
 	case RDOType::t_string : return __stringV();
 	case RDOType::t_pointer: return onPointerAsString();
 	}
-	throw RDOValueException(_T("Для rdoRuntime::RDOValue не определен метод getAsStringForTrace()"));
+	throw RDOValueException(_T("Для rdo::runtime::RDOValue не определен метод getAsStringForTrace()"));
 }
 
 inline void RDOValue::set(CREF(RDOValue) rdovalue)
@@ -776,6 +791,20 @@ inline RDOValue RDOValue::operator/ (CREF(RDOValue) rdovalue) const
 //	throw RDOValueException();
 //}
 
+inline void RDOValue::setUndefined(CREF(double) undefined)
+{
+	ASSERT(
+		undefined >= 0 &&
+		undefined <= 1
+	);
+	m_undefined = undefined;
+}
+
+inline CREF(double) RDOValue::getUndefined() const
+{
+	return m_undefined;
+}
+
 inline CREF(LPRDOType) RDOValue::type() const
 {
 	return m_pType;
@@ -824,6 +853,17 @@ inline CREF(rdo::intrusive_ptr<typename T::value_type>) RDOValue::getPointerSafe
 {
 #ifdef _DEBUG
 	rdo::intrusive_ptr<T> pType = type().object_dynamic_cast<T>();
+	ASSERT(pType);
+#endif // _DEBUG
+
+	return getPointer<typename T::value_type>();
+}
+
+template <class T>
+inline CREF(rdo::intrusive_ptr<typename T::value_type>) RDOValue::getPointerByInterfaceSafety() const
+{
+#ifdef _DEBUG
+	rdo::interface_ptr<T> pType = type().interface_dynamic_cast<T>();
 	ASSERT(pType);
 #endif // _DEBUG
 
