@@ -3,6 +3,7 @@
   \file      rdorss.cpp
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Романов Ярослав (robot.xet@gmail.com)
   \date      
   \brief     
   \indent    4T
@@ -112,16 +113,21 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 		}
 		else if (pParam->value().getAsString() == _T("#"))
 		{
-			if (!(*m_currParam)->getDefault()->defined())
+			if ((*m_currParam)->getDefault()->defined())
 			{
-				RDOParser::s_parser()->error().push_only(pParam->src_info(), _T("Невозможно использовать '#', к.т. отсутствует значение по-умолчанию"));
-				/// @todo src_info() без параметра RDOParserSrcInfo()
-				RDOParser::s_parser()->error().push_only((*m_currParam)->getTypeInfo()->src_info(RDOParserSrcInfo()), _T("См. описание параметра"));
-				RDOParser::s_parser()->error().push_done();
+				Param pValue = Param((*m_currParam)->getDefault());
+				pValue.param()->value().setUndefined(0);
+				m_paramList.push_back(pValue);
+				m_currParam++;
 			}
-			pParam->value().setUndefined(0);
-			m_paramList.push_back(Param((*m_currParam)->getDefault()));
-			m_currParam++;
+			else
+			{
+				LPRDOValue pVal = rdo::Factory<rdoParser::RDOValue>::create((*m_currParam)->getTypeInfo()->type()->get_default(), (*m_currParam)->getTypeInfo()->src_info(RDOParserSrcInfo()), (*m_currParam)->getTypeInfo());
+				Param pValue = Param(pVal);
+				pValue.param()->value().setUndefined(0);
+				m_paramList.push_back(pValue);
+				m_currParam++;
+			}
 		}
 		else
 		{
