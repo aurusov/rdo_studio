@@ -17,80 +17,79 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOFuzzyValue
+// -------------------- MemberFunctionProperties
 // --------------------------------------------------------------------------------
-LPRDOFuzzyValue RDOFuzzyValue::operator&& (CREF(LPRDOFuzzyValue) pFuzzyValue) const
+LPFuzzySet FuzzySet::operator&& (CREF(LPFuzzySet) pSet) const
 {
-	if (type() != pFuzzyValue->type())
+	if (type() != pSet->type())
 		throw RDOValueException();
 
-	LPRDOFuzzyValue pFuzzyValueResult = rdo::Factory<RDOFuzzyValue>::create(type());
-	ASSERT(pFuzzyValueResult);
+	LPFuzzySet pFuzzySetResult = rdo::Factory<FuzzySet>::create(type());
+	ASSERT(pFuzzySetResult);
 	// Найдем только пересекающие элементы и выберем минимальную функцию принадлежности
-	FuzzySet::const_iterator it1 = begin();
+	FuzzySetDefinition::const_iterator it1 = begin();
 	while (it1 != end())
 	{
-		FuzzySet::const_iterator it2 = pFuzzyValue->find(it1->first);
-		if (it2 != pFuzzyValue->end())
+		FuzzySet::FuzzySetDefinition::const_iterator it2 = pSet->find(it1->first);
+		if (it2 != pSet->end())
 		{
-			pFuzzyValueResult->operator[](it1->first) = rdo::rmin(it1->second, it2->second);
+			pFuzzySetResult->operator[](it1->first) = rdo::rmin(it1->second, it2->second);
 		}
 		++it1;
 	}
-	return pFuzzyValueResult;
+	return pFuzzySetResult;
 }
 
-LPRDOFuzzyValue RDOFuzzyValue::operator|| (CREF(LPRDOFuzzyValue) pFuzzyValue) const
+LPFuzzySet FuzzySet::operator|| (CREF(LPFuzzySet) pSet)const
 {
-	if (type() != pFuzzyValue->type())
+	if (type() != pSet->type())
 		throw RDOValueException();
 
-	LPRDOFuzzyValue pFuzzyValueResult = rdo::Factory<RDOFuzzyValue>::create(type());
-	ASSERT(pFuzzyValueResult);
+	LPFuzzySet pFuzzySetResult = rdo::Factory<FuzzySet>::create(type());
+	ASSERT(pFuzzySetResult);
 	// Объединим элементы двух множеств
 	// Если элемент одновременно принадлежит обоим множествам, то выберем максимальную функцию принадлежности
-	FuzzySet::const_iterator it1 = begin();
+	FuzzySetDefinition::const_iterator it1 = begin();
 	while (it1 != end())
 	{
-		FuzzySet::const_iterator it2 = pFuzzyValue->find(it1->first);
-		if (it2 != pFuzzyValue->end())
+		FuzzySet::FuzzySetDefinition::const_iterator it2 = pSet->find(it1->first);
+		if (it2 != pSet->end())
 		{
-			pFuzzyValueResult->operator[](it1->first) = rdo::rmax(it1->second, it2->second);
+			pFuzzySetResult->operator[](it1->first) = rdo::rmax(it1->second, it2->second);
 		}
 		else
 		{
 			// Не нашли пары
-			pFuzzyValueResult->operator[](it1->first) = it1->second;
+			pFuzzySetResult->operator[](it1->first) = it1->second;
 		}
 		++it1;
 	}
-	FuzzySet::const_iterator it2 = pFuzzyValue->begin();
-	while (it2 != pFuzzyValue->end())
+	FuzzySet::FuzzySetDefinition::const_iterator it2 = pSet->begin();
+	while (it2 != pSet->end())
 	{
-		FuzzySet::const_iterator it1 = find(it2->first);
+		FuzzySetDefinition::const_iterator it1 = find(it2->first);
 		if (it1 == end())
 		{
 			// Не нашли пары
-			pFuzzyValueResult->operator[](it2->first) = it2->second;
+			pFuzzySetResult->operator[](it2->first) = it2->second;
 		}
 		++it2;
 	}
-	return pFuzzyValueResult;
+	return pFuzzySetResult;
 }
-
 /// @todo комментарии в *.h
 //! Декартово произведение (попарное) элементов двух множест с применением произвольной функции fun
-LPRDOFuzzyValue RDOFuzzyValue::ext_binary(ExtBinaryFun fun, CREF(LPRDOFuzzyValue) pFuzzyValue) const
+LPFuzzySet MemberFunctionProperties::ext_binary(ExtBinaryFun fun, CREF(LPFuzzySet) pSet1, CREF(LPFuzzySet) pSet2)
 {
-	FuzzySet values;
-	FuzzySet::const_iterator it1 = begin();
-	while (it1 != end())
+	FuzzySet::FuzzySetDefinition values;
+	FuzzySet::FuzzySetDefinition::const_iterator it1 = pSet1->begin();
+	while (it1 != pSet1->end())
 	{
-		FuzzySet::const_iterator it2 = pFuzzyValue->begin();
-		while (it2 != pFuzzyValue->end())
+		FuzzySet::FuzzySetDefinition::const_iterator it2 = pSet2->begin();
+		while (it2 != pSet2->end())
 		{
 			RDOValue rdo_value = fun(it1->first, it2->first);
-			FuzzySet::iterator val = values.find(rdo_value);
+			FuzzySet::FuzzySetDefinition::iterator val = values.find(rdo_value);
 			if (val == values.end())
 			{
 				values[rdo_value] = rdo::rmin(it1->second, it2->second);
@@ -108,27 +107,27 @@ LPRDOFuzzyValue RDOFuzzyValue::ext_binary(ExtBinaryFun fun, CREF(LPRDOFuzzyValue
 		LPRDOFuzzyType pFuzzyType = rdo::Factory<RDOFuzzyType>::create();
 		ASSERT(pFuzzyType);
 
-		LPRDOFuzzyValue pFuzzyValueResult = rdo::Factory<RDOFuzzyValue>::create(pFuzzyType);
-		ASSERT(pFuzzyValueResult);
-		pFuzzyValueResult->m_fuzzySet = values;
+		LPFuzzySet pFuzzySetResult = rdo::Factory<FuzzySet>::create(pFuzzyType);
+		ASSERT(pFuzzySetResult);
+		pFuzzySetResult->setValues(values);
 
-		return pFuzzyValueResult;
+		return pFuzzySetResult;
 	}
 	//else
 	//{
-	//	return rdo::Factory<RDOFuzzyValue>::create(RDOFuzzyEmptyType::getInstance());
+	//	return rdo::Factory<FuzzySet>::create(RDOFuzzyEmptyType::getInstance());
 	//}
 }
 
 //! Преобразование элементов через произвольную функцию fun
-LPRDOFuzzyValue RDOFuzzyValue::ext_unary(ExtUnaryFun fun) const
+LPFuzzySet MemberFunctionProperties::ext_unary(ExtUnaryFun fun, CREF(LPFuzzySet) pSet)
 {
-	FuzzySet values;
-	FuzzySet::const_iterator it = begin();
-	while (it != end())
+	FuzzySet::FuzzySetDefinition values;
+	FuzzySet::FuzzySetDefinition::const_iterator it = pSet->begin();
+	while (it != pSet->end())
 	{
 		RDOValue rdo_value = fun(it->first);
-		FuzzySet::iterator val = values.find(rdo_value);
+		FuzzySet::FuzzySetDefinition::iterator val = values.find(rdo_value);
 		if (val == values.end())
 		{
 			values[rdo_value] = it->second;
@@ -145,26 +144,26 @@ LPRDOFuzzyValue RDOFuzzyValue::ext_unary(ExtUnaryFun fun) const
 		LPRDOFuzzyType pFuzzyType = rdo::Factory<RDOFuzzyType>::create();
 		ASSERT(pFuzzyType);
 
-		LPRDOFuzzyValue pFuzzyValueResult = rdo::Factory<RDOFuzzyValue>::create(pFuzzyType);
-		ASSERT(pFuzzyValueResult);
-		pFuzzyValueResult->m_fuzzySet = values;
+		LPFuzzySet pFuzzySetResult = rdo::Factory<FuzzySet>::create(pFuzzyType);
+		ASSERT(pFuzzySetResult);
+		pFuzzySetResult->setValues(values);
 
-		return pFuzzyValueResult;
+		return pFuzzySetResult;
 	}
 	//else
 	//{
-	//	return rdo::Factory<RDOFuzzyValue>::create(RDOFuzzyEmptyType::getInstance());
+	//	return rdo::Factory<FuzzySet>::create(RDOFuzzyEmptyType::getInstance());
 	//}
 }
 
-LPRDOFuzzyValue RDOFuzzyValue::ext_unary(ExtUnaryFunP fun, PTR(void) pParam) const
+LPFuzzySet MemberFunctionProperties::ext_unary(ExtUnaryFunP fun, PTR(void) pParam, CREF(LPFuzzySet) pSet)
 {
-	FuzzySet values;
-	FuzzySet::const_iterator it = begin();
-	while (it != end())
+	FuzzySet::FuzzySetDefinition values;
+	FuzzySet::FuzzySetDefinition::const_iterator it = pSet->begin();
+	while (it != pSet->end())
 	{
 		RDOValue rdo_value = fun(it->first, pParam);
-		FuzzySet::iterator val = values.find(rdo_value);
+		FuzzySet::FuzzySetDefinition::iterator val = values.find(rdo_value);
 		if (val == values.end())
 		{
 			values[rdo_value] = it->second;
@@ -180,11 +179,11 @@ LPRDOFuzzyValue RDOFuzzyValue::ext_unary(ExtUnaryFunP fun, PTR(void) pParam) con
 		LPRDOFuzzyType pFuzzyType = rdo::Factory<RDOFuzzyType>::create();
 		ASSERT(pFuzzyType);
 
-		LPRDOFuzzyValue pFuzzyValueResult = rdo::Factory<RDOFuzzyValue>::create(pFuzzyType);
-		ASSERT(pFuzzyValueResult);
-		pFuzzyValueResult->m_fuzzySet = values;
+		LPFuzzySet pFuzzySetResult = rdo::Factory<FuzzySet>::create(pFuzzyType);
+		ASSERT(pFuzzySetResult);
+		pFuzzySetResult->setValues(values);
 
-		return pFuzzyValueResult;
+		return pFuzzySetResult;
 	}
 }
 
@@ -193,88 +192,134 @@ RDOValue fun_sub (CREF(RDOValue) value1, CREF(RDOValue) value2) { return value1 
 RDOValue fun_mult(CREF(RDOValue) value1, CREF(RDOValue) value2) { return value1 * value2; }
 RDOValue fun_div (CREF(RDOValue) value1, CREF(RDOValue) value2) { return value1 / value2; }
 
-LPRDOFuzzyValue RDOFuzzyValue::operator+ (CREF(LPRDOFuzzyValue) pFuzzyValue) const { return ext_binary(fun_add,  pFuzzyValue); }
-LPRDOFuzzyValue RDOFuzzyValue::operator- (CREF(LPRDOFuzzyValue) pFuzzyValue) const { return ext_binary(fun_sub,  pFuzzyValue); }
-LPRDOFuzzyValue RDOFuzzyValue::operator* (CREF(LPRDOFuzzyValue) pFuzzyValue) const { return ext_binary(fun_mult, pFuzzyValue); }
-LPRDOFuzzyValue RDOFuzzyValue::operator/ (CREF(LPRDOFuzzyValue) pFuzzyValue) const { return ext_binary(fun_div,  pFuzzyValue); }
+LPFuzzySet FuzzySet::operator+ (CREF(LPFuzzySet) pSet) const
+{
+	LPFuzzySet pThis(const_cast<PTR(FuzzySet)>(this));
+	return MemberFunctionProperties::ext_binary(fun_add, pThis, pSet);
+}
+LPFuzzySet FuzzySet::operator- (CREF(LPFuzzySet) pSet) const 
+{
+	LPFuzzySet pThis(const_cast<PTR(FuzzySet)>(this));
+	return MemberFunctionProperties::ext_binary(fun_sub, pThis, pSet);
+}
+LPFuzzySet FuzzySet::operator* (CREF(LPFuzzySet) pSet) const
+{
+	LPFuzzySet pThis(const_cast<PTR(FuzzySet)>(this));
+	return MemberFunctionProperties::ext_binary(fun_mult, pThis, pSet);
+}
+LPFuzzySet FuzzySet::operator/ (CREF(LPFuzzySet) pSet) const
+{
+	LPFuzzySet pThis(const_cast<PTR(FuzzySet)>(this));
+	return MemberFunctionProperties::ext_binary(fun_div, pThis, pSet);
+}
 
 RDOValue fun_u_minus(CREF(RDOValue) rdovalue                 ) { return -rdovalue;                                     }
 RDOValue fun_u_obr  (CREF(RDOValue) rdovalue                 ) { return RDOValue(1)/rdovalue;                          }
 RDOValue fun_u_scale(CREF(RDOValue) rdovalue, PTR(void) scale) { return rdovalue * (*static_cast<PTR(double)>(scale)); }
 RDOValue fun_u_log  (CREF(RDOValue) rdovalue                 ) { return rdovalue > 0 ? log(rdovalue.getDouble()) : 0;     }
 
-LPRDOFuzzyValue RDOFuzzyValue::u_minus()             const { return ext_unary(fun_u_minus        ); }
-LPRDOFuzzyValue RDOFuzzyValue::u_obr  ()             const { return ext_unary(fun_u_obr          ); }
-LPRDOFuzzyValue RDOFuzzyValue::u_scale(double scale) const { return ext_unary(fun_u_scale, &scale); }
-LPRDOFuzzyValue RDOFuzzyValue::u_log  ()             const { return ext_unary(fun_u_log          ); }
+LPFuzzySet MemberFunctionProperties::u_minus(CREF(LPFuzzySet) pSet)               { return ext_unary(fun_u_minus,           pSet); }
+LPFuzzySet MemberFunctionProperties::u_obr  (CREF(LPFuzzySet) pSet)               { return ext_unary(fun_u_obr,             pSet); }
+LPFuzzySet MemberFunctionProperties::u_scale(CREF(LPFuzzySet) pSet, double scale) { return ext_unary(fun_u_scale, &scale, pSet);   }
+LPFuzzySet MemberFunctionProperties::u_log  (CREF(LPFuzzySet) pSet)               { return ext_unary(fun_u_log,             pSet); }
 
-LPRDOFuzzyValue RDOFuzzyValue::a_mult(CREF(LPRDOFuzzyValue) pFuzzyValue) const
+
+tstring FuzzySet::getAsString() const
 {
-	if (type() != pFuzzyValue->type())
+	if (empty())
+		return _T("[empty value]");
+
+	tstring res = _T("");
+	FuzzySetDefinition::const_iterator it = begin();
+	while (it != end())
+	{
+		rbool output = it->second > 0.0;
+		if (output)
+			res += rdo::format(_T("<%s/%.2lf>"), it->first.getAsString().c_str(), it->second);
+
+		++it;
+
+		if (output && it != end())
+			res += _T(" ");
+	}
+	return res;
+}
+
+LPFuzzySet FuzzySet::clone() const
+{
+	return rdo::Factory<FuzzySet>::create(LPFuzzySet(const_cast<PTR(FuzzySet)>(this)));
+}
+// --------------------------------------------------------------------------------
+// -------------------- MemberFunctionProperties
+// --------------------------------------------------------------------------------
+
+LPFuzzySet MemberFunctionProperties::a_mult(CREF(LPFuzzySet) pSet1, CREF(LPFuzzySet) pSet2)
+{
+	if (pSet1->type() != pSet2->type())
 		throw RDOValueException();
 
-	LPRDOFuzzyValue pFuzzyValueResult = rdo::Factory<RDOFuzzyValue>::create(type());
-	ASSERT(pFuzzyValueResult);
+	LPFuzzySet pFuzzySetResult = rdo::Factory<FuzzySet>::create(pSet1->type());
+	ASSERT(pFuzzySetResult);
 
 	// Найдем только пересекающие элементы и перемножим функции принадлежности
-	FuzzySet::const_iterator it1 = begin();
-	while (it1 != end())
+	FuzzySet::FuzzySetDefinition::const_iterator it1 = pSet1->begin();
+	while (it1 != pSet1->end())
 	{
-		FuzzySet::const_iterator it2 = pFuzzyValue->find(it1->first);
-		if (it2 != pFuzzyValue->end())
+		FuzzySet::FuzzySetDefinition::const_iterator it2 = pSet2->find(it1->first);
+		if (it2 != pSet2->end())
 		{
-			pFuzzyValueResult->operator[](it1->first) = it1->second * it2->second;
+			pFuzzySetResult->operator[](it1->first) = it1->second * it2->second;
 		}
 		it1++;
 	}
-	return pFuzzyValueResult;
+	return pFuzzySetResult;
 }
 
-LPRDOFuzzyValue RDOFuzzyValue::alpha(double appertain) const
+LPFuzzySet MemberFunctionProperties::alpha(CREF(LPFuzzySet) pSet,double appertain)
 {
-	     if (appertain < 0) appertain = 0;
-	else if (appertain > 1) appertain = 1;
+	FuzzySet::FuzzySetDefinition::const_iterator it = pSet->begin();
+	if (pSet->operator[](it->first) < appertain) pSet->operator[](it->first) = 0;
+	else if (pSet->operator[](it->first) > 1) pSet->operator[](it->first)= 1;
 
-	LPRDOFuzzyValue pFuzzyValueResult = rdo::Factory<RDOFuzzyValue>::create(type());
-	ASSERT(pFuzzyValueResult);
+	LPFuzzySet pFuzzySetResult = rdo::Factory<FuzzySet>::create(pSet->type());
+	ASSERT(pFuzzySetResult);
 
 	// Найдем отсечку
-	FuzzySet::const_iterator it = begin();
-	while (it != end())
+	while (it != pSet->end())
 	{
 		if (it->second >= appertain)
 		{
-			pFuzzyValueResult->operator[](it->first) = appertain;
+			pFuzzySetResult->operator[](it->first) = pSet->operator[](it->first);
 		}
 		it++;
 	}
-	return pFuzzyValueResult;
+	return pFuzzySetResult;
 }
 
-LPRDOFuzzyValue RDOFuzzyValue::a_pow(double power) const
+LPFuzzySet MemberFunctionProperties::a_pow(LPFuzzySet pSet, double power)
 {
-	LPRDOFuzzyValue pFuzzyValueResult = rdo::Factory<RDOFuzzyValue>::create(LPRDOFuzzyValue(const_cast<PTR(RDOFuzzyValue)>(this)));
-	ASSERT(pFuzzyValueResult);
+	LPFuzzySet pFuzzySetResult = rdo::Factory<FuzzySet>::create(pSet);
+	ASSERT(pFuzzySetResult);
 
 	// Возведём в степень
-	FuzzySet::iterator it = pFuzzyValueResult->begin();
-	while (it != pFuzzyValueResult->end())
+	FuzzySet::FuzzySetDefinition::iterator it = pFuzzySetResult->begin();
+	while (it != pFuzzySetResult->end())
 	{
-		it->second = ::pow(it->second, power);
+		it->second = pSet-pow(it->second, power);
 		it++;
 	}
-	return pFuzzyValueResult;
+	return pFuzzySetResult;
 }
 
-RDOValue RDOFuzzyValue::defuzzyfication()
+RDOValue MemberFunctionProperties::defuzzyfication(CREF(LPFuzzySet) pSet)
 {
-	FuzzySet::const_iterator it = begin();
-	if (it == end())
+	FuzzySet::FuzzySetDefinition::const_iterator it = pSet->begin();
+	if (it == pSet->end())
 		return RDOValue();
 
-	FuzzySet::const_iterator it_next = it;
+	FuzzySet::FuzzySetDefinition::const_iterator it_next = it;
 	it_next++;
-	if (it_next == end())
+	if (it_next == pSet->end())
 		return it->first;
 
 	double g      = 0;
@@ -292,7 +337,7 @@ RDOValue RDOFuzzyValue::defuzzyfication()
 
 		it++;
 		it_next++;
-		if (it_next == end())
+		if (it_next == pSet->end())
 			break;
 
 		x      = x_next;
@@ -302,32 +347,6 @@ RDOValue RDOFuzzyValue::defuzzyfication()
 		h      = x_next - x;
 	}
 	return g / f;
-}
-
-tstring RDOFuzzyValue::getAsString() const
-{
-	if (empty())
-		return _T("[empty value]");
-
-	tstring res = _T("");
-	FuzzySet::const_iterator it = begin();
-	while (it != end())
-	{
-		rbool output = it->second > 0.0;
-		if (output)
-			res += rdo::format(_T("<%s/%.2lf>"), it->first.getAsString().c_str(), it->second);
-
-		++it;
-
-		if (output && it != end())
-			res += _T(" ");
-	}
-	return res;
-}
-
-LPRDOFuzzyValue RDOFuzzyValue::clone() const
-{
-	return rdo::Factory<RDOFuzzyValue>::create(LPRDOFuzzyValue(const_cast<PTR(RDOFuzzyValue)>(this)));
 }
 
 // --------------------------------------------------------------------------------
