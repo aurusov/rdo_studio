@@ -27,38 +27,12 @@ BOOST_AUTO_TEST_CASE(RDORuntime_Fuzzy_Test)
 	LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create();
 	BOOST_CHECK(pRuntime);
 
-	//LPRDOFuzzySetDefinitionDefinitionRangeDiscret pSetDefinition = rdo::Factory<RDOFuzzySetDefinitionDefinitionRangeDiscret>::create(0, 50);
-	//BOOST_CHECK(pSetDefinition);
+	LPDefineArea pDefineAreaEmpty = rdo::Factory<DefineArea>::create();
+	BOOST_CHECK(pDefineAreaEmpty);
 
-	LPRDOFuzzyType pFuzzyType = rdo::Factory<RDOFuzzyType>::create();
-	BOOST_CHECK(pFuzzyType);
+	LPDefineArea pDefineArea = rdo::Factory<DefineArea>::create(1.0, 5.0);
+	BOOST_CHECK(pDefineArea);
 
-	LPFuzzySet pValue1 = rdo::Factory<FuzzySet>::create(pFuzzyType);
-	BOOST_CHECK(pValue1);
-
-	pValue1->append(1, 1.0)(2, 1.0)(23, 1.0)(4, 1.0)(5, 1.0)(6, 1.0)(7, 1.0)(8, 1.0)(9, 1.0);
-	BOOST_CHECK(pValue1->getAsString() == _T("<1/1.00> <2/1.00> <4/1.00> <5/1.00> <6/1.00> <7/1.00> <8/1.00> <9/1.00> <23/1.00>"));
-
-	pValue1->operator[](0) = 0.5;
-	BOOST_CHECK(pValue1->getAsString() == _T("<0/0.50> <1/1.00> <2/1.00> <4/1.00> <5/1.00> <6/1.00> <7/1.00> <8/1.00> <9/1.00> <23/1.00>"));
-
-	pValue1->operator[](14) = 0.7;
-	BOOST_CHECK(pValue1->getAsString() == _T("<0/0.50> <1/1.00> <2/1.00> <4/1.00> <5/1.00> <6/1.00> <7/1.00> <8/1.00> <9/1.00> <14/0.70> <23/1.00>"));
-
-	//LPFuzzySet pValue3 = rdo::Factory<FuzzySet>::create(pValue1->supplement());
-	//BOOST_CHECK(pValue3);
-	//BOOST_CHECK(pValue3->getAsString() == _T("<0/0.50> <3/1.00> <10/1.00> <11/1.00> <12/1.00> <13/1.00> <14/0.30> <15/1.00> <16/1.00> <17/1.00> <18/1.00> <19/1.00> <20/1.00> <21/1.00> <22/1.00> <24/1.00> <25/1.00> <26/1.00> <27/1.00> <28/1.00> <29/1.00> <30/1.00> <31/1.00> <32/1.00> <33/1.00> <34/1.00> <35/1.00> <36/1.00> <37/1.00> <38/1.00> <39/1.00> <40/1.00> <41/1.00> <42/1.00> <43/1.00> <44/1.00> <45/1.00> <46/1.00> <47/1.00> <48/1.00> <49/1.00> <50/1.00>"));
-
-	LPFuzzySet pValue2 = rdo::Factory<FuzzySet>::create(pFuzzyType);
-	BOOST_CHECK(pValue2);
-	pValue2->append(10, 1.0);
-	BOOST_CHECK(pValue2->getAsString() == _T("<10/1.00>"));
-
-	pValue1 = rdo::Factory<FuzzySet>::create(pValue1->operator+ (pValue2));
-	BOOST_CHECK(pValue1);
-
-	BOOST_CHECK(pValue1->getAsString() == _T("<10/0.50> <11/1.00> <12/1.00> <14/1.00> <15/1.00> <16/1.00> <17/1.00> <18/1.00> <19/1.00> <24/0.70> <33/1.00>"));
-	BOOST_CHECK(pValue1->defuzzyfication().getAsString() == _T("21.1755"));
 }
 
 BOOST_AUTO_TEST_SUITE_END() // RDORuntime_Fuzzy_Test
