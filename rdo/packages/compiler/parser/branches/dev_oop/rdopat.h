@@ -18,6 +18,7 @@
 #include "simulator/compiler/parser/rdofun.h"
 #include "simulator/compiler/parser/rdorss.h"
 #include "simulator/compiler/parser/param.h"
+#include "simulator/compiler/parser/local_variable.h"
 #include "simulator/compiler/parser/context/context.h"
 #include "simulator/compiler/parser/context/memory.h"
 #include "simulator/compiler/parser/context/context_switch_i.h"
@@ -25,6 +26,7 @@
 #include "simulator/runtime/rdo_pattern.h"
 #include "simulator/runtime/rdo_resource.h"
 #include "simulator/runtime/calc/calc_base.h"
+#include "simulator/runtime/calc/procedural/calc_statement.h"
 #include "simulator/runtime/calc/resource/calc_relevant.h"
 #include "simulator/runtime/calc/resource/calc_choice_from.h"
 #include "simulator/runtime/calc/resource/calc_create_resource.h"
@@ -135,8 +137,7 @@ public:
 	void setTime               ( REF(LPRDOFUNArithm) arithm);
 	void addRelResBody         (CREF(RDOParserSrcInfo) body_name);
 	virtual void addRelResUsage(CREF(LPRDOPATChoiceFrom) pChoiceFrom, CREF(LPRDOPATChoiceOrder) pChoiceOrder);
-	void addRelResConvert      (rbool trace, CREF(LPConvertCmdList) commands, CREF(YYLTYPE) convertor_pos, CREF(YYLTYPE) trace_pos, rdo::runtime::RDOResource::ConvertStatus status);
-	void addRelResConvert      (rbool trace, CREF(LPExpression) pCommands, CREF(YYLTYPE) convertor_pos, CREF(YYLTYPE) trace_pos, rdo::runtime::RDOResource::ConvertStatus status);
+	void addRelResConvert      (rbool trace, CREF(LPExpression) pStatementList, CREF(YYLTYPE) convertor_pos, CREF(YYLTYPE) trace_pos, rdo::runtime::RDOResource::ConvertStatus status);
 	void end                   ();
 
 	void         writeModelStructure    (REF(std::ostream) stream) const;
@@ -240,7 +241,7 @@ DECLARE_FACTORY(RDOPatternOperation)
 public:
 	virtual void addRelRes               (CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSrcInfo) type_info, rdo::runtime::RDOResource::ConvertStatus beg, CREF(YYLTYPE) convertor_pos);
 	        void addRelRes               (CREF(RDOParserSrcInfo) rel_info, CREF(RDOParserSrcInfo) type_info, rdo::runtime::RDOResource::ConvertStatus beg, rdo::runtime::RDOResource::ConvertStatus end, CREF(YYLTYPE) convertor_begin_pos, CREF(YYLTYPE) convertor_end_pos);
-	        void addRelResConvertBeginEnd(rbool trace_begin, CREF(LPConvertCmdList) cmd_begin, rbool trace_end, CREF(LPConvertCmdList) cmd_end, CREF(YYLTYPE) convertor_begin_pos, CREF(YYLTYPE) convertor_end_pos, CREF(YYLTYPE) trace_begin_pos, CREF(YYLTYPE) trace_end_pos);
+	        void addRelResConvertBeginEnd(rbool trace_begin, CREF(LPExpression) pBeginStatementList, rbool trace_end, CREF(LPExpression) pEndStatementList, CREF(YYLTYPE) convertor_begin_pos, CREF(YYLTYPE) convertor_end_pos, CREF(YYLTYPE) trace_begin_pos, CREF(YYLTYPE) trace_end_pos);
 
 	virtual char getModelStructureLetter() const
 	{

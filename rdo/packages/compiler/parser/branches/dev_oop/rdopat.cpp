@@ -17,7 +17,6 @@
 #include "simulator/compiler/parser/rdortp.h"
 #include "simulator/compiler/parser/rdoparser_lexer.h"
 #include "simulator/compiler/parser/type/range.h"
-#include "simulator/compiler/parser/local_variable.h"
 #include "simulator/runtime/calc/calc_pattern.h"
 #include "simulator/runtime/calc/resource/calc_resource.h"
 #include "simulator/compiler/parser/namespace.h"
@@ -284,8 +283,11 @@ void RDOPATPattern::rel_res_insert(CREF(LPRDORelevantResource) pRelevantResource
 	m_relResList.push_back(pRelevantResource);
 }
 
-void RDOPATPattern::addRelResConvert(rbool trace, CREF(LPConvertCmdList) commands, CREF(YYLTYPE) convertor_pos, CREF(YYLTYPE) trace_pos, rdo::runtime::RDOResource::ConvertStatus status)
+void RDOPATPattern::addRelResConvert(rbool trace, CREF(LPExpression) pStatementList, CREF(YYLTYPE) convertor_pos, CREF(YYLTYPE) trace_pos, rdo::runtime::RDOResource::ConvertStatus status)
 {
+	ASSERT(pStatementList);
+	ASSERT(m_pCurrRelRes);
+
 	if (status == rdo::runtime::RDOResource::CS_NoChange || status == rdo::runtime::RDOResource::CS_NonExist)
 	{
 		rdoParser::g_error().error(convertor_pos, getErrorMessage_NotNeedConvertor(m_pCurrRelRes->name(), status));
@@ -302,48 +304,12 @@ void RDOPATPattern::addRelResConvert(rbool trace, CREF(LPConvertCmdList) command
 			rdoParser::g_error().error(trace_pos, _T("Признак трассировки в данном месте возможен только для создаваемого ресурса"));
 		}
 	}
-
-	if (commands->commands().empty() && status == rdo::runtime::RDOResource::CS_Keep)
+	if (pStatementList->calc().object_dynamic_cast<rdo::runtime::RDOCalcStatementList>()->statementList().empty() && status == rdo::runtime::RDOResource::CS_Keep)
 	{
 		rdoParser::g_error().warning(convertor_pos, getWarningMessage_EmptyConvertor(m_pCurrRelRes->name(), status));
 	}
-
-	STL_FOR_ALL_CONST(commands->commands(), cmdIt)
-		addParamSetCalc(*cmdIt);
-
-	ASSERT(m_pCurrRelRes);
-}
-
-void RDOPATPattern::addRelResConvert(rbool trace, CREF(LPExpression) pCommands, CREF(YYLTYPE) convertor_pos, CREF(YYLTYPE) trace_pos, rdo::runtime::RDOResource::ConvertStatus status)
-{
-	if (status == rdo::runtime::RDOResource::CS_NoChange || status == rdo::runtime::RDOResource::CS_NonExist)
-	{
-		rdoParser::g_error().error(convertor_pos, getErrorMessage_NotNeedConvertor(m_pCurrRelRes->name(), status));
-	}
-
-	if (status == rdo::runtime::RDOResource::CS_Create)
-	{
-		addParamSetCalc(createRelRes(trace));
-	}
-	else
-	{
-		if (trace)
-		{
-			rdoParser::g_error().error(trace_pos, _T("Признак трассировки в данном месте возможен только для создаваемого ресурса"));
-		}
-	}
-
-	/*if (commands->commands().empty() && status == rdo::runtime::RDOResource::CS_Keep)
-	{
-		rdoParser::g_error().warning(convertor_pos, getWarningMessage_EmptyConvertor(m_pCurrRelRes->name(), status));
-	}
-	*/
-	rdo::runtime::LPRDOCalc pCalc = pCommands->calc();
-	ASSERT(pCalc)
-
-	addParamSetCalc(pCalc);
-
-	ASSERT(m_pCurrRelRes);
+	
+	addParamSetCalc(pStatementList->calc());
 }
 void RDOPATPattern::addParamSetCalc(CREF(rdo::runtime::LPRDOCalc) pCalc)
 {
@@ -904,20 +870,20 @@ void RDOPatternOperation::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOPar
 	}
 }
 
-void RDOPatternOperation::addRelResConvertBeginEnd(rbool trace_begin, CREF(LPConvertCmdList) cmd_begin, rbool trace_end, CREF(LPConvertCmdList) cmd_end, CREF(YYLTYPE) convertor_begin_pos, CREF(YYLTYPE) convertor_end_pos, CREF(YYLTYPE) trace_begin_pos, CREF(YYLTYPE) trace_end_pos)
+void RDOPatternOperation::addRelResConvertBeginEnd(rbool trace_begin, CREF(LPExpression) pBeginStatementList, rbool trace_end, CREF(LPExpression) pEndStatementList, CREF(YYLTYPE) convertor_begin_pos, CREF(YYLTYPE) convertor_end_pos, CREF(YYLTYPE) trace_begin_pos, CREF(YYLTYPE) trace_end_pos)
 {
-	if (cmd_begin)
+	if (pBeginStatementList)
 	{
 		m_convertorType = convert_begin;
 		ASSERT(m_pCurrRelRes);
-		addRelResConvert(trace_begin, cmd_begin, convertor_begin_pos, trace_begin_pos, m_pCurrRelRes->m_statusBegin);
+		addRelResConvert(trace_begin, pBeginStatementList, convertor_begin_pos, trace_begin_pos, m_pCurrRelRes->m_statusBegin);
 		m_convertorType = convert_unknow;
 	}
-	if (cmd_end)
+	if (pEndStatementList)
 	{
 		m_convertorType = convert_end;
 		ASSERT(m_pCurrRelRes);
-		addRelResConvert(trace_end, cmd_end, convertor_end_pos, trace_end_pos, m_pCurrRelRes->m_statusEnd);
+		addRelResConvert(trace_end, pEndStatementList, convertor_end_pos, trace_end_pos, m_pCurrRelRes->m_statusEnd);
 		m_convertorType = convert_unknow;
 	}
 }

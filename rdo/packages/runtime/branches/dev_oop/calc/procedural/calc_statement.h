@@ -101,7 +101,8 @@ CALC(RDOCalcStatementList)
 {
 	DECLARE_FACTORY(RDOCalcStatementList)
 public:
-	void addCalcStatement(CREF(LPRDOCalc) pStatement);
+	void        addCalcStatement(CREF(LPRDOCalc) pStatement);
+	RDOCalcList statementList();
 
 private:
 	RDOCalcStatementList();

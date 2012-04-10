@@ -152,11 +152,16 @@ void RDOCalcStatementList::addCalcStatement(CREF(LPRDOCalc) pStatement)
 	m_calcStatementList.push_back(pStatement);
 }
 
+RDOCalc::RDOCalcList RDOCalcStatementList::statementList()
+{
+	return m_calcStatementList;
+}
+
 REF(RDOValue) RDOCalcStatementList::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	STL_FOR_ALL(m_calcStatementList, calcIt)
 	{
-		if(pRuntime->getFunBreakFlag() == RDORuntime::FBF_NONE);
+		if(pRuntime->getFunBreakFlag() == RDORuntime::FBF_NONE)
 		{
 			LPRDOCalc pCalc = *calcIt;
 			ASSERT(pCalc);
