@@ -179,7 +179,6 @@ SET(SOURCE_FILES
 	rdortp_param.cpp
 	rdosmr.cpp
 	rdo_value.cpp
-	variable_container.cpp
 	# context path
     context/context_find.cpp
 	context/context.cpp
