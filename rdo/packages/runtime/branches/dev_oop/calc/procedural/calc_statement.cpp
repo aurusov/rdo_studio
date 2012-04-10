@@ -98,22 +98,17 @@ void RDOCalcFor::addCalcStatement(CREF(LPRDOCalc) pStatement)
 
 REF(RDOValue) RDOCalcFor::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	if(pRuntime->getFunBreakFlag() == RDORuntime::FBF_CONTINUE)
+	if(pRuntime->getFunBreakFlag() == RDORuntime::FBF_NONE)
 	{
 		m_value = m_pDeclaration->calcValue(pRuntime);
 		while (m_pCondition->calcValue(pRuntime).getAsBool())
 		{
 			m_value = m_pStatement->calcValue(pRuntime);
+			if(pRuntime->getFunBreakFlag() != RDORuntime::FBF_NONE)
+			{
+				return m_value;
+			}
 			m_pExpression->calcValue(pRuntime);
-			if(pRuntime->getFunBreakFlag() == RDORuntime::FBF_BREAK)
-			{
-				pRuntime->setFunBreakFlag(RDORuntime::FBF_CONTINUE);
-				return m_value;
-			}
-			if(pRuntime->getFunBreakFlag() == RDORuntime::FBF_RETURN)
-			{
-				return m_value;
-			}
 		}
 	}
 	return m_value;
@@ -142,6 +137,82 @@ RDOCalcFunBreak::RDOCalcFunBreak()
 REF(RDOValue) RDOCalcFunBreak::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->setFunBreakFlag(RDORuntime::FBF_BREAK);
+	return m_value;
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcStatementList
+// --------------------------------------------------------------------------------
+RDOCalcStatementList::RDOCalcStatementList()
+{}
+
+void RDOCalcStatementList::addCalcStatement(CREF(LPRDOCalc) pStatement)
+{
+	ASSERT(pStatement);
+	m_calcStatementList.push_back(pStatement);
+}
+
+REF(RDOValue) RDOCalcStatementList::doCalc(CREF(LPRDORuntime) pRuntime)
+{
+	STL_FOR_ALL(m_calcStatementList, calcIt)
+	{
+		if(pRuntime->getFunBreakFlag() == RDORuntime::FBF_NONE);
+		{
+			LPRDOCalc pCalc = *calcIt;
+			ASSERT(pCalc);
+			m_value = pCalc->calcValue(pRuntime);
+			if (pRuntime->getFunBreakFlag() != RDORuntime::FBF_NONE)
+			{
+				return m_value;
+			}
+		}
+	}
+	return m_value;
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcBreakCatch
+// --------------------------------------------------------------------------------
+RDOCalcBreakCatch::RDOCalcBreakCatch()
+{}
+
+void RDOCalcBreakCatch::addStatementList(CREF(LPRDOCalc) pStatementList)
+{
+	ASSERT(pStatementList);
+	m_pStatementList = pStatementList;
+}
+
+REF(RDOValue) RDOCalcBreakCatch::doCalc(CREF(LPRDORuntime) pRuntime)
+{
+	m_value = m_pStatementList->calcValue(pRuntime);
+	if (pRuntime->getFunBreakFlag() == RDORuntime::FBF_BREAK)
+	{
+		pRuntime->setFunBreakFlag(RDORuntime::FBF_NONE);
+		return m_value;
+	}
+	return m_value;
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcReturnCatch
+// --------------------------------------------------------------------------------
+RDOCalcReturnCatch::RDOCalcReturnCatch()
+{}
+
+void RDOCalcReturnCatch::addStatementList(CREF(LPRDOCalc) pStatementList)
+{
+	ASSERT(pStatementList);
+	m_pStatementList = pStatementList;
+}
+
+REF(RDOValue) RDOCalcReturnCatch::doCalc(CREF(LPRDORuntime) pRuntime)
+{
+	m_value = m_pStatementList->calcValue(pRuntime);
+	if (pRuntime->getFunBreakFlag() == RDORuntime::FBF_RETURN)
+	{
+		pRuntime->setFunBreakFlag(RDORuntime::FBF_NONE);
+		return m_value;
+	}
 	return m_value;
 }
 

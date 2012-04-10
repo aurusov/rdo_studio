@@ -51,7 +51,7 @@ RDORuntime::RDORuntime()
 	, m_pLastActiveBreakPoint(NULL               )
 	, m_whyStop              (rdo::service::simulation::EC_OK)
 	, m_currentTerm          (0                  )
-	, m_funBreakFlag         (FBF_CONTINUE       )
+	, m_funBreakFlag         (FBF_NONE       )
 	, m_pStudioThread        (NULL               )
 {
 	m_pTerminateIfCalc = NULL;

@@ -96,6 +96,51 @@ private:
 	DECLARE_ICalc;
 };
 
+//! Список операторов
+CALC(RDOCalcStatementList)
+{
+	DECLARE_FACTORY(RDOCalcStatementList)
+public:
+	void addCalcStatement(CREF(LPRDOCalc) pStatement);
+
+private:
+	RDOCalcStatementList();
+
+	RDOCalcList m_calcStatementList;
+
+	DECLARE_ICalc;
+};
+
+//! Ловушка для break
+CALC(RDOCalcBreakCatch)
+{
+	DECLARE_FACTORY(RDOCalcBreakCatch)
+public:
+	void addStatementList(CREF(LPRDOCalc) pStatementList);
+
+private:
+	RDOCalcBreakCatch();
+	
+	LPRDOCalc m_pStatementList;
+
+	DECLARE_ICalc;
+};
+
+//! Ловушка для return
+CALC(RDOCalcReturnCatch)
+{
+	DECLARE_FACTORY(RDOCalcReturnCatch)
+public:
+	void addStatementList(CREF(LPRDOCalc) pStatementList);
+
+private:
+	RDOCalcReturnCatch();
+	
+	LPRDOCalc m_pStatementList;
+
+	DECLARE_ICalc;
+};
+
 CLOSE_RDO_RUNTIME_NAMESPACE
 
 #endif // _LIB_RUNTIME_CALC_PROCEDURAL_STATEMENT_H_
