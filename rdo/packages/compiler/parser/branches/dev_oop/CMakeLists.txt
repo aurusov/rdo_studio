@@ -122,7 +122,6 @@ SET(HEADER_FILES
 	rdortp_param.h
 	rdosmr.h
 	rdo_value.h
-	variable_container.h
 	# context path
 	context/context_create_calc_i.h
 	context/context_find_i.h
