@@ -32,8 +32,8 @@ inline rbool DefineArea::empty() const
 }
 inline rbool DefineArea::inDomain(RDOValue pValue)const
 {
-	if (pValue <= m_domain.lower() && pValue >= m_domain.upper())
-		return true;
+	if (pValue <= m_domain.lower() || pValue >= m_domain.upper())
+		return false;
 }
 
 // --------------------------------------------------------------------------------
