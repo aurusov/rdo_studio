@@ -102,7 +102,7 @@ void RDOParser::init()
 {
 	s_parserStack.push_back(this);
 
-	m_pRuntime = rdo::Factory<rdoRuntime::RDORuntime>::create();
+	m_pRuntime = rdo::Factory<rdo::runtime::RDORuntime>::create();
 	ASSERT(m_pRuntime);
 	m_pRuntime->memory_insert(sizeof(RDOParser));
 	m_pRuntime->init();
@@ -175,7 +175,7 @@ Context::FindResult RDOParser::onFindContext(CREF(LPRDOValue) pValue) const
 				rdo::Factory<RDOType__real>::create(),
 				pValue->src_info()
 			),
-			rdo::Factory<rdoRuntime::RDOCalcGetTimeNow>::create(),
+			rdo::Factory<rdo::runtime::RDOCalcGetTimeNow>::create(),
 			pValue->src_info()
 		);
 		ASSERT(pExpression);
@@ -188,7 +188,7 @@ Context::FindResult RDOParser::onFindContext(CREF(LPRDOValue) pValue) const
 				rdo::Factory<RDOType__real>::create(),
 				pValue->src_info()
 			),
-			rdo::Factory<rdoRuntime::RDOCalcGetSeconds>::create(),
+			rdo::Factory<rdo::runtime::RDOCalcGetSeconds>::create(),
 			pValue->src_info()
 		);
 		ASSERT(pExpression);
@@ -201,7 +201,7 @@ Context::FindResult RDOParser::onFindContext(CREF(LPRDOValue) pValue) const
 				rdo::Factory<RDOType__int>::create(),
 				pValue->src_info()
 			),
-			rdo::Factory<rdoRuntime::RDOCalcGetTermNow>::create(),
+			rdo::Factory<rdo::runtime::RDOCalcGetTermNow>::create(),
 			pValue->src_info()
 		);
 		ASSERT(pExpression);
@@ -218,7 +218,7 @@ Context::FindResult RDOParser::onFindContext(CREF(LPRDOValue) pValue) const
 				pResType,
 				pValue->src_info()
 			),
-			rdoRuntime::LPRDOCalc(NULL),
+			rdo::runtime::LPRDOCalc(NULL),
 			pValue->src_info()
 		);
 		ASSERT(pExpression);
@@ -234,7 +234,7 @@ Context::FindResult RDOParser::onFindContext(CREF(LPRDOValue) pValue) const
 				pResource->getType(),
 				pValue->src_info()
 			),
-			rdo::Factory<rdoRuntime::RDOCalcGetResourceByID>::create(pResource->getID()),
+			rdo::Factory<rdo::runtime::RDOCalcGetResourceByID>::create(pResource->getID()),
 			pValue->src_info()
 		);
 		ASSERT(pExpression);
@@ -247,7 +247,7 @@ Context::FindResult RDOParser::onFindContext(CREF(LPRDOValue) pValue) const
 	{
 		LPExpression pExpression = rdo::Factory<Expression>::create(
 			pConstant->getTypeInfo(),
-			rdo::Factory<rdoRuntime::RDOCalcGetConst>::create(pConstant->getNumber()),
+			rdo::Factory<rdo::runtime::RDOCalcGetConst>::create(pConstant->getNumber()),
 			pValue->src_info()
 		);
 		ASSERT(pExpression);
@@ -288,7 +288,7 @@ Context::FindResult RDOParser::onFindContext(CREF(LPRDOValue) pValue) const
 						rdo::Factory<RDOType__identificator>::create(),
 						pValue->src_info()
 					),
-					rdo::Factory<rdoRuntime::RDOCalcConst>::create(pValue->value()),
+					rdo::Factory<rdo::runtime::RDOCalcConst>::create(pValue->value()),
 					pValue->src_info()
 				);
 				ASSERT(pExpression);
@@ -431,8 +431,6 @@ void RDOParser::parse()
 		m_parser_item = NULL;
 		it++;
 	}
-
-	parse(rdoModelObjects::obPOST);
 }
 
 void RDOParser::parse(rdoModelObjects::RDOParseType file)

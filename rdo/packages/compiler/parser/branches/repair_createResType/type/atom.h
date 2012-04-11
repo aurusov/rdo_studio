@@ -27,7 +27,7 @@ private:                                 \
 typedef RDOType parent_type;             \
 public:                                  \
 	RDOType__##Type():                   \
-		RDOType(rdoRuntime::g_##Type)    \
+		RDOType(rdo::runtime::g_##Type)  \
 	{}                                   \
 	~RDOType__##Type()                   \
 	{}                                   \

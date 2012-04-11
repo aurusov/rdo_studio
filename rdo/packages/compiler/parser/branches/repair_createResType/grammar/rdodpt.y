@@ -253,7 +253,7 @@ dpt_main
 	}
 	| error
 	{
-		PARSER->error().error(@1, _T("ќжидаетс€ описание точки"));
+		PARSER->error().error(@1, _T("ќжидаетс€ описание точки прин€ти€ решений"));
 	}
 	;
 
@@ -263,11 +263,11 @@ dpt_main
 dpt_search_trace
 	: /* empty */
 	{
-		$$ = rdoRuntime::RDODPTSearchTrace::DPT_no_trace;
+		$$ = rdo::runtime::RDODPTSearchTrace::DPT_no_trace;
 	}
 	| RDO_no_trace
 	{
-		$$ = rdoRuntime::RDODPTSearchTrace::DPT_no_trace;
+		$$ = rdo::runtime::RDODPTSearchTrace::DPT_no_trace;
 	}
 	| RDO_trace
 	{
@@ -275,15 +275,15 @@ dpt_search_trace
 	}
 	| RDO_trace_stat
 	{
-		$$ = rdoRuntime::RDODPTSearchTrace::DPT_trace_stat;
+		$$ = rdo::runtime::RDODPTSearchTrace::DPT_trace_stat;
 	}
 	| RDO_trace_tops
 	{
-		$$ = rdoRuntime::RDODPTSearchTrace::DPT_trace_tops;
+		$$ = rdo::runtime::RDODPTSearchTrace::DPT_trace_tops;
 	}
 	| RDO_trace_all
 	{
-		$$ = rdoRuntime::RDODPTSearchTrace::DPT_trace_all;
+		$$ = rdo::runtime::RDODPTSearchTrace::DPT_trace_all;
 	}
 	;
 
@@ -327,18 +327,18 @@ dpt_search_begin
 			{
 				LPILogic pParent = pParentDPTPrior->getLogic();
 				ASSERT(pParent);
-				pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<PTR(rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5), pParent);
+				pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<PTR(rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5), pParent);
 			}
 			else if (pParentDPTSome)
 			{
 				LPILogic pParent = pParentDPTSome->getLogic();
 				ASSERT(pParent);
-				pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<PTR(rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5), pParent);
+				pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<PTR(rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5), pParent);
 			}
 		}
 		else
 		{
-			pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<PTR(rdoRuntime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5));
+			pDPTSearch = rdo::Factory<RDODPTSearch>::create(pName->src_info(), *reinterpret_cast<PTR(rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag)>(&$5));
 		}
 		ASSERT(pDPTSearch);
 		$$ = PARSER->stack().push(pDPTSearch);
@@ -1456,10 +1456,10 @@ fun_arithm
 		LPRDOFUNArithm pArithm = RDOFUNArithm::generateByIdentificator(pValue);
 		ASSERT(pArithm);
 
-		rdoRuntime::LPRDOCalc pCalc;
+		rdo::runtime::LPRDOCalc pCalc;
 		if (pArithm->typeInfo()->type().object_dynamic_cast<RDOArrayType>())
 		{
-			pCalc = rdo::Factory<rdoRuntime::RDOCalcArraySize>::create(pArithm->calc());
+			pCalc = rdo::Factory<rdo::runtime::RDOCalcArraySize>::create(pArithm->calc());
 			ASSERT(pCalc);
 		}
 		else
@@ -1494,7 +1494,7 @@ fun_arithm
 			PARSER->error().error(@1, rdo::format(_T("'%s' не €вл€етс€ массивом."), pValue->value().getIdentificator().c_str()));
 		}
 
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcArrayItem>::create(pArithm->calc(), pArithmInd->calc());
+		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcArrayItem>::create(pArithm->calc(), pArithmInd->calc());
 		ASSERT(pCalc);
 
 		LPRDOType pType = pArithm->typeInfo()->type();

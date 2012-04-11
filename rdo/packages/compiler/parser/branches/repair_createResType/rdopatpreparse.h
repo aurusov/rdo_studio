@@ -29,17 +29,17 @@ OBJECT(RDOEvent)
 {
 DECLARE_FACTORY(RDOEvent);
 public:
-	typedef std::list<rdoRuntime::LPRDOCalcEvent> CalcList;
+	typedef std::list<rdo::runtime::LPRDOCalcEvent> CalcList;
 
 	CREF(tstring)            name           () const;
-	void                     attachCalc     (CREF(rdoRuntime::LPRDOCalcEventStop) pCalc);
-	void                     attachCalc     (CREF(rdoRuntime::LPRDOCalcEventPlan) pCalc);
+	void                     attachCalc     (CREF(rdo::runtime::LPRDOCalcEventStop) pCalc);
+	void                     attachCalc     (CREF(rdo::runtime::LPRDOCalcEventPlan) pCalc);
 	REF(CalcList)            getCalcList    ();
 	LPIBaseOperation         getRuntimeEvent() const;
 	void                     setRuntimeEvent(LPIBaseOperation pRuntimeEvent);
 	rbool                    getRegular     () const;
-	rdoRuntime::LPRDOCalc    getInitCalc    () const;
-	void                     setInitCalc    (CREF(rdoRuntime::LPRDOCalc) pCalc);
+	rdo::runtime::LPRDOCalc  getInitCalc    () const;
+	void                     setInitCalc    (CREF(rdo::runtime::LPRDOCalc) pCalc);
 	void                     setParamList   (CREF(LPArithmContainer) pParamList);
 	CREF(LPArithmContainer)  getParamList   () const;
 
@@ -47,12 +47,12 @@ private:
 	RDOEvent(CREF(tstring) name, rbool regular);
 	virtual ~RDOEvent();
 
-	tstring                m_name;
-	rbool                  m_regullar;
-	CalcList               m_calcList;
-	LPIBaseOperation       m_runtimeEvent;
-	rdoRuntime::LPRDOCalc  m_pInitCalc;
-	LPArithmContainer      m_pParamList;
+	tstring                  m_name;
+	rbool                    m_regullar;
+	CalcList                 m_calcList;
+	LPIBaseOperation         m_runtimeEvent;
+	rdo::runtime::LPRDOCalc  m_pInitCalc;
+	LPArithmContainer        m_pParamList;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

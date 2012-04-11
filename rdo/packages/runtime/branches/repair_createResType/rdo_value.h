@@ -59,13 +59,10 @@ public:
 	CREF(tstring)     getIdentificator() const;
 
 	template <class T>
-	REF(rdo::intrusive_ptr<T>) getPointer();
-
-	template <class T>
-	CREF(rdo::intrusive_ptr<T>) getPointer() const;
-
-	template <class T>
 	CREF(rdo::intrusive_ptr<typename T::value_type>) getPointerSafety() const;
+
+	template <class T>
+	CREF(rdo::intrusive_ptr<typename T::value_type>) getPointerByInterfaceSafety() const;
 
 	template <class T>
 	rbool isType() const;
@@ -99,6 +96,9 @@ public:
 	RDOValue       operator*  (CREF(RDOValue) rdovalue) const;
 	RDOValue       operator/  (CREF(RDOValue) rdovalue) const;
 
+	void         setUndefined (CREF(double) undefined);
+	CREF(double) getUndefined () const;
+
 	CREF(LPRDOType) type  () const;
 	RDOType::TypeID typeID() const;
 
@@ -121,8 +121,9 @@ private:
 	//! Тип контейнера значения, размер определяется по максимальному размеру типа данных
 	typedef rbyte Value[sizeof(rdo::intrusive_ptr_interface_wrapper<string_class>)];
 
-	Value      m_value; //!< контейнер значения
-	LPRDOType  m_pType; //!< тип значения
+	Value        m_value;     //!< контейнер значения
+	LPRDOType    m_pType;     //!< тип значения
+	double       m_undefined; //!< неопределенность значения
 
 	void set        (CREF(RDOValue) rdovalue);
 	void deleteValue();
@@ -138,6 +139,9 @@ private:
 	LPRDOEnumType    __enumT   () const;
 	 REF(tstring)    __stringV ();
 	CREF(tstring)    __stringV () const;
+
+	template <class T>  REF(rdo::intrusive_ptr<T>) getPointer();
+	template <class T> CREF(rdo::intrusive_ptr<T>) getPointer() const;
 
 	RDOValue clone() const;
 

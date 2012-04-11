@@ -67,13 +67,13 @@ public:
 	LPRDORSSResource createRes(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info);
 
 	void addParam(CREF(LPRDORTPParam) param);
-	void addParam(CREF(tstring) param_name, rdoRuntime::RDOType::TypeID param_typeID);
+	void addParam(CREF(tstring) param_name, rdo::runtime::RDOType::TypeID param_typeID);
 	LPRDORTPParam findRTPParam(CREF(tstring) paramName) const;
 
 	ruint           getRTPParamNumber(CREF(tstring) paramName) const;
 	CREF(ParamList) getParams() const;
 
-	CREF(rdoRuntime::LPIResourceType) getRuntimeResType() const;
+	CREF(rdo::runtime::LPIResourceType) getRuntimeResType() const;
 
 	void setType(TypeRDOResType type);
 
@@ -87,11 +87,11 @@ private:
 	RDORTPResType(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, rbool permanent, TypeRDOResType type = simple);
 	virtual ~RDORTPResType();
 
-	rdoRuntime::LPIResourceType m_pRuntimeResType;
-	TypeRDOResType              m_type;
-	const ruint                 m_number;
-	const rbool                 m_permanent;
-	ParamList                   m_params;
+	rdo::runtime::LPIResourceType m_pRuntimeResType;
+	TypeRDOResType                m_type;
+	const ruint                   m_number;
+	const rbool                   m_permanent;
+	ParamList                     m_params;
 
 	DECLARE_IContextSwitch;
 };

@@ -61,13 +61,13 @@ void RDOParserRDOItem::parse(CREF(LPRDOParser) pParser)
 	{
 	case sf_repository:
 		{
-			rdoRepository::RDOThreadRepository::FileData fileData(m_type, in_stream);
+			rdo::repository::RDOThreadRepository::FileData fileData(m_type, in_stream);
 			kernel->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &fileData);
 			break;
 		}
 	case sf_editor:
 		{
-			rdoRepository::RDOThreadRepository::FileData fileData(m_type, in_stream);
+			rdo::repository::RDOThreadRepository::FileData fileData(m_type, in_stream);
 			kernel->sendMessage(kernel->studio(), RDOThread::RT_STUDIO_MODEL_GET_TEXT, &fileData);
 			break;
 		}
@@ -111,7 +111,7 @@ ruint RDOParserRDOItem::lexer_loc_line()
 	}
 	else
 	{
-		return ruint(rdoRuntime::RDOSrcInfo::Position::UNDEFINE_LINE);
+		return ruint(rdo::runtime::RDOSrcInfo::Position::UNDEFINE_LINE);
 	}
 }
 
@@ -153,7 +153,7 @@ void RDOParserRSSPost::parse(CREF(LPRDOParser) pParser)
 			if ((*rss_it)->getType() == *rtp_it)
 			{
 #endif
-				rdoRuntime::LPRDOCalc calc = (*rss_it)->createCalc();
+				rdo::runtime::LPRDOCalc calc = (*rss_it)->createCalc();
 				pParser->runtime()->addInitCalc(calc);
 #ifdef RDOSIM_COMPATIBLE
 			}
@@ -181,7 +181,7 @@ void RDOParserSMRPost::parse(CREF(LPRDOParser) pParser)
 		LPRDOEvent pEvent = *eventIt;
 		ASSERT(pEvent);
 
-		rdoRuntime::LPRDOCalc pInitCalc = pEvent->getInitCalc();
+		rdo::runtime::LPRDOCalc pInitCalc = pEvent->getInitCalc();
 		if (pInitCalc)
 		{
 			pParser->runtime()->addInitCalc(pInitCalc);
@@ -222,7 +222,7 @@ void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 		//! \todo избавиться от рудимента getRegular()
 		if (pEvent->getRegular())
 		{
-			LPIBaseOperation pRuntimeEvent = pPattern->getPatRuntime<rdoRuntime::RDOPatternEvent>()->createActivity(pParser->runtime()->m_pMetaLogic, pParser->runtime(), pEvent->name());
+			LPIBaseOperation pRuntimeEvent = pPattern->getPatRuntime<rdo::runtime::RDOPatternEvent>()->createActivity(pParser->runtime()->m_pMetaLogic, pParser->runtime(), pEvent->name());
 			ASSERT(pRuntimeEvent);
 			pEvent->setRuntimeEvent(pRuntimeEvent);
 
@@ -239,7 +239,7 @@ void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 				ASSERT(pParam);
 				if (m_currParam < pPattern->m_paramList.size())
 				{
-					rdoRuntime::LPRDOCalc pSetParamCalc;
+					rdo::runtime::LPRDOCalc pSetParamCalc;
 					LPRDOParam pPatternParam = pPattern->m_paramList[m_currParam];
 					ASSERT(pPatternParam);
 					if (pParam->typeInfo()->src_info().src_text() == _T("*"))
@@ -250,20 +250,20 @@ void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 							RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format(_T("См. параметр '%s', тип '%s'"), pPatternParam->src_text().c_str(), pPatternParam->getTypeInfo()->src_info().src_text().c_str()));
 							RDOParser::s_parser()->error().push_done();
 						}
-						rdoRuntime::RDOValue val = pPatternParam->getDefault()->value();
+						rdo::runtime::RDOValue val = pPatternParam->getDefault()->value();
 						ASSERT(val);
-						pSetParamCalc = rdo::Factory<rdoRuntime::RDOSetPatternParamCalc>::create(
+						pSetParamCalc = rdo::Factory<rdo::runtime::RDOSetPatternParamCalc>::create(
 							m_currParam,
-							rdo::Factory<rdoRuntime::RDOCalcConst>::create(val)
+							rdo::Factory<rdo::runtime::RDOCalcConst>::create(val)
 						);
 					}
 					else
 					{
 						LPTypeInfo pTypeInfo = pPatternParam->getTypeInfo();
 						ASSERT(pTypeInfo);
-						rdoRuntime::LPRDOCalc pParamValueCalc = pParam->createCalc(pTypeInfo);
+						rdo::runtime::LPRDOCalc pParamValueCalc = pParam->createCalc(pTypeInfo);
 						ASSERT(pParamValueCalc);
-						pSetParamCalc = rdo::Factory<rdoRuntime::RDOSetPatternParamCalc>::create(
+						pSetParamCalc = rdo::Factory<rdo::runtime::RDOSetPatternParamCalc>::create(
 							m_currParam,
 							pParamValueCalc
 						);

@@ -243,14 +243,14 @@ prc_rtp_main
 		tstring rtp_param_name = _T("Время_создания");
 
 		// Получили список всех типов ресурсов
-		rdoMBuilder::RDOResTypeList rtpList(PARSER);
+		rdo::compiler::mbuilder::RDOResTypeList rtpList(PARSER);
 		// Найти тип ресурса, если его нет, то создать
 		if (!rtpList[rtp_name].exist())
 		{
 			// Создадим тип ресурса-транзакта
-			rdoMBuilder::RDOResType rtp(rtp_name, rdoMBuilder::RDOResType::rt_temporary);
+			rdo::compiler::mbuilder::RDOResType rtp(rtp_name, rdo::compiler::mbuilder::RDOResType::rt_temporary);
 			// Добавим параметр Время_создания
-			rdoMBuilder::RDOResType::Param param(rtp_param_name, rdo::Factory<RDOType__real>::create());
+			rdo::compiler::mbuilder::RDOResType::Param param(rtp_param_name, rdo::Factory<RDOType__real>::create());
 			rtp.m_params.append(param);
 			// Добавим тип ресурса
 			if (!rtpList.append(rtp))
@@ -264,13 +264,13 @@ prc_rtp_main
 		else
 		{
 			// Тип найден, проверим его на наличие вещественного параметра
-			CREF(rdoMBuilder::RDOResType) rtp = rtpList[rtp_name];
+			CREF(rdo::compiler::mbuilder::RDOResType) rtp = rtpList[rtp_name];
 			if (!rtp.m_params[rtp_param_name].exist())
 			{
 				PARSER->error().error(rtp.src_info(), rdo::format(_T("У типа ресурса '%s' нет требуемого параметра '%s'"), rtp.name().c_str(), rtp_param_name.c_str()));
 			}
 			// Параметр есть, надо проверить на тип
-			if (rtp.m_params[rtp_param_name].typeID() != rdoRuntime::RDOType::t_real)
+			if (rtp.m_params[rtp_param_name].typeID() != rdo::runtime::RDOType::t_real)
 			{
 				PARSER->error().error(rtp.src_info(), rdo::format(_T("У типа ресурса '%s' параметр '%s' не является вещественным типом"), rtp.name().c_str(), rtp_param_name.c_str()));
 			}

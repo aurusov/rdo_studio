@@ -25,14 +25,14 @@ OBJECT(VariableContainer)
 {
 DECLARE_FACTORY(VariableContainer);
 public:
-	CREF(rdoRuntime::LPRDOCalc) getCalc        () const;
-	CREF(LPLocalVariable)       getLocalVariable() const;
+	CREF(rdo::runtime::LPRDOCalc) getCalc         () const;
+	CREF(LPLocalVariable)         getLocalVariable() const;
 
 private:
-	VariableContainer(CREF(rdoRuntime::LPRDOCalc) pCalc, CREF(LPLocalVariable) pLocalVariable);
+	VariableContainer(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(LPLocalVariable) pLocalVariable);
 
-	rdoRuntime::LPRDOCalc m_pCalc;
-	LPLocalVariable       m_pLocalVariable;
+	rdo::runtime::LPRDOCalc m_pCalc;
+	LPLocalVariable         m_pLocalVariable;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

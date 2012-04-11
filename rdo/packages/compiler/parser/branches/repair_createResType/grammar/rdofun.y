@@ -391,10 +391,10 @@ fun_func_footer
 		LPExpression pExpressionFunBodyBrace = PARSER->stack().pop<Expression>($6);
 		ASSERT(pExpressionFunBodyBrace);
 
-		rdoRuntime::LPRDOCalc pCalcEnd = rdo::Factory<rdoRuntime::RDOCalcFunEnd>::create();
+		rdo::runtime::LPRDOCalc pCalcEnd = rdo::Factory<rdo::runtime::RDOCalcFunEnd>::create();
 		ASSERT(pCalcEnd);
 
-		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunBodyBrace = pExpressionFunBodyBrace->calc().object_dynamic_cast<rdoRuntime::RDOCalcFunBodyBrace>();
+		rdo::runtime::LPRDOCalcFunBodyBrace pCalcFunBodyBrace = pExpressionFunBodyBrace->calc().object_dynamic_cast<rdo::runtime::RDOCalcFunBodyBrace>();
 		ASSERT(pCalcFunBodyBrace);
 		pCalcFunBodyBrace->addFunCalc(pCalcEnd);
 
@@ -507,10 +507,10 @@ statement
 		LPExpression pExpressionFunBodyBrace = PARSER->stack().pop<Expression>($2);
 		ASSERT(pExpressionFunBodyBrace);
 
-		rdoRuntime::LPRDOCalc pCalcCloseBrace = rdo::Factory<rdoRuntime::RDOCalcCloseBrace>::create();
+		rdo::runtime::LPRDOCalc pCalcCloseBrace = rdo::Factory<rdo::runtime::RDOCalcCloseBrace>::create();
 		ASSERT(pCalcCloseBrace);
 
-		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunBodyBrace = pExpressionFunBodyBrace->calc().object_dynamic_cast<rdoRuntime::RDOCalcFunBodyBrace>();
+		rdo::runtime::LPRDOCalcFunBodyBrace pCalcFunBodyBrace = pExpressionFunBodyBrace->calc().object_dynamic_cast<rdo::runtime::RDOCalcFunBodyBrace>();
 		ASSERT(pCalcFunBodyBrace);
 		pCalcFunBodyBrace->addFunCalc(pCalcCloseBrace);
 
@@ -551,10 +551,10 @@ close_brace
 statement_list
 	: /* empty */
 	{
-		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunBodyBrace = rdo::Factory<rdoRuntime::RDOCalcFunBodyBrace>::create();
+		rdo::runtime::LPRDOCalcFunBodyBrace pCalcFunBodyBrace = rdo::Factory<rdo::runtime::RDOCalcFunBodyBrace>::create();
 		ASSERT(pCalcFunBodyBrace);
 
-		rdoRuntime::LPRDOCalc pCalcOpenBrace = rdo::Factory<rdoRuntime::RDOCalcOpenBrace>::create();
+		rdo::runtime::LPRDOCalc pCalcOpenBrace = rdo::Factory<rdo::runtime::RDOCalcOpenBrace>::create();
 		ASSERT(pCalcOpenBrace);
 
 		pCalcFunBodyBrace->addFunCalc(pCalcOpenBrace);
@@ -577,7 +577,7 @@ statement_list
 		ASSERT(pFunction);
 		if (!pFunction->getFunctionCalc())
 		{
-			rdoRuntime::LPRDOFunCalc pCalc = pCalcFunBodyBrace.object_dynamic_cast<rdoRuntime::RDOFunCalc>();
+			rdo::runtime::LPRDOFunCalc pCalc = pCalcFunBodyBrace.object_dynamic_cast<rdo::runtime::RDOFunCalc>();
 			ASSERT(pCalc);
 			pFunction->setFunctionCalc(pCalc);
 		}
@@ -592,7 +592,7 @@ statement_list
 		LPExpression pExpression = PARSER->stack().pop<Expression>($2);
 		ASSERT(pExpression);
 
-		rdoRuntime::LPRDOCalcFunBodyBrace pCalcFunBodyBrace = pExpressionFunBodyBrace->calc().object_dynamic_cast<rdoRuntime::RDOCalcFunBodyBrace>();
+		rdo::runtime::LPRDOCalcFunBodyBrace pCalcFunBodyBrace = pExpressionFunBodyBrace->calc().object_dynamic_cast<rdo::runtime::RDOCalcFunBodyBrace>();
 		ASSERT(pCalcFunBodyBrace);
 		pCalcFunBodyBrace->addFunCalc(pExpression->calc());
 
@@ -612,7 +612,7 @@ statement_list
 empty_statement
 	: ';'
 	{
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcNoChange>::create();
+		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcNoChange>::create();
 		ASSERT(pCalc);
 
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__void>::create(), RDOParserSrcInfo(@1));
@@ -632,9 +632,9 @@ empty_statement
 equal_statement
 	: RDO_IDENTIF increment_or_decrement_type
 	{
-		LPRDOValue            pParamName = PARSER->stack().pop<RDOValue>($1);
-		tstring               paramName  = pParamName->value().getIdentificator();
-		rdoRuntime::EqualType equalType  = static_cast<rdoRuntime::EqualType>($2);
+		LPRDOValue              pParamName = PARSER->stack().pop<RDOValue>($1);
+		tstring                 paramName  = pParamName->value().getIdentificator();
+		rdo::runtime::EqualType equalType  = static_cast<rdo::runtime::EqualType>($2);
 		LPContext pContext = PARSER->context();
 		ASSERT(pContext);
 		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
@@ -642,19 +642,19 @@ equal_statement
 		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
 		ASSERT(pLocalVariableListStack);
 		LPLocalVariable pLocalVariable = pLocalVariableListStack->findLocalVariable(paramName);
-		rdoRuntime::LPRDOCalc pCalc;
+		rdo::runtime::LPRDOCalc pCalc;
 		if(pLocalVariable)
 		{
 			switch (equalType)
 			{
-				case rdoRuntime::ET_INCR:
+				case rdo::runtime::ET_INCR:
 				{
-					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVariable<rdoRuntime::ET_INCR> >::create(paramName);
+					pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::ET_INCR> >::create(paramName);
 					break;
 				}
-				case rdoRuntime::ET_DECR:
+				case rdo::runtime::ET_DECR:
 				{
-					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVariable<rdoRuntime::ET_DECR> >::create(paramName);
+					pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::ET_DECR> >::create(paramName);
 					break;
 				}
 				default:
@@ -670,12 +670,12 @@ equal_statement
 		tstring oprStr;
 		switch (equalType)
 		{
-			case rdoRuntime::ET_INCR:
+			case rdo::runtime::ET_INCR:
 			{
 				oprStr = _T("++");
 				break;
 			}
-			case rdoRuntime::ET_DECR:
+			case rdo::runtime::ET_DECR:
 			{
 				oprStr = _T("--");
 				break;
@@ -695,10 +695,10 @@ equal_statement
 	}
 	| RDO_IDENTIF param_equal_type fun_arithm
 	{
-		LPRDOValue            pParamName   = PARSER->stack().pop<RDOValue>($1);
-		tstring               paramName    = pParamName->value().getIdentificator();
-		rdoRuntime::EqualType equalType    = static_cast<rdoRuntime::EqualType>($2);
-		LPRDOFUNArithm        pRightArithm = PARSER->stack().pop<RDOFUNArithm>($3);
+		LPRDOValue              pParamName   = PARSER->stack().pop<RDOValue>($1);
+		tstring                 paramName    = pParamName->value().getIdentificator();
+		rdo::runtime::EqualType equalType    = static_cast<rdo::runtime::EqualType>($2);
+		LPRDOFUNArithm          pRightArithm = PARSER->stack().pop<RDOFUNArithm>($3);
 		LPContext pContext = PARSER->context();
 		ASSERT(pContext);
 		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
@@ -706,40 +706,40 @@ equal_statement
 		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
 		ASSERT(pLocalVariableListStack);
 		LPLocalVariable pLocalVariable = pLocalVariableListStack->findLocalVariable(paramName);
-		rdoRuntime::LPRDOCalc pCalc;
-		rdoRuntime::LPRDOCalc pCalcRight;
+		rdo::runtime::LPRDOCalc pCalc;
+		rdo::runtime::LPRDOCalc pCalcRight;
 		if (pLocalVariable)
 		{
 			pCalcRight = pRightArithm->createCalc(pLocalVariable->getTypeInfo());
 			switch (equalType)
 			{
-				case rdoRuntime::ET_NOCHANGE:
+				case rdo::runtime::ET_NOCHANGE:
 				{
 					break;
 				}
-				case rdoRuntime::ET_EQUAL:
+				case rdo::runtime::ET_EQUAL:
 				{
-					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVariable<rdoRuntime::ET_EQUAL> >::create(paramName, pCalcRight);
+					pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::ET_EQUAL> >::create(paramName, pCalcRight);
 					break;
 				}
-				case rdoRuntime::ET_PLUS:
+				case rdo::runtime::ET_PLUS:
 				{
-					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVariable<rdoRuntime::ET_PLUS> >::create(paramName, pCalcRight);
+					pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::ET_PLUS> >::create(paramName, pCalcRight);
 					break;
 				}
-				case rdoRuntime::ET_MINUS:
+				case rdo::runtime::ET_MINUS:
 				{
-					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVariable<rdoRuntime::ET_MINUS> >::create(paramName, pCalcRight);
+					pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::ET_MINUS> >::create(paramName, pCalcRight);
 					break;
 				}
-				case rdoRuntime::ET_MULTIPLY:
+				case rdo::runtime::ET_MULTIPLY:
 				{
-					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVariable<rdoRuntime::ET_MULTIPLY> >::create(paramName, pCalcRight);
+					pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::ET_MULTIPLY> >::create(paramName, pCalcRight);
 					break;
 				}
-				case rdoRuntime::ET_DIVIDE:
+				case rdo::runtime::ET_DIVIDE:
 				{
-					pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVariable<rdoRuntime::ET_DIVIDE> >::create(paramName, pCalcRight);
+					pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::ET_DIVIDE> >::create(paramName, pCalcRight);
 					break;
 				}
 				default:
@@ -755,27 +755,27 @@ equal_statement
 		tstring oprStr;
 		switch (equalType)
 		{
-			case rdoRuntime::ET_EQUAL:
+			case rdo::runtime::ET_EQUAL:
 			{
 				oprStr = _T("=");
 				break;
 			}
-			case rdoRuntime::ET_PLUS:
+			case rdo::runtime::ET_PLUS:
 			{
 				oprStr = _T("+=");
 				break;
 			}
-			case rdoRuntime::ET_MINUS:
+			case rdo::runtime::ET_MINUS:
 			{
 				oprStr = _T("-=");
 				break;
 			}
-			case rdoRuntime::ET_MULTIPLY:
+			case rdo::runtime::ET_MULTIPLY:
 			{
 				oprStr = _T("*=");
 				break;
 			}
-			case rdoRuntime::ET_DIVIDE:
+			case rdo::runtime::ET_DIVIDE:
 			{
 				oprStr = _T("/=");
 				break;
@@ -828,7 +828,7 @@ set_array_item_statement
 		LPTypeInfo pItemType = pArrayType->getItemType()->type_cast(pRightArithm->typeInfo(), RDOParserSrcInfo(@1));
 		ASSERT(pItemType);
 
-		rdoRuntime::LPRDOCalc pArrayItemCalc = rdo::Factory<rdoRuntime::RDOCalcSetArrayItem>::create(pArrayArithm->calc(), pArithmInd->calc(), pRightArithm->calc());
+		rdo::runtime::LPRDOCalc pArrayItemCalc = rdo::Factory<rdo::runtime::RDOCalcSetArrayItem>::create(pArrayArithm->calc(), pArithmInd->calc(), pRightArithm->calc());
 		ASSERT(pArrayItemCalc);
 		
 		tstring   paramName = pParamName->value().getIdentificator();
@@ -839,11 +839,11 @@ set_array_item_statement
 		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
 		ASSERT(pLocalVariableListStack);
 		LPLocalVariable pLocalVariable = pLocalVariableListStack->findLocalVariable(paramName);
-		rdoRuntime::LPRDOCalc pCalc;
+		rdo::runtime::LPRDOCalc pCalc;
 		if (pLocalVariable)
 		{
 
-			pCalc = rdo::Factory<rdoRuntime::RDOCalcSetLocalVariable<rdoRuntime::ET_EQUAL> >::create(paramName, pArrayItemCalc);
+			pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::ET_EQUAL> >::create(paramName, pArrayItemCalc);
 
 		}
 		else
@@ -864,7 +864,7 @@ local_variable_declaration
 		LPTypeInfo pType = PARSER->stack().pop<TypeInfo>($1);
 		ASSERT(pType);
 
-		rdoRuntime::LPRDOCalc pCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($2);
+		rdo::runtime::LPRDOCalc pCalc = PARSER->stack().pop<rdo::runtime::RDOCalc>($2);
 		ASSERT(pCalc);
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
@@ -998,10 +998,10 @@ init_declaration_list
 
 		pLocalVariableListStack->append(pLocalVariable);
 
-		rdoRuntime::LPRDOCalc pCalc = pVariableContainer->getCalc();
+		rdo::runtime::LPRDOCalc pCalc = pVariableContainer->getCalc();
 		ASSERT(pCalc);
 
-		rdoRuntime::LPRDOCalcLocalVariableList pCalcLocalVariableList = rdo::Factory<rdoRuntime::RDOCalcLocalVariableList>::create();
+		rdo::runtime::LPRDOCalcLocalVariableList pCalcLocalVariableList = rdo::Factory<rdo::runtime::RDOCalcLocalVariableList>::create();
 		ASSERT(pCalcLocalVariableList);
 
 		pCalcLocalVariableList->addCalcLocalVariable(pCalc);
@@ -1027,10 +1027,10 @@ init_declaration_list
 
 		pLocalVariableListStack->append(pLocalVariable);
 
-		rdoRuntime::LPRDOCalc pCalc = pVariableContainer->getCalc();
+		rdo::runtime::LPRDOCalc pCalc = pVariableContainer->getCalc();
 		ASSERT(pCalc);
 
-		rdoRuntime::LPRDOCalcLocalVariableList pCalcLocalVariableList = PARSER->stack().pop<rdoRuntime::RDOCalcLocalVariableList>($1);
+		rdo::runtime::LPRDOCalcLocalVariableList pCalcLocalVariableList = PARSER->stack().pop<rdo::runtime::RDOCalcLocalVariableList>($1);
 		ASSERT(pCalcLocalVariableList);
 
 		pCalcLocalVariableList->addCalcLocalVariable(pCalc);
@@ -1059,7 +1059,7 @@ init_declaration
 				pParam->type(),
 				pParam->src_info()
 			),
-			rdo::Factory<rdoRuntime::RDOCalcConst>::create(pVariableName->value()),
+			rdo::Factory<rdo::runtime::RDOCalcConst>::create(pVariableName->value()),
 			pVariableName->src_info()
 		);
 		ASSERT(pExpression);
@@ -1067,7 +1067,7 @@ init_declaration
 		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(pVariableName, pExpression, pParam);
 		ASSERT(pLocalVariable);
 
-		rdoRuntime::LPRDOCalcCreateLocalVariable pCalcCreateLocalVariable = rdo::Factory<rdoRuntime::RDOCalcCreateLocalVariable>::create(pVariableName->value().getIdentificator());
+		rdo::runtime::LPRDOCalcCreateLocalVariable pCalcCreateLocalVariable = rdo::Factory<rdo::runtime::RDOCalcCreateLocalVariable>::create(pVariableName->value().getIdentificator());
 		ASSERT(pCalcCreateLocalVariable);
 
 		LPVariableContainer pVariableContainer = rdo::Factory<VariableContainer>::create(pCalcCreateLocalVariable, pLocalVariable);
@@ -1094,13 +1094,13 @@ init_declaration
 		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(pVariableName, pArithm->expression(), pParam);
 		ASSERT(pLocalVariable);
 
-		rdoRuntime::LPRDOCalcLocalVariableList pCalcLocalVariableList = rdo::Factory<rdoRuntime::RDOCalcLocalVariableList>::create();
+		rdo::runtime::LPRDOCalcLocalVariableList pCalcLocalVariableList = rdo::Factory<rdo::runtime::RDOCalcLocalVariableList>::create();
 		ASSERT(pCalcLocalVariableList);
 
-		rdoRuntime::LPRDOCalcCreateLocalVariable pCalcCreateLocalVariable = rdo::Factory<rdoRuntime::RDOCalcCreateLocalVariable>::create(pVariableName->value().getIdentificator());
+		rdo::runtime::LPRDOCalcCreateLocalVariable pCalcCreateLocalVariable = rdo::Factory<rdo::runtime::RDOCalcCreateLocalVariable>::create(pVariableName->value().getIdentificator());
 		ASSERT(pCalcCreateLocalVariable);
 
-		rdoRuntime::LPRDOCalcInitLocalVariable pCalcSetLocalVariable = rdo::Factory<rdoRuntime::RDOCalcInitLocalVariable>::create(pVariableName->value().getIdentificator(), pArithm->createCalc(pParam));
+		rdo::runtime::LPRDOCalcInitLocalVariable pCalcSetLocalVariable = rdo::Factory<rdo::runtime::RDOCalcInitLocalVariable>::create(pVariableName->value().getIdentificator(), pArithm->createCalc(pParam));
 		ASSERT(pCalcSetLocalVariable);
 
 		pCalcLocalVariableList->addCalcLocalVariable(pCalcCreateLocalVariable);
@@ -1118,9 +1118,9 @@ if_statement
 		LPRDOFUNLogic pCondition = PARSER->stack().pop<RDOFUNLogic>($3);
 		ASSERT(pCondition);
 
-		rdoRuntime::LPRDOCalc pConditionCalc = pCondition->getCalc();
+		rdo::runtime::LPRDOCalc pConditionCalc = pCondition->getCalc();
 		ASSERT(pConditionCalc);
-		rdoRuntime::LPRDOCalcConst pConstCalc = pConditionCalc.object_dynamic_cast<rdoRuntime::RDOCalcConst>();
+		rdo::runtime::LPRDOCalcConst pConstCalc = pConditionCalc.object_dynamic_cast<rdo::runtime::RDOCalcConst>();
 
 		LPExpression pIfExpression = PARSER->stack().pop<Expression>($5);
 		ASSERT(pIfExpression);
@@ -1129,7 +1129,7 @@ if_statement
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__void>::create(), RDOParserSrcInfo(@1));
 		ASSERT(pType);
 
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcIf>::create(pConditionCalc, pIfExpression->calc());
+		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcIf>::create(pConditionCalc, pIfExpression->calc());
 		ASSERT(pCalc);
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
@@ -1146,9 +1146,9 @@ if_statement
 		LPRDOFUNLogic pCondition = PARSER->stack().pop<RDOFUNLogic>($3);
 		ASSERT(pCondition);
 		
-		rdoRuntime::LPRDOCalc pConditionCalc = pCondition->getCalc();
+		rdo::runtime::LPRDOCalc pConditionCalc = pCondition->getCalc();
 		ASSERT(pConditionCalc);
-		rdoRuntime::LPRDOCalcConst pConstCalc = pConditionCalc.object_dynamic_cast<rdoRuntime::RDOCalcConst>();
+		rdo::runtime::LPRDOCalcConst pConstCalc = pConditionCalc.object_dynamic_cast<rdo::runtime::RDOCalcConst>();
 
 		LPExpression pIfExpression = PARSER->stack().pop<Expression>($5);
 		ASSERT(pIfExpression);
@@ -1161,7 +1161,7 @@ if_statement
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__void>::create(), RDOParserSrcInfo(@1));
 		ASSERT(pType);
 
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcIfElse>::create(pConditionCalc, pIfExpression->calc(), pElseExpression->calc());
+		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcIfElse>::create(pConditionCalc, pIfExpression->calc(), pElseExpression->calc());
 		ASSERT(pCalc);
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
@@ -1212,7 +1212,7 @@ for_statement
 		LPRDOFUNLogic pCondition = PARSER->stack().pop<RDOFUNLogic>($5);
 		ASSERT(pCondition);
 		
-		rdoRuntime::LPRDOCalc pConditionCalc = pCondition->getCalc();
+		rdo::runtime::LPRDOCalc pConditionCalc = pCondition->getCalc();
 		ASSERT(pConditionCalc);
 
 		LPExpression pEqualExpression = PARSER->stack().pop<Expression>($7);
@@ -1225,7 +1225,7 @@ for_statement
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__void>::create(), RDOParserSrcInfo(@1));
 		ASSERT(pType);
 
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcFor>::create(
+		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcFor>::create(
 			pDeclarationExpression->calc(),
 			pConditionCalc                ,
 			pEqualExpression->calc()      ,
@@ -1249,7 +1249,7 @@ for_statement
 		LPRDOFUNLogic pCondition = PARSER->stack().pop<RDOFUNLogic>($5);
 		ASSERT(pCondition);
 		
-		rdoRuntime::LPRDOCalc pConditionCalc = pCondition->getCalc();
+		rdo::runtime::LPRDOCalc pConditionCalc = pCondition->getCalc();
 		ASSERT(pConditionCalc);
 
 		LPExpression pEqualExpression = PARSER->stack().pop<Expression>($7);
@@ -1262,7 +1262,7 @@ for_statement
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__void>::create(), RDOParserSrcInfo(@1));
 		ASSERT(pType);
 
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcFor>::create(
+		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcFor>::create(
 			pInitExpression->calc()     ,
 			pConditionCalc              ,
 			pEqualExpression->calc()    ,
@@ -1283,38 +1283,38 @@ for_statement
 increment_or_decrement_type
 	: RDO_IncrEqual
 	{
-		$$ = rdoRuntime::ET_INCR;
+		$$ = rdo::runtime::ET_INCR;
 	}
 	| RDO_DecrEqual
 	{
-		$$ = rdoRuntime::ET_DECR;
+		$$ = rdo::runtime::ET_DECR;
 	}
 	;
 
 param_equal_type
 	: RDO_set
 	{
-		$$ = rdoRuntime::ET_EQUAL;
+		$$ = rdo::runtime::ET_EQUAL;
 	}
 	| '='
 	{
-		$$ = rdoRuntime::ET_EQUAL;
+		$$ = rdo::runtime::ET_EQUAL;
 	}
 	| RDO_PlusEqual
 	{
-		$$ = rdoRuntime::ET_PLUS;
+		$$ = rdo::runtime::ET_PLUS;
 	}
 	| RDO_MinusEqual
 	{
-		$$ = rdoRuntime::ET_MINUS;
+		$$ = rdo::runtime::ET_MINUS;
 	}
 	| RDO_MultiplyEqual
 	{
-		$$ = rdoRuntime::ET_MULTIPLY;
+		$$ = rdo::runtime::ET_MULTIPLY;
 	}
 	| RDO_DivideEqual
 	{
-		$$ = rdoRuntime::ET_DIVIDE;
+		$$ = rdo::runtime::ET_DIVIDE;
 	}
 	;
 
@@ -1327,10 +1327,10 @@ return_statement
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(PARSER->getLastFUNFunction()->getReturn()->getTypeInfo());
 		ASSERT(pType);
 
-		rdoRuntime::LPRDOCalc pCalc = pArithm->createCalc(pType);
+		rdo::runtime::LPRDOCalc pCalc = pArithm->createCalc(pType);
 		ASSERT(pCalc);
 
-		rdoRuntime::LPRDOCalc pCalcReturn = rdo::Factory<rdoRuntime::RDOCalcFunReturn>::create(pCalc);
+		rdo::runtime::LPRDOCalc pCalcReturn = rdo::Factory<rdo::runtime::RDOCalcFunReturn>::create(pCalc);
 		ASSERT(pCalcReturn);
 
 		LPExpressionStatement pExpression = rdo::Factory<ExpressionStatement>::create(pType, pCalcReturn, RDOParserSrcInfo(@1));
@@ -1343,7 +1343,7 @@ return_statement
 break_statement
 	:RDO_Break
 	{
-		rdoRuntime::LPRDOCalc pCalcBreak = rdo::Factory<rdoRuntime::RDOCalcFunBreak>::create();
+		rdo::runtime::LPRDOCalc pCalcBreak = rdo::Factory<rdo::runtime::RDOCalcFunBreak>::create();
 		ASSERT(pCalcBreak);
 
 		LPRDOType pBaseType = rdo::Factory<RDOType__void>::create();
@@ -1611,11 +1611,11 @@ fun_seq_by_hist_body_real
 	{
 		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 		ASSERT(pHeader);
-		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdoRuntime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdoRuntime::RDOType::t_int )
+		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
 		{
 			PARSER->error().error(@2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 		}
-		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() == rdoRuntime::RDOType::t_int )
+		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
 		{
 			PARSER->error().error(@2, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->getHeader()->src_text().c_str()));
 		}
@@ -1627,11 +1627,11 @@ fun_seq_by_hist_body_real
 	{
 		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 		ASSERT(pHeader);
-		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdoRuntime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdoRuntime::RDOType::t_int )
+		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
 		{
 			PARSER->error().error(@2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 		}
-		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() == rdoRuntime::RDOType::t_int )
+		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
 		{
 			PARSER->error().error(@3, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->getHeader()->src_text().c_str()));
 		}
@@ -1643,11 +1643,11 @@ fun_seq_by_hist_body_real
 	{
 		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 		ASSERT(pHeader);
-		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdoRuntime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdoRuntime::RDOType::t_int )
+		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
 		{
 			PARSER->error().error(@2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 		}
-		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() == rdoRuntime::RDOType::t_int )
+		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
 		{
 			PARSER->error().error(@2, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->getHeader()->src_text().c_str()));
 		}
@@ -1659,11 +1659,11 @@ fun_seq_by_hist_body_real
 	{
 		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 		ASSERT(pHeader);
-		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdoRuntime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdoRuntime::RDOType::t_int )
+		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
 		{
 			PARSER->error().error(@2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 		}
-		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() == rdoRuntime::RDOType::t_int )
+		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
 		{
 			PARSER->error().error(@2, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->getHeader()->src_text().c_str()));
 		}
@@ -1675,7 +1675,7 @@ fun_seq_by_hist_body_real
 	{
 		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 		ASSERT(pHeader);
-		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdoRuntime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdoRuntime::RDOType::t_int )
+		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
 		{
 			PARSER->error().error(@2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 		}
@@ -1687,11 +1687,11 @@ fun_seq_by_hist_body_real
 	{
 		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 		ASSERT(pHeader);
-		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdoRuntime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdoRuntime::RDOType::t_int )
+		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
 		{
 			PARSER->error().error(@2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 		}
-		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() == rdoRuntime::RDOType::t_int )
+		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
 		{
 			PARSER->error().error(@2, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->getHeader()->src_text().c_str()));
 		}
@@ -1703,11 +1703,11 @@ fun_seq_by_hist_body_real
 	{
 		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 		ASSERT(pHeader);
-		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdoRuntime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdoRuntime::RDOType::t_int )
+		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
 		{
 			PARSER->error().error(@2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 		}
-		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() == rdoRuntime::RDOType::t_int )
+		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
 		{
 			PARSER->error().error(@3, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->getHeader()->src_text().c_str()));
 		}
@@ -1719,7 +1719,7 @@ fun_seq_by_hist_body_real
 	{
 		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 		ASSERT(pHeader);
-		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdoRuntime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdoRuntime::RDOType::t_int )
+		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
 		{
 			PARSER->error().error(@2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 		}
@@ -1733,7 +1733,7 @@ fun_seq_by_hist_body_real
 		ASSERT(pSequence);
 		RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = pSequence->getHeader();
 		ASSERT(pHeader);
-		if ( pHeader->getTypeInfo()->type()->typeID() == rdoRuntime::RDOType::t_int )
+		if ( pHeader->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
 		{
 			PARSER->error().error(@2, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->src_text().c_str()));
 		}
@@ -1746,7 +1746,7 @@ fun_seq_by_hist_body_real
 		ASSERT(pSequence);
 		RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = pSequence->getHeader();
 		ASSERT(pHeader);
-		if ( pHeader->getTypeInfo()->type()->typeID() == rdoRuntime::RDOType::t_int )
+		if ( pHeader->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
 		{
 			PARSER->error().error(@3, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->src_text().c_str()));
 		}
@@ -1759,7 +1759,7 @@ fun_seq_by_hist_body_real
 		ASSERT(pSequence);
 		RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = pSequence->getHeader();
 		ASSERT(pHeader);
-		if ( pHeader->getTypeInfo()->type()->typeID() == rdoRuntime::RDOType::t_int )
+		if ( pHeader->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
 		{
 			PARSER->error().error(@2, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->src_text().c_str()));
 		}
@@ -1772,7 +1772,7 @@ fun_seq_by_hist_body_real
 		ASSERT(pSequence);
 		RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = pSequence->getHeader();
 		ASSERT(pHeader);
-		if ( pHeader->getTypeInfo()->type()->typeID() == rdoRuntime::RDOType::t_int )
+		if ( pHeader->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
 		{
 			PARSER->error().error(@2, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->src_text().c_str()));
 		}
@@ -1792,7 +1792,7 @@ fun_seq_by_hist_body_real
 		ASSERT(pSequence);
 		RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = pSequence->getHeader();
 		ASSERT(pHeader);
-		if ( pHeader->getTypeInfo()->type()->typeID() == rdoRuntime::RDOType::t_int )
+		if ( pHeader->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
 		{
 			PARSER->error().error(@2, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->src_text().c_str()));
 		}
@@ -1805,7 +1805,7 @@ fun_seq_by_hist_body_real
 		ASSERT(pSequence);
 		RDOFUNSequence::LPRDOFUNSequenceHeader pHeader = pSequence->getHeader();
 		ASSERT(pHeader);
-		if ( pHeader->getTypeInfo()->type()->typeID() == rdoRuntime::RDOType::t_int )
+		if ( pHeader->getTypeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int )
 		{
 			PARSER->error().error(@3, rdo::format(_T("Последовательность '%s' определена как целочисленная, её диапазоны тоже должны быть целочисленными"), pHeader->src_text().c_str()));
 		}
@@ -1823,7 +1823,7 @@ fun_seq_by_hist_body_real
 	{
 		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 		ASSERT(pHeader);
-		if (pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdoRuntime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdoRuntime::RDOType::t_int)
+		if (pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int)
 		{
 			PARSER->error().error(@2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 		}
@@ -1833,7 +1833,7 @@ fun_seq_by_hist_body_real
 	{
 		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 		ASSERT(pHeader);
-		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdoRuntime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdoRuntime::RDOType::t_int )
+		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
 		{
 			PARSER->error().error(@2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 		}
@@ -1843,7 +1843,7 @@ fun_seq_by_hist_body_real
 	{
 		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 		ASSERT(pHeader);
-		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdoRuntime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdoRuntime::RDOType::t_int )
+		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
 		{
 			PARSER->error().error(@2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 		}
@@ -1853,7 +1853,7 @@ fun_seq_by_hist_body_real
 	{
 		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 		ASSERT(pHeader);
-		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdoRuntime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdoRuntime::RDOType::t_int )
+		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
 		{
 			PARSER->error().error(@2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 		}
@@ -1863,7 +1863,7 @@ fun_seq_by_hist_body_real
 	{
 		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 		ASSERT(pHeader);
-		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdoRuntime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdoRuntime::RDOType::t_int )
+		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
 		{
 			PARSER->error().error(@2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 		}
@@ -1873,7 +1873,7 @@ fun_seq_by_hist_body_real
 	{
 		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 		ASSERT(pHeader);
-		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdoRuntime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdoRuntime::RDOType::t_int )
+		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_real && pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_int )
 		{
 			PARSER->error().error(@2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 		}
@@ -1916,7 +1916,7 @@ fun_seq_by_hist_body_enum
 	{
 		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 		ASSERT(pHeader);
-		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdoRuntime::RDOType::t_enum )
+		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_enum )
 		{
 			PARSER->error().error(@2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 		}
@@ -1928,7 +1928,7 @@ fun_seq_by_hist_body_enum
 	{
 		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 		ASSERT(pHeader);
-		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdoRuntime::RDOType::t_enum )
+		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_enum )
 		{
 			PARSER->error().error(@2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 		}
@@ -1954,7 +1954,7 @@ fun_seq_by_hist_body_enum
 	{
 		RDOFUNSequenceByHist::LPRDOFUNSequenceByHistHeader pHeader = PARSER->stack().pop<RDOFUNSequenceByHist::RDOFUNSequenceByHistHeader>($1);
 		ASSERT(pHeader);
-		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdoRuntime::RDOType::t_enum )
+		if ( pHeader->getHeader()->getTypeInfo()->type()->typeID() != rdo::runtime::RDOType::t_enum )
 		{
 			PARSER->error().error(@2, rdo::format(_T("Значение не соответствует типу последовательности, ожидаемые значение должно соответствовать типу: %s"), pHeader->getHeader()->getTypeInfo()->src_info().src_text().c_str()));
 		}
@@ -2142,8 +2142,8 @@ param_type
 		LPTypeInfo pType;
 		if (pRange)
 		{
-			if (pRange->getMin()->typeID() != rdoRuntime::RDOType::t_int ||
-			    pRange->getMax()->typeID() != rdoRuntime::RDOType::t_int)
+			if (pRange->getMin()->typeID() != rdo::runtime::RDOType::t_int ||
+			    pRange->getMax()->typeID() != rdo::runtime::RDOType::t_int)
 			{
 				PARSER->error().error(@2, _T("Диапазон целого типа должен быть целочисленным"));
 			}
@@ -2767,10 +2767,10 @@ fun_arithm
 		LPRDOFUNArithm pArithm = RDOFUNArithm::generateByIdentificator(pValue);
 		ASSERT(pArithm);
 
-		rdoRuntime::LPRDOCalc pCalc;
+		rdo::runtime::LPRDOCalc pCalc;
 		if (pArithm->typeInfo()->type().object_dynamic_cast<RDOArrayType>())
 		{
-			pCalc = rdo::Factory<rdoRuntime::RDOCalcArraySize>::create(pArithm->calc());
+			pCalc = rdo::Factory<rdo::runtime::RDOCalcArraySize>::create(pArithm->calc());
 			ASSERT(pCalc);
 		}
 		else
@@ -2809,7 +2809,7 @@ fun_arithm
 			PARSER->error().error(@1, rdo::format(_T("'%s' не является массивом."), pValue->value().getIdentificator().c_str()));
 		}
 
-		rdoRuntime::LPRDOCalc pCalc = rdo::Factory<rdoRuntime::RDOCalcArrayItem>::create(pArithm->calc(), pArithmInd->calc());
+		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcArrayItem>::create(pArithm->calc(), pArithmInd->calc());
 		ASSERT(pCalc);
 
 		LPTypeInfo pItemType = pArrayType->getItemType();

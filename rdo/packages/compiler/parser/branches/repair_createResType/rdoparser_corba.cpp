@@ -246,11 +246,11 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 			//! Добавляем к существующим типам ресурсов и выводим в трассировке
 	
 			//! Получили список всех описанных типов ресурсов
-			rdoMBuilder::RDOResTypeList rtpList(pParser);
+			rdo::compiler::mbuilder::RDOResTypeList rtpList(pParser);
 	
 			for (ruint i = 0; i < my_rtpList->length(); i++)
 			{
-				rdoMBuilder::RDOResType rtp(my_rtpList[i].m_name.in());
+				rdo::compiler::mbuilder::RDOResType rtp(my_rtpList[i].m_name.in());
 
 				//! Наполняем его параметрами
 				for (ruint j = 0; j != my_rtpList[i].m_param_count; j++)
@@ -259,7 +259,7 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 					{
 					case rdoParser::RDOCorba::int_type:
 					{
-						rdoMBuilder::RDOResType::Param par_int(my_rtpList[i].m_param[j].m_name.in(), rdo::Factory<RDOType__int>::create());
+						rdo::compiler::mbuilder::RDOResType::Param par_int(my_rtpList[i].m_param[j].m_name.in(), rdo::Factory<RDOType__int>::create());
 
 						if (my_rtpList[i].m_param[j].m_range_int == 1)
 							par_int.setRange(RDOValue(my_rtpList[i].m_param[j].m_min_int), RDOValue(my_rtpList[i].m_param[j].m_max_int));
@@ -272,7 +272,7 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 					}
 					case rdoParser::RDOCorba::double_type:
 					{
-						rdoMBuilder::RDOResType::Param par_double(my_rtpList[i].m_param[j].m_name.in(), rdo::Factory<RDOType__real>::create());
+						rdo::compiler::mbuilder::RDOResType::Param par_double(my_rtpList[i].m_param[j].m_name.in(), rdo::Factory<RDOType__real>::create());
 
 						if (my_rtpList[i].m_param[j].m_range_double == 1)
 							par_double.setRange(RDOValue(my_rtpList[i].m_param[j].m_min_double), RDOValue(my_rtpList[i].m_param[j].m_max_double));
@@ -286,7 +286,7 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 					case rdoParser::RDOCorba::enum_type:
 					{
 						//! Создадим список значений параметра перечислимого типа
-						rdoRuntime::RDOEnumType::Enums enumList;
+						rdo::runtime::RDOEnumType::Enums enumList;
 
 						for (CORBA::Long k = 0; k < my_rtpList[i].m_param[j].m_var_enum_count ; k++)
 						{
@@ -294,7 +294,7 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 						}
 
 						//! Создадим параметр перечислимого типа
-						rdoMBuilder::RDOResType::Param par_enum(my_rtpList[i].m_param[j].m_name.in(), enumList);
+						rdo::compiler::mbuilder::RDOResType::Param par_enum(my_rtpList[i].m_param[j].m_name.in(), enumList);
 
 						//Добавляем, если есть значение по умолчанию
 						if (my_rtpList[i].m_param[j].m_default_enum_ch == 1)
@@ -340,7 +340,7 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 					}
 					TRACE1(_T("%s\n"), info.c_str());
 
-					if (param_it->typeID() ==  rdoRuntime::RDOType::t_enum)
+					if (param_it->typeID() ==  rdo::runtime::RDOType::t_enum)
 					{
 						STL_FOR_ALL_CONST(param_it->getEnum()->getEnums(), enum_it)
 						{
@@ -363,15 +363,15 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 			//! Добавляем к существующим ресурсам и выводим в трассировке
 
 			//! Переписали имеющиеся ресурсы в rssList
-			rdoMBuilder::RDOResourceList rssList(pParser);
+			rdo::compiler::mbuilder::RDOResourceList rssList(pParser);
 
 			for (ruint i = 0; i < my_rssList->length(); i++)
 			{
 				//! Нашли тип ресурса по известному имени и создали ресурс указанного типа
-				rdoMBuilder::RDOResType _rtp = rtpList[my_rssList[i].m_type.in()];
-				rdoMBuilder::RDOResource rss(_rtp, my_rssList[i].m_name.in());
+				rdo::compiler::mbuilder::RDOResType _rtp = rtpList[my_rssList[i].m_type.in()];
+				rdo::compiler::mbuilder::RDOResource rss(_rtp, my_rssList[i].m_name.in());
 
-				//! rdoMBuilder::RDOResource::Params::const_iterator it_param = rss.begin();
+				//! rdo::compiler::mbuilder::RDOResource::Params::const_iterator it_param = rss.begin();
 
 				for (ruint j = 0; j != my_rssList[i].m_param_count; j++)
 				{
@@ -409,7 +409,7 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 			}
 
 			//! Вывели все ресурсы для теста
-			//! rdoMBuilder::RDOResourceList rssList(&parser);
+			//! rdo::compiler::mbuilder::RDOResourceList rssList(&parser);
 			STL_FOR_ALL_CONST(rssList, rss_it)
 			{
 				TRACE2(_T("rss.name = %s: %s\n"), rss_it->name().c_str(), rss_it->getType().name().c_str());
@@ -453,14 +453,14 @@ void RDOParserCorbaRSS::parse(CREF(LPRDOParser) pParser)
 	ruint rss_count = 1;
 
 	//! Получили список всех типов ресурсов
-	rdoMBuilder::RDOResTypeList rtpList(pParser);
+	rdo::compiler::mbuilder::RDOResTypeList rtpList(pParser);
 	//! Получили список всех ресурсов
-	rdoMBuilder::RDOResourceList rssList(pParser);
+	rdo::compiler::mbuilder::RDOResourceList rssList(pParser);
 
 	for (ruint i = 0; i < rss_count; i++)
 	{
 		//! Создали новый ресурс
-		rdoMBuilder::RDOResource rss(rtpList["Парикмахеры"], "MyRSS1");
+		rdo::compiler::mbuilder::RDOResource rss(rtpList["Парикмахеры"], "MyRSS1");
 		//! Заполнили его параметры
 		rss["длительность_max"] = 174;
 		//! Добавляем его к списку существующих

@@ -17,7 +17,7 @@
 #include "simulator/compiler/parser/type/range.h"
 // --------------------------------------------------------------------------------
 
-OPEN_MBUILDER_NAMESPACE
+OPEN_COMPILER_MBUILDER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // --------------------  онструкторы копий и операторы присваивани€
@@ -101,7 +101,7 @@ RDOResType::Param::Param(CREF(rdoParser::LPRDORTPParam) param)
 {
 	switch (typeID())
 	{
-		case rdoRuntime::RDOType::t_int:
+		case rdo::runtime::RDOType::t_int:
 		{
 			rdoParser::LPRDOTypeIntRange pRange = param->getTypeInfo()->type().object_dynamic_cast<rdoParser::RDOTypeIntRange>();
 			if (pRange)
@@ -111,7 +111,7 @@ RDOResType::Param::Param(CREF(rdoParser::LPRDORTPParam) param)
 			}
 			break;
 		}
-		case rdoRuntime::RDOType::t_real:
+		case rdo::runtime::RDOType::t_real:
 		{
 			rdoParser::LPRDOTypeRealRange pRange = param->getTypeInfo()->type().object_dynamic_cast<rdoParser::RDOTypeRealRange>();
 			if (pRange)
@@ -171,7 +171,7 @@ RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<rdoParser::
 	initType(pType);
 }
 
-RDOResType::Param::Param(CREF(tstring) name, CREF(rdoRuntime::RDOEnumType::Enums) enums, CREF(rdoParser::LPRDOValue) pDefault)
+RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::runtime::RDOEnumType::Enums) enums, CREF(rdoParser::LPRDOValue) pDefault)
 	: m_name    (name    )
 	, m_exist   (true    )
 	, m_id      (-1      )
@@ -244,7 +244,7 @@ rbool RDOResTypeList::appendAfter(REF(RDOResType) rtp, CREF(rdoParser::LPRDORTPR
 		ASSERT(pDefault);
 		switch (param->typeID())
 		{
-			case rdoRuntime::RDOType::t_int:
+			case rdo::runtime::RDOType::t_int:
 			{
 				if (param->hasRange())
 				{
@@ -258,7 +258,7 @@ rbool RDOResTypeList::appendAfter(REF(RDOResType) rtp, CREF(rdoParser::LPRDORTPR
 				}
 				break;
 			}
-			case rdoRuntime::RDOType::t_real:
+			case rdo::runtime::RDOType::t_real:
 			{
 				if (param->hasRange())
 				{
@@ -272,7 +272,7 @@ rbool RDOResTypeList::appendAfter(REF(RDOResType) rtp, CREF(rdoParser::LPRDORTPR
 				}
 				break;
 			}
-			case rdoRuntime::RDOType::t_enum:
+			case rdo::runtime::RDOType::t_enum:
 			{
 				pParamType = param->type();
 				break;
@@ -404,4 +404,4 @@ RDOResourceList::RDOResourceList(CREF(rdoParser::LPRDOParser) pParser)
 	}
 }
 
-CLOSE_MBUILDER_NAMESPACE
+CLOSE_COMPILER_MBUILDER_NAMESPACE

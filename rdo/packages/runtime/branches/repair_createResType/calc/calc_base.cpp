@@ -58,8 +58,8 @@ REF(RDOValue) RDOCalc::calcValue(CREF(LPRDORuntime) pRuntime)
 	}
 	catch (REF(RDORuntimeException))
 	{
-		rdoSimulator::RDOSyntaxError error(
-			rdoSimulator::RDOSyntaxError::UNKNOWN,
+		rdo::service::simulation::RDOSyntaxError error(
+			rdo::service::simulation::RDOSyntaxError::UNKNOWN,
 			rdo::format(_T("<Модельное время: %f>, '%s'"), pRuntime->getTimeNow(), m_srcInfo.src_text().c_str()),
 			m_srcInfo.src_pos().m_last_line,
 			m_srcInfo.src_pos().m_last_pos,

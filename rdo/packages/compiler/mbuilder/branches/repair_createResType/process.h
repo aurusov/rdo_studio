@@ -16,7 +16,7 @@
 #include "simulator/compiler/mbuilder/rdo_resources.h"
 // --------------------------------------------------------------------------------
 
-OPEN_MBUILDER_NAMESPACE
+OPEN_COMPILER_MBUILDER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- BlockForQueue
@@ -41,6 +41,6 @@ public:
 	static RDOResType createType (CREF(tstring) rtp_name, CREF(rdoParser::RDOParserSrcInfo) info    );
 };
 
-CLOSE_MBUILDER_NAMESPACE
+CLOSE_COMPILER_MBUILDER_NAMESPACE
 
 #endif // _MBUILDER_PROCESS_H_

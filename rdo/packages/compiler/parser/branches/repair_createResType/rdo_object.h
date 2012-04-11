@@ -26,13 +26,13 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOParserSrcInfo
 // --------------------------------------------------------------------------------
-class RDOParserSrcInfo: public rdoRuntime::RDOSrcInfo
+class RDOParserSrcInfo: public rdo::runtime::RDOSrcInfo
 {
 public:
 	RDOParserSrcInfo();
 	RDOParserSrcInfo(CREF(YYLTYPE) pos);
-	RDOParserSrcInfo(CREF(rdoRuntime::RDOSrcInfo) info);
-	RDOParserSrcInfo(CREF(rdoRuntime::RDOSrcInfo::Position) pos);
+	RDOParserSrcInfo(CREF(rdo::runtime::RDOSrcInfo) info);
+	RDOParserSrcInfo(CREF(rdo::runtime::RDOSrcInfo::Position) pos);
 	explicit RDOParserSrcInfo(CREF(tstring) text);
 	RDOParserSrcInfo(CREF(YYLTYPE) pos, CREF(tstring) text);
 	RDOParserSrcInfo(CREF(YYLTYPE) pos_begin, CREF(YYLTYPE) pos_end, rbool first_align = false);

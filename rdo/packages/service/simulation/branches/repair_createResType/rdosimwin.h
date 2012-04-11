@@ -41,7 +41,7 @@
 //#define DISABLE_CORBA
 //#ifndef DISABLE_CORBA
 OPEN_RDO_ANIMATION_NAMESPACE
-struct RDOFrame;
+struct Frame;
 CLOSE_RDO_ANIMATION_NAMESPACE
 
 #define DISABLE_CORBA
@@ -99,9 +99,9 @@ private:
 
 #endif // CORBA_ENABLE
 
-OPEN_RDO_SIMULATOR_NAMESPACE
+OPEN_RDO_SERVICE_SIMULATION_NAMESPACE
 class RDOThreadSimulator;
-CLOSE_RDO_SIMULATOR_NAMESPACE
+CLOSE_RDO_SERVICE_SIMULATION_NAMESPACE
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
@@ -120,10 +120,10 @@ public:
 
 	struct GetFrame
 	{
-		PTR(rdoAnimation::RDOFrame) m_pFrame;
-		ruint                       m_number;
+		PTR(rdo::animation::Frame) m_pFrame;
+		ruint                      m_number;
 
-		GetFrame(PTR(rdoAnimation::RDOFrame) pFrame, ruint number)
+		GetFrame(PTR(rdo::animation::Frame) pFrame, ruint number)
 			: m_pFrame(pFrame)
 			, m_number(number)
 		{}
@@ -141,9 +141,9 @@ public:
 	};
 
 private:
-	PTR(rdoSimulator::RDOThreadSimulator) m_pSimulator;
-	rbool                                 m_runtimeError;
-	ruint64                               m_timeStart;
+	PTR(rdo::service::simulation::RDOThreadSimulator)  m_pSimulator;
+	rbool                                              m_runtimeError;
+	ruint64                                            m_timeStart;
 
 	RDOThreadRunTime();
 	virtual ~RDOThreadRunTime() //! Чтобы нельзя было удалить через delete
@@ -168,14 +168,14 @@ OPEN_RDO_PARSER_NAMESPACE
 PREDECLARE_POINTER(RDOParser);
 CLOSE_RDO_PARSER_NAMESPACE
 
-OPEN_RDO_SIMULATOR_NAMESPACE
+OPEN_RDO_SERVICE_SIMULATION_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOThreadSimulator
 // --------------------------------------------------------------------------------
 class RDOThreadSimulator: public RDOThreadMT
 {
-friend class rdoRuntime::RDOThreadRunTime;
+friend class rdo::runtime::RDOThreadRunTime;
 friend class RDORuntimeTracer;
 friend class RDOSimResulter;
 
@@ -203,13 +203,13 @@ public:
 	{};
 
 private:
-	rdoParser::LPRDOParser          m_pParser;
-	rdoRuntime::LPRDORuntime        m_pRuntime;
-	rbool                           m_canTrace;
-	LPProcGUIProcess                m_pGUIProcess;
-	LPProcGUIBlock                  m_pBlock;
-	rdoRuntime::LPRDOThreadRunTime  m_pThreadRuntime;
-	RDOExitCode                     m_exitCode;
+	rdoParser::LPRDOParser                m_pParser;
+	rdo::runtime::LPRDORuntime            m_pRuntime;
+	rbool                                 m_canTrace;
+	rdo::compiler::gui::LPProcGUIProcess  m_pGUIProcess;
+	rdo::compiler::gui::LPProcGUIBlock    m_pBlock;
+	rdo::runtime::LPRDOThreadRunTime      m_pThreadRuntime;
+	RDOExitCode                           m_exitCode;
 
 	void terminateModel();
 	void closeModel    (); 
@@ -306,6 +306,6 @@ public:
 	};
 };
 
-CLOSE_RDO_SIMULATOR_NAMESPACE
+CLOSE_RDO_SERVICE_SIMULATION_NAMESPACE
 
 #endif // _RDOSIMWIN_H_

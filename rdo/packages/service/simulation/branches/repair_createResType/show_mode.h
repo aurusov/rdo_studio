@@ -16,7 +16,7 @@
 #include "simulator/service/namespace.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_SIMULATOR_NAMESPACE
+OPEN_RDO_SERVICE_SIMULATION_NAMESPACE
 
 //! Режимы анимации
 enum ShowMode
@@ -26,6 +26,6 @@ enum ShowMode
 	SM_Monitor    //!< Анимация и модель на паузе
 };
 
-CLOSE_RDO_SIMULATOR_NAMESPACE
+CLOSE_RDO_SERVICE_SIMULATION_NAMESPACE
 
 #endif // _SIMULATOR_SERVICE_SHOW_MODE_H_

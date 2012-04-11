@@ -23,14 +23,14 @@
 class IActivity
 {
 public:
-	virtual void addParamCalc  (CREF(rdoRuntime::LPRDOCalc) pCalc) = 0;
-	virtual int  getResByRelRes(ruint rel_res_id) const            = 0;
-	virtual void setRelRes     (ruint rel_res_id, ruint res_id)    = 0;
+	virtual void addParamCalc  (CREF(rdo::runtime::LPRDOCalc) pCalc) = 0;
+	virtual int  getResByRelRes(ruint rel_res_id) const              = 0;
+	virtual void setRelRes     (ruint rel_res_id, ruint res_id)      = 0;
 };
 
 #define DECLARE_IActivity \
-	virtual void addParamCalc  (CREF(rdoRuntime::LPRDOCalc) pCalc); \
-	virtual int  getResByRelRes(ruint rel_res_id) const;            \
+	virtual void addParamCalc  (CREF(rdo::runtime::LPRDOCalc) pCalc); \
+	virtual int  getResByRelRes(ruint rel_res_id) const;              \
 	virtual void setRelRes     (ruint rel_res_id, ruint res_id);
 
 /*!
@@ -40,13 +40,13 @@ public:
 class IActivityTrace
 {
 public:
-	virtual tstring traceResourcesList       (char prefix, CREF(rdoRuntime::LPRDORuntime) pRuntime)             = 0;
-	virtual tstring traceResourcesListNumbers(CREF(rdoRuntime::LPRDORuntime) pRuntime, rbool show_create_index) = 0;
+	virtual tstring traceResourcesList       (char prefix, CREF(rdo::runtime::LPRDORuntime) pRuntime)             = 0;
+	virtual tstring traceResourcesListNumbers(CREF(rdo::runtime::LPRDORuntime) pRuntime, rbool show_create_index) = 0;
 };
 
-#define DECLARE_IActivityTrace                                                                                   \
-	virtual tstring traceResourcesList       (char prefix, CREF(rdoRuntime::LPRDORuntime) pRuntime);             \
-	virtual tstring traceResourcesListNumbers(CREF(rdoRuntime::LPRDORuntime) pRuntime, rbool show_create_index);
+#define DECLARE_IActivityTrace                                                                                     \
+	virtual tstring traceResourcesList       (char prefix, CREF(rdo::runtime::LPRDORuntime) pRuntime);             \
+	virtual tstring traceResourcesListNumbers(CREF(rdo::runtime::LPRDORuntime) pRuntime, rbool show_create_index);
 
 /*!
   \interface IActivityPatternTrace
