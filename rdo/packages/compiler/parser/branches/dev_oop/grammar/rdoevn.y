@@ -2379,7 +2379,7 @@ nochange_statement
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pBaseType, RDOParserSrcInfo(@1));
 		ASSERT(pType);
 
-		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalcBreak, RDOParserSrcInfo(@1));
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
 		ASSERT(pExpression);
 
 		$$ = PARSER->stack().push(pExpression);
