@@ -64,7 +64,6 @@ public:
 	void addCalcStatement(CREF(LPRDOCalc) pStatement);
 
 private:
-	RDOCalcFor(CREF(LPRDOCalc) pDeclaration, CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pExpression, CREF(LPRDOCalc) pStatement);
 	RDOCalcFor(CREF(LPRDOCalc) pDeclaration, CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pExpression);
 
 	LPRDOCalc m_pDeclaration;

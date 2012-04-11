@@ -68,18 +68,6 @@ REF(RDOValue) RDOCalcIfElse::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcFor
 // --------------------------------------------------------------------------------
-RDOCalcFor::RDOCalcFor(CREF(LPRDOCalc) pDeclaration, CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pExpression, CREF(LPRDOCalc) pStatement)
-	: m_pDeclaration(pDeclaration)
-	, m_pCondition  (pCondition  )
-	, m_pExpression (pExpression )
-	, m_pStatement  (pStatement  )
-{
-	ASSERT(m_pDeclaration);
-	ASSERT(m_pCondition  );
-	ASSERT(m_pExpression );
-	ASSERT(m_pStatement  );
-}
-
 RDOCalcFor::RDOCalcFor(CREF(LPRDOCalc) pDeclaration, CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pExpression)
 	: m_pDeclaration(pDeclaration)
 	, m_pCondition  (pCondition  )
