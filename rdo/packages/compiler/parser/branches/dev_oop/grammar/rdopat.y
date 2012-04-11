@@ -1476,26 +1476,29 @@ pat_convert
 	{
 		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
 		ASSERT(pPattern);
-		tstring type = _T("");
-		switch (pPattern->getType())
+		if (pPattern->getType() != RDOPATPattern::PT_Event)
 		{
+			tstring type = _T("");
+			switch (pPattern->getType())
+			{
 			case RDOPATPattern::PT_Rule     :
-			{
-				type = _T("продукционном правиле");
-				break;
+				{
+					type = _T("продукционном правиле");
+					break;
+				}
+				case RDOPATPattern::PT_Operation:
+				{
+					type = _T("операции");
+					break;
+				}
+				case RDOPATPattern::PT_Keyboard :
+				{
+					type = _T("клавиатурной операции");
+					break;
+				}
 			}
-			case RDOPATPattern::PT_Operation:
-			{
-				type = _T("операции");
-				break;
-			}
-			case RDOPATPattern::PT_Keyboard :
-			{
-				type = _T("клавиатурной операции");
-				break;
-			}
+			PARSER->error().error(@2, rdo::format(_T("Ключевое слово Convert_event может быть использовано в событии, но не в %s '%s'"), type.c_str(), pPattern->name().c_str()));
 		}
-		PARSER->error().error(@2, rdo::format(_T("Ключевое слово Convert_event может быть использовано в событии, но не в %s '%s'"), type.c_str(), pPattern->name().c_str()));
 
 		LPExpression pExpressionConvertBody = PARSER->stack().pop<Expression>($4);
 		ASSERT(pExpressionConvertBody);
@@ -2512,7 +2515,17 @@ nochange_statement
 	{
 		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcNoChange>::create();
 		ASSERT(pCalc);
-		$$ = PARSER->stack().push(pCalc);
+
+		LPRDOType pBaseType = rdo::Factory<RDOType__void>::create();
+		ASSERT(pBaseType);
+
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pBaseType, RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalcBreak, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
 	}
 	| RDO_IDENTIF_NoChange error
 	{
@@ -2662,8 +2675,6 @@ process_input_statement
 		ASSERT(pExpression);
 
 		$$ = PARSER->stack().push(pExpression);
-
-		$$ = PARSER->stack().push(pCalc);
 	}
 	| RDO_IDENTIF '.' RDO_ProcessStart '(' error ')' ';'
 	{

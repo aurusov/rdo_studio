@@ -2372,7 +2372,17 @@ nochange_statement
 	{
 		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcNoChange>::create();
 		ASSERT(pCalc);
-		$$ = PARSER->stack().push(pCalc);
+
+		LPRDOType pBaseType = rdo::Factory<RDOType__void>::create();
+		ASSERT(pBaseType);
+
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pBaseType, RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalcBreak, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
 	}
 	| RDO_IDENTIF_NoChange error
 	{
@@ -2522,8 +2532,6 @@ process_input_statement
 		ASSERT(pExpression);
 
 		$$ = PARSER->stack().push(pExpression);
-
-		$$ = PARSER->stack().push(pCalc);
 	}
 	| RDO_IDENTIF '.' RDO_ProcessStart '(' error ')' ';'
 	{
