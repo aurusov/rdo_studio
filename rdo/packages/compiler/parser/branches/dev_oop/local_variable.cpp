@@ -90,7 +90,14 @@ void LocalVariableList::append(CREF(LPLocalVariable) pVariable)
 LPLocalVariable LocalVariableList::findLocalVariable(CREF(tstring) name) const
 {
 	VariableList::const_iterator it = m_variableList.find(name);
-	return it != m_variableList.end() ? it->second : NULL;
+	if(it != m_variableList.end())
+	{
+		return it->second;
+	}
+	else
+	{
+		return NULL;
+	}
 }
 
 // --------------------------------------------------------------------------------
