@@ -1676,7 +1676,7 @@ equal_statement
 		}
 		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @2, rdo::format(_T("%s %s"), paramName.c_str(), oprStr.c_str())));
 
-		LPExpression pExpression = rdo::Factory<Expression>::create(pLeftArithmType, pCalc, RDOParserSrcInfo(@1));
+		LPExpression pExpression = rdo::Factory<Expression>::create(pLeftArithmType, pCalc, pCalc->srcInfo());
 		ASSERT(pExpression);
 
 		$$ = PARSER->stack().push(pExpression);
@@ -1854,7 +1854,7 @@ equal_statement
 		}
 		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @3, rdo::format(_T("%s %s %s"), paramName.c_str(), oprStr.c_str(), pCalcRight->srcInfo().src_text().c_str())));
 
-		LPExpression pExpression = rdo::Factory<Expression>::create(pLeftArithmType, pCalc, RDOParserSrcInfo(@1));
+		LPExpression pExpression = rdo::Factory<Expression>::create(pLeftArithmType, pCalc, pCalc->srcInfo());
 		ASSERT(pExpression);
 
 		$$ = PARSER->stack().push(pExpression);
