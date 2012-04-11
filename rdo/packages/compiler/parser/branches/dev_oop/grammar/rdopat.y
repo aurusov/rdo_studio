@@ -1723,8 +1723,6 @@ equal_statement
 		LPRDOValue              pParamName = PARSER->stack().pop<RDOValue>($1);
 		tstring                 paramName  = pParamName->value().getIdentificator();
 		rdo::runtime::EqualType equalType  = static_cast<rdo::runtime::EqualType>($2);
-		LPRDORelevantResource   pRelRes    = PARSER->getLastPATPattern()->m_pCurrRelRes;
-		ASSERT(pRelRes);
 		LPContext pContext = PARSER->context();
 		ASSERT(pContext);
 		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
@@ -1758,6 +1756,8 @@ equal_statement
 		}
 		else
 		{
+			LPRDORelevantResource pRelRes = PARSER->getLastPATPattern()->m_pCurrRelRes;
+			ASSERT(pRelRes);
 			LPRDORTPParam pParam = pRelRes->getType()->findRTPParam(paramName);
 			if (!pParam)
 			{
@@ -1830,8 +1830,6 @@ equal_statement
 		tstring                 paramName    = pParamName->value().getIdentificator();
 		rdo::runtime::EqualType equalType    = static_cast<rdo::runtime::EqualType>($2);
 		LPRDOFUNArithm          pRightArithm = PARSER->stack().pop<RDOFUNArithm>($3);
-		LPRDORelevantResource   pRelRes      = PARSER->getLastPATPattern()->m_pCurrRelRes;
-		ASSERT(pRelRes);
 		LPContext pContext = PARSER->context();
 		ASSERT(pContext);
 		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
@@ -1886,6 +1884,8 @@ equal_statement
 		}
 		else
 		{
+			LPRDORelevantResource pRelRes = PARSER->getLastPATPattern()->m_pCurrRelRes;
+			ASSERT(pRelRes);
 			LPRDORTPParam pParam = pRelRes->getType()->findRTPParam(paramName);
 			if (!pParam)
 			{
@@ -2040,10 +2040,8 @@ set_array_item_statement
 		rdo::runtime::LPRDOCalc pArrayItemCalc = rdo::Factory<rdo::runtime::RDOCalcSetArrayItem>::create(pArrayArithm->calc(), pArithmInd->calc(), pRightArithm->calc());
 		ASSERT(pArrayItemCalc);
 		
-		tstring               paramName    = pParamName->value().getIdentificator();
-		LPRDORelevantResource pRelRes      = PARSER->getLastPATPattern()->m_pCurrRelRes;
-		ASSERT(pRelRes);
-		LPContext pContext = PARSER->context();
+		tstring   paramName = pParamName->value().getIdentificator();
+		LPContext pContext  = PARSER->context();
 		ASSERT(pContext);
 		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
 		ASSERT(pContextMemory);
@@ -2059,6 +2057,8 @@ set_array_item_statement
 		}
 		else
 		{
+			LPRDORelevantResource pRelRes = PARSER->getLastPATPattern()->m_pCurrRelRes;
+			ASSERT(pRelRes);
 			LPRDORTPParam pParam = pRelRes->getType()->findRTPParam(paramName);
 			ASSERT(pParam);
 
