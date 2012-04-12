@@ -2479,6 +2479,14 @@
 			Name=".common"
 			>
 			<File
+				RelativePath=".\bison_value_pair.h"
+				>
+			</File>
+			<File
+				RelativePath=".\bison_value_pair.inl"
+				>
+			</File>
+			<File
 				RelativePath=".\local_variable.cpp"
 				>
 			</File>
@@ -2496,14 +2504,6 @@
 			</File>
 			<File
 				RelativePath=".\rdo_object.h"
-				>
-			</File>
-			<File
-				RelativePath=".\variable_container.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\variable_container.h"
 				>
 			</File>
 		</Filter>
