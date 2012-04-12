@@ -24,10 +24,10 @@ $Resources
 3 machine 2
 
 $Pattern
-1 inflow V 2 1 2
-2 loadingMachine V 2 2 2
-3 processingEnd V 2 2 2
-4 loadingExit V 2 2 1
+1 inflow E 2 1 2
+2 loadingMachine E 2 2 2
+3 processingEnd E 2 2 2
+4 loadingExit E 2 2 1
 
 $Activities
 
