@@ -271,7 +271,7 @@ BOOST_AUTO_TEST_CASE(ArrayTestGetItem)
 	{
 		array.first->getItem(index);
 	}
-	catch (CREF(rdoRuntime::RDORuntimeException) ex)
+	catch (CREF(rdo::runtime::RDORuntimeException) ex)
 	{
 		if (!ex.message().empty())
 		{
