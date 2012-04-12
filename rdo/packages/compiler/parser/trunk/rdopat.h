@@ -191,7 +191,7 @@ public:
 
 	virtual char getModelStructureLetter() const
 	{
-		return _T('V');
+		return _T('I');
 	}
 	virtual PatType getType() const
 	{
