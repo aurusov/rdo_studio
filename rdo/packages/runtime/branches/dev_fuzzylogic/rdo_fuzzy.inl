@@ -17,24 +17,32 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // -------------------- DefineArea
 // --------------------------------------------------------------------------------
 inline DefineArea::DefineArea()
-	: m_domain(0,0,boost::icl::interval_bounds::closed())
+	: m_domain()
 {}
 
 inline DefineArea::~DefineArea()
 {}
+
 inline DefineArea::DefineArea(CREF(RDOValue) leftRange, CREF(RDOValue) rightRange)
-	: m_domain(leftRange, rightRange,boost::icl::interval_bounds::closed())
+{
+	DomainPart pDomainPart = DomainPart(0,0,boost::icl::interval_bounds::closed());
+	m_domain = Domain(pDomainPart);
+
+}
+inline DefineArea::DefineArea(CREF(RDOValue) value)
+	: m_domain(value)
 {}
-inline rbool DefineArea::empty() const
-{
-	if (m_domain.lower() == m_domain.upper())
-		return true;
-}
-inline rbool DefineArea::inDomain(RDOValue pValue)const
-{
-	if (pValue <= m_domain.lower() || pValue >= m_domain.upper())
-		return false;
-}
+
+//inline rbool DefineArea::empty() const
+//{
+//	if (m_domain.lower() == m_domain.upper())
+//		return true;
+//}
+//inline rbool DefineArea::inDomain(RDOValue pValue)const
+//{
+//	if (pValue <= m_domain.lower() || pValue >= m_domain.upper())
+//		return false;
+//}
 
 // --------------------------------------------------------------------------------
 // -------------------- FuzzySet

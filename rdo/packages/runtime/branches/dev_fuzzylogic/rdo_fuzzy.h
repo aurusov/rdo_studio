@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
 #include <boost/icl/interval.hpp>
+#include <boost/icl/interval_set.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_value.h"
 #include "simulator/runtime/rdo_type.h"
@@ -30,17 +31,19 @@ OBJECT(DefineArea)
 {
 DECLARE_FACTORY(DefineArea);
 public:
-	typedef  boost::icl::discrete_interval<RDOValue> Domain;
+	typedef  boost::icl::discrete_interval<RDOValue> DomainPart;
+	typedef  boost::icl::interval_set<RDOValue>      Domain;
 
-	rbool          empty   ()         const;
-	rbool          inDomain(RDOValue) const;
+	//rbool          empty   ()         const;
+	//rbool          inDomain(RDOValue) const;
 private:
 
 	DefineArea (); // empty area
-	DefineArea (CREF(RDOValue) leftBorder, CREF(RDOValue) rightBorder);
+	DefineArea(CREF(RDOValue));// 1 element
+	DefineArea  (CREF(RDOValue) leftBorder, CREF(RDOValue) rightBorder); //
 	~DefineArea();
 
-	Domain    m_domain;
+	Domain m_domain;
 };
 
 //! Нечеткое множество
@@ -84,6 +87,7 @@ private:
 
 	FuzzySetDefinition  m_fuzzySet;
 	LPRDOFuzzyType      m_pType;
+	//DefineArea          m_defineArea;
 };
 
 PREDECLARE_POINTER(RDOValue);
