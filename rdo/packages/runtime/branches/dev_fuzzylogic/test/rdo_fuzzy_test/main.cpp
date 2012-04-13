@@ -32,18 +32,31 @@ BOOST_AUTO_TEST_CASE(DefineAreaTest)
 
 	LPDefineArea pDefineArea = rdo::Factory<DefineArea>::create(1.0, 5.0);
 	BOOST_CHECK(pDefineArea);
+}
+BOOST_AUTO_TEST_CASE(FuzzySetTest)
+{
+	LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create();
+	BOOST_CHECK(pRuntime);
 
-	RDOValue testValueFalse = 100;
-	RDOValue testValueTrue = 3.0;
+	LPRDOFuzzyType pType = rdo::Factory<RDOFuzzyType>::create();
+	BOOST_CHECK(pType);
 
-	//BOOST_CHECK(!pDefineArea->inDomain(testValueFalse));
-	//BOOST_CHECK(pDefineArea->inDomain(testValueTrue));
+	LPFuzzySet pInfinityFuzzySet = rdo::Factory<FuzzySet>::create(pType);
+	BOOST_CHECK(pInfinityFuzzySet);
 
+	LPFuzzySet pCopyFuzzySet = rdo::Factory<FuzzySet>::create(pInfinityFuzzySet);
+	BOOST_CHECK(pCopyFuzzySet);
+
+	LPDefineArea pDefineArea = rdo::Factory<DefineArea>::create(0.0, 100.0);
+	BOOST_CHECK(pDefineArea);
+
+	LPFuzzySet pFuzzySet = rdo::Factory<FuzzySet>::create(pType, *pDefineArea);
+	BOOST_CHECK(pFuzzySet);
+
+//	LPFuzzySet pFuzzySet = rdo::Factory<FuzzySet>::create()
 }
 
 
 
 BOOST_AUTO_TEST_SUITE_END() // RDORuntime_Fuzzy_Test
-
-
 CLOSE_RDO_RUNTIME_NAMESPACE
