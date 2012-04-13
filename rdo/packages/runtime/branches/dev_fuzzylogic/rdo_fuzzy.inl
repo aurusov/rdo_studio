@@ -17,21 +17,28 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // -------------------- DefineArea
 // --------------------------------------------------------------------------------
 inline DefineArea::DefineArea()
-	: m_domain()
-{}
+{
+	IntervalType mType = DomainPart::closed(0,0);
+	m_domain = Domain(mType);
+}
 
 inline DefineArea::~DefineArea()
 {}
 
 inline DefineArea::DefineArea(CREF(RDOValue) leftRange, CREF(RDOValue) rightRange)
 {
-	DomainPart pDomainPart = DomainPart(0,0,boost::icl::interval_bounds::closed());
-	m_domain = Domain(pDomainPart);
-
+	IntervalType mType = DomainPart::closed(leftRange, rightRange);
+	m_domain = Domain(mType);
 }
 inline DefineArea::DefineArea(CREF(RDOValue) value)
-	: m_domain(value)
-{}
+{
+
+}
+
+//inline void DefineArea::appendDomain(CREF(DomainPart))
+//{
+//	m_domain.assignDomain(CREF(DomainPart));
+//}
 
 //inline rbool DefineArea::empty() const
 //{
@@ -54,7 +61,8 @@ inline FuzzySet::FuzzySet(CREF(LPRDOFuzzyType) pType)
 inline FuzzySet::FuzzySet(CREF(LPFuzzySet) pSet)
 	: m_pType(pSet->m_pType)
 {
-	m_fuzzySet = pSet->m_fuzzySet;
+	m_fuzzySet   = pSet->m_fuzzySet;
+	m_defineArea = pSet->m_defineArea;
 }
 inline FuzzySet::~FuzzySet()
 {}

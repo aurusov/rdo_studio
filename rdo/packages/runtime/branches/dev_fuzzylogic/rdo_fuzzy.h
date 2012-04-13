@@ -31,17 +31,18 @@ OBJECT(DefineArea)
 {
 DECLARE_FACTORY(DefineArea);
 public:
-	typedef  boost::icl::discrete_interval<RDOValue> DomainPart;
-	typedef  boost::icl::interval_set<RDOValue>      Domain;
-
-	//rbool          empty   ()         const;
+	typedef  boost::icl::interval<RDOValue> DomainPart;
+	typedef  boost::icl::interval<RDOValue>::type IntervalType;
+	typedef  boost::icl::interval_set<RDOValue> Domain;
+	
+	DefineArea (); // empty area
+	virtual ~DefineArea();
+//	void appendDomain(CREF(DomainPart));
 	//rbool          inDomain(RDOValue) const;
 private:
-
-	DefineArea (); // empty area
+//	DefineArea (); // empty area
 	DefineArea(CREF(RDOValue));// 1 element
-	DefineArea  (CREF(RDOValue) leftBorder, CREF(RDOValue) rightBorder); //
-	~DefineArea();
+	DefineArea  (CREF(RDOValue) leftBorder, CREF(RDOValue) rightBorder); //;
 
 	Domain m_domain;
 };
@@ -87,7 +88,7 @@ private:
 
 	FuzzySetDefinition  m_fuzzySet;
 	LPRDOFuzzyType      m_pType;
-	//DefineArea          m_defineArea;
+	DefineArea          m_defineArea;
 };
 
 PREDECLARE_POINTER(RDOValue);
