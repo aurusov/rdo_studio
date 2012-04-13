@@ -1459,6 +1459,245 @@ convert_end
 	}
 	;
 
+pat_pattern
+	: pat_convert RDO_End
+	{
+		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
+		pPattern->end();
+		$$ = PARSER->stack().push(pPattern);
+	}
+	;
+
+// --------------------------------------------------------------------------------
+// -------------------- Список statement'ов для паттернов
+// --------------------------------------------------------------------------------
+nochange_statement
+	: RDO_IDENTIF_NoChange ';'
+	{
+		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcNoChange>::create();
+		ASSERT(pCalc);
+
+		LPRDOType pBaseType = rdo::Factory<RDOType__void>::create();
+		ASSERT(pBaseType);
+
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pBaseType, RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	| RDO_IDENTIF_NoChange error
+	{
+		PARSER->error().error(@2, _T("Не найден символ окончания инструкции - точка с запятой"));
+	}
+	;
+
+stopping_statement
+	: RDO_IDENTIF '.' RDO_Stopping '(' ')' ';'
+	{
+		tstring    eventName = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+		LPRDOEvent pEvent    = PARSER->findEvent(eventName);
+		if (!pEvent)
+		{
+			PARSER->error().error(@1, rdo::format(_T("Попытка остановить неизвестное событие: %s"), eventName.c_str()));
+		}
+
+		rdo::runtime::LPRDOCalcEventStop pCalc = rdo::Factory<rdo::runtime::RDOCalcEventStop>::create();
+		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @6, rdo::format(_T("Остановка события %s"), eventName.c_str())));
+		ASSERT(pCalc);
+		pEvent->attachCalc(pCalc);
+
+		LPRDOType pBaseType = rdo::Factory<RDOType__void>::create();
+		ASSERT(pBaseType);
+
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pBaseType, RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	| RDO_IDENTIF '.' RDO_Stopping '(' ')' error
+	{
+		PARSER->error().error(@4, _T("Не найден символ окончания инструкции - точка с запятой"));
+	}
+	;
+
+planning_statement
+	: RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')' ';'
+	{
+		tstring           eventName   = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+		LPArithmContainer pArithmList = PARSER->stack().pop<ArithmContainer>($5);
+
+		LPRDOEvent pEvent = PARSER->findEvent(eventName);
+		if (!pEvent)
+		{
+			PARSER->error().error(@1, rdo::format(_T("Попытка запланировать неизвестное событие: %s"), eventName.c_str()));
+		}
+
+		ArithmContainer::Container::const_iterator arithmIt = pArithmList->getContainer().begin();
+		if (arithmIt == pArithmList->getContainer().end())
+		{
+			PARSER->error().error(@1, rdo::format(_T("Не указано время планирования события: %s"), eventName.c_str()));
+		}
+
+		LPRDOFUNArithm pTimeArithm = *arithmIt;
+		ASSERT(pTimeArithm);
+		++arithmIt;
+
+		LPArithmContainer pParamList = rdo::Factory<ArithmContainer>::create();
+		ASSERT(pParamList);
+
+		while (arithmIt != pArithmList->getContainer().end())
+		{
+			pParamList->addItem(*arithmIt);
+			++arithmIt;
+		}
+
+		pEvent->setParamList(pParamList);
+
+		rdo::runtime::LPRDOCalc pCalcTime = pTimeArithm->createCalc();
+		pCalcTime->setSrcInfo(pTimeArithm->src_info());
+		ASSERT(pCalcTime);
+
+		rdo::runtime::LPRDOCalcEventPlan pCalc = rdo::Factory<rdo::runtime::RDOCalcEventPlan>::create(pCalcTime);
+		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @7, rdo::format(_T("Планирование события %s в момент времени %s"), eventName.c_str(), pCalcTime->srcInfo().src_text().c_str())));
+		ASSERT(pCalc);
+		pEvent->attachCalc(pCalc);
+
+		LPRDOType pBaseType = rdo::Factory<RDOType__void>::create();
+		ASSERT(pBaseType);
+
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pBaseType, RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	| RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')' error
+	{
+		PARSER->error().error(@7, _T("Не найден символ окончания инструкции - точка с запятой"));
+	}
+	| RDO_IDENTIF '.' RDO_Planning '(' error
+	{
+		PARSER->error().error(@5, _T("Ошибка в арифметическом выражении"));
+	}
+	| RDO_IDENTIF '.' RDO_Planning error
+	{
+		PARSER->error().error(@4, _T("Ожидается открывающая скобка"));
+	}
+	| RDO_IDENTIF '.' RDO_Planning '(' arithm_list error
+	{
+		PARSER->error().error(@6, _T("Ожидается закрывающая скобка"));
+	}
+	;
+
+process_input_statement
+	: RDO_IDENTIF '.' RDO_ProcessStart '(' RDO_IDENTIF_RELRES ')' ';'
+	{
+		tstring          processName = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+		LPRDOPROCProcess pProcess    = PARSER->findPROCProcess(processName);
+		if (!pProcess)
+		{
+			PARSER->error().error(@1, rdo::format(_T("Попытка запустить неизвестный процесс: %s"), processName.c_str()));
+		}
+
+		LPIPROCBlock pBlock = (*(pProcess->getBlockList().begin()))->getRuntimeBlock();
+		ASSERT(pBlock);
+
+		tstring relResName = PARSER->stack().pop<RDOValue>($5)->value().getIdentificator();
+
+		LPRDOPATPattern pPattern = PARSER->getLastPATPattern();
+		ASSERT(pPattern);
+		/*из-за использования RDO_IDENTIF_RELRES findRelevantResource() всегда находит ресурс*/
+		LPRDORelevantResource pRelRes = pPattern->findRelevantResource(relResName);
+		tstring relResTypeName = pRelRes->getType()->name();
+
+		if (!pProcess->checkTransactType(relResTypeName))
+		{
+			PARSER->error().error(@1, rdo::format(_T("Процесс %s ожидает в качестве транзактов ресурсы типа %s, а не %s"), processName.c_str(), _T("true_resTypeName"), relResTypeName.c_str()));
+		}
+
+		rdo::runtime::LPRDOCalcProcessControl pCalc = rdo::Factory<rdo::runtime::RDOCalcProcessControl>::create(pBlock, pRelRes->m_relResID);
+		ASSERT(pCalc);
+
+		LPRDOType pBaseType = rdo::Factory<RDOType__void>::create();
+		ASSERT(pBaseType);
+
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pBaseType, RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	| RDO_IDENTIF '.' RDO_ProcessStart '(' error ')' ';'
+	{
+		PARSER->error().error(@5, _T("В качестве транзакта процессу можно передавать только релеватный ресурс"));
+	}
+	;
+
+watch_start
+	: RDO_IDENTIF '.' RDO_WatchStart '(' ')' ';'
+	{
+		tstring          name         = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+		LPRDOResultGroup pResultGroup = PARSER->findResultGroup(name);
+		if (!pResultGroup)
+		{
+			PARSER->error().error(@1, rdo::format(_T("Неизвестная группа показателей: %s"), name.c_str()));
+		}
+
+		rdo::runtime::LPRDOCalcWatchGroupStart pCalc = rdo::Factory<rdo::runtime::RDOCalcWatchGroupStart>::create(pResultGroup->getRuntime());
+		ASSERT(pCalc);
+
+		LPRDOType pBaseType = rdo::Factory<RDOType__void>::create();
+		ASSERT(pBaseType);
+
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pBaseType, RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	;
+
+watch_stop
+	: RDO_IDENTIF '.' RDO_WatchStop '(' ')' ';'
+	{
+		tstring          name         = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
+		LPRDOResultGroup pResultGroup = PARSER->findResultGroup(name);
+		if (!pResultGroup)
+		{
+			PARSER->error().error(@1, rdo::format(_T("Неизвестная группа показателей: %s"), name.c_str()));
+		}
+
+		rdo::runtime::LPRDOCalcWatchGroupStop pCalc = rdo::Factory<rdo::runtime::RDOCalcWatchGroupStop>::create(pResultGroup->getRuntime());
+		ASSERT(pCalc);
+
+		LPRDOType pBaseType = rdo::Factory<RDOType__void>::create();
+		ASSERT(pBaseType);
+
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pBaseType, RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	;
+
+// --------------------------------------------------------------------------------
+// -------------------- Список общих statement'ов
+// --------------------------------------------------------------------------------
 statement
 	: empty_statement ';'
 	| empty_statement error
@@ -1883,6 +2122,44 @@ equal_statement
 	| RDO_IDENTIF error fun_arithm
 	{
 		PARSER->error().error(@2, _T("Ошибка в операторе присваивания"));
+	}
+	;
+
+increment_or_decrement_type
+	: RDO_IncrEqual
+	{
+		$$ = rdo::runtime::ET_INCR;
+	}
+	| RDO_DecrEqual
+	{
+		$$ = rdo::runtime::ET_DECR;
+	}
+	;
+
+param_equal_type
+	: RDO_set
+	{
+		$$ = rdo::runtime::ET_EQUAL;
+	}
+	| '='
+	{
+		$$ = rdo::runtime::ET_EQUAL;
+	}
+	| RDO_PlusEqual
+	{
+		$$ = rdo::runtime::ET_PLUS;
+	}
+	| RDO_MinusEqual
+	{
+		$$ = rdo::runtime::ET_MINUS;
+	}
+	| RDO_MultiplyEqual
+	{
+		$$ = rdo::runtime::ET_MULTIPLY;
+	}
+	| RDO_DivideEqual
+	{
+		$$ = rdo::runtime::ET_DIVIDE;
 	}
 	;
 
@@ -2341,277 +2618,6 @@ break_statement
 		ASSERT(pExpression);
 
 		$$ = PARSER->stack().push(pExpression);
-	}
-	;
-
-increment_or_decrement_type
-	: RDO_IncrEqual
-	{
-		$$ = rdo::runtime::ET_INCR;
-	}
-	| RDO_DecrEqual
-	{
-		$$ = rdo::runtime::ET_DECR;
-	}
-	;
-
-param_equal_type
-	: RDO_set
-	{
-		$$ = rdo::runtime::ET_EQUAL;
-	}
-	| '='
-	{
-		$$ = rdo::runtime::ET_EQUAL;
-	}
-	| RDO_PlusEqual
-	{
-		$$ = rdo::runtime::ET_PLUS;
-	}
-	| RDO_MinusEqual
-	{
-		$$ = rdo::runtime::ET_MINUS;
-	}
-	| RDO_MultiplyEqual
-	{
-		$$ = rdo::runtime::ET_MULTIPLY;
-	}
-	| RDO_DivideEqual
-	{
-		$$ = rdo::runtime::ET_DIVIDE;
-	}
-	;
-
-nochange_statement
-	: RDO_IDENTIF_NoChange ';'
-	{
-		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcNoChange>::create();
-		ASSERT(pCalc);
-
-		LPRDOType pBaseType = rdo::Factory<RDOType__void>::create();
-		ASSERT(pBaseType);
-
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pBaseType, RDOParserSrcInfo(@1));
-		ASSERT(pType);
-
-		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
-		ASSERT(pExpression);
-
-		$$ = PARSER->stack().push(pExpression);
-	}
-	| RDO_IDENTIF_NoChange error
-	{
-		PARSER->error().error(@2, _T("Не найден символ окончания инструкции - точка с запятой"));
-	}
-	;
-
-stopping_statement
-	: RDO_IDENTIF '.' RDO_Stopping '(' ')' ';'
-	{
-		tstring    eventName = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
-		LPRDOEvent pEvent    = PARSER->findEvent(eventName);
-		if (!pEvent)
-		{
-			PARSER->error().error(@1, rdo::format(_T("Попытка остановить неизвестное событие: %s"), eventName.c_str()));
-		}
-
-		rdo::runtime::LPRDOCalcEventStop pCalc = rdo::Factory<rdo::runtime::RDOCalcEventStop>::create();
-		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @6, rdo::format(_T("Остановка события %s"), eventName.c_str())));
-		ASSERT(pCalc);
-		pEvent->attachCalc(pCalc);
-
-		LPRDOType pBaseType = rdo::Factory<RDOType__void>::create();
-		ASSERT(pBaseType);
-
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pBaseType, RDOParserSrcInfo(@1));
-		ASSERT(pType);
-
-		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
-		ASSERT(pExpression);
-
-		$$ = PARSER->stack().push(pExpression);
-	}
-	| RDO_IDENTIF '.' RDO_Stopping '(' ')' error
-	{
-		PARSER->error().error(@4, _T("Не найден символ окончания инструкции - точка с запятой"));
-	}
-	;
-
-planning_statement
-	: RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')' ';'
-	{
-		tstring           eventName   = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
-		LPArithmContainer pArithmList = PARSER->stack().pop<ArithmContainer>($5);
-
-		LPRDOEvent pEvent = PARSER->findEvent(eventName);
-		if (!pEvent)
-		{
-			PARSER->error().error(@1, rdo::format(_T("Попытка запланировать неизвестное событие: %s"), eventName.c_str()));
-		}
-
-		ArithmContainer::Container::const_iterator arithmIt = pArithmList->getContainer().begin();
-		if (arithmIt == pArithmList->getContainer().end())
-		{
-			PARSER->error().error(@1, rdo::format(_T("Не указано время планирования события: %s"), eventName.c_str()));
-		}
-
-		LPRDOFUNArithm pTimeArithm = *arithmIt;
-		ASSERT(pTimeArithm);
-		++arithmIt;
-
-		LPArithmContainer pParamList = rdo::Factory<ArithmContainer>::create();
-		ASSERT(pParamList);
-
-		while (arithmIt != pArithmList->getContainer().end())
-		{
-			pParamList->addItem(*arithmIt);
-			++arithmIt;
-		}
-
-		pEvent->setParamList(pParamList);
-
-		rdo::runtime::LPRDOCalc pCalcTime = pTimeArithm->createCalc();
-		pCalcTime->setSrcInfo(pTimeArithm->src_info());
-		ASSERT(pCalcTime);
-
-		rdo::runtime::LPRDOCalcEventPlan pCalc = rdo::Factory<rdo::runtime::RDOCalcEventPlan>::create(pCalcTime);
-		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @7, rdo::format(_T("Планирование события %s в момент времени %s"), eventName.c_str(), pCalcTime->srcInfo().src_text().c_str())));
-		ASSERT(pCalc);
-		pEvent->attachCalc(pCalc);
-
-		LPRDOType pBaseType = rdo::Factory<RDOType__void>::create();
-		ASSERT(pBaseType);
-
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pBaseType, RDOParserSrcInfo(@1));
-		ASSERT(pType);
-
-		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
-		ASSERT(pExpression);
-
-		$$ = PARSER->stack().push(pExpression);
-	}
-	| RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')' error
-	{
-		PARSER->error().error(@7, _T("Не найден символ окончания инструкции - точка с запятой"));
-	}
-	| RDO_IDENTIF '.' RDO_Planning '(' error
-	{
-		PARSER->error().error(@5, _T("Ошибка в арифметическом выражении"));
-	}
-	| RDO_IDENTIF '.' RDO_Planning error
-	{
-		PARSER->error().error(@4, _T("Ожидается открывающая скобка"));
-	}
-	| RDO_IDENTIF '.' RDO_Planning '(' arithm_list error
-	{
-		PARSER->error().error(@6, _T("Ожидается закрывающая скобка"));
-	}
-	;
-
-process_input_statement
-	: RDO_IDENTIF '.' RDO_ProcessStart '(' RDO_IDENTIF_RELRES ')' ';'
-	{
-		tstring          processName = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
-		LPRDOPROCProcess pProcess    = PARSER->findPROCProcess(processName);
-		if (!pProcess)
-		{
-			PARSER->error().error(@1, rdo::format(_T("Попытка запустить неизвестный процесс: %s"), processName.c_str()));
-		}
-
-		LPIPROCBlock pBlock = (*(pProcess->getBlockList().begin()))->getRuntimeBlock();
-		ASSERT(pBlock);
-
-		tstring relResName = PARSER->stack().pop<RDOValue>($5)->value().getIdentificator();
-
-		LPRDOPATPattern pPattern = PARSER->getLastPATPattern();
-		ASSERT(pPattern);
-		/*из-за использования RDO_IDENTIF_RELRES findRelevantResource() всегда находит ресурс*/
-		LPRDORelevantResource pRelRes = pPattern->findRelevantResource(relResName);
-		tstring relResTypeName = pRelRes->getType()->name();
-
-		if (!pProcess->checkTransactType(relResTypeName))
-		{
-			PARSER->error().error(@1, rdo::format(_T("Процесс %s ожидает в качестве транзактов ресурсы типа %s, а не %s"), processName.c_str(), _T("true_resTypeName"), relResTypeName.c_str()));
-		}
-
-		rdo::runtime::LPRDOCalcProcessControl pCalc = rdo::Factory<rdo::runtime::RDOCalcProcessControl>::create(pBlock, pRelRes->m_relResID);
-		ASSERT(pCalc);
-
-		LPRDOType pBaseType = rdo::Factory<RDOType__void>::create();
-		ASSERT(pBaseType);
-
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pBaseType, RDOParserSrcInfo(@1));
-		ASSERT(pType);
-
-		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
-		ASSERT(pExpression);
-
-		$$ = PARSER->stack().push(pExpression);
-	}
-	| RDO_IDENTIF '.' RDO_ProcessStart '(' error ')' ';'
-	{
-		PARSER->error().error(@5, _T("В качестве транзакта процессу можно передавать только релеватный ресурс"));
-	}
-	;
-
-watch_start
-	: RDO_IDENTIF '.' RDO_WatchStart '(' ')' ';'
-	{
-		tstring          name         = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
-		LPRDOResultGroup pResultGroup = PARSER->findResultGroup(name);
-		if (!pResultGroup)
-		{
-			PARSER->error().error(@1, rdo::format(_T("Неизвестная группа показателей: %s"), name.c_str()));
-		}
-
-		rdo::runtime::LPRDOCalcWatchGroupStart pCalc = rdo::Factory<rdo::runtime::RDOCalcWatchGroupStart>::create(pResultGroup->getRuntime());
-		ASSERT(pCalc);
-
-		LPRDOType pBaseType = rdo::Factory<RDOType__void>::create();
-		ASSERT(pBaseType);
-
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pBaseType, RDOParserSrcInfo(@1));
-		ASSERT(pType);
-
-		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
-		ASSERT(pExpression);
-
-		$$ = PARSER->stack().push(pExpression);
-	}
-	;
-
-watch_stop
-	: RDO_IDENTIF '.' RDO_WatchStop '(' ')' ';'
-	{
-		tstring          name         = PARSER->stack().pop<RDOValue>($1)->value().getIdentificator();
-		LPRDOResultGroup pResultGroup = PARSER->findResultGroup(name);
-		if (!pResultGroup)
-		{
-			PARSER->error().error(@1, rdo::format(_T("Неизвестная группа показателей: %s"), name.c_str()));
-		}
-
-		rdo::runtime::LPRDOCalcWatchGroupStop pCalc = rdo::Factory<rdo::runtime::RDOCalcWatchGroupStop>::create(pResultGroup->getRuntime());
-		ASSERT(pCalc);
-
-		LPRDOType pBaseType = rdo::Factory<RDOType__void>::create();
-		ASSERT(pBaseType);
-
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pBaseType, RDOParserSrcInfo(@1));
-		ASSERT(pType);
-
-		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
-		ASSERT(pExpression);
-
-		$$ = PARSER->stack().push(pExpression);
-	}
-	;
-
-pat_pattern
-	: pat_convert RDO_End
-	{
-		LPRDOPATPattern pPattern = PARSER->stack().pop<RDOPATPattern>($1);
-		pPattern->end();
-		$$ = PARSER->stack().push(pPattern);
 	}
 	;
 
