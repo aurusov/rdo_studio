@@ -81,13 +81,13 @@ void RDOCalcFunBodyBrace::addFunCalc(CREF(LPRDOCalc) pCalc)
 void RDOCalcFunBodyBrace::addRetCalc(CREF(LPRDOCalc) pCalc)
 {
 	ASSERT(pCalc);
-	LPRDOCalc pCalcReturn = rdo::Factory<RDOCalcFunReturn>::create(pCalc);
+	LPRDOCalcFunReturn pCalcReturn = rdo::Factory<RDOCalcFunReturn>::create(pCalc);
 	m_calcFunList.insert(--m_calcFunList.end(), pCalcReturn);
 }
 
 REF(RDOValue) RDOCalcFunBodyBrace::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	if (pRuntime->getFunBreakFlag() == RDORuntime::FBF_CONTINUE)
+	if (pRuntime->getFunBreakFlag() == RDORuntime::FBF_NONE)
 	{
 		STL_FOR_ALL(m_calcFunList, calcIt)
 		{
@@ -97,7 +97,7 @@ REF(RDOValue) RDOCalcFunBodyBrace::doCalc(CREF(LPRDORuntime) pRuntime)
 			if (pRuntime->getFunBreakFlag() == RDORuntime::FBF_BREAK)
 			{
 				m_calcFunList.back()->calcValue(pRuntime);
-				pRuntime->setFunBreakFlag(RDORuntime::FBF_CONTINUE);
+				pRuntime->setFunBreakFlag(RDORuntime::FBF_NONE);
 				m_value = RDOValue(false); //! break вообще ничего не возвращает
 				return m_value;
 			}
@@ -120,7 +120,7 @@ RDOCalcFunEnd::RDOCalcFunEnd()
 REF(RDOValue) RDOCalcFunEnd::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->getMemoryStack()->pop();
-	pRuntime->setFunBreakFlag(RDORuntime::FBF_CONTINUE);
+	pRuntime->setFunBreakFlag(RDORuntime::FBF_NONE);
 	return m_value;
 }
 
