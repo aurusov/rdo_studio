@@ -45,4 +45,13 @@ BOOST_AUTO_TEST_CASE(DefineAreaTest)
 
 BOOST_AUTO_TEST_SUITE_END() // RDORuntime_Fuzzy_Test
 
+	pValue1 = rdo::Factory<RDOFuzzyValue>::create(pValue1->operator+ (pValue2));
+	BOOST_CHECK(pValue1);
+
+	BOOST_CHECK(pValue1->getAsString() == _T("<10/0.50> <11/1.00> <12/1.00> <14/1.00> <15/1.00> <16/1.00> <17/1.00> <18/1.00> <19/1.00> <24/0.70> <33/1.00>"));
+	BOOST_CHECK(pValue1->defuzzyfication().getAsString() == _T("21.1755"));
+}
+
+BOOST_AUTO_TEST_SUITE_END() // RDORuntime_Fuzzy_Test
+
 CLOSE_RDO_RUNTIME_NAMESPACE
