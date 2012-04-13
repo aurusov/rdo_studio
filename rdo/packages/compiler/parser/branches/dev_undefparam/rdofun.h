@@ -581,8 +581,8 @@ public:
 	CREF(LPRDOParam) getReturn() const { return m_pReturn;             }
 	const ParamList  getParams() const { return m_paramList;           }
 
-	void                       setFunctionCalc(CREF(rdo::runtime::LPRDOFunCalc) pCalc);
-	rdo::runtime::LPRDOFunCalc getFunctionCalc() const { return m_pFunctionCalc; }
+	void                     setFunctionCalc(CREF(rdo::runtime::LPRDOCalc) pCalc);
+	rdo::runtime::LPRDOCalc  getFunctionCalc()const  { return   m_pFunctionCalc; }
 
 	void  setReturnFlag(rbool flag) {m_returnFlag = flag;}
 	rbool getReturnFlag(          ) {return m_returnFlag;}
@@ -604,14 +604,14 @@ private:
 	typedef std::vector<LPRDOFUNCalculateIf>                   CalculateIfList;
 	typedef std::vector<rdo::runtime::LPRDOCalcFunctionCaller> PostLinkedList;
 
-	LPRDOParam                 m_pReturn;
-	ParamList                  m_paramList;
-	ElementList                m_elementList;     //! for list and table
-	CalculateIfList            m_calculateIfList; //! for algorithmic
-	PostLinkedList             m_postLinkedList;  //! для рекурсивного вызова
-	rdo::runtime::LPRDOFunCalc m_pFunctionCalc;
-	LPContextMemory            m_pContextMemory;
-	rbool                      m_returnFlag;
+	LPRDOParam               m_pReturn;
+	ParamList                m_paramList;
+	ElementList              m_elementList;     //! for list and table
+	CalculateIfList          m_calculateIfList; //! for algorithmic
+	PostLinkedList           m_postLinkedList;  //! для рекурсивного вызова
+	rdo::runtime::LPRDOCalc  m_pFunctionCalc;
+	LPContextMemory          m_pContextMemory;
+	rbool                    m_returnFlag;
 
 	void init();
 

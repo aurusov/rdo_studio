@@ -1367,7 +1367,7 @@ Context::FindResult RDOFUNFunction::onFindContext(CREF(LPRDOValue) pValue) const
 	if (pParam)
 	{
 		rdo::runtime::RDOType::TypeID typeID = pParam->getTypeInfo()->type()->typeID();
-		if (typeID == rdo::runtime::RDOType::t_identificator)
+		if (typeID == rdo::runtime::RDOType::t_identificator || typeID == rdo::runtime::RDOType::t_unknow)
 		{
 			RDOParser::s_parser()->error().push_only(
 				pValue->src_info(),
@@ -1391,7 +1391,7 @@ Context::FindResult RDOFUNFunction::onFindContext(CREF(LPRDOValue) pValue) const
 RDOFUNFunction::~RDOFUNFunction()
 {}
 
-void RDOFUNFunction::setFunctionCalc(CREF(rdo::runtime::LPRDOFunCalc) pCalc)
+void RDOFUNFunction::setFunctionCalc(CREF(rdo::runtime::LPRDOCalc) pCalc)
 {
 	ASSERT(pCalc);
 	m_pFunctionCalc = pCalc;
@@ -1633,7 +1633,6 @@ void RDOFUNFunction::createAlgorithmicCalc(CREF(RDOParserSrcInfo) body_src_info)
 		}
 		ASSERT(pCalcDefault);
 		pCalcDefault->setSrcInfo(m_pReturn->getTypeInfo()->src_info());
-		m_pFunctionCalc->addRetCalc(pCalcDefault);
 	}
 }
 
