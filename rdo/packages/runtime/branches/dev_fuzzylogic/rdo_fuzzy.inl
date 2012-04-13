@@ -18,7 +18,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 inline DefineArea::DefineArea()
 {
-	IntervalType mType = DomainPart::closed(0,0);
+	IntervalType mType = DomainPart::open(-10e15, 10e15);
 	m_domain = Domain(mType);
 }
 
@@ -58,11 +58,18 @@ inline FuzzySet::FuzzySet(CREF(LPRDOFuzzyType) pType)
 	: m_pType(pType)
 {}
 
+inline FuzzySet::FuzzySet(CREF(LPRDOFuzzyType)pType, CREF(DefineArea) pDefineArea)
+	: m_pType     (pType)
+	, m_defineArea(pDefineArea)
+{}
 inline FuzzySet::FuzzySet(CREF(LPFuzzySet) pSet)
-	: m_pType(pSet->m_pType)
+	: m_pType     (pSet->m_pType)
+	, m_fuzzySet  (pSet->m_fuzzySet)
+	, m_defineArea(pSet->m_defineArea)
+{}
+inline FuzzySet::FuzzySet(CREF(FuzzySetDefinition) pSetDefinition)
 {
-	m_fuzzySet   = pSet->m_fuzzySet;
-	m_defineArea = pSet->m_defineArea;
+	
 }
 inline FuzzySet::~FuzzySet()
 {}
@@ -140,7 +147,7 @@ inline RDOFuzzyType::RDOFuzzyType()
 	/// @todo для порядку перевести на умные указатели
 }
 inline RDOFuzzyType::~RDOFuzzyType()
-{}	
+{}
 
 inline RDOValue RDOFuzzyType::value_cast(CREF(RDOValue) from) const
 {
