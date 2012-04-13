@@ -42,12 +42,14 @@ CALC(RDOCalcBodyBrace)
 {
 DECLARE_FACTORY(RDOCalcBodyBrace)
 public:
+	typedef std::vector<LPRDOCalc> CalcList;
+
 	void addCalc(CREF(LPRDOCalc) pCalc);
 
 private:
 	RDOCalcBodyBrace();
 
-	RDOCalcList m_calcList;
+	CalcList m_calcList;
 
 	DECLARE_ICalc;
 };
@@ -57,13 +59,15 @@ CALC_SUB(RDOCalcFunBodyBrace, RDOFunCalc)
 {
 DECLARE_FACTORY(RDOCalcFunBodyBrace)
 public:
+	typedef std::vector<LPRDOCalc> CalcFunList;
+
 	void addFunCalc(CREF(LPRDOCalc) pCalc);
 	void addRetCalc(CREF(LPRDOCalc) pCalc);
 
 private:
 	RDOCalcFunBodyBrace();
 
-	RDOCalcList m_calcFunList;
+	CalcFunList m_calcFunList;
 
 	DECLARE_ICalc;
 };

@@ -35,7 +35,7 @@ public:
 	typedef  boost::icl::interval<RDOValue>::type IntervalType;
 	typedef  boost::icl::interval_set<RDOValue> Domain;
 	
-	DefineArea (); // типа бесконечность
+	DefineArea (); // empty area
 	virtual ~DefineArea();
 //	void appendDomain(CREF(DomainPart));
 	//rbool          inDomain(RDOValue) const;
@@ -83,9 +83,7 @@ public:
 
 private:
 	FuzzySet(CREF(LPRDOFuzzyType)pType);
-	FuzzySet(CREF(LPRDOFuzzyType)pType, CREF(DefineArea) pDefineArea);
 	FuzzySet(CREF(LPFuzzySet) pValue);
-	FuzzySet(CREF(FuzzySetDefinition) pSetDefinition);
 	
 
 	FuzzySetDefinition  m_fuzzySet;

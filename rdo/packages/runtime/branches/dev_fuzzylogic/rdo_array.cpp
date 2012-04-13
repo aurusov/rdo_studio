@@ -92,22 +92,22 @@ ruint RDOArrayValue::size() const
 	return m_container.size();
 }
 
-CREF(RDOValue) RDOArrayValue::getItem(CREF(RDOValue) index) const
+CREF(RDOValue) RDOArrayValue::getItem(CREF(RDOValue) index, CREF(RDOSrcInfo) srcInfo, CREF(LPRDORuntime) pRuntime) const
 {
 	ruint ind = index.getUInt();
 	if (ind >= m_container.size())
 	{
-		throw RDORuntimeException(_T("Выход за пределы массива"));
+		pRuntime->error().push(_T("Выход за пределы массива"), srcInfo);
 	}
 	return m_container[ind];
 }
 
-void RDOArrayValue::setItem(CREF(RDOValue) index, CREF(RDOValue) item)
+void RDOArrayValue::setItem(CREF(RDOValue) index, CREF(RDOValue) item, CREF(RDOSrcInfo) srcInfo, CREF(LPRDORuntime) pRuntime)
 {
 	ruint ind = index.getUInt();
 	if (ind >= m_container.size())
 	{
-		throw RDORuntimeException(_T("Выход за пределы массива"));
+		pRuntime->error().push(_T("Выход за пределы массива"), srcInfo);
 	}
 	m_container[ind] = item;
 }

@@ -174,7 +174,7 @@ public:
 	*/
 	enum FunBreakFlag
 	{
-		FBF_NONE = 0,
+		FBF_CONTINUE = 0,
 		FBF_BREAK,
 		FBF_RETURN
 	};

@@ -23,10 +23,22 @@ CALC(RDOCalcCreateLocalVariable)
 {
 DECLARE_FACTORY(RDOCalcCreateLocalVariable)
 private:
-	RDOCalcCreateLocalVariable(CREF(tstring) name, CREF(LPRDOCalc) pValueCalc);
+	RDOCalcCreateLocalVariable(CREF(tstring) name);
 
-	tstring    m_name;
-	LPRDOCalc  m_pValueCalc;
+	tstring m_name;
+
+	DECLARE_ICalc;
+};
+
+//! Инициализация локальной переменной
+CALC(RDOCalcInitLocalVariable)
+{
+DECLARE_FACTORY(RDOCalcInitLocalVariable)
+private:
+	RDOCalcInitLocalVariable(CREF(tstring) name, CREF(LPRDOCalc) pCalc);
+
+	tstring   m_name;
+	LPRDOCalc m_pCalc;
 
 	DECLARE_ICalc;
 };

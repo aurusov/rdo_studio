@@ -48,7 +48,7 @@ public:
 
 	//! Сравнение двух калков как объектов (результаты калков в сравнении не используются).
 	//! Реализовывать этот метод в новых калках необязательно.
-	//! \param pCalc - калк, с которым проводит сравнение текущий
+	//! \param pCalc - калк, с которым просводит сравнение текущий
 	//! \result true, если калки одинаковые. Значение по умолчанию false
 	virtual rbool compare(CREF(LPRDOCalc) pCalc) const;
 
@@ -56,8 +56,6 @@ public:
 	CREF(RDOSrcInfo) srcInfo   () const;
 	//! Привязать калк к исходникам
 	void             setSrcInfo(CREF(RDOSrcInfo) srcInfo);
-
-	typedef std::vector<LPRDOCalc> RDOCalcList;
 
 protected:
 	RDOCalc();
