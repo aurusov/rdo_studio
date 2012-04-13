@@ -30,9 +30,9 @@ DECLARE_FACTORY(RDOMemory);
 public:
 	typedef std::map<tstring, RDOValue> LocalMemory;
 
-	void     createVariable(CREF(tstring) name);
+	void     createVariable(CREF(tstring) name, CREF(RDOValue) variable);
 	RDOValue getVariable   (CREF(tstring) name) const;
-	void     setVariable   (CREF(tstring) name, CREF(RDOValue) Variable);
+	void     setVariable   (CREF(tstring) name, CREF(RDOValue) variable);
 	rbool    findVariable  (CREF(tstring) name) const;
 
 private:
@@ -54,7 +54,7 @@ public:
 	void     push  (LPRDOMemory pMemory);
 	void     pop   ();
 
-	void     create(CREF(tstring) name);
+	void     create(CREF(tstring) name, CREF(RDOValue) variable);
 	RDOValue get   (CREF(tstring) name) const;
 	void     set   (CREF(tstring) name, CREF(RDOValue) variable);
 
