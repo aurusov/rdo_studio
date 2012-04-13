@@ -181,7 +181,6 @@ REF(RDOValue) RDOCalcBreakCatch::doCalc(CREF(LPRDORuntime) pRuntime)
 	if (pRuntime->getFunBreakFlag() == RDORuntime::FBF_BREAK)
 	{
 		pRuntime->setFunBreakFlag(RDORuntime::FBF_NONE);
-		return m_value;
 	}
 	return m_value;
 }
@@ -204,7 +203,6 @@ REF(RDOValue) RDOCalcReturnCatch::doCalc(CREF(LPRDORuntime) pRuntime)
 	if (pRuntime->getFunBreakFlag() == RDORuntime::FBF_RETURN)
 	{
 		pRuntime->setFunBreakFlag(RDORuntime::FBF_NONE);
-		return m_value;
 	}
 	return m_value;
 }
