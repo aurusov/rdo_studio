@@ -21,10 +21,10 @@ OPEN_RDO_RUNTIME_NAMESPACE
 RDOMemory::RDOMemory()
 {}
 
-void RDOMemory::createVariable(CREF(tstring) name)
+void RDOMemory::createVariable(CREF(tstring) name, CREF(RDOValue) variable)
 {
 	std::pair<LocalMemory::iterator, rbool> result =
-		m_localMemory.insert(LocalMemory::value_type(name, RDOValue()));
+		m_localMemory.insert(LocalMemory::value_type(name, variable));
 
 	ASSERT(result.second);
 }
@@ -66,11 +66,11 @@ void RDOMemoryStack::pop()
 	m_pMemoryStack.pop_back();
 }
 
-void RDOMemoryStack::create(CREF(tstring) name)
+void RDOMemoryStack::create(CREF(tstring) name, CREF(RDOValue) variable)
 {
 	ASSERT(!m_pMemoryStack.empty());
 
-	m_pMemoryStack.back()->createVariable(name);
+	m_pMemoryStack.back()->createVariable(name, variable);
 }
 
 RDOValue RDOMemoryStack::get(CREF(tstring) name) const
