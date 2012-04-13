@@ -1155,7 +1155,7 @@ for_statement
 		rdo::runtime::LPRDOCalcFor pCalcFor = pExpressionHeader->calc().object_dynamic_cast<rdo::runtime::RDOCalcFor>();
 		ASSERT(pCalcFor);
 
-		pCalcFor->addCalcStatement(pCalcStatementList);
+		pCalcFor->setStatement(pCalcStatementList);
 
 		rdo::runtime::LPRDOCalcBreakCatch pCalcBreakCatch = rdo::Factory<rdo::runtime::RDOCalcBreakCatch>::create();
 		ASSERT(pCalcBreakCatch);

@@ -78,7 +78,7 @@ RDOCalcFor::RDOCalcFor(CREF(LPRDOCalc) pDeclaration, CREF(LPRDOCalc) pCondition,
 	ASSERT(m_pExpression );
 }
 
-void RDOCalcFor::addCalcStatement(CREF(LPRDOCalc) pStatement)
+void RDOCalcFor::setStatement(CREF(LPRDOCalc) pStatement)
 {
 	ASSERT(pStatement);
 	m_pStatement = pStatement;
