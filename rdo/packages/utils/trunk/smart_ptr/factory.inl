@@ -34,7 +34,7 @@ template <class T>
 template <typename T1, typename P1>
 inline intrusive_ptr<T> Factory<T>::delegate(CREF(P1) p1)
 {
-	return T::create<T1>(p1);
+	return T::template create<T1>(p1);
 }
 
 template <class T>
