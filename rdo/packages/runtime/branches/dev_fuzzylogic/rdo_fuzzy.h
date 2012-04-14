@@ -40,7 +40,6 @@ public:
 //	void appendDomain(CREF(DomainPart));
 	//rbool          inDomain(RDOValue) const;
 private:
-//	DefineArea (); // empty area
 	DefineArea(CREF(RDOValue));// 1 element
 	DefineArea  (CREF(RDOValue) leftBorder, CREF(RDOValue) rightBorder); //;
 
@@ -81,11 +80,11 @@ public:
 	tstring getAsString() const;
 	virtual ~FuzzySet();
 	FuzzySet();
+	FuzzySet(CREF(LPFuzzySet) pValue);
 
 private:
 	FuzzySet(CREF(LPRDOFuzzyType)pType);
 	FuzzySet(CREF(LPRDOFuzzyType)pType, CREF(DefineArea) pDefineArea);
-	FuzzySet(CREF(LPFuzzySet) pValue);
 	FuzzySet(CREF(FuzzySetDefinition) pSetDefinition);
 	
 
@@ -167,19 +166,24 @@ OBJECT (RDOLingvoVariable)
 DECLARE_FACTORY(RDOLingvoVariable)
 public:
 
-	typedef std::map<RDOFuzzyTerm::Term::first_type, RDOFuzzyTerm::Term::second_type>TermSet;
+	typedef std::map<RDOFuzzyTerm::Term::first_type, RDOFuzzyTerm::Term::second_type> TermSet;
 	typedef tstring nameOfVariable;
 	
-	TermSet::const_iterator            begin ();
-	TermSet::const_iterator            end   ();
+	TermSet::const_iterator            begin () const;
+	TermSet::const_iterator            end   () const;
 	
+	void                               setName      (nameOfVariable);
 	nameOfVariable                     getName      () {return name;};
 	RDOLingvoVariable                  append       (CREF(RDOFuzzyTerm::Term) pair);
 
-private:
 	RDOLingvoVariable();
+	virtual ~RDOLingvoVariable();
+
+private:
+//	RDOLingvoVariable();
+	RDOLingvoVariable(CREF(RDOValue) pDefineAreaValue, CREF(RDOLingvoVariable) variable);
 	RDOLingvoVariable(CREF(RDOLingvoVariable));
-	~RDOLingvoVariable();
+
 
 	TermSet        m_set;
 	nameOfVariable name;

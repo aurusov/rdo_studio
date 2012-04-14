@@ -193,22 +193,34 @@ inline RDOFuzzyTerm::RDOFuzzyTerm()
 }
 inline RDOFuzzyTerm::RDOFuzzyTerm(CREF(termName) pName, CREF(FuzzySet) pSet)
 {
-	m_term = std::make_pair(pName,pSet);
+	m_term.first  = pName;
+	m_term.second = pSet;
 }
 
 inline RDOFuzzyTerm::~RDOFuzzyTerm()
 {}
 
-
 // --------------------------------------------------------------------------------
 // -------------------- RDOLingvoVariable
 // --------------------------------------------------------------------------------
-inline RDOLingvoVariable::TermSet::const_iterator           RDOLingvoVariable::begin()     {return m_set.begin();}
-inline RDOLingvoVariable::TermSet::const_iterator           RDOLingvoVariable::end  ()     {return m_set.end  ();}
+inline RDOLingvoVariable::TermSet::const_iterator           RDOLingvoVariable::begin() const     {return m_set.begin();}
+inline RDOLingvoVariable::TermSet::const_iterator           RDOLingvoVariable::end  () const     {return m_set.end  ();}
 inline RDOLingvoVariable::RDOLingvoVariable()
+	: name(_T("undefined"))
 {}
 inline RDOLingvoVariable::~RDOLingvoVariable()
 {}
+inline RDOLingvoVariable::RDOLingvoVariable(CREF(RDOValue)pDefineAreaValue, CREF(RDOLingvoVariable) variable)
+	: name(_T("activated"))
+{
+	LPDefineArea   defineArea    = rdo::Factory<DefineArea>::create(pDefineAreaValue);
+	LPRDOFuzzyType pType         = rdo::Factory<RDOFuzzyType>::create();
+	LPFuzzySet     setOfVariable = rdo::Factory<FuzzySet>::create(pType, *defineArea);
+	for (RDOLingvoVariable::TermSet::const_iterator it = variable.begin(); it != variable.end(); it++)
+	{
+		m_set.insert(std::pair<RDOFuzzyTerm::Term::first_type,FuzzySet>(it->first,*setOfVariable));
+	}
+}
 inline RDOLingvoVariable RDOLingvoVariable::append(CREF(RDOFuzzyTerm::Term) pair)
 {
 	m_set.insert(pair);
@@ -218,6 +230,10 @@ inline RDOLingvoVariable::RDOLingvoVariable(CREF(RDOLingvoVariable) variable)
 {
 	m_set = variable.m_set;
 	name  = variable.name;
+}
+inline void RDOLingvoVariable::setName(nameOfVariable nameVariable)
+{
+	name = nameVariable;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

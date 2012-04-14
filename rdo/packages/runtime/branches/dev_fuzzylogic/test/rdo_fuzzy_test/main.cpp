@@ -94,7 +94,54 @@ BOOST_AUTO_TEST_CASE(TermTest)
 	tstring name = pTerm->getName();
 	std::cout << name << std::endl;
 	BOOST_CHECK(pTerm);
+
+	LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create();
+	BOOST_CHECK(pRuntime);
+
+	LPRDOFuzzyType pType = rdo::Factory<RDOFuzzyType>::create();
+	BOOST_CHECK(pType);
+
+	LPDefineArea pDefineArea = rdo::Factory<DefineArea>::create(0.0, 100.0);
+	BOOST_CHECK(pDefineArea);
+
+	LPFuzzySet pFuzzySet = rdo::Factory<FuzzySet>::create(pType, *pDefineArea);
+	BOOST_CHECK(pFuzzySet);
+
+	LPRDOFuzzyTerm pTerm1 = rdo::Factory<RDOFuzzyTerm>::create(_T("term1"), pFuzzySet);
+	BOOST_CHECK(pTerm1);
+	tstring name1 = pTerm1->getName();
+	std::cout << name1 << std::endl;
 }
+
+BOOST_AUTO_TEST_CASE(VariableTest)
+{
+	LPRDOLingvoVariable pVariable = rdo::Factory<RDOLingvoVariable>::create();
+	BOOST_CHECK(pVariable);
+
+	LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create();
+	BOOST_CHECK(pRuntime);
+
+	LPRDOFuzzyType pType = rdo::Factory<RDOFuzzyType>::create();
+	BOOST_CHECK(pType);
+
+	LPDefineArea pDefineArea = rdo::Factory<DefineArea>::create(0.0, 100.0);
+	BOOST_CHECK(pDefineArea);
+
+	LPFuzzySet pFuzzySet = rdo::Factory<FuzzySet>::create(pType, *pDefineArea);
+	BOOST_CHECK(pFuzzySet);
+
+	LPRDOFuzzyTerm pTerm1 = rdo::Factory<RDOFuzzyTerm>::create(_T("term1"), pFuzzySet);
+	BOOST_CHECK(pTerm1);
+
+	pVariable->append(std::pair<RDOFuzzyTerm::Term::first_type,FuzzySet>(pTerm1->getName(), pTerm1->getFuzzySetDefinition()));
+	pVariable->setName(_T("testName"));
+
+	RDOValue value = 1.0;
+	LPRDOLingvoVariable pVariable2 = rdo::Factory<RDOLingvoVariable>::create(value, *pVariable);
+	BOOST_CHECK(pVariable2);
+}
+
+	
 
 BOOST_AUTO_TEST_SUITE_END() // RDORuntime_Fuzzy_Test
 CLOSE_RDO_RUNTIME_NAMESPACE

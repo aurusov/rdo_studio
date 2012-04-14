@@ -311,6 +311,11 @@ LPFuzzySet MemberFunctionProperties::a_pow(LPFuzzySet pSet, double power)
 	return pFuzzySetResult;
 }
 
+//LPRDOLingvoVariable fuzzyfication(CREF(RDOValue), CREF(RDOLingvoVariable))
+//{
+//	return (RDOL)
+//}
+
 RDOValue MemberFunctionProperties::defuzzyfication(CREF(LPFuzzySet) pSet)
 {
 	FuzzySet::FuzzySetDefinition::const_iterator it = pSet->begin();
