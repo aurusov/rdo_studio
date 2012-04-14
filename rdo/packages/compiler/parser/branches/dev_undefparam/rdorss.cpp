@@ -113,21 +113,19 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 		}
 		else if (pParam->value().getAsString() == _T("#"))
 		{
-			if ((*m_currParam)->getDefault()->defined())
-			{
-				Param pValue = Param((*m_currParam)->getDefault());
-				pValue.param()->value().setUndefined(0);
-				m_paramList.push_back(pValue);
-				m_currParam++;
-			}
-			else
-			{
-				LPRDOValue pVal = rdo::Factory<rdoParser::RDOValue>::create((*m_currParam)->getTypeInfo()->type()->get_default(), (*m_currParam)->getTypeInfo()->src_info(RDOParserSrcInfo()), (*m_currParam)->getTypeInfo());
-				Param pValue = Param(pVal);
-				pValue.param()->value().setUndefined(0);
-				m_paramList.push_back(pValue);
-				m_currParam++;
-			}
+			LPRDOValue pValue = (*m_currParam)->getDefault()->defined()
+				? (*m_currParam)->getDefault()
+				: rdo::Factory<rdoParser::RDOValue>::create(
+					(*m_currParam)->getTypeInfo()->type()->get_default(),
+					(*m_currParam)->getTypeInfo()->src_info(RDOParserSrcInfo()),
+					(*m_currParam)->getTypeInfo()
+				);
+			ASSERT(pValue);
+
+			Param param(pValue);
+			param.param()->value().setUndefined(0);
+			m_paramList.push_back(param);
+			m_currParam++;
 		}
 		else
 		{
