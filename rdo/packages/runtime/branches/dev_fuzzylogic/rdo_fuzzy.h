@@ -94,12 +94,10 @@ private:
 };
 
 PREDECLARE_POINTER(RDOValue);
-PREDECLARE_POINTER(MemberFunctionProperties)
 
 //! Свойства НМ:
 class MemberFunctionProperties
 {
-	DECLARE_FACTORY(MemberFunctionProperties)
 public:
 	typedef RDOValue (*ExtUnaryFun )(CREF(RDOValue) rdovalue);
 	typedef RDOValue (*ExtUnaryFunP)(CREF(RDOValue) rdovalue, PTR(void) pParam);

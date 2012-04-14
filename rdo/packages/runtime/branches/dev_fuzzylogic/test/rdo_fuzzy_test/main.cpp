@@ -53,7 +53,39 @@ BOOST_AUTO_TEST_CASE(FuzzySetTest)
 	LPFuzzySet pFuzzySet = rdo::Factory<FuzzySet>::create(pType, *pDefineArea);
 	BOOST_CHECK(pFuzzySet);
 
-//	LPFuzzySet pFuzzySet = rdo::Factory<FuzzySet>::create()
+	FuzzySet::FuzzySetDefinition pSetDefinition;
+	typedef FuzzySet::FuzzySetDefinition::iterator It;
+	typedef std::pair<It,rbool> Ins;
+
+	Ins insVal1 = pSetDefinition.insert(std::pair<RDOValue,double>(5,0.5));
+	BOOST_CHECK(insVal1.second);
+
+	Ins insVal2 = pSetDefinition.insert(std::pair<RDOValue,double>(1,0.1));
+	BOOST_CHECK(insVal2.second);
+
+	Ins insVal3 = pSetDefinition.insert(std::pair<RDOValue,double>(2,0.2));
+	BOOST_CHECK(insVal3.second);
+
+	Ins insVal4 = pSetDefinition.insert(std::pair<RDOValue,double>(3,1.0));
+	BOOST_CHECK(insVal4.second);
+
+	Ins insVal5 = pSetDefinition.insert(std::pair<RDOValue,double>(6,0.4));
+	BOOST_CHECK(insVal5.second);
+
+	Ins insVal6 = pSetDefinition.insert(std::pair<RDOValue,double>(7,0.2));
+	BOOST_CHECK(insVal6.second);
+
+	Ins insVal7 = pSetDefinition.insert(std::pair<RDOValue,double>(9,0.1));
+	BOOST_CHECK(insVal7.second);
+
+	Ins insVal8 = pSetDefinition.insert(std::pair<RDOValue,double>(9,0.5));
+	BOOST_CHECK(!insVal8.second);
+
+	LPFuzzySet pSet = rdo::Factory<FuzzySet>::create(pSetDefinition);
+
+	tstring stringPresentation = pSet->getAsString();
+	std::cout << stringPresentation << std::endl;
+//	BOOST_CHECK(stringPresentation == _T("<1,0.1> <2,0.2> <3,1.0> <5,0.5> <6,0.4> <7,0.2> <9,0.1>"));
 }
 
 

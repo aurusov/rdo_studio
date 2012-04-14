@@ -68,9 +68,8 @@ inline FuzzySet::FuzzySet(CREF(LPFuzzySet) pSet)
 	, m_defineArea(pSet->m_defineArea)
 {}
 inline FuzzySet::FuzzySet(CREF(FuzzySetDefinition) pSetDefinition)
-{
-	
-}
+	: m_fuzzySet(pSetDefinition)
+{}
 inline FuzzySet::~FuzzySet()
 {}
 
