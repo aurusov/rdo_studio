@@ -78,7 +78,7 @@ RDOCalcFor::RDOCalcFor(CREF(LPRDOCalc) pDeclaration, CREF(LPRDOCalc) pCondition,
 	ASSERT(m_pExpression );
 }
 
-void RDOCalcFor::addCalcStatement(CREF(LPRDOCalc) pStatement)
+void RDOCalcFor::setStatement(CREF(LPRDOCalc) pStatement)
 {
 	ASSERT(pStatement);
 	m_pStatement = pStatement;
@@ -86,13 +86,13 @@ void RDOCalcFor::addCalcStatement(CREF(LPRDOCalc) pStatement)
 
 REF(RDOValue) RDOCalcFor::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	if(pRuntime->getFunBreakFlag() == RDORuntime::FBF_NONE)
+	if (pRuntime->getFunBreakFlag() == RDORuntime::FBF_NONE)
 	{
 		m_value = m_pDeclaration->calcValue(pRuntime);
 		while (m_pCondition->calcValue(pRuntime).getAsBool())
 		{
 			m_value = m_pStatement->calcValue(pRuntime);
-			if(pRuntime->getFunBreakFlag() != RDORuntime::FBF_NONE)
+			if (pRuntime->getFunBreakFlag() != RDORuntime::FBF_NONE)
 			{
 				return m_value;
 			}
@@ -181,7 +181,6 @@ REF(RDOValue) RDOCalcBreakCatch::doCalc(CREF(LPRDORuntime) pRuntime)
 	if (pRuntime->getFunBreakFlag() == RDORuntime::FBF_BREAK)
 	{
 		pRuntime->setFunBreakFlag(RDORuntime::FBF_NONE);
-		return m_value;
 	}
 	return m_value;
 }
@@ -204,7 +203,6 @@ REF(RDOValue) RDOCalcReturnCatch::doCalc(CREF(LPRDORuntime) pRuntime)
 	if (pRuntime->getFunBreakFlag() == RDORuntime::FBF_RETURN)
 	{
 		pRuntime->setFunBreakFlag(RDORuntime::FBF_NONE);
-		return m_value;
 	}
 	return m_value;
 }

@@ -61,7 +61,7 @@ CALC(RDOCalcFor)
 {
 DECLARE_FACTORY(RDOCalcFor)
 public:
-	void addCalcStatement(CREF(LPRDOCalc) pStatement);
+	void setStatement(CREF(LPRDOCalc) pStatement);
 
 private:
 	RDOCalcFor(CREF(LPRDOCalc) pDeclaration, CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pExpression);
