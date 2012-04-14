@@ -165,7 +165,7 @@ void RPShapeCreateMJ::generate()
 	pIProcAnimation->setTransCount(3);
 }
 
-void RPShapeCreateMJ::setTransCount(int count)
+void RPShapeCreateMJ::setTransCount(ruint count)
 {
 	m_currentTransactCount = count;
 }

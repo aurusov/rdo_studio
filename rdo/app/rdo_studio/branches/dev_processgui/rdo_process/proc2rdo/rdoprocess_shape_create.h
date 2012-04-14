@@ -29,7 +29,7 @@ public:
 	//virtual void list_name();
 	virtual void generate();
 
-	virtual void setTransCount(int count);
+	virtual void setTransCount(ruint count);
 
 	//параметры для симулятора
 	rdo::compiler::gui::LPRPShapeDataBlockCreate m_pParams;

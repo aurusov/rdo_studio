@@ -25,7 +25,9 @@ OPEN_RDO_RUNTIME_NAMESPACE
   \class   RDOPROCGenerate
   \brief   Процессный блок GENERATE
 */
-class RDOPROCGenerate: public RDOPROCBlock, public IBaseOperation 
+OBJECT(RDOPROCGenerate)
+	IS  INSTANCE_OF       (RDOPROCBlock  )
+	AND IMPLEMENTATION_OF (IBaseOperation)
 {
 DEFINE_IFACTORY(RDOPROCGenerate);
 QUERY_INTERFACE_BEGIN
@@ -56,7 +58,7 @@ OBJECT_INTERFACE(IProcAnimation)
 {
 DECLARE_FACTORY(IProcAnimation)
 public:
-	virtual void setTransCount(int count) = 0;
+	virtual void setTransCount(ruint count) = 0;
 	
 protected:
 	IProcAnimation()
