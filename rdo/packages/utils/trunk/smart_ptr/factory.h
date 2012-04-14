@@ -43,6 +43,13 @@ public:
 	static intrusive_ptr<T> create(CREF(P1) p1);
 
 	//! Создает объект класса Т
+	//! \tparam T1 - тип, передаваемый в шаблонный и статический метод create класса создаваемого объекта
+	//! \param  p1 - параметр конструктора
+	//! \result Умный указатель на объект
+	template <typename T1, typename P1>
+	static intrusive_ptr<T> create(CREF(P1) p1);
+
+	//! Создает объект класса Т
 	//! \param p1 - параметр конструктора
 	//! \param p2 - параметр конструктора
 	//! \result Умный указатель на объект

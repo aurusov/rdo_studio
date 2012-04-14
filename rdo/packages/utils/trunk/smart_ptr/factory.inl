@@ -31,6 +31,13 @@ inline intrusive_ptr<T> Factory<T>::create(CREF(P1) p1)
 }
 
 template <class T>
+template <typename T1, typename P1>
+inline intrusive_ptr<T> Factory<T>::create(CREF(P1) p1)
+{
+	return T::create<T1>(p1);
+}
+
+template <class T>
 template <typename P1, typename P2>
 inline intrusive_ptr<T> Factory<T>::create(CREF(P1) p1, CREF(P2) p2)
 {
