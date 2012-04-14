@@ -47,7 +47,7 @@ public:
 	//! \param  p1 - параметр конструктора
 	//! \result Умный указатель на объект
 	template <typename T1, typename P1>
-	static intrusive_ptr<T> create(CREF(P1) p1);
+	static intrusive_ptr<T> createT(CREF(P1) p1);
 
 	//! Создает объект класса Т
 	//! \param p1 - параметр конструктора
