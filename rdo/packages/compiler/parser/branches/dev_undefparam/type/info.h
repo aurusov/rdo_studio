@@ -38,6 +38,9 @@ protected:
 private:
 	TypeInfo(CREF(LPRDOType) pType, CREF(RDOParserSrcInfo) srcInfo);
 
+	template <class T>
+	static LPTypeInfo create(CREF(RDOParserSrcInfo) srcInfo);
+
 	LPRDOType                         m_pType;
 	boost::optional<RDOParserSrcInfo> m_srcInfo;
 

@@ -171,10 +171,7 @@ Context::FindResult RDOParser::onFindContext(CREF(LPRDOValue) pValue) const
 	if (pValue->value().getIdentificator() == _T("Time_now") || pValue->value().getIdentificator() == _T("time_now") || pValue->value().getIdentificator() == _T("Системное_время") || pValue->value().getIdentificator() == _T("системное_время"))
 	{
 		LPExpression pExpression = rdo::Factory<Expression>::create(
-			rdo::Factory<TypeInfo>::create(
-				rdo::Factory<RDOType__real>::create(),
-				pValue->src_info()
-			),
+			rdo::Factory<TypeInfo>::delegate<RDOType__real>(pValue->src_info()),
 			rdo::Factory<rdo::runtime::RDOCalcGetTimeNow>::create(),
 			pValue->src_info()
 		);
@@ -184,10 +181,7 @@ Context::FindResult RDOParser::onFindContext(CREF(LPRDOValue) pValue) const
 	else if (pValue->value().getIdentificator() == _T("Seconds") || pValue->value().getIdentificator() == _T("seconds"))
 	{
 		LPExpression pExpression = rdo::Factory<Expression>::create(
-			rdo::Factory<TypeInfo>::create(
-				rdo::Factory<RDOType__real>::create(),
-				pValue->src_info()
-			),
+			rdo::Factory<TypeInfo>::delegate<RDOType__real>(pValue->src_info()),
 			rdo::Factory<rdo::runtime::RDOCalcGetSeconds>::create(),
 			pValue->src_info()
 		);
@@ -197,10 +191,7 @@ Context::FindResult RDOParser::onFindContext(CREF(LPRDOValue) pValue) const
 	else if (pValue->value().getIdentificator() == _T("Terminate_counter") || pValue->value().getIdentificator() == _T("terminate_counter"))
 	{
 		LPExpression pExpression = rdo::Factory<Expression>::create(
-			rdo::Factory<TypeInfo>::create(
-				rdo::Factory<RDOType__int>::create(),
-				pValue->src_info()
-			),
+			rdo::Factory<TypeInfo>::delegate<RDOType__int>(pValue->src_info()),
 			rdo::Factory<rdo::runtime::RDOCalcGetTermNow>::create(),
 			pValue->src_info()
 		);
@@ -284,10 +275,7 @@ Context::FindResult RDOParser::onFindContext(CREF(LPRDOValue) pValue) const
 			if (pTryCastValue && pTryCastValue->defined())
 			{
 				LPExpression pExpression = rdo::Factory<Expression>::create(
-					rdo::Factory<TypeInfo>::create(
-						rdo::Factory<RDOType__identificator>::create(),
-						pValue->src_info()
-					),
+					rdo::Factory<TypeInfo>::delegate<RDOType__identificator>(pValue->src_info()),
 					rdo::Factory<rdo::runtime::RDOCalcConst>::create(pValue->value()),
 					pValue->src_info()
 				);

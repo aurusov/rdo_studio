@@ -16,6 +16,18 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- TypeInfo
 // --------------------------------------------------------------------------------
+template <class T>
+inline LPTypeInfo TypeInfo::create(CREF(RDOParserSrcInfo) srcInfo)
+{
+	LPRDOType pType = rdo::Factory<T>::create();
+	ASSERT(pType);
+
+	LPTypeInfo pTypeInfo = rdo::Factory<TypeInfo>::create(pType, srcInfo);
+	ASSERT(pTypeInfo);
+
+	return pTypeInfo;
+}
+
 inline TypeInfo::~TypeInfo()
 {}
 
