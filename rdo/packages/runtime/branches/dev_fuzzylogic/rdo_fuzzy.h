@@ -80,6 +80,7 @@ public:
 
 	tstring getAsString() const;
 	virtual ~FuzzySet();
+	FuzzySet();
 
 private:
 	FuzzySet(CREF(LPRDOFuzzyType)pType);
@@ -94,6 +95,7 @@ private:
 };
 
 PREDECLARE_POINTER(RDOValue);
+PREDECLARE_POINTER(RDOLingvoVariable);
 
 //! Свойства НМ:
 class MemberFunctionProperties
@@ -114,7 +116,8 @@ public:
 	/* 3.78 */  static LPFuzzySet a_con     (CREF(LPFuzzySet) pSet);
 	/* 3.79 */  static LPFuzzySet a_dil     (CREF(LPFuzzySet) pSet);
 
-	/* 3.272*/  static RDOValue defuzzyfication(CREF(LPFuzzySet) pSet);
+				static LPRDOLingvoVariable fuzzyfication(CREF(RDOValue), CREF(RDOLingvoVariable)); //стоп пока
+	/* 3.272*/  static RDOValue            defuzzyfication(CREF(LPFuzzySet) pSet);
 
 	            static LPFuzzySet a_pow     (LPFuzzySet pSet, double power);
 	/* 3.114*/  static LPFuzzySet ext_unary (ExtUnaryFun  fun, CREF(LPFuzzySet) pSet);
@@ -142,18 +145,19 @@ OBJECT (RDOFuzzyTerm)
 {
 DECLARE_FACTORY (RDOFuzzyTerm)
 public:
-	typedef tstring termName;
+	typedef tstring  termName;
 	typedef std::pair<termName,FuzzySet> Term;
 
-	LPFuzzySet      getFuzzySetDefinition() const;
+	CREF(FuzzySet)  getFuzzySetDefinition() const;
 	termName        getName              () const;
 
 private:
-	RDOFuzzyTerm();
-	virtual ~RDOFuzzyTerm();
 
-	termName   m_name;
-	LPFuzzySet m_fuzzySet;
+	RDOFuzzyTerm();
+	RDOFuzzyTerm(CREF(termName), CREF(FuzzySet));
+	virtual ~RDOFuzzyTerm();
+	
+	Term m_term;
 };
 
 // !Лингвистическая переменная

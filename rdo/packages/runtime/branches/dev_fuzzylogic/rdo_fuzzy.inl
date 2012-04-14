@@ -54,6 +54,8 @@ inline DefineArea::DefineArea(CREF(RDOValue) value)
 // --------------------------------------------------------------------------------
 // -------------------- FuzzySet
 // --------------------------------------------------------------------------------
+inline FuzzySet::FuzzySet()
+{}
 inline FuzzySet::FuzzySet(CREF(LPRDOFuzzyType) pType)
 	: m_pType(pType)
 {}
@@ -176,16 +178,23 @@ inline RDOValue RDOFuzzyType::value_cast(CREF(RDOValue) from) const
 // --------------------------------------------------------------------------------
 // -------------------- RDOFuzzyTerm
 // --------------------------------------------------------------------------------
-inline LPFuzzySet RDOFuzzyTerm::getFuzzySetDefinition() const
+inline CREF(FuzzySet) RDOFuzzyTerm::getFuzzySetDefinition() const
 {
-	return (m_fuzzySet);
+	return (m_term.second);
 }
 inline tstring RDOFuzzyTerm::getName() const
 {
-	return (m_name);
+	return (m_term.first);
 }
 inline RDOFuzzyTerm::RDOFuzzyTerm()
-{}
+{
+	termName name = _T("undefined");
+	m_term.first = name;
+}
+inline RDOFuzzyTerm::RDOFuzzyTerm(CREF(termName) pName, CREF(FuzzySet) pSet)
+{
+	m_term = std::make_pair(pName,pSet);
+}
 
 inline RDOFuzzyTerm::~RDOFuzzyTerm()
 {}

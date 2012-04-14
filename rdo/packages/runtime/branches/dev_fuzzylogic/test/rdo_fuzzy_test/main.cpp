@@ -85,10 +85,16 @@ BOOST_AUTO_TEST_CASE(FuzzySetTest)
 
 	tstring stringPresentation = pSet->getAsString();
 	std::cout << stringPresentation << std::endl;
-//	BOOST_CHECK(stringPresentation == _T("<1,0.1> <2,0.2> <3,1.0> <5,0.5> <6,0.4> <7,0.2> <9,0.1>"));
+	BOOST_CHECK(stringPresentation == _T("<1/0.10> <2/0.20> <3/1.00> <5/0.50> <6/0.40> <7/0.20> <9/0.10>"));
 }
 
-
+BOOST_AUTO_TEST_CASE(TermTest)
+{
+	LPRDOFuzzyTerm pTerm = rdo::Factory<RDOFuzzyTerm>::create();
+	tstring name = pTerm->getName();
+	std::cout << name << std::endl;
+	BOOST_CHECK(pTerm);
+}
 
 BOOST_AUTO_TEST_SUITE_END() // RDORuntime_Fuzzy_Test
 CLOSE_RDO_RUNTIME_NAMESPACE
