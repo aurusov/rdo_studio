@@ -320,8 +320,7 @@ $term                          return(RDO_Fuzzy_Term);
 	tstring n1(YYText());
 	int len = n1.length();
 	tstring name(n1, 1, len-2);
-	rdoParser::LPTypeInfo pType = rdo::Factory<rdoParser::TypeInfo>::create(
-		rdo::Factory<rdoParser::RDOType__string>::create(),
+	rdoParser::LPTypeInfo pType = rdo::Factory<rdoParser::TypeInfo>::delegate<rdoParser::RDOType__string>(
 		LEXER->m_lploc ? rdoParser::RDOParserSrcInfo(LEXER_POS, name) : rdoParser::RDOParserSrcInfo(name)
 	);
 	ASSERT(pType);
@@ -360,8 +359,7 @@ $term                          return(RDO_Fuzzy_Term);
 	unput('.');
 	unput('.');
 	LEXER->loc_delta_pos(-2);
-	rdoParser::LPTypeInfo pType = rdo::Factory<rdoParser::TypeInfo>::create(
-		rdo::Factory<rdoParser::RDOType__int>::create(),
+	rdoParser::LPTypeInfo pType = rdo::Factory<rdoParser::TypeInfo>::delegate<rdoParser::RDOType__int>(
 		LEXER->m_lploc ? rdoParser::RDOParserSrcInfo(LEXER_POS, value) : rdoParser::RDOParserSrcInfo(value)
 	);
 	ASSERT(pType);
@@ -371,8 +369,7 @@ $term                          return(RDO_Fuzzy_Term);
 }
 
 ([+-]?[0-9]+"."[0-9]*([Ee][+-]?[0-9]+)?) {
-	rdoParser::LPTypeInfo pType = rdo::Factory<rdoParser::TypeInfo>::create(
-		rdo::Factory<rdoParser::RDOType__real>::create(),
+	rdoParser::LPTypeInfo pType = rdo::Factory<rdoParser::TypeInfo>::delegate<rdoParser::RDOType__real>(
 		LEXER->m_lploc ? rdoParser::RDOParserSrcInfo(LEXER_POS, YYText()) : rdoParser::RDOParserSrcInfo(YYText())
 	);
 	ASSERT(pType);
@@ -382,8 +379,7 @@ $term                          return(RDO_Fuzzy_Term);
 }
 
 [+-]?[0-9]+ {
-	rdoParser::LPTypeInfo pType = rdo::Factory<rdoParser::TypeInfo>::create(
-		rdo::Factory<rdoParser::RDOType__int>::create(),
+	rdoParser::LPTypeInfo pType = rdo::Factory<rdoParser::TypeInfo>::delegate<rdoParser::RDOType__int>(
 		LEXER->m_lploc ? rdoParser::RDOParserSrcInfo(LEXER_POS, YYText()) : rdoParser::RDOParserSrcInfo(YYText())
 	);
 	ASSERT(pType);
@@ -393,8 +389,7 @@ $term                          return(RDO_Fuzzy_Term);
 }
 
 true {
-	rdoParser::LPTypeInfo pType = rdo::Factory<rdoParser::TypeInfo>::create(
-		rdo::Factory<rdoParser::RDOType__bool>::create(),
+	rdoParser::LPTypeInfo pType = rdo::Factory<rdoParser::TypeInfo>::delegate<rdoParser::RDOType__bool>(
 		LEXER->m_lploc ? rdoParser::RDOParserSrcInfo(LEXER_POS, YYText()) : rdoParser::RDOParserSrcInfo(YYText())
 	);
 	ASSERT(pType);
@@ -404,8 +399,7 @@ true {
 }
 
 false {
-	rdoParser::LPTypeInfo pType = rdo::Factory<rdoParser::TypeInfo>::create(
-		rdo::Factory<rdoParser::RDOType__bool>::create(),
+	rdoParser::LPTypeInfo pType = rdo::Factory<rdoParser::TypeInfo>::delegate<rdoParser::RDOType__bool>(
 		LEXER->m_lploc ? rdoParser::RDOParserSrcInfo(LEXER_POS, YYText()) : rdoParser::RDOParserSrcInfo(YYText())
 	);
 	ASSERT(pType);

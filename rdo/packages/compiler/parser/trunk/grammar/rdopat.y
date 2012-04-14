@@ -1537,10 +1537,7 @@ nochange_statement
 		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcNoChange>::create();
 		ASSERT(pCalc);
 
-		LPRDOType pBaseType = rdo::Factory<RDOType__void>::create();
-		ASSERT(pBaseType);
-
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pBaseType, RDOParserSrcInfo(@1));
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
 		ASSERT(pType);
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
@@ -1569,10 +1566,7 @@ stopping_statement
 		ASSERT(pCalc);
 		pEvent->attachCalc(pCalc);
 
-		LPRDOType pBaseType = rdo::Factory<RDOType__void>::create();
-		ASSERT(pBaseType);
-
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pBaseType, RDOParserSrcInfo(@1));
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
 		ASSERT(pType);
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
@@ -1628,10 +1622,7 @@ planning_statement
 		ASSERT(pCalc);
 		pEvent->attachCalc(pCalc);
 
-		LPRDOType pBaseType = rdo::Factory<RDOType__void>::create();
-		ASSERT(pBaseType);
-
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pBaseType, RDOParserSrcInfo(@1));
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
 		ASSERT(pType);
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
@@ -1686,10 +1677,7 @@ process_input_statement
 		rdo::runtime::LPRDOCalcProcessControl pCalc = rdo::Factory<rdo::runtime::RDOCalcProcessControl>::create(pBlock, pRelRes->m_relResID);
 		ASSERT(pCalc);
 
-		LPRDOType pBaseType = rdo::Factory<RDOType__void>::create();
-		ASSERT(pBaseType);
-
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pBaseType, RDOParserSrcInfo(@1));
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
 		ASSERT(pType);
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
@@ -1716,10 +1704,7 @@ watch_start
 		rdo::runtime::LPRDOCalcWatchGroupStart pCalc = rdo::Factory<rdo::runtime::RDOCalcWatchGroupStart>::create(pResultGroup->getRuntime());
 		ASSERT(pCalc);
 
-		LPRDOType pBaseType = rdo::Factory<RDOType__void>::create();
-		ASSERT(pBaseType);
-
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pBaseType, RDOParserSrcInfo(@1));
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
 		ASSERT(pType);
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
@@ -1742,10 +1727,7 @@ watch_stop
 		rdo::runtime::LPRDOCalcWatchGroupStop pCalc = rdo::Factory<rdo::runtime::RDOCalcWatchGroupStop>::create(pResultGroup->getRuntime());
 		ASSERT(pCalc);
 
-		LPRDOType pBaseType = rdo::Factory<RDOType__void>::create();
-		ASSERT(pBaseType);
-
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pBaseType, RDOParserSrcInfo(@1));
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
 		ASSERT(pType);
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
@@ -1841,7 +1823,7 @@ statement_list
 
 		pCalcStatementList->addCalcStatement(pCalcOpenBrace);
 
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__void>::create(), RDOParserSrcInfo());
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo());
 		ASSERT(pType);
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalcStatementList, RDOParserSrcInfo());
@@ -1874,7 +1856,7 @@ empty_statement
 		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcNoChange>::create();
 		ASSERT(pCalc);
 
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__void>::create(), RDOParserSrcInfo(@1));
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
 		ASSERT(pType);
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
@@ -2341,10 +2323,7 @@ local_variable_declaration
 type_declaration
 	: RDO_integer
 	{
-		LPRDOType pBaseType = rdo::Factory<RDOType__int>::create();
-		ASSERT(pBaseType);
-
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pBaseType, RDOParserSrcInfo(@1));
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__int>(RDOParserSrcInfo(@1));
 		ASSERT(pType);
 
 		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
@@ -2355,10 +2334,7 @@ type_declaration
 	}
 	| RDO_real
 	{
-		LPRDOType pBaseType = rdo::Factory<RDOType__real>::create();
-		ASSERT(pBaseType);
-
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pBaseType, RDOParserSrcInfo(@1));
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__real>(RDOParserSrcInfo(@1));
 		ASSERT(pType);
 
 		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
@@ -2369,10 +2345,7 @@ type_declaration
 	}
 	| RDO_string
 	{
-		LPRDOType pBaseType = rdo::Factory<RDOType__string>::create();
-		ASSERT(pBaseType);
-
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pBaseType, RDOParserSrcInfo(@1));
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__string>(RDOParserSrcInfo(@1));
 		ASSERT(pType);
 
 		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
@@ -2397,10 +2370,7 @@ type_declaration
 	}
 	| RDO_bool
 	{
-		LPRDOType pBaseType = rdo::Factory<RDOType__bool>::create();
-		ASSERT(pBaseType);
-
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pBaseType, RDOParserSrcInfo(@1));
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__bool>(RDOParserSrcInfo(@1));
 		ASSERT(pType);
 
 		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
@@ -2567,7 +2537,7 @@ if_statement
 		LPExpression pIfExpression = PARSER->stack().pop<Expression>($5);
 		ASSERT(pIfExpression);
 
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__void>::create(), RDOParserSrcInfo(@1));
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
 		ASSERT(pType);
 
 		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcIf>::create(pConditionCalc, pIfExpression->calc());
@@ -2592,7 +2562,7 @@ if_statement
 		LPExpression pElseExpression = PARSER->stack().pop<Expression>($7);
 		ASSERT(pElseExpression);
 
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__void>::create(), RDOParserSrcInfo(@1));
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
 		ASSERT(pType);
 
 		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcIfElse>::create(
@@ -2663,7 +2633,7 @@ for_header
 			pEqualExpression->calc()      );
 		ASSERT(pCalc);
 
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__void>::create(), RDOParserSrcInfo(@1, @8));
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1, @8));
 		ASSERT(pType);
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1, @8));
@@ -2684,7 +2654,7 @@ for_header
 		LPExpression pEqualExpression = PARSER->stack().pop<Expression>($7);
 		ASSERT(pEqualExpression);
 
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__void>::create(), RDOParserSrcInfo(@1, @8));
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1, @8));
 		ASSERT(pType);
 
 		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcFor>::create(
@@ -2705,10 +2675,7 @@ break_statement
 		rdo::runtime::LPRDOCalc pCalcBreak = rdo::Factory<rdo::runtime::RDOCalcFunBreak>::create();
 		ASSERT(pCalcBreak);
 
-		LPRDOType pBaseType = rdo::Factory<RDOType__void>::create();
-		ASSERT(pBaseType);
-
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pBaseType, RDOParserSrcInfo(@1));
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
 		ASSERT(pType);
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalcBreak, RDOParserSrcInfo(@1));
@@ -2739,7 +2706,7 @@ param_type
 		}
 		else
 		{
-			pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__int>::create(), RDOParserSrcInfo(@1, @2));
+			pType = rdo::Factory<TypeInfo>::delegate<RDOType__int>(RDOParserSrcInfo(@1, @2));
 		}
 		ASSERT(pType);
 		$$ = PARSER->stack().push(pType);
@@ -2756,14 +2723,14 @@ param_type
 		}
 		else
 		{
-			pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__real>::create(), RDOParserSrcInfo(@1, @2));
+			pType = rdo::Factory<TypeInfo>::delegate<RDOType__real>(RDOParserSrcInfo(@1, @2));
 		}
 		ASSERT(pType);
 		$$ = PARSER->stack().push(pType);
 	}
 	| RDO_string
 	{
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__string>::create(), RDOParserSrcInfo(@1));
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__string>(RDOParserSrcInfo(@1));
 		ASSERT(pType);
 		$$ = PARSER->stack().push(pType);
 	}
@@ -2778,7 +2745,7 @@ param_type
 	}
 	| RDO_bool
 	{
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__bool>::create(), RDOParserSrcInfo(@1));
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__bool>(RDOParserSrcInfo(@1));
 		ASSERT(pType);
 		$$ = PARSER->stack().push(pType);
 	}
@@ -3370,7 +3337,7 @@ fun_arithm
 			PARSER->error().error(@1, rdo::format(_T("'%s' не является массивом."), pValue->value().getIdentificator().c_str()));
 		}
 
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(rdo::Factory<RDOType__int>::create(), RDOParserSrcInfo(@1));
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__int>(RDOParserSrcInfo(@1));
 		ASSERT(pType);
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));

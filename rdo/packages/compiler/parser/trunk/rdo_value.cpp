@@ -39,10 +39,7 @@ RDOValue::RDOValue(CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info                                                              )
 	, m_value         (rdo::runtime::RDOValue(src_info.src_text(), rdo::runtime::g_identificator))
 {
-	m_pType = rdo::Factory<TypeInfo>::create(
-		rdo::Factory<RDOType__identificator>::create(),
-		src_info
-	);
+	m_pType = rdo::Factory<TypeInfo>::delegate<RDOType__identificator>(src_info);
 	ASSERT(m_pType);
 }
 
@@ -70,40 +67,28 @@ RDOValue::RDOValue(CREF(rdo::explicit_value<rsint>) value, CREF(RDOParserSrcInfo
 	: RDOParserSrcInfo(src_info)
 	, m_value         (value   )
 {
-	m_pType = rdo::Factory<TypeInfo>::create(
-		rdo::Factory<RDOType__int>::create(),
-		src_info
-	);
+	m_pType = rdo::Factory<TypeInfo>::delegate<RDOType__int>(src_info);
 }
 
 RDOValue::RDOValue(CREF(rdo::explicit_value<ruint>) value, CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_value         (value   )
 {
-	m_pType = rdo::Factory<TypeInfo>::create(
-		rdo::Factory<RDOType__int>::create(),
-		src_info
-	);
+	m_pType = rdo::Factory<TypeInfo>::delegate<RDOType__int>(src_info);
 }
 
 RDOValue::RDOValue(CREF(rdo::explicit_value<double>) value, CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_value         (value   )
 {
-	m_pType = rdo::Factory<TypeInfo>::create(
-		rdo::Factory<RDOType__real>::create(),
-		src_info
-	);
+	m_pType = rdo::Factory<TypeInfo>::delegate<RDOType__real>(src_info);
 }
 
 RDOValue::RDOValue(CREF(rdo::explicit_value<tstring>) value, CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
 	, m_value         (value   )
 {
-	m_pType = rdo::Factory<TypeInfo>::create(
-		rdo::Factory<RDOType__string>::create(),
-		src_info
-	);
+	m_pType = rdo::Factory<TypeInfo>::delegate<RDOType__string>(src_info);
 }
 
 RDOValue::RDOValue(CREF(LPTypeInfo) pType)
@@ -181,10 +166,7 @@ LPRDOValue RDOValue::getIdentificator(CREF(tstring) identificator)
 LPRDOValue RDOValue::getUnknow(CREF(RDOParserSrcInfo) src_info)
 {
 	return rdo::Factory<RDOValue>::create(
-		rdo::Factory<TypeInfo>::create(
-			rdo::Factory<RDOType__unknow>::create(),
-			src_info
-		),
+		rdo::Factory<TypeInfo>::delegate<RDOType__unknow>(src_info),
 		src_info
 	);
 }
