@@ -130,19 +130,41 @@ BOOST_AUTO_TEST_CASE(VariableTest)
 	LPFuzzySet pFuzzySet = rdo::Factory<FuzzySet>::create(pType, *pDefineArea);
 	BOOST_CHECK(pFuzzySet);
 
+	pFuzzySet->append(5,0.5);
+	BOOST_CHECK(pFuzzySet);
+
+	pFuzzySet->append(1,0.1);
+	BOOST_CHECK(pFuzzySet);
+
+	pFuzzySet->append(2,0.2);
+	BOOST_CHECK(pFuzzySet);
+
+	pFuzzySet->append(3,1.0);
+	BOOST_CHECK(pFuzzySet);
+
+	pFuzzySet->append(6,0.4);
+	BOOST_CHECK(pFuzzySet);
+
+	pFuzzySet->append(7,0.2);
+	BOOST_CHECK(pFuzzySet);
+
+	pFuzzySet->append(9,0.1);
+	BOOST_CHECK(pFuzzySet);
+
+
 	LPRDOFuzzyTerm pTerm1 = rdo::Factory<RDOFuzzyTerm>::create(_T("term1"), pFuzzySet);
 	BOOST_CHECK(pTerm1);
 
-	pVariable->append(std::pair<RDOFuzzyTerm::Term::first_type,FuzzySet>(pTerm1->getName(), pTerm1->getFuzzySetDefinition()));
+	pVariable->append(pTerm1->getName(), pTerm1->getFuzzySetDefinition());
 	pVariable->setName(_T("testName"));
 
 	RDOValue value = 1.0;
 	LPRDOLingvoVariable pVariable2 = rdo::Factory<RDOLingvoVariable>::create(value, *pVariable);
 	BOOST_CHECK(pVariable2);
 
-	RDOValue testFuzzyValue = 4.0;
-	//LPRDOLingvoVariable variable = MemberFunctionProperties::fuzzyfication(testFuzzyValue, *pVariable2);
-	//BOOST_CHECK(variable);
+	RDOValue testFuzzyValue = 7.0;
+	LPRDOLingvoVariable variable = MemberFunctionProperties::fuzzyfication(testFuzzyValue, *pVariable);
+	BOOST_CHECK(variable);
 }
 
 	

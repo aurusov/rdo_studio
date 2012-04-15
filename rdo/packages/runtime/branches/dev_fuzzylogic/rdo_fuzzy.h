@@ -174,7 +174,7 @@ public:
 	
 	void                               setName      (nameOfVariable);
 	nameOfVariable                     getName      () {return name;};
-	RDOLingvoVariable                  append       (CREF(RDOFuzzyTerm::Term) pair);
+	void                               append       (CREF(RDOFuzzyTerm::Term::first_type) name,CREF(RDOFuzzyTerm::Term::second_type) fuzzySet);
 
 	RDOLingvoVariable();
 	virtual ~RDOLingvoVariable();

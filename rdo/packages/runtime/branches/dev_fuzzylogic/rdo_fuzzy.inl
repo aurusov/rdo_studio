@@ -193,8 +193,7 @@ inline RDOFuzzyTerm::RDOFuzzyTerm()
 }
 inline RDOFuzzyTerm::RDOFuzzyTerm(CREF(termName) pName, CREF(FuzzySet) pSet)
 {
-	m_term.first  = pName;
-	m_term.second = pSet;
+	m_term = std::make_pair<termName,FuzzySet>(pName,pSet);
 }
 
 inline RDOFuzzyTerm::~RDOFuzzyTerm()
@@ -221,12 +220,11 @@ inline RDOLingvoVariable::RDOLingvoVariable(CREF(RDOValue)pDefineAreaValue, CREF
 		m_set.insert(std::pair<RDOFuzzyTerm::Term::first_type,FuzzySet>(it->first,*setOfVariable));
 	}
 }
-inline RDOLingvoVariable RDOLingvoVariable::append(CREF(RDOFuzzyTerm::Term) pair)
+inline void RDOLingvoVariable::append(CREF(RDOFuzzyTerm::Term::first_type) name,CREF(RDOFuzzyTerm::Term::second_type) fuzzySet)
 {
-	m_set.insert(pair);
-	return *this;
+	m_set.insert(std::make_pair<RDOFuzzyTerm::Term::first_type,RDOFuzzyTerm::Term::second_type>(name, fuzzySet));
 }
-inline RDOLingvoVariable::RDOLingvoVariable(CREF(RDOLingvoVariable) variable) 
+inline RDOLingvoVariable::RDOLingvoVariable(CREF(RDOLingvoVariable) variable)
 {
 	m_set = variable.m_set;
 	name  = variable.name;

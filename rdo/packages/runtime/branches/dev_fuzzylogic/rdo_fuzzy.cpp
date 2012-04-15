@@ -311,7 +311,7 @@ LPFuzzySet MemberFunctionProperties::a_pow(LPFuzzySet pSet, double power)
 	return pFuzzySetResult;
 }
 
-LPRDOLingvoVariable fuzzyfication(CREF(RDOValue)value, CREF(RDOLingvoVariable) variable)
+LPRDOLingvoVariable MemberFunctionProperties::fuzzyfication(CREF(RDOValue)value, CREF(RDOLingvoVariable) variable)
 {
 	LPRDOLingvoVariable pVariable = rdo::Factory<RDOLingvoVariable>::create(value, variable);
 	for (RDOLingvoVariable::TermSet::const_iterator it = variable.begin(); it != variable.end(); it++)
@@ -320,7 +320,7 @@ LPRDOLingvoVariable fuzzyfication(CREF(RDOValue)value, CREF(RDOLingvoVariable) v
 		FuzzySet::FuzzyItem item = pSet.findValue(value);
 		LPFuzzySet newSet = rdo::Factory<FuzzySet>::create();
 		newSet->append(item.first, item.second);
-		pVariable->append(std::make_pair<RDOFuzzyTerm::Term::first_type, RDOFuzzyTerm::Term::second_type>(it->first, newSet));
+		pVariable->append(it->first, newSet);
 	}
 	return pVariable;
 }
