@@ -139,6 +139,10 @@ BOOST_AUTO_TEST_CASE(VariableTest)
 	RDOValue value = 1.0;
 	LPRDOLingvoVariable pVariable2 = rdo::Factory<RDOLingvoVariable>::create(value, *pVariable);
 	BOOST_CHECK(pVariable2);
+
+	RDOValue testFuzzyValue = 4.0;
+	//LPRDOLingvoVariable variable = MemberFunctionProperties::fuzzyfication(testFuzzyValue, *pVariable2);
+	//BOOST_CHECK(variable);
 }
 
 	

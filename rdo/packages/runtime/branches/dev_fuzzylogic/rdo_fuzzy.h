@@ -115,7 +115,7 @@ public:
 	/* 3.78 */  static LPFuzzySet a_con     (CREF(LPFuzzySet) pSet);
 	/* 3.79 */  static LPFuzzySet a_dil     (CREF(LPFuzzySet) pSet);
 
-				static LPRDOLingvoVariable fuzzyfication(CREF(RDOValue), CREF(RDOLingvoVariable)); //стоп пока
+				static LPRDOLingvoVariable fuzzyfication  (CREF(RDOValue), CREF(RDOLingvoVariable)); //стоп пока
 	/* 3.272*/  static RDOValue            defuzzyfication(CREF(LPFuzzySet) pSet);
 
 	            static LPFuzzySet a_pow     (LPFuzzySet pSet, double power);
