@@ -171,10 +171,12 @@ public:
 	
 	TermSet::const_iterator            begin () const;
 	TermSet::const_iterator            end   () const;
+
+	REF(FuzzySet)                      operator[] (tstring name);
 	
 	void                               setName      (nameOfVariable);
 	nameOfVariable                     getName      () {return name;};
-	void                               append       (CREF(RDOFuzzyTerm::Term::first_type) name,CREF(RDOFuzzyTerm::Term::second_type) fuzzySet);
+	void                               append       (tstring name,CREF(FuzzySet) fuzzySet);
 
 	RDOLingvoVariable();
 	virtual ~RDOLingvoVariable();
