@@ -30,7 +30,7 @@ LocalVariable::LocalVariable(CREF(LPRDOValue) pName, CREF(LPExpression) pExpress
 
 	if (m_pExpression->typeInfo()->type()->typeID() == rdo::runtime::RDOType::t_unknow)
 	{
-		rdoParser::g_error().error(m_pExpression->typeInfo()->src_info(), _T("У данного типа нет значения поумолчанию"));
+		parser::g_error().error(m_pExpression->typeInfo()->src_info(), _T("У данного типа нет значения поумолчанию"));
 	}
 }
 
@@ -79,9 +79,9 @@ void LocalVariableList::append(CREF(LPLocalVariable) pVariable)
 
 	if (pExistItem)
 	{
-		rdoParser::g_error().push_only(pVariable->getSrcInfo(),  rdo::format(_T("Переменная %s уже объявлена"), pVariable->getName().c_str()));
-		rdoParser::g_error().push_only(pExistItem->getSrcInfo(), _T("См. первое описание"));
-		rdoParser::g_error().push_done();
+		parser::g_error().push_only(pVariable->getSrcInfo(),  rdo::format(_T("Переменная %s уже объявлена"), pVariable->getName().c_str()));
+		parser::g_error().push_only(pExistItem->getSrcInfo(), _T("См. первое описание"));
+		parser::g_error().push_done();
 	}
 
 	m_variableList.insert(VariableList::value_type(pVariable->getName(), pVariable));
