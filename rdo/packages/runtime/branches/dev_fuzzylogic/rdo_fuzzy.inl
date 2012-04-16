@@ -32,7 +32,8 @@ inline DefineArea::DefineArea(CREF(RDOValue) leftRange, CREF(RDOValue) rightRang
 }
 inline DefineArea::DefineArea(CREF(RDOValue) value)
 {
-
+	IntervalType mType = DomainPart::closed(value,value);
+	m_domain = Domain(mType);
 }
 
 //inline void DefineArea::appendDomain(CREF(DomainPart))
@@ -81,7 +82,8 @@ inline void FuzzySet::setValues(CREF(FuzzySetDefinition) values)
 }
 inline REF(FuzzySet) FuzzySet::append(CREF(RDOValue) rdovalue, double appertain)
 {
-	operator[](rdovalue) = appertain;
+	std::pair<FuzzySet::FuzzySetDefinition::iterator, rbool> checkValue;
+	checkValue = m_fuzzySet.insert(std::pair<RDOValue,double>(rdovalue, appertain));
 	return *this;
 }
 

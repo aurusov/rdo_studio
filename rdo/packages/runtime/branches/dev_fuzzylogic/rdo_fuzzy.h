@@ -41,7 +41,7 @@ public:
 	//rbool          inDomain(RDOValue) const;
 private:
 	DefineArea(CREF(RDOValue));// 1 element
-	DefineArea  (CREF(RDOValue) leftBorder, CREF(RDOValue) rightBorder); //;
+	DefineArea(CREF(RDOValue) leftBorder, CREF(RDOValue) rightBorder); //;
 
 	Domain m_domain;
 };
@@ -54,9 +54,9 @@ public:
 	typedef  std::pair<RDOValue, double>                              FuzzyItem;
 	typedef  std::map<FuzzyItem::first_type, FuzzyItem::second_type>  FuzzySetDefinition;
 
-	REF(FuzzySet)                             append     (CREF(RDOValue) rdovalue, double appertain);
+	REF(FuzzySet)                             append     (CREF(RDOValue) rdovalue, double appertain); // вставка с проверкой значения, если такое же есть - не вставит
 	REF(FuzzySet)                             operator() (CREF(RDOValue) rdovalue, double appertain);
-	REF(double)                               operator[] (CREF(RDOValue) rdovalue);
+	REF(double)                               operator[] (CREF(RDOValue) rdovalue); // вставка без проверки значения
 	FuzzySetDefinition::const_iterator        find       (CREF(RDOValue) rdovalue) const;
 	FuzzyItem                                 findValue  (CREF(RDOValue) rdovalue) const;
 	FuzzySetDefinition::const_iterator        begin      () const;
@@ -182,7 +182,6 @@ public:
 	virtual ~RDOLingvoVariable();
 
 private:
-//	RDOLingvoVariable();
 	RDOLingvoVariable(CREF(RDOValue) pDefineAreaValue, CREF(RDOLingvoVariable) variable);
 	RDOLingvoVariable(CREF(RDOLingvoVariable));
 
