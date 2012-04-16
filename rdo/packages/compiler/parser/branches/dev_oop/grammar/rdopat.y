@@ -4,7 +4,7 @@
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
-  \authors   Поподьянец Евгений (pop4ikxp@mail.ru)
+  \authors   Поподьянец Евгений (kurt.gigacore@gmail.com)
   \date      20.02.2003
   \brief     Синтаксис образцов активностей
   \indent    4T

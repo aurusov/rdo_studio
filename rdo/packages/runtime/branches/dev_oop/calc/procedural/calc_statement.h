@@ -3,6 +3,7 @@
   \file      calc_statement.h
   \authors   Чирков Михаил
   \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   Поподьянец Евгений (kurt.gigacore@gmail.com)
   \date      16.04.2011
   \brief     Инструкции
   \indent    4T
