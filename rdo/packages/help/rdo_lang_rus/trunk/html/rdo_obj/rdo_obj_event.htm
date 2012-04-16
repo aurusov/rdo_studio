@@ -3,16 +3,16 @@
 <TITLE>Описание событий</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
 </HEAD>
-    <BODY>
-        <DIV>
-            <H1>ОПИСАНИЕ СОБЫТИЙ</H1>
+	<BODY>
+		<DIV>
+			<H1>ОПИСАНИЕ СОБЫТИЙ</H1>
 		<P><B>События</B> описываются в отдельном <A href="../rdo_terms.htm">объекте</A> с расширением <B>.evn</B>
 		<PRE class="syntax">$Pattern <A class="syntax" href="#event_name">&lt;имя_события&gt;</A> : event [ <A class="syntax" href="#sign_of_the_trace">&lt;признак_трассировки&gt;</A> ]
 [ $Parameters <A class="syntax" href="#param_descr">&lt;описание_параметров_события&gt;</A> ]
 $Relevant_resources <A class="syntax" href="#rel_res_desc">&lt;описание_релевантных_ресурсов_события&gt;</A>
 $Body <A class="syntax" href="#body">&lt;тело_события&gt;</A>
 $End</PRE>
-        <DL class="syntax">
+		<DL class="syntax">
 			<DT class="syntax"><A name="event_name"></A><I>имя_события</I></DT>
 			<DD class="syntax">Имя события представляет собой <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Имена должны быть различными для всех событий и не должны совпадать с ранее определенными именами.</DD>
 			<DT class="syntax"><A name ="sign_of_the_trace"><I>признак_трассировки</I></DT>
@@ -81,8 +81,8 @@ $Body
     Образец_прихода_клиента.planning( time_now + Интервал_прихода( 30 ) )(norm(5));
     Количество_в_очереди += Образец_прихода_клиента.Количество
 $End
-    </PRE>
-        <H4>См. также</H4>
+	</PRE>
+		<H4>См. также</H4>
 	<P><A href="../rdo_base/rdo_base_res_types.htm">Типы ресурсов</A></P>
 	<P><A href="../rdo_base/rdo_base_resources.htm">Описание ресурсов</A></P>
 	<P><A href="rdo_obj_const_fun_sec.htm">Описание символьных констант, функций и последовательностей</A></P>
