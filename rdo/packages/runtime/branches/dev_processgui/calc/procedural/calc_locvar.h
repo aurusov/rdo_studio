@@ -23,11 +23,7 @@ CALC(RDOCalcCreateLocalVariable)
 {
 DECLARE_FACTORY(RDOCalcCreateLocalVariable)
 private:
-<<<<<<< .working
 	RDOCalcCreateLocalVariable(CREF(tstring) name, CREF(LPRDOCalc) pValueCalc);
-=======
-	RDOCalcCreateLocalVariable(CREF(tstring) name);
->>>>>>> .merge-right.r7493
 
 	tstring    m_name;
 	LPRDOCalc  m_pValueCalc;
