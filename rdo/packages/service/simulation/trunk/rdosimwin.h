@@ -203,7 +203,7 @@ public:
 	{};
 
 private:
-	rdoParser::LPRDOParser                m_pParser;
+	rdo::compiler::parser::LPRDOParser    m_pParser;
 	rdo::runtime::LPRDORuntime            m_pRuntime;
 	rbool                                 m_canTrace;
 	rdo::compiler::gui::LPProcGUIProcess  m_pGUIProcess;
@@ -224,9 +224,9 @@ private:
 #ifdef CORBA_ENABLE
 
 //	void corbaGetRTPcount(REF(::CORBA::Long) rtp_count);
-//	void corbaGetRTPParamscount(REF(rdoParser::RDOCorba::PARAM_count) params_count);
-	void corbaGetRTP(REF(rdoParser::RDOCorba::GetRTP_var) my_rtpList);
-	void corbaGetRSS(REF(rdoParser::RDOCorba::GetRSS_var) my_rssList);
+//	void corbaGetRTPParamscount(REF(rdo::compiler::parser::RDOCorba::PARAM_count) params_count);
+	void corbaGetRTP(REF(rdo::compiler::parser::RDOCorba::GetRTP_var) my_rtpList);
+	void corbaGetRSS(REF(rdo::compiler::parser::RDOCorba::GetRSS_var) my_rssList);
 
 #endif // CORBA_ENABLE
 
@@ -282,7 +282,7 @@ public:
 class RDOThreadCodeComp: public RDOThreadMT
 {
 protected:
-	rdoParser::LPRDOParser m_pParser;
+	rdo::compiler::parser::LPRDOParser m_pParser;
 
 	virtual ~RDOThreadCodeComp(); //! „тобы нельз€ было удалить через delete помещаем его в protected
 	virtual void proc(REF(RDOMessageInfo) msg);

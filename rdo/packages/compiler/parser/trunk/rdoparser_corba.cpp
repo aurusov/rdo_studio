@@ -28,7 +28,7 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-void print_RTP(REF(rdoParser::RDOCorba::GetRTP_var) my_rtpList)
+void print_RTP(REF(RDOCorba::GetRTP_var) my_rtpList)
 {
 	PTR(FILE) f1;
 #pragma warning(disable: 4996)
@@ -40,7 +40,7 @@ void print_RTP(REF(rdoParser::RDOCorba::GetRTP_var) my_rtpList)
 		fprintf(f1, _T("\nИнформация о типе ресурса №%d:\n"), i+1);
 		fprintf(f1, _T("   Имя типа ресурса №%d: %s \n"), i+1, my_rtpList[i].m_name);
 
-		if (my_rtpList[i].m_type==rdoParser::RDOCorba::rt_permanent)
+		if (my_rtpList[i].m_type==RDOCorba::rt_permanent)
 			fprintf(f1, _T("   Вид типа ресурса: tr_permanent\n"));
 		else
 			fprintf(f1, _T("   Вид типа ресурса: tr_temporary\n"));
@@ -52,7 +52,7 @@ void print_RTP(REF(rdoParser::RDOCorba::GetRTP_var) my_rtpList)
 				
 			switch (my_rtpList[i].m_param[j].m_type)
 			{
-			case rdoParser::RDOCorba::int_type:
+			case RDOCorba::int_type:
 				fprintf(f1, _T("      Тип параметра: integer\n"));
 				if (my_rtpList[i].m_param[j].m_range_int == 1)
 				{
@@ -64,7 +64,7 @@ void print_RTP(REF(rdoParser::RDOCorba::GetRTP_var) my_rtpList)
 					fprintf(f1, _T("      Значение по умолчанию: %d \n"), my_rtpList[i].m_param[j].m_default_int);
 				}
 				break;
-			case rdoParser::RDOCorba::double_type:
+			case RDOCorba::double_type:
 					fprintf(f1, _T("      Тип параметра: real\n"));
 					if (my_rtpList[i].m_param[j].m_range_double == 1)
 					{
@@ -76,7 +76,7 @@ void print_RTP(REF(rdoParser::RDOCorba::GetRTP_var) my_rtpList)
 						fprintf(f1, _T("      Значение по умолчанию: %f \n"), my_rtpList[i].m_param[j].m_default_double);
 					}
 					break;
-				case rdoParser::RDOCorba::enum_type:
+				case RDOCorba::enum_type:
 				{
 					fprintf(f1, _T("      Тип параметра: enum\n"));
 					fprintf(f1, _T("      Значения параметра:"));
@@ -105,7 +105,7 @@ void print_RTP(REF(rdoParser::RDOCorba::GetRTP_var) my_rtpList)
 	fclose(f1);
 }
 
-void print_RSS(REF(rdoParser::RDOCorba::GetRSS_var) my_rssList)
+void print_RSS(REF(RDOCorba::GetRSS_var) my_rssList)
 {
 	PTR(FILE) f2;
 #pragma warning(disable: 4996)
@@ -121,13 +121,13 @@ void print_RSS(REF(rdoParser::RDOCorba::GetRSS_var) my_rssList)
 		{
 			switch (my_rssList[i].m_param[j].m_type)
 			{
-			case rdoParser::RDOCorba::int_type:
+			case RDOCorba::int_type:
 				fprintf(f2, _T("  Значение параметра: %s = %d\n"), my_rssList[i].m_param[j].m_name, my_rssList[i].m_param[j].m_int);
 				break;
-			case rdoParser::RDOCorba::double_type:
+			case RDOCorba::double_type:
 				fprintf(f2, _T("  Значение параметра: %s = %f\n"), my_rssList[i].m_param[j].m_name, my_rssList[i].m_param[j].m_double);
 				break;
-			case rdoParser::RDOCorba::enum_type:
+			case RDOCorba::enum_type:
 				fprintf(f2, _T("  Значение параметра: %s = %s\n"), my_rssList[i].m_param[j].m_name, my_rssList[i].m_param[j].m_enum);
 				break;
 			default: break;
@@ -214,13 +214,13 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 	//! вызвав с помощью корбы некий метод, который вернёт кучу структур
 	//! с описанием RTP и насоздавать этих типов
 
-	rdoParser::RDOParserSMRInfo parser;
+	RDOParserSMRInfo parser;
 	parser.parse();
 
 	CPTR(char) left;
 	CPTR(char) right;
 
-	rdoParser::RDOSMR::StringTable tmp = parser.getSMR()->getExternalModelList();
+	RDOSMR::StringTable tmp = parser.getSMR()->getExternalModelList();
 	STL_FOR_ALL_CONST(tmp, it)
 	{
 		left  = it->first.c_str();
@@ -232,13 +232,13 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 
 			CORBA::ORB_var         orb         = CORBA::ORB_init   (argc, NULL);
 			CORBA::Object_var      obj         = getObjectReference(orb,  left); //! может лучше right
-			rdoParser::RDOCorba_var rdocorbaref = rdoParser::RDOCorba::_narrow(obj);
+			RDOCorba_var rdocorbaref = RDOCorba::_narrow(obj);
 
 			//-------------------------------------------------------------
 			CORBA::Long rtp_count = 0;
 
-			rdoParser::RDOCorba::GetRTP_var tmp_rtp = rdocorbaref->getRDORTPlist(rtp_count);
-			rdoParser::RDOCorba::GetRTP_var my_rtpList(tmp_rtp);
+			RDOCorba::GetRTP_var tmp_rtp = rdocorbaref->getRDORTPlist(rtp_count);
+			RDOCorba::GetRTP_var my_rtpList(tmp_rtp);
 
 			//! Печатаем в файл на С для теста
 			print_RTP(my_rtpList);
@@ -257,7 +257,7 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 				{
 					switch (my_rtpList[i].m_param[j].m_type)
 					{
-					case rdoParser::RDOCorba::int_type:
+					case RDOCorba::int_type:
 					{
 						rdo::compiler::mbuilder::RDOResType::Param par_int(my_rtpList[i].m_param[j].m_name.in(), rdo::Factory<RDOType__int>::create());
 
@@ -270,7 +270,7 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 						rtp.m_params.append(par_int);
 						break;
 					}
-					case rdoParser::RDOCorba::double_type:
+					case RDOCorba::double_type:
 					{
 						rdo::compiler::mbuilder::RDOResType::Param par_double(my_rtpList[i].m_param[j].m_name.in(), rdo::Factory<RDOType__real>::create());
 
@@ -283,7 +283,7 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 						rtp.m_params.append(par_double);
 						break;
 					}
-					case rdoParser::RDOCorba::enum_type:
+					case RDOCorba::enum_type:
 					{
 						//! Создадим список значений параметра перечислимого типа
 						rdo::runtime::RDOEnumType::Enums enumList;
@@ -353,8 +353,8 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 			//! -------------------------------------------------------------
 			CORBA::Long rss_count = 0;
 
-			rdoParser::RDOCorba::GetRSS_var tmp_rss = rdocorbaref->getRDORSSPlist(rss_count);
-			rdoParser::RDOCorba::GetRSS_var my_rssList(tmp_rss);
+			RDOCorba::GetRSS_var tmp_rss = rdocorbaref->getRDORSSPlist(rss_count);
+			RDOCorba::GetRSS_var my_rssList(tmp_rss);
 		
 			//! Печатаем в файл на С для теста:
 			print_RSS(my_rssList);
@@ -378,13 +378,13 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 					//! Записываем начальные значения параметров ресурса
 					switch (my_rssList[i].m_param[j].m_type)
 					{
-					case rdoParser::RDOCorba::int_type:
+					case RDOCorba::int_type:
 						rss[my_rssList[i].m_param[j].m_name.in()] = RDOValue(my_rssList[i].m_param[j].m_int);
 						break;
-					case rdoParser::RDOCorba::double_type:
+					case RDOCorba::double_type:
 						rss[my_rssList[i].m_param[j].m_name.in()] = RDOValue(my_rssList[i].m_param[j].m_double);
 						break;
-					case rdoParser::RDOCorba::enum_type:
+					case RDOCorba::enum_type:
 					{
 						tstring temp_string;
 						temp_string = my_rssList[i].m_param[j].m_enum.in();
@@ -396,7 +396,7 @@ void RDOParserCorbaRTP::parse(CREF(LPRDOParser) pParser)
 				 }
 
 				//! Добавляем к существующим ресурсам
-				if (rssList.append<rdoParser::RDORSSResource>(rss))
+				if (rssList.append<RDORSSResource>(rss))
 				{
 					//! Добавили успешно
 					TRACE(_T("Еще один ресурс добавился!!!\n"));
@@ -464,7 +464,7 @@ void RDOParserCorbaRSS::parse(CREF(LPRDOParser) pParser)
 		//! Заполнили его параметры
 		rss["длительность_max"] = 174;
 		//! Добавляем его к списку существующих
-		if (rssList.append<rdoParser::RDORSSResource>(rss))
+		if (rssList.append<RDORSSResource>(rss))
 		{
 			//! Добавили успешно
 		}

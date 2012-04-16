@@ -17,7 +17,7 @@ static const char* _0RL_library_version = omniORB_4_1;
 
 
 void
-rdoParser::RDOCorba::ParamRTP::operator>>= (cdrStream &_n) const
+rdo::compiler::parser::RDOCorba::ParamRTP::operator>>= (cdrStream &_n) const
 {
   _n.marshalString(m_name,0);
   m_type >>= _n;
@@ -40,7 +40,7 @@ rdoParser::RDOCorba::ParamRTP::operator>>= (cdrStream &_n) const
 }
 
 void
-rdoParser::RDOCorba::ParamRTP::operator<<= (cdrStream &_n)
+rdo::compiler::parser::RDOCorba::ParamRTP::operator<<= (cdrStream &_n)
 {
   m_name = _n.unmarshalString(0);
   (TypeParam&)m_type <<= _n;
@@ -63,7 +63,7 @@ rdoParser::RDOCorba::ParamRTP::operator<<= (cdrStream &_n)
 }
 
 void
-rdoParser::RDOCorba::MY_RTP::operator>>= (cdrStream &_n) const
+rdo::compiler::parser::RDOCorba::MY_RTP::operator>>= (cdrStream &_n) const
 {
   _n.marshalString(m_name,0);
   m_type >>= _n;
@@ -73,7 +73,7 @@ rdoParser::RDOCorba::MY_RTP::operator>>= (cdrStream &_n) const
 }
 
 void
-rdoParser::RDOCorba::MY_RTP::operator<<= (cdrStream &_n)
+rdo::compiler::parser::RDOCorba::MY_RTP::operator<<= (cdrStream &_n)
 {
   m_name = _n.unmarshalString(0);
   (TypeRTP&)m_type <<= _n;
@@ -83,7 +83,7 @@ rdoParser::RDOCorba::MY_RTP::operator<<= (cdrStream &_n)
 }
 
 void
-rdoParser::RDOCorba::ParamRSS::operator>>= (cdrStream &_n) const
+rdo::compiler::parser::RDOCorba::ParamRSS::operator>>= (cdrStream &_n) const
 {
   _n.marshalString(m_name,0);
   m_type >>= _n;
@@ -94,7 +94,7 @@ rdoParser::RDOCorba::ParamRSS::operator>>= (cdrStream &_n) const
 }
 
 void
-rdoParser::RDOCorba::ParamRSS::operator<<= (cdrStream &_n)
+rdo::compiler::parser::RDOCorba::ParamRSS::operator<<= (cdrStream &_n)
 {
   m_name = _n.unmarshalString(0);
   (TypeParam&)m_type <<= _n;
@@ -105,7 +105,7 @@ rdoParser::RDOCorba::ParamRSS::operator<<= (cdrStream &_n)
 }
 
 void
-rdoParser::RDOCorba::MY_RSS::operator>>= (cdrStream &_n) const
+rdo::compiler::parser::RDOCorba::MY_RSS::operator>>= (cdrStream &_n) const
 {
   _n.marshalString(m_name,0);
   _n.marshalString(m_type,0);
@@ -115,7 +115,7 @@ rdoParser::RDOCorba::MY_RSS::operator>>= (cdrStream &_n) const
 }
 
 void
-rdoParser::RDOCorba::MY_RSS::operator<<= (cdrStream &_n)
+rdo::compiler::parser::RDOCorba::MY_RSS::operator<<= (cdrStream &_n)
 {
   m_name = _n.unmarshalString(0);
   m_type = _n.unmarshalString(0);
@@ -124,40 +124,40 @@ rdoParser::RDOCorba::MY_RSS::operator<<= (cdrStream &_n)
 
 }
 
-rdoParser::RDOCorba_ptr rdoParser::RDOCorba_Helper::_nil() {
-  return ::rdoParser::RDOCorba::_nil();
+rdo::compiler::parser::RDOCorba_ptr rdo::compiler::parser::RDOCorba_Helper::_nil() {
+  return ::rdo::compiler::parser::RDOCorba::_nil();
 }
 
-::CORBA::Boolean rdoParser::RDOCorba_Helper::is_nil(::rdoParser::RDOCorba_ptr p) {
+::CORBA::Boolean rdo::compiler::parser::RDOCorba_Helper::is_nil(::rdo::compiler::parser::RDOCorba_ptr p) {
   return ::CORBA::is_nil(p);
 
 }
 
-void rdoParser::RDOCorba_Helper::release(::rdoParser::RDOCorba_ptr p) {
+void rdo::compiler::parser::RDOCorba_Helper::release(::rdo::compiler::parser::RDOCorba_ptr p) {
   ::CORBA::release(p);
 }
 
-void rdoParser::RDOCorba_Helper::marshalObjRef(::rdoParser::RDOCorba_ptr obj, cdrStream& s) {
-  ::rdoParser::RDOCorba::_marshalObjRef(obj, s);
+void rdo::compiler::parser::RDOCorba_Helper::marshalObjRef(::rdo::compiler::parser::RDOCorba_ptr obj, cdrStream& s) {
+  ::rdo::compiler::parser::RDOCorba::_marshalObjRef(obj, s);
 }
 
-rdoParser::RDOCorba_ptr rdoParser::RDOCorba_Helper::unmarshalObjRef(cdrStream& s) {
-  return ::rdoParser::RDOCorba::_unmarshalObjRef(s);
+rdo::compiler::parser::RDOCorba_ptr rdo::compiler::parser::RDOCorba_Helper::unmarshalObjRef(cdrStream& s) {
+  return ::rdo::compiler::parser::RDOCorba::_unmarshalObjRef(s);
 }
 
-void rdoParser::RDOCorba_Helper::duplicate(::rdoParser::RDOCorba_ptr obj) {
+void rdo::compiler::parser::RDOCorba_Helper::duplicate(::rdo::compiler::parser::RDOCorba_ptr obj) {
   if( obj && !obj->_NP_is_nil() )  omni::duplicateObjRef(obj);
 }
 
-rdoParser::RDOCorba_ptr
-rdoParser::RDOCorba::_duplicate(::rdoParser::RDOCorba_ptr obj)
+rdo::compiler::parser::RDOCorba_ptr
+rdo::compiler::parser::RDOCorba::_duplicate(::rdo::compiler::parser::RDOCorba_ptr obj)
 {
   if( obj && !obj->_NP_is_nil() )  omni::duplicateObjRef(obj);
   return obj;
 }
 
-rdoParser::RDOCorba_ptr
-rdoParser::RDOCorba::_narrow(::CORBA::Object_ptr obj)
+rdo::compiler::parser::RDOCorba_ptr
+rdo::compiler::parser::RDOCorba::_narrow(::CORBA::Object_ptr obj)
 {
   if( !obj || obj->_NP_is_nil() || obj->_NP_is_pseudo() ) return _nil();
   _ptr_type e = (_ptr_type) obj->_PR_getobj()->_realNarrow(_PD_repoId);
@@ -165,16 +165,16 @@ rdoParser::RDOCorba::_narrow(::CORBA::Object_ptr obj)
 }
 
 
-rdoParser::RDOCorba_ptr
-rdoParser::RDOCorba::_unchecked_narrow(::CORBA::Object_ptr obj)
+rdo::compiler::parser::RDOCorba_ptr
+rdo::compiler::parser::RDOCorba::_unchecked_narrow(::CORBA::Object_ptr obj)
 {
   if( !obj || obj->_NP_is_nil() || obj->_NP_is_pseudo() ) return _nil();
   _ptr_type e = (_ptr_type) obj->_PR_getobj()->_uncheckedNarrow(_PD_repoId);
   return e ? e : _nil();
 }
 
-rdoParser::RDOCorba_ptr
-rdoParser::RDOCorba::_nil()
+rdo::compiler::parser::RDOCorba_ptr
+rdo::compiler::parser::RDOCorba::_nil()
 {
 #ifdef OMNI_UNLOADABLE_STUBS
   static _objref_RDOCorba _the_nil_obj;
@@ -193,16 +193,16 @@ rdoParser::RDOCorba::_nil()
 #endif
 }
 
-const char* rdoParser::RDOCorba::_PD_repoId = "IDL:rdoParse/RDOCorba:1.0";
+const char* rdo::compiler::parser::RDOCorba::_PD_repoId = "IDL:rdoParse/RDOCorba:1.0";
 
 
-rdoParser::_objref_RDOCorba::~_objref_RDOCorba() {
+rdo::compiler::parser::_objref_RDOCorba::~_objref_RDOCorba() {
   
 }
 
 
-rdoParser::_objref_RDOCorba::_objref_RDOCorba(omniIOR* ior, omniIdentity* id) :
-   omniObjRef(::rdoParser::RDOCorba::_PD_repoId, ior, id, 1)
+rdo::compiler::parser::_objref_RDOCorba::_objref_RDOCorba(omniIOR* ior, omniIdentity* id) :
+   omniObjRef(::rdo::compiler::parser::RDOCorba::_PD_repoId, ior, id, 1)
    
    
 {
@@ -210,16 +210,16 @@ rdoParser::_objref_RDOCorba::_objref_RDOCorba(omniIOR* ior, omniIdentity* id) :
 }
 
 void*
-rdoParser::_objref_RDOCorba::_ptrToObjRef(const char* id)
+rdo::compiler::parser::_objref_RDOCorba::_ptrToObjRef(const char* id)
 {
-  if( id == ::rdoParser::RDOCorba::_PD_repoId )
-    return (::rdoParser::RDOCorba_ptr) this;
+  if( id == ::rdo::compiler::parser::RDOCorba::_PD_repoId )
+    return (::rdo::compiler::parser::RDOCorba_ptr) this;
   
   if( id == ::CORBA::Object::_PD_repoId )
     return (::CORBA::Object_ptr) this;
 
-  if( omni::strMatch(id, ::rdoParser::RDOCorba::_PD_repoId) )
-    return (::rdoParser::RDOCorba_ptr) this;
+  if( omni::strMatch(id, ::rdo::compiler::parser::RDOCorba::_PD_repoId) )
+    return (::rdo::compiler::parser::RDOCorba_ptr) this;
   
   if( omni::strMatch(id, ::CORBA::Object::_PD_repoId) )
     return (::CORBA::Object_ptr) this;
@@ -245,20 +245,20 @@ public:
   
   
   ::CORBA::Long arg_0;
-  rdoParser::RDOCorba::GetRTP_var result;
+  rdo::compiler::parser::RDOCorba::GetRTP_var result;
 };
 
 void _0RL_cd_3765F01E8BABC70E_00000000::marshalReturnedValues(cdrStream& _n)
 {
-  (const rdoParser::RDOCorba::GetRTP&) result >>= _n;
+  (const rdo::compiler::parser::RDOCorba::GetRTP&) result >>= _n;
   arg_0 >>= _n;
 
 }
 
 void _0RL_cd_3765F01E8BABC70E_00000000::unmarshalReturnedValues(cdrStream& _n)
 {
-  result = new rdoParser::RDOCorba::GetRTP;
-  (rdoParser::RDOCorba::GetRTP&)result <<= _n;
+  result = new rdo::compiler::parser::RDOCorba::GetRTP;
+  (rdo::compiler::parser::RDOCorba::GetRTP&)result <<= _n;
   (::CORBA::Long&)arg_0 <<= _n;
 
 }
@@ -268,13 +268,13 @@ static void
 _0RL_lcfn_3765F01E8BABC70E_10000000(omniCallDescriptor* cd, omniServant* svnt)
 {
   _0RL_cd_3765F01E8BABC70E_00000000* tcd = (_0RL_cd_3765F01E8BABC70E_00000000*)cd;
-  rdoParser::_impl_RDOCorba* impl = (rdoParser::_impl_RDOCorba*) svnt->_ptrToInterface(rdoParser::RDOCorba::_PD_repoId);
+  rdo::compiler::parser::_impl_RDOCorba* impl = (rdo::compiler::parser::_impl_RDOCorba*) svnt->_ptrToInterface(rdo::compiler::parser::RDOCorba::_PD_repoId);
   tcd->result = impl->getRDORTPlist(tcd->arg_0);
 
 
 }
 
-rdoParser::RDOCorba::GetRTP* rdoParser::_objref_RDOCorba::getRDORTPlist(::CORBA::Long& rtp_count)
+rdo::compiler::parser::RDOCorba::GetRTP* rdo::compiler::parser::_objref_RDOCorba::getRDORTPlist(::CORBA::Long& rtp_count)
 {
   _0RL_cd_3765F01E8BABC70E_00000000 _call_desc(_0RL_lcfn_3765F01E8BABC70E_10000000, "getRDORTPlist", 14);
 
@@ -303,20 +303,20 @@ public:
   
   
   ::CORBA::Long arg_0;
-  rdoParser::RDOCorba::GetRSS_var result;
+  rdo::compiler::parser::RDOCorba::GetRSS_var result;
 };
 
 void _0RL_cd_3765F01E8BABC70E_20000000::marshalReturnedValues(cdrStream& _n)
 {
-  (const rdoParser::RDOCorba::GetRSS&) result >>= _n;
+  (const rdo::compiler::parser::RDOCorba::GetRSS&) result >>= _n;
   arg_0 >>= _n;
 
 }
 
 void _0RL_cd_3765F01E8BABC70E_20000000::unmarshalReturnedValues(cdrStream& _n)
 {
-  result = new rdoParser::RDOCorba::GetRSS;
-  (rdoParser::RDOCorba::GetRSS&)result <<= _n;
+  result = new rdo::compiler::parser::RDOCorba::GetRSS;
+  (rdo::compiler::parser::RDOCorba::GetRSS&)result <<= _n;
   (::CORBA::Long&)arg_0 <<= _n;
 
 }
@@ -326,13 +326,13 @@ static void
 _0RL_lcfn_3765F01E8BABC70E_30000000(omniCallDescriptor* cd, omniServant* svnt)
 {
   _0RL_cd_3765F01E8BABC70E_20000000* tcd = (_0RL_cd_3765F01E8BABC70E_20000000*)cd;
-  rdoParser::_impl_RDOCorba* impl = (rdoParser::_impl_RDOCorba*) svnt->_ptrToInterface(rdoParser::RDOCorba::_PD_repoId);
+  rdo::compiler::parser::_impl_RDOCorba* impl = (rdo::compiler::parser::_impl_RDOCorba*) svnt->_ptrToInterface(rdo::compiler::parser::RDOCorba::_PD_repoId);
   tcd->result = impl->getRDORSSPlist(tcd->arg_0);
 
 
 }
 
-rdoParser::RDOCorba::GetRSS* rdoParser::_objref_RDOCorba::getRDORSSPlist(::CORBA::Long& rss_count)
+rdo::compiler::parser::RDOCorba::GetRSS* rdo::compiler::parser::_objref_RDOCorba::getRDORSSPlist(::CORBA::Long& rss_count)
 {
   _0RL_cd_3765F01E8BABC70E_20000000 _call_desc(_0RL_lcfn_3765F01E8BABC70E_30000000, "getRDORSSPlist", 15);
 
@@ -343,32 +343,32 @@ rdoParser::RDOCorba::GetRSS* rdoParser::_objref_RDOCorba::getRDORSSPlist(::CORBA
 
 
 }
-rdoParser::_pof_RDOCorba::~_pof_RDOCorba() {}
+rdo::compiler::parser::_pof_RDOCorba::~_pof_RDOCorba() {}
 
 
 omniObjRef*
-rdoParser::_pof_RDOCorba::newObjRef(omniIOR* ior, omniIdentity* id)
+rdo::compiler::parser::_pof_RDOCorba::newObjRef(omniIOR* ior, omniIdentity* id)
 {
-  return new ::rdoParser::_objref_RDOCorba(ior, id);
+  return new ::rdo::compiler::parser::_objref_RDOCorba(ior, id);
 }
 
 
 ::CORBA::Boolean
-rdoParser::_pof_RDOCorba::is_a(const char* id) const
+rdo::compiler::parser::_pof_RDOCorba::is_a(const char* id) const
 {
-  if( omni::ptrStrMatch(id, ::rdoParser::RDOCorba::_PD_repoId) )
+  if( omni::ptrStrMatch(id, ::rdo::compiler::parser::RDOCorba::_PD_repoId) )
     return 1;
   
   return 0;
 }
 
-const rdoParser::_pof_RDOCorba _the_pof_rdoParse_mRDOCorba;
+const rdo::compiler::parser::_pof_RDOCorba _the_pof_rdoParse_mRDOCorba;
 
-rdoParser::_impl_RDOCorba::~_impl_RDOCorba() {}
+rdo::compiler::parser::_impl_RDOCorba::~_impl_RDOCorba() {}
 
 
 ::CORBA::Boolean
-rdoParser::_impl_RDOCorba::_dispatch(omniCallHandle& _handle)
+rdo::compiler::parser::_impl_RDOCorba::_dispatch(omniCallHandle& _handle)
 {
   const char* op = _handle.operation_name();
 
@@ -393,16 +393,16 @@ rdoParser::_impl_RDOCorba::_dispatch(omniCallHandle& _handle)
 }
 
 void*
-rdoParser::_impl_RDOCorba::_ptrToInterface(const char* id)
+rdo::compiler::parser::_impl_RDOCorba::_ptrToInterface(const char* id)
 {
-  if( id == ::rdoParser::RDOCorba::_PD_repoId )
-    return (::rdoParser::_impl_RDOCorba*) this;
+  if( id == ::rdo::compiler::parser::RDOCorba::_PD_repoId )
+    return (::rdo::compiler::parser::_impl_RDOCorba*) this;
   
   if( id == ::CORBA::Object::_PD_repoId )
     return (void*) 1;
 
-  if( omni::strMatch(id, ::rdoParser::RDOCorba::_PD_repoId) )
-    return (::rdoParser::_impl_RDOCorba*) this;
+  if( omni::strMatch(id, ::rdo::compiler::parser::RDOCorba::_PD_repoId) )
+    return (::rdo::compiler::parser::_impl_RDOCorba*) this;
   
   if( omni::strMatch(id, ::CORBA::Object::_PD_repoId) )
     return (void*) 1;
@@ -410,9 +410,9 @@ rdoParser::_impl_RDOCorba::_ptrToInterface(const char* id)
 }
 
 const char*
-rdoParser::_impl_RDOCorba::_mostDerivedRepoId()
+rdo::compiler::parser::_impl_RDOCorba::_mostDerivedRepoId()
 {
-  return ::rdoParser::RDOCorba::_PD_repoId;
+  return ::rdo::compiler::parser::RDOCorba::_PD_repoId;
 }
 
 POA_rdoParse::RDOCorba::~RDOCorba() {}

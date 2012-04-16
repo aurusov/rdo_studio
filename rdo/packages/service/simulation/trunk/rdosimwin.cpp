@@ -71,17 +71,17 @@ public:
 	{}
 	virtual ~RDOCorba_i()
 	{}
-    
-	virtual PTR(rdoParser::RDOCorba::GetRTP) getRDORTPlist (REF(::CORBA::Long) rtp_count);
-	virtual PTR(rdoParser::RDOCorba::GetRSS) getRDORSSPlist(REF(::CORBA::Long) rss_count);
+
+	virtual PTR(rdo::compiler::parser::RDOCorba::GetRTP) getRDORTPlist (REF(::CORBA::Long) rtp_count);
+	virtual PTR(rdo::compiler::parser::RDOCorba::GetRSS) getRDORSSPlist(REF(::CORBA::Long) rss_count);
 
 	static CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref);
 };
 
-PTR(rdoParser::RDOCorba::GetRTP) RDOCorba_i::getRDORTPlist(REF(::CORBA::Long) rtp_count)
+PTR(rdo::compiler::parser::RDOCorba::GetRTP) RDOCorba_i::getRDORTPlist(REF(::CORBA::Long) rtp_count)
 {
 	//! Создаем список структур для хранения информации об искомых типах ресурсов
-	rdoParser::RDOCorba::GetRTP_var my_rtpList = new rdoParser::RDOCorba::GetRTP;
+	rdo::compiler::parser::RDOCorba::GetRTP_var my_rtpList = new rdo::compiler::parser::RDOCorba::GetRTP;
 
 	//! Получаем необходимые нам данные о типах ресурсов РДО
 	kernel->sendMessage(kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RTP, &my_rtpList);
@@ -89,10 +89,10 @@ PTR(rdoParser::RDOCorba::GetRTP) RDOCorba_i::getRDORTPlist(REF(::CORBA::Long) rt
 	return my_rtpList._retn();
 }
 
-PTR(rdoParser::RDOCorba::GetRSS) RDOCorba_i::getRDORSSPlist(REF(::CORBA::Long) rss_count)
+PTR(rdo::compiler::parser::RDOCorba::GetRSS) RDOCorba_i::getRDORSSPlist(REF(::CORBA::Long) rss_count)
 {
 	//! Создаем список структур для хранения информации об искомых ресурсах
-	rdoParser::RDOCorba::GetRSS_var my_rssList = new rdoParser::RDOCorba::GetRSS;
+	rdo::compiler::parser::RDOCorba::GetRSS_var my_rssList = new rdo::compiler::parser::RDOCorba::GetRSS;
 	
 	//! Получаем необходимые нам данные о ресурсах РДО
 	kernel->sendMessage(kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RSS, &my_rssList);
@@ -169,7 +169,7 @@ CORBA::Boolean bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, CP
 		CosNaming::Name objectName;
 		objectName.length(1);
 		
-		//! rdoParser::RDOParserSMRInfo parser;
+		//! rdo::compiler::parser::RDOParserSMRInfo parser;
 		//! parser.parse();
 
 		objectName[0].id   = ModelName;
@@ -658,7 +658,7 @@ void RDOThreadRunTime::start()
 		}
 		m_pSimulator->m_pRuntime->setShowRate(m_pSimulator->m_pParser->getSMR()->getShowRate());
 	}
-	catch (REF(rdoParser::RDOSyntaxException))
+	catch (REF(rdo::compiler::parser::RDOSyntaxException))
 	{
 		m_runtimeError = true;
 		m_pSimulator->m_pRuntime->onRuntimeError();
@@ -699,7 +699,7 @@ void RDOThreadRunTime::idle()
 			RDOThreadMT::sendMessage(this, RT_THREAD_CLOSE);
 		}
 	}
-	catch (REF(rdoParser::RDOSyntaxException))
+	catch (REF(rdo::compiler::parser::RDOSyntaxException))
 	{
 		m_runtimeError = true;
 		m_pSimulator->m_pRuntime->onRuntimeError();
@@ -804,7 +804,7 @@ void RDOThreadRunTime::stop()
 		m_pSimulator->m_pRuntime->rdoPostProcess();
 		writeResultsInfo();
 	}
-	catch (REF(rdoParser::RDOSyntaxException))
+	catch (REF(rdo::compiler::parser::RDOSyntaxException))
 	{
 		m_runtimeError = true;
 		m_pSimulator->m_pRuntime->onRuntimeError();
@@ -991,7 +991,7 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 		case RT_CORBA_PARSER_GET_RTP:
 		{
 			msg.lock();
-			corbaGetRTP(*static_cast<PTR(rdoParser::RDOCorba::GetRTP_var)>(msg.param));
+			corbaGetRTP(*static_cast<PTR(rdo::compiler::parser::RDOCorba::GetRTP_var)>(msg.param));
 			msg.unlock();
 			break;
 		}
@@ -999,7 +999,7 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 		case RT_CORBA_PARSER_GET_RSS:
 		{
 			msg.lock();
-			corbaGetRSS(*static_cast<PTR(rdoParser::RDOCorba::GetRSS_var)>(msg.param));
+			corbaGetRSS(*static_cast<PTR(rdo::compiler::parser::RDOCorba::GetRSS_var)>(msg.param));
 			msg.unlock();
 			break;
 		}
@@ -1086,7 +1086,7 @@ rbool RDOThreadSimulator::parseModel()
 	terminateModel();
 	closeModel();
 
-	m_pParser = rdo::Factory<rdoParser::RDOParserModel>::create();
+	m_pParser = rdo::Factory<rdo::compiler::parser::RDOParserModel>::create();
 	ASSERT(m_pParser);
 	m_pParser->init();
 	m_pRuntime = m_pParser->runtime();
@@ -1097,7 +1097,7 @@ rbool RDOThreadSimulator::parseModel()
 		m_exitCode = rdo::service::simulation::EC_OK;
 		m_pParser->parse();
 	}
-	catch (REF(rdoParser::RDOSyntaxException))
+	catch (REF(rdo::compiler::parser::RDOSyntaxException))
 	{
 		m_exitCode = rdo::service::simulation::EC_ParserError;
 		broadcastMessage(RT_SIMULATOR_PARSE_ERROR);
@@ -1284,15 +1284,15 @@ void RDOThreadSimulator::codeCompletion()
 
 #ifdef CORBA_ENABLE
 
-void RDOThreadSimulator::corbaGetRTP(REF(rdoParser::RDOCorba::GetRTP_var) my_rtpList)
+void RDOThreadSimulator::corbaGetRTP(REF(rdo::compiler::parser::RDOCorba::GetRTP_var) my_rtpList)
 {
 	//! Пропарсели типы и ресурсы текста модели (текущие, а не записанные)
-	rdoParser::RDOParserCorba parser;
+	rdo::compiler::parser::RDOParserCorba parser;
 	try
 	{
 		parser.parse();
 	}
-	catch (REF(rdoParser::RDOSyntaxException))
+	catch (REF(rdo::compiler::parser::RDOSyntaxException))
 	{}
 	catch (REF(rdo::runtime::RDORuntimeException))
 	{}
@@ -1326,9 +1326,9 @@ void RDOThreadSimulator::corbaGetRTP(REF(rdoParser::RDOCorba::GetRTP_var) my_rtp
 		my_rtpList[i].m_name = CORBA::string_dup(rtp_it->name().c_str());
 		
 		if ((rtp_it->getType()) == rdo::compiler::mbuilder::RDOResType::rt_permanent)
-			my_rtpList[i].m_type=rdoParser::RDOCorba::rt_permanent;
+			my_rtpList[i].m_type=rdo::compiler::parser::RDOCorba::rt_permanent;
 		else
-			my_rtpList[i].m_type=rdoParser::RDOCorba::rt_temporary;
+			my_rtpList[i].m_type=rdo::compiler::parser::RDOCorba::rt_temporary;
 
 		//! Считаем количество параметров i-го типа ресурса
 		rdo::compiler::mbuilder::RDOResType::ParamList::List::const_iterator param_it = rtp_it->m_params.begin();
@@ -1363,7 +1363,7 @@ void RDOThreadSimulator::corbaGetRTP(REF(rdoParser::RDOCorba::GetRTP_var) my_rtp
 			{
 				case rdo::runtime::RDOType::t_int:
 				{
-					my_rtpList[i].m_param[j].m_type = rdoParser::RDOCorba::int_type;
+					my_rtpList[i].m_param[j].m_type = rdo::compiler::parser::RDOCorba::int_type;
 
 					if (param_it->hasRange())
 					{
@@ -1381,7 +1381,7 @@ void RDOThreadSimulator::corbaGetRTP(REF(rdoParser::RDOCorba::GetRTP_var) my_rtp
 				}
 				case rdo::runtime::RDOType::t_real:
 				{
-					my_rtpList[i].m_param[j].m_type = rdoParser::RDOCorba::double_type;
+					my_rtpList[i].m_param[j].m_type = rdo::compiler::parser::RDOCorba::double_type;
 
 					if (param_it->hasRange())
 					{
@@ -1399,7 +1399,7 @@ void RDOThreadSimulator::corbaGetRTP(REF(rdoParser::RDOCorba::GetRTP_var) my_rtp
 				}
 				case rdo::runtime::RDOType::t_enum:
 				{
-					my_rtpList[i].m_param[j].m_type = rdoParser::RDOCorba::enum_type;
+					my_rtpList[i].m_param[j].m_type = rdo::compiler::parser::RDOCorba::enum_type;
 					
 					//! Считаем количество значений перечислимого типа
 					rdo::runtime::RDOEnumType::CIterator enum_it = param_it->getEnum()->getEnums().begin();
@@ -1448,15 +1448,15 @@ void RDOThreadSimulator::corbaGetRTP(REF(rdoParser::RDOCorba::GetRTP_var) my_rtp
 
 }
 
-void RDOThreadSimulator::corbaGetRSS(REF(rdoParser::RDOCorba::GetRSS_var) my_rssList)
+void RDOThreadSimulator::corbaGetRSS(REF(rdo::compiler::parser::RDOCorba::GetRSS_var) my_rssList)
 {
 	//! Пропарсели типы и ресурсы текста модели (текущие, а не записанные)
-	rdoParser::RDOParserCorba parser;
+	rdo::compiler::parser::RDOParserCorba parser;
 	try
 	{
 		parser.parse();
 	}
-	catch (REF(rdoParser::RDOSyntaxException))
+	catch (REF(rdo::compiler::parser::RDOSyntaxException))
 	{}
 	catch (REF(rdo::runtime::RDORuntimeException))
 	{}
@@ -1514,7 +1514,7 @@ void RDOThreadSimulator::corbaGetRSS(REF(rdoParser::RDOCorba::GetRSS_var) my_rss
 				{
 					
 					my_rssList[i].m_param[j].m_int = param_it->second->getInt();
-					my_rssList[i].m_param[j].m_type = rdoParser::RDOCorba::int_type;
+					my_rssList[i].m_param[j].m_type = rdo::compiler::parser::RDOCorba::int_type;
 
 					break;
 				}
@@ -1522,7 +1522,7 @@ void RDOThreadSimulator::corbaGetRSS(REF(rdoParser::RDOCorba::GetRSS_var) my_rss
 				{
 
 					my_rssList[i].m_param[j].m_double = param_it->second->getDouble();
-					my_rssList[i].m_param[j].m_type = rdoParser::RDOCorba::double_type;
+					my_rssList[i].m_param[j].m_type = rdo::compiler::parser::RDOCorba::double_type;
 					
 					break;
 				}
@@ -1530,7 +1530,7 @@ void RDOThreadSimulator::corbaGetRSS(REF(rdoParser::RDOCorba::GetRSS_var) my_rss
 				{
 
 					my_rssList[i].m_param[j].m_enum = param_it->second->getAsString().c_str();
-					my_rssList[i].m_param[j].m_type = rdoParser::RDOCorba::enum_type;
+					my_rssList[i].m_param[j].m_type = rdo::compiler::parser::RDOCorba::enum_type;
 
 					break;
 				}
@@ -1548,12 +1548,12 @@ void RDOThreadSimulator::corbaGetRSS(REF(rdoParser::RDOCorba::GetRSS_var) my_rss
 
 /*
 	//! Пропарсели типы и ресурсы текста модели (текущие, а не записанные)
-	rdoParser::RDOParserCorba parser;
+	rdo::compiler::parser::RDOParserCorba parser;
 	try
 	{
 		parser.parse();
 	}
-	catch (REF(rdoParser::RDOSyntaxException))
+	catch (REF(rdo::compiler::parser::RDOSyntaxException))
 	{}
 	catch (REF(rdo::runtime::RDORuntimeException))
 	{}
@@ -1594,18 +1594,18 @@ void RDOThreadCodeComp::proc(REF(RDOMessageInfo) msg)
 	{
 		case RT_CODECOMP_GET_DATA:
 		{
-//			if (rdoParser::m_pParser) m_pParser = rdoParser::m_pParser;
+//			if (rdo::compiler::parser::m_pParser) m_pParser = rdo::compiler::parser::m_pParser;
 			if (!m_pParser) break;
 			msg.lock();
 			PTR(GetCodeComp) data = static_cast<PTR(GetCodeComp)>(msg.param);
 //			rdo::binarystream stream;
 //			sendMessage(kernel->studio(), RDOThread::RT_STUDIO_MODEL_GET_TEXT, &rdo::repository::RDOThreadRepository::FileData(data->file, stream));
 //			data->result = stream.data();
-			CREF(rdoParser::RDOParser::RTPResTypeList) rtp_list = m_pParser->getRTPResTypes(); 
+			CREF(rdo::compiler::parser::RDOParser::RTPResTypeList) rtp_list = m_pParser->getRTPResTypes(); 
 			STL_FOR_ALL_CONST(rtp_list, rtp_it)
 			{
-				CREF(rdoParser::RDORTPResType::ParamList) param_list = (*rtp_it)->getParams();
-				rdoParser::RDORTPResType::ParamList::const_iterator param_it = param_list.begin();
+				CREF(rdo::compiler::parser::RDORTPResType::ParamList) param_list = (*rtp_it)->getParams();
+				rdo::compiler::parser::RDORTPResType::ParamList::const_iterator param_it = param_list.begin();
 				while (param_it != param_list.end())
 				{
 					data->m_result += (*param_it)->name() + ' ';
@@ -1613,7 +1613,7 @@ void RDOThreadCodeComp::proc(REF(RDOMessageInfo) msg)
 				}
 			}
 			msg.unlock();
-//			if (m_pParser != rdoParser::m_pParser) delete m_pParser;
+//			if (m_pParser != rdo::compiler::parser::m_pParser) delete m_pParser;
 			m_pParser = NULL;
 			break;
 		}
