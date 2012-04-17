@@ -115,7 +115,7 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 		{
 			LPRDOValue pValue = (*m_currParam)->getDefault()->defined()
 				? (*m_currParam)->getDefault()
-				: rdo::Factory<rdoParser::RDOValue>::create(
+				: rdo::Factory<rdo::compiler::parser::RDOValue>::create(
 					(*m_currParam)->getTypeInfo()->type()->get_default(),
 					(*m_currParam)->getTypeInfo()->src_info(RDOParserSrcInfo()),
 					(*m_currParam)->getTypeInfo()
