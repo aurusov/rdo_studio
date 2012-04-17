@@ -130,6 +130,16 @@ BOOST_AUTO_TEST_CASE(FuzzySetTest)
 	tstring stringPresentation7 = pAlphaTest->getAsString();
 	std::cout << "pAlphaTest: " <<stringPresentation7 <<std::endl;
 
+	LPFuzzySet pMultTest = MemberFunctionProperties::a_mult(pSet, pSupplement);
+	BOOST_CHECK(pMultTest);
+	tstring stringPresentationMult = pMultTest->getAsString();
+	std::cout << "pMultTest: " << stringPresentationMult <<std::endl;
+
+	LPFuzzySet pMultTestDown = MemberFunctionProperties::a_mult(pSet, pScaleSet);
+	BOOST_CHECK(pMultTestDown);
+	tstring stringPresentationMultDown = pMultTestDown->getAsString();
+	std::cout << "pMultTest:	" << stringPresentationMultDown <<std::endl;
+
 	RDOValue defuzzyficationValue = MemberFunctionProperties::defuzzyfication(pSet);
 	BOOST_CHECK(defuzzyficationValue);
 	tstring stringPresentation9 = defuzzyficationValue.getAsString();
