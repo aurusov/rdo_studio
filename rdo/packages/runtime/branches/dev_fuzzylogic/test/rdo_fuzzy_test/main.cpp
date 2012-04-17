@@ -94,6 +94,15 @@ BOOST_AUTO_TEST_CASE(FuzzySetTest)
 
 	pSet->operator[](repeatValue) = 0.3;
 	BOOST_CHECK(pSet->getAsString() == _T("<1/0.10> <2/0.20> <3/0.30> <5/0.50> <6/0.40> <7/0.20> <9/0.10>"));
+
+	LPFuzzySet pConSet = MemberFunctionProperties::a_con(pSet);
+	tstring stringPresentation1 = pConSet->getAsString();
+	std::cout << stringPresentation1 << std::endl;
+	
+	LPFuzzySet pDilSet = MemberFunctionProperties::a_dil(pSet);
+	tstring stringPresentation2 = pDilSet->getAsString();
+	std::cout << stringPresentation2 << std::endl;
+
 }
 
 BOOST_AUTO_TEST_CASE(TermTest)

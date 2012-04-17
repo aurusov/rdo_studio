@@ -305,7 +305,7 @@ LPFuzzySet MemberFunctionProperties::a_pow(LPFuzzySet pSet, double power)
 	FuzzySet::FuzzySetDefinition::iterator it = pFuzzySetResult->begin();
 	while (it != pFuzzySetResult->end())
 	{
-		it->second = pSet-pow(it->second, power);
+		it->second = pow(it->second, power); ///flag
 		it++;
 	}
 	return pFuzzySetResult;
