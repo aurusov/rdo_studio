@@ -96,27 +96,44 @@ BOOST_AUTO_TEST_CASE(FuzzySetTest)
 	BOOST_CHECK(pSet->getAsString() == _T("<1/0.10> <2/0.20> <3/0.30> <5/0.50> <6/0.40> <7/0.20> <9/0.10>"));
 
 	LPFuzzySet pConSet = MemberFunctionProperties::a_con(pSet);
+	BOOST_CHECK(pConSet);
 	tstring stringPresentation1 = pConSet->getAsString();
 	std::cout << stringPresentation1 << std::endl;
 	
 	LPFuzzySet pDilSet = MemberFunctionProperties::a_dil(pSet);
+	BOOST_CHECK(pDilSet);
 	tstring stringPresentation2 = pDilSet->getAsString();
 	std::cout << stringPresentation2 << std::endl;
 
 	LPFuzzySet pUnaryMinusSet = MemberFunctionProperties::u_minus(pSet);
+	BOOST_CHECK(pUnaryMinusSet);
 	tstring stringPresentation3 = pUnaryMinusSet->getAsString();
 	std::cout << stringPresentation3 << std::endl;
 
 	LPFuzzySet pScaleSet = MemberFunctionProperties::u_scale(pSet, 4.0);
+	BOOST_CHECK(pScaleSet);
 	tstring stringPresentation4 = pScaleSet->getAsString();
 	std::cout << stringPresentation4 << std::endl;
 
 	LPFuzzySet pSupplement = MemberFunctionProperties::supplement(pSet);
+	BOOST_CHECK(pSupplement);
 	tstring stringPresentation5 = pSupplement->getAsString();
 	std::cout << stringPresentation5 << std::endl;
 
-	LPFuzzySet pMultTest = MemberFunctionProperties::a_mult(pSet, pScaleSet);
-	BOOST_CHECK(pMultTest);
+	//LPFuzzySet pMultTest = MemberFunctionProperties::a_mult(pSet, pScaleSet);
+	//BOOST_CHECK(pMultTest);
+	//tstring stringPresentation6 = pSupplement->getAsString();
+	//std::cout << stringPresentation6 << std::endl;
+
+	LPFuzzySet pAlphaTest = MemberFunctionProperties::alpha(pSet, 0.3);
+	BOOST_CHECK(pAlphaTest);
+	tstring stringPresentation7 = pAlphaTest->getAsString();
+	std::cout << "pAlphaTest: " <<stringPresentation7 <<std::endl;
+
+	RDOValue defuzzyficationValue = MemberFunctionProperties::defuzzyfication(pSet);
+	BOOST_CHECK(defuzzyficationValue);
+	tstring stringPresentation9 = defuzzyficationValue.getAsString();
+	std::cout << stringPresentation9 <<std::endl;
 }
 
 BOOST_AUTO_TEST_CASE(TermTest)

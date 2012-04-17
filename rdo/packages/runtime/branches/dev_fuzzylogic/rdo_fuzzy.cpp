@@ -277,12 +277,13 @@ LPFuzzySet MemberFunctionProperties::a_mult(CREF(LPFuzzySet) pSet1, CREF(LPFuzzy
 
 LPFuzzySet MemberFunctionProperties::alpha(CREF(LPFuzzySet) pSet,double appertain)
 {
-	FuzzySet::FuzzySetDefinition::const_iterator it = pSet->begin();
-	if (pSet->operator[](it->first) < appertain) pSet->operator[](it->first) = 0;
-	else if (pSet->operator[](it->first) > 1) pSet->operator[](it->first)= 1;
+	if (appertain < 0) appertain = 0;
+	else if (appertain > 1) appertain = 1;
 
 	LPFuzzySet pFuzzySetResult = rdo::Factory<FuzzySet>::create(pSet->type());
 	ASSERT(pFuzzySetResult);
+
+	FuzzySet::FuzzySetDefinition::const_iterator it = pSet->begin();
 
 	// Найдем отсечку
 	while (it != pSet->end())

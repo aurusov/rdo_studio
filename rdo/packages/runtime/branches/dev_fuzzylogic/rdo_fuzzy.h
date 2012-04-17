@@ -109,13 +109,13 @@ public:
 	/* 3.118*/  static LPFuzzySet u_scale(CREF(LPFuzzySet) pSet, double scale);
 	/* 3.119*/  static LPFuzzySet u_log  (CREF(LPFuzzySet) pSet);
 
-	/* 3.39 */  static LPFuzzySet a_mult    (CREF(LPFuzzySet) pSet1, CREF(LPFuzzySet) pSet2);
+	/* 3.39 */  static LPFuzzySet a_mult    (CREF(LPFuzzySet) pSet1, CREF(LPFuzzySet) pSet2); // не работает пока
 	/* 3.48 */  static LPFuzzySet alpha     (CREF(LPFuzzySet) pSet,  double appertain);
 	/* 3.62 */  static LPFuzzySet supplement(CREF(LPFuzzySet) pSet);
 	/* 3.78 */  static LPFuzzySet a_con     (CREF(LPFuzzySet) pSet);
 	/* 3.79 */  static LPFuzzySet a_dil     (CREF(LPFuzzySet) pSet);
 
-				static LPRDOLingvoVariable fuzzyfication  (CREF(RDOValue), CREF(RDOLingvoVariable)); //стоп пока
+				static LPRDOLingvoVariable fuzzyfication  (CREF(RDOValue), CREF(RDOLingvoVariable));
 	/* 3.272*/  static RDOValue            defuzzyfication(CREF(LPFuzzySet) pSet);
 
 	            static LPFuzzySet a_pow     (LPFuzzySet pSet, double power);
