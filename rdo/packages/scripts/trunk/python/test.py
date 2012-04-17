@@ -148,19 +148,25 @@ for task in files:
     
     print "SIMYLATION EXIT CODE :", simulation_code
     
-    exit_code_string = ''
+    simulation_exit_code_string = ''
     if cmp(simulation_code, exit_code):
-      exit_code_string = "OK"
+      simulation_exit_code_string = "OK"
     else:
-      exit_code_string = "ERROR"
+      simulation_exit_code_string = "ERROR"
       
-    print "CHECK EXIT CODE      :", exit_code_string
+    print "CHECK SIM EXIT CODE  :", simulation_exit_code_string
     
+    check_exit_code_string = ''
     if simulation_code == EXIT_CODE_TERMINATION_NORMAL:
       test_code = os.system(rdo_test_ex + ' -T ' + etalon_trace + ' -R ' + etalon_result + ' -t ' + simulation_trace + ' -r ' + simulation_result)
       if not test_code == EXIT_CODE_TERMINATION_NORMAL:
-        print "CHECK RESULT ERROR !!!!!"
         G_EXIT_CODE = EXIT_CODE_TERMINATION_ERROR
+        check_exit_code_string = 'ERROR'
+      else:
+        check_exit_code_string =  'OK'
+    
+    print "TEST EXIT CODE       :", test_code
+    print "CHECK TEST CODE      :", check_exit_code_string
         
   else:
     print 'INVALID TARGET'
