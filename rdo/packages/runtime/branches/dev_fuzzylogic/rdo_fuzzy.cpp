@@ -296,6 +296,20 @@ LPFuzzySet MemberFunctionProperties::alpha(CREF(LPFuzzySet) pSet,double appertai
 	return pFuzzySetResult;
 }
 
+LPFuzzySet MemberFunctionProperties::supplement(CREF(LPFuzzySet) pSet)
+{
+	LPFuzzySet pFuzzySetResult = rdo::Factory<FuzzySet>::create(pSet);
+	ASSERT(pFuzzySetResult);
+
+	FuzzySet::FuzzySetDefinition::iterator it = pFuzzySetResult->begin();
+	while (it != pFuzzySetResult->end())
+	{
+		it->second = 1-(it->second);
+		it++;
+	}
+	return(pFuzzySetResult);
+}
+
 LPFuzzySet MemberFunctionProperties::a_pow(LPFuzzySet pSet, double power)
 {
 	LPFuzzySet pFuzzySetResult = rdo::Factory<FuzzySet>::create(pSet);

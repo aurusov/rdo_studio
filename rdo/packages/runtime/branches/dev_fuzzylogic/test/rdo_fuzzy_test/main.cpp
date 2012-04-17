@@ -103,6 +103,19 @@ BOOST_AUTO_TEST_CASE(FuzzySetTest)
 	tstring stringPresentation2 = pDilSet->getAsString();
 	std::cout << stringPresentation2 << std::endl;
 
+	LPFuzzySet pUnaryMinusSet = MemberFunctionProperties::u_minus(pSet);
+	tstring stringPresentation3 = pUnaryMinusSet->getAsString();
+	std::cout << stringPresentation3 << std::endl;
+
+	LPFuzzySet pScaleSet = MemberFunctionProperties::u_scale(pSet, 4.0);
+	tstring stringPresentation4 = pScaleSet->getAsString();
+	std::cout << stringPresentation4 << std::endl;
+
+	LPFuzzySet pSupplement = MemberFunctionProperties::supplement(pSet);
+	tstring stringPresentation5 = pSupplement->getAsString();
+	std::cout << stringPresentation5 << std::endl;
+
+
 }
 
 BOOST_AUTO_TEST_CASE(TermTest)
