@@ -172,8 +172,8 @@ for task in files:
     print 'INVALID TARGET'
   
   # remove temp file
-  os.remove(simulation_trace)
-  os.remove(simulation_result)
+  #os.remove(simulation_trace)
+  #os.remove(simulation_result)
 
 print
 
