@@ -132,6 +132,7 @@ for task in files:
   print 'Exit code   :', exit_code
   print 'Trace file  :', etalon_trace_name
   print 'Result file :', etalon_result_name
+  print ''
   
   model = dirname + model_name_with_ex
   etalon_trace = dirname + etalon_trace_name
@@ -158,6 +159,7 @@ for task in files:
     if simulation_code == EXIT_CODE_TERMINATION_NORMAL:
       test_code = os.system(rdo_test_ex + ' -T ' + etalon_trace + ' -R ' + etalon_result + ' -t ' + simulation_trace + ' -r ' + simulation_result)
       if not test_code == EXIT_CODE_TERMINATION_NORMAL:
+        print "CHECK RESULT ERROR !!!!!"
         G_EXIT_CODE = EXIT_CODE_TERMINATION_ERROR
         
   else:
