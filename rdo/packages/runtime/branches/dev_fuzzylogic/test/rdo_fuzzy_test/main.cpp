@@ -115,7 +115,8 @@ BOOST_AUTO_TEST_CASE(FuzzySetTest)
 	tstring stringPresentation5 = pSupplement->getAsString();
 	std::cout << stringPresentation5 << std::endl;
 
-
+	LPFuzzySet pMultTest = MemberFunctionProperties::a_mult(pSet, pScaleSet);
+	BOOST_CHECK(pMultTest);
 }
 
 BOOST_AUTO_TEST_CASE(TermTest)
