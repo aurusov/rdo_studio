@@ -255,22 +255,21 @@ LPFuzzySet FuzzySet::clone() const
 
 LPFuzzySet MemberFunctionProperties::a_mult(CREF(LPFuzzySet) pSet1, CREF(LPFuzzySet) pSet2)
 {
-	if (pSet1->type() != pSet2->type())
-		throw RDOValueException();
+	//if (pSet1->type() != pSet2->type())
+	//	throw RDOValueException();
 
 	LPFuzzySet pFuzzySetResult = rdo::Factory<FuzzySet>::create(pSet1->type());
 	ASSERT(pFuzzySetResult);
 
 	// Найдем только пересекающие элементы и перемножим функции принадлежности
 	FuzzySet::FuzzySetDefinition::const_iterator it1 = pSet1->begin();
-	while (it1 != pSet1->end())
+	for (it1 = pSet1->begin(); it1 != pSet1->end(); it1++)
 	{
 		FuzzySet::FuzzySetDefinition::const_iterator it2 = pSet2->find(it1->first);
 		if (it2 != pSet2->end())
 		{
 			pFuzzySetResult->operator[](it1->first) = it1->second * it2->second;
 		}
-		it1++;
 	}
 	return pFuzzySetResult;
 }
