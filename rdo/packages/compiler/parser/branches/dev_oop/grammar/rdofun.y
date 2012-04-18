@@ -215,6 +215,7 @@
 #include "simulator/compiler/parser/local_variable.h"
 #include "simulator/compiler/parser/context/type.h"
 #include "simulator/compiler/parser/context/memory.h"
+#include "simulator/compiler/parser/context/statement.h"
 #include "simulator/runtime/calc/procedural/calc_locvar.h"
 #include "simulator/runtime/calc/procedural/calc_braces.h"
 #include "simulator/runtime/calc/procedural/calc_statement.h"
@@ -2007,6 +2008,8 @@ for_statement
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pExpressionStatement->typeInfo(), pCalcBreakCatch, RDOParserSrcInfo(@1, @2));
 
+		PARSER->contextStack()->pop();
+
 		$$ = PARSER->stack().push(pExpression);
 	}
 
@@ -2035,6 +2038,11 @@ for_header
 		ASSERT(pType);
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1, @8));
+
+		LPContextBreakable pContextBreakable = rdo::Factory<ContextBreakable>::create();
+		ASSERT(pContextBreakable);
+
+		PARSER->contextStack()->push(pContextBreakable);
 
 		$$ = PARSER->stack().push(pExpression);
 	}
@@ -2070,16 +2078,26 @@ for_header
 break_statement
 	:RDO_Break
 	{
-		rdo::runtime::LPRDOCalc pCalcBreak = rdo::Factory<rdo::runtime::RDOCalcFunBreak>::create();
-		ASSERT(pCalcBreak);
+		LPContext pContext = RDOParser::s_parser()->context();
+		ASSERT(pContext);
 
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
-		ASSERT(pType);
+		if(pContext->cast<ContextBreakable>())
+		{
+			rdo::runtime::LPRDOCalc pCalcBreak = rdo::Factory<rdo::runtime::RDOCalcFunBreak>::create();
+			ASSERT(pCalcBreak);
 
-		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalcBreak, RDOParserSrcInfo(@1));
-		ASSERT(pExpression);
+			LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
+			ASSERT(pType);
 
-		$$ = PARSER->stack().push(pExpression);
+			LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalcBreak, RDOParserSrcInfo(@1));
+			ASSERT(pExpression);
+
+			$$ = PARSER->stack().push(pExpression);
+		}
+		else
+		{
+			PARSER->error().error(@1, _T("Нельзя использовать break вне цикла"));
+		}
 	}
 	;
 

@@ -206,28 +206,28 @@
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/compiler/parser/rdoparser.h"
-#include "simulator/compiler/parser/rdoparser_lexer.h"
-#include "simulator/compiler/parser/rdopat.h"
-#include "simulator/compiler/parser/rdortp.h"
-#include "simulator/compiler/parser/rdofun.h"
-#include "simulator/compiler/parser/type/range.h"
-#include "simulator/compiler/parser/rdo_array.h"
-#include "simulator/compiler/parser/local_variable.h"
-#include "simulator/compiler/parser/type/such_as.h"
-#include "simulator/compiler/parser/context/type.h"
-#include "simulator/compiler/parser/context/memory.h"
-
 #include "simulator/runtime/rdotrace.h"
 #include "simulator/runtime/calc/calc_event.h"
 #include "simulator/runtime/calc/calc_watch.h"
 #include "simulator/runtime/calc/calc_process.h"
-#include "simulator/runtime/calc/calc_array.h"
+#include "simulator/compiler/parser/rdopat.h"
+#include "simulator/runtime/calc/procedural/calc_range.h"
+#include "simulator/runtime/calc/resource/calc_resource.h"
+#include "simulator/compiler/parser/rdoparser.h"
+#include "simulator/compiler/parser/rdoparser_lexer.h"
+#include "simulator/compiler/parser/rdortp.h"
+#include "simulator/compiler/parser/rdofun.h"
+#include "simulator/compiler/parser/type/range.h"
+#include "simulator/compiler/parser/rdo_array.h"
+#include "simulator/compiler/parser/type/such_as.h"
+#include "simulator/compiler/parser/local_variable.h"
+#include "simulator/compiler/parser/context/type.h"
+#include "simulator/compiler/parser/context/memory.h"
+#include "simulator/compiler/parser/context/statement.h"
 #include "simulator/runtime/calc/procedural/calc_locvar.h"
 #include "simulator/runtime/calc/procedural/calc_braces.h"
 #include "simulator/runtime/calc/procedural/calc_statement.h"
-#include "simulator/runtime/calc/procedural/calc_range.h"
-#include "simulator/runtime/calc/resource/calc_resource.h"
+#include "simulator/runtime/calc/calc_array.h"
 // --------------------------------------------------------------------------------
 
 #define PARSER  LEXER->parser()
@@ -2609,6 +2609,8 @@ for_statement
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pExpressionStatement->typeInfo(), pCalcBreakCatch, RDOParserSrcInfo(@1, @2));
 
+		PARSER->contextStack()->pop();
+
 		$$ = PARSER->stack().push(pExpression);
 	}
 
@@ -2637,6 +2639,11 @@ for_header
 		ASSERT(pType);
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1, @8));
+
+		LPContextBreakable pContextBreakable = rdo::Factory<ContextBreakable>::create();
+		ASSERT(pContextBreakable);
+
+		PARSER->contextStack()->push(pContextBreakable);
 
 		$$ = PARSER->stack().push(pExpression);
 	}
@@ -2672,16 +2679,26 @@ for_header
 break_statement
 	:RDO_Break
 	{
-		rdo::runtime::LPRDOCalc pCalcBreak = rdo::Factory<rdo::runtime::RDOCalcFunBreak>::create();
-		ASSERT(pCalcBreak);
+		LPContext pContext = RDOParser::s_parser()->context();
+		ASSERT(pContext);
 
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
-		ASSERT(pType);
+		if(pContext->cast<ContextBreakable>())
+		{
+			rdo::runtime::LPRDOCalc pCalcBreak = rdo::Factory<rdo::runtime::RDOCalcFunBreak>::create();
+			ASSERT(pCalcBreak);
 
-		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalcBreak, RDOParserSrcInfo(@1));
-		ASSERT(pExpression);
+			LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
+			ASSERT(pType);
 
-		$$ = PARSER->stack().push(pExpression);
+			LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalcBreak, RDOParserSrcInfo(@1));
+			ASSERT(pExpression);
+
+			$$ = PARSER->stack().push(pExpression);
+		}
+		else
+		{
+			PARSER->error().error(@1, _T("Нельзя использовать break вне цикла"));
+		}
 	}
 	;
 
