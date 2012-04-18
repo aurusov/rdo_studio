@@ -217,6 +217,7 @@
 #include "simulator/compiler/parser/type/such_as.h"
 #include "simulator/compiler/parser/context/type.h"
 #include "simulator/compiler/parser/context/memory.h"
+#include "simulator/compiler/parser/context/statement.h"
 
 #include "simulator/runtime/rdotrace.h"
 #include "simulator/runtime/calc/calc_event.h"
