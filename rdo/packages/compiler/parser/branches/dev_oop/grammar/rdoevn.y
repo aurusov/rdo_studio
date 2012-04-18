@@ -206,28 +206,28 @@
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/rdotrace.h"
-#include "simulator/runtime/calc/calc_event.h"
-#include "simulator/runtime/calc/calc_watch.h"
-#include "simulator/runtime/calc/calc_process.h"
-#include "simulator/compiler/parser/rdopat.h"
-#include "simulator/runtime/calc/procedural/calc_range.h"
-#include "simulator/runtime/calc/resource/calc_resource.h"
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/rdoparser_lexer.h"
+#include "simulator/compiler/parser/rdopat.h"
 #include "simulator/compiler/parser/rdortp.h"
 #include "simulator/compiler/parser/rdofun.h"
 #include "simulator/compiler/parser/type/range.h"
 #include "simulator/compiler/parser/rdo_array.h"
-#include "simulator/compiler/parser/type/such_as.h"
 #include "simulator/compiler/parser/local_variable.h"
+#include "simulator/compiler/parser/type/such_as.h"
 #include "simulator/compiler/parser/context/type.h"
 #include "simulator/compiler/parser/context/memory.h"
-#include "simulator/compiler/parser/context/statement.h"
+
+#include "simulator/runtime/rdotrace.h"
+#include "simulator/runtime/calc/calc_event.h"
+#include "simulator/runtime/calc/calc_watch.h"
+#include "simulator/runtime/calc/calc_process.h"
+#include "simulator/runtime/calc/calc_array.h"
 #include "simulator/runtime/calc/procedural/calc_locvar.h"
 #include "simulator/runtime/calc/procedural/calc_braces.h"
 #include "simulator/runtime/calc/procedural/calc_statement.h"
-#include "simulator/runtime/calc/calc_array.h"
+#include "simulator/runtime/calc/procedural/calc_range.h"
+#include "simulator/runtime/calc/resource/calc_resource.h"
 // --------------------------------------------------------------------------------
 
 #define PARSER  LEXER->parser()
