@@ -2672,6 +2672,11 @@ for_header
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1, @8));
 
+		LPContextBreakable pContextBreakable = rdo::Factory<ContextBreakable>::create();
+		ASSERT(pContextBreakable);
+
+		PARSER->contextStack()->push(pContextBreakable);
+		
 		$$ = PARSER->stack().push(pExpression);
 	}
 	;
