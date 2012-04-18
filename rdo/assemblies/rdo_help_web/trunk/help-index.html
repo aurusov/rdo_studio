@@ -1,0 +1,120 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+	<title>destroydrop &raquo; JavaScripts &raquo Tree</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<link rel="StyleSheet" href="web/styles/tree.css" type="text/css">
+	<script type="text/javascript" src="web/scripts/tree.js"></script>
+	<script type="text/javascript">
+		document.createElement('aside');
+		var Tree = new Array;
+		// nodeId | parentNodeId | nodeName | nodeUrl
+		Tree[0]  = "1|0|Справка по RAO-studio|";
+			Tree[1]  = "2|1|Что нового|help/rdo_studio_rus/html/rdo_whats_new.htm";
+			Tree[2]  = "3|1|Общие сведения|help/rdo_studio_rus/html/intro.htm";
+			Tree[3]  = "4|1|Работа с программным комплексом|help/rdo_studio_rus/html/work_intro.htm";
+				Tree[4]  = "5|4|Запуск|help/rdo_studio_rus/html/work_run.htm";
+				Tree[5]  = "6|4|Главное меню|help/rdo_studio_rus/html/work_menu/work_menu_intro.htm";
+					Tree[6]  = "7|6|Меню Файл|help/rdo_studio_rus/html/work_menu/work_menu_file.htm";
+					Tree[7]  = "8|6|Меню Правка|help/rdo_studio_rus/html/work_menu/work_menu_edit.htm";
+					Tree[8]  = "9|6|Меню Поиск|help/rdo_studio_rus/html/work_menu/work_menu_search.htm";
+					Tree[9]  = "10|6|Меню Просмотр|help/rdo_studio_rus/html/work_menu/work_menu_view.htm";
+					Tree[10]  = "11|6|Меню Вставка|help/rdo_studio_rus/html/work_menu/work_menu_insert.htm";
+					Tree[11]  = "12|6|Меню Модель|help/rdo_studio_rus/html/work_menu/work_menu_model.htm";
+					Tree[12]  = "13|6|Меню График|help/rdo_studio_rus/html/work_menu/work_menu_chart.htm";
+					Tree[13]  = "14|6|Меню Окна|help/rdo_studio_rus/html/work_menu/work_menu_window.htm";
+					Tree[14]  = "15|6|Меню Помощь|help/rdo_studio_rus/html/work_menu/work_menu_help.htm";
+				Tree[15]  = "16|4|Работа с моделью|help/rdo_studio_rus/html/work_model/work_model_intro.htm";
+					Tree[16]  = "17|16|Закладки окна модели|help/rdo_studio_rus/html/work_model/work_model_tabsheets.htm";
+					Tree[17]  = "18|16|Создание|help/rdo_studio_rus/html/work_model/work_model_creation.htm";
+					Tree[18]  = "19|16|Открытие|help/rdo_studio_rus/html/work_model/work_model_open.htm";
+					Tree[19]  = "20|16|Сохранение|help/rdo_studio_rus/html/work_model/work_model_save.htm";
+					Tree[20]  = "21|16|Редактирование|help/rdo_studio_rus/html/work_model/work_model_edit.htm";
+					Tree[21]  = "22|16|Автозавершение (code completion)|help/rdo_studio_rus/html/work_model/work_model_complete.htm";
+					Tree[22]  = "23|16|Шаблоны и вставка синтаксических конструкций|help/rdo_studio_rus/html/work_model/work_model_insert.htm";
+					Tree[23]  = "24|16|Дополнительные буферы обмена|help/rdo_studio_rus/html/work_model/work_model_buffer.htm";
+					Tree[24]  = "25|16|Поиск и замена подстрок|help/rdo_studio_rus/html/work_model/work_model_search_replace.htm";
+					Tree[25]  = "26|16|Поиск фразы по всей модели|help/rdo_studio_rus/html/work_model/work_model_find_in_model.htm";
+					Tree[26]  = "27|16|Навигация с помощью закладок|help/rdo_studio_rus/html/work_model/work_model_bookmarks.htm";
+					Tree[27]  = "28|16|Компиляция и запуск модели|help/rdo_studio_rus/html/work_model/work_model_run.htm";
+					Tree[28]  = "29|16|Режимы моделирования|help/rdo_studio_rus/html/work_model/work_model_frame.htm";
+					Tree[29]  = "30|16|Результаты моделирования|help/rdo_studio_rus/html/work_model/work_model_results.htm";
+					Tree[30]  = "31|16|Автоматическое построение графиков|help/rdo_studio_rus/html/work_model/work_model_chart.htm";
+				Tree[31]  = "32|4|Настройки|help/rdo_studio_rus/html/work_options/work_options.htm";
+					Tree[32]  = "33|32|Закладка Основные|help/rdo_studio_rus/html/work_options/work_options_general.htm";
+					Tree[33]  = "34|32|Закладка Редактор|help/rdo_studio_rus/html/work_options/work_options_editor.htm";
+					Tree[34]  = "35|32|Закладка Табуляция|help/rdo_studio_rus/html/work_options/work_options_tabs.htm";
+					Tree[35]  = "36|32|Закладка Стиль и цвет|help/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm";
+					Tree[36]  = "37|32|Закладка Внешние модули|help/rdo_studio_rus/html/work_options/work_options_plugins.htm";
+				Tree[37]  = "38|4|Получение справочной информации|help/rdo_studio_rus/html/work_help.htm";
+			Tree[38]  = "39|1|Разработчики|help/rdo_studio_rus/html/about.htm";
+		Tree[39] = "40|0|Справка по языку РДО|";
+			Tree[40] = "41|40|Введение|help/rdo_lang_rus/html/rdo_intro.htm";
+			Tree[41] = "42|40|Основные понятия|help/rdo_lang_rus/html/rdo_terms.htm";
+			Tree[42] = "43|40|Базовые конструкции языка|help/rdo_lang_rus/html/rdo_base/rdo_base_intro.htm";
+				Tree[43] = "44|43|Алфавит|help/rdo_lang_rus/html/rdo_base/rdo_base_alpha.htm";
+				Tree[44] = "45|43|Арифметические и логические выражения|help/rdo_lang_rus/html/rdo_base/rdo_base_equations.htm";
+				Tree[45] = "46|43|Глобальные переменные и стандартные функции|help/rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm";
+				Tree[46] = "47|43|Лексемы и разделители|help/rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_intro.htm";
+					Tree[47] = "48|47|Зарезервированные слова|help/rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_res_words.htm";
+					Tree[48] = "49|47|Имена|help/rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_names.htm";
+					Tree[49] = "50|47|Процедуры|help/rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_procedures.htm";
+					Tree[50] = "51|47|Специальные символы|help/rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_spesial_symbols.htm";
+					Tree[51] = "52|47|Строковые константы|help/rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_string_const.htm";
+					Tree[52] = "53|47|Численные константы|help/rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_numeric_const.htm";
+				Tree[53] = "54|43|Процедурное программирование|help/rdo_lang_rus/html/rdo_base/rdo_base_proc_lang.htm";
+				Tree[54] = "55|43|Ресурсы|help/rdo_lang_rus/html/rdo_base/rdo_base_resources.htm";
+				Tree[55] = "56|43|Типы данных. Соотствие типов|help/rdo_lang_rus/html/rdo_base/rdo_base_types.htm";
+				Tree[56] = "57|43|Типы ресурсов|help/rdo_lang_rus/html/rdo_base/rdo_base_res_types.htm";
+			Tree[57] = "58|40|Конструкции языка|help/rdo_lang_rus/html/rdo_obj/rdo_obj_intro.htm";
+				Tree[58] = "59|58|Кадры анимации|help/rdo_lang_rus/html/rdo_obj/rdo_obj_frm.htm";
+					Tree[59] = "60|59|Элементы отображения|help/rdo_lang_rus/html/rdo_obj/rdo_obj_frm_elem.htm";
+				Tree[60] = "61|58|Константы|help/rdo_lang_rus/html/rdo_obj/rdo_obj_const_fun_sec.htm";
+				Tree[61] = "62|58|Образцы|help/rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm";
+					Tree[62] = "63|62|Операция|help/rdo_lang_rus/html/rdo_pat_type/rdo_pat_type_opr.htm";
+					Tree[63] = "64|62|Продукционное правило|help/rdo_lang_rus/html/rdo_pat_type/rdo_pat_type_rule.htm";
+					Tree[64] = "65|62|Клавиатурная операция|help/rdo_lang_rus/html/rdo_pat_type/rdo_pat_type_keyboard.htm";
+					Tree[65] = "66|62|События|help/rdo_lang_rus/html/rdo_obj/rdo_obj_event.htm";
+					Tree[66] = "67|62|Тело образца|help/rdo_lang_rus/html/rdo_obj/rdo_obj_pat_body.htm";
+				Tree[67] = "68|58|Объект описания показателей|help/rdo_lang_rus/html/rdo_obj/rdo_obj_pmd.htm";
+				Tree[68] = "69|58|Объект прогона|help/rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm";
+				Tree[69] = "70|58|Последовательности|help/rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec.htm";
+					Tree[70] = "71|70|Гистограммное распределение|help/rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_by_hist.htm";
+					Tree[71] = "72|70|Нормальное распределение|help/rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_normal.htm";
+					Tree[72] = "73|70|Перечислимые значения|help/rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_enum.htm";
+					Tree[73] = "74|70|Равноемерное распределение|help/rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_uniform.htm";
+					Tree[74] = "75|70|Треугольное распределение|help/rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_triang.htm";
+					Tree[75] = "76|70|Экспоненциальное распределение|help/rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_exponen.htm";
+				Tree[76] = "77|58|Процессы обслуживания|help/rdo_lang_rus/html/rdo_obj/rdo_obj_proc.htm";
+				Tree[77] = "78|58|Точки принятия решений|help/rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm";
+					Tree[78] = "79|78|Some|help/rdo_lang_rus/html/rdo_dpt/rdo_dpt_some.htm";
+					Tree[79] = "80|78|Search|help/rdo_lang_rus/html/rdo_dpt/rdo_dpt_search.htm";
+					Tree[80] = "81|78|Prior|help/rdo_lang_rus/html/rdo_dpt/rdo_dpt_prior.htm";
+				Tree[81] = "82|58|Функции|help/rdo_lang_rus/html/rdo_obj/rdo_obj_fun.htm";
+			Tree[82] = "83|40|Результаты моделирования|help/rdo_lang_rus/html/rdo_res/rdo_res_intro.htm";
+				Tree[83] = "84|83|Объект результатов|help/rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm";
+				Tree[84] = "85|83|Объект трассировки|help/rdo_lang_rus/html/rdo_res/rdo_res_trc.htm";
+					Tree[85] = "86|85|Трассировка показателей|help/rdo_lang_rus/html/rdo_res/rdo_res_trc_results.htm";
+					Tree[86] = "87|85|Трассировка событий|help/rdo_lang_rus/html/rdo_res/rdo_res_trc_events.htm";
+					Tree[87] = "88|85|Трассировка состояния объектов РДО|help/rdo_lang_rus/html/rdo_res/rdo_res_trace_descr.htm";
+					Tree[88] = "89|85|Трассировка состояния ресурсов|help/rdo_lang_rus/html/rdo_res/rdo_res_trc_resourses.htm";
+					Tree[89] = "90|85|Трассировка точек принятия решений|help/rdo_lang_rus/html/rdo_res/rdo_res_trc_decisionpt.htm";
+			Tree[90] = "91|40|Теория|help/rdo_lang_rus/html/rdo_theory/rdo_theory.htm";
+				Tree[91] = "92|91|Последовательности|help/rdo_lang_rus/html/rdo_theory/rdo_theory_seq.htm";
+					Tree[92] = "93|92|База генератора|help/rdo_lang_rus/html/rdo_theory/rdo_theory_seq_base.htm";
+					Tree[93] = "94|92|Базовое распределение|help/rdo_lang_rus/html/rdo_theory/rdo_theory_seq_basedistribution.htm";
+					Tree[94] = "95|92|Обратная функция|help/rdo_lang_rus/html/rdo_theory/rdo_theory_seq_inverse.htm";
+	</script>
+</head>
+<body>
+	<b><<<a class="ref" href="http://rdo.rk9.bmstu.ru/" font-family="Arial">Назад</a></b><br/>
+	<aside>
+		<div class="tree">
+			<script type="text/javascript">
+				createTree(Tree);
+			</script>
+		</div>
+	</aside>
+		<iframe id="frm" frameborder="no" src="help/rdo_studio_rus/html/about.htm"></iframe>
+</body>
+</html>
