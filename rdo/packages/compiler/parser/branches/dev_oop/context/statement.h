@@ -59,7 +59,7 @@ public:
 	bool returnFlag();
 
 private:
-	void compileFlags();
+	bool checkChildFlags();
 
 protected:
 	ContextReturnable();

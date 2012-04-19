@@ -36,38 +36,37 @@ ContextReturnable::ContextReturnable()
 
 bool ContextReturnable::returnFlag()
 {
-	compileFlags();
+	if((m_returnFlag==false) && (!m_contextReturnableList.empty()))
+	{
+		m_returnFlag = checkChildFlags();
+	}
 	return m_returnFlag;
 }
 
 void ContextReturnable::setReturnFlag()
 {
 	m_returnFlag = true;
-	compileFlags();
 }
 
 void ContextReturnable::addContext(REF(LPContextReturnable) pContext)
 {
 	ASSERT(pContext);
 
-	pContext->compileFlags();
-
 	m_contextReturnableList.push_back(pContext);
 	ASSERT(!m_contextReturnableList.empty());
 }
 
-void ContextReturnable::compileFlags()
+bool ContextReturnable::checkChildFlags()
 {
-	if(!m_contextReturnableList.empty())
+	STL_FOR_ALL(m_contextReturnableList, contextIt)
 	{
-		bool compiledFlag = true;
-		STL_FOR_ALL(m_contextReturnableList, contextIt)
+		LPContextReturnable pContext = *contextIt;
+		if(!pContext->returnFlag())
 		{
-			LPContextReturnable pContext = *contextIt;
-			compiledFlag = (compiledFlag)&&(pContext->returnFlag());
+			return false;
 		}
-		m_returnFlag = m_returnFlag&&compiledFlag;
 	}
+	return true;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE
