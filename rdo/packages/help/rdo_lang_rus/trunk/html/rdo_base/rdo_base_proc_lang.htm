@@ -33,7 +33,7 @@
 		</DL>
 		<DL class="syntax">
 			<DD class="syntax"></DD>
-			<A href="" onclick="return toggle_display(v1);"><H4>Примеры</H4></A>
+			<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Примеры</H4></A>
 			<DIV style="display:none" id=v1>
 			<P><B><I>Вычисление наибольшего числа</I></B> из двух данных:</P>
 			<PRE name="sample_1" class="samples">
@@ -75,7 +75,7 @@ $End
 		</DL>
 		<DL class="syntax">
 			<DD class="syntax"></DD>
-			<A href="" onclick="return toggle_display(v2);"><H4>Примеры</H4></A>
+			<A href="" class="ref" onclick="return toggle_display(v2);"><H4>Примеры</H4></A>
 			<DIV style="display:none" id=v2>
 			<PRE name="sample_3" class="samples">
 {
@@ -112,7 +112,7 @@ k = 1.01;
 		<P class="remarks">Окончание работы цикла также может быть вызвано <B>операторами</B> <A href="#operator_break">break</A> и <A href="#operator_return">return</A>.</P>
 		<DL class="syntax">
 			<DD class="syntax"></DD>
-			<A href="" onclick="return toggle_display(v3);"><H4>Примеры</H4></A>
+			<A href="" class="ref" onclick="return toggle_display(v3);"><H4>Примеры</H4></A>
 			<DIV style="display:none" id=v3>
 			<P>Пример функции <B><I>вычисления факториала числа</I></B>:</P>
 			<PRE name="sample_4" class="samples">
@@ -134,7 +134,7 @@ $End
 		<P><A name="operator_break"></A>Для преждевременного (до выполнения <A href="#cycle_log_cond">условия</A>) выхода из цикла можно использовать <B>оператор break</B>. Данный оператор позволяет закончить выполнение оператора цикла. Может быть указан одной из <A href="../rdo_lex_div/rdo_lex_div_procedures.htm">процедур</A> тела цикла. В одной процедуре с данным оператором не может быть ни каких других операторов.</P>
 		<DL class="syntax">
 			<DD class="syntax"></DD>
-			<A href="" onclick="return toggle_display(v4);"><H4>Примеры</H4></A>
+			<A href="" class="ref" onclick="return toggle_display(v4);"><H4>Примеры</H4></A>
 			<DIV style="display:none" id=v4>
 			<P>Пример вложенного цикла, считающего сумму из квадратов чисел 1-30,кубов чисел 1-20 и четвертых степеней 1-10:</P>
 			<PRE name="sample_5" class="samples">
@@ -157,7 +157,7 @@ for (integer i=2;i<4;i++)
 		<P><A name="operator_return"></A><B>Оператор return</B> прекращает выполнение <A href="../rdo_obj/rdo_obj_fun.htm#body>тела</A> <A href="../rdo_obj/rdo_obj_fun.htm#alg">алгоритмической функции</A>, и возвращает значение <A href="rdo_base_equations.htm">выражения</A>, указанного после него в данной процедуре, в качестве значения всей функции, в которой он используется. В разных ветвях <A href="#operator_if">условного оператора</A> могут использоваться разные операторы возврата. Данный оператор используется лишь в контексте алгоритмических функций и не может использоваться в описании <A href="../rdo_obj/rdo_obj_pat.htm">образцов</A>. Тип выражения после <B>оператора return</B> должен соответствовать типу возвращаемого значения функции.</P>
 		<DL class="syntax">
 			<DD class="syntax"></DD>
-			<A href="" onclick="return toggle_display(v5);"><H4>Примеры</H4></A>
+			<A href="" class="ref" onclick="return toggle_display(v5);"><H4>Примеры</H4></A>
 			<DIV style="display:none" id=v5>
 			<PRE name="sample_6" class="samples">
 return true;
@@ -185,7 +185,7 @@ $End
 		<P><A name="operator_area"></A><B>Выделить локальную область памяти</B> можно с помощью <A href= "../rdo_lex_div/rdo_lex_div_spesial_symbols.htm">спецсимволов</A> &quot;{&quot; и &quot;}&quot;. Данный оператор позволяет выделить пространство имен для локальных переменных, что подразумевает возможность использования одноименных переменных в разных областях локальной памяти. Все <A href="#operator_declare">объявленные</A> внутри этой области переменные будут доступны лишь в ней, и не будут вызывать конфликтов <A href="../rdo_lex_div/rdo_lex_div_names.htm">имен</A> с переменными, объявленными в других локальных областях. Однако переменные, объявленные в объемлющей, по отношению к данной, области памяти будут также доступны в этой области и могут вызвать конфликты имен. Этот оператор можно использовать как в <A href = "../rdo_obj/rdo_obj_pat.htm">образцах</A>, так и в <A href = "../rdo_obj/rdo_obj_fun.htm">функциях</A>. </P>
 		<DL class="syntax">
 			<DD class="syntax"></DD>
-			<A href="" onclick="return toggle_display(v6);"><H4>Примеры</H4></A>
+			<A href="" class="ref" onclick="return toggle_display(v6);"><H4>Примеры</H4></A>
 			<DIV style="display:none" id=v6>
 			<PRE name="sample_8" class="samples">
 $body
@@ -204,7 +204,7 @@ real k;//нет ошибки
 		<P class="remarks"><B>Оператор</B> <A href="#operator_area">{...}</A> не может использоваться совместно с другими <B>операторами</B> внутри одной <A href="../rdo_lex_div/rdo_lex_div_procedures.htm">процедуры</A>, однако внутри себя он может содержать неограниченное количество  процедур, разделенных между собой <A href= "../rdo_lex_div/rdo_lex_div_spesial_symbols.htm">спецсимволом</A> &quot;;&quot;. Для внешней области такой список процедур будет выглядеть как одна  процедура, поэтому его можно использовать внутри операторов позволяющих исполнять одну процедуру, например в теле цикла или ветвях условного оператора, а также реализовать вложенность операторов и процедур.</P>
 		<DL class="syntax">
 			<DD class="syntax"></DD>
-			<A href="" onclick="return toggle_display(v7);"><H4>Примеры</H4></A>
+			<A href="" class="ref" onclick="return toggle_display(v7);"><H4>Примеры</H4></A>
 			<DIV style="display:none" id=v7>
 			<P>Цикл в примере выполнится 4 раза</P>
 			<PRE name="sample_9" class="samples">
