@@ -33,36 +33,38 @@ REF(RDOValue) RDOCalcNoChange::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcIf
 // --------------------------------------------------------------------------------
-RDOCalcIf::RDOCalcIf(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pStatement)
+RDOCalcIf::RDOCalcIf(CREF(LPRDOCalc) pCondition)
 	: m_pCondition(pCondition)
-	, m_pStatement(pStatement)
 {
 	ASSERT(m_pCondition);
-	ASSERT(m_pStatement);
+}
+
+void RDOCalcIf::setIfStatement  (CREF(LPRDOCalc) pStatement)
+{
+	m_ifElseStatement.first = pStatement;
+}
+
+void RDOCalcIf::setElseStatement  (CREF(LPRDOCalc) pStatement)
+{
+	m_ifElseStatement.second = pStatement;
+}
+
+bool RDOCalcIf::ElseOrNot()
+{
+	return (m_ifElseStatement.second.object_dynamic_cast<RDOCalc>()) ? true : false ;
 }
 
 REF(RDOValue) RDOCalcIf::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_value = RDOValue(false);
-	return (m_pCondition->calcValue(pRuntime).getAsBool()) ? m_pStatement->calcValue(pRuntime) : (m_value);
-}
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOCalcIfElse
-// --------------------------------------------------------------------------------
-RDOCalcIfElse::RDOCalcIfElse(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pIfStatement, CREF(LPRDOCalc) pElseStatement)
-	: m_pCondition    (pCondition    )
-	, m_pIfStatement  (pIfStatement  )
-	, m_pElseStatement(pElseStatement)
-{
-	ASSERT(m_pCondition    );
-	ASSERT(m_pIfStatement  );
-	ASSERT(m_pElseStatement);
-}
-
-REF(RDOValue) RDOCalcIfElse::doCalc(CREF(LPRDORuntime) pRuntime)
-{
-	return (m_pCondition->calcValue(pRuntime).getAsBool()) ? m_pIfStatement->calcValue(pRuntime) : m_pElseStatement->calcValue(pRuntime);
+	if (ElseOrNot())
+	{
+		return (m_pCondition->calcValue(pRuntime).getAsBool()) ? m_ifElseStatement.first->calcValue(pRuntime) : m_ifElseStatement.second->calcValue(pRuntime);
+	}
+	else
+	{
+		return (m_pCondition->calcValue(pRuntime).getAsBool()) ? m_ifElseStatement.first->calcValue(pRuntime) : (m_value);
+	}
 }
 
 // --------------------------------------------------------------------------------

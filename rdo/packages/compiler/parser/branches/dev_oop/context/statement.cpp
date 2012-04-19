@@ -27,4 +27,41 @@ ContextStatementBase::ContextStatementBase()
 ContextBreakable::ContextBreakable()
 {}
 
+// --------------------------------------------------------------------------------
+// -------------------- ContextReturnable
+// --------------------------------------------------------------------------------
+ContextReturnable::ContextReturnable()
+	:m_returnFlag(false)
+{}
+
+bool ContextReturnable::returnFlag()
+{
+	compileFlags();
+	return m_returnFlag;
+}
+
+void ContextReturnable::addContext(REF(LPContextReturnable) pContext)
+{
+	ASSERT(pContext);
+
+	pContext->compileFlags();
+
+	m_contextReturnableList.push_back(pContext);
+	ASSERT(!m_contextReturnableList.empty());
+}
+
+void ContextReturnable::compileFlags()
+{
+	if(!m_contextReturnableList.empty())
+	{
+		bool compiledFlag;
+		STL_FOR_ALL(m_contextReturnableList, contextIt)
+		{
+			LPContextReturnable pContext = *contextIt;
+			compiledFlag = (compiledFlag)&&(pContext->returnFlag());
+		}
+		m_returnFlag = m_returnFlag&&compiledFlag;
+	}
+}
+
 CLOSE_RDO_PARSER_NAMESPACE

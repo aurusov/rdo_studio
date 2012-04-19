@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/context/context.h"
+#include "simulator/compiler/parser/rdoparser.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -40,6 +41,32 @@ protected:
 	ContextBreakable();
 };
 DECLARE_POINTER(ContextBreakable);
+
+// --------------------------------------------------------------------------------
+// -------------------- ContextReturnable
+// --------------------------------------------------------------------------------
+PREDECLARE_POINTER(ContextReturnable);
+CLASS(ContextReturnable):
+	         INSTANCE_OF (ContextStatementBase)
+{
+DECLARE_FACTORY(ContextReturnable);
+public:
+
+	typedef std::vector<LPContextReturnable> ContextReturnableList;
+
+	bool returnFlag();
+	void addContext(REF(LPContextReturnable) pContext);
+
+private:
+	void compileFlags();
+
+protected:
+	ContextReturnable();
+
+	ContextReturnableList m_contextReturnableList;
+	bool                  m_returnFlag;
+
+};
 
 CLOSE_RDO_PARSER_NAMESPACE
 
