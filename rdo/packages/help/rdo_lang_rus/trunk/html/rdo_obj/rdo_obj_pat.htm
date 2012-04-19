@@ -37,6 +37,10 @@ $End</PRE>
 						<TD class="visible" NOWRAP width="20%"><A href="../rdo_pat_type/rdo_pat_type_keyboard.htm">keyboard</A></TD>
 						<TD class="visible" width="80%">Образец, описывающий клавиатурную операцию (такая операция может быть выполнена, если пользователь выполнил некоторое действие - нажал определенную клавишу или щелкнул мышью в активной области кадра анимации - и выполняются предусловия)</TD>
 					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><A href="rdo_obj_event.htm">event</A></TD>
+						<TD class="visible" width="80%">Образец, описывающий событие</TD>
+					</TR>
 				</TABLE>
 			</DD>
 			<DT class="syntax"><I>признак_трассировки</I></DT>
@@ -158,10 +162,10 @@ $End</PRE>
 			<DT class="syntax"><A name="time_expr"></A><I>выражение_времени</I></DT>
 			<DD class="syntax">Выражение времени представляет собой <A href="../rdo_base/rdo_base_equations.htm">арифметическое выражение</A> целого или вещественного типа, по которому рассчитывается <B>длительность</B> <A href="#pat_type">операции</A> или <A href="#pat_type">клавиатурной операции</A>. В образцах типа <FONT class="syntax">event</FONT> и <FONT class="syntax">rule</FONT> выражение времени вместе с зарезервированным словом <FONT class="syntax">$Time</FONT> и знаком равенства не указывают.</DD>
 			<DT class="syntax"><A name="pattern_body"></A><I>тело_образца</I></DT>
-			<DD class="syntax">Тело образца описывает суть изменений, которые происходят в системе в момент времени наступления соответствующего события (подробнее смотри описание <A class="syntax" href="rdo_obj_pat_body.htm">тела событий и образцов активностей</A>).</DD>
+			<DD class="syntax">Тело образца описывает суть изменений, которые происходят в системе в момент срабатывания образца.</DD>
 		</DL>
-		<A href="" onclick="return toggle_display(v1);"><H4>Примеры</H4></A>
-		<DIV style="display:none" id=v1>
+		<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Примеры</H4></A>
+		<DIV style="display:none" id="v1">
 		<PRE class="samples">$Pattern Образец_1 : operation
 $Parameters
   Количество : integer = 10
