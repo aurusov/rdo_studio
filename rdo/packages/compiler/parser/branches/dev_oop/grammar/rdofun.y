@@ -415,7 +415,7 @@ fun_func_footer
 
 		if(!pContextReturnableFun->returnFlag())
 		{
-			PARSER->error().warning(@6, _T("Возможно не все ветки функции могут вернуть значение."));
+			PARSER->error().warning(pFunction->src_info(), rdo::format(_T("Возможно не все ветки функции '%s' могут вернуть значение."),pFunction->name().c_str()));
 		}
 
 		pFunction->createAlgorithmicCalc(@5);
