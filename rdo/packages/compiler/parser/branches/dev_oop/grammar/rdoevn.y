@@ -2519,12 +2519,12 @@ if_statement
 	LPContextReturnable pContextReturnableChild = PARSER->context()->cast<ContextReturnable>();
 	ASSERT(pContextReturnableChild);
 
+	PARSER->contextStack()->pop();
+	
 	LPContextReturnable pContextReturnableParent = PARSER->context()->cast<ContextReturnable>();
 	ASSERT(pContextReturnableParent);
 
 	pContextReturnableParent->addContext(pContextReturnableChild);
-
-	PARSER->contextStack()->pop();
 
 	LPContextReturnable pContextReturnable = rdo::Factory<ContextReturnable>::create();
 	ASSERT(pContextReturnable);

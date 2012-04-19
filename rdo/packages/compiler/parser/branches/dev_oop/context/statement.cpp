@@ -43,6 +43,7 @@ bool ContextReturnable::returnFlag()
 void ContextReturnable::setReturnFlag()
 {
 	m_returnFlag = true;
+	compileFlags();
 }
 
 void ContextReturnable::addContext(REF(LPContextReturnable) pContext)
@@ -59,7 +60,7 @@ void ContextReturnable::compileFlags()
 {
 	if(!m_contextReturnableList.empty())
 	{
-		bool compiledFlag;
+		bool compiledFlag = true;
 		STL_FOR_ALL(m_contextReturnableList, contextIt)
 		{
 			LPContextReturnable pContext = *contextIt;

@@ -413,7 +413,7 @@ fun_func_footer
 		LPContextReturnable pContextReturnableFun = PARSER->context()->cast<ContextReturnable>();
 		ASSERT(pContextReturnableFun);
 
-		if(pContextReturnableFun->returnFlag())
+		if(!pContextReturnableFun->returnFlag())
 		{
 			PARSER->error().warning(@6, _T("Возможно не все ветки функции могут вернуть значение."));
 		}
@@ -2010,12 +2010,12 @@ if_statement
 	LPContextReturnable pContextReturnableChild = PARSER->context()->cast<ContextReturnable>();
 	ASSERT(pContextReturnableChild);
 
+	PARSER->contextStack()->pop();
+	
 	LPContextReturnable pContextReturnableParent = PARSER->context()->cast<ContextReturnable>();
 	ASSERT(pContextReturnableParent);
 
 	pContextReturnableParent->addContext(pContextReturnableChild);
-
-	PARSER->contextStack()->pop();
 
 	LPContextReturnable pContextReturnable = rdo::Factory<ContextReturnable>::create();
 	ASSERT(pContextReturnable);
