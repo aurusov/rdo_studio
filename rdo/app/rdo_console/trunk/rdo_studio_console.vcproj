@@ -191,11 +191,11 @@
 			Name=".console_controller"
 			>
 			<File
-				RelativePath=".\rdo_studio_console_controller.cpp"
+				RelativePath=".\rdo_console_controller.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdo_studio_console_controller.h"
+				RelativePath=".\rdo_console_controller.h"
 				>
 			</File>
 		</Filter>
