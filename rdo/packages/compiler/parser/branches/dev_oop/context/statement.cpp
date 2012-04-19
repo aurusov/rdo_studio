@@ -40,6 +40,11 @@ bool ContextReturnable::returnFlag()
 	return m_returnFlag;
 }
 
+void ContextReturnable::setReturnFlag()
+{
+	m_returnFlag = true;
+}
+
 void ContextReturnable::addContext(REF(LPContextReturnable) pContext)
 {
 	ASSERT(pContext);

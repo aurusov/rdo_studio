@@ -410,6 +410,14 @@ fun_func_footer
 		LPRDOFUNFunction pFunction = PARSER->getLastFUNFunction();
 		ASSERT(pFunction);
 
+		LPContextReturnable pContextReturnableFun = PARSER->context()->cast<ContextReturnable>();
+		ASSERT(pContextReturnableFun);
+
+		if(pContextReturnableFun->returnFlag())
+		{
+			PARSER->error().warning(@6, _T("Возможно не все ветки функции могут вернуть значение."));
+		}
+
 		pFunction->createAlgorithmicCalc(@5);
 	}
 	| RDO_Type '=' RDO_list fun_func_parameters RDO_Body fun_func_list_body RDO_End
@@ -1287,8 +1295,13 @@ return_statement
 		rdo::runtime::LPRDOCalc pCalcReturn = rdo::Factory<rdo::runtime::RDOCalcFunReturn>::create(pCalc);
 		ASSERT(pCalcReturn);
 
-		LPExpressionStatement pExpression = rdo::Factory<ExpressionStatement>::create(pType, pCalcReturn, RDOParserSrcInfo(@1));
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalcReturn, RDOParserSrcInfo(@1));
 		ASSERT(pExpression);
+
+		LPContextReturnable pContextReturnable = PARSER->context()->cast<ContextReturnable>();
+		ASSERT(pContextReturnable);
+
+		pContextReturnable->setReturnFlag();
 
 		$$ = PARSER->stack().push(pExpression);
 	}

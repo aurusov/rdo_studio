@@ -53,9 +53,10 @@ DECLARE_FACTORY(ContextReturnable);
 public:
 
 	typedef std::vector<LPContextReturnable> ContextReturnableList;
-
-	bool returnFlag();
 	void addContext(REF(LPContextReturnable) pContext);
+
+	void setReturnFlag();
+	bool returnFlag();
 
 private:
 	void compileFlags();
