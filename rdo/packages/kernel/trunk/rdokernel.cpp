@@ -98,7 +98,7 @@ void RDOKernel::proc( RDOMessageInfo& msg )
 					delete thread_destroy;
 					it = threads.begin();
 				} else {
-					it++;
+					++it;
 				}
 #else
 				sendMessage( thread, RDOThread::RT_THREAD_CLOSE );
@@ -136,7 +136,7 @@ void RDOKernel::idle()
 	while ( it != threads.end() ) {
 		// it_next используется из-за того, что в RDOThreadRunTime->idle() м.б. удален RDOThreadRunTime и убран из threads
 		std::list< RDOThread* >::iterator it_next = it;
-		it_next++;
+		++it_next;
 		(*it)->idle();
 		it = it_next;
 	}
@@ -309,7 +309,7 @@ void RDOKernelGUI::proc( RDOMessageInfo& msg )
 	while ( it != threads.end() ) {
 		// it_next используется из-за того, что в RDOThreadRunTime->idle() м.б. удален RDOThreadRunTime и убран из threads
 		std::list< RDOThread* >::iterator it_next = it;
-		it_next++;
+		++it_next;
 		if ( *it != msg.from ) {
 			(*it)->proc( msg );
 		}
@@ -323,7 +323,7 @@ void RDOKernelGUI::idle()
 	while ( it != threads.end() ) {
 		// it_next используется из-за того, что в RDOThreadRunTime->idle() м.б. удален RDOThreadRunTime и убран из threads
 		std::list< RDOThread* >::iterator it_next = it;
-		it_next++;
+		++it_next;
 		(*it)->idle();
 		it = it_next;
 	}
@@ -363,9 +363,9 @@ void RDOKernelGUI::update_notifies()
 			if ( std::find( notifies.begin(), notifies.end(), *notify_it ) == notifies.end() ) {
 				notifies.push_back( *notify_it );
 			}
-			notify_it++;
+			++notify_it;
 		}
-		thread_it++;
+		++thread_it;
 	}
 }
 #endif

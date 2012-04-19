@@ -52,7 +52,7 @@ tstring RDOEnumType::name() const
 	while (it != getEnums()->end())
 	{
 		str += *it;
-		it++;
+		++it;
 		if (it != getEnums()->end())
 		{
 			str += _T(", ");

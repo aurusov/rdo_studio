@@ -338,6 +338,7 @@ void RDOThreadCorba::stop()
 			else
 			{
 				int i = 0;
+				UNUSED(i);
 			}
 		}
 //		thread_corbaRunThreadFun->Delete();
@@ -1309,8 +1310,8 @@ void RDOThreadSimulator::corbaGetRTP(REF(rdo::compiler::parser::RDOCorba::GetRTP
 
 	while (rtp_it != rtpList.end())
 	{
-		rtp_count++;
-		rtp_it++;
+		++rtp_count;
+		++rtp_it;
 	}
 
 	//! Выделяем пямять под последовательность
@@ -1336,8 +1337,8 @@ void RDOThreadSimulator::corbaGetRTP(REF(rdo::compiler::parser::RDOCorba::GetRTP
 
 		while (param_it != rtp_it->m_params.end())
 		{
-			my_rtpList[i].m_param_count++;
-			param_it++;
+			++(my_rtpList[i].m_param_count);
+			++param_it;
 		}
 		
 		//! Выделяем память под последовательность параметров i-го типа ресурсов
@@ -1438,12 +1439,12 @@ void RDOThreadSimulator::corbaGetRTP(REF(rdo::compiler::parser::RDOCorba::GetRTP
 				default: break;
 			}
 		
-			j++;
-			param_it++;
+			++j;
+			++param_it;
 		}
 		j = 0;
-		i++;		
-		rtp_it++;
+		++i;
+		++rtp_it;
 	}
 
 }
@@ -1471,8 +1472,8 @@ void RDOThreadSimulator::corbaGetRSS(REF(rdo::compiler::parser::RDOCorba::GetRSS
 	//! Считаем количество ресурсов
 	while (rss_it != rssList.end())
 	{
-		rss_count++;
-		rss_it++;
+		++rss_count;
+		++rss_it;
 	}
 
 	//! Выделяем пямять под последовательность
@@ -1494,8 +1495,8 @@ void RDOThreadSimulator::corbaGetRSS(REF(rdo::compiler::parser::RDOCorba::GetRSS
 
 		while (param_it != rss_it->end())
 		{
-			my_rssList[i].m_param_count++;
-			param_it++;
+			++(my_rssList[i].m_param_count);
+			++param_it;
 		}
 		
 		//! Выделяем память под последовательность параметров i-го ресурса
@@ -1537,13 +1538,13 @@ void RDOThreadSimulator::corbaGetRSS(REF(rdo::compiler::parser::RDOCorba::GetRSS
 				default: break;
 			}
 
-			param_it++;
-			j++;
+			++param_it;
+			++j;
 		}
 	
 		j = 0;
-		rss_it++;
-		i++;
+		++rss_it;
+		++i;
 	}
 
 /*
@@ -1609,7 +1610,7 @@ void RDOThreadCodeComp::proc(REF(RDOMessageInfo) msg)
 				while (param_it != param_list.end())
 				{
 					data->m_result += (*param_it)->name() + ' ';
-					param_it++;
+					++param_it;
 				}
 			}
 			msg.unlock();

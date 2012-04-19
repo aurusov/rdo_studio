@@ -99,9 +99,9 @@ LPRDOFuzzyValue RDOFuzzyValue::ext_binary(ExtBinaryFun fun, CREF(LPRDOFuzzyValue
 			{
 				values[rdo_value] = rdo::rmax(val->second, rdo::rmin(it1->second, it2->second));
 			}
-			it2++;
+			++it2;
 		}
-		it1++;
+		++it1;
 	}
 	if (!values.empty())
 	{
@@ -140,7 +140,7 @@ LPRDOFuzzyValue RDOFuzzyValue::ext_unary(ExtUnaryFun fun) const
 		{
 			values[rdo_value] = rdo::rmax(val->second, it->second);
 		}
-		it++;
+		++it;
 	}
 	if (!values.empty())
 	{
@@ -178,7 +178,7 @@ LPRDOFuzzyValue RDOFuzzyValue::ext_unary(ExtUnaryFunP fun, PTR(void) pParam) con
 		{
 			values[rdo_value] = rdo::rmax(val->second, it->second);
 		}
-		it++;
+		++it;
 	}
 	if (!values.empty())
 	{
@@ -237,7 +237,7 @@ LPRDOFuzzyValue RDOFuzzyValue::a_mult(CREF(LPRDOFuzzyValue) pFuzzyValue) const
 		{
 			pFuzzyValueResult->operator[](it1->first) = it1->second * it2->second;
 		}
-		it1++;
+		++it1;
 	}
 	return pFuzzyValueResult;
 }
@@ -258,7 +258,7 @@ LPRDOFuzzyValue RDOFuzzyValue::alpha(double appertain) const
 		{
 			pFuzzyValueResult->operator[](it->first) = appertain;
 		}
-		it++;
+		++it;
 	}
 	return pFuzzyValueResult;
 }
@@ -273,7 +273,7 @@ LPRDOFuzzyValue RDOFuzzyValue::a_pow(double power) const
 	while (it != pFuzzyValueResult->end())
 	{
 		it->second = ::pow(it->second, power);
-		it++;
+		++it;
 	}
 	return pFuzzyValueResult;
 }
@@ -285,7 +285,7 @@ RDOValue RDOFuzzyValue::defuzzyfication()
 		return RDOValue();
 
 	FuzzySet::const_iterator it_next = it;
-	it_next++;
+	++it_next;
 	if (it_next == end())
 		return it->first;
 
@@ -302,8 +302,8 @@ RDOValue RDOFuzzyValue::defuzzyfication()
 		g += t*(x_next + x)/2.0;
 		f += t;
 
-		it++;
-		it_next++;
+		++it;
+		++it_next;
 		if (it_next == end())
 			break;
 

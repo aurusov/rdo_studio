@@ -83,7 +83,7 @@ ruint RDOParserContainer::insert(rdoModelObjectsConvertor::RDOParseType type, CR
 			while (it != m_list.end() && it->first <= max)
 			{
 				index++;
-				it++;
+				++it;
 			}
 			if (index <= max)
 			{

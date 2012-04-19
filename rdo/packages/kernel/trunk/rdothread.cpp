@@ -302,7 +302,7 @@ void RDOThread::broadcastMessage(RDOTreadMessage message, PTR(void) pParam, rboo
 		if ( thread != this && (thread->notifies.empty() || std::find( thread->notifies.begin(), thread->notifies.end(), message ) != thread->notifies.end()) ) {
 			thread->processMessages( msg );
 		}
-		it++;
+		++it;
 	}
 #endif
 }
