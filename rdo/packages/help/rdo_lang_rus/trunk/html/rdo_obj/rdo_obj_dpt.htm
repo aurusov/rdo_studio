@@ -70,7 +70,7 @@
 						<PRE class="syntax">$Activities <A class="syntax" href="#dpt_act_desc">&lt;описание_активности&gt;</A> { &lt;описание_активности&gt; }
 $End</PRE>
 						<DL class="syntax">
-							<DT>Активности вместе с <A href="rdo_pat_type_event.htm">событиями</A> определяют содержимое базы знаний программы (<A href="../rdo_terms.htm">модели</A>).</DT>
+							<DT>Активности вместе с <A href="rdo_pat_type/rdo_pat_type_event.htm">событиями</A> определяют содержимое базы знаний программы (<A href="../rdo_terms.htm">модели</A>).</DT>
 							<DT class="syntax"><A name="dpt_act_desc"></A><I>описание_активности</I></DT>
 							<DD class="syntax">Описание каждой активности зависит от типа точки и в общем случае 
 								имеет следующий формат:
@@ -84,7 +84,7 @@ $End</PRE>
 									<DT class="syntax"><A name="dpt_act_pat"></A><I>имя_образца</I></DT>
 									<DD class="syntax">Имя образца - это имя одного из образцов, заданных в <A href="rdo_obj_pat.htm">объекте образцов</A>.<P>При написании блока активностей необходимо иметь ввиду следующее. Для точки принятия решений типа <FONT class="syntax">search</FONT> допустимо использование только образцов типа <FONT class="syntax">rule</FONT>, при выполнении которых ресурсы не создаются и не уничтожаются, то есть <A href="rdo_obj_pat.htm#conv_stat">статусы конверторов</A> релевантных ресурсов которых не содержат <FONT class="syntax">Create</FONT> или <FONT class="syntax">Erase</FONT>. Использование образцов других типов не допускается.</P></DD>
 									<DT class="syntax"><A name="dpt_act_key"></A><I>код_клавиши</I></DT>
-									<DD class="syntax">Код клавиши указывают для образцов типа <A href="../rdo_pat_type/rdo_pat_type_keyboard.htm">клавиатурная операция</A> (<FONT class="syntax">keyboard</FONT>).</DD>
+									<DD class="syntax">Код клавиши указывают для образцов типа <A href="../rdo_obj/rdo_pat_type/rdo_pat_type_keyboard.htm">клавиатурная операция</A> (<FONT class="syntax">keyboard</FONT>).</DD>
 									<DT class="syntax"><A name="dpt_act_params"></A><I>значения_параметров_образца</I></DT>
 									<DD class="syntax">Значения <A href="rdo_obj_pat.htm#param_desc">параметров образца</A> задают в позиционном соответствии с порядком следования параметров в описании образца. Значения задают целой или вещественной <A href="../rdo_lex_div/rdo_lex_div_numeric_const.htm">численной константой</A> либо именем значения в соответствии с типом параметра. Для тех параметров, у которых указано значение по умолчанию, вместо начального значения можно указать символ "*". В этом случае параметр примет значение по умолчанию. Если для параметра задан диапазон возможных значений, то проверяется соответствие начального значения этому диапазону.</DD>
 									
