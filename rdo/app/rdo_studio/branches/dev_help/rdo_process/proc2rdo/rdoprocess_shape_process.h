@@ -21,7 +21,7 @@ public:
 	virtual void generate();
 
 	//параметры для симулятора
-	LPRPShapeDataBlockProcess m_pParams;
+	rdo::compiler::gui::LPRPShapeDataBlockProcess m_pParams;
 	//переменные для генерации
 	tstring gname; // имя
 	

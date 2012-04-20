@@ -66,7 +66,7 @@ rbool RDOStudioFrameView::valid()
 	return m_memDC.valid();
 }
 
-void RDOStudioFrameView::init(CPTRC(rdoAnimation::RDOFrame) pFrame, CREF(rdo::gui::BitmapList) bitmapList)
+void RDOStudioFrameView::init(CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::gui::BitmapList) bitmapList)
 {
 	ASSERT(pFrame);
 
@@ -534,10 +534,10 @@ void RDOStudioFrameView::OnMouseMove(UINT nFlags, CPoint point)
 }
 
 void RDOStudioFrameView::update(
-	CPTRC(rdoAnimation::RDOFrame) pFrame,
-	 CREF(rdo::gui::BitmapList)   bitmapList,
-	  REF(rdo::gui::BitmapList)   bitmapGeneratedList,
-	  REF(AreaList)               areaList
+	CPTRC(rdo::animation::Frame) pFrame,
+	 CREF(rdo::gui::BitmapList)  bitmapList,
+	  REF(rdo::gui::BitmapList)  bitmapGeneratedList,
+	  REF(AreaList)              areaList
 )
 {
 	ASSERT(pFrame);
@@ -551,20 +551,20 @@ void RDOStudioFrameView::update(
 
 	STL_FOR_ALL_CONST(pFrame->m_elements, it)
 	{
-		PTR(rdoAnimation::FrameItem) pCurrElement = *it;
+		PTR(rdo::animation::FrameItem) pCurrElement = *it;
 		ASSERT(pCurrElement);
 		switch (pCurrElement->getType())
 		{
-		case rdoAnimation::FrameItem::FIT_TEXT   : elementText     (static_cast<PTR(rdoAnimation::RDOTextElement   )>(pCurrElement)); break;
-		case rdoAnimation::FrameItem::FIT_RECT   : elementRect     (static_cast<PTR(rdoAnimation::RDORectElement   )>(pCurrElement)); break;
-		case rdoAnimation::FrameItem::FIT_R_RECT : elementRoundRect(static_cast<PTR(rdoAnimation::RDORRectElement  )>(pCurrElement)); break;
-		case rdoAnimation::FrameItem::FIT_LINE   : elementLine     (static_cast<PTR(rdoAnimation::RDOLineElement   )>(pCurrElement)); break;
-		case rdoAnimation::FrameItem::FIT_TRIANG : elementTriang   (static_cast<PTR(rdoAnimation::RDOTriangElement )>(pCurrElement)); break;
-		case rdoAnimation::FrameItem::FIT_CIRCLE : elementCircle   (static_cast<PTR(rdoAnimation::RDOCircleElement )>(pCurrElement)); break;
-		case rdoAnimation::FrameItem::FIT_ELLIPSE: elementEllipse  (static_cast<PTR(rdoAnimation::RDOEllipseElement)>(pCurrElement)); break;
-		case rdoAnimation::FrameItem::FIT_BMP    : elementBMP      (static_cast<PTR(rdoAnimation::RDOBmpElement    )>(pCurrElement), bitmapList, bitmapGeneratedList); break;
-		case rdoAnimation::FrameItem::FIT_S_BMP  : elementSBMP     (static_cast<PTR(rdoAnimation::RDOSBmpElement   )>(pCurrElement), bitmapList, bitmapGeneratedList); break;
-		case rdoAnimation::FrameItem::FIT_ACTIVE : elementActive   (static_cast<PTR(rdoAnimation::RDOActiveElement )>(pCurrElement), areaList); break;
+		case rdo::animation::FrameItem::FIT_TEXT   : elementText     (static_cast<PTR(rdo::animation::TextElement     )>(pCurrElement)); break;
+		case rdo::animation::FrameItem::FIT_RECT   : elementRect     (static_cast<PTR(rdo::animation::RectElement     )>(pCurrElement)); break;
+		case rdo::animation::FrameItem::FIT_R_RECT : elementRoundRect(static_cast<PTR(rdo::animation::RoundRectElement)>(pCurrElement)); break;
+		case rdo::animation::FrameItem::FIT_LINE   : elementLine     (static_cast<PTR(rdo::animation::LineElement     )>(pCurrElement)); break;
+		case rdo::animation::FrameItem::FIT_TRIANG : elementTriang   (static_cast<PTR(rdo::animation::TriangElement   )>(pCurrElement)); break;
+		case rdo::animation::FrameItem::FIT_CIRCLE : elementCircle   (static_cast<PTR(rdo::animation::CircleElement   )>(pCurrElement)); break;
+		case rdo::animation::FrameItem::FIT_ELLIPSE: elementEllipse  (static_cast<PTR(rdo::animation::EllipseElement  )>(pCurrElement)); break;
+		case rdo::animation::FrameItem::FIT_BMP    : elementBMP      (static_cast<PTR(rdo::animation::BmpElement      )>(pCurrElement), bitmapList, bitmapGeneratedList); break;
+		case rdo::animation::FrameItem::FIT_S_BMP  : elementSBMP     (static_cast<PTR(rdo::animation::ScaledBmpElement)>(pCurrElement), bitmapList, bitmapGeneratedList); break;
+		case rdo::animation::FrameItem::FIT_ACTIVE : elementActive   (static_cast<PTR(rdo::animation::ActiveElement   )>(pCurrElement), areaList); break;
 		}
 	}
 
@@ -572,7 +572,7 @@ void RDOStudioFrameView::update(
 	SendNotifyMessage(WM_PAINT, 0, 0);
 }
 
-void RDOStudioFrameView::drawBackground(CPTRC(rdoAnimation::RDOFrame) pFrame, CREF(rdo::gui::BitmapList) bitmapList)
+void RDOStudioFrameView::drawBackground(CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::gui::BitmapList) bitmapList)
 {
 	ASSERT(pFrame);
 
@@ -611,7 +611,7 @@ void RDOStudioFrameView::drawBackground(CPTRC(rdoAnimation::RDOFrame) pFrame, CR
 	}
 }
 
-void RDOStudioFrameView::elementText(PTR(rdoAnimation::RDOTextElement) pElement)
+void RDOStudioFrameView::elementText(PTR(rdo::animation::TextElement) pElement)
 {
 	ASSERT(pElement);
 
@@ -632,9 +632,9 @@ void RDOStudioFrameView::elementText(PTR(rdoAnimation::RDOTextElement) pElement)
 		Gdiplus::StringFormat sformat;
 		switch (pElement->m_align)
 		{
-		case rdoAnimation::RDOTextElement::TETA_LEFT  : sformat.SetAlignment(Gdiplus::StringAlignmentNear  ); break;
-		case rdoAnimation::RDOTextElement::TETA_RIGHT : sformat.SetAlignment(Gdiplus::StringAlignmentFar   ); break;
-		case rdoAnimation::RDOTextElement::TETA_CENTER: sformat.SetAlignment(Gdiplus::StringAlignmentCenter); break;
+		case rdo::animation::TextElement::TETA_LEFT  : sformat.SetAlignment(Gdiplus::StringAlignmentNear  ); break;
+		case rdo::animation::TextElement::TETA_RIGHT : sformat.SetAlignment(Gdiplus::StringAlignmentFar   ); break;
+		case rdo::animation::TextElement::TETA_CENTER: sformat.SetAlignment(Gdiplus::StringAlignmentCenter); break;
 		}
 		sformat.SetLineAlignment(Gdiplus::StringAlignmentNear    );
 		sformat.SetFormatFlags  (Gdiplus::StringFormatFlagsNoWrap);
@@ -673,7 +673,7 @@ void RDOStudioFrameView::elementText(PTR(rdoAnimation::RDOTextElement) pElement)
 }
 
 template <class F, class D>
-void RDOStudioFrameView::drawColoredElement(CREF(rdoAnimation::RDOColoredElement) coloredElement, F fillBinder, D drawBinder)
+void RDOStudioFrameView::drawColoredElement(CREF(rdo::animation::ColoredElement) coloredElement, F fillBinder, D drawBinder)
 {
 	if (!coloredElement.m_background.m_transparent)
 	{
@@ -700,7 +700,7 @@ void RDOStudioFrameView::drawColoredElement(CREF(rdoAnimation::RDOColoredElement
 	}
 }
 
-void RDOStudioFrameView::elementRect(PTR(rdoAnimation::RDORectElement) pElement)
+void RDOStudioFrameView::elementRect(PTR(rdo::animation::RectElement) pElement)
 {
 	ASSERT(pElement);
 
@@ -724,7 +724,7 @@ void RDOStudioFrameView::elementRect(PTR(rdoAnimation::RDORectElement) pElement)
 	);
 }
 
-void RDOStudioFrameView::elementRoundRect(PTR(rdoAnimation::RDORRectElement) pElement)
+void RDOStudioFrameView::elementRoundRect(PTR(rdo::animation::RoundRectElement) pElement)
 {
 	ASSERT(pElement);
 
@@ -757,7 +757,7 @@ void RDOStudioFrameView::elementRoundRect(PTR(rdoAnimation::RDORRectElement) pEl
 	);
 }
 
-void RDOStudioFrameView::elementLine(PTR(rdoAnimation::RDOLineElement) pElement)
+void RDOStudioFrameView::elementLine(PTR(rdo::animation::LineElement) pElement)
 {
 	ASSERT(pElement);
 
@@ -774,7 +774,7 @@ void RDOStudioFrameView::elementLine(PTR(rdoAnimation::RDOLineElement) pElement)
 	}
 }
 
-void RDOStudioFrameView::elementTriang(PTR(rdoAnimation::RDOTriangElement) pElement)
+void RDOStudioFrameView::elementTriang(PTR(rdo::animation::TriangElement) pElement)
 {
 	ASSERT(pElement);
 
@@ -796,7 +796,7 @@ void RDOStudioFrameView::elementTriang(PTR(rdoAnimation::RDOTriangElement) pElem
 	);
 }
 
-void RDOStudioFrameView::elementCircle(PTR(rdoAnimation::RDOCircleElement) pElement)
+void RDOStudioFrameView::elementCircle(PTR(rdo::animation::CircleElement) pElement)
 {
 	ASSERT(pElement);
 
@@ -816,7 +816,7 @@ void RDOStudioFrameView::elementCircle(PTR(rdoAnimation::RDOCircleElement) pElem
 	);
 }
 
-void RDOStudioFrameView::elementEllipse(PTR(rdoAnimation::RDOEllipseElement) pElement)
+void RDOStudioFrameView::elementEllipse(PTR(rdo::animation::EllipseElement) pElement)
 {
 	ASSERT(pElement);
 
@@ -837,9 +837,9 @@ void RDOStudioFrameView::elementEllipse(PTR(rdoAnimation::RDOEllipseElement) pEl
 }
 
 void RDOStudioFrameView::elementBMP(
-	 PTR(rdoAnimation::RDOBmpElement) pElement,
-	CREF(rdo::gui::BitmapList)        bitmapList,
-	 REF(rdo::gui::BitmapList)        bitmapGeneratedList)
+	 PTR(rdo::animation::BmpElement) pElement,
+	CREF(rdo::gui::BitmapList)       bitmapList,
+	 REF(rdo::gui::BitmapList)       bitmapGeneratedList)
 {
 	ASSERT(pElement);
 
@@ -857,9 +857,9 @@ void RDOStudioFrameView::elementBMP(
 }
 
 void RDOStudioFrameView::elementSBMP(
-	 PTR(rdoAnimation::RDOSBmpElement) pElement,
-	CREF(rdo::gui::BitmapList)         bitmapList,
-	 REF(rdo::gui::BitmapList)         bitmapGeneratedList)
+	 PTR(rdo::animation::ScaledBmpElement) pElement,
+	CREF(rdo::gui::BitmapList)             bitmapList,
+	 REF(rdo::gui::BitmapList)             bitmapGeneratedList)
 {
 	ASSERT(pElement);
 
@@ -919,7 +919,7 @@ PTR(Gdiplus::Bitmap) RDOStudioFrameView::getBitmap(
 	return bmpIt->second;
 }
 
-void RDOStudioFrameView::elementActive(PTR(rdoAnimation::RDOActiveElement) pElement, REF(AreaList) areaList)
+void RDOStudioFrameView::elementActive(PTR(rdo::animation::ActiveElement) pElement, REF(AreaList) areaList)
 {
 	ASSERT(pElement);
 
