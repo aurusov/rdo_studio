@@ -35,4 +35,5 @@ iframe {
 a.ref {
 	text-decoration: none;
 	font-family: Arial;
+	cursor: pointer;
 }
