@@ -2,17 +2,17 @@
 <HEAD>
 <TITLE>Тип образца "Продукционное правило"</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../../../../shared/styles/styles.css">
-<SCRIPT type="text/javascript" src="../../../shared/scripts/toggle_display.js"></SCRIPT>
+<SCRIPT type="text/javascript" src="../../../../shared/scripts/toggle_display.js"></SCRIPT>
 </HEAD>
 <BODY>
 <DIV>
 <H1>ТИП ОБРАЗЦА "ПРОДУКЦИОННОЕ ПРАВИЛО"</H1>
 		<P>Образцы типа <A name="rule"><B>rule</B></A> описывают обычные продукционные правила. Они служат для изменения состояния ресурса в зависимости от того, какое действие он выполняет. В отличие от образцов типа operation этот образец не имеет выражения для вычисления времени операции. Это связано с тем, что действие выполняется мгновенно, как только выполняются предусловия образца по всем релевантным ресурсам.</P>
 		<P>Образец типа rule содержит список релевантных ресурсов, предусловия начала операции (задаваемые по значениям релевантных ресурсов) и конвертор преобразования состояния ресурсов,участвующих в операции. Описание имеет следующий формат:</P>
-		<Pre class="syntax">$Pattern <A class="syntax" href="../rdo_obj/rdo_obj_pat.htm#pat_name">&lt;имя_образца&gt;</A> :&nbsp;rule&nbsp; [ <A class="syntax" href="../rdo_res/rdo_res_trace_descr.htm">&lt;признак_трассировки&gt;</A> ]
-[ $Parameters <A class="syntax" href="../rdo_obj/rdo_obj_pat.htm#param_desc">&lt;описание_параметров_образца&gt;</A> ]
-$Relevant_resources <A class="syntax" href="../rdo_obj/rdo_obj_pat.htm#rel_res_desc">&lt;описание_релевантных_ресурсов_образца&gt;</A><br />[ <A class="syntax" href="../rdo_obj/rdo_obj_pat.htm#pat_choice_type" style="color: FF0000">&lt;способ_выбора&gt;</A> ]
-$Body <A class="syntax" href="../rdo_obj/rdo_obj_pat_body.htm#body">&lt;тело_образца&gt;</A>
+		<Pre class="syntax">$Pattern <A class="syntax" href="../rdo_obj_pat.htm#pat_name">&lt;имя_образца&gt;</A> :&nbsp;rule&nbsp; [ <A class="syntax" href="../../rdo_res/rdo_res_trace_descr.htm">&lt;признак_трассировки&gt;</A> ]
+[ $Parameters <A class="syntax" href="../rdo_obj_pat.htm#param_desc">&lt;описание_параметров_образца&gt;</A> ]
+$Relevant_resources <A class="syntax" href="../rdo_obj_pat.htm#rel_res_desc">&lt;описание_релевантных_ресурсов_образца&gt;</A><br />[ <A class="syntax" href="../rdo_obj_pat.htm#pat_choice_type" style="color: FF0000">&lt;способ_выбора&gt;</A> ]
+$Body <A class="syntax" href="../rdo_obj_pat_body.htm#body">&lt;тело_образца&gt;</A>
 $End</PRE>
 		<DT class="syntax"><A name="body"></A><I>тело_образца</I></DT>
 		<DD class="syntax">Тело событий и образцов имеет следующий формат:
@@ -27,15 +27,15 @@ $End</PRE>
 Choice NoCheck [ &lt;способ_выбора&gt; ]</PRE>
 							<DL class="syntax">
 								<DT class="syntax"><A name="cond_log_expr"></A><I>логическое_выражение</I></DT>
-								<DD class="syntax"><A href="../rdo_base/rdo_base_equations.htm">Логическое выражение</A> определяет предусловие использования ресурса (возможность выполнения операции или правила). Если нет необходимости в предусловии, то это указывают зарезервированным словом <FONT class="syntax">NoCheck</FONT> или вообще отсутствием <FONT class="syntax">Choice from</FONT>.</DD>
+								<DD class="syntax"><A href="../../rdo_base/rdo_base_equations.htm">Логическое выражение</A> определяет предусловие использования ресурса (возможность выполнения операции или правила). Если нет необходимости в предусловии, то это указывают зарезервированным словом <FONT class="syntax">NoCheck</FONT> или вообще отсутствием <FONT class="syntax">Choice from</FONT>.</DD>
 								<DT class="syntax"><A name="cond_choice_type"></A><I>способ_выбора</I></DT>
-								<DD class="syntax">Способ выбора задается также, как и <A href="#pat_choice_type">после описания релевантных ресурсов образца</A>. Если он не указан после описания релевантных ресурсов образца, он может быть указан в теле образца для каждого релевантного ресурса после <A href="../rdo_base/rdo_base_equations.htm">логического выражения</A>. Способ выбора может быть задан также в случае, когда описатель релевантного ресурса есть имя конкретного ресурса и не существует альтернативы выбора. При этом можно использовать любой способ выбора: все равно он не будет учитываться, и результат будет одинаковым. Если состояние этого ресурса удовлетворяет предусловию, то ресурс может быть использован независимо от способа выбора, если же не удовлетворяет, то также независимо от способа выбора ресурс не может быть использован. Если способ выбора не указан, то по-умолчанию используется <FONT class="syntax">first</FONT>.
+								<DD class="syntax">Способ выбора задается также, как и <A href="#pat_choice_type">после описания релевантных ресурсов образца</A>. Если он не указан после описания релевантных ресурсов образца, он может быть указан в теле образца для каждого релевантного ресурса после <A href="../../rdo_base/rdo_base_equations.htm">логического выражения</A>. Способ выбора может быть задан также в случае, когда описатель релевантного ресурса есть имя конкретного ресурса и не существует альтернативы выбора. При этом можно использовать любой способ выбора: все равно он не будет учитываться, и результат будет одинаковым. Если состояние этого ресурса удовлетворяет предусловию, то ресурс может быть использован независимо от способа выбора, если же не удовлетворяет, то также независимо от способа выбора ресурс не может быть использован. Если способ выбора не указан, то по-умолчанию используется <FONT class="syntax">first</FONT>.
 									<P>Если способ выбора указан после описания релевантных ресурсов образца, в теле образца он должен отсутствовать для всех релевантных ресурсов.</P>
 								</DD>
 							</DL>
 						</DD>
 						<DT class="syntax"><A name="statement_list"></A><I>список_инструкций</I></DT>
-						<DD class="syntax">Список инструкций и указанное перед ним зарезервированное слово должны присутствовать в образце в том случае, если соответствующий <A href="#rel_res_desc">статус конвертора</A>, указанный при описании релевантных ресурсов, есть <FONT class="syntax">Keep</FONT> или <FONT class="syntax">Create</FONT>. Если статус конвертора есть <FONT class="syntax">Erase</FONT>, то список инструкций может быть пустым или наоборот содержать инструкции, которые требуется выполнить для сбора статистики в момент удаления ресурса. <A name="temp_trace_feat"></A>Если статус конвертора есть <FONT class="syntax">Create</FONT>, то после зарезервированного слова может быть указан <A href="../rdo_res/rdo_res_trace_descr.htm">признак трассировки</A> 
+						<DD class="syntax">Список инструкций и указанное перед ним зарезервированное слово должны присутствовать в образце в том случае, если соответствующий <A href="#rel_res_desc">статус конвертора</A>, указанный при описании релевантных ресурсов, есть <FONT class="syntax">Keep</FONT> или <FONT class="syntax">Create</FONT>. Если статус конвертора есть <FONT class="syntax">Erase</FONT>, то список инструкций может быть пустым или наоборот содержать инструкции, которые требуется выполнить для сбора статистики в момент удаления ресурса. <A name="temp_trace_feat"></A>Если статус конвертора есть <FONT class="syntax">Create</FONT>, то после зарезервированного слова может быть указан <A href="../../rdo_res/rdo_res_trace_descr.htm">признак трассировки</A> 
 						для создаваемого ресурса.
 						<P>Список инструкций записывают в следующем формате:</P>
 							<PRE class="syntax"><A class="syntax" href="#statement">&lt;инструкция&gt;</A> { &lt;инструкция&gt; }</PRE>
@@ -84,7 +84,7 @@ Choice NoCheck [ &lt;способ_выбора&gt; ]</PRE>
 													</TABLE>
 												</DD>
 												<DT class="syntax"><A name="arith_expr"></A><I>арифметическое_выражение</I></DT>
-												<DD class="syntax"><A href="../rdo_base/rdo_base_equations.htm">Арифметическое выражение</A> должно иметь тот же тип, что и параметр, которому присваивается значение. Для вещественного параметра выражение может иметь целый тип.</DD>
+												<DD class="syntax"><A href="../../rdo_base/rdo_base_equations.htm">Арифметическое выражение</A> должно иметь тот же тип, что и параметр, которому присваивается значение. Для вещественного параметра выражение может иметь целый тип.</DD>
 											</DL>
 										</DD>
 										<DT class="syntax"><A name="statement_planning"></A><I>инструкция_планирования_события</I></DT>
@@ -94,9 +94,9 @@ Choice NoCheck [ &lt;способ_выбора&gt; ]</PRE>
 													<DT class="syntax"><A name="planning_event_name"></A><I>имя_события</I></DT>
 													<DD class="syntax">Имя события - это имя одного из описанных в модели <A class="syntax" href="rdo_pat_type_event.htm">событий</A>.</DD>
 													<DT class="syntax"><A name="event_time"></A><I>время_планирования_события</I></DT>
-													<DD class="syntax">Время планирования события представляет собой <A href="../rdo_base/rdo_base_equations.htm">арифметическое выражение</A>, равное времени, в которое данное событие выполнится.</DD>
+													<DD class="syntax">Время планирования события представляет собой <A href="../../rdo_base/rdo_base_equations.htm">арифметическое выражение</A>, равное времени, в которое данное событие выполнится.</DD>
 													<DT class="syntax"><A name="param_descr"><I>значение параметров события</I></A></DT>
-													<DD class="syntax">Значения параметров события записываются таким же образом, как и для <A href="rdo_obj_dpt.htm#dpt_act_params">активностей</A>, за исключением того, что они могут представлять собой <A href="../rdo_base/rdo_base_equations.htm">арифметическое выражение</A>.</DD>
+													<DD class="syntax">Значения параметров события записываются таким же образом, как и для <A href="../rdo_obj_dpt.htm#dpt_act_params">активностей</A>, за исключением того, что они могут представлять собой <A href="../../rdo_base/rdo_base_equations.htm">арифметическое выражение</A>.</DD>
 												</DL>
 											</DD>
 											<DT class="syntax"><A name="statement_stop"></A><I>инструкция_остановки_события</I></DT>
@@ -112,9 +112,9 @@ Choice NoCheck [ &lt;способ_выбора&gt; ]</PRE>
 											<PRE class="syntax"><A class="syntax" href="#proc_name">&lt;имя_процесса&gt;</A>.processStart( <A class="syntax" href="#transact">&lt;транзакт&gt;</A> );</PRE>
 											<DL class="syntax">
 												<DT class="syntax"><A name="proc_name"></A><I>имя_процесса</I></DT>
-												<DD class="syntax">Имя события - это имя одного из описанных в модели <A class="syntax" href="rdo_obj_proc.htm">процессов</A>.</DD>
+												<DD class="syntax">Имя события - это имя одного из описанных в модели <A class="syntax" href="../rdo_obj_proc.htm">процессов</A>.</DD>
 												<DT class="syntax"><A name="transact"></A><I>транзакт</I></DT>
-												<DD class="syntax">Транзакт - это имя <A class="syntax" href="rdo_obj_pat.htm#rel_res_desc">релевантного ресурса</A>, который передается в процесс в качестве транзакта.</DD>
+												<DD class="syntax">Транзакт - это имя <A class="syntax" href="../rdo_obj_pat.htm#rel_res_desc">релевантного ресурса</A>, который передается в процесс в качестве транзакта.</DD>
 											</DL>
 										</DD>
 										<DT class="syntax"><A name="statement_nochange"></A><I>пустая_инструкция</I></DT>
@@ -154,11 +154,11 @@ $End</a>
 </PRE>
 </DIV>
 	<H4>См. также</H4>
-	<P><A href="../rdo_obj/rdo_obj_pat.htm">Описание образцов</A></P>
-	<P><A href="../rdo_obj/rdo_obj_const_fun_sec.htm">Описание символьных констант, функций и последовательностей</A></P>
+	<P><A href="../rdo_obj_pat.htm">Описание образцов</A></P>
+	<P><A href="../rdo_obj_const_fun_sec.htm">Описание символьных констант, функций и последовательностей</A></P>
 	<P><A href="rdo_pat_type_opr.htm">Тип образца "Операция"</A></P>
 	<P><A href="rdo_pat_type_keyboard.htm">Тип образца "Клавиатурная операция"</A></P>
-	<P><A href="../rdo_res/rdo_res_trace_descr.htm">Трассировка состояния объектов РДО</A></P>
+	<P><A href="../../rdo_res/rdo_res_trace_descr.htm">Трассировка состояния объектов РДО</A></P>
 </DIV>
 	<BR><SCRIPT src="../../../../shared/scripts/navbar.js"></SCRIPT>
 </BODY>
