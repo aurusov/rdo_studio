@@ -151,14 +151,13 @@ void RPShapeCreateMJ::generate()
 	pInternalStatistics = pThis.interface_cast<rdo::runtime::IInternalStatistics>();
 	ASSERT(pInternalStatistics);
 
-
 	m_pParams = rdo::Factory<rdo::compiler::gui::RPShapeDataBlockCreate>::create(zakon, gname);
 	m_pParams->setBase(base_gen);
 	m_pParams->setAmount(gamount);
 	m_pParams->setDisp(gdisp);
 	m_pParams->setExp(gexp);
 	m_pParams->setMax(gmax);
-	m_pParams->setCurTransCount(pInternalStatistics);
+	m_pParams->setStatistics(pInternalStatistics);
 
 	studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_CREATE, m_pParams.get());
 

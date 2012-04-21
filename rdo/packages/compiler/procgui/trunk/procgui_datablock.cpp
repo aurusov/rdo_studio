@@ -57,7 +57,12 @@ RPShapeDataBlockCreate::~RPShapeDataBlockCreate()
 
 void RPShapeDataBlockCreate::setAmount(int amount)
 {
-	m_amount=amount;
+	m_amount = amount;
+}
+
+void RPShapeDataBlockCreate::setStatistics(CREF(rdo::runtime::LPIInternalStatistics) pStatistics)
+{
+	m_pStatistics = pStatistics;
 }
 
 // --------------------------------------------------------------------------------
