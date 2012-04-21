@@ -43,8 +43,8 @@ protected:
   \brief   Процессный блок GENERATE
 */
 OBJECT(RDOPROCGenerate)
-	IS  INSTANCE_OF       (RDOPROCBlock  )
-	AND IMPLEMENTATION_OF (IBaseOperation)
+	IS  INSTANCE_OF      (RDOPROCBlock  )
+	AND IMPLEMENTATION_OF(IBaseOperation)
 {
 DECLARE_FACTORY(RDOPROCGenerate);
 DEFINE_IFACTORY(RDOPROCGenerate);
@@ -54,18 +54,18 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 public:
-	void calcNextTimeInterval(CREF(LPRDORuntime) pRuntime);
-	void setCurTransCount    (CREF(LPIInternalStatistics) point);
+	void calcNextTimeInterval(CREF(LPRDORuntime)          pRuntime   );
+	void setStatistics       (CREF(LPIInternalStatistics) pStatistics);
 
 private:
 	RDOPROCGenerate(LPIPROCProcess process, CREF(LPRDOCalc) pTime, CREF(LPRDOCalc) pCreateAndGoOnTransactCalc, int maxTransCount = 0);
 
-	double     timeNext;
-	LPRDOCalc  m_pTimeCalc;
-	LPRDOCalc  m_pCreateAndGoOnTransactCalc;
-	int        m_maxTransCount;
-	int        m_TransCount;
-	LPIInternalStatistics pCurTransCount;
+	double                 timeNext;
+	LPRDOCalc              m_pTimeCalc;
+	LPRDOCalc              m_pCreateAndGoOnTransactCalc;
+	int                    m_maxTransCount;
+	int                    m_TransCount;
+	LPIInternalStatistics  m_pStatistics;
 
 	DECLARE_IBaseOperation;
 };
