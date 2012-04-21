@@ -42,9 +42,7 @@ protected:
   \class   RDOPROCGenerate
   \brief   Процессный блок GENERATE
 */
-OBJECT(RDOPROCGenerate)
-	IS  INSTANCE_OF      (RDOPROCBlock  )
-	AND IMPLEMENTATION_OF(IBaseOperation)
+class RDOPROCGenerate: public RDOPROCBlock, public IBaseOperation
 {
 DECLARE_FACTORY(RDOPROCGenerate);
 DEFINE_IFACTORY(RDOPROCGenerate);
