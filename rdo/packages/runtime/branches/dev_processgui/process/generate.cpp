@@ -51,7 +51,6 @@ IBaseOperation::BOResult RDOPROCGenerate::onDoOperation(CREF(LPRDORuntime) pRunt
 {
 	++m_TransCount;
 
-	LPIProcAnimation p;
 
 
 	
@@ -94,6 +93,11 @@ IBaseOperation::BOResult RDOPROCGenerate::onContinue(CREF(LPRDORuntime) pRuntime
 {
 	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
+}
+
+void RDOPROCGenerate::setCurTransCount(CREF(LPIInternalStatistics) point)
+{
+	pCurTransCount=point;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE
