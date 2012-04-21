@@ -145,24 +145,24 @@ void RPShapeCreateMJ::generate()
 			break;
 	}
 
+	LPRPShapeCreateMJ pThis(this); 
+	ASSERT(pThis);
+
+	pInternalStatistics = pThis.interface_cast<rdo::runtime::IInternalStatistics>();
+	ASSERT(pInternalStatistics);
+
+
 	m_pParams = rdo::Factory<rdo::compiler::gui::RPShapeDataBlockCreate>::create(zakon, gname);
 	m_pParams->setBase(base_gen);
 	m_pParams->setAmount(gamount);
 	m_pParams->setDisp(gdisp);
 	m_pParams->setExp(gexp);
 	m_pParams->setMax(gmax);
+	m_pParams->setCurTransCount(pInternalStatistics);
 
 	studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_CREATE, m_pParams.get());
 
 	m_pParams = NULL;
-
-	LPRPShapeCreateMJ pThis(this);
-	ASSERT(pThis);
-
-	rdo::runtime::LPIProcAnimation pIProcAnimation = pThis.interface_cast<rdo::runtime::IProcAnimation>();
-	ASSERT(pIProcAnimation);
-
-	pIProcAnimation->setTransCount(3);
 }
 
 void RPShapeCreateMJ::setTransCount(ruint count)

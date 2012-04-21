@@ -7,7 +7,7 @@
 
 OBJECT(RPShapeCreateMJ)
 	IS  INSTANCE_OF      (RPShape_MJ                  )
-	AND IMPLEMENTATION_OF(rdo::runtime::IProcAnimation)
+	AND IMPLEMENTATION_OF(rdo::runtime::IInternalStatistics)
 {
 friend class RPMethodProc2RDO_MJ;
 
@@ -33,6 +33,7 @@ public:
 
 	//параметры для симулятора
 	rdo::compiler::gui::LPRPShapeDataBlockCreate m_pParams;
+	rdo::runtime      ::LPIInternalStatistics    pInternalStatistics;
 	//переменные для генерации
 	tstring gname; // имя
 	double gfirst; // время первого
