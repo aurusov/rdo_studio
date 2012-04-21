@@ -30,7 +30,7 @@ OBJECT_INTERFACE(IInternalStatistics)
 DECLARE_FACTORY(IInternalStatistics)
 public:
 	virtual void setTransCount(ruint count) = 0;
-	
+
 protected:
 	IInternalStatistics()
 	{}
