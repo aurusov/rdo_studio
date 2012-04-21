@@ -51,6 +51,8 @@ IBaseOperation::BOResult RDOPROCGenerate::onDoOperation(CREF(LPRDORuntime) pRunt
 {
 	++m_TransCount;
 
+	m_pStatistics->setTransCount(m_TransCount);
+
 	RDOValue pValue = m_pCreateAndGoOnTransactCalc->calcValue(pRuntime);
 
 	LPRDOPROCTransact pTransact = pValue.getPointerSafety<RDOResourceTypeTransact>();
@@ -89,6 +91,11 @@ IBaseOperation::BOResult RDOPROCGenerate::onContinue(CREF(LPRDORuntime) pRuntime
 {
 	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
+}
+
+void RDOPROCGenerate::setStatistics(CREF(LPIInternalStatistics) pStatistics)
+{
+	m_pStatistics = pStatistics;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE
