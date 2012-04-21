@@ -279,6 +279,8 @@ ProcGUIBlockGenerate::ProcGUIBlockGenerate(CREF(LPProcGUIProcess) pProcess, CREF
 
 	LPIInternalStatisticsManager pStatisticsManager = m_pBlock;
 	ASSERT(pStatisticsManager);
+
+	pStatisticsManager->setStatistics(m_pParams->getStatistics());
 }
 
 ProcGUIBlockGenerate::~ProcGUIBlockGenerate()
