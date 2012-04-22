@@ -1727,9 +1727,9 @@ statement
 	| if_else_statement
 	| RDO_else statement
 	{
-			PARSER->error().push_only(@1, rdo::format(_T("Нельзя использовать инструкцию else вне оператора if")));
-			PARSER->error().push_only(@1, rdo::format(_T("Возможно вы использовали два else для одного if")));
-			PARSER->error().push_done();
+		PARSER->error().push_only(@1, rdo::format(_T("Нельзя использовать инструкцию else вне оператора if")));
+		PARSER->error().push_only(@1, rdo::format(_T("Возможно вы использовали два else для одного if")));
+		PARSER->error().push_done();
 	}
 	| for_statement
 	| break_statement ';'
@@ -2661,7 +2661,7 @@ for_header
 		ASSERT(pContextBreakable);
 
 		PARSER->contextStack()->push(pContextBreakable);
-		
+
 		$$ = PARSER->stack().push(pExpression);
 	}
 	;
