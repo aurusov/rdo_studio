@@ -47,8 +47,7 @@ RDOControllerConsoleOptions::RDOControllerConsoleOptions(int argc, char *argv[])
 }
 
 RDOControllerConsoleOptions::~RDOControllerConsoleOptions()
-{
-	
+{	
 }
 
 void RDOControllerConsoleOptions::parseOptions()

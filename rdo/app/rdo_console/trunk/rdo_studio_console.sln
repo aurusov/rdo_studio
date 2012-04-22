@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_studio_console", "rdo_studio_console.vcproj", "{FFDA38F8-DCBB-47A6-B071-2E5AA6FFEE98}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo", "rdo_studio_console.vcproj", "{FFDA38F8-DCBB-47A6-B071-2E5AA6FFEE98}"
 	ProjectSection(ProjectDependencies) = postProject
 		{AC7C7972-A31D-4CDE-99E5-B56A19AB6457} = {AC7C7972-A31D-4CDE-99E5-B56A19AB6457}
 		{048B01A3-8722-476D-AF0C-DF56EA18E57B} = {048B01A3-8722-476D-AF0C-DF56EA18E57B}
@@ -75,6 +75,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_converter", "..\..\conv
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_procgui", "..\..\simulator\compiler\procgui\rdo_procgui.vcproj", "{977EBFEC-18C7-4851-BFB0-C7D430A1E8AA}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_test", "..\rdo_console_test\test_rdo_studio_console.vcproj", "{1453DD9A-B898-496F-BCBE-B42F9AE75FD5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -218,12 +220,25 @@ Global
 		{977EBFEC-18C7-4851-BFB0-C7D430A1E8AA}.Release MT|Win32.Build.0 = Release MT|Win32
 		{977EBFEC-18C7-4851-BFB0-C7D430A1E8AA}.Release|Win32.ActiveCfg = Release|Win32
 		{977EBFEC-18C7-4851-BFB0-C7D430A1E8AA}.Release|Win32.Build.0 = Release|Win32
+		{1453DD9A-B898-496F-BCBE-B42F9AE75FD5}.Debug Corba|Win32.ActiveCfg = Debug|Win32
+		{1453DD9A-B898-496F-BCBE-B42F9AE75FD5}.Debug Corba|Win32.Build.0 = Debug|Win32
+		{1453DD9A-B898-496F-BCBE-B42F9AE75FD5}.Debug MT|Win32.ActiveCfg = Debug|Win32
+		{1453DD9A-B898-496F-BCBE-B42F9AE75FD5}.Debug MT|Win32.Build.0 = Debug|Win32
+		{1453DD9A-B898-496F-BCBE-B42F9AE75FD5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1453DD9A-B898-496F-BCBE-B42F9AE75FD5}.Debug|Win32.Build.0 = Debug|Win32
+		{1453DD9A-B898-496F-BCBE-B42F9AE75FD5}.Release Corba|Win32.ActiveCfg = Release|Win32
+		{1453DD9A-B898-496F-BCBE-B42F9AE75FD5}.Release Corba|Win32.Build.0 = Release|Win32
+		{1453DD9A-B898-496F-BCBE-B42F9AE75FD5}.Release MT|Win32.ActiveCfg = Release|Win32
+		{1453DD9A-B898-496F-BCBE-B42F9AE75FD5}.Release MT|Win32.Build.0 = Release|Win32
+		{1453DD9A-B898-496F-BCBE-B42F9AE75FD5}.Release|Win32.ActiveCfg = Release|Win32
+		{1453DD9A-B898-496F-BCBE-B42F9AE75FD5}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FFDA38F8-DCBB-47A6-B071-2E5AA6FFEE98} = {E86C4172-0346-404B-B00A-50D5AAD721C0}
+		{1453DD9A-B898-496F-BCBE-B42F9AE75FD5} = {E86C4172-0346-404B-B00A-50D5AAD721C0}
 		{048B01A3-8722-476D-AF0C-DF56EA18E57B} = {30509F5E-5EC0-4908-8736-EEBE7DC3A8F3}
 		{FF8088D9-472E-4480-901D-009B51311853} = {DEB40E72-5A2E-472A-9929-153B78A3CA44}
 		{C6E2CFF1-566D-45E2-8D67-F78AA38891A7} = {D7BF57EC-4DFE-4DB4-BA70-BCD4087D0AC9}
