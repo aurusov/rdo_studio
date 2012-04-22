@@ -1608,7 +1608,6 @@ void RDOFUNFunction::createAlgorithmicCalc(CREF(RDOParserSrcInfo) body_src_info)
 {
 	if (!m_returnFlag)
 	{
-		RDOParser::s_parser()->error().warning(body_src_info, rdo::format(_T("Не горантированно возвращение значания функции")));
 		rdo::runtime::LPRDOCalcConst pCalcDefault;
 		if (m_pReturn->getDefault()->defined())
 		{

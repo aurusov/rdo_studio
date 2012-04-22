@@ -2555,6 +2555,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\context\statement.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\context\statement.h"
+				>
+			</File>
+			<File
 				RelativePath=".\context\type.cpp"
 				>
 			</File>
