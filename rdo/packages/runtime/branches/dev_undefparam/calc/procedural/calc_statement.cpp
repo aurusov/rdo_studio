@@ -33,36 +33,37 @@ REF(RDOValue) RDOCalcNoChange::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcIf
 // --------------------------------------------------------------------------------
-RDOCalcIf::RDOCalcIf(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pStatement)
+RDOCalcIf::RDOCalcIf(CREF(LPRDOCalc) pCondition)
 	: m_pCondition(pCondition)
-	, m_pStatement(pStatement)
 {
 	ASSERT(m_pCondition);
-	ASSERT(m_pStatement);
+	m_value = RDOValue(false);
+}
+
+void RDOCalcIf::setThenStatement(CREF(LPRDOCalc) pStatement)
+{
+	ASSERT(pStatement);
+	m_statements.first = pStatement;
+}
+
+void RDOCalcIf::setElseStatement(CREF(LPRDOCalc) pStatement)
+{
+	ASSERT(pStatement);
+	m_statements.second = pStatement;
+}
+
+rbool RDOCalcIf::hasElse() const
+{
+	return m_statements.second;
 }
 
 REF(RDOValue) RDOCalcIf::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	m_value = RDOValue(false);
-	return (m_pCondition->calcValue(pRuntime).getAsBool()) ? m_pStatement->calcValue(pRuntime) : (m_value);
-}
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOCalcIfElse
-// --------------------------------------------------------------------------------
-RDOCalcIfElse::RDOCalcIfElse(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pIfStatement, CREF(LPRDOCalc) pElseStatement)
-	: m_pCondition    (pCondition    )
-	, m_pIfStatement  (pIfStatement  )
-	, m_pElseStatement(pElseStatement)
-{
-	ASSERT(m_pCondition    );
-	ASSERT(m_pIfStatement  );
-	ASSERT(m_pElseStatement);
-}
-
-REF(RDOValue) RDOCalcIfElse::doCalc(CREF(LPRDORuntime) pRuntime)
-{
-	return (m_pCondition->calcValue(pRuntime).getAsBool()) ? m_pIfStatement->calcValue(pRuntime) : m_pElseStatement->calcValue(pRuntime);
+	return m_pCondition->calcValue(pRuntime).getAsBool()
+		? m_statements.first->calcValue(pRuntime)
+		: hasElse()
+			? m_statements.second->calcValue(pRuntime)
+			: m_value;
 }
 
 // --------------------------------------------------------------------------------

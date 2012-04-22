@@ -37,37 +37,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Вызывает инструкции из списка
-CALC(RDOCalcBodyBrace)
-{
-DECLARE_FACTORY(RDOCalcBodyBrace)
-public:
-	void addCalc(CREF(LPRDOCalc) pCalc);
-
-private:
-	RDOCalcBodyBrace();
-
-	RDOCalcList m_calcList;
-
-	DECLARE_ICalc;
-};
-
-//! Вызывает инструкции из списка и обрабатывает команды return и break
-CALC_SUB(RDOCalcFunBodyBrace, RDOFunCalc)
-{
-DECLARE_FACTORY(RDOCalcFunBodyBrace)
-public:
-	void addFunCalc(CREF(LPRDOCalc) pCalc);
-	void addRetCalc(CREF(LPRDOCalc) pCalc);
-
-private:
-	RDOCalcFunBodyBrace();
-
-	RDOCalcList m_calcFunList;
-
-	DECLARE_ICalc;
-};
-
 //! Окончание функции
 CALC(RDOCalcFunEnd)
 {

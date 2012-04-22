@@ -3,6 +3,7 @@
   \file      calc_statement.h
   \authors   Чирков Михаил
   \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   Поподьянец Евгений (kurt.gigacore@gmail.com)
   \date      16.04.2011
   \brief     Инструкции
   \indent    4T
@@ -33,25 +34,19 @@ private:
 CALC(RDOCalcIf)
 {
 DECLARE_FACTORY(RDOCalcIf)
+public:
+	void  setThenStatement(CREF(LPRDOCalc) pStatement);
+	void  setElseStatement(CREF(LPRDOCalc) pStatement);
+
+	rbool hasElse() const;
+
 private:
-	RDOCalcIf(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pStatement);
+	typedef  std::pair<LPRDOCalc, LPRDOCalc>  Statements;
 
-	LPRDOCalc m_pCondition;
-	LPRDOCalc m_pStatement;
+	RDOCalcIf(CREF(LPRDOCalc) pCondition);
 
-	DECLARE_ICalc;
-};
-
-//! Условный оператор if () then {} else {}
-CALC(RDOCalcIfElse)
-{
-DECLARE_FACTORY(RDOCalcIfElse)
-private:
-	RDOCalcIfElse(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pIfStatement, CREF(LPRDOCalc) pElseStatement);
-
-	LPRDOCalc m_pCondition;
-	LPRDOCalc m_pIfStatement;
-	LPRDOCalc m_pElseStatement;
+	LPRDOCalc   m_pCondition;
+	Statements  m_statements;
 
 	DECLARE_ICalc;
 };
