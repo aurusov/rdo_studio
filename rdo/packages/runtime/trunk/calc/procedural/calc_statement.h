@@ -42,7 +42,7 @@ public:
 
 private:
 	typedef  std::pair<LPRDOCalc, LPRDOCalc>  Statements;
-	
+
 	RDOCalcIf(CREF(LPRDOCalc) pCondition);
 
 	LPRDOCalc   m_pCondition;

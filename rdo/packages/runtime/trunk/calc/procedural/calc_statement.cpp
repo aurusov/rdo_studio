@@ -37,6 +37,7 @@ RDOCalcIf::RDOCalcIf(CREF(LPRDOCalc) pCondition)
 	: m_pCondition(pCondition)
 {
 	ASSERT(m_pCondition);
+	m_value = RDOValue(false);
 }
 
 void RDOCalcIf::setThenStatement(CREF(LPRDOCalc) pStatement)
@@ -58,15 +59,11 @@ rbool RDOCalcIf::hasElse() const
 
 REF(RDOValue) RDOCalcIf::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	m_value = RDOValue(false);
-	if (hasElse())
-	{
-		return (m_pCondition->calcValue(pRuntime).getAsBool()) ? m_statements.first->calcValue(pRuntime) : m_statements.second->calcValue(pRuntime);
-	}
-	else
-	{
-		return (m_pCondition->calcValue(pRuntime).getAsBool()) ? m_statements.first->calcValue(pRuntime) : (m_value);
-	}
+	return m_pCondition->calcValue(pRuntime).getAsBool()
+		? m_statements.first->calcValue(pRuntime)
+		: hasElse()
+			? m_statements.second->calcValue(pRuntime)
+			: m_value;
 }
 
 // --------------------------------------------------------------------------------
