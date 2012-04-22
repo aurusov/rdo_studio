@@ -64,6 +64,18 @@ inline tstring RDOValueException::getType() const
 }
 
 // --------------------------------------------------------------------------------
+// -------------------- RDOUndefinedException
+// --------------------------------------------------------------------------------
+inline RDOUndefinedException::RDOUndefinedException(CREF(tstring) message)
+: RDORuntimeException(message)
+{}
+
+inline tstring RDOUndefinedException::getType() const
+{
+	return "RDOValue Undefined Error";
+}
+
+// --------------------------------------------------------------------------------
 // -------------------- RDOInternalException
 // --------------------------------------------------------------------------------
 inline RDOInternalException::RDOInternalException(CREF(tstring) message)

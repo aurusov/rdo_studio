@@ -106,7 +106,14 @@ rbool RDOSimulator::doOperation()
 			// Не нашли запланированное событие
 			// Проверить все возможные события и действия, вызвать первое, которое может быть вызвано
 			LPIBaseOperation pMetaLogic = m_pMetaLogic.query_cast<IBaseOperation>();
-			res = pMetaLogic->onCheckCondition(pRuntime);
+			try
+			{			
+				res = pMetaLogic->onCheckCondition(pRuntime);
+			}
+			catch(RDOUndefinedException exception)
+			{
+				res = false;
+			}
 			if (res)
 			{
 				res = pMetaLogic->onDoOperation(pRuntime) != IBaseOperation::BOR_cant_run;
