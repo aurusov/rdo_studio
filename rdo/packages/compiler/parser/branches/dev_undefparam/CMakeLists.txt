@@ -129,6 +129,7 @@ SET(HEADER_FILES
 	context/context_switch_i.h
 	context/context.h
 	context/memory.h
+	context/statement.h
 	context/stack.h
 	context/type.h
 	# parses paht
@@ -185,6 +186,7 @@ SET(SOURCE_FILES
 	context/context_find.cpp
 	context/context.cpp
 	context/memory.cpp
+	context/statement.cpp
 	context/stack.cpp
 	context/type.cpp
 	# parses paht
