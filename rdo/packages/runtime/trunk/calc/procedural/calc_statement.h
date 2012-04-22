@@ -35,18 +35,18 @@ CALC(RDOCalcIf)
 {
 DECLARE_FACTORY(RDOCalcIf)
 public:
-	void setIfStatement  (CREF(LPRDOCalc) pStatement);
-	void setElseStatement(CREF(LPRDOCalc) pStatement);
+	void  setThenStatement(CREF(LPRDOCalc) pStatement);
+	void  setElseStatement(CREF(LPRDOCalc) pStatement);
 
-	bool ElseOrNot();
+	rbool hasElse() const;
 
 private:
-	typedef  std::pair<LPRDOCalc, LPRDOCalc>  IfElseStatement;
+	typedef  std::pair<LPRDOCalc, LPRDOCalc>  Statements;
 	
 	RDOCalcIf(CREF(LPRDOCalc) pCondition);
 
-	LPRDOCalc       m_pCondition;
-	IfElseStatement m_ifElseStatement;
+	LPRDOCalc   m_pCondition;
+	Statements  m_statements;
 
 	DECLARE_ICalc;
 };

@@ -39,31 +39,33 @@ RDOCalcIf::RDOCalcIf(CREF(LPRDOCalc) pCondition)
 	ASSERT(m_pCondition);
 }
 
-void RDOCalcIf::setIfStatement  (CREF(LPRDOCalc) pStatement)
+void RDOCalcIf::setThenStatement(CREF(LPRDOCalc) pStatement)
 {
-	m_ifElseStatement.first = pStatement;
+	ASSERT(pStatement);
+	m_statements.first = pStatement;
 }
 
-void RDOCalcIf::setElseStatement  (CREF(LPRDOCalc) pStatement)
+void RDOCalcIf::setElseStatement(CREF(LPRDOCalc) pStatement)
 {
-	m_ifElseStatement.second = pStatement;
+	ASSERT(pStatement);
+	m_statements.second = pStatement;
 }
 
-bool RDOCalcIf::ElseOrNot()
+rbool RDOCalcIf::hasElse() const
 {
-	return (m_ifElseStatement.second.object_dynamic_cast<RDOCalc>()) ? true : false ;
+	return m_statements.second;
 }
 
 REF(RDOValue) RDOCalcIf::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_value = RDOValue(false);
-	if (ElseOrNot())
+	if (hasElse())
 	{
-		return (m_pCondition->calcValue(pRuntime).getAsBool()) ? m_ifElseStatement.first->calcValue(pRuntime) : m_ifElseStatement.second->calcValue(pRuntime);
+		return (m_pCondition->calcValue(pRuntime).getAsBool()) ? m_statements.first->calcValue(pRuntime) : m_statements.second->calcValue(pRuntime);
 	}
 	else
 	{
-		return (m_pCondition->calcValue(pRuntime).getAsBool()) ? m_ifElseStatement.first->calcValue(pRuntime) : (m_value);
+		return (m_pCondition->calcValue(pRuntime).getAsBool()) ? m_statements.first->calcValue(pRuntime) : (m_value);
 	}
 }
 

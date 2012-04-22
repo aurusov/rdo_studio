@@ -2566,7 +2566,7 @@ if_else_statement
 		rdo::runtime::LPRDOCalcIf pCalc = pExpression->calc().object_dynamic_cast<rdo::runtime::RDOCalcIf>();
 		ASSERT(pCalc);
 
-		if (!pCalc->ElseOrNot())
+		if (!pCalc->hasElse())
 		{
 			LPExpression pExpressionStatement = PARSER->stack().pop<Expression>($3);
 			ASSERT(pExpressionStatement);
@@ -2610,7 +2610,7 @@ if_statement
 		rdo::runtime::LPRDOCalc pCalcStatement = pExpressionStatement->calc();
 		ASSERT(pCalcStatement);
 
-		pCalc->setIfStatement(pCalcStatement);
+		pCalc->setThenStatement(pCalcStatement);
 
 		LPContextReturnable pContextReturnableChild = PARSER->context()->cast<ContextReturnable>();
 		ASSERT(pContextReturnableChild);
