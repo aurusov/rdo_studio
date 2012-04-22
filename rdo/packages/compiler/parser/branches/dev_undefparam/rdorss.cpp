@@ -123,7 +123,7 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 			ASSERT(pValue);
 
 			Param param(pValue);
-			param.param()->value().setUndefined(0);
+			param.param()->value().setUndefined(false);
 			m_paramList.push_back(param);
 			m_currParam++;
 		}

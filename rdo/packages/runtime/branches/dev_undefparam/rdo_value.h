@@ -96,8 +96,8 @@ public:
 	RDOValue       operator*  (CREF(RDOValue) rdovalue) const;
 	RDOValue       operator/  (CREF(RDOValue) rdovalue) const;
 
-	void         setUndefined (CREF(double) undefined);
-	CREF(double) getUndefined () const;
+	void        setUndefined (CREF(rbool) undefined);
+	CREF(rbool) getUndefined () const;
 
 	CREF(LPRDOType) type  () const;
 	RDOType::TypeID typeID() const;
@@ -123,7 +123,7 @@ private:
 
 	Value        m_value;     //!< контейнер значения
 	LPRDOType    m_pType;     //!< тип значения
-	double       m_undefined; //!< неопределенность значения
+	rbool       m_undefined;  //!< неопределенность значения
 
 	void set        (CREF(RDOValue) rdovalue);
 	void deleteValue();
