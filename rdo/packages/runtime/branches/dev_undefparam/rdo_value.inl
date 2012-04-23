@@ -107,9 +107,9 @@ inline RDOValue::RDOValue(CREF(LPRDOEnumType) pEnum, CREF(tstring) value)
 	: m_pType(pEnum)
 {
 	__get<int>() = pEnum->findEnum(value);
-	setUndefined(true);
 	if (__get<int>() == RDOEnumType::END)
 		RDOValueException();
+	setUndefined(true);
 }
 
 inline RDOValue::RDOValue(CREF(LPRDOEnumType) pEnum, ruint index)
@@ -353,6 +353,7 @@ inline void RDOValue::set(CREF(RDOValue) rdovalue)
 	deleteValue();
 
 	m_pType = rdovalue.m_pType;
+	m_undefined = rdovalue.m_undefined;
 	switch (typeID())
 	{
 	case RDOType::t_string       :
