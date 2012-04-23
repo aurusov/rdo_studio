@@ -392,12 +392,8 @@ fun_func_footer
 		LPExpression pExpressionFunBody = PARSER->stack().pop<Expression>($6);
 		ASSERT(pExpressionFunBody);
 
-		rdo::runtime::LPRDOCalc pCalcEnd = rdo::Factory<rdo::runtime::RDOCalcFunEnd>::create();
-		ASSERT(pCalcEnd);
-
 		rdo::runtime::LPRDOCalcStatementList pCalcStatementList = pExpressionFunBody->calc().object_dynamic_cast<rdo::runtime::RDOCalcStatementList>();
 		ASSERT(pCalcStatementList);
-		pCalcStatementList->addCalcStatement(pCalcEnd);
 
 		LPExpression pExpressionReturnCatch = PARSER->stack().pop<Expression>($5);
 		ASSERT(pExpressionReturnCatch);
@@ -1356,12 +1352,8 @@ statement
 		LPExpression pStatementList = PARSER->stack().pop<Expression>($2);
 		ASSERT(pStatementList);
 
-		rdo::runtime::LPRDOCalc pCalcCloseBrace = rdo::Factory<rdo::runtime::RDOCalcCloseBrace>::create();
-		ASSERT(pCalcCloseBrace);
-
 		rdo::runtime::LPRDOCalcStatementList pCalcStatementList = pStatementList->calc().object_dynamic_cast<rdo::runtime::RDOCalcStatementList>();
 		ASSERT(pCalcStatementList);
-		pCalcStatementList->addCalcStatement(pCalcCloseBrace);
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pStatementList->typeInfo(), pCalcStatementList, RDOParserSrcInfo(@1, @3));
 		ASSERT(pExpression);
@@ -1393,11 +1385,6 @@ statement_list
 	{
 		rdo::runtime::LPRDOCalcStatementList pCalcStatementList = rdo::Factory<rdo::runtime::RDOCalcStatementList>::create();
 		ASSERT(pCalcStatementList);
-
-		rdo::runtime::LPRDOCalc pCalcOpenBrace = rdo::Factory<rdo::runtime::RDOCalcOpenBrace>::create();
-		ASSERT(pCalcOpenBrace);
-
-		pCalcStatementList->addCalcStatement(pCalcOpenBrace);
 
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo());
 		ASSERT(pType);

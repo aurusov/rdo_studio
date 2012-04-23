@@ -1290,11 +1290,6 @@ pat_convert
 		rdo::runtime::LPRDOCalcStatementList pCalcStatementList = pExpressionConvertBody->calc().object_dynamic_cast<rdo::runtime::RDOCalcStatementList>();
 		ASSERT(pCalcStatementList);
 
-		rdo::runtime::LPRDOCalc pCalcCloseBrace = rdo::Factory<rdo::runtime::RDOCalcCloseBrace>::create();
-		ASSERT(pCalcCloseBrace);
-
-		pCalcStatementList->addCalcStatement(pCalcCloseBrace);
-
 		pPattern.object_static_cast<RDOPatternOperation>()->addRelResConvertBeginEnd($3 != 0, pExpressionConvertBody, false, NULL, @2, @2, @3, @3);
 		$$ = PARSER->stack().push(pPattern);
 	}
@@ -1318,11 +1313,6 @@ pat_convert
 
 		rdo::runtime::LPRDOCalcStatementList pCalcStatementList = pExpressionConvertBody->calc().object_dynamic_cast<rdo::runtime::RDOCalcStatementList>();
 		ASSERT(pCalcStatementList);
-
-		rdo::runtime::LPRDOCalc pCalcCloseBrace = rdo::Factory<rdo::runtime::RDOCalcCloseBrace>::create();
-		ASSERT(pCalcCloseBrace);
-
-		pCalcStatementList->addCalcStatement(pCalcCloseBrace);
 
 		pPattern.object_static_cast<RDOPatternOperation>()->addRelResConvertBeginEnd(false, NULL, $3 != 0, pExpressionConvertBody, @2, @2, @3, @3);
 		$$ = PARSER->stack().push(pPattern);
@@ -1351,12 +1341,6 @@ pat_convert
 		ASSERT(pCalcStatementListBegin);
 		rdo::runtime::LPRDOCalcStatementList pCalcStatementListEnd = pExpressionConvertEnd->calc().object_dynamic_cast<rdo::runtime::RDOCalcStatementList>();
 		ASSERT(pCalcStatementListEnd);
-
-		rdo::runtime::LPRDOCalc pCalcCloseBrace = rdo::Factory<rdo::runtime::RDOCalcCloseBrace>::create();
-		ASSERT(pCalcCloseBrace);
-
-		pCalcStatementListBegin->addCalcStatement(pCalcCloseBrace);
-		pCalcStatementListEnd  ->addCalcStatement(pCalcCloseBrace);
 
 		pPattern.object_static_cast<RDOPatternOperation>()->addRelResConvertBeginEnd(
 			$3 != 0,
@@ -1392,11 +1376,6 @@ pat_convert
 		rdo::runtime::LPRDOCalcStatementList pCalcStatementList = pExpressionConvertBody->calc().object_dynamic_cast<rdo::runtime::RDOCalcStatementList>();
 		ASSERT(pCalcStatementList);
 
-		rdo::runtime::LPRDOCalc pCalcCloseBrace = rdo::Factory<rdo::runtime::RDOCalcCloseBrace>::create();
-		ASSERT(pCalcCloseBrace);
-
-		pCalcStatementList->addCalcStatement(pCalcCloseBrace);
-
 		pPattern->addRelResConvert($3 != 0, pExpressionConvertBody, @2, @3, pRelRes->m_statusBegin);
 		$$ = PARSER->stack().push(pPattern);
 	}
@@ -1422,11 +1401,6 @@ pat_convert
 
 		rdo::runtime::LPRDOCalcStatementList pCalcStatementList = pExpressionConvertBody->calc().object_dynamic_cast<rdo::runtime::RDOCalcStatementList>();
 		ASSERT(pCalcStatementList);
-
-		rdo::runtime::LPRDOCalc pCalcCloseBrace = rdo::Factory<rdo::runtime::RDOCalcCloseBrace>::create();
-		ASSERT(pCalcCloseBrace);
-
-		pCalcStatementList->addCalcStatement(pCalcCloseBrace);
 
 		ASSERT(pPattern->m_pCurrRelRes);
 		pPattern->addRelResConvert($3 != 0, pExpressionConvertBody, @2, @3, pPattern->m_pCurrRelRes->m_statusBegin);
@@ -1749,12 +1723,8 @@ statement
 		LPExpression pStatementList = PARSER->stack().pop<Expression>($2);
 		ASSERT(pStatementList);
 
-		rdo::runtime::LPRDOCalc pCalcCloseBrace = rdo::Factory<rdo::runtime::RDOCalcCloseBrace>::create();
-		ASSERT(pCalcCloseBrace);
-
 		rdo::runtime::LPRDOCalcStatementList pCalcStatementList = pStatementList->calc().object_dynamic_cast<rdo::runtime::RDOCalcStatementList>();
 		ASSERT(pCalcStatementList);
-		pCalcStatementList->addCalcStatement(pCalcCloseBrace);
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pStatementList->typeInfo(), pCalcStatementList, RDOParserSrcInfo(@1, @3));
 		ASSERT(pExpression);
@@ -1786,11 +1756,6 @@ statement_list
 	{
 		rdo::runtime::LPRDOCalcStatementList pCalcStatementList = rdo::Factory<rdo::runtime::RDOCalcStatementList>::create();
 		ASSERT(pCalcStatementList);
-
-		rdo::runtime::LPRDOCalc pCalcOpenBrace = rdo::Factory<rdo::runtime::RDOCalcOpenBrace>::create();
-		ASSERT(pCalcOpenBrace);
-
-		pCalcStatementList->addCalcStatement(pCalcOpenBrace);
 
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo());
 		ASSERT(pType);

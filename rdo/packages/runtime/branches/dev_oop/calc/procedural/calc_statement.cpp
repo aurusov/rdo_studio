@@ -114,6 +114,7 @@ REF(RDOValue) RDOCalcFunReturn::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_value = m_pReturn->calcValue(pRuntime);
 	pRuntime->setFunBreakFlag(RDORuntime::FBF_RETURN);
+	pRuntime->getMemoryStack()->pop();
 	return m_value;
 }
 
@@ -200,6 +201,8 @@ void RDOCalcReturnCatch::addStatementList(CREF(LPRDOCalc) pStatementList)
 
 REF(RDOValue) RDOCalcReturnCatch::doCalc(CREF(LPRDORuntime) pRuntime)
 {
+	LPRDOMemory pLocalMemory = rdo::Factory<RDOMemory>::create();
+	pRuntime->getMemoryStack()->push(pLocalMemory);
 	m_value = m_pStatementList->calcValue(pRuntime);
 	if (pRuntime->getFunBreakFlag() == RDORuntime::FBF_RETURN)
 	{
