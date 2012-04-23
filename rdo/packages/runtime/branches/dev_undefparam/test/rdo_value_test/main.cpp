@@ -583,11 +583,9 @@ BOOST_AUTO_TEST_CASE(RDOValue_Undefined)
 	RDOValue value1(val1);
 	BOOST_CHECK(value1);
 
-	BOOST_CHECK(value1.getUndefined() == 1);
-	value1.setUndefined(0);
-	BOOST_CHECK(value1.getUndefined() == 0);
-	value1.setUndefined(0.5);
-	BOOST_CHECK(value1.getUndefined() == 0.5);
+	BOOST_CHECK(value1.getUndefined() == true);
+	value1.setUndefined(false);
+	BOOST_CHECK(value1.getUndefined() == false);
 }
 
 BOOST_AUTO_TEST_CASE(RDOValue_Resource)
