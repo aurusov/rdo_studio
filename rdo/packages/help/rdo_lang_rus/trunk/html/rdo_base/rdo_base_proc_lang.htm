@@ -287,7 +287,7 @@ b=false;
 							</TABLE>
 						</DD>
 						<DT class="syntax"><A name="arith_expr"></A><I>арифметическое_выражение</I></DT>
-						<DD class="syntax"><A href="../../rdo_base/rdo_base_equations.htm">Арифметическое выражение</A> должно иметь тот же тип, что и параметр, которому присваивается значение. Для вещественного параметра выражение может иметь целый тип.</DD>
+						<DD class="syntax"><A href="rdo_base_equations.htm">Арифметическое выражение</A> должно иметь тот же тип, что и параметр, которому присваивается значение. Для вещественного параметра выражение может иметь целый тип.</DD>
 					</DL>
 				</DD>
 				<DT class="syntax"><A name="statement_planning"></A><I>инструкция_планирования_события</I></DT>
@@ -295,11 +295,11 @@ b=false;
 					<PRE class="syntax"><A class="syntax" href="#planning_event_name">&lt;имя_события&gt;</A>.planning( <A class="syntax" href="#event_time">&lt;время_планирования_события&gt;</A> [, <A class="syntax" href="#param_descr">&lt;знчение_параметров_события&gt;</A> ] );</PRE>
 					<DL class="syntax">
 						<DT class="syntax"><A name="planning_event_name"></A><I>имя_события</I></DT>
-						<DD class="syntax">Имя события - это имя одного из описанных в модели <A class="syntax" href="rdo_pat_type_event.htm">событий</A>.</DD>
+						<DD class="syntax">Имя события - это имя одного из описанных в модели <A class="syntax" href="../rdo_obj/rdo_pat_type/rdo_pat_type_event.htm">событий</A>.</DD>
 						<DT class="syntax"><A name="event_time"></A><I>время_планирования_события</I></DT>
-						<DD class="syntax">Время планирования события представляет собой <A href="../../rdo_base/rdo_base_equations.htm">арифметическое выражение</A>, равное времени, в которое данное событие выполнится.</DD>
+						<DD class="syntax">Время планирования события представляет собой <A href="rdo_base_equations.htm">арифметическое выражение</A>, равное времени, в которое данное событие выполнится.</DD>
 						<DT class="syntax"><A name="param_descr"><I>значение параметров события</I></A></DT>
-						<DD class="syntax">Значения параметров события записываются таким же образом, как и для <A href="../rdo_obj_dpt.htm#dpt_act_params">активностей</A>, за исключением того, что они могут представлять собой <A href="../../rdo_base/rdo_base_equations.htm">арифметическое выражение</A>.</DD>
+						<DD class="syntax">Значения параметров события записываются таким же образом, как и для <A href="../rdo_obj/rdo_obj_dpt.htm#dpt_act_params">активностей</A>, за исключением того, что они могут представлять собой <A href="rdo_base_equations.htm">арифметическое выражение</A>.</DD>
 					</DL>
 				</DD>
 				<DT class="syntax"><A name="statement_stop"></A><I>инструкция_остановки_события</I></DT>
@@ -307,7 +307,7 @@ b=false;
 					<PRE class="syntax"><A class="syntax" href="#stop_event_name">&lt;имя_события&gt;</A>.stop();</PRE>
 					<DL class="syntax">
 						<DT class="syntax"><A name="stop_event_name"></A><I>имя_события</I></DT>
-						<DD class="syntax">Имя события - это имя одного из описанных в модели <A class="syntax" href="rdo_pat_type_event.htm">событий</A>.</DD>
+						<DD class="syntax">Имя события - это имя одного из описанных в модели <A class="syntax" href="../rdo_obj/rdo_pat_type/rdo_pat_type_event.htm">событий</A>.</DD>
 					</DL>
 				</DD>
 				<DT class="syntax"><A name="statement_process_start"></A><I>инструкция_инициации_процесса</I></DT>
@@ -315,9 +315,9 @@ b=false;
 					<PRE class="syntax"><A class="syntax" href="#proc_name">&lt;имя_процесса&gt;</A>.processStart( <A class="syntax" href="#transact">&lt;транзакт&gt;</A> );</PRE>
 					<DL class="syntax">
 						<DT class="syntax"><A name="proc_name"></A><I>имя_процесса</I></DT>
-						<DD class="syntax">Имя события - это имя одного из описанных в модели <A class="syntax" href="../rdo_obj_proc.htm">процессов</A>.</DD>
+						<DD class="syntax">Имя события - это имя одного из описанных в модели <A class="syntax" href="../rdo_obj/rdo_obj_proc.htm">процессов</A>.</DD>
 						<DT class="syntax"><A name="transact"></A><I>транзакт</I></DT>
-						<DD class="syntax">Транзакт - это имя <A class="syntax" href="../rdo_obj_pat.htm#rel_res_desc">релевантного ресурса</A>, который передается в процесс в качестве транзакта.</DD>
+						<DD class="syntax">Транзакт - это имя <A class="syntax" href="../rdo_obj/rdo_obj_pat.htm#rel_res_desc">релевантного ресурса</A>, который передается в процесс в качестве транзакта.</DD>
 					</DL>
 				</DD>
 				<DT class="syntax"><A name="statement_nochange"></A><I>пустая_инструкция</I></DT>
