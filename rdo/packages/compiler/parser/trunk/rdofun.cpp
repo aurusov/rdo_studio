@@ -1324,6 +1324,9 @@ RDOFUNFunction::RDOFUNFunction(CREF(tstring) name, CREF(LPRDOParam) pReturn)
 	init();
 }
 
+RDOFUNFunction::~RDOFUNFunction()
+{}
+
 void RDOFUNFunction::init()
 {
 	RDOParser::s_parser()->insertFUNFunction(this);
@@ -1379,33 +1382,9 @@ Context::FindResult RDOFUNFunction::onFindContext(CREF(LPRDOValue) pValue) const
 	return Context::FindResult();
 }
 
-RDOFUNFunction::~RDOFUNFunction()
-{}
-
-void RDOFUNFunction::setFunctionCalc(CREF(rdo::runtime::LPRDOCalc) pCalc)
+CREF(tstring) RDOFUNFunction::name() const
 {
-	ASSERT(pCalc);
-	m_pFunctionCalc = pCalc;
-	if (m_pFunctionCalc->srcInfo().src_empty())
-	{
-		m_pFunctionCalc->setSrcInfo(src_info());
-	}
-	STL_FOR_ALL(m_postLinkedList, it)
-	{
-		(*it)->setFunctionCalc(getFunctionCalc());
-	}
-}
-
-LPRDOParam RDOFUNFunction::findFUNFunctionParam(CREF(tstring) paramName) const 
-{
-	ParamList::const_iterator it = std::find_if(m_paramList.begin(), m_paramList.end(), compareName<RDOParam>(paramName));
-	return it != m_paramList.end() ? *it : LPRDOParam(NULL);
-}
-
-int RDOFUNFunction::findFUNFunctionParamNum(CREF(tstring) paramName) const
-{
-	ParamList::const_iterator it = std::find_if(m_paramList.begin(), m_paramList.end(), compareName<RDOParam>(paramName));
-	return it != m_paramList.end() ? it - m_paramList.begin() : -1;
+	return src_info().src_text();
 }
 
 void RDOFUNFunction::add(CREF(LPRDOParam) pParam)
@@ -1428,6 +1407,18 @@ void RDOFUNFunction::add(CREF(LPRDOFUNFunctionListElement) pParam)
 void RDOFUNFunction::add(CREF(LPRDOFUNCalculateIf) pCalculateIf)
 {
 	m_calculateIfList.push_back(pCalculateIf);
+}
+
+LPRDOParam RDOFUNFunction::findFUNFunctionParam(CREF(tstring) paramName) const 
+{
+	ParamList::const_iterator it = std::find_if(m_paramList.begin(), m_paramList.end(), compareName<RDOParam>(paramName));
+	return it != m_paramList.end() ? *it : LPRDOParam(NULL);
+}
+
+int RDOFUNFunction::findFUNFunctionParamNum(CREF(tstring) paramName) const
+{
+	ParamList::const_iterator it = std::find_if(m_paramList.begin(), m_paramList.end(), compareName<RDOParam>(paramName));
+	return it != m_paramList.end() ? it - m_paramList.begin() : -1;
 }
 
 void RDOFUNFunction::createListCalc()
@@ -1623,6 +1614,51 @@ void RDOFUNFunction::createAlgorithmicCalc()
 		}
 		ASSERT(pCalcDefault);
 		pCalcDefault->setSrcInfo(m_pReturn->getTypeInfo()->src_info());
+	}
+}
+
+CREF(LPRDOParam) RDOFUNFunction::getReturn() const
+{
+	return m_pReturn;
+}
+
+const RDOFUNFunction::ParamList RDOFUNFunction::getParams() const
+{
+	return m_paramList;
+}
+
+rbool RDOFUNFunction::getReturnFlag() const
+{
+	return m_returnFlag;
+}
+
+void RDOFUNFunction::setReturnFlag(rbool flag)
+{
+	m_returnFlag = flag;
+}
+
+void RDOFUNFunction::insertPostLinked(CREF(rdo::runtime::LPRDOCalcFunctionCaller) pCalc)
+{
+	ASSERT(pCalc);
+	m_postLinkedList.push_back(pCalc);
+}
+
+rdo::runtime::LPRDOCalc RDOFUNFunction::getFunctionCalc() const
+{
+	return m_pFunctionCalc;
+}
+
+void RDOFUNFunction::setFunctionCalc(CREF(rdo::runtime::LPRDOCalc) pCalc)
+{
+	ASSERT(pCalc);
+	m_pFunctionCalc = pCalc;
+	if (m_pFunctionCalc->srcInfo().src_empty())
+	{
+		m_pFunctionCalc->setSrcInfo(src_info());
+	}
+	STL_FOR_ALL(m_postLinkedList, it)
+	{
+		(*it)->setFunctionCalc(getFunctionCalc());
 	}
 }
 

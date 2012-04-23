@@ -568,32 +568,24 @@ friend class Converter;
 public:
 	typedef std::vector<LPRDOParam> ParamList;
 
-	void       add                    (CREF(LPRDOParam)                  pParam       );
-	void       add                    (CREF(LPRDOFUNFunctionListElement) pListElement );
-	void       add                    (CREF(LPRDOFUNCalculateIf)         pCalculateIf );
-	LPRDOParam findFUNFunctionParam   (CREF(tstring)                     paramName    ) const;
-	int        findFUNFunctionParamNum(CREF(tstring)                     paramName    ) const;
-	void       createListCalc         ();
-	void       createTableCalc        (CREF(YYLTYPE)                     elements_pos );
-	void       createAlgorithmicCalc  ();
+	CREF(tstring)    name                   () const;
+	void             add                    (CREF(LPRDOParam)                  pParam       );
+	void             add                    (CREF(LPRDOFUNFunctionListElement) pListElement );
+	void             add                    (CREF(LPRDOFUNCalculateIf)         pCalculateIf );
+	LPRDOParam       findFUNFunctionParam   (CREF(tstring)                     paramName    ) const;
+	int              findFUNFunctionParamNum(CREF(tstring)                     paramName    ) const;
+	void             createListCalc         ();
+	void             createTableCalc        (CREF(YYLTYPE)                     elements_pos );
+	void             createAlgorithmicCalc  ();
+	CREF(LPRDOParam) getReturn              () const;
+	const ParamList  getParams              () const;
+	rbool            getReturnFlag          () const;
+	void             setReturnFlag          (rbool flag);
+	void             insertPostLinked       (CREF(rdo::runtime::LPRDOCalcFunctionCaller) pCalc);
+	void             end                    ();
 
-	CREF(tstring)    name     () const { return src_info().src_text(); }
-	CREF(LPRDOParam) getReturn() const { return m_pReturn;             }
-	const ParamList  getParams() const { return m_paramList;           }
-
+	rdo::runtime::LPRDOCalc  getFunctionCalc() const;
 	void                     setFunctionCalc(CREF(rdo::runtime::LPRDOCalc) pCalc);
-	rdo::runtime::LPRDOCalc  getFunctionCalc()const  { return   m_pFunctionCalc; }
-
-	void  setReturnFlag(rbool flag) {m_returnFlag = flag;}
-	rbool getReturnFlag(          ) {return m_returnFlag;}
-
-	void insertPostLinked(CREF(rdo::runtime::LPRDOCalcFunctionCaller) pCalc)
-	{
-		ASSERT(pCalc);
-		m_postLinkedList.push_back(pCalc);
-	}
-
-	void end();
 
 private:
 	RDOFUNFunction(CREF(RDOParserSrcInfo) srcInfo, CREF(LPRDOParam) pReturn);
