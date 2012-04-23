@@ -1959,14 +1959,6 @@
 				Name=".procedural"
 				>
 				<File
-					RelativePath=".\calc\procedural\calc_braces.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\calc\procedural\calc_braces.h"
-					>
-				</File>
-				<File
 					RelativePath=".\calc\procedural\calc_const.cpp"
 					>
 				</File>
