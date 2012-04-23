@@ -225,7 +225,6 @@
 #include "simulator/runtime/calc/calc_process.h"
 #include "simulator/runtime/calc/calc_array.h"
 #include "simulator/runtime/calc/procedural/calc_locvar.h"
-#include "simulator/runtime/calc/procedural/calc_braces.h"
 #include "simulator/runtime/calc/procedural/calc_statement.h"
 #include "simulator/runtime/calc/procedural/calc_range.h"
 #include "simulator/runtime/calc/resource/calc_resource.h"
