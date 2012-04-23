@@ -2,7 +2,16 @@
 <HEAD>
 <TITLE>Описание точек принятия решений</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
-<SCRIPT type="text/javascript" src="../../../shared/scripts/toggle_display.js"></SCRIPT>
+<SCRIPT>
+function toggle_display(e)
+{
+	if (e.style.display == "none")
+		e.style.display = "";
+	else
+		e.style.display = "none";
+	return false;
+}
+</SCRIPT>
 </HEAD>
 <BODY>
 	<DIV>
@@ -96,7 +105,7 @@ $End</PRE>
 			</DD>
 		</DL>
 		<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Примеры</H4></A>
-		<DIV style="display:none" id=v1>
+		<DIV style="display:none" id="v1">
 		<PRE class="samples">$Decision_point Точка_1 : search trace_stat
 $Condition
   Ресурс_1.Параметр_1=0 and Exist(Тип_1 : Тип_1.Параметр_3 = Значение_2) and

@@ -2,7 +2,16 @@
 <HEAD>
 <TITLE>Описание образцов</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
-<SCRIPT type="text/javascript" src="../../../shared/scripts/toggle_display.js"></SCRIPT>
+<SCRIPT>
+function toggle_display(e)
+{
+	if (e.style.display == "none")
+		e.style.display = "";
+	else
+		e.style.display = "none";
+	return false;
+}
+</SCRIPT>
 </HEAD>
 <BODY>
 	<DIV>

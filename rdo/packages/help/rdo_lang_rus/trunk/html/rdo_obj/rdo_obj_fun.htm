@@ -2,7 +2,16 @@
 <HEAD>
 <TITLE>Функции</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
-<SCRIPT type="text/javascript" src="../../../shared/scripts/toggle_display.js"></SCRIPT>
+<SCRIPT>
+function toggle_display(e)
+{
+	if (e.style.display == "none")
+		e.style.display = "";
+	else
+		e.style.display = "none";
+	return false;
+}
+</SCRIPT>
 </HEAD>
 <BODY>
 	<DIV>
@@ -74,7 +83,7 @@ $Body <A class="syntax" href="#body">&lt;тело_функции&gt;</A> $End</P
 				<DL class="syntax">
 					<DD class="syntax"></DD>
 					<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Примеры</H4></A>
-					<DIV style="display:none" id=v1>
+					<DIV style="display:none" id="v1">
 					<PRE class="samples">$Function Список_1 : such_as Константа_9 = Значение_2
 $Type = list
 $Parameters
@@ -101,7 +110,7 @@ $End</PRE>
 				<DL class="syntax">
 					<DD class="syntax"></DD>
 					<A href="" class="ref" onclick="return toggle_display(v2);"><H4>Примеры</H4></A>
-					<DIV style="display:none" id=v2>
+					<DIV style="display:none" id="v2">
 					<P>Комментарии в теле функций даны для пояснения порядка следования значений.</P>
 					<PRE class="samples">$Function Таблица_1 : such_as Константа_9
 $Type = table
@@ -165,7 +174,7 @@ $End</PRE>
 				<DL class="syntax">
 					<DD class="syntax"></DD>
 					<A href="" class="ref" onclick="return toggle_display(v3);"><H4>Примеры</H4></A>
-					<DIV style="display:none" id=v3>
+					<DIV style="display:none" id="v3">
 					<PRE class="samples">$Function Функция_1 : real
 $Type = algorithmic
 $Parameters

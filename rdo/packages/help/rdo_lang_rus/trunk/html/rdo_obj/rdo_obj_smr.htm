@@ -2,7 +2,16 @@
 <HEAD>
 <TITLE>Объект прогона</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
-<SCRIPT type="text/javascript" src="../../../shared/scripts/toggle_display.js"></SCRIPT>
+<SCRIPT>
+function toggle_display(e)
+{
+	if (e.style.display == "none")
+		e.style.display = "";
+	else
+		e.style.display = "none";
+	return false;
+}
+</SCRIPT>
 </HEAD>
 <BODY>
 	<DIV>
@@ -94,7 +103,7 @@
 		<PRE class="syntax">&lt;имя_последовательности&gt;.Seed = &lt;значение&gt;</PRE>
 		<P>Имя последовательности - это одно из имен, указанных в <A href="rdo_obj_const_fun_sec.htm">объекте констант</A> при описании последовательностей. Оно идентифицирует последовательность, для которой задается значение базы. Значение задают <A href="../rdo_lex_div/rdo_lex_div_numeric_const.htm">численной константой</A> целого типа в диапазоне -2147483647…2147483647.</P>
 		<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Примеры</H4></A>
-		<DIV style="display:none" id=v1>
+		<DIV style="display:none" id="v1">
 		<PRE class="samples">Model_name = example
 Resource_file = example
 OprIev_file = example

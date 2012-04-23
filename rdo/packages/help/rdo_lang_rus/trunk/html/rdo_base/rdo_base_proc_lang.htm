@@ -2,7 +2,16 @@
 <HEAD>
 <TITLE>Операторы процедурного программирования</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
-<SCRIPT type="text/javascript" src="../../../shared/scripts/toggle_display.js"></SCRIPT>
+<SCRIPT>
+function toggle_display(e)
+{
+	if (e.style.display == "none")
+		e.style.display = "";
+	else
+		e.style.display = "none";
+	return false;
+}
+</SCRIPT>
 </HEAD>
 <BODY>
 	<DIV>
@@ -34,7 +43,7 @@
 		<DL class="syntax">
 			<DD class="syntax"></DD>
 			<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Примеры</H4></A>
-			<DIV style="display:none" id=v1>
+			<DIV style="display:none" id="v1">
 			<P><B><I>Вычисление наибольшего числа</I></B> из двух данных:</P>
 			<PRE name="sample_1" class="samples">
 $Parameters
@@ -76,7 +85,7 @@ $End
 		<DL class="syntax">
 			<DD class="syntax"></DD>
 			<A href="" class="ref" onclick="return toggle_display(v2);"><H4>Примеры</H4></A>
-			<DIV style="display:none" id=v2>
+			<DIV style="display:none" id="v2">
 			<PRE name="sample_3" class="samples">
 {
 integer i;
@@ -113,7 +122,7 @@ k = 1.01;
 		<DL class="syntax">
 			<DD class="syntax"></DD>
 			<A href="" class="ref" onclick="return toggle_display(v3);"><H4>Примеры</H4></A>
-			<DIV style="display:none" id=v3>
+			<DIV style="display:none" id="v3">
 			<P>Пример функции <B><I>вычисления факториала числа</I></B>:</P>
 			<PRE name="sample_4" class="samples">
 
@@ -135,7 +144,7 @@ $End
 		<DL class="syntax">
 			<DD class="syntax"></DD>
 			<A href="" class="ref" onclick="return toggle_display(v4);"><H4>Примеры</H4></A>
-			<DIV style="display:none" id=v4>
+			<DIV style="display:none" id="v4">
 			<P>Пример вложенного цикла, считающего сумму из квадратов чисел 1-30,кубов чисел 1-20 и четвертых степеней 1-10:</P>
 			<PRE name="sample_5" class="samples">
 real s=0;
@@ -158,7 +167,7 @@ for (integer i=2;i<4;i++)
 		<DL class="syntax">
 			<DD class="syntax"></DD>
 			<A href="" class="ref" onclick="return toggle_display(v5);"><H4>Примеры</H4></A>
-			<DIV style="display:none" id=v5>
+			<DIV style="display:none" id="v5">
 			<PRE name="sample_6" class="samples">
 return true;
 return i*i;
@@ -186,7 +195,7 @@ $End
 		<DL class="syntax">
 			<DD class="syntax"></DD>
 			<A href="" class="ref" onclick="return toggle_display(v6);"><H4>Примеры</H4></A>
-			<DIV style="display:none" id=v6>
+			<DIV style="display:none" id="v6">
 			<PRE name="sample_8" class="samples">
 $body
 bool b;
@@ -205,7 +214,7 @@ real k;//нет ошибки
 		<DL class="syntax">
 			<DD class="syntax"></DD>
 			<A href="" class="ref" onclick="return toggle_display(v7);"><H4>Примеры</H4></A>
-			<DIV style="display:none" id=v7>
+			<DIV style="display:none" id="v7">
 			<P>Цикл в примере выполнится 4 раза</P>
 			<PRE name="sample_9" class="samples">
 integer i;

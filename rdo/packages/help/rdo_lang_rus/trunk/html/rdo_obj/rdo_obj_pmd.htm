@@ -2,7 +2,16 @@
 <HEAD>
 <TITLE>Объект описания показателей</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
-<SCRIPT type="text/javascript" src="../../../shared/scripts/toggle_display.js"></SCRIPT>
+<SCRIPT>
+function toggle_display(e)
+{
+	if (e.style.display == "none")
+		e.style.display = "";
+	else
+		e.style.display = "none";
+	return false;
+}
+</SCRIPT>
 </HEAD>
 <BODY>
 	<DIV>
@@ -91,7 +100,7 @@ $End</PRE>
 			</DD>
 		</DL>
 		<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Примеры</H4></A>
-		<DIV style="display:none" id=v1>
+		<DIV style="display:none" id="v1">
 		<PRE class="samples">$Results
   Показатель_1 :  trace watch_state Ресурс_2.Параметр_5 = Занят
   Показатель_2 :  watch_state Ресурс_2.Параметр_5 = Занят and

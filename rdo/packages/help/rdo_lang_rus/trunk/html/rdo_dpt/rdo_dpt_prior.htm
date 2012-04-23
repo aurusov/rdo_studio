@@ -2,7 +2,16 @@
 <HEAD>
 <TITLE>ОПИСАНИЕ ТОЧКИ ПРИНЯТИЯ РЕШЕНИЙ ТИПА PRIOR</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
-<SCRIPT type="text/javascript" src="../../../shared/scripts/toggle_display.js"></SCRIPT>
+<SCRIPT>
+function toggle_display(e)
+{
+	if (e.style.display == "none")
+		e.style.display = "";
+	else
+		e.style.display = "none";
+	return false;
+}
+</SCRIPT>
 </HEAD>
 <BODY>
 <DIV>
@@ -32,7 +41,7 @@ $End</PRE>
 				<DD class="syntax">Арифметическое выражение должно иметь целый или вещественный тип, и его значение должно лежать в диапазоне [0; 1].</DD>
 			</DL>
 		<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Примеры</H4></A>
-		<DIV style="display:none" id=v1>
+		<DIV style="display:none" id="v1">
 		<PRE class="samples">$Decision_point Точка_1 : search trace
 $Condition
   Ресурс_1.Параметр_1=0 and Exist(Тип_1 : Тип_1.Параметр_3 = Значение_2) and

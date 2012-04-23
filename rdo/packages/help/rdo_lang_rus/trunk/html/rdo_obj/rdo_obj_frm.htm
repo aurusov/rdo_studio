@@ -2,7 +2,16 @@
 <HEAD>
 <TITLE>Кадры анимации</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
-<SCRIPT type="text/javascript" src="../../../shared/scripts/toggle_display.js"></SCRIPT>
+<SCRIPT>
+function toggle_display(e)
+{
+	if (e.style.display == "none")
+		e.style.display = "";
+	else
+		e.style.display = "none";
+	return false;
+}
+</SCRIPT>
 </HEAD>
 <BODY>
 	<DIV>
@@ -68,7 +77,7 @@ $End</PRE>
 						<PRE class="syntax"><A class="syntax">&lt;тип_элемента&gt;</A> [ <A class="syntax">&lt;свойства_элемента&gt;</A> ]</PRE>
 				</DL>
 		<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Примеры</H4></A>
-		<DIV style="display:none" id=v1>
+		<DIV style="display:none" id="v1">
 		<PRE class="samples">$Frame Кадр_1
 $Back_picture = <0 255 255> animbg
 Show
