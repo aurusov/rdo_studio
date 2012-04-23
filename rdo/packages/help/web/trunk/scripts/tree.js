@@ -126,7 +126,10 @@ function addNode(parentNode, recursedNodes) {
 			}
 
 			// Start link
-			document.write("<a onclick=\"document.getElementById('frm').src ='" + nodeValues[3] + "';\" onmouseover=\"window.status='" + nodeValues[2] + "';return true;\" onmouseout=\"window.status=' ';return true;\">");
+			if ((nodeValues[1] == "0") && (hasChildNode(nodeValues[0])))
+				document.write("<a onmouseover=\"window.status='" + nodeValues[2] + "';return true;\" onmouseout=\"window.status=' ';return true;\">");
+			else
+				document.write("<a onclick=\"document.getElementById('frm').src ='" + nodeValues[3] + "';\" onmouseover=\"window.status='" + nodeValues[2] + "';return true;\" onmouseout=\"window.status=' ';return true;\">");
 
 			// Write out folder & page icons
 			if (hcn) {
