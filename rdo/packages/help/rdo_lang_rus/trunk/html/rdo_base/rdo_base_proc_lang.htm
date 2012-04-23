@@ -1,6 +1,6 @@
 ﻿<HTML>
 <HEAD>
-<TITLE>Операторы процедурного программирования</TITLE>
+<TITLE>Операторы и инструкции процедурного программирования</TITLE>
 <LINK rel = "stylesheet" type = "text/css" href = "../../../shared/styles/styles.css">
 <SCRIPT>
 function toggle_display(e)
@@ -15,37 +15,39 @@ function toggle_display(e)
 </HEAD>
 <BODY>
 	<DIV>
-		<H1>ОПЕРАТОРЫ ПРОЦЕДУРНОГО ПРОГРАММИРОВАНИЯ</H1>
-		<P>Для описания алгоритмов в данной версии языка есть возможность использования операторов процедурного (императивного) программирования:</P>
-		<UL>
-			<LI><A href="#operator_if">условный оператор</A> - <FONT class="syntax"><B>if...else</B></FONT>;</LI>
-			<LI><A href="#operator_declare">оператор объявления</A> и <A href="#operator_init">инициализации локальных переменных</A>;</LI>
-			<LI><A href="#operator_for">оператор цикла</A> - <FONT class="syntax"><B>for</B></FONT>;</LI>
-			<LI><A href="#operator_break">оператор прерывания</A> - <FONT class="syntax"><B>break</B></FONT>;</LI>
-			<LI><A href="#operator_return">оператор возврата значения</A> - <FONT class="syntax"><B>return</B></FONT>;</LI> 
-			<LI><A href="#operator_area">оператор выделения области локальной памяти</A> - <FONT class="syntax"><B>{...}</B></FONT>;</LI>
-			<LI><A href="#operator_call">оператор вызова подпрограммы</A>;</LI>
-		</UL>
-		<P> Данные операторы можно использовать при описании алгоритмических зависимостей в теле образцов и функций для составления <A href="../rdo_lex_div/rdo_lex_div_procedures.htm">процедур</A>. Все операторы являются <A href="../rdo_lex_div/rdo_lex_div_res_words.htm">зарезервированными словами</A>.</P>
-		<h2>Условный оператор</h2>
-		<P><A name="operator_if"></A><B>Описание условного оператора</B> имеет следующий формат:</P>
-		<PRE class="syntax">if (<A class="syntax" href="#log_cond">&lt;условие&gt;</A>)
-		<A class="syntax" href="#proc_list_1">&lt;первая_ветвь_исполнения&gt;</A>;
+		<H1>ОПЕРАТОРЫ И ИНСТРУКЦИИ ПРОЦЕДУРНОГО ПРОГРАММИРОВАНИЯ</H1>
+		<h2>Операторы</h2>
+		<DD class="syntax">
+			<P>Для описания алгоритмов в данной версии языка есть возможность использования <B>операторов</B> процедурного (императивного) программирования:</P>
+			<UL>
+				<LI><A href="#operator_if">условный оператор</A> - <FONT class="syntax"><B>if...else</B></FONT>;</LI>
+				<LI><A href="#operator_declare">оператор объявления</A> и <A href="#operator_init">инициализации локальных переменных</A>;</LI>
+				<LI><A href="#operator_for">оператор цикла</A> - <FONT class="syntax"><B>for</B></FONT>;</LI>
+				<LI><A href="#operator_break">оператор прерывания</A> - <FONT class="syntax"><B>break</B></FONT>;</LI>
+				<LI><A href="#operator_return">оператор возврата значения</A> - <FONT class="syntax"><B>return</B></FONT>;</LI> 
+				<LI><A href="#operator_area">оператор выделения области локальной памяти</A> - <FONT class="syntax"><B>{...}</B></FONT>;</LI>
+				<LI><A href="#operator_call">оператор вызова подпрограммы</A>;</LI>
+			</UL>
+			<P> Данные операторы можно использовать при описании алгоритмических зависимостей в теле образцов и функций для составления <A href="../rdo_lex_div/rdo_lex_div_procedures.htm">процедур</A>. Все операторы являются <A href="../rdo_lex_div/rdo_lex_div_res_words.htm">зарезервированными словами</A>.</P>
+			<h2>Условный оператор</h2>
+			<P><A name="operator_if"></A><B>Описание условного оператора</B> имеет следующий формат:</P>
+			<PRE class="syntax">if (<A class="syntax" href="#log_cond">&lt;условие&gt;</A>)
+  <A class="syntax" href="#proc_list_1">&lt;первая_ветвь_исполнения&gt;</A>;
 {else <A class="syntax" href="#proc_list_2">&lt;вторая_ветвь_исполнения&gt;</A>;}</PRE>
-		<DL class="syntax">
-			<DT class="syntax"><A name="log_cond"></A><I>условие</I></DT>
-			<DD class="syntax">Логическое выражение, определяющее выполнение первой ветви <A href="../rdo_lex_div/rdo_lex_div_procedures.htm">процедур</A> условного оператора</DD>
-			<DT class="syntax"><A name="proc_list_1"></A><I>первая_ветвь_исполнения</I></DT>
-			<DD class="syntax">Одна <A href="../rdo_lex_div/rdo_lex_div_procedures.htm">процедура</A> или список процедур, заключенный в <A href="#operator_area">оператор выделения области локальной памяти</A>. Данная ветвь подлежит исполнению, если <A href="#log_cond">условие</A> истинно.</DD>
-			<DT class="syntax"><A name="proc_list_2"></A><I>вторая_ветвь_исполнения</I></DT>
-			<DD class="syntax">Одна <A href="../rdo_lex_div/rdo_lex_div_procedures.htm">процедура</A> или список процедур, заключенный в <A href="#operator_area">оператор выделения области локальной памяти</A>. Данная ветвь подлежит исполнению, если <A href="#log_cond">условие</A> ложно.</DD>
-		</DL>
-		<DL class="syntax">
-			<DD class="syntax"></DD>
-			<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Примеры</H4></A>
-			<DIV style="display:none" id="v1">
-			<P><B><I>Вычисление наибольшего числа</I></B> из двух данных:</P>
-			<PRE name="sample_1" class="samples">
+			<DL class="syntax">
+				<DT class="syntax"><A name="log_cond"></A><I>условие</I></DT>
+				<DD class="syntax">Логическое выражение, определяющее выполнение первой ветви <A href="../rdo_lex_div/rdo_lex_div_procedures.htm">процедур</A> условного оператора</DD>
+				<DT class="syntax"><A name="proc_list_1"></A><I>первая_ветвь_исполнения</I></DT>
+				<DD class="syntax">Одна <A href="../rdo_lex_div/rdo_lex_div_procedures.htm">процедура</A> или список процедур, заключенный в <A href="#operator_area">оператор выделения области локальной памяти</A>. Данная ветвь подлежит исполнению, если <A href="#log_cond">условие</A> истинно.</DD>
+				<DT class="syntax"><A name="proc_list_2"></A><I>вторая_ветвь_исполнения</I></DT>
+				<DD class="syntax">Одна <A href="../rdo_lex_div/rdo_lex_div_procedures.htm">процедура</A> или список процедур, заключенный в <A href="#operator_area">оператор выделения области локальной памяти</A>. Данная ветвь подлежит исполнению, если <A href="#log_cond">условие</A> ложно.</DD>
+			</DL>
+			<DL class="syntax">
+				<DD class="syntax"></DD>
+				<A href="" class="ref" onclick="return toggle_display(v1);"><H4>Примеры</H4></A>
+				<DIV style="display:none" id="v1">
+				<P><B><I>Вычисление наибольшего числа</I></B> из двух данных:</P>
+				<PRE name="sample_1" class="samples">
 $Parameters
 INPUT_1	: integer
 INPUT_2	: integer
@@ -65,67 +67,66 @@ else
 	return false;
 $End
 		   </PRE>
-		</DIV>
-		</DL>
-		<h2>Операторы объявления и инициализации локальной переменной</h2>
-		<P>Для <A name="operator_declare"></A><B>объявления локальной переменной</B>  необходимо указать ее тип и имя:</P>
-		<PRE class="syntax"> <A class="syntax" href="#type_var">&lt;тип_переменной&gt;</A> <A class="syntax" href="#name_var">&lt;имя_переменной&gt;</A></PRE>
-		<P><A name="operator_init"></A><B>Инициализовать локальную переменную</B> можно следующим образом:</P>
-		<PRE class="syntax"> <A class="syntax" href="#name_var">&lt;имя_переменной&gt;</A> = <A class="syntax" href="#var_equation">&lt;значение&gt;</A></PRE>
-		<P> Два данных оператора можно использовать в одной процедуре, сводя ее к такой конструкции, создающей новую переменную:</P>
-		<PRE class="syntax"> <A class="syntax" href="#type_var">&lt;тип_переменной&gt;</A> <A class="syntax" href="#name_var">&lt;имя_переменной&gt;</A> = <A class="syntax" href="#var_equation">&lt;значение&gt;</A>;</PRE>
-		<DL class="syntax">
-			<DT class="syntax"><A name="type_var"></A><I>тип_переменной</I></DT>
-			<DD class="syntax">Тип переменной - это один из возможных в языке <A href="rdo_base_types.htm">типов данных</A>.</DD>
-			<DT class="syntax"><A name="name_var"></A><I>имя_переменной</I></DT>
-			<DD class="syntax">Имя переменной представляет собой <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Имена должны быть различными для всех переменных, описанных в одной области памяти, и не должны совпадать с ранее определенными именами и зарезервированными словами.</DD>
-			<DT class="syntax"><A name="var_equation"></A><I>значение</I></DT>
-			<DD class="syntax">После имени переменной через <A href= "../rdo_lex_div/rdo_lex_div_spesial_symbols.htm">спецсимвол</A> &quot;=&quot; записывают <A href="rdo_base_equations.htm">арифметическое выражение</A> для вычисления начального значения переменной. Тип арифметического выражения должен соответствовать типу переменной. Для вещественных переменных допустимо выражение целого типа.</DD>
-		</DL>
-		<DL class="syntax">
-			<DD class="syntax"></DD>
-			<A href="" class="ref" onclick="return toggle_display(v2);"><H4>Примеры</H4></A>
-			<DIV style="display:none" id="v2">
-			<PRE name="sample_3" class="samples">
+			</DIV>
+			</DL>
+			<h2>Операторы объявления и инициализации локальной переменной</h2>
+			<P>Для <A name="operator_declare"></A><B>объявления локальной переменной</B>  необходимо указать ее тип и имя:</P>
+			<PRE class="syntax"> <A class="syntax" href="#type_var">&lt;тип_переменной&gt;</A> <A class="syntax" href="#name_var">&lt;имя_переменной&gt;</A></PRE>
+			<P><A name="operator_init"></A><B>Инициализовать локальную переменную</B> можно следующим образом:</P>
+			<PRE class="syntax"> <A class="syntax" href="#name_var">&lt;имя_переменной&gt;</A> = <A class="syntax" href="#var_equation">&lt;значение&gt;</A></PRE>
+			<P> Два данных оператора можно использовать в одной процедуре, сводя ее к такой конструкции, создающей новую переменную:</P>
+			<PRE class="syntax"> <A class="syntax" href="#type_var">&lt;тип_переменной&gt;</A> <A class="syntax" href="#name_var">&lt;имя_переменной&gt;</A> = <A class="syntax" href="#var_equation">&lt;значение&gt;</A>;</PRE>
+			<DL class="syntax">
+				<DT class="syntax"><A name="type_var"></A><I>тип_переменной</I></DT>
+				<DD class="syntax">Тип переменной - это один из возможных в языке <A href="rdo_base_types.htm">типов данных</A>.</DD>
+				<DT class="syntax"><A name="name_var"></A><I>имя_переменной</I></DT>
+				<DD class="syntax">Имя переменной представляет собой <A href="../rdo_lex_div/rdo_lex_div_names.htm">простое имя</A>. Имена должны быть различными для всех переменных, описанных в одной области памяти, и не должны совпадать с ранее определенными именами и зарезервированными словами.</DD>
+				<DT class="syntax"><A name="var_equation"></A><I>значение</I></DT>
+				<DD class="syntax">После имени переменной через <A href= "../rdo_lex_div/rdo_lex_div_spesial_symbols.htm">спецсимвол</A> &quot;=&quot; записывают <A href="rdo_base_equations.htm">арифметическое выражение</A> для вычисления начального значения переменной. Тип арифметического выражения должен соответствовать типу переменной. Для вещественных переменных допустимо выражение целого типа.</DD>
+			</DL>
+			<DL class="syntax">
+				<DD class="syntax"></DD>
+				<A href="" class="ref" onclick="return toggle_display(v2);"><H4>Примеры</H4></A>
+				<DIV style="display:none" id="v2">
+				<PRE name="sample_3" class="samples">
 {
 integer i;
 bool Condition = false;
 real k;
 k = 1.01;
 }
-			</PRE>
-			</DIV>
-		</DL>
-			<h2>Оператор цикла</h2>
-		<P><A name="operator_for"></A><B>Описание оператора цикла</B> имеет следующий формат:</P>
-		<PRE class="syntax">for ( <A class="syntax" href="#def_cycle_var">&lt;определение_циклической_переменной&gt;</A>; <A class="syntax" href="#cycle_log_cond">&lt;логическое выражение&gt;</A>;<A class="syntax" href="#cycle_statement"> &lt;выражение&gt;</A>)
-		<A class="syntax" href="#cycle_body">&lt;тело_цикла&gt;</A></PRE>
-		<DL class="syntax">
-			<DT class="syntax"><A name="def_cycle_var"></A><I>определение_циклической_переменной</I></DT>
-			<DD class="syntax">Определить циклическую переменную можно оператором присваивания начального значения уже объявленной циклической переменной или оператором объявления локальной циклической переменной с инициализирующим значением.</DD>
-			<DT class="syntax"><A name="cycle_log_cond"></A><I>логическое выражение</I></DT>
-			<DD class="syntax">Логическое выражение, содержащее условие выполнения текущей итерации цикла.</DD>
-			<DT class="syntax"><A name="cycle_statement"></A><I>выражение</I></DT>
-			<DD class="syntax"><A href="../rdo_lex_div/rdo_lex_div_procedures.htm">процедура</A>, выполняемая после <A href="#cycle_body">тела цикла</A>. Обычно используется для изменения циклической переменной.</DD>
-			<DT class="syntax"><A name="cycle_body"></A><I>тело_цикла</I></DT>
-			<DD class="syntax">Тело цикла состоит из одной <A href="../rdo_lex_div/rdo_lex_div_procedures.htm">процедуры</A> или списка  процедур, заключенного в <A href="#operator_area">оператор выделения области локальной памяти</A>.</DD>
-		</DL>
-		<P><B>Оператор for</B> работает следующим образом:</P>
-		<OL>
-			<LI>Перед выполнением <B>цикла</B> вычисляется начальное <A href="rdo_base_equations.htm">выражение</A>,<A href="#def_cycle_var"> определяющее циклическую переменную</A>.</LI>
-			<LI>Проверяется контрольное выражение.</LI>
-			<LI>Если контрольное выражение истинное, то выполняется блок из одного или нескольких операторов, рассчитывается выражение счетчик, возврат к пункту 2.</LI>
-			<LI>А если ложно, то <B>оператор for</B> заканчивает свою работу.</LI>
-		</OL>
-		<H4>Примечания</H4>
-		<P class="remarks">Окончание работы цикла также может быть вызвано <B>операторами</B> <A href="#operator_break">break</A> и <A href="#operator_return">return</A>.</P>
-		<DL class="syntax">
-			<DD class="syntax"></DD>
-			<A href="" class="ref" onclick="return toggle_display(v3);"><H4>Примеры</H4></A>
-			<DIV style="display:none" id="v3">
-			<P>Пример функции <B><I>вычисления факториала числа</I></B>:</P>
-			<PRE name="sample_4" class="samples">
-
+				</PRE>
+				</DIV>
+			</DL>
+				<h2>Оператор цикла</h2>
+			<P><A name="operator_for"></A><B>Описание оператора цикла</B> имеет следующий формат:</P>
+			<PRE class="syntax">for ( <A class="syntax" href="#def_cycle_var">&lt;определение_циклической_переменной&gt;</A>; <A class="syntax" href="#cycle_log_cond">&lt;логическое выражение&gt;</A>;<A class="syntax" href="#cycle_statement"> &lt;выражение&gt;</A>)
+			<A class="syntax" href="#cycle_body">&lt;тело_цикла&gt;</A></PRE>
+			<DL class="syntax">
+				<DT class="syntax"><A name="def_cycle_var"></A><I>определение_циклической_переменной</I></DT>
+				<DD class="syntax">Определить циклическую переменную можно оператором присваивания начального значения уже объявленной циклической переменной или оператором объявления локальной циклической переменной с инициализирующим значением.</DD>
+				<DT class="syntax"><A name="cycle_log_cond"></A><I>логическое выражение</I></DT>
+				<DD class="syntax">Логическое выражение, содержащее условие выполнения текущей итерации цикла.</DD>
+				<DT class="syntax"><A name="cycle_statement"></A><I>выражение</I></DT>
+				<DD class="syntax"><A href="../rdo_lex_div/rdo_lex_div_procedures.htm">процедура</A>, выполняемая после <A href="#cycle_body">тела цикла</A>. Обычно используется для изменения циклической переменной.</DD>
+				<DT class="syntax"><A name="cycle_body"></A><I>тело_цикла</I></DT>
+				<DD class="syntax">Тело цикла состоит из одной <A href="../rdo_lex_div/rdo_lex_div_procedures.htm">процедуры</A> или списка  процедур, заключенного в <A href="#operator_area">оператор выделения области локальной памяти</A>.</DD>
+			</DL>
+			<P><B>Оператор for</B> работает следующим образом:</P>
+			<OL>
+				<LI>Перед выполнением <B>цикла</B> вычисляется начальное <A href="rdo_base_equations.htm">выражение</A>,<A href="#def_cycle_var"> определяющее циклическую переменную</A>.</LI>
+				<LI>Проверяется контрольное выражение.</LI>
+				<LI>Если контрольное выражение истинное, то выполняется блок из одного или нескольких операторов, рассчитывается выражение счетчик, возврат к пункту 2.</LI>
+				<LI>А если ложно, то <B>оператор for</B> заканчивает свою работу.</LI>
+			</OL>
+			<H4>Примечания</H4>
+			<P class="remarks">Окончание работы цикла также может быть вызвано <B>операторами</B> <A href="#operator_break">break</A> и <A href="#operator_return">return</A>.</P>
+			<DL class="syntax">
+				<DD class="syntax"></DD>
+				<A href="" class="ref" onclick="return toggle_display(v3);"><H4>Примеры</H4></A>
+				<DIV style="display:none" id="v3">
+				<P>Пример функции <B><I>вычисления факториала числа</I></B>:</P>
+				<PRE name="sample_4" class="samples">
 $Function Factorial : integer
 $Type = algorithmic
 $Parameters
@@ -136,17 +137,17 @@ $Body
 	s*=i;
 	return s;
 $End	  
-			</PRE>
-			</DIV>
-		</DL>
-		<h2>Оператор прерывания</h2>
-		<P><A name="operator_break"></A>Для преждевременного (до выполнения <A href="#cycle_log_cond">условия</A>) выхода из цикла можно использовать <B>оператор break</B>. Данный оператор позволяет закончить выполнение оператора цикла. Может быть указан одной из <A href="../rdo_lex_div/rdo_lex_div_procedures.htm">процедур</A> тела цикла. В одной процедуре с данным оператором не может быть ни каких других операторов.</P>
-		<DL class="syntax">
-			<DD class="syntax"></DD>
-			<A href="" class="ref" onclick="return toggle_display(v4);"><H4>Примеры</H4></A>
-			<DIV style="display:none" id="v4">
-			<P>Пример вложенного цикла, считающего сумму из квадратов чисел 1-30,кубов чисел 1-20 и четвертых степеней 1-10:</P>
-			<PRE name="sample_5" class="samples">
+				</PRE>
+				</DIV>
+			</DL>
+			<h2>Оператор прерывания</h2>
+			<P><A name="operator_break"></A>Для преждевременного (до выполнения <A href="#cycle_log_cond">условия</A>) выхода из цикла можно использовать <B>оператор break</B>. Данный оператор позволяет закончить выполнение оператора цикла. Может быть указан одной из <A href="../rdo_lex_div/rdo_lex_div_procedures.htm">процедур</A> тела цикла. В одной процедуре с данным оператором не может быть ни каких других операторов.</P>
+			<DL class="syntax">
+				<DD class="syntax"></DD>
+				<A href="" class="ref" onclick="return toggle_display(v4);"><H4>Примеры</H4></A>
+				<DIV style="display:none" id="v4">
+				<P>Пример вложенного цикла, считающего сумму из квадратов чисел 1-30,кубов чисел 1-20 и четвертых степеней 1-10:</P>
+				<PRE name="sample_5" class="samples">
 real s=0;
 for (integer i=2;i<4;i++)
 {
@@ -159,24 +160,24 @@ for (integer i=2;i<4;i++)
 	s+=IntPower(j,i);
   }
 }
-			</PRE>
-			</DIV>
-		</DL>
-		<h2>Оператор возврата значения</h2>
-		<P><A name="operator_return"></A><B>Оператор return</B> прекращает выполнение <A href="../rdo_obj/rdo_obj_fun.htm#body>тела</A> <A href="../rdo_obj/rdo_obj_fun.htm#alg">алгоритмической функции</A>, и возвращает значение <A href="rdo_base_equations.htm">выражения</A>, указанного после него в данной процедуре, в качестве значения всей функции, в которой он используется. В разных ветвях <A href="#operator_if">условного оператора</A> могут использоваться разные операторы возврата. Данный оператор используется лишь в контексте алгоритмических функций и не может использоваться в описании <A href="../rdo_obj/rdo_obj_pat.htm">образцов</A>. Тип выражения после <B>оператора return</B> должен соответствовать типу возвращаемого значения функции.</P>
-		<DL class="syntax">
-			<DD class="syntax"></DD>
-			<A href="" class="ref" onclick="return toggle_display(v5);"><H4>Примеры</H4></A>
-			<DIV style="display:none" id="v5">
-			<PRE name="sample_6" class="samples">
+				</PRE>
+				</DIV>
+			</DL>
+			<h2>Оператор возврата значения</h2>
+			<P><A name="operator_return"></A><B>Оператор return</B> прекращает выполнение <A href="../rdo_obj/rdo_obj_fun.htm#body>тела</A> <A href="../rdo_obj/rdo_obj_fun.htm#alg">алгоритмической функции</A>, и возвращает значение <A href="rdo_base_equations.htm">выражения</A>, указанного после него в данной процедуре, в качестве значения всей функции, в которой он используется. В разных ветвях <A href="#operator_if">условного оператора</A> могут использоваться разные операторы возврата. Данный оператор используется лишь в контексте алгоритмических функций и не может использоваться в описании <A href="../rdo_obj/rdo_obj_pat.htm">образцов</A>. Тип выражения после <B>оператора return</B> должен соответствовать типу возвращаемого значения функции.</P>
+			<DL class="syntax">
+				<DD class="syntax"></DD>
+				<A href="" class="ref" onclick="return toggle_display(v5);"><H4>Примеры</H4></A>
+				<DIV style="display:none" id="v5">
+				<PRE name="sample_6" class="samples">
 return true;
 return i*i;
 return Factorial(5);
 return 5;
 return argument;
-			</PRE>
-			<P>Пример функции, меняющей состояние канала</P>
-			<PRE name="sample_7" class="samples">
+				</PRE>
+				<P>Пример функции, меняющей состояние канала</P>
+				<PRE name="sample_7" class="samples">
 $Function fun_test : such_as Тестовый_тип_СМО.состояние_канала
 $Type = algorithmic
 $Parameters
@@ -187,16 +188,16 @@ if(СМО.состояние_канала == Свободен )
 else
   return Свободен;
 $End
-			</PRE>
-			</DIV>
-		</DL>  
-		<h2>Оператор выделения области локальной памяти</h2>
-		<P><A name="operator_area"></A><B>Выделить локальную область памяти</B> можно с помощью <A href= "../rdo_lex_div/rdo_lex_div_spesial_symbols.htm">спецсимволов</A> &quot;{&quot; и &quot;}&quot;. Данный оператор позволяет выделить пространство имен для локальных переменных, что подразумевает возможность использования одноименных переменных в разных областях локальной памяти. Все <A href="#operator_declare">объявленные</A> внутри этой области переменные будут доступны лишь в ней, и не будут вызывать конфликтов <A href="../rdo_lex_div/rdo_lex_div_names.htm">имен</A> с переменными, объявленными в других локальных областях. Однако переменные, объявленные в объемлющей, по отношению к данной, области памяти будут также доступны в этой области и могут вызвать конфликты имен. Этот оператор можно использовать как в <A href = "../rdo_obj/rdo_obj_pat.htm">образцах</A>, так и в <A href = "../rdo_obj/rdo_obj_fun.htm">функциях</A>. </P>
-		<DL class="syntax">
-			<DD class="syntax"></DD>
-			<A href="" class="ref" onclick="return toggle_display(v6);"><H4>Примеры</H4></A>
-			<DIV style="display:none" id="v6">
-			<PRE name="sample_8" class="samples">
+				</PRE>
+				</DIV>
+			</DL>  
+			<h2>Оператор выделения области локальной памяти</h2>
+			<P><A name="operator_area"></A><B>Выделить локальную область памяти</B> можно с помощью <A href= "../rdo_lex_div/rdo_lex_div_spesial_symbols.htm">спецсимволов</A> &quot;{&quot; и &quot;}&quot;. Данный оператор позволяет выделить пространство имен для локальных переменных, что подразумевает возможность использования одноименных переменных в разных областях локальной памяти. Все <A href="#operator_declare">объявленные</A> внутри этой области переменные будут доступны лишь в ней, и не будут вызывать конфликтов <A href="../rdo_lex_div/rdo_lex_div_names.htm">имен</A> с переменными, объявленными в других локальных областях. Однако переменные, объявленные в объемлющей, по отношению к данной, области памяти будут также доступны в этой области и могут вызвать конфликты имен. Этот оператор можно использовать как в <A href = "../rdo_obj/rdo_obj_pat.htm">образцах</A>, так и в <A href = "../rdo_obj/rdo_obj_fun.htm">функциях</A>. </P>
+			<DL class="syntax">
+				<DD class="syntax"></DD>
+				<A href="" class="ref" onclick="return toggle_display(v6);"><H4>Примеры</H4></A>
+				<DIV style="display:none" id="v6">
+				<PRE name="sample_8" class="samples">
 $body
 bool b;
 {
@@ -206,17 +207,17 @@ bool b;//ошибка - конфликт имен
 }
 integer i;//нет ошибки
 real k;//нет ошибки
-			</PRE>
-			</DIV>
-		</DL>
-		<H4>Примечания</H4>
-		<P class="remarks"><B>Оператор</B> <A href="#operator_area">{...}</A> не может использоваться совместно с другими <B>операторами</B> внутри одной <A href="../rdo_lex_div/rdo_lex_div_procedures.htm">процедуры</A>, однако внутри себя он может содержать неограниченное количество  процедур, разделенных между собой <A href= "../rdo_lex_div/rdo_lex_div_spesial_symbols.htm">спецсимволом</A> &quot;;&quot;. Для внешней области такой список процедур будет выглядеть как одна  процедура, поэтому его можно использовать внутри операторов позволяющих исполнять одну процедуру, например в теле цикла или ветвях условного оператора, а также реализовать вложенность операторов и процедур.</P>
-		<DL class="syntax">
-			<DD class="syntax"></DD>
-			<A href="" class="ref" onclick="return toggle_display(v7);"><H4>Примеры</H4></A>
-			<DIV style="display:none" id="v7">
-			<P>Цикл в примере выполнится 4 раза</P>
-			<PRE name="sample_9" class="samples">
+				</PRE>
+				</DIV>
+			</DL>
+			<H4>Примечания</H4>
+			<P class="remarks"><B>Оператор</B> <A href="#operator_area">{...}</A> не может использоваться совместно с другими <B>операторами</B> внутри одной <A href="../rdo_lex_div/rdo_lex_div_procedures.htm">процедуры</A>, однако внутри себя он может содержать неограниченное количество  процедур, разделенных между собой <A href= "../rdo_lex_div/rdo_lex_div_spesial_symbols.htm">спецсимволом</A> &quot;;&quot;. Для внешней области такой список процедур будет выглядеть как одна  процедура, поэтому его можно использовать внутри операторов позволяющих исполнять одну процедуру, например в теле цикла или ветвях условного оператора, а также реализовать вложенность операторов и процедур.</P>
+			<DL class="syntax">
+				<DD class="syntax"></DD>
+				<A href="" class="ref" onclick="return toggle_display(v7);"><H4>Примеры</H4></A>
+				<DIV style="display:none" id="v7">
+				<P>Цикл в примере выполнится 4 раза</P>
+				<PRE name="sample_9" class="samples">
 integer i;
 real a=1.0;
 bool b=true;
@@ -226,9 +227,9 @@ a/=i;
 if (a<0.1)
 b=false;
 }
-			</PRE>
-			<P>Цикл в примере будет выполняться бесконечно, т.к. условный оператор не входит в тело цикла</P>
-			<PRE name="sample_10" class="samples">
+				</PRE>
+				<P>Цикл в примере будет выполняться бесконечно, т.к. условный оператор не входит в тело цикла</P>
+				<PRE name="sample_10" class="samples">
 integer i;
 real a=1.0;
 bool b=true;
@@ -236,11 +237,95 @@ for (i=1;b;i++)
 a/=i;
 if (a<0.1)
 b=false;
-			</PRE>
-			</DIV>
-		</DL>
-		<h2>Оператор вызова подпрограммы</h2>
-		<P><A name="operator_call"></A><B>Оператор вызова подпрограммы</B> являет собой <A href="../rdo_obj/rdo_obj_fun.htm#call">вызов функции</A>. Результатом выполнения <B>оператора вызова</B> является <A href="rdo_base_equations.htm">арифметическое выражение</A>, следовательно его можно использовать внутри процедуры, совместно с другими операторами, и внутри других операторов и выражений. При использовании в теле функции необходимо помнить, что вызываемая функция должна быть описана раньше в файле .fun), места ее вызова.</P>
+				</PRE>
+				</DIV>
+			</DL>
+			<h2>Оператор вызова подпрограммы</h2>
+			<P><A name="operator_call"></A><B>Оператор вызова подпрограммы</B> являет собой <A href="../rdo_obj/rdo_obj_fun.htm#call">вызов функции</A>. Результатом выполнения <B>оператора вызова</B> является <A href="rdo_base_equations.htm">арифметическое выражение</A>, следовательно его можно использовать внутри процедуры, совместно с другими операторами, и внутри других операторов и выражений. При использовании в теле функции необходимо помнить, что вызываемая функция должна быть описана раньше в файле .fun), места ее вызова.</P>
+		</DD></BR>
+		<A name="statement"></A><h2>Инструкции</h2>
+		<DD class="syntax">
+			<P>Инструкция имеет формат:</P>
+			<PRE class="syntax"><A class="syntax" href="#statement_assignment">&lt;инструкция_присваивания&gt;</A>
+| <A class="syntax" href="#statement_planning">&lt;инструкция_планирования_события&gt;</A>
+| <A class="syntax" href="#statement_stop">&lt;инструкция_остановки_события&gt;</A>
+| <A class="syntax" href="#statement_process_start">&lt;инструкция_инициации_процесса&gt;</A>
+| <A class="syntax" href="#statement_nochange">&lt;пустая_инструкция&gt;</A>
+| { <A class="syntax" href="#statement_list">&lt;список_инструкций&gt;</A> }</PRE>
+			<DL class="syntax">
+				<DT class="syntax"><A name="statement_assignment"></A><I>инструкция_присваивания</I></DT>
+				<DD class="syntax">Инструкция присваивания имеет формат:
+					<PRE class="syntax">&lt;имя_параметра&gt; <A class="syntax" href="#assignment_operator">&lt;оператор_присваивания&gt;</A> <A class="syntax" href="#arith_expr">&lt;арифметическое_выражение&gt;</A>;</PRE>
+					<DL class="syntax">
+						<DT class="syntax"><A name="assignment_operator"></A><I>оператор_присваивания</I></DT>
+						<DD class="syntax">В данной версии языка возможны следующих операторы присваивания:
+							<TABLE class="visible" cols="2" style="width: 80%">
+								<TR valign="top">
+									<TH align="left" width="20%">Оператор присваивания</TH>
+									<TH align="left" width="80%">Описание</TH>
+								</TR>
+								<TR valign="top">
+									<TD class="visible" NOWRAP width="20%"><FONT class="syntax">=</FONT></TD>
+									<TD class="visible" width="80%">Присваивает параметру слева значение арифметического выражения справа</TD>
+								</TR>
+								<TR valign="top">
+									<TD class="visible" NOWRAP width="20%"><FONT class="syntax">+=</FONT></TD>
+									<TD class="visible" width="80%">Увеличивает параметр слева на значение арифметического выражения справа</TD>
+								</TR>
+								<TR valign="top">
+									<TD class="visible" NOWRAP width="20%"><FONT class="syntax">-=</FONT></TD>
+									<TD class="visible" width="80%">Уменьшает параметр слева на значение арифметического выражения справа</TD>
+								</TR>
+								<TR valign="top">
+									<TD class="visible" NOWRAP width="20%"><FONT class="syntax">*=</FONT></TD>
+									<TD class="visible" width="80%">Умножает параметр слева на значение арифметического выражения справа</TD>
+								</TR>
+								<TR valign="top">
+									<TD class="visible" NOWRAP width="20%"><FONT class="syntax">/=</FONT></TD>
+									<TD class="visible" width="80%">Делит параметр слева на значение арифметического выражения справа</TD>
+								</TR>
+							</TABLE>
+						</DD>
+						<DT class="syntax"><A name="arith_expr"></A><I>арифметическое_выражение</I></DT>
+						<DD class="syntax"><A href="../../rdo_base/rdo_base_equations.htm">Арифметическое выражение</A> должно иметь тот же тип, что и параметр, которому присваивается значение. Для вещественного параметра выражение может иметь целый тип.</DD>
+					</DL>
+				</DD>
+				<DT class="syntax"><A name="statement_planning"></A><I>инструкция_планирования_события</I></DT>
+				<DD class="syntax">Инструкция планирования события имеет формат:
+					<PRE class="syntax"><A class="syntax" href="#planning_event_name">&lt;имя_события&gt;</A>.planning( <A class="syntax" href="#event_time">&lt;время_планирования_события&gt;</A> [, <A class="syntax" href="#param_descr">&lt;знчение_параметров_события&gt;</A> ] );</PRE>
+					<DL class="syntax">
+						<DT class="syntax"><A name="planning_event_name"></A><I>имя_события</I></DT>
+						<DD class="syntax">Имя события - это имя одного из описанных в модели <A class="syntax" href="rdo_pat_type_event.htm">событий</A>.</DD>
+						<DT class="syntax"><A name="event_time"></A><I>время_планирования_события</I></DT>
+						<DD class="syntax">Время планирования события представляет собой <A href="../../rdo_base/rdo_base_equations.htm">арифметическое выражение</A>, равное времени, в которое данное событие выполнится.</DD>
+						<DT class="syntax"><A name="param_descr"><I>значение параметров события</I></A></DT>
+						<DD class="syntax">Значения параметров события записываются таким же образом, как и для <A href="../rdo_obj_dpt.htm#dpt_act_params">активностей</A>, за исключением того, что они могут представлять собой <A href="../../rdo_base/rdo_base_equations.htm">арифметическое выражение</A>.</DD>
+					</DL>
+				</DD>
+				<DT class="syntax"><A name="statement_stop"></A><I>инструкция_остановки_события</I></DT>
+				<DD class="syntax">Инструкция остановки события имеет формат:
+					<PRE class="syntax"><A class="syntax" href="#stop_event_name">&lt;имя_события&gt;</A>.stop();</PRE>
+					<DL class="syntax">
+						<DT class="syntax"><A name="stop_event_name"></A><I>имя_события</I></DT>
+						<DD class="syntax">Имя события - это имя одного из описанных в модели <A class="syntax" href="rdo_pat_type_event.htm">событий</A>.</DD>
+					</DL>
+				</DD>
+				<DT class="syntax"><A name="statement_process_start"></A><I>инструкция_инициации_процесса</I></DT>
+				<DD class="syntax">Инструкция инициации процесса активизирует процесс обслуживания, передавая транзакт в его первый блок, имеет следующий формат:
+					<PRE class="syntax"><A class="syntax" href="#proc_name">&lt;имя_процесса&gt;</A>.processStart( <A class="syntax" href="#transact">&lt;транзакт&gt;</A> );</PRE>
+					<DL class="syntax">
+						<DT class="syntax"><A name="proc_name"></A><I>имя_процесса</I></DT>
+						<DD class="syntax">Имя события - это имя одного из описанных в модели <A class="syntax" href="../rdo_obj_proc.htm">процессов</A>.</DD>
+						<DT class="syntax"><A name="transact"></A><I>транзакт</I></DT>
+						<DD class="syntax">Транзакт - это имя <A class="syntax" href="../rdo_obj_pat.htm#rel_res_desc">релевантного ресурса</A>, который передается в процесс в качестве транзакта.</DD>
+					</DL>
+				</DD>
+				<DT class="syntax"><A name="statement_nochange"></A><I>пустая_инструкция</I></DT>
+				<DD class="syntax">Пустая инструкция имеет формат:
+					<PRE class="syntax">&lt;имя_параметра&gt; NoChange;</PRE>Зарезервированное слово <FONT class="syntax">NoChange</FONT> указывает, что значение данного параметра не изменяется.
+				</DD>
+			</DL>
+		</DD>
 		<H4>См. также</H4>
 		<P><A href="rdo_base_alpha.htm">Алфавит</A></P>
 		<P><A href="rdo_base_types.htm">Типы данных. Соответствие типов</A></P>
