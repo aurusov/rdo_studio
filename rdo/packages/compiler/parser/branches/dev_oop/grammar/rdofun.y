@@ -415,12 +415,12 @@ fun_func_footer
 
 		pFunction->setReturnFlag(pContextReturnableFun->returnFlag());
 
-		if(!pFunction->getReturnFlag())
+		if (!pFunction->getReturnFlag())
 		{
-			PARSER->error().warning(pFunction->src_info(), rdo::format(_T("Возможно, не все ветки функции '%s' могут вернуть значение."),pFunction->name().c_str()));
+			PARSER->error().warning(pFunction->src_info(), rdo::format(_T("Возможно, не все ветки функции '%s' могут вернуть значение."), pFunction->name().c_str()));
 		}
 
-		pFunction->createAlgorithmicCalc(@5);
+		pFunction->createAlgorithmicCalc();
 	}
 	| RDO_Type '=' RDO_list fun_func_parameters RDO_Body fun_func_list_body RDO_End
 	{
