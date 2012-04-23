@@ -1604,7 +1604,7 @@ void RDOFUNFunction::createTableCalc(CREF(YYLTYPE) elements_pos)
 	setFunctionCalc(pFuncTableCalc);
 }
 
-void RDOFUNFunction::createAlgorithmicCalc(CREF(RDOParserSrcInfo) body_src_info)
+void RDOFUNFunction::createAlgorithmicCalc()
 {
 	if (!m_returnFlag)
 	{

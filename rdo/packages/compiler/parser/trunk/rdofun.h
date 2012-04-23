@@ -575,7 +575,7 @@ public:
 	int        findFUNFunctionParamNum(CREF(tstring)                     paramName    ) const;
 	void       createListCalc         ();
 	void       createTableCalc        (CREF(YYLTYPE)                     elements_pos );
-	void       createAlgorithmicCalc  (CREF(RDOParserSrcInfo)            body_src_info);
+	void       createAlgorithmicCalc  ();
 
 	CREF(tstring)    name     () const { return src_info().src_text(); }
 	CREF(LPRDOParam) getReturn() const { return m_pReturn;             }
