@@ -150,12 +150,12 @@ public:
 	CREF(FuzzySet)  getFuzzySetDefinition() const;
 	termName        getName              () const;
 
+	RDOFuzzyTerm();
+	virtual ~RDOFuzzyTerm();
+
 private:
 
-	RDOFuzzyTerm();
 	RDOFuzzyTerm(CREF(termName), CREF(FuzzySet));
-	virtual ~RDOFuzzyTerm();
-	
 	Term m_term;
 };
 
@@ -188,6 +188,20 @@ private:
 
 	TermSet        m_set;
 	nameOfVariable name;
+};
+
+OBJECT (Statement)
+{
+DECLARE_FACTORY(Statement)
+public:
+	void setTerm(RDOFuzzyTerm term);
+	void setVariable(RDOLingvoVariable variable);
+
+private:
+	Statement();
+	~Statement();
+	RDOLingvoVariable m_variable;
+	RDOFuzzyTerm      m_term;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -239,6 +239,21 @@ inline void RDOLingvoVariable::append(tstring name,CREF(FuzzySet) fuzzySet)
 {
 	operator[](name) = fuzzySet;
 }
+// --------------------------------------------------------------------------------
+// -------------------- Statement
+// --------------------------------------------------------------------------------
+inline void Statement::setTerm(RDOFuzzyTerm term)
+{
+	m_term = term;
+}
 
+inline void Statement::setVariable(RDOLingvoVariable variable)
+{
+	m_variable = variable;
+}
+inline Statement::Statement()
+{}
+inline Statement::~Statement()
+{}
 
 CLOSE_RDO_RUNTIME_NAMESPACE
