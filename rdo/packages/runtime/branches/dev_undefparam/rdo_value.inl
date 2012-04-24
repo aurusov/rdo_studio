@@ -37,7 +37,6 @@ inline RDOValue::RDOValue(CREF(RDOValue) rdovalue)
 	: m_pType(g_unknow)
 {
 	set(rdovalue);
-	setUndefined(true);
 }
 
 inline RDOValue::RDOValue(CREF(LPRDOType) pType)
