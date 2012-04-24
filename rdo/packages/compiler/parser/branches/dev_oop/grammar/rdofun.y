@@ -218,6 +218,7 @@
 #include "simulator/compiler/parser/context/statement.h"
 #include "simulator/runtime/calc/procedural/calc_locvar.h"
 #include "simulator/runtime/calc/procedural/calc_statement.h"
+#include "simulator/runtime/calc/procedural/calc_braces.h"
 #include "simulator/runtime/calc/calc_array.h"
 // --------------------------------------------------------------------------------
 
@@ -394,13 +395,26 @@ fun_func_footer
 		rdo::runtime::LPRDOCalcStatementList pCalcStatementList = pExpressionFunBody->calc().object_dynamic_cast<rdo::runtime::RDOCalcStatementList>();
 		ASSERT(pCalcStatementList);
 
+		rdo::runtime::LPRDOCalcBaseStatementList pCalcBaseStatementList = rdo::Factory<rdo::runtime::RDOCalcBaseStatementList>::create();
+		ASSERT(pCalcBaseStatementList);
+
+		rdo::runtime::LPRDOCalcOpenBrace pCalcOpenBrace = rdo::Factory<rdo::runtime::RDOCalcOpenBrace>::create();
+		ASSERT(pCalcOpenBrace);
+
+		rdo::runtime::LPRDOCalcCloseBrace pCalcCloseBrace = rdo::Factory<rdo::runtime::RDOCalcCloseBrace>::create();
+		ASSERT(pCalcCloseBrace);
+
+		pCalcBaseStatementList->addCalcStatement(pCalcOpenBrace);
+		pCalcBaseStatementList->addCalcStatement(pCalcStatementList);
+		pCalcBaseStatementList->addCalcStatement(pCalcCloseBrace);
+
 		LPExpression pExpressionReturnCatch = PARSER->stack().pop<Expression>($5);
 		ASSERT(pExpressionReturnCatch);
 
 		rdo::runtime::LPRDOCalcReturnCatch pCalcReturnCatch = pExpressionReturnCatch->calc().object_dynamic_cast<rdo::runtime::RDOCalcReturnCatch>();
 		ASSERT(pCalcReturnCatch);
 
-		pCalcReturnCatch->addStatementList(pCalcStatementList);
+		pCalcReturnCatch->addStatementList(pCalcBaseStatementList);
 
 		LPRDOFUNFunction pFunction = PARSER->getLastFUNFunction();
 		ASSERT(pFunction);

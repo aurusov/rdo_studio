@@ -92,6 +92,7 @@ SET(HEADER_FILES
 	calc/operation/calc_unary.h
 	calc/operation/operation_name.h
 	calc/operation/operation_type.h
+	calc/procedural/calc_braces.h
 	calc/procedural/calc_const.h
 	calc/procedural/calc_locvar.h
 	calc/procedural/calc_nop.h
@@ -210,6 +211,7 @@ SET(SOURCE_FILES
 	calc/operation/calc_arithm.cpp
 	calc/operation/calc_logic.cpp
 	calc/operation/calc_unary.cpp
+	calc/procedural/calc_braces.cpp
 	calc/procedural/calc_const.cpp
 	calc/procedural/calc_locvar.cpp
 	calc/procedural/calc_nop.cpp
@@ -394,6 +396,8 @@ SOURCE_GROUP(".rdo_calc_operation" FILES
 	calc/operation/operation_type.inl)
 
 SOURCE_GROUP(".rdo_calc_procedural" FILES 
+	calc/procedural/calc_braces.cpp
+	calc/procedural/calc_braces.h
 	calc/procedural/calc_const.cpp
 	calc/procedural/calc_const.h
 	calc/procedural/calc_locvar.cpp

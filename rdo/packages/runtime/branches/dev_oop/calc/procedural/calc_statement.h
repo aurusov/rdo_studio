@@ -90,18 +90,28 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Список операторов
-CALC(RDOCalcStatementList)
+//! Простой список операторов
+CALC(RDOCalcBaseStatementList)
 {
-DECLARE_FACTORY(RDOCalcStatementList)
+DECLARE_FACTORY(RDOCalcBaseStatementList)
 public:
 	void        addCalcStatement(CREF(LPRDOCalc) pStatement);
 	RDOCalcList statementList();
 
-private:
-	RDOCalcStatementList();
+protected:
+	RDOCalcBaseStatementList();
 
 	RDOCalcList m_calcStatementList;
+
+	DECLARE_ICalc;
+};
+
+//!Останавливаемый список операторов
+CALC_SUB(RDOCalcStatementList, RDOCalcBaseStatementList)
+{
+DECLARE_FACTORY(RDOCalcStatementList)
+private:
+	RDOCalcStatementList();
 
 	DECLARE_ICalc;
 };

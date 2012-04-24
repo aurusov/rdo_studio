@@ -114,7 +114,6 @@ REF(RDOValue) RDOCalcFunReturn::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_value = m_pReturn->calcValue(pRuntime);
 	pRuntime->setFunBreakFlag(RDORuntime::FBF_RETURN);
-	pRuntime->getMemoryStack()->pop();
 	return m_value;
 }
 
@@ -131,21 +130,42 @@ REF(RDOValue) RDOCalcFunBreak::doCalc(CREF(LPRDORuntime) pRuntime)
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOCalcStatementList
+// -------------------- RDOCalcBaseStatementList
 // --------------------------------------------------------------------------------
-RDOCalcStatementList::RDOCalcStatementList()
+RDOCalcBaseStatementList::RDOCalcBaseStatementList()
 {}
 
-void RDOCalcStatementList::addCalcStatement(CREF(LPRDOCalc) pStatement)
+void RDOCalcBaseStatementList::addCalcStatement(CREF(LPRDOCalc) pStatement)
 {
 	ASSERT(pStatement);
 	m_calcStatementList.push_back(pStatement);
 }
 
-RDOCalc::RDOCalcList RDOCalcStatementList::statementList()
+RDOCalc::RDOCalcList RDOCalcBaseStatementList::statementList()
 {
 	return m_calcStatementList;
 }
+
+REF(RDOValue) RDOCalcBaseStatementList::doCalc(CREF(LPRDORuntime) pRuntime)
+{
+	STL_FOR_ALL(m_calcStatementList, calcIt)
+	{
+		LPRDOCalc pCalc = *calcIt;
+		ASSERT(pCalc);
+		RDOValue tempValue = pCalc->calcValue(pRuntime);
+		if(tempValue.typeID()!= RDOType::t_unknow)
+		{
+			m_value = tempValue;
+		}
+	}
+	return m_value;
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOCalcStatementList
+// --------------------------------------------------------------------------------
+RDOCalcStatementList::RDOCalcStatementList()
+{}
 
 REF(RDOValue) RDOCalcStatementList::doCalc(CREF(LPRDORuntime) pRuntime)
 {
@@ -201,8 +221,6 @@ void RDOCalcReturnCatch::addStatementList(CREF(LPRDOCalc) pStatementList)
 
 REF(RDOValue) RDOCalcReturnCatch::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	LPRDOMemory pLocalMemory = rdo::Factory<RDOMemory>::create();
-	pRuntime->getMemoryStack()->push(pLocalMemory);
 	m_value = m_pStatementList->calcValue(pRuntime);
 	if (pRuntime->getFunBreakFlag() == RDORuntime::FBF_RETURN)
 	{

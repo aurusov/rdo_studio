@@ -304,13 +304,26 @@ void RDOPATPattern::addRelResConvert(rbool trace, CREF(LPExpression) pStatementL
 			parser::g_error().error(trace_pos, _T("Признак трассировки в данном месте возможен только для создаваемого ресурса"));
 		}
 	}
-	rdo::runtime::LPRDOCalcStatementList _pStatementList = pStatementList->calc().object_dynamic_cast<rdo::runtime::RDOCalcStatementList>();
-	ASSERT(_pStatementList);
-	if (_pStatementList->statementList().empty() && status == rdo::runtime::RDOResource::CS_Keep)
-	{
-		parser::g_error().warning(convertor_pos, getWarningMessage_EmptyConvertor(m_pCurrRelRes->name(), status));
-	}
+	rdo::runtime::LPRDOCalcBaseStatementList pBaseStatementList = pStatementList->calc().object_dynamic_cast<rdo::runtime::RDOCalcBaseStatementList>();
+	ASSERT(pBaseStatementList);
 
+	rdo::runtime::RDOCalc::RDOCalcList _pBaseStatementList = pBaseStatementList->statementList();
+	ASSERT(!_pBaseStatementList.empty());
+
+	STL_FOR_ALL(_pBaseStatementList, calcIt)
+	{
+		rdo::runtime::LPRDOCalc pCalc = *calcIt;
+		ASSERT(pCalc);
+		rdo::runtime::LPRDOCalcStatementList _pStatementList = pCalc.object_dynamic_cast<rdo::runtime::RDOCalcStatementList>();
+		if(_pStatementList)
+		{
+			if (_pStatementList->statementList().empty() && status == rdo::runtime::RDOResource::CS_Keep)
+			{
+				parser::g_error().warning(convertor_pos, getWarningMessage_EmptyConvertor(m_pCurrRelRes->name(), status));
+			}
+		}
+	}
+	
 	addParamSetCalc(pStatementList->calc());
 }
 
