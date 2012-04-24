@@ -21,16 +21,49 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
+OBJECT_INTERFACE(IInternalStatistics)
+{
+DECLARE_FACTORY(IInternalStatistics)
+public:
+	virtual void setTransCount(ruint count) = 0;
+
+protected:
+	IInternalStatistics()
+	{}
+	virtual ~IInternalStatistics()
+	{}
+};
+
+CLOSE_RDO_RUNTIME_NAMESPACE
+
+class IInternalStatisticsManager
+{
+public:
+	virtual void setStatistics(CREF(rdo::runtime::LPIInternalStatistics) pStatistics) = 0;
+
+protected:
+	IInternalStatisticsManager()
+	{}
+	virtual ~IInternalStatisticsManager()
+	{}
+};
+
+#define DECLARE_IInternalStatisticsManager \
+	virtual void setStatistics(CREF(rdo::runtime::LPIInternalStatistics) pStatistics);
+
+OPEN_RDO_RUNTIME_NAMESPACE
+
 /*!
   \class   RDOPROCGenerate
   \brief   Процессный блок GENERATE
 */
-class RDOPROCGenerate: public RDOPROCBlock, public IBaseOperation 
+class RDOPROCGenerate: public RDOPROCBlock, public IBaseOperation, public IInternalStatisticsManager
 {
 DEFINE_IFACTORY(RDOPROCGenerate);
 QUERY_INTERFACE_BEGIN
-	QUERY_INTERFACE_PARENT(RDOPROCBlock  )
-	QUERY_INTERFACE       (IBaseOperation)
+	QUERY_INTERFACE_PARENT(RDOPROCBlock              )
+	QUERY_INTERFACE       (IBaseOperation            )
+	QUERY_INTERFACE       (IInternalStatisticsManager)
 QUERY_INTERFACE_END
 
 public:
@@ -39,13 +72,15 @@ public:
 private:
 	RDOPROCGenerate(LPIPROCProcess process, CREF(LPRDOCalc) pTime, CREF(LPRDOCalc) pCreateAndGoOnTransactCalc, int maxTransCount = 0);
 
-	double     timeNext;
-	LPRDOCalc  m_pTimeCalc;
-	LPRDOCalc  m_pCreateAndGoOnTransactCalc;
-	int        m_maxTransCount;
-	int        m_TransCount;
+	double                 timeNext;
+	LPRDOCalc              m_pTimeCalc;
+	LPRDOCalc              m_pCreateAndGoOnTransactCalc;
+	int                    m_maxTransCount;
+	int                    m_TransCount;
+	LPIInternalStatistics  m_pStatistics;
 
 	DECLARE_IBaseOperation;
+	DECLARE_IInternalStatisticsManager;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

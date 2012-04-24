@@ -76,7 +76,7 @@ REF(RDOValue) RDOFunCalcSelectExist::doCalc(CREF(LPRDORuntime) pRuntime)
 		if (m_pCondition->calcValue(pRuntime).getAsBool())
 			res = true;
 		pRuntime->popGroupFunc();
-		it++;
+		++it;
 	}
 	m_value = res;
 	return m_value;
@@ -97,7 +97,7 @@ REF(RDOValue) RDOFunCalcSelectNotExist::doCalc(CREF(LPRDORuntime) pRuntime)
 		if (m_pCondition->calcValue(pRuntime).getAsBool())
 			res = false;
 		pRuntime->popGroupFunc();
-		it++;
+		++it;
 	}
 	m_value = res;
 	return m_value;
@@ -123,7 +123,7 @@ REF(RDOValue) RDOFunCalcSelectForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 		if (!m_pCondition->calcValue(pRuntime).getAsBool())
 			res = false;
 		pRuntime->popGroupFunc();
-		it++;
+		++it;
 	}
 	m_value = res;
 	return m_value;
@@ -144,7 +144,7 @@ REF(RDOValue) RDOFunCalcSelectNotForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 		if (!m_pCondition->calcValue(pRuntime).getAsBool())
 			res = true;
 		pRuntime->popGroupFunc();
-		it++;
+		++it;
 	}
 	m_value = res;
 	return m_value;

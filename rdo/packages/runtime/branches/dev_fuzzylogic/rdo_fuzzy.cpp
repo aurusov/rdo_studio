@@ -98,9 +98,9 @@ LPFuzzySet MemberFunctionProperties::ext_binary(ExtBinaryFun fun, CREF(LPFuzzySe
 			{
 				values[rdo_value] = rdo::rmax(val->second, rdo::rmin(it1->second, it2->second));
 			}
-			it2++;
+			++it2;
 		}
-		it1++;
+		++it1;
 	}
 	if (!values.empty())
 	{
@@ -136,7 +136,7 @@ LPFuzzySet MemberFunctionProperties::ext_unary(ExtUnaryFun fun, CREF(LPFuzzySet)
 		{
 			values[rdo_value] = rdo::rmax(val->second, it->second);
 		}
-		it++;
+		++it;
 	}
 	if (!values.empty())
 	{
@@ -172,7 +172,7 @@ LPFuzzySet MemberFunctionProperties::ext_unary(ExtUnaryFunP fun, PTR(void) pPara
 		{
 			values[rdo_value] = rdo::rmax(val->second, it->second);
 		}
-		it++;
+		++it;
 	}
 	if (!values.empty())
 	{
@@ -291,7 +291,7 @@ LPFuzzySet MemberFunctionProperties::alpha(CREF(LPFuzzySet) pSet,double appertai
 		{
 			pFuzzySetResult->operator[](it->first) = pSet->operator[](it->first);
 		}
-		it++;
+		++it;
 	}
 	return pFuzzySetResult;
 }
@@ -320,7 +320,7 @@ LPFuzzySet MemberFunctionProperties::a_pow(LPFuzzySet pSet, double power)
 	while (it != pFuzzySetResult->end())
 	{
 		it->second = pow(it->second, power); ///flag
-		it++;
+		++it;
 	}
 	return pFuzzySetResult;
 }
@@ -346,7 +346,7 @@ RDOValue MemberFunctionProperties::defuzzyfication(CREF(LPFuzzySet) pSet)
 		return RDOValue();
 
 	FuzzySet::FuzzySetDefinition::const_iterator it_next = it;
-	it_next++;
+	++it_next;
 	if (it_next == pSet->end())
 		return it->first;
 
@@ -363,8 +363,8 @@ RDOValue MemberFunctionProperties::defuzzyfication(CREF(LPFuzzySet) pSet)
 		g += t*(x_next + x)/2.0;
 		f += t;
 
-		it++;
-		it_next++;
+		++it;
+		++it_next;
 		if (it_next == pSet->end())
 			break;
 
