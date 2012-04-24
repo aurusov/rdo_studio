@@ -739,6 +739,44 @@ LPRDOFUNArithm RDOFUNParams::createCall(CREF(tstring) funName)
 	return pArithm;
 }
 
+LPExpression RDOFUNParams::createCallExpression(CREF(tstring) funName)
+{
+	LPRDOFUNFunction pFunction = RDOParser::s_parser()->findFUNFunction(funName);
+	if (!pFunction)
+	{
+		RDOParser::s_parser()->error().error(src_info(), rdo::format(_T("Неопределенная функция : %s"), funName.c_str()));
+	}
+
+	ruint nParams = pFunction->getParams().size();
+	if (nParams != m_pArithmContainer->getContainer().size())
+	{
+		RDOParser::s_parser()->error().error(src_info(), rdo::format(_T("Неверное количество параметров функции: %s"), funName.c_str()));
+	}
+
+	rdo::runtime::LPRDOCalc pCalc = pFunction->getFunctionCalc().object_parent_cast<rdo::runtime::RDOCalc>();
+	ASSERT(pCalc);
+	pCalc = pFunction->getReturn()->getTypeInfo()->type()->calc_cast(pCalc, pFunction->getReturn()->getTypeInfo()->type());
+	ASSERT(pCalc);
+	rdo::runtime::LPRDOCalcFunctionCaller pFuncCall = rdo::Factory<rdo::runtime::RDOCalcFunctionCaller>::create(pCalc);
+	pFuncCall->setSrcInfo(src_info());
+	for (ruint i = 0; i < nParams; i++)
+	{
+		LPTypeInfo pFuncParam = pFunction->getParams()[i]->getTypeInfo();
+		LPRDOFUNArithm pArithm = m_pArithmContainer->getContainer()[i];
+		ASSERT(pArithm);
+		pArithm->checkParamType(pFuncParam);
+		pFuncCall->addParameter(pFuncParam->type()->calc_cast(pArithm->createCalc(pFuncParam), pArithm->typeInfo()->type()));
+	}
+
+	LPExpression pExpression = rdo::Factory<Expression>::create(
+		pFunction->getReturn()->getTypeInfo(),
+		pFuncCall,
+		src_info()
+	);
+	ASSERT(pExpression);
+	return pExpression;
+}
+
 LPRDOFUNArithm RDOFUNParams::createSeqCall(CREF(tstring) seqName)
 {
 	LPRDOFUNSequence pSequence = RDOParser::s_parser()->findFUNSequence(seqName);

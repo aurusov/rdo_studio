@@ -1302,6 +1302,84 @@ return_statement
 
 		$$ = PARSER->stack().push(pExpression);
 	}
+	|RDO_Return ret_expression
+	{
+		LPExpression pExpressionReturn = PARSER->stack().pop<Expression>($2);
+		ASSERT(pExpressionReturn);
+
+		LPTypeInfo pType = pExpressionReturn->typeInfo()->type_cast(PARSER->getLastFUNFunction()->getReturn()->getTypeInfo(),RDOParserSrcInfo(@2));
+		ASSERT(pType);
+
+		rdo::runtime::LPRDOCalc pCalc = pExpressionReturn->calc();
+		ASSERT(pCalc);
+
+		rdo::runtime::LPRDOCalc pCalcReturn = rdo::Factory<rdo::runtime::RDOCalcFunReturn>::create(pCalc);
+		ASSERT(pCalcReturn);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalcReturn, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		LPContextReturnable pContextReturnable = PARSER->context()->cast<ContextReturnable>();
+		ASSERT(pContextReturnable);
+
+		pContextReturnable->setReturnFlag();
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	;
+
+ret_expression
+	: fun_arithm_func_call
+	| fun_arithm_func_call '*' fun_arithm
+	{
+		LPExpression pExpressionCaller = PARSER->stack().pop<Expression>($1);
+		ASSERT(pExpressionCaller);
+
+		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm);
+
+		LPTypeInfo pType = pExpressionCaller->typeInfo()->type_cast(pArithm->typeInfo(),RDOParserSrcInfo(@3));
+		ASSERT(pType);
+
+		rdo::runtime::LPRDOCalc pCalcArithm = pArithm->createCalc(pType);
+		ASSERT(pCalcArithm);
+
+		rdo::runtime::LPRDOCalc pCalcExpression = pExpressionCaller->calc();
+		ASSERT(pCalcExpression);
+
+		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcMultiplexer>::create(pCalcArithm, pCalcExpression);
+		ASSERT(pCalc);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	| fun_arithm '*' fun_arithm_func_call
+	{
+		LPExpression pExpressionCaller = PARSER->stack().pop<Expression>($3);
+		ASSERT(pExpressionCaller);
+
+		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($1);
+		ASSERT(pArithm);
+
+		LPTypeInfo pType = pExpressionCaller->typeInfo()->type_cast(pArithm->typeInfo(),RDOParserSrcInfo(@3));
+		ASSERT(pType);
+
+		rdo::runtime::LPRDOCalc pCalcArithm = pArithm->createCalc(pType);
+		ASSERT(pCalcArithm);
+
+		rdo::runtime::LPRDOCalc pCalcExpression = pExpressionCaller->calc();
+		ASSERT(pCalcExpression);
+
+		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcMultiplexer>::create(pCalcArithm, pCalcExpression);
+		ASSERT(pCalc);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
 	;
 
 // --------------------------------------------------------------------------------
@@ -2781,6 +2859,17 @@ fun_arithm
 		$$ = PARSER->stack().push(pResult);
 	}
 	| fun_arithm_func_call
+	{
+		LPExpression pExpressionCaller = PARSER->stack().pop<Expression>($1);
+		ASSERT(pExpressionCaller);
+
+		LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpressionCaller);
+		ASSERT(pArithm);
+
+		pArithm->setSrcInfo(RDOParserSrcInfo(@1));
+		
+		$$ = PARSER->stack().push(pArithm);
+	}
 	| fun_select_arithm
 	| '(' fun_arithm ')'
 	{
@@ -2880,9 +2969,9 @@ fun_arithm_func_call
 		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@1, funName));
 		pFunParams->setSrcPos (@1, @4);
 		pFunParams->setSrcText(funName + _T("(") + pArithmContainer->src_text() + _T(")"));
-		LPRDOFUNArithm pArithm = pFunParams->createCall(funName);
-		ASSERT(pArithm);
-		$$ = PARSER->stack().push(pArithm);
+		LPExpression pExpression = pFunParams->createCallExpression(funName);
+		ASSERT(pExpression);
+		$$ = PARSER->stack().push(pExpression);
 	}
 	| RDO_IDENTIF '(' error
 	{

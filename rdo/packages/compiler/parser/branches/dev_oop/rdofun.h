@@ -243,6 +243,7 @@ public:
 	rdo::runtime::LPRDOCalc  getCalc      (ruint paramID, CREF(LPTypeInfo) pType);
 
 	LPRDOFUNArithm createCall   (CREF(tstring) funName);
+	LPExpression   createCallExpression   (CREF(tstring) funName);
 	LPRDOFUNArithm createSeqCall(CREF(tstring) seqName);
 
 private:

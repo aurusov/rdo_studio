@@ -136,6 +136,18 @@ private:
 	DECLARE_ICalc;
 };
 
+CALC(RDOCalcMultiplexer)
+{
+DECLARE_FACTORY(RDOCalcMultiplexer)
+private:
+	RDOCalcMultiplexer(CREF(LPRDOCalc)pRightCalc, CREF(LPRDOCalc)pLeftCalc);
+	
+	LPRDOCalc m_pRightCalc;
+	LPRDOCalc m_pLeftCalc;
+
+	DECLARE_ICalc;
+};
+
 CLOSE_RDO_RUNTIME_NAMESPACE
 
 #endif // _LIB_RUNTIME_CALC_PROCEDURAL_STATEMENT_H_
