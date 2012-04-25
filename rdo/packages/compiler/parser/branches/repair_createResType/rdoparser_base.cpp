@@ -59,8 +59,8 @@ ruint RDOParserContainer::insert(rdoModelObjects::RDOParseType type, CREF(LPRDOP
 			ruint index = it->first;
 			while (it != m_list.end() && it->first <= max)
 			{
-				index++;
-				it++;
+				++index;
+				++it;
 			}
 			if (index <= max)
 			{

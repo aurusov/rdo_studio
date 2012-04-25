@@ -3,6 +3,7 @@
   \file      calc_statement.h
   \authors   Чирков Михаил
   \authors   Лущан Дмитрий (dluschan@rk9.bmstu.ru)
+  \authors   Поподьянец Евгений (kurt.gigacore@gmail.com)
   \date      16.04.2011
   \brief     Инструкции
   \indent    4T
@@ -23,7 +24,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 //! @todo заменить на CalcNop ?
 CALC(RDOCalcNoChange)
 {
-	DECLARE_FACTORY(RDOCalcNoChange)
+DECLARE_FACTORY(RDOCalcNoChange)
 private:
 	RDOCalcNoChange();
 	DECLARE_ICalc;
@@ -32,26 +33,20 @@ private:
 //! Условный оператор if () then {}
 CALC(RDOCalcIf)
 {
-	DECLARE_FACTORY(RDOCalcIf)
+DECLARE_FACTORY(RDOCalcIf)
+public:
+	void  setThenStatement(CREF(LPRDOCalc) pStatement);
+	void  setElseStatement(CREF(LPRDOCalc) pStatement);
+
+	rbool hasElse() const;
+
 private:
-	RDOCalcIf(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pStatement);
+	typedef  std::pair<LPRDOCalc, LPRDOCalc>  Statements;
 
-	LPRDOCalc m_pCondition;
-	LPRDOCalc m_pStatement;
+	RDOCalcIf(CREF(LPRDOCalc) pCondition);
 
-	DECLARE_ICalc;
-};
-
-//! Условный оператор if () then {} else {}
-CALC(RDOCalcIfElse)
-{
-	DECLARE_FACTORY(RDOCalcIfElse)
-private:
-	RDOCalcIfElse(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pIfStatement, CREF(LPRDOCalc) pElseStatement);
-
-	LPRDOCalc m_pCondition;
-	LPRDOCalc m_pIfStatement;
-	LPRDOCalc m_pElseStatement;
+	LPRDOCalc   m_pCondition;
+	Statements  m_statements;
 
 	DECLARE_ICalc;
 };
@@ -59,9 +54,12 @@ private:
 //! Оператор цикла for
 CALC(RDOCalcFor)
 {
-	DECLARE_FACTORY(RDOCalcFor)
+DECLARE_FACTORY(RDOCalcFor)
+public:
+	void setStatement(CREF(LPRDOCalc) pStatement);
+
 private:
-	RDOCalcFor(CREF(LPRDOCalc) pDeclaration, CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pExpression, CREF(LPRDOCalc) pStatement);
+	RDOCalcFor(CREF(LPRDOCalc) pDeclaration, CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pExpression);
 
 	LPRDOCalc m_pDeclaration;
 	LPRDOCalc m_pCondition;
@@ -74,7 +72,7 @@ private:
 //! Оператор возврата return
 CALC(RDOCalcFunReturn)
 {
-	DECLARE_FACTORY(RDOCalcFunReturn)
+DECLARE_FACTORY(RDOCalcFunReturn)
 private:
 	RDOCalcFunReturn(CREF(LPRDOCalc) pReturn);
 
@@ -85,9 +83,55 @@ private:
 //! Оператор возврата break
 CALC(RDOCalcFunBreak)
 {
-	DECLARE_FACTORY(RDOCalcFunBreak)
+DECLARE_FACTORY(RDOCalcFunBreak)
 private:
 	RDOCalcFunBreak();
+
+	DECLARE_ICalc;
+};
+
+//! Список операторов
+CALC(RDOCalcStatementList)
+{
+DECLARE_FACTORY(RDOCalcStatementList)
+public:
+	void        addCalcStatement(CREF(LPRDOCalc) pStatement);
+	RDOCalcList statementList();
+
+private:
+	RDOCalcStatementList();
+
+	RDOCalcList m_calcStatementList;
+
+	DECLARE_ICalc;
+};
+
+//! Ловушка для break
+CALC(RDOCalcBreakCatch)
+{
+DECLARE_FACTORY(RDOCalcBreakCatch)
+public:
+	void addStatementList(CREF(LPRDOCalc) pStatementList);
+
+private:
+	RDOCalcBreakCatch();
+	
+	LPRDOCalc m_pStatementList;
+
+	DECLARE_ICalc;
+};
+
+//! Ловушка для return
+CALC(RDOCalcReturnCatch)
+{
+DECLARE_FACTORY(RDOCalcReturnCatch)
+public:
+	void addStatementList(CREF(LPRDOCalc) pStatementList);
+
+private:
+	RDOCalcReturnCatch();
+	
+	LPRDOCalc m_pStatementList;
 
 	DECLARE_ICalc;
 };

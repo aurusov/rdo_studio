@@ -29,7 +29,7 @@
 #undef LEXER_POS
 #endif
 
-#define LEXER     reinterpret_cast<PTR(rdoParser::RDOLexer)>(this)
+#define LEXER     reinterpret_cast<PTR(rdo::compiler::parser::RDOLexer)>(this)
 #define LEXER_POS (*LEXER->m_lploc)
 #define PARSER    LEXER->parser()
 #define RUNTIME   PARSER->runtime()
@@ -320,13 +320,12 @@ $term                          return(RDO_Fuzzy_Term);
 	tstring n1(YYText());
 	int len = n1.length();
 	tstring name(n1, 1, len-2);
-	rdoParser::LPTypeInfo pType = rdo::Factory<rdoParser::TypeInfo>::create(
-		rdo::Factory<rdoParser::RDOType__string>::create(),
-		LEXER->m_lploc ? rdoParser::RDOParserSrcInfo(LEXER_POS, name) : rdoParser::RDOParserSrcInfo(name)
+	rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__string>(
+		LEXER->m_lploc ? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, name) : rdo::compiler::parser::RDOParserSrcInfo(name)
 	);
 	ASSERT(pType);
-	/// @todo TypeInfo, убрать rdoParser::RDOParserSrcInfo()
-	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdoParser::RDOValue>::create(name, pType->src_info(rdoParser::RDOParserSrcInfo()), pType)));
+	/// @todo TypeInfo, убрать rdo::compiler::parser::RDOParserSrcInfo()
+	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdo::compiler::parser::RDOValue>::create(name, pType->src_info(rdo::compiler::parser::RDOParserSrcInfo()), pType)));
 	return RDO_STRING_CONST;
 }
 
@@ -345,7 +344,7 @@ $term                          return(RDO_Fuzzy_Term);
 
 "*/" {
 	LEXER->loc_delta_pos(YYLeng());
-	PARSER->error().error(rdoParser::RDOParserSrcInfo(), _T("Не найдено начало комментария"));
+	PARSER->error().error(rdo::compiler::parser::RDOParserSrcInfo(), _T("Не найдено начало комментария"));
 }
 
 [\r\n\t ]+
@@ -360,57 +359,52 @@ $term                          return(RDO_Fuzzy_Term);
 	unput('.');
 	unput('.');
 	LEXER->loc_delta_pos(-2);
-	rdoParser::LPTypeInfo pType = rdo::Factory<rdoParser::TypeInfo>::create(
-		rdo::Factory<rdoParser::RDOType__int>::create(),
-		LEXER->m_lploc ? rdoParser::RDOParserSrcInfo(LEXER_POS, value) : rdoParser::RDOParserSrcInfo(value)
+	rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__int>(
+		LEXER->m_lploc ? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, value) : rdo::compiler::parser::RDOParserSrcInfo(value)
 	);
 	ASSERT(pType);
-	/// @todo TypeInfo, убрать rdoParser::RDOParserSrcInfo()
-	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdoParser::RDOValue>::create(atoi(value.c_str()), pType->src_info(rdoParser::RDOParserSrcInfo()), pType)));
+	/// @todo TypeInfo, убрать rdo::compiler::parser::RDOParserSrcInfo()
+	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdo::compiler::parser::RDOValue>::create(atoi(value.c_str()), pType->src_info(rdo::compiler::parser::RDOParserSrcInfo()), pType)));
 	return RDO_INT_CONST;
 }
 
 ([+-]?[0-9]+"."[0-9]*([Ee][+-]?[0-9]+)?) {
-	rdoParser::LPTypeInfo pType = rdo::Factory<rdoParser::TypeInfo>::create(
-		rdo::Factory<rdoParser::RDOType__real>::create(),
-		LEXER->m_lploc ? rdoParser::RDOParserSrcInfo(LEXER_POS, YYText()) : rdoParser::RDOParserSrcInfo(YYText())
+	rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__real>(
+		LEXER->m_lploc ? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, YYText()) : rdo::compiler::parser::RDOParserSrcInfo(YYText())
 	);
 	ASSERT(pType);
-	/// @todo TypeInfo, убрать rdoParser::RDOParserSrcInfo()
-	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdoParser::RDOValue>::create(atof(YYText()), pType->src_info(rdoParser::RDOParserSrcInfo()), pType)));
+	/// @todo TypeInfo, убрать rdo::compiler::parser::RDOParserSrcInfo()
+	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdo::compiler::parser::RDOValue>::create(atof(YYText()), pType->src_info(rdo::compiler::parser::RDOParserSrcInfo()), pType)));
 	return RDO_REAL_CONST;
 }
 
 [+-]?[0-9]+ {
-	rdoParser::LPTypeInfo pType = rdo::Factory<rdoParser::TypeInfo>::create(
-		rdo::Factory<rdoParser::RDOType__int>::create(),
-		LEXER->m_lploc ? rdoParser::RDOParserSrcInfo(LEXER_POS, YYText()) : rdoParser::RDOParserSrcInfo(YYText())
+	rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__int>(
+		LEXER->m_lploc ? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, YYText()) : rdo::compiler::parser::RDOParserSrcInfo(YYText())
 	);
 	ASSERT(pType);
-	/// @todo TypeInfo, убрать rdoParser::RDOParserSrcInfo()
-	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdoParser::RDOValue>::create(atoi(YYText()), pType->src_info(rdoParser::RDOParserSrcInfo()), pType)));
+	/// @todo TypeInfo, убрать rdo::compiler::parser::RDOParserSrcInfo()
+	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdo::compiler::parser::RDOValue>::create(atoi(YYText()), pType->src_info(rdo::compiler::parser::RDOParserSrcInfo()), pType)));
 	return RDO_INT_CONST;
 }
 
 true {
-	rdoParser::LPTypeInfo pType = rdo::Factory<rdoParser::TypeInfo>::create(
-		rdo::Factory<rdoParser::RDOType__bool>::create(),
-		LEXER->m_lploc ? rdoParser::RDOParserSrcInfo(LEXER_POS, YYText()) : rdoParser::RDOParserSrcInfo(YYText())
+	rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__bool>(
+		LEXER->m_lploc ? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, YYText()) : rdo::compiler::parser::RDOParserSrcInfo(YYText())
 	);
 	ASSERT(pType);
-	/// @todo TypeInfo, убрать rdoParser::RDOParserSrcInfo()
-	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdoParser::RDOValue>::create(rdo::runtime::RDOValue(true), pType->src_info(rdoParser::RDOParserSrcInfo()), pType)));
+	/// @todo TypeInfo, убрать rdo::compiler::parser::RDOParserSrcInfo()
+	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdo::compiler::parser::RDOValue>::create(rdo::runtime::RDOValue(true), pType->src_info(rdo::compiler::parser::RDOParserSrcInfo()), pType)));
 	return RDO_BOOL_CONST;
 }
 
 false {
-	rdoParser::LPTypeInfo pType = rdo::Factory<rdoParser::TypeInfo>::create(
-		rdo::Factory<rdoParser::RDOType__bool>::create(),
-		LEXER->m_lploc ? rdoParser::RDOParserSrcInfo(LEXER_POS, YYText()) : rdoParser::RDOParserSrcInfo(YYText())
+	rdo::compiler::parser::LPTypeInfo pType = rdo::Factory<rdo::compiler::parser::TypeInfo>::delegate<rdo::compiler::parser::RDOType__bool>(
+		LEXER->m_lploc ? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, YYText()) : rdo::compiler::parser::RDOParserSrcInfo(YYText())
 	);
 	ASSERT(pType);
-	/// @todo TypeInfo, убрать rdoParser::RDOParserSrcInfo()
-	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdoParser::RDOValue>::create(rdo::runtime::RDOValue(false), pType->src_info(rdoParser::RDOParserSrcInfo()), pType)));
+	/// @todo TypeInfo, убрать rdo::compiler::parser::RDOParserSrcInfo()
+	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdo::compiler::parser::RDOValue>::create(rdo::runtime::RDOValue(false), pType->src_info(rdo::compiler::parser::RDOParserSrcInfo()), pType)));
 	return RDO_BOOL_CONST;
 }
 
@@ -425,18 +419,18 @@ false {
 	tstring::size_type pos = n1.find_first_of("\r\n\t :");
 	tstring name(n1, 0, pos);
 	RUNTIME->memory_insert(name.length() + sizeof(tstring));
-	rdoParser::LPRDOValue pValue;
+	rdo::compiler::parser::LPRDOValue pValue;
 	if (LEXER->m_lploc)
 	{
 		YYLTYPE pos     = LEXER_POS;
 		pos.m_last_line = pos.m_first_line;
 		pos.m_last_pos  = pos.m_first_pos  + name.length();
 		pos.m_last_seek = pos.m_first_seek + name.length();
-		pValue = rdo::Factory<rdoParser::RDOValue>::create(rdoParser::RDOParserSrcInfo(pos, name));
+		pValue = rdo::Factory<rdo::compiler::parser::RDOValue>::create(rdo::compiler::parser::RDOParserSrcInfo(pos, name));
 	}
 	else
 	{
-		pValue = rdo::Factory<rdoParser::RDOValue>::create(rdoParser::RDOParserSrcInfo(name));
+		pValue = rdo::Factory<rdo::compiler::parser::RDOValue>::create(rdo::compiler::parser::RDOParserSrcInfo(name));
 	}
 	ASSERT(pValue);
 	LEXER->setvalue(PARSER->stack().push(pValue));
@@ -448,18 +442,18 @@ false {
 	tstring::size_type pos = n1.find_first_of("\r\n\t :");
 	tstring name(n1, 0, pos);
 	RUNTIME->memory_insert(name.length() + sizeof(tstring));
-	rdoParser::LPRDOValue pValue;
+	rdo::compiler::parser::LPRDOValue pValue;
 	if (LEXER->m_lploc)
 	{
 		YYLTYPE pos     = LEXER_POS;
 		pos.m_last_line = pos.m_first_line;
 		pos.m_last_pos  = pos.m_first_pos  + name.length();
 		pos.m_last_seek = pos.m_first_seek + name.length();
-		pValue = rdo::Factory<rdoParser::RDOValue>::create(rdoParser::RDOParserSrcInfo(pos, name));
+		pValue = rdo::Factory<rdo::compiler::parser::RDOValue>::create(rdo::compiler::parser::RDOParserSrcInfo(pos, name));
 	}
 	else
 	{
-		pValue = rdo::Factory<rdoParser::RDOValue>::create(rdoParser::RDOParserSrcInfo(name));
+		pValue = rdo::Factory<rdo::compiler::parser::RDOValue>::create(rdo::compiler::parser::RDOParserSrcInfo(name));
 	}
 	ASSERT(pValue);
 	LEXER->setvalue(PARSER->stack().push(pValue));
@@ -471,18 +465,18 @@ false {
 	tstring::size_type pos = n1.find_first_of("\r\n\t :");
 	tstring name(n1, 0, pos);
 	RUNTIME->memory_insert(name.length() + sizeof(tstring));
-	rdoParser::LPRDOValue pValue;
+	rdo::compiler::parser::LPRDOValue pValue;
 	if (LEXER->m_lploc)
 	{
 		YYLTYPE pos     = LEXER_POS;
 		pos.m_last_line = pos.m_first_line;
 		pos.m_last_pos  = pos.m_first_pos  + name.length();
 		pos.m_last_seek = pos.m_first_seek + name.length();
-		pValue = rdo::Factory<rdoParser::RDOValue>::create(rdoParser::RDOParserSrcInfo(pos, name));
+		pValue = rdo::Factory<rdo::compiler::parser::RDOValue>::create(rdo::compiler::parser::RDOParserSrcInfo(pos, name));
 	}
 	else
 	{
-		pValue = rdo::Factory<rdoParser::RDOValue>::create(rdoParser::RDOParserSrcInfo(name));
+		pValue = rdo::Factory<rdo::compiler::parser::RDOValue>::create(rdo::compiler::parser::RDOParserSrcInfo(name));
 	}
 	ASSERT(pValue);
 	LEXER->setvalue(PARSER->stack().push(pValue));
@@ -492,19 +486,19 @@ false {
 [A-Za-zА-Яа-я\xB8_$][A-Za-zА-Яа-я\xB80-9_$]* {
 	tstring name(YYText());
 	RUNTIME->memory_insert(name.length() + sizeof(tstring));
-	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdoParser::RDOValue>::create(LEXER->m_lploc ? rdoParser::RDOParserSrcInfo(LEXER_POS, name) : rdoParser::RDOParserSrcInfo(name))));
+	LEXER->setvalue(PARSER->stack().push(rdo::Factory<rdo::compiler::parser::RDOValue>::create(LEXER->m_lploc ? rdo::compiler::parser::RDOParserSrcInfo(LEXER_POS, name) : rdo::compiler::parser::RDOParserSrcInfo(name))));
 	switch (PARSER->getFileToParse())
 	{
 	case rdoModelObjects::EVN:
 	case rdoModelObjects::PAT:
 		if (PARSER->isPattern())
 		{
-			rdoParser::LPRDOPATPattern pPattern = PARSER->getLastPATPattern();
+			rdo::compiler::parser::LPRDOPATPattern pPattern = PARSER->getLastPATPattern();
 			ASSERT(pPattern);
-			rdoParser::LPRDORelevantResource pCurrRelRes = pPattern->m_pCurrRelRes;
+			rdo::compiler::parser::LPRDORelevantResource pCurrRelRes = pPattern->m_pCurrRelRes;
 			if (pCurrRelRes)
 			{
-				rdoParser::LPRDORTPResType pResType = pCurrRelRes->getType();
+				rdo::compiler::parser::LPRDORTPResType pResType = pCurrRelRes->getType();
 				ASSERT(pResType);
 				if (pResType->findRTPParam(name))
 				{

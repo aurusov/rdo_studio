@@ -122,13 +122,14 @@ SET(HEADER_FILES
 	rdortp_param.h
 	rdosmr.h
 	rdo_value.h
-	variable_container.h
+	bison_value_pair.h
 	# context path
 	context/context_create_calc_i.h
 	context/context_find_i.h
 	context/context_switch_i.h
 	context/context.h
 	context/memory.h
+	context/statement.h
 	context/stack.h
 	context/type.h
 	# parses paht
@@ -144,6 +145,7 @@ SET(HEADER_FILES
 
 SET(INLITE_FILES
 	rdo_logic.inl
+	bison_value_pair.inl
 	rdoparser_lexer.inl
 	rdopatpreparse.inl
 	rdo_value.inl
@@ -180,11 +182,11 @@ SET(SOURCE_FILES
 	rdortp_param.cpp
 	rdosmr.cpp
 	rdo_value.cpp
-	variable_container.cpp
 	# context path
-    context/context_find.cpp
+	context/context_find.cpp
 	context/context.cpp
 	context/memory.cpp
+	context/statement.cpp
 	context/stack.cpp
 	context/type.cpp
 	# parses paht

@@ -57,7 +57,7 @@ void RDOPMDResult::endOfCreation(CREF(LPIResult) pResult)
 	{
 		//! Показатель создаётся не в контексте группы
 		//! Такое может быть из rdoproc_rss.y
-		pResultGroup = rdoParser::RDOParser::s_parser()->findResultGroup(_T(""));
+		pResultGroup = RDOParser::s_parser()->findResultGroup(_T(""));
 		if (!pResultGroup)
 		{
 			//! Нет даже группы по-умолчанию

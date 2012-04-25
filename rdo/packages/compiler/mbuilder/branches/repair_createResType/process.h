@@ -24,9 +24,9 @@ OPEN_COMPILER_MBUILDER_NAMESPACE
 class BlockForQueue
 {
 public:
-	static rbool      checkType (RDOResType rtp,         CREF(rdoParser::RDOParserSrcInfo) info    );
-	static void       createRes (RDOResType rtp,         CREF(tstring)                     res_name);
-	static RDOResType createType(CREF(tstring) rtp_name, CREF(rdoParser::RDOParserSrcInfo) info    );
+	static rbool      checkType (RDOResType rtp,         CREF(parser::RDOParserSrcInfo) info    );
+	static void       createRes (RDOResType rtp,         CREF(tstring)                  res_name);
+	static RDOResType createType(CREF(tstring) rtp_name, CREF(parser::RDOParserSrcInfo) info    );
 };
 
 // --------------------------------------------------------------------------------
@@ -35,10 +35,10 @@ public:
 class BlockForSeize
 {
 public:
-	static rbool      checkType  (RDOResType    rtp,      CREF(rdoParser::RDOParserSrcInfo) info    );
-	static void       createRes  (RDOResType    rtp,      CREF(tstring)                     res_name);
-	static void       reobjectRes(RDOResType    rtp,      CREF(tstring)                     res_name);
-	static RDOResType createType (CREF(tstring) rtp_name, CREF(rdoParser::RDOParserSrcInfo) info    );
+	static rbool      checkType  (RDOResType    rtp,      CREF(parser::RDOParserSrcInfo) info    );
+	static void       createRes  (RDOResType    rtp,      CREF(tstring)                  res_name);
+	static void       reobjectRes(RDOResType    rtp,      CREF(tstring)                  res_name);
+	static RDOResType createType (CREF(tstring) rtp_name, CREF(parser::RDOParserSrcInfo) info    );
 };
 
 CLOSE_COMPILER_MBUILDER_NAMESPACE

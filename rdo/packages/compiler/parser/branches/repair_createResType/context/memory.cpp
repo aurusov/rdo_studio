@@ -14,6 +14,7 @@
 #include "simulator/compiler/parser/context/memory.h"
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/runtime/calc/procedural/calc_locvar.h"
+#include "simulator/runtime/calc/procedural/calc_statement.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -41,7 +42,7 @@ Context::FindResult ContextMemory::onFindContext(CREF(LPRDOValue) pValue) const
 	{
 		LPExpression pExpression = rdo::Factory<Expression>::create(
 			pLocalVariable->getExpression()->typeInfo(),
-			rdo::Factory<rdo::runtime::RDOCalcGetLocalVariable>::create(pLocalVariable->getValue()->value().getIdentificator()),
+			rdo::Factory<rdo::runtime::RDOCalcGetLocalVariable>::create(pLocalVariable->getName()),
 			pValue->src_info()
 		);
 		ASSERT(pExpression);

@@ -42,7 +42,7 @@ rbool RDOPROCAdvance::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 				{
 					return true;
 				}
-				it++;
+				++it;
 			}
 		}
 	}
@@ -73,7 +73,7 @@ IBaseOperation::BOResult RDOPROCAdvance::onDoOperation(CREF(LPRDORuntime) pRunti
 				leave_list.erase(it);
 				return IBaseOperation::BOR_planned_and_run;
 			}
-			it++;
+			++it;
 		}
 	}
 	return IBaseOperation::BOR_cant_run;

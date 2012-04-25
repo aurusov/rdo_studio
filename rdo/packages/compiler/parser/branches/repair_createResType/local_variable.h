@@ -15,6 +15,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdo_value.h"
 #include "simulator/compiler/parser/expression.h"
+#include "simulator/compiler/parser/bison_value_pair.h"
 #include "simulator/compiler/parser/type/info.h"
 // --------------------------------------------------------------------------------
 
@@ -27,17 +28,22 @@ OBJECT(LocalVariable)
 {
 DECLARE_FACTORY(LocalVariable);
 public:
-	CREF(LPRDOValue)   getValue     () const;
-	CREF(LPExpression) getExpression() const;
-	CREF(LPTypeInfo)   getTypeInfo  () const;
+	CREF(tstring)           getName        () const;
+	CREF(RDOParserSrcInfo)  getSrcInfo     () const;
+	CREF(LPExpression)      getExpression  () const;
+	CREF(LPTypeInfo)        getTypeInfo    () const;
+	rdo::runtime::RDOValue  getDefaultValue() const;
 
 private:
-	LocalVariable(CREF(LPRDOValue) pValue, CREF(LPExpression) pExpression, CREF(LPTypeInfo) pType);
+	LocalVariable(CREF(LPRDOValue) pName, CREF(LPExpression) pExpression);
+	virtual ~LocalVariable();
 
-	LPRDOValue    m_pValue;
+	LPRDOValue    m_pName;
 	LPExpression  m_pExpression;
-	LPTypeInfo    m_pType;
 };
+
+typedef BisonValuePair<rdo::runtime::LPRDOCalc, LPLocalVariable> VariableWrapper;
+DECLARE_POINTER(VariableWrapper);
 
 // --------------------------------------------------------------------------------
 // -------------------- LocalVariableList
@@ -46,15 +52,16 @@ OBJECT(LocalVariableList)
 {
 DECLARE_FACTORY(LocalVariableList);
 public:
-	typedef std::list<LPLocalVariable> VariableList;
+	typedef  std::map<tstring, LPLocalVariable>  VariableList;
 
 	void            append           (CREF(LPLocalVariable) pVariable);
 	LPLocalVariable findLocalVariable(CREF(tstring)         name     ) const;
 
 private:
 	LocalVariableList();
+	virtual ~LocalVariableList();
 
-	VariableList m_variableList;
+	VariableList  m_variableList;
 };
 
 // --------------------------------------------------------------------------------
