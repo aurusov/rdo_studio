@@ -350,7 +350,7 @@ dpt_process_line
 	}
 	| stopping_statement
 	{
-		rdoRuntime::LPRDOCalc pCalc = PARSER->stack().pop<rdoRuntime::RDOCalc>($1);
+		rdo::runtime::LPRDOCalc pCalc = PARSER->stack().pop<rdo::runtime::RDOCalc>($1);
 		ASSERT(pCalc);
 		LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCAssign>::create(
 			PARSER->getLastPROCProcess(),
