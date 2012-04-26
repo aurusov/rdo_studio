@@ -201,11 +201,11 @@ public:
 
 	Type   getType    () const { return m_type;                 }
 	rbool  isPermanent() const { return m_type == rt_permanent; }
-	rsint  id         () const { return m_id;                   }
+	ruint  id         () const { return m_id;                   }
 
 private:
 	Type   m_type;
-	rsint  m_id;
+	ruint  m_id;
 };
 	
 // --------------------------------------------------------------------------------

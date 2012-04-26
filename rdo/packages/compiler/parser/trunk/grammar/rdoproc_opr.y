@@ -348,6 +348,18 @@ dpt_process_line
 		ASSERT(pBlock);
 		$$ = PARSER->stack().push(pBlock);
 	}
+	| stopping_statement
+	{
+		rdo::runtime::LPRDOCalc pCalc = PARSER->stack().pop<rdo::runtime::RDOCalc>($1);
+		ASSERT(pCalc);
+		LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCAssign>::create(
+			PARSER->getLastPROCProcess(),
+			_T("Event stop from process"),
+			pCalc
+		);
+		ASSERT(pBlock);
+		$$ = PARSER->stack().push(pBlock);
+	}
 	| RDO_GENERATE fun_arithm
 	{
 		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
