@@ -110,7 +110,7 @@ rbool RDOSimulator::doOperation()
 			{			
 				res = pMetaLogic->onCheckCondition(pRuntime);
 			}
-			catch(RDOUndefinedException exception)
+			catch(CREF(RDOUndefinedException))
 			{
 				res = false;
 			}

@@ -66,8 +66,7 @@ inline tstring RDOValueException::getType() const
 // --------------------------------------------------------------------------------
 // -------------------- RDOUndefinedException
 // --------------------------------------------------------------------------------
-inline RDOUndefinedException::RDOUndefinedException(CREF(tstring) message)
-: RDORuntimeException(message)
+inline RDOUndefinedException::RDOUndefinedException()
 {}
 
 inline tstring RDOUndefinedException::getType() const

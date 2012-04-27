@@ -72,10 +72,10 @@ public:
   \class     RDOValueException
   \brief     Ошибка - значение не определено
 */
-class RDOUndefinedException: public RDORuntimeException
+class RDOUndefinedException
 {
 public:
-	RDOUndefinedException(CREF(tstring) message = "");
+	RDOUndefinedException();
 	virtual tstring getType() const;
 };
 
