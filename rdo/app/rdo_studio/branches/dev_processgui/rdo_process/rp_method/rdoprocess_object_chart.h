@@ -126,8 +126,9 @@ public:
 	virtual RPProject::Cursor getCursor( const rp::point& global_chart_pos );
 
 	// Отрисовка фигуры
-	virtual void draw( CDC& dc );
-	virtual void draw_after( CDC& dc );
+	virtual void draw       ( CDC& dc );
+	virtual void draw_after ( CDC& dc );
+	virtual void drawCustom ( REF(CDC) dc );
 
 	// Габориты фигуры
 	virtual rp::rect getBoundingRect( rbool global = true ) const = 0;

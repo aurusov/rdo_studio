@@ -190,6 +190,11 @@ void RPObjectChart::draw_after( CDC& dc )
 	if ( isSelected() ) draw_selected( dc );
 }
 
+void RPObjectChart::drawCustom(REF(CDC) dc)
+{
+	UNUSED(dc);
+}
+
 void RPObjectChart::setSelected( rbool value )
 {
 	rbool _sel = isSelected();

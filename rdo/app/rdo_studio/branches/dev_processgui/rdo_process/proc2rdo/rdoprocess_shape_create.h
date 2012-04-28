@@ -31,6 +31,8 @@ public:
 
 	virtual void setTransCount(ruint count);
 
+	virtual void drawCustom(REF(CDC) dc);
+
 	//параметры дл€ симул€тора
 	rdo::compiler::gui::LPRPShapeDataBlockCreate m_pParams;
 	rdo::runtime      ::LPIInternalStatistics    pInternalStatistics;
@@ -51,6 +53,8 @@ public:
 	int inf; // бесконечноть
 	int gID; // ID группы
 	double gpar1, gpar2, gpar3;
+
+	ruint indent;
 };
 
 #endif // !defined(AFX_RDOPROCESS_SHAPE_CREATE_MJ_H__B043A584_EC30_4198_83AE_4C54E356FDAF__INCLUDED_)

@@ -42,6 +42,7 @@ RPShapeCreateMJ::RPShapeCreateMJ(PTR(RPObject) _parent)
 	gpar2=0;
 	gpar3=0;
 
+	indent = 5;
 }
 
 RPShapeCreateMJ::~RPShapeCreateMJ()
@@ -167,4 +168,19 @@ void RPShapeCreateMJ::generate()
 void RPShapeCreateMJ::setTransCount(ruint count)
 {
 	m_currentTransactCount = count;
+	update();
+}
+
+void RPShapeCreateMJ::drawCustom(REF(CDC) dc)
+{
+	RPObjectMatrix::draw( dc );
+
+	LOGFONT lf;
+	text_font.GetLogFont(&lf);
+	CFont font;
+	font.CreateFontIndirect(&lf);
+	CFont* old_font = dc.SelectObject(&font);
+	dc.SetTextColor(RGB(0x00, 0x64, 0x00));
+	dc.TextOut((3*(this->pa_global.getMaxX()) + (this->pa_global.getMinX()))/4 - indent, this->pa_global.getMaxY() + indent, rp::string::fromint(m_currentTransactCount).c_str());
+	dc.SelectObject(old_font);
 }

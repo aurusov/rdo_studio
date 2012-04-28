@@ -400,6 +400,8 @@ void RPShape::draw( CDC& dc )
 	// Отрисовка доков для конекторов
 	drawDocks( dc );
 
+	drawCustom( dc );
+
 	// Вывод имени
 	if ( text_show ) {
 		LOGFONT lf;
