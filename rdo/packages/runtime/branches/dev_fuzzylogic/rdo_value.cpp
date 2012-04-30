@@ -49,17 +49,17 @@ RDOValue RDOValue::clone() const
 		return RDOValue(pIterator, pIterator);
 	}
 
-	LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
-	if (pThisFuzzyType)
-	{
-		LPFuzzySet pThisValue = getPointer<FuzzySet>();
-		ASSERT(pThisValue);
+	//LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
+	//if (pThisFuzzyType)
+	//{
+	//	LPFuzzySet pThisValue = getPointer<FuzzySet>();
+	//	ASSERT(pThisValue);
 
-		LPFuzzySet pCloneValue = pThisValue->clone();
-		ASSERT(pCloneValue);
+	//	LPFuzzySet pCloneValue = pThisValue->clone();
+	//	ASSERT(pCloneValue);
 
-		return RDOValue(pCloneValue->type(), pCloneValue);
-	}
+	//	return RDOValue(pCloneValue->type(), pCloneValue);
+	//}
 
 	throw RDOValueException(_T("Для rdo::runtime::RDOValue не определен метод clone()"));
 }
@@ -96,13 +96,13 @@ tstring RDOValue::onPointerAsString() const
 		return pThisMatrixIterator->getValue().getAsString();
 	}
 
-	LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
-	if (pThisFuzzyType)
-	{
-		LPFuzzySet pValue = getPointer<FuzzySet>();
-		ASSERT(pValue);
-		return pValue->getAsString();
-	}
+	//LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
+	//if (pThisFuzzyType)
+	//{
+	//	LPFuzzySet pValue = getPointer<FuzzySet>();
+	//	ASSERT(pValue);
+	//	return pValue->getAsString();
+	//}
 
 	throw RDOValueException(_T("Для rdo::runtime::RDOValue не определен метод getAsString()"));
 }
@@ -158,19 +158,19 @@ REF(RDOValue) RDOValue::onPointerPlus(CREF(RDOValue) rdovalue)
 		}
 	}
 
-	LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
-	if (pThisFuzzyType)
-	{
-		LPFuzzySet pThisValue = getPointer<FuzzySet>();
-		ASSERT(pThisValue);
+	//LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
+	//if (pThisFuzzyType)
+	//{
+	//	LPFuzzySet pThisValue = getPointer<FuzzySet>();
+	//	ASSERT(pThisValue);
 
-		LPRDOFuzzyType pValueFuzzyType = rdovalue.type().object_dynamic_cast<RDOFuzzyType>();
-		if (pValueFuzzyType)
-		{
-			pThisValue->operator+ (rdovalue.getPointer<FuzzySet>());
-			return *this;
-		}
-	}
+	//	LPRDOFuzzyType pValueFuzzyType = rdovalue.type().object_dynamic_cast<RDOFuzzyType>();
+	//	if (pValueFuzzyType)
+	//	{
+	//		pThisValue->operator+ (rdovalue.getPointer<FuzzySet>());
+	//		return *this;
+	//	}
+	//}
 
 	throw RDOValueException(_T("Для rdo::runtime::RDOValue не определен метод onPointerPlus()"));
 }
@@ -199,19 +199,19 @@ REF(RDOValue) RDOValue::onPointerMinus(CREF(RDOValue) rdovalue)
 		}
 	}
 
-	LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
-	if (pThisFuzzyType)
-	{
-		LPFuzzySet pThisValue = getPointer<FuzzySet>();
-		ASSERT(pThisValue);
+	//LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
+	//if (pThisFuzzyType)
+	//{
+	//	LPFuzzySet pThisValue = getPointer<FuzzySet>();
+	//	ASSERT(pThisValue);
 
-		LPRDOFuzzyType pValueFuzzyType = rdovalue.type().object_dynamic_cast<RDOFuzzyType>();
-		if (pValueFuzzyType)
-		{
-			pThisValue->operator -(rdovalue.getPointer<FuzzySet>());
-			return *this;
-		}
-	}
+	//	LPRDOFuzzyType pValueFuzzyType = rdovalue.type().object_dynamic_cast<RDOFuzzyType>();
+	//	if (pValueFuzzyType)
+	//	{
+	//		pThisValue->operator -(rdovalue.getPointer<FuzzySet>());
+	//		return *this;
+	//	}
+	//}
 
 	throw RDOValueException(_T("Для rdo::runtime::RDOValue не определен метод onPointerMinus()"));
 }
@@ -220,19 +220,19 @@ REF(RDOValue) RDOValue::onPointerMult(CREF(RDOValue) rdovalue)
 {
 	ASSERT(typeID() == RDOType::t_pointer);
 
-	LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
-	if (pThisFuzzyType)
-	{
-		LPFuzzySet pThisValue = getPointer<FuzzySet>();
-		ASSERT(pThisValue);
+	//LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
+	//if (pThisFuzzyType)
+	//{
+	//	LPFuzzySet pThisValue = getPointer<FuzzySet>();
+	//	ASSERT(pThisValue);
 
-		LPRDOFuzzyType pValueFuzzyType = rdovalue.type().object_dynamic_cast<RDOFuzzyType>();
-		if (pValueFuzzyType)
-		{
-			pThisValue->operator*(rdovalue.getPointer<FuzzySet>());
-			return *this;
-		}
-	}
+	//	LPRDOFuzzyType pValueFuzzyType = rdovalue.type().object_dynamic_cast<RDOFuzzyType>();
+	//	if (pValueFuzzyType)
+	//	{
+	//		pThisValue->operator*(rdovalue.getPointer<FuzzySet>());
+	//		return *this;
+	//	}
+	//}
 
 	throw RDOValueException(_T("Для rdo::runtime::RDOValue не определен метод onPointerMult()"));
 }
@@ -241,19 +241,19 @@ REF(RDOValue) RDOValue::onPointerDiv(CREF(RDOValue) rdovalue)
 {
 	ASSERT(typeID() == RDOType::t_pointer);
 
-	LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
-	if (pThisFuzzyType)
-	{
-		LPFuzzySet pThisValue = getPointer<FuzzySet>();
-		ASSERT(pThisValue);
+	//LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
+	//if (pThisFuzzyType)
+	//{
+	//	LPFuzzySet pThisValue = getPointer<FuzzySet>();
+	//	ASSERT(pThisValue);
 
-		LPRDOFuzzyType pValueFuzzyType = rdovalue.type().object_dynamic_cast<RDOFuzzyType>();
-		if (pValueFuzzyType)
-		{
-			pThisValue->operator/(rdovalue.getPointer<FuzzySet>());
-			return *this;
-		}
-	}
+	//	LPRDOFuzzyType pValueFuzzyType = rdovalue.type().object_dynamic_cast<RDOFuzzyType>();
+	//	if (pValueFuzzyType)
+	//	{
+	//		pThisValue->operator/(rdovalue.getPointer<FuzzySet>());
+	//		return *this;
+	//	}
+	//}
 
 	throw RDOValueException(_T("Для rdo::runtime::RDOValue не определен метод onPointerMult()"));
 }
@@ -262,13 +262,13 @@ rsint RDOValue::onPointerGetInt() const
 {
 	ASSERT(typeID() == RDOType::t_pointer);
 
-	LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
-	if (pThisFuzzyType)
-	{
-		LPFuzzySet pThisValue = getPointer<FuzzySet>();
-		ASSERT(pThisValue);
-		return MemberFunctionProperties::defuzzyfication(pThisValue).getInt();
-	}
+	//LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
+	//if (pThisFuzzyType)
+	//{
+	//	LPFuzzySet pThisValue = getPointer<FuzzySet>();
+	//	ASSERT(pThisValue);
+	//	return MemberFunctionProperties::defuzzyfication(pThisValue).getInt();
+	//}
 
 	throw RDOValueException(_T("Для rdo::runtime::RDOValue не определен метод onPointerGetInt()"));
 }
@@ -277,13 +277,13 @@ ruint RDOValue::onPointerGetUInt() const
 {
 	ASSERT(typeID() == RDOType::t_pointer);
 
-	LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
-	if (pThisFuzzyType)
-	{
-		LPFuzzySet pThisValue = getPointer<FuzzySet>();
-		ASSERT(pThisValue);
-		return (ruint)MemberFunctionProperties::defuzzyfication(pThisValue).getInt();
-	}
+	//LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
+	//if (pThisFuzzyType)
+	//{
+	//	LPFuzzySet pThisValue = getPointer<FuzzySet>();
+	//	ASSERT(pThisValue);
+	//	return (ruint)MemberFunctionProperties::defuzzyfication(pThisValue).getInt();
+	//}
 
 	throw RDOValueException(_T("Для rdo::runtime::RDOValue не определен метод onPointerGetUInt()"));
 }
@@ -292,18 +292,18 @@ rbool RDOValue::onPointerAnd(CREF(RDOValue) rdovalue) const
 {
 	ASSERT(typeID() == RDOType::t_pointer);
 
-	LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
-	if (pThisFuzzyType)
-	{
-		LPFuzzySet pThisValue = getPointer<FuzzySet>();
-		ASSERT(pThisValue);
+	//LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
+	//if (pThisFuzzyType)
+	//{
+	//	LPFuzzySet pThisValue = getPointer<FuzzySet>();
+	//	ASSERT(pThisValue);
 
-		LPRDOFuzzyType pValueFuzzyType = rdovalue.type().object_dynamic_cast<RDOFuzzyType>();
-		if (pValueFuzzyType)
-		{
-			return pThisValue->operator&&(rdovalue.getPointer<FuzzySet>());
-		}
-	}
+	//	LPRDOFuzzyType pValueFuzzyType = rdovalue.type().object_dynamic_cast<RDOFuzzyType>();
+	//	if (pValueFuzzyType)
+	//	{
+	//		return pThisValue->operator&&(rdovalue.getPointer<FuzzySet>());
+	//	}
+	//}
 
 	throw RDOValueException(_T("Для rdo::runtime::RDOValue не определен метод onPointerAnd()"));
 }
@@ -312,18 +312,18 @@ rbool RDOValue::onPointerOr(CREF(RDOValue) rdovalue) const
 {
 	ASSERT(typeID() == RDOType::t_pointer);
 
-	LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
-	if (pThisFuzzyType)
-	{
-		LPFuzzySet pThisValue = getPointer<FuzzySet>();
-		ASSERT(pThisValue);
+	//LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
+	//if (pThisFuzzyType)
+	//{
+	//	LPFuzzySet pThisValue = getPointer<FuzzySet>();
+	//	ASSERT(pThisValue);
 
-		LPRDOFuzzyType pValueFuzzyType = rdovalue.type().object_dynamic_cast<RDOFuzzyType>();
-		if (pValueFuzzyType)
-		{
-			return pThisValue->operator||(rdovalue.getPointer<FuzzySet>());
-		}
-	}
+	//	LPRDOFuzzyType pValueFuzzyType = rdovalue.type().object_dynamic_cast<RDOFuzzyType>();
+	//	if (pValueFuzzyType)
+	//	{
+	//		return pThisValue->operator||(rdovalue.getPointer<FuzzySet>());
+	//	}
+	//}
 
 	throw RDOValueException(_T("Для rdo::runtime::RDOValue не определен метод onPointerOr()"));
 }
@@ -332,13 +332,13 @@ RDOValue RDOValue::onPointerUMinus() const
 {
 	ASSERT(typeID() == RDOType::t_pointer);
 
-	LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
-	if (pThisFuzzyType)
-	{
-		LPFuzzySet pCloneValue = clone().getPointer<FuzzySet>();
-		ASSERT(pCloneValue);
-		return RDOValue(pCloneValue->type(), MemberFunctionProperties::u_minus(pCloneValue));
-	}
+	//LPRDOFuzzyType pThisFuzzyType = m_pType.object_dynamic_cast<RDOFuzzyType>();
+	//if (pThisFuzzyType)
+	//{
+	//	LPFuzzySet pCloneValue = clone().getPointer<FuzzySet>();
+	//	ASSERT(pCloneValue);
+	//	return RDOValue(pCloneValue->type(), MemberFunctionProperties::u_minus(pCloneValue));
+	//}
 
 	throw RDOValueException(_T("Для rdo::runtime::RDOValue не определен метод onPointerUMinus()"));
 }

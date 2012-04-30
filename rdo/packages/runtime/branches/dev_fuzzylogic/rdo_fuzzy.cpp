@@ -21,10 +21,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 LPFuzzySet FuzzySet::operator&& (CREF(LPFuzzySet) pSet) const
 {
-	if (type() != pSet->type())
-		throw RDOValueException();
-
-	LPFuzzySet pFuzzySetResult = rdo::Factory<FuzzySet>::create(type());
+	LPFuzzySet pFuzzySetResult = rdo::Factory<FuzzySet>::create();
 	ASSERT(pFuzzySetResult);
 	// Найдем только пересекающие элементы и выберем минимальную функцию принадлежности
 	FuzzySetDefinition::const_iterator it1 = begin();
@@ -42,10 +39,7 @@ LPFuzzySet FuzzySet::operator&& (CREF(LPFuzzySet) pSet) const
 
 LPFuzzySet FuzzySet::operator|| (CREF(LPFuzzySet) pSet)const
 {
-	if (type() != pSet->type())
-		throw RDOValueException();
-
-	LPFuzzySet pFuzzySetResult = rdo::Factory<FuzzySet>::create(type());
+	LPFuzzySet pFuzzySetResult = rdo::Factory<FuzzySet>::create();
 	ASSERT(pFuzzySetResult);
 	// Объединим элементы двух множеств
 	// Если элемент одновременно принадлежит обоим множествам, то выберем максимальную функцию принадлежности
@@ -104,19 +98,12 @@ LPFuzzySet MemberFunctionProperties::ext_binary(ExtBinaryFun fun, CREF(LPFuzzySe
 	}
 	if (!values.empty())
 	{
-		LPRDOFuzzyType pFuzzyType = rdo::Factory<RDOFuzzyType>::create();
-		ASSERT(pFuzzyType);
-
-		LPFuzzySet pFuzzySetResult = rdo::Factory<FuzzySet>::create(pFuzzyType);
+		LPFuzzySet pFuzzySetResult = rdo::Factory<FuzzySet>::create();
 		ASSERT(pFuzzySetResult);
 		pFuzzySetResult->setValues(values);
 
 		return pFuzzySetResult;
 	}
-	//else
-	//{
-	//	return rdo::Factory<FuzzySet>::create(RDOFuzzyEmptyType::getInstance());
-	//}
 }
 
 //! Преобразование элементов через произвольную функцию fun
@@ -141,19 +128,12 @@ LPFuzzySet MemberFunctionProperties::ext_unary(ExtUnaryFun fun, CREF(LPFuzzySet)
 	if (!values.empty())
 	{
 
-		LPRDOFuzzyType pFuzzyType = rdo::Factory<RDOFuzzyType>::create();
-		ASSERT(pFuzzyType);
-
-		LPFuzzySet pFuzzySetResult = rdo::Factory<FuzzySet>::create(pFuzzyType);
+		LPFuzzySet pFuzzySetResult = rdo::Factory<FuzzySet>::create();
 		ASSERT(pFuzzySetResult);
 		pFuzzySetResult->setValues(values);
 
 		return pFuzzySetResult;
 	}
-	//else
-	//{
-	//	return rdo::Factory<FuzzySet>::create(RDOFuzzyEmptyType::getInstance());
-	//}
 }
 
 LPFuzzySet MemberFunctionProperties::ext_unary(ExtUnaryFunP fun, PTR(void) pParam, CREF(LPFuzzySet) pSet)
@@ -176,13 +156,10 @@ LPFuzzySet MemberFunctionProperties::ext_unary(ExtUnaryFunP fun, PTR(void) pPara
 	}
 	if (!values.empty())
 	{
-		LPRDOFuzzyType pFuzzyType = rdo::Factory<RDOFuzzyType>::create();
-		ASSERT(pFuzzyType);
 
-		LPFuzzySet pFuzzySetResult = rdo::Factory<FuzzySet>::create(pFuzzyType);
+		LPFuzzySet pFuzzySetResult = rdo::Factory<FuzzySet>::create();
 		ASSERT(pFuzzySetResult);
 		pFuzzySetResult->setValues(values);
-
 		return pFuzzySetResult;
 	}
 }
@@ -255,10 +232,7 @@ LPFuzzySet FuzzySet::clone() const
 
 LPFuzzySet MemberFunctionProperties::a_mult(CREF(LPFuzzySet) pSet1, CREF(LPFuzzySet) pSet2)
 {
-	//if (pSet1->type() != pSet2->type())
-	//	throw RDOValueException();
-
-	LPFuzzySet pFuzzySetResult = rdo::Factory<FuzzySet>::create(pSet1->type());
+	LPFuzzySet pFuzzySetResult = rdo::Factory<FuzzySet>::create();
 	ASSERT(pFuzzySetResult);
 
 	// Найдем только пересекающие элементы и перемножим функции принадлежности
@@ -279,7 +253,7 @@ LPFuzzySet MemberFunctionProperties::alpha(CREF(LPFuzzySet) pSet,double appertai
 	if (appertain < 0) appertain = 0;
 	else if (appertain > 1) appertain = 1;
 
-	LPFuzzySet pFuzzySetResult = rdo::Factory<FuzzySet>::create(pSet->type());
+	LPFuzzySet pFuzzySetResult = rdo::Factory<FuzzySet>::create();
 	ASSERT(pFuzzySetResult);
 
 	FuzzySet::FuzzySetDefinition::const_iterator it = pSet->begin();
@@ -325,13 +299,13 @@ LPFuzzySet MemberFunctionProperties::a_pow(LPFuzzySet pSet, double power)
 	return pFuzzySetResult;
 }
 
-LPRDOLingvoVariable MemberFunctionProperties::fuzzyfication(CREF(RDOValue)value, CREF(RDOLingvoVariable) variable)
+LPRDOLingvoVariable MemberFunctionProperties::fuzzyfication(CREF(RDOValue)value, CREF(LPRDOLingvoVariable) variable)
 {
 	LPRDOLingvoVariable pVariable = rdo::Factory<RDOLingvoVariable>::create(value, variable);
-	for (RDOLingvoVariable::TermSet::const_iterator it = variable.begin(); it != variable.end(); it++)
+	for (RDOLingvoVariable::TermSet::const_iterator it = variable->begin(); it != variable->end(); it++)
 	{
-		FuzzySet pSet = it->second;
-		FuzzySet::FuzzyItem item = pSet.findValue(value);
+		LPFuzzySet pSet = rdo::Factory<FuzzySet>::create(it->second);
+		FuzzySet::FuzzyItem item = pSet->findValue(value);
 		LPFuzzySet newSet = rdo::Factory<FuzzySet>::create();
 		newSet->append(item.first, item.second);
 		pVariable->append(it->first, newSet);
@@ -380,6 +354,4 @@ RDOValue MemberFunctionProperties::defuzzyfication(CREF(LPFuzzySet) pSet)
 // --------------------------------------------------------------------------------
 // -------------------- RDOLingvoVariable
 // --------------------------------------------------------------------------------
-//LPRDOLingvoVariable RDOLingvoVariable::fuzzyfication(CREF(RDOValue) value)
-//{}
 CLOSE_RDO_RUNTIME_NAMESPACE
