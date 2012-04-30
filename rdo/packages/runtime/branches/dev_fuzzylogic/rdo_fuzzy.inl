@@ -46,6 +46,10 @@ inline FuzzySet::FuzzySet()
 inline FuzzySet::FuzzySet(CREF(LPDefineArea) pDefineArea)
 	: m_defineArea(pDefineArea)
 {}
+inline FuzzySet::FuzzySet(CREF(LPFuzzySet) pSet)
+	: m_defineArea(pSet->m_defineArea)
+	, m_fuzzySet  (pSet->m_fuzzySet)
+{}
 inline FuzzySet::~FuzzySet()
 {}
 
@@ -53,14 +57,14 @@ inline void FuzzySet::setValues(CREF(FuzzySetDefinition) values)
 {
 	m_fuzzySet = values;
 }
-inline REF(LPFuzzySet) FuzzySet::append(CREF(RDOValue) rdovalue, double appertain)
+inline LPFuzzySet FuzzySet::append(CREF(RDOValue) rdovalue, double appertain)
 {
 	std::pair<FuzzySet::FuzzySetDefinition::iterator, rbool> checkValue;
 	checkValue = m_fuzzySet.insert(std::pair<RDOValue,double>(rdovalue, appertain));
 	return LPFuzzySet(this);
 }
 
-inline REF(LPFuzzySet) FuzzySet::operator() (CREF(RDOValue) rdovalue, double appertain)
+inline LPFuzzySet FuzzySet::operator() (CREF(RDOValue) rdovalue, double appertain)
 {
 	return append(rdovalue, appertain);
 }
@@ -129,8 +133,13 @@ inline RDOLingvoVariable::TermSet::const_iterator           RDOLingvoVariable::b
 inline RDOLingvoVariable::TermSet::const_iterator           RDOLingvoVariable::end  () const     {return m_set.end  ();}
 inline RDOLingvoVariable::~RDOLingvoVariable()
 {}
+inline RDOLingvoVariable::RDOLingvoVariable(CREF(LPRDOFuzzyTerm) term, nameOfVariable nameOfVariable)
+{
+	m_name = nameOfVariable;
+	m_set.insert(make_pair(term->getName(), term->getFuzzySetDefinition()));
+}
 inline RDOLingvoVariable::RDOLingvoVariable(CREF(RDOValue)pDefineAreaValue, CREF(LPRDOLingvoVariable) variable)
-	: name(_T("activated"))
+	: m_name(_T("activated"))
 {
 	LPDefineArea   defineArea    = rdo::Factory<DefineArea>::create(pDefineAreaValue);
 	LPFuzzySet     setOfVariable = rdo::Factory<FuzzySet>::create(defineArea);
@@ -142,11 +151,11 @@ inline RDOLingvoVariable::RDOLingvoVariable(CREF(RDOValue)pDefineAreaValue, CREF
 inline RDOLingvoVariable::RDOLingvoVariable(CREF(RDOLingvoVariable) variable)
 {
 	m_set = variable.m_set;
-	name  = variable.name;
+	m_name  = variable.m_name;
 }
 inline void RDOLingvoVariable::setName(nameOfVariable nameVariable)
 {
-	name = nameVariable;
+	m_name = nameVariable;
 }
 inline REF(LPFuzzySet) RDOLingvoVariable::operator[] (tstring name)
 {

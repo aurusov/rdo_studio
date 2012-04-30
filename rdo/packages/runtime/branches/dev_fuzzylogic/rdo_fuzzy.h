@@ -51,8 +51,8 @@ public:
 	typedef  std::pair<RDOValue, double>                              FuzzyItem;
 	typedef  std::map<FuzzyItem::first_type, FuzzyItem::second_type>  FuzzySetDefinition;
 
-	REF(LPFuzzySet)                           append     (CREF(RDOValue) rdovalue, double appertain); // вставка с проверкой значения, если такое же есть - не вставит
-	REF(LPFuzzySet)                           operator() (CREF(RDOValue) rdovalue, double appertain);
+	LPFuzzySet                                append     (CREF(RDOValue) rdovalue, double appertain); // вставка с проверкой значения, если такое же есть - не вставит
+	LPFuzzySet                                operator() (CREF(RDOValue) rdovalue, double appertain);
 	REF(double)                               operator[] (CREF(RDOValue) rdovalue); // вставка без проверки значения
 	FuzzySetDefinition::const_iterator        find       (CREF(RDOValue) rdovalue) const;
 	FuzzyItem                                 findValue  (CREF(RDOValue) rdovalue) const;
@@ -75,7 +75,6 @@ public:
 
 	tstring getAsString() const;
 private:
-
 	FuzzySet();
 	FuzzySet(CREF(LPDefineArea) pDefineArea);
 	FuzzySet(CREF(LPFuzzySet) pSet); // KK
@@ -151,17 +150,17 @@ public:
 	REF(LPFuzzySet)                    operator[] (tstring name);
 	
 	void                               setName      (nameOfVariable);
-	nameOfVariable                     getName      () {return name;};
+	nameOfVariable                     getName      () {return m_name;};
 	void                               append       (tstring name,CREF(LPFuzzySet) fuzzySet);
 
 private:
+	TermSet        m_set;
+	nameOfVariable m_name;
 
+	RDOLingvoVariable(CREF(LPRDOFuzzyTerm) term, nameOfVariable nameOfVariable);
 	RDOLingvoVariable(CREF(RDOValue) pDefineAreaValue, CREF(LPRDOLingvoVariable) variable);
 	RDOLingvoVariable(CREF(RDOLingvoVariable)); // KK
 	virtual ~RDOLingvoVariable();
-
-	TermSet        m_set;
-	nameOfVariable name;
 };
 
 OBJECT (Statement)
