@@ -1,0 +1,15 @@
+﻿	</script>
+</head>
+<body>
+	<b><<<a class="ref" href="http://rdo.rk9.bmstu.ru/">Вернуться на rdo.rk9.bmstu.ru</a></b><a> | </a>
+	<a class="ref" href="keyword-index.html">Список ключевых слов</a><br/>
+	<aside>
+		<div style="display:" class="tree">
+			<script type="text/javascript">
+				createTree(Tree);
+			</script>
+		</div>
+	</aside>
+	<iframe id="frm" frameborder="no" src="help/rdo_studio_rus/html/about.htm"></iframe>
+</body>
+</html>
