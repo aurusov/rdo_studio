@@ -53,23 +53,19 @@ def get_files_list(dir):
             files.append(os.path.join(dirname, filename))
     return files
 
+
 def get_test_files(dir):
     files = get_files_list(dir)
     nfile = filter(lambda x: x.endswith(test_expansion), files)
     return nfile
 
-
+    
 def get_executables(dir):
     # get rdo_studio_console executable and test_rdo_studio_console executable
   
     files = get_files_list(dir)
-  
     rdo_ex = filter(lambda x: x.endswith(rdo_ex_substr), files)[0]
     rdo_test_ex = filter(lambda x: x.endswith(rdo_test_ex_substr), files)[0]
-    
-    if not os.path.exists(rdo_ex) or not os.path.exists(rdo_test_ex):
-        print 'Build app not found. Critical error !!!'
-        exit(EXIT_CODE_TERMINATION_ERROR)
   
     return rdo_ex, rdo_test_ex
 
@@ -87,25 +83,27 @@ def get_text_from_node_list(nodelist):
 
 print "STARTED SCRIPT :", sys.argv[0]
 
-# search .rtestx files, rdo and rdo_test executables
-
-files = get_test_files(model_directory)
+# search rdo and rdo_test executables
 executables = get_executables(directory)
 
-files.sort()
-
-rdo_ex = executables[0]
+rdo_ex      = executables[0]
 rdo_test_ex = executables[1]
+
+if not os.path.exists(rdo_ex) or not os.path.exists(rdo_test_ex):
+    print 'Build app not found. Critical error !!!'
+    exit(EXIT_CODE_TERMINATION_ERROR)
+
+# search .rtestx files
+files = get_test_files(model_directory)
+files.sort()
 
 print '\nDEBUG INFO\n'
 
-print 'Find test project files : ', files
-print
-print 'Find RDO executables    : ', executables
+print 'Find RDO executables    : ', executables, '\n'
+print 'Find test project files : ', files, '\n'
 
 # parse xml and start tests
-
-print '\nSTARTED TEST CYCLE'
+print 'STARTED TEST CYCLE'
 
 for task in files:
     print dividing_line
@@ -132,12 +130,12 @@ for task in files:
     model = dirname + model_name_with_ex
     etalon_trace = dirname + etalon_trace_name
     etalon_result =  dirname + etalon_result_name
-  
+
     model_name = model_name_with_ex.partition('.')[0]
-  
+
     simulation_trace = dirname + model_name + trace_expansion
     simulation_result = dirname + model_name + result_expansion
-  
+
     if target == TARGET_CONSOLE:
         simulation_code = os.system(rdo_ex + ' -i ' + model 
                                            + ' >> ' + null_file)
@@ -159,22 +157,22 @@ for task in files:
                                               + ' -t ' + simulation_trace 
                                               + ' -r ' + simulation_result 
                                               + ' >> ' + null_file)
-                                              
+
             if not test_code == EXIT_CODE_TERMINATION_NORMAL:
                 G_EXIT_CODE = EXIT_CODE_TERMINATION_ERROR
                 check_exit_code_string = 'ERROR'
             else:
                 check_exit_code_string =  'OK'
-        
+
         print "TEST EXIT CODE       :", test_code
         print "CHECK TEST CODE      :", check_exit_code_string
-        
+
     else:
         print 'INVALID TARGET'
-  
-  # remove temp file
-  #os.remove(simulation_trace)
-  #os.remove(simulation_result)
+
+    # remove temp file
+    #os.remove(simulation_trace)
+    #os.remove(simulation_result)
 
 print
 
