@@ -10,23 +10,26 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
-RPShapeTerminateMJ::RPShapeTerminateMJ( RPObject* _parent ):
-	RPShape_MJ( _parent, _T("Terminate") )
+RPShapeTerminateMJ::RPShapeTerminateMJ( RPObject* _parent )
+	: RPShape_MJ(_parent, _T("Terminate"))
+	, m_currentTransactCountDel(0)
 {
-	m_term_inc=1;
-	m_name=_T("Terminate");
+	m_term_inc = 1;
+	m_name     = _T("Terminate");
 
 	// инициализация типа блока 
-	type ="block";
+	type = "block";
 		
-	pa_src.push_back( rp::point(-50, 0) );
+	pa_src.push_back( rp::point(-50,   0) );
 	pa_src.push_back( rp::point(-25, -25) );
-	pa_src.push_back( rp::point(50, -25) );
-	pa_src.push_back( rp::point(50, 25) );
-	pa_src.push_back( rp::point(-25, 25) );
-	pa_src.push_back( rp::point(-50, 0) );
+	pa_src.push_back( rp::point( 50, -25) );
+	pa_src.push_back( rp::point( 50,  25) );
+	pa_src.push_back( rp::point(-25,  25) );
+	pa_src.push_back( rp::point(-50,   0) );
 
 	docks.push_back( new RPConnectorDock( this, RPConnectorDock::in,  rp::point( -50, 0 ), 180, "transact" ) );
+
+	indent = 5;
 }
 
 RPShapeTerminateMJ::~RPShapeTerminateMJ()
@@ -49,9 +52,18 @@ void RPShapeTerminateMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 
 void RPShapeTerminateMJ::generate()
 {
+	LPRPShapeTerminateMJ pThis(this);
+	ASSERT(pThis);
+
+	pInternalStatistics = pThis.interface_cast<rdo::runtime::IInternalStatistics>();
+	ASSERT(pInternalStatistics);
+
 	m_pParams = rdo::Factory<rdo::compiler::gui::RPShapeDataBlockTerminate>::create(m_name);
-	m_pParams->setTermInc(m_term_inc);
+	m_pParams->setTermInc   (m_term_inc         );
+	m_pParams->setStatistics(pInternalStatistics);
+
 	studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_TERMINATE, m_pParams.get());
+
 	m_pParams = NULL;
 }
 
@@ -88,4 +100,16 @@ void RPShapeTerminateMJ::loadFromXML(CREF(pugi::xml_node) node)
 	// Отображения объекта на Flowchart'е
 	RPObjectMatrix::loadFromXML(node);
 	RPShape::       loadFromXML(node);
+}
+
+void RPShapeTerminateMJ::setTransCount(ruint count)
+{
+	m_currentTransactCountDel = count;
+	update();
+}
+
+void RPShapeTerminateMJ::drawCustom(REF(CDC) dc)
+{
+	dc.SetTextColor(RGB(0x00, 0x64, 0x00));
+	dc.TextOut(this->pa_global.getMaxX() - 2*indent, this->pa_global.getMaxY() + indent, rp::string::fromint(m_currentTransactCountDel).c_str());
 }

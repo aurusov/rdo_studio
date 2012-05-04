@@ -23,6 +23,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
 inline RDOPROCTerminate::RDOPROCTerminate(CREF(LPIPROCProcess) pProcess, CREF(LPRDOCalc) pCalc)
 	: RDOPROCBlock(pProcess)
 	, pTermCalc   (pCalc   )
-{}
+{
+	m_transCountDel = 0;
+}
 
 CLOSE_RDO_RUNTIME_NAMESPACE
