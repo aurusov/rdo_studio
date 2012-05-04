@@ -62,7 +62,7 @@ private:
 	};
 
 	// Отрисовка фигуры
-	virtual void draw( CDC& dc );
+	virtual void draw(REF(CDC) dc);
 
 	virtual rbool isConnector() const   { return true; }
 

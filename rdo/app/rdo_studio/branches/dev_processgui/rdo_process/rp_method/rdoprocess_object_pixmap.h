@@ -14,7 +14,7 @@ protected:
 	RPPixmap* pixmap;
 
 	virtual void setPosition( double posx, double posy );
-	virtual void draw( CDC& dc );
+	virtual void draw(REF(CDC) dc);
 
 public:
 	RPObjectPixmap( RPObject* parent, RPPixmap* pixmap );

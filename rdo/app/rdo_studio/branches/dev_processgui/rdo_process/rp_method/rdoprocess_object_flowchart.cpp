@@ -435,7 +435,7 @@ rp::rect RPObjectFlowChart::getMaxRect()
 
 RPPixmap* bmp = NULL;
 
-void RPObjectFlowChart::draw( CDC& dc )
+void RPObjectFlowChart::draw(REF(CDC) dc)
 {
 #ifdef TEST_SPEED // -------------------------------------
 	SYSTEMTIME t0;

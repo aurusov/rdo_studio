@@ -104,7 +104,7 @@ public:
 	rect& extendByPerimetr( double delta );
 	rbool isIntersection( const rp::point& p1, const rp::point& p2, std::list< rp::point >& inter );
 
-	void draw( CDC& dc ) const {
+	void draw(REF(CDC) dc) const {
 		dc.MoveTo( static_cast<int>(pa[0].x), static_cast<int>(pa[0].y) );
 		dc.LineTo( static_cast<int>(pa[1].x), static_cast<int>(pa[1].y) );
 		dc.LineTo( static_cast<int>(pa[2].x), static_cast<int>(pa[2].y) );

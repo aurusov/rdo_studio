@@ -84,7 +84,7 @@ public:
 		return pa;
 	}
 
-	void draw( CDC& dc ) const {
+	void draw(REF(CDC) dc) const {
 		if ( isPolygon() ) {
 			dc.Polygon( &getWinPolyline()[0], size() );
 		} else {

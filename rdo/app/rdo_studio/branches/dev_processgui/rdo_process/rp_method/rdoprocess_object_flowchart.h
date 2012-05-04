@@ -130,7 +130,7 @@ public:
 	rp::point mouse_delta() const             { return rp::point( global_win_pos_current.x - global_win_pos_prev.x, global_win_pos_current.y - global_win_pos_prev.y ); }
 
 	// Отрисовка фигуры
-	virtual void draw( CDC& dc );
+	virtual void draw(REF(CDC) dc);
 	// Габориты фигуры
 	virtual rp::rect getBoundingRect( rbool global = true ) const;
 	virtual rp::rect getMaxRect();
