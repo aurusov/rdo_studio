@@ -387,37 +387,42 @@ void RPShape::drawConnectorsInput( CDC& dc )
 }
 */
 
-void RPShape::draw( CDC& dc )
+void RPShape::draw(REF(CDC) dc)
 {
-	RPObjectMatrix::draw( dc );
+	RPObjectMatrix::draw(dc);
 
 	// Перевод фигуры в глобальные координаты
 	transformToGlobal();
 
 	// Отрисовка полигона
-	drawPolyline( dc );
+	drawPolyline(dc);
 
 	// Отрисовка доков для конекторов
-	drawDocks( dc );
+	drawDocks(dc);
 
-	drawCustom( dc );
+	LOGFONT lf;
+	text_font.GetLogFont(&lf);
+	lf.lfEscapement = static_cast<int>(getRotationGlobal()*10);
+
+	CFont font;
+	font.CreateFontIndirect(&lf);
+
+	CFont* old_font = dc.SelectObject(&font);
 
 	// Вывод имени
-	if ( text_show ) {
-		LOGFONT lf;
-		text_font.GetLogFont( &lf );
-		lf.lfEscapement = static_cast<int>(getRotationGlobal() * 10);
-		CFont font;
-		font.CreateFontIndirect( &lf );
-		CFont* old_font = dc.SelectObject( &font );
-		CRect calc( 0, 0, 1, 1 );
-		dc.DrawText( name.c_str(), &calc, DT_CALCRECT | DT_SINGLELINE );
-		rp::point center( -calc.Width()/2, -calc.Height()/2 );
-		center = globalMatrix( m_all & ~m_sc, m_all & ~m_sc ) * center;
-		dc.SetTextColor( text_color );
-		dc.TextOut( static_cast<int>(center.x), static_cast<int>(center.y), name.c_str() );
-		dc.SelectObject( old_font );
+	if (text_show)
+	{
+		CRect calc(0, 0, 1, 1);
+		dc.DrawText(name.c_str(), &calc, DT_CALCRECT | DT_SINGLELINE);
+		rp::point center(-calc.Width()/2, -calc.Height()/2);
+		center = globalMatrix(m_all & ~m_sc, m_all & ~m_sc)*center;
+		dc.SetTextColor(text_color);
+		dc.TextOut(static_cast<int>(center.x), static_cast<int>(center.y), name.c_str());
 	}
+
+	drawCustom(dc);
+
+	dc.SelectObject(old_font);
 /*
 	rp::rect rect = getBoundingRect().getBoundingRect();
 	dc.MoveTo( rect.p0().x, rect.p0().y );

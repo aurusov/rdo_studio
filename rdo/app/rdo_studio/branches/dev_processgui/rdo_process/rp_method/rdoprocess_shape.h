@@ -145,7 +145,7 @@ public:
 
 //	const CPoint& getSnapToPoint() const { return snap_to_point; }
 
-	virtual void draw( CDC& dc );
+	virtual void draw(REF(CDC) dc);
 	virtual void draw_selected( CDC& dc );
 
 	// Габориты фигуры
