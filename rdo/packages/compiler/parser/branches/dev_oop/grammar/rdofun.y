@@ -414,7 +414,7 @@ fun_func_footer
 		rdo::runtime::LPRDOCalcReturnCatch pCalcReturnCatch = pExpressionReturnCatch->calc().object_dynamic_cast<rdo::runtime::RDOCalcReturnCatch>();
 		ASSERT(pCalcReturnCatch);
 
-		pCalcReturnCatch->addStatementList(pCalcBaseStatementList);
+		pCalcReturnCatch->setTryCalc(pCalcBaseStatementList);
 
 		LPRDOFUNFunction pFunction = PARSER->getLastFUNFunction();
 		ASSERT(pFunction);

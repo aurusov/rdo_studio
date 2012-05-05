@@ -213,15 +213,17 @@ REF(RDOValue) RDOCalcBreakCatch::doCalc(CREF(LPRDORuntime) pRuntime)
 RDOCalcReturnCatch::RDOCalcReturnCatch()
 {}
 
-void RDOCalcReturnCatch::addStatementList(CREF(LPRDOCalc) pStatementList)
+void RDOCalcReturnCatch::setTryCalc(CREF(LPRDOCalc) pTryCalc)
 {
-	ASSERT(pStatementList);
-	m_pStatementList = pStatementList;
+	ASSERT(pTryCalc);
+	m_pTryCalc = pTryCalc;
 }
 
 REF(RDOValue) RDOCalcReturnCatch::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	m_value = m_pStatementList->calcValue(pRuntime);
+	ASSERT(m_pTryCalc);
+
+	m_value = m_pTryCalc->calcValue(pRuntime);
 	if (pRuntime->getFunBreakFlag() == RDORuntime::FBF_RETURN)
 	{
 		pRuntime->setFunBreakFlag(RDORuntime::FBF_NONE);
@@ -253,4 +255,5 @@ REF(RDOValue) RDOCalcMultiplexer::doCalc(CREF(LPRDORuntime) pRuntime)
 
 	return m_value;
 }
+
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -136,12 +136,12 @@ CALC(RDOCalcReturnCatch)
 {
 DECLARE_FACTORY(RDOCalcReturnCatch)
 public:
-	void addStatementList(CREF(LPRDOCalc) pStatementList);
+	void setTryCalc(CREF(LPRDOCalc) pTryCalc);
 
 private:
 	RDOCalcReturnCatch();
-	
-	LPRDOCalc m_pStatementList;
+
+	LPRDOCalc m_pTryCalc;
 
 	DECLARE_ICalc;
 };
