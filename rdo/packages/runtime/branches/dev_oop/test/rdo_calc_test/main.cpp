@@ -75,35 +75,6 @@ BOOST_AUTO_TEST_CASE(RDOCalc_MinusDouble)
 	BOOST_CHECK(result.getDouble() == const1 - const2);
 }
 
-CALC(RDOCalcProxy)
-{
-DECLARE_FACTORY(RDOCalcProxy)
-public:
-	void setCalc(CREF(LPRDOCalc) pCalc)
-	{
-		ASSERT(pCalc);
-		m_pCalc = pCalc;
-	}
-
-private:
-	RDOCalcProxy()
-		: m_count(0)
-	{}
-
-	LPRDOCalc m_pCalc;
-	ruint     m_count;
-
-	DECLARE_ICalc;
-};
-
-REF(RDOValue) RDOCalcProxy::doCalc(CREF(LPRDORuntime) pRuntime)
-{
-	ASSERT(m_pCalc);
-
-	m_value = m_pCalc->calcValue(pRuntime);
-	return m_value;
-}
-
 struct RecursCalcSimulator
 {
 	struct Param
@@ -128,35 +99,29 @@ struct RecursCalcSimulator
 		int m_value;
 	};
 
-	int& fun1(Param& param)
+	int fun1(Param& param)
 	{
 		if (param.value() == 1)
 		{
-			m_result = 1;
+			return 1;
 		}
 		else
 		{
-			m_result = fun1(param.dec()) * param.value();
+			return fun1(param.dec()) * param.value();
 		}
-
-		return m_result;
 	}
 
-	int& fun2(Param& param)
+	int fun2(Param& param)
 	{
 		if (param.value() == 1)
 		{
-			m_result = 1;
+			return 1;
 		}
 		else
 		{
-			m_result = param.value() * fun2(param.dec());
+			return param.value() * fun2(param.dec());
 		}
-
-		return m_result;
 	}
-
-	int m_result;
 };
 
 BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
