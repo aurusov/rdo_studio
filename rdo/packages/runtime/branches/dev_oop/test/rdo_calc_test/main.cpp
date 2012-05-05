@@ -15,7 +15,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/runtime/calc/procedural/calc_const.h"
-#include "simulator/runtime/calc/procedural/calc_statement.h"
+#include "simulator/runtime/calc/operation/calc_arithm.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -27,14 +27,17 @@ static const double const2 = 11.4;
 
 typedef  boost::tuple<LPRDORuntime, LPRDOCalc, LPRDOCalc>  CalcPair;
 
-template <class F>
-RDOValue calc(F binder, CREF(CalcPair) calcPair)
+template <class T>
+RDOValue calc(CREF(CalcPair) calcPair)
 {
 	BOOST_CHECK(calcPair.get<0>());
 	BOOST_CHECK(calcPair.get<1>());
 	BOOST_CHECK(calcPair.get<2>());
 
-	return binder.operator()(calcPair.get<1>()->calcValue(calcPair.get<0>()), calcPair.get<2>()->calcValue(calcPair.get<0>()));
+	rdo::intrusive_ptr<T> pCalc = rdo::Factory<T>::create(calcPair.get<1>(), calcPair.get<2>());
+	ASSERT(pCalc);
+
+	return pCalc->calcValue(calcPair.get<0>());
 }
 
 CalcPair prepair()
@@ -53,25 +56,25 @@ CalcPair prepair()
 
 BOOST_AUTO_TEST_CASE(RDOCalc_MultDouble)
 {
-	RDOValue result = calc(boost::bind(&RDOValue::operator*, _1, _2), prepair());
+	RDOValue result = calc<RDOCalcMult>(prepair());
 	BOOST_CHECK(result.getDouble() == const1 * const2);
 }
 
 BOOST_AUTO_TEST_CASE(RDOCalc_DivDouble)
 {
-	RDOValue result = calc(boost::bind(&RDOValue::operator/, _1, _2), prepair());
+	RDOValue result = calc<RDOCalcDiv>(prepair());
 	BOOST_CHECK(result.getDouble() == const1 / const2);
 }
 
 BOOST_AUTO_TEST_CASE(RDOCalc_PlusDouble)
 {
-	RDOValue result = calc(boost::bind(&RDOValue::operator+, _1, _2), prepair());
+	RDOValue result = calc<RDOCalcPlus>(prepair());
 	BOOST_CHECK(result.getDouble() == const1 + const2);
 }
 
 BOOST_AUTO_TEST_CASE(RDOCalc_MinusDouble)
 {
-	RDOValue result = calc(boost::bind(&RDOValue::operator-, _1, _2), prepair());
+	RDOValue result = calc<RDOCalcMinus>(prepair());
 	BOOST_CHECK(result.getDouble() == const1 - const2);
 }
 
