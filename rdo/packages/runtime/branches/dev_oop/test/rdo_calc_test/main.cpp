@@ -75,66 +75,68 @@ BOOST_AUTO_TEST_CASE(RDOCalc_MinusDouble)
 	BOOST_CHECK(result.getDouble() == const1 - const2);
 }
 
-struct RecursCalcSimulator
+BOOST_AUTO_TEST_CASE(RDOCalc_RecursSimulator)
 {
-	struct Param
+	struct RecursCalcSimulator
 	{
-		Param(int value)
-			: m_value(value)
-		{}
-
-		//! Важно, чтобы результат был int, а не REF(int)
-		int value() 
+		struct Param
 		{
-			return m_value;
+			Param(int value)
+				: m_value(value)
+			{}
+
+			//! Важно, чтобы тип был int, а не int&
+			//! Иначе результаты обоих функций будут по 1
+			//! А сейчас 1 и 120
+			int value() 
+			{
+				return m_value;
+			}
+
+			Param& dec()
+			{
+				--m_value;
+				return *this;
+			}
+
+		private:
+			int m_value;
+		};
+
+		int funError(Param& param)
+		{
+			if (param.value() == 1)
+			{
+				return 1;
+			}
+			else
+			{
+				return funError(param.dec()) * param.value();
+			}
 		}
 
-		Param& dec()
+		int funOk(Param& param)
 		{
-			--m_value;
-			return *this;
+			if (param.value() == 1)
+			{
+				return 1;
+			}
+			else
+			{
+				return param.value() * funOk(param.dec());
+			}
 		}
-
-	private:
-		int m_value;
 	};
 
-	int fun1(Param& param)
-	{
-		if (param.value() == 1)
-		{
-			return 1;
-		}
-		else
-		{
-			return fun1(param.dec()) * param.value();
-		}
-	}
-
-	int fun2(Param& param)
-	{
-		if (param.value() == 1)
-		{
-			return 1;
-		}
-		else
-		{
-			return param.value() * fun2(param.dec());
-		}
-	}
-};
-
-BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
-{
 	RecursCalcSimulator calc1;
 	RecursCalcSimulator calc2;
 	RecursCalcSimulator::Param param1(5);
 	RecursCalcSimulator::Param param2(5);
 
-	int result1 = calc1.fun1(param1);
-	int result2 = calc2.fun2(param2);
-	BOOST_CHECK(result1 == 1);
-	BOOST_CHECK(result2 == 120);
+	int resultError = calc1.funError(param1);
+	int resultOk    = calc2.funOk   (param2);
+	BOOST_CHECK(resultError == 1);
+	BOOST_CHECK(resultOk    == 120);
 }
 
 BOOST_AUTO_TEST_SUITE_END() // RDOCalc_Test
