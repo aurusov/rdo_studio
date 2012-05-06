@@ -112,6 +112,8 @@ RDOCalcFunReturn::RDOCalcFunReturn(CREF(LPRDOCalc) pReturn)
 
 REF(RDOValue) RDOCalcFunReturn::doCalc(CREF(LPRDORuntime) pRuntime)
 {
+	ASSERT(m_pReturn);
+
 	m_value = m_pReturn->calcValue(pRuntime);
 	pRuntime->setFunBreakFlag(RDORuntime::FBF_RETURN);
 	return m_value;
@@ -244,15 +246,7 @@ RDOCalcMultiplexer::RDOCalcMultiplexer(CREF(LPRDOCalc)pRightCalc, CREF(LPRDOCalc
 
 REF(RDOValue) RDOCalcMultiplexer::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	RDOValue pRightValue = m_pRightCalc->calcValue(pRuntime);
-	ASSERT(pRightValue);
-
-	RDOValue pLeftValue  = m_pLeftCalc->calcValue(pRuntime);
-	ASSERT(pLeftValue);
-
-	m_value = pLeftValue * pRightValue ;
-	ASSERT(m_value);
-
+	m_value = m_pLeftCalc->calcValue(pRuntime) * m_pRightCalc->calcValue(pRuntime);
 	return m_value;
 }
 
