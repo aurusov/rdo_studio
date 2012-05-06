@@ -15,7 +15,10 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/runtime/calc/procedural/calc_const.h"
+#include "simulator/runtime/calc/procedural/calc_statement.h"
 #include "simulator/runtime/calc/operation/calc_arithm.h"
+#include "simulator/runtime/calc/operation/calc_logic.h"
+#include "simulator/runtime/calc/function/calc_function.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -140,6 +143,134 @@ BOOST_AUTO_TEST_CASE(RDOCalc_RecursSimulator)
 	int resultOk    = calc2.funOk   (param2);
 	BOOST_CHECK(resultError == 1);
 	BOOST_CHECK(resultOk    == 120);
+}
+
+BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
+{
+	struct generator
+	{
+		enum MultOrder
+		{
+			MO_FUN_PARAM,
+			MO_PARAM_FUN
+		};
+
+		static LPRDOCalc create(MultOrder order)
+		{
+			//! ручная набивка тела функции вида
+			//! 
+			//! int fun(int param)
+			//! {
+			//!     if (param == 1)
+			//!     {
+			//!        return 1;
+			//!     }
+			//!     else
+			//!     {
+			//!        return fun(param - 1) * param;
+			//!     }
+			//! }
+
+			LPRDOCalcReturnCatch pReturnCatch = rdo::Factory<RDOCalcReturnCatch>::create();
+			BOOST_CHECK(pReturnCatch);
+
+			LPRDOCalc pGetFunParam = rdo::Factory<RDOCalcFuncParam>::create(0, RDOSrcInfo());
+
+			//! if (param == 1)
+			LPRDOCalc pIFCondition;
+			{
+				LPRDOCalc pParamLeft = pGetFunParam;
+				BOOST_CHECK(pParamLeft);
+
+				LPRDOCalc pParamRight = rdo::Factory<RDOCalcConst>::create(RDOValue(rsint(1)));
+				BOOST_CHECK(pParamRight);
+
+				pIFCondition = rdo::Factory<RDOCalcIsEqual>::create(pParamLeft, pParamRight);
+			}
+			BOOST_CHECK(pIFCondition);
+
+			LPRDOCalcIf pIf = rdo::Factory<RDOCalcIf>::create(pIFCondition);
+			BOOST_CHECK(pIf);
+
+			//! return 1
+			LPRDOCalc pThen = rdo::Factory<RDOCalcFunReturn>::create(
+				rdo::Factory<RDOCalcConst>::create(RDOValue(rsint(1)))
+			);
+			BOOST_CHECK(pThen);
+
+			//! return fun(param - 1) * param
+			LPRDOCalc pElse;
+			{
+				//! Вызов fun(param - 1)
+				LPRDOCalcFunctionCaller pFunctionCallerInternal = rdo::Factory<RDOCalcFunctionCaller>::create(pReturnCatch);
+				BOOST_CHECK(pFunctionCallerInternal);
+
+				//! param - 1
+				LPRDOCalc pParamValue;
+				{
+					LPRDOCalc pParamLeft = pGetFunParam;
+					BOOST_CHECK(pParamLeft);
+
+					LPRDOCalc pParamRight = rdo::Factory<RDOCalcConst>::create(RDOValue(rsint(1)));
+					BOOST_CHECK(pParamRight);
+
+					pParamValue = rdo::Factory<RDOCalcMinus>::create(pParamLeft, pParamRight);
+				}
+				BOOST_CHECK(pParamValue);
+				pFunctionCallerInternal->addParameter(pParamValue);
+
+				// fun(param - 1) * param
+				LPRDOCalc pMult;
+				switch (order)
+				{
+				case MO_FUN_PARAM: pMult = rdo::Factory<RDOCalcMult>::create(pFunctionCallerInternal, pGetFunParam); break;
+				case MO_PARAM_FUN: pMult = rdo::Factory<RDOCalcMult>::create(pGetFunParam, pFunctionCallerInternal); break;
+				}
+				BOOST_CHECK(pMult);
+
+				pElse = rdo::Factory<RDOCalcFunReturn>::create(pMult);
+			}
+			BOOST_CHECK(pElse);
+
+			pIf->setThenStatement(pThen);
+			pIf->setElseStatement(pElse);
+
+			pReturnCatch->setTryCalc(pIf);
+
+			return externalCaller(pReturnCatch);
+		}
+
+	private:
+		//! ручная набивка вызова функции int fun(5)
+		static LPRDOCalc externalCaller(CREF(LPRDOCalc) pBody)
+		{
+			LPRDOCalc pParam = rdo::Factory<RDOCalcConst>::create(RDOValue(rsint(5)));
+			BOOST_CHECK(pParam);
+
+			return caller(pBody, pParam);
+		}
+
+		static LPRDOCalc caller(CREF(LPRDOCalc) pBody, CREF(LPRDOCalc) pParam)
+		{
+			BOOST_CHECK(pBody );
+			BOOST_CHECK(pParam);
+
+			LPRDOCalcFunctionCaller pFunctionCaller = rdo::Factory<RDOCalcFunctionCaller>::create(pBody);
+			BOOST_CHECK(pFunctionCaller);
+
+			pFunctionCaller->addParameter(pParam);
+
+			return pFunctionCaller;
+		}
+	};
+
+	RDOValue resultFunParam = generator::create(generator::MO_FUN_PARAM)->calcValue(rdo::Factory<RDORuntime>::create());
+	tstring resultFunParamStr = resultFunParam.getAsString();
+//	BOOST_CHECK(resultFunParam.getInt() == 120);
+
+	RDOValue resultParamFun = generator::create(generator::MO_PARAM_FUN)->calcValue(rdo::Factory<RDORuntime>::create());
+	tstring resultParamFunStr = resultParamFun.getAsString();
+	BOOST_CHECK(resultParamFun.getInt() == 120);
 }
 
 BOOST_AUTO_TEST_SUITE_END() // RDOCalc_Test
