@@ -271,7 +271,7 @@ BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
 
 	RDOValue resultParamFun = generator::create(generator::MO_PARAM_FUN)->calcValue(rdo::Factory<RDORuntime>::create());
 	tstring resultParamFunStr = resultParamFun.getAsString();
-	BOOST_CHECK(resultParamFun.getInt() == 1);
+	BOOST_CHECK(resultParamFun.getInt() == 120);
 }
 
 BOOST_AUTO_TEST_SUITE_END() // RDOCalc_Test
