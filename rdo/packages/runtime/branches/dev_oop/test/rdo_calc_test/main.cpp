@@ -201,10 +201,6 @@ BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
 			//! return fun(param - 1) * param
 			LPRDOCalc pElse;
 			{
-				//! Вызов fun(param - 1)
-				LPRDOCalcFunctionCaller pFunctionCallerInternal = rdo::Factory<RDOCalcFunctionCaller>::create(pReturnCatch);
-				BOOST_CHECK(pFunctionCallerInternal);
-
 				//! param - 1
 				LPRDOCalc pParamValue;
 				{
@@ -217,14 +213,19 @@ BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
 					pParamValue = rdo::Factory<RDOCalcMinus>::create(pParamLeft, pParamRight);
 				}
 				BOOST_CHECK(pParamValue);
-				pFunctionCallerInternal->addParameter(pParamValue);
 
-				// fun(param - 1) * param
+				//! Вызов fun(param - 1)
+				LPRDOCalc pFunctionCaller = caller(pReturnCatch, pParamValue);
+				BOOST_CHECK(pFunctionCaller);
+
+				//! fun(param - 1) * param
+				//! или 
+				//! param * fun(param - 1)
 				LPRDOCalc pMult;
 				switch (order)
 				{
-				case MO_FUN_PARAM: pMult = rdo::Factory<RDOCalcMult>::create(pFunctionCallerInternal, pGetFunParam); break;
-				case MO_PARAM_FUN: pMult = rdo::Factory<RDOCalcMult>::create(pGetFunParam, pFunctionCallerInternal); break;
+				case MO_FUN_PARAM: pMult = rdo::Factory<RDOCalcMult>::create(pFunctionCaller, pGetFunParam); break;
+				case MO_PARAM_FUN: pMult = rdo::Factory<RDOCalcMult>::create(pGetFunParam, pFunctionCaller); break;
 				}
 				BOOST_CHECK(pMult);
 
@@ -266,7 +267,7 @@ BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
 
 	RDOValue resultFunParam = generator::create(generator::MO_FUN_PARAM)->calcValue(rdo::Factory<RDORuntime>::create());
 	tstring resultFunParamStr = resultFunParam.getAsString();
-//	BOOST_CHECK(resultFunParam.getInt() == 120);
+	BOOST_CHECK(resultFunParam.getInt() == 1);
 
 	RDOValue resultParamFun = generator::create(generator::MO_PARAM_FUN)->calcValue(rdo::Factory<RDORuntime>::create());
 	tstring resultParamFunStr = resultParamFun.getAsString();
