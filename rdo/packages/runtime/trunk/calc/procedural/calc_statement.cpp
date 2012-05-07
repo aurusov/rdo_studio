@@ -172,17 +172,18 @@ RDOCalcStatementList::RDOCalcStatementList()
 
 REF(RDOValue) RDOCalcStatementList::doCalc(CREF(LPRDORuntime) pRuntime)
 {
+	if (pRuntime->getFunBreakFlag() != RDORuntime::FBF_NONE)
+		return m_value;
+
 	STL_FOR_ALL(m_calcStatementList, calcIt)
 	{
-		if (pRuntime->getFunBreakFlag() == RDORuntime::FBF_NONE)
+		LPRDOCalc pCalc = *calcIt;
+		ASSERT(pCalc);
+		m_value = pCalc->calcValue(pRuntime);
+
+		if (pRuntime->getFunBreakFlag() != RDORuntime::FBF_NONE)
 		{
-			LPRDOCalc pCalc = *calcIt;
-			ASSERT(pCalc);
-			m_value = pCalc->calcValue(pRuntime);
-			if (pRuntime->getFunBreakFlag() != RDORuntime::FBF_NONE)
-			{
-				return m_value;
-			}
+			return m_value;
 		}
 	}
 	return m_value;
