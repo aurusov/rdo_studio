@@ -27,7 +27,8 @@ RDOPatternIrregEvent::RDOPatternIrregEvent(rbool trace)
 
 double RDOPatternIrregEvent::getNextTimeInterval(CREF(LPRDORuntime) pRuntime)
 {
-	double time_next = m_timeCalc->calcValue(pRuntime).getDouble();
+	m_timeCalc->calcValue(pRuntime);
+	double time_next = pRuntime->stack().pop().getDouble();
 	if (time_next >= 0)
 	{
 		return time_next;

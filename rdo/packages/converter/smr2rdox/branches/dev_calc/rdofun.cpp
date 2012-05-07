@@ -66,7 +66,7 @@ rdo::runtime::LPRDOCalcConst pConstCalc2 = pSecond->m_pCalc.object_dynamic_cast<
 rdo::runtime::LPRDOCalc pNewCalc; \
 if (pConstCalc1 && pConstCalc2) \
 { \
-	pNewCalc = rdo::Factory<rdo::runtime::RDOCalcConst>::create(pConstCalc1->calcValue(Converter::s_converter()->runtime()) OPR pConstCalc2->calcValue(Converter::s_converter()->runtime())); \
+	pNewCalc = rdo::Factory<rdo::runtime::RDOCalcConst>::create(pConstCalc1->getValue() OPR pConstCalc2->getValue()); \
 	pNewCalc->setSrcInfo(rdo::runtime::RDOCalc##CALC::getStaticSrcInfo(pConstCalc1, pConstCalc2)); \
 } \
 else \
@@ -149,7 +149,8 @@ RDOFUNLogic::RDOFUNLogic(CREF(rdo::runtime::LPRDOCalc) pCalc, rbool hideWarning)
 		rdo::runtime::LPRDOCalcConst pConstCalc = m_pCalc.object_dynamic_cast<rdo::runtime::RDOCalcConst>();
 		if (pConstCalc)
 		{
-			if (pConstCalc->calcValue(Converter::s_converter()->runtime()).getAsBool())
+			pConstCalc->calcValue(Converter::s_converter()->runtime());
+			if (Converter::s_converter()->runtime()->stack().pop().getAsBool())
 			{
 				Converter::s_converter()->error().warning(pConstCalc->srcInfo(), rdo::format(_T("Логическое выражение всегда истинно: %s"), pConstCalc->srcInfo().src_text().c_str()));
 			}
@@ -1646,17 +1647,34 @@ void RDOFUNFunction::createAlgorithmicCalc(CREF(RDOParserSrcInfo) /* body_src_in
 			Converter::s_converter()->error().warning(m_calculateIfList[i]->getCondition()->src_info(), rdo::format(_T("Условие не используется: %s"), m_calculateIfList[i]->getCondition()->src_text().c_str()));
 			Converter::s_converter()->error().warning(pCondition->srcInfo(), rdo::format(_T("Последнее рабочее условие функции: %s"), pCondition->srcInfo().src_text().c_str()));
 		}
-		else if (!pConditionLast || pConditionLast->calcValue(Converter::s_converter()->runtime()).getAsBool())
+		else
 		{
-			//! Игнорируем чистые false-условия предыдущей проверкой
-			pFunAlgorithmicCalc->addCalcIf(pLogicCalc, m_calculateIfList[i]->getAction()->createCalc(m_pReturn->getType()));
-			cnt++;
+			rbool flag = true;
+			if (pConditionLast)
+			{
+				pConditionLast->calcValue(Converter::s_converter()->runtime());
+				if (!Converter::s_converter()->runtime()->stack().pop().getAsBool())
+				{
+					flag = false;
+				}
+			}
+
+			if (flag)
+			{
+				//! Игнорируем чистые false-условия предыдущей проверкой
+				pFunAlgorithmicCalc->addCalcIf(pLogicCalc, m_calculateIfList[i]->getAction()->createCalc(m_pReturn->getType()));
+				cnt++;
+			}
 		}
-		if (!defaultFlag && pConditionLast && pConditionLast->calcValue(Converter::s_converter()->runtime()).getAsBool())
+		if (!defaultFlag && pConditionLast)
 		{
-			trueConst   = true;
-			defaultFlag = true;
-			pCondition  = pConditionLast;
+			pConditionLast->calcValue(Converter::s_converter()->runtime());
+			if (Converter::s_converter()->runtime()->stack().pop().getAsBool())
+			{
+				trueConst   = true;
+				defaultFlag = true;
+				pCondition  = pConditionLast;
+			}
 		}
 	}
 	if (!cnt)
