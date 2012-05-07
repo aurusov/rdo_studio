@@ -294,13 +294,14 @@ BOOST_AUTO_TEST_CASE(RDOCalc_SpeedTest)
 		pPlus->calcValue(pRuntime);
 	}
 	clock::duration duration(clock::now() - timeStart);
+	boost::chrono::duration<double> seconds(duration);
 
 	{
 		using namespace boost::unit_test;
 		log_level logLevelBackup = runtime_config::log_level();
 		unit_test_log.set_threshold_level(log_messages);
 
-		BOOST_TEST_MESSAGE(_T("RDOCalc_SpeedTest: ") << duration);
+		BOOST_TEST_MESSAGE(_T("RDOCalc_SpeedTest: ") << seconds);
 
 		unit_test_log.set_threshold_level(logLevelBackup);
 	}
