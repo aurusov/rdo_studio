@@ -307,23 +307,23 @@ void RDOPATPattern::addRelResConvert(rbool trace, CREF(LPExpression) pStatementL
 	rdo::runtime::LPRDOCalcBaseStatementList pBaseStatementList = pStatementList->calc().object_dynamic_cast<rdo::runtime::RDOCalcBaseStatementList>();
 	ASSERT(pBaseStatementList);
 
-	rdo::runtime::RDOCalc::RDOCalcList _pBaseStatementList = pBaseStatementList->statementList();
-	ASSERT(!_pBaseStatementList.empty());
+	rdo::runtime::RDOCalc::RDOCalcList pCalcList = pBaseStatementList->statementList();
+	ASSERT(!pCalcList.empty());
 
-	STL_FOR_ALL(_pBaseStatementList, calcIt)
+	STL_FOR_ALL(pCalcList, calcIt)
 	{
 		rdo::runtime::LPRDOCalc pCalc = *calcIt;
 		ASSERT(pCalc);
-		rdo::runtime::LPRDOCalcStatementList _pStatementList = pCalc.object_dynamic_cast<rdo::runtime::RDOCalcStatementList>();
-		if(_pStatementList)
+		rdo::runtime::LPRDOCalcStatementList pStatementList = pCalc.object_dynamic_cast<rdo::runtime::RDOCalcStatementList>();
+		if (pStatementList)
 		{
-			if (_pStatementList->statementList().empty() && status == rdo::runtime::RDOResource::CS_Keep)
+			if (pStatementList->statementList().empty() && status == rdo::runtime::RDOResource::CS_Keep)
 			{
 				parser::g_error().warning(convertor_pos, getWarningMessage_EmptyConvertor(m_pCurrRelRes->name(), status));
 			}
 		}
 	}
-	
+
 	addParamSetCalc(pStatementList->calc());
 }
 

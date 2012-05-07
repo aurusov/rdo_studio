@@ -154,8 +154,9 @@ REF(RDOValue) RDOCalcBaseStatementList::doCalc(CREF(LPRDORuntime) pRuntime)
 	{
 		LPRDOCalc pCalc = *calcIt;
 		ASSERT(pCalc);
+
 		RDOValue tempValue = pCalc->calcValue(pRuntime);
-		if(tempValue.typeID()!= RDOType::t_unknow)
+		if (tempValue.typeID() != RDOType::t_unknow)
 		{
 			m_value = tempValue;
 		}
@@ -232,6 +233,5 @@ REF(RDOValue) RDOCalcReturnCatch::doCalc(CREF(LPRDORuntime) pRuntime)
 	}
 	return m_value;
 }
-
 
 CLOSE_RDO_RUNTIME_NAMESPACE

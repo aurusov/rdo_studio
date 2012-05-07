@@ -106,7 +106,7 @@ protected:
 	DECLARE_ICalc;
 };
 
-//!Останавливаемый список операторов
+//! Останавливаемый список операторов
 CALC_SUB(RDOCalcStatementList, RDOCalcBaseStatementList)
 {
 DECLARE_FACTORY(RDOCalcStatementList)

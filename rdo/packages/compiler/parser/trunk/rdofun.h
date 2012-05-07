@@ -591,8 +591,8 @@ private:
 	RDOFUNFunction(CREF(tstring) name,             CREF(LPRDOParam) pReturn);
 	virtual ~RDOFUNFunction();
 
-	typedef std::vector<LPRDOFUNFunctionListElement>           ElementList;
-	typedef std::vector<LPRDOFUNCalculateIf>                   CalculateIfList;
+	typedef  std::vector<LPRDOFUNFunctionListElement>  ElementList;
+	typedef  std::vector<LPRDOFUNCalculateIf>          CalculateIfList;
 
 	LPRDOParam               m_pReturn;
 	ParamList                m_paramList;

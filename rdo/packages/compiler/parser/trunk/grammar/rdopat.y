@@ -1362,7 +1362,7 @@ pat_convert
 		pCalcBaseStatementList->addCalcStatement(pCalcStatementList);
 		pCalcBaseStatementList->addCalcStatement(pCalcCloseBrace);
 
-		LPExpression pExpressionConvert =  rdo::Factory<Expression>::create(pExpressionConvertBody->typeInfo(),pCalcBaseStatementList,pCalcStatementList->srcInfo());
+		LPExpression pExpressionConvert = rdo::Factory<Expression>::create(pExpressionConvertBody->typeInfo(), pCalcBaseStatementList, pCalcStatementList->srcInfo());
 		ASSERT(pExpressionConvert);
 
 		pPattern.object_static_cast<RDOPatternOperation>()->addRelResConvertBeginEnd($3 != 0, pExpressionConvert, false, NULL, @2, @2, @3, @3);
@@ -1402,7 +1402,7 @@ pat_convert
 		pCalcBaseStatementList->addCalcStatement(pCalcStatementList);
 		pCalcBaseStatementList->addCalcStatement(pCalcCloseBrace);
 
-		LPExpression pExpressionConvert =  rdo::Factory<Expression>::create(pExpressionConvertBody->typeInfo(),pCalcBaseStatementList,pCalcStatementList->srcInfo());
+		LPExpression pExpressionConvert = rdo::Factory<Expression>::create(pExpressionConvertBody->typeInfo(), pCalcBaseStatementList, pCalcStatementList->srcInfo());
 		ASSERT(pExpressionConvert);
 
 		pPattern.object_static_cast<RDOPatternOperation>()->addRelResConvertBeginEnd(false, NULL, $3 != 0, pExpressionConvert, @2, @2, @3, @3);
@@ -1506,7 +1506,7 @@ pat_convert
 		pCalcBaseStatementList->addCalcStatement(pCalcStatementList);
 		pCalcBaseStatementList->addCalcStatement(pCalcCloseBrace);
 
-		LPExpression pExpressionConvert =  rdo::Factory<Expression>::create(pExpressionConvertBody->typeInfo(),pCalcBaseStatementList,pCalcStatementList->srcInfo());
+		LPExpression pExpressionConvert = rdo::Factory<Expression>::create(pExpressionConvertBody->typeInfo(), pCalcBaseStatementList, pCalcStatementList->srcInfo());
 		ASSERT(pExpressionConvert);
 
 		pPattern->addRelResConvert($3 != 0, pExpressionConvert, @2, @3, pRelRes->m_statusBegin);
@@ -1548,7 +1548,7 @@ pat_convert
 		pCalcBaseStatementList->addCalcStatement(pCalcStatementList);
 		pCalcBaseStatementList->addCalcStatement(pCalcCloseBrace);
 
-		LPExpression pExpressionConvert =  rdo::Factory<Expression>::create(pExpressionConvertBody->typeInfo(),pCalcBaseStatementList,pCalcStatementList->srcInfo());
+		LPExpression pExpressionConvert = rdo::Factory<Expression>::create(pExpressionConvertBody->typeInfo(), pCalcBaseStatementList, pCalcStatementList->srcInfo());
 		ASSERT(pExpressionConvert);
 
 		ASSERT(pPattern->m_pCurrRelRes);
