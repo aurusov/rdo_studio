@@ -12,6 +12,7 @@
 #define BOOST_TEST_MODULE RDOCalc_Test
 #include <boost/test/included/unit_test.hpp>
 #include <boost/tuple/tuple.hpp>
+#include <boost/chrono.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/runtime/calc/procedural/calc_const.h"
@@ -28,22 +29,22 @@ BOOST_AUTO_TEST_SUITE(RDOCalc_Test)
 static const double const1 = 10.5;
 static const double const2 = 11.4;
 
-typedef  boost::tuple<LPRDORuntime, LPRDOCalc, LPRDOCalc>  CalcPair;
+typedef  boost::tuple<LPRDORuntime, LPRDOCalc, LPRDOCalc>  CalcTriple;
 
 template <class T>
-RDOValue calc(CREF(CalcPair) calcPair)
+RDOValue calc(CREF(CalcTriple) calcTriple)
 {
-	BOOST_CHECK(calcPair.get<0>());
-	BOOST_CHECK(calcPair.get<1>());
-	BOOST_CHECK(calcPair.get<2>());
+	BOOST_CHECK(calcTriple.get<0>());
+	BOOST_CHECK(calcTriple.get<1>());
+	BOOST_CHECK(calcTriple.get<2>());
 
-	rdo::intrusive_ptr<T> pCalc = rdo::Factory<T>::create(calcPair.get<1>(), calcPair.get<2>());
+	rdo::intrusive_ptr<T> pCalc = rdo::Factory<T>::create(calcTriple.get<1>(), calcTriple.get<2>());
 	ASSERT(pCalc);
 
-	return pCalc->calcValue(calcPair.get<0>());
+	return pCalc->calcValue(calcTriple.get<0>());
 }
 
-CalcPair prepair()
+CalcTriple prepair()
 {
 	LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create();
 	BOOST_CHECK(pRuntime);
@@ -54,7 +55,7 @@ CalcPair prepair()
 	LPRDOCalc pRight = rdo::Factory<RDOCalcConst>::create(RDOValue(const2));
 	BOOST_CHECK(pRight);
 
-	return CalcPair(pRuntime, pLeft, pRight);
+	return CalcTriple(pRuntime, pLeft, pRight);
 }
 
 BOOST_AUTO_TEST_CASE(RDOCalc_MultDouble)
@@ -272,6 +273,37 @@ BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
 	RDOValue resultParamFun = generator::create(generator::MO_PARAM_FUN)->calcValue(rdo::Factory<RDORuntime>::create());
 	tstring resultParamFunStr = resultParamFun.getAsString();
 	BOOST_CHECK(resultParamFun.getInt() == 120);
+}
+
+BOOST_AUTO_TEST_CASE(RDOCalc_SpeedTest)
+{
+	CalcTriple triple = prepair();
+	LPRDOCalc pPlus = rdo::Factory<RDOCalcPlus>::create(triple.get<1>(), triple.get<2>());
+	BOOST_CHECK(pPlus);
+
+	LPRDORuntime pRuntime = triple.get<0>();
+	BOOST_CHECK(pRuntime);
+
+	typedef  boost::chrono::process_user_cpu_clock  clock;
+
+	static const ruint RUN_TEST_COUNT = 1000000;
+
+	clock::time_point timeStart = clock::now();
+	for (ruint i = 0; i < RUN_TEST_COUNT; ++i)
+	{
+		pPlus->calcValue(pRuntime);
+	}
+	clock::duration duration(clock::now() - timeStart);
+
+	{
+		using namespace boost::unit_test;
+		log_level logLevelBackup = runtime_config::log_level();
+		unit_test_log.set_threshold_level(log_messages);
+
+		BOOST_TEST_MESSAGE(_T("RDOCalc_SpeedTest: ") << duration);
+
+		unit_test_log.set_threshold_level(logLevelBackup);
+	}
 }
 
 BOOST_AUTO_TEST_SUITE_END() // RDOCalc_Test
