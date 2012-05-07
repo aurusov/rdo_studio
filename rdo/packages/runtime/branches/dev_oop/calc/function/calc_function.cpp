@@ -128,8 +128,14 @@ RDOCalcFuncParam::RDOCalcFuncParam(ruint paramID, CREF(RDOSrcInfo) src_info)
 
 REF(RDOValue) RDOCalcFuncParam::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	m_value = pRuntime->getFuncArgument(m_paramID);
-	return m_value;
+	m_tempValueList.push_back(pRuntime->getFuncArgument(m_paramID));
+	return m_tempValueList.back();
+}
+
+void RDOCalcFuncParam::reset()
+{
+	//! @todo никто не вызывает reset()
+	m_tempValueList.clear();
 }
 
 // --------------------------------------------------------------------------------
