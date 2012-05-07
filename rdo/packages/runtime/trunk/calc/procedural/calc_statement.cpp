@@ -202,6 +202,8 @@ void RDOCalcBreakCatch::addStatementList(CREF(LPRDOCalc) pStatementList)
 
 REF(RDOValue) RDOCalcBreakCatch::doCalc(CREF(LPRDORuntime) pRuntime)
 {
+	ASSERT(m_pStatementList);
+
 	m_value = m_pStatementList->calcValue(pRuntime);
 	if (pRuntime->getFunBreakFlag() == RDORuntime::FBF_BREAK)
 	{
