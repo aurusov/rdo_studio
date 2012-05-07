@@ -233,21 +233,5 @@ REF(RDOValue) RDOCalcReturnCatch::doCalc(CREF(LPRDORuntime) pRuntime)
 	return m_value;
 }
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOCalcMultiplexer
-// --------------------------------------------------------------------------------
-RDOCalcMultiplexer::RDOCalcMultiplexer(CREF(LPRDOCalc)pRightCalc, CREF(LPRDOCalc)pLeftCalc)
-	: m_pRightCalc  (pRightCalc)
-	, m_pLeftCalc   (pLeftCalc )
-{
-	ASSERT(m_pRightCalc);
-	ASSERT(m_pLeftCalc);
-}
-
-REF(RDOValue) RDOCalcMultiplexer::doCalc(CREF(LPRDORuntime) pRuntime)
-{
-	m_value = m_pLeftCalc->calcValue(pRuntime) * m_pRightCalc->calcValue(pRuntime);
-	return m_value;
-}
 
 CLOSE_RDO_RUNTIME_NAMESPACE
