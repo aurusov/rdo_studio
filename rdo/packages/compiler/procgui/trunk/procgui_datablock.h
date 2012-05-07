@@ -94,12 +94,16 @@ public:
 	int     getTermInc() const        { return m_term_inc; }
 	tstring getName   () const        { return m_name;     }
 
+	CREF(rdo::runtime::LPIInternalStatistics) getStatistics() const      { return m_pStatistics; }
+	void setStatistics(CREF(rdo::runtime::LPIInternalStatistics) pStatistics);
+
 private:
 	RPShapeDataBlockTerminate(CREF(tstring) name);
 	virtual ~RPShapeDataBlockTerminate();
 
-	int     m_term_inc;
-	tstring m_name;
+	int                                 m_term_inc;
+	tstring                             m_name;
+	rdo::runtime::LPIInternalStatistics m_pStatistics;
 };
 
 // --------------------------------------------------------------------------------

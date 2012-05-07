@@ -301,6 +301,11 @@ ProcGUIBlockTerminate::ProcGUIBlockTerminate(CREF(LPProcGUIProcess) pProcess, CR
 	ASSERT(pCalc);
 	m_pBlock = RF(rdo::runtime::RDOPROCTerminate)::create(pProcess->getProcess(), pCalc);
 	ASSERT(m_pBlock);
+
+	LPIInternalStatisticsManager pStatisticsManagerDel = m_pBlock;
+	ASSERT(pStatisticsManagerDel);
+
+	pStatisticsManagerDel->setStatistics(m_pParams->getStatistics());
 }
 
 ProcGUIBlockTerminate::~ProcGUIBlockTerminate()

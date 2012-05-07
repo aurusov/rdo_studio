@@ -80,6 +80,11 @@ void RPShapeDataBlockTerminate::setTermInc(int term_inc)
 	m_term_inc = term_inc;
 }
 
+void RPShapeDataBlockTerminate::setStatistics(CREF(rdo::runtime::LPIInternalStatistics) pStatistics)
+{
+	m_pStatistics = pStatistics;
+}
+
 // --------------------------------------------------------------------------------
 // -------------------- RPShapeDataBlockProcess
 // --------------------------------------------------------------------------------
