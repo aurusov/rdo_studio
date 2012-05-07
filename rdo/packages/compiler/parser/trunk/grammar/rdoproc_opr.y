@@ -612,7 +612,7 @@ dpt_term_param
 	{
 		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($1);
 		ASSERT(pArithm);
-		if (pArithm->createCalc()->calcValue(RUNTIME).type()->typeID() == rdo::runtime::RDOType::t_int)
+		if (pArithm->typeInfo()->type()->typeID() == rdo::runtime::RDOType::t_int)
 		{
 			rdo::runtime::LPRDOCalc pCalc = pArithm->createCalc(NULL);
 			LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCTerminate>::create(PARSER->getLastPROCProcess(), _T("TERMINATE"), pCalc);
