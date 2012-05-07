@@ -284,7 +284,7 @@ BOOST_AUTO_TEST_CASE(RDOCalc_SpeedTest)
 	LPRDORuntime pRuntime = triple.get<0>();
 	BOOST_CHECK(pRuntime);
 
-	typedef  boost::chrono::process_user_cpu_clock  clock;
+//	typedef  boost::chrono::process_user_cpu_clock  clock;
 
 	static const ruint RUN_TEST_COUNT = 1000000;
 
