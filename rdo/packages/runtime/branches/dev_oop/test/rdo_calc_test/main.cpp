@@ -12,7 +12,7 @@
 #define BOOST_TEST_MODULE RDOCalc_Test
 #include <boost/test/included/unit_test.hpp>
 #include <boost/tuple/tuple.hpp>
-//#include <boost/chrono.hpp>
+#include <boost/chrono.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/runtime/calc/procedural/calc_const.h"
@@ -284,26 +284,26 @@ BOOST_AUTO_TEST_CASE(RDOCalc_SpeedTest)
 	LPRDORuntime pRuntime = triple.get<0>();
 	BOOST_CHECK(pRuntime);
 
-//	typedef  boost::chrono::process_user_cpu_clock  clock;
+	typedef  boost::chrono::process_user_cpu_clock  clock;
 
 	static const ruint RUN_TEST_COUNT = 1000000;
 
-//	clock::time_point timeStart = clock::now();
+	clock::time_point timeStart = clock::now();
 	for (ruint i = 0; i < RUN_TEST_COUNT; ++i)
 	{
 		pPlus->calcValue(pRuntime);
 	}
-//	clock::duration duration(clock::now() - timeStart);
+	clock::duration duration(clock::now() - timeStart);
 
-	//{
-	//	using namespace boost::unit_test;
-	//	log_level logLevelBackup = runtime_config::log_level();
-	//	unit_test_log.set_threshold_level(log_messages);
+	{
+		using namespace boost::unit_test;
+		log_level logLevelBackup = runtime_config::log_level();
+		unit_test_log.set_threshold_level(log_messages);
 
-	//	BOOST_TEST_MESSAGE(_T("RDOCalc_SpeedTest: ") << duration);
+		BOOST_TEST_MESSAGE(_T("RDOCalc_SpeedTest: ") << duration);
 
-	//	unit_test_log.set_threshold_level(logLevelBackup);
-	//}
+		unit_test_log.set_threshold_level(logLevelBackup);
+	}
 }
 
 BOOST_AUTO_TEST_SUITE_END() // RDOCalc_Test
