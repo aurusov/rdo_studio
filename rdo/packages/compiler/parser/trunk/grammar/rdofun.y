@@ -217,8 +217,8 @@
 #include "simulator/compiler/parser/context/memory.h"
 #include "simulator/compiler/parser/context/statement.h"
 #include "simulator/runtime/calc/procedural/calc_locvar.h"
-#include "simulator/runtime/calc/procedural/calc_braces.h"
 #include "simulator/runtime/calc/procedural/calc_statement.h"
+#include "simulator/runtime/calc/procedural/calc_braces.h"
 #include "simulator/runtime/calc/calc_array.h"
 // --------------------------------------------------------------------------------
 
@@ -392,12 +392,21 @@ fun_func_footer
 		LPExpression pExpressionFunBody = PARSER->stack().pop<Expression>($6);
 		ASSERT(pExpressionFunBody);
 
-		rdo::runtime::LPRDOCalc pCalcEnd = rdo::Factory<rdo::runtime::RDOCalcFunEnd>::create();
-		ASSERT(pCalcEnd);
-
 		rdo::runtime::LPRDOCalcStatementList pCalcStatementList = pExpressionFunBody->calc().object_dynamic_cast<rdo::runtime::RDOCalcStatementList>();
 		ASSERT(pCalcStatementList);
-		pCalcStatementList->addCalcStatement(pCalcEnd);
+
+		rdo::runtime::LPRDOCalcBaseStatementList pCalcBaseStatementList = rdo::Factory<rdo::runtime::RDOCalcBaseStatementList>::create();
+		ASSERT(pCalcBaseStatementList);
+
+		rdo::runtime::LPRDOCalcOpenBrace pCalcOpenBrace = rdo::Factory<rdo::runtime::RDOCalcOpenBrace>::create();
+		ASSERT(pCalcOpenBrace);
+
+		rdo::runtime::LPRDOCalcCloseBrace pCalcCloseBrace = rdo::Factory<rdo::runtime::RDOCalcCloseBrace>::create();
+		ASSERT(pCalcCloseBrace);
+
+		pCalcBaseStatementList->addCalcStatement(pCalcOpenBrace);
+		pCalcBaseStatementList->addCalcStatement(pCalcStatementList);
+		pCalcBaseStatementList->addCalcStatement(pCalcCloseBrace);
 
 		LPExpression pExpressionReturnCatch = PARSER->stack().pop<Expression>($5);
 		ASSERT(pExpressionReturnCatch);
@@ -405,7 +414,7 @@ fun_func_footer
 		rdo::runtime::LPRDOCalcReturnCatch pCalcReturnCatch = pExpressionReturnCatch->calc().object_dynamic_cast<rdo::runtime::RDOCalcReturnCatch>();
 		ASSERT(pCalcReturnCatch);
 
-		pCalcReturnCatch->addStatementList(pCalcStatementList);
+		pCalcReturnCatch->setTryCalc(pCalcBaseStatementList);
 
 		LPRDOFUNFunction pFunction = PARSER->getLastFUNFunction();
 		ASSERT(pFunction);
@@ -1333,7 +1342,7 @@ statement
 	{
 		PARSER->error().error(@1, _T("Не найден символ окончания инструкции - точка с запятой"));
 	}
-	| if_else_statement
+	| if_statement
 	| RDO_else statement
 	{
 		PARSER->error().push_only(@1, rdo::format(_T("Нельзя использовать инструкцию else вне оператора if")));
@@ -1356,14 +1365,23 @@ statement
 		LPExpression pStatementList = PARSER->stack().pop<Expression>($2);
 		ASSERT(pStatementList);
 
-		rdo::runtime::LPRDOCalc pCalcCloseBrace = rdo::Factory<rdo::runtime::RDOCalcCloseBrace>::create();
-		ASSERT(pCalcCloseBrace);
-
 		rdo::runtime::LPRDOCalcStatementList pCalcStatementList = pStatementList->calc().object_dynamic_cast<rdo::runtime::RDOCalcStatementList>();
 		ASSERT(pCalcStatementList);
-		pCalcStatementList->addCalcStatement(pCalcCloseBrace);
 
-		LPExpression pExpression = rdo::Factory<Expression>::create(pStatementList->typeInfo(), pCalcStatementList, RDOParserSrcInfo(@1, @3));
+		rdo::runtime::LPRDOCalcBaseStatementList pCalcBaseStatementList = rdo::Factory<rdo::runtime::RDOCalcBaseStatementList>::create();
+		ASSERT(pCalcBaseStatementList);
+
+		rdo::runtime::LPRDOCalcOpenBrace pCalcOpenBrace = rdo::Factory<rdo::runtime::RDOCalcOpenBrace>::create();
+		ASSERT(pCalcOpenBrace);
+
+		rdo::runtime::LPRDOCalcCloseBrace pCalcCloseBrace = rdo::Factory<rdo::runtime::RDOCalcCloseBrace>::create();
+		ASSERT(pCalcCloseBrace);
+
+		pCalcBaseStatementList->addCalcStatement(pCalcOpenBrace);
+		pCalcBaseStatementList->addCalcStatement(pCalcStatementList);
+		pCalcBaseStatementList->addCalcStatement(pCalcCloseBrace);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pStatementList->typeInfo(), pCalcBaseStatementList, RDOParserSrcInfo(@1, @3));
 		ASSERT(pExpression);
 
 		$$ = PARSER->stack().push(pExpression);
@@ -1393,11 +1411,6 @@ statement_list
 	{
 		rdo::runtime::LPRDOCalcStatementList pCalcStatementList = rdo::Factory<rdo::runtime::RDOCalcStatementList>::create();
 		ASSERT(pCalcStatementList);
-
-		rdo::runtime::LPRDOCalc pCalcOpenBrace = rdo::Factory<rdo::runtime::RDOCalcOpenBrace>::create();
-		ASSERT(pCalcOpenBrace);
-
-		pCalcStatementList->addCalcStatement(pCalcOpenBrace);
 
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo());
 		ASSERT(pType);
@@ -1950,66 +1963,25 @@ init_declaration
 	}
 	;
 
-if_else_statement
-	: if_statement
+else_statement
+	: RDO_else statement
 	{
-		PARSER->contextStack()->pop();
-	}
-	| if_statement RDO_else statement
-	{
-		LPExpression pExpression = PARSER->stack().pop<Expression>($1);
-		ASSERT(pExpression);
-
-		rdo::runtime::LPRDOCalcIf pCalc = pExpression->calc().object_dynamic_cast<rdo::runtime::RDOCalcIf>();
-		ASSERT(pCalc);
-
-		if (!pCalc->hasElse())
-		{
-			LPExpression pExpressionStatement = PARSER->stack().pop<Expression>($3);
-			ASSERT(pExpressionStatement);
-
-			rdo::runtime::LPRDOCalc pCalcStatement = pExpressionStatement->calc();
-			ASSERT(pCalcStatement);
-
-			pCalc->setElseStatement(pCalcStatement);
-
-			LPContextReturnable pContextReturnableChild = PARSER->context()->cast<ContextReturnable>();
-			ASSERT(pContextReturnableChild);
-
-			PARSER->contextStack()->pop();
-
-			LPContextReturnable pContextReturnableParent = PARSER->context()->cast<ContextReturnable>();
-			ASSERT(pContextReturnableParent);
-
-			pContextReturnableParent->addContext(pContextReturnableChild);
-
-			$$ = PARSER->stack().push(pExpression);
-		}
-		else
-		{
-			PARSER->error().error(@2, rdo::format(_T("С одним If нельзя использовать больше одного Else")));
-		}
-	}
-	;
-
-if_statement
-	: if_header statement
-	{
-		LPExpression pExpression = PARSER->stack().pop<Expression>($1);
-		ASSERT(pExpression);
-
 		LPExpression pExpressionStatement = PARSER->stack().pop<Expression>($2);
 		ASSERT(pExpressionStatement);
 
-		rdo::runtime::LPRDOCalcIf pCalc = pExpression->calc().object_dynamic_cast<rdo::runtime::RDOCalcIf>();
-		ASSERT(pCalc);
+		PARSER->contextStack()->pop();
 
-		rdo::runtime::LPRDOCalc pCalcStatement = pExpressionStatement->calc();
-		ASSERT(pCalcStatement);
+		$$ = PARSER->stack().push(pExpressionStatement);
+	}
+	;
 
-		pCalc->setThenStatement(pCalcStatement);
-
-		LPContextReturnable pContextReturnableChild = PARSER->context()->cast<ContextReturnable>();
+then_statement
+	: statement
+	{
+		LPExpression pExpressionStatement = PARSER->stack().pop<Expression>($1);
+		ASSERT(pExpressionStatement);
+		
+		LPContextReturnable pContextReturnableChild = rdo::Factory<ContextReturnable>::create();
 		ASSERT(pContextReturnableChild);
 
 		PARSER->contextStack()->pop();
@@ -2019,16 +1991,62 @@ if_statement
 
 		pContextReturnableParent->addContext(pContextReturnableChild);
 
-		LPContextReturnable pContextReturnable = rdo::Factory<ContextReturnable>::create();
-		ASSERT(pContextReturnable);
+		PARSER->contextStack()->push(pContextReturnableChild);
 
-		PARSER->contextStack()->push(pContextReturnable);
-
-		$$ = PARSER->stack().push(pExpression);
+		$$ = PARSER->stack().push(pExpressionStatement);
 	}
 	;
 
-if_header
+
+if_statement
+	: if_condition then_statement
+	{
+		LPExpression pExpressionCondition = PARSER->stack().pop<Expression>($1);
+		ASSERT(pExpressionCondition);
+
+		LPExpression pExpressionStatement = PARSER->stack().pop<Expression>($2);
+		ASSERT(pExpressionStatement);
+
+		rdo::runtime::LPRDOCalcIf pCalc = pExpressionCondition->calc().object_dynamic_cast<rdo::runtime::RDOCalcIf>();
+		ASSERT(pCalc);
+
+		rdo::runtime::LPRDOCalc pCalcStatement = pExpressionStatement->calc();
+		ASSERT(pCalcStatement);
+
+		pCalc->setThenStatement(pCalcStatement);
+
+		PARSER->contextStack()->pop();
+
+		$$ = PARSER->stack().push(pExpressionCondition);
+	}
+	| if_condition then_statement else_statement
+	{
+		LPExpression pExpressionCondition = PARSER->stack().pop<Expression>($1);
+		ASSERT(pExpressionCondition);
+
+		LPExpression pExpressionThenStatement = PARSER->stack().pop<Expression>($2);
+		ASSERT(pExpressionThenStatement);
+
+		LPExpression pExpressionElseStatement = PARSER->stack().pop<Expression>($3);
+		ASSERT(pExpressionElseStatement);
+
+		rdo::runtime::LPRDOCalcIf pCalc = pExpressionCondition->calc().object_dynamic_cast<rdo::runtime::RDOCalcIf>();
+		ASSERT(pCalc);
+
+		rdo::runtime::LPRDOCalc pCalcThenStatement = pExpressionThenStatement->calc();
+		ASSERT(pCalcThenStatement);
+
+		rdo::runtime::LPRDOCalc pCalcElseStatement = pExpressionThenStatement->calc();
+		ASSERT(pCalcElseStatement);
+
+		pCalc->setThenStatement(pCalcThenStatement);
+		pCalc->setElseStatement(pCalcElseStatement);
+
+		$$ = PARSER->stack().push(pExpressionCondition);
+	}
+	;
+
+if_condition
 	: RDO_if '(' fun_logic ')'
 	{
 		LPRDOFUNLogic pCondition = PARSER->stack().pop<RDOFUNLogic>($3);
@@ -2048,6 +2066,11 @@ if_header
 
 		LPContextReturnable pContextReturnableChild = rdo::Factory<ContextReturnable>::create();
 		ASSERT(pContextReturnableChild);
+
+		LPContextReturnable pContextReturnableParent = PARSER->context()->cast<ContextReturnable>();
+		ASSERT(pContextReturnableParent);
+
+		pContextReturnableParent->addContext(pContextReturnableChild);
 
 		PARSER->contextStack()->push(pContextReturnableChild);
 

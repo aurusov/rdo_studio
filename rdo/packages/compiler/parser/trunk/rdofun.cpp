@@ -717,7 +717,6 @@ LPRDOFUNArithm RDOFUNParams::createCall(CREF(tstring) funName)
 	pCalc = pFunction->getReturn()->getTypeInfo()->type()->calc_cast(pCalc, pFunction->getReturn()->getTypeInfo()->type());
 	ASSERT(pCalc);
 	rdo::runtime::LPRDOCalcFunctionCaller pFuncCall = rdo::Factory<rdo::runtime::RDOCalcFunctionCaller>::create(pCalc);
-	pFunction->insertPostLinked(pFuncCall);
 	pFuncCall->setSrcInfo(src_info());
 	for (ruint i = 0; i < nParams; i++)
 	{
@@ -1637,12 +1636,6 @@ void RDOFUNFunction::setReturnFlag(rbool flag)
 	m_returnFlag = flag;
 }
 
-void RDOFUNFunction::insertPostLinked(CREF(rdo::runtime::LPRDOCalcFunctionCaller) pCalc)
-{
-	ASSERT(pCalc);
-	m_postLinkedList.push_back(pCalc);
-}
-
 rdo::runtime::LPRDOCalc RDOFUNFunction::getFunctionCalc() const
 {
 	return m_pFunctionCalc;
@@ -1655,10 +1648,6 @@ void RDOFUNFunction::setFunctionCalc(CREF(rdo::runtime::LPRDOCalc) pCalc)
 	if (m_pFunctionCalc->srcInfo().src_empty())
 	{
 		m_pFunctionCalc->setSrcInfo(src_info());
-	}
-	STL_FOR_ALL(m_postLinkedList, it)
-	{
-		(*it)->setFunctionCalc(getFunctionCalc());
 	}
 }
 
