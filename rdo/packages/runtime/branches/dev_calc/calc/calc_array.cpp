@@ -24,13 +24,12 @@ RDOCalcArraySize::RDOCalcArraySize(CREF(LPRDOCalc) pCalc)
 	: m_pCalc(pCalc)
 {}
 
-REF(RDOValue) RDOCalcArraySize::doCalc(CREF(LPRDORuntime) pRuntime)
+void RDOCalcArraySize::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	REF(RDOValue) value = m_pCalc->calcValue(pRuntime);
-	CREF(LPRDOArrayValue) pArrayValue = value.getPointerSafety<RDOArrayType>();
+	m_pCalc->calcValue(pRuntime);
+	CREF(LPRDOArrayValue) pArrayValue = pRuntime->stack().pop().getPointerSafety<RDOArrayType>();
 	ASSERT(pArrayValue);
-	m_value = RDOValue(pArrayValue->size());
-	return m_value;
+	pRuntime->stack().push(RDOValue(pArrayValue->size()));
 }
 
 // --------------------------------------------------------------------------------
@@ -46,15 +45,15 @@ RDOCalcArrayItem::RDOCalcArrayItem(CREF(LPRDOCalc) pArray, CREF(LPRDOCalc) pArra
 	setSrcInfo(m_pArrayInd->srcInfo());
 }
 
-REF(RDOValue) RDOCalcArrayItem::doCalc(CREF(LPRDORuntime) pRuntime)
+void RDOCalcArrayItem::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	REF(RDOValue) value = m_pArray->calcValue(pRuntime);
+	m_pArray->calcValue(pRuntime);
 
-	CREF(LPRDOArrayValue) pArrayValue = value.getPointerSafety<RDOArrayType>();
+	CREF(LPRDOArrayValue) pArrayValue = pRuntime->stack().pop().getPointerSafety<RDOArrayType>();
 	ASSERT(pArrayValue);
 
-	m_value = pArrayValue->getItem(m_pArrayInd->calcValue(pRuntime));
-	return m_value;
+	m_pArrayInd->calcValue(pRuntime);
+	pRuntime->stack().push(pArrayValue->getItem(pRuntime->stack().pop()));
 }
 
 // --------------------------------------------------------------------------------
@@ -72,15 +71,19 @@ RDOCalcSetArrayItem::RDOCalcSetArrayItem(CREF(LPRDOCalc) pArray, CREF(LPRDOCalc)
 	setSrcInfo(m_pArrayInd->srcInfo());
 }
 
-REF(RDOValue) RDOCalcSetArrayItem::doCalc(CREF(LPRDORuntime) pRuntime)
+void RDOCalcSetArrayItem::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	m_value = m_pArray->calcValue(pRuntime);
+	m_pArray->calcValue(pRuntime);
 
-	CREF(LPRDOArrayValue) pArrayValue = m_value.getPointerSafety<RDOArrayType>();
+	CREF(LPRDOArrayValue) pArrayValue = pRuntime->stack().pop().getPointerSafety<RDOArrayType>();
 	ASSERT(pArrayValue);
-	pArrayValue->setItem(m_pArrayInd->calcValue(pRuntime), m_pSetItem->calcValue(pRuntime));
 
-	return m_value;
+	m_pArrayInd->calcValue(pRuntime);
+	m_pSetItem ->calcValue(pRuntime);
+
+	RDOValue value = pRuntime->stack().pop();
+	RDOValue index = pRuntime->stack().pop();
+	pArrayValue->setItem(index, value);
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

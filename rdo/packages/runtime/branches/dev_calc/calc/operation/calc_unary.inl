@@ -12,6 +12,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/operation/operation_name.h"
 #include "simulator/runtime/calc/procedural/calc_const.h"
+#include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -26,7 +27,7 @@ inline RDOCalcUnaryBase::RDOCalcUnaryBase(CREF(LPRDOCalc) pOperation)
 }
 
 template <class T>
-LPRDOCalc RDOCalcUnaryBase::generateCalc(CREF(RDOSrcInfo::Position) position, CREF(LPRDOCalc) pUnaryCalc)
+inline LPRDOCalc RDOCalcUnaryBase::generateCalc(CREF(RDOSrcInfo::Position) position, CREF(LPRDOCalc) pUnaryCalc)
 {
 	ASSERT(pUnaryCalc);
 
@@ -35,7 +36,7 @@ LPRDOCalc RDOCalcUnaryBase::generateCalc(CREF(RDOSrcInfo::Position) position, CR
 	if (pConstCalc)
 	{
 		typename T::value_operator pOperation = T::getOperation();
-		pCalc = rdo::Factory<RDOCalcConst>::create((pConstCalc->calcValue(NULL).*pOperation)());
+		pCalc = rdo::Factory<RDOCalcConst>::create((pConstCalc->getValue().*pOperation)());
 		pCalc->setSrcInfo(T::getStaticSrcInfo(position, pConstCalc));
 	}
 	else
@@ -72,11 +73,11 @@ inline typename RDOCalcUnary<ret_type, pOperator, CalcType>::value_operator RDOC
 }
 
 template <typename ret_type, ret_type (RDOValue::*pOperator)() const, typename OperatorType::Type CalcType>
-inline REF(RDOValue) RDOCalcUnary<ret_type, pOperator, CalcType>::doCalc(CREF(LPRDORuntime) pRuntime)
+inline void RDOCalcUnary<ret_type, pOperator, CalcType>::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	++OperatorType::getCalcCounter<CalcType>();
-	m_value = (m_pOperation->calcValue(pRuntime).*pOperator)();
-	return m_value;
+	m_pOperation->calcValue(pRuntime);
+	pRuntime->stack().push((pRuntime->stack().pop().*pOperator)());
 }
 
 // --------------------------------------------------------------------------------

@@ -43,16 +43,37 @@ inline RDODPTActivityCompare::RDODPTActivityCompare(CREF(LPRDORuntime) pRuntime)
 	: m_pRuntime(pRuntime)
 {}
 
-inline rbool RDODPTActivityCompare::operator() (CREF(LPIBaseOperation) opr1, CREF(LPIBaseOperation) opr2)
+inline rbool RDODPTActivityCompare::operator() (CREF(LPIBaseOperation) pOpr1, CREF(LPIBaseOperation) pOpr2)
 {
-	LPIPriority pattern1 = opr1;
-	LPIPriority pattern2 = opr2;
-	if (pattern1 && pattern2)
+	LPIPriority pPattern1 = pOpr1;
+	LPIPriority pPattern2 = pOpr2;
+	if (pPattern1 && pPattern2)
 	{
-		LPRDOCalc prior1 = pattern1->getPrior();
-		LPRDOCalc prior2 = pattern2->getPrior();
-		RDOValue value1 = prior1 ? prior1->calcValue(m_pRuntime) : RDOValue(0.0);
-		RDOValue value2 = prior2 ? prior2->calcValue(m_pRuntime) : RDOValue(0.0);
+		LPRDOCalc pPrior1 = pPattern1->getPrior();
+		LPRDOCalc pPrior2 = pPattern2->getPrior();
+
+		RDOValue value1;
+		if (pPrior1)
+		{
+			pPrior1->calcValue(m_pRuntime);
+			value1 = m_pRuntime->stack().pop();
+		}
+		else
+		{
+			value1 = RDOValue(0.0);
+		}
+
+		RDOValue value2;
+		if (pPrior2)
+		{
+			pPrior2->calcValue(m_pRuntime);
+			value2 = m_pRuntime->stack().pop();
+		}
+		else
+		{
+			RDOValue(0.0);
+		}
+
 		return value1 > value2;
 	}
 	return false;

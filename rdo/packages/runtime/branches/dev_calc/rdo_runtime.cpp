@@ -84,7 +84,8 @@ rbool RDORuntime::endCondition()
 	{
 		return false; // forever
 	}
-	return fabs(m_pTerminateIfCalc->calcValue(this).getDouble()) > DBL_EPSILON;
+	m_pTerminateIfCalc->calcValue(this);
+	return fabs(stack().pop().getDouble()) > DBL_EPSILON;
 }
 
 void RDORuntime::setTerminateIf(CREF(LPRDOCalc) pTerminateIfCalc)
@@ -97,7 +98,8 @@ rbool RDORuntime::breakPoints()
 {
 	STL_FOR_ALL_CONST(m_breakPointList, it)
 	{
-		if ((*it)->getCalc()->calcValue(this).getAsBool())
+		(*it)->getCalc()->calcValue(this);
+		if (stack().pop().getAsBool())
 		{
 			m_pLastActiveBreakPoint = *it;
 			return true;

@@ -41,7 +41,9 @@ RDOValue calc(CREF(CalcTriple) calcTriple)
 	rdo::intrusive_ptr<T> pCalc = rdo::Factory<T>::create(calcTriple.get<1>(), calcTriple.get<2>());
 	ASSERT(pCalc);
 
-	return pCalc->calcValue(calcTriple.get<0>());
+	pCalc->calcValue(calcTriple.get<0>());
+
+	return calcTriple.get<0>()->stack().pop();
 }
 
 CalcTriple prepair()
@@ -266,13 +268,21 @@ BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
 		}
 	};
 
-	RDOValue resultFunParam = generator::create(generator::MO_FUN_PARAM)->calcValue(rdo::Factory<RDORuntime>::create());
-	tstring resultFunParamStr = resultFunParam.getAsString();
-	BOOST_CHECK(resultFunParam.getInt() == 120);
+	{
+		LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create();
+		generator::create(generator::MO_FUN_PARAM)->calcValue(pRuntime);
+		RDOValue resultFunParam = pRuntime->stack().pop();
+		tstring resultFunParamStr = resultFunParam.getAsString();
+		BOOST_CHECK(resultFunParam.getInt() == 120);
+	}
 
-	RDOValue resultParamFun = generator::create(generator::MO_PARAM_FUN)->calcValue(rdo::Factory<RDORuntime>::create());
-	tstring resultParamFunStr = resultParamFun.getAsString();
-	BOOST_CHECK(resultParamFun.getInt() == 120);
+	{
+		LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create();
+		generator::create(generator::MO_PARAM_FUN)->calcValue(pRuntime);
+		RDOValue resultParamFun = pRuntime->stack().pop();
+		tstring resultParamFunStr = resultParamFun.getAsString();
+		BOOST_CHECK(resultParamFun.getInt() == 120);
+	}
 }
 
 BOOST_AUTO_TEST_CASE(RDOCalc_SpeedTest)
@@ -292,6 +302,7 @@ BOOST_AUTO_TEST_CASE(RDOCalc_SpeedTest)
 	for (ruint i = 0; i < RUN_TEST_COUNT; ++i)
 	{
 		pPlus->calcValue(pRuntime);
+		pRuntime->stack().pop();
 	}
 	clock::duration duration(clock::now() - timeStart);
 	boost::chrono::duration<double> seconds(duration);

@@ -25,10 +25,9 @@ RDOCalcNop::RDOCalcNop()
 RDOCalcNop::~RDOCalcNop()
 {}
 
-REF(RDOValue) RDOCalcNop::doCalc(CREF(LPRDORuntime) pRuntime)
+void RDOCalcNop::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	UNUSED(pRuntime);
-	return m_value;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

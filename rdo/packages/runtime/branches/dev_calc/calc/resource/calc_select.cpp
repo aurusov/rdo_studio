@@ -24,9 +24,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 RDOFunCalcSelect::RDOFunCalcSelect(int nResType, CREF(LPRDOCalc) pCondition)
 	: RDOFunCalcGroup(nResType, pCondition)
-{
-	m_value = 1;
-}
+{}
 
 void RDOFunCalcSelect::prepare(CREF(LPRDORuntime) pRuntime)
 {
@@ -41,16 +39,20 @@ void RDOFunCalcSelect::prepare(CREF(LPRDORuntime) pRuntime)
 			continue;
 
 		pRuntime->pushGroupFunc(*it);
-		if (m_pCondition->calcValue(pRuntime).getAsBool())
+
+		m_pCondition->calcValue(pRuntime);
+		if (pRuntime->stack().pop().getAsBool())
+		{
 			res_list.push_back(*it);
+		}
+
 		pRuntime->popGroupFunc();
 	}
 }
 
-REF(RDOValue) RDOFunCalcSelect::doCalc(CREF(LPRDORuntime) pRuntime)
+void RDOFunCalcSelect::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	prepare(pRuntime);
-	return m_value;
 }
 
 // --------------------------------------------------------------------------------
@@ -64,7 +66,7 @@ RDOFunCalcSelectBase::RDOFunCalcSelectBase(CREF(LPRDOFunCalcSelect) pSelect, CRE
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcSelectExist
 // --------------------------------------------------------------------------------
-REF(RDOValue) RDOFunCalcSelectExist::doCalc(CREF(LPRDORuntime) pRuntime)
+void RDOFunCalcSelectExist::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
 	rbool res = false;
@@ -73,19 +75,23 @@ REF(RDOValue) RDOFunCalcSelectExist::doCalc(CREF(LPRDORuntime) pRuntime)
 	while (it != end && !res)
 	{
 		pRuntime->pushGroupFunc(*it);
-		if (m_pCondition->calcValue(pRuntime).getAsBool())
+
+		m_pCondition->calcValue(pRuntime);
+		if (pRuntime->stack().pop().getAsBool())
+		{
 			res = true;
+		}
+
 		pRuntime->popGroupFunc();
 		++it;
 	}
-	m_value = res;
-	return m_value;
+	pRuntime->stack().push(RDOValue(res));
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcSelectNotExist
 // --------------------------------------------------------------------------------
-REF(RDOValue) RDOFunCalcSelectNotExist::doCalc(CREF(LPRDORuntime) pRuntime)
+void RDOFunCalcSelectNotExist::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
 	rbool res = true;
@@ -94,25 +100,29 @@ REF(RDOValue) RDOFunCalcSelectNotExist::doCalc(CREF(LPRDORuntime) pRuntime)
 	while (it != end && res)
 	{
 		pRuntime->pushGroupFunc(*it);
-		if (m_pCondition->calcValue(pRuntime).getAsBool())
+
+		m_pCondition->calcValue(pRuntime);
+		if (pRuntime->stack().pop().getAsBool())
+		{
 			res = false;
+		}
+
 		pRuntime->popGroupFunc();
 		++it;
 	}
-	m_value = res;
-	return m_value;
+	pRuntime->stack().push(RDOValue(res));
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcSelectForAll
 // --------------------------------------------------------------------------------
-REF(RDOValue) RDOFunCalcSelectForAll::doCalc(CREF(LPRDORuntime) pRuntime)
+void RDOFunCalcSelectForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
 	if (m_pSelect->res_list.empty())
 	{
-		m_value = false;
-		return m_value;
+		pRuntime->stack().push(RDOValue(false));
+		return;
 	}
 	rbool res = true;
 	std::list<LPRDOResource>::iterator it  = m_pSelect->res_list.begin();
@@ -120,19 +130,23 @@ REF(RDOValue) RDOFunCalcSelectForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 	while (it != end && res)
 	{
 		pRuntime->pushGroupFunc(*it);
-		if (!m_pCondition->calcValue(pRuntime).getAsBool())
+
+		m_pCondition->calcValue(pRuntime);
+		if (!pRuntime->stack().pop().getAsBool())
+		{
 			res = false;
+		}
+
 		pRuntime->popGroupFunc();
 		++it;
 	}
-	m_value = res;
-	return m_value;
+	pRuntime->stack().push(RDOValue(res));
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcSelectNotForAll
 // --------------------------------------------------------------------------------
-REF(RDOValue) RDOFunCalcSelectNotForAll::doCalc(CREF(LPRDORuntime) pRuntime)
+void RDOFunCalcSelectNotForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
 	rbool res = false;
@@ -141,33 +155,35 @@ REF(RDOValue) RDOFunCalcSelectNotForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 	while (it != end && !res)
 	{
 		pRuntime->pushGroupFunc(*it);
-		if (!m_pCondition->calcValue(pRuntime).getAsBool())
+
+		m_pCondition->calcValue(pRuntime);
+		if (!pRuntime->stack().pop().getAsBool())
+		{
 			res = true;
+		}
+
 		pRuntime->popGroupFunc();
 		++it;
 	}
-	m_value = res;
-	return m_value;
+	pRuntime->stack().push(RDOValue(res));
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcSelectSize
 // --------------------------------------------------------------------------------
-REF(RDOValue) RDOFunCalcSelectSize::doCalc(CREF(LPRDORuntime) pRuntime)
+void RDOFunCalcSelectSize::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
-	m_value = m_pSelect->res_list.size();
-	return m_value;
+	pRuntime->stack().push(RDOValue(m_pSelect->res_list.size()));
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcSelectEmpty
 // --------------------------------------------------------------------------------
-REF(RDOValue) RDOFunCalcSelectEmpty::doCalc(CREF(LPRDORuntime) pRuntime)
+void RDOFunCalcSelectEmpty::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
-	m_value = m_pSelect->res_list.empty();
-	return m_value;
+	pRuntime->stack().push(m_pSelect->res_list.empty());
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

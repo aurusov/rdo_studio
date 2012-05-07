@@ -12,6 +12,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdomacros.h"
 #include "simulator/runtime/namespace.h"
+#include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -47,7 +48,8 @@ inline CREF(LPRDOCalc) RDOFRMFrame::RDOFRMPosition::getCalc() const
 
 inline int RDOFRMFrame::RDOFRMPosition::getX(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame)
 {
-	RDOValue res = m_pCalc->calcValue(pRuntime);
+	m_pCalc->calcValue(pRuntime);
+	RDOValue res = pRuntime->stack().pop();
 	switch (m_type)
 	{
 	case RDOFRMPosition::PT_DELTA  : res += pFrame->m_lastX;                        break;
@@ -60,7 +62,8 @@ inline int RDOFRMFrame::RDOFRMPosition::getX(CREF(LPRDORuntime) pRuntime, CREF(L
 
 inline int RDOFRMFrame::RDOFRMPosition::getY(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame)
 {
-	RDOValue res = m_pCalc->calcValue(pRuntime);
+	m_pCalc->calcValue(pRuntime);
+	RDOValue res = pRuntime->stack().pop();
 	switch (m_type)
 	{
 	case RDOFRMPosition::PT_DELTA  : res += pFrame->m_lastY;                        break;
@@ -73,7 +76,8 @@ inline int RDOFRMFrame::RDOFRMPosition::getY(CREF(LPRDORuntime) pRuntime, CREF(L
 
 inline int RDOFRMFrame::RDOFRMPosition::getWidth(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame)
 {
-	RDOValue res = m_pCalc->calcValue(pRuntime);
+	m_pCalc->calcValue(pRuntime);
+	RDOValue res = pRuntime->stack().pop();
 	switch (m_type)
 	{
 	case RDOFRMPosition::PT_DELTA: res += pFrame->m_lastWidth; break;
@@ -85,7 +89,8 @@ inline int RDOFRMFrame::RDOFRMPosition::getWidth(CREF(LPRDORuntime) pRuntime, CR
 
 inline int RDOFRMFrame::RDOFRMPosition::getHeight(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame)
 {
-	RDOValue res = m_pCalc->calcValue(pRuntime);
+	m_pCalc->calcValue(pRuntime);
+	RDOValue res = pRuntime->stack().pop();
 	switch (m_type)
 	{
 	case RDOFRMPosition::PT_DELTA: res += pFrame->m_lastHeight; break;
@@ -174,13 +179,23 @@ inline void RDOFRMFrame::setLastXY(double x, double y)
 inline int RDOFRMFrame::getRuletX(CREF(LPRDORuntime) pRuntime, ruint ruletID) const
 {
 	LPRDOFRMRulet pRulet = findRulet(ruletID);
-	return pRulet ? pRulet->getX()->getCalc()->calcValue(pRuntime).getInt() : 0;
+	if (pRulet)
+	{
+		pRulet->getX()->getCalc()->calcValue(pRuntime);
+		return pRuntime->stack().pop().getInt();
+	}
+	return 0;
 }
 
 inline int RDOFRMFrame::getRuletY(CREF(LPRDORuntime) pRuntime, ruint ruletID) const
 {
 	LPRDOFRMRulet pRulet = findRulet(ruletID);
-	return pRulet ? pRulet->getY()->getCalc()->calcValue(pRuntime).getInt() : 0;
+	if (pRulet)
+	{
+		pRulet->getY()->getCalc()->calcValue(pRuntime);
+		return pRuntime->stack().pop().getInt();
+	}
+	return 0;
 }
 
 inline RDOFRMFrame::LPRDOFRMRulet RDOFRMFrame::findRulet(ruint ruletID) const

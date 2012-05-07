@@ -24,14 +24,13 @@ RDOSetPatternParamCalc::RDOSetPatternParamCalc(ruint paramID, CREF(LPRDOCalc) pC
 	: m_paramID(paramID)
 	, m_pCalc  (pCalc  )
 {
-	m_value = 0;
 	ASSERT(m_pCalc);
 }
 
-REF(RDOValue) RDOSetPatternParamCalc::doCalc(CREF(LPRDORuntime) pRuntime)
+void RDOSetPatternParamCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	pRuntime->setPatternParameter(m_paramID, m_pCalc->calcValue(pRuntime));
-	return m_value;
+	m_pCalc->calcValue(pRuntime);
+	pRuntime->setPatternParameter(m_paramID, pRuntime->stack().pop());
 }
 
 // --------------------------------------------------------------------------------
@@ -41,10 +40,9 @@ RDOCalcPatParam::RDOCalcPatParam(ruint paramID)
 	: m_paramID(paramID)
 {}
 
-REF(RDOValue) RDOCalcPatParam::doCalc(CREF(LPRDORuntime) pRuntime)
+void RDOCalcPatParam::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	m_value = pRuntime->getPatternParameter(m_paramID);
-	return m_value;
+	pRuntime->stack().push(pRuntime->getPatternParameter(m_paramID));
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

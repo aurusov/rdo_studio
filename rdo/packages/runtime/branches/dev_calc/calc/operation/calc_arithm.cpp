@@ -22,36 +22,49 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcDiv
 // --------------------------------------------------------------------------------
-REF(RDOValue) RDOCalcDiv::doCalc(CREF(LPRDORuntime) pRuntime)
+void RDOCalcDiv::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	++OperatorType::getCalcCounter<OperatorType::Type(calc_type)>();
-	REF(RDOValue) rVal = m_pRight->calcValue(pRuntime);
-	if (rVal == 0)
+	m_pRight->calcValue(pRuntime);
+	RDOValue right = pRuntime->stack().pop();
+	if (right == 0)
 	{
 		pRuntime->error().push(_T("Деление на ноль"), srcInfo());
 	}
-	m_value = m_pLeft->calcValue(pRuntime) / rVal;
-	return m_value;
+	m_pLeft->calcValue(pRuntime);
+	pRuntime->stack().push(pRuntime->stack().pop() / right);
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcPlusEnumSafe
 // --------------------------------------------------------------------------------
-REF(RDOValue) RDOCalcPlusEnumSafe::doCalc(CREF(LPRDORuntime) pRuntime)
+void RDOCalcPlusEnumSafe::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	++OperatorType::getCalcCounter<OperatorType::Type(calc_type)>();
-	m_value = m_pLeft->calcValue(pRuntime).getEnumAsInt() + m_pRight->calcValue(pRuntime).getEnumAsInt();
-	return m_value;
+
+	m_pLeft->calcValue(pRuntime);
+	rsint left = pRuntime->stack().pop().getEnumAsInt();
+
+	m_pRight->calcValue(pRuntime);
+	rsint right = pRuntime->stack().pop().getEnumAsInt();
+
+	pRuntime->stack().push(left + right);
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcMultEnumSafe
 // --------------------------------------------------------------------------------
-REF(RDOValue) RDOCalcMultEnumSafe::doCalc(CREF(LPRDORuntime) pRuntime)
+void RDOCalcMultEnumSafe::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	++OperatorType::getCalcCounter<OperatorType::Type(calc_type)>();
-	m_value = m_pLeft->calcValue(pRuntime).getEnumAsInt() * m_pRight->calcValue(pRuntime).getEnumAsInt();
-	return m_value;
+
+	m_pLeft->calcValue(pRuntime);
+	rsint left = pRuntime->stack().pop().getEnumAsInt();
+
+	m_pRight->calcValue(pRuntime);
+	rsint right = pRuntime->stack().pop().getEnumAsInt();
+
+	pRuntime->stack().push(left * right);
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

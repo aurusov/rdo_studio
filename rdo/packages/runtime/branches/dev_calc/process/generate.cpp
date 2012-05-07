@@ -54,9 +54,8 @@ IBaseOperation::BOResult RDOPROCGenerate::onDoOperation(CREF(LPRDORuntime) pRunt
 	if (m_pStatistics)
 		m_pStatistics->setTransCount(m_TransCount);
 
-	RDOValue pValue = m_pCreateAndGoOnTransactCalc->calcValue(pRuntime);
-
-	LPRDOPROCTransact pTransact = pValue.getPointerSafety<RDOResourceTypeTransact>();
+	m_pCreateAndGoOnTransactCalc->calcValue(pRuntime);
+	LPRDOPROCTransact pTransact = pRuntime->stack().pop().getPointerSafety<RDOResourceTypeTransact>();
 	ASSERT(pTransact);
 
 	pTransact->setBlock(this);
@@ -74,7 +73,8 @@ IBaseOperation::BOResult RDOPROCGenerate::onDoOperation(CREF(LPRDORuntime) pRunt
 
 void RDOPROCGenerate::calcNextTimeInterval( CREF(LPRDORuntime) pRuntime )
 {
-	pRuntime->addTimePoint( timeNext = m_pTimeCalc->calcValue(pRuntime).getDouble() + pRuntime->getCurrentTime(), m_process, this );
+	m_pTimeCalc->calcValue(pRuntime);
+	pRuntime->addTimePoint(timeNext = pRuntime->stack().pop().getDouble() + pRuntime->getCurrentTime(), m_process, this);
 }
 
 void RDOPROCGenerate::onStop(CREF(LPRDORuntime) pRuntime)

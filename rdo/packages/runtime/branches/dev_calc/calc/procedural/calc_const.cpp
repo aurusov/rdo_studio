@@ -12,6 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/procedural/calc_const.h"
+#include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -30,11 +31,9 @@ CREF(RDOValue) RDOCalcConst::getValue() const
 	return m_value;
 }
 
-REF(RDOValue) RDOCalcConst::doCalc(CREF(LPRDORuntime) pRuntime)
+void RDOCalcConst::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	UNUSED(pRuntime);
-
-	return m_value;
+	pRuntime->stack().push(getValue());
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

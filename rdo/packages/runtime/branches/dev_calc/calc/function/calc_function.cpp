@@ -45,10 +45,11 @@ void RDOFuncTableCalc::addResultCalc(CREF(LPRDOCalcConst) pResult)
 	m_pResultList.push_back(pResult);
 }
 
-REF(RDOValue) RDOFuncTableCalc::doCalc(CREF(LPRDORuntime) pRuntime)
+void RDOFuncTableCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	ruint index = m_pArgument->calcValue(pRuntime).getUInt();
-	return m_pResultList[index]->calcValue(pRuntime);
+	m_pArgument->calcValue(pRuntime);
+	ruint index = pRuntime->stack().pop().getUInt();
+	m_pResultList[index]->calcValue(pRuntime);
 }
 
 // --------------------------------------------------------------------------------
@@ -69,27 +70,27 @@ void RDOFunListCalc::addCase(CREF(LPRDOCalc) pCase, CREF(LPRDOCalcConst) pResult
 	m_resultList.push_back(pResult);
 }
 
-REF(RDOValue) RDOFunListCalc::doCalc(CREF(LPRDORuntime) pRuntime)
+void RDOFunListCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	ResultList::const_iterator resultIt = m_resultList.begin();
 	STL_FOR_ALL_CONST(m_caseList, caseIt)
 	{
-		if ((*caseIt)->calcValue(pRuntime).getAsBool())
+		(*caseIt)->calcValue(pRuntime);
+		if (pRuntime->stack().pop().getAsBool())
 		{
-			return (*resultIt)->calcValue(pRuntime);
+			(*resultIt)->calcValue(pRuntime);
+			return;
 		}
 		++resultIt;
 	}
-	return m_pDefaultValue->calcValue(pRuntime);
+	m_pDefaultValue->calcValue(pRuntime);
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunAlgorithmicCalc
 // --------------------------------------------------------------------------------
 RDOFunAlgorithmicCalc::RDOFunAlgorithmicCalc()
-{
-	m_value = 0;
-}
+{}
 
 void RDOFunAlgorithmicCalc::addCalcIf(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc) pAction)
 {
@@ -100,21 +101,22 @@ void RDOFunAlgorithmicCalc::addCalcIf(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc
 	m_actionList   .push_back(pAction   );
 }
 
-REF(RDOValue) RDOFunAlgorithmicCalc::doCalc(CREF(LPRDORuntime) pRuntime)
+void RDOFunAlgorithmicCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	CalcList::const_iterator actionIt = m_actionList.begin();
 	STL_FOR_ALL_CONST(m_conditionList, conditionIt)
 	{
-		if ((*conditionIt)->calcValue(pRuntime).getAsBool())
+		(*conditionIt)->calcValue(pRuntime);
+		if (pRuntime->stack().pop().getAsBool())
 		{
-			return (*actionIt)->calcValue(pRuntime);
+			(*actionIt)->calcValue(pRuntime);
+			return;
 		}
 		++actionIt;
 	}
 
 	// До сюда дело дойти не должно, т.к. последний conditions должен быть значением по-умолчанию
 	pRuntime->error().push(_T("Внутренная ошибка, RDOFunAlgorithmicCalc"), srcInfo());
-	return m_value;
 }
 
 // --------------------------------------------------------------------------------
@@ -126,16 +128,9 @@ RDOCalcFuncParam::RDOCalcFuncParam(ruint paramID, CREF(RDOSrcInfo) src_info)
 	setSrcInfo(src_info);
 }
 
-REF(RDOValue) RDOCalcFuncParam::doCalc(CREF(LPRDORuntime) pRuntime)
+void RDOCalcFuncParam::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	m_tempValueList.push_back(pRuntime->getFuncArgument(m_paramID));
-	return m_tempValueList.back();
-}
-
-void RDOCalcFuncParam::reset()
-{
-	//! @todo никто не вызывает reset()
-	m_tempValueList.clear();
+	pRuntime->stack().push(pRuntime->getFuncArgument(m_paramID));
 }
 
 // --------------------------------------------------------------------------------
@@ -145,10 +140,9 @@ RDOCalcGetConst::RDOCalcGetConst(ruint constantID)
 	: m_constantID(constantID)
 {}
 
-REF(RDOValue) RDOCalcGetConst::doCalc(CREF(LPRDORuntime) pRuntime)
+void RDOCalcGetConst::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	m_value = pRuntime->getConstValue(m_constantID);
-	return m_value;
+	pRuntime->stack().push(pRuntime->getConstValue(m_constantID));
 }
 
 // --------------------------------------------------------------------------------
@@ -158,17 +152,16 @@ RDOCalcSetConst::RDOCalcSetConst(ruint constantID, CREF(LPRDOCalc) pCalc)
 	: m_constantID(constantID)
 	, m_pCalc     (pCalc     )
 {
-	m_value = 0;
 	if (m_pCalc)
 	{
 		setSrcInfo(m_pCalc->srcInfo());
 	}
 }
 
-REF(RDOValue) RDOCalcSetConst::doCalc(CREF(LPRDORuntime) pRuntime)
+void RDOCalcSetConst::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	pRuntime->setConstValue(m_constantID, m_pCalc->calcValue(pRuntime));
-	return m_value;
+	m_pCalc->calcValue(pRuntime);
+	pRuntime->setConstValue(m_constantID, pRuntime->stack().pop());
 }
 
 // --------------------------------------------------------------------------------
@@ -188,24 +181,23 @@ void RDOCalcFunctionCaller::setFunctionCalc(CREF(LPRDOCalc) pFunction)
 	m_pFunction = pFunction;
 }
 
-REF(RDOValue) RDOCalcFunctionCaller::doCalc(CREF(LPRDORuntime) pRuntime)
+void RDOCalcFunctionCaller::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->pushFuncTop();
 	STL_FOR_ALL_CONST(m_paramList, paramIt)
 	{
-		pRuntime->pushFuncArgument((*paramIt)->calcValue(pRuntime));
+		(*paramIt)->calcValue(pRuntime);
+		pRuntime->pushFuncArgument(pRuntime->stack().pop());
 	}
 	pRuntime->resetFuncTop(m_paramList.size());
 
-	m_value = m_pFunction->calcValue(pRuntime);
+	m_pFunction->calcValue(pRuntime);
 
 	STL_FOR_ALL_CONST(m_paramList, paramIt)
 	{
 		pRuntime->popFuncArgument();
 	}
 	pRuntime->popFuncTop();
-
-	return m_value;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

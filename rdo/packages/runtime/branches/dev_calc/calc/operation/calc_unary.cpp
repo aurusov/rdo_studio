@@ -21,20 +21,27 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- ”нарные операции
 // --------------------------------------------------------------------------------
-REF(RDOValue) RDOCalcDoubleToIntByResult::doCalc(CREF(LPRDORuntime) pRuntime)
+void RDOCalcDoubleToIntByResult::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	m_value = m_round ? RDOValue(m_pOperation->calcValue(pRuntime).getInt()) : m_pOperation->calcValue(pRuntime);
-	return m_value;
+	m_pOperation->calcValue(pRuntime);
+
+	if (m_round)
+	{
+		pRuntime->stack().push(pRuntime->stack().pop().getInt());
+	}
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcInt (приведение к целому)
 // --------------------------------------------------------------------------------
-REF(RDOValue) RDOCalcInt::doCalc(CREF(LPRDORuntime) pRuntime)
+void RDOCalcInt::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	RDOValue res = m_pOperation->calcValue(pRuntime);
-	m_value = res > 0 ? RDOValue((int)(res.getDouble() + 0.5)) : RDOValue((int)(res.getDouble() - 0.5));
-	return m_value;
+	m_pOperation->calcValue(pRuntime);
+	RDOValue res = pRuntime->stack().pop();
+	pRuntime->stack().push(res > 0
+		? RDOValue((int)(res.getDouble() + 0.5))
+		: RDOValue((int)(res.getDouble() - 0.5))
+	);
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

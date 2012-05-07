@@ -21,33 +21,49 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcAnd
 // --------------------------------------------------------------------------------
-REF(RDOValue) RDOCalcAnd::doCalc(CREF(LPRDORuntime) pRuntime)
+void RDOCalcAnd::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	++OperatorType::getCalcCounter<OperatorType::Type(calc_type)>();
 
-	if (!m_pLeft->calcValue(pRuntime).getAsBool())
-		return m_value_false;
+	m_pLeft->calcValue(pRuntime);
+	if (!pRuntime->stack().pop().getAsBool())
+	{
+		pRuntime->stack().push(m_value_false);
+		return;
+	}
 
-	if (!m_pRight->calcValue(pRuntime).getAsBool())
-		return m_value_false;
+	m_pRight->calcValue(pRuntime);
+	if (!pRuntime->stack().pop().getAsBool())
+	{
+		pRuntime->stack().push(m_value_false);
+		return;
+	}
 
-	return m_value_true;
+	pRuntime->stack().push(m_value_true);
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcAnd
 // --------------------------------------------------------------------------------
-REF(RDOValue) RDOCalcOr::doCalc(CREF(LPRDORuntime) pRuntime)
+void RDOCalcOr::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	++OperatorType::getCalcCounter<OperatorType::Type(calc_type)>();
 
-	if (m_pLeft->calcValue(pRuntime).getAsBool())
-		return m_value_true;
+	m_pLeft->calcValue(pRuntime);
+	if (pRuntime->stack().pop().getAsBool())
+	{
+		pRuntime->stack().push(m_value_true);
+		return;
+	}
 
-	if (m_pRight->calcValue(pRuntime).getAsBool())
-		return m_value_true;
+	m_pRight->calcValue(pRuntime);
+	if (pRuntime->stack().pop().getAsBool())
+	{
+		pRuntime->stack().push(m_value_true);
+		return;
+	}
 
-	return m_value_false;
+	pRuntime->stack().push(m_value_false);
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

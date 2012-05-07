@@ -57,7 +57,7 @@ private:
 	CloneList m_cloneList;
 
 	rbool     haveAdditionalCondition;
-	LPRDOCalc additionalCondition;
+	LPRDOCalc m_pAdditionalCondition;
 
 	int m_operId;
 

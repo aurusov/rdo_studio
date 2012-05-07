@@ -69,7 +69,7 @@ protected:
 	PTR(T) m_gen;
 
 private:
-	virtual REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime);
+	DECLARE_ICalc;
 };
 
 /*!

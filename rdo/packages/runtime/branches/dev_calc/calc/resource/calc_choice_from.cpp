@@ -42,14 +42,11 @@ RDOSelectResourceCalc::RDOSelectResourceCalc(ResourceID relResID, CREF(LPRDOCalc
 // --------------------------------------------------------------------------------
 RDOSelectResourceNonExistCalc::RDOSelectResourceNonExistCalc(ResourceID relResID)
 	: RDOSelectResourceCalc(relResID, NULL, NULL)
-{
-	m_value = 1;
-}
+{}
 
-REF(RDOValue) RDOSelectResourceNonExistCalc::doCalc(CREF(LPRDORuntime) pRuntime)
+void RDOSelectResourceNonExistCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
-	return m_value;
 }
 
 // --------------------------------------------------------------------------------
@@ -70,17 +67,22 @@ rbool RDOSelectResourceDirectCalc::compare(CREF(LPRDOCalc) pCalc) const
 	return m_relResID == pDirectCalc->m_relResID && m_resID == pDirectCalc->m_resID;
 }
 
-REF(RDOValue) RDOSelectResourceDirectCalc::doCalc(CREF(LPRDORuntime) pRuntime)
+void RDOSelectResourceDirectCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->getCurrentActivity()->setRelRes(m_relResID, m_resID);
-	if (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
+
+	if (m_pCalcChoiceFrom)
 	{
-		pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
-		m_value = 0;
-		return m_value;
+		m_pCalcChoiceFrom->calcValue(pRuntime);
+		if (!pRuntime->stack().pop().getAsBool())
+		{
+			pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
+			pRuntime->stack().push(RDOValue(0));
+			return;
+		}
 	}
-	m_value = 1;
-	return m_value;
+
+	pRuntime->stack().push(RDOValue(1));
 }
 
 // --------------------------------------------------------------------------------
@@ -91,7 +93,7 @@ RDOSelectResourceByTypeCalc::RDOSelectResourceByTypeCalc(ResourceID relResID, Re
 	, m_resTypeID          (resTypeID                                   )
 {}
 
-REF(RDOValue) RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
+void RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	RDOValue   maxVal      = -DBL_MAX;
 	RDOValue   minVal      = DBL_MAX;
@@ -110,23 +112,32 @@ REF(RDOValue) RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 			case order_first:
 				{
 					pRuntime->getCurrentActivity()->setRelRes(m_relResID, resID);
-					if (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
+					if (m_pCalcChoiceFrom)
 					{
-						pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
-						continue;
+						m_pCalcChoiceFrom->calcValue(pRuntime);
+						if (!pRuntime->stack().pop().getAsBool())
+						{
+							pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
+							continue;
+						}
 					}
-					m_value = 1;
-					return m_value;
+					pRuntime->stack().push(RDOValue(1));
+					return;
 				}
 			case order_with_min:
 				{
 					pRuntime->getCurrentActivity()->setRelRes(m_relResID, resID);
-					if (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
+					if (m_pCalcChoiceFrom)
 					{
-						pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
-						continue;
+						m_pCalcChoiceFrom->calcValue(pRuntime);
+						if (!pRuntime->stack().pop().getAsBool())
+						{
+							pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
+							continue;
+						}
 					}
-					RDOValue tmp = m_pCalcOrder->calcValue(pRuntime);
+					m_pCalcOrder->calcValue(pRuntime);
+					RDOValue tmp = pRuntime->stack().pop();
 					if (tmp < minVal)
 					{
 						minVal      = tmp;
@@ -137,12 +148,17 @@ REF(RDOValue) RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 			case order_with_max:
 				{
 					pRuntime->getCurrentActivity()->setRelRes(m_relResID, resID);
-					if (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
+					if (m_pCalcChoiceFrom)
 					{
-						pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
-						continue;
+						m_pCalcChoiceFrom->calcValue(pRuntime);
+						if (!pRuntime->stack().pop().getAsBool())
+						{
+							pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
+							continue;
+						}
 					}
-					RDOValue tmp = m_pCalcOrder->calcValue(pRuntime);
+					m_pCalcOrder->calcValue(pRuntime);
+					RDOValue tmp = pRuntime->stack().pop();
 					if (tmp > maxVal)
 					{
 						maxVal      = tmp;
@@ -157,11 +173,12 @@ REF(RDOValue) RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 	if (resMinMaxID != ~0)
 	{
 		pRuntime->getCurrentActivity()->setRelRes(m_relResID, resMinMaxID);
-		m_value = 1;
-		return m_value;
+		pRuntime->stack().push(RDOValue(1));
 	}
-	m_value = 0;
-	return m_value;
+	else
+	{
+		pRuntime->stack().push(RDOValue(0));
+	}
 }
 
 // --------------------------------------------------------------------------------
@@ -198,7 +215,8 @@ void RDOSelectResourceCommonCalc::getBest(REF(ResourceIDTable) allNumbs, ruint l
 				return; // state not valid
 			}
 		}
-		RDOValue newVal = const_cast<PTR(RDOSelectResourceCommonCalc)>(this)->m_pCalcChoiceFrom->calcValue(pRuntime);
+		m_pCalcChoiceFrom->calcValue(pRuntime);
+		RDOValue newVal = pRuntime->stack().pop();
 		if (!hasBest || (m_useCommonWithMax && (newVal > bestVal)) ||
 		   (!m_useCommonWithMax && (newVal < bestVal))) // found better value
 		{
@@ -265,7 +283,7 @@ rbool RDOSelectResourceCommonCalc::getFirst(REF(ResourceIDTable) allNumbs, ruint
 //	return false;
 //}
 
-REF(RDOValue) RDOSelectResourceCommonCalc::doCalc(CREF(LPRDORuntime) pRuntime)
+void RDOSelectResourceCommonCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	ResourceIDTable allNumbs;
 	ResourceIDList res;
@@ -284,8 +302,8 @@ REF(RDOValue) RDOSelectResourceCommonCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 //		}
 		if (getFirst(allNumbs, 0, pRuntime))
 		{
-			m_value = 1;
-			return m_value;
+			pRuntime->stack().push(RDOValue(1));
+			return;
 		}
 	}
 	else
@@ -300,12 +318,11 @@ REF(RDOValue) RDOSelectResourceCommonCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 			{
 				pRuntime->getCurrentActivity()->setRelRes(i, res[i]);
 			}
-			m_value = 1;
-			return m_value;
+			pRuntime->stack().push(RDOValue(1));
+			return;
 		}
 	}
-	m_value = 0;
-	return m_value;
+	pRuntime->stack().push(RDOValue(0));
 }
 
 // --------------------------------------------------------------------------------
@@ -323,7 +340,15 @@ void RDOSelectResourceDirectCommonCalc::getPossibleNumbers(CREF(LPRDORuntime) pR
 
 rbool RDOSelectResourceDirectCommonCalc::callChoice(CREF(LPRDORuntime) pRuntime) const
 {
-	return (m_pCalcChoiceFrom && !const_cast<PTR(RDOSelectResourceDirectCommonCalc)>(this)->m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool()) ? false : true;
+	if (m_pCalcChoiceFrom)
+	{
+		m_pCalcChoiceFrom->calcValue(pRuntime);
+		if (!pRuntime->stack().pop().getAsBool())
+		{
+			return false;
+		}
+	}
+	return true;
 }
 
 RDOSelectResourceDirectCommonCalc::~RDOSelectResourceDirectCommonCalc()
@@ -353,7 +378,15 @@ void RDOSelectResourceByTypeCommonCalc::getPossibleNumbers(CREF(LPRDORuntime) pR
 
 rbool RDOSelectResourceByTypeCommonCalc::callChoice(CREF(LPRDORuntime) pRuntime) const
 {
-	return (m_pCalcChoiceFrom && !const_cast<PTR(RDOSelectResourceByTypeCommonCalc)>(this)->m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool()) ? false : true;
+	if (m_pCalcChoiceFrom)
+	{
+		m_pCalcChoiceFrom->calcValue(pRuntime);
+		if (!pRuntime->stack().pop().getAsBool())
+		{
+			return false;
+		}
+	}
+	return true;
 }
 
 RDOSelectResourceByTypeCommonCalc::~RDOSelectResourceByTypeCommonCalc()
