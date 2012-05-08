@@ -199,8 +199,10 @@ public:
 	public:
 		Stack();
 
-		void      push(CREF(RDOValue) value);
-		RDOValue  pop ();
+		void           push(CREF(RDOValue) value);
+		void           push(CREF(RDOValue) value, ruint removeCount);
+		RDOValue       pop ();
+		CREF(RDOValue) top (ruint index = 0) const;
 
 	private:
 		typedef  std::vector<RDOValue>  Container;
