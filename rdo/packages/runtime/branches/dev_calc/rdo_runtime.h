@@ -202,6 +202,7 @@ public:
 		void           push(CREF(RDOValue) value);
 		void           push(CREF(RDOValue) value, ruint removeCount);
 		RDOValue       pop ();
+		void           pop (ruint count);
 		CREF(RDOValue) top (ruint index = 0) const;
 
 	private:

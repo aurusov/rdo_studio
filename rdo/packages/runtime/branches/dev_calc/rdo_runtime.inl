@@ -264,14 +264,14 @@ inline RDORuntime::Stack::Stack()
 	m_container.reserve(1000);
 }
 
-inline void RDORuntime::Stack::push(CREF(RDOValue) value)
+FORCE_INLINE void RDORuntime::Stack::push(CREF(RDOValue) value)
 {
 	m_container.push_back(value);
 }
 
-inline void RDORuntime::Stack::push(CREF(RDOValue) value, ruint removeCount)
+FORCE_INLINE void RDORuntime::Stack::push(CREF(RDOValue) value, ruint removeCount)
 {
-	m_container.resize(m_container.size() - removeCount);
+	pop (removeCount);
 	push(value);
 }
 
@@ -283,7 +283,12 @@ inline RDOValue RDORuntime::Stack::pop()
 	return result;
 }
 
-inline CREF(RDOValue) RDORuntime::Stack::top(ruint index) const
+FORCE_INLINE void RDORuntime::Stack::pop(ruint count)
+{
+	m_container.resize(m_container.size() - count);
+}
+
+FORCE_INLINE CREF(RDOValue) RDORuntime::Stack::top(ruint index) const
 {
 	return m_container[m_container.size() - 1 - index];
 }
