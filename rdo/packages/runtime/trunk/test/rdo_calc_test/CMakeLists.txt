@@ -3,8 +3,12 @@
 #==============================================================================
 
 SET(SOURCE_FILES
-	main.cpp)
+    main.cpp)
+
+FIND_PACKAGE(Boost COMPONENTS chrono REQUIRED)
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 ADD_BOOST_TEST(test_rdo_runtime_calc ${SOURCE_FILES})
 ADD_DEPENDENCIES(test_rdo_runtime_calc rdo_runtime)
 TARGET_LINK_LIBRARIES(test_rdo_runtime_calc rdo_runtime)
+TARGET_LINK_LIBRARIES(test_rdo_runtime_calc ${Boost_CHRONO_LIBRARY})
