@@ -28,8 +28,7 @@ RDOTypeParam::RDOTypeParam(CREF(LPRDOType) pType, CREF(RDOParserSrcInfo) src_inf
 	ASSERT(m_pType);
 	setSrcText(m_pType->name());
 
-	if (m_pType->type()->typeID() == rdo::runtime::RDOType::t_enum ||
-		m_pType->type().object_dynamic_cast<rdo::runtime::RDOFuzzyType>())
+	if (m_pType->type()->typeID() == rdo::runtime::RDOType::t_enum)
 	{
 		Converter::s_converter()->insertPreCastType(this);
 	}
