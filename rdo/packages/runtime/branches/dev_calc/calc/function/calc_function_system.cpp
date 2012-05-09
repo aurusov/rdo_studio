@@ -20,17 +20,19 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetTimeNow
 // --------------------------------------------------------------------------------
-void RDOCalcGetTimeNow::doCalc(CREF(LPRDORuntime) pRuntime)
+REF(RDOValue) RDOCalcGetTimeNow::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	pRuntime->stack().push(pRuntime->getTimeNow());
+	m_value = pRuntime->getTimeNow();
+	return m_value;
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcGetSeconds
 // --------------------------------------------------------------------------------
-void RDOCalcGetSeconds::doCalc(CREF(LPRDORuntime) pRuntime)
+REF(RDOValue) RDOCalcGetSeconds::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	pRuntime->stack().push(pRuntime->getSeconds());
+	m_value = pRuntime->getSeconds();
+	return m_value;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

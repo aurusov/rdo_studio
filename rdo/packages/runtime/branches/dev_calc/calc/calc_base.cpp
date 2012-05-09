@@ -28,7 +28,7 @@ RDOCalc::RDOCalc()
 RDOCalc::~RDOCalc()
 {}
 
-void RDOCalc::calcValue(CREF(LPRDORuntime) pRuntime)
+REF(RDOValue) RDOCalc::calcValue(CREF(LPRDORuntime) pRuntime)
 {
 	try
 	{
@@ -54,7 +54,7 @@ void RDOCalc::calcValue(CREF(LPRDORuntime) pRuntime)
 		}
 */
 #endif
-		doCalc(pRuntime);
+		return doCalc(pRuntime);
 	}
 	catch (CREF(RDORuntimeException) ex)
 	{
@@ -72,6 +72,7 @@ void RDOCalc::calcValue(CREF(LPRDORuntime) pRuntime)
 		);
 		pRuntime->error().push(error);
 	}
+	return m_value;
 }
 
 CREF(RDOSrcInfo) RDOCalc::srcInfo() const

@@ -32,7 +32,7 @@ RDOOperation::RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperati
 RDOOperation::RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperation) pPattern, rbool trace, CREF(LPRDOCalc) pCondition, CREF(tstring) name)
 	: RDOActivityPattern<RDOPatternOperation>(pPattern, trace, name)
 	, RDOPatternPrior                        (                     )
-	, m_pAdditionalCondition                 (pCondition           )
+	, additionalCondition                    (pCondition           )
 {
 	setTrace(trace);
 	haveAdditionalCondition = true;
@@ -41,7 +41,7 @@ RDOOperation::RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperati
 
 RDOOperation::RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(RDOOperation) originForClone)
 	: RDOActivityPattern<RDOPatternOperation>(originForClone.m_pPattern, originForClone.traceable(), originForClone.m_oprName)
-	, m_pAdditionalCondition                 (NULL                                                                           )
+	, additionalCondition                    (NULL                                                                           )
 {
   setTrace(originForClone.traceable());
   haveAdditionalCondition = false;
@@ -90,8 +90,7 @@ rbool RDOOperation::choiceFrom(CREF(LPRDORuntime) pRuntime)
 	pRuntime->setCurrentActivity(this);
 	if (haveAdditionalCondition)
 	{
-		m_pAdditionalCondition->calcValue(pRuntime);
-		if (!pRuntime->stack().pop().getAsBool())
+		if (!additionalCondition->calcValue(pRuntime).getAsBool())
 		{
 			return false;
 		}

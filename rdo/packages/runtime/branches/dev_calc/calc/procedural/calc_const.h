@@ -37,8 +37,6 @@ private:
 	//! \param value - Значение константы
 	RDOCalcConst(CREF(RDOValue) value);
 
-	RDOValue m_value;
-
 	//! Возвращает значение константы
 	//! \param pRuntime - Не используется
 	//! \result Значение константы

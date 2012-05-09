@@ -54,11 +54,6 @@ inline REF(RDOHotKey) RDORuntime::hotkey()
 	return m_hotKey;
 }
 
-inline REF(RDORuntime::Stack) RDORuntime::stack()
-{
-	return m_stack;
-}
-
 inline REF(RDOResults) RDORuntime::getResults()
 {
 	return *m_resultList;
@@ -254,27 +249,6 @@ inline CREF(tstring) RDORuntime::BreakPoint::getName() const
 inline CREF(LPRDOCalc) RDORuntime::BreakPoint::getCalc() const
 {
 	return m_pCalc;
-}
-
-// --------------------------------------------------------------------------------
-// -------------------- RDORuntime::Stack
-// --------------------------------------------------------------------------------
-inline RDORuntime::Stack::Stack()
-{
-	m_container.reserve(1000);
-}
-
-inline void RDORuntime::Stack::push(CREF(RDOValue) value)
-{
-	m_container.push_back(value);
-}
-
-inline RDOValue RDORuntime::Stack::pop()
-{
-	ASSERT(!m_container.empty());
-	RDOValue result = m_container.back();
-	m_container.pop_back();
-	return result;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

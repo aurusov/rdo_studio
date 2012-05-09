@@ -38,8 +38,7 @@ REF(LPIRule) RDODPTSearchActivity::rule()
 
 double RDODPTSearchActivity::cost(CREF(LPRDORuntime) pRuntime)
 {
-	m_pCost->calcValue(pRuntime);
-	return pRuntime->stack().pop().getDouble();
+	return m_pCost->calcValue(pRuntime).getDouble();
 }
 
 IDPTSearchActivity::ValueTime RDODPTSearchActivity::valueTime() const

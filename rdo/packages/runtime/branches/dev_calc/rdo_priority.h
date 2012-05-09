@@ -49,7 +49,7 @@ class RDODPTActivityCompare
 {
 public:
 	RDODPTActivityCompare(CREF(LPRDORuntime) pRuntime);
-	rbool operator() (CREF(LPIBaseOperation) pOpr1, CREF(LPIBaseOperation) pOpr2);
+	rbool operator() (CREF(LPIBaseOperation) opr1, CREF(LPIBaseOperation) opr2);
 
 private:
 	LPRDORuntime m_pRuntime;

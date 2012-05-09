@@ -166,10 +166,8 @@ tstring RDOPMDWatchState::traceValue() const
 
 void RDOPMDWatchState::resetResult(CREF(LPRDORuntime) pRuntime)
 {
-	m_pLogicCalc->calcValue(pRuntime);
-
 	m_watchNumber = 0;
-	m_currValue   = fabs(pRuntime->stack().pop().getDouble()) > DBL_EPSILON;
+	m_currValue   = fabs(m_pLogicCalc->calcValue(pRuntime).getDouble()) > DBL_EPSILON;
 	m_sum         = 0;
 	m_sumSqr      = 0;
 	m_minValue    = DBL_MAX;
@@ -179,8 +177,7 @@ void RDOPMDWatchState::resetResult(CREF(LPRDORuntime) pRuntime)
 
 void RDOPMDWatchState::checkResult(CREF(LPRDORuntime) pRuntime)
 {
-	m_pLogicCalc->calcValue(pRuntime);
-	rbool newValue = fabs(pRuntime->stack().pop().getDouble()) > DBL_EPSILON;
+	rbool newValue = fabs(m_pLogicCalc->calcValue(pRuntime).getDouble()) > DBL_EPSILON;
 	if (newValue && !m_currValue) //! from FALSE to TRUE
 	{
 		m_timePrev   = pRuntime->getCurrentTime();
@@ -268,9 +265,7 @@ void RDOPMDWatchQuant::checkResult(CREF(LPRDORuntime) pRuntime)
 			continue;
 
 		pRuntime->pushGroupFunc(*it);
-
-		m_pLogicCalc->calcValue(pRuntime);
-		if (pRuntime->stack().pop().getAsBool())
+		if (m_pLogicCalc->calcValue(pRuntime).getAsBool())
 		{
 			newValue++;
 		}
@@ -397,12 +392,9 @@ void RDOPMDWatchValue::checkResourceErased(CREF(LPRDOResource) pResource)
 		return;
 	}
 	m_pRuntime->pushGroupFunc(pResource);
-
-	m_pLogicCalc->calcValue(m_pRuntime);
-	if (m_pRuntime->stack().pop().getAsBool())
+	if (m_pLogicCalc->calcValue(m_pRuntime).getAsBool())
 	{
-		m_pArithmCalc->calcValue(m_pRuntime);
-		m_currValue = m_pRuntime->stack().pop();
+		m_currValue = m_pArithmCalc->calcValue(m_pRuntime);
 		traceResult(); /// @todo убрать отсюда ? (и перенести DECLARE_IResultTrace в приват)
 //		pRuntime->getTracer()->writeResult(pRuntime, this);
 		double curr = m_currValue.getDouble();
@@ -419,7 +411,6 @@ void RDOPMDWatchValue::checkResourceErased(CREF(LPRDOResource) pResource)
 		}
 		return;
 	}
-
 	m_pRuntime->popGroupFunc();
 	return;
 }
@@ -462,8 +453,7 @@ void RDOPMDGetValue::checkResult(CREF(LPRDORuntime) pRuntime)
 
 void RDOPMDGetValue::calcStat(CREF(LPRDORuntime) pRuntime, REF(std::ostream) stream)
 {
-	m_pArithmCalc->calcValue(pRuntime);
-	m_value = pRuntime->stack().pop();
+	m_value = m_pArithmCalc->calcValue(pRuntime);
 
 	stream.width(30);
 	stream << std::left << name()

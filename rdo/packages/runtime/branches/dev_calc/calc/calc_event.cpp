@@ -38,13 +38,12 @@ RDOCalcEventPlan::RDOCalcEventPlan(CREF(LPRDOCalc) pTimeCalc)
 	ASSERT(m_pTimeCalc);
 }
 
-void RDOCalcEventPlan::doCalc(CREF(LPRDORuntime) pRuntime)
+REF(RDOValue) RDOCalcEventPlan::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	ASSERT(m_pEvent);
-
-	m_pTimeCalc->calcValue(pRuntime);
-
-	pRuntime->addTimePoint(pRuntime->stack().pop().getDouble(), m_pEvent);
+	m_value = m_pTimeCalc->calcValue(pRuntime);
+	pRuntime->addTimePoint(m_value.getDouble(), m_pEvent);
+	return m_value;
 }
 
 // --------------------------------------------------------------------------------
@@ -53,10 +52,12 @@ void RDOCalcEventPlan::doCalc(CREF(LPRDORuntime) pRuntime)
 RDOCalcEventStop::RDOCalcEventStop()
 {}
 
-void RDOCalcEventStop::doCalc(CREF(LPRDORuntime) pRuntime)
+REF(RDOValue) RDOCalcEventStop::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	ASSERT(m_pEvent);
 	pRuntime->removeTimePoint(m_pEvent);
+	m_value = RDOValue(0);
+	return m_value;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

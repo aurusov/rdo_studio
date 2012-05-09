@@ -26,14 +26,13 @@ RDOGetResourceByRelevantResourceID::RDOGetResourceByRelevantResourceID(ruint rel
 	: m_relevantResourceID(relevantResourceID)
 {}
 
-void RDOGetResourceByRelevantResourceID::doCalc(CREF(LPRDORuntime) pRuntime)
+REF(RDOValue) RDOGetResourceByRelevantResourceID::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	RDOValue value;
-	if (!RDOCalcGetResourceHelper::getResource(pRuntime, pRuntime->getCurrentActivity()->getResByRelRes(m_relevantResourceID), value))
+	if (!RDOCalcGetResourceHelper::getResource(pRuntime, pRuntime->getCurrentActivity()->getResByRelRes(m_relevantResourceID), m_value))
 	{
 		pRuntime->error().push(_T("Не найден ресурс"), srcInfo());
 	}
-	pRuntime->stack().push(value);
+	return m_value;
 }
 
 // --------------------------------------------------------------------------------
@@ -42,11 +41,14 @@ void RDOGetResourceByRelevantResourceID::doCalc(CREF(LPRDORuntime) pRuntime)
 RDOEraseResRelCalc::RDOEraseResRelCalc(ruint relResID, CREF(tstring) relResName)
 	: m_relResID  (relResID  )
 	, m_relResName(relResName)
-{}
+{
+	m_value = 1;
+}
 
-void RDOEraseResRelCalc::doCalc(CREF(LPRDORuntime) pRuntime)
+REF(RDOValue) RDOEraseResRelCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->onEraseRes(pRuntime->getCurrentActivity()->getResByRelRes(m_relResID), this);
+	return m_value;
 }
 
 CREF(tstring) RDOEraseResRelCalc::getName() const
@@ -60,7 +62,7 @@ CREF(tstring) RDOEraseResRelCalc::getName() const
 RDOCalcGetGroupFunctionResource::RDOCalcGetGroupFunctionResource()
 {}
 
-void RDOCalcGetGroupFunctionResource::doCalc(CREF(LPRDORuntime) pRuntime)
+REF(RDOValue) RDOCalcGetGroupFunctionResource::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	LPRDOResource pResource = pRuntime->getGroupFuncRes();
 	ASSERT(pResource);
@@ -68,7 +70,8 @@ void RDOCalcGetGroupFunctionResource::doCalc(CREF(LPRDORuntime) pRuntime)
 	LPRDOType pType(pResource->getResType());
 	ASSERT(pType);
 
-	pRuntime->stack().push(RDOValue(pType, pResource));
+	m_value = RDOValue(pType, pResource);
+	return m_value;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

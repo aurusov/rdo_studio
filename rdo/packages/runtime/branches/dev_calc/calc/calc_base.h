@@ -43,7 +43,8 @@ public:
 	//! Расчет значение калка. Является публичным методом, через который у калка запрашивается значение
 	//! \param pRuntime - указатель на объект runtime'а.
 	//!                   Используется для доступа к БД модели, системному времени, генерации ошибок и др.
-	void calcValue(CREF(LPRDORuntime) pRuntime);
+	//! \result Вычесленное калком значение
+	REF(RDOValue) calcValue(CREF(LPRDORuntime) pRuntime);
 
 	//! Сравнение двух калков как объектов (результаты калков в сравнении не используются).
 	//! Реализовывать этот метод в новых калках необязательно.
@@ -62,12 +63,16 @@ protected:
 	RDOCalc();
 	virtual ~RDOCalc();
 
+	//! Атрибут должен хранить последнее значение калка и возвращать его в \ref doCalc
+	RDOValue m_value;
+
 	//! Абстрактное действие калка.
 	//! Метод должен быть реализован в потомках (реальных калках).
 	//! \param pRuntime - указатель на объект runtime'а.
 	//!                   Используется для доступа к БД модели, системному времени, генерации ошибок и др.
 	//! \exception RDORuntimeException
-	virtual void doCalc(CREF(LPRDORuntime) pRuntime) = 0;
+	//! \result Вычесленное калком значение
+	virtual REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime) = 0;
 
 private:
 	//! Привязка калка к исходникам
@@ -76,7 +81,7 @@ private:
 
 #define DECLARE_ICalc \
 private:              \
-	void doCalc(CREF(LPRDORuntime) pRuntime);
+	REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime);
 
 //! \def    CALC_SUB
 //! \brief  Описывает класс-потомок

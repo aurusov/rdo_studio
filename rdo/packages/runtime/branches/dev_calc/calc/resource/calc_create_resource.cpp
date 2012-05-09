@@ -40,7 +40,7 @@ RDOCalcCreateResource::RDOCalcCreateResource(
 	ASSERT(m_relResID == ~0 || (m_relResID != ~0 && !m_permanentFlag));
 }
 
-void RDOCalcCreateResource::doCalc(CREF(LPRDORuntime) pRuntime)
+REF(RDOValue) RDOCalcCreateResource::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	LPRDOResource pResource = m_pResType->createRes(pRuntime, pRuntime->getResourceId(), m_paramsCalcs, m_traceFlag, m_permanentFlag);
 	ASSERT(pResource);
@@ -53,7 +53,9 @@ void RDOCalcCreateResource::doCalc(CREF(LPRDORuntime) pRuntime)
 	LPRDOType pType = m_pResType;
 	ASSERT(pType);
 
-	pRuntime->stack().push(RDOValue(pType, pResource));
+	m_value = RDOValue(pType, pResource);
+
+	return m_value;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

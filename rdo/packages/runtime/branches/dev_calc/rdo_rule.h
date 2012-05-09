@@ -51,7 +51,7 @@ private:
 	void init();
 
 	LPRDORuntime m_pRuntime;
-	LPRDOCalc    m_pAdditionalCondition;
+	LPRDOCalc    m_additionalCondition;
 	rbool        m_traceOFF;
 
 	void trace();

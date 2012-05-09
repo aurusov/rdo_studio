@@ -61,20 +61,12 @@ rdo::animation::Color RDOFRMFrame::RDOFRMColor::getColor(CREF(LPRDORuntime) pRun
 	switch (m_type)
 	{
 	case CT_NONE        : return rdo::animation::Color(50, 200, 50);
-	case CT_RGB         : {
-		m_pRedCalc  ->calcValue(pRuntime);
-		m_pGreenCalc->calcValue(pRuntime);
-		m_pBlueCalc ->calcValue(pRuntime);
-		RDOValue blue  = pRuntime->stack().pop();
-		RDOValue green = pRuntime->stack().pop();
-		RDOValue red   = pRuntime->stack().pop();
-		return rdo::animation::Color
-		(
-			(rbyte)red  .getUInt(),
-			(rbyte)green.getUInt(),
-			(rbyte)blue .getUInt()
-		);
-	}
+	case CT_RGB         : return rdo::animation::Color
+						  (
+							(rbyte)m_pRedCalc  ->calcValue(pRuntime).getUInt(),
+							(rbyte)m_pGreenCalc->calcValue(pRuntime).getUInt(),
+							(rbyte)m_pBlueCalc ->calcValue(pRuntime).getUInt()
+						  );
 	case CT_TRANSPARENT : return rdo::animation::Color();
 	case CT_LAST_BG     : return pFrame->m_colorLastBg;
 	case CT_LAST_FG     : return pFrame->m_colorLastFg;
@@ -187,8 +179,7 @@ rbool RDOFRMFrame::checkCondition(CREF(LPRDORuntime) pRuntime)
 	if (!m_pConditionCalc)
 		return true;
 
-	m_pConditionCalc->calcValue(pRuntime);
-	return pRuntime->stack().pop().getAsBool();
+	return m_pConditionCalc->calcValue(pRuntime).getAsBool();
 }
 
 PTR(rdo::animation::Frame) RDOFRMFrame::prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORuntime) pRuntime)
@@ -337,8 +328,8 @@ PTR(rdo::animation::FrameItem) RDOFRMText::createElement(CREF(LPRDORuntime) pRun
 	}
 	else
 	{
-		m_pValue->calcValue(pRuntime);
-		t = pRuntime->stack().pop().getAsString();
+		RDOValue val = m_pValue->calcValue(pRuntime);
+		t = val.getAsString();
 	}
 
 	int x      = getX     (pRuntime, getFrame());
@@ -782,8 +773,7 @@ rbool RDOFRMShow::checkCondition(CREF(LPRDORuntime) pRuntime)
 	if (!m_pConditionCalc)
 		return true;
 
-	m_pConditionCalc->calcValue(pRuntime);
-	return pRuntime->stack().pop().getAsBool();
+	return m_pConditionCalc->calcValue(pRuntime).getAsBool();
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -54,8 +54,7 @@ IBaseOperation::BOResult RDOPROCAdvance::onDoOperation(CREF(LPRDORuntime) pRunti
 	if (!m_transacts.empty())
 	{
 		//		TRACE1(_T("%7.1f ADVANCE BEGIN\n"), pRuntime->getCurrentTime());
-		pDelayCalc->calcValue(pRuntime);
-		double timeLeave = pRuntime->stack().pop().getDouble() + pRuntime->getCurrentTime();
+		double timeLeave = pDelayCalc->calcValue(pRuntime).getDouble() + pRuntime->getCurrentTime();
 		leave_list.push_back(LeaveTr(m_transacts.front(), timeLeave));
 		m_transacts.erase(m_transacts.begin());
 		pRuntime->addTimePoint(timeLeave, m_process, this);

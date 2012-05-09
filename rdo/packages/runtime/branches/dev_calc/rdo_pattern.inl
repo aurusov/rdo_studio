@@ -55,11 +55,7 @@ inline rbool RDOPattern::runCalcsBool(REF(CalcList) calcList, CREF(LPRDORuntime)
 {
 	STL_FOR_ALL(calcList, calcIt)
 	{
-		(*calcIt)->calcValue(pRuntime);
-		if (!pRuntime->stack().pop().getAsBool())
-		{
-			return false;
-		}
+		if (!(*calcIt)->calcValue(pRuntime).getAsBool()) return false;
 	}
 	return true;
 }

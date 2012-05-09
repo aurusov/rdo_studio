@@ -44,8 +44,7 @@ IBaseOperation::BOResult RDOPROCTerminate::onDoOperation(CREF(LPRDORuntime) pRun
 	pRuntime->onEraseRes(transact->getTraceID(), NULL);
 	m_transacts.erase(m_transacts.begin());
 	ruint termNow = pRuntime->getCurrentTerm();
-	pTermCalc->calcValue(pRuntime);
-	termNow += pRuntime->stack().pop().getInt();
+	termNow += pTermCalc->calcValue(pRuntime).getInt();
 	pRuntime->setCurrentTerm(termNow);
 	return IBaseOperation::BOR_done;
 }

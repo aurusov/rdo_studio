@@ -43,14 +43,13 @@ RDOCalcGetResourceByID::RDOCalcGetResourceByID(CREF(ruint) resourceID)
 	: m_resourceID(resourceID)
 {}
 
-void RDOCalcGetResourceByID::doCalc(CREF(LPRDORuntime) pRuntime)
+REF(RDOValue) RDOCalcGetResourceByID::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	RDOValue value;
-	if (!RDOCalcGetResourceHelper::getResource(pRuntime, m_resourceID, value))
+	if (!RDOCalcGetResourceHelper::getResource(pRuntime, m_resourceID, m_value))
 	{
 		pRuntime->error().push(_T("Не найден ресурс"), srcInfo());
 	}
-	pRuntime->stack().push(value);
+	return m_value;
 }
 
 // --------------------------------------------------------------------------------
@@ -63,12 +62,12 @@ RDOCalcGetResourceParam::RDOCalcGetResourceParam(CREF(LPRDOCalc) pResource, ruin
 	ASSERT(m_pResource);
 }
 
-void RDOCalcGetResourceParam::doCalc(CREF(LPRDORuntime) pRuntime)
+REF(RDOValue) RDOCalcGetResourceParam::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	m_pResource->calcValue(pRuntime);
-	LPRDOResource pResource = pRuntime->stack().pop().getPointerByInterfaceSafety<IResourceType>();
+	LPRDOResource pResource = m_pResource->calcValue(pRuntime).getPointerByInterfaceSafety<IResourceType>();
 	ASSERT(pResource);
-	pRuntime->stack().push(pResource->getParam(m_paramID));
+	m_value = pResource->getParam(m_paramID);
+	return m_value;
 }
 
 // --------------------------------------------------------------------------------
@@ -79,9 +78,10 @@ RDOCalcGetUnknowResParam::RDOCalcGetUnknowResParam(CREF(tstring) resName, CREF(t
 	, m_parName(parName)
 {}
 
-void RDOCalcGetUnknowResParam::doCalc(CREF(LPRDORuntime) pRuntime)
+REF(RDOValue) RDOCalcGetUnknowResParam::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->error().push(rdo::format(_T("Попытка использовать несуществующий ресурс: %s.%s"), m_resName.c_str(), m_parName.c_str()), srcInfo());
+	return m_value;
 }
 
 // --------------------------------------------------------------------------------
@@ -92,16 +92,17 @@ RDOSetResourceParamCalc::RDOSetResourceParamCalc(ruint resourceID, ruint paramID
 	, m_paramID   (paramID   )
 	, m_pCalc     (pCalc     )
 {
+	m_value = true;
 	if (m_pCalc)
 	{
 		setSrcInfo(m_pCalc->srcInfo());
 	}
 }
 
-void RDOSetResourceParamCalc::doCalc(CREF(LPRDORuntime) pRuntime)
+REF(RDOValue) RDOSetResourceParamCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	m_pCalc->calcValue(pRuntime);
-	pRuntime->setResParamVal(m_resourceID, m_paramID, pRuntime->stack().pop());
+	pRuntime->setResParamVal(m_resourceID, m_paramID, m_pCalc->calcValue(pRuntime));
+	return m_value;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -30,7 +30,7 @@ RDOFunCalcGroup::RDOFunCalcGroup(int nResType, CREF(LPRDOCalc) pCondition)
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcExist
 // --------------------------------------------------------------------------------
-void RDOFunCalcExist::doCalc(CREF(LPRDORuntime) pRuntime)
+REF(RDOValue) RDOFunCalcExist::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	rbool res = false;
 	RDORuntime::ResCIterator end = pRuntime->res_end();
@@ -43,22 +43,18 @@ void RDOFunCalcExist::doCalc(CREF(LPRDORuntime) pRuntime)
 			continue;
 
 		pRuntime->pushGroupFunc(*it);
-
-		m_pCondition->calcValue(pRuntime);
-		if (pRuntime->stack().pop().getAsBool())
-		{
+		if (m_pCondition->calcValue(pRuntime).getAsBool())
 			res = true;
-		}
-
 		pRuntime->popGroupFunc();
 	}
-	pRuntime->stack().push(RDOValue(res));
+	m_value = res;
+	return m_value;
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcNotExist
 // --------------------------------------------------------------------------------
-void RDOFunCalcNotExist::doCalc(CREF(LPRDORuntime) pRuntime)
+REF(RDOValue) RDOFunCalcNotExist::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	rbool res = true;
 	RDORuntime::ResCIterator end = pRuntime->res_end();
@@ -71,22 +67,18 @@ void RDOFunCalcNotExist::doCalc(CREF(LPRDORuntime) pRuntime)
 			continue;
 
 		pRuntime->pushGroupFunc(*it);
-
-		m_pCondition->calcValue(pRuntime);
-		if (pRuntime->stack().pop().getAsBool())
-		{
+		if (m_pCondition->calcValue(pRuntime).getAsBool())
 			res = false;
-		}
-
 		pRuntime->popGroupFunc();
 	}
-	pRuntime->stack().push(RDOValue(res));
+	m_value = res;
+	return m_value;
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcForAll
 // --------------------------------------------------------------------------------
-void RDOFunCalcForAll::doCalc(CREF(LPRDORuntime) pRuntime)
+REF(RDOValue) RDOFunCalcForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	rbool first_found = false;
 	rbool res = true;
@@ -100,9 +92,7 @@ void RDOFunCalcForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 			continue;
 
 		pRuntime->pushGroupFunc(*it);
-
-		m_pCondition->calcValue(pRuntime);
-		if (!pRuntime->stack().pop().getAsBool())
+		if (!m_pCondition->calcValue(pRuntime).getAsBool())
 		{
 			res = false;
 		}
@@ -110,19 +100,16 @@ void RDOFunCalcForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 		{
 			first_found = true;
 		}
-
 		pRuntime->popGroupFunc();
 	}
-	pRuntime->stack().push(first_found
-		? RDOValue(res)
-		: RDOValue(false)
-	);
+	m_value = first_found ? res : false;
+	return m_value;
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcNotForAll
 // --------------------------------------------------------------------------------
-void RDOFunCalcNotForAll::doCalc(CREF(LPRDORuntime) pRuntime)
+REF(RDOValue) RDOFunCalcNotForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	rbool res = false;
 	RDORuntime::ResCIterator end = pRuntime->res_end();
@@ -135,16 +122,12 @@ void RDOFunCalcNotForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 			continue;
 
 		pRuntime->pushGroupFunc(*it);
-
-		m_pCondition->calcValue(pRuntime);
-		if (!pRuntime->stack().pop().getAsBool())
-		{
+		if (!m_pCondition->calcValue(pRuntime).getAsBool())
 			res = true;
-		}
-
 		pRuntime->popGroupFunc();
 	}
-	pRuntime->stack().push(RDOValue(res));
+	m_value = res;
+	return m_value;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

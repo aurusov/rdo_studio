@@ -30,20 +30,17 @@ inline RDODPTSearchRuntime::RDODPTSearchRuntime(CREF(LPRDORuntime) pRuntime, LPI
 
 inline rbool  RDODPTSearchRuntime::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
-	pCondition->calcValue(pRuntime);
-	return pRuntime->stack().pop().getAsBool();
+	return pCondition->calcValue(pRuntime).getAsBool();
 }
 
 inline rbool RDODPTSearchRuntime::TermCondition(CREF(LPRDORuntime) pRuntime)
 {
-	pTermCondition->calcValue(pRuntime);
-	return pRuntime->stack().pop().getAsBool();
+	return pTermCondition->calcValue(pRuntime).getAsBool();
 }
 
 inline double RDODPTSearchRuntime::EvaluateBy(CREF(LPRDORuntime) pRuntime)
 {
-	pEvaluateBy->calcValue(pRuntime);
-	return pRuntime->stack().pop().getDouble();
+	return pEvaluateBy->calcValue(pRuntime).getDouble();
 }
 
 inline rbool RDODPTSearchRuntime::NeedCompareTops()

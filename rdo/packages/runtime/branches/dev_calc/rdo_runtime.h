@@ -194,22 +194,6 @@ public:
 
 	void setStudioThread(PTR(RDOThread) pStudioThread);
 
-	class Stack
-	{
-	public:
-		Stack();
-
-		void      push(CREF(RDOValue) value);
-		RDOValue  pop ();
-
-	private:
-		typedef  std::vector<RDOValue>  Container;
-
-		Container  m_container;
-	};
-
-	REF(Stack) stack();
-
 private:
 	RDORuntime();
 	virtual ~RDORuntime();
@@ -230,7 +214,6 @@ private:
 	Notify              m_notify;
 	Error               m_error;
 	RDOHotKey           m_hotKey;
-	Stack               m_stack;
 
 #ifdef _DEBUG
 	typedef  std::vector<ValueList>  State;

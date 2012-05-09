@@ -31,10 +31,11 @@ void RDOCalcSeqInit::setBase(int base)
 	m_base = base;
 }
 
-void RDOCalcSeqInit::doCalc(CREF(LPRDORuntime) pRuntime)
+REF(RDOValue) RDOCalcSeqInit::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	UNUSED(pRuntime);
 	m_gen->setSeed(m_base);
+	return m_value;
 }
 
 RDOCalcSeqInit::~RDOCalcSeqInit() 
