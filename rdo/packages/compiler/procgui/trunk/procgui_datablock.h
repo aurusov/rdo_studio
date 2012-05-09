@@ -129,12 +129,17 @@ public:
 	CREF(ActionList)  getActionList () const;
 	CREF(ResNameList) getResNameList() const;
 
+	CREF(rdo::runtime::LPIInternalStatistics) getStatistics() const      { return m_pStatistics; }
+	void setStatistics(CREF(rdo::runtime::LPIInternalStatistics) pStatistics);
+
 private:
 	RPShapeDataBlockProcess(RPShapeDataBlock::zakonRaspr zakon, CREF(tstring) name);
 	virtual ~RPShapeDataBlockProcess();
 
 	ActionList  m_actionList;
 	ResNameList m_resNameList;
+
+	rdo::runtime::LPIInternalStatistics m_pStatistics;
 };
 DECLARE_POINTER(RPShapeDataBlockProcess);
 

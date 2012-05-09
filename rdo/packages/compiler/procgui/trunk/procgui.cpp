@@ -379,6 +379,11 @@ ProcGUIAdvance::ProcGUIAdvance(CREF(LPProcGUIProcess) pProcess, CREF(rdo::runtim
 
 	m_pBlock = RF(rdo::runtime::RDOPROCAdvance)::create(pProcess->getProcess(), getCalc());
 	ASSERT(m_pBlock);
+
+	LPIInternalStatisticsManager pStatisticsManagerProc = m_pBlock;
+	ASSERT(pStatisticsManagerProc);
+
+	pStatisticsManagerProc->setStatistics(m_pParams->getStatistics());
 }
 
 ProcGUIAdvance::~ProcGUIAdvance()

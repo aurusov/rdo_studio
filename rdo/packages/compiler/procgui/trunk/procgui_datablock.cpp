@@ -117,4 +117,9 @@ CREF(RPShapeDataBlockProcess::ResNameList) RPShapeDataBlockProcess::getResNameLi
 	return m_resNameList;
 }
 
+void RPShapeDataBlockProcess::setStatistics(CREF(rdo::runtime::LPIInternalStatistics) pStatistics)
+{
+	m_pStatistics = pStatistics;
+}
+
 CLOSE_COMPILER_GUI_NAMESPACE
