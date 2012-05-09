@@ -28,7 +28,7 @@ RDOSetPatternParamCalc::RDOSetPatternParamCalc(ruint paramID, CREF(LPRDOCalc) pC
 	ASSERT(m_pCalc);
 }
 
-REF(RDOValue) RDOSetPatternParamCalc::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOSetPatternParamCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->setPatternParameter(m_paramID, m_pCalc->calcValue(pRuntime));
 	return m_value;
@@ -41,7 +41,7 @@ RDOCalcPatParam::RDOCalcPatParam(ruint paramID)
 	: m_paramID(paramID)
 {}
 
-REF(RDOValue) RDOCalcPatParam::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcPatParam::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_value = pRuntime->getPatternParameter(m_paramID);
 	return m_value;

@@ -21,7 +21,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcAnd
 // --------------------------------------------------------------------------------
-REF(RDOValue) RDOCalcAnd::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcAnd::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	++OperatorType::getCalcCounter<OperatorType::Type(calc_type)>();
 
@@ -37,7 +37,7 @@ REF(RDOValue) RDOCalcAnd::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcAnd
 // --------------------------------------------------------------------------------
-REF(RDOValue) RDOCalcOr::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcOr::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	++OperatorType::getCalcCounter<OperatorType::Type(calc_type)>();
 

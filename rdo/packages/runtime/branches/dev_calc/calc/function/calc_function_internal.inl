@@ -24,7 +24,7 @@ inline RDOFunCalcStd<F>::RDOFunCalcStd(function_type pFunction)
 {}
 
 template <class F>
-inline REF(RDOValue) RDOFunCalcStd<F>::doCalc(CREF(LPRDORuntime) pRuntime)
+inline RDOValue RDOFunCalcStd<F>::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	calc(pRuntime, typename F::param_count());
 	return m_value;

@@ -32,7 +32,7 @@ RDOCalcCheckRange::RDOCalcCheckRange(CREF(RDOValue) minValue, CREF(RDOValue) max
 	}
 }
 
-REF(RDOValue) RDOCalcCheckRange::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcCheckRange::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_value = m_pCalc->calcValue(pRuntime);
 	if (m_value < m_minValue || m_value > m_maxValue)

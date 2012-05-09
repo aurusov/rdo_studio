@@ -44,7 +44,7 @@ public:
 	//! \param pRuntime - указатель на объект runtime'а.
 	//!                   Используется для доступа к БД модели, системному времени, генерации ошибок и др.
 	//! \result Вычесленное калком значение
-	REF(RDOValue) calcValue(CREF(LPRDORuntime) pRuntime);
+	RDOValue calcValue(CREF(LPRDORuntime) pRuntime);
 
 	//! Сравнение двух калков как объектов (результаты калков в сравнении не используются).
 	//! Реализовывать этот метод в новых калках необязательно.
@@ -72,7 +72,7 @@ protected:
 	//!                   Используется для доступа к БД модели, системному времени, генерации ошибок и др.
 	//! \exception RDORuntimeException
 	//! \result Вычесленное калком значение
-	virtual REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime) = 0;
+	virtual RDOValue doCalc(CREF(LPRDORuntime) pRuntime) = 0;
 
 private:
 	//! Привязка калка к исходникам
@@ -81,7 +81,7 @@ private:
 
 #define DECLARE_ICalc \
 private:              \
-	REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime);
+	RDOValue doCalc(CREF(LPRDORuntime) pRuntime);
 
 //! \def    CALC_SUB
 //! \brief  Описывает класс-потомок

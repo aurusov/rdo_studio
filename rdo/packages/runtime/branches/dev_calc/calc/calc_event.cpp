@@ -38,7 +38,7 @@ RDOCalcEventPlan::RDOCalcEventPlan(CREF(LPRDOCalc) pTimeCalc)
 	ASSERT(m_pTimeCalc);
 }
 
-REF(RDOValue) RDOCalcEventPlan::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcEventPlan::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	ASSERT(m_pEvent);
 	m_value = m_pTimeCalc->calcValue(pRuntime);
@@ -52,7 +52,7 @@ REF(RDOValue) RDOCalcEventPlan::doCalc(CREF(LPRDORuntime) pRuntime)
 RDOCalcEventStop::RDOCalcEventStop()
 {}
 
-REF(RDOValue) RDOCalcEventStop::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcEventStop::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	ASSERT(m_pEvent);
 	pRuntime->removeTimePoint(m_pEvent);

@@ -22,10 +22,10 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcDiv
 // --------------------------------------------------------------------------------
-REF(RDOValue) RDOCalcDiv::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcDiv::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	++OperatorType::getCalcCounter<OperatorType::Type(calc_type)>();
-	REF(RDOValue) right = m_pRight->calcValue(pRuntime);
+	RDOValue right = m_pRight->calcValue(pRuntime);
 	if (right == 0)
 	{
 		pRuntime->error().push(_T("Деление на ноль"), srcInfo());
@@ -37,7 +37,7 @@ REF(RDOValue) RDOCalcDiv::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcPlusEnumSafe
 // --------------------------------------------------------------------------------
-REF(RDOValue) RDOCalcPlusEnumSafe::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcPlusEnumSafe::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	++OperatorType::getCalcCounter<OperatorType::Type(calc_type)>();
 	m_value = m_pLeft->calcValue(pRuntime).getEnumAsInt() + m_pRight->calcValue(pRuntime).getEnumAsInt();
@@ -47,7 +47,7 @@ REF(RDOValue) RDOCalcPlusEnumSafe::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOCalcMultEnumSafe
 // --------------------------------------------------------------------------------
-REF(RDOValue) RDOCalcMultEnumSafe::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcMultEnumSafe::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	++OperatorType::getCalcCounter<OperatorType::Type(calc_type)>();
 	m_value = m_pLeft->calcValue(pRuntime).getEnumAsInt() * m_pRight->calcValue(pRuntime).getEnumAsInt();

@@ -46,7 +46,7 @@ RDOSelectResourceNonExistCalc::RDOSelectResourceNonExistCalc(ResourceID relResID
 	m_value = 1;
 }
 
-REF(RDOValue) RDOSelectResourceNonExistCalc::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOSelectResourceNonExistCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
 	return m_value;
@@ -70,7 +70,7 @@ rbool RDOSelectResourceDirectCalc::compare(CREF(LPRDOCalc) pCalc) const
 	return m_relResID == pDirectCalc->m_relResID && m_resID == pDirectCalc->m_resID;
 }
 
-REF(RDOValue) RDOSelectResourceDirectCalc::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOSelectResourceDirectCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->getCurrentActivity()->setRelRes(m_relResID, m_resID);
 	if (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
@@ -91,7 +91,7 @@ RDOSelectResourceByTypeCalc::RDOSelectResourceByTypeCalc(ResourceID relResID, Re
 	, m_resTypeID          (resTypeID                                   )
 {}
 
-REF(RDOValue) RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	RDOValue   maxVal      = -DBL_MAX;
 	RDOValue   minVal      = DBL_MAX;
@@ -265,7 +265,7 @@ rbool RDOSelectResourceCommonCalc::getFirst(REF(ResourceIDTable) allNumbs, ruint
 //	return false;
 //}
 
-REF(RDOValue) RDOSelectResourceCommonCalc::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOSelectResourceCommonCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	ResourceIDTable allNumbs;
 	ResourceIDList res;

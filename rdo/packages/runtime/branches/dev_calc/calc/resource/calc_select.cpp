@@ -47,7 +47,7 @@ void RDOFunCalcSelect::prepare(CREF(LPRDORuntime) pRuntime)
 	}
 }
 
-REF(RDOValue) RDOFunCalcSelect::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOFunCalcSelect::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	prepare(pRuntime);
 	return m_value;
@@ -64,7 +64,7 @@ RDOFunCalcSelectBase::RDOFunCalcSelectBase(CREF(LPRDOFunCalcSelect) pSelect, CRE
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcSelectExist
 // --------------------------------------------------------------------------------
-REF(RDOValue) RDOFunCalcSelectExist::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOFunCalcSelectExist::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
 	rbool res = false;
@@ -85,7 +85,7 @@ REF(RDOValue) RDOFunCalcSelectExist::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcSelectNotExist
 // --------------------------------------------------------------------------------
-REF(RDOValue) RDOFunCalcSelectNotExist::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOFunCalcSelectNotExist::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
 	rbool res = true;
@@ -106,7 +106,7 @@ REF(RDOValue) RDOFunCalcSelectNotExist::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcSelectForAll
 // --------------------------------------------------------------------------------
-REF(RDOValue) RDOFunCalcSelectForAll::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOFunCalcSelectForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
 	if (m_pSelect->res_list.empty())
@@ -132,7 +132,7 @@ REF(RDOValue) RDOFunCalcSelectForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcSelectNotForAll
 // --------------------------------------------------------------------------------
-REF(RDOValue) RDOFunCalcSelectNotForAll::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOFunCalcSelectNotForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
 	rbool res = false;
@@ -153,7 +153,7 @@ REF(RDOValue) RDOFunCalcSelectNotForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcSelectSize
 // --------------------------------------------------------------------------------
-REF(RDOValue) RDOFunCalcSelectSize::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOFunCalcSelectSize::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
 	m_value = m_pSelect->res_list.size();
@@ -163,7 +163,7 @@ REF(RDOValue) RDOFunCalcSelectSize::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcSelectEmpty
 // --------------------------------------------------------------------------------
-REF(RDOValue) RDOFunCalcSelectEmpty::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOFunCalcSelectEmpty::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
 	m_value = m_pSelect->res_list.empty();

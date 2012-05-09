@@ -29,7 +29,7 @@ RDOCalcWatchGroupStart::RDOCalcWatchGroupStart(CREF(LPIResultGroup) pResultGroup
 RDOCalcWatchGroupStart::~RDOCalcWatchGroupStart()
 {}
 
-REF(RDOValue) RDOCalcWatchGroupStart::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcWatchGroupStart::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	ASSERT(m_pResultGroup);
 	m_pResultGroup->onStart(pRuntime);
@@ -48,7 +48,7 @@ RDOCalcWatchGroupStop::RDOCalcWatchGroupStop(CREF(LPIResultGroup) pResultGroup)
 RDOCalcWatchGroupStop::~RDOCalcWatchGroupStop()
 {}
 
-REF(RDOValue) RDOCalcWatchGroupStop::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcWatchGroupStop::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	ASSERT(m_pResultGroup);
 	m_pResultGroup->onStop(pRuntime);

@@ -30,7 +30,7 @@ inline RDOCalcRandomDistribution<T>::~RDOCalcRandomDistribution()
 }
 
 template<class T>
-inline REF(RDOValue) RDOCalcRandomDistribution<T>::doCalc(CREF(LPRDORuntime) pRuntime)
+inline RDOValue RDOCalcRandomDistribution<T>::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	RDOValue res = getNextValue(pRuntime);
 	if (m_range)

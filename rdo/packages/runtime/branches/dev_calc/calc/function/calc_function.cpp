@@ -45,7 +45,7 @@ void RDOFuncTableCalc::addResultCalc(CREF(LPRDOCalcConst) pResult)
 	m_pResultList.push_back(pResult);
 }
 
-REF(RDOValue) RDOFuncTableCalc::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOFuncTableCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	ruint index = m_pArgument->calcValue(pRuntime).getUInt();
 	return m_pResultList[index]->calcValue(pRuntime);
@@ -69,7 +69,7 @@ void RDOFunListCalc::addCase(CREF(LPRDOCalc) pCase, CREF(LPRDOCalcConst) pResult
 	m_resultList.push_back(pResult);
 }
 
-REF(RDOValue) RDOFunListCalc::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOFunListCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	ResultList::const_iterator resultIt = m_resultList.begin();
 	STL_FOR_ALL_CONST(m_caseList, caseIt)
@@ -100,7 +100,7 @@ void RDOFunAlgorithmicCalc::addCalcIf(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc
 	m_actionList   .push_back(pAction   );
 }
 
-REF(RDOValue) RDOFunAlgorithmicCalc::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOFunAlgorithmicCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	CalcList::const_iterator actionIt = m_actionList.begin();
 	STL_FOR_ALL_CONST(m_conditionList, conditionIt)
@@ -126,7 +126,7 @@ RDOCalcFuncParam::RDOCalcFuncParam(ruint paramID, CREF(RDOSrcInfo) src_info)
 	setSrcInfo(src_info);
 }
 
-REF(RDOValue) RDOCalcFuncParam::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcFuncParam::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_value = pRuntime->getFuncArgument(m_paramID);
 	return m_value;
@@ -139,7 +139,7 @@ RDOCalcGetConst::RDOCalcGetConst(ruint constantID)
 	: m_constantID(constantID)
 {}
 
-REF(RDOValue) RDOCalcGetConst::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcGetConst::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_value = pRuntime->getConstValue(m_constantID);
 	return m_value;
@@ -159,7 +159,7 @@ RDOCalcSetConst::RDOCalcSetConst(ruint constantID, CREF(LPRDOCalc) pCalc)
 	}
 }
 
-REF(RDOValue) RDOCalcSetConst::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcSetConst::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->setConstValue(m_constantID, m_pCalc->calcValue(pRuntime));
 	return m_value;
@@ -182,7 +182,7 @@ void RDOCalcFunctionCaller::setFunctionCalc(CREF(LPRDOCalc) pFunction)
 	m_pFunction = pFunction;
 }
 
-REF(RDOValue) RDOCalcFunctionCaller::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcFunctionCaller::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->pushFuncTop();
 	STL_FOR_ALL_CONST(m_paramList, paramIt)

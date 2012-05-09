@@ -103,7 +103,7 @@ inline RDOSrcInfo RDOCalcBinary<F, CalcType>::getStaticSrcInfo(CREF(LPRDOCalc) p
 }
 
 template <class F, typename OperatorType::Type CalcType>
-inline REF(RDOValue) RDOCalcBinary<F, CalcType>::doCalc(CREF(LPRDORuntime) pRuntime)
+inline RDOValue RDOCalcBinary<F, CalcType>::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	++OperatorType::getCalcCounter<CalcType>();
 	RDOValue left(m_pLeft ->calcValue(pRuntime));
