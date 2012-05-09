@@ -88,16 +88,10 @@ protected:
 CALC(RDOCalcFuncParam)
 {
 DECLARE_FACTORY(RDOCalcFuncParam)
-public:
-	void reset();
-
 private:
 	RDOCalcFuncParam(ruint paramID, CREF(RDOSrcInfo) src_info);
 
-	typedef  std::list<RDOValue>  ValueList;
-
-	ruint      m_paramID;
-	ValueList  m_tempValueList;
+	ruint m_paramID;
 
 	DECLARE_ICalc;
 };
