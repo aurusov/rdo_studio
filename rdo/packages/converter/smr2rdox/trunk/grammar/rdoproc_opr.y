@@ -440,7 +440,8 @@ dpt_term_param
 	{
 		LPRDOFUNArithm pArithm = CONVERTER->stack().pop<RDOFUNArithm>($1);
 		ASSERT(pArithm);
-		if (pArithm->createCalc()->calcValue(RUNTIME).type()->typeID()==rdo::runtime::RDOType::t_int)
+		//! @todo очень спорное решение узнать тип
+		if (pArithm->createCalc()->calcValue(RUNTIME).type()->typeID() == rdo::runtime::RDOType::t_int)
 		{
 			rdo::runtime::LPRDOCalc pCalc = pArithm->createCalc(NULL);
 			LPRDOPROCOperator pBlock = rdo::Factory<RDOPROCTerminate>::create(CONVERTER->getLastPROCProcess(), _T("TERMINATE"), pCalc);
