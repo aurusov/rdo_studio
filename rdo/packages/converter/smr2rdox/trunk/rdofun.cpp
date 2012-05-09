@@ -66,7 +66,7 @@ rdo::runtime::LPRDOCalcConst pConstCalc2 = pSecond->m_pCalc.object_dynamic_cast<
 rdo::runtime::LPRDOCalc pNewCalc; \
 if (pConstCalc1 && pConstCalc2) \
 { \
-	pNewCalc = rdo::Factory<rdo::runtime::RDOCalcConst>::create(pConstCalc1->calcValue(Converter::s_converter()->runtime()) OPR pConstCalc2->calcValue(Converter::s_converter()->runtime())); \
+	pNewCalc = rdo::Factory<rdo::runtime::RDOCalcConst>::create(pConstCalc1->getValue() OPR pConstCalc2->getValue()); \
 	pNewCalc->setSrcInfo(rdo::runtime::RDOCalc##CALC::getStaticSrcInfo(pConstCalc1, pConstCalc2)); \
 } \
 else \
