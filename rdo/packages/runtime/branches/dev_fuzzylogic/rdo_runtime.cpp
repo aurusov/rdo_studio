@@ -53,6 +53,7 @@ RDORuntime::RDORuntime()
 	, m_currentTerm          (0                  )
 	, m_funBreakFlag         (FBF_NONE           )
 	, m_pStudioThread        (NULL               )
+	, m_currFuncTop          (0                  )
 {
 	m_pTerminateIfCalc = NULL;
 	m_pMemoryStack = rdo::Factory<RDOMemoryStack>::create();
