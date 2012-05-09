@@ -302,7 +302,7 @@ BOOST_AUTO_TEST_CASE(RDOCalc_SpeedTest)
 	for (ruint i = 0; i < RUN_TEST_COUNT; ++i)
 	{
 		pPlus->calcValue(pRuntime);
-		pRuntime->stack().pop(1);
+		pRuntime->stack().pop();
 	}
 	clock::duration duration(clock::now() - timeStart);
 	boost::chrono::duration<double> seconds(duration);

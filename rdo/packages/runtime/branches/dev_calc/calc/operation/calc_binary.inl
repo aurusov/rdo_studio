@@ -109,7 +109,7 @@ FORCE_INLINE void RDOCalcBinary<F, CalcType>::doCalc(CREF(LPRDORuntime) pRuntime
 
 	m_pLeft ->calcValue(pRuntime);
 	m_pRight->calcValue(pRuntime);
-	pRuntime->stack().push((pRuntime->stack().top(1).*F::method())(pRuntime->stack().top(0)), 2);
+	pRuntime->stack().push((pRuntime->stack().pop().*F::method())(pRuntime->stack().pop()));
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

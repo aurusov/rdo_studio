@@ -264,15 +264,9 @@ inline RDORuntime::Stack::Stack()
 	m_container.reserve(1000);
 }
 
-FORCE_INLINE void RDORuntime::Stack::push(CREF(RDOValue) value)
+inline void RDORuntime::Stack::push(CREF(RDOValue) value)
 {
 	m_container.push_back(value);
-}
-
-FORCE_INLINE void RDORuntime::Stack::push(CREF(RDOValue) value, ruint removeCount)
-{
-	pop (removeCount);
-	push(value);
 }
 
 inline RDOValue RDORuntime::Stack::pop()
@@ -281,16 +275,6 @@ inline RDOValue RDORuntime::Stack::pop()
 	RDOValue result = m_container.back();
 	m_container.pop_back();
 	return result;
-}
-
-FORCE_INLINE void RDORuntime::Stack::pop(ruint count)
-{
-	m_container.resize(m_container.size() - count);
-}
-
-FORCE_INLINE CREF(RDOValue) RDORuntime::Stack::top(ruint index) const
-{
-	return m_container[m_container.size() - 1 - index];
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE
