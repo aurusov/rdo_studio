@@ -153,7 +153,11 @@ REF(RDOValue) RDOCalcBaseStatementList::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	STL_FOR_ALL(m_calcStatementList, calcIt)
 	{
-		m_value = (*calcIt)->calcValue(pRuntime);
+		RDOValue tempValue = (*calcIt)->calcValue(pRuntime);
+		if (tempValue.typeID() != RDOType::t_unknow)
+		{
+			m_value = tempValue;
+		}
 	}
 	return m_value;
 }
