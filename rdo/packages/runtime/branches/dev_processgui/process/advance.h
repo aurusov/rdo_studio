@@ -19,6 +19,7 @@
 #include "simulator/runtime/process/rdoprocess.h"
 #include "simulator/runtime/rdo_logic.h"
 #include "simulator/runtime/rdo_res_type.h"
+#include "simulator/runtime/process/generate.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -27,12 +28,13 @@ OPEN_RDO_RUNTIME_NAMESPACE
   \class   RDOPROCAdvance
   \brief   Процессный блок ADVANCE
 */
-class RDOPROCAdvance: public RDOPROCBlock, public IBaseOperation
+class RDOPROCAdvance: public RDOPROCBlock, public IBaseOperation, public IInternalStatisticsManager
 {
 DEFINE_IFACTORY(RDOPROCAdvance);
 QUERY_INTERFACE_BEGIN
 	QUERY_INTERFACE_PARENT(RDOPROCBlock  )
 	QUERY_INTERFACE       (IBaseOperation)
+	QUERY_INTERFACE       (IInternalStatisticsManager)
 QUERY_INTERFACE_END
 
 protected:
@@ -54,7 +56,11 @@ protected:
 private:
 	RDOPROCAdvance(LPIPROCProcess process, CREF(LPRDOCalc) _pDelayCalc);
 
+	int                   m_transCountProc;
+	LPIInternalStatistics m_pStatistics;
+
 	DECLARE_IBaseOperation;
+	DECLARE_IInternalStatisticsManager;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

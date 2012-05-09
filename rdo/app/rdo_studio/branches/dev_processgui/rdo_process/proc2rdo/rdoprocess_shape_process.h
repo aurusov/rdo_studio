@@ -4,8 +4,11 @@
 #include <list>
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape.h"
 #include "simulator/compiler/procgui/procgui_datablock.h"
+#include "simulator/runtime/process/generate.h"
 
-class RPShapeProcessMJ : public RPShape_MJ
+OBJECT(RPShapeProcessMJ)
+	IS  INSTANCE_OF      (RPShape_MJ                       )
+	AND IMPLEMENTATION_OF(rdo::runtime::IInternalStatistics)
 {
 friend class RPMethodProc2RDO_MJ;
 
@@ -20,13 +23,18 @@ public:
 	virtual void onLButtonDblClk( UINT nFlags, CPoint global_chart_pos );
 	virtual void generate();
 
+	virtual void setTransCount(ruint count);
+
+	virtual void drawCustom(REF(CDC) dc);
+
 	//параметры для симулятора
 	rdo::compiler::gui::LPRPShapeDataBlockProcess m_pParams;
+	rdo::runtime::      LPIInternalStatistics     pInternalStatistics;
 	//переменные для генерации
 	tstring gname; // имя
-	
 	int gtype; // закон прибытия
 	int base_gen;
+	ruint m_currentTransactCountProc;
 	
 	//атрибуты законов
 	double gexp;
@@ -38,6 +46,8 @@ public:
 	int prior;
 	int queue;
 	int parameter;
+
+	ruint indent;
 
 	std::list< CString> list_resource_procMJ;
 

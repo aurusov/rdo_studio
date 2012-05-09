@@ -11,38 +11,40 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
-RPShapeProcessMJ::RPShapeProcessMJ( RPObject* _parent ):
-	RPShape_MJ( _parent, _T("Process") )
+RPShapeProcessMJ::RPShapeProcessMJ( RPObject* _parent )
+	: RPShape_MJ( _parent, _T("Process") )
+	, m_currentTransactCountProc(0)
 {
 	
-	gname=_T("Process"); // имя
+	gname = _T("Process"); // имя
 	
-	gtype = 0;
+	gtype    = 0;
 	base_gen = 1234567;
 	
 	//атрибуты законов
-	gexp=0;
-	gdisp=0;
-	gmax=0;
-	gmin=0;
+	gexp  = 0;
+	gdisp = 0;
+	gmax  = 0;
+	gmin  = 0;
 
-	action=0; // тип действия по отношению к ресурсу
-	prior=0;
-	queue=0;
-	parameter=888; // ПОКА НЕ ТРОГАЛ ЭТОТ ПАРАМЕТР
+	action = 0; // тип действия по отношению к ресурсу
+	prior  = 0;
+	queue  = 0;
+	parameter = 888; // ПОКА НЕ ТРОГАЛ ЭТОТ ПАРАМЕТР
+	indent = 5;
 		
 		// инициализация типа блока 
 	type ="block";
 		
 	pa_src.push_back( rp::point(-50, -25) );
-	pa_src.push_back( rp::point(50, -25) );
-	pa_src.push_back( rp::point(50, 25) );
-	pa_src.push_back( rp::point(-50, 25) );
+	pa_src.push_back( rp::point( 50, -25) );
+	pa_src.push_back( rp::point( 50,  25) );
+	pa_src.push_back( rp::point(-50,  25) );
 	pa_src.push_back( rp::point(-50, -25) );
 
-	docks.push_back( new RPConnectorDock( this, RPConnectorDock::in, rp::point( -50, 0 ), 180, "transact" ) );
-	docks.push_back( new RPConnectorDockOne( this, RPConnectorDock::out, rp::point(  50, 0 ), 0, "transact" ) );
-	docks.push_back( new RPConnectorDock( this, RPConnectorDock::in,  rp::point(  0, 25), 270, "resource" ) );
+	docks.push_back( new RPConnectorDock   (this, RPConnectorDock::in,  rp::point(-50,  0), 180, "transact"));
+	docks.push_back( new RPConnectorDockOne(this, RPConnectorDock::out, rp::point( 50,  0),   0, "transact"));
+	docks.push_back( new RPConnectorDock   (this, RPConnectorDock::in,  rp::point(  0, 25), 270, "resource"));
 }
 
 RPShapeProcessMJ::~RPShapeProcessMJ()
@@ -85,12 +87,19 @@ void RPShapeProcessMJ::generate()
 			break;
 	}
 
+	LPRPShapeProcessMJ pThis(this);
+	ASSERT(pThis);
+
+	pInternalStatistics = pThis.interface_cast<rdo::runtime::IInternalStatistics>();
+	ASSERT(pInternalStatistics);
+
 	m_pParams = rdo::Factory<rdo::compiler::gui::RPShapeDataBlockProcess>::create(zakon, gname);
 	ASSERT(m_pParams);
 	m_pParams->setBase(base_gen);
 	m_pParams->setDisp(gdisp);
 	m_pParams->setExp(gexp);
 	m_pParams->setMax(gmax);
+	m_pParams->setStatistics(pInternalStatistics);
 
 	switch(action)
 	{
@@ -106,7 +115,7 @@ void RPShapeProcessMJ::generate()
 			m_pParams->addAction(rdo::compiler::gui::RPShapeDataBlockProcess::A_SEIZE  );
 			m_pParams->addAction(rdo::compiler::gui::RPShapeDataBlockProcess::A_ADVANCE);
 			break;
-		case 3://seize,advance
+		case 3://advance,release
 			m_pParams->addAction(rdo::compiler::gui::RPShapeDataBlockProcess::A_ADVANCE);
 			m_pParams->addAction(rdo::compiler::gui::RPShapeDataBlockProcess::A_RELEASE);
 			break;
@@ -120,7 +129,20 @@ void RPShapeProcessMJ::generate()
 	}
 
 	studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_PROCESS, m_pParams.get());
+
 	m_pParams = NULL;
+}
+
+void RPShapeProcessMJ::setTransCount(ruint count)
+{
+	m_currentTransactCountProc = count;
+	update();
+}
+
+void RPShapeProcessMJ::drawCustom(REF(CDC) dc)
+{
+	dc.SetTextColor(RGB(0x00, 0x64, 0x00));
+	dc.TextOut(this->pa_global.getMaxX() - 2*indent, this->pa_global.getMaxY() + indent, rp::string::fromint(m_currentTransactCountProc).c_str());
 }
 
 void RPShapeProcessMJ::saveToXML(REF(pugi::xml_node) parentNode) const

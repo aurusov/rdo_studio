@@ -58,6 +58,12 @@ IBaseOperation::BOResult RDOPROCAdvance::onDoOperation(CREF(LPRDORuntime) pRunti
 		leave_list.push_back(LeaveTr(m_transacts.front(), timeLeave));
 		m_transacts.erase(m_transacts.begin());
 		pRuntime->addTimePoint(timeLeave, m_process, this);
+
+		++m_transCountProc;
+
+		if (m_pStatistics)
+			m_pStatistics->setTransCount(m_transCountProc);
+
 		return IBaseOperation::BOR_done;
 	} 
 	else if (!leave_list.empty())
@@ -99,6 +105,11 @@ IBaseOperation::BOResult RDOPROCAdvance::onContinue(CREF(LPRDORuntime) pRuntime)
 {
 	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
+}
+
+void RDOPROCAdvance::setStatistics(CREF(rdo::runtime::LPIInternalStatistics) pStatistics)
+{
+	m_pStatistics = pStatistics;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE
