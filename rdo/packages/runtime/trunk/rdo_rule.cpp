@@ -32,7 +32,7 @@ RDORule::RDORule(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternRule) pPattern, r
 	: RDOActivityPattern<RDOPatternRule>(pPattern, trace, name)
 	, RDOPatternPrior                   (                     )
 	, m_pRuntime                        (pRuntime             )
-	, m_additionalCondition             (pCondition           )
+	, m_pAdditionalCondition            (pCondition           )
 {
 	init();
 }
@@ -54,7 +54,7 @@ void RDORule::onBeforeChoiceFrom(CREF(LPRDORuntime) pRuntime)
 rbool RDORule::choiceFrom(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->setCurrentActivity(this);
-	if (m_additionalCondition && !m_additionalCondition->calcValue(pRuntime).getAsBool())
+	if (m_pAdditionalCondition && !m_pAdditionalCondition->calcValue(pRuntime).getAsBool())
 	{
 		return false;
 	}

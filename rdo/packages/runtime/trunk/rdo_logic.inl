@@ -203,7 +203,9 @@ inline IBaseOperation::BOResult RDOLogic<Order>::onContinue(CREF(LPRDORuntime) p
 template <class Order>
 inline rbool RDOLogic<Order>::checkSelfCondition(CREF(LPRDORuntime) pRuntime)
 {
-	return m_pCondition ? m_pCondition->calcValue(pRuntime).getAsBool() : true;
+	return m_pCondition
+		? m_pCondition->calcValue(pRuntime).getAsBool()
+		: true;
 }
 
 template <class Order>

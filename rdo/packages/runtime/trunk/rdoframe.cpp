@@ -328,8 +328,7 @@ PTR(rdo::animation::FrameItem) RDOFRMText::createElement(CREF(LPRDORuntime) pRun
 	}
 	else
 	{
-		RDOValue val = m_pValue->calcValue(pRuntime);
-		t = val.getAsString();
+		t = m_pValue->calcValue(pRuntime).getAsString();
 	}
 
 	int x      = getX     (pRuntime, getFrame());
