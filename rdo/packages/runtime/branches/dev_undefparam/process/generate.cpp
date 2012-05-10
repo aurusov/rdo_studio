@@ -54,9 +54,7 @@ IBaseOperation::BOResult RDOPROCGenerate::onDoOperation(CREF(LPRDORuntime) pRunt
 	if (m_pStatistics)
 		m_pStatistics->setTransCount(m_TransCount);
 
-	RDOValue pValue = m_pCreateAndGoOnTransactCalc->calcValue(pRuntime);
-
-	LPRDOPROCTransact pTransact = pValue.getPointerSafety<RDOResourceTypeTransact>();
+	LPRDOPROCTransact pTransact = m_pCreateAndGoOnTransactCalc->calcValue(pRuntime).getPointerSafety<RDOResourceTypeTransact>();
 	ASSERT(pTransact);
 
 	pTransact->setBlock(this);

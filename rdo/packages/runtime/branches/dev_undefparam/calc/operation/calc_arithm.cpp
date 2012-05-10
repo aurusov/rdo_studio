@@ -25,12 +25,12 @@ OPEN_RDO_RUNTIME_NAMESPACE
 REF(RDOValue) RDOCalcDiv::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	++OperatorType::getCalcCounter<OperatorType::Type(calc_type)>();
-	REF(RDOValue) rVal = m_pRight->calcValue(pRuntime);
-	if (rVal == 0)
+	REF(RDOValue) right = m_pRight->calcValue(pRuntime);
+	if (right == 0)
 	{
 		pRuntime->error().push(_T("Деление на ноль"), srcInfo());
 	}
-	m_value = m_pLeft->calcValue(pRuntime) / rVal;
+	m_value = m_pLeft->calcValue(pRuntime) / right;
 	return m_value;
 }
 

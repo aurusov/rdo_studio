@@ -43,17 +43,4 @@ REF(RDOValue) RDOCalcCloseBrace::doCalc(CREF(LPRDORuntime) pRuntime)
 	return m_value;
 }
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOCalcFunEnd
-// --------------------------------------------------------------------------------
-RDOCalcFunEnd::RDOCalcFunEnd()
-{}
-
-REF(RDOValue) RDOCalcFunEnd::doCalc(CREF(LPRDORuntime) pRuntime)
-{
-	pRuntime->getMemoryStack()->pop();
-	pRuntime->setFunBreakFlag(RDORuntime::FBF_NONE);
-	return m_value;
-}
-
 CLOSE_RDO_RUNTIME_NAMESPACE
