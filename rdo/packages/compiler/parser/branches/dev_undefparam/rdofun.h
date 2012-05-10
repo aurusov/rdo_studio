@@ -581,7 +581,6 @@ public:
 	const ParamList  getParams              () const;
 	rbool            getReturnFlag          () const;
 	void             setReturnFlag          (rbool flag);
-	void             insertPostLinked       (CREF(rdo::runtime::LPRDOCalcFunctionCaller) pCalc);
 	void             end                    ();
 
 	rdo::runtime::LPRDOCalc  getFunctionCalc() const;
@@ -592,15 +591,13 @@ private:
 	RDOFUNFunction(CREF(tstring) name,             CREF(LPRDOParam) pReturn);
 	virtual ~RDOFUNFunction();
 
-	typedef std::vector<LPRDOFUNFunctionListElement>           ElementList;
-	typedef std::vector<LPRDOFUNCalculateIf>                   CalculateIfList;
-	typedef std::vector<rdo::runtime::LPRDOCalcFunctionCaller> PostLinkedList;
+	typedef  std::vector<LPRDOFUNFunctionListElement>  ElementList;
+	typedef  std::vector<LPRDOFUNCalculateIf>          CalculateIfList;
 
 	LPRDOParam               m_pReturn;
 	ParamList                m_paramList;
 	ElementList              m_elementList;     //! for list and table
 	CalculateIfList          m_calculateIfList; //! for algorithmic
-	PostLinkedList           m_postLinkedList;  //! для рекурсивного вызова
 	rdo::runtime::LPRDOCalc  m_pFunctionCalc;
 	LPContextMemory          m_pContextMemory;
 	rbool                    m_returnFlag;
