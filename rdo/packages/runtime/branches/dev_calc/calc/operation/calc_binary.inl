@@ -106,10 +106,7 @@ template <class F, typename OperatorType::Type CalcType>
 inline RDOValue RDOCalcBinary<F, CalcType>::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	++OperatorType::getCalcCounter<CalcType>();
-	RDOValue left(m_pLeft ->calcValue(pRuntime));
-	m_value = m_pRight->calcValue(pRuntime);
-	m_value = (left.*F::method())(m_value);
-	return m_value;
+	return (m_pLeft->calcValue(pRuntime).*F::method())(m_pRight->calcValue(pRuntime));
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE
