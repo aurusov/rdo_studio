@@ -104,7 +104,7 @@ void read_result(CREF(tstring) file, REF(file_data_list) list)
 			list.push_back(temp_string);
 		
 		if (!key)
-			key = temp_string.find("$BExpCalcCounter") == -1 ? false : true;
+			key = temp_string.find("BExpCalcCounter") == -1 ? false : true;
 	}
 }
 
@@ -115,7 +115,7 @@ bool compare_result(CREF(tstring) etalon_result, CREF(tstring) result)
 	
 	read_result(etalon_result, etalon_result_list);
 	read_result(result, result_list);
-	
+
 	rbool trace_result_size_check = etalon_result_list.size() == result_list.size();
 	rbool trace_result_chech = etalon_result_list == result_list;
 
@@ -148,6 +148,7 @@ int main(int argc, PTR(char) argv[])
 {
 	RDOControllerConsoleOptions options_controller(argc, argv);
 	options_controller.parseOptions();
+    
     if(options_controller.helpQuery()) {
 		return TERMINATION_NORMAL;
     }
@@ -156,10 +157,10 @@ int main(int argc, PTR(char) argv[])
 	
 	rbool res = true;
 	
-	res *= options_controller.getEtalonTraceFileName(etalon_trace);
-	res *= options_controller.getEtalonResultFileName(etalon_result);
-	res *= options_controller.getTraceFileName(simulation_trace);
-	res *= options_controller.getResultFileName(simulation_result);
+	res &= options_controller.getEtalonTraceFileName(etalon_trace);
+	res &= options_controller.getEtalonResultFileName(etalon_result);
+	res &= options_controller.getTraceFileName(simulation_trace);
+	res &= options_controller.getResultFileName(simulation_result);
 	
 	if(res) 
 	{
@@ -168,7 +169,7 @@ int main(int argc, PTR(char) argv[])
 	else
 	{
 		std::cout << _T("Not enough of input data") << std::endl;
-		g_state = TERMINATION_ERROR_UNKNOWN;
+		g_state = TERMINATION_ERROR_INVALID_INPUT;
 	}
 	
 	if(!g_state)
@@ -179,7 +180,7 @@ int main(int argc, PTR(char) argv[])
 	{
 		std::cout <<  _T("Test is completed with an error") << std::endl;
 	}
-	
+
 	return g_state;
 }
 
