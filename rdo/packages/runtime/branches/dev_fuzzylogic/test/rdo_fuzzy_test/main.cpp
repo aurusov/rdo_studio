@@ -97,9 +97,7 @@ BOOST_AUTO_TEST_CASE(FuzzySetTest)
 	BOOST_CHECK(pMultTestDown->getAsString() == _T("[empty value]"));
 
 	RDOValue defuzzyficationValue = MemberFunctionProperties::defuzzyfication(pSet);
-	BOOST_CHECK(defuzzyficationValue);
-	tstring stringPresentation9 = defuzzyficationValue.getAsString();
-	std::cout << stringPresentation9 <<std::endl;
+	BOOST_CHECK(defuzzyficationValue.getAsString() == _T("4.83333") );
 }
 
 BOOST_AUTO_TEST_CASE(TermTest)
