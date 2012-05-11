@@ -113,6 +113,8 @@ print 'Find test project files : ', files, '\n'
 print 'STARTED TEST CYCLE'
 
 for task in files:
+    cycle_exit_code = EXIT_CODE_TERMINATION_NORMAL
+
     print dividing_line
   
     dom = xml.dom.minidom.parse(task)
@@ -165,10 +167,10 @@ for task in files:
                                               + ' -r ' + simulation_result 
                                               + ' >> ' + null_file)
 
-            G_EXIT_CODE = APP_CODE_TERMINATION_ERROR
+            cycle_exit_code = APP_CODE_TERMINATION_ERROR
                                               
             if test_code == EXIT_CODE_TERMINATION_NORMAL:
-                G_EXIT_CODE = APP_CODE_TERMINATION_NORMAL
+                cycle_exit_code = APP_CODE_TERMINATION_NORMAL
                 check_exit_code_string = 'OK'
                 
             elif test_code == EXIT_CODE_TERMINATION_ERROR_FILE_NOT_FOUND:
@@ -199,6 +201,9 @@ for task in files:
     #os.remove(simulation_trace)
     #os.remove(simulation_result)
 
+    if not cycle_exit_code == EXIT_CODE_TERMINATION_NORMAL:
+        G_EXIT_CODE = APP_CODE_TERMINATION_ERROR
+    
 print
 
 os.remove(null_file)
