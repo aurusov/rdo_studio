@@ -158,25 +158,25 @@ BOOST_AUTO_TEST_CASE(VariableTest)
 	BOOST_CHECK(pFuzzySet);
 
 	pFuzzySet->append(5,0.5);
-	BOOST_CHECK(pFuzzySet);
+	BOOST_CHECK(pFuzzySet->getAsString() == _T("<5/0.50>"));
 
 	pFuzzySet->append(1,0.1);
-	BOOST_CHECK(pFuzzySet);
+	BOOST_CHECK(pFuzzySet->getAsString() == _T("<1/0.10> <5/0.50>"));
 
 	pFuzzySet->append(2,0.2);
-	BOOST_CHECK(pFuzzySet);
+	BOOST_CHECK(pFuzzySet->getAsString() == _T("<1/0.10> <2/0.20> <5/0.50>"));
 
 	pFuzzySet->append(3,1.0);
-	BOOST_CHECK(pFuzzySet);
+	BOOST_CHECK(pFuzzySet->getAsString() == _T("<1/0.10> <2/0.20> <3/1.00> <5/0.50>"));
 
 	pFuzzySet->append(6,0.4);
-	BOOST_CHECK(pFuzzySet);
+	BOOST_CHECK(pFuzzySet->getAsString() == _T("<1/0.10> <2/0.20> <3/1.00> <5/0.50> <6/0.40>"));
 
 	pFuzzySet->append(7,0.2);
-	BOOST_CHECK(pFuzzySet);
+	BOOST_CHECK(pFuzzySet->getAsString() == _T("<1/0.10> <2/0.20> <3/1.00> <5/0.50> <6/0.40> <7/0.20>"));
 
 	pFuzzySet->append(9,0.1);
-	BOOST_CHECK(pFuzzySet);
+	BOOST_CHECK(pFuzzySet->getAsString() == _T("<1/0.10> <2/0.20> <3/1.00> <5/0.50> <6/0.40> <7/0.20> <9/0.10>"));
 
 	LPRDOFuzzyTerm pTerm4 = rdo::Factory<RDOFuzzyTerm>::create(_T("term4"), pFuzzySet);
 	BOOST_CHECK(pTerm4);
