@@ -111,6 +111,7 @@ private:
 	void saveReopen          () const;
 
 private:
+	virtual BOOL Run                 ();
 	virtual BOOL InitInstance        ();
 	virtual int  ExitInstance        ();
 	virtual BOOL PreTranslateMessage (PTR(MSG) pMsg);

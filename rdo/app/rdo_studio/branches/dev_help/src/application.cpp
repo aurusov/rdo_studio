@@ -11,6 +11,7 @@
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <gdiplus.h>
+#include <QtGui/qmessagebox.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdofile.h"
 #include "kernel/rdothread.h"
@@ -32,6 +33,8 @@
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_method.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_project.h"
 #include "thirdparty/win_registry/registry.h"
+#include "thirdparty/qt-solutions/qtwinmigrate/src/qmfcapp.h"
+#include "thirdparty/qt-solutions/qtwinmigrate/src/qwinwidget.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
@@ -204,6 +207,11 @@ RDOStudioApp::RDOStudioApp()
 
 RDOStudioApp::~RDOStudioApp()
 {}
+
+BOOL RDOStudioApp::Run()
+{
+	return QMfcApp::run(this);
+}
 
 BOOL RDOStudioApp::InitInstance()
 {
@@ -954,8 +962,12 @@ void RDOStudioApp::setupFileAssociation()
 
 void RDOStudioApp::OnAppAbout()
 {
-	RDOAboutDlg dlg;
-	dlg.DoModal();
+	QWinWidget win(studioApp.m_pMainWnd);
+	win.showCentered();
+	QMessageBox::about( &win, "About QtMfc", "QtMfc Version 1.0\nCopyright (C) 2003" );
+
+//	RDOAboutDlg dlg;
+//	dlg.DoModal();
 }
 
 void RDOStudioApp::autoCloseByModel()
