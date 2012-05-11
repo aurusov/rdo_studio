@@ -31,11 +31,18 @@ TARGET_CONSOLE   = 'CONSOLE'
 TAGRET_CONVERTER = 'CONVERTOR'
 TARGET_GUI       = 'GUI'
 
-EXIT_CODE_TERMINATION_NORMAL = 0
-EXIT_CODE_TERMINATION_ERROR  = 1
+APP_CODE_TERMINATION_NORMAL = 0
+APP_CODE_TERMINATION_ERROR  = 1
+
+EXIT_CODE_TERMINATION_NORMAL	             = 0
+EXIT_CODE_TERMINATION_ERROR_FILE_NOT_FOUND   = 1
+EXIT_CODE_TERMINATION_ERROR_INVALID_INPUT    = 2
+EXIT_CODE_TERMINATION_ERROR_RESULT           = 3
+EXIT_CODE_TERMINATION_ERROR_TRACE            = 4
+EXIT_CODE_TERMINATION_ERROR_RESULT_AND_TRACE = 5
 
 # global exit code variable
-G_EXIT_CODE = EXIT_CODE_TERMINATION_NORMAL
+G_EXIT_CODE = APP_CODE_TERMINATION_NORMAL
 
 ###############################################################################
 #                                 functions                                   #
@@ -158,11 +165,29 @@ for task in files:
                                               + ' -r ' + simulation_result 
                                               + ' >> ' + null_file)
 
-            if not test_code == EXIT_CODE_TERMINATION_NORMAL:
-                G_EXIT_CODE = EXIT_CODE_TERMINATION_ERROR
-                check_exit_code_string = 'ERROR'
+            G_EXIT_CODE = APP_CODE_TERMINATION_ERROR
+                                              
+            if test_code == EXIT_CODE_TERMINATION_NORMAL:
+                G_EXIT_CODE = APP_CODE_TERMINATION_NORMAL
+                check_exit_code_string = 'OK'
+                
+            elif test_code == EXIT_CODE_TERMINATION_ERROR_FILE_NOT_FOUND:
+                check_exit_code_string = 'ERROR FILE NOT FOUND'
+                
+            elif test_code == EXIT_CODE_TERMINATION_ERROR_INVALID_INPUT:
+                check_exit_code_string = 'ERROR INVALID INPUT'
+                
+            elif test_code == EXIT_CODE_TERMINATION_ERROR_RESULT:
+                check_exit_code_string = 'ERROR RESULT'
+            
+            elif test_code == EXIT_CODE_TERMINATION_ERROR_TRACE:
+                check_exit_code_string = 'ERROR TRACE'            
+            
+            elif test_code == EXIT_CODE_TERMINATION_ERROR_RESULT_AND_TRACE:
+                check_exit_code_string = 'ERROR RESULT AND TRACE'            
+            
             else:
-                check_exit_code_string =  'OK'
+                check_exit_code_string = 'ERROR UNKNOWN'
 
         print "TEST EXIT CODE       :", test_code
         print "CHECK TEST CODE      :", check_exit_code_string
