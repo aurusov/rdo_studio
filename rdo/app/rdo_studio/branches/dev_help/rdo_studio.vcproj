@@ -51,7 +51,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../"
-				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_WINDOWS;SCI_LEXER;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
+				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_WINDOWS;SCI_LEXER;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT;QT_QTWINMIGRATE_IMPORT"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="app/rdo_studio_mfc/pch/stdpch.h"
@@ -72,9 +72,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib pugixml_d.lib gdiplus.lib"
+				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib pugixml_d.lib gdiplus.lib QtGuid4.lib QtCored4.lib QtSolutions_MFCMigrationFramework-headd.lib"
 				OutputFile="$(OutDir)\RAO-studio.exe"
-				AdditionalLibraryDirectories="../../thirdparty/pugixml/lib"
+				AdditionalLibraryDirectories="../../thirdparty/pugixml/lib;../../thirdparty/qt-solutions/qtwinmigrate/lib"
 				IgnoreDefaultLibraryNames="msvcrt.lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
