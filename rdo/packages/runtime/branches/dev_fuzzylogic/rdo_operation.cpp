@@ -25,26 +25,26 @@ RDOOperation::RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperati
 	, RDOPatternPrior                        (                     )
 {
 	setTrace(trace);
-	haveAdditionalCondition = false;
+	m_haveAdditionalCondition = false;
 	setTraceID(pRuntime->getFreeActivityId());
 }
 
 RDOOperation::RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(LPRDOPatternOperation) pPattern, rbool trace, CREF(LPRDOCalc) pCondition, CREF(tstring) name)
 	: RDOActivityPattern<RDOPatternOperation>(pPattern, trace, name)
 	, RDOPatternPrior                        (                     )
-	, additionalCondition                    (pCondition           )
+	, m_pAdditionalCondition                 (pCondition           )
 {
 	setTrace(trace);
-	haveAdditionalCondition = true;
+	m_haveAdditionalCondition = true;
 	setTraceID(pRuntime->getFreeActivityId());
 }
 
 RDOOperation::RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(RDOOperation) originForClone)
 	: RDOActivityPattern<RDOPatternOperation>(originForClone.m_pPattern, originForClone.traceable(), originForClone.m_oprName)
-	, additionalCondition                    (NULL                                                                           )
+	, m_pAdditionalCondition                 (NULL                                                                           )
 {
   setTrace(originForClone.traceable());
-  haveAdditionalCondition = false;
+  m_haveAdditionalCondition = false;
   setTraceID(pRuntime->getFreeActivityId());
 
   m_paramsCalcs.insert(m_paramsCalcs.begin(), originForClone.m_paramsCalcs.begin(), originForClone.m_paramsCalcs.end());
@@ -88,9 +88,9 @@ void RDOOperation::onMakePlaned(CREF(LPRDORuntime) pRuntime, PTR(void) pParam)
 rbool RDOOperation::choiceFrom(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->setCurrentActivity(this);
-	if (haveAdditionalCondition)
+	if (m_haveAdditionalCondition)
 	{
-		if (!additionalCondition->calcValue(pRuntime).getAsBool())
+		if (!m_pAdditionalCondition->calcValue(pRuntime).getAsBool())
 		{
 			return false;
 		}

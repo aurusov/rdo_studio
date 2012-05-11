@@ -54,7 +54,7 @@ protected:
 	RDOCalcUnary(CREF(RDOSrcInfo::Position) position, CREF(LPRDOCalc) pOperation);
 
 private:
-	REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime);
+	DECLARE_ICalc;
 };
 
 //! ”нарный оператор плюс

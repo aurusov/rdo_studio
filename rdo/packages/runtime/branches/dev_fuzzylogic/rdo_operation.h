@@ -54,12 +54,11 @@ private:
 	RDOOperation(CREF(LPRDORuntime) pRuntime, CREF(RDOOperation) originForClone);
 
 	typedef std::vector<LPIOperation> CloneList;
+
 	CloneList m_cloneList;
-
-	rbool     haveAdditionalCondition;
-	LPRDOCalc additionalCondition;
-
-	int m_operId;
+	rbool     m_haveAdditionalCondition;
+	LPRDOCalc m_pAdditionalCondition;
+	int       m_operId;
 
 	DECLARE_IBaseOperation;
 	DECLARE_IOperationTrace;

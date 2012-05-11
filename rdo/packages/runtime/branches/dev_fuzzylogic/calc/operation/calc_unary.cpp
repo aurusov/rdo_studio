@@ -23,7 +23,10 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 REF(RDOValue) RDOCalcDoubleToIntByResult::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	m_value = m_round ? RDOValue(m_pOperation->calcValue(pRuntime).getInt()) : m_pOperation->calcValue(pRuntime);
+	REF(RDOValue) value = m_pOperation->calcValue(pRuntime);
+	m_value = m_round
+		? value.getInt()
+		: value;
 	return m_value;
 }
 
