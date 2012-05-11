@@ -53,56 +53,48 @@ BOOST_AUTO_TEST_CASE(FuzzySetTest)
 	LPFuzzySet pSet = rdo::Factory<FuzzySet>::create();
 
 	tstring stringPresentation = pSet->getAsString();
-	std::cout << stringPresentation << std::endl;
-	BOOST_CHECK(stringPresentation == _T("<1/0.10> <2/0.20> <3/1.00> <5/0.50> <6/0.40> <7/0.20> <9/0.10>"));
+	BOOST_CHECK(stringPresentation == _T("[empty value]"));
+
+	pSet->append(1,0.10);
+	pSet->append(2,0.20);
+	pSet->append(3,1.00);
+	pSet->append(5,0.50);
+	pSet->append(6,0.40);
+	pSet->append(7,0.20);
+	pSet->append(9,0.10);
+
+	BOOST_CHECK(pSet->getAsString() == _T("<1/0.10> <2/0.20> <3/1.00> <5/0.50> <6/0.40> <7/0.20> <9/0.10>"));
 
 	RDOValue repeatValue = 3.0;
 	pSet->append(repeatValue, 0.3);
-	BOOST_CHECK(pSet);
 	BOOST_CHECK(pSet->getAsString() == _T("<1/0.10> <2/0.20> <3/1.00> <5/0.50> <6/0.40> <7/0.20> <9/0.10>"));
 
 	pSet->operator[](repeatValue) = 0.3;
 	BOOST_CHECK(pSet->getAsString() == _T("<1/0.10> <2/0.20> <3/0.30> <5/0.50> <6/0.40> <7/0.20> <9/0.10>"));
 
 	LPFuzzySet pConSet = MemberFunctionProperties::a_con(pSet);
-	BOOST_CHECK(pConSet);
-	tstring stringPresentation1 = pConSet->getAsString();
-	std::cout << stringPresentation1 << std::endl;
+	BOOST_CHECK(pConSet->getAsString() == _T("<1/0.01> <2/0.04> <3/0.09> <5/0.25> <6/0.16> <7/0.04> <9/0.01>"));
 	
 	LPFuzzySet pDilSet = MemberFunctionProperties::a_dil(pSet);
-	BOOST_CHECK(pDilSet);
-	tstring stringPresentation2 = pDilSet->getAsString();
-	std::cout << stringPresentation2 << std::endl;
+	BOOST_CHECK(pDilSet->getAsString() == _T("<1/0.32> <2/0.45> <3/0.55> <5/0.71> <6/0.63> <7/0.45> <9/0.32>"));
 
 	LPFuzzySet pUnaryMinusSet = MemberFunctionProperties::u_minus(pSet);
-	BOOST_CHECK(pUnaryMinusSet);
-	tstring stringPresentation3 = pUnaryMinusSet->getAsString();
-	std::cout << stringPresentation3 << std::endl;
+	BOOST_CHECK(pUnaryMinusSet->getAsString() == _T("<-9/0.10> <-7/0.20> <-6/0.40> <-5/0.50> <-3/0.30> <-2/0.20> <-1/0.10>"));
 
 	LPFuzzySet pScaleSet = MemberFunctionProperties::u_scale(pSet, 4.0);
-	BOOST_CHECK(pScaleSet);
-	tstring stringPresentation4 = pScaleSet->getAsString();
-	std::cout << stringPresentation4 << std::endl;
+	BOOST_CHECK(pScaleSet->getAsString() == _T("<4/0.10> <8/0.20> <12/0.30> <20/0.50> <24/0.40> <28/0.20> <36/0.10>"));
 
 	LPFuzzySet pSupplement = MemberFunctionProperties::supplement(pSet);
-	BOOST_CHECK(pSupplement);
-	tstring stringPresentation5 = pSupplement->getAsString();
-	std::cout << stringPresentation5 << std::endl;
+	BOOST_CHECK(pSupplement->getAsString() == _T("<1/0.90> <2/0.80> <3/0.70> <5/0.50> <6/0.60> <7/0.80> <9/0.90>"));
 
 	LPFuzzySet pAlphaTest = MemberFunctionProperties::alpha(pSet, 0.3);
-	BOOST_CHECK(pAlphaTest);
-	tstring stringPresentation7 = pAlphaTest->getAsString();
-	std::cout << "pAlphaTest: " <<stringPresentation7 <<std::endl;
+	BOOST_CHECK(pAlphaTest->getAsString() == _T("<3/0.30> <5/0.50> <6/0.40>"));
 
 	LPFuzzySet pMultTest = MemberFunctionProperties::a_mult(pSet, pSupplement);
-	BOOST_CHECK(pMultTest);
-	tstring stringPresentationMult = pMultTest->getAsString();
-	std::cout << "pMultTest: " << stringPresentationMult <<std::endl;
+	BOOST_CHECK(pMultTest->getAsString() == _T("<1/0.09> <2/0.16> <3/0.21> <5/0.25> <6/0.24> <7/0.16> <9/0.09>"));
 
 	LPFuzzySet pMultTestDown = MemberFunctionProperties::a_mult(pSet, pScaleSet);
-	BOOST_CHECK(pMultTestDown);
-	tstring stringPresentationMultDown = pMultTestDown->getAsString();
-	std::cout << "pMultTest:	" << stringPresentationMultDown <<std::endl;
+	BOOST_CHECK(pMultTestDown->getAsString() == _T("[empty value]"));
 
 	RDOValue defuzzyficationValue = MemberFunctionProperties::defuzzyfication(pSet);
 	BOOST_CHECK(defuzzyficationValue);
@@ -115,10 +107,9 @@ BOOST_AUTO_TEST_CASE(TermTest)
 	LPFuzzySet pSet = rdo::Factory<FuzzySet>::create();
 	tstring testname = "test";
 	LPRDOFuzzyTerm pTerm = rdo::Factory<RDOFuzzyTerm>::create(testname, pSet);
-	tstring name = pTerm->getName();
-	std::cout << name << std::endl;
-	BOOST_CHECK(pTerm);
+	BOOST_CHECK(pTerm->getName() == _T("test"));
 
+	
 	LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create();
 	BOOST_CHECK(pRuntime);
 
@@ -129,9 +120,7 @@ BOOST_AUTO_TEST_CASE(TermTest)
 	BOOST_CHECK(pFuzzySet);
 
 	LPRDOFuzzyTerm pTerm3 = rdo::Factory<RDOFuzzyTerm>::create(_T("term"), pFuzzySet);
-	BOOST_CHECK(pTerm3);
-	tstring name3 = pTerm3->getName();
-	std::cout << name3 << std::endl;
+	BOOST_CHECK(pTerm3->getName() == _T("term"));
 }
 
 BOOST_AUTO_TEST_CASE(VariableTest)
@@ -141,7 +130,7 @@ BOOST_AUTO_TEST_CASE(VariableTest)
 
 	LPDefineArea pDefineArea2 = rdo::Factory<DefineArea>::create(10.0, 20.0);
 	BOOST_CHECK(pDefineArea2);
-
+	
 	LPFuzzySet pFuzzySet1 = rdo::Factory<FuzzySet>::create(pDefineArea1);
 	BOOST_CHECK(pFuzzySet1);
 
@@ -155,8 +144,7 @@ BOOST_AUTO_TEST_CASE(VariableTest)
 	BOOST_CHECK(pTerm2);
 
 	tstring name1 = pTerm1->getName();
-	std::cout << name1 << std::endl;
-
+	BOOST_CHECK(name1 == _T("term1"));
 	LPRDOLingvoVariable pVariable = rdo::Factory<RDOLingvoVariable>::create(pTerm1,_T("test"));
 	BOOST_CHECK(pVariable);
 
@@ -208,12 +196,6 @@ BOOST_AUTO_TEST_CASE(VariableTest)
 	LPRDOLingvoVariable fuzzyVariable2 = MemberFunctionProperties::fuzzyfication(valueTrueOn0_0, pVariable);
 	BOOST_CHECK(fuzzyVariable2);
 }
-BOOST_AUTO_TEST_CASE(MemberFunctionProperties)
-{
-	
-}
-
-	
 
 BOOST_AUTO_TEST_SUITE_END() // RDORuntime_Fuzzy_Test
 CLOSE_RDO_RUNTIME_NAMESPACE
