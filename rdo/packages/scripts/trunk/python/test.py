@@ -4,6 +4,7 @@
 
 import os
 import sys
+import subprocess
 import xml.dom.minidom
 
 ###############################################################################
@@ -34,7 +35,7 @@ TARGET_GUI       = 'GUI'
 APP_CODE_TERMINATION_NORMAL = 0
 APP_CODE_TERMINATION_ERROR  = 1
 
-EXIT_CODE_TERMINATION_NORMAL	             = 0
+EXIT_CODE_TERMINATION_NORMAL                 = 0
 EXIT_CODE_TERMINATION_ERROR_FILE_NOT_FOUND   = 1
 EXIT_CODE_TERMINATION_ERROR_INVALID_INPUT    = 2
 EXIT_CODE_TERMINATION_ERROR_RESULT           = 3
@@ -161,14 +162,17 @@ for task in files:
         
         check_exit_code_string = ''
         if simulation_code == EXIT_CODE_TERMINATION_NORMAL:
-            test_code = os.system(rdo_test_ex + ' -T ' + etalon_trace 
+            command = (rdo_test_ex + ' -T ' + etalon_trace 
                                               + ' -R ' + etalon_result 
                                               + ' -t ' + simulation_trace 
-                                              + ' -r ' + simulation_result 
+                                              + ' -r ' + simulation_result
                                               + ' >> ' + null_file)
+            #print command
 
+            test_code = subprocess.call(command, shell=True)
+            
             cycle_exit_code = APP_CODE_TERMINATION_ERROR
-                                              
+            
             if test_code == EXIT_CODE_TERMINATION_NORMAL:
                 cycle_exit_code = APP_CODE_TERMINATION_NORMAL
                 check_exit_code_string = 'OK'
@@ -203,9 +207,9 @@ for task in files:
 
     if not cycle_exit_code == EXIT_CODE_TERMINATION_NORMAL:
         G_EXIT_CODE = APP_CODE_TERMINATION_ERROR
-    
-print
 
 os.remove(null_file)
+
+print "\n", "PYTHON EXIT CODE :", G_EXIT_CODE, "\n"
 
 sys.exit(G_EXIT_CODE)
