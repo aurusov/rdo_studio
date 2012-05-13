@@ -53,8 +53,8 @@ sub callerUrl {
 }
 
 open(source_html_head,"keyword-index-head.tmp");
-my @strings3=<source_html_head>;
-foreach my $line (@strings3)
+my @strings_html_head=<source_html_head>;
+foreach my $line (@strings_html_head)
 {
 	print (target $line);
 }
@@ -84,8 +84,8 @@ for (my $i = 0; $i <= $size-1; ++$i,++$ii,++$it)
 }
 
 open(source_html_body,"keyword-index-body.tmp");
-my @strings4=<source_html_body>;
-foreach my $line (@strings4)
+my @strings_html_body=<source_html_body>;
+foreach my $line (@strings_html_body)
 {
 	print (target $line);
 }
