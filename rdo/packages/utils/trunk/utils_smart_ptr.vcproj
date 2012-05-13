@@ -23,6 +23,7 @@
 			ConfigurationType="4"
 			UseOfMFC="0"
 			CharacterSet="2"
+			BuildLogFile="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -86,6 +87,7 @@
 			CharacterSet="2"
 			ManagedExtensions="0"
 			WholeProgramOptimization="1"
+			BuildLogFile="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -147,6 +149,7 @@
 			CharacterSet="2"
 			ManagedExtensions="0"
 			WholeProgramOptimization="1"
+			BuildLogFile="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -205,6 +208,7 @@
 			ConfigurationType="4"
 			UseOfMFC="0"
 			CharacterSet="2"
+			BuildLogFile="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
