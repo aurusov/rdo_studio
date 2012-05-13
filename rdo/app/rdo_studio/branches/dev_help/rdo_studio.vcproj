@@ -18,8 +18,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="2"
@@ -106,8 +106,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="1"
@@ -194,8 +194,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug Corba|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="2"
@@ -283,8 +283,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release Corba|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="1"
@@ -368,8 +368,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug MT|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="2"
@@ -456,8 +456,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release MT|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="1"
