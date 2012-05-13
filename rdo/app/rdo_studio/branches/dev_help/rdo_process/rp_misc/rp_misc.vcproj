@@ -49,7 +49,7 @@
 				PrecompiledHeaderThrough="app\rdo_studio_mfc\rdo_process\rp_misc\stdafx.h"
 				ObjectFile="$(IntDir)\"
 				WarningLevel="4"
-				DebugInformationFormat="4"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"

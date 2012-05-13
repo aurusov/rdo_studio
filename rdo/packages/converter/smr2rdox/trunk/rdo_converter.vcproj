@@ -122,7 +122,7 @@
 				PrecompiledHeaderThrough="converter/smr2rdox/pch.h"
 				BrowseInformation="1"
 				WarningLevel="4"
-				DebugInformationFormat="4"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -194,7 +194,7 @@
 				PrecompiledHeaderThrough="converter/smr2rdox/pch.h"
 				BrowseInformation="1"
 				WarningLevel="4"
-				DebugInformationFormat="4"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -337,7 +337,7 @@
 				PrecompiledHeaderThrough="converter/smr2rdox/pch.h"
 				BrowseInformation="1"
 				WarningLevel="4"
-				DebugInformationFormat="4"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
