@@ -17,22 +17,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".service", ".service", "{EC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".help", ".help", "{5810CF5F-91F9-4CEA-9355-1BF51A22CC1D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".resources (not for compiler)", ".resources (not for compiler)", "{9ECFE882-0486-4248-9A76-7F44E9732861}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "help_tools", "help_tools", "{2B5E6C99-0AC7-4736-8647-E69E9327A8E0}"
-	ProjectSection(SolutionItems) = preProject
-		thirdparty\help\phonon4.dll = thirdparty\help\phonon4.dll
-		thirdparty\help\qcollectiongenerator.exe = thirdparty\help\qcollectiongenerator.exe
-		thirdparty\help\QtCLucene4.dll = thirdparty\help\QtCLucene4.dll
-		thirdparty\help\QtCore4.dll = thirdparty\help\QtCore4.dll
-		thirdparty\help\QtGui4.dll = thirdparty\help\QtGui4.dll
-		thirdparty\help\QtHelp4.dll = thirdparty\help\QtHelp4.dll
-		thirdparty\help\QtNetwork4.dll = thirdparty\help\QtNetwork4.dll
-		thirdparty\help\QtSql4.dll = thirdparty\help\QtSql4.dll
-		thirdparty\help\QtWebKit4.dll = thirdparty\help\QtWebKit4.dll
-		thirdparty\help\QtXml4.dll = thirdparty\help\QtXml4.dll
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".plugnis", ".plugnis", "{0AAC792C-5016-4DFC-89BF-F98D70E5F396}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".studio", ".studio", "{217960B7-38FB-4E51-9732-71A0C56B81C6}"
@@ -465,9 +449,7 @@ Global
 		{6A0AC201-55B9-4861-8339-5AD42572B2FC} = {217960B7-38FB-4E51-9732-71A0C56B81C6}
 		{BED179D0-CC1B-48B4-8F56-3E71F4051CF1} = {217960B7-38FB-4E51-9732-71A0C56B81C6}
 		{57783A90-EA7F-44B1-814C-A31793A29007} = {217960B7-38FB-4E51-9732-71A0C56B81C6}
-		{9ECFE882-0486-4248-9A76-7F44E9732861} = {5810CF5F-91F9-4CEA-9355-1BF51A22CC1D}
 		{267B709F-6B99-4F25-8FB5-BF8A9DB6073E} = {5810CF5F-91F9-4CEA-9355-1BF51A22CC1D}
-		{2B5E6C99-0AC7-4736-8647-E69E9327A8E0} = {9ECFE882-0486-4248-9A76-7F44E9732861}
 		{37214C3A-5EA5-4CE1-B843-ABF4399CFC51} = {0AAC792C-5016-4DFC-89BF-F98D70E5F396}
 		{1FACE2E3-B02E-45E1-9A93-56FD00508301} = {0AAC792C-5016-4DFC-89BF-F98D70E5F396}
 		{201000FF-16EB-4410-A653-8DF3009CF71C} = {9DFEF469-50D9-406D-A45B-C4A80612A530}
