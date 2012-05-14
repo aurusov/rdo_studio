@@ -919,8 +919,8 @@ void RDOEditorEdit::OnUpdateGotoPrev(CCmdUI* pCmdUI)
 
 void RDOEditorEdit::OnHelpKeyword()
 {
-	tstring filename = studioApp.getFullHelpFileName();
-	if ( filename.empty() ) return;
+	QProcess* assistant = studioApp.getQtAssistantWindow();
+	if ( assistant.empty() ) return;
 
 	tstring keyword = getCurrentOrSelectedWord();
 	tstring s = getAllKW();
@@ -944,11 +944,9 @@ void RDOEditorEdit::OnHelpKeyword()
 		}
 	}
 
-	HH_AKLINK link;
-	::ZeroMemory( &link, sizeof( HH_AKLINK ) );
-	link.cbStruct     = sizeof( HH_AKLINK );
-	link.fIndexOnFail = TRUE;
-	link.pszKeywords  = keyword.c_str();
-
-	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_KEYWORD_LOOKUP, (DWORD)&link );
+	QByteArray ba;
+	ba.append("activateKeyword");
+	ba.append(keyword.c_str());
+	ba.append("\n");
+	assistant->write(ba);
 }
