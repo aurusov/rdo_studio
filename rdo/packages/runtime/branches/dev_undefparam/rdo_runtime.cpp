@@ -414,11 +414,7 @@ void RDORuntime::onResetResult()
 	LPIResultList::iterator it = m_resultAllList.begin();
 	while (it != m_resultAllList.end())
 	{
-		try
-		{
-			(*it)->resetResult(this);
-		}
-		catch (CREF(RDOUndefinedException)) {}
+		(*it)->resetResult(this);
 		++it;
 	}
 }
@@ -428,11 +424,7 @@ void RDORuntime::onCheckResult()
 	LPIResultList::iterator it = m_resultAllList.begin();
 	while (it != m_resultAllList.end())
 	{
-		try
-		{
-			(*it)->checkResult(this);
-		}
-		catch(CREF(RDOUndefinedException)) {}
+		(*it)->checkResult(this);
 		++it;
 	}
 }

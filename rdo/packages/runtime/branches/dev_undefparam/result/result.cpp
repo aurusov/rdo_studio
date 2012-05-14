@@ -167,7 +167,14 @@ tstring RDOPMDWatchState::traceValue() const
 void RDOPMDWatchState::resetResult(CREF(LPRDORuntime) pRuntime)
 {
 	m_watchNumber = 0;
-	m_currValue   = fabs(m_pLogicCalc->calcValue(pRuntime).getDouble()) > DBL_EPSILON;
+	try
+	{
+		m_currValue   = fabs(m_pLogicCalc->calcValue(pRuntime).getDouble()) > DBL_EPSILON;
+	}
+	catch(CREF(RDOUndefinedException))
+	{
+		m_currValue = false;
+	}
 	m_sum         = 0;
 	m_sumSqr      = 0;
 	m_minValue    = DBL_MAX;
@@ -177,7 +184,15 @@ void RDOPMDWatchState::resetResult(CREF(LPRDORuntime) pRuntime)
 
 void RDOPMDWatchState::checkResult(CREF(LPRDORuntime) pRuntime)
 {
-	rbool newValue = fabs(m_pLogicCalc->calcValue(pRuntime).getDouble()) > DBL_EPSILON;
+	rbool newValue;
+	try 
+	{
+		newValue = fabs(m_pLogicCalc->calcValue(pRuntime).getDouble()) > DBL_EPSILON;
+	}
+	catch(CREF(RDOUndefinedException))
+	{
+		newValue = false;
+	}
 	if (newValue && !m_currValue) //! from FALSE to TRUE
 	{
 		m_timePrev   = pRuntime->getCurrentTime();
