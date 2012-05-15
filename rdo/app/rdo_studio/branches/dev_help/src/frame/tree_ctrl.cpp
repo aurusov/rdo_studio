@@ -99,7 +99,7 @@ void RDOStudioFrameTreeCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 
 void RDOStudioFrameTreeCtrl::OnHelpKeyword()
 {
-	QProcess* assistant = studioApp.getQtAssistantWindow();
+	QProcess* assistant = studioApp.chkQtAssistantWindow();
 	if ( assistant->state() != assistant->Running ) return;
 	QByteArray ba;
 	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_model/work_model_frame.htm#frame\n");

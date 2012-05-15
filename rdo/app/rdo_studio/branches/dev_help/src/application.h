@@ -73,12 +73,12 @@ public:
 	void           autoCloseByPlugin(PTR(RDOStudioPlugin) plugin);
 	rbool          isPluginAutoStart(PTR(RDOStudioPlugin) plugin) const;
 
-	static tstring getFullExtName();
-	static tstring getFullHelpFileName(tstring str = "RAO-help.qhc");
-	static rbool   shortToLongPath    (CREF(tstring) shortPath, REF(tstring) longPath);
-	static tstring chkHelpExist              (tstring fileName);
-	QProcess*      getQtAssistantWindow();
-	QProcess*      runQtAssistantWindow();
+	static tstring getFullExtName      ();
+	tstring        getFullHelpFileName (tstring str = "RAO-help.qhc") const;
+	static rbool   shortToLongPath     (CREF(tstring) shortPath, REF(tstring) longPath);
+	tstring        chkHelpExist        (tstring fileName) const;
+	QProcess*      chkQtAssistantWindow();
+	QProcess*      runQtAssistantWindow() const;
 
 private:
 #ifdef RDO_MT

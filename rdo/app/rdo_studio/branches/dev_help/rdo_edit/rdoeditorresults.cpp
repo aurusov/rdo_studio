@@ -75,7 +75,7 @@ void RDOEditorResults::setEditorStyle( RDOEditorResultsStyle* _style )
 
 void RDOEditorResults::OnHelpKeyword()
 {
-	QProcess* assistant = studioApp.getQtAssistantWindow();
+	QProcess* assistant = studioApp.chkQtAssistantWindow();
 	if ( assistant->state() != assistant->Running ) return;
 
 	tstring keyword = getCurrentOrSelectedWord();

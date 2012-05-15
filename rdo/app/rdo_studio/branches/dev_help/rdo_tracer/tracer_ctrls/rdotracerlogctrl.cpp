@@ -251,7 +251,7 @@ void RDOTracerLogCtrl::OnUpdateFind( CCmdUI* pCmdUI )
 
 void RDOTracerLogCtrl::OnHelpKeyword()
 {
-	QProcess* assistant = studioApp.getQtAssistantWindow();
+	QProcess* assistant = studioApp.chkQtAssistantWindow();
 	if ( assistant->state() != assistant->Running ) return;
 
 	tstring line;

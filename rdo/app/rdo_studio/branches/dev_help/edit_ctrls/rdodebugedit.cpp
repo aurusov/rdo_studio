@@ -88,7 +88,7 @@ void RDODebugEdit::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
 
 void RDODebugEdit::OnHelpKeyword()
 {
-	QProcess* assistant = studioApp.getQtAssistantWindow();
+	QProcess* assistant = studioApp.chkQtAssistantWindow();
 	if ( assistant->state() != assistant->Running ) return;
 	QByteArray ba;
 	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_run.htm#output_debug\n");

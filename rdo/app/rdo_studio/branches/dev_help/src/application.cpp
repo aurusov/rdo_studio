@@ -753,7 +753,7 @@ tstring RDOStudioApp::getFullExtName()
 	return fileName;
 }
 
-tstring RDOStudioApp::getFullHelpFileName(tstring str)
+tstring RDOStudioApp::getFullHelpFileName(tstring str) const
 {
 	tstring strTemp = chkHelpExist(str);
 	if (                       strTemp.size() < 3) return _T("");
@@ -762,7 +762,7 @@ tstring RDOStudioApp::getFullHelpFileName(tstring str)
 	return strTemp;
 }
 
-tstring RDOStudioApp::chkHelpExist(tstring fileName)
+tstring RDOStudioApp::chkHelpExist(tstring fileName) const
 {
 	fileName.insert(0, rdo::extractFilePath(RDOStudioApp::getFullExtName()));
 	if (!rdo::File::exist(fileName))
@@ -773,7 +773,7 @@ tstring RDOStudioApp::chkHelpExist(tstring fileName)
 	return fileName;
 }
 
-QProcess* RDOStudioApp::getQtAssistantWindow()
+QProcess* RDOStudioApp::chkQtAssistantWindow()
 {
 	if (!m_pAssistant)
 	{
@@ -785,7 +785,7 @@ QProcess* RDOStudioApp::getQtAssistantWindow()
 		return m_pAssistant = runQtAssistantWindow();
 }
 
-QProcess* RDOStudioApp::runQtAssistantWindow()
+QProcess* RDOStudioApp::runQtAssistantWindow() const
 {
 		QProcess *process = new QProcess;
 		QStringList args;

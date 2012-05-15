@@ -531,7 +531,7 @@ void RDOStudioMainFrame::endProgress()
 
 void RDOStudioMainFrame::OnHelpContents()
 {
-	QProcess* assistant = studioApp.getQtAssistantWindow();
+	QProcess* assistant = studioApp.chkQtAssistantWindow();
 	if ( assistant->state() != assistant->Running ) return;
 
 	QByteArray ba;
