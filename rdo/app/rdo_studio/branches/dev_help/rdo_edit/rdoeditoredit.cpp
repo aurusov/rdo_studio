@@ -9,6 +9,7 @@
 
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
+#include <Qt/qprocess.h>
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoredit.h"
@@ -920,7 +921,7 @@ void RDOEditorEdit::OnUpdateGotoPrev(CCmdUI* pCmdUI)
 void RDOEditorEdit::OnHelpKeyword()
 {
 	QProcess* assistant = studioApp.getQtAssistantWindow();
-	if ( assistant.empty() ) return;
+	if ( assistant->state() != assistant->Running ) return;
 
 	tstring keyword = getCurrentOrSelectedWord();
 	tstring s = getAllKW();
@@ -945,7 +946,7 @@ void RDOEditorEdit::OnHelpKeyword()
 	}
 
 	QByteArray ba;
-	ba.append("activateKeyword");
+	ba.append("activateKeyword ");
 	ba.append(keyword.c_str());
 	ba.append("\n");
 	assistant->write(ba);

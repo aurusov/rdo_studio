@@ -12,7 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <gdiplus.h>
 #include <QtGui/qmessagebox.h>
-#include <QProcess>
+#include <Qt/qprocess.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdofile.h"
 #include "kernel/rdothread.h"
@@ -755,16 +755,14 @@ tstring RDOStudioApp::getFullExtName()
 
 tstring RDOStudioApp::getFullHelpFileName(tstring str)
 {
-	str = chkHelpExist(str);
-	if (                        str.c_str() == "") return _T("");
-	if (chkHelpExist ("rdo_lang_rus.qch"  ) == "") return _T("");
-	if (chkHelpExist ("rdo_studio_rus.qch") == "") return _T("");
-	if (chkHelpExist ("assistant.exe"     ) == "") return _T("");
+	tstring strTemp = chkHelpExist(str);
+	if (                       strTemp.size() < 3) return _T("");
+	if (chkHelpExist ("assistant.exe").size() < 3) return _T("");
 
-	return str;
+	return strTemp;
 }
 
-tstring chkHelpExist(tstring fileName)
+tstring RDOStudioApp::chkHelpExist(tstring fileName)
 {
 	fileName.insert(0, rdo::extractFilePath(RDOStudioApp::getFullExtName()));
 	if (!rdo::File::exist(fileName))
@@ -775,10 +773,20 @@ tstring chkHelpExist(tstring fileName)
 	return fileName;
 }
 
-QProcess* getQtAssistantWindow()
+QProcess* RDOStudioApp::getQtAssistantWindow()
 {
-	if (!m_assistant)
+	if (!m_pAssistant)
 	{
+		return m_pAssistant = runQtAssistantWindow();
+	}
+	else if (m_pAssistant->state() == m_pAssistant->Running)
+		return m_pAssistant;
+	else
+		return m_pAssistant = runQtAssistantWindow();
+}
+
+QProcess* RDOStudioApp::runQtAssistantWindow()
+{
 		QProcess *process = new QProcess;
 		QStringList args;
 		args << QLatin1String("-collectionFile")
@@ -786,14 +794,8 @@ QProcess* getQtAssistantWindow()
 			<< QLatin1String("-enableRemoteControl")
 			<< QLatin1String("-quiet");
 		process->start(QLatin1String("assistant"), args);
-		if (!process->waitForStarted())
-		{
-			if (process->state() == process->Running)
-				return m_assistant = process;
-		}
-	}
-	else
-		return m_assistant;
+		if (process->state() == process->Running)
+			return process;
 }
 
 rbool RDOStudioApp::getFileAssociationSetup() const
