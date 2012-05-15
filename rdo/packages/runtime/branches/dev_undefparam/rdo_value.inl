@@ -294,7 +294,7 @@ inline CREF(tstring) RDOValue::getIdentificator() const
 
 inline tstring RDOValue::getAsString() const
 {
-	if (m_undefined == false) 
+	if (m_undefined == false)
 	throw RDOUndefinedException();
 	switch (typeID())
 	{
@@ -311,8 +311,8 @@ inline tstring RDOValue::getAsString() const
 
 inline tstring RDOValue::getAsStringForTrace() const
 {
-	//if (m_undefined == false)
-	//throw RDOUndefinedException();
+	if (m_undefined == false) return _T("#");
+	
 	switch (typeID())
 	{
 	case RDOType::t_int    : return rdo::format(_T("%d"), __get<int>());
