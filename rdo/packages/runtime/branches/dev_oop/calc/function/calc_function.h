@@ -56,10 +56,9 @@ public:
 private:
 	RDOFunListCalc(CREF(LPRDOCalcConst) pDefaultValue);
 
-	typedef  std::vector<LPRDOCalc>       CaseList;
 	typedef  std::vector<LPRDOCalcConst>  ResultList;
 
-	CaseList        m_caseList;
+	RDOCalcList     m_caseList;
 	ResultList      m_resultList;
 	LPRDOCalcConst  m_pDefaultValue;
 
@@ -76,10 +75,8 @@ public:
 protected:
 	RDOFunAlgorithmicCalc();
 
-	typedef  std::vector<LPRDOCalc>  CalcList;
-
-	CalcList  m_conditionList;
-	CalcList  m_actionList;
+	RDOCalcList  m_conditionList;
+	RDOCalcList  m_actionList;
 
 	DECLARE_ICalc;
 };
@@ -132,10 +129,8 @@ public:
 private:
 	RDOCalcFunctionCaller(CREF(LPRDOCalc) pFunction);
 
-	typedef  std::vector<LPRDOCalc>  ParamList;
-
-	ParamList  m_paramList;
-	LPRDOCalc  m_pFunction;
+	RDOCalcList  m_paramList;
+	LPRDOCalc    m_pFunction;
 
 	DECLARE_ICalc;
 };
