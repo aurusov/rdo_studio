@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <Qt/qprocess.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/options.h"
 #include "app/rdo_studio_mfc/src/application.h"
@@ -2176,22 +2177,23 @@ int CALLBACK RDOStudioOptions::AddContextHelpProc(HWND hwnd, UINT message, LPARA
 
 void RDOStudioOptions::onHelpButton()
 {
-	tstring filename = studioApp.getFullHelpFileName();
-	if ( filename.empty() ) return;
+	QProcess* assistant = studioApp.getQtAssistantWindow();
+	if ( assistant->state() != assistant->Running ) return;
+	QByteArray ba;
 
 	CPropertyPage* page = GetActivePage( );
 	if ( page == general ) {
-		filename += "::/html/work_options_general.htm";
+		ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_general.htm\n");
 	} else if ( page == editor ) {
-		filename += "::/html/work_options_editor.htm";
+		ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_editor.htm\n");
 	} else if ( page == tabs ) {
-		filename += "::/html/work_options_tabs.htm";
+		ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_tabs.htm\n");
 	} else if ( page == styles ) {
-		filename += "::/html/work_options_styles_and_color.htm";
+		ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm\n");
 	} else if ( page == plugins ) {
-		filename += "::/html/work_options.htm";
+		ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options.htm\n");
 	}
-	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );
+	assistant->write(ba);
 }
 
 BOOL RDOStudioOptions::OnHelpInfo(HELPINFO* pHelpInfo) 

@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <Qt/qprocess.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracertreectrl.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
@@ -319,8 +320,9 @@ void RDOTracerTreeCtrl::OnChartFindincharts()
 
 void RDOTracerTreeCtrl::OnHelpKeyword()
 {
-	tstring filename = studioApp.getFullHelpFileName();
-	if ( filename.empty() ) return;
-	filename += "::/html/work_model_chart.htm";
-	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );
+	QProcess* assistant = studioApp.getQtAssistantWindow();
+	if ( assistant->state() != assistant->Running ) return;
+	QByteArray ba;
+	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_model/work_model_chart.htm\n");
+	assistant->write(ba);
 }

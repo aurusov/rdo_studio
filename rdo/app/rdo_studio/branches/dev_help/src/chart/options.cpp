@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <Qt/qprocess.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/chart/options.h"
 #include "app/rdo_studio_mfc/src/chart/view.h"
@@ -460,18 +461,19 @@ int CALLBACK RDOStudioChartOptions::AddContextHelpProc(HWND hwnd, UINT message, 
 
 void RDOStudioChartOptions::onHelpButton()
 {
-	/*string filename = studioApp.getFullHelpFileName();
-	if ( filename.empty() ) return;
+	/*QProcess* assistant = studioApp.getQtAssistantWindow();
+	if ( assistant->state() != assistant->Running ) return;
+	QByteArray ba;
 
 	CPropertyPage* page = GetActivePage( );
 	if ( page == editor ) {
-		filename += "::/html/work_options.htm#editor";
+		ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options.htm#editor\n");
 	} else if ( page == tabs ) {
-		filename += "::/html/work_options.htm#tabs";
+		ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options.htm#tabs\n");
 	} else if ( page == styles ) {
-		filename += "::/html/work_options.htm#styles";
+		ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options.htm#styles\n");
 	}
-	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );*/
+	assistant->write(ba);*/
 }
 
 BOOL RDOStudioChartOptions::OnHelpInfo(HELPINFO* pHelpInfo) 
@@ -483,4 +485,3 @@ BOOL RDOStudioChartOptions::OnHelpInfo(HELPINFO* pHelpInfo)
 		return ::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_HELP_CONTEXT, pHelpInfo->dwContextId) != NULL;
 	return TRUE;
 }
-

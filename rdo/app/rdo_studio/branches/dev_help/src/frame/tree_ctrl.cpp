@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <Qt/qprocess.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/frame/tree_ctrl.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
@@ -98,8 +99,9 @@ void RDOStudioFrameTreeCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 
 void RDOStudioFrameTreeCtrl::OnHelpKeyword()
 {
-	tstring filename = studioApp.getFullHelpFileName();
-	if ( filename.empty() ) return;
-	filename += "::/html/work_model_frame.htm#frame";
-	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );
+	QProcess* assistant = studioApp.getQtAssistantWindow();
+	if ( assistant->state() != assistant->Running ) return;
+	QByteArray ba;
+	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_model/work_model_frame.htm#frame\n");
+	assistant->write(ba);
 }
