@@ -2214,6 +2214,8 @@ tstring RDOStudioOptions::resolveKeyAndUrl (ruint helpInfo)
 	if (m_keyAndUrl.size() == 0)
 		buildMap();
 	mapKeyAndUrl::iterator it = m_keyAndUrl.find(helpInfo);
+	if (it == m_keyAndUrl.end())
+		return "qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options.htm\n";
 	return (*it).second;
 }
 
