@@ -773,7 +773,7 @@ tstring RDOStudioApp::chkHelpExist(tstring fileName) const
 	return fileName;
 }
 
-QProcess* RDOStudioApp::chkQtAssistantWindow()
+PTR(QProcess) RDOStudioApp::chkQtAssistantWindow()
 {
 	if (!m_pAssistant)
 	{
@@ -785,7 +785,7 @@ QProcess* RDOStudioApp::chkQtAssistantWindow()
 		return m_pAssistant = runQtAssistantWindow();
 }
 
-QProcess* RDOStudioApp::runQtAssistantWindow() const
+PTR(QProcess) RDOStudioApp::runQtAssistantWindow() const
 {
 		QProcess *process = new QProcess;
 		QStringList args;
