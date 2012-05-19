@@ -1,7 +1,7 @@
 @echo off
 set PATH1=D:\Dev_web
 set PATH2=D:\Dev\app\rdo_studio_mfc\help
-set PATH3=D:\Dev_web\web\scripts\Perl
+set PATH3=%PATH1%\web\scripts\Perl
 
 TortoiseProc.exe /command:cleanup /PATH:"%PATH1%" /nodlg /externals /cleanup  /closeonend:1 /noui
 TortoiseProc.exe /command:update /PATH:"%PATH1%" /closeonend:1
