@@ -12,6 +12,7 @@
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 #include <iostream>
+#include <boost/bind.hpp>
 #define BOOST_TEST_MODULE RDOValue_Test
 #include <boost/test/included/unit_test.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -23,103 +24,32 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 BOOST_AUTO_TEST_SUITE(RDOValue_Test)
 
-void testing(RDOValue value1, RDOValue value2)
+template <class F>
+void testException(F binder)
 {
 	rbool flag = false;
 	try
 	{
-		value1 += value2;
+		binder();
 	}
 	catch(CREF(RDOValueException))
 	{
 		flag = true;
 	}
 	BOOST_CHECK(flag);
-	flag = false;
-	try
-	{
-		value1 -= value2;
-	}
-	catch(CREF(RDOValueException))
-	{
-		flag = true;
-	}
-	BOOST_CHECK(flag);
-	flag = false;
-	try
-	{
-		value1 *= value2;
-	}
-	catch(CREF(RDOValueException))
-	{
-		flag = true;
-	}
-	BOOST_CHECK(flag);
-	flag = false;
-	try
-	{
-		value1 /= value2;
-	}
-	catch (CREF(RDOValueException))
-	{
-		flag = true;
-	}
-	BOOST_CHECK(flag);
-	flag = false;
-	try
-	{
-		if (value1 > value2)
-		{}
-	}
-	catch(CREF(RDOValueException))
-	{
-		flag = true;
-	}
-	BOOST_CHECK(flag);
-	flag = false;
-	try
-	{
-		if(value1 <  value2)
-		{}
-	}
-	catch(CREF(RDOValueException))
-	{
-		flag = true;
-	}
-	BOOST_CHECK(flag);
-	flag = false;
-	try
-	{
-		if(value1 >= value2)
-		{}
-	}
-	catch(CREF(RDOValueException))
-	{
-		flag = true;
-	}
-	BOOST_CHECK(flag);
-	flag = false;
-	try
-	{
-		if(value1 <= value2)
-		{}
-	}
-	catch(CREF(RDOValueException))
-	{
-		flag = true;
-	}
-	BOOST_CHECK(flag);
-	flag = false;
-	try
-	{
-		if(value1 == value2)
-		{}
-	}
-	catch(CREF(RDOValueException))
-	{
-		flag = true;
-	}
-	BOOST_CHECK(flag);
+}
+
+void testing(RDOValue value1, RDOValue value2)
+{
+	testException(boost::bind(&RDOValue::operator+=, &value1, boost::cref(value2)));
+	testException(boost::bind(&RDOValue::operator-=, &value1, boost::cref(value2)));
+	testException(boost::bind(&RDOValue::operator*=, &value1, boost::cref(value2)));
+	testException(boost::bind(&RDOValue::operator/=, &value1, boost::cref(value2)));
+	testException(boost::bind(&RDOValue::operator>,  &value1, boost::cref(value2)));
+	testException(boost::bind(&RDOValue::operator<,  &value1, boost::cref(value2)));
+	testException(boost::bind(&RDOValue::operator>=, &value1, boost::cref(value2)));
+	testException(boost::bind(&RDOValue::operator<=, &value1, boost::cref(value2)));
+	testException(boost::bind(&RDOValue::operator==, &value1, boost::cref(value2)));
 }
 
 void compare(RDOValue value1, RDOValue value2)
