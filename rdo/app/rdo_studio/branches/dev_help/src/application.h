@@ -12,7 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <fstream>
-#include <Qt/qprocess.h>
+#include <QtCore/qprocess.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
 #include "ui/mfc_ctrls/rdolink.h"

@@ -12,7 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <gdiplus.h>
 #include <QtGui/qmessagebox.h>
-#include <Qt/qprocess.h>
+#include <QtCore/qprocess.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdofile.h"
 #include "kernel/rdothread.h"

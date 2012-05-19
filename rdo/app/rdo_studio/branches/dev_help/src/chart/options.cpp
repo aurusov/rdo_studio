@@ -10,7 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <Qt/qprocess.h>
+#include <QtCore/qprocess.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/chart/options.h"
 #include "app/rdo_studio_mfc/src/chart/view.h"
