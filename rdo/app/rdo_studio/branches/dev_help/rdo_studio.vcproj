@@ -168,7 +168,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib pugixml.lib gdiplus.lib"
+				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib pugixml.lib gdiplus.lib QtGui4.lib QtCore4.lib"
 				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="../../thirdparty/pugixml/lib"
@@ -354,7 +354,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib pugixml.lib gdiplus.lib &quot;$(OutDir)/rdo_corba.lib&quot;"
+				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib pugixml.lib gdiplus.lib  QtGui4.lib QtCore4.lib &quot;$(OutDir)/rdo_corba.lib&quot;"
 				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="../../thirdparty/pugixml/lib"
@@ -539,7 +539,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib pugixml.lib gdiplus.lib"
+				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib pugixml.lib gdiplus.lib  QtGui4.lib QtCore4.lib"
 				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="../../thirdparty/pugixml/lib"
