@@ -12,7 +12,6 @@
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 #include <iostream>
-#include <boost/regex.hpp>
 #define BOOST_TEST_MODULE RDOValue_Test
 #include <boost/test/included/unit_test.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
