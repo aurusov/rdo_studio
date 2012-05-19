@@ -33,15 +33,15 @@ protected:
   \def     DEFINE_CALC_GROUP
   \brief   Групповые калки
 */
-#define DEFINE_CALC_GROUP(CalcName) \
-CALC_SUB(RDOFunCalc##CalcName, RDOFunCalcGroup) \
-{ \
-DECLARE_FACTORY(RDOFunCalc##CalcName) \
-private: \
+#define DEFINE_CALC_GROUP(CalcName)                                \
+CALC_SUB(RDOFunCalc##CalcName, RDOFunCalcGroup)                    \
+{                                                                  \
+DECLARE_FACTORY(RDOFunCalc##CalcName)                              \
+private:                                                           \
 	RDOFunCalc##CalcName(int nResType, CREF(LPRDOCalc) pCondition) \
-		: RDOFunCalcGroup(nResType, pCondition) \
-	{} \
- 	virtual REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime); \
+		: RDOFunCalcGroup(nResType, pCondition)                    \
+	{}                                                             \
+	DECLARE_ICalc;                                                 \
 };
 
 /*!

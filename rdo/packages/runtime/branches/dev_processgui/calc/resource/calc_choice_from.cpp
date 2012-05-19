@@ -198,7 +198,7 @@ void RDOSelectResourceCommonCalc::getBest(REF(ResourceIDTable) allNumbs, ruint l
 				return; // state not valid
 			}
 		}
-		RDOValue newVal = const_cast<PTR(RDOSelectResourceCommonCalc)>(this)->m_pCalcChoiceFrom->calcValue(pRuntime);
+		RDOValue newVal = m_pCalcChoiceFrom->calcValue(pRuntime);
 		if (!hasBest || (m_useCommonWithMax && (newVal > bestVal)) ||
 		   (!m_useCommonWithMax && (newVal < bestVal))) // found better value
 		{
@@ -323,7 +323,9 @@ void RDOSelectResourceDirectCommonCalc::getPossibleNumbers(CREF(LPRDORuntime) pR
 
 rbool RDOSelectResourceDirectCommonCalc::callChoice(CREF(LPRDORuntime) pRuntime) const
 {
-	return (m_pCalcChoiceFrom && !const_cast<PTR(RDOSelectResourceDirectCommonCalc)>(this)->m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool()) ? false : true;
+	return (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
+		? false
+		: true;
 }
 
 RDOSelectResourceDirectCommonCalc::~RDOSelectResourceDirectCommonCalc()
@@ -353,7 +355,9 @@ void RDOSelectResourceByTypeCommonCalc::getPossibleNumbers(CREF(LPRDORuntime) pR
 
 rbool RDOSelectResourceByTypeCommonCalc::callChoice(CREF(LPRDORuntime) pRuntime) const
 {
-	return (m_pCalcChoiceFrom && !const_cast<PTR(RDOSelectResourceByTypeCommonCalc)>(this)->m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool()) ? false : true;
+	return (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
+		? false
+		: true;
 }
 
 RDOSelectResourceByTypeCommonCalc::~RDOSelectResourceByTypeCommonCalc()

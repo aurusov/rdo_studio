@@ -68,10 +68,10 @@ public:
 private:
 	function_type m_pFunction;
 
-	REF(RDOValue) doCalc(CREF(LPRDORuntime) pRuntime);
-
 	void calc(CREF(LPRDORuntime) pRuntime, std_fun_one_param);
 	void calc(CREF(LPRDORuntime) pRuntime, std_fun_two_param);
+
+	DECLARE_ICalc;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

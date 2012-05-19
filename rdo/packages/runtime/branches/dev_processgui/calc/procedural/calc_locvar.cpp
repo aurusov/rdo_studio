@@ -50,7 +50,9 @@ REF(RDOValue) RDOCalcGetLocalVariable::doCalc(CREF(LPRDORuntime) pRuntime)
 // -------------------- RDOCalcLocalVariableList
 // --------------------------------------------------------------------------------
 RDOCalcLocalVariableList::RDOCalcLocalVariableList()
-{}
+{
+	m_value = RDOValue(0);
+}
 
 void RDOCalcLocalVariableList::addCalcLocalVariable(CREF(LPRDOCalc) pCalc)
 {
@@ -64,8 +66,6 @@ REF(RDOValue) RDOCalcLocalVariableList::doCalc(CREF(LPRDORuntime) pRuntime)
 	{
 		(*calc_it)->calcValue(pRuntime);
 	}
-
-	m_value = RDOValue(m_calcLocalVariableList.size());
 	return m_value;
 }
 
