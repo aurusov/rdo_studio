@@ -55,6 +55,7 @@
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_WINDOWS;_USRDLL;RDO_PLUGIN_EXPORTS;WINVER=0x0501;BOOST_TYPEOF_SILENT"
+				RuntimeLibrary="2"
 				WarningLevel="4"
 			/>
 			<Tool
@@ -304,6 +305,7 @@
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_WINDOWS;_USRDLL;RDO_PLUGIN_EXPORTS;WINVER=0x0501;BOOST_TYPEOF_SILENT"
+				RuntimeLibrary="2"
 				BrowseInformation="1"
 				WarningLevel="4"
 			/>
