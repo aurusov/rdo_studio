@@ -794,8 +794,7 @@ PTR(QProcess) RDOStudioApp::runQtAssistantWindow() const
 			<< QLatin1String("-enableRemoteControl")
 			<< QLatin1String("-quiet");
 		process->start(QLatin1String("assistant"), args);
-		if (process->state() == process->Running)
-			return process;
+		return process;
 }
 
 rbool RDOStudioApp::getFileAssociationSetup() const
