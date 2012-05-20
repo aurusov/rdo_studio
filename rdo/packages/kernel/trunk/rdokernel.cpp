@@ -1,4 +1,6 @@
 // ---------------------------------------------------------------------------- PCH
+// ----------------------------------------------------------------------- PLATFORM
+#include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
 #include <algorithm>
@@ -38,6 +40,10 @@ RDOKernel::~RDOKernel()
 
 void RDOKernel::init()
 {
+#ifdef COMPILER_VISUAL_STUDIO
+	_set_output_format(_TWO_DIGIT_EXPONENT);
+#endif
+
 	new RDOKernel();
 }
 
