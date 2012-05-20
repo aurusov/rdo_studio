@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_CASE(MantissaPrecision)
 	stream << boost::format("%1$.10E") % value;
 
 	std::string str = stream.str();
-	std::cout << str;
+	std::cout << str << std::endl;
 
 	BOOST_CHECK(stream.str() == "1.0000000000E+008");
 }
