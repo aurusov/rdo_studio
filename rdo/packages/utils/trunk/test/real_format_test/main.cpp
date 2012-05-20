@@ -20,14 +20,14 @@ BOOST_AUTO_TEST_SUITE(RDORealFormatTest)
 
 BOOST_AUTO_TEST_CASE(MantissaPrecision)
 {
-	double value = 10e+237;
+	double value = 10e+37;
 	std::stringstream stream;
 	stream << boost::format("%1$.10E") % value;
 
 	std::string str = stream.str();
 	std::cout << str << std::endl;
 
-	BOOST_CHECK(stream.str() == "1.0000000000E+238");
+	BOOST_CHECK(stream.str() == "1.0000000000E+038");
 }
 
 BOOST_AUTO_TEST_SUITE_END() // RDORealFormatTest
