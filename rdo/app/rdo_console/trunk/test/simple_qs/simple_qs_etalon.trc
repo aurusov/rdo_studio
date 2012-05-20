@@ -1,4 +1,4 @@
-Results_file   = simple_qs.pmv    2011-Dec-11 16:51:20.965832
+Results_file   = simple_qs.pmv    2012-May-20 22:52:09.325062
 Run_file       = simple_qs.smr
 Model_name     = simple_qs
 Resource_file  = simple_qs.rss
@@ -489,4 +489,4 @@ RK 5051.16 1 1 0 3 150
 ES 5051.16 2
 $Status = NORMAL_TERMINATION 5051.16
 
-DPS_MM 4790
+DPS_MM 4615

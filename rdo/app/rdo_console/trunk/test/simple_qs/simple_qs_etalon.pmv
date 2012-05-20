@@ -1,4 +1,4 @@
-Results_file   = simple_qs.pmv    2011-Dec-11 16:51:21.258849
+Results_file   = simple_qs.pmv    2012-May-20 22:52:09.496662
 Run_file       = simple_qs.smr
 Model_name     = simple_qs
 Resource_file  = simple_qs.rss
@@ -7,14 +7,14 @@ $Changes
 
 
 $Status = NORMAL_TERMINATION
-$Result_values  0  5051.16  0.292
-  EventCount           303  0.0599862  1037
-  OperRuleCheckCounter 454  0.0898804  1554
-  AExpCalcCounter      159  0.0314779  544
-  BExpCalcCounter      3355  0.664204  11489
+$Result_values  0  5051.16  0.171
+  EventCount           303  0.0599862  1771
+  OperRuleCheckCounter 454  0.0898804  2654
+  AExpCalcCounter      159  0.0314779  929
+  BExpCalcCounter      3355  0.664204  19619
 
 Занятость_парикмахера         	FALSE	150	0.877315	136115	20.0211	39.9958
-Длина_очереди                 	3	303	2.75699	1.56872e+006	0	9
+Длина_очереди                 	3	303	2.75699	1.56872e+06	0	9
 Всего_обслужено               	150
 Пропускная_способность        	1.78177
 Длительность_работы           	84.186
