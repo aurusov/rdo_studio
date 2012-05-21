@@ -39,7 +39,7 @@ void testException(F binder)
 	BOOST_CHECK(flag);
 }
 
-void testing(RDOValue value1, RDOValue value2)
+void testing(CREF(RDOValue) value1, CREF(RDOValue) value2)
 {
 	testException(boost::bind(&RDOValue::operator+=, &value1, boost::cref(value2)));
 	testException(boost::bind(&RDOValue::operator-=, &value1, boost::cref(value2)));
