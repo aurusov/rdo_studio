@@ -471,13 +471,6 @@ inline rbool RDOValue::operator< (CREF(RDOValue) rdovalue) const
 	throw RDOValueException();
 }
 
-inline rbool RDOValue::operator< (CREF(RDOValue) rdovalue)
-{
-	if (m_undefined == false || rdovalue.getUndefined() == false)
-	throw RDOUndefinedException();
-	return static_cast<CPTR(RDOValue)>(this)->operator< (rdovalue);
-}
-
 inline rbool RDOValue::operator> (CREF(RDOValue) rdovalue) const
 {
 	if (m_undefined == false || rdovalue.getUndefined() == false)

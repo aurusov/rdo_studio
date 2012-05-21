@@ -75,7 +75,6 @@ public:
 	rbool          operator== (CREF(RDOValue) rdovalue) const;
 	rbool          operator!= (CREF(RDOValue) rdovalue) const;
 	rbool          operator<  (CREF(RDOValue) rdovalue) const;
-	rbool          operator<  (CREF(RDOValue) rdovalue);
 	rbool          operator>  (CREF(RDOValue) rdovalue) const;
 	rbool          operator<= (CREF(RDOValue) rdovalue) const;
 	rbool          operator>= (CREF(RDOValue) rdovalue) const;
