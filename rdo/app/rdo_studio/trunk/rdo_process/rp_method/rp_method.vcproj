@@ -85,7 +85,7 @@
 			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
-			UseOfMFC="1"
+			UseOfMFC="2"
 			CharacterSet="2"
 			BuildLogFile="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
@@ -109,6 +109,7 @@
 				InlineFunctionExpansion="2"
 				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
+				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="app\rdo_studio_mfc\rdo_process\rp_method\stdafx.h"
 			/>
