@@ -50,7 +50,7 @@
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="app/rdo_studio_mfc/rdo_process/proc2rdo/stdafx.h"
 				WarningLevel="4"
-				DebugInformationFormat="4"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"

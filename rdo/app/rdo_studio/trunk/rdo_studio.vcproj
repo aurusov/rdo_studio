@@ -58,7 +58,7 @@
 				PrecompiledHeaderThrough="app/rdo_studio_mfc/pch/stdpch.h"
 				BrowseInformation="1"
 				WarningLevel="4"
-				DebugInformationFormat="4"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -74,13 +74,16 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib pugixml_d.lib gdiplus.lib"
-				OutputFile="$(OutDir)\RAO-studio.exe"
+				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
+				LinkIncremental="1"
 				AdditionalLibraryDirectories="../../thirdparty/pugixml/lib"
 				IgnoreDefaultLibraryNames="msvcrt.lib"
 				GenerateDebugInformation="true"
+				ProgramDatabaseFile="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\$(TargetName).pdb"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
+				ImportLibrary="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -148,7 +151,6 @@
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="app/rdo_studio_mfc/pch/stdpch.h"
 				WarningLevel="4"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -164,12 +166,13 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib pugixml.lib gdiplus.lib"
-				OutputFile="$(OutDir)\RAO-studio.exe"
+				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
+				LinkIncremental="1"
 				AdditionalLibraryDirectories="../../thirdparty/pugixml/lib"
-				GenerateDebugInformation="true"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
+				ImportLibrary="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -237,7 +240,7 @@
 				PrecompiledHeaderThrough="app/rdo_studio_mfc/pch/stdpch.h"
 				BrowseInformation="1"
 				WarningLevel="4"
-				DebugInformationFormat="4"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -253,13 +256,16 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib pugixml_d.lib gdiplus.lib &quot;$(OutDir)/rdo_corba.lib&quot;"
-				OutputFile="$(OutDir)\RAO-studio.exe"
+				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
+				LinkIncremental="1"
 				AdditionalLibraryDirectories="../../thirdparty/pugixml/lib"
 				IgnoreDefaultLibraryNames="msvcrt.lib"
 				GenerateDebugInformation="true"
+				ProgramDatabaseFile="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\$(TargetName).pdb"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
+				ImportLibrary="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -341,11 +347,13 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib pugixml.lib gdiplus.lib &quot;$(OutDir)/rdo_corba.lib&quot;"
-				OutputFile="$(OutDir)\RAO-studio.exe"
+				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
+				LinkIncremental="1"
 				AdditionalLibraryDirectories="../../thirdparty/pugixml/lib"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
+				ImportLibrary="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -412,7 +420,7 @@
 				PrecompiledHeaderThrough="app/rdo_studio_mfc/pch/stdpch.h"
 				BrowseInformation="1"
 				WarningLevel="4"
-				DebugInformationFormat="4"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -428,13 +436,16 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib pugixml_d.lib gdiplus.lib"
-				OutputFile="$(OutDir)\RAO-studio.exe"
+				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
+				LinkIncremental="1"
 				AdditionalLibraryDirectories="../../thirdparty/pugixml/lib"
 				IgnoreDefaultLibraryNames="msvcrt.lib"
 				GenerateDebugInformation="true"
+				ProgramDatabaseFile="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\$(TargetName).pdb"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
+				ImportLibrary="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -516,11 +527,13 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib pugixml.lib gdiplus.lib"
-				OutputFile="$(OutDir)\RAO-studio.exe"
+				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
+				LinkIncremental="1"
 				AdditionalLibraryDirectories="../../thirdparty/pugixml/lib"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
+				ImportLibrary="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
 				TargetMachine="1"
 			/>
 			<Tool
