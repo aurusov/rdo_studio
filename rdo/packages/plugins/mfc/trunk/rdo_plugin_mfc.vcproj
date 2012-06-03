@@ -56,7 +56,7 @@
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="app/rdo_studio_mfc/plugins/mfc/stdafx.h"
-				BrowseInformation="1"
+				BrowseInformation="0"
 				WarningLevel="4"
 				DebugInformationFormat="3"
 			/>
@@ -73,12 +73,15 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(SolutionDir)\$(ConfigurationName)\plugins\$(ProjectName).rsp"
+				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\plugins\$(ProjectName).rsp"
+				LinkIncremental="1"
 				ModuleDefinitionFile=".\rdo_plugin_mfc.def"
 				GenerateDebugInformation="true"
+				ProgramDatabaseFile="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\$(TargetName).pdb"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
+				ImportLibrary="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -161,11 +164,13 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(SolutionDir)\$(ConfigurationName)\plugins\$(ProjectName).rsp"
+				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\plugins\$(ProjectName).rsp"
+				LinkIncremental="1"
 				ModuleDefinitionFile=".\rdo_plugin_mfc.def"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
+				ImportLibrary="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -248,7 +253,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(SolutionDir)\$(ConfigurationName)\plugins\$(ProjectName).rsp"
+				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\plugins\$(ProjectName).rsp"
 				ModuleDefinitionFile=".\rdo_plugin_mfc.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -335,7 +340,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(SolutionDir)\$(ConfigurationName)\plugins\$(ProjectName).rsp"
+				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\plugins\$(ProjectName).rsp"
 				ModuleDefinitionFile=".\rdo_plugin_mfc.def"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
@@ -421,12 +426,15 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(SolutionDir)\$(ConfigurationName)\plugins\$(ProjectName).rsp"
+				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\plugins\$(ProjectName).rsp"
+				LinkIncremental="1"
 				ModuleDefinitionFile=".\rdo_plugin_mfc.def"
 				GenerateDebugInformation="true"
+				ProgramDatabaseFile="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\$(TargetName).pdb"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
+				ImportLibrary="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -508,11 +516,13 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(SolutionDir)\$(ConfigurationName)\plugins\$(ProjectName).rsp"
+				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\plugins\$(ProjectName).rsp"
+				LinkIncremental="1"
 				ModuleDefinitionFile=".\rdo_plugin_mfc.def"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
+				ImportLibrary="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
 				TargetMachine="1"
 			/>
 			<Tool
