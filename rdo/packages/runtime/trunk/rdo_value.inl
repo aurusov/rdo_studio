@@ -176,7 +176,7 @@ inline void RDOValue::deleteValue()
 
 inline rsint RDOValue::getInt() const
 {
-	if (m_undefined == false)
+	if (!m_undefined)
 		throw RDOUndefinedException();
 
 	switch (typeID())
@@ -192,7 +192,7 @@ inline rsint RDOValue::getInt() const
 
 inline ruint RDOValue::getUInt() const
 {
-	if (m_undefined == false)
+	if (!m_undefined)
 		throw RDOUndefinedException();
 
 	switch (typeID())
@@ -208,7 +208,7 @@ inline ruint RDOValue::getUInt() const
 
 inline rsint RDOValue::getEnumAsInt() const
 {
-	if (m_undefined == false)
+	if (!m_undefined)
 		throw RDOUndefinedException();
 
 	switch (typeID())
@@ -223,7 +223,7 @@ inline rsint RDOValue::getEnumAsInt() const
 
 inline LPRDOEnumType RDOValue::getEnum() const
 {
-	if (m_undefined == false)
+	if (!m_undefined)
 		throw RDOUndefinedException();
 
 	switch (typeID())
@@ -235,7 +235,7 @@ inline LPRDOEnumType RDOValue::getEnum() const
 
 inline double RDOValue::getDouble() const
 {
-	if (m_undefined == false)
+	if (!m_undefined)
 		throw RDOUndefinedException();
 
 	switch (typeID())
@@ -250,7 +250,7 @@ inline double RDOValue::getDouble() const
 
 inline rbool RDOValue::getBool() const
 {
-	if (m_undefined == false)
+	if (!m_undefined)
 		throw RDOUndefinedException();
 
 	switch (typeID())
@@ -262,7 +262,7 @@ inline rbool RDOValue::getBool() const
 
 inline rbool RDOValue::getAsBool() const
 {
-	if (m_undefined == false)
+	if (!m_undefined)
 		throw RDOUndefinedException();
 
 	switch (typeID())
@@ -278,7 +278,7 @@ inline rbool RDOValue::getAsBool() const
 
 inline CREF(tstring) RDOValue::getString() const
 {
-	if (m_undefined == false)
+	if (!m_undefined)
 		throw RDOUndefinedException();
 
 	switch (typeID())
@@ -290,7 +290,7 @@ inline CREF(tstring) RDOValue::getString() const
 
 inline CREF(tstring) RDOValue::getIdentificator() const
 {
-	if (m_undefined == false) 
+	if (!m_undefined) 
 		throw RDOUndefinedException();
 
 	switch (typeID())
@@ -302,7 +302,7 @@ inline CREF(tstring) RDOValue::getIdentificator() const
 
 inline tstring RDOValue::getAsString() const
 {
-	if (m_undefined == false)
+	if (!m_undefined)
 		throw RDOUndefinedException();
 
 	switch (typeID())
@@ -320,7 +320,7 @@ inline tstring RDOValue::getAsString() const
 
 inline tstring RDOValue::getAsStringForTrace() const
 {
-	if (m_undefined == false)
+	if (!m_undefined)
 		return _T("#");
 
 	switch (typeID())
@@ -366,7 +366,7 @@ inline REF(RDOValue) RDOValue::operator= (CREF(RDOValue) rdovalue)
 
 inline rbool RDOValue::operator== (CREF(RDOValue) rdovalue) const
 {
-	if (m_undefined == false || rdovalue.getUndefined() == false)
+	if (!m_undefined || !rdovalue.getUndefined())
 		throw RDOUndefinedException();
 
 	switch (typeID())
@@ -431,15 +431,12 @@ inline rbool RDOValue::operator== (CREF(RDOValue) rdovalue) const
 
 inline rbool RDOValue::operator!= (CREF(RDOValue) rdovalue) const
 {
-	if (m_undefined == false || rdovalue.getUndefined() == false)
-		throw RDOUndefinedException();
-
 	return !operator==(rdovalue);
 }
 
 inline rbool RDOValue::operator< (CREF(RDOValue) rdovalue) const
 {
-	if (m_undefined == false || rdovalue.getUndefined() == false)
+	if (!m_undefined || !rdovalue.getUndefined())
 		throw RDOUndefinedException();
 
 	switch (typeID())
@@ -484,31 +481,22 @@ inline rbool RDOValue::operator< (CREF(RDOValue) rdovalue) const
 
 inline rbool RDOValue::operator> (CREF(RDOValue) rdovalue) const
 {
-	if (m_undefined == false || rdovalue.getUndefined() == false)
-		throw RDOUndefinedException();
-
 	return !operator<=(rdovalue);
 }
 
 inline rbool RDOValue::operator<= (CREF(RDOValue) rdovalue) const
 {
-	if (m_undefined == false || rdovalue.getUndefined() == false)
-		throw RDOUndefinedException();
-
 	return operator<(rdovalue) || operator==(rdovalue);
 }
 
 inline rbool RDOValue::operator>= (CREF(RDOValue) rdovalue) const
 {
-	if (m_undefined == false || rdovalue.getUndefined() == false)
-		throw RDOUndefinedException();
-
 	return operator>(rdovalue) || operator==(rdovalue);
 }
 
 inline RDOValue RDOValue::operator&& (CREF(RDOValue) rdovalue) const
 {
-	if (m_undefined == false || rdovalue.getUndefined() == false)
+	if (!m_undefined || !rdovalue.getUndefined())
 		throw RDOUndefinedException();
 
 	switch (typeID())
@@ -531,7 +519,7 @@ inline RDOValue RDOValue::operator&& (CREF(RDOValue) rdovalue) const
 
 inline RDOValue RDOValue::operator|| (CREF(RDOValue) rdovalue) const
 {
-	if (m_undefined == false || rdovalue.getUndefined() == false)
+	if (!m_undefined || !rdovalue.getUndefined())
 		throw RDOUndefinedException();
 
 	switch (typeID())
@@ -554,7 +542,7 @@ inline RDOValue RDOValue::operator|| (CREF(RDOValue) rdovalue) const
 
 inline RDOValue RDOValue::operator- () const
 {
-	if (m_undefined == false)
+	if (!m_undefined)
 		throw RDOUndefinedException();
 
 	switch (typeID())
@@ -569,7 +557,7 @@ inline RDOValue RDOValue::operator- () const
 
 inline rbool RDOValue::operator! () const
 {
-	if (m_undefined == false)
+	if (!m_undefined)
 		throw RDOUndefinedException();
 
 	switch (typeID())
@@ -583,7 +571,7 @@ inline rbool RDOValue::operator! () const
 
 inline REF(RDOValue) RDOValue::operator+= (CREF(RDOValue) rdovalue)
 {
-	if (m_undefined == false || rdovalue.getUndefined() == false)
+	if (!m_undefined || !rdovalue.getUndefined())
 		throw RDOUndefinedException();
 
 	switch (typeID())
@@ -638,9 +626,6 @@ inline REF(RDOValue) RDOValue::operator+= (CREF(RDOValue) rdovalue)
 
 inline CREF(RDOValue) RDOValue::operator++()
 {
-	if (m_undefined == false)
-		throw RDOUndefinedException();
-
 	operator+=(1);
 	return *this;
 }
@@ -649,7 +634,7 @@ inline RDOValue RDOValue::operator++(int inc)
 {
 	UNUSED(inc);
 
-	if (m_undefined == false)
+	if (!m_undefined)
 		throw RDOUndefinedException();
 
 	RDOValue prevValue(typeID() == RDOType::t_pointer ? clone() : *this);
@@ -659,7 +644,7 @@ inline RDOValue RDOValue::operator++(int inc)
 
 inline CREF(RDOValue) RDOValue::operator--()
 {
-	if (m_undefined == false)
+	if (!m_undefined)
 		throw RDOUndefinedException();
 
 	operator-=(1);
@@ -670,7 +655,7 @@ inline RDOValue RDOValue::operator--(int inc)
 {
 	UNUSED(inc);
 
-	if (m_undefined == false)
+	if (!m_undefined)
 		throw RDOUndefinedException();
 
 	RDOValue prevValue(typeID() == RDOType::t_pointer ? clone() : *this);
@@ -680,7 +665,7 @@ inline RDOValue RDOValue::operator--(int inc)
 
 inline REF(RDOValue) RDOValue::operator-= (CREF(RDOValue) rdovalue)
 {
-	if (m_undefined == false || rdovalue.getUndefined() == false)
+	if (!m_undefined || !rdovalue.getUndefined())
 		throw RDOUndefinedException();
 
 	switch (typeID())
@@ -714,7 +699,7 @@ inline REF(RDOValue) RDOValue::operator-= (CREF(RDOValue) rdovalue)
 
 inline REF(RDOValue) RDOValue::operator*= (CREF(RDOValue) rdovalue)
 {
-	if (m_undefined == false || rdovalue.getUndefined() == false)
+	if (!m_undefined || !rdovalue.getUndefined())
 		throw RDOUndefinedException();
 
 	switch (typeID())
@@ -748,7 +733,7 @@ inline REF(RDOValue) RDOValue::operator*= (CREF(RDOValue) rdovalue)
 
 inline REF(RDOValue) RDOValue::operator/= (CREF(RDOValue) rdovalue)
 {
-	if (m_undefined == false || rdovalue.getUndefined() == false)
+	if (!m_undefined || !rdovalue.getUndefined())
 		throw RDOUndefinedException();
 
 	switch (typeID())
@@ -782,9 +767,6 @@ inline REF(RDOValue) RDOValue::operator/= (CREF(RDOValue) rdovalue)
 
 inline RDOValue RDOValue::operator+ (CREF(RDOValue) rdovalue) const
 {
-	if (m_undefined == false || rdovalue.getUndefined() == false)
-		throw RDOUndefinedException();
-
 	RDOValue value2(*this);
 	value2 += rdovalue;
 	return value2;
@@ -792,9 +774,6 @@ inline RDOValue RDOValue::operator+ (CREF(RDOValue) rdovalue) const
 
 inline RDOValue RDOValue::operator- (CREF(RDOValue) rdovalue) const
 {
-	if (m_undefined == false || rdovalue.getUndefined() == false)
-		throw RDOUndefinedException();
-
 	RDOValue value2(*this);
 	value2 -= rdovalue;
 	return value2;
@@ -802,9 +781,6 @@ inline RDOValue RDOValue::operator- (CREF(RDOValue) rdovalue) const
 
 inline RDOValue RDOValue::operator* (CREF(RDOValue) rdovalue) const
 {
-	if (m_undefined == false || rdovalue.getUndefined() == false)
-		throw RDOUndefinedException();
-
 	RDOValue value2(*this);
 	value2 *= rdovalue;
 	return value2;
@@ -812,9 +788,6 @@ inline RDOValue RDOValue::operator* (CREF(RDOValue) rdovalue) const
 
 inline RDOValue RDOValue::operator/ (CREF(RDOValue) rdovalue) const
 {
-	if (m_undefined == false || rdovalue.getUndefined() == false)
-		throw RDOUndefinedException();
-
 	RDOValue value2(*this);
 	value2 /= rdovalue;
 	return value2;
