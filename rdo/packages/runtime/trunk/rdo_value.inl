@@ -34,7 +34,6 @@ inline RDOValue::~RDOValue()
 }
 
 inline RDOValue::RDOValue(CREF(RDOValue) rdovalue)
-	: m_pType(g_unknow)
 {
 	set(rdovalue);
 	setUndefined(1);
@@ -306,8 +305,6 @@ inline tstring RDOValue::getAsStringForTrace() const
 
 inline void RDOValue::set(CREF(RDOValue) rdovalue)
 {
-	deleteValue();
-
 	m_pType = rdovalue.m_pType;
 	switch (typeID())
 	{
@@ -329,6 +326,7 @@ inline void RDOValue::set(CREF(RDOValue) rdovalue)
 
 inline REF(RDOValue) RDOValue::operator= (CREF(RDOValue) rdovalue)
 {
+	deleteValue();
 	set(rdovalue);
 	return *this;
 }
