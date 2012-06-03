@@ -100,7 +100,7 @@ void RDOFunAlgorithmicCalc::addCalcIf(CREF(LPRDOCalc) pCondition, CREF(LPRDOCalc
 
 RDOValue RDOFunAlgorithmicCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	CalcList::const_iterator actionIt = m_actionList.begin();
+	RDOCalcList::const_iterator actionIt = m_actionList.begin();
 	STL_FOR_ALL_CONST(m_conditionList, conditionIt)
 	{
 		if ((*conditionIt)->calcValue(pRuntime).getAsBool())
