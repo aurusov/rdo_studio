@@ -328,7 +328,14 @@ PTR(rdo::animation::FrameItem) RDOFRMText::createElement(CREF(LPRDORuntime) pRun
 	}
 	else
 	{
-		t = m_pValue->calcValue(pRuntime).getAsString();
+		try
+		{
+			t = m_pValue->calcValue(pRuntime).getAsString();
+		}
+		catch (CREF(RDOUndefinedException))
+		{
+			t = _T("#");
+		}
 	}
 
 	int x      = getX     (pRuntime, getFrame());
