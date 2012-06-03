@@ -30,7 +30,7 @@ RDOFunCalcGroup::RDOFunCalcGroup(int nResType, CREF(LPRDOCalc) pCondition)
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcExist
 // --------------------------------------------------------------------------------
-REF(RDOValue) RDOFunCalcExist::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOFunCalcExist::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	rbool res = false;
 	RDORuntime::ResCIterator end = pRuntime->res_end();
@@ -47,14 +47,13 @@ REF(RDOValue) RDOFunCalcExist::doCalc(CREF(LPRDORuntime) pRuntime)
 			res = true;
 		pRuntime->popGroupFunc();
 	}
-	m_value = res;
-	return m_value;
+	return RDOValue(res);
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcNotExist
 // --------------------------------------------------------------------------------
-REF(RDOValue) RDOFunCalcNotExist::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOFunCalcNotExist::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	rbool res = true;
 	RDORuntime::ResCIterator end = pRuntime->res_end();
@@ -71,14 +70,13 @@ REF(RDOValue) RDOFunCalcNotExist::doCalc(CREF(LPRDORuntime) pRuntime)
 			res = false;
 		pRuntime->popGroupFunc();
 	}
-	m_value = res;
-	return m_value;
+	return RDOValue(res);
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcForAll
 // --------------------------------------------------------------------------------
-REF(RDOValue) RDOFunCalcForAll::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOFunCalcForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	rbool first_found = false;
 	rbool res = true;
@@ -102,14 +100,13 @@ REF(RDOValue) RDOFunCalcForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 		}
 		pRuntime->popGroupFunc();
 	}
-	m_value = first_found ? res : false;
-	return m_value;
+	return RDOValue(first_found ? res : false);
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcNotForAll
 // --------------------------------------------------------------------------------
-REF(RDOValue) RDOFunCalcNotForAll::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOFunCalcNotForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	rbool res = false;
 	RDORuntime::ResCIterator end = pRuntime->res_end();
@@ -126,8 +123,7 @@ REF(RDOValue) RDOFunCalcNotForAll::doCalc(CREF(LPRDORuntime) pRuntime)
 			res = true;
 		pRuntime->popGroupFunc();
 	}
-	m_value = res;
-	return m_value;
+	return RDOValue(res);
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

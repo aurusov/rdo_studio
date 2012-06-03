@@ -28,7 +28,7 @@ RDOCalc::RDOCalc()
 RDOCalc::~RDOCalc()
 {}
 
-REF(RDOValue) RDOCalc::calcValue(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalc::calcValue(CREF(LPRDORuntime) pRuntime)
 {
 	try
 	{
@@ -72,7 +72,7 @@ REF(RDOValue) RDOCalc::calcValue(CREF(LPRDORuntime) pRuntime)
 		);
 		pRuntime->error().push(error);
 	}
-	return m_value;
+	return RDOValue();
 }
 
 CREF(RDOSrcInfo) RDOCalc::srcInfo() const

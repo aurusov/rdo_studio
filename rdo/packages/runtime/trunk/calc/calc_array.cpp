@@ -24,13 +24,12 @@ RDOCalcArraySize::RDOCalcArraySize(CREF(LPRDOCalc) pCalc)
 	: m_pCalc(pCalc)
 {}
 
-REF(RDOValue) RDOCalcArraySize::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcArraySize::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	REF(RDOValue) value = m_pCalc->calcValue(pRuntime);
+	RDOValue value = m_pCalc->calcValue(pRuntime);
 	CREF(LPRDOArrayValue) pArrayValue = value.getPointerSafety<RDOArrayType>();
 	ASSERT(pArrayValue);
-	m_value = RDOValue(pArrayValue->size());
-	return m_value;
+	return pArrayValue->size();
 }
 
 // --------------------------------------------------------------------------------
@@ -46,15 +45,14 @@ RDOCalcArrayItem::RDOCalcArrayItem(CREF(LPRDOCalc) pArray, CREF(LPRDOCalc) pArra
 	setSrcInfo(m_pArrayInd->srcInfo());
 }
 
-REF(RDOValue) RDOCalcArrayItem::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcArrayItem::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	REF(RDOValue) value = m_pArray->calcValue(pRuntime);
+	RDOValue value = m_pArray->calcValue(pRuntime);
 
 	CREF(LPRDOArrayValue) pArrayValue = value.getPointerSafety<RDOArrayType>();
 	ASSERT(pArrayValue);
 
-	m_value = pArrayValue->getItem(m_pArrayInd->calcValue(pRuntime));
-	return m_value;
+	return pArrayValue->getItem(m_pArrayInd->calcValue(pRuntime));
 }
 
 // --------------------------------------------------------------------------------
@@ -72,15 +70,15 @@ RDOCalcSetArrayItem::RDOCalcSetArrayItem(CREF(LPRDOCalc) pArray, CREF(LPRDOCalc)
 	setSrcInfo(m_pArrayInd->srcInfo());
 }
 
-REF(RDOValue) RDOCalcSetArrayItem::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcSetArrayItem::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	m_value = m_pArray->calcValue(pRuntime);
+	RDOValue value = m_pArray->calcValue(pRuntime);
 
-	CREF(LPRDOArrayValue) pArrayValue = m_value.getPointerSafety<RDOArrayType>();
+	CREF(LPRDOArrayValue) pArrayValue = value.getPointerSafety<RDOArrayType>();
 	ASSERT(pArrayValue);
 	pArrayValue->setItem(m_pArrayInd->calcValue(pRuntime), m_pSetItem->calcValue(pRuntime));
 
-	return m_value;
+	return value;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

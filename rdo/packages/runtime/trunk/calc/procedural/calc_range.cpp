@@ -32,14 +32,14 @@ RDOCalcCheckRange::RDOCalcCheckRange(CREF(RDOValue) minValue, CREF(RDOValue) max
 	}
 }
 
-REF(RDOValue) RDOCalcCheckRange::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcCheckRange::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	m_value = m_pCalc->calcValue(pRuntime);
-	if (m_value < m_minValue || m_value > m_maxValue)
+	RDOValue value = m_pCalc->calcValue(pRuntime);
+	if (value < m_minValue || value > m_maxValue)
 	{
-		pRuntime->error().push(rdo::format(_T("Значение выходит за допустимый диапазон [%s..%s]: %s"), m_minValue.getAsString().c_str(), m_maxValue.getAsString().c_str(), m_value.getAsString().c_str()), srcInfo());
+		pRuntime->error().push(rdo::format(_T("Значение выходит за допустимый диапазон [%s..%s]: %s"), m_minValue.getAsString().c_str(), m_maxValue.getAsString().c_str(), value.getAsString().c_str()), srcInfo());
 	}
-	return m_value;
+	return value;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

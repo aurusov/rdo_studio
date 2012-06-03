@@ -29,58 +29,58 @@ inline RDOCalcSetLocalVariable<equalType>::~RDOCalcSetLocalVariable()
 {}
 
 template <>
-inline REF(RDOValue) RDOCalcSetLocalVariable<ET_EQUAL>::doCalc(CREF(LPRDORuntime) pRuntime)
+inline RDOValue RDOCalcSetLocalVariable<ET_EQUAL>::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->getMemoryStack()->set(m_name, m_pCalc->calcValue(pRuntime));
-	return m_value;
+	return RDOValue();
 }
 
 template <>
-inline REF(RDOValue) RDOCalcSetLocalVariable<ET_PLUS>::doCalc(CREF(LPRDORuntime) pRuntime)
+inline RDOValue RDOCalcSetLocalVariable<ET_PLUS>::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	RDOValue pValue = pRuntime->getMemoryStack()->get(m_name) + m_pCalc->calcValue(pRuntime);
-	pRuntime->getMemoryStack()->set(m_name, pValue);
-	return m_value;
+	RDOValue value = pRuntime->getMemoryStack()->get(m_name) + m_pCalc->calcValue(pRuntime);
+	pRuntime->getMemoryStack()->set(m_name, value);
+	return value;
 }
 
 template <>
-inline REF(RDOValue) RDOCalcSetLocalVariable<ET_MINUS>::doCalc(CREF(LPRDORuntime) pRuntime)
+inline RDOValue RDOCalcSetLocalVariable<ET_MINUS>::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	RDOValue pValue = pRuntime->getMemoryStack()->get(m_name) - m_pCalc->calcValue(pRuntime);
-	pRuntime->getMemoryStack()->set(m_name, pValue);
-	return m_value;
+	RDOValue value = pRuntime->getMemoryStack()->get(m_name) - m_pCalc->calcValue(pRuntime);
+	pRuntime->getMemoryStack()->set(m_name, value);
+	return value;
 }
 
 template <>
-inline REF(RDOValue) RDOCalcSetLocalVariable<ET_MULTIPLY>::doCalc(CREF(LPRDORuntime) pRuntime)
+inline RDOValue RDOCalcSetLocalVariable<ET_MULTIPLY>::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	RDOValue pValue = pRuntime->getMemoryStack()->get(m_name) * m_pCalc->calcValue(pRuntime);
-	pRuntime->getMemoryStack()->set(m_name, pValue);
-	return m_value;
+	RDOValue value = pRuntime->getMemoryStack()->get(m_name) * m_pCalc->calcValue(pRuntime);
+	pRuntime->getMemoryStack()->set(m_name, value);
+	return value;
 }
 
 template <>
-inline REF(RDOValue) RDOCalcSetLocalVariable<ET_DIVIDE>::doCalc(CREF(LPRDORuntime) pRuntime)
+inline RDOValue RDOCalcSetLocalVariable<ET_DIVIDE>::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	RDOValue pValue = pRuntime->getMemoryStack()->get(m_name) / m_pCalc->calcValue(pRuntime);
-	pRuntime->getMemoryStack()->set(m_name, pValue);
-	return m_value;
+	RDOValue value = pRuntime->getMemoryStack()->get(m_name) / m_pCalc->calcValue(pRuntime);
+	pRuntime->getMemoryStack()->set(m_name, value);
+	return value;
 }
 
 template <>
-inline REF(RDOValue) RDOCalcSetLocalVariable<ET_INCR>::doCalc(CREF(LPRDORuntime) pRuntime)
+inline RDOValue RDOCalcSetLocalVariable<ET_INCR>::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	RDOValue pValue = pRuntime->getMemoryStack()->get(m_name) + RDOValue(1);
-	pRuntime->getMemoryStack()->set(m_name, pValue);
-	return m_value;
+	RDOValue value = pRuntime->getMemoryStack()->get(m_name) + RDOValue(1);
+	pRuntime->getMemoryStack()->set(m_name, value);
+	return value;
 }
 
 template <>
-inline REF(RDOValue) RDOCalcSetLocalVariable<ET_DECR>::doCalc(CREF(LPRDORuntime) pRuntime)
+inline RDOValue RDOCalcSetLocalVariable<ET_DECR>::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	RDOValue pValue = pRuntime->getMemoryStack()->get(m_name) - RDOValue(1);
-	pRuntime->getMemoryStack()->set(m_name, pValue);
-	return m_value;
+	RDOValue value = pRuntime->getMemoryStack()->get(m_name) - RDOValue(1);
+	pRuntime->getMemoryStack()->set(m_name, value);
+	return value;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -24,24 +24,23 @@ inline RDOFunCalcStd<F>::RDOFunCalcStd(function_type pFunction)
 {}
 
 template <class F>
-inline REF(RDOValue) RDOFunCalcStd<F>::doCalc(CREF(LPRDORuntime) pRuntime)
+inline RDOValue RDOFunCalcStd<F>::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	calc(pRuntime, typename F::param_count());
-	return m_value;
+	return calc(pRuntime, typename F::param_count());
 }
 
 template <class F>
-FORCE_INLINE void RDOFunCalcStd<F>::calc(CREF(LPRDORuntime) pRuntime, std_fun_one_param)
+FORCE_INLINE RDOValue RDOFunCalcStd<F>::calc(CREF(LPRDORuntime) pRuntime, std_fun_one_param)
 {
-	m_value = m_pFunction(
+	return m_pFunction(
 		GetParam<typename F::arg1_type>::getParam(pRuntime, 0)
 	);
 }
 
 template <class F>
-FORCE_INLINE void RDOFunCalcStd<F>::calc(CREF(LPRDORuntime) pRuntime, std_fun_two_param)
+FORCE_INLINE RDOValue RDOFunCalcStd<F>::calc(CREF(LPRDORuntime) pRuntime, std_fun_two_param)
 {
-	m_value = m_pFunction(
+	return m_pFunction(
 		GetParam<typename F::arg1_type>::getParam(pRuntime, 0),
 		GetParam<typename F::arg2_type>::getParam(pRuntime, 1)
 	);
