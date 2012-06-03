@@ -30,7 +30,7 @@ inline RDOValue RDOFunCalcStd<F>::doCalc(CREF(LPRDORuntime) pRuntime)
 }
 
 template <class F>
-FORCE_INLINE RDOValue RDOFunCalcStd<F>::calc(CREF(LPRDORuntime) pRuntime, std_fun_one_param)
+inline RDOValue RDOFunCalcStd<F>::calc(CREF(LPRDORuntime) pRuntime, std_fun_one_param)
 {
 	return m_pFunction(
 		GetParam<typename F::arg1_type>::getParam(pRuntime, 0)
@@ -38,7 +38,7 @@ FORCE_INLINE RDOValue RDOFunCalcStd<F>::calc(CREF(LPRDORuntime) pRuntime, std_fu
 }
 
 template <class F>
-FORCE_INLINE RDOValue RDOFunCalcStd<F>::calc(CREF(LPRDORuntime) pRuntime, std_fun_two_param)
+inline RDOValue RDOFunCalcStd<F>::calc(CREF(LPRDORuntime) pRuntime, std_fun_two_param)
 {
 	return m_pFunction(
 		GetParam<typename F::arg1_type>::getParam(pRuntime, 0),
