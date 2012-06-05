@@ -237,7 +237,7 @@ LPFuzzySet MemberFunctionProperties::a_mult(CREF(LPFuzzySet) pSet1, CREF(LPFuzzy
 
 	// Найдем только пересекающие элементы и перемножим функции принадлежности
 	FuzzySet::FuzzySetDefinition::const_iterator it1 = pSet1->begin();
-	for (it1 = pSet1->begin(); it1 != pSet1->end(); it1++)
+	for (it1 = pSet1->begin(); it1 != pSet1->end(); ++it1)
 	{
 		FuzzySet::FuzzySetDefinition::const_iterator it2 = pSet2->find(it1->first);
 		if (it2 != pSet2->end())
@@ -279,7 +279,7 @@ LPFuzzySet MemberFunctionProperties::supplement(CREF(LPFuzzySet) pSet)
 	while (it != pFuzzySetResult->end())
 	{
 		it->second = 1-(it->second);
-		it++;
+		++it;
 	}
 	return(pFuzzySetResult);
 }
@@ -302,7 +302,7 @@ LPFuzzySet MemberFunctionProperties::a_pow(LPFuzzySet pSet, double power)
 LPRDOLingvoVariable MemberFunctionProperties::fuzzyfication(CREF(RDOValue)value, CREF(LPRDOLingvoVariable) variable)
 {
 	LPRDOLingvoVariable pVariable = rdo::Factory<RDOLingvoVariable>::create(value, variable);
-	for (RDOLingvoVariable::TermSet::const_iterator it = variable->begin(); it != variable->end(); it++)
+	for (RDOLingvoVariable::TermSet::const_iterator it = variable->begin(); it != variable->end(); ++it)
 	{
 		LPFuzzySet pSet = rdo::Factory<FuzzySet>::create(it->second);
 		FuzzySet::FuzzyItem item = pSet->findValue(value);
