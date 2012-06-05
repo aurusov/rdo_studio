@@ -73,10 +73,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib pugixml_d.lib gdiplus.lib"
+				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib gdiplus.lib"
 				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../thirdparty/pugixml/lib"
 				IgnoreDefaultLibraryNames="msvcrt.lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\$(TargetName).pdb"
@@ -166,10 +165,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib pugixml.lib gdiplus.lib"
+				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib gdiplus.lib"
 				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../thirdparty/pugixml/lib"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
@@ -256,10 +254,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib pugixml_d.lib gdiplus.lib &quot;$(OutDir)/rdo_corba.lib&quot;"
+				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib gdiplus.lib &quot;$(OutDir)/rdo_corba.lib&quot;"
 				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../thirdparty/pugixml/lib"
 				IgnoreDefaultLibraryNames="msvcrt.lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\$(TargetName).pdb"
@@ -348,10 +345,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib pugixml.lib gdiplus.lib &quot;$(OutDir)/rdo_corba.lib&quot;"
+				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib gdiplus.lib &quot;$(OutDir)/rdo_corba.lib&quot;"
 				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../thirdparty/pugixml/lib"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
@@ -437,10 +433,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib pugixml_d.lib gdiplus.lib"
+				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib gdiplus.lib"
 				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../thirdparty/pugixml/lib"
 				IgnoreDefaultLibraryNames="msvcrt.lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\$(TargetName).pdb"
@@ -529,10 +524,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib pugixml.lib gdiplus.lib"
+				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib gdiplus.lib"
 				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../thirdparty/pugixml/lib"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
@@ -2468,7 +2462,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="copy RAO-studio.run.error.txt"
-						CommandLine="copy &quot;$(InputDir)RAO-studio.run.error.txt&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.run.error.txt&quot;"
+						CommandLine="copy &quot;$(InputDir)RAO-studio.run.error.txt&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.run.error.txt&quot;&#x0D;&#x0A;"
 						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.run.error.txt&quot;"
 					/>
 				</FileConfiguration>
@@ -2478,7 +2472,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="copy RAO-studio.run.error.txt"
-						CommandLine="copy &quot;$(InputDir)RAO-studio.run.error.txt&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.run.error.txt&quot;"
+						CommandLine="copy &quot;$(InputDir)RAO-studio.run.error.txt&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.run.error.txt&quot;&#x0D;&#x0A;"
 						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.run.error.txt&quot;"
 					/>
 				</FileConfiguration>
