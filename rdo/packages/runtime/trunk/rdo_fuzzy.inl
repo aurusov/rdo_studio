@@ -14,207 +14,172 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOFuzzyValue
+// -------------------- DefineArea
 // --------------------------------------------------------------------------------
-inline RDOFuzzyValue::RDOFuzzyValue(CREF(LPRDOFuzzyType) pType)
-	: m_pType(pType)
-{}
-
-inline RDOFuzzyValue::RDOFuzzyValue(CREF(LPRDOFuzzyValue) pFuzzyValue)
-	: m_pType(pFuzzyValue->m_pType)
+inline DefineArea::DefineArea()
 {
-	m_fuzzySet = pFuzzyValue->m_fuzzySet;
+	IntervalType mType = DomainPart::open(-10e15, 10e15);
+	m_domain = Domain(mType);
 }
 
-inline RDOFuzzyValue::~RDOFuzzyValue()
+inline DefineArea::~DefineArea()
 {}
 
-inline REF(RDOFuzzyValue) RDOFuzzyValue::append(CREF(RDOValue) rdovalue, double appertain)
+inline DefineArea::DefineArea(CREF(RDOValue) leftRange, CREF(RDOValue) rightRange)
 {
-	operator[](rdovalue) = appertain;
-	return *this;
+	IntervalType mType = DomainPart::closed(leftRange, rightRange);
+	m_domain = Domain(mType);
+}
+inline DefineArea::DefineArea(CREF(RDOValue) value)
+{
+	IntervalType mType = DomainPart::closed(value,value);
+	m_domain = Domain(mType);
 }
 
-inline REF(RDOFuzzyValue) RDOFuzzyValue::operator() (CREF(RDOValue) rdovalue, double appertain)
+
+// --------------------------------------------------------------------------------
+// -------------------- FuzzySet
+// --------------------------------------------------------------------------------
+inline FuzzySet::FuzzySet()
+{}
+
+inline FuzzySet::FuzzySet(CREF(LPDefineArea) pDefineArea)
+	: m_defineArea(pDefineArea)
+{}
+inline FuzzySet::FuzzySet(CREF(LPFuzzySet) pSet)
+	: m_defineArea(pSet->m_defineArea)
+	, m_fuzzySet  (pSet->m_fuzzySet)
+{}
+inline FuzzySet::~FuzzySet()
+{}
+
+inline void FuzzySet::setValues(CREF(FuzzySetDefinition) values)
+{
+	m_fuzzySet = values;
+}
+inline LPFuzzySet FuzzySet::append(CREF(RDOValue) rdovalue, double appertain)
+{
+	std::pair<FuzzySet::FuzzySetDefinition::iterator, rbool> checkValue;
+	checkValue = m_fuzzySet.insert(std::pair<RDOValue,double>(rdovalue, appertain));
+	return LPFuzzySet(this);
+}
+
+inline LPFuzzySet FuzzySet::operator() (CREF(RDOValue) rdovalue, double appertain)
 {
 	return append(rdovalue, appertain);
 }
 
-inline REF(double) RDOFuzzyValue::operator[] (CREF(RDOValue) rdovalue)
+inline REF(double) FuzzySet::operator[] (CREF(RDOValue) rdovalue)
 {
-	if (!type()->inRange(rdovalue))
-		throw RDOValueException();
-
 	return m_fuzzySet[rdovalue];
 }
 
-inline RDOFuzzyValue::FuzzySet::const_iterator RDOFuzzyValue::find(CREF(RDOValue) rdovalue) const
+inline FuzzySet::FuzzySetDefinition::const_iterator FuzzySet::find(CREF(RDOValue) rdovalue) const
 {
 	return m_fuzzySet.find(rdovalue);
 }
 
-inline RDOFuzzyValue::FuzzyItem RDOFuzzyValue::findValue(CREF(RDOValue) rdovalue) const
+inline FuzzySet::FuzzyItem FuzzySet::findValue(CREF(RDOValue) rdovalue) const
 {
-	FuzzySet::const_iterator found = find(rdovalue);
+	FuzzySetDefinition::const_iterator found = find(rdovalue);
 	if (found != end()) return FuzzyItem(found->first, found->second);
 	else                return FuzzyItem(rdovalue,     0.0          );
 }
 
-inline RDOFuzzyValue::FuzzySet::const_iterator RDOFuzzyValue::begin() const { return m_fuzzySet.begin(); }
-inline RDOFuzzyValue::FuzzySet::const_iterator RDOFuzzyValue::end  () const { return m_fuzzySet.end();   }
-inline RDOFuzzyValue::FuzzySet::iterator       RDOFuzzyValue::begin()       { return m_fuzzySet.begin(); }
-inline RDOFuzzyValue::FuzzySet::iterator       RDOFuzzyValue::end  ()       { return m_fuzzySet.end();   }
-inline rbool                                   RDOFuzzyValue::empty() const { return m_fuzzySet.empty(); }
-inline CREF(LPRDOFuzzyType)                    RDOFuzzyValue::type () const { return m_pType;            }
-
-inline LPRDOFuzzyValue RDOFuzzyValue::supplement() const
+inline FuzzySet::FuzzySetDefinition::const_iterator FuzzySet::begin() const { return m_fuzzySet.begin(); }
+inline FuzzySet::FuzzySetDefinition::const_iterator FuzzySet::end  () const { return m_fuzzySet.end();   }
+inline FuzzySet::FuzzySetDefinition::iterator       FuzzySet::begin()       { return m_fuzzySet.begin(); }
+inline FuzzySet::FuzzySetDefinition::iterator       FuzzySet::end  ()       { return m_fuzzySet.end();   }
+inline rbool                                        FuzzySet::empty() const { return m_fuzzySet.empty(); }
+inline rbool FuzzySet::inRange (CREF(RDOValue) rdovalue)
 {
-	return type()->getSupplement(LPRDOFuzzyValue(const_cast<PTR(RDOFuzzyValue)>(this)));
+	return m_fuzzySet.find(rdovalue) != m_fuzzySet.end();
 }
-
-inline LPRDOFuzzyValue RDOFuzzyValue::a_con     () const { return a_pow(2.0);                   }
-inline LPRDOFuzzyValue RDOFuzzyValue::a_dil     () const { return a_pow(0.5);                   }
-
 // --------------------------------------------------------------------------------
-// -------------------- RDOFuzzyType
+// -------------------- MemberFunctionProperties
 // --------------------------------------------------------------------------------
-inline RDOFuzzyType::RDOFuzzyType(CREF(LPRDOFuzzySetDefinition) pFuzzySetDefinition)
-	: RDOType             (t_pointer          )
-	, m_fuzzySetDefinition(pFuzzySetDefinition)
+inline LPFuzzySet MemberFunctionProperties::a_con (CREF(LPFuzzySet) pSet)
 {
-	//! Было
-	//! m_fuzzySetDefinition->reparent(this);
-	/// @todo для порядку перевести на умные указатели
+	return a_pow(pSet, 2.0);
 }
-
-inline RDOFuzzyType::~RDOFuzzyType()
-{}
-
-inline tstring RDOFuzzyType::name() const
+inline LPFuzzySet MemberFunctionProperties::a_dil (CREF(LPFuzzySet) pSet)
 {
-	return _T("RDOFuzzyType");
-}
-
-inline RDOValue RDOFuzzyType::value_cast(CREF(RDOValue) from) const
-{
-	UNUSED(from);
-	throw RDOTypeException();
-}
-
-inline rbool RDOFuzzyType::operator== (CREF(RDOFuzzyType) type) const
-{
-	return this == &type;
-}
-
-inline rbool RDOFuzzyType::operator!= (CREF(RDOFuzzyType) type) const
-{
-	return !operator==(type);
-}
-
-inline rbool RDOFuzzyType::inRange(CREF(RDOValue) rdovalue) const
-{
-	return m_fuzzySetDefinition->inRange(rdovalue);
-}
-
-inline LPRDOFuzzyValue RDOFuzzyType::getSupplement(CREF(LPRDOFuzzyValue) pFuzzyValue) const
-{
-	return m_fuzzySetDefinition->getSupplement(pFuzzyValue);
+	return a_pow(pSet, 0.5);
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOFuzzySetDefinition
+// -------------------- RDOFuzzyTerm
 // --------------------------------------------------------------------------------
-inline RDOFuzzySetDefinition::RDOFuzzySetDefinition()
-{}
+inline CREF(LPFuzzySet) RDOFuzzyTerm::getFuzzySetDefinition() const
+{
+	return (m_term.second);
+}
+inline tstring RDOFuzzyTerm::getName() const
+{
+	return (m_term.first);
+}
+inline RDOFuzzyTerm::RDOFuzzyTerm(CREF(termName) pName, CREF(LPFuzzySet) pSet)
+{
+	m_term = std::make_pair<termName,LPFuzzySet>(pName,pSet);
+}
 
-inline RDOFuzzySetDefinition::~RDOFuzzySetDefinition()
+inline RDOFuzzyTerm::~RDOFuzzyTerm()
 {}
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOFuzzySetDefinitionFixed
+// -------------------- RDOLingvoVariable
 // --------------------------------------------------------------------------------
-inline RDOFuzzySetDefinitionFixed::RDOFuzzySetDefinitionFixed()
-	: RDOFuzzySetDefinition()
+inline RDOLingvoVariable::TermSet::const_iterator           RDOLingvoVariable::begin() const     {return m_set.begin();}
+inline RDOLingvoVariable::TermSet::const_iterator           RDOLingvoVariable::end  () const     {return m_set.end  ();}
+inline RDOLingvoVariable::~RDOLingvoVariable()
 {}
-
-inline RDOFuzzySetDefinitionFixed::~RDOFuzzySetDefinitionFixed()
-{}
-
-inline REF(RDOFuzzySetDefinitionFixed) RDOFuzzySetDefinitionFixed::append(CREF(RDOValue) rdovalue)
+inline RDOLingvoVariable::RDOLingvoVariable(CREF(LPRDOFuzzyTerm) term, nameOfVariable nameOfVariable)
 {
-	m_items[rdovalue] = 1.0;
-	return *this;
+	m_name = nameOfVariable;
+	m_set.insert(make_pair(term->getName(), term->getFuzzySetDefinition()));
 }
-
-inline REF(RDOFuzzySetDefinitionFixed) RDOFuzzySetDefinitionFixed::operator() (CREF(RDOValue) rdovalue)
+inline RDOLingvoVariable::RDOLingvoVariable(CREF(RDOValue)pDefineAreaValue, CREF(LPRDOLingvoVariable) variable)
+	: m_name(_T("activated"))
 {
-	return append(rdovalue);
-}
-
-inline rbool RDOFuzzySetDefinitionFixed::inRange(CREF(RDOValue) rdovalue) const
-{
-	return m_items.find(rdovalue) != m_items.end();
-}
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOFuzzySetDefinitionRangeDiscret
-// --------------------------------------------------------------------------------
-inline RDOFuzzySetDefinitionRangeDiscret::RDOFuzzySetDefinitionRangeDiscret(CREF(RDOValue) from, CREF(RDOValue) till, CREF(RDOValue) step)
-	: RDOFuzzySetDefinition(    )
-	, m_from               (from)
-	, m_till               (till)
-	, m_step               (step)
-{}
-
-inline RDOFuzzySetDefinitionRangeDiscret::~RDOFuzzySetDefinitionRangeDiscret()
-{}
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOFuzzyEmptyType
-// --------------------------------------------------------------------------------
-inline RDOFuzzyEmptyType::RDOFuzzyEmptyType()
-	: RDOFuzzyType(rdo::Factory<RDOFuzzySetDefinitionEmpty>::create())
-{}
-
-inline RDOFuzzyEmptyType::~RDOFuzzyEmptyType()
-{
-	RDOFuzzyEmptyType::s_emptyType = NULL;
-}
-
-inline tstring RDOFuzzyEmptyType::asString() const
-{
-	return _T("[empty set]");
-}
-
-inline LPRDOFuzzyType RDOFuzzyEmptyType::getInstance()
-{
-	if (!RDOFuzzyEmptyType::s_emptyType)
+	LPDefineArea   defineArea    = rdo::Factory<DefineArea>::create(pDefineAreaValue);
+	LPFuzzySet     setOfVariable = rdo::Factory<FuzzySet>::create(defineArea);
+	for (RDOLingvoVariable::TermSet::const_iterator it = variable->begin(); it != variable->end(); it++)
 	{
-		RDOFuzzyEmptyType::s_emptyType = new RDOFuzzyEmptyType();
+		m_set.insert(std::pair<RDOFuzzyTerm::Term::first_type,LPFuzzySet>(it->first,setOfVariable));
 	}
-	return LPRDOFuzzyType(RDOFuzzyEmptyType::s_emptyType);
 }
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOFuzzyEmptyType::RDOFuzzySetDefinitionEmpty
-// --------------------------------------------------------------------------------
-inline RDOFuzzyEmptyType::RDOFuzzySetDefinitionEmpty::RDOFuzzySetDefinitionEmpty()
-	: RDOFuzzySetDefinition()
-{}
-
-inline RDOFuzzyEmptyType::RDOFuzzySetDefinitionEmpty::~RDOFuzzySetDefinitionEmpty()
-{}
-
-inline rbool RDOFuzzyEmptyType::RDOFuzzySetDefinitionEmpty::inRange(CREF(RDOValue) rdovalue) const
+inline RDOLingvoVariable::RDOLingvoVariable(CREF(RDOLingvoVariable) variable)
 {
-	UNUSED(rdovalue);
-	return false;
+	m_set = variable.m_set;
+	m_name  = variable.m_name;
+}
+inline void RDOLingvoVariable::setName(nameOfVariable nameVariable)
+{
+	m_name = nameVariable;
+}
+inline REF(LPFuzzySet) RDOLingvoVariable::operator[] (tstring name)
+{
+	return m_set[name];
+}
+inline void RDOLingvoVariable::append(tstring name,CREF(LPFuzzySet) fuzzySet)
+{
+	operator[](name) = fuzzySet;
+}
+// --------------------------------------------------------------------------------
+// -------------------- Statement
+// --------------------------------------------------------------------------------
+inline void Statement::setTerm(LPRDOFuzzyTerm term)
+{
+	m_term = term;
 }
 
-inline LPRDOFuzzyValue RDOFuzzyEmptyType::RDOFuzzySetDefinitionEmpty::getSupplement(CREF(LPRDOFuzzyValue) pFuzzyValue) const
+inline void Statement::setVariable(LPRDOLingvoVariable variable)
 {
-	UNUSED(pFuzzyValue);
-	return rdo::Factory<RDOFuzzyValue>::create(RDOFuzzyEmptyType::getInstance());
+	m_variable = variable;
 }
+inline Statement::Statement()
+{}
+inline Statement::~Statement()
+{}
 
 CLOSE_RDO_RUNTIME_NAMESPACE

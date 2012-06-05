@@ -22,45 +22,178 @@ OPEN_RDO_RUNTIME_NAMESPACE
 
 BOOST_AUTO_TEST_SUITE(RDORuntime_Fuzzy_Test)
 
-BOOST_AUTO_TEST_CASE(RDORuntime_Fuzzy_Test)
+BOOST_AUTO_TEST_CASE(DefineAreaTest)
 {
 	LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create();
 	BOOST_CHECK(pRuntime);
 
-	LPRDOFuzzySetDefinitionRangeDiscret pSetDefinition = rdo::Factory<RDOFuzzySetDefinitionRangeDiscret>::create(0, 50);
-	BOOST_CHECK(pSetDefinition);
+	LPDefineArea pDefineAreaEmpty = rdo::Factory<DefineArea>::create();
+	BOOST_CHECK(pDefineAreaEmpty);
 
-	LPRDOFuzzyType pFuzzyType = rdo::Factory<RDOFuzzyType>::create(pSetDefinition);
-	BOOST_CHECK(pFuzzyType);
+	LPDefineArea pDefineArea = rdo::Factory<DefineArea>::create(1.0, 5.0);
+	BOOST_CHECK(pDefineArea);
+}
+BOOST_AUTO_TEST_CASE(FuzzySetTest)
+{
+	LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create();
+	BOOST_CHECK(pRuntime);
 
-	LPRDOFuzzyValue pValue1 = rdo::Factory<RDOFuzzyValue>::create(pFuzzyType);
-	BOOST_CHECK(pValue1);
+	LPFuzzySet pInfinityFuzzySet = rdo::Factory<FuzzySet>::create();
+	BOOST_CHECK(pInfinityFuzzySet);
 
-	pValue1->append(1, 1.0)(2, 1.0)(23, 1.0)(4, 1.0)(5, 1.0)(6, 1.0)(7, 1.0)(8, 1.0)(9, 1.0);
-	BOOST_CHECK(pValue1->getAsString() == _T("<1/1.00> <2/1.00> <4/1.00> <5/1.00> <6/1.00> <7/1.00> <8/1.00> <9/1.00> <23/1.00>"));
+	LPFuzzySet pCopyFuzzySet = rdo::Factory<FuzzySet>::create(pInfinityFuzzySet);
+	BOOST_CHECK(pCopyFuzzySet);
 
-	pValue1->operator[](0) = 0.5;
-	BOOST_CHECK(pValue1->getAsString() == _T("<0/0.50> <1/1.00> <2/1.00> <4/1.00> <5/1.00> <6/1.00> <7/1.00> <8/1.00> <9/1.00> <23/1.00>"));
+	LPDefineArea pDefineArea = rdo::Factory<DefineArea>::create(0.0, 100.0);
+	BOOST_CHECK(pDefineArea);
 
-	pValue1->operator[](14) = 0.7;
-	BOOST_CHECK(pValue1->getAsString() == _T("<0/0.50> <1/1.00> <2/1.00> <4/1.00> <5/1.00> <6/1.00> <7/1.00> <8/1.00> <9/1.00> <14/0.70> <23/1.00>"));
+	LPFuzzySet pFuzzySet = rdo::Factory<FuzzySet>::create(pDefineArea);
+	BOOST_CHECK(pFuzzySet);
 
-	LPRDOFuzzyValue pValue3 = rdo::Factory<RDOFuzzyValue>::create(pValue1->supplement());
-	BOOST_CHECK(pValue3);
-	BOOST_CHECK(pValue3->getAsString() == _T("<0/0.50> <3/1.00> <10/1.00> <11/1.00> <12/1.00> <13/1.00> <14/0.30> <15/1.00> <16/1.00> <17/1.00> <18/1.00> <19/1.00> <20/1.00> <21/1.00> <22/1.00> <24/1.00> <25/1.00> <26/1.00> <27/1.00> <28/1.00> <29/1.00> <30/1.00> <31/1.00> <32/1.00> <33/1.00> <34/1.00> <35/1.00> <36/1.00> <37/1.00> <38/1.00> <39/1.00> <40/1.00> <41/1.00> <42/1.00> <43/1.00> <44/1.00> <45/1.00> <46/1.00> <47/1.00> <48/1.00> <49/1.00> <50/1.00>"));
+	LPFuzzySet pSet = rdo::Factory<FuzzySet>::create();
 
-	LPRDOFuzzyValue pValue2 = rdo::Factory<RDOFuzzyValue>::create(pFuzzyType);
-	BOOST_CHECK(pValue2);
-	pValue2->append(10, 1.0);
-	BOOST_CHECK(pValue2->getAsString() == _T("<10/1.00>"));
+	tstring stringPresentation = pSet->getAsString();
+	BOOST_CHECK(stringPresentation == _T("[empty value]"));
 
-	pValue1 = rdo::Factory<RDOFuzzyValue>::create(pValue1->operator+ (pValue2));
-	BOOST_CHECK(pValue1);
+	pSet->append(1,0.10);
+	pSet->append(2,0.20);
+	pSet->append(3,1.00);
+	pSet->append(5,0.50);
+	pSet->append(6,0.40);
+	pSet->append(7,0.20);
+	pSet->append(9,0.10);
 
-	BOOST_CHECK(pValue1->getAsString() == _T("<10/0.50> <11/1.00> <12/1.00> <14/1.00> <15/1.00> <16/1.00> <17/1.00> <18/1.00> <19/1.00> <24/0.70> <33/1.00>"));
-	BOOST_CHECK(pValue1->defuzzyfication().getAsString() == _T("21.1755"));
+	BOOST_CHECK(pSet->getAsString() == _T("<1/0.10> <2/0.20> <3/1.00> <5/0.50> <6/0.40> <7/0.20> <9/0.10>"));
+
+	RDOValue repeatValue = 3.0;
+	pSet->append(repeatValue, 0.3);
+	BOOST_CHECK(pSet->getAsString() == _T("<1/0.10> <2/0.20> <3/1.00> <5/0.50> <6/0.40> <7/0.20> <9/0.10>"));
+
+	pSet->operator[](repeatValue) = 0.3;
+	BOOST_CHECK(pSet->getAsString() == _T("<1/0.10> <2/0.20> <3/0.30> <5/0.50> <6/0.40> <7/0.20> <9/0.10>"));
+
+	LPFuzzySet pConSet = MemberFunctionProperties::a_con(pSet);
+	BOOST_CHECK(pConSet->getAsString() == _T("<1/0.01> <2/0.04> <3/0.09> <5/0.25> <6/0.16> <7/0.04> <9/0.01>"));
+	
+	LPFuzzySet pDilSet = MemberFunctionProperties::a_dil(pSet);
+	BOOST_CHECK(pDilSet->getAsString() == _T("<1/0.32> <2/0.45> <3/0.55> <5/0.71> <6/0.63> <7/0.45> <9/0.32>"));
+
+	LPFuzzySet pUnaryMinusSet = MemberFunctionProperties::u_minus(pSet);
+	BOOST_CHECK(pUnaryMinusSet->getAsString() == _T("<-9/0.10> <-7/0.20> <-6/0.40> <-5/0.50> <-3/0.30> <-2/0.20> <-1/0.10>"));
+
+	LPFuzzySet pScaleSet = MemberFunctionProperties::u_scale(pSet, 4.0);
+	BOOST_CHECK(pScaleSet->getAsString() == _T("<4/0.10> <8/0.20> <12/0.30> <20/0.50> <24/0.40> <28/0.20> <36/0.10>"));
+
+	LPFuzzySet pSupplement = MemberFunctionProperties::supplement(pSet);
+	BOOST_CHECK(pSupplement->getAsString() == _T("<1/0.90> <2/0.80> <3/0.70> <5/0.50> <6/0.60> <7/0.80> <9/0.90>"));
+
+	LPFuzzySet pAlphaTest = MemberFunctionProperties::alpha(pSet, 0.3);
+	BOOST_CHECK(pAlphaTest->getAsString() == _T("<3/0.30> <5/0.50> <6/0.40>"));
+
+	LPFuzzySet pMultTest = MemberFunctionProperties::a_mult(pSet, pSupplement);
+	BOOST_CHECK(pMultTest->getAsString() == _T("<1/0.09> <2/0.16> <3/0.21> <5/0.25> <6/0.24> <7/0.16> <9/0.09>"));
+
+	LPFuzzySet pMultTestDown = MemberFunctionProperties::a_mult(pSet, pScaleSet);
+	BOOST_CHECK(pMultTestDown->getAsString() == _T("[empty value]"));
+
+	RDOValue defuzzyficationValue = MemberFunctionProperties::defuzzyfication(pSet);
+	BOOST_CHECK(defuzzyficationValue.getAsString() == _T("4.83333") );
+}
+
+BOOST_AUTO_TEST_CASE(TermTest)
+{
+	LPFuzzySet pSet = rdo::Factory<FuzzySet>::create();
+	tstring testname = "test";
+	LPRDOFuzzyTerm pTerm = rdo::Factory<RDOFuzzyTerm>::create(testname, pSet);
+	BOOST_CHECK(pTerm->getName() == _T("test"));
+
+	
+	LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create();
+	BOOST_CHECK(pRuntime);
+
+	LPDefineArea pDefineArea = rdo::Factory<DefineArea>::create(0.0, 100.0);
+	BOOST_CHECK(pDefineArea);
+
+	LPFuzzySet pFuzzySet = rdo::Factory<FuzzySet>::create(pDefineArea);
+	BOOST_CHECK(pFuzzySet);
+
+	LPRDOFuzzyTerm pTerm3 = rdo::Factory<RDOFuzzyTerm>::create(_T("term"), pFuzzySet);
+	BOOST_CHECK(pTerm3->getName() == _T("term"));
+}
+
+BOOST_AUTO_TEST_CASE(VariableTest)
+{
+	LPDefineArea pDefineArea1 = rdo::Factory<DefineArea>::create(0.0, 20.0);
+	BOOST_CHECK(pDefineArea1);
+
+	LPDefineArea pDefineArea2 = rdo::Factory<DefineArea>::create(10.0, 20.0);
+	BOOST_CHECK(pDefineArea2);
+	
+	LPFuzzySet pFuzzySet1 = rdo::Factory<FuzzySet>::create(pDefineArea1);
+	BOOST_CHECK(pFuzzySet1);
+
+	LPFuzzySet pFuzzySet2 = rdo::Factory<FuzzySet>::create(pDefineArea2);
+	BOOST_CHECK(pFuzzySet2);
+
+	LPRDOFuzzyTerm pTerm1 = rdo::Factory<RDOFuzzyTerm>::create(_T("term1"), pFuzzySet1);
+	BOOST_CHECK(pTerm1);
+
+	LPRDOFuzzyTerm pTerm2 = rdo::Factory<RDOFuzzyTerm>::create(_T("term2"), pFuzzySet2);
+	BOOST_CHECK(pTerm2);
+
+	tstring name1 = pTerm1->getName();
+	BOOST_CHECK(name1 == _T("term1"));
+	LPRDOLingvoVariable pVariable = rdo::Factory<RDOLingvoVariable>::create(pTerm1,_T("test"));
+	BOOST_CHECK(pVariable);
+
+	LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create();
+	BOOST_CHECK(pRuntime);
+
+	LPDefineArea pDefineArea = rdo::Factory<DefineArea>::create(0.0, 100.0);
+	BOOST_CHECK(pDefineArea);
+
+	LPFuzzySet pFuzzySet = rdo::Factory<FuzzySet>::create(pDefineArea);
+	BOOST_CHECK(pFuzzySet);
+
+	pFuzzySet->append(5,0.5);
+	BOOST_CHECK(pFuzzySet->getAsString() == _T("<5/0.50>"));
+
+	pFuzzySet->append(1,0.1);
+	BOOST_CHECK(pFuzzySet->getAsString() == _T("<1/0.10> <5/0.50>"));
+
+	pFuzzySet->append(2,0.2);
+	BOOST_CHECK(pFuzzySet->getAsString() == _T("<1/0.10> <2/0.20> <5/0.50>"));
+
+	pFuzzySet->append(3,1.0);
+	BOOST_CHECK(pFuzzySet->getAsString() == _T("<1/0.10> <2/0.20> <3/1.00> <5/0.50>"));
+
+	pFuzzySet->append(6,0.4);
+	BOOST_CHECK(pFuzzySet->getAsString() == _T("<1/0.10> <2/0.20> <3/1.00> <5/0.50> <6/0.40>"));
+
+	pFuzzySet->append(7,0.2);
+	BOOST_CHECK(pFuzzySet->getAsString() == _T("<1/0.10> <2/0.20> <3/1.00> <5/0.50> <6/0.40> <7/0.20>"));
+
+	pFuzzySet->append(9,0.1);
+	BOOST_CHECK(pFuzzySet->getAsString() == _T("<1/0.10> <2/0.20> <3/1.00> <5/0.50> <6/0.40> <7/0.20> <9/0.10>"));
+
+	LPRDOFuzzyTerm pTerm4 = rdo::Factory<RDOFuzzyTerm>::create(_T("term4"), pFuzzySet);
+	BOOST_CHECK(pTerm4);
+
+	pVariable->append(pTerm4->getName(), pTerm4->getFuzzySetDefinition());
+	pVariable->setName(_T("testName"));
+
+	RDOValue value = 1.0;
+	LPRDOLingvoVariable pVariable2 = rdo::Factory<RDOLingvoVariable>::create(value, pVariable);
+	BOOST_CHECK(pVariable2);
+
+	RDOValue valueTrueOn0_2 = 7.0;
+	LPRDOLingvoVariable fuzzyVariable1 = MemberFunctionProperties::fuzzyfication(valueTrueOn0_2, pVariable);
+	BOOST_CHECK(fuzzyVariable1);
+
+	RDOValue valueTrueOn0_0 = 10.0;
+	LPRDOLingvoVariable fuzzyVariable2 = MemberFunctionProperties::fuzzyfication(valueTrueOn0_0, pVariable);
+	BOOST_CHECK(fuzzyVariable2);
 }
 
 BOOST_AUTO_TEST_SUITE_END() // RDORuntime_Fuzzy_Test
-
 CLOSE_RDO_RUNTIME_NAMESPACE
