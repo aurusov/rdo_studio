@@ -3,6 +3,7 @@
   \file      rdorss.cpp
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Романов Ярослав (robot.xet@gmail.com)
   \date      
   \brief     
   \indent    4T
@@ -108,6 +109,22 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 				RDOParser::s_parser()->error().push_done();
 			}
 			m_paramList.push_back(Param((*m_currParam)->getDefault()));
+			m_currParam++;
+		}
+		else if (pParam->value().getAsString() == _T("#"))
+		{
+			LPRDOValue pValue = (*m_currParam)->getDefault()->defined()
+				? (*m_currParam)->getDefault()
+				: rdo::Factory<rdo::compiler::parser::RDOValue>::create(
+					(*m_currParam)->getTypeInfo()->type()->get_default(),
+					(*m_currParam)->getTypeInfo()->src_info(RDOParserSrcInfo()),
+					(*m_currParam)->getTypeInfo()
+				);
+			ASSERT(pValue);
+
+			Param param(pValue);
+			param.param()->value().setUndefined(false);
+			m_paramList.push_back(param);
 			m_currParam++;
 		}
 		else

@@ -333,6 +333,7 @@ rss_values
 
 rss_value
 	: '*'               {PARSER->getLastRSSResource()->addParam(rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@1, _T("*"))));}
+	| '#'               {PARSER->getLastRSSResource()->addParam(rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@1, _T("#"))));}
 	| RDO_INT_CONST     {PARSER->getLastRSSResource()->addParam(PARSER->stack().pop<RDOValue>($1));}
 	| RDO_REAL_CONST    {PARSER->getLastRSSResource()->addParam(PARSER->stack().pop<RDOValue>($1));}
 	| RDO_BOOL_CONST    {PARSER->getLastRSSResource()->addParam(PARSER->stack().pop<RDOValue>($1));}

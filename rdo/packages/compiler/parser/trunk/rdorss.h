@@ -3,6 +3,7 @@
   \file      rdorss.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Романов Ярослав (robot.xet@gmail.com)
   \date      
   \brief     
   \indent    4T
@@ -50,6 +51,11 @@ public:
 		{}
 
 		CREF(LPRDOValue) param() const
+		{
+			return m_pValue;
+		}
+
+		REF(LPRDOValue) param()
 		{
 			return m_pValue;
 		}
