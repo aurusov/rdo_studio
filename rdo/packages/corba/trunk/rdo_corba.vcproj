@@ -17,7 +17,7 @@
 	</ToolFiles>
 	<Configurations>
 		<Configuration
-			Name="Debug Corba|Win32"
+			Name="debug.corba|Win32"
 			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
@@ -89,7 +89,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release Corba|Win32"
+			Name="release.corba|Win32"
 			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"

@@ -17,7 +17,7 @@
 	</ToolFiles>
 	<Configurations>
 		<Configuration
-			Name="Debug|Win32"
+			Name="debug|Win32"
 			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
@@ -108,7 +108,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release|Win32"
+			Name="release|Win32"
 			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
@@ -197,7 +197,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Debug Corba|Win32"
+			Name="debug.corba|Win32"
 			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
@@ -289,7 +289,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release Corba|Win32"
+			Name="release.corba|Win32"
 			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
@@ -377,7 +377,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Debug MT|Win32"
+			Name="debug.mt|Win32"
 			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
@@ -468,7 +468,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release MT|Win32"
+			Name="release.mt|Win32"
 			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
@@ -569,7 +569,7 @@
 					RelativePath="edit_ctrls\rdobaseedit.cpp"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -578,7 +578,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -587,7 +587,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -596,7 +596,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -605,7 +605,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -614,7 +614,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -631,7 +631,7 @@
 					RelativePath="edit_ctrls\rdobaseeditstyle.cpp"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -640,7 +640,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -649,7 +649,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -658,7 +658,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -667,7 +667,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -676,7 +676,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -693,7 +693,7 @@
 					RelativePath="edit_ctrls\rdobuildedit.cpp"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -702,7 +702,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -711,7 +711,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -720,7 +720,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -729,7 +729,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -738,7 +738,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -755,7 +755,7 @@
 					RelativePath="edit_ctrls\rdobuildeditstyle.cpp"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -764,7 +764,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -773,7 +773,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -782,7 +782,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -791,7 +791,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -800,7 +800,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -817,7 +817,7 @@
 					RelativePath="edit_ctrls\rdodebugedit.cpp"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -826,7 +826,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -835,7 +835,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -844,7 +844,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -853,7 +853,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -862,7 +862,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -879,7 +879,7 @@
 					RelativePath="edit_ctrls\rdofindedit.cpp"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -888,7 +888,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -897,7 +897,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -906,7 +906,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -915,7 +915,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -924,7 +924,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -941,7 +941,7 @@
 					RelativePath="edit_ctrls\rdofindeditstyle.cpp"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -950,7 +950,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -959,7 +959,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -968,7 +968,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -977,7 +977,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -986,7 +986,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1003,7 +1003,7 @@
 					RelativePath="edit_ctrls\rdologedit.cpp"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1012,7 +1012,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1021,7 +1021,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1030,7 +1030,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1039,7 +1039,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1048,7 +1048,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1065,7 +1065,7 @@
 					RelativePath="edit_ctrls\rdologeditstyle.cpp"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1074,7 +1074,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1083,7 +1083,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1092,7 +1092,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1101,7 +1101,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1110,7 +1110,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1131,7 +1131,7 @@
 					RelativePath="rdo_tracer\tracer_ctrls\rdologctrl.cpp"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1140,7 +1140,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1149,7 +1149,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1158,7 +1158,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1167,7 +1167,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1176,7 +1176,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1193,7 +1193,7 @@
 					RelativePath="rdo_tracer\tracer_ctrls\rdologstyle.cpp"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1202,7 +1202,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1211,7 +1211,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1220,7 +1220,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1229,7 +1229,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1238,7 +1238,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1255,7 +1255,7 @@
 					RelativePath="rdo_tracer\tracer_ctrls\rdotracerlogctrl.cpp"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1264,7 +1264,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1273,7 +1273,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1282,7 +1282,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1291,7 +1291,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1300,7 +1300,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1317,7 +1317,7 @@
 					RelativePath="rdo_tracer\tracer_ctrls\rdotracerlogstyle.cpp"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1326,7 +1326,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1335,7 +1335,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1344,7 +1344,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1353,7 +1353,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1362,7 +1362,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1379,7 +1379,7 @@
 					RelativePath="rdo_tracer\tracer_ctrls\rdotracertreectrl.cpp"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1388,7 +1388,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1397,7 +1397,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1406,7 +1406,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1415,7 +1415,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1424,7 +1424,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1441,7 +1441,7 @@
 					RelativePath="rdo_tracer\tracer_ctrls\rdotracertreeitem.cpp"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1450,7 +1450,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1459,7 +1459,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1468,7 +1468,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1477,7 +1477,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1486,7 +1486,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -1508,7 +1508,7 @@
 				RelativePath="rdo_tracer\rdotracer.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1517,7 +1517,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1526,7 +1526,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug Corba|Win32"
+					Name="debug.corba|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1535,7 +1535,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release Corba|Win32"
+					Name="release.corba|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1544,7 +1544,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug MT|Win32"
+					Name="debug.mt|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1553,7 +1553,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release MT|Win32"
+					Name="release.mt|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1570,7 +1570,7 @@
 				RelativePath="rdo_tracer\rdotracerbase.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1579,7 +1579,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1588,7 +1588,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug Corba|Win32"
+					Name="debug.corba|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1597,7 +1597,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release Corba|Win32"
+					Name="release.corba|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1606,7 +1606,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug MT|Win32"
+					Name="debug.mt|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1615,7 +1615,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release MT|Win32"
+					Name="release.mt|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1632,7 +1632,7 @@
 				RelativePath="rdo_tracer\rdotraceroperation.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1641,7 +1641,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1650,7 +1650,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug Corba|Win32"
+					Name="debug.corba|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1659,7 +1659,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release Corba|Win32"
+					Name="release.corba|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1668,7 +1668,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug MT|Win32"
+					Name="debug.mt|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1677,7 +1677,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release MT|Win32"
+					Name="release.mt|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1694,7 +1694,7 @@
 				RelativePath="rdo_tracer\rdotracerpattern.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1703,7 +1703,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1712,7 +1712,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug Corba|Win32"
+					Name="debug.corba|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1721,7 +1721,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release Corba|Win32"
+					Name="release.corba|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1730,7 +1730,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug MT|Win32"
+					Name="debug.mt|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1739,7 +1739,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release MT|Win32"
+					Name="release.mt|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1756,7 +1756,7 @@
 				RelativePath="rdo_tracer\rdotracerresource.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1765,7 +1765,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1774,7 +1774,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug Corba|Win32"
+					Name="debug.corba|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1783,7 +1783,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release Corba|Win32"
+					Name="release.corba|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1792,7 +1792,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug MT|Win32"
+					Name="debug.mt|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1801,7 +1801,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release MT|Win32"
+					Name="release.mt|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1818,7 +1818,7 @@
 				RelativePath="rdo_tracer\rdotracerrestype.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1827,7 +1827,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1836,7 +1836,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug Corba|Win32"
+					Name="debug.corba|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1845,7 +1845,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release Corba|Win32"
+					Name="release.corba|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1854,7 +1854,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug MT|Win32"
+					Name="debug.mt|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1863,7 +1863,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release MT|Win32"
+					Name="release.mt|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1880,7 +1880,7 @@
 				RelativePath="rdo_tracer\rdotracerresult.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1889,7 +1889,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1898,7 +1898,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug Corba|Win32"
+					Name="debug.corba|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1907,7 +1907,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release Corba|Win32"
+					Name="release.corba|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1916,7 +1916,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug MT|Win32"
+					Name="debug.mt|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1925,7 +1925,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release MT|Win32"
+					Name="release.mt|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1942,7 +1942,7 @@
 				RelativePath="rdo_tracer\rdotracerserie.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1951,7 +1951,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1960,7 +1960,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug Corba|Win32"
+					Name="debug.corba|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1969,7 +1969,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release Corba|Win32"
+					Name="release.corba|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1978,7 +1978,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug MT|Win32"
+					Name="debug.mt|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1987,7 +1987,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release MT|Win32"
+					Name="release.mt|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2004,7 +2004,7 @@
 				RelativePath="rdo_tracer\rdotracervalues.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2013,7 +2013,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2022,7 +2022,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug Corba|Win32"
+					Name="debug.corba|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2031,7 +2031,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release Corba|Win32"
+					Name="release.corba|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2040,7 +2040,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug MT|Win32"
+					Name="debug.mt|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2049,7 +2049,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release MT|Win32"
+					Name="release.mt|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2070,7 +2070,7 @@
 				RelativePath=".\src\frame\document.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2079,7 +2079,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2087,24 +2087,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\document_frame"
-						BrowseInformationFile="$(IntDir)\document_frame"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\document_frame"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug MT|Win32"
+					Name="debug.corba|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2113,7 +2096,24 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release MT|Win32"
+					Name="release.corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\document_frame"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="debug.mt|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\document_frame"
+						BrowseInformationFile="$(IntDir)\document_frame"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release.mt|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2129,7 +2129,7 @@
 				RelativePath=".\src\frame\manager.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2138,7 +2138,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2146,24 +2146,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\frame_manager"
-						BrowseInformationFile="$(IntDir)\frame_manager"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\frame_manager"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug MT|Win32"
+					Name="debug.corba|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2172,7 +2155,24 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release MT|Win32"
+					Name="release.corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\frame_manager"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="debug.mt|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\frame_manager"
+						BrowseInformationFile="$(IntDir)\frame_manager"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release.mt|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2196,7 +2196,7 @@
 				RelativePath=".\src\frame\style.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2205,7 +2205,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2213,24 +2213,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\style_frame"
-						BrowseInformationFile="$(IntDir)\style_frame"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\style_frame"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug MT|Win32"
+					Name="debug.corba|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2239,7 +2222,24 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release MT|Win32"
+					Name="release.corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\style_frame"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="debug.mt|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\style_frame"
+						BrowseInformationFile="$(IntDir)\style_frame"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release.mt|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2263,7 +2263,7 @@
 				RelativePath=".\src\frame\view.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2272,7 +2272,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2280,24 +2280,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\view_frame"
-						BrowseInformationFile="$(IntDir)\view_frame"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\view_frame"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug MT|Win32"
+					Name="debug.corba|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2306,7 +2289,24 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release MT|Win32"
+					Name="release.corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\view_frame"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="debug.mt|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\view_frame"
+						BrowseInformationFile="$(IntDir)\view_frame"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release.mt|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2447,7 +2447,7 @@
 				RelativePath=".\res\RAO-studio.run.error.txt"
 				>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="release|Win32"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
@@ -2457,7 +2457,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release Corba|Win32"
+					Name="release.corba|Win32"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
@@ -2467,7 +2467,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release MT|Win32"
+					Name="release.mt|Win32"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
@@ -2485,7 +2485,7 @@
 				RelativePath="rdo_studio.rc"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="debug|Win32"
 					>
 					<Tool
 						Name="VCResourceCompilerTool"
@@ -2493,7 +2493,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="release|Win32"
 					>
 					<Tool
 						Name="VCResourceCompilerTool"
@@ -2501,7 +2501,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug Corba|Win32"
+					Name="debug.corba|Win32"
 					>
 					<Tool
 						Name="VCResourceCompilerTool"
@@ -2509,7 +2509,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release Corba|Win32"
+					Name="release.corba|Win32"
 					>
 					<Tool
 						Name="VCResourceCompilerTool"
@@ -2517,7 +2517,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug MT|Win32"
+					Name="debug.mt|Win32"
 					>
 					<Tool
 						Name="VCResourceCompilerTool"
@@ -2525,7 +2525,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release MT|Win32"
+					Name="release.mt|Win32"
 					>
 					<Tool
 						Name="VCResourceCompilerTool"
@@ -2645,7 +2645,7 @@
 				RelativePath=".\src\options.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2654,7 +2654,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2662,24 +2662,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\options_general"
-						BrowseInformationFile="$(IntDir)\options_general"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\options_general"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug MT|Win32"
+					Name="debug.corba|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2688,7 +2671,24 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release MT|Win32"
+					Name="release.corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\options_general"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="debug.mt|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\options_general"
+						BrowseInformationFile="$(IntDir)\options_general"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release.mt|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2728,7 +2728,7 @@
 				RelativePath=".\src\style.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2737,7 +2737,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2745,24 +2745,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\style_base"
-						BrowseInformationFile="$(IntDir)\style_base"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\style_base"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug MT|Win32"
+					Name="debug.corba|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2771,7 +2754,24 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release MT|Win32"
+					Name="release.corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\style_base"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="debug.mt|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\style_base"
+						BrowseInformationFile="$(IntDir)\style_base"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release.mt|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2795,7 +2795,7 @@
 				RelativePath=".\src\view.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2804,7 +2804,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2812,24 +2812,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\view_general"
-						BrowseInformationFile="$(IntDir)\view_general"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\view_general"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug MT|Win32"
+					Name="debug.corba|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2838,7 +2821,24 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release MT|Win32"
+					Name="release.corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\view_general"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="debug.mt|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\view_general"
+						BrowseInformationFile="$(IntDir)\view_general"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release.mt|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2866,7 +2866,7 @@
 				RelativePath=".\src\model\document.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2875,7 +2875,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2883,24 +2883,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\document_model"
-						BrowseInformationFile="$(IntDir)\document_model"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\document_model"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug MT|Win32"
+					Name="debug.corba|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2909,7 +2892,24 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release MT|Win32"
+					Name="release.corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\document_model"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="debug.mt|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\document_model"
+						BrowseInformationFile="$(IntDir)\document_model"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release.mt|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2933,7 +2933,7 @@
 				RelativePath=".\src\model\new.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2942,7 +2942,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2950,24 +2950,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\model_new"
-						BrowseInformationFile="$(IntDir)\model_new"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\model_new"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug MT|Win32"
+					Name="debug.corba|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2976,7 +2959,24 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release MT|Win32"
+					Name="release.corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\model_new"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="debug.mt|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\model_new"
+						BrowseInformationFile="$(IntDir)\model_new"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release.mt|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -2992,7 +2992,7 @@
 				RelativePath=".\src\model\view.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3001,7 +3001,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3009,24 +3009,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\view_model"
-						BrowseInformationFile="$(IntDir)\view_model"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\view_model"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug MT|Win32"
+					Name="debug.corba|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3035,7 +3018,24 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release MT|Win32"
+					Name="release.corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\view_model"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="debug.mt|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\view_model"
+						BrowseInformationFile="$(IntDir)\view_model"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release.mt|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3063,7 +3063,7 @@
 				RelativePath=".\src\chart\document.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3072,7 +3072,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3080,24 +3080,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\document_chart"
-						BrowseInformationFile="$(IntDir)\document_chart"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\document_chart"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug MT|Win32"
+					Name="debug.corba|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3106,7 +3089,24 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release MT|Win32"
+					Name="release.corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\document_chart"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="debug.mt|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\document_chart"
+						BrowseInformationFile="$(IntDir)\document_chart"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release.mt|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3122,7 +3122,7 @@
 				RelativePath=".\src\chart\options.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3131,7 +3131,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3139,24 +3139,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\options_chart"
-						BrowseInformationFile="$(IntDir)\options_chart"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\options_chart"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug MT|Win32"
+					Name="debug.corba|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3165,7 +3148,24 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release MT|Win32"
+					Name="release.corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\options_chart"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="debug.mt|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\options_chart"
+						BrowseInformationFile="$(IntDir)\options_chart"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release.mt|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3181,7 +3181,7 @@
 				RelativePath=".\src\chart\view.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3190,7 +3190,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3198,24 +3198,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\view_chart"
-						BrowseInformationFile="$(IntDir)\view_chart"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release Corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\view_chart"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug MT|Win32"
+					Name="debug.corba|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3224,7 +3207,24 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release MT|Win32"
+					Name="release.corba|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\view_chart"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="debug.mt|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\view_chart"
+						BrowseInformationFile="$(IntDir)\view_chart"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release.mt|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3255,7 +3255,7 @@
 					RelativePath="rdo_edit\rdoeditorbaseedit.cpp"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3264,7 +3264,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3273,7 +3273,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3282,7 +3282,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3291,7 +3291,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3300,7 +3300,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3317,7 +3317,7 @@
 					RelativePath="rdo_edit\rdoeditorbaseeditstyle.cpp"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3326,7 +3326,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3335,7 +3335,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3344,7 +3344,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3353,7 +3353,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3362,7 +3362,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3379,7 +3379,7 @@
 					RelativePath="rdo_edit\rdoeditoredit.cpp"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3388,7 +3388,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3397,7 +3397,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3406,7 +3406,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3415,7 +3415,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3424,7 +3424,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3441,7 +3441,7 @@
 					RelativePath="rdo_edit\rdoeditoreditstyle.cpp"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3450,7 +3450,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3459,7 +3459,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3468,7 +3468,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3477,7 +3477,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3486,7 +3486,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3503,7 +3503,7 @@
 					RelativePath="rdo_edit\rdoeditorresults.cpp"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3512,7 +3512,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3521,7 +3521,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3530,7 +3530,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3539,7 +3539,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3548,7 +3548,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3565,7 +3565,7 @@
 					RelativePath="rdo_edit\rdoeditorresultsstyle.cpp"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3574,7 +3574,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3583,7 +3583,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3592,7 +3592,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3601,7 +3601,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3610,7 +3610,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3627,7 +3627,7 @@
 					RelativePath="rdo_edit\rdoeditortabctrl.cpp"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3636,7 +3636,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3645,7 +3645,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3654,7 +3654,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3663,7 +3663,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3672,7 +3672,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3693,7 +3693,7 @@
 					RelativePath=".\src\edit\document.cpp"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3702,7 +3702,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3710,24 +3710,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)\document_editor"
-							BrowseInformationFile="$(IntDir)\document_editor"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)\document_editor"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3736,7 +3719,24 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\document_editor"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\document_editor"
+							BrowseInformationFile="$(IntDir)\document_editor"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3760,7 +3760,7 @@
 					RelativePath=".\src\edit\view.cpp"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3769,7 +3769,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3777,24 +3777,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)\view_edit"
-							BrowseInformationFile="$(IntDir)\view_edit"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release Corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)\view_edit"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3803,7 +3786,24 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\view_edit"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\view_edit"
+							BrowseInformationFile="$(IntDir)\view_edit"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3892,7 +3892,7 @@
 				RelativePath=".\pch\stdpch.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3900,7 +3900,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3908,7 +3908,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug Corba|Win32"
+					Name="debug.corba|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3916,7 +3916,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release Corba|Win32"
+					Name="release.corba|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3924,7 +3924,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug MT|Win32"
+					Name="debug.mt|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3932,7 +3932,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release MT|Win32"
+					Name="release.mt|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -3959,7 +3959,7 @@
 					RelativePath="..\..\thirdparty\sci\AutoComplete.cxx"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3968,7 +3968,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3977,7 +3977,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3986,7 +3986,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -3995,7 +3995,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4004,7 +4004,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4021,7 +4021,7 @@
 					RelativePath="..\..\thirdparty\sci\CallTip.cxx"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4030,7 +4030,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4039,7 +4039,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4048,7 +4048,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4057,7 +4057,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4066,7 +4066,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4083,7 +4083,7 @@
 					RelativePath="..\..\thirdparty\sci\CellBuffer.cxx"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4092,7 +4092,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4101,7 +4101,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4110,7 +4110,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4119,7 +4119,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4128,7 +4128,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4145,7 +4145,7 @@
 					RelativePath="..\..\thirdparty\sci\ContractionState.cxx"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4154,7 +4154,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4163,7 +4163,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4172,7 +4172,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4181,7 +4181,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4190,7 +4190,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4207,7 +4207,7 @@
 					RelativePath="..\..\thirdparty\sci\Document.cxx"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4216,7 +4216,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4225,7 +4225,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4234,7 +4234,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4243,7 +4243,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4252,7 +4252,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4269,7 +4269,7 @@
 					RelativePath="..\..\thirdparty\sci\DocumentAccessor.cxx"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4278,7 +4278,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4287,7 +4287,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4296,7 +4296,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4305,7 +4305,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4314,7 +4314,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4331,7 +4331,7 @@
 					RelativePath="..\..\thirdparty\sci\Editor.cxx"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4340,7 +4340,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4349,7 +4349,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4358,7 +4358,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4367,7 +4367,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4376,7 +4376,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4393,7 +4393,7 @@
 					RelativePath="..\..\thirdparty\sci\ExternalLexer.cxx"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4402,7 +4402,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4411,7 +4411,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4420,7 +4420,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4429,7 +4429,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4438,7 +4438,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4455,7 +4455,7 @@
 					RelativePath="..\..\thirdparty\sci\Indicator.cxx"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4464,7 +4464,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4473,7 +4473,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4482,7 +4482,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4491,7 +4491,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4500,7 +4500,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4517,7 +4517,7 @@
 					RelativePath="..\..\thirdparty\sci\KeyMap.cxx"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4526,7 +4526,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4535,7 +4535,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4544,7 +4544,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4553,7 +4553,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4562,7 +4562,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4579,7 +4579,7 @@
 					RelativePath="..\..\thirdparty\sci\KeyWords.cxx"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4588,7 +4588,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4597,7 +4597,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4606,7 +4606,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4615,7 +4615,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4624,7 +4624,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4641,7 +4641,7 @@
 					RelativePath="..\..\thirdparty\sci\LexFind.cxx"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4650,7 +4650,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4659,7 +4659,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4668,7 +4668,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4677,7 +4677,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4686,7 +4686,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4703,7 +4703,7 @@
 					RelativePath="..\..\thirdparty\sci\LexRdo.cxx"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4712,7 +4712,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4721,7 +4721,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4730,7 +4730,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4739,7 +4739,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4748,7 +4748,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4765,7 +4765,7 @@
 					RelativePath="..\..\thirdparty\sci\LexText.cxx"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4774,7 +4774,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4783,7 +4783,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4792,7 +4792,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4801,7 +4801,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4810,7 +4810,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4827,7 +4827,7 @@
 					RelativePath="..\..\thirdparty\sci\LineMarker.cxx"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4836,7 +4836,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4845,7 +4845,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4854,7 +4854,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4863,7 +4863,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4872,7 +4872,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4901,7 +4901,7 @@
 					RelativePath="..\..\thirdparty\sci\PlatWin.cxx"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4910,7 +4910,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4919,7 +4919,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4928,7 +4928,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4937,7 +4937,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4946,7 +4946,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4959,7 +4959,7 @@
 					RelativePath="..\..\thirdparty\sci\PropSet.cxx"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4968,7 +4968,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4977,7 +4977,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4986,7 +4986,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -4995,7 +4995,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5004,7 +5004,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5021,7 +5021,7 @@
 					RelativePath="..\..\thirdparty\sci\RESearch.cxx"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5030,7 +5030,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5039,7 +5039,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5048,7 +5048,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5057,7 +5057,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5066,7 +5066,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5091,7 +5091,7 @@
 					RelativePath="..\..\thirdparty\sci\ScintillaBase.cxx"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5100,7 +5100,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5109,7 +5109,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5118,7 +5118,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5127,7 +5127,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5136,7 +5136,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5157,7 +5157,7 @@
 					RelativePath="..\..\thirdparty\sci\ScintillaWin.cxx"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5166,7 +5166,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5175,7 +5175,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5184,7 +5184,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5193,7 +5193,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5202,7 +5202,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5219,7 +5219,7 @@
 					RelativePath="..\..\thirdparty\sci\Style.cxx"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5228,7 +5228,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5237,7 +5237,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5246,7 +5246,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5255,7 +5255,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5264,7 +5264,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5281,7 +5281,7 @@
 					RelativePath="..\..\thirdparty\sci\StyleContext.cxx"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5290,7 +5290,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5299,7 +5299,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5308,7 +5308,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5317,7 +5317,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5326,7 +5326,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5347,7 +5347,7 @@
 					RelativePath="..\..\thirdparty\sci\UniConversion.cxx"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5356,7 +5356,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5365,7 +5365,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5374,7 +5374,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5383,7 +5383,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5392,7 +5392,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5409,7 +5409,7 @@
 					RelativePath="..\..\thirdparty\sci\ViewStyle.cxx"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5418,7 +5418,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5427,7 +5427,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5436,7 +5436,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5445,7 +5445,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5454,7 +5454,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5471,7 +5471,7 @@
 					RelativePath="..\..\thirdparty\sci\WindowAccessor.cxx"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5480,7 +5480,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5489,7 +5489,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5498,7 +5498,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5507,7 +5507,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5516,7 +5516,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5533,7 +5533,7 @@
 					RelativePath="..\..\thirdparty\sci\XPM.cxx"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5542,7 +5542,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5551,7 +5551,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5560,7 +5560,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5569,7 +5569,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5578,7 +5578,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5599,7 +5599,7 @@
 					RelativePath="..\..\thirdparty\sizecbar\scbarg.cpp"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5607,7 +5607,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5615,7 +5615,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5623,7 +5623,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5631,7 +5631,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5639,7 +5639,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5655,7 +5655,7 @@
 					RelativePath="..\..\thirdparty\sizecbar\sizecbar.cpp"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5663,7 +5663,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5671,7 +5671,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5679,7 +5679,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5687,7 +5687,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5695,7 +5695,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5715,7 +5715,7 @@
 					RelativePath="..\..\thirdparty\win_registry\Registry.cpp"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
+						Name="debug|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5723,7 +5723,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release|Win32"
+						Name="release|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5731,7 +5731,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug Corba|Win32"
+						Name="debug.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5739,7 +5739,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release Corba|Win32"
+						Name="release.corba|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5747,7 +5747,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Debug MT|Win32"
+						Name="debug.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -5755,7 +5755,7 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
-						Name="Release MT|Win32"
+						Name="release.mt|Win32"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
