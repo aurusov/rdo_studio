@@ -37,8 +37,6 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				PreprocessorDefinitions="_DEBUG"
-				MkTypLibCompatible="false"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
@@ -105,8 +103,6 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				PreprocessorDefinitions="NDEBUG"
-				MkTypLibCompatible="false"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"

@@ -40,12 +40,6 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				PreprocessorDefinitions="_DEBUG"
-				MkTypLibCompatible="true"
-				SuppressStartupBanner="true"
-				TargetEnvironment="1"
-				TypeLibraryName=".\Debug/rdo_plugin_mfc.tlb"
-				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
@@ -130,12 +124,6 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				PreprocessorDefinitions="NDEBUG"
-				MkTypLibCompatible="true"
-				SuppressStartupBanner="true"
-				TargetEnvironment="1"
-				TypeLibraryName=".\Release/rdo_plugin_mfc.tlb"
-				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
@@ -217,12 +205,6 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				PreprocessorDefinitions="_DEBUG"
-				MkTypLibCompatible="true"
-				SuppressStartupBanner="true"
-				TargetEnvironment="1"
-				TypeLibraryName=".\Debug/rdo_plugin_mfc.tlb"
-				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
@@ -305,12 +287,6 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				PreprocessorDefinitions="NDEBUG"
-				MkTypLibCompatible="true"
-				SuppressStartupBanner="true"
-				TargetEnvironment="1"
-				TypeLibraryName=".\Release/rdo_plugin_mfc.tlb"
-				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
@@ -389,12 +365,6 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				PreprocessorDefinitions="_DEBUG"
-				MkTypLibCompatible="true"
-				SuppressStartupBanner="true"
-				TargetEnvironment="1"
-				TypeLibraryName=".\Debug/rdo_plugin_mfc.tlb"
-				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
@@ -479,12 +449,6 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				PreprocessorDefinitions="NDEBUG"
-				MkTypLibCompatible="true"
-				SuppressStartupBanner="true"
-				TargetEnvironment="1"
-				TypeLibraryName=".\Release/rdo_plugin_mfc.tlb"
-				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
