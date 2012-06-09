@@ -17,7 +17,7 @@
 	</ToolFiles>
 	<Configurations>
 		<Configuration
-			Name="Debug|Win32"
+			Name="debug|Win32"
 			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
@@ -90,7 +90,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release|Win32"
+			Name="release|Win32"
 			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
@@ -117,7 +117,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="../../../"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;RDO_STUDIO_CONSOLE_APP=\&quot;D:/repository/rdo/build/Debug/rdo.exe\&quot;;RDO_STUDIO_CONSOLE_TEST_PATH=\&quot;D:/repository/rdo/app/rdo_studio_console/test/\&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;RDO_STUDIO_CONSOLE_APP=\&quot;D:/repository/rdo/build/debug/rdo.exe\&quot;;RDO_STUDIO_CONSOLE_TEST_PATH=\&quot;D:/repository/rdo/app/rdo_studio_console/test/\&quot;"
 				ExceptionHandling="2"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
