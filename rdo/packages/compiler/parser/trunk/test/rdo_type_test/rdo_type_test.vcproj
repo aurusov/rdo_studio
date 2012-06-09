@@ -17,7 +17,7 @@
 	</ToolFiles>
 	<Configurations>
 		<Configuration
-			Name="debug|Win32"
+			Name="Debug|Win32"
 			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
@@ -86,7 +86,7 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="release|Win32"
+			Name="Release|Win32"
 			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
