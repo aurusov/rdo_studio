@@ -2,11 +2,11 @@
 </head>
 <body>
 	<b><<<a class="ref" href="http://rdo.rk9.bmstu.ru/">Вернуться на rdo.rk9.bmstu.ru</a></b><a> | </a>
-	<a class="ref" href="keyword-index.html">Список ключевых слов</a><br/>
+	<a class="ref" href="index.html">Содержание</a><br/>
 	<aside>
-		<div style="display:" class="tree">
+		<div class="tree">
 			<script type="text/javascript">
-				createTree(Tree);
+				createTree(List);
 			</script>
 		</div>
 	</aside>

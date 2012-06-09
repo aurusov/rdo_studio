@@ -3,10 +3,10 @@ use strict;
 open(source_studio,"rdo_studio_rus.qhp");
 open(source_lang,"rdo_lang_rus.qhp");
 
-if (-e "help-index.html") {
-	unlink ("help-index.html");
+if (-e "index.html") {
+	unlink ("index.html");
 }
-open(target,">>help-index.html");
+open(target,">>index.html");
 
 my @temp;
 my $flagO=0;
@@ -68,7 +68,7 @@ foreach my $line (@temp)
 
 }
 
-open(source_html_head,"help-index-head.tmp");
+open(source_html_head,"index-head.tmp");
 my @strings_html_head=<source_html_head>;
 foreach my $line (@strings_html_head)
 {
@@ -78,7 +78,7 @@ close (source_html_head);
 
 print (target @temp);
 
-open(source_html_body,"help-index-body.tmp");
+open(source_html_body,"index-body.tmp");
 my @strings_html_body=<source_html_body>;
 foreach my $line (@strings_html_body)
 {

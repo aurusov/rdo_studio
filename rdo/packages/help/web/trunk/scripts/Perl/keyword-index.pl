@@ -2,10 +2,10 @@ use strict;
 open(source_studio,"rdo_studio_rus.qhp");
 open(source_lang,"rdo_lang_rus.qhp");
 
-if (-e "keyword-index.html") {
-	unlink ("keyword-index.html");
+if (-e "keywords.html") {
+	unlink ("keywords.html");
 }
-open(target,">>keyword-index.html");
+open(target,">>keywords.html");
 
 my @temp;
 my @strings_studio=<source_studio>;
@@ -52,7 +52,7 @@ sub callerUrl {
 	close(tempFile);
 }
 
-open(source_html_head,"keyword-index-head.tmp");
+open(source_html_head,"keywords-head.tmp");
 my @strings_html_head=<source_html_head>;
 foreach my $line (@strings_html_head)
 {
@@ -83,7 +83,7 @@ for (my $i = 0; $i <= $size-1; ++$i,++$ii,++$it)
 	}
 }
 
-open(source_html_body,"keyword-index-body.tmp");
+open(source_html_body,"keywords-body.tmp");
 my @strings_html_body=<source_html_body>;
 foreach my $line (@strings_html_body)
 {

@@ -10,15 +10,15 @@ TortoiseProc.exe /command:cleanup /PATH:"%PATH2%" /nodlg /externals /cleanup  /c
 TortoiseProc.exe /command:update /PATH:"%PATH2%" /closeonend:1
 
 cd %PATH3%
-copy /Y help-index-body.tmp %PATH2%
-copy /Y help-index-head.tmp %PATH2%
+copy /Y index-body.tmp %PATH2%
+copy /Y index-head.tmp %PATH2%
 copy /Y help-index.pl %PATH2%
-copy /Y keyword-index-body.tmp %PATH2%
-copy /Y keyword-index-head.tmp %PATH2%
+copy /Y keywords-body.tmp %PATH2%
+copy /Y keywords-head.tmp %PATH2%
 copy /Y keyword-index.pl %PATH2%
 
 cd %PATH2%
 help-index.pl
 keyword-index.pl
-copy /Y keyword-index.html %PATH1%
-copy /Y help-index.html %PATH1%
+copy /Y keywords.html %PATH1%
+copy /Y index.html %PATH1%
