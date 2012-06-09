@@ -1,1 +1,1 @@
-updater-body.bat "D:\Dev_web" "D:\Dev\app\rdo_studio_mfc\help"
+updater-body.bat "D:\sites\rdo\help" "D:\sites\rdo\help_assistant"
