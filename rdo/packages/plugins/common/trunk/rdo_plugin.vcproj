@@ -17,14 +17,14 @@
 	<Configurations>
 		<Configuration
 			Name="release|Win32"
-			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
-			BuildLogFile="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
+			BuildLogFile="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -69,7 +69,7 @@
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
+				ImportLibrary="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -96,13 +96,13 @@
 		</Configuration>
 		<Configuration
 			Name="debug|Win32"
-			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
-			BuildLogFile="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
+			BuildLogFile="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -145,11 +145,11 @@
 				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\plugins\$(ProjectName).rsp"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\$(TargetName).pdb"
+				ProgramDatabaseFile="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).pdb"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
+				ImportLibrary="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -176,13 +176,13 @@
 		</Configuration>
 		<Configuration
 			Name="debug.mt|Win32"
-			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
-			BuildLogFile="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
+			BuildLogFile="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -225,11 +225,11 @@
 				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\plugins\$(ProjectName).rsp"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\$(TargetName).pdb"
+				ProgramDatabaseFile="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).pdb"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
+				ImportLibrary="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -256,14 +256,14 @@
 		</Configuration>
 		<Configuration
 			Name="release.mt|Win32"
-			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
-			BuildLogFile="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
+			BuildLogFile="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -307,7 +307,7 @@
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
+				ImportLibrary="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
 				TargetMachine="1"
 			/>
 			<Tool

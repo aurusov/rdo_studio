@@ -18,14 +18,14 @@
 	<Configurations>
 		<Configuration
 			Name="release|Win32"
-			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
-			BuildLogFile="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
+			BuildLogFile="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -89,14 +89,14 @@
 		</Configuration>
 		<Configuration
 			Name="debug|Win32"
-			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			ManagedExtensions="0"
-			BuildLogFile="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
+			BuildLogFile="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -159,14 +159,14 @@
 		</Configuration>
 		<Configuration
 			Name="debug.corba|Win32"
-			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			ManagedExtensions="0"
-			BuildLogFile="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
+			BuildLogFile="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -230,14 +230,14 @@
 		</Configuration>
 		<Configuration
 			Name="release.corba|Win32"
-			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
-			BuildLogFile="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
+			BuildLogFile="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -302,14 +302,14 @@
 		</Configuration>
 		<Configuration
 			Name="debug.mt|Win32"
-			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			ManagedExtensions="0"
-			BuildLogFile="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
+			BuildLogFile="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -372,14 +372,14 @@
 		</Configuration>
 		<Configuration
 			Name="release.mt|Win32"
-			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
-			BuildLogFile="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
+			BuildLogFile="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
