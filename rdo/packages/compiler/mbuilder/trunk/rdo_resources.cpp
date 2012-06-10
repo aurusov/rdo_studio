@@ -128,10 +128,10 @@ RDOResType::Param::Param(CREF(parser::LPRDORTPParam) param)
 // ---- Инициализация *нового* типа ресурса
 // --------------------------------------------------------------------------------
 RDOResType::RDOResType(CREF(tstring) name, Type type)
-	: m_name (name )
-	, m_type (type )
-	, m_exist(false)
-	, m_id   (-1   )
+	: m_name (name     )
+	, m_type (type     )
+	, m_exist(false    )
+	, m_id   (ruint(~0))
 {}
 
 rbool RDOResType::ParamList::append(REF(Param) param)
