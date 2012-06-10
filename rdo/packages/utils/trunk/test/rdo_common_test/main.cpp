@@ -19,7 +19,7 @@
 #include "utils/rdocommon.h"
 #include "utils/rdofile.h"
 #include "utils/rdotime.h"
-#include "utils/test/utils_common_test/resource.h"
+#include "utils/test/rdo_common_test/resource.h"
 // --------------------------------------------------------------------------------
 
 const tstring s_testFileName(_T("test_file"));
