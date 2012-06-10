@@ -1,19 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "utils_common", "..\..\..\utils\utils_common.vcproj", "{AC7C7972-A31D-4CDE-99E5-B56A19AB6457}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "utils_common", "..\..\..\utils\projects\common\utils_common.vcproj", "{AC7C7972-A31D-4CDE-99E5-B56A19AB6457}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_runtime", "..\rdo_runtime.vcproj", "{C34EF28F-1D66-4CEE-B435-7C420DAF0AD3}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_runtime", "..\projects\common\rdo_runtime.vcproj", "{C34EF28F-1D66-4CEE-B435-7C420DAF0AD3}"
 	ProjectSection(ProjectDependencies) = postProject
 		{AC7C7972-A31D-4CDE-99E5-B56A19AB6457} = {AC7C7972-A31D-4CDE-99E5-B56A19AB6457}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_array_test", "rdo_array_test\rdo_array_test.vcproj", "{F83B49E2-A9F0-4BD6-B6B7-91FBDACE518F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_array", "..\projects\tests\test_array.vcproj", "{F83B49E2-A9F0-4BD6-B6B7-91FBDACE518F}"
 	ProjectSection(ProjectDependencies) = postProject
 		{C34EF28F-1D66-4CEE-B435-7C420DAF0AD3} = {C34EF28F-1D66-4CEE-B435-7C420DAF0AD3}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "utils_smart_ptr", "..\..\..\utils\utils_smart_ptr.vcproj", "{7861F6F8-175E-474E-8B38-82F47FF4A377}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "utils_smart_ptr", "..\..\..\utils\projects\common\utils_smart_ptr.vcproj", "{7861F6F8-175E-474E-8B38-82F47FF4A377}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="rdo_matrix_test"
+	Name="test_matrix"
 	ProjectGUID="{31BADFCA-7F27-44EC-8CA2-5F2493C8EAD5}"
-	RootNamespace="rdo_matrix_test"
+	RootNamespace="test_matrix"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -160,7 +160,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\main.cpp"
+				RelativePath="..\..\test\matrix\main.cpp"
 				>
 			</File>
 		</Filter>

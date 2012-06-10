@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="sequences_test"
+	Name="test_sequences"
 	ProjectGUID="{9F58A671-DD59-4DB6-BADB-E67F39C5D269}"
-	RootNamespace="sequences_test"
+	RootNamespace="test_sequences"
 	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
@@ -162,7 +162,7 @@
 			Name=".test"
 			>
 			<File
-				RelativePath=".\main.cpp"
+				RelativePath="..\..\test\sequences\main.cpp"
 				>
 			</File>
 		</Filter>

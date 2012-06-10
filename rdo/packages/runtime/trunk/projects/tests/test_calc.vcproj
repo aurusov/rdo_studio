@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="rdo_calc_test"
+	Name="test_calc"
 	ProjectGUID="{F1C3D639-7F04-4FC5-A134-84D261C9168D}"
-	RootNamespace="rdo_calc_test"
+	RootNamespace="test_calc"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -166,7 +166,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\main.cpp"
+				RelativePath="..\..\test\calc\main.cpp"
 				>
 			</File>
 		</Filter>
