@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="rdo_common_test"
+	Name="test_common"
 	ProjectGUID="{7FB0726B-9FA1-446D-9AD1-80BB4D0255CC}"
-	RootNamespace="rdo_common_test"
+	RootNamespace="test_common"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -163,7 +163,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\test\rdo_common_test\main.cpp"
+				RelativePath="..\..\test\common\main.cpp"
 				>
 			</File>
 		</Filter>
@@ -173,11 +173,11 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\..\test\rdo_common_test\resource.h"
+				RelativePath="..\..\test\common\resource.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\test\rdo_common_test\resource_test.rc"
+				RelativePath="..\..\test\common\resource_test.rc"
 				>
 			</File>
 		</Filter>

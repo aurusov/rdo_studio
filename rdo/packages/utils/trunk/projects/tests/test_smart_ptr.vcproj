@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="rdo_smart_ptr_test"
+	Name="test_smart_ptr"
 	ProjectGUID="{5B0F116C-4A01-465B-A208-6A09B9602CF6}"
-	RootNamespace="rdo_smart_ptr_test"
+	RootNamespace="test_smart_ptr"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -162,7 +162,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\test\rdo_smart_ptr_test\main.cpp"
+				RelativePath="..\..\test\smart_ptr\main.cpp"
 				>
 			</File>
 		</Filter>

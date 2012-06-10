@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="rdo_real_format_test"
+	Name="test_real_format"
 	ProjectGUID="{5B0F116C-4A01-465B-A208-6A09B9602CF6}"
-	RootNamespace="rdo_smart_ptr_test"
+	RootNamespace="test_real_format"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -162,7 +162,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\test\real_format_test\main.cpp"
+				RelativePath="..\..\test\real_format\main.cpp"
 				>
 			</File>
 		</Filter>

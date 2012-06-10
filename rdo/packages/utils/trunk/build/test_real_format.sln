@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_real_format_test", "..\projects\tests\rdo_real_format_test.vcproj", "{5B0F116C-4A01-465B-A208-6A09B9602CF6}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_real_format", "..\projects\tests\test_real_format.vcproj", "{5B0F116C-4A01-465B-A208-6A09B9602CF6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

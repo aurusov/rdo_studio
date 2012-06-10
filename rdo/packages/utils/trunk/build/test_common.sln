@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "utils_common", "..\projects\common\utils_common.vcproj", "{AC7C7972-A31D-4CDE-99E5-B56A19AB6457}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_common_test", "..\projects\tests\rdo_common_test.vcproj", "{7FB0726B-9FA1-446D-9AD1-80BB4D0255CC}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_common", "..\projects\tests\test_common.vcproj", "{7FB0726B-9FA1-446D-9AD1-80BB4D0255CC}"
 	ProjectSection(ProjectDependencies) = postProject
 		{AC7C7972-A31D-4CDE-99E5-B56A19AB6457} = {AC7C7972-A31D-4CDE-99E5-B56A19AB6457}
 	EndProjectSection

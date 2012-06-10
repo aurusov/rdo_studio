@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="rdo_interface_test"
+	Name="test_interface"
 	ProjectGUID="{AE02731D-290A-4C68-9764-2C826B306D29}"
-	RootNamespace="rdo_interface_test"
+	RootNamespace="test_interface"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -162,7 +162,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\test\rdo_interface_test\main.cpp"
+				RelativePath="..\..\test\interface\main.cpp"
 				>
 			</File>
 		</Filter>
