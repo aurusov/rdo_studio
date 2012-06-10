@@ -210,7 +210,7 @@
 			<Tool
 				Name="VCLibrarianTool"
 				AdditionalDependencies="COS4d.lib COSDynamic4d.lib omniCodeSets4d.lib omniDynamic4d.lib omniORB4d.lib omnisslTP4d.lib omnithreadd.lib ws2_32.lib mswsock.lib advapi32.lib"
-				AdditionalLibraryDirectories="../../thirdparty/corba/lib/x86_win32"
+				AdditionalLibraryDirectories="../../../../../thirdparty/corba/lib/x86_win32"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -282,7 +282,7 @@
 			<Tool
 				Name="VCLibrarianTool"
 				AdditionalDependencies="COS4.lib COSDynamic4.lib omniCodeSets4.lib omniDynamic4.lib omniORB4.lib omnisslTP4.lib omnithread.lib ws2_32.lib mswsock.lib advapi32.lib"
-				AdditionalLibraryDirectories="../../thirdparty/corba/lib/x86_win32"
+				AdditionalLibraryDirectories="../../../../../thirdparty/corba/lib/x86_win32"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -424,7 +424,7 @@
 			<Tool
 				Name="VCLibrarianTool"
 				AdditionalDependencies="COS4.lib COSDynamic4.lib omniCodeSets4.lib omniDynamic4.lib omniORB4.lib omnisslTP4.lib omnithread.lib ws2_32.lib mswsock.lib advapi32.lib"
-				AdditionalLibraryDirectories="../../thirdparty/corba/lib/x86_win32"
+				AdditionalLibraryDirectories="../../../../../thirdparty/corba/lib/x86_win32"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -2336,7 +2336,7 @@
 						>
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="../../../thirdparty/bison_flex/include"
+							AdditionalIncludeDirectories="../../../../../thirdparty/bison_flex/include"
 							PreprocessorDefinitions=""
 							UsePrecompiledHeader="0"
 						/>
@@ -2346,7 +2346,7 @@
 						>
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="../../../thirdparty/bison_flex/include"
+							AdditionalIncludeDirectories="../../../../../thirdparty/bison_flex/include"
 							PreprocessorDefinitions=""
 							UsePrecompiledHeader="0"
 						/>
@@ -2356,7 +2356,7 @@
 						>
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="../../../thirdparty/bison_flex/include"
+							AdditionalIncludeDirectories="../../../../../thirdparty/bison_flex/include"
 							PreprocessorDefinitions=""
 							UsePrecompiledHeader="0"
 						/>
@@ -2366,7 +2366,7 @@
 						>
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="../../../thirdparty/bison_flex/include"
+							AdditionalIncludeDirectories="../../../../../thirdparty/bison_flex/include"
 							PreprocessorDefinitions=""
 							UsePrecompiledHeader="0"
 						/>
@@ -2376,7 +2376,7 @@
 						>
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="../../../thirdparty/bison_flex/include"
+							AdditionalIncludeDirectories="../../../../../thirdparty/bison_flex/include"
 							PreprocessorDefinitions=""
 							UsePrecompiledHeader="0"
 						/>
@@ -2386,7 +2386,7 @@
 						>
 						<Tool
 							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories="../../../thirdparty/bison_flex/include"
+							AdditionalIncludeDirectories="../../../../../thirdparty/bison_flex/include"
 							PreprocessorDefinitions=""
 							UsePrecompiledHeader="0"
 						/>
