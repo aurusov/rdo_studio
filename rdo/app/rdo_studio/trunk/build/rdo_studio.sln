@@ -136,7 +136,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_plugin_mfc", "..\plugin
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_plugin", "..\plugins\common\rdo_plugin.vcproj", "{1FACE2E3-B02E-45E1-9A93-56FD00508301}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_version", "..\rdo_version.vcproj", "{6A0AC201-55B9-4861-8339-5AD42572B2FC}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_version", "rdo_version.vcproj", "{6A0AC201-55B9-4861-8339-5AD42572B2FC}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_ctrls", "..\..\..\ui\mfc_ctrls\rdo_ctrls.vcproj", "{07426CDA-CE5C-4545-9C50-FF25E80CDF96}"
 EndProject
