@@ -47,7 +47,7 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../../../"
+				AdditionalIncludeDirectories="../../../../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
@@ -112,7 +112,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../"
+				AdditionalIncludeDirectories="../../../../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
@@ -179,7 +179,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../"
+				AdditionalIncludeDirectories="../../../../../"
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -248,7 +248,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../../../"
+				AdditionalIncludeDirectories="../../../../../"
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
@@ -314,7 +314,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../"
+				AdditionalIncludeDirectories="../../../../../"
 				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
@@ -382,7 +382,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../../../"
+				AdditionalIncludeDirectories="../../../../../"
 				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
@@ -428,7 +428,7 @@
 			Name=".resources"
 			>
 			<File
-				RelativePath="rdo_resources.cpp"
+				RelativePath="..\..\rdo_resources.cpp"
 				>
 				<FileConfiguration
 					Name="release|Win32"
@@ -486,7 +486,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="rdo_resources.h"
+				RelativePath="..\..\rdo_resources.h"
 				>
 			</File>
 		</Filter>
@@ -494,7 +494,7 @@
 			Name=".pch"
 			>
 			<File
-				RelativePath="pch.cpp"
+				RelativePath="..\..\pch.cpp"
 				>
 				<FileConfiguration
 					Name="release|Win32"
@@ -558,7 +558,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="pch.h"
+				RelativePath="..\..\pch.h"
 				>
 			</File>
 		</Filter>
@@ -566,7 +566,7 @@
 			Name=".common"
 			>
 			<File
-				RelativePath=".\namespace.h"
+				RelativePath="..\..\namespace.h"
 				>
 			</File>
 		</Filter>
@@ -574,11 +574,11 @@
 			Name=".process"
 			>
 			<File
-				RelativePath=".\process.cpp"
+				RelativePath="..\..\process.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\process.h"
+				RelativePath="..\..\process.h"
 				>
 			</File>
 		</Filter>
