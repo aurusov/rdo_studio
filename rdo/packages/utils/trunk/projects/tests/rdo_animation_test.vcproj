@@ -3,8 +3,8 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="rdo_animation_test"
-	ProjectGUID="{AE02731D-290A-4C68-9764-2C826B306D29}"
-	RootNamespace="rdo_interface_test"
+	ProjectGUID="{AB375DFE-0ABE-4FFE-8719-451E28F3E91E}"
+	RootNamespace="rdo_animation_test"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
