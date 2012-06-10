@@ -43,7 +43,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../"
+				AdditionalIncludeDirectories="../../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				BrowseInformation="1"
@@ -109,7 +109,7 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../"
+				AdditionalIncludeDirectories="../../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="2"
 				WarningLevel="4"
@@ -171,7 +171,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../"
+				AdditionalIncludeDirectories="../../../"
 				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="2"
 				BrowseInformation="1"
@@ -232,7 +232,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../"
+				AdditionalIncludeDirectories="../../../"
 				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				BrowseInformation="1"
@@ -275,11 +275,11 @@
 			Name=".animation"
 			>
 			<File
-				RelativePath=".\rdoanimation.h"
+				RelativePath="..\..\rdoanimation.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoanimation.inl"
+				RelativePath="..\..\rdoanimation.inl"
 				>
 			</File>
 		</Filter>
@@ -287,11 +287,11 @@
 			Name=".interface"
 			>
 			<File
-				RelativePath=".\rdointerface.h"
+				RelativePath="..\..\rdointerface.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdointerface.inl"
+				RelativePath="..\..\rdointerface.inl"
 				>
 			</File>
 		</Filter>
@@ -299,35 +299,35 @@
 			Name=".common"
 			>
 			<File
-				RelativePath=".\model_objects.h"
+				RelativePath="..\..\model_objects.h"
 				>
 			</File>
 			<File
-				RelativePath=".\namespace.h"
+				RelativePath="..\..\namespace.h"
 				>
 			</File>
 			<File
-				RelativePath=".\platform.h"
+				RelativePath="..\..\platform.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdocommon.cpp"
+				RelativePath="..\..\rdocommon.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdocommon.h"
+				RelativePath="..\..\rdocommon.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdocommon.inl"
+				RelativePath="..\..\rdocommon.inl"
 				>
 			</File>
 			<File
-				RelativePath=".\rdomacros.h"
+				RelativePath="..\..\rdomacros.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdotypes.h"
+				RelativePath="..\..\rdotypes.h"
 				>
 			</File>
 		</Filter>
@@ -335,11 +335,11 @@
 			Name=".debug"
 			>
 			<File
-				RelativePath=".\rdodebug.h"
+				RelativePath="..\..\rdodebug.h"
 				>
 			</File>
 			<File
-				RelativePath=".\static_assert.h"
+				RelativePath="..\..\static_assert.h"
 				>
 			</File>
 		</Filter>
@@ -347,15 +347,15 @@
 			Name=".file"
 			>
 			<File
-				RelativePath=".\rdofile.cpp"
+				RelativePath="..\..\rdofile.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdofile.h"
+				RelativePath="..\..\rdofile.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdofile.inl"
+				RelativePath="..\..\rdofile.inl"
 				>
 			</File>
 		</Filter>
@@ -363,11 +363,11 @@
 			Name=".time"
 			>
 			<File
-				RelativePath=".\rdotime.h"
+				RelativePath="..\..\rdotime.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdotime.inl"
+				RelativePath="..\..\rdotime.inl"
 				>
 			</File>
 		</Filter>
@@ -375,7 +375,7 @@
 			Name=".stream"
 			>
 			<File
-				RelativePath=".\rdostream.h"
+				RelativePath="..\..\rdostream.h"
 				>
 			</File>
 		</Filter>
@@ -383,31 +383,31 @@
 			Name=".stuff"
 			>
 			<File
-				RelativePath=".\explicit_value.h"
+				RelativePath="..\..\explicit_value.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoidgenerator.h"
+				RelativePath="..\..\rdoidgenerator.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoindexedstack.h"
+				RelativePath="..\..\rdoindexedstack.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdosingletone.h"
+				RelativePath="..\..\rdosingletone.h"
 				>
 			</File>
 			<File
-				RelativePath=".\stack.h"
+				RelativePath="..\..\stack.h"
 				>
 			</File>
 			<File
-				RelativePath=".\stack.inl"
+				RelativePath="..\..\stack.inl"
 				>
 			</File>
 			<File
-				RelativePath=".\supersubclass.h"
+				RelativePath="..\..\supersubclass.h"
 				>
 			</File>
 		</Filter>

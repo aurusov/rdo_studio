@@ -43,7 +43,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../"
+				AdditionalIncludeDirectories="../../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				BrowseInformation="1"
@@ -109,7 +109,7 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../"
+				AdditionalIncludeDirectories="../../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 			/>
 			<Tool
@@ -169,7 +169,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../"
+				AdditionalIncludeDirectories="../../../"
 				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				BrowseInformation="1"
 			/>
@@ -228,7 +228,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../"
+				AdditionalIncludeDirectories="../../../"
 				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				BrowseInformation="1"
@@ -271,11 +271,11 @@
 			Name=".factory"
 			>
 			<File
-				RelativePath=".\smart_ptr\factory.h"
+				RelativePath="..\..smart_ptr\factory.h"
 				>
 			</File>
 			<File
-				RelativePath=".\smart_ptr\factory.inl"
+				RelativePath="..\..smart_ptr\factory.inl"
 				>
 			</File>
 		</Filter>
@@ -283,11 +283,11 @@
 			Name=".interface_ptr"
 			>
 			<File
-				RelativePath=".\smart_ptr\interface_ptr.h"
+				RelativePath="..\..smart_ptr\interface_ptr.h"
 				>
 			</File>
 			<File
-				RelativePath=".\smart_ptr\interface_ptr.inl"
+				RelativePath="..\..smart_ptr\interface_ptr.inl"
 				>
 			</File>
 		</Filter>
@@ -295,19 +295,19 @@
 			Name=".intrusive_ptr"
 			>
 			<File
-				RelativePath=".\smart_ptr\intrusive_ptr.h"
+				RelativePath="..\..smart_ptr\intrusive_ptr.h"
 				>
 			</File>
 			<File
-				RelativePath=".\smart_ptr\intrusive_ptr.inl"
+				RelativePath="..\..smart_ptr\intrusive_ptr.inl"
 				>
 			</File>
 			<File
-				RelativePath=".\smart_ptr\intrusive_ptr_interface_wrapper.h"
+				RelativePath="..\..smart_ptr\intrusive_ptr_interface_wrapper.h"
 				>
 			</File>
 			<File
-				RelativePath=".\smart_ptr\intrusive_ptr_interface_wrapper.inl"
+				RelativePath="..\..smart_ptr\intrusive_ptr_interface_wrapper.inl"
 				>
 			</File>
 		</Filter>
@@ -315,23 +315,23 @@
 			Name=".ref_counter"
 			>
 			<File
-				RelativePath=".\smart_ptr\counter_reference.h"
+				RelativePath="..\..smart_ptr\counter_reference.h"
 				>
 			</File>
 			<File
-				RelativePath=".\smart_ptr\counter_reference.inl"
+				RelativePath="..\..smart_ptr\counter_reference.inl"
 				>
 			</File>
 			<File
-				RelativePath=".\smart_ptr\ref_counter.h"
+				RelativePath="..\..smart_ptr\ref_counter.h"
 				>
 			</File>
 			<File
-				RelativePath=".\smart_ptr\ref_counter.inl"
+				RelativePath="..\..smart_ptr\ref_counter.inl"
 				>
 			</File>
 			<File
-				RelativePath=".\smart_ptr\ref_counter_i.h"
+				RelativePath="..\..smart_ptr\ref_counter_i.h"
 				>
 			</File>
 		</Filter>
@@ -339,7 +339,7 @@
 			Name=".wrapper"
 			>
 			<File
-				RelativePath=".\rdosmart_ptr_wrapper.h"
+				RelativePath="..\..rdosmart_ptr_wrapper.h"
 				>
 			</File>
 		</Filter>
