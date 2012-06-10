@@ -48,7 +48,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="../"
+				AdditionalIncludeDirectories="../../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="2"
 				WarningLevel="4"
@@ -111,7 +111,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../"
+				AdditionalIncludeDirectories="../../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				BrowseInformation="1"
@@ -176,7 +176,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../;../thirdparty/corba/include"
+				AdditionalIncludeDirectories="../../../;../../../thirdparty/corba/include"
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				BrowseInformation="1"
@@ -242,7 +242,7 @@
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../;../thirdparty/corba/include"
+				AdditionalIncludeDirectories="../../../;../../../thirdparty/corba/include"
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="2"
 				BrowseInformation="1"
@@ -306,7 +306,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../"
+				AdditionalIncludeDirectories="../../../"
 				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				BrowseInformation="1"
@@ -372,7 +372,7 @@
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../"
+				AdditionalIncludeDirectories="../../../"
 				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="2"
 				BrowseInformation="1"
@@ -417,7 +417,7 @@
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 			>
 			<File
-				RelativePath="rdothread.cpp"
+				RelativePath="..\..\rdothread.cpp"
 				>
 				<FileConfiguration
 					Name="release|Win32"
@@ -475,7 +475,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="rdothread.h"
+				RelativePath="..\..\rdothread.h"
 				>
 			</File>
 		</Filter>
@@ -483,7 +483,7 @@
 			Name=".kernel"
 			>
 			<File
-				RelativePath="rdokernel.cpp"
+				RelativePath="..\..\rdokernel.cpp"
 				>
 				<FileConfiguration
 					Name="release|Win32"
@@ -541,7 +541,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="rdokernel.h"
+				RelativePath="..\..\rdokernel.h"
 				>
 			</File>
 		</Filter>
