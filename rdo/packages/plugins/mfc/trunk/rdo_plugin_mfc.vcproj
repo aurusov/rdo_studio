@@ -18,13 +18,13 @@
 	<Configurations>
 		<Configuration
 			Name="debug|Win32"
-			OutputDirectory="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
-			BuildLogFile="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
+			BuildLogFile="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -66,15 +66,15 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\plugins\$(ProjectName).rsp"
+				OutputFile="$(SolutionDir)bin\product\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\plugins\$(ProjectName).rsp"
 				LinkIncremental="1"
 				ModuleDefinitionFile=".\rdo_plugin_mfc.def"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).pdb"
+				ProgramDatabaseFile="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).pdb"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
+				ImportLibrary="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -101,14 +101,14 @@
 		</Configuration>
 		<Configuration
 			Name="release|Win32"
-			OutputDirectory="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
-			BuildLogFile="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
+			BuildLogFile="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -150,13 +150,13 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\plugins\$(ProjectName).rsp"
+				OutputFile="$(SolutionDir)bin\product\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\plugins\$(ProjectName).rsp"
 				LinkIncremental="1"
 				ModuleDefinitionFile=".\rdo_plugin_mfc.def"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
+				ImportLibrary="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -183,13 +183,13 @@
 		</Configuration>
 		<Configuration
 			Name="debug.corba|Win32"
-			OutputDirectory="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
-			BuildLogFile="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
+			BuildLogFile="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -232,7 +232,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\plugins\$(ProjectName).rsp"
+				OutputFile="$(SolutionDir)bin\product\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\plugins\$(ProjectName).rsp"
 				ModuleDefinitionFile=".\rdo_plugin_mfc.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -264,14 +264,14 @@
 		</Configuration>
 		<Configuration
 			Name="release.corba|Win32"
-			OutputDirectory="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
-			BuildLogFile="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
+			BuildLogFile="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -312,7 +312,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\plugins\$(ProjectName).rsp"
+				OutputFile="$(SolutionDir)bin\product\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\plugins\$(ProjectName).rsp"
 				ModuleDefinitionFile=".\rdo_plugin_mfc.def"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
@@ -343,13 +343,13 @@
 		</Configuration>
 		<Configuration
 			Name="debug.mt|Win32"
-			OutputDirectory="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
-			BuildLogFile="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
+			BuildLogFile="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -391,15 +391,15 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\plugins\$(ProjectName).rsp"
+				OutputFile="$(SolutionDir)bin\product\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\plugins\$(ProjectName).rsp"
 				LinkIncremental="1"
 				ModuleDefinitionFile=".\rdo_plugin_mfc.def"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).pdb"
+				ProgramDatabaseFile="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).pdb"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
+				ImportLibrary="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -426,14 +426,14 @@
 		</Configuration>
 		<Configuration
 			Name="release.mt|Win32"
-			OutputDirectory="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
-			BuildLogFile="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
+			BuildLogFile="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -474,13 +474,13 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\plugins\$(ProjectName).rsp"
+				OutputFile="$(SolutionDir)bin\product\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\plugins\$(ProjectName).rsp"
 				LinkIncremental="1"
 				ModuleDefinitionFile=".\rdo_plugin_mfc.def"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="$(ProjectDir)obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
+				ImportLibrary="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
 				TargetMachine="1"
 			/>
 			<Tool
