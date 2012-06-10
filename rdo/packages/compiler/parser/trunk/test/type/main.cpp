@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_SUITE(RDOParserType_Test)
 
 BOOST_AUTO_TEST_CASE(RDOParserType_Test_int)
 {
-	rdoParse::LPRDOType pType = rdo::Factory<rdoParse::RDOType__int>::create();
+	rdo::compiler::parser::LPRDOType pType = rdo::Factory<rdo::compiler::parser::RDOType__int>::create();
 	BOOST_CHECK(pType);
 }
 
