@@ -44,7 +44,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../"
+				AdditionalIncludeDirectories="../../../../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_WINDOWS;SCI_LEXER;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
@@ -131,7 +131,7 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../../../"
+				AdditionalIncludeDirectories="../../../../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_WINDOWS;SCI_LEXER;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
@@ -210,7 +210,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../;../../../thirdparty/corba/include"
+				AdditionalIncludeDirectories="../../../../../;../../../../../thirdparty/corba/include"
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;_DEBUG;_WINDOWS;SCI_LEXER;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -296,7 +296,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../../../;../../../thirdparty/corba/include"
+				AdditionalIncludeDirectories="../../../../../;../../../../../thirdparty/corba/include"
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;NDEBUG;_WINDOWS;SCI_LEXER;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
@@ -376,7 +376,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../"
+				AdditionalIncludeDirectories="../../../../../"
 				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_WINDOWS;SCI_LEXER;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
@@ -461,7 +461,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../../../"
+				AdditionalIncludeDirectories="../../../../../"
 				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_WINDOWS;SCI_LEXER;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
@@ -524,7 +524,7 @@
 				Name=".editor"
 				>
 				<File
-					RelativePath="..\edit_ctrls\rdobaseedit.cpp"
+					RelativePath="..\..\edit_ctrls\rdobaseedit.cpp"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -582,73 +582,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\edit_ctrls\rdobaseedit.h"
+					RelativePath="..\..\edit_ctrls\rdobaseedit.h"
 					>
 				</File>
 				<File
-					RelativePath="..\edit_ctrls\rdobaseeditstyle.cpp"
-					>
-					<FileConfiguration
-						Name="debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\edit_ctrls\rdobaseeditstyle.h"
-					>
-				</File>
-				<File
-					RelativePath="..\edit_ctrls\rdobuildedit.cpp"
+					RelativePath="..\..\edit_ctrls\rdobaseeditstyle.cpp"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -706,73 +644,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\edit_ctrls\rdobuildedit.h"
+					RelativePath="..\..\edit_ctrls\rdobaseeditstyle.h"
 					>
 				</File>
 				<File
-					RelativePath="..\edit_ctrls\rdobuildeditstyle.cpp"
-					>
-					<FileConfiguration
-						Name="debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\edit_ctrls\rdobuildeditstyle.h"
-					>
-				</File>
-				<File
-					RelativePath="..\edit_ctrls\rdodebugedit.cpp"
+					RelativePath="..\..\edit_ctrls\rdobuildedit.cpp"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -830,73 +706,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\edit_ctrls\rdodebugedit.h"
+					RelativePath="..\..\edit_ctrls\rdobuildedit.h"
 					>
 				</File>
 				<File
-					RelativePath="..\edit_ctrls\rdofindedit.cpp"
-					>
-					<FileConfiguration
-						Name="debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\edit_ctrls\rdofindedit.h"
-					>
-				</File>
-				<File
-					RelativePath="..\edit_ctrls\rdofindeditstyle.cpp"
+					RelativePath="..\..\edit_ctrls\rdobuildeditstyle.cpp"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -954,73 +768,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\edit_ctrls\rdofindeditstyle.h"
+					RelativePath="..\..\edit_ctrls\rdobuildeditstyle.h"
 					>
 				</File>
 				<File
-					RelativePath="..\edit_ctrls\rdologedit.cpp"
-					>
-					<FileConfiguration
-						Name="debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\edit_ctrls\rdologedit.h"
-					>
-				</File>
-				<File
-					RelativePath="..\edit_ctrls\rdologeditstyle.cpp"
+					RelativePath="..\..\edit_ctrls\rdodebugedit.cpp"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -1078,7 +830,255 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\edit_ctrls\rdologeditstyle.h"
+					RelativePath="..\..\edit_ctrls\rdodebugedit.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\edit_ctrls\rdofindedit.cpp"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\edit_ctrls\rdofindedit.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\edit_ctrls\rdofindeditstyle.cpp"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\edit_ctrls\rdofindeditstyle.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\edit_ctrls\rdologedit.cpp"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\edit_ctrls\rdologedit.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\edit_ctrls\rdologeditstyle.cpp"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\edit_ctrls\rdologeditstyle.h"
 					>
 				</File>
 			</Filter>
@@ -1086,7 +1086,7 @@
 				Name=".tracer"
 				>
 				<File
-					RelativePath="..\rdo_tracer\tracer_ctrls\rdologctrl.cpp"
+					RelativePath="..\..\rdo_tracer\tracer_ctrls\rdologctrl.cpp"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -1144,73 +1144,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\rdo_tracer\tracer_ctrls\rdologctrl.h"
+					RelativePath="..\..\rdo_tracer\tracer_ctrls\rdologctrl.h"
 					>
 				</File>
 				<File
-					RelativePath="..\rdo_tracer\tracer_ctrls\rdologstyle.cpp"
-					>
-					<FileConfiguration
-						Name="debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\rdo_tracer\tracer_ctrls\rdologstyle.h"
-					>
-				</File>
-				<File
-					RelativePath="..\rdo_tracer\tracer_ctrls\rdotracerlogctrl.cpp"
+					RelativePath="..\..\rdo_tracer\tracer_ctrls\rdologstyle.cpp"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -1268,73 +1206,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\rdo_tracer\tracer_ctrls\rdotracerlogctrl.h"
+					RelativePath="..\..\rdo_tracer\tracer_ctrls\rdologstyle.h"
 					>
 				</File>
 				<File
-					RelativePath="..\rdo_tracer\tracer_ctrls\rdotracerlogstyle.cpp"
-					>
-					<FileConfiguration
-						Name="debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\rdo_tracer\tracer_ctrls\rdotracerlogstyle.h"
-					>
-				</File>
-				<File
-					RelativePath="..\rdo_tracer\tracer_ctrls\rdotracertreectrl.cpp"
+					RelativePath="..\..\rdo_tracer\tracer_ctrls\rdotracerlogctrl.cpp"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -1392,11 +1268,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\rdo_tracer\tracer_ctrls\rdotracertreectrl.h"
+					RelativePath="..\..\rdo_tracer\tracer_ctrls\rdotracerlogctrl.h"
 					>
 				</File>
 				<File
-					RelativePath="..\rdo_tracer\tracer_ctrls\rdotracertreeitem.cpp"
+					RelativePath="..\..\rdo_tracer\tracer_ctrls\rdotracerlogstyle.cpp"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -1454,7 +1330,131 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\rdo_tracer\tracer_ctrls\rdotracertreeitem.h"
+					RelativePath="..\..\rdo_tracer\tracer_ctrls\rdotracerlogstyle.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\rdo_tracer\tracer_ctrls\rdotracertreectrl.cpp"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\rdo_tracer\tracer_ctrls\rdotracertreectrl.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\rdo_tracer\tracer_ctrls\rdotracertreeitem.cpp"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\rdo_tracer\tracer_ctrls\rdotracertreeitem.h"
 					>
 				</File>
 			</Filter>
@@ -1463,75 +1463,75 @@
 			Name=".tracer"
 			>
 			<File
-				RelativePath="..\rdo_tracer\rdotracer.cpp"
+				RelativePath="..\..\rdo_tracer\rdotracer.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\rdo_tracer\rdotracer.h"
+				RelativePath="..\..\rdo_tracer\rdotracer.h"
 				>
 			</File>
 			<File
-				RelativePath="..\rdo_tracer\rdotracerbase.cpp"
+				RelativePath="..\..\rdo_tracer\rdotracerbase.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\rdo_tracer\rdotracerbase.h"
+				RelativePath="..\..\rdo_tracer\rdotracerbase.h"
 				>
 			</File>
 			<File
-				RelativePath="..\rdo_tracer\rdotraceroperation.cpp"
+				RelativePath="..\..\rdo_tracer\rdotraceroperation.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\rdo_tracer\rdotraceroperation.h"
+				RelativePath="..\..\rdo_tracer\rdotraceroperation.h"
 				>
 			</File>
 			<File
-				RelativePath="..\rdo_tracer\rdotracerpattern.cpp"
+				RelativePath="..\..\rdo_tracer\rdotracerpattern.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\rdo_tracer\rdotracerpattern.h"
+				RelativePath="..\..\rdo_tracer\rdotracerpattern.h"
 				>
 			</File>
 			<File
-				RelativePath="..\rdo_tracer\rdotracerresource.cpp"
+				RelativePath="..\..\rdo_tracer\rdotracerresource.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\rdo_tracer\rdotracerresource.h"
+				RelativePath="..\..\rdo_tracer\rdotracerresource.h"
 				>
 			</File>
 			<File
-				RelativePath="..\rdo_tracer\rdotracerrestype.cpp"
+				RelativePath="..\..\rdo_tracer\rdotracerrestype.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\rdo_tracer\rdotracerrestype.h"
+				RelativePath="..\..\rdo_tracer\rdotracerrestype.h"
 				>
 			</File>
 			<File
-				RelativePath="..\rdo_tracer\rdotracerresult.cpp"
+				RelativePath="..\..\rdo_tracer\rdotracerresult.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\rdo_tracer\rdotracerresult.h"
+				RelativePath="..\..\rdo_tracer\rdotracerresult.h"
 				>
 			</File>
 			<File
-				RelativePath="..\rdo_tracer\rdotracerserie.cpp"
+				RelativePath="..\..\rdo_tracer\rdotracerserie.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\rdo_tracer\rdotracerserie.h"
+				RelativePath="..\..\rdo_tracer\rdotracerserie.h"
 				>
 			</File>
 			<File
-				RelativePath="..\rdo_tracer\rdotracervalues.cpp"
+				RelativePath="..\..\rdo_tracer\rdotracervalues.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\rdo_tracer\rdotracervalues.h"
+				RelativePath="..\..\rdo_tracer\rdotracervalues.h"
 				>
 			</File>
 		</Filter>
@@ -1539,7 +1539,7 @@
 			Name=".frame"
 			>
 			<File
-				RelativePath="..\src\frame\document.cpp"
+				RelativePath="..\..\src\frame\document.cpp"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -1594,11 +1594,11 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\src\frame\document.h"
+				RelativePath="..\..\src\frame\document.h"
 				>
 			</File>
 			<File
-				RelativePath="..\src\frame\manager.cpp"
+				RelativePath="..\..\src\frame\manager.cpp"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -1653,19 +1653,19 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\src\frame\manager.h"
+				RelativePath="..\..\src\frame\manager.h"
 				>
 			</File>
 			<File
-				RelativePath="..\src\frame\options_ctrl.cpp"
+				RelativePath="..\..\src\frame\options_ctrl.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\src\frame\options_ctrl.h"
+				RelativePath="..\..\src\frame\options_ctrl.h"
 				>
 			</File>
 			<File
-				RelativePath="..\src\frame\style.cpp"
+				RelativePath="..\..\src\frame\style.cpp"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -1720,19 +1720,19 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\src\frame\style.h"
+				RelativePath="..\..\src\frame\style.h"
 				>
 			</File>
 			<File
-				RelativePath="..\src\frame\tree_ctrl.cpp"
+				RelativePath="..\..\src\frame\tree_ctrl.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\src\frame\tree_ctrl.h"
+				RelativePath="..\..\src\frame\tree_ctrl.h"
 				>
 			</File>
 			<File
-				RelativePath="..\src\frame\view.cpp"
+				RelativePath="..\..\src\frame\view.cpp"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -1787,7 +1787,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\src\frame\view.h"
+				RelativePath="..\..\src\frame\view.h"
 				>
 			</File>
 		</Filter>
@@ -1796,127 +1796,127 @@
 			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 			>
 			<File
-				RelativePath="..\res\ac_data.xpm"
+				RelativePath="..\..\res\ac_data.xpm"
 				>
 			</File>
 			<File
-				RelativePath="..\res\ac_function.xpm"
+				RelativePath="..\..\res\ac_function.xpm"
 				>
 			</File>
 			<File
-				RelativePath="..\res\ac_trace.xpm"
+				RelativePath="..\..\res\ac_trace.xpm"
 				>
 			</File>
 			<File
-				RelativePath="..\res\editToolbar.bmp"
+				RelativePath="..\..\res\editToolbar.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\res\editToolbar_d.bmp"
+				RelativePath="..\..\res\editToolbar_d.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\res\fileToolbar.bmp"
+				RelativePath="..\..\res\fileToolbar.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\res\fileToolbar_d.bmp"
+				RelativePath="..\..\res\fileToolbar_d.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\res\flow_connector.cur"
+				RelativePath="..\..\res\flow_connector.cur"
 				>
 			</File>
 			<File
-				RelativePath="..\res\flow_dock_in.cur"
+				RelativePath="..\..\res\flow_dock_in.cur"
 				>
 			</File>
 			<File
-				RelativePath="..\res\flow_dock_not.cur"
+				RelativePath="..\..\res\flow_dock_not.cur"
 				>
 			</File>
 			<File
-				RelativePath="..\res\flow_move.cur"
+				RelativePath="..\..\res\flow_move.cur"
 				>
 			</File>
 			<File
-				RelativePath="..\res\flow_rotate.cur"
+				RelativePath="..\..\res\flow_rotate.cur"
 				>
 			</File>
 			<File
-				RelativePath="..\res\flow_rotate_center.cur"
+				RelativePath="..\..\res\flow_rotate_center.cur"
 				>
 			</File>
 			<File
-				RelativePath="..\res\flow_rotate_tl.cur"
+				RelativePath="..\..\res\flow_rotate_tl.cur"
 				>
 			</File>
 			<File
-				RelativePath="..\res\flow_scale_lr.cur"
+				RelativePath="..\..\res\flow_scale_lr.cur"
 				>
 			</File>
 			<File
-				RelativePath="..\res\flow_scale_tb.cur"
+				RelativePath="..\..\res\flow_scale_tb.cur"
 				>
 			</File>
 			<File
-				RelativePath="..\res\flow_scale_tlbr.cur"
+				RelativePath="..\..\res\flow_scale_tlbr.cur"
 				>
 			</File>
 			<File
-				RelativePath="..\res\flow_scale_trbl.cur"
+				RelativePath="..\..\res\flow_scale_trbl.cur"
 				>
 			</File>
 			<File
-				RelativePath="..\res\flow_select.cur"
+				RelativePath="..\..\res\flow_select.cur"
 				>
 			</File>
 			<File
-				RelativePath="..\res\flow_trash.cur"
+				RelativePath="..\..\res\flow_trash.cur"
 				>
 			</File>
 			<File
-				RelativePath="..\res\flowchart_default.bmp"
+				RelativePath="..\..\res\flowchart_default.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\res\flowchart_icon.ico"
+				RelativePath="..\..\res\flowchart_icon.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\res\frameoptionsctrl.bmp"
+				RelativePath="..\..\res\frameoptionsctrl.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\res\framestreectrl.bmp"
+				RelativePath="..\..\res\framestreectrl.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\res\modelToolbar_d.bmp"
+				RelativePath="..\..\res\modelToolbar_d.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\res\modeToolbar.bmp"
+				RelativePath="..\..\res\modeToolbar.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\res\pagectrl_close.bmp"
+				RelativePath="..\..\res\pagectrl_close.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\res\pagectrl_close_over.bmp"
+				RelativePath="..\..\res\pagectrl_close_over.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\res\pagectrl_page.bmp"
+				RelativePath="..\..\res\pagectrl_page.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\res\RAO-studio.manifest"
+				RelativePath="..\..\res\RAO-studio.manifest"
 				>
 			</File>
 			<File
-				RelativePath="..\res\RAO-studio.run.error.txt"
+				RelativePath="..\..\res\RAO-studio.run.error.txt"
 				>
 				<FileConfiguration
 					Name="release|Win32"
@@ -1950,11 +1950,11 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\res\rdo_studio.ico"
+				RelativePath="..\..\res\rdo_studio.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\rdo_studio.rc"
+				RelativePath="..\..\rdo_studio.rc"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -2006,75 +2006,75 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\res\rdo_studio.rc2"
+				RelativePath="..\..\res\rdo_studio.rc2"
 				>
 			</File>
 			<File
-				RelativePath="..\rdo_studio.reg"
+				RelativePath="..\..\rdo_studio.reg"
 				>
 			</File>
 			<File
-				RelativePath="..\res\rdostudiochartdoc.ico"
+				RelativePath="..\..\res\rdostudiochartdoc.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\res\rdostudioeditdoc.ico"
+				RelativePath="..\..\res\rdostudioeditdoc.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\res\rdostudioframedoc.ico"
+				RelativePath="..\..\res\rdostudioframedoc.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\res\rdostudiomodeldoc.ico"
+				RelativePath="..\..\res\rdostudiomodeldoc.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\Resource.h"
+				RelativePath="..\..\Resource.h"
 				>
 			</File>
 			<File
-				RelativePath="..\resource.hm"
+				RelativePath="..\..\resource.hm"
 				>
 			</File>
 			<File
-				RelativePath="..\res\toolbar1.bmp"
+				RelativePath="..\..\res\toolbar1.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\res\toolbar_empty.bmp"
+				RelativePath="..\..\res\toolbar_empty.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\res\toolbar_mainframe.bmp"
+				RelativePath="..\..\res\toolbar_mainframe.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\res\toolbar_mainframe_d.bmp"
+				RelativePath="..\..\res\toolbar_mainframe_d.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\res\toolbar_styleandcolor.bmp"
+				RelativePath="..\..\res\toolbar_styleandcolor.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\res\tracertreectrl.bmp"
+				RelativePath="..\..\res\tracertreectrl.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\res\trash.bmp"
+				RelativePath="..\..\res\trash.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\res\version.h"
+				RelativePath="..\..\res\version.h"
 				>
 			</File>
 			<File
-				RelativePath="..\res\zoomToolbar.bmp"
+				RelativePath="..\..\res\zoomToolbar.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\res\zoomToolbar_d.bmp"
+				RelativePath="..\..\res\zoomToolbar_d.bmp"
 				>
 			</File>
 		</Filter>
@@ -2082,39 +2082,39 @@
 			Name=".application"
 			>
 			<File
-				RelativePath="..\src\application.cpp"
+				RelativePath="..\..\src\application.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\src\application.h"
+				RelativePath="..\..\src\application.h"
 				>
 			</File>
 			<File
-				RelativePath="..\src\child_frm.cpp"
+				RelativePath="..\..\src\child_frm.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\src\child_frm.h"
+				RelativePath="..\..\src\child_frm.h"
 				>
 			</File>
 			<File
-				RelativePath="..\src\dock_wnd.cpp"
+				RelativePath="..\..\src\dock_wnd.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\src\dock_wnd.h"
+				RelativePath="..\..\src\dock_wnd.h"
 				>
 			</File>
 			<File
-				RelativePath="..\src\main_frm.cpp"
+				RelativePath="..\..\src\main_frm.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\src\main_frm.h"
+				RelativePath="..\..\src\main_frm.h"
 				>
 			</File>
 			<File
-				RelativePath="..\src\options.cpp"
+				RelativePath="..\..\src\options.cpp"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -2169,35 +2169,35 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\src\options.h"
+				RelativePath="..\..\src\options.h"
 				>
 			</File>
 			<File
-				RelativePath="..\src\output.cpp"
+				RelativePath="..\..\src\output.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\src\output.h"
+				RelativePath="..\..\src\output.h"
 				>
 			</File>
 			<File
-				RelativePath="..\src\plugins.cpp"
+				RelativePath="..\..\src\plugins.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\src\plugins.h"
+				RelativePath="..\..\src\plugins.h"
 				>
 			</File>
 			<File
-				RelativePath="..\src\status_bar.cpp"
+				RelativePath="..\..\src\status_bar.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\src\status_bar.h"
+				RelativePath="..\..\src\status_bar.h"
 				>
 			</File>
 			<File
-				RelativePath="..\src\style.cpp"
+				RelativePath="..\..\src\style.cpp"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -2252,19 +2252,19 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\src\style.h"
+				RelativePath="..\..\src\style.h"
 				>
 			</File>
 			<File
-				RelativePath="..\src\thread.cpp"
+				RelativePath="..\..\src\thread.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\src\thread.h"
+				RelativePath="..\..\src\thread.h"
 				>
 			</File>
 			<File
-				RelativePath="..\src\view.cpp"
+				RelativePath="..\..\src\view.cpp"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -2319,15 +2319,15 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\src\view.h"
+				RelativePath="..\..\src\view.h"
 				>
 			</File>
 			<File
-				RelativePath="..\src\workspace.cpp"
+				RelativePath="..\..\src\workspace.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\src\workspace.h"
+				RelativePath="..\..\src\workspace.h"
 				>
 			</File>
 		</Filter>
@@ -2335,7 +2335,7 @@
 			Name=".model"
 			>
 			<File
-				RelativePath="..\src\model\document.cpp"
+				RelativePath="..\..\src\model\document.cpp"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -2390,19 +2390,19 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\src\model\document.h"
+				RelativePath="..\..\src\model\document.h"
 				>
 			</File>
 			<File
-				RelativePath="..\src\model\model.cpp"
+				RelativePath="..\..\src\model\model.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\src\model\model.h"
+				RelativePath="..\..\src\model\model.h"
 				>
 			</File>
 			<File
-				RelativePath="..\src\model\new.cpp"
+				RelativePath="..\..\src\model\new.cpp"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -2457,11 +2457,11 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\src\model\new.h"
+				RelativePath="..\..\src\model\new.h"
 				>
 			</File>
 			<File
-				RelativePath="..\src\model\view.cpp"
+				RelativePath="..\..\src\model\view.cpp"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -2516,7 +2516,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\src\model\view.h"
+				RelativePath="..\..\src\model\view.h"
 				>
 			</File>
 		</Filter>
@@ -2524,15 +2524,15 @@
 			Name=".chart"
 			>
 			<File
-				RelativePath="..\src\chart\doc_serie.cpp"
+				RelativePath="..\..\src\chart\doc_serie.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\src\chart\doc_serie.h"
+				RelativePath="..\..\src\chart\doc_serie.h"
 				>
 			</File>
 			<File
-				RelativePath="..\src\chart\document.cpp"
+				RelativePath="..\..\src\chart\document.cpp"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -2587,11 +2587,11 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\src\chart\document.h"
+				RelativePath="..\..\src\chart\document.h"
 				>
 			</File>
 			<File
-				RelativePath="..\src\chart\options.cpp"
+				RelativePath="..\..\src\chart\options.cpp"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -2646,11 +2646,11 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\src\chart\options.h"
+				RelativePath="..\..\src\chart\options.h"
 				>
 			</File>
 			<File
-				RelativePath="..\src\chart\view.cpp"
+				RelativePath="..\..\src\chart\view.cpp"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -2705,15 +2705,15 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\src\chart\view.h"
+				RelativePath="..\..\src\chart\view.h"
 				>
 			</File>
 			<File
-				RelativePath="..\src\chart\view_style.cpp"
+				RelativePath="..\..\src\chart\view_style.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\src\chart\view_style.h"
+				RelativePath="..\..\src\chart\view_style.h"
 				>
 			</File>
 		</Filter>
@@ -2724,7 +2724,7 @@
 				Name=".control"
 				>
 				<File
-					RelativePath="..\rdo_edit\rdoeditorbaseedit.cpp"
+					RelativePath="..\..\rdo_edit\rdoeditorbaseedit.cpp"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -2782,73 +2782,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\rdo_edit\rdoeditorbaseedit.h"
+					RelativePath="..\..\rdo_edit\rdoeditorbaseedit.h"
 					>
 				</File>
 				<File
-					RelativePath="..\rdo_edit\rdoeditorbaseeditstyle.cpp"
-					>
-					<FileConfiguration
-						Name="debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\rdo_edit\rdoeditorbaseeditstyle.h"
-					>
-				</File>
-				<File
-					RelativePath="..\rdo_edit\rdoeditoredit.cpp"
+					RelativePath="..\..\rdo_edit\rdoeditorbaseeditstyle.cpp"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -2906,73 +2844,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\rdo_edit\rdoeditoredit.h"
+					RelativePath="..\..\rdo_edit\rdoeditorbaseeditstyle.h"
 					>
 				</File>
 				<File
-					RelativePath="..\rdo_edit\rdoeditoreditstyle.cpp"
-					>
-					<FileConfiguration
-						Name="debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\rdo_edit\rdoeditoreditstyle.h"
-					>
-				</File>
-				<File
-					RelativePath="..\rdo_edit\rdoeditorresults.cpp"
+					RelativePath="..\..\rdo_edit\rdoeditoredit.cpp"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -3030,73 +2906,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\rdo_edit\rdoeditorresults.h"
+					RelativePath="..\..\rdo_edit\rdoeditoredit.h"
 					>
 				</File>
 				<File
-					RelativePath="..\rdo_edit\rdoeditorresultsstyle.cpp"
-					>
-					<FileConfiguration
-						Name="debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\rdo_edit\rdoeditorresultsstyle.h"
-					>
-				</File>
-				<File
-					RelativePath="..\rdo_edit\rdoeditortabctrl.cpp"
+					RelativePath="..\..\rdo_edit\rdoeditoreditstyle.cpp"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -3154,7 +2968,193 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\rdo_edit\rdoeditortabctrl.h"
+					RelativePath="..\..\rdo_edit\rdoeditoreditstyle.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\rdo_edit\rdoeditorresults.cpp"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\rdo_edit\rdoeditorresults.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\rdo_edit\rdoeditorresultsstyle.cpp"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\rdo_edit\rdoeditorresultsstyle.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\rdo_edit\rdoeditortabctrl.cpp"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							AdditionalIncludeDirectories=""
+							PreprocessorDefinitions=""
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\rdo_edit\rdoeditortabctrl.h"
 					>
 				</File>
 			</Filter>
@@ -3162,7 +3162,7 @@
 				Name=".doc.view"
 				>
 				<File
-					RelativePath="..\src\edit\document.cpp"
+					RelativePath="..\..\src\edit\document.cpp"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -3217,19 +3217,19 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\src\edit\document.h"
+					RelativePath="..\..\src\edit\document.h"
 					>
 				</File>
 				<File
-					RelativePath="..\src\edit\document_base.cpp"
+					RelativePath="..\..\src\edit\document_base.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\src\edit\document_base.h"
+					RelativePath="..\..\src\edit\document_base.h"
 					>
 				</File>
 				<File
-					RelativePath="..\src\edit\view.cpp"
+					RelativePath="..\..\src\edit\view.cpp"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -3284,15 +3284,15 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\src\edit\view.h"
+					RelativePath="..\..\src\edit\view.h"
 					>
 				</File>
 				<File
-					RelativePath="..\src\edit\view_base.cpp"
+					RelativePath="..\..\src\edit\view_base.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\src\edit\view_base.h"
+					RelativePath="..\..\src\edit\view_base.h"
 					>
 				</File>
 			</Filter>
@@ -3301,59 +3301,59 @@
 			Name=".process"
 			>
 			<File
-				RelativePath="..\rdo_process\rdoprocess_childfrm.cpp"
+				RelativePath="..\..\rdo_process\rdoprocess_childfrm.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\rdo_process\rdoprocess_childfrm.h"
+				RelativePath="..\..\rdo_process\rdoprocess_childfrm.h"
 				>
 			</File>
 			<File
-				RelativePath="..\rdo_process\rdoprocess_dockwnd.cpp"
+				RelativePath="..\..\rdo_process\rdoprocess_dockwnd.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\rdo_process\rdoprocess_dockwnd.h"
+				RelativePath="..\..\rdo_process\rdoprocess_dockwnd.h"
 				>
 			</File>
 			<File
-				RelativePath="..\rdo_process\rdoprocess_docview.cpp"
+				RelativePath="..\..\rdo_process\rdoprocess_docview.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\rdo_process\rdoprocess_docview.h"
+				RelativePath="..\..\rdo_process\rdoprocess_docview.h"
 				>
 			</File>
 			<File
-				RelativePath="..\rdo_process\rdoprocess_method_manager.cpp"
+				RelativePath="..\..\rdo_process\rdoprocess_method_manager.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\rdo_process\rdoprocess_method_manager.h"
+				RelativePath="..\..\rdo_process\rdoprocess_method_manager.h"
 				>
 			</File>
 			<File
-				RelativePath="..\rdo_process\rdoprocess_pagectrl.cpp"
+				RelativePath="..\..\rdo_process\rdoprocess_pagectrl.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\rdo_process\rdoprocess_pagectrl.h"
+				RelativePath="..\..\rdo_process\rdoprocess_pagectrl.h"
 				>
 			</File>
 			<File
-				RelativePath="..\rdo_process\rdoprocess_project.cpp"
+				RelativePath="..\..\rdo_process\rdoprocess_project.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\rdo_process\rdoprocess_project.h"
+				RelativePath="..\..\rdo_process\rdoprocess_project.h"
 				>
 			</File>
 			<File
-				RelativePath="..\rdo_process\rdoprocess_toolbar.cpp"
+				RelativePath="..\..\rdo_process\rdoprocess_toolbar.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\rdo_process\rdoprocess_toolbar.h"
+				RelativePath="..\..\rdo_process\rdoprocess_toolbar.h"
 				>
 			</File>
 		</Filter>
@@ -3361,7 +3361,7 @@
 			Name=".pch"
 			>
 			<File
-				RelativePath="..\pch\stdpch.cpp"
+				RelativePath="..\..\pch\stdpch.cpp"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -3413,7 +3413,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\pch\stdpch.h"
+				RelativePath="..\..\pch\stdpch.h"
 				>
 			</File>
 		</Filter>
@@ -3424,73 +3424,11 @@
 				Name=".scintilla"
 				>
 				<File
-					RelativePath="..\..\..\thirdparty\sci\Accessor.h"
+					RelativePath="..\..\..\..\thirdparty\sci\Accessor.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\sci\AutoComplete.cxx"
-					>
-					<FileConfiguration
-						Name="debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\..\thirdparty\sci\AutoComplete.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\thirdparty\sci\CallTip.cxx"
+					RelativePath="..\..\..\..\thirdparty\sci\AutoComplete.cxx"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -3548,73 +3486,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\sci\CallTip.h"
+					RelativePath="..\..\..\..\thirdparty\sci\AutoComplete.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\sci\CellBuffer.cxx"
-					>
-					<FileConfiguration
-						Name="debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\..\thirdparty\sci\CellBuffer.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\thirdparty\sci\ContractionState.cxx"
+					RelativePath="..\..\..\..\thirdparty\sci\CallTip.cxx"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -3672,73 +3548,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\sci\ContractionState.h"
+					RelativePath="..\..\..\..\thirdparty\sci\CallTip.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\sci\Document.cxx"
-					>
-					<FileConfiguration
-						Name="debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\..\thirdparty\sci\Document.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\thirdparty\sci\DocumentAccessor.cxx"
+					RelativePath="..\..\..\..\thirdparty\sci\CellBuffer.cxx"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -3796,73 +3610,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\sci\DocumentAccessor.h"
+					RelativePath="..\..\..\..\thirdparty\sci\CellBuffer.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\sci\Editor.cxx"
-					>
-					<FileConfiguration
-						Name="debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\..\thirdparty\sci\Editor.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\thirdparty\sci\ExternalLexer.cxx"
+					RelativePath="..\..\..\..\thirdparty\sci\ContractionState.cxx"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -3920,73 +3672,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\sci\ExternalLexer.h"
+					RelativePath="..\..\..\..\thirdparty\sci\ContractionState.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\sci\Indicator.cxx"
-					>
-					<FileConfiguration
-						Name="debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\..\thirdparty\sci\Indicator.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\thirdparty\sci\KeyMap.cxx"
+					RelativePath="..\..\..\..\thirdparty\sci\Document.cxx"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -4044,73 +3734,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\sci\KeyMap.h"
+					RelativePath="..\..\..\..\thirdparty\sci\Document.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\sci\KeyWords.cxx"
-					>
-					<FileConfiguration
-						Name="debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\..\thirdparty\sci\KeyWords.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\thirdparty\sci\LexFind.cxx"
+					RelativePath="..\..\..\..\thirdparty\sci\DocumentAccessor.cxx"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -4168,73 +3796,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\sci\LexFind.h"
+					RelativePath="..\..\..\..\thirdparty\sci\DocumentAccessor.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\sci\LexRdo.cxx"
-					>
-					<FileConfiguration
-						Name="debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\..\thirdparty\sci\LexRdo.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\thirdparty\sci\LexText.cxx"
+					RelativePath="..\..\..\..\thirdparty\sci\Editor.cxx"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -4292,85 +3858,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\sci\License.txt"
+					RelativePath="..\..\..\..\thirdparty\sci\Editor.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\sci\LineMarker.cxx"
-					>
-					<FileConfiguration
-						Name="debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\..\thirdparty\sci\LineMarker.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\thirdparty\sci\Margin.cur"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\thirdparty\sci\Platform.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\thirdparty\sci\PlatformRes.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\thirdparty\sci\PlatWin.cxx"
+					RelativePath="..\..\..\..\thirdparty\sci\ExternalLexer.cxx"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -4428,7 +3920,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\sci\PropSet.cxx"
+					RelativePath="..\..\..\..\thirdparty\sci\ExternalLexer.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\thirdparty\sci\Indicator.cxx"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -4486,81 +3982,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\sci\PropSet.h"
+					RelativePath="..\..\..\..\thirdparty\sci\Indicator.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\sci\RESearch.cxx"
-					>
-					<FileConfiguration
-						Name="debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\..\thirdparty\sci\RESearch.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\thirdparty\sci\SciLexer.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\thirdparty\sci\Scintilla.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\thirdparty\sci\ScintillaBase.cxx"
+					RelativePath="..\..\..\..\thirdparty\sci\KeyMap.cxx"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -4618,15 +4044,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\sci\ScintillaBase.h"
+					RelativePath="..\..\..\..\thirdparty\sci\KeyMap.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\sci\ScintillaWidget.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\thirdparty\sci\ScintillaWin.cxx"
+					RelativePath="..\..\..\..\thirdparty\sci\KeyWords.cxx"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -4684,73 +4106,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\sci\SString.h"
+					RelativePath="..\..\..\..\thirdparty\sci\KeyWords.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\sci\Style.cxx"
-					>
-					<FileConfiguration
-						Name="debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\..\thirdparty\sci\Style.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\thirdparty\sci\StyleContext.cxx"
+					RelativePath="..\..\..\..\thirdparty\sci\LexFind.cxx"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -4808,15 +4168,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\sci\StyleContext.h"
+					RelativePath="..\..\..\..\thirdparty\sci\LexFind.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\sci\SVector.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\thirdparty\sci\UniConversion.cxx"
+					RelativePath="..\..\..\..\thirdparty\sci\LexRdo.cxx"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -4874,73 +4230,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\sci\UniConversion.h"
+					RelativePath="..\..\..\..\thirdparty\sci\LexRdo.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\sci\ViewStyle.cxx"
-					>
-					<FileConfiguration
-						Name="debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-							UsePrecompiledHeader="0"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\..\thirdparty\sci\ViewStyle.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\thirdparty\sci\WindowAccessor.cxx"
+					RelativePath="..\..\..\..\thirdparty\sci\LexText.cxx"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -4998,11 +4292,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\sci\WindowAccessor.h"
+					RelativePath="..\..\..\..\thirdparty\sci\License.txt"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\sci\XPM.cxx"
+					RelativePath="..\..\..\..\thirdparty\sci\LineMarker.cxx"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -5060,7 +4354,713 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\sci\XPM.h"
+					RelativePath="..\..\..\..\thirdparty\sci\LineMarker.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\thirdparty\sci\Margin.cur"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\thirdparty\sci\Platform.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\thirdparty\sci\PlatformRes.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\thirdparty\sci\PlatWin.cxx"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\..\..\thirdparty\sci\PropSet.cxx"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\..\..\thirdparty\sci\PropSet.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\thirdparty\sci\RESearch.cxx"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\..\..\thirdparty\sci\RESearch.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\thirdparty\sci\SciLexer.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\thirdparty\sci\Scintilla.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\thirdparty\sci\ScintillaBase.cxx"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\..\..\thirdparty\sci\ScintillaBase.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\thirdparty\sci\ScintillaWidget.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\thirdparty\sci\ScintillaWin.cxx"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\..\..\thirdparty\sci\SString.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\thirdparty\sci\Style.cxx"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\..\..\thirdparty\sci\Style.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\thirdparty\sci\StyleContext.cxx"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\..\..\thirdparty\sci\StyleContext.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\thirdparty\sci\SVector.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\thirdparty\sci\UniConversion.cxx"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\..\..\thirdparty\sci\UniConversion.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\thirdparty\sci\ViewStyle.cxx"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\..\..\thirdparty\sci\ViewStyle.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\thirdparty\sci\WindowAccessor.cxx"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\..\..\thirdparty\sci\WindowAccessor.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\thirdparty\sci\XPM.cxx"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.corba|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.mt|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\..\..\thirdparty\sci\XPM.h"
 					>
 				</File>
 			</Filter>
@@ -5068,7 +5068,7 @@
 				Name=".sizecbar"
 				>
 				<File
-					RelativePath="..\..\..\thirdparty\sizecbar\scbarg.cpp"
+					RelativePath="..\..\..\..\thirdparty\sizecbar\scbarg.cpp"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -5120,11 +5120,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\sizecbar\scbarg.h"
+					RelativePath="..\..\..\..\thirdparty\sizecbar\scbarg.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\sizecbar\sizecbar.cpp"
+					RelativePath="..\..\..\..\thirdparty\sizecbar\sizecbar.cpp"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -5176,7 +5176,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\sizecbar\sizecbar.h"
+					RelativePath="..\..\..\..\thirdparty\sizecbar\sizecbar.h"
 					>
 				</File>
 			</Filter>
@@ -5184,7 +5184,7 @@
 				Name=".win.registry"
 				>
 				<File
-					RelativePath="..\..\..\thirdparty\win_registry\Registry.cpp"
+					RelativePath="..\..\..\..\thirdparty\win_registry\Registry.cpp"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -5236,11 +5236,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\win_registry\Registry.h"
+					RelativePath="..\..\..\..\thirdparty\win_registry\Registry.h"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\thirdparty\win_registry\resource.h"
+					RelativePath="..\..\..\..\thirdparty\win_registry\resource.h"
 					>
 				</File>
 			</Filter>
