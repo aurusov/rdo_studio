@@ -81,7 +81,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_help_lang_eng", "..\hel
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_help_studio_rus", "..\help\rdo_studio_rus\rdo_studio_rus.vcproj", "{083D1F44-0D2E-422B-966D-0AEC03F89807}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_studio", "rdo_studio.vcproj", "{B24B66FC-B6FB-4051-AB29-93AF90570C26}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_studio", "..\projects\common\rdo_studio.vcproj", "{B24B66FC-B6FB-4051-AB29-93AF90570C26}"
 	ProjectSection(ProjectDependencies) = postProject
 		{89A1E353-E2DC-495C-B403-742BE206ACED} = {89A1E353-E2DC-495C-B403-742BE206ACED}
 		{9EEDD880-5EA7-40E5-B065-DA72B19892F4} = {9EEDD880-5EA7-40E5-B065-DA72B19892F4}
@@ -136,7 +136,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_plugin_mfc", "..\plugin
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_plugin", "..\plugins\common\rdo_plugin.vcproj", "{1FACE2E3-B02E-45E1-9A93-56FD00508301}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_version", "rdo_version.vcproj", "{6A0AC201-55B9-4861-8339-5AD42572B2FC}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_version", "..\projects\common\rdo_version.vcproj", "{6A0AC201-55B9-4861-8339-5AD42572B2FC}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_ctrls", "..\..\..\ui\mfc_ctrls\projects\common\rdo_ctrls.vcproj", "{07426CDA-CE5C-4545-9C50-FF25E80CDF96}"
 EndProject
