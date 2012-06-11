@@ -44,7 +44,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../"
+				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				BrowseInformation="1"
@@ -113,7 +113,7 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../../"
+				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="2"
 				BrowseInformation="1"
@@ -179,7 +179,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../;../../thirdparty/corba/include"
+				AdditionalIncludeDirectories="../../../../;../../../../thirdparty/corba/include"
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4;BOOST_TYPEOF_SILENT"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -248,7 +248,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../../;../../thirdparty/corba/include"
+				AdditionalIncludeDirectories="../../../../;../../../../thirdparty/corba/include"
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="2"
 				BrowseInformation="1"
@@ -314,7 +314,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../"
+				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				BrowseInformation="1"
@@ -382,7 +382,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../../"
+				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501;__WIN32__;__x86__;_WIN32_WINNT=0x0400;__NT__;__OSVERSION__=4;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="2"
 				BrowseInformation="1"
@@ -425,15 +425,15 @@
 	</References>
 	<Files>
 		<File
-			RelativePath=".\error_code.h"
+			RelativePath="..\..\error_code.h"
 			>
 		</File>
 		<File
-			RelativePath=".\namespace.h"
+			RelativePath="..\..\namespace.h"
 			>
 		</File>
 		<File
-			RelativePath="rdosimwin.cpp"
+			RelativePath="..\..\rdosimwin.cpp"
 			>
 			<FileConfiguration
 				Name="debug|Win32"
@@ -491,11 +491,11 @@
 			</FileConfiguration>
 		</File>
 		<File
-			RelativePath="rdosimwin.h"
+			RelativePath="..\..\rdosimwin.h"
 			>
 		</File>
 		<File
-			RelativePath=".\show_mode.h"
+			RelativePath="..\..\show_mode.h"
 			>
 		</File>
 	</Files>
