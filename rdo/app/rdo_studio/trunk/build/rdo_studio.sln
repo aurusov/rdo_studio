@@ -36,38 +36,38 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".converter", ".converter", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".process", ".process", "{7ECBB553-A3BC-426A-B472-66C7947C39A8}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "utils_common", "..\..\..\utils\utils_common.vcproj", "{AC7C7972-A31D-4CDE-99E5-B56A19AB6457}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "utils_common", "..\..\..\utils\projects\common\utils_common.vcproj", "{AC7C7972-A31D-4CDE-99E5-B56A19AB6457}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_repository", "..\..\..\repository\rdo_repository.vcproj", "{FF8088D9-472E-4480-901D-009B51311853}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_repository", "..\..\..\repository\projects\common\rdo_repository.vcproj", "{FF8088D9-472E-4480-901D-009B51311853}"
 	ProjectSection(ProjectDependencies) = postProject
 		{89A1E353-E2DC-495C-B403-742BE206ACED} = {89A1E353-E2DC-495C-B403-742BE206ACED}
 		{048B01A3-8722-476D-AF0C-DF56EA18E57B} = {048B01A3-8722-476D-AF0C-DF56EA18E57B}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_kernel", "..\..\..\kernel\rdo_kernel.vcproj", "{048B01A3-8722-476D-AF0C-DF56EA18E57B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_kernel", "..\..\..\kernel\projects\common\rdo_kernel.vcproj", "{048B01A3-8722-476D-AF0C-DF56EA18E57B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{7FDB2504-B35B-4698-88A5-55B7112E01F4} = {7FDB2504-B35B-4698-88A5-55B7112E01F4}
 		{AC7C7972-A31D-4CDE-99E5-B56A19AB6457} = {AC7C7972-A31D-4CDE-99E5-B56A19AB6457}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_runtime", "..\..\..\simulator\runtime\rdo_runtime.vcproj", "{C34EF28F-1D66-4CEE-B435-7C420DAF0AD3}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_runtime", "..\..\..\simulator\runtime\projects\common\rdo_runtime.vcproj", "{C34EF28F-1D66-4CEE-B435-7C420DAF0AD3}"
 	ProjectSection(ProjectDependencies) = postProject
 		{AC7C7972-A31D-4CDE-99E5-B56A19AB6457} = {AC7C7972-A31D-4CDE-99E5-B56A19AB6457}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_parser", "..\..\..\simulator\compiler\parser\rdo_parser.vcproj", "{7FDB2504-B35B-4698-88A5-55B7112E01F4}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_parser", "..\..\..\simulator\compiler\parser\projects\common\rdo_parser.vcproj", "{7FDB2504-B35B-4698-88A5-55B7112E01F4}"
 	ProjectSection(ProjectDependencies) = postProject
 		{AC7C7972-A31D-4CDE-99E5-B56A19AB6457} = {AC7C7972-A31D-4CDE-99E5-B56A19AB6457}
 		{C34EF28F-1D66-4CEE-B435-7C420DAF0AD3} = {C34EF28F-1D66-4CEE-B435-7C420DAF0AD3}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_mbuilder", "..\..\..\simulator\compiler\mbuilder\rdo_mbuilder.vcproj", "{14EF6EFF-2AAE-4E22-8293-8B2FEABA688F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_mbuilder", "..\..\..\simulator\compiler\mbuilder\projects\common\rdo_mbuilder.vcproj", "{14EF6EFF-2AAE-4E22-8293-8B2FEABA688F}"
 	ProjectSection(ProjectDependencies) = postProject
 		{7FDB2504-B35B-4698-88A5-55B7112E01F4} = {7FDB2504-B35B-4698-88A5-55B7112E01F4}
 		{AC7C7972-A31D-4CDE-99E5-B56A19AB6457} = {AC7C7972-A31D-4CDE-99E5-B56A19AB6457}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_simulator", "..\..\..\simulator\service\rdo_simulator.vcproj", "{614C13B6-EBB9-47F5-AABB-4439DA20E796}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_simulator", "..\..\..\simulator\service\projects\common\rdo_simulator.vcproj", "{614C13B6-EBB9-47F5-AABB-4439DA20E796}"
 	ProjectSection(ProjectDependencies) = postProject
 		{7FDB2504-B35B-4698-88A5-55B7112E01F4} = {7FDB2504-B35B-4698-88A5-55B7112E01F4}
 		{C34EF28F-1D66-4CEE-B435-7C420DAF0AD3} = {C34EF28F-1D66-4CEE-B435-7C420DAF0AD3}
@@ -99,9 +99,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_studio", "rdo_studio.vc
 		{977EBFEC-18C7-4851-BFB0-C7D430A1E8AA} = {977EBFEC-18C7-4851-BFB0-C7D430A1E8AA}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_corba", "..\..\..\simulator\corba\rdo_corba.vcproj", "{201000FF-16EB-4410-A653-8DF3009CF71C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_corba", "..\..\..\simulator\corba\projects\common\rdo_corba.vcproj", "{201000FF-16EB-4410-A653-8DF3009CF71C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_converter", "..\..\..\converter\smr2rdox\rdo_converter.vcproj", "{6279A1CE-BFD8-497F-B4AD-F0DCADC9C0B6}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_converter", "..\..\..\converter\smr2rdox\projects\common\rdo_converter.vcproj", "{6279A1CE-BFD8-497F-B4AD-F0DCADC9C0B6}"
 	ProjectSection(ProjectDependencies) = postProject
 		{89A1E353-E2DC-495C-B403-742BE206ACED} = {89A1E353-E2DC-495C-B403-742BE206ACED}
 		{AC7C7972-A31D-4CDE-99E5-B56A19AB6457} = {AC7C7972-A31D-4CDE-99E5-B56A19AB6457}
@@ -138,11 +138,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_plugin", "..\plugins\co
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_version", "rdo_version.vcproj", "{6A0AC201-55B9-4861-8339-5AD42572B2FC}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_ctrls", "..\..\..\ui\mfc_ctrls\rdo_ctrls.vcproj", "{07426CDA-CE5C-4545-9C50-FF25E80CDF96}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_ctrls", "..\..\..\ui\mfc_ctrls\projects\common\rdo_ctrls.vcproj", "{07426CDA-CE5C-4545-9C50-FF25E80CDF96}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "utils_smart_ptr", "..\..\..\utils\utils_smart_ptr.vcproj", "{7861F6F8-175E-474E-8B38-82F47FF4A377}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "utils_smart_ptr", "..\..\..\utils\projects\common\utils_smart_ptr.vcproj", "{7861F6F8-175E-474E-8B38-82F47FF4A377}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_procgui", "..\..\..\simulator\compiler\procgui\rdo_procgui.vcproj", "{977EBFEC-18C7-4851-BFB0-C7D430A1E8AA}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_procgui", "..\..\..\simulator\compiler\procgui\projects\common\rdo_procgui.vcproj", "{977EBFEC-18C7-4851-BFB0-C7D430A1E8AA}"
 	ProjectSection(ProjectDependencies) = postProject
 		{AC7C7972-A31D-4CDE-99E5-B56A19AB6457} = {AC7C7972-A31D-4CDE-99E5-B56A19AB6457}
 		{C34EF28F-1D66-4CEE-B435-7C420DAF0AD3} = {C34EF28F-1D66-4CEE-B435-7C420DAF0AD3}
