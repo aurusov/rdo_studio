@@ -1243,7 +1243,7 @@
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
 						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex\bin&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -v --defines=&quot;../../grammar/rdogramma.h&quot; -prtp -o&quot;../../grammar/rdogramrtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramrtp.cpp;..\..\grammar\rdogramma.h;..\..\grammar\rdogramrtp.output"
+						Outputs="..\..\grammar\rdogramrtp.cpp;..\..\grammar\rdogramrtp.dot;..\..\grammar\rdogramma.h;..\..\grammar\rdogramrtp.output"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1253,7 +1253,7 @@
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
 						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex\bin&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -v --defines=&quot;../../grammar/rdogramma.h&quot; -prtp -o&quot;../../grammar/rdogramrtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramrtp.cpp;..\..\grammar\rdogramma.h;..\..\grammar\rdogramrtp.output"
+						Outputs="..\..\grammar\rdogramrtp.cpp;..\..\grammar\rdogramrtp.dot;..\..\grammar\rdogramma.h;..\..\grammar\rdogramrtp.output"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1263,7 +1263,7 @@
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
 						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex\bin&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -v --defines=&quot;../../grammar/rdogramma.h&quot; -prtp -o&quot;../../grammar/rdogramrtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramrtp.cpp;..\..\grammar\rdogramma.h;..\..\grammar\rdogramrtp.output"
+						Outputs="..\..\grammar\rdogramrtp.cpp;..\..\grammar\rdogramrtp.dot;..\..\grammar\rdogramma.h;..\..\grammar\rdogramrtp.output"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1273,7 +1273,7 @@
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
 						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex\bin&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -v --defines=&quot;../../grammar/rdogramma.h&quot; -prtp -o&quot;../../grammar/rdogramrtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramrtp.cpp;..\..\grammar\rdogramma.h;..\..\grammar\rdogramrtp.output"
+						Outputs="..\..\grammar\rdogramrtp.cpp;..\..\grammar\rdogramrtp.dot;..\..\grammar\rdogramma.h;..\..\grammar\rdogramrtp.output"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1283,7 +1283,7 @@
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
 						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex\bin&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -v --defines=&quot;../../grammar/rdogramma.h&quot; -prtp -o&quot;../../grammar/rdogramrtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramrtp.cpp;..\..\grammar\rdogramma.h;..\..\grammar\rdogramrtp.output"
+						Outputs="..\..\grammar\rdogramrtp.cpp;..\..\grammar\rdogramrtp.dot;..\..\grammar\rdogramma.h;..\..\grammar\rdogramrtp.output"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1293,7 +1293,7 @@
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
 						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex\bin&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -v --defines=&quot;../../grammar/rdogramma.h&quot; -prtp -o&quot;../../grammar/rdogramrtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="..\..\grammar\rdogramrtp.cpp;..\..\grammar\rdogramma.h;..\..\grammar\rdogramrtp.output"
+						Outputs="..\..\grammar\rdogramrtp.cpp;..\..\grammar\rdogramrtp.dot;..\..\grammar\rdogramma.h;..\..\grammar\rdogramrtp.output"
 					/>
 				</FileConfiguration>
 			</File>
