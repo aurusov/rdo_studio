@@ -16,12 +16,12 @@
 	<Configurations>
 		<Configuration
 			Name="debug|Win32"
-			OutputDirectory="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			UseOfMFC="2"
 			CharacterSet="2"
-			BuildLogFile="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
+			BuildLogFile="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -79,12 +79,12 @@
 		</Configuration>
 		<Configuration
 			Name="release|Win32"
-			OutputDirectory="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			UseOfMFC="2"
 			CharacterSet="2"
-			BuildLogFile="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
+			BuildLogFile="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"

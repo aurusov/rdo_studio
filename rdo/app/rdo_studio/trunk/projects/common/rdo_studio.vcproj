@@ -18,13 +18,13 @@
 	<Configurations>
 		<Configuration
 			Name="debug|Win32"
-			OutputDirectory="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
-			BuildLogFile="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
+			BuildLogFile="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -67,15 +67,15 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib gdiplus.lib"
-				OutputFile="$(SolutionDir)bin\product\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
+				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
 				LinkIncremental="1"
 				IgnoreDefaultLibraryNames="msvcrt.lib"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).pdb"
+				ProgramDatabaseFile="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).pdb"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
+				ImportLibrary="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -102,14 +102,14 @@
 		</Configuration>
 		<Configuration
 			Name="release|Win32"
-			OutputDirectory="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
-			BuildLogFile="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
+			BuildLogFile="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -152,12 +152,12 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib gdiplus.lib"
-				OutputFile="$(SolutionDir)bin\product\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
+				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
 				LinkIncremental="1"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
+				ImportLibrary="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -184,13 +184,13 @@
 		</Configuration>
 		<Configuration
 			Name="debug.corba|Win32"
-			OutputDirectory="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
-			BuildLogFile="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
+			BuildLogFile="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -234,15 +234,15 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib gdiplus.lib &quot;$(OutDir)/rdo_corba.lib&quot;"
-				OutputFile="$(SolutionDir)bin\product\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
+				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
 				LinkIncremental="1"
 				IgnoreDefaultLibraryNames="msvcrt.lib"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).pdb"
+				ProgramDatabaseFile="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).pdb"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
+				ImportLibrary="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -269,14 +269,14 @@
 		</Configuration>
 		<Configuration
 			Name="release.corba|Win32"
-			OutputDirectory="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
-			BuildLogFile="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
+			BuildLogFile="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -318,12 +318,12 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib gdiplus.lib &quot;$(OutDir)/rdo_corba.lib&quot;"
-				OutputFile="$(SolutionDir)bin\product\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
+				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
 				LinkIncremental="1"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
+				ImportLibrary="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -350,13 +350,13 @@
 		</Configuration>
 		<Configuration
 			Name="debug.mt|Win32"
-			OutputDirectory="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
-			BuildLogFile="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
+			BuildLogFile="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -399,15 +399,15 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib gdiplus.lib"
-				OutputFile="$(SolutionDir)bin\product\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
+				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
 				LinkIncremental="1"
 				IgnoreDefaultLibraryNames="msvcrt.lib"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).pdb"
+				ProgramDatabaseFile="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).pdb"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
+				ImportLibrary="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -434,14 +434,14 @@
 		</Configuration>
 		<Configuration
 			Name="release.mt|Win32"
-			OutputDirectory="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
-			BuildLogFile="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
+			BuildLogFile="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -483,12 +483,12 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib gdiplus.lib"
-				OutputFile="$(SolutionDir)bin\product\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
+				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
 				LinkIncremental="1"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary="$(ProjectDir)bin\obj\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
+				ImportLibrary="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -1924,8 +1924,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="copy RAO-studio.run.error.txt"
-						CommandLine="copy &quot;$(InputDir)RAO-studio.run.error.txt&quot; &quot;$(SolutionDir)bin\product\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.run.error.txt&quot;&#x0D;&#x0A;"
-						Outputs="&quot;$(SolutionDir)bin\product\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.run.error.txt&quot;"
+						CommandLine="copy &quot;$(InputDir)RAO-studio.run.error.txt&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.run.error.txt&quot;&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.run.error.txt&quot;"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1934,8 +1934,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="copy RAO-studio.run.error.txt"
-						CommandLine="copy &quot;$(InputDir)RAO-studio.run.error.txt&quot; &quot;$(SolutionDir)bin\product\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.run.error.txt&quot;&#x0D;&#x0A;"
-						Outputs="&quot;$(SolutionDir)bin\product\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.run.error.txt&quot;"
+						CommandLine="copy &quot;$(InputDir)RAO-studio.run.error.txt&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.run.error.txt&quot;&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.run.error.txt&quot;"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1944,8 +1944,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="copy RAO-studio.run.error.txt"
-						CommandLine="copy &quot;$(InputDir)RAO-studio.run.error.txt&quot; &quot;$(SolutionDir)bin\product\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.run.error.txt&quot;&#x0D;&#x0A;"
-						Outputs="&quot;$(SolutionDir)bin\product\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.run.error.txt&quot;"
+						CommandLine="copy &quot;$(InputDir)RAO-studio.run.error.txt&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.run.error.txt&quot;&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.run.error.txt&quot;"
 					/>
 				</FileConfiguration>
 			</File>
