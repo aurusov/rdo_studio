@@ -470,8 +470,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="..\..\..\..\..\thirdparty\bison_flex\bin\flex.exe -ogrammar\rdolex.cpp -+ &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdolex.cpp"
+						CommandLine="..\..\..\..\..\thirdparty\bison_flex\bin\flex.exe -o&quot;../../grammar/rdolex.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdolex.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -480,8 +480,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="..\..\..\..\..\thirdparty\bison_flex\bin\flex.exe -ogrammar\rdolex.cpp -+ &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdolex.cpp"
+						CommandLine="..\..\..\..\..\thirdparty\bison_flex\bin\flex.exe -o&quot;../../grammar/rdolex.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdolex.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -490,8 +490,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="..\..\..\..\..\thirdparty\bison_flex\bin\flex.exe -ogrammar\rdolex.cpp -+ &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdolex.cpp"
+						CommandLine="..\..\..\..\..\thirdparty\bison_flex\bin\flex.exe -o&quot;../../grammar/rdolex.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdolex.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -500,8 +500,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="..\..\..\..\..\thirdparty\bison_flex\bin\flex.exe -ogrammar\rdolex.cpp -+ &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdolex.cpp"
+						CommandLine="..\..\..\..\..\thirdparty\bison_flex\bin\flex.exe -o&quot;../../grammar/rdolex.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdolex.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -510,8 +510,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="..\..\..\..\..\thirdparty\bison_flex\bin\flex.exe -ogrammar\rdolex.cpp -+ &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdolex.cpp"
+						CommandLine="..\..\..\..\..\thirdparty\bison_flex\bin\flex.exe -o&quot;../../grammar/rdolex.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdolex.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -520,8 +520,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="..\..\..\..\..\thirdparty\bison_flex\bin\flex.exe -ogrammar\rdolex.cpp -+ &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdolex.cpp"
+						CommandLine="..\..\..\..\..\thirdparty\bison_flex\bin\flex.exe -o&quot;../../grammar/rdolex.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdolex.cpp"
 					/>
 				</FileConfiguration>
 			</File>
@@ -538,8 +538,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;../../../thirdparty\bison_flex/bin&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pdpt -ogrammar/rdogramdpt.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramdpt.cpp;grammar\rdogramdpt.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;../../../thirdparty\bison_flex/bin&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pdpt -o&quot;../../grammar/rdogramdpt.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramdpt.cpp;..\..\grammar\rdogramdpt.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -548,8 +548,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;../../../thirdparty\bison_flex/bin&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pdpt -ogrammar/rdogramdpt.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramdpt.cpp;grammar\rdogramdpt.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;../../../thirdparty\bison_flex/bin&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pdpt -o&quot;../../grammar/rdogramdpt.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramdpt.cpp;..\..\grammar\rdogramdpt.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -558,8 +558,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;../../../thirdparty\bison_flex/bin&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pdpt -ogrammar/rdogramdpt.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramdpt.cpp;grammar\rdogramdpt.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;../../../thirdparty\bison_flex/bin&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pdpt -o&quot;../../grammar/rdogramdpt.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramdpt.cpp;..\..\grammar\rdogramdpt.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -568,8 +568,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;../../../thirdparty\bison_flex/bin&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pdpt -ogrammar/rdogramdpt.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramdpt.cpp;grammar\rdogramdpt.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;../../../thirdparty\bison_flex/bin&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pdpt -o&quot;../../grammar/rdogramdpt.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramdpt.cpp;..\..\grammar\rdogramdpt.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -578,8 +578,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;../../../thirdparty\bison_flex/bin&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pdpt -ogrammar/rdogramdpt.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramdpt.cpp;grammar\rdogramdpt.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;../../../thirdparty\bison_flex/bin&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pdpt -o&quot;../../grammar/rdogramdpt.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramdpt.cpp;..\..\grammar\rdogramdpt.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -588,8 +588,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;../../../thirdparty\bison_flex/bin&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pdpt -ogrammar/rdogramdpt.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramdpt.cpp;grammar\rdogramdpt.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;../../../thirdparty\bison_flex/bin&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pdpt -o&quot;../../grammar/rdogramdpt.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramdpt.cpp;..\..\grammar\rdogramdpt.dot"
 					/>
 				</FileConfiguration>
 			</File>
@@ -602,8 +602,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pevn -ogrammar\rdogramevn.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramevn.cpp;grammar\rdogramevn.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pevn -o&quot;../../grammar/rdogramevn.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramevn.cpp;..\..\grammar\rdogramevn.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -612,8 +612,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pevn -ogrammar\rdogramevn.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramevn.cpp;grammar\rdogramevn.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pevn -o&quot;../../grammar/rdogramevn.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramevn.cpp;..\..\grammar\rdogramevn.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -622,8 +622,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pevn -ogrammar\rdogramevn.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramevn.cpp;grammar\rdogramevn.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pevn -o&quot;../../grammar/rdogramevn.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramevn.cpp;..\..\grammar\rdogramevn.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -632,8 +632,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pevn -ogrammar\rdogramevn.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramevn.cpp;grammar\rdogramevn.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pevn -o&quot;../../grammar/rdogramevn.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramevn.cpp;..\..\grammar\rdogramevn.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -642,8 +642,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pevn -ogrammar\rdogramevn.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramevn.cpp;grammar\rdogramevn.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pevn -o&quot;../../grammar/rdogramevn.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramevn.cpp;..\..\grammar\rdogramevn.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -652,8 +652,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pevn -ogrammar\rdogramevn.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramevn.cpp;grammar\rdogramevn.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pevn -o&quot;../../grammar/rdogramevn.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramevn.cpp;..\..\grammar\rdogramevn.dot"
 					/>
 				</FileConfiguration>
 			</File>
@@ -666,8 +666,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pevn_preparse_ -ogrammar\rdogramevn_preparse.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramevn_preparse.cpp;grammar\rdogramevn_preparse.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pevn_preparse_ -o&quot;../../grammar/rdogramevn_preparse.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramevn_preparse.cpp;..\..\grammar\rdogramevn_preparse.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -676,8 +676,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pevn_preparse_ -ogrammar\rdogramevn_preparse.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramevn_preparse.cpp;grammar\rdogramevn_preparse.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pevn_preparse_ -o&quot;../../grammar/rdogramevn_preparse.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramevn_preparse.cpp;..\..\grammar\rdogramevn_preparse.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -686,8 +686,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pevn_preparse_ -ogrammar\rdogramevn_preparse.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramevn_preparse.cpp;grammar\rdogramevn_preparse.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pevn_preparse_ -o&quot;../../grammar/rdogramevn_preparse.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramevn_preparse.cpp;..\..\grammar\rdogramevn_preparse.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -696,8 +696,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pevn_preparse_ -ogrammar\rdogramevn_preparse.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramevn_preparse.cpp;grammar\rdogramevn_preparse.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pevn_preparse_ -o&quot;../../grammar/rdogramevn_preparse.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramevn_preparse.cpp;..\..\grammar\rdogramevn_preparse.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -706,8 +706,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pevn_preparse_ -ogrammar\rdogramevn_preparse.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramevn_preparse.cpp;grammar\rdogramevn_preparse.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pevn_preparse_ -o&quot;../../grammar/rdogramevn_preparse.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramevn_preparse.cpp;..\..\grammar\rdogramevn_preparse.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -716,8 +716,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pevn_preparse_ -ogrammar\rdogramevn_preparse.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramevn_preparse.cpp;grammar\rdogramevn_preparse.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pevn_preparse_ -o&quot;../../grammar/rdogramevn_preparse.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramevn_preparse.cpp;..\..\grammar\rdogramevn_preparse.dot"
 					/>
 				</FileConfiguration>
 			</File>
@@ -730,8 +730,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pfrm -ogrammar\rdogramfrm.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramfrm.cpp;grammar\rdogramfrm.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pfrm -o&quot;../../grammar/rdogramfrm.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramfrm.cpp;..\..\grammar\rdogramfrm.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -740,8 +740,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pfrm -ogrammar\rdogramfrm.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramfrm.cpp;grammar\rdogramfrm.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pfrm -o&quot;../../grammar/rdogramfrm.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramfrm.cpp;..\..\grammar\rdogramfrm.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -750,8 +750,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pfrm -ogrammar\rdogramfrm.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramfrm.cpp;grammar\rdogramfrm.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pfrm -o&quot;../../grammar/rdogramfrm.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramfrm.cpp;..\..\grammar\rdogramfrm.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -760,8 +760,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pfrm -ogrammar\rdogramfrm.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramfrm.cpp;grammar\rdogramfrm.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pfrm -o&quot;../../grammar/rdogramfrm.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramfrm.cpp;..\..\grammar\rdogramfrm.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -770,8 +770,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pfrm -ogrammar\rdogramfrm.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramfrm.cpp;grammar\rdogramfrm.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pfrm -o&quot;../../grammar/rdogramfrm.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramfrm.cpp;..\..\grammar\rdogramfrm.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -780,8 +780,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pfrm -ogrammar\rdogramfrm.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramfrm.cpp;grammar\rdogramfrm.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pfrm -o&quot;../../grammar/rdogramfrm.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramfrm.cpp;..\..\grammar\rdogramfrm.dot"
 					/>
 				</FileConfiguration>
 			</File>
@@ -794,8 +794,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pfun -ogrammar\rdogramfun.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramfun.cpp;grammar\rdogramfun.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pfun -o&quot;../../grammar/rdogramfun.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramfun.cpp;..\..\grammar\rdogramfun.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -804,8 +804,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pfun -ogrammar\rdogramfun.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramfun.cpp;grammar\rdogramfun.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pfun -o&quot;../../grammar/rdogramfun.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramfun.cpp;..\..\grammar\rdogramfun.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -814,8 +814,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pfun -ogrammar\rdogramfun.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramfun.cpp;grammar\rdogramfun.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pfun -o&quot;../../grammar/rdogramfun.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramfun.cpp;..\..\grammar\rdogramfun.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -824,8 +824,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pfun -ogrammar\rdogramfun.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramfun.cpp;grammar\rdogramfun.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pfun -o&quot;../../grammar/rdogramfun.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramfun.cpp;..\..\grammar\rdogramfun.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -834,8 +834,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pfun -ogrammar\rdogramfun.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramfun.cpp;grammar\rdogramfun.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pfun -o&quot;../../grammar/rdogramfun.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramfun.cpp;..\..\grammar\rdogramfun.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -844,8 +844,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pfun -ogrammar\rdogramfun.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramfun.cpp;grammar\rdogramfun.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pfun -o&quot;../../grammar/rdogramfun.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramfun.cpp;..\..\grammar\rdogramfun.dot"
 					/>
 				</FileConfiguration>
 			</File>
@@ -858,8 +858,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -ppat -ogrammar\rdogrampat.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogrampat.cpp;grammar\rdogrampat.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -ppat -o&quot;../../grammar/rdogrampat.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogrampat.cpp;..\..\grammar\rdogrampat.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -868,8 +868,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -ppat -ogrammar\rdogrampat.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogrampat.cpp;grammar\rdogrampat.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -ppat -o&quot;../../grammar/rdogrampat.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogrampat.cpp;..\..\grammar\rdogrampat.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -878,8 +878,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -ppat -ogrammar\rdogrampat.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogrampat.cpp;grammar\rdogrampat.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -ppat -o&quot;../../grammar/rdogrampat.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogrampat.cpp;..\..\grammar\rdogrampat.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -888,8 +888,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -ppat -ogrammar\rdogrampat.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogrampat.cpp;grammar\rdogrampat.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -ppat -o&quot;../../grammar/rdogrampat.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogrampat.cpp;..\..\grammar\rdogrampat.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -898,8 +898,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -ppat -ogrammar\rdogrampat.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogrampat.cpp;grammar\rdogrampat.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -ppat -o&quot;../../grammar/rdogrampat.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogrampat.cpp;..\..\grammar\rdogrampat.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -908,8 +908,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -ppat -ogrammar\rdogrampat.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogrampat.cpp;grammar\rdogrampat.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -ppat -o&quot;../../grammar/rdogrampat.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogrampat.cpp;..\..\grammar\rdogrampat.dot"
 					/>
 				</FileConfiguration>
 			</File>
@@ -922,8 +922,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -ppmd -ogrammar\rdogrampmd.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogrampmd.cpp;grammar\rdogrampmd.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -ppmd -o&quot;../../grammar/rdogrampmd.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogrampmd.cpp;..\..\grammar\rdogrampmd.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -932,8 +932,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -ppmd -ogrammar\rdogrampmd.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogrampmd.cpp;grammar\rdogrampmd.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -ppmd -o&quot;../../grammar/rdogrampmd.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogrampmd.cpp;..\..\grammar\rdogrampmd.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -942,8 +942,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -ppmd -ogrammar\rdogrampmd.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogrampmd.cpp;grammar\rdogrampmd.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -ppmd -o&quot;../../grammar/rdogrampmd.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogrampmd.cpp;..\..\grammar\rdogrampmd.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -952,8 +952,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -ppmd -ogrammar\rdogrampmd.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogrampmd.cpp;grammar\rdogrampmd.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -ppmd -o&quot;../../grammar/rdogrampmd.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogrampmd.cpp;..\..\grammar\rdogrampmd.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -962,8 +962,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -ppmd -ogrammar\rdogrampmd.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogrampmd.cpp;grammar\rdogrampmd.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -ppmd -o&quot;../../grammar/rdogrampmd.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogrampmd.cpp;..\..\grammar\rdogrampmd.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -972,8 +972,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -ppmd -ogrammar\rdogrampmd.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogrampmd.cpp;grammar\rdogrampmd.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -ppmd -o&quot;../../grammar/rdogrampmd.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogrampmd.cpp;..\..\grammar\rdogrampmd.dot"
 					/>
 				</FileConfiguration>
 			</File>
@@ -986,8 +986,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_opr_ -ogrammar\rdogramproc_opr.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramproc_opr.cpp;grammar\rdogramproc_opr.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_opr_ -o&quot;../../grammar/rdogramproc_opr.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramproc_opr.cpp;..\..\grammar\rdogramproc_opr.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -996,8 +996,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_opr_ -ogrammar\rdogramproc_opr.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramproc_opr.cpp;grammar\rdogramproc_opr.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_opr_ -o&quot;../../grammar/rdogramproc_opr.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramproc_opr.cpp;..\..\grammar\rdogramproc_opr.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1006,8 +1006,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_opr_ -ogrammar\rdogramproc_opr.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramproc_opr.cpp;grammar\rdogramproc_opr.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_opr_ -o&quot;../../grammar/rdogramproc_opr.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramproc_opr.cpp;..\..\grammar\rdogramproc_opr.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1016,8 +1016,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_opr_ -ogrammar\rdogramproc_opr.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramproc_opr.cpp;grammar\rdogramproc_opr.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_opr_ -o&quot;../../grammar/rdogramproc_opr.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramproc_opr.cpp;..\..\grammar\rdogramproc_opr.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1026,8 +1026,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_opr_ -ogrammar\rdogramproc_opr.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramproc_opr.cpp;grammar\rdogramproc_opr.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_opr_ -o&quot;../../grammar/rdogramproc_opr.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramproc_opr.cpp;..\..\grammar\rdogramproc_opr.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1036,8 +1036,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_opr_ -ogrammar\rdogramproc_opr.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramproc_opr.cpp;grammar\rdogramproc_opr.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_opr_ -o&quot;../../grammar/rdogramproc_opr.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramproc_opr.cpp;..\..\grammar\rdogramproc_opr.dot"
 					/>
 				</FileConfiguration>
 			</File>
@@ -1050,8 +1050,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_rss_ -ogrammar\rdogramproc_rss.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramproc_rss.cpp;grammar\rdogramproc_rss.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_rss_ -o&quot;../../grammar/rdogramproc_rss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramproc_rss.cpp;..\..\grammar\rdogramproc_rss.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1060,8 +1060,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_rss_ -ogrammar\rdogramproc_rss.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramproc_rss.cpp;grammar\rdogramproc_rss.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_rss_ -o&quot;../../grammar/rdogramproc_rss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramproc_rss.cpp;..\..\grammar\rdogramproc_rss.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1070,8 +1070,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_rss_ -ogrammar\rdogramproc_rss.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramproc_rss.cpp;grammar\rdogramproc_rss.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_rss_ -o&quot;../../grammar/rdogramproc_rss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramproc_rss.cpp;..\..\grammar\rdogramproc_rss.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1080,8 +1080,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_rss_ -ogrammar\rdogramproc_rss.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramproc_rss.cpp;grammar\rdogramproc_rss.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_rss_ -o&quot;../../grammar/rdogramproc_rss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramproc_rss.cpp;..\..\grammar\rdogramproc_rss.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1090,8 +1090,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_rss_ -ogrammar\rdogramproc_rss.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramproc_rss.cpp;grammar\rdogramproc_rss.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_rss_ -o&quot;../../grammar/rdogramproc_rss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramproc_rss.cpp;..\..\grammar\rdogramproc_rss.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1100,8 +1100,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_rss_ -ogrammar\rdogramproc_rss.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramproc_rss.cpp;grammar\rdogramproc_rss.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_rss_ -o&quot;../../grammar/rdogramproc_rss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramproc_rss.cpp;..\..\grammar\rdogramproc_rss.dot"
 					/>
 				</FileConfiguration>
 			</File>
@@ -1114,8 +1114,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_rtp_ -ogrammar\rdogramproc_rtp.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramproc_rtp.cpp;grammar\rdogramproc_rtp.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_rtp_ -o&quot;../../grammar/rdogramproc_rtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramproc_rtp.cpp;..\..\grammar\rdogramproc_rtp.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1124,8 +1124,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_rtp_ -ogrammar\rdogramproc_rtp.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramproc_rtp.cpp;grammar\rdogramproc_rtp.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_rtp_ -o&quot;../../grammar/rdogramproc_rtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramproc_rtp.cpp;..\..\grammar\rdogramproc_rtp.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1134,8 +1134,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_rtp_ -ogrammar\rdogramproc_rtp.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramproc_rtp.cpp;grammar\rdogramproc_rtp.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_rtp_ -o&quot;../../grammar/rdogramproc_rtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramproc_rtp.cpp;..\..\grammar\rdogramproc_rtp.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1144,8 +1144,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_rtp_ -ogrammar\rdogramproc_rtp.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramproc_rtp.cpp;grammar\rdogramproc_rtp.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_rtp_ -o&quot;../../grammar/rdogramproc_rtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramproc_rtp.cpp;..\..\grammar\rdogramproc_rtp.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1154,8 +1154,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_rtp_ -ogrammar\rdogramproc_rtp.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramproc_rtp.cpp;grammar\rdogramproc_rtp.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_rtp_ -o&quot;../../grammar/rdogramproc_rtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramproc_rtp.cpp;..\..\grammar\rdogramproc_rtp.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1164,8 +1164,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_rtp_ -ogrammar\rdogramproc_rtp.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramproc_rtp.cpp;grammar\rdogramproc_rtp.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -pproc_rtp_ -o&quot;../../grammar/rdogramproc_rtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramproc_rtp.cpp;..\..\grammar\rdogramproc_rtp.dot"
 					/>
 				</FileConfiguration>
 			</File>
@@ -1178,8 +1178,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -prss -ogrammar\rdogramrss.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramrss.cpp;grammar\rdogramrss.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -prss -o&quot;../../grammar/rdogramrss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramrss.cpp;..\..\grammar\rdogramrss.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1188,8 +1188,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -prss -ogrammar\rdogramrss.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramrss.cpp;grammar\rdogramrss.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -prss -o&quot;../../grammar/rdogramrss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramrss.cpp;..\..\grammar\rdogramrss.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1198,8 +1198,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -prss -ogrammar\rdogramrss.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramrss.cpp;grammar\rdogramrss.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -prss -o&quot;../../grammar/rdogramrss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramrss.cpp;..\..\grammar\rdogramrss.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1208,8 +1208,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -prss -ogrammar\rdogramrss.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramrss.cpp;grammar\rdogramrss.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -prss -o&quot;../../grammar/rdogramrss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramrss.cpp;..\..\grammar\rdogramrss.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1218,8 +1218,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -prss -ogrammar\rdogramrss.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramrss.cpp;grammar\rdogramrss.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -prss -o&quot;../../grammar/rdogramrss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramrss.cpp;..\..\grammar\rdogramrss.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1228,8 +1228,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -prss -ogrammar\rdogramrss.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramrss.cpp;grammar\rdogramrss.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -prss -o&quot;../../grammar/rdogramrss.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramrss.cpp;..\..\grammar\rdogramrss.dot"
 					/>
 				</FileConfiguration>
 			</File>
@@ -1242,8 +1242,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex\bin&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -v --defines=grammar\rdogramma.h -prtp -ogrammar\rdogramrtp.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramrtp.cpp;grammar\rdogramrtp.dot;grammar\rdogramma.h;grammar\rdogramrtp.output"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex\bin&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -v --defines=&quot;../../grammar/rdogramma.h&quot; -prtp -o&quot;../../grammar/rdogramrtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramrtp.cpp;..\..\grammar\rdogramma.h;..\..\grammar\rdogramrtp.output"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1252,8 +1252,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex\bin&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -v --defines=grammar\rdogramma.h -prtp -ogrammar\rdogramrtp.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramrtp.cpp;grammar\rdogramrtp.dot;grammar\rdogramma.h;grammar\rdogramrtp.output"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex\bin&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -v --defines=&quot;../../grammar/rdogramma.h&quot; -prtp -o&quot;../../grammar/rdogramrtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramrtp.cpp;..\..\grammar\rdogramma.h;..\..\grammar\rdogramrtp.output"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1262,8 +1262,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex\bin&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -v --defines=grammar\rdogramma.h -prtp -ogrammar\rdogramrtp.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramrtp.cpp;grammar\rdogramrtp.dot;grammar\rdogramma.h;grammar\rdogramrtp.output"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex\bin&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -v --defines=&quot;../../grammar/rdogramma.h&quot; -prtp -o&quot;../../grammar/rdogramrtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramrtp.cpp;..\..\grammar\rdogramma.h;..\..\grammar\rdogramrtp.output"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1272,8 +1272,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex\bin&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -v --defines=grammar\rdogramma.h -prtp -ogrammar\rdogramrtp.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramrtp.cpp;grammar\rdogramrtp.dot;grammar\rdogramma.h;grammar\rdogramrtp.output"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex\bin&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -v --defines=&quot;../../grammar/rdogramma.h&quot; -prtp -o&quot;../../grammar/rdogramrtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramrtp.cpp;..\..\grammar\rdogramma.h;..\..\grammar\rdogramrtp.output"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1282,8 +1282,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex\bin&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -v --defines=grammar\rdogramma.h -prtp -ogrammar\rdogramrtp.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramrtp.cpp;grammar\rdogramrtp.dot;grammar\rdogramma.h;grammar\rdogramrtp.output"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex\bin&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -v --defines=&quot;../../grammar/rdogramma.h&quot; -prtp -o&quot;../../grammar/rdogramrtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramrtp.cpp;..\..\grammar\rdogramma.h;..\..\grammar\rdogramrtp.output"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1292,8 +1292,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex\bin&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -v --defines=grammar\rdogramma.h -prtp -ogrammar\rdogramrtp.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramrtp.cpp;grammar\rdogramrtp.dot;grammar\rdogramma.h;grammar\rdogramrtp.output"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex\bin&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -v --defines=&quot;../../grammar/rdogramma.h&quot; -prtp -o&quot;../../grammar/rdogramrtp.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramrtp.cpp;..\..\grammar\rdogramma.h;..\..\grammar\rdogramrtp.output"
 					/>
 				</FileConfiguration>
 			</File>
@@ -1306,8 +1306,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -psmr_file_ -ogrammar\rdogramsmr_file.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramsmr_file.cpp;grammar\rdogramsmr_file.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -psmr_file_ -o&quot;../../grammar/rdogramsmr_file.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramsmr_file.cpp;..\..\grammar\rdogramsmr_file.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1316,8 +1316,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -psmr_file_ -ogrammar\rdogramsmr_file.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramsmr_file.cpp;grammar\rdogramsmr_file.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -psmr_file_ -o&quot;../../grammar/rdogramsmr_file.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramsmr_file.cpp;..\..\grammar\rdogramsmr_file.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1326,8 +1326,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -psmr_file_ -ogrammar\rdogramsmr_file.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramsmr_file.cpp;grammar\rdogramsmr_file.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -psmr_file_ -o&quot;../../grammar/rdogramsmr_file.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramsmr_file.cpp;..\..\grammar\rdogramsmr_file.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1336,8 +1336,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -psmr_file_ -ogrammar\rdogramsmr_file.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramsmr_file.cpp;grammar\rdogramsmr_file.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -psmr_file_ -o&quot;../../grammar/rdogramsmr_file.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramsmr_file.cpp;..\..\grammar\rdogramsmr_file.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1346,8 +1346,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -psmr_file_ -ogrammar\rdogramsmr_file.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramsmr_file.cpp;grammar\rdogramsmr_file.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -psmr_file_ -o&quot;../../grammar/rdogramsmr_file.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramsmr_file.cpp;..\..\grammar\rdogramsmr_file.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1356,8 +1356,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -psmr_file_ -ogrammar\rdogramsmr_file.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramsmr_file.cpp;grammar\rdogramsmr_file.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -psmr_file_ -o&quot;../../grammar/rdogramsmr_file.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramsmr_file.cpp;..\..\grammar\rdogramsmr_file.dot"
 					/>
 				</FileConfiguration>
 			</File>
@@ -1370,8 +1370,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -psmr_sim_ -ogrammar\rdogramsmr_sim.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramsmr_sim.cpp;grammar\rdogramsmr_sim.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -psmr_sim_ -o&quot;../../grammar/rdogramsmr_sim.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramsmr_sim.cpp;..\..\grammar\rdogramsmr_sim.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1380,8 +1380,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -psmr_sim_ -ogrammar\rdogramsmr_sim.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramsmr_sim.cpp;grammar\rdogramsmr_sim.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -psmr_sim_ -o&quot;../../grammar/rdogramsmr_sim.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramsmr_sim.cpp;..\..\grammar\rdogramsmr_sim.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1390,8 +1390,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -psmr_sim_ -ogrammar\rdogramsmr_sim.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramsmr_sim.cpp;grammar\rdogramsmr_sim.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -psmr_sim_ -o&quot;../../grammar/rdogramsmr_sim.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramsmr_sim.cpp;..\..\grammar\rdogramsmr_sim.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1400,8 +1400,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -psmr_sim_ -ogrammar\rdogramsmr_sim.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramsmr_sim.cpp;grammar\rdogramsmr_sim.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -psmr_sim_ -o&quot;../../grammar/rdogramsmr_sim.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramsmr_sim.cpp;..\..\grammar\rdogramsmr_sim.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1410,8 +1410,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -psmr_sim_ -ogrammar\rdogramsmr_sim.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramsmr_sim.cpp;grammar\rdogramsmr_sim.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -psmr_sim_ -o&quot;../../grammar/rdogramsmr_sim.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramsmr_sim.cpp;..\..\grammar\rdogramsmr_sim.dot"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1420,8 +1420,8 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="build $(InputFileName)"
-						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -psmr_sim_ -ogrammar\rdogramsmr_sim.cpp &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="grammar\rdogramsmr_sim.cpp;grammar\rdogramsmr_sim.dot"
+						CommandLine="set BISON_PKGDATADIR=../../../../../thirdparty/bison_flex/share/bison&#x0D;&#x0A;set PATH=$PATH;..\..\..\..\..\thirdparty\bison_flex&#x0D;&#x0A;..\..\..\..\..\thirdparty\bison_flex\bin\bison.exe -g -psmr_sim_ -o&quot;../../grammar/rdogramsmr_sim.cpp&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="..\..\grammar\rdogramsmr_sim.cpp;..\..\grammar\rdogramsmr_sim.dot"
 					/>
 				</FileConfiguration>
 			</File>
