@@ -44,7 +44,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../../../"
+				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_WINDOWS;SCI_LEXER;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
@@ -131,7 +131,7 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../../../../../"
+				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_WINDOWS;SCI_LEXER;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
@@ -210,7 +210,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../../../;../../../../../thirdparty/corba/include"
+				AdditionalIncludeDirectories="../../../../;../../../../thirdparty/corba/include"
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;_DEBUG;_WINDOWS;SCI_LEXER;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -296,7 +296,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../../../../../;../../../../../thirdparty/corba/include"
+				AdditionalIncludeDirectories="../../../../;../../../../thirdparty/corba/include"
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;NDEBUG;_WINDOWS;SCI_LEXER;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
@@ -376,7 +376,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../../../"
+				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_WINDOWS;SCI_LEXER;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
@@ -461,7 +461,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../../../../../"
+				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_WINDOWS;SCI_LEXER;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
