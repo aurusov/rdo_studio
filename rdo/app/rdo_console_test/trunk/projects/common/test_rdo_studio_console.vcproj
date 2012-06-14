@@ -22,6 +22,7 @@
 			IntermediateDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="2"
+			BuildLogFile="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -96,6 +97,7 @@
 			ConfigurationType="1"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
+			BuildLogFile="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
