@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../"
+				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_WINDOWS;_UNISTD_H_;_CONSOLE;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -119,7 +119,7 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../../"
+				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_WINDOWS;WINVER=0x0501;BOOST_TYPEOF_SILENT;_CONSOLE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="false"
@@ -179,11 +179,11 @@
 			Name=".code"
 			>
 			<File
-				RelativePath=".\main.cpp"
+				RelativePath="..\..\main.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\terminate_codes.h"
+				RelativePath="..\..\terminate_codes.h"
 				>
 			</File>
 		</Filter>
@@ -191,11 +191,11 @@
 			Name=".console_controller"
 			>
 			<File
-				RelativePath=".\rdo_console_controller.cpp"
+				RelativePath="..\..\rdo_console_controller.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdo_console_controller.h"
+				RelativePath="..\..\rdo_console_controller.h"
 				>
 			</File>
 		</Filter>
@@ -203,15 +203,15 @@
 			Name=".console_options"
 			>
 			<File
-				RelativePath=".\controller_console_options.cpp"
+				RelativePath="..\..\controller_console_options.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\controller_console_options.h"
+				RelativePath="..\..\controller_console_options.h"
 				>
 			</File>
 			<File
-				RelativePath=".\controller_console_options_config.h"
+				RelativePath="..\..\controller_console_options_config.h"
 				>
 			</File>
 		</Filter>

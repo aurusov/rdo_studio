@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../"
+				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="$(ProjectDir)WIN32;_DEBUG;_CONSOLE;RDO_STUDIO_CONSOLE_APP=\&quot;rdo_studio_console.exe\&quot;"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
@@ -116,7 +116,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../../../"
+				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;RDO_STUDIO_CONSOLE_APP=\&quot;D:/repository/rdo/build/debug/rdo.exe\&quot;;RDO_STUDIO_CONSOLE_TEST_PATH=\&quot;D:/repository/rdo/app/rdo_studio_console/test/\&quot;"
 				ExceptionHandling="2"
 				RuntimeLibrary="0"
@@ -173,7 +173,7 @@
 			Name=".code"
 			>
 			<File
-				RelativePath=".\main.cpp"
+				RelativePath="..\..\main.cpp"
 				>
 			</File>
 		</Filter>
@@ -181,15 +181,15 @@
 			Name=".console_options"
 			>
 			<File
-				RelativePath=".\controller_console_options.cpp"
+				RelativePath="..\..\controller_console_options.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\controller_console_options.h"
+				RelativePath="..\..\controller_console_options.h"
 				>
 			</File>
 			<File
-				RelativePath=".\controller_console_options_config.h"
+				RelativePath="..\..\controller_console_options_config.h"
 				>
 			</File>
 		</Filter>
