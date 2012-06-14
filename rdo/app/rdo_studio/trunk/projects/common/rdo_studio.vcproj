@@ -67,7 +67,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib gdiplus.lib"
-				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
+				OutputFile="$(SolutionDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
 				LinkIncremental="1"
 				IgnoreDefaultLibraryNames="msvcrt.lib"
 				GenerateDebugInformation="true"
@@ -152,7 +152,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib gdiplus.lib"
-				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
+				OutputFile="$(SolutionDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
 				LinkIncremental="1"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
@@ -234,7 +234,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib gdiplus.lib &quot;$(OutDir)/rdo_corba.lib&quot;"
-				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
+				OutputFile="$(SolutionDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
 				LinkIncremental="1"
 				IgnoreDefaultLibraryNames="msvcrt.lib"
 				GenerateDebugInformation="true"
@@ -318,7 +318,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib gdiplus.lib &quot;$(OutDir)/rdo_corba.lib&quot;"
-				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
+				OutputFile="$(SolutionDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
 				LinkIncremental="1"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
@@ -399,7 +399,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib gdiplus.lib"
-				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
+				OutputFile="$(SolutionDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
 				LinkIncremental="1"
 				IgnoreDefaultLibraryNames="msvcrt.lib"
 				GenerateDebugInformation="true"
@@ -483,7 +483,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib gdiplus.lib"
-				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
+				OutputFile="$(SolutionDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
 				LinkIncremental="1"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
