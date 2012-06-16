@@ -12,12 +12,12 @@
 			<TR><TD width=100% bgcolor="#B0C0D0"></TD></TR>
 			<TR><TD width=100%><UL>
 				<LI>исправлена и дополнена документация, создана <A href="http://rdo.rk9.bmstu.ru/help">online версия</A>
-				<LI>добавлены <A href="http://rdo.rk9.bmstu.ru:81/">автотесты</A>
+				<LI><A href="http://rdo.rk9.bmstu.ru:81/">внедрена</A> <A href="http://ru.wikipedia.org/wiki/%D0%A0%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0_%D1%87%D0%B5%D1%80%D0%B5%D0%B7_%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5">TDD-методология</A>
+				<LI>добавлен <A href="../../rdo_lang_rus/html/rdo_base/rdo_base_proc_lang.htm">процедурный язык программирования</A> (if, for, локальные переменные и др.) для функций и паттернов
+				<LI>рефакторинг <A href="../../rdo_lang_rus/html/rdo_obj/rdo_pat_type/rdo_pat_type_event.htm">событий</A>, явное <A href="../../rdo_lang_rus/html/rdo_base/rdo_base_instr.htm">планирование</A>
 				<LI>исправлена ошибка рекурсивного вызова <A href="../../rdo_lang_rus/html/rdo_obj/rdo_obj_fun.htm">функции</A>
 				<LI>интеграция методов моделирования: событийного, процессно-ориентированного и подхода сканирования активностей
 				<LI>добавлен <A href="../../rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_triang.htm">треугольный</A> закон распределения
-				<LI>добавлен <A href="../../rdo_lang_rus/html/rdo_base/rdo_base_proc_lang.htm">процедурный язык программирования</A> (if, for, локальные переменные и др.) для функций и паттернов
-				<LI>рефакторинг <A href="../../rdo_lang_rus/html/rdo_obj/rdo_pat_type/rdo_pat_type_event.htm">событий</A>, вынесение их на отдельную закладку EVN</A>
 				<LI>удалена закладка OPR</A>
 				<LI>добавлено неопределенноё значение параметра</A>
 			</UL></TD></TR>
@@ -73,16 +73,30 @@
 			<TR><TD width=100% bgcolor="#B0C0D0"></TD></TR>
 			<TR><TD width=100%><UL>
  				<LI>рефакторинг документации
- 				<LI>перевод документации на unicode
- 				<LI>разработка <A href="http://rdo.rk9.bmstu.ru/help">online версии</A> документации, обновляется автоматически
-				<LI><A href="http://rdo.rk9.bmstu.ru:81/">внедрена</A> <A href="http://ru.wikipedia.org/wiki/%D0%A0%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0_%D1%87%D0%B5%D1%80%D0%B5%D0%B7_%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5">TDD-методология</A>, используется <A href="http://jenkins-ci.org/">Jenkins</A>
- 				<LI>разработаны автотесты на модули системы моделирования
- 				<LI>разработаны интегральные автотесты на процесс моделирования
- 				<LI>добавлен оператор <A href="../../rdo_lang_rus/html/rdo_base/rdo_base_proc_lang.htm#operator_if">if</A>
- 				<LI>добавлен оператор <A href="../../rdo_lang_rus/html/rdo_base/rdo_base_proc_lang.htm#operator_for">for</A>
- 				<LI>добавлен оператор <A href="../../rdo_lang_rus/html/rdo_base/rdo_base_proc_lang.htm#operator_return">return</A>
- 				<LI>добавлен оператор <A href="../../rdo_lang_rus/html/rdo_base/rdo_base_proc_lang.htm#operator_break">break</A>
- 				<LI>добавлены <A href="../../rdo_lang_rus/html/rdo_base/rdo_base_proc_lang.htm#operator_declare">локальные переменные</A> функций и паттернов
+				<UL>
+					<LI>перевод документации на unicode
+					<LI>разработана <A href="http://rdo.rk9.bmstu.ru/help">online версии</A> документации, обновляется автоматически
+				</UL>
+				<LI><A href="http://rdo.rk9.bmstu.ru:81/">внедрена</A> <A href="http://ru.wikipedia.org/wiki/%D0%A0%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0_%D1%87%D0%B5%D1%80%D0%B5%D0%B7_%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5">TDD-методология</A>
+				<UL>
+					<LI>используется <A href="http://jenkins-ci.org/">Jenkins</A>
+					<LI>разработаны автотесты на модули системы моделирования
+					<LI>разработаны интегральные автотесты на процесс моделирования
+				</UL>
+				<LI>добавлен <A href="../../rdo_lang_rus/html/rdo_base/rdo_base_proc_lang.htm">процедурный язык программирования</A>
+				<UL>
+					<LI>добавлен оператор <A href="../../rdo_lang_rus/html/rdo_base/rdo_base_proc_lang.htm#operator_if">if</A>
+					<LI>добавлен оператор <A href="../../rdo_lang_rus/html/rdo_base/rdo_base_proc_lang.htm#operator_for">for</A>
+					<LI>добавлен оператор <A href="../../rdo_lang_rus/html/rdo_base/rdo_base_proc_lang.htm#operator_return">return</A>
+					<LI>добавлен оператор <A href="../../rdo_lang_rus/html/rdo_base/rdo_base_proc_lang.htm#operator_break">break</A>
+					<LI>добавлены <A href="../../rdo_lang_rus/html/rdo_base/rdo_base_proc_lang.htm#operator_declare">локальные переменные</A> функций и паттернов
+				</UL>
+ 				<LI>рефакторинг <A href="../../rdo_lang_rus/html/rdo_obj/rdo_pat_type/rdo_pat_type_event.htm">событий</A>
+				<UL>
+					<LI>события вынесены на закладку EVN
+					<LI>явное <A href="../../rdo_lang_rus/html/rdo_base/rdo_base_instr.htm#statement_planning">планирование</A> событий
+					<LI><A href="../../rdo_lang_rus/html/rdo_base/rdo_base_instr.htm#statement_stop">отмена</A> запланированного события
+				</UL>
  				<LI>из процесса можно не только планировать, но и останавливать события
 			</UL></TD></TR>
 			<TR><TD width=100% bgcolor="#EFF0FE"><b>&nbsp;build 697 (версия 1.0)</b></TD></TR>
