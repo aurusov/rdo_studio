@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="rdo"
+	Name="rdo_studio_console"
 	ProjectGUID="{FFDA38F8-DCBB-47A6-B071-2E5AA6FFEE98}"
 	RootNamespace="rdo_studio_console"
 	Keyword="Win32Proj"
@@ -62,9 +62,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="pugixml_d.lib"
+				OutputFile="$(OutDir)\rdo.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../thirdparty/pugixml/lib"
+				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -140,9 +140,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="pugixml.lib"
+				OutputFile="$(OutDir)\rdo.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../thirdparty/pugixml/lib"
+				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="0"
