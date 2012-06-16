@@ -1,7 +1,5 @@
-PROJECT(utils_tests)
-
-ADD_SUBDIRECTORY(utils_common_test)
-ADD_SUBDIRECTORY(rdo_smart_ptr_test)
-ADD_SUBDIRECTORY(rdo_interface_test)
-ADD_SUBDIRECTORY(rdo_animation_test)
-ADD_SUBDIRECTORY(real_format_test)
+ADD_SUBDIRECTORY(animation)
+ADD_SUBDIRECTORY(common)
+ADD_SUBDIRECTORY(interface)
+ADD_SUBDIRECTORY(real_format)
+ADD_SUBDIRECTORY(smart_ptr)

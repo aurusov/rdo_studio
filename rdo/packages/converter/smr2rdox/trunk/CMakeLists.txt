@@ -65,7 +65,6 @@ IF(PROJECT_OS_LINUX)
     ADD_FLEX_BISON_DEPENDENCY(lexer_scaner rdosmr_sim)
 
     SET(GENERATED_FILES
-        ${GRAMMA_PATH}/rdogramma.h
         ${FLEX_lexer_scaner_OUTPUTS}
         ${BISON_rdortp_OUTPUTS}
         ${BISON_rdortp_OUTPUT_HEADER}
@@ -87,7 +86,7 @@ IF(PROJECT_OS_LINUX)
 ELSE(WIN32)
 
     SET(GENERATED_FILES
-        ${GRAMMA_PATH}/rdogramma.h
+        ${GRAMMA_PATH}/rdobison.h
         ${GRAMMA_PATH}/rdogramsmr_sim.cpp
         ${GRAMMA_PATH}/rdogramsmr_file.cpp
         ${GRAMMA_PATH}/rdogramproc_rtp.cpp
