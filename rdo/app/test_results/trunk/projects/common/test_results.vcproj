@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="rdo_test"
+	Name="test_results"
 	ProjectGUID="{1453DD9A-B898-496F-BCBE-B42F9AE75FD5}"
 	RootNamespace="test_rdo_studio_console"
 	Keyword="Win32Proj"
@@ -43,7 +43,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../../../"
-				PreprocessorDefinitions="$(ProjectDir)WIN32;_DEBUG;_CONSOLE;RDO_STUDIO_CONSOLE_APP=\&quot;rdo_studio_console.exe\&quot;"
+				PreprocessorDefinitions="$(ProjectDir)WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
@@ -63,6 +63,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				OutputFile="$(OutDir)\rdo_test.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -138,6 +139,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				OutputFile="$(OutDir)\rdo_test.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -188,6 +190,10 @@
 			</File>
 			<File
 				RelativePath="..\..\controller_console_options.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\controller_console_options.inl"
 				>
 			</File>
 			<File

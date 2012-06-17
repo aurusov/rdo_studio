@@ -9,7 +9,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_console_test/controller_console_options.h"
+#include "app/test_results/controller_console_options.h"
 // --------------------------------------------------------------------------------
 
 template<class T>
