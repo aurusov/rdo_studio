@@ -44,13 +44,10 @@
 				Optimization="0"
 				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_WINDOWS;_UNISTD_H_;_CONSOLE;WINVER=0x0501;BOOST_TYPEOF_SILENT"
-				MinimalRebuild="false"
-				ExceptionHandling="1"
-				BasicRuntimeChecks="0"
 				RuntimeLibrary="3"
-				UsePrecompiledHeader="0"
+				BrowseInformation="1"
 				WarningLevel="4"
-				DebugInformationFormat="4"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -64,11 +61,14 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\rdo_test.exe"
-				LinkIncremental="2"
+				LinkIncremental="1"
 				IgnoreDefaultLibraryNames="msvcrt.lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).pdb"
 				SubSystem="1"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
+				ImportLibrary="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -98,7 +98,7 @@
 			OutputDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="2"
 			WholeProgramOptimization="1"
 			BuildLogFile="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
@@ -119,16 +119,14 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
+				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
+				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../../../../"
-				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_WINDOWS;_UNISTD_H_;_CONSOLE;WINVER=0x0501;BOOST_TYPEOF_SILENT"
-				ExceptionHandling="2"
-				RuntimeLibrary="0"
-				EnableFunctionLevelLinking="true"
+				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_WINDOWS;WINVER=0x0501;BOOST_TYPEOF_SILENT;_CONSOLE"
+				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
-				WarningLevel="3"
-				DebugInformationFormat="3"
+				WarningLevel="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -143,11 +141,10 @@
 				Name="VCLinkerTool"
 				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\rdo_test.exe"
 				LinkIncremental="1"
-				GenerateDebugInformation="false"
-				ProgramDatabaseFile=""
 				SubSystem="1"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
+				ImportLibrary="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
 				TargetMachine="1"
 			/>
 			<Tool
