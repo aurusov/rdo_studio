@@ -41,7 +41,7 @@ const tstring HELP_COMMENT                  = _T(": display help message");
 const tstring VERSION_COMMENT               = _T(": display program version");
 
 // Auxiliary constants
-const tstring PROGRAM_VERSION               = _T("0.4.1");
+const tstring PROGRAM_VERSION               = _T("0.5.0");
 const tstring PROGRAM_NAME                  = _T("rdo test");
 
 const tstring NOP_STRING                    = _T(" ");
