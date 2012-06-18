@@ -45,6 +45,7 @@
 				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_WINDOWS;_UNISTD_H_;_CONSOLE;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
+				UsePrecompiledHeader="2"
 				BrowseInformation="1"
 				WarningLevel="4"
 				DebugInformationFormat="3"
@@ -125,7 +126,7 @@
 				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_WINDOWS;WINVER=0x0501;BOOST_TYPEOF_SILENT;_CONSOLE"
 				RuntimeLibrary="2"
-				UsePrecompiledHeader="0"
+				UsePrecompiledHeader="2"
 				WarningLevel="4"
 			/>
 			<Tool
