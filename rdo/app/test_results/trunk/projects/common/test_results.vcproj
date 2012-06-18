@@ -3,8 +3,8 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="test_results"
-	ProjectGUID="{FFDA38F8-DCBB-47A6-B071-2E5AA6FFEE98}"
-	RootNamespace="rdo_studio_console"
+	ProjectGUID="{1453DD9A-B898-496F-BCBE-B42F9AE75FD5}"
+	RootNamespace="test_rdo_studio_console"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -44,10 +44,13 @@
 				Optimization="0"
 				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_WINDOWS;_UNISTD_H_;_CONSOLE;WINVER=0x0501;BOOST_TYPEOF_SILENT"
+				MinimalRebuild="false"
+				ExceptionHandling="1"
+				BasicRuntimeChecks="0"
 				RuntimeLibrary="3"
-				BrowseInformation="1"
+				UsePrecompiledHeader="0"
 				WarningLevel="4"
-				DebugInformationFormat="3"
+				DebugInformationFormat="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -61,14 +64,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\rdo_test.exe"
-				LinkIncremental="1"
+				LinkIncremental="2"
 				IgnoreDefaultLibraryNames="msvcrt.lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).pdb"
 				SubSystem="1"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				ImportLibrary="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -98,7 +98,7 @@
 			OutputDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
-			CharacterSet="2"
+			CharacterSet="1"
 			WholeProgramOptimization="1"
 			BuildLogFile="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
@@ -119,14 +119,16 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				InlineFunctionExpansion="2"
+				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../../../../"
-				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_WINDOWS;WINVER=0x0501;BOOST_TYPEOF_SILENT;_CONSOLE"
-				RuntimeLibrary="2"
+				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_WINDOWS;_UNISTD_H_;_CONSOLE;WINVER=0x0501;BOOST_TYPEOF_SILENT"
+				ExceptionHandling="2"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
-				WarningLevel="4"
+				WarningLevel="3"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -141,10 +143,11 @@
 				Name="VCLinkerTool"
 				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\rdo_test.exe"
 				LinkIncremental="1"
+				GenerateDebugInformation="false"
+				ProgramDatabaseFile=""
 				SubSystem="1"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				ImportLibrary="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\$(TargetName).lib"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -177,6 +180,14 @@
 			Name=".code"
 			>
 			<File
+				RelativePath="..\..\main.cpp"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name=".console_options"
+			>
+			<File
 				RelativePath="..\..\controller_console_options.cpp"
 				>
 			</File>
@@ -190,14 +201,6 @@
 			</File>
 			<File
 				RelativePath="..\..\controller_console_options_config.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\main.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\test.cpp"
 				>
 			</File>
 		</Filter>
