@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="test_results"
+	Name="test_rdo_studio_console"
 	ProjectGUID="{1453DD9A-B898-496F-BCBE-B42F9AE75FD5}"
 	RootNamespace="test_rdo_studio_console"
 	Keyword="Win32Proj"
