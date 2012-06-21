@@ -18,13 +18,13 @@ trace_expansion     = '.trc'
 result_expansion    = '.pmv'
 build_dir_substr    = 'build'
 rdo_ex_substr       = 'rdo'
-rdo_test_ex_substr  = 'rdo_test'
+rdo_test_ex_substr  = 'check_results'
 
 null_file = 'null_temp_file'
 
 if sys.platform == 'win32':
     rdo_ex_substr      = 'rdo.exe'
-    rdo_test_ex_substr = 'rdo_test.exe'
+    rdo_test_ex_substr = 'check_results.exe'
 
 dividing_line = '-------------------------------------------------------------------------------'
 

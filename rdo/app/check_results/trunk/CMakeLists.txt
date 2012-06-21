@@ -21,13 +21,13 @@ SET(SOURCE_FILES
 SET(MAIN_FILE 
     main.cpp)
 
-ADD_EXECUTABLE(rdo_test ${MAIN_FILE} ${HEADER_FILES} ${INLINE_FILES} ${SOURCE_FILES})
+ADD_EXECUTABLE(check_results ${MAIN_FILE} ${HEADER_FILES} ${INLINE_FILES} ${SOURCE_FILES})
 
-ADD_DEPENDENCIES(rdo_test rdo)
-ADD_DEPENDENCIES(rdo_test rdo_utils)
+ADD_DEPENDENCIES(check_results rdo)
+ADD_DEPENDENCIES(check_results rdo_utils)
 
-TARGET_LINK_LIBRARIES(rdo_test rdo_utils)
-TARGET_LINK_LIBRARIES(rdo_test ${Boost_PROGRAM_OPTIONS_LIBRARY})
+TARGET_LINK_LIBRARIES(check_results rdo_utils)
+TARGET_LINK_LIBRARIES(check_results ${Boost_PROGRAM_OPTIONS_LIBRARY})
 
 IF(MSVC) # lotions for windows #
 

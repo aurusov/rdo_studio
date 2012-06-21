@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".utils", ".utils", "{8CDA60
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".app", ".app", "{E86C4172-0346-404B-B00A-50D5AAD721C0}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_results", "..\projects\common\test_results.vcproj", "{1453DD9A-B898-496F-BCBE-B42F9AE75FD5}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_results", "..\projects\common\check_results.vcproj", "{1453DD9A-B898-496F-BCBE-B42F9AE75FD5}"
 	ProjectSection(ProjectDependencies) = postProject
 		{AC7C7972-A31D-4CDE-99E5-B56A19AB6457} = {AC7C7972-A31D-4CDE-99E5-B56A19AB6457}
 	EndProjectSection
