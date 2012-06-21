@@ -16,11 +16,12 @@
 	</ToolFiles>
 	<Configurations>
 		<Configuration
-			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			Name="debug|Win32"
+			OutputDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="10"
 			CharacterSet="2"
+			BuildLogFile="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -34,16 +35,17 @@
 			<Tool
 				Name="VCPostBuildEventTool"
 				Description="generate version"
-				CommandLine="..\..\thirdparty\svnversion\svnversion ..\.. | ..\..\thirdparty\svnversion\version_diff.exe res/version.h"
+				CommandLine="..\..\..\..\thirdparty\svnversion\svnversion ..\..\..\.. | ..\..\..\..\thirdparty\svnversion\version_diff.exe ../../res/version.h"
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			Name="release|Win32"
+			OutputDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="10"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
+			BuildLogFile="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -57,7 +59,7 @@
 			<Tool
 				Name="VCPostBuildEventTool"
 				Description="generate version"
-				CommandLine="..\..\thirdparty\svnversion\svnversion ..\.. | ..\..\thirdparty\svnversion\version_diff.exe res/version.h"
+				CommandLine="..\..\..\..\thirdparty\svnversion\svnversion ..\..\..\.. | ..\..\..\..\thirdparty\svnversion\version_diff.exe ../../res/version.h"
 			/>
 		</Configuration>
 	</Configurations>

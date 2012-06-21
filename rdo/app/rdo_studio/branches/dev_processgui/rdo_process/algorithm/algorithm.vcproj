@@ -16,9 +16,9 @@
 	</ToolFiles>
 	<Configurations>
 		<Configuration
-			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			Name="debug|Win32"
+			OutputDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			UseOfMFC="2"
 			CharacterSet="0"
@@ -37,8 +37,6 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				PreprocessorDefinitions="_DEBUG"
-				MkTypLibCompatible="false"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
@@ -83,9 +81,9 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			Name="release|Win32"
+			OutputDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			UseOfMFC="1"
 			CharacterSet="2"
@@ -105,8 +103,6 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				PreprocessorDefinitions="NDEBUG"
-				MkTypLibCompatible="false"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
@@ -181,7 +177,7 @@
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -189,7 +185,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"

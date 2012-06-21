@@ -16,12 +16,13 @@
 	</ToolFiles>
 	<Configurations>
 		<Configuration
-			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			Name="debug|Win32"
+			OutputDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			UseOfMFC="2"
 			CharacterSet="2"
+			BuildLogFile="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -48,7 +49,7 @@
 				PrecompiledHeaderThrough="app\rdo_studio_mfc\rdo_process\rp_misc\stdafx.h"
 				ObjectFile="$(IntDir)\"
 				WarningLevel="4"
-				DebugInformationFormat="4"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -80,11 +81,13 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			Name="release|Win32"
+			OutputDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="4"
+			UseOfMFC="2"
 			CharacterSet="2"
+			BuildLogFile="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -105,6 +108,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
+				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="app\rdo_studio_mfc\rdo_process\rp_misc\stdafx.h"
 			/>
@@ -182,7 +186,7 @@
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -190,7 +194,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="release|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
