@@ -19,7 +19,7 @@ namespace fs = boost::filesystem;
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdocommon.h"
 #include "utils/rdofile.h"
-#include "app/check_results/controller_console_options.h"
+#include "app/rdo_check_results/controller_console_options.h"
 // --------------------------------------------------------------------------------
 
 #ifdef COMPILER_VISUAL_STUDIO
