@@ -42,7 +42,7 @@ const tstring VERSION_COMMENT               = _T(": display program version");
 
 // Auxiliary constants
 const tstring PROGRAM_VERSION               = _T("0.5.0");
-const tstring PROGRAM_NAME                  = _T("rdo test");
+const tstring PROGRAM_NAME                  = _T("rdo check results");
 
 const tstring NOP_STRING                    = _T(" ");
 const tstring COMMA_STRING                  = _T(",");
