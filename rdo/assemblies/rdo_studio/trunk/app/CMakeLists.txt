@@ -3,4 +3,4 @@
 #==============================================================================
 
 ADD_SUBDIRECTORY(rdo_console)
-ADD_SUBDIRECTORY(test_results)
+ADD_SUBDIRECTORY(check_results)
