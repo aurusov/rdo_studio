@@ -30,7 +30,7 @@ CREF(RDOValue) RDOCalcConst::getValue() const
 	return m_value;
 }
 
-REF(RDOValue) RDOCalcConst::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcConst::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	UNUSED(pRuntime);
 

@@ -26,13 +26,14 @@ RDOGetResourceByRelevantResourceID::RDOGetResourceByRelevantResourceID(ruint rel
 	: m_relevantResourceID(relevantResourceID)
 {}
 
-REF(RDOValue) RDOGetResourceByRelevantResourceID::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOGetResourceByRelevantResourceID::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	if (!RDOCalcGetResourceHelper::getResource(pRuntime, pRuntime->getCurrentActivity()->getResByRelRes(m_relevantResourceID), m_value))
+	RDOValue value;
+	if (!RDOCalcGetResourceHelper::getResource(pRuntime, pRuntime->getCurrentActivity()->getResByRelRes(m_relevantResourceID), value))
 	{
 		pRuntime->error().push(_T("Не найден ресурс"), srcInfo());
 	}
-	return m_value;
+	return value;
 }
 
 // --------------------------------------------------------------------------------
@@ -41,14 +42,12 @@ REF(RDOValue) RDOGetResourceByRelevantResourceID::doCalc(CREF(LPRDORuntime) pRun
 RDOEraseResRelCalc::RDOEraseResRelCalc(ruint relResID, CREF(tstring) relResName)
 	: m_relResID  (relResID  )
 	, m_relResName(relResName)
-{
-	m_value = 1;
-}
+{}
 
-REF(RDOValue) RDOEraseResRelCalc::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOEraseResRelCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->onEraseRes(pRuntime->getCurrentActivity()->getResByRelRes(m_relResID), this);
-	return m_value;
+	return RDOValue();
 }
 
 CREF(tstring) RDOEraseResRelCalc::getName() const
@@ -62,7 +61,7 @@ CREF(tstring) RDOEraseResRelCalc::getName() const
 RDOCalcGetGroupFunctionResource::RDOCalcGetGroupFunctionResource()
 {}
 
-REF(RDOValue) RDOCalcGetGroupFunctionResource::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOCalcGetGroupFunctionResource::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	LPRDOResource pResource = pRuntime->getGroupFuncRes();
 	ASSERT(pResource);
@@ -70,8 +69,7 @@ REF(RDOValue) RDOCalcGetGroupFunctionResource::doCalc(CREF(LPRDORuntime) pRuntim
 	LPRDOType pType(pResource->getResType());
 	ASSERT(pType);
 
-	m_value = RDOValue(pType, pResource);
-	return m_value;
+	return RDOValue(pType, pResource);
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

@@ -2,11 +2,10 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="rdo_fuzzy_test"
-	ProjectGUID="{6242650C-75FB-4725-9267-44E1D1A30EE1}"
-	RootNamespace="rdo_fuzzy_test"
-	Keyword="Win32Proj"
-	TargetFrameworkVersion="131072"
+	Name="test_sequences"
+	ProjectGUID="{9F58A671-DD59-4DB6-BADB-E67F39C5D269}"
+	RootNamespace="test_sequences"
+	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
 		<Platform
@@ -17,9 +16,9 @@
 	</ToolFiles>
 	<Configurations>
 		<Configuration
-			Name="Debug|Win32"
-			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
+			Name="debug|Win32"
+			OutputDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="2"
 			>
@@ -42,8 +41,9 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../../../"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
+				MinimalRebuild="true"
 				ExceptionHandling="2"
+				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				WarningLevel="4"
 				DebugInformationFormat="4"
@@ -60,7 +60,6 @@
 			<Tool
 				Name="VCLinkerTool"
 				GenerateDebugInformation="true"
-				SubSystem="1"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -86,12 +85,10 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release|Win32"
-			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
+			Name="release|Win32"
+			OutputDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
-			UseOfMFC="0"
-			UseOfATL="0"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -112,10 +109,12 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="../../../../"
-				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_CONSOLE"
-				ExceptionHandling="2"
+				Optimization="2"
+				EnableIntrinsicFunctions="true"
+				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
 				WarningLevel="4"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -128,7 +127,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				SubSystem="1"
+				GenerateDebugInformation="true"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -159,11 +160,9 @@
 	<Files>
 		<Filter
 			Name=".test"
-			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\main.cpp"
+				RelativePath="..\..\test\sequences\main.cpp"
 				>
 			</File>
 		</Filter>

@@ -69,6 +69,17 @@ public:
 };
 
 /*!
+  \class     RDOValueException
+  \brief     ќшибка - значение не определено
+*/
+class RDOUndefinedException: public RDORuntimeException
+{
+public:
+	RDOUndefinedException();
+	virtual tstring getType() const;
+};
+
+/*!
   \class     RDOInternalException
   \brief     ¬нутренн€€ ошибка
 */

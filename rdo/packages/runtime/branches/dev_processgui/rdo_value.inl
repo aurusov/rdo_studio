@@ -25,7 +25,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 inline RDOValue::RDOValue()
 	: m_pType(g_unknow)
 {
-	setUndefined(1);
+	setUndefined(true);
 }
 
 inline RDOValue::~RDOValue()
@@ -34,10 +34,8 @@ inline RDOValue::~RDOValue()
 }
 
 inline RDOValue::RDOValue(CREF(RDOValue) rdovalue)
-	: m_pType(g_unknow)
 {
 	set(rdovalue);
-	setUndefined(1);
 }
 
 inline RDOValue::RDOValue(CREF(LPRDOType) pType)
@@ -54,21 +52,21 @@ inline RDOValue::RDOValue(CREF(LPRDOType) pType)
 	case RDOType::t_identificator : new (&m_value) rdo::intrusive_ptr_interface_wrapper<string_class>(new string_class(_T(""))); break;
 	default                       : throw RDOValueException();
 	}
-	setUndefined(1);
+	setUndefined(true);
 }
 
 inline RDOValue::RDOValue(rsint value)
 	: m_pType(g_int)
 {
 	__get<int>() = value;
-	setUndefined(1);
+	setUndefined(true);
 }
 
 inline RDOValue::RDOValue(ruint value)
 	: m_pType(g_int)
 {
 	__get<int>() = value;
-	setUndefined(1);
+	setUndefined(true);
 }
 
 #ifdef ARCHITECTURES_AMD64
@@ -83,14 +81,14 @@ inline RDOValue::RDOValue(double value)
 	: m_pType(g_real)
 {
 	__get<double>() = value;
-	setUndefined(1);
+	setUndefined(true);
 }
 
 inline RDOValue::RDOValue(rbool value)
 	: m_pType(g_bool)
 {
 	__get<rbool>() = value;
-	setUndefined(1);
+	setUndefined(true);
 }
 
 inline RDOValue::RDOValue(CREF(LPRDOEnumType) pEnum)
@@ -100,16 +98,16 @@ inline RDOValue::RDOValue(CREF(LPRDOEnumType) pEnum)
 		RDOValueException();
 
 	__get<int>() = pEnum->findEnum(pEnum->getValues()[0]);
-	setUndefined(1);
+	setUndefined(true);
 }
 
 inline RDOValue::RDOValue(CREF(LPRDOEnumType) pEnum, CREF(tstring) value)
 	: m_pType(pEnum)
 {
 	__get<int>() = pEnum->findEnum(value);
-	setUndefined(1);
 	if (__get<int>() == RDOEnumType::END)
 		RDOValueException();
+	setUndefined(true);
 }
 
 inline RDOValue::RDOValue(CREF(LPRDOEnumType) pEnum, ruint index)
@@ -119,7 +117,7 @@ inline RDOValue::RDOValue(CREF(LPRDOEnumType) pEnum, ruint index)
 		RDOValueException();
 
 	__get<int>() = index;
-	setUndefined(1);
+	setUndefined(true);
 }
 
 inline RDOValue::RDOValue(CREF(tstring) value)
@@ -128,14 +126,14 @@ inline RDOValue::RDOValue(CREF(tstring) value)
 	STATIC_ASSERT(sizeof(rdo::intrusive_ptr_interface_wrapper<string_class>) >= sizeof(double));
 
 	new (&m_value) rdo::intrusive_ptr_interface_wrapper<string_class>(new string_class(value));
-	setUndefined(1);
+	setUndefined(true);
 }
 
 inline RDOValue::RDOValue(CPTR(tchar) value)
 	: m_pType(g_string)
 {
 	new (&m_value) rdo::intrusive_ptr_interface_wrapper<string_class>(new string_class(value));
-	setUndefined(1);
+	setUndefined(true);
 }
 
 inline RDOValue::RDOValue(CREF(tstring) value, CREF(LPRDOType) pType)
@@ -145,7 +143,7 @@ inline RDOValue::RDOValue(CREF(tstring) value, CREF(LPRDOType) pType)
 		RDOValueException();
 
 	new (&m_value) rdo::intrusive_ptr_interface_wrapper<string_class>(new string_class(value));
-	setUndefined(1);
+	setUndefined(true);
 }
 
 template <class T>
@@ -161,7 +159,7 @@ inline RDOValue::RDOValue(CREF(LPRDOType) pType, CREF(rdo::intrusive_ptr<T>) pOb
 		typeID() == RDOType::t_pointer
 	);
 	new (&m_value) rdo::intrusive_ptr_interface_wrapper<T>(pObject);
-	setUndefined(1);
+	setUndefined(true);
 }
 
 inline void RDOValue::deleteValue()
@@ -178,6 +176,9 @@ inline void RDOValue::deleteValue()
 
 inline rsint RDOValue::getInt() const
 {
+	if (!m_undefined)
+		throw RDOUndefinedException();
+
 	switch (typeID())
 	{
 	case RDOType::t_int    : return __get<int>  ();
@@ -191,6 +192,9 @@ inline rsint RDOValue::getInt() const
 
 inline ruint RDOValue::getUInt() const
 {
+	if (!m_undefined)
+		throw RDOUndefinedException();
+
 	switch (typeID())
 	{
 	case RDOType::t_int    : return __get<ruint>();
@@ -204,6 +208,9 @@ inline ruint RDOValue::getUInt() const
 
 inline rsint RDOValue::getEnumAsInt() const
 {
+	if (!m_undefined)
+		throw RDOUndefinedException();
+
 	switch (typeID())
 	{
 	case RDOType::t_int : return __get<int>  ();
@@ -216,6 +223,9 @@ inline rsint RDOValue::getEnumAsInt() const
 
 inline LPRDOEnumType RDOValue::getEnum() const
 {
+	if (!m_undefined)
+		throw RDOUndefinedException();
+
 	switch (typeID())
 	{
 	case RDOType::t_enum: return __enumT();
@@ -225,6 +235,9 @@ inline LPRDOEnumType RDOValue::getEnum() const
 
 inline double RDOValue::getDouble() const
 {
+	if (!m_undefined)
+		throw RDOUndefinedException();
+
 	switch (typeID())
 	{
 	case RDOType::t_int : return __get<int>   ();
@@ -237,6 +250,9 @@ inline double RDOValue::getDouble() const
 
 inline rbool RDOValue::getBool() const
 {
+	if (!m_undefined)
+		throw RDOUndefinedException();
+
 	switch (typeID())
 	{
 	case RDOType::t_bool: return __get<rbool>();
@@ -246,6 +262,9 @@ inline rbool RDOValue::getBool() const
 
 inline rbool RDOValue::getAsBool() const
 {
+	if (!m_undefined)
+		throw RDOUndefinedException();
+
 	switch (typeID())
 	{
 	case RDOType::t_int   : return __get<int>   ()      ? true : false;
@@ -259,6 +278,9 @@ inline rbool RDOValue::getAsBool() const
 
 inline CREF(tstring) RDOValue::getString() const
 {
+	if (!m_undefined)
+		throw RDOUndefinedException();
+
 	switch (typeID())
 	{
 	case RDOType::t_string: return __stringV();
@@ -268,6 +290,9 @@ inline CREF(tstring) RDOValue::getString() const
 
 inline CREF(tstring) RDOValue::getIdentificator() const
 {
+	if (!m_undefined) 
+		throw RDOUndefinedException();
+
 	switch (typeID())
 	{
 	case RDOType::t_identificator: return __stringV();
@@ -277,6 +302,9 @@ inline CREF(tstring) RDOValue::getIdentificator() const
 
 inline tstring RDOValue::getAsString() const
 {
+	if (!m_undefined)
+		throw RDOUndefinedException();
+
 	switch (typeID())
 	{
 	case RDOType::t_int          : return rdo::format(_T("%d"), __get<int>());
@@ -292,6 +320,9 @@ inline tstring RDOValue::getAsString() const
 
 inline tstring RDOValue::getAsStringForTrace() const
 {
+	if (!m_undefined)
+		return _T("#");
+
 	switch (typeID())
 	{
 	case RDOType::t_int    : return rdo::format(_T("%d"), __get<int>());
@@ -306,9 +337,8 @@ inline tstring RDOValue::getAsStringForTrace() const
 
 inline void RDOValue::set(CREF(RDOValue) rdovalue)
 {
-	deleteValue();
-
-	m_pType = rdovalue.m_pType;
+	m_pType     = rdovalue.m_pType;
+	m_undefined = rdovalue.m_undefined;
 	switch (typeID())
 	{
 	case RDOType::t_string       :
@@ -329,12 +359,16 @@ inline void RDOValue::set(CREF(RDOValue) rdovalue)
 
 inline REF(RDOValue) RDOValue::operator= (CREF(RDOValue) rdovalue)
 {
+	deleteValue();
 	set(rdovalue);
 	return *this;
 }
 
 inline rbool RDOValue::operator== (CREF(RDOValue) rdovalue) const
 {
+	if (!m_undefined || !rdovalue.getUndefined())
+		throw RDOUndefinedException();
+
 	switch (typeID())
 	{
 	case RDOType::t_int:
@@ -402,6 +436,9 @@ inline rbool RDOValue::operator!= (CREF(RDOValue) rdovalue) const
 
 inline rbool RDOValue::operator< (CREF(RDOValue) rdovalue) const
 {
+	if (!m_undefined || !rdovalue.getUndefined())
+		throw RDOUndefinedException();
+
 	switch (typeID())
 	{
 	case RDOType::t_int:
@@ -442,11 +479,6 @@ inline rbool RDOValue::operator< (CREF(RDOValue) rdovalue) const
 	throw RDOValueException();
 }
 
-inline rbool RDOValue::operator< (CREF(RDOValue) rdovalue)
-{
-	return static_cast<CPTR(RDOValue)>(this)->operator< (rdovalue);
-}
-
 inline rbool RDOValue::operator> (CREF(RDOValue) rdovalue) const
 {
 	return !operator<=(rdovalue);
@@ -464,6 +496,9 @@ inline rbool RDOValue::operator>= (CREF(RDOValue) rdovalue) const
 
 inline RDOValue RDOValue::operator&& (CREF(RDOValue) rdovalue) const
 {
+	if (!m_undefined || !rdovalue.getUndefined())
+		throw RDOUndefinedException();
+
 	switch (typeID())
 	{
 	case RDOType::t_bool:
@@ -484,6 +519,9 @@ inline RDOValue RDOValue::operator&& (CREF(RDOValue) rdovalue) const
 
 inline RDOValue RDOValue::operator|| (CREF(RDOValue) rdovalue) const
 {
+	if (!m_undefined || !rdovalue.getUndefined())
+		throw RDOUndefinedException();
+
 	switch (typeID())
 	{
 	case RDOType::t_bool:
@@ -504,6 +542,9 @@ inline RDOValue RDOValue::operator|| (CREF(RDOValue) rdovalue) const
 
 inline RDOValue RDOValue::operator- () const
 {
+	if (!m_undefined)
+		throw RDOUndefinedException();
+
 	switch (typeID())
 	{
 	case RDOType::t_int    : return RDOValue(-__get<int>   ());
@@ -516,6 +557,9 @@ inline RDOValue RDOValue::operator- () const
 
 inline rbool RDOValue::operator! () const
 {
+	if (!m_undefined)
+		throw RDOUndefinedException();
+
 	switch (typeID())
 	{
 	case RDOType::t_int : return !__get<int>   (); break;
@@ -527,6 +571,9 @@ inline rbool RDOValue::operator! () const
 
 inline REF(RDOValue) RDOValue::operator+= (CREF(RDOValue) rdovalue)
 {
+	if (!m_undefined || !rdovalue.getUndefined())
+		throw RDOUndefinedException();
+
 	switch (typeID())
 	{
 	case RDOType::t_int:
@@ -587,6 +634,9 @@ inline RDOValue RDOValue::operator++(int inc)
 {
 	UNUSED(inc);
 
+	if (!m_undefined)
+		throw RDOUndefinedException();
+
 	RDOValue prevValue(typeID() == RDOType::t_pointer ? clone() : *this);
 	operator+=(1);
 	return prevValue;
@@ -594,6 +644,9 @@ inline RDOValue RDOValue::operator++(int inc)
 
 inline CREF(RDOValue) RDOValue::operator--()
 {
+	if (!m_undefined)
+		throw RDOUndefinedException();
+
 	operator-=(1);
 	return *this;
 }
@@ -602,6 +655,9 @@ inline RDOValue RDOValue::operator--(int inc)
 {
 	UNUSED(inc);
 
+	if (!m_undefined)
+		throw RDOUndefinedException();
+
 	RDOValue prevValue(typeID() == RDOType::t_pointer ? clone() : *this);
 	operator-=(1);
 	return prevValue;
@@ -609,6 +665,9 @@ inline RDOValue RDOValue::operator--(int inc)
 
 inline REF(RDOValue) RDOValue::operator-= (CREF(RDOValue) rdovalue)
 {
+	if (!m_undefined || !rdovalue.getUndefined())
+		throw RDOUndefinedException();
+
 	switch (typeID())
 	{
 	case RDOType::t_int:
@@ -640,6 +699,9 @@ inline REF(RDOValue) RDOValue::operator-= (CREF(RDOValue) rdovalue)
 
 inline REF(RDOValue) RDOValue::operator*= (CREF(RDOValue) rdovalue)
 {
+	if (!m_undefined || !rdovalue.getUndefined())
+		throw RDOUndefinedException();
+
 	switch (typeID())
 	{
 	case RDOType::t_int:
@@ -671,6 +733,9 @@ inline REF(RDOValue) RDOValue::operator*= (CREF(RDOValue) rdovalue)
 
 inline REF(RDOValue) RDOValue::operator/= (CREF(RDOValue) rdovalue)
 {
+	if (!m_undefined || !rdovalue.getUndefined())
+		throw RDOUndefinedException();
+
 	switch (typeID())
 	{
 	case RDOType::t_int:
@@ -791,16 +856,12 @@ inline RDOValue RDOValue::operator/ (CREF(RDOValue) rdovalue) const
 //	throw RDOValueException();
 //}
 
-inline void RDOValue::setUndefined(CREF(double) undefined)
+inline void RDOValue::setUndefined(CREF(rbool) undefined)
 {
-	ASSERT(
-		undefined >= 0 &&
-		undefined <= 1
-	);
 	m_undefined = undefined;
 }
 
-inline CREF(double) RDOValue::getUndefined() const
+inline CREF(rbool) RDOValue::getUndefined() const
 {
 	return m_undefined;
 }

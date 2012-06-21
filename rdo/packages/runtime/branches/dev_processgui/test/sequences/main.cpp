@@ -35,6 +35,7 @@ typedef std::vector<ruint>  ContainerInt;
 typedef const tstring contstr;
 
 const long int g_seed                 = 123456789;                  //!< база генератора
+contstr        g_filePath             = _T("../../test/sequences/");//!< путь к файлам относительно проекта
 contstr        g_fileNormalName       = _T("data_normal.txt");      //!< файл данных
 contstr        g_fileUniformName      = _T("data_uniform.txt");     //!< файл данных
 contstr        g_fileExponentialName  = _T("data_exponential.txt"); //!< файл данных
@@ -286,13 +287,13 @@ BOOST_AUTO_TEST_SUITE(RDOSequencesTest)
 BOOST_AUTO_TEST_CASE(RDONormalTestCreate)
 {
 	onGenerateData<rdo::runtime::RandGeneratorNormal>
-		(boost::bind(&rdo::runtime::RandGeneratorNormal::next, _1, g_main, g_var), g_fileNormalName);
+		(boost::bind(&rdo::runtime::RandGeneratorNormal::next, _1, g_main, g_var), g_filePath + g_fileNormalName);
 }
 
 BOOST_AUTO_TEST_CASE(RDONormalTestCheck)
 {
 	onCheckData<rdo::runtime::RandGeneratorNormal>
-		(boost::bind(&rdo::runtime::RandGeneratorNormal::next, _1, g_main, g_var), g_fileNormalName);
+		(boost::bind(&rdo::runtime::RandGeneratorNormal::next, _1, g_main, g_var), g_filePath + g_fileNormalName);
 
 	SequenceNormal normal(g_main, g_var);
 	onCheckKsi<SequenceNormal, rdo::runtime::RandGeneratorNormal>
@@ -309,13 +310,13 @@ BOOST_AUTO_TEST_CASE(RDONormalTestCheck)
 BOOST_AUTO_TEST_CASE(RDOUniformTestCreate)
 {
 	onGenerateData<rdo::runtime::RandGeneratorUniform>
-		(boost::bind(&rdo::runtime::RandGeneratorUniform::next, _1, g_from, g_to), g_fileUniformName);
+		(boost::bind(&rdo::runtime::RandGeneratorUniform::next, _1, g_from, g_to), g_filePath + g_fileUniformName);
 }
 
 BOOST_AUTO_TEST_CASE(RDOUniformTestCheck)
 {
 	onCheckData<rdo::runtime::RandGeneratorUniform>
-		(boost::bind(&rdo::runtime::RandGeneratorUniform::next, _1, g_from, g_to), g_fileUniformName);
+		(boost::bind(&rdo::runtime::RandGeneratorUniform::next, _1, g_from, g_to), g_filePath + g_fileUniformName);
 
 	SequenceUniform uniform(g_from, g_to);
 	onCheckKsi<SequenceUniform, rdo::runtime::RandGeneratorUniform>
@@ -332,13 +333,13 @@ BOOST_AUTO_TEST_CASE(RDOUniformTestCheck)
 BOOST_AUTO_TEST_CASE(RDOExponentialTestCreate)
 {
 	onGenerateData<rdo::runtime::RandGeneratorExponential>
-		(boost::bind(&rdo::runtime::RandGeneratorExponential::next, _1, g_main), g_fileExponentialName);
+		(boost::bind(&rdo::runtime::RandGeneratorExponential::next, _1, g_main), g_filePath + g_fileExponentialName);
 }
 
 BOOST_AUTO_TEST_CASE(RDOExponentialTestCheck)
 {
 	onCheckData<rdo::runtime::RandGeneratorExponential>
-		(boost::bind(&rdo::runtime::RandGeneratorExponential::next, _1, g_main), g_fileExponentialName);
+		(boost::bind(&rdo::runtime::RandGeneratorExponential::next, _1, g_main), g_filePath + g_fileExponentialName);
 
 	SequenceExponential exponential(g_main);
 	onCheckKsi<SequenceExponential, rdo::runtime::RandGeneratorExponential>
@@ -355,13 +356,13 @@ BOOST_AUTO_TEST_CASE(RDOExponentialTestCheck)
 BOOST_AUTO_TEST_CASE(RDOTriangularTestCreate)
 {
 	onGenerateData<rdo::runtime::RandGeneratorTriangular>
-		(boost::bind(&rdo::runtime::RandGeneratorTriangular::next, _1, g_from, g_top, g_to), g_fileTriangularName);
+		(boost::bind(&rdo::runtime::RandGeneratorTriangular::next, _1, g_from, g_top, g_to), g_filePath + g_fileTriangularName);
 }
 
 BOOST_AUTO_TEST_CASE(RDOTriangularTestCheck)
 {
 	onCheckData<rdo::runtime::RandGeneratorTriangular>
-		(boost::bind(&rdo::runtime::RandGeneratorTriangular::next, _1, g_from, g_top, g_to), g_fileTriangularName);
+		(boost::bind(&rdo::runtime::RandGeneratorTriangular::next, _1, g_from, g_top, g_to), g_filePath + g_fileTriangularName);
 
 	SequenceTriangular triangular(g_from, g_top, g_to);
 	onCheckKsi<SequenceTriangular, rdo::runtime::RandGeneratorTriangular>

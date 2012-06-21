@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="rdo_value_test"
-	ProjectGUID="{F83B49E2-A9F0-4BD6-B6B7-91FBDACE518F}"
-	RootNamespace="rdo_value_test"
+	Name="test_matrix"
+	ProjectGUID="{31BADFCA-7F27-44EC-8CA2-5F2493C8EAD5}"
+	RootNamespace="test_matrix"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -17,9 +17,9 @@
 	</ToolFiles>
 	<Configurations>
 		<Configuration
-			Name="Debug|Win32"
-			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
+			Name="debug|Win32"
+			OutputDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="2"
 			>
@@ -86,12 +86,10 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release|Win32"
-			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
+			Name="release|Win32"
+			OutputDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
-			UseOfMFC="0"
-			UseOfATL="0"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -113,8 +111,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="../../../../"
-				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_CONSOLE"
-				ExceptionHandling="2"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				WarningLevel="4"
 			/>
 			<Tool
@@ -163,7 +160,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\main.cpp"
+				RelativePath="..\..\test\matrix\main.cpp"
 				>
 			</File>
 		</Filter>

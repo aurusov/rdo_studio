@@ -42,14 +42,12 @@ RDOSelectResourceCalc::RDOSelectResourceCalc(ResourceID relResID, CREF(LPRDOCalc
 // --------------------------------------------------------------------------------
 RDOSelectResourceNonExistCalc::RDOSelectResourceNonExistCalc(ResourceID relResID)
 	: RDOSelectResourceCalc(relResID, NULL, NULL)
-{
-	m_value = 1;
-}
+{}
 
-REF(RDOValue) RDOSelectResourceNonExistCalc::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOSelectResourceNonExistCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
-	return m_value;
+	return RDOValue();
 }
 
 // --------------------------------------------------------------------------------
@@ -70,17 +68,15 @@ rbool RDOSelectResourceDirectCalc::compare(CREF(LPRDOCalc) pCalc) const
 	return m_relResID == pDirectCalc->m_relResID && m_resID == pDirectCalc->m_resID;
 }
 
-REF(RDOValue) RDOSelectResourceDirectCalc::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOSelectResourceDirectCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->getCurrentActivity()->setRelRes(m_relResID, m_resID);
 	if (m_pCalcChoiceFrom && !m_pCalcChoiceFrom->calcValue(pRuntime).getAsBool())
 	{
 		pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
-		m_value = 0;
-		return m_value;
+		return RDOValue(0);
 	}
-	m_value = 1;
-	return m_value;
+	return RDOValue(1);
 }
 
 // --------------------------------------------------------------------------------
@@ -91,7 +87,7 @@ RDOSelectResourceByTypeCalc::RDOSelectResourceByTypeCalc(ResourceID relResID, Re
 	, m_resTypeID          (resTypeID                                   )
 {}
 
-REF(RDOValue) RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	RDOValue   maxVal      = -DBL_MAX;
 	RDOValue   minVal      = DBL_MAX;
@@ -115,8 +111,7 @@ REF(RDOValue) RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 						pRuntime->getCurrentActivity()->setRelRes(m_relResID, ruint(~0));
 						continue;
 					}
-					m_value = 1;
-					return m_value;
+					return RDOValue(1);
 				}
 			case order_with_min:
 				{
@@ -157,11 +152,9 @@ REF(RDOValue) RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 	if (resMinMaxID != ~0)
 	{
 		pRuntime->getCurrentActivity()->setRelRes(m_relResID, resMinMaxID);
-		m_value = 1;
-		return m_value;
+		return RDOValue(1);
 	}
-	m_value = 0;
-	return m_value;
+	return RDOValue(0);
 }
 
 // --------------------------------------------------------------------------------
@@ -265,7 +258,7 @@ rbool RDOSelectResourceCommonCalc::getFirst(REF(ResourceIDTable) allNumbs, ruint
 //	return false;
 //}
 
-REF(RDOValue) RDOSelectResourceCommonCalc::doCalc(CREF(LPRDORuntime) pRuntime)
+RDOValue RDOSelectResourceCommonCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	ResourceIDTable allNumbs;
 	ResourceIDList res;
@@ -284,8 +277,7 @@ REF(RDOValue) RDOSelectResourceCommonCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 //		}
 		if (getFirst(allNumbs, 0, pRuntime))
 		{
-			m_value = 1;
-			return m_value;
+			return RDOValue(1);
 		}
 	}
 	else
@@ -300,12 +292,10 @@ REF(RDOValue) RDOSelectResourceCommonCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 			{
 				pRuntime->getCurrentActivity()->setRelRes(i, res[i]);
 			}
-			m_value = 1;
-			return m_value;
+			return RDOValue(1);
 		}
 	}
-	m_value = 0;
-	return m_value;
+	return RDOValue(0);
 }
 
 // --------------------------------------------------------------------------------

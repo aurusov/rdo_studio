@@ -12,6 +12,8 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
+#include <boost/icl/interval.hpp>
+#include <boost/icl/interval_set.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_value.h"
 #include "simulator/runtime/rdo_type.h"
@@ -20,173 +22,159 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-PREDECLARE_POINTER(RDOFuzzyType);
+PREDECLARE_POINTER(FuzzySet);
+PREDECLARE_POINTER(DefineArea);
+//! Область определения
 
-//! Нечеткое значение
-OBJECT(RDOFuzzyValue)
+OBJECT(DefineArea)
 {
-DECLARE_FACTORY(RDOFuzzyValue);
+DECLARE_FACTORY(DefineArea);
+public:
+	typedef  boost::icl::interval<RDOValue> DomainPart;
+	typedef  boost::icl::interval<RDOValue>::type IntervalType;
+	typedef  boost::icl::interval_set<RDOValue> Domain;
+	
+	DefineArea (); // типа бесконечность
+	virtual ~DefineArea();
+private:
+	DefineArea(CREF(RDOValue));// 1 element
+	DefineArea(CREF(RDOValue) leftBorder, CREF(RDOValue) rightBorder); //;
 
+	Domain m_domain;
+};
+
+//! Нечеткое множество
+OBJECT(FuzzySet)
+{
+DECLARE_FACTORY(FuzzySet);
 public:
 	typedef  std::pair<RDOValue, double>                              FuzzyItem;
-	typedef  std::map<FuzzyItem::first_type, FuzzyItem::second_type>  FuzzySet;
+	typedef  std::map<FuzzyItem::first_type, FuzzyItem::second_type>  FuzzySetDefinition;
 
-	REF(RDOFuzzyValue)         append     (CREF(RDOValue) rdovalue, double appertain);
-	REF(RDOFuzzyValue)         operator() (CREF(RDOValue) rdovalue, double appertain);
-	REF(double)                operator[] (CREF(RDOValue) rdovalue);
-	FuzzySet::const_iterator   find       (CREF(RDOValue) rdovalue) const;
-	FuzzyItem                  findValue  (CREF(RDOValue) rdovalue) const;
-	FuzzySet::const_iterator   begin      () const;
-	FuzzySet::const_iterator   end        () const;
-	rbool                      empty      () const;
-	CREF(LPRDOFuzzyType)       type       () const;
-	LPRDOFuzzyValue            clone      () const;
+	LPFuzzySet                                append     (CREF(RDOValue) rdovalue, double appertain); // вставка с проверкой значения, если такое же есть - не вставит
+	LPFuzzySet                                operator() (CREF(RDOValue) rdovalue, double appertain);
+	REF(double)                               operator[] (CREF(RDOValue) rdovalue); // вставка без проверки значения
+	FuzzySetDefinition::const_iterator        find       (CREF(RDOValue) rdovalue) const;
+	FuzzyItem                                 findValue  (CREF(RDOValue) rdovalue) const;
+	FuzzySetDefinition::const_iterator        begin      () const;
+	FuzzySetDefinition::const_iterator        end        () const;
+	FuzzySetDefinition::iterator              begin      ();
+	FuzzySetDefinition::iterator              end        ();
+	LPFuzzySet                                clone      () const;
+	rbool                                     empty      () const;
+	rbool                                     inRange    (CREF(RDOValue) rdovalue);
+	void                                      setValues  (CREF(FuzzySetDefinition) values);
 
-	/* 3.37 */  LPRDOFuzzyValue operator&& (CREF(LPRDOFuzzyValue) pFuzzyValue) const;
-	/* 3.40 */  LPRDOFuzzyValue operator|| (CREF(LPRDOFuzzyValue) pFuzzyValue) const;
-	/* 3.102*/  LPRDOFuzzyValue operator+  (CREF(LPRDOFuzzyValue) pFuzzyValue) const;
-	/* 3.104*/  LPRDOFuzzyValue operator-  (CREF(LPRDOFuzzyValue) pFuzzyValue) const;
-	/* 3.106*/  LPRDOFuzzyValue operator*  (CREF(LPRDOFuzzyValue) pFuzzyValue) const;
-	/* 3.108*/  LPRDOFuzzyValue operator/  (CREF(LPRDOFuzzyValue) pFuzzyValue) const;
+	            LPFuzzySet operator&& (CREF(LPFuzzySet) pFuzzyValue) const;
+	            LPFuzzySet operator|| (CREF(LPFuzzySet) pFuzzyValue) const;
+	/* 3.102*/  LPFuzzySet operator+  (CREF(LPFuzzySet) pFuzzyValue) const;
+	/* 3.104*/  LPFuzzySet operator-  (CREF(LPFuzzySet) pFuzzyValue) const;
+	/* 3.106*/  LPFuzzySet operator*  (CREF(LPFuzzySet) pFuzzyValue) const;
+	/* 3.108*/  LPFuzzySet operator/  (CREF(LPFuzzySet) pFuzzyValue) const;
 
-	/* 3.116*/  LPRDOFuzzyValue u_minus() const;
-	/* 3.117*/  LPRDOFuzzyValue u_obr  () const;
-	/* 3.118*/  LPRDOFuzzyValue u_scale(double scale) const;
-	/* 3.119*/  LPRDOFuzzyValue u_log  () const;
-
-	/* 3.39 */  LPRDOFuzzyValue a_mult    (CREF(LPRDOFuzzyValue) pFuzzyValue) const;
-	/* 3.48 */  LPRDOFuzzyValue alpha     (double appertain) const;
-	/* 3.62 */  LPRDOFuzzyValue supplement() const;
-	/* 3.78 */  LPRDOFuzzyValue a_con     () const;
-	/* 3.79 */  LPRDOFuzzyValue a_dil     () const;
-
-	/* 3.272*/ RDOValue defuzzyfication();
 
 	tstring getAsString() const;
-
 private:
-	RDOFuzzyValue(CREF(LPRDOFuzzyType)  pType );
-	RDOFuzzyValue(CREF(LPRDOFuzzyValue) pValue);
-	virtual ~RDOFuzzyValue();
+	FuzzySet();
+	FuzzySet(CREF(LPDefineArea) pDefineArea);
+	FuzzySet(CREF(LPFuzzySet) pSet); // KK
 
-	FuzzySet        m_fuzzySet;
-	LPRDOFuzzyType  m_pType;
+	virtual ~FuzzySet();
 
-	FuzzySet::iterator  begin();
-	FuzzySet::iterator  end  ();
+	FuzzySetDefinition  m_fuzzySet;
+	LPDefineArea        m_defineArea;
+};
 
+PREDECLARE_POINTER(RDOValue);
+PREDECLARE_POINTER(RDOLingvoVariable);
+
+//! Свойства НМ:
+class MemberFunctionProperties
+{
+public:
 	typedef RDOValue (*ExtUnaryFun )(CREF(RDOValue) rdovalue);
 	typedef RDOValue (*ExtUnaryFunP)(CREF(RDOValue) rdovalue, PTR(void) pParam);
 	typedef RDOValue (*ExtBinaryFun)(CREF(RDOValue) rdovalue1, CREF(RDOValue) rdovalue2);
 
-	            LPRDOFuzzyValue a_pow     (double power) const;
-	/* 3.114*/  LPRDOFuzzyValue ext_unary (ExtUnaryFun  fun) const;
-	/* 3.114*/  LPRDOFuzzyValue ext_unary (ExtUnaryFunP fun, PTR(void) pParam) const;
-	/* 3.83 */  LPRDOFuzzyValue ext_binary(ExtBinaryFun fun, CREF(LPRDOFuzzyValue) pFuzzyValue) const;
+	/* 3.116*/  static LPFuzzySet u_minus(CREF(LPFuzzySet) pSet);
+	/* 3.117*/  static LPFuzzySet u_obr  (CREF(LPFuzzySet) pSet);
+	/* 3.118*/  static LPFuzzySet u_scale(CREF(LPFuzzySet) pSet, double scale);
+	/* 3.119*/  static LPFuzzySet u_log  (CREF(LPFuzzySet) pSet);
+
+	/* 3.39 */  static LPFuzzySet a_mult    (CREF(LPFuzzySet) pSet1, CREF(LPFuzzySet) pSet2); // не работает пока
+	/* 3.48 */  static LPFuzzySet alpha     (CREF(LPFuzzySet) pSet,  double appertain);
+	/* 3.62 */  static LPFuzzySet supplement(CREF(LPFuzzySet) pSet);
+	/* 3.78 */  static LPFuzzySet a_con     (CREF(LPFuzzySet) pSet);
+	/* 3.79 */  static LPFuzzySet a_dil     (CREF(LPFuzzySet) pSet);
+
+				static LPRDOLingvoVariable fuzzyfication  (CREF(RDOValue), CREF(LPRDOLingvoVariable));
+	/* 3.272*/  static RDOValue            defuzzyfication(CREF(LPFuzzySet) pSet);
+
+	            static LPFuzzySet a_pow     (LPFuzzySet pSet, double power);
+	/* 3.114*/  static LPFuzzySet ext_unary (ExtUnaryFun  fun, CREF(LPFuzzySet) pSet);
+	/* 3.114*/  static LPFuzzySet ext_unary (ExtUnaryFunP fun, PTR(void) pParam, CREF(LPFuzzySet) pSet);
+	/* 3.83 */  static LPFuzzySet ext_binary(ExtBinaryFun fun, CREF(LPFuzzySet) pSet1, CREF(LPFuzzySet) pSet2);
+
 };
+// ! Терм
 
-PREDECLARE_POINTER(RDOFuzzySetDefinition);
-
-//! Тип нечеткой переменной
-class RDOFuzzyType: public RDOType
+OBJECT (RDOFuzzyTerm)
 {
-DECLARE_FACTORY(RDOFuzzyType);
+DECLARE_FACTORY (RDOFuzzyTerm)
 public:
-	virtual tstring  name      ()                    const;
-	virtual RDOValue value_cast(CREF(RDOValue) from) const;
+	typedef tstring  termName;
+	typedef std::pair<termName,LPFuzzySet> Term;
 
-	rbool operator== (CREF(RDOFuzzyType) type) const;
-	rbool operator!= (CREF(RDOFuzzyType) type) const;
-
-	rbool           inRange      (CREF(RDOValue)        rdovalue) const;
-	LPRDOFuzzyValue getSupplement(CREF(LPRDOFuzzyValue) pValue  ) const;
-
-protected:
-	RDOFuzzyType(CREF(LPRDOFuzzySetDefinition) pFuzzySetDefinition);
-	virtual ~RDOFuzzyType();
+	CREF(LPFuzzySet)  getFuzzySetDefinition() const;
+	termName          getName              () const;
 
 private:
-	typedef std::map< tstring, LPRDOFuzzyValue > Terms;
+	RDOFuzzyTerm(CREF(termName), CREF(LPFuzzySet));
+	virtual ~RDOFuzzyTerm();
 
-	Terms                    m_terms;
-	LPRDOFuzzySetDefinition  m_fuzzySetDefinition;
-};
-DECLARE_POINTER(RDOFuzzyType);
-
-//! Нечеткое множество
-OBJECT(RDOFuzzySetDefinition)
-{
-DECLARE_FACTORY(RDOFuzzySetDefinition)
-public:
-	virtual rbool           inRange      (CREF(RDOValue)        rdovalue) const = 0;
-	virtual LPRDOFuzzyValue getSupplement(CREF(LPRDOFuzzyValue) pValue  ) const = 0;
-
-protected:
-	RDOFuzzySetDefinition();
-	virtual ~RDOFuzzySetDefinition();
+	Term m_term;
 };
 
-//! Нечеткое фиксированное множество
-class RDOFuzzySetDefinitionFixed: public RDOFuzzySetDefinition
-{
-DECLARE_FACTORY(RDOFuzzySetDefinitionFixed)
-public:
-	REF(RDOFuzzySetDefinitionFixed) append     (CREF(RDOValue) rdovalue);
-	REF(RDOFuzzySetDefinitionFixed) operator() (CREF(RDOValue) rdovalue);
+// !Лингвистическая переменная
 
-	virtual rbool           inRange      (CREF(RDOValue)        rdovalue) const;
-	virtual LPRDOFuzzyValue getSupplement(CREF(LPRDOFuzzyValue) pValue  ) const;
+OBJECT (RDOLingvoVariable)
+{
+DECLARE_FACTORY(RDOLingvoVariable)
+public:
+	typedef std::map<RDOFuzzyTerm::Term::first_type, RDOFuzzyTerm::Term::second_type> TermSet;
+	typedef tstring nameOfVariable;
+
+	TermSet::const_iterator            begin () const;
+	TermSet::const_iterator            end   () const;
+
+	REF(LPFuzzySet)                    operator[] (tstring name);
+	
+	void                               setName      (nameOfVariable);
+	nameOfVariable                     getName      () {return m_name;};
+	void                               append       (tstring name,CREF(LPFuzzySet) fuzzySet);
 
 private:
-	RDOFuzzySetDefinitionFixed();
-	virtual ~RDOFuzzySetDefinitionFixed();
+	TermSet        m_set;
+	nameOfVariable m_name;
 
-	RDOFuzzyValue::FuzzySet  m_items;
+	RDOLingvoVariable(CREF(LPRDOFuzzyTerm) term, nameOfVariable nameOfVariable);
+	RDOLingvoVariable(CREF(RDOValue) pDefineAreaValue, CREF(LPRDOLingvoVariable) variable);
+	RDOLingvoVariable(CREF(RDOLingvoVariable)); // KK
+	virtual ~RDOLingvoVariable();
 };
-DECLARE_POINTER(RDOFuzzySetDefinitionFixed);
 
-//! Дискретное множество диапазонов
-class RDOFuzzySetDefinitionRangeDiscret: public RDOFuzzySetDefinition
+OBJECT (Statement)
 {
-DECLARE_FACTORY(RDOFuzzySetDefinitionRangeDiscret)
+DECLARE_FACTORY(Statement)
 public:
-	virtual rbool           inRange      (CREF(RDOValue)        rdovalue) const;
-	virtual LPRDOFuzzyValue getSupplement(CREF(LPRDOFuzzyValue) pValue  ) const;
+	void setTerm(LPRDOFuzzyTerm term);
+	void setVariable(LPRDOLingvoVariable variable);
 
 private:
-	RDOFuzzySetDefinitionRangeDiscret(CREF(RDOValue) from, CREF(RDOValue) till, CREF(RDOValue) step = 1);
-	virtual ~RDOFuzzySetDefinitionRangeDiscret();
-
-	RDOValue  m_from;
-	RDOValue  m_till;
-	RDOValue  m_step;
-};
-DECLARE_POINTER(RDOFuzzySetDefinitionRangeDiscret);
-
-//! Пустой нечеткий тип
-class RDOFuzzyEmptyType: public RDOFuzzyType
-{
-public:
-	static LPRDOFuzzyType getInstance();
-
-private:
-	RDOFuzzyEmptyType();
-	virtual ~RDOFuzzyEmptyType();
-
-	static PTR(RDOFuzzyEmptyType) s_emptyType;
-
-	//! Пустое множество
-	class RDOFuzzySetDefinitionEmpty: public RDOFuzzySetDefinition
-	{
-	public:
-		RDOFuzzySetDefinitionEmpty();
-		virtual ~RDOFuzzySetDefinitionEmpty();
-
-		virtual rbool           inRange      (CREF(RDOValue)        rdovalue) const;
-		virtual LPRDOFuzzyValue getSupplement(CREF(LPRDOFuzzyValue) pValue  ) const;
-	};
-
-	virtual tstring asString() const;
+	LPRDOLingvoVariable m_variable;
+	LPRDOFuzzyTerm      m_term;
+	Statement();
+	~Statement();
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
