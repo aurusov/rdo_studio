@@ -18,7 +18,7 @@ public:
 
 	RPProcessShapeProcess* m_pParent; // ссылка на родителя
 
-	enum { IDD = IDD_DIALOG_PROCESS_1_MJ };
+	enum { IDD = IDD_DIALOG_PROCESS_SHAPE_PROCESS_1 };
 	CComboBox	m_gtype;
 	CComboBox	m_gqueque;
 	RPListBox	m_ResList;

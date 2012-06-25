@@ -13,7 +13,7 @@ public:
 	RPProcessShapeCreateDlg1(CWnd* pParent = NULL,RPProcessShapeCreate* ppParent=NULL);
 	virtual BOOL OnInitDialog();
 
-	enum { IDD = IDD_DIALOG_CREATE_1_MJ };
+	enum { IDD = IDD_DIALOG_PROCESS_SHAPE_CREATE_1 };
 	CEdit		m_expCtrl;
 	CEdit		m_dispCtrl;
 	CEdit		m_maxCtrl;

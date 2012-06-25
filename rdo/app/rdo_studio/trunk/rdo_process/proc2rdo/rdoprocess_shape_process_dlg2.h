@@ -17,7 +17,7 @@ public:
 
 	std::list< RPObject* > m_resourceList;
 
-	enum { IDD = IDD_DIALOG_PROCESS_2_MJ };
+	enum { IDD = IDD_DIALOG_PROCESS_SHAPE_PROCESS_2 };
 	CComboBox	m_combo_res_control;
 	CString	m_combo_res_value;
 

@@ -12,7 +12,7 @@ public:
 
 	PTR(RPProcessShapeTerminate) m_pShape;
 
-	enum { IDD = IDD_DIALOG_TERMINATE_1_MJ };
+	enum { IDD = IDD_DIALOG_PROCESS_SHAPE_TERMINATE };
 	CString    m_name;
 	int        m_terminateCounter;
 

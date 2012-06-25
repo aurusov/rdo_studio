@@ -13,7 +13,7 @@ public:
 
 	virtual BOOL OnInitDialog();
 
-	enum { IDD = IDD_DIALOG_CREATE_2_MJ };
+	enum { IDD = IDD_DIALOG_PROCESS_SHAPE_CREATE_2 };
 	int		m_dlginf;
 	int		m_dlgid;
 	double	m_dlgpar1;
