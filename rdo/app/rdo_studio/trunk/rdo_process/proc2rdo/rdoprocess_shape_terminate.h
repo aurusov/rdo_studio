@@ -17,7 +17,7 @@ private:
 public:
 	tstring m_name;
 	int     m_term_inc;
-	ruint   m_currentTransactCountDel;
+	ruint   m_terminatedTransactCount;
 	ruint   indent;
 
 	rdo::compiler::gui::LPRPShapeDataBlockTerminate m_pParams;

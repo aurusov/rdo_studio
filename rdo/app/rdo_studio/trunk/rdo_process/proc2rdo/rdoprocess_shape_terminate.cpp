@@ -12,7 +12,7 @@ static char THIS_FILE[]=__FILE__;
 
 RPProcessShapeTerminate::RPProcessShapeTerminate( RPObject* _parent )
 	: RPProcessShape(_parent, _T("Terminate"))
-	, m_currentTransactCountDel(0)
+	, m_terminatedTransactCount(0)
 {
 	m_term_inc = 1;
 	m_name     = _T("Terminate");
@@ -65,6 +65,9 @@ void RPProcessShapeTerminate::generate()
 	studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_TERMINATE, m_pParams.get());
 
 	m_pParams = NULL;
+
+	m_terminatedTransactCount = 0;
+	update();
 }
 
 void RPProcessShapeTerminate::saveToXML(REF(pugi::xml_node) parentNode) const
@@ -104,12 +107,12 @@ void RPProcessShapeTerminate::loadFromXML(CREF(pugi::xml_node) node)
 
 void RPProcessShapeTerminate::setTransCount(ruint count)
 {
-	m_currentTransactCountDel = count;
+	m_terminatedTransactCount = count;
 	update();
 }
 
 void RPProcessShapeTerminate::drawCustom(REF(CDC) dc)
 {
 	dc.SetTextColor(RGB(0x00, 0x64, 0x00));
-	dc.TextOut(this->pa_global.getMaxX() - 2*indent, this->pa_global.getMaxY() + indent, rp::string::fromint(m_currentTransactCountDel).c_str());
+	dc.TextOut(this->pa_global.getMaxX() - 2*indent, this->pa_global.getMaxY() + indent, rp::string::fromint(m_terminatedTransactCount).c_str());
 }

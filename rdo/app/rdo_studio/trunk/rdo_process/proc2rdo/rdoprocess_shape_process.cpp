@@ -13,7 +13,7 @@ static char THIS_FILE[]=__FILE__;
 
 RPProcessShapeProcess::RPProcessShapeProcess( RPObject* _parent )
 	: RPProcessShape( _parent, _T("Process") )
-	, m_currentTransactCountProc(0)
+	, m_inProcessTransactCount(0)
 {
 	
 	gname = _T("Process"); // имя
@@ -131,18 +131,21 @@ void RPProcessShapeProcess::generate()
 	studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_PROCESS, m_pParams.get());
 
 	m_pParams = NULL;
+
+	m_inProcessTransactCount = 0;
+	update();
 }
 
 void RPProcessShapeProcess::setTransCount(ruint count)
 {
-	m_currentTransactCountProc = count;
+	m_inProcessTransactCount = count;
 	update();
 }
 
 void RPProcessShapeProcess::drawCustom(REF(CDC) dc)
 {
 	dc.SetTextColor(RGB(0x00, 0x64, 0x00));
-	dc.TextOut(this->pa_global.getMaxX() - 2*indent, this->pa_global.getMaxY() + indent, rp::string::fromint(m_currentTransactCountProc).c_str());
+	dc.TextOut(this->pa_global.getMaxX() - 2*indent, this->pa_global.getMaxY() + indent, rp::string::fromint(m_inProcessTransactCount).c_str());
 }
 
 void RPProcessShapeProcess::saveToXML(REF(pugi::xml_node) parentNode) const

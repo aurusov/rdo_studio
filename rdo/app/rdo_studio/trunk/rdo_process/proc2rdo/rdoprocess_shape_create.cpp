@@ -13,7 +13,7 @@ static char THIS_FILE[]=__FILE__;
 
 RPProcessShapeCreate::RPProcessShapeCreate(PTR(RPObject) _parent)
 	: RPProcessShape(_parent, _T("Create"))
-	, m_currentTransactCount(0)
+	, m_createdTransactCount(0)
 {
 	pa_src.push_back( rp::point(-50, -25) );
 	pa_src.push_back( rp::point(25, -25) );
@@ -163,16 +163,19 @@ void RPProcessShapeCreate::generate()
 	studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_CREATE, m_pParams.get());
 
 	m_pParams = NULL;
+
+	m_createdTransactCount = 0;
+	update();
 }
 
 void RPProcessShapeCreate::setTransCount(ruint count)
 {
-	m_currentTransactCount = count;
+	m_createdTransactCount = count;
 	update();
 }
 
 void RPProcessShapeCreate::drawCustom(REF(CDC) dc)
 {
 	dc.SetTextColor(RGB(0x00, 0x64, 0x00));
-	dc.TextOut((3*(this->pa_global.getMaxX()) + (this->pa_global.getMinX()))/4 - indent, this->pa_global.getMaxY() + indent, rp::string::fromint(m_currentTransactCount).c_str());
+	dc.TextOut((3*(this->pa_global.getMaxX()) + (this->pa_global.getMinX()))/4 - indent, this->pa_global.getMaxY() + indent, rp::string::fromint(m_createdTransactCount).c_str());
 }

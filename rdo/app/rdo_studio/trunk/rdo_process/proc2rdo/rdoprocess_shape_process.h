@@ -34,7 +34,7 @@ public:
 	tstring gname; // имя
 	int gtype; // закон прибытия
 	int base_gen;
-	ruint m_currentTransactCountProc;
+	ruint m_inProcessTransactCount;
 	
 	//атрибуты законов
 	double gexp;
