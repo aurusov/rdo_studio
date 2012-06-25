@@ -1,10 +1,5 @@
-// stdafx.h : include file for standard system include files,
-//  or project specific include files that are used frequently, but
-//      are changed infrequently
-//
-
-#if !defined(AFX_STDAFX_H__B30E7E66_4B80_494F_B974_665CDD4194F3__INCLUDED_)
-#define AFX_STDAFX_H__B30E7E66_4B80_494F_B974_665CDD4194F3__INCLUDED_
+#ifndef _PLUGINS_MFC_STDAFX_H_
+#define _PLUGINS_MFC_STDAFX_H_
 
 #ifndef WINVER               // Allow use of features specific to Windows XP or later.
 #define WINVER 0x0501        // Change this to the appropriate value to target other versions of Windows.
@@ -38,4 +33,4 @@
 
 #include "utils/rdomacros.h"
 
-#endif // !defined(AFX_STDAFX_H__B30E7E66_4B80_494F_B974_665CDD4194F3__INCLUDED_)
+#endif // _PLUGINS_MFC_STDAFX_H_

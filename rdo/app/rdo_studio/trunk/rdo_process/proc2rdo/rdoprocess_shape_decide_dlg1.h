@@ -1,7 +1,6 @@
-#if !defined(AFX_RDOPROCESS_SHAPE_DECIDE_DLG1_MJ_H__0B17943D_987C_48BF_AEDD_79F2B8DB6275__INCLUDED_)
-#define AFX_RDOPROCESS_SHAPE_DECIDE_DLG1_MJ_H__0B17943D_987C_48BF_AEDD_79F2B8DB6275__INCLUDED_
+#ifndef _PROC2RDO_RDOPROCESS_SHAPE_DECIDE_DLG1_H_
+#define _PROC2RDO_RDOPROCESS_SHAPE_DECIDE_DLG1_H_
 
-//
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_decide.h"
 
@@ -9,7 +8,7 @@ class RPProcessShapeDecideDlg1 : public CDialog
 {
 public:
 	RPProcessShapeDecideDlg1(CWnd* pParent = NULL, RPProcessShapeDecide* ppParent=NULL);
-    virtual BOOL OnInitDialog();
+	virtual BOOL OnInitDialog();
 
 	RPProcessShapeDecide* m_pParent; // ссылка на родителя
 
@@ -24,4 +23,4 @@ private:
 	DECLARE_MESSAGE_MAP()
 };
 
-#endif // !defined(AFX_RDOPROCESS_SHAPE_TERMINATE_DLG1_MJ_H__0B17943D_987C_48BF_AEDD_79F2B8DB6275__INCLUDED_)
+#endif // _PROC2RDO_RDOPROCESS_SHAPE_DECIDE_DLG1_H_

@@ -1,5 +1,5 @@
-#if !defined(AFX_RDOPROCESS_SHAPE_CREATE_MJ_H__B043A584_EC30_4198_83AE_4C54E356FDAF__INCLUDED_)
-#define AFX_RDOPROCESS_SHAPE_CREATE_MJ_H__B043A584_EC30_4198_83AE_4C54E356FDAF__INCLUDED_
+#ifndef _PROC2RDO_RDOPROCESS_SHAPE_CREATE_H_
+#define _PROC2RDO_RDOPROCESS_SHAPE_CREATE_H_
 
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape.h"
 #include "simulator/compiler/procgui/procgui_datablock.h"
@@ -57,4 +57,4 @@ public:
 	ruint indent;
 };
 
-#endif // !defined(AFX_RDOPROCESS_SHAPE_CREATE_MJ_H__B043A584_EC30_4198_83AE_4C54E356FDAF__INCLUDED_)
+#endif // _PROC2RDO_RDOPROCESS_SHAPE_CREATE_H_

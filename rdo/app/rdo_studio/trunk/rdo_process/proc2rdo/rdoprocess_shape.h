@@ -1,5 +1,5 @@
-#ifndef RDO_PROCESS_SHAPE_MJ_H
-#define RDO_PROCESS_SHAPE_MJ_H
+#ifndef _PROC2RDO_RDOPROCESS_SHAPE_H_
+#define _PROC2RDO_RDOPROCESS_SHAPE_H_
 
 #include <fstream>
 
@@ -51,4 +51,4 @@ public:
 	void loadFromXML(CREF(pugi::xml_node) node);
 };
 
-#endif // RDO_PROCESS_SHAPE_MJ_H
+#endif // _PROC2RDO_RDOPROCESS_SHAPE_H_

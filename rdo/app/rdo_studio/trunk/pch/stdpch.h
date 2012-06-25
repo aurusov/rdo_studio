@@ -1,10 +1,5 @@
-// stdafx.h : include file for standard system include files,
-//  or project specific include files that are used frequently, but
-//      are changed infrequently
-//
-
-#if !defined(AFX_STDAFX_H__CC79E6D9_586A_4A94_BC75_BA68368A3C59__INCLUDED_)
-#define AFX_STDAFX_H__CC79E6D9_586A_4A94_BC75_BA68368A3C59__INCLUDED_
+#ifndef _RDO_STUDIO_STDAFX_H_
+#define _RDO_STUDIO_STDAFX_H_
 
 #ifndef WINVER               // Allow use of features specific to Windows XP or later.
 #define WINVER 0x0501        // Change this to the appropriate value to target other versions of Windows.
@@ -44,4 +39,4 @@ void appendMenu (PTR(CMenu) pFrom, const int from_index, PTR(CMenu) pTo);
 void eraseMenu  (PTR(CMenu) pFrom, const int from_index = -1 );
 int  roundDouble(const double val);
 
-#endif // !defined(AFX_STDAFX_H__CC79E6D9_586A_4A94_BC75_BA68368A3C59__INCLUDED_)
+#endif // _RDO_STUDIO_STDAFX_H_
