@@ -44,6 +44,12 @@ IBaseOperation::BOResult RDOPROCTerminate::onDoOperation(CREF(LPRDORuntime) pRun
 	pRuntime->onEraseRes(transact->getTraceID(), NULL);
 	m_transacts.erase(m_transacts.begin());
 	ruint termNow = pRuntime->getCurrentTerm();
+
+	++m_transCountDel;
+
+	if (m_pStatistics)
+		m_pStatistics->setTransCount(m_transCountDel);
+
 	termNow += pTermCalc->calcValue(pRuntime).getInt();
 	pRuntime->setCurrentTerm(termNow);
 	return IBaseOperation::BOR_done;
@@ -69,6 +75,11 @@ IBaseOperation::BOResult RDOPROCTerminate::onContinue(CREF(LPRDORuntime) pRuntim
 {
 	UNUSED(pRuntime);
 	return IBaseOperation::BOR_cant_run;
+}
+
+void RDOPROCTerminate::setStatistics(CREF(rdo::runtime::LPIInternalStatistics) pStatistics)
+{
+	m_pStatistics = pStatistics;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE
