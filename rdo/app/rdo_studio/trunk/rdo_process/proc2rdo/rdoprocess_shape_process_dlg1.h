@@ -16,7 +16,7 @@ public:
 	RPProcessShapeProcessDlg1(CWnd* pParent = NULL,RPProcessShapeProcess* ppParent=NULL);
     virtual BOOL OnInitDialog();
 
-	RPProcessShapeProcess* pParentMJ; // ссылка на родителя
+	RPProcessShapeProcess* m_pParent; // ссылка на родителя
 
 	enum { IDD = IDD_DIALOG_PROCESS_1_MJ };
 	CComboBox	m_gtype;

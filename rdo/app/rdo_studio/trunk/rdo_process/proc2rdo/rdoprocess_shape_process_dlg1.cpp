@@ -25,9 +25,8 @@ RPProcessShapeProcessDlg1::RPProcessShapeProcessDlg1(CWnd* pParent /*=NULL*/,RPP
 	m_gmax = 0.0;
 	m_gbase_gen = 0;
 
-    pParentMJ = ppParent;
+	m_pParent = ppParent;
 }
-
 
 void RPProcessShapeProcessDlg1::DoDataExchange(CDataExchange* pDX)
 {
@@ -58,45 +57,37 @@ void RPProcessShapeProcessDlg1::DoDataExchange(CDataExchange* pDX)
 BOOL RPProcessShapeProcessDlg1::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-		 //отображение имени блока в окне
-	CString str( pParentMJ->getName().c_str() );
-    m_name = str;
+	//отображение имени блока в окне
+	CString str( m_pParent->getName().c_str() );
+	m_name = str;
 	UpdateData(FALSE);
 	
-// инициализаци€ из вызвавшего объекта
-	m_gtype.SetCurSel(pParentMJ->gtype); // закон прибыти€
-	m_gbase_gen=pParentMJ->base_gen;
+	// инициализаци€ из вызвавшего объекта
+	m_gtype.SetCurSel(m_pParent->gtype); // закон прибыти€
+	m_gbase_gen=m_pParent->base_gen;
 	//атрибуты законов
-	m_gexp=pParentMJ->gexp;
-	m_gdisp=pParentMJ->gdisp;
-	m_gmax=pParentMJ->gmax;
-	m_gmin=pParentMJ->gmin;
+	m_gexp  = m_pParent->gexp;
+	m_gdisp = m_pParent->gdisp;
+	m_gmax  = m_pParent->gmax;
+	m_gmin  = m_pParent->gmin;
 
+	m_action.SetCurSel(m_pParent->action);
+	m_gprior = m_pParent->prior;
+	m_gqueque.SetCurSel(m_pParent->queue);
 
-m_action.SetCurSel(pParentMJ->action);
-m_gprior = pParentMJ->prior;
-m_gqueque.SetCurSel(pParentMJ->queue);
-//m_parameter.SetCurSel(pParentMJ->parameter);
-
-
-//бегает по списку ресурсовm_resourceList
-std::list<CString>::iterator it = pParentMJ->m_resourceList.begin();
-	while( it != pParentMJ->m_resourceList.end() ) 
+	//бегает по списку ресурсовm_resourceList
+	std::list<CString>::iterator it = m_pParent->m_resourceList.begin();
+	while( it != m_pParent->m_resourceList.end() )
 	{
-	m_ResList.AddString(*it);
-	it++;
-	}	
+		m_ResList.AddString(*it);
+		++it;
+	}
 
-
-
-
-UpdateData(FALSE);
-OnCbnSelchange2(); 
-OnCbnSelchange1();
+	UpdateData(FALSE);
+	OnCbnSelchange2();
+	OnCbnSelchange1();
 	return TRUE;
 }
-
-
 
 BEGIN_MESSAGE_MAP(RPProcessShapeProcessDlg1, CDialog)
 	ON_CBN_SELCHANGE(IDC_COMBO1, OnCbnSelchange1)
@@ -109,106 +100,101 @@ END_MESSAGE_MAP()
 
 void RPProcessShapeProcessDlg1::OnCbnSelchange1() 
 {
-int cur = m_gtype.GetCurSel();
+	int cur = m_gtype.GetCurSel();
 
-switch(cur) // определ€ем активные окна исход€ из закона
-{
-case 0: // константа
-	m_expCtrl.EnableWindow(TRUE);
-	m_expText.SetWindowText(_T(" онстанта"));
-	m_dispText.ShowWindow(SW_HIDE);
-	m_dispCtrl.ShowWindow(SW_HIDE);
-	m_maxText.ShowWindow(SW_HIDE);
-	m_maxCtrl.ShowWindow(SW_HIDE);
-					break;	
-case 1: // нормальный
-	m_expText.SetWindowText(_T("ћат. ожидание"));
-	m_dispText.ShowWindow(SW_SHOW);
-	m_dispText.SetWindowText(_T("ƒисперси€"));
-	m_dispCtrl.ShowWindow(SW_SHOW);
-	m_maxText.ShowWindow(SW_HIDE);
-	m_maxCtrl.ShowWindow(SW_HIDE);
-					break;
-case 2: // равномерный закон
-	m_expText.SetWindowText(_T("Ћева€ граница"));
-	m_dispText.ShowWindow(SW_SHOW);
-	m_dispText.SetWindowText(_T("ѕрава€ граница"));
-	m_dispCtrl.ShowWindow(SW_SHOW);
-	m_maxText.ShowWindow(SW_HIDE);
-	m_maxCtrl.ShowWindow(SW_HIDE);
-					break;
-case 3: // труегольный
-	m_expText.SetWindowText(_T("Ћева€ граница"));
-	m_dispText.ShowWindow(SW_SHOW);
-	m_dispText.SetWindowText(_T("¬ысота"));
-	m_dispCtrl.ShowWindow(SW_SHOW);
-	m_maxText.ShowWindow(SW_SHOW);
-	m_maxText.SetWindowText(_T("ѕрава€ граница"));
-	m_maxCtrl.ShowWindow(SW_SHOW);
-					break;
-case 4: //экспоненциальный
-	m_expText.SetWindowText(_T("ћат. ожидание"));
-	m_dispText.ShowWindow(SW_HIDE);
-	m_dispCtrl.ShowWindow(SW_HIDE);
-	m_maxText.ShowWindow(SW_HIDE);
-	m_maxCtrl.ShowWindow(SW_HIDE);
-					break;
-}	
+	switch(cur) // определ€ем активные окна исход€ из закона
+	{
+	case 0: // константа
+		m_expCtrl.EnableWindow(TRUE);
+		m_expText.SetWindowText(_T(" онстанта"));
+		m_dispText.ShowWindow(SW_HIDE);
+		m_dispCtrl.ShowWindow(SW_HIDE);
+		m_maxText.ShowWindow(SW_HIDE);
+		m_maxCtrl.ShowWindow(SW_HIDE);
+		break;
+	case 1: // нормальный
+		m_expText.SetWindowText(_T("ћат. ожидание"));
+		m_dispText.ShowWindow(SW_SHOW);
+		m_dispText.SetWindowText(_T("ƒисперси€"));
+		m_dispCtrl.ShowWindow(SW_SHOW);
+		m_maxText.ShowWindow(SW_HIDE);
+		m_maxCtrl.ShowWindow(SW_HIDE);
+		break;
+	case 2: // равномерный закон
+		m_expText.SetWindowText(_T("Ћева€ граница"));
+		m_dispText.ShowWindow(SW_SHOW);
+		m_dispText.SetWindowText(_T("ѕрава€ граница"));
+		m_dispCtrl.ShowWindow(SW_SHOW);
+		m_maxText.ShowWindow(SW_HIDE);
+		m_maxCtrl.ShowWindow(SW_HIDE);
+		break;
+	case 3: // труегольный
+		m_expText.SetWindowText(_T("Ћева€ граница"));
+		m_dispText.ShowWindow(SW_SHOW);
+		m_dispText.SetWindowText(_T("¬ысота"));
+		m_dispCtrl.ShowWindow(SW_SHOW);
+		m_maxText.ShowWindow(SW_SHOW);
+		m_maxText.SetWindowText(_T("ѕрава€ граница"));
+		m_maxCtrl.ShowWindow(SW_SHOW);
+		break;
+	case 4: //экспоненциальный
+		m_expText.SetWindowText(_T("ћат. ожидание"));
+		m_dispText.ShowWindow(SW_HIDE);
+		m_dispCtrl.ShowWindow(SW_HIDE);
+		m_maxText.ShowWindow(SW_HIDE);
+		m_maxCtrl.ShowWindow(SW_HIDE);
+		break;
+	}
 }
 
 void RPProcessShapeProcessDlg1::OnCbnSelchange3() 
 {
-int cur = m_gqueque.GetCurSel();
+	int cur = m_gqueque.GetCurSel();
 
-switch(cur) // определ€ем активные окна исход€ из закона
-{
-case 0: // fifo
-	m_parameter.EnableWindow(FALSE);
-					break;	
-case 1: // lifo
-	m_parameter.EnableWindow(FALSE);
-				break;
-case 2: // минимизаци€
-	m_parameter.EnableWindow(TRUE);
-					break;
-case 3: // максимизаци€
-	m_parameter.EnableWindow(TRUE);
-					break;
-}	
+	switch(cur) // определ€ем активные окна исход€ из закона
+	{
+	case 0: // fifo
+		m_parameter.EnableWindow(FALSE);
+		break;
+	case 1: // lifo
+		m_parameter.EnableWindow(FALSE);
+		break;
+	case 2: // минимизаци€
+		m_parameter.EnableWindow(TRUE);
+		break;
+	case 3: // максимизаци€
+		m_parameter.EnableWindow(TRUE);
+		break;
+	}
 }
 
-void RPProcessShapeProcessDlg1::OnButton1() 
+void RPProcessShapeProcessDlg1::OnButton1()
 {
-	RPProcessShapeProcessDlg2 dlg( this, pParentMJ, this );
+	RPProcessShapeProcessDlg2 dlg( this, m_pParent, this );
 	dlg.DoModal();
 }
 
-void RPProcessShapeProcessDlg1::OnOK() 
+void RPProcessShapeProcessDlg1::OnOK()
 {
 	// вывод и ввод имени блока
 	UpdateData(TRUE);
-	pParentMJ->setName(tstring(m_name));
+	m_pParent->setName(tstring(m_name));
 
-	
-// инициализаци€ из вызвавшего объекта
-	pParentMJ->gtype= m_gtype.GetCurSel(); // закон прибыти€
-	pParentMJ->base_gen=m_gbase_gen;
+	// инициализаци€ из вызвавшего объекта
+	m_pParent->gtype    = m_gtype.GetCurSel(); // закон прибыти€
+	m_pParent->base_gen = m_gbase_gen;
 	//атрибуты законов
-	pParentMJ->gexp=m_gexp;
-	pParentMJ->gdisp=m_gdisp;
-	pParentMJ->gmax=m_gmax;
-	pParentMJ->gmin=m_gmin;
-	pParentMJ->gname=m_name;
+	m_pParent->gexp   = m_gexp;
+	m_pParent->gdisp  = m_gdisp;
+	m_pParent->gmax   = m_gmax;
+	m_pParent->gmin   = m_gmin;
+	m_pParent->gname  = m_name;
 
+	m_pParent->action = m_action.GetCurSel();
+	m_pParent->prior  = m_gprior ;
+	m_pParent->queue  = m_gqueque.GetCurSel();
 
-pParentMJ->action=m_action.GetCurSel();
-pParentMJ->prior = m_gprior ;
-pParentMJ->queue=m_gqueque.GetCurSel();
-
-
-
-
-	CDialog::OnOK();	
+	CDialog::OnOK();
 }
 
 void RPProcessShapeProcessDlg1::OnCbnSelchange2() 
@@ -218,66 +204,55 @@ void RPProcessShapeProcessDlg1::OnCbnSelchange2()
 	switch(cur) // определ€ем активные окна исход€ из закона
 	{
 	case 0: // задержать
-			m_gqueque.EnableWindow(FALSE); // невидима€ очередь
-			m_parameter.EnableWindow(FALSE);// невидима€ очередь
-			m_AddRes.EnableWindow(FALSE); 
-			m_DelRes.EnableWindow(FALSE); 
-			m_ResList.EnableWindow(FALSE); 
-			
-						break;	
-	case 1: //зан€ть задержать освободить
-			m_gqueque.EnableWindow(TRUE);// невидима€ очередь
-				 if(m_gqueque.GetCurSel() == 0 || m_gqueque.GetCurSel() == 1)
-					   m_parameter.EnableWindow(FALSE);
-				 else
-					   m_parameter.EnableWindow(TRUE);
+		m_gqueque.EnableWindow(FALSE); // невидима€ очередь
+		m_parameter.EnableWindow(FALSE);// невидима€ очередь
+		m_AddRes.EnableWindow(FALSE);
+		m_DelRes.EnableWindow(FALSE);
+		m_ResList.EnableWindow(FALSE);
+		break;
 
-			m_AddRes.EnableWindow(TRUE); 
-			m_DelRes.EnableWindow(TRUE); 
-			m_ResList.EnableWindow(TRUE); 
-		
-					break;
+	case 1: //зан€ть задержать освободить
+		m_gqueque.EnableWindow(TRUE);// невидима€ очередь
+		if(m_gqueque.GetCurSel() == 0 || m_gqueque.GetCurSel() == 1)
+			m_parameter.EnableWindow(FALSE);
+		else
+			m_parameter.EnableWindow(TRUE);
+
+		m_AddRes.EnableWindow(TRUE);
+		m_DelRes.EnableWindow(TRUE);
+		m_ResList.EnableWindow(TRUE);
+		break;
 
 	case 2: // зан€ть задержать
 		m_gqueque.EnableWindow(TRUE);// невидима€ очередь
-				if(m_gqueque.GetCurSel() == 0 || m_gqueque.GetCurSel() == 1)
-					m_parameter.EnableWindow(FALSE);
-				else
-					m_parameter.EnableWindow(TRUE);
+		if(m_gqueque.GetCurSel() == 0 || m_gqueque.GetCurSel() == 1)
+			m_parameter.EnableWindow(FALSE);
+		else
+			m_parameter.EnableWindow(TRUE);
 
-			m_AddRes.EnableWindow(TRUE); 
-			m_DelRes.EnableWindow(TRUE); 
-			m_ResList.EnableWindow(TRUE); 
-						break;
-
-
+		m_AddRes.EnableWindow(TRUE);
+		m_DelRes.EnableWindow(TRUE);
+		m_ResList.EnableWindow(TRUE);
+		break;
 
 	case 3: // задержать освободить
 		m_gqueque.EnableWindow(TRUE);// невидима€ очередь
-				 if(m_gqueque.GetCurSel() == 0 || m_gqueque.GetCurSel() == 1)
-					   m_parameter.EnableWindow(FALSE);
-				 else
-					   m_parameter.EnableWindow(TRUE);
+		if(m_gqueque.GetCurSel() == 0 || m_gqueque.GetCurSel() == 1)
+			m_parameter.EnableWindow(FALSE);
+		else
+			m_parameter.EnableWindow(TRUE);
 
-			m_AddRes.EnableWindow(TRUE); 
-			m_DelRes.EnableWindow(TRUE); 
-			m_ResList.EnableWindow(TRUE); 
-						break;
-	}	
+		m_AddRes.EnableWindow(TRUE);
+		m_DelRes.EnableWindow(TRUE);
+		m_ResList.EnableWindow(TRUE);
+		break;
+	}
 }
 
 HBRUSH RPProcessShapeProcessDlg1::OnCtlColor( CDC* pDC, CWnd* pWnd, UINT nCtlColor )
 {
 	return CDialog::OnCtlColor( pDC, pWnd, nCtlColor );
-	//if ( nCtlColor == CTLCOLOR_LISTBOX && pWnd == &m_ResList ) {
-	//	return m_ResList.IsWindowEnabled() ? brush1 : brush2;
-	//} else {
-	//	return CDialog::OnCtlColor( pDC, pWnd, nCtlColor );
-	//}
 }
 
-void RPProcessShapeProcessDlg1::OnButton2() 
-{
-
-
-}
+void RPProcessShapeProcessDlg1::OnButton2()
+{}

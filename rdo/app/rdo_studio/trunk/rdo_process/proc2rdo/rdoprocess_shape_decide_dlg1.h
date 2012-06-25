@@ -11,7 +11,7 @@ public:
 	RPProcessShapeDecideDlg1(CWnd* pParent = NULL, RPProcessShapeDecide* ppParent=NULL);
     virtual BOOL OnInitDialog();
 
-	RPProcessShapeDecide* pParentMJ; // ссылка на родителя
+	RPProcessShapeDecide* m_pParent; // ссылка на родителя
 
 	enum { IDD = IDD_DIALOG_DECIDE_1 };
 	CString	m_name;

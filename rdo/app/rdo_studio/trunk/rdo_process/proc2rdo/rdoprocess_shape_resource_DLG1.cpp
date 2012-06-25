@@ -12,9 +12,8 @@ RPProcessShapeResourceDlg1::RPProcessShapeResourceDlg1 (CWnd* pParent, RPProcess
 {
 	m_name = _T("");
 	m_dlgamount = 0;
-	pParentMJ = ppParent;
+	m_pParent = ppParent;
 }
-
 
 void RPProcessShapeResourceDlg1::DoDataExchange(CDataExchange* pDX)
 {
@@ -25,28 +24,24 @@ void RPProcessShapeResourceDlg1::DoDataExchange(CDataExchange* pDX)
 
 BOOL RPProcessShapeResourceDlg1::OnInitDialog()
 {
-// отображение имени блока
-	CString str( pParentMJ->getName().c_str() );
-    m_name = str;
+	// отображение имени блока
+	CString str( m_pParent->getName().c_str() );
+	m_name = str;
 
-	m_dlgamount = pParentMJ->gamount;
+	m_dlgamount = m_pParent->gamount;
 	UpdateData(FALSE);
 
-return TRUE;
+	return TRUE;
 }
-
-
-
 
 BEGIN_MESSAGE_MAP(RPProcessShapeResourceDlg1, CDialog)
 END_MESSAGE_MAP()
 
-void RPProcessShapeResourceDlg1::OnOK() 
+void RPProcessShapeResourceDlg1::OnOK()
 {
-
 	UpdateData(TRUE);
-	pParentMJ->setName(tstring(m_name));
+	m_pParent->setName(tstring(m_name));
 
-	pParentMJ->gamount = m_dlgamount;	
+	m_pParent->gamount = m_dlgamount;
 	CDialog::OnOK();
 }

@@ -11,7 +11,7 @@ public:
 	virtual BOOL OnInitDialog();
 
 
-	RPProcessShapeResource* pParentMJ;
+	RPProcessShapeResource* m_pParent;
 
 	enum { IDD = IDD_DIALOG_RESOURCE_DLG1 };
 	CString	m_name;

@@ -9,7 +9,7 @@ class RPProcessShapeCreateDlg2 : public CDialog
 public:
 	RPProcessShapeCreateDlg2(CWnd* pParent = NULL,RPProcessShapeCreate* ppParent=NULL);
 	
-	RPProcessShapeCreate* pParentMJ; // ссылка на вызывающий объект
+	RPProcessShapeCreate* m_pParent; // ссылка на вызывающий объект
 
 	virtual BOOL OnInitDialog();
 

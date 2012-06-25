@@ -15,9 +15,8 @@ RPProcessShapeCreateDlg2::RPProcessShapeCreateDlg2(CWnd* pParent,RPProcessShapeC
 	m_dlgpar1 = 0.0;
 	m_dlgpar2 = 0.0;
 	m_dlgpar3 = 0.0;
-	pParentMJ = ppParent;
+	m_pParent = ppParent;
 }
-
 
 void RPProcessShapeCreateDlg2::DoDataExchange(CDataExchange* pDX)
 {
@@ -29,24 +28,21 @@ void RPProcessShapeCreateDlg2::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT5, m_dlgpar3);
 }
 
-
 BOOL RPProcessShapeCreateDlg2::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
 	// инициализация окна значениями объекта
-    
-	m_dlginf= pParentMJ->inf; // бесконечноть
-	m_dlgid=  pParentMJ->gID; // ID группы
-	m_dlgpar1=pParentMJ->gpar1;
-	m_dlgpar2=pParentMJ->gpar2;
-	m_dlgpar3=pParentMJ->gpar3;
 
-UpdateData(FALSE);
+	m_dlginf  = m_pParent->inf; // бесконечноть
+	m_dlgid   = m_pParent->gID; // ID группы
+	m_dlgpar1 = m_pParent->gpar1;
+	m_dlgpar2 = m_pParent->gpar2;
+	m_dlgpar3 = m_pParent->gpar3;
+
+	UpdateData(FALSE);
 	return TRUE;
 }
-
-
 
 BEGIN_MESSAGE_MAP(RPProcessShapeCreateDlg2, CDialog)
 END_MESSAGE_MAP()
@@ -55,14 +51,13 @@ void RPProcessShapeCreateDlg2::OnOK()
 {
 	// инициализация объекта значениями окна
 
-    UpdateData(TRUE);
+	UpdateData(TRUE);
 	
-	pParentMJ->inf   = m_dlginf; // бесконечноть
-	pParentMJ->gID   = m_dlgid; // ID группы
-	pParentMJ->gpar1 = m_dlgpar1;
-	pParentMJ->gpar2 = m_dlgpar2;
-	pParentMJ->gpar3 = m_dlgpar3;
-  
-		
+	m_pParent->inf   = m_dlginf; // бесконечноть
+	m_pParent->gID   = m_dlgid; // ID группы
+	m_pParent->gpar1 = m_dlgpar1;
+	m_pParent->gpar2 = m_dlgpar2;
+	m_pParent->gpar3 = m_dlgpar3;
+
 	CDialog::OnOK();
 }

@@ -18,7 +18,7 @@ RPProcessShapeCreateDlg1::RPProcessShapeCreateDlg1(CWnd* pParent /*=NULL*/,RPPro
 	m_dlgdisp = 0.0;
 	m_dlgmax = 0.0;
 	m_dlgbase_gen = 0;
-    pParentMJ = ppParent;
+	m_pParent = ppParent;
 }
 
 void RPProcessShapeCreateDlg1::DoDataExchange(CDataExchange* pDX)
@@ -44,41 +44,34 @@ void RPProcessShapeCreateDlg1::DoDataExchange(CDataExchange* pDX)
 BOOL RPProcessShapeCreateDlg1::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-	
-	
-	 //отображение имени блока в окне
-	CString str( pParentMJ->getName().c_str() );
-    m_name = str;
+
+	//отображение имени блока в окне
+	CString str( m_pParent->getName().c_str() );
+	m_name = str;
 	UpdateData(FALSE);
-	
-// инициализация из вызвавшего объекта
 
+	// инициализация из вызвавшего объекта
+	m_comboCtrl.SetCurSel(m_pParent->gtype); // закон прибытия
 
-	m_comboCtrl.SetCurSel(pParentMJ->gtype); // закон прибытия
-   
-
-	
-	m_dlgfirst=pParentMJ->gfirst; // время первого
-	m_dlgamount= static_cast<int>(pParentMJ->gamount); // кол-во создаваемых
-	m_dlgbase_gen=pParentMJ->base_gen;
+	m_dlgfirst=m_pParent->gfirst; // время первого
+	m_dlgamount= static_cast<int>(m_pParent->gamount); // кол-во создаваемых
+	m_dlgbase_gen=m_pParent->base_gen;
 	//атрибуты законов
-	m_dlgexp=pParentMJ->gexp;
-	m_dlgdisp=pParentMJ->gdisp;
-	m_dlgmax=pParentMJ->gmax;
+	m_dlgexp=m_pParent->gexp;
+	m_dlgdisp=m_pParent->gdisp;
+	m_dlgmax=m_pParent->gmax;
 	//второе окно
-	pParentMJ->inf; // бесконечноть
-	pParentMJ->gID; // ID группы
-	pParentMJ->gpar1;
-	pParentMJ->gpar2;
-	pParentMJ->gpar3;
+	m_pParent->inf; // бесконечноть
+	m_pParent->gID; // ID группы
+	m_pParent->gpar1;
+	m_pParent->gpar2;
+	m_pParent->gpar3;
 
-UpdateData(FALSE);
+	UpdateData(FALSE);
 
- RPProcessShapeCreateDlg1::OnCbnSelchange1();
+	RPProcessShapeCreateDlg1::OnCbnSelchange1();
 	return TRUE;
 }
-
-
 
 BEGIN_MESSAGE_MAP(RPProcessShapeCreateDlg1, CDialog)
 	ON_CBN_SELCHANGE(IDC_COMBO1, OnCbnSelchange1)
@@ -87,78 +80,76 @@ END_MESSAGE_MAP()
 
 void RPProcessShapeCreateDlg1::OnCbnSelchange1() 
 {
-
-int cur = m_comboCtrl.GetCurSel();
-UpdateData(TRUE);
+	int cur = m_comboCtrl.GetCurSel();
+	UpdateData(TRUE);
 	switch(cur) // определяем активные окна исходя из закона
 	{
-case 0: // константа
-	m_expText.SetWindowText(_T("Константа"));
-	m_dispText.ShowWindow(SW_HIDE);
-	m_dispCtrl.ShowWindow(SW_HIDE);
-	m_maxText.ShowWindow(SW_HIDE);
-	m_maxCtrl.ShowWindow(SW_HIDE);
-	break;
-case 1: // нормальный
-	m_expText.SetWindowText(_T("Мат. ожидание"));
-	m_dispText.ShowWindow(SW_SHOW);
-	m_dispText.SetWindowText(_T("Дисперсия"));
-	m_dispCtrl.ShowWindow(SW_SHOW);
-	m_maxText.ShowWindow(SW_HIDE);
-	m_maxCtrl.ShowWindow(SW_HIDE);
-	break;
-case 2: // равномерный закон
-	m_expText.SetWindowText(_T("Левая граница"));
-	m_dispText.ShowWindow(SW_SHOW);
-	m_dispText.SetWindowText(_T("Правая граница"));
-	m_dispCtrl.ShowWindow(SW_SHOW);
-	m_maxText.ShowWindow(SW_HIDE);
-	m_maxCtrl.ShowWindow(SW_HIDE);
-	break;
-case 3: // труегольный
-	m_expText.SetWindowText(_T("Левая граница"));
-	m_dispText.ShowWindow(SW_SHOW);
-	m_dispText.SetWindowText(_T("Высота"));
-	m_dispCtrl.ShowWindow(SW_SHOW);
-	m_maxText.ShowWindow(SW_SHOW);
-	m_maxText.SetWindowText(_T("Правая граница"));
-	m_maxCtrl.ShowWindow(SW_SHOW);
-	break;
-case 4: //экспоненциальный
-	m_expText.SetWindowText(_T("Мат. ожидание"));
-	m_dispText.ShowWindow(SW_HIDE);
-	m_dispCtrl.ShowWindow(SW_HIDE);
-	m_maxText.ShowWindow(SW_HIDE);
-	m_maxCtrl.ShowWindow(SW_HIDE);
-	break;
+	case 0: // константа
+		m_expText.SetWindowText(_T("Константа"));
+		m_dispText.ShowWindow(SW_HIDE);
+		m_dispCtrl.ShowWindow(SW_HIDE);
+		m_maxText.ShowWindow(SW_HIDE);
+		m_maxCtrl.ShowWindow(SW_HIDE);
+		break;
+	case 1: // нормальный
+		m_expText.SetWindowText(_T("Мат. ожидание"));
+		m_dispText.ShowWindow(SW_SHOW);
+		m_dispText.SetWindowText(_T("Дисперсия"));
+		m_dispCtrl.ShowWindow(SW_SHOW);
+		m_maxText.ShowWindow(SW_HIDE);
+		m_maxCtrl.ShowWindow(SW_HIDE);
+		break;
+	case 2: // равномерный закон
+		m_expText.SetWindowText(_T("Левая граница"));
+		m_dispText.ShowWindow(SW_SHOW);
+		m_dispText.SetWindowText(_T("Правая граница"));
+		m_dispCtrl.ShowWindow(SW_SHOW);
+		m_maxText.ShowWindow(SW_HIDE);
+		m_maxCtrl.ShowWindow(SW_HIDE);
+		break;
+	case 3: // труегольный
+		m_expText.SetWindowText(_T("Левая граница"));
+		m_dispText.ShowWindow(SW_SHOW);
+		m_dispText.SetWindowText(_T("Высота"));
+		m_dispCtrl.ShowWindow(SW_SHOW);
+		m_maxText.ShowWindow(SW_SHOW);
+		m_maxText.SetWindowText(_T("Правая граница"));
+		m_maxCtrl.ShowWindow(SW_SHOW);
+		break;
+	case 4: //экспоненциальный
+		m_expText.SetWindowText(_T("Мат. ожидание"));
+		m_dispText.ShowWindow(SW_HIDE);
+		m_dispCtrl.ShowWindow(SW_HIDE);
+		m_maxText.ShowWindow(SW_HIDE);
+		m_maxCtrl.ShowWindow(SW_HIDE);
+		break;
 	}
-	UpdateData(FALSE);	
+	UpdateData(FALSE);
 }
 
 void RPProcessShapeCreateDlg1::OnButton1() 
 {
-	RPProcessShapeCreateDlg2 dlg2( this, pParentMJ );
+	RPProcessShapeCreateDlg2 dlg2( this, m_pParent );
 	dlg2.DoModal();
 }
 
 void RPProcessShapeCreateDlg1::OnOK() 
 {
 	UpdateData(TRUE);
-	pParentMJ->setName( tstring(m_name) );
-//	pParentMJ->update_modify();	
+	m_pParent->setName( tstring(m_name) );
+//	m_pParent->update_modify();	
 	CDialog::OnOK();
 
 	// запись параметров в объект
 	// инициализация из вызвавшего объекта
-UpdateData(TRUE);
-	pParentMJ->gname=m_name;
-	pParentMJ->gfirst=m_dlgfirst; // время первого
-	pParentMJ->gamount=m_dlgamount; // кол-во создаваемых
-	pParentMJ->gtype=m_comboCtrl.GetCurSel(); // закон прибытия
-	pParentMJ->base_gen=m_dlgbase_gen;
+	UpdateData(TRUE);
+	m_pParent->gname    = m_name;
+	m_pParent->gfirst   = m_dlgfirst; // время первого
+	m_pParent->gamount  = m_dlgamount; // кол-во создаваемых
+	m_pParent->gtype    = m_comboCtrl.GetCurSel(); // закон прибытия
+	m_pParent->base_gen = m_dlgbase_gen;
 	//атрибуты законов
-	pParentMJ->gexp=m_dlgexp;
-	pParentMJ->gdisp=m_dlgdisp;
-	pParentMJ->gmax=m_dlgmax;
-
+	m_pParent->gexp  = m_dlgexp;
+	m_pParent->gdisp = m_dlgdisp;
+	m_pParent->gmax  = m_dlgmax;
 }

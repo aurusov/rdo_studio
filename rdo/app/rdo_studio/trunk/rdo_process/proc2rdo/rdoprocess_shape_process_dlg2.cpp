@@ -12,7 +12,7 @@ RPProcessShapeProcessDlg2::RPProcessShapeProcessDlg2(CWnd* pParent,RPProcessShap
 	: CDialog(RPProcessShapeProcessDlg2::IDD, pParent)
 {
 	m_combo_res_value = _T("");
-	pParentMJ = ppParent;
+	m_pParent = ppParent;
 	pParentDlgMJ = pParentDlg;
 }
 
@@ -37,14 +37,11 @@ BEGIN_MESSAGE_MAP(RPProcessShapeProcessDlg2, CDialog)
 	ON_CBN_CLOSEUP(IDC_COMBO1, OnCloseupCombo1)
 END_MESSAGE_MAP()
 
-void RPProcessShapeProcessDlg2::OnCloseupCombo1() 
-{
-//pParentMJ->list_name_for_resource_MJ();	
-}
+void RPProcessShapeProcessDlg2::OnCloseupCombo1()
+{}
 
 void RPProcessShapeProcessDlg2::list_name_resource()
 {
-
 	std::list< RPObject* >::const_iterator it = m_resourceList.begin();
 	while( it != m_resourceList.end() )
 	{
@@ -54,8 +51,7 @@ void RPProcessShapeProcessDlg2::list_name_resource()
 	}
 }
 
-
-void RPProcessShapeProcessDlg2::OnOK() 
+void RPProcessShapeProcessDlg2::OnOK()
 {
 	/// @todo Add extra validation here
 	CString data_combo;
@@ -63,7 +59,7 @@ void RPProcessShapeProcessDlg2::OnOK()
 	{
 		m_combo_res_control.GetLBText(m_combo_res_control.GetCurSel(),data_combo);
 		pParentDlgMJ->m_ResList.AddString(data_combo);
-        pParentMJ->m_resourceList.push_back(data_combo);
+		m_pParent->m_resourceList.push_back(data_combo);
 	}
 	CDialog::OnOK();
 }

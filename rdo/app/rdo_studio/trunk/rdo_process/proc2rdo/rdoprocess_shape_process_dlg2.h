@@ -12,7 +12,7 @@ public:
 	RPProcessShapeProcessDlg2(CWnd* pParent = NULL,RPProcessShapeProcess* ppParent=NULL,RPProcessShapeProcessDlg1* pParentDlg = NULL );
 	virtual BOOL OnInitDialog();
 	
-	RPProcessShapeProcess* pParentMJ;
+	RPProcessShapeProcess* m_pParent;
 	RPProcessShapeProcessDlg1* pParentDlgMJ;
 
 	std::list< RPObject* > m_resourceList;

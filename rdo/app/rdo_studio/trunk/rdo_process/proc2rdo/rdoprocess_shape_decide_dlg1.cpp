@@ -14,24 +14,20 @@ RPProcessShapeDecideDlg1::RPProcessShapeDecideDlg1(CWnd* pParent,RPProcessShapeD
 	mp_true = 0.9;
 	mp_false = 0.1;
 
-	pParentMJ = ppParent;
+	m_pParent = ppParent;
 }
-
-
 
 BOOL RPProcessShapeDecideDlg1::OnInitDialog()
 {
-// отображение имени блока
-	CString str( pParentMJ->getName().c_str() );
-    m_name = str;
-	mp_true=pParentMJ->ptrue;
-	mp_false=pParentMJ->pfalse;
+	// отображение имени блока
+	CString str( m_pParent->getName().c_str() );
+	m_name = str;
+	mp_true=m_pParent->ptrue;
+	mp_false=m_pParent->pfalse;
 	UpdateData(FALSE);
-	 
-return TRUE;
+
+	return TRUE;
 }
-
-
 
 void RPProcessShapeDecideDlg1::DoDataExchange(CDataExchange* pDX)
 {
@@ -41,17 +37,17 @@ void RPProcessShapeDecideDlg1::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT3, mp_false);
 }
 
-
 BEGIN_MESSAGE_MAP(RPProcessShapeDecideDlg1, CDialog)
 END_MESSAGE_MAP()
 
-void RPProcessShapeDecideDlg1::OnOK() 
+void RPProcessShapeDecideDlg1::OnOK()
 {
 	UpdateData( true );
-	if ( pParentMJ->setName( rp::string(m_name) ) ) {
+	if ( m_pParent->setName( rp::string(m_name) ) )
+	{
 		CDialog::OnOK();
-		pParentMJ->ptrue=mp_true;
-		pParentMJ->pfalse=mp_false;
+		m_pParent->ptrue=mp_true;
+		m_pParent->pfalse=mp_false;
 	}
 	
 }

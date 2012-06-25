@@ -7,7 +7,7 @@
 class RPProcessShapeCreateDlg1 : public CDialog
 {
 protected:
-	RPProcessShapeCreate* pParentMJ; // ссылка на объект, который вызвал диалог
+	RPProcessShapeCreate* m_pParent; // ссылка на объект, который вызвал диалог
 	
 public:
 	RPProcessShapeCreateDlg1(CWnd* pParent = NULL,RPProcessShapeCreate* ppParent=NULL);
