@@ -32,7 +32,7 @@ rbool RDOPROCGenerate::onCheckCondition( CREF(LPRDORuntime) pRuntime )
 {
 	if (m_maxTransCount > 0)
 	{
-		if (m_TransCount < m_maxTransCount)
+		if (m_createdTransactCount < m_maxTransCount)
 		{
 			return pRuntime->getCurrentTime() >= timeNext ? true : false;
 		}
@@ -49,10 +49,10 @@ rbool RDOPROCGenerate::onCheckCondition( CREF(LPRDORuntime) pRuntime )
 
 IBaseOperation::BOResult RDOPROCGenerate::onDoOperation(CREF(LPRDORuntime) pRuntime)
 {
-	++m_TransCount;
+	++m_createdTransactCount;
 
 	if (m_pStatistics)
-		m_pStatistics->setTransCount(m_TransCount);
+		m_pStatistics->setTransCount(m_createdTransactCount);
 
 	LPRDOPROCTransact pTransact = m_pCreateAndGoOnTransactCalc->calcValue(pRuntime).getPointerSafety<RDOResourceTypeTransact>();
 	ASSERT(pTransact);

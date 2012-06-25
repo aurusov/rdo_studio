@@ -76,7 +76,7 @@ private:
 	LPRDOCalc              m_pTimeCalc;
 	LPRDOCalc              m_pCreateAndGoOnTransactCalc;
 	int                    m_maxTransCount;
-	int                    m_TransCount;
+	ruint                  m_createdTransactCount;
 	LPIInternalStatistics  m_pStatistics;
 
 	DECLARE_IBaseOperation;
