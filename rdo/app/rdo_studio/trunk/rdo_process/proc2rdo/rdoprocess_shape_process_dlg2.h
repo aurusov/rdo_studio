@@ -13,7 +13,7 @@ public:
 	virtual BOOL OnInitDialog();
 	
 	RPProcessShapeProcess* m_pParent;
-	RPProcessShapeProcessDlg1* pParentDlgMJ;
+	RPProcessShapeProcessDlg1* m_pParentDlg;
 
 	std::list< RPObject* > m_resourceList;
 

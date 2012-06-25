@@ -13,7 +13,7 @@ RPProcessShapeProcessDlg2::RPProcessShapeProcessDlg2(CWnd* pParent,RPProcessShap
 {
 	m_combo_res_value = _T("");
 	m_pParent = ppParent;
-	pParentDlgMJ = pParentDlg;
+	m_pParentDlg = pParentDlg;
 }
 
 BOOL RPProcessShapeProcessDlg2::OnInitDialog()
@@ -58,7 +58,7 @@ void RPProcessShapeProcessDlg2::OnOK()
 	if(	m_combo_res_control.GetCurSel() != -1)
 	{
 		m_combo_res_control.GetLBText(m_combo_res_control.GetCurSel(),data_combo);
-		pParentDlgMJ->m_ResList.AddString(data_combo);
+		m_pParentDlg->m_ResList.AddString(data_combo);
 		m_pParent->m_resourceList.push_back(data_combo);
 	}
 	CDialog::OnOK();
