@@ -56,7 +56,6 @@ protected:
 private:
 	RDOPROCAdvance(LPIPROCProcess process, CREF(LPRDOCalc) _pDelayCalc);
 
-	int                   m_transCountProc;
 	LPIInternalStatistics m_pStatistics;
 
 	DECLARE_IBaseOperation;

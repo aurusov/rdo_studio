@@ -59,10 +59,8 @@ IBaseOperation::BOResult RDOPROCAdvance::onDoOperation(CREF(LPRDORuntime) pRunti
 		m_transacts.erase(m_transacts.begin());
 		pRuntime->addTimePoint(timeLeave, m_process, this);
 
-		++m_transCountProc;
-
 		if (m_pStatistics)
-			m_pStatistics->setTransCount(m_transCountProc);
+			m_pStatistics->setTransCount(m_transacts.size());
 
 		return IBaseOperation::BOR_done;
 	} 

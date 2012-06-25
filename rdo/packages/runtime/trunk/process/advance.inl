@@ -23,9 +23,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 inline RDOPROCAdvance::RDOPROCAdvance(LPIPROCProcess process, CREF(LPRDOCalc) _pDelayCalc)
 	: RDOPROCBlock(process    )
 	, pDelayCalc  (_pDelayCalc)
-{
-	m_transCountProc = 0;
-}
+{}
 
 inline RDOPROCAdvance::LeaveTr::LeaveTr(CREF(LPRDOPROCTransact) _transact, double _timeLeave)
 	: transact (_transact )
