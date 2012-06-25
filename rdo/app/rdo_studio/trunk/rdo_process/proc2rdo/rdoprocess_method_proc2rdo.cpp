@@ -30,19 +30,16 @@ RPMethodProc2RDO::RPMethodProc2RDO( RPObject* _parent ):
 	rpMethod::RPMethod( _parent, "РДО-Процесс" ),
 	RPProcessObject( get_this() ),
 	btn_generate( -1 ),
-	btn_generate_setup( -1 ),
-	RDOfiles( NULL ) // инициализация
+	btn_generate_setup( -1 )
 {
 	proc2rdo = this;
 	m_generateTime = 100;
-	RDOfiles = new RPCreationRDOFilesMJ();
 	pixmap_big   = rpMethod::project->createBitmap( method_big_xpm );
 	pixmap_small = rpMethod::project->createBitmap( method_small_xpm );
 }
 
 RPMethodProc2RDO::~RPMethodProc2RDO()
 {
-	delete RDOfiles;
 	proc2rdo = NULL;
 }
 

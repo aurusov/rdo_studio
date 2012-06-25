@@ -2,7 +2,6 @@
 #define RDO_PROCESS_METHOD_PROC2RDO_H
 
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_method.h"
-#include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_creation_RDO_files.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape.h"
 #include "utils/rdotypes.h"
 
@@ -30,7 +29,6 @@ public:
 	virtual RPObjectFlowChart* makeFlowChart( RPObject* parent );
 	virtual void generate();
 	double m_generateTime;
-	RPCreationRDOFilesMJ* RDOfiles;
 	std::list< CString > list_pattern_names; // MJ 7.04.06 хранятся имена всех паттернов для записи в файл *.opr generate() заполняет его
 	
 	// Блокируем вхождение функции saveToXML и loadFromXML в RPMethod

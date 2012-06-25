@@ -116,43 +116,5 @@ void RPProcessShapeDecide::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos
 
 void RPProcessShapeDecide::generate()
 {
-	RPCreationRDOFilesMJ* RDOfiles = proc2rdo->RDOfiles;
-	//заполняем лист названиями паттернов для *.opr
-		CString name_value1("Блок_десайд_");
-		CString name_value2(getName().c_str());
-		CString name_value(name_value1 + name_value2);
-		proc2rdo->list_pattern_names.push_back(name_value);
-// ГЕНЕРАЦИЯ паттерное РДО ФАЙЛ *.pat
-
-RDOfiles->pattern <<std::endl
-<<std::endl<<"{-------блок десайд------------"<<getName().c_str()<<"---------------------------------}"
-<<std::endl
-<<std::endl
-<<std::endl<<"$Pattern Блок_десайд_"<<getName().c_str()<<" : rule  {срабатывание закона}trace"
-<<std::endl<<"	$Relevant_resources"
-<<std::endl
-<<std::endl<<"		_transact_X : Group_of_transacts_X keep"
-<<std::endl
-<<std::endl<<"$Body"
-<<std::endl 
-<<std::endl<<"  _transact_X"
-<<std::endl<<"		 Choice from _transact_X.Состояние_транспортировки = ожидает and"
-<<std::endl<<"		_transact_X.Место_нахождения_будущее = "<<getName().c_str()
-<<std::endl<<"			first"
-<<std::endl	 
-<<std::endl
-<<std::endl<<"	Convert_rule"
-<<std::endl<<"		  Место_нахождения            set "<<getName().c_str()
-<<std::endl<<"			Место_нахождения_будущее    set ГИСТ_"<<getName().c_str()
-<<std::endl	 
-<<std::endl<<"$End";
-
-RDOfiles->function<<std::endl<<"{-------блок десайд ------" <<getName().c_str()<<"--------------}" <<std::endl
-<<std::endl<<"$Sequence ГИСТ_"<<getName().c_str()<<": such_as Group_of_transacts_X.Место_нахождения"
-	<<std::endl<<"$Type = by_hist"
-	<<std::endl<<"$Body"
-<<std::endl<<id_next.c_str()<<"  "<<ptrue
-<<std::endl<<id_next2.c_str()<<"  "<<pfalse
-
-	<<std::endl<<"	$End";
+	NEVER_REACH_HERE;
 }

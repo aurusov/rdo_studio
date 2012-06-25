@@ -97,57 +97,7 @@ void RPProcessShapeResource::onLButtonDblClk( UINT nFlags, CPoint global_chart_p
 
 void RPProcessShapeResource::generate()
 {
-	/*RDOfiles->pattern <<std::endl<<std::endl<<"имя следующего блока - "<<id_next
-	<<std::endl<<"имя - "<<getName().c_str()
-	<<std::endl<<"всего может обслуживать одновременно - "<<gamount;
-*/
-
-	RPCreationRDOFilesMJ* RDOfiles = proc2rdo->RDOfiles;
-
-	// ГЕНЕРАЦИЯ статистики РДО ФАЙЛ *.pmd
-	RDOfiles->statistic
-
-	<<std::endl<<"Занятость_Ресурса_" <<getName().c_str()<<
-	  ":  watch_state "<<"Resource_"<<getName().c_str()<<".Состояние = занят";
-
-
-
-
-	
-// ГЕНЕРАЦИЯ ФУНКЦИЙ РДО ФАЙЛ *.fun
-RDOfiles->function<<std::endl<<"{-------ресурс ------" <<getName().c_str()<<"-------------------}" <<std::endl
-	
-	
-	
-	
-<<std::endl<<"$Function  fun_resource_" <<getName().c_str()<<" : such_as Resource.Состояние {освобождение или занятие ресурса}"
-<<std::endl<<"	$Type = algorithmic"
-<<std::endl<<"	$Parameters"
-<<std::endl<<"		 _amount        : integer {сколько транзактов уже обслуживается}"
-<<std::endl<<"		 _state         : such_as Resource.Состояние {состяние ресурса}"
-<<std::endl<<"		 _max           : integer      { макс колличество которое может обслуживаться"
-<<std::endl<<"после которого рессурс переходит в состяоние занят}"
-<<std::endl
-<<std::endl<<"$Body"
-<<std::endl<<"	Calculate_if _amount >= _max and _state = свободен"
-<<std::endl<<"		fun_resource_" <<getName().c_str()<<" = занят"
-<<std::endl<<"	{занимает если кол-во превысило максимум}"
-<<std::endl 
-<<std::endl<<"	Calculate_if _amount < _max and _state = занят"
-<<std::endl<<"		fun_resource_" <<getName().c_str()<<" = свободен"
-<<std::endl    
-<<std::endl<<"	Calculate_if 1=1"
-<<std::endl<<"		fun_resource_" <<getName().c_str()<<" = _state"
-<<std::endl
-<<std::endl<<"$End";
-
-
-
-// ГЕНЕРАЦИЯ ресурсов РДО ФАЙЛ *.res
-RDOfiles->resourse<<std::endl<<std::endl<<"{-------ресурс ------" <<getName().c_str()<<"-------------------}" <<std::endl
-
-<<"Resource_"<<getName().c_str()<<" : Resource свободен 0 1";
-
+	NEVER_REACH_HERE;
 }
 
 void RPProcessShapeResource::saveToXML(REF(pugi::xml_node) parentNode) const
