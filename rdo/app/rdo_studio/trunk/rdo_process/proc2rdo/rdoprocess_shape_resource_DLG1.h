@@ -4,14 +4,14 @@
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_resource.h"
 
-class RPShapeResourceDLG1_MJ : public CDialog
+class RPProcessShapeResourceDlg1 : public CDialog
 {
 public:
-	RPShapeResourceDLG1_MJ(CWnd* pParent = NULL, RPShapeResource_MJ* ppParent = NULL);
+	RPProcessShapeResourceDlg1(CWnd* pParent = NULL, RPProcessShapeResource* ppParent = NULL);
 	virtual BOOL OnInitDialog();
 
 
-	RPShapeResource_MJ* pParentMJ;
+	RPProcessShapeResource* pParentMJ;
 
 	enum { IDD = IDD_DIALOG_RESOURCE_DLG1 };
 	CString	m_name;

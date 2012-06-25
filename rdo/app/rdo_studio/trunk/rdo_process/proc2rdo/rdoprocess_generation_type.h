@@ -3,10 +3,10 @@
 
 #include "app/rdo_studio_mfc/resource.h"
 
-class RP_GENERATION_TYPE_MJ : public CDialog
+class RPProcessGenerationType : public CDialog
 {
 public:
-	RP_GENERATION_TYPE_MJ(CWnd* pParent = NULL);
+	RPProcessGenerationType(CWnd* pParent = NULL);
 	virtual BOOL OnInitDialog();
 
 	enum { IDD = IDD_DIALOG_GEN_TYPE };

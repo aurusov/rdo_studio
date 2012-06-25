@@ -32,8 +32,8 @@ public:
 		return connectors.empty();
 	}
 };
-RPShapeDecide::RPShapeDecide( RPObject* _parent ):
-	RPShape_MJ( _parent, _T("Decide") )
+RPProcessShapeDecide::RPProcessShapeDecide( RPObject* _parent ):
+	RPProcessShape( _parent, _T("Decide") )
 {
 
 	pa_src.push_back(rp::point(-55, 0));
@@ -50,19 +50,19 @@ RPShapeDecide::RPShapeDecide( RPObject* _parent ):
 	 pfalse = 0.1;
 }
 
-RPShapeDecide::~RPShapeDecide()
+RPProcessShapeDecide::~RPProcessShapeDecide()
 {
 }
 
-rp::RPXMLNode* RPShapeDecide::save( rp::RPXMLNode* parent_node )
+rp::RPXMLNode* RPProcessShapeDecide::save( rp::RPXMLNode* parent_node )
 {
-	rp::RPXMLNode* obj_node = RPShape_MJ::save( parent_node );
+	rp::RPXMLNode* obj_node = RPProcessShape::save( parent_node );
 	return obj_node;
 }
 
-void RPShapeDecide::saveToXML(REF(pugi::xml_node) parentNode) const
+void RPProcessShapeDecide::saveToXML(REF(pugi::xml_node) parentNode) const
 {
-	// Записываем узел <RPShapeDecide/>:
+	// Записываем узел <RPProcessShapeDecide/>:
 	pugi::xml_node node = parentNode.append_child(getClassName().c_str());
 	// Соxраняем атрибуты объекта:
 	// 1) Атрибуты графики
@@ -74,7 +74,7 @@ void RPShapeDecide::saveToXML(REF(pugi::xml_node) parentNode) const
 	node.append_attribute(_T("false"))  .set_value(pfalse           );
 }
 
-void RPShapeDecide::loadFromXML(CREF(pugi::xml_node) node)
+void RPProcessShapeDecide::loadFromXML(CREF(pugi::xml_node) node)
 {
 	// Считываем атрибуты для загрузки сохраненного блока "Decide":
 	for(pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute())
@@ -100,21 +100,21 @@ void RPShapeDecide::loadFromXML(CREF(pugi::xml_node) node)
 	RPShape::       loadFromXML(node);
 }
 
-RPObject* RPShapeDecide::newObject( RPObject* parent )
+RPObject* RPProcessShapeDecide::newObject( RPObject* parent )
 {
-	return new RPShapeDecide( parent );
+	return new RPProcessShapeDecide( parent );
 }
 
-void RPShapeDecide::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
+void RPProcessShapeDecide::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 {
 	UNUSED(nFlags          );
 	UNUSED(global_chart_pos);
 
-	RPShapeDecideDlg1 dlg( AfxGetMainWnd(), this );
+	RPProcessShapeDecideDlg1 dlg( AfxGetMainWnd(), this );
 	dlg.DoModal();
 }
 
-void RPShapeDecide::generate()
+void RPProcessShapeDecide::generate()
 {
 	RPCreationRDOFilesMJ* RDOfiles = proc2rdo->RDOfiles;
 	//заполняем лист названиями паттернов для *.opr

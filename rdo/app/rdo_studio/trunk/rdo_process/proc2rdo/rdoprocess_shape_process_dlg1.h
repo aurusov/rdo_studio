@@ -10,13 +10,13 @@ private:
 	DECLARE_MESSAGE_MAP()
 };
 
-class RPShapeProcessDlg1_MJ : public CDialog
+class RPProcessShapeProcessDlg1 : public CDialog
 {
 public:
-	RPShapeProcessDlg1_MJ(CWnd* pParent = NULL,RPShapeProcessMJ* ppParent=NULL);
+	RPProcessShapeProcessDlg1(CWnd* pParent = NULL,RPProcessShapeProcess* ppParent=NULL);
     virtual BOOL OnInitDialog();
 
-	RPShapeProcessMJ* pParentMJ; // ссылка на родителя
+	RPProcessShapeProcess* pParentMJ; // ссылка на родителя
 
 	enum { IDD = IDD_DIALOG_PROCESS_1_MJ };
 	CComboBox	m_gtype;
@@ -24,12 +24,12 @@ public:
 	RPListBox	m_ResList;
 	CButton		m_DelRes;
 	CButton		m_AddRes;
-	CEdit		m_proc_dlg1_max_control_MJ;
-	CEdit		m_proc_dlg1_disp_control_MJ;
-	CEdit		m_proc_dlg1_exp_control_MJ;
-	CStatic		m_proc_dlgl_exp_text_MJ;
-	CStatic		m_proc_dlgl_disp_text_MJ;
-	CStatic		m_proc_dlgl_max_text_MJ;
+	CEdit		m_maxCtrl;
+	CEdit		m_dispCtrl;
+	CEdit		m_expCtrl;
+	CStatic		m_expText;
+	CStatic		m_dispText;
+	CStatic		m_maxText;
 	CComboBox	m_parameter;
 	CComboBox	m_action;
 	CString	m_name;

@@ -82,7 +82,7 @@ void RPConnector::loadFromXML(CREF(pugi::xml_node) node)
 		{
 			pObjFrom = rpMethod::project->findObject(attr.value());
 			// Для блока Resource восстанавливаем его коннектор (отличен от других):
-			if (pObjFrom->getClassInfo()->isKindOf("RPShapeResource_MJ"))
+			if (pObjFrom->getClassInfo()->isKindOf("RPProcessShapeResource"))
 			{
 				main_pen_width = 1;
 				main_pen_default.DeleteObject();

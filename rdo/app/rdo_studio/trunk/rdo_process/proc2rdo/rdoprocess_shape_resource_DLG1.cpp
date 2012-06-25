@@ -7,8 +7,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-RPShapeResourceDLG1_MJ::RPShapeResourceDLG1_MJ (CWnd* pParent, RPShapeResource_MJ* ppParent)
-	: CDialog(RPShapeResourceDLG1_MJ::IDD, pParent)
+RPProcessShapeResourceDlg1::RPProcessShapeResourceDlg1 (CWnd* pParent, RPProcessShapeResource* ppParent)
+	: CDialog(RPProcessShapeResourceDlg1::IDD, pParent)
 {
 	m_name = _T("");
 	m_dlgamount = 0;
@@ -16,14 +16,14 @@ RPShapeResourceDLG1_MJ::RPShapeResourceDLG1_MJ (CWnd* pParent, RPShapeResource_M
 }
 
 
-void RPShapeResourceDLG1_MJ::DoDataExchange(CDataExchange* pDX)
+void RPProcessShapeResourceDlg1::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_EDIT1, m_name);
 	DDX_Text(pDX, IDC_EDIT2, m_dlgamount);
 }
 
-BOOL RPShapeResourceDLG1_MJ::OnInitDialog()
+BOOL RPProcessShapeResourceDlg1::OnInitDialog()
 {
 // отображение имени блока
 	CString str( pParentMJ->getName().c_str() );
@@ -38,10 +38,10 @@ return TRUE;
 
 
 
-BEGIN_MESSAGE_MAP(RPShapeResourceDLG1_MJ, CDialog)
+BEGIN_MESSAGE_MAP(RPProcessShapeResourceDlg1, CDialog)
 END_MESSAGE_MAP()
 
-void RPShapeResourceDLG1_MJ::OnOK() 
+void RPProcessShapeResourceDlg1::OnOK() 
 {
 
 	UpdateData(TRUE);

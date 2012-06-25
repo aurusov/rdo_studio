@@ -11,8 +11,8 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
-RPShapeCreateMJ::RPShapeCreateMJ(PTR(RPObject) _parent)
-	: RPShape_MJ(_parent, _T("Create"))
+RPProcessShapeCreate::RPProcessShapeCreate(PTR(RPObject) _parent)
+	: RPProcessShape(_parent, _T("Create"))
 	, m_currentTransactCount(0)
 {
 	pa_src.push_back( rp::point(-50, -25) );
@@ -45,19 +45,19 @@ RPShapeCreateMJ::RPShapeCreateMJ(PTR(RPObject) _parent)
 	indent = 5;
 }
 
-RPShapeCreateMJ::~RPShapeCreateMJ()
+RPProcessShapeCreate::~RPProcessShapeCreate()
 {
 }
 
-rp::RPXMLNode* RPShapeCreateMJ::save( rp::RPXMLNode* parent_node )
+rp::RPXMLNode* RPProcessShapeCreate::save( rp::RPXMLNode* parent_node )
 {
-	rp::RPXMLNode* obj_node = RPShape_MJ::save( parent_node );
+	rp::RPXMLNode* obj_node = RPProcessShape::save( parent_node );
 	return obj_node;
 }
 
-void RPShapeCreateMJ::saveToXML(REF(pugi::xml_node) parentNode) const
+void RPProcessShapeCreate::saveToXML(REF(pugi::xml_node) parentNode) const
 {
-	// Записываем узел <RPShapeCreateMJ/>:
+	// Записываем узел <RPProcessShapeCreate/>:
 	pugi::xml_node node = parentNode.append_child(getClassName().c_str());
 	// Соxраняем атрибуты объекта:
 	// 1) Атрибуты графики
@@ -72,7 +72,7 @@ void RPShapeCreateMJ::saveToXML(REF(pugi::xml_node) parentNode) const
 	node.append_attribute(_T("zakon"))    .set_value(gtype            );
 }
 
-void RPShapeCreateMJ::loadFromXML(CREF(pugi::xml_node) node)
+void RPProcessShapeCreate::loadFromXML(CREF(pugi::xml_node) node)
 {
 	// Считываем атрибуты для загрузки сохраненного блока "Create":
 	for (pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute())
@@ -110,21 +110,21 @@ void RPShapeCreateMJ::loadFromXML(CREF(pugi::xml_node) node)
 	RPShape::       loadFromXML(node);
 }
 
-RPObject* RPShapeCreateMJ::newObject( RPObject* parent )
+RPObject* RPProcessShapeCreate::newObject( RPObject* parent )
 {
-	return new RPShapeCreateMJ( parent );
+	return new RPProcessShapeCreate( parent );
 }
 
-void RPShapeCreateMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
+void RPProcessShapeCreate::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 {
 	UNUSED(nFlags          );
 	UNUSED(global_chart_pos);
 
-	RPShapeCreateDlg1_MJ dlg( AfxGetMainWnd(), this );
+	RPProcessShapeCreateDlg1 dlg( AfxGetMainWnd(), this );
 	dlg.DoModal();
 }
 
-void RPShapeCreateMJ::generate()
+void RPProcessShapeCreate::generate()
 {
 	rdo::compiler::gui::RPShapeDataBlock::zakonRaspr zakon;
 	switch(gtype)
@@ -146,7 +146,7 @@ void RPShapeCreateMJ::generate()
 			break;
 	}
 
-	LPRPShapeCreateMJ pThis(this); 
+	LPRPProcessShapeCreate pThis(this); 
 	ASSERT(pThis);
 
 	pInternalStatistics = pThis.interface_cast<rdo::runtime::IInternalStatistics>();
@@ -165,13 +165,13 @@ void RPShapeCreateMJ::generate()
 	m_pParams = NULL;
 }
 
-void RPShapeCreateMJ::setTransCount(ruint count)
+void RPProcessShapeCreate::setTransCount(ruint count)
 {
 	m_currentTransactCount = count;
 	update();
 }
 
-void RPShapeCreateMJ::drawCustom(REF(CDC) dc)
+void RPProcessShapeCreate::drawCustom(REF(CDC) dc)
 {
 	dc.SetTextColor(RGB(0x00, 0x64, 0x00));
 	dc.TextOut((3*(this->pa_global.getMaxX()) + (this->pa_global.getMinX()))/4 - indent, this->pa_global.getMaxY() + indent, rp::string::fromint(m_currentTransactCount).c_str());

@@ -104,7 +104,7 @@ void RPMethodManager::init()
 	}
 #else
 	//insertMethod( RPMethodAlgorithm::registerMethod() );
-	insertMethod( RPMethodProc2RDO_MJ::registerMethod() );
+	insertMethod( RPMethodProc2RDO::registerMethod() );
 #endif
 }
 

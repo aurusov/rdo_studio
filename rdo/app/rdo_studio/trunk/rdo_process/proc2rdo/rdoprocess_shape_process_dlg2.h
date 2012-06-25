@@ -5,17 +5,17 @@
 #include <list>
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_process_dlg1.h"
 
-class RPShapeProcessDlg2_MJ : public CDialog
+class RPProcessShapeProcessDlg2 : public CDialog
 {
 public:
 	void list_name_resource();
-	RPShapeProcessDlg2_MJ(CWnd* pParent = NULL,RPShapeProcessMJ* ppParent=NULL,RPShapeProcessDlg1_MJ* pParentDlg = NULL );
+	RPProcessShapeProcessDlg2(CWnd* pParent = NULL,RPProcessShapeProcess* ppParent=NULL,RPProcessShapeProcessDlg1* pParentDlg = NULL );
 	virtual BOOL OnInitDialog();
 	
-	RPShapeProcessMJ* pParentMJ;
-	RPShapeProcessDlg1_MJ* pParentDlgMJ;
+	RPProcessShapeProcess* pParentMJ;
+	RPProcessShapeProcessDlg1* pParentDlgMJ;
 
-	std::list< RPObject* > list_resource_MJ;
+	std::list< RPObject* > m_resourceList;
 
 	enum { IDD = IDD_DIALOG_PROCESS_2_MJ };
 	CComboBox	m_combo_res_control;

@@ -7,8 +7,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-RPShapeDecideDlg1::RPShapeDecideDlg1(CWnd* pParent,RPShapeDecide* ppParent)
-	: CDialog(RPShapeDecideDlg1::IDD, pParent)
+RPProcessShapeDecideDlg1::RPProcessShapeDecideDlg1(CWnd* pParent,RPProcessShapeDecide* ppParent)
+	: CDialog(RPProcessShapeDecideDlg1::IDD, pParent)
 {
 	m_name = _T("");
 	mp_true = 0.9;
@@ -19,7 +19,7 @@ RPShapeDecideDlg1::RPShapeDecideDlg1(CWnd* pParent,RPShapeDecide* ppParent)
 
 
 
-BOOL RPShapeDecideDlg1::OnInitDialog()
+BOOL RPProcessShapeDecideDlg1::OnInitDialog()
 {
 // отображение имени блока
 	CString str( pParentMJ->getName().c_str() );
@@ -33,7 +33,7 @@ return TRUE;
 
 
 
-void RPShapeDecideDlg1::DoDataExchange(CDataExchange* pDX)
+void RPProcessShapeDecideDlg1::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_EDIT1, m_name);
@@ -42,10 +42,10 @@ void RPShapeDecideDlg1::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(RPShapeDecideDlg1, CDialog)
+BEGIN_MESSAGE_MAP(RPProcessShapeDecideDlg1, CDialog)
 END_MESSAGE_MAP()
 
-void RPShapeDecideDlg1::OnOK() 
+void RPProcessShapeDecideDlg1::OnOK() 
 {
 	UpdateData( true );
 	if ( pParentMJ->setName( rp::string(m_name) ) ) {

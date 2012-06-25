@@ -4,13 +4,13 @@
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_terminate.h"
 
-class RPShapeTerminateDlg1_MJ: public CDialog
+class RPProcessShapeTerminateDlg1: public CDialog
 {
 public:
-	RPShapeTerminateDlg1_MJ(PTR(CWnd) pWndParent = NULL, PTR(RPShapeTerminateMJ) pShape = NULL);
+	RPProcessShapeTerminateDlg1(PTR(CWnd) pWndParent = NULL, PTR(RPProcessShapeTerminate) pShape = NULL);
 	virtual BOOL OnInitDialog();
 
-	PTR(RPShapeTerminateMJ) m_pShape;
+	PTR(RPProcessShapeTerminate) m_pShape;
 
 	enum { IDD = IDD_DIALOG_TERMINATE_1_MJ };
 	CString    m_name;

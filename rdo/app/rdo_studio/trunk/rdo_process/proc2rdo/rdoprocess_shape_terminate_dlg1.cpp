@@ -7,25 +7,25 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-BEGIN_MESSAGE_MAP(RPShapeTerminateDlg1_MJ, CDialog)
+BEGIN_MESSAGE_MAP(RPProcessShapeTerminateDlg1, CDialog)
 END_MESSAGE_MAP()
 
-RPShapeTerminateDlg1_MJ::RPShapeTerminateDlg1_MJ(PTR(CWnd) pWndParent, PTR(RPShapeTerminateMJ) pShape)
-	: CDialog(RPShapeTerminateDlg1_MJ::IDD, pWndParent)
+RPProcessShapeTerminateDlg1::RPProcessShapeTerminateDlg1(PTR(CWnd) pWndParent, PTR(RPProcessShapeTerminate) pShape)
+	: CDialog(RPProcessShapeTerminateDlg1::IDD, pWndParent)
 {
 	m_name = _T("");
 	m_pShape = pShape;
 	ASSERT(m_pShape);
 }
 
-void RPShapeTerminateDlg1_MJ::DoDataExchange(CDataExchange* pDX)
+void RPProcessShapeTerminateDlg1::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_EDIT1, m_name            );
 	DDX_Text(pDX, IDC_EDIT3, m_terminateCounter);
 }
 
-BOOL RPShapeTerminateDlg1_MJ::OnInitDialog()
+BOOL RPProcessShapeTerminateDlg1::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
@@ -36,7 +36,7 @@ BOOL RPShapeTerminateDlg1_MJ::OnInitDialog()
 	return TRUE;
 }
 
-void RPShapeTerminateDlg1_MJ::OnOK()
+void RPProcessShapeTerminateDlg1::OnOK()
 {
 	UpdateData(true);
 

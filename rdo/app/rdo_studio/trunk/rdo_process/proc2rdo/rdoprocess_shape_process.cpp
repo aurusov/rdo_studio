@@ -11,8 +11,8 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
-RPShapeProcessMJ::RPShapeProcessMJ( RPObject* _parent )
-	: RPShape_MJ( _parent, _T("Process") )
+RPProcessShapeProcess::RPProcessShapeProcess( RPObject* _parent )
+	: RPProcessShape( _parent, _T("Process") )
 	, m_currentTransactCountProc(0)
 {
 	
@@ -47,25 +47,25 @@ RPShapeProcessMJ::RPShapeProcessMJ( RPObject* _parent )
 	docks.push_back( new RPConnectorDock   (this, RPConnectorDock::in,  rp::point(  0, 25), 270, "resource"));
 }
 
-RPShapeProcessMJ::~RPShapeProcessMJ()
+RPProcessShapeProcess::~RPProcessShapeProcess()
 {
 }
 
-RPObject* RPShapeProcessMJ::newObject( RPObject* parent )
+RPObject* RPProcessShapeProcess::newObject( RPObject* parent )
 {
-	return new RPShapeProcessMJ( parent );
+	return new RPProcessShapeProcess( parent );
 }
 
-void RPShapeProcessMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
+void RPProcessShapeProcess::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 {
 	UNUSED(nFlags          );
 	UNUSED(global_chart_pos);
 
-	RPShapeProcessDlg1_MJ dlg( AfxGetMainWnd(), this );
+	RPProcessShapeProcessDlg1 dlg( AfxGetMainWnd(), this );
 	dlg.DoModal();
 }
 
-void RPShapeProcessMJ::generate()
+void RPProcessShapeProcess::generate()
 {
 	rdo::compiler::gui::RPShapeDataBlock::zakonRaspr zakon;
 	switch(gtype)
@@ -87,7 +87,7 @@ void RPShapeProcessMJ::generate()
 			break;
 	}
 
-	LPRPShapeProcessMJ pThis(this);
+	LPRPProcessShapeProcess pThis(this);
 	ASSERT(pThis);
 
 	pInternalStatistics = pThis.interface_cast<rdo::runtime::IInternalStatistics>();
@@ -121,8 +121,8 @@ void RPShapeProcessMJ::generate()
 			break;
 	}
 
-	std::list<CString>::iterator it = list_resource_procMJ.begin();
-	while( it != list_resource_procMJ.end() ) 
+	std::list<CString>::iterator it = m_resourceList.begin();
+	while( it != m_resourceList.end() ) 
 	{
 		m_pParams->addRes(static_cast<tstring>(*it));
 		it++;
@@ -133,21 +133,21 @@ void RPShapeProcessMJ::generate()
 	m_pParams = NULL;
 }
 
-void RPShapeProcessMJ::setTransCount(ruint count)
+void RPProcessShapeProcess::setTransCount(ruint count)
 {
 	m_currentTransactCountProc = count;
 	update();
 }
 
-void RPShapeProcessMJ::drawCustom(REF(CDC) dc)
+void RPProcessShapeProcess::drawCustom(REF(CDC) dc)
 {
 	dc.SetTextColor(RGB(0x00, 0x64, 0x00));
 	dc.TextOut(this->pa_global.getMaxX() - 2*indent, this->pa_global.getMaxY() + indent, rp::string::fromint(m_currentTransactCountProc).c_str());
 }
 
-void RPShapeProcessMJ::saveToXML(REF(pugi::xml_node) parentNode) const
+void RPProcessShapeProcess::saveToXML(REF(pugi::xml_node) parentNode) const
 {
-	// Записываем узел <RPShapeProcessMJ/>:
+	// Записываем узел <RPProcessShapeProcess/>:
 	pugi::xml_node node = parentNode.append_child(getClassName().c_str());
 	// Соxраняем атрибуты объекта:
 	// 1) Атрибуты графики
@@ -164,7 +164,7 @@ void RPShapeProcessMJ::saveToXML(REF(pugi::xml_node) parentNode) const
 	node.append_attribute(_T("queue"))      .set_value(queue            );
 }
 
-void RPShapeProcessMJ::loadFromXML(CREF(pugi::xml_node) node)
+void RPProcessShapeProcess::loadFromXML(CREF(pugi::xml_node) node)
 {
 	// Считываем атрибуты для загрузки сохраненного блока "Process":
 	for(pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute())

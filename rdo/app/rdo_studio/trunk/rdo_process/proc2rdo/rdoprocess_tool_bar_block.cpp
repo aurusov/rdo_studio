@@ -9,21 +9,21 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-RPToolBarBlockMJ::RPToolBarBlockMJ()
+RPProcessToolBarBlock::RPProcessToolBarBlock()
 {
 }
 
-RPToolBarBlockMJ::~RPToolBarBlockMJ()
+RPProcessToolBarBlock::~RPProcessToolBarBlock()
 {
 }
 
 
-BEGIN_MESSAGE_MAP(RPToolBarBlockMJ, CStatusBarCtrl)
+BEGIN_MESSAGE_MAP(RPProcessToolBarBlock, CStatusBarCtrl)
 	ON_COMMAND(ID_BUTTON32779, OnButton32779)
 END_MESSAGE_MAP()
 
-void RPToolBarBlockMJ::OnButton32779() 
+void RPProcessToolBarBlock::OnButton32779() 
 {
-//	RPShapeCreateMJ* shape_create = new RPShapeCreateMJ( flowobj );
+//	RPProcessShapeCreate* shape_create = new RPProcessShapeCreate( flowobj );
 //	shape_create->setPosition( 100,100 );
 }

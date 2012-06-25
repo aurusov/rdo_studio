@@ -3,20 +3,20 @@
 
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape.h"
 
-class RPShapeDecide : public RPShape_MJ  
+class RPProcessShapeDecide : public RPProcessShape  
 {
-friend class RPMethodProc2RDO_MJ;
+friend class RPMethodProc2RDO;
 
 private:
 	static RPObject* newObject( RPObject* parent );
 
 public:
-	RPShapeDecide( RPObject* parent );
-	virtual ~RPShapeDecide();
+	RPProcessShapeDecide( RPObject* parent );
+	virtual ~RPProcessShapeDecide();
 
-	virtual rp::string getClassName() const { return "RPShapeDecide"; }
+	virtual rp::string getClassName() const { return "RPProcessShapeDecide"; }
 	virtual rp::RPXMLNode* save( rp::RPXMLNode* parent_node );
-	// Переопределенная виртуальная функция saveToXML и loadFromXML для RPShapeDecide:
+	// Переопределенная виртуальная функция saveToXML и loadFromXML для RPProcessShapeDecide:
 	void saveToXML  (REF (pugi::xml_node) parentNode) const;
 	void loadFromXML(CREF(pugi::xml_node) node);
 

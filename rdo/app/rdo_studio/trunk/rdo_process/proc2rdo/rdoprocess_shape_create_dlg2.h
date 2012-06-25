@@ -4,12 +4,12 @@
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_create.h"
 
-class RPShapeCreateDlg2_MJ : public CDialog
+class RPProcessShapeCreateDlg2 : public CDialog
 {
 public:
-	RPShapeCreateDlg2_MJ(CWnd* pParent = NULL,RPShapeCreateMJ* ppParent=NULL);
+	RPProcessShapeCreateDlg2(CWnd* pParent = NULL,RPProcessShapeCreate* ppParent=NULL);
 	
-	RPShapeCreateMJ* pParentMJ; // ссылка на вызывающий объект
+	RPProcessShapeCreate* pParentMJ; // ссылка на вызывающий объект
 
 	virtual BOOL OnInitDialog();
 

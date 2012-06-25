@@ -7,13 +7,13 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-RP_GENERATION_TYPE_MJ::RP_GENERATION_TYPE_MJ(CWnd* pParent /*=NULL*/)
-	: CDialog(RP_GENERATION_TYPE_MJ::IDD, pParent)
+RPProcessGenerationType::RPProcessGenerationType(CWnd* pParent /*=NULL*/)
+	: CDialog(RPProcessGenerationType::IDD, pParent)
 {
 	m_time_value = 0.0;
 }
 
-void RP_GENERATION_TYPE_MJ::DoDataExchange(CDataExchange* pDX)
+void RPProcessGenerationType::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_COMBO1, m_combo);
@@ -21,11 +21,11 @@ void RP_GENERATION_TYPE_MJ::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT1, m_time_value);
 }
 
-BEGIN_MESSAGE_MAP(RP_GENERATION_TYPE_MJ, CDialog)
+BEGIN_MESSAGE_MAP(RPProcessGenerationType, CDialog)
 	ON_CBN_CLOSEUP(IDC_COMBO1, OnCloseupCombo1)
 END_MESSAGE_MAP()
 
-void RP_GENERATION_TYPE_MJ::OnCloseupCombo1() 
+void RPProcessGenerationType::OnCloseupCombo1() 
 {
 int cur = m_combo.GetCurSel();
 
@@ -44,7 +44,7 @@ int cur = m_combo.GetCurSel();
 	}	
 }
 
-BOOL RP_GENERATION_TYPE_MJ::OnInitDialog()
+BOOL RPProcessGenerationType::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
@@ -53,15 +53,15 @@ BOOL RP_GENERATION_TYPE_MJ::OnInitDialog()
 	m_combo.SetCurSel(0); // закон прибытия
 OnCloseupCombo1();
 
-	m_time_value = proc2rdo->generate_time_MJ;
+	m_time_value = proc2rdo->m_generateTime;
 	UpdateData(FALSE);
 	return TRUE;
 }
 
-void RP_GENERATION_TYPE_MJ::OnOK() 
+void RPProcessGenerationType::OnOK() 
 {
 	UpdateData(TRUE);
-	proc2rdo->generate_time_MJ = m_time_value;
+	proc2rdo->m_generateTime = m_time_value;
 
 	CDialog::OnOK();
 }

@@ -5,13 +5,13 @@
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_decide.h"
 
-class RPShapeDecideDlg1 : public CDialog
+class RPProcessShapeDecideDlg1 : public CDialog
 {
 public:
-	RPShapeDecideDlg1(CWnd* pParent = NULL, RPShapeDecide* ppParent=NULL);
+	RPProcessShapeDecideDlg1(CWnd* pParent = NULL, RPProcessShapeDecide* ppParent=NULL);
     virtual BOOL OnInitDialog();
 
-	RPShapeDecide* pParentMJ; // ссылка на родителя
+	RPProcessShapeDecide* pParentMJ; // ссылка на родителя
 
 	enum { IDD = IDD_DIALOG_DECIDE_1 };
 	CString	m_name;

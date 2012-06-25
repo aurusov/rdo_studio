@@ -26,10 +26,10 @@ public:
 };
 
 // --------------------------------------------------------------------------------
-// -------------------- RPShapeResource_MJ
+// -------------------- RPProcessShapeResource
 // --------------------------------------------------------------------------------
-RPShapeResource_MJ::RPShapeResource_MJ( RPObject* _parent ):
-	RPShape_MJ( _parent, _T("Resource") )
+RPProcessShapeResource::RPProcessShapeResource( RPObject* _parent ):
+	RPProcessShape( _parent, _T("Resource") )
 {
 	
 	gamount=1;
@@ -77,25 +77,25 @@ RPShapeResource_MJ::RPShapeResource_MJ( RPObject* _parent ):
 	docks.push_back( new RPConnectorDockResourceOut( this, RPConnectorDock::out,  rp::point( 0, -25 ), 90, "resource" ) );
 }
 
-RPShapeResource_MJ::~RPShapeResource_MJ()
+RPProcessShapeResource::~RPProcessShapeResource()
 {
 }
 
-RPObject* RPShapeResource_MJ::newObject( RPObject* parent )
+RPObject* RPProcessShapeResource::newObject( RPObject* parent )
 {
-	return new RPShapeResource_MJ( parent );
+	return new RPProcessShapeResource( parent );
 }
 
-void RPShapeResource_MJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
+void RPProcessShapeResource::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 {
 	UNUSED(nFlags          );
 	UNUSED(global_chart_pos);
 
-	RPShapeResourceDLG1_MJ dlg( AfxGetMainWnd(), this );
+	RPProcessShapeResourceDlg1 dlg( AfxGetMainWnd(), this );
 	dlg.DoModal();
 }
 
-void RPShapeResource_MJ::generate()
+void RPProcessShapeResource::generate()
 {
 	/*RDOfiles->pattern <<std::endl<<std::endl<<"имя следующего блока - "<<id_next
 	<<std::endl<<"имя - "<<getName().c_str()
@@ -150,9 +150,9 @@ RDOfiles->resourse<<std::endl<<std::endl<<"{-------ресурс ------" <<getName().c_
 
 }
 
-void RPShapeResource_MJ::saveToXML(REF(pugi::xml_node) parentNode) const
+void RPProcessShapeResource::saveToXML(REF(pugi::xml_node) parentNode) const
 {
-	// Записываем узел <RPShapeResource_MJ/>:
+	// Записываем узел <RPProcessShapeResource/>:
 	pugi::xml_node node = parentNode.append_child(getClassName().c_str());
 	// Соxраняем атрибуты объекта:
 	// 1) Атрибуты графики
@@ -163,7 +163,7 @@ void RPShapeResource_MJ::saveToXML(REF(pugi::xml_node) parentNode) const
 	node.append_attribute(_T("amount"))   .set_value(gamount          );
 }
 
-void RPShapeResource_MJ::loadFromXML(CREF(pugi::xml_node) node)
+void RPProcessShapeResource::loadFromXML(CREF(pugi::xml_node) node)
 {
 	// Считываем атрибуты для загрузки сохраненного блока "Resource":
 	for(pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute())

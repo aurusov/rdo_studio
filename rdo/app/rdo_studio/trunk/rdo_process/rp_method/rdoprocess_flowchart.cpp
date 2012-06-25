@@ -82,7 +82,7 @@ BOOL RPFlowChart::Create( LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD d
 	CDC* dc  = GetDC();
 	saved_dc = dc->SaveDC();
 
-//	flowobj = static_cast<RPObjectFlowChart*>(rpMethod::factory->getNewObject( "RPObjectFlowChart_MJ", rpMethod::project ));
+//	flowobj = static_cast<RPObjectFlowChart*>(rpMethod::factory->getNewObject( "RPProcessFlowChart", rpMethod::project ));
 
 //	updateFont();
 	updateScrollBars();

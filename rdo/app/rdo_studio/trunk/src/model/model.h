@@ -92,16 +92,16 @@ private:
 	rbool canCloseModel           ();
 	void  afterModelStart         ();
 
-	PTR(RPMethodProc2RDO_MJ) getProc2rdo() const
+	PTR(RPMethodProc2RDO) getProc2rdo() const
 	{
 		RPMethodManager::MethodList::const_iterator it = studioApp.getMethodManager().getList().begin();
 		while (it != studioApp.getMethodManager().getList().end())
 		{
 			PTR(rpMethod::RPMethod) pMethod = *it;
 			ASSERT(pMethod);
-			if (pMethod->getClassName() == _T("RPMethodProc2RDO_MJ"))
+			if (pMethod->getClassName() == _T("RPMethodProc2RDO"))
 			{
-				PTR(RPMethodProc2RDO_MJ) pProc2RDO = dynamic_cast<PTR(RPMethodProc2RDO_MJ)>(pMethod);
+				PTR(RPMethodProc2RDO) pProc2RDO = dynamic_cast<PTR(RPMethodProc2RDO)>(pMethod);
 				ASSERT(pProc2RDO);
 				return pProc2RDO;
 			}

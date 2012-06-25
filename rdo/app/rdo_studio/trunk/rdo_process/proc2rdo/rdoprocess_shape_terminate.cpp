@@ -10,8 +10,8 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
-RPShapeTerminateMJ::RPShapeTerminateMJ( RPObject* _parent )
-	: RPShape_MJ(_parent, _T("Terminate"))
+RPProcessShapeTerminate::RPProcessShapeTerminate( RPObject* _parent )
+	: RPProcessShape(_parent, _T("Terminate"))
 	, m_currentTransactCountDel(0)
 {
 	m_term_inc = 1;
@@ -32,27 +32,27 @@ RPShapeTerminateMJ::RPShapeTerminateMJ( RPObject* _parent )
 	indent = 5;
 }
 
-RPShapeTerminateMJ::~RPShapeTerminateMJ()
+RPProcessShapeTerminate::~RPProcessShapeTerminate()
 {
 }
 
-RPObject* RPShapeTerminateMJ::newObject( RPObject* parent )
+RPObject* RPProcessShapeTerminate::newObject( RPObject* parent )
 {
-	return new RPShapeTerminateMJ( parent );
+	return new RPProcessShapeTerminate( parent );
 }
 
-void RPShapeTerminateMJ::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
+void RPProcessShapeTerminate::onLButtonDblClk( UINT nFlags, CPoint global_chart_pos )
 {
 	UNUSED(nFlags          );
 	UNUSED(global_chart_pos);
 
-	RPShapeTerminateDlg1_MJ dlg( AfxGetMainWnd(), this );
+	RPProcessShapeTerminateDlg1 dlg( AfxGetMainWnd(), this );
 	dlg.DoModal();
 }
 
-void RPShapeTerminateMJ::generate()
+void RPProcessShapeTerminate::generate()
 {
-	LPRPShapeTerminateMJ pThis(this);
+	LPRPProcessShapeTerminate pThis(this);
 	ASSERT(pThis);
 
 	pInternalStatistics = pThis.interface_cast<rdo::runtime::IInternalStatistics>();
@@ -67,9 +67,9 @@ void RPShapeTerminateMJ::generate()
 	m_pParams = NULL;
 }
 
-void RPShapeTerminateMJ::saveToXML(REF(pugi::xml_node) parentNode) const
+void RPProcessShapeTerminate::saveToXML(REF(pugi::xml_node) parentNode) const
 {
-	// Записываем узел <RShapeTerminateMJ/>:
+	// Записываем узел <RPProcessShapeTerminate/>:
 	pugi::xml_node node = parentNode.append_child(getClassName().c_str());
 	// Соxраняем атрибуты объекта:
 	// 1) Атрибуты графики
@@ -80,7 +80,7 @@ void RPShapeTerminateMJ::saveToXML(REF(pugi::xml_node) parentNode) const
 	node.append_attribute(_T("terminateCounter"))    .set_value(m_term_inc       );
 }
 
-void RPShapeTerminateMJ::loadFromXML(CREF(pugi::xml_node) node)
+void RPProcessShapeTerminate::loadFromXML(CREF(pugi::xml_node) node)
 {
 	// Считываем атрибуты для загрузки сохраненного блока "Terminate":
 	for (pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute())
@@ -102,13 +102,13 @@ void RPShapeTerminateMJ::loadFromXML(CREF(pugi::xml_node) node)
 	RPShape::       loadFromXML(node);
 }
 
-void RPShapeTerminateMJ::setTransCount(ruint count)
+void RPProcessShapeTerminate::setTransCount(ruint count)
 {
 	m_currentTransactCountDel = count;
 	update();
 }
 
-void RPShapeTerminateMJ::drawCustom(REF(CDC) dc)
+void RPProcessShapeTerminate::drawCustom(REF(CDC) dc)
 {
 	dc.SetTextColor(RGB(0x00, 0x64, 0x00));
 	dc.TextOut(this->pa_global.getMaxX() - 2*indent, this->pa_global.getMaxY() + indent, rp::string::fromint(m_currentTransactCountDel).c_str());

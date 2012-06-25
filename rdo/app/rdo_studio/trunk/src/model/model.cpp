@@ -465,7 +465,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 				plugins->pluginProc(rdoPlugin::PM_MODEL_BUILD_OK);
 			}
 			m_buildState = BS_COMPLETE;
-			PTR(RPMethodProc2RDO_MJ) pMethod = getProc2rdo();
+			PTR(RPMethodProc2RDO) pMethod = getProc2rdo();
 			if (pMethod && pMethod->checkModelStructure())
 			{
 				pMethod->generate();
@@ -730,7 +730,7 @@ void RDOStudioModel::newModelFromRepository()
 	{
 		m_GUI_HAS_MODEL = true;
 
-		PTR(RPMethodProc2RDO_MJ) pMethod = getProc2rdo();
+		PTR(RPMethodProc2RDO) pMethod = getProc2rdo();
 		if (pMethod)
 		{
 			m_pFlowchartDocTemplate->OpenDocumentFile(NULL);
@@ -828,7 +828,7 @@ void RDOStudioModel::openModelFromRepository()
 	{
 		m_GUI_HAS_MODEL = true;
 
-		PTR(RPMethodProc2RDO_MJ) pMethod = getProc2rdo();
+		PTR(RPMethodProc2RDO) pMethod = getProc2rdo();
 		if (pMethod)
 		{
 			m_pFlowchartDocTemplate->OpenDocumentFile(NULL);
@@ -1069,7 +1069,7 @@ void RDOStudioModel::loadFromXML()
 	}
 	else
 	{
-		PTR(RPMethodProc2RDO_MJ) pMethod = getProc2rdo();
+		PTR(RPMethodProc2RDO) pMethod = getProc2rdo();
 		pMethod->makeFlowChart(rpMethod::project);
 	}
 }

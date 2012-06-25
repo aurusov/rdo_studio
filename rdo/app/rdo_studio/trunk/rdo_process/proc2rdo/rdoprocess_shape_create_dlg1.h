@@ -4,23 +4,23 @@
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_create.h"
 #include "app/rdo_studio_mfc/resource.h"
 
-class RPShapeCreateDlg1_MJ : public CDialog
+class RPProcessShapeCreateDlg1 : public CDialog
 {
 protected:
-	RPShapeCreateMJ* pParentMJ; // ссылка на объект, который вызвал диалог
+	RPProcessShapeCreate* pParentMJ; // ссылка на объект, который вызвал диалог
 	
 public:
-	RPShapeCreateDlg1_MJ(CWnd* pParent = NULL,RPShapeCreateMJ* ppParent=NULL);
+	RPProcessShapeCreateDlg1(CWnd* pParent = NULL,RPProcessShapeCreate* ppParent=NULL);
 	virtual BOOL OnInitDialog();
 
 	enum { IDD = IDD_DIALOG_CREATE_1_MJ };
-	CEdit		m_create_dlg1_exp_control_MJ;
-	CEdit		m_create_dlg1_disp_control_MJ;
-	CEdit		m_create_dlg1_max_control_MJ;
-	CStatic		m_create_dlgl_exp_text_MJ;
-	CStatic		m_create_dlgl_disp_text_MJ;
-	CStatic		m_create_dlgl_max_text_MJ;
-	CComboBox	m_create_dlg1_combo1_MJ;
+	CEdit		m_expCtrl;
+	CEdit		m_dispCtrl;
+	CEdit		m_maxCtrl;
+	CStatic		m_expText;
+	CStatic		m_dispText;
+	CStatic		m_maxText;
+	CComboBox	m_comboCtrl;
 	CString		m_name;
 	double		m_dlgfirst;
 	int			m_dlgamount;

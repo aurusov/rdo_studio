@@ -7,8 +7,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-RPShapeCreateDlg2_MJ::RPShapeCreateDlg2_MJ(CWnd* pParent,RPShapeCreateMJ* ppParent)
-	: CDialog(RPShapeCreateDlg2_MJ::IDD, pParent)
+RPProcessShapeCreateDlg2::RPProcessShapeCreateDlg2(CWnd* pParent,RPProcessShapeCreate* ppParent)
+	: CDialog(RPProcessShapeCreateDlg2::IDD, pParent)
 {
 	m_dlginf = 0;
 	m_dlgid = 0;
@@ -19,7 +19,7 @@ RPShapeCreateDlg2_MJ::RPShapeCreateDlg2_MJ(CWnd* pParent,RPShapeCreateMJ* ppPare
 }
 
 
-void RPShapeCreateDlg2_MJ::DoDataExchange(CDataExchange* pDX)
+void RPProcessShapeCreateDlg2::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_EDIT1, m_dlginf);
@@ -30,7 +30,7 @@ void RPShapeCreateDlg2_MJ::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BOOL RPShapeCreateDlg2_MJ::OnInitDialog()
+BOOL RPProcessShapeCreateDlg2::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
@@ -48,10 +48,10 @@ UpdateData(FALSE);
 
 
 
-BEGIN_MESSAGE_MAP(RPShapeCreateDlg2_MJ, CDialog)
+BEGIN_MESSAGE_MAP(RPProcessShapeCreateDlg2, CDialog)
 END_MESSAGE_MAP()
 
-void RPShapeCreateDlg2_MJ::OnOK() 
+void RPProcessShapeCreateDlg2::OnOK() 
 {
 	// инициализация объекта значениями окна
 

@@ -6,10 +6,10 @@
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape.h"
 #include "utils/rdotypes.h"
 
-class RPMethodProc2RDO_MJ: public rpMethod::RPMethod, public RPObject_MJ
+class RPMethodProc2RDO: public rpMethod::RPMethod, public RPProcessObject
 {
 private:
-	virtual ~RPMethodProc2RDO_MJ();
+	virtual ~RPMethodProc2RDO();
 
 protected:
 	void registerObject();
@@ -21,15 +21,15 @@ protected:
 	virtual void buttonUpdate( RPCtrlToolbar::ButtonUpdate& button_update );
 
 public:
-	RPMethodProc2RDO_MJ( RPObject* _parent );
+	RPMethodProc2RDO( RPObject* _parent );
 	static rpMethod::RPMethod* registerMethod();
 	rbool checkModelStructure();
 	virtual rp::string getVersionDesc() const { return "альфа"; }
 	virtual rp::string getDescription() const { return "Переводит квадратики в паттерны"; }
-	virtual rp::string getClassName() const { return "RPMethodProc2RDO_MJ"; }
+	virtual rp::string getClassName() const { return "RPMethodProc2RDO"; }
 	virtual RPObjectFlowChart* makeFlowChart( RPObject* parent );
 	virtual void generate();
-	double generate_time_MJ;
+	double m_generateTime;
 	RPCreationRDOFilesMJ* RDOfiles;
 	std::list< CString > list_pattern_names; // MJ 7.04.06 хранятся имена всех паттернов для записи в файл *.opr generate() заполняет его
 	
@@ -39,6 +39,6 @@ public:
 	virtual void loadFromXML(CREF(pugi::xml_node) node);
 };
 
-extern RPMethodProc2RDO_MJ* proc2rdo;
+extern RPMethodProc2RDO* proc2rdo;
 
 #endif // RDO_PROCESS_METHOD_PROC2RDO_H

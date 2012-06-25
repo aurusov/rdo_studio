@@ -111,7 +111,7 @@ void RPProjectMFC::saveToXML(REF(pugi::xml_node) parentNode) const
 	// Атрибуты <RPProjectMFC>:
 	node.append_attribute(_T("name")).set_value(getName().c_str());
 
-	// Ссылаемся на первого потомка RPObject (RPObjectFlowChart_MJ), используя контейнер "list":
+	// Ссылаемся на первого потомка RPObject (RPProcessFlowChart), используя контейнер "list":
 	std::list<PTR(RPObject)> childList;
 	getAllChild(childList);
 	STL_FOR_ALL_CONST(childList, it)
@@ -125,11 +125,11 @@ void RPProjectMFC::loadFromXML(CREF(pugi::xml_node) node)
 	// Пришел узел, следующий за <Model>, т.е. <RPProjectMFC>:
 	if (strcmp(node.name(), getClassName().c_str()) == 0)
 	{
-		// Проверяем, а стоим ли мы на узле RPObjectFlowChart_MJ ? (т.к. их может быть несколько, то запускаем цикл)
+		// Проверяем, а стоим ли мы на узле RPProcessFlowChart ? (т.к. их может быть несколько, то запускаем цикл)
 		// Атрибуты <RPProjectMFC> не считываем. Они не актуальны.
 		for (pugi::xml_node next_node = node.first_child(); next_node; next_node = next_node.next_sibling())
 		{
-			if (strcmp(next_node.name(), "RPObjectFlowChart_MJ") == 0)
+			if (strcmp(next_node.name(), "RPProcessFlowChart") == 0)
 			{
 				// Генерируем FlowChart
 				PTR(RPObjectFlowChart) pFlowChart = static_cast<PTR(RPObjectFlowChart)>(rpMethod::factory->getNewObject(next_node.name(), rpMethod::project));

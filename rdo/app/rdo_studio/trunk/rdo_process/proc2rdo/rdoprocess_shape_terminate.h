@@ -5,11 +5,11 @@
 #include "simulator/compiler/procgui/procgui_datablock.h"
 #include "simulator/runtime/process/generate.h"
 
-OBJECT(RPShapeTerminateMJ)
-	IS  INSTANCE_OF      (RPShape_MJ                       )
+OBJECT(RPProcessShapeTerminate)
+	IS  INSTANCE_OF      (RPProcessShape                   )
 	AND IMPLEMENTATION_OF(rdo::runtime::IInternalStatistics)
 {
-friend class RPMethodProc2RDO_MJ;
+friend class RPMethodProc2RDO;
 
 private:
 	static RPObject* newObject( RPObject* parent );
@@ -23,10 +23,10 @@ public:
 	rdo::compiler::gui::LPRPShapeDataBlockTerminate m_pParams;
 	rdo::runtime::      LPIInternalStatistics       pInternalStatistics;
 
-	RPShapeTerminateMJ( RPObject* parent );
-	virtual ~RPShapeTerminateMJ();
+	RPProcessShapeTerminate( RPObject* parent );
+	virtual ~RPProcessShapeTerminate();
 
-	virtual rp::string getClassName() const { return "RPShapeTerminateMJ"; }
+	virtual rp::string getClassName() const { return "RPProcessShapeTerminate"; }
 
 	virtual void onLButtonDblClk( UINT nFlags, CPoint global_chart_pos );
 	virtual void generate();
@@ -35,7 +35,7 @@ public:
 
 	virtual void drawCustom(REF(CDC) dc);
 
-	// Переопределенная виртуальная функция saveToXML и loadFromXML для RPShapeTerminateMJ:
+	// Переопределенная виртуальная функция saveToXML и loadFromXML для RPProcessShapeTerminate:
 	void saveToXML  (REF (pugi::xml_node) parentNode) const;
 	void loadFromXML(CREF(pugi::xml_node) node);
 };
