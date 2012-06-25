@@ -1,5 +1,5 @@
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/stdafx.h"
-#include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_resource_DLG1.h"
+#include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_resource_dlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

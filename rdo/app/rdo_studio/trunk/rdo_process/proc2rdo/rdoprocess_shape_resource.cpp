@@ -1,6 +1,6 @@
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/stdafx.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_resource.h"
-#include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_resource_DLG1.h"
+#include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape_resource_dlg.h"
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_method_proc2rdo.h"
 
 #ifdef _DEBUG

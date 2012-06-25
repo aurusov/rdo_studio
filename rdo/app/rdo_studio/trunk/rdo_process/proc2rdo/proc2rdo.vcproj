@@ -203,7 +203,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape_resource_DLG1.cpp"
+				RelativePath=".\rdoprocess_shape_resource_dlg.cpp"
 				>
 			</File>
 			<File
@@ -293,7 +293,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape_resource_DLG1.h"
+				RelativePath=".\rdoprocess_shape_resource_dlg.h"
 				>
 			</File>
 			<File
