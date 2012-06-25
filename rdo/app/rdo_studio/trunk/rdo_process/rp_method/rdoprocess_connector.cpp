@@ -69,6 +69,8 @@ void RPConnector::loadFromXML(CREF(pugi::xml_node) node)
 {
 	PTR(RPObject) pObjFrom = NULL;
 	PTR(RPObject) pObjTo   = NULL;
+	unsigned int iFrom     = 0;
+	unsigned int iTo       = 0;
 	
 	// Считываем атрибуты для загрузки сохраненного блока "Connector":
 	for (pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute())
@@ -90,20 +92,23 @@ void RPConnector::loadFromXML(CREF(pugi::xml_node) node)
 				can_update = true;
 			}
 		}
-		else if (attrName == _T("obj_to" ))
+		else if (attrName == _T("obj_to"))
 		{
 			pObjTo = rpMethod::project->findObject(attr.value());
 		}
 		else if (attrName == _T("index_from"))
 		{
-			ASSERT(pObjFrom && pObjFrom->getClassInfo()->isKindOf("RPShape"));
-			dock_begin = static_cast<RPShape*>(pObjFrom)->getDock(attr.as_uint());
+			iFrom = attr.as_uint();
 		}
 		else if (attrName == _T("index_to"))
 		{
-			ASSERT(pObjTo && pObjTo->getClassInfo()->isKindOf("RPShape"));
-			dock_end = static_cast<RPShape*>(pObjTo)->getDock(attr.as_uint());
+			iTo = attr.as_uint();
 		}
+	}
+	if (pObjFrom && pObjTo && pObjFrom->getClassInfo()->isKindOf("RPShape") && pObjTo->getClassInfo()->isKindOf("RPShape"))
+	{
+		dock_begin = static_cast<RPShape*>(pObjFrom)->getDock(iFrom);
+		dock_end   = static_cast<RPShape*>(pObjTo)  ->getDock(iTo);
 	}
 }
 

@@ -93,18 +93,18 @@ void RPShape::saveToXML(REF(pugi::xml_node) parentNode) const
 	if (const_cast<CBrush&>(bg_brush).GetLogBrush(&lb))
 	{
 		pugi::xml_node brushNode = node.append_child(_T("LOGBRUSH"));
-		brushNode.append_attribute(_T("color"))    .set_value(RPObjectChart::colorToStr(lb.lbColor).c_str());
-		brushNode.append_attribute(_T("style"))    .set_value(lb.lbStyle                                   );
+		brushNode.append_attribute(_T("color")).set_value(RPObjectChart::colorToStr(lb.lbColor).c_str());
+		brushNode.append_attribute(_T("style")).set_value(lb.lbStyle                                   );
 	}
 	// Создаем фон текста:
 	LOGFONT lf;
 	if (const_cast<CFont&>(text_font).GetLogFont(&lf))
 	{
 		pugi::xml_node fontNode = node.append_child(_T("LOGFONT"));
-		fontNode.append_attribute(_T("name"))     .set_value(lf.lfFaceName                                );
-		fontNode.append_attribute(_T("height"))   .set_value(lf.lfHeight                                  );
-		fontNode.append_attribute(_T("color"))    .set_value(RPObjectChart::colorToStr(text_color).c_str());
-		fontNode.append_attribute(_T("show"))     .set_value(rp::string::   frombool  (text_show) .c_str());
+		fontNode.append_attribute(_T("name"))  .set_value(lf.lfFaceName                                );
+		fontNode.append_attribute(_T("height")).set_value(lf.lfHeight                                  );
+		fontNode.append_attribute(_T("color")) .set_value(RPObjectChart::colorToStr(text_color).c_str());
+		fontNode.append_attribute(_T("show"))  .set_value(rp::string::   frombool  (text_show) .c_str());
 	}
 }
 
@@ -115,8 +115,8 @@ void RPShape::loadFromXML(CREF(pugi::xml_node) node)
 	CFont    font;
 	CBrush   brush;
 	
-	COLORREF clr;
-	rbool show       = false;
+	COLORREF clr = 0;
+	rbool show   = false;
 	// Переменные для проверки существования структур lb:
 	rbool colorExist = false;
 	rbool styleExist = false;
