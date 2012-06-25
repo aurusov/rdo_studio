@@ -1030,7 +1030,7 @@ void RDOStudioModel::saveToXML()
 	rpMethod::project->saveToXML(node);
 
 	// Создаем файл '.prcx' с помощью репозитария:
-	rdoRepository::RDOThreadRepository::FileInfo fileInfo(rdoModelObjects::PRCX);
+	rdo::repository::RDOThreadRepository::FileInfo fileInfo(rdoModelObjects::PRCX);
 	sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &fileInfo);
 
 	// Автоматически открываем файл при создании потока:

@@ -157,7 +157,7 @@ RPObjectChart* RPObjectChart::find( const rp::point& global_chart_pos )
 	return pointInShape( global_chart_pos ) ? this : NULL;
 }
 
-void RPObjectChart::draw( CDC& dc )
+void RPObjectChart::draw(REF(CDC) dc)
 {
 	// Вызов отрисовки потомков
 	std::list< RPObjectChart* > objects;
@@ -188,6 +188,11 @@ void RPObjectChart::draw_after( CDC& dc )
 		it++;
 	}
 	if ( isSelected() ) draw_selected( dc );
+}
+
+void RPObjectChart::drawCustom(REF(CDC) dc)
+{
+	UNUSED(dc);
 }
 
 void RPObjectChart::setSelected( rbool value )

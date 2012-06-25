@@ -13,6 +13,7 @@ static char THIS_FILE[]=__FILE__;
 
 RPShapeCreateMJ::RPShapeCreateMJ(PTR(RPObject) _parent)
 	: RPShape_MJ(_parent, _T("Create"))
+	, m_currentTransactCount(0)
 {
 	pa_src.push_back( rp::point(-50, -25) );
 	pa_src.push_back( rp::point(25, -25) );
@@ -41,6 +42,7 @@ RPShapeCreateMJ::RPShapeCreateMJ(PTR(RPObject) _parent)
 	gpar2=0;
 	gpar3=0;
 
+	indent = 5;
 }
 
 RPShapeCreateMJ::~RPShapeCreateMJ()
@@ -144,14 +146,33 @@ void RPShapeCreateMJ::generate()
 			break;
 	}
 
+	LPRPShapeCreateMJ pThis(this); 
+	ASSERT(pThis);
+
+	pInternalStatistics = pThis.interface_cast<rdo::runtime::IInternalStatistics>();
+	ASSERT(pInternalStatistics);
+
 	m_pParams = rdo::Factory<rdo::compiler::gui::RPShapeDataBlockCreate>::create(zakon, gname);
 	m_pParams->setBase(base_gen);
 	m_pParams->setAmount(gamount);
 	m_pParams->setDisp(gdisp);
 	m_pParams->setExp(gexp);
 	m_pParams->setMax(gmax);
+	m_pParams->setStatistics(pInternalStatistics);
 
 	studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_PROCGUI_BLOCK_CREATE, m_pParams.get());
 
 	m_pParams = NULL;
+}
+
+void RPShapeCreateMJ::setTransCount(ruint count)
+{
+	m_currentTransactCount = count;
+	update();
+}
+
+void RPShapeCreateMJ::drawCustom(REF(CDC) dc)
+{
+	dc.SetTextColor(RGB(0x00, 0x64, 0x00));
+	dc.TextOut((3*(this->pa_global.getMaxX()) + (this->pa_global.getMinX()))/4 - indent, this->pa_global.getMaxY() + indent, rp::string::fromint(m_currentTransactCount).c_str());
 }

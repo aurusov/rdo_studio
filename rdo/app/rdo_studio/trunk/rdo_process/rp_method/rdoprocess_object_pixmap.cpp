@@ -262,7 +262,7 @@ HGDIOBJ RotateMemoryDC(HBITMAP hBmpSrc, CDC& hdcSrc, int SrcW, int SrcH, float a
 	return old_pixmap;
 }
 
-void RPObjectPixmap::draw( CDC& dc )
+void RPObjectPixmap::draw(REF(CDC) dc)
 {
 	RPObjectMatrix::draw( dc );
 

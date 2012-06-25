@@ -109,6 +109,8 @@ void RPConnector::loadFromXML(CREF(pugi::xml_node) node)
 	{
 		dock_begin = static_cast<RPShape*>(pObjFrom)->getDock(iFrom);
 		dock_end   = static_cast<RPShape*>(pObjTo)  ->getDock(iTo);
+		dock_begin->connectors.push_back(this);
+		dock_end  ->connectors.push_back(this);
 	}
 }
 
@@ -308,7 +310,7 @@ void RPConnector::next_step( CDC& dc, const rp::point& p1, const rp::point& p2, 
 	}
 }
 
-void RPConnector::draw( CDC& dc )
+void RPConnector::draw(REF(CDC) dc)
 {
 	if ( dock_begin && !dock_end ) {
 		rp::polyline pa;
