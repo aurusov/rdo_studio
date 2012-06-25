@@ -45,12 +45,12 @@ IBaseOperation::BOResult RDOPROCTerminate::onDoOperation(CREF(LPRDORuntime) pRun
 	m_transacts.erase(m_transacts.begin());
 	ruint termNow = pRuntime->getCurrentTerm();
 
-	++m_transCountDel;
+	++m_terminatedTransactCount;
 
 	if (m_pStatistics)
-		m_pStatistics->setTransCount(m_transCountDel);
+		m_pStatistics->setTransCount(m_terminatedTransactCount);
 
-	termNow += pTermCalc->calcValue(pRuntime).getInt();
+	termNow += m_pTermCalc->calcValue(pRuntime).getInt();
 	pRuntime->setCurrentTerm(termNow);
 	return IBaseOperation::BOR_done;
 }
