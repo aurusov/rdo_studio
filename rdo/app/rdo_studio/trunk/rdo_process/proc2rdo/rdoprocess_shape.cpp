@@ -15,44 +15,6 @@ RPProcessFlowChart::RPProcessFlowChart( RPObject* parent ):
 	RPProcessObject( get_this() )
 {
 	after_constructor();
-/*
-	RPProcessShapeCreate* shape_create = new RPProcessShapeCreate( this );
-	shape_create->setPosition( 100, 100 );
-	shape_create->gamount = 1000;
-	shape_create->gname   = "Входной_склад";
-	shape_create->setName( tstring("Входной_склад") );
-	shape_create->gtype = 2;
-	shape_create->gmin  = 10;
-	shape_create->gmax  = 30;
-	
-	RPProcessShapeProcess* shape_process = new RPProcessShapeProcess( this );
-	shape_process->setPosition( 100, 150 );
-	shape_process->setName( tstring("Перевозка_станок") );
-	shape_process->gtype = 3;
-	shape_process->gexp  = 7;
-
-	shape_process = new RPProcessShapeProcess( this );
-	shape_process->setPosition( 100, 200 );
-	shape_process->gtype = 1;
-	shape_process->gdisp = 2;
-	shape_process->gexp  = 15;
-
-	shape_process = new RPProcessShapeProcess( this );
-	shape_process->setPosition( 100, 250 );
-	shape_process->setName( tstring("Перевозка_склад") );
-	shape_process->gtype = 3;
-	shape_process->gexp  = 5;
-
-	RPProcessShapeTerminate* shape_terminate = new RPProcessShapeTerminate( this );
-	shape_terminate->setPosition( 100, 200 );
-	shape_terminate->setName( tstring("Склад") );
-
-	RPProcessShapeResource* shape_resource = new RPProcessShapeResource( this );
-	shape_resource->setPosition( 100, 250 );
-
-	shape_resource = new RPProcessShapeResource( this );
-	shape_resource->setPosition( 100, 300 );
-*/
 }
 
 RPObject* RPProcessFlowChart::newObject( RPObject* _parent )
