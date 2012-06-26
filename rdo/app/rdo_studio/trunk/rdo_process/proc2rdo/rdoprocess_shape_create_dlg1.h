@@ -23,7 +23,7 @@ public:
 	CComboBox	m_comboCtrl;
 	CString		m_name;
 	double		m_dlgfirst;
-	int			m_dlgamount;
+	ruint		m_dlgamount;
 	double		m_dlgexp;
 	double		m_dlgdisp;
 	double		m_dlgmax;

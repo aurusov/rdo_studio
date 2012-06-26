@@ -1,6 +1,7 @@
 #ifndef _PROC2RDO_RDOPROCESS_SHAPE_CREATE_H_
 #define _PROC2RDO_RDOPROCESS_SHAPE_CREATE_H_
 
+#include <boost/optional.hpp>
 #include "app/rdo_studio_mfc/rdo_process/proc2rdo/rdoprocess_shape.h"
 #include "simulator/compiler/procgui/procgui_datablock.h"
 #include "simulator/runtime/process/generate.h"
@@ -39,7 +40,7 @@ public:
 	//переменные для генерации
 	tstring gname; // имя
 	double gfirst; // время первого
-	int gamount; // кол-во создаваемых
+	boost::optional<ruint> gamount; // кол-во создаваемых
 	int gtype; // закон прибытия
 	int base_gen;
 	ruint m_createdTransactCount;

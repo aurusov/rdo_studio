@@ -54,7 +54,10 @@ BOOL RPProcessShapeCreateDlg1::OnInitDialog()
 	m_comboCtrl.SetCurSel(m_pParent->gtype); // закон прибытия
 
 	m_dlgfirst=m_pParent->gfirst; // время первого
-	m_dlgamount= static_cast<int>(m_pParent->gamount); // кол-во создаваемых
+	if (m_pParent->gamount)
+	{
+		m_dlgamount = m_pParent->gamount.get(); // кол-во создаваемых
+	}
 	m_dlgbase_gen=m_pParent->base_gen;
 	//атрибуты законов
 	m_dlgexp=m_pParent->gexp;
@@ -145,7 +148,9 @@ void RPProcessShapeCreateDlg1::OnOK()
 	UpdateData(TRUE);
 	m_pParent->gname    = m_name;
 	m_pParent->gfirst   = m_dlgfirst; // время первого
-	m_pParent->gamount  = m_dlgamount; // кол-во создаваемых
+	m_pParent->gamount  = m_dlgamount > 0
+		? m_dlgamount
+		: boost::optional<ruint>(); // кол-во создаваемых
 	m_pParent->gtype    = m_comboCtrl.GetCurSel(); // закон прибытия
 	m_pParent->base_gen = m_dlgbase_gen;
 	//атрибуты законов

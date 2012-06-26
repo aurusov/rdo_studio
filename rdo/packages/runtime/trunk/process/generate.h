@@ -13,6 +13,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/noncopyable.hpp>
+#include <boost/optional.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo.h"
 #include "simulator/runtime/rdo_runtime.h"
@@ -70,12 +71,12 @@ public:
 	void calcNextTimeInterval(CREF(LPRDORuntime) pRuntime);
 
 private:
-	RDOPROCGenerate(LPIPROCProcess process, CREF(LPRDOCalc) pTime, CREF(LPRDOCalc) pCreateAndGoOnTransactCalc, int maxTransCount = 0);
+	RDOPROCGenerate(LPIPROCProcess process, CREF(LPRDOCalc) pTime, CREF(LPRDOCalc) pCreateAndGoOnTransactCalc, boost::optional<ruint> maxCreateTransactCount = boost::optional<ruint>());
 
 	double                 timeNext;
 	LPRDOCalc              m_pTimeCalc;
 	LPRDOCalc              m_pCreateAndGoOnTransactCalc;
-	int                    m_maxTransCount;
+	boost::optional<ruint> m_maxCreateTransactCount;
 	ruint                  m_createdTransactCount;
 	LPIInternalStatistics  m_pStatistics;
 

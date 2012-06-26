@@ -12,6 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <list>
+#include <boost/optional.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/smart_ptr/intrusive_ptr.h"
 #include "simulator/compiler/procgui/namespace.h"
@@ -37,7 +38,6 @@ public:
 	};
 
 	void setBase  (int base   );
-	void setAmount(int amount );
 	void setDisp  (double disp);
 	void setExp   (double exp );
 	void setMax   (double max );
@@ -68,8 +68,8 @@ class RPShapeDataBlockCreate: public RPShapeDataBlock
 {
 DECLARE_FACTORY(RPShapeDataBlockCreate)
 public:
-	int  getAmount() const      { return m_amount; }
-	void setAmount(int amount);
+	boost::optional<ruint>  getAmount() const      { return m_amount; }
+	void setAmount(boost::optional<ruint> amount);
 
 	CREF(rdo::runtime::LPIInternalStatistics) getStatistics() const      { return m_pStatistics; }
 	void setStatistics(CREF(rdo::runtime::LPIInternalStatistics) pStatistics);
@@ -78,7 +78,7 @@ private:
 	RPShapeDataBlockCreate(RPShapeDataBlock::zakonRaspr zakon, CREF(tstring) name);
 	virtual ~RPShapeDataBlockCreate();
 
-	int                                  m_amount;
+	boost::optional<ruint>               m_amount;
 	rdo::runtime::LPIInternalStatistics  m_pStatistics;
 };
 DECLARE_POINTER(RPShapeDataBlockCreate);

@@ -20,12 +20,12 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCGenerate
 // --------------------------------------------------------------------------------
-inline RDOPROCGenerate::RDOPROCGenerate(LPIPROCProcess process, CREF(LPRDOCalc) pTime, CREF(LPRDOCalc) pCreateAndGoOnTransactCalc, int maxTransCount)
+inline RDOPROCGenerate::RDOPROCGenerate(LPIPROCProcess process, CREF(LPRDOCalc) pTime, CREF(LPRDOCalc) pCreateAndGoOnTransactCalc, boost::optional<ruint> maxCreateTransactCount)
 	: RDOPROCBlock                (process                   )
 	, timeNext                    (0.0                       )
 	, m_pTimeCalc                 (pTime                     )
 	, m_pCreateAndGoOnTransactCalc(pCreateAndGoOnTransactCalc)
-	, m_maxTransCount             (maxTransCount             )
+	, m_maxCreateTransactCount    (maxCreateTransactCount    )
 	, m_createdTransactCount      (0                         )
 {}
 

@@ -27,7 +27,6 @@ RPProcessShapeCreate::RPProcessShapeCreate(PTR(RPObject) _parent)
 	// инициализация параметров для генерирования
 	gname=_T("Create"); // имя
 	gfirst=0; // время первого
-	gamount=100; // кол-во создаваемых
 	gtype=0; // закон прибытия
 	base_gen=1234567890;
 	//атрибуты законов
@@ -64,12 +63,15 @@ void RPProcessShapeCreate::saveToXML(REF(pugi::xml_node) parentNode) const
 	RPObjectMatrix::saveToXML(node);
 	RPShape::       saveToXML(node);
 	// 2) Атрибуты симулятора
-	node.append_attribute(_T("name"))     .set_value(getName().c_str());
-	node.append_attribute(_T("amount"))   .set_value(gamount          );
-	node.append_attribute(_T("base_gen")) .set_value(base_gen         );
-	node.append_attribute(_T("exp"))      .set_value(gexp             );
-	node.append_attribute(_T("disp"))     .set_value(gdisp            );
-	node.append_attribute(_T("zakon"))    .set_value(gtype            );
+	node.append_attribute(_T("name")).set_value(getName().c_str());
+	if (gamount)
+	{
+		node.append_attribute(_T("amount")).set_value(gamount.get());
+	}
+	node.append_attribute(_T("base_gen")).set_value(base_gen);
+	node.append_attribute(_T("exp"))     .set_value(gexp    );
+	node.append_attribute(_T("disp"))    .set_value(gdisp   );
+	node.append_attribute(_T("zakon"))   .set_value(gtype   );
 }
 
 void RPProcessShapeCreate::loadFromXML(CREF(pugi::xml_node) node)
@@ -86,7 +88,10 @@ void RPProcessShapeCreate::loadFromXML(CREF(pugi::xml_node) node)
 		}
 		else if (attrName == _T("amount"))
 		{
-			gamount = attr.as_int();
+			ruint amount = attr.as_uint();
+			gamount = amount > 0
+				? amount
+				: boost::optional<ruint>();
 		}
 		else if (attrName == _T("base_gen"))
 		{

@@ -23,28 +23,19 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCGenerate
 // --------------------------------------------------------------------------------
-void RDOPROCGenerate::onStart( CREF(LPRDORuntime) pRuntime )
+void RDOPROCGenerate::onStart(CREF(LPRDORuntime) pRuntime)
 {
 	calcNextTimeInterval(pRuntime);
 }
 
-rbool RDOPROCGenerate::onCheckCondition( CREF(LPRDORuntime) pRuntime )
+rbool RDOPROCGenerate::onCheckCondition(CREF(LPRDORuntime) pRuntime)
 {
-	if (m_maxTransCount > 0)
+	if (m_maxCreateTransactCount && m_createdTransactCount >= m_maxCreateTransactCount.get())
 	{
-		if (m_createdTransactCount < m_maxTransCount)
-		{
-			return pRuntime->getCurrentTime() >= timeNext ? true : false;
-		}
-		else
-		{
-			return false;
-		}
+		return false;
 	}
-	else
-	{
-		return pRuntime->getCurrentTime() >= timeNext ? true : false;
-	}
+
+	return pRuntime->getCurrentTime() >= timeNext ? true : false;
 }
 
 IBaseOperation::BOResult RDOPROCGenerate::onDoOperation(CREF(LPRDORuntime) pRuntime)
@@ -70,7 +61,7 @@ IBaseOperation::BOResult RDOPROCGenerate::onDoOperation(CREF(LPRDORuntime) pRunt
 	return IBaseOperation::BOR_done;
 }
 
-void RDOPROCGenerate::calcNextTimeInterval( CREF(LPRDORuntime) pRuntime )
+void RDOPROCGenerate::calcNextTimeInterval(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->addTimePoint( timeNext = m_pTimeCalc->calcValue(pRuntime).getDouble() + pRuntime->getCurrentTime(), m_process, this );
 }
