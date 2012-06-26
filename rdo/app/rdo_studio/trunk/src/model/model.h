@@ -163,6 +163,8 @@ public:
 
 	PTR(RPDoc) getFlowchartDoc() const
 	{
+		if (!m_pFlowchartDocTemplate)
+			return NULL;
 		POSITION pos = m_pFlowchartDocTemplate->GetFirstDocPosition();
 		return pos ? static_cast<PTR(RPDoc)>(m_pFlowchartDocTemplate->GetNextDoc(pos)) : NULL;
 	}
