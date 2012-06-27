@@ -823,8 +823,8 @@ void RDOStudioFrameView::elementEllipse(PTR(rdo::animation::EllipseElement) pEle
 	Gdiplus::Rect rect(
 		(int)(pElement->m_point.m_x),
 		(int)(pElement->m_point.m_y),
-		(int)(pElement->m_point.m_x + pElement->m_size.m_width),
-		(int)(pElement->m_point.m_y + pElement->m_size.m_height)
+		(int)(pElement->m_size.m_width),
+		(int)(pElement->m_size.m_height)
 	);
 
 	Gdiplus::Status (Gdiplus::Graphics::*pBrush)(CPTR(Gdiplus::Brush), CREF(Gdiplus::Rect)) = &Gdiplus::Graphics::FillEllipse;
