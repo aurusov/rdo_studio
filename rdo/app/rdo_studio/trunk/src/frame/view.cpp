@@ -723,24 +723,34 @@ void RDOStudioFrameView::elementRoundRect(PTR(rdo::animation::RoundRectElement) 
 {
 	ASSERT(pElement);
 
-	int radius = (int)(std::min<double>(pElement->m_size.m_width, pElement->m_size.m_height) / 3.0);
+	Gdiplus::REAL radius   = std::min<Gdiplus::REAL>((Gdiplus::REAL)pElement->m_size.m_width, (Gdiplus::REAL)pElement->m_size.m_height) / 3.0f;
+	Gdiplus::REAL diameter = radius * 2.0f;
 
-	Gdiplus::Rect rect(
-		(int)pElement->m_point.m_x,
-		(int)pElement->m_point.m_y,
-		(int)pElement->m_size.m_width,
-		(int)pElement->m_size.m_height
+	Gdiplus::RectF brushRect(
+		(Gdiplus::REAL)pElement->m_point.m_x,
+		(Gdiplus::REAL)pElement->m_point.m_y,
+		(Gdiplus::REAL)pElement->m_size.m_width,
+		(Gdiplus::REAL)pElement->m_size.m_height
 	);
 
+	Gdiplus::PointF point1(brushRect.X + radius,                   brushRect.Y);
+	Gdiplus::PointF point2(brushRect.X + brushRect.Width - radius, point1.Y);
+	Gdiplus::PointF point3(point2.X + radius,                      point2.Y + radius);
+	Gdiplus::PointF point4(point3.X,                               brushRect.Y + brushRect.Height - radius);
+	Gdiplus::PointF point5(point4.X - radius,                      point4.Y + radius);
+	Gdiplus::PointF point6(point1.X,                               point5.Y);
+	Gdiplus::PointF point7(brushRect.X,                            point4.Y);
+	Gdiplus::PointF point8(point7.X,                               point3.Y);
+
 	Gdiplus::GraphicsPath gpath;
-	gpath.AddLine(rect.X + radius, rect.Y, rect.X + rect.Width - (radius * 2), rect.Y);
-	gpath.AddArc (rect.X + rect.Width - (radius * 2), rect.Y, radius * 2, radius * 2, 270, 90);
-	gpath.AddLine(rect.X + rect.Width, rect.Y + radius, rect.X + rect.Width, rect.Y + rect.Height - (radius * 2));
-	gpath.AddArc (rect.X + rect.Width - (radius * 2), rect.Y + rect.Height - (radius * 2), radius * 2, radius * 2, 0, 90);
-	gpath.AddLine(rect.X + rect.Width - (radius * 2), rect.Y + rect.Height, rect.X + radius, rect.Y + rect.Height);
-	gpath.AddArc (rect.X, rect.Y + rect.Height - (radius * 2), radius * 2, radius * 2, 90, 90);
-	gpath.AddLine(rect.X, rect.Y + rect.Height - (radius * 2), rect.X, rect.Y + radius);
-	gpath.AddArc (rect.X, rect.Y, radius * 2, radius * 2, 180, 90);
+	gpath.AddLine(point1, point2);
+	gpath.AddArc (point2.X - radius, point2.Y, diameter, diameter, 270, 90);
+	gpath.AddLine(point3, point4);
+	gpath.AddArc (point5.X - radius, point5.Y - diameter, diameter, diameter, 0, 90);
+	gpath.AddLine(point5, point6);
+	gpath.AddArc (point7.X, point7.Y - radius, diameter, diameter, 90, 90);
+	gpath.AddLine(point7, point8);
+	gpath.AddArc (point7.X, point1.Y, diameter, diameter, 180, 90);
 	gpath.CloseFigure();
 
 	Gdiplus::Status (Gdiplus::Graphics::*pBrush)(CPTR(Gdiplus::Brush), CPTR(Gdiplus::GraphicsPath)) = &Gdiplus::Graphics::FillPath;
