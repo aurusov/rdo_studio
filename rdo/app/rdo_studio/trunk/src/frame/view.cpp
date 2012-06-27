@@ -803,8 +803,8 @@ void RDOStudioFrameView::elementCircle(PTR(rdo::animation::CircleElement) pEleme
 	Gdiplus::Rect rect(
 		(int)(pElement->m_center.m_x - pElement->m_radius.m_radius),
 		(int)(pElement->m_center.m_y - pElement->m_radius.m_radius),
-		(int)(pElement->m_center.m_x + pElement->m_radius.m_radius),
-		(int)(pElement->m_center.m_y + pElement->m_radius.m_radius)
+		(int)(pElement->m_radius.m_radius * 2),
+		(int)(pElement->m_radius.m_radius * 2)
 	);
 
 	Gdiplus::Status (Gdiplus::Graphics::*pBrush)(CPTR(Gdiplus::Brush), CREF(Gdiplus::Rect)) = &Gdiplus::Graphics::FillEllipse;
