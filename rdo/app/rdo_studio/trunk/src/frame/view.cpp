@@ -472,11 +472,6 @@ void RDOStudioFrameView::OnDraw(PTR(CDC) pDC)
 
 void RDOStudioFrameView::onDraw(REF(Gdiplus::Graphics) graphics)
 {
-//	PTR(RDOStudioFrameDoc) pDoc = GetDocument();
-//	ASSERT_VALID(pDoc);
-
-//	GetClientRect(&m_newClientRect);
-
 	if (valid())
 	{
 		graphics.DrawImage(&m_memDC.buffer(), -m_pos.X, -m_pos.Y);
