@@ -618,6 +618,7 @@ rbool RDOStudioModel::openModel(CREF(tstring) modelName) const
 	}
 	else
 	{
+		m_modelClosed = true;
 		if (m_smrEmptyError)
 		{
 			studioApp.m_pMainFrame->MessageBox(_T("В smr-файле не найдено имя модели"), _T("Ошибка открытия модели"), MB_OK | MB_ICONERROR);
