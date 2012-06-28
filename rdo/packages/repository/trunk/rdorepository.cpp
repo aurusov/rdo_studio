@@ -322,8 +322,8 @@ rbool RDOThreadRepository::openModel(CREF(tstring) modelFileName)
 			}
 			else
 			{
-				broadcastMessage(RT_REPOSITORY_MODEL_OPEN_ERROR, &m_projectName.m_fullFileName);
 				setName(_T(""));
+				broadcastMessage(RT_REPOSITORY_MODEL_OPEN_ERROR, const_cast<PTR(tstring)>(&modelFileName));
 			}
 		}
 	}
