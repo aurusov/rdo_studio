@@ -557,15 +557,7 @@ void RDOStudioApp::OnProjectReopen(UINT nID)
 
 	if (!model->openModel(m_reopenList[i]) && model->isPrevModelClosed())
 	{
-		tstring item = m_reopenList[i];
-		STL_FOR_ALL(m_reopenList, it)
-		{
-			if (*it == item)
-			{
-				m_reopenList.erase(it);
-				break;
-			}
-		}
+		m_reopenList.erase(m_reopenList.begin() + i);
 		updateReopenSubMenu();
 	}
 }
