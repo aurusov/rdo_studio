@@ -11,6 +11,7 @@
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <limits>
+#include <QtCore/qprocess.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/src/application.h"
@@ -530,10 +531,12 @@ void RDOStudioMainFrame::endProgress()
 
 void RDOStudioMainFrame::OnHelpContents()
 {
-	tstring filename = studioApp.getFullHelpFileName();
-	if ( filename.empty() ) return;
+	QProcess* assistant = studioApp.chkQtAssistantWindow();
+	if ( assistant->state() != assistant->Running ) return;
 
-	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );
+	QByteArray ba;
+	ba.append("setSource qthelp://language/doc/rdo_studio_rus/html/about.htm\n");
+	assistant->write(ba);
 }
 
 void RDOStudioMainFrame::OnModelRuntimeMaxSpeed()

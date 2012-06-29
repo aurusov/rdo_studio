@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtCore/qprocess.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/options.h"
 #include "app/rdo_studio_mfc/src/application.h"
@@ -2176,33 +2177,110 @@ int CALLBACK RDOStudioOptions::AddContextHelpProc(HWND hwnd, UINT message, LPARA
 
 void RDOStudioOptions::onHelpButton()
 {
-	tstring filename = studioApp.getFullHelpFileName();
-	if ( filename.empty() ) return;
+	QProcess* assistant = studioApp.chkQtAssistantWindow();
+	if ( assistant->state() != assistant->Running ) return;
+	QByteArray ba;
 
 	CPropertyPage* page = GetActivePage( );
 	if ( page == general ) {
-		filename += "::/html/work_options_general.htm";
+		ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_general.htm\n");
 	} else if ( page == editor ) {
-		filename += "::/html/work_options_editor.htm";
+		ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_editor.htm\n");
 	} else if ( page == tabs ) {
-		filename += "::/html/work_options_tabs.htm";
+		ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_tabs.htm\n");
 	} else if ( page == styles ) {
-		filename += "::/html/work_options_styles_and_color.htm";
+		ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm\n");
 	} else if ( page == plugins ) {
-		filename += "::/html/work_options.htm";
+		ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options.htm\n");
 	}
-	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );
+	assistant->write(ba);
 }
 
-BOOL RDOStudioOptions::OnHelpInfo(HELPINFO* pHelpInfo) 
+BOOL RDOStudioOptions::OnHelpInfo(PTR(HELPINFO) pHelpInfo) 
 {
-	tstring filename = studioApp.getFullHelpFileName();
-	if ( filename.empty() ) return TRUE;
-
-	if ( pHelpInfo->iContextType == HELPINFO_WINDOW )
-		return ::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_HELP_CONTEXT, pHelpInfo->dwContextId) != NULL;
-	return TRUE;
+	QProcess* assistant = studioApp.chkQtAssistantWindow();
+	if ( assistant->state() != assistant->Running ) return TRUE;
+	
+	QByteArray ba;
+	ba.append("setSource ");
+	ba.append(resolveKeyAndUrl(pHelpInfo->dwContextId).c_str());
+	ba.append("\n");
+	assistant->write(ba);
+	return FALSE;
 }
+
+tstring RDOStudioOptions::resolveKeyAndUrl (ruint helpInfo)
+{
+	if (m_keyAndUrl.size() == 0)
+		buildMap();
+	mapKeyAndUrl::iterator it = m_keyAndUrl.find(helpInfo);
+	if (it == m_keyAndUrl.end())
+		return "qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options.htm\n";
+	return (*it).second;
+}
+
+void RDOStudioOptions::buildMap()
+{
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x80980413,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_editor.htm#buffers"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x809803e9,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_editor.htm#clear_auto"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x80980414,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_editor.htm#clear_after"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x80980415,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_editor.htm#clear_after"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x80980416,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_editor.htm#clear_after"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x8098040f,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_editor.htm#complete"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x809803fe,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_editor.htm#full_nearest"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x809803ff,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_editor.htm#full_nearest"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x809803fd,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_editor.htm#use_autocomlete"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x80980411,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_editor.htm#margin"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x809803f0,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_editor.htm#margin_fold"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x809803ee,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_editor.htm#margin_bookmark"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x809803ec,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_editor.htm#margin_line_number"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x80a60418,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_general.htm#file_association"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x80a60443,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_general.htm#setup_association"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x80a60446,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_general.htm#check_association"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x80a60444,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_general.htm#open_last_project"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x80a60445,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_general.htm#show_full_name"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x809b03f2,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_tabs.htm#tab_size"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x809b0410,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_tabs.htm#tab_size"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x809b03f3,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_tabs.htm#indent_size"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x809b0412,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_tabs.htm#indent_size"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x809b03f6,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_tabs.htm#use_tabs"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x809b03f7,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_tabs.htm#tab_indents"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x809b03f9,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_tabs.htm#back_untab"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x809b03f8,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_tabs.htm#back_untab"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x809b03fa,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_tabs.htm#auto_indent"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x809903ea,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm#groups"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x809903f4,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm#theme"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x809903ef,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm#theme"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x80990400,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm#font"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x80990401,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm#font"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x80990409,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm#fore_back"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x80990407,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm#fore_back"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x80990405,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm#fore_back"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x8099040a,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm#fore_back"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x80990408,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm#fore_back"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x80990406,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm#fore_back"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x80990402,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm#b_i_u"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x80990403,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm#b_i_u"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x80990404,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm#b_i_u"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x809903fc,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm#word_wrap"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x809903fb,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm#horz_scroll"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x8099040e,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm#bookmark"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x8099040d,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm#bookmark"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x8099040c,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm#fold"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x8099040b,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm#fold"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x80990419,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm#vert_border"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x8099041a,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm#vert_border"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x8099041b,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm#horz_border"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x8099041c,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm#horz_border"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x8099041d,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm#chart_title_font_size"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x8099040f,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm#chart_title_font_size"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x8099041e,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm#chart_legend_font_size"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x80990410,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm#chart_legend_font_size"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x80990420,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm#chart_minimal_interval"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x8099041f,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm#chart_minimal_interval"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x809903f1,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm#preview_as"));
+	m_keyAndUrl.insert (std::pair<ruint,tstring>(0x809903f5,"qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options_styles_and_color.htm#preview_as"));
+	}
 
 void RDOStudioOptionsColorsStyles::OnCommentGroupCheck()
 {

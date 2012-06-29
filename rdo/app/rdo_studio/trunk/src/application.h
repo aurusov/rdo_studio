@@ -12,6 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <fstream>
+#include <QtCore/qprocess.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
 #include "ui/mfc_ctrls/rdolink.h"
@@ -72,9 +73,12 @@ public:
 	void           autoCloseByPlugin(PTR(RDOStudioPlugin) plugin);
 	rbool          isPluginAutoStart(PTR(RDOStudioPlugin) plugin) const;
 
-	static tstring getFullExtName();
-	static tstring getFullHelpFileName(tstring str = "RAO-studio.chm");
-	static rbool   shortToLongPath    (CREF(tstring) shortPath, REF(tstring) longPath);
+	static tstring getFullExtName      ();
+	tstring        getFullHelpFileName (tstring str = "RAO-help.qhc") const;
+	static rbool   shortToLongPath     (CREF(tstring) shortPath, REF(tstring) longPath);
+	tstring        chkHelpExist        (tstring fileName) const;
+	PTR(QProcess)  chkQtAssistantWindow();
+	PTR(QProcess)  runQtAssistantWindow() const;
 
 private:
 #ifdef RDO_MT
@@ -104,6 +108,7 @@ private:
 	tstring                                m_openModelName;
 	PluginNameList                         m_pluginStartNameList;
 	PluginNameList                         m_pluginExitNameList;
+	QProcess*                              m_pAssistant;
 
 	void setupFileAssociation();
 	void updateReopenSubMenu () const;

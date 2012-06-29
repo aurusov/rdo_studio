@@ -11,6 +11,7 @@
 #define _RDO_STUDIO_MFC_OPTIONS_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <map>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "ui/mfc_ctrls/rdocolorcombobox.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoredit.h"
@@ -402,15 +403,20 @@ private:
 
 	RDOStudioFrameOptionsCtrl      preview_frame;
 
+	typedef std::map<ruint,tstring> mapKeyAndUrl;
+	mapKeyAndUrl                   m_keyAndUrl;
+
+	tstring      resolveKeyAndUrl (ruint helpInfo);
+	void         buildMap         ();
+	void         onHelpButton();
+
 	void updateStyles();
 	void apply() const;
 	static int CALLBACK AddContextHelpProc(HWND hwnd, UINT message, LPARAM lParam);
-	void onHelpButton();
 
-private:
 	virtual BOOL ContinueModal();
 
-	afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
+	afx_msg BOOL OnHelpInfo(PTR(HELPINFO) pHelpInfo);
 	DECLARE_MESSAGE_MAP()
 
 public:

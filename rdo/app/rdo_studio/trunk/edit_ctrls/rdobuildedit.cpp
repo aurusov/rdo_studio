@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtCore/qprocess.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/edit_ctrls/rdobuildedit.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoredit.h"
@@ -160,8 +161,9 @@ void RDOBuildEdit::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
 
 void RDOBuildEdit::OnHelpKeyword()
 {
-	tstring filename = studioApp.getFullHelpFileName();
-	if ( filename.empty() ) return;
-	filename += "::/html/work_run.htm#output_build";
-	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL );
+	QProcess* assistant = studioApp.chkQtAssistantWindow();
+	if ( assistant->state() != assistant->Running ) return;
+	QByteArray ba;
+	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_run.htm#output_build\n");
+	assistant->write(ba);
 }

@@ -11,6 +11,7 @@
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <gdiplus.h>
+#include <QtCore/qprocess.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdofile.h"
 #include "kernel/rdothread.h"
@@ -736,17 +737,48 @@ tstring RDOStudioApp::getFullExtName()
 	return fileName;
 }
 
-tstring RDOStudioApp::getFullHelpFileName(tstring str)
+tstring RDOStudioApp::getFullHelpFileName(tstring str) const
 {
-	str.insert(0, rdo::extractFilePath(RDOStudioApp::getFullExtName()));
-	
-	if (!rdo::File::exist(str))
+	tstring strTemp = chkHelpExist(str);
+	if (                       strTemp.size() < 3) return _T("");
+	if (chkHelpExist ("assistant.exe").size() < 3) return _T("");
+
+	return strTemp;
+}
+
+tstring RDOStudioApp::chkHelpExist(tstring fileName) const
+{
+	fileName.insert(0, rdo::extractFilePath(RDOStudioApp::getFullExtName()));
+	if (!rdo::File::exist(fileName))
 	{
-		::MessageBox(NULL, rdo::format(ID_MSG_NO_HELP_FILE, str.c_str()).c_str(), NULL, MB_ICONEXCLAMATION | MB_OK);
+		::MessageBox(NULL, rdo::format(ID_MSG_NO_HELP_FILE, fileName.c_str()).c_str(), NULL, MB_ICONEXCLAMATION | MB_OK);
 		return _T("");
 	}
+	return fileName;
+}
 
-	return str;
+PTR(QProcess) RDOStudioApp::chkQtAssistantWindow()
+{
+	if (!m_pAssistant)
+	{
+		return m_pAssistant = runQtAssistantWindow();
+	}
+	else if (m_pAssistant->state() == m_pAssistant->Running)
+		return m_pAssistant;
+	else
+		return m_pAssistant = runQtAssistantWindow();
+}
+
+PTR(QProcess) RDOStudioApp::runQtAssistantWindow() const
+{
+		QProcess *process = new QProcess;
+		QStringList args;
+		args << QLatin1String("-collectionFile")
+			<< QLatin1String(getFullHelpFileName().c_str())
+			<< QLatin1String("-enableRemoteControl")
+			<< QLatin1String("-quiet");
+		process->start(QLatin1String("assistant"), args);
+		return process;
 }
 
 rbool RDOStudioApp::getFileAssociationSetup() const

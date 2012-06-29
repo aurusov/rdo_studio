@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtCore/qprocess.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoredit.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
@@ -919,8 +920,8 @@ void RDOEditorEdit::OnUpdateGotoPrev(CCmdUI* pCmdUI)
 
 void RDOEditorEdit::OnHelpKeyword()
 {
-	tstring filename = studioApp.getFullHelpFileName();
-	if ( filename.empty() ) return;
+	QProcess* assistant = studioApp.chkQtAssistantWindow();
+	if ( assistant->state() != assistant->Running ) return;
 
 	tstring keyword = getCurrentOrSelectedWord();
 	tstring s = getAllKW();
@@ -944,11 +945,9 @@ void RDOEditorEdit::OnHelpKeyword()
 		}
 	}
 
-	HH_AKLINK link;
-	::ZeroMemory( &link, sizeof( HH_AKLINK ) );
-	link.cbStruct     = sizeof( HH_AKLINK );
-	link.fIndexOnFail = TRUE;
-	link.pszKeywords  = keyword.c_str();
-
-	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_KEYWORD_LOOKUP, (DWORD)&link );
+	QByteArray ba;
+	ba.append("activateKeyword ");
+	ba.append(keyword.c_str());
+	ba.append("\n");
+	assistant->write(ba);
 }

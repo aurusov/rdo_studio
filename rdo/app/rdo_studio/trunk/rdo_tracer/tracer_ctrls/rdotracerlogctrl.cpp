@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtCore/qprocess.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracerlogctrl.h"
 #include "app/rdo_studio_mfc/src/application.h"
@@ -250,8 +251,8 @@ void RDOTracerLogCtrl::OnUpdateFind( CCmdUI* pCmdUI )
 
 void RDOTracerLogCtrl::OnHelpKeyword()
 {
-	tstring filename = studioApp.getFullHelpFileName();
-	if ( filename.empty() ) return;
+	QProcess* assistant = studioApp.chkQtAssistantWindow();
+	if ( assistant->state() != assistant->Running ) return;
 
 	tstring line;
 
@@ -274,14 +275,11 @@ void RDOTracerLogCtrl::OnHelpKeyword()
 		}
 	}
 
-
-	HH_AKLINK link;
-	::ZeroMemory( &link, sizeof( HH_AKLINK ) );
-	link.cbStruct     = sizeof( HH_AKLINK );
-	link.fIndexOnFail = TRUE;
-	link.pszKeywords  = keyword.c_str();
-
-	::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_KEYWORD_LOOKUP, (DWORD)&link );
+	QByteArray ba;
+	ba.append("activateKeyword ");
+	ba.append(keyword.c_str());
+	ba.append("\n");
+	assistant->write(ba);
 }
 
 void RDOTracerLogCtrl::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
