@@ -33,6 +33,7 @@
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_method.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_project.h"
 #include "thirdparty/win_registry/registry.h"
+#include "thirdparty/qt-solutions/qtwinmigrate/src/qmfcapp.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
@@ -205,6 +206,11 @@ RDOStudioApp::RDOStudioApp()
 
 RDOStudioApp::~RDOStudioApp()
 {}
+
+BOOL RDOStudioApp::Run()
+{
+	return QMfcApp::run(this);
+}
 
 BOOL RDOStudioApp::InitInstance()
 {
