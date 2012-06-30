@@ -1,0 +1,58 @@
+<HTML>
+<HEAD>
+<TITLE>Indexes tracing</TITLE>
+<LINK rel = "stylesheet" type = "text/css" href = "../styles.css">
+</HEAD>
+<BODY>
+	<DIV>
+		<H1>INDEXES TRACING</H1>
+		<P>An <B>index tracing</B> line has the following format:</P>
+		<PRE class="syntax">V <A class="syntax" href="#time">&lt;time&gt;</A> <A class="syntax" href="#pmv_num">&lt;index_number&gt;</A> <A class="syntax" href="#value">&lt;value&gt;</A></PRE>
+		<DL class="syntax">
+			<DT class="syntax"><A name="time"></A><I>time</I></DT>
+			<DD class="syntax">Field "time" contains the moment the index value changes written in real constant format.</DD>
+			<DT class="syntax"><A name="pmv_num"></A><I>index_number</I></DT>
+			<DD class="syntax">The index number is the number indicated for the indexes traced in section <FONT class="syntax">$Watching</FONT> of the <A href="../html/rdo_res_trc.htm#watching">tracing object</A>.</DD>
+			<DT class="syntax"><A name="value"></A><I>value</I></DT>
+			<DD class="syntax">Indexes are traced at the moment of changing the parameter values, the quantity of temporary resources, the logical expression value (for indexes of <FONT class="syntax">watch_state</FONT> kind), or at the moment the resource is eliminated (for indexes of <FONT class="syntax">watch_value</FONT> kind).
+			<P>The value depends on the index kind. Values are given below for indexes of every kind:</P>
+				<TABLE class="visible">
+					<TR valign="top">
+						<TH align="left" width="20%">Index kind</TH>
+						<TH align="left" width="80%">Value description</TH>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">watch_par</FONT></TD>
+						<TD class="visible" width="80%">Parameter's new value</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">watch_state</FONT></TD>
+						<TD class="visible" width="80%">Logical expression's new value</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">watch_quant</FONT></TD>
+						<TD class="visible" width="80%">Resource quantity new value</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">watch_value</FONT></TD>
+						<TD class="visible" width="80%">Arithmetic expression's value</TD>
+					</TR>
+				</TABLE>
+				<P>For indexes of <FONT class="syntax">get_value</FONT> kind there is no tracing.</P>
+			</DD>
+		</DL>
+		<H4>See Also</H4>
+		<P><A href="../html/rdo_res_trc.htm">Tracing object</A></P>
+		<P><A href="../html/rdo_res_trc_events.htm">Events tracing</A></P>
+		<P><A href="../html/rdo_res_trc_resourses.htm">Resources state tracing</A></P>
+		<P><A href="../html/rdo_res_trc_decisionpt.htm">Decision points tracing</A></P>
+	</DIV>
+	<A name="prev_section;../html/rdo_res_intro.htm;Simulation results">
+	<A name="next_section;;">
+	<A name="section_top;../html/rdo_res_trc.htm;Tracing object">
+	<A name="section;Tracing object;">
+	<A name="prev_topic;../html/rdo_res_trc_resourses.htm;Resources state tracing">
+	<A name="next_topic;../html/rdo_res_trc_decisionpt.htm;Decision points tracing">
+	<A name="title;RAO language help"><BR><SCRIPT src="../navbar.js"></SCRIPT>
+</BODY>
+</HTML>

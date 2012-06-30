@@ -1,0 +1,49 @@
+<HTML>
+<HEAD>
+<TITLE>ОПИСАНИЕ ТОЧКИ ПРИНЯТИЯ РЕШЕНИЙ ТИПА SOME</TITLE>
+<LINK rel = "stylesheet" type = "text/css" href = "../styles.css">
+<script type="text/javascript">
+function toggle_display(e)
+{
+    if (e.style.display == "none")
+        e.style.display = "";
+    else
+        e.style.display = "none";
+    return false;
+}
+</script>
+</HEAD>
+<BODY>
+<DIV>
+	<H1>ТОЧКА ПРИНЯТИЯ РЕШЕНИЙ ТИПА SOME</H1>
+		<P>Алгоритм обработки точек принятия решений типа some следующий: при каждом событии после изменения состояния системы и сбора статистической информации проверяются <A href="../html/rdo_obj_dpt.htm#init_cond"> предусловия точек принятия решений</A> в порядке их следования в объекте описания точек. При нахождении точки принятия решений, предусловие которой выполняется, запускается алгоритм обработки точки.</P>
+		<P>Описание точек принятия решений типа some имеет следующий формат:</P>
+		<PRE class="syntax">$Decision_point <A class="syntax" href="#dpt_some_pat">&lt;имя_точки&gt;</A> : some [ <A class="syntax" href="../html/rdo_res_trace_descr.htm#dpt_trace">&lt;признак_трассировки&gt;</A> ]
+$Condition <A class="syntax" href="../html/rdo_obj_dpt.htm#init_cond">&lt;условие_активизации_точки&gt;</A>
+$Activities <A class="syntax" href="../html/rdo_obj_dpt.htm">&lt;описание_активности&gt;</A> { &lt;описание_активности&gt; }
+$End</PRE>
+		<DT class="syntax"><A class="syntax" name="#some_act_desc"></A><I>описание активности:</I><DT>
+		<DD><PRE class="syntax"><A class="syntax" href="rdo_obj_dpt.htm#dpt_act_name">&lt;имя_активности&gt;</A> : <A class="syntax" href="#dpt_some_pat">&lt;имя_образца&gt;</A> [ <A class="syntax" href="rdo_obj_dpt.htm#dpt_act_key">&lt;код_клавиши&gt;</A> ]
+[ <A class="syntax" href="../html/rdo_obj_dpt.htm#dpt_act_params">&lt;значения_параметров_образца&gt;</A> ]</PRE>
+			<DT class="syntax"><A name="dpt_some_pat"></A><I>имя_образца</I></DT>
+			<P>При написании активности типа some допустимо использовать все существующие типы образцов.</P>
+		</DD>
+		<P>Для точек типа <FONT class="syntax">some</FONT> алгоритм проверяет <A href="../html/rdo_obj_dpt.htm#dpt_act_block_end">активности</A> в порядке их записи в точке принятия решений. Найдя первую активность, <A href="../html/rdo_obj_pat_body.htm#init_cond">предусловия</A> которой выполняются, он планирует соответствующее событие (событие начала действия или событие выполнения правила), после чего обработка этой и других точек завершается. Если же не найдено ни одной активности, для которой выполнены предусловия, анализируется следующая точка принятия решений.</P>
+		<A href="" onclick="return toggle_display(v1);"><H4>Примеры</H4></A>
+		<DIV style="display:none" id=v1>
+		<PRE class="samples">$Decision_point Точка_2 : some
+$Condition NoCheck
+$Activities
+  Операция_1 : Образец_14   25  *
+  Операция_2 : Образец_15   Значение_2
+  Операция_3 : Образец_16
+$End</PRE>
+		</DIV>
+		<H4>См. также</H4>
+		<P><A href="../html/rdo_dpt_search.htm">Точка принятия решений типа search</A></P>
+		<P><A href="../html/rdo_dpt_prior.htm">Точка принятия решений типа prior</A></P>
+		<P><A href="../html/rdo_obj_dpt.htm">Описание точек принятия решений в РДО</A></P>
+	</DIV>
+	<BR><SCRIPT src="../navbar.js"></SCRIPT>
+</BODY>
+</HTML>

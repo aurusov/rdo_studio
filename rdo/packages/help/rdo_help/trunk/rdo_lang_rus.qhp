@@ -1,0 +1,560 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<QtHelpProject version="1.0">
+	<namespace>language</namespace>
+	<virtualFolder>doc</virtualFolder>
+	<filterSection>
+		<toc>
+			<section title="Справка по языку РДО" ref="">
+				<section title="Введение" ref="rdo_lang_rus/html/rdo_intro.htm"/>
+				<section title="Основные понятия" ref="rdo_lang_rus/html/rdo_terms.htm"/>
+				<section title="Базовые конструкции языка" ref="rdo_lang_rus/html/rdo_base/rdo_base_intro.htm">
+					<section title="Алфавит" ref="rdo_lang_rus/html/rdo_base/rdo_base_alpha.htm"/>
+					<section title="Арифметические и логические выражения" ref="rdo_lang_rus/html/rdo_base/rdo_base_equations.htm"/>
+					<section title="Глобальные переменные и стандартные функции" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+					<section title="Лексемы и разделители" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_intro.htm">
+						<section title="Зарезервированные слова" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_res_words.htm"/>
+						<section title="Имена" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_names.htm"/>
+						<section title="Процедуры" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_procedures.htm"/>
+						<section title="Специальные символы" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_spesial_symbols.htm"/>
+						<section title="Строковые константы" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_string_const.htm"/>
+						<section title="Численные константы" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_numeric_const.htm"/>
+					</section>
+					<section title="Процедурное программирование" ref="rdo_lang_rus/html/rdo_base/rdo_base_proc_lang.htm">
+						<section title="Инструкции используемые в образцах" ref="rdo_lang_rus/html/rdo_base/rdo_base_instr.htm"/>
+					</section>
+					<section title="Ресурсы" ref="rdo_lang_rus/html/rdo_base/rdo_base_resources.htm">
+						<section title="Неопределенное значение параметра ресурса" ref="rdo_lang_rus/html/rdo_base/rdo_base_resources_undefined.htm"/>
+					</section>
+					<section title="Типы данных. Соотствие типов" ref="rdo_lang_rus/html/rdo_base/rdo_base_types.htm"/>
+					<section title="Типы ресурсов" ref="rdo_lang_rus/html/rdo_base/rdo_base_res_types.htm"/>
+				</section>
+				<section title="Конструкции языка" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_intro.htm">
+					<section title="Кадры анимации" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm.htm">
+						<section title="Элементы отображения" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm_elem.htm"/>
+					</section>
+					<section title="Константы" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_const_fun_sec.htm"/>
+					<section title="Образцы" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm">
+						<section title="Операция" ref="rdo_lang_rus/html/rdo_obj/rdo_pat_type/rdo_pat_type_opr.htm"/>
+						<section title="Продукционное правило" ref="rdo_lang_rus/html/rdo_obj/rdo_pat_type/rdo_pat_type_rule.htm"/>
+						<section title="Клавиатурная операция" ref="rdo_lang_rus/html/rdo_obj/rdo_pat_type/rdo_pat_type_keyboard.htm"/>
+						<section title="События" ref="rdo_lang_rus/html/rdo_obj/rdo_pat_type/rdo_pat_type_event.htm"/>
+					</section>
+					<section title="Объект описания показателей" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pmd.htm"/>
+					<section title="Объект прогона" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
+					<section title="Последовательности" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec.htm">
+						<section title="Гистограммное распределение" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_by_hist.htm"/>
+						<section title="Нормальное распределение" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_normal.htm"/>
+						<section title="Перечислимые значения" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_enum.htm"/>
+						<section title="Равноемерное распределение" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_uniform.htm"/>
+						<section title="Треугольное распределение" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_triang.htm"/>
+						<section title="Экспоненциальное распределение" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_exponen.htm"/>
+					</section>
+					<section title="Процессы обслуживания" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_proc.htm"/>
+					<section title="Точки принятия решений" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm">
+						<section title="Some" ref="rdo_lang_rus/html/rdo_dpt/rdo_dpt_some.htm"/>
+						<section title="Search" ref="rdo_lang_rus/html/rdo_dpt/rdo_dpt_search.htm"/>
+						<section title="Prior" ref="rdo_lang_rus/html/rdo_dpt/rdo_dpt_prior.htm"/>
+					</section>
+					<section title="Функции" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_fun.htm"/>
+				</section>
+				<section title="Результаты моделирования" ref="rdo_lang_rus/html/rdo_res/rdo_res_intro.htm">
+					<section title="Объект результатов" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
+					<section title="Объект трассировки" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc.htm">
+						<section title="Трассировка показателей" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_results.htm"/>
+						<section title="Трассировка событий" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_events.htm"/>
+						<section title="Трассировка состояния объектов РДО" ref="rdo_lang_rus/html/rdo_res/rdo_res_trace_descr.htm"/>
+						<section title="Трассировка состояния ресурсов" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_resourses.htm"/>
+						<section title="Трассировка точек принятия решений" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_decisionpt.htm"/>
+					</section>
+				</section>
+				<section title="Теория" ref="rdo_lang_rus/html/rdo_theory/rdo_theory.htm">
+					<section title="Последовательности" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_seq.htm">
+						<section title="База генератора" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_seq_base.htm"/>
+						<section title="Базовое распределение" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_seq_basedistribution.htm"/>
+						<section title="Обратная функция" ref="rdo_lang_rus/html/rdo_theory/rdo_theory_seq_inverse.htm"/>
+					</section>
+				</section>
+			</section>
+		</toc>
+		<keywords>
+			<keyword name="'" ref="rdo_lang_rus/html/rdo_base/rdo_base_alpha.htm"/>
+			<keyword name="'" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_string_const.htm"/>
+			<keyword name="-" ref="rdo_lang_rus/html/rdo_base/rdo_base_alpha.htm"/>
+			<keyword name="-" ref="rdo_lang_rus/html/rdo_base/rdo_base_equations.htm"/>
+			<keyword name="-" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_spesial_symbols.htm"/>
+			<keyword name="!" ref="rdo_lang_rus/html/rdo_base/rdo_base_equations.htm"/>
+			<keyword name="#" ref="rdo_lang_rus/html/rdo_base/rdo_base_alpha.htm"/>
+			<keyword name="#" ref="rdo_lang_rus/html/rdo_base/rdo_base_resources.htm"/>
+			<keyword name="$" ref="rdo_lang_rus/html/rdo_base/rdo_base_alpha.htm"/>
+			<keyword name="$Activities" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm"/>
+			<keyword name="$Back_picture" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm.htm"/>
+			<keyword name="$Body" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_fun.htm"/>
+			<keyword name="$Body" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec.htm"/>
+			<keyword name="$Body" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="$Changes" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc.htm"/>
+			<keyword name="$Changes" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
+			<keyword name="$Compare_tops" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm"/>
+			<keyword name="$Condition" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm"/>
+			<keyword name="$Constant" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_const_fun_sec.htm"/>
+			<keyword name="$Decision_point" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm"/>
+			<keyword name="$End" ref="rdo_lang_rus/html/rdo_base/rdo_base_res_types.htm"/>
+			<keyword name="$End" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_const_fun_sec.htm"/>
+			<keyword name="$End" ref="rdo_lang_rus/html/rdo_base/rdo_base_resources.htm"/>
+			<keyword name="$End" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_fun.htm"/>
+			<keyword name="$End" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec.htm"/>
+			<keyword name="$End" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="$End" ref="rdo_lang_rus/html/rdo_obj/rdo_pat_type/rdo_pat_type_event.htm"/>
+			<keyword name="$End" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm"/>
+			<keyword name="$End" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm.htm"/>
+			<keyword name="$End" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pmd.htm"/>
+			<keyword name="$Evaluate_by" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm"/>
+			<keyword name="$Frame" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm.htm"/>
+			<keyword name="$Function" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_fun.htm"/>
+			<keyword name="$Parameters" ref="rdo_lang_rus/html/rdo_base/rdo_base_res_types.htm"/>
+			<keyword name="$Parameters" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_fun.htm"/>
+			<keyword name="$Parameters" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="$Pattern" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="$Process" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_proc.htm"/>
+			<keyword name="$Relevant_resources" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="$Resource_type" ref="rdo_lang_rus/html/rdo_base/rdo_base_res_types.htm"/>
+			<keyword name="$Resources" ref="rdo_lang_rus/html/rdo_base/rdo_base_resources.htm"/>
+			<keyword name="$Result_values" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
+			<keyword name="$Results" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pmd.htm"/>
+			<keyword name="$Sequence" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec.htm"/>
+			<keyword name="$Status" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc.htm"/>
+			<keyword name="$Status" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
+			<keyword name="$Term_condition" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm"/>
+			<keyword name="$Time" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="$Tracing" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc.htm"/>
+			<keyword name="$Type" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_fun.htm"/>
+			<keyword name="$Type" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec.htm"/>
+			<keyword name="$Watching" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc.htm"/>
+			<keyword name="( )" ref="rdo_lang_rus/html/rdo_base/rdo_base_alpha.htm"/>
+			<keyword name="( )" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_spesial_symbols.htm"/>
+			<keyword name="*" ref="rdo_lang_rus/html/rdo_base/rdo_base_alpha.htm"/>
+			<keyword name="*" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_spesial_symbols.htm"/>
+			<keyword name="*" ref="rdo_lang_rus/html/rdo_base/rdo_base_equations.htm"/>
+			<keyword name="*" ref="rdo_lang_rus/html/rdo_base/rdo_base_resources.htm"/>
+			<keyword name="," ref="rdo_lang_rus/html/rdo_base/rdo_base_alpha.htm"/>
+			<keyword name="," ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_spesial_symbols.htm"/>
+			<keyword name="." ref="rdo_lang_rus/html/rdo_base/rdo_base_alpha.htm"/>
+			<keyword name=".." ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_spesial_symbols.htm"/>
+			<keyword name="/" ref="rdo_lang_rus/html/rdo_base/rdo_base_alpha.htm"/>
+			<keyword name="/" ref="rdo_lang_rus/html/rdo_base/rdo_base_equations.htm"/>
+			<keyword name="/" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_spesial_symbols.htm"/>
+			<keyword name=":" ref="rdo_lang_rus/html/rdo_base/rdo_base_alpha.htm"/>
+			<keyword name=":" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_spesial_symbols.htm"/>
+			<keyword name="[ ]" ref="rdo_lang_rus/html/rdo_base/rdo_base_alpha.htm"/>
+			<keyword name="[ ]" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_spesial_symbols.htm"/>
+			<keyword name="[ ]" ref="rdo_lang_rus/html/rdo_base/rdo_base_types.htm"/>
+			<keyword name="[ ]" ref="rdo_lang_rus/html/rdo_base/rdo_base_equations.htm"/>
+			<keyword name="\" ref="rdo_lang_rus/html/rdo_base/rdo_base_alpha.htm"/>
+			<keyword name="_" ref="rdo_lang_rus/html/rdo_base/rdo_base_alpha.htm"/>
+			<keyword name="{ }" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_intro.htm"/>
+			<keyword name="{ }" ref="rdo_lang_rus/html/rdo_base/rdo_base_alpha.htm"/>
+			<keyword name="~" ref="rdo_lang_rus/html/rdo_base/rdo_base_alpha.htm"/>
+			<keyword name="+" ref="rdo_lang_rus/html/rdo_base/rdo_base_equations.htm"/>
+			<keyword name="+" ref="rdo_lang_rus/html/rdo_base/rdo_base_alpha.htm"/>
+			<keyword name="+" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_spesial_symbols.htm"/>
+			<keyword name="&lt;" ref="rdo_lang_rus/html/rdo_base/rdo_base_alpha.htm"/>
+			<keyword name="&lt;" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_spesial_symbols.htm"/>
+			<keyword name="&lt;" ref="rdo_lang_rus/html/rdo_base/rdo_base_equations.htm"/>
+			<keyword name="&lt;=" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_spesial_symbols.htm"/>
+			<keyword name="&lt;=" ref="rdo_lang_rus/html/rdo_base/rdo_base_equations.htm"/>
+			<keyword name="&lt;&gt;" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_spesial_symbols.htm"/>
+			<keyword name="&lt;&gt;" ref="rdo_lang_rus/html/rdo_base/rdo_base_equations.htm"/>
+			<keyword name="=" ref="rdo_lang_rus/html/rdo_base/rdo_base_alpha.htm"/>
+			<keyword name="=" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_spesial_symbols.htm"/>
+			<keyword name="=" ref="rdo_lang_rus/html/rdo_base/rdo_base_equations.htm"/>
+			<keyword name="&gt;" ref="rdo_lang_rus/html/rdo_base/rdo_base_alpha.htm"/>
+			<keyword name="&gt;" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_spesial_symbols.htm"/>
+			<keyword name="&gt;" ref="rdo_lang_rus/html/rdo_base/rdo_base_equations.htm"/>
+			<keyword name="&gt;=" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_spesial_symbols.htm"/>
+			<keyword name="&gt;=" ref="rdo_lang_rus/html/rdo_base/rdo_base_equations.htm"/>
+			<keyword name="Abs" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="active" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm.htm"/>
+			<keyword name="ADVANCE" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_proc.htm"/>
+			<keyword name="AExpCalcCounter" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
+			<keyword name="after" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm"/>
+			<keyword name="algorithmic" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_fun.htm"/>
+			<keyword name="all" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_res_words.htm"/>
+			<keyword name="and" ref="rdo_lang_rus/html/rdo_base/rdo_base_equations.htm"/>
+			<keyword name="Animation" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
+			<keyword name="ArcCos" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="ArcSin" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="ArcTan" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="ASSIGN" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_proc.htm"/>
+			<keyword name="before" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm"/>
+			<keyword name="BExpCalcCounter" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
+			<keyword name="bitmap" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm_elem.htm"/>
+			<keyword name="Break_point" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
+			<keyword name="by_hist" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_by_hist.htm"/>
+			<keyword name="Calculate_if" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_fun.htm"/>
+			<keyword name="Choice" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="circle" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm_elem.htm"/>
+			<keyword name="Convert_begin" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="Convert_end" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="Convert_event" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="Convert_rule" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="Cos" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="Cotan" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="Create" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="DEPART" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_proc.htm"/>
+			<keyword name="DPS_C" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc.htm"/>
+			<keyword name="DPS_CO" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc.htm"/>
+			<keyword name="DPS_CO" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc.htm"/>
+			<keyword name="DPS_ME" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc.htm"/>
+			<keyword name="DPS_MM" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc.htm"/>
+			<keyword name="DPS_TG" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc.htm"/>
+			<keyword name="DPS_TI" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc.htm"/>
+			<keyword name="DPS_TM" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc.htm"/>
+			<keyword name="DPS_TO" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc.htm"/>
+			<keyword name="DPS_TT" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc.htm"/>
+			<keyword name="DPT" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm"/>
+			<keyword name="EB" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_events.htm"/>
+			<keyword name="EF" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_events.htm"/>
+			<keyword name="EI" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_events.htm"/>
+			<keyword name="ellipse" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm_elem.htm"/>
+			<keyword name="Empty" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="enumerative" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_enum.htm"/>
+			<keyword name="ER" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_events.htm"/>
+			<keyword name="Erase" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="ES" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_events.htm"/>
+			<keyword name="event" ref="rdo_lang_rus/html/rdo_obj/rdo_pat_type/rdo_pat_type_event.htm"/>
+			<keyword name="EventCount" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
+			<keyword name="Exist" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="Exp" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="exponential" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_exponen.htm"/>
+			<keyword name="FALSE" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
+			<keyword name="first" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="Floor" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="For_All" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="Frac" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="Frame_file" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
+			<keyword name="Frame_number" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
+			<keyword name="FRM" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm.htm"/>
+			<keyword name="from" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="FUN" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_const_fun_sec.htm"/>
+			<keyword name="FUN" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_fun.htm"/>
+			<keyword name="FUN" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec.htm"/>
+			<keyword name="GENERATE" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_proc.htm"/>
+			<keyword name="get_value" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pmd.htm"/>
+			<keyword name="IAbs" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="IMax" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="IMin" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="Int" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="integer" ref="rdo_lang_rus/html/rdo_base/rdo_base_types.htm"/>
+			<keyword name="IntPower" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="Keep" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="keyboard" ref="rdo_lang_rus/html/rdo_obj/rdo_pat_type/rdo_pat_type_keyboard.htm"/>
+			<keyword name="line" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm_elem.htm"/>
+			<keyword name="list" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_fun.htm"/>
+			<keyword name="Ln" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="Log10" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="Log2" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="LogN" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="Max" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="Min" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="Model_name" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
+			<keyword name="Model_name" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc.htm"/>
+			<keyword name="Model_name" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
+			<keyword name="Monitor" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
+			<keyword name="NO" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm"/>
+			<keyword name="NO_MORE_EVENTS" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc.htm"/>
+			<keyword name="NO_MORE_EVENTS" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
+			<keyword name="no_trace" ref="rdo_lang_rus/html/rdo_base/rdo_base_resources.htm"/>
+			<keyword name="no_trace" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="no_trace" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm"/>
+			<keyword name="no_trace" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pmd.htm"/>
+			<keyword name="NoChange" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="NoCheck" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="NoCheck" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="NoCheck" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pmd.htm"/>
+			<keyword name="NonExist" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="normal" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_normal.htm"/>
+			<keyword name="NORMAL_TERMINATION" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc.htm"/>
+			<keyword name="NORMAL_TERMINATION" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
+			<keyword name="NoShow" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
+			<keyword name="not" ref="rdo_lang_rus/html/rdo_base/rdo_base_equations.htm"/>
+			<keyword name="Not_Exist" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="Not_For_All" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="operation" ref="rdo_lang_rus/html/rdo_obj/rdo_pat_type/rdo_pat_type_opr.htm"/>
+			<keyword name="OperRuleCheckCounter" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
+			<keyword name="OprIev_file" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
+			<keyword name="OprIev_file" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc.htm"/>
+			<keyword name="OprIev_file" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
+			<keyword name="or" ref="rdo_lang_rus/html/rdo_base/rdo_base_equations.htm"/>
+			<keyword name="PAT" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="pattern" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="permanent" ref="rdo_lang_rus/html/rdo_base/rdo_base_res_types.htm"/>
+			<keyword name="PMD" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pmd.htm"/>
+			<keyword name="PMV" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
+			<keyword name="Power" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="prior" ref="rdo_lang_rus/html/rdo_dpt/rdo_dpt_prior.htm"/>
+			<keyword name="QUEUE" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_proc.htm"/>
+			<keyword name="r_rect" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm_elem.htm"/>
+			<keyword name="RC" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_resourses.htm"/>
+			<keyword name="RE" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_resourses.htm"/>
+			<keyword name="real" ref="rdo_lang_rus/html/rdo_base/rdo_base_types.htm"/>
+			<keyword name="rect" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm_elem.htm"/>
+			<keyword name="RELEASE" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_proc.htm"/>
+			<keyword name="Resource_file" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
+			<keyword name="Resource_file" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc.htm"/>
+			<keyword name="Resource_file" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
+			<keyword name="Results_file" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
+			<keyword name="Results_file" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc.htm"/>
+			<keyword name="Results_file" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
+			<keyword name="RK" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_resourses.htm"/>
+			<keyword name="Round" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="RSS" ref="rdo_lang_rus/html/rdo_base/rdo_base_resources.htm"/>
+			<keyword name="RTP" ref="rdo_lang_rus/html/rdo_base/rdo_base_res_types.htm"/>
+			<keyword name="rule" ref="rdo_lang_rus/html/rdo_obj/rdo_pat_type/rdo_pat_type_rule.htm"/>
+			<keyword name="Run_file" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc.htm"/>
+			<keyword name="Run_file" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
+			<keyword name="Run_StartTime" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
+			<keyword name="RUN_TIME_ERROR" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc.htm"/>
+			<keyword name="RUN_TIME_ERROR" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
+			<keyword name="s_bmp" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm_elem.htm"/>
+			<keyword name="SB" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_decisionpt.htm"/>
+			<keyword name="SD" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_decisionpt.htm"/>
+			<keyword name="search" ref="rdo_lang_rus/html/rdo_dpt/rdo_dpt_search.htm"/>
+			<keyword name="Seconds" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="SEF" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_decisionpt.htm"/>
+			<keyword name="SEIZE" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_proc.htm"/>
+			<keyword name="Select" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="SEM" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_decisionpt.htm"/>
+			<keyword name="SEN" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_decisionpt.htm"/>
+			<keyword name="SES" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_decisionpt.htm"/>
+			<keyword name="set" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="SEU" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_decisionpt.htm"/>
+			<keyword name="Show" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm.htm"/>
+			<keyword name="Show_if" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm.htm"/>
+			<keyword name="Show_mode" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
+			<keyword name="Show_rate" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
+			<keyword name="Sin" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="Size" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="SMR" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
+			<keyword name="SO" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_decisionpt.htm"/>
+			<keyword name="some" ref="rdo_lang_rus/html/rdo_dpt/rdo_dpt_some.htm"/>
+			<keyword name="Sqrt" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="SRC" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_decisionpt.htm"/>
+			<keyword name="SRE" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_decisionpt.htm"/>
+			<keyword name="SRK" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_decisionpt.htm"/>
+			<keyword name="Statistic_file" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
+			<keyword name="STD" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_decisionpt.htm"/>
+			<keyword name="STN" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_decisionpt.htm"/>
+			<keyword name="STR" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_decisionpt.htm"/>
+			<keyword name="such_as" ref="rdo_lang_rus/html/rdo_base/rdo_base_types.htm"/>
+			<keyword name="table" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_fun.htm"/>
+			<keyword name="Tan" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="temporary" ref="rdo_lang_rus/html/rdo_base/rdo_base_res_types.htm"/>
+			<keyword name="Term_now" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_proc.htm"/>
+			<keyword name="TERMINATE" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_proc.htm"/>
+			<keyword name="Terminate_if" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
+			<keyword name="text" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm_elem.htm"/>
+			<keyword name="Time_now" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="trace" ref="rdo_lang_rus/html/rdo_base/rdo_base_resources.htm"/>
+			<keyword name="trace" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="trace" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pmd.htm"/>
+			<keyword name="trace_all" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm"/>
+			<keyword name="Trace_EndTime" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
+			<keyword name="Trace_file" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
+			<keyword name="Trace_StartTime" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
+			<keyword name="trace_stat" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm"/>
+			<keyword name="trace_tops" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm"/>
+			<keyword name="transparent" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm_elem.htm"/>
+			<keyword name="trc" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc.htm"/>
+			<keyword name="trc" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_results.htm"/>
+			<keyword name="trc" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_events.htm"/>
+			<keyword name="trc" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_resourses.htm"/>
+			<keyword name="trc" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_decisionpt.htm"/>
+			<keyword name="triang" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm_elem.htm"/>
+			<keyword name="triangular" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_triang.htm"/>
+			<keyword name="TRUE" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
+			<keyword name="uniform" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_uniform.htm"/>
+			<keyword name="USER_BREAK" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc.htm"/>
+			<keyword name="USER_BREAK" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
+			<keyword name="V" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_results.htm"/>
+			<keyword name="value" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm"/>
+			<keyword name="watch_par" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pmd.htm"/>
+			<keyword name="watch_quant" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pmd.htm"/>
+			<keyword name="watch_state" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pmd.htm"/>
+			<keyword name="watch_value" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pmd.htm"/>
+			<keyword name="with_max" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="with_min" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="YES" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm"/>
+			<keyword name="активная область" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm.htm"/>
+			<keyword name="активность" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm"/>
+			<keyword name="алгоритмическая функция" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_fun.htm"/>
+			<keyword name="алфавит" ref="rdo_lang_rus/html/rdo_base/rdo_base_alpha.htm"/>
+			<keyword name="арифметические выражения" ref="rdo_lang_rus/html/rdo_base/rdo_base_equations.htm"/>
+			<keyword name="арифметические операции" ref="rdo_lang_rus/html/rdo_base/rdo_base_equations.htm"/>
+			<keyword name="арифметические типы" ref="rdo_lang_rus/html/rdo_base/rdo_base_equations.htm"/>
+			<keyword name="база генератора" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec.htm"/>
+			<keyword name="блок активностей" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm"/>
+			<keyword name="вещественный тип" ref="rdo_lang_rus/html/rdo_base/rdo_base_types.htm"/>
+			<keyword name="вид ресурсов" ref="rdo_lang_rus/html/rdo_base/rdo_base_res_types.htm"/>
+			<keyword name="выражение времени" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="выражения арифметические" ref="rdo_lang_rus/html/rdo_base/rdo_base_equations.htm"/>
+			<keyword name="выражения логические" ref="rdo_lang_rus/html/rdo_base/rdo_base_equations.htm"/>
+			<keyword name="гистограмное" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_by_hist.htm"/>
+			<keyword name="глобальные переменные" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="закон" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec.htm"/>
+			<keyword name="закон нормальное распределение" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_normal.htm"/>
+			<keyword name="закон равномерное распределение" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_uniform.htm"/>
+			<keyword name="закон треугольное распределение" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_triang.htm"/>
+			<keyword name="закон экспоненциальное распределение" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_exponen.htm"/>
+			<keyword name="зарезервированные слова" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_res_words.htm"/>
+			<keyword name="значение по умолчанию" ref="rdo_lang_rus/html/rdo_base/rdo_base_res_types.htm"/>
+			<keyword name="ИИ" ref="rdo_lang_rus/html/rdo_intro.htm"/>
+			<keyword name="ИМ" ref="rdo_lang_rus/html/rdo_intro.htm"/>
+			<keyword name="имена" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_names.htm"/>
+			<keyword name="имитационное моделирование" ref="rdo_lang_rus/html/rdo_intro.htm"/>
+			<keyword name="интеллектуальное ИМ" ref="rdo_lang_rus/html/rdo_intro.htm"/>
+			<keyword name="информация о поиске на графе" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_decisionpt.htm"/>
+			<keyword name="информация о событии" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_events.htm"/>
+			<keyword name="искусственный интеллект" ref="rdo_lang_rus/html/rdo_intro.htm"/>
+			<keyword name="исходные данные" ref="rdo_lang_rus/html/rdo_terms.htm"/>
+			<keyword name="кадры анимации" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm.htm"/>
+			<keyword name="клавиатурная операция" ref="rdo_lang_rus/html/rdo_obj/rdo_pat_type/rdo_pat_type_keyboard.htm"/>
+			<keyword name="комментарий" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_intro.htm"/>
+			<keyword name="конвертор" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="константы" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_string_const.htm"/>
+			<keyword name="константы" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_numeric_const.htm"/>
+			<keyword name="константы" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_const_fun_sec.htm"/>
+			<keyword name="лексема" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_intro.htm"/>
+			<keyword name="логические выражения" ref="rdo_lang_rus/html/rdo_base/rdo_base_equations.htm"/>
+			<keyword name="множество отображения" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm.htm"/>
+			<keyword name="модель" ref="rdo_lang_rus/html/rdo_terms.htm"/>
+			<keyword name="модель:минимальный состав" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_intro.htm"/>
+			<keyword name="начальные значения" ref="rdo_lang_rus/html/rdo_base/rdo_base_resources.htm"/>
+			<keyword name="новое значение базы генератора" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
+			<keyword name="новое значение констант" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
+			<keyword name="новое значение параметра ресурса" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
+			<keyword name="нормальное распределение" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec/rdo_obj_sec_normal.htm"/>
+			<keyword name="образцы операций" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="обращение к последовательности" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec.htm"/>
+			<keyword name="обращение к функции" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_fun.htm"/>
+			<keyword name="объект" ref="rdo_lang_rus/html/rdo_terms.htm"/>
+			<keyword name="объект кадры анимации" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm.htm"/>
+			<keyword name="объект константы, функции и последовательности" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_const_fun_sec.htm"/>
+			<keyword name="объект образцы операций" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="объект прогон" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
+			<keyword name="объект результаты" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
+			<keyword name="объект ресурсы" ref="rdo_lang_rus/html/rdo_base/rdo_base_resources.htm"/>
+			<keyword name="объект типы ресурсов" ref="rdo_lang_rus/html/rdo_base/rdo_base_res_types.htm"/>
+			<keyword name="объект точки принятия решений" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm"/>
+			<keyword name="объект трассировка" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc.htm"/>
+			<keyword name="объект требуемая статистика" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pmd.htm"/>
+			<keyword name="окончание поиска" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_decisionpt.htm"/>
+			<keyword name="операнды" ref="rdo_lang_rus/html/rdo_base/rdo_base_equations.htm"/>
+			<keyword name="операции" ref="rdo_lang_rus/html/rdo_obj/rdo_pat_type/rdo_pat_type_opr.htm"/>
+			<keyword name="операции" ref="rdo_lang_rus/html/rdo_base/rdo_base_equations.htm"/>
+			<keyword name="операция" ref="rdo_lang_rus/html/rdo_obj/rdo_pat_type/rdo_pat_type_opr.htm"/>
+			<keyword name="описание константы" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_const_fun_sec.htm"/>
+			<keyword name="описание процессов обслужывания" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_proc.htm"/>
+			<keyword name="параметр образца" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="параметр ресурса" ref="rdo_lang_rus/html/rdo_base/rdo_base_res_types.htm"/>
+			<keyword name="перечислимые значения" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_enum.htm"/>
+			<keyword name="перечислимый тип" ref="rdo_lang_rus/html/rdo_base/rdo_base_types.htm"/>
+			<keyword name="показатели" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pmd.htm"/>
+			<keyword name="показатели" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
+			<keyword name="порожденная вершина" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_decisionpt.htm"/>
+			<keyword name="правило записи" ref="rdo_lang_rus/html/rdo_base/rdo_base_intro.htm"/>
+			<keyword name="прогон" ref="rdo_lang_rus/html/rdo_terms.htm"/>
+			<keyword name="прогон: объект" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
+			<keyword name="продукция" ref="rdo_lang_rus/html/rdo_obj/rdo_pat_type/rdo_pat_type_rule.htm"/>
+			<keyword name="простое имя" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_names.htm"/>
+			<keyword name="процесс обслужывания" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_proc.htm"/>
+			<keyword name="равномерное распределение" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_uniform.htm"/>
+			<keyword name="разделитель" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_intro.htm"/>
+			<keyword name="раскрываемая вершина" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_decisionpt.htm"/>
+			<keyword name="РДО" ref="rdo_lang_rus/html/rdo_intro.htm"/>
+			<keyword name="результаты" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
+			<keyword name="результирующие статистики" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
+			<keyword name="релевантные ресурсы" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="ресурсы" ref="rdo_lang_rus/html/rdo_base/rdo_base_resources.htm"/>
+			<keyword name="СДС" ref="rdo_lang_rus/html/rdo_intro.htm"/>
+			<keyword name="сложная дискретная система" ref="rdo_lang_rus/html/rdo_intro.htm"/>
+			<keyword name="служебная информация" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
+			<keyword name="событие" ref="rdo_lang_rus/html/rdo_obj/rdo_pat_type/rdo_pat_type_event.htm"/>
+			<keyword name="соответствие типов" ref="rdo_lang_rus/html/rdo_base/rdo_base_types.htm"/>
+			<keyword name="состав ИМ" ref="rdo_lang_rus/html/rdo_terms.htm"/>
+			<keyword name="состав ИМ минимальный" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_intro.htm"/>
+			<keyword name="составное имя" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_names.htm"/>
+			<keyword name="специальные символы" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_spesial_symbols.htm"/>
+			<keyword name="специальные символы" ref="rdo_lang_rus/html/rdo_base/rdo_base_alpha.htm"/>
+			<keyword name="список" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_fun.htm"/>
+			<keyword name="список изменений" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc.htm"/>
+			<keyword name="список изменений" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
+			<keyword name="способ выбора" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="ссылка" ref="rdo_lang_rus/html/rdo_base/rdo_base_types.htm"/>
+			<keyword name="стандартные функции" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="статистика" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pmd.htm"/>
+			<keyword name="статистика по поиску на графе" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc.htm"/>
+			<keyword name="статус конвертора" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="статус окончания моделирования" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc.htm"/>
+			<keyword name="статус окончания моделирования" ref="rdo_lang_rus/html/rdo_res/rdo_res_pmv.htm"/>
+			<keyword name="стоимость применения правила" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm"/>
+			<keyword name="строковые константы" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_string_const.htm"/>
+			<keyword name="таблица" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_fun.htm"/>
+			<keyword name="тело образца" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="тело последовательности" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec.htm"/>
+			<keyword name="тело функции" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_fun.htm"/>
+			<keyword name="терминальное условие" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm"/>
+			<keyword name="тип" ref="rdo_lang_rus/html/rdo_base/rdo_base_types.htm"/>
+			<keyword name="тип" ref="rdo_lang_rus/html/rdo_base/rdo_base_res_types.htm"/>
+			<keyword name="тип" ref="rdo_lang_rus/html/rdo_base/rdo_base_equations.htm"/>
+			<keyword name="тип образца" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
+			<keyword name="тип последовательности" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec.htm"/>
+			<keyword name="тип события" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_events.htm"/>
+			<keyword name="тип точки" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm"/>
+			<keyword name="тип функции" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_fun.htm"/>
+			<keyword name="тип функции:арифметического выражения" ref="rdo_lang_rus/html/rdo_base/rdo_base_equations.htm"/>
+			<keyword name="тип функции:вещественный" ref="rdo_lang_rus/html/rdo_base/rdo_base_types.htm"/>
+			<keyword name="тип функции:данных" ref="rdo_lang_rus/html/rdo_base/rdo_base_types.htm"/>
+			<keyword name="тип функции:диапазон" ref="rdo_lang_rus/html/rdo_base/rdo_base_types.htm"/>
+			<keyword name="тип функции:перечислимый" ref="rdo_lang_rus/html/rdo_base/rdo_base_types.htm"/>
+			<keyword name="тип функции:ресурсов" ref="rdo_lang_rus/html/rdo_base/rdo_base_res_types.htm"/>
+			<keyword name="тип функции:соответствие типов" ref="rdo_lang_rus/html/rdo_base/rdo_base_types.htm"/>
+			<keyword name="тип функции:ссылка" ref="rdo_lang_rus/html/rdo_base/rdo_base_types.htm"/>
+			<keyword name="тип функции:целый" ref="rdo_lang_rus/html/rdo_base/rdo_base_types.htm"/>
+			<keyword name="типы ресурсов" ref="rdo_lang_rus/html/rdo_base/rdo_base_res_types.htm"/>
+			<keyword name="точки останова" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
+			<keyword name="точки принятия решений" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm"/>
+			<keyword name="трассировка" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc.htm"/>
+			<keyword name="трассировка" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_results.htm"/>
+			<keyword name="трассировка" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_events.htm"/>
+			<keyword name="трассировка" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_resourses.htm"/>
+			<keyword name="трассировка" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_decisionpt.htm"/>
+			<keyword name="требуемая статистика" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pmd.htm"/>
+			<keyword name="треугольное распределение" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_triang.htm"/>
+			<keyword name="условие активизации точки" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_dpt.htm"/>
+			<keyword name="условие окончания прогона" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
+			<keyword name="условие показа кадра" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm.htm"/>
+			<keyword name="фоновая картинка" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm.htm"/>
+			<keyword name="фраза" ref="rdo_lang_rus/html/rdo_base/rdo_base_intro.htm"/>
+			<keyword name="функции" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
+			<keyword name="функции" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_fun.htm"/>
+			<keyword name="целый тип" ref="rdo_lang_rus/html/rdo_base/rdo_base_types.htm"/>
+			<keyword name="численные константы" ref="rdo_lang_rus/html/rdo_lex_div/rdo_lex_div_numeric_const.htm"/>
+			<keyword name="экспоненциальное распределение" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_sec/rdo_obj_sec_exponen.htm"/>
+			<keyword name="элемент" ref="rdo_lang_rus/html/rdo_base/rdo_base_intro.htm"/>
+			<keyword name="элементы отображения" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm.htm"/>
+		</keywords>
+		<files>
+			<file>rdo_lang_rus/html/rdo_base/*</file>
+			<file>rdo_lang_rus/html/rdo_dpt/*</file>
+			<file>rdo_lang_rus/html/rdo_lex_div/*</file>
+			<file>rdo_lang_rus/html/rdo_obj/*</file>
+			<file>rdo_lang_rus/html/rdo_obj/rdo_obj_sec/*</file>
+			<file>rdo_lang_rus/html/rdo_obj/rdo_pat_type/*</file>
+			<file>rdo_lang_rus/html/rdo_res/*</file>
+			<file>rdo_lang_rus/html/rdo_theory/*</file>
+			<file>rdo_lang_rus/html/*</file>
+			<file>rdo_lang_rus/images/*</file>
+			<file>shared/styles/styles.css</file>
+			<file>shared/scripts/navbar.js</file>
+		</files>
+	</filterSection>
+</QtHelpProject>

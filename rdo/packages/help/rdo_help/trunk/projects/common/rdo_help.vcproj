@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="9,00"
+	Name="rdo_help"
+	ProjectGUID="{267B709F-6B99-4F25-8FB5-BF8A9DB6073E}"
+	RootNamespace="rdo_help"
+	TargetFrameworkVersion="196613"
+	>
+	<Platforms>
+		<Platform
+			Name="Win32"
+		/>
+	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
+	<Configurations>
+		<Configuration
+			Name="debug|Win32"
+			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
+			ConfigurationType="10"
+			CharacterSet="2"
+			BuildLogFile="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				CommandLine=""
+			/>
+		</Configuration>
+		<Configuration
+			Name="release|Win32"
+			OutputDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)"
+			ConfigurationType="10"
+			CharacterSet="2"
+			WholeProgramOptimization="0"
+			BuildLogFile="$(ProjectDir)bin\$(PlatformName)\$(ConfigurationName)\BuildLog.htm"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				CommandLine=""
+			/>
+		</Configuration>
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<Filter
+			Name=".qt.help.projects"
+			>
+			<File
+				RelativePath=".\..\..\rdo_lang_rus.qhp"
+				>
+			</File>
+			<File
+				RelativePath=".\..\..\rdo_studio_rus.qhp"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name=".qt.binary"
+			>
+			<File
+				RelativePath=".\rdo_help_cbs\assistant.exe.txt"
+				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\rdo_help_cbs\QtCLucene4.dll.txt"
+				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\rdo_help_cbs\QtCore4.dll.txt"
+				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\rdo_help_cbs\QtGui4.dll.txt"
+				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\rdo_help_cbs\QtHelp4.dll.txt"
+				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\rdo_help_cbs\QtNetwork4.dll.txt"
+				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\rdo_help_cbs\QtSql4.dll.txt"
+				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\rdo_help_cbs\QtWebKit4.dll.txt"
+				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputName)"
+						CommandLine="copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<Filter
+				Name="sqldrivers"
+				>
+				<File
+					RelativePath=".\rdo_help_cbs\sqldrivers\qsqlite4.dll.txt"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="copy $(InputName)"
+							CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\sqldrivers&quot; mkdir &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\sqldrivers&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\sqldrivers\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\sqldrivers\$(InputName)&quot; &gt; nul&#x0D;&#x0A;"
+							Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\sqldrivers\$(InputName)&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="copy $(InputName)"
+							CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\sqldrivers&quot; mkdir &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\sqldrivers&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\sqldrivers\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\sqldrivers\$(InputName)&quot; &gt; nul&#x0D;&#x0A;"
+							Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\sqldrivers\$(InputName)&quot;"
+						/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+		</Filter>
+		<File
+			RelativePath=".\..\..\RAO-help-collection.qhcp"
+			>
+			<FileConfiguration
+				Name="debug|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="generate help files"
+					CommandLine="set QT_PLUGIN_PATH=%QTDIR%\plugins&#x0D;&#x0A;&quot;$(QTDIR)\bin\qcollectiongenerator.exe&quot; &quot;$(InputPath)&quot; -o .\..\..\RAO-help.qhc&#x0D;&#x0A;echo copy RAO-help.qhc&#x0D;&#x0A;copy &quot;$(InputDir)\RAO-help.qhc&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-help.qhc&quot; &gt; nul&#x0D;&#x0A;echo copy rdo_lang_rus.qch&#x0D;&#x0A;copy &quot;$(InputDir)\rdo_lang_rus.qch&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\rdo_lang_rus.qch&quot; &gt; nul&#x0D;&#x0A;echo copy rdo_studio_rus.qch&#x0D;&#x0A;copy &quot;$(InputDir)\rdo_studio_rus.qch&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\rdo_studio_rus.qch&quot; &gt; nul&#x0D;&#x0A;"
+					Outputs=".\..\..\RAO-help.qhc;.\..\..\rdo_lang_rus.qch;.\..\..\rdo_studio_rus.qch;&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-help.qhc&quot;;&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\rdo_lang_rus.qch&quot;;&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\rdo_studio_rus.qch&quot;"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="release|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="generate help files"
+					CommandLine="set QT_PLUGIN_PATH=%QTDIR%\plugins&#x0D;&#x0A;&quot;$(QTDIR)\bin\qcollectiongenerator.exe&quot; &quot;$(InputPath)&quot; -o .\..\..\RAO-help.qhc&#x0D;&#x0A;echo copy RAO-help.qhc&#x0D;&#x0A;copy &quot;$(InputDir)\RAO-help.qhc&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-help.qhc&quot; &gt; nul&#x0D;&#x0A;echo copy rdo_lang_rus.qch&#x0D;&#x0A;copy &quot;$(InputDir)\rdo_lang_rus.qch&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\rdo_lang_rus.qch&quot; &gt; nul&#x0D;&#x0A;echo copy rdo_studio_rus.qch&#x0D;&#x0A;copy &quot;$(InputDir)\rdo_studio_rus.qch&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\rdo_studio_rus.qch&quot; &gt; nul&#x0D;&#x0A;"
+					Outputs=".\..\..\RAO-help.qhc;.\..\..\rdo_lang_rus.qch;.\..\..\rdo_studio_rus.qch;&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-help.qhc&quot;;&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\rdo_lang_rus.qch&quot;;&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\rdo_studio_rus.qch&quot;"
+				/>
+			</FileConfiguration>
+		</File>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

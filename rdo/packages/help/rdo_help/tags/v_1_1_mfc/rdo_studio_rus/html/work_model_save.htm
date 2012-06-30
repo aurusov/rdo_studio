@@ -1,0 +1,22 @@
+<HTML>
+<HEAD>
+<TITLE>Сохранение модели</TITLE>
+<LINK rel = "stylesheet" type = "text/css" href = "../styles.css">
+</HEAD>
+<BODY>
+	<DIV>
+		<H1>СОХРАНЕНИЕ МОДЕЛИ</H1>
+		<P><B>Сохранить</B> <A href="ms-its:RAO-language.chm::/html/rdo_terms.htm#model">модель</A> можно путем выбора <A href="../html/work_menu_file.htm#file_save">пункта меню</A> <FONT class="syntax">Файл/Сохранить</FONT>, нажав комбинацию клавиш <FONT class="syntax">Ctrl+S</FONT> или с помощью соответствующей кнопки на панели инструментов проекта - <IMG align="absmiddle" src="../images/file_save.gif">. Команда <FONT class="syntax">Файл/Сохранить&nbsp;всё</FONT> производит полностью аналогичные действия.</P>
+		<P>Существует возможность сохранения модели под другим именем. Для этого необходимо выбрать пункт <A href="../html/work_menu_file.htm#file_saveas">меню</A> <FONT class="syntax">Файл/Сохранить&nbsp;как</FONT>. При этом будет выдано стандартное диалоговое окно WINDOWS для сохранения файла, где пользователю предлагается ввести новое имя файлов модели (файла прогона с расширением <FONT class="syntax">*.smr</FONT>):</P>
+		<P class="image"><IMG src="../images/model_save.png"></P>
+		<A name="save_smr"></A><P>При записи модели под другим именем фактически записывается с новым именем только файл (объект) прогона (<FONT class="syntax">*.smr</FONT>). Чтобы изменить имена других файлов модели, необходимо:</P>
+		<LI>Для файлов с расширением <FONT class="syntax">*.pat</FONT>, <FONT class="syntax">*.rss</FONT>, <FONT class="syntax">*.rtp</FONT>, <FONT class="syntax">*.opr</FONT>, <FONT class="syntax">*.frm</FONT>, <FONT class="syntax">*.fun</FONT>, <FONT class="syntax">*.dpt</FONT> и <FONT class="syntax">*.pmd</FONT> указать новые значения в объекте прогона на закладке SMR (<A href="ms-its:RAO-language.chm::/html/rdo_obj_smr.htm">см. подробнее</A>) и записать модель командой <FONT class="syntax">Файл/Сохранить</FONT>. Если в именах файлов будут допущены ошибки, то может возникнуть <A href="../html/work_model_open.htm#open_error">ошибка открытия</A> модели.
+		<LI>Для файлов с расширением <FONT class="syntax">*.pmv</FONT> (результаты моделирования) и <FONT class="syntax">*.trc</FONT> (трассировка) так же можно указать новые значения в объекте прогона на закладке SMR (<A href="ms-its:RAO-language.chm::/html/rdo_obj_smr.htm">см. подробнее</A>) параметрам <FONT class="syntax">Results_file</FONT> и <FONT class="syntax">Trace_file</FONT> соответственно, но сформированными под новыми именами они будут после очередного прогона, а не в момент записи модели.
+		<H4>См. также</H4>
+		<P><A href="../html/work_model_open.htm#open_error">Ошибка открытия</A></P>
+		<P><A href="ms-its:RAO-language.chm::/html/rdo_obj_smr.htm">Описание объекта прогона</A></P>
+		<P><A href="../html/work_menu_file.htm">Меню Файл</A></P>
+	</DIV>
+	<SCRIPT src="../footer_raostudio.js"></SCRIPT>
+</BODY>
+</HTML>

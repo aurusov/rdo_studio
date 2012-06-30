@@ -1,0 +1,182 @@
+<HTML>
+<HEAD>
+<TITLE>Results object</TITLE>
+<LINK rel = "stylesheet" type = "text/css" href = "../styles.css">
+</HEAD>
+<BODY>
+	<DIV>
+		<H1>RESULTS OBJECT</H1>
+		<P>RAO simulator creates <B>results object</B> (with extension <FONT class="syntax">.pmv</FONT>) if during a run there is an <A href="../html/rdo_obj_pmd.htm">object describing the indexes</A> (performance measures) required. It has the following format:</P>
+		<PRE class="syntax">Results_file   = <A class="syntax" href="#res_obj_name">&lt;results_object_name&gt;</A>.pmv <A class="syntax" href="#creation_date">&lt;creation_date&gt;</A>
+Run_file       = <A class="syntax" href="#smr_name">&lt;run_name&gt;</A>.smr
+Model_name     = <A class="syntax" href="#model_name">&lt;model_name&gt;</A>
+Resource_file  = <A class="syntax" href="#res_name">&lt;resources_object_name&gt;</A>.rss
+OprIev_file    = <A class="syntax" href="#opr_name">&lt;operations_object_name&gt;</A>.opr
+
+$Changes
+  <A class="syntax" href="#changes">&lt;list_of_changes&gt;</A>
+
+$Status = <A class="syntax" href="#end_status">&lt;run_termination_status&gt;</A>
+$Result_values &lt;beginning_time_of_statistic_collection&gt;
+  &lt;ending_time_of_statistic_collection&gt;
+  <A class="syntax" href="#calc_time">&lt;calculation_time&gt;</A> <A class="syntax" href="#service_info">&lt;service_information&gt;</A>
+
+  <A class="syntax" href="#result_stat">&lt;resulting_statistics&gt;</A></PRE>
+		<DL class="syntax">
+			<DT class="syntax"><A name="res_obj_name"></A><I>results_object_name</I></DT>
+			<DD class="syntax">The name of this results object.</DD>
+			<DT class="syntax"><A name="creation_date"></A><I>creation_date</I></DT>
+			<DD class="syntax">Creation date of this results object.</DD>
+			<DT class="syntax"><A name="smr_name"></A><I>run_name</I></DT>
+			<DD class="syntax">Run name is the name of the <A href="../html/rdo_obj_smr.htm">run object</A> used in this run.</DD>
+			<DT class="syntax"><A name="model_name"></A><A name="res_name"></A><A name="opr_name"></A><I>model_name, resources_object_name, operations_object_name</I></DT>
+			<DD class="syntax">The names of the model, the <A href="../html/rdo_base_resources.htm">resource object</A> and the <A href="../html/rdo_obj_opr.htm">operation object</A> are determined in the <A href="../html/rdo_obj_smr.htm">run object</A>.</DD>
+			<DT class="syntax"><A name="changes"></A><I>list_of_changes</I></DT>
+			<DD class="syntax">A list of changes contains the names and new values of <A href="../html/rdo_obj_smr.htm#const_new">symbol constants</A>, <A href="../html/rdo_obj_smr.htm#res_param_new">resource parameters</A> and <A href="../html/rdo_obj_smr.htm#seed_new">sequence generator bases</A> determined in the run object.</DD>
+			<DT class="syntax"><A name="end_status"></A><A name="end_status_norm"></A><A name="end_status_nme"></A><A name="end_status_ub"></A><A name="end_status_rte"></A><I>run_termination_status</I></DT>
+			<DD class="syntax">The status of simulation run termination describes the termination reason, it may be one of the following:</DD>
+				<TABLE class="visible">
+					<TR valign="top">
+						<TH align="left" width="20%">Status</TH>
+						<TH align="left" width="80%">Description</TH>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">NORMAL_TERMINATION</FONT></TD>
+						<TD class="visible" width="80%">The simulation is terminated normally when the termination condition determined for the run is satisfied</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">NO_MORE_EVENTS</FONT></TD>
+						<TD class="visible" width="80%">There are no more events in the model</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">USER_BREAK</FONT></TD>
+						<TD class="visible" width="80%">The simulation is terminated because the user has intervened with one of possible commands for stopping RAO simulator</TD>
+					</TR>
+					<TR valign="top">
+						<TD class="visible" NOWRAP width="20%"><FONT class="syntax">RUN_TIME_ERROR</FONT></TD>
+						<TD class="visible" width="80%">The simulation is terminated because of a run-time error (information about the error is displayed in RAO simulator dialogue window)</TD>
+					</TR>
+				</TABLE>
+			</DD>
+			<DT class="syntax"><A name="calc_time"></A><I>calculation_time</I></DT>
+			<DD class="syntax">Calculation time is physical duration of the run, measured in seconds.</DD>
+			<DT class="syntax"><A name="service_info"></A><I>service_information</I></DT>
+			<DD class="syntax">Service information contains the data characterising the simulation model's complexity and the computer's speed, including the number of events during the calculations <FONT class="syntax">EventCount</FONT>, the number of checking up the <A href="../html/rdo_obj_pat.htm#init_cond">pattern preconditions</A> <FONT class="syntax">OperRuleCheckCounter</FONT>, how many times <A href="../html/rdo_base_equations.htm#arithm_expr">arithmetic</A> <FONT class="syntax">AExpCalcCounter</FONT> and <A href="../html/rdo_base_equations.htm#log_expr">logical</A> <FONT class="syntax">BExpCalcCounter</FONT> expressions have been calculated, and all those values per one hour of model time and per one second of computer operation time.</DD>
+			<DT class="syntax"><A name="result_stat"></A><I>resulting_statistics</I></DT>
+			<DD class="syntax">Statistics on each index is printed in a separate line according to the order the indexes are described in the <A href="../html/rdo_obj_pmd.htm">performance measures object</A>. The line format depends on the index kind.
+				<P>Formats for all kinds of indexes are given below.</P>
+				<P><BR>An index of the kind <FONT class="syntax">watch_state</FONT> has the following format:</P>
+				<PRE class="syntax"><A class="syntax" href="#ws_pmv_name">&lt;index_name&gt;</A> <A class="syntax" href="#ws_cur_val">&lt;current_value&gt;</A> <A class="syntax" href="#ws_watch_num">&lt;number_of_observations&gt;</A>
+<A class="syntax" href="#ws_ave_val">&lt;average_value&gt;</A> <A class="syntax" href="#ws_sum_squares">&lt;sum_of_squares&gt;</A> <A class="syntax" href="#ws_min_val">&lt;minimum_value&gt;</A>
+<A class="syntax" href="#ws_max_val">&lt;maximum_value&gt;</A></PRE>
+				<DL class="syntax">
+					<DT class="syntax"><A name="ws_pmv_name"></A><I>index_name</I></DT>
+					<DD class="syntax">Index name is the name of this index in the <A href="../html/rdo_obj_pmd.htm">performance measures object</A>.</DD>
+					<DT class="syntax"><A name="ws_cur_val"></A><I>current_value</I></DT>
+					<DD class="syntax">Current value is the value of <A href="../html/rdo_obj_pmd.htm#ws">logical expression</A> for given index at the moment the results object is put out (<FONT class="syntax">TRUE</FONT> or <FONT class="syntax">FALSE</FONT>).</DD>
+					<DT class="syntax"><A name="ws_watch_num"></A><I>number_of_observations</I></DT>
+					<DD class="syntax">The number of observations is how many intervals were there during which the system's state satisfied the conditions (how many times the <A href="../html/rdo_obj_pmd.htm#ws">logical expression</A> changed its value from TRUE to FALSE).</DD>
+					<DT class="syntax"><A name="ws_ave_val"></A><I>average_value</I></DT>
+					<DD class="syntax">The average value is the ratio of the period during which the system's state satisfied the <A href="../html/rdo_obj_pmd.htm#ws">condition</A> to the whole period of collecting the index values.</DD>
+					<DT class="syntax"><A name="ws_sum_squares"></A><I>sum_of_squares</I></DT>
+					<DD class="syntax">The sum of squares is the sum of interval duration squares for intervals during which the system's state satisfied the <A href="../html/rdo_obj_pmd.htm#ws">condition</A>.</DD>
+					<DT class="syntax"><A name="ws_min_val"></A><A name="ws_max_val"></A><I>minimum_value, maximum_value</I></DT>
+					<DD class="syntax">The minimum and the maximum values are the minimum and the maximum duration of an interval while the index values were collected.</DD>
+					<DL class="syntax">
+						<DD class="syntax"><H4>Examples</H4><PRE class="samples">Index_1   FALSE  110  0.1099  1.1000  0.1000  0.1000</PRE></DD>
+					</DL>
+				</DL>
+				<P><BR>An index of the kind <FONT class="syntax">watch_par</FONT> has the following format:</P>
+				<PRE class="syntax"><A class="syntax" href="#wp_pmv_name">&lt;index_name&gt;</A> <A class="syntax" href="#wp_cur_val">&lt;current_value&gt;</A> <A class="syntax" href="#wp_watch_num">&lt;number_of_observations&gt;</A>
+<A class="syntax" href="#wp_ave_val">&lt;average_value&gt;</A> <A class="syntax" href="#wp_sum_squares">&lt;sum_of_squares&gt;</A> <A class="syntax" href="#wp_min_val">&lt;minimum_value&gt;</A>
+<A class="syntax" href="#wp_max_val">&lt;maximum_value&gt;</A></PRE>
+				<P>Each <B>observation</B> is a product of interval duration when the parameter's value was constant and the parameter's value.</P>
+				<DL class="syntax">
+					<DT class="syntax"><A name="wp_pmv_name"></A><I>index_name</I></DT>
+					<DD class="syntax">Index name is the name of this index in the <A href="../html/rdo_obj_pmd.htm">performance measures object</A>.</DD>
+					<DT class="syntax"><A name="wp_cur_val"></A><I>current_value</I></DT>
+					<DD class="syntax">Current value is a parameter's value at the moment the results object is put out.</DD>
+					<DT class="syntax"><A name="wp_watch_num"></A><I>number_of_observations</I></DT>
+					<DD class="syntax">The number of observations is how many times the parameter's value changed.</DD>
+					<DT class="syntax"><A name="wp_ave_val"></A><I>average_value</I></DT>
+					<DD class="syntax">The average value is calculated as the sum of observations divided by the total length of observations interval, i.e. it is the parameter's mean value during the period.</DD>
+					<DT class="syntax"><A name="wp_sum_squares"></A><I>sum_of_squares</I></DT>
+					<DD class="syntax">The sum of squares is the sum of observations squares.</DD>
+					<DT class="syntax"><A name="wp_min_val"></A><A name="wp_max_val"></A><I>minimum_value, maximum_value</I></DT>
+					<DD class="syntax">The minimum and the maximum values relate to the parameter's values during the observation period.</DD>
+					<DL class="syntax">
+						<DD class="syntax"><H4>Examples</H4><PRE class="samples">Index_3   2  38  1.4507  8615.0102  0  2</PRE></DD>
+					</DL>
+				</DL>
+				<P><BR>An index of the kind <FONT class="syntax">watch_quant</FONT> has the following format:</P>
+				<PRE class="syntax"><A class="syntax" href="#wq_pmv_name">&lt;index_name&gt;</A> <A class="syntax" href="#wq_cur_val">&lt;current_value&gt;</A> <A class="syntax" href="#wq_watch_num">&lt;number_of_observations&gt;</A>
+<A class="syntax" href="#wq_ave_val">&lt;average_value&gt;</A> <A class="syntax" href="#wq_sum_squares">&lt;sum_of_squares&gt;</A> <A class="syntax" href="#wq_min_val">&lt;minimum_value&gt;</A>
+<A class="syntax" href="#wq_max_val">&lt;maximum_value&gt;</A></PRE>
+				<P>Each <B>observation</B> is a product of the interval duration when the quantity of resources did not change and the quantity of resources.</P>
+				<DL class="syntax">
+					<DT class="syntax"><A name="wq_pmv_name"></A><I>index_name</I></DT>
+					<DD class="syntax">Index name is the name of this index in the <A href="../html/rdo_obj_pmd.htm">performance measures object</A>.</DD>
+					<DT class="syntax"><A name="wq_cur_val"></A><I>current_value</I></DT>
+					<DD class="syntax">The current value is how many resources were there at the moment of putting out the results object.</DD>
+					<DT class="syntax"><A name="wq_watch_num"></A><I>number_of_observations</I></DT>
+					<DD class="syntax">The number of observations is how many times the quantity of resources changed.</DD>
+					<DT class="syntax"><A name="wq_ave_val"></A><I>average_value</I></DT>
+					<DD class="syntax">The average value is calculated as the sum of observations divided by the observation period duration, i.e. it is the mean quantity of resources for that period.</DD>
+					<DT class="syntax"><A name="wq_sum_squares"></A><I>sum_of_squares</I></DT>
+					<DD class="syntax">The sum of squares is the sum of observation squares.</DD>
+					<DT class="syntax"><A name="wq_min_val"></A><A name="wq_max_val"></A><I>minimum_value, maximum_value</I></DT>
+					<DD class="syntax">The minimum and the maximum values are those for the quantity of resources during the observation period.</DD>
+					<DL class="syntax">
+						<DD class="syntax"><H4>Examples</H4><PRE class="samples">Index_5   9  159  6.2971  4004.3572  1  17</PRE></DD>
+					</DL>
+				</DL>
+				<P><BR>An index of the kind <FONT class="syntax">watch_value</FONT> has the following format:</P>
+				<PRE class="syntax"><A class="syntax" href="#wv_pmv_name">&lt;index_name&gt;</A> <A class="syntax" href="#wv_watch_num">&lt;number_of_observations&gt;</A> <A class="syntax" href="#wv_ave_val">&lt;average_value&gt;</A>
+<A class="syntax" href="#wv_std_dev">&lt;mean_square_deviation&gt;</A> <A class="syntax" href="#wv_ave_dev">&lt;mean_deviation&gt;</A>
+<A class="syntax" href="#wv_min_val">&lt;minimum_value&gt;</A> <A class="syntax" href="#wv_max_val">&lt;maximum_value&gt;</A></PRE>
+				<P>Each <B>observation</B> is the value of <A href="../html/rdo_obj_pmd.htm#wv_arith_expr">arithmetic expression</A> at the moment a temporary resource is eliminated.</P>
+				<DL class="syntax">
+					<DT class="syntax"><A name="wv_pmv_name"></A><I>index_name</I></DT>
+					<DD class="syntax">Index name is the name of this index in the <A href="../html/rdo_obj_pmd.htm">performance measures object</A>.</DD>
+					<DT class="syntax"><A name="wv_watch_num"></A><I>number_of_observations</I></DT>
+					<DD class="syntax">The number of observations is how many temporary resources were eliminated, their state satisfying the <A href="../html/rdo_obj_pmd.htm#wv_log_expr">condition</A>.</DD>
+					<DT class="syntax"><A name="wv_ave_val"></A><I>average_value</I></DT>
+					<DD class="syntax">The average value is calculated as the sum of observations divided by the number of observations.</DD>
+					<DT class="syntax"><A name="wv_std_dev"></A><I>mean_square_deviation</I></DT>
+					<DD class="syntax">The mean square deviation is calculated according to the known formula as square root of the sum of squares of differences between each observation and the mean value, divided by the number of observations diminished by 1.</DD>
+					<DT class="syntax"><A name="wv_ave_dev"></A><I>mean_deviation</I></DT>
+					<DD class="syntax">The mean deviation is calculated as the mean square deviation divided by square root of the number of observations.</DD>
+					<DT class="syntax"><A name="wv_min_val"></A><A name="wv_max_val"></A><I>minimum_value, maximum_value</I></DT>
+					<DD class="syntax">The minimum and the maximum values are those of the <A href="../html/rdo_obj_pmd.htm#wv_arith_expr">arithmetic expression</A> during the observations period.</DD>
+					<DL class="syntax">
+						<DD class="syntax"><H4>Examples</H4><PRE class="samples">Index_7   105  5.5664  2.7038  0.2639  1.6760  13.2216</PRE></DD>
+					</DL>
+				</DL>
+				<P><BR>An index of the kind <FONT class="syntax">get_value</FONT> has the following format:</P>
+				<PRE class="syntax"><A class="syntax" href="#gw_pmv_name">&lt;index_name&gt;</A> <A class="syntax" href="#gw_value">&lt;value&gt;</A></PRE>
+				<DL class="syntax">
+					<DT class="syntax"><A name="gw_pmv_name"></A><I>index_name</I></DT>
+					<DD class="syntax">Index name is the name of this index in the <A href="../html/rdo_obj_pmd.htm">performance measures object</A>.</DD>
+					<DT class="syntax"><A name="gw_value"></A><I>value</I></DT>
+					<DD class="syntax">The value is the <A href="../html/rdo_obj_pmd.htm#gw">arithmetic expression's</A> value at the moment of putting out the object results.</DD>
+					<DL class="syntax">
+						<DD class="syntax"><H4>Examples</H4><PRE class="samples">Index_9  700.6459</PRE></DD>
+					</DL>
+				</DL>
+			</DD>
+		</DL>
+		<H4>See Also</H4>
+		<P><A href="../html/rdo_obj_pmd.htm">Performance measures description object</A></P>
+		<P><A href="../html/rdo_obj_smr.htm">Run object</A></P>
+		<P><A href="../html/rdo_res_trc.htm">Tracing object</A></P>
+	</DIV>
+	<BR>
+	<A name="prev_section;../html/rdo_obj_const_fun_sec.htm;Symbol constants, functions and sequences description">
+	<A name="next_section;../html/rdo_res_trc.htm;Tracing object">
+	<A name="section_top;../html/rdo_res_intro.htm;Simulation results">
+	<A name="section;Simulation results;">
+	<A name="prev_topic;../html/rdo_res_intro.htm;Simulation results">
+	<A name="next_topic;../html/rdo_res_trc.htm;Tracing object">
+	<A name="title;RAO language help"><BR><SCRIPT src="../navbar.js"></SCRIPT>
+</BODY>
+</HTML>

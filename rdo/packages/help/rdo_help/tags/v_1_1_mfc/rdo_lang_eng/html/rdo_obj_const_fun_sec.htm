@@ -1,0 +1,60 @@
+<HTML>
+<HEAD>
+<TITLE>Symbol constants, functions and sequences description</TITLE>
+<LINK rel = "stylesheet" type = "text/css" href = "../styles.css">
+</HEAD>
+<BODY>
+	<DIV>
+		<H1>SYMBOL CONSTANTS, FUNCTIONS AND SEQUENCES DESCRIPTION</H1>
+		<P>To make the program more expressive and convenient to read, symbol constants and functions may be determined in the language.</P>
+		<P>They are described in a separate <A href="../html/rdo_terms.htm#object">object</A> (with extension <FONT class="syntax">.fun</FONT>) that determines symbol constants, functions and sequences. The object's format is as follows:</P>
+		<PRE class="syntax">$Constant
+<A class="syntax" href="#const_desc">&lt;constant_description&gt;</A> { &lt;constant_description&gt; }
+$End
+{ <A class="syntax" href="#fun_sec_desc">&lt;function_or_sequence_description&gt;</A> }</PRE>
+		<P>All the constants are described first, then functions and sequences in arbitrary order.</P>
+		<DL class="syntax">
+			<DT class="syntax"><A name="const_desc"></A><I>constant_description</I></DT>
+			<DD class="syntax">The constants are described with the following format:<BR>
+				<PRE class="syntax"><A class="syntax" href="#const_name">&lt;constant_name&gt;</A> : <A class="syntax" href="#const_type">&lt;constant_type&gt;</A> = <A class="syntax" href="#def_val">&lt;constant_value&gt;</A></PRE>
+				<DL class="syntax">
+					<DT class="syntax"><A name="const_name"></A><I>constant_name</I></DT>
+					<DD class="syntax">A constant name is a <A href="../html/rdo_lex_div_names.htm">simple name</A>. Names should be different for different constants, they should not coincide with <A href="../html/rdo_lex_div_res_words.htm">reserved words</A>, <A href="../html/rdo_base_res_types.htm">resource type</A> names, <A href="../html/rdo_base_res_types.htm#param_desc">parameter names</A> or <A href="../html/rdo_base_resources.htm#res_name">resource names</A>.</DD>
+					<DT class="syntax"><A name="const_type"></A><I>constant_type</I></DT>
+					<DD class="syntax">Constant type is one of the <A href="../html/rdo_base_types.htm">data types</A> allowed in the language. When describing constant types, references are possible on <A href="../html/rdo_base_res_types.htm#param_type">resource parameter types</A> and the types of constants described before.</DD>
+					<DT class="syntax"><A name="def_val"></A><I>constant_value</I></DT>
+					<DD class="syntax">The value of a symbol constant is determined by an integer or real <A href="../html/rdo_lex_div_numeric_const.htm">constant</A>, or by a value name according to the constant's type.</DD>
+					<H4>Examples</H4>
+					<PRE class="samples">$Constant
+  Constant_1 : integer = 10
+  Constant_2 : real = 3.14159
+  Constant_3 : integer [0..1000] = 0
+  Constant_4 : real [0.0..20.0] = 10.0
+  Constant_5 : (Free, Busy, Loading, Unloading) = Free
+  Constant_6 : such_as Type_1.Parameter_1 = 20
+  Constant_7 : such_as Constant_4 = 6.72
+  Constant_8 : such_as Type_1.Parameter_5 = Busy
+  Constant_9 : (Value_1, Value_2, Value_3,
+                 Value_4, Value_5) = Value_1
+$End</PRE>
+					<H4>Remarks</H4>
+					<P class="remarks">Before a run, symbol constant value may be changed in the run object. If a range of possible value is specified when describing a constant, then it is checked up whether the new value is within that range.</P>
+				</DL>
+			</DD>
+			<DT class="syntax"><A name="fun_sec_desc"></A><I>function_or_sequence_description</I></DT>
+			<DD class="syntax"><A href="../html/rdo_obj_fun.htm">Functions descriptions</A> and (or) <A href="../html/rdo_obj_sec.htm">sequences descriptions</A> follow constants descriptions.</DD>
+		</DL>
+		<H4>See Also</H4>
+		<P><A href="../html/rdo_base_types.htm">Data types. Types correspondence</A></P>
+		<P><A href="../html/rdo_obj_fun.htm">Function syntax</A></P>
+		<P><A href="../html/rdo_obj_sec.htm">Sequence syntax</A></P>
+	</DIV>
+	<A name="prev_section;../html/rdo_obj_intro.htm;Certain constructions of the language">
+	<A name="next_section;../html/rdo_res_intro.htm;Simulation results">
+	<A name="section_top;../html/rdo_obj_intro.htm;Certain constructions of the language">
+	<A name="section;Symbol constants, functions and sequences description;">
+	<A name="prev_topic;../html/rdo_obj_intro.htm;Certain constructions of the language">
+	<A name="next_topic;../html/rdo_obj_fun.htm;Function syntax">
+	<A name="title;RAO language help"><BR><SCRIPT src="../navbar.js"></SCRIPT>
+</BODY>
+</HTML>
