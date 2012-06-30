@@ -144,7 +144,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pugixml", "..\..\..\thirdpa
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QtSolutions_MFCMigrationFramework-head", "..\..\..\thirdparty\qt-solutions\qtwinmigrate\buildlib\QtSolutions_MFCMigrationFramework-head.vcproj", "{DB8E188F-B492-3826-B679-00ACC9944E2D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_help", "..\help\rdo_help.vcproj", "{267B709F-6B99-4F25-8FB5-BF8A9DB6073E}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_help", "..\help\projects\common\rdo_help.vcproj", "{267B709F-6B99-4F25-8FB5-BF8A9DB6073E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
