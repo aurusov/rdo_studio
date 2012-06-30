@@ -150,7 +150,7 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Source Files"
+			Name=".source"
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
@@ -159,93 +159,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_method_proc2rdo.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_create.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_create_dlg1.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_create_dlg2.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_decide.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_decide_dlg1.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_process.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_process_dlg1.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_process_dlg2.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_resource.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_resource_dlg.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_terminate.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_terminate_dlg1.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_tool_bar_block.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\proc2rdo\stdafx.cpp"
-				>
-				<FileConfiguration
-					Name="debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-			</File>
-		</Filter>
-		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
-			>
-			<File
 				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_generation_type.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_method_proc2rdo.cpp"
 				>
 			</File>
 			<File
@@ -253,68 +171,16 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_create.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_create_dlg1.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_create_dlg2.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_decide.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_decide_dlg1.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_process.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_process_dlg1.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_process_dlg2.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_resource.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_resource_dlg.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_terminate.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_terminate_dlg1.h"
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_tool_bar_block.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_tool_bar_block.h"
 				>
 			</File>
-			<File
-				RelativePath="..\..\rdo_process\proc2rdo\stdafx.h"
-				>
-			</File>
 		</Filter>
 		<Filter
-			Name="Resource Files"
+			Name=".resource"
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
@@ -344,6 +210,146 @@
 			</File>
 			<File
 				RelativePath="..\..\rdo_process\proc2rdo\res\method_small.xpm"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name=".shape"
+			>
+			<File
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_create.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_create.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_decide.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_decide.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_process.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_process.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_resource.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_resource.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_terminate.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_terminate.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name=".dlg"
+			>
+			<File
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_create_dlg1.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_create_dlg1.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_create_dlg2.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_create_dlg2.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_decide_dlg1.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_decide_dlg1.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_process_dlg1.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_process_dlg1.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_process_dlg2.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_process_dlg2.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_resource_dlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_resource_dlg.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_terminate_dlg1.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_terminate_dlg1.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name=".pch"
+			>
+			<File
+				RelativePath="..\..\rdo_process\proc2rdo\stdafx.cpp"
+				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\rdo_process\proc2rdo\stdafx.h"
 				>
 			</File>
 		</Filter>

@@ -146,7 +146,7 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Source Files"
+			Name=".source"
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
@@ -155,7 +155,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_math.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_matrix.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_matrix.h"
 				>
 			</File>
 			<File
@@ -163,7 +171,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_pixmap.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_point.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_point.h"
 				>
 			</File>
 			<File
@@ -171,7 +187,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_polyline.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_rect.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_rect.h"
 				>
 			</File>
 			<File
@@ -179,9 +203,45 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_string.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_xml.cpp"
 				>
 			</File>
+			<File
+				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_xml.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name=".clonebitmap"
+			>
+			<File
+				RelativePath="..\..\rdo_process\rp_misc\clonebitmap\CloneBitmap.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_process\rp_misc\clonebitmap\CloneBitmap.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name=".mctranspblt"
+			>
+			<File
+				RelativePath="..\..\rdo_process\rp_misc\mctranspblt\McTransparentBlit.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_process\rp_misc\mctranspblt\McTransparentBlit.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name=".pch"
+			>
 			<File
 				RelativePath="..\..\rdo_process\rp_misc\stdafx.cpp"
 				>
@@ -202,70 +262,8 @@
 					/>
 				</FileConfiguration>
 			</File>
-		</Filter>
-		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
-			>
-			<File
-				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_math.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_matrix.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_pixmap.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_point.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_polyline.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_rect.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_string.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_xml.h"
-				>
-			</File>
 			<File
 				RelativePath="..\..\rdo_process\rp_misc\stdafx.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="clonebitmap"
-			>
-			<File
-				RelativePath="..\..\rdo_process\rp_misc\clonebitmap\CloneBitmap.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\rp_misc\clonebitmap\CloneBitmap.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="mctranspblt"
-			>
-			<File
-				RelativePath="..\..\rdo_process\rp_misc\mctranspblt\McTransparentBlit.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\rp_misc\mctranspblt\McTransparentBlit.h"
 				>
 			</File>
 		</Filter>
