@@ -158,23 +158,23 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\algorithm.def"
+				RelativePath="..\..\rdo_process\algorithm\algorithm.def"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_method_algorithm.cpp"
+				RelativePath="..\..\rdo_process\algorithm\rdoprocess_method_algorithm.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape_action.cpp"
+				RelativePath="..\..\rdo_process\algorithm\rdoprocess_shape_action.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape_if.cpp"
+				RelativePath="..\..\rdo_process\algorithm\rdoprocess_shape_if.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\stdafx.cpp"
+				RelativePath="..\..\rdo_process\algorithm\stdafx.cpp"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -200,19 +200,19 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\rdoprocess_method_algorithm.h"
+				RelativePath="..\..\rdo_process\algorithm\rdoprocess_method_algorithm.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape_action.h"
+				RelativePath="..\..\rdo_process\algorithm\rdoprocess_shape_action.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape_if.h"
+				RelativePath="..\..\rdo_process\algorithm\rdoprocess_shape_if.h"
 				>
 			</File>
 			<File
-				RelativePath=".\stdafx.h"
+				RelativePath="..\..\rdo_process\algorithm\stdafx.h"
 				>
 			</File>
 		</Filter>
@@ -222,11 +222,11 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
-				RelativePath=".\res\block_action.xpm"
+				RelativePath="..\..\rdo_process\algorithm\res\block_action.xpm"
 				>
 			</File>
 			<File
-				RelativePath=".\res\block_if.xpm"
+				RelativePath="..\..\rdo_process\algorithm\res\block_if.xpm"
 				>
 			</File>
 		</Filter>

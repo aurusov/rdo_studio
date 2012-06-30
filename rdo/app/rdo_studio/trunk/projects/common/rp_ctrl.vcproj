@@ -147,11 +147,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\rdoprocess_toolbar.cpp"
+				RelativePath="..\..\rdo_process\rp_ctrl\rdoprocess_toolbar.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\stdafx.cpp"
+				RelativePath="..\..\rdo_process\rp_ctrl\stdafx.cpp"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -177,11 +177,11 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\rdoprocess_toolbar.h"
+				RelativePath="..\..\rdo_process\rp_ctrl\rdoprocess_toolbar.h"
 				>
 			</File>
 			<File
-				RelativePath=".\stdafx.h"
+				RelativePath="..\..\rdo_process\rp_ctrl\stdafx.h"
 				>
 			</File>
 		</Filter>

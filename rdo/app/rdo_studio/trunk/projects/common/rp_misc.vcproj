@@ -151,39 +151,39 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\rdoprocess_math.cpp"
+				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_math.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_matrix.cpp"
+				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_matrix.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_pixmap.cpp"
+				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_pixmap.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_point.cpp"
+				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_point.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_polyline.cpp"
+				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_polyline.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_rect.cpp"
+				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_rect.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_string.cpp"
+				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_string.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_xml.cpp"
+				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_xml.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\stdafx.cpp"
+				RelativePath="..\..\rdo_process\rp_misc\stdafx.cpp"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -209,39 +209,39 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\rdoprocess_math.h"
+				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_math.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_matrix.h"
+				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_matrix.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_pixmap.h"
+				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_pixmap.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_point.h"
+				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_point.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_polyline.h"
+				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_polyline.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_rect.h"
+				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_rect.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_string.h"
+				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_string.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_xml.h"
+				RelativePath="..\..\rdo_process\rp_misc\rdoprocess_xml.h"
 				>
 			</File>
 			<File
-				RelativePath=".\stdafx.h"
+				RelativePath="..\..\rdo_process\rp_misc\stdafx.h"
 				>
 			</File>
 		</Filter>
@@ -249,11 +249,11 @@
 			Name="clonebitmap"
 			>
 			<File
-				RelativePath=".\clonebitmap\CloneBitmap.cpp"
+				RelativePath="..\..\rdo_process\rp_misc\clonebitmap\CloneBitmap.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\clonebitmap\CloneBitmap.h"
+				RelativePath="..\..\rdo_process\rp_misc\clonebitmap\CloneBitmap.h"
 				>
 			</File>
 		</Filter>
@@ -261,11 +261,11 @@
 			Name="mctranspblt"
 			>
 			<File
-				RelativePath=".\mctranspblt\McTransparentBlit.cpp"
+				RelativePath="..\..\rdo_process\rp_misc\mctranspblt\McTransparentBlit.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\mctranspblt\McTransparentBlit.h"
+				RelativePath="..\..\rdo_process\rp_misc\mctranspblt\McTransparentBlit.h"
 				>
 			</File>
 		</Filter>

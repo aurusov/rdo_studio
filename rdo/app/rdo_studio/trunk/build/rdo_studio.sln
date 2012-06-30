@@ -95,26 +95,26 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_converter", "..\..\..\c
 		{C34EF28F-1D66-4CEE-B435-7C420DAF0AD3} = {C34EF28F-1D66-4CEE-B435-7C420DAF0AD3}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rp_method", "..\rdo_process\rp_method\rp_method.vcproj", "{E3E1B8AA-D06A-4999-923A-A4D7BB2AAD62}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rp_method", "..\projects\common\rp_method.vcproj", "{E3E1B8AA-D06A-4999-923A-A4D7BB2AAD62}"
 	ProjectSection(ProjectDependencies) = postProject
 		{89A1E353-E2DC-495C-B403-742BE206ACED} = {89A1E353-E2DC-495C-B403-742BE206ACED}
 		{1C949A7B-8C06-4A86-A833-C1052DD93810} = {1C949A7B-8C06-4A86-A833-C1052DD93810}
 		{6EA136E5-E2E9-45C3-AF41-93EB339894BE} = {6EA136E5-E2E9-45C3-AF41-93EB339894BE}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "method_proc2rdo", "..\rdo_process\proc2rdo\proc2rdo.vcproj", "{9EEDD880-5EA7-40E5-B065-DA72B19892F4}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "method_proc2rdo", "..\projects\common\proc2rdo.vcproj", "{9EEDD880-5EA7-40E5-B065-DA72B19892F4}"
 	ProjectSection(ProjectDependencies) = postProject
 		{7FDB2504-B35B-4698-88A5-55B7112E01F4} = {7FDB2504-B35B-4698-88A5-55B7112E01F4}
 		{E3E1B8AA-D06A-4999-923A-A4D7BB2AAD62} = {E3E1B8AA-D06A-4999-923A-A4D7BB2AAD62}
 		{6EA136E5-E2E9-45C3-AF41-93EB339894BE} = {6EA136E5-E2E9-45C3-AF41-93EB339894BE}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rp_ctrl", "..\rdo_process\rp_ctrl\rp_ctrl.vcproj", "{6EA136E5-E2E9-45C3-AF41-93EB339894BE}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rp_ctrl", "..\projects\common\rp_ctrl.vcproj", "{6EA136E5-E2E9-45C3-AF41-93EB339894BE}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1C949A7B-8C06-4A86-A833-C1052DD93810} = {1C949A7B-8C06-4A86-A833-C1052DD93810}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rp_misc", "..\rdo_process\rp_misc\rp_misc.vcproj", "{1C949A7B-8C06-4A86-A833-C1052DD93810}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rp_misc", "..\projects\common\rp_misc.vcproj", "{1C949A7B-8C06-4A86-A833-C1052DD93810}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_plugin_mfc", "..\plugins\mfc\rdo_plugin_mfc.vcproj", "{37214C3A-5EA5-4CE1-B843-ABF4399CFC51}"
 	ProjectSection(ProjectDependencies) = postProject

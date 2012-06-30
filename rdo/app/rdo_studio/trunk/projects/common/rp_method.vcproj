@@ -151,55 +151,55 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\rdoprocess_connector.cpp"
+				RelativePath="..\..\rdo_process\rp_method\rdoprocess_connector.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_factory.cpp"
+				RelativePath="..\..\rdo_process\rp_method\rdoprocess_factory.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_flowchart.cpp"
+				RelativePath="..\..\rdo_process\rp_method\rdoprocess_flowchart.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_messages.cpp"
+				RelativePath="..\..\rdo_process\rp_method\rdoprocess_messages.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_method.cpp"
+				RelativePath="..\..\rdo_process\rp_method\rdoprocess_method.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_object.cpp"
+				RelativePath="..\..\rdo_process\rp_method\rdoprocess_object.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_object_chart.cpp"
+				RelativePath="..\..\rdo_process\rp_method\rdoprocess_object_chart.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_object_flowchart.cpp"
+				RelativePath="..\..\rdo_process\rp_method\rdoprocess_object_flowchart.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_object_matrix.cpp"
+				RelativePath="..\..\rdo_process\rp_method\rdoprocess_object_matrix.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_object_pixmap.cpp"
+				RelativePath="..\..\rdo_process\rp_method\rdoprocess_object_pixmap.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_project.cpp"
+				RelativePath="..\..\rdo_process\rp_method\rdoprocess_project.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape.cpp"
+				RelativePath="..\..\rdo_process\rp_method\rdoprocess_shape.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\stdafx.cpp"
+				RelativePath="..\..\rdo_process\rp_method\stdafx.cpp"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -225,55 +225,55 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\rdoprocess_connector.h"
+				RelativePath="..\..\rdo_process\rp_method\rdoprocess_connector.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_factory.h"
+				RelativePath="..\..\rdo_process\rp_method\rdoprocess_factory.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_flowchart.h"
+				RelativePath="..\..\rdo_process\rp_method\rdoprocess_flowchart.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_messages.h"
+				RelativePath="..\..\rdo_process\rp_method\rdoprocess_messages.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_method.h"
+				RelativePath="..\..\rdo_process\rp_method\rdoprocess_method.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_object.h"
+				RelativePath="..\..\rdo_process\rp_method\rdoprocess_object.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_object_chart.h"
+				RelativePath="..\..\rdo_process\rp_method\rdoprocess_object_chart.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_object_flowchart.h"
+				RelativePath="..\..\rdo_process\rp_method\rdoprocess_object_flowchart.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_object_matrix.h"
+				RelativePath="..\..\rdo_process\rp_method\rdoprocess_object_matrix.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_object_pixmap.h"
+				RelativePath="..\..\rdo_process\rp_method\rdoprocess_object_pixmap.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_project.h"
+				RelativePath="..\..\rdo_process\rp_method\rdoprocess_project.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape.h"
+				RelativePath="..\..\rdo_process\rp_method\rdoprocess_shape.h"
 				>
 			</File>
 			<File
-				RelativePath=".\stdafx.h"
+				RelativePath="..\..\rdo_process\rp_method\stdafx.h"
 				>
 			</File>
 		</Filter>

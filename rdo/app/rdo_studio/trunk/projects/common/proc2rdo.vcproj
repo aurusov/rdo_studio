@@ -155,71 +155,71 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\rdoprocess_generation_type.cpp"
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_generation_type.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_method_proc2rdo.cpp"
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_method_proc2rdo.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape.cpp"
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape_create.cpp"
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_create.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape_create_dlg1.cpp"
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_create_dlg1.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape_create_dlg2.cpp"
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_create_dlg2.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape_decide.cpp"
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_decide.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape_decide_dlg1.cpp"
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_decide_dlg1.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape_process.cpp"
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_process.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape_process_dlg1.cpp"
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_process_dlg1.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape_process_dlg2.cpp"
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_process_dlg2.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape_resource.cpp"
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_resource.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape_resource_dlg.cpp"
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_resource_dlg.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape_terminate.cpp"
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_terminate.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape_terminate_dlg1.cpp"
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_terminate_dlg1.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_tool_bar_block.cpp"
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_tool_bar_block.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\stdafx.cpp"
+				RelativePath="..\..\rdo_process\proc2rdo\stdafx.cpp"
 				>
 				<FileConfiguration
 					Name="debug|Win32"
@@ -245,71 +245,71 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\rdoprocess_generation_type.h"
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_generation_type.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_method_proc2rdo.h"
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_method_proc2rdo.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape.h"
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape_create.h"
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_create.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape_create_dlg1.h"
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_create_dlg1.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape_create_dlg2.h"
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_create_dlg2.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape_decide.h"
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_decide.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape_decide_dlg1.h"
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_decide_dlg1.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape_process.h"
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_process.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape_process_dlg1.h"
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_process_dlg1.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape_process_dlg2.h"
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_process_dlg2.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape_resource.h"
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_resource.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape_resource_dlg.h"
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_resource_dlg.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape_terminate.h"
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_terminate.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_shape_terminate_dlg1.h"
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_shape_terminate_dlg1.h"
 				>
 			</File>
 			<File
-				RelativePath=".\rdoprocess_tool_bar_block.h"
+				RelativePath="..\..\rdo_process\proc2rdo\rdoprocess_tool_bar_block.h"
 				>
 			</File>
 			<File
-				RelativePath=".\stdafx.h"
+				RelativePath="..\..\rdo_process\proc2rdo\stdafx.h"
 				>
 			</File>
 		</Filter>
@@ -319,31 +319,31 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
-				RelativePath=".\res\block_create.xpm"
+				RelativePath="..\..\rdo_process\proc2rdo\res\block_create.xpm"
 				>
 			</File>
 			<File
-				RelativePath=".\res\block_decide.xpm"
+				RelativePath="..\..\rdo_process\proc2rdo\res\block_decide.xpm"
 				>
 			</File>
 			<File
-				RelativePath=".\res\block_process.xpm"
+				RelativePath="..\..\rdo_process\proc2rdo\res\block_process.xpm"
 				>
 			</File>
 			<File
-				RelativePath=".\res\block_resource.xpm"
+				RelativePath="..\..\rdo_process\proc2rdo\res\block_resource.xpm"
 				>
 			</File>
 			<File
-				RelativePath=".\res\block_terminate.xpm"
+				RelativePath="..\..\rdo_process\proc2rdo\res\block_terminate.xpm"
 				>
 			</File>
 			<File
-				RelativePath=".\res\method_big.xpm"
+				RelativePath="..\..\rdo_process\proc2rdo\res\method_big.xpm"
 				>
 			</File>
 			<File
-				RelativePath=".\res\method_small.xpm"
+				RelativePath="..\..\rdo_process\proc2rdo\res\method_small.xpm"
 				>
 			</File>
 		</Filter>
