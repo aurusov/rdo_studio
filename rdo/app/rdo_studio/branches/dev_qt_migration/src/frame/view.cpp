@@ -172,7 +172,6 @@ void RDOStudioFrameView::OnDestroy()
 	delete m_pWidget;
 	m_pWidget = NULL;
 
-	delete m_pFrameAnimationWnd;
 	m_pFrameAnimationWnd = NULL;
 
 	RDOStudioView::OnDestroy();
