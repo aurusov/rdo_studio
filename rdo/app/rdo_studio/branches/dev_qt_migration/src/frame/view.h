@@ -13,12 +13,28 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
 #include <gdiplus.h>
+#include <QtGui/qwidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdoanimation.h"
 #include "ui/gdiplus/headers/memdc/memdc.h"
 #include "ui/gdiplus/headers/bitmap/bitmap.h"
 #include "app/rdo_studio_mfc/src/view.h"
+#include "thirdparty/qt-solutions/qtwinmigrate/src/qwinwidget.h"
 // --------------------------------------------------------------------------------
+
+// --------------------------------------------------------------------------------
+// -------------------- FrameAnimationWnd
+// --------------------------------------------------------------------------------
+class FrameAnimationWnd: public QWidget
+{
+private:
+	Q_OBJECT
+	typedef  QWidget  parent_type;
+
+public:
+	FrameAnimationWnd(PTR(QWidget) pParent);
+	virtual ~FrameAnimationWnd();
+};
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioFrameView
@@ -59,6 +75,8 @@ private:
 	rdo::gui::MemDC               m_memDC;
 	HWND                          m_hwnd;
 	rbool                         m_mouseOnHScroll;
+	PTR(QWinWidget)               m_pWidget;
+	PTR(FrameAnimationWnd)        m_pFrameAnimationWnd;
 
 	rbool valid           ();
 	void  init            (CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::gui::BitmapList) bitmapList);

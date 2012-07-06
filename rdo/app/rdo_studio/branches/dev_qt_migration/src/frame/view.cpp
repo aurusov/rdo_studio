@@ -11,6 +11,7 @@
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
+#include <QtGui/qlayout.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
 #include "simulator/service/rdosimwin.h"
@@ -22,6 +23,16 @@
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/htmlhelp.h"
 // --------------------------------------------------------------------------------
+
+// --------------------------------------------------------------------------------
+// -------------------- FrameAnimationWnd
+// --------------------------------------------------------------------------------
+FrameAnimationWnd::FrameAnimationWnd(PTR(QWidget) pParent)
+	: parent_type(pParent)
+{}
+
+FrameAnimationWnd::~FrameAnimationWnd()
+{}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioFrameView
@@ -50,10 +61,12 @@ BEGIN_MESSAGE_MAP(RDOStudioFrameView, RDOStudioView)
 END_MESSAGE_MAP()
 
 RDOStudioFrameView::RDOStudioFrameView()
-	: RDOStudioView   ()
-	, m_newClientRect (0, 0, 0, 0)
-	, m_hwnd          (NULL )
-	, m_mouseOnHScroll(false)
+	: RDOStudioView       ()
+	, m_newClientRect     (0, 0, 0, 0)
+	, m_hwnd              (NULL )
+	, m_mouseOnHScroll    (false)
+	, m_pWidget           (NULL )
+	, m_pFrameAnimationWnd(NULL )
 {
 	m_bgColor.SetFromCOLORREF(studioApp.m_pMainFrame->style_frame.theme->backgroundColor);
 }
@@ -130,6 +143,15 @@ int RDOStudioFrameView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (RDOStudioView::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
+	m_pWidget = new QWinWidget(this);
+	PTR(QHBoxLayout) pBoxLayout = new QHBoxLayout(m_pWidget);
+
+	m_pFrameAnimationWnd = new FrameAnimationWnd(m_pWidget);
+	pBoxLayout->addWidget(m_pFrameAnimationWnd);
+
+	m_pWidget->move(0, 0);
+	m_pWidget->show();
+
 	m_hwnd = GetSafeHwnd();
 
 	updateFont      ();
@@ -146,6 +168,12 @@ void RDOStudioFrameView::OnDestroy()
 		model->m_frameManager.disconnectFrameDoc(GetDocument());
 		model->m_frameManager.resetCurrentShowingFrame(index);
 	}
+
+	delete m_pWidget;
+	m_pWidget = NULL;
+
+	delete m_pFrameAnimationWnd;
+	m_pFrameAnimationWnd = NULL;
 
 	RDOStudioView::OnDestroy();
 }
