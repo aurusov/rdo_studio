@@ -14,6 +14,7 @@
 #include <map>
 #include <gdiplus.h>
 #include <QtGui/qwidget.h>
+#include <QtGui/qscrollarea.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdoanimation.h"
 #include "ui/gdiplus/headers/memdc/memdc.h"
@@ -25,15 +26,18 @@
 // --------------------------------------------------------------------------------
 // -------------------- FrameAnimationWnd
 // --------------------------------------------------------------------------------
-class FrameAnimationWnd: public QWidget
+class FrameAnimationWnd: public QScrollArea
 {
 private:
 	Q_OBJECT
-	typedef  QWidget  parent_type;
+	typedef  QScrollArea  parent_type;
 
 public:
 	FrameAnimationWnd(PTR(QWidget) pParent);
 	virtual ~FrameAnimationWnd();
+
+private:
+	PTR(QWidget) m_pContent;
 };
 
 // --------------------------------------------------------------------------------

@@ -29,7 +29,16 @@
 // --------------------------------------------------------------------------------
 FrameAnimationWnd::FrameAnimationWnd(PTR(QWidget) pParent)
 	: parent_type(pParent)
-{}
+{
+	setWidgetResizable(true);
+
+	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+	setVerticalScrollBarPolicy  (Qt::ScrollBarAlwaysOn);
+
+	m_pContent = new QWidget();
+	ASSERT(m_pContent);
+	setWidget(m_pContent);
+}
 
 FrameAnimationWnd::~FrameAnimationWnd()
 {}
@@ -144,10 +153,17 @@ int RDOStudioFrameView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 
 	m_pWidget = new QWinWidget(this);
-	PTR(QHBoxLayout) pBoxLayout = new QHBoxLayout(m_pWidget);
+	ASSERT(m_pWidget);
+
+	PTR(QVBoxLayout) pVBoxLayout = new QVBoxLayout(m_pWidget);
+	ASSERT(pVBoxLayout);
+	pVBoxLayout->setSpacing(0);
+	pVBoxLayout->setContentsMargins(0, 0, 0, 0);
 
 	m_pFrameAnimationWnd = new FrameAnimationWnd(m_pWidget);
-	pBoxLayout->addWidget(m_pFrameAnimationWnd);
+	ASSERT(m_pFrameAnimationWnd);
+
+	pVBoxLayout->addWidget(m_pFrameAnimationWnd);
 
 	m_pWidget->move(0, 0);
 	m_pWidget->show();
