@@ -101,7 +101,7 @@ private:
 	Gdiplus::Point                m_pos;
 	Gdiplus::Color                m_bgColor;
 	std::auto_ptr<Gdiplus::Font>  m_pFont;
-	rdo::gui::MemDC               m_memDC;
+	rdo::gui::GDIPlusMemDC        m_memDC;
 	HWND                          m_hwnd;
 	rbool                         m_mouseOnHScroll;
 	PTR(QWinWidget)               m_pWidget;
