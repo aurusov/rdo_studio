@@ -147,6 +147,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QtSolutions_MFCMigrationFra
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_help", "..\help\projects\common\rdo_help.vcproj", "{267B709F-6B99-4F25-8FB5-BF8A9DB6073E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ui_abstract", "..\..\..\ui\abstract\projects\common\ui_abstract.vcproj", "{F5B3A34A-2DA4-4475-A49F-0A7A84C4DE27}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		debug.corba|x64 = debug.corba|x64
@@ -597,6 +599,24 @@ Global
 		{267B709F-6B99-4F25-8FB5-BF8A9DB6073E}.release|x64.ActiveCfg = release|Win32
 		{267B709F-6B99-4F25-8FB5-BF8A9DB6073E}.release|x86.ActiveCfg = release|Win32
 		{267B709F-6B99-4F25-8FB5-BF8A9DB6073E}.release|x86.Build.0 = release|Win32
+		{F5B3A34A-2DA4-4475-A49F-0A7A84C4DE27}.debug.corba|x64.ActiveCfg = release|Win32
+		{F5B3A34A-2DA4-4475-A49F-0A7A84C4DE27}.debug.corba|x86.ActiveCfg = debug|Win32
+		{F5B3A34A-2DA4-4475-A49F-0A7A84C4DE27}.debug.corba|x86.Build.0 = debug|Win32
+		{F5B3A34A-2DA4-4475-A49F-0A7A84C4DE27}.debug.mt|x64.ActiveCfg = debug|Win32
+		{F5B3A34A-2DA4-4475-A49F-0A7A84C4DE27}.debug.mt|x86.ActiveCfg = debug|Win32
+		{F5B3A34A-2DA4-4475-A49F-0A7A84C4DE27}.debug.mt|x86.Build.0 = debug|Win32
+		{F5B3A34A-2DA4-4475-A49F-0A7A84C4DE27}.debug|x64.ActiveCfg = debug|Win32
+		{F5B3A34A-2DA4-4475-A49F-0A7A84C4DE27}.debug|x86.ActiveCfg = debug|Win32
+		{F5B3A34A-2DA4-4475-A49F-0A7A84C4DE27}.debug|x86.Build.0 = debug|Win32
+		{F5B3A34A-2DA4-4475-A49F-0A7A84C4DE27}.release.corba|x64.ActiveCfg = release|Win32
+		{F5B3A34A-2DA4-4475-A49F-0A7A84C4DE27}.release.corba|x86.ActiveCfg = release|Win32
+		{F5B3A34A-2DA4-4475-A49F-0A7A84C4DE27}.release.corba|x86.Build.0 = release|Win32
+		{F5B3A34A-2DA4-4475-A49F-0A7A84C4DE27}.release.mt|x64.ActiveCfg = release|Win32
+		{F5B3A34A-2DA4-4475-A49F-0A7A84C4DE27}.release.mt|x86.ActiveCfg = release|Win32
+		{F5B3A34A-2DA4-4475-A49F-0A7A84C4DE27}.release.mt|x86.Build.0 = release|Win32
+		{F5B3A34A-2DA4-4475-A49F-0A7A84C4DE27}.release|x64.ActiveCfg = release|Win32
+		{F5B3A34A-2DA4-4475-A49F-0A7A84C4DE27}.release|x86.ActiveCfg = release|Win32
+		{F5B3A34A-2DA4-4475-A49F-0A7A84C4DE27}.release|x86.Build.0 = release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -632,6 +652,7 @@ Global
 		{1C949A7B-8C06-4A86-A833-C1052DD93810} = {7ECBB553-A3BC-426A-B472-66C7947C39A8}
 		{07426CDA-CE5C-4545-9C50-FF25E80CDF96} = {BED179D0-CC1B-48B4-8F56-3E71F4051CF1}
 		{C88D1EDC-470E-46A0-B6A3-6CE444EE9BE7} = {BED179D0-CC1B-48B4-8F56-3E71F4051CF1}
+		{F5B3A34A-2DA4-4475-A49F-0A7A84C4DE27} = {BED179D0-CC1B-48B4-8F56-3E71F4051CF1}
 		{89A1E353-E2DC-495C-B403-742BE206ACED} = {807B893B-C55E-463C-861F-427D54396501}
 		{DB8E188F-B492-3826-B679-00ACC9944E2D} = {807B893B-C55E-463C-861F-427D54396501}
 	EndGlobalSection
