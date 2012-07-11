@@ -138,6 +138,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".ui", ".ui", "{BED179D0-CC1B-48B4-8F56-3E71F4051CF1}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_gdiplus", "..\..\..\ui\gdiplus\projects\common\rdo_gdiplus.vcproj", "{C88D1EDC-470E-46A0-B6A3-6CE444EE9BE7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F5B3A34A-2DA4-4475-A49F-0A7A84C4DE27} = {F5B3A34A-2DA4-4475-A49F-0A7A84C4DE27}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".thirdparty", ".thirdparty", "{807B893B-C55E-463C-861F-427D54396501}"
 EndProject
