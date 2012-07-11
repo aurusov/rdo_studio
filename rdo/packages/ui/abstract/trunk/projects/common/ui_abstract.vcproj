@@ -188,6 +188,10 @@
 			Name=".memdc"
 			>
 			<File
+				RelativePath="..\..\src\memdc\memdc.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\headers\memdc\memdc.h"
 				>
 			</File>

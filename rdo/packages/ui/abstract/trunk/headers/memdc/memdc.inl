@@ -16,92 +16,67 @@ namespace rdo
 	namespace gui
 	{
 		template <class TDC, class TBMP>
-		inline AbstractMemDC<TDC, TBMP>::AbstractMemDC()
-		   : m_width (0)
-		   , m_height(0)
+		inline MemDC<TDC, TBMP>::MemDC()
+			: MemDCBase()
 		{}
 
 		template <class TDC, class TBMP>
-		inline AbstractMemDC<TDC, TBMP>::~AbstractMemDC()
+		inline MemDC<TDC, TBMP>::~MemDC()
 		{
-		   clear();
+			clear();
 		}
 
 		template <class TDC, class TBMP>
-		inline rbool AbstractMemDC<TDC, TBMP>::valid() const
+		inline rbool MemDC<TDC, TBMP>::valid() const
 		{
-		   return m_pDC.get() != NULL ? true : false;
+			return m_pDC.get() != NULL ? true : false;
 		}
 
 		template <class TDC, class TBMP>
-		inline rbool AbstractMemDC<TDC, TBMP>::create(ruint width, ruint height)
+		inline rbool MemDC<TDC, TBMP>::create(ruint width, ruint height, REF(TDC) from)
 		{
-		   HWND hWnd = ::GetDesktopWindow(); if (!hWnd) return false;
-		   HDC  hDC  = ::GetDC(hWnd);        if (!hDC ) return false;
+			if (m_pBitmap.get() || m_pDC.get())
+				return false;
 
-		   TDC dc(hDC);
-		   rbool ok = create(width, height, dc);
-		   ::ReleaseDC(hWnd, hDC);
-		   return ok;
+			m_width  = width;
+			m_height = height;
+			m_pBitmap.reset(new TBMP(m_width, m_height, &from));
+			if (m_pBitmap.get())
+			{
+				m_pDC.reset(new TDC(m_pBitmap.get()));
+			}
+			return valid();
 		}
 
 		template <class TDC, class TBMP>
-		inline rbool AbstractMemDC<TDC, TBMP>::create(ruint width, ruint height, REF(TDC) from)
+		inline rbool MemDC<TDC, TBMP>::resize(ruint width, ruint height)
 		{
-		   if (m_pBitmap.get() || m_pDC.get())
-			  return false;
+			if (width == 0 || height == 0)
+				return false;
+			if (width == m_width && height == m_height)
+				return true;
 
-		   m_width  = width;
-		   m_height = height;
-		   m_pBitmap.reset(new TBMP(m_width, m_height, &from));
-		   if (m_pBitmap.get())
-		   {
-			  m_pDC.reset(new TDC(m_pBitmap.get()));
-		   }
-		   return valid();
+			clear();
+			return create(width, height);
 		}
 
 		template <class TDC, class TBMP>
-		inline rbool AbstractMemDC<TDC, TBMP>::resize(ruint width, ruint height)
+		inline REF(TDC) MemDC<TDC, TBMP>::dc()
 		{
-		   if (width == 0 || height == 0)
-			  return false;
-		   if (width == m_width && height == m_height)
-			  return true;
-
-		   clear();
-		   return create(width, height);
+			return *m_pDC.get();
 		}
 
 		template <class TDC, class TBMP>
-		inline ruint AbstractMemDC<TDC, TBMP>::width() const
+		inline REF(TBMP) MemDC<TDC, TBMP>::buffer()
 		{
-		   return m_width;
+			return *m_pBitmap.get();
 		}
 
 		template <class TDC, class TBMP>
-		inline ruint AbstractMemDC<TDC, TBMP>::height() const
+		inline void MemDC<TDC, TBMP>::clear()
 		{
-		   return m_height;
-		}
-
-		template <class TDC, class TBMP>
-		inline REF(TDC) AbstractMemDC<TDC, TBMP>::dc()
-		{
-		   return *m_pDC.get();
-		}
-
-		template <class TDC, class TBMP>
-		inline REF(TBMP) AbstractMemDC<TDC, TBMP>::buffer()
-		{
-		   return *m_pBitmap.get();
-		}
-
-		template <class TDC, class TBMP>
-		inline void AbstractMemDC<TDC, TBMP>::clear()
-		{
-		   if (m_pBitmap.get())  m_pBitmap.reset();
-		   if (m_pDC    .get())  m_pDC    .reset();
+			if (m_pBitmap.get())  m_pBitmap.reset();
+			if (m_pDC    .get())  m_pDC    .reset();
 		}
 
 	} // namespace gui
