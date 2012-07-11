@@ -12,6 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
 #include <QtGui/qlayout.h>
+#include <QtGui/qpainter.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
 #include "simulator/service/rdosimwin.h"
@@ -24,18 +25,138 @@
 #include "app/rdo_studio_mfc/htmlhelp.h"
 // --------------------------------------------------------------------------------
 
+FrameAnimationContent::FrameAnimationContent(PTR(QWidget) pParent)
+	: parent_type(pParent)
+	, m_pPixmap  (NULL   )
+{
+	setAutoFillBackground(false);
+	setAttribute(Qt::WA_OpaquePaintEvent,   true);
+	setAttribute(Qt::WA_NoSystemBackground, true);
+}
+
+FrameAnimationContent::~FrameAnimationContent()
+{}
+
+void FrameAnimationContent::resizeEvent(QResizeEvent* pEvent)
+{
+	PTR(QPixmap) pPixmap = new QPixmap(pEvent->size());
+
+	if (m_pPixmap)
+	{
+		QPainter painter(pPixmap);
+		painter.drawPixmap(0, 0, *m_pPixmap);
+		delete m_pPixmap;
+	}
+
+	m_pPixmap = pPixmap;
+}
+
+void FrameAnimationContent::paintEvent(QPaintEvent* pEvent)
+{
+	UNUSED(pEvent);
+
+	QPainter painter(this);
+	painter.drawPixmap(0, 0, *m_pPixmap);
+
+	//painter.setPen(Qt::red);
+	//painter.setBrush(Qt::yellow);
+	//painter.drawRect(0, 0, width() - 1, height() - 1);
+}
+
+void FrameAnimationContent::update(
+	CPTRC(rdo::animation::Frame) pFrame,
+	 CREF(rdo::gui::BitmapList)  bitmapList,
+	  REF(rdo::gui::BitmapList)  bitmapGeneratedList
+)
+{
+	ASSERT(pFrame);
+
+	//if (!valid())
+	//{
+	//	init(pFrame, bitmapList);
+	//}
+
+	//drawBackground(pFrame, bitmapList);
+
+	STL_FOR_ALL_CONST(pFrame->m_elements, it)
+	{
+		PTR(rdo::animation::FrameItem) pCurrElement = *it;
+		ASSERT(pCurrElement);
+		switch (pCurrElement->getType())
+		{
+//		case rdo::animation::FrameItem::FIT_TEXT   : elementText     (static_cast<PTR(rdo::animation::TextElement     )>(pCurrElement)); break;
+		case rdo::animation::FrameItem::FIT_RECT   : elementRect     (static_cast<PTR(rdo::animation::RectElement     )>(pCurrElement)); break;
+//		case rdo::animation::FrameItem::FIT_R_RECT : elementRoundRect(static_cast<PTR(rdo::animation::RoundRectElement)>(pCurrElement)); break;
+//		case rdo::animation::FrameItem::FIT_LINE   : elementLine     (static_cast<PTR(rdo::animation::LineElement     )>(pCurrElement)); break;
+//		case rdo::animation::FrameItem::FIT_TRIANG : elementTriang   (static_cast<PTR(rdo::animation::TriangElement   )>(pCurrElement)); break;
+//		case rdo::animation::FrameItem::FIT_CIRCLE : elementCircle   (static_cast<PTR(rdo::animation::CircleElement   )>(pCurrElement)); break;
+//		case rdo::animation::FrameItem::FIT_ELLIPSE: elementEllipse  (static_cast<PTR(rdo::animation::EllipseElement  )>(pCurrElement)); break;
+//		case rdo::animation::FrameItem::FIT_BMP    : elementBMP      (static_cast<PTR(rdo::animation::BmpElement      )>(pCurrElement), bitmapList, bitmapGeneratedList); break;
+//		case rdo::animation::FrameItem::FIT_S_BMP  : elementSBMP     (static_cast<PTR(rdo::animation::ScaledBmpElement)>(pCurrElement), bitmapList, bitmapGeneratedList); break;
+//		case rdo::animation::FrameItem::FIT_ACTIVE : elementActive   (static_cast<PTR(rdo::animation::ActiveElement   )>(pCurrElement), areaList); break;
+		}
+	}
+
+//	InvalidateRect   (NULL);
+//	SendNotifyMessage(WM_PAINT, 0, 0);
+}
+
+void FrameAnimationContent::elementRect(PTR(rdo::animation::RectElement) pElement)
+{
+	ASSERT(pElement);
+
+	QPainter painter(m_pPixmap);
+
+	if (!pElement->m_foreground.m_transparent)
+	{
+		painter.setPen(QColor(
+			pElement->m_foreground.m_r,
+			pElement->m_foreground.m_g,
+			pElement->m_foreground.m_b
+		));
+	}
+	else
+	{
+		painter.setPen(Qt::NoPen);
+	}
+
+	if (!pElement->m_background.m_transparent)
+	{
+		painter.setBrush(QColor(
+			pElement->m_background.m_r,
+			pElement->m_background.m_g,
+			pElement->m_background.m_b
+		));
+	}
+	else
+	{
+		painter.setBrush(Qt::NoBrush);
+	}
+
+	painter.drawRect(
+		pElement->m_point.m_x,
+		pElement->m_point.m_y,
+		pElement->m_size.m_width,
+		pElement->m_size.m_height
+	);
+}
+
 // --------------------------------------------------------------------------------
 // -------------------- FrameAnimationWnd
 // --------------------------------------------------------------------------------
 FrameAnimationWnd::FrameAnimationWnd(PTR(QWidget) pParent)
 	: parent_type(pParent)
 {
+	setAutoFillBackground(false);
+	setAttribute(Qt::WA_OpaquePaintEvent,   true);
+	setAttribute(Qt::WA_NoSystemBackground, true);
+
 	setWidgetResizable(true);
 
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 	setVerticalScrollBarPolicy  (Qt::ScrollBarAlwaysOn);
 
-	m_pContent = new QWidget();
+	m_pContent = new FrameAnimationContent(this);
 	ASSERT(m_pContent);
 	setWidget(m_pContent);
 }
@@ -153,6 +274,10 @@ int RDOStudioFrameView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 
 	m_pWidget = new QWinWidget(this);
+	m_pWidget->setAutoFillBackground(false);
+	m_pWidget->setAttribute(Qt::WA_OpaquePaintEvent,   true);
+	m_pWidget->setAttribute(Qt::WA_NoSystemBackground, true);
+
 	ASSERT(m_pWidget);
 
 	PTR(QVBoxLayout) pVBoxLayout = new QVBoxLayout(m_pWidget);
@@ -265,6 +390,7 @@ void RDOStudioFrameView::OnSize(UINT nType, int cx, int cy)
 	RDOStudioView::OnSize(nType, cx, cy);
 
 	GetClientRect(&m_newClientRect);
+	m_pWidget->resize(cx, cy);
 
 	updateScrollBars();
 }
@@ -500,11 +626,14 @@ BOOL RDOStudioFrameView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 
 void RDOStudioFrameView::OnPaint()
 {
-	Gdiplus::Graphics graphics(m_hwnd);
-
 	PAINTSTRUCT ps;
 	::BeginPaint(m_hwnd, &ps);
-	onDraw      (graphics);
+
+	static_cast<PTR(FrameAnimationWnd)>(m_pFrameAnimationWnd)->widget()->repaint();
+
+//	Gdiplus::Graphics graphics(m_hwnd);
+//	onDraw      (graphics);
+
 	::EndPaint  (m_hwnd, &ps);
 }
 
@@ -578,6 +707,8 @@ void RDOStudioFrameView::update(
 	  REF(AreaList)              areaList
 )
 {
+	static_cast<PTR(FrameAnimationContent)>(static_cast<PTR(FrameAnimationWnd)>(m_pFrameAnimationWnd)->widget())->update(pFrame, bitmapList, bitmapGeneratedList);
+
 	ASSERT(pFrame);
 
 	if (!valid())
@@ -740,26 +871,26 @@ void RDOStudioFrameView::drawColoredElement(CREF(rdo::animation::ColoredElement)
 
 void RDOStudioFrameView::elementRect(PTR(rdo::animation::RectElement) pElement)
 {
-	ASSERT(pElement);
+	//ASSERT(pElement);
 
-	Gdiplus::Rect brushRect(
-		(int)pElement->m_point.m_x,
-		(int)pElement->m_point.m_y,
-		(int)pElement->m_size.m_width,
-		(int)pElement->m_size.m_height
-	);
+	//Gdiplus::Rect brushRect(
+	//	(int)pElement->m_point.m_x,
+	//	(int)pElement->m_point.m_y,
+	//	(int)pElement->m_size.m_width,
+	//	(int)pElement->m_size.m_height
+	//);
 
-	Gdiplus::Rect penRect(brushRect);
-	--penRect.Width;
-	--penRect.Height;
+	//Gdiplus::Rect penRect(brushRect);
+	//--penRect.Width;
+	//--penRect.Height;
 
-	Gdiplus::Status (Gdiplus::Graphics::*pBrush)(CPTR(Gdiplus::Brush), CREF(Gdiplus::Rect)) = &Gdiplus::Graphics::FillRectangle;
-	Gdiplus::Status (Gdiplus::Graphics::*pPen  )(CPTR(Gdiplus::Pen),   CREF(Gdiplus::Rect)) = &Gdiplus::Graphics::DrawRectangle;
+	//Gdiplus::Status (Gdiplus::Graphics::*pBrush)(CPTR(Gdiplus::Brush), CREF(Gdiplus::Rect)) = &Gdiplus::Graphics::FillRectangle;
+	//Gdiplus::Status (Gdiplus::Graphics::*pPen  )(CPTR(Gdiplus::Pen),   CREF(Gdiplus::Rect)) = &Gdiplus::Graphics::DrawRectangle;
 
-	drawColoredElement(*pElement,
-		boost::bind(pBrush, _1, _2, brushRect),
-		boost::bind(pPen,   _1, _2, penRect  )
-	);
+	//drawColoredElement(*pElement,
+	//	boost::bind(pBrush, _1, _2, brushRect),
+	//	boost::bind(pPen,   _1, _2, penRect  )
+	//);
 }
 
 void RDOStudioFrameView::elementRoundRect(PTR(rdo::animation::RoundRectElement) pElement)

@@ -15,6 +15,7 @@
 #include <gdiplus.h>
 #include <QtGui/qwidget.h>
 #include <QtGui/qscrollarea.h>
+#include <QtGui/qevent.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdoanimation.h"
 #include "ui/gdiplus/headers/memdc/memdc.h"
@@ -22,6 +23,30 @@
 #include "app/rdo_studio_mfc/src/view.h"
 #include "thirdparty/qt-solutions/qtwinmigrate/src/qwinwidget.h"
 // --------------------------------------------------------------------------------
+
+class FrameAnimationContent: public QWidget
+{
+private:
+	Q_OBJECT
+	typedef  QWidget  parent_type;
+
+public:
+	FrameAnimationContent(PTR(QWidget) pParent);
+	virtual ~FrameAnimationContent();
+
+	void                   update       (CPTRC(rdo::animation::Frame) pFrame,
+	                                      CREF(rdo::gui::BitmapList)  bitmapList,
+	                                       REF(rdo::gui::BitmapList)  bitmapGeneratedList);
+
+private:
+	PTR(QPixmap) m_pPixmap;
+
+	void elementRect(PTR(rdo::animation::RectElement) pElement);
+
+private slots:
+	void resizeEvent(QResizeEvent* pEvent);
+	void paintEvent (QPaintEvent*  pEvent);
+};
 
 // --------------------------------------------------------------------------------
 // -------------------- FrameAnimationWnd
@@ -80,7 +105,7 @@ private:
 	HWND                          m_hwnd;
 	rbool                         m_mouseOnHScroll;
 	PTR(QWinWidget)               m_pWidget;
-	PTR(FrameAnimationWnd)        m_pFrameAnimationWnd;
+	PTR(QWidget)                  m_pFrameAnimationWnd;
 
 	rbool valid           ();
 	void  init            (CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::gui::BitmapList) bitmapList);
