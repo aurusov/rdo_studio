@@ -33,18 +33,17 @@ namespace rdo
 		}
 
 		template <class TDC, class TBMP>
-		inline rbool MemDC<TDC, TBMP>::create(ruint width, ruint height, REF(TDC) from)
+		inline rbool MemDC<TDC, TBMP>::create(ruint width, ruint height)
 		{
 			if (m_pBitmap.get() || m_pDC.get())
 				return false;
 
 			m_width  = width;
 			m_height = height;
-			m_pBitmap.reset(new TBMP(m_width, m_height, &from));
-			if (m_pBitmap.get())
-			{
-				m_pDC.reset(new TDC(m_pBitmap.get()));
-			}
+
+			if (!onCreate())
+				return false;
+
 			return valid();
 		}
 

@@ -187,6 +187,10 @@
 		<Filter
 			Name=".memdc"
 			>
+			<File
+				RelativePath="..\..\headers\memdc\memdc.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

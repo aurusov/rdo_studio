@@ -53,6 +53,8 @@ namespace rdo
 			std::auto_ptr<TDC>    m_pDC;
 			std::auto_ptr<TBMP>   m_pBitmap;
 
+			rbool onCreate();
+
 			void clear();
 		};
 
