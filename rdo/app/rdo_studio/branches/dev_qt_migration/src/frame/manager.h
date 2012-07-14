@@ -16,7 +16,6 @@
 #include <memory>
 #include <gdiplus.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "ui/gdiplus/headers/bitmap/bitmap.h"
 #include "app/rdo_studio_mfc/src/frame/document.h"
 #include "app/rdo_studio_mfc/src/frame/view.h"
 // --------------------------------------------------------------------------------
@@ -95,7 +94,7 @@ private:
 	typedef  std::vector<PTR(Frame)>  FrameList;
 
 	FrameList             m_frameList;
-	rdo::gui::BitmapList  m_bitmapList;
+	FrameAnimationContent::BitmapList  m_bitmapList;
 	PTR(FrameDocTemplate) m_pFrameDocTemplate;
 	ruint                 m_lastShowedFrame;
 	ruint                 m_currentShowingFrame;

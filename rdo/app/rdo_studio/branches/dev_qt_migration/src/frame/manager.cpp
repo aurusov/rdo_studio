@@ -247,10 +247,10 @@ void RDOStudioFrameManager::clear()
 		delete *it;
 	}
 
-	STL_FOR_ALL(m_bitmapList, it)
-	{
-		delete it->second;
-	}
+	//STL_FOR_ALL(m_bitmapList, it)
+	//{
+	//	delete it->second;
+	//}
 
 	m_frameList .clear();
 	m_bitmapList.clear();
@@ -347,11 +347,11 @@ void RDOStudioFrameManager::insertBitmap(CREF(tstring) bitmapName)
 	model->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD_BINARY, &data);
 
 	rbool ok = false;
-	PTR(Gdiplus::Bitmap) pBitmap = rdo::gui::Bitmap::load(data.m_name);
-	if (pBitmap)
+	QPixmap pixmap(QString::fromStdString(data.m_name));
+	if (!pixmap.isNull())
 	{
-		std::pair<rdo::gui::BitmapList::const_iterator, rbool> result =
-			m_bitmapList.insert(rdo::gui::BitmapList::value_type(bitmapName, pBitmap));
+		std::pair<FrameAnimationContent::BitmapList::const_iterator, rbool> result =
+			m_bitmapList.insert(FrameAnimationContent::BitmapList::value_type(bitmapName, pixmap));
 		if (result.second)
 		{
 			ok = true;
@@ -371,7 +371,7 @@ void RDOStudioFrameManager::showFrame(CPTRC(rdo::animation::Frame) pFrame, ruint
 		{
 			PTR(RDOStudioFrameView) pFrameView = getFrameView(index);
 			ASSERT(pFrameView);
-			rdo::gui::BitmapList bitmapGeneratedList;
+			FrameAnimationContent::BitmapList bitmapGeneratedList;
 			pFrameView->update(pFrame, m_bitmapList, bitmapGeneratedList, m_frameList[index]->m_areaList);
 			if (!bitmapGeneratedList.empty())
 			{
