@@ -12,6 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <gdiplus.h>
 #include <QtCore/qprocess.h>
+#include <QtCore/qtextcodec.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdofile.h"
 #include "kernel/rdothread.h"
@@ -195,6 +196,7 @@ RDOStudioApp::RDOStudioApp()
 {
 	setlocale(LC_ALL,     _T("rus"));
 	setlocale(LC_NUMERIC, _T("eng"));
+	QTextCodec::setCodecForCStrings(QTextCodec::codecForLocale());
 
 	m_log.open(_T("log.txt"));
 #ifdef PROCGUI_ENABLE
