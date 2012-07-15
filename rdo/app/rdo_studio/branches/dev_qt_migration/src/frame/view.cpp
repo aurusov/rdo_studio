@@ -85,11 +85,6 @@ void FrameAnimationContent::init(CPTRC(rdo::animation::Frame) pFrame, CREF(Bitma
 	else
 	{
 		bgColor = QColor(pFrame->m_bgColor.m_r, pFrame->m_bgColor.m_g, pFrame->m_bgColor.m_b);
-		bgColor = QColor(
-			GetRValue(studioApp.m_pMainFrame->style_frame.theme->backgroundColor),
-			GetGValue(studioApp.m_pMainFrame->style_frame.theme->backgroundColor),
-			GetBValue(studioApp.m_pMainFrame->style_frame.theme->backgroundColor)
-		);
 	}
 	setBGColor(bgColor);
 
