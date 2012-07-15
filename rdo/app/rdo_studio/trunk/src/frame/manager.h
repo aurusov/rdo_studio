@@ -14,7 +14,6 @@
 #include <vector>
 #include <map>
 #include <memory>
-#include <gdiplus.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/frame/document.h"
 #include "app/rdo_studio_mfc/src/frame/view.h"

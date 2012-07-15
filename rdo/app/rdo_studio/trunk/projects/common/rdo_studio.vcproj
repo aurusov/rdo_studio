@@ -66,7 +66,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib gdiplus.lib QtGuid4.lib QtCored4.lib"
+				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib QtGuid4.lib QtCored4.lib"
 				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
 				LinkIncremental="1"
 				IgnoreDefaultLibraryNames="msvcrt.lib"
@@ -153,7 +153,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib gdiplus.lib QtGui4.lib QtCore4.lib"
+				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib QtGui4.lib QtCore4.lib"
 				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
 				LinkIncremental="1"
 				SubSystem="2"
@@ -237,7 +237,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib gdiplus.lib QtGuid4.lib QtCored4.lib &quot;$(OutDir)/rdo_corba.lib&quot;"
+				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib QtGuid4.lib QtCored4.lib &quot;$(OutDir)/rdo_corba.lib&quot;"
 				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
 				LinkIncremental="1"
 				IgnoreDefaultLibraryNames="msvcrt.lib"
@@ -323,7 +323,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib gdiplus.lib QtGui4.lib QtCore4.lib &quot;$(OutDir)/rdo_corba.lib&quot;"
+				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib QtGui4.lib QtCore4.lib &quot;$(OutDir)/rdo_corba.lib&quot;"
 				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
 				LinkIncremental="1"
 				SubSystem="2"
@@ -406,7 +406,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib gdiplus.lib QtGuid4.lib QtCored4.lib"
+				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib QtGuid4.lib QtCored4.lib"
 				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
 				LinkIncremental="1"
 				IgnoreDefaultLibraryNames="msvcrt.lib"
@@ -492,7 +492,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib gdiplus.lib QtGui4.lib QtCore4.lib"
+				AdditionalDependencies="Imm32.lib Version.lib Htmlhelp.lib QtGui4.lib QtCore4.lib"
 				OutputFile="$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\RAO-studio.exe"
 				LinkIncremental="1"
 				SubSystem="2"

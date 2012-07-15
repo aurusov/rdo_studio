@@ -99,7 +99,6 @@ private:
 	rbool                                  m_fileAssociationCheckInFuture;
 	rbool                                  m_openLastProject;
 	tstring                                m_lastProjectName;
-	ULONG_PTR                              m_gdiplusToken;
 	rbool                                  m_showCaptionFullName;
 	rbool                                  m_autoRun;
 	rbool                                  m_autoExitByModel;

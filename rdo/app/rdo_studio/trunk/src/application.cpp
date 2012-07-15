@@ -10,7 +10,6 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <gdiplus.h>
 #include <QtCore/qprocess.h>
 #include <QtCore/qtextcodec.h>
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -232,9 +231,6 @@ BOOL RDOStudioApp::InitInstance()
 	m_lastProjectName              = GetProfileString(_T("general"),         _T("lastProject"),        _T(""));
 	m_showCaptionFullName          = GetProfileInt   (_T("general"),         _T("showCaptionFullName"), false) ? true : false;
 
-	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
-	Gdiplus::GdiplusStartup(&m_gdiplusToken, &gdiplusStartupInput, NULL);
-
 	m_editDocTemplate = new CMultiDocTemplate(IDR_EDIT_TYPE, RUNTIME_CLASS(RDOStudioEditDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioEditView));
 	AddDocTemplate(m_editDocTemplate);
 
@@ -421,8 +417,6 @@ int RDOStudioApp::ExitInstance()
 	RDOKernel::close();
 
 	::HtmlHelp(NULL, NULL, HH_CLOSE_ALL, 0);
-
-	Gdiplus::GdiplusShutdown(m_gdiplusToken);
 
 	if (m_autoExitByModel || !m_pluginExitNameList.empty())
 	{

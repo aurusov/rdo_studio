@@ -12,7 +12,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <map>
-#include <gdiplus.h>
 #include <QtGui/qwidget.h>
 #include <QtGui/qscrollarea.h>
 #include <QtGui/qevent.h>
