@@ -96,7 +96,7 @@ private:
 	typedef  std::vector<PTR(Frame)>  FrameList;
 
 	FrameList             m_frameList;
-	FrameAnimationContent::BitmapList  m_bitmapList;
+	rdo::gui::BitmapList  m_bitmapList;
 	PTR(FrameDocTemplate) m_pFrameDocTemplate;
 	ruint                 m_lastShowedFrame;
 	ruint                 m_currentShowingFrame;

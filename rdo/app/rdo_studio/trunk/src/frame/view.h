@@ -16,11 +16,11 @@
 #include <QtGui/qwidget.h>
 #include <QtGui/qscrollarea.h>
 #include <QtGui/qevent.h>
-#include <QtGui/qpixmap.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdoanimation.h"
 #include "ui/qt/headers/memdc/memdc.h"
 #include "ui/qt/headers/animation/area.h"
+#include "ui/qt/headers/bitmap/bitmap.h"
 #include "app/rdo_studio_mfc/src/view.h"
 #include "thirdparty/qt-solutions/qtwinmigrate/src/qwinwidget.h"
 // --------------------------------------------------------------------------------
@@ -35,11 +35,9 @@ public:
 	FrameAnimationContent(PTR(QWidget) pParent);
 	virtual ~FrameAnimationContent();
 
-	typedef  std::map<tstring, QPixmap>  BitmapList;
-
 	void update    (CPTRC(rdo::animation::Frame)         pFrame,
-	                 CREF(BitmapList)                    bitmapList,
-	                  REF(BitmapList)                    bitmapGeneratedList,
+	                 CREF(rdo::gui::BitmapList)          bitmapList,
+	                  REF(rdo::gui::BitmapList)          bitmapGeneratedList,
 	                  REF(rdo::gui::animation::AreaList) areaList);
 	void updateFont();
 
@@ -51,12 +49,12 @@ private:
 	QFont              m_font;
 
 	rbool valid           () const;
-	void  init            (CPTRC(rdo::animation::Frame) pFrame, CREF(BitmapList) bitmapList);
+	void  init            (CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::gui::BitmapList) bitmapList);
 	void  init            (CREF(QSize)   size );
 	void  setBGColor      (CREF(QColor)  color);
 	void  onDraw          (REF(QPainter) painter);
 
-	void  drawBackground    (CPTRC(rdo::animation::Frame) pFrame, CREF(BitmapList) bitmapList);
+	void  drawBackground    (CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::gui::BitmapList) bitmapList);
 	template <class F>
 	void  drawColoredElement(CPTR(rdo::animation::ColoredElement)   pColor, F drawMethod);
 	void  setColors         (CPTR(rdo::animation::ColoredElement)   pColor);
@@ -67,14 +65,14 @@ private:
 	void  elementTriang     ( PTR(rdo::animation::TriangElement)    pElement);
 	void  elementCircle     ( PTR(rdo::animation::CircleElement)    pElement);
 	void  elementEllipse    ( PTR(rdo::animation::EllipseElement)   pElement);
-	void  elementBMP        ( PTR(rdo::animation::BmpElement)       pElement, CREF(BitmapList) bitmapList, REF(BitmapList) bitmapGeneratedList);
-	void  elementSBMP       ( PTR(rdo::animation::ScaledBmpElement) pElement, CREF(BitmapList) bitmapList, REF(BitmapList) bitmapGeneratedList);
+	void  elementBMP        ( PTR(rdo::animation::BmpElement)       pElement, CREF(rdo::gui::BitmapList) bitmapList, REF(rdo::gui::BitmapList) bitmapGeneratedList);
+	void  elementSBMP       ( PTR(rdo::animation::ScaledBmpElement) pElement, CREF(rdo::gui::BitmapList) bitmapList, REF(rdo::gui::BitmapList) bitmapGeneratedList);
 	void  elementActive     ( PTR(rdo::animation::ActiveElement)    pElement, REF(rdo::gui::animation::AreaList) areaList);
 
 	static QPixmap getBitmap(CREF(tstring)              bitmapName,
 	                         CREF(tstring)              maskName,
-	                         CREF(BitmapList) bitmapList,
-	                          REF(BitmapList) bitmapGeneratedList);
+	                         CREF(rdo::gui::BitmapList) bitmapList,
+	                          REF(rdo::gui::BitmapList) bitmapGeneratedList);
 
 private:
 	virtual void resizeEvent    (QResizeEvent* pEvent);
@@ -111,10 +109,10 @@ public:
 	RDOStudioFrameView();
 	virtual ~RDOStudioFrameView();
 
-	void                       update       (CPTRC(rdo::animation::Frame)             pFrame,
-	                                          CREF(FrameAnimationContent::BitmapList) bitmapList,
-	                                           REF(FrameAnimationContent::BitmapList) bitmapGeneratedList,
-	                                           REF(rdo::gui::animation::AreaList)     areaList);
+	void                       update       (CPTRC(rdo::animation::Frame)         pFrame,
+	                                          CREF(rdo::gui::BitmapList)          bitmapList,
+	                                           REF(rdo::gui::BitmapList)          bitmapGeneratedList,
+	                                           REF(rdo::gui::animation::AreaList) areaList);
 	void                       updateFont   ();
 	PTR(RDOStudioFrameDoc)     GetDocument  ();
 	CREF(CRect)                getClientRect() const;

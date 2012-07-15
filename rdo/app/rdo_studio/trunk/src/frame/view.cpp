@@ -49,7 +49,7 @@ rbool FrameAnimationContent::valid() const
 	return m_memDC.valid();
 }
 
-void FrameAnimationContent::init(CPTRC(rdo::animation::Frame) pFrame, CREF(BitmapList) bitmapList)
+void FrameAnimationContent::init(CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::gui::BitmapList) bitmapList)
 {
 	ASSERT(pFrame);
 
@@ -57,7 +57,7 @@ void FrameAnimationContent::init(CPTRC(rdo::animation::Frame) pFrame, CREF(Bitma
 	rbool imageFound = false;
 	if (pFrame->hasBgImage())
 	{
-		BitmapList::const_iterator bmpIt = bitmapList.find(pFrame->m_bgImageName);
+		rdo::gui::BitmapList::const_iterator bmpIt = bitmapList.find(pFrame->m_bgImageName);
 		if (bmpIt != bitmapList.end())
 		{
 			size.setWidth (bmpIt->second.width ());
@@ -162,8 +162,8 @@ void FrameAnimationContent::onDraw(REF(QPainter) painter)
 
 void FrameAnimationContent::update(
 	CPTRC(rdo::animation::Frame)         pFrame,
-	 CREF(BitmapList)                    bitmapList,
-	  REF(BitmapList)                    bitmapGeneratedList,
+	 CREF(rdo::gui::BitmapList)          bitmapList,
+	  REF(rdo::gui::BitmapList)          bitmapGeneratedList,
 	  REF(rdo::gui::animation::AreaList) areaList
 )
 {
@@ -204,14 +204,14 @@ void FrameAnimationContent::update(
 	parent_type::update();
 }
 
-void FrameAnimationContent::drawBackground(CPTRC(rdo::animation::Frame) pFrame, CREF(BitmapList) bitmapList)
+void FrameAnimationContent::drawBackground(CPTRC(rdo::animation::Frame) pFrame, CREF(rdo::gui::BitmapList) bitmapList)
 {
 	ASSERT(pFrame);
 
 	rbool bgImage = false;
 	if (pFrame->hasBgImage())
 	{
-		BitmapList::const_iterator bmpIt = bitmapList.find(pFrame->m_bgImageName);
+		rdo::gui::BitmapList::const_iterator bmpIt = bitmapList.find(pFrame->m_bgImageName);
 		if (bmpIt != bitmapList.end())
 		{
 			m_memDC.dc().drawPixmap(0, 0, bmpIt->second);
@@ -445,8 +445,8 @@ void FrameAnimationContent::elementEllipse(PTR(rdo::animation::EllipseElement) p
 
 void FrameAnimationContent::elementBMP(
 	 PTR(rdo::animation::BmpElement) pElement,
-	CREF(BitmapList)       bitmapList,
-	 REF(BitmapList)       bitmapGeneratedList)
+	CREF(rdo::gui::BitmapList)       bitmapList,
+	 REF(rdo::gui::BitmapList)       bitmapGeneratedList)
 {
 	ASSERT(pElement);
 
@@ -465,8 +465,8 @@ void FrameAnimationContent::elementBMP(
 
 void FrameAnimationContent::elementSBMP(
 	 PTR(rdo::animation::ScaledBmpElement) pElement,
-	CREF(BitmapList)             bitmapList,
-	 REF(BitmapList)             bitmapGeneratedList)
+	CREF(rdo::gui::BitmapList)             bitmapList,
+	 REF(rdo::gui::BitmapList)             bitmapGeneratedList)
 {
 	ASSERT(pElement);
 
@@ -486,10 +486,10 @@ void FrameAnimationContent::elementSBMP(
 QPixmap FrameAnimationContent::getBitmap(
 	CREF(tstring)              bitmapName,
 	CREF(tstring)              maskName,
-	CREF(BitmapList) bitmapList,
-	 REF(BitmapList) bitmapGeneratedList)
+	CREF(rdo::gui::BitmapList) bitmapList,
+	 REF(rdo::gui::BitmapList) bitmapGeneratedList)
 {
-	BitmapList::const_iterator bmpIt = bitmapList.find(bitmapName);
+	rdo::gui::BitmapList::const_iterator bmpIt = bitmapList.find(bitmapName);
 	if (bmpIt == bitmapList.end())
 		return QPixmap();
 
@@ -497,7 +497,7 @@ QPixmap FrameAnimationContent::getBitmap(
 	{
 		tstring maskedBitmapName(rdo::format(_T("%s%s"), bitmapName.c_str(), maskName.c_str()));
 
-		BitmapList::const_iterator generatedIt = bitmapList.find(maskedBitmapName);
+		rdo::gui::BitmapList::const_iterator generatedIt = bitmapList.find(maskedBitmapName);
 		if (generatedIt != bitmapList.end())
 		{
 			return generatedIt->second;
@@ -509,34 +509,16 @@ QPixmap FrameAnimationContent::getBitmap(
 			return generatedIt->second;
 		}
 
-		BitmapList::const_iterator maskIt = bitmapList.find(maskName);
+		rdo::gui::BitmapList::const_iterator maskIt = bitmapList.find(maskName);
 		if (maskIt != bitmapList.end())
 		{
-			QImage  generated = bmpIt->second.copy().toImage().convertToFormat(QImage::Format_ARGB32);
-			QImage  mask      = maskIt->second.toImage();
-			if (!generated.isNull() && !mask.isNull() && generated.size() == mask.size())
+			QPixmap pixmap = rdo::gui::Bitmap::transparent(bmpIt->second, maskIt->second);
+			if (!pixmap.isNull())
 			{
-				QRgb white       = QColor(Qt::white).rgb();
-				QRgb transparent = QColor(Qt::transparent).rgba();
-				for (int x = 0; x < mask.width(); ++x)
-				{
-					for (int y = 0; y < mask.height(); ++y)
-					{
-						if (mask.pixel(x, y) == white)
-						{
-							generated.setPixel(x, y, transparent);
-						}
-					}
-				}
-
-				QPixmap pixmap = QPixmap::fromImage(generated);
-				if (!pixmap.isNull())
-				{
-					std::pair<BitmapList::const_iterator, rbool> result =
-						bitmapGeneratedList.insert(BitmapList::value_type(maskedBitmapName, pixmap));
-					ASSERT(result.second);
-					return pixmap;
-				}
+				std::pair<rdo::gui::BitmapList::const_iterator, rbool> result =
+					bitmapGeneratedList.insert(rdo::gui::BitmapList::value_type(maskedBitmapName, pixmap));
+				ASSERT(result.second);
+				return pixmap;
 			}
 		}
 	}
@@ -668,10 +650,10 @@ void RDOStudioFrameView::OnDestroy()
 }
 
 void RDOStudioFrameView::update(
-	CPTRC(rdo::animation::Frame)             pFrame,
-	 CREF(FrameAnimationContent::BitmapList) bitmapList,
-	  REF(FrameAnimationContent::BitmapList) bitmapGeneratedList,
-	  REF(rdo::gui::animation::AreaList)     areaList
+	CPTRC(rdo::animation::Frame)         pFrame,
+	 CREF(rdo::gui::BitmapList)          bitmapList,
+	  REF(rdo::gui::BitmapList)          bitmapGeneratedList,
+	  REF(rdo::gui::animation::AreaList) areaList
 )
 {
 	static_cast<PTR(FrameAnimationContent)>(m_pFrameAnimationWnd->widget())->update(pFrame, bitmapList, bitmapGeneratedList, areaList);

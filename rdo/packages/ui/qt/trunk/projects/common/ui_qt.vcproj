@@ -200,6 +200,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name=".bitmap"
+			>
+			<File
+				RelativePath="..\..\src\bitmap\bitmap.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\headers\bitmap\bitmap.h"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
