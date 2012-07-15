@@ -27,10 +27,30 @@ namespace rdo
 		inline rbool MemDC<QPainter, QPixmap>::onCreate()
 		{
 			m_pBitmap.reset(new QPixmap(m_width, m_height));
-			if (m_pBitmap.get())
+			m_pDC.reset(new QPainter);
+			return true;
+		}
+
+		template <>
+		inline rbool MemDC<QPainter, QPixmap>::resize(ruint width, ruint height)
+		{
+			if (width == 0 || height == 0)
+				return false;
+			if (width == m_width && height == m_height)
+				return true;
+
+			std::auto_ptr<QPixmap> pPrevBitmap(m_pBitmap);
+
+			clear();
+			if (!create(width, height))
+				return false;
+
+			if (pPrevBitmap.get())
 			{
-				m_pDC.reset(new QPainter(m_pBitmap.get()));
+				QPainter painter(m_pBitmap.get());
+				painter.drawPixmap(0, 0, *pPrevBitmap.get());
 			}
+
 			return true;
 		}
 
