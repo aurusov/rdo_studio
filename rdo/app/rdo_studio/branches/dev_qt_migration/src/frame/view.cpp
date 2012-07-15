@@ -99,7 +99,7 @@ void FrameAnimationContent::init(CPTRC(rdo::animation::Frame) pFrame, CREF(Bitma
 void FrameAnimationContent::init(CREF(QSize) size)
 {
 	m_memDC.resize(size.width(), size.height());
-//	updateScrollBars();
+	setMinimumSize(size);
 }
 
 void FrameAnimationContent::updateFont()
@@ -122,7 +122,6 @@ void FrameAnimationContent::setBGColor(CREF(QColor) color)
 void FrameAnimationContent::resizeEvent(QResizeEvent* pEvent)
 {
 	m_size = pEvent->size();
-//	updateScrollBars();
 }
 
 void FrameAnimationContent::paintEvent(QPaintEvent* pEvent)
@@ -548,9 +547,8 @@ FrameAnimationWnd::FrameAnimationWnd(PTR(QWidget) pParent)
 	setAttribute(Qt::WA_NoSystemBackground, true);
 
 	setWidgetResizable(true);
-
-	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-	setVerticalScrollBarPolicy  (Qt::ScrollBarAlwaysOn);
+	setFrameShadow(QFrame::Plain  );
+	setFrameShape (QFrame::NoFrame);
 
 	m_pContent = new FrameAnimationContent(this);
 	ASSERT(m_pContent);
@@ -649,7 +647,7 @@ int RDOStudioFrameView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	pVBoxLayout->setSpacing(0);
 	pVBoxLayout->setContentsMargins(0, 0, 0, 0);
 
-	m_pFrameAnimationWnd = new FrameAnimationContent(m_pWidget);
+	m_pFrameAnimationWnd = new FrameAnimationWnd(m_pWidget);
 	ASSERT(m_pFrameAnimationWnd);
 
 	pVBoxLayout->addWidget(m_pFrameAnimationWnd);
@@ -708,7 +706,7 @@ void RDOStudioFrameView::updateFont()
 	std::wstring fontName = rdo::toUnicode(pStyle->font->name);
 	m_pFont.reset(new Gdiplus::Font(fontName.c_str(), Gdiplus::REAL(pStyle->font->size), style));
 
-	static_cast<PTR(FrameAnimationContent)>(m_pFrameAnimationWnd)->updateFont();
+	static_cast<PTR(FrameAnimationContent)>(m_pFrameAnimationWnd->widget())->updateFont();
 }
 
 BOOL RDOStudioFrameView::OnPreparePrinting(PTR(CPrintInfo) pInfo)
@@ -1073,7 +1071,7 @@ void RDOStudioFrameView::update(
 	  REF(AreaList)              areaList
 )
 {
-	static_cast<PTR(FrameAnimationContent)>(m_pFrameAnimationWnd)->update(pFrame, bitmapList, bitmapGeneratedList);
+	static_cast<PTR(FrameAnimationContent)>(m_pFrameAnimationWnd->widget())->update(pFrame, bitmapList, bitmapGeneratedList);
 
 	//ASSERT(pFrame);
 

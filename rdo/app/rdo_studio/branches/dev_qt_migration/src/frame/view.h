@@ -136,7 +136,7 @@ private:
 	HWND                          m_hwnd;
 	rbool                         m_mouseOnHScroll;
 	PTR(QWinWidget)               m_pWidget;
-	PTR(QWidget)                  m_pFrameAnimationWnd;
+	PTR(FrameAnimationWnd)        m_pFrameAnimationWnd;
 
 	rbool valid           ();
 	void  init            (CPTRC(rdo::animation::Frame) pFrame, CREF(FrameAnimationContent::BitmapList) bitmapList);
