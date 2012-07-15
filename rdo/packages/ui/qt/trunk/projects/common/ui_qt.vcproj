@@ -52,7 +52,7 @@
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="ui/qt/pch/stdpch.h"
 				BrowseInformation="1"
-				WarningLevel="4"
+				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -119,7 +119,7 @@
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="ui/qt/pch/stdpch.h"
 				BrowseInformation="1"
-				WarningLevel="4"
+				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
 			<Tool
