@@ -192,6 +192,14 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name=".animation"
+			>
+			<File
+				RelativePath="..\..\headers\animation\area.h"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

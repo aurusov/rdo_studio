@@ -184,7 +184,7 @@ void RDOStudioFrameManager::areaDown(ruint frameIndex, CREF(QPoint) point) const
 {
 	ASSERT(frameIndex != ruint(~0) && frameIndex < m_frameList.size());
 
-	CREF(FrameAnimationContent::AreaList) areaList = m_frameList[frameIndex]->m_areaList;
+	CREF(rdo::gui::animation::AreaList) areaList = m_frameList[frameIndex]->m_areaList;
 	STL_FOR_ALL_CONST(areaList, it)
 	{
 		if (it->second.m_rect.contains(point))

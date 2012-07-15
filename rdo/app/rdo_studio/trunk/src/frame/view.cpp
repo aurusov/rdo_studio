@@ -161,10 +161,10 @@ void FrameAnimationContent::onDraw(REF(QPainter) painter)
 }
 
 void FrameAnimationContent::update(
-	CPTRC(rdo::animation::Frame) pFrame,
-	 CREF(BitmapList)            bitmapList,
-	  REF(BitmapList)            bitmapGeneratedList,
-	  REF(AreaList)              areaList
+	CPTRC(rdo::animation::Frame)         pFrame,
+	 CREF(BitmapList)                    bitmapList,
+	  REF(BitmapList)                    bitmapGeneratedList,
+	  REF(rdo::gui::animation::AreaList) areaList
 )
 {
 	ASSERT(pFrame);
@@ -544,15 +544,15 @@ QPixmap FrameAnimationContent::getBitmap(
 	return bmpIt->second;
 }
 
-void FrameAnimationContent::elementActive(PTR(rdo::animation::ActiveElement) pElement, REF(AreaList) areaList)
+void FrameAnimationContent::elementActive(PTR(rdo::animation::ActiveElement) pElement, REF(rdo::gui::animation::AreaList) areaList)
 {
 	ASSERT(pElement);
 
-	AreaList::iterator it = areaList.find(pElement->m_opr_name);
+	rdo::gui::animation::AreaList::iterator it = areaList.find(pElement->m_opr_name);
 	if (it == areaList.end())
 	{
-		std::pair<AreaList::iterator, rbool> result =
-			areaList.insert(AreaList::value_type(pElement->m_opr_name, Area()));
+		std::pair<rdo::gui::animation::AreaList::iterator, rbool> result =
+			areaList.insert(rdo::gui::animation::AreaList::value_type(pElement->m_opr_name, rdo::gui::animation::Area()));
 		ASSERT(result.second);
 		it = result.first;
 	}
@@ -671,7 +671,7 @@ void RDOStudioFrameView::update(
 	CPTRC(rdo::animation::Frame)             pFrame,
 	 CREF(FrameAnimationContent::BitmapList) bitmapList,
 	  REF(FrameAnimationContent::BitmapList) bitmapGeneratedList,
-	  REF(FrameAnimationContent::AreaList)   areaList
+	  REF(rdo::gui::animation::AreaList)     areaList
 )
 {
 	static_cast<PTR(FrameAnimationContent)>(m_pFrameAnimationWnd->widget())->update(pFrame, bitmapList, bitmapGeneratedList, areaList);

@@ -82,12 +82,12 @@ private:
 		 Frame();
 		~Frame();
 
-		HTREEITEM                        m_hitem;
-		tstring                          m_name;
-		PTR(RDOStudioFrameDoc)           m_pDoc;
-		PTR(RDOStudioFrameView)          m_pView;
-		PTR(FrameAnimationContent)       m_pContent;
-		FrameAnimationContent::AreaList  m_areaList;
+		HTREEITEM                      m_hitem;
+		tstring                        m_name;
+		PTR(RDOStudioFrameDoc)         m_pDoc;
+		PTR(RDOStudioFrameView)        m_pView;
+		PTR(FrameAnimationContent)     m_pContent;
+		rdo::gui::animation::AreaList  m_areaList;
 
 	private:
 		void clear();
