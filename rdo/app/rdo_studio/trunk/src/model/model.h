@@ -40,6 +40,7 @@ friend class RDOStudioFrameTreeCtrl;
 friend class RDOStudioApp;
 friend class RDOThreadStudioGUI;
 friend class RDOStudioPlugins;
+friend class FrameAnimationContent;
 
 private:
 	enum BuildState

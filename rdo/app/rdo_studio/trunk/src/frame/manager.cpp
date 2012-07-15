@@ -32,9 +32,10 @@
 // -------------------- RDOStudioFrameManager::Frame
 // --------------------------------------------------------------------------------
 RDOStudioFrameManager::Frame::Frame()
-	: m_hitem(0   )
-	, m_pDoc (NULL)
-	, m_pView(NULL)
+	: m_hitem   (0   )
+	, m_pDoc    (NULL)
+	, m_pView   (NULL)
+	, m_pContent(NULL)
 {}
 
 RDOStudioFrameManager::Frame::~Frame()
@@ -90,8 +91,6 @@ void RDOStudioFrameManager::insertFrame(CREF(tstring) frameName)
 	PTR(Frame) item = new Frame();
 	item->m_hitem = studioApp.m_pMainFrame->workspace.frames->InsertItem(frameName.c_str(), 1, 1, studioApp.m_pMainFrame->workspace.frames->GetRootItem());
 	item->m_name  = frameName;
-	item->m_pDoc  = NULL;
-	item->m_pView = NULL;
 	m_frameList.push_back(item);
 }
 
@@ -137,6 +136,20 @@ ruint RDOStudioFrameManager::findFrameIndex(CPTR(RDOStudioFrameView) pView) cons
 	return ruint(~0);
 }
 
+ruint RDOStudioFrameManager::findFrameIndex(CPTR(FrameAnimationContent) pContent) const
+{
+	ruint index = 0;
+	STL_FOR_ALL_CONST(m_frameList, it)
+	{
+		if ((*it)->m_pContent == pContent)
+		{
+			return index;
+		}
+		index++;
+	}
+	return ruint(~0);
+}
+
 CREF(tstring) RDOStudioFrameManager::getFrameName(ruint index) const
 {
 	ASSERT(index < m_frameList.size());
@@ -167,14 +180,14 @@ rbool RDOStudioFrameManager::isChanged()
 	return res;
 }
 
-void RDOStudioFrameManager::areaDown(ruint frameIndex, CREF(Gdiplus::Point) point) const
+void RDOStudioFrameManager::areaDown(ruint frameIndex, CREF(QPoint) point) const
 {
 	ASSERT(frameIndex != ruint(~0) && frameIndex < m_frameList.size());
 
-	CREF(RDOStudioFrameView::AreaList) areaList = m_frameList[frameIndex]->m_areaList;
+	CREF(FrameAnimationContent::AreaList) areaList = m_frameList[frameIndex]->m_areaList;
 	STL_FOR_ALL_CONST(areaList, it)
 	{
-		if (it->second.m_rect.Contains(point))
+		if (it->second.m_rect.contains(point))
 		{
 			tstring areaName = it->first;
 			model->sendMessage(kernel->runtime(), RDOThread::RT_RUNTIME_FRAME_AREA_DOWN, &areaName);
@@ -190,9 +203,10 @@ PTR(RDOStudioFrameDoc) RDOStudioFrameManager::connectFrameDoc(ruint index)
 		pDoc = static_cast<PTR(RDOStudioFrameDoc)>(m_pFrameDocTemplate->OpenDocumentFile(NULL));
 		if (pDoc)
 		{
-			m_frameList[index]->m_pDoc  = pDoc;
-			m_frameList[index]->m_pView = pDoc->getView();
-			m_lastShowedFrame           = index;
+			m_frameList[index]->m_pDoc     = pDoc;
+			m_frameList[index]->m_pView    = pDoc->getView();
+			m_frameList[index]->m_pContent = pDoc->getView()->getContent();
+			m_lastShowedFrame              = index;
 			pDoc->SetTitle(rdo::format(IDS_FRAME_NAME, getFrameName(index).c_str()).c_str());
 			setCurrentShowingFrame(index);
 		}
@@ -247,10 +261,10 @@ void RDOStudioFrameManager::clear()
 		delete *it;
 	}
 
-	STL_FOR_ALL(m_bitmapList, it)
-	{
-		delete it->second;
-	}
+	//STL_FOR_ALL(m_bitmapList, it)
+	//{
+	//	delete it->second;
+	//}
 
 	m_frameList .clear();
 	m_bitmapList.clear();
@@ -347,11 +361,11 @@ void RDOStudioFrameManager::insertBitmap(CREF(tstring) bitmapName)
 	model->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD_BINARY, &data);
 
 	rbool ok = false;
-	PTR(Gdiplus::Bitmap) pBitmap = rdo::gui::Bitmap::load(data.m_name);
-	if (pBitmap)
+	QPixmap pixmap(QString::fromStdString(data.m_name));
+	if (!pixmap.isNull())
 	{
-		std::pair<rdo::gui::BitmapList::const_iterator, rbool> result =
-			m_bitmapList.insert(rdo::gui::BitmapList::value_type(bitmapName, pBitmap));
+		std::pair<FrameAnimationContent::BitmapList::const_iterator, rbool> result =
+			m_bitmapList.insert(FrameAnimationContent::BitmapList::value_type(bitmapName, pixmap));
 		if (result.second)
 		{
 			ok = true;
@@ -371,7 +385,7 @@ void RDOStudioFrameManager::showFrame(CPTRC(rdo::animation::Frame) pFrame, ruint
 		{
 			PTR(RDOStudioFrameView) pFrameView = getFrameView(index);
 			ASSERT(pFrameView);
-			rdo::gui::BitmapList bitmapGeneratedList;
+			FrameAnimationContent::BitmapList bitmapGeneratedList;
 			pFrameView->update(pFrame, m_bitmapList, bitmapGeneratedList, m_frameList[index]->m_areaList);
 			if (!bitmapGeneratedList.empty())
 			{
