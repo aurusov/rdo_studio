@@ -19,7 +19,6 @@
 #include <QtGui/qpixmap.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdoanimation.h"
-#include "ui/gdiplus/headers/memdc/memdc.h"
 #include "ui/qt/headers/memdc/memdc.h"
 #include "app/rdo_studio_mfc/src/view.h"
 #include "thirdparty/qt-solutions/qtwinmigrate/src/qwinwidget.h"
