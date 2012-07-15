@@ -36,9 +36,10 @@ public:
 	void insertFrame (CREF(tstring) frameName );
 	void insertBitmap(CREF(tstring) bitmapName);
 
-	ruint findFrameIndex(const HTREEITEM          hitem) const;
-	ruint findFrameIndex(CPTR(RDOStudioFrameDoc)  pDoc ) const;
-	ruint findFrameIndex(CPTR(RDOStudioFrameView) pView) const;
+	ruint findFrameIndex(const HTREEITEM             hitem   ) const;
+	ruint findFrameIndex(CPTR(RDOStudioFrameDoc)     pDoc    ) const;
+	ruint findFrameIndex(CPTR(RDOStudioFrameView)    pView   ) const;
+	ruint findFrameIndex(CPTR(FrameAnimationContent) pContent) const;
 
 	CREF(tstring)           getFrameName      (ruint index) const;
 	PTR(RDOStudioFrameDoc)  getFrameDoc       (ruint index) const;
@@ -46,7 +47,7 @@ public:
 	ruint                   count             () const;
 	rbool                   isChanged         ();
 
-	void                    areaDown          (ruint frameIndex, CREF(Gdiplus::Point) point) const;
+	void                    areaDown          (ruint frameIndex, CREF(QPoint) point) const;
 
 	PTR(RDOStudioFrameDoc)  connectFrameDoc   (ruint index);
 	void                    disconnectFrameDoc(CPTR(RDOStudioFrameDoc) pDoc);
@@ -81,11 +82,12 @@ private:
 		 Frame();
 		~Frame();
 
-		HTREEITEM                     m_hitem;
-		tstring                       m_name;
-		PTR(RDOStudioFrameDoc)        m_pDoc;
-		PTR(RDOStudioFrameView)       m_pView;
-		RDOStudioFrameView::AreaList  m_areaList;
+		HTREEITEM                        m_hitem;
+		tstring                          m_name;
+		PTR(RDOStudioFrameDoc)           m_pDoc;
+		PTR(RDOStudioFrameView)          m_pView;
+		PTR(FrameAnimationContent)       m_pContent;
+		FrameAnimationContent::AreaList  m_areaList;
 
 	private:
 		void clear();

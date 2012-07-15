@@ -30,8 +30,6 @@ FrameAnimationContent::FrameAnimationContent(PTR(QWidget) pParent)
 	, m_size     (QSize (0, 0))
 	, m_pos      (QPoint(0, 0))
 {
-//	setAutoFillBackground(false);
-//	setAttribute(Qt::WA_OpaquePaintEvent,   true);
 	setAttribute(Qt::WA_NoSystemBackground, true);
 
 	m_bgColor = QColor(
@@ -127,6 +125,20 @@ void FrameAnimationContent::paintEvent(QPaintEvent* pEvent)
 	onDraw(painter);
 }
 
+void FrameAnimationContent::mousePressEvent(QMouseEvent* pEvent)
+{
+	ASSERT(pEvent);
+	if (pEvent->button() == Qt::LeftButton)
+	{
+		PTR(RDOStudioFrameManager) pFrameManager = &model->m_frameManager;
+		ruint index = pFrameManager->findFrameIndex(this);
+		if (index != ruint(~0))
+		{
+			pFrameManager->areaDown(index, pEvent->pos());
+		}
+	}
+}
+
 void FrameAnimationContent::onDraw(REF(QPainter) painter)
 {
 	if (valid())
@@ -150,8 +162,9 @@ void FrameAnimationContent::onDraw(REF(QPainter) painter)
 
 void FrameAnimationContent::update(
 	CPTRC(rdo::animation::Frame) pFrame,
-	 CREF(BitmapList)  bitmapList,
-	  REF(BitmapList)  bitmapGeneratedList
+	 CREF(BitmapList)            bitmapList,
+	  REF(BitmapList)            bitmapGeneratedList,
+	  REF(AreaList)              areaList
 )
 {
 	ASSERT(pFrame);
@@ -182,7 +195,7 @@ void FrameAnimationContent::update(
 		case rdo::animation::FrameItem::FIT_ELLIPSE: elementEllipse  (static_cast<PTR(rdo::animation::EllipseElement  )>(pCurrElement)); break;
 		case rdo::animation::FrameItem::FIT_BMP    : elementBMP      (static_cast<PTR(rdo::animation::BmpElement      )>(pCurrElement), bitmapList, bitmapGeneratedList); break;
 		case rdo::animation::FrameItem::FIT_S_BMP  : elementSBMP     (static_cast<PTR(rdo::animation::ScaledBmpElement)>(pCurrElement), bitmapList, bitmapGeneratedList); break;
-//		case rdo::animation::FrameItem::FIT_ACTIVE : elementActive   (static_cast<PTR(rdo::animation::ActiveElement   )>(pCurrElement), areaList); break;
+		case rdo::animation::FrameItem::FIT_ACTIVE : elementActive   (static_cast<PTR(rdo::animation::ActiveElement   )>(pCurrElement), areaList); break;
 		}
 	}
 
@@ -531,6 +544,26 @@ QPixmap FrameAnimationContent::getBitmap(
 	return bmpIt->second;
 }
 
+void FrameAnimationContent::elementActive(PTR(rdo::animation::ActiveElement) pElement, REF(AreaList) areaList)
+{
+	ASSERT(pElement);
+
+	AreaList::iterator it = areaList.find(pElement->m_opr_name);
+	if (it == areaList.end())
+	{
+		std::pair<AreaList::iterator, rbool> result =
+			areaList.insert(AreaList::value_type(pElement->m_opr_name, Area()));
+		ASSERT(result.second);
+		it = result.first;
+	}
+	it->second.m_rect = QRect(
+		(int)(pElement->m_point.m_x),
+		(int)(pElement->m_point.m_y),
+		(int)(pElement->m_size.m_width),
+		(int)(pElement->m_size.m_height)
+	);
+}
+
 // --------------------------------------------------------------------------------
 // -------------------- FrameAnimationWnd
 // --------------------------------------------------------------------------------
@@ -559,59 +592,24 @@ FrameAnimationWnd::~FrameAnimationWnd()
 IMPLEMENT_DYNCREATE(RDOStudioFrameView, RDOStudioView)
 
 BEGIN_MESSAGE_MAP(RDOStudioFrameView, RDOStudioView)
-	ON_WM_CREATE       ()
-	ON_WM_DESTROY      ()
-	ON_WM_SIZE         ()
-	ON_WM_HSCROLL      ()
-	ON_WM_VSCROLL      ()
-	ON_WM_LBUTTONDOWN  ()
-	ON_WM_KEYDOWN      ()
-	ON_WM_KEYUP        ()
-	ON_WM_MOUSEWHEEL   ()
-	ON_WM_PAINT        ()
-	ON_WM_NCLBUTTONDOWN()
-	ON_WM_NCRBUTTONDOWN()
-	ON_WM_NCMOUSEMOVE  ()
-	ON_WM_MOUSEMOVE    ()
-	ON_COMMAND         (ID_HELP_KEYWORD, OnHelpKeyword)
-	ON_COMMAND         (ID_FILE_PRINT, RDOStudioView::OnFilePrint)
-	ON_COMMAND         (ID_FILE_PRINT_DIRECT, RDOStudioView::OnFilePrint)
-	ON_COMMAND         (ID_FILE_PRINT_PREVIEW, RDOStudioView::OnFilePrintPreview)
+	ON_WM_CREATE ()
+	ON_WM_DESTROY()
+	ON_WM_SIZE   ()
+	ON_WM_KEYDOWN()
+	ON_WM_KEYUP  ()
+	ON_WM_PAINT  ()
+	ON_COMMAND   (ID_HELP_KEYWORD, OnHelpKeyword)
 END_MESSAGE_MAP()
 
 RDOStudioFrameView::RDOStudioFrameView()
 	: RDOStudioView       ()
-	, m_newClientRect     (0, 0, 0, 0)
-	, m_hwnd              (NULL )
-	, m_mouseOnHScroll    (false)
+	, m_clientRect        (0, 0, 0, 0)
 	, m_pWidget           (NULL )
 	, m_pFrameAnimationWnd(NULL )
-{
-	m_bgColor.SetFromCOLORREF(studioApp.m_pMainFrame->style_frame.theme->backgroundColor);
-}
+{}
 
 RDOStudioFrameView::~RDOStudioFrameView()
 {}
-
-rbool RDOStudioFrameView::valid()
-{
-	return m_memDC.valid();
-}
-
-void RDOStudioFrameView::init(CPTRC(rdo::animation::Frame) pFrame, CREF(FrameAnimationContent::BitmapList) bitmapList)
-{
-}
-
-void RDOStudioFrameView::init(CREF(Gdiplus::Size) size)
-{
-	m_memDC.resize(size.Width, size.Height);
-	updateScrollBars();
-}
-
-void RDOStudioFrameView::setBGColor(CREF(Gdiplus::Color) color)
-{
-	m_bgColor = color;
-}
 
 BOOL RDOStudioFrameView::PreCreateWindow(REF(CREATESTRUCT) cs)
 {
@@ -619,7 +617,6 @@ BOOL RDOStudioFrameView::PreCreateWindow(REF(CREATESTRUCT) cs)
 		return FALSE;
 
 	cs.style &= ~WS_BORDER;
-	cs.style |= WS_HSCROLL | WS_VSCROLL;
 	cs.lpszClass = AfxRegisterWndClass(CS_DBLCLKS | CS_OWNDC, ::LoadCursor(NULL, IDC_ARROW));
 
 	return TRUE;
@@ -631,8 +628,6 @@ int RDOStudioFrameView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 
 	m_pWidget = new QWinWidget(this);
-//	m_pWidget->setAutoFillBackground(false);
-//	m_pWidget->setAttribute(Qt::WA_OpaquePaintEvent,   true);
 	m_pWidget->setAttribute(Qt::WA_NoSystemBackground, true);
 
 	ASSERT(m_pWidget);
@@ -650,10 +645,7 @@ int RDOStudioFrameView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_pWidget->move(0, 0);
 	m_pWidget->show();
 
-	m_hwnd = GetSafeHwnd();
-
-	updateFont      ();
-	updateScrollBars();
+	updateFont();
 
 	return 0;
 }
@@ -675,50 +667,26 @@ void RDOStudioFrameView::OnDestroy()
 	RDOStudioView::OnDestroy();
 }
 
+void RDOStudioFrameView::update(
+	CPTRC(rdo::animation::Frame)             pFrame,
+	 CREF(FrameAnimationContent::BitmapList) bitmapList,
+	  REF(FrameAnimationContent::BitmapList) bitmapGeneratedList,
+	  REF(FrameAnimationContent::AreaList)   areaList
+)
+{
+	static_cast<PTR(FrameAnimationContent)>(m_pFrameAnimationWnd->widget())->update(pFrame, bitmapList, bitmapGeneratedList, areaList);
+}
+
 void RDOStudioFrameView::updateFont()
 {
-	LOGFONT lf;
-	memset(&lf, 0, sizeof(lf));
-	PTR(RDOStudioFrameStyle) pStyle = &studioApp.m_pMainFrame->style_frame;
-//	lf.lfHeight    = -MulDiv(pStyle->font->size, ::GetDeviceCaps(hDC, LOGPIXELSY), 72);
-	lf.lfWeight    = pStyle->theme->defaultStyle & rdoStyle::RDOStyleFont::BOLD ? FW_BOLD : FW_NORMAL;
-	lf.lfItalic    = pStyle->theme->defaultStyle & rdoStyle::RDOStyleFont::ITALIC;
-	lf.lfUnderline = pStyle->theme->defaultStyle & rdoStyle::RDOStyleFont::UNDERLINE;
-	lf.lfCharSet   = BYTE(pStyle->font->characterSet);
-#pragma warning(disable: 4996)
-	strcpy(lf.lfFaceName, pStyle->font->name.c_str());
-#pragma warning(default: 4996)
-
-	Gdiplus::FontStyle style;
-	switch (pStyle->theme->defaultStyle)
-	{
-	case rdoStyle::RDOStyleFont::BOLD     : style = Gdiplus::FontStyleBold;      break;
-	case rdoStyle::RDOStyleFont::ITALIC   : style = Gdiplus::FontStyleItalic;    break;
-	case rdoStyle::RDOStyleFont::UNDERLINE: style = Gdiplus::FontStyleUnderline; break;
-	default                               : style = Gdiplus::FontStyleRegular;   break;
-	}
-
-	std::wstring fontName = rdo::toUnicode(pStyle->font->name);
-	m_pFont.reset(new Gdiplus::Font(fontName.c_str(), Gdiplus::REAL(pStyle->font->size), style));
-
 	static_cast<PTR(FrameAnimationContent)>(m_pFrameAnimationWnd->widget())->updateFont();
 }
 
-BOOL RDOStudioFrameView::OnPreparePrinting(PTR(CPrintInfo) pInfo)
+PTR(FrameAnimationContent) RDOStudioFrameView::getContent()
 {
-	return DoPreparePrinting(pInfo);
-}
-
-void RDOStudioFrameView::OnBeginPrinting(PTR(CDC) pDC, PTR(CPrintInfo) pInfo)
-{
-	UNUSED(pDC  );
-	UNUSED(pInfo);
-}
-
-void RDOStudioFrameView::OnEndPrinting(PTR(CDC) pDC, PTR(CPrintInfo) pInfo)
-{
-	UNUSED(pDC  );
-	UNUSED(pInfo);
+	PTR(FrameAnimationContent) pContent = static_cast<PTR(FrameAnimationContent)>(m_pFrameAnimationWnd->widget());
+	ASSERT(pContent);
+	return pContent;
 }
 
 #ifdef _DEBUG
@@ -741,182 +709,15 @@ PTR(RDOStudioFrameDoc) RDOStudioFrameView::GetDocument()
 
 CREF(CRect) RDOStudioFrameView::getClientRect() const
 {
-	return m_newClientRect;
+	return m_clientRect;
 }
 
 void RDOStudioFrameView::OnSize(UINT nType, int cx, int cy)
 {
 	RDOStudioView::OnSize(nType, cx, cy);
 
-	GetClientRect(&m_newClientRect);
+	GetClientRect(&m_clientRect);
 	m_pWidget->resize(cx, cy);
-
-	updateScrollBars();
-}
-
-void RDOStudioFrameView::updateScrollBars()
-{
-	SCROLLINFO si;
-	si.cbSize = sizeof(si);
-	si.fMask  = SIF_RANGE | SIF_PAGE | SIF_POS;
-
-	if (m_pos.X > rsint(m_memDC.width()) - m_newClientRect.right)
-	{
-		m_pos.X = m_memDC.width() - m_newClientRect.right;
-	}
-	if (m_pos.X < 0)
-	{
-		m_pos.X = 0;
-	}
-	si.nMin  = 0;
-	si.nMax  = m_memDC.width() - 1;
-	si.nPos  = m_pos.X;
-	si.nPage = m_newClientRect.right;
-	SetScrollInfo(SB_HORZ, &si, TRUE);
-
-	if (m_pos.Y > rsint(m_memDC.height()) - m_newClientRect.bottom)
-	{
-		m_pos.Y = m_memDC.height() - m_newClientRect.bottom;
-	}
-	if (m_pos.Y < 0)
-	{
-		m_pos.Y = 0;
-	}
-	si.nMin  = 0;
-	si.nMax  = m_memDC.height() - 1;
-	si.nPos  = m_pos.Y;
-	si.nPage = m_newClientRect.bottom;
-	SetScrollInfo(SB_VERT, &si, TRUE);
-}
-
-void RDOStudioFrameView::OnHScroll(UINT nSBCode, UINT nPos, PTR(CScrollBar) pScrollBar)
-{
-	UNUSED(nPos      );
-	UNUSED(pScrollBar);
-
-	if (nSBCode == SB_ENDSCROLL)
-	{
-		model->setGUIContinue();
-	}
-	SCROLLINFO si;
-	si.cbSize = sizeof(si);
-	switch (nSBCode)
-	{
-	case SB_LEFT:
-		m_pos.X = 0;
-		break;
-
-	case SB_RIGHT:
-		m_pos.X = m_memDC.width() - m_newClientRect.right;
-		break;
-
-	case SB_PAGELEFT:
-		GetScrollInfo(SB_HORZ, &si, SIF_PAGE);
-		m_pos.X -= si.nPage;
-		break; 
-
-	case SB_PAGERIGHT:
-		GetScrollInfo(SB_HORZ, &si, SIF_PAGE);
-		m_pos.X += si.nPage;
-		break;
-
-	case SB_LINELEFT:
-		m_pos.X--;
-		break;
-
-	case SB_LINERIGHT:
-		m_pos.X++;
-		break;
-
-	case SB_THUMBTRACK:
-		GetScrollInfo(SB_HORZ, &si, SIF_TRACKPOS);
-		m_pos.X += si.nTrackPos - m_pos.X;
-		break;
-	}
-	if (m_pos.X > rsint(m_memDC.width()) - m_newClientRect.right)
-	{
-		m_pos.X = m_memDC.width() - m_newClientRect.right;
-	}
-	if (m_pos.X < 0)
-	{
-		m_pos.X = 0;
-	}
-	si.fMask = SIF_POS;
-	si.nPos  = m_pos.X;
-	SetScrollInfo(SB_HORZ, &si, TRUE);
-	InvalidateRect(NULL);
-	UpdateWindow();
-}
-
-void RDOStudioFrameView::OnVScroll(UINT nSBCode, UINT nPos, PTR(CScrollBar) pScrollBar)
-{
-	UNUSED(nPos      );
-	UNUSED(pScrollBar);
-
-	if (nSBCode == SB_ENDSCROLL)
-	{
-		model->setGUIContinue();
-	}
-	SCROLLINFO si;
-	si.cbSize = sizeof(si);
-	switch(nSBCode)
-	{
-	case SB_TOP:
-		m_pos.Y = 0;
-		break;
-
-	case SB_BOTTOM:
-		m_pos.Y = m_memDC.height() - m_newClientRect.bottom;
-		break;
-
-	case SB_PAGEUP:
-		GetScrollInfo(SB_VERT, &si, SIF_PAGE);
-		m_pos.Y -= si.nPage;
-		break; 
-
-	case SB_PAGEDOWN:
-		GetScrollInfo(SB_VERT, &si, SIF_PAGE);
-		m_pos.Y += si.nPage;
-		break;
-
-	case SB_LINEUP:
-		m_pos.Y--;
-		break;
-
-	case SB_LINEDOWN:
-		m_pos.Y++;
-		break;
-
-	case SB_THUMBTRACK:
-		GetScrollInfo(SB_VERT, &si, SIF_TRACKPOS);
-		m_pos.Y += si.nTrackPos - m_pos.Y;
-		break;
-	}
-	if (m_pos.Y > rsint(m_memDC.height()) - m_newClientRect.bottom)
-	{
-		m_pos.Y = m_memDC.height() - m_newClientRect.bottom;
-	}
-	if (m_pos.Y < 0)
-	{
-		m_pos.Y = 0;
-	}
-	si.fMask = SIF_POS;
-	si.nPos  = m_pos.Y;
-	SetScrollInfo(SB_VERT, &si, TRUE);
-	InvalidateRect(NULL);
-	UpdateWindow();
-}
-
-void RDOStudioFrameView::OnLButtonDown(UINT nFlags, CPoint point)
-{
-	PTR(RDOStudioFrameManager) pFrameManager = &model->m_frameManager;
-	ruint index = pFrameManager->findFrameIndex(this);
-	if (index != ruint(~0))
-	{
-		pFrameManager->areaDown(index, Gdiplus::Point(point.x + m_pos.X, point.y + m_pos.Y));
-	}
-
-	RDOStudioView::OnLButtonDown(nFlags, point);
 }
 
 void RDOStudioFrameView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
@@ -942,87 +743,15 @@ void RDOStudioFrameView::OnActivateView(BOOL bActivate, PTR(CView) pActivateView
 	RDOStudioView::OnActivateView(bActivate, pActivateView, pDeactiveView);
 }
 
-BOOL RDOStudioFrameView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
-{
-	UNUSED(nFlags);
-	UNUSED(pt    );
-
-	SCROLLINFO si;
-	si.cbSize = sizeof(si);
-	si.fMask  = SIF_POS;
-	if (m_mouseOnHScroll)
-	{
-		m_pos.X -= m_newClientRect.right / 4 * (zDelta >= 0 ? 1 : -1);
-		if (m_pos.X > rsint(m_memDC.width()) - m_newClientRect.right)
-		{
-			m_pos.X = rsint(m_memDC.width()) - m_newClientRect.right;
-		}
-		if (m_pos.X < 0)
-		{
-			m_pos.X = 0;
-		}
-		si.nPos = m_pos.X;
-		SetScrollInfo(SB_HORZ, &si, TRUE);
-	}
-	else
-	{
-		m_pos.Y -= m_newClientRect.bottom / 4 * (zDelta >= 0 ? 1 : -1);
-		if (m_pos.Y > rsint(m_memDC.height()) - m_newClientRect.bottom)
-		{
-			m_pos.Y = rsint(m_memDC.height()) - m_newClientRect.bottom;
-		}
-		if (m_pos.Y < 0)
-		{
-			m_pos.Y = 0;
-		}
-		si.nPos = m_pos.Y;
-		SetScrollInfo(SB_VERT, &si, TRUE);
-	}
-	InvalidateRect(NULL);
-	UpdateWindow  ();
-	return TRUE;
-}
-
 void RDOStudioFrameView::OnPaint()
 {
-	PAINTSTRUCT ps;
-	::BeginPaint(m_hwnd, &ps);
-
-//	Gdiplus::Graphics graphics(m_hwnd);
-//	onDraw      (graphics);
-
-	::EndPaint  (m_hwnd, &ps);
-
+	CPaintDC dc(this);
 	m_pFrameAnimationWnd->update();
 }
 
 void RDOStudioFrameView::OnDraw(PTR(CDC) pDC)
 {
 	RDOStudioView::OnDraw(pDC);
-}
-
-void RDOStudioFrameView::onDraw(REF(Gdiplus::Graphics) graphics)
-{
-	if (valid())
-	{
-		graphics.DrawImage(&m_memDC.buffer(), -m_pos.X, -m_pos.Y);
-
-		if (m_newClientRect.right - m_memDC.width() > 0)
-		{
-			Gdiplus::SolidBrush brush(m_bgColor);
-			graphics.FillRectangle(&brush, m_memDC.width(), 0, m_newClientRect.right - m_memDC.width(), m_newClientRect.bottom);
-		}
-		if (m_newClientRect.bottom - m_memDC.height() > 0)
-		{
-			Gdiplus::SolidBrush brush(m_bgColor);
-			graphics.FillRectangle(&brush, 0, m_memDC.height(), m_newClientRect.right, m_newClientRect.bottom - m_memDC.height());
-		}
-	}
-	else
-	{
-		Gdiplus::SolidBrush brush(m_bgColor);
-		graphics.FillRectangle(&brush, m_newClientRect.left, m_newClientRect.top, m_newClientRect.Width(), m_newClientRect.Height());
-	}
 }
 
 void RDOStudioFrameView::OnHelpKeyword()
@@ -1033,78 +762,4 @@ void RDOStudioFrameView::OnHelpKeyword()
 
 	filename += "::/html/work_model_frame.htm";
 	::HtmlHelp(::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL);
-}
-
-void RDOStudioFrameView::OnNcLButtonDown(UINT nHitTest, CPoint point)
-{
-	model->setGUIPause();
-	RDOStudioView::OnNcLButtonDown(nHitTest, point);
-}
-
-void RDOStudioFrameView::OnNcRButtonDown(UINT nHitTest, CPoint point)
-{
-	model->setGUIPause();
-	RDOStudioView::OnNcRButtonDown(nHitTest, point);
-}
-
-void RDOStudioFrameView::OnNcMouseMove(UINT nHitTest, CPoint point)
-{
-	m_mouseOnHScroll = nHitTest == HTHSCROLL;
-	RDOStudioView::OnNcMouseMove(nHitTest, point);
-}
-
-void RDOStudioFrameView::OnMouseMove(UINT nFlags, CPoint point)
-{
-	m_mouseOnHScroll = false;
-	RDOStudioView::OnMouseMove(nFlags, point);
-}
-
-void RDOStudioFrameView::update(
-	CPTRC(rdo::animation::Frame) pFrame,
-	 CREF(FrameAnimationContent::BitmapList)  bitmapList,
-	  REF(FrameAnimationContent::BitmapList)  bitmapGeneratedList,
-	  REF(AreaList)              areaList
-)
-{
-	static_cast<PTR(FrameAnimationContent)>(m_pFrameAnimationWnd->widget())->update(pFrame, bitmapList, bitmapGeneratedList);
-
-	//ASSERT(pFrame);
-
-	//if (!valid())
-	//{
-	//	init(pFrame, bitmapList);
-	//}
-
-	//drawBackground(pFrame, bitmapList);
-
-	//STL_FOR_ALL_CONST(pFrame->m_elements, it)
-	//{
-	//	PTR(rdo::animation::FrameItem) pCurrElement = *it;
-	//	ASSERT(pCurrElement);
-	//	switch (pCurrElement->getType())
-	//	{
-	//	case rdo::animation::FrameItem::FIT_ACTIVE : elementActive   (static_cast<PTR(rdo::animation::ActiveElement   )>(pCurrElement), areaList); break;
-	//	}
-	//}
-
-	//InvalidateRect   (NULL);
-	//SendNotifyMessage(WM_PAINT, 0, 0);
-}
-
-void RDOStudioFrameView::elementActive(PTR(rdo::animation::ActiveElement) pElement, REF(AreaList) areaList)
-{
-	ASSERT(pElement);
-
-	AreaList::iterator it = areaList.find(pElement->m_opr_name);
-	if (it == areaList.end())
-	{
-		std::pair<AreaList::iterator, rbool> result =
-			areaList.insert(AreaList::value_type(pElement->m_opr_name, Area()));
-		ASSERT(result.second);
-		it = result.first;
-	}
-	it->second.m_rect.X      = (int)(pElement->m_point.m_x);
-	it->second.m_rect.Y      = (int)(pElement->m_point.m_y);
-	it->second.m_rect.Width  = (int)(pElement->m_size.m_width);
-	it->second.m_rect.Height = (int)(pElement->m_size.m_height);
 }
