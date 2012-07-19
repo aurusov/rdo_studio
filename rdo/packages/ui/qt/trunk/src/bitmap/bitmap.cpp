@@ -29,7 +29,7 @@ QPixmap Bitmap::transparent(CREF(QPixmap) bitmap, CREF(QPixmap) mask)
 		return QPixmap();
 
 	QPixmap generated = QPixmap::fromImage(generatedImage);
-	if (!generated.isNull())
+	if (generated.isNull())
 		return QPixmap();
 
 	return generated;
