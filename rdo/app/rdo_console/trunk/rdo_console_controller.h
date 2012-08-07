@@ -24,7 +24,7 @@ public:
 	virtual ~RDOStudioConsoleController();
 
 	rbool finished              () const;
-	rbool errorOccurred         () const;
+	rbool runtimeError          () const;
 	rbool simulationSuccessfully() const;
 
 private:
@@ -37,6 +37,7 @@ private:
 
 	SimulatorState        m_state;
 	mutable boost::mutex  m_stateMutex;
+	bool				  m_runtimeError;
 
 	void proc(REF(RDOMessageInfo) msg);
 };

@@ -19,6 +19,8 @@ namespace fs = boost::filesystem;
 #include "app/rdo_console/rdo_console_controller.h"
 // --------------------------------------------------------------------------------
 
+static ruint g_exitCode;
+
 int main(int argc, PTR(char) argv[])
 {
 	RDOControllerConsoleOptions options_controller(argc, argv);
@@ -49,31 +51,30 @@ int main(int argc, PTR(char) argv[])
 		{
 			kernel->idle();
 
-			if (pAppController->errorOccurred())
+			if (pAppController->runtimeError())
 			{
-				std::cerr << _T("Run-time error") << std::endl;
-				exit(TERMINATION_WITH_AN_ERROR_RUNTIME_ERROR);
+				std::cout << _T("Run-time error") << std::endl;
+				g_exitCode = TERMINATION_WITH_AN_ERROR_RUNTIME_ERROR;
 			}
 		}
+		bool simulationSuccessfully = pAppController->simulationSuccessfully();
 
-		bool simulationResult = pAppController->simulationSuccessfully();
-
-		// Close
 		RDOKernel::close();
 
-		if (simulationResult)
+		if (simulationSuccessfully)
 		{
 			std::cout << _T("Simulation finished successfully") << std::endl;
+			g_exitCode = TERMINATION_NORMAL;
 		}
 		else
 		{
-			std::cout << _T("Simulation completed with errors") << std::endl;		
+			std::cout << _T("Simulation completed with errors") << std::endl;
 		}
 	}
 	else if(!options_controller.helpQuery())
 	{
 		std::cout << _T("Model does not exist") << std::endl;
-		return TERMINATION_WITH_AN_ERROR_NO_MODEL;
+		g_exitCode = TERMINATION_WITH_AN_ERROR_NO_MODEL;
 	}
-	return TERMINATION_NORMAL;
+	return g_exitCode;
 }
