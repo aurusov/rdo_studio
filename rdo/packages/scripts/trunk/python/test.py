@@ -106,7 +106,6 @@ files = get_test_files(model_directory)
 files.sort()
 
 print '\nDEBUG INFO\n'
-
 print 'Find RDO executables    : ', executables, '\n'
 print 'Find test project files : ', files, '\n'
 
@@ -114,8 +113,6 @@ print 'Find test project files : ', files, '\n'
 print 'STARTED TEST CYCLE'
 
 for task in files:
-    cycle_exit_code = EXIT_CODE_TERMINATION_NORMAL
-
     print dividing_line
   
     dom = xml.dom.minidom.parse(task)
@@ -146,18 +143,20 @@ for task in files:
     simulation_trace = dirname + model_name + trace_expansion
     simulation_result = dirname + model_name + result_expansion
 
+    cycle_exit_code = EXIT_CODE_TERMINATION_NORMAL
+
+    # select target
     if target == TARGET_CONSOLE:
-        simulation_code = os.system(rdo_ex + ' -i ' + model 
-                                           + ' >> ' + null_file)
-        
+
+        # run rdo_console app on test model
+         command = (rdo_ex + ' -i ' + model + ' >> ' + null_file)
+        simulation_code = os.system(command, shell=True)
         print "SIMYLATION EXIT CODE :", simulation_code
         
-        simulation_exit_code_string = ''
+        # check simulation exit code
+        simulation_exit_code_string = 'ERROR'
         if cmp(simulation_code, exit_code):
             simulation_exit_code_string = "OK"
-        else:
-            simulation_exit_code_string = "ERROR"
-          
         print "CHECK SIM EXIT CODE  :", simulation_exit_code_string
         
         check_exit_code_string = ''
@@ -195,8 +194,8 @@ for task in files:
             else:
                 check_exit_code_string = 'ERROR UNKNOWN'
 
-        print "TEST EXIT CODE       :", test_code
-        print "CHECK TEST CODE      :", check_exit_code_string
+            print "TEST EXIT CODE       :", test_code
+            print "CHECK TEST CODE      :", check_exit_code_string
 
     else:
         print 'INVALID TARGET'
