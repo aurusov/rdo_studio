@@ -1,0 +1,5 @@
+$Decision_point Operations: some
+$Activities
+	
+	Обслуживание_клиента: Образец_обслуживания_клиента
+$End
