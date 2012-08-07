@@ -149,8 +149,8 @@ for task in files:
     if target == TARGET_CONSOLE:
 
         # run rdo_console app on test model
-         command = (rdo_ex + ' -i ' + model + ' >> ' + null_file)
-        simulation_code = os.system(command, shell=True)
+        command = (rdo_ex + ' -i ' + model + ' >> ' + null_file)
+        simulation_code = subprocess.call(command, shell=True)
         print "SIMYLATION EXIT CODE :", simulation_code
         
         # check simulation exit code
