@@ -161,9 +161,7 @@ void RDOBuildEdit::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
 
 void RDOBuildEdit::OnHelpKeyword()
 {
-	QProcess* assistant = studioApp.chkQtAssistantWindow();
-	if ( assistant->state() != assistant->Running ) return;
 	QByteArray ba;
 	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_run.htm#output_build\n");
-	assistant->write(ba);
+	studioApp.callQtAssistantWindow(ba);
 }

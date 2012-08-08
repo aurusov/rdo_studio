@@ -79,6 +79,7 @@ public:
 	tstring        chkHelpExist        (tstring fileName) const;
 	PTR(QProcess)  chkQtAssistantWindow();
 	PTR(QProcess)  runQtAssistantWindow() const;
+	void           callQtAssistantWindow(QByteArray ba);
 
 private:
 #ifdef RDO_MT

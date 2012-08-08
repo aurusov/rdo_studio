@@ -2177,8 +2177,6 @@ int CALLBACK RDOStudioOptions::AddContextHelpProc(HWND hwnd, UINT message, LPARA
 
 void RDOStudioOptions::onHelpButton()
 {
-	QProcess* assistant = studioApp.chkQtAssistantWindow();
-	if ( assistant->state() != assistant->Running ) return;
 	QByteArray ba;
 
 	CPropertyPage* page = GetActivePage( );
@@ -2193,19 +2191,16 @@ void RDOStudioOptions::onHelpButton()
 	} else if ( page == plugins ) {
 		ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options.htm\n");
 	}
-	assistant->write(ba);
+	studioApp.callQtAssistantWindow(ba);
 }
 
 BOOL RDOStudioOptions::OnHelpInfo(PTR(HELPINFO) pHelpInfo) 
 {
-	QProcess* assistant = studioApp.chkQtAssistantWindow();
-	if ( assistant->state() != assistant->Running ) return TRUE;
-	
 	QByteArray ba;
 	ba.append("setSource ");
 	ba.append(resolveKeyAndUrl(pHelpInfo->dwContextId).c_str());
 	ba.append("\n");
-	assistant->write(ba);
+	studioApp.callQtAssistantWindow(ba);
 	return FALSE;
 }
 

@@ -1240,9 +1240,7 @@ void RDOStudioChartView::OnUpdateViewZoomauto(CCmdUI* pCmdUI)
 
 void RDOStudioChartView::OnHelpKeyword()
 {
-	QProcess* assistant = studioApp.chkQtAssistantWindow();
-	if ( assistant->state() != assistant->Running ) return;
 	QByteArray ba;
 	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_model/work_model_chart.htm\n");
-	assistant->write(ba);
+	studioApp.callQtAssistantWindow(ba);
 }

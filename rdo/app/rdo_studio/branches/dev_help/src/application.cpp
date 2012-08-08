@@ -783,6 +783,14 @@ PTR(QProcess) RDOStudioApp::runQtAssistantWindow() const
 		return process;
 }
 
+void RDOStudioApp::callQtAssistantWindow(QByteArray ba)
+{
+	QProcess* assistant = studioApp.chkQtAssistantWindow();
+	if ( assistant->state() != assistant->Running ) return;
+
+	assistant->write(ba);
+}
+
 rbool RDOStudioApp::getFileAssociationSetup() const
 {
 	return m_fileAssociationSetup;

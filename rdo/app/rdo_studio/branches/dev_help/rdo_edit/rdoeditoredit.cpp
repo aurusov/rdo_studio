@@ -920,9 +920,6 @@ void RDOEditorEdit::OnUpdateGotoPrev(CCmdUI* pCmdUI)
 
 void RDOEditorEdit::OnHelpKeyword()
 {
-	QProcess* assistant = studioApp.chkQtAssistantWindow();
-	if ( assistant->state() != assistant->Running ) return;
-
 	tstring keyword = getCurrentOrSelectedWord();
 	tstring s = getAllKW();
 
@@ -949,5 +946,5 @@ void RDOEditorEdit::OnHelpKeyword()
 	ba.append("activateKeyword ");
 	ba.append(keyword.c_str());
 	ba.append("\n");
-	assistant->write(ba);
+	studioApp.callQtAssistantWindow(ba);
 }
