@@ -105,12 +105,16 @@ if not os.path.exists(rdo_ex) or not os.path.exists(rdo_test_ex):
 files = get_test_files(model_directory)
 files.sort()
 
-print '\nDEBUG INFO\n'
-print 'Find RDO executables    : ', executables, '\n'
-print 'Find test project files : ', files, '\n'
+print '\nDEBUG INFO'
+print '\nFind RDO executables    :'
+for string in executables:
+    print string
+print '\nFind test project files :'
+for string in files:
+    print string
 
 # parse xml and start tests
-print 'STARTED TEST CYCLE'
+print '\nSTARTED TEST CYCLEn\n'
 
 for task in files:
     print dividing_line
@@ -166,7 +170,6 @@ for task in files:
                                               + ' -t ' + simulation_trace 
                                               + ' -r ' + simulation_result
                                               + ' >> ' + null_file)
-            #print command
 
             test_code = subprocess.call(command, shell=True)
             
