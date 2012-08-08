@@ -122,7 +122,6 @@ private:
 	void onHelpButton();
 
 private:
-	afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
 	DECLARE_MESSAGE_MAP()
 
 public:
