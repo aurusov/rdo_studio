@@ -106,7 +106,7 @@ BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_OUTPUT, OnUpdateViewOutput)
 	ON_WM_DESTROY()
 	ON_COMMAND(ID_VIEW_OPTIONS, OnViewOptions)
-	ON_COMMAND(ID_HELP_CONTENTS, OnHelpContents)
+	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
 	ON_COMMAND(ID_MODEL_RUNTIME_MAXSPEED, OnModelRuntimeMaxSpeed)
 	ON_COMMAND(ID_MODEL_RUNTIME_JUMP, OnModelRuntimeJump)
 	ON_COMMAND(ID_MODEL_RUNTIME_SYNC, OnModelRuntimeSync)
@@ -529,14 +529,11 @@ void RDOStudioMainFrame::endProgress()
 	statusBar.setProgressVisible( false );
 }
 
-void RDOStudioMainFrame::OnHelpContents()
+void RDOStudioMainFrame::OnHelpKeyword()
 {
-	QProcess* assistant = studioApp.chkQtAssistantWindow();
-	if ( assistant->state() != assistant->Running ) return;
-
 	QByteArray ba;
 	ba.append("setSource qthelp://language/doc/rdo_studio_rus/html/about.htm\n");
-	assistant->write(ba);
+	studioApp.callQtAssistantWindow(ba);
 }
 
 void RDOStudioMainFrame::OnModelRuntimeMaxSpeed()
