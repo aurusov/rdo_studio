@@ -11,7 +11,7 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 SET(HEADER_FILES
 	keyboard.h
 	equaltype.h
-	pch.h
+	pch/stdpch.h
 	namespace.h
 	rdo_activity.h
 	rdo_activity_i.h
@@ -157,7 +157,7 @@ SET(INLINE_FILES
 	calc/resource/calc_relevant.inl)
 
 SET(SOURCE_FILES
-	pch.cpp
+	pch/stdpch.cpp
 	rdo_activity.cpp
 	rdo_array.cpp
 	rdobase.cpp
@@ -247,8 +247,8 @@ SOURCE_GROUP(".keyboard" FILES
 	keyboard.h)
 
 SOURCE_GROUP(".pch" FILES 
-	pch.h
-	pch.cpp)
+	pch/stdpch.h
+	pch/stdpch.cpp)
 
 SOURCE_GROUP(".rdo_value" FILES 
 	rdo_value.h
