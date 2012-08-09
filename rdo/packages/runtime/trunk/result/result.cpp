@@ -11,7 +11,7 @@
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/platform.h"
 // ---------------------------------------------------------------------------- PCH
-#include "simulator/runtime/pch.h"
+#include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <limits>
 #ifdef COMPILER_GCC

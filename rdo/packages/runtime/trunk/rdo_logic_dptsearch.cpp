@@ -10,7 +10,7 @@
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/platform.h"
 // ---------------------------------------------------------------------------- PCH
-#include "simulator/runtime/pch.h"
+#include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_logic_dptsearch.h"

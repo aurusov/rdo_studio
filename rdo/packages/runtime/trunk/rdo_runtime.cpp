@@ -11,7 +11,7 @@
 // ----------------------------------------------------------------------- PLATFORM
 #include "utils/platform.h"
 // ----------------------------------------------------------------------- PCH
-#include "simulator/runtime/pch.h"
+#include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <limits>
 #ifdef COMPILER_GCC
@@ -19,7 +19,7 @@
 #endif // COMPILER_GCC
 #include <iomanip>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/pch.h"
+#include "simulator/runtime/pch/stdpch.h"
 #include "simulator/runtime/keyboard.h"
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/runtime/rdo_activity.h"

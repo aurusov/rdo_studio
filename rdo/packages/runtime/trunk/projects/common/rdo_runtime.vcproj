@@ -51,7 +51,7 @@
 				PreprocessorDefinitions="RDO_ST;WIN32;NDEBUG;_LIB;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="simulator/runtime/pch.h"
+				PrecompiledHeaderThrough="simulator/runtime/pch/stdpch.h"
 				BrowseInformation="1"
 				WarningLevel="4"
 				DebugInformationFormat="3"
@@ -118,7 +118,7 @@
 				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="simulator/runtime/pch.h"
+				PrecompiledHeaderThrough="simulator/runtime/pch/stdpch.h"
 				BrowseInformation="1"
 				WarningLevel="4"
 				DebugInformationFormat="3"
@@ -186,7 +186,7 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="simulator/runtime/pch.h"
+				PrecompiledHeaderThrough="simulator/runtime/pch/stdpch.h"
 				BrowseInformation="1"
 				WarningLevel="4"
 				DebugInformationFormat="3"
@@ -253,7 +253,7 @@
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="simulator/runtime/pch.h"
+				PrecompiledHeaderThrough="simulator/runtime/pch/stdpch.h"
 				WarningLevel="4"
 			/>
 			<Tool
@@ -318,7 +318,7 @@
 				PreprocessorDefinitions="RDO_MT;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="simulator/runtime/pch.h"
+				PrecompiledHeaderThrough="simulator/runtime/pch/stdpch.h"
 				BrowseInformation="1"
 				WarningLevel="4"
 				DebugInformationFormat="3"
@@ -385,7 +385,7 @@
 				PreprocessorDefinitions="RDO_MT;WIN32;NDEBUG;_LIB;WINVER=0x0501;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="simulator/runtime/pch.h"
+				PrecompiledHeaderThrough="simulator/runtime/pch/stdpch.h"
 				WarningLevel="4"
 			/>
 			<Tool
@@ -1926,7 +1926,7 @@
 			Name=".pch"
 			>
 			<File
-				RelativePath="..\..\pch.cpp"
+				RelativePath="..\..\pch\stdpch.cpp"
 				>
 				<FileConfiguration
 					Name="release|Win32"
@@ -1990,7 +1990,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\pch.h"
+				RelativePath="..\..\pch\stdpch.h"
 				>
 			</File>
 		</Filter>

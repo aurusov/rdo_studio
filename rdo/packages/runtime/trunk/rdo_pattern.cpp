@@ -10,7 +10,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/pch.h"
+#include "simulator/runtime/pch/stdpch.h"
 #include "simulator/runtime/rdo_pattern.h"
 #include "simulator/runtime/rdo_event.h"
 #include "simulator/runtime/rdo_rule.h"

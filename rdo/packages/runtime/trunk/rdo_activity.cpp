@@ -10,7 +10,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/pch.h"
+#include "simulator/runtime/pch/stdpch.h"
 #include "simulator/runtime/rdo_activity.h"
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/runtime/calc/calc_base.h"
