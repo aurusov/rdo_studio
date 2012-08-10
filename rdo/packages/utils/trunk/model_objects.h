@@ -61,4 +61,7 @@ OPEN_RDO_MODEL_OBJECTS_NAMESPACE
 	};
 CLOSE_RDO_MODEL_OBJECTS_NAMESPACE
 
+typedef rdoModelObjects::RDOFileType  RDOFileType;
+typedef rdoModelObjects::RDOParseType RDOParseType;
+
 #endif // _UTILS_MODEL_OBJECTS_H_
