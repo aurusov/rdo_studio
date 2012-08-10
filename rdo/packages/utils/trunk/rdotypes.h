@@ -22,6 +22,7 @@
 #   define _T(x) x
 #endif // COMPILER_GCC
 
+#include <list>
 #include <string>
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
@@ -77,5 +78,7 @@ typedef  unsigned int                ruint;
 
 //! Тип байта
 typedef  unsigned char               rbyte;
+
+typedef std::list<tstring>           rtstringList;
 
 #endif // _UTILS_RDOTYPES_H_
