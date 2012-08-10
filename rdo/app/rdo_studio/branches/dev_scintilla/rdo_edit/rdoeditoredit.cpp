@@ -19,8 +19,8 @@
 #include "app/rdo_studio_mfc/src/edit/view_base.h"
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/htmlhelp.h"
-#include "thirdparty/sci/LexRdo.h"
-#include "thirdparty/sci/PropSet.h"
+#include "thirdparty/sci/rdo/LexRdo.h"
+#include "thirdparty/sci/rdo/PropSet.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG

@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/style.h"
-#include "thirdparty/sci/Scintilla.h"
+#include "thirdparty/sci/include/Scintilla.h"
 // --------------------------------------------------------------------------------
 
 namespace rdoEditCtrl {
