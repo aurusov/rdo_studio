@@ -452,7 +452,6 @@ int CALLBACK RDOStudioChartOptions::AddContextHelpProc(HWND hwnd, UINT message, 
 	switch (message) {
 		case PSCB_INITIALIZED: {
 			LONG style = ::GetWindowLong( hwnd, GWL_EXSTYLE );
-			style |= WS_EX_CONTEXTHELP;
 			::SetWindowLong( hwnd, GWL_EXSTYLE, style );
 		}
 	}
