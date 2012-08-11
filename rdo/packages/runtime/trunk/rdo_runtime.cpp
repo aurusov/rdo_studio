@@ -250,12 +250,12 @@ void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
 		}
 		else
 		{
-			error().push(rdo::service::simulation::RDOSyntaxError(
-				rdo::service::simulation::RDOSyntaxError::UNKNOWN,
+			error().push(rdo::service::simulation::RDOSyntaxMessage(
 				_T("¬нутренн€€ ошибка: insertNewResource"),
+				rdo::service::simulation::RDOSyntaxMessage::UNKNOWN,
+				rdoModelObjects::PAT,
 				0,
-				0,
-				rdoModelObjects::PAT
+				0
 			));
 		}
 	}

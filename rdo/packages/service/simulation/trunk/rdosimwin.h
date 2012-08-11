@@ -239,8 +239,8 @@ protected:
 	void  runModel  ();
 	void  stopModel ();
 
-	typedef std::vector<RDOSyntaxError> SyntaxErrorList;
-	SyntaxErrorList getErrors();
+	typedef std::vector<RDOSyntaxMessage> SyntaxMessageList;
+	SyntaxMessageList getErrors();
 
 	void codeCompletion();
 

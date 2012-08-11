@@ -1042,9 +1042,9 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 		}
 		case RT_SIMULATOR_GET_ERRORS:
 		{
-			SyntaxErrorList m_errorList = getErrors();
+			SyntaxMessageList m_errorList = getErrors();
 			msg.lock();
-			PTR(SyntaxErrorList) msg_errors = static_cast<PTR(SyntaxErrorList)>(msg.param);
+			PTR(SyntaxMessageList) msg_errors = static_cast<PTR(SyntaxMessageList)>(msg.param);
 			msg_errors->assign(m_errorList.begin(), m_errorList.end());
 			msg.unlock();
 			break;
@@ -1234,7 +1234,7 @@ void RDOThreadSimulator::parseSMRFileInfo(REF(rdo::textstream) smr, REF(rdoModel
 				BOOST_AUTO(it, errorList.begin());
 				while (it != errorList.end())
 				{
-					broadcastMessage(RT_DEBUG_STRING, const_cast<PTR(tstring)>(&it->m_message));
+					broadcastMessage(RT_DEBUG_STRING, const_cast<PTR(tstring)>(&it->text));
 					++it;
 				}
 			}
@@ -1251,9 +1251,9 @@ void RDOThreadSimulator::parseSMRFileInfo(REF(rdo::textstream) smr, REF(rdoModel
 #endif
 }
 
-RDOThreadSimulator::SyntaxErrorList RDOThreadSimulator::getErrors()
+RDOThreadSimulator::SyntaxMessageList RDOThreadSimulator::getErrors()
 {
-	SyntaxErrorList res;
+	SyntaxMessageList res;
 
 	if (!m_pParser)
 	{

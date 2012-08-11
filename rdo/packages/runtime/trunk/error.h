@@ -23,9 +23,9 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class Error
 {
 public:
-	typedef  std::vector<rdo::service::simulation::RDOSyntaxError>  ErrorList;
+	typedef  std::vector<rdo::service::simulation::RDOSyntaxMessage>  ErrorList;
 
-	void            push(CREF(rdo::service::simulation::RDOSyntaxError) error);
+	void            push(CREF(rdo::service::simulation::RDOSyntaxMessage) error);
 	void            push(CREF(tstring) message, CREF(RDOSrcInfo) srcInfo);
 	CREF(ErrorList) list() const;
 

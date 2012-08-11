@@ -74,15 +74,17 @@ public:
 	const rdoEditCtrl::RDOFindEdit*       getFind() const    { return find;    };
 
 	void appendStringToBuild( CREF(tstring) str ) const;
-	void appendStringToBuild( rdo::service::simulation::RDOSyntaxError::ErrorCode error_code, CREF(tstring) str, const rdoModelObjects::RDOFileType fileType = rdoModelObjects::PAT, const int lineNumber = -1, const int posInLine = 0, const rbool warning = true ) const;
+	void appendStringToBuild( CREF(rdo::service::simulation::RDOSyntaxMessage) error ) const;
 	void appendStringToDebug( CREF(tstring) str ) const;
 	void appendStringToResults( CREF(tstring) str ) const;
-	void appendStringToFind( CREF(tstring) str, const rdoModelObjects::RDOFileType fileType = rdoModelObjects::PAT, const int lineNumber = -1, const int posInLine = 0 ) const;
+	void appendStringToFind( CREF(tstring) str, rdoModelObjects::RDOFileType fileType = rdoModelObjects::PAT, int lineNumber = -1, int posInLine = 0 ) const;
 
 	void updateLogConnection() const;
 	void updateStyles() const;
 
 private:
+	typedef rdo::service::simulation::RDOSyntaxMessage RDOSyntaxMessage;
+
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	DECLARE_MESSAGE_MAP()
 };

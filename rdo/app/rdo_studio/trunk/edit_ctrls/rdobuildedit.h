@@ -22,41 +22,41 @@ namespace rdoEditCtrl {
 // --------------------------------------------------------------------------------
 // -------------------- RDOBuildEditLineInfo
 // --------------------------------------------------------------------------------
-class RDOBuildEditLineInfo: public RDOLogEditLineInfo
+class RDOBuildEditLineInfo : public RDOLogEditLineInfo
 {
-friend class RDOBuildEdit;
-
-protected:
-	rdo::service::simulation::RDOSyntaxError::ErrorCode error_code;
-	rbool warning;
-
+//friend class RDOBuildEdit;
 public:
-	RDOBuildEditLineInfo( rdo::service::simulation::RDOSyntaxError::ErrorCode _error_code, CREF(tstring) _message, const rdoModelObjects::RDOFileType _fileType = rdoModelObjects::PAT, const int _lineNumber = -1, const int _posInLine = 0, rbool _warning = false );
-	RDOBuildEditLineInfo( CREF(tstring) _message );
-	~RDOBuildEditLineInfo();
+	explicit RDOBuildEditLineInfo( CREF(rdo::service::simulation::RDOSyntaxMessage) error );
+	explicit RDOBuildEditLineInfo( CREF(tstring) text );
+	virtual ~RDOBuildEditLineInfo();
 
 	virtual tstring getMessage() const;
+
+private:
+	typedef rdo::service::simulation::RDOSyntaxMessage RDOSyntaxMessage;
 };
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOBuildEdit
 // --------------------------------------------------------------------------------
-class RDOBuildEdit: public RDOLogEdit
+class RDOBuildEdit : public RDOLogEdit
 {
-protected:
-	virtual void updateEdit( rdoEditor::RDOEditorEdit* edit, const RDOLogEditLineInfo* lineInfo );
-
-private:
-	afx_msg void OnHelpKeyword();
-	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
-	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );
-	DECLARE_MESSAGE_MAP()
-
 public:
 	RDOBuildEdit();
 	virtual ~RDOBuildEdit();
 
-	void showFirstError();
+	virtual void showFirstError();
+
+protected:
+	virtual void updateEdit( rdoEditor::RDOEditorEdit* edit, const RDOLogEditLineInfo* lineInfo );
+
+private:
+	typedef rdo::service::simulation::RDOSyntaxMessage RDOSyntaxMessage;
+
+	afx_msg void OnHelpKeyword();
+	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
+	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );
+	DECLARE_MESSAGE_MAP()
 };
 
 }; // namespace rdoEditCtrl

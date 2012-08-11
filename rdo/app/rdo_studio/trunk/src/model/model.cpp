@@ -406,14 +406,14 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			output->clearBuild();
 			output->showBuild();
 			output->appendStringToBuild(rdo::format(IDS_MODEL_RUNTIMEERROR));
-			std::vector< RDOSyntaxError > errors;
+			std::vector< RDOSyntaxMessage > errors;
 			studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors);
 			int errors_cnt   = 0;
 			int warnings_cnt = 0;
 			STL_FOR_ALL_CONST(errors, it)
 			{
-				output->appendStringToBuild(it->m_code, it->m_message, it->m_file, it->m_line, it->m_pos, it->m_warning);
-				if (it->m_warning)
+				output->appendStringToBuild(*it);
+				if (it->type == RDOSyntaxMessage::MESSAGE_WARNING)
 				{
 					warnings_cnt++;
 				}
@@ -439,14 +439,14 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		{
 			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_EXITCODE, &m_exitCode);
 			PTR(RDOStudioOutput) output = &studioApp.m_pMainFrame->output;
-			std::vector<RDOSyntaxError> errors;
+			std::vector<RDOSyntaxMessage> errors;
 			studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors);
 			int errors_cnt   = 0;
 			int warnings_cnt = 0;
 			STL_FOR_ALL_CONST(errors, it)
 			{
-				output->appendStringToBuild(it->m_code, it->m_message, it->m_file, it->m_line, it->m_pos, it->m_warning);
-				if (it->m_warning)
+				output->appendStringToBuild(*it);
+				if (it->type == RDOSyntaxMessage::MESSAGE_WARNING)
 				{
 					warnings_cnt++;
 				}
@@ -478,14 +478,14 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			m_GUI_IS_RUNING = false;
 			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_EXITCODE, &m_exitCode);
 			PTR(RDOStudioOutput) output = &studioApp.m_pMainFrame->output;
-			std::vector<RDOSyntaxError> errors;
+			std::vector<RDOSyntaxMessage> errors;
 			studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors);
 			int errors_cnt   = 0;
 			int warnings_cnt = 0;
 			STL_FOR_ALL_CONST(errors, it)
 			{
-				output->appendStringToBuild(it->m_code, it->m_message, it->m_file, it->m_line, it->m_pos, it->m_warning);
-				if (it->m_warning)
+				output->appendStringToBuild(*it);
+				if (it->type == RDOSyntaxMessage::MESSAGE_WARNING)
 				{
 					warnings_cnt++;
 				}
