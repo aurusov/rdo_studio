@@ -26,21 +26,33 @@ namespace rdoEditCtrl {
 // --------------------------------------------------------------------------------
 // -------------------- RDOLogEditLineInfo
 // --------------------------------------------------------------------------------
-class RDOLogEdit;
-
 class RDOLogEditLineInfo
 {
 public:
-	RDOLogEditLineInfo( CREF(tstring) _message, const rdoModelObjects::RDOFileType _fileType = rdoModelObjects::PAT, const int _lineNumber = -1, const int _posInLine = 0 );
-	~RDOLogEditLineInfo();
+	typedef  rdo::service::simulation::RDOSyntaxMessage  RDOSyntaxMessage;
 
-	rdoModelObjects::RDOFileType fileType;
-	int                          lineNumber;
-	int                          posInLine;
-	tstring                      message;
-	int                          posInLog;
+	explicit RDOLogEditLineInfo(CREF(RDOSyntaxMessage) message);
+	explicit RDOLogEditLineInfo(CREF(tstring)          message);
+	virtual ~RDOLogEditLineInfo();
 
 	virtual tstring getMessage() const;
+	rbool  isSimpleTextMessage() const;
+
+	rdoModelObjects::RDOFileType getFileType() const;
+
+	int           getLineNumber() const;
+	int           getPosInLine () const;
+	int           getPosInLog  () const;
+	CREF(tstring) getText      () const;
+
+	RDOSyntaxMessage::Type  getMessageType() const;
+
+	void setPosInLog(int posInLog);
+
+private:
+	RDOSyntaxMessage  m_message;
+	rsint             m_posInLog;
+	rbool             m_simpleTextMessage;
 };
 
 // --------------------------------------------------------------------------------
@@ -48,41 +60,48 @@ public:
 // --------------------------------------------------------------------------------
 class RDOLogEdit: public RDOBaseEdit
 {
-private:
-	int sci_MARKER_LINE;
-
-protected:
-	int current_line;
-	std::list< RDOLogEditLineInfo* > lines;
-	void clearLines();
-
-	void setSelectLine();
-	void setSelectLine( const int line, const RDOLogEditLineInfo* lineInfo, const rbool useScroll = false );
-	virtual void updateEdit( rdoEditor::RDOEditorEdit* edit, const RDOLogEditLineInfo* lineInfo );
-	void clearSelectLine();
-	rbool hasSelectLine() const;
-
-protected:
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-
-private:
-	virtual BOOL OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult );
-
-	afx_msg void OnGotoNext();
-	afx_msg void OnGotoPrev();
-	DECLARE_MESSAGE_MAP()
+public:
+	typedef  std::list<PTR(RDOLogEditLineInfo)>  RDOLogEditLineInfoList;
 
 public:
 	RDOLogEdit();
 	virtual ~RDOLogEdit();
 
-	void setEditorStyle( RDOLogEditStyle* _style );
+	virtual void setEditorStyle(PTR(RDOLogEditStyle) style);
 
-	void gotoNext();
-	void gotoPrev();
+	virtual void gotoNext();
+	virtual void gotoPrev();
 
 	virtual void clearAll();
-	void appendLine( RDOLogEditLineInfo* line );
+	virtual void appendLine(PTR(RDOLogEditLineInfo) line);
+
+protected:
+	void  getLines        (REF(RDOLogEditLineInfoList) lines) const;
+	rsint getCurrentLine  () const;
+	rsint getSciMarkerLine() const;
+
+	void  setCurrentLine  (rsint currentLine  );
+	void  setSciMarkerLine(rsint sciMarkerLine);
+
+protected:
+	virtual void updateEdit( PTR(rdoEditor::RDOEditorEdit) edit, CPTR(RDOLogEditLineInfo) lineInfo );
+
+	void  clearLines     ();
+	void  setSelectLine  ();
+	void  setSelectLine  (int line, CPTR(RDOLogEditLineInfo) lineInfo, rbool useScroll = false);
+	void  clearSelectLine();
+	rbool hasSelectLine  () const;
+
+	virtual BOOL OnNotify  (WPARAM wParam, LPARAM lParam, LRESULT* pResult);
+	afx_msg int  OnCreate  (LPCREATESTRUCT lpCreateStruct);
+	afx_msg void OnGotoNext();
+	afx_msg void OnGotoPrev();
+	DECLARE_MESSAGE_MAP()
+
+private:
+	RDOLogEditLineInfoList  m_lines;
+	rsint                   m_currentLine;
+	rsint                   m_sciMarkerLine;
 };
 
 }; // namespace rdoEditCtrl

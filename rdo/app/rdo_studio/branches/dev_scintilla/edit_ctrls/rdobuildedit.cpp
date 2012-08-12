@@ -20,38 +20,31 @@
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
+#	define new DEBUG_NEW
 #undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+	static char THIS_FILE[] = __FILE__;
 #endif
 
-using namespace rdoEditCtrl;
+namespace rdoEditCtrl {
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOBuildEditLineInfo
 // --------------------------------------------------------------------------------
-RDOBuildEditLineInfo::RDOBuildEditLineInfo( rdo::service::simulation::RDOSyntaxError::ErrorCode _error_code, CREF(tstring) _message, const rdoModelObjects::RDOFileType _fileType, const int _lineNumber, const int _posInLine, rbool _warning ):
-	RDOLogEditLineInfo( _message, _fileType, _lineNumber, _posInLine ),
-	error_code( _error_code ),
-	warning( _warning )
-{
-}
+RDOBuildEditLineInfo::RDOBuildEditLineInfo(CREF(RDOSyntaxMessage) message)
+	: RDOLogEditLineInfo(message)
+{}
 
-RDOBuildEditLineInfo::RDOBuildEditLineInfo( CREF(tstring) _message ):
-	RDOLogEditLineInfo( _message ),
-	error_code( rdo::service::simulation::RDOSyntaxError::UNKNOWN ),
-	warning( false )
-{
-}
+RDOBuildEditLineInfo::RDOBuildEditLineInfo(CREF(tstring) message)
+	: RDOLogEditLineInfo(message)
+{}
 
 RDOBuildEditLineInfo::~RDOBuildEditLineInfo()
-{
-}
+{}
 
 tstring RDOBuildEditLineInfo::getMessage() const
 {
 	tstring file;
-	switch ( fileType ) {
+	switch ( getFileType() ) {
 		case rdoModelObjects::RTP : file = "RTP" ; break;
 		case rdoModelObjects::RSS : file = "RSS" ; break;
 		case rdoModelObjects::EVN : file = "EVN" ; break;
@@ -65,11 +58,14 @@ tstring RDOBuildEditLineInfo::getMessage() const
 		case rdoModelObjects::PMD : file = "PMD" ; break;
 		default: file = "";
 	}
-	if ( lineNumber < 0 || file.empty() ) {
-		return message;
-	} else {
-		tstring s_error = warning ? rdo::format( IDS_WARNING, error_code ) : rdo::format( IDS_ERROR, error_code );
-		return rdo::format( "%s (%d): %s: %s", file.c_str(), lineNumber + 1, s_error.c_str(), message.c_str() );
+	if ( isSimpleTextMessage() )
+	{
+		return getText();
+	}
+	else
+	{
+		tstring s_error = rdo::format(getMessageType() == RDOSyntaxMessage::MT_WARNING ? IDS_WARNING : IDS_ERROR);
+		return rdo::format( "%s (%d): %s: %s", file.c_str(), getLineNumber() + 1, s_error.c_str(), getText().c_str() );
 	}
 }
 
@@ -85,66 +81,69 @@ BEGIN_MESSAGE_MAP( RDOBuildEdit, RDOLogEdit )
 	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar )
 END_MESSAGE_MAP()
 
-RDOBuildEdit::RDOBuildEdit(): RDOLogEdit()
-{
-}
+RDOBuildEdit::RDOBuildEdit()
+	: RDOLogEdit()
+{}
 
 RDOBuildEdit::~RDOBuildEdit()
-{
-}
+{}
 
 void RDOBuildEdit::showFirstError()
 {
-	current_line++;
+	setCurrentLine(getCurrentLine() + 1);
+	RDOLogEditLineInfoList lines;
+	getLines(lines);
 	std::list< RDOLogEditLineInfo* >::iterator it = lines.begin();
-	TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->lineNumber, static_cast<RDOBuildEditLineInfo*>(*it)->warning ? 1 : 0, (*it)->message.c_str() );
+	TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->getLineNumber(), static_cast<RDOBuildEditLineInfo*>(*it)->getMessageType() == RDOSyntaxMessage::MT_WARNING ? 1 : 0, (*it)->getText().c_str() );
 	int i;
-	for ( i = 0; i < current_line; i++ ) {
+	for ( i = 0; i < getCurrentLine(); i++ ) {
 		if ( it != lines.end() ) {
 			it++;
-			TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->lineNumber, static_cast<RDOBuildEditLineInfo*>(*it)->warning ? 1 : 0, (*it)->message.c_str() );
-		} else {
-			current_line = 0;
+			TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->getLineNumber(), static_cast<RDOBuildEditLineInfo*>(*it)->getMessageType() == RDOSyntaxMessage::MT_WARNING ? 1 : 0, (*it)->getText().c_str() );
+		}
+		else
+		{
+			setCurrentLine(0);
 			break;
 		}
 	}
 	it = lines.begin();
-	TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->lineNumber, static_cast<RDOBuildEditLineInfo*>(*it)->warning ? 1 : 0, (*it)->message.c_str() );
-	for ( i = 0; i < current_line; i++ ) {
+	TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->getLineNumber(), static_cast<RDOBuildEditLineInfo*>(*it)->getMessageType() == RDOSyntaxMessage::MT_WARNING ? 1 : 0, (*it)->getText().c_str() );
+	for ( i = 0; i < getCurrentLine(); i++ ) {
 		it++;
-		TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->lineNumber, static_cast<RDOBuildEditLineInfo*>(*it)->warning ? 1 : 0, (*it)->message.c_str() );
+		TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->getLineNumber(), static_cast<RDOBuildEditLineInfo*>(*it)->getMessageType() == RDOSyntaxMessage::MT_WARNING ? 1 : 0, (*it)->getText().c_str() );
 	}
-	while ( it != lines.end() && ((*it)->lineNumber == -1 || static_cast<RDOBuildEditLineInfo*>(*it)->warning) ) {
+	while ( it != lines.end() && ((*it)->getLineNumber() == -1 || static_cast<RDOBuildEditLineInfo*>(*it)->getMessageType() == RDOSyntaxMessage::MT_WARNING) ) {
 		it++;
 		if ( it != lines.end() ) {
-			TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->lineNumber, static_cast<RDOBuildEditLineInfo*>(*it)->warning ? 1 : 0, (*it)->message.c_str() );
+			TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->getLineNumber(), static_cast<RDOBuildEditLineInfo*>(*it)->getMessageType() == RDOSyntaxMessage::MT_WARNING ? 1 : 0, (*it)->getText().c_str() );
 		}
-		current_line++;
+		setCurrentLine(getCurrentLine() + 1);
 	}
 	if ( it == lines.end() ) {
 		it = lines.begin();
-		TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->lineNumber, static_cast<RDOBuildEditLineInfo*>(*it)->warning ? 1 : 0, (*it)->message.c_str() );
-		current_line = 0;
-		while ( it != lines.end() && ((*it)->lineNumber == -1 || static_cast<RDOBuildEditLineInfo*>(*it)->warning) ) {
+		TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->getLineNumber(), static_cast<RDOBuildEditLineInfo*>(*it)->getMessageType() == RDOSyntaxMessage::MT_WARNING ? 1 : 0, (*it)->getText().c_str() );
+		setCurrentLine(0);
+		while ( it != lines.end() && ((*it)->getLineNumber() == -1 || static_cast<RDOBuildEditLineInfo*>(*it)->getMessageType() == RDOSyntaxMessage::MT_WARNING) ) {
 			it++;
 			if ( it != lines.end() ) {
-				TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->lineNumber, static_cast<RDOBuildEditLineInfo*>(*it)->warning ? 1 : 0, (*it)->message.c_str() );
+				TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->getLineNumber(), static_cast<RDOBuildEditLineInfo*>(*it)->getMessageType() == RDOSyntaxMessage::MT_WARNING ? 1 : 0, (*it)->getText().c_str() );
 			}
-			current_line++;
+			setCurrentLine(getCurrentLine() + 1);
 		}
 	}
 	if ( it != lines.end() ) {
-		TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->lineNumber, static_cast<RDOBuildEditLineInfo*>(*it)->warning ? 1 : 0, (*it)->message.c_str() );
+		TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->getLineNumber(), static_cast<RDOBuildEditLineInfo*>(*it)->getMessageType() == RDOSyntaxMessage::MT_WARNING ? 1 : 0, (*it)->getText().c_str() );
 	}
-	if ( it != lines.end() && (*it)->lineNumber != -1 && !static_cast<RDOBuildEditLineInfo*>(*it)->warning ) {
-		setSelectLine( current_line, *it, true );
+	if ( it != lines.end() && (*it)->getLineNumber() != -1 && static_cast<RDOBuildEditLineInfo*>(*it)->getMessageType() == RDOSyntaxMessage::MT_ERROR ) {
+		setSelectLine( getCurrentLine(), *it, true );
 	}
 }
 
 void RDOBuildEdit::updateEdit( rdoEditor::RDOEditorEdit* edit, const RDOLogEditLineInfo* lineInfo )
 {
 	RDOLogEdit::updateEdit( edit, lineInfo );
-	edit->setErrorLine( lineInfo->lineNumber );
+	edit->setErrorLine( lineInfo->getLineNumber() );
 }
 
 void RDOBuildEdit::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
@@ -167,3 +166,5 @@ void RDOBuildEdit::OnHelpKeyword()
 	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_run.htm#output_build\n");
 	assistant->write(ba);
 }
+
+}; // namespace rdoEditCtrl

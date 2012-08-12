@@ -196,11 +196,12 @@ void RDOStudioOutput::appendStringToBuild( CREF(tstring) str ) const
 	build->appendLine( line );
 }
 
-void RDOStudioOutput::appendStringToBuild( rdo::service::simulation::RDOSyntaxError::ErrorCode error_code, CREF(tstring) str, const rdoModelObjects::RDOFileType fileType, const int lineNumber, const int posInLine, const rbool warning ) const
+void RDOStudioOutput::appendStringToBuild( CREF(RDOSyntaxMessage) message ) const
 {
-	if ( !warning || (warning && static_cast<RDOBuildEditTheme*>(studioApp.m_pMainFrame->style_build.theme)->warning) ) {
-		RDOBuildEditLineInfo* line = new RDOBuildEditLineInfo( error_code, str, fileType, lineNumber, posInLine, warning );
-		build->appendLine( line );
+	if (message.m_type == RDOSyntaxMessage::MT_ERROR || (message.m_type == RDOSyntaxMessage::MT_WARNING && static_cast<PTR(RDOBuildEditTheme)>(studioApp.m_pMainFrame->style_build.theme)->warning))
+	{
+		PTR(RDOBuildEditLineInfo) pLine = new RDOBuildEditLineInfo(message);
+		build->appendLine(pLine);
 	}
 }
 
@@ -219,9 +220,9 @@ void RDOStudioOutput::appendStringToResults( CREF(tstring) str ) const
 	results->setCurrentPos(pos  );
 }
 
-void RDOStudioOutput::appendStringToFind( CREF(tstring) str, const rdoModelObjects::RDOFileType fileType, const int lineNumber, const int posInLine ) const
+void RDOStudioOutput::appendStringToFind( CREF(tstring) str, rdoModelObjects::RDOFileType fileType, int lineNumber, int posInLine ) const
 {
-	RDOLogEditLineInfo* line = new RDOLogEditLineInfo( str, fileType, lineNumber, posInLine );
+	RDOLogEditLineInfo* line = new RDOLogEditLineInfo( RDOSyntaxMessage(str, fileType, lineNumber, posInLine ) );
 	find->appendLine( line );
 }
 
