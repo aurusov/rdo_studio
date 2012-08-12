@@ -59,6 +59,11 @@ dividing_line = '---------------------------------------------------------------
 #                                 functions                                   #
 ###############################################################################
 
+def print_list_of_line(list):
+    for string in list:
+        print string
+
+
 def get_files_list(dir):
     dirs  = []
     nfile = []
@@ -77,18 +82,19 @@ def get_test_files(dir):
     nfile = filter(lambda x: x.endswith(test_expansion), files)
     return nfile
 
-    
+
 def get_executables(dir):
     # get rdo_studio_console executable and test_rdo_studio_console executable
-  
     files = get_files_list(dir)
     rdo_ex = filter(lambda x: x.endswith(rdo_ex_substr), files)[0]
     rdo_test_ex = filter(lambda x: x.endswith(rdo_test_ex_substr), files)[0]
-  
+
     return rdo_ex, rdo_test_ex
 
 
-def get_text_from_node(node):
+def get_text_from_dom(dom, node_text):
+
+    node = dom.getElementsByTagName(node_text)
     if not len(node):
         return ''
 
@@ -123,33 +129,34 @@ files = get_test_files(model_directory)
 files.sort()
 
 print '\nDEBUG INFO'
+
 print '\nFind RDO executables    :'
-for string in executables:
-    print string
+print_list_of_line(executables)
+
 print '\nFind test project files :'
-for string in files:
-    print string
+print_list_of_line(files)
 
 # parse xml and start tests
 print '\nSTARTED TEST CYCLE\n'
 
+# check model cycle
 for task in files:
+
     print dividing_line
 
+    dirname = os.path.dirname(task) + '/'
+    
     dom = xml.dom.minidom.parse(task)
 
-    dirname = os.path.dirname(task) + '/'
-
-    model_name_with_ex = get_text_from_node(dom.getElementsByTagName('model'))
-
-    target                = get_text_from_node(dom.getElementsByTagName('target'))
-    text_exit_code        = get_text_from_node(dom.getElementsByTagName('exit_code'))
-    etalon_trace_name     = get_text_from_node(dom.getElementsByTagName('trace'))
-    etalon_result_name    = get_text_from_node(dom.getElementsByTagName('result')) 
-    compile_log_file_name = get_text_from_node(dom.getElementsByTagName('log_compilation'))
+    model_name_with_ex    = get_text_from_dom(dom, 'model')
+    target                = get_text_from_dom(dom, 'target')
+    text_exit_code        = get_text_from_dom(dom, 'exit_code')
+    etalon_trace_name     = get_text_from_dom(dom, 'trace')
+    etalon_result_name    = get_text_from_dom(dom, 'result') 
+    compile_log_file_name = get_text_from_dom(dom, 'log_compilation')
 
     exit_code = int(text_exit_code)
-    
+
     print 'Project              :', task
     print 'Model file           :', model_name_with_ex
     print 'Target               :', target
@@ -169,8 +176,8 @@ for task in files:
     simulation_result = dirname + model_name + result_expansion
 
     cycle_exit_code = APP_CODE_TERMINATION_ERROR
-    
-    # select target
+
+    # select console target
     if target == TARGET_CONSOLE:
 
         # run rdo_console app on test model
@@ -180,19 +187,23 @@ for task in files:
 
         # check simulation exit code
         simulation_exit_code_string = 'ERROR'
-      
-        if simulation_code == exit_code:
+
+        cmp_exit_code = simulation_code == exit_code
+        if cmp_exit_code:
             simulation_exit_code_string = "OK"
-            
+
         print "CHECK SIM EXIT CODE  :", simulation_exit_code_string
 
+        # bad simulation exit code
+        if not cmp_exit_code:
+            cycle_exit_code = APP_CODE_TERMINATION_ERROR
+
         # nornal simulation check
-        if simulation_code == RDO_CONSOLE_TERMINATION_NORMAL:
-            command = (rdo_test_ex + ' -T ' + etalon_trace 
-                                              + ' -R ' + etalon_result 
-                                              + ' -t ' + simulation_trace 
-                                              + ' -r ' + simulation_result
-                                              + ' >> ' + null_file)
+        elif simulation_code == RDO_CONSOLE_TERMINATION_NORMAL:
+        
+            command = (rdo_test_ex + ' -T ' + etalon_trace + ' -R ' + etalon_result 
+                                   + ' -t ' + simulation_trace + ' -r ' + simulation_result
+                                   + ' >> ' + null_file)
 
             test_code = subprocess.call(command, shell=True)
 
@@ -220,6 +231,10 @@ for task in files:
             print "TEST EXIT CODE       :", test_code
             print "CHECK TEST CODE      :", check_exit_code_string
 
+        # .rdox model not found
+        elif simulation_code == RDO_CONSOLE_TERMINATION_WITH_AN_ERROR_NO_MODEL:
+            cycle_exit_code = APP_CODE_TERMINATION_NORMAL
+            
         # check compile error log
         elif simulation_code == RDO_CONSOLE_TERMINATION_WITH_AN_ERROR_PARSE_ERROR:
 
@@ -232,10 +247,15 @@ for task in files:
             check_message_cmp_string = 'ERROR'
 
             if cmp(string_list_log, string_list_log_etalon) == 0:
+                print 'GOOD CMP RESULT'
                 cycle_exit_code = APP_CODE_TERMINATION_NORMAL
                 check_message_cmp_string = 'OK'
 
             print "CHECK ERROR LIST     :", check_message_cmp_string 
+
+        # runtime error in rdo_console
+        elif simulation_code == RDO_CONSOLE_TERMINATION_WITH_AN_ERROR_RUNTIME_ERROR:
+            cycle_exit_code = APP_CODE_TERMINATION_NORMAL
 
     else:
         print 'INVALID TARGET'
