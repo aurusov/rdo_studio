@@ -41,6 +41,7 @@ SET(INLITE_FILES
 	stack.inl)
 
 SET(SOURCE_FILES
+    model_objects.cpp
 	rdocommon.cpp
 	rdofile.cpp)
 
