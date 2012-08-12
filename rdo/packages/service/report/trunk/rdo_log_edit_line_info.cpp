@@ -13,7 +13,7 @@
 #include "simulator/report/rdo_log_edit_line_info.h"
 // --------------------------------------------------------------------------------
 
-using namespace typedef rdo::simulation::report;
+using namespace rdo::simulation::report;
 
 RDOLogEditLineInfo::RDOLogEditLineInfo( CREF(RDOSyntaxMessage) message ):
 	m_message( message ),
@@ -80,12 +80,12 @@ tstring RDOLogEditLineInfo::getText() const
 	return m_message.text;
 }
 
-rdo::simulation::report::RDOSyntaxMessage::Type RDOLogEditLineInfo::getMessageType() const
+RDOSyntaxMessage::Type RDOLogEditLineInfo::getMessageType() const
 {
 	return m_message.type;
 }
 
-rdo::simulation::report::RDOSyntaxMessage::ErrorCode RDOLogEditLineInfo::getErrorCode() const
+RDOSyntaxMessage::ErrorCode RDOLogEditLineInfo::getErrorCode() const
 {
 	return m_message.code;
 }

@@ -37,7 +37,7 @@ public:
 	void setPosInLog(int posInLog);
 
 private:
-	RDOSyntaxMessage m_message;
+	rdo::simulation::report::RDOSyntaxMessage m_message;
 	rsint m_posInLog;
 	rbool m_simpleTextMessage;
 };

@@ -15,7 +15,7 @@
 #include "simulator/report/rdo_build_edit_line_info.h"
 // --------------------------------------------------------------------------------
 
-using namespace typedef rdo::simulation::report;
+using namespace rdo::simulation::report;
 
 RDOBuildEditLineInfo::RDOBuildEditLineInfo( CREF(RDOSyntaxMessage) error ) :
 	RDOLogEditLineInfo( error )
