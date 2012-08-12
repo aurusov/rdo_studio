@@ -32,6 +32,7 @@ enum RDOExitCode
 	EC_NoMoreEvents   //!< Модель завершилась потому, что больше нечего моделировать
 };
 
+//! Синтаксическое сообщение
 struct RDOSyntaxMessage
 {
 	enum ErrorCode
@@ -45,12 +46,12 @@ struct RDOSyntaxMessage
 		MT_WARNING
 	};
 
-	tstring                      text;
-	ErrorCode                    code;
-	rdoModelObjects::RDOFileType file;
-	ruint                        line;    //!< Номер строки с ошибкой
-	ruint                        pos;     //!< Позиция ошибки в строке
-	Type                         type; 
+	tstring                      text; //!< Текст сообщения
+	ErrorCode                    code; //!< Код ошибки
+	rdoModelObjects::RDOFileType file; //!< Файл с ошибкой
+	ruint                        line; //!< Номер строки с ошибкой
+	ruint                        pos;  //!< Позиция ошибки в строке
+	Type                         type; //!<  Тип сообщения
 
 	RDOSyntaxMessage(CREF(tstring) text, ErrorCode code, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type = MT_ERROR) : 
 		text(text),

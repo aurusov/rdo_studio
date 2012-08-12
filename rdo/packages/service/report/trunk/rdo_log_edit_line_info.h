@@ -2,7 +2,7 @@
   \copyright (c) RDO-Team, 2012
   \file      rdo_log_edit_line_info.h
   \authors   Евгений Пройдаков (lord.tiran@gmail.com)
-  \date      15.02.2012
+  \date      12.08.2012
   \brief     
   \indent    4T
 */
@@ -37,8 +37,6 @@ public:
 	void setPosInLog(int posInLog);
 
 private:
-	typedef rdo::simulation::report::RDOSyntaxMessage RDOSyntaxMessage;
-
 	RDOSyntaxMessage m_message;
 	rsint m_posInLog;
 	rbool m_simpleTextMessage;
