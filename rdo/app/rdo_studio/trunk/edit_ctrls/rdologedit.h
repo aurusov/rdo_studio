@@ -12,6 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "simulator/report/rdo_log_edit_line_info.h"
 #include "simulator/service/rdosimwin.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdobaseedit.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdologeditstyle.h"
@@ -22,38 +23,6 @@ class RDOEditorEdit;
 }
 
 namespace rdoEditCtrl {
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOLogEditLineInfo
-// --------------------------------------------------------------------------------
-class RDOLogEditLineInfo
-{
-public:
-	typedef  rdo::service::simulation::RDOSyntaxMessage  RDOSyntaxMessage;
-
-	explicit RDOLogEditLineInfo(CREF(RDOSyntaxMessage) message);
-	explicit RDOLogEditLineInfo(CREF(tstring)          message);
-	virtual ~RDOLogEditLineInfo();
-
-	virtual tstring getMessage() const;
-	rbool  isSimpleTextMessage() const;
-
-	rdoModelObjects::RDOFileType getFileType() const;
-
-	int           getLineNumber() const;
-	int           getPosInLine () const;
-	int           getPosInLog  () const;
-	CREF(tstring) getText      () const;
-
-	RDOSyntaxMessage::Type  getMessageType() const;
-
-	void setPosInLog(int posInLog);
-
-private:
-	RDOSyntaxMessage  m_message;
-	rsint             m_posInLog;
-	rbool             m_simpleTextMessage;
-};
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOLogEdit

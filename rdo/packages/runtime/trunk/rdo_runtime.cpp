@@ -34,6 +34,8 @@
 #include "utils/rdodebug.h"
 // --------------------------------------------------------------------------------
 
+typedef rdo::simulation::report::RDOSyntaxMessage RDOSyntaxMessage;
+
 #ifdef COMPILER_VISUAL_STUDIO
 	#pragma warning(disable : 4786)
 #endif
@@ -49,7 +51,7 @@ RDORuntime::RDORuntime()
 	, m_resultList           (NULL               )
 	, m_resultListInfo       (NULL               )
 	, m_pLastActiveBreakPoint(NULL               )
-	, m_whyStop              (rdo::service::simulation::EC_OK)
+	, m_whyStop              (rdo::simulation::report::EC_OK)
 	, m_currentTerm          (0                  )
 	, m_funBreakFlag         (FBF_NONE           )
 	, m_pStudioThread        (NULL               )
@@ -250,8 +252,9 @@ void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
 		}
 		else
 		{
-			error().push(rdo::service::simulation::RDOSyntaxMessage(
+			error().push(RDOSyntaxMessage(
 				_T("¬нутренн€€ ошибка: insertNewResource"),
+				RDOSyntaxMessage::UNKNOWN,
 				rdoModelObjects::PAT,
 				0,
 				0
@@ -457,10 +460,10 @@ void RDORuntime::writeExitCode()
 	tstring status;
 	switch (m_whyStop)
 	{
-	case rdo::service::simulation::EC_OK          : status = _T("NORMAL_TERMINATION"); break;
-	case rdo::service::simulation::EC_NoMoreEvents: status = _T("NO_MORE_EVENTS");     break;
-	case rdo::service::simulation::EC_RunTimeError: status = _T("RUN_TIME_ERROR");     break;
-	case rdo::service::simulation::EC_UserBreak   : status = _T("USER_BREAK");         break;
+	case rdo::simulation::report::EC_OK           : status = _T("NORMAL_TERMINATION"); break;
+	case rdo::simulation::report::EC_NoMoreEvents : status = _T("NO_MORE_EVENTS");     break;
+	case rdo::simulation::report::EC_RunTimeError : status = _T("RUN_TIME_ERROR");     break;
+	case rdo::simulation::report::EC_UserBreak    : status = _T("USER_BREAK");         break;
 	default: NEVER_REACH_HERE;
 	}
 

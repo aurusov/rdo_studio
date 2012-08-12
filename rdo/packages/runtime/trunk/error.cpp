@@ -21,7 +21,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- Error
 // --------------------------------------------------------------------------------
-void Error::push(CREF(rdo::service::simulation::RDOSyntaxMessage) error)
+void Error::push(CREF(RDOSyntaxMessage) error)
 {
 	m_errorList.push_back(error);
 	throw RDORuntimeException(_T(""));
@@ -31,8 +31,9 @@ void Error::push(CREF(tstring) message, CREF(RDOSrcInfo) srcInfo)
 {
 	ASSERT(!message.empty());
 
-	rdo::service::simulation::RDOSyntaxMessage error(
+	RDOSyntaxMessage error(
 		message,
+		RDOSyntaxMessage::UNKNOWN,
 		srcInfo.src_filetype(),
 		srcInfo.src_pos().m_last_line,
 		srcInfo.src_pos().m_last_pos

@@ -649,7 +649,7 @@ void RDOThreadRunTime::start()
 	try
 	{
 		LPRDOThreadRunTime pThis(this);
-		m_pSimulator->m_exitCode = rdo::service::simulation::EC_OK;
+		m_pSimulator->m_exitCode = rdo::simulation::report::EC_OK;
 		m_pSimulator->m_pRuntime->rdoInit(pTracer, pResults, pResultsInfo, pThis.interface_cast<IThreadProxy>());
 		switch (m_pSimulator->m_pParser->getSMR()->getShowMode())
 		{
@@ -723,16 +723,16 @@ void RDOThreadRunTime::writeResultsInfo()
 {
 	switch (m_pSimulator->m_pRuntime->m_whyStop)
 	{
-		case rdo::service::simulation::EC_OK:
+		case rdo::simulation::report::EC_OK:
 			m_pSimulator->m_pRuntime->getResultsInfo() << _T("$Status = ") << _T("NORMAL_TERMINATION");
 			break;
-		case rdo::service::simulation::EC_NoMoreEvents:
+		case rdo::simulation::report::EC_NoMoreEvents:
 			m_pSimulator->m_pRuntime->getResultsInfo() << _T("$Status = ") << _T("NO_MORE_EVENTS");
 			break;
-		case rdo::service::simulation::EC_RunTimeError:
+		case rdo::simulation::report::EC_RunTimeError:
 			m_pSimulator->m_pRuntime->getResultsInfo() << _T("$Status = ") << _T("RUN_TIME_ERROR");
 			break;
-		case rdo::service::simulation::EC_UserBreak:
+		case rdo::simulation::report::EC_UserBreak:
 			m_pSimulator->m_pRuntime->getResultsInfo() << _T("$Status = ") << _T("USER_BREAK");
 			break;
 	}
@@ -859,7 +859,7 @@ OPEN_RDO_SERVICE_SIMULATION_NAMESPACE
 RDOThreadSimulator::RDOThreadSimulator()
 	: RDOThreadMT     (_T("RDOThreadSimulator")       )
 	, m_pThreadRuntime(NULL                           )
-	, m_exitCode      (rdo::service::simulation::EC_OK)
+	, m_exitCode      (rdo::simulation::report::EC_OK)
 {
 	notifies.push_back(RT_STUDIO_MODEL_BUILD              );
 	notifies.push_back(RT_STUDIO_MODEL_RUN                );
@@ -933,7 +933,7 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 		case RT_SIMULATOR_GET_MODEL_EXITCODE:
 		{
 			msg.lock();
-			*static_cast<PTR(rdo::service::simulation::RDOExitCode)>(msg.param) = m_exitCode;
+			*static_cast<PTR(rdo::simulation::report::RDOExitCode)>(msg.param) = m_exitCode;
 			msg.unlock();
 			break;
 		}
@@ -1053,9 +1053,9 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 		{
 			if (msg.from == m_pThreadRuntime.get())
 			{
-				//! rdo::service::simulation::EC_ParserError   - Не используется в run-time
-				//! rdo::service::simulation::EC_ModelNotFound - Не используется в run-time
-				//! rdo::service::simulation::EC_UserBreak     - Устанавливается в m_pSimulator, перехват RT_THREAD_STOP_AFTER не срабатывает
+				//! rdo::simulation::report::EC_ParserError   - Не используется в run-time
+				//! rdo::simulation::report::EC_ModelNotFound - Не используется в run-time
+				//! rdo::simulation::report::EC_UserBreak     - Устанавливается в m_pSimulator, перехват RT_THREAD_STOP_AFTER не срабатывает
 				m_exitCode = m_pRuntime->m_whyStop;
 				if (!m_pThreadRuntime->runtimeError())
 				{
@@ -1095,12 +1095,12 @@ rbool RDOThreadSimulator::parseModel()
 
 	try
 	{
-		m_exitCode = rdo::service::simulation::EC_OK;
+		m_exitCode = rdo::simulation::report::EC_OK;
 		m_pParser->parse();
 	}
 	catch (REF(rdo::compiler::parser::RDOSyntaxException))
 	{
-		m_exitCode = rdo::service::simulation::EC_ParserError;
+		m_exitCode = rdo::simulation::report::EC_ParserError;
 		broadcastMessage(RT_SIMULATOR_PARSE_ERROR);
 		closeModel();
 		return false;
@@ -1109,7 +1109,7 @@ rbool RDOThreadSimulator::parseModel()
 	{
 		tstring mess = ex.getType() + _T(" : ") + ex.message();
 		broadcastMessage(RT_SIMULATOR_PARSE_STRING, &mess);
-		m_exitCode = rdo::service::simulation::EC_ParserError;
+		m_exitCode = rdo::simulation::report::EC_ParserError;
 		broadcastMessage(RT_SIMULATOR_PARSE_ERROR);
 		closeModel();
 		return false;
@@ -1129,7 +1129,7 @@ void RDOThreadSimulator::runModel()
 	ASSERT(m_pRuntime);
 
 	m_pParser->error().clear();
-	m_exitCode = rdo::service::simulation::EC_OK;
+	m_exitCode = rdo::simulation::report::EC_OK;
 	m_pRuntime->setStudioThread(kernel->studio());
 	m_pThreadRuntime = rdo::Factory<rdo::runtime::RDOThreadRunTime>::create();
 }
@@ -1137,12 +1137,12 @@ void RDOThreadSimulator::runModel()
 void RDOThreadSimulator::stopModel()
 {
 	m_pRuntime->onUserBreak();
-	m_exitCode = rdo::service::simulation::EC_UserBreak;
+	m_exitCode = rdo::simulation::report::EC_UserBreak;
 	terminateModel();
 	m_canTrace = false;
 	broadcastMessage(RT_SIMULATOR_MODEL_STOP_BY_USER);
 	closeModel();
-//	kernel.callback(RDOKernel::modelExit, rdo::service::simulation::EC_UserBreak);
+//	kernel.callback(RDOKernel::modelExit, rdo::simulation::report::EC_UserBreak);
 }
 
 void RDOThreadSimulator::terminateModel()
@@ -1234,7 +1234,7 @@ void RDOThreadSimulator::parseSMRFileInfo(REF(rdo::textstream) smr, REF(rdo::con
 				BOOST_AUTO(it, errorList.begin());
 				while (it != errorList.end())
 				{
-					broadcastMessage(RT_DEBUG_STRING, const_cast<PTR(tstring)>(&it->m_message));
+					broadcastMessage(RT_DEBUG_STRING, const_cast<PTR(tstring)>(&it->text));
 					++it;
 				}
 			}

@@ -1,0 +1,32 @@
+#==============================================================================
+# Copyright (c) 2012 Evgeny Proydakov <lord.tiran@gmail.com>
+#==============================================================================
+
+MESSAGE(STATUS "CREATE  RDO_SIMULATOR_REPORT  LIBRARY")
+
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
+
+SET(HEADER_FILES
+    code.h
+    error_code.h
+    namespace.h
+    rdoo_log_edit_line_info.h
+    rdo_build_edit_line_info.h)
+
+SET(SOURCE_FILES
+    rdo_log_edit_line_info.cpp
+    rdo_build_edit_line_info.cpp)
+
+ADD_LIBRARY(rdo_simulator ${HEADER_FILES} ${SOURCE_FILES})
+
+ADD_DEPENDENCIES(rdo_simulator_report rdo_utils)
+TARGET_LINK_LIBRARIES(rdo_simulator rdo_utils)
+
+
+IF(MSVC) # lotions for windows #
+
+SOURCE_GROUP(".code" FILES 
+	${HEADER_FILES}
+	${SOURCE_FILES})
+	
+ENDIF(MSVC)

@@ -82,7 +82,7 @@ private:
 	rbool                                  m_tempPause;
 	rdo::runtime::RunTimeMode              m_runtimeMode;
 	rdo::runtime::RunTimeMode              m_runtimeModePrev;
-	rdo::service::simulation::RDOExitCode  m_exitCode;
+	rdo::simulation::report::RDOExitCode  m_exitCode;
 	mutable rbool                          m_prevModify;
 
 	void  updateFrmDescribed      ();
@@ -202,7 +202,7 @@ public:
 	rbool  isFrmDescribed() const { return m_frmDescribed;                                                       }
 	double getTimeNow    () const { return m_timeNow;                                                            }
 
-	rdo::service::simulation::RDOExitCode getExitCode   () const { return m_exitCode;    }
+	rdo::simulation::report::RDOExitCode getExitCode   () const { return m_exitCode;    }
 	rdo::runtime::RunTimeMode             getRuntimeMode() const { return m_runtimeMode; }
 	void    setRuntimeMode       (const rdo::runtime::RunTimeMode value);
 	tstring getLastBreakPointName();

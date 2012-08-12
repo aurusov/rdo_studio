@@ -498,7 +498,9 @@ RDOPROCOperator::~RDOPROCOperator()
 // --------------------------------------------------------------------------------
 RDOPROCGenerate::RDOPROCGenerate(CREF(LPRDOPROCProcess) pProcess, CREF(tstring) name, CREF(rdo::runtime::LPRDOCalc) pTimeCalc)
 	: RDOPROCOperator(pProcess, name)
-{}
+{
+	UNUSED(pTimeCalc);
+}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPROCBlockForQueue

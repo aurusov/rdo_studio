@@ -17,7 +17,7 @@
 #include "converter/smr2rdox/namespace.h"
 #include "converter/smr2rdox/rdo_object.h"
 #include "simulator/runtime/rdo_exception.h"
-#include "simulator/service/error_code.h"
+#include "simulator/report/error_code.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
@@ -40,17 +40,21 @@ public:
 class Error
 {
 public:
-	typedef std::vector<rdo::service::simulation::RDOSyntaxMessage> ErrorList;
+	typedef std::vector<rdo::simulation::report::RDOSyntaxMessage> ErrorList;
 
 	Error();
 
 	//! 1
-	void error    (CREF(RDOParserSrcInfo) src_info, CREF(tstring) message);
-	void warning  (CREF(RDOParserSrcInfo) src_info, CREF(tstring) message);
-	void push_only(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message);
+	void error    (CREF(RDOParserSrcInfo) src_info, rdo::simulation::report::RDOSyntaxMessage::ErrorCode error_code);
+	void push_only(CREF(RDOParserSrcInfo) src_info, rdo::simulation::report::RDOSyntaxMessage::ErrorCode error_code);
 
 	//! 2
-	void error    (CREF(RDOParserSrcInfo) src_info1, CREF(RDOParserSrcInfo) src_info2, CREF(tstring) message);
+	void error    (CREF(RDOParserSrcInfo) src_info, CREF(tstring) message, rdo::simulation::report::RDOSyntaxMessage::ErrorCode error_code = rdo::simulation::report::RDOSyntaxMessage::UNKNOWN);
+	void warning  (CREF(RDOParserSrcInfo) src_info, CREF(tstring) message, rdo::simulation::report::RDOSyntaxMessage::ErrorCode error_code = rdo::simulation::report::RDOSyntaxMessage::UNKNOWN);
+	void push_only(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message, rdo::simulation::report::RDOSyntaxMessage::ErrorCode error_code = rdo::simulation::report::RDOSyntaxMessage::UNKNOWN);
+
+	//! 3
+	void error    (CREF(RDOParserSrcInfo) src_info1, CREF(RDOParserSrcInfo) src_info2, CREF(tstring) message, rdo::simulation::report::RDOSyntaxMessage::ErrorCode error_code = rdo::simulation::report::RDOSyntaxMessage::UNKNOWN);
 
 	//! misc
 	void            push_done();

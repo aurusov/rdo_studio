@@ -103,7 +103,7 @@ private:
 	rbool                                  m_autoRun;
 	rbool                                  m_autoExitByModel;
 	rbool                                  m_dontCloseIfError;
-	rdo::service::simulation::RDOExitCode  m_exitCode;
+	rdo::simulation::report::RDOExitCode  m_exitCode;
 	tstring                                m_openModelName;
 	PluginNameList                         m_pluginStartNameList;
 	PluginNameList                         m_pluginExitNameList;

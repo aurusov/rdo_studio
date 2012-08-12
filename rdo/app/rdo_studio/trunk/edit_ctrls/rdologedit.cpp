@@ -11,7 +11,7 @@
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/service/error_code.h"
+#include "simulator/report//error_code.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdologedit.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
@@ -27,97 +27,6 @@
 #endif
 
 using namespace rdoEditCtrl;
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOLogEditLineInfo
-// --------------------------------------------------------------------------------
-RDOLogEditLineInfo::RDOLogEditLineInfo(CREF(RDOSyntaxMessage) message)
-	: m_message          (message)
-	, m_posInLog         (0      )
-	, m_simpleTextMessage(false )
-{}
-
-RDOLogEditLineInfo::RDOLogEditLineInfo(CREF(tstring) message)
-	: m_message(RDOSyntaxMessage
-	(
-		message,
-		rdoModelObjects::PAT,
-		0, 0
-	))
-	, m_posInLog(0)
-	, m_simpleTextMessage(true)
-{}
-
-RDOLogEditLineInfo::~RDOLogEditLineInfo()
-{}
-
-tstring RDOLogEditLineInfo::getMessage() const
-{
-	tstring file;
-	switch (m_message.m_file)
-	{
-		case rdoModelObjects::RTP : file = "RTP" ; break;
-		case rdoModelObjects::RSS : file = "RSS" ; break;
-		case rdoModelObjects::EVN : file = "EVN" ; break;
-		case rdoModelObjects::PAT : file = "PAT" ; break;
-		case rdoModelObjects::DPT : file = "DPT" ; break;
-		case rdoModelObjects::PRC : file = "PRC" ; break;
-		case rdoModelObjects::PRCX: file = "PRCX"; break;
-		case rdoModelObjects::FRM : file = "FRM" ; break;
-		case rdoModelObjects::FUN : file = "FUN" ; break;
-		case rdoModelObjects::SMR : file = "SMR" ; break;
-		case rdoModelObjects::PMD : file = "PMD" ; break;
-		default: file = "";
-	}
-	if (m_simpleTextMessage)
-	{
-		return m_message.m_message;
-	}
-	else
-	{
-		return rdo::format( "%s (%d): %s", file.c_str(), m_message.m_line + 1, m_message.m_message.c_str() );
-	}
-}
-
-rbool RDOLogEditLineInfo::isSimpleTextMessage() const
-{
-	return m_simpleTextMessage;
-}
-
-rdoModelObjects::RDOFileType RDOLogEditLineInfo::getFileType() const
-{
-	return m_message.m_file;
-}
-
-int RDOLogEditLineInfo::getLineNumber() const
-{
-	return m_message.m_line;
-}
-
-int RDOLogEditLineInfo::getPosInLine() const
-{
-	return m_message.m_pos;
-}
-
-int RDOLogEditLineInfo::getPosInLog() const
-{
-	return m_posInLog;
-}
-
-CREF(tstring) RDOLogEditLineInfo::getText() const
-{
-	return m_message.m_message;
-}
-
-RDOLogEditLineInfo::RDOSyntaxMessage::Type RDOLogEditLineInfo::getMessageType() const
-{
-	return m_message.m_type;
-}
-
-void RDOLogEditLineInfo::setPosInLog(int posInLog)
-{
-	m_posInLog = posInLog;
-}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOLogEdit

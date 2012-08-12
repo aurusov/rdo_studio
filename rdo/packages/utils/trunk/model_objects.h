@@ -13,6 +13,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/rdotypes.h"
 // --------------------------------------------------------------------------------
 
 //! \namespace rdoModelObjects
@@ -59,6 +60,9 @@ OPEN_RDO_MODEL_OBJECTS_NAMESPACE
 		obPOST = 0x0800, //!< Пост-компиляция
 		obALL  = 0x0FFF  //!< Все типы (маска полностью выставлена)
 	};
+
+	tstring getFileTypeString(RDOFileType type);
+
 CLOSE_RDO_MODEL_OBJECTS_NAMESPACE
 
 #endif // _UTILS_MODEL_OBJECTS_H_

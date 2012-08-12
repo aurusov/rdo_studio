@@ -299,6 +299,10 @@
 			Name=".common"
 			>
 			<File
+				RelativePath="..\..\model_objects.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\model_objects.h"
 				>
 			</File>

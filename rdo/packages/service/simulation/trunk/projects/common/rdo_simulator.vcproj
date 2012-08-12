@@ -425,10 +425,6 @@
 	</References>
 	<Files>
 		<File
-			RelativePath="..\..\error_code.h"
-			>
-		</File>
-		<File
 			RelativePath="..\..\namespace.h"
 			>
 		</File>

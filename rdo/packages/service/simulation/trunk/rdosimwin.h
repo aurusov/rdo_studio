@@ -15,8 +15,9 @@
 #include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <string>
-#include <sstream>
 #include <vector>
+#include <sstream>
+
 #include <boost/noncopyable.hpp>
 
 #ifdef COMPILER_VISUAL_STUDIO
@@ -209,7 +210,7 @@ private:
 	rdo::compiler::gui::LPProcGUIProcess  m_pGUIProcess;
 	rdo::compiler::gui::LPProcGUIBlock    m_pBlock;
 	rdo::runtime::LPRDOThreadRunTime      m_pThreadRuntime;
-	RDOExitCode                           m_exitCode;
+	rdo::simulation::report::RDOExitCode  m_exitCode;
 
 	void terminateModel();
 	void closeModel    (); 
@@ -239,7 +240,7 @@ protected:
 	void  runModel  ();
 	void  stopModel ();
 
-	typedef std::vector<RDOSyntaxMessage> SyntaxMessageList;
+	typedef std::vector<rdo::simulation::report::RDOSyntaxMessage> SyntaxMessageList;
 	SyntaxMessageList getErrors();
 
 	void codeCompletion();

@@ -182,22 +182,22 @@ inline RDOValue RDORuntime::getPatternParameter(ruint paramID) const
 
 inline void RDORuntime::onNothingMoreToDo()
 {
-	m_whyStop = rdo::service::simulation::EC_NoMoreEvents;
+	m_whyStop = rdo::simulation::report::EC_NoMoreEvents;
 }
 
 inline void RDORuntime::onEndCondition()
 {
-	m_whyStop = rdo::service::simulation::EC_OK;
+	m_whyStop = rdo::simulation::report::EC_OK;
 }
 
 inline void RDORuntime::onRuntimeError()
 {
-	m_whyStop = rdo::service::simulation::EC_RunTimeError;
+	m_whyStop = rdo::simulation::report::EC_RunTimeError;
 }
 
 inline void RDORuntime::onUserBreak()
 {
-	m_whyStop = rdo::service::simulation::EC_UserBreak;
+	m_whyStop = rdo::simulation::report::EC_UserBreak;
 }
 
 inline RDORuntime::ResCIterator RDORuntime::res_begin() const

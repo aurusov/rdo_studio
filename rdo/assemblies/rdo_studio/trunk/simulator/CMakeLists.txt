@@ -3,6 +3,7 @@
 #==============================================================================
 
 SET(COMPILER_PATH compiler)
+SET(REPORT_PATH report)
 SET(RUNTIME_PATH runtime)
 SET(SERVICE_PATH service)
 

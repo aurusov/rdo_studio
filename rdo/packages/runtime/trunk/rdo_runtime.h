@@ -159,7 +159,7 @@ public:
 
 	virtual void onPutToTreeNode();
 
-	rdo::service::simulation::RDOExitCode m_whyStop;
+	rdo::simulation::report::RDOExitCode m_whyStop;
 
 	virtual void onNothingMoreToDo();
 	virtual void onEndCondition();
