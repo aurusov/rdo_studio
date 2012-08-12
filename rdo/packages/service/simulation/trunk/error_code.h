@@ -53,12 +53,12 @@ struct RDOSyntaxMessage
 	//! \param line    - номер строки с ошибкой
 	//! \param pos     - позиция ошибки в строке
 	//! \param warning - признак предупреждения, может отсутствовать. Значение по умолчанию \b false
-	RDOSyntaxMessage(CREF(tstring) message, ErrorCode code, ruint line, ruint pos, rdoModelObjects::RDOFileType file, rbool warning = false)
+	RDOSyntaxMessage(CREF(tstring) message, ErrorCode code, rdoModelObjects::RDOFileType file, ruint line, ruint pos, rbool warning = false)
 		: m_message(message)
 		, m_code   (code   )
+		, m_file   (file   )
 		, m_line   (line   )
 		, m_pos    (pos    )
-		, m_file   (file   )
 		, m_warning(warning)
 	{}
 };
