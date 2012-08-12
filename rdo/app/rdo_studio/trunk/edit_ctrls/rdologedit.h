@@ -38,11 +38,12 @@ public:
 	virtual tstring getMessage() const;
 	rbool  isSimpleTextMessage() const;
 
-	RDOFileType getFileType  () const;
-	int         getLineNumber() const;
-	int         getPosInLine () const;
-	int         getPosInLog  () const;
-	tstring     getText      () const;
+	rdoModelObjects::RDOFileType getFileType() const;
+
+	int           getLineNumber() const;
+	int           getPosInLine () const;
+	int           getPosInLog  () const;
+	CREF(tstring) getText      () const;
 
 	RDOSyntaxMessage::Type      getMessageType() const;
 	RDOSyntaxMessage::ErrorCode getErrorCode  () const;

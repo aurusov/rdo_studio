@@ -49,6 +49,8 @@ protected:
 	virtual void updateEdit( rdoEditor::RDOEditorEdit* edit, const RDOLogEditLineInfo* lineInfo );
 
 private:
+	typedef  rdo::service::simulation::RDOSyntaxMessage  RDOSyntaxMessage;
+
 	afx_msg void OnHelpKeyword();
 	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );

@@ -55,7 +55,8 @@ RDOLogEditLineInfo::~RDOLogEditLineInfo()
 tstring RDOLogEditLineInfo::getMessage() const
 {
 	tstring file;
-	switch ( m_message.file ) {
+	switch (m_message.m_file)
+	{
 		case rdoModelObjects::RTP : file = "RTP" ; break;
 		case rdoModelObjects::RSS : file = "RSS" ; break;
 		case rdoModelObjects::EVN : file = "EVN" ; break;
@@ -69,13 +70,13 @@ tstring RDOLogEditLineInfo::getMessage() const
 		case rdoModelObjects::PMD : file = "PMD" ; break;
 		default: file = "";
 	}
-	if ( m_simpleTextMessage )
+	if (m_simpleTextMessage)
 	{
-		return m_message.text;
+		return m_message.m_message;
 	}
 	else
 	{
-		return rdo::format( "%s (%d): %s", file.c_str(), m_message.line + 1, m_message.text.c_str() );
+		return rdo::format( "%s (%d): %s", file.c_str(), m_message.m_line + 1, m_message.m_message.c_str() );
 	}
 }
 
@@ -84,19 +85,19 @@ rbool RDOLogEditLineInfo::isSimpleTextMessage() const
 	return m_simpleTextMessage;
 }
 
-RDOFileType RDOLogEditLineInfo::getFileType() const
+rdoModelObjects::RDOFileType RDOLogEditLineInfo::getFileType() const
 {
-	return m_message.file;
+	return m_message.m_file;
 }
 
 int RDOLogEditLineInfo::getLineNumber() const
 {
-	return m_message.line;
+	return m_message.m_line;
 }
 
 int RDOLogEditLineInfo::getPosInLine() const
 {
-	return m_message.pos;
+	return m_message.m_pos;
 }
 
 int RDOLogEditLineInfo::getPosInLog() const
@@ -104,19 +105,19 @@ int RDOLogEditLineInfo::getPosInLog() const
 	return m_posInLog;
 }
 
-tstring RDOLogEditLineInfo::getText() const
+CREF(tstring) RDOLogEditLineInfo::getText() const
 {
-	return m_message.text;
+	return m_message.m_message;
 }
 
 RDOLogEditLineInfo::RDOSyntaxMessage::Type RDOLogEditLineInfo::getMessageType() const
 {
-	return m_message.type;
+	return m_message.m_type;
 }
 
 RDOLogEditLineInfo::RDOSyntaxMessage::ErrorCode RDOLogEditLineInfo::getErrorCode() const
 {
-	return m_message.code;
+	return m_message.m_code;
 }
 
 void RDOLogEditLineInfo::setPosInLog(int posInLog)
@@ -133,9 +134,9 @@ BEGIN_MESSAGE_MAP( RDOLogEdit, RDOBaseEdit )
 	ON_COMMAND(ID_BUILDFINDLOG_GOTO_PREV, OnGotoPrev)
 END_MESSAGE_MAP()
 
-RDOLogEdit::RDOLogEdit():
-	RDOBaseEdit(),
-	m_currentLine( -1 )
+RDOLogEdit::RDOLogEdit()
+	: RDOBaseEdit  ()
+	, m_currentLine(-1)
 {
 	setCurrentLine(-1);
 	m_sciMarkerLine = getNewMarker();
@@ -204,7 +205,7 @@ rsint RDOLogEdit::getSciMarkerLine() const
 	return m_sciMarkerLine;
 }
 
-void RDOLogEdit::setCurrentLine( rsint currentLine )
+void RDOLogEdit::setCurrentLine(rsint currentLine)
 {
 	m_currentLine = currentLine;
 }

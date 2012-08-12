@@ -39,12 +39,18 @@ struct RDOSyntaxMessage
 		UNKNOWN = 1, //!< Неизвестная ошибка
 	};
 
+	enum Type
+	{
+		MESSAGE_ERROR = 0,
+		MESSAGE_WARNING
+	};
+
 	tstring                       m_message; //!< Сообщение об ошибке
 	ErrorCode                     m_code;    //!< Код ошибки
 	rdoModelObjects::RDOFileType  m_file;    //!< Файл, в котором найдена ошибка
 	ruint                         m_line;    //!< Номер строки с ошибкой
 	ruint                         m_pos;     //!< Позиция ошибки в строке
-	rbool                         m_warning; //!< Признак предупреждения (\b true - предупреждение, \b false - ошибка)
+	Type                          m_type;    //!< Тип сообщения
 
 	//! Конструктор ошибки
 	//! \param message - сообщение об ошибке
@@ -52,14 +58,14 @@ struct RDOSyntaxMessage
 	//! \param file    - файл, в котором найдена ошибка
 	//! \param line    - номер строки с ошибкой
 	//! \param pos     - позиция ошибки в строке
-	//! \param warning - признак предупреждения, может отсутствовать. Значение по умолчанию \b false
-	RDOSyntaxMessage(CREF(tstring) message, ErrorCode code, rdoModelObjects::RDOFileType file, ruint line, ruint pos, rbool warning = false)
+	//! \param type    - тип сообщения. Значение по умолчанию \b MESSAGE_ERROR
+	RDOSyntaxMessage(CREF(tstring) message, ErrorCode code, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type = MESSAGE_ERROR)
 		: m_message(message)
 		, m_code   (code   )
 		, m_file   (file   )
 		, m_line   (line   )
 		, m_pos    (pos    )
-		, m_warning(warning)
+		, m_type   (type   )
 	{}
 };
 
