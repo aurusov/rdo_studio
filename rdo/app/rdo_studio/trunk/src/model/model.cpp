@@ -413,7 +413,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			STL_FOR_ALL_CONST(errors, it)
 			{
 				output->appendStringToBuild(*it);
-				if (it->m_type == RDOSyntaxMessage::MESSAGE_WARNING)
+				if (it->m_type == RDOSyntaxMessage::MT_WARNING)
 				{
 					warnings_cnt++;
 				}
@@ -446,7 +446,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			STL_FOR_ALL_CONST(errors, it)
 			{
 				output->appendStringToBuild(*it);
-				if (it->m_type == RDOSyntaxMessage::MESSAGE_WARNING)
+				if (it->m_type == RDOSyntaxMessage::MT_WARNING)
 				{
 					warnings_cnt++;
 				}
@@ -485,7 +485,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			STL_FOR_ALL_CONST(errors, it)
 			{
 				output->appendStringToBuild(*it);
-				if (it->m_type == RDOSyntaxMessage::MESSAGE_WARNING)
+				if (it->m_type == RDOSyntaxMessage::MT_WARNING)
 				{
 					warnings_cnt++;
 				}

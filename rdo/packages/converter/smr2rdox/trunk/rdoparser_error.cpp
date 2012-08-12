@@ -40,7 +40,7 @@ void Error::warning(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message)
 	if (blocked())
 		return;
 
-	m_errors.push_back(rdo::service::simulation::RDOSyntaxMessage(message, src_info.src_filetype(), src_info.src_pos().m_last_line, src_info.src_pos().m_last_pos, rdo::service::simulation::RDOSyntaxMessage::MESSAGE_ERROR));
+	m_errors.push_back(rdo::service::simulation::RDOSyntaxMessage(message, src_info.src_filetype(), src_info.src_pos().m_last_line, src_info.src_pos().m_last_pos, rdo::service::simulation::RDOSyntaxMessage::MT_ERROR));
 }
 
 void Error::push_only(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message)

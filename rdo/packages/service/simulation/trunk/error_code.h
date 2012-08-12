@@ -34,8 +34,8 @@ struct RDOSyntaxMessage
 {
 	enum Type
 	{
-		MESSAGE_ERROR = 0,
-		MESSAGE_WARNING
+		MT_ERROR = 0,
+		MT_WARNING
 	};
 
 	tstring                       m_message; //!< Сообщение об ошибке
@@ -49,8 +49,8 @@ struct RDOSyntaxMessage
 	//! \param file    - файл, в котором найдена ошибка
 	//! \param line    - номер строки с ошибкой
 	//! \param pos     - позиция ошибки в строке
-	//! \param type    - тип сообщения. Значение по умолчанию \b MESSAGE_ERROR
-	RDOSyntaxMessage(CREF(tstring) message, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type = MESSAGE_ERROR)
+	//! \param type    - тип сообщения. Значение по умолчанию \b MT_ERROR
+	RDOSyntaxMessage(CREF(tstring) message, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type = MT_ERROR)
 		: m_message(message)
 		, m_file   (file   )
 		, m_line   (line   )
