@@ -198,11 +198,11 @@ void RDOStudioOutput::appendStringToBuild( CREF(tstring) str ) const
 	build->appendLine( line );
 }
 
-void RDOStudioOutput::appendStringToBuild( CREF(rdo::simulation::report::RDOSyntaxMessage) error ) const
+void RDOStudioOutput::appendStringToBuild( CREF(rdo::simulation::report::RDOSyntaxMessage) message ) const
 {
-	if ( error.type == rdo::simulation::report::RDOSyntaxMessage::MT_ERROR || (error.type == RDOSyntaxMessage::MT_WARNING && static_cast<RDOBuildEditTheme*>(studioApp.m_pMainFrame->style_build.theme)->warning) )
+	if ( message.type == rdo::simulation::report::RDOSyntaxMessage::MT_ERROR || (message.type == RDOSyntaxMessage::MT_WARNING && static_cast<RDOBuildEditTheme*>(studioApp.m_pMainFrame->style_build.theme)->warning) )
 	{
-		PTR(RDOBuildEditLineInfo) pLine = new RDOBuildEditLineInfo(error);
+		PTR(RDOBuildEditLineInfo) pLine = new RDOBuildEditLineInfo(message);
 		build->appendLine(pLine);
 	}
 }

@@ -19,8 +19,8 @@
 class RDOBuildEditLineInfo : public RDOLogEditLineInfo
 {
 public:
-	explicit RDOBuildEditLineInfo( CREF(rdo::simulation::report::RDOSyntaxMessage) error );
-	explicit RDOBuildEditLineInfo( CREF(tstring) text );
+	explicit RDOBuildEditLineInfo( CREF(rdo::simulation::report::RDOSyntaxMessage) message );
+	explicit RDOBuildEditLineInfo( CREF(tstring) message );
 	virtual ~RDOBuildEditLineInfo();
 
 	virtual tstring getMessage() const;

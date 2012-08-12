@@ -21,9 +21,9 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- Error
 // --------------------------------------------------------------------------------
-void Error::push(CREF(RDOSyntaxMessage) error)
+void Error::push(CREF(RDOSyntaxMessage) message)
 {
-	m_errorList.push_back(error);
+	m_errorList.push_back(message);
 	throw RDORuntimeException(_T(""));
 }
 

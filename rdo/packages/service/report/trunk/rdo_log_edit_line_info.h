@@ -20,7 +20,7 @@ class RDOLogEditLineInfo
 {
 public:
 	explicit RDOLogEditLineInfo( CREF(rdo::simulation::report::RDOSyntaxMessage) message );
-	explicit RDOLogEditLineInfo( CREF(tstring) text );
+	explicit RDOLogEditLineInfo( CREF(tstring) message );
 	virtual ~RDOLogEditLineInfo();
 
 	virtual tstring getMessage() const;
