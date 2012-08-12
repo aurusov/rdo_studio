@@ -29,6 +29,7 @@ ADD_DEPENDENCIES(rdo rdo_utils)
 ADD_DEPENDENCIES(rdo rdo_kernel)
 ADD_DEPENDENCIES(rdo rdo_repository)
 ADD_DEPENDENCIES(rdo rdo_simulator)
+ADD_DEPENDENCIES(rdo rdo_simulator_report)
 
 TARGET_LINK_LIBRARIES(rdo ${Boost_PROGRAM_OPTIONS_LIBRARY} ${Boost_THREAD_LIBRARY})
 
@@ -36,6 +37,7 @@ TARGET_LINK_LIBRARIES(rdo rdo_utils)
 TARGET_LINK_LIBRARIES(rdo rdo_kernel)
 TARGET_LINK_LIBRARIES(rdo rdo_repository)
 TARGET_LINK_LIBRARIES(rdo rdo_simulator)
+TARGET_LINK_LIBRARIES(rdo rdo_simulator_report)
 
 IF(MSVC) # lotions for windows #
 
