@@ -11,7 +11,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdocommon.h"
-#include "simulator/report/code.h"
+#include "simulator/report/comment.h"
 #include "simulator/report/rdo_build_edit_line_info.h"
 // --------------------------------------------------------------------------------
 
@@ -38,8 +38,9 @@ tstring RDOBuildEditLineInfo::getMessage() const
 	else
 	{
 		tstring file = rdoModelObjects::getFileTypeString(getFileType());
-		tstring s_error = (getMessageType() == RDOSyntaxMessage::MT_WARNING) ? rdo::format( IDS_WARNING, getErrorCode() ) : rdo::format( IDS_ERROR, getErrorCode() );
-		tstring text = rdo::format( "%s (%d): %s: %s", file.c_str(), getLineNumber() + 1, s_error.c_str(), getText().c_str() );
+		rsint code = getErrorCode();
+		tstring error = (getMessageType() == RDOSyntaxMessage::MT_WARNING) ? rdo::format( WARNING_STRING, code ) : rdo::format( ERROR_STRING, code );
+		tstring text = rdo::format( "%s (%d): %s: %s", file.c_str(), getLineNumber() + 1, error.c_str(), getText().c_str() );
 		return text;
 	}
 }

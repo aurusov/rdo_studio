@@ -9,8 +9,12 @@
 
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
+#include <vector>
 #include <boost/thread/locks.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "kernel/rdokernel.h"
+#include "simulator/service/rdosimwin.h"
+#include "simulator/report/rdo_build_edit_line_info.h"
 #include "app/rdo_console/rdo_console_controller.h"
 // --------------------------------------------------------------------------------
 
@@ -18,8 +22,10 @@
 
 RDOStudioConsoleController::RDOStudioConsoleController()
 	: RDOThread(_T("RDOThreadRDOStudioConsoleController"))
-	, m_state  (SS_UNDEFINED)
+	, m_state(SS_UNDEFINED)
+	, m_buildError(false)
 	, m_runtimeError(false)
+	, m_exitCode(rdo::simulation::report::EC_OK)
 {
 	notifies.push_back(RT_REPOSITORY_MODEL_OPEN_ERROR       );
 	notifies.push_back(RT_RUNTIME_MODEL_START_BEFORE        );
@@ -48,21 +54,25 @@ rbool RDOStudioConsoleController::finished() const
 	return res;
 }
 
+rbool RDOStudioConsoleController::buildError () const
+{
+	return m_buildError;
+}
+
 rbool RDOStudioConsoleController::runtimeError() const
 {
-	/// @todo added errors controle
 	return m_runtimeError;
 }
 
-rbool RDOStudioConsoleController::simulationSuccessfully() const
+rbool RDOStudioConsoleController::simulationSuccessfully()
 {
-	bool res = true;
-	{
-		MUTEXT_PROTECTION(m_stateMutex);
-		//! @todo запросить код возврата у симулятора (RT_SIMULATOR_GET_MODEL_EXITCODE)
-		res = !m_runtimeError;
-	}
-	return res;
+	sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_EXITCODE, &m_exitCode);
+	return m_exitCode == rdo::simulation::report::EC_OK;
+}
+
+void RDOStudioConsoleController::getBuildLogList(StringList& list) const
+{
+	list = m_buildLogList;
 }
 
 void RDOStudioConsoleController::proc(REF(RDOThread::RDOMessageInfo) msg)
@@ -90,6 +100,12 @@ void RDOStudioConsoleController::proc(REF(RDOThread::RDOMessageInfo) msg)
 		break;
 
 	case RDOThread::RT_SIMULATOR_PARSE_ERROR:
+		{
+			m_buildError = true;
+			std::vector<RDOSyntaxMessage> errors;
+			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_ERRORS, &errors);
+			fillBuildLogList(errors);
+		}
 		break;
 
 	case RDOThread::RT_SIMULATOR_PARSE_ERROR_SMR:
@@ -104,5 +120,15 @@ void RDOStudioConsoleController::proc(REF(RDOThread::RDOMessageInfo) msg)
 	case RDOThread::RT_SIMULATOR_MODEL_STOP_RUNTIME_ERROR:
 		m_runtimeError = true;
 		break;
+	}
+}
+
+void RDOStudioConsoleController::fillBuildLogList(std::vector<RDOSyntaxMessage>& errors)
+{
+	STL_FOR_ALL_CONST(errors, it)
+	{
+		RDOBuildEditLineInfo info(*it);
+		tstring line = info.getMessage();
+		m_buildLogList.push_back(line);
 	}
 }

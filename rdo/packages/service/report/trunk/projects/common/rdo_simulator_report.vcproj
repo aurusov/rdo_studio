@@ -428,7 +428,7 @@
 			Name=".code"
 			>
 			<File
-				RelativePath="..\..\code.h"
+				RelativePath="..\..\comment.h"
 				>
 			</File>
 			<File

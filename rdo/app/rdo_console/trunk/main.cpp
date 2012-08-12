@@ -19,33 +19,72 @@ namespace fs = boost::filesystem;
 #include "app/rdo_console/rdo_console_controller.h"
 // --------------------------------------------------------------------------------
 
-static ruint g_exitCode;
+#define LOG_FILE_NAME "log.txt"
+
+static ruint g_exitCode = TERMINATION_NORMAL;
 
 int main(int argc, PTR(char) argv[])
 {
 	RDOControllerConsoleOptions options_controller(argc, argv);
-
 	options_controller.parseOptions();
 
 	tstring model_name;
 	options_controller.getModelName(model_name);
-	
 	rbool model_exist = fs::exists(model_name);
 
-	if (model_exist)
+	boost::filesystem::path path(model_name);
+	tstring model_dir = path.parent_path().string();
+
+	if (options_controller.helpQuery())
 	{
-		// Init
-		RDOKernel::init();
-		new rdo::service::simulation::RDOThreadSimulator();
-		new rdo::repository::RDOThreadRepository();
+		return TERMINATION_NORMAL;
+	}
+	else if(!model_exist && !options_controller.helpQuery())
+	{
+		std::cout << _T("Model does not exist") << std::endl;
+		return TERMINATION_WITH_AN_ERROR_NO_MODEL;
+	}
 
-		PTR(RDOStudioConsoleController) pAppController = new RDOStudioConsoleController();
-		ASSERT(pAppController);
+	// simulation
 
-		rdo::repository::RDOThreadRepository::OpenFile data(model_name);
-		pAppController->broadcastMessage(RDOThread::RT_STUDIO_MODEL_OPEN, &data);
-		pAppController->broadcastMessage(RDOThread::RT_STUDIO_MODEL_BUILD      );
-		pAppController->broadcastMessage(RDOThread::RT_STUDIO_MODEL_RUN        );
+	RDOKernel::init();
+	new rdo::service::simulation::RDOThreadSimulator();
+	new rdo::repository::RDOThreadRepository();
+
+	PTR(RDOStudioConsoleController) pAppController = new RDOStudioConsoleController();
+	ASSERT(pAppController);
+
+	rdo::repository::RDOThreadRepository::OpenFile data(model_name);
+	pAppController->broadcastMessage(RDOThread::RT_STUDIO_MODEL_OPEN, &data);
+	pAppController->broadcastMessage(RDOThread::RT_STUDIO_MODEL_BUILD      );
+
+	bool simulationSuccessfully = false;
+
+	bool buildError = pAppController->buildError();
+	if(buildError)
+	{
+		StringList buildList;
+		pAppController->getBuildLogList(buildList);
+
+		tstring fileName(model_dir + "/" + LOG_FILE_NAME);
+		boost::filesystem::remove(fileName);
+		std::ofstream stream(fileName.c_str(), std::ios::out);
+
+		stream.clear();
+		if (stream.fail()) {
+			return TERMINATION_WITH_APP_RUNTIME_ERROR;
+		}
+		for(StringList::const_iterator it = buildList.begin(); it != buildList.end(); ++it) {
+			stream << it->c_str() << std::endl;
+		}
+		stream.close();
+
+		std::cerr << _T("Build model error") << std::endl;
+		g_exitCode = TERMINATION_WITH_AN_ERROR_PARSE_ERROR;
+	}
+	else
+	{
+		pAppController->broadcastMessage(RDOThread::RT_STUDIO_MODEL_RUN);
 
 		while (!pAppController->finished())
 		{
@@ -53,28 +92,22 @@ int main(int argc, PTR(char) argv[])
 
 			if (pAppController->runtimeError())
 			{
-				std::cout << _T("Run-time error") << std::endl;
+				std::cerr << _T("Run-time error") << std::endl;
 				g_exitCode = TERMINATION_WITH_AN_ERROR_RUNTIME_ERROR;
 			}
 		}
-		bool simulationSuccessfully = pAppController->simulationSuccessfully();
+		simulationSuccessfully = pAppController->simulationSuccessfully();
 
 		RDOKernel::close();
-
-		if (simulationSuccessfully)
-		{
-			std::cout << _T("Simulation finished successfully") << std::endl;
-			g_exitCode = TERMINATION_NORMAL;
-		}
-		else
-		{
-			std::cout << _T("Simulation completed with errors") << std::endl;
-		}
 	}
-	else if(!options_controller.helpQuery())
+	if (simulationSuccessfully)
 	{
-		std::cout << _T("Model does not exist") << std::endl;
-		g_exitCode = TERMINATION_WITH_AN_ERROR_NO_MODEL;
+		std::cout << _T("Simulation finished successfully") << std::endl;
+		g_exitCode = TERMINATION_NORMAL;
+	}
+	else
+	{
+		std::cout << _T("Simulation completed with errors") << std::endl;
 	}
 	return g_exitCode;
 }
