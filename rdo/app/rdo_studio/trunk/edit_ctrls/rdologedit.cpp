@@ -37,10 +37,10 @@ RDOLogEditLineInfo::RDOLogEditLineInfo(CREF(RDOSyntaxMessage) message)
 	, m_simpleTextMessage(false )
 {}
 
-RDOLogEditLineInfo::RDOLogEditLineInfo(CREF(tstring) text)
+RDOLogEditLineInfo::RDOLogEditLineInfo(CREF(tstring) message)
 	: m_message(RDOSyntaxMessage
 	(
-		text,
+		message,
 		RDOSyntaxMessage::UNKNOWN,
 		rdoModelObjects::PAT,
 		0, 0

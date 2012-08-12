@@ -76,7 +76,7 @@ public:
 	const rdoEditCtrl::RDOFindEdit*       getFind() const    { return find;    };
 
 	void appendStringToBuild( CREF(tstring) str ) const;
-	void appendStringToBuild( CREF(RDOSyntaxMessage) error ) const;
+	void appendStringToBuild( CREF(RDOSyntaxMessage) message ) const;
 	void appendStringToDebug( CREF(tstring) str ) const;
 	void appendStringToResults( CREF(tstring) str ) const;
 	void appendStringToFind( CREF(tstring) str, rdoModelObjects::RDOFileType fileType = rdoModelObjects::PAT, int lineNumber = -1, int posInLine = 0 ) const;

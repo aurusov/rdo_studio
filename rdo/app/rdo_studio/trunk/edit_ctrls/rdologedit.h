@@ -32,7 +32,7 @@ public:
 	typedef  rdo::service::simulation::RDOSyntaxMessage  RDOSyntaxMessage;
 
 	explicit RDOLogEditLineInfo(CREF(RDOSyntaxMessage) message);
-	explicit RDOLogEditLineInfo(CREF(tstring)          text   );
+	explicit RDOLogEditLineInfo(CREF(tstring)          message);
 	virtual ~RDOLogEditLineInfo();
 
 	virtual tstring getMessage() const;

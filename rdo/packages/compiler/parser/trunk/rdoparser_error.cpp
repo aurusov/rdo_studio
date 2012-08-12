@@ -37,41 +37,37 @@ void Error::error(CREF(RDOParserSrcInfo) src_info, rdo::service::simulation::RDO
 void Error::push_only(CREF(RDOParserSrcInfo) src_info, rdo::service::simulation::RDOSyntaxMessage::ErrorCode error_code)
 {
 	if (blocked())
-	{
 		return;
-	}
 
 	push_only(src_info, _T(""), error_code);
 }
 
 //! 2
-void Error::error(CREF(RDOParserSrcInfo) src_info, CREF(tstring) text, rdo::service::simulation::RDOSyntaxMessage::ErrorCode errorCode)
+void Error::error(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message, rdo::service::simulation::RDOSyntaxMessage::ErrorCode errorCode)
 {
 	if (blocked())
-	{
 		return;
-	}
 
-	push_only(src_info, text, errorCode);
+	push_only(src_info, message, errorCode);
 	throw RDOSyntaxException(m_errorList.back().text);
 }
 
-void Error::warning(CREF(RDOParserSrcInfo) src_info, CREF(tstring) text, rdo::service::simulation::RDOSyntaxMessage::ErrorCode errorCode) 
+void Error::warning(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message, rdo::service::simulation::RDOSyntaxMessage::ErrorCode errorCode) 
 {
 	if (blocked())
 		return;
 
-	m_errorList.push_back(rdo::service::simulation::RDOSyntaxMessage(text, errorCode, src_info.src_filetype(), src_info.src_pos().m_last_line, src_info.src_pos().m_last_pos, rdo::service::simulation::RDOSyntaxMessage::MESSAGE_WARNING));
+	m_errorList.push_back(rdo::service::simulation::RDOSyntaxMessage(message, errorCode, src_info.src_filetype(), src_info.src_pos().m_last_line, src_info.src_pos().m_last_pos, rdo::service::simulation::RDOSyntaxMessage::MESSAGE_WARNING));
 }
 
-void Error::push_only(CREF(RDOParserSrcInfo) src_info, CREF(tstring) text, rdo::service::simulation::RDOSyntaxMessage::ErrorCode errorCode)
+void Error::push_only(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message, rdo::service::simulation::RDOSyntaxMessage::ErrorCode errorCode)
 {
 	if (blocked())
 		return;
 
 	if (src_info.src_pos().m_last_line != rdo::runtime::RDOSrcInfo::Position::UNDEFINE_LINE && src_info.src_pos().m_last_pos != rdo::runtime::RDOSrcInfo::Position::UNDEFINE_POS)
 	{
-		m_errorList.push_back(rdo::service::simulation::RDOSyntaxMessage(text, errorCode, src_info.src_filetype(), src_info.src_pos().m_last_line, src_info.src_pos().m_last_pos));
+		m_errorList.push_back(rdo::service::simulation::RDOSyntaxMessage(message, errorCode, src_info.src_filetype(), src_info.src_pos().m_last_line, src_info.src_pos().m_last_pos));
 	}
 }
 

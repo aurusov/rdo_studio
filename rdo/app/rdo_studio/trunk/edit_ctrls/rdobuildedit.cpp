@@ -30,12 +30,12 @@ namespace rdoEditCtrl {
 // --------------------------------------------------------------------------------
 // -------------------- RDOBuildEditLineInfo
 // --------------------------------------------------------------------------------
-RDOBuildEditLineInfo::RDOBuildEditLineInfo(CREF(RDOSyntaxMessage) error)
-	: RDOLogEditLineInfo(error)
+RDOBuildEditLineInfo::RDOBuildEditLineInfo(CREF(RDOSyntaxMessage) message)
+	: RDOLogEditLineInfo(message)
 {}
 
-RDOBuildEditLineInfo::RDOBuildEditLineInfo(CREF(tstring) text)
-	: RDOLogEditLineInfo(text)
+RDOBuildEditLineInfo::RDOBuildEditLineInfo(CREF(tstring) message)
+	: RDOLogEditLineInfo(message)
 {}
 
 RDOBuildEditLineInfo::~RDOBuildEditLineInfo()
