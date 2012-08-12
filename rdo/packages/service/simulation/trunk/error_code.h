@@ -29,35 +29,38 @@ enum RDOExitCode
 	EC_NoMoreEvents   //!< Модель завершилась потому, что больше нечего моделировать
 };
 
-struct RDOSyntaxMessage
+//! Синтаксическая ошибка
+struct RDOSyntaxError
 {
+	//! \brief   Код ошибки
+	//! \details Сейчас вместо кода ошибки используется текстовое сообщение об ошибке
 	enum ErrorCode
 	{
-		UNKNOWN = 1
+		UNKNOWN = 1, //!< Неизвестная ошибка
 	};
 
-	enum Type
-	{
-		MESSAGE_ERROR = 0,
-		MESSAGE_WARNING
-	};
+	ErrorCode                     m_code;    //!< Код ошибки
+	tstring                       m_message; //!< Сообщение об ошибке
+	rdoModelObjects::RDOFileType  m_file;    //!< Файл, в котором найдена ошибка
+	ruint                         m_line;    //!< Номер строки с ошибкой
+	ruint                         m_pos;     //!< Позиция ошибки в строке
+	rbool                         m_warning; //!< Признак предупреждения (\b true - предупреждение, \b false - ошибка)
 
-	tstring                      text;
-	ErrorCode                    code;
-	rdoModelObjects::RDOFileType file;
-	ruint                        line;    //!< Номер строки с ошибкой
-	ruint                        pos;     //!< Позиция ошибки в строке
-	Type                         type; 
-
-	RDOSyntaxMessage(CREF(tstring) text, ErrorCode code, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type = MESSAGE_ERROR) : 
-		text(text),
-		code(code),
-		line(line),
-		pos (pos ),
-		file(file),
-		type(type)
-	{
-	}
+	//! Конструктор ошибки
+	//! \param code    - код ошибки
+	//! \param message - сообщение об ошибке
+	//! \param file    - файл, в котором найдена ошибка
+	//! \param line    - номер строки с ошибкой
+	//! \param pos     - позиция ошибки в строке
+	//! \param warning - признак предупреждения, может отсутствовать. Значение по умолчанию \b false
+	RDOSyntaxError(ErrorCode code, CREF(tstring) message, ruint line, ruint pos, rdoModelObjects::RDOFileType file, rbool warning = false)
+		: m_code   (code   )
+		, m_message(message)
+		, m_line   (line   )
+		, m_pos    (pos    )
+		, m_file   (file   )
+		, m_warning(warning)
+	{}
 };
 
 CLOSE_RDO_SERVICE_SIMULATION_NAMESPACE
