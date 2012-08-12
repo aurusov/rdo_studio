@@ -26,8 +26,7 @@ public:
 	virtual tstring getMessage() const;
 	rbool isSimpleTextMessage() const;
 
-	rdo::simulation::report::RDOSyntaxMessage::Type    getMessageType() const;
-	rdo::simulation::report::RDOSyntaxMessage::ErrorCode getErrorCode() const;
+	rdo::simulation::report::RDOSyntaxMessage::Type getMessageType() const;
 	rdoModelObjects::RDOFileType getFileType() const;
 	ruint   getLineNumber() const;
 	ruint   getPosInLine () const;

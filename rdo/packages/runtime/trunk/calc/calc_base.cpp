@@ -65,7 +65,6 @@ RDOValue RDOCalc::calcValue(CREF(LPRDORuntime) pRuntime)
 		}
 		rdo::simulation::report::RDOSyntaxMessage error(
 			message,
-			rdo::simulation::report::RDOSyntaxMessage::UNKNOWN,
 			m_srcInfo.src_filetype(),
 			m_srcInfo.src_pos().m_last_line,
 			m_srcInfo.src_pos().m_last_pos

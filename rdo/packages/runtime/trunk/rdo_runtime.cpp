@@ -254,7 +254,6 @@ void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
 		{
 			error().push(RDOSyntaxMessage(
 				_T("¬нутренн€€ ошибка: insertNewResource"),
-				RDOSyntaxMessage::UNKNOWN,
 				rdoModelObjects::PAT,
 				0,
 				0

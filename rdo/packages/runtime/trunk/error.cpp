@@ -33,7 +33,6 @@ void Error::push(CREF(tstring) message, CREF(RDOSrcInfo) srcInfo)
 
 	RDOSyntaxMessage error(
 		message,
-		RDOSyntaxMessage::UNKNOWN,
 		srcInfo.src_filetype(),
 		srcInfo.src_pos().m_last_line,
 		srcInfo.src_pos().m_last_pos

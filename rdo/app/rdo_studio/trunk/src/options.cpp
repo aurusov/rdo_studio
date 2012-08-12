@@ -22,9 +22,9 @@
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
+#	define new DEBUG_NEW
 #undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+	static char THIS_FILE[] = __FILE__;
 #endif
 
 using namespace rdoEditor;
@@ -62,8 +62,7 @@ RDOStudioOptionsGeneral::RDOStudioOptionsGeneral( RDOStudioOptions& _sheet ):
 }
 
 RDOStudioOptionsGeneral::~RDOStudioOptionsGeneral()
-{
-}
+{}
 
 void RDOStudioOptionsGeneral::DoDataExchange(CDataExchange* pDX) 
 {
@@ -135,8 +134,7 @@ RDOStudioOptionsEditor::RDOStudioOptionsEditor( RDOStudioOptions& _sheet ):
 }
 
 RDOStudioOptionsEditor::~RDOStudioOptionsEditor()
-{
-}
+{}
 
 void RDOStudioOptionsEditor::DoDataExchange(CDataExchange* pDX)
 {
@@ -251,8 +249,7 @@ RDOStudioOptionsTabs::RDOStudioOptionsTabs( RDOStudioOptions& _sheet ):
 }
 
 RDOStudioOptionsTabs::~RDOStudioOptionsTabs()
-{
-}
+{}
 
 void RDOStudioOptionsTabs::DoDataExchange(CDataExchange* pDX)
 {
@@ -566,7 +563,7 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 	sheet->preview_build.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, 0 );
 	sheet->preview_build.setEditorStyle( &sheet->style_build );
 	sheet->preview_build.appendLine( new RDOBuildEditLineInfo( rdo::format( IDS_COLORSTYLE_BUILD_SAMPLE1 ) ) );
-	sheet->preview_build.appendLine( new RDOBuildEditLineInfo( rdo::simulation::report::RDOSyntaxMessage( rdo::format( IDS_COLORSTYLE_BUILD_SAMPLE2 ), rdo::simulation::report::RDOSyntaxMessage::UNKNOWN, rdoModelObjects::PAT, 40, 0 ) ) );
+	sheet->preview_build.appendLine( new RDOBuildEditLineInfo( rdo::simulation::report::RDOSyntaxMessage( rdo::format( IDS_COLORSTYLE_BUILD_SAMPLE2 ), rdoModelObjects::PAT, 40, 0 ) ) );
 	sheet->preview_build.appendLine( new RDOBuildEditLineInfo( rdo::format( IDS_COLORSTYLE_BUILD_SAMPLE3 ) ) );
 	sheet->preview_build.gotoNext();
 
@@ -592,8 +589,8 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 	sheet->preview_find.setKeyword( "$Time" );
 	sheet->preview_find.appendLine( new RDOLogEditLineInfo( rdo::format( IDS_COLORSTYLE_FIND_SAMPLE1 ) ) );
 
-	sheet->preview_find.appendLine( new RDOLogEditLineInfo( rdo::simulation::report::RDOSyntaxMessage( rdo::format( IDS_COLORSTYLE_FIND_SAMPLE2 ), rdo::simulation::report::RDOSyntaxMessage::UNKNOWN, rdoModelObjects::PAT, 3, 0 ) ) );
-	sheet->preview_find.appendLine( new RDOLogEditLineInfo( rdo::simulation::report::RDOSyntaxMessage( rdo::format( IDS_COLORSTYLE_FIND_SAMPLE3 ), rdo::simulation::report::RDOSyntaxMessage::UNKNOWN, rdoModelObjects::PAT, 13, 0 ) ) );
+	sheet->preview_find.appendLine( new RDOLogEditLineInfo( rdo::simulation::report::RDOSyntaxMessage( rdo::format( IDS_COLORSTYLE_FIND_SAMPLE2 ), rdoModelObjects::PAT, 3, 0 ) ) );
+	sheet->preview_find.appendLine( new RDOLogEditLineInfo( rdo::simulation::report::RDOSyntaxMessage( rdo::format( IDS_COLORSTYLE_FIND_SAMPLE3 ), rdoModelObjects::PAT, 13, 0 ) ) );
 	sheet->preview_find.appendLine( new RDOLogEditLineInfo( rdo::format( IDS_COLORSTYLE_FIND_SAMPLE4 ) ) );
 	sheet->preview_find.gotoNext();
 

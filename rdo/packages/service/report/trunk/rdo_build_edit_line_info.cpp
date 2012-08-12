@@ -37,8 +37,7 @@ tstring RDOBuildEditLineInfo::getMessage() const
 	else
 	{
 		tstring file = rdoModelObjects::getFileTypeString(getFileType());
-		rsint code = getErrorCode();
-		tstring error = (getMessageType() == RDOSyntaxMessage::MT_WARNING) ? rdo::format( WARNING_STRING, code ) : rdo::format( ERROR_STRING, code );
+		tstring error = (getMessageType() == RDOSyntaxMessage::MT_WARNING) ? tstring( WARNING_STRING ) : tstring( ERROR_STRING );
 		tstring text = rdo::format( "%s (%d): %s: %s", file.c_str(), getLineNumber() + 1, error.c_str(), getText().c_str() );
 		return text;
 	}

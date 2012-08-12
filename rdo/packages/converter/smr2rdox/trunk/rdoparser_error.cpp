@@ -28,58 +28,41 @@ Error::Error()
 {}
 
 //! 1
-void Error::error(CREF(RDOParserSrcInfo) src_info, rdo::simulation::report::RDOSyntaxMessage::ErrorCode error_code)
+void Error::error(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message)
 {
 	if (blocked())
 		return;
 
-	error(src_info, _T(""), error_code);
-}
-
-void Error::push_only(CREF(RDOParserSrcInfo) src_info, rdo::simulation::report::RDOSyntaxMessage::ErrorCode error_code)
-{
-	if (blocked())
-		return;
-
-	push_only(src_info, _T(""), error_code);
-}
-
-//! 2
-void Error::error(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message, rdo::simulation::report::RDOSyntaxMessage::ErrorCode error_code)
-{
-	if (blocked())
-		return;
-
-	push_only(src_info, message, error_code);
+	push_only(src_info, message);
 	throw RDOSyntaxException(m_errors.back().text);
 }
 
-void Error::warning(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message, rdo::simulation::report::RDOSyntaxMessage::ErrorCode error_code) 
+void Error::warning(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message) 
 {
 	if (blocked())
 		return;
 
-	m_errors.push_back(rdo::simulation::report::RDOSyntaxMessage(message, error_code, src_info.src_filetype(), src_info.src_pos().m_last_line, src_info.src_pos().m_last_pos, RDOSyntaxMessage::MT_WARNING));
+	m_errors.push_back(rdo::simulation::report::RDOSyntaxMessage(message, src_info.src_filetype(), src_info.src_pos().m_last_line, src_info.src_pos().m_last_pos, RDOSyntaxMessage::MT_WARNING));
 }
 
-void Error::push_only(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message, rdo::simulation::report::RDOSyntaxMessage::ErrorCode error_code)
+void Error::push_only(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message)
 {
 	if (blocked())
 		return;
 
 	if (src_info.src_pos().m_last_line != rdo::runtime::RDOSrcInfo::Position::UNDEFINE_LINE && src_info.src_pos().m_last_pos != rdo::runtime::RDOSrcInfo::Position::UNDEFINE_POS)
 	{
-		m_errors.push_back(rdo::simulation::report::RDOSyntaxMessage(message, error_code, src_info.src_filetype(), src_info.src_pos().m_last_line, src_info.src_pos().m_last_pos));
+		m_errors.push_back(rdo::simulation::report::RDOSyntaxMessage(message, src_info.src_filetype(), src_info.src_pos().m_last_line, src_info.src_pos().m_last_pos));
 	}
 }
 
-//! 3
-void Error::error(CREF(RDOParserSrcInfo) src_info1, CREF(RDOParserSrcInfo) src_info2, CREF(tstring) message, rdo::simulation::report::RDOSyntaxMessage::ErrorCode error_code)
+//! 2
+void Error::error(CREF(RDOParserSrcInfo) src_info1, CREF(RDOParserSrcInfo) src_info2, CREF(tstring) message)
 {
 	if (blocked())
 		return;
 
-	push_only(src_info1.src_pos().m_last_line != src_info2.src_pos().m_last_line ? src_info1 : src_info2, message, error_code);
+	push_only(src_info1.src_pos().m_last_line != src_info2.src_pos().m_last_line ? src_info1 : src_info2, message);
 	throw RDOSyntaxException(m_errors.back().text);
 }
 

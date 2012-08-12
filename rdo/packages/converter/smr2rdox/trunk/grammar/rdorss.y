@@ -233,7 +233,7 @@ rss_main
 			}
 			else
 			{
-				CONVERTER->error().error(@1, rdo::simulation::report::RDOSyntaxMessage::UNKNOWN);
+				CONVERTER->error().error(@1, _T("Неизвестная ошибка"));
 			}
 		}
 	}

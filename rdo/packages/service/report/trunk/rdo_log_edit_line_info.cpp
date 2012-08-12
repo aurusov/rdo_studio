@@ -24,7 +24,6 @@ RDOLogEditLineInfo::RDOLogEditLineInfo( CREF(RDOSyntaxMessage) message ):
 RDOLogEditLineInfo::RDOLogEditLineInfo( CREF(tstring) message ) :
 	m_message(RDOSyntaxMessage (
 		message,
-		RDOSyntaxMessage::UNKNOWN,
 		rdoModelObjects::PAT,
 		0, 
 		0
@@ -58,11 +57,6 @@ rbool RDOLogEditLineInfo::isSimpleTextMessage() const
 rdoModelObjects::RDOFileType RDOLogEditLineInfo::getFileType() const
 {
 	return m_message.file;
-}
-
-RDOSyntaxMessage::ErrorCode RDOLogEditLineInfo::getErrorCode() const
-{
-	return m_message.code;
 }
 
 ruint RDOLogEditLineInfo::getLineNumber() const

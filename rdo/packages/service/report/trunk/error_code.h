@@ -35,11 +35,6 @@ enum RDOExitCode
 //! Синтаксическое сообщение
 struct RDOSyntaxMessage
 {
-	enum ErrorCode
-	{
-		UNKNOWN = 1
-	};
-
 	enum Type
 	{
 		MT_ERROR = 0,
@@ -47,7 +42,6 @@ struct RDOSyntaxMessage
 	};
 
 	tstring                      text; //!< Текст сообщения
-	ErrorCode                    code; //!< Код ошибки
 	rdoModelObjects::RDOFileType file; //!< Файл с ошибкой
 	ruint                        line; //!< Номер строки с ошибкой
 	ruint                        pos;  //!< Позиция ошибки в строке
@@ -60,9 +54,8 @@ struct RDOSyntaxMessage
 	//! \param line    - номер строки с ошибкой
 	//! \param pos     - позиция ошибки в строке
 	//! \param type    - тип сообщения. Значение по умолчанию \b MESSAGE_ERROR
-	RDOSyntaxMessage(CREF(tstring) text, ErrorCode code, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type = MT_ERROR) : 
+	RDOSyntaxMessage(CREF(tstring) text, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type = MT_ERROR) : 
 		text(text),
-		code(code),
 		file(file),
 		line(line),
 		pos (pos ),

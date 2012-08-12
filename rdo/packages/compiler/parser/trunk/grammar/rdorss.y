@@ -244,7 +244,7 @@ rss_main
 			}
 			else
 			{
-				PARSER->error().error(@1, rdo::simulation::report::RDOSyntaxMessage::UNKNOWN);
+				PARSER->error().error(@1, _T("Неизвестная ошибка"));
 			}
 		}
 	}

@@ -224,7 +224,7 @@ void RDOStudioOutput::appendStringToResults( CREF(tstring) str ) const
 
 void RDOStudioOutput::appendStringToFind( CREF(tstring) str, rdoModelObjects::RDOFileType fileType, int lineNumber, int posInLine ) const
 {
-	RDOLogEditLineInfo* line = new RDOLogEditLineInfo( rdo::simulation::report::RDOSyntaxMessage(str, rdo::simulation::report::RDOSyntaxMessage::UNKNOWN, fileType, lineNumber, posInLine ) );
+	RDOLogEditLineInfo* line = new RDOLogEditLineInfo( rdo::simulation::report::RDOSyntaxMessage(str, fileType, lineNumber, posInLine ) );
 	find->appendLine( line );
 }
 
