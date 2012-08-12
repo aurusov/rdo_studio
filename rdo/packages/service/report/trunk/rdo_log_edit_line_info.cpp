@@ -46,7 +46,8 @@ tstring RDOLogEditLineInfo::getMessage() const
 	else
 	{
 		tstring file = rdoModelObjects::getFileTypeString(getFileType());
-		return rdo::format( "%s (%d): %s", file.c_str(), m_message.line + 1, m_message.text.c_str() );
+		tstring text = rdo::format( "%s (%d): %s", file.c_str(), m_message.line + 1, m_message.text.c_str() );
+		return text;
 	}
 }
 

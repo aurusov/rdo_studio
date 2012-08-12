@@ -39,6 +39,7 @@ tstring RDOBuildEditLineInfo::getMessage() const
 	{
 		tstring file = rdoModelObjects::getFileTypeString(getFileType());
 		tstring s_error = (getMessageType() == RDOSyntaxMessage::MT_WARNING) ? rdo::format( IDS_WARNING, getErrorCode() ) : rdo::format( IDS_ERROR, getErrorCode() );
-		return rdo::format( "%s (%d): %s: %s", file.c_str(), getLineNumber() + 1, s_error.c_str(), getText().c_str() );
+		tstring text = rdo::format( "%s (%d): %s: %s", file.c_str(), getLineNumber() + 1, s_error.c_str(), getText().c_str() );
+		return text;
 	}
 }
