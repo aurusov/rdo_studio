@@ -45,16 +45,12 @@ public:
 	Error();
 
 	//! 1
-	void error    (CREF(RDOParserSrcInfo) src_info, rdo::service::simulation::RDOSyntaxMessage::ErrorCode error_code);
-	void push_only(CREF(RDOParserSrcInfo) src_info, rdo::service::simulation::RDOSyntaxMessage::ErrorCode error_code);
+	void error    (CREF(RDOParserSrcInfo) src_info, CREF(tstring) message);
+	void warning  (CREF(RDOParserSrcInfo) src_info, CREF(tstring) message);
+	void push_only(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message);
 
 	//! 2
-	void error    (CREF(RDOParserSrcInfo) src_info, CREF(tstring) message, rdo::service::simulation::RDOSyntaxMessage::ErrorCode error_code = rdo::service::simulation::RDOSyntaxMessage::UNKNOWN);
-	void warning  (CREF(RDOParserSrcInfo) src_info, CREF(tstring) message, rdo::service::simulation::RDOSyntaxMessage::ErrorCode error_code = rdo::service::simulation::RDOSyntaxMessage::UNKNOWN);
-	void push_only(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message, rdo::service::simulation::RDOSyntaxMessage::ErrorCode error_code = rdo::service::simulation::RDOSyntaxMessage::UNKNOWN);
-
-	//! 3
-	void error    (CREF(RDOParserSrcInfo) src_info1, CREF(RDOParserSrcInfo) src_info2, CREF(tstring) message, rdo::service::simulation::RDOSyntaxMessage::ErrorCode error_code = rdo::service::simulation::RDOSyntaxMessage::UNKNOWN);
+	void error    (CREF(RDOParserSrcInfo) src_info1, CREF(RDOParserSrcInfo) src_info2, CREF(tstring) message);
 
 	//! misc
 	void            push_done();

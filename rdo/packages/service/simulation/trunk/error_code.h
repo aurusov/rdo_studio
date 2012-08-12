@@ -32,13 +32,6 @@ enum RDOExitCode
 //! Синтаксическая ошибка
 struct RDOSyntaxMessage
 {
-	//! \brief   Код ошибки
-	//! \details Сейчас вместо кода ошибки используется текстовое сообщение об ошибке
-	enum ErrorCode
-	{
-		UNKNOWN = 1, //!< Неизвестная ошибка
-	};
-
 	enum Type
 	{
 		MESSAGE_ERROR = 0,
@@ -46,7 +39,6 @@ struct RDOSyntaxMessage
 	};
 
 	tstring                       m_message; //!< Сообщение об ошибке
-	ErrorCode                     m_code;    //!< Код ошибки
 	rdoModelObjects::RDOFileType  m_file;    //!< Файл, в котором найдена ошибка
 	ruint                         m_line;    //!< Номер строки с ошибкой
 	ruint                         m_pos;     //!< Позиция ошибки в строке
@@ -54,14 +46,12 @@ struct RDOSyntaxMessage
 
 	//! Конструктор ошибки
 	//! \param message - сообщение об ошибке
-	//! \param code    - код ошибки
 	//! \param file    - файл, в котором найдена ошибка
 	//! \param line    - номер строки с ошибкой
 	//! \param pos     - позиция ошибки в строке
 	//! \param type    - тип сообщения. Значение по умолчанию \b MESSAGE_ERROR
-	RDOSyntaxMessage(CREF(tstring) message, ErrorCode code, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type = MESSAGE_ERROR)
+	RDOSyntaxMessage(CREF(tstring) message, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type = MESSAGE_ERROR)
 		: m_message(message)
-		, m_code   (code   )
 		, m_file   (file   )
 		, m_line   (line   )
 		, m_pos    (pos    )

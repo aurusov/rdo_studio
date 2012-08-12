@@ -41,7 +41,6 @@ RDOLogEditLineInfo::RDOLogEditLineInfo(CREF(tstring) message)
 	: m_message(RDOSyntaxMessage
 	(
 		message,
-		RDOSyntaxMessage::UNKNOWN,
 		rdoModelObjects::PAT,
 		0, 0
 	))
@@ -113,11 +112,6 @@ CREF(tstring) RDOLogEditLineInfo::getText() const
 RDOLogEditLineInfo::RDOSyntaxMessage::Type RDOLogEditLineInfo::getMessageType() const
 {
 	return m_message.m_type;
-}
-
-RDOLogEditLineInfo::RDOSyntaxMessage::ErrorCode RDOLogEditLineInfo::getErrorCode() const
-{
-	return m_message.m_code;
 }
 
 void RDOLogEditLineInfo::setPosInLog(int posInLog)

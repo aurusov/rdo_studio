@@ -3728,8 +3728,8 @@ END
 STRINGTABLE 
 BEGIN
     ID_MODEL_FRAME_NEXT     "\nСлед. кадр анимации"
-    IDS_ERROR               "ошибка C%04d"
-    IDS_WARNING             "предупреждение C%04d"
+    IDS_ERROR               "ошибка"
+    IDS_WARNING             "предупреждение"
 END
 
 STRINGTABLE 
@@ -5253,8 +5253,8 @@ END
 STRINGTABLE 
 BEGIN
     ID_MODEL_FRAME_NEXT     "\nNext Frame"
-    IDS_ERROR               "error С%04d"
-    IDS_WARNING             "warning С%04d"
+    IDS_ERROR               "error"
+    IDS_WARNING             "warning"
 END
 
 STRINGTABLE 

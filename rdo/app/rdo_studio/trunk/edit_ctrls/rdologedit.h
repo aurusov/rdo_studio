@@ -45,8 +45,7 @@ public:
 	int           getPosInLog  () const;
 	CREF(tstring) getText      () const;
 
-	RDOSyntaxMessage::Type      getMessageType() const;
-	RDOSyntaxMessage::ErrorCode getErrorCode  () const;
+	RDOSyntaxMessage::Type  getMessageType() const;
 
 	void setPosInLog(int posInLog);
 
