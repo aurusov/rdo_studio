@@ -56,9 +56,9 @@ struct RDOSyntaxMessage
 	RDOSyntaxMessage(CREF(tstring) text, ErrorCode code, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type = MT_ERROR) : 
 		text(text),
 		code(code),
+		file(file),
 		line(line),
 		pos (pos ),
-		file(file),
 		type(type)
 	{
 	}
