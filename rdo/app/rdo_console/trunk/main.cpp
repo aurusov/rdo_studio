@@ -39,7 +39,7 @@ int main(int argc, PTR(char) argv[])
 	{
 		return TERMINATION_NORMAL;
 	}
-	else if(!model_exist && !options_controller.helpQuery())
+	else if (!model_exist && !options_controller.helpQuery())
 	{
 		std::cout << _T("Model does not exist") << std::endl;
 		return TERMINATION_WITH_AN_ERROR_NO_MODEL;
@@ -61,7 +61,7 @@ int main(int argc, PTR(char) argv[])
 	bool simulationSuccessfully = false;
 
 	bool buildError = pAppController->buildError();
-	if(buildError)
+	if (buildError)
 	{
 		StringList buildList;
 		pAppController->getBuildLogList(buildList);
@@ -74,8 +74,16 @@ int main(int argc, PTR(char) argv[])
 		if (stream.fail()) {
 			return TERMINATION_WITH_APP_RUNTIME_ERROR;
 		}
-		for(StringList::const_iterator it = buildList.begin(); it != buildList.end(); ++it) {
-			stream << it->c_str() << std::endl;
+		size_t counter = 0;
+		size_t size = buildList.size();
+		for (StringList::const_iterator it = buildList.begin(); it != buildList.end(); ++it)
+		{
+			stream << it->c_str();
+			if (counter < size - 1)
+			{
+				stream << std::endl;
+			}
+			++counter;
 		}
 		stream.close();
 
@@ -92,7 +100,7 @@ int main(int argc, PTR(char) argv[])
 
 			if (pAppController->runtimeError())
 			{
-				std::cerr << _T("Run-time error") << std::endl;
+				std::cout << _T("Run-time error") << std::endl;
 				g_exitCode = TERMINATION_WITH_AN_ERROR_RUNTIME_ERROR;
 			}
 		}
