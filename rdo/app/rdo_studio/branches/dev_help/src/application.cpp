@@ -759,16 +759,16 @@ tstring RDOStudioApp::chkHelpExist(tstring fileName) const
 	return fileName;
 }
 
-PTR(QProcess) RDOStudioApp::chkQtAssistantWindow()
+void RDOStudioApp::chkQtAssistantWindow()
 {
 	if (!m_pAssistant)
 	{
-		return m_pAssistant = runQtAssistantWindow();
+		m_pAssistant = runQtAssistantWindow();
 	}
 	else if (m_pAssistant->state() == m_pAssistant->Running)
-		return m_pAssistant;
+		return;
 	else
-		return m_pAssistant = runQtAssistantWindow();
+		m_pAssistant = runQtAssistantWindow();
 }
 
 PTR(QProcess) RDOStudioApp::runQtAssistantWindow() const
@@ -785,10 +785,10 @@ PTR(QProcess) RDOStudioApp::runQtAssistantWindow() const
 
 void RDOStudioApp::callQtAssistantWindow(QByteArray ba)
 {
-	QProcess* assistant = studioApp.chkQtAssistantWindow();
-	if ( assistant->state() != assistant->Running ) return;
+	studioApp.chkQtAssistantWindow();
+	if ( m_pAssistant->state() != m_pAssistant->Running ) return;
 
-	assistant->write(ba);
+	m_pAssistant->write(ba);
 }
 
 rbool RDOStudioApp::getFileAssociationSetup() const
