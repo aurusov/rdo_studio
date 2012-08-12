@@ -81,13 +81,12 @@ BEGIN_MESSAGE_MAP( RDOBuildEdit, RDOLogEdit )
 	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar )
 END_MESSAGE_MAP()
 
-RDOBuildEdit::RDOBuildEdit(): RDOLogEdit()
-{
-}
+RDOBuildEdit::RDOBuildEdit()
+	: RDOLogEdit()
+{}
 
 RDOBuildEdit::~RDOBuildEdit()
-{
-}
+{}
 
 void RDOBuildEdit::showFirstError()
 {
