@@ -31,33 +31,30 @@ using namespace rdoEditCtrl;
 // --------------------------------------------------------------------------------
 // -------------------- RDOLogEditLineInfo
 // --------------------------------------------------------------------------------
-RDOLogEditLineInfo::RDOLogEditLineInfo( CREF(rdo::service::simulation::RDOSyntaxMessage) message ):
-	m_message( message ),
-	m_posInLog(0),
-	m_simpleTextMessage(false)
-{
-}
+RDOLogEditLineInfo::RDOLogEditLineInfo(CREF(RDOSyntaxMessage) message)
+	: m_message          (message)
+	, m_posInLog         (0      )
+	, m_simpleTextMessage(false )
+{}
 
-RDOLogEditLineInfo::RDOLogEditLineInfo( CREF(tstring) text ) :
-	m_message(rdo::service::simulation::RDOSyntaxMessage (
+RDOLogEditLineInfo::RDOLogEditLineInfo(CREF(tstring) text)
+	: m_message(RDOSyntaxMessage
+	(
 		text,
 		RDOSyntaxMessage::UNKNOWN,
 		rdoModelObjects::PAT,
-		0, 
-		0
-		) ),
-	m_posInLog(0),
-	m_simpleTextMessage(true)
-{
-}
+		0, 0
+	))
+	, m_posInLog(0)
+	, m_simpleTextMessage(true)
+{}
 
 RDOLogEditLineInfo::~RDOLogEditLineInfo()
-{
-}
+{}
 
 tstring RDOLogEditLineInfo::getMessage() const
 {
-	tstring file("");
+	tstring file;
 	switch ( m_message.file ) {
 		case rdoModelObjects::RTP : file = "RTP" ; break;
 		case rdoModelObjects::RSS : file = "RSS" ; break;
@@ -112,12 +109,12 @@ tstring RDOLogEditLineInfo::getText() const
 	return m_message.text;
 }
 
-rdo::service::simulation::RDOSyntaxMessage::Type RDOLogEditLineInfo::getMessageType() const
+RDOLogEditLineInfo::RDOSyntaxMessage::Type RDOLogEditLineInfo::getMessageType() const
 {
 	return m_message.type;
 }
 
-rdo::service::simulation::RDOSyntaxMessage::ErrorCode RDOLogEditLineInfo::getErrorCode() const
+RDOLogEditLineInfo::RDOSyntaxMessage::ErrorCode RDOLogEditLineInfo::getErrorCode() const
 {
 	return m_message.code;
 }
@@ -237,9 +234,9 @@ BOOL RDOLogEdit::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
 	}
 	else
 	{
-		return true;
+		return TRUE;
 	}
-	return false;
+	return FALSE;
 }
 
 int RDOLogEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )

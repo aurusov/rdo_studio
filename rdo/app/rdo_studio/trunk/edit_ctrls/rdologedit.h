@@ -29,30 +29,30 @@ namespace rdoEditCtrl {
 class RDOLogEditLineInfo
 {
 public:
-	explicit RDOLogEditLineInfo( CREF(rdo::service::simulation::RDOSyntaxMessage) message );
-	explicit RDOLogEditLineInfo( CREF(tstring) text );
+	typedef  rdo::service::simulation::RDOSyntaxMessage  RDOSyntaxMessage;
+
+	explicit RDOLogEditLineInfo(CREF(RDOSyntaxMessage) message);
+	explicit RDOLogEditLineInfo(CREF(tstring)          text   );
 	virtual ~RDOLogEditLineInfo();
 
 	virtual tstring getMessage() const;
-	rbool isSimpleTextMessage() const;
+	rbool  isSimpleTextMessage() const;
 
-	RDOFileType getFileType() const;
-	int getLineNumber() const;
-	int getPosInLine() const;
-	int getPosInLog() const;
-	tstring getText() const;
-    rdo::service::simulation::RDOSyntaxMessage::Type getMessageType() const;
-	rdo::service::simulation::RDOSyntaxMessage::ErrorCode getErrorCode() const;
+	RDOFileType getFileType  () const;
+	int         getLineNumber() const;
+	int         getPosInLine () const;
+	int         getPosInLog  () const;
+	tstring     getText      () const;
+
+	RDOSyntaxMessage::Type      getMessageType() const;
+	RDOSyntaxMessage::ErrorCode getErrorCode  () const;
 
 	void setPosInLog(int posInLog);
 
 private:
-	typedef rdo::service::simulation::RDOSyntaxMessage RDOSyntaxMessage;
-
-	rdo::service::simulation::RDOSyntaxMessage m_message;
-	rsint m_posInLog;
-
-	rbool m_simpleTextMessage;
+	RDOSyntaxMessage  m_message;
+	rsint             m_posInLog;
+	rbool             m_simpleTextMessage;
 };
 
 // --------------------------------------------------------------------------------
@@ -61,47 +61,47 @@ private:
 class RDOLogEdit: public RDOBaseEdit
 {
 public:
-	typedef std::list< PTR(RDOLogEditLineInfo) > RDOLogEditLineInfoList;
+	typedef  std::list<PTR(RDOLogEditLineInfo)>  RDOLogEditLineInfoList;
 
 public:
 	RDOLogEdit();
 	virtual ~RDOLogEdit();
 
-	virtual void setEditorStyle( PTR(RDOLogEditStyle) style );
+	virtual void setEditorStyle(PTR(RDOLogEditStyle) style);
 
 	virtual void gotoNext();
 	virtual void gotoPrev();
 
 	virtual void clearAll();
-	virtual void appendLine( PTR(RDOLogEditLineInfo) line );
+	virtual void appendLine(PTR(RDOLogEditLineInfo) line);
 
 protected:
-	void getLines( REF(RDOLogEditLineInfoList) lines ) const;
-	rsint getCurrentLine() const;
+	void  getLines        (REF(RDOLogEditLineInfoList) lines) const;
+	rsint getCurrentLine  () const;
 	rsint getSciMarkerLine() const;
 
-	void setCurrentLine( rsint currentLine );
-	void setSciMarkerLine( rsint sciMarkerLine );
+	void  setCurrentLine  (rsint currentLine  );
+	void  setSciMarkerLine(rsint sciMarkerLine);
 
 protected:
 	virtual void updateEdit( PTR(rdoEditor::RDOEditorEdit) edit, CPTR(RDOLogEditLineInfo) lineInfo );
 
-	void clearLines();
-	void setSelectLine();
-	void setSelectLine( int line, CPTR(RDOLogEditLineInfo) lineInfo, rbool useScroll = false );
-	void clearSelectLine();
-	rbool hasSelectLine() const;
+	void  clearLines     ();
+	void  setSelectLine  ();
+	void  setSelectLine  (int line, CPTR(RDOLogEditLineInfo) lineInfo, rbool useScroll = false);
+	void  clearSelectLine();
+	rbool hasSelectLine  () const;
 
-	virtual BOOL OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult );
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	virtual BOOL OnNotify  (WPARAM wParam, LPARAM lParam, LRESULT* pResult);
+	afx_msg int  OnCreate  (LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnGotoNext();
 	afx_msg void OnGotoPrev();
 	DECLARE_MESSAGE_MAP()
 
 private:
-	RDOLogEditLineInfoList m_lines;
-	rsint m_currentLine;
-	rsint m_sciMarkerLine;
+	RDOLogEditLineInfoList  m_lines;
+	rsint                   m_currentLine;
+	rsint                   m_sciMarkerLine;
 };
 
 }; // namespace rdoEditCtrl

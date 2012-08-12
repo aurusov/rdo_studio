@@ -196,9 +196,9 @@ void RDOStudioOutput::appendStringToBuild( CREF(tstring) str ) const
 	build->appendLine( line );
 }
 
-void RDOStudioOutput::appendStringToBuild( CREF(rdo::service::simulation::RDOSyntaxMessage) error ) const
+void RDOStudioOutput::appendStringToBuild( CREF(RDOSyntaxMessage) error ) const
 {
-	if ( error.type == rdo::service::simulation::RDOSyntaxMessage::MESSAGE_ERROR || (error.type == RDOSyntaxMessage::MESSAGE_WARNING && static_cast<RDOBuildEditTheme*>(studioApp.m_pMainFrame->style_build.theme)->warning) )
+	if ( error.type == RDOSyntaxMessage::MESSAGE_ERROR || (error.type == RDOSyntaxMessage::MESSAGE_WARNING && static_cast<RDOBuildEditTheme*>(studioApp.m_pMainFrame->style_build.theme)->warning) )
 	{
 		RDOBuildEditLineInfo* line = new RDOBuildEditLineInfo( error );
 		build->appendLine( line );
@@ -222,7 +222,7 @@ void RDOStudioOutput::appendStringToResults( CREF(tstring) str ) const
 
 void RDOStudioOutput::appendStringToFind( CREF(tstring) str, rdoModelObjects::RDOFileType fileType, int lineNumber, int posInLine ) const
 {
-	RDOLogEditLineInfo* line = new RDOLogEditLineInfo( rdo::service::simulation::RDOSyntaxMessage(str, rdo::service::simulation::RDOSyntaxMessage::UNKNOWN, fileType, lineNumber, posInLine ) );
+	RDOLogEditLineInfo* line = new RDOLogEditLineInfo( RDOSyntaxMessage(str, RDOSyntaxMessage::UNKNOWN, fileType, lineNumber, posInLine ) );
 	find->appendLine( line );
 }
 

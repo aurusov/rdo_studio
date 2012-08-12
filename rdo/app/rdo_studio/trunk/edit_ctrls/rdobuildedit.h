@@ -24,16 +24,14 @@ namespace rdoEditCtrl {
 // --------------------------------------------------------------------------------
 class RDOBuildEditLineInfo : public RDOLogEditLineInfo
 {
-//friend class RDOBuildEdit;
 public:
-	explicit RDOBuildEditLineInfo( CREF(rdo::service::simulation::RDOSyntaxMessage) error );
-	explicit RDOBuildEditLineInfo( CREF(tstring) text );
+	typedef  rdo::service::simulation::RDOSyntaxMessage  RDOSyntaxMessage;
+
+	explicit RDOBuildEditLineInfo(CREF(RDOSyntaxMessage) error);
+	explicit RDOBuildEditLineInfo(CREF(tstring)          text );
 	virtual ~RDOBuildEditLineInfo();
 
 	virtual tstring getMessage() const;
-
-private:
-	typedef rdo::service::simulation::RDOSyntaxMessage RDOSyntaxMessage;
 };
 
 // --------------------------------------------------------------------------------
@@ -51,8 +49,6 @@ protected:
 	virtual void updateEdit( rdoEditor::RDOEditorEdit* edit, const RDOLogEditLineInfo* lineInfo );
 
 private:
-	typedef rdo::service::simulation::RDOSyntaxMessage RDOSyntaxMessage;
-
 	afx_msg void OnHelpKeyword();
 	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );

@@ -53,6 +53,8 @@ private:
 	CMenu popupMenu;
 
 public:
+	typedef  rdo::service::simulation::RDOSyntaxMessage  RDOSyntaxMessage;
+
 	RDOStudioOutput();
 	virtual ~RDOStudioOutput();
 
@@ -74,7 +76,7 @@ public:
 	const rdoEditCtrl::RDOFindEdit*       getFind() const    { return find;    };
 
 	void appendStringToBuild( CREF(tstring) str ) const;
-	void appendStringToBuild( CREF(rdo::service::simulation::RDOSyntaxMessage) error ) const;
+	void appendStringToBuild( CREF(RDOSyntaxMessage) error ) const;
 	void appendStringToDebug( CREF(tstring) str ) const;
 	void appendStringToResults( CREF(tstring) str ) const;
 	void appendStringToFind( CREF(tstring) str, rdoModelObjects::RDOFileType fileType = rdoModelObjects::PAT, int lineNumber = -1, int posInLine = 0 ) const;
@@ -83,8 +85,6 @@ public:
 	void updateStyles() const;
 
 private:
-	typedef rdo::service::simulation::RDOSyntaxMessage RDOSyntaxMessage;
-
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	DECLARE_MESSAGE_MAP()
 };

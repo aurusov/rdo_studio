@@ -30,23 +30,20 @@ namespace rdoEditCtrl {
 // --------------------------------------------------------------------------------
 // -------------------- RDOBuildEditLineInfo
 // --------------------------------------------------------------------------------
-RDOBuildEditLineInfo::RDOBuildEditLineInfo( CREF(rdo::service::simulation::RDOSyntaxMessage) error ) :
-	RDOLogEditLineInfo( error )
-{
-}
+RDOBuildEditLineInfo::RDOBuildEditLineInfo(CREF(RDOSyntaxMessage) error)
+	: RDOLogEditLineInfo(error)
+{}
 
-RDOBuildEditLineInfo::RDOBuildEditLineInfo( CREF(tstring) text ) :
-	RDOLogEditLineInfo( text )
-{
-}
+RDOBuildEditLineInfo::RDOBuildEditLineInfo(CREF(tstring) text)
+	: RDOLogEditLineInfo(text)
+{}
 
 RDOBuildEditLineInfo::~RDOBuildEditLineInfo()
-{
-}
+{}
 
 tstring RDOBuildEditLineInfo::getMessage() const
 {
-	tstring file("");
+	tstring file;
 	switch ( getFileType() ) {
 		case rdoModelObjects::RTP : file = "RTP" ; break;
 		case rdoModelObjects::RSS : file = "RSS" ; break;
