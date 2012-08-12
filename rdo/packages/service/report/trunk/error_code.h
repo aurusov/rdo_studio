@@ -53,6 +53,13 @@ struct RDOSyntaxMessage
 	ruint                        pos;  //!< Позиция ошибки в строке
 	Type                         type; //!<  Тип сообщения
 
+	//! Конструктор сообщения
+	//! \param message - текст сообщение
+	//! \param code    - код ошибки
+	//! \param file    - файл, в котором найдена ошибка
+	//! \param line    - номер строки с ошибкой
+	//! \param pos     - позиция ошибки в строке
+	//! \param type    - тип сообщения. Значение по умолчанию \b MESSAGE_ERROR
 	RDOSyntaxMessage(CREF(tstring) text, ErrorCode code, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type = MT_ERROR) : 
 		text(text),
 		code(code),

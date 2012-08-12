@@ -60,17 +60,22 @@ rdoModelObjects::RDOFileType RDOLogEditLineInfo::getFileType() const
 	return m_message.file;
 }
 
-int RDOLogEditLineInfo::getLineNumber() const
+RDOSyntaxMessage::ErrorCode RDOLogEditLineInfo::getErrorCode() const
+{
+	return m_message.code;
+}
+
+ruint RDOLogEditLineInfo::getLineNumber() const
 {
 	return m_message.line;
 }
 
-int RDOLogEditLineInfo::getPosInLine() const
+ruint RDOLogEditLineInfo::getPosInLine() const
 {
 	return m_message.pos;
 }
 
-int RDOLogEditLineInfo::getPosInLog() const
+ruint RDOLogEditLineInfo::getPosInLog() const
 {
 	return m_posInLog;
 }
@@ -83,11 +88,6 @@ tstring RDOLogEditLineInfo::getText() const
 RDOSyntaxMessage::Type RDOLogEditLineInfo::getMessageType() const
 {
 	return m_message.type;
-}
-
-RDOSyntaxMessage::ErrorCode RDOLogEditLineInfo::getErrorCode() const
-{
-	return m_message.code;
 }
 
 void RDOLogEditLineInfo::setPosInLog(int posInLog)

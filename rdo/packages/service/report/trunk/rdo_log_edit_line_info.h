@@ -26,19 +26,19 @@ public:
 	virtual tstring getMessage() const;
 	rbool isSimpleTextMessage() const;
 
-	rdo::simulation::report::RDOSyntaxMessage::Type getMessageType() const;
-	rdoModelObjects::RDOFileType getFileType() const;
+	rdo::simulation::report::RDOSyntaxMessage::Type    getMessageType() const;
 	rdo::simulation::report::RDOSyntaxMessage::ErrorCode getErrorCode() const;
-	int getLineNumber() const;
-	int getPosInLine() const;
-	int getPosInLog() const;
-	tstring getText() const;
+	rdoModelObjects::RDOFileType getFileType() const;
+	ruint   getLineNumber() const;
+	ruint   getPosInLine () const;
+	ruint   getPosInLog  () const;
+	tstring getText      () const;
 
 	void setPosInLog(int posInLog);
 
 private:
 	rdo::simulation::report::RDOSyntaxMessage m_message;
-	rsint m_posInLog;
+	ruint m_posInLog;
 	rbool m_simpleTextMessage;
 };
 
