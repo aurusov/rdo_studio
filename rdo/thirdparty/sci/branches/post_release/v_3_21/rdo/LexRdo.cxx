@@ -11,18 +11,22 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <assert.h>
 
 #include "LexRdo.h"
 
 #include "Platform.h"
 
 #include "PropSet.h"
+#include "ILexer.h"
+#include "LexAccessor.h"
 #include "Accessor.h"
 #include "StyleContext.h"
-#include "KeyWords.h"
 #include "Scintilla.h"
 #include "SciLexer.h"
 #include "SString.h"
+#include "CharacterSet.h"
+#include "LexerModule.h"
 
 static void ColouriseRdoDoc( unsigned int startPos, int length, int initStyle, WordList *keywordlists[], Accessor &styler )
 {
