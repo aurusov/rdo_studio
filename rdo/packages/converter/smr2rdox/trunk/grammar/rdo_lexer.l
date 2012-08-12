@@ -538,7 +538,7 @@ false {
 
 	switch (CONVERTER->getFileToParse())
 	{
-	case rdoModelObjectsConvertor::PAT_IN:
+	case rdo::converter::smr2rdox::PAT_IN:
 		if (CONVERTER->isPattern())
 		{
 			rdo::converter::smr2rdox::LPRDOPATPattern pPattern = CONVERTER->getLastPATPattern();

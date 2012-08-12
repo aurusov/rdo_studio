@@ -41,7 +41,7 @@ OBJECT(RDOParserItem)
 {
 DECLARE_FACTORY(RDOParserItem);
 public:
-	rdoModelObjectsConvertor::RDOFileTypeIn m_type;
+	rdo::converter::smr2rdox::RDOFileTypeIn m_type;
 
 	t_bison_parse_fun m_parser_fun;
 	t_bison_error_fun m_error_fun;
@@ -67,7 +67,7 @@ public:
 
 protected:
 	RDOParserItem();
-	RDOParserItem(rdoModelObjectsConvertor::RDOFileTypeIn type, t_bison_parse_fun parser_fun, t_bison_error_fun error_fun, t_flex_lexer_fun lexer_fun);
+	RDOParserItem(rdo::converter::smr2rdox::RDOFileTypeIn type, t_bison_parse_fun parser_fun, t_bison_error_fun error_fun, t_flex_lexer_fun lexer_fun);
 	virtual ~RDOParserItem();
 
 	rbool m_needStream;
@@ -92,13 +92,13 @@ public:
 	Iterator end  ()            { return m_list.end();       }
 	Iterator find (ruint index) { return m_list.find(index); }
 
-	static void getMinMax(rdoModelObjectsConvertor::RDOParseType type, REF(ruint) min, REF(ruint) max);
+	static void getMinMax(rdo::converter::smr2rdox::RDOParseType type, REF(ruint) min, REF(ruint) max);
 
 protected:
 	RDOParserContainer();
 	virtual ~RDOParserContainer();
 
-	ruint insert(rdoModelObjectsConvertor::RDOParseType type, CREF(LPRDOParserItem) pParser);
+	ruint insert(rdo::converter::smr2rdox::RDOParseType type, CREF(LPRDOParserItem) pParser);
 
 private:
 	List m_list;

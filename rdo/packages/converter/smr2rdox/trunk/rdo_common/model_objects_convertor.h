@@ -16,12 +16,10 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "converter/smr2rdox/namespace.h"
 // --------------------------------------------------------------------------------
 
-#define OPEN_RDO_MODEL_OBJECTS_CONVERTOR_NAMESPACE	namespace rdoModelObjectsConvertor {
-#define CLOSE_RDO_MODEL_OBJECTS_CONVERTOR_NAMESPACE	};
-
-OPEN_RDO_MODEL_OBJECTS_CONVERTOR_NAMESPACE
+OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 	struct RDOSMRFileInfo
 	{
 		tstring  m_modelName;
@@ -91,6 +89,6 @@ OPEN_RDO_MODEL_OBJECTS_CONVERTOR_NAMESPACE
 		obPOST = 0x0400,
 		obALL  = 0x07FF
 	};
-CLOSE_RDO_MODEL_OBJECTS_CONVERTOR_NAMESPACE
+CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
 #endif // _RDOCOMMON_MODEL_OBJECTS_CONVERTOR_H_

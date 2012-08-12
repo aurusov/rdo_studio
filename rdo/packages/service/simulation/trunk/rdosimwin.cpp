@@ -1210,7 +1210,7 @@ void RDOThreadSimulator::closeModel()
 	}
 }
 
-void RDOThreadSimulator::parseSMRFileInfo(REF(rdo::textstream) smr, REF(rdoModelObjectsConvertor::RDOSMRFileInfo) info)
+void RDOThreadSimulator::parseSMRFileInfo(REF(rdo::textstream) smr, REF(rdo::converter::smr2rdox::RDOSMRFileInfo) info)
 {
 	UNUSED(smr);
 

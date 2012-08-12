@@ -36,21 +36,21 @@ void Document::create(CREF(tstring) filePath, CREF(tstring) modelName)
 	m_modelName = modelName;
 }
 
-void Document::init(rdoModelObjectsConvertor::RDOFileTypeIn type, REF(std::ifstream) stream)
+void Document::init(rdo::converter::smr2rdox::RDOFileTypeIn type, REF(std::ifstream) stream)
 {
 	Type typeOut;
 	switch (type)
 	{
-	case rdoModelObjectsConvertor::PAT_IN: typeOut = PAT; break;
-	case rdoModelObjectsConvertor::RTP_IN: typeOut = RTP; break;
-	case rdoModelObjectsConvertor::RSS_IN: typeOut = RSS; break;
-	case rdoModelObjectsConvertor::OPR_IN: typeOut = OPR; break;
-	case rdoModelObjectsConvertor::FRM_IN: typeOut = FRM; break;
-	case rdoModelObjectsConvertor::FUN_IN: typeOut = FUN; break;
-	case rdoModelObjectsConvertor::DPT_IN: typeOut = DPT; break;
-	case rdoModelObjectsConvertor::SMR_IN: typeOut = SMR; break;
-	case rdoModelObjectsConvertor::PMD_IN: typeOut = PMD; break;
-	case rdoModelObjectsConvertor::PMV_IN: typeOut = PMV; break;
+	case rdo::converter::smr2rdox::PAT_IN: typeOut = PAT; break;
+	case rdo::converter::smr2rdox::RTP_IN: typeOut = RTP; break;
+	case rdo::converter::smr2rdox::RSS_IN: typeOut = RSS; break;
+	case rdo::converter::smr2rdox::OPR_IN: typeOut = OPR; break;
+	case rdo::converter::smr2rdox::FRM_IN: typeOut = FRM; break;
+	case rdo::converter::smr2rdox::FUN_IN: typeOut = FUN; break;
+	case rdo::converter::smr2rdox::DPT_IN: typeOut = DPT; break;
+	case rdo::converter::smr2rdox::SMR_IN: typeOut = SMR; break;
+	case rdo::converter::smr2rdox::PMD_IN: typeOut = PMD; break;
+	case rdo::converter::smr2rdox::PMV_IN: typeOut = PMV; break;
 	default                              : typeOut = UNDEFINED; NEVER_REACH_HERE; break;
 	}
 	LPMemoryStream streamOut = getMemoryStream(typeOut);
@@ -107,20 +107,20 @@ Document::TypeOut Document::typeToOut(CREF(Type) typeIn) const
 {
 	switch (typeIn)
 	{
-	case PAT: return rdoModelObjectsConvertor::PAT_OUT;
-	case RTP: return rdoModelObjectsConvertor::RTP_OUT;
-	case RSS: return rdoModelObjectsConvertor::RSS_OUT;
-	case FRM: return rdoModelObjectsConvertor::FRM_OUT;
-	case FUN: return rdoModelObjectsConvertor::FUN_OUT;
-	case DPT: return rdoModelObjectsConvertor::DPT_OUT;
-	case SMR: return rdoModelObjectsConvertor::SMR_OUT;
-	case PMD: return rdoModelObjectsConvertor::PMD_OUT;
-	case PMV: return rdoModelObjectsConvertor::PMV_OUT;
-	case TRC: return rdoModelObjectsConvertor::TRC_OUT;
-	case EVN: return rdoModelObjectsConvertor::EVN_OUT;
-	case PRC: return rdoModelObjectsConvertor::PRC_OUT;
+	case PAT: return rdo::converter::smr2rdox::PAT_OUT;
+	case RTP: return rdo::converter::smr2rdox::RTP_OUT;
+	case RSS: return rdo::converter::smr2rdox::RSS_OUT;
+	case FRM: return rdo::converter::smr2rdox::FRM_OUT;
+	case FUN: return rdo::converter::smr2rdox::FUN_OUT;
+	case DPT: return rdo::converter::smr2rdox::DPT_OUT;
+	case SMR: return rdo::converter::smr2rdox::SMR_OUT;
+	case PMD: return rdo::converter::smr2rdox::PMD_OUT;
+	case PMV: return rdo::converter::smr2rdox::PMV_OUT;
+	case TRC: return rdo::converter::smr2rdox::TRC_OUT;
+	case EVN: return rdo::converter::smr2rdox::EVN_OUT;
+	case PRC: return rdo::converter::smr2rdox::PRC_OUT;
 	}
-	return rdoModelObjectsConvertor::UNDEFINED_OUT;
+	return rdo::converter::smr2rdox::UNDEFINED_OUT;
 }
 
 void Document::close()
@@ -128,7 +128,7 @@ void Document::close()
 	STL_FOR_ALL_CONST(m_memoryFileList, memoryIt)
 	{
 		TypeOut typeOut = typeToOut(memoryIt->first);
-		if (typeOut != rdoModelObjectsConvertor::UNDEFINED_OUT)
+		if (typeOut != rdo::converter::smr2rdox::UNDEFINED_OUT)
 		{
 			LPFileStream pFileStream = getFileStream(typeOut);
 			ASSERT(pFileStream);
@@ -149,18 +149,18 @@ tstring Document::getName(TypeOut typeOut) const
 	tstring extention;
 	switch (typeOut)
 	{
-	case rdoModelObjectsConvertor::PAT_OUT: extention = _T("pat"); break;
-	case rdoModelObjectsConvertor::RTP_OUT: extention = _T("rtp"); break;
-	case rdoModelObjectsConvertor::RSS_OUT: extention = _T("rss"); break;
-	case rdoModelObjectsConvertor::FRM_OUT: extention = _T("frm"); break;
-	case rdoModelObjectsConvertor::FUN_OUT: extention = _T("fun"); break;
-	case rdoModelObjectsConvertor::DPT_OUT: extention = _T("dpt"); break;
-	case rdoModelObjectsConvertor::SMR_OUT: extention = _T("smr"); break;
-	case rdoModelObjectsConvertor::PMD_OUT: extention = _T("pmd"); break;
-	case rdoModelObjectsConvertor::PMV_OUT: extention = _T("pmv"); break;
-	case rdoModelObjectsConvertor::TRC_OUT: extention = _T("trc"); break;
-	case rdoModelObjectsConvertor::EVN_OUT: extention = _T("evn"); break;
-	case rdoModelObjectsConvertor::PRC_OUT: extention = _T("prc"); break;
+	case rdo::converter::smr2rdox::PAT_OUT: extention = _T("pat"); break;
+	case rdo::converter::smr2rdox::RTP_OUT: extention = _T("rtp"); break;
+	case rdo::converter::smr2rdox::RSS_OUT: extention = _T("rss"); break;
+	case rdo::converter::smr2rdox::FRM_OUT: extention = _T("frm"); break;
+	case rdo::converter::smr2rdox::FUN_OUT: extention = _T("fun"); break;
+	case rdo::converter::smr2rdox::DPT_OUT: extention = _T("dpt"); break;
+	case rdo::converter::smr2rdox::SMR_OUT: extention = _T("smr"); break;
+	case rdo::converter::smr2rdox::PMD_OUT: extention = _T("pmd"); break;
+	case rdo::converter::smr2rdox::PMV_OUT: extention = _T("pmv"); break;
+	case rdo::converter::smr2rdox::TRC_OUT: extention = _T("trc"); break;
+	case rdo::converter::smr2rdox::EVN_OUT: extention = _T("evn"); break;
+	case rdo::converter::smr2rdox::PRC_OUT: extention = _T("prc"); break;
 	default: NEVER_REACH_HERE;
 	}
 

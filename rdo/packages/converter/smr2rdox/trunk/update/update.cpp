@@ -33,17 +33,17 @@ IDocument::Type DocUpdate::getCurrentType() const
 {
 	switch (Converter::getFileToParse())
 	{
-	case rdoModelObjectsConvertor::PAT_IN: return IDocument::PAT;
-	case rdoModelObjectsConvertor::RTP_IN: return IDocument::RTP;
-	case rdoModelObjectsConvertor::RSS_IN: return IDocument::RSS;
-	case rdoModelObjectsConvertor::OPR_IN: return IDocument::OPR;
-	case rdoModelObjectsConvertor::FRM_IN: return IDocument::FRM;
-	case rdoModelObjectsConvertor::FUN_IN: return IDocument::FUN;
-	case rdoModelObjectsConvertor::DPT_IN: return IDocument::DPT;
-	case rdoModelObjectsConvertor::SMR_IN: return IDocument::SMR;
-	case rdoModelObjectsConvertor::PMD_IN: return IDocument::PMD;
-	case rdoModelObjectsConvertor::PMV_IN: return IDocument::PMV;
-	case rdoModelObjectsConvertor::TRC_IN: return IDocument::TRC;
+	case rdo::converter::smr2rdox::PAT_IN: return IDocument::PAT;
+	case rdo::converter::smr2rdox::RTP_IN: return IDocument::RTP;
+	case rdo::converter::smr2rdox::RSS_IN: return IDocument::RSS;
+	case rdo::converter::smr2rdox::OPR_IN: return IDocument::OPR;
+	case rdo::converter::smr2rdox::FRM_IN: return IDocument::FRM;
+	case rdo::converter::smr2rdox::FUN_IN: return IDocument::FUN;
+	case rdo::converter::smr2rdox::DPT_IN: return IDocument::DPT;
+	case rdo::converter::smr2rdox::SMR_IN: return IDocument::SMR;
+	case rdo::converter::smr2rdox::PMD_IN: return IDocument::PMD;
+	case rdo::converter::smr2rdox::PMV_IN: return IDocument::PMV;
+	case rdo::converter::smr2rdox::TRC_IN: return IDocument::TRC;
 	default: NEVER_REACH_HERE;
 	}
 	NEVER_REACH_HERE;
@@ -204,7 +204,7 @@ UpdateMove::UpdateMove(CREF(Position) posFromBegin, CREF(Position) posFromEnd, C
 	, m_posTo       (posTo       )
 	, m_fileFrom    (fileFrom    )
 {
-	if (static_cast<int>(m_fileFrom) == static_cast<int>(rdoModelObjectsConvertor::UNDEFINED_OUT))
+	if (static_cast<int>(m_fileFrom) == static_cast<int>(rdo::converter::smr2rdox::UNDEFINED_OUT))
 	{
 		m_fileFrom = getCurrentType();
 	}

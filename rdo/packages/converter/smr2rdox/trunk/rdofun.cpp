@@ -306,7 +306,7 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pValue)
 	}
 
 	//! Ищем параметр релевантного ресурса
-	if (Converter::s_converter()->getFileToParse() == rdoModelObjectsConvertor::PAT_IN)
+	if (Converter::s_converter()->getFileToParse() == rdo::converter::smr2rdox::PAT_IN)
 	{
 		LPRDOPATPattern pPattern = Converter::s_converter()->getLastPATPattern();
 		if (pPattern && pPattern->m_pCurrRelRes)
@@ -325,8 +325,8 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pValue)
 	LPRDOParam pFunctionParam;
 	switch (Converter::s_converter()->getFileToParse())
 	{
-	case rdoModelObjectsConvertor::PAT_IN: pFunctionParam = Converter::s_converter()->getLastPATPattern ()->findPATPatternParam (pValue->value().getIdentificator()); break;
-	case rdoModelObjectsConvertor::FUN_IN: pFunctionParam = Converter::s_converter()->getLastFUNFunction()->findFUNFunctionParam(pValue->value().getIdentificator()); break;
+	case rdo::converter::smr2rdox::PAT_IN: pFunctionParam = Converter::s_converter()->getLastPATPattern ()->findPATPatternParam (pValue->value().getIdentificator()); break;
+	case rdo::converter::smr2rdox::FUN_IN: pFunctionParam = Converter::s_converter()->getLastFUNFunction()->findFUNFunctionParam(pValue->value().getIdentificator()); break;
 	}
 
 	//! Ищем константы по имени
@@ -370,8 +370,8 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pValue)
 		m_pValue = rdo::Factory<RDOValue>::create(pFunctionParam->getType()->type());
 		switch (Converter::s_converter()->getFileToParse())
 		{
-		case rdoModelObjectsConvertor::PAT_IN: m_pCalc = rdo::Factory<rdo::runtime::RDOCalcPatParam> ::create(Converter::s_converter()->getLastPATPattern ()->findPATPatternParamNum (pValue->value().getIdentificator())); break;
-		case rdoModelObjectsConvertor::FUN_IN: m_pCalc = rdo::Factory<rdo::runtime::RDOCalcFuncParam>::create(Converter::s_converter()->getLastFUNFunction()->findFUNFunctionParamNum(pValue->value().getIdentificator()), pFunctionParam->src_info()); break;
+		case rdo::converter::smr2rdox::PAT_IN: m_pCalc = rdo::Factory<rdo::runtime::RDOCalcPatParam> ::create(Converter::s_converter()->getLastPATPattern ()->findPATPatternParamNum (pValue->value().getIdentificator())); break;
+		case rdo::converter::smr2rdox::FUN_IN: m_pCalc = rdo::Factory<rdo::runtime::RDOCalcFuncParam>::create(Converter::s_converter()->getLastFUNFunction()->findFUNFunctionParamNum(pValue->value().getIdentificator()), pFunctionParam->src_info()); break;
 		}
 		if (m_pCalc)
 		{
@@ -399,7 +399,7 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pResName, CREF(LPRDOValue) pParName)
 		{
 			m_pCalc = rdo::Factory<rdo::runtime::RDOCalcNop>::create();
 		}
-		else if (pResource->getType()->isTemporary() && Converter::s_converter()->getFileToParse() == rdoModelObjectsConvertor::FRM_IN)
+		else if (pResource->getType()->isTemporary() && Converter::s_converter()->getFileToParse() == rdo::converter::smr2rdox::FRM_IN)
 		{
 			m_pCalc = rdo::Factory<rdo::runtime::RDOCalcNop>::create();
 		}
@@ -431,7 +431,7 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pResName, CREF(LPRDOValue) pParName)
 		//! Возможно, это релевантный ресурс
 		switch (Converter::s_converter()->getFileToParse())
 		{
-		case rdoModelObjectsConvertor::PAT_IN:
+		case rdo::converter::smr2rdox::PAT_IN:
 			if (Converter::s_converter()->getLastPATPattern() && Converter::s_converter()->getLastPATPattern()->findRelevantResource(pResName->value().getIdentificator()))
 			{
 				//! Это релевантный ресурс где-то в паттерне (with_min-common-choice, $Time, $Body)
@@ -543,7 +543,7 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pResName, CREF(LPRDOValue) pParName)
 			}
 			break;
 
-		case rdoModelObjectsConvertor::DPT_IN:
+		case rdo::converter::smr2rdox::DPT_IN:
 			if (Converter::s_converter()->isCurrentDPTSearch() && Converter::s_converter()->getLastDPTSearch()->getLastActivity())
 			{
 				LPRDOPATPattern pPattern = Converter::s_converter()->getLastDPTSearch()->getLastActivity()->pattern();
@@ -580,7 +580,7 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pResName, CREF(LPRDOValue) pParName)
 			}
 			break;
 
-		case rdoModelObjectsConvertor::FRM_IN:
+		case rdo::converter::smr2rdox::FRM_IN:
 			if (Converter::s_converter()->getLastFRMFrame() && Converter::s_converter()->getLastFRMFrame()->frame()->getLastShow() && Converter::s_converter()->getLastFRMFrame()->frame()->getLastShow()->isShowIf())
 			{
 				m_pCalc = rdo::Factory<rdo::runtime::RDOCalcGetUnknowResParam>::create(pResName->value().getIdentificator(), pParName->value().getIdentificator());

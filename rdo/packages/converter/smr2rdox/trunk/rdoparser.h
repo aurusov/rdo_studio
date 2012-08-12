@@ -182,7 +182,7 @@ public:
 
 	void insertDocUpdate(CREF(LPDocUpdate) pDocUpdate);
 
-	static rdoModelObjectsConvertor::RDOFileTypeIn getFileToParse();
+	static rdo::converter::smr2rdox::RDOFileTypeIn getFileToParse();
 	static ruint                                   lexer_loc_line();
 	static ruint                                   lexer_loc_pos ();
 	static PTR(Converter)                          s_converter   ();
@@ -288,7 +288,7 @@ public:
 		CNV_OK,
 		CNV_ERROR
 	};
-	Result convert(CREF(tstring) smrFullFileName, REF(rdoModelObjectsConvertor::RDOSMRFileInfo) info);
+	Result convert(CREF(tstring) smrFullFileName, REF(rdo::converter::smr2rdox::RDOSMRFileInfo) info);
 
 private:
 	rbool createRDOX(CREF(tstring) smrFileName) const;
@@ -300,7 +300,7 @@ private:
 class RDOParserSMRInfo: public RDOParserTemplate<RDOParserContainerSMRInfo>
 {
 public:
-	typedef std::map<rdoModelObjectsConvertor::RDOFileTypeIn, tstring> FileList;
+	typedef std::map<rdo::converter::smr2rdox::RDOFileTypeIn, tstring> FileList;
 
 	rbool          parseSMR(CREF(tstring) smrFullFileName, REF(tstring) modelName);
 	CREF(FileList) getFileList() const;
@@ -308,7 +308,7 @@ public:
 private:
 	FileList m_fileList;
 
-	void insertFileName(rdoModelObjectsConvertor::RDOFileTypeIn type,
+	void insertFileName(rdo::converter::smr2rdox::RDOFileTypeIn type,
 	                    CREF(tstring)                           modelPath,
 	                    CREF(tstring)                           modelName,
 	                    CREF(tstring)                           smrFileName,

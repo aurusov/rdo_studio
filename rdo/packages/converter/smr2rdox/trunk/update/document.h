@@ -35,10 +35,10 @@ OBJECT(Document)
 {
 DECLARE_FACTORY(Document)
 public:
-	typedef rdoModelObjectsConvertor::RDOFileTypeOut TypeOut;
+	typedef rdo::converter::smr2rdox::RDOFileTypeOut TypeOut;
 
 	void    create      (CREF(tstring) filePath, CREF(tstring) modelName);
-	void    init        (rdoModelObjectsConvertor::RDOFileTypeIn type, REF(std::ifstream) stream);
+	void    init        (rdo::converter::smr2rdox::RDOFileTypeIn type, REF(std::ifstream) stream);
 	void    insertUpdate(CREF(LPDocUpdate) pUpdate);
 	void    convert     ();
 	void    close       ();

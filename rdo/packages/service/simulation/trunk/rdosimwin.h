@@ -250,7 +250,7 @@ protected:
 public:
 	RDOThreadSimulator();
 
-	void parseSMRFileInfo(REF(rdo::textstream) smr, REF(rdoModelObjectsConvertor::RDOSMRFileInfo) info);
+	void parseSMRFileInfo(REF(rdo::textstream) smr, REF(rdo::converter::smr2rdox::RDOSMRFileInfo) info);
 
 	ShowMode getInitialShowMode   () const;
 	int      getInitialFrameNumber() const;

@@ -36,7 +36,7 @@ public:
 	virtual ruint lexer_loc_pos ();
 
 protected:
-	RDOParserRDOItem(rdoModelObjectsConvertor::RDOFileTypeIn type, t_bison_parse_fun parser_fun, t_bison_error_fun error_fun, t_flex_lexer_fun lexer_fun);
+	RDOParserRDOItem(rdo::converter::smr2rdox::RDOFileTypeIn type, t_bison_parse_fun parser_fun, t_bison_error_fun error_fun, t_flex_lexer_fun lexer_fun);
 	virtual ~RDOParserRDOItem();
 
 	PTR(RDOLexer)  m_pLexer;
