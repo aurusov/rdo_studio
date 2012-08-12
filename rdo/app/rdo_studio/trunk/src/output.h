@@ -36,10 +36,9 @@ namespace rdoTracerLog {
 class RDOStudioOutput: public RDOStudioDockWnd
 {
 private:
-
-	class Tab: public RDOTabCtrl {
-	protected:
-		virtual void changeCurrentItem();
+	class Tab : public RDOTabCtrl {
+		protected:
+			virtual void changeCurrentItem();
 	};
 
 	Tab tab;
@@ -53,8 +52,6 @@ private:
 	CMenu popupMenu;
 
 public:
-	typedef rdo::simulation::report::RDOSyntaxMessage  RDOSyntaxMessage;
-
 	RDOStudioOutput();
 	virtual ~RDOStudioOutput();
 
@@ -86,8 +83,6 @@ public:
 	void updateStyles() const;
 
 private:
-	typedef rdo::simulation::report::RDOSyntaxMessage RDOSyntaxMessage;
-
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	DECLARE_MESSAGE_MAP()
 };

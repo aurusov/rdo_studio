@@ -33,6 +33,7 @@ static char THIS_FILE[] = __FILE__;
 
 using namespace rdoEditor;
 using namespace rdoEditCtrl;
+using namespace rdo::simulation::report;
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioOutput
