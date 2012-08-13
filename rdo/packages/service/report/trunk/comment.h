@@ -10,7 +10,12 @@
 #ifndef _SIMULATOR_REPORT_COMMENT_H_
 #define _SIMULATOR_REPORT_COMMENT_H_
 
-#define WARNING_STRING "предупреждение"
-#define ERROR_STRING   "ошибка"
+// ----------------------------------------------------------------------- INCLUDES
+// ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/rdotypes.h"
+// --------------------------------------------------------------------------------
+
+#define WARNING_STRING _T("предупреждение")
+#define ERROR_STRING   _T("ошибка")
 
 #endif // _SIMULATOR_REPORT_COMMENT_H_

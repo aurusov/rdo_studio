@@ -7,7 +7,7 @@ MESSAGE(STATUS "CREATE  RDO_SIMULATOR_REPORT  LIBRARY")
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
 SET(HEADER_FILES
-    code.h
+    comment.h
     error_code.h
     namespace.h
     rdo_log_edit_line_info.h
