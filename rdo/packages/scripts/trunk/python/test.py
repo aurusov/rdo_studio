@@ -257,7 +257,6 @@ for task in files:
             check_message_cmp_string = 'ERROR'
   
             if cmp(string_list_log, string_list_log_etalon) == 0:
-                print 'GOOD CMP RESULT'
                 cycle_exit_code = APP_CODE_TERMINATION_NORMAL
                 check_message_cmp_string = 'OK'
 
