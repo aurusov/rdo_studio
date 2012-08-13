@@ -64,6 +64,13 @@ def print_list_of_line(list):
         print string
 
 
+def cut_slash(list):
+    for index in range(len(list)):
+        list[index] = list[index].strip()
+        list[index] = list[index].replace('\n', '')
+        list[index] = list[index].rstrip()
+
+
 def get_files_list(dir):
     dirs  = []
     nfile = []
@@ -244,8 +251,11 @@ for task in files:
             string_list_log = open(simulation_log_file, 'r').readlines()
             string_list_log_etalon = open(simulation_log_file_etalon, 'r').readlines()
 
-            check_message_cmp_string = 'ERROR'
+            cut_slash(string_list_log)
+            cut_slash(string_list_log_etalon)
 
+            check_message_cmp_string = 'ERROR'
+  
             if cmp(string_list_log, string_list_log_etalon) == 0:
                 print 'GOOD CMP RESULT'
                 cycle_exit_code = APP_CODE_TERMINATION_NORMAL
