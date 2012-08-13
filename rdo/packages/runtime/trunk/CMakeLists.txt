@@ -2,7 +2,7 @@
 # Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>
 #==============================================================================
 
-MESSAGE(STATUS "CREATE  RDO_RUNTIME  LIBRARY ")
+MESSAGE(STATUS "CREATE  RDO_RUNTIME  LIBRARY")
 
 FIND_PACKAGE(Boost COMPONENTS system filesystem thread date_time REQUIRED)
 LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
