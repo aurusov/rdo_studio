@@ -37,6 +37,7 @@
 
 using namespace rdoEditor;
 using namespace rdo::service::simulation;
+using namespace rdo::simulation::report;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -75,7 +76,7 @@ RDOStudioModel::RDOStudioModel()
 	, m_tempPause        (false                     )
 	, m_runtimeMode      (rdo::runtime::RTM_MaxSpeed)
 	, m_runtimeModePrev  (rdo::runtime::RTM_MaxSpeed)
-	, m_exitCode         (rdo::service::simulation::EC_ModelNotFound)
+	, m_exitCode         (rdo::simulation::report::EC_ModelNotFound)
 	, m_prevModify       (false                     )
 	, m_buildState       (BS_UNDEFINED              )
 {
@@ -413,7 +414,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			STL_FOR_ALL_CONST(errors, it)
 			{
 				output->appendStringToBuild(*it);
-				if (it->m_type == RDOSyntaxMessage::MT_WARNING)
+				if (it->type == RDOSyntaxMessage::MT_WARNING)
 				{
 					warnings_cnt++;
 				}
@@ -446,7 +447,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			STL_FOR_ALL_CONST(errors, it)
 			{
 				output->appendStringToBuild(*it);
-				if (it->m_type == RDOSyntaxMessage::MT_WARNING)
+				if (it->type == RDOSyntaxMessage::MT_WARNING)
 				{
 					warnings_cnt++;
 				}
@@ -485,7 +486,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			STL_FOR_ALL_CONST(errors, it)
 			{
 				output->appendStringToBuild(*it);
-				if (it->m_type == RDOSyntaxMessage::MT_WARNING)
+				if (it->type == RDOSyntaxMessage::MT_WARNING)
 				{
 					warnings_cnt++;
 				}

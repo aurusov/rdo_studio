@@ -189,7 +189,7 @@ RDOStudioApp::RDOStudioApp()
 	, m_autoRun                     (false )
 	, m_autoExitByModel             (false )
 	, m_dontCloseIfError            (false )
-	, m_exitCode                    (rdo::service::simulation::EC_OK)
+	, m_exitCode                    (rdo::simulation::report::EC_OK)
 	, m_openModelName               (_T(""))
 	, m_pMainFrame                  (NULL  )
 {
@@ -339,7 +339,7 @@ BOOL RDOStudioApp::InitInstance()
 			}
 			else
 			{
-				m_exitCode = rdo::service::simulation::EC_ModelNotFound;
+				m_exitCode = rdo::simulation::report::EC_ModelNotFound;
 				return false;
 			}
 		}
@@ -394,7 +394,7 @@ int RDOStudioApp::ExitInstance()
 		rpMethod::project = NULL;
 	}
 #endif
-	if (m_exitCode != rdo::service::simulation::EC_ModelNotFound)
+	if (m_exitCode != rdo::simulation::report::EC_ModelNotFound)
 	{
 		m_exitCode = model->getExitCode();
 	}
@@ -759,28 +759,37 @@ tstring RDOStudioApp::chkHelpExist(tstring fileName) const
 	return fileName;
 }
 
-PTR(QProcess) RDOStudioApp::chkQtAssistantWindow()
+void RDOStudioApp::chkAndRunQtAssistant()
 {
 	if (!m_pAssistant)
 	{
-		return m_pAssistant = runQtAssistantWindow();
+		m_pAssistant = runQtAssistant();
 	}
 	else if (m_pAssistant->state() == m_pAssistant->Running)
-		return m_pAssistant;
+		return;
 	else
-		return m_pAssistant = runQtAssistantWindow();
+		m_pAssistant = runQtAssistant();
 }
 
-PTR(QProcess) RDOStudioApp::runQtAssistantWindow() const
+PTR(QProcess) RDOStudioApp::runQtAssistant() const
 {
-		QProcess *process = new QProcess;
-		QStringList args;
-		args << QLatin1String("-collectionFile")
-			<< QLatin1String(getFullHelpFileName().c_str())
-			<< QLatin1String("-enableRemoteControl")
-			<< QLatin1String("-quiet");
-		process->start(QLatin1String("assistant"), args);
-		return process;
+	PTR(QProcess) pProcess = new QProcess;
+	QStringList args;
+	args << QLatin1String("-collectionFile")
+		<< QLatin1String(getFullHelpFileName().c_str())
+		<< QLatin1String("-enableRemoteControl")
+		<< QLatin1String("-quiet");
+	pProcess->start(QLatin1String("assistant"), args);
+	return pProcess;
+}
+
+void RDOStudioApp::callQtAssistant(QByteArray ba)
+{
+	chkAndRunQtAssistant();
+	if (m_pAssistant->state() != m_pAssistant->Running)
+		return;
+
+	m_pAssistant->write(ba);
 }
 
 rbool RDOStudioApp::getFileAssociationSetup() const
@@ -988,7 +997,7 @@ void RDOStudioApp::autoCloseByModel()
 {
 	if (m_autoExitByModel)
 	{
-		if (!m_dontCloseIfError || !model || (m_dontCloseIfError && (model->getExitCode() == rdo::service::simulation::EC_OK || model->getExitCode() == rdo::service::simulation::EC_NoMoreEvents)))
+		if (!m_dontCloseIfError || !model || (m_dontCloseIfError && (model->getExitCode() == rdo::simulation::report::EC_OK || model->getExitCode() == rdo::simulation::report::EC_NoMoreEvents)))
 		{
 			m_pMainFrame->SendMessage(WM_CLOSE);
 		}

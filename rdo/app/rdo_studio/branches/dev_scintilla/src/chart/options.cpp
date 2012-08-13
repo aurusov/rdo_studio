@@ -429,9 +429,6 @@ RDOStudioChartOptions::RDOStudioChartOptions( RDOStudioChartView* _view ):
 
 	AddPage( chart );
 	AddPage( series );
-
-	m_psh.dwFlags |= PSH_USECALLBACK | PSH_HASHELP;
-	m_psh.pfnCallback = AddContextHelpProc;
 }
 
 RDOStudioChartOptions::~RDOStudioChartOptions()
@@ -447,41 +444,15 @@ void RDOStudioChartOptions::apply() const
 	view->GetDocument()->UpdateAllViews( NULL );
 }
 
-int CALLBACK RDOStudioChartOptions::AddContextHelpProc(HWND hwnd, UINT message, LPARAM /*lParam*/)
-{
-	switch (message) {
-		case PSCB_INITIALIZED: {
-			LONG style = ::GetWindowLong( hwnd, GWL_EXSTYLE );
-			style |= WS_EX_CONTEXTHELP;
-			::SetWindowLong( hwnd, GWL_EXSTYLE, style );
-		}
-	}
-	return true;
-}
-
 void RDOStudioChartOptions::onHelpButton()
 {
-	/*QProcess* assistant = studioApp.chkQtAssistantWindow();
-	if ( assistant->state() != assistant->Running ) return;
 	QByteArray ba;
 
 	CPropertyPage* page = GetActivePage( );
-	if ( page == editor ) {
-		ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options.htm#editor\n");
-	} else if ( page == tabs ) {
-		ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options.htm#tabs\n");
-	} else if ( page == styles ) {
-		ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options.htm#styles\n");
+	if ( page == chart ) {
+		ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_model/work_model_chart.htm#chart\n");
+	} else if ( page == series ) {
+		ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_model/work_model_chart.htm#series\n");
 	}
-	assistant->write(ba);*/
-}
-
-BOOL RDOStudioChartOptions::OnHelpInfo(HELPINFO* pHelpInfo) 
-{
-	tstring filename = studioApp.getFullHelpFileName();
-	if ( filename.empty() ) return TRUE;
-
-	if ( pHelpInfo->iContextType == HELPINFO_WINDOW )
-		return ::HtmlHelp( ::GetDesktopWindow(), filename.c_str(), HH_HELP_CONTEXT, pHelpInfo->dwContextId) != NULL;
-	return TRUE;
+	studioApp.callQtAssistant(ba);
 }

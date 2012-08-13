@@ -11,6 +11,7 @@
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "simulator/report/rdo_build_edit_line_info.h"
 #include "app/rdo_studio_mfc/src/output.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"
@@ -32,6 +33,7 @@ static char THIS_FILE[] = __FILE__;
 
 using namespace rdoEditor;
 using namespace rdoEditCtrl;
+using namespace rdo::simulation::report;
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioOutput
@@ -192,13 +194,13 @@ void RDOStudioOutput::clearFind()
 
 void RDOStudioOutput::appendStringToBuild( CREF(tstring) str ) const
 {
-	RDOBuildEditLineInfo* line = new RDOBuildEditLineInfo( str );
-	build->appendLine( line );
+	PTR(RDOBuildEditLineInfo) pLine = new RDOBuildEditLineInfo( str );
+	build->appendLine( pLine );
 }
 
-void RDOStudioOutput::appendStringToBuild( CREF(RDOSyntaxMessage) message ) const
+void RDOStudioOutput::appendStringToBuild( CREF(rdo::simulation::report::RDOSyntaxMessage) message ) const
 {
-	if (message.m_type == RDOSyntaxMessage::MT_ERROR || (message.m_type == RDOSyntaxMessage::MT_WARNING && static_cast<PTR(RDOBuildEditTheme)>(studioApp.m_pMainFrame->style_build.theme)->warning))
+	if ( message.type == rdo::simulation::report::RDOSyntaxMessage::MT_ERROR || (message.type == RDOSyntaxMessage::MT_WARNING && static_cast<PTR(RDOBuildEditTheme)>(studioApp.m_pMainFrame->style_build.theme)->warning) )
 	{
 		PTR(RDOBuildEditLineInfo) pLine = new RDOBuildEditLineInfo(message);
 		build->appendLine(pLine);
@@ -222,7 +224,7 @@ void RDOStudioOutput::appendStringToResults( CREF(tstring) str ) const
 
 void RDOStudioOutput::appendStringToFind( CREF(tstring) str, rdoModelObjects::RDOFileType fileType, int lineNumber, int posInLine ) const
 {
-	RDOLogEditLineInfo* line = new RDOLogEditLineInfo( RDOSyntaxMessage(str, fileType, lineNumber, posInLine ) );
+	RDOLogEditLineInfo* line = new RDOLogEditLineInfo( rdo::simulation::report::RDOSyntaxMessage(str, fileType, lineNumber, posInLine ) );
 	find->appendLine( line );
 }
 

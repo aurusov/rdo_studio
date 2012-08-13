@@ -118,11 +118,9 @@ private:
 	RDOStudioChartView*          view;
 
 	void apply() const;
-	static int CALLBACK AddContextHelpProc(HWND hwnd, UINT message, LPARAM lParam);
 	void onHelpButton();
 
 private:
-	afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
 	DECLARE_MESSAGE_MAP()
 
 public:

@@ -77,8 +77,9 @@ public:
 	tstring        getFullHelpFileName (tstring str = "RAO-help.qhc") const;
 	static rbool   shortToLongPath     (CREF(tstring) shortPath, REF(tstring) longPath);
 	tstring        chkHelpExist        (tstring fileName) const;
-	PTR(QProcess)  chkQtAssistantWindow();
-	PTR(QProcess)  runQtAssistantWindow() const;
+	void           chkAndRunQtAssistant();
+	PTR(QProcess)  runQtAssistant      () const;
+	void           callQtAssistant     (QByteArray ba);
 
 private:
 #ifdef RDO_MT
@@ -103,7 +104,7 @@ private:
 	rbool                                  m_autoRun;
 	rbool                                  m_autoExitByModel;
 	rbool                                  m_dontCloseIfError;
-	rdo::service::simulation::RDOExitCode  m_exitCode;
+	rdo::simulation::report::RDOExitCode  m_exitCode;
 	tstring                                m_openModelName;
 	PluginNameList                         m_pluginStartNameList;
 	PluginNameList                         m_pluginExitNameList;

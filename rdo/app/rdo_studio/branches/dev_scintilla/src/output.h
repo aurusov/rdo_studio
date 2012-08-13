@@ -36,10 +36,9 @@ namespace rdoTracerLog {
 class RDOStudioOutput: public RDOStudioDockWnd
 {
 private:
-
-	class Tab: public RDOTabCtrl {
-	protected:
-		virtual void changeCurrentItem();
+	class Tab : public RDOTabCtrl {
+		protected:
+			virtual void changeCurrentItem();
 	};
 
 	Tab tab;
@@ -53,8 +52,6 @@ private:
 	CMenu popupMenu;
 
 public:
-	typedef  rdo::service::simulation::RDOSyntaxMessage  RDOSyntaxMessage;
-
 	RDOStudioOutput();
 	virtual ~RDOStudioOutput();
 
@@ -76,7 +73,8 @@ public:
 	const rdoEditCtrl::RDOFindEdit*       getFind() const    { return find;    };
 
 	void appendStringToBuild( CREF(tstring) str ) const;
-	void appendStringToBuild( CREF(RDOSyntaxMessage) message ) const;
+
+	void appendStringToBuild( CREF(rdo::simulation::report::RDOSyntaxMessage) message ) const;
 	void appendStringToDebug( CREF(tstring) str ) const;
 	void appendStringToResults( CREF(tstring) str ) const;
 	void appendStringToFind( CREF(tstring) str, rdoModelObjects::RDOFileType fileType = rdoModelObjects::PAT, int lineNumber = -1, int posInLine = 0 ) const;
