@@ -157,7 +157,7 @@ private:
 	afx_msg void OnUpdateViewOutput(CCmdUI* pCmdUI);
 	afx_msg void OnDestroy();
 	afx_msg void OnViewOptions();
-	afx_msg void OnHelpContents();
+	afx_msg void OnHelpKeyword();
 	afx_msg void OnModelRuntimeMaxSpeed();
 	afx_msg void OnModelRuntimeJump();
 	afx_msg void OnModelRuntimeSync();

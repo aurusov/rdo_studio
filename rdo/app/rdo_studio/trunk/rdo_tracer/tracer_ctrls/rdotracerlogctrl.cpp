@@ -251,9 +251,6 @@ void RDOTracerLogCtrl::OnUpdateFind( CCmdUI* pCmdUI )
 
 void RDOTracerLogCtrl::OnHelpKeyword()
 {
-	QProcess* assistant = studioApp.chkQtAssistantWindow();
-	if ( assistant->state() != assistant->Running ) return;
-
 	tstring line;
 
 	getSelected( line );
@@ -279,7 +276,7 @@ void RDOTracerLogCtrl::OnHelpKeyword()
 	ba.append("activateKeyword ");
 	ba.append(keyword.c_str());
 	ba.append("\n");
-	assistant->write(ba);
+	studioApp.callQtAssistant(ba);
 }
 
 void RDOTracerLogCtrl::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )

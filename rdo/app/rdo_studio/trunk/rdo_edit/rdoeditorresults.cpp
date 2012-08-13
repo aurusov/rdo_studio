@@ -75,9 +75,6 @@ void RDOEditorResults::setEditorStyle( RDOEditorResultsStyle* _style )
 
 void RDOEditorResults::OnHelpKeyword()
 {
-	QProcess* assistant = studioApp.chkQtAssistantWindow();
-	if ( assistant->state() != assistant->Running ) return;
-
 	tstring keyword = getCurrentOrSelectedWord();
 	tstring s = getAllKW();
 
@@ -89,7 +86,7 @@ void RDOEditorResults::OnHelpKeyword()
 	ba.append("activateKeyword ");
 	ba.append(keyword.c_str());
 	ba.append("\n");
-	assistant->write(ba);
+	studioApp.callQtAssistant(ba);
 }
 
 void RDOEditorResults::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )

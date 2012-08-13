@@ -759,28 +759,37 @@ tstring RDOStudioApp::chkHelpExist(tstring fileName) const
 	return fileName;
 }
 
-PTR(QProcess) RDOStudioApp::chkQtAssistantWindow()
+void RDOStudioApp::chkAndRunQtAssistant()
 {
 	if (!m_pAssistant)
 	{
-		return m_pAssistant = runQtAssistantWindow();
+		m_pAssistant = runQtAssistant();
 	}
 	else if (m_pAssistant->state() == m_pAssistant->Running)
-		return m_pAssistant;
+		return;
 	else
-		return m_pAssistant = runQtAssistantWindow();
+		m_pAssistant = runQtAssistant();
 }
 
-PTR(QProcess) RDOStudioApp::runQtAssistantWindow() const
+PTR(QProcess) RDOStudioApp::runQtAssistant() const
 {
-		QProcess *process = new QProcess;
-		QStringList args;
-		args << QLatin1String("-collectionFile")
-			<< QLatin1String(getFullHelpFileName().c_str())
-			<< QLatin1String("-enableRemoteControl")
-			<< QLatin1String("-quiet");
-		process->start(QLatin1String("assistant"), args);
-		return process;
+	PTR(QProcess) pProcess = new QProcess;
+	QStringList args;
+	args << QLatin1String("-collectionFile")
+		<< QLatin1String(getFullHelpFileName().c_str())
+		<< QLatin1String("-enableRemoteControl")
+		<< QLatin1String("-quiet");
+	pProcess->start(QLatin1String("assistant"), args);
+	return pProcess;
+}
+
+void RDOStudioApp::callQtAssistant(QByteArray ba)
+{
+	chkAndRunQtAssistant();
+	if (m_pAssistant->state() != m_pAssistant->Running)
+		return;
+
+	m_pAssistant->write(ba);
 }
 
 rbool RDOStudioApp::getFileAssociationSetup() const
