@@ -9,7 +9,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/filesystem.hpp>
-namespace fs = boost::filesystem;
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdocommon.h"
 #include "repository/rdorepository.h"
@@ -19,7 +18,9 @@ namespace fs = boost::filesystem;
 #include "app/rdo_console/rdo_console_controller.h"
 // --------------------------------------------------------------------------------
 
-#define LOG_FILE_NAME "log.txt"
+namespace fs = boost::filesystem;
+
+const tstring LOG_FILE_NAME = _T("log.txt");
 
 static ruint g_exitCode = TERMINATION_NORMAL;
 
@@ -74,20 +75,13 @@ int main(int argc, PTR(char) argv[])
 		if (stream.fail()) {
 			return TERMINATION_WITH_APP_RUNTIME_ERROR;
 		}
-		size_t counter = 0;
-		size_t size = buildList.size();
 		for (StringList::const_iterator it = buildList.begin(); it != buildList.end(); ++it)
 		{
-			stream << it->c_str();
-			if (counter < size - 1)
-			{
-				stream << std::endl;
-			}
-			++counter;
+			stream << it->c_str() << std::endl;
 		}
 		stream.close();
 
-		std::cerr << _T("Build model error") << std::endl;
+		std::cout << _T("Build model error") << std::endl;
 		g_exitCode = TERMINATION_WITH_AN_ERROR_PARSE_ERROR;
 	}
 	else
