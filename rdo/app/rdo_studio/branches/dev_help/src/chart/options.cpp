@@ -429,9 +429,6 @@ RDOStudioChartOptions::RDOStudioChartOptions( RDOStudioChartView* _view ):
 
 	AddPage( chart );
 	AddPage( series );
-
-	m_psh.dwFlags |= PSH_USECALLBACK | PSH_HASHELP;
-	m_psh.pfnCallback = AddContextHelpProc;
 }
 
 RDOStudioChartOptions::~RDOStudioChartOptions()
@@ -445,17 +442,6 @@ void RDOStudioChartOptions::apply() const
 	chart->apply();
 	series->apply();
 	view->GetDocument()->UpdateAllViews( NULL );
-}
-
-int CALLBACK RDOStudioChartOptions::AddContextHelpProc(HWND hwnd, UINT message, LPARAM /*lParam*/)
-{
-	switch (message) {
-		case PSCB_INITIALIZED: {
-			LONG style = ::GetWindowLong( hwnd, GWL_EXSTYLE );
-			::SetWindowLong( hwnd, GWL_EXSTYLE, style );
-		}
-	}
-	return true;
 }
 
 void RDOStudioChartOptions::onHelpButton()
