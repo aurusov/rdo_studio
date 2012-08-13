@@ -88,7 +88,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="copy $(InputName)"
-						CommandLine="copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
 						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
 					/>
 				</FileConfiguration>
@@ -98,7 +98,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="copy $(InputName)"
-						CommandLine="copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
 						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
 					/>
 				</FileConfiguration>
@@ -112,7 +112,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="copy $(InputName)"
-						CommandLine="copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
 						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
 					/>
 				</FileConfiguration>
@@ -122,7 +122,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="copy $(InputName)"
-						CommandLine="copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
 						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
 					/>
 				</FileConfiguration>
@@ -136,7 +136,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="copy $(InputName)"
-						CommandLine="copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
 						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
 					/>
 				</FileConfiguration>
@@ -146,7 +146,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="copy $(InputName)"
-						CommandLine="copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
 						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
 					/>
 				</FileConfiguration>
@@ -160,7 +160,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="copy $(InputName)"
-						CommandLine="copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
 						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
 					/>
 				</FileConfiguration>
@@ -170,7 +170,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="copy $(InputName)"
-						CommandLine="copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
 						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
 					/>
 				</FileConfiguration>
@@ -184,7 +184,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="copy $(InputName)"
-						CommandLine="copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
 						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
 					/>
 				</FileConfiguration>
@@ -194,7 +194,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="copy $(InputName)"
-						CommandLine="copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
 						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
 					/>
 				</FileConfiguration>
@@ -208,7 +208,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="copy $(InputName)"
-						CommandLine="copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
 						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
 					/>
 				</FileConfiguration>
@@ -218,7 +218,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="copy $(InputName)"
-						CommandLine="copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
 						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
 					/>
 				</FileConfiguration>
@@ -232,7 +232,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="copy $(InputName)"
-						CommandLine="copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
 						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
 					/>
 				</FileConfiguration>
@@ -242,7 +242,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="copy $(InputName)"
-						CommandLine="copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
 						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
 					/>
 				</FileConfiguration>
@@ -256,7 +256,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="copy $(InputName)"
-						CommandLine="copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
 						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
 					/>
 				</FileConfiguration>
@@ -266,7 +266,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="copy $(InputName)"
-						CommandLine="copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
+						CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; copy &quot;$(QTDIR)\bin\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot; &gt;nul&#x0D;&#x0A;"
 						Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\$(InputName)&quot;"
 					/>
 				</FileConfiguration>
@@ -283,7 +283,7 @@
 						<Tool
 							Name="VCCustomBuildTool"
 							Description="copy $(InputName)"
-							CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\sqldrivers&quot; mkdir &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\sqldrivers&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\sqldrivers\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\sqldrivers\$(InputName)&quot; &gt; nul&#x0D;&#x0A;"
+							CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\sqldrivers&quot; mkdir &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\sqldrivers&quot;&#x0D;&#x0A;if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\sqldrivers\$(InputName)&quot; copy &quot;$(QTDIR)\plugins\sqldrivers\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\sqldrivers\$(InputName)&quot; &gt; nul&#x0D;&#x0A;"
 							Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\sqldrivers\$(InputName)&quot;"
 						/>
 					</FileConfiguration>
@@ -293,7 +293,7 @@
 						<Tool
 							Name="VCCustomBuildTool"
 							Description="copy $(InputName)"
-							CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\sqldrivers&quot; mkdir &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\sqldrivers&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\sqldrivers\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\sqldrivers\$(InputName)&quot; &gt; nul&#x0D;&#x0A;"
+							CommandLine="if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\sqldrivers&quot; mkdir &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\sqldrivers&quot;&#x0D;&#x0A;if not exist &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\sqldrivers\$(InputName)&quot; copy &quot;$(QTDIR)\plugins\sqldrivers\$(InputName)&quot; &quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\sqldrivers\$(InputName)&quot; &gt; nul&#x0D;&#x0A;"
 							Outputs="&quot;$(SolutionDir)bin\$(SolutionName)\$(PlatformName)\$(ConfigurationName)\sqldrivers\$(InputName)&quot;"
 						/>
 					</FileConfiguration>
