@@ -77,9 +77,9 @@ public:
 	tstring        getFullHelpFileName (tstring str = "RAO-help.qhc") const;
 	static rbool   shortToLongPath     (CREF(tstring) shortPath, REF(tstring) longPath);
 	tstring        chkHelpExist        (tstring fileName) const;
-	void           chkQtAssistantWindow();
-	PTR(QProcess)  runQtAssistantWindow() const;
-	void           callQtAssistantWindow(QByteArray ba);
+	void           chkAndRunQtAssistant();
+	PTR(QProcess)  runQtAssistant      () const;
+	void           callQtAssistant     (QByteArray ba);
 
 private:
 #ifdef RDO_MT

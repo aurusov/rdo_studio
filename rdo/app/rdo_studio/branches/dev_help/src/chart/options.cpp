@@ -454,5 +454,5 @@ void RDOStudioChartOptions::onHelpButton()
 	} else if ( page == series ) {
 		ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_model/work_model_chart.htm#series\n");
 	}
-	studioApp.callQtAssistantWindow(ba);
+	studioApp.callQtAssistant(ba);
 }

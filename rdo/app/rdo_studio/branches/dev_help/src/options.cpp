@@ -2191,7 +2191,7 @@ void RDOStudioOptions::onHelpButton()
 	} else if ( page == plugins ) {
 		ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_options/work_options.htm\n");
 	}
-	studioApp.callQtAssistantWindow(ba);
+	studioApp.callQtAssistant(ba);
 }
 
 BOOL RDOStudioOptions::OnHelpInfo(PTR(HELPINFO) pHelpInfo) 
@@ -2200,7 +2200,7 @@ BOOL RDOStudioOptions::OnHelpInfo(PTR(HELPINFO) pHelpInfo)
 	ba.append("setSource ");
 	ba.append(resolveKeyAndUrl(pHelpInfo->dwContextId).c_str());
 	ba.append("\n");
-	studioApp.callQtAssistantWindow(ba);
+	studioApp.callQtAssistant(ba);
 	return FALSE;
 }
 

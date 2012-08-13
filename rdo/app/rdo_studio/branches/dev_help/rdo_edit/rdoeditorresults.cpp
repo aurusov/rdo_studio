@@ -86,7 +86,7 @@ void RDOEditorResults::OnHelpKeyword()
 	ba.append("activateKeyword ");
 	ba.append(keyword.c_str());
 	ba.append("\n");
-	studioApp.callQtAssistantWindow(ba);
+	studioApp.callQtAssistant(ba);
 }
 
 void RDOEditorResults::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )

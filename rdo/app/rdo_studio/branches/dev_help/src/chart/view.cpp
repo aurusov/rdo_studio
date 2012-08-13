@@ -1242,5 +1242,5 @@ void RDOStudioChartView::OnHelpKeyword()
 {
 	QByteArray ba;
 	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_model/work_model_chart.htm\n");
-	studioApp.callQtAssistantWindow(ba);
+	studioApp.callQtAssistant(ba);
 }

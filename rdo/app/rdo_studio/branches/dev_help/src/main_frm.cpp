@@ -533,7 +533,7 @@ void RDOStudioMainFrame::OnHelpKeyword()
 {
 	QByteArray ba;
 	ba.append("setSource qthelp://language/doc/rdo_studio_rus/html/about.htm\n");
-	studioApp.callQtAssistantWindow(ba);
+	studioApp.callQtAssistant(ba);
 }
 
 void RDOStudioMainFrame::OnModelRuntimeMaxSpeed()
