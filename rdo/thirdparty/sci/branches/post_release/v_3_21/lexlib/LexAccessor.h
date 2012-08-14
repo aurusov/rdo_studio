@@ -5,6 +5,9 @@
 // Copyright 1998-2010 by Neil Hodgson <neilh@scintilla.org>
 // The License.txt file describes the conditions under which this software may be distributed.
 
+#include "ILexer.h"
+#include <assert.h>
+
 #ifndef LEXACCESSOR_H
 #define LEXACCESSOR_H
 
