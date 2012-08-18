@@ -20,6 +20,7 @@
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/src/child_frm.h"
+#include "app/rdo_studio_mfc/src/about.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/src/edit/document.h"
 #include "app/rdo_studio_mfc/src/edit/view.h"
@@ -989,8 +990,9 @@ void RDOStudioApp::setupFileAssociation()
 
 void RDOStudioApp::OnAppAbout()
 {
-	RDOAboutDlg dlg;
-	dlg.DoModal();
+	QWinWidget parent(m_pMainFrame);
+	About dlg(&parent);
+	dlg.exec();
 }
 
 void RDOStudioApp::autoCloseByModel()
@@ -1042,98 +1044,6 @@ BOOL RDOStudioApp::PreTranslateMessage(PTR(MSG) pMsg)
 BOOL RDOStudioApp::ProcessMessageFilter(int code, LPMSG lpMsg)
 {
 	return CWinApp::ProcessMessageFilter(code, lpMsg);
-}
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOAboutDlg
-// --------------------------------------------------------------------------------
-BEGIN_MESSAGE_MAP(RDOAboutDlg, CDialog)
-	ON_BN_CLICKED(IDC_ABOUT_EMAIL, OnAboutEmail)
-	ON_BN_CLICKED(IDC_ABOUT_WEB,   OnAboutWeb  )
-END_MESSAGE_MAP()
-
-RDOAboutDlg::RDOAboutDlg()
-	: CDialog    (IDD   )
-	, m_caption  (_T(""))
-	, m_developer(_T(""))
-{
-	CString s;
-	s.Format(IDS_DEVELOPERS);
-	m_developer = s;
-
-	TCHAR szExeName[ MAX_PATH + 1 ];
-	if (::GetModuleFileName(NULL, szExeName, MAX_PATH))
-	{
-		DWORD dwHnd;
-		DWORD size = ::GetFileVersionInfoSize(szExeName, &dwHnd);
-		if (size)
-		{
-			PTR(void) pBuffer = malloc(size);
-			if (pBuffer != NULL)
-			{
-				if (::GetFileVersionInfo(szExeName, dwHnd, size, pBuffer))
-				{
-					PTR(DWORD) pTranslation;
-					UINT       length;
-					if (::VerQueryValue(pBuffer, _T("\\VarFileInfo\\Translation"), (PTR(PTR(void)))&pTranslation, &length))
-					{
-						DWORD translation = *pTranslation;
-						char key[2000];
-						wsprintf(key, _T("\\StringFileInfo\\%04x%04x\\ProductName"), LOWORD(translation), HIWORD(translation));
-						PTR(char) pProductName;
-						if (::VerQueryValue(pBuffer, key, (PTR(PTR(void)))&pProductName, &length))
-						{
-							PTR(VS_FIXEDFILEINFO) pFixedInfo;
-							if (::VerQueryValue(pBuffer, _T("\\"), (PTR(PTR(void)))&pFixedInfo, &length))
-							{
-#ifdef RDO_MT
-								PTR(char) pThreadVer = _T("mt");
-#else
-								PTR(char) pThreadVer = _T("st");
-#endif
-
-#ifdef RDOSIM_COMPATIBLE
-								PTR(char) pRdoCompatible = _T("-comp");
-#else
-								PTR(char) pRdoCompatible = _T("");
-#endif
-
-								s.Format(_T("%s   %s%s-version %u.%u (build %u)"), pProductName, pThreadVer, pRdoCompatible, HIWORD(pFixedInfo->dwProductVersionMS), LOWORD(pFixedInfo->dwProductVersionMS), LOWORD(pFixedInfo->dwProductVersionLS));
-								m_caption = s;
-							}
-						}
-					}
-				}
-				free(pBuffer);
-			}
-		}
-	}
-}
-
-RDOAboutDlg::~RDOAboutDlg()
-{}
-
-void RDOAboutDlg::DoDataExchange(PTR(CDataExchange) pDX)
-{
-	CDialog::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_ABOUT_WEB,     m_web      );
-	DDX_Control(pDX, IDC_ABOUT_EMAIL,   m_email    );
-	DDX_Text   (pDX, IDC_ABOUT_CAPTION, m_caption  );
-	DDX_Text   (pDX, IDC_DEVELOPERS,    m_developer);
-}
-
-void RDOAboutDlg::OnAboutEmail() 
-{
-	CString s;
-	m_email.GetWindowText(s);
-	::ShellExecute(m_hWnd, _T("open"), _T("mailto:") + s, 0, 0, SW_SHOWNORMAL);
-}
-
-void RDOAboutDlg::OnAboutWeb() 
-{
-	CString s;
-	m_web.GetWindowText(s);
-	::ShellExecute(m_hWnd, _T("open"), s, 0, 0, SW_SHOWNORMAL);
 }
 
 void RDOStudioApp::broadcastMessage(RDOThread::RDOTreadMessage message, PTR(void) pParam)

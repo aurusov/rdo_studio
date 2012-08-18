@@ -15,8 +15,6 @@
 #include <QtCore/qprocess.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
-#include "ui/mfc_ctrls/rdolink.h"
-#include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_method_manager.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"
 // --------------------------------------------------------------------------------
@@ -144,30 +142,6 @@ private:
 	afx_msg void OnUpdateModelStop  (PTR(CCmdUI) pCmdUI);
 	afx_msg void OnUpdateFileNew    (PTR(CCmdUI) pCmdUI);
 	afx_msg void OnUpdateFileOpen   (PTR(CCmdUI) pCmdUI);
-	DECLARE_MESSAGE_MAP()
-};
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOAboutDlg
-// --------------------------------------------------------------------------------
-class RDOAboutDlg: public CDialog
-{
-public:
-	RDOAboutDlg();
-	virtual ~RDOAboutDlg();
-
-private:
-	enum { IDD = IDD_ABOUT };
-
-	RDOLink	 m_web;
-	RDOLink	 m_email;
-	CString	 m_caption;
-	CString	 m_developer;
-
-	virtual void DoDataExchange(PTR(CDataExchange) pDX);
-
-	afx_msg void OnAboutEmail();
-	afx_msg void OnAboutWeb  ();
 	DECLARE_MESSAGE_MAP()
 };
 
