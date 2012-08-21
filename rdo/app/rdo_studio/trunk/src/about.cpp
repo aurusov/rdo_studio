@@ -19,4 +19,26 @@ About::About(PTR(QWidget) pParent)
 	, m_ui   (new Ui::AboutDialog)
 {
 	m_ui->setupUi(this);
+
+	m_ui->version->setText(QString("RAO-studio   %1%2-version 1.1 (build %3)")
+
+#ifdef RDO_MT
+		.arg("mt")
+#else
+		.arg("st")
+#endif
+
+#ifdef RDOSIM_COMPATIBLE
+		.arg("-comp")
+#else
+		.arg("")
+#endif
+
+		.arg(1234)
+	);
+
+	if (pParent)
+	{
+		move(pParent->frameGeometry().center() - frameGeometry().center());
+	}
 }
