@@ -18,8 +18,8 @@
 
 #include "Platform.h"
 
-#include "SString.h"
-#include "StringList.h"
+#include "thirdparty\sci\scite\SString.h"
+#include "thirdparty\sci\scite\StringList.h"
 #include "ILexer.h"
 #include "LexAccessor.h"
 #include "Accessor.h"

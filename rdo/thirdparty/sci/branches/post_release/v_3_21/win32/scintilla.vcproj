@@ -399,6 +399,22 @@
 				RelativePath="..\rdo\LexRdo.h"
 				>
 			</File>
+			<Filter
+				Name=".win32"
+				>
+				<File
+					RelativePath=".\PlatWin.cxx"
+					>
+				</File>
+				<File
+					RelativePath=".\PlatWin.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ScintillaWin.cxx"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name=".lexlib"
@@ -489,18 +505,14 @@
 			</File>
 		</Filter>
 		<Filter
-			Name=".win32"
+			Name="scite"
 			>
 			<File
-				RelativePath=".\PlatWin.cxx"
+				RelativePath="..\scite\SString.h"
 				>
 			</File>
 			<File
-				RelativePath=".\PlatWin.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ScintillaWin.cxx"
+				RelativePath="..\scite\StringList.h"
 				>
 			</File>
 		</Filter>
