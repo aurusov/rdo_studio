@@ -96,13 +96,13 @@ ILexer *LexerModule::Create() const {
 }
 
 void LexerModule::Lex(unsigned int startPos, int lengthDoc, int initStyle,
-	  WordList *keywordlists[], Accessor &styler) const {
+	  StringList *keywordlists[], Accessor &styler) const {
 	if (fnLexer)
 		fnLexer(startPos, lengthDoc, initStyle, keywordlists, styler);
 }
 
 void LexerModule::Fold(unsigned int startPos, int lengthDoc, int initStyle,
-	  WordList *keywordlists[], Accessor &styler) const {
+	  StringList *keywordlists[], Accessor &styler) const {
 	if (fnFolder) {
 		int lineCurrent = styler.GetLine(startPos);
 		// Move back one line in case deletion wrecked current line fold state

@@ -17,23 +17,23 @@
 
 #include "Platform.h"
 
-#include "PropSet.h"
+#include "SString.h"
+#include "StringList.h"
 #include "ILexer.h"
 #include "LexAccessor.h"
 #include "Accessor.h"
 #include "StyleContext.h"
 #include "Scintilla.h"
 #include "SciLexer.h"
-#include "SString.h"
 #include "CharacterSet.h"
 #include "LexerModule.h"
 
-static void ColouriseRdoDoc( unsigned int startPos, int length, int initStyle, WordList *keywordlists[], Accessor &styler )
+static void ColouriseRdoDoc( unsigned int startPos, int length, int initStyle, StringList *keywordlists[], Accessor &styler )
 {
-	WordList& keywords  = *keywordlists[0];
-	WordList& functions = *keywordlists[1];
-	WordList& traces    = *keywordlists[2];
-	WordList& colors    = *keywordlists[3];
+	StringList& keywords  = *keywordlists[0];
+	StringList& functions = *keywordlists[1];
+	StringList& traces    = *keywordlists[2];
+	StringList& colors    = *keywordlists[3];
 
 	styler.StartAt( startPos );
 
@@ -101,7 +101,7 @@ static void ColouriseRdoDoc( unsigned int startPos, int length, int initStyle, W
 	sc.Complete();
 }
 
-static void FoldRdoDoc( unsigned int startPos, int length, int initStyle, WordList *[], Accessor &styler )
+static void FoldRdoDoc( unsigned int startPos, int length, int initStyle, StringList *[], Accessor &styler )
 {
 	unsigned int endPos = startPos + length;
 	int visibleChars = 0;

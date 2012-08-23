@@ -11,22 +11,26 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <assert.h>
 
 #include "LexFind.h"
 #include "LexRdo.h"
 
 #include "Platform.h"
 
-#include "PropSet.h"
+#include "SString.h"
+#include "StringList.h"
+#include "ILexer.h"
+#include "LexAccessor.h"
 #include "Accessor.h"
 #include "KeyWords.h"
 #include "Scintilla.h"
 #include "SciLexer.h"
-#include "SString.h"
 
-static void ColouriseFindDoc( unsigned int startPos, int length, int initStyle, WordList *keywordlists[], Accessor &styler )
+
+static void ColouriseFindDoc( unsigned int startPos, int length, int initStyle, StringList *keywordlists[], Accessor &styler )
 {
-	WordList& keywords = *keywordlists[ SCI_RDO_ENDOFLINEONLY_KEYWORDSINDEX ];
+	StringList& keywords = *keywordlists[ SCI_RDO_ENDOFLINEONLY_KEYWORDSINDEX ];
 	if ( !keywords ) return;
 	const char* findKeyword = keywords[0];
 	const int findKeywordLen = strlen( findKeyword );
