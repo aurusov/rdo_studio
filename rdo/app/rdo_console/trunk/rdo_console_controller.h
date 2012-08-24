@@ -22,6 +22,8 @@
 class RDOStudioConsoleController: public RDOThread
 {
 public:
+	typedef  std::list<tstring>  StringList;
+
 	RDOStudioConsoleController();
 	virtual ~RDOStudioConsoleController();
 
@@ -52,7 +54,7 @@ private:
 	rbool                m_buildError; 
 	rbool                m_runtimeError;
 	RDOExitCode          m_exitCode;
-	StringList         m_buildLogList;
+	StringList           m_buildLogList;
 
 	mutable boost::mutex m_stateMutex;
 };
