@@ -64,6 +64,8 @@ int main(int argc, PTR(char) argv[])
 	bool buildError = pAppController->buildError();
 	if (buildError)
 	{
+		typedef  std::list<tstring>  StringList;
+		
 		StringList buildList;
 		pAppController->getBuildLogList(buildList);
 
