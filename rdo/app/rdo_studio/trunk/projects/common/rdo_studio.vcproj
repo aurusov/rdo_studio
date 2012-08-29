@@ -1886,6 +1886,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\res\build_version.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\res\editToolbar.bmp"
 				>
 			</File>

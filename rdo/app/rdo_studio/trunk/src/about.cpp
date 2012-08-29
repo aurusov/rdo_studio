@@ -12,6 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/about.h"
+#include "app/rdo_studio_mfc/res/build_version.h"
 // --------------------------------------------------------------------------------
 
 About::About(PTR(QWidget) pParent)
@@ -34,7 +35,7 @@ About::About(PTR(QWidget) pParent)
 		.arg("")
 #endif
 
-		.arg(1234)
+		.arg(g_buildVersion)
 	);
 
 	if (pParent)
