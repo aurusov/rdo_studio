@@ -3,6 +3,7 @@
   \file      error_code.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \authors   Пройдаков Евгений (lord.tiran@gmail.com)
   \date      16.02.2012
   \brief     Коды окончания моделирования
   \indent    4T
@@ -49,19 +50,17 @@ struct RDOSyntaxMessage
 
 	//! Конструктор сообщения
 	//! \param message - текст сообщение
-	//! \param code    - код ошибки
 	//! \param file    - файл, в котором найдена ошибка
 	//! \param line    - номер строки с ошибкой
 	//! \param pos     - позиция ошибки в строке
-	//! \param type    - тип сообщения. Значение по умолчанию \b MESSAGE_ERROR
-	RDOSyntaxMessage(CREF(tstring) text, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type = MT_ERROR) : 
-		text(text),
-		file(file),
-		line(line),
-		pos (pos ),
-		type(type)
-	{
-	}
+	//! \param type    - тип сообщения. Значение по умолчанию \b MT_ERROR
+	RDOSyntaxMessage(CREF(tstring) text, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type = MT_ERROR)
+		: text(text)
+		, file(file)
+		, line(line)
+		, pos (pos )
+		, type(type)
+	{}
 };
 
 CLOSE_RDO_SIMULATION_REPORT_NAMESPACE
