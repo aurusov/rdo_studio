@@ -31,6 +31,7 @@ using namespace rdoEditor;
 using namespace rdoStyle;
 using namespace rdoEditCtrl;
 using namespace rdoTracerLog;
+using namespace rdo::simulation::report;
 
 #define timerPlugin_ID 1
 

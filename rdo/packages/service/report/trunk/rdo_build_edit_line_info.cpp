@@ -15,7 +15,7 @@
 #include "simulator/report/rdo_build_edit_line_info.h"
 // --------------------------------------------------------------------------------
 
-using namespace rdo::simulation::report;
+OPEN_RDO_SIMULATION_REPORT_NAMESPACE
 
 RDOBuildEditLineInfo::RDOBuildEditLineInfo( CREF(RDOSyntaxMessage) message ) :
 	RDOLogEditLineInfo( message )
@@ -42,3 +42,5 @@ tstring RDOBuildEditLineInfo::getMessage() const
 		return text;
 	}
 }
+
+CLOSE_RDO_SIMULATION_REPORT_NAMESPACE

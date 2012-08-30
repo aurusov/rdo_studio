@@ -13,20 +13,23 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdotypes.h"
+#include "simulator/report/namespace.h"
 #include "simulator/report/error_code.h"
 // --------------------------------------------------------------------------------
+
+OPEN_RDO_SIMULATION_REPORT_NAMESPACE
 
 class RDOLogEditLineInfo
 {
 public:
-	explicit RDOLogEditLineInfo( CREF(rdo::simulation::report::RDOSyntaxMessage) message );
+	explicit RDOLogEditLineInfo( CREF(RDOSyntaxMessage) message );
 	explicit RDOLogEditLineInfo( CREF(tstring) message );
 	virtual ~RDOLogEditLineInfo();
 
 	virtual tstring getMessage() const;
 	rbool isSimpleTextMessage() const;
 
-	rdo::simulation::report::RDOSyntaxMessage::Type getMessageType() const;
+	RDOSyntaxMessage::Type getMessageType() const;
 	rdoModelObjects::RDOFileType getFileType() const;
 	ruint   getLineNumber() const;
 	ruint   getPosInLine () const;
@@ -36,9 +39,11 @@ public:
 	void setPosInLog(int posInLog);
 
 private:
-	rdo::simulation::report::RDOSyntaxMessage m_message;
+	RDOSyntaxMessage m_message;
 	ruint m_posInLog;
 	rbool m_simpleTextMessage;
 };
+
+CLOSE_RDO_SIMULATION_REPORT_NAMESPACE
 
 #endif // _RDO_LOG_EDIT_LINE_INFO_H_

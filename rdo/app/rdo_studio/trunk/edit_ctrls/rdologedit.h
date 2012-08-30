@@ -30,7 +30,8 @@ namespace rdoEditCtrl {
 class RDOLogEdit: public RDOBaseEdit
 {
 public:
-	typedef  std::list<PTR(RDOLogEditLineInfo)>  RDOLogEditLineInfoList;
+	typedef rdo::simulation::report::RDOLogEditLineInfo RDOLogEditLineInfo;
+	typedef std::list<PTR(RDOLogEditLineInfo)> RDOLogEditLineInfoList;
 
 public:
 	RDOLogEdit();

@@ -13,17 +13,22 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/report/error_code.h"
+#include "simulator/report/namespace.h"
 #include "simulator/report/rdo_log_edit_line_info.h"
 // --------------------------------------------------------------------------------
+
+OPEN_RDO_SIMULATION_REPORT_NAMESPACE
 
 class RDOBuildEditLineInfo : public RDOLogEditLineInfo
 {
 public:
-	explicit RDOBuildEditLineInfo( CREF(rdo::simulation::report::RDOSyntaxMessage) message );
+	explicit RDOBuildEditLineInfo( CREF(RDOSyntaxMessage) message );
 	explicit RDOBuildEditLineInfo( CREF(tstring) message );
 	virtual ~RDOBuildEditLineInfo();
 
 	virtual tstring getMessage() const;
 };
+
+CLOSE_RDO_SIMULATION_REPORT_NAMESPACE
 
 #endif // _RDO_BUILD_EDIT_LINE_INFO_H_

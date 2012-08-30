@@ -13,7 +13,7 @@
 #include "simulator/report/rdo_log_edit_line_info.h"
 // --------------------------------------------------------------------------------
 
-using namespace rdo::simulation::report;
+OPEN_RDO_SIMULATION_REPORT_NAMESPACE
 
 RDOLogEditLineInfo::RDOLogEditLineInfo( CREF(RDOSyntaxMessage) message ):
 	m_message( message ),
@@ -88,3 +88,5 @@ void RDOLogEditLineInfo::setPosInLog(int posInLog)
 {
 	m_posInLog = posInLog;
 }
+
+CLOSE_RDO_SIMULATION_REPORT_NAMESPACE
