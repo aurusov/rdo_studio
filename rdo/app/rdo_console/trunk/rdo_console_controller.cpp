@@ -18,6 +18,8 @@
 #include "app/rdo_console/rdo_console_controller.h"
 // --------------------------------------------------------------------------------
 
+using namespace rdo::simulation::report;
+
 #define MUTEXT_PROTECTION(A) boost::lock_guard<boost::mutex> lg_##__LINE__(A);
 
 RDOStudioConsoleController::RDOStudioConsoleController()
