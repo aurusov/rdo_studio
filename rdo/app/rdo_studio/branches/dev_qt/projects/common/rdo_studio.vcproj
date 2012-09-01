@@ -2302,6 +2302,70 @@
 						/>
 					</FileConfiguration>
 				</File>
+				<File
+					RelativePath="..\..\res\ui\main_window.ui"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="UIC $(InputFileName)"
+							CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\$(InputName)_ui.h&quot;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\$(InputName)_ui.h&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="UIC $(InputFileName)"
+							CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\$(InputName)_ui.h&quot;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\$(InputName)_ui.h&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.corba|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="UIC $(InputFileName)"
+							CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\$(InputName)_ui.h&quot;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\$(InputName)_ui.h&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.corba|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="UIC $(InputFileName)"
+							CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\$(InputName)_ui.h&quot;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\$(InputName)_ui.h&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.mt|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="UIC $(InputFileName)"
+							CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\$(InputName)_ui.h&quot;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\$(InputName)_ui.h&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.mt|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="UIC $(InputFileName)"
+							CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\$(InputName)_ui.h&quot;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\$(InputName)_ui.h&quot;"
+						/>
+					</FileConfiguration>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -5719,6 +5783,10 @@
 				>
 				<File
 					RelativePath=".\bin\rdo_studio\generated\about_ui.h"
+					>
+				</File>
+				<File
+					RelativePath=".\bin\rdo_studio\generated\main_window_ui.h"
 					>
 				</File>
 			</Filter>
