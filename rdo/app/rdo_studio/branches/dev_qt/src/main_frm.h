@@ -91,8 +91,6 @@ public:
 	void update_start();
 	void update_stop();
 
-	static rbool is_close_mode() { return close_mode; }
-
 	PTR(CWnd) c_wnd() { return &m_thisCWnd; }
 
 private:
@@ -110,9 +108,6 @@ private:
 	virtual void hideEvent (QHideEvent*  event);
 
 	UINT m_updateTimer;
-
-	// Используется при закрытии модели. Задается вопрос.
-	static rbool close_mode;
 
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnViewFileToolbar();

@@ -43,9 +43,15 @@ public:
 
 	rbool isMDIMaximazed() const { return true; }
 
+	static rbool is_close_mode() { return close_mode; }
+
 	virtual void updateAllStyles() const = 0;
 	virtual void showWorkspace  () = 0;
 	virtual void showOutput     () = 0;
+
+protected:
+	// Используется при закрытии модели. Задается вопрос.
+	static rbool close_mode;
 };
 
 #endif // _RDO_STUDIO_MAIN_WINDOWS_BASE_H_

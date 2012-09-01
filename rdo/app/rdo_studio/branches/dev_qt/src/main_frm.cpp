@@ -152,7 +152,7 @@ static UINT indicators[] = {
 	ID_PROGRESSSTATUSBAR
 };
 
-rbool RDOStudioMainFrame::close_mode = false;
+rbool MainWindowBase::close_mode = false;
 
 RDOStudioMainFrame::RDOStudioMainFrame()
 	: m_updateTimer(0)
