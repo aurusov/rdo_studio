@@ -48,7 +48,6 @@ public:
 	PTR(MainWindowBase) getIMainWnd();
 	PTR(MainWindowBase) getStyle   ();
 
-	PTR(RDOStudioMainFrame) m_pMainFrame;
 	//! см. описание RDOKernelGUI
 	//! Главная треда самого приложения, т.е. кернет для win32-gui, но не кернел системы
 	PTR(RDOThread)          m_pStudioGUI;
@@ -114,6 +113,7 @@ private:
 	PluginNameList                         m_pluginStartNameList;
 	PluginNameList                         m_pluginExitNameList;
 	QProcess*                              m_pAssistant;
+	PTR(RDOStudioMainFrame)                m_pMainFrame;
 
 	void setupFileAssociation();
 	void updateReopenSubMenu () const;

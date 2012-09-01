@@ -244,8 +244,6 @@ void RDOStudioMainFrame::closeEvent(QCloseEvent* event)
 {
 	close_mode = true;
 
-	studioApp.m_pMainFrame = NULL;
-
 	update_stop();
 	style_editor.save();
 	style_build.save();
