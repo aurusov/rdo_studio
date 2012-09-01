@@ -436,6 +436,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\file_message.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\file_message.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\namespace.h"
 				>
 			</File>

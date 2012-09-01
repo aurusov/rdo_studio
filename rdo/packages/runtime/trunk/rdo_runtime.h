@@ -32,6 +32,7 @@
 #include "simulator/runtime/notify.h"
 #include "simulator/runtime/error.h"
 #include "simulator/runtime/hotkey.h"
+#include "simulator/report/error_code.h"
 // --------------------------------------------------------------------------------
 
 class RDOThread;

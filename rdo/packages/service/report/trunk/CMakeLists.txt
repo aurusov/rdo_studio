@@ -8,12 +8,14 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
 SET(HEADER_FILES
     comment.h
-    error_code.h
     namespace.h
+    error_code.h
+    file_message.h
     rdo_log_edit_line_info.h
     rdo_build_edit_line_info.h)
 
 SET(SOURCE_FILES
+    file_message.cpp
     rdo_log_edit_line_info.cpp
     rdo_build_edit_line_info.cpp)
 

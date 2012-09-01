@@ -14,9 +14,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdotypes.h"
-#include "utils/rdomacros.h"
-#include "utils/model_objects.h"
 #include "simulator/report/namespace.h"
 // --------------------------------------------------------------------------------
 
@@ -31,36 +28,6 @@ enum RDOExitCode
 	EC_UserBreak,     //!< Модель остановлена пользователем
 	EC_ModelNotFound, //!< Файл прогона модели не найден
 	EC_NoMoreEvents   //!< Модель завершилась потому, что больше нечего моделировать
-};
-
-//! Синтаксическое сообщение
-struct FileMessage
-{
-	enum Type
-	{
-		MT_ERROR = 0,
-		MT_WARNING
-	};
-
-	tstring                      text; //!< Текст сообщения
-	rdoModelObjects::RDOFileType file; //!< Файл с ошибкой
-	ruint                        line; //!< Номер строки с ошибкой
-	ruint                        pos;  //!< Позиция ошибки в строке
-	Type                         type; //!<  Тип сообщения
-
-	//! Конструктор сообщения
-	//! \param message - текст сообщение
-	//! \param file    - файл, в котором найдена ошибка
-	//! \param line    - номер строки с ошибкой
-	//! \param pos     - позиция ошибки в строке
-	//! \param type    - тип сообщения. Значение по умолчанию \b MT_ERROR
-	FileMessage(CREF(tstring) text, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type = MT_ERROR)
-		: text(text)
-		, file(file)
-		, line(line)
-		, pos (pos )
-		, type(type)
-	{}
 };
 
 CLOSE_RDO_SIMULATION_REPORT_NAMESPACE

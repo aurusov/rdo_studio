@@ -14,7 +14,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdotypes.h"
 #include "simulator/report/namespace.h"
-#include "simulator/report/error_code.h"
+#include "simulator/report/file_message.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_SIMULATION_REPORT_NAMESPACE

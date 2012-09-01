@@ -104,7 +104,7 @@ void RDOStudioConsoleController::proc(REF(RDOThread::RDOMessageInfo) msg)
 	case RDOThread::RT_SIMULATOR_PARSE_ERROR:
 		{
 			m_buildError = true;
-			std::vector<RDOSyntaxMessage> errors;
+			std::vector<FileMessage> errors;
 			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_ERRORS, &errors);
 			fillBuildLogList(errors);
 		}
@@ -125,7 +125,7 @@ void RDOStudioConsoleController::proc(REF(RDOThread::RDOMessageInfo) msg)
 	}
 }
 
-void RDOStudioConsoleController::fillBuildLogList(std::vector<RDOSyntaxMessage>& errors)
+void RDOStudioConsoleController::fillBuildLogList(REF(std::vector<FileMessage>) errors)
 {
 	STL_FOR_ALL_CONST(errors, it)
 	{

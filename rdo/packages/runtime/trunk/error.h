@@ -15,7 +15,7 @@
 #include <vector>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_object.h"
-#include "simulator/report/error_code.h"
+#include "simulator/report/file_message.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE

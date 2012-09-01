@@ -17,6 +17,7 @@
 #include "utils/rdotypes.h"
 #include "kernel/rdothread.h"
 #include "simulator/report/error_code.h"
+#include "simulator/report/file_message.h"
 // --------------------------------------------------------------------------------
 
 class RDOStudioConsoleController: public RDOThread
@@ -35,12 +36,12 @@ public:
 	void getBuildLogList(StringList& list) const;
 
 private:
-	typedef rdo::simulation::report::RDOSyntaxMessage RDOSyntaxMessage;
-	typedef rdo::simulation::report::RDOExitCode      RDOExitCode;
+	typedef rdo::simulation::report::FileMessage FileMessage;
+	typedef rdo::simulation::report::RDOExitCode RDOExitCode;
 
 private:
 	void proc(REF(RDOMessageInfo) msg);
-	void fillBuildLogList(std::vector<RDOSyntaxMessage>& errors);
+	void fillBuildLogList(REF(std::vector<FileMessage>) errors);
 
 private:
 	enum SimulatorState
