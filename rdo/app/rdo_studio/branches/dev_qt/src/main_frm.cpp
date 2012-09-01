@@ -88,60 +88,58 @@ const ruint WORKSPACE_SHOW_MESSAGE = ::RegisterWindowMessage( "WORKSPACE_SHOW_ME
 const ruint OUTPUT_SHOW_MESSAGE    = ::RegisterWindowMessage( "OUTPUT_SHOW_MESSAGE" );
 const ruint update_timer_ID = 1;
 
-IMPLEMENT_DYNAMIC(RDOStudioMainFrame, CMDIFrameWnd)
-
-BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
-	ON_WM_CREATE()
-	ON_COMMAND(ID_VIEW_TOOLBAR_FILE_TOOLBAR, OnViewFileToolbar)
-	ON_COMMAND(ID_VIEW_TOOLBAR_EDIT_TOOLBAR, OnViewEditToolbar)
-	ON_COMMAND(ID_VIEW_TOOLBAR_ZOOM_TOOLBAR, OnViewZoomToolbar)
-	ON_COMMAND(ID_VIEW_TOOLBAR_MODEL_TOOLBAR, OnViewModelToolbar)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_FILE_TOOLBAR, OnUpdateViewFileToolbar)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_EDIT_TOOLBAR, OnUpdateViewEditToolbar)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_ZOOM_TOOLBAR, OnUpdateViewZoomToolbar)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_MODEL_TOOLBAR, OnUpdateViewModelToolbar)
-	ON_COMMAND(ID_VIEW_WORKSPACE, OnViewWorkspace)
-	ON_COMMAND(ID_VIEW_OUTPUT, OnViewOutput)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_WORKSPACE, OnUpdateViewWorkspace)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_OUTPUT, OnUpdateViewOutput)
-	ON_WM_DESTROY()
-	ON_COMMAND(ID_VIEW_OPTIONS, OnViewOptions)
-	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
-	ON_COMMAND(ID_MODEL_RUNTIME_MAXSPEED, OnModelRuntimeMaxSpeed)
-	ON_COMMAND(ID_MODEL_RUNTIME_JUMP, OnModelRuntimeJump)
-	ON_COMMAND(ID_MODEL_RUNTIME_SYNC, OnModelRuntimeSync)
-	ON_COMMAND(ID_MODEL_RUNTIME_PAUSE, OnModelRuntimePause)
-	ON_UPDATE_COMMAND_UI(ID_MODEL_RUNTIME_MAXSPEED, OnUpdateModelRuntimeMaxSpeed)
-	ON_UPDATE_COMMAND_UI(ID_MODEL_RUNTIME_JUMP, OnUpdateModelRuntimeJump)
-	ON_UPDATE_COMMAND_UI(ID_MODEL_RUNTIME_SYNC, OnUpdateModelRuntimeSync)
-	ON_UPDATE_COMMAND_UI(ID_MODEL_RUNTIME_PAUSE, OnUpdateModelRuntimePause)
-	ON_COMMAND(ID_MODEL_SHOWRATE_INC, OnModelShowRateInc)
-	ON_COMMAND(ID_MODEL_SHOWRATE_INCFOUR, OnModelShowRateIncFour)
-	ON_COMMAND(ID_MODEL_SHOWRATE_DECFOUR, OnModelShowRateDecFour)
-	ON_COMMAND(ID_MODEL_SHOWRATE_DEC, OnModelShowRateDec)
-	ON_UPDATE_COMMAND_UI(ID_MODEL_SHOWRATE_INC, OnUpdateModelShowRateInc)
-	ON_UPDATE_COMMAND_UI(ID_MODEL_SHOWRATE_INCFOUR, OnUpdateModelShowRateIncFour)
-	ON_UPDATE_COMMAND_UI(ID_MODEL_SHOWRATE_DECFOUR, OnUpdateModelShowRateDecFour)
-	ON_UPDATE_COMMAND_UI(ID_MODEL_SHOWRATE_DEC, OnUpdateModelShowRateDec)
-	ON_COMMAND(ID_MODEL_FRAME_NEXT, OnModelFrameNext)
-	ON_COMMAND(ID_MODEL_FRAME_PREV, OnModelFramePrev)
-	ON_UPDATE_COMMAND_UI(ID_MODEL_FRAME_NEXT, OnUpdateModelFrameNext)
-	ON_UPDATE_COMMAND_UI(ID_MODEL_FRAME_PREV, OnUpdateModelFramePrev)
-	ON_WM_TIMER()
-	ON_WM_CLOSE()
-	ON_WM_SHOWWINDOW()
-	ON_WM_SIZE()
-	ON_WM_ENTERMENULOOP()
-	ON_WM_EXITMENULOOP()
-	ON_WM_ENTERIDLE()
-	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR           , OnUpdateCoordStatusBar )
-	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR          , OnUpdateModifyStatusBar )
-	ON_UPDATE_COMMAND_UI( ID_INSERTOVERWRITE_STATUSBAR , OnUpdateInsertOverwriteStatusBar )
-	ON_UPDATE_COMMAND_UI( ID_MODEL_TIME_STATUSBAR      , OnUpdateModelTimeStatusBar )
-	ON_UPDATE_COMMAND_UI( ID_MODEL_RUNTYPE_STATUSBAR   , OnUpdateModelRunTypeStatusBar )
-	ON_UPDATE_COMMAND_UI( ID_MODEL_SPEED_STATUSBAR     , OnUpdateModelSpeedStatusBar )
-	ON_UPDATE_COMMAND_UI( ID_MODEL_SHOWRATE_STATUSBAR  , OnUpdateModelShowRateStatusBar )
-END_MESSAGE_MAP()
+//BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
+//	ON_WM_CREATE()
+//	ON_COMMAND(ID_VIEW_TOOLBAR_FILE_TOOLBAR, OnViewFileToolbar)
+//	ON_COMMAND(ID_VIEW_TOOLBAR_EDIT_TOOLBAR, OnViewEditToolbar)
+//	ON_COMMAND(ID_VIEW_TOOLBAR_ZOOM_TOOLBAR, OnViewZoomToolbar)
+//	ON_COMMAND(ID_VIEW_TOOLBAR_MODEL_TOOLBAR, OnViewModelToolbar)
+//	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_FILE_TOOLBAR, OnUpdateViewFileToolbar)
+//	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_EDIT_TOOLBAR, OnUpdateViewEditToolbar)
+//	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_ZOOM_TOOLBAR, OnUpdateViewZoomToolbar)
+//	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_MODEL_TOOLBAR, OnUpdateViewModelToolbar)
+//	ON_COMMAND(ID_VIEW_WORKSPACE, OnViewWorkspace)
+//	ON_COMMAND(ID_VIEW_OUTPUT, OnViewOutput)
+//	ON_UPDATE_COMMAND_UI(ID_VIEW_WORKSPACE, OnUpdateViewWorkspace)
+//	ON_UPDATE_COMMAND_UI(ID_VIEW_OUTPUT, OnUpdateViewOutput)
+//	ON_WM_DESTROY()
+//	ON_COMMAND(ID_VIEW_OPTIONS, OnViewOptions)
+//	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
+//	ON_COMMAND(ID_MODEL_RUNTIME_MAXSPEED, OnModelRuntimeMaxSpeed)
+//	ON_COMMAND(ID_MODEL_RUNTIME_JUMP, OnModelRuntimeJump)
+//	ON_COMMAND(ID_MODEL_RUNTIME_SYNC, OnModelRuntimeSync)
+//	ON_COMMAND(ID_MODEL_RUNTIME_PAUSE, OnModelRuntimePause)
+//	ON_UPDATE_COMMAND_UI(ID_MODEL_RUNTIME_MAXSPEED, OnUpdateModelRuntimeMaxSpeed)
+//	ON_UPDATE_COMMAND_UI(ID_MODEL_RUNTIME_JUMP, OnUpdateModelRuntimeJump)
+//	ON_UPDATE_COMMAND_UI(ID_MODEL_RUNTIME_SYNC, OnUpdateModelRuntimeSync)
+//	ON_UPDATE_COMMAND_UI(ID_MODEL_RUNTIME_PAUSE, OnUpdateModelRuntimePause)
+//	ON_COMMAND(ID_MODEL_SHOWRATE_INC, OnModelShowRateInc)
+//	ON_COMMAND(ID_MODEL_SHOWRATE_INCFOUR, OnModelShowRateIncFour)
+//	ON_COMMAND(ID_MODEL_SHOWRATE_DECFOUR, OnModelShowRateDecFour)
+//	ON_COMMAND(ID_MODEL_SHOWRATE_DEC, OnModelShowRateDec)
+//	ON_UPDATE_COMMAND_UI(ID_MODEL_SHOWRATE_INC, OnUpdateModelShowRateInc)
+//	ON_UPDATE_COMMAND_UI(ID_MODEL_SHOWRATE_INCFOUR, OnUpdateModelShowRateIncFour)
+//	ON_UPDATE_COMMAND_UI(ID_MODEL_SHOWRATE_DECFOUR, OnUpdateModelShowRateDecFour)
+//	ON_UPDATE_COMMAND_UI(ID_MODEL_SHOWRATE_DEC, OnUpdateModelShowRateDec)
+//	ON_COMMAND(ID_MODEL_FRAME_NEXT, OnModelFrameNext)
+//	ON_COMMAND(ID_MODEL_FRAME_PREV, OnModelFramePrev)
+//	ON_UPDATE_COMMAND_UI(ID_MODEL_FRAME_NEXT, OnUpdateModelFrameNext)
+//	ON_UPDATE_COMMAND_UI(ID_MODEL_FRAME_PREV, OnUpdateModelFramePrev)
+//	ON_WM_TIMER()
+//	ON_WM_CLOSE()
+//	ON_WM_SHOWWINDOW()
+//	ON_WM_SIZE()
+//	ON_WM_ENTERMENULOOP()
+//	ON_WM_EXITMENULOOP()
+//	ON_WM_ENTERIDLE()
+//	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR           , OnUpdateCoordStatusBar )
+//	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR          , OnUpdateModifyStatusBar )
+//	ON_UPDATE_COMMAND_UI( ID_INSERTOVERWRITE_STATUSBAR , OnUpdateInsertOverwriteStatusBar )
+//	ON_UPDATE_COMMAND_UI( ID_MODEL_TIME_STATUSBAR      , OnUpdateModelTimeStatusBar )
+//	ON_UPDATE_COMMAND_UI( ID_MODEL_RUNTYPE_STATUSBAR   , OnUpdateModelRunTypeStatusBar )
+//	ON_UPDATE_COMMAND_UI( ID_MODEL_SPEED_STATUSBAR     , OnUpdateModelSpeedStatusBar )
+//	ON_UPDATE_COMMAND_UI( ID_MODEL_SHOWRATE_STATUSBAR  , OnUpdateModelShowRateStatusBar )
+//END_MESSAGE_MAP()
 
 static UINT indicators[] = {
 	ID_COORD_STATUSBAR,
@@ -157,17 +155,18 @@ static UINT indicators[] = {
 rbool RDOStudioMainFrame::close_mode = false;
 
 RDOStudioMainFrame::RDOStudioMainFrame()
-	: CMDIFrameWnd (    )
-	, m_pLastDocked(NULL)
+	: m_pLastDocked(NULL)
 	, m_updateTimer(0   )
-{}
+{
+	setupUi(this);
+}
 
 RDOStudioMainFrame::~RDOStudioMainFrame()
 {}
 
-int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
+void RDOStudioMainFrame::init()
 {
-	if ( CMDIFrameWnd::OnCreate(lpCreateStruct) == -1 ) return -1;
+	m_thisCWnd.Attach(winId());
 
 	//  то-то должен подн€ть кернел и треды
 	new RDOStudioModel();
@@ -200,57 +199,51 @@ int RDOStudioMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	style_chart.init( "chart" );
 	style_chart.load();
 
-	fileToolBar.init( this, IDR_FILE_TOOLBAR, IDB_FILE_TOOLBAR_D );
-	editToolBar.init( this, IDR_EDIT_TOOLBAR, IDB_EDIT_TOOLBAR_D );
-	zoomToolBar.init( this, IDR_ZOOM_TOOLBAR, IDB_ZOOM_TOOLBAR_D );
-	modelToolBar.init( this, IDR_MODEL_TOOLBAR, IDB_MODEL_TOOLBAR_D );
+	//fileToolBar.init( c_wnd(), IDR_FILE_TOOLBAR, IDB_FILE_TOOLBAR_D );
+	//editToolBar.init( c_wnd(), IDR_EDIT_TOOLBAR, IDB_EDIT_TOOLBAR_D );
+	//zoomToolBar.init( c_wnd(), IDR_ZOOM_TOOLBAR, IDB_ZOOM_TOOLBAR_D );
+	//modelToolBar.init( c_wnd(), IDR_MODEL_TOOLBAR, IDB_MODEL_TOOLBAR_D );
 
-	statusBar.Create( this );
-	statusBar.SetIndicators( indicators, sizeof(indicators)/sizeof(UINT) );
-	statusBar.SetPaneInfo( 0, ID_COORD_STATUSBAR           , SBPS_NORMAL , 70 );
-	statusBar.SetPaneInfo( 1, ID_MODIFY_STATUSBAR          , SBPS_NORMAL , 80 );
-	statusBar.SetPaneInfo( 2, ID_INSERTOVERWRITE_STATUSBAR , SBPS_NORMAL , 70 );
-	statusBar.SetPaneInfo( 3, ID_MODEL_TIME_STATUSBAR      , SBPS_NORMAL , 100 );
-	statusBar.SetPaneInfo( 4, ID_MODEL_RUNTYPE_STATUSBAR   , SBPS_NORMAL , 120 );
-	statusBar.SetPaneInfo( 5, ID_MODEL_SPEED_STATUSBAR     , SBPS_NORMAL , 90 );
-	statusBar.SetPaneInfo( 6, ID_MODEL_SHOWRATE_STATUSBAR  , SBPS_NORMAL , 140 );
-	statusBar.SetPaneInfo( 7, ID_PROGRESSSTATUSBAR         , SBPS_STRETCH, 70 );
-	statusBar.setProgressIndicator( ID_PROGRESSSTATUSBAR );
+	//statusBar.Create( c_wnd() );
+	//statusBar.SetIndicators( indicators, sizeof(indicators)/sizeof(UINT) );
+	//statusBar.SetPaneInfo( 0, ID_COORD_STATUSBAR           , SBPS_NORMAL , 70 );
+	//statusBar.SetPaneInfo( 1, ID_MODIFY_STATUSBAR          , SBPS_NORMAL , 80 );
+	//statusBar.SetPaneInfo( 2, ID_INSERTOVERWRITE_STATUSBAR , SBPS_NORMAL , 70 );
+	//statusBar.SetPaneInfo( 3, ID_MODEL_TIME_STATUSBAR      , SBPS_NORMAL , 100 );
+	//statusBar.SetPaneInfo( 4, ID_MODEL_RUNTYPE_STATUSBAR   , SBPS_NORMAL , 120 );
+	//statusBar.SetPaneInfo( 5, ID_MODEL_SPEED_STATUSBAR     , SBPS_NORMAL , 90 );
+	//statusBar.SetPaneInfo( 6, ID_MODEL_SHOWRATE_STATUSBAR  , SBPS_NORMAL , 140 );
+	//statusBar.SetPaneInfo( 7, ID_PROGRESSSTATUSBAR         , SBPS_STRETCH, 70 );
+	//statusBar.setProgressIndicator( ID_PROGRESSSTATUSBAR );
 
-	workspace.Create( rdo::format( ID_DOCK_WORKSPACE ).c_str(), this, 0 );
-	workspace.SetBarStyle( workspace.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
-	output.Create( rdo::format( ID_DOCK_OUTPUT ).c_str(), this, 0 );
+	//workspace.Create( rdo::format( ID_DOCK_WORKSPACE ).c_str(), c_wnd(), 0 );
+	//workspace.SetBarStyle( workspace.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
+	output.Create( rdo::format( ID_DOCK_OUTPUT ).c_str(), c_wnd(), 0 );
 	output.SetBarStyle( output.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
 
-	fileToolBar.EnableDocking( CBRS_ALIGN_ANY );
-	editToolBar.EnableDocking( CBRS_ALIGN_ANY );
-	zoomToolBar.EnableDocking( CBRS_ALIGN_ANY );
-	modelToolBar.EnableDocking( CBRS_ALIGN_ANY );
-	workspace.EnableDocking( CBRS_ALIGN_ANY );
-	output.EnableDocking( CBRS_ALIGN_ANY );
+	//fileToolBar.EnableDocking( CBRS_ALIGN_ANY );
+	//editToolBar.EnableDocking( CBRS_ALIGN_ANY );
+	//zoomToolBar.EnableDocking( CBRS_ALIGN_ANY );
+	//modelToolBar.EnableDocking( CBRS_ALIGN_ANY );
+	//workspace.EnableDocking( CBRS_ALIGN_ANY );
+	//output.EnableDocking( CBRS_ALIGN_ANY );
 
-	EnableDocking( CBRS_ALIGN_ANY );
-
-	DockControlBar( &fileToolBar );
-	dockControlBarBesideOf( editToolBar, fileToolBar );
-	dockControlBarBesideOf( zoomToolBar, editToolBar );
-	dockControlBarBesideOf( modelToolBar, zoomToolBar );
-	DockControlBar( &workspace, AFX_IDW_DOCKBAR_LEFT );
-	DockControlBar( &output, AFX_IDW_DOCKBAR_BOTTOM );
-
-//	zoomToolBar.SetButtonStyle( 2, TBBS_CHECKBOX );
-
-	modelToolBar.SetButtonStyle( 3, TBBS_CHECKBOX | TBBS_CHECKGROUP );
-	modelToolBar.SetButtonStyle( 4, TBBS_CHECKBOX | TBBS_CHECKGROUP );
-	modelToolBar.SetButtonStyle( 5, TBBS_CHECKBOX | TBBS_CHECKGROUP );
+	//modelToolBar.SetButtonStyle( 3, TBBS_CHECKBOX | TBBS_CHECKGROUP );
+	//modelToolBar.SetButtonStyle( 4, TBBS_CHECKBOX | TBBS_CHECKGROUP );
+	//modelToolBar.SetButtonStyle( 5, TBBS_CHECKBOX | TBBS_CHECKGROUP );
 
 	tracer->registerClipboardFormat();
-
-	return 0;
 }
 
-void RDOStudioMainFrame::OnDestroy()
+void RDOStudioMainFrame::setVisible(rbool visible)
 {
+	parent_type::setVisible(visible);
+}
+
+void RDOStudioMainFrame::closeEvent(QCloseEvent* event)
+{
+	close_mode = true;
+
 	studioApp.m_pMainFrame = NULL;
 
 	update_stop();
@@ -263,85 +256,29 @@ void RDOStudioMainFrame::OnDestroy()
 	style_frame.save();
 	style_chart.save();
 
-	::OleUninitialize();
-	CMDIFrameWnd::OnDestroy();
-}
+	close_mode = false;
 
-void RDOStudioMainFrame::insertToolBar(PTR(CToolBar) pToolbar)
-{
-	if (!m_pLastDocked)
-	{
-		DockControlBar(pToolbar);
-	}
-	else
-	{
-		dockControlBarBesideOf(*pToolbar, *m_pLastDocked);
-	}
-	m_pLastDocked = pToolbar;
-}
-
-BOOL RDOStudioMainFrame::PreCreateWindow(CREATESTRUCT& cs)
-{
-	if( !CMDIFrameWnd::PreCreateWindow(cs) ) return FALSE;
-	return TRUE;
-}
-
-#ifdef _DEBUG
-void RDOStudioMainFrame::AssertValid() const
-{
-	CMDIFrameWnd::AssertValid();
-}
-
-void RDOStudioMainFrame::Dump(CDumpContext& dc) const
-{
-	CMDIFrameWnd::Dump(dc);
-}
-#endif
-
-void RDOStudioMainFrame::dockControlBarBesideOf( CControlBar& bar, CControlBar& baseBar )
-{
-	RecalcLayout( TRUE );
-
-	CRect rect;
-	baseBar.GetWindowRect( rect );
-
-	DWORD dw = baseBar.GetBarStyle();
-
-	UINT n = 0;
-	n = ( dw & CBRS_ALIGN_TOP          ) ? AFX_IDW_DOCKBAR_TOP    : n;
-	n = ( dw & CBRS_ALIGN_BOTTOM && !n ) ? AFX_IDW_DOCKBAR_BOTTOM : n;
-	n = ( dw & CBRS_ALIGN_LEFT   && !n ) ? AFX_IDW_DOCKBAR_LEFT   : n;
-	n = ( dw & CBRS_ALIGN_RIGHT  && !n ) ? AFX_IDW_DOCKBAR_RIGHT  : n;
-
-	int dx = 0;
-	int dy = 0;
-	if ( n == AFX_IDW_DOCKBAR_TOP || n == AFX_IDW_DOCKBAR_BOTTOM ) dx = 1;
-	if ( n == AFX_IDW_DOCKBAR_LEFT || n == AFX_IDW_DOCKBAR_RIGHT ) dy = 1;
-
-	rect.OffsetRect( dx, dy );
-
-	DockControlBar( &bar, n, rect );
-	m_pLastDocked = &bar;//рдо-процесс
+	parent_type::closeEvent(event);
 }
 
 void RDOStudioMainFrame::OnViewFileToolbar() 
 {
-	ShowControlBar( &fileToolBar, !(fileToolBar.GetStyle() & WS_VISIBLE), false );
+	//ShowControlBar( &fileToolBar, !(fileToolBar.GetStyle() & WS_VISIBLE), false );
 }
 
 void RDOStudioMainFrame::OnViewEditToolbar() 
 {
-	ShowControlBar( &editToolBar, !(editToolBar.GetStyle() & WS_VISIBLE), false );
+	//ShowControlBar( &editToolBar, !(editToolBar.GetStyle() & WS_VISIBLE), false );
 }
 
 void RDOStudioMainFrame::OnViewZoomToolbar()
 {
-	ShowControlBar( &zoomToolBar, !(zoomToolBar.GetStyle() & WS_VISIBLE), false );
+	//ShowControlBar( &zoomToolBar, !(zoomToolBar.GetStyle() & WS_VISIBLE), false );
 }
 
 void RDOStudioMainFrame::OnViewModelToolbar()
 {
-	ShowControlBar( &modelToolBar, !(modelToolBar.GetStyle() & WS_VISIBLE), false );
+	//ShowControlBar( &modelToolBar, !(modelToolBar.GetStyle() & WS_VISIBLE), false );
 }
 
 void RDOStudioMainFrame::OnUpdateViewFileToolbar(CCmdUI* pCmdUI) 
@@ -364,49 +301,34 @@ void RDOStudioMainFrame::OnUpdateViewModelToolbar(CCmdUI* pCmdUI)
 	pCmdUI->SetCheck( modelToolBar.GetStyle() & WS_VISIBLE );
 }
 
-BOOL RDOStudioMainFrame::OnCmdMsgForDockOnly( UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo )
-{
-	CWnd* wnd = GetFocus();
-	if ( wnd ) {
-		std::map< HWND, CWnd* >::iterator it = cmd_wnd.begin();
-		while ( it != cmd_wnd.end() ) {
-			if ( it->first == wnd->m_hWnd ) {
-				return it->second->OnCmdMsg( nID, nCode, pExtra, pHandlerInfo );
-			}
-			it++;
-		}
-	}
-	return FALSE;
-}
-
 void RDOStudioMainFrame::OnViewWorkspace() 
 {
-	ShowControlBar( &workspace, !workspace.IsVisible(), false );
+	//ShowControlBar( &workspace, !workspace.IsVisible(), false );
 }
 
 void RDOStudioMainFrame::OnViewOutput() 
 {
-	ShowControlBar( &output, !output.IsVisible(), false );
+	//ShowControlBar( &output, !output.IsVisible(), false );
 }
 
 void RDOStudioMainFrame::OnWorkspaceShow()
 {
-	ShowControlBar( &workspace, true, false );
+	//ShowControlBar( &workspace, true, false );
 }
 
 void RDOStudioMainFrame::OnOutputShow()
 {
-	ShowControlBar( &output, true, false );
+	//ShowControlBar( &output, true, false );
 }
 
 void RDOStudioMainFrame::showWorkspace()
 {
-	::SendMessage( m_hWnd, WORKSPACE_SHOW_MESSAGE, 0, 0 );
+	//::SendMessage( m_hWnd, WORKSPACE_SHOW_MESSAGE, 0, 0 );
 }
 
 void RDOStudioMainFrame::showOutput()
 {
-	::SendMessage( m_hWnd, OUTPUT_SHOW_MESSAGE, 0, 0 );
+	//::SendMessage( m_hWnd, OUTPUT_SHOW_MESSAGE, 0, 0 );
 }
 
 void RDOStudioMainFrame::OnUpdateViewWorkspace(CCmdUI* pCmdUI) 
@@ -644,33 +566,23 @@ void RDOStudioMainFrame::OnUpdateModelFramePrev(CCmdUI* pCmdUI)
 	pCmdUI->Enable( model->canShowPrevFrame() );
 }
 
-LRESULT RDOStudioMainFrame::WindowProc( UINT message, WPARAM wParam, LPARAM lParam )
-{
-	if ( message == WORKSPACE_SHOW_MESSAGE ) {
-		OnWorkspaceShow();
-	} else if ( message == OUTPUT_SHOW_MESSAGE ) {
-		OnOutputShow();
-	}
-	return CMDIFrameWnd::WindowProc( message, wParam, lParam );
-}
-
 void RDOStudioMainFrame::update_start()
 {
-	m_updateTimer = SetTimer(update_timer_ID, 1000 / 30, NULL);
+//	m_updateTimer = SetTimer(update_timer_ID, 1000 / 30, NULL);
 }
 
 void RDOStudioMainFrame::update_stop()
 {
 	if (m_updateTimer)
 	{
-		KillTimer(m_updateTimer);
+		//KillTimer(m_updateTimer);
 		m_updateTimer = 0;
 	}
 }
 
 void RDOStudioMainFrame::OnTimer( UINT nIDEvent )
 {
-	CMDIFrameWnd::OnTimer(nIDEvent);
+	//parent_type::OnTimer(nIDEvent);
 
 	if (nIDEvent == m_updateTimer)
 	{
@@ -680,41 +592,28 @@ void RDOStudioMainFrame::OnTimer( UINT nIDEvent )
 	}
 }
 
-void RDOStudioMainFrame::OnClose()
+void RDOStudioMainFrame::showEvent(QShowEvent*)
 {
-	close_mode = true;
-	CMDIFrameWnd::OnClose();
-	// close_mode объ€влена как static, т.к. после удачного закрыти€ всех документов
-	// происходит реальное удаление главного окна и this уже не определен
-	close_mode = false;
+	if (plugins)
+	{
+		plugins->saveMainFrameState(SW_SHOW);
+	}
 }
 
-void RDOStudioMainFrame::OnShowWindow( BOOL bShow, UINT nStatus )
+void RDOStudioMainFrame::hideEvent(QHideEvent*)
 {
-	CMDIFrameWnd::OnShowWindow( bShow, nStatus );
-	if ( plugins ) plugins->saveMainFrameState( bShow ? SW_SHOW : SW_HIDE );
+	if (plugins)
+	{
+		plugins->saveMainFrameState(SW_HIDE);
+	}
 }
 
-void RDOStudioMainFrame::OnSize( UINT nType, int cx, int cy )
-{
-	CMDIFrameWnd::OnSize( nType, cx, cy );
-	if ( plugins ) plugins->saveMainFrameState( nType == SIZE_MAXIMIZED || nType == SIZE_RESTORED ? SW_SHOW : SW_HIDE );
-}
-
-void RDOStudioMainFrame::OnEnterMenuLoop( BOOL bIsTrackPopupMenu )
-{
-	CMDIFrameWnd::OnEnterMenuLoop( bIsTrackPopupMenu );
-	model->setGUIPause();
-}
-
-void RDOStudioMainFrame::OnExitMenuLoop( BOOL bIsTrackPopupMenu )
-{
-	CMDIFrameWnd::OnExitMenuLoop( bIsTrackPopupMenu );
-	model->setGUIContinue();
-}
-
-void RDOStudioMainFrame::OnEnterIdle( UINT nWhy, CWnd* pWho )
-{
-	CMDIFrameWnd::OnEnterIdle( nWhy, pWho );
+//void RDOStudioMainFrame::OnEnterMenuLoop( BOOL bIsTrackPopupMenu )
+//{
 //	model->setGUIPause();
-}
+//}
+//
+//void RDOStudioMainFrame::OnExitMenuLoop( BOOL bIsTrackPopupMenu )
+//{
+//	model->setGUIContinue();
+//}

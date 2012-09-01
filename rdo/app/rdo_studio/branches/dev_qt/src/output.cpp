@@ -43,8 +43,12 @@ BEGIN_MESSAGE_MAP(RDOStudioOutput, RDOStudioDockWnd)
 END_MESSAGE_MAP()
 
 RDOStudioOutput::RDOStudioOutput()
-{
-}
+	: build  (NULL)
+	, debug  (NULL)
+	, trace  (NULL)
+	, results(NULL)
+	, find   (NULL)
+{}
 
 RDOStudioOutput::~RDOStudioOutput()
 {
@@ -62,24 +66,28 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	popupMenu.CreatePopupMenu();
 
-	CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
+	if (AfxGetMainWnd())
+	{
+		CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
+		if (mainMenu)
+		{
+			rbool maximized = studioApp.m_pMainFrame->isMDIMaximazed();
+			int delta = maximized ? 1 : 0;
 
-	BOOL maximized;
-	studioApp.m_pMainFrame->MDIGetActive( &maximized );
-	int delta = maximized ? 1 : 0;
-
-	appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );
-	appendMenu( mainMenu->GetSubMenu( 1 + delta ), 8, &popupMenu );
-	appendMenu( mainMenu->GetSubMenu( 1 + delta ), 10, &popupMenu );
-	popupMenu.AppendMenu( MF_SEPARATOR );
-	appendMenu( mainMenu->GetSubMenu( 2 + delta ), 0, &popupMenu );
-	appendMenu( mainMenu->GetSubMenu( 2 + delta ), 1, &popupMenu );
-	appendMenu( mainMenu->GetSubMenu( 2 + delta ), 2, &popupMenu );
-	popupMenu.AppendMenu( MF_SEPARATOR );
-	appendMenu( mainMenu->GetSubMenu( 2 + delta ), 7, &popupMenu );
-	appendMenu( mainMenu->GetSubMenu( 2 + delta ), 8, &popupMenu );
-	appendMenu( mainMenu->GetSubMenu( 2 + delta ), 9, &popupMenu );
-	appendMenu( mainMenu->GetSubMenu( 2 + delta ), 10, &popupMenu );
+			appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );
+			appendMenu( mainMenu->GetSubMenu( 1 + delta ), 8, &popupMenu );
+			appendMenu( mainMenu->GetSubMenu( 1 + delta ), 10, &popupMenu );
+			popupMenu.AppendMenu( MF_SEPARATOR );
+			appendMenu( mainMenu->GetSubMenu( 2 + delta ), 0, &popupMenu );
+			appendMenu( mainMenu->GetSubMenu( 2 + delta ), 1, &popupMenu );
+			appendMenu( mainMenu->GetSubMenu( 2 + delta ), 2, &popupMenu );
+			popupMenu.AppendMenu( MF_SEPARATOR );
+			appendMenu( mainMenu->GetSubMenu( 2 + delta ), 7, &popupMenu );
+			appendMenu( mainMenu->GetSubMenu( 2 + delta ), 8, &popupMenu );
+			appendMenu( mainMenu->GetSubMenu( 2 + delta ), 9, &popupMenu );
+			appendMenu( mainMenu->GetSubMenu( 2 + delta ), 10, &popupMenu );
+		}
+	}
 
 	build   = new RDOBuildEdit;
 	debug   = new RDODebugEdit;
@@ -113,11 +121,11 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	tab.insertItem( results, rdo::format( IDS_TAB_RESULT ).c_str() );
 	tab.insertItem( find, rdo::format( IDS_TAB_FIND ).c_str() );
 
-	studioApp.m_pMainFrame->registerCmdWnd( build, build->getSCIHWND() );
-	studioApp.m_pMainFrame->registerCmdWnd( debug, debug->getSCIHWND() );
-	studioApp.m_pMainFrame->registerCmdWnd( trace );
-	studioApp.m_pMainFrame->registerCmdWnd( results, results->getSCIHWND() );
-	studioApp.m_pMainFrame->registerCmdWnd( find, find->getSCIHWND() );
+	//studioApp.m_pMainFrame->registerCmdWnd( build, build->getSCIHWND() );
+	//studioApp.m_pMainFrame->registerCmdWnd( debug, debug->getSCIHWND() );
+	//studioApp.m_pMainFrame->registerCmdWnd( trace );
+	//studioApp.m_pMainFrame->registerCmdWnd( results, results->getSCIHWND() );
+	//studioApp.m_pMainFrame->registerCmdWnd( find, find->getSCIHWND() );
 
 	return 0;
 }

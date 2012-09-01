@@ -12,6 +12,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtGui/qmessagebox.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
@@ -88,7 +89,7 @@ void RPProjectMFC::open()
 			load( project_node );
 		}
 	} catch ( rp::RPXMLException& ex ) {
-		studioApp.m_pMainFrame->MessageBox( ex.getError().c_str(), NULL, MB_ICONERROR );
+		QMessageBox::critical(studioApp.m_pMainFrame, "Ошибка чтения", ex.getError().c_str());
 	}
 }
 
@@ -100,7 +101,7 @@ void RPProjectMFC::save()
 		save_child( project_node );
 		xml_doc.save( "c:\\sample.xml" );
 	} catch ( rp::RPXMLException& ex ) {
-		studioApp.m_pMainFrame->MessageBox( ex.getError().c_str(), NULL, MB_ICONERROR );
+		QMessageBox::critical(studioApp.m_pMainFrame, "Ошибка записи", ex.getError().c_str());
 	}
 }
 
@@ -155,8 +156,7 @@ void RPProjectMFC::load( rp::RPXMLNode* node )
 
 void RPProjectMFC::makeFlowChartWnd( RPObjectFlowChart* flowobj )
 {
-	BOOL maximized = false;
-	studioApp.m_pMainFrame->MDIGetActive( &maximized );
+	rbool maximized = studioApp.m_pMainFrame->isMDIMaximazed();
 	PTR(RPDoc) doc = model->getFlowchartDoc();
 	PTR(RPChildFrame) mdi = static_cast<PTR(RPChildFrame)>(doc->getView()->GetParent());
 	mdi->SetIcon( flowobj->getMethod()->getPixmap()->getIcon(), true );

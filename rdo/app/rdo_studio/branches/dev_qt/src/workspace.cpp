@@ -64,10 +64,10 @@ int RDOStudioWorkspace::OnCreate(LPCREATESTRUCT lpCreateStruct)
 #ifdef PROCGUI_ENABLE
 	tab.insertItem( pagectrl, rdo::format( IDS_TAB_PAGECTRL ).c_str() );
 #endif
-	studioApp.m_pMainFrame->registerCmdWnd( trace );
-	studioApp.m_pMainFrame->registerCmdWnd( frames );
+//	studioApp.m_pMainFrame->registerCmdWnd( trace );
+//	studioApp.m_pMainFrame->registerCmdWnd( frames );
 #ifdef PROCGUI_ENABLE
-	studioApp.m_pMainFrame->registerCmdWnd( pagectrl );
+//	studioApp.m_pMainFrame->registerCmdWnd( pagectrl );
 #endif
 	return 0;
 }

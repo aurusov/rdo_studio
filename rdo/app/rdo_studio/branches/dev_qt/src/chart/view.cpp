@@ -163,22 +163,26 @@ int RDOStudioChartView::OnCreate( LPCREATESTRUCT lpCreateStruct )
 
 	popupMenu.CreatePopupMenu();
 
-	CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
-	
-	BOOL maximized;
-	studioApp.m_pMainFrame->MDIGetActive( &maximized );
-	int delta = maximized ? 1 : 0;
+	if (AfxGetMainWnd())
+	{
+		CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
+		if (mainMenu)
+		{
+			rbool maximized = studioApp.m_pMainFrame->isMDIMaximazed();
+			int delta = maximized ? 1 : 0;
 
-	appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );
-	popupMenu.AppendMenu( MF_SEPARATOR );
-	appendMenu( mainMenu->GetSubMenu( 3 + delta ), 6, &popupMenu );
-	appendMenu( mainMenu->GetSubMenu( 3 + delta ), 7, &popupMenu );
-	appendMenu( mainMenu->GetSubMenu( 3 + delta ), 8, &popupMenu );
-	appendMenu( mainMenu->GetSubMenu( 3 + delta ), 9, &popupMenu );
-	popupMenu.AppendMenu( MF_SEPARATOR );
-	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 3, &popupMenu );
-	popupMenu.AppendMenu( MF_SEPARATOR );
-	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 5, &popupMenu );
+			appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );
+			popupMenu.AppendMenu( MF_SEPARATOR );
+			appendMenu( mainMenu->GetSubMenu( 3 + delta ), 6, &popupMenu );
+			appendMenu( mainMenu->GetSubMenu( 3 + delta ), 7, &popupMenu );
+			appendMenu( mainMenu->GetSubMenu( 3 + delta ), 8, &popupMenu );
+			appendMenu( mainMenu->GetSubMenu( 3 + delta ), 9, &popupMenu );
+			popupMenu.AppendMenu( MF_SEPARATOR );
+			appendMenu( mainMenu->GetSubMenu( 6 + delta ), 3, &popupMenu );
+			popupMenu.AppendMenu( MF_SEPARATOR );
+			appendMenu( mainMenu->GetSubMenu( 6 + delta ), 5, &popupMenu );
+		}
+	}
 
 	return 0;
 }

@@ -12,6 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <math.h>
+#include <QtGui/qmainwindow.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
 #include "app/rdo_studio_mfc/src/workspace.h"
@@ -26,6 +27,7 @@
 #include "app/rdo_studio_mfc/src/chart/view_style.h"
 #include "app/rdo_studio_mfc/src/status_bar.h"
 #include "app/rdo_studio_mfc/src/frame/style.h"
+#include "app/rdo_studio_mfc/projects/common/bin/rdo_studio/generated/main_window_ui.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
@@ -63,32 +65,18 @@ public:
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioMainFrame
 // --------------------------------------------------------------------------------
-class RDOStudioMainFrame: public CMDIFrameWnd
+class RDOStudioMainFrame: public QMainWindow, private Ui::MainWindow
 {
-DECLARE_DYNAMIC(RDOStudioMainFrame)
+Q_OBJECT
+
 friend class RDOToolBar;
 friend class RDOStudioModelDoc;
-
-private:
-	RDOToolBar          fileToolBar;
-	RDOToolBar          editToolBar;
-	RDOToolBar          zoomToolBar;
-	RDOToolBarModel     modelToolBar;
-	RDOStudioStatusBar  statusBar;
-
-
-	void dockControlBarBesideOf( CControlBar& bar, CControlBar& baseBar );
-	
-	std::map< HWND, CWnd* > cmd_wnd;
-
-	UINT m_updateTimer;
-
-	// Используется при закрытии модели. Задается вопрос.
-	static rbool close_mode;
 
 public:
 	RDOStudioMainFrame();
 	virtual ~RDOStudioMainFrame();
+
+	void init();
 
 	RDOStudioWorkspace workspace;
 	RDOStudioOutput    output;
@@ -104,19 +92,12 @@ public:
 	RDOStudioChartViewStyle          style_chart;
 	void updateAllStyles() const;
 
-	void insertToolBar(PTR(CToolBar) pToolbar);
+	virtual void setVisible(rbool visible);
 
 	void showWorkspace();
 	void showOutput();
 
 	double getSpeed() const { return modelToolBar.getSpeed(); }
-
-	void registerCmdWnd( CWnd* wnd, HWND hwnd = 0 ) {
-		if ( wnd ) {
-			if ( !hwnd ) hwnd = wnd->m_hWnd;
-			cmd_wnd[hwnd] = wnd;
-		}
-	}
 
 	void beginProgress( const int lower = 0, const int upper = 100, const int step = 1 );
 	void getProgressRange( int& lower, int& upper ) const  { statusBar.getRange( lower, upper ); };
@@ -126,21 +107,33 @@ public:
 	void stepProgress()                                    { statusBar.stepIt();                 };
 	void endProgress();
 
-	BOOL OnCmdMsgForDockOnly( UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo );
-
 	void update_start();
 	void update_stop();
 
 	static rbool is_close_mode() { return close_mode; }
 
-#ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
-#endif
+	rbool isMDIMaximazed() const { return true; }
+
+	PTR(CWnd) c_wnd() { return &m_thisCWnd; }
 
 private:
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+	typedef  QMainWindow  parent_type;
+
+	CWnd                    m_thisCWnd;
+	RDOToolBar              fileToolBar;
+	RDOToolBar              editToolBar;
+	RDOToolBar              zoomToolBar;
+	RDOToolBarModel         modelToolBar;
+	RDOStudioStatusBar      statusBar;
+
+	virtual void closeEvent(QCloseEvent* event);
+	virtual void showEvent (QShowEvent*  event);
+	virtual void hideEvent (QHideEvent*  event);
+
+	UINT m_updateTimer;
+
+	// Используется при закрытии модели. Задается вопрос.
+	static rbool close_mode;
 
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnViewFileToolbar();
@@ -179,12 +172,8 @@ private:
 	afx_msg void OnUpdateModelFrameNext(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateModelFramePrev(CCmdUI* pCmdUI);
 	afx_msg void OnTimer(UINT nIDEvent);
-	afx_msg void OnClose();
 	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
-	afx_msg void OnEnterMenuLoop( BOOL bIsTrackPopupMenu );
-	afx_msg void OnExitMenuLoop( BOOL bIsTrackPopupMenu );
-	afx_msg void OnEnterIdle(UINT nWhy, CWnd* pWho);
 	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateInsertOverwriteStatusBar( CCmdUI *pCmdUI );
@@ -196,7 +185,6 @@ private:
 	afx_msg void OnOutputShow();
 	afx_msg void OnMethodCommandRange( UINT id );
 	afx_msg void OnMethodUpdateRange( CCmdUI* pCmdUI );
-	DECLARE_MESSAGE_MAP()
 };
 
 #endif // _RDO_STUDIO_MFC_MAIN_FRM_H_

@@ -11,6 +11,7 @@
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <limits>
+#include <QtGui/qmessagebox.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdostream.h"
 #include "utils/rdoanimation.h"
@@ -622,7 +623,7 @@ rbool RDOStudioModel::openModel(CREF(tstring) modelName) const
 		m_modelClosed = true;
 		if (m_smrEmptyError)
 		{
-			studioApp.m_pMainFrame->MessageBox(_T("В smr-файле не найдено имя модели"), _T("Ошибка открытия модели"), MB_OK | MB_ICONERROR);
+			QMessageBox::critical(studioApp.m_pMainFrame, _T("Ошибка открытия модели"), _T("В smr-файле не найдено имя модели"));
 			closeModel();
 		}
 		else
@@ -739,12 +740,6 @@ void RDOStudioModel::newModelFromRepository()
 			pMethod->makeFlowChart(rpMethod::project);
 		}
 
-		BOOL maximize = false;
-		if (!studioApp.m_pMainFrame->MDIGetActive(&maximize))
-		{
-			maximize = true;
-		}
-
 		m_pModelDocTemplate->OpenDocumentFile(NULL);
 		rdo::repository::RDOThreadRepository::FileInfo data_smr(rdoModelObjects::RDOX);
 		studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data_smr);
@@ -811,11 +806,6 @@ void RDOStudioModel::newModelFromRepository()
 			}
 		}
 
-		PTR(CWnd) wnd = studioApp.m_pMainFrame->GetActiveFrame();
-		if (maximize && wnd && wnd != studioApp.m_pMainFrame)
-		{
-			studioApp.m_pMainFrame->MDIMaximize(wnd);
-		}
 		studioApp.setLastProjectName(getFullName());
 		if (m_useTemplate != -1)
 		{
@@ -837,14 +827,8 @@ void RDOStudioModel::openModelFromRepository()
 			loadFromXML();
 		}
 
-		BOOL maximize = false;
-		if (!studioApp.m_pMainFrame->MDIGetActive(&maximize))
-		{
-			maximize = true;
-		}
-
 		PTR(CWnd) active = CWnd::GetActiveWindow();
-		m_pModelDocTemplate->OpenDocumentFile(NULL);
+//		m_pModelDocTemplate->OpenDocumentFile(NULL);
 		rdo::repository::RDOThreadRepository::FileInfo data_smr(rdoModelObjects::RDOX);
 		studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data_smr);
 		setName(data_smr.m_name);
@@ -918,12 +902,6 @@ void RDOStudioModel::openModelFromRepository()
 			studioApp.m_pMainFrame->endProgress();
 		}
 
-		PTR(CWnd) wnd = studioApp.m_pMainFrame->GetActiveFrame();
-		if (maximize && wnd && wnd != studioApp.m_pMainFrame)
-		{
-			studioApp.m_pMainFrame->MDIMaximize(wnd);
-		}
-
 		updateFrmDescribed();
 
 		if (active) active->SetFocus();
@@ -947,7 +925,7 @@ void RDOStudioModel::saveModelToRepository()
 			studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_SAVE, &fileData);
 			if (m_smrEmptyError)
 			{
-				studioApp.m_pMainFrame->MessageBox(_T("В smr-файле не найдено имя модели, модель не будет записана"), _T("Ошибка записи модели"), MB_OK | MB_ICONERROR);
+				QMessageBox::critical(studioApp.m_pMainFrame, _T("Ошибка записи модели"), _T("В smr-файле не найдено имя модели, модель не будет записана"));
 				return;
 			}
 			smr_modified = true;

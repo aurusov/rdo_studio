@@ -71,17 +71,21 @@ int RDOTracerLogCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 
 	popupMenu.CreatePopupMenu();
 
-	CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
-	
-	BOOL maximized;
-	studioApp.m_pMainFrame->MDIGetActive( &maximized );
-	int delta = maximized ? 1 : 0;
+	if (AfxGetMainWnd())
+	{
+		CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
+		if (mainMenu)
+		{
+			rbool maximized = studioApp.m_pMainFrame->isMDIMaximazed();
+			int delta = maximized ? 1 : 0;
 
-	appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );
-	popupMenu.AppendMenu( MF_SEPARATOR );
-	appendMenu( mainMenu->GetSubMenu( 2 + delta ), 0, &popupMenu );
-	appendMenu( mainMenu->GetSubMenu( 2 + delta ), 1, &popupMenu );
-	appendMenu( mainMenu->GetSubMenu( 2 + delta ), 2, &popupMenu );
+			appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );
+			popupMenu.AppendMenu( MF_SEPARATOR );
+			appendMenu( mainMenu->GetSubMenu( 2 + delta ), 0, &popupMenu );
+			appendMenu( mainMenu->GetSubMenu( 2 + delta ), 1, &popupMenu );
+			appendMenu( mainMenu->GetSubMenu( 2 + delta ), 2, &popupMenu );
+		}
+	}
 
 	return 0;
 }

@@ -87,8 +87,7 @@ int RDOStudioEditBaseView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
 
-	BOOL maximized;
-	studioApp.m_pMainFrame->MDIGetActive( &maximized );
+	rbool maximized = studioApp.m_pMainFrame->isMDIMaximazed();
 	int delta = maximized ? 1 : 0;
 
 	appendMenu( mainMenu, 4 + delta, &popupMenu );

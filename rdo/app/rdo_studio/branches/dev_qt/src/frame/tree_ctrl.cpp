@@ -90,7 +90,7 @@ void RDOStudioFrameTreeCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 				if ( !doc ) {
 					model->m_frameManager.connectFrameDoc( index );
 				} else {
-					studioApp.m_pMainFrame->MDIActivate( doc->getView()->GetParentFrame() );
+//					studioApp.m_pMainFrame->MDIActivate( doc->getView()->GetParentFrame() );
 				}
 			}
 		}
