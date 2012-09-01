@@ -129,7 +129,7 @@ void RDOStudioConsoleController::fillBuildLogList(REF(std::vector<FileMessage>) 
 {
 	STL_FOR_ALL_CONST(errors, it)
 	{
-		RDOBuildEditLineInfo info(*it);
+		BuildEditLineInfo info(*it);
 		tstring line = info.getMessage();
 		m_buildLogList.push_back(line);
 	}
