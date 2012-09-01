@@ -156,7 +156,7 @@ void RPProjectMFC::load( rp::RPXMLNode* node )
 
 void RPProjectMFC::makeFlowChartWnd( RPObjectFlowChart* flowobj )
 {
-	rbool maximized = studioApp.getStyle()->isMDIMaximazed();
+	rbool maximized = studioApp.getIMainWnd()->isMDIMaximazed();
 	PTR(RPDoc) doc = model->getFlowchartDoc();
 	PTR(RPChildFrame) mdi = static_cast<PTR(RPChildFrame)>(doc->getView()->GetParent());
 	mdi->SetIcon( flowobj->getMethod()->getPixmap()->getIcon(), true );

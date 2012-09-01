@@ -75,13 +75,13 @@ void RDOTracer::proc( RDOThread::RDOMessageInfo& msg )
 			clear();
 			try {
 				setModelName( model->getName() );
-				studioApp.getStyle()->output.appendStringToDebug( rdo::format( IDS_TRACER_GETTING_MODEL_STRUCTURE ) );
+				studioApp.getIMainWnd()->output.appendStringToDebug( rdo::format( IDS_TRACER_GETTING_MODEL_STRUCTURE ) );
 				rdo::textstream model_structure;
 				sendMessage( kernel->simulator(), RT_SIMULATOR_GET_MODEL_STRUCTURE, &model_structure );
 				getModelStructure( model_structure );
-				studioApp.getStyle()->output.appendStringToDebug( rdo::format( IDS_MODEL_RESOURCE_LOADING_NAME_OK ) );
+				studioApp.getIMainWnd()->output.appendStringToDebug( rdo::format( IDS_MODEL_RESOURCE_LOADING_NAME_OK ) );
 			} catch ( ... ) {
-				studioApp.getStyle()->output.appendStringToDebug( rdo::format( IDS_MODEL_RESOURCE_LOADING_NAME_FAILED ) );
+				studioApp.getIMainWnd()->output.appendStringToDebug( rdo::format( IDS_MODEL_RESOURCE_LOADING_NAME_FAILED ) );
 			}
 			break;
 		}

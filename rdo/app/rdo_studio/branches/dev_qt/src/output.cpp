@@ -71,7 +71,7 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
 		if (mainMenu)
 		{
-			rbool maximized = studioApp.getStyle()->isMDIMaximazed();
+			rbool maximized = studioApp.getIMainWnd()->isMDIMaximazed();
 			int delta = maximized ? 1 : 0;
 
 			appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );
@@ -132,7 +132,7 @@ int RDOStudioOutput::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 void RDOStudioOutput::showBuild()
 {
-	studioApp.getStyle()->showOutput();
+	studioApp.getIMainWnd()->showOutput();
 	tab.setCurrentItem( 0 );
 	if ( plugins->studioIsShow() ) {
 		build->SetFocus();
@@ -142,7 +142,7 @@ void RDOStudioOutput::showBuild()
 
 void RDOStudioOutput::showDebug()
 {
-	studioApp.getStyle()->showOutput();
+	studioApp.getIMainWnd()->showOutput();
 	tab.setCurrentItem( 1 );
 	if ( plugins->studioIsShow() ) {
 		debug->SetFocus();
@@ -152,7 +152,7 @@ void RDOStudioOutput::showDebug()
 
 void RDOStudioOutput::showTrace()
 {
-	studioApp.getStyle()->showOutput();
+	studioApp.getIMainWnd()->showOutput();
 	tab.setCurrentItem( 2 );
 	if ( plugins->studioIsShow() ) {
 		trace->SetFocus();
@@ -162,7 +162,7 @@ void RDOStudioOutput::showTrace()
 
 void RDOStudioOutput::showResults()
 {
-	studioApp.getStyle()->showOutput();
+	studioApp.getIMainWnd()->showOutput();
 	tab.setCurrentItem( 3 );
 	if ( plugins->studioIsShow() ) {
 		results->SetFocus();
@@ -172,7 +172,7 @@ void RDOStudioOutput::showResults()
 
 void RDOStudioOutput::showFind()
 {
-	studioApp.getStyle()->showOutput();
+	studioApp.getIMainWnd()->showOutput();
 	tab.setCurrentItem( 4 );
 	if ( plugins->studioIsShow() ) {
 		find->SetFocus();
@@ -238,7 +238,7 @@ void RDOStudioOutput::appendStringToFind( CREF(tstring) str, rdoModelObjects::RD
 
 void RDOStudioOutput::Tab::changeCurrentItem()
 {
-	studioApp.getStyle()->output.updateLogConnection();
+	studioApp.getIMainWnd()->output.updateLogConnection();
 }
 
 void RDOStudioOutput::updateLogConnection() const

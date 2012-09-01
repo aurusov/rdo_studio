@@ -44,8 +44,9 @@ public:
 	RDOStudioApp();
 	virtual ~RDOStudioApp();
 
-	PTR(QWidget)        getMainWnd();
-	PTR(MainWindowBase) getStyle  ();
+	PTR(QWidget)        getMainWnd ();
+	PTR(MainWindowBase) getIMainWnd();
+	PTR(MainWindowBase) getStyle   ();
 
 	PTR(RDOStudioMainFrame) m_pMainFrame;
 	//! см. описание RDOKernelGUI

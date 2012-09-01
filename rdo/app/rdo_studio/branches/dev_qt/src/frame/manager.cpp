@@ -89,7 +89,7 @@ RDOStudioFrameManager::~RDOStudioFrameManager()
 void RDOStudioFrameManager::insertFrame(CREF(tstring) frameName)
 {
 	PTR(Frame) item = new Frame();
-	item->m_hitem = studioApp.getStyle()->workspace.frames->InsertItem(frameName.c_str(), 1, 1, studioApp.getStyle()->workspace.frames->GetRootItem());
+	item->m_hitem = studioApp.getIMainWnd()->workspace.frames->InsertItem(frameName.c_str(), 1, 1, studioApp.getIMainWnd()->workspace.frames->GetRootItem());
 	item->m_name  = frameName;
 	m_frameList.push_back(item);
 }
@@ -246,7 +246,7 @@ void RDOStudioFrameManager::clear()
 {
 	if (studioApp.getStyle())
 	{
-		studioApp.getStyle()->workspace.frames->deleteChildren(studioApp.getStyle()->workspace.frames->GetRootItem());
+		studioApp.getIMainWnd()->workspace.frames->deleteChildren(studioApp.getIMainWnd()->workspace.frames->GetRootItem());
 	}
 	STL_FOR_ALL(m_frameList, it)
 	{
@@ -287,7 +287,7 @@ PTR(RDOStudioFrameDoc) RDOStudioFrameManager::getFirstExistDoc() const
 
 void RDOStudioFrameManager::expand() const
 {
-	studioApp.getStyle()->workspace.frames->expand();
+	studioApp.getIMainWnd()->workspace.frames->expand();
 }
 
 rbool RDOStudioFrameManager::isValidFrameDoc(CPTRC(RDOStudioFrameDoc) pFrame) const
@@ -324,7 +324,7 @@ void RDOStudioFrameManager::setCurrentShowingFrame(ruint index)
 		m_currentShowingFrame = index;
 		if (studioApp.getStyle())
 		{
-			PTR(CTreeCtrl) pTree = studioApp.getStyle()->workspace.frames;
+			PTR(CTreeCtrl) pTree = studioApp.getIMainWnd()->workspace.frames;
 			if (m_currentShowingFrame != ruint(~0))
 			{
 				HTREEITEM hitem = m_frameList[m_currentShowingFrame]->m_hitem;
@@ -351,7 +351,7 @@ void RDOStudioFrameManager::insertBitmap(CREF(tstring) bitmapName)
 	if (m_bitmapList.find(bitmapName) != m_bitmapList.end())
 		return;
 
-	PTR(RDOStudioOutput) pOutput = &studioApp.getStyle()->output;
+	PTR(RDOStudioOutput) pOutput = &studioApp.getIMainWnd()->output;
 	ASSERT(pOutput);
 	pOutput->appendStringToDebug(rdo::format(IDS_MODEL_RESOURCE_LOADING_NAME, bitmapName.c_str()));
 	const_cast<PTR(rdoEditCtrl::RDODebugEdit)>(pOutput->getDebug())->UpdateWindow();
