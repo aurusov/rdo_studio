@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>RAO-studio</string>
+   <string>RAO Studio</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../rdo_studio.qrc">
