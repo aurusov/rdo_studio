@@ -11,13 +11,13 @@ SET(HEADER_FILES
     namespace.h
     error_code.h
     file_message.h
-    rdo_log_edit_line_info.h
-    rdo_build_edit_line_info.h)
+    log_edit_line_info.h
+    build_edit_line_info.h)
 
 SET(SOURCE_FILES
     file_message.cpp
-    rdo_log_edit_line_info.cpp
-    rdo_build_edit_line_info.cpp)
+    log_edit_line_info.cpp
+    build_edit_line_info.cpp)
 
 ADD_LIBRARY(rdo_simulator_report ${HEADER_FILES} ${SOURCE_FILES})
 
