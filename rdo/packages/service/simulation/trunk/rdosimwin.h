@@ -240,7 +240,7 @@ protected:
 	void  runModel  ();
 	void  stopModel ();
 
-	typedef std::vector<rdo::simulation::report::RDOSyntaxMessage> SyntaxMessageList;
+	typedef std::vector<rdo::simulation::report::FileMessage> SyntaxMessageList;
 	SyntaxMessageList getErrors();
 
 	void codeCompletion();

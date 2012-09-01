@@ -15,14 +15,14 @@
 
 OPEN_RDO_SIMULATION_REPORT_NAMESPACE
 
-RDOLogEditLineInfo::RDOLogEditLineInfo( CREF(RDOSyntaxMessage) message ):
+RDOLogEditLineInfo::RDOLogEditLineInfo( CREF(FileMessage) message ):
 	m_message( message ),
 	m_posInLog(0),
 	m_simpleTextMessage(false)
 {}
 
 RDOLogEditLineInfo::RDOLogEditLineInfo( CREF(tstring) message ) :
-	m_message(RDOSyntaxMessage (
+	m_message(FileMessage (
 		message,
 		rdoModelObjects::PAT,
 		0, 
@@ -79,7 +79,7 @@ tstring RDOLogEditLineInfo::getText() const
 	return m_message.text;
 }
 
-RDOSyntaxMessage::Type RDOLogEditLineInfo::getMessageType() const
+FileMessage::Type RDOLogEditLineInfo::getMessageType() const
 {
 	return m_message.type;
 }

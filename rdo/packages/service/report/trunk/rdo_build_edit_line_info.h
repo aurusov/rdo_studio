@@ -22,7 +22,7 @@ OPEN_RDO_SIMULATION_REPORT_NAMESPACE
 class RDOBuildEditLineInfo : public RDOLogEditLineInfo
 {
 public:
-	explicit RDOBuildEditLineInfo( CREF(RDOSyntaxMessage) message );
+	explicit RDOBuildEditLineInfo( CREF(FileMessage) message );
 	explicit RDOBuildEditLineInfo( CREF(tstring) message );
 	virtual ~RDOBuildEditLineInfo();
 

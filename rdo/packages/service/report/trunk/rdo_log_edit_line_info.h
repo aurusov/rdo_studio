@@ -22,14 +22,14 @@ OPEN_RDO_SIMULATION_REPORT_NAMESPACE
 class RDOLogEditLineInfo
 {
 public:
-	explicit RDOLogEditLineInfo( CREF(RDOSyntaxMessage) message );
+	explicit RDOLogEditLineInfo( CREF(FileMessage) message );
 	explicit RDOLogEditLineInfo( CREF(tstring) message );
 	virtual ~RDOLogEditLineInfo();
 
 	virtual tstring getMessage() const;
 	rbool isSimpleTextMessage() const;
 
-	RDOSyntaxMessage::Type getMessageType() const;
+	FileMessage::Type getMessageType() const;
 	rdoModelObjects::RDOFileType getFileType() const;
 	ruint   getLineNumber() const;
 	ruint   getPosInLine () const;
@@ -39,7 +39,7 @@ public:
 	void setPosInLog(int posInLog);
 
 private:
-	RDOSyntaxMessage m_message;
+	FileMessage m_message;
 	ruint m_posInLog;
 	rbool m_simpleTextMessage;
 };

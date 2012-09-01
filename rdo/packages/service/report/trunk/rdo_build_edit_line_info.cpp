@@ -17,7 +17,7 @@
 
 OPEN_RDO_SIMULATION_REPORT_NAMESPACE
 
-RDOBuildEditLineInfo::RDOBuildEditLineInfo( CREF(RDOSyntaxMessage) message ) :
+RDOBuildEditLineInfo::RDOBuildEditLineInfo( CREF(FileMessage) message ) :
 	RDOLogEditLineInfo( message )
 {}
 
@@ -37,7 +37,7 @@ tstring RDOBuildEditLineInfo::getMessage() const
 	else
 	{
 		tstring file = rdoModelObjects::getFileTypeString(getFileType());
-		tstring error = (getMessageType() == RDOSyntaxMessage::MT_WARNING) ? tstring( WARNING_STRING ) : tstring( ERROR_STRING );
+		tstring error = (getMessageType() == FileMessage::MT_WARNING) ? tstring( WARNING_STRING ) : tstring( ERROR_STRING );
 		tstring text = rdo::format( "%s (%d): %s: %s", file.c_str(), getLineNumber() + 1, error.c_str(), getText().c_str() );
 		return text;
 	}

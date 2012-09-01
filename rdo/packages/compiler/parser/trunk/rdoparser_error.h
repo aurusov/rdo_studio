@@ -40,7 +40,7 @@ public:
 class Error
 {
 public:
-	typedef std::vector<rdo::simulation::report::RDOSyntaxMessage> ErrorList;
+	typedef std::vector<rdo::simulation::report::FileMessage> ErrorList;
 
 	Error();
 

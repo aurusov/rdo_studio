@@ -34,7 +34,7 @@ enum RDOExitCode
 };
 
 //! Синтаксическое сообщение
-struct RDOSyntaxMessage
+struct FileMessage
 {
 	enum Type
 	{
@@ -54,7 +54,7 @@ struct RDOSyntaxMessage
 	//! \param line    - номер строки с ошибкой
 	//! \param pos     - позиция ошибки в строке
 	//! \param type    - тип сообщения. Значение по умолчанию \b MT_ERROR
-	RDOSyntaxMessage(CREF(tstring) text, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type = MT_ERROR)
+	FileMessage(CREF(tstring) text, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type = MT_ERROR)
 		: text(text)
 		, file(file)
 		, line(line)
