@@ -22,6 +22,7 @@ OPEN_RDO_SIMULATION_REPORT_NAMESPACE
 class BuildEditLineInfo : public LogEditLineInfo
 {
 public:
+	BuildEditLineInfo( CREF(tstring) text, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type );
 	explicit BuildEditLineInfo( CREF(FileMessage) message );
 	explicit BuildEditLineInfo( CREF(tstring) message );
 	virtual ~BuildEditLineInfo();

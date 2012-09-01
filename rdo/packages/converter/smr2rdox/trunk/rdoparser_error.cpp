@@ -34,7 +34,7 @@ void Error::error(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message)
 		return;
 
 	push_only(src_info, message);
-	throw RDOSyntaxException(m_errors.back().text);
+	throw RDOSyntaxException(m_errors.back().getText());
 }
 
 void Error::warning(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message) 
@@ -63,7 +63,7 @@ void Error::error(CREF(RDOParserSrcInfo) src_info1, CREF(RDOParserSrcInfo) src_i
 		return;
 
 	push_only(src_info1.src_pos().m_last_line != src_info2.src_pos().m_last_line ? src_info1 : src_info2, message);
-	throw RDOSyntaxException(m_errors.back().text);
+	throw RDOSyntaxException(m_errors.back().getText());
 }
 
 //! misc
@@ -74,7 +74,7 @@ void Error::push_done()
 
 	if (!m_errors.empty())
 	{
-		throw rdo::converter::smr2rdox::RDOSyntaxException(m_errors.back().text);
+		throw rdo::converter::smr2rdox::RDOSyntaxException(m_errors.back().getText());
 	}
 }
 
@@ -85,7 +85,8 @@ void Error::modify(CREF(tstring) message)
 
 	if (!m_errors.empty())
 	{
-		m_errors.front().text = message + m_errors.front().text;
+		tstring new_text = message + m_errors.front().getText();
+		m_errors.front().setText(new_text);
 		throw rdo::converter::smr2rdox::RDOSyntaxException(_T(""));
 	}
 }

@@ -19,9 +19,10 @@
 
 OPEN_RDO_SIMULATION_REPORT_NAMESPACE
 
-class LogEditLineInfo
+class LogEditLineInfo : public FileMessage
 {
 public:
+	LogEditLineInfo( CREF(tstring) text, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type );
 	explicit LogEditLineInfo( CREF(FileMessage) message );
 	explicit LogEditLineInfo( CREF(tstring) message );
 	virtual ~LogEditLineInfo();
@@ -29,17 +30,10 @@ public:
 	virtual tstring getMessage() const;
 	rbool isSimpleTextMessage() const;
 
-	FileMessage::Type getMessageType() const;
-	rdoModelObjects::RDOFileType getFileType() const;
-	ruint   getLineNumber() const;
-	ruint   getPosInLine () const;
-	ruint   getPosInLog  () const;
-	tstring getText      () const;
-
+	ruint getPosInLog() const;
 	void setPosInLog(int posInLog);
 
 private:
-	FileMessage m_message;
 	ruint m_posInLog;
 	rbool m_simpleTextMessage;
 };

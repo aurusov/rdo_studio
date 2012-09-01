@@ -15,11 +15,41 @@
 OPEN_RDO_SIMULATION_REPORT_NAMESPACE
 
 FileMessage::FileMessage(CREF(tstring) text, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type)
-	: text(text)
-	, file(file)
-	, line(line)
-	, pos (pos )
-	, type(type)
+	: m_text(text)
+	, m_file(file)
+	, m_line(line)
+	, m_pos (pos )
+	, m_type(type)
 {}
+
+tstring FileMessage::getText() const
+{
+	return m_text;
+}
+
+rdoModelObjects::RDOFileType FileMessage::getFileType() const
+{
+	return m_file;
+}
+
+ruint FileMessage::getLineNumber() const
+{
+	return m_line;
+}
+
+ruint FileMessage::getPosInLine() const
+{
+	return m_pos;
+}
+
+FileMessage::Type FileMessage::getType() const
+{
+	return m_type;
+}
+
+void FileMessage::setText(CREF(tstring) text)
+{
+	m_text = text;
+}
 
 CLOSE_RDO_SIMULATION_REPORT_NAMESPACE

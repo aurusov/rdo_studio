@@ -15,19 +15,20 @@
 
 OPEN_RDO_SIMULATION_REPORT_NAMESPACE
 
-LogEditLineInfo::LogEditLineInfo( CREF(FileMessage) message ):
-	m_message( message ),
-	m_posInLog(0),
-	m_simpleTextMessage(false)
+LogEditLineInfo::LogEditLineInfo( CREF(tstring) text, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type ) 
+	: FileMessage( text, file, line, pos, type )
+	, m_posInLog(0)
+	, m_simpleTextMessage(false)
+{}
+
+LogEditLineInfo::LogEditLineInfo( CREF(FileMessage) message )
+	: FileMessage(message)
+	, m_posInLog(0)
+	, m_simpleTextMessage(false)
 {}
 
 LogEditLineInfo::LogEditLineInfo( CREF(tstring) message ) :
-	m_message(FileMessage (
-		message,
-		rdoModelObjects::PAT,
-		0, 
-		0
-		) ),
+	FileMessage( message, rdoModelObjects::PAT, 0, 0 ),
 	m_posInLog(0),
 	m_simpleTextMessage(true)
 {}
@@ -39,12 +40,12 @@ tstring LogEditLineInfo::getMessage() const
 {	
 	if ( m_simpleTextMessage )
 	{
-		return m_message.text;
+		return getText();
 	}
 	else
 	{
 		tstring file = rdoModelObjects::getFileTypeString(getFileType());
-		tstring text = rdo::format( "%s (%d): %s", file.c_str(), m_message.line + 1, m_message.text.c_str() );
+		tstring text = rdo::format( "%s (%d): %s", file.c_str(), getLineNumber() + 1, getText().c_str() );
 		return text;
 	}
 }
@@ -54,34 +55,9 @@ rbool LogEditLineInfo::isSimpleTextMessage() const
 	return m_simpleTextMessage;
 }
 
-rdoModelObjects::RDOFileType LogEditLineInfo::getFileType() const
-{
-	return m_message.file;
-}
-
-ruint LogEditLineInfo::getLineNumber() const
-{
-	return m_message.line;
-}
-
-ruint LogEditLineInfo::getPosInLine() const
-{
-	return m_message.pos;
-}
-
 ruint LogEditLineInfo::getPosInLog() const
 {
 	return m_posInLog;
-}
-
-tstring LogEditLineInfo::getText() const
-{
-	return m_message.text;
-}
-
-FileMessage::Type LogEditLineInfo::getMessageType() const
-{
-	return m_message.type;
 }
 
 void LogEditLineInfo::setPosInLog(int posInLog)

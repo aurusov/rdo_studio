@@ -55,12 +55,12 @@ void RDOBuildEdit::showFirstError()
 	RDOLogEditLineInfoList lines;
 	getLines(lines);
 	std::list< RDOLogEditLineInfo* >::iterator it = lines.begin();
-	TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->getLineNumber(), static_cast<BuildEditLineInfo*>(*it)->getMessageType() == RDOSyntaxMessage::MT_WARNING ? 1 : 0, (*it)->getText().c_str() );
+	TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->getLineNumber(), static_cast<BuildEditLineInfo*>(*it)->getType() == RDOSyntaxMessage::MT_WARNING ? 1 : 0, (*it)->getText().c_str() );
 	int i;
 	for ( i = 0; i < getCurrentLine(); i++ ) {
 		if ( it != lines.end() ) {
 			it++;
-			TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->getLineNumber(), static_cast<BuildEditLineInfo*>(*it)->getMessageType() == RDOSyntaxMessage::MT_WARNING ? 1 : 0, (*it)->getText().c_str() );
+			TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->getLineNumber(), static_cast<BuildEditLineInfo*>(*it)->getType() == RDOSyntaxMessage::MT_WARNING ? 1 : 0, (*it)->getText().c_str() );
 		}
 		else
 		{
@@ -69,34 +69,34 @@ void RDOBuildEdit::showFirstError()
 		}
 	}
 	it = lines.begin();
-	TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->getLineNumber(), static_cast<BuildEditLineInfo*>(*it)->getMessageType() == RDOSyntaxMessage::MT_WARNING ? 1 : 0, (*it)->getText().c_str() );
+	TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->getLineNumber(), static_cast<BuildEditLineInfo*>(*it)->getType() == RDOSyntaxMessage::MT_WARNING ? 1 : 0, (*it)->getText().c_str() );
 	for ( i = 0; i < getCurrentLine(); i++ ) {
 		it++;
-		TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->getLineNumber(), static_cast<BuildEditLineInfo*>(*it)->getMessageType() == RDOSyntaxMessage::MT_WARNING ? 1 : 0, (*it)->getText().c_str() );
+		TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->getLineNumber(), static_cast<BuildEditLineInfo*>(*it)->getType() == RDOSyntaxMessage::MT_WARNING ? 1 : 0, (*it)->getText().c_str() );
 	}
-	while ( it != lines.end() && ((*it)->getLineNumber() == -1 || static_cast<BuildEditLineInfo*>(*it)->getMessageType() == RDOSyntaxMessage::MT_WARNING) ) {
+	while ( it != lines.end() && ((*it)->getLineNumber() == -1 || static_cast<BuildEditLineInfo*>(*it)->getType() == RDOSyntaxMessage::MT_WARNING) ) {
 		it++;
 		if ( it != lines.end() ) {
-			TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->getLineNumber(), static_cast<BuildEditLineInfo*>(*it)->getMessageType() == RDOSyntaxMessage::MT_WARNING ? 1 : 0, (*it)->getText().c_str() );
+			TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->getLineNumber(), static_cast<BuildEditLineInfo*>(*it)->getType() == RDOSyntaxMessage::MT_WARNING ? 1 : 0, (*it)->getText().c_str() );
 		}
 		setCurrentLine(getCurrentLine() + 1);
 	}
 	if ( it == lines.end() ) {
 		it = lines.begin();
-		TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->getLineNumber(), static_cast<BuildEditLineInfo*>(*it)->getMessageType() == RDOSyntaxMessage::MT_WARNING ? 1 : 0, (*it)->getText().c_str() );
+		TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->getLineNumber(), static_cast<BuildEditLineInfo*>(*it)->getType() == RDOSyntaxMessage::MT_WARNING ? 1 : 0, (*it)->getText().c_str() );
 		setCurrentLine(0);
-		while ( it != lines.end() && ((*it)->getLineNumber() == -1 || static_cast<BuildEditLineInfo*>(*it)->getMessageType() == RDOSyntaxMessage::MT_WARNING) ) {
+		while ( it != lines.end() && ((*it)->getLineNumber() == -1 || static_cast<BuildEditLineInfo*>(*it)->getType() == RDOSyntaxMessage::MT_WARNING) ) {
 			it++;
 			if ( it != lines.end() ) {
-				TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->getLineNumber(), static_cast<BuildEditLineInfo*>(*it)->getMessageType() == RDOSyntaxMessage::MT_WARNING ? 1 : 0, (*it)->getText().c_str() );
+				TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->getLineNumber(), static_cast<BuildEditLineInfo*>(*it)->getType() == RDOSyntaxMessage::MT_WARNING ? 1 : 0, (*it)->getText().c_str() );
 			}
 			setCurrentLine(getCurrentLine() + 1);
 		}
 	}
 	if ( it != lines.end() ) {
-		TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->getLineNumber(), static_cast<BuildEditLineInfo*>(*it)->getMessageType() == RDOSyntaxMessage::MT_WARNING ? 1 : 0, (*it)->getText().c_str() );
+		TRACE3(_T("ln = %d, w = %d, msg = %s\n"), (*it)->getLineNumber(), static_cast<BuildEditLineInfo*>(*it)->getType() == RDOSyntaxMessage::MT_WARNING ? 1 : 0, (*it)->getText().c_str() );
 	}
-	if ( it != lines.end() && (*it)->getLineNumber() != -1 && static_cast<BuildEditLineInfo*>(*it)->getMessageType() == RDOSyntaxMessage::MT_ERROR ) {
+	if ( it != lines.end() && (*it)->getLineNumber() != -1 && static_cast<BuildEditLineInfo*>(*it)->getType() == RDOSyntaxMessage::MT_ERROR ) {
 		setSelectLine( getCurrentLine(), *it, true );
 	}
 }

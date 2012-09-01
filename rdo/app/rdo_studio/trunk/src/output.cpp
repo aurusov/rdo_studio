@@ -200,7 +200,7 @@ void RDOStudioOutput::appendStringToBuild( CREF(tstring) str ) const
 
 void RDOStudioOutput::appendStringToBuild( CREF(rdo::simulation::report::FileMessage) message ) const
 {
-	if ( message.type == rdo::simulation::report::FileMessage::MT_ERROR || (message.type == FileMessage::MT_WARNING && static_cast<PTR(RDOBuildEditTheme)>(studioApp.m_pMainFrame->style_build.theme)->warning) )
+	if ( message.getType() == rdo::simulation::report::FileMessage::MT_ERROR || (message.getType() == FileMessage::MT_WARNING && static_cast<PTR(RDOBuildEditTheme)>(studioApp.m_pMainFrame->style_build.theme)->warning) )
 	{
 		PTR(BuildEditLineInfo) pLine = new BuildEditLineInfo(message);
 		build->appendLine(pLine);

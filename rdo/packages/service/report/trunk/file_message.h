@@ -21,8 +21,9 @@
 OPEN_RDO_SIMULATION_REPORT_NAMESPACE
 
 //! Файловое сообщение
-struct FileMessage
+class FileMessage
 {
+public:
 	enum Type
 	{
 		MT_ERROR = 0,
@@ -37,11 +38,20 @@ struct FileMessage
 	//! \param type    - тип сообщения. Значение по умолчанию \b MT_ERROR
 	FileMessage(CREF(tstring) text, rdoModelObjects::RDOFileType file, ruint line, ruint pos, Type type = MT_ERROR);
 
-	tstring                      text; //!< Текст сообщения
-	rdoModelObjects::RDOFileType file; //!< Файл с ошибкой
-	ruint                        line; //!< Номер строки с ошибкой
-	ruint                        pos;  //!< Позиция ошибки в строке
-	Type                         type; //!<  Тип сообщения
+	tstring getText    () const;
+	rdoModelObjects::RDOFileType getFileType() const;
+	ruint getLineNumber() const;
+	ruint getPosInLine () const;
+	Type  getType      () const;
+
+	void setText(CREF(tstring) text);
+
+private:
+	tstring                      m_text; //!< Текст сообщения
+	rdoModelObjects::RDOFileType m_file; //!< Файл с ошибкой
+	ruint                        m_line; //!< Номер строки с ошибкой
+	ruint                        m_pos;  //!< Позиция ошибки в строке
+	Type                         m_type; //!<  Тип сообщения
 };
 
 CLOSE_RDO_SIMULATION_REPORT_NAMESPACE

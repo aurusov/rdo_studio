@@ -1234,7 +1234,8 @@ void RDOThreadSimulator::parseSMRFileInfo(REF(rdo::textstream) smr, REF(rdo::con
 				BOOST_AUTO(it, errorList.begin());
 				while (it != errorList.end())
 				{
-					broadcastMessage(RT_DEBUG_STRING, const_cast<PTR(tstring)>(&it->text));
+					tstring text = it->getText();
+					broadcastMessage(RT_DEBUG_STRING, const_cast<PTR(tstring)>(&text));
 					++it;
 				}
 			}
