@@ -17,11 +17,10 @@
 
 About::About(PTR(QWidget) pParent)
 	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
-	, m_ui   (new Ui::AboutDialog)
 {
-	m_ui->setupUi(this);
+	setupUi(this);
 
-	m_ui->version->setText(QString("RAO-studio   %1%2-version 1.1 (build %3)")
+	version->setText(QString("RAO-studio   %1%2-version 1.1 (build %3)")
 
 #ifdef RDO_MT
 		.arg("mt")

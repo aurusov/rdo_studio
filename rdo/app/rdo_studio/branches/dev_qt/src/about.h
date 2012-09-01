@@ -16,15 +16,12 @@
 #include "app/rdo_studio_mfc/projects/common/bin/rdo_studio/generated/about_ui.h"
 // --------------------------------------------------------------------------------
 
-class About: public QDialog
+class About: public QDialog, private Ui::AboutDialog
 {
 Q_OBJECT
 
 public:
 	explicit About(PTR(QWidget) pParent = NULL);
-
-private:
-	std::auto_ptr<Ui::AboutDialog>  m_ui;
 };
 
 #endif // _RDO_STUDIO_ABOUT_H_
