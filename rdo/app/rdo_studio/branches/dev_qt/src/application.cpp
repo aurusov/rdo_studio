@@ -381,6 +381,8 @@ BOOL RDOStudioApp::InitInstance()
 
 int RDOStudioApp::ExitInstance()
 {
+	m_pMainFrame = NULL;
+
 #ifdef PROCGUI_ENABLE
 	m_methodManager.close();
 
