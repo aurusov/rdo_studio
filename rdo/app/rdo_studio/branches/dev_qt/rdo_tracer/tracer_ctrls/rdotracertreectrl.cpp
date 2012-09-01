@@ -21,7 +21,7 @@
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracerresult.h"
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/src/main_frm.h"
+#include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/src/chart/document.h"
 #include "app/rdo_studio_mfc/htmlhelp.h"
 // --------------------------------------------------------------------------------
@@ -106,7 +106,7 @@ int RDOTracerTreeCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 		CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
 		if (mainMenu)
 		{
-			rbool maximized = studioApp.m_pMainFrame->isMDIMaximazed();
+			rbool maximized = studioApp.getStyle()->isMDIMaximazed();
 			int delta = maximized ? 1 : 0;
 
 			appendMenu( mainMenu->GetSubMenu( 6 + delta ), 0, &popupMenu );

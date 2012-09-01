@@ -15,18 +15,8 @@
 #include <QtGui/qmainwindow.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
-#include "app/rdo_studio_mfc/src/workspace.h"
-#include "app/rdo_studio_mfc/src/output.h"
-#include "app/rdo_studio_mfc/rdo_edit/rdoeditoreditstyle.h"
-#include "app/rdo_studio_mfc/rdo_edit/rdoeditorresultsstyle.h"
-#include "app/rdo_studio_mfc/edit_ctrls/rdobuildeditstyle.h"
-#include "app/rdo_studio_mfc/edit_ctrls/rdobaseeditstyle.h"
-#include "app/rdo_studio_mfc/edit_ctrls/rdofindeditstyle.h"
-#include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracerlogstyle.h"
-#include "app/rdo_studio_mfc/src/style.h"
-#include "app/rdo_studio_mfc/src/chart/view_style.h"
+#include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/src/status_bar.h"
-#include "app/rdo_studio_mfc/src/frame/style.h"
 #include "app/rdo_studio_mfc/projects/common/bin/rdo_studio/generated/main_window_ui.h"
 // --------------------------------------------------------------------------------
 
@@ -65,7 +55,10 @@ public:
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioMainFrame
 // --------------------------------------------------------------------------------
-class RDOStudioMainFrame: public QMainWindow, private Ui::MainWindow
+class RDOStudioMainFrame
+	: public QMainWindow
+	, public MainWindowBase
+	, private Ui::MainWindow
 {
 Q_OBJECT
 
@@ -78,24 +71,12 @@ public:
 
 	void init();
 
-	RDOStudioWorkspace workspace;
-	RDOStudioOutput    output;
-	PTR(CControlBar)   m_pLastDocked;
+	virtual void updateAllStyles() const;
 
-	rdoEditor::RDOEditorEditStyle    style_editor;
-	rdoEditCtrl::RDOBuildEditStyle   style_build;
-	rdoEditCtrl::RDOBaseEditStyle    style_debug;
-	rdoTracerLog::RDOTracerLogStyle  style_trace;
-	rdoEditor::RDOEditorResultsStyle style_results;
-	rdoEditCtrl::RDOFindEditStyle    style_find;
-	RDOStudioFrameStyle              style_frame;
-	RDOStudioChartViewStyle          style_chart;
-	void updateAllStyles() const;
+	virtual void showWorkspace();
+	virtual void showOutput   ();
 
 	virtual void setVisible(rbool visible);
-
-	void showWorkspace();
-	void showOutput();
 
 	double getSpeed() const { return modelToolBar.getSpeed(); }
 
@@ -111,8 +92,6 @@ public:
 	void update_stop();
 
 	static rbool is_close_mode() { return close_mode; }
-
-	rbool isMDIMaximazed() const { return true; }
 
 	PTR(CWnd) c_wnd() { return &m_thisCWnd; }
 

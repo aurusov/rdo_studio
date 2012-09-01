@@ -2,14 +2,6 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>628</width>
-    <height>455</height>
-   </rect>
-  </property>
   <property name="windowTitle">
    <string>RAO Studio</string>
   </property>
@@ -24,7 +16,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>628</width>
+     <width>264</width>
      <height>21</height>
     </rect>
    </property>

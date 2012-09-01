@@ -24,7 +24,7 @@
 #include "app/rdo_studio_mfc/src/chart/view.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/child_frm.h"
-#include "app/rdo_studio_mfc/src/main_frm.h"
+#include "app/rdo_studio_mfc/src/main_windows_base.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
@@ -823,7 +823,7 @@ void RDOTracerBase::updateChartsStyles() const
 		while ( pos != NULL ) {
 			CView* pView = (*it)->GetNextView( pos );
 			if ( pView && pView->IsKindOf(RUNTIME_CLASS(RDOStudioChartView)) ) {
-				((RDOStudioChartView*)pView)->setStyle( &studioApp.m_pMainFrame->style_chart );
+				((RDOStudioChartView*)pView)->setStyle( &studioApp.getStyle()->style_chart );
 			}
 		}
 	}

@@ -431,6 +431,16 @@ int RDOStudioApp::ExitInstance()
 	}
 }
 
+PTR(QWidget) RDOStudioApp::getMainWnd()
+{
+	return m_pMainFrame;
+}
+
+PTR(MainWindowBase) RDOStudioApp::getStyle()
+{
+	return m_pMainFrame;
+}
+
 CREF(RPMethodManager) RDOStudioApp::getMethodManager() const
 {
 	return m_methodManager;

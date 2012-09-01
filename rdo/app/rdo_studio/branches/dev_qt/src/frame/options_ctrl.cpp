@@ -14,7 +14,7 @@
 #include "app/rdo_studio_mfc/src/frame/options_ctrl.h"
 #include "app/rdo_studio_mfc/src/frame/style.h"
 #include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/src/main_frm.h"
+#include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/resource.h"
 // --------------------------------------------------------------------------------
 

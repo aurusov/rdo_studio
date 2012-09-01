@@ -155,9 +155,9 @@ static UINT indicators[] = {
 rbool RDOStudioMainFrame::close_mode = false;
 
 RDOStudioMainFrame::RDOStudioMainFrame()
-	: m_pLastDocked(NULL)
-	, m_updateTimer(0   )
+	: m_updateTimer(0)
 {
+	m_pLastDocked = NULL;
 	setupUi(this);
 }
 

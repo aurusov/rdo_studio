@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/child_frm.h"
 #include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/src/main_frm.h"
+#include "app/rdo_studio_mfc/src/main_windows_base.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG

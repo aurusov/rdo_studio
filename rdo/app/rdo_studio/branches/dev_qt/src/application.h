@@ -13,10 +13,13 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <fstream>
 #include <QtCore/qprocess.h>
+#include <QtGui/qwidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
+#include "kernel/rdokernel.h"
+#include "simulator/service/rdosimwin.h"
+#include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_method_manager.h"
-#include "app/rdo_studio_mfc/src/main_frm.h"
 // --------------------------------------------------------------------------------
 
 //#define PROCGUI_ENABLE
@@ -40,6 +43,9 @@ friend class RDOStudioCommandLineInfo;
 public:
 	RDOStudioApp();
 	virtual ~RDOStudioApp();
+
+	PTR(QWidget)        getMainWnd();
+	PTR(MainWindowBase) getStyle  ();
 
 	PTR(RDOStudioMainFrame) m_pMainFrame;
 	//! см. описание RDOKernelGUI

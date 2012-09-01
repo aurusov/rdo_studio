@@ -15,7 +15,7 @@
 #include "app/rdo_studio_mfc/src/chart/view.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
 #include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/src/main_frm.h"
+#include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/src/chart/view_style.h"
 #include "app/rdo_studio_mfc/src/chart/doc_serie.h"
@@ -154,7 +154,7 @@ int RDOStudioChartView::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	hbmpInit  = (HBITMAP)::GetCurrentObject( hmemdc, OBJ_BITMAP );
 
 	if ( !previewMode )
-		setStyle( &studioApp.m_pMainFrame->style_chart, false );
+		setStyle( &studioApp.getStyle()->style_chart, false );
 
 	if ( GetDocument() ) {
 		recalcLayout();
@@ -168,7 +168,7 @@ int RDOStudioChartView::OnCreate( LPCREATESTRUCT lpCreateStruct )
 		CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
 		if (mainMenu)
 		{
-			rbool maximized = studioApp.m_pMainFrame->isMDIMaximazed();
+			rbool maximized = studioApp.getStyle()->isMDIMaximazed();
 			int delta = maximized ? 1 : 0;
 
 			appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );

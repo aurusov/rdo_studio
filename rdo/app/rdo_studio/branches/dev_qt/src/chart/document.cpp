@@ -17,7 +17,7 @@
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracerserie.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracervalues.h"
 #include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/src/main_frm.h"
+#include "app/rdo_studio_mfc/src/main_windows_base.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG

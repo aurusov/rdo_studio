@@ -2532,6 +2532,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\src\main_windows_base.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\options.cpp"
 				>
 				<FileConfiguration

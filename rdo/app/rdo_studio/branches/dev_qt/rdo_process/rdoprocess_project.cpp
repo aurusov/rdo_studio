@@ -89,7 +89,7 @@ void RPProjectMFC::open()
 			load( project_node );
 		}
 	} catch ( rp::RPXMLException& ex ) {
-		QMessageBox::critical(studioApp.m_pMainFrame, "Ошибка чтения", ex.getError().c_str());
+		QMessageBox::critical(studioApp.getMainWnd(), "Ошибка чтения", ex.getError().c_str());
 	}
 }
 
@@ -101,7 +101,7 @@ void RPProjectMFC::save()
 		save_child( project_node );
 		xml_doc.save( "c:\\sample.xml" );
 	} catch ( rp::RPXMLException& ex ) {
-		QMessageBox::critical(studioApp.m_pMainFrame, "Ошибка записи", ex.getError().c_str());
+		QMessageBox::critical(studioApp.getMainWnd(), "Ошибка записи", ex.getError().c_str());
 	}
 }
 
@@ -156,7 +156,7 @@ void RPProjectMFC::load( rp::RPXMLNode* node )
 
 void RPProjectMFC::makeFlowChartWnd( RPObjectFlowChart* flowobj )
 {
-	rbool maximized = studioApp.m_pMainFrame->isMDIMaximazed();
+	rbool maximized = studioApp.getStyle()->isMDIMaximazed();
 	PTR(RPDoc) doc = model->getFlowchartDoc();
 	PTR(RPChildFrame) mdi = static_cast<PTR(RPChildFrame)>(doc->getView()->GetParent());
 	mdi->SetIcon( flowobj->getMethod()->getPixmap()->getIcon(), true );
