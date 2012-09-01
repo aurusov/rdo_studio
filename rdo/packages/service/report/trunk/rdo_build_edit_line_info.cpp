@@ -17,18 +17,18 @@
 
 OPEN_RDO_SIMULATION_REPORT_NAMESPACE
 
-RDOBuildEditLineInfo::RDOBuildEditLineInfo( CREF(FileMessage) message ) :
-	RDOLogEditLineInfo( message )
+BuildEditLineInfo::BuildEditLineInfo( CREF(FileMessage) message ) :
+	LogEditLineInfo( message )
 {}
 
-RDOBuildEditLineInfo::RDOBuildEditLineInfo( CREF(tstring) message ) :
-	RDOLogEditLineInfo( message )
+BuildEditLineInfo::BuildEditLineInfo( CREF(tstring) message ) :
+	LogEditLineInfo( message )
 {}
 
-RDOBuildEditLineInfo::~RDOBuildEditLineInfo()
+BuildEditLineInfo::~BuildEditLineInfo()
 {}
 
-tstring RDOBuildEditLineInfo::getMessage() const
+tstring BuildEditLineInfo::getMessage() const
 {
 	if ( isSimpleTextMessage() )
 	{

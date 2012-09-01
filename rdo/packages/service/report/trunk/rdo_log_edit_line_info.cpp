@@ -15,13 +15,13 @@
 
 OPEN_RDO_SIMULATION_REPORT_NAMESPACE
 
-RDOLogEditLineInfo::RDOLogEditLineInfo( CREF(FileMessage) message ):
+LogEditLineInfo::LogEditLineInfo( CREF(FileMessage) message ):
 	m_message( message ),
 	m_posInLog(0),
 	m_simpleTextMessage(false)
 {}
 
-RDOLogEditLineInfo::RDOLogEditLineInfo( CREF(tstring) message ) :
+LogEditLineInfo::LogEditLineInfo( CREF(tstring) message ) :
 	m_message(FileMessage (
 		message,
 		rdoModelObjects::PAT,
@@ -32,10 +32,10 @@ RDOLogEditLineInfo::RDOLogEditLineInfo( CREF(tstring) message ) :
 	m_simpleTextMessage(true)
 {}
 
-RDOLogEditLineInfo::~RDOLogEditLineInfo()
+LogEditLineInfo::~LogEditLineInfo()
 {}
 
-tstring RDOLogEditLineInfo::getMessage() const
+tstring LogEditLineInfo::getMessage() const
 {	
 	if ( m_simpleTextMessage )
 	{
@@ -49,42 +49,42 @@ tstring RDOLogEditLineInfo::getMessage() const
 	}
 }
 
-rbool RDOLogEditLineInfo::isSimpleTextMessage() const
+rbool LogEditLineInfo::isSimpleTextMessage() const
 {
 	return m_simpleTextMessage;
 }
 
-rdoModelObjects::RDOFileType RDOLogEditLineInfo::getFileType() const
+rdoModelObjects::RDOFileType LogEditLineInfo::getFileType() const
 {
 	return m_message.file;
 }
 
-ruint RDOLogEditLineInfo::getLineNumber() const
+ruint LogEditLineInfo::getLineNumber() const
 {
 	return m_message.line;
 }
 
-ruint RDOLogEditLineInfo::getPosInLine() const
+ruint LogEditLineInfo::getPosInLine() const
 {
 	return m_message.pos;
 }
 
-ruint RDOLogEditLineInfo::getPosInLog() const
+ruint LogEditLineInfo::getPosInLog() const
 {
 	return m_posInLog;
 }
 
-tstring RDOLogEditLineInfo::getText() const
+tstring LogEditLineInfo::getText() const
 {
 	return m_message.text;
 }
 
-FileMessage::Type RDOLogEditLineInfo::getMessageType() const
+FileMessage::Type LogEditLineInfo::getMessageType() const
 {
 	return m_message.type;
 }
 
-void RDOLogEditLineInfo::setPosInLog(int posInLog)
+void LogEditLineInfo::setPosInLog(int posInLog)
 {
 	m_posInLog = posInLog;
 }

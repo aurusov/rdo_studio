@@ -563,9 +563,9 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 
 	sheet->preview_build.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, 0 );
 	sheet->preview_build.setEditorStyle( &sheet->style_build );
-	sheet->preview_build.appendLine( new RDOBuildEditLineInfo( rdo::format( IDS_COLORSTYLE_BUILD_SAMPLE1 ) ) );
-	sheet->preview_build.appendLine( new RDOBuildEditLineInfo( rdo::simulation::report::FileMessage( rdo::format( IDS_COLORSTYLE_BUILD_SAMPLE2 ), rdoModelObjects::PAT, 40, 0 ) ) );
-	sheet->preview_build.appendLine( new RDOBuildEditLineInfo( rdo::format( IDS_COLORSTYLE_BUILD_SAMPLE3 ) ) );
+	sheet->preview_build.appendLine( new BuildEditLineInfo( rdo::format( IDS_COLORSTYLE_BUILD_SAMPLE1 ) ) );
+	sheet->preview_build.appendLine( new BuildEditLineInfo( rdo::simulation::report::FileMessage( rdo::format( IDS_COLORSTYLE_BUILD_SAMPLE2 ), rdoModelObjects::PAT, 40, 0 ) ) );
+	sheet->preview_build.appendLine( new BuildEditLineInfo( rdo::format( IDS_COLORSTYLE_BUILD_SAMPLE3 ) ) );
 	sheet->preview_build.gotoNext();
 
 	sheet->preview_debug.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, 0 );
@@ -588,11 +588,11 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 	sheet->preview_find.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, 0 );
 	sheet->preview_find.setEditorStyle( &sheet->style_find );
 	sheet->preview_find.setKeyword( "$Time" );
-	sheet->preview_find.appendLine( new RDOLogEditLineInfo( rdo::format( IDS_COLORSTYLE_FIND_SAMPLE1 ) ) );
+	sheet->preview_find.appendLine( new LogEditLineInfo( rdo::format( IDS_COLORSTYLE_FIND_SAMPLE1 ) ) );
 
-	sheet->preview_find.appendLine( new RDOLogEditLineInfo( rdo::simulation::report::FileMessage( rdo::format( IDS_COLORSTYLE_FIND_SAMPLE2 ), rdoModelObjects::PAT, 3, 0 ) ) );
-	sheet->preview_find.appendLine( new RDOLogEditLineInfo( rdo::simulation::report::FileMessage( rdo::format( IDS_COLORSTYLE_FIND_SAMPLE3 ), rdoModelObjects::PAT, 13, 0 ) ) );
-	sheet->preview_find.appendLine( new RDOLogEditLineInfo( rdo::format( IDS_COLORSTYLE_FIND_SAMPLE4 ) ) );
+	sheet->preview_find.appendLine( new LogEditLineInfo( rdo::simulation::report::FileMessage( rdo::format( IDS_COLORSTYLE_FIND_SAMPLE2 ), rdoModelObjects::PAT, 3, 0 ) ) );
+	sheet->preview_find.appendLine( new LogEditLineInfo( rdo::simulation::report::FileMessage( rdo::format( IDS_COLORSTYLE_FIND_SAMPLE3 ), rdoModelObjects::PAT, 13, 0 ) ) );
+	sheet->preview_find.appendLine( new LogEditLineInfo( rdo::format( IDS_COLORSTYLE_FIND_SAMPLE4 ) ) );
 	sheet->preview_find.gotoNext();
 
 	sheet->preview_chart_doc->SetTitle( rdo::format( IDS_COLORSTYLE_CHART_SAMPLE1 ).c_str() );
