@@ -7,14 +7,14 @@
   \indent    4T
 */
 
-#ifndef _RDO_BUILD_EDIT_LINE_INFO_H_
-#define _RDO_BUILD_EDIT_LINE_INFO_H_
+#ifndef _BUILD_EDIT_LINE_INFO_H_
+#define _BUILD_EDIT_LINE_INFO_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/report/error_code.h"
 #include "simulator/report/namespace.h"
-#include "simulator/report/rdo_log_edit_line_info.h"
+#include "simulator/report/log_edit_line_info.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_SIMULATION_REPORT_NAMESPACE
@@ -31,4 +31,4 @@ public:
 
 CLOSE_RDO_SIMULATION_REPORT_NAMESPACE
 
-#endif // _RDO_BUILD_EDIT_LINE_INFO_H_
+#endif // _BUILD_EDIT_LINE_INFO_H_

@@ -12,7 +12,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdocommon.h"
 #include "simulator/report/comment.h"
-#include "simulator/report/rdo_build_edit_line_info.h"
+#include "simulator/report/build_edit_line_info.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_SIMULATION_REPORT_NAMESPACE

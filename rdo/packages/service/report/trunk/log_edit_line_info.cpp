@@ -10,7 +10,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdocommon.h"
-#include "simulator/report/rdo_log_edit_line_info.h"
+#include "simulator/report/log_edit_line_info.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_SIMULATION_REPORT_NAMESPACE

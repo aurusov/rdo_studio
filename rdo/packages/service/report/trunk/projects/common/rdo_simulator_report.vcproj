@@ -448,19 +448,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\rdo_build_edit_line_info.cpp"
+				RelativePath="..\..\build_edit_line_info.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\rdo_build_edit_line_info.h"
+				RelativePath="..\..\build_edit_line_info.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\rdo_log_edit_line_info.cpp"
+				RelativePath="..\..\log_edit_line_info.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\rdo_log_edit_line_info.h"
+				RelativePath="..\..\log_edit_line_info.h"
 				>
 			</File>
 		</Filter>

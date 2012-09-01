@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _RDO_LOG_EDIT_LINE_INFO_H_
-#define _RDO_LOG_EDIT_LINE_INFO_H_
+#ifndef _LOG_EDIT_LINE_INFO_H_
+#define _LOG_EDIT_LINE_INFO_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -46,4 +46,4 @@ private:
 
 CLOSE_RDO_SIMULATION_REPORT_NAMESPACE
 
-#endif // _RDO_LOG_EDIT_LINE_INFO_H_
+#endif // _LOG_EDIT_LINE_INFO_H_
