@@ -407,14 +407,14 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			output->clearBuild();
 			output->showBuild();
 			output->appendStringToBuild(rdo::format(IDS_MODEL_RUNTIMEERROR));
-			std::vector< RDOSyntaxMessage > errors;
+			std::vector< FileMessage > errors;
 			studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors);
 			int errors_cnt   = 0;
 			int warnings_cnt = 0;
 			STL_FOR_ALL_CONST(errors, it)
 			{
 				output->appendStringToBuild(*it);
-				if (it->type == RDOSyntaxMessage::MT_WARNING)
+				if (it->getType() == FileMessage::MT_WARNING)
 				{
 					warnings_cnt++;
 				}
@@ -440,14 +440,14 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		{
 			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_EXITCODE, &m_exitCode);
 			PTR(RDOStudioOutput) output = &studioApp.m_pMainFrame->output;
-			std::vector<RDOSyntaxMessage> errors;
+			std::vector<FileMessage> errors;
 			studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors);
 			int errors_cnt   = 0;
 			int warnings_cnt = 0;
 			STL_FOR_ALL_CONST(errors, it)
 			{
 				output->appendStringToBuild(*it);
-				if (it->type == RDOSyntaxMessage::MT_WARNING)
+				if (it->getType() == FileMessage::MT_WARNING)
 				{
 					warnings_cnt++;
 				}
@@ -479,14 +479,14 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			m_GUI_IS_RUNING = false;
 			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_EXITCODE, &m_exitCode);
 			PTR(RDOStudioOutput) output = &studioApp.m_pMainFrame->output;
-			std::vector<RDOSyntaxMessage> errors;
+			std::vector<FileMessage> errors;
 			studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors);
 			int errors_cnt   = 0;
 			int warnings_cnt = 0;
 			STL_FOR_ALL_CONST(errors, it)
 			{
 				output->appendStringToBuild(*it);
-				if (it->type == RDOSyntaxMessage::MT_WARNING)
+				if (it->getType() == FileMessage::MT_WARNING)
 				{
 					warnings_cnt++;
 				}
