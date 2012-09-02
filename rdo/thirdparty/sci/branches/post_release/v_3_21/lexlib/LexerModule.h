@@ -13,10 +13,10 @@ namespace Scintilla {
 #endif
 
 class Accessor;
-class StringList;
+class WordList;
 
 typedef void (*LexerFunction)(unsigned int startPos, int lengthDoc, int initStyle,
-                  StringList *keywordlists[], Accessor &styler);
+                  WordList *keywordlists[], Accessor &styler);
 typedef ILexer *(*LexerFactoryFunction)();
 
 /**
@@ -59,9 +59,9 @@ public:
 	ILexer *Create() const;
 
 	virtual void Lex(unsigned int startPos, int length, int initStyle,
-                  StringList *keywordlists[], Accessor &styler) const;
+                  WordList *keywordlists[], Accessor &styler) const;
 	virtual void Fold(unsigned int startPos, int length, int initStyle,
-                  StringList *keywordlists[], Accessor &styler) const;
+                  WordList *keywordlists[], Accessor &styler) const;
 
 	friend class Catalogue;
 };

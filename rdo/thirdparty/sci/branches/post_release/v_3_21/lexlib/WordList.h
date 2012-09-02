@@ -28,6 +28,7 @@ public:
 	~WordList() { Clear(); }
 	operator bool() const { return len ? true : false; }
 	bool operator!=(const WordList &other) const;
+	char *operator[](int ind) { return words[ind]; }
 	void Clear();
 	void Set(const char *s);
 	bool InList(const char *s) const;

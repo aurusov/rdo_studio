@@ -6,7 +6,7 @@
 // The License.txt file describes the conditions under which this software may be distributed.
 
 typedef void (*LexerFunction)(unsigned int startPos, int lengthDoc, int initStyle,
-                  StringList *keywordlists[], Accessor &styler);
+                  WordList *keywordlists[], Accessor &styler);
                   
 /**
  * A LexerModule is responsible for lexing and folding a particular language.

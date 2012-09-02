@@ -19,7 +19,7 @@
 #include "Platform.h"
 
 #include "thirdparty\sci\scite\SString.h"
-#include "thirdparty\sci\scite\StringList.h"
+#include "WordList.h"
 #include "ILexer.h"
 #include "LexAccessor.h"
 #include "Accessor.h"
@@ -28,9 +28,9 @@
 #include "SciLexer.h"
 
 
-static void ColouriseFindDoc( unsigned int startPos, int length, int initStyle, StringList *keywordlists[], Accessor &styler )
+static void ColouriseFindDoc( unsigned int startPos, int length, int initStyle, WordList *keywordlists[], Accessor &styler )
 {
-	StringList& keywords = *keywordlists[ SCI_RDO_ENDOFLINEONLY_KEYWORDSINDEX ];
+	WordList& keywords = *keywordlists[ SCI_RDO_ENDOFLINEONLY_KEYWORDSINDEX ];
 	if ( !keywords ) return;
 	const char* findKeyword = keywords[0];
 	const int findKeywordLen = strlen( findKeyword );
