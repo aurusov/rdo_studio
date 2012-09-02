@@ -776,11 +776,11 @@ PTR(QProcess) RDOStudioApp::runQtAssistant() const
 {
 	PTR(QProcess) pProcess = new QProcess;
 	QStringList args;
-	args << QLatin1String("-collectionFile")
-		<< QLatin1String(getFullHelpFileName().c_str())
-		<< QLatin1String("-enableRemoteControl")
-		<< QLatin1String("-quiet");
-	pProcess->start(QLatin1String("assistant"), args);
+	args << QString("-collectionFile")
+		<< QString(getFullHelpFileName().c_str())
+		<< QString("-enableRemoteControl")
+		<< QString("-quiet");
+	pProcess->start(QString("assistant"), args);
 	return pProcess;
 }
 
