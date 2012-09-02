@@ -415,7 +415,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			STL_FOR_ALL_CONST(errors, it)
 			{
 				output->appendStringToBuild(*it);
-				if (it->type == FileMessage::MT_WARNING)
+				if (it->getType() == FileMessage::MT_WARNING)
 				{
 					warnings_cnt++;
 				}
@@ -448,7 +448,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			STL_FOR_ALL_CONST(errors, it)
 			{
 				output->appendStringToBuild(*it);
-				if (it->type == FileMessage::MT_WARNING)
+				if (it->getType() == FileMessage::MT_WARNING)
 				{
 					warnings_cnt++;
 				}
@@ -487,7 +487,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			STL_FOR_ALL_CONST(errors, it)
 			{
 				output->appendStringToBuild(*it);
-				if (it->type == FileMessage::MT_WARNING)
+				if (it->getType() == FileMessage::MT_WARNING)
 				{
 					warnings_cnt++;
 				}

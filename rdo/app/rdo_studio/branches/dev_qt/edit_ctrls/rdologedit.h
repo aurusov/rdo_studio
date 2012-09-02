@@ -12,7 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/report/rdo_log_edit_line_info.h"
+#include "simulator/report/log_edit_line_info.h"
 #include "simulator/service/rdosimwin.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdobaseedit.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdologeditstyle.h"
@@ -30,7 +30,7 @@ namespace rdoEditCtrl {
 class RDOLogEdit: public RDOBaseEdit
 {
 public:
-	typedef rdo::simulation::report::RDOLogEditLineInfo RDOLogEditLineInfo;
+	typedef rdo::simulation::report::LogEditLineInfo RDOLogEditLineInfo;
 	typedef std::list<PTR(RDOLogEditLineInfo)> RDOLogEditLineInfoList;
 
 public:

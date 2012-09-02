@@ -11,7 +11,7 @@
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/report/rdo_build_edit_line_info.h"
+#include "simulator/report/build_edit_line_info.h"
 #include "app/rdo_studio_mfc/src/output.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
@@ -202,15 +202,15 @@ void RDOStudioOutput::clearFind()
 
 void RDOStudioOutput::appendStringToBuild( CREF(tstring) str ) const
 {
-	PTR(RDOBuildEditLineInfo) pLine = new RDOBuildEditLineInfo( str );
+	PTR(BuildEditLineInfo) pLine = new BuildEditLineInfo( str );
 	build->appendLine( pLine );
 }
 
 void RDOStudioOutput::appendStringToBuild( CREF(rdo::simulation::report::FileMessage) message ) const
 {
-	if ( message.type == rdo::simulation::report::FileMessage::MT_ERROR || (message.type == FileMessage::MT_WARNING && static_cast<PTR(RDOBuildEditTheme)>(studioApp.getStyle()->style_build.theme)->warning) )
+	if ( message.getType() == rdo::simulation::report::FileMessage::MT_ERROR || (message.getType() == FileMessage::MT_WARNING && static_cast<PTR(RDOBuildEditTheme)>(studioApp.m_pMainFrame->style_build.theme)->warning) )
 	{
-		PTR(RDOBuildEditLineInfo) pLine = new RDOBuildEditLineInfo(message);
+		PTR(BuildEditLineInfo) pLine = new BuildEditLineInfo(message);
 		build->appendLine(pLine);
 	}
 }
@@ -232,7 +232,7 @@ void RDOStudioOutput::appendStringToResults( CREF(tstring) str ) const
 
 void RDOStudioOutput::appendStringToFind( CREF(tstring) str, rdoModelObjects::RDOFileType fileType, int lineNumber, int posInLine ) const
 {
-	RDOLogEditLineInfo* line = new RDOLogEditLineInfo( rdo::simulation::report::FileMessage(str, fileType, lineNumber, posInLine ) );
+	LogEditLineInfo* line = new LogEditLineInfo( rdo::simulation::report::FileMessage(str, fileType, lineNumber, posInLine ) );
 	find->appendLine( line );
 }
 
