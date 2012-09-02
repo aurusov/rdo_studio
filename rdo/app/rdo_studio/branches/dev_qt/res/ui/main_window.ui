@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../rdo_studio.qrc">
-    <normaloff>:/images/images/rdo_studio_16x16.png</normaloff>:/images/images/rdo_studio_16x16.png</iconset>
+    <normaloff>:/images/images/logo.png</normaloff>:/images/images/logo.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget"/>
   <widget class="QStatusBar" name="statusbar"/>
