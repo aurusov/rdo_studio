@@ -166,7 +166,7 @@ RDOStudioMainFrame::~RDOStudioMainFrame()
 
 void RDOStudioMainFrame::init()
 {
-	m_thisCWnd.Attach(mdiArea->winId());
+	m_thisCWnd.Attach(winId());
 
 	// Кто-то должен поднять кернел и треды
 	new RDOStudioModel();
