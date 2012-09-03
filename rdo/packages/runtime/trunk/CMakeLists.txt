@@ -229,11 +229,13 @@ SET(SOURCE_FILES
 
 ADD_LIBRARY(rdo_runtime ${HEADER_FILES} ${INLINE_FILES} ${SOURCE_FILES})
 
-ADD_DEPENDENCIES(test_rdo_utils rdo_utils)
+ADD_DEPENDENCIES(rdo_runtime rdo_utils)
+ADD_DEPENDENCIES(rdo_runtime rdo_simulator_report)
 
-TARGET_LINK_LIBRARIES(rdo_runtime rdo_utils)
-SET_TARGET_PROPERTIES(rdo_runtime PROPERTIES LINKER_LANGUAGE CXX)
 TARGET_LINK_LIBRARIES(rdo_runtime ${Boost_LIBRARIES})
+TARGET_LINK_LIBRARIES(rdo_runtime rdo_utils)
+TARGET_LINK_LIBRARIES(rdo_runtime rdo_simulator_report)
+SET_TARGET_PROPERTIES(rdo_runtime PROPERTIES LINKER_LANGUAGE CXX)
 
 SET(RDO_RUNTIME_TEST_PATH ${CMAKE_CURRENT_SOURCE_DIR}/test)
 ADD_SUBDIRECTORY(${RDO_RUNTIME_TEST_PATH})
@@ -262,30 +264,30 @@ SOURCE_GROUP(".rdo_type" FILES
 	
 SOURCE_GROUP(".rdo_type_array" FILES 
 	rdo_array.h
-	rdo_array.cpp)	
+	rdo_array.cpp)
 
 SOURCE_GROUP(".rdo_type_enum" FILES 
 	rdo_enum.h
-	rdo_enum.inl)	
+	rdo_enum.inl)
 
 SOURCE_GROUP(".rdo_type_fuzzy" FILES 
 	rdo_fuzzy.h
 	rdo_fuzzy.inl
-	rdo_fuzzy.cpp)	
+	rdo_fuzzy.cpp)
 
 SOURCE_GROUP(".rdo_type_matrix" FILES 
 	rdo_matrix.h
-	rdo_matrix.cpp)	
+	rdo_matrix.cpp)
 
 SOURCE_GROUP(".rdo_trace" FILES 
 	rdotrace.h
 	rdotrace.inl
 	rdotrace.cpp
-	rdotrace_i.h)	
+	rdotrace_i.h)
 
 SOURCE_GROUP(".interfaces" FILES 
 	rdo_model_i.h
-	rdo_runtime_interface_registrator.h)	
+	rdo_runtime_interface_registrator.h)
 
 SOURCE_GROUP(".rdo_frame" FILES 
 	rdoframe.h
