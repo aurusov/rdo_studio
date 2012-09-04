@@ -34,7 +34,7 @@ void Error::error(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message)
 		return;
 
 	push_only(src_info, message);
-	throw RDOSyntaxException(m_errorList.back().text);
+	throw RDOSyntaxException(m_errorList.back().getText());
 }
 
 void Error::warning(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message) 
@@ -42,7 +42,7 @@ void Error::warning(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message)
 	if (blocked())
 		return;
 
-	m_errorList.push_back(rdo::simulation::report::RDOSyntaxMessage(message, src_info.src_filetype(), src_info.src_pos().m_last_line, src_info.src_pos().m_last_pos, RDOSyntaxMessage::MT_WARNING));
+	m_errorList.push_back(rdo::simulation::report::FileMessage(message, src_info.src_filetype(), src_info.src_pos().m_last_line, src_info.src_pos().m_last_pos, FileMessage::MT_WARNING));
 }
 
 void Error::push_only(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message)
@@ -52,7 +52,7 @@ void Error::push_only(CREF(RDOParserSrcInfo) src_info, CREF(tstring) message)
 
 	if (src_info.src_pos().m_last_line != rdo::runtime::RDOSrcInfo::Position::UNDEFINE_LINE && src_info.src_pos().m_last_pos != rdo::runtime::RDOSrcInfo::Position::UNDEFINE_POS)
 	{
-		m_errorList.push_back(rdo::simulation::report::RDOSyntaxMessage(message, src_info.src_filetype(), src_info.src_pos().m_last_line, src_info.src_pos().m_last_pos));
+		m_errorList.push_back(rdo::simulation::report::FileMessage(message, src_info.src_filetype(), src_info.src_pos().m_last_line, src_info.src_pos().m_last_pos));
 	}
 }
 
@@ -63,7 +63,7 @@ void Error::error(CREF(RDOParserSrcInfo) src_info1, CREF(RDOParserSrcInfo) src_i
 		return;
 
 	push_only(src_info1.src_pos().m_last_line != src_info2.src_pos().m_last_line ? src_info1 : src_info2, message);
-	throw RDOSyntaxException(m_errorList.back().text);
+	throw RDOSyntaxException(m_errorList.back().getText());
 }
 
 //! misc
@@ -74,7 +74,7 @@ void Error::push_done()
 
 	if (!m_errorList.empty())
 	{
-		throw RDOSyntaxException(m_errorList.back().text);
+		throw RDOSyntaxException(m_errorList.back().getText());
 	}
 }
 
@@ -85,7 +85,8 @@ void Error::modify(CREF(tstring) message)
 
 	if (!m_errorList.empty())
 	{
-		m_errorList.front().text = message + m_errorList.front().text;
+		tstring new_text = message + m_errorList.front().getText();;
+		m_errorList.front().setText(new_text); 
 		throw RDOSyntaxException(_T(""));
 	}
 }
