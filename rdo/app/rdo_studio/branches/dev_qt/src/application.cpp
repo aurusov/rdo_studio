@@ -296,7 +296,7 @@ BOOL RDOStudioApp::InitInstance()
 #endif
 
 	loadReopen();
-//	updateReopenSubMenu();
+	updateReopenSubMenu();
 
 	if (getFileAssociationCheckInFuture())
 	{
@@ -612,51 +612,84 @@ void RDOStudioApp::insertReopenItem(CREF(tstring) item)
 
 void RDOStudioApp::updateReopenSubMenu() const
 {
-	if (!AfxGetMainWnd() || !AfxGetMainWnd()->GetMenu())
-		return;
-
-	rbool maximized = m_pMainFrame->isMDIMaximazed();
-	int delta = maximized ? 1 : 0;
-
-	PTR(CMenu) pReopenMenu = AfxGetMainWnd()->GetMenu()->GetSubMenu(delta)->GetSubMenu(2);
-
-	while (pReopenMenu->GetMenuItemCount())
+	QMenu* pMenuFile = m_pMainFrame->getMenuFile();
+	QList<QAction*> actionList = pMenuFile->actions();
+	for (int actionIndex = 0; actionIndex < actionList.size(); ++actionIndex)
 	{
-		pReopenMenu->DeleteMenu(0, MF_BYPOSITION);
-	}
-
-	if (!m_reopenList.empty())
-	{
-		AfxGetMainWnd()->GetMenu()->GetSubMenu(delta)->EnableMenuItem(2, MF_BYPOSITION | MF_ENABLED);
-		for (ReopenList::size_type i = 0; i < m_reopenList.size(); i++)
+		QAction* pAction = actionList[actionIndex];
+		if (pAction->text() == "Недавние")
 		{
-			if (i == 4)
+			QMenu* pMenuReopen = pAction->menu();
+			if (pMenuReopen)
 			{
-				pReopenMenu->AppendMenu(MF_SEPARATOR);
+				pMenuReopen->clear();
 			}
-			ruint id = ID_FILE_MRU_FILE1;
-			switch (i)
+			else
 			{
-			case 0: id = ID_FILE_REOPEN_1;  break;
-			case 1: id = ID_FILE_REOPEN_2;  break;
-			case 2: id = ID_FILE_REOPEN_3;  break;
-			case 3: id = ID_FILE_REOPEN_4;  break;
-			case 4: id = ID_FILE_REOPEN_5;  break;
-			case 5: id = ID_FILE_REOPEN_6;  break;
-			case 6: id = ID_FILE_REOPEN_7;  break;
-			case 7: id = ID_FILE_REOPEN_8;  break;
-			case 8: id = ID_FILE_REOPEN_9;  break;
-			case 9: id = ID_FILE_REOPEN_10; break;
+				pMenuReopen = new QMenu();
 			}
-			pReopenMenu->AppendMenu(MF_STRING, id, rdo::format(_T("%d. %s"), i+1, m_reopenList[i].c_str()).c_str());
+
+			for (ReopenList::size_type reopenIndex = 0; reopenIndex < m_reopenList.size(); ++reopenIndex)
+			{
+				if (reopenIndex == 4)
+				{
+					pMenuReopen->addSeparator();
+				}
+				pMenuReopen->addAction(rdo::format("%d. %s", reopenIndex+1, m_reopenList[reopenIndex].c_str()).c_str());
+			}
+
+			pAction->setMenu(pMenuReopen);
+			break;
 		}
-	}
-	else
-	{
-		AfxGetMainWnd()->GetMenu()->GetSubMenu(delta)->EnableMenuItem(2, MF_BYPOSITION | MF_DISABLED | MF_GRAYED);
 	}
 
 	saveReopen();
+
+	//if (!AfxGetMainWnd() || !AfxGetMainWnd()->GetMenu())
+	//	return;
+
+	//rbool maximized = m_pMainFrame->isMDIMaximazed();
+	//int delta = maximized ? 1 : 0;
+
+	//PTR(CMenu) pReopenMenu = AfxGetMainWnd()->GetMenu()->GetSubMenu(delta)->GetSubMenu(2);
+
+	//while (pReopenMenu->GetMenuItemCount())
+	//{
+	//	pReopenMenu->DeleteMenu(0, MF_BYPOSITION);
+	//}
+
+	//if (!m_reopenList.empty())
+	//{
+	//	AfxGetMainWnd()->GetMenu()->GetSubMenu(delta)->EnableMenuItem(2, MF_BYPOSITION | MF_ENABLED);
+	//	for (ReopenList::size_type i = 0; i < m_reopenList.size(); i++)
+	//	{
+	//		if (i == 4)
+	//		{
+	//			pReopenMenu->AppendMenu(MF_SEPARATOR);
+	//		}
+	//		ruint id = ID_FILE_MRU_FILE1;
+	//		switch (i)
+	//		{
+	//		case 0: id = ID_FILE_REOPEN_1;  break;
+	//		case 1: id = ID_FILE_REOPEN_2;  break;
+	//		case 2: id = ID_FILE_REOPEN_3;  break;
+	//		case 3: id = ID_FILE_REOPEN_4;  break;
+	//		case 4: id = ID_FILE_REOPEN_5;  break;
+	//		case 5: id = ID_FILE_REOPEN_6;  break;
+	//		case 6: id = ID_FILE_REOPEN_7;  break;
+	//		case 7: id = ID_FILE_REOPEN_8;  break;
+	//		case 8: id = ID_FILE_REOPEN_9;  break;
+	//		case 9: id = ID_FILE_REOPEN_10; break;
+	//		}
+	//		pReopenMenu->AppendMenu(MF_STRING, id, rdo::format(_T("%d. %s"), i+1, m_reopenList[i].c_str()).c_str());
+	//	}
+	//}
+	//else
+	//{
+	//	AfxGetMainWnd()->GetMenu()->GetSubMenu(delta)->EnableMenuItem(2, MF_BYPOSITION | MF_DISABLED | MF_GRAYED);
+	//}
+
+	//saveReopen();
 }
 
 void RDOStudioApp::loadReopen()
