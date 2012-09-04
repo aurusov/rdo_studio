@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <fstream>
 #include <QtCore/qprocess.h>
-#include <QtGui/qwidget.h>
+#include <QtGui/qmainwindow.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
 #include "kernel/rdokernel.h"
@@ -44,7 +44,7 @@ public:
 	RDOStudioApp();
 	virtual ~RDOStudioApp();
 
-	PTR(QWidget)        getMainWnd ();
+	PTR(QMainWindow)    getMainWnd ();
 	PTR(MainWindowBase) getIMainWnd();
 	PTR(MainWindowBase) getStyle   ();
 

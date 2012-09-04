@@ -433,7 +433,7 @@ int RDOStudioApp::ExitInstance()
 	}
 }
 
-PTR(QWidget) RDOStudioApp::getMainWnd()
+PTR(QMainWindow) RDOStudioApp::getMainWnd()
 {
 	return m_pMainFrame;
 }
