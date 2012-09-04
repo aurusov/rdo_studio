@@ -15,7 +15,7 @@
 #include <vector>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdo_object.h"
-#include "simulator/report/error_code.h"
+#include "simulator/report/file_message.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -23,14 +23,14 @@ OPEN_RDO_RUNTIME_NAMESPACE
 class Error
 {
 public:
-	typedef  std::vector<rdo::simulation::report::RDOSyntaxMessage>  ErrorList;
+	typedef  std::vector<rdo::simulation::report::FileMessage>  ErrorList;
 
-	void            push(CREF(rdo::simulation::report::RDOSyntaxMessage) error);
+	void            push(CREF(rdo::simulation::report::FileMessage) error);
 	void            push(CREF(tstring) message, CREF(RDOSrcInfo) srcInfo);
 	CREF(ErrorList) list() const;
 
 private:
-	typedef rdo::simulation::report::RDOSyntaxMessage RDOSyntaxMessage;
+	typedef rdo::simulation::report::FileMessage RDOSyntaxMessage;
 
 	ErrorList m_errorList;
 };

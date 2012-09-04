@@ -63,7 +63,7 @@ RDOValue RDOCalc::calcValue(CREF(LPRDORuntime) pRuntime)
 		{
 			message = rdo::format(_T("%s: %s"), message.c_str(), ex.message().c_str());
 		}
-		rdo::simulation::report::RDOSyntaxMessage error(
+		rdo::simulation::report::FileMessage error(
 			message,
 			m_srcInfo.src_filetype(),
 			m_srcInfo.src_pos().m_last_line,

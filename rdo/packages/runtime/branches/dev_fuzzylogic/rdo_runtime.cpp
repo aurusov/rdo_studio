@@ -34,7 +34,7 @@
 #include "utils/rdodebug.h"
 // --------------------------------------------------------------------------------
 
-typedef rdo::simulation::report::RDOSyntaxMessage RDOSyntaxMessage;
+typedef rdo::simulation::report::FileMessage RDOSyntaxMessage;
 
 #ifdef COMPILER_VISUAL_STUDIO
 	#pragma warning(disable : 4786)
