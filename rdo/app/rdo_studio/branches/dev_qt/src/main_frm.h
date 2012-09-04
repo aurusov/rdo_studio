@@ -80,16 +80,16 @@ public:
 
 	double getSpeed() const { return modelToolBar.getSpeed(); }
 
-	void beginProgress( const int lower = 0, const int upper = 100, const int step = 1 );
-	void getProgressRange( int& lower, int& upper ) const  { statusBar.getRange( lower, upper ); };
-	void setProgress( const int pos )                      { statusBar.setPos( pos );            };
-	int  getProgress() const                               { return statusBar.getPos();          };
-	void offsetProgress( const int offset )                { statusBar.offsetPos( offset );      };
-	void stepProgress()                                    { statusBar.stepIt();                 };
-	void endProgress();
+	void beginProgress   (const int lower = 0, const int upper = 100, const int step = 1);
+	void getProgressRange(int& lower, int& upper) const  { statusBar.getRange( lower, upper ); };
+	void setProgress     (const int pos)                 { statusBar.setPos( pos );            };
+	int  getProgress     () const                        { return statusBar.getPos();          };
+	void offsetProgress  (const int offset)              { statusBar.offsetPos( offset );      };
+	void stepProgress    ()                              { statusBar.stepIt();                 };
+	void endProgress     ();
 
 	void update_start();
-	void update_stop();
+	void update_stop ();
 
 	PTR(CWnd) c_wnd() { return &m_thisCWnd; }
 
