@@ -11,6 +11,7 @@
 #define _RDO_STUDIO_MFC_OUTPUT_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtGui/qwidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/service/rdosimwin.h"
 #include "ui/mfc_ctrls/rdotabctrl.h"
@@ -33,26 +34,10 @@ namespace rdoTracerLog {
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioOutput
 // --------------------------------------------------------------------------------
-class RDOStudioOutput: public RDOStudioDockWnd
+class RDOStudioOutput: public QWidget
 {
-private:
-	class Tab : public RDOTabCtrl {
-		protected:
-			virtual void changeCurrentItem();
-	};
-
-	Tab tab;
-
-	rdoEditCtrl::RDOBuildEdit*      build;
-	rdoEditCtrl::RDODebugEdit*      debug;
-	rdoTracerLog::RDOTracerLogCtrl* trace;
-	rdoEditor::RDOEditorResults*    results;
-	rdoEditCtrl::RDOFindEdit*       find;
-
-	CMenu popupMenu;
-
 public:
-	RDOStudioOutput();
+	RDOStudioOutput(PTR(QWidget) pParent);
 	virtual ~RDOStudioOutput();
 
 	void showBuild();
@@ -83,8 +68,24 @@ public:
 	void updateStyles() const;
 
 private:
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	DECLARE_MESSAGE_MAP()
+	typedef  QWidget  parent_type;
+
+	class Tab: public RDOTabCtrl
+	{
+	protected:
+		virtual void changeCurrentItem();
+	};
+
+	CWnd                            m_thisCWnd;
+	Tab                             tab;
+	rdoEditCtrl::RDOBuildEdit*      build;
+	rdoEditCtrl::RDODebugEdit*      debug;
+	rdoTracerLog::RDOTracerLogCtrl* trace;
+	rdoEditor::RDOEditorResults*    results;
+	rdoEditCtrl::RDOFindEdit*       find;
+	CMenu                           popupMenu;
+
+	void resizeEvent(PTR(QResizeEvent) event);
 };
 
 #endif // _RDO_STUDIO_MFC_OUTPUT_H_

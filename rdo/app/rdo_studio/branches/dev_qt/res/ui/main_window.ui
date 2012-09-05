@@ -73,6 +73,9 @@
    <widget class="QWidget" name="workspaceDockWidgetContent"/>
   </widget>
   <widget class="QDockWidget" name="outputDockWidget">
+   <property name="windowTitle">
+    <string>Output</string>
+   </property>
    <attribute name="dockWidgetArea">
     <number>8</number>
    </attribute>

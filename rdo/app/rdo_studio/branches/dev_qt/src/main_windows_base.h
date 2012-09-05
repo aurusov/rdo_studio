@@ -13,7 +13,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/workspace.h"
-#include "app/rdo_studio_mfc/src/output.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoreditstyle.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorresultsstyle.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdobuildeditstyle.h"
@@ -25,12 +24,13 @@
 #include "app/rdo_studio_mfc/src/frame/style.h"
 // --------------------------------------------------------------------------------
 
+class RDOStudioOutput;
+
 class MainWindowBase
 {
 public:
-	RDOStudioWorkspace workspace;
-	RDOStudioOutput    output;
-	PTR(CControlBar)   m_pLastDocked;
+	RDOStudioWorkspace   workspace;
+	PTR(CControlBar)     m_pLastDocked;
 
 	rdoEditor::RDOEditorEditStyle    style_editor;
 	rdoEditCtrl::RDOBuildEditStyle   style_build;
@@ -42,6 +42,8 @@ public:
 	RDOStudioChartViewStyle          style_chart;
 
 	rbool isMDIMaximazed() const { return true; }
+
+	PTR(RDOStudioOutput) getOutputDoc() { return m_pOutputDoc; }
 
 	static rbool is_close_mode() { return close_mode; }
 
@@ -65,6 +67,8 @@ public:
 protected:
 	// Используется при закрытии модели. Задается вопрос.
 	static rbool close_mode;
+
+	PTR(RDOStudioOutput) m_pOutputDoc;
 };
 
 #endif // _RDO_STUDIO_MAIN_WINDOWS_BASE_H_
