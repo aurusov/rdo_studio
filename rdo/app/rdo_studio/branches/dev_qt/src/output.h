@@ -15,7 +15,6 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/service/rdosimwin.h"
 #include "ui/mfc_ctrls/rdotabctrl.h"
-#include "app/rdo_studio_mfc/src/dock_wnd.h"
 // --------------------------------------------------------------------------------
 
 namespace rdoEditor {
