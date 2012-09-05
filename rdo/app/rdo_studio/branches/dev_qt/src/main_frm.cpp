@@ -217,11 +217,13 @@ void RDOStudioMainFrame::init()
 	//statusBar.SetPaneInfo( 7, ID_PROGRESSSTATUSBAR         , SBPS_STRETCH, 70 );
 	//statusBar.setProgressIndicator( ID_PROGRESSSTATUSBAR );
 
-	//workspace.Create( rdo::format( ID_DOCK_WORKSPACE ).c_str(), c_wnd(), 0 );
-	//workspace.SetBarStyle( workspace.GetBarStyle() | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
+	m_pWorkspaceDoc = new RDOStudioWorkspace(workspaceDockWidgetContents);
+	PTR(QVBoxLayout) pWorkspaceLayout = new QVBoxLayout(workspaceDockWidgetContents);
+	pWorkspaceLayout->setSpacing(0);
+	pWorkspaceLayout->setContentsMargins(0, 0, 0, 0);
+	pWorkspaceLayout->addWidget(m_pWorkspaceDoc);
 
 	m_pOutputDoc = new RDOStudioOutput(outputDockWidgetContents);
-
 	PTR(QVBoxLayout) pOutputLayout = new QVBoxLayout(outputDockWidgetContents);
 	pOutputLayout->setSpacing(0);
 	pOutputLayout->setContentsMargins(0, 0, 0, 0);
@@ -336,7 +338,7 @@ void RDOStudioMainFrame::showOutput()
 
 void RDOStudioMainFrame::OnUpdateViewWorkspace(CCmdUI* pCmdUI) 
 {
-	pCmdUI->SetCheck( workspace.IsVisible() );
+	pCmdUI->SetCheck(getWorkspaceDoc()->isVisible());
 }
 
 void RDOStudioMainFrame::OnUpdateViewOutput(CCmdUI* pCmdUI) 

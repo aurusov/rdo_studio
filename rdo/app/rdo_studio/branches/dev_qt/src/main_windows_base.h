@@ -29,7 +29,6 @@ class RDOStudioOutput;
 class MainWindowBase
 {
 public:
-	RDOStudioWorkspace   workspace;
 	PTR(CControlBar)     m_pLastDocked;
 
 	rdoEditor::RDOEditorEditStyle    style_editor;
@@ -43,7 +42,8 @@ public:
 
 	rbool isMDIMaximazed() const { return true; }
 
-	PTR(RDOStudioOutput) getOutputDoc() { return m_pOutputDoc; }
+	PTR(RDOStudioOutput)    getOutputDoc   () { return m_pOutputDoc;    }
+	PTR(RDOStudioWorkspace) getWorkspaceDoc() { return m_pWorkspaceDoc; }
 
 	static rbool is_close_mode() { return close_mode; }
 
@@ -68,7 +68,8 @@ protected:
 	// Используется при закрытии модели. Задается вопрос.
 	static rbool close_mode;
 
-	PTR(RDOStudioOutput) m_pOutputDoc;
+	PTR(RDOStudioOutput)     m_pOutputDoc;
+	PTR(RDOStudioWorkspace)  m_pWorkspaceDoc;
 };
 
 #endif // _RDO_STUDIO_MAIN_WINDOWS_BASE_H_

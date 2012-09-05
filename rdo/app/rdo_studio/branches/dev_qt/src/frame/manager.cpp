@@ -90,7 +90,7 @@ RDOStudioFrameManager::~RDOStudioFrameManager()
 void RDOStudioFrameManager::insertFrame(CREF(tstring) frameName)
 {
 	PTR(Frame) item = new Frame();
-	item->m_hitem = studioApp.getIMainWnd()->workspace.frames->InsertItem(frameName.c_str(), 1, 1, studioApp.getIMainWnd()->workspace.frames->GetRootItem());
+	item->m_hitem = studioApp.getIMainWnd()->getWorkspaceDoc()->frames->InsertItem(frameName.c_str(), 1, 1, studioApp.getIMainWnd()->getWorkspaceDoc()->frames->GetRootItem());
 	item->m_name  = frameName;
 	m_frameList.push_back(item);
 }
@@ -247,7 +247,7 @@ void RDOStudioFrameManager::clear()
 {
 	if (studioApp.getStyle())
 	{
-		studioApp.getIMainWnd()->workspace.frames->deleteChildren(studioApp.getIMainWnd()->workspace.frames->GetRootItem());
+		studioApp.getIMainWnd()->getWorkspaceDoc()->frames->deleteChildren(studioApp.getIMainWnd()->getWorkspaceDoc()->frames->GetRootItem());
 	}
 	STL_FOR_ALL(m_frameList, it)
 	{
@@ -288,7 +288,7 @@ PTR(RDOStudioFrameDoc) RDOStudioFrameManager::getFirstExistDoc() const
 
 void RDOStudioFrameManager::expand() const
 {
-	studioApp.getIMainWnd()->workspace.frames->expand();
+	studioApp.getIMainWnd()->getWorkspaceDoc()->frames->expand();
 }
 
 rbool RDOStudioFrameManager::isValidFrameDoc(CPTRC(RDOStudioFrameDoc) pFrame) const
@@ -325,7 +325,7 @@ void RDOStudioFrameManager::setCurrentShowingFrame(ruint index)
 		m_currentShowingFrame = index;
 		if (studioApp.getStyle())
 		{
-			PTR(CTreeCtrl) pTree = studioApp.getIMainWnd()->workspace.frames;
+			PTR(CTreeCtrl) pTree = studioApp.getIMainWnd()->getWorkspaceDoc()->frames;
 			if (m_currentShowingFrame != ruint(~0))
 			{
 				HTREEITEM hitem = m_frameList[m_currentShowingFrame]->m_hitem;
