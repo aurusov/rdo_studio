@@ -5546,34 +5546,6 @@
 				Name=".moc"
 				>
 				<File
-					RelativePath=".\bin\rdo_studio\Win32\debug\moc_about.cpp"
-					>
-					<FileConfiguration
-						Name="release|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.corba|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.mt|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
 					RelativePath=".\bin\rdo_studio\Win32\release\moc_about.cpp"
 					>
 					<FileConfiguration
@@ -5602,7 +5574,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath=".\bin\rdo_studio\Win32\debug\moc_view.cpp"
+					RelativePath=".\bin\rdo_studio\Win32\debug\moc_about.cpp"
 					>
 					<FileConfiguration
 						Name="release|Win32"
@@ -5650,6 +5622,34 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="debug.mt|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\bin\rdo_studio\Win32\debug\moc_view.cpp"
+					>
+					<FileConfiguration
+						Name="release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.corba|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.mt|Win32"
 						ExcludedFromBuild="true"
 						>
 						<Tool
