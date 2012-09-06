@@ -121,8 +121,8 @@
     <addaction name="actViewShowSpace"/>
     <addaction name="actViewShowEndSymbol"/>
     <addaction name="separator"/>
-    <addaction name="actViewZoomMin"/>
     <addaction name="actViewZoomMax"/>
+    <addaction name="actViewZoomMin"/>
     <addaction name="actViewZoomAuto"/>
     <addaction name="actViewZoomReset"/>
     <addaction name="separator"/>
@@ -269,115 +269,184 @@
    <property name="text">
     <string>Отменить</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Z</string>
+   </property>
   </action>
   <action name="acteditRedo">
    <property name="text">
     <string>Повторить</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Y</string>
    </property>
   </action>
   <action name="actEditCut">
    <property name="text">
     <string>Вырезать</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+X</string>
+   </property>
   </action>
   <action name="actEditCopy">
    <property name="text">
     <string>Копировать</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
    </property>
   </action>
   <action name="actEditPaste">
    <property name="text">
     <string>Вставить</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+V</string>
+   </property>
   </action>
   <action name="actEditClear">
    <property name="text">
     <string>Удалить</string>
+   </property>
+   <property name="shortcut">
+    <string>Del</string>
    </property>
   </action>
   <action name="actEditCopyAsRTF">
    <property name="text">
     <string>Копировать как RTF</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+C</string>
+   </property>
   </action>
   <action name="actEditSelectAll">
    <property name="text">
     <string>Выделить все</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+A</string>
    </property>
   </action>
   <action name="actEditUpPercase">
    <property name="text">
     <string>В верхний регистр</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+U</string>
+   </property>
   </action>
   <action name="actEditLowPercase">
    <property name="text">
     <string>В нижний регистр</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+U</string>
    </property>
   </action>
   <action name="actEditCommentSelection">
    <property name="text">
     <string>Закомментировать выделенное</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
   </action>
   <action name="actEditCompleteWord">
    <property name="text">
     <string>Завершить слово</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Space</string>
    </property>
   </action>
   <action name="actSearchFind">
    <property name="text">
     <string>Найти...</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
+   </property>
   </action>
   <action name="actSearchFindNext">
    <property name="text">
     <string>Найти следующий</string>
+   </property>
+   <property name="shortcut">
+    <string>F3</string>
    </property>
   </action>
   <action name="actSearchFindPrevious">
    <property name="text">
     <string>Найти предыдущий</string>
    </property>
+   <property name="shortcut">
+    <string>Shift+F3</string>
+   </property>
   </action>
   <action name="actSearchReplace">
    <property name="text">
     <string>Заменить</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
    </property>
   </action>
   <action name="actSearchFinInModel">
    <property name="text">
     <string>Найти в модели</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+F</string>
+   </property>
   </action>
   <action name="actSearchBookmarksAddClear">
    <property name="text">
     <string>Поставить/снять закладку</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F2</string>
    </property>
   </action>
   <action name="actSearchBookmarkNext">
    <property name="text">
     <string>Перейти к след. закладке</string>
    </property>
+   <property name="shortcut">
+    <string>F2</string>
+   </property>
   </action>
   <action name="actSearchBookmarkPrevious">
    <property name="text">
     <string>Перейти к пред. закладке</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+F2</string>
    </property>
   </action>
   <action name="actSearchBookmarksClearAll">
    <property name="text">
     <string>Очистить все закладки</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+F2</string>
+   </property>
   </action>
   <action name="actSearchGotoLine">
    <property name="text">
     <string>Перейти на строчку</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+G</string>
+   </property>
   </action>
   <action name="actViewToggleAllfolds">
    <property name="text">
     <string>Свернуть/развернуть все группы</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+0</string>
    </property>
   </action>
   <action name="actViewToggleCurrentfold">
@@ -389,20 +458,32 @@
    <property name="text">
     <string>Показать пробелы</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+8</string>
+   </property>
   </action>
   <action name="actViewShowEndSymbol">
    <property name="text">
     <string>Показать символ конца строки</string>
    </property>
-  </action>
-  <action name="actViewZoomMin">
-   <property name="text">
-    <string>Увеличить масштаб</string>
+   <property name="shortcut">
+    <string>Ctrl+9</string>
    </property>
   </action>
   <action name="actViewZoomMax">
    <property name="text">
+    <string>Увеличить масштаб</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+=</string>
+   </property>
+  </action>
+  <action name="actViewZoomMin">
+   <property name="text">
     <string>Уменьшить масштаб</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+-</string>
    </property>
   </action>
   <action name="actViewZoomAuto">
@@ -414,15 +495,24 @@
    <property name="text">
     <string>Восстановить масштаб</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+/</string>
+   </property>
   </action>
   <action name="actViewWorkspace">
    <property name="text">
     <string>Показать панель объектов</string>
    </property>
+   <property name="shortcut">
+    <string>Alt+0</string>
+   </property>
   </action>
   <action name="actViewOutput">
    <property name="text">
     <string>Показать панель вывода</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+9</string>
    </property>
   </action>
   <action name="actViewSettings">
@@ -434,15 +524,24 @@
    <property name="text">
     <string>Скомпилировать</string>
    </property>
+   <property name="shortcut">
+    <string>F7</string>
+   </property>
   </action>
   <action name="actModelRun">
    <property name="text">
     <string>Запустить</string>
    </property>
+   <property name="shortcut">
+    <string>F5</string>
+   </property>
   </action>
   <action name="actModelStop">
    <property name="text">
     <string>Остановить</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+F5</string>
    </property>
   </action>
   <action name="actModelRuntimeMaxSpeed">
@@ -469,6 +568,9 @@
    <property name="text">
     <string>Увеличить масштаб</string>
    </property>
+   <property name="shortcut">
+    <string>Alt++</string>
+   </property>
   </action>
   <action name="actModelShowrateDec">
    <property name="text">
@@ -484,6 +586,9 @@
    <property name="text">
     <string>Пред. кадр анимации</string>
    </property>
+   <property name="shortcut">
+    <string>Alt+-</string>
+   </property>
   </action>
   <action name="actChartFindInChart">
    <property name="text">
@@ -498,6 +603,9 @@
   <action name="actChartTimeWrap">
    <property name="text">
     <string>'Схлопнуть' время</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
    </property>
   </action>
   <action name="actChartOptions">
