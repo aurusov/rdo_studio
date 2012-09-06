@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>628</width>
-    <height>455</height>
+    <width>855</width>
+    <height>464</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -36,8 +36,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>628</width>
-     <height>21</height>
+     <width>855</width>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -63,7 +63,126 @@
     <addaction name="separator"/>
     <addaction name="actHelpAbout"/>
    </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Правка</string>
+    </property>
+    <addaction name="actEditUndo"/>
+    <addaction name="acteditRedo"/>
+    <addaction name="separator"/>
+    <addaction name="actEditCut"/>
+    <addaction name="actEditCopy"/>
+    <addaction name="actEditPaste"/>
+    <addaction name="actEditClear"/>
+    <addaction name="separator"/>
+    <addaction name="actEditCopyAsRTF"/>
+    <addaction name="separator"/>
+    <addaction name="actEditSelectAll"/>
+    <addaction name="separator"/>
+    <addaction name="actEditUpPercase"/>
+    <addaction name="actEditLowPercase"/>
+    <addaction name="actEditCommentSelection"/>
+    <addaction name="actEditCompleteWord"/>
+   </widget>
+   <widget class="QMenu" name="menuSearch">
+    <property name="title">
+     <string>Поиск</string>
+    </property>
+    <addaction name="actSearchFind"/>
+    <addaction name="actSearchFindNext"/>
+    <addaction name="actSearchFindPrevious"/>
+    <addaction name="actSearchReplace"/>
+    <addaction name="separator"/>
+    <addaction name="actSearchFinInModel"/>
+    <addaction name="separator"/>
+    <addaction name="actSearchBookmarksAddClear"/>
+    <addaction name="actSearchBookmarkNext"/>
+    <addaction name="actSearchBookmarkPrevious"/>
+    <addaction name="actSearchBookmarksClearAll"/>
+    <addaction name="separator"/>
+    <addaction name="actSearchGotoLine"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>Просмотр</string>
+    </property>
+    <widget class="QMenu" name="menuViewToolbar">
+     <property name="title">
+      <string>Панели</string>
+     </property>
+     <addaction name="actViewToolbarFile"/>
+     <addaction name="actViewToolbarEdit"/>
+     <addaction name="actViewToolbarZoom"/>
+     <addaction name="actViewToolbarModel"/>
+    </widget>
+    <addaction name="actViewToggleAllfolds"/>
+    <addaction name="actViewToggleCurrentfold"/>
+    <addaction name="separator"/>
+    <addaction name="actViewShowSpace"/>
+    <addaction name="actViewShowEndSymbol"/>
+    <addaction name="separator"/>
+    <addaction name="actViewZoomMin"/>
+    <addaction name="actViewZoomMax"/>
+    <addaction name="actViewZoomAuto"/>
+    <addaction name="actViewZoomReset"/>
+    <addaction name="separator"/>
+    <addaction name="actViewWorkspace"/>
+    <addaction name="actViewOutput"/>
+    <addaction name="menuViewToolbar"/>
+    <addaction name="separator"/>
+    <addaction name="actViewSettings"/>
+   </widget>
+   <widget class="QMenu" name="menuInsert">
+    <property name="title">
+     <string>Вставка</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuModel">
+    <property name="title">
+     <string>Модель</string>
+    </property>
+    <addaction name="actModelBuild"/>
+    <addaction name="actModelRun"/>
+    <addaction name="actModelStop"/>
+    <addaction name="separator"/>
+    <addaction name="actModelRuntimeMaxSpeed"/>
+    <addaction name="actModelRuntimeJump"/>
+    <addaction name="actModelRuntimeSync"/>
+    <addaction name="actModelRuntimePause"/>
+    <addaction name="separator"/>
+    <addaction name="actModelShowrateInc"/>
+    <addaction name="actModelShowrateDec"/>
+    <addaction name="separator"/>
+    <addaction name="actModelFrameNext"/>
+    <addaction name="actModelFramePrev"/>
+   </widget>
+   <widget class="QMenu" name="menuChart">
+    <property name="title">
+     <string>График</string>
+    </property>
+    <addaction name="actChartFindInChart"/>
+    <addaction name="actChartAddToNewChart"/>
+    <addaction name="separator"/>
+    <addaction name="actChartTimeWrap"/>
+    <addaction name="separator"/>
+    <addaction name="actChartOptions"/>
+   </widget>
+   <widget class="QMenu" name="menuWindow">
+    <property name="title">
+     <string>Окна</string>
+    </property>
+    <addaction name="actWindowCascade"/>
+    <addaction name="actWindowTitleHorzontal"/>
+    <addaction name="actWindowArrange"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuSearch"/>
+   <addaction name="menuView"/>
+   <addaction name="menuInsert"/>
+   <addaction name="menuModel"/>
+   <addaction name="menuChart"/>
+   <addaction name="menuWindow"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QDockWidget" name="workspaceDockWidget">
@@ -144,6 +263,281 @@
   <action name="actHelpAbout">
    <property name="text">
     <string>О программе...</string>
+   </property>
+  </action>
+  <action name="actEditUndo">
+   <property name="text">
+    <string>Отменить</string>
+   </property>
+  </action>
+  <action name="acteditRedo">
+   <property name="text">
+    <string>Повторить</string>
+   </property>
+  </action>
+  <action name="actEditCut">
+   <property name="text">
+    <string>Вырезать</string>
+   </property>
+  </action>
+  <action name="actEditCopy">
+   <property name="text">
+    <string>Копировать</string>
+   </property>
+  </action>
+  <action name="actEditPaste">
+   <property name="text">
+    <string>Вставить</string>
+   </property>
+  </action>
+  <action name="actEditClear">
+   <property name="text">
+    <string>Удалить</string>
+   </property>
+  </action>
+  <action name="actEditCopyAsRTF">
+   <property name="text">
+    <string>Копировать как RTF</string>
+   </property>
+  </action>
+  <action name="actEditSelectAll">
+   <property name="text">
+    <string>Выделить все</string>
+   </property>
+  </action>
+  <action name="actEditUpPercase">
+   <property name="text">
+    <string>В верхний регистр</string>
+   </property>
+  </action>
+  <action name="actEditLowPercase">
+   <property name="text">
+    <string>В нижний регистр</string>
+   </property>
+  </action>
+  <action name="actEditCommentSelection">
+   <property name="text">
+    <string>Закомментировать выделенное</string>
+   </property>
+  </action>
+  <action name="actEditCompleteWord">
+   <property name="text">
+    <string>Завершить слово</string>
+   </property>
+  </action>
+  <action name="actSearchFind">
+   <property name="text">
+    <string>Найти...</string>
+   </property>
+  </action>
+  <action name="actSearchFindNext">
+   <property name="text">
+    <string>Найти следующий</string>
+   </property>
+  </action>
+  <action name="actSearchFindPrevious">
+   <property name="text">
+    <string>Найти предыдущий</string>
+   </property>
+  </action>
+  <action name="actSearchReplace">
+   <property name="text">
+    <string>Заменить</string>
+   </property>
+  </action>
+  <action name="actSearchFinInModel">
+   <property name="text">
+    <string>Найти в модели</string>
+   </property>
+  </action>
+  <action name="actSearchBookmarksAddClear">
+   <property name="text">
+    <string>Поставить/снять закладку</string>
+   </property>
+  </action>
+  <action name="actSearchBookmarkNext">
+   <property name="text">
+    <string>Перейти к след. закладке</string>
+   </property>
+  </action>
+  <action name="actSearchBookmarkPrevious">
+   <property name="text">
+    <string>Перейти к пред. закладке</string>
+   </property>
+  </action>
+  <action name="actSearchBookmarksClearAll">
+   <property name="text">
+    <string>Очистить все закладки</string>
+   </property>
+  </action>
+  <action name="actSearchGotoLine">
+   <property name="text">
+    <string>Перейти на строчку</string>
+   </property>
+  </action>
+  <action name="actViewToggleAllfolds">
+   <property name="text">
+    <string>Свернуть/развернуть все группы</string>
+   </property>
+  </action>
+  <action name="actViewToggleCurrentfold">
+   <property name="text">
+    <string>Свернуть/развернуть текущую группу</string>
+   </property>
+  </action>
+  <action name="actViewShowSpace">
+   <property name="text">
+    <string>Показать пробелы</string>
+   </property>
+  </action>
+  <action name="actViewShowEndSymbol">
+   <property name="text">
+    <string>Показать символ конца строки</string>
+   </property>
+  </action>
+  <action name="actViewZoomMin">
+   <property name="text">
+    <string>Увеличить масштаб</string>
+   </property>
+  </action>
+  <action name="actViewZoomMax">
+   <property name="text">
+    <string>Уменьшить масштаб</string>
+   </property>
+  </action>
+  <action name="actViewZoomAuto">
+   <property name="text">
+    <string>Автоматический масштаб</string>
+   </property>
+  </action>
+  <action name="actViewZoomReset">
+   <property name="text">
+    <string>Восстановить масштаб</string>
+   </property>
+  </action>
+  <action name="actViewWorkspace">
+   <property name="text">
+    <string>Показать панель объектов</string>
+   </property>
+  </action>
+  <action name="actViewOutput">
+   <property name="text">
+    <string>Показать панель вывода</string>
+   </property>
+  </action>
+  <action name="actViewSettings">
+   <property name="text">
+    <string>Настройки...</string>
+   </property>
+  </action>
+  <action name="actModelBuild">
+   <property name="text">
+    <string>Скомпилировать</string>
+   </property>
+  </action>
+  <action name="actModelRun">
+   <property name="text">
+    <string>Запустить</string>
+   </property>
+  </action>
+  <action name="actModelStop">
+   <property name="text">
+    <string>Остановить</string>
+   </property>
+  </action>
+  <action name="actModelRuntimeMaxSpeed">
+   <property name="text">
+    <string>Максимальная скорость</string>
+   </property>
+  </action>
+  <action name="actModelRuntimeJump">
+   <property name="text">
+    <string>Дискретная имитация</string>
+   </property>
+  </action>
+  <action name="actModelRuntimeSync">
+   <property name="text">
+    <string>Синхронная имитация</string>
+   </property>
+  </action>
+  <action name="actModelRuntimePause">
+   <property name="text">
+    <string>Пауза</string>
+   </property>
+  </action>
+  <action name="actModelShowrateInc">
+   <property name="text">
+    <string>Увеличить масштаб</string>
+   </property>
+  </action>
+  <action name="actModelShowrateDec">
+   <property name="text">
+    <string>Уменьшить масштаб</string>
+   </property>
+  </action>
+  <action name="actModelFrameNext">
+   <property name="text">
+    <string>След. кадр анимации</string>
+   </property>
+  </action>
+  <action name="actModelFramePrev">
+   <property name="text">
+    <string>Пред. кадр анимации</string>
+   </property>
+  </action>
+  <action name="actChartFindInChart">
+   <property name="text">
+    <string>Поиск на графике</string>
+   </property>
+  </action>
+  <action name="actChartAddToNewChart">
+   <property name="text">
+    <string>Добавить на новый график</string>
+   </property>
+  </action>
+  <action name="actChartTimeWrap">
+   <property name="text">
+    <string>'Схлопнуть' время</string>
+   </property>
+  </action>
+  <action name="actChartOptions">
+   <property name="text">
+    <string>Настройки</string>
+   </property>
+  </action>
+  <action name="actWindowCascade">
+   <property name="text">
+    <string>Расположить каскадом</string>
+   </property>
+  </action>
+  <action name="actWindowTitleHorzontal">
+   <property name="text">
+    <string>Расположить заголовками</string>
+   </property>
+  </action>
+  <action name="actWindowArrange">
+   <property name="text">
+    <string>Упорядочить свернутые</string>
+   </property>
+  </action>
+  <action name="actViewToolbarFile">
+   <property name="text">
+    <string>Панель файлов</string>
+   </property>
+  </action>
+  <action name="actViewToolbarEdit">
+   <property name="text">
+    <string>Панель редактирования</string>
+   </property>
+  </action>
+  <action name="actViewToolbarZoom">
+   <property name="text">
+    <string>Панель масштаба</string>
+   </property>
+  </action>
+  <action name="actViewToolbarModel">
+   <property name="text">
+    <string>Панель модели</string>
    </property>
   </action>
  </widget>
