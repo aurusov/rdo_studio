@@ -158,5 +158,7 @@ static void FoldRdoDoc( unsigned int startPos, int length, int initStyle, WordLi
 	int flagsNext = styler.LevelAt(lineCurrent) & ~SC_FOLDLEVELNUMBERMASK;
 	styler.SetLevel(lineCurrent, levelPrev | flagsNext);
 }
-
-LexerModule lmRDO( SCLEX_RDO, ColouriseRdoDoc, "rdo", FoldRdoDoc );
+void createLexRdo()
+{
+	LexerModule lmRDO( SCLEX_RDO, ColouriseRdoDoc, "rdo", FoldRdoDoc );
+}
