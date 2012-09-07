@@ -476,6 +476,47 @@ bool SString::grow(lenpos_t lenNew) {
 	return sNew != 0;
 }
 
+SString &SString::assign(const char *sOther, lenpos_t sSize_) {
+	if (!sOther) {
+		sSize_ = 0;
+	} else if (sSize_ == measure_length) {
+		sSize_ = strlen(sOther);
+	}
+	if (sSize > 0 && sSize_ <= sSize) {	// Does not allocate new buffer if the current is big enough
+		if (s && sSize_) {
+			memcpy(s, sOther, sSize_);
+		}
+		s[sSize_] = '\0';
+		sLen = sSize_;
+	} else {
+		delete []s;
+		s = StringAllocate(sOther, sSize_);
+		if (s) {
+			sSize = sSize_;	// Allow buffer bigger than real string, thus providing space to grow
+			sLen = sSize_;
+		} else {
+			sSize = sLen = 0;
+		}
+	}
+	return *this;
+}
+
+bool SString::operator==(const SString &sOther) const {
+	if ((s == 0) && (sOther.s == 0))
+		return true;
+	if ((s == 0) || (sOther.s == 0))
+		return false;
+	return strcmp(s, sOther.s) == 0;
+}
+
+bool SString::operator==(const char *sOther) const {
+	if ((s == 0) && (sOther == 0))
+		return true;
+	if ((s == 0) || (sOther == 0))
+		return false;
+	return strcmp(s, sOther) == 0;
+}
+
 int CompareNoCase(const char *a, const char *b) {
 	while (*a && *b) {
 		if (*a != *b) {

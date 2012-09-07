@@ -45,7 +45,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../../;../../../thirdparty/sci/include;../../../thirdparty/sci/src;../../../thirdparty/sci/lexlib;../../../thirdparty/sci/win32"
-				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT;_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="RDO_ST;SCI_LEXER;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="3"
 				BrowseInformation="1"
 				WarningLevel="4"
