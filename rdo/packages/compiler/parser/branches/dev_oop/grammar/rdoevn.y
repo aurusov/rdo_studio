@@ -1629,7 +1629,11 @@ planning_statement
 		LPExpression pEventExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
 		ASSERT(pExpression);
 
-		$$ = PARSER->stack().push(pExpression);
+		LPIBaseOperation pBaseOperation = pEvent->getRuntimeEvent();
+		ASSERT(pBaseOperation);
+
+		pCalc->setEvent(pBaseOperation);
+		pEvent->setInitCalc(pCalc);
 	}
 	| RDO_IDENTIF '.' RDO_Planning '(' expression ')' error
 	{
@@ -3291,6 +3295,26 @@ fun_arithm
 // --------------------------------------------------------------------------------
 expression
 	: RDO_INT_CONST                      { $$ = PARSER->stack().push(ExpressionGenerator::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
+	| expression ',' expression
+	{
+		LPExpression pFirstEpression    = PARSER->stack().pop<Expression>($1);
+		LPExpression pSecondExpression  = PARSER->stack().pop<Expression>($3);
+		ASSERT (pFirstEpression  );
+		ASSERT (pSecondExpression);
+		LPExpressionList pExpressionList = pFirstEpression.object_dynamic_cast<ExpressionList>();
+		if(pExpressionList)
+		{
+			pExpressionList->addItem(pSecondExpression);
+		}
+		else
+		{
+			pExpressionList = rdo::Factory<ExpressionList>::create();
+			pExpressionList->addItem(pFirstEpression  );
+			pExpressionList->addItem(pSecondExpression);
+		}
+		
+		$$ = PARSER->stack().push(pExpressionList);
+	}
 	;
 // --------------------------------------------------------------------------------
 // -------------------- Функции и последовательности
