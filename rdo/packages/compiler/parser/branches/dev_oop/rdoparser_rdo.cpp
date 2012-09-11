@@ -233,9 +233,9 @@ void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 
 			LPIActivity pActivity = pRuntimeEvent;
 			ASSERT(pActivity);
-			STL_FOR_ALL_CONST(pEvent->getParamList()->getContainer(), paramIt)
+			STL_FOR_ALL_CONST(pEvent->getParamList()->expressionList(), paramIt)
 			{
-				LPRDOFUNArithm pParam = *paramIt;
+				LPExpression pParam = *paramIt;
 				ASSERT(pParam);
 				if (m_currParam < pPattern->m_paramList.size())
 				{
@@ -261,7 +261,7 @@ void RDOParserEVNPost::parse(CREF(LPRDOParser) pParser)
 					{
 						LPTypeInfo pTypeInfo = pPatternParam->getTypeInfo();
 						ASSERT(pTypeInfo);
-						rdo::runtime::LPRDOCalc pParamValueCalc = pParam->createCalc(pTypeInfo);
+						rdo::runtime::LPRDOCalc pParamValueCalc = pParam->calc();
 						ASSERT(pParamValueCalc);
 						pSetParamCalc = rdo::Factory<rdo::runtime::RDOSetPatternParamCalc>::create(
 							m_currParam,

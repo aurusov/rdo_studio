@@ -18,50 +18,68 @@
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
-
 // --------------------------------------------------------------------------------
 // -------------------- Expression
 // --------------------------------------------------------------------------------
-class ExpressionStatement;
 OBJECT(Expression) IS INSTANCE_OF(RDOParserSrcInfo)
 {
 DECLARE_FACTORY(Expression);
-friend class ExpressionStatement;
+friend class ExpressionGenerator;
 public:
+	typedef std::vector<LPExpression> RDOExpressionList;
+
 	CREF(LPTypeInfo)               typeInfo  () const;
 	CREF(rdo::runtime::LPRDOCalc)  calc      () const;
 	virtual void                   setSrcInfo(CREF(RDOParserSrcInfo) src_info);
 
-	LPRDOValue                   constant  () const;
+	LPRDOValue                     constant  () const;
+	Expression();
+	virtual ~Expression();
+
 
 private:
 	Expression(CREF(LPTypeInfo) pType, CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(RDOParserSrcInfo) src_info);
 	Expression(CREF(LPRDOValue) pValue);
 	Expression(CREF(LPExpression) pExpression);
-	virtual ~Expression();
-
+	
 	LPTypeInfo               m_pType;
 	LPRDOValue               m_pValue; //! < Используется или m_pValue или m_pCalc
 	rdo::runtime::LPRDOCalc  m_pCalc;  //! < Более красивое решение: завести парсеровский калк
 };
 
 // --------------------------------------------------------------------------------
-// -------------------- ExpressionStatement
+// -------------------- ExpressionGenerator
 // --------------------------------------------------------------------------------
-CLASS(ExpressionStatement): INSTANCE_OF(Expression)
+CLASS(ExpressionGenerator): INSTANCE_OF(Expression)
 {
-DECLARE_FACTORY(ExpressionStatement);
+DECLARE_FACTORY(ExpressionGenerator);
 public:
-	rbool getReturn();
+static LPExpression generateByConst (CREF(LPRDOValue) pValue);
 
 private:
-	ExpressionStatement(CREF(LPTypeInfo) pType, CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(rdo::runtime::RDOSrcInfo) src_info);
-	ExpressionStatement(CREF(LPExpression) pExpression);
-	virtual ~ExpressionStatement();
-
-	rbool m_returnFlag;
+	ExpressionGenerator(CREF(LPExpression) pExpression);
+	virtual ~ExpressionGenerator();
 };
-DECLARE_POINTER(ExpressionStatement);
+
+// --------------------------------------------------------------------------------
+// -------------------- ExpressionList
+// --------------------------------------------------------------------------------
+//! Список выражений
+CLASS(ExpressionList): INSTANCE_OF(Expression)
+{
+DECLARE_FACTORY(ExpressionList);
+public:
+	
+	CREF(RDOExpressionList) expressionList() const { return m_expressionList; }
+	void                    addItem       (CREF(LPExpression) pExpression);
+
+private:
+	ExpressionList();
+	virtual ~ExpressionList();
+
+	RDOExpressionList m_expressionList;
+};
+DECLARE_POINTER(ExpressionList);
 
 CLOSE_RDO_PARSER_NAMESPACE
 

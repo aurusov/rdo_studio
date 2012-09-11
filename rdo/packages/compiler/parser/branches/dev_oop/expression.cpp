@@ -57,6 +57,9 @@ Expression::Expression(CREF(LPExpression) pExpression)
 	, m_pValue(pExpression->m_pValue)
 {}
 
+Expression::Expression()
+{}
+
 Expression::~Expression()
 {}
 
@@ -88,24 +91,40 @@ LPRDOValue Expression::constant() const
 	return LPRDOValue(NULL);
 }
 // --------------------------------------------------------------------------------
-// -------------------- ExpressionStatement
+// -------------------- ExpressionGenerator
 // --------------------------------------------------------------------------------
-ExpressionStatement::ExpressionStatement(CREF(LPTypeInfo) pType, CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(rdo::runtime::RDOSrcInfo) src_info)
-	:Expression  (pType, pCalc, src_info),
-	 m_returnFlag(true                  )
+ExpressionGenerator::ExpressionGenerator(CREF(LPExpression) pExpression)
+	:Expression  (pExpression)
 {}
 
-ExpressionStatement::ExpressionStatement(CREF(LPExpression) pExpression)
-	:Expression  (pExpression),
-	 m_returnFlag(true       )
+ExpressionGenerator::~ExpressionGenerator()
 {}
 
-ExpressionStatement::~ExpressionStatement()
-{}
-
-rbool ExpressionStatement::getReturn()
+LPExpression ExpressionGenerator::generateByConst(CREF(LPRDOValue) pValue)
 {
-	return m_returnFlag;
+	ASSERT(pValue);
+	ASSERT(pValue->constant());
+
+	LPExpression pExpression = rdo::Factory<Expression>::create(pValue);
+	ASSERT(pExpression);
+
+	return pExpression;
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- ExpressionList
+// --------------------------------------------------------------------------------
+ExpressionList::ExpressionList()
+	: Expression()
+{}
+
+ExpressionList::~ExpressionList()
+{}
+
+void ExpressionList::addItem(CREF(LPExpression) pExpression)
+{
+	ASSERT(pExpression);
+	m_expressionList.push_back(pExpression);
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

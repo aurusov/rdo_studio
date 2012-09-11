@@ -14,6 +14,8 @@
 #include "utils/rdotypes.h"
 #include "simulator/runtime/calc/calc_event.h"
 #include "simulator/runtime/rdo_event.h"
+#include "simulator/compiler/parser/rdoparser.h"
+#include "simulator/compiler/parser/rdoparser_lexer.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -25,7 +27,7 @@ inline RDOEvent::RDOEvent(CREF(tstring) name, rbool regular)
 	: m_name    (name   )
 	, m_regullar(regular)
 {
-	m_pParamList = rdo::Factory<ArithmContainer>::create();
+	m_pParamList = rdo::Factory<ExpressionList>::create();
 }
 
 inline RDOEvent::~RDOEvent()
@@ -79,16 +81,14 @@ inline void RDOEvent::setInitCalc(CREF(rdo::runtime::LPRDOCalc) pCalc)
 	ASSERT(pCalc);
 	m_pInitCalc = pCalc;
 }
-
-inline void RDOEvent::setParamList(CREF(LPArithmContainer) pParamList)
+inline void RDOEvent::setParamList(CREF(LPExpressionList) pParamList)
 {
 	ASSERT(pParamList);
 	m_pParamList = pParamList;
 }
 
-inline CREF(LPArithmContainer) RDOEvent::getParamList() const
+inline CREF(LPExpressionList) RDOEvent::getParamList() const
 {
 	return m_pParamList;
 }
-
 CLOSE_RDO_PARSER_NAMESPACE
