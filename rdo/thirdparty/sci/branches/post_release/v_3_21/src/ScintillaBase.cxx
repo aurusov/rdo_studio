@@ -537,7 +537,7 @@ void LexState::SetLexer(uptr_t wParam) {
 	} else {
 		const LexerModule *lex = Catalogue::Find(lexLanguage);
 		if (!lex)
-			lex = Catalogue::Find(SCLEX_RDO);
+			lex = Catalogue::Find(SCLEX_NULL);
 		SetLexerModule(lex);
 	}
 }
@@ -545,7 +545,7 @@ void LexState::SetLexer(uptr_t wParam) {
 void LexState::SetLexerLanguage(const char *languageName) {
 	const LexerModule *lex = Catalogue::Find(languageName);
 	if (!lex)
-		lex = Catalogue::Find(SCLEX_RDO);
+		lex = Catalogue::Find(SCLEX_NULL);
 	if (lex)
 		lexLanguage = lex->GetLanguage();
 	SetLexerModule(lex);
