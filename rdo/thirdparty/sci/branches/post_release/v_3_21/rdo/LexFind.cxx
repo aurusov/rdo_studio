@@ -20,15 +20,12 @@
 
 #include "thirdparty\sci\scite\SString.h"
 #include "WordList.h"
-#include "ILexer.h"
 #include "LexAccessor.h"
 #include "Accessor.h"
-#include "KeyWords.h"
 #include "Scintilla.h"
 #include "SciLexer.h"
 
-
-static void ColouriseFindDoc( unsigned int startPos, int length, int initStyle, WordList *keywordlists[], Accessor &styler )
+static void lexerRDOFindColor( unsigned int startPos, int length, int initStyle, WordList *keywordlists[], Accessor &styler )
 {
 	WordList& keywords = *keywordlists[ SCI_RDO_ENDOFLINEONLY_KEYWORDSINDEX ];
 	if ( !keywords ) return;
@@ -84,4 +81,4 @@ static void ColouriseFindDoc( unsigned int startPos, int length, int initStyle, 
 	styler.ColourTo( lengthDoc - 1, state );
 }
 
-LexerModule lmFind( SCLEX_FIND, ColouriseFindDoc, "find" );
+LexerModule lexerRDOFind(SCLEX_FIND, lexerRDOFindColor, "find");

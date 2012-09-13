@@ -19,16 +19,14 @@
 
 #include "thirdparty\sci\scite\SString.h"
 #include "WordList.h"
-#include "ILexer.h"
 #include "LexAccessor.h"
 #include "Accessor.h"
 #include "StyleContext.h"
 #include "Scintilla.h"
 #include "SciLexer.h"
 #include "CharacterSet.h"
-#include "LexerModule.h"
 
-static void ColouriseRdoDoc( unsigned int startPos, int length, int initStyle, WordList *keywordlists[], Accessor &styler )
+static void lexerRDOSyntaxColor( unsigned int startPos, int length, int initStyle, WordList *keywordlists[], Accessor &styler )
 {
 	WordList& keywords  = *keywordlists[0];
 	WordList& functions = *keywordlists[1];
@@ -101,7 +99,7 @@ static void ColouriseRdoDoc( unsigned int startPos, int length, int initStyle, W
 	sc.Complete();
 }
 
-static void FoldRdoDoc( unsigned int startPos, int length, int initStyle, WordList *[], Accessor &styler )
+static void lexerRDOSyntaxFold( unsigned int startPos, int length, int initStyle, WordList *[], Accessor &styler )
 {
 	unsigned int endPos = startPos + length;
 	int visibleChars = 0;
@@ -159,4 +157,4 @@ static void FoldRdoDoc( unsigned int startPos, int length, int initStyle, WordLi
 	styler.SetLevel(lineCurrent, levelPrev | flagsNext);
 }
 
-LexerModule lmRDO( SCLEX_RDO, ColouriseRdoDoc, "rdo", FoldRdoDoc );
+LexerModule lexerRDOSyntax(SCLEX_RDO, lexerRDOSyntaxColor, "rdo", lexerRDOSyntaxFold);

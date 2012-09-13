@@ -3,6 +3,8 @@
 
 #include <ctype.h>
 #include "utils/rdotypes.h"
+#include "thirdparty/sci/include/ILexer.h"
+#include "thirdparty/sci/lexlib/LexerModule.h"
 
 #define SCN_RDO_POSCHANGED    20000
 #define SCN_RDO_CLICK         20001
@@ -59,5 +61,7 @@ static inline char RDOMakeLowerCase( char ch )
 	if ( ch >= 'À' && ch <= 'ß' ) return static_cast<char>( ch - 'À' + 'à' );
 	return ch;
 }
+
+extern LexerModule lexerRDOSyntax;
 
 #endif // LEXRDO_H
