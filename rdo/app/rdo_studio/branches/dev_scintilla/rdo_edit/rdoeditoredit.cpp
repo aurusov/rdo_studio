@@ -186,7 +186,7 @@ BOOL RDOEditorEdit::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
 int RDOEditorEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
 	if ( RDOEditorBaseEdit::OnCreate(lpCreateStruct) == -1 ) return -1;
-	createLexRdo();
+
 	sendEditor( SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT | SC_MOD_CHANGEFOLD );
 
 	sendEditor( SCI_SETMARGINTYPEN     , sci_FOLDMARGIN_ID, SC_MARGIN_SYMBOL );

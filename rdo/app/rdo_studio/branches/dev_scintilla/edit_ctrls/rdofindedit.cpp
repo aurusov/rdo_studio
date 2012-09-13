@@ -55,7 +55,7 @@ RDOFindEdit::~RDOFindEdit()
 int RDOFindEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
 	if ( RDOLogEdit::OnCreate(lpCreateStruct) == -1 ) return -1;
-	createLexFind();
+
 	sendEditor( SCI_SETLEXER, SCLEX_FIND );
 //	int lexLanguage = sendEditor( SCI_GETLEXER );
 	sendEditor( SCI_SETSTYLEBITS, 5 );
