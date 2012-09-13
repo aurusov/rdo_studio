@@ -23,7 +23,7 @@
 #include "ILexer.h"
 #include "LexAccessor.h"
 #include "Accessor.h"
-#include "LexerModule.h"
+#include "KeyWords.h"
 #include "Scintilla.h"
 #include "SciLexer.h"
 
@@ -83,8 +83,5 @@ static void ColouriseFindDoc( unsigned int startPos, int length, int initStyle, 
 	}
 	styler.ColourTo( lengthDoc - 1, state );
 }
-void createLexFind()
-{
-	LexerModule lmFind( SCLEX_FIND, ColouriseFindDoc, "find" );
-}
 
+LexerModule lmFind( SCLEX_FIND, ColouriseFindDoc, "find" );

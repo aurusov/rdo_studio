@@ -60,5 +60,4 @@ static inline char RDOMakeLowerCase( char ch )
 	return ch;
 }
 
-void createLexRdo();
 #endif // LEXRDO_H
