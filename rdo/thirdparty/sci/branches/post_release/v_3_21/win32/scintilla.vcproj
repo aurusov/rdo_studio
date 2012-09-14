@@ -511,10 +511,6 @@
 				RelativePath="..\scite\SString.h"
 				>
 			</File>
-			<File
-				RelativePath="..\scite\StringList.h"
-				>
-			</File>
 		</Filter>
 	</Files>
 	<Globals>

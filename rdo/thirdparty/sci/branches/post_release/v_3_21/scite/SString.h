@@ -8,7 +8,13 @@
 #ifndef SSTRING_H
 #define SSTRING_H
 
+// These functions are implemented because each platform calls them something different.
+int CompareCaseInsensitive(const char *a, const char *b);
+int CompareNCaseInsensitive(const char *a, const char *b, size_t len);
+bool EqualCaseInsensitive(const char *a, const char *b);
+
 // Define another string class.
+// While it would be 'better' to use std::string, that doubles the executable size.
 // An SString may contain embedded nul characters.
 
 /**
@@ -152,7 +158,6 @@ public:
 		sSize = sLen = (s) ? last - first : 0;
 	}
 	SString(int i);
-	SString(size_t i);
 	SString(double d, int precision);
 	~SString() {
 		sLen = 0;
@@ -192,7 +197,7 @@ public:
 	bool operator!=(const char *sOther) const {
 		return !operator==(sOther);
 	}
-	bool contains(char ch) const {
+	bool contains(char ch) {
 		return (s && *s) ? strchr(s, ch) != 0 : false;
 	}
 	void setsizegrowth(lenpos_t sizeGrowth_) {
@@ -248,7 +253,7 @@ public:
 	bool startswith(const char *prefix);
 	bool endswith(const char *suffix);
 	int search(const char *sFind, lenpos_t start=0) const;
-	bool contains(const char *sFind) const {
+	bool contains(const char *sFind) {
 		return search(sFind) >= 0;
 	}
 	int substitute(char chFind, char chReplace);
@@ -271,9 +276,5 @@ inline char *StringDup(
 {
 	return SContainer::StringAllocate(s, len);
 }
-
-bool isprefix(const char *target, const char *prefix);
-int CompareNoCase(const char *a, const char *b);
-bool EqualCaseInsensitive(const char *a, const char *b);
 
 #endif
