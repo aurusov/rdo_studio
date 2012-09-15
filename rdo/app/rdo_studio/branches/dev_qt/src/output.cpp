@@ -110,6 +110,7 @@ RDOStudioOutput::RDOStudioOutput(PTR(QWidget) pParent)
 	tab.insertItem( results, rdo::format( IDS_TAB_RESULT ).c_str() );
 	tab.insertItem( find, rdo::format( IDS_TAB_FIND ).c_str() );
 
+	//! @todo qt
 	//studioApp.m_pMainFrame->registerCmdWnd( build, build->getSCIHWND() );
 	//studioApp.m_pMainFrame->registerCmdWnd( debug, debug->getSCIHWND() );
 	//studioApp.m_pMainFrame->registerCmdWnd( trace );

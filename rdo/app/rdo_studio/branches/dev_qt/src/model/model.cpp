@@ -829,6 +829,7 @@ void RDOStudioModel::openModelFromRepository()
 		}
 
 		PTR(CWnd) active = CWnd::GetActiveWindow();
+		//! @todo qt
 //		m_pModelDocTemplate->OpenDocumentFile(NULL);
 		rdo::repository::RDOThreadRepository::FileInfo data_smr(rdoModelObjects::RDOX);
 		studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data_smr);

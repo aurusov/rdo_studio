@@ -447,6 +447,7 @@ rbool RDOTracerSerie::activateFirstDoc() const
 			if ( pos )
 				view = static_cast<RDOStudioChartView*>(doc->GetNextView( pos ));
 			if ( view ) {
+				//! @todo qt
 //				studioApp.m_pMainFrame->MDIActivate( view->GetParentFrame() );
 				res = true;
 			}

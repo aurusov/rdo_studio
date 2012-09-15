@@ -89,6 +89,7 @@ const ruint WORKSPACE_SHOW_MESSAGE = ::RegisterWindowMessage( "WORKSPACE_SHOW_ME
 const ruint OUTPUT_SHOW_MESSAGE    = ::RegisterWindowMessage( "OUTPUT_SHOW_MESSAGE" );
 const ruint update_timer_ID = 1;
 
+//! @todo qt
 //BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
 //	ON_WM_CREATE()
 //	ON_COMMAND(ID_VIEW_TOOLBAR_FILE_TOOLBAR, OnViewFileToolbar)
@@ -200,6 +201,7 @@ void RDOStudioMainFrame::init()
 	style_chart.init( "chart" );
 	style_chart.load();
 
+	//! @todo qt
 	//fileToolBar.init( c_wnd(), IDR_FILE_TOOLBAR, IDB_FILE_TOOLBAR_D );
 	//editToolBar.init( c_wnd(), IDR_EDIT_TOOLBAR, IDB_EDIT_TOOLBAR_D );
 	//zoomToolBar.init( c_wnd(), IDR_ZOOM_TOOLBAR, IDB_ZOOM_TOOLBAR_D );
@@ -229,6 +231,7 @@ void RDOStudioMainFrame::init()
 	pOutputLayout->setContentsMargins(0, 0, 0, 0);
 	pOutputLayout->addWidget(m_pOutputDoc);
 
+	//! @todo qt
 	//fileToolBar.EnableDocking( CBRS_ALIGN_ANY );
 	//editToolBar.EnableDocking( CBRS_ALIGN_ANY );
 	//zoomToolBar.EnableDocking( CBRS_ALIGN_ANY );
@@ -268,21 +271,25 @@ void RDOStudioMainFrame::closeEvent(QCloseEvent* event)
 
 void RDOStudioMainFrame::OnViewFileToolbar() 
 {
+	//! @todo qt
 	//ShowControlBar( &fileToolBar, !(fileToolBar.GetStyle() & WS_VISIBLE), false );
 }
 
 void RDOStudioMainFrame::OnViewEditToolbar() 
 {
+	//! @todo qt
 	//ShowControlBar( &editToolBar, !(editToolBar.GetStyle() & WS_VISIBLE), false );
 }
 
 void RDOStudioMainFrame::OnViewZoomToolbar()
 {
+	//! @todo qt
 	//ShowControlBar( &zoomToolBar, !(zoomToolBar.GetStyle() & WS_VISIBLE), false );
 }
 
 void RDOStudioMainFrame::OnViewModelToolbar()
 {
+	//! @todo qt
 	//ShowControlBar( &modelToolBar, !(modelToolBar.GetStyle() & WS_VISIBLE), false );
 }
 
@@ -308,31 +315,37 @@ void RDOStudioMainFrame::OnUpdateViewModelToolbar(CCmdUI* pCmdUI)
 
 void RDOStudioMainFrame::OnViewWorkspace() 
 {
+	//! @todo qt
 	//ShowControlBar( &workspace, !workspace.IsVisible(), false );
 }
 
 void RDOStudioMainFrame::OnViewOutput() 
 {
+	//! @todo qt
 	//ShowControlBar( &output, !output.IsVisible(), false );
 }
 
 void RDOStudioMainFrame::OnWorkspaceShow()
 {
+	//! @todo qt
 	//ShowControlBar( &workspace, true, false );
 }
 
 void RDOStudioMainFrame::OnOutputShow()
 {
+	//! @todo qt
 	//ShowControlBar( &output, true, false );
 }
 
 void RDOStudioMainFrame::showWorkspace()
 {
+	//! @todo qt
 	//::SendMessage( m_hWnd, WORKSPACE_SHOW_MESSAGE, 0, 0 );
 }
 
 void RDOStudioMainFrame::showOutput()
 {
+	//! @todo qt
 	//::SendMessage( m_hWnd, OUTPUT_SHOW_MESSAGE, 0, 0 );
 }
 
@@ -573,6 +586,7 @@ void RDOStudioMainFrame::OnUpdateModelFramePrev(CCmdUI* pCmdUI)
 
 void RDOStudioMainFrame::update_start()
 {
+//! @todo qt
 //	m_updateTimer = SetTimer(update_timer_ID, 1000 / 30, NULL);
 }
 
@@ -580,6 +594,7 @@ void RDOStudioMainFrame::update_stop()
 {
 	if (m_updateTimer)
 	{
+		//! @todo qt
 		//KillTimer(m_updateTimer);
 		m_updateTimer = 0;
 	}
@@ -587,6 +602,7 @@ void RDOStudioMainFrame::update_stop()
 
 void RDOStudioMainFrame::OnTimer( UINT nIDEvent )
 {
+	//! @todo qt
 	//parent_type::OnTimer(nIDEvent);
 
 	if (nIDEvent == m_updateTimer)
@@ -613,6 +629,7 @@ void RDOStudioMainFrame::hideEvent(QHideEvent*)
 	}
 }
 
+//! @todo qt
 //void RDOStudioMainFrame::OnEnterMenuLoop( BOOL bIsTrackPopupMenu )
 //{
 //	model->setGUIPause();

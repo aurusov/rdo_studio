@@ -645,6 +645,7 @@ void RDOStudioApp::updateReopenSubMenu() const
 
 	saveReopen();
 
+	//! @todo qt
 	//if (!AfxGetMainWnd() || !AfxGetMainWnd()->GetMenu())
 	//	return;
 
@@ -1075,6 +1076,7 @@ BOOL RDOStudioApp::PreTranslateMessage(PTR(MSG) pMsg)
 {
 	if (pMsg->message == WM_KEYDOWN)
 	{
+		//! @todo qt
 		//PTR(CMDIChildWnd) pChild = m_pMainFrame->MDIGetActive();
 		//if (pChild)
 		//{

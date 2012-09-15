@@ -54,9 +54,11 @@ RDOStudioWorkspace::RDOStudioWorkspace(PTR(QWidget) pParent)
 #ifdef PROCGUI_ENABLE
 	tab.insertItem( pagectrl, rdo::format( IDS_TAB_PAGECTRL ).c_str() );
 #endif
+//! @todo qt
 //	studioApp.m_pMainFrame->registerCmdWnd( trace );
 //	studioApp.m_pMainFrame->registerCmdWnd( frames );
 #ifdef PROCGUI_ENABLE
+//! @todo qt
 //	studioApp.m_pMainFrame->registerCmdWnd( pagectrl );
 #endif
 }

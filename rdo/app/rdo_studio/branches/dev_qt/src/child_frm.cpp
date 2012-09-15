@@ -59,6 +59,7 @@ void RDOStudioChildFrame::Dump(CDumpContext& dc) const
 
 BOOL RDOStudioChildFrame::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
 {
+//! @todo qt
 //	if ( studioApp.m_pMainFrame->OnCmdMsgForDockOnly( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
 	if ( CMDIChildWnd::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo) ) return TRUE;
 	return FALSE;
