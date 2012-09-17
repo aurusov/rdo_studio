@@ -399,22 +399,6 @@
 				RelativePath="..\rdo\LexRdo.h"
 				>
 			</File>
-			<Filter
-				Name=".win32"
-				>
-				<File
-					RelativePath=".\PlatWin.cxx"
-					>
-				</File>
-				<File
-					RelativePath=".\PlatWin.h"
-					>
-				</File>
-				<File
-					RelativePath=".\ScintillaWin.cxx"
-					>
-				</File>
-			</Filter>
 		</Filter>
 		<Filter
 			Name=".lexlib"
@@ -501,6 +485,22 @@
 			</File>
 			<File
 				RelativePath="..\lexlib\WordList.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name=".win32"
+			>
+			<File
+				RelativePath=".\PlatWin.cxx"
+				>
+			</File>
+			<File
+				RelativePath=".\PlatWin.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ScintillaWin.cxx"
 				>
 			</File>
 		</Filter>
