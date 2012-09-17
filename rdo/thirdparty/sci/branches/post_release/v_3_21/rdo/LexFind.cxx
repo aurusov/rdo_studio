@@ -18,7 +18,6 @@
 
 #include "Platform.h"
 
-#include "thirdparty\sci\scite\SString.h"
 #include "WordList.h"
 #include "LexAccessor.h"
 #include "Accessor.h"

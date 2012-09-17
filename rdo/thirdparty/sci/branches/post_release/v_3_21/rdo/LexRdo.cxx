@@ -17,7 +17,6 @@
 
 #include "Platform.h"
 
-#include "thirdparty\sci\scite\SString.h"
 #include "WordList.h"
 #include "LexAccessor.h"
 #include "Accessor.h"
@@ -109,7 +108,7 @@ static void lexerRDOSyntaxFold( unsigned int startPos, int length, int initStyle
 	char chNext = styler[startPos];
 	int styleNext = styler.StyleAt( startPos );
 	int style = initStyle;
-	SString str = "";
+	tstring str = "";
 	for ( unsigned int i = startPos; i < endPos; i++ ) {
 		char ch = chNext;
 		chNext = styler.SafeGetCharAt(i + 1);

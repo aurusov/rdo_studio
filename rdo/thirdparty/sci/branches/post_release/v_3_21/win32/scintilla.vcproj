@@ -504,14 +504,6 @@
 				>
 			</File>
 		</Filter>
-		<Filter
-			Name="scite"
-			>
-			<File
-				RelativePath="..\scite\SString.h"
-				>
-			</File>
-		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
