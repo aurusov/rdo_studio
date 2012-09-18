@@ -99,7 +99,6 @@ private:
 	RPMethodManager                        m_methodManager;
 	std::ofstream                          m_log;
 	ReopenList                             m_reopenList;
-	PTR(CMultiDocTemplate)                 m_editDocTemplate;
 	rbool                                  m_fileAssociationSetup;
 	rbool                                  m_fileAssociationCheckInFuture;
 	rbool                                  m_openLastProject;

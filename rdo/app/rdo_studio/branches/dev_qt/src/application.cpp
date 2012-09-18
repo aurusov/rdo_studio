@@ -181,7 +181,6 @@ RDOStudioApp::RDOStudioApp()
 #ifdef RDO_MT
 	, m_pStudioMT                   (NULL  )
 #endif
-	, m_editDocTemplate             (NULL  )
 	, m_fileAssociationSetup        (false )
 	, m_fileAssociationCheckInFuture(false )
 	, m_openLastProject             (false )
@@ -231,9 +230,6 @@ BOOL RDOStudioApp::InitInstance()
 	m_openLastProject              = GetProfileInt   (_T("general"),         _T("openLastProject"),      true) ? true : false;
 	m_lastProjectName              = GetProfileString(_T("general"),         _T("lastProject"),        _T(""));
 	m_showCaptionFullName          = GetProfileInt   (_T("general"),         _T("showCaptionFullName"), false) ? true : false;
-
-	m_editDocTemplate = new CMultiDocTemplate(IDR_EDIT_TYPE, RUNTIME_CLASS(RDOStudioEditDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioEditView));
-	AddDocTemplate(m_editDocTemplate);
 
 	// Кто-то должен поднять кернел и треды
 	RDOKernel::init();

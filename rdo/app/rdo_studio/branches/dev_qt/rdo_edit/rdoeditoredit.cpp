@@ -138,13 +138,9 @@ BOOL RDOEditorEdit::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
 		if ( scn->nmhdr.hwndFrom == sciHWND ) {
 			switch( scn->nmhdr.code ) {
 				case SCN_RDO_BUFFERKEY: {
-					if ( view ) {
-						switch ( view->currentBuffer ) {
-							case 1: view->buf1 += static_cast<char>(scn->ch); break;
-							case 2: view->buf2 += static_cast<char>(scn->ch); break;
-							case 3: view->buf3 += static_cast<char>(scn->ch); break;
-							case 4: view->buf4 += static_cast<char>(scn->ch); break;
-						}
+					if ( view )
+					{
+						view->m_bufferList.find(view->m_currentBuffer)->second.value += static_cast<char>(scn->ch);
 					}
 					return TRUE;
 				}
@@ -621,79 +617,107 @@ void RDOEditorEdit::OnInsertCommand( UINT nID )
 	replaceCurrent( static_cast<LPCTSTR>(s), incPos );
 }
 
-void RDOEditorEdit::OnInsertBuffer1Paste() 
+void RDOEditorEdit::OnInsertBuffer1Paste()
 {
-	if ( view ) {
-		view->currentBuffer = 1;
-		replaceCurrent( view->buf1 );
+	if (view)
+	{
+		view->m_currentBuffer = 0;
+		replaceCurrent(view->m_bufferList.find(view->m_currentBuffer)->second.value);
 	}
 }
 
-void RDOEditorEdit::OnInsertBuffer2Paste() 
+void RDOEditorEdit::OnInsertBuffer2Paste()
 {
-	if ( view ) {
-		view->currentBuffer = 2;
-		replaceCurrent( view->buf2 );
+	if (view)
+	{
+		view->m_currentBuffer = 1;
+		replaceCurrent(view->m_bufferList.find(view->m_currentBuffer)->second.value);
 	}
 }
 
-void RDOEditorEdit::OnInsertBuffer3Paste() 
+void RDOEditorEdit::OnInsertBuffer3Paste()
 {
-	if ( view ) {
-		view->currentBuffer = 3;
-		replaceCurrent( view->buf3 );
+	if (view)
+	{
+		view->m_currentBuffer = 2;
+		replaceCurrent(view->m_bufferList.find(view->m_currentBuffer)->second.value);
 	}
 }
 
-void RDOEditorEdit::OnInsertBuffer4Paste() 
+void RDOEditorEdit::OnInsertBuffer4Paste()
 {
-	if ( view ) {
-		view->currentBuffer = 4;
-		replaceCurrent( view->buf4 );
+	if (view)
+	{
+		view->m_currentBuffer = 3;
+		replaceCurrent(view->m_bufferList.find(view->m_currentBuffer)->second.value);
 	}
 }
 
 void RDOEditorEdit::OnUndateBuffer1Paste( CCmdUI* pCmdUI )
 {
-	pCmdUI->Enable( view && !view->buf1.empty() );
+	if (!view)
+	{
+		pCmdUI->Enable(FALSE);
+		return;
+	}
+
+	pCmdUI->Enable(!view->m_bufferList.find(0)->second.value.empty());
 }
 
 void RDOEditorEdit::OnUndateBuffer2Paste( CCmdUI* pCmdUI )
 {
-	pCmdUI->Enable( view && !view->buf2.empty() );
+	if (!view)
+	{
+		pCmdUI->Enable(FALSE);
+		return;
+	}
+
+	pCmdUI->Enable(!view->m_bufferList.find(1)->second.value.empty());
 }
 
 void RDOEditorEdit::OnUndateBuffer3Paste( CCmdUI* pCmdUI )
 {
-	pCmdUI->Enable( view && !view->buf3.empty() );
+	if (!view)
+	{
+		pCmdUI->Enable(FALSE);
+		return;
+	}
+
+	pCmdUI->Enable(!view->m_bufferList.find(2)->second.value.empty());
 }
 
 void RDOEditorEdit::OnUndateBuffer4Paste( CCmdUI* pCmdUI )
 {
-	pCmdUI->Enable( view && !view->buf4.empty() );
+	if (!view)
+	{
+		pCmdUI->Enable(FALSE);
+		return;
+	}
+
+	pCmdUI->Enable(!view->m_bufferList.find(3)->second.value.empty());
 }
 
-void RDOEditorEdit::OnInsertBuffer1Append() 
+void RDOEditorEdit::OnInsertBuffer1Append()
 {
-	onBufferAppend( 1 );
+	onBufferAppend(0);
 }
 
-void RDOEditorEdit::OnInsertBuffer2Append() 
+void RDOEditorEdit::OnInsertBuffer2Append()
 {
-	onBufferAppend( 2 );
+	onBufferAppend(1);
 }
 
-void RDOEditorEdit::OnInsertBuffer3Append() 
+void RDOEditorEdit::OnInsertBuffer3Append()
 {
-	onBufferAppend( 3 );
+	onBufferAppend(2);
 }
 
-void RDOEditorEdit::OnInsertBuffer4Append() 
+void RDOEditorEdit::OnInsertBuffer4Append()
 {
-	onBufferAppend( 4 );
+	onBufferAppend(3);
 }
 
-void RDOEditorEdit::onBufferAppend( const int bufIndex )
+void RDOEditorEdit::onBufferAppend(ruint bufferID)
 {
 	if ( !view ) return;
 
@@ -707,42 +731,20 @@ void RDOEditorEdit::onBufferAppend( const int bufIndex )
 		canUseSelected    = cr.cpMin != cr.cpMax;
 	}
 	tstring s = "";
-	switch ( bufIndex ) {
-		case 1: {
-			if ( view->resetBuf1 ) {
-				view->resetBuf1 = false;
-			} else {
-				s = view->buf1;
-			}
-			break;
-		}
-		case 2: {
-			if ( view->resetBuf2 ) {
-				view->resetBuf2 = false;
-			} else {
-				s = view->buf2;
-			}
-			break;
-		}
-		case 3: {
-			if ( view->resetBuf3 ) {
-				view->resetBuf3 = false;
-			} else {
-				s = view->buf3;
-			}
-			break;
-		}
-		case 4: {
-			if ( view->resetBuf4 ) {
-				view->resetBuf4 = false;
-			} else {
-				s = view->buf4;
-			}
-			break;
-		}
+
+	RDOStudioEditBaseView::BufferList::iterator bufferIt = view->m_bufferList.find(bufferID);
+	ASSERT(bufferIt != view->m_bufferList.end());
+
+	if (bufferIt->second.reset)
+	{
+		bufferIt->second.reset = false;
+	}
+	else
+	{
+		s = bufferIt->second.value;
 	}
 
-	view->restartBufTimer( bufIndex );
+	view->restartBufTimer(bufferID);
 
 	if ( canUseSelected ) {
 		s += getSelection();
@@ -760,13 +762,9 @@ void RDOEditorEdit::onBufferAppend( const int bufIndex )
 	}
 	setCurrentPos( pos );
 	setSelection( bufSelStart, pos );
-	switch ( bufIndex ) {
-		case 1: view->buf1 = s; break;
-		case 2: view->buf2 = s; break;
-		case 3: view->buf3 = s; break;
-		case 4: view->buf4 = s; break;
-	}
-	view->currentBuffer = bufIndex;
+
+	bufferIt->second.value = s;
+	view->m_currentBuffer = bufferID;
 }
 
 void RDOEditorEdit::OnUndateBufferAppend( CCmdUI* pCmdUI )
@@ -774,27 +772,27 @@ void RDOEditorEdit::OnUndateBufferAppend( CCmdUI* pCmdUI )
 	pCmdUI->Enable( view && GUI_IS_SELECTED || getCurrentPos() != getLength() );
 }
 
-void RDOEditorEdit::OnInsertBuffer1Edit() 
+void RDOEditorEdit::OnInsertBuffer1Edit()
 {
-	onBufferEdit( 1 );
+	onBufferEdit(0);
 }
 
-void RDOEditorEdit::OnInsertBuffer2Edit() 
+void RDOEditorEdit::OnInsertBuffer2Edit()
 {
-	onBufferEdit( 2 );
+	onBufferEdit(1);
 }
 
-void RDOEditorEdit::OnInsertBuffer3Edit() 
+void RDOEditorEdit::OnInsertBuffer3Edit()
 {
-	onBufferEdit( 3 );
+	onBufferEdit(2);
 }
 
-void RDOEditorEdit::OnInsertBuffer4Edit() 
+void RDOEditorEdit::OnInsertBuffer4Edit()
 {
-	onBufferEdit( 4 );
+	onBufferEdit(3);
 }
 
-void RDOEditorEdit::onBufferEdit( const int bufIndex )
+void RDOEditorEdit::onBufferEdit(ruint bufferID)
 {
 	if ( !view ) return;
 
@@ -803,85 +801,107 @@ void RDOEditorEdit::onBufferEdit( const int bufIndex )
 
 	bufName = rdo::format( ID_BUFFER_NAME );
 
-	switch ( bufIndex ) {
-		case 1: bufName += " 1:"; bufValue = view->buf1; break;
-		case 2: bufName += " 2:"; bufValue = view->buf2; break;
-		case 3: bufName += " 3:"; bufValue = view->buf3; break;
-		case 4: bufName += " 4:"; bufValue = view->buf4; break;
-	}
+	RDOStudioEditBaseView::BufferList::iterator bufferIt = view->m_bufferList.find(bufferID);
+	ASSERT(bufferIt != view->m_bufferList.end());
 
-	if ( bufValue.empty() ) {
+	bufName = rdo::format(" %d:%s", bufferID + 1, bufferIt->second.value.c_str());
+
+	if ( bufValue.empty() )
+	{
 		bufValue = getCurrentOrSelectedWord();
 	}
 	RDOEditorEditBufferDlg dlg( bufName.c_str(), bufValue.c_str() );
 
-	if ( dlg.DoModal() == IDOK ) {
-
-		switch ( bufIndex ) {
-			case 1: view->buf1 = dlg.bufValue; break;
-			case 2: view->buf2 = dlg.bufValue; break;
-			case 3: view->buf3 = dlg.bufValue; break;
-			case 4: view->buf4 = dlg.bufValue; break;
-		}
-		view->currentBuffer = bufIndex;
+	if ( dlg.DoModal() == IDOK )
+	{
+		bufferIt->second.value = dlg.bufValue;
+		view->m_currentBuffer = bufferID;
 	}
 }
 
-void RDOEditorEdit::OnUpdateInsertBufferEdit(CCmdUI* pCmdUI) 
+void RDOEditorEdit::OnUpdateInsertBufferEdit(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable( view != NULL );
 }
 
-void RDOEditorEdit::OnInsertBuffer1Clear() 
+void RDOEditorEdit::OnInsertBuffer1Clear()
 {
-	if ( view ) {
-		view->buf1 = "";
-		view->currentBuffer = 1;
+	if (view)
+	{
+		view->m_currentBuffer = 0;
+		view->m_bufferList.find(view->m_currentBuffer)->second.value = "";
 	}
 }
 
-void RDOEditorEdit::OnInsertBuffer2Clear() 
+void RDOEditorEdit::OnInsertBuffer2Clear()
 {
-	if ( view ) {
-		view->buf2 = "";
-		view->currentBuffer = 2;
+	if (view)
+	{
+		view->m_currentBuffer = 1;
+		view->m_bufferList.find(view->m_currentBuffer)->second.value = "";
 	}
 }
 
-void RDOEditorEdit::OnInsertBuffer3Clear() 
+void RDOEditorEdit::OnInsertBuffer3Clear()
 {
-	if ( view ) {
-		view->buf3 = "";
-		view->currentBuffer = 3;
+	if (view)
+	{
+		view->m_currentBuffer = 2;
+		view->m_bufferList.find(view->m_currentBuffer)->second.value = "";
 	}
 }
 
-void RDOEditorEdit::OnInsertBuffer4Clear() 
+void RDOEditorEdit::OnInsertBuffer4Clear()
 {
-	if ( view ) {
-		view->buf4 = "";
-		view->currentBuffer = 4;
+	if (view)
+	{
+		view->m_currentBuffer = 3;
+		view->m_bufferList.find(view->m_currentBuffer)->second.value = "";
 	}
 }
 
 void RDOEditorEdit::OnUndateBuffer1Clear( CCmdUI* pCmdUI )
 {
-	pCmdUI->Enable( view && !view->buf1.empty() );
+	if (!view)
+	{
+		pCmdUI->Enable(FALSE);
+		return;
+	}
+
+	pCmdUI->Enable(!view->m_bufferList.find(0)->second.value.empty());
 }
 
 void RDOEditorEdit::OnUndateBuffer2Clear( CCmdUI* pCmdUI )
 {
-	pCmdUI->Enable( view && !view->buf2.empty() );
+	if (!view)
+	{
+		pCmdUI->Enable(FALSE);
+		return;
+	}
+
+	pCmdUI->Enable(!view->m_bufferList.find(0)->second.value.empty());
 }
 
 void RDOEditorEdit::OnUndateBuffer3Clear( CCmdUI* pCmdUI )
 {
-	pCmdUI->Enable( view && !view->buf3.empty() );
+	if (!view)
+	{
+		pCmdUI->Enable(FALSE);
+		return;
+	}
+
+	pCmdUI->Enable(!view->m_bufferList.find(2)->second.value.empty());
 }
 
 void RDOEditorEdit::OnUndateBuffer4Clear( CCmdUI* pCmdUI )
 {
-	pCmdUI->Enable( view && !view->buf4.empty() );
+	if (!view)
+	{
+		pCmdUI->Enable(FALSE);
+		return;
+	}
+
+	pCmdUI->Enable(!view->m_bufferList.find(3)->second.value.empty());
 }
 
 const rdoEditCtrl::RDOLogEdit* RDOEditorEdit::getLog() const

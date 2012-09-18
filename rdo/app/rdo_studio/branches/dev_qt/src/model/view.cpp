@@ -10,9 +10,9 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtGui/qevent.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/model/view.h"
-#include "app/rdo_studio_mfc/src/model/document.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/src/output.h"
@@ -34,111 +34,76 @@ using namespace rdoEditor;
 // --------------------------------------------------------------------------------
 static const UINT FINDINMODEL_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 
-IMPLEMENT_DYNCREATE(RDOStudioModelView, RDOStudioEditBaseView)
-
 // ON_UPDATE_COMMAND_UI сделано
 
-BEGIN_MESSAGE_MAP(RDOStudioModelView, RDOStudioEditBaseView)
-	ON_WM_CREATE()
-	ON_WM_SETFOCUS()
-	ON_WM_SIZE()
-	ON_COMMAND(ID_SEARCH_FIND_INMODEL, OnSearchFindInModel)
-	ON_REGISTERED_MESSAGE( FINDINMODEL_MSG, OnFindInModelMsg )
-	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR          , OnUpdateCoordStatusBar )
-	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR         , OnUpdateModifyStatusBar )
-	ON_UPDATE_COMMAND_UI( ID_INSERTOVERWRITE_STATUSBAR, OnUpdateInsertOverwriteStatusBar )
-	ON_COMMAND(ID_FILE_PRINT, RDOStudioEditBaseView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_DIRECT, RDOStudioEditBaseView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_PREVIEW, RDOStudioEditBaseView::OnFilePrintPreview)
-END_MESSAGE_MAP()
+//! @todo qt
+//BEGIN_MESSAGE_MAP(RDOStudioModelView, RDOStudioEditBaseView)
+//	ON_WM_CREATE()
+//	ON_WM_SETFOCUS()
+//	ON_WM_SIZE()
+//	ON_COMMAND(ID_SEARCH_FIND_INMODEL, OnSearchFindInModel)
+//	ON_REGISTERED_MESSAGE( FINDINMODEL_MSG, OnFindInModelMsg )
+//	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR          , OnUpdateCoordStatusBar )
+//	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR         , OnUpdateModifyStatusBar )
+//	ON_UPDATE_COMMAND_UI( ID_INSERTOVERWRITE_STATUSBAR, OnUpdateInsertOverwriteStatusBar )
+//	ON_COMMAND(ID_FILE_PRINT, RDOStudioEditBaseView::OnFilePrint)
+//	ON_COMMAND(ID_FILE_PRINT_DIRECT, RDOStudioEditBaseView::OnFilePrint)
+//	ON_COMMAND(ID_FILE_PRINT_PREVIEW, RDOStudioEditBaseView::OnFilePrintPreview)
+//END_MESSAGE_MAP()
 
-RDOStudioModelView::RDOStudioModelView(): RDOStudioEditBaseView()
-{
-	tab = new RDOEditorTabCtrl( this );
-}
+RDOStudioModelView::RDOStudioModelView(QWidget* pParent)
+	: RDOStudioEditBaseView(pParent)
+	, tab(NULL)
+{}
 
 RDOStudioModelView::~RDOStudioModelView()
 {
 	if ( tab ) { delete tab; tab = NULL; }
 }
 
-BOOL RDOStudioModelView::PreCreateWindow(CREATESTRUCT& cs)
+void RDOStudioModelView::init()
 {
-	if( !RDOStudioEditBaseView::PreCreateWindow( cs ) ) return FALSE;
-
-	cs.style &= ~WS_BORDER;
-	cs.dwExStyle &= ~WS_EX_CLIENTEDGE;
-	cs.lpszClass = AfxRegisterWndClass( 0, ::LoadCursor(NULL, IDC_ARROW) );
-
-	return TRUE;
+	tab = new RDOEditorTabCtrl(this);
+	tab->Create( NULL, NULL, 0, CRect(0, 0, 100, 100), CWnd::FromHandle(winId()), 0 );
 }
 
-void RDOStudioModelView::OnDraw(CDC* /*pDC*/)
+//! @todo qt
+//BOOL RDOStudioModelView::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
+//{
+//	if ( tab->getCurrentEdit()->OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
+//	return RDOStudioEditBaseView::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
+//}
+//
+//void RDOStudioModelView::OnSetFocus(CWnd* pOldWnd)
+//{
+//	RDOStudioEditBaseView::OnSetFocus( pOldWnd );
+//	tab->SetFocus();
+//}
+//
+
+void RDOStudioModelView::resizeEvent(PTR(QResizeEvent) event)
 {
-	RDOStudioModelDoc* pDoc = GetDocument();
-	ASSERT_VALID(pDoc);
+	parent_type::resizeEvent(event);
+
+	if (!tab)
+		return;
+
+	QSize size(event->size());
+	tab->MoveWindow(0, 0, size.width(), size.height());
 }
 
-BOOL RDOStudioModelView::OnPreparePrinting(CPrintInfo* pInfo)
+//void RDOStudioModelView::OnSize(UINT nType, int cx, int cy) 
+//{
+//	RDOStudioEditBaseView::OnSize(nType, cx, cy);
+//	
+//	CRect r;
+//	GetClientRect( r );
+//	tab->MoveWindow( r );
+//}
+
+REF(rdoEditor::RDOEditorTabCtrl) RDOStudioModelView::getTab()
 {
-	return DoPreparePrinting(pInfo);
-}
-
-void RDOStudioModelView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
-{
-}
-
-void RDOStudioModelView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
-{
-}
-
-#ifdef _DEBUG
-void RDOStudioModelView::AssertValid() const
-{
-	RDOStudioEditBaseView::AssertValid();
-}
-
-void RDOStudioModelView::Dump(CDumpContext& dc) const
-{
-	RDOStudioEditBaseView::Dump(dc);
-}
-
-RDOStudioModelDoc* RDOStudioModelView::GetDocument()
-{
-	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(RDOStudioModelDoc)));
-	return (RDOStudioModelDoc*)m_pDocument;
-}
-#endif
-
-int RDOStudioModelView::OnCreate(LPCREATESTRUCT lpCreateStruct) 
-{
-	if (RDOStudioEditBaseView::OnCreate(lpCreateStruct) == -1)
-		return -1;
-
-	tab->Create( NULL, NULL, 0, CRect(0, 0, 100, 100), this, 0 );
-
-	return 0;
-}
-
-BOOL RDOStudioModelView::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
-{
-	if ( tab->getCurrentEdit()->OnCmdMsg( nID, nCode, pExtra, pHandlerInfo ) ) return TRUE;
-	return RDOStudioEditBaseView::OnCmdMsg(nID, nCode, pExtra, pHandlerInfo);
-}
-
-void RDOStudioModelView::OnSetFocus(CWnd* pOldWnd)
-{
-	RDOStudioEditBaseView::OnSetFocus( pOldWnd );
-	tab->SetFocus();
-}
-
-void RDOStudioModelView::OnSize(UINT nType, int cx, int cy) 
-{
-	RDOStudioEditBaseView::OnSize(nType, cx, cy);
-	
-	CRect r;
-	GetClientRect( r );
-	tab->MoveWindow( r );
+	return *tab;
 }
 
 RDOEditorEdit* RDOStudioModelView::getEdit() const
@@ -149,7 +114,7 @@ RDOEditorEdit* RDOStudioModelView::getEdit() const
 void RDOStudioModelView::OnSearchFindInModel() 
 {
 	CFindReplaceDialog* pDlg = new CFindReplaceDialog();
-	pDlg->Create( true, getEdit()->getWordForFind().c_str(), NULL, FR_HIDEUPDOWN, this );
+	pDlg->Create( true, getEdit()->getWordForFind().c_str(), NULL, FR_HIDEUPDOWN, &m_thisCWnd );
 }
 
 LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM /*wParam*/, LPARAM lParam )

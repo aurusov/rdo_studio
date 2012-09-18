@@ -65,15 +65,16 @@ void RDOStudioEditDoc::Dump(CDumpContext& dc) const
 
 void RDOStudioEditDoc::updateModify()
 {
-	POSITION pos = GetFirstViewPosition();
-	if ( pos ) {
-		RDOStudioEditView* view = static_cast<RDOStudioEditView*>(GetNextView( pos ));
-		if ( view ) {
-			if ( view->edit->isModify() ) {
-				SetModifiedFlag( true );
-				return;
-			}
-		}
-	}
-	SetModifiedFlag( false );
+	//! @todo qt
+	//POSITION pos = GetFirstViewPosition();
+	//if ( pos ) {
+	//	RDOStudioEditView* view = static_cast<RDOStudioEditView*>(GetNextView( pos ));
+	//	if ( view ) {
+	//		if ( view->edit->isModify() ) {
+	//			SetModifiedFlag( true );
+	//			return;
+	//		}
+	//	}
+	//}
+	//SetModifiedFlag( false );
 }

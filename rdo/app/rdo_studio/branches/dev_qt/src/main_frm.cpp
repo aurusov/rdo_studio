@@ -161,6 +161,9 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 {
 	m_pLastDocked = NULL;
 	setupUi(this);
+
+    QObject::connect(actFileNew,  SIGNAL(triggered(bool)), this, SLOT(onFileNew ()));
+    QObject::connect(actFileOpen, SIGNAL(triggered(bool)), this, SLOT(onFileOpen()));
 }
 
 RDOStudioMainFrame::~RDOStudioMainFrame()
@@ -267,6 +270,21 @@ void RDOStudioMainFrame::closeEvent(QCloseEvent* event)
 	close_mode = false;
 
 	parent_type::closeEvent(event);
+}
+
+void RDOStudioMainFrame::onFileNew() 
+{
+	int i = 1;
+	//RDOStudioModelNew dlg;
+	//if (dlg.DoModal() == IDOK)
+	//{
+	//	model->newModel(dlg.getModelName(), dlg.getModelPath() + dlg.getModelName(), dlg.getModelTemplate());
+	//}
+}
+
+void RDOStudioMainFrame::onFileOpen() 
+{
+	model->openModel();
 }
 
 void RDOStudioMainFrame::OnViewFileToolbar() 
@@ -458,15 +476,48 @@ void RDOStudioMainFrame::updateAllStyles() const
 
 void RDOStudioMainFrame::beginProgress( const int lower, const int upper, const int step )
 {
-	statusBar.setRange( lower, upper );
-	statusBar.setStep( step );
-	statusBar.setPos( lower );
-	statusBar.setProgressVisible( true );
+	//! @todo qt
+	//statusBar.setRange( lower, upper );
+	//statusBar.setStep( step );
+	//statusBar.setPos( lower );
+	//statusBar.setProgressVisible( true );
 }
+
+void RDOStudioMainFrame::getProgressRange(int& lower, int& upper) const
+{
+	//! @todo qt
+	//statusBar.getRange( lower, upper );
+};
+
+void RDOStudioMainFrame::setProgress(const int pos)
+{
+	//! @todo qt
+	//statusBar.setPos( pos );
+};
+
+int RDOStudioMainFrame::getProgress() const
+{
+	return 0;
+	//! @todo qt
+	//return statusBar.getPos();
+};
+
+void RDOStudioMainFrame::offsetProgress(const int offset)
+{
+	//! @todo qt
+	//statusBar.offsetPos( offset );
+};
+
+void RDOStudioMainFrame::stepProgress()
+{
+	//! @todo qt
+	//statusBar.stepIt();
+};
 
 void RDOStudioMainFrame::endProgress()
 {
-	statusBar.setProgressVisible( false );
+	//! @todo qt
+	//statusBar.setProgressVisible( false );
 }
 
 void RDOStudioMainFrame::OnHelpKeyword()
@@ -639,3 +690,10 @@ void RDOStudioMainFrame::hideEvent(QHideEvent*)
 //{
 //	model->setGUIContinue();
 //}
+
+void RDOStudioMainFrame::addSubWindow(QWidget* pWidget)
+{
+	ASSERT(pWidget);
+	mdiArea->addSubWindow(pWidget);
+	pWidget->show();
+}

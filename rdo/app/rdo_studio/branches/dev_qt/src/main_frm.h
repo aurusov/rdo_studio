@@ -63,7 +63,6 @@ class RDOStudioMainFrame
 Q_OBJECT
 
 friend class RDOToolBar;
-friend class RDOStudioModelDoc;
 
 public:
 	RDOStudioMainFrame();
@@ -81,11 +80,11 @@ public:
 	double getSpeed() const { return modelToolBar.getSpeed(); }
 
 	void beginProgress   (const int lower = 0, const int upper = 100, const int step = 1);
-	void getProgressRange(int& lower, int& upper) const  { statusBar.getRange( lower, upper ); };
-	void setProgress     (const int pos)                 { statusBar.setPos( pos );            };
-	int  getProgress     () const                        { return statusBar.getPos();          };
-	void offsetProgress  (const int offset)              { statusBar.offsetPos( offset );      };
-	void stepProgress    ()                              { statusBar.stepIt();                 };
+	void getProgressRange(int& lower, int& upper) const;
+	void setProgress     (const int pos);
+	int  getProgress     () const;
+	void offsetProgress  (const int offset);
+	void stepProgress    ();
 	void endProgress     ();
 
 	void update_start();
@@ -94,6 +93,8 @@ public:
 	PTR(QMenu) getMenuFile() { return menuFile; }
 
 	PTR(CWnd) c_wnd() { return &m_thisCWnd; }
+
+	virtual void addSubWindow(QWidget* pWidget);
 
 private:
 	typedef  QMainWindow  parent_type;
@@ -111,7 +112,11 @@ private:
 
 	UINT m_updateTimer;
 
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+private slots:
+	void onFileNew ();
+	void onFileOpen();
+
+private:
 	afx_msg void OnViewFileToolbar();
 	afx_msg void OnViewEditToolbar();
 	afx_msg void OnViewZoomToolbar();

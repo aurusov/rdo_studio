@@ -15,7 +15,6 @@
 #include "kernel/rdothread.h"
 #include "simulator/service/rdosimwin.h"
 #include "app/rdo_studio_mfc/src/frame/manager.h"
-#include "app/rdo_studio_mfc/src/model/document.h"
 #include "app/rdo_studio_mfc/src/model/view.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_childfrm.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_docview.h"
@@ -34,7 +33,6 @@ namespace rdoEditor {
 
 class RDOStudioModel: public RDOThreadGUI
 {
-friend class RDOStudioModelDoc;
 friend class RDOStudioFrameView;
 friend class RDOStudioFrameTreeCtrl;
 friend class RDOStudioApp;
@@ -50,7 +48,6 @@ private:
 		BS_ERROR
 	};
 
-	PTR(CMultiDocTemplate)                 m_pModelDocTemplate;
 	PTR(CMultiDocTemplate)                 m_pFlowchartDocTemplate;
 	RDOStudioFrameManager                  m_frameManager;
 
@@ -83,7 +80,9 @@ private:
 	rdo::runtime::RunTimeMode              m_runtimeMode;
 	rdo::runtime::RunTimeMode              m_runtimeModePrev;
 	rdo::simulation::report::RDOExitCode  m_exitCode;
-	mutable rbool                          m_prevModify;
+	mutable rbool                          m_modify;
+	RDOStudioModelView*                    m_pModelView;
+	tstring                                m_name;
 
 	void  updateFrmDescribed      ();
 	void  newModelFromRepository  ();
@@ -109,12 +108,6 @@ private:
 			it++;
 		}
 		return NULL;
-	}
-
-	PTR(RDOStudioModelDoc) getModelDoc() const
-	{
-		POSITION pos = m_pModelDocTemplate->GetFirstDocPosition();
-		return pos ? static_cast<PTR(RDOStudioModelDoc)>(m_pModelDocTemplate->GetNextDoc(pos)) : NULL;
 	}
 
 	struct ModelTemplateItem
@@ -172,26 +165,12 @@ public:
 
 	tstring getName() const
 	{
-		PTR(RDOStudioModelDoc) pDoc = getModelDoc();
-		return pDoc ? pDoc->getName() : _T("");
+		return m_name;
 	}
 	void    setName    (CREF(tstring) str);
 	tstring getFullName() const;
 
-	rbool   isModify   () const
-	{
-		PTR(RDOStudioModelDoc) pDoc = getModelDoc();
-		rbool result = pDoc ? pDoc->isModify() : false;
-		if (m_prevModify != result)
-		{
-			m_prevModify = result;
-			if (plugins)
-			{
-				plugins->pluginProc(rdoPlugin::PM_MODEL_MODIFY);
-			}
-		}
-		return result;
-	}
+	rbool  isModify      () const;
 	rbool  canNew        () const { return ((hasModel() && m_GUI_CAN_RUN) || !hasModel()) && m_GUI_ACTION_NEW;   }
 	rbool  canOpen       () const { return ((hasModel() && m_GUI_CAN_RUN) || !hasModel()) && m_GUI_ACTION_OPEN;  }
 	rbool  canSave       () const { return isModify()                                     && m_GUI_ACTION_SAVE;  }
@@ -221,22 +200,26 @@ public:
 	void       closeAllFrame   ()                { m_frameManager.closeAll();                         }
 	rbool      hasModel        () const          { return m_GUI_HAS_MODEL;                            }
 
-	PTR(rdoEditor::RDOEditorTabCtrl) getTab() const
+	PTR(rdoEditor::RDOEditorTabCtrl) getTab()
 	{
-		PTR(RDOStudioModelDoc) pDoc = getModelDoc();
-		if (pDoc)
-		{
-			PTR(RDOStudioModelView) pView = pDoc->getView();
-			if (pView)
-			{
-				return pView->tab;
-			}
-		}
-		return NULL;
+		if (!m_pModelView)
+			return NULL;
+
+		return &m_pModelView->getTab();
+	}
+
+	CPTR(rdoEditor::RDOEditorTabCtrl) getTab() const
+	{
+		if (!m_pModelView)
+			return NULL;
+
+		return &m_pModelView->getTab();
 	}
 
 	void  updateStyleOfAllModel() const;
 	rbool isPrevModelClosed    () const { return m_modelClosed; }
+
+	rbool saveModified();
 };
 
 // --------------------------------------------------------------------------------

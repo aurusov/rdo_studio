@@ -86,16 +86,17 @@ int RDOEditorTabCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	page9->setEditorStyle ( &studioApp.getStyle()->style_editor );
 	page10->setEditorStyle( &studioApp.getStyle()->style_editor );
 
-	page1->setPopupMenu ( &view->popupMenu );
-	page2->setPopupMenu ( &view->popupMenu );
-	page3->setPopupMenu ( &view->popupMenu );
-	page4->setPopupMenu ( &view->popupMenu );
-	page5->setPopupMenu ( &view->popupMenu );
-	page6->setPopupMenu ( &view->popupMenu );
-	page7->setPopupMenu ( &view->popupMenu );
-	page8->setPopupMenu ( &view->popupMenu );
-	page9->setPopupMenu ( &view->popupMenu );
-	page10->setPopupMenu( &view->popupMenu );
+	//! @todo qt
+	//page1->setPopupMenu ( &view->popupMenu );
+	//page2->setPopupMenu ( &view->popupMenu );
+	//page3->setPopupMenu ( &view->popupMenu );
+	//page4->setPopupMenu ( &view->popupMenu );
+	//page5->setPopupMenu ( &view->popupMenu );
+	//page6->setPopupMenu ( &view->popupMenu );
+	//page7->setPopupMenu ( &view->popupMenu );
+	//page8->setPopupMenu ( &view->popupMenu );
+	//page9->setPopupMenu ( &view->popupMenu );
+	//page10->setPopupMenu( &view->popupMenu );
 
 	group.insert( page1 );
 	group.insert( page2 );
