@@ -12,6 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <limits>
 #include <QtCore/qprocess.h>
+#include <QtGui/qmdisubwindow.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/src/application.h"
@@ -694,6 +695,27 @@ void RDOStudioMainFrame::hideEvent(QHideEvent*)
 void RDOStudioMainFrame::addSubWindow(QWidget* pWidget)
 {
 	ASSERT(pWidget);
-	mdiArea->addSubWindow(pWidget);
+
+	QList<QMdiSubWindow*> frameList = mdiArea->subWindowList();
+
+	rbool maximized = frameList.empty();
+	if (!maximized)
+	{
+		maximized = frameList.front()->isMaximized();
+	}
+
+	QMdiSubWindow* pFrame = mdiArea->addSubWindow(pWidget);
 	pWidget->show();
+
+	static const float sizeScale = 0.9;
+	QSize size(mdiArea->size());
+	size.setWidth (float(size.width ()) * sizeScale);
+	size.setHeight(float(size.height()) * sizeScale);
+	pFrame->move  (frameList.size() * 4, frameList.size() * 4);
+	pFrame->resize(size);
+
+	if (maximized)
+	{
+		pFrame->showMaximized();
+	}
 }
