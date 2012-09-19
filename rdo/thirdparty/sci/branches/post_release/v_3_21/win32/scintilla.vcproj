@@ -399,6 +399,14 @@
 				RelativePath="..\rdo\LexRdo.h"
 				>
 			</File>
+			<File
+				RelativePath="..\rdo\WordListUtil.cxx"
+				>
+			</File>
+			<File
+				RelativePath="..\rdo\WordListUtil.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name=".lexlib"
