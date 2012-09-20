@@ -162,6 +162,7 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 {
 	m_pLastDocked = NULL;
 	setupUi(this);
+	mdiArea->setOption(QMdiArea::DontMaximizeSubWindowOnActivation);
 
     QObject::connect(actFileNew,  SIGNAL(triggered(bool)), this, SLOT(onFileNew ()));
     QObject::connect(actFileOpen, SIGNAL(triggered(bool)), this, SLOT(onFileOpen()));
