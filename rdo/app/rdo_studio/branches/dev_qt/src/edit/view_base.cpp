@@ -77,6 +77,8 @@ RDOStudioEditBaseView::RDOStudioEditBaseView(QWidget* pParent)
 
 RDOStudioEditBaseView::~RDOStudioEditBaseView()
 {
+	m_thisCWnd.Detach();
+
 	//! todo qt
 	// eraseMenu(&m_popupMenu);
 }
