@@ -1331,7 +1331,7 @@ void RDOStudioModel::setGUIContinue()
 rbool RDOStudioModel::isModify() const
 {
 	if (!m_pModelView)
-		false;
+		return false;
 
 	rbool result = false;
 
