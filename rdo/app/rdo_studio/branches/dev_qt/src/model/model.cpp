@@ -743,7 +743,6 @@ void RDOStudioModel::newModelFromRepository()
 	ASSERT(!m_pModelView);
 	m_pModelView = new RDOStudioModelView(NULL);
 	studioApp.getIMainWnd()->addSubWindow(m_pModelView);
-	m_pModelView->init();
 	//m_pModelDocTemplate->OpenDocumentFile(NULL);
 	rdo::repository::RDOThreadRepository::FileInfo data_smr(rdoModelObjects::RDOX);
 	studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data_smr);
@@ -828,7 +827,6 @@ void RDOStudioModel::openModelFromRepository()
 	//! @todo qt
 	m_pModelView = new RDOStudioModelView(NULL);
 	studioApp.getIMainWnd()->addSubWindow(m_pModelView);
-	m_pModelView->init();
 
 //	m_pModelDocTemplate->OpenDocumentFile(NULL);
 	rdo::repository::RDOThreadRepository::FileInfo data_smr(rdoModelObjects::RDOX);

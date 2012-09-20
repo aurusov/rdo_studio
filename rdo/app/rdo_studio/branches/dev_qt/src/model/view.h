@@ -12,6 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/rdointerface.h"
 #include "app/rdo_studio_mfc/src/edit/view_base.h"
 // --------------------------------------------------------------------------------
 
@@ -23,7 +24,7 @@ namespace rdoEditor {
 	class RDOEditorTabCtrl;
 }
 
-class RDOStudioModelView: public RDOStudioEditBaseView
+class RDOStudioModelView: public RDOStudioEditBaseView, public IInit
 {
 private:
 	rdoEditor::RDOEditorTabCtrl* tab;
@@ -32,8 +33,6 @@ public:
 	RDOStudioModelView(QWidget* pParent);
 	virtual ~RDOStudioModelView();
 
-	void init();
-
 	REF(rdoEditor::RDOEditorTabCtrl)  getTab ();
 	virtual rdoEditor::RDOEditorEdit* getEdit() const;
 
@@ -41,6 +40,8 @@ private:
 	typedef  RDOStudioEditBaseView  parent_type;
 
 	void resizeEvent(PTR(QResizeEvent) event);
+
+	DECLARE_IInit;
 
 	afx_msg void OnSearchFindInModel();
 	afx_msg LRESULT OnFindInModelMsg( WPARAM wParam, LPARAM lParam );

@@ -61,10 +61,11 @@ RDOStudioModelView::~RDOStudioModelView()
 	if ( tab ) { delete tab; tab = NULL; }
 }
 
-void RDOStudioModelView::init()
+rbool RDOStudioModelView::init()
 {
 	tab = new RDOEditorTabCtrl(this);
 	tab->Create( NULL, NULL, 0, CRect(0, 0, 100, 100), CWnd::FromHandle(winId()), 0 );
+	return true;
 }
 
 //! @todo qt

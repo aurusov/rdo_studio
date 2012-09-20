@@ -705,6 +705,11 @@ void RDOStudioMainFrame::addSubWindow(QWidget* pWidget)
 	}
 
 	QMdiSubWindow* pFrame = mdiArea->addSubWindow(pWidget);
+	IInit* pInitWidget = dynamic_cast<IInit*>(pWidget);
+	if (pInitWidget)
+	{
+		pInitWidget->init();
+	}
 	pWidget->show();
 
 	static const float sizeScale = 0.9;
