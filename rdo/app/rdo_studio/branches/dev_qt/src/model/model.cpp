@@ -1360,14 +1360,14 @@ rbool RDOStudioModel::saveModified()
 {
 	if (isRunning())
 	{
-		QMessageBox::warning(studioApp.getMainWnd(), "Модель запущена", rdo::format(ID_MSG_MODEL_NEED_STOPED_FOR_CLOSE).c_str());
+		QMessageBox::warning(studioApp.getMainWnd(), "RAO-Studio", rdo::format(ID_MSG_MODEL_NEED_STOPED_FOR_CLOSE).c_str());
 		return false;
 	}
 	rbool result = true;
 
 	if (isModify())
 	{
-		switch (QMessageBox::question(studioApp.getMainWnd(), "Сохранить", rdo::format(ID_MSG_MODELSAVE_QUERY).c_str(), QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel))
+		switch (QMessageBox::question(studioApp.getMainWnd(), "RAO-Studio", rdo::format(ID_MSG_MODELSAVE_QUERY).c_str(), QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel))
 		{
 			case QMessageBox::Yes   : result = saveModel(); break;
 			case QMessageBox::No    : result = true; break;
@@ -1376,7 +1376,7 @@ rbool RDOStudioModel::saveModified()
 	}
 	else if (!MainWindowBase::is_close_mode())
 	{
-		switch (QMessageBox::question(studioApp.getMainWnd(), "Закрыть", rdo::format(ID_MSG_MODELCLOSE_QUERY).c_str(), QMessageBox::Yes | QMessageBox::No))
+		switch (QMessageBox::question(studioApp.getMainWnd(), "RAO-Studio", rdo::format(ID_MSG_MODELCLOSE_QUERY).c_str(), QMessageBox::Yes | QMessageBox::No))
 		{
 			case QMessageBox::Yes: result = true; break;
 			case QMessageBox::No : result = false; break;
