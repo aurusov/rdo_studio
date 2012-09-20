@@ -1112,13 +1112,17 @@ void RDOStudioModel::setName(CREF(tstring) str)
 	{
 		m_name = newName;
 
+		tstring title(rdo::format(IDS_MODEL_NAME, m_name.c_str()));
+
+		m_pModelView->parentWidget()->setWindowTitle(QString::fromStdString(title));
+
 		if (studioApp.getShowCaptionFullName())
 		{
 			studioApp.getMainWnd()->setWindowTitle(rdo::format(IDS_MODEL_NAME, getFullName().c_str()).c_str());
 		}
 		else
 		{
-			studioApp.getMainWnd()->setWindowTitle(rdo::format(IDS_MODEL_NAME, m_name.c_str()).c_str());
+			studioApp.getMainWnd()->setWindowTitle(title.c_str());
 		}
 
 		if (plugins)
