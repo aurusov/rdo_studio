@@ -273,7 +273,7 @@ void RDOStudioMainFrame::closeEvent(QCloseEvent* event)
 	parent_type::closeEvent(event);
 }
 
-void RDOStudioMainFrame::onFileNew() 
+void RDOStudioMainFrame::onFileNew()
 {
 	int i = 1;
 	//RDOStudioModelNew dlg;
@@ -283,18 +283,18 @@ void RDOStudioMainFrame::onFileNew()
 	//}
 }
 
-void RDOStudioMainFrame::onFileOpen() 
+void RDOStudioMainFrame::onFileOpen()
 {
 	model->openModel();
 }
 
-void RDOStudioMainFrame::OnViewFileToolbar() 
+void RDOStudioMainFrame::OnViewFileToolbar()
 {
 	//! @todo qt
 	//ShowControlBar( &fileToolBar, !(fileToolBar.GetStyle() & WS_VISIBLE), false );
 }
 
-void RDOStudioMainFrame::OnViewEditToolbar() 
+void RDOStudioMainFrame::OnViewEditToolbar()
 {
 	//! @todo qt
 	//ShowControlBar( &editToolBar, !(editToolBar.GetStyle() & WS_VISIBLE), false );
@@ -312,12 +312,12 @@ void RDOStudioMainFrame::OnViewModelToolbar()
 	//ShowControlBar( &modelToolBar, !(modelToolBar.GetStyle() & WS_VISIBLE), false );
 }
 
-void RDOStudioMainFrame::OnUpdateViewFileToolbar(CCmdUI* pCmdUI) 
+void RDOStudioMainFrame::OnUpdateViewFileToolbar(CCmdUI* pCmdUI)
 {
 	pCmdUI->SetCheck( fileToolBar.GetStyle() & WS_VISIBLE );
 }
 
-void RDOStudioMainFrame::OnUpdateViewEditToolbar(CCmdUI* pCmdUI) 
+void RDOStudioMainFrame::OnUpdateViewEditToolbar(CCmdUI* pCmdUI)
 {
 	pCmdUI->SetCheck( editToolBar.GetStyle() & WS_VISIBLE );
 }
@@ -332,13 +332,13 @@ void RDOStudioMainFrame::OnUpdateViewModelToolbar(CCmdUI* pCmdUI)
 	pCmdUI->SetCheck( modelToolBar.GetStyle() & WS_VISIBLE );
 }
 
-void RDOStudioMainFrame::OnViewWorkspace() 
+void RDOStudioMainFrame::OnViewWorkspace()
 {
 	//! @todo qt
 	//ShowControlBar( &workspace, !workspace.IsVisible(), false );
 }
 
-void RDOStudioMainFrame::OnViewOutput() 
+void RDOStudioMainFrame::OnViewOutput()
 {
 	//! @todo qt
 	//ShowControlBar( &output, !output.IsVisible(), false );
@@ -368,12 +368,12 @@ void RDOStudioMainFrame::showOutput()
 	//::SendMessage( m_hWnd, OUTPUT_SHOW_MESSAGE, 0, 0 );
 }
 
-void RDOStudioMainFrame::OnUpdateViewWorkspace(CCmdUI* pCmdUI) 
+void RDOStudioMainFrame::OnUpdateViewWorkspace(CCmdUI* pCmdUI)
 {
 	pCmdUI->SetCheck(getWorkspaceDoc()->isVisible());
 }
 
-void RDOStudioMainFrame::OnUpdateViewOutput(CCmdUI* pCmdUI) 
+void RDOStudioMainFrame::OnUpdateViewOutput(CCmdUI* pCmdUI)
 {
 	pCmdUI->SetCheck(getOutputDoc()->isVisible());
 }
@@ -462,7 +462,7 @@ void RDOStudioMainFrame::OnUpdateModelShowRateStatusBar( CCmdUI *pCmdUI )
 	}
 }
 
-void RDOStudioMainFrame::OnViewOptions() 
+void RDOStudioMainFrame::OnViewOptions()
 {
 	RDOStudioOptions dlg;
 	dlg.DoModal();
