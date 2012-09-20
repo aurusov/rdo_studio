@@ -134,6 +134,8 @@ private:
 
 	void show_result();
 
+	void createView();
+
 protected:
 	virtual void proc(REF(RDOThread::RDOMessageInfo) msg);
 

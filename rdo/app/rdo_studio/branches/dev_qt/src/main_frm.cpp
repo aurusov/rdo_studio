@@ -163,8 +163,12 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 	setupUi(this);
 	mdiArea->setOption(QMdiArea::DontMaximizeSubWindowOnActivation);
 
-	QObject::connect(actFileNew,  SIGNAL(triggered(bool)), this, SLOT(onFileNew ()));
-	QObject::connect(actFileOpen, SIGNAL(triggered(bool)), this, SLOT(onFileOpen()));
+	QObject::connect(actFileNew,     SIGNAL(triggered(bool)), this, SLOT(onFileNew    ()));
+	QObject::connect(actFileOpen,    SIGNAL(triggered(bool)), this, SLOT(onFileOpen   ()));
+	QObject::connect(actFileClose,   SIGNAL(triggered(bool)), this, SLOT(onFileClose  ()));
+	QObject::connect(actFileSave,    SIGNAL(triggered(bool)), this, SLOT(onFileSave   ()));
+	QObject::connect(actFileSaveAs,  SIGNAL(triggered(bool)), this, SLOT(onFileSaveAs ()));
+	QObject::connect(actFileSaveAll, SIGNAL(triggered(bool)), this, SLOT(onFileSaveAll()));
 }
 
 RDOStudioMainFrame::~RDOStudioMainFrame()
@@ -286,6 +290,26 @@ void RDOStudioMainFrame::onFileNew()
 void RDOStudioMainFrame::onFileOpen()
 {
 	model->openModel();
+}
+
+void RDOStudioMainFrame::onFileClose()
+{
+	model->closeModel();
+}
+
+void RDOStudioMainFrame::onFileSave()
+{
+	model->saveModel();
+}
+
+void RDOStudioMainFrame::onFileSaveAs()
+{
+	model->saveAsModel();
+}
+
+void RDOStudioMainFrame::onFileSaveAll()
+{
+	model->saveModel();
 }
 
 void RDOStudioMainFrame::OnViewFileToolbar()

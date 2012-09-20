@@ -728,6 +728,14 @@ rbool RDOStudioModel::stopModel() const
 	return false;
 }
 
+void RDOStudioModel::createView()
+{
+	ASSERT(m_pModelView == NULL);
+	m_pModelView = new RDOStudioModelView(NULL);
+	studioApp.getIMainWnd()->addSubWindow(m_pModelView);
+	m_pModelView->parentWidget()->setWindowIcon(QIcon(QString::fromUtf8(":/images/images/model.png")));
+}
+
 void RDOStudioModel::newModelFromRepository()
 {
 	m_GUI_HAS_MODEL = true;
@@ -740,9 +748,7 @@ void RDOStudioModel::newModelFromRepository()
 	}
 
 	//! @todo qt
-	ASSERT(!m_pModelView);
-	m_pModelView = new RDOStudioModelView(NULL);
-	studioApp.getIMainWnd()->addSubWindow(m_pModelView);
+	createView();
 	//m_pModelDocTemplate->OpenDocumentFile(NULL);
 	rdo::repository::RDOThreadRepository::FileInfo data_smr(rdoModelObjects::RDOX);
 	studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data_smr);
@@ -825,9 +831,7 @@ void RDOStudioModel::openModelFromRepository()
 
 	PTR(CWnd) active = CWnd::GetActiveWindow();
 	//! @todo qt
-	m_pModelView = new RDOStudioModelView(NULL);
-	studioApp.getIMainWnd()->addSubWindow(m_pModelView);
-
+	createView();
 //	m_pModelDocTemplate->OpenDocumentFile(NULL);
 	rdo::repository::RDOThreadRepository::FileInfo data_smr(rdoModelObjects::RDOX);
 	studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data_smr);
@@ -1062,22 +1066,21 @@ void RDOStudioModel::updateFrmDescribed()
 
 rbool RDOStudioModel::canCloseModel()
 {
-	rbool flag = true;
+	rbool result = true;
 	if (isModify() && m_autoDeleteDoc)
 	{
-		int res = AfxGetMainWnd()->MessageBox(rdo::format(ID_MSG_MODELSAVE_QUERY).c_str(), NULL, MB_ICONQUESTION | MB_YESNOCANCEL);
-		switch (res)
+		switch (QMessageBox::question(studioApp.getMainWnd(), "RAO-Studio", rdo::format(ID_MSG_MODELSAVE_QUERY).c_str(), QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel))
 		{
-		case IDYES   : flag = saveModel(); break;
-		case IDNO    : flag = true; break;
-		case IDCANCEL: flag = false; break;
+			case QMessageBox::Yes   : result = saveModel(); break;
+			case QMessageBox::No    : result = true; break;
+			case QMessageBox::Cancel: result = false; break;
 		}
 	}
-	if (!flag)
+	if (!result)
 	{
 		m_showCanNotCloseModelMessage = false;
 	}
-	return flag;
+	return result;
 }
 
 void RDOStudioModel::closeModelFromRepository()
@@ -1100,7 +1103,10 @@ void RDOStudioModel::closeModelFromRepository()
 	{
 		m_showCanNotCloseModelMessage = true;
 	}
+	m_pModelView->parentWidget()->close();
+	m_pModelView  = NULL;
 	m_modelClosed = true;
+	setName("");
 }
 
 void RDOStudioModel::setName(CREF(tstring) str)
@@ -1112,18 +1118,16 @@ void RDOStudioModel::setName(CREF(tstring) str)
 	{
 		m_name = newName;
 
-		tstring title(rdo::format(IDS_MODEL_NAME, m_name.c_str()));
-
-		m_pModelView->parentWidget()->setWindowTitle(QString::fromStdString(title));
-		m_pModelView->parentWidget()->setWindowIcon (QIcon(QString::fromUtf8(":/images/images/model.png")));
-
-		if (studioApp.getShowCaptionFullName())
+		if (m_pModelView)
 		{
-			studioApp.getMainWnd()->setWindowTitle(rdo::format(IDS_MODEL_NAME, getFullName().c_str()).c_str());
-		}
-		else
-		{
-			studioApp.getMainWnd()->setWindowTitle(title.c_str());
+			if (studioApp.getShowCaptionFullName())
+			{
+				m_pModelView->parentWidget()->setWindowTitle(QString::fromStdString(rdo::format(IDS_MODEL_NAME, getFullName().c_str())));
+			}
+			else
+			{
+				m_pModelView->parentWidget()->setWindowTitle(QString::fromStdString(rdo::format(IDS_MODEL_NAME, m_name.c_str())));
+			}
 		}
 
 		if (plugins)

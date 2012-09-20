@@ -113,8 +113,12 @@ private:
 	UINT m_updateTimer;
 
 private slots:
-	void onFileNew ();
-	void onFileOpen();
+	void onFileNew    ();
+	void onFileOpen   ();
+	void onFileClose  ();
+	void onFileSave   ();
+	void onFileSaveAs ();
+	void onFileSaveAll();
 
 private:
 	afx_msg void OnViewFileToolbar();

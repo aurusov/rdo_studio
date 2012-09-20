@@ -152,12 +152,8 @@ void RDOStudioCommandLineInfo::ParseParam(LPCTSTR lpszParam, BOOL bFlag, BOOL bL
 RDOStudioApp studioApp;
 
 BEGIN_MESSAGE_MAP(RDOStudioApp, CWinApp)
-	ON_COMMAND          (ID_FILE_MODEL_SAVE,    OnFileSave         )
 	ON_UPDATE_COMMAND_UI(ID_FILE_MODEL_SAVE,    OnUpdateFileSave   )
-	ON_COMMAND          (ID_FILE_SAVE_ALL,      OnFileSaveAll      )
 	ON_UPDATE_COMMAND_UI(ID_FILE_SAVE_ALL,      OnUpdateFileSaveAll)
-	ON_COMMAND          (ID_FILE_MODEL_CLOSE,   OnFileClose        )
-	ON_COMMAND          (ID_FILE_MODEL_SAVE_AS, OnFileSaveAs       )
 	ON_UPDATE_COMMAND_UI(ID_FILE_MODEL_CLOSE,   OnUpdateFileClose  )
 	ON_UPDATE_COMMAND_UI(ID_FILE_MODEL_SAVE_AS, OnUpdateFileSaveAs )
 	ON_COMMAND          (ID_MODEL_BUILD,        OnModelBuild       )
@@ -483,26 +479,6 @@ rbool RDOStudioApp::shortToLongPath(CREF(tstring) shortPath, REF(tstring) longPa
 		longPath = W2A(szLongPath);
 		return true;
 	}
-}
-
-void RDOStudioApp::OnFileClose() 
-{
-	model->closeModel();
-}
-
-void RDOStudioApp::OnFileSave() 
-{
-	model->saveModel();
-}
-
-void RDOStudioApp::OnFileSaveAs() 
-{
-	model->saveAsModel();
-}
-
-void RDOStudioApp::OnFileSaveAll() 
-{
-	model->saveModel();
 }
 
 void RDOStudioApp::OnUpdateFileNew(PTR(CCmdUI) pCmdUI)
