@@ -1115,6 +1115,7 @@ void RDOStudioModel::setName(CREF(tstring) str)
 		tstring title(rdo::format(IDS_MODEL_NAME, m_name.c_str()));
 
 		m_pModelView->parentWidget()->setWindowTitle(QString::fromStdString(title));
+		m_pModelView->parentWidget()->setWindowIcon(QIcon(QString::fromUtf8(":/images/images/model.png")));
 
 		if (studioApp.getShowCaptionFullName())
 		{
