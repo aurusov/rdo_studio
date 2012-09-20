@@ -127,9 +127,7 @@ private:
 	virtual BOOL OnIdle              (LONG lCount);
 	virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
 
-	afx_msg void OnFileNew          ();
 	afx_msg void OnWindowNew        ();
-	afx_msg void OnFileOpen         ();
 	afx_msg void OnFileSave         ();
 	afx_msg void OnFileSaveAll      ();
 	afx_msg void OnFileClose        ();

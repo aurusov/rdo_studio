@@ -152,8 +152,6 @@ void RDOStudioCommandLineInfo::ParseParam(LPCTSTR lpszParam, BOOL bFlag, BOOL bL
 RDOStudioApp studioApp;
 
 BEGIN_MESSAGE_MAP(RDOStudioApp, CWinApp)
-	ON_COMMAND          (ID_FILE_NEW,           OnFileNew          )
-	ON_COMMAND          (ID_FILE_OPEN,          OnFileOpen         )
 	ON_COMMAND          (ID_FILE_MODEL_SAVE,    OnFileSave         )
 	ON_UPDATE_COMMAND_UI(ID_FILE_MODEL_SAVE,    OnUpdateFileSave   )
 	ON_COMMAND          (ID_FILE_SAVE_ALL,      OnFileSaveAll      )
@@ -362,11 +360,6 @@ BOOL RDOStudioApp::InitInstance()
 		m_dontCloseIfError = false;
 	}
 
-	if (newModel)
-	{
-//		OnFileNew();
-	}
-
 	if (m_autoRun)
 	{
 		OnModelRun();
@@ -490,20 +483,6 @@ rbool RDOStudioApp::shortToLongPath(CREF(tstring) shortPath, REF(tstring) longPa
 		longPath = W2A(szLongPath);
 		return true;
 	}
-}
-
-void RDOStudioApp::OnFileNew() 
-{
-	RDOStudioModelNew dlg;
-	if (dlg.DoModal() == IDOK)
-	{
-		model->newModel(dlg.getModelName(), dlg.getModelPath() + dlg.getModelName(), dlg.getModelTemplate());
-	}
-}
-
-void RDOStudioApp::OnFileOpen() 
-{
-	model->openModel();
 }
 
 void RDOStudioApp::OnFileClose() 

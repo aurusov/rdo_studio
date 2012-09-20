@@ -275,7 +275,7 @@ void RDOStudioMainFrame::closeEvent(QCloseEvent* event)
 
 void RDOStudioMainFrame::onFileNew()
 {
-	int i = 1;
+	//! @todo qt
 	//RDOStudioModelNew dlg;
 	//if (dlg.DoModal() == IDOK)
 	//{
