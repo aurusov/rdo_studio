@@ -13,6 +13,7 @@
 #include <QtGui/qevent.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/model/view.h"
+#include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/src/output.h"
@@ -66,6 +67,18 @@ rbool RDOStudioModelView::init()
 	tab = new RDOEditorTabCtrl(this);
 	tab->Create( NULL, NULL, 0, CRect(0, 0, 100, 100), CWnd::FromHandle(winId()), 0 );
 	return true;
+}
+
+void RDOStudioModelView::closeEvent(PTR(QCloseEvent) event)
+{
+	if (model->saveModified())
+	{
+		event->accept();
+	}
+	else
+	{
+		event->ignore();
+	}
 }
 
 //! @todo qt

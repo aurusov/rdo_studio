@@ -39,6 +39,7 @@ public:
 private:
 	typedef  RDOStudioEditBaseView  parent_type;
 
+	void closeEvent (PTR(QCloseEvent)  event);
 	void resizeEvent(PTR(QResizeEvent) event);
 
 	DECLARE_IInit;
