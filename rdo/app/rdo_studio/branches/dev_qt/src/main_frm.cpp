@@ -160,7 +160,6 @@ rbool MainWindowBase::close_mode = false;
 RDOStudioMainFrame::RDOStudioMainFrame()
 	: m_updateTimer(0)
 {
-	m_pLastDocked = NULL;
 	setupUi(this);
 	mdiArea->setOption(QMdiArea::DontMaximizeSubWindowOnActivation);
 

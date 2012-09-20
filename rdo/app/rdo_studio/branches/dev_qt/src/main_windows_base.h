@@ -29,8 +29,6 @@ class RDOStudioOutput;
 class MainWindowBase
 {
 public:
-	PTR(CControlBar)     m_pLastDocked;
-
 	rdoEditor::RDOEditorEditStyle    style_editor;
 	rdoEditCtrl::RDOBuildEditStyle   style_build;
 	rdoEditCtrl::RDOBaseEditStyle    style_debug;
