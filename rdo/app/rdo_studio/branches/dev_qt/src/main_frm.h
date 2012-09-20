@@ -120,6 +120,12 @@ private slots:
 	void onFileSaveAs ();
 	void onFileSaveAll();
 
+	void onModelBuild();
+public slots:
+	void onModelRun  ();
+private slots:
+	void onModelStop ();
+
 private:
 	afx_msg void OnViewFileToolbar();
 	afx_msg void OnViewEditToolbar();

@@ -156,9 +156,6 @@ BEGIN_MESSAGE_MAP(RDOStudioApp, CWinApp)
 	ON_UPDATE_COMMAND_UI(ID_FILE_SAVE_ALL,      OnUpdateFileSaveAll)
 	ON_UPDATE_COMMAND_UI(ID_FILE_MODEL_CLOSE,   OnUpdateFileClose  )
 	ON_UPDATE_COMMAND_UI(ID_FILE_MODEL_SAVE_AS, OnUpdateFileSaveAs )
-	ON_COMMAND          (ID_MODEL_BUILD,        OnModelBuild       )
-	ON_COMMAND          (ID_MODEL_RUN,          OnModelRun         )
-	ON_COMMAND          (ID_MODEL_STOP,         OnModelStop        )
 	ON_UPDATE_COMMAND_UI(ID_MODEL_BUILD,        OnUpdateModelBuild )
 	ON_UPDATE_COMMAND_UI(ID_MODEL_RUN,          OnUpdateModelRun   )
 	ON_UPDATE_COMMAND_UI(ID_MODEL_STOP,         OnUpdateModelStop  )
@@ -358,7 +355,7 @@ BOOL RDOStudioApp::InitInstance()
 
 	if (m_autoRun)
 	{
-		OnModelRun();
+		m_pMainFrame->onModelRun();
 	}
 
 	return TRUE;
@@ -702,21 +699,6 @@ void RDOStudioApp::saveReopen() const
 		{}
 		END_CATCH
 	}
-}
-
-void RDOStudioApp::OnModelBuild() 
-{
-	model->buildModel();
-}
-
-void RDOStudioApp::OnModelRun() 
-{
-	model->runModel();
-}
-
-void RDOStudioApp::OnModelStop() 
-{
-	model->stopModel();
 }
 
 void RDOStudioApp::OnUpdateModelBuild(PTR(CCmdUI) pCmdUI) 

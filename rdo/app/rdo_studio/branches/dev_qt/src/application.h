@@ -128,9 +128,6 @@ private:
 	virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
 
 	afx_msg void OnWindowNew        ();
-	afx_msg void OnModelBuild       ();
-	afx_msg void OnModelRun         ();
-	afx_msg void OnModelStop        ();
 	afx_msg void OnAppAbout         ();
 	afx_msg void OnProjectReopen    (UINT nID);
 	afx_msg void OnUpdateFileSave   (PTR(CCmdUI) pCmdUI);

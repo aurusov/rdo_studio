@@ -169,6 +169,10 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 	QObject::connect(actFileSave,    SIGNAL(triggered(bool)), this, SLOT(onFileSave   ()));
 	QObject::connect(actFileSaveAs,  SIGNAL(triggered(bool)), this, SLOT(onFileSaveAs ()));
 	QObject::connect(actFileSaveAll, SIGNAL(triggered(bool)), this, SLOT(onFileSaveAll()));
+
+	QObject::connect(actModelBuild, SIGNAL(triggered(bool)), this, SLOT(onModelBuild()));
+	QObject::connect(actModelRun,   SIGNAL(triggered(bool)), this, SLOT(onModelRun  ()));
+	QObject::connect(actModelStop,  SIGNAL(triggered(bool)), this, SLOT(onModelStop ()));
 }
 
 RDOStudioMainFrame::~RDOStudioMainFrame()
@@ -310,6 +314,21 @@ void RDOStudioMainFrame::onFileSaveAs()
 void RDOStudioMainFrame::onFileSaveAll()
 {
 	model->saveModel();
+}
+
+void RDOStudioMainFrame::onModelBuild()
+{
+	model->buildModel();
+}
+
+void RDOStudioMainFrame::onModelRun()
+{
+	model->runModel();
+}
+
+void RDOStudioMainFrame::onModelStop()
+{
+	model->stopModel();
 }
 
 void RDOStudioMainFrame::OnViewFileToolbar()
