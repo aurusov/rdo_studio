@@ -3,7 +3,5 @@
     <model>syntax_error.rdox</model>
     <target>CONSOLE</target>
     <exit_code>3</exit_code>
-    <trace></trace>
-    <result></result>
     <log_compilation>syntax_error.rlog</log_compilation>
 </test>
