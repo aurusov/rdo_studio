@@ -3,6 +3,4 @@
   <model>model_not_found.rdox</model>
   <target>CONSOLE</target>
   <exit_code>1</exit_code>
-  <trace></trace>
-  <result></result>
 </test>
