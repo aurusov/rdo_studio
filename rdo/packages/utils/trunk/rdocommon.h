@@ -143,7 +143,7 @@ OPEN_RDO_NAMESPACE
 	//! container(1)(3)(5)(2);        // Размещает в контейнере 4-ре элемента
 	//! \endcode
 	template <class T>
-	class vector: public std::vector<T>
+    class vector : public std::vector<T>
 	{
 	public:
 		//! \details Создаёт пустой контейнер
@@ -154,7 +154,7 @@ OPEN_RDO_NAMESPACE
 		//! \param item - Элемент контейнера
 		vector(CREF(T) item)
 		{
-			push_back(item);
+            std::vector<T>::push_back(item);
 		}
 
 		//! Добавляет в контейнер новый эелемент, более удобный аналог std::vector::push_back()
@@ -162,7 +162,7 @@ OPEN_RDO_NAMESPACE
 		//! \result Возвращает сам контейнер, чтобы эту же операцию можно было вызвать снова
 		REF(vector) operator() (CREF(T) item)
 		{
-			push_back(item);
+            std::vector<T>::push_back(item);
 			return *this;
 		}
 	};
