@@ -49,7 +49,7 @@ public:
 
 	virtual void init( CWnd* parent, unsigned int tbResID, unsigned int tbDisabledImageResID );
 
-	double getSpeed() const { return log( double(slider.GetPos() + 1) ) / log101; }
+	double getSpeed() const { return 1; /*log( double(slider.GetPos() + 1) ) / log101;*/ } //! @todo qt
 };
 
 // --------------------------------------------------------------------------------
