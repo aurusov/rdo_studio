@@ -15,7 +15,6 @@
 #include "app/rdo_studio_mfc/src/frame/tree_ctrl.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/src/frame/manager.h"
-#include "app/rdo_studio_mfc/src/frame/document.h"
 #include "app/rdo_studio_mfc/src/frame/view.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
@@ -86,12 +85,14 @@ void RDOStudioFrameTreeCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 			ruint index = model->m_frameManager.findFrameIndex( hitem );
 			if (index != ruint(~0))
 			{
-				RDOStudioFrameDoc* doc = model->m_frameManager.getFrameDoc( index );
-				if ( !doc ) {
-					model->m_frameManager.connectFrameDoc( index );
-				} else {
-					//! @todo qt
-//					studioApp.m_pMainFrame->MDIActivate( doc->getView()->GetParentFrame() );
+				FrameAnimationWnd* pView = model->getFrameManager().getFrameView(index);
+				if (!pView)
+				{
+					model->getFrameManager().createView(index);
+				}
+				else
+				{
+					studioApp.getIMainWnd()->activateSubWindow(pView->parentWidget());
 				}
 			}
 		}

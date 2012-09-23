@@ -94,7 +94,9 @@ public:
 
 	PTR(CWnd) c_wnd() { return &m_thisCWnd; }
 
-	virtual void addSubWindow(QWidget* pWidget);
+	virtual void addSubWindow              (QWidget* pWidget);
+	virtual void activateSubWindow         (QWidget* pWidget);
+	virtual void connectOnActivateSubWindow(QObject* pObject);
 
 private:
 	typedef  QMainWindow  parent_type;
@@ -105,12 +107,12 @@ private:
 	RDOToolBar              zoomToolBar;
 	RDOToolBarModel         modelToolBar;
 	RDOStudioStatusBar      statusBar;
+	int                     m_updateTimerID;
 
 	virtual void closeEvent(QCloseEvent* event);
 	virtual void showEvent (QShowEvent*  event);
 	virtual void hideEvent (QHideEvent*  event);
-
-	UINT m_updateTimer;
+	virtual void timerEvent(QTimerEvent* event);
 
 private slots:
 	void onFileNew    ();
@@ -162,7 +164,6 @@ private:
 	afx_msg void OnModelFramePrev();
 	afx_msg void OnUpdateModelFrameNext(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateModelFramePrev(CCmdUI* pCmdUI);
-	afx_msg void OnTimer(UINT nIDEvent);
 	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );

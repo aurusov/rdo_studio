@@ -14,8 +14,8 @@
 #include <vector>
 #include <map>
 #include <memory>
+#include <QtGui/qmdisubwindow.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/frame/document.h"
 #include "app/rdo_studio_mfc/src/frame/view.h"
 // --------------------------------------------------------------------------------
 
@@ -26,8 +26,10 @@ OPEN_RDO_ANIMATION_NAMESPACE
 struct Frame;
 CLOSE_RDO_ANIMATION_NAMESPACE
 
-class RDOStudioFrameManager
+class RDOStudioFrameManager: QObject
 {
+Q_OBJECT
+
 public:
 	RDOStudioFrameManager();
 	virtual ~RDOStudioFrameManager();
@@ -36,24 +38,23 @@ public:
 	void insertBitmap(CREF(tstring) bitmapName);
 
 	ruint findFrameIndex(const HTREEITEM             hitem   ) const;
-	ruint findFrameIndex(CPTR(RDOStudioFrameDoc)     pDoc    ) const;
-	ruint findFrameIndex(CPTR(RDOStudioFrameView)    pView   ) const;
+	ruint findFrameIndex(CPTR(FrameAnimationWnd)     pView   ) const;
 	ruint findFrameIndex(CPTR(FrameAnimationContent) pContent) const;
 
+	rbool                   isShowing         () const;
 	CREF(tstring)           getFrameName      (ruint index) const;
-	PTR(RDOStudioFrameDoc)  getFrameDoc       (ruint index) const;
-	PTR(RDOStudioFrameView) getFrameView      (ruint index) const;
+	PTR(FrameAnimationWnd)  getFrameView      (ruint index) const;
+	PTR(FrameAnimationWnd)  getFrameViewFirst () const;
 	ruint                   count             () const;
 	rbool                   isChanged         ();
 
 	void                    areaDown          (ruint frameIndex, CREF(QPoint) point) const;
 
-	PTR(RDOStudioFrameDoc)  connectFrameDoc   (ruint index);
-	void                    disconnectFrameDoc(CPTR(RDOStudioFrameDoc) pDoc);
-	PTR(RDOStudioFrameDoc)  getFirstExistDoc  () const;
-	void                    closeAll          ();
-	void                    clear             ();
-	void                    expand            () const;
+	PTR(FrameAnimationWnd)  createView    (ruint index);
+	void                    disconnectView(CPTR(FrameAnimationWnd) pView);
+	void                    closeAll      ();
+	void                    clear         ();
+	void                    expand        () const;
 
 	ruint getLastShowedFrame      () const;
 	void  setLastShowedFrame      (ruint index);
@@ -68,14 +69,6 @@ public:
 	void  updateStyles            () const;
 
 private:
-	class FrameDocTemplate: public CMultiDocTemplate
-	{
-	public:
-		FrameDocTemplate(UINT nIDResource, PTR(CRuntimeClass) pDocClass, PTR(CRuntimeClass) pFrameClass, PTR(CRuntimeClass) pViewClass);
-
-		virtual PTR(CFrameWnd) CreateNewFrame(PTR(CDocument) pDoc, PTR(CFrameWnd) pOther);
-	};
-
 	struct Frame
 	{
 		 Frame();
@@ -83,8 +76,7 @@ private:
 
 		HTREEITEM                      m_hitem;
 		tstring                        m_name;
-		PTR(RDOStudioFrameDoc)         m_pDoc;
-		PTR(RDOStudioFrameView)        m_pView;
+		PTR(FrameAnimationWnd)         m_pView;
 		PTR(FrameAnimationContent)     m_pContent;
 		rdo::gui::animation::AreaList  m_areaList;
 
@@ -96,12 +88,12 @@ private:
 
 	FrameList             m_frameList;
 	rdo::gui::BitmapList  m_bitmapList;
-	PTR(FrameDocTemplate) m_pFrameDocTemplate;
 	ruint                 m_lastShowedFrame;
 	ruint                 m_currentShowingFrame;
 	rbool                 m_changed;
 
-	rbool isValidFrameDoc(CPTRC(RDOStudioFrameDoc) pFrame) const;
+private slots:
+	void onSubWindowActivated(QMdiSubWindow* pWindow);
 };
 
 #endif // _RDO_STUDIO_MFC_FRAME_MANAGER_H_

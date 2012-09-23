@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/images">
+    <file>images/frame.png</file>
     <file>images/rdo_studio_16x16.png</file>
     <file>images/model.png</file>
     <file>images/logo.png</file>

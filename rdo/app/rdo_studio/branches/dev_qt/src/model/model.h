@@ -33,12 +33,10 @@ namespace rdoEditor {
 
 class RDOStudioModel: public RDOThreadGUI
 {
-friend class RDOStudioFrameView;
 friend class RDOStudioFrameTreeCtrl;
 friend class RDOStudioApp;
 friend class RDOThreadStudioGUI;
 friend class RDOStudioPlugins;
-friend class FrameAnimationContent;
 
 private:
 	enum BuildState
@@ -222,6 +220,8 @@ public:
 	rbool isPrevModelClosed    () const { return m_modelClosed; }
 
 	rbool saveModified();
+
+	REF(RDOStudioFrameManager) getFrameManager();
 };
 
 // --------------------------------------------------------------------------------

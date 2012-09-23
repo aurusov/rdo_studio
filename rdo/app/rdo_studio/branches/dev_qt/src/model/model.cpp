@@ -25,7 +25,6 @@
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/src/child_frm.h"
 #include "app/rdo_studio_mfc/src/output.h"
-#include "app/rdo_studio_mfc/src/frame/document.h"
 #include "app/rdo_studio_mfc/src/frame/view.h"
 #include "app/rdo_studio_mfc/src/plugins.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
@@ -334,8 +333,8 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			int index = m_frameManager.getLastShowedFrame();
 			if (index != -1)
 			{
-				PTR(RDOStudioFrameView) pView = m_frameManager.getFrameView(index);
-				if (pView) pView->SetFocus();
+				PTR(FrameAnimationWnd) pView = m_frameManager.getFrameView(index);
+				if (pView) pView->setFocus();
 			}
 			studioApp.getIMainWnd()->update_start();
 			if (plugins)
@@ -1172,10 +1171,10 @@ void RDOStudioModel::afterModelStart()
 		m_frameManager.setLastShowedFrame(initFrameNumber);
 		if (getRuntimeMode() != rdo::runtime::RTM_MaxSpeed && initFrameNumber < m_frameManager.count())
 		{
-			PTR(RDOStudioFrameDoc) pDoc = m_frameManager.connectFrameDoc(initFrameNumber);
-			if (pDoc)
+			PTR(FrameAnimationWnd) pView = m_frameManager.createView(initFrameNumber);
+			if (pView)
 			{
-				m_frameManager.getFrameView(initFrameNumber)->SetFocus();
+				m_frameManager.getFrameView(initFrameNumber)->setFocus();
 			}
 		}
 		output->appendStringToDebug(rdo::format(IDS_MODEL_RESOURCE_LOADING_OK));
@@ -1223,10 +1222,10 @@ void RDOStudioModel::setRuntimeMode(const rdo::runtime::RunTimeMode value)
 			case rdo::runtime::RTM_MaxSpeed: closeAllFrame(); break;
 			default:
 			{
-				PTR(RDOStudioFrameDoc) pDoc = m_frameManager.getFirstExistDoc();
-				if (!pDoc)
+				PTR(FrameAnimationWnd) pView = m_frameManager.getFrameViewFirst();
+				if (!pView)
 				{
-					m_frameManager.connectFrameDoc(m_frameManager.getLastShowedFrame());
+					m_frameManager.createView(m_frameManager.getLastShowedFrame());
 				}
 				break;
 			}
@@ -1290,13 +1289,14 @@ void RDOStudioModel::update()
 		{
 			break;
 		}
-		PTR(RDOStudioFrameView) pView = m_frameManager.getFrameView(i);
+		PTR(FrameAnimationWnd) pView = m_frameManager.getFrameView(i);
 		if (pView)
 		{
-			PTR(CDC) dc = pView->GetDC();
-			if (dc->RectVisible(pView->getClientRect()))
+			//! @todo qt: переделать модель отрисовки.
+			//! В pView::paintEvent запрашивать RT_RUNTIME_GET_FRAME, если был тик от таймера.
+			//! Иначе отрисовывать текущий буфер.
+			if (pView->isVisible())
 			{
-				pView->ReleaseDC(dc);
 				try
 				{
 					rdo::animation::Frame frame;
@@ -1309,10 +1309,6 @@ void RDOStudioModel::update()
 					sendMessage(kernel->runtime(), RT_SIMULATOR_MODEL_STOP_RUNTIME_DELAY);
 					return;
 				}
-			}
-			else
-			{
-				pView->ReleaseDC(dc);
 			}
 		}
 	}
@@ -1400,4 +1396,9 @@ rbool RDOStudioModel::saveModified()
 		m_GUI_HAS_MODEL = false;
 	}
 	return result;
+}
+
+REF(RDOStudioFrameManager) RDOStudioModel::getFrameManager()
+{
+	return m_frameManager;
 }

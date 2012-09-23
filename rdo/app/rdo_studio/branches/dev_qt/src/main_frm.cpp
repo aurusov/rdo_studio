@@ -88,7 +88,6 @@ void RDOToolBarModel::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar
 // --------------------------------------------------------------------------------
 const ruint WORKSPACE_SHOW_MESSAGE = ::RegisterWindowMessage( "WORKSPACE_SHOW_MESSAGE" );
 const ruint OUTPUT_SHOW_MESSAGE    = ::RegisterWindowMessage( "OUTPUT_SHOW_MESSAGE" );
-const ruint update_timer_ID = 1;
 
 //! @todo qt
 //BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
@@ -158,7 +157,7 @@ static UINT indicators[] = {
 rbool MainWindowBase::close_mode = false;
 
 RDOStudioMainFrame::RDOStudioMainFrame()
-	: m_updateTimer(0)
+	: m_updateTimerID(0)
 {
 	setupUi(this);
 	mdiArea->setOption(QMdiArea::DontMaximizeSubWindowOnActivation);
@@ -681,26 +680,23 @@ void RDOStudioMainFrame::OnUpdateModelFramePrev(CCmdUI* pCmdUI)
 
 void RDOStudioMainFrame::update_start()
 {
-//! @todo qt
-//	m_updateTimer = SetTimer(update_timer_ID, 1000 / 30, NULL);
+	m_updateTimerID = startTimer(1000 / 30);
 }
 
 void RDOStudioMainFrame::update_stop()
 {
-	if (m_updateTimer)
+	if (m_updateTimerID)
 	{
-		//! @todo qt
-		//KillTimer(m_updateTimer);
-		m_updateTimer = 0;
+		killTimer(m_updateTimerID);
+		m_updateTimerID = 0;
 	}
 }
 
-void RDOStudioMainFrame::OnTimer( UINT nIDEvent )
+void RDOStudioMainFrame::timerEvent(QTimerEvent* event)
 {
-	//! @todo qt
-	//parent_type::OnTimer(nIDEvent);
+	parent_type::timerEvent(event);
 
-	if (nIDEvent == m_updateTimer)
+	if (event->timerId() == m_updateTimerID)
 	{
 		update_stop();
 		model->update();
@@ -748,6 +744,7 @@ void RDOStudioMainFrame::addSubWindow(QWidget* pWidget)
 	}
 
 	QMdiSubWindow* pFrame = mdiArea->addSubWindow(pWidget);
+
 	IInit* pInitWidget = dynamic_cast<IInit*>(pWidget);
 	if (pInitWidget)
 	{
@@ -766,4 +763,21 @@ void RDOStudioMainFrame::addSubWindow(QWidget* pWidget)
 	{
 		pFrame->showMaximized();
 	}
+}
+
+void RDOStudioMainFrame::activateSubWindow(QWidget* pWidget)
+{
+	QMdiSubWindow* pSubWindow = dynamic_cast<QMdiSubWindow*>(pWidget);
+	if (!pSubWindow)
+		return;
+
+	mdiArea->setActiveSubWindow(pSubWindow);
+}
+
+void RDOStudioMainFrame::connectOnActivateSubWindow(QObject* pObject)
+{
+	ASSERT(mdiArea);
+	ASSERT(pObject);
+
+	QObject::connect(mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), pObject, SLOT(onSubWindowActivated(QMdiSubWindow*)));
 }

@@ -62,7 +62,9 @@ public:
 	virtual void update_start() = 0;
 	virtual void update_stop () = 0;
 
-	virtual void addSubWindow(QWidget* pWidget) = 0;
+	virtual void addSubWindow              (QWidget* pWidget) = 0;
+	virtual void activateSubWindow         (QWidget* pWidget) = 0;
+	virtual void connectOnActivateSubWindow(QObject* pObject) = 0;
 
 protected:
 	// Используется при закрытии модели. Задается вопрос.
