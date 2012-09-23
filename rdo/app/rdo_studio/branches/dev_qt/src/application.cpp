@@ -22,8 +22,6 @@
 #include "app/rdo_studio_mfc/src/child_frm.h"
 #include "app/rdo_studio_mfc/src/about.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
-#include "app/rdo_studio_mfc/src/edit/document.h"
-#include "app/rdo_studio_mfc/src/edit/view.h"
 #include "app/rdo_studio_mfc/src/plugins.h"
 #include "app/rdo_studio_mfc/src/thread.h"
 #include "app/rdo_studio_mfc/src/model/new.h"

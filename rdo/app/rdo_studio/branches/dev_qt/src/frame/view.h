@@ -20,7 +20,6 @@
 #include "ui/qt/headers/memdc/memdc.h"
 #include "ui/qt/headers/animation/area.h"
 #include "ui/qt/headers/bitmap/bitmap.h"
-#include "app/rdo_studio_mfc/src/view.h"
 #include "thirdparty/qt-solutions/qtwinmigrate/src/qwinwidget.h"
 // --------------------------------------------------------------------------------
 

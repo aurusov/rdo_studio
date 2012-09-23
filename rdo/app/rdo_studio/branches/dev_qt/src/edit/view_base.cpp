@@ -15,7 +15,6 @@
 #include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/edit/view_base.h"
-#include "app/rdo_studio_mfc/src/edit/document_base.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoredit.h"

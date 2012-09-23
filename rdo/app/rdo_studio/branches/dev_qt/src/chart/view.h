@@ -12,7 +12,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/view.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracervalues.h"
 #include "app/rdo_studio_mfc/src/chart/document.h"
 // --------------------------------------------------------------------------------
@@ -24,7 +23,7 @@ class RDOStudioChartViewStyle;
 class RDOTracerSerie;
 class RDOStudioDocSerie;
 
-class RDOStudioChartView : public RDOStudioView
+class RDOStudioChartView : public CView
 {
 friend class RDOTracerSerieFindValue;
 friend class RDOStudioChartOptionsChart;
