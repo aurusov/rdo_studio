@@ -13,6 +13,8 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <math.h>
 #include <QtGui/qmainwindow.h>
+#include <QtGui/qlabel.h>
+#include <boost/mpl/integral_c.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
@@ -68,6 +70,18 @@ public:
 	RDOStudioMainFrame();
 	virtual ~RDOStudioMainFrame();
 
+	enum StatusBar
+	{
+		SB_COORD,
+		SB_MODIFY,
+		SB_INSERTOVERWRITE,
+		SB_MODEL_TIME,
+		SB_MODEL_RUNTYPE,
+		SB_MODEL_SPEED,
+		SB_MODEL_SHOWRATE,
+		SB_PROGRESSSTATUSBAR
+	};
+
 	void init();
 
 	virtual void updateAllStyles() const;
@@ -98,6 +112,9 @@ public:
 	virtual void activateSubWindow         (QWidget* pWidget);
 	virtual void connectOnActivateSubWindow(QObject* pObject);
 
+	template <StatusBar N>
+	void updateStatusBar(CREF(QString) message);
+
 private:
 	typedef  QMainWindow  parent_type;
 
@@ -108,11 +125,23 @@ private:
 	RDOToolBarModel         modelToolBar;
 	RDOStudioStatusBar      statusBar;
 	int                     m_updateTimerID;
+	PTR(QLabel)             m_pSBCoord;
+	PTR(QLabel)             m_pSBModify;
 
 	virtual void closeEvent(QCloseEvent* event);
 	virtual void showEvent (QShowEvent*  event);
 	virtual void hideEvent (QHideEvent*  event);
 	virtual void timerEvent(QTimerEvent* event);
+
+	template <StatusBar N>
+	struct StatusBarType: boost::mpl::integral_c<StatusBar, N>
+	{};
+
+	template <StatusBar N>
+	void updateStatusBar(StatusBarType<N>, CREF(QString) message);
+
+	template <StatusBar N>
+	PTR(QLabel) getStatusBarLabel(StatusBarType<N>);
 
 private slots:
 	void onFileNew    ();

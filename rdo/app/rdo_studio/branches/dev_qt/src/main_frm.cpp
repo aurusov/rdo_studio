@@ -162,6 +162,12 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 	setupUi(this);
 	mdiArea->setOption(QMdiArea::DontMaximizeSubWindowOnActivation);
 
+	m_pSBCoord  = new QLabel(this);
+	m_pSBModify = new QLabel(this);
+
+	parent_type::statusBar()->addWidget(m_pSBCoord );
+	parent_type::statusBar()->addWidget(m_pSBModify);
+
 	QObject::connect(actFileNew,     SIGNAL(triggered(bool)), this, SLOT(onFileNew    ()));
 	QObject::connect(actFileOpen,    SIGNAL(triggered(bool)), this, SLOT(onFileOpen   ()));
 	QObject::connect(actFileClose,   SIGNAL(triggered(bool)), this, SLOT(onFileClose  ()));
@@ -780,4 +786,30 @@ void RDOStudioMainFrame::connectOnActivateSubWindow(QObject* pObject)
 	ASSERT(pObject);
 
 	QObject::connect(mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), pObject, SLOT(onSubWindowActivated(QMdiSubWindow*)));
+}
+
+template <RDOStudioMainFrame::StatusBar N>
+void RDOStudioMainFrame::updateStatusBar(CREF(QString) message)
+{
+	updateStatusBar(StatusBarType<N>(), message);
+}
+
+template <RDOStudioMainFrame::StatusBar N>
+void RDOStudioMainFrame::updateStatusBar(StatusBarType<N> statusBar, CREF(QString) message)
+{
+	PTR(QLabel) pLabel = getStatusBarLabel(statusBar);
+	ASSERT(pLabel);
+	pLabel->setText(message);
+}
+
+template <>
+PTR(QLabel) RDOStudioMainFrame::getStatusBarLabel<RDOStudioMainFrame::SB_COORD>(StatusBarType<SB_COORD>)
+{
+	return m_pSBCoord;
+}
+
+template <>
+PTR(QLabel) RDOStudioMainFrame::getStatusBarLabel<RDOStudioMainFrame::SB_MODIFY>(StatusBarType<SB_MODIFY>)
+{
+	return m_pSBModify;
 }
