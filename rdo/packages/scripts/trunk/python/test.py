@@ -154,8 +154,6 @@ print '\nSTARTED TEST CYCLE\n'
 for task in files:
 
     print dividing_line
-
-    print "ENC", sys.getfilesystemencoding()
     
     dirname = os.path.dirname(unicode(task, sys.getfilesystemencoding())) + u'/'
     
