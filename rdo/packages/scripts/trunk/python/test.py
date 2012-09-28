@@ -1,6 +1,8 @@
 ###############################################################################
 # Copyright (c) 2012 Evgeny Proydakov <lord.tiran@gmail.com>
 ###############################################################################
+# -*- coding: utf-8 -
+###############################################################################
 
 import os
 import sys
@@ -169,15 +171,13 @@ for task in files:
 
     exit_code = int(text_exit_code)
     
-    print 'Project              :'
-    print task
-    print 'Model file           :'
-    print model_name_with_ex
-    print 'Target               :' + target
+    print 'Project              :', task
+    print 'Model file           :', model_name_with_ex.encode(sys.getfilesystemencoding()).strip()
+    print 'Target               :', target
     print 'Exit code            :', exit_code
-    print 'Trace file           :' + etalon_trace_name
-    print 'Result file          :' + etalon_result_name
-    print 'Log compilation file :' + compile_log_file_name
+    print 'Trace file           :', etalon_trace_name
+    print 'Result file          :', etalon_result_name
+    print 'Log compilation file :', compile_log_file_name
     print ''
     
     model         = dirname + model_name_with_ex
