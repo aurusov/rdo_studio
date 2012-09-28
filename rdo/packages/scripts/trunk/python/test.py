@@ -171,7 +171,8 @@ for task in files:
     
     print 'Project              :'
     print task
-    print 'Model file           :' + model_name_with_ex
+    print 'Model file           :'
+    print model_name_with_ex
     print 'Target               :' + target
     print 'Exit code            :', exit_code
     print 'Trace file           :' + etalon_trace_name
