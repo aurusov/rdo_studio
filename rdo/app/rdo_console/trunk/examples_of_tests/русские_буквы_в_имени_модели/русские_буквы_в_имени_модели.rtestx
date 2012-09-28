@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<test>
+  <model>русские_буквы_в_имени_модели.rdox</model>
+  <target>CONSOLE</target>
+  <exit_code>0</exit_code>
+  <trace>русские_буквы_в_имени_модели_etalon.trc</trace>
+  <result>русские_буквы_в_имени_модели_etalon.pmv</result>
+</test>
