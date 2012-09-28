@@ -1,8 +1,6 @@
 ###############################################################################
 # Copyright (c) 2012 Evgeny Proydakov <lord.tiran@gmail.com>
 ###############################################################################
-# -*- coding: utf-8 -
-###############################################################################
 
 import os
 import sys
@@ -175,9 +173,9 @@ for task in files:
     print 'Model file           :', model_name_with_ex.encode(sys.getfilesystemencoding()).strip()
     print 'Target               :', target
     print 'Exit code            :', exit_code
-    print 'Trace file           :', etalon_trace_name
-    print 'Result file          :', etalon_result_name
-    print 'Log compilation file :', compile_log_file_name
+    print 'Trace file           :', etalon_trace_name.encode(sys.getfilesystemencoding()).strip()
+    print 'Result file          :', etalon_result_name.encode(sys.getfilesystemencoding()).strip()
+    print 'Log compilation file :', compile_log_file_name.encode(sys.getfilesystemencoding()).strip()
     print ''
     
     model         = dirname + model_name_with_ex
