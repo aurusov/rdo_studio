@@ -112,6 +112,7 @@ def get_text_from_dom(dom, node_text):
             rc.append(node.data)
     return ''.join(rc)
 
+
 def wrap_the_string_in_quotes(string):
     new_string = '"' + string + '"'
     return new_string
@@ -167,14 +168,14 @@ for task in files:
     compile_log_file_name = get_text_from_dom(dom, 'log_compilation')
 
     exit_code = int(text_exit_code)
-
-    print u'Project              :', task
-    print u'Model file           :', model_name_with_ex
-    print u'Target               :', target
-    print u'Exit code            :', exit_code
-    print u'Trace file           :', etalon_trace_name
-    print u'Result file          :', etalon_result_name
-    print u'Log compilation file :', compile_log_file_name
+    
+    print 'Project              :' + task
+    print 'Model file           :' + model_name_with_ex
+    print 'Target               :' + target
+    print 'Exit code            :', exit_code
+    print 'Trace file           :' + etalon_trace_name
+    print 'Result file          :' + etalon_result_name
+    print 'Log compilation file :' + compile_log_file_name
     print ''
     
     model         = dirname + model_name_with_ex
