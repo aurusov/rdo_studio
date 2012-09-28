@@ -169,7 +169,8 @@ for task in files:
 
     exit_code = int(text_exit_code)
     
-    print 'Project              :' + task
+    print 'Project              :'
+    print task
     print 'Model file           :' + model_name_with_ex
     print 'Target               :' + target
     print 'Exit code            :', exit_code
