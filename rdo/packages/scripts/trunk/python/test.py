@@ -112,6 +112,10 @@ def get_text_from_dom(dom, node_text):
             rc.append(node.data)
     return ''.join(rc)
 
+def wrap_the_string_in_quotes(string):
+    new_string = '"' + string + '"'
+    return new_string
+    
 ###############################################################################
 #                                 main code                                   #
 ###############################################################################
@@ -151,7 +155,9 @@ for task in files:
 
     print dividing_line
 
-    dirname = os.path.dirname(task) + '/'
+    print "ENC", sys.getfilesystemencoding()
+    
+    dirname = os.path.dirname(unicode(task, sys.getfilesystemencoding())) + u'/'
     
     dom = xml.dom.minidom.parse(task)
 
@@ -172,10 +178,10 @@ for task in files:
     print 'Result file          :', etalon_result_name
     print 'Log compilation file :', compile_log_file_name
     print ''
-
-    model = dirname + model_name_with_ex
-    etalon_trace = dirname + etalon_trace_name
-    etalon_result =  dirname + etalon_result_name
+    
+    model         = dirname + model_name_with_ex
+    etalon_trace  = dirname + etalon_trace_name
+    etalon_result = dirname + etalon_result_name
 
     model_name = model_name_with_ex.partition('.')[0]
 
@@ -188,7 +194,7 @@ for task in files:
     if target == TARGET_CONSOLE:
 
         # run rdo_console app on test model
-        command = (rdo_ex + ' -i ' + model + ' >> ' + null_file)
+        command = (rdo_ex + ' -i ' + wrap_the_string_in_quotes(model) + ' >> ' + null_file)
         simulation_code = subprocess.call(command, shell=True)
         print "SIMYLATION EXIT CODE :", simulation_code
 
@@ -208,8 +214,8 @@ for task in files:
         # nornal simulation check
         elif simulation_code == RDO_CONSOLE_TERMINATION_NORMAL:
         
-            command = (rdo_test_ex + ' -T ' + etalon_trace + ' -R ' + etalon_result 
-                                   + ' -t ' + simulation_trace + ' -r ' + simulation_result
+            command = (rdo_test_ex + ' -T ' + wrap_the_string_in_quotes(etalon_trace) + ' -R ' + wrap_the_string_in_quotes(etalon_result) 
+                                   + ' -t ' + wrap_the_string_in_quotes(simulation_trace) + ' -r ' + wrap_the_string_in_quotes(simulation_result)
                                    + ' >> ' + null_file)
 
             test_code = subprocess.call(command, shell=True)
