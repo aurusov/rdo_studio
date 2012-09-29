@@ -595,10 +595,10 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 	sheet->preview_find.appendLine( new LogEditLineInfo( rdo::format( IDS_COLORSTYLE_FIND_SAMPLE4 ) ) );
 	sheet->preview_find.gotoNext();
 
-	sheet->preview_chart_doc->SetTitle( rdo::format( IDS_COLORSTYLE_CHART_SAMPLE1 ).c_str() );
-	sheet->preview_chart->previewMode = true;
+	sheet->preview_chart_doc->setTitle( rdo::format( IDS_COLORSTYLE_CHART_SAMPLE1 ).c_str() );
+	sheet->preview_chart->setPreviwMode(true);
 	sheet->preview_chart->Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, 0 );
-	sheet->preview_chart_doc->AddView( sheet->preview_chart );
+	sheet->preview_chart_doc->attachView( sheet->preview_chart );
 	sheet->preview_chart->setStyle( &sheet->style_chart, false );
 	//initializing times vector
 	sheet->preview_times.push_back( RDOTracerTimeNow( 0, 3 ) );
@@ -2091,7 +2091,9 @@ RDOStudioOptions::RDOStudioOptions():
 	plugins = new RDOStudioOptionsPlugins( *this );
 
 	preview_chart_doc = new RDOStudioChartDoc( true );
-	preview_chart     = new RDOStudioChartView( true );
+	RDOStudioChartViewQt* pViewQt = new RDOStudioChartViewQt(preview_chart_doc, true);
+	IInit* pViewInit = dynamic_cast<IInit*>(pViewQt);
+	pViewInit->init();
 
 	AddPage( general );
 	AddPage( editor );
@@ -2109,8 +2111,7 @@ RDOStudioOptions::~RDOStudioOptions()
 	//if the property page that contains them was showed (chart_need_delete == false)
 	//because framework kills them itself
 	if ( chart_need_delete ) {
-		delete preview_chart_doc; preview_chart_doc = NULL;
-		delete preview_chart;     preview_chart = NULL;
+		preview_chart_doc->getFirstView()->getQtParent()->parentWidget()->close();
 	}
 	if ( general )  { delete general; general = NULL; }
 	if ( editor )   { delete editor; editor = NULL; }

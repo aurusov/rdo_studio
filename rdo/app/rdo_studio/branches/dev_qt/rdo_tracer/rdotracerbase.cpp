@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracerbase.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracerrestype.h"
@@ -44,7 +45,6 @@ RDOTracerBase::RDOTracerBase( CREF(tstring) _thread_name, RDOKernelGUI* _kernel_
 	log( NULL ),
 	tree( NULL ),
 	clipboardFormat( 0 ),
-	chartDocTemplate( NULL ),
 	eventIndex( 0 ),
 	drawTrace( true ),
 	action( RUA_NONE )
@@ -602,18 +602,12 @@ void RDOTracerBase::clearCharts()
 {
 	mutex.Lock();
 
-	while ( !charts.empty() ) {
-		charts.front()->OnCloseDocument();
+	while (!charts.empty())
+	{
+		charts.front()->getFirstView()->getQtParent()->parentWidget()->close();
 	}
-	charts.clear();
 
 	mutex.Unlock();
-}
-
-CMultiDocTemplate* RDOTracerBase::createDocTemplate()
-{
-	chartDocTemplate = new CMultiDocTemplate( IDR_CHARTTYPE, RUNTIME_CLASS(RDOStudioChartDoc), RUNTIME_CLASS(RDOStudioChildFrame), RUNTIME_CLASS(RDOStudioChartView) );
-	return chartDocTemplate;
 }
 
 RDOTracerLogCtrl* RDOTracerBase::createLog()
@@ -769,11 +763,15 @@ void RDOTracerBase::getTraceString( tstring trace_string )
 
 RDOStudioChartDoc* RDOTracerBase::createNewChart()
 {
-	RDOStudioChartDoc* doc = NULL;
-	if ( chartDocTemplate ) {
-		doc = (RDOStudioChartDoc*)chartDocTemplate->OpenDocumentFile( NULL );
-	}
-	return doc;
+	RDOStudioChartDoc*    pDoc  = new RDOStudioChartDoc   ();
+	RDOStudioChartViewQt* pView = new RDOStudioChartViewQt(pDoc, false);
+	studioApp.getIMainWnd()->addSubWindow(pView);
+	pDoc->attachView(pView->getContext());
+	pDoc->autoTitle();
+
+	pView->parentWidget()->setWindowIcon(QIcon(QString::fromUtf8(":/images/images/chart.png")));
+
+	return pDoc;
 }
 
 RDOStudioChartDoc* RDOTracerBase::addSerieToChart( RDOTracerSerie* const serie, RDOStudioChartDoc* chart )
@@ -817,15 +815,10 @@ void RDOTracerBase::removeChart( RDOStudioChartDoc* chart )
 void RDOTracerBase::updateChartsStyles() const
 {
 	const_cast<CMutex&>(mutex).Lock();
-	
-	for ( std::vector< RDOStudioChartDoc* >::const_iterator it = charts.begin(); it != charts.end(); it++ ) {
-		POSITION pos = (*it)->GetFirstViewPosition();
-		while ( pos != NULL ) {
-			CView* pView = (*it)->GetNextView( pos );
-			if ( pView && pView->IsKindOf(RUNTIME_CLASS(RDOStudioChartView)) ) {
-				((RDOStudioChartView*)pView)->setStyle( &studioApp.getStyle()->style_chart );
-			}
-		}
+
+	BOOST_FOREACH(RDOStudioChartDoc* pDoc, charts)
+	{
+		pDoc->setStyle(&studioApp.getStyle()->style_chart);
 	}
 
 	const_cast<CMutex&>(mutex).Unlock();

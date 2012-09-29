@@ -92,7 +92,6 @@ private:
 
 	UINT clipboardFormat;
 
-	CMultiDocTemplate* chartDocTemplate;
 	std::vector <RDOStudioChartDoc*> charts;
 
 	rbool drawTrace;
@@ -102,7 +101,6 @@ protected:
 	virtual ~RDOTracerBase();
 
 public:
-	CMultiDocTemplate* createDocTemplate();
 	rdoTracerLog::RDOTracerLogCtrl* createLog();
 	RDOTracerTreeCtrl* createTree();
 

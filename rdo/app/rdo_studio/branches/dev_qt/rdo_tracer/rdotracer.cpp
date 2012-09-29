@@ -20,6 +20,7 @@
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/thread.h"
+#include "app/rdo_studio_mfc/src/chart/document.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
@@ -74,6 +75,7 @@ void RDOTracer::proc( RDOThread::RDOMessageInfo& msg )
 		}
 		case RDOThread::RT_RUNTIME_MODEL_START_BEFORE: {
 			clear();
+			RDOStudioChartDoc::resetTitleIndex();
 			try {
 				setModelName( model->getName() );
 				studioApp.getIMainWnd()->getOutputDoc()->appendStringToDebug( rdo::format( IDS_TRACER_GETTING_MODEL_STRUCTURE ) );

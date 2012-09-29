@@ -27,23 +27,20 @@
 class RDOTracerTimeNow;
 class RDOTracerValue;
 class RDOStudioDocSerie;
+class RDOStudioChartViewStyle;
 
 typedef std::list< RDOTracerTimeNow* > timesList;
 
-class RDOStudioChartDoc : public CDocument
+class RDOStudioChartDoc
 {
 friend class RDOStudioChartView;
 friend class RDOStudioChartDocInsertTime;
 friend class RDOStudioChartOptionsChart;
 friend class RDOStudioChartOptionsSeries;
 
-DECLARE_DYNCREATE(RDOStudioChartDoc)
-
 protected:
-	
-	
 	CMutex mutex;
-	
+
 	std::vector< RDOStudioDocSerie* > series;
 	int getSerieIndex( RDOStudioDocSerie* serie ) const;
 	COLORREF selectColor();
@@ -66,35 +63,34 @@ protected:
 
 	tstring title;
 
-public:
-	virtual void SetTitle( LPCTSTR lpszTitle );
+	std::vector<RDOStudioChartView*> m_viewList;
 
-private:
-	virtual void Serialize(CArchive& ar);
-	virtual BOOL OnNewDocument();
-
-	DECLARE_MESSAGE_MAP()
+	static ruint s_titleIndex;
 
 public:
 	RDOStudioChartDoc( const rbool preview = false );
 	virtual ~RDOStudioChartDoc();
 
+	void attachView(RDOStudioChartView* pView);
+	RDOStudioChartView* getFirstView();
+
+	tstring     getTitle () const;
+	void        setTitle (CREF(tstring) title);
+	void        autoTitle();
+	static void resetTitleIndex();
+
+	void setStyle(RDOStudioChartViewStyle* pStyle);
+
+	void updateAllViews();
+
 	void addSerie( RDOTracerSerie* const serie );
 	//void removeSerie( RDOTracerSerie* const serie );
 	rbool serieExists( const RDOTracerSerie* serie ) const;
 
-	tstring getTitle() const { return title; };
-	
 	void lock() { mutex.Lock(); };
 	void unlock() { mutex.Unlock(); };
 	void incTimeEventsCount( RDOTracerTimeNow* time );
 	rbool newValueToSerieAdded( RDOTracerValue* val );
-
-#ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
-#endif
-
 };
 
 #endif // _RDO_STUDIO_MFC_CHART_DOCUMENT_H_

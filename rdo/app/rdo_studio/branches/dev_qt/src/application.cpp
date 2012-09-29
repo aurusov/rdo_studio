@@ -243,7 +243,7 @@ BOOL RDOStudioApp::InitInstance()
 //	new RDOThreadStudio2();
 
 	tracer = new rdoTracer::RDOTracer();
-	AddDocTemplate(tracer->createDocTemplate());
+
 #ifdef PROCGUI_ENABLE
 	rpMethod::project->cursors[ RPProject::cursor_flow_select ]        = AfxGetApp()->LoadCursor(IDC_FLOW_SELECT);
 	rpMethod::project->cursors[ RPProject::cursor_flow_move ]          = AfxGetApp()->LoadCursor(IDC_FLOW_MOVE);

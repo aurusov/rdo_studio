@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/chart/document.h"
 #include "app/rdo_studio_mfc/src/chart/view.h"
@@ -65,16 +66,12 @@ void RDOStudioChartDocInsertTime::operator ()( RDOTracerValue* val )
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioChartDoc
 // --------------------------------------------------------------------------------
-IMPLEMENT_DYNCREATE(RDOStudioChartDoc, CDocument)
+ruint RDOStudioChartDoc::s_titleIndex = 0;
 
-BEGIN_MESSAGE_MAP(RDOStudioChartDoc, CDocument)
-END_MESSAGE_MAP()
-
-RDOStudioChartDoc::RDOStudioChartDoc( const rbool preview )
-	: CDocument(),
-	minTimeOffset( 1.7E+308 ),
-	ticksCount( 0 ),
-	previewMode( preview )
+RDOStudioChartDoc::RDOStudioChartDoc(const rbool preview)
+	: minTimeOffset(1.7E+308)
+	, ticksCount   (0       )
+	, previewMode  (preview )
 {
 	if ( !previewMode )
 		tracer->addChart( this );
@@ -98,6 +95,35 @@ RDOStudioChartDoc::~RDOStudioChartDoc()
 	tracer->unlock();
 }
 
+void RDOStudioChartDoc::attachView(RDOStudioChartView* pView)
+{
+	m_viewList.push_back(pView);
+}
+
+RDOStudioChartView* RDOStudioChartDoc::getFirstView()
+{
+	return m_viewList.empty()
+		? NULL
+		: m_viewList.front();
+}
+
+void RDOStudioChartDoc::setStyle(RDOStudioChartViewStyle* pStyle)
+{
+	ASSERT(pStyle)
+	BOOST_FOREACH(RDOStudioChartView* pView, m_viewList)
+	{
+		pView->setStyle(pStyle);
+	}
+}
+
+void RDOStudioChartDoc::updateAllViews()
+{
+	BOOST_FOREACH(RDOStudioChartView* pView, m_viewList)
+	{
+		pView->updateView();
+	}
+}
+
 int RDOStudioChartDoc::getSerieIndex( RDOStudioDocSerie* serie ) const
 {
 	int res = -1;
@@ -108,20 +134,6 @@ int RDOStudioChartDoc::getSerieIndex( RDOStudioDocSerie* serie ) const
 		index ++;
 	}
 	return res;
-}
-
-BOOL RDOStudioChartDoc::OnNewDocument()
-{
-	if ( !CDocument::OnNewDocument() ) return FALSE;
-	return TRUE;
-}
-
-void RDOStudioChartDoc::Serialize(CArchive& ar)
-{
-	if ( ar.IsStoring() ) {
-	}
-	else {
-	}
 }
 
 void RDOStudioChartDoc::incTimeEventsCount( RDOTracerTimeNow* time )
@@ -245,13 +257,11 @@ void RDOStudioChartDoc::addSerie( RDOTracerSerie* const serie )
 		}
 
 		serie->addToDoc( this );
-		if ( series.size() == 1 ) {
-			POSITION pos = GetFirstViewPosition();
-			while (pos != NULL) {
-				CView* pView = GetNextView( pos );
-				if ( pView && pView->IsKindOf( RUNTIME_CLASS(RDOStudioChartView) ) )
-					static_cast<RDOStudioChartView*>( pView )->yAxis = docserie;
-			}
+		if (series.size() == 1)
+		{
+			RDOStudioChartView* pView = getFirstView();
+			ASSERT(pView);
+			pView->yAxis = docserie;
 		}
 		docserie->unlock();
 		updateChartViews( UPDATE_NEWSERIE );
@@ -325,20 +335,24 @@ rbool RDOStudioChartDoc::serieExists( const RDOTracerSerie* serie ) const
 	return res;
 }
 
-void RDOStudioChartDoc::SetTitle( LPCTSTR lpszTitle )
+tstring RDOStudioChartDoc::getTitle() const
 {
-	title = lpszTitle;
-	CDocument::SetTitle( rdo::format( IDS_CHART_TITLE, title.c_str() ).c_str() );
+	return title;
 }
 
-#ifdef _DEBUG
-void RDOStudioChartDoc::AssertValid() const
+void RDOStudioChartDoc::setTitle(CREF(tstring) title)
 {
-	CDocument::AssertValid();
+	this->title = title;
+	getFirstView()->getQtParent()->setWindowTitle(QString::fromStdString(rdo::format(IDS_CHART_TITLE, this->title.c_str()).c_str()));
 }
 
-void RDOStudioChartDoc::Dump(CDumpContext& dc) const
+void RDOStudioChartDoc::autoTitle()
 {
-	CDocument::Dump(dc);
+	tstring title = rdo::format("График%d", ++s_titleIndex);
+	setTitle(title);
 }
-#endif //_DEBUG
+
+void RDOStudioChartDoc::resetTitleIndex()
+{
+	s_titleIndex = 0;
+}

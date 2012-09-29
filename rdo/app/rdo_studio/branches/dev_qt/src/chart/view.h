@@ -11,9 +11,12 @@
 #define _RDO_STUDIO_MFC_CHART_VIEW_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtGui/qwidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/rdointerface.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracervalues.h"
 #include "app/rdo_studio_mfc/src/chart/document.h"
+#include "thirdparty/qt-solutions/qtwinmigrate/src/qwinhost.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
@@ -23,14 +26,15 @@ class RDOStudioChartViewStyle;
 class RDOTracerSerie;
 class RDOStudioDocSerie;
 
-class RDOStudioChartView : public CView
+class RDOStudioChartView : public CWnd
 {
 friend class RDOTracerSerieFindValue;
 friend class RDOStudioChartOptionsChart;
+friend class RDOStudioChartViewQt;
+friend class RDOTracerSerie;
+friend class RDOStudioChartDoc;
 
 protected:
-	DECLARE_DYNCREATE(RDOStudioChartView)
-
 	CMutex mutex;
 
 	COleDropTarget target;
@@ -106,33 +110,33 @@ protected:
 	HWND    hwnd;
 	void setFonts( const rbool needRedraw = true );
 
+	QWidget* m_pParent;
+
 	void onDraw();
 
-public:
-	RDOStudioChartView( const rbool preview = false);
+private:
+	RDOStudioChartView(QWidget* pParent, RDOStudioChartDoc* pDocument, const rbool preview /* = false*/); //! @todo qt
 	virtual ~RDOStudioChartView();
+
+public:
 	RDOStudioChartDoc* GetDocument();
+	void attachToDoc();
+
+	QWidget* getQtParent();
 
 	const RDOStudioChartViewStyle& getStyle() const;
 	void setStyle( RDOStudioChartViewStyle* _style, const rbool needRedraw = true );
 
+	void setPreviwMode(rbool value);
+
 private:
-	virtual void OnInitialUpdate();
+	RDOStudioChartDoc* m_pDocument;
+
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	virtual void OnDraw(CDC* pDC);
-	virtual BOOL OnPreparePrinting( CPrintInfo* pInfo );
-	virtual void OnBeginPrinting( CDC* pDC, CPrintInfo* pInfo );
-	virtual void OnEndPrinting( CDC* pDC, CPrintInfo* pInfo );
 	virtual DROPEFFECT OnDragEnter( COleDataObject* pDataObject, DWORD dwKeyState, CPoint point );
 	virtual void OnDragLeave();
 	virtual DROPEFFECT OnDragOver( COleDataObject* pDataObject, DWORD dwKeyState, CPoint point );
 	virtual BOOL OnDrop( COleDataObject* pDataObject, DROPEFFECT dropEffect, CPoint point );
-	virtual void OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint);
-
-#ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
-#endif
 
 protected:
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
@@ -162,9 +166,29 @@ protected:
 	DECLARE_MESSAGE_MAP()
 };
 
-#ifndef _DEBUG
-inline RDOStudioChartDoc* RDOStudioChartView::GetDocument()
-   { return (RDOStudioChartDoc*)m_pDocument; }
-#endif
+class RDOStudioChartViewQt:
+	public QWidget,
+	public IInit
+{
+public:
+	RDOStudioChartViewQt(RDOStudioChartDoc* pDocument, const rbool preview);
+	virtual ~RDOStudioChartViewQt();
+
+	RDOStudioChartView* getContext();
+
+private:
+	typedef  QWidget  parent_type;
+
+	RDOStudioChartView* m_pContext;
+	RDOStudioChartDoc*  m_pDocument;
+	rbool               m_preview;
+	CWnd                m_thisCWnd;
+
+	virtual void resizeEvent(PTR(QResizeEvent) event);
+	virtual void paintEvent (PTR(QPaintEvent ) event);
+	virtual void closeEvent (PTR(QCloseEvent ) event);
+
+	DECLARE_IInit;
+};
 
 #endif // _RDO_STUDIO_MFC_CHART_VIEW_H_

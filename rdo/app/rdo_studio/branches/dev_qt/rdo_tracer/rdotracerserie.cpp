@@ -438,23 +438,20 @@ rbool RDOTracerSerie::activateFirstDoc() const
 {
 	const_cast<CMutex&>(mutex).Lock();
 	
-	rbool res = false;
-	if ( !documents.empty() ) {
-		RDOStudioChartDoc* doc = documents.front();
-		if ( doc ) {
-			POSITION pos = doc->GetFirstViewPosition();
-			RDOStudioChartView* view = NULL;
-			if ( pos )
-				view = static_cast<RDOStudioChartView*>(doc->GetNextView( pos ));
-			if ( view ) {
-				//! @todo qt
-//				studioApp.m_pMainFrame->MDIActivate( view->GetParentFrame() );
-				res = true;
-			}
+	rbool result = false;
+	if (!documents.empty())
+	{
+		RDOStudioChartDoc* pDoc = documents.front();
+		if (pDoc)
+		{
+			RDOStudioChartView* pView = pDoc->getFirstView();
+			ASSERT(pView)
+			studioApp.getIMainWnd()->activateSubWindow(pView->getQtParent()->parentWidget());
+			result = true;
 		}
 	}
 
 	const_cast<CMutex&>(mutex).Unlock();
 
-	return res;
+	return result;
 }
