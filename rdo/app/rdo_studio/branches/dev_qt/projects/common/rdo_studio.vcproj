@@ -3532,14 +3532,6 @@
 			Name=".process"
 			>
 			<File
-				RelativePath="..\..\rdo_process\rdoprocess_childfrm.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\rdoprocess_childfrm.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\rdo_process\rdoprocess_dockwnd.cpp"
 				>
 			</File>

@@ -17,7 +17,6 @@
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_project.h"
-#include "app/rdo_studio_mfc/rdo_process/rdoprocess_childfrm.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_docview.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_toolbar.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_misc/rdoprocess_pixmap.h"
@@ -156,28 +155,21 @@ void RPProjectMFC::load( rp::RPXMLNode* node )
 
 void RPProjectMFC::makeFlowChartWnd( RPObjectFlowChart* flowobj )
 {
-	rbool maximized = studioApp.getIMainWnd()->isMDIMaximazed();
-	PTR(RPDoc) doc = model->getFlowchartDoc();
-	PTR(RPChildFrame) mdi = static_cast<PTR(RPChildFrame)>(doc->getView()->GetParent());
-	mdi->SetIcon( flowobj->getMethod()->getPixmap()->getIcon(), true );
-	if ( maximized ) {
-		mdi->ShowWindow( SW_HIDE );
-		mdi->MDIRestore();
-		mdi->ShowWindow( SW_HIDE );
-	}
-	doc->getView()->makeFlowChartWnd( flowobj );
+	//! @todo qt
+	//rbool maximized = studioApp.getIMainWnd()->isMDIMaximazed();
+	PTR(RPViewQt) pView = model->getProcView();
+	//! @todo qt
+	//PTR(RPChildFrame) mdi = static_cast<PTR(RPChildFrame)>(doc->getView()->GetParent());
+	//mdi->SetIcon( flowobj->getMethod()->getPixmap()->getIcon(), true );
+	//if ( maximized ) {
+	//	mdi->ShowWindow( SW_HIDE );
+	//	mdi->MDIRestore();
+	//	mdi->ShowWindow( SW_HIDE );
+	//}
+	pView->getContext()->makeFlowChartWnd( flowobj );
 	flowobj->setCorrectName( flowobj->getClassInfo()->getLabel() );
-	if ( maximized ) {
-		mdi->MDIMaximize();
-	}
-/*
-CDocument::SetTitle Ч установить заголовок дл€ документа
-
-CChildFrame::OnUpdateFrameTitle Ч переопределить дл€ своих нужд Ч mdiчилды
-
-CFrameWnd::OnUpdateFrameTitle Ч переопределить дл€ своих нужд Ч главное окно
-
-AfxSetWindowText Ч нужно вызывать дл€ правильного(чилд или главное окно) окна, иначе ничего видно не будет.
-CViewXXX €вл€етюс€ чилдома у CMDIChildWnd
-*/
+	//! @todo qt
+	//if ( maximized ) {
+	//	mdi->MDIMaximize();
+	//}
 }

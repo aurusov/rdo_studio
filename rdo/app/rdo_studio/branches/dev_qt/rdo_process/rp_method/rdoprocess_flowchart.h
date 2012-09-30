@@ -7,10 +7,11 @@
 // --------------------------------------------------------------------------------
 // -------------------- RPFlowChart
 // --------------------------------------------------------------------------------
+class RPView;
+
 class RPFlowChart: public CWnd
 {
 friend class RPObjectFlowChart;
-friend class RPChildFrame;
 
 private:
 	enum GridMode { gtSnapOff, gtSnapToPoint, gtSnapToCenter };
@@ -46,7 +47,6 @@ private:
 //	rbool showConnectorPoint;
 
 	RPObjectFlowChart* flowobj;
-	CDocument*         doc;
 
 #ifdef TEST_SPEED
 	int sec_cnt;
@@ -56,9 +56,9 @@ private:
 #endif
 
 public:
-	RPFlowChart( RPObjectFlowChart* _flowobj, CDocument* _doc );
+	RPFlowChart( RPObjectFlowChart* _flowobj, RPView* pView );
 	virtual ~RPFlowChart();
-	
+
 	void init();
 	RPObjectFlowChart& getObjectFlowChart() const { return *flowobj; }
 	void setName( const rp::string& value );
@@ -66,6 +66,8 @@ public:
 	virtual BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 
 private:
+	RPView* m_pView;
+
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 
 	afx_msg void OnPaint();

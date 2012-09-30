@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/images">
+    <file>images/flowchart.png</file>
     <file>images/frame.png</file>
     <file>images/chart.png</file>
     <file>images/rdo_studio_16x16.png</file>

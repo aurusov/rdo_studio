@@ -16,7 +16,6 @@
 #include "simulator/service/rdosimwin.h"
 #include "app/rdo_studio_mfc/src/frame/manager.h"
 #include "app/rdo_studio_mfc/src/model/view.h"
-#include "app/rdo_studio_mfc/rdo_process/rdoprocess_childfrm.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_docview.h"
 #include "app/rdo_studio_mfc/src/plugins.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_project.h"
@@ -46,7 +45,6 @@ private:
 		BS_ERROR
 	};
 
-	PTR(CMultiDocTemplate)                 m_pFlowchartDocTemplate;
 	RDOStudioFrameManager                  m_frameManager;
 
 	int                                    m_useTemplate;
@@ -80,6 +78,7 @@ private:
 	rdo::simulation::report::RDOExitCode  m_exitCode;
 	mutable rbool                          m_modify;
 	RDOStudioModelView*                    m_pModelView;
+	RPViewQt*                              m_pModelProcView;
 	tstring                                m_name;
 
 	void  updateFrmDescribed      ();
@@ -132,7 +131,8 @@ private:
 
 	void show_result();
 
-	void createView();
+	void createView    ();
+	void createProcView();
 
 protected:
 	virtual void proc(REF(RDOThread::RDOMessageInfo) msg);
@@ -154,14 +154,6 @@ public:
 	void  update        ();
 	void  setGUIPause   ();
 	void  setGUIContinue();
-
-	PTR(RPDoc) getFlowchartDoc() const
-	{
-		if (!m_pFlowchartDocTemplate)
-			return NULL;
-		POSITION pos = m_pFlowchartDocTemplate->GetFirstDocPosition();
-		return pos ? static_cast<PTR(RPDoc)>(m_pFlowchartDocTemplate->GetNextDoc(pos)) : NULL;
-	}
 
 	tstring getName() const
 	{
@@ -222,6 +214,8 @@ public:
 	rbool saveModified();
 
 	REF(RDOStudioFrameManager) getFrameManager();
+
+	PTR(RPViewQt) getProcView();
 };
 
 // --------------------------------------------------------------------------------

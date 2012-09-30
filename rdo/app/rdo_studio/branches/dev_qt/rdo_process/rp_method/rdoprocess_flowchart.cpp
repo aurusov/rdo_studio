@@ -2,6 +2,7 @@
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_flowchart.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_object_flowchart.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_object.h"
+#include "app/rdo_studio_mfc/rdo_process/rdoprocess_docview.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -38,20 +39,19 @@ BEGIN_MESSAGE_MAP( RPFlowChart, CWnd )
 	ON_WM_NCHITTEST()
 END_MESSAGE_MAP()
 
-RPFlowChart::RPFlowChart( RPObjectFlowChart* _flowobj, CDocument* _doc ):
-	CWnd(),
-	saved_dc( 0 ),
-	scroll_inited( false ),
-	scroll_delta( 0, 0 ),
-	scroll_size( 0, 0 ),
-	flowobj( _flowobj ),
-	doc( _doc )
+RPFlowChart::RPFlowChart(RPObjectFlowChart* _flowobj, RPView* pView)
+	: CWnd()
+	, m_pView(pView)
+	, saved_dc( 0 )
+	, scroll_inited( false )
+	, scroll_delta( 0, 0 )
+	, scroll_size( 0, 0 )
+	, flowobj( _flowobj )
 #ifdef TEST_SPEED // -------------------------------------
-	,
-	sec_cnt( 0 ),
-	sec_timer( 0 ),
-	makegrid_cnt( 0 ),
-	makegridempty_cnt( 0 )
+	, sec_cnt( 0 )
+	, sec_timer( 0 )
+	, makegrid_cnt( 0 )
+	, makegridempty_cnt( 0 )
 #endif // ------------------------------------------------
 {
 	flowobj->flowchart = this;
@@ -132,8 +132,7 @@ void RPFlowChart::OnDestroy()
 void RPFlowChart::setName( const rp::string& value )
 {
 	UNUSED(value);
-
-	doc->SetTitle( flowobj->getName().c_str() );
+	m_pView->getQtParent()->parentWidget()->setWindowTitle(QString::fromStdString(flowobj->getName()));
 }
 
 void RPFlowChart::updateScrollBars()

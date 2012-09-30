@@ -12,36 +12,11 @@
 #define _RDO_STUDIO_MFC_RDO_PROCESS_DOCVIEW_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtGui/qwidget.h>
+#include <afxole.h>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/rdointerface.h"
 // --------------------------------------------------------------------------------
-
-// --------------------------------------------------------------------------------
-// -------------------- RPDoc
-// --------------------------------------------------------------------------------
-class RPView;
-
-class RPDoc: public CDocument
-{
-DECLARE_DYNCREATE(RPDoc)
-protected:
-	RPDoc();
-	virtual ~RPDoc();
-
-	virtual BOOL OnNewDocument();
-	virtual void Serialize(CArchive& ar);
-
-#ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
-#endif
-
-	afx_msg void OnMethodCommandRange( UINT id );
-	afx_msg void OnMethodUpdateRange( CCmdUI* pCmdUI );
-	DECLARE_MESSAGE_MAP()
-
-public:
-	RPView* getView() const;
-};
 
 // --------------------------------------------------------------------------------
 // -------------------- RPView
@@ -50,41 +25,34 @@ class RPFlowChart;
 class RPObjectFlowChart;
 class RPObjectClassInfo;
 
-class RPView: public CView
+class RPView: public CWnd
 {
-DECLARE_DYNCREATE(RPView)
-
 private:
 	RPFlowChart* flowchart;
 
-protected:
-	RPView();
+public:
+	RPView(QWidget* pParent);
 	virtual ~RPView();
 
+	QWidget* getQtParent();
+
+protected:
 	COleDropTarget target;
 	const RPObjectClassInfo* getSrcClassInfo( COleDataObject* pDataObject ) const;
 
-	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
-	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
-	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
-	virtual void OnInitialUpdate();
 	virtual DROPEFFECT OnDragEnter( COleDataObject* pDataObject, DWORD dwKeyState, CPoint point );
 	virtual DROPEFFECT OnDragOver( COleDataObject* pDataObject, DWORD dwKeyState, CPoint point );
 	virtual void OnDragLeave();
 	virtual BOOL OnDrop( COleDataObject* pDataObject, DROPEFFECT dropEffect, CPoint point );
 
-#ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
-#endif
-
 public:
 	RPFlowChart* getFlowchart() { return flowchart; }
-	RPDoc* GetDocument() const;
-	virtual void OnDraw( CDC* pDC );
 	virtual BOOL PreCreateWindow( CREATESTRUCT& cs );
 	virtual BOOL OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
 	void makeFlowChartWnd( RPObjectFlowChart* flowobj );
+
+private:
+	QWidget* m_pParent;
 
 protected:
 	afx_msg void OnDestroy();
@@ -93,9 +61,26 @@ protected:
 	DECLARE_MESSAGE_MAP()
 };
 
-#ifndef _DEBUG
-inline RPDoc* RPView::GetDocument() const
-   { return reinterpret_cast<RPDoc*>(m_pDocument); }
-#endif
+class RPViewQt:
+	public QWidget,
+	public IInit
+{
+public:
+	RPViewQt();
+	virtual ~RPViewQt();
+
+	RPView* getContext();
+
+private:
+	typedef  QWidget  parent_type;
+
+	RPView*  m_pContext;
+	CWnd     m_thisCWnd;
+
+	void closeEvent (PTR(QCloseEvent)  event);
+	void resizeEvent(PTR(QResizeEvent) event);
+
+	DECLARE_IInit;
+};
 
 #endif // _RDO_STUDIO_MFC_RDO_PROCESS_DOCVIEW_H_

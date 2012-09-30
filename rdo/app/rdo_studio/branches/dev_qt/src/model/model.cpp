@@ -54,7 +54,6 @@ PTR(RDOStudioModel) model = NULL;
 
 RDOStudioModel::RDOStudioModel()
 	: RDOThreadGUI(_T("RDOThreadModelGUI"), static_cast<PTR(RDOKernelGUI)>(studioApp.m_pStudioGUI))
-	, m_pFlowchartDocTemplate( NULL                 )
 	, m_useTemplate      (-1                        )
 	, m_autoDeleteDoc    (true                      )
 	, m_showCanNotCloseModelMessage(true            )
@@ -81,13 +80,9 @@ RDOStudioModel::RDOStudioModel()
 	, m_modify           (false                     )
 	, m_buildState       (BS_UNDEFINED              )
 	, m_pModelView       (NULL                      )
+	, m_pModelProcView   (NULL                      )
 	, m_name             ("")
 {
-#ifdef PROCGUI_ENABLE
-	m_pFlowchartDocTemplate = new CMultiDocTemplate(IDR_FLOWCHART_TYPE, RUNTIME_CLASS(RPDoc), RUNTIME_CLASS(RPChildFrame), RUNTIME_CLASS(RPView));
-	AfxGetApp()->AddDocTemplate(m_pFlowchartDocTemplate);
-#endif
-
 	model = this;
 
 	ModelTemplate modelTemplate;
@@ -735,6 +730,14 @@ void RDOStudioModel::createView()
 	m_pModelView->parentWidget()->setWindowIcon(QIcon(QString::fromUtf8(":/images/images/model.png")));
 }
 
+void RDOStudioModel::createProcView()
+{
+	ASSERT(m_pModelProcView == NULL);
+	m_pModelProcView = new RPViewQt();
+	studioApp.getIMainWnd()->addSubWindow(m_pModelProcView);
+	m_pModelProcView->parentWidget()->setWindowIcon(QIcon(QString::fromUtf8(":/images/images/flowchart.png")));
+}
+
 void RDOStudioModel::newModelFromRepository()
 {
 	m_GUI_HAS_MODEL = true;
@@ -742,13 +745,11 @@ void RDOStudioModel::newModelFromRepository()
 	PTR(RPMethodProc2RDO) pMethod = getProc2rdo();
 	if (pMethod)
 	{
-		m_pFlowchartDocTemplate->OpenDocumentFile(NULL);
+		createProcView();
 		pMethod->makeFlowChart(rpMethod::project);
 	}
 
-	//! @todo qt
 	createView();
-	//m_pModelDocTemplate->OpenDocumentFile(NULL);
 	rdo::repository::RDOThreadRepository::FileInfo data_smr(rdoModelObjects::RDOX);
 	studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data_smr);
 	setName(data_smr.m_name);
@@ -824,14 +825,12 @@ void RDOStudioModel::openModelFromRepository()
 	PTR(RPMethodProc2RDO) pMethod = getProc2rdo();
 	if (pMethod)
 	{
-		m_pFlowchartDocTemplate->OpenDocumentFile(NULL);
+		createProcView();
 		loadFromXML();
 	}
 
 	PTR(CWnd) active = CWnd::GetActiveWindow();
-	//! @todo qt
 	createView();
-//	m_pModelDocTemplate->OpenDocumentFile(NULL);
 	rdo::repository::RDOThreadRepository::FileInfo data_smr(rdoModelObjects::RDOX);
 	studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data_smr);
 	setName(data_smr.m_name);
@@ -1092,10 +1091,10 @@ void RDOStudioModel::closeModelFromRepository()
 				return;
 		}
 	}
-	PTR(RPDoc) pFlowchartDoc = getFlowchartDoc();
-	if (pFlowchartDoc)
+	if (m_pModelProcView)
 	{
-		pFlowchartDoc->OnCloseDocument();
+		m_pModelProcView->parentWidget()->close();
+		m_pModelProcView = NULL;
 	}
 	m_GUI_HAS_MODEL = false;
 	if (!m_showCanNotCloseModelMessage)
@@ -1401,4 +1400,9 @@ rbool RDOStudioModel::saveModified()
 REF(RDOStudioFrameManager) RDOStudioModel::getFrameManager()
 {
 	return m_frameManager;
+}
+
+PTR(RPViewQt) RDOStudioModel::getProcView()
+{
+	return m_pModelProcView;
 }
