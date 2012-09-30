@@ -290,7 +290,7 @@ BOOL RDOStudioApp::InitInstance()
 
 #ifdef PROCGUI_ENABLE
 	m_methodManager.init();
-	m_pMainFrame->workspace.pagectrl->selectFirst();
+	m_pMainFrame->getWorkspaceDoc()->pagectrl->selectFirst();
 #endif
 	RDOStudioCommandLineInfo cmdInfo;
 	ParseCommandLine(cmdInfo);
