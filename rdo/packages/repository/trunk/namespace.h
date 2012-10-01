@@ -14,8 +14,8 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
-//! \namespace rdo::repository
-//! \brief     Пространство имён репозитария
+//! \namespace  rdo::repository
+//! \brief      Пространство имён репозитария
 #define  OPEN_RDO_REPOSITORY_NAMESPACE  namespace rdo { namespace repository {
 #define CLOSE_RDO_REPOSITORY_NAMESPACE  }};
 

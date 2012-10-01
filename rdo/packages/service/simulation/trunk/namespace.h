@@ -16,8 +16,8 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
-//! \namespace rdo::service::simulation
-//! \brief     Пространство имён симулятора
+//! \namespace  rdo::service::simulation
+//! \brief      Пространство имён симулятора
 #define  OPEN_RDO_SERVICE_SIMULATION_NAMESPACE  namespace rdo { namespace service { namespace simulation {
 #define CLOSE_RDO_SERVICE_SIMULATION_NAMESPACE  }}};
 

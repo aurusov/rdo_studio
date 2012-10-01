@@ -14,6 +14,8 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
+//! \namespace  rdo::simulation::report
+//! \brief      Пространство имён отчетов - report
 #define  OPEN_RDO_SIMULATION_REPORT_NAMESPACE  namespace rdo { namespace simulation { namespace report {
 #define CLOSE_RDO_SIMULATION_REPORT_NAMESPACE  }}};
 
