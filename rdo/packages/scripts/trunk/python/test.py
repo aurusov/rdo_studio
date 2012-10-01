@@ -116,6 +116,10 @@ def get_text_from_dom(dom, node_text):
 def wrap_the_string_in_quotes(string):
     new_string = '"' + string + '"'
     return new_string
+
+
+def safe_encode(string):
+    return string.encode(sys.getfilesystemencoding()).strip()
     
 ###############################################################################
 #                                 main code                                   #
@@ -156,9 +160,11 @@ for task in files:
 
     print dividing_line
 
-    utask = unicode(task, sys.getfilesystemencoding())
+    print task
+    
+    utask   = unicode(task, sys.getfilesystemencoding())
     dirname = os.path.dirname(utask) + u'/'
-    dom = xml.dom.minidom.parse(utask)
+    dom     = xml.dom.minidom.parse(utask)
 
     model_name_with_ex    = get_text_from_dom(dom, 'model')
     target                = get_text_from_dom(dom, 'target')
@@ -168,14 +174,14 @@ for task in files:
     compile_log_file_name = get_text_from_dom(dom, 'log_compilation')
 
     exit_code = int(text_exit_code)
-    
+
     print 'Project              :', task
-    print 'Model file           :', model_name_with_ex.encode(sys.getfilesystemencoding()).strip()
+    print 'Model file           :', safe_encode(model_name_with_ex)
     print 'Target               :', target
     print 'Exit code            :', exit_code
-    print 'Trace file           :', etalon_trace_name.encode(sys.getfilesystemencoding()).strip()
-    print 'Result file          :', etalon_result_name.encode(sys.getfilesystemencoding()).strip()
-    print 'Log compilation file :', compile_log_file_name.encode(sys.getfilesystemencoding()).strip()
+    print 'Trace file           :', safe_encode(etalon_trace_name)
+    print 'Result file          :', safe_encode(etalon_result_name)
+    print 'Log compilation file :', safe_encode(compile_log_file_name)
     print ''
     
     model         = dirname + model_name_with_ex
