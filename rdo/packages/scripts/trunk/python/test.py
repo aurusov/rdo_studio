@@ -159,8 +159,6 @@ print '\nSTARTED TEST CYCLE\n'
 for task in files:
 
     print dividing_line
-
-    print task
     
     utask   = unicode(task, sys.getfilesystemencoding())
     dirname = os.path.dirname(utask) + u'/'
