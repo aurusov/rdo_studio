@@ -155,10 +155,10 @@ print '\nSTARTED TEST CYCLE\n'
 for task in files:
 
     print dividing_line
-    
-    dirname = os.path.dirname(unicode(task, sys.getfilesystemencoding())) + u'/'
-    
-    dom = xml.dom.minidom.parse(task)
+
+    utask = unicode(task, sys.getfilesystemencoding())
+    dirname = os.path.dirname(utask) + u'/'
+    dom = xml.dom.minidom.parse(utask)
 
     model_name_with_ex    = get_text_from_dom(dom, 'model')
     target                = get_text_from_dom(dom, 'target')
