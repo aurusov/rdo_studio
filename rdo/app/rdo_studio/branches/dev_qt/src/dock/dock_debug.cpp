@@ -10,7 +10,6 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtGui/qboxlayout.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/dock/dock_debug.h"
 #include "app/rdo_studio_mfc/src/application.h"
