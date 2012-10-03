@@ -16,7 +16,6 @@
 #include "app/rdo_studio_mfc/src/application.h"
 #include "simulator/report/file_message.h"
 #include "simulator/report/build_edit_line_info.h"
-#include "thirdparty/qt-solutions/qtwinmigrate/src/qwinwidget.h"
 // --------------------------------------------------------------------------------
 
 DockBuild::DockBuild(PTR(QWidget) pParent)
@@ -28,7 +27,7 @@ DockBuild::DockBuild(PTR(QWidget) pParent)
 	m_pContext = new Context(pDocWidget);
 	m_pContext->setMinimumSize(300, 150);
 	//! @todo qt
-	//m_pContext->setPopupMenu( &popupMenu );
+	//m_pContext->setPopupMenu(&popupMenu);
 
 	PTR(QVBoxLayout) pOutputLayout = new QVBoxLayout(pDocWidget);
 	pOutputLayout->setSpacing(0);
