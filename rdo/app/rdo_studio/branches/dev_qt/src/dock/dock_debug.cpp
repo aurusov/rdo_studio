@@ -17,34 +17,13 @@
 // --------------------------------------------------------------------------------
 
 DockDebug::DockDebug(PTR(QWidget) pParent)
-	: QDockWidget("Вывод", pParent)
+	: parent_class("Вывод", pParent)
 {
-	PTR(QWidget) pDocWidget = new QWidget();
-	setWidget(pDocWidget);
-
-	m_pContext = new Context(pDocWidget);
-	m_pContext->setMinimumSize(300, 150);
-	//! @todo qt
-	//m_pContext->setPopupMenu(&popupMenu);
-
-	PTR(QVBoxLayout) pOutputLayout = new QVBoxLayout(pDocWidget);
-	pOutputLayout->setSpacing(0);
-	pOutputLayout->setContentsMargins(0, 0, 0, 0);
-	pOutputLayout->addWidget(m_pContext);
-
-	m_pContext->init();
 	getContext().setEditorStyle(&studioApp.getStyle()->style_debug);
-	getContext().ShowWindow(SW_SHOW);
 }
 
 DockDebug::~DockDebug()
 {}
-
-REF(DockDebug::Context::context_type) DockDebug::getContext()
-{
-	ASSERT(m_pContext);
-	return m_pContext->getContext();
-}
 
 void DockDebug::appendString(CREF(tstring) str)
 {

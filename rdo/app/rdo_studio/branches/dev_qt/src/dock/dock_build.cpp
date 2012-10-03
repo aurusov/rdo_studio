@@ -10,7 +10,6 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtGui/qboxlayout.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/dock/dock_build.h"
 #include "app/rdo_studio_mfc/src/application.h"
@@ -19,34 +18,13 @@
 // --------------------------------------------------------------------------------
 
 DockBuild::DockBuild(PTR(QWidget) pParent)
-	: QDockWidget("Компилятор", pParent)
+	: parent_class("Компилятор", pParent)
 {
-	PTR(QWidget) pDocWidget = new QWidget();
-	setWidget(pDocWidget);
-
-	m_pContext = new Context(pDocWidget);
-	m_pContext->setMinimumSize(300, 150);
-	//! @todo qt
-	//m_pContext->setPopupMenu(&popupMenu);
-
-	PTR(QVBoxLayout) pOutputLayout = new QVBoxLayout(pDocWidget);
-	pOutputLayout->setSpacing(0);
-	pOutputLayout->setContentsMargins(0, 0, 0, 0);
-	pOutputLayout->addWidget(m_pContext);
-
-	m_pContext->init();
 	getContext().setEditorStyle(&studioApp.getStyle()->style_build);
-	getContext().ShowWindow(SW_SHOW);
 }
 
 DockBuild::~DockBuild()
 {}
-
-REF(DockBuild::Context::context_type) DockBuild::getContext()
-{
-	ASSERT(m_pContext);
-	return m_pContext->getContext();
-}
 
 void DockBuild::appendString(CREF(tstring) str)
 {

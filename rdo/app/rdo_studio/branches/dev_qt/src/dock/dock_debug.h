@@ -11,29 +11,22 @@
 #define _RDO_STUDIO_DOCK_DEBUG_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtGui/qdockwidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "app/rdo_studio_mfc/src/dock/dock_base.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdodebugedit.h"
-#include "app/rdo_studio_mfc/src/mfc_qt_wrapper.h"
 // --------------------------------------------------------------------------------
 
-class DockDebug: public QDockWidget
+class DockDebug: public DockBase<rdoEditCtrl::RDODebugEdit>
 {
 public:
-	typedef  MFCQtWrapper<rdoEditCtrl::RDODebugEdit>  Context;
-
 	DockDebug(PTR(QWidget) pParent);
 	virtual ~DockDebug();
 
 	void appendString(CREF(tstring) str);
 	void clear();
 
-	REF(Context::context_type) getContext();
-
 private:
-	typedef  QDockWidget  parent_type;
-
-	PTR(Context)  m_pContext;
+	typedef  DockBase<rdoEditCtrl::RDODebugEdit>  parent_class;
 };
 
 #endif // _RDO_STUDIO_DOCK_DEBUG_H_
