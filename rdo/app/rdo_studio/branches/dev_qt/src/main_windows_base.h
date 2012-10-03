@@ -24,6 +24,7 @@
 #include "app/rdo_studio_mfc/src/frame/style.h"
 #include "app/rdo_studio_mfc/src/dock/dock_build.h"
 #include "app/rdo_studio_mfc/src/dock/dock_debug.h"
+#include "app/rdo_studio_mfc/src/dock/dock_results.h"
 // --------------------------------------------------------------------------------
 
 class RDOStudioOutput;
@@ -42,8 +43,9 @@ public:
 
 	rbool isMDIMaximazed() const { return true; }
 
-	REF(DockBuild)          getDockBuild   () { ASSERT(m_pDockBuild); return *m_pDockBuild; }
-	REF(DockDebug)          getDockDebug   () { ASSERT(m_pDockDebug); return *m_pDockDebug; }
+	REF(DockBuild)          getDockBuild   () { ASSERT(m_pDockBuild  ); return *m_pDockBuild;   }
+	REF(DockDebug)          getDockDebug   () { ASSERT(m_pDockDebug  ); return *m_pDockDebug;   }
+	REF(DockResults)        getDockResults () { ASSERT(m_pDockResults); return *m_pDockResults; }
 	PTR(RDOStudioOutput)    getOutputDoc   () { return m_pOutputDoc;    }
 	PTR(RDOStudioWorkspace) getWorkspaceDoc() { return m_pWorkspaceDoc; }
 
@@ -76,6 +78,7 @@ protected:
 
 	PTR(DockBuild)           m_pDockBuild;
 	PTR(DockDebug)           m_pDockDebug;
+	PTR(DockResults)         m_pDockResults;
 	PTR(RDOStudioOutput)     m_pOutputDoc;
 	PTR(RDOStudioWorkspace)  m_pWorkspaceDoc;
 };

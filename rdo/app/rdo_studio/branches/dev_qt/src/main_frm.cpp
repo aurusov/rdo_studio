@@ -218,17 +218,17 @@ void RDOStudioMainFrame::init()
 	style_chart.init( "chart" );
 	style_chart.load();
 
-	m_pDockBuild  = new DockBuild(this);
-	m_pDockDebug  = new DockDebug(this);
-	m_pDockTrace  = new QDockWidget("Трассировка", this);
-	m_pDockResult = new QDockWidget("Результаты",  this);
-	m_pDockFind   = new QDockWidget("Поиск",       this);
-	tabifyDockWidget(outputDockWidget, m_pDockBuild );
-	tabifyDockWidget(outputDockWidget, m_pDockDebug );
-	tabifyDockWidget(outputDockWidget, m_pDockTrace );
-	tabifyDockWidget(outputDockWidget, m_pDockResult);
-	tabifyDockWidget(outputDockWidget, m_pDockFind  );
-	m_pDockResult->raise();
+	m_pDockBuild   = new DockBuild(this);
+	m_pDockDebug   = new DockDebug(this);
+	m_pDockTrace   = new QDockWidget("Трассировка", this);
+	m_pDockResults = new DockResults(this);
+	m_pDockFind    = new QDockWidget("Поиск",       this);
+	tabifyDockWidget(outputDockWidget, m_pDockBuild  );
+	tabifyDockWidget(outputDockWidget, m_pDockDebug  );
+	tabifyDockWidget(outputDockWidget, m_pDockTrace  );
+	tabifyDockWidget(outputDockWidget, m_pDockResults);
+	tabifyDockWidget(outputDockWidget, m_pDockFind   );
+	m_pDockDebug->raise();
 
 	//! @todo qt
 	//fileToolBar.init( c_wnd(), IDR_FILE_TOOLBAR, IDB_FILE_TOOLBAR_D );

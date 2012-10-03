@@ -160,15 +160,15 @@ void RDOStudioOutput::showTrace()
 	}
 }
 
-void RDOStudioOutput::showResults()
-{
-	studioApp.getIMainWnd()->showOutput();
-	tab.setCurrentItem( 3 );
-	if ( plugins->studioIsShow() ) {
-		results->SetFocus();
-		update();
-	}
-}
+//void RDOStudioOutput::showResults()
+//{
+//	studioApp.getIMainWnd()->showOutput();
+//	tab.setCurrentItem( 3 );
+//	if ( plugins->studioIsShow() ) {
+//		results->SetFocus();
+//		update();
+//	}
+//}
 
 void RDOStudioOutput::showFind()
 {
@@ -180,24 +180,9 @@ void RDOStudioOutput::showFind()
 	}
 }
 
-void RDOStudioOutput::clearResults()
-{
-	if ( results ) results->clearAll();
-}
-
 void RDOStudioOutput::clearFind()
 {
 	if ( find ) find->clearAll();
-}
-
-void RDOStudioOutput::appendStringToResults( CREF(tstring) str ) const
-{
-	int pos = results->getCurrentPos();
-	results->setCurrentPos(results->getLength());
-	results->setReadOnly  (false);
-	results->appendText   (str  );
-	results->setReadOnly  (true );
-	results->setCurrentPos(pos  );
 }
 
 void RDOStudioOutput::appendStringToFind( CREF(tstring) str, rdoModelObjects::RDOFileType fileType, int lineNumber, int posInLine ) const

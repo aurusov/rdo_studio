@@ -524,7 +524,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		case RDOThread::RT_RESULT_STRING:
 		{
 			msg.lock();
-			studioApp.getIMainWnd()->getOutputDoc()->appendStringToResults(*static_cast<PTR(tstring)>(msg.param));
+			studioApp.getIMainWnd()->getDockResults().appendString(*static_cast<PTR(tstring)>(msg.param));
 			msg.unlock();
 			break;
 		}
@@ -538,16 +538,15 @@ void RDOStudioModel::show_result()
 	tstring str = model_results.str();
 	if (!str.empty())
 	{
-		PTR(RDOStudioOutput) output = studioApp.getIMainWnd()->getOutputDoc();
 		rdo::repository::RDOThreadRepository::FileInfo data(rdoModelObjects::PMV);
 		studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data);
 		if (!data.m_described)
 		{
 			studioApp.getIMainWnd()->getDockDebug().appendString(_T("Результаты не будут записаны в файл, т.к. в SMR не определен Results_file\n"));
 		}
-		output->getResults()->clearAll();
-		output->showResults();
-		output->appendStringToResults(str);
+		studioApp.getIMainWnd()->getDockResults().getContext().clearAll();
+		studioApp.getIMainWnd()->getDockResults().raise();
+		studioApp.getIMainWnd()->getDockResults().appendString(str);
 	}
 }
 
@@ -558,9 +557,9 @@ rbool RDOStudioModel::newModel(tstring _model_name, tstring _model_path, const i
 
 	m_useTemplate = _useTemplate;
 	PTR(RDOStudioOutput) output = studioApp.getIMainWnd()->getOutputDoc();
-	studioApp.getIMainWnd()->getDockBuild().clear();
-	studioApp.getIMainWnd()->getDockDebug().clear();
-	output->clearResults();
+	studioApp.getIMainWnd()->getDockBuild  ().clear();
+	studioApp.getIMainWnd()->getDockDebug  ().clear();
+	studioApp.getIMainWnd()->getDockResults().clear();
 	output->clearFind();
 	rdo::repository::RDOThreadRepository::NewModel data;
 	data.m_name = _model_name;
@@ -585,9 +584,9 @@ rbool RDOStudioModel::openModel(CREF(tstring) modelName) const
 		return false;
 	}
 	PTR(RDOStudioOutput) output = studioApp.getIMainWnd()->getOutputDoc();
-	studioApp.getIMainWnd()->getDockBuild().clear();
-	studioApp.getIMainWnd()->getDockDebug().clear();
-	output->clearResults();
+	studioApp.getIMainWnd()->getDockBuild  ().clear();
+	studioApp.getIMainWnd()->getDockDebug  ().clear();
+	studioApp.getIMainWnd()->getDockResults().clear();
 	output->clearFind();
 	studioApp.getIMainWnd()->getDockDebug().raise();
 	studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(IDS_MODEL_LOADING_BEGIN));
@@ -602,7 +601,7 @@ rbool RDOStudioModel::openModel(CREF(tstring) modelName) const
 		rdo::binarystream stream;
 		rdo::repository::RDOThreadRepository::FileData fileData(rdoModelObjects::PMV, stream);
 		studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &fileData);
-		output->appendStringToResults(stream.str());
+		studioApp.getIMainWnd()->getDockResults().appendString(stream.str());
 		output->updateLogConnection();
 		studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(IDS_MODEL_LOADING_OK));
 		studioApp.setLastProjectName(getFullName());
@@ -650,9 +649,9 @@ rbool RDOStudioModel::closeModel() const
 		PTR(RDOStudioOutput) pOutput = studioApp.getIMainWnd()->getOutputDoc();
 		if (pOutput)
 		{
-			studioApp.getIMainWnd()->getDockBuild().clear();
-			studioApp.getIMainWnd()->getDockDebug().clear();
-			pOutput->clearResults();
+			studioApp.getIMainWnd()->getDockBuild  ().clear();
+			studioApp.getIMainWnd()->getDockDebug  ().clear();
+			studioApp.getIMainWnd()->getDockResults().clear();
 			pOutput->clearFind();
 		}
 		studioApp.broadcastMessage(RDOThread::RT_STUDIO_MODEL_CLOSE);
@@ -672,10 +671,9 @@ rbool RDOStudioModel::buildModel()
 
 	if (hasModel() && !isRunning() && saveModel())
 	{
-		PTR(RDOStudioOutput) output = studioApp.getIMainWnd()->getOutputDoc();
 		studioApp.getIMainWnd()->getDockBuild().clear();
 		studioApp.getIMainWnd()->getDockDebug().clear();
-		output->clearResults();
+		studioApp.getIMainWnd()->getDockResults().clear();
 		studioApp.getIMainWnd()->getDockBuild().raise();
 		studioApp.getIMainWnd()->getDockBuild().appendString(rdo::format(IDS_MODEL_BUILDING_BEGIN));
 		studioApp.getIMainWnd()->getDockBuild().getContext().UpdateWindow();
@@ -694,10 +692,9 @@ rbool RDOStudioModel::runModel()
 			return false;
 
 		m_GUI_CAN_RUN = false;
-		PTR(RDOStudioOutput) output = studioApp.getIMainWnd()->getOutputDoc();
 		studioApp.getIMainWnd()->getDockBuild().clear();
 		studioApp.getIMainWnd()->getDockDebug().clear();
-		output->clearResults();
+		studioApp.getIMainWnd()->getDockResults().clear();
 		studioApp.getIMainWnd()->getDockBuild().raise();
 		studioApp.getIMainWnd()->getDockBuild().getContext().UpdateWindow();
 		studioApp.broadcastMessage(RDOThread::RT_STUDIO_MODEL_RUN);
