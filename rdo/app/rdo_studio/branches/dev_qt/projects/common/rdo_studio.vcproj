@@ -5839,6 +5839,14 @@
 				RelativePath="..\..\src\dock\dock_build.h"
 				>
 			</File>
+			<File
+				RelativePath="..\..\src\dock\dock_debug.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\dock\dock_debug.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

@@ -219,11 +219,11 @@ void RDOStudioMainFrame::init()
 	style_chart.load();
 
 	m_pDockBuild  = new DockBuild(this);
-	m_pDockDebug  = new QDockWidget("Вывод",       this);
+	m_pDockDebug  = new DockDebug(this);
 	m_pDockTrace  = new QDockWidget("Трассировка", this);
 	m_pDockResult = new QDockWidget("Результаты",  this);
 	m_pDockFind   = new QDockWidget("Поиск",       this);
-	tabifyDockWidget(outputDockWidget, m_pDockBuild);
+	tabifyDockWidget(outputDockWidget, m_pDockBuild );
 	tabifyDockWidget(outputDockWidget, m_pDockDebug );
 	tabifyDockWidget(outputDockWidget, m_pDockTrace );
 	tabifyDockWidget(outputDockWidget, m_pDockResult);

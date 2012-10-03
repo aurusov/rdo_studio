@@ -301,10 +301,8 @@ void RDOStudioFrameManager::insertBitmap(CREF(tstring) bitmapName)
 	if (m_bitmapList.find(bitmapName) != m_bitmapList.end())
 		return;
 
-	PTR(RDOStudioOutput) pOutput = studioApp.getIMainWnd()->getOutputDoc();
-	ASSERT(pOutput);
-	pOutput->appendStringToDebug(rdo::format(IDS_MODEL_RESOURCE_LOADING_NAME, bitmapName.c_str()));
-	const_cast<PTR(rdoEditCtrl::RDODebugEdit)>(pOutput->getDebug())->UpdateWindow();
+	studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(IDS_MODEL_RESOURCE_LOADING_NAME, bitmapName.c_str()));
+	studioApp.getIMainWnd()->getDockDebug().getContext().UpdateWindow();
 
 	rdo::binarystream stream;
 	rdo::repository::RDOThreadRepository::BinaryFile data(bitmapName, stream);
@@ -322,8 +320,8 @@ void RDOStudioFrameManager::insertBitmap(CREF(tstring) bitmapName)
 		}
 	}
 
-	pOutput->appendStringToDebug(rdo::format(ok ? IDS_MODEL_RESOURCE_LOADING_NAME_OK : IDS_MODEL_RESOURCE_LOADING_NAME_FAILED));
-	const_cast<PTR(rdoEditCtrl::RDODebugEdit)>(pOutput->getDebug())->UpdateWindow();
+	studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(ok ? IDS_MODEL_RESOURCE_LOADING_NAME_OK : IDS_MODEL_RESOURCE_LOADING_NAME_FAILED));
+	studioApp.getIMainWnd()->getDockDebug().getContext().UpdateWindow();
 }
 
 void RDOStudioFrameManager::showFrame(CPTRC(rdo::animation::Frame) pFrame, ruint index)

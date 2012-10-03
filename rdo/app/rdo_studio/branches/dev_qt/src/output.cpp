@@ -140,15 +140,15 @@ void RDOStudioOutput::resizeEvent(PTR(QResizeEvent) event)
 //	}
 //}
 
-void RDOStudioOutput::showDebug()
-{
-	studioApp.getIMainWnd()->showOutput();
-	tab.setCurrentItem( 1 );
-	if ( plugins->studioIsShow() ) {
-		debug->SetFocus();
-		update();
-	}
-}
+//void RDOStudioOutput::showDebug()
+//{
+//	studioApp.getIMainWnd()->showOutput();
+//	tab.setCurrentItem( 1 );
+//	if ( plugins->studioIsShow() ) {
+//		debug->SetFocus();
+//		update();
+//	}
+//}
 
 void RDOStudioOutput::showTrace()
 {
@@ -180,11 +180,6 @@ void RDOStudioOutput::showFind()
 	}
 }
 
-void RDOStudioOutput::clearDebug()
-{
-	if ( debug ) debug->clearAll();
-}
-
 void RDOStudioOutput::clearResults()
 {
 	if ( results ) results->clearAll();
@@ -193,11 +188,6 @@ void RDOStudioOutput::clearResults()
 void RDOStudioOutput::clearFind()
 {
 	if ( find ) find->clearAll();
-}
-
-void RDOStudioOutput::appendStringToDebug( CREF(tstring) str ) const
-{
-	debug->appendLine( str );
 }
 
 void RDOStudioOutput::appendStringToResults( CREF(tstring) str ) const
