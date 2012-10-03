@@ -130,15 +130,15 @@ void RDOStudioOutput::resizeEvent(PTR(QResizeEvent) event)
 	tab.MoveWindow(0, 0, size.width(), size.height());
 }
 
-void RDOStudioOutput::showBuild()
-{
-	studioApp.getIMainWnd()->showOutput();
-	tab.setCurrentItem( 0 );
-	if ( plugins->studioIsShow() ) {
-		build->SetFocus();
-		update();
-	}
-}
+//void RDOStudioOutput::showBuild()
+//{
+//	studioApp.getIMainWnd()->showOutput();
+//	tab.setCurrentItem( 0 );
+//	if ( plugins->studioIsShow() ) {
+//		build->SetFocus();
+//		update();
+//	}
+//}
 
 void RDOStudioOutput::showDebug()
 {
@@ -180,11 +180,6 @@ void RDOStudioOutput::showFind()
 	}
 }
 
-void RDOStudioOutput::clearBuild()
-{
-	if ( build ) build->clearAll();
-}
-
 void RDOStudioOutput::clearDebug()
 {
 	if ( debug ) debug->clearAll();
@@ -198,21 +193,6 @@ void RDOStudioOutput::clearResults()
 void RDOStudioOutput::clearFind()
 {
 	if ( find ) find->clearAll();
-}
-
-void RDOStudioOutput::appendStringToBuild( CREF(tstring) str ) const
-{
-	PTR(BuildEditLineInfo) pLine = new BuildEditLineInfo( str );
-	build->appendLine( pLine );
-}
-
-void RDOStudioOutput::appendStringToBuild( CREF(rdo::simulation::report::FileMessage) message ) const
-{
-	if ( message.getType() == rdo::simulation::report::FileMessage::MT_ERROR || (message.getType() == FileMessage::MT_WARNING && static_cast<PTR(RDOBuildEditTheme)>(studioApp.getStyle()->style_build.theme)->warning) )
-	{
-		PTR(BuildEditLineInfo) pLine = new BuildEditLineInfo(message);
-		build->appendLine(pLine);
-	}
 }
 
 void RDOStudioOutput::appendStringToDebug( CREF(tstring) str ) const

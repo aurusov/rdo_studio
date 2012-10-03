@@ -39,26 +39,20 @@ public:
 	RDOStudioOutput(PTR(QWidget) pParent);
 	virtual ~RDOStudioOutput();
 
-	void showBuild();
 	void showDebug();
 	void showTrace();
 	void showResults();
 	void showFind();
 
-	void clearBuild();
 	void clearDebug();
 	void clearResults();
 	void clearFind();
 
-	const rdoEditCtrl::RDOBuildEdit*      getBuild() const   { return build;   };
 	const rdoEditCtrl::RDODebugEdit*      getDebug() const   { return debug;   };
 	const rdoTracerLog::RDOTracerLogCtrl* getTrace() const   { return trace;   };
 	      rdoEditor::RDOEditorResults*    getResults() const { return results; };
 	const rdoEditCtrl::RDOFindEdit*       getFind() const    { return find;    };
 
-	void appendStringToBuild( CREF(tstring) str ) const;
-
-	void appendStringToBuild( CREF(rdo::simulation::report::FileMessage) message ) const;
 	void appendStringToDebug( CREF(tstring) str ) const;
 	void appendStringToResults( CREF(tstring) str ) const;
 	void appendStringToFind( CREF(tstring) str, rdoModelObjects::RDOFileType fileType = rdoModelObjects::PAT, int lineNumber = -1, int posInLine = 0 ) const;

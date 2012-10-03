@@ -400,16 +400,16 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			show_result();
 			PTR(RDOStudioOutput) output = studioApp.getIMainWnd()->getOutputDoc();
 			output->appendStringToDebug(rdo::format(IDS_MODEL_RUNTIMEERROR_STOPED));
-			output->clearBuild();
-			output->showBuild();
-			output->appendStringToBuild(rdo::format(IDS_MODEL_RUNTIMEERROR));
+			studioApp.getIMainWnd()->getDockBuild().clear();
+			studioApp.getIMainWnd()->getDockBuild().raise();
+			studioApp.getIMainWnd()->getDockBuild().appendString(rdo::format(IDS_MODEL_RUNTIMEERROR));
 			std::vector< FileMessage > errors;
 			studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors);
 			int errors_cnt   = 0;
 			int warnings_cnt = 0;
 			STL_FOR_ALL_CONST(errors, it)
 			{
-				output->appendStringToBuild(*it);
+				studioApp.getIMainWnd()->getDockBuild().appendString(*it);
 				if (it->getType() == FileMessage::MT_WARNING)
 				{
 					warnings_cnt++;
@@ -435,14 +435,13 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		case RDOThread::RT_SIMULATOR_PARSE_OK:
 		{
 			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_EXITCODE, &m_exitCode);
-			PTR(RDOStudioOutput) output = studioApp.getIMainWnd()->getOutputDoc();
 			std::vector<FileMessage> errors;
 			studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors);
 			int errors_cnt   = 0;
 			int warnings_cnt = 0;
 			STL_FOR_ALL_CONST(errors, it)
 			{
-				output->appendStringToBuild(*it);
+				studioApp.getIMainWnd()->getDockBuild().appendString(*it);
 				if (it->getType() == FileMessage::MT_WARNING)
 				{
 					warnings_cnt++;
@@ -452,10 +451,10 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 					errors_cnt++;
 				}
 			}
-			output->appendStringToBuild(rdo::format(IDS_MODEL_BUILDING_RESULTS, errors_cnt, warnings_cnt));
+			studioApp.getIMainWnd()->getDockBuild().appendString(rdo::format(IDS_MODEL_BUILDING_RESULTS, errors_cnt, warnings_cnt));
 			if (errors_cnt || warnings_cnt)
 			{
-//				const_cast<PTR(rdoEditCtrl::RDOBuildEdit)>(output->getBuild())->showFirstError();
+//				studioApp.getIMainWnd()->getDockBuild().getContext().showFirstError();
 			}
 			if (plugins)
 			{
@@ -474,14 +473,13 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		{
 			m_GUI_IS_RUNING = false;
 			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_EXITCODE, &m_exitCode);
-			PTR(RDOStudioOutput) output = studioApp.getIMainWnd()->getOutputDoc();
 			std::vector<FileMessage> errors;
 			studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors);
 			int errors_cnt   = 0;
 			int warnings_cnt = 0;
 			STL_FOR_ALL_CONST(errors, it)
 			{
-				output->appendStringToBuild(*it);
+				studioApp.getIMainWnd()->getDockBuild().appendString(*it);
 				if (it->getType() == FileMessage::MT_WARNING)
 				{
 					warnings_cnt++;
@@ -491,10 +489,10 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 					errors_cnt++;
 				}
 			}
-			output->appendStringToBuild(rdo::format(IDS_MODEL_BUILDING_RESULTS, errors_cnt, warnings_cnt));
+			studioApp.getIMainWnd()->getDockBuild().appendString(rdo::format(IDS_MODEL_BUILDING_RESULTS, errors_cnt, warnings_cnt));
 			if (errors_cnt || warnings_cnt)
 			{
-				const_cast<PTR(rdoEditCtrl::RDOBuildEdit)>(output->getBuild())->showFirstError();
+				studioApp.getIMainWnd()->getDockBuild().getContext().showFirstError();
 			}
 
 			if (plugins)
@@ -516,7 +514,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		case RDOThread::RT_SIMULATOR_PARSE_STRING:
 		{
 			msg.lock();
-			studioApp.getIMainWnd()->getOutputDoc()->appendStringToBuild(*static_cast<PTR(tstring)>(msg.param));
+			studioApp.getIMainWnd()->getDockBuild().appendString(*static_cast<PTR(tstring)>(msg.param));
 			msg.unlock();
 			break;
 		}
@@ -564,7 +562,7 @@ rbool RDOStudioModel::newModel(tstring _model_name, tstring _model_path, const i
 
 	m_useTemplate = _useTemplate;
 	PTR(RDOStudioOutput) output = studioApp.getIMainWnd()->getOutputDoc();
-	output->clearBuild();
+	studioApp.getIMainWnd()->getDockBuild().clear();
 	output->clearDebug();
 	output->clearResults();
 	output->clearFind();
@@ -591,7 +589,7 @@ rbool RDOStudioModel::openModel(CREF(tstring) modelName) const
 		return false;
 	}
 	PTR(RDOStudioOutput) output = studioApp.getIMainWnd()->getOutputDoc();
-	output->clearBuild();
+	studioApp.getIMainWnd()->getDockBuild().clear();
 	output->clearDebug();
 	output->clearResults();
 	output->clearFind();
@@ -656,7 +654,7 @@ rbool RDOStudioModel::closeModel() const
 		PTR(RDOStudioOutput) pOutput = studioApp.getIMainWnd()->getOutputDoc();
 		if (pOutput)
 		{
-			pOutput->clearBuild();
+			studioApp.getIMainWnd()->getDockBuild().clear();
 			pOutput->clearDebug();
 			pOutput->clearResults();
 			pOutput->clearFind();
@@ -679,12 +677,12 @@ rbool RDOStudioModel::buildModel()
 	if (hasModel() && !isRunning() && saveModel())
 	{
 		PTR(RDOStudioOutput) output = studioApp.getIMainWnd()->getOutputDoc();
-		output->clearBuild();
+		studioApp.getIMainWnd()->getDockBuild().clear();
 		output->clearDebug();
 		output->clearResults();
-		output->showBuild();
-		output->appendStringToBuild(rdo::format(IDS_MODEL_BUILDING_BEGIN));
-		const_cast<PTR(rdoEditCtrl::RDOBuildEdit)>(output->getBuild())->UpdateWindow();
+		studioApp.getIMainWnd()->getDockBuild().raise();
+		studioApp.getIMainWnd()->getDockBuild().appendString(rdo::format(IDS_MODEL_BUILDING_BEGIN));
+		studioApp.getIMainWnd()->getDockBuild().getContext().UpdateWindow();
 		m_buildState = BS_UNDEFINED;
 		studioApp.broadcastMessage(RDOThread::RT_STUDIO_MODEL_BUILD);
 		return m_buildState == BS_COMPLETE;
@@ -701,11 +699,11 @@ rbool RDOStudioModel::runModel()
 
 		m_GUI_CAN_RUN = false;
 		PTR(RDOStudioOutput) output = studioApp.getIMainWnd()->getOutputDoc();
-		output->clearBuild();
+		studioApp.getIMainWnd()->getDockBuild().clear();
 		output->clearDebug();
 		output->clearResults();
-		output->showBuild();
-		const_cast<PTR(rdoEditCtrl::RDOBuildEdit)>(output->getBuild())->UpdateWindow();
+		studioApp.getIMainWnd()->getDockBuild().raise();
+		studioApp.getIMainWnd()->getDockBuild().getContext().UpdateWindow();
 		studioApp.broadcastMessage(RDOThread::RT_STUDIO_MODEL_RUN);
 		return true;
 	}

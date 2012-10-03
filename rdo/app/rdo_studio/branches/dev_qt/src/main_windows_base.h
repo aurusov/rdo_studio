@@ -22,6 +22,7 @@
 #include "app/rdo_studio_mfc/src/style.h"
 #include "app/rdo_studio_mfc/src/chart/view_style.h"
 #include "app/rdo_studio_mfc/src/frame/style.h"
+#include "app/rdo_studio_mfc/src/dock/dock_build.h"
 // --------------------------------------------------------------------------------
 
 class RDOStudioOutput;
@@ -40,6 +41,7 @@ public:
 
 	rbool isMDIMaximazed() const { return true; }
 
+	REF(DockBuild)          getDockBuild   () { ASSERT(m_pDockBuild); return *m_pDockBuild; }
 	PTR(RDOStudioOutput)    getOutputDoc   () { return m_pOutputDoc;    }
 	PTR(RDOStudioWorkspace) getWorkspaceDoc() { return m_pWorkspaceDoc; }
 
@@ -70,6 +72,7 @@ protected:
 	// Используется при закрытии модели. Задается вопрос.
 	static rbool close_mode;
 
+	PTR(DockBuild)           m_pDockBuild;
 	PTR(RDOStudioOutput)     m_pOutputDoc;
 	PTR(RDOStudioWorkspace)  m_pWorkspaceDoc;
 };
