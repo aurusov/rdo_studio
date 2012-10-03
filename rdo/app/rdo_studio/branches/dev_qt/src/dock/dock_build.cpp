@@ -1,5 +1,5 @@
 /*!
-  \copyright (c) RDO-Team, 2003-2012
+  \copyright (c) RDO-Team, 2012-2012
   \file      dock_build.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      30.09.2012
@@ -25,11 +25,10 @@ DockBuild::DockBuild(PTR(QWidget) pParent)
 	PTR(QWidget) pDocWidget = new QWidget();
 	setWidget(pDocWidget);
 
-	//! @todo qt
-	//m_pContext->setPopupMenu( &popupMenu );
-
 	m_pContext = new Context(pDocWidget);
 	m_pContext->setMinimumSize(300, 150);
+	//! @todo qt
+	//m_pContext->setPopupMenu( &popupMenu );
 
 	PTR(QVBoxLayout) pOutputLayout = new QVBoxLayout(pDocWidget);
 	pOutputLayout->setSpacing(0);
@@ -37,7 +36,7 @@ DockBuild::DockBuild(PTR(QWidget) pParent)
 	pOutputLayout->addWidget(m_pContext);
 
 	m_pContext->init();
-	getContext().setEditorStyle( &studioApp.getStyle()->style_build );
+	getContext().setEditorStyle(&studioApp.getStyle()->style_build);
 	getContext().ShowWindow(SW_SHOW);
 }
 
