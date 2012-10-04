@@ -24,6 +24,7 @@
 #include "app/rdo_studio_mfc/src/frame/style.h"
 #include "app/rdo_studio_mfc/src/dock/dock_build.h"
 #include "app/rdo_studio_mfc/src/dock/dock_debug.h"
+#include "app/rdo_studio_mfc/src/dock/dock_trace.h"
 #include "app/rdo_studio_mfc/src/dock/dock_results.h"
 #include "app/rdo_studio_mfc/src/dock/dock_find.h"
 // --------------------------------------------------------------------------------
@@ -46,6 +47,7 @@ public:
 
 	REF(DockBuild)          getDockBuild   () { ASSERT(m_pDockBuild  ); return *m_pDockBuild;   }
 	REF(DockDebug)          getDockDebug   () { ASSERT(m_pDockDebug  ); return *m_pDockDebug;   }
+	REF(DockTrace)          getDockTrace   () { ASSERT(m_pDockTrace  ); return *m_pDockTrace;   }
 	REF(DockResults)        getDockResults () { ASSERT(m_pDockResults); return *m_pDockResults; }
 	REF(DockFind)           getDockFind    () { ASSERT(m_pDockFind   ); return *m_pDockFind;    }
 	PTR(RDOStudioOutput)    getOutputDoc   () { return m_pOutputDoc;    }
@@ -80,6 +82,7 @@ protected:
 
 	PTR(DockBuild)           m_pDockBuild;
 	PTR(DockDebug)           m_pDockDebug;
+	PTR(DockTrace)           m_pDockTrace;
 	PTR(DockResults)         m_pDockResults;
 	PTR(DockFind)            m_pDockFind;
 	PTR(RDOStudioOutput)     m_pOutputDoc;

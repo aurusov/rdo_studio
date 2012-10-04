@@ -80,13 +80,11 @@ RDOStudioOutput::RDOStudioOutput(PTR(QWidget) pParent)
 
 	build   = new RDOBuildEdit;
 	debug   = new RDODebugEdit;
-	trace   = tracer->createLog();
 	results = new RDOEditorResults;
 	find    = new RDOFindEdit;
 
 	build->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), 0 );
 	debug->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), 0 );
-	trace->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), 0 );
 	results->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), 0 );
 	find->Create( NULL, NULL, 0, CRect(0, 0, 0, 0), tab.getTabAsParent(), 0 );
 
@@ -96,8 +94,6 @@ RDOStudioOutput::RDOStudioOutput(PTR(QWidget) pParent)
 	debug->setEditorStyle( &studioApp.getStyle()->style_debug );
 	debug->setPopupMenu( &popupMenu );
 
-	trace->setStyle( &studioApp.getStyle()->style_trace );
-
 	results->setEditorStyle( &studioApp.getStyle()->style_results );
 	results->setPopupMenu( &popupMenu );
 
@@ -106,7 +102,6 @@ RDOStudioOutput::RDOStudioOutput(PTR(QWidget) pParent)
 
 	tab.insertItem( build, rdo::format( IDS_TAB_BUILD ).c_str() );
 	tab.insertItem( debug, rdo::format( IDS_TAB_DEBUG ).c_str() );
-	tab.insertItem( trace, rdo::format( IDS_TAB_TRACE ).c_str() );
 	tab.insertItem( results, rdo::format( IDS_TAB_RESULT ).c_str() );
 	tab.insertItem( find, rdo::format( IDS_TAB_FIND ).c_str() );
 
@@ -150,15 +145,15 @@ void RDOStudioOutput::resizeEvent(PTR(QResizeEvent) event)
 //	}
 //}
 
-void RDOStudioOutput::showTrace()
-{
-	studioApp.getIMainWnd()->showOutput();
-	tab.setCurrentItem( 2 );
-	if ( plugins->studioIsShow() ) {
-		trace->SetFocus();
-		update();
-	}
-}
+//void RDOStudioOutput::showTrace()
+//{
+//	studioApp.getIMainWnd()->showOutput();
+//	tab.setCurrentItem( 2 );
+//	if ( plugins->studioIsShow() ) {
+//		trace->SetFocus();
+//		update();
+//	}
+//}
 
 //void RDOStudioOutput::showResults()
 //{
@@ -187,28 +182,30 @@ void RDOStudioOutput::Tab::changeCurrentItem()
 
 void RDOStudioOutput::updateLogConnection() const
 {
-	int item = tab.getCurrentIndex();
-	RDOLogEdit* log = NULL;
-	if ( item == 0 ) {
-		log = build;
-	} else if ( item == 4 ) {
-		log = find;
-	}
-	if ( log ) {
-		rdoEditor::RDOEditorTabCtrl* editor_tab = model->getTab();
-		if ( editor_tab ) {
-			for ( int i = 0; i < editor_tab->getItemCount(); i++ ) {
-				editor_tab->getItemEdit( i )->setLog( *log );
-			}
-		}
-	}
+	//! @todo qt
+	//int item = tab.getCurrentIndex();
+	//RDOLogEdit* log = NULL;
+	//if ( item == 0 ) {
+	//	log = build;
+	//} else if ( item == 4 ) {
+	//	log = find;
+	//}
+	//if ( log ) {
+	//	rdoEditor::RDOEditorTabCtrl* editor_tab = model->getTab();
+	//	if ( editor_tab ) {
+	//		for ( int i = 0; i < editor_tab->getItemCount(); i++ ) {
+	//			editor_tab->getItemEdit( i )->setLog( *log );
+	//		}
+	//	}
+	//}
 }
 
 void RDOStudioOutput::updateStyles() const
 {
-	build->setEditorStyle( &studioApp.getStyle()->style_build );
-	debug->setEditorStyle( &studioApp.getStyle()->style_debug );
-	trace->setStyle( &studioApp.getStyle()->style_trace );
-	results->setEditorStyle( &studioApp.getStyle()->style_results );
-	find->setEditorStyle( &studioApp.getStyle()->style_find );
+	//! @todo qt
+	//build->setEditorStyle( &studioApp.getStyle()->style_build );
+	//debug->setEditorStyle( &studioApp.getStyle()->style_debug );
+	//trace->setStyle( &studioApp.getStyle()->style_trace );
+	//results->setEditorStyle( &studioApp.getStyle()->style_results );
+	//find->setEditorStyle( &studioApp.getStyle()->style_find );
 }

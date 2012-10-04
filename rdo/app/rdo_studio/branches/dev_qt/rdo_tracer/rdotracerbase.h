@@ -101,7 +101,7 @@ protected:
 	virtual ~RDOTracerBase();
 
 public:
-	rdoTracerLog::RDOTracerLogCtrl* createLog();
+	void setLog(PTR(rdoTracerLog::RDOTracerLogCtrl) pTracerLog);
 	RDOTracerTreeCtrl* createTree();
 
 	void startTrace();

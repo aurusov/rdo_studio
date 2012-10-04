@@ -5867,6 +5867,14 @@
 				RelativePath="..\..\src\dock\dock_results.h"
 				>
 			</File>
+			<File
+				RelativePath="..\..\src\dock\dock_trace.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\dock\dock_trace.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

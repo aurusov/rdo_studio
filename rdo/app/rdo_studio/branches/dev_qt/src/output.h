@@ -39,10 +39,6 @@ public:
 	RDOStudioOutput(PTR(QWidget) pParent);
 	virtual ~RDOStudioOutput();
 
-	void showTrace();
-
-	const rdoTracerLog::RDOTracerLogCtrl* getTrace() const   { return trace;   };
-
 	void updateLogConnection() const;
 	void updateStyles() const;
 

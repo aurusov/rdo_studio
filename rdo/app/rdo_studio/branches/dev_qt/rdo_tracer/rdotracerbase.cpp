@@ -610,10 +610,9 @@ void RDOTracerBase::clearCharts()
 	mutex.Unlock();
 }
 
-RDOTracerLogCtrl* RDOTracerBase::createLog()
+void RDOTracerBase::setLog(PTR(rdoTracerLog::RDOTracerLogCtrl) pTracerLog)
 {
-	log = new RDOTracerLogCtrl();
-	return log;
+	log = pTracerLog;
 }
 
 RDOTracerTreeCtrl* RDOTracerBase::createTree()
