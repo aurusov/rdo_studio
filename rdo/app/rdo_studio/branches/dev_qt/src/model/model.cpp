@@ -560,7 +560,7 @@ rbool RDOStudioModel::newModel(tstring _model_name, tstring _model_path, const i
 	studioApp.getIMainWnd()->getDockBuild  ().clear();
 	studioApp.getIMainWnd()->getDockDebug  ().clear();
 	studioApp.getIMainWnd()->getDockResults().clear();
-	output->clearFind();
+	studioApp.getIMainWnd()->getDockFind   ().clear();
 	rdo::repository::RDOThreadRepository::NewModel data;
 	data.m_name = _model_name;
 	data.m_path = _model_path;
@@ -587,7 +587,7 @@ rbool RDOStudioModel::openModel(CREF(tstring) modelName) const
 	studioApp.getIMainWnd()->getDockBuild  ().clear();
 	studioApp.getIMainWnd()->getDockDebug  ().clear();
 	studioApp.getIMainWnd()->getDockResults().clear();
-	output->clearFind();
+	studioApp.getIMainWnd()->getDockFind   ().clear();
 	studioApp.getIMainWnd()->getDockDebug().raise();
 	studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(IDS_MODEL_LOADING_BEGIN));
 	studioApp.getIMainWnd()->getDockDebug().getContext().UpdateWindow();
@@ -646,14 +646,10 @@ rbool RDOStudioModel::closeModel() const
 	if (!isRunning())
 	{
 		stopModel();
-		PTR(RDOStudioOutput) pOutput = studioApp.getIMainWnd()->getOutputDoc();
-		if (pOutput)
-		{
-			studioApp.getIMainWnd()->getDockBuild  ().clear();
-			studioApp.getIMainWnd()->getDockDebug  ().clear();
-			studioApp.getIMainWnd()->getDockResults().clear();
-			pOutput->clearFind();
-		}
+		studioApp.getIMainWnd()->getDockBuild  ().clear();
+		studioApp.getIMainWnd()->getDockDebug  ().clear();
+		studioApp.getIMainWnd()->getDockResults().clear();
+		studioApp.getIMainWnd()->getDockFind   ().clear();
 		studioApp.broadcastMessage(RDOThread::RT_STUDIO_MODEL_CLOSE);
 		return true;
 	}

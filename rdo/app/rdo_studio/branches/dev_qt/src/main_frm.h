@@ -126,7 +126,6 @@ private:
 	RDOStudioStatusBar      statusBar;
 	int                     m_updateTimerID;
 	PTR(QDockWidget)        m_pDockTrace;
-	PTR(QDockWidget)        m_pDockFind;
 	PTR(QLabel)             m_pSBCoord;
 	PTR(QLabel)             m_pSBModify;
 

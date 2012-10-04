@@ -170,26 +170,15 @@ void RDOStudioOutput::showTrace()
 //	}
 //}
 
-void RDOStudioOutput::showFind()
-{
-	studioApp.getIMainWnd()->showOutput();
-	tab.setCurrentItem( 4 );
-	if ( plugins->studioIsShow() ) {
-		find->SetFocus();
-		update();
-	}
-}
-
-void RDOStudioOutput::clearFind()
-{
-	if ( find ) find->clearAll();
-}
-
-void RDOStudioOutput::appendStringToFind( CREF(tstring) str, rdoModelObjects::RDOFileType fileType, int lineNumber, int posInLine ) const
-{
-	LogEditLineInfo* line = new LogEditLineInfo( rdo::simulation::report::FileMessage(str, fileType, lineNumber, posInLine ) );
-	find->appendLine( line );
-}
+//void RDOStudioOutput::showFind()
+//{
+//	studioApp.getIMainWnd()->showOutput();
+//	tab.setCurrentItem( 4 );
+//	if ( plugins->studioIsShow() ) {
+//		find->SetFocus();
+//		update();
+//	}
+//}
 
 void RDOStudioOutput::Tab::changeCurrentItem()
 {

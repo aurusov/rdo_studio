@@ -40,14 +40,8 @@ public:
 	virtual ~RDOStudioOutput();
 
 	void showTrace();
-	void showFind();
-
-	void clearFind();
 
 	const rdoTracerLog::RDOTracerLogCtrl* getTrace() const   { return trace;   };
-	const rdoEditCtrl::RDOFindEdit*       getFind() const    { return find;    };
-
-	void appendStringToFind( CREF(tstring) str, rdoModelObjects::RDOFileType fileType = rdoModelObjects::PAT, int lineNumber = -1, int posInLine = 0 ) const;
 
 	void updateLogConnection() const;
 	void updateStyles() const;

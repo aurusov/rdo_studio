@@ -5852,6 +5852,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\dock\dock_find.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\dock\dock_find.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\dock\dock_results.cpp"
 				>
 			</File>
