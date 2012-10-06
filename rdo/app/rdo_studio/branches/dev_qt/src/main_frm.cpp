@@ -805,7 +805,7 @@ void RDOStudioMainFrame::addSubWindow(QWidget* pWidget)
 	}
 	pWidget->show();
 
-	static const float sizeScale = 0.9;
+	static const float sizeScale = 0.9f;
 	QSize size(mdiArea->size());
 	size.setWidth (float(size.width ()) * sizeScale);
 	size.setHeight(float(size.height()) * sizeScale);
