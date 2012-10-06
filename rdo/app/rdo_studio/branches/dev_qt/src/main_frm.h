@@ -84,7 +84,7 @@ public:
 
 	void init();
 
-	virtual void updateAllStyles() const;
+	virtual void updateAllStyles();
 
 	virtual void showWorkspace();
 	virtual void showOutput   ();

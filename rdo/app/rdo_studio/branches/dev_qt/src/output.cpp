@@ -177,7 +177,6 @@ void RDOStudioOutput::resizeEvent(PTR(QResizeEvent) event)
 
 void RDOStudioOutput::Tab::changeCurrentItem()
 {
-	studioApp.getIMainWnd()->getOutputDoc()->updateLogConnection();
 }
 
 void RDOStudioOutput::updateLogConnection() const

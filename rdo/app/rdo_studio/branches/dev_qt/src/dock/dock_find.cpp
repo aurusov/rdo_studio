@@ -12,15 +12,12 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/dock/dock_find.h"
-#include "app/rdo_studio_mfc/src/application.h"
 #include "simulator/report/log_edit_line_info.h"
 // --------------------------------------------------------------------------------
 
 DockFind::DockFind(PTR(QWidget) pParent)
 	: parent_class("Поиск", pParent)
-{
-	getContext().setEditorStyle(&studioApp.getStyle()->style_find);
-}
+{}
 
 DockFind::~DockFind()
 {}

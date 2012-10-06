@@ -29,8 +29,6 @@
 #include "app/rdo_studio_mfc/src/dock/dock_find.h"
 // --------------------------------------------------------------------------------
 
-class RDOStudioOutput;
-
 class MainWindowBase
 {
 public:
@@ -50,12 +48,11 @@ public:
 	REF(DockTrace)          getDockTrace   () { ASSERT(m_pDockTrace  ); return *m_pDockTrace;   }
 	REF(DockResults)        getDockResults () { ASSERT(m_pDockResults); return *m_pDockResults; }
 	REF(DockFind)           getDockFind    () { ASSERT(m_pDockFind   ); return *m_pDockFind;    }
-	PTR(RDOStudioOutput)    getOutputDoc   () { return m_pOutputDoc;    }
 	PTR(RDOStudioWorkspace) getWorkspaceDoc() { return m_pWorkspaceDoc; }
 
 	static rbool is_close_mode() { return close_mode; }
 
-	virtual void updateAllStyles() const = 0;
+	virtual void updateAllStyles() = 0;
 	virtual void showWorkspace  () = 0;
 	virtual void showOutput     () = 0;
 
@@ -85,7 +82,6 @@ protected:
 	PTR(DockTrace)           m_pDockTrace;
 	PTR(DockResults)         m_pDockResults;
 	PTR(DockFind)            m_pDockFind;
-	PTR(RDOStudioOutput)     m_pOutputDoc;
 	PTR(RDOStudioWorkspace)  m_pWorkspaceDoc;
 };
 

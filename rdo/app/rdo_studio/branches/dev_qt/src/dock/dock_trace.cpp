@@ -12,7 +12,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/dock/dock_trace.h"
-#include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
 // --------------------------------------------------------------------------------
 
@@ -20,7 +19,6 @@ DockTrace::DockTrace(PTR(QWidget) pParent)
 	: parent_class("Трассировка", pParent)
 {
 	tracer->setLog(&getContext());
-	getContext().setStyle(&studioApp.getStyle()->style_trace);
 }
 
 DockTrace::~DockTrace()

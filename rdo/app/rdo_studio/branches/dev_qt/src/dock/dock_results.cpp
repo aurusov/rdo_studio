@@ -12,14 +12,11 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/dock/dock_results.h"
-#include "app/rdo_studio_mfc/src/application.h"
 // --------------------------------------------------------------------------------
 
 DockResults::DockResults(PTR(QWidget) pParent)
 	: parent_class("Результаты", pParent)
-{
-	getContext().setEditorStyle(&studioApp.getStyle()->style_results);
-}
+{}
 
 DockResults::~DockResults()
 {}

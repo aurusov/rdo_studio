@@ -19,9 +19,7 @@
 
 DockBuild::DockBuild(PTR(QWidget) pParent)
 	: parent_class("Компилятор", pParent)
-{
-	getContext().setEditorStyle(&studioApp.getStyle()->style_build);
-}
+{}
 
 DockBuild::~DockBuild()
 {}

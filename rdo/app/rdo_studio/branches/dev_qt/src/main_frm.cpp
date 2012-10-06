@@ -18,7 +18,6 @@
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/src/options.h"
-#include "app/rdo_studio_mfc/src/output.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
 #include "app/rdo_studio_mfc/htmlhelp.h"
 #include "app/rdo_studio_mfc/resource.h"
@@ -223,6 +222,7 @@ void RDOStudioMainFrame::init()
 	m_pDockTrace   = new DockTrace  (this);
 	m_pDockResults = new DockResults(this);
 	m_pDockFind    = new DockFind   (this);
+	updateAllStyles();
 	tabifyDockWidget(outputDockWidget, m_pDockBuild  );
 	tabifyDockWidget(outputDockWidget, m_pDockDebug  );
 	tabifyDockWidget(outputDockWidget, m_pDockTrace  );
@@ -253,12 +253,6 @@ void RDOStudioMainFrame::init()
 	pWorkspaceLayout->setSpacing(0);
 	pWorkspaceLayout->setContentsMargins(0, 0, 0, 0);
 	pWorkspaceLayout->addWidget(m_pWorkspaceDoc);
-
-	m_pOutputDoc = new RDOStudioOutput(outputDockWidgetContents);
-	PTR(QVBoxLayout) pOutputLayout = new QVBoxLayout(outputDockWidgetContents);
-	pOutputLayout->setSpacing(0);
-	pOutputLayout->setContentsMargins(0, 0, 0, 0);
-	pOutputLayout->addWidget(m_pOutputDoc);
 
 	//! @todo qt
 	//fileToolBar.EnableDocking( CBRS_ALIGN_ANY );
@@ -435,7 +429,8 @@ void RDOStudioMainFrame::OnUpdateViewWorkspace(CCmdUI* pCmdUI)
 
 void RDOStudioMainFrame::OnUpdateViewOutput(CCmdUI* pCmdUI)
 {
-	pCmdUI->SetCheck(getOutputDoc()->isVisible());
+	//! @todo qt
+//	pCmdUI->SetCheck(getOutputDoc()->isVisible());
 }
 
 void RDOStudioMainFrame::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
@@ -528,10 +523,14 @@ void RDOStudioMainFrame::OnViewOptions()
 	dlg.DoModal();
 }
 
-void RDOStudioMainFrame::updateAllStyles() const
+void RDOStudioMainFrame::updateAllStyles()
 {
 	model->updateStyleOfAllModel();
-	const_cast<PTR(RDOStudioMainFrame)>(this)->getOutputDoc()->updateStyles();
+	getDockBuild  ().getContext().setEditorStyle(&style_build  );
+	getDockDebug  ().getContext().setEditorStyle(&style_debug  );
+	getDockTrace  ().getContext().setStyle      (&style_trace  );
+	getDockResults().getContext().setEditorStyle(&style_results);
+	getDockFind   ().getContext().setEditorStyle(&style_find   );
 	tracer->updateChartsStyles();
 }
 

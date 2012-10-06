@@ -24,7 +24,6 @@
 #include "app/rdo_studio_mfc/src/thread.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/src/child_frm.h"
-#include "app/rdo_studio_mfc/src/output.h"
 #include "app/rdo_studio_mfc/src/frame/view.h"
 #include "app/rdo_studio_mfc/src/plugins.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
@@ -556,7 +555,6 @@ rbool RDOStudioModel::newModel(tstring _model_name, tstring _model_path, const i
 		return false;
 
 	m_useTemplate = _useTemplate;
-	PTR(RDOStudioOutput) output = studioApp.getIMainWnd()->getOutputDoc();
 	studioApp.getIMainWnd()->getDockBuild  ().clear();
 	studioApp.getIMainWnd()->getDockDebug  ().clear();
 	studioApp.getIMainWnd()->getDockResults().clear();
@@ -565,7 +563,6 @@ rbool RDOStudioModel::newModel(tstring _model_name, tstring _model_path, const i
 	data.m_name = _model_name;
 	data.m_path = _model_path;
 	studioApp.broadcastMessage(RDOThread::RT_STUDIO_MODEL_NEW, &data);
-	output->updateLogConnection();
 	return true;
 }
 
@@ -583,7 +580,6 @@ rbool RDOStudioModel::openModel(CREF(tstring) modelName) const
 	{
 		return false;
 	}
-	PTR(RDOStudioOutput) output = studioApp.getIMainWnd()->getOutputDoc();
 	studioApp.getIMainWnd()->getDockBuild  ().clear();
 	studioApp.getIMainWnd()->getDockDebug  ().clear();
 	studioApp.getIMainWnd()->getDockResults().clear();
@@ -602,7 +598,6 @@ rbool RDOStudioModel::openModel(CREF(tstring) modelName) const
 		rdo::repository::RDOThreadRepository::FileData fileData(rdoModelObjects::PMV, stream);
 		studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_LOAD, &fileData);
 		studioApp.getIMainWnd()->getDockResults().appendString(stream.str());
-		output->updateLogConnection();
 		studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(IDS_MODEL_LOADING_OK));
 		studioApp.setLastProjectName(getFullName());
 	}
@@ -616,7 +611,6 @@ rbool RDOStudioModel::openModel(CREF(tstring) modelName) const
 		}
 		else
 		{
-			output->updateLogConnection();
 			studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(IDS_MODEL_LOADING_FAILD));
 		}
 	}

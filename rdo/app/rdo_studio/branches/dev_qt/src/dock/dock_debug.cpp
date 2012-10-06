@@ -12,14 +12,11 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/dock/dock_debug.h"
-#include "app/rdo_studio_mfc/src/application.h"
 // --------------------------------------------------------------------------------
 
 DockDebug::DockDebug(PTR(QWidget) pParent)
 	: parent_class("Вывод", pParent)
-{
-	getContext().setEditorStyle(&studioApp.getStyle()->style_debug);
-}
+{}
 
 DockDebug::~DockDebug()
 {}

@@ -15,7 +15,6 @@
 #include "repository/rdorepository.h"
 #include "simulator/service/rdosimwin.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
-#include "app/rdo_studio_mfc/src/output.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/src/application.h"
