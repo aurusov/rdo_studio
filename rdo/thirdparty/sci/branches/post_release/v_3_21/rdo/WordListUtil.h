@@ -7,12 +7,13 @@
   \indent    4T
 */
 
-class WordListUtil
+#include <boost/noncopyable.hpp>
+#include "WordList.h"
+
+class WordListUtil: public boost::noncopyable
 {
 public:
 	WordListUtil(const WordList& wordlist);
-	//~WordListUtil();
-	WordListUtil& operator=( const WordListUtil&) {}
 	//tstring GetNearestWord(const char *wordStart, int searchLen) const;
 	std::vector<tstring> GetNearestWords(const char *wordStart) const;
 

@@ -13,13 +13,12 @@
 
 #include "utils\rdotypes.h"
 
-#include "WordList.h"
 #include "WordListUtil.h"
 
 WordListUtil::WordListUtil(const WordList& wordlist)
-	:wl(wordlist)
-{
-}
+	: wl(wordlist)
+{}
+
 //tstring WordListUtil::GetNearestWord (const char *wordStart, int searchLen) const
 //{
 //}
