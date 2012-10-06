@@ -178,13 +178,3 @@ void RDOStudioOutput::resizeEvent(PTR(QResizeEvent) event)
 void RDOStudioOutput::Tab::changeCurrentItem()
 {
 }
-
-void RDOStudioOutput::updateStyles() const
-{
-	//! @todo qt
-	//build->setEditorStyle( &studioApp.getStyle()->style_build );
-	//debug->setEditorStyle( &studioApp.getStyle()->style_debug );
-	//trace->setStyle( &studioApp.getStyle()->style_trace );
-	//results->setEditorStyle( &studioApp.getStyle()->style_results );
-	//find->setEditorStyle( &studioApp.getStyle()->style_find );
-}

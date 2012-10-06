@@ -39,8 +39,6 @@ public:
 	RDOStudioOutput(PTR(QWidget) pParent);
 	virtual ~RDOStudioOutput();
 
-	void updateStyles() const;
-
 private:
 	typedef  QWidget  parent_type;
 
