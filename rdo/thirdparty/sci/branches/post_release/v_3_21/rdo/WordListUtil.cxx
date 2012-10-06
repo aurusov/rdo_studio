@@ -67,6 +67,10 @@ std::vector<tstring> WordListUtil::GetNearestWords(const tstring& userPattern) c
 			float priority = tstring(wl.words[i]).length();
 			priorityResult.push_back(PriorityResultItem(wl.words[i], priority));
 		}
+		else
+		{
+			priorityResult.push_back(PriorityResultItem(wl.words[i], 0.0));
+		}
 	}
 	std::sort(priorityResult.begin(), priorityResult.end());
 
