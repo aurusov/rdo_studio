@@ -2592,14 +2592,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\output.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\output.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\plugins.cpp"
 				>
 			</File>

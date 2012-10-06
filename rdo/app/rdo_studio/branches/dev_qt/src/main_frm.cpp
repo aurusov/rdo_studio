@@ -236,6 +236,37 @@ void RDOStudioMainFrame::init()
 	m_pDockDebug->raise();
 
 	//! @todo qt
+	//! Создание popup-menu для редакторов из докод
+	//popupMenu.CreatePopupMenu();
+
+	//if (AfxGetMainWnd())
+	//{
+	//	CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
+	//	if (mainMenu)
+	//	{
+	//		rbool maximized = studioApp.getIMainWnd()->isMDIMaximazed();
+	//		int delta = maximized ? 1 : 0;
+
+	//		appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );
+	//		appendMenu( mainMenu->GetSubMenu( 1 + delta ), 8, &popupMenu );
+	//		appendMenu( mainMenu->GetSubMenu( 1 + delta ), 10, &popupMenu );
+	//		popupMenu.AppendMenu( MF_SEPARATOR );
+	//		appendMenu( mainMenu->GetSubMenu( 2 + delta ), 0, &popupMenu );
+	//		appendMenu( mainMenu->GetSubMenu( 2 + delta ), 1, &popupMenu );
+	//		appendMenu( mainMenu->GetSubMenu( 2 + delta ), 2, &popupMenu );
+	//		popupMenu.AppendMenu( MF_SEPARATOR );
+	//		appendMenu( mainMenu->GetSubMenu( 2 + delta ), 7, &popupMenu );
+	//		appendMenu( mainMenu->GetSubMenu( 2 + delta ), 8, &popupMenu );
+	//		appendMenu( mainMenu->GetSubMenu( 2 + delta ), 9, &popupMenu );
+	//		appendMenu( mainMenu->GetSubMenu( 2 + delta ), 10, &popupMenu );
+	//	}
+	//}
+	//build->setPopupMenu( &popupMenu );
+	//debug->setPopupMenu( &popupMenu );
+	//results->setPopupMenu( &popupMenu );
+	//find->setPopupMenu( &popupMenu );
+
+	//! @todo qt
 	//fileToolBar.init( c_wnd(), IDR_FILE_TOOLBAR, IDB_FILE_TOOLBAR_D );
 	//editToolBar.init( c_wnd(), IDR_EDIT_TOOLBAR, IDB_EDIT_TOOLBAR_D );
 	//zoomToolBar.init( c_wnd(), IDR_ZOOM_TOOLBAR, IDB_ZOOM_TOOLBAR_D );
