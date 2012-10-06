@@ -8,7 +8,7 @@
 */
 
 #include <boost/noncopyable.hpp>
-#include "WordList.h"
+#include "thirdparty/sci/lexlib/WordList.h"
 
 class WordListUtil: public boost::noncopyable
 {
