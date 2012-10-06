@@ -28,12 +28,12 @@ std::vector<tstring> WordListUtil::GetNearestWords(const char *wordStart) const
 	struct keyword
 	{
 		tstring value;
-		int     priority;
+		float   priority;
 
 		keyword()
-			: priority(0)
+			: priority(0.0)
 		{}
-		keyword(const tstring& value, int priority)
+		keyword(const tstring& value, float priority)
 			: value   (value   )
 			, priority(priority)
 		{}
