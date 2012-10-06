@@ -10,6 +10,7 @@
 #include <vector>
 #include <map>
 #include <boost\algorithm\string.hpp>
+#include <boost\foreach.hpp>
 
 #include "utils\rdotypes.h"
 
@@ -25,29 +26,29 @@ WordListUtil::WordListUtil(const WordList& wordlist)
 
 std::vector<tstring> WordListUtil::GetNearestWords(const char *wordStart) const
 {
-	struct keyword
+	struct Keyword
 	{
 		tstring value;
 		float   priority;
 
-		keyword()
+		Keyword()
 			: priority(0.0)
 		{}
-		keyword(const tstring& value, float priority)
+		Keyword(const tstring& value, float priority)
 			: value   (value   )
 			, priority(priority)
 		{}
 
-		rbool operator< (const keyword& other) const
+		rbool operator< (const Keyword& keyword) const
 		{
-			return priority < other.priority;
+			return priority < keyword.priority;
 		}
 	};
 
 	int start = 0;
 	int end = wl.len - 1;
 	std::vector<tstring> res;
-	std::vector<keyword> pres;
+	std::vector<Keyword> pres;
 	if (0 == wl.words)
 	{
 		res.push_back("");
@@ -66,16 +67,15 @@ std::vector<tstring> WordListUtil::GetNearestWords(const char *wordStart) const
 	{
 		if (boost::ifind_first(wl.words[i], wordStart))
 		{
-			pres.push_back(keyword(wl.words[i], tstring(wl.words[i]).length()));
+			pres.push_back(Keyword(wl.words[i], tstring(wl.words[i]).length()));
 		}
 	}
 
 	std::sort(pres.begin(), pres.end());
-	std::vector<keyword>::iterator it;
 
-	for (it = pres.begin(); it != pres.end(); ++it)
+	BOOST_FOREACH(const Keyword& keyword, pres)
 	{
-		res.push_back(it->value);
+		res.push_back(keyword.value);
 	}
 	return res;
 }
