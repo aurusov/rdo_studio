@@ -194,15 +194,6 @@
    </attribute>
    <widget class="QWidget" name="workspaceDockWidgetContents"/>
   </widget>
-  <widget class="QDockWidget" name="outputDockWidget">
-   <property name="windowTitle">
-    <string>Output</string>
-   </property>
-   <attribute name="dockWidgetArea">
-    <number>8</number>
-   </attribute>
-   <widget class="QWidget" name="outputDockWidgetContents"/>
-  </widget>
   <action name="actFileNew">
    <property name="text">
     <string>Новая модель...</string>

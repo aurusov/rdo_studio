@@ -228,11 +228,11 @@ void RDOStudioMainFrame::init()
 	QObject::connect(m_pDockFind,  SIGNAL(visibilityChanged(bool)), this, SLOT(onDockVisibleChanged(bool)));
 
 	updateAllStyles();
-	tabifyDockWidget(outputDockWidget, m_pDockBuild  );
-	tabifyDockWidget(outputDockWidget, m_pDockDebug  );
-	tabifyDockWidget(outputDockWidget, m_pDockTrace  );
-	tabifyDockWidget(outputDockWidget, m_pDockResults);
-	tabifyDockWidget(outputDockWidget, m_pDockFind   );
+	addDockWidget(Qt::BottomDockWidgetArea, m_pDockBuild);
+	tabifyDockWidget(m_pDockBuild, m_pDockDebug  );
+	tabifyDockWidget(m_pDockBuild, m_pDockTrace  );
+	tabifyDockWidget(m_pDockBuild, m_pDockResults);
+	tabifyDockWidget(m_pDockBuild, m_pDockFind   );
 	m_pDockDebug->raise();
 
 	//! @todo qt
