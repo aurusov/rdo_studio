@@ -7,16 +7,23 @@
   \indent    4T
 */
 
+#ifndef _THIRDPARTY_SCINTILLA_WORDLISTUTIL_H_
+#define _THIRDPARTY_SCINTILLA_WORDLISTUTIL_H_
+
+// ----------------------------------------------------------------------- INCLUDES
 #include <boost/noncopyable.hpp>
+// ----------------------------------------------------------------------- SYNOPSIS
 #include "thirdparty/sci/lexlib/WordList.h"
+// --------------------------------------------------------------------------------
 
 class WordListUtil: public boost::noncopyable
 {
 public:
 	WordListUtil(const WordList& wordlist);
-	//tstring GetNearestWord(const char *wordStart, int searchLen) const;
 	std::vector<tstring> GetNearestWords(const tstring& userPattern) const;
 
 private:
 	const WordList& wl;
 };
+
+#endif //_THIRDPARTY_SCINTILLA_WORDLISTUTIL_H_

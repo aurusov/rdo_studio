@@ -7,22 +7,18 @@
   \indent    4T
 */
 
+// ----------------------------------------------------------------------- INCLUDES
 #include <vector>
-#include <map>
-#include <boost\algorithm\string.hpp>
-#include <boost\foreach.hpp>
-
-#include "utils\rdotypes.h"
-
-#include "WordListUtil.h"
+#include <boost/algorithm/string.hpp>
+#include <boost/foreach.hpp>
+// ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/rdotypes.h"
+#include "thirdparty/sci/rdo/WordListUtil.h"
+// --------------------------------------------------------------------------------
 
 WordListUtil::WordListUtil(const WordList& wordlist)
 	: wl(wordlist)
 {}
-
-//tstring WordListUtil::GetNearestWord (const char *wordStart, int searchLen) const
-//{
-//}
 
 std::vector<tstring> WordListUtil::GetNearestWords(const tstring& userPattern) const
 {
