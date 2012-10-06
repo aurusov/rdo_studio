@@ -157,6 +157,8 @@ public slots:
 private slots:
 	void onModelStop ();
 
+	void onDockVisibleChanged(bool visible);
+
 private:
 	afx_msg void OnViewFileToolbar();
 	afx_msg void OnViewEditToolbar();

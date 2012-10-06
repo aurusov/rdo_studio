@@ -39,7 +39,6 @@ public:
 	RDOStudioOutput(PTR(QWidget) pParent);
 	virtual ~RDOStudioOutput();
 
-	void updateLogConnection() const;
 	void updateStyles() const;
 
 private:

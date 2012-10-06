@@ -179,26 +179,6 @@ void RDOStudioOutput::Tab::changeCurrentItem()
 {
 }
 
-void RDOStudioOutput::updateLogConnection() const
-{
-	//! @todo qt
-	//int item = tab.getCurrentIndex();
-	//RDOLogEdit* log = NULL;
-	//if ( item == 0 ) {
-	//	log = build;
-	//} else if ( item == 4 ) {
-	//	log = find;
-	//}
-	//if ( log ) {
-	//	rdoEditor::RDOEditorTabCtrl* editor_tab = model->getTab();
-	//	if ( editor_tab ) {
-	//		for ( int i = 0; i < editor_tab->getItemCount(); i++ ) {
-	//			editor_tab->getItemEdit( i )->setLog( *log );
-	//		}
-	//	}
-	//}
-}
-
 void RDOStudioOutput::updateStyles() const
 {
 	//! @todo qt

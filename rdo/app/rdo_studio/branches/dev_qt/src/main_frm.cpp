@@ -18,6 +18,7 @@
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/src/options.h"
+#include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
 #include "app/rdo_studio_mfc/htmlhelp.h"
 #include "app/rdo_studio_mfc/resource.h"
@@ -222,6 +223,10 @@ void RDOStudioMainFrame::init()
 	m_pDockTrace   = new DockTrace  (this);
 	m_pDockResults = new DockResults(this);
 	m_pDockFind    = new DockFind   (this);
+
+	QObject::connect(m_pDockBuild, SIGNAL(visibilityChanged(bool)), this, SLOT(onDockVisibleChanged(bool)));
+	QObject::connect(m_pDockFind,  SIGNAL(visibilityChanged(bool)), this, SLOT(onDockVisibleChanged(bool)));
+
 	updateAllStyles();
 	tabifyDockWidget(outputDockWidget, m_pDockBuild  );
 	tabifyDockWidget(outputDockWidget, m_pDockDebug  );
@@ -823,4 +828,36 @@ template <>
 PTR(QLabel) RDOStudioMainFrame::getStatusBarLabel<RDOStudioMainFrame::SB_MODIFY>(StatusBarType<SB_MODIFY>)
 {
 	return m_pSBModify;
+}
+
+void RDOStudioMainFrame::onDockVisibleChanged(rbool visible)
+{
+	if (!visible)
+		return;
+
+	QDockWidget* pDock = dynamic_cast<QDockWidget*>(sender());
+	ASSERT(pDock);
+
+	rdoEditCtrl::RDOLogEdit* pLog = NULL;
+
+	if (pDock == &getDockBuild())
+	{
+		pLog = &getDockBuild().getContext();
+	}
+	else if (pDock == &getDockFind())
+	{
+		pLog = &getDockFind().getContext();
+	}
+
+	if (!pLog)
+		return;
+
+	rdoEditor::RDOEditorTabCtrl* pEditorTab = model->getTab();
+	if (pEditorTab)
+	{
+		for (int i = 0; i < pEditorTab->getItemCount(); ++i)
+		{
+			pEditorTab->getItemEdit(i)->setLog(*pLog);
+		}
+	}
 }
