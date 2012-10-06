@@ -25,21 +25,29 @@ WordListUtil::WordListUtil(const WordList& wordlist)
 
 std::vector<tstring> WordListUtil::GetNearestWords(const char *wordStart) const
 {
-	struct keywords
+	struct keyword
 	{
-		tstring keyword;
-		int priority;
+		tstring value;
+		int     priority;
 
-		bool operator<(const keywords& k)
+		keyword()
+			: priority(0)
+		{}
+		keyword(const tstring& value, int priority)
+			: value   (value   )
+			, priority(priority)
+		{}
+
+		rbool operator< (const keyword& other) const
 		{
-			return priority < k.priority;
+			return priority < other.priority;
 		}
 	};
-	keywords key;
+
 	int start = 0;
 	int end = wl.len - 1;
 	std::vector<tstring> res;
-	std::vector<keywords> pres;
+	std::vector<keyword> pres;
 	if (0 == wl.words)
 	{
 		res.push_back("");
@@ -53,20 +61,21 @@ std::vector<tstring> WordListUtil::GetNearestWords(const char *wordStart) const
 		}
 		return res;
 	}
+
 	for (int i = start; i < end; i++)
 	{
-		if(boost::ifind_first(wl.words[i], wordStart))
+		if (boost::ifind_first(wl.words[i], wordStart))
 		{
-			key.keyword = wl.words[i];
-			key.priority = tstring(wl.words[i]).length();
-			pres.push_back(key);
+			pres.push_back(keyword(wl.words[i], tstring(wl.words[i]).length()));
 		}
 	}
+
 	std::sort(pres.begin(), pres.end());
-	std::vector<keywords>::iterator it;
-	for(it = pres.begin(); it != pres.end(); ++it)
+	std::vector<keyword>::iterator it;
+
+	for (it = pres.begin(); it != pres.end(); ++it)
 	{
-		res.push_back((*it).keyword);
+		res.push_back(it->value);
 	}
 	return res;
 }
