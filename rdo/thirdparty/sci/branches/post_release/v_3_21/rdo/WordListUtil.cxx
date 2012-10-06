@@ -59,9 +59,13 @@ std::vector<tstring> WordListUtil::GetNearestWords(const tstring& userPattern) c
 	std::vector<PriorityResultItem> priorityResult;
 	for (int i = 0; i < wl.len; ++i)
 	{
-		if (boost::ifind_first(wl.words[i], userPattern))
+		boost::iterator_range<char*> findPatternIt = boost::ifind_first(wl.words[i], userPattern);
+		if (!findPatternIt.empty())
 		{
-			priorityResult.push_back(PriorityResultItem(wl.words[i], tstring(wl.words[i]).length()));
+			boost::iterator_range<char*> fullKeywordIt(wl.words[i], wl.words[i] + strlen(wl.words[i]));
+			ruint position = findPatternIt.begin() - fullKeywordIt.begin();
+			float priority = tstring(wl.words[i]).length();
+			priorityResult.push_back(PriorityResultItem(wl.words[i], priority));
 		}
 	}
 	std::sort(priorityResult.begin(), priorityResult.end());
