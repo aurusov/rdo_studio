@@ -1139,7 +1139,7 @@ stringList::reverse_iterator RDOLogCtrl::reverse_findString( int index )
 
 stringList::const_iterator RDOLogCtrl::const_findString( int index ) const
 {
-	stringList::const_iterator res;
+	stringList::const_iterator res = strings.end();
 	
 	if ( index == 0 ) {
 		res = strings.begin();
@@ -1165,12 +1165,15 @@ stringList::const_iterator RDOLogCtrl::const_findString( int index ) const
 			res --;
 			delta = deltaEnd;
 		}
-		if ( delta > 0 ) {
-			for ( int i = 0; i < delta; i++ )
-				res++;
-		} else {
-			for ( int i = delta; i < 0; i++ )
-				res--;
+		if (res != strings.end())
+		{
+			if ( delta > 0 ) {
+				for ( int i = 0; i < delta; i++ )
+					res++;
+			} else {
+				for ( int i = delta; i < 0; i++ )
+					res--;
+			}
 		}
 	}
 
