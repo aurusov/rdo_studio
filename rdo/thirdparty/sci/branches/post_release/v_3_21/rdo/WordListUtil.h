@@ -15,7 +15,7 @@ class WordListUtil: public boost::noncopyable
 public:
 	WordListUtil(const WordList& wordlist);
 	//tstring GetNearestWord(const char *wordStart, int searchLen) const;
-	std::vector<tstring> GetNearestWords(const char *wordStart) const;
+	std::vector<tstring> GetNearestWords(const tstring& userPattern) const;
 
 private:
 	const WordList& wl;

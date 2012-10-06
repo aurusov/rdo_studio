@@ -24,58 +24,56 @@ WordListUtil::WordListUtil(const WordList& wordlist)
 //{
 //}
 
-std::vector<tstring> WordListUtil::GetNearestWords(const char *wordStart) const
+std::vector<tstring> WordListUtil::GetNearestWords(const tstring& userPattern) const
 {
-	struct Keyword
+	struct PriorityResultItem
 	{
-		tstring value;
-		float   priority;
+		tstring  value;
+		float    priority;
 
-		Keyword()
+		PriorityResultItem()
 			: priority(0.0)
 		{}
-		Keyword(const tstring& value, float priority)
+		PriorityResultItem(const tstring& value, float priority)
 			: value   (value   )
 			, priority(priority)
 		{}
 
-		rbool operator< (const Keyword& keyword) const
+		rbool operator< (const PriorityResultItem& item) const
 		{
-			return priority < keyword.priority;
+			return priority < item.priority;
 		}
 	};
 
-	int start = 0;
-	int end = wl.len - 1;
-	std::vector<tstring> res;
-	std::vector<Keyword> pres;
-	if (0 == wl.words)
+	typedef  std::vector<tstring>  result_type;
+	result_type result;
+
+	if (wl.words == 0)
+		return result;
+
+	if (userPattern.empty())
 	{
-		res.push_back("");
-		return res;
-	}
-	if( boost::iequals(wordStart, ""))
-	{
-		for(int i = start; i < end; i++)
+		for (int i = 0; i < wl.len; ++i)
 		{
-			res.push_back(wl.words[i]);
+			result.push_back(wl.words[i]);
 		}
-		return res;
+		return result;
 	}
 
-	for (int i = start; i < end; i++)
+	std::vector<PriorityResultItem> priorityResult;
+	for (int i = 0; i < wl.len; ++i)
 	{
-		if (boost::ifind_first(wl.words[i], wordStart))
+		if (boost::ifind_first(wl.words[i], userPattern))
 		{
-			pres.push_back(Keyword(wl.words[i], tstring(wl.words[i]).length()));
+			priorityResult.push_back(PriorityResultItem(wl.words[i], tstring(wl.words[i]).length()));
 		}
 	}
+	std::sort(priorityResult.begin(), priorityResult.end());
 
-	std::sort(pres.begin(), pres.end());
-
-	BOOST_FOREACH(const Keyword& keyword, pres)
+	BOOST_FOREACH(const PriorityResultItem& item, priorityResult)
 	{
-		res.push_back(keyword.value);
+		result.push_back(item.value);
 	}
-	return res;
+
+	return result;
 }
