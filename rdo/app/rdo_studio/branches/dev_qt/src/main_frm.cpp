@@ -293,6 +293,8 @@ void RDOStudioMainFrame::init()
 #ifdef PROCGUI_ENABLE
 	m_pDockProcess = new DockProcess(this);
 	tabifyDockWidget(m_pDockTraceTree, m_pDockProcess);
+#else
+	m_pDockProcess = NULL;
 #endif
 
 	//! @todo qt
