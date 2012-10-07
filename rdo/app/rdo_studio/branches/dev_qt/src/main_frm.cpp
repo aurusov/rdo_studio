@@ -86,9 +86,6 @@ void RDOToolBarModel::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioMainFrame
 // --------------------------------------------------------------------------------
-const ruint WORKSPACE_SHOW_MESSAGE = ::RegisterWindowMessage( "WORKSPACE_SHOW_MESSAGE" );
-const ruint OUTPUT_SHOW_MESSAGE    = ::RegisterWindowMessage( "OUTPUT_SHOW_MESSAGE" );
-
 //! @todo qt
 //BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
 //	ON_WM_CREATE()
@@ -100,10 +97,6 @@ const ruint OUTPUT_SHOW_MESSAGE    = ::RegisterWindowMessage( "OUTPUT_SHOW_MESSA
 //	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_EDIT_TOOLBAR, OnUpdateViewEditToolbar)
 //	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_ZOOM_TOOLBAR, OnUpdateViewZoomToolbar)
 //	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_MODEL_TOOLBAR, OnUpdateViewModelToolbar)
-//	ON_COMMAND(ID_VIEW_WORKSPACE, OnViewWorkspace)
-//	ON_COMMAND(ID_VIEW_OUTPUT, OnViewOutput)
-//	ON_UPDATE_COMMAND_UI(ID_VIEW_WORKSPACE, OnUpdateViewWorkspace)
-//	ON_UPDATE_COMMAND_UI(ID_VIEW_OUTPUT, OnUpdateViewOutput)
 //	ON_WM_DESTROY()
 //	ON_COMMAND(ID_VIEW_OPTIONS, OnViewOptions)
 //	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
@@ -304,7 +297,6 @@ void RDOStudioMainFrame::init()
 	//editToolBar.EnableDocking( CBRS_ALIGN_ANY );
 	//zoomToolBar.EnableDocking( CBRS_ALIGN_ANY );
 	//modelToolBar.EnableDocking( CBRS_ALIGN_ANY );
-	//workspace.EnableDocking( CBRS_ALIGN_ANY );
 
 	//modelToolBar.SetButtonStyle( 3, TBBS_CHECKBOX | TBBS_CHECKGROUP );
 	//modelToolBar.SetButtonStyle( 4, TBBS_CHECKBOX | TBBS_CHECKGROUP );
@@ -429,54 +421,6 @@ void RDOStudioMainFrame::OnUpdateViewZoomToolbar(CCmdUI* pCmdUI)
 void RDOStudioMainFrame::OnUpdateViewModelToolbar(CCmdUI* pCmdUI)
 {
 	pCmdUI->SetCheck( modelToolBar.GetStyle() & WS_VISIBLE );
-}
-
-void RDOStudioMainFrame::OnViewWorkspace()
-{
-	//! @todo qt
-	//ShowControlBar( &workspace, !workspace.IsVisible(), false );
-}
-
-void RDOStudioMainFrame::OnViewOutput()
-{
-	//! @todo qt
-	//ShowControlBar( &output, !output.IsVisible(), false );
-}
-
-void RDOStudioMainFrame::OnWorkspaceShow()
-{
-	//! @todo qt
-	//ShowControlBar( &workspace, true, false );
-}
-
-void RDOStudioMainFrame::OnOutputShow()
-{
-	//! @todo qt
-	//ShowControlBar( &output, true, false );
-}
-
-void RDOStudioMainFrame::showWorkspace()
-{
-	//! @todo qt
-	//::SendMessage( m_hWnd, WORKSPACE_SHOW_MESSAGE, 0, 0 );
-}
-
-void RDOStudioMainFrame::showOutput()
-{
-	//! @todo qt
-	//::SendMessage( m_hWnd, OUTPUT_SHOW_MESSAGE, 0, 0 );
-}
-
-void RDOStudioMainFrame::OnUpdateViewWorkspace(CCmdUI* pCmdUI)
-{
-	//! @todo qt
-//	pCmdUI->SetCheck(getWorkspaceDoc()->isVisible());
-}
-
-void RDOStudioMainFrame::OnUpdateViewOutput(CCmdUI* pCmdUI)
-{
-	//! @todo qt
-//	pCmdUI->SetCheck(getOutputDoc()->isVisible());
 }
 
 void RDOStudioMainFrame::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )

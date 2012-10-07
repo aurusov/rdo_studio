@@ -86,9 +86,6 @@ public:
 
 	virtual void updateAllStyles();
 
-	virtual void showWorkspace();
-	virtual void showOutput   ();
-
 	virtual void setVisible(rbool visible);
 
 	double getSpeed() const { return modelToolBar.getSpeed(); }
@@ -168,10 +165,6 @@ private:
 	afx_msg void OnUpdateViewEditToolbar(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateViewZoomToolbar(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateViewModelToolbar(CCmdUI* pCmdUI);
-	afx_msg void OnViewWorkspace();
-	afx_msg void OnViewOutput();
-	afx_msg void OnUpdateViewWorkspace(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateViewOutput(CCmdUI* pCmdUI);
 	afx_msg void OnDestroy();
 	afx_msg void OnViewOptions();
 	afx_msg void OnHelpKeyword();
@@ -204,8 +197,6 @@ private:
 	afx_msg void OnUpdateModelRunTypeStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModelSpeedStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModelShowRateStatusBar( CCmdUI *pCmdUI );
-	afx_msg void OnWorkspaceShow();
-	afx_msg void OnOutputShow();
 	afx_msg void OnMethodCommandRange( UINT id );
 	afx_msg void OnMethodUpdateRange( CCmdUI* pCmdUI );
 };

@@ -126,8 +126,6 @@
     <addaction name="actViewZoomAuto"/>
     <addaction name="actViewZoomReset"/>
     <addaction name="separator"/>
-    <addaction name="actViewWorkspace"/>
-    <addaction name="actViewOutput"/>
     <addaction name="menuViewToolbar"/>
     <addaction name="separator"/>
     <addaction name="actViewSettings"/>
@@ -479,22 +477,6 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+/</string>
-   </property>
-  </action>
-  <action name="actViewWorkspace">
-   <property name="text">
-    <string>Показать панель объектов</string>
-   </property>
-   <property name="shortcut">
-    <string>Alt+0</string>
-   </property>
-  </action>
-  <action name="actViewOutput">
-   <property name="text">
-    <string>Показать панель вывода</string>
-   </property>
-   <property name="shortcut">
-    <string>Alt+9</string>
    </property>
   </action>
   <action name="actViewSettings">

@@ -57,8 +57,6 @@ public:
 	static rbool is_close_mode() { return close_mode; }
 
 	virtual void updateAllStyles() = 0;
-	virtual void showWorkspace  () = 0;
-	virtual void showOutput     () = 0;
 
 	virtual double getSpeed() const = 0;
 

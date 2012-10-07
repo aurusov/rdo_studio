@@ -534,9 +534,6 @@ BEGIN
     SEPARATOR
     BUTTON      ID_SEARCH_BOOKMARK_PREVIOUS
     BUTTON      ID_SEARCH_BOOKMARK_NEXT
-    SEPARATOR
-    BUTTON      ID_VIEW_WORKSPACE
-    BUTTON      ID_VIEW_OUTPUT
 END
 
 IDR_MODEL_TOOLBAR TOOLBAR  16, 15
@@ -854,8 +851,6 @@ BEGIN
         MENUITEM "&Автоматический масштаб\tCtrl+Num*", ID_VIEW_ZOOMAUTO
         MENUITEM "Восстаносить маст&шаб\tCtrl+Num/", ID_VIEW_ZOOMRESET
         MENUITEM SEPARATOR
-        MENUITEM "Показать панель &объектов\tAlt+0", ID_VIEW_WORKSPACE
-        MENUITEM "Показать панель &вывода\tAlt+9", ID_VIEW_OUTPUT
         POPUP "Па&нели"
         BEGIN
             MENUITEM "Панель &файлов",              ID_VIEW_TOOLBAR_FILE_TOOLBAR
@@ -1284,9 +1279,7 @@ BEGIN
     "G",            ID_SEARCH_GOTO_LINE,    VIRTKEY, CONTROL, NOINVERT
     "H",            ID_SEARCH_REPLACE,      VIRTKEY, CONTROL, NOINVERT
     "9",            ID_VIEW_ENDOFLINE,      VIRTKEY, SHIFT, CONTROL, NOINVERT
-    "9",            ID_VIEW_OUTPUT,         VIRTKEY, ALT, NOINVERT
     "8",            ID_VIEW_WHITESPACE,     VIRTKEY, SHIFT, CONTROL, NOINVERT
-    "0",            ID_VIEW_WORKSPACE,      VIRTKEY, ALT, NOINVERT
     VK_MULTIPLY,    ID_VIEW_ZOOMAUTO,       VIRTKEY, CONTROL, NOINVERT
     VK_ADD,         ID_VIEW_ZOOMIN,         VIRTKEY, CONTROL, NOINVERT
     VK_SUBTRACT,    ID_VIEW_ZOOMOUT,        VIRTKEY, CONTROL, NOINVERT
@@ -3502,8 +3495,6 @@ BEGIN
     ID_STATUSBAR_MODEL_RUNTIME_BREAKPOINT "Точка останова: %s"
     ID_MODEL_FILETYPE       "РДО-проект (*.rdox)|*.rdox|РДО-конвертор (*.smr)|*.smr|Все файлы (*.*)|*.*||"
     ID_OPTIONS              "Настройки"
-    ID_DOCK_WORKSPACE       "Панель объектов"
-    ID_DOCK_OUTPUT          "Панель вывода"
     ID_FINDINMODEL_BEGINMSG "Поиск '%s'...\r\n"
 END
 
@@ -3760,12 +3751,6 @@ BEGIN
     IDS_MODEL_RESOURCE_LOADING_NAME_OK "ok\n"
     IDS_MODEL_RESOURCE_LOADING_NAME_FAILED "failed\n"
     IDS_MODEL_RESOURCE_LOADING_OK "Загрузка ресурсов для анимации...ok\n"
-END
-
-STRINGTABLE 
-BEGIN
-    ID_VIEW_WORKSPACE       "\nПанель объектов (Alt+0)"
-    ID_VIEW_OUTPUT          "\nПанель вывод (Alt+9)"
 END
 
 STRINGTABLE 
@@ -4388,8 +4373,6 @@ BEGIN
         MENUITEM "&Zoom Auto\tCtrl+Num*",       ID_VIEW_ZOOMAUTO
         MENUITEM "&Reset Zoom\tCtrl+Num/",      ID_VIEW_ZOOMRESET
         MENUITEM SEPARATOR
-        MENUITEM "&Workspace\tAlt+0",           ID_VIEW_WORKSPACE
-        MENUITEM "&Output\tAlt+9",              ID_VIEW_OUTPUT
         POPUP "&Toolbar"
         BEGIN
             MENUITEM "&File Toolbar",               ID_VIEW_TOOLBAR_FILE_TOOLBAR
@@ -5028,8 +5011,6 @@ BEGIN
     ID_STATUSBAR_MODEL_RUNTIME_BREAKPOINT "Break point: %s"
     ID_MODEL_FILETYPE       "RAO Project (*.rdox)|*.rdox|RAO Convertor (*.smr)|*.smr|All Files (*.*)|*.*||"
     ID_OPTIONS              "Options"
-    ID_DOCK_WORKSPACE       "Workspace"
-    ID_DOCK_OUTPUT          "Output"
     ID_FINDINMODEL_BEGINMSG "Searching for '%s'...\r\n"
 END
 
@@ -5290,8 +5271,6 @@ END
 STRINGTABLE 
 BEGIN
     ID_DOCK_PROJECT_BAR     "Проект"
-    ID_VIEW_WORKSPACE       "\nWorkspace (Alt+0)"
-    ID_VIEW_OUTPUT          "\nOutput (Alt+9)"
 END
 
 STRINGTABLE 
