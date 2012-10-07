@@ -295,6 +295,11 @@ void RDOStudioMainFrame::init()
 	tabifyDockWidget(workspaceDockWidget, m_pDockTraceTree);
 	tabifyDockWidget(workspaceDockWidget, m_pDockFrame    );
 
+#ifdef PROCGUI_ENABLE
+	m_pDockProcess = new DockProcess(this);
+	tabifyDockWidget(workspaceDockWidget, m_pDockProcess);
+#endif
+
 	//! @todo qt
 	//fileToolBar.EnableDocking( CBRS_ALIGN_ANY );
 	//editToolBar.EnableDocking( CBRS_ALIGN_ANY );

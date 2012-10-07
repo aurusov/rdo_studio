@@ -5860,6 +5860,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\dock\dock_process.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\dock\dock_process.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\dock\dock_results.cpp"
 				>
 			</File>
