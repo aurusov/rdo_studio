@@ -11,6 +11,7 @@
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
+#include <QtGui/qaction.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/dock/dock_find.h"
 #include "simulator/report/log_edit_line_info.h"
@@ -25,7 +26,9 @@ DockFind::DockFind(PTR(QWidget) pParent)
 		),
 		QSize(300, 150)
 	)
-{}
+{
+	toggleViewAction()->setIcon(QIcon(QString::fromUtf8(":/images/images/dock_find.png")));
+}
 
 DockFind::~DockFind()
 {}

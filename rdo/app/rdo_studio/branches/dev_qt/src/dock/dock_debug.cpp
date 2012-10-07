@@ -11,6 +11,7 @@
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
+#include <QtGui/qaction.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/dock/dock_debug.h"
 // --------------------------------------------------------------------------------
@@ -24,7 +25,9 @@ DockDebug::DockDebug(PTR(QWidget) pParent)
 		),
 		QSize(300, 150)
 	)
-{}
+{
+	toggleViewAction()->setIcon(QIcon(QString::fromUtf8(":/images/images/dock_debug.png")));
+}
 
 DockDebug::~DockDebug()
 {}
