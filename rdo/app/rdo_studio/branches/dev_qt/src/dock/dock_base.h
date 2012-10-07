@@ -34,10 +34,10 @@ public:
 		//! @todo qt
 		//m_pContext->setPopupMenu(&popupMenu);
 
-		PTR(QVBoxLayout) pOutputLayout = new QVBoxLayout(pDocWidget);
-		pOutputLayout->setSpacing(0);
-		pOutputLayout->setContentsMargins(0, 0, 0, 0);
-		pOutputLayout->addWidget(m_pContext);
+		PTR(QVBoxLayout) pLayout = new QVBoxLayout(pDocWidget);
+		pLayout->setSpacing(0);
+		pLayout->setContentsMargins(0, 0, 0, 0);
+		pLayout->addWidget(m_pContext);
 
 		m_pContext->init();
 		getContext().ShowWindow(SW_SHOW);
