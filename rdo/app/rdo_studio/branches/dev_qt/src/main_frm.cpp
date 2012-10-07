@@ -297,6 +297,8 @@ void RDOStudioMainFrame::init()
 	m_pDockProcess = NULL;
 #endif
 
+	m_pDockTraceTree->raise();
+
 	//! @todo qt
 	//fileToolBar.EnableDocking( CBRS_ALIGN_ANY );
 	//editToolBar.EnableDocking( CBRS_ALIGN_ANY );
