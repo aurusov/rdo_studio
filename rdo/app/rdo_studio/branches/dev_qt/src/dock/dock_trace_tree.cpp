@@ -18,10 +18,12 @@
 
 DockTraceTree::DockTraceTree(PTR(QWidget) pParent)
 	: parent_class(
-		"Графики", pParent,
+		"Графики",
+		pParent,
 		parent_class::Context::CreateFunction(
 			boost::bind<BOOL>(&parent_class::Context::context_type::Create, _1, DWORD(0), CRect(0, 0, 0, 0), _2, UINT(0))
-		)
+		),
+		QSize(150, 300)
 	)
 {
 	tracer->setTree(&getContext());

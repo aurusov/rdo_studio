@@ -21,7 +21,8 @@ DockResults::DockResults(PTR(QWidget) pParent)
 		pParent,
 		parent_class::Context::CreateFunction(
 			boost::bind<BOOL>(&parent_class::Context::context_type::Create, _1, LPCTSTR(NULL), LPCTSTR(NULL), DWORD(0), CRect(0, 0, 0, 0), _2, UINT(0), static_cast<CCreateContext*>(NULL))
-		)
+		),
+		QSize(300, 150)
 	)
 {}
 
