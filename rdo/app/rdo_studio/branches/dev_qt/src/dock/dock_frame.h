@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_DOCK_DOCK_FRAME_H_
-#define _RDO_STUDIO_DOCK_DOCK_FRAME_H_
+#ifndef _RDO_STUDIO_DOCK_FRAME_H_
+#define _RDO_STUDIO_DOCK_FRAME_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -26,4 +26,4 @@ private:
 	typedef  DockBase<RDOStudioFrameTreeCtrl>  parent_class;
 };
 
-#endif // _RDO_STUDIO_DOCK_DOCK_FRAME_H_
+#endif // _RDO_STUDIO_DOCK_FRAME_H_
