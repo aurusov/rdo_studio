@@ -284,20 +284,15 @@ void RDOStudioMainFrame::init()
 	//statusBar.SetPaneInfo( 7, ID_PROGRESSSTATUSBAR         , SBPS_STRETCH, 70 );
 	//statusBar.setProgressIndicator( ID_PROGRESSSTATUSBAR );
 
-	m_pWorkspaceDoc = new RDOStudioWorkspace(workspaceDockWidgetContents);
-	PTR(QVBoxLayout) pWorkspaceLayout = new QVBoxLayout(workspaceDockWidgetContents);
-	pWorkspaceLayout->setSpacing(0);
-	pWorkspaceLayout->setContentsMargins(0, 0, 0, 0);
-	pWorkspaceLayout->addWidget(m_pWorkspaceDoc);
-
 	m_pDockTraceTree = new DockTraceTree(this);
 	m_pDockFrame     = new DockFrame    (this);
-	tabifyDockWidget(workspaceDockWidget, m_pDockTraceTree);
-	tabifyDockWidget(workspaceDockWidget, m_pDockFrame    );
+
+	addDockWidget(Qt::LeftDockWidgetArea, m_pDockTraceTree);
+	tabifyDockWidget(m_pDockTraceTree, m_pDockFrame);
 
 #ifdef PROCGUI_ENABLE
 	m_pDockProcess = new DockProcess(this);
-	tabifyDockWidget(workspaceDockWidget, m_pDockProcess);
+	tabifyDockWidget(m_pDockTraceTree, m_pDockProcess);
 #endif
 
 	//! @todo qt
@@ -470,7 +465,8 @@ void RDOStudioMainFrame::showOutput()
 
 void RDOStudioMainFrame::OnUpdateViewWorkspace(CCmdUI* pCmdUI)
 {
-	pCmdUI->SetCheck(getWorkspaceDoc()->isVisible());
+	//! @todo qt
+//	pCmdUI->SetCheck(getWorkspaceDoc()->isVisible());
 }
 
 void RDOStudioMainFrame::OnUpdateViewOutput(CCmdUI* pCmdUI)

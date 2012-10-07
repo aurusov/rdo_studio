@@ -23,7 +23,6 @@
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/src/child_frm.h"
-#include "app/rdo_studio_mfc/src/workspace.h"
 #include "app/rdo_studio_mfc/src/frame/tree_ctrl.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdodebugedit.h"
 #include "app/rdo_studio_mfc/resource.h"

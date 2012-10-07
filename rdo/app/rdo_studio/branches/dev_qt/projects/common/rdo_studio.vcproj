@@ -2674,14 +2674,6 @@
 				RelativePath="..\..\src\thread.h"
 				>
 			</File>
-			<File
-				RelativePath="..\..\src\workspace.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\workspace.h"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name=".model"
