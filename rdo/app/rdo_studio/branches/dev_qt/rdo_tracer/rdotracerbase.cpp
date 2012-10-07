@@ -767,7 +767,7 @@ RDOStudioChartDoc* RDOTracerBase::createNewChart()
 	pDoc->attachView(pView->getContext());
 	pDoc->autoTitle();
 
-	pView->parentWidget()->setWindowIcon(QIcon(QString::fromUtf8(":/images/images/chart.png")));
+	pView->parentWidget()->setWindowIcon(QIcon(QString::fromUtf8(":/images/images/mdi_chart.png")));
 
 	return pDoc;
 }

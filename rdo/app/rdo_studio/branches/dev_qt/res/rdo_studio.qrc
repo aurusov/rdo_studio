@@ -1,6 +1,5 @@
 <RCC>
   <qresource prefix="/images">
-    <file>images/flowchart.png</file>
     <file>images/dock_build.png</file>
     <file>images/dock_chart.png</file>
     <file>images/dock_debug.png</file>
@@ -9,11 +8,12 @@
     <file>images/dock_process.png</file>
     <file>images/dock_results.png</file>
     <file>images/dock_trace.png</file>
-    <file>images/frame.png</file>
-    <file>images/chart.png</file>
     <file>images/rdo_studio_16x16.png</file>
-    <file>images/model.png</file>
     <file>images/logo.png</file>
+    <file>images/mdi_chart.png</file>
+    <file>images/mdi_flowchart.png</file>
+    <file>images/mdi_frame.png</file>
+    <file>images/mdi_model.png</file>
     <file>images/about.png</file>
   </qresource>
 </RCC>

@@ -708,7 +708,7 @@ void RDOStudioModel::createView()
 	ASSERT(m_pModelView == NULL);
 	m_pModelView = new RDOStudioModelView(NULL);
 	studioApp.getIMainWnd()->addSubWindow(m_pModelView);
-	m_pModelView->parentWidget()->setWindowIcon(QIcon(QString::fromUtf8(":/images/images/model.png")));
+	m_pModelView->parentWidget()->setWindowIcon(QIcon(QString::fromUtf8(":/images/images/mdi_model.png")));
 }
 
 void RDOStudioModel::createProcView()
@@ -716,7 +716,7 @@ void RDOStudioModel::createProcView()
 	ASSERT(m_pModelProcView == NULL);
 	m_pModelProcView = new RPViewQt();
 	studioApp.getIMainWnd()->addSubWindow(m_pModelProcView);
-	m_pModelProcView->parentWidget()->setWindowIcon(QIcon(QString::fromUtf8(":/images/images/flowchart.png")));
+	m_pModelProcView->parentWidget()->setWindowIcon(QIcon(QString::fromUtf8(":/images/images/mdi_flowchart.png")));
 }
 
 void RDOStudioModel::newModelFromRepository()
