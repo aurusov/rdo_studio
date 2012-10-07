@@ -27,6 +27,7 @@
 #include "app/rdo_studio_mfc/src/dock/dock_trace.h"
 #include "app/rdo_studio_mfc/src/dock/dock_results.h"
 #include "app/rdo_studio_mfc/src/dock/dock_find.h"
+#include "app/rdo_studio_mfc/src/dock/dock_trace_tree.h"
 // --------------------------------------------------------------------------------
 
 class MainWindowBase
@@ -43,12 +44,13 @@ public:
 
 	rbool isMDIMaximazed() const { return true; }
 
-	REF(DockBuild)          getDockBuild   () { ASSERT(m_pDockBuild  ); return *m_pDockBuild;   }
-	REF(DockDebug)          getDockDebug   () { ASSERT(m_pDockDebug  ); return *m_pDockDebug;   }
-	REF(DockTrace)          getDockTrace   () { ASSERT(m_pDockTrace  ); return *m_pDockTrace;   }
-	REF(DockResults)        getDockResults () { ASSERT(m_pDockResults); return *m_pDockResults; }
-	REF(DockFind)           getDockFind    () { ASSERT(m_pDockFind   ); return *m_pDockFind;    }
-	PTR(RDOStudioWorkspace) getWorkspaceDoc() { return m_pWorkspaceDoc; }
+	REF(DockBuild)          getDockBuild    () { ASSERT(m_pDockBuild    ); return *m_pDockBuild;     }
+	REF(DockDebug)          getDockDebug    () { ASSERT(m_pDockDebug    ); return *m_pDockDebug;     }
+	REF(DockTrace)          getDockTrace    () { ASSERT(m_pDockTrace    ); return *m_pDockTrace;     }
+	REF(DockResults)        getDockResults  () { ASSERT(m_pDockResults  ); return *m_pDockResults;   }
+	REF(DockFind)           getDockFind     () { ASSERT(m_pDockFind     ); return *m_pDockFind;      }
+	REF(DockTraceTree)      getDockTraceTree() { ASSERT(m_pDockTraceTree); return *m_pDockTraceTree; }
+	PTR(RDOStudioWorkspace) getWorkspaceDoc () { return m_pWorkspaceDoc; }
 
 	static rbool is_close_mode() { return close_mode; }
 
@@ -82,6 +84,7 @@ protected:
 	PTR(DockTrace)           m_pDockTrace;
 	PTR(DockResults)         m_pDockResults;
 	PTR(DockFind)            m_pDockFind;
+	PTR(DockTraceTree)       m_pDockTraceTree;
 	PTR(RDOStudioWorkspace)  m_pWorkspaceDoc;
 };
 

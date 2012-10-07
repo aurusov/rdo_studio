@@ -615,10 +615,9 @@ void RDOTracerBase::setLog(PTR(rdoTracerLog::RDOTracerLogCtrl) pTracerLog)
 	log = pTracerLog;
 }
 
-RDOTracerTreeCtrl* RDOTracerBase::createTree()
+void RDOTracerBase::setTree(PTR(RDOTracerTreeCtrl) pTreeCtrl)
 {
-	tree = new RDOTracerTreeCtrl();
-	return tree;
+	tree = pTreeCtrl;
 }
 
 void RDOTracerBase::getModelStructure( rdo::textstream& stream )

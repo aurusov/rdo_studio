@@ -290,6 +290,9 @@ void RDOStudioMainFrame::init()
 	pWorkspaceLayout->setContentsMargins(0, 0, 0, 0);
 	pWorkspaceLayout->addWidget(m_pWorkspaceDoc);
 
+	m_pDockTraceTree = new DockTraceTree(this);
+	tabifyDockWidget(workspaceDockWidget, m_pDockTraceTree);
+
 	//! @todo qt
 	//fileToolBar.EnableDocking( CBRS_ALIGN_ANY );
 	//editToolBar.EnableDocking( CBRS_ALIGN_ANY );

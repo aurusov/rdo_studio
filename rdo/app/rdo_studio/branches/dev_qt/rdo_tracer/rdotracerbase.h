@@ -101,8 +101,8 @@ protected:
 	virtual ~RDOTracerBase();
 
 public:
-	void setLog(PTR(rdoTracerLog::RDOTracerLogCtrl) pTracerLog);
-	RDOTracerTreeCtrl* createTree();
+	void setLog (PTR(rdoTracerLog::RDOTracerLogCtrl) pTracerLog);
+	void setTree(PTR(RDOTracerTreeCtrl)              pTreeCtrl );
 
 	void startTrace();
 	void getModelStructure( rdo::textstream& stream );
