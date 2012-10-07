@@ -228,6 +228,32 @@ void RDOStudioMainFrame::init()
 	tabifyDockWidget(m_pDockBuild, m_pDockFind   );
 	m_pDockDebug->raise();
 
+	m_pDockTraceTree = new DockTraceTree(this);
+	m_pDockFrame     = new DockFrame    (this);
+	addDockWidget(Qt::LeftDockWidgetArea, m_pDockTraceTree);
+	tabifyDockWidget(m_pDockTraceTree, m_pDockFrame);
+	m_pDockTraceTree->raise();
+
+	PTR(QMenu) pMenuDockView = new QMenu("Окна");
+	ASSERT(pMenuDockView);
+	menuView->insertMenu(menuViewToolbar->menuAction(), pMenuDockView);
+
+	pMenuDockView->addAction(m_pDockBuild->toggleViewAction());
+	pMenuDockView->addAction(m_pDockDebug->toggleViewAction());
+	pMenuDockView->addAction(m_pDockTrace->toggleViewAction());
+	pMenuDockView->addAction(m_pDockResults->toggleViewAction());
+	pMenuDockView->addAction(m_pDockFind->toggleViewAction());
+	pMenuDockView->addAction(m_pDockTraceTree->toggleViewAction());
+	pMenuDockView->addAction(m_pDockFrame->toggleViewAction());
+
+#ifdef PROCGUI_ENABLE
+	m_pDockProcess = new DockProcess(this);
+	tabifyDockWidget(m_pDockTraceTree, m_pDockProcess);
+	pMenuDockView->addAction(m_pDockProcess->toggleViewAction());
+#else
+	m_pDockProcess = NULL;
+#endif
+
 	//! @todo qt
 	//! Создание popup-menu для редакторов из докод
 	//popupMenu.CreatePopupMenu();
@@ -276,21 +302,6 @@ void RDOStudioMainFrame::init()
 	//statusBar.SetPaneInfo( 6, ID_MODEL_SHOWRATE_STATUSBAR  , SBPS_NORMAL , 140 );
 	//statusBar.SetPaneInfo( 7, ID_PROGRESSSTATUSBAR         , SBPS_STRETCH, 70 );
 	//statusBar.setProgressIndicator( ID_PROGRESSSTATUSBAR );
-
-	m_pDockTraceTree = new DockTraceTree(this);
-	m_pDockFrame     = new DockFrame    (this);
-
-	addDockWidget(Qt::LeftDockWidgetArea, m_pDockTraceTree);
-	tabifyDockWidget(m_pDockTraceTree, m_pDockFrame);
-
-#ifdef PROCGUI_ENABLE
-	m_pDockProcess = new DockProcess(this);
-	tabifyDockWidget(m_pDockTraceTree, m_pDockProcess);
-#else
-	m_pDockProcess = NULL;
-#endif
-
-	m_pDockTraceTree->raise();
 
 	//! @todo qt
 	//fileToolBar.EnableDocking( CBRS_ALIGN_ANY );
