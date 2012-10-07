@@ -31,7 +31,6 @@ static char THIS_FILE[] = __FILE__;
 // --------------------------------------------------------------------------------
 RDOStudioWorkspace::RDOStudioWorkspace(PTR(QWidget) pParent)
 	: parent_type(pParent)
-	, frames(NULL)
 {
 	setMinimumSize(200, 150);
 
@@ -40,14 +39,9 @@ RDOStudioWorkspace::RDOStudioWorkspace(PTR(QWidget) pParent)
 	tab.Create( NULL, NULL, 0, CRect(0, 0, 100, 100), &m_thisCWnd, 0 );
 	tab.modifyTabStyle( 0, TCS_MULTILINE );
 
-	frames = new RDOStudioFrameTreeCtrl;
-	frames->Create( 0, CRect(0, 0, 0, 0), &tab, 0 );
 #ifdef PROCGUI_ENABLE
 	pagectrl = new RPPageCtrl;
 	pagectrl->Create( "", "", 0 , CRect(0, 0, 0, 0), &tab, 0);
-#endif
-	tab.insertItem( frames, rdo::format( IDS_TAB_FRAMES ).c_str() );
-#ifdef PROCGUI_ENABLE
 	tab.insertItem( pagectrl, rdo::format( IDS_TAB_PAGECTRL ).c_str() );
 #endif
 //! @todo qt

@@ -74,7 +74,7 @@ RDOStudioFrameManager::~RDOStudioFrameManager()
 void RDOStudioFrameManager::insertFrame(CREF(tstring) frameName)
 {
 	PTR(Frame) item = new Frame();
-	item->m_hitem = studioApp.getIMainWnd()->getWorkspaceDoc()->frames->InsertItem(frameName.c_str(), 1, 1, studioApp.getIMainWnd()->getWorkspaceDoc()->frames->GetRootItem());
+	item->m_hitem = studioApp.getIMainWnd()->getDockFrame().getContext().InsertItem(frameName.c_str(), 1, 1, studioApp.getIMainWnd()->getDockFrame().getContext().GetRootItem());
 	item->m_name  = frameName;
 	m_frameList.push_back(item);
 }
@@ -224,7 +224,7 @@ void RDOStudioFrameManager::clear()
 {
 	if (studioApp.getStyle())
 	{
-		studioApp.getIMainWnd()->getWorkspaceDoc()->frames->deleteChildren(studioApp.getIMainWnd()->getWorkspaceDoc()->frames->GetRootItem());
+		studioApp.getIMainWnd()->getDockFrame().getContext().deleteChildren(studioApp.getIMainWnd()->getDockFrame().getContext().GetRootItem());
 	}
 	BOOST_FOREACH(Frame* pFrame, m_frameList)
 	{
@@ -250,7 +250,7 @@ void RDOStudioFrameManager::clear()
 
 void RDOStudioFrameManager::expand() const
 {
-	studioApp.getIMainWnd()->getWorkspaceDoc()->frames->expand();
+	studioApp.getIMainWnd()->getDockFrame().getContext().expand();
 }
 
 ruint RDOStudioFrameManager::getLastShowedFrame() const
@@ -273,15 +273,14 @@ void RDOStudioFrameManager::setCurrentShowingFrame(ruint index)
 		m_currentShowingFrame = index;
 		if (studioApp.getStyle())
 		{
-			PTR(CTreeCtrl) pTree = studioApp.getIMainWnd()->getWorkspaceDoc()->frames;
 			if (m_currentShowingFrame != ruint(~0))
 			{
 				HTREEITEM hitem = m_frameList[m_currentShowingFrame]->m_hitem;
-				pTree->SelectItem(hitem);
+				studioApp.getIMainWnd()->getDockFrame().getContext().SelectItem(hitem);
 			}
 			else
 			{
-				pTree->SelectItem(NULL);
+				studioApp.getIMainWnd()->getDockFrame().getContext().SelectItem(NULL);
 			}
 		}
 	}

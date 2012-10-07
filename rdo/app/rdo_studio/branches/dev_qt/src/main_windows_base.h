@@ -28,6 +28,7 @@
 #include "app/rdo_studio_mfc/src/dock/dock_results.h"
 #include "app/rdo_studio_mfc/src/dock/dock_find.h"
 #include "app/rdo_studio_mfc/src/dock/dock_trace_tree.h"
+#include "app/rdo_studio_mfc/src/dock/dock_frame.h"
 // --------------------------------------------------------------------------------
 
 class MainWindowBase
@@ -50,6 +51,7 @@ public:
 	REF(DockResults)        getDockResults  () { ASSERT(m_pDockResults  ); return *m_pDockResults;   }
 	REF(DockFind)           getDockFind     () { ASSERT(m_pDockFind     ); return *m_pDockFind;      }
 	REF(DockTraceTree)      getDockTraceTree() { ASSERT(m_pDockTraceTree); return *m_pDockTraceTree; }
+	REF(DockFrame)          getDockFrame    () { ASSERT(m_pDockFrame    ); return *m_pDockFrame;     }
 	PTR(RDOStudioWorkspace) getWorkspaceDoc () { return m_pWorkspaceDoc; }
 
 	static rbool is_close_mode() { return close_mode; }
@@ -85,6 +87,7 @@ protected:
 	PTR(DockResults)         m_pDockResults;
 	PTR(DockFind)            m_pDockFind;
 	PTR(DockTraceTree)       m_pDockTraceTree;
+	PTR(DockFrame)           m_pDockFrame;
 	PTR(RDOStudioWorkspace)  m_pWorkspaceDoc;
 };
 
