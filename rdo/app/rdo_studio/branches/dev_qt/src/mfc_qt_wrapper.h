@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qwidget.h>
 #include <QtGui/qevent.h>
+#include <boost/function.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdointerface.h"
 // --------------------------------------------------------------------------------
@@ -25,10 +26,12 @@ class MFCQtWrapper
 public:
 	typedef  T        context_type;
 	typedef  QWidget  parent_type;
+	typedef  boost::function<void (T*, CWnd*)>  CreateFunction;
 
-	MFCQtWrapper(PTR(QWidget) pParent)
-		: QWidget   (pParent)
-		, m_pContext(NULL   )
+	MFCQtWrapper(PTR(QWidget) pParent, CREF(CreateFunction) createFunction)
+		: QWidget         (pParent       )
+		, m_pContext      (NULL          )
+		, m_createFunction(createFunction)
 	{}
 
 	virtual ~MFCQtWrapper()
@@ -43,7 +46,7 @@ public:
 		m_thisCWnd.Attach(winId());
 
 		m_pContext = new T;
-		m_pContext->Create(NULL, NULL, 0, CRect(0, 0, 0, 0), &m_thisCWnd, 0);
+		m_createFunction(m_pContext, &m_thisCWnd);
 
 		return true;
 	}
@@ -55,8 +58,9 @@ public:
 	}
 
 private:
-	PTR(T) m_pContext;
-	CWnd   m_thisCWnd;
+	PTR(T)          m_pContext;
+	CWnd            m_thisCWnd;
+	CreateFunction  m_createFunction;
 
 	virtual void resizeEvent(PTR(QResizeEvent) event)
 	{

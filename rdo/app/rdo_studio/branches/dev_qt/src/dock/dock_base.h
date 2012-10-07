@@ -23,13 +23,13 @@ class DockBase: public QDockWidget
 public:
 	typedef  MFCQtWrapper<T>  Context;
 
-	DockBase(CREF(QString) caption, PTR(QWidget) pParent)
+	DockBase(CREF(QString) caption, PTR(QWidget) pParent, CREF(typename MFCQtWrapper<T>::CreateFunction) createFunction)
 		: QDockWidget(caption, pParent)
 	{
 		PTR(QWidget) pDocWidget = new QWidget();
 		setWidget(pDocWidget);
 
-		m_pContext = new Context(pDocWidget);
+		m_pContext = new Context(pDocWidget, createFunction);
 		m_pContext->setMinimumSize(300, 150);
 		//! @todo qt
 		//m_pContext->setPopupMenu(&popupMenu);
