@@ -505,7 +505,7 @@ void RDOEditorEdit::completeWord()
 	for(it = temp.begin(); it != temp.end(); ++it)
 	{
 		s += (*it);
-		if(it != temp.end()) s += " ";
+		if(it != temp.end() - 1) s += " ";
 	}
 	char currentLine[8000];
 	int line = getCurrentLineNumber();
@@ -523,17 +523,12 @@ void RDOEditorEdit::completeWord()
 	const char* str = currentLine + startPos;
 	unsigned int strLength = currentPos - startPos;
 
-	const char* word = NULL;
-//	while ( !word && wordLength > 1 ) {
-//		wordLength--;
-//		word = wl.GetNearestWord( str, wordLength, true );
-//	}
 	std::vector<tstring> words = wlist.GetNearestWords(str);
 	tstring pstr = "";
-	for(it = words.begin(); it != words.end(); ++it)
+	for(it = words.begin(); it != words.end(); ++it) 
 	{
 		pstr += (*it);
-		if(it != words.end()) pstr += " ";
+		if(it != words.end() - 1) pstr += " ";
 	}
 	LPCTSTR list;
 	if ( ((RDOEditorEditStyle*)style)->autoComplete->showFullList ) {
@@ -554,7 +549,7 @@ void RDOEditorEdit::completeWord()
 			wl.Set( pstr.c_str() );
 			wl.InList( "" );
 			startKeyWord = (*it);
-			if ( words.capacity() == 1 && strLength <= startKeyWord.length() && startKeyWord.find( str ) == 0  ) {
+			if ( words.size() == 1 && strLength <= startKeyWord.length() && startKeyWord.find( str ) == 0  ) {
 				useReplace = true;
 			}
 		}
