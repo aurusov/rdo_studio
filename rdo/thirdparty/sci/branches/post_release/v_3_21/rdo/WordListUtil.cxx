@@ -20,7 +20,7 @@ WordListUtil::WordListUtil(const WordList& wordlist)
 	: wl(wordlist)
 {}
 
-std::vector<tstring> WordListUtil::GetNearestWords(const tstring& userPattern) const
+std::pair<std::vector<tstring>, tstring> WordListUtil::GetNearestWords(const tstring& userPattern) const
 {
 	struct PriorityResultItem
 	{
@@ -43,7 +43,9 @@ std::vector<tstring> WordListUtil::GetNearestWords(const tstring& userPattern) c
 		}
 	};
 
-	typedef  std::vector<tstring>  result_type;
+	typedef std::pair<std::vector<tstring>, tstring>  result_type;
+	std::vector<tstring> kwList;
+	tstring startWord = "";
 	result_type result;
 
 	if (wl.words == 0)
@@ -53,9 +55,10 @@ std::vector<tstring> WordListUtil::GetNearestWords(const tstring& userPattern) c
 	{
 		for (int i = 0; i < wl.len; ++i)
 		{
-			result.push_back(wl.words[i]);
+			kwList.push_back(wl.words[i]);
 		}
-		return result;
+		startWord = wl.words[0];
+		return result = make_pair(kwList, startWord);
 	}
 
 	std::vector<PriorityResultItem> priorityResult;
@@ -80,11 +83,14 @@ std::vector<tstring> WordListUtil::GetNearestWords(const tstring& userPattern) c
 	}
 	std::sort(priorityResult.begin(), priorityResult.end());
 
+	std::vector<PriorityResultItem>::iterator it = priorityResult.begin();
+	startWord = it->value;
+	const float maxPriority = 0.7;
 	BOOST_FOREACH(const PriorityResultItem& item, priorityResult)
 	{
-		if(item.priority < 0.7)
-			result.push_back(item.value);
+		if(item.priority < maxPriority)
+			kwList.push_back(item.value);
 	}
-
-	return result;
+	std::sort(kwList.begin(), kwList.end());
+	return result = make_pair(kwList, startWord);
 }
