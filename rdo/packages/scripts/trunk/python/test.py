@@ -165,7 +165,7 @@ for task in files:
 
     text_task = open(utask, 'r').read()
     
-    dom     = xml.dom.minidom.parseString(text_task)
+    dom = xml.dom.minidom.parseString(text_task)
 
     model_name_with_ex    = get_text_from_dom(dom, 'model')
     target                = get_text_from_dom(dom, 'target')
