@@ -501,10 +501,11 @@ void RDOEditorEdit::completeWord()
 	wl.InList("");
 	s = "";
 
+	typedef std::pair<std::vector<tstring>, tstring> string_pair;
 	typedef std::vector<tstring> string_list;
-
 	WordListUtil wlist(wl);
-	string_list temp = wlist.GetNearestWords("");
+	string_pair tempPair = wlist.GetNearestWords("");
+	string_list temp = tempPair.first;
 	for(string_list::const_iterator it = temp.begin(); it != temp.end(); ++it)
 	{
 		s += *it;
@@ -528,7 +529,8 @@ void RDOEditorEdit::completeWord()
 	const char* str = currentLine + startPos;
 	unsigned int strLength = currentPos - startPos;
 
-	string_list words = wlist.GetNearestWords(str);
+	string_pair wordsPair = wlist.GetNearestWords(str);
+	string_list words = wordsPair.first;
 	tstring pstr = "";
 	for(string_list::const_iterator it = words.begin(); it != words.end(); ++it) 
 	{
@@ -554,14 +556,14 @@ void RDOEditorEdit::completeWord()
 	{
 		string_list::const_iterator it = words.begin();
 		tstring startKeyWord           = "";
-		tstring startKeyWordScroll     = *it;
+		tstring startKeyWordScroll     = wordsPair.second;
 		rbool useReplace = false;
 		if (pstr.c_str())
 		{
 			wl.Clear();
 			wl.Set(pstr.c_str());
 			wl.InList("");
-			startKeyWord = *it;
+			startKeyWord = wordsPair.second;
 			if (words.size() == 1 && strLength <= startKeyWord.length() && startKeyWord.find(str) == 0)
 			{
 				useReplace = true;
