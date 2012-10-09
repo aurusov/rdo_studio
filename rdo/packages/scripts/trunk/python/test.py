@@ -162,7 +162,10 @@ for task in files:
     
     utask   = unicode(task, sys.getfilesystemencoding())
     dirname = os.path.dirname(utask) + u'/'
-    dom     = xml.dom.minidom.parse(utask)
+
+    text_task = open(utask, 'r').read()
+    
+    dom     = xml.dom.minidom.parseString(text_task)
 
     model_name_with_ex    = get_text_from_dom(dom, 'model')
     target                = get_text_from_dom(dom, 'target')
