@@ -529,6 +529,11 @@ void RDOEditorEdit::completeWord()
 	unsigned int strLength = currentPos - startPos;
 
 	string_list words = wlist.GetNearestWords(str);
+
+	string_list::const_iterator it = words.begin();
+	tstring stWord = *it;
+	std::sort(words.begin(), words.end());
+
 	tstring pstr = "";
 	for(string_list::const_iterator it = words.begin(); it != words.end(); ++it) 
 	{
@@ -552,16 +557,15 @@ void RDOEditorEdit::completeWord()
 
 	if (list) 
 	{
-		string_list::const_iterator it = words.begin();
 		tstring startKeyWord           = "";
-		tstring startKeyWordScroll     = *it;
+		tstring startKeyWordScroll     = stWord;
 		rbool useReplace = false;
 		if (pstr.c_str())
 		{
 			wl.Clear();
 			wl.Set(pstr.c_str());
 			wl.InList("");
-			startKeyWord = *it;
+			startKeyWord = stWord;
 			if (words.size() == 1 && strLength <= startKeyWord.length() && startKeyWord.find(str) == 0)
 			{
 				useReplace = true;
