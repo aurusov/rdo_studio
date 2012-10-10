@@ -39,7 +39,7 @@ std::vector<tstring> WordListUtil::GetNearestWords(const tstring& userPattern) c
 		{
 			return priority == item.priority
 				? value < item.value
-				: priority < item.priority;
+				: priority > item.priority;
 		}
 	};
 
@@ -70,21 +70,29 @@ std::vector<tstring> WordListUtil::GetNearestWords(const tstring& userPattern) c
 			ruint wLen = fullKeywordIt.end() - fullKeywordIt.begin();
 			float positionPart = float(position) / float(wLen);
 			float diffPart = float(diff) / float(wLen);
-			float priority = (positionPart + diffPart) / 2;
+			float priority = 1 - (positionPart + diffPart) / 2;
 			priorityResult.push_back(PriorityResultItem(wl.words[i], priority));
 		}
 		else
 		{
-			priorityResult.push_back(PriorityResultItem(wl.words[i], 1.0));
+			priorityResult.push_back(PriorityResultItem(wl.words[i], 0.0));
 		}
 	}
 	std::sort(priorityResult.begin(), priorityResult.end());
+	float const minPriority = 0.4;
 
 	BOOST_FOREACH(const PriorityResultItem& item, priorityResult)
 	{
-		if(item.priority < 0.7)
+		if(item.priority >= minPriority)
 			result.push_back(item.value);
 	}
-
-	return result;
+	if (result.empty())
+	{
+		for (int i = 0; i < wl.len; ++i)
+		{
+			result.push_back(wl.words[i]);
+		}
+	}
+	else
+		return result;
 }
