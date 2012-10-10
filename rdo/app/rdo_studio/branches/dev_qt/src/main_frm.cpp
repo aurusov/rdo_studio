@@ -324,20 +324,24 @@ void RDOStudioMainFrame::setVisible(rbool visible)
 void RDOStudioMainFrame::closeEvent(QCloseEvent* event)
 {
 	close_mode = true;
-
-	update_stop();
-	style_editor.save();
-	style_build.save();
-	style_debug.save();
-	style_trace.save();
-	style_results.save();
-	style_find.save();
-	style_frame.save();
-	style_chart.save();
-
+	if (model && !model->saveModified())
+	{
+		event->ignore();
+	}
 	close_mode = false;
 
-	parent_type::closeEvent(event);
+	if (event->isAccepted())
+	{
+		update_stop();
+		style_editor.save();
+		style_build.save();
+		style_debug.save();
+		style_trace.save();
+		style_results.save();
+		style_find.save();
+		style_frame.save();
+		style_chart.save();
+	}
 }
 
 void RDOStudioMainFrame::onFileNew()

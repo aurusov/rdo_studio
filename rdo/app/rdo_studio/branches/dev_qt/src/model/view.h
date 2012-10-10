@@ -14,6 +14,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdointerface.h"
 #include "app/rdo_studio_mfc/src/edit/view_base.h"
+#include "app/rdo_studio_mfc/src/model/model.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
@@ -33,11 +34,15 @@ public:
 	RDOStudioModelView(QWidget* pParent);
 	virtual ~RDOStudioModelView();
 
+	void setModel(PTR(RDOStudioModel) pModel);
+
 	REF(rdoEditor::RDOEditorTabCtrl)  getTab ();
 	virtual rdoEditor::RDOEditorEdit* getEdit() const;
 
 private:
 	typedef  RDOStudioEditBaseView  parent_type;
+
+	PTR(RDOStudioModel) m_pModel;
 
 	void closeEvent (PTR(QCloseEvent)  event);
 	void resizeEvent(PTR(QResizeEvent) event);

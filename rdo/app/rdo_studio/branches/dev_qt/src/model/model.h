@@ -15,7 +15,6 @@
 #include "kernel/rdothread.h"
 #include "simulator/service/rdosimwin.h"
 #include "app/rdo_studio_mfc/src/frame/manager.h"
-#include "app/rdo_studio_mfc/src/model/view.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_docview.h"
 #include "app/rdo_studio_mfc/src/plugins.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_project.h"
@@ -29,6 +28,8 @@
 namespace rdoEditor {
 	class RDOEditorTabCtrl;
 }
+
+class RDOStudioModelView;
 
 class RDOStudioModel: public RDOThreadGUI
 {
@@ -142,18 +143,20 @@ public:
 	virtual ~RDOStudioModel();
 
 	rbool newModel      (tstring _model_name = _T(""), tstring _model_path = _T(""), const int _useTemplate = -1);
-	rbool openModel     (CREF(tstring) modelName = _T("")) const;
+	rbool openModel     (CREF(tstring) modelName = _T(""));
 	rbool saveModel     () const;
 	void  saveAsModel   () const;
 	void  saveToXML     ();
 	void  loadFromXML   ();
-	rbool closeModel    () const;
+	rbool closeModel    ();
 	rbool buildModel    ();
 	rbool runModel      ();
 	rbool stopModel     () const;
 	void  update        ();
 	void  setGUIPause   ();
 	void  setGUIContinue();
+
+	void resetView();
 
 	tstring getName() const
 	{
@@ -192,21 +195,8 @@ public:
 	void       closeAllFrame   ()                { m_frameManager.closeAll();                         }
 	rbool      hasModel        () const          { return m_GUI_HAS_MODEL;                            }
 
-	PTR(rdoEditor::RDOEditorTabCtrl) getTab()
-	{
-		if (!m_pModelView)
-			return NULL;
-
-		return &m_pModelView->getTab();
-	}
-
-	CPTR(rdoEditor::RDOEditorTabCtrl) getTab() const
-	{
-		if (!m_pModelView)
-			return NULL;
-
-		return &m_pModelView->getTab();
-	}
+	 PTR(rdoEditor::RDOEditorTabCtrl) getTab();
+	CPTR(rdoEditor::RDOEditorTabCtrl) getTab() const;
 
 	void  updateStyleOfAllModel() const;
 	rbool isPrevModelClosed    () const { return m_modelClosed; }

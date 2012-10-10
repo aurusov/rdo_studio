@@ -13,7 +13,6 @@
 #include <QtGui/qevent.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/model/view.h"
-#include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdofindedit.h"
@@ -53,7 +52,8 @@ static const UINT FINDINMODEL_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 
 RDOStudioModelView::RDOStudioModelView(QWidget* pParent)
 	: RDOStudioEditBaseView(pParent)
-	, tab(NULL)
+	, m_pModel(NULL)
+	, tab     (NULL)
 {}
 
 RDOStudioModelView::~RDOStudioModelView()
@@ -68,15 +68,24 @@ rbool RDOStudioModelView::init()
 	return true;
 }
 
+void RDOStudioModelView::setModel(PTR(RDOStudioModel) pModel)
+{
+	ASSERT(m_pModel != pModel);
+	m_pModel = pModel;
+}
+
 void RDOStudioModelView::closeEvent(PTR(QCloseEvent) event)
 {
-	if (model->saveModified())
+	if (m_pModel)
 	{
-		event->accept();
-	}
-	else
-	{
-		event->ignore();
+		if (m_pModel->saveModified())
+		{
+			event->accept();
+		}
+		else
+		{
+			event->ignore();
+		}
 	}
 }
 

@@ -21,6 +21,7 @@
 #include "repository/rdorepository.h"
 #include "simulator/runtime/rdo_exception.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
+#include "app/rdo_studio_mfc/src/model/view.h"
 #include "app/rdo_studio_mfc/src/thread.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/src/child_frm.h"
@@ -566,7 +567,7 @@ rbool RDOStudioModel::newModel(tstring _model_name, tstring _model_path, const i
 	return true;
 }
 
-rbool RDOStudioModel::openModel(CREF(tstring) modelName) const
+rbool RDOStudioModel::openModel(CREF(tstring) modelName)
 {
 	if (!plugins->canAction(rdoPlugin::maOpen))
 		return false;
@@ -632,13 +633,14 @@ void RDOStudioModel::saveAsModel() const
 	studioApp.broadcastMessage(RDOThread::RT_STUDIO_MODEL_SAVE_AS);
 }
 
-rbool RDOStudioModel::closeModel() const
+rbool RDOStudioModel::closeModel()
 {
 	if (!plugins->canAction(rdoPlugin::maClose))
 		return false;
 
 	if (!isRunning())
 	{
+		resetView();
 		stopModel();
 		studioApp.getIMainWnd()->getDockBuild  ().clear();
 		studioApp.getIMainWnd()->getDockDebug  ().clear();
@@ -707,8 +709,17 @@ void RDOStudioModel::createView()
 {
 	ASSERT(m_pModelView == NULL);
 	m_pModelView = new RDOStudioModelView(NULL);
+	m_pModelView->setModel(this);
 	studioApp.getIMainWnd()->addSubWindow(m_pModelView);
 	m_pModelView->parentWidget()->setWindowIcon(QIcon(QString::fromUtf8(":/images/images/mdi_model.png")));
+}
+
+void RDOStudioModel::resetView()
+{
+	if (m_pModelView)
+	{
+		m_pModelView->setModel(NULL);
+	}
 }
 
 void RDOStudioModel::createProcView()
@@ -1383,4 +1394,20 @@ REF(RDOStudioFrameManager) RDOStudioModel::getFrameManager()
 PTR(RPViewQt) RDOStudioModel::getProcView()
 {
 	return m_pModelProcView;
+}
+
+PTR(rdoEditor::RDOEditorTabCtrl) RDOStudioModel::getTab()
+{
+	if (!m_pModelView)
+		return NULL;
+
+	return &m_pModelView->getTab();
+}
+
+CPTR(rdoEditor::RDOEditorTabCtrl) RDOStudioModel::getTab() const
+{
+	if (!m_pModelView)
+		return NULL;
+
+	return &m_pModelView->getTab();
 }
