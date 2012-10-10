@@ -3579,7 +3579,6 @@ BEGIN
                             "Работает модель. Перед закрытием её необходимо остановить."
     ID_MSG_MODEL_NEED_STOPED_FOR_OPEN 
                             "Работает модель. Перед открытием её необходимо остановить."
-    ID_MSG_MODELCLOSE_QUERY "Закрыть модель ?"
 END
 
 STRINGTABLE 
@@ -5094,7 +5093,6 @@ BEGIN
     ID_MSG_MODEL_NEED_STOPED_FOR_CLOSE2 
                             "Model runing. Stop it before closing."
     ID_MSG_MODEL_NEED_STOPED_FOR_OPEN2 "Model runing. Stop it before open."
-    ID_MSG_MODELCLOSE_QUERY2 "Close model ?"
 END
 
 STRINGTABLE 

@@ -1358,7 +1358,7 @@ rbool RDOStudioModel::saveModified()
 	}
 	else if (!MainWindowBase::is_close_mode())
 	{
-		switch (QMessageBox::question(studioApp.getMainWnd(), "RAO-Studio", rdo::format(ID_MSG_MODELCLOSE_QUERY).c_str(), QMessageBox::Yes | QMessageBox::No))
+		switch (QMessageBox::question(studioApp.getMainWnd(), "RAO-Studio", "Закрыть модель ?", QMessageBox::Yes | QMessageBox::No))
 		{
 			case QMessageBox::Yes: result = true; break;
 			case QMessageBox::No : result = false; break;
