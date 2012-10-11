@@ -79,20 +79,12 @@ std::vector<tstring> WordListUtil::GetNearestWords(const tstring& userPattern) c
 		}
 	}
 	std::sort(priorityResult.begin(), priorityResult.end());
-	float const minPriority = 0.4;
+	float const minPriority = (float)0.3;
 
 	BOOST_FOREACH(const PriorityResultItem& item, priorityResult)
 	{
 		if(item.priority >= minPriority)
 			result.push_back(item.value);
 	}
-	if (result.empty())
-	{
-		for (int i = 0; i < wl.len; ++i)
-		{
-			result.push_back(wl.words[i]);
-		}
-	}
-	else
-		return result;
+	return result;
 }
