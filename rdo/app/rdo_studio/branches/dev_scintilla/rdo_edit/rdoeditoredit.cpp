@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/algorithm/string.hpp>
 #include <QtCore/qprocess.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoredit.h"
@@ -529,6 +530,8 @@ void RDOEditorEdit::completeWord()
 	unsigned int strLength = currentPos - startPos;
 
 	string_list words = wlist.GetNearestWords(str);
+	if(words.empty())
+		words = wlist.GetNearestWords("");
 
 	string_list::const_iterator it = words.begin();
 	tstring stWord = *it;
@@ -566,7 +569,7 @@ void RDOEditorEdit::completeWord()
 			wl.Set(pstr.c_str());
 			wl.InList("");
 			startKeyWord = stWord;
-			if (words.size() == 1 && strLength <= startKeyWord.length() && startKeyWord.find(str) == 0)
+			if (words.size() == 1 && strLength <= startKeyWord.length() && !boost::ifind_first(startKeyWord, str))
 			{
 				useReplace = true;
 			}
