@@ -524,7 +524,6 @@ void RDOEditorEdit::completeWord()
 	{
 		startPos--;
 	}
-
 	currentLine[ currentPos ] = '\0';
 	const char* str = currentLine + startPos;
 	unsigned int strLength = currentPos - startPos;
@@ -569,7 +568,7 @@ void RDOEditorEdit::completeWord()
 			wl.Set(pstr.c_str());
 			wl.InList("");
 			startKeyWord = stWord;
-			if (words.size() == 1 && strLength <= startKeyWord.length() && !boost::ifind_first(startKeyWord, str))
+			if (words.size() == 1 && strLength <= startKeyWord.length() && boost::ifind_first(startKeyWord, str).begin() == startKeyWord.begin())
 			{
 				useReplace = true;
 			}
