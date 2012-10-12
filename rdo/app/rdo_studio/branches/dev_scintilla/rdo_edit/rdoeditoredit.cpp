@@ -506,10 +506,10 @@ void RDOEditorEdit::completeWord()
 
 	WordListUtil wlist(wl);
 	string_list fullList = wlist.GetNearestWords("");
-	for(string_list::const_iterator it = temp.begin(); it != temp.end(); ++it)
+	for(string_list::const_iterator it = fullList.begin(); it != fullList.end(); ++it)
 	{
 		s += *it;
-		if (it != temp.end() - 1)
+		if (it != fullList.end() - 1)
 			s += " ";
 	}
 	char currentLine[8000];
