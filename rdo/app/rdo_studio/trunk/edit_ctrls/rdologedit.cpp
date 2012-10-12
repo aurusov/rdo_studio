@@ -17,7 +17,7 @@
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
 #include "app/rdo_studio_mfc/resource.h"
-#include "thirdparty/sci/Scintilla.h"
+#include "thirdparty/sci/include/Scintilla.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
