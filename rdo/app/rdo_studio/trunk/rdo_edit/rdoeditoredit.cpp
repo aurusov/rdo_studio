@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/algorithm/string.hpp>
 #include <QtCore/qprocess.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoredit.h"
@@ -20,7 +21,8 @@
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/htmlhelp.h"
 #include "thirdparty/sci/rdo/LexRdo.h"
-#include "thirdparty/sci/rdo/PropSet.h"
+#include "thirdparty/sci/lexlib/WordList.h"
+#include "thirdparty/sci/rdo/WordListUtil.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
@@ -461,44 +463,55 @@ void RDOEditorEdit::commentSelection() const
 
 void RDOEditorEdit::completeWord()
 {
-	if ( !static_cast<RDOEditorEditStyle*>(style)->autoComplete->useAutoComplete ) return;
+	if (!static_cast<RDOEditorEditStyle*>(style)->autoComplete->useAutoComplete)
+		return;
 
 	SetFocus();
 	tstring s;
 	RDOEditorTabCtrl* tab = model->getTab();
-	if ( tab ) {
-//		studioApp.m_pStudioGUI->sendMessage( kernel->simulator(), RDOThread::RT_CODECOMP_GET_DATA, &rdo::service::simulation::RDOThreadCodeComp::GetCodeComp( tab->getCurrentRDOItem(), getCurrentPos(), getCurrentLineNumber(), s ) );
+	if (tab)
+	{
+		//studioApp.m_pStudioGUI->sendMessage( kernel->simulator(), RDOThread::RT_CODECOMP_GET_DATA, &rdo::service::simulation::RDOThreadCodeComp::GetCodeComp( tab->getCurrentRDOItem(), getCurrentPos(), getCurrentLineNumber(), s ) );
 
 		rdo::service::simulation::RDOThreadSimulator::GetRTP RTPList;
-		studioApp.m_pStudioGUI->sendMessage( kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RTP, &RTPList );
+		studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RTP, &RTPList);
 		std::vector< rdo::service::simulation::RDOThreadSimulator::RTP >::iterator rtp_it = RTPList.begin();
-		while ( rtp_it != RTPList.end() )
+		while (rtp_it != RTPList.end())
 		{
 			// Что-то делаем
-			rtp_it++;
+			++rtp_it;
 		}
 
 		rdo::service::simulation::RDOThreadSimulator::GetRSS RSSList;
-		studioApp.m_pStudioGUI->sendMessage( kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RSS, &RSSList );
+		studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RSS, &RSSList);
 		std::vector< rdo::service::simulation::RDOThreadSimulator::RSS >::iterator rss_it = RSSList.begin();
-		while ( rss_it != RSSList.end() )
+		while (rss_it != RSSList.end())
 		{
 			// Что-то делаем
-			rss_it++;
+			++rss_it;
 		}
 	}
-	if ( s.empty() ) {
+
+	if (s.empty())
+	{
 		s = getAllKW();
 	}
-	WordList wl;
-	wl.Set( s.c_str() );
-	wl.InList( "" );
-	s = "";
-	for ( int i = 0; i < wl.len; i++ ) {
-		s += wl.wordsNoCase[i];
-		if ( i < wl.len-1 ) s += " ";
-	}
 
+	WordList wl;
+	wl.Set(s.c_str());
+	wl.InList("");
+	s = "";
+
+	typedef std::vector<tstring> string_list;
+
+	WordListUtil wlist(wl);
+	string_list fullList = wlist.GetNearestWords("");
+	for(string_list::const_iterator it = temp.begin(); it != temp.end(); ++it)
+	{
+		s += *it;
+		if (it != temp.end() - 1)
+			s += " ";
+	}
 	char currentLine[8000];
 	int line = getCurrentLineNumber();
 	sendEditor( SCI_GETLINE, line, reinterpret_cast<long>(currentLine) );
@@ -507,60 +520,85 @@ void RDOEditorEdit::completeWord()
 
 	int startPos = currentPos;
 
-	while ( (startPos > 0) && isRDOLexerIdentifier( currentLine[startPos - 1] ) ) {
+	while ((startPos > 0) && isRDOLexerIdentifier(currentLine[startPos - 1]))
+	{
 		startPos--;
 	}
-
 	currentLine[ currentPos ] = '\0';
 	const char* str = currentLine + startPos;
 	unsigned int strLength = currentPos - startPos;
 
-	const char* word = NULL;
-	int wordLength = strLength + 1;
-	if ( wordLength <= 0 ) wordLength = 1;
-	while ( !word && wordLength > 1 ) {
-		wordLength--;
-		word = wl.GetNearestWord( str, wordLength, true );
+	string_list words = wlist.GetNearestWords(str);
+	if(words.empty())
+		words = fullList;
+
+	string_list::const_iterator it = words.begin();
+	tstring stWord = *it;
+	std::sort(words.begin(), words.end());
+
+	tstring pstr = "";
+	for(string_list::const_iterator it = words.begin(); it != words.end(); ++it) 
+	{
+		pstr += (*it);
+		if (it != words.end() - 1)
+			pstr += " ";
 	}
-	char* words = wl.GetNearestWords( str, wordLength, true );
 	LPCTSTR list;
-	if ( ((RDOEditorEditStyle*)style)->autoComplete->showFullList ) {
+	if (static_cast<PTR(RDOEditorEditStyle)>(style)->autoComplete->showFullList)
+	{
 		list = s.c_str();
-	} else {
-		list = words;
-		if ( !list ) list = s.c_str();
+	}
+	else
+	{
+		list = pstr.c_str();
+		if (!list)
+		{
+			list = s.c_str();
+		}
 	}
 
-	if ( list ) {
-
-		tstring startKeyWord       = "";
-		tstring startKeyWordScroll = wl.wordsNoCase[ wl.len-1 ];
+	if (list) 
+	{
+		tstring startKeyWord           = "";
+		tstring startKeyWordScroll     = stWord;
 		rbool useReplace = false;
-		if ( words ) {
+		if (pstr.c_str())
+		{
 			wl.Clear();
-			wl.Set( words );
-			wl.InList( "" );
-			startKeyWord = wl.wordsNoCase[0];
-			if ( wl.len == 1 && strLength <= startKeyWord.length() && startKeyWord.find( str ) == 0  ) {
+			wl.Set(pstr.c_str());
+			wl.InList("");
+			startKeyWord = stWord;
+			if (words.size() == 1 && strLength <= startKeyWord.length() && boost::ifind_first(startKeyWord, str).begin() == startKeyWord.begin())
+			{
 				useReplace = true;
 			}
 		}
-		while ( startKeyWord.find( '?' ) != tstring::npos ) {
-			tstring::size_type pos1 = startKeyWord.find( '?' );
-			tstring::size_type pos2 = startKeyWord.find( ' ', pos1 );
-			startKeyWord.erase( pos1, pos2 - pos1 );
+
+		while (startKeyWord.find('?') != tstring::npos)
+		{
+			tstring::size_type pos1 = startKeyWord.find('?');
+			tstring::size_type pos2 = startKeyWord.find(' ', pos1);
+			startKeyWord.erase(pos1, pos2 - pos1);
 		}
-		if ( useReplace ) {
-			setSelection( getCurrentPos(), getCurrentPos() - strLength );
-			replaceCurrent( startKeyWord );
-		} else {
-			sendEditor( SCI_AUTOCSHOW, strLength, (long)list );
-			sendEditorString( SCI_AUTOCSELECT, 0, startKeyWordScroll.c_str() );
-			sendEditorString( SCI_AUTOCSELECT, 0, startKeyWord.c_str() );
+		while (startKeyWordScroll.find('?') != tstring::npos)
+		{
+			tstring::size_type pos1 = startKeyWordScroll.find('?');
+			tstring::size_type pos2 = startKeyWordScroll.find(' ', pos1);
+			startKeyWordScroll.erase(pos1, pos2 - pos1);
+		}
+
+		if (useReplace)
+		{
+			setSelection  (getCurrentPos(), getCurrentPos() - strLength);
+			replaceCurrent(startKeyWord);
+		}
+		else
+		{
+			sendEditor      (SCI_AUTOCSHOW,   strLength, (long)list);
+			sendEditorString(SCI_AUTOCSELECT, 0, startKeyWordScroll.c_str());
+			sendEditorString(SCI_AUTOCSELECT, 0, startKeyWord.c_str());
 		}
 	}
-
-	if ( words ) delete []words;
 }
 
 void RDOEditorEdit::setErrorLine( int line )

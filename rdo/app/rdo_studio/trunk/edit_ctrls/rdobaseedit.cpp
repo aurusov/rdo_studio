@@ -16,7 +16,7 @@
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/resource.h"
 #include "thirdparty/sci/include/SciLexer.h"
-#include "thirdparty/sci/rdo/PropSet.h"
+#include "thirdparty/sci/lexlib/WordList.h"
 #include "thirdparty/sci/include/Scintilla.h"
 // --------------------------------------------------------------------------------
 
