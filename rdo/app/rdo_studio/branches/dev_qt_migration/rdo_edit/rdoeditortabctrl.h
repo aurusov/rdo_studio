@@ -48,7 +48,7 @@ private:
 
 	static PTR(PageContext::context_type) constructPage(PTR(RDOStudioEditBaseView) pView);
 
-	PTR(PageContext) createPage(PTR(RDOStudioEditBaseView) pView, CREF(QString) name);
+	void createPage(PTR(RDOStudioEditBaseView) pView, CREF(QString) name);
 };
 
 }; // namespace rdoEditor

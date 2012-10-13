@@ -43,7 +43,7 @@ RDOEditorTabCtrl::RDOEditorTabCtrl(PTR(QWidget) pParent, PTR(RDOStudioEditBaseVi
 RDOEditorTabCtrl::~RDOEditorTabCtrl()
 {}
 
-PTR(RDOEditorTabCtrl::PageContext) RDOEditorTabCtrl::createPage(PTR(RDOStudioEditBaseView) pView, CREF(QString) name)
+void RDOEditorTabCtrl::createPage(PTR(RDOStudioEditBaseView) pView, CREF(QString) name)
 {
 	PTR(PageContext) pPage = new PageContext(
 		this,
@@ -65,8 +65,6 @@ PTR(RDOEditorTabCtrl::PageContext) RDOEditorTabCtrl::createPage(PTR(RDOStudioEdi
 
 	group.insert(&pPage->getContext());
 	pPage->getContext().setGroup(&group);
-
-	return pPage;
 }
 
 PTR(RDOEditorTabCtrl::PageContext::context_type) RDOEditorTabCtrl::constructPage(PTR(RDOStudioEditBaseView) pView)
