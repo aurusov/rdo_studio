@@ -50,7 +50,7 @@ static const UINT FINDINMODEL_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 //	ON_COMMAND(ID_FILE_PRINT_PREVIEW, RDOStudioEditBaseView::OnFilePrintPreview)
 //END_MESSAGE_MAP()
 
-RDOStudioModelView::RDOStudioModelView(QWidget* pParent)
+RDOStudioModelView::RDOStudioModelView(PTR(QWidget) pParent)
 	: RDOStudioEditBaseView(pParent)
 	, m_pModel  (NULL)
 	, m_pTabCtrl(NULL)
