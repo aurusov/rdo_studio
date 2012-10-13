@@ -113,15 +113,6 @@ void RDOStudioModelView::resizeEvent(PTR(QResizeEvent) event)
 	tab->resize(size);
 }
 
-//void RDOStudioModelView::OnSize(UINT nType, int cx, int cy) 
-//{
-//	RDOStudioEditBaseView::OnSize(nType, cx, cy);
-//	
-//	CRect r;
-//	GetClientRect( r );
-//	tab->MoveWindow( r );
-//}
-
 REF(rdoEditor::RDOEditorTabCtrl) RDOStudioModelView::getTab()
 {
 	return *tab;
