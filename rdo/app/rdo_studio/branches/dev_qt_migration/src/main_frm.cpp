@@ -855,7 +855,7 @@ void RDOStudioMainFrame::onDockVisibleChanged(rbool visible)
 	rdoEditor::RDOEditorTabCtrl* pEditorTab = model->getTab();
 	if (pEditorTab)
 	{
-		for (int i = 0; i < pEditorTab->getItemCount(); ++i)
+		for (int i = 0; i < pEditorTab->count(); ++i)
 		{
 			pEditorTab->getItemEdit(i)->setLog(*pLog);
 		}

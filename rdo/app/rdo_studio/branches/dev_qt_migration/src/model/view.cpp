@@ -63,8 +63,7 @@ RDOStudioModelView::~RDOStudioModelView()
 
 rbool RDOStudioModelView::init()
 {
-	tab = new RDOEditorTabCtrl(this);
-	tab->Create( NULL, NULL, 0, CRect(0, 0, 100, 100), CWnd::FromHandle(winId()), 0 );
+	tab = new RDOEditorTabCtrl(this, this);
 	return true;
 }
 
@@ -111,7 +110,7 @@ void RDOStudioModelView::resizeEvent(PTR(QResizeEvent) event)
 		return;
 
 	QSize size(event->size());
-	tab->MoveWindow(0, 0, size.width(), size.height());
+	tab->resize(size);
 }
 
 //void RDOStudioModelView::OnSize(UINT nType, int cx, int cy) 
@@ -152,7 +151,7 @@ LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM /*wParam*/, LPARAM lParam )
 		studioApp.getIMainWnd()->getDockFind().getContext().setKeyword(findStr, bMatchCase);
 		studioApp.getIMainWnd()->getDockFind().appendString(rdo::format(ID_FINDINMODEL_BEGINMSG, findStr.c_str()));
 		int count = 0;
-		for ( int i = 0; i < tab->getItemCount(); i++ ) {
+		for ( int i = 0; i < tab->count(); i++ ) {
 			RDOEditorEdit* edit = tab->getItemEdit( i );
 			int pos  = 0;
 			int line = 0;

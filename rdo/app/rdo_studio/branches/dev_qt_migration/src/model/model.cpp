@@ -746,7 +746,7 @@ void RDOStudioModel::newModelFromRepository()
 	studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data_smr);
 	setName(data_smr.m_name);
 
-	for (int i = 0; i < m_pModelView->getTab().getItemCount(); i++)
+	for (int i = 0; i < m_pModelView->getTab().count(); i++)
 	{
 		PTR(RDOEditorEdit) edit = m_pModelView->getTab().getItemEdit(i);
 		edit->setReadOnly(false);
@@ -827,7 +827,7 @@ void RDOStudioModel::openModelFromRepository()
 	studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data_smr);
 	setName(data_smr.m_name);
 
-	int cnt = m_pModelView->getTab().getItemCount();
+	int cnt = m_pModelView->getTab().count();
 	studioApp.getIMainWnd()->beginProgress(0, cnt * 2 + 1);
 	studioApp.getIMainWnd()->stepProgress();
 	for (int i = 0; i < cnt; i++)
@@ -916,7 +916,7 @@ void RDOStudioModel::saveModelToRepository()
 		smr_modified = true;
 	}
 
-	int cnt = m_pModelView->getTab().getItemCount();
+	int cnt = m_pModelView->getTab().count();
 	int progress_cnt = 0;
 	for (int i = 0; i < cnt; i++)
 	{
@@ -1180,7 +1180,7 @@ void RDOStudioModel::updateStyleOfAllModel() const
 {
 	if (m_pModelView)
 	{
-		for (int i = 0; i < m_pModelView->getTab().getItemCount(); i++)
+		for (int i = 0; i < m_pModelView->getTab().count(); i++)
 		{
 			m_pModelView->getTab().getItemEdit(i)->setEditorStyle(&studioApp.getStyle()->style_editor);
 		}
@@ -1328,7 +1328,7 @@ rbool RDOStudioModel::isModify() const
 
 	rbool result = false;
 
-	for (int i = 0; i < getTab()->getItemCount(); i++)
+	for (int i = 0; i < getTab()->count(); i++)
 	{
 		if (getTab()->getItemEdit( i )->isModify())
 		{
