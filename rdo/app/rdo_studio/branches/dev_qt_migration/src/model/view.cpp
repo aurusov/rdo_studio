@@ -54,17 +54,13 @@ RDOStudioModelView::RDOStudioModelView(QWidget* pParent)
 	: RDOStudioEditBaseView(pParent)
 	, m_pModel(NULL)
 	, tab     (NULL)
-{}
+{
+	tab = new RDOEditorTabCtrl(this, this);
+}
 
 RDOStudioModelView::~RDOStudioModelView()
 {
 	if ( tab ) { delete tab; tab = NULL; }
-}
-
-rbool RDOStudioModelView::init()
-{
-	tab = new RDOEditorTabCtrl(this, this);
-	return true;
 }
 
 void RDOStudioModelView::setModel(PTR(RDOStudioModel) pModel)
