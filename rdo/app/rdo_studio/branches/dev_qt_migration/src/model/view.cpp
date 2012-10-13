@@ -59,9 +59,7 @@ RDOStudioModelView::RDOStudioModelView(QWidget* pParent)
 }
 
 RDOStudioModelView::~RDOStudioModelView()
-{
-	if (m_pTabCtrl) { delete m_pTabCtrl; m_pTabCtrl = NULL; }
-}
+{}
 
 void RDOStudioModelView::setModel(PTR(RDOStudioModel) pModel)
 {
