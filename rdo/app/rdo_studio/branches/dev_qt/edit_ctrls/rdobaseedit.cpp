@@ -15,9 +15,9 @@
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/resource.h"
-#include "thirdparty/sci/SciLexer.h"
-#include "thirdparty/sci/PropSet.h"
-#include "thirdparty/sci/Scintilla.h"
+#include "thirdparty/sci/include/SciLexer.h"
+#include "thirdparty/sci/lexlib/WordList.h"
+#include "thirdparty/sci/include/Scintilla.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
