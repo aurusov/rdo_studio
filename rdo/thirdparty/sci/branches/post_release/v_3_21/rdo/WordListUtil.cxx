@@ -20,7 +20,7 @@ WordListUtil::WordListUtil(const WordList& wordlist)
 	: wl(wordlist)
 {}
 
-std::vector<tstring> WordListUtil::GetNearestWords(const tstring& userPattern) const
+std::vector<tstring> WordListUtil::getNearestWords(const tstring& userPattern) const
 {
 	struct PriorityResultItem
 	{
