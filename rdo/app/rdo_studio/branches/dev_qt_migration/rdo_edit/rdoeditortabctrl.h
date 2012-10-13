@@ -44,7 +44,6 @@ public:
 	PTR(PageContext::context_type) getItemEdit   (rdoModelObjects::RDOFileType type) const;
 
 private:
-	RDOStudioEditBaseView*        view;
 	rdoEditCtrl::RDOBaseEditGroup group;
 
 	static PTR(PageContext::context_type) constructPage(PTR(RDOStudioEditBaseView) pView);

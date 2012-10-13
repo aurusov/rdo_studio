@@ -25,7 +25,6 @@ using namespace rdoEditor;
 // --------------------------------------------------------------------------------
 RDOEditorTabCtrl::RDOEditorTabCtrl(PTR(QWidget) pParent, PTR(RDOStudioEditBaseView) pView)
 	: QTabWidget(pParent)
-	, view(pView)
 {
 	createPage(pView, "RTP");
 	createPage(pView, "RSS");
