@@ -505,7 +505,7 @@ void RDOEditorEdit::completeWord()
 	typedef std::vector<tstring> string_list;
 
 	WordListUtil getList(fullWordList);
-	string_list fullList = getList.getNearestWords("");
+	string_list fullList = getList.getNearestWords(tstring());
 	for(string_list::const_iterator it = fullList.begin(); it != fullList.end(); ++it)
 	{
 		stringList += *it;
