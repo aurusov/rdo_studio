@@ -36,8 +36,7 @@ public:
 
 	void setModel(PTR(RDOStudioModel) pModel);
 
-	REF(rdoEditor::RDOEditorTabCtrl)  getTab ();
-	virtual rdoEditor::RDOEditorEdit* getEdit() const;
+	REF(rdoEditor::RDOEditorTabCtrl) getTab();
 
 private:
 	typedef  RDOStudioEditBaseView  parent_type;

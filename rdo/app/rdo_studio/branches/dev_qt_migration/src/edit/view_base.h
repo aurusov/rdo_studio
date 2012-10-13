@@ -46,8 +46,6 @@ public:
 
 	void restartBufTimer(ruint bufferID);
 
-	virtual rdoEditor::RDOEditorEdit* getEdit() const;
-
 protected:
 	RDOStudioEditBaseView(QWidget* pParent);
 

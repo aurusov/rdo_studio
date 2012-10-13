@@ -127,15 +127,10 @@ REF(rdoEditor::RDOEditorTabCtrl) RDOStudioModelView::getTab()
 	return *tab;
 }
 
-RDOEditorEdit* RDOStudioModelView::getEdit() const
-{
-	return tab->getCurrentEdit();
-}
-
 void RDOStudioModelView::OnSearchFindInModel() 
 {
 	CFindReplaceDialog* pDlg = new CFindReplaceDialog();
-	pDlg->Create( true, getEdit()->getWordForFind().c_str(), NULL, FR_HIDEUPDOWN, &m_thisCWnd );
+	pDlg->Create( true, tab->getCurrentEdit()->getWordForFind().c_str(), NULL, FR_HIDEUPDOWN, &m_thisCWnd );
 }
 
 LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM /*wParam*/, LPARAM lParam )
@@ -180,7 +175,7 @@ LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM /*wParam*/, LPARAM lParam )
 void RDOStudioModelView::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
-	RDOEditorEdit* edit = getEdit();
+	RDOEditorEdit* edit = tab->getCurrentEdit();
 	if ( edit ) {
 		pCmdUI->SetText( rdo::format( "%d: %d", edit->getCurrentColumnNumber() + 1, edit->getCurrentLineNumber() + 1 ).c_str() );
 	} else {
@@ -191,7 +186,7 @@ void RDOStudioModelView::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
 void RDOStudioModelView::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
-	RDOEditorEdit* edit = getEdit();
+	RDOEditorEdit* edit = tab->getCurrentEdit();
 	if ( edit ) {
 		if ( edit->isReadOnly() ) {
 			pCmdUI->SetText( rdo::format( ID_STATUSBAR_READONLY ).c_str() );
@@ -208,7 +203,7 @@ void RDOStudioModelView::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
 void RDOStudioModelView::OnUpdateInsertOverwriteStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
-	RDOEditorEdit* edit = getEdit();
+	RDOEditorEdit* edit = tab->getCurrentEdit();
 	if ( edit && edit->isOverwrite() ) {
 		pCmdUI->SetText( rdo::format( ID_STATUSBAR_OVERWRITE ).c_str() );
 	} else {
