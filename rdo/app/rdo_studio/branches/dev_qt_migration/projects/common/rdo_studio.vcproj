@@ -3520,14 +3520,6 @@
 			Name=".process"
 			>
 			<File
-				RelativePath="..\..\rdo_process\rdoprocess_dockwnd.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\rdo_process\rdoprocess_dockwnd.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\rdo_process\rdoprocess_docview.cpp"
 				>
 			</File>
