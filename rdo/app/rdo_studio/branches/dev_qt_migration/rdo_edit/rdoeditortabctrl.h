@@ -26,17 +26,9 @@ namespace rdoEditor {
 // --------------------------------------------------------------------------------
 class RDOEditorTabCtrl: public QTabWidget
 {
-private:
-	RDOStudioEditBaseView*        view;
-	rdoEditCtrl::RDOBaseEditGroup group;
-
+public:
 	typedef  MFCQtWrapper<RDOEditorEdit>  PageContext;
 
-	static PTR(PageContext::context_type) constructPage(PTR(RDOStudioEditBaseView) pView);
-
-	PTR(PageContext) createPage(PTR(RDOStudioEditBaseView) pView, CREF(QString) name);
-
-public:
 	RDOEditorTabCtrl(PTR(QWidget) pParent, PTR(RDOStudioEditBaseView) pView);
 	virtual ~RDOEditorTabCtrl();
 
@@ -47,9 +39,17 @@ public:
 	rdoModelObjects::RDOFileType getCurrentRDOItem() const         { return indexToType(currentIndex()); }
 	void setCurrentRDOItem(rdoModelObjects::RDOFileType type);
 
-	PageContext::context_type* getCurrentEdit() const;
-	PageContext::context_type* getItemEdit   (int index) const;
-	PageContext::context_type* getItemEdit   (rdoModelObjects::RDOFileType type) const;
+	PTR(PageContext::context_type) getCurrentEdit() const;
+	PTR(PageContext::context_type) getItemEdit   (int index) const;
+	PTR(PageContext::context_type) getItemEdit   (rdoModelObjects::RDOFileType type) const;
+
+private:
+	RDOStudioEditBaseView*        view;
+	rdoEditCtrl::RDOBaseEditGroup group;
+
+	static PTR(PageContext::context_type) constructPage(PTR(RDOStudioEditBaseView) pView);
+
+	PTR(PageContext) createPage(PTR(RDOStudioEditBaseView) pView, CREF(QString) name);
 };
 
 }; // namespace rdoEditor
