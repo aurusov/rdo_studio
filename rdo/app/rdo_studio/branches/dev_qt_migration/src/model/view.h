@@ -20,17 +20,13 @@
 // -------------------- RDOStudioModelView
 // --------------------------------------------------------------------------------
 namespace rdoEditor {
-	class RDOEditorEdit;
 	class RDOEditorTabCtrl;
 }
 
 class RDOStudioModelView: public RDOStudioEditBaseView
 {
-private:
-	rdoEditor::RDOEditorTabCtrl* tab;
-
 public:
-	RDOStudioModelView(QWidget* pParent);
+	RDOStudioModelView(PTR(QWidget) pParent);
 	virtual ~RDOStudioModelView();
 
 	void setModel(PTR(RDOStudioModel) pModel);
@@ -40,16 +36,17 @@ public:
 private:
 	typedef  RDOStudioEditBaseView  parent_type;
 
-	PTR(RDOStudioModel) m_pModel;
+	PTR(rdoEditor::RDOEditorTabCtrl) m_pTabCtrl;
+	PTR(RDOStudioModel)              m_pModel;
 
 	void closeEvent (PTR(QCloseEvent)  event);
 	void resizeEvent(PTR(QResizeEvent) event);
 
 	afx_msg void OnSearchFindInModel();
-	afx_msg LRESULT OnFindInModelMsg( WPARAM wParam, LPARAM lParam );
-	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
-	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );
-	afx_msg void OnUpdateInsertOverwriteStatusBar( CCmdUI *pCmdUI );
+	afx_msg LRESULT OnFindInModelMsg(WPARAM wParam, LPARAM lParam);
+	afx_msg void OnUpdateCoordStatusBar          (CCmdUI* pCmdUI);
+	afx_msg void OnUpdateModifyStatusBar         (CCmdUI* pCmdUI);
+	afx_msg void OnUpdateInsertOverwriteStatusBar(CCmdUI* pCmdUI);
 };
 
 #endif // RDOSTUDIOMODELVIEW_H
