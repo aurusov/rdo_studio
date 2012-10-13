@@ -11,6 +11,7 @@
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qevent.h>
+#include <QtGui/qboxlayout.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/model/view.h"
 #include "app/rdo_studio_mfc/src/application.h"
@@ -50,6 +51,11 @@ RDOStudioModelView::RDOStudioModelView(PTR(QWidget) pParent)
 	, m_pTabCtrl(NULL)
 {
 	m_pTabCtrl = new RDOEditorTabCtrl(this, this);
+
+	PTR(QVBoxLayout) pLayout = new QVBoxLayout(this);
+	pLayout->setSpacing(0);
+	pLayout->setContentsMargins(0, 0, 0, 0);
+	pLayout->addWidget(m_pTabCtrl);
 }
 
 RDOStudioModelView::~RDOStudioModelView()
@@ -89,17 +95,6 @@ void RDOStudioModelView::closeEvent(PTR(QCloseEvent) event)
 //	m_pTabCtrl->SetFocus();
 //}
 //
-
-void RDOStudioModelView::resizeEvent(PTR(QResizeEvent) event)
-{
-	parent_type::resizeEvent(event);
-
-	if (!m_pTabCtrl)
-		return;
-
-	QSize size(event->size());
-	m_pTabCtrl->resize(size);
-}
 
 REF(rdoEditor::RDOEditorTabCtrl) RDOStudioModelView::getTab()
 {

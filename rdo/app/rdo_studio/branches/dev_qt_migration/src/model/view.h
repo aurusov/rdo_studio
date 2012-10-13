@@ -39,8 +39,7 @@ private:
 	PTR(rdoEditor::RDOEditorTabCtrl) m_pTabCtrl;
 	PTR(RDOStudioModel)              m_pModel;
 
-	void closeEvent (PTR(QCloseEvent)  event);
-	void resizeEvent(PTR(QResizeEvent) event);
+	void closeEvent(PTR(QCloseEvent) event);
 
 	afx_msg void OnSearchFindInModel();
 	afx_msg LRESULT OnFindInModelMsg(WPARAM wParam, LPARAM lParam);
