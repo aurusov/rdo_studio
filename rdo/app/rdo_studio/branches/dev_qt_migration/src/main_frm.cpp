@@ -101,7 +101,6 @@ void RDOToolBarModel::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar
 //	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_MODEL_TOOLBAR, OnUpdateViewModelToolbar)
 //	ON_WM_DESTROY()
 //	ON_COMMAND(ID_VIEW_OPTIONS, OnViewOptions)
-//	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
 //	ON_COMMAND(ID_MODEL_RUNTIME_MAXSPEED, OnModelRuntimeMaxSpeed)
 //	ON_COMMAND(ID_MODEL_RUNTIME_JUMP, OnModelRuntimeJump)
 //	ON_COMMAND(ID_MODEL_RUNTIME_SYNC, OnModelRuntimeSync)
@@ -594,20 +593,18 @@ void RDOStudioMainFrame::endProgress()
 	//statusBar.setProgressVisible( false );
 }
 
-void RDOStudioMainFrame::OnHelpKeyword()
-{
-	QByteArray ba;
-	ba.append("setSource qthelp://language/doc/rdo_studio_rus/html/about.htm\n");
-	studioApp.callQtAssistant(ba);
-}
-
 void RDOStudioMainFrame::onHelpContext()
 {
 	PTR(IHelpContext) pHelpContext = dynamic_cast<PTR(IHelpContext)>(focusWidget());
 	if (pHelpContext)
 	{
 		pHelpContext->onHelpContext();
-		return;
+	}
+	else
+	{
+		QByteArray ba;
+		ba.append("setSource qthelp://language/doc/rdo_studio_rus/html/rdo_whats_new.htm\n");
+		studioApp.callQtAssistant(ba);
 	}
 }
 
