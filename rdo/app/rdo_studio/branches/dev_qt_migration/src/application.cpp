@@ -20,7 +20,6 @@
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/src/child_frm.h"
-#include "app/rdo_studio_mfc/src/about.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/src/plugins.h"
 #include "app/rdo_studio_mfc/src/thread.h"
@@ -157,7 +156,6 @@ BEGIN_MESSAGE_MAP(RDOStudioApp, CWinApp)
 	ON_UPDATE_COMMAND_UI(ID_MODEL_BUILD,        OnUpdateModelBuild )
 	ON_UPDATE_COMMAND_UI(ID_MODEL_RUN,          OnUpdateModelRun   )
 	ON_UPDATE_COMMAND_UI(ID_MODEL_STOP,         OnUpdateModelStop  )
-	ON_COMMAND          (ID_APP_ABOUT,          OnAppAbout         )
 	ON_UPDATE_COMMAND_UI(ID_FILE_NEW,           OnUpdateFileNew    )
 	ON_UPDATE_COMMAND_UI(ID_FILE_OPEN,          OnUpdateFileOpen   )
 	ON_COMMAND_RANGE    (ID_FILE_REOPEN_1, ID_FILE_REOPEN_10, OnProjectReopen)
@@ -971,12 +969,6 @@ void RDOStudioApp::setupFileAssociation()
 			::RegCloseKey(hCurUserSoftClasses);
 		}
 	}
-}
-
-void RDOStudioApp::OnAppAbout()
-{
-	About dlg(m_pMainFrame);
-	dlg.exec();
 }
 
 void RDOStudioApp::autoCloseByModel()

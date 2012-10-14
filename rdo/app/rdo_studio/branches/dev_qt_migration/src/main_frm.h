@@ -154,6 +154,9 @@ public slots:
 private slots:
 	void onModelStop ();
 
+	void onHelpContext();
+	void onHelpAbout  ();
+
 	void onDockVisibleChanged(bool visible);
 
 private:

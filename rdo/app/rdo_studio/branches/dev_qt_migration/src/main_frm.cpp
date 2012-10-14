@@ -18,6 +18,7 @@
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/src/options.h"
+#include "app/rdo_studio_mfc/src/about.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
 #include "app/rdo_studio_mfc/htmlhelp.h"
@@ -171,6 +172,9 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 	QObject::connect(actModelBuild, SIGNAL(triggered(bool)), this, SLOT(onModelBuild()));
 	QObject::connect(actModelRun,   SIGNAL(triggered(bool)), this, SLOT(onModelRun  ()));
 	QObject::connect(actModelStop,  SIGNAL(triggered(bool)), this, SLOT(onModelStop ()));
+
+	QObject::connect(actHelpContext, SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
+	QObject::connect(actHelpAbout,   SIGNAL(triggered(bool)), this, SLOT(onHelpAbout  ()));
 }
 
 RDOStudioMainFrame::~RDOStudioMainFrame()
@@ -590,6 +594,16 @@ void RDOStudioMainFrame::OnHelpKeyword()
 	QByteArray ba;
 	ba.append("setSource qthelp://language/doc/rdo_studio_rus/html/about.htm\n");
 	studioApp.callQtAssistant(ba);
+}
+
+void RDOStudioMainFrame::onHelpContext()
+{
+}
+
+void RDOStudioMainFrame::onHelpAbout()
+{
+	About dlg(this);
+	dlg.exec();
 }
 
 void RDOStudioMainFrame::OnModelRuntimeMaxSpeed()

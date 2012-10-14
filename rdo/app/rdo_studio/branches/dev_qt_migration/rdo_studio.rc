@@ -1173,8 +1173,6 @@ BEGIN
     POPUP "Помо&щь"
     BEGIN
         MENUITEM "&Содержание\tF1",             ID_HELP_CONTENTS
-        MENUITEM SEPARATOR
-        MENUITEM "&О программе...",             ID_APP_ABOUT
     END
 END
 
@@ -3356,7 +3354,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    ID_APP_ABOUT            "Показать информация о программе\nО программе"
     ID_APP_EXIT             "Выход из приложения\nВыход"
 END
 
@@ -4692,8 +4689,6 @@ BEGIN
     POPUP "&Help"
     BEGIN
         MENUITEM "&Contents",                   ID_HELP_CONTENTS
-        MENUITEM SEPARATOR
-        MENUITEM "&About...",                   ID_APP_ABOUT
     END
 END
 
@@ -4896,7 +4891,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
     ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
 END
 
