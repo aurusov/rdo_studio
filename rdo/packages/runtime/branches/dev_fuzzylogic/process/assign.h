@@ -14,9 +14,11 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/noncopyable.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "simulator/runtime/namespace.h"
 #include "simulator/runtime/rdo.h"
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/runtime/process/rdoprocess_i.h"
+#include "simulator/runtime/process/rdoprocess.h"
 #include "simulator/runtime/rdo_logic.h"
 #include "simulator/runtime/rdo_res_type.h"
 // --------------------------------------------------------------------------------
