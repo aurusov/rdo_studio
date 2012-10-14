@@ -3,7 +3,7 @@
   \file      app/rdo_studio_mfc/src/frame/tree_ctrl.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      28.03.2003
-  \brief     
+  \brief     Дерево кадров анимации
   \indent    4T
 */
 
@@ -50,7 +50,7 @@ void RDOStudioFrameTreeCtrl::clear()
 	}
 }
 
-void RDOStudioFrameTreeCtrl::OnHelpKeyword()
+void RDOStudioFrameTreeCtrl::onHelpContext()
 {
 	QByteArray ba;
 	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_model/work_model_frame.htm#frame\n");

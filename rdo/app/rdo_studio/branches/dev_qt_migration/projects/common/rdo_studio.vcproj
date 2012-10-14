@@ -2457,6 +2457,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\help_context_i.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\main_frm.cpp"
 				>
 			</File>

@@ -3,7 +3,7 @@
   \file      app/rdo_studio_mfc/src/frame/tree_ctrl.h
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      28.03.2003
-  \brief     
+  \brief     Дерево кадров анимации
   \indent    4T
 */
 
@@ -13,9 +13,12 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qtreewidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "app/rdo_studio_mfc/src/help_context_i.h"
 // --------------------------------------------------------------------------------
 
-class RDOStudioFrameTreeCtrl: public QTreeWidget
+class RDOStudioFrameTreeCtrl
+	: public QTreeWidget
+	, public IHelpContext
 {
 public:
 	RDOStudioFrameTreeCtrl(PTR(QWidget) pParent);
@@ -30,7 +33,7 @@ private:
 
 	PTR(QTreeWidgetItem) m_pRootItem;
 
-	afx_msg void OnHelpKeyword();
+	DECLARE_IHelpContext;
 };
 
 #endif // _RDO_STUDIO_MFC_FRAME_TREE_CTRL_H_

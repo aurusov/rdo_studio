@@ -16,6 +16,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/src/application.h"
+#include "app/rdo_studio_mfc/src/help_context_i.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/src/options.h"
 #include "app/rdo_studio_mfc/src/about.h"
@@ -602,6 +603,12 @@ void RDOStudioMainFrame::OnHelpKeyword()
 
 void RDOStudioMainFrame::onHelpContext()
 {
+	PTR(IHelpContext) pHelpContext = dynamic_cast<PTR(IHelpContext)>(focusWidget());
+	if (pHelpContext)
+	{
+		pHelpContext->onHelpContext();
+		return;
+	}
 }
 
 void RDOStudioMainFrame::onHelpAbout()
