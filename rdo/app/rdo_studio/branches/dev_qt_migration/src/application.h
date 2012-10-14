@@ -83,7 +83,7 @@ public:
 	tstring        chkHelpExist        (tstring fileName) const;
 	void           chkAndRunQtAssistant();
 	PTR(QProcess)  runQtAssistant      () const;
-	void           callQtAssistant     (QByteArray ba);
+	void           callQtAssistant     (CREF(QByteArray) ba);
 
 private:
 #ifdef RDO_MT

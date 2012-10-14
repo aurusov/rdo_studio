@@ -767,7 +767,7 @@ PTR(QProcess) RDOStudioApp::runQtAssistant() const
 	return pProcess;
 }
 
-void RDOStudioApp::callQtAssistant(QByteArray ba)
+void RDOStudioApp::callQtAssistant(CREF(QByteArray) ba)
 {
 	chkAndRunQtAssistant();
 	if (m_pAssistant->state() != m_pAssistant->Running)
