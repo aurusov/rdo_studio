@@ -318,6 +318,10 @@ void RDOStudioMainFrame::init()
 	//modelToolBar.SetButtonStyle( 5, TBBS_CHECKBOX | TBBS_CHECKGROUP );
 
 	tracer->registerClipboardFormat();
+
+	PTR(IInit) pModelInit = dynamic_cast<PTR(IInit)>(model);
+	ASSERT(pModelInit);
+	pModelInit->init();
 }
 
 void RDOStudioMainFrame::setVisible(rbool visible)

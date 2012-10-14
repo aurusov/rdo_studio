@@ -15,7 +15,9 @@
 #include <map>
 #include <memory>
 #include <QtGui/qmdisubwindow.h>
+#include <QtGui/qtreewidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/rdointerface.h"
 #include "app/rdo_studio_mfc/src/frame/view.h"
 // --------------------------------------------------------------------------------
 
@@ -26,7 +28,9 @@ OPEN_RDO_ANIMATION_NAMESPACE
 struct Frame;
 CLOSE_RDO_ANIMATION_NAMESPACE
 
-class RDOStudioFrameManager: QObject
+class RDOStudioFrameManager
+	: public QObject
+	, public IInit
 {
 Q_OBJECT
 
@@ -37,9 +41,9 @@ public:
 	void insertFrame (CREF(tstring) frameName );
 	void insertBitmap(CREF(tstring) bitmapName);
 
-	ruint findFrameIndex(const HTREEITEM             hitem   ) const;
-	ruint findFrameIndex(CPTR(FrameAnimationWnd)     pView   ) const;
-	ruint findFrameIndex(CPTR(FrameAnimationContent) pContent) const;
+	ruint findFrameIndex(CPTR(QTreeWidgetItem)       pTreeWidgetItem) const;
+	ruint findFrameIndex(CPTR(FrameAnimationWnd)     pView          ) const;
+	ruint findFrameIndex(CPTR(FrameAnimationContent) pContent       ) const;
 
 	rbool                   isShowing         () const;
 	CREF(tstring)           getFrameName      (ruint index) const;
@@ -54,7 +58,6 @@ public:
 	void                    disconnectView(CPTR(FrameAnimationWnd) pView);
 	void                    closeAll      ();
 	void                    clear         ();
-	void                    expand        () const;
 
 	ruint getLastShowedFrame      () const;
 	void  setLastShowedFrame      (ruint index);
@@ -74,7 +77,7 @@ private:
 		 Frame();
 		~Frame();
 
-		HTREEITEM                      m_hitem;
+		PTR(QTreeWidgetItem)           m_pTreeWidgetItem;
 		tstring                        m_name;
 		PTR(FrameAnimationWnd)         m_pView;
 		PTR(FrameAnimationContent)     m_pContent;
@@ -92,8 +95,11 @@ private:
 	ruint                 m_currentShowingFrame;
 	rbool                 m_changed;
 
+	DECLARE_IInit;
+
 private slots:
-	void onSubWindowActivated(QMdiSubWindow* pWindow);
+	void onSubWindowActivated         (QMdiSubWindow* pWindow);
+	void onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pTreeWidgetItem, int);
 };
 
 #endif // _RDO_STUDIO_MFC_FRAME_MANAGER_H_

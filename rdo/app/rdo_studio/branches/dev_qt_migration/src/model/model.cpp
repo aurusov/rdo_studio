@@ -195,6 +195,15 @@ RDOStudioModel::~RDOStudioModel()
 //	closeModel();
 }
 
+rbool RDOStudioModel::init()
+{
+	PTR(IInit) pFrameManagerInit = dynamic_cast<PTR(IInit)>(&m_frameManager);
+	ASSERT(pFrameManagerInit);
+	pFrameManagerInit->init();
+
+	return true;
+}
+
 void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 {
 	switch (msg.message)
@@ -1150,7 +1159,6 @@ void RDOStudioModel::afterModelStart()
 		{
 			m_frameManager.insertFrame(*frame_it);
 		}
-		m_frameManager.expand();
 		m_timeNow = 0;
 		ruint initFrameNumber = kernel->simulator()->getInitialFrameNumber();
 		if (initFrameNumber != ruint(~0))

@@ -11,19 +11,20 @@
 #define _RDO_STUDIO_DOCK_FRAME_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtGui/qdockwidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/dock/dock_base.h"
 #include "app/rdo_studio_mfc/src/frame/tree_ctrl.h"
 // --------------------------------------------------------------------------------
 
-class DockFrame: public DockBase<RDOStudioFrameTreeCtrl>
+class DockFrame: public QDockWidget
 {
 public:
+	typedef  RDOStudioFrameTreeCtrl  context_type;
+
 	DockFrame(PTR(QWidget) pParent);
 	virtual ~DockFrame();
 
-private:
-	typedef  DockBase<RDOStudioFrameTreeCtrl>  parent_class;
+	REF(context_type) getContext();
 };
 
 #endif // _RDO_STUDIO_DOCK_FRAME_H_

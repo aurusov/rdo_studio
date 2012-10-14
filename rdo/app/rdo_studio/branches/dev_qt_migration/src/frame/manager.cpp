@@ -32,9 +32,9 @@
 // -------------------- RDOStudioFrameManager::Frame
 // --------------------------------------------------------------------------------
 RDOStudioFrameManager::Frame::Frame()
-	: m_hitem   (0   )
-	, m_pView   (NULL)
-	, m_pContent(NULL)
+	: m_pTreeWidgetItem(NULL)
+	, m_pView          (NULL)
+	, m_pContent       (NULL)
 {}
 
 RDOStudioFrameManager::Frame::~Frame()
@@ -70,20 +70,30 @@ RDOStudioFrameManager::~RDOStudioFrameManager()
 	}
 }
 
+rbool RDOStudioFrameManager::init()
+{
+	connect(
+		&studioApp.getIMainWnd()->getDockFrame().getContext(), SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)),
+		this,                                                  SLOT(onTreeWidgetItemDoubleClicked(QTreeWidgetItem*, int))
+	);
+
+	return true;
+}
+
 void RDOStudioFrameManager::insertFrame(CREF(tstring) frameName)
 {
 	PTR(Frame) item = new Frame();
-	item->m_hitem = studioApp.getIMainWnd()->getDockFrame().getContext().InsertItem(frameName.c_str(), 1, 1, studioApp.getIMainWnd()->getDockFrame().getContext().GetRootItem());
-	item->m_name  = frameName;
+	item->m_pTreeWidgetItem = studioApp.getIMainWnd()->getDockFrame().getContext().insertFrame(QString::fromStdString(frameName));
+	item->m_name            = frameName;
 	m_frameList.push_back(item);
 }
 
-ruint RDOStudioFrameManager::findFrameIndex(const HTREEITEM hitem) const
+ruint RDOStudioFrameManager::findFrameIndex(CPTR(QTreeWidgetItem) pTreeWidgetItem) const
 {
 	ruint index = 0;
 	STL_FOR_ALL_CONST(m_frameList, it)
 	{
-		if ((*it)->m_hitem == hitem)
+		if ((*it)->m_pTreeWidgetItem == pTreeWidgetItem)
 		{
 			return index;
 		}
@@ -223,7 +233,7 @@ void RDOStudioFrameManager::clear()
 {
 	if (studioApp.getStyle())
 	{
-		studioApp.getIMainWnd()->getDockFrame().getContext().deleteChildren(studioApp.getIMainWnd()->getDockFrame().getContext().GetRootItem());
+		studioApp.getIMainWnd()->getDockFrame().getContext().clear();
 	}
 	BOOST_FOREACH(Frame* pFrame, m_frameList)
 	{
@@ -245,11 +255,6 @@ void RDOStudioFrameManager::clear()
 
 	m_lastShowedFrame = ruint(~0);
 	setCurrentShowingFrame(ruint(~0));
-}
-
-void RDOStudioFrameManager::expand() const
-{
-	studioApp.getIMainWnd()->getDockFrame().getContext().expand();
 }
 
 ruint RDOStudioFrameManager::getLastShowedFrame() const
@@ -274,12 +279,11 @@ void RDOStudioFrameManager::setCurrentShowingFrame(ruint index)
 		{
 			if (m_currentShowingFrame != ruint(~0))
 			{
-				HTREEITEM hitem = m_frameList[m_currentShowingFrame]->m_hitem;
-				studioApp.getIMainWnd()->getDockFrame().getContext().SelectItem(hitem);
+				studioApp.getIMainWnd()->getDockFrame().getContext().setCurrentItem(m_frameList[m_currentShowingFrame]->m_pTreeWidgetItem);
 			}
 			else
 			{
-				studioApp.getIMainWnd()->getDockFrame().getContext().SelectItem(NULL);
+				studioApp.getIMainWnd()->getDockFrame().getContext().setCurrentItem(NULL);
 			}
 		}
 	}
@@ -432,4 +436,24 @@ void RDOStudioFrameManager::onSubWindowActivated(QMdiSubWindow* pWindow)
 	ruint index = findFrameIndex(pFrameAnimationWnd);
 	setLastShowedFrame    (index);
 	setCurrentShowingFrame(index);
+}
+
+void RDOStudioFrameManager::onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pTreeWidgetItem, int)
+{
+	if (model->getRuntimeMode() == rdo::runtime::RTM_MaxSpeed)
+		return;
+
+	ruint index = findFrameIndex(pTreeWidgetItem);
+	if (index == ruint(~0))
+		return;
+
+	PTR(FrameAnimationWnd) pView = getFrameView(index);
+	if (!pView)
+	{
+		createView(index);
+	}
+	else
+	{
+		studioApp.getIMainWnd()->activateSubWindow(pView->parentWidget());
+	}
 }

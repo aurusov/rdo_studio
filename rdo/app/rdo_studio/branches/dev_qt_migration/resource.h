@@ -25,7 +25,6 @@
 #define IDD_OPTIONS_STYLESANDCOLORS     154
 #define IDD_FILEASSOCIATION             155
 #define IDD_OPTIONS_TABS                156
-#define IDB_FRAMES_TREECTRL             157
 #define IDD_CHART_OPTIONS_SERIES        158
 #define IDR_ZOOM_TOOLBAR                160
 #define IDB_ZOOM_TOOLBAR_D              162

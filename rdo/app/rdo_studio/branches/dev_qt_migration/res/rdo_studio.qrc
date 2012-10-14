@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="/images">
+    <file>images/tree_frame_item.png</file>
+    <file>images/tree_frame_root.png</file>
     <file>images/dock_build.png</file>
     <file>images/dock_chart.png</file>
     <file>images/dock_debug.png</file>

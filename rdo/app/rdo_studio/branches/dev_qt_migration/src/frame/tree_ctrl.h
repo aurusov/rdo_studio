@@ -11,30 +11,26 @@
 #define _RDO_STUDIO_MFC_FRAME_TREE_CTRL_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtGui/qtreewidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "ui/mfc_ctrls/rdotreectrl.h"
 // --------------------------------------------------------------------------------
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOStudioFrameTreeCtrl
-// --------------------------------------------------------------------------------
-class RDOStudioFrameTreeCtrl: public RDOTreeCtrl
+class RDOStudioFrameTreeCtrl: public QTreeWidget
 {
-private:
-	CImageList imageList;
-
 public:
-	RDOStudioFrameTreeCtrl();
+	RDOStudioFrameTreeCtrl(PTR(QWidget) pParent);
 	virtual ~RDOStudioFrameTreeCtrl();
 
-	void expand();
+	PTR(QTreeWidgetItem) insertFrame(CREF(QString) name);
+
+	void clear();
 
 private:
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
+	typedef  QTreeWidget  parent_type;
+
+	PTR(QTreeWidgetItem) m_pRootItem;
+
 	afx_msg void OnHelpKeyword();
-	DECLARE_MESSAGE_MAP()
 };
 
 #endif // _RDO_STUDIO_MFC_FRAME_TREE_CTRL_H_
