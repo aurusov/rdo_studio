@@ -94,7 +94,6 @@ private:
 	//afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnUpdateChartFindincharts(CCmdUI* pCmdUI);
 	afx_msg void OnChartFindincharts();
-	afx_msg void OnHelpKeyword();
 
 public:
 	RDOTracerTreeCtrl(PTR(QWidget) pParent);
