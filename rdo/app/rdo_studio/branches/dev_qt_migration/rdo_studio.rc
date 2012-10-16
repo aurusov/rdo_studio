@@ -761,11 +761,6 @@ END
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\rdo_studio.ico"
-IDR_CHARTTYPE           ICON                    "res\\rdostudiochartdoc.ico"
-IDR_MODEL_TYPE          ICON                    "res\\rdostudiomodeldoc.ico"
-IDR_EDIT_TYPE           ICON                    "res\\rdostudioeditdoc.ico"
-IDR_FRAME_TYPE          ICON                    "res\\rdostudioframedoc.ico"
-IDR_FLOWCHART_TYPE      ICON                    "res\\flowchart_icon.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -3308,7 +3303,6 @@ BEGIN
     IDR_TOOLBAR_STYLEANDCOLOR "Стиль и цвет"
     IDR_TOOLBAR_MAINFRAME   "Основные"
     IDR_TOOLBAR_EMPTY       "Команды"
-    IDR_FLOWCHART_TYPE      "\nfchart\nfchart"
 END
 
 STRINGTABLE 
@@ -3326,10 +3320,7 @@ STRINGTABLE
 BEGIN
     IDR_MAINFRAME           "RAO Studio"
     IDR_MODEL_TYPE          "\nmodel\nModel Files\nRAO Model File (*.rdox)\n.rdox\nRAOStudio.Document\nRAO Document"
-    IDR_EDIT_TYPE           "\nedit\nEdit File\nRAO Files (.pat;.rtp;.rss;.opr;.frm;.fun;.dpt;.pmd;.pmv;.trc)\n.pat;.rtp;.rss;.opr;.frm;.fun;.dpt;.pmd;.pmv;.trc\nRAOStudio.Document\nRAO Document"
     IDR_FILE_TOOLBAR        "Файл"
-    IDR_CHARTTYPE           "\nГрафик\nChart\n\n\nRAOStudio.Document\nRAO Document"
-    IDR_FRAME_TYPE          "\nframe\nModel Frame\n\n\nRAOStudio.Document\nRAO Document"
 END
 
 STRINGTABLE 
@@ -4800,10 +4791,7 @@ STRINGTABLE
 BEGIN
     IDR_MAINFRAME           "RAO Studio"
     IDR_MODEL_TYPE          "\nmodel\nModel Files\nRAO Model File (*.rdox)\n.rdox\nRAOStudio.Document\nRAO Document"
-    IDR_EDIT_TYPE           "\nedit\nEdit File\nRAO Files (.pat;.rtp;.rss;.opr;.frm;.fun;.dpt;.pmd;.pmv;.trc)\n.pat;.rtp;.rss;.opr;.frm;.fun;.dpt;.pmd;.pmv;.trc\nRAOStudio.Document\nRAO Document"
     IDR_FILE_TOOLBAR        "File"
-    IDR_CHARTTYPE           "\nchart\nChart\n\n\nRAOStudio.Document\nRAO Document"
-    IDR_FRAME_TYPE          "\nframe\nModel Frame\n\n\nRAOStudio.Document\nRAO Document"
 END
 
 STRINGTABLE 

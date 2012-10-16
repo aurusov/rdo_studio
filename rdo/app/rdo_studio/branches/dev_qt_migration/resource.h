@@ -5,10 +5,7 @@
 #define IDD_CHART_OPTIONS_CHART         107
 #define IDR_MAINFRAME                   128
 #define IDR_MODEL_TYPE                  129
-#define IDR_EDIT_TYPE                   131
 #define IDR_FILE_TOOLBAR                132
-#define IDR_CHARTTYPE                   134
-#define IDR_FRAME_TYPE                  135
 #define IDD_BUFFER                      142
 #define IDB_TRASH                       143
 #define IDB_FILE_TOOLBAR_D              144
@@ -102,7 +99,6 @@
 #define IDR_TOOLBAR_MAINFRAME           264
 #define IDR_TOOLBAR_EMPTY               265
 #define IDR_TOOLBAR_MAINFRAME_D         266
-#define IDR_FLOWCHART_TYPE              267
 #define IDC_CLEARAUTO_CHECK             1001
 #define IDC_STYLEITEM_TREE              1002
 #define IDC_BUFFERVALUESTATIC           1003

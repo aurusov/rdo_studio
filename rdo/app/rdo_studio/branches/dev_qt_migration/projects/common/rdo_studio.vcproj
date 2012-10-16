@@ -2023,10 +2023,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\res\flowchart_icon.ico"
-				>
-			</File>
-			<File
 				RelativePath="..\..\res\frameoptionsctrl.bmp"
 				>
 			</File>
@@ -2214,22 +2210,6 @@
 			</File>
 			<File
 				RelativePath="..\..\rdo_studio.reg"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\rdostudiochartdoc.ico"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\rdostudioeditdoc.ico"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\rdostudioframedoc.ico"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\rdostudiomodeldoc.ico"
 				>
 			</File>
 			<File
