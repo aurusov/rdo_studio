@@ -1,5 +1,11 @@
 <RCC>
   <qresource prefix="/images">
+    <file>images/tree_chart_erased.png</file>
+    <file>images/tree_chart_root.png</file>
+    <file>images/tree_chart_sub_root_1.png</file>
+    <file>images/tree_chart_sub_root_2.png</file>
+    <file>images/tree_chart_sub_root_3.png</file>
+    <file>images/tree_chart_value.png</file>
     <file>images/help_context.png</file>
     <file>images/tree_frame_item.png</file>
     <file>images/tree_frame_root.png</file>

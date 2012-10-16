@@ -10,25 +10,29 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/bind.hpp>
 #include <QtGui/qaction.h>
+#include <QtGui/qboxlayout.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/dock/dock_trace_tree.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
 // --------------------------------------------------------------------------------
 
 DockTraceTree::DockTraceTree(PTR(QWidget) pParent)
-	: parent_class(
-		"Графики",
-		pParent,
-		parent_class::Context::CreateFunction(
-			boost::bind<BOOL>(&parent_class::Context::context_type::Create, _1, DWORD(0), CRect(0, 0, 0, 0), _2, UINT(0))
-		),
-		QSize(200, 300)
-	)
+	: QDockWidget("Графики", pParent)
 {
+	PTR(context_type) pWidget = new context_type(this);
+	pWidget->setMinimumSize(QSize(200, 300));
+
+	PTR(QVBoxLayout) pLayout = new QVBoxLayout(this);
+	pLayout->setSpacing(0);
+	pLayout->setContentsMargins(0, 0, 0, 0);
+	pLayout->addWidget(pWidget);
+
+	setWidget(pWidget);
+
 	toggleViewAction()->setIcon(QIcon(QString::fromUtf8(":/images/images/dock_chart.png")));
-	tracer->setTree(&getContext());
+
+	tracer->setTree(pWidget);
 }
 
 DockTraceTree::~DockTraceTree()

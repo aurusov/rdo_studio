@@ -11,19 +11,18 @@
 #define _RDO_STUDIO_DOCK_TRACE_TREE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtGui/qdockwidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/dock/dock_base.h"
 #include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracertreectrl.h"
 // --------------------------------------------------------------------------------
 
-class DockTraceTree: public DockBase<RDOTracerTreeCtrl>
+class DockTraceTree: public QDockWidget
 {
 public:
+	typedef  RDOTracerTreeCtrl  context_type;
+
 	DockTraceTree(PTR(QWidget) pParent);
 	virtual ~DockTraceTree();
-
-private:
-	typedef  DockBase<RDOTracerTreeCtrl>  parent_class;
 };
 
 #endif // _RDO_STUDIO_DOCK_TRACE_TREE_H_

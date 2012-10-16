@@ -11,6 +11,7 @@
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtCore/qprocess.h>
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracertreectrl.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
@@ -19,11 +20,8 @@
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracerpattern.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotraceroperation.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracerresult.h"
-#include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
-#include "app/rdo_studio_mfc/src/chart/document.h"
-#include "app/rdo_studio_mfc/htmlhelp.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
@@ -40,25 +38,64 @@ SCODE RDODropSource::GiveFeedback( DROPEFFECT dropEffect )
 	return COleDropSource::GiveFeedback( dropEffect );
 }
 
-IMPLEMENT_DYNCREATE( RDOTracerTreeCtrl, RDOTreeCtrl )
+//! @todo qt
+//BEGIN_MESSAGE_MAP( RDOTracerTreeCtrl, RDOTreeCtrl )
+//	ON_WM_INITMENUPOPUP()
+//	ON_COMMAND( ID_CHART_ADDTONEWCHART, OnAddToNewChart )
+//	ON_UPDATE_COMMAND_UI( ID_CHART_ADDTONEWCHART, OnUpdateAddToNewChart )
+//	ON_NOTIFY_REFLECT( TVN_BEGINDRAG, OnDragDrop )
+//	ON_WM_RBUTTONDOWN()
+//	ON_UPDATE_COMMAND_UI(ID_CHART_FINDINCHARTS, OnUpdateChartFindincharts)
+//	ON_COMMAND(ID_CHART_FINDINCHARTS, OnChartFindincharts)
+//END_MESSAGE_MAP()
 
-// ON_UPDATE_COMMAND_UI сделано
+Q_DECLARE_METATYPE(RDOTracerTreeItem*);
 
-BEGIN_MESSAGE_MAP( RDOTracerTreeCtrl, RDOTreeCtrl )
-	ON_WM_CREATE()
-	ON_WM_INITMENUPOPUP()
-	ON_COMMAND( ID_CHART_ADDTONEWCHART, OnAddToNewChart )
-	ON_UPDATE_COMMAND_UI( ID_CHART_ADDTONEWCHART, OnUpdateAddToNewChart )
-	ON_WM_LBUTTONDBLCLK()
-	ON_NOTIFY_REFLECT( TVN_BEGINDRAG, OnDragDrop )
-	ON_WM_RBUTTONDOWN()
-	ON_UPDATE_COMMAND_UI(ID_CHART_FINDINCHARTS, OnUpdateChartFindincharts)
-	ON_COMMAND(ID_CHART_FINDINCHARTS, OnChartFindincharts)
-	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
-END_MESSAGE_MAP()
-
-RDOTracerTreeCtrl::RDOTracerTreeCtrl(): RDOTreeCtrl()
+RDOTracerTreeCtrl::RDOTracerTreeCtrl(PTR(QWidget) pParent)
+	: parent_type(pParent)
 {
+	setColumnCount    (1);
+	setHeaderHidden   (true);
+	setRootIsDecorated(false);
+
+	m_iconList.reserve(IT_COUNT);
+	m_iconList.push_back(QIcon(QString::fromUtf8(":/images/images/tree_chart_root.png")));
+	m_iconList.push_back(QIcon(QString::fromUtf8(":/images/images/tree_chart_sub_root_1.png")));
+	m_iconList.push_back(QIcon(QString::fromUtf8(":/images/images/tree_chart_sub_root_2.png")));
+	m_iconList.push_back(QIcon(QString::fromUtf8(":/images/images/tree_chart_sub_root_3.png")));
+	m_iconList.push_back(QIcon(QString::fromUtf8(":/images/images/tree_chart_value.png")));
+	m_iconList.push_back(QIcon(QString::fromUtf8(":/images/images/tree_chart_erased.png")));
+
+	rootItem.setTreeItem(new QTreeWidgetItem(this));
+	rootItem.getTreeItem().setText(0, "Модель");
+	rootItem.getTreeItem().setIcon(0, m_iconList[IT_ROOT]);
+
+	createItem(rootItem.getTreeItem(), rtpItem, "Типы ресурсов", IT_SUB_ROOT_1);
+	createItem(rootItem.getTreeItem(), patItem, "Образцы",       IT_SUB_ROOT_1);
+	createItem(rootItem.getTreeItem(), pmvItem, "Результаты",    IT_SUB_ROOT_1);
+
+	rootItem.getTreeItem().setExpanded(true);
+
+	connect(
+		this, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)),
+		this, SLOT(onTreeWidgetItemDoubleClicked(QTreeWidgetItem*, int))
+	);
+
+	//! @todo qt
+	//popupMenu.CreatePopupMenu();
+
+	//if (AfxGetMainWnd())
+	//{
+	//	CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
+	//	if (mainMenu)
+	//	{
+	//		rbool maximized = studioApp.getIMainWnd()->isMDIMaximazed();
+	//		int delta = maximized ? 1 : 0;
+
+	//		appendMenu( mainMenu->GetSubMenu( 6 + delta ), 0, &popupMenu );
+	//		appendMenu( mainMenu->GetSubMenu( 6 + delta ), 1, &popupMenu );
+	//	}
+	//}
 }
 
 RDOTracerTreeCtrl::~RDOTracerTreeCtrl()
@@ -66,263 +103,229 @@ RDOTracerTreeCtrl::~RDOTracerTreeCtrl()
 	source.Empty();
 }
 
-RDOTracerTreeItem* RDOTracerTreeCtrl::getIfItemIsDrawable ( const HTREEITEM hItem ) const
+PTR(RDOTracerTreeItem) RDOTracerTreeCtrl::getIfItemIsDrawable(PTR(QTreeWidgetItem) pCtrlItem) const
 {
-	RDOTracerTreeItem* res = NULL;
-	if ( hItem ) {
-		RDOTracerTreeItem* item = (RDOTracerTreeItem*)GetItemData( hItem );
-		res = item && item->isDrawable() ? item : NULL;
-	}
-	return res;
-}
-
-BOOL RDOTracerTreeCtrl::PreCreateWindow( CREATESTRUCT& cs )
-{
-	cs.style = WS_CHILD | WS_VISIBLE | WS_CLIPCHILDREN | WS_TABSTOP | TVS_HASBUTTONS /*| TVS_LINESATROOT*/ | TVS_HASLINES/* | TVS_DISABLEDRAGDROP*/;
-	cs.dwExStyle |= WS_EX_CLIENTEDGE;
-	return RDOTreeCtrl::PreCreateWindow(cs);
-}
-
-int RDOTracerTreeCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
-{
-	if ( RDOTreeCtrl::OnCreate( lpCreateStruct ) == -1 ) return -1;
-
-	imageList.Create( 16, 16, ILC_COLORDDB | ILC_MASK, 5, 1 );
-	CBitmap bmp;
-	bmp.LoadBitmap( IDB_TREECTRL );
-	imageList.Add( &bmp, RGB( 255, 0, 255 ) );
-	SetImageList( &imageList, TVSIL_NORMAL );
-
-	rootItem.setTreeItem( InsertItem( rdo::format( ID_MODEL_START ).c_str(), 0, 0 ) );
-	rtpItem.setTreeItem( InsertItem( rdo::format( ID_RESOURCE_TYPES ).c_str(), 1, 1, rootItem.getTreeItem() ) );
-	patItem.setTreeItem( InsertItem( rdo::format( ID_PATTERNS ).c_str(), 1, 1, rootItem.getTreeItem() ) );
-	pmvItem.setTreeItem( InsertItem( rdo::format( ID_RESULTS ).c_str(), 1, 1, rootItem.getTreeItem() ) );
-	Expand( rootItem.getTreeItem(), TVE_EXPAND );
-
-	popupMenu.CreatePopupMenu();
-
-	if (AfxGetMainWnd())
+	PTR(RDOTracerTreeItem) pRes = NULL;
+	if (pCtrlItem)
 	{
-		CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
-		if (mainMenu)
-		{
-			rbool maximized = studioApp.getIMainWnd()->isMDIMaximazed();
-			int delta = maximized ? 1 : 0;
-
-			appendMenu( mainMenu->GetSubMenu( 6 + delta ), 0, &popupMenu );
-			appendMenu( mainMenu->GetSubMenu( 6 + delta ), 1, &popupMenu );
-		}
+		PTR(RDOTracerTreeItem) pItem = pCtrlItem->data(0, Qt::UserRole).value<PTR(RDOTracerTreeItem)>();
+		pRes = pItem && pItem->isDrawable()
+			? pItem
+			: NULL;
 	}
-
-	return 0;
+	return pRes;
 }
 
-void RDOTracerTreeCtrl::OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu )
+//! @todo qt
+//void RDOTracerTreeCtrl::OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu )
+//{
+//	RDOTreeCtrl::OnInitMenuPopup( pPopupMenu, nIndex, bSysMenu );
+//	CFrameWnd* pwndFrame = (CFrameWnd*)AfxGetMainWnd();
+//	if( pwndFrame ) pwndFrame->SendMessage( WM_INITMENUPOPUP, WPARAM(pPopupMenu->m_hMenu), MAKELPARAM(nIndex, bSysMenu) );
+//}
+//
+//void RDOTracerTreeCtrl::doDragDrop( RDOTracerTreeItem* item, CPoint point )
+//{
+//	UNUSED(point);
+//
+//	UINT format = tracer->getClipboardFormat();
+//	if ( format ) {
+//		RDOTracerSerie** ptr = (RDOTracerSerie**)::GlobalAlloc( LMEM_FIXED, sizeof( RDOTracerSerie* ) );
+//		*ptr = (RDOTracerSerie*)item;
+//		source.CacheGlobalData( CLIPFORMAT(format), ptr );
+//		source.DoDragDrop( DROPEFFECT_COPY, NULL, &dropsource );
+//		source.Empty();
+//		// Dont call ::GlobalFree( ptr ), because
+//		// COleDataSource::Empty() calls ::ReleaseStgMedium() for
+//		// each allocated storage medium. By Microsoft's default
+//		// STGMEDIUM::punkForRelease == NULL,
+//		// so ::ReleaseStgMedium() calls ::GlobalFree()
+//		// for each allocated STGMEDIUM::TYMED_HGLOBAL.
+//		// ::GlobalFlags( ptr ) returns GMEM_INVALID_HANDLE
+//		// if HGLOBAL is not a valid handle.
+//	}
+//}
+//
+//void RDOTracerTreeCtrl::OnDragDrop ( NMHDR * pNotifyStruct, LRESULT* result )
+//{
+//	LPNMTREEVIEW lpnmtv = (LPNMTREEVIEW)pNotifyStruct;
+//	HTREEITEM hitem = lpnmtv->itemNew.hItem;
+//	RDOTracerTreeItem* item = getIfItemIsDrawable( hitem );
+//	if ( item  )
+//		doDragDrop( item, lpnmtv->ptDrag );
+//	*result = 0;
+//}
+
+void RDOTracerTreeCtrl::setModelName(CREF(tstring) modelName)
 {
-	RDOTreeCtrl::OnInitMenuPopup( pPopupMenu, nIndex, bSysMenu );
-	CFrameWnd* pwndFrame = (CFrameWnd*)AfxGetMainWnd();
-	if( pwndFrame ) pwndFrame->SendMessage( WM_INITMENUPOPUP, WPARAM(pPopupMenu->m_hMenu), MAKELPARAM(nIndex, bSysMenu) );
+	rootItem.getTreeItem().setText(0, QString::fromStdString(rdo::format(ID_MODEL, modelName.c_str())));
 }
 
-void RDOTracerTreeCtrl::setHasChildren( const RDOTracerTreeItem* item, const rbool hasChildren )
+void RDOTracerTreeCtrl::createItem(REF(QTreeWidgetItem) parent, REF(RDOTracerTreeItem) item, CREF(QString) name, IconType iconType)
 {
-	TVITEM tvitem;
-	tvitem.hItem = item->getTreeItem();
-	tvitem.mask = TVIF_CHILDREN;
-	tvitem.cChildren = hasChildren ? 1 : 0;
-	SetItem( &tvitem );
+	PTR(QTreeWidgetItem) pCtrlItem = new QTreeWidgetItem(&parent);
+	pCtrlItem->setText(0, name);
+	pCtrlItem->setIcon(0, m_iconList[iconType]);
+	pCtrlItem->setData(0, Qt::UserRole, QVariant::fromValue(&item));
+	item.setTreeItem(pCtrlItem);
 }
 
-void RDOTracerTreeCtrl::doDragDrop( RDOTracerTreeItem* item, CPoint point )
+void RDOTracerTreeCtrl::addResourceType(PTR(RDOTracerResType) pRTP)
 {
-	UNUSED(point);
+	createItem(rtpItem.getTreeItem(), *pRTP, QString::fromStdString(pRTP->Name), IT_SUB_ROOT_2);
+}
 
-	UINT format = tracer->getClipboardFormat();
-	if ( format ) {
-		RDOTracerSerie** ptr = (RDOTracerSerie**)::GlobalAlloc( LMEM_FIXED, sizeof( RDOTracerSerie* ) );
-		*ptr = (RDOTracerSerie*)item;
-		source.CacheGlobalData( CLIPFORMAT(format), ptr );
-		source.DoDragDrop( DROPEFFECT_COPY, NULL, &dropsource );
-		source.Empty();
-		// Dont call ::GlobalFree( ptr ), because
-		// COleDataSource::Empty() calls ::ReleaseStgMedium() for
-		// each allocated storage medium. By Microsoft's default
-		// STGMEDIUM::punkForRelease == NULL,
-		// so ::ReleaseStgMedium() calls ::GlobalFree()
-		// for each allocated STGMEDIUM::TYMED_HGLOBAL.
-		// ::GlobalFlags( ptr ) returns GMEM_INVALID_HANDLE
-		// if HGLOBAL is not a valid handle.
+void RDOTracerTreeCtrl::addResource(PTR(RDOTracerResource) pRSS)
+{
+	PTR(RDOTracerResType) pRTP = pRSS->getType();
+	createItem(pRTP->getTreeItem(), *pRSS, QString::fromStdString(pRSS->Name), IT_SUB_ROOT_3);
+
+	int count = pRTP->getParamsCount();
+	for (int i = 0; i < count; i++)
+	{
+		PTR(RDOTracerTreeItem) pParam = pRSS->getParam(i);
+		ASSERT(pParam);
+		createItem(pRSS->getTreeItem(), *pParam, QString::fromStdString(pRTP->getParamInfo(i)->Name), IT_VALUE);
+	}
+	updateResource(pRSS);
+}
+
+void RDOTracerTreeCtrl::updateResource(PTR(RDOTracerResource) pRSS)
+{
+	if (pRSS->isErased())
+	{
+		pRSS->getTreeItem().setIcon(0, m_iconList[IT_ERASED]);
+	}
+	else
+	{
+		pRSS->getTreeItem().setIcon(0, m_iconList[IT_SUB_ROOT_3]);
 	}
 }
 
-void RDOTracerTreeCtrl::OnDragDrop ( NMHDR * pNotifyStruct, LRESULT* result )
+void RDOTracerTreeCtrl::addPattern(PTR(RDOTracerPattern) pPAT)
 {
-	LPNMTREEVIEW lpnmtv = (LPNMTREEVIEW)pNotifyStruct;
-	HTREEITEM hitem = lpnmtv->itemNew.hItem;
-	RDOTracerTreeItem* item = getIfItemIsDrawable( hitem );
-	if ( item  )
-		doDragDrop( item, lpnmtv->ptDrag );
-	*result = 0;
+	createItem(patItem.getTreeItem(), *pPAT, QString::fromStdString(pPAT->Name), IT_SUB_ROOT_2);
 }
 
-BOOL RDOTracerTreeCtrl::setModelName( CREF(tstring) modelName )
+void RDOTracerTreeCtrl::addOperation(PTR(RDOTracerOperationBase) pOPR)
 {
-	return SetItemText( rootItem.getTreeItem(), rdo::format( ID_MODEL, modelName.c_str() ).c_str() );
+	createItem(pOPR->getPattern()->getTreeItem(), *pOPR, QString::fromStdString(pOPR->getName()), IT_VALUE);
 }
 
-void RDOTracerTreeCtrl::addResourceType( RDOTracerResType* resType )
+/*void RDOTracerTreeCtrl::addIrregularEvent(PTR(RDOTracerOperation) pOpr)
 {
-	UINT mask = TVIF_IMAGE | TVIF_PARAM | TVIF_SELECTEDIMAGE | TVIF_TEXT;
-	resType->setTreeItem( InsertItem( mask, resType->Name.c_str(), 2, 2, 0, 0, (LPARAM)(RDOTracerTreeItem*)resType, rtpItem.getTreeItem(), TVI_LAST ) );
-	setHasChildren( &rtpItem );
-}
-
-void RDOTracerTreeCtrl::addResource( RDOTracerResource* res )
-{
-	UINT mask =  TVIF_PARAM | TVIF_TEXT;
-	RDOTracerResType* type = res->getType();
-	res->setTreeItem( InsertItem( mask, res->Name.c_str(), 0, 0, 0, 0, (LPARAM)(RDOTracerTreeItem*)res, type->getTreeItem(), TVI_LAST ) );
-	int count = type->getParamsCount();
-	mask |= ( TVIF_IMAGE | TVIF_SELECTEDIMAGE );
-	for ( int i = 0; i < count; i++ )
-		res->getParam( i )->setTreeItem( InsertItem( mask, type->getParamInfo( i )->Name.c_str(), 5, 5, 0, 0, (LPARAM)(RDOTracerTreeItem*)res->getParam( i ), res->getTreeItem(), TVI_LAST ) );
-	updateResource( res );
-	setHasChildren( type );
-}
-
-void RDOTracerTreeCtrl::updateResource( RDOTracerResource* const res )
-{
-	int index = 3;
-	if ( res->isErased() )
-		index = 6;
-	SetItemImage( res->getTreeItem(), index, index );
-}
-
-void RDOTracerTreeCtrl::addPattern( RDOTracerPattern* pat )
-{
-	UINT mask = TVIF_IMAGE | TVIF_PARAM | TVIF_SELECTEDIMAGE | TVIF_TEXT;
-	pat->setTreeItem( InsertItem( mask, pat->Name.c_str(), 2, 2, 0, 0, (LPARAM)(RDOTracerTreeItem*)pat, patItem.getTreeItem(), TVI_LAST ) );
-	setHasChildren( &patItem );
-}
-
-void RDOTracerTreeCtrl::addOperation( RDOTracerOperationBase* opr )
-{
-	UINT mask = TVIF_IMAGE | TVIF_PARAM | TVIF_SELECTEDIMAGE | TVIF_TEXT;
-	opr->setTreeItem( InsertItem( mask, opr->getName().c_str(), 5, 5, 0, 0, (LPARAM)(RDOTracerTreeItem*)opr, opr->getPattern()->getTreeItem(), TVI_LAST ) );
-	setHasChildren( opr->getPattern() );
-}
-
-/*void RDOTracerTreeCtrl::addIrregularEvent( RDOTracerOperation* opr )
-{
-	addOperation( opr );
+	addOperation(pOpr);
 }*/
 
-void RDOTracerTreeCtrl::addResult( RDOTracerResult* res )
+void RDOTracerTreeCtrl::addResult(PTR(RDOTracerResult) pPMV)
 {
-	UINT mask = TVIF_IMAGE | TVIF_PARAM | TVIF_SELECTEDIMAGE | TVIF_TEXT;
-	res->setTreeItem( InsertItem( mask, res->getName().c_str(), 5, 5, 0, 0, (LPARAM)(RDOTracerTreeItem*)res, pmvItem.getTreeItem(), TVI_LAST ) );
-	setHasChildren( &pmvItem );
+	createItem(pmvItem.getTreeItem(), *pPMV, QString::fromStdString(pPMV->getName()), IT_VALUE);
 }
 
-void RDOTracerTreeCtrl::deleteChildren( const RDOTracerTreeItem* parent )
+void RDOTracerTreeCtrl::deleteChildren(REF(RDOTracerTreeItem) parent)
 {
-	RDOTreeCtrl::deleteChildren( parent->getTreeItem() );
-	setHasChildren( parent, false );
+	QList<PTR(QTreeWidgetItem)> children = parent.getTreeItem().takeChildren();
+	BOOST_FOREACH(PTR(QTreeWidgetItem) item, children)
+	{
+		parent.getTreeItem().removeChild(item);
+	}
 }
 
 void RDOTracerTreeCtrl::clear()
 {
-	deleteChildren( &rtpItem );
-	deleteChildren( &patItem );
-	deleteChildren( &pmvItem );
-	SetItemText( rootItem.getTreeItem(), rdo::format( ID_MODEL_START ).c_str() );
+	deleteChildren(rtpItem);
+	deleteChildren(patItem);
+	deleteChildren(pmvItem);
+	rootItem.getTreeItem().setText(0, "Модель");
 }
 
-void RDOTracerTreeCtrl::addToNewChart( const HTREEITEM hitem ) const
+void RDOTracerTreeCtrl::addToNewChart(PTR(QTreeWidgetItem) pCtrlItem) const
 {
-	UNUSED(hitem);
-
-	RDOTracerTreeItem* item = getIfItemIsDrawable( GetSelectedItem() );
-	if ( item ) {
-		tracer->addSerieToChart( static_cast<RDOTracerSerie*>( item ) );
+	PTR(RDOTracerTreeItem) pTreeItem = getIfItemIsDrawable(pCtrlItem);
+	if (pTreeItem)
+	{
+		tracer->addSerieToChart(static_cast<PTR(RDOTracerSerie)>(pTreeItem));
 	}
 }
 
-rbool RDOTracerTreeCtrl::findInCharts( const HTREEITEM hitem ) const
+rbool RDOTracerTreeCtrl::findInCharts(PTR(QTreeWidgetItem) pCtrlItem) const
 {
-	UNUSED(hitem);
-
-	rbool res = false;
-	RDOTracerTreeItem* item = getIfItemIsDrawable( GetSelectedItem() );
-	RDOTracerSerie* serie = NULL;
-	if ( item ) {
-		serie = static_cast<RDOTracerSerie*>( item );
-		res = serie->activateFirstDoc();
+	PTR(RDOTracerTreeItem) pTreeItem = getIfItemIsDrawable(pCtrlItem);
+	if (pTreeItem)
+	{
+		PTR(RDOTracerSerie) pSerie = static_cast<PTR(RDOTracerSerie)>(pTreeItem);
+		return pSerie->activateFirstDoc();
 	}
-	return res;
+	return false;
+}
+
+PTR(QTreeWidgetItem) RDOTracerTreeCtrl::getSelected() const
+{
+	QList<PTR(QTreeWidgetItem)> selected = selectedItems();
+	return selected.size() == 1
+		? selected.front()
+		: NULL;
 }
 
 void RDOTracerTreeCtrl::OnAddToNewChart()
 {
-	addToNewChart( GetSelectedItem() );
+	addToNewChart(getSelected());
 }
 
 void RDOTracerTreeCtrl::OnUpdateAddToNewChart( CCmdUI* pCmdUI )
 {
-	pCmdUI->Enable( tracer->getDrawTrace() && getIfItemIsDrawable( GetSelectedItem() ) != NULL );
+	pCmdUI->Enable(tracer->getDrawTrace() && getIfItemIsDrawable(getSelected()));
 }
 
-void RDOTracerTreeCtrl::OnLButtonDblClk(UINT nFlags, CPoint point) 
+void RDOTracerTreeCtrl::onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pCtrlItem, int)
 {
-	RDOTreeCtrl::OnLButtonDblClk(nFlags, point);
+	if (!tracer->getDrawTrace())
+		return;
 
-	if ( tracer->getDrawTrace() ) {
-		UINT uFlags;
-		HTREEITEM hitem = HitTest( point, &uFlags );
-
-		if ( hitem && ( TVHT_ONITEM & uFlags ) ) {
-			if ( !findInCharts( hitem ) )
-				addToNewChart( hitem );
-		}
+	if (!findInCharts(pCtrlItem))
+	{
+		addToNewChart(pCtrlItem);
 	}
 }
 
-void RDOTracerTreeCtrl::OnRButtonDown(UINT _nFlags, CPoint point) 
-{
-	UNUSED(_nFlags);
+//! @todo qt
+//void RDOTracerTreeCtrl::OnRButtonDown(UINT _nFlags, CPoint point)
+//{
+//	UNUSED(_nFlags);
+//
+//	UINT uFlags;
+//	HTREEITEM hitem = HitTest( point, &uFlags );
+//	if ( hitem && ( TVHT_ONITEM & uFlags ) ) {
+//		SelectItem( hitem );
+//	}
+//	if ( GetFocus() != this )
+//		SetFocus();
+//	CPoint pos = point;
+//	ClientToScreen( &pos );
+//	if ( popupMenu.m_hMenu ) popupMenu.TrackPopupMenu( TPM_LEFTALIGN | TPM_RIGHTBUTTON, pos.x, pos.y, this );
+//}
 
-	UINT uFlags;
-	HTREEITEM hitem = HitTest( point, &uFlags );
-	if ( hitem && ( TVHT_ONITEM & uFlags ) ) {
-		SelectItem( hitem );
-	}
-	if ( GetFocus() != this )
-		SetFocus();
-	CPoint pos = point;
-	ClientToScreen( &pos );
-	if ( popupMenu.m_hMenu ) popupMenu.TrackPopupMenu( TPM_LEFTALIGN | TPM_RIGHTBUTTON, pos.x, pos.y, this );
-}
-
-void RDOTracerTreeCtrl::OnUpdateChartFindincharts(CCmdUI* pCmdUI) 
+void RDOTracerTreeCtrl::OnUpdateChartFindincharts(CCmdUI* pCmdUI)
 {
 	rbool enable = false;
-	if ( tracer->getDrawTrace() ) {
-		RDOTracerTreeItem* item = getIfItemIsDrawable( GetSelectedItem() );
-		RDOTracerSerie* serie = NULL;
-		if ( item ) {
-			serie = static_cast<RDOTracerSerie*>( item );
-			enable = serie->isInOneOrMoreDocs();
+	if (tracer->getDrawTrace())
+	{
+		PTR(RDOTracerTreeItem) pTreeItem = getIfItemIsDrawable(getSelected());
+		if (pTreeItem)
+		{
+			PTR(RDOTracerSerie) pSerie = static_cast<PTR(RDOTracerSerie)>(pTreeItem);
+			enable = pSerie->isInOneOrMoreDocs();
 		}
 	}
-	pCmdUI->Enable( enable );
+	pCmdUI->Enable(enable);
 }
 
-void RDOTracerTreeCtrl::OnChartFindincharts() 
+void RDOTracerTreeCtrl::OnChartFindincharts()
 {
-	findInCharts( GetSelectedItem() );
+	findInCharts(getSelected());
 }
 
-void RDOTracerTreeCtrl::OnHelpKeyword()
+void RDOTracerTreeCtrl::onHelpContext()
 {
 	QByteArray ba;
 	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_model/work_model_chart.htm\n");

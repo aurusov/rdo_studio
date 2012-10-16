@@ -11,15 +11,17 @@
 #define _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOTRACERTREECTRL_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtGui/qtreewidget.h>
+#include <QtGui/qicon.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "ui/mfc_ctrls/rdotreectrl.h"
 #include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracertreeitem.h"
+#include "app/rdo_studio_mfc/src/help_context_i.h"
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOTracerTreeCtrl
 // --------------------------------------------------------------------------------
-class RDODropSource : public COleDropSource
+class RDODropSource: public COleDropSource
 {
 private:
 	virtual SCODE GiveFeedback( DROPEFFECT dropEffect );
@@ -35,61 +37,82 @@ class RDOTracerPattern;
 class RDOTracerOperationBase;
 class RDOTracerResult;
 
-class RDOTracerTreeCtrl: public RDOTreeCtrl  
+class RDOTracerTreeCtrl
+	: public QTreeWidget
+	, public IHelpContext
 {
-DECLARE_DYNCREATE( RDOTracerTreeCtrl )
+Q_OBJECT
+
 private:
-	CImageList imageList;
+	typedef  QTreeWidget  parent_type;
 
-	RDOTracerTreeItem rootItem;
-	RDOTracerTreeItem rtpItem;
-	RDOTracerTreeItem patItem;
-	RDOTracerTreeItem pmvItem;
+	RDOTracerTreeItem  rootItem;
+	RDOTracerTreeItem  rtpItem;
+	RDOTracerTreeItem  patItem;
+	RDOTracerTreeItem  pmvItem;
 
-	void setHasChildren( const RDOTracerTreeItem* item, const rbool hasChildren = true );
+	enum IconType
+	{
+		IT_ROOT       = 0,
+		IT_SUB_ROOT_1,
+		IT_SUB_ROOT_2,
+		IT_SUB_ROOT_3,
+		IT_VALUE,
+		IT_ERASED,
+		IT_COUNT
+	};
+
+	typedef  std::vector<QIcon>  IconList;
+	IconList m_iconList;
+
+	void createItem(REF(QTreeWidgetItem) parent, REF(RDOTracerTreeItem) item, CREF(QString) name, IconType iconType);
+
+	DECLARE_IHelpContext;
 
 protected:
 	COleDataSource source;
 	RDODropSource  dropsource;
 
-	RDOTracerTreeItem* getIfItemIsDrawable( const HTREEITEM hItem ) const;
+	PTR(RDOTracerTreeItem) getIfItemIsDrawable(PTR(QTreeWidgetItem) pCtrlItem) const;
 
-	void doDragDrop( RDOTracerTreeItem* item, CPoint point );
+	//! @todo qt
+	//void doDragDrop( RDOTracerTreeItem* item, CPoint point );
 
 	CMenu popupMenu;
 
-	void  addToNewChart( const HTREEITEM hitem ) const;
-	rbool findInCharts( const HTREEITEM hitem ) const;
+	void  addToNewChart(PTR(QTreeWidgetItem) pCtrlItem) const;
+	rbool findInCharts (PTR(QTreeWidgetItem) pCtrlItem) const;
 
 private:
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	PTR(QTreeWidgetItem) getSelected() const;
 
-	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
-	afx_msg void OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu );
+	//! @todo qt
+	//afx_msg void OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu );
 	afx_msg void OnAddToNewChart();
 	afx_msg void OnUpdateAddToNewChart( CCmdUI* pCmdUI );
-	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
-	afx_msg void OnDragDrop ( NMHDR * pNotifyStruct, LRESULT* result );
-	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
+	//afx_msg void OnDragDrop ( NMHDR * pNotifyStruct, LRESULT* result );
+	//afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnUpdateChartFindincharts(CCmdUI* pCmdUI);
 	afx_msg void OnChartFindincharts();
 	afx_msg void OnHelpKeyword();
-	DECLARE_MESSAGE_MAP()
 
 public:
-	RDOTracerTreeCtrl();
+	RDOTracerTreeCtrl(PTR(QWidget) pParent);
 	virtual ~RDOTracerTreeCtrl();
 
-	BOOL setModelName( CREF(tstring) modelName );
-	void addResourceType( RDOTracerResType* resType );
-	void addResource( RDOTracerResource* res );
-	void updateResource( RDOTracerResource* const res );
-	void addPattern( RDOTracerPattern* pat );
-	void addOperation( RDOTracerOperationBase* opr );
-	//void addIrregularEvent( RDOTracerOperation* opr );
-	void addResult( RDOTracerResult* res );
-	void deleteChildren( const RDOTracerTreeItem* parent );
+	void setModelName   (CREF(tstring) modelName);
+	void addResourceType(PTR(RDOTracerResType)       pRTP);
+	void addResource    (PTR(RDOTracerResource)      pRSS);
+	void updateResource (PTR(RDOTracerResource)      pRSS);
+	void addPattern     (PTR(RDOTracerPattern)       pPAT);
+	void addOperation   (PTR(RDOTracerOperationBase) pOPR);
+	void addResult      (PTR(RDOTracerResult)        pPMV);
+	void deleteChildren (REF(RDOTracerTreeItem)      parent);
 	void clear();
+	//void addIrregularEvent( RDOTracerOperation* opr );
+
+private slots:
+	void onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pCtrlItem, int);
 };
 
 #endif // _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOTRACERTREECTRL_H_
