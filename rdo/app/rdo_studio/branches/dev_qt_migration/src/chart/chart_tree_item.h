@@ -18,27 +18,13 @@
 class RDOTracerTreeItem
 {
 public:
-	RDOTracerTreeItem(rbool drawable = false)
-		: m_pCtrlItem(NULL    )
-		, m_drawable (drawable)
-	{}
-	~RDOTracerTreeItem()
-	{}
+	RDOTracerTreeItem (rbool drawable = false);
+	~RDOTracerTreeItem();
 
-	void setCtrlItem(PTR(QTreeWidgetItem) pCtrlItem)
-	{
-		m_pCtrlItem = pCtrlItem;
-	}
-	REF(QTreeWidgetItem) getCtrlItem()
-	{
-		ASSERT(m_pCtrlItem)
-		return *m_pCtrlItem;
-	}
+	void setCtrlItem(PTR(QTreeWidgetItem) pCtrlItem);
+	REF(QTreeWidgetItem) getCtrlItem();
 
-	rbool isDrawable() const
-	{
-		return m_drawable;
-	}
+	rbool isDrawable() const;
 
 private:
 	PTR(QTreeWidgetItem) m_pCtrlItem;

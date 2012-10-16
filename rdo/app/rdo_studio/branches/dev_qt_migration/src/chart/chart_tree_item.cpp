@@ -14,8 +14,26 @@
 #include "app/rdo_studio_mfc/src/chart/chart_tree_item.h"
 // --------------------------------------------------------------------------------
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
+RDOTracerTreeItem::RDOTracerTreeItem(rbool drawable)
+	: m_pCtrlItem(NULL    )
+	, m_drawable (drawable)
+{}
+
+RDOTracerTreeItem::~RDOTracerTreeItem()
+{}
+
+void RDOTracerTreeItem::setCtrlItem(PTR(QTreeWidgetItem) pCtrlItem)
+{
+	m_pCtrlItem = pCtrlItem;
+}
+
+REF(QTreeWidgetItem) RDOTracerTreeItem::getCtrlItem()
+{
+	ASSERT(m_pCtrlItem)
+	return *m_pCtrlItem;
+}
+
+rbool RDOTracerTreeItem::isDrawable() const
+{
+	return m_drawable;
+}
