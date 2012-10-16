@@ -1,14 +1,14 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdotracertreeitem.h
+  \file      chart_tree_item.h
   \author    Захаров Павел
   \date      12.03.2003
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOTRACERTREEITEM_H_
-#define _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOTRACERTREEITEM_H_
+#ifndef _APP_RDO_STUDIO_CHART_TREE_ITEM_H_
+#define _APP_RDO_STUDIO_CHART_TREE_ITEM_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qtreewidget.h>
@@ -45,4 +45,4 @@ private:
 	rbool                m_drawable; // set to true ONLY for RDOTracerSerie and descendants
 };
 
-#endif // _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOTRACERTREEITEM_H_
+#endif // _APP_RDO_STUDIO_CHART_TREE_ITEM_H_

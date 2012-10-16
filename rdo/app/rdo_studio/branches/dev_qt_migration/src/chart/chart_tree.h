@@ -1,20 +1,20 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdotracertreectrl.h
+  \file      chart_tree.h
   \author    Захаров Павел
   \date      12.03.2003
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOTRACERTREECTRL_H_
-#define _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOTRACERTREECTRL_H_
+#ifndef _APP_RDO_STUDIO_CHART_TREE_H_
+#define _APP_RDO_STUDIO_CHART_TREE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qtreewidget.h>
 #include <QtGui/qicon.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracertreeitem.h"
+#include "app/rdo_studio_mfc/src/chart/chart_tree_item.h"
 #include "app/rdo_studio_mfc/src/help_context_i.h"
 // --------------------------------------------------------------------------------
 
@@ -110,4 +110,4 @@ private slots:
 	void onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pCtrlItem, int);
 };
 
-#endif // _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOTRACERTREECTRL_H_
+#endif // _APP_RDO_STUDIO_CHART_TREE_H_

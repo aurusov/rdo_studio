@@ -26,7 +26,7 @@
 #include "app/rdo_studio_mfc/src/dock/dock_trace.h"
 #include "app/rdo_studio_mfc/src/dock/dock_results.h"
 #include "app/rdo_studio_mfc/src/dock/dock_find.h"
-#include "app/rdo_studio_mfc/src/dock/dock_trace_tree.h"
+#include "app/rdo_studio_mfc/src/dock/dock_chart_tree.h"
 #include "app/rdo_studio_mfc/src/dock/dock_frame.h"
 #include "app/rdo_studio_mfc/src/dock/dock_process.h"
 // --------------------------------------------------------------------------------

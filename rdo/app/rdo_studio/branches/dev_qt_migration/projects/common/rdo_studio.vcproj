@@ -1351,190 +1351,6 @@
 					RelativePath="..\..\rdo_tracer\tracer_ctrls\rdotracerlogstyle.h"
 					>
 				</File>
-				<File
-					RelativePath="..\..\rdo_tracer\tracer_ctrls\rdotracertreectrl.cpp"
-					>
-					<FileConfiguration
-						Name="debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\rdo_tracer\tracer_ctrls\rdotracertreectrl.h"
-					>
-					<FileConfiguration
-						Name="debug|Win32"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-							Description="MOC $(InputFileName)"
-							CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio_mfc/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
-							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release|Win32"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-							Description="MOC $(InputFileName)"
-							CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio_mfc/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
-							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.corba|Win32"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-							Description="MOC $(InputFileName)"
-							CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio_mfc/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
-							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.corba|Win32"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-							Description="MOC $(InputFileName)"
-							CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio_mfc/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
-							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.mt|Win32"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-							Description="MOC $(InputFileName)"
-							CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio_mfc/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
-							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.mt|Win32"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-							Description="MOC $(InputFileName)"
-							CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -fapp/rdo_studio_mfc/pch/stdpch.h -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
-							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\rdo_tracer\tracer_ctrls\rdotracertreeitem.cpp"
-					>
-					<FileConfiguration
-						Name="debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.corba|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="debug.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.mt|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							AdditionalIncludeDirectories=""
-							PreprocessorDefinitions=""
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\..\rdo_tracer\tracer_ctrls\rdotracertreeitem.h"
-					>
-				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -2832,6 +2648,22 @@
 		<Filter
 			Name=".chart"
 			>
+			<File
+				RelativePath="..\..\src\chart\chart_tree.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\chart\chart_tree.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\chart\chart_tree_item.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\chart\chart_tree_item.h"
+				>
+			</File>
 			<File
 				RelativePath="..\..\src\chart\doc_serie.cpp"
 				>
@@ -4140,6 +3972,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\dock\dock_chart_tree.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\dock\dock_chart_tree.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\dock\dock_debug.cpp"
 				>
 			</File>
@@ -4185,14 +4025,6 @@
 			</File>
 			<File
 				RelativePath="..\..\src\dock\dock_trace.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\dock\dock_trace_tree.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\dock\dock_trace_tree.h"
 				>
 			</File>
 		</Filter>

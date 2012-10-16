@@ -13,7 +13,7 @@
 #include <QtGui/qaction.h>
 #include <QtGui/qboxlayout.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/dock/dock_trace_tree.h"
+#include "app/rdo_studio_mfc/src/dock/dock_chart_tree.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
 // --------------------------------------------------------------------------------
 

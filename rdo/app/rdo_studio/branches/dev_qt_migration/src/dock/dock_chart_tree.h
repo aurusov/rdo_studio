@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qdockwidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracertreectrl.h"
+#include "app/rdo_studio_mfc/src/chart/chart_tree.h"
 // --------------------------------------------------------------------------------
 
 class DockTraceTree: public QDockWidget

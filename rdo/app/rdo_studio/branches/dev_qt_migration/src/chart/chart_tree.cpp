@@ -13,7 +13,7 @@
 #include <QtCore/qprocess.h>
 #include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracertreectrl.h"
+#include "app/rdo_studio_mfc/src/chart/chart_tree.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracerrestype.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracerresource.h"
