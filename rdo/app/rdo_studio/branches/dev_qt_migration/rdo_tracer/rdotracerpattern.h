@@ -26,7 +26,7 @@ enum RDOTracerPatternKind {
 	RDOPK_KEYBOARD
 };
 
-class RDOTracerPattern : public RDOTracerTreeItem
+class RDOTracerPattern : public ChartTreeItem
 {
 protected:
 	RDOTracerPatternKind patKind;

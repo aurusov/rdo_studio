@@ -60,7 +60,7 @@ tstring RDOTracerResParamInfo::getEnumValue( unsigned int index ) const
 // -------------------- RDOTracerResType
 // --------------------------------------------------------------------------------
 RDOTracerResType::RDOTracerResType( const RDOTracerResTypeKind kind ) :
-	RDOTracerTreeItem(),
+	ChartTreeItem(),
 	restypeKind( kind )
 {
 }

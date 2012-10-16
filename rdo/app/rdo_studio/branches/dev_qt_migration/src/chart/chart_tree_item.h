@@ -15,11 +15,11 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 // --------------------------------------------------------------------------------
 
-class RDOTracerTreeItem
+class ChartTreeItem
 {
 public:
-	RDOTracerTreeItem (rbool drawable = false);
-	~RDOTracerTreeItem();
+	ChartTreeItem (rbool drawable = false);
+	~ChartTreeItem();
 
 	void setCtrlItem(PTR(QTreeWidgetItem) pCtrlItem);
 	REF(QTreeWidgetItem) getCtrlItem();

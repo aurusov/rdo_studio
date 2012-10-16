@@ -43,7 +43,7 @@ class RDOTracerTimeNow;
 
 typedef std::list< RDOTracerValue* > valuesList;
 
-class RDOTracerSerie : public RDOTracerTreeItem
+class RDOTracerSerie : public ChartTreeItem
 {
 friend class RDOStudioDocSerie;
 

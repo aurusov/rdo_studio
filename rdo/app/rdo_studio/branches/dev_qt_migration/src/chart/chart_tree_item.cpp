@@ -14,26 +14,26 @@
 #include "app/rdo_studio_mfc/src/chart/chart_tree_item.h"
 // --------------------------------------------------------------------------------
 
-RDOTracerTreeItem::RDOTracerTreeItem(rbool drawable)
+ChartTreeItem::ChartTreeItem(rbool drawable)
 	: m_pCtrlItem(NULL    )
 	, m_drawable (drawable)
 {}
 
-RDOTracerTreeItem::~RDOTracerTreeItem()
+ChartTreeItem::~ChartTreeItem()
 {}
 
-void RDOTracerTreeItem::setCtrlItem(PTR(QTreeWidgetItem) pCtrlItem)
+void ChartTreeItem::setCtrlItem(PTR(QTreeWidgetItem) pCtrlItem)
 {
 	m_pCtrlItem = pCtrlItem;
 }
 
-REF(QTreeWidgetItem) RDOTracerTreeItem::getCtrlItem()
+REF(QTreeWidgetItem) ChartTreeItem::getCtrlItem()
 {
 	ASSERT(m_pCtrlItem)
 	return *m_pCtrlItem;
 }
 
-rbool RDOTracerTreeItem::isDrawable() const
+rbool ChartTreeItem::isDrawable() const
 {
 	return m_drawable;
 }

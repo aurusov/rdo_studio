@@ -19,7 +19,7 @@
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOTracerTreeCtrl
+// -------------------- ChartTree
 // --------------------------------------------------------------------------------
 class RDODropSource: public COleDropSource
 {
@@ -40,15 +40,15 @@ class RDOTracerPattern;
 class RDOTracerOperationBase;
 class RDOTracerResult;
 
-class RDOTracerTreeCtrl
+class ChartTree
 	: public QTreeWidget
 	, public IHelpContext
 {
 Q_OBJECT
 
 public:
-	RDOTracerTreeCtrl(PTR(QWidget) pParent);
-	virtual ~RDOTracerTreeCtrl();
+	ChartTree(PTR(QWidget) pParent);
+	virtual ~ChartTree();
 
 	void setModelName   (CREF(tstring) modelName);
 	void addResourceType(PTR(RDOTracerResType)       pRTP);
@@ -57,7 +57,7 @@ public:
 	void addPattern     (PTR(RDOTracerPattern)       pPAT);
 	void addOperation   (PTR(RDOTracerOperationBase) pOPR);
 	void addResult      (PTR(RDOTracerResult)        pPMV);
-	void deleteChildren (REF(RDOTracerTreeItem)      parent);
+	void deleteChildren (REF(ChartTreeItem)          parent);
 	void clear();
 	//void addIrregularEvent( RDOTracerOperation* opr );
 
@@ -76,28 +76,28 @@ private:
 	};
 	typedef  std::vector<QIcon>  IconList;
 
-	RDOTracerTreeItem  m_root;
-	RDOTracerTreeItem  m_rootRTP;
-	RDOTracerTreeItem  m_rootPAT;
-	RDOTracerTreeItem  m_rootPMV;
-	IconList           m_iconList;
+	ChartTreeItem  m_root;
+	ChartTreeItem  m_rootRTP;
+	ChartTreeItem  m_rootPAT;
+	ChartTreeItem  m_rootPMV;
+	IconList       m_iconList;
 
-	COleDataSource     m_source;
-	RDODropSource      m_dropsource;
-	CMenu              m_popupMenu;
+	COleDataSource m_source;
+	RDODropSource  m_dropsource;
+	CMenu          m_popupMenu;
 
-	void createItem(REF(RDOTracerTreeItem) parent, REF(RDOTracerTreeItem) item, CREF(QString) name, IconType iconType);
+	void createItem(REF(ChartTreeItem) parent, REF(ChartTreeItem) item, CREF(QString) name, IconType iconType);
 
 	void  addToNewChart(PTR(QTreeWidgetItem) pCtrlItem) const;
 	rbool findInCharts (PTR(QTreeWidgetItem) pCtrlItem) const;
 
-	PTR(RDOTracerTreeItem) getIfItemIsDrawable(CPTR(QTreeWidgetItem) pCtrlItem) const;
-	PTR(QTreeWidgetItem)   getSelected        () const;
+	PTR(ChartTreeItem)   getIfItemIsDrawable(CPTR(QTreeWidgetItem) pCtrlItem) const;
+	PTR(QTreeWidgetItem) getSelected        () const;
 
 	DECLARE_IHelpContext;
 
 	//! @todo qt
-	//void doDragDrop( RDOTracerTreeItem* item, CPoint point );
+	//void doDragDrop( ChartTreeItem* item, CPoint point );
 	//afx_msg void OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu );
 	//afx_msg void OnDragDrop ( NMHDR * pNotifyStruct, LRESULT* result );
 	//afx_msg void OnRButtonDown(UINT nFlags, CPoint point);

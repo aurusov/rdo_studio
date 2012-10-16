@@ -16,13 +16,13 @@
 #include "app/rdo_studio_mfc/src/chart/chart_tree.h"
 // --------------------------------------------------------------------------------
 
-class DockTraceTree: public QDockWidget
+class DockChartTree: public QDockWidget
 {
 public:
-	typedef  RDOTracerTreeCtrl  context_type;
+	typedef  ChartTree  context_type;
 
-	DockTraceTree(PTR(QWidget) pParent);
-	virtual ~DockTraceTree();
+	DockChartTree(PTR(QWidget) pParent);
+	virtual ~DockChartTree();
 };
 
 #endif // _RDO_STUDIO_DOCK_TRACE_TREE_H_

@@ -17,7 +17,7 @@
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
 // --------------------------------------------------------------------------------
 
-DockTraceTree::DockTraceTree(PTR(QWidget) pParent)
+DockChartTree::DockChartTree(PTR(QWidget) pParent)
 	: QDockWidget("Графики", pParent)
 {
 	PTR(context_type) pWidget = new context_type(this);
@@ -35,5 +35,5 @@ DockTraceTree::DockTraceTree(PTR(QWidget) pParent)
 	tracer->setTree(pWidget);
 }
 
-DockTraceTree::~DockTraceTree()
+DockChartTree::~DockChartTree()
 {}

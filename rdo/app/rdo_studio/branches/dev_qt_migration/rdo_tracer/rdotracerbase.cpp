@@ -615,7 +615,7 @@ void RDOTracerBase::setLog(PTR(rdoTracerLog::RDOTracerLogCtrl) pTracerLog)
 	log = pTracerLog;
 }
 
-void RDOTracerBase::setTree(PTR(RDOTracerTreeCtrl) pTreeCtrl)
+void RDOTracerBase::setTree(PTR(ChartTree) pTreeCtrl)
 {
 	tree = pTreeCtrl;
 }

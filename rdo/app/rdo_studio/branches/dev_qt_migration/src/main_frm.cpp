@@ -232,11 +232,11 @@ void RDOStudioMainFrame::init()
 	tabifyDockWidget(m_pDockBuild, m_pDockFind   );
 	m_pDockDebug->raise();
 
-	m_pDockTraceTree = new DockTraceTree(this);
+	m_pDockChartTree = new DockChartTree(this);
 	m_pDockFrame     = new DockFrame    (this);
-	addDockWidget(Qt::LeftDockWidgetArea, m_pDockTraceTree);
-	tabifyDockWidget(m_pDockTraceTree, m_pDockFrame);
-	m_pDockTraceTree->raise();
+	addDockWidget(Qt::LeftDockWidgetArea, m_pDockChartTree);
+	tabifyDockWidget(m_pDockChartTree, m_pDockFrame);
+	m_pDockChartTree->raise();
 
 	PTR(QMenu) pMenuDockView = new QMenu("Окна");
 	ASSERT(pMenuDockView);
@@ -247,12 +247,12 @@ void RDOStudioMainFrame::init()
 	pMenuDockView->addAction(m_pDockTrace->toggleViewAction());
 	pMenuDockView->addAction(m_pDockResults->toggleViewAction());
 	pMenuDockView->addAction(m_pDockFind->toggleViewAction());
-	pMenuDockView->addAction(m_pDockTraceTree->toggleViewAction());
+	pMenuDockView->addAction(m_pDockChartTree->toggleViewAction());
 	pMenuDockView->addAction(m_pDockFrame->toggleViewAction());
 
 #ifdef PROCGUI_ENABLE
 	m_pDockProcess = new DockProcess(this);
-	tabifyDockWidget(m_pDockTraceTree, m_pDockProcess);
+	tabifyDockWidget(m_pDockChartTree, m_pDockProcess);
 	pMenuDockView->addAction(m_pDockProcess->toggleViewAction());
 #else
 	m_pDockProcess = NULL;

@@ -41,7 +41,7 @@ public:
 // --------------------------------------------------------------------------------
 class RDOTracerResType;
 
-class RDOTracerResource : public RDOTracerTreeItem
+class RDOTracerResource : public ChartTreeItem
 {
 protected:
 	CMutex mutex;

@@ -53,7 +53,7 @@ enum RDOTracerResTypeKind {
 	RDOTK_TEMPORARY
 };
 
-class RDOTracerResType : public RDOTracerTreeItem
+class RDOTracerResType : public ChartTreeItem
 {
 protected:
 	std::vector <RDOTracerResParamInfo*> paramsInfo;
