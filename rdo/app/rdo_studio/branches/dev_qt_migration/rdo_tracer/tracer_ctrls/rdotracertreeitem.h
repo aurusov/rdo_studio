@@ -17,32 +17,32 @@
 
 class RDOTracerTreeItem
 {
-protected:
-	PTR(QTreeWidgetItem) m_pTreeItem;
-	rbool                m_drawable; // set to true ONLY for RDOTracerSerie and descendants
-
 public:
-	RDOTracerTreeItem(const rbool drawable = false)
-		: m_pTreeItem(NULL)
+	RDOTracerTreeItem(rbool drawable = false)
+		: m_pCtrlItem(NULL    )
 		, m_drawable (drawable)
 	{}
 	~RDOTracerTreeItem()
 	{}
 
-	void setTreeItem(PTR(QTreeWidgetItem) pTreeItem)
+	void setCtrlItem(PTR(QTreeWidgetItem) pCtrlItem)
 	{
-		m_pTreeItem = pTreeItem;
+		m_pCtrlItem = pCtrlItem;
 	}
-	REF(QTreeWidgetItem) getTreeItem()
+	REF(QTreeWidgetItem) getCtrlItem()
 	{
-		ASSERT(m_pTreeItem)
-		return *m_pTreeItem;
+		ASSERT(m_pCtrlItem)
+		return *m_pCtrlItem;
 	}
 
-	const rbool isDrawable() const
+	rbool isDrawable() const
 	{
 		return m_drawable;
 	}
+
+private:
+	PTR(QTreeWidgetItem) m_pCtrlItem;
+	rbool                m_drawable; // set to true ONLY for RDOTracerSerie and descendants
 };
 
 #endif // _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOTRACERTREEITEM_H_

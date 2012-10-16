@@ -33,9 +33,9 @@ static char THIS_FILE[] = __FILE__;
 // --------------------------------------------------------------------------------
 // -------------------- RDOTracerTreeCtrl
 // --------------------------------------------------------------------------------
-SCODE RDODropSource::GiveFeedback( DROPEFFECT dropEffect )
+SCODE RDODropSource::GiveFeedback(DROPEFFECT dropEffect)
 {
-	return COleDropSource::GiveFeedback( dropEffect );
+	return COleDropSource::GiveFeedback(dropEffect);
 }
 
 //! @todo qt
@@ -66,15 +66,15 @@ RDOTracerTreeCtrl::RDOTracerTreeCtrl(PTR(QWidget) pParent)
 	m_iconList.push_back(QIcon(QString::fromUtf8(":/images/images/tree_chart_value.png")));
 	m_iconList.push_back(QIcon(QString::fromUtf8(":/images/images/tree_chart_erased.png")));
 
-	rootItem.setTreeItem(new QTreeWidgetItem(this));
-	rootItem.getTreeItem().setText(0, "Модель");
-	rootItem.getTreeItem().setIcon(0, m_iconList[IT_ROOT]);
+	m_root.setCtrlItem(new QTreeWidgetItem(this));
+	m_root.getCtrlItem().setText(0, "Модель");
+	m_root.getCtrlItem().setIcon(0, m_iconList[IT_ROOT]);
 
-	createItem(rootItem.getTreeItem(), rtpItem, "Типы ресурсов", IT_SUB_ROOT_1);
-	createItem(rootItem.getTreeItem(), patItem, "Образцы",       IT_SUB_ROOT_1);
-	createItem(rootItem.getTreeItem(), pmvItem, "Результаты",    IT_SUB_ROOT_1);
+	createItem(m_root, m_rootRTP, "Типы ресурсов", IT_SUB_ROOT_1);
+	createItem(m_root, m_rootPAT, "Образцы",       IT_SUB_ROOT_1);
+	createItem(m_root, m_rootPMV, "Результаты",    IT_SUB_ROOT_1);
 
-	rootItem.getTreeItem().setExpanded(true);
+	m_root.getCtrlItem().setExpanded(true);
 
 	connect(
 		this, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)),
@@ -100,10 +100,10 @@ RDOTracerTreeCtrl::RDOTracerTreeCtrl(PTR(QWidget) pParent)
 
 RDOTracerTreeCtrl::~RDOTracerTreeCtrl()
 {
-	source.Empty();
+	m_source.Empty();
 }
 
-PTR(RDOTracerTreeItem) RDOTracerTreeCtrl::getIfItemIsDrawable(PTR(QTreeWidgetItem) pCtrlItem) const
+PTR(RDOTracerTreeItem) RDOTracerTreeCtrl::getIfItemIsDrawable(CPTR(QTreeWidgetItem) pCtrlItem) const
 {
 	PTR(RDOTracerTreeItem) pRes = NULL;
 	if (pCtrlItem)
@@ -158,34 +158,34 @@ PTR(RDOTracerTreeItem) RDOTracerTreeCtrl::getIfItemIsDrawable(PTR(QTreeWidgetIte
 
 void RDOTracerTreeCtrl::setModelName(CREF(tstring) modelName)
 {
-	rootItem.getTreeItem().setText(0, QString::fromStdString(rdo::format(ID_MODEL, modelName.c_str())));
+	m_root.getCtrlItem().setText(0, QString::fromStdString(rdo::format(ID_MODEL, modelName.c_str())));
 }
 
-void RDOTracerTreeCtrl::createItem(REF(QTreeWidgetItem) parent, REF(RDOTracerTreeItem) item, CREF(QString) name, IconType iconType)
+void RDOTracerTreeCtrl::createItem(REF(RDOTracerTreeItem) parent, REF(RDOTracerTreeItem) item, CREF(QString) name, IconType iconType)
 {
-	PTR(QTreeWidgetItem) pCtrlItem = new QTreeWidgetItem(&parent);
+	PTR(QTreeWidgetItem) pCtrlItem = new QTreeWidgetItem(&parent.getCtrlItem());
 	pCtrlItem->setText(0, name);
 	pCtrlItem->setIcon(0, m_iconList[iconType]);
 	pCtrlItem->setData(0, Qt::UserRole, QVariant::fromValue(&item));
-	item.setTreeItem(pCtrlItem);
+	item.setCtrlItem(pCtrlItem);
 }
 
 void RDOTracerTreeCtrl::addResourceType(PTR(RDOTracerResType) pRTP)
 {
-	createItem(rtpItem.getTreeItem(), *pRTP, QString::fromStdString(pRTP->Name), IT_SUB_ROOT_2);
+	createItem(m_rootRTP, *pRTP, QString::fromStdString(pRTP->Name), IT_SUB_ROOT_2);
 }
 
 void RDOTracerTreeCtrl::addResource(PTR(RDOTracerResource) pRSS)
 {
 	PTR(RDOTracerResType) pRTP = pRSS->getType();
-	createItem(pRTP->getTreeItem(), *pRSS, QString::fromStdString(pRSS->Name), IT_SUB_ROOT_3);
+	createItem(*pRTP, *pRSS, QString::fromStdString(pRSS->Name), IT_SUB_ROOT_3);
 
 	int count = pRTP->getParamsCount();
 	for (int i = 0; i < count; i++)
 	{
 		PTR(RDOTracerTreeItem) pParam = pRSS->getParam(i);
 		ASSERT(pParam);
-		createItem(pRSS->getTreeItem(), *pParam, QString::fromStdString(pRTP->getParamInfo(i)->Name), IT_VALUE);
+		createItem(*pRSS, *pParam, QString::fromStdString(pRTP->getParamInfo(i)->Name), IT_VALUE);
 	}
 	updateResource(pRSS);
 }
@@ -194,22 +194,22 @@ void RDOTracerTreeCtrl::updateResource(PTR(RDOTracerResource) pRSS)
 {
 	if (pRSS->isErased())
 	{
-		pRSS->getTreeItem().setIcon(0, m_iconList[IT_ERASED]);
+		pRSS->getCtrlItem().setIcon(0, m_iconList[IT_ERASED]);
 	}
 	else
 	{
-		pRSS->getTreeItem().setIcon(0, m_iconList[IT_SUB_ROOT_3]);
+		pRSS->getCtrlItem().setIcon(0, m_iconList[IT_SUB_ROOT_3]);
 	}
 }
 
 void RDOTracerTreeCtrl::addPattern(PTR(RDOTracerPattern) pPAT)
 {
-	createItem(patItem.getTreeItem(), *pPAT, QString::fromStdString(pPAT->Name), IT_SUB_ROOT_2);
+	createItem(m_rootPAT, *pPAT, QString::fromStdString(pPAT->Name), IT_SUB_ROOT_2);
 }
 
 void RDOTracerTreeCtrl::addOperation(PTR(RDOTracerOperationBase) pOPR)
 {
-	createItem(pOPR->getPattern()->getTreeItem(), *pOPR, QString::fromStdString(pOPR->getName()), IT_VALUE);
+	createItem(*pOPR->getPattern(), *pOPR, QString::fromStdString(pOPR->getName()), IT_VALUE);
 }
 
 /*void RDOTracerTreeCtrl::addIrregularEvent(PTR(RDOTracerOperation) pOpr)
@@ -219,24 +219,24 @@ void RDOTracerTreeCtrl::addOperation(PTR(RDOTracerOperationBase) pOPR)
 
 void RDOTracerTreeCtrl::addResult(PTR(RDOTracerResult) pPMV)
 {
-	createItem(pmvItem.getTreeItem(), *pPMV, QString::fromStdString(pPMV->getName()), IT_VALUE);
+	createItem(m_rootPMV, *pPMV, QString::fromStdString(pPMV->getName()), IT_VALUE);
 }
 
 void RDOTracerTreeCtrl::deleteChildren(REF(RDOTracerTreeItem) parent)
 {
-	QList<PTR(QTreeWidgetItem)> children = parent.getTreeItem().takeChildren();
+	QList<PTR(QTreeWidgetItem)> children = parent.getCtrlItem().takeChildren();
 	BOOST_FOREACH(PTR(QTreeWidgetItem) item, children)
 	{
-		parent.getTreeItem().removeChild(item);
+		parent.getCtrlItem().removeChild(item);
 	}
 }
 
 void RDOTracerTreeCtrl::clear()
 {
-	deleteChildren(rtpItem);
-	deleteChildren(patItem);
-	deleteChildren(pmvItem);
-	rootItem.getTreeItem().setText(0, "Модель");
+	deleteChildren(m_rootRTP);
+	deleteChildren(m_rootPAT);
+	deleteChildren(m_rootPMV);
+	m_root.getCtrlItem().setText(0, "Модель");
 }
 
 void RDOTracerTreeCtrl::addToNewChart(PTR(QTreeWidgetItem) pCtrlItem) const
