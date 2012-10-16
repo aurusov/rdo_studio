@@ -2257,18 +2257,6 @@
 				>
 			</File>
 			<Filter
-				Name=".images"
-				>
-				<File
-					RelativePath="..\..\res\images\about.png"
-					>
-				</File>
-				<File
-					RelativePath="..\..\res\images\logo.png"
-					>
-				</File>
-			</Filter>
-			<Filter
 				Name=".ui"
 				>
 				<File
