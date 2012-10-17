@@ -577,6 +577,7 @@ public:
 	void             createListCalc         ();
 	void             createTableCalc        (CREF(YYLTYPE)                     elements_pos );
 	void             createAlgorithmicCalc  ();
+//	void             createFuzzyContext     (CREF(YYLTYPE) elements_pos); // load external FCL file
 	CREF(LPRDOParam) getReturn              () const;
 	const ParamList  getParams              () const;
 	rbool            getReturnFlag          () const;
