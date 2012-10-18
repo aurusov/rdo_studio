@@ -109,6 +109,8 @@ RDOStudioModel::RDOStudioModel()
 	modelTemplate[ rdoModelObjects::FRM ] = ModelTemplateItem(IDR_MODEL_TMP2_FRM, 7 );
 	modelTemplate[ rdoModelObjects::FUN ] = ModelTemplateItem(IDR_MODEL_TMP2_FUN, 10);
 	modelTemplate[ rdoModelObjects::SMR ] = ModelTemplateItem(IDR_MODEL_TMP2_SMR, 0 );
+	modelTemplate[ rdoModelObjects::FCL ] = ModelTemplateItem(IDR_MODEL_TMP2_FCL, 0 );
+
 	m_modelTemplates[2] = modelTemplate;
 
 	modelTemplate.clear();
@@ -122,6 +124,7 @@ RDOStudioModel::RDOStudioModel()
 	modelTemplate[ rdoModelObjects::FRM ] = ModelTemplateItem(IDR_MODEL_TMP3_FRM, 84 );
 	modelTemplate[ rdoModelObjects::FUN ] = ModelTemplateItem(IDR_MODEL_TMP3_FUN, 44 );
 	modelTemplate[ rdoModelObjects::SMR ] = ModelTemplateItem(IDR_MODEL_TMP3_SMR, 0  );
+	modelTemplate[ rdoModelObjects::FCL ] = ModelTemplateItem(IDR_MODEL_TMP3_FCL, 0  );
 	m_modelTemplates[3] = modelTemplate;
 
 	modelTemplate.clear();
@@ -133,6 +136,7 @@ RDOStudioModel::RDOStudioModel()
 	modelTemplate[ rdoModelObjects::FUN ] = ModelTemplateItem( IDR_MODEL_TMP4_FUN, 0 );
 	modelTemplate[ rdoModelObjects::SMR ] = ModelTemplateItem( IDR_MODEL_TMP4_SMR, 0 );
 	modelTemplate[ rdoModelObjects::PMD ] = ModelTemplateItem( IDR_MODEL_TMP4_PMD, 0 );
+	modelTemplate[ rdoModelObjects::FCL ] = ModelTemplateItem( IDR_MODEL_TMP4_FCL, 0 );
 	m_modelTemplates[4] = modelTemplate;
 
 	modelTemplate.clear();
@@ -144,6 +148,7 @@ RDOStudioModel::RDOStudioModel()
 	modelTemplate[ rdoModelObjects::FUN ] = ModelTemplateItem(IDR_MODEL_TMP5_FUN, 0);
 	modelTemplate[ rdoModelObjects::SMR ] = ModelTemplateItem(IDR_MODEL_TMP5_SMR, 0);
 	modelTemplate[ rdoModelObjects::PMD ] = ModelTemplateItem(IDR_MODEL_TMP5_PMD, 0);
+	modelTemplate[ rdoModelObjects::FCL ] = ModelTemplateItem(IDR_MODEL_TMP5_FCL, 0);
 	m_modelTemplates[5] = modelTemplate;
 
 	modelTemplate.clear();
@@ -155,6 +160,7 @@ RDOStudioModel::RDOStudioModel()
 	modelTemplate[ rdoModelObjects::FUN ] = ModelTemplateItem(IDR_MODEL_TMP6_FUN, 0);
 	modelTemplate[ rdoModelObjects::SMR ] = ModelTemplateItem(IDR_MODEL_TMP6_SMR, 0);
 	modelTemplate[ rdoModelObjects::PMD ] = ModelTemplateItem(IDR_MODEL_TMP6_PMD, 0);
+	modelTemplate[ rdoModelObjects::FCL ] = ModelTemplateItem(IDR_MODEL_TMP6_FCL, 0);
 	m_modelTemplates[6] = modelTemplate;
 
 	modelTemplate.clear();
@@ -166,6 +172,7 @@ RDOStudioModel::RDOStudioModel()
 	modelTemplate[ rdoModelObjects::FUN ] = ModelTemplateItem(IDR_MODEL_TMP7_FUN, 0);
 	modelTemplate[ rdoModelObjects::SMR ] = ModelTemplateItem(IDR_MODEL_TMP7_SMR, 0);
 	modelTemplate[ rdoModelObjects::PMD ] = ModelTemplateItem(IDR_MODEL_TMP7_PMD, 0);
+	modelTemplate[ rdoModelObjects::FCL ] = ModelTemplateItem(IDR_MODEL_TMP7_FCL, 0);
 	m_modelTemplates[7] = modelTemplate;
 
 	notifies.push_back(RT_STUDIO_MODEL_GET_TEXT             );
@@ -901,6 +908,7 @@ void RDOStudioModel::openModelFromRepository()
 						case rdoModelObjects::FRM: obj = IDS_MODEL_FRAMES;        break;
 						case rdoModelObjects::FUN: obj = IDS_MODEL_FUNCTIONS;     break;
 						case rdoModelObjects::PMD: obj = IDS_MODEL_PMDS;          break;
+						case rdoModelObjects::FCL: obj = IDS_MODEL_FCL;           break;
 						}
 						if (obj)
 						{
@@ -984,6 +992,7 @@ void RDOStudioModel::saveModelToRepository()
 					case rdoModelObjects::PRC:
 					case rdoModelObjects::FRM:
 					case rdoModelObjects::FUN:
+					case rdoModelObjects::FCL:
 					case rdoModelObjects::PMD:
 						{
 							rdo::repository::RDOThreadRepository::FileData fileData(type, stream);
