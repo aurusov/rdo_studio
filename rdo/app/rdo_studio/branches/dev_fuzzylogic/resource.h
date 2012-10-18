@@ -106,6 +106,11 @@
 #define IDR_TOOLBAR_EMPTY               265
 #define IDR_TOOLBAR_MAINFRAME_D         266
 #define IDR_FLOWCHART_TYPE              267
+#define IDR_MODEL_TMP3_FCL              268
+#define IDR_MODEL_TMP4_FCL              269
+#define IDR_MODEL_TMP5_FCL              270
+#define IDR_MODEL_TMP6_FCL              271
+#define IDR_MODEL_TMP7_FCL              272
 #define IDC_CLEARAUTO_CHECK             1001
 #define IDC_STYLEITEM_TREE              1002
 #define IDC_BUFFERVALUESTATIC           1003
@@ -723,6 +728,7 @@
 #define IDS_MODEL_RUNTIMEERROR          40215
 #define IDS_MODEL_BUILDING_BEGIN        40216
 #define IDS_MODEL_BUILDING_RESULTS      40217
+#define IDS_MODEL_FCL                   40218
 #define IDS_MODEL_RESOURCE_LOADING_BEGIN 40219
 #define IDS_MODEL_RESOURCE_LOADING_NAME 40220
 #define IDS_MODEL_RESOURCE_LOADING_NAME_OK 40221
@@ -775,6 +781,7 @@
 #define ID_MSG_MODEL_NEED_STOPED_FOR_OPEN2 60007
 #define ID_MSG_MODELCLOSE_QUERY         60007
 #define ID_MSG_MODELCLOSE_QUERY2        60008
+#define IDR_MODEL_TMP2_FCL              60009
 
 // Next default values for new objects
 // 
