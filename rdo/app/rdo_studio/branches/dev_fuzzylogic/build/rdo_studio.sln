@@ -162,6 +162,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".report", ".report", "{5425
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "scintilla", "..\..\..\thirdparty\sci\win32\scintilla.vcproj", "{4FD39261-AA37-485C-AFFA-D910E8BE7B06}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ffllapi", "..\..\..\thirdparty\ffll\Msvc\FFLL API.vcproj", "{E08EE7A6-6256-439E-9765-9F0A202AB0F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		debug.corba|x64 = debug.corba|x64
@@ -666,6 +668,22 @@ Global
 		{4FD39261-AA37-485C-AFFA-D910E8BE7B06}.release|x64.ActiveCfg = release|Win32
 		{4FD39261-AA37-485C-AFFA-D910E8BE7B06}.release|x86.ActiveCfg = release|Win32
 		{4FD39261-AA37-485C-AFFA-D910E8BE7B06}.release|x86.Build.0 = release|Win32
+		{E08EE7A6-6256-439E-9765-9F0A202AB0F8}.debug.corba|x64.ActiveCfg = debug|Win32
+		{E08EE7A6-6256-439E-9765-9F0A202AB0F8}.debug.corba|x86.ActiveCfg = debug|Win32
+		{E08EE7A6-6256-439E-9765-9F0A202AB0F8}.debug.corba|x86.Build.0 = debug|Win32
+		{E08EE7A6-6256-439E-9765-9F0A202AB0F8}.debug.mt|x64.ActiveCfg = debug|Win32
+		{E08EE7A6-6256-439E-9765-9F0A202AB0F8}.debug.mt|x86.ActiveCfg = debug|Win32
+		{E08EE7A6-6256-439E-9765-9F0A202AB0F8}.debug|x64.ActiveCfg = debug|Win32
+		{E08EE7A6-6256-439E-9765-9F0A202AB0F8}.debug|x86.ActiveCfg = debug|Win32
+		{E08EE7A6-6256-439E-9765-9F0A202AB0F8}.debug|x86.Build.0 = debug|Win32
+		{E08EE7A6-6256-439E-9765-9F0A202AB0F8}.release.corba|x64.ActiveCfg = release|Win32
+		{E08EE7A6-6256-439E-9765-9F0A202AB0F8}.release.corba|x86.ActiveCfg = release|Win32
+		{E08EE7A6-6256-439E-9765-9F0A202AB0F8}.release.mt|x64.ActiveCfg = release|Win32
+		{E08EE7A6-6256-439E-9765-9F0A202AB0F8}.release.mt|x86.ActiveCfg = release|Win32
+		{E08EE7A6-6256-439E-9765-9F0A202AB0F8}.release.mt|x86.Build.0 = release|Win32
+		{E08EE7A6-6256-439E-9765-9F0A202AB0F8}.release|x64.ActiveCfg = release|Win32
+		{E08EE7A6-6256-439E-9765-9F0A202AB0F8}.release|x86.ActiveCfg = release|Win32
+		{E08EE7A6-6256-439E-9765-9F0A202AB0F8}.release|x86.Build.0 = release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -706,6 +724,7 @@ Global
 		{89A1E353-E2DC-495C-B403-742BE206ACED} = {807B893B-C55E-463C-861F-427D54396501}
 		{DB8E188F-B492-3826-B679-00ACC9944E2D} = {807B893B-C55E-463C-861F-427D54396501}
 		{4FD39261-AA37-485C-AFFA-D910E8BE7B06} = {807B893B-C55E-463C-861F-427D54396501}
+		{E08EE7A6-6256-439E-9765-9F0A202AB0F8} = {807B893B-C55E-463C-861F-427D54396501}
 		{1A30755E-7F25-4D65-9A1F-A60369337BFB} = {5425BEB8-53E7-403F-8CCC-34065EB9C016}
 	EndGlobalSection
 EndGlobal
