@@ -11,6 +11,7 @@
 #include <boost/filesystem.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdocommon.h"
+#include "utils/rdolocale.h"
 #include "repository/rdorepository.h"
 #include "simulator/service/rdosimwin.h"
 #include "app/rdo_console/terminate_codes.h"
@@ -26,6 +27,8 @@ static ruint g_exitCode = TERMINATION_NORMAL;
 
 int main(int argc, PTR(char) argv[])
 {
+    rdo::setup_locale();
+
 	RDOControllerConsoleOptions options_controller(argc, argv);
 	options_controller.parseOptions();
 

@@ -1,5 +1,5 @@
 #==============================================================================
-# Copyright (c) 2011 Evgeny Proydakov <lord.tiran@gmail.com>
+# Copyright (c) 2011-2012 Evgeny Proydakov <lord.tiran@gmail.com>
 #==============================================================================
 
 MESSAGE(STATUS "CREATE  RDO_UTILS  LIBRARY ")
@@ -28,9 +28,11 @@ SET(HEADER_FILES
 	rdostream.h
 	rdotime.h
 	rdotypes.h
+	rdolocale.h
 	stack.h
 	static_assert.h
-	supersubclass.h)
+	supersubclass.h
+	)
 
 SET(INLITE_FILES
 	rdoanimation.inl
@@ -38,12 +40,15 @@ SET(INLITE_FILES
 	rdofile.inl
 	rdointerface.inl
 	rdotime.inl
-	stack.inl)
+	stack.inl
+	)
 
 SET(SOURCE_FILES
     model_objects.cpp
 	rdocommon.cpp
-	rdofile.cpp)
+	rdofile.cpp
+	rdolocale.cpp
+	)
 
 SET(SMART_PTR_FILES
 	smart_ptr/factory.h
@@ -61,7 +66,8 @@ SET(SMART_PTR_FILES
 	smart_ptr/ref_counter.inl
 	smart_ptr/ref_counter.h
 	smart_ptr/counter_reference.h
-	smart_ptr/counter_reference.inl)
+	smart_ptr/counter_reference.inl
+	)
 
 ADD_LIBRARY(rdo_utils ${HEADER_FILES} ${INLITE_FILES} ${SOURCE_FILES} ${SMART_PTR_FILES})
 SET_TARGET_PROPERTIES(rdo_utils PROPERTIES LINKER_LANGUAGE CXX)
@@ -74,16 +80,21 @@ IF(MSVC) # lotions for windows #
 
 SOURCE_GROUP(".animation" FILES 
 	rdoanimation.h
-	rdoanimation.inl)
+	rdoanimation.inl
+	)
 
 SOURCE_GROUP(".common" FILES
 	rdotypes.h
 	namespace.h
 	rdomacros.h 
 	rdocommon.h
+	rdolocale.h
+	rdolocale.cpp
 	rdocommon.inl
 	rdocommon.cpp
-	model_objects.h)
+	model_objects.h
+	model_objects.cpp
+	)
 
 SOURCE_GROUP(".debug" FILES 
 	rdodebug.h
@@ -92,38 +103,46 @@ SOURCE_GROUP(".debug" FILES
 SOURCE_GROUP(".file" FILES 
 	rdofile.h
 	rdofile.inl
-	rdofile.cpp)
+	rdofile.cpp
+	)
 
 SOURCE_GROUP(".interface" FILES 
 	rdointerface.h
-	rdointerface.inl)
+	rdointerface.inl
+	)
 
 SOURCE_GROUP(".smart_ptr_factory" FILES
 	smart_ptr/factory.h
-	smart_ptr/factory.inl)
+	smart_ptr/factory.inl
+	)
 
 SOURCE_GROUP(".smart_ptr_wrapper" FILES
-	rdosmart_ptr_wrapper.h)
+	rdosmart_ptr_wrapper.h
+	)
 
 SOURCE_GROUP(".smart_ptr_ref_counter" FILES
 	smart_ptr/ref_counter_i.h
 	smart_ptr/ref_counter.inl
 	smart_ptr/ref_counter.h
 	smart_ptr/counter_reference.h
-	smart_ptr/counter_reference.inl)
+	smart_ptr/counter_reference.inl
+	)
 
 SOURCE_GROUP(".smart_ptr_interface_ptr" FILES
 	smart_ptr/interface_ptr.h
-	smart_ptr/interface_ptr.inl)
+	smart_ptr/interface_ptr.inl
+	)
 
 SOURCE_GROUP(".smart_ptr_intrusive_ptr" FILES
 	smart_ptr/intrusive_ptr.h
 	smart_ptr/intrusive_ptr_interface_wrapper.h
 	smart_ptr/intrusive_ptr.inl
-	smart_ptr/intrusive_ptr_interface_wrapper.inl)
+	smart_ptr/intrusive_ptr_interface_wrapper.inl
+	)
 
 SOURCE_GROUP(".stream" FILES 
-	rdostream.h)
+	rdostream.h
+	)
 
 SOURCE_GROUP(".stuff" FILES 
 	stack.h
@@ -131,13 +150,16 @@ SOURCE_GROUP(".stuff" FILES
 	supersubclass.h
 	rdosingletone.h
 	rdoidgenerator.h
-	rdoindexedstack.h)
+	rdoindexedstack.h
+	)
 
 SOURCE_GROUP(".time" FILES
 	rdotime.h
-	rdotime.inl)
+	rdotime.inl
+	)
 
 SOURCE_GROUP(".platform" FILES
-	platform.h)
+	platform.h
+	)
 
 ENDIF(MSVC)
