@@ -3413,7 +3413,7 @@ END
 STRINGTABLE 
 BEGIN
     ID_INSERT_PRC_TEMPL_PROCESS
-                            "$Process <>\r\n\tGENERATE\r\n\r\n\tQUEUE\r\n\r\n\tSEIZE\r\n\r\n\tDEPART\r\n\r\n\tADVANCE\r\n\r\n\tQUEUE\r\n\r\n\tRELEASE\r\n\r\n\tTERMINATE\r\n$End\r\n"
+                            "$Process \r\n\tGENERATE \r\n\r\n\tQUEUE\r\n\r\n\tSEIZE\r\n\r\n\tDEPART\r\n\r\n\tADVANCE\r\n\r\n\tQUEUE\r\n\r\n\tRELEASE\r\n\r\n\tTERMINATE\r\n$End\r\n"
 END
 
 STRINGTABLE 
