@@ -27,7 +27,7 @@ static ruint g_exitCode = TERMINATION_NORMAL;
 
 int main(int argc, PTR(char) argv[])
 {
-    rdo::setup_locale();
+	rdo::setup_locale();
 
 	RDOControllerConsoleOptions options_controller(argc, argv);
 	options_controller.parseOptions();

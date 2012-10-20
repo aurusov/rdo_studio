@@ -18,15 +18,15 @@ OPEN_RDO_NAMESPACE
 
 void setup_locale()
 {
-    std::locale default_locale (std::locale::classic());
+	std::locale default_locale (std::locale::classic());
 
-    std::locale C99_out_locale(default_locale, new boost::math::nonfinite_num_put<char>);
-    std::locale C99_in_locale(default_locale, new boost::math::nonfinite_num_get<char>);
+	std::locale C99_out_locale(default_locale, new boost::math::nonfinite_num_put<char>);
+	std::locale C99_in_locale(default_locale, new boost::math::nonfinite_num_get<char>);
 
-    std::cout.imbue(C99_out_locale);
-    std::cerr.imbue(C99_out_locale);
-    std::clog.imbue(C99_out_locale);
-    std::cin.imbue(C99_in_locale);
+	std::cout.imbue(C99_out_locale);
+	std::cerr.imbue(C99_out_locale);
+	std::clog.imbue(C99_out_locale);
+	std::cin.imbue(C99_in_locale);
 }
 
 CLOSE_RDO_NAMESPACE
