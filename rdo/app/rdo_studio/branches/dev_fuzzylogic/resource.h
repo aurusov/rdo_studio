@@ -303,7 +303,7 @@
 #define ID_INSERT_PAT_FIRST             32866
 #define ID_INSERT_PAT_WITHMAX           32867
 #define ID_INSERT_PAT_WITHMIN           32868
-#define ID_INSERT_PAT_SET               32869
+//#define ID_INSERT_PAT_SET               32869 // можно использовать
 #define ID_INSERT_PAT_END               32870
 #define ID_INSERT_RTP_RTPPERMANENT      32871
 #define ID_INSERT_RTP_RTPTEMPORARY      32872
@@ -362,7 +362,7 @@
 #define ID_INSERT_FUN_END               32925
 #define ID_INSERT_DPT_TEMPL_SEARCH      32926
 #define ID_INSERT_DPT_TEMPL_SOME        32927
-#define ID_INSERT_DPT_ACTIV             32928
+//#define ID_INSERT_DPT_ACTIV             32928 //можно использовать
 #define ID_INSERT_DPT_DECISIONPOINT     32929
 #define ID_INSERT_DPT_SOME              32930
 #define ID_INSERT_DPT_SEARCH            32931
@@ -381,8 +381,8 @@
 #define ID_INSERT_DPT_VALUEAFTER        32945
 #define ID_INSERT_DPT_END               32946
 #define ID_INSERT_SMR_MODELNAME         32947
-#define ID_INSERT_SMR_RESOURCEFILE      32948
-#define ID_INSERT_SMR_OPRIEVFILE        32949
+//#define ID_INSERT_SMR_RESOURCEFILE      32948 //можно использовать
+//#define ID_INSERT_SMR_OPRIEVFILE        32949 //можно использовать
 #define ID_INSERT_SMR_STATISTICFILE     32950
 #define ID_INSERT_SMR_RESULTSFILE       32951
 #define ID_INSERT_SMR_TRACEFILE         32952
