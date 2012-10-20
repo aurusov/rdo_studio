@@ -898,7 +898,7 @@ BEGIN
         END
 		POPUP "EVN"
         BEGIN
-            MENUITEM "EVN",                         ID_INSERT_PAT_TEMPL_EVENT
+            MENUITEM "EVN event",                   ID_INSERT_PAT_TEMPL_EVENT
             MENUITEM "$Pattern",                    ID_INSERT_PAT_PATTERN
             MENUITEM "trace",                       ID_INSERT_PAT_TRACE
             MENUITEM "no_trace",                    ID_INSERT_PAT_NOTRACE
@@ -4421,7 +4421,7 @@ BEGIN
         END
 		POPUP "EVN"
         BEGIN
-            MENUITEM "EVN",                         ID_INSERT_PAT_TEMPL_EVENT
+            MENUITEM "EVN event",                   ID_INSERT_PAT_TEMPL_EVENT
             MENUITEM "$Pattern",                    ID_INSERT_PAT_PATTERN
             MENUITEM "trace",                       ID_INSERT_PAT_TRACE
             MENUITEM "no_trace",                    ID_INSERT_PAT_NOTRACE
