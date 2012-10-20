@@ -321,10 +321,10 @@
 #define ID_INSERT_RSS_TRACE             32884
 #define ID_INSERT_RSS_NOTRACE           32885
 #define ID_INSERT_RSS_END               32886
-//#define ID_INSERT_FUN_CALCULATEIF       32887 // можно использовать
+#define ID_INSERT_PRC_END               32887 
 #define ID_INSERT_PRC_TEMPL_PROCESS     32888
 #define ID_INSERT_DPT_PRIOR             32889
-//#define ID_INSERT_PRC_PROCESS           32890 // можно использовать
+#define ID_INSERT_PRC_PROCESS           32890
 //#define ID_INSERT_PRC_GENERATE          32891 // можно использовать
 #define ID_INSERT_FRM_FRM               32892
 #define ID_INSERT_FRM_FRAME             32893
