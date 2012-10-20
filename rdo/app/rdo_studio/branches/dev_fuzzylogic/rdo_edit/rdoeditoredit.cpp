@@ -654,7 +654,7 @@ void RDOEditorEdit::OnInsertCommand( UINT nID )
 		case ID_INSERT_ALGO_FOR             : incPos = 5;  break;
 		case ID_INSERT_ALGO_IF              :
 		case ID_INSERT_ALGO_IF_ELSE         : incPos = 4;  break;
-		case ID_INSERT_PRC_TEMPL_PROCESS    : incPos = 9;  break;
+		case ID_INSERT_PRC_TEMPL_PROCESS    : incPos = 10;  break;
 	}
 
 	replaceCurrent( static_cast<LPCTSTR>(s), incPos );
