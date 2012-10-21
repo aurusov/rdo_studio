@@ -2,6 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_ffll", "..\projects\tests\test_ffll.vcproj", "{3CA927FE-DBFC-413D-934C-8698104C0D5E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E08EE7A6-6256-439E-9765-9F0A202AB0F8} = {E08EE7A6-6256-439E-9765-9F0A202AB0F8}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ffllapi", "..\..\..\thirdparty\ffll\Msvc\FFLL API.vcproj", "{E08EE7A6-6256-439E-9765-9F0A202AB0F8}"
 EndProject
