@@ -199,9 +199,6 @@
 %token RDO_QUEUE
 %token RDO_DEPART
 %token RDO_ASSIGN
-//%token RDO_FuzzyType
-//%token RDO_FuzzyInput
-//%token RDO_FuzzyOutput
 
 %{
 // ---------------------------------------------------------------------------- PCH
@@ -446,12 +443,6 @@ fun_func_footer
 		ASSERT(pFunction);
 		pFunction->createTableCalc(@6);
 	}
-	//| RDO_Type '=' RDO_FuzzyType fun_func_parameters RDO_Body fun_fuzzy_body RDO_End
-	//{
-	//	LPRDOFUNFunction pFunction = PARSER->getLastFUNFunction();
-	//	ASSERT(pFunction);
-	////	pFunction->createFuzzyContext(@6);
-	//}
 	| RDO_Type '=' RDO_algorithmic fun_func_parameters alg_body statement_list error
 	{
 		PARSER->error().error(@7, _T("Ожидается ключевое слово $End"));
@@ -528,42 +519,6 @@ fun_func_list_body
 	: /* empty */
 	| fun_func_list_body fun_func_list_value
 	;
-//member_statement_parent
-//	: RDO_IDENTIF
-//	{
-//		LPRDOValue pIdentificator = PARSER->stack().pop<RDOValue>($1);
-//		ASSERT(pIdentificator);
-//
-//		LPContext pCurrentContext = PARSER->context();
-//		ASSERT(pCurrentContext);
-//
-//		LPContext pContext = pCurrentContext->find(pIdentificator);
-//		if (!pContext)
-//		{
-//			PARSER->error().error(@1, rdo::format(_T("Неизвестный идентификатор: %s"), pIdentificator->value().getIdentificator().c_str()));
-//		}
-//
-//		$$ = PARSER->stack().push(pContext);
-//	}
-//	;
-//fun_fuzzy_body
-//	: /* empty */
-//	| RDO_FuzzyInput member_statement_parent '.' RDO_IDENTIF
-//	{
-//		LPContext pContext        = PARSER->stack().pop<Context>($2);
-//		LPRDOValue pIdentificator = PARSER->stack().pop<RDOValue>($4);
-//		ASSERT(pContext      );
-//		ASSERT(pIdentificator);
-//
-//		LPExpression pExpression = pContext->create(pIdentificator);
-//		if (!pExpression)
-//		{
-//			PARSER->error().error(@3, rdo::format(_T("Неизвестный идентификатор: %s"), pIdentificator->value().getIdentificator().c_str()));
-//		}
-//
-//		$$ = PARSER->stack().push(pExpression);
-//	}
-//	;
 
 fun_func_list_value
 	: RDO_IDENTIF
@@ -601,9 +556,6 @@ fun_func_list_value
 		$$ = PARSER->stack().push(pValue);
 	}
 	;
-// --------------------------------------------------------------------------------
-// -------------------- FuzzyFunction
-// --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
 // -------------------- Последовательности

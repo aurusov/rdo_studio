@@ -1593,23 +1593,7 @@ void RDOFUNFunction::createTableCalc(CREF(YYLTYPE) elements_pos)
 	}
 	setFunctionCalc(pFuncTableCalc);
 }
-//void RDOFUNFunction::createFuzzyContext(CREF(YYLTYPE) elements_pos)
-//{
-//	ruint model   = ffll_new_model();  // fcl library creates model
-//	ruint ret_val = (ruint)ffll_load_fcl_file(model, "model.fcl");  
-//
-//	if (ret_val < 0)
-//	{
-//		RDOParser::s_parser()->error().error(src_info(), _T("Error Opening fcl file"));
-//		return 0;
-//	}
-//	ruint child = ffll_new_child(model);
-//
-//	ffll_set_value(model, child, OUR_HEALTH, our_health); 
-//	ffll_set_value(model, child, ENEMY_HEALTH, enemy_health);
-//
-//
-//}
+
 void RDOFUNFunction::createAlgorithmicCalc()
 {
 	if (!m_returnFlag)

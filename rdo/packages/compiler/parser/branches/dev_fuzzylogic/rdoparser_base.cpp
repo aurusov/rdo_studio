@@ -92,7 +92,6 @@ void RDOParserContainer::getMinMax(rdoModelObjects::RDOParseType type, REF(ruint
 		case rdoModelObjects::obFRM : min = 1000; max = 1099; break;
 		case rdoModelObjects::obSMR : min = 1100; max = 1199; break;
 		case rdoModelObjects::obPOST: min = 1200; max = 1299; break;
-//		case rdoModelObjects::obFCL:  min = 1300; max = 1399; break;
 		default                     : min = ruint(UNDEFINED_ID); max = ruint(UNDEFINED_ID); break;
 	}
 }
@@ -128,7 +127,6 @@ RDOParserContainerModel::RDOParserContainerModel()
 	insert(rdoModelObjects::obSMR, rdo::Factory<RDOParserRSSPost>::create());
 	insert(rdoModelObjects::obSMR, rdo::Factory<RDOParserRDOItem>::create(rdoModelObjects::SMR, smr_sim_parse, smr_sim_error, smr_sim_lex));
 	insert(rdoModelObjects::obSMR, rdo::Factory<RDOParserSMRPost>::create());
-
 }
 
 // --------------------------------------------------------------------------------
