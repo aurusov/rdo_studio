@@ -100,7 +100,7 @@ public:
 	virtual void     onStart         (CREF(rdo::runtime::LPRDORuntime) pRuntime);                   \
 	virtual void     onStop          (CREF(rdo::runtime::LPRDORuntime) pRuntime);                   \
 	virtual rbool    onCheckCondition(CREF(rdo::runtime::LPRDORuntime) pRuntime);                   \
-	virtual BOResult onDoOperation   (CREF(rdo::runtime::LPRDORuntime) pRuntime);					    \
+	virtual BOResult onDoOperation   (CREF(rdo::runtime::LPRDORuntime) pRuntime);                   \
 	virtual void     onMakePlaned    (CREF(rdo::runtime::LPRDORuntime) pRuntime, PTR(void) pParam); \
 	virtual BOResult onContinue      (CREF(rdo::runtime::LPRDORuntime) pRuntime);
 
