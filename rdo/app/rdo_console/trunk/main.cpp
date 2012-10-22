@@ -9,6 +9,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/filesystem.hpp>
+#include <boost/date_time.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdocommon.h"
 #include "utils/rdolocale.h"
@@ -28,6 +29,8 @@ static ruint g_exitCode = TERMINATION_NORMAL;
 int main(int argc, PTR(char) argv[])
 {
 	rdo::setup_locale();
+
+    boost::posix_time::ptime startTime = boost::posix_time::microsec_clock::local_time();
 
 	RDOControllerConsoleOptions options_controller(argc, argv);
 	options_controller.parseOptions();
@@ -107,6 +110,13 @@ int main(int argc, PTR(char) argv[])
 
 		RDOKernel::close();
 	}
+
+    boost::posix_time::ptime endTime = boost::posix_time::microsec_clock::local_time();
+
+    ruint64 simulationTimeMillisecond = ( endTime - startTime ).total_milliseconds();
+
+    std::cout << "Total simulation time : " << simulationTimeMillisecond << " milliseconds" << std::endl;
+
 	if (simulationSuccessfully)
 	{
 		std::cout << _T("Simulation finished successfully") << std::endl;
@@ -116,5 +126,6 @@ int main(int argc, PTR(char) argv[])
 	{
 		std::cout << _T("Simulation completed with errors") << std::endl;
 	}
+
 	return g_exitCode;
 }
