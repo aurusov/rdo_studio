@@ -240,7 +240,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- MultiRun
 // --------------------------------------------------------------------------------
-smr_multirun 
+smr_multirun
 	: RDO_MultiRun smr_multirun_body RDO_End
 	| RDO_MultiRun smr_multirun_body error
 	{
