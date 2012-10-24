@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<test>
-  <model>event_qs.rdox</model>
-  <target>CONSOLE</target>
-  <exit_code>0</exit_code>
-  <trace>event_qs_etalon.trc</trace>
-  <result>event_qs_etalon.pmv</result>
-</test>

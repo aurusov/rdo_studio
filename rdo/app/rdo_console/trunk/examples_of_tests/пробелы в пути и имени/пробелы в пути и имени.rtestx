@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<test>
-  <model>пробелы в пути и имени.rdox</model>
-  <target>CONSOLE</target>
-  <exit_code>0</exit_code>
-  <trace>пробелы в пути и имени etalon.trc</trace>
-  <result>пробелы в пути и имени etalon.pmv</result>
-</test>

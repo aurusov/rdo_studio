@@ -1,6 +1,0 @@
-$Resources
-	system : System   trace * * *
-	robot  : Resource trace * *
-	machine: Resource trace * *
-$End
-

@@ -1,4 +1,0 @@
-inflow.planning(time_now + nextInflow(timeIntervalBetweenArrivals))
-
-Terminate_if system.sysExit >= 75
-

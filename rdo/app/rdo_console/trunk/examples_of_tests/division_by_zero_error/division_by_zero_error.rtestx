@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<test>
-  <model>division_by_zero_error.rdox</model>
-  <target>CONSOLE</target>
-  <exit_code>4</exit_code>
-</test>

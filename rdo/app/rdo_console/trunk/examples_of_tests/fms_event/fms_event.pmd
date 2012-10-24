@@ -1,9 +1,0 @@
-$Results
-	robotUtil  : watch_state robot.state == busy
-	machineUtil: watch_state machine.state == busy
-	queue      : watch_par   system.sysQueue
-	count      : watch_par   system.sysCount
-	exit       : watch_par   system.sysExit
-	timeWork   : get_value time_now
-$End
-
