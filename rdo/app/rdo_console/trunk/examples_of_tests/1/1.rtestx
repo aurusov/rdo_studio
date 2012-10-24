@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<test>
+  <model>1.rdox</model>
+  <target>CONSOLE</target>
+  <exit_code>0</exit_code>
+  <trace>1_etalon.trc</trace>
+  <result>1_etalon.pmv</result>
+</test>

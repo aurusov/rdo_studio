@@ -1,0 +1,21 @@
+Results_file   = 1.pmv    2012-May-20 22:52:09.496662
+Run_file       = 1.smr
+Model_name     = 1
+Resource_file  = 1.rss
+
+$Changes
+
+
+$Status = NORMAL_TERMINATION
+$Result_values  0  5051.16  0.171
+  EventCount           303  0.0599862  1771
+  OperRuleCheckCounter 454  0.0898804  2654
+  AExpCalcCounter      159  0.0314779  929
+  BExpCalcCounter      3355  0.664204  19619
+
+Занятость_парикмахера         	FALSE	150	0.877315	136115	20.0211	39.9958
+Длина_очереди                 	3	303	2.75699	1.56872e+06	0	9
+Всего_обслужено               	150
+Пропускная_способность        	1.78177
+Длительность_работы           	84.186
+
