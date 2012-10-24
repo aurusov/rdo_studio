@@ -241,54 +241,60 @@ OPEN_RDO_PARSER_NAMESPACE
 // -------------------- MultiRun
 // --------------------------------------------------------------------------------
 smr_multirun 
-	: RDO_MultiRun smr_multirun_body RDO_End
-	| RDO_MultiRun smr_multirun_body error
-	{
-		PARSER->error().error(@2, _T("После описания констант ожидается ключевое слово $End"));
-	}
-	;
+    : RDO_MultiRun smr_multirun_body RDO_End
+    | RDO_MultiRun smr_multirun_body error
+    {
+        PARSER->error().error(@2, _T("После описания констант ожидается ключевое слово $End"));
+    }
+    ;
 
 smr_multirun_body
-	: /* empty */
-	| smr_multirun_body smr_multirun_body_desc
-	| smr_multirun_body error
-	{
-		PARSER->error().error(@2, _T("Ожидается описание MultiRun"));
-	}
-	;
+    : /* empty */
+    | smr_multirun_body smr_multirun_body_desc
+    | smr_multirun_body error
+    {
+        PARSER->error().error(@2, _T("Ожидается описание MultiRun"));
+    }
+    ;
 
 smr_multirun_body_desc
     : smr_multirun_body_desc RDO_Runcount '=' fun_arithm';'
     {
-      int i = 0;
-      breakpoint;
+        int i = 0;
+        breakpoint;
     }
     | smr_multirun_body_desc RDO_IDENTIF '.' RDO_Seek '=' RDO_IDENTIF '.' RDO_Seek '*' smr_seq_descr
     {
-      int i = 0;
-      breakpoint;
+        int i = 0;
+        breakpoint;
     }
     | smr_multirun_body_desc RDO_IDENTIF '.' RDO_Seek '=' RDO_IDENTIF '.' RDO_Next
     {
-      int i = 0;
-      breakpoint;
+        int i = 0;
+        breakpoint;
     }
     | smr_multirun_body_desc RDO_IDENTIF '.' RDO_Seek '=' 
+    {
+        int i = 0;
+        breakpoint;
+    }
+    ;
 
 smr_seq_descr
-	: smr_seq_descr smr_seq_normal
+    : smr_seq_descr smr_seq_normal
     {
-      int i = 0;
-      breakpoint;
+        int i = 0;
+        breakpoint;
     }
-	;
+    ;
+
 smr_seq_normal
     : RDO_normal
     {
-      int i = 0;
-      breakpoint;
+        int i = 0;
+        breakpoint;
     }
-	;
+    ;
 
 // --------------------------------------------------------------------------------
 // -------------------- SHowMOde
