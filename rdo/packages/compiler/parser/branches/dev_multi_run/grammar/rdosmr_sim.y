@@ -101,6 +101,10 @@
 %token RDO_Monitor
 %token RDO_Animation
 %token RDO_NoChange
+%token RDO_MultiRun
+%token RDO_Runcount
+%token RDO_Next
+%token RDO_Seek
 
 %token RDO_ProcessStart
 %token RDO_Decision_point
@@ -233,7 +237,62 @@ OPEN_RDO_PARSER_NAMESPACE
 %start smr_cond
 
 %%
+// --------------------------------------------------------------------------------
+// -------------------- MultiRun
+// --------------------------------------------------------------------------------
+smr_multirun 
+	: RDO_MultiRun smr_multirun_body RDO_End
+	| RDO_MultiRun smr_multirun_body error
+	{
+		PARSER->error().error(@2, _T("После описания констант ожидается ключевое слово $End"));
+	}
+	;
 
+smr_multirun_body
+	: /* empty */
+	| smr_multirun_body smr_multirun_body_desc
+	| smr_multirun_body error
+	{
+		PARSER->error().error(@2, _T("Ожидается описание MultiRun"));
+	}
+	;
+
+smr_multirun_body_desc
+    : smr_multirun_body_desc RDO_Runcount '=' fun_arithm';'
+    {
+      int i = 0;
+      breakpoint;
+    }
+    | smr_multirun_body_desc RDO_IDENTIF '.' RDO_Seek '=' RDO_IDENTIF '.' RDO_Seek '*' smr_seq_descr
+    {
+      int i = 0;
+      breakpoint;
+    }
+    | smr_multirun_body_desc RDO_IDENTIF '.' RDO_Seek '=' RDO_IDENTIF '.' RDO_Next
+    {
+      int i = 0;
+      breakpoint;
+    }
+    | smr_multirun_body_desc RDO_IDENTIF '.' RDO_Seek '=' 
+
+smr_seq_descr
+	: smr_seq_descr smr_seq_normal
+    {
+      int i = 0;
+      breakpoint;
+    }
+	;
+smr_seq_normal
+    : RDO_normal
+    {
+      int i = 0;
+      breakpoint;
+    }
+	;
+
+// --------------------------------------------------------------------------------
+// -------------------- SHowMOde
+// --------------------------------------------------------------------------------
 smr_show_mode
 	: RDO_NoShow
 	{
@@ -248,9 +307,12 @@ smr_show_mode
 		$$ = rdo::service::simulation::SM_Animation;
 	}
 	;
-
+// --------------------------------------------------------------------------------
+// -------------------- SMR_COND
+// --------------------------------------------------------------------------------
 smr_cond
 	: /* empty */
+    | smr_cond smr_multirun
 	| smr_cond RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')'
 	{
 		tstring    eventName          = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
