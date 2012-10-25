@@ -42,8 +42,22 @@ int main( int argc, char* argv[] )
 	std::wstring name3(L"inputVariable2");
 	const wchar_t* szInputVariable2 = name3.c_str();
 
+	std::wstring nameSet(L"set1Var1");
+	wchar_t* wset_name1 = convert_to_wide_char("set1Var1");
+
+
+
 	FuzzyVariableBase* inputVar1 = new FuzzyVariableBase(testModel);// create new inputVar
 	int i = inputVar1->init(szInputVariable1, 34.5, 45.3, true);//left x value, right x value? 	// if no name is passed in name it "Variable 0"
+	inputVar1->add_set(inputVar1->new_set(wset_name1,25,inputVar1,0,30,2));
+	
+	inputVar1->set_x_array_count(100);
+//	inputVar1->set_right_x(25);
+//	inputVar1->set_ramp(1,0,0);
+	//inputVar1->set_dom_array_count(20);
+//	inputVar1->set_left_x(0);
+	
+	
 //	ASSERT(i == -1);
 	FuzzyVariableBase* inputVar2  = new FuzzyVariableBase(testModel);
 	int k = inputVar2->init(szInputVariable2, 34.5, 45.3, true);
@@ -78,6 +92,25 @@ int main( int argc, char* argv[] )
 	// Membership functions for sets in InputVariable1
 
 	MemberFuncTrap* functionTrap1 = new MemberFuncTrap(set1Var1);
+	functionTrap1->init();
+	functionTrap1->set_ramp(1,0); // RAMP_NA
+	functionTrap1->init();
+	functionTrap1->set_node(0,25,0);
+	functionTrap1->set_node(1,27,1);  // 4 point for trap
+	functionTrap1->set_node(2,30,1);
+	functionTrap1->set_node(3,32,0);
+
+	wchar_t* wset_name = convert_to_wide_char("Set1Var1");
+//	FuzzySetBase* set = new_set(wset_name, 0, inputVar1, 3, 0, 2);
+
+	functionTrap1->get_start_x();
+	functionTrap1->get_end_x();
+	functionTrap1->get_node_x(2);
+	functionTrap1->get_node_y(2);
+	functionTrap1->get_ramp();
+	functionTrap1->get_center_x();
+//	functionTrap1->get_dom();
+//	functionTrap1->get_value();
 
 
 	DOMType* arrayDegreeOfMembership = new DOMType[];
