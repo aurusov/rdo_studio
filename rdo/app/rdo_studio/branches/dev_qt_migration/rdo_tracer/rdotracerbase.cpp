@@ -58,40 +58,47 @@ RDOTracerBase::~RDOTracerBase()
 
 RDOTracerResParamInfo* RDOTracerBase::getParamType( rdo::textstream& stream )
 {
-	tstring                par_type;
-	RDOTracerResParamType  parType = RDOPT_UNDEFINED;
-	ruint                  enum_count = 0;
-	stream >> par_type;
-	if ( par_type == "E" )
+	boost::optional<RDOTracerResParamType> parType;
+
+	tstring parTypeName;
+	stream >> parTypeName;
+	if ( parTypeName == "E" )
 	{
 		parType = RDOPT_ENUMERATIVE;
-		stream >> enum_count;
 	}
-	if ( par_type == "I" )
+	if ( parTypeName == "I" )
 	{
 		parType = RDOPT_INTEGER;
 	}
-	else if ( par_type == "R" )
+	else if ( parTypeName == "R" )
 	{
 		parType = RDOPT_REAL;
 	}
-	else if ( par_type == "B" )
+	else if ( parTypeName == "B" )
 	{
 		parType = RDOPT_BOOL;
 	}
-	else if ( par_type == "A" )
+	else if ( parTypeName == "A" )
 	{
 		parType = RDOPT_ARRAY;
 	}
-	ASSERT(parType != RDOPT_UNDEFINED);
+	else if ( parTypeName == "S" )
+	{
+		parType = RDOPT_STRING;
+	}
+	ASSERT(parType.is_initialized());
 
-	RDOTracerResParamInfo* param = new RDOTracerResParamInfo( parType );
+	RDOTracerResParamInfo* param = new RDOTracerResParamInfo( parType.get() );
 	if ( parType == RDOPT_ENUMERATIVE )
 	{
-		tstring en_name;
+		ruint enum_count;
+		stream >> enum_count;
 		for ( ruint j = 0; j < enum_count; j++ )
 		{
-			stream >> en_name;
+			tstring en_id;
+			stream >> en_id;
+
+			tstring en_name;
 			stream >> en_name;
 			param->addEnumValue( en_name );
 		}

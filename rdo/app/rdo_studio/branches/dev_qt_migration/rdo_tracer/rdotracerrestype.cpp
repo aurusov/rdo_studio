@@ -27,7 +27,7 @@ RDOTracerResParamInfo::RDOTracerResParamInfo( const RDOTracerResParamType type )
 	paramType( type ),
 	enumValues( NULL )
 {
-	if ( paramType == RDOPT_ENUMERATIVE || paramType == RDOPT_BOOL )
+	if ( paramType == RDOPT_ENUMERATIVE || paramType == RDOPT_BOOL || paramType == RDOPT_STRING )
 		enumValues = new RDOStringVector();
 }
 
@@ -41,6 +41,21 @@ int RDOTracerResParamInfo::addEnumValue( CREF(tstring) value )
 {
 	if ( !enumValues )
 		return -1;
+	enumValues->push_back( value );
+	return enumValues->size() - 1;
+}
+
+int RDOTracerResParamInfo::addStringValue( CREF(tstring) value )
+{
+	if ( !enumValues )
+		return -1;
+
+	RDOStringVector::const_iterator it = std::find(enumValues->begin(), enumValues->end(), value);
+	if (it != enumValues->end())
+	{
+		return it - enumValues->begin();
+	}
+
 	enumValues->push_back( value );
 	return enumValues->size() - 1;
 }
