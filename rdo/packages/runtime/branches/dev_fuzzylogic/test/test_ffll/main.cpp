@@ -21,14 +21,17 @@
 int main( int argc, char* argv[] )
 {
 	FuzzyModelBase* testModel = new FuzzyModelBase();// = new FuzzyModelBase();
-	testModel->init(); //create model with empty rule array
+//	testModel->init(); //create model with empty rule array
+	RuleArray* ruleArray = new RuleArray(testModel);
+	ruleArray->alloc(10); // number of rules;
+//	testModel->get_num_of_rules();
 	//const Char* c = model->get_model_name();
 
 	testModel->FuzzyModelBase::set_defuzz_method(0); // set DEFUZZ_COG method
 	testModel->FuzzyModelBase::set_inference_method(0);
 	testModel->FuzzyModelBase::set_composition_method(0);
 
-
+	
 
 
 	//FuzzyModelBase* pmodel = &model;
@@ -60,14 +63,14 @@ int main( int argc, char* argv[] )
 	
 //	ASSERT(i == -1);
 	FuzzyVariableBase* inputVar2  = new FuzzyVariableBase(testModel);
-	int k = inputVar2->init(szInputVariable2, 34.5, 45.3, true);
+	int k = inputVar2->init(szInputVariable2, 40, 55, true);
 //	ASSERT(k == -1);
 	FuzzyOutVariable* outVariable1 = new FuzzyOutVariable(testModel); // create new outVar
 	int j = outVariable1->init(szOutVariable1, 23.4, 56.5, true); //return 0 if success
 //	ASSERT(j == -1);
 
 	testModel->add_input_variable(szInputVariable1, 34.5, 45.3, true);
-	testModel->add_input_variable(szInputVariable1, 34.5, 45.3, true);
+	testModel->add_input_variable(szInputVariable2, 40, 55, true);
 	testModel->add_output_variable(szOutVariable1, 23.4, 56.5, true);
 
 	// set atributes for InputVariable1
@@ -89,6 +92,12 @@ int main( int argc, char* argv[] )
 	FuzzySetBase* set2Var2 = new FuzzySetBase(inputVar2);
 	FuzzySetBase* set3Var2 = new FuzzySetBase(inputVar2);
 
+	FuzzySetBase* outSet1 = new FuzzySetBase(outVariable1);
+	FuzzySetBase* outSet2 = new FuzzySetBase(outVariable1);
+	FuzzySetBase* outSet3 = new FuzzySetBase(outVariable1);
+	outSet1->set_index(0);
+	outSet2->set_index(1);
+	outSet2->set_index(2);
 	// Membership functions for sets in InputVariable1
 
 	MemberFuncTrap* functionTrap1 = new MemberFuncTrap(set1Var1);
@@ -112,6 +121,31 @@ int main( int argc, char* argv[] )
 //	functionTrap1->get_dom();
 //	functionTrap1->get_value();
 
+	int o = testModel->get_input_var_count();
+
+	//if inputVar1 term1 and inputVar2 term1 then outputVar term1
+	//if inputVar1 term1 and inputVar2 term2 then outputVar term2
+	//if inputVar1 term1 and inputVar2 term3 then outputVar term3
+	//if inputVar1 term2 and inputVar2 term1 then outputVar term1
+	//if inputVar1 term2 and inputVar2 term2 then outputVar term2
+	//if inputVar1 term2 and inputVar2 term3 then outputVar term3
+	//if inputVar1 term3 and inputVar2 term1 then outputVar term1
+	//if inputVar1 term3 and inputVar2 term2 then outputVar term2
+	//if inputVar1 term3 and inputVar2 term3 then outputVar term3
+
+	int oo = testModel->get_input_var_count()+1;
+	
+	std::string* rule_components = new std::string[oo + 1]; // +1 for output var
+
+	testModel->add_rule(0, outSet1->get_index());
+	testModel->add_rule(1, outSet2->get_index());
+	testModel->add_rule(2, outSet3->get_index());
+	testModel->add_rule(3, outSet1->get_index());
+	testModel->add_rule(4, outSet2->get_index());
+	testModel->add_rule(5, outSet3->get_index());
+	testModel->add_rule(6, outSet1->get_index());
+	testModel->add_rule(7, outSet2->get_index());
+	testModel->add_rule(8, outSet3->get_index());
 
 	DOMType* arrayDegreeOfMembership = new DOMType[];
 //	arrayDegreeOfMembership = (1,2,4,5,6,7,8,9,8,7,6,5,4,3,2,1);
