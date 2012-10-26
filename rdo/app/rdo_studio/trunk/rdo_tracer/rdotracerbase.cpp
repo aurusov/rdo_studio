@@ -82,6 +82,10 @@ RDOTracerResParamInfo* RDOTracerBase::getParamType( rdo::textstream& stream )
 	{
 		parType = RDOPT_ARRAY;
 	}
+	else if ( parTypeName == "S" )
+	{
+		parType = RDOPT_STRING;
+	}
 	ASSERT(parType.is_initialized());
 
 	RDOTracerResParamInfo* param = new RDOTracerResParamInfo( parType.get() );
