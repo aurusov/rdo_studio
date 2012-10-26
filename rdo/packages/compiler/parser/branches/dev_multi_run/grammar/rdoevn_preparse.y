@@ -102,6 +102,10 @@
 %token RDO_Monitor
 %token RDO_Animation
 %token RDO_NoChange
+%token RDO_MultiRun
+%token RDO_RunCount
+%token RDO_Next
+%token RDO_Seek
 
 %token RDO_ProcessStart
 %token RDO_Decision_point

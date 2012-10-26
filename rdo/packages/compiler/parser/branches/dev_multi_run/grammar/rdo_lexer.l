@@ -164,6 +164,16 @@ Monitor                        return(RDO_Monitor);
 monitor                        return(RDO_Monitor);
 Animation                      return(RDO_Animation);
 animation                      return(RDO_Animation);
+$MultiRun                      return(RDO_MultiRun);
+$multiRun                      return(RDO_MultiRun);
+$multirun                      return(RDO_MultiRun);
+$Multirun                      return(RDO_MultiRun);
+runcount                       return(RDO_RunCount);
+Runcount                       return(RDO_RunCount);
+Seek                           return(RDO_Seek);
+seek                           return(RDO_Seek);
+Next                           return(RDO_Next);
+next                           return(RDO_Next);
 
 $Decision_point                return(RDO_Decision_point);
 $decision_point                return(RDO_Decision_point);

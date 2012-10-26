@@ -238,7 +238,7 @@ OPEN_RDO_PARSER_NAMESPACE
 
 %%
 // --------------------------------------------------------------------------------
-// -------------------- MultiRun
+// --------------------MultiRun
 // --------------------------------------------------------------------------------
 smr_multirun
 	: RDO_MultiRun smr_multirun_body RDO_End
@@ -261,22 +261,27 @@ smr_multirun_body_desc
 	: smr_multirun_body_desc RDO_RunCount '=' fun_arithm';'
 	{
 		int i = 0;
-		breakpoint;
+		PARSER->error().error(@2, _T("я попал в нужную мне бизоновскую ветку - 1!"));
 	}
 	| smr_multirun_body_desc RDO_IDENTIF '.' RDO_Seek '=' RDO_IDENTIF '.' RDO_Seek '*' smr_seq_descr
 	{
 		int i = 0;
-		breakpoint;
+		PARSER->error().error(@2, _T("я попал в нужную мне бизоновскую ветку - 2!"));
+	}
+	| smr_multirun_body_desc RDO_IDENTIF '.' RDO_Seek '=' fun_arithm';'
+	{
+		int i = 0;
+		PARSER->error().error(@2, _T("я попал в нужную мне бизоновскую ветку - 3!"));
 	}
 	| smr_multirun_body_desc RDO_IDENTIF '.' RDO_Seek '=' RDO_IDENTIF '.' RDO_Next
 	{
 		int i = 0;
-		breakpoint;
+		PARSER->error().error(@2, _T("я попал в нужную мне бизоновскую ветку - 4!"));
 	}
 	| smr_multirun_body_desc RDO_IDENTIF '.' RDO_Seek '='
 	{
 		int i = 0;
-		breakpoint;
+		PARSER->error().error(@2, _T("я попал в нужную мне бизоновскую ветку - 5!"));
 	}
 	;
 
@@ -284,7 +289,7 @@ smr_seq_descr
 	: smr_seq_descr smr_seq_normal
 	{
 		int i = 0;
-		breakpoint;
+		PARSER->error().error(@2, _T("я попал в нужную мне бизоновскую ветку - 6!"));
 	}
 	;
 
@@ -292,12 +297,12 @@ smr_seq_normal
 	: RDO_normal
 	{
 		int i = 0;
-		breakpoint;
+		PARSER->error().error(@1, _T("я попал в нужную мне бизоновскую ветку - 7!"));
 	}
 	;
 
 // --------------------------------------------------------------------------------
-// -------------------- SHowMOde
+// --------------------ShowMode
 // --------------------------------------------------------------------------------
 smr_show_mode
 	: RDO_NoShow
@@ -314,7 +319,7 @@ smr_show_mode
 	}
 	;
 // --------------------------------------------------------------------------------
-// -------------------- SMR_COND
+// --------------------smr_cond
 // --------------------------------------------------------------------------------
 smr_cond
 	: /* empty */
