@@ -19,7 +19,6 @@
 // -------------------- RDOTracerResParamInfo
 // --------------------------------------------------------------------------------
 enum RDOTracerResParamType {
-	RDOPT_UNDEFINED = ~0,
 	RDOPT_INTEGER   = 0,
 	RDOPT_REAL,
 	RDOPT_ENUMERATIVE,
