@@ -48,13 +48,32 @@ int main( int argc, char* argv[] )
 	std::wstring nameSet(L"set1Var1");
 	wchar_t* wset_name1 = convert_to_wide_char("set1Var1");
 
+	FuzzyVariableBase* inputVariable1 = new FuzzyVariableBase(testModel);// create new inputVar
+
+	FuzzySetBase* set1Var1 = new FuzzySetBase(inputVariable1);
+	set1Var1->new_member_func(2);
+
+	MemberFuncTrap* functionTrap1 = new MemberFuncTrap(set1Var1);
+	functionTrap1->init();
+	set1Var1->set_ramp(1,0); // RAMP_NA
+//	functionTrap1->init();
+	set1Var1->set_node(0,25,0);
+	set1Var1->set_node(1,27,1);  // 4 point for trap
+	set1Var1->set_node(2,30,1);
+	set1Var1->set_node(3,32,0);
 
 
-	FuzzyVariableBase* inputVar1 = new FuzzyVariableBase(testModel);// create new inputVar
-	int i = inputVar1->init(szInputVariable1, 34.5, 45.3, true);//left x value, right x value? 	// if no name is passed in name it "Variable 0"
-	inputVar1->add_set(inputVar1->new_set(wset_name1,25,inputVar1,0,30,2));
+
+
+	set1Var1->set_index(0);
+	int gg = inputVariable1->get_num_of_sets();
+//	set1Var1->set_member_func(functionTrap1); //
+
+
+//	int i = inputVar1->init(szInputVariable1, 34.5, 45.3, true);//left x value, right x value? 	// if no name is passed in name it "Variable 0"
+	int test = inputVariable1->add_set(set1Var1);
 	
-	inputVar1->set_x_array_count(100);
+	inputVariable1->set_x_array_count(100);
 //	inputVar1->set_right_x(25);
 //	inputVar1->set_ramp(1,0,0);
 	//inputVar1->set_dom_array_count(20);
@@ -62,11 +81,11 @@ int main( int argc, char* argv[] )
 	
 	
 //	ASSERT(i == -1);
-	FuzzyVariableBase* inputVar2  = new FuzzyVariableBase(testModel);
-	int k = inputVar2->init(szInputVariable2, 40, 55, true);
+	FuzzyVariableBase* inputVariable2  = new FuzzyVariableBase(testModel);
+//	int k = inputVar2->init(szInputVariable2, 40, 55, true);
 //	ASSERT(k == -1);
 	FuzzyOutVariable* outVariable1 = new FuzzyOutVariable(testModel); // create new outVar
-	int j = outVariable1->init(szOutVariable1, 23.4, 56.5, true); //return 0 if success
+//	int j = outVariable1->init(szOutVariable1, 23.4, 56.5, true); //return 0 if success
 //	ASSERT(j == -1);
 
 	testModel->add_input_variable(szInputVariable1, 34.5, 45.3, true);
@@ -75,22 +94,21 @@ int main( int argc, char* argv[] )
 
 	// set atributes for InputVariable1
 
-	inputVar1->set_dom_array_count(100); // discrete y
-	inputVar1->set_x_array_count(100); //discrete x
+	inputVariable1->set_dom_array_count(100); // discrete y
+	inputVariable1->set_x_array_count(100); //discrete x
 
-	inputVar1->set_index(0);
+	inputVariable1->set_index(0);
 
-	// FuzzySets for InputVariable1
-	FuzzySetBase* set1Var1 = new FuzzySetBase(inputVar1);
+
 	// Set attributes for set1Var1
 
-	FuzzySetBase* set2Var1 = new FuzzySetBase(inputVar1);
-	FuzzySetBase* set3Var1 = new FuzzySetBase(inputVar1);
+	FuzzySetBase* set2Var1 = new FuzzySetBase(inputVariable1);
+	FuzzySetBase* set3Var1 = new FuzzySetBase(inputVariable1);
 
 	// FuzzySets for InputVariable2
-	FuzzySetBase* set1Var2 = new FuzzySetBase(inputVar2);
-	FuzzySetBase* set2Var2 = new FuzzySetBase(inputVar2);
-	FuzzySetBase* set3Var2 = new FuzzySetBase(inputVar2);
+	FuzzySetBase* set1Var2 = new FuzzySetBase(inputVariable2);
+	FuzzySetBase* set2Var2 = new FuzzySetBase(inputVariable2);
+	FuzzySetBase* set3Var2 = new FuzzySetBase(inputVariable2);
 
 	FuzzySetBase* outSet1 = new FuzzySetBase(outVariable1);
 	FuzzySetBase* outSet2 = new FuzzySetBase(outVariable1);
@@ -99,15 +117,6 @@ int main( int argc, char* argv[] )
 	outSet2->set_index(1);
 	outSet2->set_index(2);
 	// Membership functions for sets in InputVariable1
-
-	MemberFuncTrap* functionTrap1 = new MemberFuncTrap(set1Var1);
-	functionTrap1->init();
-	functionTrap1->set_ramp(1,0); // RAMP_NA
-	functionTrap1->init();
-	functionTrap1->set_node(0,25,0);
-	functionTrap1->set_node(1,27,1);  // 4 point for trap
-	functionTrap1->set_node(2,30,1);
-	functionTrap1->set_node(3,32,0);
 
 	wchar_t* wset_name = convert_to_wide_char("Set1Var1");
 //	FuzzySetBase* set = new_set(wset_name, 0, inputVar1, 3, 0, 2);
