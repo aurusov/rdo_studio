@@ -1177,7 +1177,7 @@ BEGIN
     END
     POPUP "Помо&щь"
     BEGIN
-        MENUITEM "&Содержание\tF1",             ID_HELP_CONTENTS
+        MENUITEM "&Содержание\tF1",             ID_HELP_KEYWORD
         MENUITEM SEPARATOR
         MENUITEM "&О программе...",             ID_APP_ABOUT
     END
@@ -4709,7 +4709,7 @@ BEGIN
     END
     POPUP "&Help"
     BEGIN
-        MENUITEM "&Contents",                   ID_HELP_CONTENTS
+        MENUITEM "&Contents",                   ID_HELP_KEYWORD
         MENUITEM SEPARATOR
         MENUITEM "&About...",                   ID_APP_ABOUT
     END
