@@ -260,6 +260,17 @@ void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
 			));
 		}
 	}
+#ifdef RDO_LIMIT_RES
+	if (m_resourceListByID.size() >= 200)
+	{
+		error().push(RDOSyntaxMessage(
+			_T("Сработало лицензионное ограничение на количество ресурсов. Обратитесь за приобритением полной версии"),
+			rdoModelObjects::PAT,
+			0,
+			0
+		));
+	}
+#endif
 	m_resourceListByTime.push_back(pResource);
 }
 
