@@ -31,7 +31,6 @@ RDOResource::RDOResource(CREF(LPRDORuntime) pRuntime, CREF(ParamList) paramList,
 	, m_temporary        (temporary                             )
 {
 	appendParams(paramList.begin(), paramList.end());
-	pRuntime->insertNewResource(this);
 }
 
 /// @todo копирующий конструктор не используется - нужен ли он?
@@ -47,7 +46,6 @@ RDOResource::RDOResource(CREF(LPRDORuntime) pRuntime, CREF(RDOResource) copy)
 	, m_temporary        (copy.m_temporary )
 {
 	appendParams(copy.m_paramList.begin(), copy.m_paramList.end());
-	pRuntime->insertNewResource(this);
 /// @todo посмотреть history и принять решение и комментарии
 //	getRuntime()->incrementResourceIdReference( getTraceID() );
 }
@@ -70,7 +68,10 @@ rbool RDOResource::operator!= (RDOResource &other)
 
 LPRDOResource RDOResource::clone(CREF(LPRDORuntime) pRuntime) const
 {
-	return rdo::Factory<RDOResource>::create(pRuntime, m_paramList, m_resType, getTraceID(), m_type, traceable(), m_temporary);
+	LPRDOResource pResource = rdo::Factory<RDOResource>::create(pRuntime, m_paramList, m_resType, getTraceID(), m_type, traceable(), m_temporary);
+	ASSERT(pResource);
+	pRuntime->insertNewResource(pResource);
+	return pResource;
 }
 
 tstring RDOResource::getTypeId()
