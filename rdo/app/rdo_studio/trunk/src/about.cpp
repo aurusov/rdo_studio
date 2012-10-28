@@ -21,7 +21,20 @@ About::About(PTR(QWidget) pParent)
 {
 	m_ui->setupUi(this);
 
-	m_ui->version->setText(QString("RAO-studio   %1%2-version 1.1 (build %3)")
+	QString limitation;
+
+#ifdef RDO_LICENSE_ACADEMIC
+		limitation += "не для коммерческого использования";
+#endif
+
+#ifdef RDO_LIMIT_RES
+		if (!limitation.isEmpty())
+			limitation += ", ";
+
+		limitation += "ограниченная версия";
+#endif
+
+	m_ui->version->setText(QString("Система имитационного моделирования\n\nRAO-studio   %1%2-version 1.1 (build %3)%4")
 
 #ifdef RDO_MT
 		.arg("mt")
@@ -36,6 +49,11 @@ About::About(PTR(QWidget) pParent)
 #endif
 
 		.arg(g_buildVersion)
+
+		.arg(!limitation.isEmpty()
+			? "\n(" + limitation + ")"
+			: ""
+		)
 	);
 
 	if (pParent)
