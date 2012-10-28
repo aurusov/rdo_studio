@@ -120,7 +120,7 @@ RDOPROCTransact::~RDOPROCTransact()
 
 LPRDOResource RDOPROCTransact::clone(CREF(LPRDORuntime) pRuntime) const
 {
-	return rdo::Factory<RDOResource>::create(pRuntime, getParamList(), getResType(), getTraceID(), getType(), traceable(), m_temporary);
+	return rdo::Factory<RDOPROCTransact>::create(pRuntime, getParamList(), getResType(), getTraceID(), getType(), traceable(), m_temporary);
 }
 
 void RDOPROCTransact::next()
@@ -140,7 +140,7 @@ RDOPROCResource::~RDOPROCResource()
 
 LPRDOResource RDOPROCResource::clone(CREF(LPRDORuntime) pRuntime) const
 {
-	return rdo::Factory<RDOResource>::create(pRuntime, getParamList(), getResType(), getTraceID(), getType(), traceable(), m_temporary);
+	return rdo::Factory<RDOPROCResource>::create(pRuntime, getParamList(), getResType(), getTraceID(), getType(), traceable(), m_temporary);
 }
 
 // --------------------------------------------------------------------------------
