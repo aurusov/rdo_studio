@@ -196,7 +196,7 @@ public:
 	void setStudioThread(PTR(RDOThread) pStudioThread);
 
 private:
-	RDORuntime();
+	RDORuntime(PTR(Error) pError);
 	virtual ~RDORuntime();
 
 	typedef  RDOSimulatorTrace           parent_type;
@@ -213,7 +213,7 @@ private:
 	LPIThreadProxy      m_pThreadProxy;
 	PTR(RDOThread)      m_pStudioThread;
 	Notify              m_notify;
-	Error               m_error;
+	PTR(Error)          m_pError;
 	RDOHotKey           m_hotKey;
 
 #ifdef _DEBUG

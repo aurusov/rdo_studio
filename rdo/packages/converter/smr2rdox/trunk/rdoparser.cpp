@@ -106,7 +106,7 @@ Converter::Converter()
 {
 	s_parserStack.push_back(this);
 
-	m_pRuntime = rdo::Factory<rdo::runtime::RDORuntime>::create();
+	m_pRuntime = rdo::Factory<rdo::runtime::RDORuntime>::create(new rdo::runtime::Error());
 	ASSERT(m_pRuntime);
 	m_pRuntime->memory_insert(sizeof(Converter));
 	m_pRuntime->init();

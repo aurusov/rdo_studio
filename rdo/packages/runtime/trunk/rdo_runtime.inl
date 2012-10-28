@@ -46,7 +46,8 @@ inline REF(Notify) RDORuntime::notify()
 
 inline REF(Error) RDORuntime::error()
 {
-	return m_error;
+	ASSERT(m_pError);
+	return *m_pError;
 }
 
 inline REF(RDOHotKey) RDORuntime::hotkey()
