@@ -140,7 +140,7 @@ void RDOStudioChartDoc::incTimeEventsCount( RDOTracerTimeNow* time )
 {
 	//mutex.Lock(); Document is locked from RDOTracerBase::addTime
 
-	if ( docTimes.back() == time ) {
+	if ( !docTimes.empty() && docTimes.back() == time ) {
 		ticksCount ++;
 		updateChartViews( UPDATE_TIMETICKS );
 	}
