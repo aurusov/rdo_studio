@@ -1165,7 +1165,7 @@ BEGIN
     END
     POPUP "Помо&щь"
     BEGIN
-        MENUITEM "&Содержание\tF1",             ID_HELP_CONTENTS
+        MENUITEM "&Содержание\tF1",             ID_HELP_KEYWORD
     END
 END
 
@@ -4670,7 +4670,7 @@ BEGIN
     END
     POPUP "&Help"
     BEGIN
-        MENUITEM "&Contents",                   ID_HELP_CONTENTS
+        MENUITEM "&Contents",                   ID_HELP_KEYWORD
     END
 END
 

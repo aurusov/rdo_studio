@@ -518,7 +518,6 @@
 #define ID_EMPTYCOMMAND_36              33193
 #define ID_EMPTYCOMMAND_37              33194
 #define ID_EMPTYCOMMAND_38              33195
-#define ID_HELP_CONTENTS                33196
 #define ID_INSERT_BUFFER1_APPEND        33197
 #define ID_INSERT_BUFFER2_APPEND        33198
 #define ID_INSERT_BUFFER3_APPEND        33199
