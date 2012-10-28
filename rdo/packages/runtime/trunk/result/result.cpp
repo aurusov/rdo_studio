@@ -409,7 +409,8 @@ void RDOPMDWatchValue::checkResourceErased(CREF(LPRDOResource) pResource)
 	m_pRuntime->pushGroupFunc(pResource);
 	if (m_pLogicCalc->calcValue(m_pRuntime).getAsBool())
 	{
-		m_currValue = m_pArithmCalc->calcValue(m_pRuntime);
+		m_currValue  = m_pArithmCalc->calcValue(m_pRuntime);
+		m_wasChanged = true;
 		traceResult(); /// @todo убрать отсюда ? (и перенести DECLARE_IResultTrace в приват)
 //		pRuntime->getTracer()->writeResult(pRuntime, this);
 		double curr = m_currValue.getDouble();
