@@ -204,7 +204,7 @@ void RDOStudioOutput::appendStringToBuild( CREF(rdo::simulation::report::FileMes
 	{
 		if (message.getText().find("Сработало лицензионное ограничение") != tstring::npos)
 		{
-			::MessageBox(NULL, message.getText().c_str(), "Лицензионное ограничение", MB_OK | MB_ICONERROR);
+			AfxGetMainWnd()->MessageBox(message.getText().c_str(), "Лицензионное ограничение", MB_OK | MB_ICONERROR);
 			return;
 		}
 		PTR(BuildEditLineInfo) pLine = new BuildEditLineInfo(message);
