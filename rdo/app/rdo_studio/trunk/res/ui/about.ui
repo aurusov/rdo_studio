@@ -78,7 +78,7 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="2">
+   <item row="1" column="1" colspan="2">
     <widget class="QLabel" name="www">
      <property name="font">
       <font>
@@ -96,7 +96,7 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="2">
+   <item row="2" column="1" colspan="2">
     <widget class="QLabel" name="email">
      <property name="text">
       <string>&lt;A HREF=&quot;mailto:rdo@rk9.bmstu.ru&quot;&gt;rdo@rk9.bmstu.ru&lt;/A&gt;</string>
@@ -142,7 +142,7 @@
             <x>0</x>
             <y>0</y>
             <width>361</width>
-            <height>1955</height>
+            <height>2344</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="gridLayout_4">
@@ -247,18 +247,24 @@ p, li { white-space: pre-wrap; }
    </item>
    <item row="4" column="2">
     <widget class="QPushButton" name="closeButton">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="text">
       <string>Закрыть</string>
      </property>
     </widget>
    </item>
   </layout>
-  <zorder>closeButton</zorder>
   <zorder>email</zorder>
   <zorder>www</zorder>
   <zorder>logoFrame</zorder>
   <zorder>version</zorder>
   <zorder>tabWidget</zorder>
+  <zorder>closeButton</zorder>
  </widget>
  <resources>
   <include location="../rdo_studio.qrc"/>
