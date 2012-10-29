@@ -48,6 +48,16 @@ int main( int argc, char* argv[] )
 	std::wstring nameSet(L"set1Var1");
 	wchar_t* wset_name1 = convert_to_wide_char("set1Var1");
 
+	std::wstring nameSet1(L"outSet1");
+	wchar_t* oset_name1 = convert_to_wide_char("outSet1");
+
+	std::wstring nameSet2(L"outSet2");
+	wchar_t* oset_name2 = convert_to_wide_char("outSet2");
+
+	std::wstring nameSet3(L"outSet3");
+	wchar_t* oset_name3 = convert_to_wide_char("outSet3");
+
+
 	FuzzyVariableBase* inputVariable1 = new FuzzyVariableBase(testModel);// create new inputVar
 
 	FuzzySetBase* set1Var1 = new FuzzySetBase(inputVariable1);
@@ -66,6 +76,7 @@ int main( int argc, char* argv[] )
 
 
 	set1Var1->set_index(0);
+	set1Var1->set_id(wset_name1);
 	int gg = inputVariable1->get_num_of_sets();
 //	set1Var1->set_member_func(functionTrap1); //
 
@@ -88,7 +99,35 @@ int main( int argc, char* argv[] )
 //	int j = outVariable1->init(szOutVariable1, 23.4, 56.5, true); //return 0 if success
 //	ASSERT(j == -1);
 
-	testModel->add_input_variable(szInputVariable1, 34.5, 45.3, true);
+	FuzzySetBase* nameSet1 = new FuzzySetBase(outVariable1);
+	FuzzySetBase* nameSet2 = new FuzzySetBase(outVariable1);
+	FuzzySetBase* nameSet3 = new FuzzySetBase(outVariable1);
+
+	nameSet1->init(oset_name1,20,0,20,1);
+	nameSet2->init(oset_name2,20,0,20,1);
+	nameSet3->init(oset_name3,20,0,20,1);
+
+	nameSet1->set_index(0);
+	nameSet2->set_index(1);
+	nameSet2->set_index(2);
+
+	outVariable1->add_set(nameSet1);
+	outVariable1->add_set(nameSet2);
+	outVariable1->add_set(nameSet3);
+
+	testModel->add_rule(0, nameSet1->get_index());
+	testModel->add_rule(1, nameSet2->get_index());
+	testModel->add_rule(2, nameSet3->get_index());
+	testModel->add_rule(3, nameSet1->get_index());
+	testModel->add_rule(4, nameSet2->get_index());
+	testModel->add_rule(5, nameSet3->get_index());
+	testModel->add_rule(6, nameSet1->get_index());
+	testModel->add_rule(7, nameSet2->get_index());
+	testModel->add_rule(8, nameSet3->get_index());
+
+
+	inputVariable1->set_id(szInputVariable1);
+	int ii = testModel->add_input_variable(szInputVariable1, 34.5, 45.3, true);
 	testModel->add_input_variable(szInputVariable2, 40, 55, true);
 	testModel->add_output_variable(szOutVariable1, 23.4, 56.5, true);
 
@@ -110,12 +149,6 @@ int main( int argc, char* argv[] )
 	FuzzySetBase* set2Var2 = new FuzzySetBase(inputVariable2);
 	FuzzySetBase* set3Var2 = new FuzzySetBase(inputVariable2);
 
-	FuzzySetBase* outSet1 = new FuzzySetBase(outVariable1);
-	FuzzySetBase* outSet2 = new FuzzySetBase(outVariable1);
-	FuzzySetBase* outSet3 = new FuzzySetBase(outVariable1);
-	outSet1->set_index(0);
-	outSet2->set_index(1);
-	outSet2->set_index(2);
 	// Membership functions for sets in InputVariable1
 
 	wchar_t* wset_name = convert_to_wide_char("Set1Var1");
@@ -146,15 +179,6 @@ int main( int argc, char* argv[] )
 	
 	std::string* rule_components = new std::string[oo + 1]; // +1 for output var
 
-	testModel->add_rule(0, outSet1->get_index());
-	testModel->add_rule(1, outSet2->get_index());
-	testModel->add_rule(2, outSet3->get_index());
-	testModel->add_rule(3, outSet1->get_index());
-	testModel->add_rule(4, outSet2->get_index());
-	testModel->add_rule(5, outSet3->get_index());
-	testModel->add_rule(6, outSet1->get_index());
-	testModel->add_rule(7, outSet2->get_index());
-	testModel->add_rule(8, outSet3->get_index());
 
 	DOMType* arrayDegreeOfMembership = new DOMType[];
 //	arrayDegreeOfMembership = (1,2,4,5,6,7,8,9,8,7,6,5,4,3,2,1);
