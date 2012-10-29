@@ -33,7 +33,7 @@ About::About(PTR(QWidget) pParent)
 		limitation += "ограниченна€ верси€";
 #endif
 
-	m_ui->version->setText(QString("—истема имитационного моделировани€\n\nRAO-studio   %1%2-version 1.1 (build %3)%4")
+	version->setText(QString("—истема имитационного моделировани€\n\nRAO-studio   %1%2-version 1.1 (build %3)%4")
 
 #ifdef RDO_MT
 		.arg("mt")
