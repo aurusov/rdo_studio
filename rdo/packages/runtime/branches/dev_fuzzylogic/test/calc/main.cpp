@@ -46,7 +46,8 @@ RDOValue calc(CREF(CalcTriple) calcTriple)
 
 CalcTriple prepair()
 {
-	LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create();
+	static Error error;
+	LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create(&error);
 	BOOST_CHECK(pRuntime);
 
 	LPRDOCalc pLeft = rdo::Factory<RDOCalcConst>::create(RDOValue(const1));
@@ -266,11 +267,13 @@ BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)
 		}
 	};
 
-	RDOValue resultFunParam = generator::create(generator::MO_FUN_PARAM)->calcValue(rdo::Factory<RDORuntime>::create());
+	Error error;
+
+	RDOValue resultFunParam = generator::create(generator::MO_FUN_PARAM)->calcValue(rdo::Factory<RDORuntime>::create(&error));
 	tstring resultFunParamStr = resultFunParam.getAsString();
 	BOOST_CHECK(resultFunParam.getInt() == 120);
 
-	RDOValue resultParamFun = generator::create(generator::MO_PARAM_FUN)->calcValue(rdo::Factory<RDORuntime>::create());
+	RDOValue resultParamFun = generator::create(generator::MO_PARAM_FUN)->calcValue(rdo::Factory<RDORuntime>::create(&error));
 	tstring resultParamFunStr = resultParamFun.getAsString();
 	BOOST_CHECK(resultParamFun.getInt() == 120);
 }

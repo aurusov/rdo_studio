@@ -46,7 +46,8 @@ inline REF(Notify) RDORuntime::notify()
 
 inline REF(Error) RDORuntime::error()
 {
-	return m_error;
+	ASSERT(m_pError);
+	return *m_pError;
 }
 
 inline REF(RDOHotKey) RDORuntime::hotkey()
@@ -162,7 +163,9 @@ inline void RDORuntime::popFuncTop()
 
 inline LPRDOResource RDORuntime::getResourceByID(ruint resourceID) const
 {
-	return resourceID != ~0 ? m_resourceListByID[resourceID] : LPRDOResource(NULL);
+	return resourceID != ~0 && resourceID < m_resourceListByID.size()
+		? m_resourceListByID[resourceID]
+		: LPRDOResource(NULL);
 }
 
 inline void RDORuntime::setPatternParameter(ruint paramID, CREF(RDOValue) paramValue)
