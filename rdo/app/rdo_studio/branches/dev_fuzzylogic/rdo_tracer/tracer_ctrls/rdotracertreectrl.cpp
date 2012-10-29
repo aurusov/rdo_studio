@@ -11,6 +11,7 @@
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtCore/qprocess.h>
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracertreectrl.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
@@ -49,6 +50,8 @@ BEGIN_MESSAGE_MAP( RDOTracerTreeCtrl, RDOTreeCtrl )
 	ON_WM_INITMENUPOPUP()
 	ON_COMMAND( ID_CHART_ADDTONEWCHART, OnAddToNewChart )
 	ON_UPDATE_COMMAND_UI( ID_CHART_ADDTONEWCHART, OnUpdateAddToNewChart )
+	ON_COMMAND( ID_CHART_EXPORT, OnExportChart )
+	ON_UPDATE_COMMAND_UI( ID_CHART_EXPORT, OnUpdateExportChart )
 	ON_WM_LBUTTONDBLCLK()
 	ON_NOTIFY_REFLECT( TVN_BEGINDRAG, OnDragDrop )
 	ON_WM_RBUTTONDOWN()
@@ -107,8 +110,7 @@ int RDOTracerTreeCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	studioApp.m_pMainFrame->MDIGetActive( &maximized );
 	int delta = maximized ? 1 : 0;
 
-	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 0, &popupMenu );
-	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 1, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 2, &popupMenu );
 
 	return 0;
 }
@@ -264,6 +266,44 @@ void RDOTracerTreeCtrl::OnAddToNewChart()
 }
 
 void RDOTracerTreeCtrl::OnUpdateAddToNewChart( CCmdUI* pCmdUI )
+{
+	pCmdUI->Enable( tracer->getDrawTrace() && getIfItemIsDrawable( GetSelectedItem() ) != NULL );
+}
+
+void RDOTracerTreeCtrl::OnExportChart()
+{
+	if (!tracer->getDrawTrace())
+		return;
+
+	PTR(RDOTracerTreeItem) pItem = getIfItemIsDrawable(GetSelectedItem());
+	if (!pItem)
+		return;
+
+	PTR(RDOTracerSerie) pSerie = static_cast<PTR(RDOTracerSerie)>(pItem);
+	ASSERT(pSerie);
+	RDOTracerSerie::ExportData exportData = pSerie->exportData();
+	if (exportData.empty())
+		return;
+
+	CString filter("csv-פאיכ (*.csv)|*.csv|Âסו פאיכû (*.*)|*.*||");
+	CFileDialog dlg(false, _T("csv"), pSerie->getTitle().c_str(), OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, filter, AfxGetMainWnd());
+	if (dlg.DoModal() != IDOK)
+		return;
+
+	CString fileName = dlg.GetPathName();
+	std::ofstream stream(fileName);
+	if (!stream.is_open())
+		return;
+
+	BOOST_FOREACH(CREF(RDOTracerSerie::ExportData::value_type) exportItem, exportData)
+	{
+		stream << exportItem << std::endl;
+	}
+
+	stream.close();
+}
+
+void RDOTracerTreeCtrl::OnUpdateExportChart( CCmdUI* pCmdUI )
 {
 	pCmdUI->Enable( tracer->getDrawTrace() && getIfItemIsDrawable( GetSelectedItem() ) != NULL );
 }

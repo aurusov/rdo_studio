@@ -19,12 +19,12 @@
 // -------------------- RDOTracerResParamInfo
 // --------------------------------------------------------------------------------
 enum RDOTracerResParamType {
-	RDOPT_UNDEFINED = ~0,
 	RDOPT_INTEGER   = 0,
 	RDOPT_REAL,
 	RDOPT_ENUMERATIVE,
 	RDOPT_BOOL,
-	RDOPT_ARRAY
+	RDOPT_ARRAY,
+	RDOPT_STRING
 };
 	
 typedef std::vector <tstring> RDOStringVector;
@@ -40,7 +40,8 @@ public:
 
 	tstring Name;
 	RDOTracerResParamType getParamType() const { return paramType; };
-	int addEnumValue( CREF(tstring) value );
+	int addEnumValue  ( CREF(tstring) value );
+	int addStringValue( CREF(tstring) value );
 	tstring getEnumValue( unsigned int index ) const;
 	int getEnumCount() const { return enumValues ? enumValues->size() : 0; };
 };

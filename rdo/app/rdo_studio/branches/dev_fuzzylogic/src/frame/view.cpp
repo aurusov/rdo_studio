@@ -738,10 +738,7 @@ void RDOStudioFrameView::OnDraw(PTR(CDC) pDC)
 
 void RDOStudioFrameView::OnHelpKeyword()
 {
-	tstring filename = studioApp.getFullHelpFileName();
-	if (filename.empty())
-		return;
-
-	filename += "::/html/work_model_frame.htm";
-	::HtmlHelp(::GetDesktopWindow(), filename.c_str(), HH_DISPLAY_TOPIC, NULL);
+	QByteArray ba;
+	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_model/work_model_frame.htm\n");
+	studioApp.callQtAssistant(ba);
 }

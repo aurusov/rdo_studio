@@ -59,7 +59,8 @@ void RDOTracerResParam::getCaptions( std::vector<tstring> &captions, const int v
 			break;
 		}
 		case RDOPT_ENUMERATIVE:
-		case RDOPT_BOOL       : {
+		case RDOPT_BOOL       :
+		case RDOPT_STRING     : {
 			RDOTracerSerie::getCaptions( captions, val_count );
 			int delta = getParamInfo()->getEnumCount();
 			minValue = 0;
@@ -72,7 +73,9 @@ void RDOTracerResParam::getCaptions( std::vector<tstring> &captions, const int v
 				real_val_count = delta;
 			}
 			int valo = (int)minValue;
-			int valoffset = ( delta - 1 ) / ( real_val_count - 1 );
+			int valoffset = real_val_count != 1
+				? ( delta - 1 ) / ( real_val_count - 1 )
+				: 0;
 			for ( int i = 0; i < real_val_count; i++ ) {
 				captions.push_back( getParamInfo()->getEnumValue( valo ) );
 				valo += valoffset;
@@ -155,18 +158,28 @@ void RDOTracerResource::setParams( tstring& line, RDOTracerTimeNow* const time, 
 		{
 			newval = prevval->value;
 		}
-		else if (nextValue == _T("true"))
-		{
-			newval = 1;
-		}
-		else if (nextValue == _T("false"))
-		{
-			newval = 0;
-		}
 		else
 		{
-			newval = atof( nextValue.c_str() );
+			switch (resType->getParamInfo(i)->getParamType())
+			{
+			case RDOPT_ENUMERATIVE:
+				newval = 0;
+				if (nextValue == _T("true"))
+				{
+					newval = 1;
+				}
+				break;
+
+			case RDOPT_STRING:
+				newval = resType->getParamInfo(i)->addStringValue(nextValue);
+				break;
+
+			default:
+				newval = atof( nextValue.c_str() );
+				break;
+			}
 		}
+
 		if ( true /*!prevval || erasing || prevval->value != newval*/ ) {
 			RDOTracerValue* newvalue = new RDOTracerValue( time, eventIndex );
 			newvalue->value = newval;

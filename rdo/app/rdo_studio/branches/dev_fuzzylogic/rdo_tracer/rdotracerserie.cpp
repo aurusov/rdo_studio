@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracerserie.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracervalues.h"
@@ -456,4 +457,22 @@ rbool RDOTracerSerie::activateFirstDoc() const
 	const_cast<CMutex&>(mutex).Unlock();
 
 	return res;
+}
+
+RDOTracerSerie::ExportData RDOTracerSerie::exportData()
+{
+	setlocale(LC_ALL, _T("rus"));
+
+	ExportData exportData;
+	exportData.reserve(values.size() + 1);
+	exportData.push_back(rdo::format("%s;%s", "время", title.c_str()));
+
+	BOOST_FOREACH(PTR(RDOTracerValue) pValue, values)
+	{
+		exportData.push_back(rdo::format("%f;%f", pValue->getModelTime()->time, pValue->value));
+	}
+
+	setlocale(LC_NUMERIC, _T("eng"));
+
+	return exportData;
 }

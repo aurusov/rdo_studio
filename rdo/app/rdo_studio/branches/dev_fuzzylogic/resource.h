@@ -260,7 +260,6 @@
 #define IDC_STATIC8                     1169
 #define IDC_STATIC9                     1170
 #define ID_CHART_ADDTONEWCHART          32771
-#define ID_DOCK_PROJECT_BAR             32772
 #define ID_VIEW_WORKSPACE               32774
 #define ID_VIEW_OUTPUT                  32775
 #define ID_EDIT_UPPERCASE               32780
@@ -530,7 +529,6 @@
 #define ID_EMPTYCOMMAND_36              33193
 #define ID_EMPTYCOMMAND_37              33194
 #define ID_EMPTYCOMMAND_38              33195
-#define ID_HELP_CONTENTS                33196
 #define ID_INSERT_BUFFER1_APPEND        33197
 #define ID_INSERT_BUFFER2_APPEND        33198
 #define ID_INSERT_BUFFER3_APPEND        33199
@@ -592,6 +590,8 @@
 #define ID_FLOW_SELECT                  33305
 #define ID_FLOW_CONNECTOR               33306
 #define ID_FLOW_ROTATE                  33307
+#define ID_33308                        33308
+#define ID_CHART_EXPORT                 33309
 #define IDS_DEVELOPERS                  34000
 #define IDS_ER_UNKNOWN                  35000
 #define ID_STATUSBAR_READONLY           40000
@@ -771,10 +771,7 @@
 #define ID_MSG_MODELCLOSE_ERROR         60004
 #define ID_MSG_MODEL_NEED_STOPED_FOR_CLOSE 60005
 #define ID_MSG_MODEL_NEED_STOPED_FOR_OPEN 60006
-#define ID_MSG_MODEL_NEED_STOPED_FOR_CLOSE2 60006
-#define ID_MSG_MODEL_NEED_STOPED_FOR_OPEN2 60007
 #define ID_MSG_MODELCLOSE_QUERY         60007
-#define ID_MSG_MODELCLOSE_QUERY2        60008
 
 // Next default values for new objects
 // 
@@ -782,7 +779,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        268
-#define _APS_NEXT_COMMAND_VALUE         33308
+#define _APS_NEXT_COMMAND_VALUE         33310
 #define _APS_NEXT_CONTROL_VALUE         1171
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
