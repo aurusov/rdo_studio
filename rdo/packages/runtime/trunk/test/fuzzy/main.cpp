@@ -24,7 +24,8 @@ BOOST_AUTO_TEST_SUITE(RDORuntime_Fuzzy_Test)
 
 BOOST_AUTO_TEST_CASE(DefineAreaTest)
 {
-	LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create();
+	Error error;
+	LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create(&error);
 	BOOST_CHECK(pRuntime);
 
 	LPDefineArea pDefineAreaEmpty = rdo::Factory<DefineArea>::create();
@@ -35,7 +36,8 @@ BOOST_AUTO_TEST_CASE(DefineAreaTest)
 }
 BOOST_AUTO_TEST_CASE(FuzzySetTest)
 {
-	LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create();
+	Error error;
+	LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create(&error);
 	BOOST_CHECK(pRuntime);
 
 	LPFuzzySet pInfinityFuzzySet = rdo::Factory<FuzzySet>::create();
@@ -108,7 +110,8 @@ BOOST_AUTO_TEST_CASE(TermTest)
 	BOOST_CHECK(pTerm->getName() == _T("test"));
 
 	
-	LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create();
+	Error error;
+	LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create(&error);
 	BOOST_CHECK(pRuntime);
 
 	LPDefineArea pDefineArea = rdo::Factory<DefineArea>::create(0.0, 100.0);
@@ -146,7 +149,8 @@ BOOST_AUTO_TEST_CASE(VariableTest)
 	LPRDOLingvoVariable pVariable = rdo::Factory<RDOLingvoVariable>::create(pTerm1,_T("test"));
 	BOOST_CHECK(pVariable);
 
-	LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create();
+	Error error;
+	LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create(&error);
 	BOOST_CHECK(pRuntime);
 
 	LPDefineArea pDefineArea = rdo::Factory<DefineArea>::create(0.0, 100.0);
