@@ -138,7 +138,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_plugin", "..\plugins\co
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_version", "..\projects\common\rdo_version.vcproj", "{6A0AC201-55B9-4861-8339-5AD42572B2FC}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_ctrls", "..\..\..\ui\mfc_ctrls\projects\common\rdo_ctrls.vcproj", "{07426CDA-CE5C-4545-9C50-FF25E80CDF96}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ui_ctrls", "..\..\..\ui\mfc_ctrls\projects\common\ui_ctrls.vcproj", "{07426CDA-CE5C-4545-9C50-FF25E80CDF96}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "utils_smart_ptr", "..\..\..\utils\projects\common\utils_smart_ptr.vcproj", "{7861F6F8-175E-474E-8B38-82F47FF4A377}"
 EndProject
@@ -150,7 +150,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_procgui", "..\..\..\sim
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".ui", ".ui", "{BED179D0-CC1B-48B4-8F56-3E71F4051CF1}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_gdiplus", "..\..\..\ui\gdiplus\projects\common\rdo_gdiplus.vcproj", "{C88D1EDC-470E-46A0-B6A3-6CE444EE9BE7}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ui_gdiplus", "..\..\..\ui\gdiplus\projects\common\ui_gdiplus.vcproj", "{C88D1EDC-470E-46A0-B6A3-6CE444EE9BE7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".thirdparty", ".thirdparty", "{807B893B-C55E-463C-861F-427D54396501}"
 EndProject
