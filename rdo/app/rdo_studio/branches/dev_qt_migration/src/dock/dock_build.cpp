@@ -12,6 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
 #include <QtGui/qaction.h>
+#include <QtGui/qmessagebox.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/dock/dock_build.h"
 #include "app/rdo_studio_mfc/src/application.h"
@@ -45,6 +46,12 @@ void DockBuild::appendString(CREF(rdo::simulation::report::FileMessage) message)
 {
 	if (message.getType() == rdo::simulation::report::FileMessage::MT_ERROR || (message.getType() == rdo::simulation::report::FileMessage::MT_WARNING && static_cast<PTR(rdoEditCtrl::RDOBuildEditTheme)>(studioApp.getStyle()->style_build.theme)->warning))
 	{
+		if (message.getText().find("Сработало лицензионное ограничение") != tstring::npos)
+		{
+			QMessageBox::critical(studioApp.getMainWnd(), "Лицензионное ограничение", message.getText().c_str());
+			return;
+		}
+
 		PTR(rdo::simulation::report::BuildEditLineInfo) pLine = new rdo::simulation::report::BuildEditLineInfo(message);
 		getContext().appendLine(pLine);
 	}
