@@ -110,8 +110,6 @@ int RDOTracerTreeCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	studioApp.m_pMainFrame->MDIGetActive( &maximized );
 	int delta = maximized ? 1 : 0;
 
-	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 0, &popupMenu );
-	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 1, &popupMenu );
 	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 2, &popupMenu );
 
 	return 0;
