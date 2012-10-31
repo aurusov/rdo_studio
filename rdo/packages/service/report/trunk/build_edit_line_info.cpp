@@ -42,7 +42,7 @@ tstring BuildEditLineInfo::getMessage() const
 	{
 		tstring file = rdoModelObjects::getFileTypeString(getFileType());
 		tstring error = ( getType() == FileMessage::MT_WARNING ) ? tstring( WARNING_STRING ) : tstring( ERROR_STRING );
-		tstring text = rdo::format( "%s (%d): %s: %s", file.c_str(), getLineNumber() + 1, error.c_str(), getText().c_str() );
+		tstring text = rdo::format(_T("%s (%d): %s: %s"), file.c_str(), getLineNumber() + 1, error.c_str(), getText().c_str() );
 		return text;
 	}
 }
