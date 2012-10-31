@@ -365,7 +365,7 @@ OPEN_RDO_SERVICE_SIMULATION_NAMESPACE
 class RDORuntimeTracer: public rdo::runtime::RDOTrace, public rdo::runtime::RDOEndL
 {
 public:
-	virtual REF(std::ostream)          getOStream()    { return m_stream; }
+	virtual REF(rdo::ostream)          getOStream()    { return m_stream; }
 	virtual REF(rdo::runtime::RDOEndL) getEOL()        { return *this;    }
 
 	void onEndl()
@@ -409,17 +409,17 @@ private:
 class RDOSimResulter: public rdo::runtime::RDOResults
 {
 public:
-	RDOSimResulter(PTR(RDOThreadSimulator) pSimulator, REF(std::ostream) stream)
+	RDOSimResulter(PTR(RDOThreadSimulator) pSimulator, REF(rdo::ostream) stream)
 		: m_pSimulator(pSimulator)
 		, m_stream    (stream    )
 	{}
 
 private:
 	PTR(RDOThreadSimulator) m_pSimulator;
-	REF(std::ostream)       m_stream;
+	REF(rdo::ostream)       m_stream;
 	rdo::textstream         m_buffer;
 
-	virtual REF(std::ostream) getOStream()
+	virtual REF(rdo::ostream) getOStream()
 	{
 		return m_buffer;
 	}
@@ -460,14 +460,14 @@ private:
 class RDOSimResultInformer: public rdo::runtime::RDOResults, public boost::noncopyable
 {
 public:
-	RDOSimResultInformer(REF(std::ostream) stream)
+	RDOSimResultInformer(REF(rdo::ostream) stream)
 		: m_stream(stream)
 	{}
 
 private:
-	REF(std::ostream) m_stream;
+	REF(rdo::ostream) m_stream;
 
-	virtual REF(std::ostream) getOStream()
+	virtual REF(rdo::ostream) getOStream()
 	{
 		return m_stream;
 	}
