@@ -157,7 +157,7 @@ RPPageCtrlItem* RPPageCtrl::prepareNewPage()
 	}
 	RPPageCtrlItem* page = new RPPageCtrlItem();
 	items.push_back( page );
-	page->Create( "", "", 0, CRect(0,0,100,100), this, UINT(~0) );
+	page->Create( _T(""), _T(""), 0, CRect(0,0,100,100), this, UINT(~0) );
 	return page;
 }
 
@@ -485,7 +485,7 @@ int RPPageCtrlItem::OnCreate( LPCREATESTRUCT lpCreateStruct )
 {
 	if ( CWnd::OnCreate(lpCreateStruct) == -1 ) return -1;
 
-	label.Create( "", "", WS_DLGFRAME, CRect(0,0,200,200), this, UINT(~0) );
+	label.Create( _T(""), _T(""), WS_DLGFRAME, CRect(0,0,200,200), this, UINT(~0) );
 
 	RPPageCtrl* pagectrl = static_cast<RPPageCtrl*>(GetParent());
 	if ( !pagectrl->label_height ) {

@@ -35,11 +35,11 @@ toLower tr( std::locale("rus") );
 
 public:
 	//! Конструктор по-умолчанию, создает пустую строку.
-	string(): std::basic_string< char >() {};
+	string(): tstring() {};
 	//! Создает строку по указателю.
-	string( const char* str ): std::basic_string< char >( str ) {};
+	string( const char* str ): tstring( str ) {};
 	//! Конструктор копии.
-	string( CREF(tstring) str ): std::basic_string< char >( str ) {};
+	string( CREF(tstring) str ): tstring( str ) {};
 
 	int      toint() const    { return atoi( c_str() );                     }
 	long int tolong() const   { return atol( c_str() );                     }
