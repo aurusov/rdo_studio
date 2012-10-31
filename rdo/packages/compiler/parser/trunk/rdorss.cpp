@@ -82,7 +82,7 @@ Context::FindResult RDORSSResource::onSwitchContext(CREF(LPExpression) pSwitchEx
 	return Context::FindResult(const_cast<PTR(RDORSSResource)>(this), pExpression, pValue);
 }
 
-void RDORSSResource::writeModelStructure(REF(std::ostream) stream) const
+void RDORSSResource::writeModelStructure(REF(rdo::ostream) stream) const
 {
 	stream << (getID() + 1) << _T(" ") << name() << _T(" ") << getType()->getNumber() << std::endl;
 }

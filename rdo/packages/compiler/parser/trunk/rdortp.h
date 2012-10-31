@@ -79,7 +79,7 @@ public:
 
 	void end();
 
-	void writeModelStructure(REF(std::ostream) stream) const;
+	void writeModelStructure(REF(rdo::ostream) stream) const;
 
 	DECLARE_IType;
 
