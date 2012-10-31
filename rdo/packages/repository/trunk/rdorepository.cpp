@@ -431,7 +431,7 @@ void RDOThreadRepository::extractName(CREF(tstring) fullName)
 		s.assign(&name[0], pos);
 		name = s;
 	}
-	static char szDelims[] = _T(" \t\n\r");
+	static tchar szDelims[] = _T(" \t\n\r");
 	name.erase(0, name.find_first_not_of(szDelims));
 	name.erase(name.find_last_not_of(szDelims) + 1, tstring::npos);
 	pos = name.find_last_of(_T('\\'));
@@ -453,7 +453,7 @@ void RDOThreadRepository::extractName(CREF(tstring) fullName)
 void RDOThreadRepository::setName(CREF(tstring) name)
 {
 	m_modelName = name;
-	static char szDelims[] = _T(" \t\n\r");
+	static tchar szDelims[] = _T(" \t\n\r");
 	m_modelName.erase(0, m_modelName.find_first_not_of(szDelims));
 	m_modelName.erase(m_modelName.find_last_not_of(szDelims) + 1, tstring::npos);
 	if (m_modelName.empty())
@@ -532,13 +532,13 @@ void RDOThreadRepository::saveFile(CREF(tstring) fileName, REF(rdo::stream) stre
 		{
 			if (stream.isBinary())
 			{
-				std::ofstream file(fileName.c_str(), std::ios::out | std::ios::binary);
+				rdo::ofstream file(fileName.c_str(), std::ios::out | std::ios::binary);
 				file << stream.rdbuf();
 				file.close();
 			}
 			else
 			{
-				std::ofstream file(fileName.c_str());
+				rdo::ofstream file(fileName.c_str());
 				file << stream.rdbuf();
 				file.close();
 			}
@@ -568,7 +568,7 @@ void RDOThreadRepository::createRDOX()
 		projectVersionAttr.set_value(_T("2"));
 		smrVersionAttr    .set_value(_T("2"));
 
-		std::ofstream ofs(rdoxFileName.c_str());
+		rdo::ofstream ofs(rdoxFileName.c_str());
 		if (ofs.good())
 		{
 			doc.save(ofs);
@@ -608,7 +608,7 @@ void RDOThreadRepository::loadBMP(REF(tstring) name, REF(rdo::stream) stream) co
 	}
 }
 
-void RDOThreadRepository::writeModelFilesInfo(REF(std::ofstream) stream) const
+void RDOThreadRepository::writeModelFilesInfo(REF(rdo::ofstream) stream) const
 {
 	stream << _T("Results_file   = ") << getFileExtName(rdoModelObjects::PMV) << _T("    ") << rdo::Time::local().asString() << std::endl;
 	stream << _T("Run_file       = ") << getFileExtName(rdoModelObjects::SMR) << std::endl;
@@ -616,11 +616,11 @@ void RDOThreadRepository::writeModelFilesInfo(REF(std::ofstream) stream) const
 	stream << _T("Resource_file  = ") << getFileName(rdoModelObjects::RSS) << getExtention(rdoModelObjects::RSS) << std::endl;
 }
 
-rbool RDOThreadRepository::createFile(CREF(tstring) name, CREF(tstring) ext, REF(std::ofstream) stream) const
+rbool RDOThreadRepository::createFile(CREF(tstring) name, CREF(tstring) ext, REF(rdo::ofstream) stream) const
 {
-	std::stringstream backupDirName;
+	stringstream backupDirName;
 	backupDirName << m_modelPath
-	              << boost::format(_T("%1$04d-%2$02d-%3$02d %4$02d-%5$02d-%6$02d %7$s.%8$s"))
+	              << boost::basic_format<tchar>(_T("%1$04d-%2$02d-%3$02d %4$02d-%5$02d-%6$02d %7$s.%8$s"))
 	                 % m_systemTime.date().year ()
 	                 % m_systemTime.date().month()
 	                 % m_systemTime.date().day  ()
@@ -666,7 +666,7 @@ void RDOThreadRepository::stopModel()
 	}
 	if (m_files[rdoModelObjects::PMV].m_described)
 	{
-		std::ofstream results_file;
+		rdo::ofstream results_file;
 		results_file.open(getFullFileName(rdoModelObjects::PMV).c_str(), std::ios::out | std::ios::binary);
 		if (results_file.is_open())
 		{

@@ -57,9 +57,9 @@ public:
 	{
 		tstring            m_name;
 		tstring            m_ext;
-		REF(std::ofstream) m_stream;
+		REF(rdo::ofstream) m_stream;
 
-		CreateFileInfo(CREF(tstring) name, CREF(tstring) ext, REF(std::ofstream) stream)
+		CreateFileInfo(CREF(tstring) name, CREF(tstring) ext, REF(rdo::ofstream) stream)
 			: m_name  (name  )
 			, m_ext   (ext   )
 			, m_stream(stream)
@@ -161,7 +161,7 @@ private:
 	tstring        m_modelName;
 	tstring        m_modelPath;
 	rbool          m_hasModel;
-	std::ofstream  m_traceFile;
+	rdo::ofstream  m_traceFile;
 	FileList       m_files;
 	rbool          m_realOnlyInDlg;
 	ProjectName    m_projectName;
@@ -179,12 +179,12 @@ private:
 	void      loadFile(CREF(tstring) fileName, REF(rdo::stream) stream, rbool described, rbool mustExist, REF(rbool) reanOnly) const;
 	void      saveFile(CREF(tstring) fileName, REF(rdo::stream) stream, rbool deleteIfEmpty = false) const;
 
-	rbool     createFile(CREF(tstring) name, CREF(tstring) ext, REF(std::ofstream) stream) const;
+	rbool     createFile(CREF(tstring) name, CREF(tstring) ext, REF(rdo::ofstream) stream) const;
 
 	void      beforeModelStart   ();
 	void      stopModel          ();
 	void      trace              (CREF(tstring) message);
-	void      writeModelFilesInfo(REF(std::ofstream) stream) const;
+	void      writeModelFilesInfo(REF(rdo::ofstream) stream) const;
 
 protected:
 	virtual ~RDOThreadRepository(); // Чтобы нельзя было удалить через delete
