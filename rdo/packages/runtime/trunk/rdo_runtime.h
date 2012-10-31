@@ -21,6 +21,7 @@
 #include <time.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdocommon.h"
+#include "utils/rdostream.h"
 #include "utils/smart_ptr/intrusive_ptr.h"
 #include "simulator/runtime/rdotrace.h"
 #include "simulator/runtime/simtrace.h"
@@ -52,7 +53,7 @@ public:
 	REF(RDOResults) operator<< (CREF(T) value);
 
 	virtual void              flush     () = 0;
-	virtual REF(std::ostream) getOStream() = 0;
+	virtual REF(rdo::ostream) getOStream() = 0;
 };
 
 class RDOEvent;

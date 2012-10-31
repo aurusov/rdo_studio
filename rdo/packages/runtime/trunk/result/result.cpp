@@ -130,7 +130,7 @@ void RDOPMDWatchPar::checkResult(CREF(LPRDORuntime) pRuntime)
 	}
 }
 
-void RDOPMDWatchPar::calcStat(CREF(LPRDORuntime) pRuntime, REF(std::ostream) stream)
+void RDOPMDWatchPar::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) stream)
 {
 	double currTime = m_resourceID == ~0 ? m_timeErase : pRuntime->getCurrentTime();
 	double val      = m_currValue.getDouble() * (currTime - m_timePrev);
@@ -219,7 +219,7 @@ void RDOPMDWatchState::checkResult(CREF(LPRDORuntime) pRuntime)
 	m_currValue = newValue;
 }
 
-void RDOPMDWatchState::calcStat(CREF(LPRDORuntime) pRuntime, REF(std::ostream) stream)
+void RDOPMDWatchState::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) stream)
 {
 	double currTime = pRuntime->getCurrentTime();
 	double val      = m_currValue * (currTime - m_timePrev);
@@ -311,7 +311,7 @@ void RDOPMDWatchQuant::checkResult(CREF(LPRDORuntime) pRuntime)
 	}
 }
 
-void RDOPMDWatchQuant::calcStat(CREF(LPRDORuntime) pRuntime, REF(std::ostream) stream)
+void RDOPMDWatchQuant::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) stream)
 {
 	double currTime = pRuntime->getCurrentTime();
 	double val      = m_currValue * (currTime - m_timePrev);
@@ -372,7 +372,7 @@ void RDOPMDWatchValue::checkResult(CREF(LPRDORuntime) pRuntime)
 	UNUSED(pRuntime);
 }
 
-void RDOPMDWatchValue::calcStat(CREF(LPRDORuntime) pRuntime, REF(std::ostream) stream)
+void RDOPMDWatchValue::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) stream)
 {
 	UNUSED(pRuntime);
 
@@ -467,7 +467,7 @@ void RDOPMDGetValue::checkResult(CREF(LPRDORuntime) pRuntime)
 	UNUSED(pRuntime);
 }
 
-void RDOPMDGetValue::calcStat(CREF(LPRDORuntime) pRuntime, REF(std::ostream) stream)
+void RDOPMDGetValue::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) stream)
 {
 	m_value = m_pArithmCalc->calcValue(pRuntime);
 
@@ -481,27 +481,27 @@ CREF(RDOValue) RDOPMDGetValue::getValue() const
 	return m_value;
 }
 
-void RDOPMDWatchPar::writeModelStructure(REF(std::ostream) stream) const
+void RDOPMDWatchPar::writeModelStructure(REF(rdo::ostream) stream) const
 {
 	stream << traceId() << _T(" watch_par") << std::endl;
 }
 
-void RDOPMDWatchState::writeModelStructure(REF(std::ostream) stream) const
+void RDOPMDWatchState::writeModelStructure(REF(rdo::ostream) stream) const
 {
 	stream << traceId() << _T(" watch_state") << std::endl;
 }
 
-void RDOPMDWatchQuant::writeModelStructure(REF(std::ostream) stream) const
+void RDOPMDWatchQuant::writeModelStructure(REF(rdo::ostream) stream) const
 {
 	stream << traceId() << _T(" watch_quant") << std::endl;
 }
 
-void RDOPMDWatchValue::writeModelStructure(REF(std::ostream) stream) const
+void RDOPMDWatchValue::writeModelStructure(REF(rdo::ostream) stream) const
 {
 	stream << traceId() << _T(" watch_value") << std::endl;
 }
 
-void RDOPMDGetValue::writeModelStructure(REF(std::ostream) stream) const
+void RDOPMDGetValue::writeModelStructure(REF(rdo::ostream) stream) const
 {
 	stream << traceId() << _T(" get_value") << std::endl;
 }

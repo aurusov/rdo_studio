@@ -28,7 +28,7 @@ inline void RDOResource::setRuntime(CREF(LPRDORuntime) pRuntime)
 
 inline tstring RDOResource::whoAreYou()
 {
-	return "rdoRes";
+	return _T("rdoRes");
 }
 
 inline void RDOResource::makeTemporary(rbool value)

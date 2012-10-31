@@ -14,6 +14,7 @@
 #include <fstream>
 #include <list>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/rdostream.h"
 #include "utils/smart_ptr/intrusive_ptr.h"
 #include "simulator/runtime/rdo.h"
 #include "simulator/runtime/rdotrace_i.h"
@@ -45,7 +46,7 @@ public:
 	virtual void onEndl();
 };
 
-inline std::ostream &operator << (std::ostream &stream, RDOEndL& rdoEndL);
+inline rdo::ostream &operator << (rdo::ostream &stream, RDOEndL& rdoEndL);
 
 /*!
   \class     RDOTrace
@@ -93,7 +94,7 @@ public:
 	virtual void writeResult(CREF(LPRDORuntime) pRuntime, PTR(RDOResultTrace) pok);
 
 public:
-	virtual REF(std::ostream) getOStream();
+	virtual REF(rdo::ostream) getOStream();
 	virtual REF(RDOEndL)      getEOL();
 
 protected:
@@ -101,7 +102,7 @@ protected:
 
 private:
 	rbool         m_canWriteToStream;
-	std::ofstream m_emptyOut;
+	rdo::ofstream m_emptyOut;
 	RDOEndL       m_emptyEndL;
 };
 

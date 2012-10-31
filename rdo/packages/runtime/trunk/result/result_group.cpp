@@ -88,7 +88,7 @@ void RDOPMDResultGroup::checkResult(CREF(LPRDORuntime) pRuntime)
 	}
 }
 
-void RDOPMDResultGroup::calcStat(CREF(LPRDORuntime) pRuntime, REF(std::ostream) stream)
+void RDOPMDResultGroup::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) stream)
 {
 	if (m_state == RGS_STOP)
 		return;
@@ -127,9 +127,9 @@ void RDOPMDResultGroup::calcStat(CREF(LPRDORuntime) pRuntime, REF(std::ostream) 
 			}
 			else
 			{
-				setlocale(LC_NUMERIC, _T("rus"));
+				setlocale(LC_NUMERIC, "rus");
 				m_streamTable << rdo::format(_T("%f"), pGetValue->getValue().getDouble()) << _T("\t");
-				setlocale(LC_NUMERIC, _T("eng"));
+				setlocale(LC_NUMERIC, "eng");
 			}
 			tableWrite = true;
 		}
