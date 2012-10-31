@@ -42,7 +42,7 @@ inline tstring Time::asString() const
 	}
 	else
 	{
-		return boost::posix_time::to_simple_string(boost::posix_time::microsec_clock::local_time());
+		return boost::posix_time::to_simple_string_type<tchar>(boost::posix_time::microsec_clock::local_time());
 	}
 }
 

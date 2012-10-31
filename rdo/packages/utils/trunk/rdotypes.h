@@ -27,7 +27,11 @@
 // --------------------------------------------------------------------------------
 
 //! Тип символа
+#ifndef UNICODE
 typedef  char                        tchar;
+#else
+typedef  wchar_t                     tchar;
+#endif
 
 //! Тип строки
 typedef  std::basic_string<tchar>    tstring;

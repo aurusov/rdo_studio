@@ -11,6 +11,9 @@
 #define _UTILS_RDOSTREAM_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <istream>
+#include <ostream>
+#include <fstream>
 #include <sstream>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/namespace.h"
@@ -19,14 +22,20 @@
 
 OPEN_RDO_NAMESPACE
 
+typedef  std::basic_istream<tchar, std::char_traits<tchar> >   istream;
+typedef  std::basic_ostream<tchar, std::char_traits<tchar> >   ostream;
+typedef  std::basic_ofstream<tchar, std::char_traits<tchar> >  ofstream;
+typedef  std::basic_stringstream<tchar>                        stringstream;
+typedef  std::basic_ostringstream<tchar>                       ostringstream;
+
 // --------------------------------------------------------------------------------
 // -------------------- stream
 // --------------------------------------------------------------------------------
-class stream: public std::stringstream
+class stream: public rdo::stringstream
 {
 public:
 	stream(ios_base::openmode mode)
-		: std::stringstream(mode)
+		: rdo::stringstream(mode)
 	{}
 	virtual rbool isBinary() const = 0;
 };

@@ -23,6 +23,7 @@
 #include "utils/rdotypes.h"
 #include "utils/rdomacros.h"
 #include "utils/model_objects.h"
+#include "utils/rdostream.h"
 // --------------------------------------------------------------------------------
 
 #ifdef COMPILER_VISUAL_STUDIO
@@ -114,7 +115,7 @@ OPEN_RDO_NAMESPACE
 	template< class T >
 	inline tstring toString(T value)
 	{
-		std::ostringstream str;
+		rdo::ostringstream str;
 		str << value;
 		return str.str();
 	}

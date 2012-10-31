@@ -51,7 +51,11 @@ tstring format( CPTR(tchar) str, REF(va_list) params )
 	while ( size == -1 ) {
 #ifdef COMPILER_VISUAL_STUDIO
 #   pragma warning(disable: 4996)
+#ifdef UNICODE
+		size = _vsnwprintf( &s[0], s.size(), str, params );
+#else
 		size = _vsnprintf( &s[0], s.size(), str, params );
+#endif
 #   pragma warning(default: 4996)
 #endif  // COMPILER_VISUAL_STUDIO
 #ifdef COMPILER_GCC
@@ -99,9 +103,9 @@ struct _toLower {
 void toLower( REF(tstring) str )
 {
 #ifdef COMPILER_VISUAL_STUDIO
-	_toLower tr1( std::locale(_T("rus")) );
+	_toLower tr1( std::locale("rus") );
 	std::transform( str.begin(), str.end(), str.begin(), tr1 );
-	_toLower tr2( std::locale(_T("C")) );
+	_toLower tr2( std::locale("C") );
 #elif defined COMPILER_GCC
 	boost::algorithm::to_lower(str);
 #endif // COMPILER_VISUAL_STUDIO
@@ -154,7 +158,7 @@ tstring extractFilePath( CREF(tstring) fileName )
 		pos = fileName.find_last_of( _T('/') );
 	}
 	if ( pos == tstring::npos ) {
-		return "";
+		return _T("");
 	}
 	if ( pos != tstring::npos && pos < fileName.length() - 1 ) {
 		s.assign( &fileName[0], pos + 1 );

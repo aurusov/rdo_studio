@@ -29,7 +29,11 @@ OPEN_RDO_NAMESPACE
 rbool File::read_only(CREF(tstring) name)
 {
 #ifdef COMPILER_VISUAL_STUDIO
+#ifdef UNICODE
+	return _waccess_s(name.c_str(), 04) == 0 && _waccess_s(name.c_str(), 06) == -1;
+#else
 	return _access(name.c_str(), 04) == 0 && _access(name.c_str(), 06) == -1;
+#endif
 #endif  // COMPILER_VISUAL_STUDIO
 #ifdef COMPILER_GCC
 	return access(name.c_str(), R_OK) == 0 && access(name.c_str(), W_OK) == -1;
@@ -39,12 +43,16 @@ rbool File::read_only(CREF(tstring) name)
 rbool File::splitpath(CREF(tstring) name, REF(tstring) fileDir, REF(tstring) fileName, REF(tstring) fileExt)
 {
 #if defined( COMPILER_VISUAL_STUDIO )
-	char _drive[_MAX_DRIVE];
-	char _dir  [_MAX_DIR  ];
-	char _name [_MAX_FNAME];
-	char _ext  [_MAX_EXT  ];
+	tchar _drive[_MAX_DRIVE];
+	tchar _dir  [_MAX_DIR  ];
+	tchar _name [_MAX_FNAME];
+	tchar _ext  [_MAX_EXT  ];
 
+#ifdef UNICODE
+	if (_wsplitpath_s(name.c_str(), _drive, _MAX_DRIVE, _dir, _MAX_DIR, _name, _MAX_FNAME, _ext, _MAX_EXT) != 0)
+#else
 	if (_splitpath_s(name.c_str(), _drive, _MAX_DRIVE, _dir, _MAX_DIR, _name, _MAX_FNAME, _ext, _MAX_EXT) != 0)
+#endif
 		return false;
 
 	fileDir  = rdo::format(_T("%s%s"), _drive, _dir);
@@ -73,13 +81,13 @@ tstring File::getTempFileName()
 {
 #ifdef COMPILER_VISUAL_STUDIO
 	const ruint BUFSIZE = 4096;
-	char lpPathBuffer[BUFSIZE];
+	tchar lpPathBuffer[BUFSIZE];
 
 	if (::GetTempPath(BUFSIZE, lpPathBuffer) == 0)
 	{
 		return tstring();
 	}
-	char szTempName[MAX_PATH];
+	tchar szTempName[MAX_PATH];
 	if (::GetTempFileName(lpPathBuffer, NULL, 0, szTempName) == 0)
 	{
 		return tstring();
