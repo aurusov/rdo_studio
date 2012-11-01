@@ -104,7 +104,7 @@
 %token RDO_Animation
 %token RDO_NoChange
 %token RDO_MultiRun
-%token RDO_RunCount
+%token RDO_Run_Count
 %token RDO_Next
 %token RDO_Seek
 

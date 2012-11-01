@@ -102,7 +102,7 @@
 %token RDO_Animation
 %token RDO_NoChange
 %token RDO_MultiRun
-%token RDO_RunCount
+%token RDO_Run_Count
 %token RDO_Next
 %token RDO_Seek
 
@@ -258,46 +258,21 @@ smr_multirun_body
 	;
 
 smr_multirun_body_desc
-	: smr_multirun_body_desc RDO_RunCount '=' fun_arithm';'
+	: RDO_Run_Count '=' RDO_INT_CONST ';'
 	{
-		int i = 0;
 		PARSER->error().error(@2, _T("я попал в нужную мне бизоновскую ветку - 1!"));
 	}
-	| smr_multirun_body_desc RDO_IDENTIF '.' RDO_Seek '=' RDO_IDENTIF '.' RDO_Seek '*' smr_seq_descr
+	| RDO_IDENTIF '.' RDO_Seek '=' fun_arithm';'
 	{
-		int i = 0;
-		PARSER->error().error(@2, _T("я попал в нужную мне бизоновскую ветку - 2!"));
-	}
-	| smr_multirun_body_desc RDO_IDENTIF '.' RDO_Seek '=' fun_arithm';'
-	{
-		int i = 0;
 		PARSER->error().error(@2, _T("я попал в нужную мне бизоновскую ветку - 3!"));
 	}
-	| smr_multirun_body_desc RDO_IDENTIF '.' RDO_Seek '=' RDO_IDENTIF '.' RDO_Next
+	| RDO_IDENTIF '.' RDO_Seek '=' RDO_IDENTIF '.' RDO_Next
 	{
-		int i = 0;
 		PARSER->error().error(@2, _T("я попал в нужную мне бизоновскую ветку - 4!"));
 	}
-	| smr_multirun_body_desc RDO_IDENTIF '.' RDO_Seek '='
+	| RDO_IDENTIF '.' RDO_Seek '=' error
 	{
-		int i = 0;
 		PARSER->error().error(@2, _T("я попал в нужную мне бизоновскую ветку - 5!"));
-	}
-	;
-
-smr_seq_descr
-	: smr_seq_descr smr_seq_normal
-	{
-		int i = 0;
-		PARSER->error().error(@2, _T("я попал в нужную мне бизоновскую ветку - 6!"));
-	}
-	;
-
-smr_seq_normal
-	: RDO_normal
-	{
-		int i = 0;
-		PARSER->error().error(@1, _T("я попал в нужную мне бизоновскую ветку - 7!"));
 	}
 	;
 
@@ -318,6 +293,7 @@ smr_show_mode
 		$$ = rdo::service::simulation::SM_Animation;
 	}
 	;
+
 // --------------------------------------------------------------------------------
 // --------------------smr_cond
 // --------------------------------------------------------------------------------
