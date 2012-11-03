@@ -23,7 +23,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 inline void RDOEndL::onEndl()
 {}
 
-inline std::ostream &operator << (std::ostream &stream, RDOEndL& rdoEndL)
+inline rdo::ostream &operator << (rdo::ostream &stream, RDOEndL& rdoEndL)
 {
 	rdoEndL.onEndl();
 	return stream;
@@ -65,7 +65,7 @@ inline rbool RDOTrace::isNull() const
 	return m_isNullTracer;
 }
 
-inline REF(std::ostream) RDOTrace::getOStream()
+inline REF(rdo::ostream) RDOTrace::getOStream()
 {
 	return m_emptyOut;
 }

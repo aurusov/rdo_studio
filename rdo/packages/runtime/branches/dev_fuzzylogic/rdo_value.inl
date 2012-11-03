@@ -891,7 +891,7 @@ inline CREF(tstring) RDOValue::__stringV() const
 	return *getPointer<string_class>().get();
 }
 
-inline REF(std::ostream) operator<< (REF(std::ostream) stream, CREF(RDOValue) rdovalue)
+inline REF(rdo::ostream) operator<< (REF(rdo::ostream) stream, CREF(RDOValue) rdovalue)
 {
 	stream << rdovalue.getAsStringForTrace();
 	return stream;
