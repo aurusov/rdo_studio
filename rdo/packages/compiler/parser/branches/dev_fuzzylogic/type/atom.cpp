@@ -70,7 +70,7 @@ rdo::runtime::RDOValue RDOType__unknow::get_default() const
 	return rdo::runtime::RDOValue();
 }
 
-void RDOType__unknow::writeModelStructure(REF(std::ostream) stream) const
+void RDOType__unknow::writeModelStructure(REF(rdo::ostream) stream) const
 {
 	UNUSED(stream);
 	parser::g_error().error(RDOParserSrcInfo(), _T("Внутренная ошибка парсера. Невозможно записать неизвестный тип в отчет"));
@@ -118,7 +118,7 @@ rdo::runtime::RDOValue RDOType__void::get_default() const
 	return rdo::runtime::RDOValue();
 }
 
-void RDOType__void::writeModelStructure(REF(std::ostream) stream) const
+void RDOType__void::writeModelStructure(REF(rdo::ostream) stream) const
 {
 	UNUSED(stream);
 	parser::g_error().error(RDOParserSrcInfo(), _T("Внутренная ошибка парсера. Невозможно записать void-тип в отчет"));
@@ -185,7 +185,7 @@ rdo::runtime::RDOValue RDOType__int::get_default() const
 	return rdo::runtime::RDOValue(0);
 }
 
-void RDOType__int::writeModelStructure(REF(std::ostream) stream) const
+void RDOType__int::writeModelStructure(REF(rdo::ostream) stream) const
 {
 	stream << _T("I") << std::endl;
 }
@@ -244,7 +244,7 @@ rdo::runtime::RDOValue RDOType__real::get_default() const
 	return rdo::runtime::RDOValue(0.0);
 }
 
-void RDOType__real::writeModelStructure(REF(std::ostream) stream) const
+void RDOType__real::writeModelStructure(REF(rdo::ostream) stream) const
 {
 	stream << _T("R") << std::endl;
 }
@@ -302,7 +302,7 @@ rdo::runtime::RDOValue RDOType__string::get_default() const
 	return rdo::runtime::RDOValue(_T(""));
 }
 
-void RDOType__string::writeModelStructure(REF(std::ostream) stream) const
+void RDOType__string::writeModelStructure(REF(rdo::ostream) stream) const
 {
 	stream << _T("S") << std::endl;
 }
@@ -351,7 +351,7 @@ rdo::runtime::RDOValue RDOType__identificator::get_default() const
 	return rdo::runtime::RDOValue(_T(""), rdo::runtime::g_identificator);
 }
 
-void RDOType__identificator::writeModelStructure(REF(std::ostream) stream) const
+void RDOType__identificator::writeModelStructure(REF(rdo::ostream) stream) const
 {
 	UNUSED(stream);
 	parser::g_error().error(RDOParserSrcInfo(), _T("Внутренная ошибка парсера. Невозможно записать тип идектификатор в отчет"));
@@ -411,7 +411,7 @@ rdo::runtime::RDOValue RDOType__bool::get_default() const
 	return rdo::runtime::RDOValue(false);
 }
 
-void RDOType__bool::writeModelStructure(REF(std::ostream) stream) const
+void RDOType__bool::writeModelStructure(REF(rdo::ostream) stream) const
 {
 	stream << _T("B") << std::endl;
 }

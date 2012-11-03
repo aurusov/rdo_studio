@@ -344,7 +344,7 @@ tstring RDOPATPattern::getPatternId() const
 	return m_pPatRuntime->traceId(); 
 }
 
-void RDOPATPattern::writeModelStructure(REF(std::ostream) stream) const
+void RDOPATPattern::writeModelStructure(REF(rdo::ostream) stream) const
 {
 	stream << getPatternId() << " " << name() << " " << getModelStructureLetter() << " " << m_relResList.size();
 	STL_FOR_ALL_CONST(m_relResList, it)
