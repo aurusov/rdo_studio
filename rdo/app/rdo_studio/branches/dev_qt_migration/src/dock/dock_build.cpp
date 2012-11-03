@@ -69,11 +69,3 @@ REF(DockBuild::context_type) DockBuild::getContext()
 {
 	return *static_cast<PTR(context_type)>(widget());
 }
-REF(DockBuild::context_type) DockBuild::getContext()
-{
-	return *static_cast<PTR(context_type)>(widget());
-}
-REF(DockBuild::context_type) DockBuild::getContext()
-{
-	return *static_cast<PTR(context_type)>(widget());
-}
