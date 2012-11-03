@@ -44,7 +44,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../;../../../thirdparty/sci/include;../../../thirdparty/sci/src;../../../thirdparty/sci/lexlib;../../../thirdparty/sci/win32"
+				AdditionalIncludeDirectories="../../../;../../../thirdparty/sci/include;../../../thirdparty/sci/src;../../../thirdparty/sci/lexlib;&quot;$(QTDIR)/include/QtCore&quot;;&quot;$(QTDIR)/include/QtGui&quot;"
 				PreprocessorDefinitions="RDO_ST;SCI_LEXER;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="3"
 				BrowseInformation="1"
@@ -113,7 +113,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="../../../;../../../thirdparty/sci/include;../../../thirdparty/sci/src;../../../thirdparty/sci/lexlib;../../../thirdparty/sci/win32"
+				AdditionalIncludeDirectories="../../../;../../../thirdparty/sci/include;../../../thirdparty/sci/src;../../../thirdparty/sci/lexlib;&quot;$(QTDIR)/include/QtGui&quot;;&quot;$(QTDIR)/include/QtCore&quot;"
 				PreprocessorDefinitions="RDO_ST;SCI_LEXER;WIN32;NDEBUG;_LIB;WINVER=0x0501;BOOST_TYPEOF_SILENT;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="2"
 				WarningLevel="4"
@@ -497,19 +497,79 @@
 			</File>
 		</Filter>
 		<Filter
-			Name=".win32"
+			Name="qt"
 			>
 			<File
-				RelativePath=".\PlatWin.cxx"
+				RelativePath=".\bin\scintilla\generated\moc_ScintillaEditBase.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\PlatWin.h"
+				RelativePath=".\bin\scintilla\generated\moc_ScintillaQt.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\ScintillaWin.cxx"
+				RelativePath="..\qt\ScintillaEditBase\PlatQt.cpp"
 				>
+			</File>
+			<File
+				RelativePath="..\qt\ScintillaEditBase\PlatQt.h"
+				>
+			</File>
+			<File
+				RelativePath="..\qt\ScintillaEditBase\ScintillaEditBase.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\qt\ScintillaEditBase\ScintillaEditBase.h"
+				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="MOC $(InputFileName)"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="MOC $(InputFileName)"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\qt\ScintillaEditBase\ScintillaQt.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\qt\ScintillaEditBase\ScintillaQt.h"
+				>
+				<FileConfiguration
+					Name="debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="MOC $(InputFileName)"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="MOC $(InputFileName)"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot; -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_MSC_VER=1500 -DWIN32 -f&quot;$(InputPath)&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+						Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\moc_$(InputName).cpp&quot;"
+					/>
+				</FileConfiguration>
 			</File>
 		</Filter>
 	</Files>
