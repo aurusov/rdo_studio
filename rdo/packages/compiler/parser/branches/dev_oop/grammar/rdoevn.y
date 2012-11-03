@@ -1647,7 +1647,7 @@ planning_statement
 	{
 		PARSER->error().error(@4, _T("Ожидается открывающая скобка"));
 	}
-	| RDO_IDENTIF '.' RDO_Planning '(' arithm_list error
+	| RDO_IDENTIF '.' RDO_Planning '(' expression error
 	{
 		PARSER->error().error(@6, _T("Ожидается закрывающая скобка"));
 	}
@@ -1993,12 +1993,13 @@ equal_statement
 
 		$$ = PARSER->stack().push(pExpression);
 	}
-	| RDO_IDENTIF param_equal_type fun_arithm
+	| RDO_IDENTIF param_equal_type expression
 	{
-		LPRDOValue              pParamName   = PARSER->stack().pop<RDOValue>($1);
-		tstring                 paramName    = pParamName->value().getIdentificator();
-		rdo::runtime::EqualType equalType    = static_cast<rdo::runtime::EqualType>($2);
-		LPRDOFUNArithm          pRightArithm = PARSER->stack().pop<RDOFUNArithm>($3);
+		LPRDOValue              pParamName       = PARSER->stack().pop<RDOValue>($1);
+		tstring                 paramName        = pParamName->value().getIdentificator();
+		rdo::runtime::EqualType equalType        = static_cast<rdo::runtime::EqualType>($2);
+		LPExpression            pRightExpression = PARSER->stack().pop<Expression>($3);
+		ASSERT(pRightExpression);
 		LPContext pContext = PARSER->context();
 		ASSERT(pContext);
 		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
@@ -2008,12 +2009,12 @@ equal_statement
 		LPLocalVariable pLocalVariable = pLocalVariableListStack->findLocalVariable(paramName);
 		rdo::runtime::LPRDOCalc pCalc;
 		rdo::runtime::LPRDOCalc pCalcRight;
-		LPTypeInfo pLeftArithmType;
+		LPTypeInfo pLeftExpressionType;
 		if (pLocalVariable)
 		{
-			pLeftArithmType = pLocalVariable->getTypeInfo();
+			pLeftExpressionType = pLocalVariable->getTypeInfo();
 
-			pCalcRight = pRightArithm->createCalc(pLocalVariable->getTypeInfo());
+			pCalcRight = pRightExpression->calc();
 			switch (equalType)
 			{
 				case rdo::runtime::ET_NOCHANGE:
@@ -2061,9 +2062,9 @@ equal_statement
 				PARSER->error().error(@1, rdo::format(_T("Неизвестный параметр: %s"), paramName.c_str()));
 			}
 
-			pLeftArithmType = pParam->getTypeInfo();
+			pLeftExpressionType = pParam->getTypeInfo();
 
-			pCalcRight = pRightArithm->createCalc(pParam->getTypeInfo());
+			pCalcRight = pRightExpression->calc();
 			switch (equalType)
 			{
 				case rdo::runtime::ET_NOCHANGE:
