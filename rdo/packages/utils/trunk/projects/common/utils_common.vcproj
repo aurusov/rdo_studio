@@ -415,6 +415,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name=".locale"
+			>
+			<File
+				RelativePath="..\..\rdolocale.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdolocale.h"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
