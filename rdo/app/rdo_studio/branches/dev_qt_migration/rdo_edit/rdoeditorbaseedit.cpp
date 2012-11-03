@@ -39,12 +39,13 @@ static char* wordCharacters = "0123456789_$abcdefghijklmnopqrstuvwxyzABCDEFGHIJK
 
 // ---------------
 
-BEGIN_MESSAGE_MAP( RDOEditorBaseEdit, RDOBaseEdit )
-	ON_WM_CREATE()
-END_MESSAGE_MAP()
+//! @todo qt
+//BEGIN_MESSAGE_MAP( RDOEditorBaseEdit, RDOBaseEdit )
+//	ON_WM_CREATE()
+//END_MESSAGE_MAP()
 
-RDOEditorBaseEdit::RDOEditorBaseEdit():
-	RDOBaseEdit(),
+RDOEditorBaseEdit::RDOEditorBaseEdit(PTR(QWidget) pParent):
+	RDOBaseEdit(pParent),
 	kw0( "$Activities?0 $Back_picture?0 $Body?0 $Changes?0 $Compare_tops?0 $Condition?0 \
 $Constant?0 $Decision_point?0 $Default?0 $End?0 $End_picture?0 $Evaluate_by?0 $Frame?0 $Function?0 \
 $Include?0 $Multithreading?0 $multithreading?0 $Operations?0 $Parameters?0 $Fuzzy_Parameters?0 Term?0 $Pattern?0 $Process?0 $Relevant_resources?0 $Resource_type?0 \
@@ -69,39 +70,6 @@ Not_Exist?1 Not_For_All?1 Power?1 Round?1 Sin?1 Sqrt?1 Tan?1 Select?1 Size?1 Emp
 	kw2( "no_trace?2 trace?2 trace_all?2 trace_stat?2 trace_tops?2" ),
 	kw3( "transparent last white black red green blue cyan magenta yellow gray" )
 {
-}
-
-RDOEditorBaseEdit::~RDOEditorBaseEdit()
-{
-}
-
-BOOL RDOEditorBaseEdit::DestroyWindow()
-{
-	return RDOBaseEdit::DestroyWindow();
-}
-
-tstring RDOEditorBaseEdit::getAllKW() const
-{
-	return rdo::format( "%s %s %s %s", kw0.c_str(), kw1.c_str(), kw2.c_str(), kw3.c_str() );
-}
-
-tstring RDOEditorBaseEdit::convertToLexer( CREF(tstring) kw )
-{
-	tstring s = kw;
-	while ( s.find( '?' ) != tstring::npos ) {
-		tstring::size_type pos1 = s.find( '?' );
-		tstring::size_type pos2 = s.find( ' ', pos1 );
-		s.erase( pos1, pos2 - pos1 );
-	}
-	tstring str_big = s;
-	rdo::toLower(s);
-	return str_big + " " + s;
-}
-
-int RDOEditorBaseEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
-{
-	if ( RDOBaseEdit::OnCreate(lpCreateStruct) == -1 ) return -1;
-
 	sendEditor( SCI_SETLEXER, SCLEX_RDO );
 	sendEditor( SCI_GETLEXER );
 
@@ -120,8 +88,28 @@ int RDOEditorBaseEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	sendEditor( SCI_REGISTERIMAGE, 0, reinterpret_cast<long>(xpm_ac_function) );
 	sendEditor( SCI_REGISTERIMAGE, 1, reinterpret_cast<unsigned long>(xpm_ac_data) );
 	sendEditor( SCI_REGISTERIMAGE, 2, reinterpret_cast<unsigned long>(xpm_ac_trace) );
+}
 
-	return 0;
+RDOEditorBaseEdit::~RDOEditorBaseEdit()
+{
+}
+
+tstring RDOEditorBaseEdit::getAllKW() const
+{
+	return rdo::format( "%s %s %s %s", kw0.c_str(), kw1.c_str(), kw2.c_str(), kw3.c_str() );
+}
+
+tstring RDOEditorBaseEdit::convertToLexer( CREF(tstring) kw )
+{
+	tstring s = kw;
+	while ( s.find( '?' ) != tstring::npos ) {
+		tstring::size_type pos1 = s.find( '?' );
+		tstring::size_type pos2 = s.find( ' ', pos1 );
+		s.erase( pos1, pos2 - pos1 );
+	}
+	tstring str_big = s;
+	rdo::toLower(s);
+	return str_big + " " + s;
 }
 
 void RDOEditorBaseEdit::setEditorStyle( RDOEditorBaseEditStyle* _style )

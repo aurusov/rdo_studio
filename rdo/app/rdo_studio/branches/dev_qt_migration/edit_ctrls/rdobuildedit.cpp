@@ -36,14 +36,15 @@ namespace rdoEditCtrl {
 
 // ON_UPDATE_COMMAND_UI сделано
 
-BEGIN_MESSAGE_MAP( RDOBuildEdit, RDOLogEdit )
-	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
-	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR , OnUpdateCoordStatusBar )
-	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar )
-END_MESSAGE_MAP()
+//! @todo qt
+//BEGIN_MESSAGE_MAP( RDOBuildEdit, RDOLogEdit )
+//	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
+//	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR , OnUpdateCoordStatusBar )
+//	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar )
+//END_MESSAGE_MAP()
 
-RDOBuildEdit::RDOBuildEdit()
-	: RDOLogEdit()
+RDOBuildEdit::RDOBuildEdit(PTR(QWidget) pParent)
+	: RDOLogEdit(pParent)
 {}
 
 RDOBuildEdit::~RDOBuildEdit()

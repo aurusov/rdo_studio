@@ -72,69 +72,70 @@ static const UINT FIND_REPLASE_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 
 // ON_UPDATE_COMMAND_UI сделано
 
-BEGIN_MESSAGE_MAP( RDOBaseEdit, CWnd )
-	ON_WM_CREATE()
-	ON_WM_SETFOCUS()
-	ON_WM_SIZE()
-	ON_WM_INITMENUPOPUP()
-	ON_WM_CONTEXTMENU()
-	ON_COMMAND(ID_EDIT_UNDO, OnEditUndo)
-	ON_COMMAND(ID_EDIT_REDO, OnEditRedo)
-	ON_COMMAND(ID_EDIT_CUT, OnEditCut)
-	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
-	ON_COMMAND(ID_EDIT_PASTE, OnEditPaste)
-	ON_COMMAND(ID_EDIT_CLEAR, OnEditClear)
-	ON_COMMAND(ID_EDIT_COPYASRTF, OnEditCopyAsRTF)
-	ON_COMMAND(ID_EDIT_SELECT_ALL, OnEditSelectAll)
-	ON_COMMAND(ID_EDIT_UPPERCASE, OnEditUpperCase)
-	ON_COMMAND(ID_EDIT_LOWERCASE, OnEditLowerCase)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_UNDO, OnUpdateEditUndo)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_REDO, OnUpdateEditRedo)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_CUT, OnUpdateEditCut)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_PASTE, OnUpdateEditPaste)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_CLEAR, OnUpdateEditClear)
-	ON_UPDATE_COMMAND_UI( ID_EDIT_SELECT_ALL, OnSelectAll )
-	ON_COMMAND(ID_SEARCH_FIND, OnSearchFind)
-	ON_COMMAND(ID_SEARCH_REPLACE, OnSearchReplace)
-	ON_COMMAND(ID_SEARCH_FIND_NEXT, OnSearchFindNext)
-	ON_COMMAND(ID_SEARCH_FIND_PREVIOUS, OnSearchFindPrevious)
-	ON_COMMAND(ID_SEARCH_FIND_NEXT_FAST, OnSearchFindNextFast)
-	ON_COMMAND(ID_SEARCH_FIND_PREVIOUS_FAST, OnSearchFindPreviousFast)
-	ON_UPDATE_COMMAND_UI(ID_SEARCH_FIND_NEXT, OnUpdateSearchFindNextPrev)
-	ON_UPDATE_COMMAND_UI(ID_SEARCH_FIND, OnUpdateSearchFind)
-	ON_UPDATE_COMMAND_UI(ID_SEARCH_REPLACE, OnUpdateSearchReplace)
-	ON_COMMAND( ID_SEARCH_BOOKMARK_TOGGLE  , OnBookmarkToggle )
-	ON_COMMAND( ID_SEARCH_BOOKMARK_NEXT    , OnBookmarkNext )
-	ON_COMMAND( ID_SEARCH_BOOKMARK_PREVIOUS, OnBookmarkPrev )
-	ON_COMMAND( ID_SEARCH_BOOKMARKS_CLEAR  , OnBookmarkClearAll )
-	ON_UPDATE_COMMAND_UI( ID_SEARCH_BOOKMARK_NEXT, OnHasBookmarks )
-	ON_COMMAND(ID_VIEW_WHITESPACE, OnViewWhiteSpace)
-	ON_COMMAND(ID_VIEW_ENDOFLINE, OnViewEndOfLine)
-	ON_COMMAND(ID_VIEW_ZOOMIN, OnViewZoomIn)
-	ON_COMMAND(ID_VIEW_ZOOMOUT, OnViewZoomOut)
-	ON_COMMAND(ID_VIEW_ZOOMRESET, OnViewZoomReset)
-	ON_UPDATE_COMMAND_UI( ID_VIEW_WHITESPACE      , OnUpdateWhiteSpace )
-	ON_UPDATE_COMMAND_UI( ID_VIEW_ENDOFLINE       , OnUpdateEndOfLine )
-	ON_UPDATE_COMMAND_UI( ID_VIEW_ZOOMIN          , OnUpdateZoomIn )
-	ON_UPDATE_COMMAND_UI( ID_VIEW_ZOOMOUT         , OnUpdateZoomOut )
-	ON_UPDATE_COMMAND_UI( ID_VIEW_ZOOMRESET       , OnUpdateZoomReset )
-	ON_UPDATE_COMMAND_UI( ID_EDIT_COPYASRTF       , OnIsSelected )
-	ON_UPDATE_COMMAND_UI( ID_EDIT_UPPERCASE       , OnIsSelected )
-	ON_UPDATE_COMMAND_UI( ID_EDIT_LOWERCASE       , OnIsSelected )
-	ON_UPDATE_COMMAND_UI( ID_SEARCH_BOOKMARK_PREVIOUS, OnHasBookmarks )
-	ON_UPDATE_COMMAND_UI( ID_SEARCH_BOOKMARKS_CLEAR  , OnHasBookmarks )
-	ON_UPDATE_COMMAND_UI( ID_SEARCH_FIND_PREVIOUS, OnUpdateSearchFindNextPrev )
-	ON_UPDATE_COMMAND_UI( ID_EDIT_COPY, OnIsSelected )
-	ON_COMMAND(ID_SEARCH_GOTO_LINE, OnSearchGotoLine)
-
-	ON_REGISTERED_MESSAGE( FIND_REPLASE_MSG, OnFindReplaceMsg )
-
-END_MESSAGE_MAP()
+//! @todo qt
+//BEGIN_MESSAGE_MAP( RDOBaseEdit, CWnd )
+//	ON_WM_CREATE()
+//	ON_WM_SETFOCUS()
+//	ON_WM_SIZE()
+//	ON_WM_INITMENUPOPUP()
+//	ON_WM_CONTEXTMENU()
+//	ON_COMMAND(ID_EDIT_UNDO, OnEditUndo)
+//	ON_COMMAND(ID_EDIT_REDO, OnEditRedo)
+//	ON_COMMAND(ID_EDIT_CUT, OnEditCut)
+//	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
+//	ON_COMMAND(ID_EDIT_PASTE, OnEditPaste)
+//	ON_COMMAND(ID_EDIT_CLEAR, OnEditClear)
+//	ON_COMMAND(ID_EDIT_COPYASRTF, OnEditCopyAsRTF)
+//	ON_COMMAND(ID_EDIT_SELECT_ALL, OnEditSelectAll)
+//	ON_COMMAND(ID_EDIT_UPPERCASE, OnEditUpperCase)
+//	ON_COMMAND(ID_EDIT_LOWERCASE, OnEditLowerCase)
+//	ON_UPDATE_COMMAND_UI(ID_EDIT_UNDO, OnUpdateEditUndo)
+//	ON_UPDATE_COMMAND_UI(ID_EDIT_REDO, OnUpdateEditRedo)
+//	ON_UPDATE_COMMAND_UI(ID_EDIT_CUT, OnUpdateEditCut)
+//	ON_UPDATE_COMMAND_UI(ID_EDIT_PASTE, OnUpdateEditPaste)
+//	ON_UPDATE_COMMAND_UI(ID_EDIT_CLEAR, OnUpdateEditClear)
+//	ON_UPDATE_COMMAND_UI( ID_EDIT_SELECT_ALL, OnSelectAll )
+//	ON_COMMAND(ID_SEARCH_FIND, OnSearchFind)
+//	ON_COMMAND(ID_SEARCH_REPLACE, OnSearchReplace)
+//	ON_COMMAND(ID_SEARCH_FIND_NEXT, OnSearchFindNext)
+//	ON_COMMAND(ID_SEARCH_FIND_PREVIOUS, OnSearchFindPrevious)
+//	ON_COMMAND(ID_SEARCH_FIND_NEXT_FAST, OnSearchFindNextFast)
+//	ON_COMMAND(ID_SEARCH_FIND_PREVIOUS_FAST, OnSearchFindPreviousFast)
+//	ON_UPDATE_COMMAND_UI(ID_SEARCH_FIND_NEXT, OnUpdateSearchFindNextPrev)
+//	ON_UPDATE_COMMAND_UI(ID_SEARCH_FIND, OnUpdateSearchFind)
+//	ON_UPDATE_COMMAND_UI(ID_SEARCH_REPLACE, OnUpdateSearchReplace)
+//	ON_COMMAND( ID_SEARCH_BOOKMARK_TOGGLE  , OnBookmarkToggle )
+//	ON_COMMAND( ID_SEARCH_BOOKMARK_NEXT    , OnBookmarkNext )
+//	ON_COMMAND( ID_SEARCH_BOOKMARK_PREVIOUS, OnBookmarkPrev )
+//	ON_COMMAND( ID_SEARCH_BOOKMARKS_CLEAR  , OnBookmarkClearAll )
+//	ON_UPDATE_COMMAND_UI( ID_SEARCH_BOOKMARK_NEXT, OnHasBookmarks )
+//	ON_COMMAND(ID_VIEW_WHITESPACE, OnViewWhiteSpace)
+//	ON_COMMAND(ID_VIEW_ENDOFLINE, OnViewEndOfLine)
+//	ON_COMMAND(ID_VIEW_ZOOMIN, OnViewZoomIn)
+//	ON_COMMAND(ID_VIEW_ZOOMOUT, OnViewZoomOut)
+//	ON_COMMAND(ID_VIEW_ZOOMRESET, OnViewZoomReset)
+//	ON_UPDATE_COMMAND_UI( ID_VIEW_WHITESPACE      , OnUpdateWhiteSpace )
+//	ON_UPDATE_COMMAND_UI( ID_VIEW_ENDOFLINE       , OnUpdateEndOfLine )
+//	ON_UPDATE_COMMAND_UI( ID_VIEW_ZOOMIN          , OnUpdateZoomIn )
+//	ON_UPDATE_COMMAND_UI( ID_VIEW_ZOOMOUT         , OnUpdateZoomOut )
+//	ON_UPDATE_COMMAND_UI( ID_VIEW_ZOOMRESET       , OnUpdateZoomReset )
+//	ON_UPDATE_COMMAND_UI( ID_EDIT_COPYASRTF       , OnIsSelected )
+//	ON_UPDATE_COMMAND_UI( ID_EDIT_UPPERCASE       , OnIsSelected )
+//	ON_UPDATE_COMMAND_UI( ID_EDIT_LOWERCASE       , OnIsSelected )
+//	ON_UPDATE_COMMAND_UI( ID_SEARCH_BOOKMARK_PREVIOUS, OnHasBookmarks )
+//	ON_UPDATE_COMMAND_UI( ID_SEARCH_BOOKMARKS_CLEAR  , OnHasBookmarks )
+//	ON_UPDATE_COMMAND_UI( ID_SEARCH_FIND_PREVIOUS, OnUpdateSearchFindNextPrev )
+//	ON_UPDATE_COMMAND_UI( ID_EDIT_COPY, OnIsSelected )
+//	ON_COMMAND(ID_SEARCH_GOTO_LINE, OnSearchGotoLine)
+//
+//	ON_REGISTERED_MESSAGE( FIND_REPLASE_MSG, OnFindReplaceMsg )
+//
+//END_MESSAGE_MAP()
 
 int RDOBaseEdit::objectCount = 0;
 
-RDOBaseEdit::RDOBaseEdit():
-	CWnd(),
+RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent):
+	ScintillaEditBase(pParent),
 	GUI_ID_EDIT_UNDO( false ),
 	GUI_ID_EDIT_REDO( false ),
 	GUI_ID_EDIT_CUT( false ),
@@ -145,9 +146,6 @@ RDOBaseEdit::RDOBaseEdit():
 	GUI_HAS_BOOKMARK( false ),
 	GUI_ID_VIEW_WHITESPACE( false ),
 	GUI_ID_VIEW_ENDOFLINE( false ),
-	sciHWND( 0 ),
-	sciEditor( 0 ),
-	sciFun( NULL ),
 	markerCount( 0 ),
 	popupMenu( NULL ),
 	style( NULL ),
@@ -155,113 +153,62 @@ RDOBaseEdit::RDOBaseEdit():
 	firstFoundPos( -1 ),
 	bHaveFound( false )
 {
+	QObject::connect(this, SIGNAL(ScintillaEditBase::needShown()), this, SLOT(catchNeedShown()));
+	QObject::connect(this, SIGNAL(ScintillaEditBase::charAdded()), this, SLOT(catchCharAdded()));
+	QObject::connect(this, SIGNAL(ScintillaEditBase::updateUi() ), this, SLOT(catchUpdateUi() ));
+
 	if ( !objectCount ) {
-		Scintilla_RegisterClasses( 0 );
 		Scintilla_LinkLexers();
 	}
 	objectCount++;
 
 	sci_MARKER_BOOKMARK = getNewMarker();
+
+	sendEditor( SCI_SETLEXER, SCLEX_TEXT );
+	//	int lexLanguage = sendEditor( SCI_GETLEXER );
+
+	sendEditor( SCI_SETMARGINWIDTHN, 1, 0 );
+
+	sendEditor( SCI_USEPOPUP, 0 );
 }
 
 RDOBaseEdit::~RDOBaseEdit()
 {
 	objectCount--;
-	if ( !objectCount ) {
-		Scintilla_ReleaseResources();
-	}
 }
 
-BOOL RDOBaseEdit::PreCreateWindow( CREATESTRUCT& cs )
+//! @todo qt
+//void RDOBaseEdit::OnSetFocus( CWnd* pOldWnd )
+//{
+//	CWnd::OnSetFocus( pOldWnd );
+//	if ( sciHWND ) {
+//		::SetFocus( sciHWND );
+//	}
+//	updateAllGUI();
+//}
+
+void RDOBaseEdit::catchNeedShown(int position, int length)
 {
-	if ( !CWnd::PreCreateWindow(cs) ) return FALSE;
-	cs.dwExStyle |= WS_EX_CLIENTEDGE;
-	cs.style &= ~WS_BORDER;
-	cs.style |= WS_CLIPCHILDREN;
-	cs.lpszClass = AfxRegisterWndClass( 0 );
-	return TRUE;
+	ensureRangeVisible(position, position + length, false);
 }
 
-BOOL RDOBaseEdit::OnNotify( WPARAM /*wParam*/, LPARAM lParam, LRESULT* /*pResult*/ )
+void RDOBaseEdit::catchCharAdded(int ch)
 {
-	SCNotification* scn = (SCNotification*)lParam;
-
-	if ( scn->nmhdr.hwndFrom == sciHWND ) {
-		switch( scn->nmhdr.code ) {
-			case SCN_NEEDSHOWN: {
-				ensureRangeVisible( scn->position, scn->position + scn->length, false );
-				return TRUE;
-			}
-			case SCN_CHARADDED: {
-				if ( style && style->tab->autoIndent && ( scn->ch == '\r' || scn->ch == '\n' ) ) autoIndent();
-				return TRUE;
-			}
-			case SCN_UPDATEUI: {
-				updateEditGUI();
-				return TRUE;
-			}
-		}
-	}
-	return FALSE;
+	if ( style && style->tab->autoIndent && ( ch == '\r' || ch == '\n' ) )
+		autoIndent();
 }
 
-BOOL RDOBaseEdit::OnCommand(WPARAM wParam, LPARAM lParam)
+void RDOBaseEdit::catchUpdateUi()
 {
-	if ( HIWORD( wParam ) == SCEN_SETFOCUS ) {
-		CWnd* parent = GetParent();
-		if ( parent ) {
-			parent->SendMessage( WM_COMMAND, MAKELONG(0, WM_SETFOCUS), (LPARAM)m_hWnd );
-		}
-	}
-	return CWnd::OnCommand( wParam, lParam );
+	updateEditGUI();
 }
 
-int RDOBaseEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
-{
-	if ( CWnd::OnCreate(lpCreateStruct) == -1 ) return -1;
-	sciHWND = CreateWindowEx( 0, "Scintilla", "", WS_CHILD | WS_VISIBLE | WS_TABSTOP, 10, 10, 500, 400, m_hWnd, 0, 0, NULL );
-	sciFun = (sciFunType)::SendMessage( sciHWND, SCI_GETDIRECTFUNCTION, 0, 0 );
-	sciEditor = (long)::SendMessage( sciHWND, SCI_GETDIRECTPOINTER, 0, 0 );
-
-	sendEditor( SCI_SETLEXER, SCLEX_TEXT );
-//	int lexLanguage = sendEditor( SCI_GETLEXER );
-
-	sendEditor( SCI_SETMARGINWIDTHN, 1, 0 );
-
-	sendEditor( SCI_USEPOPUP, 0 );
-
-	return 0;
-}
-
-void RDOBaseEdit::OnSetFocus( CWnd* pOldWnd )
-{
-	CWnd::OnSetFocus( pOldWnd );
-	if ( sciHWND ) {
-		::SetFocus( sciHWND );
-	}
-	updateAllGUI();
-}
-
-void RDOBaseEdit::OnSize( UINT nType, int cx, int cy )
-{
-	CWnd::OnSize( nType, cx, cy );
-	CRect r;
-	GetClientRect( r );
-	::MoveWindow( sciHWND, r.left, r.top, r.right - r.left, r.bottom - r.top, false );
-}
-
-void RDOBaseEdit::OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu )
-{
-	CWnd::OnInitMenuPopup( pPopupMenu, nIndex, bSysMenu );
-	CFrameWnd* pwndFrame = (CFrameWnd*)AfxGetMainWnd();
-	if( pwndFrame ) pwndFrame->SendMessage( WM_INITMENUPOPUP, WPARAM(pPopupMenu->m_hMenu), MAKELPARAM(nIndex, bSysMenu) );
-}
-
-void RDOBaseEdit::OnContextMenu( CWnd* pWnd, CPoint pos )
-{
-	CWnd::OnContextMenu( pWnd, pos );
-	if ( popupMenu ) popupMenu->TrackPopupMenu( TPM_LEFTALIGN | TPM_RIGHTBUTTON, pos.x, pos.y, this );
-}
+//! @todo qt
+//void RDOBaseEdit::OnContextMenu( CWnd* pWnd, QPoint pos )
+//{
+//	CWnd::OnContextMenu( pWnd, pos );
+//	if ( popupMenu ) popupMenu->TrackPopupMenu( TPM_LEFTALIGN | TPM_RIGHTBUTTON, pos.x(), pos.y(), this );
+//}
 
 int RDOBaseEdit::getNewMarker()
 {
@@ -504,18 +451,20 @@ void RDOBaseEdit::ensureRangeVisible( int posStart, int posEnd, rbool enforcePol
 
 void RDOBaseEdit::OnSearchFind() 
 {
-	firstFoundPos = -1;
-	CFindReplaceDialog* pDlg = new CFindReplaceDialog();
-	DWORD flag = group ? ((group->bSearchDown ? FR_DOWN : 0) | (group->bMatchCase ? FR_MATCHCASE : 0) | (group->bMatchWholeWord ? FR_WHOLEWORD : 0)) : 0;
-	pDlg->Create( true, getWordForFind().c_str(), NULL, flag, this );
+	//! @todo qt
+	//firstFoundPos = -1;
+	//CFindReplaceDialog* pDlg = new CFindReplaceDialog();
+	//DWORD flag = group ? ((group->bSearchDown ? FR_DOWN : 0) | (group->bMatchCase ? FR_MATCHCASE : 0) | (group->bMatchWholeWord ? FR_WHOLEWORD : 0)) : 0;
+	//pDlg->Create( true, getWordForFind().c_str(), NULL, flag, this );
 }
 
 void RDOBaseEdit::OnSearchReplace() 
 {
-	firstFoundPos = -1;
-	CFindReplaceDialog* pDlg = new CFindReplaceDialog();
-	DWORD flag = group ? ((group->bSearchDown ? FR_DOWN : 0) | (group->bMatchCase ? FR_MATCHCASE : 0) | (group->bMatchWholeWord ? FR_WHOLEWORD : 0)) : 0;
-	pDlg->Create( false, getWordForFind().c_str(), group ? group->replaceStr.c_str() : NULL, flag, this );
+	//! @todo qt
+	//firstFoundPos = -1;
+	//CFindReplaceDialog* pDlg = new CFindReplaceDialog();
+	//DWORD flag = group ? ((group->bSearchDown ? FR_DOWN : 0) | (group->bMatchCase ? FR_MATCHCASE : 0) | (group->bMatchWholeWord ? FR_WHOLEWORD : 0)) : 0;
+	//pDlg->Create( false, getWordForFind().c_str(), group ? group->replaceStr.c_str() : NULL, flag, this );
 }
 
 void RDOBaseEdit::OnSearchFindNext() 
@@ -556,43 +505,44 @@ void RDOBaseEdit::OnSearchFindPreviousFast()
 
 LRESULT RDOBaseEdit::OnFindReplaceMsg( WPARAM /*wParam*/, LPARAM lParam )
 {
-	if ( !group ) return 0;
+	//! @todo qt
+	//if ( !group ) return 0;
 
-	CFindReplaceDialog* pDialog = CFindReplaceDialog::GetNotifier( lParam );
+	//CFindReplaceDialog* pDialog = CFindReplaceDialog::GetNotifier( lParam );
 
-	group->findStr = pDialog->GetFindString();
+	//group->findStr = pDialog->GetFindString();
 
-	if ( pDialog->IsTerminating() ) {
-		firstFoundPos = -1;
-		SetFocus();
-		return 0;
-	} else {
-		rbool newSearchDown     = pDialog->SearchDown() ? true : false;
-		rbool newMatchCase      = pDialog->MatchCase() ? true : false;
-		rbool newMatchWholeWord = pDialog->MatchWholeWord() ? true : false;
-		if ( newSearchDown != group->bSearchDown || newMatchCase != group->bMatchCase || newMatchWholeWord != group->bMatchWholeWord ) {
-			firstFoundPos = -1;
-		}
-		group->bSearchDown     = newSearchDown;
-		group->bMatchCase      = newMatchCase;
-		group->bMatchWholeWord = newMatchWholeWord;
+	//if ( pDialog->IsTerminating() ) {
+	//	firstFoundPos = -1;
+	//	SetFocus();
+	//	return 0;
+	//} else {
+	//	rbool newSearchDown     = pDialog->SearchDown() ? true : false;
+	//	rbool newMatchCase      = pDialog->MatchCase() ? true : false;
+	//	rbool newMatchWholeWord = pDialog->MatchWholeWord() ? true : false;
+	//	if ( newSearchDown != group->bSearchDown || newMatchCase != group->bMatchCase || newMatchWholeWord != group->bMatchWholeWord ) {
+	//		firstFoundPos = -1;
+	//	}
+	//	group->bSearchDown     = newSearchDown;
+	//	group->bMatchCase      = newMatchCase;
+	//	group->bMatchWholeWord = newMatchWholeWord;
 
-		if ( pDialog->FindNext() ) {
+	//	if ( pDialog->FindNext() ) {
 
-			findNext( group->findStr, group->bSearchDown, group->bMatchCase, group->bMatchWholeWord );
+	//		findNext( group->findStr, group->bSearchDown, group->bMatchCase, group->bMatchWholeWord );
 
-		} else if ( pDialog->ReplaceCurrent() ) {
+	//	} else if ( pDialog->ReplaceCurrent() ) {
 
-			group->replaceStr = static_cast<LPCTSTR>(pDialog->GetReplaceString());
-			replace( group->findStr, group->replaceStr, group->bSearchDown, group->bMatchCase, group->bMatchWholeWord );
+	//		group->replaceStr = static_cast<LPCTSTR>(pDialog->GetReplaceString());
+	//		replace( group->findStr, group->replaceStr, group->bSearchDown, group->bMatchCase, group->bMatchWholeWord );
 
-		} else if ( pDialog->ReplaceAll() ) {
+	//	} else if ( pDialog->ReplaceAll() ) {
 
-			group->replaceStr = static_cast<LPCTSTR>(pDialog->GetReplaceString());
-			replaceAll( group->findStr, group->replaceStr, group->bMatchCase, group->bMatchWholeWord );
+	//		group->replaceStr = static_cast<LPCTSTR>(pDialog->GetReplaceString());
+	//		replaceAll( group->findStr, group->replaceStr, group->bMatchCase, group->bMatchWholeWord );
 
-		}
-	}
+	//	}
+	//}
 	return 0;
 }
 
@@ -645,16 +595,18 @@ void RDOBaseEdit::findNext( REF(tstring) findWhat, const rbool searchDown, const
 	if ( posFind == -1 ) {
 		firstFoundPos = -1;
 		bHaveFound    = false;
-		MessageBox( rdo::format( ID_MSG_CANTFIND, findWhat.c_str() ).c_str(), NULL, MB_OK | MB_ICONWARNING );
-		SetFocus();
+		//MessageBox( rdo::format( ID_MSG_CANTFIND, findWhat.c_str() ).c_str(), NULL, MB_OK | MB_ICONWARNING );
+		//SetFocus();
+		QMessageBox::warning(studioApp.getMainWnd(), "Результаты поиска", rdo::format( ID_MSG_CANTFIND, findWhat.c_str()).c_str());
 	} else {
 		if ( firstFoundPos == -1 ) {
 			firstFoundPos = posFind;
 		} else if ( posFind == firstFoundPos ) {
 			firstFoundPos = -1;
 			bHaveFound    = false;
-			MessageBox( rdo::format( ID_MSG_CANTFIND, findWhat.c_str() ).c_str(), NULL, MB_OK | MB_ICONWARNING );
-			SetFocus();
+			//MessageBox( rdo::format( ID_MSG_CANTFIND, findWhat.c_str() ).c_str(), NULL, MB_OK | MB_ICONWARNING );
+			//SetFocus();
+			QMessageBox::warning(studioApp.getMainWnd(), "Результаты поиска", rdo::format( ID_MSG_CANTFIND, findWhat.c_str()).c_str());
 			return;
 		}
 		bHaveFound = true;
@@ -713,8 +665,9 @@ void RDOBaseEdit::replaceAll( REF(tstring) findWhat, REF(tstring) replaceWhat, c
 		setSelection( lastMatch, lastMatch );
 		sendEditor( SCI_ENDUNDOACTION );
 	} else {
-		MessageBox( rdo::format( ID_MSG_CANTFIND, findWhat.c_str() ).c_str(), NULL, MB_OK | MB_ICONWARNING );
-		SetFocus();
+		//MessageBox( rdo::format( ID_MSG_CANTFIND, findWhat.c_str() ).c_str(), NULL, MB_OK | MB_ICONWARNING );
+		//SetFocus();
+		QMessageBox::warning(studioApp.getMainWnd(), "Результаты поиска", rdo::format( ID_MSG_CANTFIND, findWhat.c_str()).c_str());
 	}
 }
 
@@ -795,21 +748,22 @@ rbool RDOBaseEdit::hasBookmarks() const
 
 void RDOBaseEdit::copyAsRTF()
 {
-	if ( isSelected() ) {
+	//! @todo qt
+	//if ( isSelected() ) {
 
-		CSharedFile memFile;
+	//	CSharedFile memFile;
 
-		CharacterRange cr = getSelectionRange();
-		saveAsRTF( memFile, cr.cpMin, cr.cpMax );
+	//	CharacterRange cr = getSelectionRange();
+	//	saveAsRTF( memFile, cr.cpMin, cr.cpMax );
 
-		HGLOBAL hData = memFile.Detach();
-		if ( OpenClipboard() ) {
-			::EmptyClipboard();
-			::SetClipboardData( ::RegisterClipboardFormat( CF_RTF ), hData );
-			CloseClipboard();
-		}
+	//	HGLOBAL hData = memFile.Detach();
+	//	if ( OpenClipboard() ) {
+	//		::EmptyClipboard();
+	//		::SetClipboardData( ::RegisterClipboardFormat( CF_RTF ), hData );
+	//		CloseClipboard();
+	//	}
 
-	}
+	//}
 }
 
 // --------------------------------------------------------------------------------
@@ -1258,7 +1212,7 @@ void RDOBaseEdit::OnBookmarkNext()
 			}
 		}
 		if ( !allItem ) {
-			(*it)->SetFocus();
+			(*it)->setFocus();
 		} else {
 			(*it)->bookmarkNext();
 		}
@@ -1296,7 +1250,7 @@ void RDOBaseEdit::OnBookmarkPrev()
 			}
 		}
 		if ( !allItem ) {
-			(*it)->SetFocus();
+			(*it)->setFocus();
 		} else {
 			(*it)->bookmarkPrev();
 		}
@@ -1479,11 +1433,12 @@ public:
 
 void RDOBaseEdit::OnSearchGotoLine()
 {
-	RDOGotoDlg dialog( this, getCurrentLineNumber() + 1 );
-	if ( dialog.DoModal() == IDOK ) {
-		if ( dialog.line - 1 > getLineCount() ) {
-			dialog.line = getLineCount() + 1;
-		}
-		setCurrentPos( dialog.line - 1, 0 );
-	}
+	//! @todo qt
+	//RDOGotoDlg dialog( this, getCurrentLineNumber() + 1 );
+	//if ( dialog.DoModal() == IDOK ) {
+	//	if ( dialog.line - 1 > getLineCount() ) {
+	//		dialog.line = getLineCount() + 1;
+	//	}
+	//	setCurrentPos( dialog.line - 1, 0 );
+	//}
 }

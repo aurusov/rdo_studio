@@ -31,18 +31,39 @@ using namespace rdoEditCtrl;
 // --------------------------------------------------------------------------------
 // -------------------- RDOLogEdit
 // ---------------------------------------------------------------------------
-BEGIN_MESSAGE_MAP( RDOLogEdit, RDOBaseEdit )
-	ON_WM_CREATE()
-	ON_COMMAND(ID_BUILDFINDLOG_GOTO_NEXT, OnGotoNext)
-	ON_COMMAND(ID_BUILDFINDLOG_GOTO_PREV, OnGotoPrev)
-END_MESSAGE_MAP()
 
-RDOLogEdit::RDOLogEdit()
-	: RDOBaseEdit  ()
+//! @todo qt
+//BEGIN_MESSAGE_MAP( RDOLogEdit, RDOBaseEdit )
+//	ON_WM_CREATE()
+//	ON_COMMAND(ID_BUILDFINDLOG_GOTO_NEXT, OnGotoNext)
+//	ON_COMMAND(ID_BUILDFINDLOG_GOTO_PREV, OnGotoPrev)
+//END_MESSAGE_MAP()
+
+RDOLogEdit::RDOLogEdit(PTR(QWidget) pParent)
+	: RDOBaseEdit  (pParent)
 	, m_currentLine(-1)
 {
 	setCurrentLine(-1);
 	m_sciMarkerLine = getNewMarker();
+
+	sendEditor( SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT );
+
+	setReadOnly( true );
+
+	sendEditorString( SCI_SETPROPERTY, reinterpret_cast<unsigned long>("withoutselectbyclick"), "1" );
+
+	QObject::connect(this, SIGNAL(ScintillaEditBase::doubleClick()), this, SLOT(catchDoubleClick()));
+	QObject::connect(this, SIGNAL(ScintillaEditBase::modified()), this, SLOT(catchModified()));
+}
+
+void RDOLogEdit::catchDoubleClick()
+{
+	setSelectLine();
+}
+
+void RDOLogEdit::catchModified()
+{
+	if ( hasSelectLine() ) clearSelectLine();
 }
 
 RDOLogEdit::~RDOLogEdit()
@@ -118,50 +139,11 @@ void RDOLogEdit::setSciMarkerLine( rsint sciMarkerLine )
 	m_sciMarkerLine = sciMarkerLine;
 }
 
-BOOL RDOLogEdit::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
-{
-	if ( !RDOBaseEdit::OnNotify( wParam, lParam, pResult ) ) {
-
-		SCNotification* scn = (SCNotification*)lParam;
-		if ( scn->nmhdr.hwndFrom == sciHWND ) {
-			switch( scn->nmhdr.code ) {
-				case SCN_DOUBLECLICK: {
-					setSelectLine();
-					return TRUE;
-				}
-				case SCN_MODIFIED: {
-					if ( hasSelectLine() ) clearSelectLine();
-					return TRUE;
-				}
-			}
-		}
-	}
-	else
-	{
-		return TRUE;
-	}
-	return FALSE;
-}
-
-int RDOLogEdit::OnCreate( LPCREATESTRUCT lpCreateStruct )
-{
-	if ( RDOBaseEdit::OnCreate(lpCreateStruct) == -1 ) return -1;
-
-	sendEditor( SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT );
-
-	setReadOnly( true );
-
-	sendEditorString( SCI_SETPROPERTY, reinterpret_cast<unsigned long>("withoutselectbyclick"), "1" );
-
-	return 0;
-}
-
 void RDOLogEdit::setSelectLine()
 {
-	CPoint point;
-	::GetCursorPos( &point );
-	ScreenToClient( &point );
-	int pos  = sendEditor( SCI_POSITIONFROMPOINT, point.x, point.y );
+	QPoint point = QCursor::pos();
+	QWidget::mapFromGlobal(point);
+	int pos  = sendEditor( SCI_POSITIONFROMPOINT, point.x(), point.y() );
 	int line = getLineFromPosition( pos );
 	setCurrentPos( pos );
 	m_currentLine = line;
@@ -283,7 +265,7 @@ void RDOLogEdit::updateEdit( rdoEditor::RDOEditorEdit* edit, const RDOLogEditLin
 	int pos = edit->getPositionFromLine(lineInfo->getLineNumber()) + lineInfo->getPosInLine();
 	edit->setCurrentPos( pos );
 	edit->horzScrollToCurrentPos();
-	edit->SetFocus();
+	edit->setFocus();
 }
 
 void RDOLogEdit::clearSelectLine()
@@ -291,7 +273,7 @@ void RDOLogEdit::clearSelectLine()
 	int nextLine = sendEditor( SCI_MARKERNEXT, 0, 1 << m_sciMarkerLine );
 	if ( nextLine >= 0 ) {
 		sendEditor( SCI_MARKERDELETE, nextLine, m_sciMarkerLine );
-		RedrawWindow();
+		QWidget::update();
 	}
 }
 

@@ -10,8 +10,8 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/bind.hpp>
 #include <QtGui/qaction.h>
+#include <QtGui/qboxlayout.h>
 #include <QtGui/qmessagebox.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/dock/dock_build.h"
@@ -21,15 +21,18 @@
 // --------------------------------------------------------------------------------
 
 DockBuild::DockBuild(PTR(QWidget) pParent)
-	: parent_class(
-		"Компилятор",
-		pParent,
-		parent_class::Context::CreateFunction(
-			boost::bind<BOOL>(&parent_class::Context::context_type::Create, _1, LPCTSTR(NULL), LPCTSTR(NULL), DWORD(0), CRect(0, 0, 0, 0), _2, UINT(0), static_cast<CCreateContext*>(NULL))
-		),
-		QSize(300, 150)
-	)
+	: QDockWidget("Компилятор", pParent)
 {
+	PTR(context_type) pWidget = new context_type(this);
+	pWidget->setMinimumSize(QSize(150, 300));
+
+	PTR(QVBoxLayout) pLayout = new QVBoxLayout(this);
+	pLayout->setSpacing(0);
+	pLayout->setContentsMargins(0, 0, 0, 0);
+	pLayout->addWidget(pWidget);
+
+	setWidget(pWidget);
+
 	toggleViewAction()->setIcon(QIcon(QString::fromUtf8(":/images/images/dock_build.png")));
 }
 
@@ -60,4 +63,17 @@ void DockBuild::appendString(CREF(rdo::simulation::report::FileMessage) message)
 void DockBuild::clear()
 {
 	getContext().clearAll();
+}
+
+REF(DockBuild::context_type) DockBuild::getContext()
+{
+	return *static_cast<PTR(context_type)>(widget());
+}
+REF(DockBuild::context_type) DockBuild::getContext()
+{
+	return *static_cast<PTR(context_type)>(widget());
+}
+REF(DockBuild::context_type) DockBuild::getContext()
+{
+	return *static_cast<PTR(context_type)>(widget());
 }

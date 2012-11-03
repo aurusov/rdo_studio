@@ -31,16 +31,12 @@ protected:
 	tstring getAllKW() const;
 	static tstring convertToLexer( CREF(tstring) kw );
 
-	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
-
 private:
-	DECLARE_MESSAGE_MAP()
+	//DECLARE_MESSAGE_MAP()
 
 public:
-	RDOEditorBaseEdit();
+	RDOEditorBaseEdit(PTR(QWidget) pParent);
 	virtual ~RDOEditorBaseEdit();
-
-	virtual BOOL DestroyWindow();
 
 	void setEditorStyle( RDOEditorBaseEditStyle* _style );
 

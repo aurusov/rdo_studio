@@ -24,14 +24,12 @@ namespace rdoEditCtrl {
 class RDOFindEdit: public RDOLogEdit
 {
 private:
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnHelpKeyword();
 	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );
-	DECLARE_MESSAGE_MAP()
 
 public:
-	RDOFindEdit();
+	RDOFindEdit(PTR(QWidget) pParent);
 	virtual ~RDOFindEdit();
 
 	void setEditorStyle( RDOFindEditStyle* _style );

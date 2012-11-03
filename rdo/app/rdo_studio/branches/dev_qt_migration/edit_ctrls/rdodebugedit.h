@@ -23,14 +23,12 @@ namespace rdoEditCtrl {
 class RDODebugEdit: public RDOBaseEdit
 {
 private:
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnHelpKeyword();
 	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );
-	DECLARE_MESSAGE_MAP()
 
 public:
-	RDODebugEdit();
+	RDODebugEdit(PTR(QWidget) pParent);
 	virtual ~RDODebugEdit();
 
 	void appendLine( CREF(tstring) str );

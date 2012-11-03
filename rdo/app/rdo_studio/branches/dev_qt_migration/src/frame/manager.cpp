@@ -303,7 +303,7 @@ void RDOStudioFrameManager::insertBitmap(CREF(tstring) bitmapName)
 		return;
 
 	studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(IDS_MODEL_RESOURCE_LOADING_NAME, bitmapName.c_str()));
-	studioApp.getIMainWnd()->getDockDebug().getContext().UpdateWindow();
+	studioApp.getIMainWnd()->getDockDebug().getContext().update();
 
 	rdo::binarystream stream;
 	rdo::repository::RDOThreadRepository::BinaryFile data(bitmapName, stream);
@@ -322,7 +322,7 @@ void RDOStudioFrameManager::insertBitmap(CREF(tstring) bitmapName)
 	}
 
 	studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(ok ? IDS_MODEL_RESOURCE_LOADING_NAME_OK : IDS_MODEL_RESOURCE_LOADING_NAME_FAILED));
-	studioApp.getIMainWnd()->getDockDebug().getContext().UpdateWindow();
+	studioApp.getIMainWnd()->getDockDebug().getContext().update();
 }
 
 void RDOStudioFrameManager::showFrame(CPTRC(rdo::animation::Frame) pFrame, ruint index)

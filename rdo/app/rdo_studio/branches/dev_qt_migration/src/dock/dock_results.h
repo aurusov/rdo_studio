@@ -11,22 +11,23 @@
 #define _RDO_STUDIO_DOCK_RESULTS_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtGui/qdockwidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/dock/dock_base.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorresults.h"
 // --------------------------------------------------------------------------------
 
-class DockResults: public DockBase<rdoEditor::RDOEditorResults>
+class DockResults: public QDockWidget
 {
 public:
+	typedef rdoEditor::RDOEditorResults context_type;
+
 	DockResults(PTR(QWidget) pParent);
 	virtual ~DockResults();
 
 	void appendString(CREF(tstring) str);
 	void clear();
 
-private:
-	typedef  DockBase<rdoEditor::RDOEditorResults>  parent_class;
+	REF(context_type) getContext();
 };
 
 #endif // _RDO_STUDIO_DOCK_RESULTS_H_

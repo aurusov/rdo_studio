@@ -207,10 +207,7 @@ void RDOStudioOptionsEditor::OnUpdateModify()
 	sheet->style_editor.margin->bookmark   = m_marginBookmark ? true : false;
 	sheet->style_editor.margin->lineNumber = m_marginLineNumber ? true : false;
 
-	if ( sheet->preview_editor.GetSafeHwnd() )
-	{
-		sheet->preview_editor.setEditorStyle( &sheet->style_editor );
-	}
+	sheet->preview_editor.setEditorStyle( &sheet->style_editor );
 
 	SetModified( *sheet->style_editor.buffer != *studioApp.getStyle()->style_editor.buffer || *sheet->style_editor.autoComplete != *studioApp.getStyle()->style_editor.autoComplete || *sheet->style_editor.margin != *studioApp.getStyle()->style_editor.margin );
 }
@@ -552,7 +549,8 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 	fgColorCB.insertBaseColors();
 	bgColorCB.insertBaseColors();
 
-	sheet->preview_editor.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, 0 );
+	//! @todo qt
+	//sheet->preview_editor.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, 0 );
 	sheet->preview_editor.setEditorStyle( &sheet->style_editor );
 	sheet->preview_editor.setCanClearErrorLine( false );
 	sheet->preview_editor.appendText( rdo::format( IDS_COLORSTYLE_EDITOR_SAMPLE ) );
@@ -561,14 +559,16 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 	sheet->preview_editor.bookmarkToggle();
 	sheet->preview_editor.setErrorLine( sheet->preview_editor.getLineCount() - 1 );
 
-	sheet->preview_build.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, 0 );
+	//! @todo qt
+	//sheet->preview_build.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, 0 );
 	sheet->preview_build.setEditorStyle( &sheet->style_build );
 	sheet->preview_build.appendLine( new BuildEditLineInfo( rdo::format( IDS_COLORSTYLE_BUILD_SAMPLE1 ) ) );
 	sheet->preview_build.appendLine( new BuildEditLineInfo( rdo::simulation::report::FileMessage( rdo::format( IDS_COLORSTYLE_BUILD_SAMPLE2 ), rdoModelObjects::PAT, 40, 0 ) ) );
 	sheet->preview_build.appendLine( new BuildEditLineInfo( rdo::format( IDS_COLORSTYLE_BUILD_SAMPLE3 ) ) );
 	sheet->preview_build.gotoNext();
 
-	sheet->preview_debug.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, 0 );
+	//! @todo qt
+	//sheet->preview_debug.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, 0 );
 	sheet->preview_debug.setEditorStyle( &sheet->style_debug );
 	sheet->preview_debug.appendLine( rdo::format( IDS_COLORSTYLE_DEBUG_SAMPLE ) );
 
@@ -579,13 +579,15 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 	sheet->preview_trace.setText( rdo::format( IDS_COLORSTYLE_LOG_SAMPLE ) );
 	sheet->preview_trace.selectLine( 0 );
 
-	sheet->preview_results.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, 0 );
+	//! @todo qt
+	//sheet->preview_results.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, 0 );
 	sheet->preview_results.setEditorStyle( &sheet->style_results );
 	sheet->preview_results.setReadOnly( false );
 	sheet->preview_results.replaceCurrent( rdo::format( IDS_COLORSTYLE_RESULTS_SAMPLE ), 0 );
 	sheet->preview_results.setReadOnly( true );
 
-	sheet->preview_find.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, 0 );
+	//! @todo qt
+	//sheet->preview_find.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, 0 );
 	sheet->preview_find.setEditorStyle( &sheet->style_find );
 	sheet->preview_find.setKeyword( "$Time" );
 	sheet->preview_find.appendLine( new LogEditLineInfo( rdo::format( IDS_COLORSTYLE_FIND_SAMPLE1 ) ) );
@@ -633,12 +635,19 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 	rectEdit.top    = rectStyleLB.bottom + 5;
 	rectEdit.bottom = r.bottom;
 
-	sheet->preview_editor.MoveWindow( rectEdit );
-	sheet->preview_build.MoveWindow( rectEdit );
-	sheet->preview_debug.MoveWindow( rectEdit );
+	QRect qRectEdit(
+		rectEdit.left,
+		rectEdit.top,
+		rectEdit.Width(),
+		rectEdit.Height()
+	);
+
+	sheet->preview_editor.setGeometry( qRectEdit );
+	sheet->preview_build.setGeometry( qRectEdit );
+	sheet->preview_debug.setGeometry( qRectEdit );
 	sheet->preview_trace.MoveWindow( rectEdit );
-	sheet->preview_results.MoveWindow( rectEdit );
-	sheet->preview_find.MoveWindow( rectEdit );
+	sheet->preview_results.setGeometry( qRectEdit );
+	sheet->preview_find.setGeometry( qRectEdit );
 	sheet->preview_chart->MoveWindow( rectEdit );
 	sheet->preview_frame.MoveWindow( rectEdit );
 
@@ -1539,28 +1548,28 @@ void RDOStudioOptionsColorsStyles::setPreviewAsCombo( STYLEObject::Type type )
 {
 	if ( previewAs != type && type >= STYLEObject::source ) {
 		previewAs = type;
-		sheet->preview_editor.ShowWindow( SW_HIDE );
-		sheet->preview_build.ShowWindow( SW_HIDE );
-		sheet->preview_debug.ShowWindow( SW_HIDE );
+		sheet->preview_editor.hide();
+		sheet->preview_build.hide();
+		sheet->preview_debug.hide();
 		sheet->preview_trace.ShowWindow( SW_HIDE );
-		sheet->preview_results.ShowWindow( SW_HIDE );
-		sheet->preview_find.ShowWindow( SW_HIDE );
+		sheet->preview_results.hide();
+		sheet->preview_find.hide();
 		sheet->preview_chart->ShowWindow( SW_HIDE );
 		sheet->preview_frame.ShowWindow( SW_HIDE );
 		switch ( previewAs ) {
 			case STYLEObject::source: {
 				m_previewAs.SetCurSel( 0 );
-				sheet->preview_editor.ShowWindow( SW_SHOW );
+				sheet->preview_editor.show();
 				break;
 			}
 			case STYLEObject::build: {
 				m_previewAs.SetCurSel( 1 );
-				sheet->preview_build.ShowWindow( SW_SHOW );
+				sheet->preview_build.show();
 				break;
 			}
 			case STYLEObject::debug: {
 				m_previewAs.SetCurSel( 2 );
-				sheet->preview_debug.ShowWindow( SW_SHOW );
+				sheet->preview_debug.show();
 				break;
 			}
 			case STYLEObject::trace: {
@@ -1570,12 +1579,12 @@ void RDOStudioOptionsColorsStyles::setPreviewAsCombo( STYLEObject::Type type )
 			}
 			case STYLEObject::results: {
 				m_previewAs.SetCurSel( 4 );
-				sheet->preview_results.ShowWindow( SW_SHOW );
+				sheet->preview_results.show();
 				break;
 			}
 			case STYLEObject::find: {
 				m_previewAs.SetCurSel( 5 );
-				sheet->preview_find.ShowWindow( SW_SHOW );
+				sheet->preview_find.show();
 				break;
 			}
 			case STYLEObject::chart: {
@@ -2062,7 +2071,13 @@ RDOStudioOptions::RDOStudioOptions():
 	tabs( NULL ),
 	styles( NULL ),
 	plugins( NULL ),
-	chart_need_delete( true )
+	chart_need_delete( true ),
+	//! @todo qt заменить на new()
+	preview_editor(NULL),
+	preview_build(NULL),
+	preview_debug(NULL),
+	preview_results(NULL),
+	preview_find(NULL)
 {
 	SetTitle( rdo::format( ID_OPTIONS ).c_str() );
 
@@ -2122,30 +2137,14 @@ RDOStudioOptions::~RDOStudioOptions()
 
 void RDOStudioOptions::updateStyles()
 {
-	if ( preview_editor.GetSafeHwnd() ) {
-		preview_editor.setEditorStyle( &style_editor );
-	}
-	if ( preview_build.GetSafeHwnd() ) {
-		preview_build.setEditorStyle( &style_build );
-	}
-	if ( preview_debug.GetSafeHwnd() ) {
-		preview_debug.setEditorStyle( &style_debug );
-	}
-	if ( preview_trace.GetSafeHwnd() ) {
-		preview_trace.setStyle( &style_trace );
-	}
-	if ( preview_results.GetSafeHwnd() ) {
-		preview_results.setEditorStyle( &style_results );
-	}
-	if ( preview_find.GetSafeHwnd() ) {
-		preview_find.setEditorStyle( &style_find );
-	}
-	if ( preview_chart->GetSafeHwnd() ) {
-		preview_chart->setStyle( &style_chart );
-	}
-	if ( preview_frame.GetSafeHwnd() ) {
-		preview_frame.setStyle( &style_frame );
-	}
+	preview_editor.setEditorStyle( &style_editor );
+	preview_build.setEditorStyle( &style_build );
+	preview_debug.setEditorStyle( &style_debug );
+	preview_trace.setStyle( &style_trace );
+	preview_results.setEditorStyle( &style_results );
+	preview_find.setEditorStyle( &style_find );
+	preview_chart->setStyle( &style_chart );
+	preview_frame.setStyle( &style_frame );
 }
 
 void RDOStudioOptions::apply() const

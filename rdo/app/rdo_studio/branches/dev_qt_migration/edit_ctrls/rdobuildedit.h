@@ -25,7 +25,7 @@ namespace rdoEditCtrl {
 class RDOBuildEdit : public RDOLogEdit
 {
 public:
-	RDOBuildEdit();
+	RDOBuildEdit(PTR(QWidget) pParent);
 	virtual ~RDOBuildEdit();
 
 	virtual void showFirstError();
@@ -39,7 +39,6 @@ private:
 	afx_msg void OnHelpKeyword();
 	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );
-	DECLARE_MESSAGE_MAP()
 };
 
 }; // namespace rdoEditCtrl

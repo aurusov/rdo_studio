@@ -332,7 +332,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			afterModelStart();
 			studioApp.getIMainWnd()->getDockDebug().raise();
 			studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(IDS_MODEL_STARTED));
-			studioApp.getIMainWnd()->getDockDebug().getContext().UpdateWindow();
+			studioApp.getIMainWnd()->getDockDebug().getContext().update();
 			int index = m_frameManager.getLastShowedFrame();
 			if (index != -1)
 			{
@@ -373,7 +373,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		case RDOThread::RT_SIMULATOR_MODEL_STOP_OK:
 		{
 			studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(IDS_MODEL_FINISHED));
-			studioApp.getIMainWnd()->getDockDebug().getContext().UpdateWindow();
+			studioApp.getIMainWnd()->getDockDebug().getContext().update();
 
 			show_result();
 
@@ -389,7 +389,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		{
 			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_EXITCODE, &m_exitCode);
 			studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(IDS_MODEL_STOPED));
-			studioApp.getIMainWnd()->getDockDebug().getContext().UpdateWindow();
+			studioApp.getIMainWnd()->getDockDebug().getContext().update();
 
 			show_result();
 
@@ -596,7 +596,7 @@ rbool RDOStudioModel::openModel(CREF(tstring) modelName)
 	studioApp.getIMainWnd()->getDockFind   ().clear();
 	studioApp.getIMainWnd()->getDockDebug().raise();
 	studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(IDS_MODEL_LOADING_BEGIN));
-	studioApp.getIMainWnd()->getDockDebug().getContext().UpdateWindow();
+	studioApp.getIMainWnd()->getDockDebug().getContext().update();
 	m_openError     = false;
 	m_smrEmptyError = false;
 	m_modelClosed   = false;
@@ -677,7 +677,7 @@ rbool RDOStudioModel::buildModel()
 		studioApp.getIMainWnd()->getDockResults().clear();
 		studioApp.getIMainWnd()->getDockBuild().raise();
 		studioApp.getIMainWnd()->getDockBuild().appendString(rdo::format(IDS_MODEL_BUILDING_BEGIN));
-		studioApp.getIMainWnd()->getDockBuild().getContext().UpdateWindow();
+		studioApp.getIMainWnd()->getDockBuild().getContext().update();
 		m_buildState = BS_UNDEFINED;
 		studioApp.broadcastMessage(RDOThread::RT_STUDIO_MODEL_BUILD);
 		return m_buildState == BS_COMPLETE;
@@ -697,7 +697,7 @@ rbool RDOStudioModel::runModel()
 		studioApp.getIMainWnd()->getDockDebug().clear();
 		studioApp.getIMainWnd()->getDockResults().clear();
 		studioApp.getIMainWnd()->getDockBuild().raise();
-		studioApp.getIMainWnd()->getDockBuild().getContext().UpdateWindow();
+		studioApp.getIMainWnd()->getDockBuild().getContext().update();
 		studioApp.broadcastMessage(RDOThread::RT_STUDIO_MODEL_RUN);
 		return true;
 	}
@@ -888,7 +888,7 @@ void RDOStudioModel::openModelFromRepository()
 				if (obj)
 				{
 					studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(IDS_MODEL_CANNOT_LOAD, rdo::format(obj).c_str(), data.m_fullName.c_str()));
-					studioApp.getIMainWnd()->getDockDebug().getContext().UpdateWindow();
+					studioApp.getIMainWnd()->getDockDebug().getContext().update();
 				}
 				m_openError = true;
 			}
@@ -1143,7 +1143,7 @@ void RDOStudioModel::afterModelStart()
 	{
 		studioApp.getIMainWnd()->getDockDebug().raise();
 		studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(IDS_MODEL_RESOURCE_LOADING_BEGIN));
-		studioApp.getIMainWnd()->getDockDebug().getContext().UpdateWindow();
+		studioApp.getIMainWnd()->getDockDebug().getContext().update();
 
 		std::list< tstring > frames;
 		std::list< tstring > bitmaps;
@@ -1175,7 +1175,7 @@ void RDOStudioModel::afterModelStart()
 			}
 		}
 		studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(IDS_MODEL_RESOURCE_LOADING_OK));
-		studioApp.getIMainWnd()->getDockDebug().getContext().UpdateWindow();
+		studioApp.getIMainWnd()->getDockDebug().getContext().update();
 	}
 	else
 	{

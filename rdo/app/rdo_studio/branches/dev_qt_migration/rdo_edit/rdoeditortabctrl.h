@@ -27,7 +27,7 @@ namespace rdoEditor {
 class RDOEditorTabCtrl: public QTabWidget
 {
 public:
-	typedef  MFCQtWrapper<RDOEditorEdit>  PageContext;
+	typedef RDOEditorEdit context_type;
 
 	RDOEditorTabCtrl(PTR(QWidget) pParent, PTR(RDOStudioEditBaseView) pView);
 	virtual ~RDOEditorTabCtrl();
@@ -39,14 +39,12 @@ public:
 	rdoModelObjects::RDOFileType getCurrentRDOItem() const         { return indexToType(currentIndex()); }
 	void setCurrentRDOItem(rdoModelObjects::RDOFileType type);
 
-	PTR(PageContext::context_type) getCurrentEdit() const;
-	PTR(PageContext::context_type) getItemEdit   (int index) const;
-	PTR(PageContext::context_type) getItemEdit   (rdoModelObjects::RDOFileType type) const;
+	PTR(context_type) getCurrentEdit() const;
+	PTR(context_type) getItemEdit   (int index) const;
+	PTR(context_type) getItemEdit   (rdoModelObjects::RDOFileType type) const;
 
 private:
 	rdoEditCtrl::RDOBaseEditGroup group;
-
-	static PTR(PageContext::context_type) constructPage(PTR(RDOStudioEditBaseView) pView);
 
 	void createPage(PTR(RDOStudioEditBaseView) pView, CREF(QString) name);
 };

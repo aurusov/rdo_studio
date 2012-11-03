@@ -10,22 +10,25 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/bind.hpp>
 #include <QtGui/qaction.h>
+#include <QtGui/qboxlayout.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/dock/dock_debug.h"
 // --------------------------------------------------------------------------------
 
 DockDebug::DockDebug(PTR(QWidget) pParent)
-	: parent_class(
-		"Вывод",
-		pParent,
-		parent_class::Context::CreateFunction(
-			boost::bind<BOOL>(&parent_class::Context::context_type::Create, _1, LPCTSTR(NULL), LPCTSTR(NULL), DWORD(0), CRect(0, 0, 0, 0), _2, UINT(0), static_cast<CCreateContext*>(NULL))
-		),
-		QSize(300, 150)
-	)
+	: QDockWidget("Вывод", pParent)
 {
+	PTR(context_type) pWidget = new context_type(this);
+	pWidget->setMinimumSize(QSize(150, 300));
+
+	PTR(QVBoxLayout) pLayout = new QVBoxLayout(this);
+	pLayout->setSpacing(0);
+	pLayout->setContentsMargins(0, 0, 0, 0);
+	pLayout->addWidget(pWidget);
+
+	setWidget(pWidget);
+
 	toggleViewAction()->setIcon(QIcon(QString::fromUtf8(":/images/images/dock_debug.png")));
 }
 
@@ -40,4 +43,9 @@ void DockDebug::appendString(CREF(tstring) str)
 void DockDebug::clear()
 {
 	getContext().clearAll();
+}
+
+REF(DockDebug::context_type) DockDebug::getContext()
+{
+	return *static_cast<PTR(context_type)>(widget());
 }

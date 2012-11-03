@@ -24,17 +24,13 @@ namespace rdoEditor {
 class RDOEditorResults: public RDOEditorBaseEdit
 {
 private:
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnHelpKeyword();
 	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );
-	DECLARE_MESSAGE_MAP()
 
 public:
-	RDOEditorResults();
+	RDOEditorResults(PTR(QWidget) pParent);
 	virtual ~RDOEditorResults();
-
-//	virtual BOOL DestroyWindow();
 
 	void setEditorStyle( RDOEditorResultsStyle* _style );
 };

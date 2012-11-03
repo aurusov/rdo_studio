@@ -33,29 +33,21 @@ using namespace rdoEditCtrl;
 
 // ON_UPDATE_COMMAND_UI сделано
 
-BEGIN_MESSAGE_MAP( RDODebugEdit, RDOBaseEdit )
-	ON_WM_CREATE()
-	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
-	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR , OnUpdateCoordStatusBar )
-	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar )
-END_MESSAGE_MAP()
+//! @todo qt
+//BEGIN_MESSAGE_MAP( RDODebugEdit, RDOBaseEdit )
+//	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
+//	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR , OnUpdateCoordStatusBar )
+//	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar )
+//END_MESSAGE_MAP()
 
-RDODebugEdit::RDODebugEdit(): RDOBaseEdit()
+RDODebugEdit::RDODebugEdit(PTR(QWidget) pParent)
+	: RDOBaseEdit(pParent)
 {
+	setReadOnly( true );
 }
 
 RDODebugEdit::~RDODebugEdit()
-{
-}
-
-int RDODebugEdit::OnCreate(LPCREATESTRUCT lpCreateStruct)
-{
-	if ( RDOBaseEdit::OnCreate(lpCreateStruct) == -1 ) return -1;
-
-	setReadOnly( true );
-
-	return 0;
-}
+{}
 
 void RDODebugEdit::appendLine( CREF(tstring) str )
 {

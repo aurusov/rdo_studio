@@ -29,12 +29,13 @@ namespace rdoEditCtrl {
 // --------------------------------------------------------------------------------
 class RDOLogEdit: public RDOBaseEdit
 {
+	Q_OBJECT
 public:
 	typedef rdo::simulation::report::LogEditLineInfo RDOLogEditLineInfo;
 	typedef std::list<PTR(RDOLogEditLineInfo)> RDOLogEditLineInfoList;
 
 public:
-	RDOLogEdit();
+	RDOLogEdit(PTR(QWidget) pParent);
 	virtual ~RDOLogEdit();
 
 	virtual void setEditorStyle(PTR(RDOLogEditStyle) style);
@@ -62,16 +63,17 @@ protected:
 	void  clearSelectLine();
 	rbool hasSelectLine  () const;
 
-	virtual BOOL OnNotify  (WPARAM wParam, LPARAM lParam, LRESULT* pResult);
-	afx_msg int  OnCreate  (LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnGotoNext();
 	afx_msg void OnGotoPrev();
-	DECLARE_MESSAGE_MAP()
 
 private:
 	RDOLogEditLineInfoList  m_lines;
 	rsint                   m_currentLine;
 	rsint                   m_sciMarkerLine;
+
+private slots:
+	void catchDoubleClick();
+	void catchModified();
 };
 
 }; // namespace rdoEditCtrl

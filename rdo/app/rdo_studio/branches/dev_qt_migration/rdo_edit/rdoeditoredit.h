@@ -26,6 +26,7 @@ namespace rdoEditor {
 // --------------------------------------------------------------------------------
 class RDOEditorEdit: public RDOEditorBaseEdit
 {
+	Q_OBJECT
 private:
 	int sci_FOLDMARGIN_ID;
 	int sci_MARKER_ERROR;
@@ -53,9 +54,7 @@ protected:
 	rbool hasErrorLine  () const;
 
 private:
-	virtual BOOL OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult );
 
-	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
 	afx_msg void OnEditCommentSelection();
 	afx_msg void OnEditCompleteWord();
 	afx_msg void OnInsertBuffer1Paste();
@@ -93,10 +92,9 @@ private:
 	afx_msg void OnUpdateFold(CCmdUI* pCmdUI);
 	afx_msg void OnHelpKeyword();
 	afx_msg void OnInsertCommand( UINT nID );
-	DECLARE_MESSAGE_MAP()
 
 public:
-	RDOEditorEdit( RDOStudioEditBaseView* _view = NULL );
+	RDOEditorEdit( QWidget* pParent, RDOStudioEditBaseView* _view = NULL );
 	virtual ~RDOEditorEdit();
 
 	void setEditorStyle( RDOEditorEditStyle* _style );
@@ -107,6 +105,14 @@ public:
 	const rdoEditCtrl::RDOLogEdit* getLog() const;
 
 	void setCanClearErrorLine( rbool value ) { canClearErrorLine = value; }
+
+private slots:
+	void catchBufferKey(int ch);
+	void catchRdoPosChanged();
+	void catchRdoClick();
+	void catchModified(int modificationType, int position, int length, int linesAdded, const QByteArray bytes, int line, int foldLevelNow, int foldLevelPrev);
+	void catchMarginClick(int margin, int position, int modifiers);
+	void catchCharAdded();
 };
 
 }; // namespace rdoEditor

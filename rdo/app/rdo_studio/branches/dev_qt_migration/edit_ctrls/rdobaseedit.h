@@ -13,9 +13,13 @@
 // ----------------------------------------------------------------------- PLATFORM
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
+#include <QtGui/qwidget.h>
+#include <QtGui/qmenu.h>
+#include <QtGui/qmessagebox.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdostream.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdobaseeditstyle.h"
+#include "thirdparty/sci/qt/ScintillaEditBase/ScintillaEditBase.h"
 // --------------------------------------------------------------------------------
 
 namespace rdoEditCtrl {
@@ -56,8 +60,9 @@ public:
 	RDOBaseEditListIterator end()   const { return list.end();   }
 };
 
-class RDOBaseEdit: public CWnd
+class RDOBaseEdit: public ScintillaEditBase
 {
+	Q_OBJECT
 private:
 	static int objectCount;
 
@@ -75,13 +80,9 @@ protected:
 	rbool GUI_ID_VIEW_WHITESPACE;
 	rbool GUI_ID_VIEW_ENDOFLINE;
 
-	HWND       sciHWND;
-	long       sciEditor;
-	sciFunType sciFun;
-	long sendEditor( unsigned int msg, unsigned long wParam = 0, long lParam = 0 ) const   { return sciFun( sciEditor, msg, wParam, lParam );               };
-	long sendEditorString( unsigned int msg, unsigned long wParam, const char* str ) const { return sendEditor( msg, wParam, reinterpret_cast<long>(str) ); };
-
-	CMenu* popupMenu;
+	long sendEditor( unsigned int msg, unsigned long wParam = 0, long lParam = 0 ) const   { return ScintillaEditBase::send( msg, wParam, lParam );; };
+	long sendEditorString( unsigned int msg, unsigned long wParam, const char* str ) const { return ScintillaEditBase::sends( msg, wParam, str ); };
+	QMenu* popupMenu;
 
 	int sci_MARKER_BOOKMARK;
 	int getNewMarker();
@@ -111,18 +112,11 @@ protected:
 	void updateBookmarksGUI();
 
 protected:
-	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
 	afx_msg void OnIsSelected(CCmdUI* pCmdUI);
-	virtual BOOL OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult );
 
 private:
-	virtual BOOL PreCreateWindow( CREATESTRUCT& cs );
-	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
-
-	afx_msg void OnSetFocus( CWnd *pOldWnd );
-	afx_msg void OnSize( UINT nType, int cx, int cy );
-	afx_msg void OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu );
-	afx_msg void OnContextMenu( CWnd* pWnd, CPoint pos );
+	//! @todo qt
+	//afx_msg void OnContextMenu( CWnd* pWnd, CPoint pos );
 	afx_msg void OnEditUndo();
 	afx_msg void OnEditRedo();
 	afx_msg void OnEditCut();
@@ -165,19 +159,22 @@ private:
 	afx_msg void OnUpdateZoomReset( CCmdUI *pCmdUI );
 	afx_msg void OnSearchGotoLine();
 	afx_msg LRESULT OnFindReplaceMsg( WPARAM wParam, LPARAM lParam );
-	DECLARE_MESSAGE_MAP()
+	//DECLARE_MESSAGE_MAP()
+
+private slots:
+	void catchNeedShown(int position, int length);
+	void catchCharAdded(int ch);
+	void catchUpdateUi();
 
 public:
-	RDOBaseEdit();
+	RDOBaseEdit(PTR(QWidget) pParent);
 	virtual ~RDOBaseEdit();
-
-	HWND getSCIHWND() const { return sciHWND; }
 
 	const RDOBaseEditStyle* getEditorStyle() const         { return style; };
 	void setEditorStyle( RDOBaseEditStyle* _style );
 
 	void setGroup( RDOBaseEditGroup* _group );
-	void setPopupMenu( CMenu* const value )                { popupMenu = value; };
+	void setPopupMenu( QMenu* const value )                { popupMenu = value; };
 
 	rbool isEmpty() const                                  { return getLength() == 0;                                                         };
 	rbool isSelected() const                               { return sendEditor( SCI_GETSELECTIONSTART ) != sendEditor( SCI_GETSELECTIONEND ); };
