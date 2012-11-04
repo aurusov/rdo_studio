@@ -34,7 +34,6 @@ using namespace rdoEditCtrl;
 
 //! @todo qt
 //BEGIN_MESSAGE_MAP( RDOLogEdit, RDOBaseEdit )
-//	ON_WM_CREATE()
 //	ON_COMMAND(ID_BUILDFINDLOG_GOTO_NEXT, OnGotoNext)
 //	ON_COMMAND(ID_BUILDFINDLOG_GOTO_PREV, OnGotoPrev)
 //END_MESSAGE_MAP()
@@ -46,11 +45,11 @@ RDOLogEdit::RDOLogEdit(PTR(QWidget) pParent)
 	setCurrentLine(-1);
 	m_sciMarkerLine = getNewMarker();
 
-	sendEditor( SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT );
+	sendEditor(SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT);
 
-	setReadOnly( true );
+	setReadOnly(true);
 
-	sendEditorString( SCI_SETPROPERTY, reinterpret_cast<unsigned long>("withoutselectbyclick"), "1" );
+	sendEditorString(SCI_SETPROPERTY, reinterpret_cast<unsigned long>("withoutselectbyclick"), "1");
 
 	QObject::connect(this, SIGNAL(doubleClick(int, int)), this, SLOT(catchDoubleClick(int, int)));
 	QObject::connect(this, SIGNAL(modified()), this, SLOT(catchModified()));
@@ -66,7 +65,10 @@ void RDOLogEdit::catchDoubleClick(int position, int line)
 
 void RDOLogEdit::catchModified()
 {
-	if ( hasSelectLine() ) clearSelectLine();
+	if (hasSelectLine())
+	{
+		clearSelectLine();
+	}
 }
 
 RDOLogEdit::~RDOLogEdit()
@@ -74,50 +76,57 @@ RDOLogEdit::~RDOLogEdit()
 	clearLines();
 }
 
-void RDOLogEdit::setEditorStyle( RDOLogEditStyle* style )
+void RDOLogEdit::setEditorStyle(PTR(RDOLogEditStyle) pStyle)
 {
-	RDOBaseEdit::setEditorStyle( style );
-	if ( !style ) 
+	RDOBaseEdit::setEditorStyle(pStyle);
+	if (!style) 
 	{
 		return;
 	}
 
 	// ----------
 	// Selected Line
-	defineMarker( m_sciMarkerLine, SC_MARK_BACKGROUND, RGB( 0xFF, 0xFF, 0xFF ), static_cast<RDOLogEditTheme*>(style->theme)->selectLineBgColor );
+	defineMarker(m_sciMarkerLine, SC_MARK_BACKGROUND, RGB(0xFF, 0xFF, 0xFF), static_cast<PTR(RDOLogEditTheme)>(style->theme)->selectLineBgColor);
 }
 
 void RDOLogEdit::gotoPrev()
 {
 	m_currentLine--;
-	if ( m_currentLine < 0 ) {
+	if (m_currentLine < 0)
+	{
 		m_currentLine = m_lines.size() - 1;
 	}
-	if ( m_currentLine < 0 ) return;
+	if (m_currentLine < 0)
+		return;
 
 	RDOLogEditLineInfoList::iterator it = m_lines.begin();
 	int i;
-	for ( i = 0; i < m_currentLine; i++ ) {
-		it++;
+	for (i = 0; i < m_currentLine; i++)
+	{
+		++it;
 	}
-	while ( it != m_lines.begin() && (*it)->getLineNumber() == -1 ) {
-		it--;
-		m_currentLine--;
+	while (it != m_lines.begin() && (*it)->getLineNumber() == -1)
+	{
+		--it;
+		--m_currentLine;
 	}
-	if ( it == m_lines.begin() && (*it)->getLineNumber() == -1 ) {
+	if (it == m_lines.begin() && (*it)->getLineNumber() == -1)
+	{
 		it = m_lines.end();
 		m_currentLine = m_lines.size();
-		while ( it == m_lines.end() || (it != m_lines.begin() && (*it)->getLineNumber() == -1) ) {
-			it--;
-			m_currentLine--;
+		while (it == m_lines.end() || (it != m_lines.begin() && (*it)->getLineNumber() == -1))
+		{
+			--it;
+			--m_currentLine;
 		}
 	}
-	if ( it != m_lines.end() && (*it)->getLineNumber() != -1 ) {
-		setSelectLine( m_currentLine, *it, true );
+	if (it != m_lines.end() && (*it)->getLineNumber() != -1)
+	{
+		setSelectLine(m_currentLine, *it, true);
 	}
 }
 
-void RDOLogEdit::getLines( REF(RDOLogEditLineInfoList) lines ) const
+void RDOLogEdit::getLines(REF(RDOLogEditLineInfoList) lines) const
 {
 	lines = m_lines;
 }
@@ -137,7 +146,7 @@ void RDOLogEdit::setCurrentLine(rsint currentLine)
 	m_currentLine = currentLine;
 }
 
-void RDOLogEdit::setSciMarkerLine( rsint sciMarkerLine )
+void RDOLogEdit::setSciMarkerLine(rsint sciMarkerLine)
 {
 	m_sciMarkerLine = sciMarkerLine;
 }
@@ -146,53 +155,65 @@ void RDOLogEdit::setSelectLine()
 {
 	QPoint point = QCursor::pos();
 	QWidget::mapFromGlobal(point);
-	int pos  = sendEditor( SCI_POSITIONFROMPOINT, point.x(), point.y() );
-	int line = getLineFromPosition( pos );
-	setCurrentPos( pos );
+	int pos  = sendEditor(SCI_POSITIONFROMPOINT, point.x(), point.y());
+	int line = getLineFromPosition(pos);
+	setCurrentPos(pos);
 	m_currentLine = line;
 
-	std::list< RDOLogEditLineInfo* >::iterator it = m_lines.begin();
-	for ( int i = 0; i < line; i++ ) {
-		if ( it != m_lines.end() ) {
-			it++;
+	RDOLogEditLineInfoList::iterator it = m_lines.begin();
+	for (int i = 0; i < line; i++)
+	{
+		if (it != m_lines.end())
+		{
+			++it;
 		}
 	}
-	if ( it != m_lines.end() && (*it)->getLineNumber() != -1 ) {
-		setSelectLine( line, *it );
+	if (it != m_lines.end() && (*it)->getLineNumber() != -1)
+	{
+		setSelectLine(line, *it);
 	}
 }
 
 void RDOLogEdit::gotoNext()
 {
 	m_currentLine++;
-	std::list< RDOLogEditLineInfo* >::iterator it = m_lines.begin();
+	RDOLogEditLineInfoList::iterator it = m_lines.begin();
 	int i;
-	for ( i = 0; i < m_currentLine; i++ ) {
-		if ( it != m_lines.end() ) {
-			it++;
-		} else {
+	for (i = 0; i < m_currentLine; i++)
+	{
+		if (it != m_lines.end())
+		{
+			++it;
+		}
+		else
+		{
 			m_currentLine = 0;
 			break;
 		}
 	}
 	it = m_lines.begin();
-	for ( i = 0; i < m_currentLine; i++ ) {
-		it++;
+	for (i = 0; i < m_currentLine; i++)
+	{
+		++it;
 	}
-	while ( it != m_lines.end() && (*it)->getLineNumber() == -1 ) {
-		it++;
-		m_currentLine++;
+	while (it != m_lines.end() && (*it)->getLineNumber() == -1)
+	{
+		++it;
+		++m_currentLine;
 	}
-	if ( it == m_lines.end() ) {
+	if (it == m_lines.end())
+	{
 		it = m_lines.begin();
 		m_currentLine = 0;
-		while ( it != m_lines.end() && (*it)->getLineNumber() == -1 ) {
-			it++;
-			m_currentLine++;
+		while (it != m_lines.end() && (*it)->getLineNumber() == -1)
+		{
+			++it;
+			++m_currentLine;
 		}
 	}
-	if ( it != m_lines.end() && (*it)->getLineNumber() != -1 ) {
-		setSelectLine( m_currentLine, *it, true );
+	if (it != m_lines.end() && (*it)->getLineNumber() != -1)
+	{
+		setSelectLine(m_currentLine, *it, true);
 	}
 }
 
@@ -202,25 +223,25 @@ void RDOLogEdit::clearAll()
 	clearLines();
 }
 
-void RDOLogEdit::appendLine( RDOLogEditLineInfo* line )
+void RDOLogEdit::appendLine(PTR(RDOLogEditLineInfo) pLine)
 {
-	m_lines.push_back( line );
+	m_lines.push_back(pLine);
 	rbool readOnly = isReadOnly();
-	if ( readOnly )
+	if (readOnly)
 	{
-		setReadOnly( false );
+		setReadOnly(false);
 	}
-	tstring str = line->getMessage();
-	rdo::trimRight( str );
+	tstring str = pLine->getMessage();
+	rdo::trimRight(str);
 	str += "\r\n";
-	setCurrentPos( getLength() );
-	appendText( str );
-	line->setPosInLog( getLength() );
-	scrollToLine2( getLineCount() );
-	setCurrentPos( line->getPosInLog() );
-	if ( readOnly )
+	setCurrentPos(getLength());
+	appendText(str);
+	pLine->setPosInLog(getLength());
+	scrollToLine2(getLineCount());
+	setCurrentPos(pLine->getPosInLog());
+	if (readOnly)
 	{
-		setReadOnly( true );
+		setReadOnly(true);
 	}
 	updateEditGUI();
 }
@@ -235,63 +256,72 @@ void RDOLogEdit::OnGotoPrev()
 	gotoPrev();
 }
 
-void RDOLogEdit::setSelectLine( const int line, const RDOLogEditLineInfo* lineInfo, const rbool useScroll )
+void RDOLogEdit::setSelectLine(int line, CPTR(RDOLogEditLineInfo) pLineInfo, rbool useScroll)
 {
-	if ( lineInfo->getLineNumber() != -1 ) {
-		if ( sendEditor( SCI_MARKERNEXT, 0, 1 << m_sciMarkerLine ) != line ) {
+	if (pLineInfo->getLineNumber() != -1)
+	{
+		if (sendEditor(SCI_MARKERNEXT, 0, 1 << m_sciMarkerLine) != line)
+		{
 			clearSelectLine();
-			sendEditor( SCI_MARKERADD, line, m_sciMarkerLine );
-			if ( useScroll ) {
-				setCurrentPos( lineInfo->getPosInLog() );
+			sendEditor(SCI_MARKERADD, line, m_sciMarkerLine);
+			if (useScroll)
+			{
+				setCurrentPos(pLineInfo->getPosInLog());
 				scrollToCarret();
 			}
 		}
-		rdoEditor::RDOEditorTabCtrl* tab = model->getTab();
-		if ( tab ) {
-			if ( tab->getCurrentRDOItem() != lineInfo->getFileType() ) {
-				rdoEditor::RDOEditorEdit* edit = tab->getCurrentEdit();
-				if ( !edit || (edit && edit->getLog() == this) ) {
-					tab->setCurrentRDOItem( lineInfo->getFileType() );
+		PTR(rdoEditor::RDOEditorTabCtrl) pTab = model->getTab();
+		if (pTab)
+		{
+			if (pTab->getCurrentRDOItem() != pLineInfo->getFileType())
+			{
+				PTR(rdoEditor::RDOEditorEdit) pEdit = pTab->getCurrentEdit();
+				if (!pEdit || (pEdit && pEdit->getLog() == this))
+				{
+					pTab->setCurrentRDOItem(pLineInfo->getFileType());
 				}
 			}
-			rdoEditor::RDOEditorEdit* edit = tab->getCurrentEdit();
-			if ( edit && edit->getLog() == this ) {
-				updateEdit( edit, lineInfo );
+			PTR(rdoEditor::RDOEditorEdit) pEdit = pTab->getCurrentEdit();
+			if (pEdit && pEdit->getLog() == this)
+			{
+				updateEdit(pEdit, pLineInfo);
 			}
 		}
 	}
 }
 
-void RDOLogEdit::updateEdit( rdoEditor::RDOEditorEdit* edit, const RDOLogEditLineInfo* lineInfo )
+void RDOLogEdit::updateEdit(PTR(rdoEditor::RDOEditorEdit) pEdit, CPTR(RDOLogEditLineInfo) pLineInfo)
 {
-	edit->scrollToLine( lineInfo->getLineNumber() );
-	int pos = edit->getPositionFromLine(lineInfo->getLineNumber()) + lineInfo->getPosInLine();
-	edit->setCurrentPos( pos );
-	edit->horzScrollToCurrentPos();
-	edit->setFocus();
+	pEdit->scrollToLine(pLineInfo->getLineNumber());
+	int pos = pEdit->getPositionFromLine(pLineInfo->getLineNumber()) + pLineInfo->getPosInLine();
+	pEdit->setCurrentPos(pos);
+	pEdit->horzScrollToCurrentPos();
+	pEdit->setFocus();
 }
 
 void RDOLogEdit::clearSelectLine()
 {
-	int nextLine = sendEditor( SCI_MARKERNEXT, 0, 1 << m_sciMarkerLine );
-	if ( nextLine >= 0 ) {
-		sendEditor( SCI_MARKERDELETE, nextLine, m_sciMarkerLine );
-		QWidget::update();
+	int nextLine = sendEditor(SCI_MARKERNEXT, 0, 1 << m_sciMarkerLine);
+	if (nextLine >= 0)
+	{
+		sendEditor(SCI_MARKERDELETE, nextLine, m_sciMarkerLine);
+		update();
 	}
 }
 
 rbool RDOLogEdit::hasSelectLine() const
 {
-	int nextLine = sendEditor( SCI_MARKERNEXT, 0, 1 << m_sciMarkerLine );
+	int nextLine = sendEditor(SCI_MARKERNEXT, 0, 1 << m_sciMarkerLine);
 	return nextLine >= 0;
 }
 
 void RDOLogEdit::clearLines()
 {
-	std::list< RDOLogEditLineInfo* >::iterator it = m_lines.begin();
-	while ( it != m_lines.end() ) {
+	RDOLogEditLineInfoList::iterator it = m_lines.begin();
+	while (it != m_lines.end())
+	{
 		delete *it;
-		it++;
+		++it;
 	}
 	m_lines.clear();
 	m_currentLine = 0;

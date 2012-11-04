@@ -38,16 +38,16 @@ public:
 	RDOLogEdit(PTR(QWidget) pParent);
 	virtual ~RDOLogEdit();
 
-	virtual void setEditorStyle(PTR(RDOLogEditStyle) style);
+	virtual void setEditorStyle(PTR(RDOLogEditStyle) pStyle);
 
 	virtual void gotoNext();
 	virtual void gotoPrev();
 
 	virtual void clearAll();
-	virtual void appendLine(PTR(RDOLogEditLineInfo) line);
+	virtual void appendLine(PTR(RDOLogEditLineInfo) pLine);
 
 protected:
-	void  getLines        (REF(RDOLogEditLineInfoList) lines) const;
+	void  getLines        (REF(RDOLogEditLineInfoList) pLines) const;
 	rsint getCurrentLine  () const;
 	rsint getSciMarkerLine() const;
 
@@ -55,11 +55,11 @@ protected:
 	void  setSciMarkerLine(rsint sciMarkerLine);
 
 protected:
-	virtual void updateEdit( PTR(rdoEditor::RDOEditorEdit) edit, CPTR(RDOLogEditLineInfo) lineInfo );
+	virtual void updateEdit(PTR(rdoEditor::RDOEditorEdit) pEdit, CPTR(RDOLogEditLineInfo) pLineInfo);
 
 	void  clearLines     ();
 	void  setSelectLine  ();
-	void  setSelectLine  (int line, CPTR(RDOLogEditLineInfo) lineInfo, rbool useScroll = false);
+	void  setSelectLine  (int line, CPTR(RDOLogEditLineInfo) pLineInfo, rbool useScroll = false);
 	void  clearSelectLine();
 	rbool hasSelectLine  () const;
 
