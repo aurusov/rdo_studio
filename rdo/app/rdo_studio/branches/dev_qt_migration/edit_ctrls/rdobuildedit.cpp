@@ -38,7 +38,6 @@ namespace rdoEditCtrl {
 
 //! @todo qt
 //BEGIN_MESSAGE_MAP( RDOBuildEdit, RDOLogEdit )
-//	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
 //	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR , OnUpdateCoordStatusBar )
 //	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar )
 //END_MESSAGE_MAP()
@@ -120,7 +119,7 @@ void RDOBuildEdit::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
 	pCmdUI->SetText( rdo::format( ID_STATUSBAR_READONLY ).c_str() );
 }
 
-void RDOBuildEdit::OnHelpKeyword()
+void RDOBuildEdit::onHelpContext()
 {
 	QByteArray ba;
 	ba.append("setSource qthelp://studio/doc/rdo_studio_rus/html/work_run.htm#output_build\n");
