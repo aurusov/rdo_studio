@@ -18,7 +18,6 @@
 #include "app/rdo_studio_mfc/resource.h"
 #include "thirdparty/sci/include/SciLexer.h"
 #include "thirdparty/sci/lexlib/WordList.h"
-#include "thirdparty/sci/include/Scintilla.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
