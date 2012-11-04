@@ -523,6 +523,7 @@ void RDOEditorEdit::completeWord()
 	if (!static_cast<RDOEditorEditStyle*>(style)->autoComplete->useAutoComplete)
 		return;
 
+	setFocus();
 	tstring primaryKwList;
 	if (model->getTab())
 	{
