@@ -151,9 +151,9 @@ RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent):
 	firstFoundPos( -1 ),
 	bHaveFound( false )
 {
-	QObject::connect(this, SIGNAL(ScintillaEditBase::needShown()), this, SLOT(catchNeedShown()));
-	QObject::connect(this, SIGNAL(ScintillaEditBase::charAdded()), this, SLOT(catchCharAdded()));
-	QObject::connect(this, SIGNAL(ScintillaEditBase::updateUi() ), this, SLOT(catchUpdateUi() ));
+	QObject::connect(this, SIGNAL(needShown(int, int)), this, SLOT(catchNeedShown(int, int)));
+	QObject::connect(this, SIGNAL(charAdded(int)), this, SLOT(catchCharAdded(int)));
+	QObject::connect(this, SIGNAL(updateUi()), this, SLOT(catchUpdateUi()));
 
 	if (!initLexer)
 	{
