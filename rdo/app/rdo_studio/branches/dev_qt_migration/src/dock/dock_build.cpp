@@ -24,7 +24,7 @@ DockBuild::DockBuild(PTR(QWidget) pParent)
 	: QDockWidget("Компилятор", pParent)
 {
 	PTR(context_type) pWidget = new context_type(this);
-	pWidget->setMinimumSize(QSize(150, 300));
+	pWidget->setMinimumSize(QSize(300, 150));
 
 	PTR(QVBoxLayout) pLayout = new QVBoxLayout(this);
 	pLayout->setSpacing(0);
