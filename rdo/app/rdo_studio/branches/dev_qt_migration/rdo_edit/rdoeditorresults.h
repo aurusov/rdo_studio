@@ -14,6 +14,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorbaseedit.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorresultsstyle.h"
+#include "app/rdo_studio_mfc/src/help_context_i.h"
 // --------------------------------------------------------------------------------
 
 namespace rdoEditor {
@@ -21,7 +22,9 @@ namespace rdoEditor {
 // --------------------------------------------------------------------------------
 // -------------------- RDOEditorResults
 // --------------------------------------------------------------------------------
-class RDOEditorResults: public RDOEditorBaseEdit
+class RDOEditorResults
+	: public RDOEditorBaseEdit
+	, public IHelpContext
 {
 public:
 	RDOEditorResults(PTR(QWidget) pParent);
@@ -30,9 +33,10 @@ public:
 	void setEditorStyle(PTR(RDOEditorResultsStyle) pStyle);
 
 private:
-	afx_msg void OnHelpKeyword();
 	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );
+
+	DECLARE_IHelpContext;
 };
 
 }; // namespace rdoEditor
