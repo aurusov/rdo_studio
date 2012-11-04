@@ -38,7 +38,8 @@ using namespace rdoEditor;
 //	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar )
 //END_MESSAGE_MAP()
 
-RDOEditorResults::RDOEditorResults(PTR(QWidget) pParent): RDOEditorBaseEdit(pParent)
+RDOEditorResults::RDOEditorResults(PTR(QWidget) pParent)
+	: RDOEditorBaseEdit(pParent)
 {
 	kw0 = "TRUE FALSE";
 	kw1 = "";
@@ -49,13 +50,11 @@ RDOEditorResults::RDOEditorResults(PTR(QWidget) pParent): RDOEditorBaseEdit(pPar
 }
 
 RDOEditorResults::~RDOEditorResults()
-{
-}
+{}
 
-void RDOEditorResults::setEditorStyle( RDOEditorResultsStyle* _style )
+void RDOEditorResults::setEditorStyle(PTR(RDOEditorResultsStyle) pStyle)
 {
-	RDOEditorBaseEdit::setEditorStyle( _style );
-	if ( !style ) return;
+	RDOEditorBaseEdit::setEditorStyle(pStyle);
 }
 
 void RDOEditorResults::OnHelpKeyword()

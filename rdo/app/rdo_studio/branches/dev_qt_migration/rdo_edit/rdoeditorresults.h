@@ -23,16 +23,16 @@ namespace rdoEditor {
 // --------------------------------------------------------------------------------
 class RDOEditorResults: public RDOEditorBaseEdit
 {
-private:
-	afx_msg void OnHelpKeyword();
-	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
-	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );
-
 public:
 	RDOEditorResults(PTR(QWidget) pParent);
 	virtual ~RDOEditorResults();
 
-	void setEditorStyle( RDOEditorResultsStyle* _style );
+	void setEditorStyle(PTR(RDOEditorResultsStyle) pStyle);
+
+private:
+	afx_msg void OnHelpKeyword();
+	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
+	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );
 };
 
 }; // namespace rdoEditor
