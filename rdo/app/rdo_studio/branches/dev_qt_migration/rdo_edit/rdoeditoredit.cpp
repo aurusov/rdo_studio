@@ -163,6 +163,11 @@ void RDOEditorEdit::catchRdoClick()
 
 void RDOEditorEdit::catchModified(int modificationType, int position, int length, int linesAdded, const QByteArray& bytes, int line, int foldLevelNow, int foldLevelPrev)
 {
+	UNUSED(linesAdded);
+	UNUSED(length    );
+	UNUSED(position  );
+	UNUSED(bytes     );
+
 	bufSelStart = -1;
 	if ( modificationType & SC_MOD_CHANGEFOLD ) {
 		foldChanged( line, foldLevelNow, foldLevelPrev );
