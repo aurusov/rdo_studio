@@ -58,7 +58,7 @@ public:
 
 class RDOBaseEdit: public ScintillaEditBase
 {
-	Q_OBJECT
+Q_OBJECT
 private:
 	int markerCount;
 
