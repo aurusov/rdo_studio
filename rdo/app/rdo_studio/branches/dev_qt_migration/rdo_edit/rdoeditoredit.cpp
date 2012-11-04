@@ -141,7 +141,7 @@ RDOEditorEdit::RDOEditorEdit(PTR(QWidget) pParent, PTR(RDOStudioEditBaseView) pV
 	QObject::connect(this, SIGNAL(ScintillaEditBase::modified(int, int, int, int, const QByteArray&, int, int, int)), this, SLOT(catchModified(int, int, int, int, const QByteArray&, int, int, int)));
 	QObject::connect(this, SIGNAL(ScintillaEditBase::marginClicked()), this, SLOT(catchMarginClick()));
 	QObject::connect(this, SIGNAL(ScintillaEditBase::charAdded()), this, SLOT(catchCharAdded()));
-	//! @todo qt - обработать сигналы SCI_RDOPOSCHANGED, SCI_RDOCLICK
+	//! @todo qt - обработать сигналы SCN_RDO_POSCHANGED, SCN_RDO_CLICK
 	//QObject::connect(this, SIGNAL(), this, SLOT(catchRdoPosChanged()));
 	//QObject::connect(this, SIGNAL(), this, SLOT(catchRdoClick()));
 }
