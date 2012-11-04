@@ -13,9 +13,7 @@
 // ----------------------------------------------------------------------- PLATFORM
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
-#include <QtGui/qwidget.h>
 #include <QtGui/qmenu.h>
-#include <QtGui/qmessagebox.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdostream.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdobaseeditstyle.h"
@@ -27,8 +25,6 @@ namespace rdoEditCtrl {
 // --------------------------------------------------------------------------------
 // -------------------- RDOBaseEdit
 // --------------------------------------------------------------------------------
-typedef long (*sciFunType)( long ptr, unsigned int iMessage, unsigned long wParam, long lParam );
-
 class RDOBaseEdit;
 
 typedef std::vector< RDOBaseEdit* >                 RDOBaseEditList;
@@ -116,6 +112,7 @@ protected:
 
 private:
 	//! @todo qt
+	//afx_msg void OnSetFocus( CWnd *pOldWnd );
 	//afx_msg void OnContextMenu( CWnd* pWnd, CPoint pos );
 	afx_msg void OnEditUndo();
 	afx_msg void OnEditRedo();
@@ -159,7 +156,6 @@ private:
 	afx_msg void OnUpdateZoomReset( CCmdUI *pCmdUI );
 	afx_msg void OnSearchGotoLine();
 	afx_msg LRESULT OnFindReplaceMsg( WPARAM wParam, LPARAM lParam );
-	//DECLARE_MESSAGE_MAP()
 
 private slots:
 	void catchNeedShown(int position, int length);

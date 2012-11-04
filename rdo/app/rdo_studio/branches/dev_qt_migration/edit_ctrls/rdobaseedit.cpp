@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtGui/qmessagebox.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/edit_ctrls/rdobaseedit.h"
 #include "app/rdo_studio_mfc/src/application.h"
@@ -74,10 +75,7 @@ static const UINT FIND_REPLASE_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 
 //! @todo qt
 //BEGIN_MESSAGE_MAP( RDOBaseEdit, CWnd )
-//	ON_WM_CREATE()
 //	ON_WM_SETFOCUS()
-//	ON_WM_SIZE()
-//	ON_WM_INITMENUPOPUP()
 //	ON_WM_CONTEXTMENU()
 //	ON_COMMAND(ID_EDIT_UNDO, OnEditUndo)
 //	ON_COMMAND(ID_EDIT_REDO, OnEditRedo)
