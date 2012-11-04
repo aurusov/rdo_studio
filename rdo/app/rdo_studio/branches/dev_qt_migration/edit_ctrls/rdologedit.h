@@ -72,8 +72,8 @@ private:
 	rsint                   m_sciMarkerLine;
 
 private slots:
-	void catchDoubleClick();
-	void catchModified();
+	void catchDoubleClick(int position, int line);
+	void catchModified   ();
 };
 
 }; // namespace rdoEditCtrl

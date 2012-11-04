@@ -52,12 +52,15 @@ RDOLogEdit::RDOLogEdit(PTR(QWidget) pParent)
 
 	sendEditorString( SCI_SETPROPERTY, reinterpret_cast<unsigned long>("withoutselectbyclick"), "1" );
 
-	QObject::connect(this, SIGNAL(ScintillaEditBase::doubleClick()), this, SLOT(catchDoubleClick()));
-	QObject::connect(this, SIGNAL(ScintillaEditBase::modified()), this, SLOT(catchModified()));
+	QObject::connect(this, SIGNAL(doubleClick(int, int)), this, SLOT(catchDoubleClick(int, int)));
+	QObject::connect(this, SIGNAL(modified()), this, SLOT(catchModified()));
 }
 
-void RDOLogEdit::catchDoubleClick()
+void RDOLogEdit::catchDoubleClick(int position, int line)
 {
+	UNUSED(position);
+	UNUSED(line    );
+
 	setSelectLine();
 }
 
