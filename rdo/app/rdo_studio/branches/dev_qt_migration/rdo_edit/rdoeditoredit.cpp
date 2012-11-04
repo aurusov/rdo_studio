@@ -11,7 +11,6 @@
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/algorithm/string.hpp>
-#include <QtCore/qprocess.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoredit.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
@@ -65,7 +64,6 @@ void RDOEditorEditBufferDlg::DoDataExchange( CDataExchange* pDX )
 
 //! @todo qt
 //BEGIN_MESSAGE_MAP( RDOEditorEdit, RDOEditorBaseEdit )
-//	ON_WM_CREATE()
 //	ON_COMMAND(ID_EDIT_COMMENTSELECTION, OnEditCommentSelection)
 //	ON_COMMAND(ID_EDIT_COMPLETEWORD, OnEditCompleteWord)
 //	ON_COMMAND(ID_INSERT_BUFFER1_PASTE, OnInsertBuffer1Paste)
