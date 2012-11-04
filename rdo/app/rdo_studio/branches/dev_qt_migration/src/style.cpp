@@ -12,6 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/style.h"
+#include "thirdparty/sci/include/Scintilla.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
@@ -32,7 +33,7 @@ RDOStyleFont::RDOStyleFont()
 	codepage     = 0;
 	characterSet = 1;
 	if ( PRIMARYLANGID(GetSystemDefaultLangID()) == LANG_RUSSIAN ) {
-		characterSet = RUSSIAN_CHARSET;
+		characterSet = SC_CHARSET_CYRILLIC;
 	}
 }
 
@@ -70,6 +71,10 @@ void RDOStyleFont::load( tstring regPath )
 	size         = AfxGetApp()->GetProfileInt( regPath.c_str(), "size", size );
 	codepage     = AfxGetApp()->GetProfileInt( regPath.c_str(), "codepage", codepage );
 	characterSet = AfxGetApp()->GetProfileInt( regPath.c_str(), "characterSet", characterSet );
+	if (characterSet == RUSSIAN_CHARSET)
+	{
+		characterSet = SC_CHARSET_CYRILLIC;
+	}
 }
 
 void RDOStyleFont::save( tstring regPath ) const
