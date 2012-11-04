@@ -137,10 +137,10 @@ RDOEditorEdit::RDOEditorEdit(PTR(QWidget) pParent, PTR(RDOStudioEditBaseView) pV
 	sendEditor(SCI_AUTOCSETAUTOHIDE      , false);
 	sendEditor(SCI_AUTOCSTOPS            , 0, reinterpret_cast<long>("+-*/:[](),<>=."));
 
-	QObject::connect(this, SIGNAL(ScintillaEditBase::key()), this, SLOT(catchBufferKey()));
+	QObject::connect(this, SIGNAL(ScintillaEditBase::key(int)), this, SLOT(catchBufferKey(int)));
 	QObject::connect(this, SIGNAL(ScintillaEditBase::modified(int, int, int, int, const QByteArray&, int, int, int)), this, SLOT(catchModified(int, int, int, int, const QByteArray&, int, int, int)));
-	QObject::connect(this, SIGNAL(ScintillaEditBase::marginClicked()), this, SLOT(catchMarginClick()));
-	QObject::connect(this, SIGNAL(ScintillaEditBase::charAdded()), this, SLOT(catchCharAdded()));
+	QObject::connect(this, SIGNAL(ScintillaEditBase::marginClicked(int, int, int)), this, SLOT(catchMarginClick(int, int, int)));
+	QObject::connect(this, SIGNAL(ScintillaEditBase::charAdded(int)), this, SLOT(catchCharAdded(int)));
 	//! @todo qt - обработать сигналы SCN_RDO_POSCHANGED, SCN_RDO_CLICK
 	//QObject::connect(this, SIGNAL(), this, SLOT(catchRdoPosChanged()));
 	//QObject::connect(this, SIGNAL(), this, SLOT(catchRdoClick()));
