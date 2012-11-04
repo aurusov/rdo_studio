@@ -592,18 +592,18 @@ void RDOBaseEdit::findNext( REF(tstring) findWhat, const rbool searchDown, const
 	if ( posFind == -1 ) {
 		firstFoundPos = -1;
 		bHaveFound    = false;
-		//MessageBox( rdo::format( ID_MSG_CANTFIND, findWhat.c_str() ).c_str(), NULL, MB_OK | MB_ICONWARNING );
-		//SetFocus();
-		QMessageBox::warning(studioApp.getMainWnd(), "Результаты поиска", rdo::format( ID_MSG_CANTFIND, findWhat.c_str()).c_str());
+		QMessageBox::warning(this, "Результаты поиска", rdo::format(ID_MSG_CANTFIND, findWhat.c_str()).c_str());
+		//! @todo возможно, надо убрать
+		setFocus();
 	} else {
 		if ( firstFoundPos == -1 ) {
 			firstFoundPos = posFind;
 		} else if ( posFind == firstFoundPos ) {
 			firstFoundPos = -1;
 			bHaveFound    = false;
-			//MessageBox( rdo::format( ID_MSG_CANTFIND, findWhat.c_str() ).c_str(), NULL, MB_OK | MB_ICONWARNING );
-			//SetFocus();
-			QMessageBox::warning(studioApp.getMainWnd(), "Результаты поиска", rdo::format( ID_MSG_CANTFIND, findWhat.c_str()).c_str());
+			QMessageBox::warning(this, "Результаты поиска", rdo::format(ID_MSG_CANTFIND, findWhat.c_str()).c_str());
+			//! @todo возможно, надо убрать
+			setFocus();
 			return;
 		}
 		bHaveFound = true;
@@ -662,9 +662,9 @@ void RDOBaseEdit::replaceAll( REF(tstring) findWhat, REF(tstring) replaceWhat, c
 		setSelection( lastMatch, lastMatch );
 		sendEditor( SCI_ENDUNDOACTION );
 	} else {
-		//MessageBox( rdo::format( ID_MSG_CANTFIND, findWhat.c_str() ).c_str(), NULL, MB_OK | MB_ICONWARNING );
-		//SetFocus();
-		QMessageBox::warning(studioApp.getMainWnd(), "Результаты поиска", rdo::format( ID_MSG_CANTFIND, findWhat.c_str()).c_str());
+		QMessageBox::warning(this, "Результаты поиска", rdo::format(ID_MSG_CANTFIND, findWhat.c_str()).c_str());
+		//! @todo возможно, надо убрать
+		setFocus();
 	}
 }
 
