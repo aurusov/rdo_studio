@@ -60,7 +60,7 @@ class RDOBaseEdit: public ScintillaEditBase
 {
 	Q_OBJECT
 private:
-	static int objectCount;
+	static rbool initLexer;
 
 	int markerCount;
 
