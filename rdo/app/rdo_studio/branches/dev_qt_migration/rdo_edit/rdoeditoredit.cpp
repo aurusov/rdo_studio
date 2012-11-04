@@ -115,12 +115,12 @@ void RDOEditorEditBufferDlg::DoDataExchange( CDataExchange* pDX )
 //
 //END_MESSAGE_MAP()
 
-RDOEditorEdit::RDOEditorEdit( QWidget* pParent, RDOStudioEditBaseView* _view ):
-	RDOEditorBaseEdit(pParent),
-	bufSelStart( -1 ),
-	view( _view ),
-	log( NULL ),
-	canClearErrorLine( true )
+RDOEditorEdit::RDOEditorEdit(PTR(QWidget) pParent, PTR(RDOStudioEditBaseView) pView)
+	: RDOEditorBaseEdit(pParent)
+	, bufSelStart      (-1     )
+	, view             (pView  )
+	, log              (NULL   )
+	, canClearErrorLine(true   )
 {
 	sci_FOLDMARGIN_ID = getNewMarker();
 	sci_MARKER_ERROR  = getNewMarker();
@@ -241,10 +241,11 @@ RDOEditorEdit::~RDOEditorEdit()
 //	return FALSE;
 //}
 
-void RDOEditorEdit::setEditorStyle( RDOEditorEditStyle* _style )
+void RDOEditorEdit::setEditorStyle(PTR(RDOEditorEditStyle) pStyle)
 {
-	RDOEditorBaseEdit::setEditorStyle( _style );
-	if ( !style ) return;
+	RDOEditorBaseEdit::setEditorStyle(pStyle);
+	if (!style)
+		return;
 
 	// ----------
 	// Fold
@@ -980,26 +981,28 @@ void RDOEditorEdit::OnUndateBuffer4Clear( CCmdUI* pCmdUI )
 	pCmdUI->Enable(!view->m_bufferList.find(3)->second.value.empty());
 }
 
-const rdoEditCtrl::RDOLogEdit* RDOEditorEdit::getLog() const
+CPTR(rdoEditCtrl::RDOLogEdit) RDOEditorEdit::getLog() const
 {
 	return log;
 }
 
-void RDOEditorEdit::setLog( RDOLogEdit& _log )
+void RDOEditorEdit::setLog(REF(RDOLogEdit) log)
 {
-	log = &_log;
+	this->log = &log;
 }
 
 void RDOEditorEdit::OnGotoNext()
 {
-	if ( log ) {
+	if (log)
+	{
 		log->gotoNext();
 	}
 }
 
 void RDOEditorEdit::OnGotoPrev()
 {
-	if ( log ) {
+	if (log)
+	{
 		log->gotoPrev();
 	}
 }
