@@ -138,7 +138,7 @@ RDOEditorEdit::RDOEditorEdit(PTR(QWidget) pParent, PTR(RDOStudioEditBaseView) pV
 	sendEditor( SCI_AUTOCSTOPS            , 0, reinterpret_cast<long>("+-*/:[](),<>=.") );
 
 	QObject::connect(this, SIGNAL(ScintillaEditBase::key()), this, SLOT(catchBufferKey()));
-	QObject::connect(this, SIGNAL(ScintillaEditBase::modified(int, int, int, int, const QByteArray, int, int, int)), this, SLOT(catchModified(int, int, int, int, const QByteArray&, int, int, int)));
+	QObject::connect(this, SIGNAL(ScintillaEditBase::modified(int, int, int, int, const QByteArray&, int, int, int)), this, SLOT(catchModified(int, int, int, int, const QByteArray&, int, int, int)));
 	QObject::connect(this, SIGNAL(ScintillaEditBase::marginClicked()), this, SLOT(catchMarginClick()));
 	QObject::connect(this, SIGNAL(ScintillaEditBase::charAdded()), this, SLOT(catchCharAdded()));
 }
@@ -161,7 +161,7 @@ void RDOEditorEdit::catchRdoClick()
 	bufSelStart = -1;
 }
 
-void RDOEditorEdit::catchModified(int modificationType, int position, int length, int linesAdded, const QByteArray bytes, int line, int foldLevelNow, int foldLevelPrev)
+void RDOEditorEdit::catchModified(int modificationType, int position, int length, int linesAdded, const QByteArray& bytes, int line, int foldLevelNow, int foldLevelPrev)
 {
 	bufSelStart = -1;
 	if ( modificationType & SC_MOD_CHANGEFOLD ) {
