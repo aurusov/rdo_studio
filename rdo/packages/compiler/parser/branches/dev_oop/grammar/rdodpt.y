@@ -828,6 +828,10 @@ dpt_some_descr_param
 
 dpt_some_activity
 	: /* empty */
+	{
+		LPRDODPTActivity pActivity = NULL;
+		$$ = PARSER->stack().push(pActivity);
+	}
 	| dpt_some_activity dpt_some_name dpt_some_descr_keyb dpt_some_descr_param
 	{
 		LPRDODPTActivity pActivity = PARSER->stack().pop<RDODPTSomeActivity>($2);
@@ -841,7 +845,6 @@ dpt_some_header
 	: dpt_some_prior RDO_Activities dpt_some_activity
 	{
 		LPRDODPTActivity pActivity = PARSER->stack().pop<RDODPTActivity>($3);
-		ASSERT(pActivity);
 	}
 	| dpt_some_prior error
 	{
