@@ -31,9 +31,6 @@ protected:
 	tstring getAllKW() const;
 	static tstring convertToLexer( CREF(tstring) kw );
 
-private:
-	//DECLARE_MESSAGE_MAP()
-
 public:
 	RDOEditorBaseEdit(PTR(QWidget) pParent);
 	virtual ~RDOEditorBaseEdit();

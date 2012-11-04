@@ -39,11 +39,6 @@ static char* wordCharacters = "0123456789_$abcdefghijklmnopqrstuvwxyzABCDEFGHIJK
 
 // ---------------
 
-//! @todo qt
-//BEGIN_MESSAGE_MAP( RDOEditorBaseEdit, RDOBaseEdit )
-//	ON_WM_CREATE()
-//END_MESSAGE_MAP()
-
 RDOEditorBaseEdit::RDOEditorBaseEdit(PTR(QWidget) pParent):
 	RDOBaseEdit(pParent),
 	kw0( "$Activities?0 $Back_picture?0 $Body?0 $Changes?0 $Compare_tops?0 $Condition?0 \
