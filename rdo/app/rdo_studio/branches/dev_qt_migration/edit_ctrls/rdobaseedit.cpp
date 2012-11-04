@@ -129,8 +129,6 @@ static const UINT FIND_REPLASE_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 //
 //END_MESSAGE_MAP()
 
-rbool RDOBaseEdit::initLexer = false;
-
 RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent):
 	ScintillaEditBase(pParent),
 	GUI_ID_EDIT_UNDO( false ),
@@ -153,12 +151,6 @@ RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent):
 	QObject::connect(this, SIGNAL(needShown(int, int)), this, SLOT(catchNeedShown(int, int)));
 	QObject::connect(this, SIGNAL(charAdded(int)), this, SLOT(catchCharAdded(int)));
 	QObject::connect(this, SIGNAL(updateUi()), this, SLOT(catchUpdateUi()));
-
-	if (!initLexer)
-	{
-		Scintilla_LinkLexers();
-		initLexer = true;
-	}
 
 	sci_MARKER_BOOKMARK = getNewMarker();
 

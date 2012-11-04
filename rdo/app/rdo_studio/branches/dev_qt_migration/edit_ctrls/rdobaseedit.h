@@ -60,8 +60,6 @@ class RDOBaseEdit: public ScintillaEditBase
 {
 	Q_OBJECT
 private:
-	static rbool initLexer;
-
 	int markerCount;
 
 protected:
