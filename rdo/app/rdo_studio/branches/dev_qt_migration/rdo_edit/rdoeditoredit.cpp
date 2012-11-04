@@ -39,21 +39,21 @@ using namespace rdoEditCtrl;
 class RDOEditorEditBufferDlg: public CDialog
 {
 protected:
-	virtual void DoDataExchange( CDataExchange* pDX );
+	virtual void DoDataExchange(CDataExchange* pDX);
 
 public:
 	CString bufName;
 	CString bufValue;
 
-	RDOEditorEditBufferDlg( CString _bufName, CString _bufValue ): CDialog( IDD_BUFFER ), bufName( _bufName ), bufValue( _bufValue ) {};
+	RDOEditorEditBufferDlg(CString _bufName, CString _bufValue): CDialog(IDD_BUFFER), bufName(_bufName), bufValue(_bufValue) {};
 };
 
-void RDOEditorEditBufferDlg::DoDataExchange( CDataExchange* pDX )
+void RDOEditorEditBufferDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange( pDX );
+	CDialog::DoDataExchange(pDX);
 
-	DDX_Text( pDX, IDC_BUFFERVALUESTATIC, bufName );
-	DDX_Text( pDX, IDC_BUFFERVALUEEDIT, bufValue );
+	DDX_Text(pDX, IDC_BUFFERVALUESTATIC, bufName);
+	DDX_Text(pDX, IDC_BUFFERVALUEEDIT, bufValue);
 }
 
 // --------------------------------------------------------------------------------
@@ -123,19 +123,19 @@ RDOEditorEdit::RDOEditorEdit(PTR(QWidget) pParent, PTR(RDOStudioEditBaseView) pV
 	sci_FOLDMARGIN_ID = getNewMarker();
 	sci_MARKER_ERROR  = getNewMarker();
 
-	sendEditor( SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT | SC_MOD_CHANGEFOLD );
+	sendEditor(SCI_SETMODEVENTMASK, SC_MOD_INSERTTEXT | SC_MOD_DELETETEXT | SC_MOD_CHANGEFOLD);
 
-	sendEditor( SCI_SETMARGINTYPEN     , sci_FOLDMARGIN_ID, SC_MARGIN_SYMBOL );
-	sendEditor( SCI_SETFOLDFLAGS, 16 );
-	sendEditor( SCI_SETMARGINMASKN     , sci_FOLDMARGIN_ID, SC_MASK_FOLDERS );
-	sendEditor( SCI_SETMARGINSENSITIVEN, sci_FOLDMARGIN_ID, 1 );
+	sendEditor(SCI_SETMARGINTYPEN     , sci_FOLDMARGIN_ID, SC_MARGIN_SYMBOL);
+	sendEditor(SCI_SETFOLDFLAGS, 16);
+	sendEditor(SCI_SETMARGINMASKN     , sci_FOLDMARGIN_ID, SC_MASK_FOLDERS);
+	sendEditor(SCI_SETMARGINSENSITIVEN, sci_FOLDMARGIN_ID, 1);
 
-	sendEditor( SCI_AUTOCSETIGNORECASE    , 1 );
-	sendEditor( SCI_AUTOCSETCHOOSESINGLE  , 0 );
-	sendEditor( SCI_AUTOCSETDROPRESTOFWORD, true );
-	sendEditor( SCI_AUTOCSETCANCELATSTART , false );
-	sendEditor( SCI_AUTOCSETAUTOHIDE      , false );
-	sendEditor( SCI_AUTOCSTOPS            , 0, reinterpret_cast<long>("+-*/:[](),<>=.") );
+	sendEditor(SCI_AUTOCSETIGNORECASE    , 1);
+	sendEditor(SCI_AUTOCSETCHOOSESINGLE  , 0);
+	sendEditor(SCI_AUTOCSETDROPRESTOFWORD, true );
+	sendEditor(SCI_AUTOCSETCANCELATSTART , false);
+	sendEditor(SCI_AUTOCSETAUTOHIDE      , false);
+	sendEditor(SCI_AUTOCSTOPS            , 0, reinterpret_cast<long>("+-*/:[](),<>=."));
 
 	QObject::connect(this, SIGNAL(ScintillaEditBase::key()), this, SLOT(catchBufferKey()));
 	QObject::connect(this, SIGNAL(ScintillaEditBase::modified(int, int, int, int, const QByteArray&, int, int, int)), this, SLOT(catchModified(int, int, int, int, const QByteArray&, int, int, int)));
@@ -143,9 +143,12 @@ RDOEditorEdit::RDOEditorEdit(PTR(QWidget) pParent, PTR(RDOStudioEditBaseView) pV
 	QObject::connect(this, SIGNAL(ScintillaEditBase::charAdded()), this, SLOT(catchCharAdded()));
 }
 
+RDOEditorEdit::~RDOEditorEdit()
+{}
+
 void RDOEditorEdit::catchBufferKey(int ch)
 {
-	if ( view )
+	if (view)
 	{
 		view->m_bufferList.find(view->m_currentBuffer)->second.value += static_cast<char>(ch);
 	}
@@ -169,27 +172,27 @@ void RDOEditorEdit::catchModified(int modificationType, int position, int length
 	UNUSED(bytes     );
 
 	bufSelStart = -1;
-	if ( modificationType & SC_MOD_CHANGEFOLD ) {
-		foldChanged( line, foldLevelNow, foldLevelPrev );
+	if (modificationType & SC_MOD_CHANGEFOLD)
+	{
+		foldChanged(line, foldLevelNow, foldLevelPrev);
 	}
-	if ( canClearErrorLine && hasErrorLine() ) clearErrorLine();
-
+	if (canClearErrorLine && hasErrorLine())
+	{
+		clearErrorLine();
+	}
 }
 
 void RDOEditorEdit::catchMarginClick(int margin, int position, int modifiers)
 {
-	if ( margin == sci_FOLDMARGIN_ID ) {
-	foldMarginClick( position, modifiers );
+	if (margin == sci_FOLDMARGIN_ID)
+	{
+		foldMarginClick(position, modifiers);
 	}
 }
 
 void RDOEditorEdit::catchCharAdded()
 {
 	bufSelStart = -1;
-}
-
-RDOEditorEdit::~RDOEditorEdit()
-{
 }
 
 void RDOEditorEdit::setEditorStyle(PTR(RDOEditorEditStyle) pStyle)
@@ -203,86 +206,93 @@ void RDOEditorEdit::setEditorStyle(PTR(RDOEditorEditStyle) pStyle)
 	RDOEditorEditTheme* theme = static_cast<RDOEditorEditTheme*>(style->theme);
 	COLORREF foldFgColor = theme->foldFgColor;
 	COLORREF foldBgColor = theme->foldBgColor;
-	switch ( theme->foldStyle ) {
-		case RDOFOLDS_NONE:
-			defineMarker( SC_MARKNUM_FOLDEROPEN   , SC_MARK_EMPTY, foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDER       , SC_MARK_EMPTY, foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERSUB    , SC_MARK_EMPTY, foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERTAIL   , SC_MARK_EMPTY, foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDEREND    , SC_MARK_EMPTY, foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY, foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_EMPTY, foldFgColor, foldBgColor );
-			break;
-		case RDOFOLDS_PLUS:
-			defineMarker( SC_MARKNUM_FOLDEROPEN   , SC_MARK_MINUS, foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDER       , SC_MARK_PLUS , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERSUB    , SC_MARK_EMPTY, foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERTAIL   , SC_MARK_EMPTY, foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDEREND    , SC_MARK_EMPTY, foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY, foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_EMPTY, foldFgColor, foldBgColor );
-			break;
-		case RDOFOLDS_PLUSCONNECTED:
-			defineMarker( SC_MARKNUM_FOLDEROPEN   , SC_MARK_MINUS  , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDER       , SC_MARK_PLUS   , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERSUB    , SC_MARK_VLINE  , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERTAIL   , SC_MARK_LCORNER, foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDEREND    , SC_MARK_EMPTY  , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY  , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_LCORNER, foldFgColor, foldBgColor );
-			break;
-		case RDOFOLDS_ARROW:
-			defineMarker( SC_MARKNUM_FOLDEROPEN   , SC_MARK_ARROWDOWN, foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDER       , SC_MARK_ARROW    , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERSUB    , SC_MARK_EMPTY    , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERTAIL   , SC_MARK_EMPTY    , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDEREND    , SC_MARK_EMPTY    , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY    , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_EMPTY    , foldFgColor, foldBgColor );
-			break;
-		case RDOFOLDS_ARROWCONNECTED:
-			defineMarker( SC_MARKNUM_FOLDEROPEN   , SC_MARK_ARROWDOWN, foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDER       , SC_MARK_ARROW    , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERSUB    , SC_MARK_VLINE    , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERTAIL   , SC_MARK_LCORNER  , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDEREND    , SC_MARK_EMPTY    , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY    , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_LCORNER  , foldFgColor, foldBgColor );
-			break;
-		case RDOFOLDS_BOXCONNECTED:
-			defineMarker( SC_MARKNUM_FOLDEROPEN   , SC_MARK_BOXMINUS, foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDER       , SC_MARK_BOXPLUS , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERSUB    , SC_MARK_VLINE   , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERTAIL   , SC_MARK_LCORNER , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDEREND    , SC_MARK_EMPTY   , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY   , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_LCORNER , foldFgColor, foldBgColor );
-			break;
-		case RDOFOLDS_CIRCLECONNECTED:
-			defineMarker( SC_MARKNUM_FOLDEROPEN   , SC_MARK_CIRCLEMINUS, foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDER       , SC_MARK_CIRCLEPLUS , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERSUB    , SC_MARK_VLINE      , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERTAIL   , SC_MARK_LCORNER    , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDEREND    , SC_MARK_EMPTY      , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY      , foldFgColor, foldBgColor );
-			defineMarker( SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_LCORNER    , foldFgColor, foldBgColor );
-			break;
+	switch (theme->foldStyle)
+	{
+	case RDOFOLDS_NONE:
+		defineMarker(SC_MARKNUM_FOLDEROPEN   , SC_MARK_EMPTY, foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDER       , SC_MARK_EMPTY, foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDERSUB    , SC_MARK_EMPTY, foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDERTAIL   , SC_MARK_EMPTY, foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDEREND    , SC_MARK_EMPTY, foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY, foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_EMPTY, foldFgColor, foldBgColor);
+		break;
+
+	case RDOFOLDS_PLUS:
+		defineMarker(SC_MARKNUM_FOLDEROPEN   , SC_MARK_MINUS, foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDER       , SC_MARK_PLUS , foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDERSUB    , SC_MARK_EMPTY, foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDERTAIL   , SC_MARK_EMPTY, foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDEREND    , SC_MARK_EMPTY, foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY, foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_EMPTY, foldFgColor, foldBgColor);
+		break;
+
+	case RDOFOLDS_PLUSCONNECTED:
+		defineMarker(SC_MARKNUM_FOLDEROPEN   , SC_MARK_MINUS  , foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDER       , SC_MARK_PLUS   , foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDERSUB    , SC_MARK_VLINE  , foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDERTAIL   , SC_MARK_LCORNER, foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDEREND    , SC_MARK_EMPTY  , foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY  , foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_LCORNER, foldFgColor, foldBgColor);
+		break;
+
+	case RDOFOLDS_ARROW:
+		defineMarker(SC_MARKNUM_FOLDEROPEN   , SC_MARK_ARROWDOWN, foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDER       , SC_MARK_ARROW    , foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDERSUB    , SC_MARK_EMPTY    , foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDERTAIL   , SC_MARK_EMPTY    , foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDEREND    , SC_MARK_EMPTY    , foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY    , foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_EMPTY    , foldFgColor, foldBgColor);
+		break;
+
+	case RDOFOLDS_ARROWCONNECTED:
+		defineMarker(SC_MARKNUM_FOLDEROPEN   , SC_MARK_ARROWDOWN, foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDER       , SC_MARK_ARROW    , foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDERSUB    , SC_MARK_VLINE    , foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDERTAIL   , SC_MARK_LCORNER  , foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDEREND    , SC_MARK_EMPTY    , foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY    , foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_LCORNER  , foldFgColor, foldBgColor);
+		break;
+
+	case RDOFOLDS_BOXCONNECTED:
+		defineMarker(SC_MARKNUM_FOLDEROPEN   , SC_MARK_BOXMINUS, foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDER       , SC_MARK_BOXPLUS , foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDERSUB    , SC_MARK_VLINE   , foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDERTAIL   , SC_MARK_LCORNER , foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDEREND    , SC_MARK_EMPTY   , foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY   , foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_LCORNER , foldFgColor, foldBgColor);
+		break;
+
+	case RDOFOLDS_CIRCLECONNECTED:
+		defineMarker(SC_MARKNUM_FOLDEROPEN   , SC_MARK_CIRCLEMINUS, foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDER       , SC_MARK_CIRCLEPLUS , foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDERSUB    , SC_MARK_VLINE      , foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDERTAIL   , SC_MARK_LCORNER    , foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDEREND    , SC_MARK_EMPTY      , foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDEROPENMID, SC_MARK_EMPTY      , foldFgColor, foldBgColor);
+		defineMarker(SC_MARKNUM_FOLDERMIDTAIL, SC_MARK_LCORNER    , foldFgColor, foldBgColor);
+		break;
 	}
-	tstring cf_prop( "CommentFold" );
-	tstring cf_val_1( "1" );
-	tstring cf_val_0( "0" );
-	sendEditorString( SCI_SETPROPERTY, reinterpret_cast<unsigned long>(cf_prop.c_str()), theme->commentFold ? cf_val_1.c_str() : cf_val_0.c_str() );
-	sendEditor( SCI_COLOURISE, 0, -1 );
+	tstring cf_prop("CommentFold");
+	tstring cf_val_1("1");
+	tstring cf_val_0("0");
+	sendEditorString(SCI_SETPROPERTY, reinterpret_cast<unsigned long>(cf_prop.c_str()), theme->commentFold ? cf_val_1.c_str() : cf_val_0.c_str());
+	sendEditor(SCI_COLOURISE, 0, -1);
 
 	// ----------
 	// Margin
-	sendEditor( SCI_SETMARGINWIDTHN, 2, static_cast<RDOEditorEditStyle*>(style)->margin->fold ? 16 : 0 );
-	sendEditor( SCI_SETMARGINWIDTHN, 1, static_cast<RDOEditorEditStyle*>(style)->margin->bookmark ? 16 : 0 );
-	sendEditor( SCI_SETMARGINWIDTHN, 0, static_cast<RDOEditorEditStyle*>(style)->margin->lineNumber ? 40 : 0 );
+	sendEditor(SCI_SETMARGINWIDTHN, 2, static_cast<RDOEditorEditStyle*>(style)->margin->fold ? 16 : 0);
+	sendEditor(SCI_SETMARGINWIDTHN, 1, static_cast<RDOEditorEditStyle*>(style)->margin->bookmark ? 16 : 0);
+	sendEditor(SCI_SETMARGINWIDTHN, 0, static_cast<RDOEditorEditStyle*>(style)->margin->lineNumber ? 40 : 0);
 
 	// ----------
 	// Error
-	defineMarker( sci_MARKER_ERROR, SC_MARK_BACKGROUND, RGB( 0xFF, 0xFF, 0xFF ), static_cast<RDOEditorEditTheme*>(style->theme)->errorBgColor );
+	defineMarker(sci_MARKER_ERROR, SC_MARK_BACKGROUND, RGB(0xFF, 0xFF, 0xFF), static_cast<RDOEditorEditTheme*>(style->theme)->errorBgColor);
 }
 
 void RDOEditorEdit::OnEditCommentSelection() 
@@ -295,115 +305,168 @@ void RDOEditorEdit::OnEditCompleteWord()
 	completeWord();
 }
 
-void RDOEditorEdit::expand( int& line, rbool doExpand, rbool force, int visLevels, int level ) const
+void RDOEditorEdit::expand(int& line, rbool doExpand, rbool force, int visLevels, int level) const
 {
-	int lineMaxSubord = sendEditor( SCI_GETLASTCHILD, line, level & SC_FOLDLEVELNUMBERMASK );
+	int lineMaxSubord = sendEditor(SCI_GETLASTCHILD, line, level & SC_FOLDLEVELNUMBERMASK);
 	line++;
-	while ( line <= lineMaxSubord ) {
-		if ( force ) {
-			if ( visLevels > 0 )
-				sendEditor( SCI_SHOWLINES, line, line );
-			else
-				sendEditor( SCI_HIDELINES, line, line );
-		} else {
-			if ( doExpand ) sendEditor( SCI_SHOWLINES, line, line );
+	while (line <= lineMaxSubord)
+	{
+		if (force)
+		{
+			sendEditor(
+				visLevels > 0
+					? SCI_SHOWLINES
+					: SCI_HIDELINES,
+				line,
+				line
+			);
+		}
+		else
+		{
+			if (doExpand)
+			{
+				sendEditor(SCI_SHOWLINES, line, line);
+			}
 		}
 		int levelLine = level;
-		if ( levelLine == -1 ) levelLine = sendEditor( SCI_GETFOLDLEVEL, line );
-		if ( levelLine & SC_FOLDLEVELHEADERFLAG ) {
-			if ( force ) {
-				if ( visLevels > 1 )
-					sendEditor( SCI_SETFOLDEXPANDED, line, 1 );
+		if (levelLine == -1)
+		{
+			levelLine = sendEditor(SCI_GETFOLDLEVEL, line);
+		}
+		if (levelLine & SC_FOLDLEVELHEADERFLAG)
+		{
+			if (force)
+			{
+				sendEditor(
+					SCI_SETFOLDEXPANDED,
+					line,
+					visLevels > 1
+						? 1
+						: 0
+				);
+				expand(line, doExpand, force, visLevels - 1);
+			}
+			else
+			{
+				if (doExpand)
+				{
+					if (!sendEditor(SCI_GETFOLDEXPANDED, line))
+					{
+						sendEditor(SCI_SETFOLDEXPANDED, line, 1);
+					}
+					expand(line, true, force, visLevels - 1);
+				}
 				else
-					sendEditor( SCI_SETFOLDEXPANDED, line, 0 );
-				expand( line, doExpand, force, visLevels - 1 );
-			} else {
-				if ( doExpand ) {
-					if ( !sendEditor(SCI_GETFOLDEXPANDED, line) ) sendEditor( SCI_SETFOLDEXPANDED, line, 1 );
-					expand( line, true, force, visLevels - 1 );
-				} else {
-					expand( line, false, force, visLevels - 1 );
+				{
+					expand(line, false, force, visLevels - 1);
 				}
 			}
-		} else {
+		}
+		else
+		{
 			line++;
 		}
 	}
 }
 
-void RDOEditorEdit::foldChanged( int line, int levelNow, int levelPrev ) const
+void RDOEditorEdit::foldChanged(int line, int levelNow, int levelPrev) const
 {
-	if ( levelNow & SC_FOLDLEVELHEADERFLAG ) {
-		if ( !(levelPrev & SC_FOLDLEVELHEADERFLAG) ) {
-			sendEditor( SCI_SETFOLDEXPANDED, line, 1 );
+	if (levelNow & SC_FOLDLEVELHEADERFLAG)
+	{
+		if (!(levelPrev & SC_FOLDLEVELHEADERFLAG))
+		{
+			sendEditor(SCI_SETFOLDEXPANDED, line, 1);
 		}
-	} else if ( levelPrev & SC_FOLDLEVELHEADERFLAG ) {
-		if ( !sendEditor( SCI_GETFOLDEXPANDED, line ) ) {
-			expand( line, true, false, 0, levelPrev );
+	}
+	else if (levelPrev & SC_FOLDLEVELHEADERFLAG)
+	{
+		if (!sendEditor(SCI_GETFOLDEXPANDED, line))
+		{
+			expand(line, true, false, 0, levelPrev);
 		}
 	}
 }
 
 void RDOEditorEdit::toggleCurrentFold() const
 {
-	sendEditor( SCI_TOGGLEFOLD, getCurrentLineNumber() );
+	sendEditor(SCI_TOGGLEFOLD, getCurrentLineNumber());
 }
 
 void RDOEditorEdit::toggleAllFolds() const
 {
-	sendEditor( SCI_COLOURISE, 0, -1 );
+	sendEditor(SCI_COLOURISE, 0, -1);
 	int maxLine = getLineCount();
 	rbool expanding = true;
-	for ( int lineSeek = 0; lineSeek < maxLine; lineSeek++ ) {
-		if ( sendEditor(SCI_GETFOLDLEVEL, lineSeek) & SC_FOLDLEVELHEADERFLAG ) {
-			expanding = !sendEditor( SCI_GETFOLDEXPANDED, lineSeek );
+	for (int lineSeek = 0; lineSeek < maxLine; lineSeek++)
+	{
+		if (sendEditor(SCI_GETFOLDLEVEL, lineSeek) & SC_FOLDLEVELHEADERFLAG)
+		{
+			expanding = !sendEditor(SCI_GETFOLDEXPANDED, lineSeek);
 			break;
 		}
 	}
-	for ( int line = 0; line < maxLine; line++ ) {
+	for (int line = 0; line < maxLine; line++)
+	{
 		int level = sendEditor(SCI_GETFOLDLEVEL, line);
-		if ( (level & SC_FOLDLEVELHEADERFLAG) &&
-		     (SC_FOLDLEVELBASE == (level & SC_FOLDLEVELNUMBERMASK)) ) {
-			if ( expanding ) {
-				sendEditor( SCI_SETFOLDEXPANDED, line, 1 );
-				expand( line, true, false, 0, level );
+		if ((level & SC_FOLDLEVELHEADERFLAG) &&
+		    (SC_FOLDLEVELBASE == (level & SC_FOLDLEVELNUMBERMASK)))
+		{
+			if (expanding)
+			{
+				sendEditor(SCI_SETFOLDEXPANDED, line, 1);
+				expand(line, true, false, 0, level);
 				line--;
-			} else {
-				int lineMaxSubord = sendEditor( SCI_GETLASTCHILD, line, -1 );
-				sendEditor( SCI_SETFOLDEXPANDED, line, 0 );
-				if ( lineMaxSubord > line ) {
-					sendEditor( SCI_HIDELINES, line + 1, lineMaxSubord );
+			}
+			else
+			{
+				int lineMaxSubord = sendEditor(SCI_GETLASTCHILD, line, -1);
+				sendEditor(SCI_SETFOLDEXPANDED, line, 0);
+				if (lineMaxSubord > line)
+				{
+					sendEditor(SCI_HIDELINES, line + 1, lineMaxSubord);
 				}
 			}
 		}
 	}
 }
 
-void RDOEditorEdit::foldMarginClick( int position, int modifiers ) const
+void RDOEditorEdit::foldMarginClick(int position, int modifiers) const
 {
-	int lineClick = getLineFromPosition( position );
-	if ( (modifiers & SCMOD_SHIFT) && (modifiers & SCMOD_CTRL) ) {
+	int lineClick = getLineFromPosition(position);
+	if ((modifiers & SCMOD_SHIFT) && (modifiers & SCMOD_CTRL))
+	{
 		toggleAllFolds();
-	} else {
-		int levelClick = sendEditor( SCI_GETFOLDLEVEL, lineClick );
-		if ( levelClick & SC_FOLDLEVELHEADERFLAG ) {
-			if ( modifiers & SCMOD_SHIFT ) {
+	}
+	else
+	{
+		int levelClick = sendEditor(SCI_GETFOLDLEVEL, lineClick);
+		if (levelClick & SC_FOLDLEVELHEADERFLAG)
+		{
+			if (modifiers & SCMOD_SHIFT)
+			{
 				// Ensure all children visible
-				sendEditor( SCI_SETFOLDEXPANDED, lineClick, 1 );
-				expand( lineClick, true, true, 100, levelClick );
-			} else if ( modifiers & SCMOD_CTRL ) {
-				if ( sendEditor(SCI_GETFOLDEXPANDED, lineClick) ) {
+				sendEditor(SCI_SETFOLDEXPANDED, lineClick, 1);
+				expand(lineClick, true, true, 100, levelClick);
+			}
+			else if (modifiers & SCMOD_CTRL)
+			{
+				if (sendEditor(SCI_GETFOLDEXPANDED, lineClick))
+				{
 					// Contract this line and all children
-					sendEditor( SCI_SETFOLDEXPANDED, lineClick, 0 );
-					expand( lineClick, false, true, 0, levelClick );
-				} else {
-					// Expand this line and all children
-					sendEditor( SCI_SETFOLDEXPANDED, lineClick, 1 );
-					expand( lineClick, true, true, 100, levelClick );
+					sendEditor(SCI_SETFOLDEXPANDED, lineClick, 0);
+					expand(lineClick, false, true, 0, levelClick);
 				}
-			} else {
+				else
+				{
+					// Expand this line and all children
+					sendEditor(SCI_SETFOLDEXPANDED, lineClick, 1);
+					expand(lineClick, true, true, 100, levelClick);
+				}
+			}
+			else
+			{
 				// Toggle this line
-				sendEditor( SCI_TOGGLEFOLD, lineClick );
+				sendEditor(SCI_TOGGLEFOLD, lineClick);
 			}
 		}
 	}
@@ -421,30 +484,34 @@ void RDOEditorEdit::OnToggleAllFolds()
 
 void RDOEditorEdit::OnUpdateFold(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable( !GUI_IS_EMPTY );
+	pCmdUI->Enable(!GUI_IS_EMPTY);
 }
 
 void RDOEditorEdit::commentSelection() const
 {
-	if ( GUI_IS_SELECTED ) {
-		tstring startComment( "/*" );
-		tstring endComment( "*/" );
+	if (GUI_IS_SELECTED)
+	{
+		tstring startComment("/*");
+		tstring endComment("*/");
 		int startCommentLength = startComment.length();
 		CharacterRange cr = getSelectionRange();
 		int caretPosition = getCurrentPos();
-		rbool moveCaret = caretPosition < cr.cpMax;
-		sendEditor( SCI_BEGINUNDOACTION );
-		sendEditorString( SCI_INSERTTEXT, cr.cpMin, startComment.c_str() );
+		rbool moveCaret   = caretPosition < cr.cpMax;
+		sendEditor(SCI_BEGINUNDOACTION);
+		sendEditorString(SCI_INSERTTEXT, cr.cpMin, startComment.c_str());
 		cr.cpMax += startCommentLength;
 		cr.cpMin += startCommentLength;
-		sendEditorString( SCI_INSERTTEXT, cr.cpMax, endComment.c_str() );
-		if ( moveCaret ) {
-			sendEditor( SCI_GOTOPOS      , cr.cpMax );
-			sendEditor( SCI_SETCURRENTPOS, cr.cpMin );
-		} else {
-			setSelection( cr.cpMin, cr.cpMax );
+		sendEditorString(SCI_INSERTTEXT, cr.cpMax, endComment.c_str());
+		if (moveCaret)
+		{
+			sendEditor(SCI_GOTOPOS,       cr.cpMax);
+			sendEditor(SCI_SETCURRENTPOS, cr.cpMin);
 		}
-		sendEditor( SCI_ENDUNDOACTION );
+		else
+		{
+			setSelection(cr.cpMin, cr.cpMax);
+		}
+		sendEditor(SCI_ENDUNDOACTION);
 	}
 }
 
@@ -454,10 +521,9 @@ void RDOEditorEdit::completeWord()
 		return;
 
 	tstring primaryKwList;
-	RDOEditorTabCtrl* tab = model->getTab();
-	if (tab)
+	if (model->getTab())
 	{
-		//studioApp.m_pStudioGUI->sendMessage( kernel->simulator(), RDOThread::RT_CODECOMP_GET_DATA, &rdo::service::simulation::RDOThreadCodeComp::GetCodeComp( tab->getCurrentRDOItem(), getCurrentPos(), getCurrentLineNumber(), primaryKwList ) );
+		//studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_CODECOMP_GET_DATA, &rdo::service::simulation::RDOThreadCodeComp::GetCodeComp(tab->getCurrentRDOItem(), getCurrentPos(), getCurrentLineNumber(), primaryKwList));
 
 		rdo::service::simulation::RDOThreadSimulator::GetRTP RTPList;
 		studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_CORBA_PARSER_GET_RTP, &RTPList);
@@ -492,17 +558,19 @@ void RDOEditorEdit::completeWord()
 
 	WordListUtil getList(fullWordList);
 	string_list basicList = getList.getNearestWords(tstring());
-	for(string_list::const_iterator it = basicList.begin(); it != basicList.end(); ++it)
+	for (string_list::const_iterator it = basicList.begin(); it != basicList.end(); ++it)
 	{
 		primaryKwList += *it;
 		if (it != basicList.end() - 1)
+		{
 			primaryKwList += " ";
+		}
 	}
 	char currentLine[8000];
 	int line = getCurrentLineNumber();
-	sendEditor( SCI_GETLINE, line, reinterpret_cast<long>(currentLine) );
+	sendEditor(SCI_GETLINE, line, reinterpret_cast<long>(currentLine));
 
-	int currentPos = getCurrentPos() - getPositionFromLine( line );
+	int currentPos = getCurrentPos() - getPositionFromLine(line);
 
 	int startPos = currentPos;
 
@@ -515,19 +583,23 @@ void RDOEditorEdit::completeWord()
 	unsigned int userPatternLength = currentPos - startPos;
 
 	string_list prioritySortedKwList = getList.getNearestWords(userPattern);
-	if(prioritySortedKwList.empty())
+	if (prioritySortedKwList.empty())
+	{
 		prioritySortedKwList = basicList;
+	}
 
 	string_list::const_iterator it = prioritySortedKwList.begin();
 	tstring stWord = *it;
 	std::sort(prioritySortedKwList.begin(), prioritySortedKwList.end());
 
 	tstring foundKeyWords = "";
-	for(string_list::const_iterator it = prioritySortedKwList.begin(); it != prioritySortedKwList.end(); ++it) 
+	for (string_list::const_iterator it = prioritySortedKwList.begin(); it != prioritySortedKwList.end(); ++it) 
 	{
 		foundKeyWords += (*it);
 		if (it != prioritySortedKwList.end() - 1)
+		{
 			foundKeyWords += " ";
+		}
 	}
 	LPCTSTR list;
 	if (static_cast<PTR(RDOEditorEditStyle)>(style)->autoComplete->showFullList)
@@ -545,8 +617,8 @@ void RDOEditorEdit::completeWord()
 
 	if (list) 
 	{
-		tstring startKeyWord           = "";
-		tstring startKeyWordScroll     = stWord;
+		tstring startKeyWord       = "";
+		tstring startKeyWordScroll = stWord;
 		rbool useReplace = false;
 		if (foundKeyWords.c_str())
 		{
@@ -587,38 +659,43 @@ void RDOEditorEdit::completeWord()
 	}
 }
 
-void RDOEditorEdit::setErrorLine( int line )
+void RDOEditorEdit::setErrorLine(int line)
 {
 	clearErrorLine();
-	if ( line == -1 ) line = getCurrentLineNumber();
-	sendEditor( SCI_MARKERADD, line, sci_MARKER_ERROR );
+	if (line == -1)
+	{
+		line = getCurrentLineNumber();
+	}
+	sendEditor(SCI_MARKERADD, line, sci_MARKER_ERROR);
 }
 
 void RDOEditorEdit::clearErrorLine()
 {
-	int nextLine = sendEditor( SCI_MARKERNEXT, 0, 1 << sci_MARKER_ERROR );
-	if ( nextLine >= 0 ) {
-		sendEditor( SCI_MARKERDELETE, nextLine, sci_MARKER_ERROR );
+	int nextLine = sendEditor(SCI_MARKERNEXT, 0, 1 << sci_MARKER_ERROR);
+	if (nextLine >= 0)
+	{
+		sendEditor(SCI_MARKERDELETE, nextLine, sci_MARKER_ERROR);
 		QWidget::update();
 	}
 }
 
 rbool RDOEditorEdit::hasErrorLine() const
 {
-	int nextLine = sendEditor( SCI_MARKERNEXT, 0, 1 << sci_MARKER_ERROR );
+	int nextLine = sendEditor(SCI_MARKERNEXT, 0, 1 << sci_MARKER_ERROR);
 	return nextLine >= 0;
 }
 
-void RDOEditorEdit::OnInsertCommand( UINT nID )
+void RDOEditorEdit::OnInsertCommand(UINT nID)
 {
 	CString s = "";
-	if ( !s.LoadString( nID ) ) {
-		AfxGetMainWnd()->GetMenu()->GetMenuString( nID, s, MF_BYCOMMAND );
+	if (!s.LoadString(nID))
+	{
+		AfxGetMainWnd()->GetMenu()->GetMenuString(nID, s, MF_BYCOMMAND);
 	}
 
 	int incPos = -1;
 
-	switch ( nID ) {
+	switch (nID) {
 		case ID_INSERT_PAT_TEMPL_OPERATION  :
 		case ID_INSERT_PAT_TEMPL_EVENT:
 		case ID_INSERT_PAT_TEMPL_KEYBOARD:
@@ -642,7 +719,7 @@ void RDOEditorEdit::OnInsertCommand( UINT nID )
 		case ID_INSERT_ALGO_IF_ELSE         : incPos = 4;  break;
 	}
 
-	replaceCurrent( static_cast<LPCTSTR>(s), incPos );
+	replaceCurrent(static_cast<LPCTSTR>(s), incPos);
 }
 
 void RDOEditorEdit::OnInsertBuffer1Paste()
@@ -681,7 +758,7 @@ void RDOEditorEdit::OnInsertBuffer4Paste()
 	}
 }
 
-void RDOEditorEdit::OnUndateBuffer1Paste( CCmdUI* pCmdUI )
+void RDOEditorEdit::OnUndateBuffer1Paste(CCmdUI* pCmdUI)
 {
 	if (!view)
 	{
@@ -692,7 +769,7 @@ void RDOEditorEdit::OnUndateBuffer1Paste( CCmdUI* pCmdUI )
 	pCmdUI->Enable(!view->m_bufferList.find(0)->second.value.empty());
 }
 
-void RDOEditorEdit::OnUndateBuffer2Paste( CCmdUI* pCmdUI )
+void RDOEditorEdit::OnUndateBuffer2Paste(CCmdUI* pCmdUI)
 {
 	if (!view)
 	{
@@ -703,7 +780,7 @@ void RDOEditorEdit::OnUndateBuffer2Paste( CCmdUI* pCmdUI )
 	pCmdUI->Enable(!view->m_bufferList.find(1)->second.value.empty());
 }
 
-void RDOEditorEdit::OnUndateBuffer3Paste( CCmdUI* pCmdUI )
+void RDOEditorEdit::OnUndateBuffer3Paste(CCmdUI* pCmdUI)
 {
 	if (!view)
 	{
@@ -714,7 +791,7 @@ void RDOEditorEdit::OnUndateBuffer3Paste( CCmdUI* pCmdUI )
 	pCmdUI->Enable(!view->m_bufferList.find(2)->second.value.empty());
 }
 
-void RDOEditorEdit::OnUndateBuffer4Paste( CCmdUI* pCmdUI )
+void RDOEditorEdit::OnUndateBuffer4Paste(CCmdUI* pCmdUI)
 {
 	if (!view)
 	{
@@ -747,12 +824,16 @@ void RDOEditorEdit::OnInsertBuffer4Append()
 
 void RDOEditorEdit::onBufferAppend(ruint bufferID)
 {
-	if ( !view ) return;
+	if (!view)
+		return;
 
 	int pos = getCurrentPos();
-	if ( pos == getLength() ) return;
+	if (pos == getLength())
+		return;
+
 	rbool canUseSelected = false;
-	if ( bufSelStart == -1 ) {
+	if (bufSelStart == -1)
+	{
 		CharacterRange cr = getSelectionRange();
 		bufSelStart       = cr.cpMin;
 		pos               = cr.cpMax;
@@ -774,30 +855,35 @@ void RDOEditorEdit::onBufferAppend(ruint bufferID)
 
 	view->restartBufTimer(bufferID);
 
-	if ( canUseSelected ) {
+	if (canUseSelected)
+	{
 		s += getSelection();
-	} else {
-		char c = static_cast<char>(sendEditor( SCI_GETCHARAT, pos ));
-		int line = getLineFromPosition( pos );
+	}
+	else
+	{
+		char c = static_cast<char>(sendEditor(SCI_GETCHARAT, pos));
+		int line = getLineFromPosition(pos);
 		s += c;
 		pos++;
-		if ( c == '\r' || c == '\n' ) {
-			while ( line == getLineFromPosition( pos ) && ( static_cast<char>(sendEditor( SCI_GETCHARAT, pos )) == '\r' || static_cast<char>(sendEditor( SCI_GETCHARAT, pos )) == '\n' ) ) {
-				s += static_cast<char>(sendEditor( SCI_GETCHARAT, pos ));
+		if (c == '\r' || c == '\n')
+		{
+			while (line == getLineFromPosition(pos) && (static_cast<char>(sendEditor(SCI_GETCHARAT, pos)) == '\r' || static_cast<char>(sendEditor(SCI_GETCHARAT, pos)) == '\n'))
+			{
+				s += static_cast<char>(sendEditor(SCI_GETCHARAT, pos));
 				pos++;
 			}
 		}
 	}
-	setCurrentPos( pos );
-	setSelection( bufSelStart, pos );
+	setCurrentPos(pos);
+	setSelection(bufSelStart, pos);
 
 	bufferIt->second.value = s;
 	view->m_currentBuffer = bufferID;
 }
 
-void RDOEditorEdit::OnUndateBufferAppend( CCmdUI* pCmdUI )
+void RDOEditorEdit::OnUndateBufferAppend(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable( view && GUI_IS_SELECTED || getCurrentPos() != getLength() );
+	pCmdUI->Enable(view && GUI_IS_SELECTED || getCurrentPos() != getLength());
 }
 
 void RDOEditorEdit::OnInsertBuffer1Edit()
@@ -822,25 +908,26 @@ void RDOEditorEdit::OnInsertBuffer4Edit()
 
 void RDOEditorEdit::onBufferEdit(ruint bufferID)
 {
-	if ( !view ) return;
+	if (!view)
+		return;
 
 	tstring bufName;
 	tstring bufValue;
 
-	bufName = rdo::format( ID_BUFFER_NAME );
+	bufName = rdo::format(ID_BUFFER_NAME);
 
 	RDOStudioEditBaseView::BufferList::iterator bufferIt = view->m_bufferList.find(bufferID);
 	ASSERT(bufferIt != view->m_bufferList.end());
 
 	bufName = rdo::format(" %d:%s", bufferID + 1, bufferIt->second.value.c_str());
 
-	if ( bufValue.empty() )
+	if (bufValue.empty())
 	{
 		bufValue = getCurrentOrSelectedWord();
 	}
-	RDOEditorEditBufferDlg dlg( bufName.c_str(), bufValue.c_str() );
+	RDOEditorEditBufferDlg dlg(bufName.c_str(), bufValue.c_str());
 
-	if ( dlg.DoModal() == IDOK )
+	if (dlg.DoModal() == IDOK)
 	{
 		bufferIt->second.value = dlg.bufValue;
 		view->m_currentBuffer = bufferID;
@@ -849,7 +936,7 @@ void RDOEditorEdit::onBufferEdit(ruint bufferID)
 
 void RDOEditorEdit::OnUpdateInsertBufferEdit(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable( view != NULL );
+	pCmdUI->Enable(view != NULL);
 }
 
 void RDOEditorEdit::OnInsertBuffer1Clear()
@@ -888,7 +975,7 @@ void RDOEditorEdit::OnInsertBuffer4Clear()
 	}
 }
 
-void RDOEditorEdit::OnUndateBuffer1Clear( CCmdUI* pCmdUI )
+void RDOEditorEdit::OnUndateBuffer1Clear(CCmdUI* pCmdUI)
 {
 	if (!view)
 	{
@@ -899,7 +986,7 @@ void RDOEditorEdit::OnUndateBuffer1Clear( CCmdUI* pCmdUI )
 	pCmdUI->Enable(!view->m_bufferList.find(0)->second.value.empty());
 }
 
-void RDOEditorEdit::OnUndateBuffer2Clear( CCmdUI* pCmdUI )
+void RDOEditorEdit::OnUndateBuffer2Clear(CCmdUI* pCmdUI)
 {
 	if (!view)
 	{
@@ -910,7 +997,7 @@ void RDOEditorEdit::OnUndateBuffer2Clear( CCmdUI* pCmdUI )
 	pCmdUI->Enable(!view->m_bufferList.find(0)->second.value.empty());
 }
 
-void RDOEditorEdit::OnUndateBuffer3Clear( CCmdUI* pCmdUI )
+void RDOEditorEdit::OnUndateBuffer3Clear(CCmdUI* pCmdUI)
 {
 	if (!view)
 	{
@@ -921,7 +1008,7 @@ void RDOEditorEdit::OnUndateBuffer3Clear( CCmdUI* pCmdUI )
 	pCmdUI->Enable(!view->m_bufferList.find(2)->second.value.empty());
 }
 
-void RDOEditorEdit::OnUndateBuffer4Clear( CCmdUI* pCmdUI )
+void RDOEditorEdit::OnUndateBuffer4Clear(CCmdUI* pCmdUI)
 {
 	if (!view)
 	{
@@ -960,12 +1047,12 @@ void RDOEditorEdit::OnGotoPrev()
 
 void RDOEditorEdit::OnUpdateGotoNext(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable( log ? true : false );
+	pCmdUI->Enable(log ? true : false);
 }
 
 void RDOEditorEdit::OnUpdateGotoPrev(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable( log ? true : false );
+	pCmdUI->Enable(log ? true : false);
 }
 
 void RDOEditorEdit::OnHelpKeyword()
@@ -973,21 +1060,24 @@ void RDOEditorEdit::OnHelpKeyword()
 	tstring keyword = getCurrentOrSelectedWord();
 	tstring s = getAllKW();
 
-	if ( s.find_first_of( keyword ) == tstring::npos || keyword.empty() ) {
+	if (s.find_first_of(keyword) == tstring::npos || keyword.empty())
+	{
 		RDOEditorTabCtrl* tab = model->getTab();
-		if ( tab ) {
-			switch( tab->getCurrentRDOItem() ) {
-				case rdoModelObjects::RTP: keyword = "rtp"; break;
-				case rdoModelObjects::RSS: keyword = "rss"; break;
-				case rdoModelObjects::EVN: keyword = "evn"; break;
-				case rdoModelObjects::PAT: keyword = "pat"; break;
-				case rdoModelObjects::DPT: keyword = "dpt"; break;
-				case rdoModelObjects::PRC: keyword = "prc"; break;
-				case rdoModelObjects::FRM: keyword = "frm"; break;
-				case rdoModelObjects::FUN: keyword = "fun"; break;
-				case rdoModelObjects::SMR: keyword = "smr"; break;
-				case rdoModelObjects::PMD: keyword = "pmd"; break;
-				default:                   keyword = ""; break;
+		if (tab)
+		{
+			switch(tab->getCurrentRDOItem())
+			{
+			case rdoModelObjects::RTP: keyword = "rtp"; break;
+			case rdoModelObjects::RSS: keyword = "rss"; break;
+			case rdoModelObjects::EVN: keyword = "evn"; break;
+			case rdoModelObjects::PAT: keyword = "pat"; break;
+			case rdoModelObjects::DPT: keyword = "dpt"; break;
+			case rdoModelObjects::PRC: keyword = "prc"; break;
+			case rdoModelObjects::FRM: keyword = "frm"; break;
+			case rdoModelObjects::FUN: keyword = "fun"; break;
+			case rdoModelObjects::SMR: keyword = "smr"; break;
+			case rdoModelObjects::PMD: keyword = "pmd"; break;
+			default:                   keyword = ""; break;
 			}
 		}
 	}
