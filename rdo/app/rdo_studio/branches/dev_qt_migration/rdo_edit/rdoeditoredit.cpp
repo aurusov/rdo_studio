@@ -192,58 +192,6 @@ RDOEditorEdit::~RDOEditorEdit()
 {
 }
 
-//BOOL RDOEditorEdit::OnNotify( WPARAM wParam, LPARAM lParam, LRESULT* pResult )
-//{
-////	TRACE( "N. %d, %d, %d, %d\n", ::GetCurrentProcess(), ::GetCurrentProcessId(), ::GetCurrentThread(), ::GetCurrentThreadId() );
-//
-//	SCNotification* scn = reinterpret_cast<SCNotification*>(lParam);
-//
-//	if ( !RDOEditorBaseEdit::OnNotify( wParam, lParam, pResult ) || ( scn->nmhdr.hwndFrom == sciHWND && scn->nmhdr.code == SCN_CHARADDED ) ) {
-//
-//		if ( scn->nmhdr.hwndFrom == sciHWND ) {
-//			switch( scn->nmhdr.code ) {
-//				case SCN_RDO_BUFFERKEY: {
-//					if ( view )
-//					{
-//						view->m_bufferList.find(view->m_currentBuffer)->second.value += static_cast<char>(scn->ch);
-//					}
-//					return TRUE;
-//				}
-//				case SCN_RDO_POSCHANGED: {
-//					bufSelStart = -1;
-//					return TRUE;
-//				}
-//				case SCN_RDO_CLICK: {
-//					bufSelStart = -1;
-//					return TRUE;
-//				}
-//				case SCN_MODIFIED: {
-//					bufSelStart = -1;
-//					if ( scn->modificationType & SC_MOD_CHANGEFOLD ) {
-//						foldChanged( scn->line, scn->foldLevelNow, scn->foldLevelPrev );
-//					}
-//					if ( canClearErrorLine && hasErrorLine() ) clearErrorLine();
-//					return TRUE;
-//				}
-//				case SCN_MARGINCLICK: {
-//					if ( scn->margin == sci_FOLDMARGIN_ID ) {
-//						foldMarginClick( scn->position, scn->modifiers );
-//						return TRUE;
-//					}
-//					break;
-//				}
-//				case SCN_CHARADDED: {
-//					bufSelStart = -1;
-//					return TRUE;
-//				}
-//			}
-//		}
-//	} else {
-//		return TRUE;
-//	}
-//	return FALSE;
-//}
-
 void RDOEditorEdit::setEditorStyle(PTR(RDOEditorEditStyle) pStyle)
 {
 	RDOEditorBaseEdit::setEditorStyle(pStyle);
