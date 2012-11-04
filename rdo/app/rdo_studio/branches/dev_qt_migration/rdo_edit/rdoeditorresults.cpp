@@ -15,7 +15,6 @@
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorresults.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/resource.h"
-#include "app/rdo_studio_mfc/htmlhelp.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
@@ -34,7 +33,6 @@ using namespace rdoEditor;
 
 //! @todo qt
 //BEGIN_MESSAGE_MAP( RDOEditorResults, RDOEditorBaseEdit )
-//	ON_WM_CREATE()
 //	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
 //	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR , OnUpdateCoordStatusBar )
 //	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar )

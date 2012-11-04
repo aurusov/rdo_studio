@@ -14,7 +14,6 @@
 #include <QtGui/qtabwidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoredit.h"
-#include "app/rdo_studio_mfc/src/mfc_qt_wrapper.h"
 // --------------------------------------------------------------------------------
 
 class RDOStudioEditBaseView;
