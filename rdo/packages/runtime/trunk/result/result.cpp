@@ -35,6 +35,40 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDResult
 // --------------------------------------------------------------------------------
+template <class T>
+class ResultStreamItem
+{
+public:
+	ResultStreamItem(rbool predicate, const T& value)
+		: predicate(predicate)
+		, value    (value    )
+	{}
+
+	template <class T>
+	friend rdo::ostream& operator<< (rdo::ostream& stream, const ResultStreamItem<T>& item);
+
+private:
+	rbool predicate;
+	T     value;
+};
+
+template <class T>
+inline rdo::ostream& operator<< (rdo::ostream& stream, const ResultStreamItem<T>& item)
+{
+	if (item.predicate)
+	{
+		stream << item.value;
+	}
+	else
+	{
+		stream << _T("нет данных");
+	}
+	return stream;
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOPMDResult
+// --------------------------------------------------------------------------------
 RDOPMDResult::RDOPMDResult(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace)
 	: RDOResultTrace(pRuntime, trace)
 	, m_name        (name           )
@@ -230,12 +264,12 @@ void RDOPMDWatchState::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 	stream.width(30);
 	stream << std::left
 		<< name()
-		<< _T("\t") << traceValue()
+		<< _T("\t") << ResultStreamItem<tstring>(m_watchNumber > 0, traceValue())
 		<< _T("\t") << m_watchNumber
-		<< _T("\t") << average
-		<< _T("\t") << m_sumSqr
-		<< _T("\t") << m_minValue
-		<< _T("\t") << m_maxValue
+		<< _T("\t") << ResultStreamItem<double>(m_watchNumber > 0, average   )
+		<< _T("\t") << ResultStreamItem<double>(m_watchNumber > 0, m_sumSqr  )
+		<< _T("\t") << ResultStreamItem<double>(m_watchNumber > 0, m_minValue)
+		<< _T("\t") << ResultStreamItem<double>(m_watchNumber > 0, m_maxValue)
 		<< _T('\n');
 }
 
