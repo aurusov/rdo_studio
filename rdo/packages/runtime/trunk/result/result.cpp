@@ -263,8 +263,7 @@ void RDOPMDWatchState::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 	double average  = m_sum / (currTime - m_timeBegin);
 
 	stream.width(30);
-	stream << std::left
-		<< name()
+	stream << std::left << name()
 		<< _T("\t") << ResultStreamItem<tstring>(m_watchNumber > 0, traceValue())
 		<< _T("\t") << m_watchNumber
 		<< _T("\t") << ResultStreamItem<double>(m_watchNumber > 0, average   )
