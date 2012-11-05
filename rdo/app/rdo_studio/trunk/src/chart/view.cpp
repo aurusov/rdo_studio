@@ -176,9 +176,9 @@ int RDOStudioChartView::OnCreate( LPCREATESTRUCT lpCreateStruct )
 	appendMenu( mainMenu->GetSubMenu( 3 + delta ), 8, &popupMenu );
 	appendMenu( mainMenu->GetSubMenu( 3 + delta ), 9, &popupMenu );
 	popupMenu.AppendMenu( MF_SEPARATOR );
-	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 3, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 4, &popupMenu );
 	popupMenu.AppendMenu( MF_SEPARATOR );
-	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 5, &popupMenu );
+	appendMenu( mainMenu->GetSubMenu( 6 + delta ), 6, &popupMenu );
 
 	return 0;
 }
