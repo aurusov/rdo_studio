@@ -174,12 +174,12 @@ void RDOPMDWatchPar::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) str
 
 	stream.width(30);
 	stream << std::left << name()
-		<< _T("\t") << traceValue()
+		<< _T("\t") << ResultStreamItem<tstring>(m_watchNumber > 0, traceValue())
 		<< _T("\t") << m_watchNumber
-		<< _T("\t") << average
-		<< _T("\t") << m_sumSqr
-		<< _T("\t") << m_minValue
-		<< _T("\t") << m_maxValue
+		<< _T("\t") << ResultStreamItem<double>  (m_watchNumber > 0, average   )
+		<< _T("\t") << ResultStreamItem<double>  (m_watchNumber > 0, m_sumSqr  )
+		<< _T("\t") << ResultStreamItem<RDOValue>(m_watchNumber > 0, m_minValue)
+		<< _T("\t") << ResultStreamItem<RDOValue>(m_watchNumber > 0, m_maxValue)
 		<< _T('\n');
 }
 
