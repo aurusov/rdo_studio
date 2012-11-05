@@ -235,7 +235,8 @@ void RDOPMDWatchState::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 		<< _T("\t") << average
 		<< _T("\t") << m_sumSqr
 		<< _T("\t") << m_minValue
-		<< _T("\t") << m_maxValue << _T('\n');
+		<< _T("\t") << m_maxValue
+		<< _T('\n');
 }
 
 // --------------------------------------------------------------------------------
