@@ -111,7 +111,7 @@ void RDOPMDWatchPar::checkResult(CREF(LPRDORuntime) pRuntime)
 	{
 		double currTime = pRuntime->getCurrentTime();
 		double val      = m_currValue.getDouble() * (currTime - m_timePrev);
-		m_sum	       += val;
+		m_sum          += val;
 		m_sumSqr       += val * val;
 		m_timePrev      = currTime;
 		m_currValue     = newValue;
@@ -134,7 +134,7 @@ void RDOPMDWatchPar::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) str
 {
 	double currTime = m_resourceID == ~0 ? m_timeErase : pRuntime->getCurrentTime();
 	double val      = m_currValue.getDouble() * (currTime - m_timePrev);
-	m_sum	       += val;
+	m_sum          += val;
 	m_sumSqr       += val * val;
 	double average  = m_sum / (currTime - m_timeBegin);
 
@@ -175,11 +175,11 @@ void RDOPMDWatchState::resetResult(CREF(LPRDORuntime) pRuntime)
 	{
 		m_currValue = false;
 	}
-	m_sum         = 0;
-	m_sumSqr      = 0;
-	m_minValue    = DBL_MAX;
-	m_maxValue    = DBL_MIN;
-	m_timePrev    = m_timeBegin = pRuntime->getCurrentTime();
+	m_sum      = 0;
+	m_sumSqr   = 0;
+	m_minValue = DBL_MAX;
+	m_maxValue = DBL_MIN;
+	m_timePrev = m_timeBegin = pRuntime->getCurrentTime();
 }
 
 void RDOPMDWatchState::checkResult(CREF(LPRDORuntime) pRuntime)
@@ -202,7 +202,7 @@ void RDOPMDWatchState::checkResult(CREF(LPRDORuntime) pRuntime)
 	{
 		double currTime = pRuntime->getCurrentTime();
 		double val      = currTime - m_timePrev;
-		m_sum	       += val;
+		m_sum          += val;
 		m_sumSqr       += val * val;
 		m_wasChanged    = true;
 		m_watchNumber++;
