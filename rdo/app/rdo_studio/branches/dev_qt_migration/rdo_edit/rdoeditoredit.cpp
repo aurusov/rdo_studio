@@ -185,7 +185,7 @@ void RDOEditorEdit::catchModified(int modificationType, int position, int length
 	}
 }
 
-void RDOEditorEdit::catchMarginClick(int margin, int position, int modifiers)
+void RDOEditorEdit::catchMarginClick(int position, int modifiers, int margin)
 {
 	if (margin == sci_FOLDMARGIN_ID)
 	{

@@ -111,7 +111,7 @@ private slots:
 	void catchRdoPosChanged();
 	void catchRdoClick     ();
 	void catchModified     (int modificationType, int position, int length, int linesAdded, const QByteArray& bytes, int line, int foldLevelNow, int foldLevelPrev);
-	void catchMarginClick  (int margin, int position, int modifiers);
+	void catchMarginClick  (int position, int modifiers, int margin);
 	void catchCharAdded    ();
 };
 
