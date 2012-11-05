@@ -148,6 +148,30 @@ void RDOStudioCommandLineInfo::ParseParam(LPCTSTR lpszParam, BOOL bFlag, BOOL bL
 // --------------------------------------------------------------------------------
 RDOStudioApp studioApp;
 
+#ifdef _DEBUG
+void g_messageOutput(QtMsgType type, const char *msg)
+{
+	switch (type)
+	{
+	case QtDebugMsg:
+		TRACE1("Debug: %s\n", msg);
+		break;
+
+	case QtWarningMsg:
+		TRACE1("Warning: %s\n", msg);
+		break;
+
+	case QtCriticalMsg:
+		TRACE1("Critical: %s\n", msg);
+		break;
+
+	case QtFatalMsg:
+		TRACE1("Fatal: %s\n", msg);
+		break;
+	}
+}
+#endif
+
 BEGIN_MESSAGE_MAP(RDOStudioApp, CWinApp)
 	ON_UPDATE_COMMAND_UI(ID_FILE_MODEL_SAVE,    OnUpdateFileSave   )
 	ON_UPDATE_COMMAND_UI(ID_FILE_SAVE_ALL,      OnUpdateFileSaveAll)
@@ -180,6 +204,10 @@ RDOStudioApp::RDOStudioApp()
 	, m_openModelName               (_T(""))
 	, m_pMainFrame                  (NULL  )
 {
+#ifdef _DEBUG
+	qInstallMsgHandler(g_messageOutput);
+#endif
+
 	setlocale(LC_ALL,     _T("rus"));
 	setlocale(LC_NUMERIC, _T("eng"));
 	QTextCodec::setCodecForCStrings(QTextCodec::codecForLocale());
