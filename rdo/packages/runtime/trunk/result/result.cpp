@@ -179,7 +179,8 @@ void RDOPMDWatchPar::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) str
 		<< _T("\t") << average
 		<< _T("\t") << m_sumSqr
 		<< _T("\t") << m_minValue
-		<< _T("\t") << m_maxValue << _T('\n');
+		<< _T("\t") << m_maxValue
+		<< _T('\n');
 }
 
 // --------------------------------------------------------------------------------
@@ -361,7 +362,8 @@ void RDOPMDWatchQuant::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 		<< _T("\t") << average
 		<< _T("\t") << m_sumSqr
 		<< _T("\t") << m_minValue
-		<< _T("\t") << m_maxValue << _T('\n');
+		<< _T("\t") << m_maxValue
+		<< _T('\n');
 }
 
 void RDOPMDWatchQuant::setLogicCalc(CREF(LPRDOCalc) pLogicCalc)
@@ -432,7 +434,8 @@ void RDOPMDWatchValue::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 		<< _T("\t") << averageSqr
 		<< _T("\t") << deviation
 		<< _T("\t") << m_minValue
-		<< _T("\t") << m_maxValue << _T('\n');
+		<< _T("\t") << m_maxValue
+		<< _T('\n');
 }
 
 void RDOPMDWatchValue::checkResourceErased(CREF(LPRDOResource) pResource)
@@ -508,7 +511,8 @@ void RDOPMDGetValue::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) str
 
 	stream.width(30);
 	stream << std::left << name()
-		<< _T("\t") << m_value.getAsString() << _T('\n');
+		<< _T("\t") << m_value.getAsString()
+		<< _T('\n');
 }
 
 CREF(RDOValue) RDOPMDGetValue::getValue() const
