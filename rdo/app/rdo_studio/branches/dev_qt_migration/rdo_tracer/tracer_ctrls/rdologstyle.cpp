@@ -28,8 +28,8 @@ using namespace rdoStyle;
 // --------------------------------------------------------------------------------
 RDOLogColorPair::RDOLogColorPair()
 {
-	foregroundColor = RGB( 0x00, 0x00, 0x00 );
-	backgroundColor = RGB( 0xFF, 0xFF, 0xFF );
+	foregroundColor = QColor( 0x00, 0x00, 0x00 );
+	backgroundColor = QColor( 0xFF, 0xFF, 0xFF );
 }
 
 RDOLogColorPair::~RDOLogColorPair()
@@ -58,15 +58,16 @@ rbool RDOLogColorPair::operator !=( const RDOLogColorPair& colors ) const
 void RDOLogColorPair::load( tstring regPath, tstring regParam )
 {
 	regParam += "_%s";
-	foregroundColor = AfxGetApp()->GetProfileInt( regPath.c_str(), rdo::format( regParam.c_str(), "foregroundColor" ).c_str(), foregroundColor );
-	backgroundColor = AfxGetApp()->GetProfileInt( regPath.c_str(), rdo::format( regParam.c_str(), "backgroundColor" ).c_str(), backgroundColor );
+	//! todo qt
+	//foregroundColor = QColor(QString::fromStdString((LPCTSTR)AfxGetApp()->GetProfileString( regPath.c_str(), rdo::format( regParam.c_str(), "foregroundColor" ).c_str(), foregroundColor.name().toStdString().c_str() )));
+	//backgroundColor = QColor(QString::fromStdString((LPCTSTR)AfxGetApp()->GetProfileString( regPath.c_str(), rdo::format( regParam.c_str(), "backgroundColor" ).c_str(), backgroundColor.name().toStdString().c_str() )));
 }
 
 void RDOLogColorPair::save( tstring regPath, tstring regParam ) const
 {
 	regParam += "_%s";
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), rdo::format( regParam.c_str(), "foregroundColor" ).c_str(), foregroundColor );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), rdo::format( regParam.c_str(), "backgroundColor" ).c_str(), backgroundColor );
+	AfxGetApp()->WriteProfileString( regPath.c_str(), rdo::format( regParam.c_str(), "foregroundColor" ).c_str(), foregroundColor.name().toStdString().c_str() );
+	AfxGetApp()->WriteProfileString( regPath.c_str(), rdo::format( regParam.c_str(), "backgroundColor" ).c_str(), backgroundColor.name().toStdString().c_str() );
 }
 
 // --------------------------------------------------------------------------------

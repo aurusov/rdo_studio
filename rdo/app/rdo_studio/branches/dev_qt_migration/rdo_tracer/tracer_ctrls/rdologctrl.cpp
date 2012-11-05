@@ -10,6 +10,8 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtGui/qpainter.h>
+#include <QtGui/qscrollbar.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdologctrl.h"
 #include "app/rdo_studio_mfc/src/application.h"
@@ -155,63 +157,50 @@ rbool RDOLogCtrlFindInList::operator()( tstring nextstr )
 // --------------------------------------------------------------------------------
 // -------------------- RDOLogCtrl
 // --------------------------------------------------------------------------------
-IMPLEMENT_DYNAMIC( RDOLogCtrl, CWnd )
-
-BEGIN_MESSAGE_MAP( RDOLogCtrl, CWnd )
-	ON_WM_CREATE()
-	ON_WM_SIZE()
-	ON_WM_PAINT()
-	ON_WM_HSCROLL()
-	ON_WM_VSCROLL()
-	ON_WM_ERASEBKGND()
-	ON_WM_SETFOCUS()
-	ON_WM_KILLFOCUS()
-	ON_WM_KEYDOWN()
-	ON_WM_GETDLGCODE()
-	ON_WM_MOUSEWHEEL()
-	ON_WM_LBUTTONDOWN()
-	ON_WM_DESTROY()
-END_MESSAGE_MAP()
-
-RDOLogCtrl::RDOLogCtrl( RDOLogStyle* style ):
-	CWnd(),
-	lineHeight( 0 ),
-	charWidth( 0 ),
-	maxStrWidth( 0 ),
-	xPos( 0 ),
-	yPos( 0 ),
-	xMax( 0 ),
-	yMax( 0 ),
-	xPageSize( 0 ),
-	yPageSize( 0 ),
-	clipRect( 0, 0, 0, 0 ),
-	prevClientRect( 0, 0, 0, 0 ),
-	newClientRect(0, 0, 0, 0 ),
-	prevWindowRect( 0, 0, 0, 0 ),
-	lastViewableLine( 0 ),
-	hasFocus( false ),
-	selectedLine( -1 ),
-	fullRepaintLines( 0 ),
-	focusOnly( false ),
-	logStyle( style ),
-	stringsCount( 0 ),
-	firstFoundLine( -1 ),
-	posFind( -1 ),
-	bHaveFound( false ),
-	bSearchDown( true ),
-	bMatchCase( false ),
-	bMatchWholeWord( false ),
-	drawLog( true ),
-	hdc( NULL ),
-	saved_hdc( 0 ),
-	hwnd( NULL ),
-	fontInit( NULL ),
-	hfontLog( NULL )
+RDOLogCtrl::RDOLogCtrl(PTR(QAbstractScrollArea) pParent, PTR(RDOLogStyle) pStyle)
+	: parent_type(pParent)
+	, m_pScrollArea(pParent)
+	, lineHeight( 0 )
+	, charWidth( 0 )
+	, maxStrWidth( 0 )
+	, xPos( 0 )
+	, yPos( 0 )
+	, xMax( 0 )
+	, yMax( 0 )
+	, xPageSize( 0 )
+	, yPageSize( 0 )
+	, clipRect( 0, 0, 0, 0 )
+	, prevClientRect(0, 0, 0, 0)
+	, newClientRect (0, 0, 0, 0)
+	, prevWindowRect(0, 0, 0, 0)
+	, lastViewableLine( 0 )
+	, selectedLine( -1 )
+	, fullRepaintLines( 0 )
+	, focusOnly( false )
+	, logStyle( pStyle )
+	, stringsCount( 0 )
+	, firstFoundLine( -1 )
+	, posFind( -1 )
+	, bHaveFound( false )
+	, bSearchDown( true )
+	, bMatchCase( false )
+	, bMatchWholeWord( false )
+	, drawLog( true )
+	, m_prevVertSBValue(0)
+	, m_prevHorzSBValue(0)
 {
-	//if no style specified default style will be used
-	if ( !logStyle ) {
+	if (!logStyle)
+	{
 		logStyle = &studioApp.getStyle()->style_trace;
 	}
+
+	connect(&getVertScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(onVertScrollBarValueChanged(int)));
+	connect(&getHorzScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(onHorzScrollBarValueChanged(int)));
+
+	setFocusPolicy(Qt::ClickFocus);
+
+	setFont(false);
+	updateScrollBars();
 }
 
 RDOLogCtrl::~RDOLogCtrl()
@@ -219,169 +208,142 @@ RDOLogCtrl::~RDOLogCtrl()
 	clear();
 }
 
-BOOL RDOLogCtrl::PreCreateWindow( CREATESTRUCT& cs )
+REF(QScrollBar) RDOLogCtrl::getVertScrollBar()
 {
-	if ( !CWnd::PreCreateWindow( cs ) ) return FALSE;
-	cs.style = WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL | WS_TABSTOP;
-	cs.dwExStyle |= WS_EX_CLIENTEDGE;
-	//Setting class style CS_OWNDC to avoid DC releasing
-	//and selecting previous objects into it
-	cs.lpszClass = AfxRegisterWndClass( CS_DBLCLKS | CS_OWNDC, ::LoadCursor(NULL, IDC_ARROW)/*, reinterpret_cast<HBRUSH>( COLOR_WINDOW + 1 ), NULL*/ );
-	return TRUE;
+	PTR(QScrollBar) pScrollBar = m_pScrollArea->verticalScrollBar();
+	ASSERT(pScrollBar);
+	return *pScrollBar;
 }
 
-int RDOLogCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
+REF(QScrollBar) RDOLogCtrl::getHorzScrollBar()
 {
-	if ( CWnd::OnCreate( lpCreateStruct ) == -1 ) return -1;
-	//Remembering handle to the window in hwnd member
-	hwnd = GetSafeHwnd();
-	//Remembering handle to the private device context in hdc member
-	if ( hwnd )
-		hdc = ::GetDC( hwnd );
-	if ( !hdc ) return -1;
-	//Setting background mode one time in initialization.
-	//We have private DC, so we needn't to reset it each time
-	//we paint
-	::SetBkMode( hdc, TRANSPARENT );
-	//Remembering default font to select it into DC
-	//when setting new font
-	fontInit = (HFONT)::GetCurrentObject( hdc, OBJ_FONT );
-	//Saving the own DC state to restore it before destroying
-	//a window
-	saved_hdc = ::SaveDC( hdc );
-	setFont( false );
-	updateScrollBars();
-	return 0;
+	PTR(QScrollBar) pScrollBar = m_pScrollArea->horizontalScrollBar();
+	ASSERT(pScrollBar);
+	return *pScrollBar;
 }
 
-void RDOLogCtrl::OnSize( UINT nType, int cx, int cy )
+void RDOLogCtrl::resizeEvent(QResizeEvent* pEvent)
 {
-	UNUSED(nType);
-	UNUSED(cx   );
-	UNUSED(cy   );
+	parent_type::resizeEvent(pEvent);
 
 		//In our case OnSize() invalidates all needed rectangles.
 		//Default handler invalidates all client area.
 //		CWnd::OnSize(  nType, cx, cy );
 
-		GetClientRect( &newClientRect );
+	newClientRect = QRect(QPoint(0, 0), pEvent->size());
 
-		CRect newWindowRect;
-		GetWindowRect( &newWindowRect );
+	QRect newWindowRect(
+		mapToGlobal(newClientRect.topLeft()),
+		mapToGlobal(newClientRect.bottomRight())
+	);
 
-		int prevYPos = yPos;
-		int prevXPos = xPos;
-		//updateScrollBars() uses newClientRect so call it
-		//after setting up newClientRect
-		updateScrollBars();
+	int prevYPos = yPos;
+	int prevXPos = xPos;
+	//updateScrollBars() uses newClientRect so call it
+	//after setting up newClientRect
+	updateScrollBars();
 
-		//isFullyVisible() uses newClientRect so call it
-		//after setting up newClientRect
-		rbool lastLineVisible = isFullyVisible( stringsCount - 1 );
-		rbool lastCharVisible = maxStrWidth == xPos + newClientRect.Width() / charWidth;
+	//isFullyVisible() uses newClientRect so call it
+	//after setting up newClientRect
+	rbool lastLineVisible = isFullyVisible( stringsCount - 1 );
+	rbool lastCharVisible = maxStrWidth == xPos + newClientRect.width() / charWidth;
+	
+	rbool fullVisibleVert = !yPos && lastLineVisible;
+	rbool fullVisibleHorz = !xPos && lastCharVisible;
+	
+	rbool needShiftVert = yPos < prevYPos && !fullVisibleVert;
+	rbool needShiftHorz = xPos < prevXPos && !fullVisibleHorz;
+	
+	rbool topChanged = prevWindowRect.top() != newWindowRect.top();
+	int dx = newClientRect.right() - prevClientRect.right();
+	int dy = newClientRect.bottom() - prevClientRect.bottom();
+	
+	QRect prevClRectBackup(prevClientRect);
+	
+	int mul = newClientRect.height() / lineHeight;
+	if ( mul * lineHeight < newClientRect.height() )
+		mul++;
+	lastViewableLine = yPos + mul - 1;
+
+	prevClientRect = newClientRect;
+	prevWindowRect = newWindowRect;
+
+	//If top of the window changed repainting all window
+	//because default OnSize() handler invalidates all
+	//client rectangle.
+	//If top is the same validating all client rectangle
+	//and calculating invalid rectangle.
+	if ( !topChanged ) {
+
+		update(newClientRect);
+
+		//If new window size is smaller than the previous
+		//no repainting is needed.
+		if ( dx < 0 && dy < 0 )
+			return;
 		
-		rbool fullVisibleVert = !yPos && lastLineVisible;
-		rbool fullVisibleHorz = !xPos && lastCharVisible;
-		
-		rbool needShiftVert = yPos < prevYPos && !fullVisibleVert;
-		rbool needShiftHorz = xPos < prevXPos && !fullVisibleHorz;
-		
-		rbool topChanged = prevWindowRect.top != newWindowRect.top;
-		int dx = newClientRect.right - prevClientRect.right;
-		int dy = newClientRect.bottom - prevClientRect.bottom;
-		
-		CRect prevClRectBackup;
-		prevClRectBackup.CopyRect( &prevClientRect );
-		
-		int mul = newClientRect.Height() / lineHeight;
-		if ( mul * lineHeight < newClientRect.Height() )
-			mul++;
-		lastViewableLine = yPos + mul - 1;
+		QRegion bottomRgn;
+		if ( dy )
+			bottomRgn = QRegion( newClientRect.left(), prevClRectBackup.bottom() - 1, newClientRect.right(), newClientRect.bottom() );
+		else
+			bottomRgn = QRegion( 0, 0, 0, 0 );
 
-		prevClientRect = newClientRect;
-		prevWindowRect = newWindowRect;
+		//Substracting 1 pixel to remove old focus rectangle.
+		QRegion rightRgn;
+		if ( dx )
+			rightRgn = QRegion( prevClRectBackup.right() - 1, newClientRect.top(), newClientRect.right(), newClientRect.bottom() );
+		else
+			rightRgn = QRegion( 0, 0, 0, 0 );
+		
+		QRegion invalidRgn = bottomRgn.united(rightRgn);
 
-		//If top of the window changed repainting all window
-		//because default OnSize() handler invalidates all
-		//client rectangle.
-		//If top is the same validating all client rectangle
-		//and calculating invalid rectangle.
-		if ( !topChanged ) {
-
-			ValidateRect( &newClientRect );
-
-			//If new window size is smaller than the previous
-			//no repainting is needed.
-			if ( dx < 0 && dy < 0 )
-				return;
+		if ( invalidRgn.isEmpty() ) {
 			
-			CRgn bottomRgn;
-			if ( dy )
-				bottomRgn.CreateRectRgn( newClientRect.left, prevClRectBackup.bottom - 1, newClientRect.right, newClientRect.bottom );
-			else
-				bottomRgn.CreateRectRgn( 0, 0, 0, 0 );
-
-			//Substracting 1 pixel to remove old focus rectangle.
-			CRgn rightRgn;
-			if ( dx )
-				rightRgn.CreateRectRgn( prevClRectBackup.right - 1, newClientRect.top, newClientRect.right, newClientRect.bottom );
-			else
-				rightRgn.CreateRectRgn( 0, 0, 0, 0 );
+			invalidRgn = QRegion( newClientRect.left(), newClientRect.top(), newClientRect.right(), newClientRect.bottom() );
+		
+		} else if ( needShiftVert || needShiftHorz ) {
 			
-			CRgn invalidRgn;
-			invalidRgn.CreateRectRgn( 0, 0, 0, 0 );
-			int res = invalidRgn.CombineRgn( &bottomRgn, &rightRgn, RGN_OR );
-
-			if ( res == NULLREGION || res == ERROR ) {
-				
-				invalidRgn.DeleteObject();
-				invalidRgn.CreateRectRgn( newClientRect.left, newClientRect.top, newClientRect.right, newClientRect.bottom );
-			
-			} else if ( needShiftVert || needShiftHorz ) {
-				
-				//If scrolled vertically to the end of log
-				//and resizing forces to appear new line
-				//at the top of the log.
-				if ( needShiftVert ) {
-
-					ScrollWindowEx( 0, lineHeight * ( prevYPos - yPos ),
-						(CONST CRect *) NULL, NULL,
-						(CRgn*) NULL, (CRect*) NULL, SW_INVALIDATE );
-					if ( dx )
-						InvalidateRgn( &rightRgn );
+			//If scrolled vertically to the end of log
+			//and resizing forces to appear new line
+			//at the top of the log.
+			if ( needShiftVert ) {
+				getVertScrollBar().setValue(lineHeight * ( prevYPos - yPos ));
+				if (getVertScrollBar().isHidden())
+				{
+					getVertScrollBar().show();
 				}
-				
-				//If scrolled horizontally to the end of log
-				//and resizing forces to appear new char
-				//at the left of the log.
-				if ( needShiftHorz ) {
 
-					ScrollWindowEx( charWidth * ( prevXPos - xPos ), 0,
-						(CONST CRect*)NULL, (CONST CRect*)NULL,
-						(CRgn*)NULL, (CRect*)NULL, SW_INVALIDATE );
-			
-					if ( isVisible( selectedLine) ) {
-						CRect rect;
-						getLineRect( selectedLine, &rect );
-						InvalidateRect( &rect );
-					}
-					
-					if ( dy )
-						InvalidateRgn( &bottomRgn );
-				}
-				//All needed rectangles invalidated
-				//by ScrollWindowEx() so RETURN.
-				return;
+				if ( dx )
+					update( rightRgn );
 			}
 			
-			InvalidateRgn( &invalidRgn );
-			
-			bottomRgn.DeleteObject();
-			rightRgn.DeleteObject();
-			invalidRgn.DeleteObject();
-		} else {
-			InvalidateRect( &newClientRect );
+			//If scrolled horizontally to the end of log
+			//and resizing forces to appear new char
+			//at the left of the log.
+			if ( needShiftHorz ) {
+
+				getHorzScrollBar().setValue(charWidth * ( prevXPos - xPos ));
+				if (getHorzScrollBar().isHidden())
+				{
+					getHorzScrollBar().show();
+				}
+		
+				if ( isVisible( selectedLine) ) {
+					update(getLineRect(selectedLine));
+				}
+				
+				if ( dy )
+					update( bottomRgn );
+			}
+			//All needed rectangles invalidated
+			return;
 		}
+		
+		update( invalidRgn );
+		
+	} else {
+		update( newClientRect );
+	}
 }
 
 rbool RDOLogCtrl::getItemColors( const int index, RDOLogColorPair* &colors ) const
@@ -394,26 +356,34 @@ rbool RDOLogCtrl::getItemColors( CREF(tstring) item, RDOLogColorPair* &colors ) 
 	return logStyle->getItemColors( item, colors );
 }
 
-void RDOLogCtrl::OnPaint()
+void RDOLogCtrl::paintEvent(QPaintEvent* pEvent)
 {
 	mutex.Lock();
 
-	PAINTSTRUCT ps;
-	::BeginPaint( hwnd, &ps );
+	QPainter painter(this);
 
 	if ( drawLog ) {
 
-		if ( !IsRectEmpty( &(ps.rcPaint) ) ) {
+		if ( !pEvent->rect().isEmpty() && !pEvent->rect().isNull() ) {
+
+			painter.setFont(m_font);
 		
-			int firstLine = max ( 0, yPos + ps.rcPaint.top / lineHeight );
-			int mul = ps.rcPaint.bottom / lineHeight;
-			if ( ps.rcPaint.bottom > mul * lineHeight ) mul++;
+			int firstLine = max ( 0, yPos + pEvent->rect().top() / lineHeight );
+			int mul = pEvent->rect().bottom() / lineHeight;
+			if ( pEvent->rect().bottom() > mul * lineHeight ) mul++;
 			int lastLine = min ( stringsCount - 1, yPos + mul - 1 );
 
 			RDOLogColorPair* colors = NULL;
 
-			int y = lineHeight * ( -yPos + firstLine - 1 );
-			CRect rect( charWidth * ( -xPos ), y, ps.rcPaint.right, y + lineHeight );
+			int y = lineHeight * ( -yPos + firstLine - 1);
+			QRect rect( charWidth * ( -xPos ), y, pEvent->rect().width(), lineHeight );
+			QRect textRect(
+				rect.left  () + logStyle->borders->horzBorder,
+				rect.top   () + logStyle->borders->vertBorder,
+				rect.width () - logStyle->borders->horzBorder * 2,
+				rect.height() - logStyle->borders->vertBorder * 2
+			);
+
 			stringList::const_iterator it = const_findString( firstLine );
 			for ( int i = firstLine; i < lastLine + 1; i++ ) {
 
@@ -422,24 +392,32 @@ void RDOLogCtrl::OnPaint()
 						getItemColors( i, colors );
 				} else {
 					colors = new RDOLogColorPair();
-					colors->foregroundColor = ::GetSysColor( COLOR_HIGHLIGHTTEXT );
-					colors->backgroundColor  = ::GetSysColor( COLOR_HIGHLIGHT );
+					colors->foregroundColor = palette().color(QPalette::HighlightedText);
+					colors->backgroundColor = palette().color(QPalette::Highlight);
 				}
 
-				rect.OffsetRect( 0, lineHeight );
+				rect    .translate( 0, lineHeight );
+				textRect.translate( 0, lineHeight );
 
 				//Main drawing cycle
-				::SetBkColor( hdc, colors->backgroundColor );
-				::SetTextColor( hdc, colors->foregroundColor );
-				::ExtTextOut( hdc, rect.left + logStyle->borders->horzBorder, rect.top + logStyle->borders->vertBorder, ETO_OPAQUE, rect, (*it).c_str(), (*it).length(), NULL );
+				painter.setBackgroundMode(Qt::TransparentMode);
+				painter.fillRect(rect, colors->backgroundColor);
+				painter.setPen  (colors->foregroundColor);
+				painter.drawText(
+					textRect,
+					QString::fromStdString(*it)
+				);
 				//End of main drawing cycle :)
 
-				if ( i == selectedLine && hasFocus ) {
-					CRect focusRect;
-					focusRect.CopyRect( &newClientRect );
-					focusRect.top = rect.top;
-					focusRect.bottom = rect.bottom;
-					::DrawFocusRect( hdc, focusRect );
+				if ( i == selectedLine && hasFocus() ) {
+					QRect focusRect(newClientRect);
+					focusRect.setTop   (rect.top   ());
+					focusRect.setBottom(rect.bottom());
+					QStyleOptionFocusRect option;
+					option.initFrom(this);
+					option.backgroundColor = palette().color(QPalette::Background);
+					option.rect = focusRect;
+					style()->drawPrimitive(QStyle::PE_FrameFocusRect, &option, &painter, this);
 				}
 
 				it++;
@@ -451,202 +429,117 @@ void RDOLogCtrl::OnPaint()
 
 			getItemColors( "", colors );
 			
-			//MFC's FillSolidRect do the same thing
-			::SetBkColor( hdc, colors->backgroundColor );
-			::ExtTextOut( hdc, 0, 0, ETO_OPAQUE, CRect( ps.rcPaint.left, rect.bottom, ps.rcPaint.right, ps.rcPaint.bottom ), NULL, 0, NULL );
+			painter.fillRect(
+				pEvent->rect().left(),
+				rect.bottom(),
+				pEvent->rect().width(),
+				pEvent->rect().height() - rect.bottom(),
+				colors->backgroundColor
+			);
 		}
 	} else {
 		RDOLogColorPair* colors = NULL;
 		getItemColors( "", colors );
 
-		//MFC's FillSolidRect do the same thing
-		::SetBkColor( hdc, colors->backgroundColor );
-		::ExtTextOut( hdc, 0, 0, ETO_OPAQUE, newClientRect, NULL, 0, NULL );
+		painter.fillRect(
+			newClientRect,
+			colors->backgroundColor
+		);
 	}
-	
-	::EndPaint( hwnd, &ps );
 
 	mutex.Unlock();
+
+	parent_type::paintEvent(pEvent);
 }
 
-void RDOLogCtrl::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar )
+void RDOLogCtrl::onVertScrollBarValueChanged(int value)
 {
-	UNUSED(nPos      );
-	UNUSED(pScrollBar);
+	if (value < 0)
+		return;
 
-	int inc;
-	SCROLLINFO si;
-	si.cbSize = sizeof( si );
-
-	switch( nSBCode ) {
-		case SB_PAGEUP:
-			inc = -xPageSize;
-			break; 
-
-		case SB_PAGEDOWN:
-			inc = xPageSize;
-			break;
-
-		case SB_LINEUP:
-			inc = -1;
-			break;
-
-		case SB_LINEDOWN:
-			inc = 1;
-			break;
-
-		case SB_THUMBTRACK: {
-			GetScrollInfo( SB_HORZ, &si, SIF_TRACKPOS );
-			inc = si.nTrackPos - xPos;
-			break;
-		}
-		default:
-			inc = 0;
-	}
-
-	scrollHorizontally( inc );
+	int inc = value - m_prevVertSBValue;
+	TRACE3("onVertScrollBarValueChanged %d, %d, %d\n", value, m_prevVertSBValue, inc);
+	m_prevVertSBValue = value;
+	scrollVertically(inc);
 }
 
-void RDOLogCtrl::OnVScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar )
+void RDOLogCtrl::onHorzScrollBarValueChanged(int value)
 {
-	UNUSED(nPos      );
-	UNUSED(pScrollBar);
+	if (value < 0)
+		return;
 
-	int inc;
-	SCROLLINFO si;
-	si.cbSize = sizeof( si );
-
-	switch( nSBCode ) {
-		case SB_TOP:
-			inc = -yPos;
-			break;
-		case SB_PAGEUP:
-			inc = min( -1, -yPageSize );
-			break; 
-
-		case SB_PAGEDOWN:
-			inc = max( 1, yPageSize );
-			break;
-
-		case SB_LINEUP:
-			inc = -1;
-			break;
-
-		case SB_LINEDOWN:
-			inc = 1;
-			break;
-
-		case SB_THUMBTRACK: {
-			GetScrollInfo( SB_VERT, &si, SIF_TRACKPOS );
-			inc = si.nTrackPos - yPos;
-			break;
-		}
-		case SB_BOTTOM:
-			inc = yMax - yPos;
-			break;
-		default:
-			inc = 0;
-	}
-
-	scrollVertically( inc );
+	int inc = value - m_prevHorzSBValue;
+	TRACE3("onHorzScrollBarValueChanged %d, %d, %d\n", value, m_prevVertSBValue, inc);
+	m_prevHorzSBValue = value;
+	scrollHorizontally(inc);
 }
 
-BOOL RDOLogCtrl::OnEraseBkgnd(CDC* pDC) 
-{
-	UNUSED(pDC);
-	return TRUE;
-}
+//! @todo qt
+//void RDOLogCtrl::OnSetFocus( CWnd* pOldWnd )
+//{
+//	CWnd::OnSetFocus( pOldWnd );
+//	repaintLine( selectedLine );
+//}
+//
+//void RDOLogCtrl::OnKillFocus( CWnd* pNewWnd )
+//{
+//	CWnd::OnKillFocus( pNewWnd );
+//	repaintLine( selectedLine );
+//}
 
-void RDOLogCtrl::OnSetFocus( CWnd* pOldWnd )
+void RDOLogCtrl::keyPressEvent(QKeyEvent* pEvent)
 {
-	CWnd::OnSetFocus( pOldWnd );
-	hasFocus = true;
-	repaintLine( selectedLine );
-}
-
-void RDOLogCtrl::OnKillFocus( CWnd* pNewWnd )
-{
-	CWnd::OnKillFocus( pNewWnd );
-	hasFocus = false;
-	repaintLine( selectedLine );
-}
-
-void RDOLogCtrl::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags )
-{
-	UNUSED(nRepCnt);
-	UNUSED(nFlags );
-
-	WORD scrollNotify = 0xFFFF;
-	UINT msg = WM_VSCROLL;
-	
-	switch ( nChar ) {
-	
-		case VK_UP:
+	switch (pEvent->key())
+	{
+		case Qt::Key_Up:
 			selectLine( selectedLine - 1 );
 			break;
 
-		case VK_PRIOR:
+		case Qt::Key_PageUp:
 			selectLine( max ( selectedLine - yPageSize, 0 ) );
 			break;
 
-		case VK_NEXT:
+		case Qt::Key_PageDown:
 			selectLine( min ( selectedLine + yPageSize, stringsCount - 1 ) );
 			break;
 
-		case VK_DOWN:
+		case Qt::Key_Down:
 			selectLine( selectedLine + 1 );
 			break;
 
-		case VK_HOME:
+		case Qt::Key_Home:
 			selectLine( 0 );
 			break;
 
-		case VK_END:
+		case Qt::Key_End:
 			selectLine( stringsCount - 1 );
 			break;
 
-		case VK_LEFT: {
-			scrollNotify = SB_LINEUP;
-			msg = WM_HSCROLL;
+		case Qt::Key_Left:
+			getHorzScrollBar().setValue(getHorzScrollBar().value() - 1);
 			break;
-		}
 		
-		case VK_RIGHT: {
-			scrollNotify = SB_LINEDOWN;
-			msg = WM_HSCROLL;
+		case Qt::Key_Right:
+			getHorzScrollBar().setValue(getHorzScrollBar().value() + 1);
 			break;
-		}
-		default:
-			break;
+
+		default: break;
 	}
-
-	if (scrollNotify != -1) 
-		SendNotifyMessage( msg, MAKELONG(scrollNotify, 0), NULL );
-	
 }
 
-BOOL RDOLogCtrl::OnMouseWheel( UINT nFlags, short zDelta, CPoint pt )
+void RDOLogCtrl::wheelEvent(QWheelEvent* pEvent)
 {
-	UNUSED(nFlags);
-	UNUSED(pt    );
-
-	WORD scrollNotify = 0xFFFF;
-	
-	if ( zDelta < 0 )
-		scrollNotify = SB_LINEDOWN;
-	else
-		scrollNotify = SB_LINEUP;
-	
-	SendNotifyMessage( WM_VSCROLL, MAKELONG(scrollNotify, 0), NULL );
-	
-	return TRUE;
+	getVertScrollBar().setValue(getVertScrollBar().value() + (pEvent->delta() < 0 ? 1 : -1));
 }
 
-void RDOLogCtrl::OnLButtonDown( UINT nFlags, CPoint point )
+void RDOLogCtrl::mousePressEvent(QMouseEvent* pEvent)
 {
-	CWnd::OnLButtonDown( nFlags, point );
-	SetFocus();
-	selectLine( min( yPos + point.y / lineHeight, stringsCount - 1 ) );
+	if (pEvent->button() == Qt::LeftButton)
+	{
+		//! @todo qt
+		//	SetFocus();
+		selectLine( min( yPos + pEvent->pos().y() / lineHeight, stringsCount - 1 ) );
+	}
 }
 
 void RDOLogCtrl::recalcWidth( const int newMaxStrWidth )
@@ -665,15 +558,15 @@ void RDOLogCtrl::recalcWidth( const int newMaxStrWidth )
 
 void RDOLogCtrl::updateScrollBars()
 {
-	xPageSize = newClientRect.Width() / charWidth;
-	yPageSize = newClientRect.Height() / lineHeight;
+	xPageSize = newClientRect.width () / charWidth;
+	yPageSize = newClientRect.height() / lineHeight;
 
 	yMax = max ( 0, stringsCount - yPageSize );
 	int prev_ypos = yPos;
 	yPos = min ( yPos, yMax );
 	setYPosIterator( prev_ypos );
 	int mul = yPageSize;
-	if ( mul * lineHeight < newClientRect.Height() )
+	if ( mul * lineHeight < newClientRect.height() )
 		mul++;
 	lastViewableLine = yPos + mul - 1;
 
@@ -683,32 +576,31 @@ void RDOLogCtrl::updateScrollBars()
 	si.nMin   = 0;
 
 	if ( drawLog ) { 
-		
-		si.nMax   = stringsCount - 1;
-		si.nPage  = yPageSize; 
-		si.nPos   = yPos; 
-		SetScrollInfo( SB_VERT, &si, TRUE );
-		
+		getVertScrollBar().setMinimum (0);
+		getVertScrollBar().setMaximum (stringsCount - 1);
+		getVertScrollBar().setPageStep(yPageSize);
+		getVertScrollBar().setValue   (yPos);
+
 		xMax = max ( 0, maxStrWidth - xPageSize );
 		xPos = min ( xPos, xMax ); 
-		
-		si.nMax   = maxStrWidth - 1; 
-		si.nPage  = xPageSize; 
-		si.nPos   = xPos; 
-		SetScrollInfo( SB_HORZ, &si, TRUE );
+
+		getHorzScrollBar().setMinimum (0);
+		getHorzScrollBar().setMaximum (maxStrWidth - 1);
+		getHorzScrollBar().setPageStep(xPageSize);
+		getHorzScrollBar().setValue   (xPos);
 	} else {
-		si.nMax   = 0;
-		si.nPage  = 0; 
-		si.nPos   = 0; 
-		SetScrollInfo( SB_VERT, &si, FALSE );
-		
+		getVertScrollBar().setMinimum (0);
+		getVertScrollBar().setMaximum (0);
+		getVertScrollBar().setPageStep(0);
+		getVertScrollBar().setValue   (0);
+
 		xMax = max ( 0, maxStrWidth - xPageSize );
 		xPos = min ( xPos, xMax ); 
-		
-		si.nMax   = 0; 
-		si.nPage  = 0; 
-		si.nPos   = 0; 
-		SetScrollInfo( SB_HORZ, &si, FALSE );
+
+		getHorzScrollBar().setMinimum (0);
+		getHorzScrollBar().setMaximum (0);
+		getHorzScrollBar().setPageStep(0);
+		getHorzScrollBar().setValue   (0);
 	}
 }
 
@@ -726,54 +618,17 @@ rbool RDOLogCtrl::scrollVertically( int inc )
 		yPos += inc;
 		setYPosIterator( prev_ypos );
 		lastViewableLine += inc;
-		
-		CRect rect;
-		rect.CopyRect( &newClientRect );
 
-		if ( fullRepaintLines )
-			if ( inc > 0 )
-				rect.bottom = ( rect.Height() / lineHeight - fullRepaintLines + 1 ) * lineHeight;
-			else
-				rect.top = ( fullRepaintLines - 1 )  * lineHeight;
-		
-		ScrollWindowEx( 0, -lineHeight * inc,
-			(CONST CRect *) NULL, &rect,
-			(CRgn*) NULL, NULL, SW_INVALIDATE );
-		/*ScrollWindowEx( 0, -lineHeight * inc,
-			(CONST CRect *) NULL, NULL,
-			(CRgn*) NULL, (CRect*) NULL, 0 );*/
-
-		SCROLLINFO si;
-		si.cbSize = sizeof( si );
-		si.fMask  = SIF_POS;
-		si.nPos   = yPos;
-		SetScrollInfo( SB_VERT, &si, TRUE );
-
-		if ( fullRepaintLines ) {
-			rect.CopyRect( &newClientRect );
-			if ( inc > 0 ) {
-				rect.top = ( rect.Height() / lineHeight - fullRepaintLines + 1 ) * lineHeight;
-			} else {
-				rect.bottom = ( fullRepaintLines - 1 ) * lineHeight;
-			}
-			InvalidateRect( &rect );
-		}
-		
-		/*rect.CopyRect( &newClientRect );
-		if ( inc > 0 ) {
-			rect.top = rect.Height() - inc * lineHeight;
-			if ( fullRepaintLines )
-				rect.top = ( rect.top / lineHeight - fullRepaintLines + 1) * lineHeight;
-		} else {
-			rect.bottom = (-inc) * lineHeight;
-			if ( fullRepaintLines )
-				rect.bottom = ( rect.bottom / lineHeight + fullRepaintLines - 1) * lineHeight;
-		}
-		
-		InvalidateRect( &rect );*/
 		updateWindow();
 		res = true;
+
+		TRACE1("scrollVertically %d ok\n", inc);
 	}
+	else
+	{
+		TRACE1("scrollVertically %d error\n", inc);
+	}
+
 	return res;
 }
 
@@ -789,22 +644,10 @@ rbool RDOLogCtrl::scrollHorizontally( int inc )
 	if ( inc == max ( -xPos, min ( inc, xMax - xPos ) ) ) {
 		xPos += inc;
 		
-		ScrollWindowEx( -charWidth * inc, 0,
-			(CONST CRect*)NULL, (CONST CRect*)NULL,
-			(CRgn*)NULL, (CRect*)NULL, SW_INVALIDATE );
-		
 		if ( isVisible( selectedLine) ) {
-			CRect rect;
-			getLineRect( selectedLine, &rect );
-			InvalidateRect( &rect );
+			update(getLineRect(selectedLine));
 		}
 		
-		SCROLLINFO si;
-		si.cbSize = sizeof( si );
-		si.fMask  = SIF_POS;
-		si.nPos   = xPos;
-		SetScrollInfo( SB_HORZ, &si, TRUE );
-
 		updateWindow();
 		res = true;
 	}
@@ -818,7 +661,7 @@ rbool RDOLogCtrl::isVisible( const int index ) const
 
 rbool RDOLogCtrl::isFullyVisible( const int index ) const
 {
-	int lastVisible = yPos + newClientRect.Height() / lineHeight - 1;
+	int lastVisible = yPos + newClientRect.height() / lineHeight - 1;
 	return index <= lastVisible && index >= yPos;
 }
 
@@ -842,34 +685,27 @@ void RDOLogCtrl::selectLine( const int index )
 		//repaintLine() repaints line only if it's visible
 		repaintLine( prevSel );
 	}
-	CWnd* parent = GetParent();
-	if ( parent )
-		::SendNotifyMessage( parent->m_hWnd, WM_LOGSELCHANGE, (WPARAM)prevSel, (LPARAM)selectedLine );
 }
 
-void RDOLogCtrl::getLineRect( const int index, CRect* rect ) const
+QRect RDOLogCtrl::getLineRect(int index) const
 {
-	rect->CopyRect( &newClientRect );
-	rect->top = ( index - yPos ) * lineHeight;
-	rect->bottom = min( rect->top + lineHeight, rect->bottom );
+	QRect rect(newClientRect);
+	rect.setTop(( index - yPos ) * lineHeight);
+	rect.setBottom(min( rect.top() + lineHeight, rect.bottom() ));
+	return rect;
 }
 
 void RDOLogCtrl::repaintLine ( const int index )
 {
 	if ( isVisible( index ) ) {
-		CRect rect;
-		getLineRect( index, &rect );
-		InvalidateRect( &rect );
+		update(getLineRect(index));
 		updateWindow();
 	}
 }
 
 void RDOLogCtrl::updateWindow()
 {
-	CRgn updateRgn;
-	int rgn_type = GetUpdateRgn( &updateRgn );
-	if ( rgn_type != NULLREGION && rgn_type != ERROR )
-		SendNotifyMessage( WM_PAINT, 0, 0 );
+	update();
 }
 
 rbool RDOLogCtrl::makeLineVisible( const int index )
@@ -881,7 +717,7 @@ rbool RDOLogCtrl::makeLineVisible( const int index )
 
 	int inc;
 	if ( yPos < index ) {
-		int lastVisible = yPos + newClientRect.Height() / lineHeight - 1;
+		int lastVisible = yPos + newClientRect.height() / lineHeight - 1;
 		inc = index - lastVisible;
 	} else
 		inc = index - yPos;
@@ -900,113 +736,90 @@ void RDOLogCtrl::addStringToLog( const tstring logStr )
 {
 	mutex.Lock();
 
-	if ( hwnd ) {
-		rbool prevVisible = isVisible( stringsCount - 1 );
+//! @todo qt
+	//if ( !hwnd )
+	//	return;
 
-		strings.push_back( logStr );
-		if ( !stringsCount )
-			yPos_iterator = strings.begin();
-		stringsCount ++;
+	rbool prevVisible = isVisible( stringsCount - 1 );
 
-		recalcWidth( logStr.length() );
+	strings.push_back( logStr );
+	if ( !stringsCount )
+		yPos_iterator = strings.begin();
+	stringsCount ++;
 
-		int lastString = stringsCount - 1;
+	recalcWidth( logStr.length() );
 
-		if ( drawLog ) {
+	int lastString = stringsCount - 1;
 
-			updateScrollBars();
+	if ( drawLog ) {
+
+		updateScrollBars();
 
 
-			fullRepaintLines = 1;
+		fullRepaintLines = 1;
 
-			if (  selectedLine != -1 && selectedLine == lastString - 1 ) {
-				selectedLine = lastString;
-				fullRepaintLines ++;
-			}
-
-			if ( !isFullyVisible( lastString ) && prevVisible && ( !isVisible( selectedLine ) || selectedLine == lastString ) )
-				//::SendMessage( m_hWnd, WM_VSCROLL, MAKELONG(SB_BOTTOM, 0), NULL );
-				scrollVertically( yMax - yPos );
-			else if ( isVisible( lastString ) ) {
-				repaintLine( lastString );
-				if ( fullRepaintLines == 2 )
-					repaintLine( lastString - 1 );
-			}
-
-			fullRepaintLines = 0;
-		} else {
-			if (  selectedLine != -1 && selectedLine == lastString - 1 )
-				selectedLine = lastString;
+		if (  selectedLine != -1 && selectedLine == lastString - 1 ) {
+			selectedLine = lastString;
+			fullRepaintLines ++;
 		}
+
+		if ( !isFullyVisible( lastString ) && prevVisible && ( !isVisible( selectedLine ) || selectedLine == lastString ) )
+			//::SendMessage( m_hWnd, WM_VSCROLL, MAKELONG(SB_BOTTOM, 0), NULL );
+			scrollVertically( yMax - yPos );
+		else if ( isVisible( lastString ) ) {
+			repaintLine( lastString );
+			if ( fullRepaintLines == 2 )
+				repaintLine( lastString - 1 );
+		}
+
+		fullRepaintLines = 0;
+	} else {
+		if (  selectedLine != -1 && selectedLine == lastString - 1 )
+			selectedLine = lastString;
 	}
 
 	mutex.Unlock();
 }
 
-const RDOLogStyle& RDOLogCtrl::getStyle() const
+CREF(RDOLogStyle) RDOLogCtrl::getStyle() const
 {
-	return (*logStyle);
+	return *logStyle;
 }
 
 void RDOLogCtrl::setStyle( RDOLogStyle* style, const rbool needRedraw )
 {
 	logStyle = style;
-	setFont( false );
+	setFont(false);
 	
 	recalcWidth( maxStrWidth );
 	updateScrollBars();
 	
 	if ( needRedraw ) {
-		Invalidate();
+		update();
 		updateWindow();
 	}
 }
 
-void RDOLogCtrl::setFont( const rbool needRedraw )
+void RDOLogCtrl::setFont(rbool needRedraw)
 {
-	if ( !logStyle ) return;
-
-	//If some font set for the log control:
-	//1. select the default font into device context
-	//2. delete log font
-	if ( hfontLog ) {
-		::SelectObject( hdc, fontInit );
-		if ( !::DeleteObject( hfontLog ) )
-			return;
-	}
+	if (!logStyle)
+		return;
 
 	mutex.Lock();
 
-	LOGFONT lf;
-	memset( &lf, 0, sizeof(lf) );
-	// The negative is to allow for leading
-	lf.lfHeight    = -MulDiv( logStyle->font->size, ::GetDeviceCaps( hdc, LOGPIXELSY ), 72 );
-	lf.lfWeight    = logStyle->theme->style & RDOStyleFont::BOLD ? FW_BOLD : FW_NORMAL;
-	lf.lfItalic    = logStyle->theme->style & RDOStyleFont::ITALIC;
-	lf.lfUnderline = logStyle->theme->style & RDOStyleFont::UNDERLINE;
-	lf.lfCharSet   = BYTE(logStyle->font->characterSet);
-#pragma warning(disable: 4996)
-	strcpy( lf.lfFaceName, logStyle->font->name.c_str() );
-#pragma warning(default: 4996)
+	m_font = QFont(logStyle->font->name.c_str());
+	m_font.setBold     (logStyle->theme->style & rdoStyle::RDOStyleFont::BOLD     );
+	m_font.setItalic   (logStyle->theme->style & rdoStyle::RDOStyleFont::ITALIC   );
+	m_font.setUnderline(logStyle->theme->style & rdoStyle::RDOStyleFont::UNDERLINE);
+	m_font.setPointSize(logStyle->font->size);
 
-	//Create new log font
-	hfontLog = ::CreateFontIndirect( &lf );
+	QFontMetrics fontMetrics(m_font);
+	lineHeight = fontMetrics.height() + 2 * logStyle->borders->vertBorder;
+	charWidth  = fontMetrics.averageCharWidth(); // fontMetrics.maxWidth()
 
-	if ( hfontLog ) {
-		TEXTMETRIC tm;
-		if ( hwnd ) {
-			//Select new font into device context and recalculate
-			//text lineHeight and charWidth
-			::SelectObject( hdc, hfontLog );
-			::GetTextMetrics( hdc, &tm );
-			lineHeight = tm.tmHeight + 2 * logStyle->borders->vertBorder;
-			charWidth  = tm.tmAveCharWidth/*tm.tmMaxCharWidth*/;
-		}
-		
-		if ( needRedraw ) {
-			Invalidate();   
-			updateWindow();
-		}
+	if (needRedraw)
+	{
+		update();
 	}
 
 	mutex.Unlock();
@@ -1036,18 +849,19 @@ void RDOLogCtrl::getSelected( tstring& str ) const
 
 void RDOLogCtrl::copy()
 {
-	if ( canCopy() ) {
-		if ( !OpenClipboard() || !::EmptyClipboard() )
-			return;
-		tstring str;
-		getSelected( str );
-		char* ptr = (char*)::LocalAlloc( LMEM_FIXED, str.length() + 1 );
-#pragma warning(disable: 4996)
-		strcpy( ptr, str.c_str() );
-#pragma warning(default: 4996)
-		::SetClipboardData( CF_TEXT, ptr );
-		CloseClipboard();
-	}
+//! @todo qt
+//	if ( canCopy() ) {
+//		if ( !OpenClipboard() || !::EmptyClipboard() )
+//			return;
+//		tstring str;
+//		getSelected( str );
+//		char* ptr = (char*)::LocalAlloc( LMEM_FIXED, str.length() + 1 );
+//#pragma warning(disable: 4996)
+//		strcpy( ptr, str.c_str() );
+//#pragma warning(default: 4996)
+//		::SetClipboardData( CF_TEXT, ptr );
+//		CloseClipboard();
+//	}
 }
 
 void RDOLogCtrl::clear()
@@ -1060,12 +874,11 @@ void RDOLogCtrl::clear()
 	maxStrWidth       = 0;
 	lastViewableLine  = 0;
 	selectedLine = -1;
-	if ( ::IsWindow( m_hWnd ) ) {
-		updateScrollBars();
-		Invalidate();
-		updateWindow();
-	}
-	
+
+	updateScrollBars();
+	update();
+	updateWindow();
+
 	mutex.Unlock();
 }
 
@@ -1279,26 +1092,13 @@ void RDOLogCtrl::setText( tstring text )
 	}
 }
 
-void RDOLogCtrl::setDrawLog( const rbool value )
+void RDOLogCtrl::setDrawLog( rbool value )
 {
 	if ( drawLog != value ) {
 		drawLog = value;
 		updateScrollBars();
-		Invalidate();
+		update();
 		updateWindow();
 		makeLineVisible( selectedLine );
 	}
-}
-
-void RDOLogCtrl::OnDestroy() 
-{
-	if ( hdc ) {
-		::RestoreDC( hdc, saved_hdc );
-	}
-	//If some font is selected into device context
-	//select default font and delete log font
-	if ( hfontLog ) {
-		::DeleteObject( hfontLog );
-	}
-	CWnd ::OnDestroy();
 }

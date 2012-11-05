@@ -542,11 +542,11 @@ void RDOStudioMainFrame::OnViewOptions()
 void RDOStudioMainFrame::updateAllStyles()
 {
 	model->updateStyleOfAllModel();
-	getDockBuild  ().getContext().setEditorStyle(&style_build  );
-	getDockDebug  ().getContext().setEditorStyle(&style_debug  );
-	getDockTrace  ().getContext().setStyle      (&style_trace  );
-	getDockResults().getContext().setEditorStyle(&style_results);
-	getDockFind   ().getContext().setEditorStyle(&style_find   );
+	getDockBuild  ().getContext().setEditorStyle (&style_build  );
+	getDockDebug  ().getContext().setEditorStyle (&style_debug  );
+	getDockTrace  ().getContext().view().setStyle(&style_trace  );
+	getDockResults().getContext().setEditorStyle (&style_results);
+	getDockFind   ().getContext().setEditorStyle (&style_find   );
 	tracer->updateChartsStyles();
 }
 

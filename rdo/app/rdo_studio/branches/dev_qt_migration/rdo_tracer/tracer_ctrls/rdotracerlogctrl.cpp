@@ -11,6 +11,7 @@
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtCore/qprocess.h>
+#include <QtGui/qmessagebox.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracerlogctrl.h"
 #include "app/rdo_studio_mfc/src/application.h"
@@ -30,68 +31,71 @@ using namespace rdoTracerLog;
 // --------------------------------------------------------------------------------
 // -------------------- RDOTracerLogCtrl
 // --------------------------------------------------------------------------------
+RDOTracerLogCtrl::RDOTracerLogCtrl(PTR(QWidget) pParent)
+	: QAbstractScrollArea(pParent)
+{
+	PTR(RDOTracerLogCtrlView) pLog = new RDOTracerLogCtrlView(this);
+	pLog->show();
+
+	setViewport(pLog);
+}
+
+rbool RDOTracerLogCtrl::viewportEvent(PTR(QEvent) pEvent)
+{
+	return false;
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOTracerLogCtrlView
+// --------------------------------------------------------------------------------
 static const UINT FIND_REPLASE_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 
-// ON_UPDATE_COMMAND_UI сделано
+//! @todo qt
+//BEGIN_MESSAGE_MAP( RDOTracerLogCtrlView, RDOLogCtrl )
+//	ON_COMMAND( ID_SEARCH_FIND, OnFind )
+//	ON_COMMAND( ID_SEARCH_FIND_NEXT    , OnFindNext )
+//	ON_COMMAND( ID_SEARCH_FIND_PREVIOUS, OnFindPrev )
+//	ON_COMMAND( ID_EDIT_COPY, OnCopy )
+//	ON_REGISTERED_MESSAGE( FIND_REPLASE_MSG, OnFindReplaceMsg )
+//	ON_UPDATE_COMMAND_UI( ID_EDIT_COPY           , OnCanCopy )
+//	ON_UPDATE_COMMAND_UI( ID_SEARCH_FIND_NEXT    , OnUpdateFindNextPrev )
+//	ON_UPDATE_COMMAND_UI( ID_SEARCH_FIND         , OnUpdateFind )
+//	ON_UPDATE_COMMAND_UI( ID_SEARCH_FIND_PREVIOUS, OnUpdateFindNextPrev )
+//	ON_WM_INITMENUPOPUP()
+//	ON_WM_CONTEXTMENU()
+//	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR , OnUpdateCoordStatusBar )
+//	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar )
+//END_MESSAGE_MAP()
 
-BEGIN_MESSAGE_MAP( RDOTracerLogCtrl, RDOLogCtrl )
-	ON_WM_CREATE()
-	ON_COMMAND( ID_SEARCH_FIND, OnFind )
-	ON_COMMAND( ID_SEARCH_FIND_NEXT    , OnFindNext )
-	ON_COMMAND( ID_SEARCH_FIND_PREVIOUS, OnFindPrev )
-	ON_COMMAND( ID_EDIT_COPY, OnCopy )
-	ON_REGISTERED_MESSAGE( FIND_REPLASE_MSG, OnFindReplaceMsg )
-	ON_UPDATE_COMMAND_UI( ID_EDIT_COPY           , OnCanCopy )
-	ON_UPDATE_COMMAND_UI( ID_SEARCH_FIND_NEXT    , OnUpdateFindNextPrev )
-	ON_UPDATE_COMMAND_UI( ID_SEARCH_FIND         , OnUpdateFind )
-	ON_UPDATE_COMMAND_UI( ID_SEARCH_FIND_PREVIOUS, OnUpdateFindNextPrev )
-	ON_WM_INITMENUPOPUP()
-	ON_WM_CONTEXTMENU()
-	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
-	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR , OnUpdateCoordStatusBar )
-	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar )
-END_MESSAGE_MAP()
-
-IMPLEMENT_DYNCREATE( RDOTracerLogCtrl, RDOLogCtrl )
-
-RDOTracerLogCtrl::RDOTracerLogCtrl() :
-	RDOLogCtrl( &studioApp.getStyle()->style_trace ),
-	addingSubitems( false ),
-	bShowMenu( true )
+RDOTracerLogCtrlView::RDOTracerLogCtrlView(PTR(QAbstractScrollArea) pParent)
+	: RDOLogCtrl(pParent, &studioApp.getStyle()->style_trace)
+	, addingSubitems( false )
+	, bShowMenu( true )
 {
+	//! todo qt
+	//popupMenu.CreatePopupMenu();
+
+	//if (AfxGetMainWnd())
+	//{
+	//	CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
+	//	if (mainMenu)
+	//	{
+	//		rbool maximized = studioApp.getIMainWnd()->isMDIMaximazed();
+	//		int delta = maximized ? 1 : 0;
+
+	//		appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );
+	//		popupMenu.AppendMenu( MF_SEPARATOR );
+	//		appendMenu( mainMenu->GetSubMenu( 2 + delta ), 0, &popupMenu );
+	//		appendMenu( mainMenu->GetSubMenu( 2 + delta ), 1, &popupMenu );
+	//		appendMenu( mainMenu->GetSubMenu( 2 + delta ), 2, &popupMenu );
+	//	}
+	//}
 }
 
-RDOTracerLogCtrl::~RDOTracerLogCtrl()
-{
-}
+RDOTracerLogCtrlView::~RDOTracerLogCtrlView()
+{}
 
-int RDOTracerLogCtrl::OnCreate( LPCREATESTRUCT lpCreateStruct )
-{
-	if ( RDOLogCtrl::OnCreate(lpCreateStruct) == -1 ) return -1;
-
-	popupMenu.CreatePopupMenu();
-
-	if (AfxGetMainWnd())
-	{
-		CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
-		if (mainMenu)
-		{
-			rbool maximized = studioApp.getIMainWnd()->isMDIMaximazed();
-			int delta = maximized ? 1 : 0;
-
-			appendMenu( mainMenu->GetSubMenu( 1 + delta ), 4, &popupMenu );
-			popupMenu.AppendMenu( MF_SEPARATOR );
-			appendMenu( mainMenu->GetSubMenu( 2 + delta ), 0, &popupMenu );
-			appendMenu( mainMenu->GetSubMenu( 2 + delta ), 1, &popupMenu );
-			appendMenu( mainMenu->GetSubMenu( 2 + delta ), 2, &popupMenu );
-		}
-	}
-
-	return 0;
-}
-
-
-rbool RDOTracerLogCtrl::getItemColors( const int index, RDOLogColorPair* &colors ) const
+rbool RDOTracerLogCtrlView::getItemColors( const int index, RDOLogColorPair* &colors ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
@@ -107,13 +111,14 @@ rbool RDOTracerLogCtrl::getItemColors( const int index, RDOLogColorPair* &colors
 	return res;
 }
 
-void RDOTracerLogCtrl::showFindError( tstring& findStr )
+void RDOTracerLogCtrlView::showFindError( tstring& findStr )
 {
-	MessageBox( rdo::format( ID_MSG_CANTFIND, findStr.c_str() ).c_str(), NULL, MB_OK | MB_ICONWARNING );
-	SetFocus();
+	QMessageBox::warning(this, "RAO-Studio", rdo::format(ID_MSG_CANTFIND, findStr.c_str()).c_str());
+	//! @todo qt
+	// SetFocus();
 }
 
-void RDOTracerLogCtrl::clear()
+void RDOTracerLogCtrlView::clear()
 {
 	mutex.Lock();
 
@@ -123,7 +128,7 @@ void RDOTracerLogCtrl::clear()
 	mutex.Unlock();
 }
 
-void RDOTracerLogCtrl::addStringToLog( const tstring logStr )
+void RDOTracerLogCtrlView::addStringToLog( const tstring logStr )
 {
 	mutex.Lock();
 	
@@ -152,28 +157,29 @@ void RDOTracerLogCtrl::addStringToLog( const tstring logStr )
 	mutex.Unlock();
 }
 
-void RDOTracerLogCtrl::setStyle( RDOTracerLogStyle* style, const rbool needRedraw )
+void RDOTracerLogCtrlView::setStyle( RDOTracerLogStyle* style, const rbool needRedraw )
 {
 	logStyle = style;
 	RDOLogCtrl::setStyle( style, needRedraw );
 }
 
-void RDOTracerLogCtrl::OnCopy()
+void RDOTracerLogCtrlView::OnCopy()
 {
 	copy();
 }
 
-void RDOTracerLogCtrl::OnFind()
+void RDOTracerLogCtrlView::OnFind()
 {
-	firstFoundLine = -1;
-	CFindReplaceDialog* pDlg = new CFindReplaceDialog();
-	DWORD flag = (bSearchDown ? FR_DOWN : 0) | (bMatchCase ? FR_MATCHCASE : 0) | (bMatchWholeWord ? FR_WHOLEWORD : 0);
-	tstring str;
-	getSelected( str );
-	pDlg->Create( true, str.c_str(), NULL, flag, this );
+	//! @todo qt
+	//firstFoundLine = -1;
+	//CFindReplaceDialog* pDlg = new CFindReplaceDialog();
+	//DWORD flag = (bSearchDown ? FR_DOWN : 0) | (bMatchCase ? FR_MATCHCASE : 0) | (bMatchWholeWord ? FR_WHOLEWORD : 0);
+	//tstring str;
+	//getSelected( str );
+	//pDlg->Create( true, str.c_str(), NULL, flag, this );
 }
 
-void RDOTracerLogCtrl::OnFindNext()
+void RDOTracerLogCtrlView::OnFindNext()
 {
 	firstFoundLine = -1;
 	findNext();
@@ -182,7 +188,7 @@ void RDOTracerLogCtrl::OnFindNext()
 	}
 }
 
-void RDOTracerLogCtrl::OnFindPrev()
+void RDOTracerLogCtrlView::OnFindPrev()
 {
 	firstFoundLine = -1;
 	findPrevious();
@@ -191,69 +197,71 @@ void RDOTracerLogCtrl::OnFindPrev()
 	}
 }
 
-LRESULT RDOTracerLogCtrl::OnFindReplaceMsg( WPARAM wParam, LPARAM lParam )
+LRESULT RDOTracerLogCtrlView::OnFindReplaceMsg( WPARAM wParam, LPARAM lParam )
 {
 	UNUSED(wParam);
 
-	CFindReplaceDialog* pDialog = CFindReplaceDialog::GetNotifier( lParam );
+	//! todo qt
+	//CFindReplaceDialog* pDialog = CFindReplaceDialog::GetNotifier( lParam );
 
-	findStr = pDialog->GetFindString();
+	//findStr = pDialog->GetFindString();
 
-	if ( pDialog->IsTerminating() ) {
-		firstFoundLine = -1;
-		SetFocus();
-		return 0;
-	} else {
-		rbool newSearchDown     = pDialog->SearchDown() ? true : false;
-		rbool newMatchCase      = pDialog->MatchCase() ? true : false;
-		rbool newMatchWholeWord = pDialog->MatchWholeWord() ? true : false;
-		if ( newSearchDown != bSearchDown || newMatchCase != bMatchCase || newMatchWholeWord != bMatchWholeWord ) {
-			firstFoundLine = -1;
-		}
-		bSearchDown     = newSearchDown;
-		bMatchCase      = newMatchCase;
-		bMatchWholeWord = newMatchWholeWord;
+	//if ( pDialog->IsTerminating() ) {
+	//	firstFoundLine = -1;
+	//	SetFocus();
+	//	return 0;
+	//} else {
+	//	rbool newSearchDown     = pDialog->SearchDown() ? true : false;
+	//	rbool newMatchCase      = pDialog->MatchCase() ? true : false;
+	//	rbool newMatchWholeWord = pDialog->MatchWholeWord() ? true : false;
+	//	if ( newSearchDown != bSearchDown || newMatchCase != bMatchCase || newMatchWholeWord != bMatchWholeWord ) {
+	//		firstFoundLine = -1;
+	//	}
+	//	bSearchDown     = newSearchDown;
+	//	bMatchCase      = newMatchCase;
+	//	bMatchWholeWord = newMatchWholeWord;
 
-		if ( pDialog->FindNext() ) {
-			findNext();
-			if ( !bHaveFound ) {
-				showFindError( findStr );
-			}
-		}
-	}
+	//	if ( pDialog->FindNext() ) {
+	//		findNext();
+	//		if ( !bHaveFound ) {
+	//			showFindError( findStr );
+	//		}
+	//	}
+	//}
 	return 0;
 }
 
-void RDOTracerLogCtrl::OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu )
-{
-	CWnd::OnInitMenuPopup( pPopupMenu, nIndex, bSysMenu );
-	CFrameWnd* pwndFrame = (CFrameWnd*)AfxGetMainWnd();
-	if( pwndFrame ) pwndFrame->SendMessage( WM_INITMENUPOPUP, WPARAM(pPopupMenu->m_hMenu), MAKELPARAM(nIndex, bSysMenu) );
-}
+//! todo qt
+//void RDOTracerLogCtrlView::OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu )
+//{
+//	CWnd::OnInitMenuPopup( pPopupMenu, nIndex, bSysMenu );
+//	CFrameWnd* pwndFrame = (CFrameWnd*)AfxGetMainWnd();
+//	if( pwndFrame ) pwndFrame->SendMessage( WM_INITMENUPOPUP, WPARAM(pPopupMenu->m_hMenu), MAKELPARAM(nIndex, bSysMenu) );
+//}
+//
+//void RDOTracerLogCtrlView::OnContextMenu( CWnd* pWnd, CPoint pos )
+//{
+//	if ( !bShowMenu ) return;
+//	CWnd::OnContextMenu( pWnd, pos );
+//	if ( popupMenu.m_hMenu ) popupMenu.TrackPopupMenu( TPM_LEFTALIGN | TPM_RIGHTBUTTON, pos.x, pos.y, this );
+//}
 
-void RDOTracerLogCtrl::OnContextMenu( CWnd* pWnd, CPoint pos )
-{
-	if ( !bShowMenu ) return;
-	CWnd::OnContextMenu( pWnd, pos );
-	if ( popupMenu.m_hMenu ) popupMenu.TrackPopupMenu( TPM_LEFTALIGN | TPM_RIGHTBUTTON, pos.x, pos.y, this );
-}
-
-void RDOTracerLogCtrl::OnCanCopy( CCmdUI* pCmdUI )
+void RDOTracerLogCtrlView::OnCanCopy( CCmdUI* pCmdUI )
 {
 	pCmdUI->Enable( canCopy() );
 }
 
-void RDOTracerLogCtrl::OnUpdateFindNextPrev( CCmdUI* pCmdUI )
+void RDOTracerLogCtrlView::OnUpdateFindNextPrev( CCmdUI* pCmdUI )
 {
 	pCmdUI->Enable( !findStr.empty() );
 }
 
-void RDOTracerLogCtrl::OnUpdateFind( CCmdUI* pCmdUI )
+void RDOTracerLogCtrlView::OnUpdateFind( CCmdUI* pCmdUI )
 {
 	pCmdUI->Enable( stringsCount );
 }
 
-void RDOTracerLogCtrl::OnHelpKeyword()
+void RDOTracerLogCtrlView::onHelpContext()
 {
 	tstring line;
 
@@ -283,7 +291,7 @@ void RDOTracerLogCtrl::OnHelpKeyword()
 	studioApp.callQtAssistant(ba);
 }
 
-void RDOTracerLogCtrl::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
+void RDOTracerLogCtrlView::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
 	if ( selectedLine != -1 ) {
@@ -293,7 +301,7 @@ void RDOTracerLogCtrl::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
 	}
 }
 
-void RDOTracerLogCtrl::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
+void RDOTracerLogCtrlView::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
 	pCmdUI->SetText( rdo::format( ID_STATUSBAR_READONLY ).c_str() );

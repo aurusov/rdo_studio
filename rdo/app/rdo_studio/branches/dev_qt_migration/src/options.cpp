@@ -396,32 +396,33 @@ RDOStudioOptionsColorsStyles::RDOStudioOptionsColorsStyles( RDOStudioOptions& _s
 
 	RDOTracerLogTheme* trace_theme = static_cast<RDOTracerLogTheme*>(sheet->style_trace.theme);
 	object = new STYLEObject( STYLEObject::trace, sheet->style_trace.font->name, sheet->style_trace.font->size );
-	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG ), trace_theme->style, trace_theme->defaultColor.foregroundColor, trace_theme->defaultColor.backgroundColor ) );
-	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_ES ), trace_theme->style, trace_theme->es.foregroundColor, trace_theme->es.backgroundColor ) );
-	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_EB ), trace_theme->style, trace_theme->eb.foregroundColor, trace_theme->eb.backgroundColor ) );
-	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_EF ), trace_theme->style, trace_theme->ef.foregroundColor, trace_theme->ef.backgroundColor ) );
-	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_EI ), trace_theme->style, trace_theme->ei.foregroundColor, trace_theme->ei.backgroundColor ) );
-	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_ER ), trace_theme->style, trace_theme->er.foregroundColor, trace_theme->er.backgroundColor ) );
-	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_RC ), trace_theme->style, trace_theme->rc.foregroundColor, trace_theme->rc.backgroundColor ) );
-	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_RE ), trace_theme->style, trace_theme->re.foregroundColor, trace_theme->re.backgroundColor ) );
-	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_RK ), trace_theme->style, trace_theme->rk.foregroundColor, trace_theme->rk.backgroundColor ) );
-	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_V ),  trace_theme->style, trace_theme->v.foregroundColor,  trace_theme->v.backgroundColor  ) );
-	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_STATUS ), trace_theme->style, trace_theme->s.foregroundColor, trace_theme->s.backgroundColor ) );
-	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_DPS ), trace_theme->style, trace_theme->dps.foregroundColor, trace_theme->dps.backgroundColor ) );
-	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_SB ),  trace_theme->style, trace_theme->sb.foregroundColor,  trace_theme->sb.backgroundColor  ) );
-	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_SO ),  trace_theme->style, trace_theme->so.foregroundColor,  trace_theme->so.backgroundColor  ) );
-	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_STN ), trace_theme->style, trace_theme->stn.foregroundColor, trace_theme->stn.backgroundColor ) );
-	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_STD ), trace_theme->style, trace_theme->std.foregroundColor, trace_theme->std.backgroundColor ) );
-	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_STR ), trace_theme->style, trace_theme->str.foregroundColor, trace_theme->str.backgroundColor ) );
-	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_SRC ), trace_theme->style, trace_theme->src.foregroundColor, trace_theme->src.backgroundColor ) );
-	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_SRE ), trace_theme->style, trace_theme->sre.foregroundColor, trace_theme->sre.backgroundColor ) );
-	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_SRK ), trace_theme->style, trace_theme->srk.foregroundColor, trace_theme->srk.backgroundColor ) );
-	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_SD ),  trace_theme->style, trace_theme->sd.foregroundColor,  trace_theme->sd.backgroundColor  ) );
-	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_SES ), trace_theme->style, trace_theme->ses.foregroundColor, trace_theme->ses.backgroundColor ) );
-	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_SEN ), trace_theme->style, trace_theme->sen.foregroundColor, trace_theme->sen.backgroundColor ) );
-	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_SEM ), trace_theme->style, trace_theme->sem.foregroundColor, trace_theme->sem.backgroundColor ) );
-	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_SEF ), trace_theme->style, trace_theme->sef.foregroundColor, trace_theme->sef.backgroundColor ) );
-	object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_SEU ), trace_theme->style, trace_theme->seu.foregroundColor, trace_theme->seu.backgroundColor ) );
+	//! todo qt
+	//object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG ), trace_theme->style, trace_theme->defaultColor.foregroundColor, trace_theme->defaultColor.backgroundColor ) );
+	//object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_ES ), trace_theme->style, trace_theme->es.foregroundColor, trace_theme->es.backgroundColor ) );
+	//object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_EB ), trace_theme->style, trace_theme->eb.foregroundColor, trace_theme->eb.backgroundColor ) );
+	//object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_EF ), trace_theme->style, trace_theme->ef.foregroundColor, trace_theme->ef.backgroundColor ) );
+	//object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_EI ), trace_theme->style, trace_theme->ei.foregroundColor, trace_theme->ei.backgroundColor ) );
+	//object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_ER ), trace_theme->style, trace_theme->er.foregroundColor, trace_theme->er.backgroundColor ) );
+	//object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_RC ), trace_theme->style, trace_theme->rc.foregroundColor, trace_theme->rc.backgroundColor ) );
+	//object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_RE ), trace_theme->style, trace_theme->re.foregroundColor, trace_theme->re.backgroundColor ) );
+	//object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_RK ), trace_theme->style, trace_theme->rk.foregroundColor, trace_theme->rk.backgroundColor ) );
+	//object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_V ),  trace_theme->style, trace_theme->v.foregroundColor,  trace_theme->v.backgroundColor  ) );
+	//object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_STATUS ), trace_theme->style, trace_theme->s.foregroundColor, trace_theme->s.backgroundColor ) );
+	//object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_DPS ), trace_theme->style, trace_theme->dps.foregroundColor, trace_theme->dps.backgroundColor ) );
+	//object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_SB ),  trace_theme->style, trace_theme->sb.foregroundColor,  trace_theme->sb.backgroundColor  ) );
+	//object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_SO ),  trace_theme->style, trace_theme->so.foregroundColor,  trace_theme->so.backgroundColor  ) );
+	//object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_STN ), trace_theme->style, trace_theme->stn.foregroundColor, trace_theme->stn.backgroundColor ) );
+	//object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_STD ), trace_theme->style, trace_theme->std.foregroundColor, trace_theme->std.backgroundColor ) );
+	//object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_STR ), trace_theme->style, trace_theme->str.foregroundColor, trace_theme->str.backgroundColor ) );
+	//object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_SRC ), trace_theme->style, trace_theme->src.foregroundColor, trace_theme->src.backgroundColor ) );
+	//object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_SRE ), trace_theme->style, trace_theme->sre.foregroundColor, trace_theme->sre.backgroundColor ) );
+	//object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_SRK ), trace_theme->style, trace_theme->srk.foregroundColor, trace_theme->srk.backgroundColor ) );
+	//object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_SD ),  trace_theme->style, trace_theme->sd.foregroundColor,  trace_theme->sd.backgroundColor  ) );
+	//object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_SES ), trace_theme->style, trace_theme->ses.foregroundColor, trace_theme->ses.backgroundColor ) );
+	//object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_SEN ), trace_theme->style, trace_theme->sen.foregroundColor, trace_theme->sen.backgroundColor ) );
+	//object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_SEM ), trace_theme->style, trace_theme->sem.foregroundColor, trace_theme->sem.backgroundColor ) );
+	//object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_SEF ), trace_theme->style, trace_theme->sef.foregroundColor, trace_theme->sef.backgroundColor ) );
+	//object->properties.push_back( new STYLEProperty( object, rdo::format( IDS_COLORSTYLE_LOG_SEU ), trace_theme->style, trace_theme->seu.foregroundColor, trace_theme->seu.backgroundColor ) );
 	objects.push_back( object );
 
 	RDOEditorBaseEditTheme* results_theme = static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme);
@@ -572,12 +573,13 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 	sheet->preview_debug.setEditorStyle( &sheet->style_debug );
 	sheet->preview_debug.appendLine( rdo::format( IDS_COLORSTYLE_DEBUG_SAMPLE ) );
 
-	sheet->preview_trace.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, 0 );
-	sheet->preview_trace.setStyle( &sheet->style_trace );
-	sheet->preview_trace.setFocusOnly( true );
-	sheet->preview_trace.setShowMenu( false );
-	sheet->preview_trace.setText( rdo::format( IDS_COLORSTYLE_LOG_SAMPLE ) );
-	sheet->preview_trace.selectLine( 0 );
+	//! todo qt
+	//sheet->preview_trace.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, 0 );
+	sheet->preview_trace.view().setStyle( &sheet->style_trace );
+	sheet->preview_trace.view().setFocusOnly( true );
+	sheet->preview_trace.view().setShowMenu( false );
+	sheet->preview_trace.view().setText( rdo::format( IDS_COLORSTYLE_LOG_SAMPLE ) );
+	sheet->preview_trace.view().selectLine( 0 );
 
 	//! @todo qt
 	//sheet->preview_results.Create( NULL, NULL, WS_CHILD, CRect( 0, 0, 444, 223 ), this, 0 );
@@ -645,7 +647,7 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 	sheet->preview_editor.setGeometry( qRectEdit );
 	sheet->preview_build.setGeometry( qRectEdit );
 	sheet->preview_debug.setGeometry( qRectEdit );
-	sheet->preview_trace.MoveWindow( rectEdit );
+	sheet->preview_trace.setGeometry( qRectEdit );
 	sheet->preview_results.setGeometry( qRectEdit );
 	sheet->preview_find.setGeometry( qRectEdit );
 	sheet->preview_chart->MoveWindow( rectEdit );
@@ -1551,7 +1553,7 @@ void RDOStudioOptionsColorsStyles::setPreviewAsCombo( STYLEObject::Type type )
 		sheet->preview_editor.hide();
 		sheet->preview_build.hide();
 		sheet->preview_debug.hide();
-		sheet->preview_trace.ShowWindow( SW_HIDE );
+		sheet->preview_trace.view().hide();
 		sheet->preview_results.hide();
 		sheet->preview_find.hide();
 		sheet->preview_chart->ShowWindow( SW_HIDE );
@@ -1574,7 +1576,7 @@ void RDOStudioOptionsColorsStyles::setPreviewAsCombo( STYLEObject::Type type )
 			}
 			case STYLEObject::trace: {
 				m_previewAs.SetCurSel( 3 );
-				sheet->preview_trace.ShowWindow( SW_SHOW );
+				sheet->preview_trace.show();
 				break;
 			}
 			case STYLEObject::results: {
@@ -2077,7 +2079,8 @@ RDOStudioOptions::RDOStudioOptions():
 	preview_build(NULL),
 	preview_debug(NULL),
 	preview_results(NULL),
-	preview_find(NULL)
+	preview_find(NULL),
+	preview_trace(NULL)
 {
 	SetTitle( rdo::format( ID_OPTIONS ).c_str() );
 
@@ -2140,7 +2143,7 @@ void RDOStudioOptions::updateStyles()
 	preview_editor.setEditorStyle( &style_editor );
 	preview_build.setEditorStyle( &style_build );
 	preview_debug.setEditorStyle( &style_debug );
-	preview_trace.setStyle( &style_trace );
+	preview_trace.view().setStyle( &style_trace );
 	preview_results.setEditorStyle( &style_results );
 	preview_find.setEditorStyle( &style_find );
 	preview_chart->setStyle( &style_chart );

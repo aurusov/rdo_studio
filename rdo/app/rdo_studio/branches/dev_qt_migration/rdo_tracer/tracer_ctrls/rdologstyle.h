@@ -11,6 +11,7 @@
 #define _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOLOGSTYLE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtGui/qcolor.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/style.h"
 // --------------------------------------------------------------------------------
@@ -33,8 +34,8 @@ public:
 	virtual void load( tstring regPath, tstring regParam );
 	virtual void save( tstring regPath, tstring regParam ) const;
 
-	COLORREF foregroundColor;
-	COLORREF backgroundColor;
+	QColor foregroundColor;
+	QColor backgroundColor;
 };
 
 // --------------------------------------------------------------------------------

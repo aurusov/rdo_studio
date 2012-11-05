@@ -600,7 +600,7 @@ void RDOTracerBase::clear()
 	if( tree )
 		tree->clear();
 	if ( log )
-		log->clear();
+		log->view().clear();
 
 	mutex.Unlock();
 }
@@ -741,7 +741,7 @@ void RDOTracerBase::getTraceString( tstring trace_string )
 	mutex.Lock();
 
 	if ( log ) {
-		log->addStringToLog( trace_string );
+		log->view().addStringToLog( trace_string );
 	}
 
 	action = RUA_NONE;
@@ -840,6 +840,6 @@ void RDOTracerBase::setDrawTrace( const rbool value )
 		drawTrace = value;
 		if ( !drawTrace )
 			clearCharts();
-		log->setDrawLog( value );
+		log->view().setDrawLog( value );
 	}
 }
