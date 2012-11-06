@@ -103,8 +103,9 @@ REF(rdoEditor::RDOEditorTabCtrl) RDOStudioModelView::getTab()
 
 void RDOStudioModelView::OnSearchFindInModel() 
 {
-	PTR(CFindReplaceDialog) pDlg = new CFindReplaceDialog();
-	pDlg->Create(true, m_pTabCtrl->getCurrentEdit()->getWordForFind().c_str(), NULL, FR_HIDEUPDOWN, &m_thisCWnd);
+	//! todo qt
+	//PTR(CFindReplaceDialog) pDlg = new CFindReplaceDialog();
+	//pDlg->Create(true, m_pTabCtrl->getCurrentEdit()->getWordForFind().c_str(), NULL, FR_HIDEUPDOWN, &m_thisCWnd);
 }
 
 LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM /*wParam*/, LPARAM lParam )
