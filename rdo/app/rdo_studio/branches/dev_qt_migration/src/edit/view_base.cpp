@@ -48,11 +48,6 @@ RDOStudioEditBaseView::RDOStudioEditBaseView(QWidget* pParent)
 	m_bufferList.insert(BufferList::value_type(2, Buffer(new QTimer(this))));
 	m_bufferList.insert(BufferList::value_type(3, Buffer(new QTimer(this))));
 
-	BOOST_FOREACH(BufferList::value_type& buffer, m_bufferList)
-	{
-		connect(buffer.second.pTimer, SIGNAL(timeout()), this, SLOT(timerEvent(QTimerEvent*)));
-	}
-
 	//! todo qt
 	//popupMenu.CreatePopupMenu();
 
