@@ -30,7 +30,7 @@ class RDOToolBar: public CToolBar
 public:
 	virtual void init(CWnd* parent, unsigned int tbResID, unsigned int tbDisabledImageResID);
 
-protected:
+private:
 	CImageList disabledImage;
 };
 
@@ -49,7 +49,7 @@ public:
 
 	double getSpeed() const { return 1; /*log( double(slider.GetPos() + 1) ) / log101;*/ } //! @todo qt
 
-protected:
+private:
 	double       log101;
 	CSliderCtrl  slider;
 
