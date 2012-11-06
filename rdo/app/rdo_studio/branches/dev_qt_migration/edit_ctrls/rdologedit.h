@@ -29,12 +29,12 @@ namespace rdoEditCtrl {
 // --------------------------------------------------------------------------------
 class RDOLogEdit: public RDOBaseEdit
 {
-	Q_OBJECT
+Q_OBJECT
+
 public:
 	typedef rdo::simulation::report::LogEditLineInfo RDOLogEditLineInfo;
 	typedef std::list<PTR(RDOLogEditLineInfo)> RDOLogEditLineInfoList;
 
-public:
 	RDOLogEdit(PTR(QWidget) pParent);
 	virtual ~RDOLogEdit();
 
