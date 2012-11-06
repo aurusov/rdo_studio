@@ -27,11 +27,11 @@
 // --------------------------------------------------------------------------------
 class RDOToolBar: public CToolBar
 {
+public:
+	virtual void init(CWnd* parent, unsigned int tbResID, unsigned int tbDisabledImageResID);
+
 protected:
 	CImageList disabledImage;
-
-public:
-	virtual void init( CWnd* parent, unsigned int tbResID, unsigned int tbDisabledImageResID );
 };
 
 // --------------------------------------------------------------------------------
@@ -39,19 +39,23 @@ public:
 // --------------------------------------------------------------------------------
 class RDOToolBarModel: public RDOToolBar
 {
-protected:
-	double log101;
-	CSliderCtrl slider;
-
-	afx_msg void OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar );
-	DECLARE_MESSAGE_MAP()
-
 public:
-	RDOToolBarModel(): RDOToolBar(), log101( log(101.0) ) {}
+	RDOToolBarModel()
+		: RDOToolBar()
+		, log101    (log(101.0))
+	{}
 
-	virtual void init( CWnd* parent, unsigned int tbResID, unsigned int tbDisabledImageResID );
+	virtual void init(CWnd* parent, unsigned int tbResID, unsigned int tbDisabledImageResID);
 
 	double getSpeed() const { return 1; /*log( double(slider.GetPos() + 1) ) / log101;*/ } //! @todo qt
+
+protected:
+	double       log101;
+	CSliderCtrl  slider;
+
+	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	DECLARE_MESSAGE_MAP()
+
 };
 
 // --------------------------------------------------------------------------------
