@@ -11,7 +11,6 @@
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qaction.h>
-#include <QtGui/qboxlayout.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/dock/dock_find.h"
 #include "simulator/report/log_edit_line_info.h"
@@ -22,11 +21,6 @@ DockFind::DockFind(PTR(QWidget) pParent)
 {
 	PTR(context_type) pWidget = new context_type(this);
 	pWidget->setMinimumSize(QSize(300, 150));
-
-	PTR(QVBoxLayout) pLayout = new QVBoxLayout(this);
-	pLayout->setSpacing(0);
-	pLayout->setContentsMargins(0, 0, 0, 0);
-	pLayout->addWidget(pWidget);
 
 	setWidget(pWidget);
 
