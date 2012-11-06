@@ -24,7 +24,6 @@
 #include "app/rdo_studio_mfc/src/model/view.h"
 #include "app/rdo_studio_mfc/src/thread.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
-#include "app/rdo_studio_mfc/src/child_frm.h"
 #include "app/rdo_studio_mfc/src/frame/view.h"
 #include "app/rdo_studio_mfc/src/plugins.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
