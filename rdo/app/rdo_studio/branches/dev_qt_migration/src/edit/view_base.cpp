@@ -41,8 +41,6 @@ RDOStudioEditBaseView::RDOStudioEditBaseView(QWidget* pParent)
 	: QWidget(pParent)
 	, m_currentBuffer(0)
 {
-	m_thisCWnd.Attach(winId());
-
 	m_bufferList.insert(BufferList::value_type(0, Buffer(new QTimer(this))));
 	m_bufferList.insert(BufferList::value_type(1, Buffer(new QTimer(this))));
 	m_bufferList.insert(BufferList::value_type(2, Buffer(new QTimer(this))));
@@ -71,8 +69,6 @@ RDOStudioEditBaseView::RDOStudioEditBaseView(QWidget* pParent)
 
 RDOStudioEditBaseView::~RDOStudioEditBaseView()
 {
-	m_thisCWnd.Detach();
-
 	//! todo qt
 	// eraseMenu(&m_popupMenu);
 }
