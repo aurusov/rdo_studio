@@ -1763,14 +1763,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\child_frm.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\child_frm.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\help_context_i.h"
 				>
 			</File>
