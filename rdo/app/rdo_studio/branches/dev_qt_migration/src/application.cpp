@@ -12,6 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtCore/qprocess.h>
 #include <QtCore/qtextcodec.h>
+#include <QtGui/qmessagebox.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdofile.h"
 #include "kernel/rdothread.h"
@@ -158,15 +159,15 @@ void g_messageOutput(QtMsgType type, const char *msg)
 		break;
 
 	case QtWarningMsg:
-		TRACE1("Warning: %s\n", msg);
+		QMessageBox::warning(studioApp.getMainWnd(), "QtWarning", msg);
 		break;
 
 	case QtCriticalMsg:
-		TRACE1("Critical: %s\n", msg);
+		QMessageBox::critical(studioApp.getMainWnd(), "QtCritical", msg);
 		break;
 
 	case QtFatalMsg:
-		TRACE1("Fatal: %s\n", msg);
+		QMessageBox::critical(studioApp.getMainWnd(), "QtFatal", msg);
 		break;
 	}
 }
