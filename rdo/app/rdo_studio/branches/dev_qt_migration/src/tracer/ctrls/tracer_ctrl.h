@@ -1,21 +1,21 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdologctrl.h
+  \file      tracer_ctrl.h
   \author    Захаров Павел
   \date      12.03.2003
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOLOGCTRL_H_
-#define _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOLOGCTRL_H_
+#ifndef _RDO_STUDIO_MFC_TRACER_CTRLS_TRACER_CTRL_H_
+#define _RDO_STUDIO_MFC_TRACER_CTRLS_TRACER_CTRL_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qwidget.h>
 #include <QtGui/qevent.h>
 #include <QtGui/qabstractscrollarea.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdologstyle.h"
+#include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl_style.h"
 // --------------------------------------------------------------------------------
 
 namespace rdoTracerLog {
@@ -152,4 +152,4 @@ public:
 
 }; // namespace rdoTracerLog
 
-#endif // _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOLOGCTRL_H_
+#endif // _RDO_STUDIO_MFC_TRACER_CTRLS_TRACER_CTRL_H_

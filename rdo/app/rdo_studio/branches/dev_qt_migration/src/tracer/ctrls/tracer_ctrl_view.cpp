@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdotracerlogctrl.cpp
+  \file      tracer_ctrl_view.cpp
   \author    Захаров Павел
   \date      12.03.2003
   \brief     
@@ -13,7 +13,7 @@
 #include <QtCore/qprocess.h>
 #include <QtGui/qmessagebox.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracerlogctrl.h"
+#include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl_view.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/resource.h"

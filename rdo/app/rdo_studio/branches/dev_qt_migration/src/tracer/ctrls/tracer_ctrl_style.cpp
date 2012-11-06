@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdologstyle.cpp
+  \file      tracer_ctrl_style.cpp
   \author    Захаров Павел
   \date      12.03.2003
   \brief     
@@ -11,7 +11,7 @@
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdologstyle.h"
+#include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl_style.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG

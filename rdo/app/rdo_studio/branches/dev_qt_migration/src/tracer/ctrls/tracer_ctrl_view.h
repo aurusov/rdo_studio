@@ -1,20 +1,20 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      rdotracerlogctrl.h
+  \file      tracer_ctrl_view.h
   \author    Захаров Павел
   \date      12.03.2003
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOTRACERLOGCTRL_H_
-#define _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOTRACERLOGCTRL_H_
+#ifndef _RDO_STUDIO_MFC_TRACER_CTRLSTRACER_CTRL_VIEW_H_
+#define _RDO_STUDIO_MFC_TRACER_CTRLSTRACER_CTRL_VIEW_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qabstractscrollarea.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdologctrl.h"
-#include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracerlogstyle.h"
+#include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl.h"
+#include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl_view_style.h"
 #include "app/rdo_studio_mfc/src/help_context_i.h"
 // --------------------------------------------------------------------------------
 
@@ -93,4 +93,4 @@ private:
 
 }; // namespace rdoTracerLog
 
-#endif // _RDO_STUDIO_MFC_RDO_TRACER_CTRLS_RDOTRACERLOGCTRL_H_
+#endif // _RDO_STUDIO_MFC_TRACER_CTRLSTRACER_CTRL_VIEW_H_
