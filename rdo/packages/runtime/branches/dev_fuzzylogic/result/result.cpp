@@ -14,6 +14,7 @@
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <limits>
+#include <boost/optional.hpp>
 #ifdef COMPILER_GCC
 	#include <float.h>
 #endif // COMPILER_GCC
@@ -31,6 +32,40 @@ typedef ruint ruint_type;
 #endif // ARCHITECTURES_AMD64
 
 OPEN_RDO_RUNTIME_NAMESPACE
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOPMDResult
+// --------------------------------------------------------------------------------
+template <class T>
+class ResultStreamItem
+{
+public:
+	ResultStreamItem(rbool predicate, const T& value)
+		: predicate(predicate)
+		, value    (value    )
+	{}
+
+	template <class T>
+	friend rdo::ostream& operator<< (rdo::ostream& stream, const ResultStreamItem<T>& item);
+
+private:
+	rbool predicate;
+	T     value;
+};
+
+template <class T>
+inline rdo::ostream& operator<< (rdo::ostream& stream, const ResultStreamItem<T>& item)
+{
+	if (item.predicate)
+	{
+		stream << item.value;
+	}
+	else
+	{
+		stream << _T("нет данных");
+	}
+	return stream;
+}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOPMDResult
@@ -111,7 +146,7 @@ void RDOPMDWatchPar::checkResult(CREF(LPRDORuntime) pRuntime)
 	{
 		double currTime = pRuntime->getCurrentTime();
 		double val      = m_currValue.getDouble() * (currTime - m_timePrev);
-		m_sum	       += val;
+		m_sum          += val;
 		m_sumSqr       += val * val;
 		m_timePrev      = currTime;
 		m_currValue     = newValue;
@@ -134,18 +169,19 @@ void RDOPMDWatchPar::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) str
 {
 	double currTime = m_resourceID == ~0 ? m_timeErase : pRuntime->getCurrentTime();
 	double val      = m_currValue.getDouble() * (currTime - m_timePrev);
-	m_sum	       += val;
+	m_sum          += val;
 	m_sumSqr       += val * val;
 	double average  = m_sum / (currTime - m_timeBegin);
 
 	stream.width(30);
 	stream << std::left << name()
-		<< _T("\t") << traceValue()
+		<< _T("\t") << ResultStreamItem<tstring>(m_watchNumber > 0, traceValue())
 		<< _T("\t") << m_watchNumber
-		<< _T("\t") << average
-		<< _T("\t") << m_sumSqr
-		<< _T("\t") << m_minValue
-		<< _T("\t") << m_maxValue << _T('\n');
+		<< _T("\t") << ResultStreamItem<double>  (m_watchNumber > 0, average   )
+		<< _T("\t") << ResultStreamItem<double>  (m_watchNumber > 0, m_sumSqr  )
+		<< _T("\t") << ResultStreamItem<RDOValue>(m_watchNumber > 0, m_minValue)
+		<< _T("\t") << ResultStreamItem<RDOValue>(m_watchNumber > 0, m_maxValue)
+		<< _T('\n');
 }
 
 // --------------------------------------------------------------------------------
@@ -175,11 +211,11 @@ void RDOPMDWatchState::resetResult(CREF(LPRDORuntime) pRuntime)
 	{
 		m_currValue = false;
 	}
-	m_sum         = 0;
-	m_sumSqr      = 0;
-	m_minValue    = DBL_MAX;
-	m_maxValue    = DBL_MIN;
-	m_timePrev    = m_timeBegin = pRuntime->getCurrentTime();
+	m_sum      = 0;
+	m_sumSqr   = 0;
+	m_minValue = DBL_MAX;
+	m_maxValue = DBL_MIN;
+	m_timePrev = m_timeBegin = pRuntime->getCurrentTime();
 }
 
 void RDOPMDWatchState::checkResult(CREF(LPRDORuntime) pRuntime)
@@ -202,7 +238,7 @@ void RDOPMDWatchState::checkResult(CREF(LPRDORuntime) pRuntime)
 	{
 		double currTime = pRuntime->getCurrentTime();
 		double val      = currTime - m_timePrev;
-		m_sum	       += val;
+		m_sum          += val;
 		m_sumSqr       += val * val;
 		m_wasChanged    = true;
 		m_watchNumber++;
@@ -228,14 +264,14 @@ void RDOPMDWatchState::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 	double average  = m_sum / (currTime - m_timeBegin);
 
 	stream.width(30);
-	stream << std::left
-		<< name()
-		<< _T("\t") << traceValue()
+	stream << std::left << name()
+		<< _T("\t") << ResultStreamItem<tstring>(m_watchNumber > 0, traceValue())
 		<< _T("\t") << m_watchNumber
-		<< _T("\t") << average
-		<< _T("\t") << m_sumSqr
-		<< _T("\t") << m_minValue
-		<< _T("\t") << m_maxValue << _T('\n');
+		<< _T("\t") << ResultStreamItem<double>(m_watchNumber > 0, average   )
+		<< _T("\t") << ResultStreamItem<double>(m_watchNumber > 0, m_sumSqr  )
+		<< _T("\t") << ResultStreamItem<double>(m_watchNumber > 0, m_minValue)
+		<< _T("\t") << ResultStreamItem<double>(m_watchNumber > 0, m_maxValue)
+		<< _T('\n');
 }
 
 // --------------------------------------------------------------------------------
@@ -270,7 +306,7 @@ void RDOPMDWatchQuant::resetResult(CREF(LPRDORuntime) pRuntime)
 
 void RDOPMDWatchQuant::checkResult(CREF(LPRDORuntime) pRuntime)
 {
-	int newValue = 0;
+	boost::optional<int> newValue;
 	for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != pRuntime->res_end(); it++)
 	{
 		if (*it == 0)
@@ -282,20 +318,24 @@ void RDOPMDWatchQuant::checkResult(CREF(LPRDORuntime) pRuntime)
 		pRuntime->pushGroupFunc(*it);
 		if (m_pLogicCalc->calcValue(pRuntime).getAsBool())
 		{
-			newValue++;
+			if (!newValue.is_initialized())
+			{
+				newValue = 0;
+			}
+			++*newValue;
 		}
 
 		pRuntime->popGroupFunc();
 	}
 
-	if (newValue != m_currValue)
+	if (newValue.is_initialized() && *newValue != m_currValue)
 	{
 		double currTime = pRuntime->getCurrentTime();
 		double val      = m_currValue * (currTime - m_timePrev);
 		m_sum          += val;
 		m_sumSqr       += val * val;
 		m_timePrev      = currTime;
-		m_currValue     = newValue;
+		m_currValue     = *newValue;
 		m_wasChanged    = true;
 		m_watchNumber++;
 
@@ -321,12 +361,13 @@ void RDOPMDWatchQuant::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 
 	stream.width(30);
 	stream << std::left << name()
-		<< _T("\t") << traceValue()
+		<< _T("\t") << ResultStreamItem<tstring>(m_watchNumber > 0, traceValue())
 		<< _T("\t") << m_watchNumber
-		<< _T("\t") << average
-		<< _T("\t") << m_sumSqr
-		<< _T("\t") << m_minValue
-		<< _T("\t") << m_maxValue << _T('\n');
+		<< _T("\t") << ResultStreamItem<double>(m_watchNumber > 0, average   )
+		<< _T("\t") << ResultStreamItem<double>(m_watchNumber > 0, m_sumSqr  )
+		<< _T("\t") << ResultStreamItem<double>(m_watchNumber > 0, m_minValue)
+		<< _T("\t") << ResultStreamItem<double>(m_watchNumber > 0, m_maxValue)
+		<< _T('\n');
 }
 
 void RDOPMDWatchQuant::setLogicCalc(CREF(LPRDOCalc) pLogicCalc)
@@ -393,11 +434,12 @@ void RDOPMDWatchValue::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 	stream.width(30);
 	stream << std::left << name()
 		<< _T("\t") << m_watchNumber
-		<< _T("\t") << average
-		<< _T("\t") << averageSqr
-		<< _T("\t") << deviation
-		<< _T("\t") << m_minValue
-		<< _T("\t") << m_maxValue << _T('\n');
+		<< _T("\t") << ResultStreamItem<double>  (m_watchNumber > 0, average   )
+		<< _T("\t") << ResultStreamItem<double>  (m_watchNumber > 0, averageSqr)
+		<< _T("\t") << ResultStreamItem<double>  (m_watchNumber > 0, deviation )
+		<< _T("\t") << ResultStreamItem<RDOValue>(m_watchNumber > 0, m_minValue)
+		<< _T("\t") << ResultStreamItem<RDOValue>(m_watchNumber > 0, m_maxValue)
+		<< _T('\n');
 }
 
 void RDOPMDWatchValue::checkResourceErased(CREF(LPRDOResource) pResource)
@@ -473,7 +515,8 @@ void RDOPMDGetValue::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) str
 
 	stream.width(30);
 	stream << std::left << name()
-		<< _T("\t") << m_value.getAsString() << _T('\n');
+		<< _T("\t") << m_value.getAsString()
+		<< _T('\n');
 }
 
 CREF(RDOValue) RDOPMDGetValue::getValue() const
