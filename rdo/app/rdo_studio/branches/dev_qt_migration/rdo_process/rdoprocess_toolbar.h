@@ -56,15 +56,15 @@ public:
 };
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOToolBar
+// -------------------- RDOProcToolBar
 // --------------------------------------------------------------------------------
 class RDOProcToolBar: public CToolBar
 {
-protected:
-	CImageList disabledImage;
-
 public:
 	virtual void init( CWnd* parent, unsigned int tbResID, unsigned int tbDisabledImageResID = -1 );
+
+protected:
+	CImageList disabledImage;
 };
 
 // --------------------------------------------------------------------------------
