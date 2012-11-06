@@ -23,21 +23,22 @@ namespace rdoEditor {
 // --------------------------------------------------------------------------------
 class RDOEditorBaseEdit: public rdoEditCtrl::RDOBaseEdit
 {
+public:
+	RDOEditorBaseEdit(PTR(QWidget) pParent);
+	virtual ~RDOEditorBaseEdit();
+
+	void setEditorStyle(PTR(RDOEditorBaseEditStyle) pStyle);
+
+	void replaceCurrent(CREF(tstring) str, int changePosValue = -1) const;
+
 protected:
 	tstring kw0;
 	tstring kw1;
 	tstring kw2;
 	tstring kw3;
 	tstring getAllKW() const;
-	static tstring convertToLexer( CREF(tstring) kw );
 
-public:
-	RDOEditorBaseEdit(PTR(QWidget) pParent);
-	virtual ~RDOEditorBaseEdit();
-
-	void setEditorStyle( RDOEditorBaseEditStyle* _style );
-
-	void replaceCurrent( const tstring str, const int changePosValue = -1 ) const;
+	static tstring convertToLexer(CREF(tstring) kw);
 };
 
 }; // namespace rdoEditor
