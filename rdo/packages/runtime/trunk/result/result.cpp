@@ -212,7 +212,6 @@ void RDOPMDWatchState::resetResult(CREF(LPRDORuntime) pRuntime)
 		m_currValue = false;
 	}
 	m_sum      = 0;
-	m_sumSqr   = 0;
 	m_minValue = DBL_MAX;
 	m_maxValue = DBL_MIN;
 	m_timePrev = m_timeBegin = pRuntime->getCurrentTime();
@@ -239,7 +238,6 @@ void RDOPMDWatchState::checkResult(CREF(LPRDORuntime) pRuntime)
 		double currTime = pRuntime->getCurrentTime();
 		double val      = currTime - m_timePrev;
 		m_sum          += val;
-		m_sumSqr       += val * val;
 		m_wasChanged    = true;
 		m_watchNumber++;
 
@@ -260,17 +258,22 @@ void RDOPMDWatchState::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 	double currTime = pRuntime->getCurrentTime();
 	double val      = m_currValue * (currTime - m_timePrev);
 	m_sum          += val;
-	m_sumSqr       += val * val;
 	double average  = m_sum / (currTime - m_timeBegin);
+
+	if (m_watchNumber == 0)
+	{
+		m_minValue = 0.0;
+		m_maxValue = 0.0;
+	}
 
 	stream.width(30);
 	stream << std::left << name()
-		<< _T("\t") << ResultStreamItem<tstring>(m_watchNumber > 0, traceValue())
-		<< _T("\t") << m_watchNumber
-		<< _T("\t") << ResultStreamItem<double>(m_watchNumber > 0, average   )
-		<< _T("\t") << ResultStreamItem<double>(m_watchNumber > 0, m_sumSqr  )
-		<< _T("\t") << ResultStreamItem<double>(m_watchNumber > 0, m_minValue)
-		<< _T("\t") << ResultStreamItem<double>(m_watchNumber > 0, m_maxValue)
+		<< _T("\t") << _T("Тип:")        << _T("\t") << _T("state")
+		<< _T("\t") << _T("Посл.знач.:") << _T("\t") << traceValue()
+		<< _T("\t") << _T("% соотв.:")   << _T("\t") << average
+		<< _T("\t") << _T("Мин.длит.:")  << _T("\t") << m_minValue
+		<< _T("\t") << _T("Макс.длит.:") << _T("\t") << m_maxValue
+		<< _T("\t") << _T("Числ.наб.:")  << _T("\t") << m_watchNumber
 		<< _T('\n');
 }
 

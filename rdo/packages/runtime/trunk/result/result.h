@@ -110,7 +110,6 @@ private:
 	int       m_watchNumber;
 	rbool     m_currValue;
 	double    m_sum;
-	double    m_sumSqr;
 	double    m_minValue;
 	double    m_maxValue;
 
