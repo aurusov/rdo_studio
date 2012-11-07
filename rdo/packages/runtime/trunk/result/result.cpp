@@ -14,6 +14,7 @@
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <limits>
+#include <boost/format.hpp>
 #ifdef COMPILER_GCC
 	#include <float.h>
 #endif // COMPILER_GCC
@@ -269,10 +270,10 @@ void RDOPMDWatchState::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 	stream << std::left << name()
 		<< _T("\t") << _T("Тип:")        << _T("\t") << _T("state")
 		<< _T("\t") << _T("Посл.знач.:") << _T("\t") << traceValue()
-		<< _T("\t") << _T("% соотв.:")   << _T("\t") << average
-		<< _T("\t") << _T("Мин.длит.:")  << _T("\t") << m_minValue
-		<< _T("\t") << _T("Макс.длит.:") << _T("\t") << m_maxValue
-		<< _T("\t") << _T("Числ.наб.:")  << _T("\t") << m_watchNumber
+		<< _T("\t") << _T("% соотв.:")   << _T("\t") << boost::format(_T("%1.6f")) % average
+		<< _T("\t") << _T("Мин.длит.:")  << _T("\t") << boost::format(_T("%1.6f")) % m_minValue
+		<< _T("\t") << _T("Макс.длит.:") << _T("\t") << boost::format(_T("%1.6f")) % m_maxValue
+		<< _T("\t") << _T("Числ.наб.:")  << _T("\t") << boost::format(_T("%d"))    % m_watchNumber
 		<< _T('\n');
 }
 
