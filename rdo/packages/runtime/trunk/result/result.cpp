@@ -45,8 +45,8 @@ public:
 		, value    (value    )
 	{}
 
-	template <class T1>
-	friend rdo::ostream& operator<< (rdo::ostream& stream, const ResultStreamItem<T1>& item);
+	template <class TS>
+	friend rdo::ostream& operator<< (rdo::ostream& stream, const ResultStreamItem<TS>& item);
 
 private:
 	rbool predicate;
