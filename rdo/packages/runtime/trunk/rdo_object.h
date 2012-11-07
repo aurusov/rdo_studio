@@ -132,8 +132,8 @@ public:
 	*/
 	struct Position
 	{
-		enum {UNDEFINE_POS  = ~0};
-		enum {UNDEFINE_LINE = ~0};
+		static const ruint UNDEFINE_POS  = ~0;
+		static const ruint UNDEFINE_LINE = ~0;
 
 		ruint m_first_line;
 		ruint m_first_pos;
