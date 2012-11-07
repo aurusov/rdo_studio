@@ -43,7 +43,7 @@ inline RDOSrcInfo::Position::Position(ruint first_line, ruint first_pos, ruint l
 
 inline rbool RDOSrcInfo::Position::empty() const
 {
-	return m_first_line == UNDEFINE_LINE && m_first_pos == UNDEFINE_POS && m_last_line == UNDEFINE_LINE && m_last_pos == UNDEFINE_POS;
+	return m_first_line == ruint(UNDEFINE_LINE) && ruint(m_first_pos == UNDEFINE_POS) && m_last_line == ruint(UNDEFINE_LINE) && m_last_pos == ruint(UNDEFINE_POS);
 }
 
 inline rbool RDOSrcInfo::Position::point() const
