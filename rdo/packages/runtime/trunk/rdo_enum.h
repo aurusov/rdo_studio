@@ -32,7 +32,7 @@ public:
 	typedef Enums::const_iterator  CIterator;
 	typedef Enums::const_iterator  const_iterator;
 
-	enum { END = ~0 };
+	static const ruint END = ~0;
 
 	void  add     (CREF(tstring) next);
 	ruint findEnum(CREF(tstring) val) const;
