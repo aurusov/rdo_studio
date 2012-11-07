@@ -14,7 +14,6 @@
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <limits>
-#include <boost/optional.hpp>
 #ifdef COMPILER_GCC
 	#include <float.h>
 #endif // COMPILER_GCC
@@ -309,7 +308,7 @@ void RDOPMDWatchQuant::resetResult(CREF(LPRDORuntime) pRuntime)
 
 void RDOPMDWatchQuant::checkResult(CREF(LPRDORuntime) pRuntime)
 {
-	boost::optional<int> newValue;
+	int newValue = 0;
 	for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != pRuntime->res_end(); it++)
 	{
 		if (*it == 0)
@@ -321,24 +320,20 @@ void RDOPMDWatchQuant::checkResult(CREF(LPRDORuntime) pRuntime)
 		pRuntime->pushGroupFunc(*it);
 		if (m_pLogicCalc->calcValue(pRuntime).getAsBool())
 		{
-			if (!newValue.is_initialized())
-			{
-				newValue = 0;
-			}
-			++*newValue;
+			newValue++;
 		}
 
 		pRuntime->popGroupFunc();
 	}
 
-	if (newValue.is_initialized() && *newValue != m_currValue)
+	if (newValue != m_currValue)
 	{
 		double currTime = pRuntime->getCurrentTime();
 		double val      = m_currValue * (currTime - m_timePrev);
 		m_sum          += val;
 		m_sumSqr       += val * val;
 		m_timePrev      = currTime;
-		m_currValue     = *newValue;
+		m_currValue     = newValue;
 		m_wasChanged    = true;
 		m_watchNumber++;
 
