@@ -127,7 +127,6 @@ void RDOPMDWatchPar::resetResult(CREF(LPRDORuntime) pRuntime)
 	m_currValue   = m_pResource->getParam(m_paramID);
 	m_watchNumber = 0;
 	m_sum         = 0;
-	m_sumSqr      = 0;
 	m_minValue    = m_currValue;
 	m_maxValue    = m_currValue;
 	m_timePrev    = m_timeBegin = m_timeErase = pRuntime->getCurrentTime();
@@ -147,7 +146,6 @@ void RDOPMDWatchPar::checkResult(CREF(LPRDORuntime) pRuntime)
 		double currTime = pRuntime->getCurrentTime();
 		double val      = m_currValue.getDouble() * (currTime - m_timePrev);
 		m_sum          += val;
-		m_sumSqr       += val * val;
 		m_timePrev      = currTime;
 		m_currValue     = newValue;
 		m_wasChanged    = true;
@@ -170,17 +168,16 @@ void RDOPMDWatchPar::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) str
 	double currTime = m_resourceID == ~0 ? m_timeErase : pRuntime->getCurrentTime();
 	double val      = m_currValue.getDouble() * (currTime - m_timePrev);
 	m_sum          += val;
-	m_sumSqr       += val * val;
 	double average  = m_sum / (currTime - m_timeBegin);
 
 	stream.width(30);
 	stream << std::left << name()
-		<< _T("\t") << ResultStreamItem<tstring>(m_watchNumber > 0, traceValue())
-		<< _T("\t") << m_watchNumber
-		<< _T("\t") << ResultStreamItem<double>  (m_watchNumber > 0, average   )
-		<< _T("\t") << ResultStreamItem<double>  (m_watchNumber > 0, m_sumSqr  )
-		<< _T("\t") << ResultStreamItem<RDOValue>(m_watchNumber > 0, m_minValue)
-		<< _T("\t") << ResultStreamItem<RDOValue>(m_watchNumber > 0, m_maxValue)
+		<< _T("\t") << _T("Тип:")        << _T("\t") << _T("par")
+		<< _T("\t") << _T("Посл.знач.:") << _T("\t") << ResultStreamItem<tstring> (m_watchNumber > 0, traceValue())
+		<< _T("\t") << _T("Ср.знач.:")   << _T("\t") << ResultStreamItem<double>  (m_watchNumber > 0, average     )
+		<< _T("\t") << _T("Мин.знач.:")  << _T("\t") << ResultStreamItem<RDOValue>(m_watchNumber > 0, m_minValue  )
+		<< _T("\t") << _T("Макс.знач.:") << _T("\t") << ResultStreamItem<RDOValue>(m_watchNumber > 0, m_maxValue  )
+		<< _T("\t") << _T("Числ.наб.:")  << _T("\t") << m_watchNumber
 		<< _T('\n');
 }
 

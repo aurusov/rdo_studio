@@ -72,7 +72,6 @@ private:
 	int           m_watchNumber;
 	RDOValue      m_currValue;
 	double        m_sum;
-	double        m_sumSqr;
 	RDOValue      m_minValue;
 	RDOValue      m_maxValue;
 
