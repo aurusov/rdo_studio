@@ -399,7 +399,6 @@ void RDOPMDWatchValue::resetResult(CREF(LPRDORuntime) pRuntime)
 	m_watchNumber = 0;
 	m_currValue   = 0;
 	m_sum         = 0;
-	m_sumSqr      = 0;
 	m_minValue    = DBL_MAX;
 	m_maxValue    = DBL_MIN;
 }
@@ -413,28 +412,23 @@ void RDOPMDWatchValue::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 {
 	UNUSED(pRuntime);
 
-	double average, averageSqr, deviation;
+	double average;
 	if (m_watchNumber < 2)
 	{
-		average = averageSqr = deviation = 0;
+		average = 0;
 	}
 	else
 	{
-		average    = m_sum / m_watchNumber;
-		averageSqr = m_sumSqr - 2 * average * m_sum + m_watchNumber * average * average;
-		averageSqr = sqrt(averageSqr / (m_watchNumber - 1));
-		/// @todo а почему корень берем от m_watchNumber?
-		deviation  = averageSqr / sqrt((double)m_watchNumber);
+		average = m_sum / m_watchNumber;
 	}
 
 	stream.width(30);
 	stream << std::left << name()
-		<< _T("\t") << m_watchNumber
-		<< _T("\t") << ResultStreamItem<double>  (m_watchNumber > 0, average   )
-		<< _T("\t") << ResultStreamItem<double>  (m_watchNumber > 0, averageSqr)
-		<< _T("\t") << ResultStreamItem<double>  (m_watchNumber > 0, deviation )
-		<< _T("\t") << ResultStreamItem<RDOValue>(m_watchNumber > 0, m_minValue)
-		<< _T("\t") << ResultStreamItem<RDOValue>(m_watchNumber > 0, m_maxValue)
+		<< _T("\t") << _T("Тип:")        << _T("\t") << _T("value")
+		<< _T("\t") << _T("Ср.знач.:")   << _T("\t") << ResultStreamItem<double>  (m_watchNumber > 0, average   )
+		<< _T("\t") << _T("Мин.знач.:")  << _T("\t") << ResultStreamItem<RDOValue>(m_watchNumber > 0, m_minValue)
+		<< _T("\t") << _T("Макс.знач.:") << _T("\t") << ResultStreamItem<RDOValue>(m_watchNumber > 0, m_maxValue)
+		<< _T("\t") << _T("Числ.наб.:")  << _T("\t") << m_watchNumber
 		<< _T('\n');
 }
 
@@ -453,7 +447,6 @@ void RDOPMDWatchValue::checkResourceErased(CREF(LPRDOResource) pResource)
 //		pRuntime->getTracer()->writeResult(pRuntime, this);
 		double curr = m_currValue.getDouble();
 		m_sum    += curr;
-		m_sumSqr += curr * curr;
 		m_watchNumber++;
 		if (m_minValue > m_currValue)
 		{
