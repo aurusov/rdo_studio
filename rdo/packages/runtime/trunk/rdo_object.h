@@ -132,8 +132,8 @@ public:
 	*/
 	struct Position
 	{
-		static const ruint UNDEFINE_POS  = ~0;
-		static const ruint UNDEFINE_LINE = ~0;
+		static const ruint UNDEFINE_POS  = ruint(~0);
+		static const ruint UNDEFINE_LINE = ruint(~0);
 
 		ruint m_first_line;
 		ruint m_first_pos;
