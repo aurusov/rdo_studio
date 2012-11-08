@@ -141,8 +141,8 @@ RDOEditorEdit::RDOEditorEdit(PTR(QWidget) pParent, PTR(RDOStudioEditBaseView) pV
 	QObject::connect(this, SIGNAL(modified(int, int, int, int, const QByteArray&, int, int, int)), this, SLOT(catchModified(int, int, int, int, const QByteArray&, int, int, int)));
 	QObject::connect(this, SIGNAL(marginClicked(int, int, int)), this, SLOT(catchMarginClick(int, int, int)));
 	QObject::connect(this, SIGNAL(charAdded(int)), this, SLOT(catchCharAdded(int)));
-	//! @todo qt - обработать сигналы SCN_RDO_POSCHANGED, SCN_RDO_CLICK
-	//QObject::connect(this, SIGNAL(), this, SLOT(catchRdoPosChanged()));
+	QObject::connect(this, SIGNAL(updateUi()), this, SLOT(catchUpdateUi()));
+	//! @todo qt - обработать сигнал SCN_RDO_CLICK (нужен ли в новой версии?)
 	//QObject::connect(this, SIGNAL(), this, SLOT(catchRdoClick()));
 }
 
@@ -157,7 +157,8 @@ void RDOEditorEdit::catchBufferKey(int ch)
 	}
 }
 
-void RDOEditorEdit::catchRdoPosChanged()
+void RDOEditorEdit::catchUpdateUi()
+
 {
 	bufSelStart = -1;
 }
