@@ -12,14 +12,6 @@
 #include "utils/platform.h"
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
-
-#ifdef min
-	#undef min
-#endif
-
-#ifdef max
-	#undef max
-#endif
 // ----------------------------------------------------------------------- INCLUDES
 #include <limits>
 #include <boost/format.hpp>
@@ -274,8 +266,8 @@ void RDOPMDWatchState::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 		<< _T("\t") << _T("Тип:")        << _T("\t") << _T("state")
 		<< _T("\t") << _T("Посл.знач.:") << _T("\t") << traceValue()
 		<< _T("\t") << _T("% соотв.:")   << _T("\t") << boost::format(_T("%1.6f")) % average
-		<< _T("\t") << _T("Мин.длит.:")  << _T("\t") << boost::format(_T("%1.6f")) % (count > 0 ? boost::accumulators::min(m_acc) : 0)
-		<< _T("\t") << _T("Макс.длит.:") << _T("\t") << boost::format(_T("%1.6f")) % (count > 0 ? boost::accumulators::max(m_acc) : 0)
+		<< _T("\t") << _T("Мин.длит.:")  << _T("\t") << boost::format(_T("%1.6f")) % (count > 0 ? (boost::accumulators::min)(m_acc) : 0)
+		<< _T("\t") << _T("Макс.длит.:") << _T("\t") << boost::format(_T("%1.6f")) % (count > 0 ? (boost::accumulators::max)(m_acc) : 0)
 		<< _T("\t") << _T("Числ.наб.:")  << _T("\t") << count
 		<< _T('\n');
 }
