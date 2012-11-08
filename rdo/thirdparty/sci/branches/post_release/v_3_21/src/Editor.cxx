@@ -7316,8 +7316,10 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 		return pdoc->LineStart(wParam + 1) - pdoc->LineStart(wParam);
 
 	case SCI_REPLACESEL: {
-			if (lParam == 0)
+			if (lParam == 0) {
+				EnsureCaretVisible();
 				return 0;
+			}
 			UndoGroup ug(pdoc);
 			ClearSelection();
 			char *replacement = CharPtrFromSPtr(lParam);
