@@ -256,13 +256,20 @@ void RDOPMDWatchState::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 {
 	double currTime = pRuntime->getCurrentTime();
 
+	ruint countCorrection = 0;
 	if (m_currValue)
 	{
 		m_acc(currTime - m_timePrev);
+		countCorrection = 1;
 	}
 
 	double average = boost::accumulators::sum(m_acc) / (currTime - m_timeBegin);
 	ruint  count   = boost::accumulators::count(m_acc);
+
+	if (count > 0)
+	{
+		count -= countCorrection;
+	}
 
 	stream.width(30);
 	stream << std::left << name()
