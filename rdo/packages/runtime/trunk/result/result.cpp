@@ -303,12 +303,8 @@ tstring RDOPMDWatchQuant::traceValue() const
 
 void RDOPMDWatchQuant::resetResult(CREF(LPRDORuntime) pRuntime)
 {
-	m_watchNumber = 0;
-	m_currValue   = -1;
-	m_sum         = 0;
-	m_minValue    = DBL_MAX;
-	m_maxValue    = DBL_MIN;
-	m_timePrev    = m_timeBegin = pRuntime->getCurrentTime();
+	m_currValue = -1;
+	m_timePrev  = m_timeBegin = pRuntime->getCurrentTime();
 }
 
 void RDOPMDWatchQuant::checkResult(CREF(LPRDORuntime) pRuntime)
@@ -333,41 +329,61 @@ void RDOPMDWatchQuant::checkResult(CREF(LPRDORuntime) pRuntime)
 
 	if (newValue != m_currValue)
 	{
-		double currTime = pRuntime->getCurrentTime();
-		double val      = m_currValue * (currTime - m_timePrev);
-		m_sum          += val;
-		m_timePrev      = currTime;
 		m_currValue     = newValue;
+		double currTime = pRuntime->getCurrentTime();
+		m_acc(m_currValue, boost::accumulators::weight = currTime - m_timePrev);
+		m_timePrev      = currTime;
 		m_wasChanged    = true;
-		m_watchNumber++;
-
-		if (m_minValue > m_currValue)
-		{
-			m_minValue = m_currValue;
-		}
-
-		if (m_maxValue < m_currValue)
-		{
-			m_maxValue = m_currValue;
-		}
 	}
 }
 
 void RDOPMDWatchQuant::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) stream)
 {
+	ruint countCorrection = 0;
+
+	//! @todo убрать копипаст
+	int newValue = 0;
+	for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != pRuntime->res_end(); it++)
+	{
+		if (*it == 0)
+			continue;
+
+		if (!(*it)->checkType(m_rtpID))
+			continue;
+
+		pRuntime->pushGroupFunc(*it);
+		if (m_pLogicCalc->calcValue(pRuntime).getAsBool())
+		{
+			newValue++;
+		}
+
+		pRuntime->popGroupFunc();
+	}
+
 	double currTime = pRuntime->getCurrentTime();
-	double val      = m_currValue * (currTime - m_timePrev);
-	m_sum          += val;
-	double average  = m_sum / (currTime - m_timeBegin);
+	m_acc(newValue, boost::accumulators::weight = currTime - m_timePrev);
+	if (newValue == m_currValue)
+	{
+		countCorrection = 1;
+	}
+	m_currValue = newValue;
+
+	double average = boost::accumulators::weighted_mean(m_acc);
+	ruint  count   = boost::accumulators::count(m_acc);
+
+	if (count > 0)
+	{
+		count -= countCorrection;
+	}
 
 	stream.width(30);
 	stream << std::left << name()
 		<< _T("\t") << _T("Тип:")        << _T("\t") << _T("quant")
-		<< _T("\t") << _T("Посл.знач.:") << _T("\t") << ResultStreamItem<tstring>(m_watchNumber > 0, traceValue())
-		<< _T("\t") << _T("Ср.знач.:")   << _T("\t") << ResultStreamItem<double> (m_watchNumber > 0, average     )
-		<< _T("\t") << _T("Мин.знач.:")  << _T("\t") << ResultStreamItem<double> (m_watchNumber > 0, m_minValue  )
-		<< _T("\t") << _T("Макс.знач.:") << _T("\t") << ResultStreamItem<double> (m_watchNumber > 0, m_maxValue  )
-		<< _T("\t") << _T("Числ.наб.:")  << _T("\t") << m_watchNumber
+		<< _T("\t") << _T("Посл.знач.:") << _T("\t") << ResultStreamItem<tstring>(count > 0, traceValue())
+		<< _T("\t") << _T("Ср.знач.:")   << _T("\t") << ResultStreamItem<double> (count > 0, average     )
+		<< _T("\t") << _T("Мин.знач.:")  << _T("\t") << ResultStreamItem<double> (count > 0, (boost::accumulators::min)(m_acc))
+		<< _T("\t") << _T("Макс.знач.:") << _T("\t") << ResultStreamItem<double> (count > 0, (boost::accumulators::max)(m_acc))
+		<< _T("\t") << _T("Числ.наб.:")  << _T("\t") << count
 		<< _T('\n');
 }
 

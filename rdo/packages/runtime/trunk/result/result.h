@@ -165,20 +165,26 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 private:
+	typedef boost::accumulators::accumulator_set<
+		double,
+		boost::accumulators::stats<
+			boost::accumulators::tag::weighted_mean,
+			boost::accumulators::tag::min,
+			boost::accumulators::tag::max,
+			boost::accumulators::tag::count
+		>,
+		double
+	> acc_type;
+
 	RDOPMDWatchQuant(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resTypeName, int rtpID);
 	virtual ~RDOPMDWatchQuant();
 
 	LPRDOCalc m_pLogicCalc;
 	int       m_rtpID;
-
-	int       m_watchNumber;
 	int       m_currValue;
-	double    m_sum;
-	double    m_minValue;
-	double    m_maxValue;
-
 	double    m_timeBegin;
 	double    m_timePrev;
+	acc_type  m_acc;
 
 	DECLARE_IResult;
 	DECLARE_IResultTraceValue;
