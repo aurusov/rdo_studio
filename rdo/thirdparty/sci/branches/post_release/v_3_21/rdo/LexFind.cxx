@@ -24,6 +24,20 @@
 #include "Scintilla.h"
 #include "SciLexer.h"
 
+static inline char RDOMakeUpperCase( char ch )
+{
+	if ( ch >= 'a' && ch <= 'z' ) return static_cast<char>( ch - 'a' + 'A' );
+	if ( ch >= 'à' && ch <= 'ÿ' ) return static_cast<char>( ch - 'à' + 'À' );
+	return ch;
+}
+
+static inline char RDOMakeLowerCase( char ch )
+{
+	if ( ch >= 'A' && ch <= 'Z' ) return static_cast<char>( ch - 'A' + 'a' );
+	if ( ch >= 'À' && ch <= 'ß' ) return static_cast<char>( ch - 'À' + 'à' );
+	return ch;
+}
+
 static void lexerRDOFindColor( unsigned int startPos, int length, int initStyle, WordList *keywordlists[], Accessor &styler )
 {
 	WordList& keywords = *keywordlists[ SCI_RDO_ENDOFLINEONLY_KEYWORDSINDEX ];
