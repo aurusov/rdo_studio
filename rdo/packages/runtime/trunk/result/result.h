@@ -24,6 +24,7 @@
 #include <boost/accumulators/statistics/min.hpp>
 #include <boost/accumulators/statistics/max.hpp>
 #include <boost/accumulators/statistics/count.hpp>
+#include <boost/accumulators/statistics/weighted_mean.hpp>
 
 #ifdef COMPILER_VISUAL_STUDIO
 	#pragma warning(default: 4510)
@@ -80,23 +81,28 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 private:
+	typedef boost::accumulators::accumulator_set<
+		double,
+		boost::accumulators::stats<
+			boost::accumulators::tag::weighted_mean,
+			boost::accumulators::tag::min,
+			boost::accumulators::tag::max,
+			boost::accumulators::tag::count
+		>,
+		double
+	> acc_type;
+
 	RDOPMDWatchPar(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resName, CREF(tstring) parName, ruint resourceID, ruint paramID);
 	virtual ~RDOPMDWatchPar();
 
 	LPRDOResource m_pResource;
 	ruint         m_resourceID;
 	ruint         m_paramID;
-
-	int           m_watchNumber;
 	RDOValue      m_currValue;
-	double        m_sum;
-	RDOValue      m_minValue;
-	RDOValue      m_maxValue;
-
 	double        m_timeBegin;
 	double        m_timePrev;
-
 	double        m_timeErase;
+	acc_type      m_acc;
 
 	DECLARE_INotify;
 	DECLARE_IResult;

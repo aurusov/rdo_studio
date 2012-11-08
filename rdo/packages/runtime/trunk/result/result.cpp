@@ -139,12 +139,8 @@ void RDOPMDWatchPar::resetResult(CREF(LPRDORuntime) pRuntime)
 	m_pResource = pRuntime->getResourceByID(m_resourceID);
 	ASSERT(m_pResource);
 
-	m_currValue   = m_pResource->getParam(m_paramID);
-	m_watchNumber = 0;
-	m_sum         = 0;
-	m_minValue    = m_currValue;
-	m_maxValue    = m_currValue;
-	m_timePrev    = m_timeBegin = m_timeErase = pRuntime->getCurrentTime();
+	m_currValue = m_pResource->getParam(m_paramID);
+	m_timePrev  = m_timeBegin = m_timeErase = pRuntime->getCurrentTime();
 }
 
 void RDOPMDWatchPar::checkResult(CREF(LPRDORuntime) pRuntime)
@@ -159,40 +155,47 @@ void RDOPMDWatchPar::checkResult(CREF(LPRDORuntime) pRuntime)
 	if (newValue != m_currValue)
 	{
 		double currTime = pRuntime->getCurrentTime();
-		double val      = m_currValue.getDouble() * (currTime - m_timePrev);
-		m_sum          += val;
+		m_acc(m_currValue.getDouble(), boost::accumulators::weight = currTime - m_timePrev);
 		m_timePrev      = currTime;
 		m_currValue     = newValue;
 		m_wasChanged    = true;
-		m_watchNumber++;
-
-		if (m_minValue > m_currValue)
-		{
-			m_minValue = m_currValue;
-		}
-
-		if (m_maxValue < m_currValue)
-		{
-			m_maxValue = m_currValue;
-		}
 	}
 }
 
 void RDOPMDWatchPar::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) stream)
 {
-	double currTime = m_resourceID == ~0 ? m_timeErase : pRuntime->getCurrentTime();
-	double val      = m_currValue.getDouble() * (currTime - m_timePrev);
-	m_sum          += val;
-	double average  = m_sum / (currTime - m_timeBegin);
+	ruint countCorrection = 0;
+	if (m_resourceID != ~0)
+	{
+		RDOValue newValue = m_pResource->getParam(m_paramID);
+		double currTime = pRuntime->getCurrentTime();
+		m_acc(newValue.getDouble(), boost::accumulators::weight = currTime - m_timePrev);
+		if (newValue == m_currValue)
+		{
+			countCorrection = 1;
+		}
+		m_currValue = newValue;
+	}
+
+	double average = boost::accumulators::weighted_mean(m_acc);
+	ruint  count   = boost::accumulators::count(m_acc);
+
+	if (count > 0)
+	{
+		count -= countCorrection;
+	}
+
+	RDOValue minValue = RDOValue::fromDouble(m_currValue.type(), (boost::accumulators::min)(m_acc));
+	RDOValue maxValue = RDOValue::fromDouble(m_currValue.type(), (boost::accumulators::max)(m_acc));
 
 	stream.width(30);
 	stream << std::left << name()
 		<< _T("\t") << _T("Тип:")        << _T("\t") << _T("par")
-		<< _T("\t") << _T("Посл.знач.:") << _T("\t") << ResultStreamItem<tstring> (m_watchNumber > 0, traceValue())
-		<< _T("\t") << _T("Ср.знач.:")   << _T("\t") << ResultStreamItem<double>  (m_watchNumber > 0, average     )
-		<< _T("\t") << _T("Мин.знач.:")  << _T("\t") << ResultStreamItem<RDOValue>(m_watchNumber > 0, m_minValue  )
-		<< _T("\t") << _T("Макс.знач.:") << _T("\t") << ResultStreamItem<RDOValue>(m_watchNumber > 0, m_maxValue  )
-		<< _T("\t") << _T("Числ.наб.:")  << _T("\t") << m_watchNumber
+		<< _T("\t") << _T("Посл.знач.:") << _T("\t") << ResultStreamItem<tstring> (count > 0, traceValue())
+		<< _T("\t") << _T("Ср.знач.:")   << _T("\t") << ResultStreamItem<double>  (count > 0, average     )
+		<< _T("\t") << _T("Мин.знач.:")  << _T("\t") << ResultStreamItem<RDOValue>(count > 0, minValue    )
+		<< _T("\t") << _T("Макс.знач.:") << _T("\t") << ResultStreamItem<RDOValue>(count > 0, maxValue    )
+		<< _T("\t") << _T("Числ.наб.:")  << _T("\t") << count
 		<< _T('\n');
 }
 
