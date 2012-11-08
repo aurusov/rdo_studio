@@ -12,6 +12,24 @@
 #define _LIB_RUNTIME_RESULT_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#ifdef COMPILER_VISUAL_STUDIO
+	#pragma warning(disable: 4510)
+	#pragma warning(disable: 4512)
+	#pragma warning(disable: 4610)
+#endif
+
+#include <boost/accumulators/accumulators.hpp>
+#include <boost/accumulators/statistics/stats.hpp>
+#include <boost/accumulators/statistics/sum.hpp>
+#include <boost/accumulators/statistics/min.hpp>
+#include <boost/accumulators/statistics/max.hpp>
+#include <boost/accumulators/statistics/count.hpp>
+
+#ifdef COMPILER_VISUAL_STUDIO
+	#pragma warning(default: 4510)
+	#pragma warning(default: 4512)
+	#pragma warning(default: 4610)
+#endif
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdotrace.h"
 #include "simulator/runtime/rdotrace_i.h"
@@ -101,19 +119,24 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 private:
+	typedef boost::accumulators::accumulator_set<
+		double,
+		boost::accumulators::stats<
+			boost::accumulators::tag::sum,
+			boost::accumulators::tag::min,
+			boost::accumulators::tag::max,
+			boost::accumulators::tag::count
+		>
+	> acc_type;
+
 	RDOPMDWatchState(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(LPRDOCalc) pLogic);
 	virtual ~RDOPMDWatchState();
 
 	LPRDOCalc m_pLogicCalc;
-
-	int       m_watchNumber;
 	rbool     m_currValue;
-	double    m_sum;
-	double    m_minValue;
-	double    m_maxValue;
-
 	double    m_timeBegin;
 	double    m_timePrev;
+	acc_type  m_acc;
 
 	DECLARE_IResult;
 	DECLARE_IResultTraceValue;

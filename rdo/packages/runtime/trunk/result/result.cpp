@@ -12,9 +12,18 @@
 #include "utils/platform.h"
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
+
+#ifdef min
+	#undef min
+#endif
+
+#ifdef max
+	#undef max
+#endif
 // ----------------------------------------------------------------------- INCLUDES
 #include <limits>
 #include <boost/format.hpp>
+
 #ifdef COMPILER_GCC
 	#include <float.h>
 #endif // COMPILER_GCC
@@ -59,6 +68,20 @@ inline rdo::ostream& operator<< (rdo::ostream& stream, const ResultStreamItem<T>
 	if (item.predicate)
 	{
 		stream << item.value;
+	}
+	else
+	{
+		stream << _T("нет данных");
+	}
+	return stream;
+}
+
+template <>
+inline rdo::ostream& operator<< (rdo::ostream& stream, const ResultStreamItem<double>& item)
+{
+	if (item.predicate)
+	{
+		stream << boost::format(_T("%1.6f")) % item.value;
 	}
 	else
 	{
@@ -199,7 +222,6 @@ tstring RDOPMDWatchState::traceValue() const
 
 void RDOPMDWatchState::resetResult(CREF(LPRDORuntime) pRuntime)
 {
-	m_watchNumber = 0;
 	try
 	{
 		m_currValue = fabs(m_pLogicCalc->calcValue(pRuntime).getDouble()) > DBL_EPSILON;
@@ -208,9 +230,6 @@ void RDOPMDWatchState::resetResult(CREF(LPRDORuntime) pRuntime)
 	{
 		m_currValue = false;
 	}
-	m_sum      = 0;
-	m_minValue = DBL_MAX;
-	m_maxValue = DBL_MIN;
 	m_timePrev = m_timeBegin = pRuntime->getCurrentTime();
 }
 
@@ -232,20 +251,8 @@ void RDOPMDWatchState::checkResult(CREF(LPRDORuntime) pRuntime)
 	}
 	else if (!newValue && m_currValue) //! from TRUE to FALSE
 	{
-		double currTime = pRuntime->getCurrentTime();
-		double val      = currTime - m_timePrev;
-		m_sum          += val;
-		m_wasChanged    = true;
-		m_watchNumber++;
-
-		if (m_minValue > val)
-		{
-			m_minValue = val;
-		}
-		if (m_maxValue < val)
-		{
-			m_maxValue = val;
-		}
+		m_acc(pRuntime->getCurrentTime() - m_timePrev);
+		m_wasChanged = true;
 	}
 	m_currValue = newValue;
 }
@@ -253,24 +260,23 @@ void RDOPMDWatchState::checkResult(CREF(LPRDORuntime) pRuntime)
 void RDOPMDWatchState::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) stream)
 {
 	double currTime = pRuntime->getCurrentTime();
-	double val      = m_currValue * (currTime - m_timePrev);
-	m_sum          += val;
-	double average  = m_sum / (currTime - m_timeBegin);
 
-	if (m_watchNumber == 0)
+	if (m_currValue)
 	{
-		m_minValue = 0.0;
-		m_maxValue = 0.0;
+		m_acc(currTime - m_timePrev);
 	}
+
+	double average = boost::accumulators::sum(m_acc) / (currTime - m_timeBegin);
+	ruint  count   = boost::accumulators::count(m_acc);
 
 	stream.width(30);
 	stream << std::left << name()
 		<< _T("\t") << _T("Тип:")        << _T("\t") << _T("state")
 		<< _T("\t") << _T("Посл.знач.:") << _T("\t") << traceValue()
 		<< _T("\t") << _T("% соотв.:")   << _T("\t") << boost::format(_T("%1.6f")) % average
-		<< _T("\t") << _T("Мин.длит.:")  << _T("\t") << boost::format(_T("%1.6f")) % m_minValue
-		<< _T("\t") << _T("Макс.длит.:") << _T("\t") << boost::format(_T("%1.6f")) % m_maxValue
-		<< _T("\t") << _T("Числ.наб.:")  << _T("\t") << m_watchNumber
+		<< _T("\t") << _T("Мин.длит.:")  << _T("\t") << boost::format(_T("%1.6f")) % (count > 0 ? boost::accumulators::min(m_acc) : 0)
+		<< _T("\t") << _T("Макс.длит.:") << _T("\t") << boost::format(_T("%1.6f")) % (count > 0 ? boost::accumulators::max(m_acc) : 0)
+		<< _T("\t") << _T("Числ.наб.:")  << _T("\t") << count
 		<< _T('\n');
 }
 
