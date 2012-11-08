@@ -41,8 +41,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;..\..\..\..\&quot;,&quot;..\..\..\..\thirdparty\jfuzzyqt-1.11\src&quot;,&quot;..\..\..\..\thirdparty\jfuzzyqt-1.11\include&quot;,&quot;src.gen\moc&quot;,&quot;mkspecs\win32-msvc2008&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
+				AdditionalIncludeDirectories="&quot;..\..\..\..\thirdparty\v_1_11\src&quot;,&quot;..\..\..\..\thirdparty\v_1_11\include&quot;,&quot;src.gen\moc&quot;,&quot;mkspecs\win32-msvc2008&quot;"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,QT_DLL,QT_PLUGIN,QT_CORE_LIB,QT_HAVE_MMX,QT_HAVE_3DNOW,QT_HAVE_SSE,QT_HAVE_MMXEXT,QT_HAVE_SSE2,QT_THREAD_SUPPORT"
 				ExceptionHandling="2"
 				RuntimeLibrary="3"
 				WarningLevel="4"
@@ -59,8 +59,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\..\..\..\thirdparty\jfuzzyqt-1.11\bin\jfuzzyqt\Win32\Debug\jfuzzyqt.lib QtCored4.lib"
-				AdditionalLibraryDirectories="&quot;..\..\..\..\thirdparty\jfuzzyqt-1.11\bin\jfuzzyqt\Win32\Debug&quot;, &quot;..\..\build&quot;"
+				AdditionalDependencies="..\..\..\..\thirdparty\v_1_11\bin\jfuzzyqt\Win32\debug\jfuzzyqt.lib QtCored4.lib"
+				AdditionalLibraryDirectories="&quot;..\..\..\..\thirdparty\v_1_11\bin\jfuzzyqt\Win32\Debug&quot;, &quot;..\..\build&quot;"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"

@@ -3,25 +3,34 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_fuzzyQt", "..\projects\tests\test_fuzzyQt.vcproj", "{AC643926-3931-4D0E-8B69-BCA8458F327E}"
 	ProjectSection(ProjectDependencies) = postProject
-		{9BBEAC1D-DE8C-3D84-80AC-0ACD19B6F48A} = {9BBEAC1D-DE8C-3D84-80AC-0ACD19B6F48A}
+		{05CAB3F2-3245-369D-944B-D07414C42268} = {05CAB3F2-3245-369D-944B-D07414C42268}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jfuzzyqt", "..\..\..\thirdparty\jfuzzyqt-1.11\jfuzzyqt.vcproj", "{9BBEAC1D-DE8C-3D84-80AC-0ACD19B6F48A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jfuzzyqt", "..\..\..\thirdparty\v_1_11\jfuzzyqt.vcproj", "{05CAB3F2-3245-369D-944B-D07414C42268}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		debug|Win32 = debug|Win32
 		debug|x86 = debug|x86
+		release|Win32 = release|Win32
 		release|x86 = release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AC643926-3931-4D0E-8B69-BCA8458F327E}.debug|Win32.ActiveCfg = debug|Win32
+		{AC643926-3931-4D0E-8B69-BCA8458F327E}.debug|Win32.Build.0 = debug|Win32
 		{AC643926-3931-4D0E-8B69-BCA8458F327E}.debug|x86.ActiveCfg = debug|Win32
 		{AC643926-3931-4D0E-8B69-BCA8458F327E}.debug|x86.Build.0 = debug|Win32
+		{AC643926-3931-4D0E-8B69-BCA8458F327E}.release|Win32.ActiveCfg = release|Win32
+		{AC643926-3931-4D0E-8B69-BCA8458F327E}.release|Win32.Build.0 = release|Win32
 		{AC643926-3931-4D0E-8B69-BCA8458F327E}.release|x86.ActiveCfg = release|Win32
 		{AC643926-3931-4D0E-8B69-BCA8458F327E}.release|x86.Build.0 = release|Win32
-		{9BBEAC1D-DE8C-3D84-80AC-0ACD19B6F48A}.debug|x86.ActiveCfg = Debug|Win32
-		{9BBEAC1D-DE8C-3D84-80AC-0ACD19B6F48A}.debug|x86.Build.0 = Debug|Win32
-		{9BBEAC1D-DE8C-3D84-80AC-0ACD19B6F48A}.release|x86.ActiveCfg = Release|Win32
-		{9BBEAC1D-DE8C-3D84-80AC-0ACD19B6F48A}.release|x86.Build.0 = Release|Win32
+		{05CAB3F2-3245-369D-944B-D07414C42268}.debug|Win32.ActiveCfg = debug|Win32
+		{05CAB3F2-3245-369D-944B-D07414C42268}.debug|Win32.Build.0 = debug|Win32
+		{05CAB3F2-3245-369D-944B-D07414C42268}.debug|x86.ActiveCfg = debug|Win32
+		{05CAB3F2-3245-369D-944B-D07414C42268}.debug|x86.Build.0 = debug|Win32
+		{05CAB3F2-3245-369D-944B-D07414C42268}.release|Win32.ActiveCfg = Release|Win32
+		{05CAB3F2-3245-369D-944B-D07414C42268}.release|Win32.Build.0 = Release|Win32
+		{05CAB3F2-3245-369D-944B-D07414C42268}.release|x86.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
