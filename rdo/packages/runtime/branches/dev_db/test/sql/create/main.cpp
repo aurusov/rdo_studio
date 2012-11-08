@@ -15,26 +15,25 @@
 #include <QtSql\QtSql>
 #include <QtCore\QCoreApplication>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator\runtime\test\sql\include\connectDB.h"
+#include "simulator\runtime\test\sql\include\generalDB.h"
 // --------------------------------------------------------------------------------
 
 int main(int argc, char *argv[])
 {
 	QCoreApplication app(argc, argv);
-	QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL");
-	db = connectDB(db, "postgres");
+	generalDB db = generalDB::generalDB("localhost","postgres","postgres","rdo",5432);
 
 	QSqlQuery query;
 	QString create_dropDb = "DROP DATABASE IF EXISTS rdo;";
 	QString create_db     = "CREATE DATABASE rdo;";
 
-	bool dbB_drop = query.exec(create_dropDb);
-	bool cr_dbB   = query.exec(create_db);
+	db.m_db.exec(create_dropDb);
+	db.m_db.exec(create_db);
 
-	if (!(dbB_drop*cr_dbB))
-		std::cout << "Creation of datebase failed! :(" << std::endl;
+	//if (!(dbB_drop*cr_dbB))
+	//	std::cout << "Creation of datebase failed! :(" << std::endl;
 
-	db = connectDB(db);
+	generalDB db2 = generalDB::generalDB();
 
 //------------------------
 	QString create_rtp = "CREATE TABLE rtp"
@@ -152,7 +151,7 @@ int main(int argc, char *argv[])
 	if (!(rtp*seq*list*param*real*function*realTr*enumB*enumTr*enumVv*intB*intTr))
 		std::cout << "Creation of structure of datebase failed! :(" << std::endl;
 
-	db.close();
+	db.m_db.close();
 	std::cout << "to be continued...\n";
 //	getch();
 	return 0;

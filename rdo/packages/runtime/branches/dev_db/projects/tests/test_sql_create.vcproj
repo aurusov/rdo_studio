@@ -169,11 +169,11 @@
 			Name=".test"
 			>
 			<File
-				RelativePath="..\..\test\sql\include\connectDB.cpp"
+				RelativePath="..\..\test\sql\include\generalDB.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\test\sql\include\connectDB.h"
+				RelativePath="..\..\test\sql\include\generalDB.h"
 				>
 			</File>
 			<File
