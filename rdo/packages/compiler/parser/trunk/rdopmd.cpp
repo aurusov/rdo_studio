@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/calc_base.h"
+#include "simulator/runtime/result/result.h"
 #include "simulator/runtime/result/result_group.h"
 #include "simulator/compiler/parser/rdopmd.h"
 #include "simulator/compiler/parser/rdoparser.h"

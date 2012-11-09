@@ -14,7 +14,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/smart_ptr/factory.h"
-#include "simulator/runtime/result/result.h"
 #include "converter/smr2rdox/rdo_object.h"
 #include "converter/smr2rdox/rdofun.h"
 // --------------------------------------------------------------------------------
