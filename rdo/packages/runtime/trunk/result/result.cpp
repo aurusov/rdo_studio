@@ -210,8 +210,8 @@ void RDOPMDWatchPar::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) str
 		<< _T("\t") << _T("Макс.знач.:") << _T("\t") << ResultStreamItem<RDOValue>(count > 0, maxValue    )
 		<< _T("\t") << _T("Числ.наб.:")  << _T("\t") << count
 		<< _T("\t") << _T("Стд.откл.:")  << _T("\t") << ResultStreamItem<double>  (varianceEnable, stdDeviation)
-		<< _T("\t") << _T("К.Вар.%:")    << _T("\t") << ResultStreamItem<double>  (averageEnable,  cv          )
-		<< _T("\t") << _T("Пол.Инт:")    << _T("\t") << ResultStreamItem<double>  (count > 0,      median      )
+		<< _T("\t") << _T("К.вар.%:")    << _T("\t") << ResultStreamItem<double>  (averageEnable,  cv          )
+		<< _T("\t") << _T("Медиана:")    << _T("\t") << ResultStreamItem<double>  (count > 0,      median      )
 		<< _T('\n');
 }
 
@@ -419,8 +419,8 @@ void RDOPMDWatchQuant::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 		<< _T("\t") << _T("Макс.знач.:") << _T("\t") << ResultStreamItem<int>    (true, (int)(boost::accumulators::max)(m_acc))
 		<< _T("\t") << _T("Числ.наб.:")  << _T("\t") << count
 		<< _T("\t") << _T("Стд.откл.:")  << _T("\t") << ResultStreamItem<double> (varianceEnable, stdDeviation)
-		<< _T("\t") << _T("К.Вар.%:")    << _T("\t") << ResultStreamItem<double> (averageEnable,  cv          )
-		<< _T("\t") << _T("Пол.Инт:")    << _T("\t") << ResultStreamItem<double> (count > 0,      median      )
+		<< _T("\t") << _T("К.вар.%:")    << _T("\t") << ResultStreamItem<double> (averageEnable,  cv          )
+		<< _T("\t") << _T("Медиана:")    << _T("\t") << ResultStreamItem<double> (count > 0,      median      )
 		<< _T('\n');
 }
 
@@ -494,10 +494,10 @@ void RDOPMDWatchValue::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 		<< _T("\t") << _T("Ср.знач.:")   << _T("\t") << ResultStreamItem<double>  (count > 0, average )
 		<< _T("\t") << _T("Мин.знач.:")  << _T("\t") << ResultStreamItem<RDOValue>(count > 0, minValue)
 		<< _T("\t") << _T("Макс.знач.:") << _T("\t") << ResultStreamItem<RDOValue>(count > 0, maxValue)
-		<< _T("\t") << _T("Числ.изм.:")  << _T("\t") << count
+		<< _T("\t") << _T("Числ.наб.:")  << _T("\t") << count
 		<< _T("\t") << _T("Стд.откл.:")  << _T("\t") << ResultStreamItem<double>  (varianceEnable, stdDeviation)
-		<< _T("\t") << _T("К.Вар.%:")    << _T("\t") << ResultStreamItem<double>  (averageEnable,  cv          )
-		<< _T("\t") << _T("Пол.Инт:")    << _T("\t") << ResultStreamItem<double>  (count > 0,      median      )
+		<< _T("\t") << _T("К.вар.%:")    << _T("\t") << ResultStreamItem<double>  (averageEnable,  cv          )
+		<< _T("\t") << _T("Медиана:")    << _T("\t") << ResultStreamItem<double>  (count > 0,      median      )
 		<< _T('\n');
 }
 
