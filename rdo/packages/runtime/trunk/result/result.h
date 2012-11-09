@@ -91,7 +91,9 @@ private:
 			boost::accumulators::tag::weighted_mean,
 			boost::accumulators::tag::min,
 			boost::accumulators::tag::max,
-			boost::accumulators::tag::count
+			boost::accumulators::tag::count,
+			boost::accumulators::tag::weighted_variance,
+			boost::accumulators::tag::weighted_median(boost::accumulators::with_p_square_quantile)
 		>,
 		double
 	> acc_type;
