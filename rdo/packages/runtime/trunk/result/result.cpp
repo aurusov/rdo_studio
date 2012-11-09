@@ -372,8 +372,24 @@ void RDOPMDWatchQuant::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 		m_wasFinalCalc = true;
 	}
 
-	double average = boost::accumulators::weighted_mean(m_acc);
-	ruint  count   = boost::accumulators::count(m_acc);
+	double average  = boost::accumulators::weighted_mean(m_acc);
+	ruint  count    = boost::accumulators::count(m_acc);
+	double variance = boost::accumulators::weighted_variance(m_acc);
+
+	rbool averageEnable  = count > 0 && fabs(variance) > DBL_EPSILON;
+	rbool varianceEnable = count > 0 && fabs(variance) > DBL_EPSILON;
+
+	double stdDeviation = varianceEnable
+		? sqrt(variance)
+		: 0.0;
+
+	double cv = averageEnable
+		? (variance / average) * 100.0
+		: 0.0;
+
+	double median = count > 0
+		? boost::accumulators::weighted_median(m_acc)
+		: 0.0;
 
 	stream.width(30);
 	stream << std::left << name()
@@ -383,6 +399,9 @@ void RDOPMDWatchQuant::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 		<< _T("\t") << _T("Мин.знач.:")  << _T("\t") << ResultStreamItem<int>    (true, (int)(boost::accumulators::min)(m_acc))
 		<< _T("\t") << _T("Макс.знач.:") << _T("\t") << ResultStreamItem<int>    (true, (int)(boost::accumulators::max)(m_acc))
 		<< _T("\t") << _T("Числ.наб.:")  << _T("\t") << count
+		<< _T("\t") << _T("Стд.откл.:")  << _T("\t") << ResultStreamItem<double> (varianceEnable, stdDeviation)
+		<< _T("\t") << _T("К.Вар.%:")    << _T("\t") << ResultStreamItem<double> (averageEnable,  cv          )
+		<< _T("\t") << _T("Пол.Инт:")    << _T("\t") << ResultStreamItem<double> (count > 0,      median      )
 		<< _T('\n');
 }
 
