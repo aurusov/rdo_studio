@@ -381,8 +381,8 @@ void RDOPMDWatchQuant::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 		<< _T("\t") << _T("Тип:")        << _T("\t") << _T("quant")
 		<< _T("\t") << _T("Посл.знач.:") << _T("\t") << ResultStreamItem<tstring>(count > 0, traceValue())
 		<< _T("\t") << _T("Ср.знач.:")   << _T("\t") << ResultStreamItem<double> (count > 0, average     )
-		<< _T("\t") << _T("Мин.знач.:")  << _T("\t") << ResultStreamItem<double> (count > 0, (boost::accumulators::min)(m_acc))
-		<< _T("\t") << _T("Макс.знач.:") << _T("\t") << ResultStreamItem<double> (count > 0, (boost::accumulators::max)(m_acc))
+		<< _T("\t") << _T("Мин.знач.:")  << _T("\t") << ResultStreamItem<int>    (count > 0, (int)(boost::accumulators::min)(m_acc))
+		<< _T("\t") << _T("Макс.знач.:") << _T("\t") << ResultStreamItem<int>    (count > 0, (int)(boost::accumulators::max)(m_acc))
 		<< _T("\t") << _T("Числ.наб.:")  << _T("\t") << count
 		<< _T('\n');
 }
