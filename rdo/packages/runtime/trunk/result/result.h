@@ -120,8 +120,8 @@ private:
 	double        m_timeBegin;
 	double        m_timePrev;
 	double        m_timeErase;
-	acc_type      m_acc;
 	rbool         m_wasFinalCalc;
+	acc_type      m_acc;
 
 	DECLARE_INotify;
 	DECLARE_IResult;
@@ -161,6 +161,7 @@ private:
 	rbool     m_currValue;
 	double    m_timeBegin;
 	double    m_timePrev;
+	rbool     m_wasFinalCalc;
 	acc_type  m_acc;
 
 	DECLARE_IResult;
@@ -203,6 +204,7 @@ private:
 	ruint     m_currQuant;
 	double    m_timeBegin;
 	double    m_timePrev;
+	rbool     m_wasFinalCalc;
 	acc_type  m_acc;
 
 	ruint calcCurrentQuant(CREF(LPRDORuntime) pRuntime) const;
@@ -275,6 +277,7 @@ private:
 
 	LPRDOCalc m_pArithmCalc;
 	RDOValue  m_value;
+	rbool     m_wasFinalCalc;
 
 	DECLARE_IResult;
 	DECLARE_IResultTraceValue;
