@@ -104,9 +104,10 @@ CREF(tstring) RDOPMDResult::name() const
 // -------------------- RDOPMDWatchPar
 // --------------------------------------------------------------------------------
 RDOPMDWatchPar::RDOPMDWatchPar(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resName, CREF(tstring) parName, ruint resourceID, ruint paramID)
-	: RDOPMDResult(pRuntime, name, trace)
-	, m_resourceID(resourceID           )
-	, m_paramID   (paramID              )
+	: RDOPMDResult  (pRuntime, name, trace)
+	, m_resourceID  (resourceID           )
+	, m_paramID     (paramID              )
+	, m_wasFinalCalc(false                )
 {
 	UNUSED(resName);
 	UNUSED(parName);
@@ -129,7 +130,7 @@ void RDOPMDWatchPar::notify(ruint message, PTR(void) pParam)
 
 tstring RDOPMDWatchPar::traceValue() const
 {
-	return rdo::toString(m_currValue);
+	return rdo::toString(m_currentValue.rdoValue);
 }
 
 void RDOPMDWatchPar::resetResult(CREF(LPRDORuntime) pRuntime)
@@ -139,8 +140,9 @@ void RDOPMDWatchPar::resetResult(CREF(LPRDORuntime) pRuntime)
 	m_pResource = pRuntime->getResourceByID(m_resourceID);
 	ASSERT(m_pResource);
 
-	m_currValue = m_pResource->getParam(m_paramID);
-	m_timePrev  = m_timeBegin = m_timeErase = pRuntime->getCurrentTime();
+	m_currentValue = m_pResource->getParam(m_paramID);
+	m_timePrev     = m_timeBegin = m_timeErase = pRuntime->getCurrentTime();
+	m_wasFinalCalc = false;
 }
 
 void RDOPMDWatchPar::checkResult(CREF(LPRDORuntime) pRuntime)
@@ -150,43 +152,38 @@ void RDOPMDWatchPar::checkResult(CREF(LPRDORuntime) pRuntime)
 		return;
 	}
 
+	double currTime = pRuntime->getCurrentTime();
+	m_currentValue.weight += currTime - m_timePrev;
+
 	ASSERT(m_pResource);
 	RDOValue newValue = m_pResource->getParam(m_paramID);
-	if (newValue != m_currValue)
+	if (newValue != m_currentValue.rdoValue)
 	{
-		double currTime = pRuntime->getCurrentTime();
-		m_acc(m_currValue.getDouble(), boost::accumulators::weight = currTime - m_timePrev);
-		m_timePrev      = currTime;
-		m_currValue     = newValue;
-		m_wasChanged    = true;
+		m_acc(m_currentValue.doubleValue, boost::accumulators::weight = m_currentValue.weight);
+
+		m_currentValue = newValue;
+		m_wasChanged   = true;
 	}
+
+	m_timePrev = currTime;
 }
 
 void RDOPMDWatchPar::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) stream)
 {
-	ruint countCorrection = 0;
-	if (m_resourceID != ~0)
+	if (!m_wasFinalCalc)
 	{
-		RDOValue newValue = m_pResource->getParam(m_paramID);
-		double currTime = pRuntime->getCurrentTime();
-		m_acc(newValue.getDouble(), boost::accumulators::weight = currTime - m_timePrev);
-		if (newValue == m_currValue)
-		{
-			countCorrection = 1;
-		}
-		m_currValue = newValue;
+		checkResult(pRuntime);
+
+		m_acc(m_currentValue.doubleValue, boost::accumulators::weight = m_currentValue.weight);
+
+		m_wasFinalCalc = true;
 	}
 
 	double average = boost::accumulators::weighted_mean(m_acc);
 	ruint  count   = boost::accumulators::count(m_acc);
 
-	if (count > 0)
-	{
-		count -= countCorrection;
-	}
-
-	RDOValue minValue = RDOValue::fromDouble(m_currValue.type(), (boost::accumulators::min)(m_acc));
-	RDOValue maxValue = RDOValue::fromDouble(m_currValue.type(), (boost::accumulators::max)(m_acc));
+	RDOValue minValue = RDOValue::fromDouble(m_currentValue.rdoValue.type(), (boost::accumulators::min)(m_acc));
+	RDOValue maxValue = RDOValue::fromDouble(m_currentValue.rdoValue.type(), (boost::accumulators::max)(m_acc));
 
 	stream.width(30);
 	stream << std::left << name()

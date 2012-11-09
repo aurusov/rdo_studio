@@ -95,14 +95,33 @@ private:
 	RDOPMDWatchPar(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resName, CREF(tstring) parName, ruint resourceID, ruint paramID);
 	virtual ~RDOPMDWatchPar();
 
+	struct CurrentValue
+	{
+		RDOValue rdoValue;
+		double   doubleValue;
+		double   weight;
+
+		CurrentValue()
+			: doubleValue(0.0)
+			, weight     (0.0)
+		{}
+
+		CurrentValue(CREF(RDOValue) rdoValue)
+			: rdoValue   (rdoValue)
+			, doubleValue(rdoValue.getDouble())
+			, weight     (0.0)
+		{}
+	};
+
 	LPRDOResource m_pResource;
 	ruint         m_resourceID;
 	ruint         m_paramID;
-	RDOValue      m_currValue;
+	CurrentValue  m_currentValue;
 	double        m_timeBegin;
 	double        m_timePrev;
 	double        m_timeErase;
 	acc_type      m_acc;
+	rbool         m_wasFinalCalc;
 
 	DECLARE_INotify;
 	DECLARE_IResult;
