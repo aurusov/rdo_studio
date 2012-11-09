@@ -303,12 +303,12 @@ RDOPMDWatchQuant::~RDOPMDWatchQuant()
 
 tstring RDOPMDWatchQuant::traceValue() const
 {
-	return rdo::toString(m_currQuant);
+	return rdo::toString(m_currentValue.quant);
 }
 
 void RDOPMDWatchQuant::resetResult(CREF(LPRDORuntime) pRuntime)
 {
-	m_currQuant    = 0;
+	m_currentValue = 0;
 	m_timePrev     = m_timeBegin = pRuntime->getCurrentTime();
 	m_wasFinalCalc = false;
 }
@@ -339,35 +339,41 @@ void RDOPMDWatchQuant::checkResult(CREF(LPRDORuntime) pRuntime)
 {
 	ruint newQuant = calcCurrentQuant(pRuntime);
 
-	if (newQuant != m_currQuant)
+	double currTime = pRuntime->getCurrentTime();
+	m_currentValue.weight += currTime - m_timePrev;
+
+	if (newQuant != m_currentValue.quant)
 	{
-		m_currQuant     = newQuant;
-		double currTime = pRuntime->getCurrentTime();
-		m_acc(m_currQuant, boost::accumulators::weight = currTime - m_timePrev);
-		m_timePrev      = currTime;
-		m_wasChanged    = true;
+		m_acc(m_currentValue.quant, boost::accumulators::weight = m_currentValue.weight);
+		m_currentValue = newQuant;
+		m_wasChanged   = true;
 	}
+
+	m_timePrev = currTime;
 }
 
 void RDOPMDWatchQuant::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) stream)
 {
-	ruint  countCorrection = 0;
-	ruint  newQuant = calcCurrentQuant(pRuntime);
-	double currTime = pRuntime->getCurrentTime();
-	m_acc(newQuant, boost::accumulators::weight = currTime - m_timePrev);
-	if (newQuant == m_currQuant)
+	if (!m_wasFinalCalc)
 	{
-		countCorrection = 1;
+		ruint newQuant = calcCurrentQuant(pRuntime);
+		if (newQuant != m_currentValue.quant)
+		{
+			m_acc(m_currentValue.quant, boost::accumulators::weight = m_currentValue.weight);
+			m_currentValue = newQuant;
+		}
+		else
+		{
+			double currTime = pRuntime->getCurrentTime();
+			m_currentValue.weight += currTime - m_timePrev;
+		}
+		m_acc(m_currentValue.quant, boost::accumulators::weight = m_currentValue.weight);
+
+		m_wasFinalCalc = true;
 	}
-	m_currQuant = newQuant;
 
 	double average = boost::accumulators::weighted_mean(m_acc);
 	ruint  count   = boost::accumulators::count(m_acc);
-
-	if (count > 0)
-	{
-		count -= countCorrection;
-	}
 
 	stream.width(30);
 	stream << std::left << name()

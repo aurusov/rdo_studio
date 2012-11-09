@@ -215,13 +215,29 @@ private:
 	RDOPMDWatchQuant(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resTypeName, int rtpID);
 	virtual ~RDOPMDWatchQuant();
 
-	LPRDOCalc m_pLogicCalc;
-	int       m_rtpID;
-	ruint     m_currQuant;
-	double    m_timeBegin;
-	double    m_timePrev;
-	rbool     m_wasFinalCalc;
-	acc_type  m_acc;
+	struct CurrentValue
+	{
+		ruint   quant;
+		double  weight;
+
+		CurrentValue()
+			: quant (0  )
+			, weight(0.0)
+		{}
+
+		CurrentValue(ruint quant)
+			: quant (quant)
+			, weight(0.0  )
+		{}
+	};
+
+	LPRDOCalc    m_pLogicCalc;
+	int          m_rtpID;
+	CurrentValue m_currentValue;
+	double       m_timeBegin;
+	double       m_timePrev;
+	rbool        m_wasFinalCalc;
+	acc_type     m_acc;
 
 	ruint calcCurrentQuant(CREF(LPRDORuntime) pRuntime) const;
 
