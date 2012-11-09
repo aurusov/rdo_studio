@@ -210,18 +210,18 @@ RDOPMDWatchState::~RDOPMDWatchState()
 
 tstring RDOPMDWatchState::traceValue() const
 {
-	return m_currValue ? _T("TRUE") : _T("FALSE");
+	return m_currentValue.state ? _T("TRUE") : _T("FALSE");
 }
 
 void RDOPMDWatchState::resetResult(CREF(LPRDORuntime) pRuntime)
 {
 	try
 	{
-		m_currValue = fabs(m_pLogicCalc->calcValue(pRuntime).getDouble()) > DBL_EPSILON;
+		m_currentValue = fabs(m_pLogicCalc->calcValue(pRuntime).getDouble()) > DBL_EPSILON;
 	}
 	catch (CREF(RDOUndefinedException))
 	{
-		m_currValue = false;
+		m_currentValue = false;
 	}
 	m_timePrev     = m_timeBegin = pRuntime->getCurrentTime();
 	m_wasFinalCalc = false;
@@ -238,37 +238,42 @@ void RDOPMDWatchState::checkResult(CREF(LPRDORuntime) pRuntime)
 	{
 		newValue = false;
 	}
-	if (newValue && !m_currValue) //! from FALSE to TRUE
+
+	double currTime = pRuntime->getCurrentTime();
+	m_currentValue.duration += currTime - m_timePrev;
+
+	if (!m_currentValue.state && newValue) //! from FALSE to TRUE
 	{
-		m_timePrev   = pRuntime->getCurrentTime();
-		m_wasChanged = true;
+		m_currentValue = newValue;
+		m_wasChanged   = true;
 	}
-	else if (!newValue && m_currValue) //! from TRUE to FALSE
+	else if (m_currentValue.state && !newValue) //! from TRUE to FALSE
 	{
-		m_acc(pRuntime->getCurrentTime() - m_timePrev);
-		m_wasChanged = true;
+		m_acc(m_currentValue.duration);
+		m_currentValue = newValue;
+		m_wasChanged   = true;
 	}
-	m_currValue = newValue;
+
+	m_timePrev = currTime;
 }
 
 void RDOPMDWatchState::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) stream)
 {
+	if (!m_wasFinalCalc)
+	{
+		if (m_currentValue.state)
+		{
+			double currTime = pRuntime->getCurrentTime();
+			m_currentValue.duration += currTime - m_timePrev;
+			m_acc(m_currentValue.duration);
+		}
+
+		m_wasFinalCalc = true;
+	}
+
 	double currTime = pRuntime->getCurrentTime();
-
-	ruint countCorrection = 0;
-	if (m_currValue)
-	{
-		m_acc(currTime - m_timePrev);
-		countCorrection = 1;
-	}
-
-	double average = boost::accumulators::sum(m_acc) / (currTime - m_timeBegin);
-	ruint  count   = boost::accumulators::count(m_acc);
-
-	if (count > 0)
-	{
-		count -= countCorrection;
-	}
+	double average  = boost::accumulators::sum(m_acc) / (currTime - m_timeBegin);
+	ruint  count    = boost::accumulators::count(m_acc);
 
 	stream.width(30);
 	stream << std::left << name()

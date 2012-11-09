@@ -157,12 +157,28 @@ private:
 	RDOPMDWatchState(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(LPRDOCalc) pLogic);
 	virtual ~RDOPMDWatchState();
 
-	LPRDOCalc m_pLogicCalc;
-	rbool     m_currValue;
-	double    m_timeBegin;
-	double    m_timePrev;
-	rbool     m_wasFinalCalc;
-	acc_type  m_acc;
+	struct CurrentValue
+	{
+		rbool  state;
+		double duration;
+
+		CurrentValue()
+			: state   (false)
+			, duration(0.0  )
+		{}
+
+		CurrentValue(rbool state)
+			: state   (state)
+			, duration(0.0  )
+		{}
+	};
+
+	LPRDOCalc     m_pLogicCalc;
+	CurrentValue  m_currentValue;
+	double        m_timeBegin;
+	double        m_timePrev;
+	rbool         m_wasFinalCalc;
+	acc_type      m_acc;
 
 	DECLARE_IResult;
 	DECLARE_IResultTraceValue;
