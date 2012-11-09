@@ -25,6 +25,8 @@
 #include <boost/accumulators/statistics/max.hpp>
 #include <boost/accumulators/statistics/count.hpp>
 #include <boost/accumulators/statistics/weighted_mean.hpp>
+#include <boost/accumulators/statistics/variance.hpp>
+#include <boost/accumulators/statistics/median.hpp>
 
 #ifdef COMPILER_VISUAL_STUDIO
 	#pragma warning(default: 4510)
@@ -269,7 +271,9 @@ private:
 			boost::accumulators::tag::mean,
 			boost::accumulators::tag::min,
 			boost::accumulators::tag::max,
-			boost::accumulators::tag::count
+			boost::accumulators::tag::count,
+			boost::accumulators::tag::variance,
+			boost::accumulators::tag::median(boost::accumulators::with_p_square_quantile)
 		>
 	> acc_type;
 

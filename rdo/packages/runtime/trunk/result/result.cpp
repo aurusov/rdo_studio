@@ -428,8 +428,24 @@ void RDOPMDWatchValue::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 {
 	UNUSED(pRuntime);
 
-	double average = boost::accumulators::mean(m_acc);
-	ruint  count   = boost::accumulators::count(m_acc);
+	double average  = boost::accumulators::mean(m_acc);
+	ruint  count    = boost::accumulators::count(m_acc);
+	double variance = boost::accumulators::variance(m_acc);
+
+	rbool averageEnable  = count > 0 && fabs(variance) > DBL_EPSILON;
+	rbool varianceEnable = count > 0 && fabs(variance) > DBL_EPSILON;
+
+	double stdDeviation = varianceEnable
+		? sqrt(variance)
+		: 0.0;
+
+	double cv = averageEnable
+		? (variance / average) * 100.0
+		: 0.0;
+
+	double median = count > 0
+		? boost::accumulators::median(m_acc)
+		: 0.0;
 
 	RDOValue minValue = RDOValue::fromDouble(m_currValue.type(), (boost::accumulators::min)(m_acc));
 	RDOValue maxValue = RDOValue::fromDouble(m_currValue.type(), (boost::accumulators::max)(m_acc));
@@ -440,7 +456,10 @@ void RDOPMDWatchValue::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 		<< _T("\t") << _T("Ср.знач.:")   << _T("\t") << ResultStreamItem<double>  (count > 0, average )
 		<< _T("\t") << _T("Мин.знач.:")  << _T("\t") << ResultStreamItem<RDOValue>(count > 0, minValue)
 		<< _T("\t") << _T("Макс.знач.:") << _T("\t") << ResultStreamItem<RDOValue>(count > 0, maxValue)
-		<< _T("\t") << _T("Числ.наб.:")  << _T("\t") << count
+		<< _T("\t") << _T("Числ.изм.:")  << _T("\t") << count
+		<< _T("\t") << _T("Стд.откл.:")  << _T("\t") << ResultStreamItem<double>  (varianceEnable, stdDeviation)
+		<< _T("\t") << _T("К.Вар.%:")    << _T("\t") << ResultStreamItem<double>  (averageEnable,  cv          )
+		<< _T("\t") << _T("Пол.Инт:")    << _T("\t") << ResultStreamItem<double>  (count > 0,      median      )
 		<< _T('\n');
 }
 
