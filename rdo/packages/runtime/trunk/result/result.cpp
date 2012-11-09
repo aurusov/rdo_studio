@@ -570,7 +570,8 @@ void RDOPMDGetValue::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) str
 
 	stream.width(30);
 	stream << std::left << name()
-		<< _T("\t") << m_value.getAsString()
+		<< _T("\t") << _T("Тип:")      << _T("\t") << _T("get_value")
+		<< _T("\t") << _T("Значение:") << _T("\t") << m_value.getAsString()
 		<< _T('\n');
 }
 
