@@ -26,11 +26,17 @@ static inline bool isRDOLetter( char ch )
 	return false;
 }
 
+static inline bool isRDOLexerSuchAsIdentifierStyle( char ch )
+{
+	if ( ch == '%' ) return true;
+	return false;
+}
+
 static inline bool isRDOLexerIdentifier( char ch )
 {
 	if ( (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') ||
 	     (ch >= 'à' && ch <= 'ÿ') || (ch >= 'À' && ch <= 'ß') || ch == '¨' || ch == '¸' ||
-	     ch == '_' || ch == '$' || isdigit((rbyte)ch) ) return true;
+	     ch == '_' || ch == '$' || isRDOLexerSuchAsIdentifierStyle(ch) || isdigit((rbyte)ch) ) return true;
 	return false;
 }
 
