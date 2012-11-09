@@ -379,10 +379,10 @@ void RDOPMDWatchQuant::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 	stream.width(30);
 	stream << std::left << name()
 		<< _T("\t") << _T("Тип:")        << _T("\t") << _T("quant")
-		<< _T("\t") << _T("Посл.знач.:") << _T("\t") << ResultStreamItem<tstring>(count > 0, traceValue())
-		<< _T("\t") << _T("Ср.знач.:")   << _T("\t") << ResultStreamItem<double> (count > 0, average     )
-		<< _T("\t") << _T("Мин.знач.:")  << _T("\t") << ResultStreamItem<int>    (count > 0, (int)(boost::accumulators::min)(m_acc))
-		<< _T("\t") << _T("Макс.знач.:") << _T("\t") << ResultStreamItem<int>    (count > 0, (int)(boost::accumulators::max)(m_acc))
+		<< _T("\t") << _T("Посл.знач.:") << _T("\t") << ResultStreamItem<tstring>(true, traceValue())
+		<< _T("\t") << _T("Ср.знач.:")   << _T("\t") << ResultStreamItem<double> (true, average     )
+		<< _T("\t") << _T("Мин.знач.:")  << _T("\t") << ResultStreamItem<int>    (true, (int)(boost::accumulators::min)(m_acc))
+		<< _T("\t") << _T("Макс.знач.:") << _T("\t") << ResultStreamItem<int>    (true, (int)(boost::accumulators::max)(m_acc))
 		<< _T("\t") << _T("Числ.наб.:")  << _T("\t") << count
 		<< _T('\n');
 }
