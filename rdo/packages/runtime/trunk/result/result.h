@@ -176,12 +176,14 @@ private:
 		double
 	> acc_type;
 
+	static const ruint UNDEFINED = ruint(~0);
+
 	RDOPMDWatchQuant(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resTypeName, int rtpID);
 	virtual ~RDOPMDWatchQuant();
 
 	LPRDOCalc m_pLogicCalc;
 	int       m_rtpID;
-	int       m_currValue;
+	ruint     m_currQuant;
 	double    m_timeBegin;
 	double    m_timePrev;
 	acc_type  m_acc;

@@ -298,18 +298,18 @@ RDOPMDWatchQuant::~RDOPMDWatchQuant()
 
 tstring RDOPMDWatchQuant::traceValue() const
 {
-	return rdo::toString(m_currValue);
+	return rdo::toString(m_currQuant);
 }
 
 void RDOPMDWatchQuant::resetResult(CREF(LPRDORuntime) pRuntime)
 {
-	m_currValue = -1;
+	m_currQuant = UNDEFINED;
 	m_timePrev  = m_timeBegin = pRuntime->getCurrentTime();
 }
 
 void RDOPMDWatchQuant::checkResult(CREF(LPRDORuntime) pRuntime)
 {
-	int newValue = 0;
+	ruint newQuant = 0;
 	for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != pRuntime->res_end(); it++)
 	{
 		if (*it == 0)
@@ -321,17 +321,17 @@ void RDOPMDWatchQuant::checkResult(CREF(LPRDORuntime) pRuntime)
 		pRuntime->pushGroupFunc(*it);
 		if (m_pLogicCalc->calcValue(pRuntime).getAsBool())
 		{
-			newValue++;
+			newQuant++;
 		}
 
 		pRuntime->popGroupFunc();
 	}
 
-	if (newValue != m_currValue)
+	if (newQuant != m_currQuant)
 	{
-		m_currValue     = newValue;
+		m_currQuant     = newQuant;
 		double currTime = pRuntime->getCurrentTime();
-		m_acc(m_currValue, boost::accumulators::weight = currTime - m_timePrev);
+		m_acc(m_currQuant, boost::accumulators::weight = currTime - m_timePrev);
 		m_timePrev      = currTime;
 		m_wasChanged    = true;
 	}
@@ -342,7 +342,7 @@ void RDOPMDWatchQuant::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 	ruint countCorrection = 0;
 
 	//! @todo убрать копипаст
-	int newValue = 0;
+	ruint newQuant = 0;
 	for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != pRuntime->res_end(); it++)
 	{
 		if (*it == 0)
@@ -354,19 +354,19 @@ void RDOPMDWatchQuant::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 		pRuntime->pushGroupFunc(*it);
 		if (m_pLogicCalc->calcValue(pRuntime).getAsBool())
 		{
-			newValue++;
+			newQuant++;
 		}
 
 		pRuntime->popGroupFunc();
 	}
 
 	double currTime = pRuntime->getCurrentTime();
-	m_acc(newValue, boost::accumulators::weight = currTime - m_timePrev);
-	if (m_currValue == -1 || newValue == m_currValue)
+	m_acc(newQuant, boost::accumulators::weight = currTime - m_timePrev);
+	if (m_currQuant == UNDEFINED || newQuant == m_currQuant)
 	{
 		countCorrection = 1;
 	}
-	m_currValue = newValue;
+	m_currQuant = newQuant;
 
 	double average = boost::accumulators::weighted_mean(m_acc);
 	ruint  count   = boost::accumulators::count(m_acc);
