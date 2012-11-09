@@ -307,10 +307,10 @@ void RDOPMDWatchQuant::resetResult(CREF(LPRDORuntime) pRuntime)
 	m_timePrev  = m_timeBegin = pRuntime->getCurrentTime();
 }
 
-void RDOPMDWatchQuant::checkResult(CREF(LPRDORuntime) pRuntime)
+ruint RDOPMDWatchQuant::calcCurrentQuant(CREF(LPRDORuntime) pRuntime) const
 {
 	ruint newQuant = 0;
-	for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != pRuntime->res_end(); it++)
+	for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != pRuntime->res_end(); ++it)
 	{
 		if (*it == 0)
 			continue;
@@ -326,6 +326,12 @@ void RDOPMDWatchQuant::checkResult(CREF(LPRDORuntime) pRuntime)
 
 		pRuntime->popGroupFunc();
 	}
+	return newQuant;
+}
+
+void RDOPMDWatchQuant::checkResult(CREF(LPRDORuntime) pRuntime)
+{
+	ruint newQuant = calcCurrentQuant(pRuntime);
 
 	if (newQuant != m_currQuant)
 	{
@@ -339,27 +345,8 @@ void RDOPMDWatchQuant::checkResult(CREF(LPRDORuntime) pRuntime)
 
 void RDOPMDWatchQuant::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) stream)
 {
-	ruint countCorrection = 0;
-
-	//! @todo убрать копипаст
-	ruint newQuant = 0;
-	for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != pRuntime->res_end(); it++)
-	{
-		if (*it == 0)
-			continue;
-
-		if (!(*it)->checkType(m_rtpID))
-			continue;
-
-		pRuntime->pushGroupFunc(*it);
-		if (m_pLogicCalc->calcValue(pRuntime).getAsBool())
-		{
-			newQuant++;
-		}
-
-		pRuntime->popGroupFunc();
-	}
-
+	ruint  countCorrection = 0;
+	ruint  newQuant = calcCurrentQuant(pRuntime);
 	double currTime = pRuntime->getCurrentTime();
 	m_acc(newQuant, boost::accumulators::weight = currTime - m_timePrev);
 	if (m_currQuant == UNDEFINED || newQuant == m_currQuant)

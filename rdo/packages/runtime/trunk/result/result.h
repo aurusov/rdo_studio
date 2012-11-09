@@ -188,6 +188,8 @@ private:
 	double    m_timePrev;
 	acc_type  m_acc;
 
+	ruint calcCurrentQuant(CREF(LPRDORuntime) pRuntime) const;
+
 	DECLARE_IResult;
 	DECLARE_IResultTraceValue;
 	DECLARE_IResultWatchQuant;
