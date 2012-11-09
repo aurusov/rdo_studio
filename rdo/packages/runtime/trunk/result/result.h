@@ -176,8 +176,6 @@ private:
 		double
 	> acc_type;
 
-	static const ruint UNDEFINED = ruint(~0);
-
 	RDOPMDWatchQuant(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resTypeName, int rtpID);
 	virtual ~RDOPMDWatchQuant();
 

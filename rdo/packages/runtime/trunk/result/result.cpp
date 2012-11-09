@@ -303,7 +303,7 @@ tstring RDOPMDWatchQuant::traceValue() const
 
 void RDOPMDWatchQuant::resetResult(CREF(LPRDORuntime) pRuntime)
 {
-	m_currQuant = UNDEFINED;
+	m_currQuant = 0;
 	m_timePrev  = m_timeBegin = pRuntime->getCurrentTime();
 }
 
@@ -335,9 +335,6 @@ void RDOPMDWatchQuant::checkResult(CREF(LPRDORuntime) pRuntime)
 
 	if (newQuant != m_currQuant)
 	{
-		if (m_currQuant == UNDEFINED && newQuant == 0)
-			return;
-
 		m_currQuant     = newQuant;
 		double currTime = pRuntime->getCurrentTime();
 		m_acc(m_currQuant, boost::accumulators::weight = currTime - m_timePrev);
@@ -352,7 +349,7 @@ void RDOPMDWatchQuant::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 	ruint  newQuant = calcCurrentQuant(pRuntime);
 	double currTime = pRuntime->getCurrentTime();
 	m_acc(newQuant, boost::accumulators::weight = currTime - m_timePrev);
-	if (m_currQuant == UNDEFINED || newQuant == m_currQuant)
+	if (newQuant == m_currQuant)
 	{
 		countCorrection = 1;
 	}
