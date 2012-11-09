@@ -417,11 +417,7 @@ void RDOPMDWatchValue::resetResult(CREF(LPRDORuntime) pRuntime)
 {
 	UNUSED(pRuntime);
 
-	m_watchNumber = 0;
-	m_currValue   = 0;
-	m_sum         = 0;
-	m_minValue    = DBL_MAX;
-	m_maxValue    = DBL_MIN;
+	m_currValue = 0;
 }
 
 void RDOPMDWatchValue::checkResult(CREF(LPRDORuntime) pRuntime)
@@ -433,23 +429,19 @@ void RDOPMDWatchValue::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 {
 	UNUSED(pRuntime);
 
-	double average;
-	if (m_watchNumber < 2)
-	{
-		average = 0;
-	}
-	else
-	{
-		average = m_sum / m_watchNumber;
-	}
+	double average = boost::accumulators::mean(m_acc);
+	ruint  count   = boost::accumulators::count(m_acc);
+
+	RDOValue minValue = RDOValue::fromDouble(m_currValue.type(), (boost::accumulators::min)(m_acc));
+	RDOValue maxValue = RDOValue::fromDouble(m_currValue.type(), (boost::accumulators::max)(m_acc));
 
 	stream.width(30);
 	stream << std::left << name()
 		<< _T("\t") << _T("Тип:")        << _T("\t") << _T("value")
-		<< _T("\t") << _T("Ср.знач.:")   << _T("\t") << ResultStreamItem<double>  (m_watchNumber > 0, average   )
-		<< _T("\t") << _T("Мин.знач.:")  << _T("\t") << ResultStreamItem<RDOValue>(m_watchNumber > 0, m_minValue)
-		<< _T("\t") << _T("Макс.знач.:") << _T("\t") << ResultStreamItem<RDOValue>(m_watchNumber > 0, m_maxValue)
-		<< _T("\t") << _T("Числ.наб.:")  << _T("\t") << m_watchNumber
+		<< _T("\t") << _T("Ср.знач.:")   << _T("\t") << ResultStreamItem<double>  (count > 0, average )
+		<< _T("\t") << _T("Мин.знач.:")  << _T("\t") << ResultStreamItem<RDOValue>(count > 0, minValue)
+		<< _T("\t") << _T("Макс.знач.:") << _T("\t") << ResultStreamItem<RDOValue>(count > 0, maxValue)
+		<< _T("\t") << _T("Числ.наб.:")  << _T("\t") << count
 		<< _T('\n');
 }
 
@@ -466,17 +458,7 @@ void RDOPMDWatchValue::checkResourceErased(CREF(LPRDOResource) pResource)
 		m_wasChanged = true;
 		traceResult(); /// @todo убрать отсюда ? (и перенести DECLARE_IResultTrace в приват)
 //		pRuntime->getTracer()->writeResult(pRuntime, this);
-		double curr = m_currValue.getDouble();
-		m_sum    += curr;
-		m_watchNumber++;
-		if (m_minValue > m_currValue)
-		{
-			m_minValue = m_currValue;
-		}
-		if (m_maxValue < m_currValue)
-		{
-			m_maxValue = m_currValue;
-		}
+		m_acc(m_currValue.getDouble());
 		return;
 	}
 	m_pRuntime->popGroupFunc();
