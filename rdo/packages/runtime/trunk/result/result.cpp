@@ -362,7 +362,7 @@ void RDOPMDWatchQuant::calcStat(CREF(LPRDORuntime) pRuntime, REF(rdo::ostream) s
 
 	double currTime = pRuntime->getCurrentTime();
 	m_acc(newValue, boost::accumulators::weight = currTime - m_timePrev);
-	if (newValue == m_currValue)
+	if (m_currValue == -1 || newValue == m_currValue)
 	{
 		countCorrection = 1;
 	}
