@@ -12,6 +12,8 @@
 #include <assert.h>
 #include <ctype.h>
 
+#include "thirdparty/sci/rdo/LexFind.h"
+
 #include "ILexer.h"
 #include "Scintilla.h"
 #include "SciLexer.h"
@@ -29,7 +31,7 @@ using namespace Scintilla;
 
 LexerBase::LexerBase() {
 	for (int wl = 0; wl < numWordLists; wl++)
-		keyWordLists[wl] = new WordList;
+		keyWordLists[wl] = new WordList(wl == SCI_RDO_ENDOFLINEONLY_KEYWORDSINDEX);
 	keyWordLists[numWordLists] = 0;
 }
 
