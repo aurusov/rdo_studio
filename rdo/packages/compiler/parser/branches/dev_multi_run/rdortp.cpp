@@ -56,7 +56,7 @@ void RDORTPResType::addParam(CREF(LPRDORTPParam) param)
 {
 	if (findRTPParam(param->name()))
 	{
-		RDOParser::s_parser()->error().error(param->src_info(), rdo::format("Параметр уже существует: %s", param->name().c_str()));
+		RDOParser::s_parser()->error().error(param->src_info(), rdo::format(_T("Параметр уже существует: %s"), param->name().c_str()));
 	}
 	m_params.push_back(param);
 }
@@ -79,7 +79,7 @@ ruint RDORTPResType::getRTPParamNumber(CREF(tstring) paramName) const
 	return it != m_params.end() ? it - m_params.begin() : UNDEFINED_PARAM;
 }
 
-void RDORTPResType::writeModelStructure(REF(std::ostream) stream) const
+void RDORTPResType::writeModelStructure(REF(rdo::ostream) stream) const
 {
 	stream << getNumber() << " " << name() << " " << getParams().size() << std::endl;
 	for (ruint i = 0; i < getParams().size(); i++)

@@ -82,7 +82,7 @@ public:
 	rbool defined () const;
 	void  end     ();
 
-	void writeModelStructure(REF(std::ostream) stream) const;
+	void writeModelStructure(REF(rdo::ostream) stream) const;
 
 protected:
 	RDORSSResource(CREF(LPRDOParser) pParser, CREF(RDOParserSrcInfo) src_info, CREF(LPRDORTPResType) pResType, ruint id = UNDEFINED_ID);
