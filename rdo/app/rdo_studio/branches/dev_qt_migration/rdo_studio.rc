@@ -1152,6 +1152,7 @@ BEGIN
     BEGIN
         MENUITEM "&Поиск на графике",           ID_CHART_FINDINCHARTS
         MENUITEM "&Добавить на новый график",   ID_CHART_ADDTONEWCHART
+        MENUITEM "Экспорт данных",              ID_CHART_EXPORT
         MENUITEM SEPARATOR
         MENUITEM "'&Схлопнуть' время\tCtrl+W",  ID_CHART_TIMEWRAP
         MENUITEM SEPARATOR

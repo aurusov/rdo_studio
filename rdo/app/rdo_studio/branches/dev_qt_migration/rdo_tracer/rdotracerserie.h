@@ -92,6 +92,9 @@ public:
 	void  removeFromDoc( RDOStudioChartDoc* const doc );
 	rbool isInOneOrMoreDocs() const { return !documents.empty(); };
 	rbool activateFirstDoc() const;
+
+	typedef std::vector<tstring> ExportData;
+	ExportData exportData();
 };
 
 #endif // _RDO_STUDIO_MFC_TRACER_RDOTRACERSERIE_H_

@@ -578,6 +578,8 @@
 #define ID_FLOW_SELECT                  33305
 #define ID_FLOW_CONNECTOR               33306
 #define ID_FLOW_ROTATE                  33307
+#define ID_33308                        33308
+#define ID_CHART_EXPORT                 33309
 #define IDS_DEVELOPERS                  34000
 #define IDS_ER_UNKNOWN                  35000
 #define ID_STATUSBAR_READONLY           40000
@@ -763,7 +765,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        268
-#define _APS_NEXT_COMMAND_VALUE         33308
+#define _APS_NEXT_COMMAND_VALUE         33310
 #define _APS_NEXT_CONTROL_VALUE         1171
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
