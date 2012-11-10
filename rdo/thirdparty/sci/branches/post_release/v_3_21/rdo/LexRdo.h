@@ -6,7 +6,6 @@
 #include "thirdparty/sci/include/ILexer.h"
 #include "thirdparty/sci/lexlib/LexerModule.h"
 
-#define SCN_RDO_POSCHANGED    20000
 #define SCN_RDO_CLICK         20001
 #define SCN_RDO_BUFFERKEY     20002
 
