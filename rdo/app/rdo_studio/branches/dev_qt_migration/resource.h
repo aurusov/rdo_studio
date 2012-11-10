@@ -253,7 +253,6 @@
 #define IDC_STATIC8                     1169
 #define IDC_STATIC9                     1170
 #define ID_CHART_ADDTONEWCHART          32771
-#define ID_DOCK_PROJECT_BAR             32772
 #define ID_EDIT_UPPERCASE               32780
 #define ID_EDIT_LOWERCASE               32781
 #define ID_SEARCH_FIND                  32787
@@ -756,8 +755,7 @@
 #define ID_MSG_MODELCLOSE_ERROR         60004
 #define ID_MSG_MODEL_NEED_STOPED_FOR_CLOSE 60005
 #define ID_MSG_MODEL_NEED_STOPED_FOR_OPEN 60006
-#define ID_MSG_MODEL_NEED_STOPED_FOR_CLOSE2 60006
-#define ID_MSG_MODEL_NEED_STOPED_FOR_OPEN2 60007
+#define ID_MSG_MODELCLOSE_QUERY         60007
 
 // Next default values for new objects
 // 
