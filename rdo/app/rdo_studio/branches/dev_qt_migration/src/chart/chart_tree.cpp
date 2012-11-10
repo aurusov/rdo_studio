@@ -94,8 +94,6 @@ ChartTree::ChartTree(PTR(QWidget) pParent)
 	//		rbool maximized = studioApp.getIMainWnd()->isMDIMaximazed();
 	//		int delta = maximized ? 1 : 0;
 
-	//		appendMenu( mainMenu->GetSubMenu( 6 + delta ), 0, &popupMenu );
-	//		appendMenu( mainMenu->GetSubMenu( 6 + delta ), 1, &popupMenu );
 	//		appendMenu( mainMenu->GetSubMenu( 6 + delta ), 2, &popupMenu );
 	//	}
 	//}
