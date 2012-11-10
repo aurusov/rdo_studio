@@ -20,7 +20,7 @@
 // --------------------------------------------------------------------------------
 // -------------------- RPPageCtrl
 // --------------------------------------------------------------------------------
-const UINT RP_PAGECTRL_DELETEITEM  = ::RegisterWindowMessage( "RP_PAGECTRL_DELETEITEM" );
+const UINT RP_PAGECTRL_DELETEITEM  = ::RegisterWindowMessage( _T("RP_PAGECTRL_DELETEITEM") );
 
 class RPPageCtrlItem;
 
