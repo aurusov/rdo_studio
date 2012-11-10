@@ -27,7 +27,7 @@ rbool RDOCalcGetResourceHelper::getResource(CREF(LPRDORuntime) pRuntime, ruint r
 {
 	LPRDOResource pResource = pRuntime->getResourceByID(resourceID);
 	if (!pResource)
-		false;
+		return false;
 
 	LPRDOType pType(pResource->getResType());
 	ASSERT(pType);

@@ -28,10 +28,10 @@ inline RDORuntimeObject::~RDORuntimeObject()
 // -------------------- Position::Position
 // --------------------------------------------------------------------------------
 inline RDOSrcInfo::Position::Position()
-	: m_first_line(ruint(UNDEFINE_LINE))
-	, m_first_pos (ruint(UNDEFINE_POS ))
-	, m_last_line (ruint(UNDEFINE_LINE))
-	, m_last_pos  (ruint(UNDEFINE_POS ))
+	: m_first_line(UNDEFINE_LINE)
+	, m_first_pos (UNDEFINE_POS )
+	, m_last_line (UNDEFINE_LINE)
+	, m_last_pos  (UNDEFINE_POS )
 {}
 
 inline RDOSrcInfo::Position::Position(ruint first_line, ruint first_pos, ruint last_line, ruint last_pos)

@@ -12,6 +12,29 @@
 #define _LIB_RUNTIME_RESULT_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#ifdef COMPILER_VISUAL_STUDIO
+	#pragma warning(disable: 4510)
+	#pragma warning(disable: 4512)
+	#pragma warning(disable: 4610)
+#endif
+
+#include <boost/accumulators/accumulators.hpp>
+#include <boost/accumulators/statistics/stats.hpp>
+#include <boost/accumulators/statistics/sum.hpp>
+#include <boost/accumulators/statistics/min.hpp>
+#include <boost/accumulators/statistics/max.hpp>
+#include <boost/accumulators/statistics/count.hpp>
+#include <boost/accumulators/statistics/variance.hpp>
+#include <boost/accumulators/statistics/median.hpp>
+#include <boost/accumulators/statistics/weighted_mean.hpp>
+#include <boost/accumulators/statistics/weighted_variance.hpp>
+#include <boost/accumulators/statistics/weighted_median.hpp>
+
+#ifdef COMPILER_VISUAL_STUDIO
+	#pragma warning(default: 4510)
+	#pragma warning(default: 4512)
+	#pragma warning(default: 4610)
+#endif
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdotrace.h"
 #include "simulator/runtime/rdotrace_i.h"
@@ -62,24 +85,49 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 private:
+	typedef boost::accumulators::accumulator_set<
+		double,
+		boost::accumulators::stats<
+			boost::accumulators::tag::weighted_mean,
+			boost::accumulators::tag::min,
+			boost::accumulators::tag::max,
+			boost::accumulators::tag::count,
+			boost::accumulators::tag::weighted_variance,
+			boost::accumulators::tag::weighted_median(boost::accumulators::with_p_square_quantile)
+		>,
+		double
+	> acc_type;
+
 	RDOPMDWatchPar(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resName, CREF(tstring) parName, ruint resourceID, ruint paramID);
 	virtual ~RDOPMDWatchPar();
+
+	struct CurrentValue
+	{
+		RDOValue rdoValue;
+		double   doubleValue;
+		double   weight;
+
+		CurrentValue()
+			: doubleValue(0.0)
+			, weight     (0.0)
+		{}
+
+		CurrentValue(CREF(RDOValue) rdoValue)
+			: rdoValue   (rdoValue)
+			, doubleValue(rdoValue.getDouble())
+			, weight     (0.0)
+		{}
+	};
 
 	LPRDOResource m_pResource;
 	ruint         m_resourceID;
 	ruint         m_paramID;
-
-	int           m_watchNumber;
-	RDOValue      m_currValue;
-	double        m_sum;
-	double        m_sumSqr;
-	RDOValue      m_minValue;
-	RDOValue      m_maxValue;
-
+	CurrentValue  m_currentValue;
 	double        m_timeBegin;
 	double        m_timePrev;
-
 	double        m_timeErase;
+	rbool         m_wasFinalCalc;
+	acc_type      m_acc;
 
 	DECLARE_INotify;
 	DECLARE_IResult;
@@ -102,20 +150,41 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 private:
+	typedef boost::accumulators::accumulator_set<
+		double,
+		boost::accumulators::stats<
+			boost::accumulators::tag::sum,
+			boost::accumulators::tag::min,
+			boost::accumulators::tag::max,
+			boost::accumulators::tag::count
+		>
+	> acc_type;
+
 	RDOPMDWatchState(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(LPRDOCalc) pLogic);
 	virtual ~RDOPMDWatchState();
 
-	LPRDOCalc m_pLogicCalc;
+	struct CurrentValue
+	{
+		rbool  state;
+		double duration;
 
-	int       m_watchNumber;
-	rbool     m_currValue;
-	double    m_sum;
-	double    m_sumSqr;
-	double    m_minValue;
-	double    m_maxValue;
+		CurrentValue()
+			: state   (false)
+			, duration(0.0  )
+		{}
 
-	double    m_timeBegin;
-	double    m_timePrev;
+		CurrentValue(rbool state)
+			: state   (state)
+			, duration(0.0  )
+		{}
+	};
+
+	LPRDOCalc     m_pLogicCalc;
+	CurrentValue  m_currentValue;
+	double        m_timeBegin;
+	double        m_timePrev;
+	rbool         m_wasFinalCalc;
+	acc_type      m_acc;
 
 	DECLARE_IResult;
 	DECLARE_IResultTraceValue;
@@ -138,21 +207,47 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 private:
+	typedef boost::accumulators::accumulator_set<
+		double,
+		boost::accumulators::stats<
+			boost::accumulators::tag::weighted_mean,
+			boost::accumulators::tag::min,
+			boost::accumulators::tag::max,
+			boost::accumulators::tag::count,
+			boost::accumulators::tag::weighted_variance,
+			boost::accumulators::tag::weighted_median(boost::accumulators::with_p_square_quantile)
+		>,
+		double
+	> acc_type;
+
 	RDOPMDWatchQuant(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resTypeName, int rtpID);
 	virtual ~RDOPMDWatchQuant();
 
-	LPRDOCalc m_pLogicCalc;
-	int       m_rtpID;
+	struct CurrentValue
+	{
+		ruint   quant;
+		double  weight;
 
-	int       m_watchNumber;
-	int       m_currValue;
-	double    m_sum;
-	double    m_sumSqr;
-	double    m_minValue;
-	double    m_maxValue;
+		CurrentValue()
+			: quant (0  )
+			, weight(0.0)
+		{}
 
-	double    m_timeBegin;
-	double    m_timePrev;
+		CurrentValue(ruint quant)
+			: quant (quant)
+			, weight(0.0  )
+		{}
+	};
+
+	LPRDOCalc    m_pLogicCalc;
+	int          m_rtpID;
+	CurrentValue m_currentValue;
+	double       m_timeBegin;
+	double       m_timePrev;
+	rbool        m_wasFinalCalc;
+	acc_type     m_acc;
+
+	ruint calcCurrentQuant(CREF(LPRDORuntime) pRuntime) const;
 
 	DECLARE_IResult;
 	DECLARE_IResultTraceValue;
@@ -176,19 +271,26 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 private:
+	typedef boost::accumulators::accumulator_set<
+		double,
+		boost::accumulators::stats<
+			boost::accumulators::tag::mean,
+			boost::accumulators::tag::min,
+			boost::accumulators::tag::max,
+			boost::accumulators::tag::count,
+			boost::accumulators::tag::variance,
+			boost::accumulators::tag::median(boost::accumulators::with_p_square_quantile)
+		>
+	> acc_type;
+
 	RDOPMDWatchValue(CREF(LPRDORuntime) pRuntime, CREF(tstring) name, rbool trace, CREF(tstring) resTypeName, int rtpID);
 	virtual ~RDOPMDWatchValue();
 
 	LPRDOCalc m_pLogicCalc;
 	LPRDOCalc m_pArithmCalc;
 	int       m_rtpID;
-
-	int       m_watchNumber;
 	RDOValue  m_currValue;
-	double    m_sum;
-	double    m_sumSqr;
-	RDOValue  m_minValue;
-	RDOValue  m_maxValue;
+	acc_type  m_acc;
 
 	DECLARE_IResult;
 	DECLARE_IResultTraceValue;
@@ -217,6 +319,7 @@ private:
 
 	LPRDOCalc m_pArithmCalc;
 	RDOValue  m_value;
+	rbool     m_wasFinalCalc;
 
 	DECLARE_IResult;
 	DECLARE_IResultTraceValue;

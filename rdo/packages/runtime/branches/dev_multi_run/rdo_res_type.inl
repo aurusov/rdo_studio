@@ -10,6 +10,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/smart_ptr/intrusive_ptr.h"
+#include "simulator/runtime/rdo_runtime.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -32,7 +33,12 @@ inline LPRDOResource RDOResourceTypeBase<T>::createRes(CREF(LPRDORuntime) pRunti
 	ASSERT(pThis);
 	LPIResourceType pIResType = pThis.template interface_cast<IResourceType>();
 	ASSERT(pIResType);
-	return rdo::Factory<T>::create(pRuntime, paramsCalcs, pIResType, resID, this->getTraceID(), traceFlag, permanentFlag);
+
+	rdo::intrusive_ptr<T> pResource = rdo::Factory<T>::create(pRuntime, paramsCalcs, pIResType, resID, this->getTraceID(), traceFlag, permanentFlag);
+	ASSERT(pResource);
+	pRuntime->insertNewResource(pResource);
+
+	return pResource;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

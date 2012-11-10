@@ -45,7 +45,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDORuntime
 // --------------------------------------------------------------------------------
-RDORuntime::RDORuntime()
+RDORuntime::RDORuntime(PTR(Error) pError)
 	: RDOSimulatorTrace      (                   )
 	, m_currActivity         (NULL               )
 	, m_resultList           (NULL               )
@@ -56,7 +56,9 @@ RDORuntime::RDORuntime()
 	, m_funBreakFlag         (FBF_NONE           )
 	, m_pStudioThread        (NULL               )
 	, m_currFuncTop          (0                  )
+	, m_pError               (pError             )
 {
+	ASSERT(m_pError);
 	m_pTerminateIfCalc = NULL;
 	m_pMemoryStack = rdo::Factory<RDOMemoryStack>::create();
 	ASSERT(m_pMemoryStack);
@@ -214,7 +216,7 @@ void RDORuntime::onEraseRes(ruint resourceID, CREF(LPRDOEraseResRelCalc) pCalc)
 	LPRDOResource res = m_resourceListByID.at(resourceID);
 	if (!res)
 	{
-		error().push(rdo::format(_T("Временный ресурс уже удален. Возможно, он удален ранее в этом же образце. Имя релевантного ресурса: %s"), pCalc ? pCalc->getName().c_str() : "неизвестное имя"), pCalc->srcInfo());
+		error().push(rdo::format(_T("Временный ресурс уже удален. Возможно, он удален ранее в этом же образце. Имя релевантного ресурса: %s"), pCalc ? pCalc->getName().c_str() : _T("неизвестное имя")), pCalc->srcInfo());
 	}
 	if (!res->canFree())
 	{
@@ -260,6 +262,17 @@ void RDORuntime::insertNewResource(CREF(LPRDOResource) pResource)
 			));
 		}
 	}
+#ifdef RDO_LIMIT_RES
+	if (m_resourceListByID.size() >= 200)
+	{
+		error().push(RDOSyntaxMessage(
+			_T("Сработало лицензионное ограничение на количество ресурсов. Обратитесь за приобритением полной версии"),
+			rdoModelObjects::PAT,
+			0,
+			0
+		));
+	}
+#endif
 	m_resourceListByTime.push_back(pResource);
 }
 
@@ -358,7 +371,7 @@ RDOValue RDORuntime::getFuncArgument(ruint paramID) const
 
 LPRDORuntime RDORuntime::clone() const
 {
-	LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create();
+	LPRDORuntime pRuntime = rdo::Factory<RDORuntime>::create(m_pError);
 	ASSERT(pRuntime);
 	pRuntime->m_sizeofSim = sizeof(RDORuntime);
 

@@ -75,7 +75,7 @@ protected:
 	rdo::intrusive_ptr<T> m_pPattern;
 
 private:
-	void writeModelStructure(REF(std::ostream) stream) const;
+	void writeModelStructure(REF(rdo::ostream) stream) const;
 	CREF(tstring) tracePatternId() const;
 };
 

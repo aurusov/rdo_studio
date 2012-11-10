@@ -12,6 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/rdostream.h"
 #include "simulator/runtime/result/result_group_i.h"
 // --------------------------------------------------------------------------------
 
@@ -48,8 +49,8 @@ private:
 	State          m_state;
 	tstring        m_name;
 	double         m_timeStart;
-	std::ofstream  m_streamFull;
-	std::ofstream  m_streamTable;
+	rdo::ofstream  m_streamFull;
+	rdo::ofstream  m_streamTable;
 
 	DECLARE_IResult;
 	DECLARE_IResultGroup;

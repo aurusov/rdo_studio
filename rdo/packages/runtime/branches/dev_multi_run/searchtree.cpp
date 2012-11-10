@@ -98,7 +98,7 @@ void TreeNode::ExpandChildren()
 #ifdef _DEBUG
 		if (m_pChildRuntime->checkState())
 		{
-			TRACE1("состояние, node = %d\n", m_number);
+			TRACE1(_T("состояние, node = %d\n"), m_number);
 		}
 #endif
 		m_root->m_sizeof_dpt += m_pChildRuntime->getSizeofSim();
@@ -162,9 +162,9 @@ void TreeNode::ExpandChildren()
 #ifdef _DEBUG
 					if (m_number == 294)
 					{
-						TRACE1("loser->m_number = %d\n", loser->m_number);
-						TRACE1("loser->m_parent->m_number = %d\n", loser->m_parent->m_number);
-						TRACE1("loser->m_parent->m_children.size() = %d\n", loser->m_parent->m_children.size());
+						TRACE1(_T("loser->m_number = %d\n"), loser->m_number);
+						TRACE1(_T("loser->m_parent->m_number = %d\n"), loser->m_parent->m_number);
+						TRACE1(_T("loser->m_parent->m_children.size() = %d\n"), loser->m_parent->m_children.size());
 						loser->m_pRuntime->showResources(loser->m_number);
 					}
 #endif
@@ -177,7 +177,7 @@ void TreeNode::ExpandChildren()
 #ifdef _DEBUG
 					if (m_number == 294)
 					{
-						TRACE1("loser->m_parent->m_children.size() after erase = %d\n", loser->m_parent->m_children.size());
+						TRACE1(_T("loser->m_parent->m_children.size() after erase = %d\n"), loser->m_parent->m_children.size());
 					}
 #endif
 					// Теперь пересчитываем стоимость этой вершины и всех её потомков

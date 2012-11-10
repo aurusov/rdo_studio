@@ -31,7 +31,6 @@ RDOResource::RDOResource(CREF(LPRDORuntime) pRuntime, CREF(ParamList) paramList,
 	, m_temporary        (temporary                             )
 {
 	appendParams(paramList.begin(), paramList.end());
-	pRuntime->insertNewResource(this);
 }
 
 /// @todo копирующий конструктор не используется - нужен ли он?
@@ -47,7 +46,6 @@ RDOResource::RDOResource(CREF(LPRDORuntime) pRuntime, CREF(RDOResource) copy)
 	, m_temporary        (copy.m_temporary )
 {
 	appendParams(copy.m_paramList.begin(), copy.m_paramList.end());
-	pRuntime->insertNewResource(this);
 /// @todo посмотреть history и принять решение и комментарии
 //	getRuntime()->incrementResourceIdReference( getTraceID() );
 }
@@ -70,28 +68,31 @@ rbool RDOResource::operator!= (RDOResource &other)
 
 LPRDOResource RDOResource::clone(CREF(LPRDORuntime) pRuntime) const
 {
-	return rdo::Factory<RDOResource>::create(pRuntime, m_paramList, m_resType, getTraceID(), m_type, traceable(), m_temporary);
+	LPRDOResource pResource = rdo::Factory<RDOResource>::create(pRuntime, m_paramList, m_resType, getTraceID(), m_type, traceable(), m_temporary);
+	ASSERT(pResource);
+	pRuntime->insertNewResource(pResource);
+	return pResource;
 }
 
 tstring RDOResource::getTypeId()
 {
-	std::ostringstream str;
+	rdo::ostringstream str;
 	str << m_type;
 	return str.str();
 }
 
 tstring RDOResource::traceParametersValue()
 {
-	std::ostringstream str;
+	rdo::ostringstream str;
 	if(m_paramList.size() > 0)
 	{
 		ParamList::iterator end = m_paramList.end();
 		for (ParamList::iterator it = m_paramList.begin();;)
 		{
 #ifdef RDOSIM_COMPATIBLE
-			std::ostringstream _str;
+			rdo::ostringstream _str;
 			_str << *it;
-			tstring::size_type pos = _str.str().find("e");
+			tstring::size_type pos = _str.str().find(_T("e"));
 			if (pos != tstring::npos)
 			{
 				tstring __str = _str.str();
@@ -107,7 +108,7 @@ tstring RDOResource::traceParametersValue()
 #endif
 			if (++it == end)
 				break;
-			str << " ";
+			str << _T(" ");
 		}
 	}
 	return str.str();
@@ -115,11 +116,11 @@ tstring RDOResource::traceParametersValue()
 
 tstring RDOResource::traceResourceState(char prefix, CREF(LPRDORuntime) pRuntime)
 {
-	std::ostringstream res;
+	rdo::ostringstream res;
 	if (traceable() || (prefix != '\0'))
 	{
 		if (m_state == RDOResource::CS_NoChange || m_state == RDOResource::CS_NonExist)
-			return "";
+			return _T("");
 
 		if (prefix != '\0')
 			res << prefix;
@@ -132,8 +133,8 @@ tstring RDOResource::traceResourceState(char prefix, CREF(LPRDORuntime) pRuntime
 		case RDOResource::CS_Erase:
 			res << "RE "
 #ifdef RDOSIM_COMPATIBLE
-				<< pRuntime->getCurrentTime() << " "
-				<< traceTypeId()              << " "
+				<< pRuntime->getCurrentTime() << _T(" ")
+				<< traceTypeId()              << _T(" ")
 				<< traceId()                  << std::endl;
 			return res.str();
 #else

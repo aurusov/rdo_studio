@@ -19,6 +19,24 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
+RDOValue RDOValue::fromDouble(CREF(LPRDOType) pType, double value)
+{
+	RDOValue result(pType);
+
+	switch (result.typeID())
+	{
+	case RDOType::t_unknow: break;
+	case RDOType::t_int   : result.__get<int>   () = int(value);    break;
+	case RDOType::t_real  : result.__get<double>() = value;         break;
+	case RDOType::t_enum  : result.__get<ruint> () = ruint(value);  break;
+	case RDOType::t_bool  : result.__get<rbool> () = value != 0.0;  break;
+	default               : throw RDOValueException();
+	}
+	result.setUndefined(true);
+
+	return result;
+}
+
 REF(PTR(void)) RDOValue::__voidPtrV()
 {
 	return __get<PTR(void)>();

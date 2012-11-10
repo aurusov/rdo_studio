@@ -30,7 +30,7 @@ void RDODPTSearchTrace::onSearchBegin(CREF(LPRDORuntime) pRuntime)
 	}
 	if (traceFlag == DPT_trace_tops || traceFlag == DPT_trace_all)
 	{
-		pRuntime->getTracer()->writeString("STN 1 0 0 0 -1 -1 0 0");
+		pRuntime->getTracer()->writeString(_T("STN 1 0 0 0 -1 -1 0 0"));
 	}
 	++calc_cnt;
 }
