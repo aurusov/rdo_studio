@@ -47,6 +47,8 @@ SCODE RDODropSource::GiveFeedback(DROPEFFECT dropEffect)
 //	ON_WM_RBUTTONDOWN()
 //	ON_UPDATE_COMMAND_UI(ID_CHART_FINDINCHARTS, OnUpdateChartFindincharts)
 //	ON_COMMAND(ID_CHART_FINDINCHARTS, OnChartFindincharts)
+//	ON_COMMAND( ID_CHART_EXPORT, OnExportChart )
+//	ON_UPDATE_COMMAND_UI( ID_CHART_EXPORT, OnUpdateExportChart )
 //END_MESSAGE_MAP()
 
 Q_DECLARE_METATYPE(ChartTreeItem*);
@@ -94,6 +96,7 @@ ChartTree::ChartTree(PTR(QWidget) pParent)
 
 	//		appendMenu( mainMenu->GetSubMenu( 6 + delta ), 0, &popupMenu );
 	//		appendMenu( mainMenu->GetSubMenu( 6 + delta ), 1, &popupMenu );
+	//		appendMenu( mainMenu->GetSubMenu( 6 + delta ), 2, &popupMenu );
 	//	}
 	//}
 }
@@ -303,6 +306,44 @@ void ChartTree::onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pCtrlItem, int)
 //	CPoint pos = point;
 //	ClientToScreen( &pos );
 //	if ( popupMenu.m_hMenu ) popupMenu.TrackPopupMenu( TPM_LEFTALIGN | TPM_RIGHTBUTTON, pos.x, pos.y, this );
+//}
+//
+//void RDOTracerTreeCtrl::OnExportChart()
+//{
+//	if (!tracer->getDrawTrace())
+//		return;
+//
+//	PTR(RDOTracerTreeItem) pItem = getIfItemIsDrawable(GetSelectedItem());
+//	if (!pItem)
+//		return;
+//
+//	PTR(RDOTracerSerie) pSerie = static_cast<PTR(RDOTracerSerie)>(pItem);
+//	ASSERT(pSerie);
+//	RDOTracerSerie::ExportData exportData = pSerie->exportData();
+//	if (exportData.empty())
+//		return;
+//
+//	CString filter("csv-פאיכ (*.csv)|*.csv|Âסו פאיכû (*.*)|*.*||");
+//	CFileDialog dlg(false, _T("csv"), pSerie->getTitle().c_str(), OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, filter, AfxGetMainWnd());
+//	if (dlg.DoModal() != IDOK)
+//		return;
+//
+//	CString fileName = dlg.GetPathName();
+//	std::ofstream stream(fileName);
+//	if (!stream.is_open())
+//		return;
+//
+//	BOOST_FOREACH(CREF(RDOTracerSerie::ExportData::value_type) exportItem, exportData)
+//	{
+//		stream << exportItem << std::endl;
+//	}
+//
+//	stream.close();
+//}
+//
+//void RDOTracerTreeCtrl::OnUpdateExportChart( CCmdUI* pCmdUI )
+//{
+//	pCmdUI->Enable( tracer->getDrawTrace() && getIfItemIsDrawable( GetSelectedItem() ) != NULL );
 //}
 
 void ChartTree::OnUpdateChartFindincharts(CCmdUI* pCmdUI)

@@ -101,6 +101,8 @@ private:
 	//afx_msg void OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu );
 	//afx_msg void OnDragDrop ( NMHDR * pNotifyStruct, LRESULT* result );
 	//afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
+	//afx_msg void OnExportChart();
+	//afx_msg void OnUpdateExportChart( CCmdUI* pCmdUI );
 	afx_msg void OnAddToNewChart();
 	afx_msg void OnUpdateAddToNewChart( CCmdUI* pCmdUI );
 	afx_msg void OnUpdateChartFindincharts(CCmdUI* pCmdUI);
