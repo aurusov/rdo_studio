@@ -162,12 +162,10 @@ void RDOTracerResource::setParams( tstring& line, RDOTracerTimeNow* const time, 
 		{
 			switch (resType->getParamInfo(i)->getParamType())
 			{
-			case RDOPT_ENUMERATIVE:
-				newval = 0;
-				if (nextValue == _T("true"))
-				{
-					newval = 1;
-				}
+			case RDOPT_BOOL:
+				newval = nextValue == _T("true")
+					? 1.0
+					: 0.0;
 				break;
 
 			case RDOPT_STRING:
