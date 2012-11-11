@@ -1929,11 +1929,11 @@ param_value_default
 		RDOParserSrcInfo src_info(@1, @2, true);
 		if (src_info.src_pos().point())
 		{
-			CONVERTER->error().error(src_info, _T("Не указано значение по-умолчанию"));
+			CONVERTER->error().error(src_info, _T("Не указано значение по умолчанию"));
 		}
 		else
 		{
-			CONVERTER->error().error(src_info, _T("Неверное значение по-умолчанию"));
+			CONVERTER->error().error(src_info, _T("Неверное значение по умолчанию"));
 		}
 	}
 	;

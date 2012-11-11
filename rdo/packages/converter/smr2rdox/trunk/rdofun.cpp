@@ -511,7 +511,7 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pResName, CREF(LPRDOValue) pParName)
 							{
 								if (!pParam->getDefault()->defined())
 								{
-									Converter::s_converter()->error().error(pParName->src_info(), rdo::format(_T("Параметр '%s' еще не определен, ему необходимо присвоить значение в текущем конверторе или указать значение по-умолчанию в типе ресурса"), pParName->value().getIdentificator().c_str()));
+									Converter::s_converter()->error().error(pParName->src_info(), rdo::format(_T("Параметр '%s' еще не определен, ему необходимо присвоить значение в текущем конверторе или указать значение по умолчанию в типе ресурса"), pParName->value().getIdentificator().c_str()));
 								}
 							}
 						}
@@ -524,7 +524,7 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pResName, CREF(LPRDOValue) pParName)
 								{
 									if (!pParam->getDefault()->defined())
 									{
-										Converter::s_converter()->error().error(pParName->src_info(), rdo::format(_T("Параметр '%s' еще не определен, ему необходимо присвоить значение в текущем конверторе или указать значение по-умолчанию в типе ресурса"), pParName->value().getIdentificator().c_str()));
+										Converter::s_converter()->error().error(pParName->src_info(), rdo::format(_T("Параметр '%s' еще не определен, ему необходимо присвоить значение в текущем конверторе или указать значение по умолчанию в типе ресурса"), pParName->value().getIdentificator().c_str()));
 									}
 								}
 							}
@@ -1455,7 +1455,7 @@ void RDOFUNFunction::createListCalc()
 {
 	if (!m_pReturn->getDefault()->defined())
 	{
-		Converter::s_converter()->error().error(m_pReturn->src_info(), rdo::format(_T("Функция '%s' должна иметь значение по-умолчанию"), name().c_str()));
+		Converter::s_converter()->error().error(m_pReturn->src_info(), rdo::format(_T("Функция '%s' должна иметь значение по умолчанию"), name().c_str()));
 	}
 	if (m_paramList.empty())
 	{
@@ -1679,7 +1679,7 @@ void RDOFUNFunction::createAlgorithmicCalc(CREF(RDOParserSrcInfo) /* body_src_in
 	}
 	if (!defaultFlag)
 	{
-		//! Присвоить автоматическое значение по-умолчанию, если оно не задано в явном виде
+		//! Присвоить автоматическое значение по умолчанию, если оно не задано в явном виде
 		rdo::runtime::LPRDOCalcConst pCalcCondition = rdo::Factory<rdo::runtime::RDOCalcConst>::create(1);
 		rdo::runtime::LPRDOCalcConst pCalcAction    = rdo::Factory<rdo::runtime::RDOCalcConst>::create(m_pReturn->getType()->type()->get_default()->value());
 		ASSERT(pCalcCondition);
@@ -1687,7 +1687,7 @@ void RDOFUNFunction::createAlgorithmicCalc(CREF(RDOParserSrcInfo) /* body_src_in
 		pCalcCondition->setSrcInfo(m_pReturn->getType()->src_info());
 		pCalcAction->setSrcInfo(m_pReturn->getType()->src_info());
 		pFunAlgorithmicCalc->addCalcIf(pCalcCondition, pCalcAction);
-		Converter::s_converter()->error().warning(src_info(), rdo::format(_T("Для функции '%s' неопределено значение по-умолчанию"), name().c_str()));
+		Converter::s_converter()->error().warning(src_info(), rdo::format(_T("Для функции '%s' неопределено значение по умолчанию"), name().c_str()));
 	}
 	setFunctionCalc(pFunAlgorithmicCalc);
 }

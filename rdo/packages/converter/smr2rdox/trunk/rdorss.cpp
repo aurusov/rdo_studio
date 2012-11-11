@@ -68,7 +68,7 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 		{
 			if (!(*m_currParam)->getDefault()->defined())
 			{
-				Converter::s_converter()->error().push_only(pParam->src_info(), _T("Ќевозможно использовать '*', к.т. отсутствует значение по-умолчанию"));
+				Converter::s_converter()->error().push_only(pParam->src_info(), _T("Ќевозможно использовать '*', к.т. отсутствует значение по умолчанию"));
 				Converter::s_converter()->error().push_only((*m_currParam)->getType()->src_info(), _T("—м. описание параметра"));
 				Converter::s_converter()->error().push_done();
 			}

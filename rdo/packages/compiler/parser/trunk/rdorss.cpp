@@ -103,7 +103,7 @@ void RDORSSResource::addParam(CREF(LPRDOValue) pParam)
 		{
 			if (!(*m_currParam)->getDefault()->defined())
 			{
-				RDOParser::s_parser()->error().push_only(pParam->src_info(), _T("Невозможно использовать '*', к.т. отсутствует значение по-умолчанию"));
+				RDOParser::s_parser()->error().push_only(pParam->src_info(), _T("Невозможно использовать '*', к.т. отсутствует значение по умолчанию"));
 				/// @todo src_info() без параметра RDOParserSrcInfo()
 				RDOParser::s_parser()->error().push_only((*m_currParam)->getTypeInfo()->src_info(RDOParserSrcInfo()), _T("См. описание параметра"));
 				RDOParser::s_parser()->error().push_done();

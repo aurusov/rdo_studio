@@ -1424,7 +1424,7 @@ void RDOFUNFunction::createListCalc()
 {
 	if (!m_pReturn->getDefault()->defined())
 	{
-		RDOParser::s_parser()->error().error(m_pReturn->src_info(), rdo::format(_T("Функция '%s' должна иметь значение по-умолчанию"), name().c_str()));
+		RDOParser::s_parser()->error().error(m_pReturn->src_info(), rdo::format(_T("Функция '%s' должна иметь значение по умолчанию"), name().c_str()));
 	}
 	if (m_paramList.empty())
 	{
@@ -1607,9 +1607,9 @@ void RDOFUNFunction::createAlgorithmicCalc()
 		}
 		else
 		{
-			//! Присвоить автоматическое значение по-умолчанию, если оно не задано в явном виде
+			//! Присвоить автоматическое значение по умолчанию, если оно не задано в явном виде
 			pCalcDefault = rdo::Factory<rdo::runtime::RDOCalcConst>::create(m_pReturn->getTypeInfo()->type()->get_default());
-			RDOParser::s_parser()->error().warning(src_info(), rdo::format(_T("Для функции '%s' неопределено значение по-умолчанию"), name().c_str()));
+			RDOParser::s_parser()->error().warning(src_info(), rdo::format(_T("Для функции '%s' неопределено значение по умолчанию"), name().c_str()));
 		}
 		ASSERT(pCalcDefault);
 		pCalcDefault->setSrcInfo(m_pReturn->getTypeInfo()->src_info());
