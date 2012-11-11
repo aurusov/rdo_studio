@@ -200,6 +200,7 @@
 %token RDO_ASSIGN
 
 %token RDO_Sprite
+%token RDO_sprite_call
 
 
 %{
