@@ -316,6 +316,10 @@ $fuzzy                         return(RDO_Fuzzy);
 $Term                          return(RDO_Fuzzy_Term);
 $term                          return(RDO_Fuzzy_Term);
 
+$Sprite                        return (RDO_Sprite);
+$sprite                        return (RDO_Sprite);
+
+
 (\'[^\']*\') {
 	tstring n1(YYText());
 	int len = n1.length();

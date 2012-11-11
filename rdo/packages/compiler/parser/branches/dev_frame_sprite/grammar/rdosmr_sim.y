@@ -199,6 +199,8 @@
 %token RDO_DEPART
 %token RDO_ASSIGN
 
+%token RDO_Sprite
+
 %{
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
