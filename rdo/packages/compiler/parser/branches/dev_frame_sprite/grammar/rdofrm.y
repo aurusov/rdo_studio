@@ -217,8 +217,6 @@
 #include "simulator/compiler/parser/rdodpt.h"
 #include "simulator/compiler/parser/type/range.h"
 #include "simulator/runtime/calc/calc_base.h"
-#include "simulator/compiler/parser/type/such_as.h"
-#include "utils/rdoanimation.h"
 #include "simulator/runtime/calc/calc_array.h"
 // --------------------------------------------------------------------------------
 
@@ -275,7 +273,6 @@ typedef rdo::runtime::LPRDOFRMSpace                 LPRDOFRMSpace;
 frm_main
 	: /* empty */
 	| frm_main frm_end
-   | frm_main frm_sprite_end
 	| error
 	{
 		PARSER->error().error(@1, _T("Неизвестная ошибка"));
@@ -400,8 +397,7 @@ frm_item
 	| frm_item frm_active  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMActive       >($2));}
 	| frm_item frm_ruler   {PARSER->getLastFRMFrame()->frame()->addRulet(PARSER->stack().pop<RDOFRMRulet        >($2));}
 	| frm_item frm_space   {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMSpace        >($2));}
-	| frm_item frm_sprite  {}
-   ;
+	;
 
 frm_header
 	: frm_backpicture frm_item
@@ -1696,6 +1692,99 @@ frm_active
 	;
 
 // --------------------------------------------------------------------------------
+// -------------------- Список общих statement'ов
+// --------------------------------------------------------------------------------
+type_declaration
+	: RDO_integer
+	{
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__int>(RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
+		ASSERT(pTypeContext);
+
+		PARSER->contextStack()->push(pTypeContext);
+		$$ = PARSER->stack().push(pType);
+	}
+	| RDO_real
+	{
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__real>(RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
+		ASSERT(pTypeContext);
+
+		PARSER->contextStack()->push(pTypeContext);
+		$$ = PARSER->stack().push(pType);
+	}
+	| RDO_string
+	{
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__string>(RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
+		ASSERT(pTypeContext);
+
+		PARSER->contextStack()->push(pTypeContext);
+		$$ = PARSER->stack().push(pType);
+	}
+	| param_type_array
+	{
+		LPRDOArrayType pArray = PARSER->stack().pop<RDOArrayType>($1);
+		ASSERT(pArray);
+
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pArray, RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
+		ASSERT(pTypeContext);
+
+		PARSER->contextStack()->push(pTypeContext);
+		$$ = PARSER->stack().push(pType);
+	}
+	| RDO_bool
+	{
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__bool>(RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
+		ASSERT(pTypeContext);
+
+		PARSER->contextStack()->push(pTypeContext);
+		$$ = PARSER->stack().push(pType);
+	}
+	| param_type_enum
+	{
+		LEXER->enumReset();
+		LPRDOEnumType pEnum = PARSER->stack().pop<RDOEnumType>($1);
+		ASSERT(pEnum);
+
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pEnum, RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
+		ASSERT(pTypeContext);
+
+		PARSER->contextStack()->push(pTypeContext);
+		$$ = PARSER->stack().push(pType);
+	}
+	| param_type_such_as
+	{
+		LPTypeInfo pTypeSuchAs = PARSER->stack().pop<TypeInfo>($1);
+		ASSERT(pTypeSuchAs);
+
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pTypeSuchAs->type(), RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
+		ASSERT(pTypeContext);
+
+		PARSER->contextStack()->push(pTypeContext);
+		$$ = PARSER->stack().push(pType);
+	}
+	;
+
+// --------------------------------------------------------------------------------
 // -------------------- Описание типа параметра
 // --------------------------------------------------------------------------------
 param_type
@@ -1999,20 +2088,6 @@ param_type_array
 		ASSERT(pParamType);
 		LPRDOArrayType pArray = rdo::Factory<RDOArrayType>::create(pParamType, RDOParserSrcInfo(@1, @4));
 		$$ = PARSER->stack().push(pArray);
-	}
-	;
-
-param_list
-	: /*empty*/
-	| param_list_body
-	;
-
-param_list_body
-	: param_type RDO_IDENTIF {}
-	| param_list_body ',' param_type RDO_IDENTIF {}
-	| param_list_body ',' error
-	{
-		PARSER->error().error(@3, _T("Ошибка в задании параметра!"));
 	}
 	;
 
@@ -2659,51 +2734,6 @@ fun_select_arithm
 		PARSER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
 	}
 	;
-// --------------------------------------------------------------------------------
-// -------------------- Спрайт
-// --------------------------------------------------------------------------------
-frm_sprite_end
-	: frm_sprite_begin RDO_End {}
-	;
-
-frm_sprite_begin
-	:frm_sprite_header frm_item {}
-	;
-
-frm_sprite_header 
-	: RDO_Sprite RDO_IDENTIF '(' param_list ')' {}
-	| RDO_Sprite RDO_IDENTIF '(' param_list error
-	{
-		PARSER->error().error(@5, _T("Ожидается закрывающая скобка"));
-	}
-	| RDO_Sprite RDO_IDENTIF '(' error
-	{
-		PARSER->error().error(@4, _T("Ошибка задания параметров"));
-	}
-	| RDO_Sprite RDO_IDENTIF error
-	{
-		PARSER->error().error(@3, _T("Ожидается открывающая скобка"));
-	}
-	;
-
-	
-
-frm_sprite
-	: RDO_Sprite RDO_IDENTIF '(' arithm_list ')' {} //использовать fun_arithm_func_call (?)
-	| RDO_Sprite RDO_IDENTIF '(' arithm_list error
-	{
-		PARSER->error().error(@5, _T("Ожидается закрывающая скобка"));
-	}
-	| RDO_Sprite RDO_IDENTIF '(' error
-	{
-		PARSER->error().error(@4, _T("Ошибка задания параметров"));
-	}
-	| RDO_Sprite RDO_IDENTIF error
-	{
-		PARSER->error().error(@3, _T("Ожидается открывающая скобка"));
-	}
-	;
-
 
 %%
 
