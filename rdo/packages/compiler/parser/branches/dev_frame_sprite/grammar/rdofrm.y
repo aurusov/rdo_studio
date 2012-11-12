@@ -216,6 +216,11 @@
 #include "simulator/compiler/parser/rdopat.h"
 #include "simulator/compiler/parser/rdodpt.h"
 #include "simulator/compiler/parser/type/range.h"
+#include "simulator/compiler/parser/type/such_as.h"
+#include "simulator/compiler/parser/local_variable.h"
+#include "simulator/compiler/parser/context/type.h"
+#include "simulator/compiler/parser/context/memory.h"
+#include "simulator/compiler/parser/context/statement.h"
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/calc/calc_array.h"
 // --------------------------------------------------------------------------------
