@@ -417,6 +417,20 @@ frm_end
 	}
 	;
 
+param_list
+	: /*empty*/
+	| param_list_body
+   	;
+
+param_list_body
+	: type_declaration RDO_IDENTIF {}
+	| param_list_body ',' type_declaration RDO_IDENTIF {}
+	| param_list_body ',' error
+	{
+		PARSER->error().error(@3, _T("ќшибка в задании параметра!"));
+	}
+	;
+
 // --------------------------------------------------------------------------------
 // -------------------- Ёлементы
 // --------------------------------------------------------------------------------
