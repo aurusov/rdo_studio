@@ -278,6 +278,7 @@ typedef rdo::runtime::LPRDOFRMSpace                 LPRDOFRMSpace;
 frm_main
 	: /* empty */
 	| frm_main frm_end
+   | frm_main frm_sprite_end
 	| error
 	{
 		PARSER->error().error(@1, _T("Неизвестная ошибка"));
@@ -402,6 +403,7 @@ frm_item
 	| frm_item frm_active  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMActive       >($2));}
 	| frm_item frm_ruler   {PARSER->getLastFRMFrame()->frame()->addRulet(PARSER->stack().pop<RDOFRMRulet        >($2));}
 	| frm_item frm_space   {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMSpace        >($2));}
+   | frm_item frm_sprite  {}
 	;
 
 frm_header
@@ -2751,6 +2753,51 @@ fun_select_arithm
 	| fun_select_body '.' RDO_Size '(' error
 	{
 		PARSER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
+	}
+	;
+
+// --------------------------------------------------------------------------------
+// -------------------- Спрайт
+// --------------------------------------------------------------------------------
+frm_sprite_end
+	: frm_sprite_begin RDO_End {}
+	;
+
+frm_sprite_begin
+	:frm_sprite_header frm_item {}
+	;
+
+frm_sprite_header 
+	: RDO_Sprite RDO_IDENTIF '(' param_list ')' {}
+	| RDO_Sprite RDO_IDENTIF '(' param_list error
+	{
+		PARSER->error().error(@5, _T("Ожидается закрывающая скобка"));
+	}
+	| RDO_Sprite RDO_IDENTIF '(' error
+	{
+		PARSER->error().error(@4, _T("Ошибка задания параметров"));
+	}
+	| RDO_Sprite RDO_IDENTIF error
+	{
+		PARSER->error().error(@3, _T("Ожидается открывающая скобка"));
+	}
+	;
+
+	
+
+frm_sprite
+	: RDO_Sprite RDO_IDENTIF '(' arithm_list ')' {} //использовать fun_arithm_func_call (?)
+	| RDO_Sprite RDO_IDENTIF '(' arithm_list error
+	{
+		PARSER->error().error(@5, _T("Ожидается закрывающая скобка"));
+	}
+	| RDO_Sprite RDO_IDENTIF '(' error
+	{
+		PARSER->error().error(@4, _T("Ошибка задания параметров"));
+	}
+	| RDO_Sprite RDO_IDENTIF error
+	{
+		PARSER->error().error(@3, _T("Ожидается открывающая скобка"));
 	}
 	;
 
