@@ -109,7 +109,6 @@ public:
 	void setCanClearErrorLine( rbool value ) { canClearErrorLine = value; }
 
 private slots:
-	void catchBufferKey    (int ch);
 	void catchUpdateUi     ();
 	void catchModified     (int modificationType, int position, int length, int linesAdded, const QByteArray& bytes, int line, int foldLevelNow, int foldLevelPrev);
 	void catchMarginClick  (int position, int modifiers, int margin);
