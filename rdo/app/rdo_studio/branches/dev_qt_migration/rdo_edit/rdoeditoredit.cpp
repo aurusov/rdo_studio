@@ -139,24 +139,35 @@ RDOEditorEdit::RDOEditorEdit(PTR(QWidget) pParent, PTR(RDOStudioEditBaseView) pV
 
 	QObject::connect(this, SIGNAL(modified(int, int, int, int, const QByteArray&, int, int, int)), this, SLOT(catchModified(int, int, int, int, const QByteArray&, int, int, int)));
 	QObject::connect(this, SIGNAL(marginClicked(int, int, int)), this, SLOT(catchMarginClick(int, int, int)));
+	QObject::connect(this, SIGNAL(marginClicked(int, int, int)), this, SLOT(catchUpdateUi()));
 	QObject::connect(this, SIGNAL(charAdded(int)), this, SLOT(catchCharAdded(int)));
 	QObject::connect(this, SIGNAL(updateUi()), this, SLOT(catchUpdateUi()));
-	//! @todo qt - обработать сигнал SCN_RDO_CLICK (нужен ли в новой версии?)
-	//QObject::connect(this, SIGNAL(), this, SLOT(catchRdoClick()));
+	QObject::connect(this, SIGNAL(notifyParent(SCNotification)), this, SLOT(catchIndicator(SCNotification)));
 }
 
 RDOEditorEdit::~RDOEditorEdit()
 {}
 
-void RDOEditorEdit::catchUpdateUi()
-
+void RDOEditorEdit::cleanBuf()
 {
 	bufSelStart = -1;
 }
-
-void RDOEditorEdit::catchRdoClick()
+void RDOEditorEdit::catchUpdateUi()
 {
-	bufSelStart = -1;
+	cleanBuf();
+}
+
+void RDOEditorEdit::catchIndicator(SCNotification scn)
+{
+	switch (scn.nmhdr.code)
+	{
+	case SCN_INDICATORCLICK:
+		cleanBuf();
+		break;
+	case SCN_INDICATORRELEASE:
+		cleanBuf();
+		break;
+	}
 }
 
 void RDOEditorEdit::catchModified(int modificationType, int position, int length, int linesAdded, const QByteArray& bytes, int line, int foldLevelNow, int foldLevelPrev)

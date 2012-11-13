@@ -93,6 +93,8 @@ private:
 	afx_msg void OnHelpKeyword();
 	afx_msg void OnInsertCommand( UINT nID );
 
+	void cleanBuf();
+
 public:
 	RDOEditorEdit(PTR(QWidget) pParent, PTR(RDOStudioEditBaseView) pView = NULL);
 	virtual ~RDOEditorEdit();
@@ -109,10 +111,10 @@ public:
 private slots:
 	void catchBufferKey    (int ch);
 	void catchUpdateUi     ();
-	void catchRdoClick     ();
 	void catchModified     (int modificationType, int position, int length, int linesAdded, const QByteArray& bytes, int line, int foldLevelNow, int foldLevelPrev);
 	void catchMarginClick  (int position, int modifiers, int margin);
 	void catchCharAdded    ();
+	void catchIndicator    (SCNotification scn);
 };
 
 }; // namespace rdoEditor
