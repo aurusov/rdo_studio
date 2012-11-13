@@ -137,7 +137,6 @@ RDOEditorEdit::RDOEditorEdit(PTR(QWidget) pParent, PTR(RDOStudioEditBaseView) pV
 	sendEditor(SCI_AUTOCSETAUTOHIDE      , false);
 	sendEditor(SCI_AUTOCSTOPS            , 0, reinterpret_cast<long>("+-*/:[](),<>=."));
 
-	QObject::connect(this, SIGNAL(key(int)), this, SLOT(catchBufferKey(int)));
 	QObject::connect(this, SIGNAL(modified(int, int, int, int, const QByteArray&, int, int, int)), this, SLOT(catchModified(int, int, int, int, const QByteArray&, int, int, int)));
 	QObject::connect(this, SIGNAL(marginClicked(int, int, int)), this, SLOT(catchMarginClick(int, int, int)));
 	QObject::connect(this, SIGNAL(charAdded(int)), this, SLOT(catchCharAdded(int)));
@@ -148,14 +147,6 @@ RDOEditorEdit::RDOEditorEdit(PTR(QWidget) pParent, PTR(RDOStudioEditBaseView) pV
 
 RDOEditorEdit::~RDOEditorEdit()
 {}
-
-void RDOEditorEdit::catchBufferKey(int ch)
-{
-	if (view)
-	{
-		view->m_bufferList.find(view->m_currentBuffer)->second.value += static_cast<char>(ch);
-	}
-}
 
 void RDOEditorEdit::catchUpdateUi()
 
