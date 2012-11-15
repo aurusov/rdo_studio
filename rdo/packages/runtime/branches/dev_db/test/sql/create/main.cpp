@@ -15,7 +15,7 @@
 #include <QtSql\QtSql>
 #include <QtCore\QCoreApplication>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator\runtime\test\sql\include\generalDB.h"
+#include "simulator\runtime\test\sql\include\general_db.h"
 // --------------------------------------------------------------------------------
 
 int main(int argc, char *argv[])
@@ -23,18 +23,13 @@ int main(int argc, char *argv[])
 	QCoreApplication app(argc, argv);
 	generalDB db = generalDB::generalDB("localhost","postgres","postgres","rdo",5432);
 
+	db.queryExec("DROP DATABASE IF EXISTS rdo;");
+	db.queryExec("CREATE DATABASE rdo;");
+
+	db.setDefParams();
+	db.initDB();
+
 	QSqlQuery query;
-	QString create_dropDb = "DROP DATABASE IF EXISTS rdo;";
-	QString create_db     = "CREATE DATABASE rdo;";
-
-	db.m_db.exec(create_dropDb);
-	db.m_db.exec(create_db);
-
-	//if (!(dbB_drop*cr_dbB))
-	//	std::cout << "Creation of datebase failed! :(" << std::endl;
-
-	generalDB db2 = generalDB::generalDB();
-
 //------------------------
 	QString create_rtp = "CREATE TABLE rtp"
 						"("
@@ -43,7 +38,7 @@ int main(int argc, char *argv[])
 						"	r_t_perm             boolean NOT NULL,"
 						"	PRIMARY KEY (r_t_id)"
 						");";
-	bool rtp = query.exec(create_rtp);
+	db.queryExec(create_rtp);
 
 	QString create_list = "CREATE TABLE list_of_types_of_params"
 						"("
@@ -51,7 +46,7 @@ int main(int argc, char *argv[])
 						"	table_id      integer NOT NULL,"
 						"	PRIMARY KEY (type_id)"
 						");";
-	bool list = query.exec(create_list);
+	db.queryExec(create_list);
 
 	QString create_param = "CREATE TABLE param_of_type"
 						"("
@@ -63,12 +58,12 @@ int main(int argc, char *argv[])
 						"	FOREIGN KEY (r_t_id) REFERENCES rtp,"
 						"	FOREIGN KEY (type_id) REFERENCES list_of_types_of_params"
 						");";
-	bool param = query.exec(create_param);
+	db.queryExec(create_param);
 //------------------------
 
 //------------------------
 	QString create_seq = "CREATE SEQUENCE type_of_param_seq;";
-	bool seq = query.exec(create_seq);
+	db.queryExec(create_seq);
 
 	QString create_function = "CREATE FUNCTION copy_type_id() RETURNS TRIGGER AS $trig$"
 							"	BEGIN"
@@ -77,7 +72,7 @@ int main(int argc, char *argv[])
 							"		RETURN NULL;"
 							"	END;"
 							"	$trig$ LANGUAGE plpgsql;";
-	bool function = query.exec(create_function);
+	db.queryExec(create_function);
 //------------------------
 
 
@@ -93,13 +88,13 @@ int main(int argc, char *argv[])
 						"	max          real,"
 						"	PRIMARY KEY (type_id)"
 						");";
-	bool real = query.exec(create_real);
+	db.queryExec(create_real);
 
 	QString create_realTr = "CREATE TRIGGER real_trig"
 						"	AFTER INSERT ON real"
 						"	FOR EACH ROW"
 						"	EXECUTE PROCEDURE copy_type_id();";
-	bool realTr = query.exec(create_realTr);
+	db.queryExec(create_realTr);
 //------------------------
 
 //------------------------
@@ -109,13 +104,13 @@ int main(int argc, char *argv[])
 						"	def_val      VARCHAR(40),"
 						"	PRIMARY KEY (type_id)"
 						");";
-	bool enumB = query.exec(create_enum);
+	db.queryExec(create_enum);
 
 	QString create_enumTr = "CREATE TRIGGER enum_trig"
 						"	AFTER INSERT ON enum"
 						"	FOR EACH ROW"
 						"	EXECUTE PROCEDURE copy_type_id();";
-	bool enumTr = query.exec(create_enumTr);
+	db.queryExec(create_enumTr);
 
 	QString create_enumVv = "CREATE TABLE enum_valid_value"
 						"("
@@ -126,7 +121,7 @@ int main(int argc, char *argv[])
 						"	PRIMARY KEY (enum_id, vv_id),"
 						"	FOREIGN KEY (enum_id) REFERENCES enum"
 						");";
-	bool enumVv = query.exec(create_enumVv);
+	db.queryExec(create_enumVv);
 //------------------------
 
 //------------------------
@@ -138,21 +133,16 @@ int main(int argc, char *argv[])
 						"	max          integer,"
 						"	PRIMARY KEY (type_id)"
 						");";
-	bool intB = query.exec(create_int);
+	db.queryExec(create_int);
 
 	QString create_intTr = "CREATE TRIGGER int_trig"
 						"	AFTER INSERT ON int"
 						"	FOR EACH ROW"
 						"	EXECUTE PROCEDURE copy_type_id();";
-	bool intTr = query.exec(create_intTr);
+	db.queryExec(create_intTr);
 //------------------------
 
-
-	if (!(rtp*seq*list*param*real*function*realTr*enumB*enumTr*enumVv*intB*intTr))
-		std::cout << "Creation of structure of datebase failed! :(" << std::endl;
-
-	db.m_db.close();
 	std::cout << "to be continued...\n";
-//	getch();
+	getch();
 	return 0;
 }
