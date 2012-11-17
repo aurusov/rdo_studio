@@ -113,7 +113,7 @@ private slots:
 	void catchModified     (int modificationType, int position, int length, int linesAdded, const QByteArray& bytes, int line, int foldLevelNow, int foldLevelPrev);
 	void catchMarginClick  (int position, int modifiers, int margin);
 	void catchCharAdded    ();
-	void catchNotify    (SCNotification* scn);
+	void catchNotify       (SCNotification* scn);
 };
 
 }; // namespace rdoEditor
