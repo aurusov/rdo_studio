@@ -6,8 +6,6 @@
 #include "thirdparty/sci/include/ILexer.h"
 #include "thirdparty/sci/lexlib/LexerModule.h"
 
-#define SCN_RDO_CLICK         20001
-
 static inline bool isRDOLexerOperator( char ch )
 {
 	if ( ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == ':' ||
