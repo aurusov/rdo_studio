@@ -142,7 +142,7 @@ RDOEditorEdit::RDOEditorEdit(PTR(QWidget) pParent, PTR(RDOStudioEditBaseView) pV
 	QObject::connect(this, SIGNAL(marginClicked(int, int, int)), this, SLOT(catchUpdateUi()));
 	QObject::connect(this, SIGNAL(charAdded(int)), this, SLOT(catchCharAdded(int)));
 	QObject::connect(this, SIGNAL(updateUi()), this, SLOT(catchUpdateUi()));
-	QObject::connect(this, SIGNAL(notifyParent(SCNotification)), this, SLOT(catchIndicator(SCNotification)));
+	QObject::connect(this, SIGNAL(notify(SCNotification*)), this, SLOT(catchIndicator(SCNotification*)));
 }
 
 RDOEditorEdit::~RDOEditorEdit()
@@ -158,9 +158,9 @@ void RDOEditorEdit::catchUpdateUi()
 	cleanBuf();
 }
 
-void RDOEditorEdit::catchIndicator(SCNotification scn)
+void RDOEditorEdit::catchNotify(SCNotification* scn)
 {
-	switch (scn.nmhdr.code)
+	switch (scn->nmhdr.code)
 	{
 	case SCN_INDICATORCLICK  :
 	case SCN_INDICATORRELEASE:
