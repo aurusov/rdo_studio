@@ -139,35 +139,10 @@ RDOEditorEdit::RDOEditorEdit(PTR(QWidget) pParent, PTR(RDOStudioEditBaseView) pV
 
 	QObject::connect(this, SIGNAL(modified(int, int, int, int, const QByteArray&, int, int, int)), this, SLOT(catchModified(int, int, int, int, const QByteArray&, int, int, int)));
 	QObject::connect(this, SIGNAL(marginClicked(int, int, int)), this, SLOT(catchMarginClick(int, int, int)));
-	QObject::connect(this, SIGNAL(marginClicked(int, int, int)), this, SLOT(catchUpdateUi()));
-	QObject::connect(this, SIGNAL(charAdded(int)), this, SLOT(catchCharAdded(int)));
-	QObject::connect(this, SIGNAL(updateUi()), this, SLOT(catchUpdateUi()));
-	QObject::connect(this, SIGNAL(notify(SCNotification*)), this, SLOT(catchNotify(SCNotification*)));
 }
 
 RDOEditorEdit::~RDOEditorEdit()
 {}
-
-void RDOEditorEdit::cleanBuf()
-{
-	bufSelStart = -1;
-}
-
-void RDOEditorEdit::catchUpdateUi()
-{
-	cleanBuf();
-}
-
-void RDOEditorEdit::catchNotify(SCNotification* scn)
-{
-	switch (scn->nmhdr.code)
-	{
-	case SCN_INDICATORCLICK  :
-	case SCN_INDICATORRELEASE:
-		cleanBuf();
-		break;
-	}
-}
 
 void RDOEditorEdit::catchModified(int modificationType, int position, int length, int linesAdded, const QByteArray& bytes, int line, int foldLevelNow, int foldLevelPrev)
 {
@@ -193,11 +168,6 @@ void RDOEditorEdit::catchMarginClick(int position, int modifiers, int margin)
 	{
 		foldMarginClick(position, modifiers);
 	}
-}
-
-void RDOEditorEdit::catchCharAdded()
-{
-	bufSelStart = -1;
 }
 
 void RDOEditorEdit::setEditorStyle(PTR(RDOEditorEditStyle) pStyle)
