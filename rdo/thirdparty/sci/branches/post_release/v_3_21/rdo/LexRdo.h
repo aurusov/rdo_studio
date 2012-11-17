@@ -7,7 +7,6 @@
 #include "thirdparty/sci/lexlib/LexerModule.h"
 
 #define SCN_RDO_CLICK         20001
-#define SCN_RDO_BUFFERKEY     20002
 
 static inline bool isRDOLexerOperator( char ch )
 {
