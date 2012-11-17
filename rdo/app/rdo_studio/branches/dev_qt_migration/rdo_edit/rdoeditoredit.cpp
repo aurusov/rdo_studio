@@ -152,6 +152,7 @@ void RDOEditorEdit::cleanBuf()
 {
 	bufSelStart = -1;
 }
+
 void RDOEditorEdit::catchUpdateUi()
 {
 	cleanBuf();
@@ -161,9 +162,7 @@ void RDOEditorEdit::catchIndicator(SCNotification scn)
 {
 	switch (scn.nmhdr.code)
 	{
-	case SCN_INDICATORCLICK:
-		cleanBuf();
-		break;
+	case SCN_INDICATORCLICK  :
 	case SCN_INDICATORRELEASE:
 		cleanBuf();
 		break;
