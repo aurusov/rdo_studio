@@ -409,10 +409,10 @@ frm_item
 frm_header
 	: frm_backpicture statement_list
 	{
-		LPExpression pExpressionConvertBody = PARSER->stack().pop<Expression>($2);
-		ASSERT(pExpressionConvertBody);
+		LPExpression pExpressionFrameBody = PARSER->stack().pop<Expression>($2);
+		ASSERT(pExpressionFrameBody);
 
-		rdo::runtime::LPRDOCalcStatementList pCalcStatementList = pExpressionConvertBody->calc().object_dynamic_cast<rdo::runtime::RDOCalcStatementList>();
+		rdo::runtime::LPRDOCalcStatementList pCalcStatementList = pExpressionFrameBody->calc().object_dynamic_cast<rdo::runtime::RDOCalcStatementList>();
 		ASSERT(pCalcStatementList);
 
 		rdo::runtime::LPRDOCalcBaseStatementList pCalcBaseStatementList = rdo::Factory<rdo::runtime::RDOCalcBaseStatementList>::create();
@@ -428,8 +428,10 @@ frm_header
 		pCalcBaseStatementList->addCalcStatement(pCalcStatementList);
 		pCalcBaseStatementList->addCalcStatement(pCalcCloseBrace);
 
-		LPExpression pExpressionConvert = rdo::Factory<Expression>::create(pExpressionConvertBody->typeInfo(), pCalcBaseStatementList, pCalcStatementList->srcInfo());
-		ASSERT(pExpressionConvert);
+		LPExpression pExpressionFrame = rdo::Factory<Expression>::create(pExpressionFrameBody->typeInfo(), pCalcBaseStatementList, pCalcStatementList->srcInfo());
+		ASSERT(pExpressionFrame);
+
+		// куда отправлять pExpressionFrame?
 
 		LPRDOFRMFrame pFrame = PARSER->stack().pop<RDOFRMFrame>($1);
 		ASSERT(pFrame);
