@@ -42,6 +42,12 @@ RDOFRMFrame::RDOFRMFrame(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic)
 	RDOParser::s_parser()->runtime()->addRuntimeFrame(m_pFrame);
 	RDOParser::s_parser()->insertFRMFrame(this);
 	RDOParser::s_parser()->contextStack()->push(this);
+
+	m_pContextMemory = rdo::Factory<ContextMemory>::create();
+	ASSERT(m_pContextMemory);
+	RDOParser::s_parser()->contextStack()->push(m_pContextMemory);
+
+	ContextMemory::push();
 }
 
 Context::FindResult RDOFRMFrame::onFindContext(CREF(LPRDOValue) pValue) const
