@@ -33,7 +33,6 @@ private:
 	int sci_MARKER_ERROR;
 
 protected:
-	int bufSelStart;
 	RDOStudioEditBaseView* view;
 
 	rdoEditCtrl::RDOLogEdit* log;
@@ -57,32 +56,6 @@ protected:
 private:
 	afx_msg void OnEditCommentSelection();
 	afx_msg void OnEditCompleteWord();
-	afx_msg void OnInsertBuffer1Paste();
-	afx_msg void OnInsertBuffer2Paste();
-	afx_msg void OnInsertBuffer3Paste();
-	afx_msg void OnInsertBuffer4Paste();
-	afx_msg void OnInsertBuffer1Append();
-	afx_msg void OnInsertBuffer2Append();
-	afx_msg void OnInsertBuffer3Append();
-	afx_msg void OnInsertBuffer4Append();
-	afx_msg void OnInsertBuffer1Edit();
-	afx_msg void OnInsertBuffer2Edit();
-	afx_msg void OnInsertBuffer3Edit();
-	afx_msg void OnInsertBuffer4Edit();
-	afx_msg void OnInsertBuffer1Clear();
-	afx_msg void OnInsertBuffer2Clear();
-	afx_msg void OnInsertBuffer3Clear();
-	afx_msg void OnInsertBuffer4Clear();
-	afx_msg void OnUndateBuffer1Paste( CCmdUI* pCmdUI );
-	afx_msg void OnUndateBuffer2Paste( CCmdUI* pCmdUI );
-	afx_msg void OnUndateBuffer3Paste( CCmdUI* pCmdUI );
-	afx_msg void OnUndateBuffer4Paste( CCmdUI* pCmdUI );
-	afx_msg void OnUndateBufferAppend( CCmdUI* pCmdUI );
-	afx_msg void OnUpdateInsertBufferEdit(CCmdUI* pCmdUI);
-	afx_msg void OnUndateBuffer1Clear( CCmdUI* pCmdUI );
-	afx_msg void OnUndateBuffer2Clear( CCmdUI* pCmdUI );
-	afx_msg void OnUndateBuffer3Clear( CCmdUI* pCmdUI );
-	afx_msg void OnUndateBuffer4Clear( CCmdUI* pCmdUI );
 	afx_msg void OnGotoNext();
 	afx_msg void OnGotoPrev();
 	afx_msg void OnUpdateGotoNext(CCmdUI* pCmdUI);
