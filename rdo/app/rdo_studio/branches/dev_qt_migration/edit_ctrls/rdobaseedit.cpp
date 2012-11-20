@@ -154,7 +154,7 @@ RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent):
 
 	sci_MARKER_BOOKMARK = getNewMarker();
 
-	sendEditor( SCI_SETLEXER, SCLEX_TEXT );
+	sendEditor( SCI_SETLEXER, SCLEX_NULL );
 	//	int lexLanguage = sendEditor( SCI_GETLEXER );
 
 	sendEditor( SCI_SETMARGINWIDTHN, 1, 0 );
