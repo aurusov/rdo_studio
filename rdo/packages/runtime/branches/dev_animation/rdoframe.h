@@ -168,6 +168,8 @@ protected:
 
 	void prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORuntime) pRuntime);
 
+	void getBitmaps(REF(ImageNameList) list) const;
+
 private:
 	typedef std::list<LPRDOFRMShow>        ShowList;
 	typedef std::map<ruint, LPRDOFRMRulet> RuletList;

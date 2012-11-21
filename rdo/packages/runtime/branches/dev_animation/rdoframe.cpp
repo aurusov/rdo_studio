@@ -175,6 +175,14 @@ void RDOFRMSprite::prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORun
 	}
 }
 
+void RDOFRMSprite::getBitmaps(REF(ImageNameList) list) const
+{
+	STL_FOR_ALL_CONST(m_showList, it)
+	{
+		(*it)->getBitmaps(list);
+	}
+}
+
 void RDOFRMSprite::setColorLastBG(RDOFRMColor::ColorType type, CREF(rdo::animation::Color) lastBg)
 {
 	if (type == RDOFRMColor::CT_RGB)
@@ -273,10 +281,7 @@ void RDOFRMFrame::getBitmaps(REF(ImageNameList) list) const
 	if (!m_picFileName.empty())
 		list.push_back(m_picFileName);
 
-	STL_FOR_ALL_CONST(m_showList, it)
-	{
-		(*it)->getBitmaps(list);
-	}
+	RDOFRMSprite::getBitmaps(list);
 }
 
 // --------------------------------------------------------------------------------
