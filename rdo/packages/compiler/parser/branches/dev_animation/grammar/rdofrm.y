@@ -408,7 +408,7 @@ frm_item
 	| frm_active  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMActive       >($1));}
 	| frm_ruler   {PARSER->getLastFRMFrame()->frame()->addRulet(PARSER->stack().pop<RDOFRMRulet        >($1));}
 	| frm_space   {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMSpace        >($1));}
-	| frm_item frm_sprite  {}
+	| frm_sprite  {}
 	;
 
 frm_header
@@ -1745,15 +1745,18 @@ frm_active
 // -------------------- Спрайт
 // --------------------------------------------------------------------------------
 frm_sprite_end
-	: frm_sprite_begin RDO_End {}
+	: frm_sprite_begin RDO_End
+	{}
 	;
 
 frm_sprite_begin
-	:frm_sprite_header frm_item {}
+	: frm_sprite_header frm_item
+	{}
 	;
 
-frm_sprite_header 
-	: RDO_Sprite RDO_IDENTIF '(' param_list ')' {}
+frm_sprite_header
+	: RDO_Sprite RDO_IDENTIF '(' param_list ')'
+	{}
 	| RDO_Sprite RDO_IDENTIF '(' param_list error
 	{
 		PARSER->error().error(@5, _T("Ожидается закрывающая скобка"));
@@ -1847,6 +1850,7 @@ statement
 
 		$$ = PARSER->stack().push(pExpression);
 	}
+	| frm_item
 	| error
 	{
 		PARSER->error().error(@1, _T("Неизвестная инструкция"));
@@ -1880,15 +1884,6 @@ statement_list
 		ASSERT(pExpression);
 
 		$$ = PARSER->stack().push(pExpression);
-	}
-	| statement_list frm_item
-	{
-		LPExpression pExpressionStatementList = PARSER->stack().pop<Expression>($1);
-		ASSERT(pExpressionStatementList);
-
-		pExpressionStatementList->setSrcInfo(RDOParserSrcInfo(@1, @2));
-
-		$$ = PARSER->stack().push(pExpressionStatementList);	
 	}
 	| statement_list statement
 	{
