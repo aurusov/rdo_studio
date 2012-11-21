@@ -26,14 +26,14 @@ PREDECLARE_POINTER(RDOFRMShow);
 PREDECLARE_POINTER(RDOFRMItem);
 
 /*!
-  \class     RDOFRMFrame
+  \class     RDOFRMSprite
   \brief     Кадр
 */
-OBJECT(RDOFRMFrame)
+OBJECT(RDOFRMSprite)
 	IS  INSTANCE_OF(RDORuntimeObject)
 	AND INSTANCE_OF(RDOSrcInfo      )
 {
-DECLARE_FACTORY(RDOFRMFrame)
+DECLARE_FACTORY(RDOFRMSprite)
 public:
 	typedef std::list<tstring> ImageNameList;
 
@@ -61,10 +61,10 @@ public:
 		PositionType    getType() const;
 		CREF(LPRDOCalc) getCalc() const;
 
-		int getX     (CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame);
-		int getY     (CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame);
-		int getWidth (CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame);
-		int getHeight(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame);
+		int getX     (CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMSprite) pFrame);
+		int getY     (CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMSprite) pFrame);
+		int getWidth (CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMSprite) pFrame);
+		int getHeight(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMSprite) pFrame);
 
 	private:
 		RDOFRMPosition(CREF(LPRDOCalc) pCalc, PositionType type = PT_ABSOLUTE, int ruletID = 0);
@@ -100,7 +100,7 @@ public:
 			CT_LAST_FG_TEXT
 		};
 
-		rdo::animation::Color getColor(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
+		rdo::animation::Color getColor(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMSprite) pFrame) const;
 
 		ColorType getType() const;
 		void setType(ColorType type);
@@ -142,20 +142,17 @@ public:
 	};
 
 public:
-	void          getBitmaps        (REF(ImageNameList) list) const;
 	LPRDOFRMShow  getLastShow       () const;
 	CREF(tstring) name              () const;
 
 	void          setBackgroundColor(CREF(LPRDOFRMColor) pBgColor   );
-	void          setBackPicture    (CREF(tstring)       picFileName);
-	void          setBackPicture    (int width, int height          );
 	void          startShow         (CREF(LPRDOCalc) pCalc = NULL   );
 	void          addItem           (CREF(LPRDOFRMItem)  pItem      );
 	void          addRulet          (CREF(LPRDOFRMRulet) pRulet     );
 	rbool         checkCondition    (CREF(LPRDORuntime)  pRuntime   );
 
-	PTR(rdo::animation::Frame) createFrame (CREF(LPRDORuntime) pRuntime);
-	PTR(rdo::animation::Frame) prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORuntime) pRuntime);
+//	PTR(rdo::animation::Frame) createSprite (CREF(LPRDORuntime) pRuntime);
+//	PTR(rdo::animation::Frame) prepareSprite(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORuntime) pRuntime);
 
 	void setColorLastBG    (RDOFRMColor::ColorType type, CREF(rdo::animation::Color) lastBg);
 	void setColorLastFG    (RDOFRMColor::ColorType type, CREF(rdo::animation::Color) lastFg);
@@ -167,19 +164,18 @@ public:
 	int getRuletX(CREF(LPRDORuntime) pRuntime, ruint ruletID) const;
 	int getRuletY(CREF(LPRDORuntime) pRuntime, ruint ruletID) const;
 	LPRDOFRMRulet findRulet(ruint ruletID) const;
+	RDOFRMSprite(CREF(RDOSrcInfo) src_info, CREF(LPRDOCalc) pConditionCalc = NULL);
+	virtual ~RDOFRMSprite();
 
 private:
-	RDOFRMFrame(CREF(RDOSrcInfo) src_info, CREF(LPRDOCalc) pConditionCalc = NULL);
-	virtual ~RDOFRMFrame();
+	
 
 	typedef std::list<LPRDOFRMShow>        ShowList;
 	typedef std::map<ruint, LPRDOFRMRulet> RuletList;
-
+protected:
 	LPRDOCalc              m_pConditionCalc;
 	LPRDOFRMColor          m_pBgColor;
-	tstring                m_picFileName;
-	ruint                  m_width;
-	ruint                  m_height;
+
 	ShowList               m_showList;
 	rdo::animation::Color  m_colorLastBg;
 	rdo::animation::Color  m_colorLastFg;
@@ -200,21 +196,21 @@ private:
 class RDOFRMBoundingItem
 {
 protected:
-	RDOFRMBoundingItem(CREF(RDOFRMFrame::LPRDOFRMPosition) pX, CREF(RDOFRMFrame::LPRDOFRMPosition) pY, CREF(RDOFRMFrame::LPRDOFRMPosition) pWidth, CREF(RDOFRMFrame::LPRDOFRMPosition) pHeight);
+	RDOFRMBoundingItem(CREF(RDOFRMSprite::LPRDOFRMPosition) pX, CREF(RDOFRMSprite::LPRDOFRMPosition) pY, CREF(RDOFRMSprite::LPRDOFRMPosition) pWidth, CREF(RDOFRMSprite::LPRDOFRMPosition) pHeight);
 	virtual ~RDOFRMBoundingItem();
 
-	int getX        (CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
-	int getY        (CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
-	int getWidth    (CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
-	int getHeight   (CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
-	int getWidthAsX (CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
-	int getHeightAsY(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
+	int getX        (CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMSprite) pFrame) const;
+	int getY        (CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMSprite) pFrame) const;
+	int getWidth    (CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMSprite) pFrame) const;
+	int getHeight   (CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMSprite) pFrame) const;
+	int getWidthAsX (CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMSprite) pFrame) const;
+	int getHeightAsY(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMSprite) pFrame) const;
 
 private:
-	RDOFRMFrame::LPRDOFRMPosition m_pX;
-	RDOFRMFrame::LPRDOFRMPosition m_pY;
-	RDOFRMFrame::LPRDOFRMPosition m_pWidth;
-	RDOFRMFrame::LPRDOFRMPosition m_pHeight;
+	RDOFRMSprite::LPRDOFRMPosition m_pX;
+	RDOFRMSprite::LPRDOFRMPosition m_pY;
+	RDOFRMSprite::LPRDOFRMPosition m_pWidth;
+	RDOFRMSprite::LPRDOFRMPosition m_pHeight;
 };
 
 /*!
@@ -225,19 +221,19 @@ private:
 class RDOFRMColoredItem
 {
 public:
-	CREF(RDOFRMFrame::LPRDOFRMColor) getBgColor() const;
-	CREF(RDOFRMFrame::LPRDOFRMColor) getFgColor() const;
+	CREF(RDOFRMSprite::LPRDOFRMColor) getBgColor() const;
+	CREF(RDOFRMSprite::LPRDOFRMColor) getFgColor() const;
 
-	rdo::animation::Color getBg(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
-	rdo::animation::Color getFg(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMFrame) pFrame) const;
+	rdo::animation::Color getBg(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMSprite) pFrame) const;
+	rdo::animation::Color getFg(CREF(LPRDORuntime) pRuntime, CREF(LPRDOFRMSprite) pFrame) const;
 
 protected:
-	RDOFRMColoredItem(CREF(RDOFRMFrame::LPRDOFRMColor) pBgColor, CREF(RDOFRMFrame::LPRDOFRMColor) pFgColor);
+	RDOFRMColoredItem(CREF(RDOFRMSprite::LPRDOFRMColor) pBgColor, CREF(RDOFRMSprite::LPRDOFRMColor) pFgColor);
 	virtual ~RDOFRMColoredItem();
 
 private:
-	RDOFRMFrame::LPRDOFRMColor m_pBgColor;
-	RDOFRMFrame::LPRDOFRMColor m_pFgColor;
+	RDOFRMSprite::LPRDOFRMColor m_pBgColor;
+	RDOFRMSprite::LPRDOFRMColor m_pFgColor;
 };
 
 /*!
@@ -250,16 +246,16 @@ DECLARE_FACTORY(RDOFRMItem)
 public:
 	virtual PTR(rdo::animation::FrameItem) createElement(CREF(LPRDORuntime) pRuntime) = 0;
 
-	virtual void getBitmaps(REF(RDOFRMFrame::ImageNameList) list);
+	virtual void getBitmaps(REF(RDOFRMSprite::ImageNameList) list);
 
 protected:
-	RDOFRMItem(CREF(LPRDOFRMFrame) pFrame);
+	RDOFRMItem(CREF(LPRDOFRMSprite) pFrame);
 	virtual ~RDOFRMItem();
 
-	CREF(LPRDOFRMFrame) getFrame() const;
+	CREF(LPRDOFRMSprite) getFrame() const;
 
 private:
-	LPRDOFRMFrame m_pFrame;
+	LPRDOFRMSprite m_pFrame;
 };
 
 /*!
@@ -295,13 +291,13 @@ public:
 
 private:
 	RDOFRMText(
-		CREF(LPRDOFRMFrame)                 pFrame,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pX,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pY,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pWidth,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pHeight,
-		CREF(RDOFRMFrame::LPRDOFRMColor)    pBgColor,
-		CREF(RDOFRMFrame::LPRDOFRMColor)    pFgColor
+		CREF(LPRDOFRMSprite)                 pFrame,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pX,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pY,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pWidth,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pHeight,
+		CREF(RDOFRMSprite::LPRDOFRMColor)    pBgColor,
+		CREF(RDOFRMSprite::LPRDOFRMColor)    pFgColor
 	);
 	virtual ~RDOFRMText();
 
@@ -320,13 +316,13 @@ private:
 RDOFRM_ITEM(RDOFRMBitmapBase)
 {
 protected:
-	virtual void getBitmaps(REF(RDOFRMFrame::ImageNameList) list);
+	virtual void getBitmaps(REF(RDOFRMSprite::ImageNameList) list);
 
 	tstring m_pictFilename;
 	tstring m_maskFilename;
 
 protected:
-	RDOFRMBitmapBase(CREF(LPRDOFRMFrame) pFrame, CREF(tstring) pictFilename, CREF(tstring) maskFilename = _T(""));
+	RDOFRMBitmapBase(CREF(LPRDOFRMSprite) pFrame, CREF(tstring) pictFilename, CREF(tstring) maskFilename = _T(""));
 	virtual ~RDOFRMBitmapBase();
 };
 
@@ -339,16 +335,16 @@ CLASS(RDOFRMBitmap): INSTANCE_OF(RDOFRMBitmapBase)
 DECLARE_FACTORY(RDOFRMBitmap)
 private:
 	RDOFRMBitmap(
-		CREF(LPRDOFRMFrame)                 pFrame,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pX,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pY,
+		CREF(LPRDOFRMSprite)                 pFrame,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pX,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pY,
 		CREF(tstring)                       pictFilename,
 		CREF(tstring)                       maskFilename = _T("")
 	);
 	virtual ~RDOFRMBitmap();
 
-	RDOFRMFrame::LPRDOFRMPosition m_pX;
-	RDOFRMFrame::LPRDOFRMPosition m_pY;
+	RDOFRMSprite::LPRDOFRMPosition m_pX;
+	RDOFRMSprite::LPRDOFRMPosition m_pY;
 
 	DECLARE_RDOFRMIItem;
 };
@@ -367,11 +363,11 @@ CLASS(RDOFRMBitmapStretch):
 DECLARE_FACTORY(RDOFRMBitmapStretch)
 private:
 	RDOFRMBitmapStretch(
-		CREF(LPRDOFRMFrame)                 pFrame,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pX,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pY,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pWidth,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pHeight,
+		CREF(LPRDOFRMSprite)                 pFrame,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pX,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pY,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pWidth,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pHeight,
 		CREF(tstring)                       pictFilename,
 		CREF(tstring)                       maskFilename = _T("")
 	);
@@ -393,13 +389,13 @@ RDOFRM_ITEM(RDOFRMRect)
 DECLARE_FACTORY(RDOFRMRect)
 private:
 	RDOFRMRect(
-		CREF(LPRDOFRMFrame)                 pFrame,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pX,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pY,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pWidth,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pHeight,
-		CREF(RDOFRMFrame::LPRDOFRMColor)    pBgColor,
-		CREF(RDOFRMFrame::LPRDOFRMColor)    pFgColor
+		CREF(LPRDOFRMSprite)                 pFrame,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pX,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pY,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pWidth,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pHeight,
+		CREF(RDOFRMSprite::LPRDOFRMColor)    pBgColor,
+		CREF(RDOFRMSprite::LPRDOFRMColor)    pFgColor
 	);
 	virtual ~RDOFRMRect();
 
@@ -417,13 +413,13 @@ RDOFRM_ITEM(RDOFRMRectRound)
 DECLARE_FACTORY(RDOFRMRectRound)
 private:
 	RDOFRMRectRound(
-		CREF(LPRDOFRMFrame)                 pFrame,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pX,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pY,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pWidth,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pHeight,
-		CREF(RDOFRMFrame::LPRDOFRMColor)    pBgColor,
-		CREF(RDOFRMFrame::LPRDOFRMColor)    pFgColor
+		CREF(LPRDOFRMSprite)                 pFrame,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pX,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pY,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pWidth,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pHeight,
+		CREF(RDOFRMSprite::LPRDOFRMColor)    pBgColor,
+		CREF(RDOFRMSprite::LPRDOFRMColor)    pFgColor
 	);
 	virtual ~RDOFRMRectRound();
 
@@ -439,18 +435,18 @@ RDOFRM_ITEM(RDOFRMCircle) IS INSTANCE_OF(RDOFRMColoredItem)
 DECLARE_FACTORY(RDOFRMCircle)
 private:
 	RDOFRMCircle(
-		CREF(LPRDOFRMFrame)                 pFrame,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pX,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pY,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pRadius,
-		CREF(RDOFRMFrame::LPRDOFRMColor)    pBgColor,
-		CREF(RDOFRMFrame::LPRDOFRMColor)    pFgColor
+		CREF(LPRDOFRMSprite)                 pFrame,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pX,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pY,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pRadius,
+		CREF(RDOFRMSprite::LPRDOFRMColor)    pBgColor,
+		CREF(RDOFRMSprite::LPRDOFRMColor)    pFgColor
 	);
 	virtual ~RDOFRMCircle();
 
-	RDOFRMFrame::LPRDOFRMPosition m_pX;
-	RDOFRMFrame::LPRDOFRMPosition m_pY;
-	RDOFRMFrame::LPRDOFRMPosition m_pRadius;
+	RDOFRMSprite::LPRDOFRMPosition m_pX;
+	RDOFRMSprite::LPRDOFRMPosition m_pY;
+	RDOFRMSprite::LPRDOFRMPosition m_pRadius;
 
 	DECLARE_RDOFRMIItem;
 };
@@ -466,13 +462,13 @@ RDOFRM_ITEM(RDOFRMEllipse)
 DECLARE_FACTORY(RDOFRMEllipse)
 private:
 	RDOFRMEllipse(
-		CREF(LPRDOFRMFrame)                 pFrame,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pX,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pY,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pWidth,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pHeight,
-		CREF(RDOFRMFrame::LPRDOFRMColor)    pBgColor,
-		CREF(RDOFRMFrame::LPRDOFRMColor)    pFgColor
+		CREF(LPRDOFRMSprite)                 pFrame,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pX,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pY,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pWidth,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pHeight,
+		CREF(RDOFRMSprite::LPRDOFRMColor)    pBgColor,
+		CREF(RDOFRMSprite::LPRDOFRMColor)    pFgColor
 	);
 	virtual ~RDOFRMEllipse();
 
@@ -488,16 +484,16 @@ RDOFRM_ITEM(RDOFRMLine) AND INSTANCE_OF(RDOFRMBoundingItem)
 DECLARE_FACTORY(RDOFRMLine)
 private:
 	RDOFRMLine(
-		CREF(LPRDOFRMFrame)                 pFrame,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pX1,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pY1,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pX2,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pY2,
-		CREF(RDOFRMFrame::LPRDOFRMColor)    pColor
+		CREF(LPRDOFRMSprite)                 pFrame,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pX1,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pY1,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pX2,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pY2,
+		CREF(RDOFRMSprite::LPRDOFRMColor)    pColor
 	);
 	virtual ~RDOFRMLine();
 
-	RDOFRMFrame::LPRDOFRMColor m_pColor;
+	RDOFRMSprite::LPRDOFRMColor m_pColor;
 
 	DECLARE_RDOFRMIItem;
 };
@@ -511,24 +507,24 @@ RDOFRM_ITEM(RDOFRMTriang) AND INSTANCE_OF(RDOFRMColoredItem)
 DECLARE_FACTORY(RDOFRMTriang)
 private:
 	RDOFRMTriang(
-		CREF(LPRDOFRMFrame)                 pFrame,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pX1,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pY1,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pX2,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pY2,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pX3,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pY3,
-		CREF(RDOFRMFrame::LPRDOFRMColor)    pBgColor,
-		CREF(RDOFRMFrame::LPRDOFRMColor)    pFgColor
+		CREF(LPRDOFRMSprite)                 pFrame,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pX1,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pY1,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pX2,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pY2,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pX3,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pY3,
+		CREF(RDOFRMSprite::LPRDOFRMColor)    pBgColor,
+		CREF(RDOFRMSprite::LPRDOFRMColor)    pFgColor
 	);
 	virtual ~RDOFRMTriang();
 
-	RDOFRMFrame::LPRDOFRMPosition m_pX1;
-	RDOFRMFrame::LPRDOFRMPosition m_pY1;
-	RDOFRMFrame::LPRDOFRMPosition m_pX2;
-	RDOFRMFrame::LPRDOFRMPosition m_pY2;
-	RDOFRMFrame::LPRDOFRMPosition m_pX3;
-	RDOFRMFrame::LPRDOFRMPosition m_pY3;
+	RDOFRMSprite::LPRDOFRMPosition m_pX1;
+	RDOFRMSprite::LPRDOFRMPosition m_pY1;
+	RDOFRMSprite::LPRDOFRMPosition m_pX2;
+	RDOFRMSprite::LPRDOFRMPosition m_pY2;
+	RDOFRMSprite::LPRDOFRMPosition m_pX3;
+	RDOFRMSprite::LPRDOFRMPosition m_pY3;
 
 	DECLARE_RDOFRMIItem;
 };
@@ -543,11 +539,11 @@ RDOFRM_ITEM(RDOFRMActive) AND INSTANCE_OF(RDOFRMBoundingItem)
 DECLARE_FACTORY(RDOFRMActive)
 private:
 	RDOFRMActive(
-		CREF(LPRDOFRMFrame)                 pFrame,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pX,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pY,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pWidth,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pHeight,
+		CREF(LPRDOFRMSprite)                 pFrame,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pX,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pY,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pWidth,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pHeight,
 		CREF(tstring)                       operName
 	);
 	virtual ~RDOFRMActive();
@@ -567,11 +563,11 @@ RDOFRM_ITEM(RDOFRMSpace) AND INSTANCE_OF(RDOFRMBoundingItem)
 DECLARE_FACTORY(RDOFRMSpace)
 private:
 	RDOFRMSpace(
-		CREF(LPRDOFRMFrame)                 pFrame,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pX,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pY,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pWidth,
-		CREF(RDOFRMFrame::LPRDOFRMPosition) pHeight
+		CREF(LPRDOFRMSprite)                 pFrame,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pX,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pY,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pWidth,
+		CREF(RDOFRMSprite::LPRDOFRMPosition) pHeight
 	);
 	virtual ~RDOFRMSpace();
 
@@ -594,7 +590,7 @@ public:
 	REF(ItemList) getItemList   ();
 	void          insertItem    (CREF(LPRDOFRMItem) pItem            );
 	rbool         checkCondition(CREF(LPRDORuntime) pRuntime         );
-	virtual void  getBitmaps    (REF(RDOFRMFrame::ImageNameList) list);
+	virtual void  getBitmaps    (REF(RDOFRMSprite::ImageNameList) list);
 
 private:
 	RDOFRMShow(CREF(LPRDOCalc) pConditionCalc);
@@ -603,6 +599,26 @@ private:
 	ItemList  m_itemList;
 	LPRDOCalc m_pConditionCalc;
 };
+
+CLASS(RDOFRMFrame) : 
+	INSTANCE_OF(RDOFRMSprite)
+ {
+ DECLARE_FACTORY(RDOFRMFrame)
+ public:
+	void          getBitmaps        (REF(ImageNameList) list) const;
+	void          setBackPicture    (CREF(tstring)       picFileName);
+	void          setBackPicture    (int width, int height          );
+	PTR(rdo::animation::Frame) createFrame (CREF(LPRDORuntime) pRuntime);
+	PTR(rdo::animation::Frame) prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORuntime) pRuntime);
+ private:
+         RDOFRMFrame(CREF(RDOSrcInfo) src_info, CREF(LPRDOCalc) pConditionCalc = NULL);
+         virtual ~RDOFRMFrame();
+         tstring                m_picFileName;
+         ruint                  m_width;
+         ruint                  m_height;
+};
+
+DECLARE_POINTER(RDOFRMFrame);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
