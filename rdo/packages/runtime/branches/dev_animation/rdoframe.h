@@ -161,6 +161,8 @@ public:
 	int getRuletX(CREF(LPRDORuntime) pRuntime, ruint ruletID) const;
 	int getRuletY(CREF(LPRDORuntime) pRuntime, ruint ruletID) const;
 	LPRDOFRMRulet findRulet(ruint ruletID) const;
+
+protected:
 	RDOFRMSprite(CREF(RDOSrcInfo) src_info, CREF(LPRDOCalc) pConditionCalc = NULL);
 	virtual ~RDOFRMSprite();
 
