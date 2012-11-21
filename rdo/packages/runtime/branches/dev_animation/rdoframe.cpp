@@ -11,6 +11,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/runtime/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdoframe.h"
 #include "simulator/runtime/rdo_runtime.h"
@@ -125,13 +126,13 @@ void RDOFRMSprite::prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORun
 
 	if (checkCondition(pRuntime))
 	{
-		STL_FOR_ALL(m_showList, showIt)
+		BOOST_FOREACH(const LPRDOFRMShow& pShow, m_showList)
 		{
-			if ((*showIt)->checkCondition(pRuntime))
+			if (pShow->checkCondition(pRuntime))
 			{
-				STL_FOR_ALL((*showIt)->getItemList(), itemIt)
+				BOOST_FOREACH(const LPRDOFRMItem& pItem, pShow->getItemList())
 				{
-					PTR(rdo::animation::FrameItem) pElement = (*itemIt)->createElement(pRuntime);
+					PTR(rdo::animation::FrameItem) pElement = pItem->createElement(pRuntime);
 					if (pElement)
 					{
 						pFrame->m_elements.push_back(pElement);
@@ -177,9 +178,9 @@ void RDOFRMSprite::prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORun
 
 void RDOFRMSprite::getBitmaps(REF(ImageNameList) list) const
 {
-	STL_FOR_ALL_CONST(m_showList, it)
+	BOOST_FOREACH(const LPRDOFRMShow& pShow, m_showList)
 	{
-		(*it)->getBitmaps(list);
+		pShow->getBitmaps(list);
 	}
 }
 
@@ -776,9 +777,9 @@ REF(RDOFRMShow::ItemList) RDOFRMShow::getItemList()
 
 void RDOFRMShow::getBitmaps(REF(RDOFRMSprite::ImageNameList) list)
 {
-	STL_FOR_ALL(m_itemList, it)
+	BOOST_FOREACH(const LPRDOFRMItem& pItem, m_itemList)
 	{
-		(*it)->getBitmaps(list);
+		pItem->getBitmaps(list);
 	}
 }
 
