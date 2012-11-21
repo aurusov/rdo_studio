@@ -602,22 +602,23 @@ private:
   \class     RDOFRMFrame
   \brief     Фрейм. Формирует кадр анимации
 */
-CLASS(RDOFRMFrame) : 
+CLASS(RDOFRMFrame):
 	INSTANCE_OF(RDOFRMSprite)
- {
- DECLARE_FACTORY(RDOFRMFrame)
- public:
+{
+DECLARE_FACTORY(RDOFRMFrame)
+public:
 	void          getBitmaps        (REF(ImageNameList) list) const;
 	void          setBackPicture    (CREF(tstring)       picFileName);
 	void          setBackPicture    (int width, int height          );
 	PTR(rdo::animation::Frame) createFrame (CREF(LPRDORuntime) pRuntime);
 	PTR(rdo::animation::Frame) prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORuntime) pRuntime);
- private:
-         RDOFRMFrame(CREF(RDOSrcInfo) src_info, CREF(LPRDOCalc) pConditionCalc = NULL);
-         virtual ~RDOFRMFrame();
-         tstring                m_picFileName;
-         ruint                  m_width;
-         ruint                  m_height;
+private:
+	RDOFRMFrame(CREF(RDOSrcInfo) src_info, CREF(LPRDOCalc) pConditionCalc = NULL);
+	virtual ~RDOFRMFrame();
+
+	tstring m_picFileName;
+	ruint   m_width;
+	ruint   m_height;
 };
 
 DECLARE_POINTER(RDOFRMFrame);
