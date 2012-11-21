@@ -257,7 +257,7 @@ rbool RDOFRMSprite::checkCondition(CREF(LPRDORuntime) pRuntime)
 	return m_pConditionCalc->calcValue(pRuntime).getAsBool();
 }
 
-PTR(rdo::animation::Frame) RDOFRMFrame::prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORuntime) pRuntime)
+void RDOFRMFrame::prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORuntime) pRuntime)
 {
 	ASSERT(pFrame);
 
@@ -266,8 +266,6 @@ PTR(rdo::animation::Frame) RDOFRMFrame::prepareFrame(PTR(rdo::animation::Frame) 
 	pFrame->m_size.m_height = m_height;
 
 	RDOFRMSprite::prepareFrame(pFrame, pRuntime);
-
-	return pFrame;
 }
 
 void RDOFRMFrame::getBitmaps(REF(ImageNameList) list) const
