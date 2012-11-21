@@ -152,13 +152,6 @@ inline CREF(tstring) RDOFRMSprite::name() const
 	return src_text();
 }
 
-inline PTR(rdo::animation::Frame) RDOFRMFrame::createFrame(CREF(LPRDORuntime) pRuntime)
-{
-	PTR(rdo::animation::Frame) pFrame = new rdo::animation::Frame();
-	prepareFrame(pFrame, pRuntime);
-	return pFrame;
-}
-
 inline void RDOFRMSprite::setLastXYWH(double x, double y, double width, double height)
 {
 	setLastXY(x ,y);

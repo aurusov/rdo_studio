@@ -607,7 +607,6 @@ public:
 	void  setBackPicture(CREF(tstring) picFileName);
 	void  setBackPicture(int width, int height);
 
-	PTR(rdo::animation::Frame) createFrame(CREF(LPRDORuntime) pRuntime);
 	void prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORuntime) pRuntime);
 
 private:
