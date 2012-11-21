@@ -1745,16 +1745,16 @@ frm_sprite_header
 	;
 
 frm_sprite
-	: RDO_Sprite RDO_IDENTIF '(' arithm_list ')' {} //использовать fun_arithm_func_call (?)
-	| RDO_Sprite RDO_IDENTIF '(' arithm_list error
+	: RDO_sprite_call RDO_IDENTIF '(' arithm_list ')' {} //использовать fun_arithm_func_call (?)
+	| RDO_sprite_call RDO_IDENTIF '(' arithm_list error
 	{
 		PARSER->error().error(@5, _T("Ожидается закрывающая скобка"));
 	}
-	| RDO_Sprite RDO_IDENTIF '(' error
+	| RDO_sprite_call RDO_IDENTIF '(' error
 	{
 		PARSER->error().error(@4, _T("Ошибка задания параметров"));
 	}
-	| RDO_Sprite RDO_IDENTIF error
+	| RDO_sprite_call RDO_IDENTIF error
 	{
 		PARSER->error().error(@3, _T("Ожидается открывающая скобка"));
 	}
