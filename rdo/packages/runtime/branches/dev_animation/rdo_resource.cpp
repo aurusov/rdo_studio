@@ -48,7 +48,7 @@ RDOResource::RDOResource(CREF(LPRDORuntime) pRuntime, CREF(RDOResource) copy)
 {
 	UNUSED(pRuntime);
 	appendParams(copy.m_paramList.begin(), copy.m_paramList.end());
-/// @todo посмотреть history и принять решение и комментарии
+/// @todo посмотреть history и принять решение о комментарии
 //	getRuntime()->incrementResourceIdReference( getTraceID() );
 }
 
