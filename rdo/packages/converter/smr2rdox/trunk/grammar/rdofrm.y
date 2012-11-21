@@ -203,6 +203,7 @@
 #include "converter/smr2rdox/rdodpt.h"
 #include "converter/smr2rdox/rdo_type_range.h"
 #include "converter/smr2rdox/update/update.h"
+#include "simulator/runtime/rdoframe.h"
 #include "simulator/runtime/calc/calc_base.h"
 #include "utils/rdoanimation.h"
 // --------------------------------------------------------------------------------
