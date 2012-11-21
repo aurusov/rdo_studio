@@ -45,7 +45,7 @@ private:
 	RDOFRMFrame(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic = NULL);
 
 	rdo::runtime::LPRDOFRMFrame m_pFrame;
-	LPContextMemory  m_pContextMemory;
+	LPContextMemory             m_pContextMemory;
 
 	DECLARE_IContextFind;
 };
