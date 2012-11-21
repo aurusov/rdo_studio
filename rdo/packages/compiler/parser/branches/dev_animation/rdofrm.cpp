@@ -70,8 +70,8 @@ Context::FindResult RDOFRMFrame::onFindContext(CREF(LPRDOValue) pValue) const
 
 void RDOFRMFrame::end()
 {
-	RDOParser::s_parser()->contextStack()->pop();
 	ContextMemory::pop();
+	RDOParser::s_parser()->contextStack()->pop();
 }
 
 CLOSE_RDO_PARSER_NAMESPACE
