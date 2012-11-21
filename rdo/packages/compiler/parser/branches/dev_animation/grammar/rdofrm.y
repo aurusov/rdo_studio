@@ -395,26 +395,49 @@ frm_show
 	;
 
 frm_item
-	: /* empty */
-	| frm_item frm_show
-	| frm_item frm_text    {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMText         >($2));}
-	| frm_item frm_bitmap  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMBitmap       >($2));}
-	| frm_item frm_rect    {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMRect         >($2));}
-	| frm_item frm_line    {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMLine         >($2));}
-	| frm_item frm_circle  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMCircle       >($2));}
-	| frm_item frm_ellipse {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMEllipse      >($2));}
-	| frm_item frm_r_rect  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMRectRound    >($2));}
-	| frm_item frm_triang  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMTriang       >($2));}
-	| frm_item frm_s_bmp   {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMBitmapStretch>($2));}
-	| frm_item frm_active  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMActive       >($2));}
-	| frm_item frm_ruler   {PARSER->getLastFRMFrame()->frame()->addRulet(PARSER->stack().pop<RDOFRMRulet        >($2));}
-	| frm_item frm_space   {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMSpace        >($2));}
+	: frm_show
+	| frm_text    {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMText         >($1));}
+	| frm_bitmap  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMBitmap       >($1));}
+	| frm_rect    {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMRect         >($1));}
+	| frm_line    {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMLine         >($1));}
+	| frm_circle  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMCircle       >($1));}
+	| frm_ellipse {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMEllipse      >($1));}
+	| frm_r_rect  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMRectRound    >($1));}
+	| frm_triang  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMTriang       >($1));}
+	| frm_s_bmp   {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMBitmapStretch>($1));}
+	| frm_active  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMActive       >($1));}
+	| frm_ruler   {PARSER->getLastFRMFrame()->frame()->addRulet(PARSER->stack().pop<RDOFRMRulet        >($1));}
+	| frm_space   {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMSpace        >($1));}
 	| frm_item frm_sprite  {}
 	;
 
 frm_header
-	: frm_backpicture frm_item
+	: frm_backpicture statement_list
 	{
+		LPExpression pExpressionFrameBody = PARSER->stack().pop<Expression>($2);
+		ASSERT(pExpressionFrameBody);
+
+		rdo::runtime::LPRDOCalcStatementList pCalcStatementList = pExpressionFrameBody->calc().object_dynamic_cast<rdo::runtime::RDOCalcStatementList>();
+		ASSERT(pCalcStatementList);
+
+		rdo::runtime::LPRDOCalcBaseStatementList pCalcBaseStatementList = rdo::Factory<rdo::runtime::RDOCalcBaseStatementList>::create();
+		ASSERT(pCalcBaseStatementList);
+
+		rdo::runtime::LPRDOCalcOpenBrace pCalcOpenBrace = rdo::Factory<rdo::runtime::RDOCalcOpenBrace>::create();
+		ASSERT(pCalcOpenBrace);
+
+		rdo::runtime::LPRDOCalcCloseBrace pCalcCloseBrace = rdo::Factory<rdo::runtime::RDOCalcCloseBrace>::create();
+		ASSERT(pCalcCloseBrace);
+
+		pCalcBaseStatementList->addCalcStatement(pCalcOpenBrace);
+		pCalcBaseStatementList->addCalcStatement(pCalcStatementList);
+		pCalcBaseStatementList->addCalcStatement(pCalcCloseBrace);
+
+		LPExpression pExpressionFrame = rdo::Factory<Expression>::create(pExpressionFrameBody->typeInfo(), pCalcBaseStatementList, pCalcStatementList->srcInfo());
+		ASSERT(pExpressionFrame);
+
+		// куда отправлять pExpressionFrame?
+
 		LPRDOFRMFrame pFrame = PARSER->stack().pop<RDOFRMFrame>($1);
 		ASSERT(pFrame);
 		$$ = PARSER->stack().push(pFrame);
@@ -1857,6 +1880,15 @@ statement_list
 		ASSERT(pExpression);
 
 		$$ = PARSER->stack().push(pExpression);
+	}
+	| statement_list frm_item
+	{
+		LPExpression pExpressionStatementList = PARSER->stack().pop<Expression>($1);
+		ASSERT(pExpressionStatementList);
+
+		pExpressionStatementList->setSrcInfo(RDOParserSrcInfo(@1, @2));
+
+		$$ = PARSER->stack().push(pExpressionStatementList);	
 	}
 	| statement_list statement
 	{
