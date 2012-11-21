@@ -151,9 +151,6 @@ public:
 	void          addRulet          (CREF(LPRDOFRMRulet) pRulet     );
 	rbool         checkCondition    (CREF(LPRDORuntime)  pRuntime   );
 
-//	PTR(rdo::animation::Frame) createSprite (CREF(LPRDORuntime) pRuntime);
-//	PTR(rdo::animation::Frame) prepareSprite(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORuntime) pRuntime);
-
 	void setColorLastBG    (RDOFRMColor::ColorType type, CREF(rdo::animation::Color) lastBg);
 	void setColorLastFG    (RDOFRMColor::ColorType type, CREF(rdo::animation::Color) lastFg);
 	void setColorLastBGText(RDOFRMColor::ColorType type, CREF(rdo::animation::Color) lastBgText);
