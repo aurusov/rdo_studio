@@ -98,6 +98,12 @@ RDOFRMSprite::RDOFRMSprite(CREF(RDOSrcInfo) src_info, CREF(LPRDOCalc) pCondition
 RDOFRMSprite::~RDOFRMSprite()
 {}
 
+RDOValue RDOFRMSprite::doCalc(CREF(LPRDORuntime) pRuntime)
+{
+	UNUSED(pRuntime);
+	return RDOValue();
+}
+
 void RDOFRMSprite::prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORuntime) pRuntime)
 {
 	ASSERT(pFrame);

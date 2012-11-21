@@ -29,7 +29,7 @@ PREDECLARE_POINTER(RDOFRMItem);
   \class     RDOFRMSprite
   \brief     Спрайт. Владеет и запускает на исполнение основные команды анимации
 */
-OBJECT(RDOFRMSprite)
+CALC(RDOFRMSprite)
 	IS  INSTANCE_OF(RDORuntimeObject)
 	AND INSTANCE_OF(RDOSrcInfo      )
 {
@@ -184,6 +184,8 @@ private:
 	double                 m_lastWidth;
 	double                 m_lastHeight;
 	RuletList              m_ruletList;
+
+	DECLARE_ICalc;
 };
 
 /*!
