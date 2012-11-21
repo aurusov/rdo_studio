@@ -27,7 +27,7 @@ PREDECLARE_POINTER(RDOFRMItem);
 
 /*!
   \class     RDOFRMSprite
-  \brief     Спрайт. Реализует основные команды анимации
+  \brief     Спрайт. Владеет и запускает на исполнение основные команды анимации
 */
 OBJECT(RDOFRMSprite)
 	IS  INSTANCE_OF(RDORuntimeObject)
@@ -39,7 +39,7 @@ public:
 
 	/*!
 	  \class     RDOFRMPosition
-	  \brief     Позиция кадра
+	  \brief     Позиция
 	*/
 	OBJECT(RDOFRMPosition) IS INSTANCE_OF(RDORuntimeObject)
 	{
@@ -47,7 +47,7 @@ public:
 	public:
 		/*!
 		  \enum      PositionType
-		  \brief     Тип позици кадра
+		  \brief     Тип позици
 		*/
 		enum PositionType
 		{
@@ -85,10 +85,7 @@ public:
 	{
 	DECLARE_FACTORY(RDOFRMColor)
 	public:
-		/*!
-		  \enum      ColorType
-		  \brief     Цвет фигуры
-		*/
+		//! @brief  Цвет фигуры
 		enum ColorType
 		{
 			CT_NONE,
@@ -120,7 +117,7 @@ public:
 
 	/*!
 	  \class     RDOFRMRulet
-	  \brief     Объект-цвет
+	  \brief     Рулетка. Используется для позиционирования
 	*/
 	OBJECT(RDOFRMRulet)
 		 IS  INSTANCE_OF(RDORuntimeObject)
@@ -216,7 +213,7 @@ private:
 
 /*!
   \class     RDOFRMColoredItem
-  \brief     Цветной объект
+  \brief     Объект с цветом
   \details   В парсере не создается
 */
 class RDOFRMColoredItem
@@ -239,7 +236,7 @@ private:
 
 /*!
   \class     RDOFRMItem
-  \brief     Базовый для всех элементов
+  \brief     Базовый класс для всех элементов
 */
 OBJECT(RDOFRMItem) IS INSTANCE_OF(RDORuntimeObject)
 {
@@ -277,7 +274,7 @@ CLASS(A): INSTANCE_OF(RDOFRMItem)
 
 /*!
   \class     RDOFRMText
-  \brief     Текстовая анимация
+  \brief     Текст
 */
 RDOFRM_ITEM(RDOFRMText)
 	IS  INSTANCE_OF(RDOFRMBoundingItem)
@@ -312,7 +309,7 @@ private:
 
 /*!
   \class     RDOFRMBitmapBase
-  \brief     Базовый класс для картинок в анимации
+  \brief     Базовый класс для картинок
 */
 RDOFRM_ITEM(RDOFRMBitmapBase)
 {
@@ -329,7 +326,7 @@ protected:
 
 /*!
   \class     RDOFRMBitmap
-  \brief     Картинка в анимации
+  \brief     Картинка
 */
 CLASS(RDOFRMBitmap): INSTANCE_OF(RDOFRMBitmapBase)
 {
@@ -354,8 +351,7 @@ DECLARE_POINTER(RDOFRMBitmap)
 
 /*!
   \class     RDOFRMBitmapStretch
-  \brief     Растягивающаяся картинка в анимации
-  \todo      что это?
+  \brief     Масштабируемая картинка
 */
 CLASS(RDOFRMBitmapStretch):
 		INSTANCE_OF(RDOFRMBitmapBase  )
@@ -381,7 +377,7 @@ DECLARE_POINTER(RDOFRMBitmapStretch);
 
 /*!
   \class     RDOFRMRect
-  \brief     Прямоугольник для анимации
+  \brief     Объект прямоугольник
 */
 RDOFRM_ITEM(RDOFRMRect)
 	IS  INSTANCE_OF(RDOFRMBoundingItem)
@@ -405,7 +401,7 @@ private:
 
 /*!
   \class     RDOFRMRectRound
-  \brief     Прямоугольник со скругленными углами для анимации
+  \brief     Прямоугольник со скругленными углами
 */
 RDOFRM_ITEM(RDOFRMRectRound)
 	IS  INSTANCE_OF(RDOFRMBoundingItem)
@@ -429,7 +425,7 @@ private:
 
 /*!
   \class     RDOFRMCircle
-  \brief     Окружность для анимации
+  \brief     Окружность
 */
 RDOFRM_ITEM(RDOFRMCircle) IS INSTANCE_OF(RDOFRMColoredItem)
 {
@@ -454,7 +450,7 @@ private:
 
 /*!
   \class     RDOFRMEllipse
-  \brief     Эллипс для анимации
+  \brief     Эллипс
 */
 RDOFRM_ITEM(RDOFRMEllipse)
 	IS  INSTANCE_OF(RDOFRMBoundingItem)
@@ -478,7 +474,7 @@ private:
 
 /*!
   \class     RDOFRMLine
-  \brief     Линия для анимации
+  \brief     Линия
 */
 RDOFRM_ITEM(RDOFRMLine) AND INSTANCE_OF(RDOFRMBoundingItem)
 {
@@ -501,7 +497,7 @@ private:
 
 /*!
   \class     RDOFRMTriang
-  \brief     Треугольник для анимации
+  \brief     Треугольник
 */
 RDOFRM_ITEM(RDOFRMTriang) AND INSTANCE_OF(RDOFRMColoredItem)
 {
@@ -532,8 +528,7 @@ private:
 
 /*!
   \class     RDOFRMActive
-  \brief     Активный кадр
-  \todo      что это?
+  \brief     Активная область
 */
 RDOFRM_ITEM(RDOFRMActive) AND INSTANCE_OF(RDOFRMBoundingItem)
 {
@@ -556,8 +551,7 @@ private:
 
 /*!
   \class     RDOFRMSpace
-  \brief     Пробел
-  \todo      что это?
+  \brief     Пустота
 */
 RDOFRM_ITEM(RDOFRMSpace) AND INSTANCE_OF(RDOFRMBoundingItem)
 {
@@ -577,8 +571,7 @@ private:
 
 /*!
   \class     RDOFRMShow
-  \brief     Показ кадра
-  \todo      что это?
+  \brief     Команды анимации Show и ShowIf
 */
 OBJECT(RDOFRMShow) IS INSTANCE_OF(RDORuntimeObject)
 {
