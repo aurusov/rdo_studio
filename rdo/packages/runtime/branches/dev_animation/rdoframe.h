@@ -174,7 +174,6 @@ private:
 	typedef std::list<LPRDOFRMShow>        ShowList;
 	typedef std::map<ruint, LPRDOFRMRulet> RuletList;
 
-protected:
 	LPRDOCalc              m_pConditionCalc;
 	LPRDOFRMColor          m_pBgColor;
 
