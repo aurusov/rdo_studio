@@ -208,27 +208,3 @@ insertMenu.push_back("INSERT_FUNCTIONS_LOG2            | Log10           ");
 insertMenu.push_back("INSERT_FUNCTIONS_LOG10           | Log2            ");
 
 insertMenu.push_back("LINE");
-
-insertMenu.push_back("INSERT_BUFFER_1_PASTE  | Insert | Вставить         ");
-insertMenu.push_back("INSERT_BUFFER_1_APPEND | Add    | Добавить         ");
-insertMenu.push_back("INSERT_BUFFER_1_EDIT   | Edit   | Редактировать... ");
-insertMenu.push_back("LINE                                               ");
-insertMenu.push_back("INSERT_BUFFER_1_CLEAR  | Clear  | Очистить         ");
-
-insertMenu.push_back("INSERT_BUFFER_2_PASTE  | Insert | Вставить         ");
-insertMenu.push_back("INSERT_BUFFER_2_APPEND | Add    | Добавить         ");
-insertMenu.push_back("INSERT_BUFFER_2_EDIT   | Edit   | Редактировать... ");
-insertMenu.push_back("LINE                                               ");
-insertMenu.push_back("INSERT_BUFFER_2_CLEAR  | Clear  | Очистить         ");
-
-insertMenu.push_back("INSERT_BUFFER_3_PASTE  | Insert | Вставить         ");
-insertMenu.push_back("INSERT_BUFFER_3_APPEND | Add    | Добавить         ");
-insertMenu.push_back("INSERT_BUFFER_3_EDIT   | Edit   | Редактировать... ");
-insertMenu.push_back("LINE                                               ");
-insertMenu.push_back("INSERT_BUFFER_3_CLEAR  | Clear  | Очистить         ");
-
-insertMenu.push_back("INSERT_BUFFER_4_PASTE  | Insert | Вставить         ");
-insertMenu.push_back("INSERT_BUFFER_4_APPEND | Add    | Добавить         ");
-insertMenu.push_back("INSERT_BUFFER_4_EDIT   | Edit   | Редактировать... ");
-insertMenu.push_back("LINE                                               ");
-insertMenu.push_back("INSERT_BUFFER_4_CLEAR  | Clear  | Очистить         ");
