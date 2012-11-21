@@ -166,6 +166,8 @@ protected:
 	RDOFRMSprite(CREF(RDOSrcInfo) src_info, CREF(LPRDOCalc) pConditionCalc = NULL);
 	virtual ~RDOFRMSprite();
 
+	void prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORuntime) pRuntime);
+
 private:
 	typedef std::list<LPRDOFRMShow>        ShowList;
 	typedef std::map<ruint, LPRDOFRMRulet> RuletList;

@@ -97,6 +97,84 @@ RDOFRMSprite::RDOFRMSprite(CREF(RDOSrcInfo) src_info, CREF(LPRDOCalc) pCondition
 RDOFRMSprite::~RDOFRMSprite()
 {}
 
+void RDOFRMSprite::prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORuntime) pRuntime)
+{
+	ASSERT(pFrame);
+
+	if (m_pBgColor)
+	{
+		if (m_pBgColor->getType() == RDOFRMColor::CT_RGB)
+		{
+			rdo::animation::Color bgColor = m_pBgColor->getColor(pRuntime, this);
+			pFrame->m_bgColor = bgColor;
+		}
+		else
+		{
+			pFrame->m_bgColor = rdo::animation::Color();
+		}
+	}
+	else
+	{
+		pFrame->m_bgColor = rdo::animation::Color();
+	}
+
+	m_lastX      = 0;
+	m_lastY      = 0;
+	m_lastWidth  = 0;
+	m_lastHeight = 0;
+
+	if (checkCondition(pRuntime))
+	{
+		STL_FOR_ALL(m_showList, showIt)
+		{
+			if ((*showIt)->checkCondition(pRuntime))
+			{
+				STL_FOR_ALL((*showIt)->getItemList(), itemIt)
+				{
+					PTR(rdo::animation::FrameItem) pElement = (*itemIt)->createElement(pRuntime);
+					if (pElement)
+					{
+						pFrame->m_elements.push_back(pElement);
+					}
+				}
+			}
+		}
+
+#ifdef MODEL_DOROGA_HACK
+		RDORuntime::ResCIterator end = pRuntime->res_end();
+		for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != end; ++it)
+		{
+			if (*it && (*it)->checkType(1))
+			{
+				rdo::animation::Point point((*it)->getParam(0).getInt(), (*it)->getParam(1).getInt());
+				rdo::animation::Size  size;
+				if ((*it)->getParam(5).getInt() == 1 || (*it)->getParam(5).getInt() == 3)
+				{
+					size.m_width  = (*it)->getParam(8).getInt();
+					size.m_height = (*it)->getParam(9).getInt();
+				}
+				else
+				{
+					size.m_width  = (*it)->getParam(9).getInt();
+					size.m_height = (*it)->getParam(8).getInt();
+				}
+				point.m_x -= size.m_width  / 2;
+				point.m_y -= size.m_height / 2;
+
+				ruint colorRuint = (*it)->getParam(7).getUInt();
+				rdo::animation::Color color(GetBValue(colorRuint), GetGValue(colorRuint), GetRValue(colorRuint));
+
+				PTR(rdo::animation::FrameItem) pRect = new rdo::animation::RectElement(
+					rdo::animation::BoundedElement(point, size),
+					rdo::animation::ColoredElement(color, color)
+				);
+				pFrame->m_elements.push_back(pRect);
+			}
+		}
+#endif // MODEL_DOROGA_HACK
+	}
+}
+
 void RDOFRMSprite::setColorLastBG(RDOFRMColor::ColorType type, CREF(rdo::animation::Color) lastBg)
 {
 	if (type == RDOFRMColor::CT_RGB)
@@ -183,81 +261,11 @@ PTR(rdo::animation::Frame) RDOFRMFrame::prepareFrame(PTR(rdo::animation::Frame) 
 {
 	ASSERT(pFrame);
 
-	if (m_pBgColor)
-	{
-		if (m_pBgColor->getType() == RDOFRMColor::CT_RGB)
-		{
-			rdo::animation::Color bgColor = m_pBgColor->getColor(pRuntime, this);
-			pFrame->m_bgColor = bgColor;
-		}
-		else
-		{
-			pFrame->m_bgColor = rdo::animation::Color();
-		}
-	}
-	else
-	{
-		pFrame->m_bgColor = rdo::animation::Color();
-	}
 	pFrame->m_bgImageName   = m_picFileName;
 	pFrame->m_size.m_width  = m_width;
 	pFrame->m_size.m_height = m_height;
 
-	m_lastX      = 0;
-	m_lastY      = 0;
-	m_lastWidth  = 0;
-	m_lastHeight = 0;
-
-	if (checkCondition(pRuntime))
-	{
-		STL_FOR_ALL(m_showList, showIt)
-		{
-			if ((*showIt)->checkCondition(pRuntime))
-			{
-				STL_FOR_ALL((*showIt)->getItemList(), itemIt)
-				{
-					PTR(rdo::animation::FrameItem) pElement = (*itemIt)->createElement(pRuntime);
-					if (pElement)
-					{
-						pFrame->m_elements.push_back(pElement);
-					}
-				}
-			}
-		}
-
-#ifdef MODEL_DOROGA_HACK
-		RDORuntime::ResCIterator end = pRuntime->res_end();
-		for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != end; ++it)
-		{
-			if (*it && (*it)->checkType(1))
-			{
-				rdo::animation::Point point((*it)->getParam(0).getInt(), (*it)->getParam(1).getInt());
-				rdo::animation::Size  size;
-				if ((*it)->getParam(5).getInt() == 1 || (*it)->getParam(5).getInt() == 3)
-				{
-					size.m_width  = (*it)->getParam(8).getInt();
-					size.m_height = (*it)->getParam(9).getInt();
-				}
-				else
-				{
-					size.m_width  = (*it)->getParam(9).getInt();
-					size.m_height = (*it)->getParam(8).getInt();
-				}
-				point.m_x -= size.m_width  / 2;
-				point.m_y -= size.m_height / 2;
-
-				ruint colorRuint = (*it)->getParam(7).getUInt();
-				rdo::animation::Color color(GetBValue(colorRuint), GetGValue(colorRuint), GetRValue(colorRuint));
-
-				PTR(rdo::animation::FrameItem) pRect = new rdo::animation::RectElement(
-					rdo::animation::BoundedElement(point, size),
-					rdo::animation::ColoredElement(color, color)
-				);
-				pFrame->m_elements.push_back(pRect);
-			}
-		}
-#endif // MODEL_DOROGA_HACK
-	}
+	RDOFRMSprite::prepareFrame(pFrame, pRuntime);
 
 	return pFrame;
 }
