@@ -30,6 +30,7 @@ RDOResource::RDOResource(CREF(LPRDORuntime) pRuntime, CREF(ParamList) paramList,
 	, m_resType          (pResType                              )
 	, m_temporary        (temporary                             )
 {
+	UNUSED(pRuntime);
 	appendParams(paramList.begin(), paramList.end());
 }
 
@@ -45,6 +46,7 @@ RDOResource::RDOResource(CREF(LPRDORuntime) pRuntime, CREF(RDOResource) copy)
 	, m_resType          (copy.m_resType   )
 	, m_temporary        (copy.m_temporary )
 {
+	UNUSED(pRuntime);
 	appendParams(copy.m_paramList.begin(), copy.m_paramList.end());
 /// @todo посмотреть history и принять решение и комментарии
 //	getRuntime()->incrementResourceIdReference( getTraceID() );
