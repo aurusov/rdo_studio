@@ -81,7 +81,7 @@ rdo::animation::Color RDOFRMSprite::RDOFRMColor::getColor(CREF(LPRDORuntime) pRu
 // -------------------- RDOFRMFrame
 // --------------------------------------------------------------------------------
 RDOFRMFrame::RDOFRMFrame(CREF(RDOSrcInfo) src_info, CREF(LPRDOCalc) pConditionCalc)
-	: RDOFRMSprite    (src_info,pConditionCalc)
+	: RDOFRMSprite    (src_info, pConditionCalc)
 	, m_picFileName   (_T("")        )
 	, m_width         (800           )
 	, m_height        (600           )
@@ -348,8 +348,8 @@ RDOFRMBitmap::RDOFRMBitmap(
 		CREF(LPRDOFRMSprite)                 pSprite,
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pX,
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pY,
-		CREF(tstring)                       pictFilename,
-		CREF(tstring)                       maskFilename
+		CREF(tstring)                        pictFilename,
+		CREF(tstring)                        maskFilename
 	)
 	: RDOFRMBitmapBase(pSprite, pictFilename, maskFilename)
 	, m_pX            (pX)
@@ -382,8 +382,8 @@ RDOFRMBitmapStretch::RDOFRMBitmapStretch(
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pY,
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pWidth,
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pHeight,
-		CREF(tstring)                       pictFilename,
-		CREF(tstring)                       maskFilename
+		CREF(tstring)                        pictFilename,
+		CREF(tstring)                        maskFilename
 	)
 	: RDOFRMBitmapBase  (pSprite, pictFilename, maskFilename)
 	, RDOFRMBoundingItem(pX, pY, pWidth, pHeight)

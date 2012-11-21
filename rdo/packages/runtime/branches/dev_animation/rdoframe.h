@@ -336,8 +336,8 @@ private:
 		CREF(LPRDOFRMSprite)                 pSprite,
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pX,
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pY,
-		CREF(tstring)                       pictFilename,
-		CREF(tstring)                       maskFilename = _T("")
+		CREF(tstring)                        pictFilename,
+		CREF(tstring)                        maskFilename = _T("")
 	);
 	virtual ~RDOFRMBitmap();
 
@@ -366,8 +366,8 @@ private:
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pY,
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pWidth,
 		CREF(RDOFRMSprite::LPRDOFRMPosition) pHeight,
-		CREF(tstring)                       pictFilename,
-		CREF(tstring)                       maskFilename = _T("")
+		CREF(tstring)                        pictFilename,
+		CREF(tstring)                        maskFilename = _T("")
 	);
 	virtual ~RDOFRMBitmapStretch();
 
@@ -586,8 +586,8 @@ public:
 	rbool         isShowIf      () const;
 
 	REF(ItemList) getItemList   ();
-	void          insertItem    (CREF(LPRDOFRMItem) pItem            );
-	rbool         checkCondition(CREF(LPRDORuntime) pRuntime         );
+	void          insertItem    (CREF(LPRDOFRMItem) pItem             );
+	rbool         checkCondition(CREF(LPRDORuntime) pRuntime          );
 	virtual void  getBitmaps    (REF(RDOFRMSprite::ImageNameList) list);
 
 private:
@@ -607,11 +607,13 @@ CLASS(RDOFRMFrame):
 {
 DECLARE_FACTORY(RDOFRMFrame)
 public:
-	void          getBitmaps        (REF(ImageNameList) list) const;
-	void          setBackPicture    (CREF(tstring)       picFileName);
-	void          setBackPicture    (int width, int height          );
+	void  getBitmaps    (REF(ImageNameList) list) const;
+	void  setBackPicture(CREF(tstring) picFileName);
+	void  setBackPicture(int width, int height);
+
 	PTR(rdo::animation::Frame) createFrame (CREF(LPRDORuntime) pRuntime);
 	PTR(rdo::animation::Frame) prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORuntime) pRuntime);
+
 private:
 	RDOFRMFrame(CREF(RDOSrcInfo) src_info, CREF(LPRDOCalc) pConditionCalc = NULL);
 	virtual ~RDOFRMFrame();
