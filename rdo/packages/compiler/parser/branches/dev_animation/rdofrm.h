@@ -13,13 +13,16 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/rdoframe.h"
 #include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/compiler/parser/rdofun.h"
 #include "simulator/compiler/parser/context/context.h"
 #include "simulator/compiler/parser/context/memory.h"
 #include "simulator/compiler/parser/context/context_find_i.h"
 // --------------------------------------------------------------------------------
+
+OPEN_RDO_RUNTIME_NAMESPACE
+PREDECLARE_POINTER(RDOFRMFrame);
+CLOSE_RDO_RUNTIME_NAMESPACE
 
 OPEN_RDO_PARSER_NAMESPACE
 

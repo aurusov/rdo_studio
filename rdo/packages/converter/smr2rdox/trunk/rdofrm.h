@@ -13,10 +13,13 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/rdoframe.h"
 #include "converter/smr2rdox/rdo_object.h"
 #include "converter/smr2rdox/rdofun.h"
 // --------------------------------------------------------------------------------
+
+OPEN_RDO_RUNTIME_NAMESPACE
+PREDECLARE_POINTER(RDOFRMFrame);
+CLOSE_RDO_RUNTIME_NAMESPACE
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
