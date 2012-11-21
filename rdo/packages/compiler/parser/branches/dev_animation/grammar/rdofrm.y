@@ -1797,7 +1797,6 @@ statement
 	{
 		PARSER->error().error(@1, _T("Не найден символ окончания инструкции - точка с запятой"));
 	}
-//	| member_statement ';'
 	| open_brace statement_list close_brace
 	{
 		LPExpression pStatementList = PARSER->stack().pop<Expression>($2);
@@ -1894,43 +1893,6 @@ empty_statement
 	| error ';'
 	{
 		PARSER->error().error(@1, _T("Ошибка в инструкции"));
-	}
-	;
-
-member_statement_parent
-	: RDO_IDENTIF
-	{
-		LPRDOValue pIdentificator = PARSER->stack().pop<RDOValue>($1);
-		ASSERT(pIdentificator);
-
-		LPContext pCurrentContext = PARSER->context();
-		ASSERT(pCurrentContext);
-
-		LPContext pContext = pCurrentContext->find(pIdentificator);
-		if (!pContext)
-		{
-			PARSER->error().error(@1, rdo::format(_T("Неизвестный идентификатор: %s"), pIdentificator->value().getIdentificator().c_str()));
-		}
-
-		$$ = PARSER->stack().push(pContext);
-	}
-	;
-
-member_statement
-	: member_statement_parent '.' RDO_IDENTIF
-	{
-		LPContext  pContext       = PARSER->stack().pop<Context>($1);
-		LPRDOValue pIdentificator = PARSER->stack().pop<RDOValue>($3);
-		ASSERT(pContext      );
-		ASSERT(pIdentificator);
-
-		LPExpression pExpression = pContext->create(pIdentificator);
-		if (!pExpression)
-		{
-			PARSER->error().error(@3, rdo::format(_T("Неизвестный идентификатор: %s"), pIdentificator->value().getIdentificator().c_str()));
-		}
-
-		$$ = PARSER->stack().push(pExpression);
 	}
 	;
 
