@@ -27,7 +27,7 @@ PREDECLARE_POINTER(RDOFRMItem);
 
 /*!
   \class     RDOFRMSprite
-  \brief     Кадр
+  \brief     Спрайт. Реализует основные команды анимации
 */
 OBJECT(RDOFRMSprite)
 	IS  INSTANCE_OF(RDORuntimeObject)
@@ -600,6 +600,10 @@ private:
 	LPRDOCalc m_pConditionCalc;
 };
 
+/*!
+  \class     RDOFRMFrame
+  \brief     Фрейм. Формирует кадр анимации
+*/
 CLASS(RDOFRMFrame) : 
 	INSTANCE_OF(RDOFRMSprite)
  {
