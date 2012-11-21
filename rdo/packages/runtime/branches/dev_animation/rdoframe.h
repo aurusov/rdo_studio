@@ -143,7 +143,7 @@ public:
 	CREF(tstring) name              () const;
 
 	void          setBackgroundColor(CREF(LPRDOFRMColor) pBgColor   );
-	void          startShow         (CREF(LPRDOCalc) pCalc = NULL   );
+	void          createShow        (CREF(LPRDOCalc) pCalc = NULL   );
 	void          addItem           (CREF(LPRDOFRMItem)  pItem      );
 	void          addRulet          (CREF(LPRDOFRMRulet) pRulet     );
 	rbool         checkCondition    (CREF(LPRDORuntime)  pRuntime   );
