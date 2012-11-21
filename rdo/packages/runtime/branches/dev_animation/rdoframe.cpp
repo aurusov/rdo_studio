@@ -78,16 +78,23 @@ rdo::animation::Color RDOFRMSprite::RDOFRMColor::getColor(CREF(LPRDORuntime) pRu
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOFRMFrame
+// -------------------- RDOFRMSprite
 // --------------------------------------------------------------------------------
-RDOFRMFrame::RDOFRMFrame(CREF(RDOSrcInfo) src_info, CREF(LPRDOCalc) pConditionCalc)
-	: RDOFRMSprite    (src_info, pConditionCalc)
-	, m_picFileName   (_T("")        )
-	, m_width         (800           )
-	, m_height        (600           )
-	{}
+RDOFRMSprite::RDOFRMSprite(CREF(RDOSrcInfo) src_info, CREF(LPRDOCalc) pConditionCalc)
+	: RDOSrcInfo      (src_info      )
+	, m_pConditionCalc(pConditionCalc)
+	, m_lastX         (0             )
+	, m_lastY         (0             )
+	, m_lastWidth     (0             )
+	, m_lastHeight    (0             )
+{
+	m_colorLastBg     = rdo::animation::Color(50, 200, 50);
+	m_colorLastFg     = m_colorLastBg;
+	m_colorLastBgText = m_colorLastBg;
+	m_colorLastFgText = m_colorLastBg;
+}
 
-RDOFRMFrame::~RDOFRMFrame()
+RDOFRMSprite::~RDOFRMSprite()
 {}
 
 void RDOFRMSprite::setColorLastBG(RDOFRMColor::ColorType type, CREF(rdo::animation::Color) lastBg)
@@ -773,23 +780,16 @@ rbool RDOFRMShow::checkCondition(CREF(LPRDORuntime) pRuntime)
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOFRMSprite
+// -------------------- RDOFRMFrame
 // --------------------------------------------------------------------------------
-RDOFRMSprite::RDOFRMSprite(CREF(RDOSrcInfo) src_info, CREF(LPRDOCalc) pConditionCalc)
-	: RDOSrcInfo      (src_info      )
-	, m_pConditionCalc(pConditionCalc)
-	, m_lastX         (0             )
-	, m_lastY         (0             )
-	, m_lastWidth     (0             )
-	, m_lastHeight    (0             )
-{
-	m_colorLastBg     = rdo::animation::Color(50, 200, 50);
-	m_colorLastFg     = m_colorLastBg;
-	m_colorLastBgText = m_colorLastBg;
-	m_colorLastFgText = m_colorLastBg;
-}
+RDOFRMFrame::RDOFRMFrame(CREF(RDOSrcInfo) src_info, CREF(LPRDOCalc) pConditionCalc)
+	: RDOFRMSprite    (src_info, pConditionCalc)
+	, m_picFileName   (_T("")        )
+	, m_width         (800           )
+	, m_height        (600           )
+	{}
 
-RDOFRMSprite::~RDOFRMSprite()
+RDOFRMFrame::~RDOFRMFrame()
 {}
 
 CLOSE_RDO_RUNTIME_NAMESPACE
