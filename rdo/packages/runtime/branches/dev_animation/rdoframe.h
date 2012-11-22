@@ -119,15 +119,16 @@ public:
 	  \class     RDOFRMRulet
 	  \brief     Рулетка. Используется для позиционирования
 	*/
-	OBJECT(RDOFRMRulet)
-		 IS  INSTANCE_OF(RDORuntimeObject)
-		 AND INSTANCE_OF(RDOSrcInfo      )
+	CALC(RDOFRMRulet)
 	{
 	DECLARE_FACTORY(RDOFRMRulet)
 	public:
 		ruint getIndex() const;
 		CREF(LPRDOFRMPosition) getX() const;
 		CREF(LPRDOFRMPosition) getY() const;
+
+		//! @todo Добавлен для обратной совместимости
+		CREF(RDOSrcInfo) src_info() const;
 
 	private:
 		RDOFRMRulet(CREF(RDOSrcInfo) src_info, ruint index, CREF(LPRDOFRMPosition) pX, CREF(LPRDOFRMPosition) pY);
@@ -136,6 +137,8 @@ public:
 		ruint             m_index;
 		LPRDOFRMPosition  m_pX;
 		LPRDOFRMPosition  m_pY;
+
+		DECLARE_ICalc;
 	};
 
 public:
@@ -145,7 +148,7 @@ public:
 	void          setBackgroundColor(CREF(LPRDOFRMColor) pBgColor   );
 	LPRDOCalc     startShow         (CREF(LPRDOCalc) pCalc = NULL   );
 	LPRDOCalc     addItem           (CREF(LPRDOFRMItem)  pItem      );
-	void          addRulet          (CREF(LPRDOFRMRulet) pRulet     );
+	LPRDOCalc     addRulet          (CREF(LPRDOFRMRulet) pRulet     );
 	rbool         checkCondition    (CREF(LPRDORuntime)  pRuntime   );
 
 	void setColorLastBG    (RDOFRMColor::ColorType type, CREF(rdo::animation::Color) lastBg);

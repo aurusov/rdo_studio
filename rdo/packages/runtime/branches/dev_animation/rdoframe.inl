@@ -130,11 +130,12 @@ inline CREF(RDOFRMSprite::LPRDOFRMPosition) RDOFRMSprite::RDOFRMRulet::getY() co
 }
 
 inline RDOFRMSprite::RDOFRMRulet::RDOFRMRulet(CREF(RDOSrcInfo) src_info, ruint index, CREF(LPRDOFRMPosition) pX, CREF(LPRDOFRMPosition) pY)
-	: RDOSrcInfo(src_info)
-	, m_index   (index   )
-	, m_pX      (pX      )
-	, m_pY      (pY      )
-{}
+	: m_index(index)
+	, m_pX   (pX   )
+	, m_pY   (pY   )
+{
+	setSrcInfo(src_info);
+}
 
 inline RDOFRMSprite::RDOFRMRulet::~RDOFRMRulet()
 {}

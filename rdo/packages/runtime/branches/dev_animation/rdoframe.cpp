@@ -248,12 +248,14 @@ LPRDOCalc RDOFRMSprite::addItem(CREF(LPRDOFRMItem) pItem)
 	return pItem;
 }
 
-void RDOFRMSprite::addRulet(CREF(LPRDOFRMRulet) pRulet)
+LPRDOCalc RDOFRMSprite::addRulet(CREF(LPRDOFRMRulet) pRulet)
 {
 	ASSERT(pRulet);
 	std::pair<RuletList::const_iterator, rbool> result =
 		m_ruletList.insert(RuletList::value_type(pRulet->getIndex(), pRulet));
 	ASSERT(result.second);
+
+	return pRulet;
 }
 
 rbool RDOFRMSprite::checkCondition(CREF(LPRDORuntime) pRuntime)
@@ -283,6 +285,20 @@ void RDOFRMFrame::getBitmaps(REF(ImageNameList) list) const
 		list.push_back(m_picFileName);
 
 	RDOFRMSprite::getBitmaps(list);
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOFRMSprite::RDOFRMRulet
+// --------------------------------------------------------------------------------
+RDOValue RDOFRMSprite::RDOFRMRulet::doCalc(CREF(LPRDORuntime) pRuntime)
+{
+	UNUSED(pRuntime);
+	return RDOValue();
+}
+
+CREF(RDOSrcInfo) RDOFRMSprite::RDOFRMRulet::src_info() const
+{
+	return srcInfo();
 }
 
 // --------------------------------------------------------------------------------
