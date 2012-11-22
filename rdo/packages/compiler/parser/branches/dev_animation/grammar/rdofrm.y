@@ -382,28 +382,16 @@ frm_show
 		LPRDOFRMFrame pFrame = PARSER->getLastFRMFrame();
 		ASSERT(pFrame);
 
-		rdo::runtime::LPRDOCalc pShow = pFrame->frame()->startShow();
-		ASSERT(pShow);
-
-		LPExpression pExpression = RDOFRMFrame::generateExpression(pShow, RDOParserSrcInfo(@1));
-		ASSERT(pExpression);
-
-		$$ = PARSER->stack().push(pExpression);
+		$$ = PARSER->stack().push(pFrame->frame()->startShow());
 	}
 	| RDO_Show_if fun_logic
 	{
 		LPRDOFRMFrame pFrame = PARSER->getLastFRMFrame();
 		ASSERT(pFrame);
 
-		rdo::runtime::LPRDOCalc pShow = pFrame->frame()->startShow(
+		$$ = PARSER->stack().push(pFrame->frame()->startShow(
 			PARSER->stack().pop<RDOFUNLogic>($2)->getCalc()
-		);
-		ASSERT(pShow);
-
-		LPExpression pExpression = RDOFRMFrame::generateExpression(pShow, RDOParserSrcInfo(@1, @2));
-		ASSERT(pExpression);
-
-		$$ = PARSER->stack().push(pExpression);
+		));
 	}
 	| RDO_Show_if error
 	{
@@ -413,6 +401,15 @@ frm_show
 
 frm_item
 	: frm_show
+	{
+		LPExpression pExpression = RDOFRMFrame::generateExpression(
+			PARSER->stack().pop<rdo::runtime::RDOCalc>($1),
+			RDOParserSrcInfo(@1)
+		);
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
 	| frm_text
 	{
 		LPExpression pExpression = RDOFRMFrame::generateExpression(
