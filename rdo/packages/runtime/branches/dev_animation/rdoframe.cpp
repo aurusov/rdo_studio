@@ -251,8 +251,7 @@ LPRDOCalc RDOFRMSprite::addItem(CREF(LPRDOCalc) pItem)
 	LPRDOFRMShow pShow = pItem.object_dynamic_cast<RDOFRMShow>();
 	if (pShow)
 	{
-		m_showList.push_back(pShow);
-		return pItem;
+		return addShow(pShow);
 	}
 
 	LPRDOFRMRulet pRulet = pItem.object_dynamic_cast<RDOFRMRulet>();
@@ -268,6 +267,12 @@ LPRDOCalc RDOFRMSprite::addItem(CREF(LPRDOCalc) pItem)
 
 	m_showList.back()->insertItem(pItem);
 	return pItem;
+}
+
+LPRDOCalc RDOFRMSprite::addShow(CREF(LPRDOFRMShow) pShow)
+{
+	m_showList.push_back(pShow);
+	return pShow;
 }
 
 LPRDOCalc RDOFRMSprite::addRulet(CREF(LPRDOFRMRulet) pRulet)

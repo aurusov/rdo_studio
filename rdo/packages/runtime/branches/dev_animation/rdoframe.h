@@ -166,6 +166,7 @@ public:
 	void          setBackgroundColor(CREF(LPRDOFRMColor) pBgColor   );
 	LPRDOCalc     startShow         (CREF(LPRDOCalc) pCalc = NULL   );
 	LPRDOCalc     addItem           (CREF(LPRDOCalc)     pItem      );
+	LPRDOCalc     addShow           (CREF(LPRDOFRMShow)  pShow      );
 	LPRDOCalc     addRulet          (CREF(LPRDOFRMRulet) pRulet     );
 	rbool         checkCondition    (CREF(LPRDORuntime)  pRuntime   );
 
