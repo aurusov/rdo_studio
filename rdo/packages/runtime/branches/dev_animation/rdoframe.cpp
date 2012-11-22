@@ -262,7 +262,7 @@ LPRDOCalc RDOFRMSprite::addItem(CREF(LPRDOCalc) pItem)
 
 	if (m_showList.empty())
 	{
-		startShow();
+		addShow(rdo::Factory<RDOFRMShow>::create(LPRDOCalc()));
 	}
 
 	m_showList.back()->insertItem(pItem);
