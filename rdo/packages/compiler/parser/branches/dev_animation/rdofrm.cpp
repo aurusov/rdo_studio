@@ -75,4 +75,17 @@ void RDOFRMFrame::end()
 	RDOParser::s_parser()->contextStack()->pop();
 }
 
+LPExpression RDOFRMFrame::generateExpression(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(RDOParserSrcInfo) srcInfo)
+{
+	ASSERT(pCalc);
+
+	LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(srcInfo);
+	ASSERT(pType);
+
+	LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, srcInfo);
+	ASSERT(pExpression);
+
+	return pExpression;
+}
+
 CLOSE_RDO_PARSER_NAMESPACE

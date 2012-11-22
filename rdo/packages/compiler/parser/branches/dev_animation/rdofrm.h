@@ -44,6 +44,8 @@ public:
 	CREF(rdo::runtime::LPRDOFRMFrame) frame() const  { return m_pFrame;              }
 	void                              end  ();
 
+	static LPExpression generateExpression(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(RDOParserSrcInfo) srcInfo);
+
 private:
 	RDOFRMFrame(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic = NULL);
 

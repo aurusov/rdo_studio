@@ -385,10 +385,7 @@ frm_show
 		rdo::runtime::LPRDOCalc pShow = pFrame->frame()->startShow();
 		ASSERT(pShow);
 
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(@1);
-		ASSERT(pType);
-
-		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pShow, pType->src_info());
+		LPExpression pExpression = RDOFRMFrame::generateExpression(pShow, RDOParserSrcInfo(@1, @2));
 		ASSERT(pExpression);
 
 		$$ = PARSER->stack().push(pExpression);
@@ -403,10 +400,7 @@ frm_show
 		);
 		ASSERT(pShow);
 
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1, @2));
-		ASSERT(pType);
-
-		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pShow, pType->src_info());
+		LPExpression pExpression = RDOFRMFrame::generateExpression(pShow, RDOParserSrcInfo(@1, @2));
 		ASSERT(pExpression);
 
 		$$ = PARSER->stack().push(pExpression);
