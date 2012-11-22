@@ -234,7 +234,7 @@ LPRDOCalc RDOFRMSprite::startShow(CREF(LPRDOCalc) pCalc)
 	return pShow;
 }
 
-void RDOFRMSprite::addItem(CREF(LPRDOFRMItem) pItem)
+LPRDOCalc RDOFRMSprite::addItem(CREF(LPRDOFRMItem) pItem)
 {
 	ASSERT(pItem);
 
@@ -244,6 +244,8 @@ void RDOFRMSprite::addItem(CREF(LPRDOFRMItem) pItem)
 	}
 
 	m_showList.back()->insertItem(pItem);
+
+	return pItem;
 }
 
 void RDOFRMSprite::addRulet(CREF(LPRDOFRMRulet) pRulet)
@@ -281,6 +283,22 @@ void RDOFRMFrame::getBitmaps(REF(ImageNameList) list) const
 		list.push_back(m_picFileName);
 
 	RDOFRMSprite::getBitmaps(list);
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOFRMItem
+// --------------------------------------------------------------------------------
+RDOValue RDOFRMItem::doCalc(CREF(LPRDORuntime) pRuntime)
+{
+	PTR(rdo::animation::FrameItem) pElement = createElement(pRuntime);
+	if (pElement)
+	{
+		PTR(rdo::animation::Frame) pFrame = pRuntime->getPreparingFrame();
+		ASSERT(pFrame);
+		pFrame->m_elements.push_back(pElement);
+	}
+
+	return RDOValue();
 }
 
 // --------------------------------------------------------------------------------
@@ -766,16 +784,9 @@ RDOValue RDOFRMShow::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	if (checkCondition(pRuntime))
 	{
-		PTR(rdo::animation::Frame) pFrame = pRuntime->getPreparingFrame();
-		ASSERT(pFrame);
-
-		BOOST_FOREACH(const LPRDOFRMItem& pItem, m_itemList)
+		BOOST_FOREACH(const LPRDOCalc& pItem, m_itemList)
 		{
-			PTR(rdo::animation::FrameItem) pElement = pItem->createElement(pRuntime);
-			if (pElement)
-			{
-				pFrame->m_elements.push_back(pElement);
-			}
+			pItem->calcValue(pRuntime);
 		}
 	}
 

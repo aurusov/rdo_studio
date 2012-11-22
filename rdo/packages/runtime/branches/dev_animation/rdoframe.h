@@ -144,7 +144,7 @@ public:
 
 	void          setBackgroundColor(CREF(LPRDOFRMColor) pBgColor   );
 	LPRDOCalc     startShow         (CREF(LPRDOCalc) pCalc = NULL   );
-	void          addItem           (CREF(LPRDOFRMItem)  pItem      );
+	LPRDOCalc     addItem           (CREF(LPRDOFRMItem)  pItem      );
 	void          addRulet          (CREF(LPRDOFRMRulet) pRulet     );
 	rbool         checkCondition    (CREF(LPRDORuntime)  pRuntime   );
 
@@ -238,7 +238,7 @@ private:
   \class     RDOFRMItem
   \brief     Базовый класс для всех элементов
 */
-OBJECT(RDOFRMItem) IS INSTANCE_OF(RDORuntimeObject)
+CALC(RDOFRMItem)
 {
 DECLARE_FACTORY(RDOFRMItem)
 public:
@@ -254,6 +254,8 @@ protected:
 
 private:
 	LPRDOFRMSprite m_pFrame;
+
+	DECLARE_ICalc;
 };
 
 /*!
