@@ -455,10 +455,11 @@ frm_header
 		LPExpression pExpressionFrame = rdo::Factory<Expression>::create(pExpressionFrameBody->typeInfo(), pCalcBaseStatementList, pCalcStatementList->srcInfo());
 		ASSERT(pExpressionFrame);
 
-		// куда отправлять pExpressionFrame?
-
 		LPRDOFRMFrame pFrame = PARSER->stack().pop<RDOFRMFrame>($1);
 		ASSERT(pFrame);
+
+		PARSER->getLastFRMFrame()->frame()->addItem(pExpressionFrame->calc());
+
 		$$ = PARSER->stack().push(pFrame);
 	}
 	;
