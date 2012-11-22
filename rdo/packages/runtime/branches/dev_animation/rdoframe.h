@@ -163,8 +163,6 @@ protected:
 	RDOFRMSprite(CREF(RDOSrcInfo) src_info, CREF(LPRDOCalc) pConditionCalc = NULL);
 	virtual ~RDOFRMSprite();
 
-	void prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORuntime) pRuntime);
-
 	void getBitmaps(REF(ImageNameList) list) const;
 
 private:
@@ -575,7 +573,7 @@ private:
   \class     RDOFRMShow
   \brief     Команды анимации Show и ShowIf
 */
-OBJECT(RDOFRMShow) IS INSTANCE_OF(RDORuntimeObject)
+CALC(RDOFRMShow)
 {
 DECLARE_FACTORY(RDOFRMShow)
 public:
@@ -583,7 +581,6 @@ public:
 
 	rbool         isShowIf      () const;
 
-	REF(ItemList) getItemList   ();
 	void          insertItem    (CREF(LPRDOFRMItem) pItem             );
 	rbool         checkCondition(CREF(LPRDORuntime) pRuntime          );
 	virtual void  getBitmaps    (REF(RDOFRMSprite::ImageNameList) list);
@@ -594,6 +591,8 @@ private:
 
 	ItemList  m_itemList;
 	LPRDOCalc m_pConditionCalc;
+
+	DECLARE_ICalc;
 };
 
 /*!

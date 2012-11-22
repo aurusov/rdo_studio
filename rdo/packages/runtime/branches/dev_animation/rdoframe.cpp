@@ -100,12 +100,7 @@ RDOFRMSprite::~RDOFRMSprite()
 
 RDOValue RDOFRMSprite::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	UNUSED(pRuntime);
-	return RDOValue();
-}
-
-void RDOFRMSprite::prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORuntime) pRuntime)
-{
+	PTR(rdo::animation::Frame) pFrame = pRuntime->getPreparingFrame();
 	ASSERT(pFrame);
 
 	if (m_pBgColor)
@@ -134,17 +129,7 @@ void RDOFRMSprite::prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORun
 	{
 		BOOST_FOREACH(const LPRDOFRMShow& pShow, m_showList)
 		{
-			if (pShow->checkCondition(pRuntime))
-			{
-				BOOST_FOREACH(const LPRDOFRMItem& pItem, pShow->getItemList())
-				{
-					PTR(rdo::animation::FrameItem) pElement = pItem->createElement(pRuntime);
-					if (pElement)
-					{
-						pFrame->m_elements.push_back(pElement);
-					}
-				}
-			}
+			pShow->calcValue(pRuntime);
 		}
 
 #ifdef MODEL_DOROGA_HACK
@@ -180,6 +165,8 @@ void RDOFRMSprite::prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORun
 		}
 #endif // MODEL_DOROGA_HACK
 	}
+
+	return RDOValue();
 }
 
 void RDOFRMSprite::getBitmaps(REF(ImageNameList) list) const
@@ -280,7 +267,9 @@ void RDOFRMFrame::prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORunt
 	pFrame->m_size.m_width  = m_width;
 	pFrame->m_size.m_height = m_height;
 
-	RDOFRMSprite::prepareFrame(pFrame, pRuntime);
+	pRuntime->setPreparingFrame(pFrame);
+	RDOFRMSprite::calcValue(pRuntime);
+	pRuntime->resetPreparingFrame();
 }
 
 void RDOFRMFrame::getBitmaps(REF(ImageNameList) list) const
@@ -770,15 +759,30 @@ RDOFRMShow::RDOFRMShow(CREF(LPRDOCalc) pConditionCalc)
 RDOFRMShow::~RDOFRMShow()
 {}
 
+RDOValue RDOFRMShow::doCalc(CREF(LPRDORuntime) pRuntime)
+{
+	if (checkCondition(pRuntime))
+	{
+		PTR(rdo::animation::Frame) pFrame = pRuntime->getPreparingFrame();
+		ASSERT(pFrame);
+
+		BOOST_FOREACH(const LPRDOFRMItem& pItem, m_itemList)
+		{
+			PTR(rdo::animation::FrameItem) pElement = pItem->createElement(pRuntime);
+			if (pElement)
+			{
+				pFrame->m_elements.push_back(pElement);
+			}
+		}
+	}
+
+	return RDOValue();
+}
+
 void RDOFRMShow::insertItem(CREF(LPRDOFRMItem) pItem)
 {
 	ASSERT(pItem);
 	m_itemList.push_back(pItem);
-}
-
-REF(RDOFRMShow::ItemList) RDOFRMShow::getItemList()
-{
-	return m_itemList;
 }
 
 void RDOFRMShow::getBitmaps(REF(RDOFRMSprite::ImageNameList) list)
