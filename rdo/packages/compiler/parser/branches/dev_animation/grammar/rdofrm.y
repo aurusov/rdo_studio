@@ -415,10 +415,10 @@ frm_item
 	: frm_show
 	| frm_text
 	{
-		rdo::runtime::LPRDOCalc pCalc = PARSER->getLastFRMFrame()->frame()->addItem(PARSER->stack().pop<RDOFRMText>($1));
-		ASSERT(pCalc);
-
-		LPExpression pExpression = RDOFRMFrame::generateExpression(pCalc, RDOParserSrcInfo(@1));
+		LPExpression pExpression = RDOFRMFrame::generateExpression(
+			PARSER->getLastFRMFrame()->frame()->addItem(PARSER->stack().pop<RDOFRMText>($1)),
+			RDOParserSrcInfo(@1)
+		);
 		ASSERT(pExpression);
 
 		$$ = PARSER->stack().push(pExpression);
