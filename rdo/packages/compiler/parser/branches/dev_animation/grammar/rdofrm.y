@@ -413,7 +413,16 @@ frm_show
 
 frm_item
 	: frm_show
-	| frm_text    {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMText         >($1));}
+	| frm_text
+	{
+		rdo::runtime::LPRDOCalc pCalc = PARSER->getLastFRMFrame()->frame()->addItem(PARSER->stack().pop<RDOFRMText>($1));
+		ASSERT(pCalc);
+
+		LPExpression pExpression = RDOFRMFrame::generateExpression(pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
 	| frm_bitmap  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMBitmap       >($1));}
 	| frm_rect    {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMRect         >($1));}
 	| frm_line    {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMLine         >($1));}
