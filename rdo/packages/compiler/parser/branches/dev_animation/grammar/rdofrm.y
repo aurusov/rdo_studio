@@ -423,18 +423,117 @@ frm_item
 
 		$$ = PARSER->stack().push(pExpression);
 	}
-	| frm_bitmap  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMBitmap       >($1));}
-	| frm_rect    {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMRect         >($1));}
-	| frm_line    {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMLine         >($1));}
-	| frm_circle  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMCircle       >($1));}
-	| frm_ellipse {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMEllipse      >($1));}
-	| frm_r_rect  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMRectRound    >($1));}
-	| frm_triang  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMTriang       >($1));}
-	| frm_s_bmp   {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMBitmapStretch>($1));}
-	| frm_active  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMActive       >($1));}
-	| frm_ruler   {PARSER->getLastFRMFrame()->frame()->addRulet(PARSER->stack().pop<RDOFRMRulet        >($1));}
-	| frm_space   {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMSpace        >($1));}
-	| frm_sprite  {}
+	| frm_bitmap
+	{
+		LPExpression pExpression = RDOFRMFrame::generateExpression(
+			PARSER->getLastFRMFrame()->frame()->addItem(PARSER->stack().pop<RDOFRMBitmap>($1)),
+			RDOParserSrcInfo(@1)
+		);
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	| frm_rect
+	{
+		LPExpression pExpression = RDOFRMFrame::generateExpression(
+			PARSER->getLastFRMFrame()->frame()->addItem(PARSER->stack().pop<RDOFRMRect>($1)),
+			RDOParserSrcInfo(@1)
+		);
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	| frm_line
+	{
+		LPExpression pExpression = RDOFRMFrame::generateExpression(
+			PARSER->getLastFRMFrame()->frame()->addItem(PARSER->stack().pop<RDOFRMLine>($1)),
+			RDOParserSrcInfo(@1)
+		);
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	| frm_circle
+	{
+		LPExpression pExpression = RDOFRMFrame::generateExpression(
+			PARSER->getLastFRMFrame()->frame()->addItem(PARSER->stack().pop<RDOFRMCircle>($1)),
+			RDOParserSrcInfo(@1)
+		);
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	| frm_ellipse
+	{
+		LPExpression pExpression = RDOFRMFrame::generateExpression(
+			PARSER->getLastFRMFrame()->frame()->addItem(PARSER->stack().pop<RDOFRMEllipse>($1)),
+			RDOParserSrcInfo(@1)
+		);
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	| frm_r_rect
+	{
+		LPExpression pExpression = RDOFRMFrame::generateExpression(
+			PARSER->getLastFRMFrame()->frame()->addItem(PARSER->stack().pop<RDOFRMRectRound>($1)),
+			RDOParserSrcInfo(@1)
+		);
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	| frm_triang
+	{
+		LPExpression pExpression = RDOFRMFrame::generateExpression(
+			PARSER->getLastFRMFrame()->frame()->addItem(PARSER->stack().pop<RDOFRMTriang>($1)),
+			RDOParserSrcInfo(@1)
+		);
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	| frm_s_bmp
+	{
+		LPExpression pExpression = RDOFRMFrame::generateExpression(
+			PARSER->getLastFRMFrame()->frame()->addItem(PARSER->stack().pop<RDOFRMBitmapStretch>($1)),
+			RDOParserSrcInfo(@1)
+		);
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	| frm_active
+	{
+		LPExpression pExpression = RDOFRMFrame::generateExpression(
+			PARSER->getLastFRMFrame()->frame()->addItem(PARSER->stack().pop<RDOFRMActive>($1)),
+			RDOParserSrcInfo(@1)
+		);
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	| frm_ruler
+	{
+		LPExpression pExpression = RDOFRMFrame::generateExpression(
+			PARSER->getLastFRMFrame()->frame()->addRulet(PARSER->stack().pop<RDOFRMRulet>($1)),
+			RDOParserSrcInfo(@1)
+		);
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	| frm_space
+	{
+		LPExpression pExpression = RDOFRMFrame::generateExpression(
+			PARSER->getLastFRMFrame()->frame()->addItem(PARSER->stack().pop<RDOFRMSpace>($1)),
+			RDOParserSrcInfo(@1)
+		);
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	| frm_sprite
 	;
 
 frm_header
