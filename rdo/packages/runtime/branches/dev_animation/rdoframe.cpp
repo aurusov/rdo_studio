@@ -239,22 +239,29 @@ void RDOFRMFrame::setBackPicture(int width, int height)
 
 LPRDOCalc RDOFRMSprite::startShow(CREF(LPRDOCalc) pCalc)
 {
-	LPRDOFRMShow pShow = rdo::Factory<RDOFRMShow>::create(pCalc);
-	ASSERT(pShow);
-	m_showList.push_back(pShow);
-	return pShow;
+	//! @todo Метод можно удалить
+	UNUSED(pCalc);
+	return NULL;
 }
 
 LPRDOCalc RDOFRMSprite::addItem(CREF(LPRDOCalc) pItem)
 {
 	ASSERT(pItem);
 
-	if (m_showList.empty())
+	LPRDOFRMShow pShow = pItem.object_dynamic_cast<RDOFRMShow>();
+	if (pShow)
 	{
-		startShow();
+		m_showList.push_back(pShow);
 	}
+	else
+	{
+		if (m_showList.empty())
+		{
+			startShow();
+		}
 
-	m_showList.back()->insertItem(pItem);
+		m_showList.back()->insertItem(pItem);
+	}
 
 	return pItem;
 }

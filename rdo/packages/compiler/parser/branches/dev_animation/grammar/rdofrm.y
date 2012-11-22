@@ -379,19 +379,15 @@ frm_backpicture
 frm_show
 	: RDO_Show
 	{
-		LPRDOFRMFrame pFrame = PARSER->getLastFRMFrame();
-		ASSERT(pFrame);
-
-		$$ = PARSER->stack().push(pFrame->frame()->startShow());
+		$$ = PARSER->stack().push(
+			rdo::Factory<rdo::runtime::RDOFRMShow>::create(rdo::runtime::LPRDOCalc())
+		);
 	}
 	| RDO_Show_if fun_logic
 	{
-		LPRDOFRMFrame pFrame = PARSER->getLastFRMFrame();
-		ASSERT(pFrame);
-
-		$$ = PARSER->stack().push(pFrame->frame()->startShow(
-			PARSER->stack().pop<RDOFUNLogic>($2)->getCalc()
-		));
+		$$ = PARSER->stack().push(
+			rdo::Factory<rdo::runtime::RDOFRMShow>::create(PARSER->stack().pop<RDOFUNLogic>($2)->getCalc())
+		);
 	}
 	| RDO_Show_if error
 	{
@@ -403,7 +399,7 @@ frm_item
 	: frm_show
 	{
 		LPExpression pExpression = RDOFRMFrame::generateExpression(
-			PARSER->stack().pop<rdo::runtime::RDOCalc>($1),
+			PARSER->getLastFRMFrame()->frame()->addItem(PARSER->stack().pop<rdo::runtime::RDOCalc>($1)),
 			RDOParserSrcInfo(@1)
 		);
 		ASSERT(pExpression);
