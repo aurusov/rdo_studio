@@ -355,12 +355,12 @@ frm_show
 	{
 		LPRDOFRMFrame pFrame = CONVERTER->getLastFRMFrame();
 		ASSERT(pFrame);
-		pFrame->frame()->createShow();
+		pFrame->frame()->startShow();
 	}
 	| RDO_Show_if fun_logic
 	{
 		LPRDOFRMFrame pFrame = CONVERTER->getLastFRMFrame();
-		pFrame->frame()->createShow(CONVERTER->stack().pop<RDOFUNLogic>($2)->getCalc());
+		pFrame->frame()->startShow(CONVERTER->stack().pop<RDOFUNLogic>($2)->getCalc());
 	}
 	| RDO_Show_if error
 	{

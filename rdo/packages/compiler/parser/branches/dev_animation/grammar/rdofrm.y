@@ -381,12 +381,12 @@ frm_show
 	{
 		LPRDOFRMFrame pFrame = PARSER->getLastFRMFrame();
 		ASSERT(pFrame);
-		pFrame->frame()->createShow();
+		pFrame->frame()->startShow();
 	}
 	| RDO_Show_if fun_logic
 	{
 		LPRDOFRMFrame pFrame = PARSER->getLastFRMFrame();
-		pFrame->frame()->createShow(PARSER->stack().pop<RDOFUNLogic>($2)->getCalc());
+		pFrame->frame()->startShow(PARSER->stack().pop<RDOFUNLogic>($2)->getCalc());
 	}
 	| RDO_Show_if error
 	{
