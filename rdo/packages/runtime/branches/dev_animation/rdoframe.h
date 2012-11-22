@@ -23,20 +23,38 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 PREDECLARE_POINTER(RDOFRMShow);
-PREDECLARE_POINTER(RDOFRMItem);
+
+/*!
+  \interface IRDOFRMItemGetBitmap
+  \brief     Индерфейс запроса картинок у элемента анимации
+*/
+OBJECT_INTERFACE(IRDOFRMItemGetBitmap)
+{
+DECLARE_FACTORY(IRDOFRMItemGetBitmap)
+public:
+	typedef std::list<tstring> ImageNameList;
+
+	virtual void getBitmaps(REF(ImageNameList) list) const = 0;
+
+protected:
+	IRDOFRMItemGetBitmap();
+	virtual ~IRDOFRMItemGetBitmap();
+};
+#define DECLATE_IRDOFRMItemGetBitmap \
+	virtual void getBitmaps(REF(ImageNameList) list) const;
+
 
 /*!
   \class     RDOFRMSprite
   \brief     Спрайт. Владеет и запускает на исполнение основные команды анимации
 */
 CALC(RDOFRMSprite)
-	IS  INSTANCE_OF(RDORuntimeObject)
-	AND INSTANCE_OF(RDOSrcInfo      )
+	IS  INSTANCE_OF      (RDORuntimeObject    )
+	AND INSTANCE_OF      (RDOSrcInfo          )
+	AND IMPLEMENTATION_OF(IRDOFRMItemGetBitmap)
 {
 DECLARE_FACTORY(RDOFRMSprite)
 public:
-	typedef std::list<tstring> ImageNameList;
-
 	/*!
 	  \class     RDOFRMPosition
 	  \brief     Позиция
@@ -147,7 +165,7 @@ public:
 
 	void          setBackgroundColor(CREF(LPRDOFRMColor) pBgColor   );
 	LPRDOCalc     startShow         (CREF(LPRDOCalc) pCalc = NULL   );
-	LPRDOCalc     addItem           (CREF(LPRDOFRMItem)  pItem      );
+	LPRDOCalc     addItem           (CREF(LPRDOCalc)     pItem      );
 	LPRDOCalc     addRulet          (CREF(LPRDOFRMRulet) pRulet     );
 	rbool         checkCondition    (CREF(LPRDORuntime)  pRuntime   );
 
@@ -166,7 +184,7 @@ protected:
 	RDOFRMSprite(CREF(RDOSrcInfo) src_info, CREF(LPRDOCalc) pConditionCalc = NULL);
 	virtual ~RDOFRMSprite();
 
-	void getBitmaps(REF(ImageNameList) list) const;
+	DECLATE_IRDOFRMItemGetBitmap;
 
 private:
 	typedef std::list<LPRDOFRMShow>        ShowList;
@@ -244,11 +262,6 @@ private:
 CALC(RDOFRMItem)
 {
 DECLARE_FACTORY(RDOFRMItem)
-public:
-	virtual PTR(rdo::animation::FrameItem) createElement(CREF(LPRDORuntime) pRuntime) = 0;
-
-	virtual void getBitmaps(REF(RDOFRMSprite::ImageNameList) list);
-
 protected:
 	RDOFRMItem(CREF(LPRDOFRMSprite) pSprite);
 	virtual ~RDOFRMItem();
@@ -257,17 +270,7 @@ protected:
 
 private:
 	LPRDOFRMSprite m_pFrame;
-
-	DECLARE_ICalc;
 };
-
-/*!
-  \def       DECLARE_RDOFRMIItem
-  \brief     Декларация метода \a createElement
-*/
-#define DECLARE_RDOFRMIItem \
-private:                    \
-	PTR(rdo::animation::FrameItem) createElement(CREF(LPRDORuntime) pRuntime);
 
 /*!
   \def       RDOFRM_ITEM(A)
@@ -309,7 +312,7 @@ private:
 	tstring      m_text;
 	rbool        m_isTextString;
 
-	DECLARE_RDOFRMIItem;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -317,16 +320,17 @@ private:
   \brief     Базовый класс для картинок
 */
 RDOFRM_ITEM(RDOFRMBitmapBase)
+	IS IMPLEMENTATION_OF(IRDOFRMItemGetBitmap)
 {
 protected:
-	virtual void getBitmaps(REF(RDOFRMSprite::ImageNameList) list);
-
 	tstring m_pictFilename;
 	tstring m_maskFilename;
 
-protected:
 	RDOFRMBitmapBase(CREF(LPRDOFRMSprite) pSprite, CREF(tstring) pictFilename, CREF(tstring) maskFilename = _T(""));
 	virtual ~RDOFRMBitmapBase();
+
+private:
+	DECLATE_IRDOFRMItemGetBitmap
 };
 
 /*!
@@ -349,7 +353,7 @@ private:
 	RDOFRMSprite::LPRDOFRMPosition m_pX;
 	RDOFRMSprite::LPRDOFRMPosition m_pY;
 
-	DECLARE_RDOFRMIItem;
+	DECLARE_ICalc;
 };
 
 DECLARE_POINTER(RDOFRMBitmap)
@@ -375,7 +379,7 @@ private:
 	);
 	virtual ~RDOFRMBitmapStretch();
 
-	DECLARE_RDOFRMIItem;
+	DECLARE_ICalc;
 };
 
 DECLARE_POINTER(RDOFRMBitmapStretch);
@@ -401,7 +405,7 @@ private:
 	);
 	virtual ~RDOFRMRect();
 
-	DECLARE_RDOFRMIItem;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -425,7 +429,7 @@ private:
 	);
 	virtual ~RDOFRMRectRound();
 
-	DECLARE_RDOFRMIItem;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -450,7 +454,7 @@ private:
 	RDOFRMSprite::LPRDOFRMPosition m_pY;
 	RDOFRMSprite::LPRDOFRMPosition m_pRadius;
 
-	DECLARE_RDOFRMIItem;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -474,7 +478,7 @@ private:
 	);
 	virtual ~RDOFRMEllipse();
 
-	DECLARE_RDOFRMIItem;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -497,7 +501,7 @@ private:
 
 	RDOFRMSprite::LPRDOFRMColor m_pColor;
 
-	DECLARE_RDOFRMIItem;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -528,7 +532,7 @@ private:
 	RDOFRMSprite::LPRDOFRMPosition m_pX3;
 	RDOFRMSprite::LPRDOFRMPosition m_pY3;
 
-	DECLARE_RDOFRMIItem;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -551,7 +555,7 @@ private:
 
 	tstring m_operName;
 
-	DECLARE_RDOFRMIItem;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -571,7 +575,7 @@ private:
 	);
 	virtual ~RDOFRMSpace();
 
-	DECLARE_RDOFRMIItem;
+	DECLARE_ICalc;
 };
 
 /*!
@@ -579,16 +583,16 @@ private:
   \brief     Команды анимации Show и ShowIf
 */
 CALC(RDOFRMShow)
+	IS IMPLEMENTATION_OF(IRDOFRMItemGetBitmap)
 {
 DECLARE_FACTORY(RDOFRMShow)
 public:
-	typedef std::list<LPRDOFRMItem> ItemList;
+	typedef std::list<LPRDOCalc> ItemList;
 
 	rbool         isShowIf      () const;
 
-	void          insertItem    (CREF(LPRDOFRMItem) pItem             );
+	void          insertItem    (CREF(LPRDOCalc)    pItem             );
 	rbool         checkCondition(CREF(LPRDORuntime) pRuntime          );
-	virtual void  getBitmaps    (REF(RDOFRMSprite::ImageNameList) list);
 
 private:
 	RDOFRMShow(CREF(LPRDOCalc) pConditionCalc);
@@ -598,6 +602,7 @@ private:
 	LPRDOCalc m_pConditionCalc;
 
 	DECLARE_ICalc;
+	DECLATE_IRDOFRMItemGetBitmap;
 };
 
 /*!
@@ -609,11 +614,13 @@ CLASS(RDOFRMFrame):
 {
 DECLARE_FACTORY(RDOFRMFrame)
 public:
-	void  getBitmaps    (REF(ImageNameList) list) const;
-	void  setBackPicture(CREF(tstring) picFileName);
-	void  setBackPicture(int width, int height);
+	void setBackPicture(CREF(tstring) picFileName);
+	void setBackPicture(int width, int height);
 
 	void prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORuntime) pRuntime);
+
+	//! @todo Нужно спрятатть в приват и поправить симулятор, из которого метод вызывается
+	DECLATE_IRDOFRMItemGetBitmap;
 
 private:
 	RDOFRMFrame(CREF(RDOSrcInfo) src_info, CREF(LPRDOCalc) pConditionCalc = NULL);

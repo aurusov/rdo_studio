@@ -268,11 +268,6 @@ inline RDOFRMItem::RDOFRMItem(CREF(LPRDOFRMSprite) pSprite)
 inline RDOFRMItem::~RDOFRMItem()
 {}
 
-inline void RDOFRMItem::getBitmaps(REF(RDOFRMSprite::ImageNameList) list)
-{
-	UNUSED(list);
-}
-
 inline CREF(LPRDOFRMSprite) RDOFRMItem::getFrame() const
 {
 	return m_pFrame;
@@ -290,7 +285,7 @@ inline RDOFRMBitmapBase::RDOFRMBitmapBase(CREF(LPRDOFRMSprite) pSprite, CREF(tst
 inline RDOFRMBitmapBase::~RDOFRMBitmapBase()
 {}
 
-inline void RDOFRMBitmapBase::getBitmaps(REF(RDOFRMSprite::ImageNameList) list)
+inline void RDOFRMBitmapBase::getBitmaps(REF(IRDOFRMItemGetBitmap::ImageNameList) list) const
 {
 	list.push_back(m_pictFilename);
 	if (!m_maskFilename.empty())
