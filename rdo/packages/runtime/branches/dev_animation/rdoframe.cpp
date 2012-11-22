@@ -226,9 +226,12 @@ void RDOFRMFrame::setBackPicture(int width, int height)
 	m_height      = height;
 }
 
-void RDOFRMSprite::startShow(CREF(LPRDOCalc) pCalc)
+LPRDOCalc RDOFRMSprite::startShow(CREF(LPRDOCalc) pCalc)
 {
-	m_showList.push_back(rdo::Factory<RDOFRMShow>::create(pCalc));
+	LPRDOFRMShow pShow = rdo::Factory<RDOFRMShow>::create(pCalc);
+	ASSERT(pShow);
+	m_showList.push_back(pShow);
+	return pShow;
 }
 
 void RDOFRMSprite::addItem(CREF(LPRDOFRMItem) pItem)
