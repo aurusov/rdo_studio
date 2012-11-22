@@ -252,17 +252,21 @@ LPRDOCalc RDOFRMSprite::addItem(CREF(LPRDOCalc) pItem)
 	if (pShow)
 	{
 		m_showList.push_back(pShow);
+		return pItem;
 	}
-	else
+
+	LPRDOFRMRulet pRulet = pItem.object_dynamic_cast<RDOFRMRulet>();
+	if (pRulet)
 	{
-		if (m_showList.empty())
-		{
-			startShow();
-		}
-
-		m_showList.back()->insertItem(pItem);
+		return addRulet(pRulet);
 	}
 
+	if (m_showList.empty())
+	{
+		startShow();
+	}
+
+	m_showList.back()->insertItem(pItem);
 	return pItem;
 }
 

@@ -509,7 +509,7 @@ frm_item
 	| frm_ruler
 	{
 		LPExpression pExpression = RDOFRMFrame::generateExpression(
-			PARSER->getLastFRMFrame()->frame()->addRulet(PARSER->stack().pop<RDOFRMRulet>($1)),
+			PARSER->getLastFRMFrame()->frame()->addItem(PARSER->stack().pop<RDOFRMRulet>($1)),
 			RDOParserSrcInfo(@1)
 		);
 		ASSERT(pExpression);
