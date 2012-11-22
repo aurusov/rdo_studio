@@ -23,6 +23,7 @@
 OPEN_RDO_RUNTIME_NAMESPACE
 
 PREDECLARE_POINTER(RDOFRMShow);
+PREDECLARE_POINTER(RDOFRMItem);
 
 /*!
   \interface IRDOFRMItemGetBitmap
@@ -165,6 +166,7 @@ public:
 
 	void          setBackgroundColor(CREF(LPRDOFRMColor) pBgColor   );
 	LPRDOCalc     startShow         (CREF(LPRDOCalc) pCalc = NULL   );
+	void          insertItem        (CREF(LPRDOFRMItem)  pItem      );
 	LPRDOCalc     addItem           (CREF(LPRDOCalc)     pItem      );
 	LPRDOCalc     addShow           (CREF(LPRDOFRMShow)  pShow      );
 	LPRDOCalc     addRulet          (CREF(LPRDOFRMRulet) pRulet     );
@@ -188,8 +190,9 @@ protected:
 	DECLATE_IRDOFRMItemGetBitmap;
 
 private:
-	typedef std::list<LPRDOFRMShow>        ShowList;
-	typedef std::map<ruint, LPRDOFRMRulet> RuletList;
+	typedef std::list<LPRDOFRMShow>           ShowList;
+	typedef std::map<ruint, LPRDOFRMRulet>    RuletList;
+	typedef std::list<LPIRDOFRMItemGetBitmap> GetBitmapList;
 
 	LPRDOCalc              m_pConditionCalc;
 	LPRDOFRMColor          m_pBgColor;
@@ -204,6 +207,7 @@ private:
 	double                 m_lastWidth;
 	double                 m_lastHeight;
 	RuletList              m_ruletList;
+	GetBitmapList          m_getBitmapList;
 
 	DECLARE_ICalc;
 };

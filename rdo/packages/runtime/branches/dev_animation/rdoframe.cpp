@@ -180,10 +180,8 @@ RDOValue RDOFRMSprite::doCalc(CREF(LPRDORuntime) pRuntime)
 
 void RDOFRMSprite::getBitmaps(REF(IRDOFRMItemGetBitmap::ImageNameList) list) const
 {
-	BOOST_FOREACH(const LPRDOFRMShow& pShow, m_showList)
+	BOOST_FOREACH(const LPIRDOFRMItemGetBitmap& pGetBitmap, m_getBitmapList)
 	{
-		rdo::interface_ptr<IRDOFRMItemGetBitmap> pGetBitmap = pShow.interface_dynamic_cast<IRDOFRMItemGetBitmap>();
-		ASSERT(pGetBitmap);
 		pGetBitmap->getBitmaps(list);
 	}
 }
@@ -242,6 +240,15 @@ LPRDOCalc RDOFRMSprite::startShow(CREF(LPRDOCalc) pCalc)
 	//! @todo Метод можно удалить
 	UNUSED(pCalc);
 	return NULL;
+}
+
+void RDOFRMSprite::insertItem(CREF(LPRDOFRMItem) pItem)
+{
+	rdo::interface_ptr<IRDOFRMItemGetBitmap> pGetBitmap = pItem.interface_dynamic_cast<IRDOFRMItemGetBitmap>();
+	if (pGetBitmap)
+	{
+		m_getBitmapList.push_back(pGetBitmap);
+	}
 }
 
 LPRDOCalc RDOFRMSprite::addItem(CREF(LPRDOCalc) pItem)

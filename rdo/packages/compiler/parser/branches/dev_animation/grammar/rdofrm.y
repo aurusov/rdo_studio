@@ -398,8 +398,13 @@ frm_show
 frm_item_statement
 	: frm_item
 	{
+		rdo::runtime::LPRDOFRMItem pItem = PARSER->stack().pop<rdo::runtime::RDOFRMItem>($1);
+		ASSERT(pItem);
+
+		PARSER->getLastFRMFrame()->frame()->insertItem(pItem);
+
 		LPExpression pExpression = RDOFRMFrame::generateExpression(
-			PARSER->getLastFRMFrame()->frame()->addItem(PARSER->stack().pop<rdo::runtime::RDOCalc>($1)),
+			pItem,
 			RDOParserSrcInfo(@1)
 		);
 		ASSERT(pExpression);
