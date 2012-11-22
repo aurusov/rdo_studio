@@ -385,7 +385,7 @@ frm_show
 		rdo::runtime::LPRDOCalc pShow = pFrame->frame()->startShow();
 		ASSERT(pShow);
 
-		LPExpression pExpression = RDOFRMFrame::generateExpression(pShow, RDOParserSrcInfo(@1, @2));
+		LPExpression pExpression = RDOFRMFrame::generateExpression(pShow, RDOParserSrcInfo(@1));
 		ASSERT(pExpression);
 
 		$$ = PARSER->stack().push(pExpression);
