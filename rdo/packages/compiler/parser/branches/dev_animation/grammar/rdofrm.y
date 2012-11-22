@@ -395,8 +395,8 @@ frm_show
 	}
 	;
 
-frm_item
-	: frm_show
+frm_item_statement
+	: frm_item
 	{
 		LPExpression pExpression = RDOFRMFrame::generateExpression(
 			PARSER->getLastFRMFrame()->frame()->addItem(PARSER->stack().pop<rdo::runtime::RDOCalc>($1)),
@@ -406,126 +406,22 @@ frm_item
 
 		$$ = PARSER->stack().push(pExpression);
 	}
+	;
+
+frm_item
+	: frm_show
 	| frm_text
-	{
-		LPExpression pExpression = RDOFRMFrame::generateExpression(
-			PARSER->getLastFRMFrame()->frame()->addItem(PARSER->stack().pop<RDOFRMText>($1)),
-			RDOParserSrcInfo(@1)
-		);
-		ASSERT(pExpression);
-
-		$$ = PARSER->stack().push(pExpression);
-	}
 	| frm_bitmap
-	{
-		LPExpression pExpression = RDOFRMFrame::generateExpression(
-			PARSER->getLastFRMFrame()->frame()->addItem(PARSER->stack().pop<RDOFRMBitmap>($1)),
-			RDOParserSrcInfo(@1)
-		);
-		ASSERT(pExpression);
-
-		$$ = PARSER->stack().push(pExpression);
-	}
 	| frm_rect
-	{
-		LPExpression pExpression = RDOFRMFrame::generateExpression(
-			PARSER->getLastFRMFrame()->frame()->addItem(PARSER->stack().pop<RDOFRMRect>($1)),
-			RDOParserSrcInfo(@1)
-		);
-		ASSERT(pExpression);
-
-		$$ = PARSER->stack().push(pExpression);
-	}
 	| frm_line
-	{
-		LPExpression pExpression = RDOFRMFrame::generateExpression(
-			PARSER->getLastFRMFrame()->frame()->addItem(PARSER->stack().pop<RDOFRMLine>($1)),
-			RDOParserSrcInfo(@1)
-		);
-		ASSERT(pExpression);
-
-		$$ = PARSER->stack().push(pExpression);
-	}
 	| frm_circle
-	{
-		LPExpression pExpression = RDOFRMFrame::generateExpression(
-			PARSER->getLastFRMFrame()->frame()->addItem(PARSER->stack().pop<RDOFRMCircle>($1)),
-			RDOParserSrcInfo(@1)
-		);
-		ASSERT(pExpression);
-
-		$$ = PARSER->stack().push(pExpression);
-	}
 	| frm_ellipse
-	{
-		LPExpression pExpression = RDOFRMFrame::generateExpression(
-			PARSER->getLastFRMFrame()->frame()->addItem(PARSER->stack().pop<RDOFRMEllipse>($1)),
-			RDOParserSrcInfo(@1)
-		);
-		ASSERT(pExpression);
-
-		$$ = PARSER->stack().push(pExpression);
-	}
 	| frm_r_rect
-	{
-		LPExpression pExpression = RDOFRMFrame::generateExpression(
-			PARSER->getLastFRMFrame()->frame()->addItem(PARSER->stack().pop<RDOFRMRectRound>($1)),
-			RDOParserSrcInfo(@1)
-		);
-		ASSERT(pExpression);
-
-		$$ = PARSER->stack().push(pExpression);
-	}
 	| frm_triang
-	{
-		LPExpression pExpression = RDOFRMFrame::generateExpression(
-			PARSER->getLastFRMFrame()->frame()->addItem(PARSER->stack().pop<RDOFRMTriang>($1)),
-			RDOParserSrcInfo(@1)
-		);
-		ASSERT(pExpression);
-
-		$$ = PARSER->stack().push(pExpression);
-	}
 	| frm_s_bmp
-	{
-		LPExpression pExpression = RDOFRMFrame::generateExpression(
-			PARSER->getLastFRMFrame()->frame()->addItem(PARSER->stack().pop<RDOFRMBitmapStretch>($1)),
-			RDOParserSrcInfo(@1)
-		);
-		ASSERT(pExpression);
-
-		$$ = PARSER->stack().push(pExpression);
-	}
 	| frm_active
-	{
-		LPExpression pExpression = RDOFRMFrame::generateExpression(
-			PARSER->getLastFRMFrame()->frame()->addItem(PARSER->stack().pop<RDOFRMActive>($1)),
-			RDOParserSrcInfo(@1)
-		);
-		ASSERT(pExpression);
-
-		$$ = PARSER->stack().push(pExpression);
-	}
 	| frm_ruler
-	{
-		LPExpression pExpression = RDOFRMFrame::generateExpression(
-			PARSER->getLastFRMFrame()->frame()->addItem(PARSER->stack().pop<RDOFRMRulet>($1)),
-			RDOParserSrcInfo(@1)
-		);
-		ASSERT(pExpression);
-
-		$$ = PARSER->stack().push(pExpression);
-	}
 	| frm_space
-	{
-		LPExpression pExpression = RDOFRMFrame::generateExpression(
-			PARSER->getLastFRMFrame()->frame()->addItem(PARSER->stack().pop<RDOFRMSpace>($1)),
-			RDOParserSrcInfo(@1)
-		);
-		ASSERT(pExpression);
-
-		$$ = PARSER->stack().push(pExpression);
-	}
 	| frm_sprite
 	;
 
@@ -1968,7 +1864,7 @@ statement
 
 		$$ = PARSER->stack().push(pExpression);
 	}
-	| frm_item
+	| frm_item_statement
 	| error
 	{
 		PARSER->error().error(@1, _T("Неизвестная инструкция"));
