@@ -41,7 +41,7 @@ protected:
 	IRDOFRMItemGetBitmap();
 	virtual ~IRDOFRMItemGetBitmap();
 };
-#define DECLATE_IRDOFRMItemGetBitmap \
+#define DECLARE_IRDOFRMItemGetBitmap \
 	virtual void getBitmaps(REF(ImageNameList) list) const;
 
 
@@ -187,7 +187,7 @@ protected:
 	RDOFRMSprite(CREF(RDOSrcInfo) src_info, CREF(LPRDOCalc) pConditionCalc = NULL);
 	virtual ~RDOFRMSprite();
 
-	DECLATE_IRDOFRMItemGetBitmap;
+	DECLARE_IRDOFRMItemGetBitmap;
 
 private:
 	typedef std::list<LPRDOFRMShow>           ShowList;
@@ -335,7 +335,7 @@ protected:
 	virtual ~RDOFRMBitmapBase();
 
 private:
-	DECLATE_IRDOFRMItemGetBitmap
+	DECLARE_IRDOFRMItemGetBitmap
 };
 
 /*!
@@ -607,7 +607,7 @@ private:
 	LPRDOCalc m_pConditionCalc;
 
 	DECLARE_ICalc;
-	DECLATE_IRDOFRMItemGetBitmap;
+	DECLARE_IRDOFRMItemGetBitmap;
 };
 
 /*!
@@ -625,7 +625,7 @@ public:
 	void prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORuntime) pRuntime);
 
 	//! @todo Нужно спрятатть в приват и поправить симулятор, из которого метод вызывается
-	DECLATE_IRDOFRMItemGetBitmap;
+	DECLARE_IRDOFRMItemGetBitmap;
 
 private:
 	RDOFRMFrame(CREF(RDOSrcInfo) src_info, CREF(LPRDOCalc) pConditionCalc = NULL);
