@@ -1610,6 +1610,22 @@ frm_line
 frm_triang
 	: RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color ',' frm_color ']'
 	{
+		LPDocUpdate pOpenBraceReplace = rdo::Factory<UpdateReplace>::create(
+			@2.m_first_seek,
+			@2.m_last_seek,
+			_T("(")
+		);
+		ASSERT(pOpenBraceReplace);
+		CONVERTER->insertDocUpdate(pOpenBraceReplace);
+
+		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
+			@18.m_first_seek,
+			@18.m_last_seek,
+			_T(")")
+		);
+		ASSERT(pCloseBraceReplace);
+		CONVERTER->insertDocUpdate(pCloseBraceReplace);
+
 		LPRDOFRMPosition pX1 = CONVERTER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY1 = CONVERTER->stack().pop<RDOFRMPosition>($5);
 		LPRDOFRMPosition pX2 = CONVERTER->stack().pop<RDOFRMPosition>($7);
