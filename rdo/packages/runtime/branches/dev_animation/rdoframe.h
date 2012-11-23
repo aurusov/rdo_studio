@@ -27,7 +27,7 @@ PREDECLARE_POINTER(RDOFRMItem);
 
 /*!
   \interface IRDOFRMItemGetBitmap
-  \brief     Индерфейс запроса картинок у элемента анимации
+  \brief     Интерфейс запроса картинок у элемента анимации
 */
 OBJECT_INTERFACE(IRDOFRMItemGetBitmap)
 {
