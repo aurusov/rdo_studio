@@ -737,6 +737,14 @@ frm_text_align
 frm_text_common
 	: RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color ','
 	{
+		LPDocUpdate pOpenBraceReplace = rdo::Factory<UpdateReplace>::create(
+			@2.m_first_seek,
+			@2.m_last_seek,
+			_T("(")
+		);
+		ASSERT(pOpenBraceReplace);
+		CONVERTER->insertDocUpdate(pOpenBraceReplace);
+
 		LPRDOFRMPosition pX      = CONVERTER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = CONVERTER->stack().pop<RDOFRMPosition>($5);
 		LPRDOFRMPosition pWidth  = CONVERTER->stack().pop<RDOFRMPosition>($7);
@@ -854,6 +862,14 @@ frm_text_common
 frm_text
 	: frm_text_common frm_text_align fun_arithm ']'
 	{
+		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
+			@4.m_first_seek,
+			@4.m_last_seek,
+			_T(")")
+		);
+		ASSERT(pCloseBraceReplace);
+		CONVERTER->insertDocUpdate(pCloseBraceReplace);
+
 		LPRDOFRMText pText = CONVERTER->stack().pop<RDOFRMText>($1);
 		ASSERT(pText);
 		pText->setText((rdo::animation::TextElement::TextAlign)$2, CONVERTER->stack().pop<RDOFUNArithm>($3)->createCalc());
@@ -861,6 +877,14 @@ frm_text
 	}
 	| frm_text_common frm_text_align RDO_STRING_CONST ']'
 	{
+		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
+			@4.m_first_seek,
+			@4.m_last_seek,
+			_T(")")
+		);
+		ASSERT(pCloseBraceReplace);
+		CONVERTER->insertDocUpdate(pCloseBraceReplace);
+
 		LPRDOFRMText pText = CONVERTER->stack().pop<RDOFRMText>($1);
 		ASSERT(pText);
 		pText->setText((rdo::animation::TextElement::TextAlign)$2, CONVERTER->stack().pop<RDOValue>($3)->value().getString());
