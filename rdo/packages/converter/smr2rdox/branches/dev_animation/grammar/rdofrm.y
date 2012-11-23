@@ -998,6 +998,22 @@ frm_bitmap
 frm_s_bmp
 	: RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF ']'
 	{
+		LPDocUpdate pOpenBraceReplace = rdo::Factory<UpdateReplace>::create(
+			@2.m_first_seek,
+			@2.m_last_seek,
+			_T("(")
+		);
+		ASSERT(pOpenBraceReplace);
+		CONVERTER->insertDocUpdate(pOpenBraceReplace);
+
+		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
+			@12.m_first_seek,
+			@12.m_last_seek,
+			_T(")")
+		);
+		ASSERT(pCloseBraceReplace);
+		CONVERTER->insertDocUpdate(pCloseBraceReplace);
+
 		LPRDOFRMPosition pX      = CONVERTER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = CONVERTER->stack().pop<RDOFRMPosition>($5);
 		LPRDOFRMPosition pWidth  = CONVERTER->stack().pop<RDOFRMPosition>($7);
@@ -1012,6 +1028,22 @@ frm_s_bmp
 	}
 	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF ',' RDO_IDENTIF ']'
 	{
+		LPDocUpdate pOpenBraceReplace = rdo::Factory<UpdateReplace>::create(
+			@2.m_first_seek,
+			@2.m_last_seek,
+			_T("(")
+		);
+		ASSERT(pOpenBraceReplace);
+		CONVERTER->insertDocUpdate(pOpenBraceReplace);
+
+		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
+			@14.m_first_seek,
+			@14.m_last_seek,
+			_T(")")
+		);
+		ASSERT(pCloseBraceReplace);
+		CONVERTER->insertDocUpdate(pCloseBraceReplace);
+
 		LPRDOFRMPosition pX      = CONVERTER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = CONVERTER->stack().pop<RDOFRMPosition>($5);
 		LPRDOFRMPosition pWidth  = CONVERTER->stack().pop<RDOFRMPosition>($7);
