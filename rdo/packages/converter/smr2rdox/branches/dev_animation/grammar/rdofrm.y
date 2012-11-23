@@ -1721,6 +1721,22 @@ frm_triang
 frm_active
 	: RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ']'
 	{
+		LPDocUpdate pOpenBraceReplace = rdo::Factory<UpdateReplace>::create(
+			@3.m_first_seek,
+			@3.m_last_seek,
+			_T("(")
+		);
+		ASSERT(pOpenBraceReplace);
+		CONVERTER->insertDocUpdate(pOpenBraceReplace);
+
+		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
+			@11.m_first_seek,
+			@11.m_last_seek,
+			_T(")")
+		);
+		ASSERT(pCloseBraceReplace);
+		CONVERTER->insertDocUpdate(pCloseBraceReplace);
+
 		tstring oprName = CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		LPRDOOPROperation pOperation = CONVERTER->findOPROperation(oprName);
 		if (!pOperation)
