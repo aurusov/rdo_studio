@@ -865,7 +865,7 @@ frm_text
 		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@4.m_first_seek,
 			@4.m_last_seek,
-			_T(")")
+			_T(");")
 		);
 		ASSERT(pCloseBraceReplace);
 		CONVERTER->insertDocUpdate(pCloseBraceReplace);
@@ -880,7 +880,7 @@ frm_text
 		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@4.m_first_seek,
 			@4.m_last_seek,
-			_T(")")
+			_T(");")
 		);
 		ASSERT(pCloseBraceReplace);
 		CONVERTER->insertDocUpdate(pCloseBraceReplace);
@@ -918,7 +918,7 @@ frm_bitmap
 		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@8.m_first_seek,
 			@8.m_last_seek,
-			_T(")")
+			_T(");")
 		);
 		ASSERT(pCloseBraceReplace);
 		CONVERTER->insertDocUpdate(pCloseBraceReplace);
@@ -944,7 +944,7 @@ frm_bitmap
 		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@10.m_first_seek,
 			@10.m_last_seek,
-			_T(")")
+			_T(");")
 		);
 		ASSERT(pCloseBraceReplace);
 		CONVERTER->insertDocUpdate(pCloseBraceReplace);
@@ -1009,7 +1009,7 @@ frm_s_bmp
 		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@12.m_first_seek,
 			@12.m_last_seek,
-			_T(")")
+			_T(");")
 		);
 		ASSERT(pCloseBraceReplace);
 		CONVERTER->insertDocUpdate(pCloseBraceReplace);
@@ -1039,7 +1039,7 @@ frm_s_bmp
 		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@14.m_first_seek,
 			@14.m_last_seek,
-			_T(")")
+			_T(");")
 		);
 		ASSERT(pCloseBraceReplace);
 		CONVERTER->insertDocUpdate(pCloseBraceReplace);
@@ -1124,7 +1124,7 @@ frm_rect
 		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@14.m_first_seek,
 			@14.m_last_seek,
-			_T(")")
+			_T(");")
 		);
 		ASSERT(pCloseBraceReplace);
 		CONVERTER->insertDocUpdate(pCloseBraceReplace);
@@ -1160,7 +1160,7 @@ frm_rect
 		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@12.m_first_seek,
 			@12.m_last_seek,
-			_T(")")
+			_T(");")
 		);
 		ASSERT(pCloseBraceReplace);
 		CONVERTER->insertDocUpdate(pCloseBraceReplace);
@@ -1196,7 +1196,7 @@ frm_rect
 		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@10.m_first_seek,
 			@10.m_last_seek,
-			_T(")")
+			_T(");")
 		);
 		ASSERT(pCloseBraceReplace);
 		CONVERTER->insertDocUpdate(pCloseBraceReplace);
@@ -1232,7 +1232,7 @@ frm_rect
 		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@8.m_first_seek,
 			@8.m_last_seek,
-			_T(")")
+			_T(");")
 		);
 		ASSERT(pCloseBraceReplace);
 		CONVERTER->insertDocUpdate(pCloseBraceReplace);
@@ -1268,7 +1268,7 @@ frm_rect
 		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@6.m_first_seek,
 			@6.m_last_seek,
-			_T(")")
+			_T(");")
 		);
 		ASSERT(pCloseBraceReplace);
 		CONVERTER->insertDocUpdate(pCloseBraceReplace);
@@ -1359,7 +1359,7 @@ frm_r_rect
 		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@14.m_first_seek,
 			@14.m_last_seek,
-			_T(")")
+			_T(");")
 		);
 		ASSERT(pCloseBraceReplace);
 		CONVERTER->insertDocUpdate(pCloseBraceReplace);
@@ -1450,7 +1450,7 @@ frm_ellipse
 		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@14.m_first_seek,
 			@14.m_last_seek,
-			_T(")")
+			_T(");")
 		);
 		ASSERT(pCloseBraceReplace);
 		CONVERTER->insertDocUpdate(pCloseBraceReplace);
@@ -1541,7 +1541,7 @@ frm_line
 		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@12.m_first_seek,
 			@12.m_last_seek,
-			_T(")")
+			_T(");")
 		);
 		ASSERT(pCloseBraceReplace);
 		CONVERTER->insertDocUpdate(pCloseBraceReplace);
@@ -1621,7 +1621,7 @@ frm_triang
 		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@18.m_first_seek,
 			@18.m_last_seek,
-			_T(")")
+			_T(");")
 		);
 		ASSERT(pCloseBraceReplace);
 		CONVERTER->insertDocUpdate(pCloseBraceReplace);
@@ -1732,7 +1732,7 @@ frm_active
 		LPDocUpdate pCloseBraceReplace = rdo::Factory<UpdateReplace>::create(
 			@11.m_first_seek,
 			@11.m_last_seek,
-			_T(")")
+			_T(");")
 		);
 		ASSERT(pCloseBraceReplace);
 		CONVERTER->insertDocUpdate(pCloseBraceReplace);
