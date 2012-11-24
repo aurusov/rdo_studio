@@ -34,29 +34,6 @@ using namespace rdoEditor;
 using namespace rdoEditCtrl;
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOEditorEditBufferDlg
-// --------------------------------------------------------------------------------
-class RDOEditorEditBufferDlg: public CDialog
-{
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);
-
-public:
-	CString bufName;
-	CString bufValue;
-
-	RDOEditorEditBufferDlg(CString _bufName, CString _bufValue): CDialog(IDD_BUFFER), bufName(_bufName), bufValue(_bufValue) {};
-};
-
-void RDOEditorEditBufferDlg::DoDataExchange(CDataExchange* pDX)
-{
-	CDialog::DoDataExchange(pDX);
-
-	DDX_Text(pDX, IDC_BUFFERVALUESTATIC, bufName);
-	DDX_Text(pDX, IDC_BUFFERVALUEEDIT, bufValue);
-}
-
-// --------------------------------------------------------------------------------
 // -------------------- RDOEditorEdit
 // ---------------------------------------------------------------------------
 

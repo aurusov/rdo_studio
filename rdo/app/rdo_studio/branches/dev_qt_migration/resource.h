@@ -6,7 +6,6 @@
 #define IDR_MAINFRAME                   128
 #define IDR_MODEL_TYPE                  129
 #define IDR_FILE_TOOLBAR                132
-#define IDD_BUFFER                      142
 #define IDB_TRASH                       143
 #define IDB_FILE_TOOLBAR_D              144
 #define IDB_EDIT_TOOLBAR_D              145
