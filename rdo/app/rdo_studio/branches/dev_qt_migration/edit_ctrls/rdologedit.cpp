@@ -49,18 +49,29 @@ RDOLogEdit::RDOLogEdit(PTR(QWidget) pParent)
 
 	setReadOnly(true);
 
-	sendEditorString(SCI_SETPROPERTY, reinterpret_cast<unsigned long>("withoutselectbyclick"), "1");
-
 	QObject::connect(this, SIGNAL(doubleClick(int, int)), this, SLOT(catchDoubleClick(int, int)));
 	QObject::connect(this, SIGNAL(modified(int, int, int, int, const QByteArray&, int, int, int)), this, SLOT(catchModified()));
 }
 
 void RDOLogEdit::catchDoubleClick(int position, int line)
 {
-	UNUSED(position);
-	UNUSED(line    );
+	m_currentLine = line;
 
-	setSelectLine();
+	RDOLogEditLineInfoList::iterator it = m_lines.begin();
+	for (int i = 0; i < line; i++)
+	{
+		if (it != m_lines.end())
+		{
+			++it;
+		}
+	}
+	if (it != m_lines.end() && (*it)->getLineNumber() != -1)
+	{
+		setSelectLine(line, *it);
+	}
+
+	sendEditor( SCI_SETSELECTIONSTART, position);
+	sendEditor( SCI_SETSELECTIONEND  , position);
 }
 
 void RDOLogEdit::catchModified()
@@ -149,29 +160,6 @@ void RDOLogEdit::setCurrentLine(rsint currentLine)
 void RDOLogEdit::setSciMarkerLine(rsint sciMarkerLine)
 {
 	m_sciMarkerLine = sciMarkerLine;
-}
-
-void RDOLogEdit::setSelectLine()
-{
-	QPoint point = QCursor::pos();
-	QWidget::mapFromGlobal(point);
-	int pos  = sendEditor(SCI_POSITIONFROMPOINT, point.x(), point.y());
-	int line = getLineFromPosition(pos);
-	setCurrentPos(pos);
-	m_currentLine = line;
-
-	RDOLogEditLineInfoList::iterator it = m_lines.begin();
-	for (int i = 0; i < line; i++)
-	{
-		if (it != m_lines.end())
-		{
-			++it;
-		}
-	}
-	if (it != m_lines.end() && (*it)->getLineNumber() != -1)
-	{
-		setSelectLine(line, *it);
-	}
 }
 
 void RDOLogEdit::gotoNext()

@@ -58,7 +58,6 @@ protected:
 	virtual void updateEdit(PTR(rdoEditor::RDOEditorEdit) pEdit, CPTR(RDOLogEditLineInfo) pLineInfo);
 
 	void  clearLines     ();
-	void  setSelectLine  ();
 	void  setSelectLine  (int line, CPTR(RDOLogEditLineInfo) pLineInfo, rbool useScroll = false);
 	void  clearSelectLine();
 	rbool hasSelectLine  () const;
