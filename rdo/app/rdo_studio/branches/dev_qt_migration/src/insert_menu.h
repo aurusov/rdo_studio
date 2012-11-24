@@ -206,5 +206,3 @@ insertMenu.push_back("INSERT_FUNCTIONS_INTPOWER        | IntPower        ");
 insertMenu.push_back("INSERT_FUNCTIONS_LN              | Ln              ");
 insertMenu.push_back("INSERT_FUNCTIONS_LOG2            | Log10           ");
 insertMenu.push_back("INSERT_FUNCTIONS_LOG10           | Log2            ");
-
-insertMenu.push_back("LINE");
