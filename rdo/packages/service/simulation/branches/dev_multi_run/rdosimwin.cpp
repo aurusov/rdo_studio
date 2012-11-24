@@ -857,8 +857,8 @@ OPEN_RDO_SERVICE_SIMULATION_NAMESPACE
 // -------------------- RDOThreadSimulator
 // --------------------------------------------------------------------------------
 RDOThreadSimulator::RDOThreadSimulator()
-	: RDOThreadMT     (_T("RDOThreadSimulator")       )
-	, m_pThreadRuntime(NULL                           )
+	: RDOThreadMT     (_T("RDOThreadSimulator")      )
+	, m_pThreadRuntime(NULL                          )
 	, m_exitCode      (rdo::simulation::report::EC_OK)
 {
 	notifies.push_back(RT_STUDIO_MODEL_BUILD              );
