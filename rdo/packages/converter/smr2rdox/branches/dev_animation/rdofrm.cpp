@@ -16,6 +16,7 @@
 #include "converter/smr2rdox/rdofrm.h"
 #include "converter/smr2rdox/rdoparser.h"
 #include "converter/smr2rdox/rdoparser_lexer.h"
+#include "converter/smr2rdox/update/update.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
@@ -37,9 +38,50 @@ void cnv_frmerror(PTR(char) message)
 // --------------------------------------------------------------------------------
 RDOFRMFrame::RDOFRMFrame(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic)
 	: RDOParserSrcInfo(src_info)
+	, m_itemCount     (0)
 {
 	m_pFrame = rdo::Factory<rdo::runtime::RDOFRMFrame>::create(src_info, pLogic ? pLogic->getCalc() : rdo::runtime::LPRDOCalc(NULL));
 	Converter::s_converter()->insertFRMFrame(this);
+}
+
+void RDOFRMFrame::setShowIfBlock(CREF(Seek) firstSeek)
+{
+	if (m_firstSeek.is_initialized() && m_lastSeek.is_initialized() && m_itemCount > 1)
+	{
+		LPDocUpdate pOpenBraceInsert = rdo::Factory<UpdateInsert>::create(
+			*m_firstSeek,
+			_T("\n{")
+		);
+		ASSERT(pOpenBraceInsert);
+		Converter::s_converter()->insertDocUpdate(pOpenBraceInsert);
+
+		LPDocUpdate pCloseBraceInsert = rdo::Factory<UpdateInsert>::create(
+			*m_lastSeek,
+			_T("\n}")
+		);
+		ASSERT(pCloseBraceInsert);
+		Converter::s_converter()->insertDocUpdate(pCloseBraceInsert);
+	}
+
+	m_itemCount = 0;
+	m_firstSeek = firstSeek;
+	m_lastSeek.reset();
+}
+
+void RDOFRMFrame::addItem(CREF(rdo::runtime::LPRDOCalc), ruint lastSeek)
+{
+	++m_itemCount;
+	m_lastSeek = lastSeek;
+}
+
+CREF(RDOFRMFrame::Seek) RDOFRMFrame::getFirstSeek() const
+{
+	return m_firstSeek;
+}
+
+CREF(RDOFRMFrame::Seek) RDOFRMFrame::getLastSeek() const
+{
+	return m_lastSeek;
 }
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

@@ -353,13 +353,47 @@ frm_backpicture
 frm_show
 	: RDO_Show
 	{
+		LPDocUpdate pShowDelete = rdo::Factory<UpdateDelete>::create(
+			@1.m_first_seek,
+			@1.m_last_seek
+		);
+		ASSERT(pShowDelete);
+		CONVERTER->insertDocUpdate(pShowDelete);
+
 		LPRDOFRMFrame pFrame = CONVERTER->getLastFRMFrame();
 		ASSERT(pFrame);
+
+		pFrame->setShowIfBlock(RDOFRMFrame::Seek());
 		pFrame->frame()->startShow();
 	}
 	| RDO_Show_if fun_logic
 	{
+		LPDocUpdate pShowIfReplace = rdo::Factory<UpdateReplace>::create(
+			@1.m_first_seek,
+			@1.m_last_seek,
+			_T("if")
+		);
+		ASSERT(pShowIfReplace);
+		CONVERTER->insertDocUpdate(pShowIfReplace);
+
+		LPDocUpdate pOpenBraceInsert = rdo::Factory<UpdateInsert>::create(
+			@2.m_first_seek,
+			_T("(")
+		);
+		ASSERT(pOpenBraceInsert);
+		CONVERTER->insertDocUpdate(pOpenBraceInsert);
+
+		tstring closeBrace(_T(")"));
+		LPDocUpdate pCloseBraceInsert = rdo::Factory<UpdateInsert>::create(
+			@2.m_last_seek,
+			closeBrace
+		);
+		ASSERT(pCloseBraceInsert);
+		CONVERTER->insertDocUpdate(pCloseBraceInsert);
+
 		LPRDOFRMFrame pFrame = CONVERTER->getLastFRMFrame();
+		ASSERT(pFrame);
+		pFrame->setShowIfBlock(RDOFRMFrame::Seek(@2.m_last_seek + closeBrace.length()));
 		pFrame->frame()->startShow(CONVERTER->stack().pop<RDOFUNLogic>($2)->getCalc());
 	}
 	| RDO_Show_if error
@@ -371,17 +405,17 @@ frm_show
 frm_item
 	: /* empty */
 	| frm_item frm_show
-	| frm_item frm_text    {CONVERTER->getLastFRMFrame()->frame()->addItem (CONVERTER->stack().pop<RDOFRMText         >($2));}
-	| frm_item frm_bitmap  {CONVERTER->getLastFRMFrame()->frame()->addItem (CONVERTER->stack().pop<RDOFRMBitmap       >($2));}
-	| frm_item frm_rect    {CONVERTER->getLastFRMFrame()->frame()->addItem (CONVERTER->stack().pop<RDOFRMRect         >($2));}
-	| frm_item frm_line    {CONVERTER->getLastFRMFrame()->frame()->addItem (CONVERTER->stack().pop<RDOFRMLine         >($2));}
-	| frm_item frm_ellipse {CONVERTER->getLastFRMFrame()->frame()->addItem (CONVERTER->stack().pop<RDOFRMEllipse      >($2));}
-	| frm_item frm_r_rect  {CONVERTER->getLastFRMFrame()->frame()->addItem (CONVERTER->stack().pop<RDOFRMRectRound    >($2));}
-	| frm_item frm_triang  {CONVERTER->getLastFRMFrame()->frame()->addItem (CONVERTER->stack().pop<RDOFRMTriang       >($2));}
-	| frm_item frm_s_bmp   {CONVERTER->getLastFRMFrame()->frame()->addItem (CONVERTER->stack().pop<RDOFRMBitmapStretch>($2));}
-	| frm_item frm_active  {CONVERTER->getLastFRMFrame()->frame()->addItem (CONVERTER->stack().pop<RDOFRMActive       >($2));}
-	| frm_item frm_ruler   {CONVERTER->getLastFRMFrame()->frame()->addRulet(CONVERTER->stack().pop<RDOFRMRulet        >($2));}
-	| frm_item frm_space   {CONVERTER->getLastFRMFrame()->frame()->addItem (CONVERTER->stack().pop<RDOFRMSpace        >($2));}
+	| frm_item frm_text    {CONVERTER->getLastFRMFrame()->addItem (CONVERTER->stack().pop<RDOFRMText         >($2), @2.m_last_seek);}
+	| frm_item frm_bitmap  {CONVERTER->getLastFRMFrame()->addItem (CONVERTER->stack().pop<RDOFRMBitmap       >($2), @2.m_last_seek);}
+	| frm_item frm_rect    {CONVERTER->getLastFRMFrame()->addItem (CONVERTER->stack().pop<RDOFRMRect         >($2), @2.m_last_seek);}
+	| frm_item frm_line    {CONVERTER->getLastFRMFrame()->addItem (CONVERTER->stack().pop<RDOFRMLine         >($2), @2.m_last_seek);}
+	| frm_item frm_ellipse {CONVERTER->getLastFRMFrame()->addItem (CONVERTER->stack().pop<RDOFRMEllipse      >($2), @2.m_last_seek);}
+	| frm_item frm_r_rect  {CONVERTER->getLastFRMFrame()->addItem (CONVERTER->stack().pop<RDOFRMRectRound    >($2), @2.m_last_seek);}
+	| frm_item frm_triang  {CONVERTER->getLastFRMFrame()->addItem (CONVERTER->stack().pop<RDOFRMTriang       >($2), @2.m_last_seek);}
+	| frm_item frm_s_bmp   {CONVERTER->getLastFRMFrame()->addItem (CONVERTER->stack().pop<RDOFRMBitmapStretch>($2), @2.m_last_seek);}
+	| frm_item frm_active  {CONVERTER->getLastFRMFrame()->addItem (CONVERTER->stack().pop<RDOFRMActive       >($2), @2.m_last_seek);}
+	| frm_item frm_ruler   {CONVERTER->getLastFRMFrame()->frame()->addRulet(CONVERTER->stack().pop<RDOFRMRulet>($2));}
+	| frm_item frm_space   {CONVERTER->getLastFRMFrame()->addItem (CONVERTER->stack().pop<RDOFRMSpace        >($2), @2.m_last_seek);}
 	;
 
 frm_header
