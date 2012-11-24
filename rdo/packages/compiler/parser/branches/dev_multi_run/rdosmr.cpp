@@ -58,6 +58,11 @@ RDOSMR::RDOSMR()
 	, m_showMode      (rdo::service::simulation::SM_NoShow           )
 {}
 
+void RDOSMR::setRunCount(ruint value)
+{
+	m_runCount = value;
+}
+
 void RDOSMR::setShowMode(rdo::service::simulation::ShowMode showMode)
 {
 	m_showMode = showMode;

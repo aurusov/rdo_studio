@@ -260,7 +260,14 @@ smr_multirun_body
 smr_multirun_body_desc
 	: RDO_Run_Count '=' RDO_INT_CONST ';'
 	{
-		PARSER->error().error(@2, _T("я попал в нужную мне бизоновскую ветку - 1!"));
+		LPRDOSMR pSMR = PARSER->getSMR();
+		ASSERT(pSMR);
+		rsint count = PARSER->stack().pop<RDOValue>($4)->value().getInt();
+		if (count < 0)
+		{
+			PARSER->error().error(@3, _T("Число прогонов должно быть больше нуля"));
+		}
+		pSMR->setRunCount(ruint(count));
 	}
 	| RDO_IDENTIF '.' RDO_Seek '=' fun_arithm';'
 	{

@@ -63,6 +63,7 @@ public:
 	double                             getRunStartTime  () const { return m_runStartTime;   }
 	double                             getTraceStartTime() const { return m_traceStartTime; }
 	double                             getTraceEndTime  () const { return m_traceEndTime;   }
+	ruint                              getRunCount      () const { return m_runCount;       }
 
 	void setShowMode      (rdo::service::simulation::ShowMode showMode);
 	void setFrameNumber   (int value,    CREF(YYLTYPE) pos);
@@ -70,6 +71,7 @@ public:
 	void setRunStartTime  (double value, CREF(YYLTYPE) pos);
 	void setTraceStartTime(double value, CREF(YYLTYPE) pos);
 	void setTraceEndTime  (double value, CREF(YYLTYPE) pos);
+	void setRunCount      (ruint  value);
 
 	void setTerminateIf  (REF(LPRDOFUNLogic) pLogic);
 	void setConstValue   (CREF(RDOParserSrcInfo) const_info, REF(LPRDOFUNArithm)    pArithm);
@@ -95,6 +97,7 @@ private:
 	double                              m_runStartTime;
 	double                              m_traceStartTime;
 	double                              m_traceEndTime;
+	ruint                               m_runCount;
 	YYLTYPE                             m_traceStartTime_pos;
 	YYLTYPE                             m_traceEndTime_pos;
 	LPRDOFUNLogic                       m_pTerminateIf;
