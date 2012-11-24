@@ -267,6 +267,8 @@ Size                           return(RDO_Size);
 size                           return(RDO_Size);
 empty                          return(RDO_Empty);
 Empty                          return(RDO_Empty);
+getArray                       return(RDO_Select_Array);
+get_array                      return(RDO_Select_Array);
 watch_start                    return(RDO_WatchStart);
 watch_stop                     return(RDO_WatchStop);
 
