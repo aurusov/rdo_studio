@@ -415,19 +415,19 @@ frm_item_statement
 
 frm_item
 	: frm_show
-	| frm_text
-	| frm_bitmap
-	| frm_rect
-	| frm_line
-	| frm_circle
-	| frm_ellipse
-	| frm_r_rect
-	| frm_triang
-	| frm_s_bmp
-	| frm_active
-	| frm_ruler
-	| frm_space
-	| frm_sprite
+	| frm_text ';'
+	| frm_bitmap ';'
+	| frm_rect ';'
+	| frm_line ';'
+	| frm_circle ';'
+	| frm_ellipse ';'
+	| frm_r_rect ';'
+	| frm_triang ';'
+	| frm_s_bmp ';'
+	| frm_active ';'
+	| frm_ruler ';'
+	| frm_space ';'
+	| frm_sprite ';'
 	;
 
 frm_header
@@ -755,7 +755,7 @@ frm_radius
 	};
 
 frm_ruler
-	: RDO_ruler '[' RDO_INT_CONST ',' frm_position_xy ',' frm_position_xy ']'
+	: RDO_ruler '(' RDO_INT_CONST ',' frm_position_xy ',' frm_position_xy ')'
 	{
 		LPRDOValue pRuletID = PARSER->stack().pop<RDOValue>($3);
 		ASSERT(pRuletID);
@@ -782,38 +782,38 @@ frm_ruler
 		ASSERT(pRulet);
 		$$ = PARSER->stack().push(pRulet);
 	}
-	| RDO_ruler '[' RDO_INT_CONST ',' frm_position_xy ',' frm_position_xy error
+	| RDO_ruler '(' RDO_INT_CONST ',' frm_position_xy ',' frm_position_xy error
 	{
-		PARSER->error().error(@7, _T("ќжидаетс€ ']'"));
+		PARSER->error().error(@7, _T("ќжидаетс€ ')'"));
 	}
-	| RDO_ruler '[' RDO_INT_CONST ',' frm_position_xy ',' error
+	| RDO_ruler '(' RDO_INT_CONST ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@6, @7, _T("ќжидаетс€ координата по оси Y"));
 	}
-	| RDO_ruler '[' RDO_INT_CONST ',' frm_position_xy error
+	| RDO_ruler '(' RDO_INT_CONST ',' frm_position_xy error
 	{
 		PARSER->error().error(@5, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_ruler '[' RDO_INT_CONST ',' error
+	| RDO_ruler '(' RDO_INT_CONST ',' error
 	{
 		PARSER->error().error(@4, @5, _T("ќжидаетс€ координата по оси X"));
 	}
-	| RDO_ruler '[' RDO_INT_CONST error
+	| RDO_ruler '(' RDO_INT_CONST error
 	{
 		PARSER->error().error(@3, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_ruler '[' error
+	| RDO_ruler '(' error
 	{
 		PARSER->error().error(@2, @3, _T("ќжидаетс€ номер рулетки"));
 	}
 	| RDO_ruler error
 	{
-		PARSER->error().error(@1, _T("ќжидаетс€ '['"));
+		PARSER->error().error(@1, _T("ќжидаетс€ '('"));
 	}
 	;
 
 frm_space
-	: RDO_space '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ']'
+	: RDO_space '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ')'
 	{
 		LPRDOFRMPosition pX      = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -827,41 +827,41 @@ frm_space
 		ASSERT(pSpace);
 		$$ = PARSER->stack().push(pSpace);
 	}
-	| RDO_space '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
+	| RDO_space '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
 	{
-		PARSER->error().error(@9, _T("ќжидаетс€ ']'"));
+		PARSER->error().error(@9, _T("ќжидаетс€ ')'"));
 	}
-	| RDO_space '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
+	| RDO_space '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
 	{
 		PARSER->error().error(@8, @9, _T("ќжидаетс€ высота"));
 	}
-	| RDO_space '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
+	| RDO_space '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
 	{
 		PARSER->error().error(@7, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_space '[' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_space '(' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@6, @7, _T("ќжидаетс€ ширина"));
 	}
-	| RDO_space '[' frm_position_xy ',' frm_position_xy error
+	| RDO_space '(' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@5, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_space '[' frm_position_xy ',' error
+	| RDO_space '(' frm_position_xy ',' error
 	{
 		PARSER->error().error(@4, @5, _T("ќжидаетс€ координата по оси Y"));
 	}
-	| RDO_space '[' frm_position_xy error
+	| RDO_space '(' frm_position_xy error
 	{
 		PARSER->error().error(@3, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_space '[' error
+	| RDO_space '(' error
 	{
 		PARSER->error().error(@2, @3, _T("ќжидаетс€ координата по оси X"));
 	}
 	| RDO_space error
 	{
-		PARSER->error().error(@1, _T("ќжидаетс€ '['"));
+		PARSER->error().error(@1, _T("ќжидаетс€ '('"));
 	}
 	;
 
@@ -873,7 +873,7 @@ frm_text_align
 	;
 
 frm_text_common
-	: RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color ','
+	: RDO_text '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color ','
 	{
 		LPRDOFRMPosition pX      = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -894,7 +894,7 @@ frm_text_common
 		$$ = PARSER->stack().push(pText);
 	}
 /*
-	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ','
+	| RDO_text '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ','
 	{
 		LPRDOFRMPosition pX      = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -914,7 +914,7 @@ frm_text_common
 		ASSERT(pText);
 		$$ = PARSER->stack().push(pText);
 	}
-	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ','
+	| RDO_text '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ','
 	{
 		LPRDOFRMPosition pX      = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -935,69 +935,69 @@ frm_text_common
 		$$ = PARSER->stack().push(pText);
 	}
 */
-	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color error
+	| RDO_text '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color error
 	{
 		PARSER->error().error(@13, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' error
+	| RDO_text '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' error
 	{
 		PARSER->error().error(@12, @13, _T("ќжидаетс€ цвет текста"));
 	}
-	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color error
+	| RDO_text '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color error
 	{
 		PARSER->error().error(@11, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error
+	| RDO_text '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error
 	{
 		PARSER->error().error(@10, @11, _T("ќжидаетс€ цвет фона"));
 	}
-	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
+	| RDO_text '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
 	{
 		PARSER->error().error(@9, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
+	| RDO_text '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
 	{
 		PARSER->error().error(@8, @9, _T("ќжидаетс€ высота"));
 	}
-	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
+	| RDO_text '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
 	{
 		PARSER->error().error(@7, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_text '(' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@6, @7, _T("ќжидаетс€ ширина"));
 	}
-	| RDO_text '[' frm_position_xy ',' frm_position_xy error
+	| RDO_text '(' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@5, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_text '[' frm_position_xy ',' error
+	| RDO_text '(' frm_position_xy ',' error
 	{
 		PARSER->error().error(@4, @5, _T("ќжидаетс€ координата по оси Y"));
 	}
-	| RDO_text '[' frm_position_xy error
+	| RDO_text '(' frm_position_xy error
 	{
 		PARSER->error().error(@3, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_text '[' error
+	| RDO_text '(' error
 	{
 		PARSER->error().error(@2, @3, _T("ќжидаетс€ координата по оси X"));
 	}
 	| RDO_text error
 	{
-		PARSER->error().error(@1, _T("ќжидаетс€ '['"));
+		PARSER->error().error(@1, _T("ќжидаетс€ '('"));
 	}
 	;
 
 frm_text
-	: frm_text_common frm_text_align fun_arithm ']'
+	: frm_text_common frm_text_align fun_arithm ')'
 	{
 		LPRDOFRMText pText = PARSER->stack().pop<RDOFRMText>($1);
 		ASSERT(pText);
 		pText->setText((rdo::animation::TextElement::TextAlign)$2, PARSER->stack().pop<RDOFUNArithm>($3)->createCalc());
 		$$ = PARSER->stack().push(pText);
 	}
-	| frm_text_common frm_text_align RDO_STRING_CONST ']'
+	| frm_text_common frm_text_align RDO_STRING_CONST ')'
 	{
 		LPRDOFRMText pText = PARSER->stack().pop<RDOFRMText>($1);
 		ASSERT(pText);
@@ -1006,11 +1006,11 @@ frm_text
 	}
 	| frm_text_common frm_text_align fun_arithm error
 	{
-		PARSER->error().error(@3, _T("ќжидаетс€ ']'"));
+		PARSER->error().error(@3, _T("ќжидаетс€ ')'"));
 	}
 	| frm_text_common frm_text_align RDO_STRING_CONST error
 	{
-		PARSER->error().error(@3, _T("ќжидаетс€ ']'"));
+		PARSER->error().error(@3, _T("ќжидаетс€ ')'"));
 	}
 	| frm_text_common frm_text_align error
 	{
@@ -1019,7 +1019,7 @@ frm_text
 	;
 
 frm_bitmap
-	: RDO_bitmap '[' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF ']'
+	: RDO_bitmap '(' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF ')'
 	{
 		LPRDOFRMPosition pX = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -1029,7 +1029,7 @@ frm_bitmap
 		ASSERT(pBitmap);
 		$$ = PARSER->stack().push(pBitmap);
 	}
-	| RDO_bitmap '[' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF ',' RDO_IDENTIF ']'
+	| RDO_bitmap '(' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF ',' RDO_IDENTIF ')'
 	{
 		LPRDOFRMPosition pX = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -1039,46 +1039,46 @@ frm_bitmap
 		ASSERT(pBitmap);
 		$$ = PARSER->stack().push(pBitmap);
 	}
-	| RDO_bitmap '[' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF ',' RDO_IDENTIF error
+	| RDO_bitmap '(' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF ',' RDO_IDENTIF error
 	{
-		PARSER->error().error(@9, _T("ќжидаетс€ ']'"));
+		PARSER->error().error(@9, _T("ќжидаетс€ ')'"));
 	}
-	| RDO_bitmap '[' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF ',' error
+	| RDO_bitmap '(' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF ',' error
 	{
 		PARSER->error().error(@8, @9, _T("ќжидаетс€ им€ маски дл€ картинки"));
 	}
-	| RDO_bitmap '[' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF error
+	| RDO_bitmap '(' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF error
 	{
-		PARSER->error().error(@7, _T("ќжидаетс€ ']'"));
+		PARSER->error().error(@7, _T("ќжидаетс€ ')'"));
 	}
-	| RDO_bitmap '[' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_bitmap '(' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@6, @7, _T("ќжидаетс€ им€ картинки"));
 	}
-	| RDO_bitmap '[' frm_position_xy ',' frm_position_xy error
+	| RDO_bitmap '(' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@5, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_bitmap '[' frm_position_xy ',' error
+	| RDO_bitmap '(' frm_position_xy ',' error
 	{
 		PARSER->error().error(@4, @5, _T("ќжидаетс€ координата по оси Y"));
 	}
-	| RDO_bitmap '[' frm_position_xy error
+	| RDO_bitmap '(' frm_position_xy error
 	{
 		PARSER->error().error(@3, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_bitmap '[' error
+	| RDO_bitmap '(' error
 	{
 		PARSER->error().error(@2, @3, _T("ќжидаетс€ координата по оси X"));
 	}
 	| RDO_bitmap error
 	{
-		PARSER->error().error(@1, _T("ќжидаетс€ '['"));
+		PARSER->error().error(@1, _T("ќжидаетс€ '('"));
 	}
 	;
 
 frm_s_bmp
-	: RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF ']'
+	: RDO_s_bmp '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF ')'
 	{
 		LPRDOFRMPosition pX      = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -1092,7 +1092,7 @@ frm_s_bmp
 		ASSERT(pBitmap);
 		$$ = PARSER->stack().push(pBitmap);
 	}
-	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF ',' RDO_IDENTIF ']'
+	| RDO_s_bmp '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF ',' RDO_IDENTIF ')'
 	{
 		LPRDOFRMPosition pX      = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -1106,62 +1106,62 @@ frm_s_bmp
 		ASSERT(pBitmap);
 		$$ = PARSER->stack().push(pBitmap);
 	}
-	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF ',' RDO_IDENTIF error
+	| RDO_s_bmp '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF ',' RDO_IDENTIF error
 	{
-		PARSER->error().error(@13, _T("ќжидаетс€ ']'"));
+		PARSER->error().error(@13, _T("ќжидаетс€ ')'"));
 	}
-	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF ',' error
+	| RDO_s_bmp '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF ',' error
 	{
 		PARSER->error().error(@12, @13, _T("ќжидаетс€ им€ маски дл€ картинки"));
 	}
-	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF error
+	| RDO_s_bmp '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF error
 	{
-		PARSER->error().error(@11, _T("ќжидаетс€ ']'"));
+		PARSER->error().error(@11, _T("ќжидаетс€ ')'"));
 	}
-	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error
+	| RDO_s_bmp '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error
 	{
 		PARSER->error().error(@10, @11, _T("ќжидаетс€ им€ картинки"));
 	}
-	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
+	| RDO_s_bmp '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
 	{
 		PARSER->error().error(@9, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
+	| RDO_s_bmp '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
 	{
 		PARSER->error().error(@8, @9, _T("ќжидаетс€ высота"));
 	}
-	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
+	| RDO_s_bmp '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
 	{
 		PARSER->error().error(@7, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_s_bmp '(' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@6, @7, _T("ќжидаетс€ ширина"));
 	}
-	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy error
+	| RDO_s_bmp '(' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@5, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_s_bmp '[' frm_position_xy ',' error
+	| RDO_s_bmp '(' frm_position_xy ',' error
 	{
 		PARSER->error().error(@4, @5, _T("ќжидаетс€ координата по оси Y"));
 	}
-	| RDO_s_bmp '[' frm_position_xy error
+	| RDO_s_bmp '(' frm_position_xy error
 	{
 		PARSER->error().error(@3, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_s_bmp '[' error
+	| RDO_s_bmp '(' error
 	{
 		PARSER->error().error(@2, @3, _T("ќжидаетс€ координата по оси X"));
 	}
 	| RDO_s_bmp error
 	{
-		PARSER->error().error(@1, _T("ќжидаетс€ '['"));
+		PARSER->error().error(@1, _T("ќжидаетс€ '('"));
 	}
 	;
 
 frm_rect
-	: RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color ']'
+	: RDO_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color ')'
 	{
 		LPRDOFRMPosition pX      = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -1181,7 +1181,7 @@ frm_rect
 		ASSERT(pRect);
 		$$ = PARSER->stack().push(pRect);
 	}
-	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ']'
+	| RDO_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ')'
 	{
 		LPRDOFRMPosition pX      = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -1201,7 +1201,7 @@ frm_rect
 		ASSERT(pRect);
 		$$ = PARSER->stack().push(pRect);
 	}
-	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ']'
+	| RDO_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ')'
 	{
 		LPRDOFRMPosition pX      = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -1221,7 +1221,7 @@ frm_rect
 		ASSERT(pRect);
 		$$ = PARSER->stack().push(pRect);
 	}
-	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ']'
+	| RDO_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ')'
 	{
 		LPRDOFRMPosition pX      = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -1241,7 +1241,7 @@ frm_rect
 		ASSERT(pRect);
 		$$ = PARSER->stack().push(pRect);
 	}
-	| RDO_rect '[' frm_position_xy ',' frm_position_xy ']'
+	| RDO_rect '(' frm_position_xy ',' frm_position_xy ')'
 	{
 		LPRDOFRMPosition pX      = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -1261,62 +1261,62 @@ frm_rect
 		ASSERT(pRect);
 		$$ = PARSER->stack().push(pRect);
 	}
-	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color error
+	| RDO_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color error
 	{
-		PARSER->error().error(@13, _T("ќжидаетс€ ']'"));
+		PARSER->error().error(@13, _T("ќжидаетс€ ')'"));
 	}
-	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' error
+	| RDO_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' error
 	{
 		PARSER->error().error(@12, @13, _T("ќжидаетс€ цвет линии пр€моугольника"));
 	}
-	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color error
+	| RDO_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color error
 	{
 		PARSER->error().error(@11, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error
+	| RDO_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error
 	{
 		PARSER->error().error(@10, @11, _T("ќжидаетс€ цвет фона"));
 	}
-	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
+	| RDO_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
 	{
 		PARSER->error().error(@9, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
+	| RDO_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
 	{
 		PARSER->error().error(@8, @9, _T("ќжидаетс€ высота"));
 	}
-	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
+	| RDO_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
 	{
 		PARSER->error().error(@7, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_rect '(' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@6, @7, _T("ќжидаетс€ ширина"));
 	}
-	| RDO_rect '[' frm_position_xy ',' frm_position_xy error
+	| RDO_rect '(' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@5, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_rect '[' frm_position_xy ',' error
+	| RDO_rect '(' frm_position_xy ',' error
 	{
 		PARSER->error().error(@4, @5, _T("ќжидаетс€ координата по оси Y"));
 	}
-	| RDO_rect '[' frm_position_xy error
+	| RDO_rect '(' frm_position_xy error
 	{
 		PARSER->error().error(@3, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_rect '[' error
+	| RDO_rect '(' error
 	{
 		PARSER->error().error(@2, @3, _T("ќжидаетс€ координата по оси X"));
 	}
 	| RDO_rect error
 	{
-		PARSER->error().error(@1, _T("ќжидаетс€ '['"));
+		PARSER->error().error(@1, _T("ќжидаетс€ '('"));
 	}
 	;
 
 frm_r_rect
-	: RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color ']'
+	: RDO_r_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color ')'
 	{
 		LPRDOFRMPosition pX      = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -1336,62 +1336,62 @@ frm_r_rect
 		ASSERT(pRoundRect);
 		$$ = PARSER->stack().push(pRoundRect);
 	}
-	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color error
+	| RDO_r_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color error
 	{
-		PARSER->error().error(@13, _T("ќжидаетс€ ']'"));
+		PARSER->error().error(@13, _T("ќжидаетс€ ')'"));
 	}
-	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' error
+	| RDO_r_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' error
 	{
 		PARSER->error().error(@12, @13, _T("ќжидаетс€ цвет линии пр€моугольника"));
 	}
-	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color error
+	| RDO_r_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color error
 	{
 		PARSER->error().error(@11, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error
+	| RDO_r_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error
 	{
 		PARSER->error().error(@10, @11, _T("ќжидаетс€ цвет фона"));
 	}
-	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
+	| RDO_r_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
 	{
 		PARSER->error().error(@9, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
+	| RDO_r_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
 	{
 		PARSER->error().error(@8, @9, _T("ќжидаетс€ высота"));
 	}
-	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
+	| RDO_r_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
 	{
 		PARSER->error().error(@7, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_r_rect '(' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@6, @7, _T("ќжидаетс€ ширина"));
 	}
-	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy error
+	| RDO_r_rect '(' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@5, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_r_rect '[' frm_position_xy ',' error
+	| RDO_r_rect '(' frm_position_xy ',' error
 	{
 		PARSER->error().error(@4, @5, _T("ќжидаетс€ координата по оси Y"));
 	}
-	| RDO_r_rect '[' frm_position_xy error
+	| RDO_r_rect '(' frm_position_xy error
 	{
 		PARSER->error().error(@3, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_r_rect '[' error
+	| RDO_r_rect '(' error
 	{
 		PARSER->error().error(@2, @3, _T("ќжидаетс€ координата по оси X"));
 	}
 	| RDO_r_rect error
 	{
-		PARSER->error().error(@1, _T("ќжидаетс€ '['"));
+		PARSER->error().error(@1, _T("ќжидаетс€ '('"));
 	}
 	;
 
 frm_circle
-	: RDO_circle '[' frm_position_xy ',' frm_position_xy ',' frm_radius ',' frm_color ',' frm_color ']'
+	: RDO_circle '(' frm_position_xy ',' frm_position_xy ',' frm_radius ',' frm_color ',' frm_color ')'
 	{
 		LPRDOFRMPosition pX      = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -1409,53 +1409,53 @@ frm_circle
 		ASSERT(pCircle);
 		$$ = PARSER->stack().push(pCircle);
 	}
-	| RDO_circle '[' frm_position_xy ',' frm_position_xy ',' frm_radius ',' frm_color ',' frm_color error
+	| RDO_circle '(' frm_position_xy ',' frm_position_xy ',' frm_radius ',' frm_color ',' frm_color error
 	{
-		PARSER->error().error(@11, _T("ќжидаетс€ ']'"));
+		PARSER->error().error(@11, _T("ќжидаетс€ ')'"));
 	}
-	| RDO_circle '[' frm_position_xy ',' frm_position_xy ',' frm_radius ',' frm_color ',' error
+	| RDO_circle '(' frm_position_xy ',' frm_position_xy ',' frm_radius ',' frm_color ',' error
 	{
 		PARSER->error().error(@10, @11, _T("ќжидаетс€ цвет линии круга"));
 	}
-	| RDO_circle '[' frm_position_xy ',' frm_position_xy ',' frm_radius ',' frm_color error
+	| RDO_circle '(' frm_position_xy ',' frm_position_xy ',' frm_radius ',' frm_color error
 	{
 		PARSER->error().error(@9, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_circle '[' frm_position_xy ',' frm_position_xy ',' frm_radius ',' error
+	| RDO_circle '(' frm_position_xy ',' frm_position_xy ',' frm_radius ',' error
 	{
 		PARSER->error().error(@8, @9, _T("ќжидаетс€ цвет фона"));
 	}
-	| RDO_circle '[' frm_position_xy ',' frm_position_xy ',' frm_radius error
+	| RDO_circle '(' frm_position_xy ',' frm_position_xy ',' frm_radius error
 	{
 		PARSER->error().error(@7, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_circle '[' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_circle '(' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@6, @7, _T("ќжидаетс€ радиус"));
 	}
-	| RDO_circle '[' frm_position_xy ',' frm_position_xy error
+	| RDO_circle '(' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@5, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_circle '[' frm_position_xy ',' error
+	| RDO_circle '(' frm_position_xy ',' error
 	{
 		PARSER->error().error(@4, @5, _T("ќжидаетс€ координата по оси Y"));
 	}
-	| RDO_circle '[' frm_position_xy error
+	| RDO_circle '(' frm_position_xy error
 	{
 		PARSER->error().error(@3, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_circle '[' error
+	| RDO_circle '(' error
 	{
 		PARSER->error().error(@2, @3, _T("ќжидаетс€ координата по оси X"));
 	}
 	| RDO_circle error
 	{
-		PARSER->error().error(@1, _T("ќжидаетс€ '['"));
+		PARSER->error().error(@1, _T("ќжидаетс€ '('"));
 	};
 
 frm_ellipse
-	: RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color ']'
+	: RDO_ellipse '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color ')'
 	{
 		LPRDOFRMPosition pX      = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -1475,62 +1475,62 @@ frm_ellipse
 		ASSERT(pEllipse);
 		$$ = PARSER->stack().push(pEllipse);
 	}
-	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color error
+	| RDO_ellipse '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color error
 	{
-		PARSER->error().error(@13, _T("ќжидаетс€ ']'"));
+		PARSER->error().error(@13, _T("ќжидаетс€ ')'"));
 	}
-	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' error
+	| RDO_ellipse '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' error
 	{
 		PARSER->error().error(@12, @13, _T("ќжидаетс€ цвет линии эллипса"));
 	}
-	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color error
+	| RDO_ellipse '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color error
 	{
 		PARSER->error().error(@11, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error
+	| RDO_ellipse '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error
 	{
 		PARSER->error().error(@10, @11, _T("ќжидаетс€ цвет фона"));
 	}
-	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
+	| RDO_ellipse '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
 	{
 		PARSER->error().error(@9, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
+	| RDO_ellipse '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
 	{
 		PARSER->error().error(@8, @9, _T("ќжидаетс€ высота"));
 	}
-	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
+	| RDO_ellipse '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
 	{
 		PARSER->error().error(@7, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_ellipse '(' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@6, @7, _T("ќжидаетс€ ширина"));
 	}
-	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy error
+	| RDO_ellipse '(' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@5, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_ellipse '[' frm_position_xy ',' error
+	| RDO_ellipse '(' frm_position_xy ',' error
 	{
 		PARSER->error().error(@4, @5, _T("ќжидаетс€ координата по оси Y"));
 	}
-	| RDO_ellipse '[' frm_position_xy error
+	| RDO_ellipse '(' frm_position_xy error
 	{
 		PARSER->error().error(@3, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_ellipse '[' error
+	| RDO_ellipse '(' error
 	{
 		PARSER->error().error(@2, @3, _T("ќжидаетс€ координата по оси X"));
 	}
 	| RDO_ellipse error
 	{
-		PARSER->error().error(@1, _T("ќжидаетс€ '['"));
+		PARSER->error().error(@1, _T("ќжидаетс€ '('"));
 	}
 	;
 
 frm_line
-	: RDO_line '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color ']'
+	: RDO_line '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color ')'
 	{
 		LPRDOFRMPosition pX      = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -1547,54 +1547,54 @@ frm_line
 		ASSERT(pLine);
 		$$ = PARSER->stack().push(pLine);
 	}
-	| RDO_line '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color error
+	| RDO_line '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color error
 	{
-		PARSER->error().error(@11, _T("ќжидаетс€ ']'"));
+		PARSER->error().error(@11, _T("ќжидаетс€ ')'"));
 	}
-	| RDO_line '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_line '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@10, @11, _T("ќжидаетс€ цвет линии"));
 	}
-	| RDO_line '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
+	| RDO_line '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@9, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_line '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_line '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@8, @9, _T("ќжидаетс€ Y2"));
 	}
-	| RDO_line '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
+	| RDO_line '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@7, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_line '[' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_line '(' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@6, @7, _T("ќжидаетс€ X2"));
 	}
-	| RDO_line '[' frm_position_xy ',' frm_position_xy error
+	| RDO_line '(' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@5, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_line '[' frm_position_xy ',' error
+	| RDO_line '(' frm_position_xy ',' error
 	{
 		PARSER->error().error(@4, @5, _T("ќжидаетс€ Y1"));
 	}
-	| RDO_line '[' frm_position_xy error
+	| RDO_line '(' frm_position_xy error
 	{
 		PARSER->error().error(@3, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_line '[' error
+	| RDO_line '(' error
 	{
 		PARSER->error().error(@2, @3, _T("ќжидаетс€ X1"));
 	}
 	| RDO_line error
 	{
-		PARSER->error().error(@1, _T("ќжидаетс€ '['"));
+		PARSER->error().error(@1, _T("ќжидаетс€ '('"));
 	}
 	;
 
 frm_triang
-	: RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color ',' frm_color ']'
+	: RDO_triang '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color ',' frm_color ')'
 	{
 		LPRDOFRMPosition pX1 = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY1 = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -1618,78 +1618,78 @@ frm_triang
 		ASSERT(pTriang);
 		$$ = PARSER->stack().push(pTriang);
 	}
-	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color ',' frm_color error
+	| RDO_triang '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color ',' frm_color error
 	{
-		PARSER->error().error(@17, _T("ќжидаетс€ ']'"));
+		PARSER->error().error(@17, _T("ќжидаетс€ ')'"));
 	}
-	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color ',' error
+	| RDO_triang '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color ',' error
 	{
 		PARSER->error().error(@16, @17, _T("ќжидаетс€ цвет линии"));
 	}
-	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color error
+	| RDO_triang '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color error
 	{
 		PARSER->error().error(@15, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_triang '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@14, @15, _T("ќжидаетс€ цвет треугольника"));
 	}
-	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
+	| RDO_triang '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@13, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_triang '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@12, @13, _T("ќжидаетс€ Y3"));
 	}
-	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
+	| RDO_triang '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@11, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_triang '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@10, @11, _T("ќжидаетс€ X3"));
 	}
-	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
+	| RDO_triang '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@9, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_triang '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@8, @9, _T("ќжидаетс€ Y2"));
 	}
-	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
+	| RDO_triang '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@7, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_triang '(' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@6, @7, _T("ќжидаетс€ X2"));
 	}
-	| RDO_triang '[' frm_position_xy ',' frm_position_xy error
+	| RDO_triang '(' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@5, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_triang '[' frm_position_xy ',' error
+	| RDO_triang '(' frm_position_xy ',' error
 	{
 		PARSER->error().error(@4, @5, _T("ќжидаетс€ Y1"));
 	}
-	| RDO_triang '[' frm_position_xy error
+	| RDO_triang '(' frm_position_xy error
 	{
 		PARSER->error().error(@3, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_triang '[' error
+	| RDO_triang '(' error
 	{
 		PARSER->error().error(@2, @3, _T("ќжидаетс€ X1"));
 	}
 	| RDO_triang error
 	{
-		PARSER->error().error(@1, _T("ќжидаетс€ '['"));
+		PARSER->error().error(@1, _T("ќжидаетс€ '('"));
 	}
 	;
 
 frm_active
-	: RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ']'
+	: RDO_active RDO_IDENTIF '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ')'
 	{
 		tstring oprName = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		LPRDODPTActivity pActivity = PARSER->findDPTActivity(oprName);
@@ -1719,41 +1719,41 @@ frm_active
 		ASSERT(pActive);
 		$$ = PARSER->stack().push(pActive);
 	}
-	| RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
+	| RDO_active RDO_IDENTIF '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
 	{
-		PARSER->error().error(@10, _T("ќжидаетс€ ']'"));
+		PARSER->error().error(@10, _T("ќжидаетс€ ')'"));
 	}
-	| RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
+	| RDO_active RDO_IDENTIF '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
 	{
 		PARSER->error().error(@9, @10, _T("ќжидаетс€ высота"));
 	}
-	| RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
+	| RDO_active RDO_IDENTIF '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
 	{
 		PARSER->error().error(@8, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_active RDO_IDENTIF '(' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@7, @8, _T("ќжидаетс€ ширина"));
 	}
-	| RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy error
+	| RDO_active RDO_IDENTIF '(' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@6, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_active RDO_IDENTIF '[' frm_position_xy ',' error
+	| RDO_active RDO_IDENTIF '(' frm_position_xy ',' error
 	{
 		PARSER->error().error(@5, @6, _T("ќжидаетс€ координата по оси Y"));
 	}
-	| RDO_active RDO_IDENTIF '[' frm_position_xy error
+	| RDO_active RDO_IDENTIF '(' frm_position_xy error
 	{
 		PARSER->error().error(@4, _T("ќжидаетс€ зап€та€"));
 	}
-	| RDO_active RDO_IDENTIF '[' error
+	| RDO_active RDO_IDENTIF '(' error
 	{
 		PARSER->error().error(@3, @4, _T("ќжидаетс€ координата по оси X"));
 	}
 	| RDO_active RDO_IDENTIF error
 	{
-		PARSER->error().error(@2, _T("ќжидаетс€ '['"));
+		PARSER->error().error(@2, _T("ќжидаетс€ '('"));
 	}
 	| RDO_active error
 	{
