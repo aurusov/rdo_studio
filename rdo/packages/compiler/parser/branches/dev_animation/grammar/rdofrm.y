@@ -1789,6 +1789,28 @@ frm_sprite
 	;
 
 // --------------------------------------------------------------------------------
+// -------------------- Список statement'ов для анимации
+// --------------------------------------------------------------------------------
+return_statement
+	: RDO_Return
+	{
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(0));
+		ASSERT(pCalc);
+
+		rdo::runtime::LPRDOCalc pCalcReturn = rdo::Factory<rdo::runtime::RDOCalcFunReturn>::create(pCalc);
+		ASSERT(pCalcReturn);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalcReturn, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	;
+
+// --------------------------------------------------------------------------------
 // -------------------- Список общих statement'ов
 // --------------------------------------------------------------------------------
 statement
@@ -1822,6 +1844,11 @@ statement
 	| for_statement
 	| break_statement ';'
 	| break_statement error
+	{
+		PARSER->error().error(@1, _T("Не найден символ окончания инструкции - точка с запятой"));
+	}
+	| return_statement ';'
+	| return_statement error
 	{
 		PARSER->error().error(@1, _T("Не найден символ окончания инструкции - точка с запятой"));
 	}
