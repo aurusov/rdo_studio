@@ -46,7 +46,7 @@ public:
 	void  onAfterBackPicture  (ruint lastSeek);
 
 private:
-	RDOFRMFrame(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic = NULL);
+	RDOFRMFrame(CREF(RDOParserSrcInfo) src_info);
 
 	typedef  boost::optional<std::pair<ruint, ruint> > PosPair;
 

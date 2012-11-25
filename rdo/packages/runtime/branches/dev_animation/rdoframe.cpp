@@ -91,13 +91,12 @@ rdo::animation::Color RDOFRMSprite::RDOFRMColor::getColor(CREF(LPRDORuntime) pRu
 // --------------------------------------------------------------------------------
 // -------------------- RDOFRMSprite
 // --------------------------------------------------------------------------------
-RDOFRMSprite::RDOFRMSprite(CREF(RDOSrcInfo) src_info, CREF(LPRDOCalc) pConditionCalc)
-	: RDOSrcInfo      (src_info      )
-	, m_pConditionCalc(pConditionCalc)
-	, m_lastX         (0             )
-	, m_lastY         (0             )
-	, m_lastWidth     (0             )
-	, m_lastHeight    (0             )
+RDOFRMSprite::RDOFRMSprite(CREF(RDOSrcInfo) srcInfo)
+	: RDOSrcInfo  (srcInfo)
+	, m_lastX     (0      )
+	, m_lastY     (0      )
+	, m_lastWidth (0      )
+	, m_lastHeight(0      )
 {
 	m_colorLastBg     = rdo::animation::Color(50, 200, 50);
 	m_colorLastFg     = m_colorLastBg;
@@ -135,43 +134,40 @@ RDOValue RDOFRMSprite::doCalc(CREF(LPRDORuntime) pRuntime)
 	m_lastWidth  = 0;
 	m_lastHeight = 0;
 
-	if (checkCondition(pRuntime))
-	{
-		m_pSpriteCalc->calcValue(pRuntime);
+	m_pSpriteCalc->calcValue(pRuntime);
 
 #ifdef MODEL_DOROGA_HACK
-		RDORuntime::ResCIterator end = pRuntime->res_end();
-		for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != end; ++it)
+	RDORuntime::ResCIterator end = pRuntime->res_end();
+	for (RDORuntime::ResCIterator it = pRuntime->res_begin(); it != end; ++it)
+	{
+		if (*it && (*it)->checkType(1))
 		{
-			if (*it && (*it)->checkType(1))
+			rdo::animation::Point point((*it)->getParam(0).getInt(), (*it)->getParam(1).getInt());
+			rdo::animation::Size  size;
+			if ((*it)->getParam(5).getInt() == 1 || (*it)->getParam(5).getInt() == 3)
 			{
-				rdo::animation::Point point((*it)->getParam(0).getInt(), (*it)->getParam(1).getInt());
-				rdo::animation::Size  size;
-				if ((*it)->getParam(5).getInt() == 1 || (*it)->getParam(5).getInt() == 3)
-				{
-					size.m_width  = (*it)->getParam(8).getInt();
-					size.m_height = (*it)->getParam(9).getInt();
-				}
-				else
-				{
-					size.m_width  = (*it)->getParam(9).getInt();
-					size.m_height = (*it)->getParam(8).getInt();
-				}
-				point.m_x -= size.m_width  / 2;
-				point.m_y -= size.m_height / 2;
-
-				ruint colorRuint = (*it)->getParam(7).getUInt();
-				rdo::animation::Color color(GetBValue(colorRuint), GetGValue(colorRuint), GetRValue(colorRuint));
-
-				PTR(rdo::animation::FrameItem) pRect = new rdo::animation::RectElement(
-					rdo::animation::BoundedElement(point, size),
-					rdo::animation::ColoredElement(color, color)
-				);
-				pFrame->m_elements.push_back(pRect);
+				size.m_width  = (*it)->getParam(8).getInt();
+				size.m_height = (*it)->getParam(9).getInt();
 			}
+			else
+			{
+				size.m_width  = (*it)->getParam(9).getInt();
+				size.m_height = (*it)->getParam(8).getInt();
+			}
+			point.m_x -= size.m_width  / 2;
+			point.m_y -= size.m_height / 2;
+
+			ruint colorRuint = (*it)->getParam(7).getUInt();
+			rdo::animation::Color color(GetBValue(colorRuint), GetGValue(colorRuint), GetRValue(colorRuint));
+
+			PTR(rdo::animation::FrameItem) pRect = new rdo::animation::RectElement(
+				rdo::animation::BoundedElement(point, size),
+				rdo::animation::ColoredElement(color, color)
+			);
+			pFrame->m_elements.push_back(pRect);
 		}
-#endif // MODEL_DOROGA_HACK
 	}
+#endif // MODEL_DOROGA_HACK
 
 	return RDOValue();
 }
@@ -272,14 +268,6 @@ void RDOFRMSprite::insertRulet(CREF(LPRDOFRMRulet) pRulet)
 	std::pair<RuletList::const_iterator, rbool> result =
 		m_ruletList.insert(RuletList::value_type(pRulet->getIndex(), pRulet));
 	ASSERT(result.second);
-}
-
-rbool RDOFRMSprite::checkCondition(CREF(LPRDORuntime) pRuntime)
-{
-	if (!m_pConditionCalc)
-		return true;
-
-	return m_pConditionCalc->calcValue(pRuntime).getAsBool();
 }
 
 void RDOFRMFrame::prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORuntime) pRuntime)
@@ -810,11 +798,11 @@ RDOValue RDOFRMSpace::doCalc(CREF(LPRDORuntime) pRuntime)
 // --------------------------------------------------------------------------------
 // -------------------- RDOFRMFrame
 // --------------------------------------------------------------------------------
-RDOFRMFrame::RDOFRMFrame(CREF(RDOSrcInfo) src_info, CREF(LPRDOCalc) pConditionCalc)
-	: RDOFRMSprite    (src_info, pConditionCalc)
-	, m_picFileName   (_T("")        )
-	, m_width         (800           )
-	, m_height        (600           )
+RDOFRMFrame::RDOFRMFrame(CREF(RDOSrcInfo) srcInfo)
+	: RDOFRMSprite (srcInfo)
+	, m_picFileName(_T("") )
+	, m_width      (800    )
+	, m_height     (600    )
 	{}
 
 RDOFRMFrame::~RDOFRMFrame()

@@ -47,7 +47,7 @@ public:
 	static LPExpression generateExpression(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(RDOParserSrcInfo) srcInfo);
 
 private:
-	RDOFRMFrame(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic = NULL);
+	RDOFRMFrame(CREF(RDOParserSrcInfo) srcInfo);
 
 	rdo::runtime::LPRDOFRMFrame m_pFrame;
 	LPContextMemory             m_pContextMemory;

@@ -304,7 +304,7 @@ frm_begin
 	}
 	| RDO_Frame RDO_IDENTIF RDO_Show_if fun_logic
 	{
-		LPRDOFRMFrame pFrame = rdo::Factory<RDOFRMFrame>::create(PARSER->stack().pop<RDOValue>($2)->src_info(), PARSER->stack().pop<RDOFUNLogic>($4));
+		LPRDOFRMFrame pFrame = rdo::Factory<RDOFRMFrame>::create(PARSER->stack().pop<RDOValue>($2)->src_info());
 		ASSERT(pFrame);
 		$$ = PARSER->stack().push(pFrame);
 	}

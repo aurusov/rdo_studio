@@ -35,10 +35,10 @@ void frmerror(PTR(char) message)
 // --------------------------------------------------------------------------------
 // -------------------- RDOFRMFrame
 // --------------------------------------------------------------------------------
-RDOFRMFrame::RDOFRMFrame(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic)
-	: RDOParserSrcInfo(src_info)
+RDOFRMFrame::RDOFRMFrame(CREF(RDOParserSrcInfo) srcInfo)
+	: RDOParserSrcInfo(srcInfo)
 {
-	m_pFrame = rdo::Factory<rdo::runtime::RDOFRMFrame>::create(src_info, pLogic ? pLogic->getCalc() : rdo::runtime::LPRDOCalc(NULL));
+	m_pFrame = rdo::Factory<rdo::runtime::RDOFRMFrame>::create(srcInfo);
 	ASSERT(m_pFrame)
 	RDOParser::s_parser()->runtime()->addRuntimeFrame(m_pFrame);
 	RDOParser::s_parser()->insertFRMFrame(this);

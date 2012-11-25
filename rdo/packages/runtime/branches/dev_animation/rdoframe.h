@@ -165,7 +165,6 @@ public:
 	void          setBackgroundColor(CREF(LPRDOFRMColor) pBgColor   );
 	void          insertItem        (CREF(LPRDOFRMItem)  pItem      );
 	void          setSpriteCalc     (CREF(LPRDOCalc)     pSpriteCalc);
-	rbool         checkCondition    (CREF(LPRDORuntime)  pRuntime   );
 
 	void setColorLastBG    (RDOFRMColor::ColorType type, CREF(rdo::animation::Color) lastBg);
 	void setColorLastFG    (RDOFRMColor::ColorType type, CREF(rdo::animation::Color) lastFg);
@@ -179,7 +178,7 @@ public:
 	LPRDOFRMRulet findRulet(ruint ruletID) const;
 
 protected:
-	RDOFRMSprite(CREF(RDOSrcInfo) src_info, CREF(LPRDOCalc) pConditionCalc = NULL);
+	RDOFRMSprite(CREF(RDOSrcInfo) srcInfo);
 	virtual ~RDOFRMSprite();
 
 	DECLARE_IRDOFRMItemGetBitmap;
@@ -188,9 +187,7 @@ private:
 	typedef std::map<ruint, LPRDOFRMRulet>    RuletList;
 	typedef std::list<LPIRDOFRMItemGetBitmap> GetBitmapList;
 
-	LPRDOCalc              m_pConditionCalc;
 	LPRDOFRMColor          m_pBgColor;
-
 	LPRDOCalc              m_pSpriteCalc;
 	rdo::animation::Color  m_colorLastBg;
 	rdo::animation::Color  m_colorLastFg;
@@ -598,7 +595,7 @@ public:
 	DECLARE_IRDOFRMItemGetBitmap;
 
 private:
-	RDOFRMFrame(CREF(RDOSrcInfo) src_info, CREF(LPRDOCalc) pConditionCalc = NULL);
+	RDOFRMFrame(CREF(RDOSrcInfo) srcInfo);
 	virtual ~RDOFRMFrame();
 
 	tstring m_picFileName;
