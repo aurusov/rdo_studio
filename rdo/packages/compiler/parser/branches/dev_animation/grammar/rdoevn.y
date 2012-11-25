@@ -2200,10 +2200,6 @@ equal_statement
 	{
 		PARSER->error().error(@3, _T("Ошибка в арифметическом выражении"));
 	}
-	| RDO_IDENTIF error fun_arithm
-	{
-		PARSER->error().error(@2, _T("Ошибка в операторе присваивания"));
-	}
 	;
 
 increment_or_decrement_type
