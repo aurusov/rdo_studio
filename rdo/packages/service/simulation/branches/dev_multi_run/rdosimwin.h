@@ -145,6 +145,7 @@ private:
 	PTR(rdo::service::simulation::RDOThreadSimulator)  m_pSimulator;
 	rbool                                              m_runtimeError;
 	ruint64                                            m_timeStart;
+	ruint                                              m_runCount;
 
 	RDOThreadRunTime();
 	virtual ~RDOThreadRunTime() //! Чтобы нельзя было удалить через delete
@@ -215,8 +216,9 @@ private:
 	void terminateModel();
 	void closeModel    (); 
 
-	ShowMode m_showMode; //! current show mode
-	double   m_showRate; //! current show mode
+	ShowMode  m_showMode; //! current show mode
+	double    m_showRate; //! current show mode
+	ruint     m_runCount;
 
 	rdo::textstream m_resultString;
 	rdo::textstream m_resultInfoString;

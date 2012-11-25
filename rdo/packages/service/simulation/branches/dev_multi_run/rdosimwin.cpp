@@ -488,6 +488,7 @@ RDOThreadRunTime::RDOThreadRunTime()
 	: RDOThreadMT   (_T("RDOThreadRunTime"))
 	, m_pSimulator  (NULL                  )
 	, m_runtimeError(false                 )
+	, m_runCount    (2                     )
 {
 	rdo::Time time;
 	
@@ -860,6 +861,7 @@ RDOThreadSimulator::RDOThreadSimulator()
 	: RDOThreadMT     (_T("RDOThreadSimulator")      )
 	, m_pThreadRuntime(NULL                          )
 	, m_exitCode      (rdo::simulation::report::EC_OK)
+	, m_runCount      (2                             )
 {
 	notifies.push_back(RT_STUDIO_MODEL_BUILD              );
 	notifies.push_back(RT_STUDIO_MODEL_RUN                );
@@ -1061,6 +1063,12 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 				{
 					//! Остановились сами нормально
 					broadcastMessage(RT_SIMULATOR_MODEL_STOP_OK);
+					// место для добавления цикла //
+					if (--m_runCount)
+					{
+						m_pThreadRuntime = NULL;
+						sendMessage(this, RT_STUDIO_MODEL_RUN);
+					}
 					closeModel();
 				}
 				else
