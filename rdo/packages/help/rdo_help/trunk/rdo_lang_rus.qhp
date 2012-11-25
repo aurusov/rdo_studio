@@ -327,8 +327,6 @@
 			<keyword name="SES" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_decisionpt.htm"/>
 			<keyword name="set" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_pat.htm"/>
 			<keyword name="SEU" ref="rdo_lang_rus/html/rdo_res/rdo_res_trc_decisionpt.htm"/>
-			<keyword name="Show" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm.htm"/>
-			<keyword name="Show_if" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_frm.htm"/>
 			<keyword name="Show_mode" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
 			<keyword name="Show_rate" ref="rdo_lang_rus/html/rdo_obj/rdo_obj_smr.htm"/>
 			<keyword name="Sin" ref="rdo_lang_rus/html/rdo_base/rdo_base_std_var_func.htm"/>
