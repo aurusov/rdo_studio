@@ -44,7 +44,6 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/MP"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="RDO_ST;RDO_LIMIT_RES;RDO_LICENSE_ACADEMIC;WIN32;_DEBUG;_WINDOWS;SCI_LEXER;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT;QT_QTWINMIGRATE_IMPORT"
@@ -133,7 +132,6 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/MP"
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
@@ -218,7 +216,6 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/MP"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../../../;../../../../thirdparty/corba/include"
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;RDO_LIMIT_RES;RDO_LICENSE_ACADEMIC;WIN32;_DEBUG;_WINDOWS;SCI_LEXER;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT;QT_QTWINMIGRATE_IMPORT"
@@ -308,7 +305,6 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/MP"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../../../../;../../../../thirdparty/corba/include"
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;RDO_LIMIT_RES;RDO_LICENSE_ACADEMIC;WIN32;NDEBUG;_WINDOWS;SCI_LEXER;WINVER=0x0501;BOOST_TYPEOF_SILENT;QT_QTWINMIGRATE_IMPORT"
@@ -392,7 +388,6 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/MP"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="RDO_MT;RDO_LIMIT_RES;RDO_LICENSE_ACADEMIC;WIN32;_DEBUG;_WINDOWS;SCI_LEXER;_UNISTD_H_;WINVER=0x0501;BOOST_TYPEOF_SILENT;QT_QTWINMIGRATE_IMPORT"
@@ -481,7 +476,6 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/MP"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="../../../../"
 				PreprocessorDefinitions="RDO_MT;RDO_LIMIT_RES;RDO_LICENSE_ACADEMIC;WIN32;NDEBUG;_WINDOWS;SCI_LEXER;WINVER=0x0501;BOOST_TYPEOF_SILENT;QT_QTWINMIGRATE_IMPORT"
@@ -3643,54 +3637,6 @@
 			<File
 				RelativePath="..\..\rdo_process\rdoprocess_project.cpp"
 				>
-				<FileConfiguration
-					Name="debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						WarningLevel="3"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						WarningLevel="3"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="debug.corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						WarningLevel="3"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release.corba|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						WarningLevel="3"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="debug.mt|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						WarningLevel="3"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="release.mt|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						WarningLevel="3"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\rdo_process\rdoprocess_project.h"
@@ -3956,34 +3902,6 @@
 				Name=".moc"
 				>
 				<File
-					RelativePath=".\bin\rdo_studio\Win32\debug\moc_about.cpp"
-					>
-					<FileConfiguration
-						Name="release|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.corba|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="release.mt|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
 					RelativePath=".\bin\rdo_studio\Win32\release\moc_about.cpp"
 					>
 					<FileConfiguration
@@ -4012,7 +3930,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath=".\bin\rdo_studio\Win32\debug\moc_view.cpp"
+					RelativePath=".\bin\rdo_studio\Win32\debug\moc_about.cpp"
 					>
 					<FileConfiguration
 						Name="release|Win32"
@@ -4060,6 +3978,34 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="debug.mt|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\bin\rdo_studio\Win32\debug\moc_view.cpp"
+					>
+					<FileConfiguration
+						Name="release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.corba|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.mt|Win32"
 						ExcludedFromBuild="true"
 						>
 						<Tool
