@@ -3736,7 +3736,6 @@ fun_select_arithm
 	}
 	;
 
-
 %%
 
 CLOSE_RDO_PARSER_NAMESPACE

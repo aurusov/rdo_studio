@@ -318,7 +318,6 @@ $Sprite                        return(RDO_Sprite);
 $sprite                        return(RDO_Sprite);
 sprite                         return(RDO_sprite_call);
 
-
 (\'[^\']*\') {
 	tstring n1(YYText());
 	int len = n1.length();

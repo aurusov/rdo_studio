@@ -201,7 +201,6 @@
 %token RDO_Sprite
 %token RDO_sprite_call
 
-
 %{
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
