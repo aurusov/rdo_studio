@@ -277,8 +277,18 @@ frm_begin
 	}
 	| RDO_Frame RDO_IDENTIF RDO_Show_if fun_logic
 	{
-		LPRDOFRMFrame pFrame = rdo::Factory<RDOFRMFrame>::create(CONVERTER->stack().pop<RDOValue>($2)->src_info(), CONVERTER->stack().pop<RDOFUNLogic>($4));
+		LPDocUpdate pShowIfDelete = rdo::Factory<UpdateDelete>::create(
+			@3.m_first_seek,
+			@3.m_last_seek
+		);
+		ASSERT(pShowIfDelete);
+		CONVERTER->insertDocUpdate(pShowIfDelete);
+
+		LPRDOFRMFrame pFrame = rdo::Factory<RDOFRMFrame>::create(CONVERTER->stack().pop<RDOValue>($2)->src_info());
 		ASSERT(pFrame);
+
+		pFrame->setFrameConditionPos(@4.m_first_seek, @4.m_last_seek);
+
 		$$ = CONVERTER->stack().push(pFrame);
 	}
 	| RDO_Frame RDO_IDENTIF RDO_Show_if error
@@ -323,6 +333,8 @@ frm_backpicture
 		LPRDOFRMFrame pFrame = CONVERTER->stack().pop<RDOFRMFrame>($1);
 		ASSERT(pFrame);
 		pFrame->frame()->setBackPicture(CONVERTER->stack().pop<RDOValue>($2)->value().getIdentificator());
+		pFrame->onAfterBackPicture(@2.m_last_seek);
+
 		$$ = CONVERTER->stack().push(pFrame);
 	}
 	| frm_background RDO_INT_CONST RDO_INT_CONST
@@ -330,6 +342,8 @@ frm_backpicture
 		LPRDOFRMFrame pFrame = CONVERTER->stack().pop<RDOFRMFrame>($1);
 		ASSERT(pFrame);
 		pFrame->frame()->setBackPicture(CONVERTER->stack().pop<RDOValue>($2)->value().getInt(), CONVERTER->stack().pop<RDOValue>($3)->value().getInt());
+		pFrame->onAfterBackPicture(@3.m_last_seek);
+
 		$$ = CONVERTER->stack().push(pFrame);
 	}
 	| frm_background RDO_INT_CONST RDO_INT_CONST error

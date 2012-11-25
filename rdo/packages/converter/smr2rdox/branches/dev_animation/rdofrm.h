@@ -40,8 +40,10 @@ public:
 
 	typedef  boost::optional<ruint>  Seek;
 
-	void  setShowIfBlock(CREF(Seek) firstSeek);
-	void  addItem       (CREF(rdo::runtime::LPRDOCalc) pItem, ruint lastSeek);
+	void  setShowIfBlock      (CREF(Seek) firstSeek);
+	void  addItem             (CREF(rdo::runtime::LPRDOCalc) pItem, ruint lastSeek);
+	void  setFrameConditionPos(ruint firstSeek, ruint lastSeek);
+	void  onAfterBackPicture  (ruint lastSeek);
 
 	CREF(Seek) getFirstSeek() const;
 	CREF(Seek) getLastSeek () const;
@@ -49,10 +51,13 @@ public:
 private:
 	RDOFRMFrame(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic = NULL);
 
+	typedef  boost::optional<std::pair<ruint, ruint> > PosPair;
+
 	rdo::runtime::LPRDOFRMFrame m_pFrame;
 	Seek                        m_firstSeek;
 	Seek                        m_lastSeek;
 	ruint                       m_itemCount;
+	PosPair                     m_frame—onditionPos;
 };
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
