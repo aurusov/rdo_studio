@@ -149,9 +149,7 @@
 %token RDO_Multithreading
 
 %token RDO_Frame
-%token RDO_Show_if
 %token RDO_Back_picture
-%token RDO_Show
 %token RDO_frm_cell
 %token RDO_text
 %token RDO_bitmap
@@ -187,6 +185,7 @@
 %token RDO_Select
 %token RDO_Size
 %token RDO_Empty
+%token RDO_Select_Array
 %token RDO_not
 %token RDO_UMINUS
 %token RDO_string
@@ -199,6 +198,9 @@
 %token RDO_QUEUE
 %token RDO_DEPART
 %token RDO_ASSIGN
+
+%token RDO_Sprite
+%token RDO_sprite_call
 
 %{
 // ---------------------------------------------------------------------------- PCH
@@ -213,9 +215,19 @@
 #include "simulator/compiler/parser/rdopat.h"
 #include "simulator/compiler/parser/rdodpt.h"
 #include "simulator/compiler/parser/type/range.h"
+#include "simulator/compiler/parser/rdo_array.h"
+#include "simulator/compiler/parser/local_variable.h"
+#include "simulator/compiler/parser/type/such_as.h"
+#include "simulator/compiler/parser/context/type.h"
+#include "simulator/compiler/parser/context/memory.h"
+#include "simulator/compiler/parser/context/statement.h"
+#include "simulator/runtime/rdoframe.h"
 #include "simulator/runtime/calc/calc_base.h"
-#include "utils/rdoanimation.h"
 #include "simulator/runtime/calc/calc_array.h"
+#include "simulator/runtime/calc/procedural/calc_locvar.h"
+#include "simulator/runtime/calc/procedural/calc_statement.h"
+#include "simulator/runtime/calc/procedural/calc_braces.h"
+#include "simulator/runtime/calc/procedural/calc_range.h"
 // --------------------------------------------------------------------------------
 
 #define PARSER  LEXER->parser()
@@ -271,6 +283,7 @@ typedef rdo::runtime::LPRDOFRMSpace                 LPRDOFRMSpace;
 frm_main
 	: /* empty */
 	| frm_main frm_end
+	| frm_main frm_sprite_end
 	| error
 	{
 		PARSER->error().error(@1, _T("Неизвестная ошибка"));
@@ -286,16 +299,6 @@ frm_begin
 		LPRDOFRMFrame pFrame = rdo::Factory<RDOFRMFrame>::create(PARSER->stack().pop<RDOValue>($2)->src_info());
 		ASSERT(pFrame);
 		$$ = PARSER->stack().push(pFrame);
-	}
-	| RDO_Frame RDO_IDENTIF RDO_Show_if fun_logic
-	{
-		LPRDOFRMFrame pFrame = rdo::Factory<RDOFRMFrame>::create(PARSER->stack().pop<RDOValue>($2)->src_info(), PARSER->stack().pop<RDOFUNLogic>($4));
-		ASSERT(pFrame);
-		$$ = PARSER->stack().push(pFrame);
-	}
-	| RDO_Frame RDO_IDENTIF RDO_Show_if error
-	{
-		PARSER->error().error(@4, _T("Ошибка в логическом выражении"))
 	}
 	;
 
@@ -344,14 +347,6 @@ frm_backpicture
 		pFrame->frame()->setBackPicture(PARSER->stack().pop<RDOValue>($2)->value().getInt(), PARSER->stack().pop<RDOValue>($3)->value().getInt());
 		$$ = PARSER->stack().push(pFrame);
 	}
-	| frm_background RDO_INT_CONST RDO_INT_CONST error
-	{
-		PARSER->error().error(@4, _T("Описание заголовка кадра окончено, ожидается ключевое слово $Show"));
-	}
-	| frm_background RDO_IDENTIF error
-	{
-		PARSER->error().error(@3, _T("Описание заголовка кадра окончено, ожидается ключевое слово $Show"));
-	}
 	| frm_background RDO_INT_CONST error
 	{
 		PARSER->error().error(@2, _T("После ширины кадра необходимо указать его высоту"));
@@ -362,46 +357,70 @@ frm_backpicture
 	}
 	;
 
-frm_show
-	: RDO_Show
+frm_item_statement
+	: frm_item
 	{
-		LPRDOFRMFrame pFrame = PARSER->getLastFRMFrame();
-		ASSERT(pFrame);
-		pFrame->frame()->startShow();
-	}
-	| RDO_Show_if fun_logic
-	{
-		LPRDOFRMFrame pFrame = PARSER->getLastFRMFrame();
-		pFrame->frame()->startShow(PARSER->stack().pop<RDOFUNLogic>($2)->getCalc());
-	}
-	| RDO_Show_if error
-	{
-		PARSER->error().error(@2, _T("Ошибка в логическом выражении"))
+		rdo::runtime::LPRDOFRMItem pItem = PARSER->stack().pop<rdo::runtime::RDOFRMItem>($1);
+		ASSERT(pItem);
+
+		PARSER->getLastFRMFrame()->frame()->insertItem(pItem);
+
+		LPExpression pExpression = RDOFRMFrame::generateExpression(
+			pItem,
+			RDOParserSrcInfo(@1)
+		);
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
 	}
 	;
 
 frm_item
-	: /* empty */
-	| frm_item frm_show
-	| frm_item frm_text    {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMText         >($2));}
-	| frm_item frm_bitmap  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMBitmap       >($2));}
-	| frm_item frm_rect    {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMRect         >($2));}
-	| frm_item frm_line    {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMLine         >($2));}
-	| frm_item frm_circle  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMCircle       >($2));}
-	| frm_item frm_ellipse {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMEllipse      >($2));}
-	| frm_item frm_r_rect  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMRectRound    >($2));}
-	| frm_item frm_triang  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMTriang       >($2));}
-	| frm_item frm_s_bmp   {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMBitmapStretch>($2));}
-	| frm_item frm_active  {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMActive       >($2));}
-	| frm_item frm_ruler   {PARSER->getLastFRMFrame()->frame()->addRulet(PARSER->stack().pop<RDOFRMRulet        >($2));}
-	| frm_item frm_space   {PARSER->getLastFRMFrame()->frame()->addItem (PARSER->stack().pop<RDOFRMSpace        >($2));}
+	: frm_text
+	| frm_bitmap
+	| frm_rect
+	| frm_line
+	| frm_circle
+	| frm_ellipse
+	| frm_r_rect
+	| frm_triang
+	| frm_s_bmp
+	| frm_active
+	| frm_ruler
+	| frm_space
+	| frm_sprite
 	;
 
 frm_header
-	: frm_backpicture frm_item
+	: frm_backpicture statement_list
 	{
+		LPExpression pExpressionFrameBody = PARSER->stack().pop<Expression>($2);
+		ASSERT(pExpressionFrameBody);
+
+		rdo::runtime::LPRDOCalcStatementList pCalcStatementList = pExpressionFrameBody->calc().object_dynamic_cast<rdo::runtime::RDOCalcStatementList>();
+		ASSERT(pCalcStatementList);
+
+		rdo::runtime::LPRDOCalcBaseStatementList pCalcBaseStatementList = rdo::Factory<rdo::runtime::RDOCalcBaseStatementList>::create();
+		ASSERT(pCalcBaseStatementList);
+
+		rdo::runtime::LPRDOCalcOpenBrace pCalcOpenBrace = rdo::Factory<rdo::runtime::RDOCalcOpenBrace>::create();
+		ASSERT(pCalcOpenBrace);
+
+		rdo::runtime::LPRDOCalcCloseBrace pCalcCloseBrace = rdo::Factory<rdo::runtime::RDOCalcCloseBrace>::create();
+		ASSERT(pCalcCloseBrace);
+
+		pCalcBaseStatementList->addCalcStatement(pCalcOpenBrace);
+		pCalcBaseStatementList->addCalcStatement(pCalcStatementList);
+		pCalcBaseStatementList->addCalcStatement(pCalcCloseBrace);
+
+		LPExpression pExpressionFrame = rdo::Factory<Expression>::create(pExpressionFrameBody->typeInfo(), pCalcBaseStatementList, pCalcStatementList->srcInfo());
+		ASSERT(pExpressionFrame);
+
 		LPRDOFRMFrame pFrame = PARSER->stack().pop<RDOFRMFrame>($1);
 		ASSERT(pFrame);
+
+		PARSER->getLastFRMFrame()->frame()->setSpriteCalc(pExpressionFrame->calc());
+
 		$$ = PARSER->stack().push(pFrame);
 	}
 	;
@@ -412,6 +431,20 @@ frm_end
 		LPRDOFRMFrame pFrame = PARSER->stack().pop<RDOFRMFrame>($1);
 		ASSERT(pFrame);
 		pFrame->end();
+	}
+	;
+
+param_list
+	: /*empty*/
+	| param_list_body
+	;
+
+param_list_body
+	: type_declaration RDO_IDENTIF {}
+	| param_list_body ',' type_declaration RDO_IDENTIF {}
+	| param_list_body ',' error
+	{
+		PARSER->error().error(@3, _T("Ошибка в задании параметра!"));
 	}
 	;
 
@@ -683,7 +716,7 @@ frm_radius
 	};
 
 frm_ruler
-	: RDO_ruler '[' RDO_INT_CONST ',' frm_position_xy ',' frm_position_xy ']'
+	: RDO_ruler '(' RDO_INT_CONST ',' frm_position_xy ',' frm_position_xy ')'
 	{
 		LPRDOValue pRuletID = PARSER->stack().pop<RDOValue>($3);
 		ASSERT(pRuletID);
@@ -710,38 +743,38 @@ frm_ruler
 		ASSERT(pRulet);
 		$$ = PARSER->stack().push(pRulet);
 	}
-	| RDO_ruler '[' RDO_INT_CONST ',' frm_position_xy ',' frm_position_xy error
+	| RDO_ruler '(' RDO_INT_CONST ',' frm_position_xy ',' frm_position_xy error
 	{
-		PARSER->error().error(@7, _T("Ожидается ']'"));
+		PARSER->error().error(@7, _T("Ожидается ')'"));
 	}
-	| RDO_ruler '[' RDO_INT_CONST ',' frm_position_xy ',' error
+	| RDO_ruler '(' RDO_INT_CONST ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@6, @7, _T("Ожидается координата по оси Y"));
 	}
-	| RDO_ruler '[' RDO_INT_CONST ',' frm_position_xy error
+	| RDO_ruler '(' RDO_INT_CONST ',' frm_position_xy error
 	{
 		PARSER->error().error(@5, _T("Ожидается запятая"));
 	}
-	| RDO_ruler '[' RDO_INT_CONST ',' error
+	| RDO_ruler '(' RDO_INT_CONST ',' error
 	{
 		PARSER->error().error(@4, @5, _T("Ожидается координата по оси X"));
 	}
-	| RDO_ruler '[' RDO_INT_CONST error
+	| RDO_ruler '(' RDO_INT_CONST error
 	{
 		PARSER->error().error(@3, _T("Ожидается запятая"));
 	}
-	| RDO_ruler '[' error
+	| RDO_ruler '(' error
 	{
 		PARSER->error().error(@2, @3, _T("Ожидается номер рулетки"));
 	}
 	| RDO_ruler error
 	{
-		PARSER->error().error(@1, _T("Ожидается '['"));
+		PARSER->error().error(@1, _T("Ожидается '('"));
 	}
 	;
 
 frm_space
-	: RDO_space '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ']'
+	: RDO_space '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ')'
 	{
 		LPRDOFRMPosition pX      = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -755,41 +788,41 @@ frm_space
 		ASSERT(pSpace);
 		$$ = PARSER->stack().push(pSpace);
 	}
-	| RDO_space '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
+	| RDO_space '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
 	{
-		PARSER->error().error(@9, _T("Ожидается ']'"));
+		PARSER->error().error(@9, _T("Ожидается ')'"));
 	}
-	| RDO_space '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
+	| RDO_space '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
 	{
 		PARSER->error().error(@8, @9, _T("Ожидается высота"));
 	}
-	| RDO_space '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
+	| RDO_space '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
 	{
 		PARSER->error().error(@7, _T("Ожидается запятая"));
 	}
-	| RDO_space '[' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_space '(' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@6, @7, _T("Ожидается ширина"));
 	}
-	| RDO_space '[' frm_position_xy ',' frm_position_xy error
+	| RDO_space '(' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@5, _T("Ожидается запятая"));
 	}
-	| RDO_space '[' frm_position_xy ',' error
+	| RDO_space '(' frm_position_xy ',' error
 	{
 		PARSER->error().error(@4, @5, _T("Ожидается координата по оси Y"));
 	}
-	| RDO_space '[' frm_position_xy error
+	| RDO_space '(' frm_position_xy error
 	{
 		PARSER->error().error(@3, _T("Ожидается запятая"));
 	}
-	| RDO_space '[' error
+	| RDO_space '(' error
 	{
 		PARSER->error().error(@2, @3, _T("Ожидается координата по оси X"));
 	}
 	| RDO_space error
 	{
-		PARSER->error().error(@1, _T("Ожидается '['"));
+		PARSER->error().error(@1, _T("Ожидается '('"));
 	}
 	;
 
@@ -801,7 +834,7 @@ frm_text_align
 	;
 
 frm_text_common
-	: RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color ','
+	: RDO_text '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color ','
 	{
 		LPRDOFRMPosition pX      = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -822,7 +855,7 @@ frm_text_common
 		$$ = PARSER->stack().push(pText);
 	}
 /*
-	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ','
+	| RDO_text '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ','
 	{
 		LPRDOFRMPosition pX      = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -842,7 +875,7 @@ frm_text_common
 		ASSERT(pText);
 		$$ = PARSER->stack().push(pText);
 	}
-	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ','
+	| RDO_text '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ','
 	{
 		LPRDOFRMPosition pX      = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -863,69 +896,69 @@ frm_text_common
 		$$ = PARSER->stack().push(pText);
 	}
 */
-	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color error
+	| RDO_text '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color error
 	{
 		PARSER->error().error(@13, _T("Ожидается запятая"));
 	}
-	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' error
+	| RDO_text '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' error
 	{
 		PARSER->error().error(@12, @13, _T("Ожидается цвет текста"));
 	}
-	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color error
+	| RDO_text '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color error
 	{
 		PARSER->error().error(@11, _T("Ожидается запятая"));
 	}
-	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error
+	| RDO_text '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error
 	{
 		PARSER->error().error(@10, @11, _T("Ожидается цвет фона"));
 	}
-	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
+	| RDO_text '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
 	{
 		PARSER->error().error(@9, _T("Ожидается запятая"));
 	}
-	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
+	| RDO_text '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
 	{
 		PARSER->error().error(@8, @9, _T("Ожидается высота"));
 	}
-	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
+	| RDO_text '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
 	{
 		PARSER->error().error(@7, _T("Ожидается запятая"));
 	}
-	| RDO_text '[' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_text '(' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@6, @7, _T("Ожидается ширина"));
 	}
-	| RDO_text '[' frm_position_xy ',' frm_position_xy error
+	| RDO_text '(' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@5, _T("Ожидается запятая"));
 	}
-	| RDO_text '[' frm_position_xy ',' error
+	| RDO_text '(' frm_position_xy ',' error
 	{
 		PARSER->error().error(@4, @5, _T("Ожидается координата по оси Y"));
 	}
-	| RDO_text '[' frm_position_xy error
+	| RDO_text '(' frm_position_xy error
 	{
 		PARSER->error().error(@3, _T("Ожидается запятая"));
 	}
-	| RDO_text '[' error
+	| RDO_text '(' error
 	{
 		PARSER->error().error(@2, @3, _T("Ожидается координата по оси X"));
 	}
 	| RDO_text error
 	{
-		PARSER->error().error(@1, _T("Ожидается '['"));
+		PARSER->error().error(@1, _T("Ожидается '('"));
 	}
 	;
 
 frm_text
-	: frm_text_common frm_text_align fun_arithm ']'
+	: frm_text_common frm_text_align fun_arithm ')'
 	{
 		LPRDOFRMText pText = PARSER->stack().pop<RDOFRMText>($1);
 		ASSERT(pText);
 		pText->setText((rdo::animation::TextElement::TextAlign)$2, PARSER->stack().pop<RDOFUNArithm>($3)->createCalc());
 		$$ = PARSER->stack().push(pText);
 	}
-	| frm_text_common frm_text_align RDO_STRING_CONST ']'
+	| frm_text_common frm_text_align RDO_STRING_CONST ')'
 	{
 		LPRDOFRMText pText = PARSER->stack().pop<RDOFRMText>($1);
 		ASSERT(pText);
@@ -934,11 +967,11 @@ frm_text
 	}
 	| frm_text_common frm_text_align fun_arithm error
 	{
-		PARSER->error().error(@3, _T("Ожидается ']'"));
+		PARSER->error().error(@3, _T("Ожидается ')'"));
 	}
 	| frm_text_common frm_text_align RDO_STRING_CONST error
 	{
-		PARSER->error().error(@3, _T("Ожидается ']'"));
+		PARSER->error().error(@3, _T("Ожидается ')'"));
 	}
 	| frm_text_common frm_text_align error
 	{
@@ -947,7 +980,7 @@ frm_text
 	;
 
 frm_bitmap
-	: RDO_bitmap '[' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF ']'
+	: RDO_bitmap '(' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF ')'
 	{
 		LPRDOFRMPosition pX = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -957,7 +990,7 @@ frm_bitmap
 		ASSERT(pBitmap);
 		$$ = PARSER->stack().push(pBitmap);
 	}
-	| RDO_bitmap '[' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF ',' RDO_IDENTIF ']'
+	| RDO_bitmap '(' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF ',' RDO_IDENTIF ')'
 	{
 		LPRDOFRMPosition pX = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -967,46 +1000,46 @@ frm_bitmap
 		ASSERT(pBitmap);
 		$$ = PARSER->stack().push(pBitmap);
 	}
-	| RDO_bitmap '[' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF ',' RDO_IDENTIF error
+	| RDO_bitmap '(' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF ',' RDO_IDENTIF error
 	{
-		PARSER->error().error(@9, _T("Ожидается ']'"));
+		PARSER->error().error(@9, _T("Ожидается ')'"));
 	}
-	| RDO_bitmap '[' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF ',' error
+	| RDO_bitmap '(' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF ',' error
 	{
 		PARSER->error().error(@8, @9, _T("Ожидается имя маски для картинки"));
 	}
-	| RDO_bitmap '[' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF error
+	| RDO_bitmap '(' frm_position_xy ',' frm_position_xy ',' RDO_IDENTIF error
 	{
-		PARSER->error().error(@7, _T("Ожидается ']'"));
+		PARSER->error().error(@7, _T("Ожидается ')'"));
 	}
-	| RDO_bitmap '[' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_bitmap '(' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@6, @7, _T("Ожидается имя картинки"));
 	}
-	| RDO_bitmap '[' frm_position_xy ',' frm_position_xy error
+	| RDO_bitmap '(' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@5, _T("Ожидается запятая"));
 	}
-	| RDO_bitmap '[' frm_position_xy ',' error
+	| RDO_bitmap '(' frm_position_xy ',' error
 	{
 		PARSER->error().error(@4, @5, _T("Ожидается координата по оси Y"));
 	}
-	| RDO_bitmap '[' frm_position_xy error
+	| RDO_bitmap '(' frm_position_xy error
 	{
 		PARSER->error().error(@3, _T("Ожидается запятая"));
 	}
-	| RDO_bitmap '[' error
+	| RDO_bitmap '(' error
 	{
 		PARSER->error().error(@2, @3, _T("Ожидается координата по оси X"));
 	}
 	| RDO_bitmap error
 	{
-		PARSER->error().error(@1, _T("Ожидается '['"));
+		PARSER->error().error(@1, _T("Ожидается '('"));
 	}
 	;
 
 frm_s_bmp
-	: RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF ']'
+	: RDO_s_bmp '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF ')'
 	{
 		LPRDOFRMPosition pX      = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -1020,7 +1053,7 @@ frm_s_bmp
 		ASSERT(pBitmap);
 		$$ = PARSER->stack().push(pBitmap);
 	}
-	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF ',' RDO_IDENTIF ']'
+	| RDO_s_bmp '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF ',' RDO_IDENTIF ')'
 	{
 		LPRDOFRMPosition pX      = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -1034,62 +1067,62 @@ frm_s_bmp
 		ASSERT(pBitmap);
 		$$ = PARSER->stack().push(pBitmap);
 	}
-	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF ',' RDO_IDENTIF error
+	| RDO_s_bmp '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF ',' RDO_IDENTIF error
 	{
-		PARSER->error().error(@13, _T("Ожидается ']'"));
+		PARSER->error().error(@13, _T("Ожидается ')'"));
 	}
-	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF ',' error
+	| RDO_s_bmp '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF ',' error
 	{
 		PARSER->error().error(@12, @13, _T("Ожидается имя маски для картинки"));
 	}
-	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF error
+	| RDO_s_bmp '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' RDO_IDENTIF error
 	{
-		PARSER->error().error(@11, _T("Ожидается ']'"));
+		PARSER->error().error(@11, _T("Ожидается ')'"));
 	}
-	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error
+	| RDO_s_bmp '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error
 	{
 		PARSER->error().error(@10, @11, _T("Ожидается имя картинки"));
 	}
-	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
+	| RDO_s_bmp '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
 	{
 		PARSER->error().error(@9, _T("Ожидается запятая"));
 	}
-	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
+	| RDO_s_bmp '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
 	{
 		PARSER->error().error(@8, @9, _T("Ожидается высота"));
 	}
-	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
+	| RDO_s_bmp '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
 	{
 		PARSER->error().error(@7, _T("Ожидается запятая"));
 	}
-	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_s_bmp '(' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@6, @7, _T("Ожидается ширина"));
 	}
-	| RDO_s_bmp '[' frm_position_xy ',' frm_position_xy error
+	| RDO_s_bmp '(' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@5, _T("Ожидается запятая"));
 	}
-	| RDO_s_bmp '[' frm_position_xy ',' error
+	| RDO_s_bmp '(' frm_position_xy ',' error
 	{
 		PARSER->error().error(@4, @5, _T("Ожидается координата по оси Y"));
 	}
-	| RDO_s_bmp '[' frm_position_xy error
+	| RDO_s_bmp '(' frm_position_xy error
 	{
 		PARSER->error().error(@3, _T("Ожидается запятая"));
 	}
-	| RDO_s_bmp '[' error
+	| RDO_s_bmp '(' error
 	{
 		PARSER->error().error(@2, @3, _T("Ожидается координата по оси X"));
 	}
 	| RDO_s_bmp error
 	{
-		PARSER->error().error(@1, _T("Ожидается '['"));
+		PARSER->error().error(@1, _T("Ожидается '('"));
 	}
 	;
 
 frm_rect
-	: RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color ']'
+	: RDO_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color ')'
 	{
 		LPRDOFRMPosition pX      = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -1109,7 +1142,7 @@ frm_rect
 		ASSERT(pRect);
 		$$ = PARSER->stack().push(pRect);
 	}
-	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ']'
+	| RDO_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ')'
 	{
 		LPRDOFRMPosition pX      = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -1129,7 +1162,7 @@ frm_rect
 		ASSERT(pRect);
 		$$ = PARSER->stack().push(pRect);
 	}
-	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ']'
+	| RDO_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ')'
 	{
 		LPRDOFRMPosition pX      = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -1149,7 +1182,7 @@ frm_rect
 		ASSERT(pRect);
 		$$ = PARSER->stack().push(pRect);
 	}
-	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ']'
+	| RDO_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ')'
 	{
 		LPRDOFRMPosition pX      = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -1169,7 +1202,7 @@ frm_rect
 		ASSERT(pRect);
 		$$ = PARSER->stack().push(pRect);
 	}
-	| RDO_rect '[' frm_position_xy ',' frm_position_xy ']'
+	| RDO_rect '(' frm_position_xy ',' frm_position_xy ')'
 	{
 		LPRDOFRMPosition pX      = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -1189,62 +1222,62 @@ frm_rect
 		ASSERT(pRect);
 		$$ = PARSER->stack().push(pRect);
 	}
-	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color error
+	| RDO_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color error
 	{
-		PARSER->error().error(@13, _T("Ожидается ']'"));
+		PARSER->error().error(@13, _T("Ожидается ')'"));
 	}
-	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' error
+	| RDO_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' error
 	{
 		PARSER->error().error(@12, @13, _T("Ожидается цвет линии прямоугольника"));
 	}
-	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color error
+	| RDO_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color error
 	{
 		PARSER->error().error(@11, _T("Ожидается запятая"));
 	}
-	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error
+	| RDO_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error
 	{
 		PARSER->error().error(@10, @11, _T("Ожидается цвет фона"));
 	}
-	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
+	| RDO_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
 	{
 		PARSER->error().error(@9, _T("Ожидается запятая"));
 	}
-	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
+	| RDO_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
 	{
 		PARSER->error().error(@8, @9, _T("Ожидается высота"));
 	}
-	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
+	| RDO_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
 	{
 		PARSER->error().error(@7, _T("Ожидается запятая"));
 	}
-	| RDO_rect '[' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_rect '(' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@6, @7, _T("Ожидается ширина"));
 	}
-	| RDO_rect '[' frm_position_xy ',' frm_position_xy error
+	| RDO_rect '(' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@5, _T("Ожидается запятая"));
 	}
-	| RDO_rect '[' frm_position_xy ',' error
+	| RDO_rect '(' frm_position_xy ',' error
 	{
 		PARSER->error().error(@4, @5, _T("Ожидается координата по оси Y"));
 	}
-	| RDO_rect '[' frm_position_xy error
+	| RDO_rect '(' frm_position_xy error
 	{
 		PARSER->error().error(@3, _T("Ожидается запятая"));
 	}
-	| RDO_rect '[' error
+	| RDO_rect '(' error
 	{
 		PARSER->error().error(@2, @3, _T("Ожидается координата по оси X"));
 	}
 	| RDO_rect error
 	{
-		PARSER->error().error(@1, _T("Ожидается '['"));
+		PARSER->error().error(@1, _T("Ожидается '('"));
 	}
 	;
 
 frm_r_rect
-	: RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color ']'
+	: RDO_r_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color ')'
 	{
 		LPRDOFRMPosition pX      = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -1264,62 +1297,62 @@ frm_r_rect
 		ASSERT(pRoundRect);
 		$$ = PARSER->stack().push(pRoundRect);
 	}
-	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color error
+	| RDO_r_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color error
 	{
-		PARSER->error().error(@13, _T("Ожидается ']'"));
+		PARSER->error().error(@13, _T("Ожидается ')'"));
 	}
-	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' error
+	| RDO_r_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' error
 	{
 		PARSER->error().error(@12, @13, _T("Ожидается цвет линии прямоугольника"));
 	}
-	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color error
+	| RDO_r_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color error
 	{
 		PARSER->error().error(@11, _T("Ожидается запятая"));
 	}
-	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error
+	| RDO_r_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error
 	{
 		PARSER->error().error(@10, @11, _T("Ожидается цвет фона"));
 	}
-	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
+	| RDO_r_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
 	{
 		PARSER->error().error(@9, _T("Ожидается запятая"));
 	}
-	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
+	| RDO_r_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
 	{
 		PARSER->error().error(@8, @9, _T("Ожидается высота"));
 	}
-	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
+	| RDO_r_rect '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
 	{
 		PARSER->error().error(@7, _T("Ожидается запятая"));
 	}
-	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_r_rect '(' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@6, @7, _T("Ожидается ширина"));
 	}
-	| RDO_r_rect '[' frm_position_xy ',' frm_position_xy error
+	| RDO_r_rect '(' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@5, _T("Ожидается запятая"));
 	}
-	| RDO_r_rect '[' frm_position_xy ',' error
+	| RDO_r_rect '(' frm_position_xy ',' error
 	{
 		PARSER->error().error(@4, @5, _T("Ожидается координата по оси Y"));
 	}
-	| RDO_r_rect '[' frm_position_xy error
+	| RDO_r_rect '(' frm_position_xy error
 	{
 		PARSER->error().error(@3, _T("Ожидается запятая"));
 	}
-	| RDO_r_rect '[' error
+	| RDO_r_rect '(' error
 	{
 		PARSER->error().error(@2, @3, _T("Ожидается координата по оси X"));
 	}
 	| RDO_r_rect error
 	{
-		PARSER->error().error(@1, _T("Ожидается '['"));
+		PARSER->error().error(@1, _T("Ожидается '('"));
 	}
 	;
 
 frm_circle
-	: RDO_circle '[' frm_position_xy ',' frm_position_xy ',' frm_radius ',' frm_color ',' frm_color ']'
+	: RDO_circle '(' frm_position_xy ',' frm_position_xy ',' frm_radius ',' frm_color ',' frm_color ')'
 	{
 		LPRDOFRMPosition pX      = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -1337,53 +1370,53 @@ frm_circle
 		ASSERT(pCircle);
 		$$ = PARSER->stack().push(pCircle);
 	}
-	| RDO_circle '[' frm_position_xy ',' frm_position_xy ',' frm_radius ',' frm_color ',' frm_color error
+	| RDO_circle '(' frm_position_xy ',' frm_position_xy ',' frm_radius ',' frm_color ',' frm_color error
 	{
-		PARSER->error().error(@11, _T("Ожидается ']'"));
+		PARSER->error().error(@11, _T("Ожидается ')'"));
 	}
-	| RDO_circle '[' frm_position_xy ',' frm_position_xy ',' frm_radius ',' frm_color ',' error
+	| RDO_circle '(' frm_position_xy ',' frm_position_xy ',' frm_radius ',' frm_color ',' error
 	{
 		PARSER->error().error(@10, @11, _T("Ожидается цвет линии круга"));
 	}
-	| RDO_circle '[' frm_position_xy ',' frm_position_xy ',' frm_radius ',' frm_color error
+	| RDO_circle '(' frm_position_xy ',' frm_position_xy ',' frm_radius ',' frm_color error
 	{
 		PARSER->error().error(@9, _T("Ожидается запятая"));
 	}
-	| RDO_circle '[' frm_position_xy ',' frm_position_xy ',' frm_radius ',' error
+	| RDO_circle '(' frm_position_xy ',' frm_position_xy ',' frm_radius ',' error
 	{
 		PARSER->error().error(@8, @9, _T("Ожидается цвет фона"));
 	}
-	| RDO_circle '[' frm_position_xy ',' frm_position_xy ',' frm_radius error
+	| RDO_circle '(' frm_position_xy ',' frm_position_xy ',' frm_radius error
 	{
 		PARSER->error().error(@7, _T("Ожидается запятая"));
 	}
-	| RDO_circle '[' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_circle '(' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@6, @7, _T("Ожидается радиус"));
 	}
-	| RDO_circle '[' frm_position_xy ',' frm_position_xy error
+	| RDO_circle '(' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@5, _T("Ожидается запятая"));
 	}
-	| RDO_circle '[' frm_position_xy ',' error
+	| RDO_circle '(' frm_position_xy ',' error
 	{
 		PARSER->error().error(@4, @5, _T("Ожидается координата по оси Y"));
 	}
-	| RDO_circle '[' frm_position_xy error
+	| RDO_circle '(' frm_position_xy error
 	{
 		PARSER->error().error(@3, _T("Ожидается запятая"));
 	}
-	| RDO_circle '[' error
+	| RDO_circle '(' error
 	{
 		PARSER->error().error(@2, @3, _T("Ожидается координата по оси X"));
 	}
 	| RDO_circle error
 	{
-		PARSER->error().error(@1, _T("Ожидается '['"));
+		PARSER->error().error(@1, _T("Ожидается '('"));
 	};
 
 frm_ellipse
-	: RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color ']'
+	: RDO_ellipse '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color ')'
 	{
 		LPRDOFRMPosition pX      = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -1403,62 +1436,62 @@ frm_ellipse
 		ASSERT(pEllipse);
 		$$ = PARSER->stack().push(pEllipse);
 	}
-	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color error
+	| RDO_ellipse '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' frm_color error
 	{
-		PARSER->error().error(@13, _T("Ожидается ']'"));
+		PARSER->error().error(@13, _T("Ожидается ')'"));
 	}
-	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' error
+	| RDO_ellipse '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color ',' error
 	{
 		PARSER->error().error(@12, @13, _T("Ожидается цвет линии эллипса"));
 	}
-	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color error
+	| RDO_ellipse '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' frm_color error
 	{
 		PARSER->error().error(@11, _T("Ожидается запятая"));
 	}
-	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error
+	| RDO_ellipse '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ',' error
 	{
 		PARSER->error().error(@10, @11, _T("Ожидается цвет фона"));
 	}
-	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
+	| RDO_ellipse '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
 	{
 		PARSER->error().error(@9, _T("Ожидается запятая"));
 	}
-	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
+	| RDO_ellipse '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
 	{
 		PARSER->error().error(@8, @9, _T("Ожидается высота"));
 	}
-	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
+	| RDO_ellipse '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
 	{
 		PARSER->error().error(@7, _T("Ожидается запятая"));
 	}
-	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_ellipse '(' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@6, @7, _T("Ожидается ширина"));
 	}
-	| RDO_ellipse '[' frm_position_xy ',' frm_position_xy error
+	| RDO_ellipse '(' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@5, _T("Ожидается запятая"));
 	}
-	| RDO_ellipse '[' frm_position_xy ',' error
+	| RDO_ellipse '(' frm_position_xy ',' error
 	{
 		PARSER->error().error(@4, @5, _T("Ожидается координата по оси Y"));
 	}
-	| RDO_ellipse '[' frm_position_xy error
+	| RDO_ellipse '(' frm_position_xy error
 	{
 		PARSER->error().error(@3, _T("Ожидается запятая"));
 	}
-	| RDO_ellipse '[' error
+	| RDO_ellipse '(' error
 	{
 		PARSER->error().error(@2, @3, _T("Ожидается координата по оси X"));
 	}
 	| RDO_ellipse error
 	{
-		PARSER->error().error(@1, _T("Ожидается '['"));
+		PARSER->error().error(@1, _T("Ожидается '('"));
 	}
 	;
 
 frm_line
-	: RDO_line '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color ']'
+	: RDO_line '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color ')'
 	{
 		LPRDOFRMPosition pX      = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY      = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -1475,54 +1508,54 @@ frm_line
 		ASSERT(pLine);
 		$$ = PARSER->stack().push(pLine);
 	}
-	| RDO_line '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color error
+	| RDO_line '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color error
 	{
-		PARSER->error().error(@11, _T("Ожидается ']'"));
+		PARSER->error().error(@11, _T("Ожидается ')'"));
 	}
-	| RDO_line '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_line '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@10, @11, _T("Ожидается цвет линии"));
 	}
-	| RDO_line '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
+	| RDO_line '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@9, _T("Ожидается запятая"));
 	}
-	| RDO_line '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_line '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@8, @9, _T("Ожидается Y2"));
 	}
-	| RDO_line '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
+	| RDO_line '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@7, _T("Ожидается запятая"));
 	}
-	| RDO_line '[' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_line '(' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@6, @7, _T("Ожидается X2"));
 	}
-	| RDO_line '[' frm_position_xy ',' frm_position_xy error
+	| RDO_line '(' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@5, _T("Ожидается запятая"));
 	}
-	| RDO_line '[' frm_position_xy ',' error
+	| RDO_line '(' frm_position_xy ',' error
 	{
 		PARSER->error().error(@4, @5, _T("Ожидается Y1"));
 	}
-	| RDO_line '[' frm_position_xy error
+	| RDO_line '(' frm_position_xy error
 	{
 		PARSER->error().error(@3, _T("Ожидается запятая"));
 	}
-	| RDO_line '[' error
+	| RDO_line '(' error
 	{
 		PARSER->error().error(@2, @3, _T("Ожидается X1"));
 	}
 	| RDO_line error
 	{
-		PARSER->error().error(@1, _T("Ожидается '['"));
+		PARSER->error().error(@1, _T("Ожидается '('"));
 	}
 	;
 
 frm_triang
-	: RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color ',' frm_color ']'
+	: RDO_triang '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color ',' frm_color ')'
 	{
 		LPRDOFRMPosition pX1 = PARSER->stack().pop<RDOFRMPosition>($3);
 		LPRDOFRMPosition pY1 = PARSER->stack().pop<RDOFRMPosition>($5);
@@ -1546,78 +1579,78 @@ frm_triang
 		ASSERT(pTriang);
 		$$ = PARSER->stack().push(pTriang);
 	}
-	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color ',' frm_color error
+	| RDO_triang '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color ',' frm_color error
 	{
-		PARSER->error().error(@17, _T("Ожидается ']'"));
+		PARSER->error().error(@17, _T("Ожидается ')'"));
 	}
-	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color ',' error
+	| RDO_triang '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color ',' error
 	{
 		PARSER->error().error(@16, @17, _T("Ожидается цвет линии"));
 	}
-	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color error
+	| RDO_triang '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_color error
 	{
 		PARSER->error().error(@15, _T("Ожидается запятая"));
 	}
-	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_triang '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@14, @15, _T("Ожидается цвет треугольника"));
 	}
-	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
+	| RDO_triang '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@13, _T("Ожидается запятая"));
 	}
-	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_triang '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@12, @13, _T("Ожидается Y3"));
 	}
-	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
+	| RDO_triang '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@11, _T("Ожидается запятая"));
 	}
-	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_triang '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@10, @11, _T("Ожидается X3"));
 	}
-	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
+	| RDO_triang '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@9, _T("Ожидается запятая"));
 	}
-	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_triang '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@8, @9, _T("Ожидается Y2"));
 	}
-	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
+	| RDO_triang '(' frm_position_xy ',' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@7, _T("Ожидается запятая"));
 	}
-	| RDO_triang '[' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_triang '(' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@6, @7, _T("Ожидается X2"));
 	}
-	| RDO_triang '[' frm_position_xy ',' frm_position_xy error
+	| RDO_triang '(' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@5, _T("Ожидается запятая"));
 	}
-	| RDO_triang '[' frm_position_xy ',' error
+	| RDO_triang '(' frm_position_xy ',' error
 	{
 		PARSER->error().error(@4, @5, _T("Ожидается Y1"));
 	}
-	| RDO_triang '[' frm_position_xy error
+	| RDO_triang '(' frm_position_xy error
 	{
 		PARSER->error().error(@3, _T("Ожидается запятая"));
 	}
-	| RDO_triang '[' error
+	| RDO_triang '(' error
 	{
 		PARSER->error().error(@2, @3, _T("Ожидается X1"));
 	}
 	| RDO_triang error
 	{
-		PARSER->error().error(@1, _T("Ожидается '['"));
+		PARSER->error().error(@1, _T("Ожидается '('"));
 	}
 	;
 
 frm_active
-	: RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ']'
+	: RDO_active RDO_IDENTIF '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh ')'
 	{
 		tstring oprName = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
 		LPRDODPTActivity pActivity = PARSER->findDPTActivity(oprName);
@@ -1647,45 +1680,1415 @@ frm_active
 		ASSERT(pActive);
 		$$ = PARSER->stack().push(pActive);
 	}
-	| RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
+	| RDO_active RDO_IDENTIF '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' frm_position_wh error
 	{
-		PARSER->error().error(@10, _T("Ожидается ']'"));
+		PARSER->error().error(@10, _T("Ожидается ')'"));
 	}
-	| RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
+	| RDO_active RDO_IDENTIF '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh ',' error
 	{
 		PARSER->error().error(@9, @10, _T("Ожидается высота"));
 	}
-	| RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
+	| RDO_active RDO_IDENTIF '(' frm_position_xy ',' frm_position_xy ',' frm_position_wh error
 	{
 		PARSER->error().error(@8, _T("Ожидается запятая"));
 	}
-	| RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy ',' error
+	| RDO_active RDO_IDENTIF '(' frm_position_xy ',' frm_position_xy ',' error
 	{
 		PARSER->error().error(@7, @8, _T("Ожидается ширина"));
 	}
-	| RDO_active RDO_IDENTIF '[' frm_position_xy ',' frm_position_xy error
+	| RDO_active RDO_IDENTIF '(' frm_position_xy ',' frm_position_xy error
 	{
 		PARSER->error().error(@6, _T("Ожидается запятая"));
 	}
-	| RDO_active RDO_IDENTIF '[' frm_position_xy ',' error
+	| RDO_active RDO_IDENTIF '(' frm_position_xy ',' error
 	{
 		PARSER->error().error(@5, @6, _T("Ожидается координата по оси Y"));
 	}
-	| RDO_active RDO_IDENTIF '[' frm_position_xy error
+	| RDO_active RDO_IDENTIF '(' frm_position_xy error
 	{
 		PARSER->error().error(@4, _T("Ожидается запятая"));
 	}
-	| RDO_active RDO_IDENTIF '[' error
+	| RDO_active RDO_IDENTIF '(' error
 	{
 		PARSER->error().error(@3, @4, _T("Ожидается координата по оси X"));
 	}
 	| RDO_active RDO_IDENTIF error
 	{
-		PARSER->error().error(@2, _T("Ожидается '['"));
+		PARSER->error().error(@2, _T("Ожидается '('"));
 	}
 	| RDO_active error
 	{
 		PARSER->error().error(@1, _T("Ожидается имя клавиатурной операции"));
+	}
+	;
+
+// --------------------------------------------------------------------------------
+// -------------------- Спрайт
+// --------------------------------------------------------------------------------
+frm_sprite_end
+	: frm_sprite_begin RDO_End
+	{}
+	;
+
+frm_sprite_begin
+	: frm_sprite_header frm_item
+	{}
+	;
+
+frm_sprite_header
+	: RDO_Sprite RDO_IDENTIF '(' param_list ')'
+	{}
+	| RDO_Sprite RDO_IDENTIF '(' param_list error
+	{
+		PARSER->error().error(@5, _T("Ожидается закрывающая скобка"));
+	}
+	| RDO_Sprite RDO_IDENTIF '(' error
+	{
+		PARSER->error().error(@4, _T("Ошибка задания параметров"));
+	}
+	| RDO_Sprite RDO_IDENTIF error
+	{
+		PARSER->error().error(@3, _T("Ожидается открывающая скобка"));
+	}
+	;
+
+frm_sprite
+	: RDO_sprite_call RDO_IDENTIF '(' arithm_list ')' {} //использовать fun_arithm_func_call (?)
+	| RDO_sprite_call RDO_IDENTIF '(' arithm_list error
+	{
+		PARSER->error().error(@5, _T("Ожидается закрывающая скобка"));
+	}
+	| RDO_sprite_call RDO_IDENTIF '(' error
+	{
+		PARSER->error().error(@4, _T("Ошибка задания параметров"));
+	}
+	| RDO_sprite_call RDO_IDENTIF error
+	{
+		PARSER->error().error(@3, _T("Ожидается открывающая скобка"));
+	}
+	;
+
+// --------------------------------------------------------------------------------
+// -------------------- Список statement'ов для анимации
+// --------------------------------------------------------------------------------
+return_statement
+	: RDO_Return
+	{
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcConst>::create(rdo::runtime::RDOValue(0));
+		ASSERT(pCalc);
+
+		rdo::runtime::LPRDOCalc pCalcReturn = rdo::Factory<rdo::runtime::RDOCalcFunReturn>::create(pCalc);
+		ASSERT(pCalcReturn);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalcReturn, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	;
+
+// --------------------------------------------------------------------------------
+// -------------------- Список общих statement'ов
+// --------------------------------------------------------------------------------
+statement
+	: empty_statement ';'
+	| empty_statement error
+	{
+		PARSER->error().error(@1, _T("Не найден символ окончания инструкции - точка с запятой"));
+	}
+	| equal_statement ';'
+	| equal_statement error
+	{
+		PARSER->error().error(@1, _T("Не найден символ окончания инструкции - точка с запятой"));
+	}
+	| set_array_item_statement ';'
+	| set_array_item_statement error
+	{
+		PARSER->error().error(@1, _T("Не найден символ окончания инструкции - точка с запятой"));
+	}
+	| local_variable_declaration ';'
+	| local_variable_declaration error
+	{
+		PARSER->error().error(@1, _T("Не найден символ окончания инструкции - точка с запятой"));
+	}
+	| if_else_statement
+	| RDO_else statement
+	{
+		PARSER->error().push_only(@1, rdo::format(_T("Нельзя использовать инструкцию else вне оператора if")));
+		PARSER->error().push_only(@1, rdo::format(_T("Возможно вы использовали два else для одного if")));
+		PARSER->error().push_done();
+	}
+	| for_statement
+	| break_statement ';'
+	| break_statement error
+	{
+		PARSER->error().error(@1, _T("Не найден символ окончания инструкции - точка с запятой"));
+	}
+	| return_statement ';'
+	| return_statement error
+	{
+		PARSER->error().error(@1, _T("Не найден символ окончания инструкции - точка с запятой"));
+	}
+	| open_brace statement_list close_brace
+	{
+		LPExpression pStatementList = PARSER->stack().pop<Expression>($2);
+		ASSERT(pStatementList);
+
+		rdo::runtime::LPRDOCalcStatementList pCalcStatementList = pStatementList->calc().object_dynamic_cast<rdo::runtime::RDOCalcStatementList>();
+		ASSERT(pCalcStatementList);
+
+		rdo::runtime::LPRDOCalcBaseStatementList pCalcBaseStatementList = rdo::Factory<rdo::runtime::RDOCalcBaseStatementList>::create();
+		ASSERT(pCalcBaseStatementList);
+
+		rdo::runtime::LPRDOCalcOpenBrace pCalcOpenBrace = rdo::Factory<rdo::runtime::RDOCalcOpenBrace>::create();
+		ASSERT(pCalcOpenBrace);
+
+		rdo::runtime::LPRDOCalcCloseBrace pCalcCloseBrace = rdo::Factory<rdo::runtime::RDOCalcCloseBrace>::create();
+		ASSERT(pCalcCloseBrace);
+
+		pCalcBaseStatementList->addCalcStatement(pCalcOpenBrace);
+		pCalcBaseStatementList->addCalcStatement(pCalcStatementList);
+		pCalcBaseStatementList->addCalcStatement(pCalcCloseBrace);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pStatementList->typeInfo(), pCalcBaseStatementList, RDOParserSrcInfo(@1, @3));
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	| frm_item_statement ';'
+	| frm_item_statement
+	{
+		PARSER->error().error(@1, _T("Ожидается ';'"));
+	}
+	| error
+	{
+		PARSER->error().error(@1, _T("Неизвестная инструкция"));
+	}
+	;
+
+open_brace
+	: '{'
+	{
+		ContextMemory::push();
+	}
+	;
+
+close_brace
+	: '}'
+	{
+		ContextMemory::pop();
+	}
+	;
+
+statement_list
+	: /* empty */
+	{
+		rdo::runtime::LPRDOCalcStatementList pCalcStatementList = rdo::Factory<rdo::runtime::RDOCalcStatementList>::create();
+		ASSERT(pCalcStatementList);
+
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo());
+		ASSERT(pType);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalcStatementList, RDOParserSrcInfo());
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	| statement_list statement
+	{
+		LPExpression pExpressionStatementList = PARSER->stack().pop<Expression>($1);
+		ASSERT(pExpressionStatementList);
+
+		LPExpression pExpressionStatement = PARSER->stack().pop<Expression>($2);
+		ASSERT(pExpressionStatement);
+
+		rdo::runtime::LPRDOCalcStatementList pCalcStatementList = pExpressionStatementList->calc().object_dynamic_cast<rdo::runtime::RDOCalcStatementList>();
+		ASSERT(pCalcStatementList);
+
+		pCalcStatementList->addCalcStatement(pExpressionStatement->calc());
+
+		pExpressionStatementList->setSrcInfo(RDOParserSrcInfo(@1, @2));
+
+		$$ = PARSER->stack().push(pExpressionStatementList);
+	}
+	;
+
+empty_statement
+	: ';'
+	{
+		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcNoChange>::create();
+		ASSERT(pCalc);
+
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	| error ';'
+	{
+		PARSER->error().error(@1, _T("Ошибка в инструкции"));
+	}
+	;
+
+equal_statement
+	: RDO_IDENTIF increment_or_decrement_type
+	{
+		LPRDOValue              pParamName = PARSER->stack().pop<RDOValue>($1);
+		tstring                 paramName  = pParamName->value().getIdentificator();
+		rdo::runtime::EqualType equalType  = static_cast<rdo::runtime::EqualType>($2);
+		LPContext pContext = PARSER->context();
+		ASSERT(pContext);
+		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
+		ASSERT(pContextMemory);
+		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
+		ASSERT(pLocalVariableListStack);
+		LPLocalVariable pLocalVariable = pLocalVariableListStack->findLocalVariable(paramName);
+		rdo::runtime::LPRDOCalc pCalc;
+		LPTypeInfo pLeftArithmType;
+		if(pLocalVariable)
+		{
+			pLeftArithmType = pLocalVariable->getTypeInfo();
+
+			switch (equalType)
+			{
+				case rdo::runtime::ET_INCR:
+				{
+					pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::ET_INCR> >::create(paramName);
+					break;
+				}
+				case rdo::runtime::ET_DECR:
+				{
+					pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::ET_DECR> >::create(paramName);
+					break;
+				}
+				default:
+				{
+					NEVER_REACH_HERE;
+				}
+			}
+		}
+		else
+		{
+			LPRDORelevantResource pRelRes = PARSER->getLastPATPattern()->m_pCurrRelRes;
+			ASSERT(pRelRes);
+			LPRDORTPParam pParam = pRelRes->getType()->findRTPParam(paramName);
+			if (!pParam)
+			{
+				PARSER->error().error(@1, rdo::format(_T("Неизвестный параметр: %s"), paramName.c_str()));
+			}
+
+			pLeftArithmType = pParam->getTypeInfo();
+
+			switch (equalType)
+			{
+				case rdo::runtime::ET_INCR:
+				{
+					pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::ET_INCR> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName));
+					break;
+				}
+				case rdo::runtime::ET_DECR:
+				{
+					pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::ET_DECR> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName));
+					break;
+				}
+				default:
+				{
+					NEVER_REACH_HERE;
+				}
+			}
+			ASSERT(pCalc);
+
+			//! Проверка на диапазон
+			LPRDOTypeIntRange pTypeIntRange = pParam->getTypeInfo()->type().object_dynamic_cast<RDOTypeIntRange>();
+			if (pTypeIntRange)
+			{
+				pCalc = rdo::Factory<rdo::runtime::RDOCalcCheckRange>::create(pTypeIntRange->range()->getMin()->value(), pTypeIntRange->range()->getMax()->value(), pCalc);
+			}
+
+			LPRDOTypeRealRange pTypeRealRange = pParam->getTypeInfo()->type().object_dynamic_cast<RDOTypeRealRange>();
+			if (pTypeRealRange)
+			{
+				pCalc = rdo::Factory<rdo::runtime::RDOCalcCheckRange>::create(pTypeRealRange->range()->getMin()->value(), pTypeRealRange->range()->getMax()->value(), pCalc);
+			}
+		}
+
+		tstring oprStr;
+		switch (equalType)
+		{
+			case rdo::runtime::ET_INCR:
+			{
+				oprStr = _T("++");
+				break;
+			}
+			case rdo::runtime::ET_DECR:
+			{
+				oprStr = _T("--");
+				break;
+			}
+			default:
+			{
+				oprStr = _T("");
+				break;
+			}
+		}
+		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @2, rdo::format(_T("%s %s"), paramName.c_str(), oprStr.c_str())));
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pLeftArithmType, pCalc, pCalc->srcInfo());
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	| RDO_IDENTIF param_equal_type fun_arithm
+	{
+		LPRDOValue              pParamName   = PARSER->stack().pop<RDOValue>($1);
+		tstring                 paramName    = pParamName->value().getIdentificator();
+		rdo::runtime::EqualType equalType    = static_cast<rdo::runtime::EqualType>($2);
+		LPRDOFUNArithm          pRightArithm = PARSER->stack().pop<RDOFUNArithm>($3);
+		LPContext pContext = PARSER->context();
+		ASSERT(pContext);
+		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
+		ASSERT(pContextMemory);
+		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
+		ASSERT(pLocalVariableListStack);
+		LPLocalVariable pLocalVariable = pLocalVariableListStack->findLocalVariable(paramName);
+		rdo::runtime::LPRDOCalc pCalc;
+		rdo::runtime::LPRDOCalc pCalcRight;
+		LPTypeInfo pLeftArithmType;
+		if (pLocalVariable)
+		{
+			pLeftArithmType = pLocalVariable->getTypeInfo();
+
+			pCalcRight = pRightArithm->createCalc(pLocalVariable->getTypeInfo());
+			switch (equalType)
+			{
+				case rdo::runtime::ET_NOCHANGE:
+				{
+					break;
+				}
+				case rdo::runtime::ET_EQUAL:
+				{
+					pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::ET_EQUAL> >::create(paramName, pCalcRight);
+					break;
+				}
+				case rdo::runtime::ET_PLUS:
+				{
+					pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::ET_PLUS> >::create(paramName, pCalcRight);
+					break;
+				}
+				case rdo::runtime::ET_MINUS:
+				{
+					pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::ET_MINUS> >::create(paramName, pCalcRight);
+					break;
+				}
+				case rdo::runtime::ET_MULTIPLY:
+				{
+					pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::ET_MULTIPLY> >::create(paramName, pCalcRight);
+					break;
+				}
+				case rdo::runtime::ET_DIVIDE:
+				{
+					pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::ET_DIVIDE> >::create(paramName, pCalcRight);
+					break;
+				}
+				default:
+				{
+					NEVER_REACH_HERE;
+				}
+			}
+		}
+		else
+		{
+			LPRDORelevantResource pRelRes = PARSER->getLastPATPattern()->m_pCurrRelRes;
+			ASSERT(pRelRes);
+			LPRDORTPParam pParam = pRelRes->getType()->findRTPParam(paramName);
+			if (!pParam)
+			{
+				PARSER->error().error(@1, rdo::format(_T("Неизвестный параметр: %s"), paramName.c_str()));
+			}
+
+			pLeftArithmType = pParam->getTypeInfo();
+
+			pCalcRight = pRightArithm->createCalc(pParam->getTypeInfo());
+			switch (equalType)
+			{
+				case rdo::runtime::ET_NOCHANGE:
+				{
+					break;
+				}
+				case rdo::runtime::ET_EQUAL:
+				{
+					pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::ET_EQUAL> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
+					ASSERT(pCalc);
+					pCalc->setSrcInfo(RDOParserSrcInfo(@1, rdo::format(_T("%s.%s"), pRelRes->src_text().c_str(), paramName.c_str())));
+
+					LPExpression pExpressionLeft = rdo::Factory<Expression>::create(
+						pParam->getTypeInfo(),
+						pCalc,
+						pCalc->srcInfo()
+					);
+					ASSERT(pExpressionLeft);
+
+					LPRDOFUNArithm pArithmLeft = rdo::Factory<RDOFUNArithm>::create(pExpressionLeft);
+					ASSERT(pArithmLeft);
+					pArithmLeft->setEqual(pRightArithm);
+
+					pRelRes->getParamSetList().insert(pParam);
+					break;
+				}
+				case rdo::runtime::ET_PLUS:
+				{
+					pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::ET_PLUS> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
+					break;
+				}
+				case rdo::runtime::ET_MINUS:
+				{
+					pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::ET_MINUS> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
+					break;
+				}
+				case rdo::runtime::ET_MULTIPLY:
+				{
+					pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::ET_MULTIPLY> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
+					break;
+				}
+				case rdo::runtime::ET_DIVIDE:
+				{
+					pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::ET_DIVIDE> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pCalcRight);
+					break;
+				}
+				default:
+				{
+					NEVER_REACH_HERE;
+				}
+			}
+			ASSERT(pCalc);
+
+			//! Проверка на диапазон
+			LPRDOTypeIntRange pTypeIntRange = pParam->getTypeInfo()->type().object_dynamic_cast<RDOTypeIntRange>();
+			if (pTypeIntRange)
+			{
+				pCalc = rdo::Factory<rdo::runtime::RDOCalcCheckRange>::create(pTypeIntRange->range()->getMin()->value(), pTypeIntRange->range()->getMax()->value(), pCalc);
+			}
+
+			LPRDOTypeRealRange pTypeRealRange = pParam->getTypeInfo()->type().object_dynamic_cast<RDOTypeRealRange>();
+			if (pTypeRealRange)
+			{
+				pCalc = rdo::Factory<rdo::runtime::RDOCalcCheckRange>::create(pTypeRealRange->range()->getMin()->value(), pTypeRealRange->range()->getMax()->value(), pCalc);
+			}
+		}
+
+		tstring oprStr;
+		switch (equalType)
+		{
+			case rdo::runtime::ET_EQUAL:
+			{
+				oprStr = _T("=");
+				break;
+			}
+			case rdo::runtime::ET_PLUS:
+			{
+				oprStr = _T("+=");
+				break;
+			}
+			case rdo::runtime::ET_MINUS:
+			{
+				oprStr = _T("-=");
+				break;
+			}
+			case rdo::runtime::ET_MULTIPLY:
+			{
+				oprStr = _T("*=");
+				break;
+			}
+			case rdo::runtime::ET_DIVIDE:
+			{
+				oprStr = _T("/=");
+				break;
+			}
+			default:
+			{
+				oprStr = _T("");
+				break;
+			}
+		}
+		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @3, rdo::format(_T("%s %s %s"), paramName.c_str(), oprStr.c_str(), pCalcRight->srcInfo().src_text().c_str())));
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pLeftArithmType, pCalc, pCalc->srcInfo());
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	| RDO_IDENTIF param_equal_type error
+	{
+		PARSER->error().error(@3, _T("Ошибка в арифметическом выражении"));
+	}
+	;
+
+increment_or_decrement_type
+	: RDO_IncrEqual
+	{
+		$$ = rdo::runtime::ET_INCR;
+	}
+	| RDO_DecrEqual
+	{
+		$$ = rdo::runtime::ET_DECR;
+	}
+	;
+
+param_equal_type
+	: RDO_set
+	{
+		$$ = rdo::runtime::ET_EQUAL;
+	}
+	| '='
+	{
+		$$ = rdo::runtime::ET_EQUAL;
+	}
+	| RDO_PlusEqual
+	{
+		$$ = rdo::runtime::ET_PLUS;
+	}
+	| RDO_MinusEqual
+	{
+		$$ = rdo::runtime::ET_MINUS;
+	}
+	| RDO_MultiplyEqual
+	{
+		$$ = rdo::runtime::ET_MULTIPLY;
+	}
+	| RDO_DivideEqual
+	{
+		$$ = rdo::runtime::ET_DIVIDE;
+	}
+	;
+
+set_array_item_statement
+	: RDO_IDENTIF '[' fun_arithm ']' '=' fun_arithm
+	{
+		LPRDOValue     pParamName   = PARSER->stack().pop<RDOValue>($1);
+		ASSERT(pParamName);
+		LPRDOFUNArithm pArrayArithm = RDOFUNArithm::generateByIdentificator(pParamName);
+		LPRDOFUNArithm pArithmInd   = PARSER->stack().pop<RDOFUNArithm>($3);
+		LPRDOFUNArithm pRightArithm = PARSER->stack().pop<RDOFUNArithm>($6);
+		ASSERT(pArrayArithm);
+		ASSERT(pArithmInd  );
+		ASSERT(pRightArithm);
+
+		if (!pArrayArithm->typeInfo()->type().object_dynamic_cast<RDOArrayType>())
+		{
+			PARSER->error().error(@1, rdo::format(_T("'%s' не является массивом."), pParamName->value().getIdentificator().c_str()));
+		}
+
+		LPRDOType pType = pArrayArithm->typeInfo()->type();
+		ASSERT(pType);
+		LPRDOArrayType pArrayType = pType.object_dynamic_cast<RDOArrayType>();
+		ASSERT(pArrayType);
+
+		LPTypeInfo pItemType = pArrayType->getItemType()->type_cast(pRightArithm->typeInfo(), RDOParserSrcInfo(@1));
+		ASSERT(pItemType);
+
+		rdo::runtime::LPRDOCalc pArrayItemCalc = rdo::Factory<rdo::runtime::RDOCalcSetArrayItem>::create(pArrayArithm->calc(), pArithmInd->calc(), pRightArithm->calc());
+		ASSERT(pArrayItemCalc);
+		
+		tstring   paramName = pParamName->value().getIdentificator();
+		LPContext pContext  = PARSER->context();
+		ASSERT(pContext);
+		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
+		ASSERT(pContextMemory);
+		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
+		ASSERT(pLocalVariableListStack);
+		LPLocalVariable pLocalVariable = pLocalVariableListStack->findLocalVariable(paramName);
+		rdo::runtime::LPRDOCalc pCalc;
+		if (pLocalVariable)
+		{
+			pCalc = rdo::Factory<rdo::runtime::RDOCalcSetLocalVariable<rdo::runtime::ET_EQUAL> >::create(paramName, pArrayItemCalc);
+		}
+		else
+		{
+			LPRDORelevantResource pRelRes = PARSER->getLastPATPattern()->m_pCurrRelRes;
+			ASSERT(pRelRes);
+			LPRDORTPParam pParam = pRelRes->getType()->findRTPParam(paramName);
+			ASSERT(pParam);
+
+			pCalc = rdo::Factory<rdo::runtime::RDOSetRelResParamCalc<rdo::runtime::ET_EQUAL> >::create(pRelRes->m_relResID, pRelRes->getType()->getRTPParamNumber(paramName), pArrayItemCalc);
+			ASSERT(pCalc);
+			pCalc->setSrcInfo(RDOParserSrcInfo(@1, rdo::format(_T("%s.%s"), pRelRes->src_text().c_str(), paramName.c_str())));
+		}
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pArrayArithm->typeInfo(), pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	;
+
+local_variable_declaration
+	: type_declaration init_declaration_list
+	{
+		LPTypeInfo pType = PARSER->stack().pop<TypeInfo>($1);
+		ASSERT(pType);
+
+		rdo::runtime::LPRDOCalc pCalc = PARSER->stack().pop<rdo::runtime::RDOCalc>($2);
+		ASSERT(pCalc);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1, @2));
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+
+		PARSER->contextStack()->pop();
+	}
+	;
+
+type_declaration
+	: RDO_integer
+	{
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__int>(RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
+		ASSERT(pTypeContext);
+
+		PARSER->contextStack()->push(pTypeContext);
+		$$ = PARSER->stack().push(pType);
+	}
+	| RDO_real
+	{
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__real>(RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
+		ASSERT(pTypeContext);
+
+		PARSER->contextStack()->push(pTypeContext);
+		$$ = PARSER->stack().push(pType);
+	}
+	| RDO_string
+	{
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__string>(RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
+		ASSERT(pTypeContext);
+
+		PARSER->contextStack()->push(pTypeContext);
+		$$ = PARSER->stack().push(pType);
+	}
+	| param_type_array
+	{
+		LPRDOArrayType pArray = PARSER->stack().pop<RDOArrayType>($1);
+		ASSERT(pArray);
+
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pArray, RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
+		ASSERT(pTypeContext);
+
+		PARSER->contextStack()->push(pTypeContext);
+		$$ = PARSER->stack().push(pType);
+	}
+	| RDO_bool
+	{
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__bool>(RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
+		ASSERT(pTypeContext);
+
+		PARSER->contextStack()->push(pTypeContext);
+		$$ = PARSER->stack().push(pType);
+	}
+	| param_type_enum
+	{
+		LEXER->enumReset();
+		LPRDOEnumType pEnum = PARSER->stack().pop<RDOEnumType>($1);
+		ASSERT(pEnum);
+
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pEnum, RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
+		ASSERT(pTypeContext);
+
+		PARSER->contextStack()->push(pTypeContext);
+		$$ = PARSER->stack().push(pType);
+	}
+	| param_type_such_as
+	{
+		LPTypeInfo pTypeSuchAs = PARSER->stack().pop<TypeInfo>($1);
+		ASSERT(pTypeSuchAs);
+
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pTypeSuchAs->type(), RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
+		ASSERT(pTypeContext);
+
+		PARSER->contextStack()->push(pTypeContext);
+		$$ = PARSER->stack().push(pType);
+	}
+	;
+
+init_declaration_list
+	: init_declaration
+	{
+		LPVariableWrapper pVariableWrapper = PARSER->stack().pop<VariableWrapper>($1);
+		ASSERT(pVariableWrapper);
+
+		LPLocalVariable pLocalVariable = pVariableWrapper->getSecond();
+		ASSERT(pLocalVariable);
+
+		LPContext pContext = PARSER->context();
+		ASSERT(pContext);
+
+		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
+		ASSERT(pContextMemory);
+
+		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
+		ASSERT(pLocalVariableListStack);
+
+		pLocalVariableListStack->append(pLocalVariable);
+
+		rdo::runtime::LPRDOCalc pCalc = pVariableWrapper->getFirst();
+		ASSERT(pCalc);
+
+		rdo::runtime::LPRDOCalcLocalVariableList pCalcLocalVariableList = rdo::Factory<rdo::runtime::RDOCalcLocalVariableList>::create();
+		ASSERT(pCalcLocalVariableList);
+
+		pCalcLocalVariableList->addCalcLocalVariable(pCalc);
+
+		$$ = PARSER->stack().push(pCalcLocalVariableList);
+	}
+	| init_declaration_list ',' init_declaration
+	{
+		LPVariableWrapper pVariableWrapper = PARSER->stack().pop<VariableWrapper>($3);
+		ASSERT(pVariableWrapper);
+
+		LPLocalVariable pLocalVariable = pVariableWrapper->getSecond();
+		ASSERT(pLocalVariable);
+
+		LPContext pContext = PARSER->context();
+		ASSERT(pContext);
+
+		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
+		ASSERT(pContextMemory);
+
+		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
+		ASSERT(pLocalVariableListStack);
+
+		pLocalVariableListStack->append(pLocalVariable);
+
+		rdo::runtime::LPRDOCalc pCalc = pVariableWrapper->getFirst();
+		ASSERT(pCalc);
+
+		rdo::runtime::LPRDOCalcLocalVariableList pCalcLocalVariableList = PARSER->stack().pop<rdo::runtime::RDOCalcLocalVariableList>($1);
+		ASSERT(pCalcLocalVariableList);
+
+		pCalcLocalVariableList->addCalcLocalVariable(pCalc);
+
+		$$ = PARSER->stack().push(pCalcLocalVariableList);
+	}
+	;
+
+init_declaration
+	: RDO_IDENTIF
+	{
+		LPRDOValue pVariableName = PARSER->stack().pop<RDOValue>($1);
+		ASSERT(pVariableName);
+
+		LPContext pContext = PARSER->context();
+		ASSERT(pContext);
+
+		LPTypeContext pTypeContext = pContext.object_static_cast<TypeContext>();
+		ASSERT(pTypeContext);
+
+		LPTypeInfo pTypeInfo = pTypeContext->getTypeInfo();
+		ASSERT(pTypeInfo);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(
+			pTypeInfo,
+			rdo::Factory<rdo::runtime::RDOCalcConst>::create(pTypeInfo->type()->get_default()),
+			pVariableName->src_info()
+		);
+		ASSERT(pExpression);
+
+		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(pVariableName, pExpression);
+		ASSERT(pLocalVariable);
+
+		rdo::runtime::LPRDOCalcCreateLocalVariable pCalcCreateLocalVariable = rdo::Factory<rdo::runtime::RDOCalcCreateLocalVariable>::create(pLocalVariable->getName(), pLocalVariable->getExpression()->calc());
+		ASSERT(pCalcCreateLocalVariable);
+
+		LPVariableWrapper pVariableWrapper = rdo::Factory<VariableWrapper>::create(pCalcCreateLocalVariable, pLocalVariable);
+		ASSERT(pVariableWrapper);
+
+		$$ = PARSER->stack().push(pVariableWrapper);
+	}
+	| RDO_IDENTIF '=' fun_arithm
+	{
+		LPRDOValue pVariableName = PARSER->stack().pop<RDOValue>($1);
+		ASSERT(pVariableName);
+
+		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm);
+
+		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(pVariableName, pArithm->expression());
+		ASSERT(pLocalVariable);
+
+		rdo::runtime::LPRDOCalcCreateLocalVariable pCalcCreateLocalVariable = rdo::Factory<rdo::runtime::RDOCalcCreateLocalVariable>::create(pLocalVariable->getName(), pLocalVariable->getExpression()->calc());
+		ASSERT(pCalcCreateLocalVariable);
+
+		LPVariableWrapper pVariableWrapper = rdo::Factory<VariableWrapper>::create(pCalcCreateLocalVariable, pLocalVariable);
+		ASSERT(pVariableWrapper);
+
+		$$ = PARSER->stack().push(pVariableWrapper);
+	}
+	;
+
+if_else_statement
+	: if_statement
+	{
+		PARSER->contextStack()->pop();
+	}
+	| if_statement RDO_else statement
+	{
+		LPExpression pExpression = PARSER->stack().pop<Expression>($1);
+		ASSERT(pExpression);
+
+		rdo::runtime::LPRDOCalcIf pCalc = pExpression->calc().object_dynamic_cast<rdo::runtime::RDOCalcIf>();
+		ASSERT(pCalc);
+
+		if (!pCalc->hasElse())
+		{
+			LPExpression pExpressionStatement = PARSER->stack().pop<Expression>($3);
+			ASSERT(pExpressionStatement);
+
+			rdo::runtime::LPRDOCalc pCalcStatement = pExpressionStatement->calc();
+			ASSERT(pCalcStatement);
+
+			pCalc->setElseStatement(pCalcStatement);
+
+			LPContextReturnable pContextReturnableChild = PARSER->context()->cast<ContextReturnable>();
+			ASSERT(pContextReturnableChild);
+
+			PARSER->contextStack()->pop();
+
+			LPContextReturnable pContextReturnableParent = PARSER->context()->cast<ContextReturnable>();
+			ASSERT(pContextReturnableParent);
+
+			pContextReturnableParent->addContext(pContextReturnableChild);
+
+			$$ = PARSER->stack().push(pExpression);
+		}
+		else
+		{
+			PARSER->error().error(@2, rdo::format(_T("С одним If нельзя использовать больше одного Else")));
+		}
+	}
+	;
+
+if_statement
+	: if_header statement
+	{
+		LPExpression pExpression = PARSER->stack().pop<Expression>($1);
+		ASSERT(pExpression);
+
+		LPExpression pExpressionStatement = PARSER->stack().pop<Expression>($2);
+		ASSERT(pExpressionStatement);
+
+		rdo::runtime::LPRDOCalcIf pCalc = pExpression->calc().object_dynamic_cast<rdo::runtime::RDOCalcIf>();
+		ASSERT(pCalc);
+
+		rdo::runtime::LPRDOCalc pCalcStatement = pExpressionStatement->calc();
+		ASSERT(pCalcStatement);
+
+		pCalc->setThenStatement(pCalcStatement);
+
+		LPContextReturnable pContextReturnableChild = PARSER->context()->cast<ContextReturnable>();
+		ASSERT(pContextReturnableChild);
+
+		PARSER->contextStack()->pop();
+
+		LPContextReturnable pContextReturnableParent = PARSER->context()->cast<ContextReturnable>();
+		ASSERT(pContextReturnableParent);
+
+		pContextReturnableParent->addContext(pContextReturnableChild);
+
+		LPContextReturnable pContextReturnable = rdo::Factory<ContextReturnable>::create();
+		ASSERT(pContextReturnable);
+
+		PARSER->contextStack()->push(pContextReturnable);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	;
+
+if_header
+	: RDO_if '(' fun_logic ')'
+	{
+		LPRDOFUNLogic pCondition = PARSER->stack().pop<RDOFUNLogic>($3);
+		ASSERT(pCondition);
+
+		rdo::runtime::LPRDOCalc pConditionCalc = pCondition->getCalc();
+		ASSERT(pConditionCalc);
+
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcIf>::create(pConditionCalc);
+		ASSERT(pCalc);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		LPContextReturnable pContextReturnableChild = rdo::Factory<ContextReturnable>::create();
+		ASSERT(pContextReturnableChild);
+
+		PARSER->contextStack()->push(pContextReturnableChild);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	| RDO_if error fun_logic
+	{
+		PARSER->error().error(@2, _T("Ожидается открывающая скобка"));
+	}
+	| RDO_if '(' fun_logic error
+	{
+		PARSER->error().error(@4, _T("Ожидается закрывающая скобка"));
+	}
+	;
+
+for_statement
+	: for_header statement
+	{
+		LPExpression pExpressionHeader = PARSER->stack().pop<Expression>($1);
+		ASSERT(pExpressionHeader);
+
+		LPExpression pExpressionStatement = PARSER->stack().pop<Expression>($2);
+		ASSERT(pExpressionStatement);
+
+		rdo::runtime::LPRDOCalc pCalcStatementList = pExpressionStatement->calc();
+		ASSERT(pCalcStatementList);
+
+		rdo::runtime::LPRDOCalcFor pCalcFor = pExpressionHeader->calc().object_dynamic_cast<rdo::runtime::RDOCalcFor>();
+		ASSERT(pCalcFor);
+
+		pCalcFor->setStatement(pCalcStatementList);
+
+		rdo::runtime::LPRDOCalcBreakCatch pCalcBreakCatch = rdo::Factory<rdo::runtime::RDOCalcBreakCatch>::create();
+		ASSERT(pCalcBreakCatch);
+		pCalcBreakCatch->addStatementList(pCalcFor);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pExpressionStatement->typeInfo(), pCalcBreakCatch, RDOParserSrcInfo(@1, @2));
+
+		PARSER->contextStack()->pop();
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	;
+
+for_header
+	: RDO_for '(' local_variable_declaration ';' fun_logic ';' equal_statement ')'
+	{
+		LPExpression pDeclarationExpression = PARSER->stack().pop<Expression>($3);
+		ASSERT(pDeclarationExpression);
+
+		LPRDOFUNLogic pCondition = PARSER->stack().pop<RDOFUNLogic>($5);
+		ASSERT(pCondition);
+		
+		rdo::runtime::LPRDOCalc pConditionCalc = pCondition->getCalc();
+		ASSERT(pConditionCalc);
+
+		LPExpression pEqualExpression = PARSER->stack().pop<Expression>($7);
+		ASSERT(pEqualExpression);
+
+		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcFor>::create(
+			pDeclarationExpression->calc(),
+			pConditionCalc                ,
+			pEqualExpression->calc()      );
+		ASSERT(pCalc);
+
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1, @8));
+		ASSERT(pType);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1, @8));
+
+		LPContextBreakable pContextBreakable = rdo::Factory<ContextBreakable>::create();
+		ASSERT(pContextBreakable);
+
+		PARSER->contextStack()->push(pContextBreakable);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	| RDO_for '(' equal_statement ';' fun_logic ';' equal_statement ')'
+	{
+		LPExpression pInitExpression = PARSER->stack().pop<Expression>($3);
+		ASSERT(pInitExpression);
+
+		LPRDOFUNLogic pCondition = PARSER->stack().pop<RDOFUNLogic>($5);
+		ASSERT(pCondition);
+
+		rdo::runtime::LPRDOCalc pConditionCalc = pCondition->getCalc();
+		ASSERT(pConditionCalc);
+
+		LPExpression pEqualExpression = PARSER->stack().pop<Expression>($7);
+		ASSERT(pEqualExpression);
+
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1, @8));
+		ASSERT(pType);
+
+		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcFor>::create(
+			pInitExpression->calc()     ,
+			pConditionCalc              ,
+			pEqualExpression->calc()    );
+		ASSERT(pCalc);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1, @8));
+
+		LPContextBreakable pContextBreakable = rdo::Factory<ContextBreakable>::create();
+		ASSERT(pContextBreakable);
+
+		PARSER->contextStack()->push(pContextBreakable);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	;
+
+break_statement
+	:RDO_Break
+	{
+		LPContext pContext = RDOParser::s_parser()->context();
+		ASSERT(pContext);
+
+		if (pContext->cast<ContextBreakable>())
+		{
+			rdo::runtime::LPRDOCalc pCalcBreak = rdo::Factory<rdo::runtime::RDOCalcFunBreak>::create();
+			ASSERT(pCalcBreak);
+
+			LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
+			ASSERT(pType);
+
+			LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalcBreak, RDOParserSrcInfo(@1));
+			ASSERT(pExpression);
+
+			$$ = PARSER->stack().push(pExpression);
+		}
+		else
+		{
+			PARSER->error().error(@1, _T("Нельзя использовать break вне цикла"));
+		}
+	}
+	;
+
+// --------------------------------------------------------------------------------
+// -------------------- Описание типа параметра
+// --------------------------------------------------------------------------------
+param_type
+	: RDO_integer param_type_range
+	{
+		LPRDOTypeRangeRange pRange = PARSER->stack().pop<RDOTypeRangeRange>($2);
+		LPTypeInfo pType;
+		if (pRange)
+		{
+			if (pRange->getMin()->typeID() != rdo::runtime::RDOType::t_int ||
+			    pRange->getMax()->typeID() != rdo::runtime::RDOType::t_int)
+			{
+				PARSER->error().error(@2, _T("Диапазон целого типа должен быть целочисленным"));
+			}
+			LPRDOTypeIntRange pIntRange = rdo::Factory<RDOTypeIntRange>::create(pRange);
+			ASSERT(pIntRange);
+			pType = rdo::Factory<TypeInfo>::create(pIntRange, RDOParserSrcInfo(@1, @2));
+		}
+		else
+		{
+			pType = rdo::Factory<TypeInfo>::delegate<RDOType__int>(RDOParserSrcInfo(@1, @2));
+		}
+		ASSERT(pType);
+		$$ = PARSER->stack().push(pType);
+	}
+	| RDO_real param_type_range
+	{
+		LPRDOTypeRangeRange pRange = PARSER->stack().pop<RDOTypeRangeRange>($2);
+		LPTypeInfo pType;
+		if (pRange)
+		{
+			LPRDOTypeRealRange pRealRange = rdo::Factory<RDOTypeRealRange>::create(pRange);
+			ASSERT(pRealRange);
+			pType = rdo::Factory<TypeInfo>::create(pRealRange, RDOParserSrcInfo(@1, @2));
+		}
+		else
+		{
+			pType = rdo::Factory<TypeInfo>::delegate<RDOType__real>(RDOParserSrcInfo(@1, @2));
+		}
+		ASSERT(pType);
+		$$ = PARSER->stack().push(pType);
+	}
+	| RDO_string
+	{
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__string>(RDOParserSrcInfo(@1));
+		ASSERT(pType);
+		$$ = PARSER->stack().push(pType);
+	}
+	| param_type_array
+	{
+		LEXER->array_cnt_rst();
+		LPRDOArrayType pArray = PARSER->stack().pop<RDOArrayType>($1);
+		ASSERT(pArray);
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pArray, RDOParserSrcInfo(@1));
+		ASSERT(pType);
+		$$ = PARSER->stack().push(pType);
+	}
+	| RDO_bool
+	{
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__bool>(RDOParserSrcInfo(@1));
+		ASSERT(pType);
+		$$ = PARSER->stack().push(pType);
+	}
+	| param_type_enum
+	{
+		LEXER->enumReset();
+		LPRDOEnumType pEnum = PARSER->stack().pop<RDOEnumType>($1);
+		ASSERT(pEnum);
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pEnum, RDOParserSrcInfo(@1));
+		ASSERT(pType);
+		$$ = PARSER->stack().push(pType);
+	}
+	| RDO_IDENTIF
+	{
+		LPRDOValue pValue = PARSER->stack().pop<RDOValue>($1);
+		ASSERT(pValue);
+
+		LPContext pContext = RDOParser::s_parser()->context();
+		ASSERT(pContext);
+
+		pContext = pContext->find(pValue);
+		ASSERT(pContext);
+
+		LPExpression pExpression = pContext->create(pValue);
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression->typeInfo());
+	}
+	| param_type_such_as
+	{
+		LPRDOTypeParamSuchAs pTypeSuchAs = PARSER->stack().pop<RDOTypeParamSuchAs>($1);
+		ASSERT(pTypeSuchAs);
+		LPTypeInfo pType = pTypeSuchAs.object_parent_cast<TypeInfo>();
+		ASSERT(pType);
+		$$ = PARSER->stack().push(pType);
+	}
+	;
+
+param_type_range
+	: /* empty */
+	{
+		$$ = PARSER->stack().push<RDOTypeRangeRange>(LPRDOTypeRangeRange());
+	}
+	| '[' RDO_INT_CONST RDO_dblpoint RDO_INT_CONST ']'
+	{
+		LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(PARSER->stack().pop<RDOValue>($2), PARSER->stack().pop<RDOValue>($4), RDOParserSrcInfo(@1, @5));
+		ASSERT(pRange);
+		pRange->checkRange();
+		$$ = PARSER->stack().push(pRange);
+	}
+	| '[' RDO_REAL_CONST RDO_dblpoint RDO_REAL_CONST ']'
+	{
+		LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(PARSER->stack().pop<RDOValue>($2), PARSER->stack().pop<RDOValue>($4), RDOParserSrcInfo(@1, @5));
+		ASSERT(pRange);
+		pRange->checkRange();
+		$$ = PARSER->stack().push(pRange);
+	}
+	| '[' RDO_REAL_CONST RDO_dblpoint RDO_INT_CONST ']'
+	{
+		LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(PARSER->stack().pop<RDOValue>($2), PARSER->stack().pop<RDOValue>($4), RDOParserSrcInfo(@1, @5));
+		ASSERT(pRange);
+		pRange->checkRange();
+		$$ = PARSER->stack().push(pRange);
+	}
+	| '[' RDO_INT_CONST RDO_dblpoint RDO_REAL_CONST ']'
+	{
+		LPRDOTypeRangeRange pRange = rdo::Factory<RDOTypeRangeRange>::create(PARSER->stack().pop<RDOValue>($2), PARSER->stack().pop<RDOValue>($4), RDOParserSrcInfo(@1, @5));
+		ASSERT(pRange);
+		pRange->checkRange();
+		$$ = PARSER->stack().push(pRange);
+	}
+	| '[' RDO_REAL_CONST RDO_dblpoint RDO_REAL_CONST error
+	{
+		PARSER->error().error(@4, _T("Диапазон задан неверно"));
+	}
+	| '[' RDO_REAL_CONST RDO_dblpoint RDO_INT_CONST error
+	{
+		PARSER->error().error(@4, _T("Диапазон задан неверно"));
+	}
+	| '[' RDO_INT_CONST RDO_dblpoint RDO_REAL_CONST error
+	{
+		PARSER->error().error(@4, _T("Диапазон задан неверно"));
+	}
+	| '[' RDO_INT_CONST RDO_dblpoint RDO_INT_CONST error
+	{
+		PARSER->error().error(@4, _T("Диапазон задан неверно"));
+	}
+	| '[' RDO_REAL_CONST RDO_dblpoint error
+	{
+		PARSER->error().error(@4, _T("Диапазон задан неверно"));
+	}
+	| '[' RDO_INT_CONST RDO_dblpoint error
+	{
+		PARSER->error().error(@4, _T("Диапазон задан неверно"));
+	}
+	| '[' error
+	{
+		PARSER->error().error(@2, _T("Диапазон задан неверно"));
+	}
+	;
+
+param_type_enum
+	: '(' param_type_enum_list ')'
+	{
+		LPRDOEnumType pEnum = PARSER->stack().pop<RDOEnumType>($2);
+		ASSERT(pEnum);
+		$$ = PARSER->stack().push(pEnum);
+	}
+	| '(' param_type_enum_list error
+	{
+		PARSER->error().error(@2, _T("Перечисление должно заканчиваться скобкой"));
+	}
+	;
+
+param_type_enum_list
+	: RDO_IDENTIF
+	{
+		LPRDOEnumType pEnum = rdo::Factory<RDOEnumType>::create();
+		ASSERT(pEnum);
+		pEnum->add(PARSER->stack().pop<RDOValue>($1));
+		LEXER->enumBegin();
+		$$ = PARSER->stack().push(pEnum);
+	}
+	| param_type_enum_list ',' RDO_IDENTIF
+	{
+		if (!LEXER->enumEmpty())
+		{
+			LPRDOEnumType pEnum = PARSER->stack().pop<RDOEnumType>($1);
+			ASSERT(pEnum);
+			LPRDOValue pValue = PARSER->stack().pop<RDOValue>($3);
+			ASSERT(pValue);
+			pEnum->add(pValue);
+			$$ = PARSER->stack().push(pEnum);
+		}
+		else
+		{
+			PARSER->error().error(@3, _T("Ошибка в описании значений перечислимого типа"));
+		}
+	}
+	| param_type_enum_list RDO_IDENTIF
+	{
+		if (!LEXER->enumEmpty())
+		{
+			LPRDOEnumType pEnum = PARSER->stack().pop<RDOEnumType>($1);
+			ASSERT(pEnum);
+			LPRDOValue pValue = PARSER->stack().pop<RDOValue>($2);
+			ASSERT(pValue);
+			pEnum->add(pValue);
+			$$ = PARSER->stack().push(pEnum);
+			PARSER->error().warning(@1, rdo::format(_T("Пропущена запятая перед: %s"), pValue->value().getIdentificator().c_str()));
+		}
+		else
+		{
+			PARSER->error().error(@2, _T("Ошибка в описании значений перечислимого типа"));
+		}
+	}
+	| param_type_enum_list ',' RDO_INT_CONST
+	{
+		PARSER->error().error(@3, _T("Значение перечислимого типа не может быть цифрой"));
+	}
+	| param_type_enum_list ',' RDO_REAL_CONST
+	{
+		PARSER->error().error(@3, _T("Значение перечислимого типа не может быть цифрой"));
+	}
+	| param_type_enum_list RDO_INT_CONST
+	{
+		PARSER->error().error(@2, _T("Значение перечислимого типа не может быть цифрой"));
+	}
+	| param_type_enum_list RDO_REAL_CONST
+	{
+		PARSER->error().error(@2, _T("Значение перечислимого типа не может быть цифрой"));
+	}
+	| RDO_INT_CONST
+	{
+		PARSER->error().error(@1, _T("Значение перечислимого типа не может начинаться с цифры"));
+	}
+	| RDO_REAL_CONST
+	{
+		PARSER->error().error(@1, _T("Значение перечислимого типа не может начинаться с цифры"));
+	}
+	;
+
+param_type_such_as
+	: RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF
+	{
+		tstring type  = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		tstring param = PARSER->stack().pop<RDOValue>($4)->value().getIdentificator();
+		LPRDORTPResType pResType = PARSER->findRTPResType(type);
+		if (!pResType)
+		{
+			PARSER->error().error(@2, rdo::format(_T("Ссылка на неизвестный тип ресурса: %s"), type.c_str()));
+		}
+		LPRDORTPParam pRTPParam = pResType->findRTPParam(param);
+		if (!pRTPParam)
+		{
+			PARSER->error().error(@4, rdo::format(_T("Ссылка на неизвестный параметр ресурса: %s.%s"), type.c_str(), param.c_str()));
+		}
+		LPRDOParam pParam = pRTPParam.object_parent_cast<RDOParam>();
+		ASSERT(pParam);
+		LPRDOTypeParamSuchAs pTypeSuchAs = rdo::Factory<RDOTypeParamSuchAs>::create(pParam);
+		ASSERT(pTypeSuchAs);
+		$$ = PARSER->stack().push(pTypeSuchAs);
+	}
+	| RDO_such_as RDO_IDENTIF
+	{
+		tstring constName = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		LPRDOFUNConstant pConstant = PARSER->findFUNConstant(constName);
+		if (!pConstant)
+		{
+			PARSER->error().error(@2, rdo::format(_T("Ссылка на несуществующую константу: %s"), constName.c_str()));
+		}
+		LPRDOParam pParam = pConstant.object_parent_cast<RDOParam>();
+		ASSERT(pParam);
+		LPRDOTypeParamSuchAs pTypeSuchAs = rdo::Factory<RDOTypeParamSuchAs>::create(pParam);
+		ASSERT(pTypeSuchAs);
+		$$ = PARSER->stack().push(pTypeSuchAs);
+	}
+	| RDO_such_as RDO_IDENTIF '.' error
+	{
+		tstring type = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		LPRDORTPResType pResType = PARSER->findRTPResType(type);
+		if (!pResType)
+		{
+			PARSER->error().error(@2, rdo::format(_T("Ссылка на неизвестный тип ресурса: %s"), type.c_str()));
+		}
+		else
+		{
+			PARSER->error().error(@4, _T("Ошибка при указании параметра"));
+		}
+	}
+	| RDO_such_as error
+	{
+		PARSER->error().error(@2, _T("После ключевого слова such_as необходимо указать тип и параметер ресурса для ссылки"));
+	}
+	;
+
+param_type_array
+	: RDO_array '<' param_type '>'
+	{
+		LPTypeInfo pParamType = PARSER->stack().pop<TypeInfo>($3);
+		ASSERT(pParamType);
+		LPRDOArrayType pArray = rdo::Factory<RDOArrayType>::create(pParamType, RDOParserSrcInfo(@1, @4));
+		$$ = PARSER->stack().push(pArray);
 	}
 	;
 

@@ -149,9 +149,7 @@
 %token RDO_Multithreading
 
 %token RDO_Frame
-%token RDO_Show_if
 %token RDO_Back_picture
-%token RDO_Show
 %token RDO_frm_cell
 %token RDO_text
 %token RDO_bitmap
@@ -187,6 +185,7 @@
 %token RDO_Select
 %token RDO_Size
 %token RDO_Empty
+%token RDO_Select_Array
 %token RDO_not
 %token RDO_UMINUS
 %token RDO_string
@@ -199,6 +198,9 @@
 %token RDO_QUEUE
 %token RDO_DEPART
 %token RDO_ASSIGN
+
+%token RDO_Sprite
+%token RDO_sprite_call
 
 %{
 // ---------------------------------------------------------------------------- PCH
@@ -1642,10 +1644,6 @@ equal_statement
 	| RDO_IDENTIF param_equal_type error
 	{
 		PARSER->error().error(@3, _T("Ошибка в арифметическом выражении"));
-	}
-	| RDO_IDENTIF error fun_arithm
-	{
-		PARSER->error().error(@2, _T("Ошибка в операторе присваивания"));
 	}
 	;
 

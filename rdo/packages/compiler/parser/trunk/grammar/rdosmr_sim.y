@@ -148,9 +148,7 @@
 %token RDO_Multithreading
 
 %token RDO_Frame
-%token RDO_Show_if
 %token RDO_Back_picture
-%token RDO_Show
 %token RDO_frm_cell
 %token RDO_text
 %token RDO_bitmap
@@ -198,6 +196,9 @@
 %token RDO_QUEUE
 %token RDO_DEPART
 %token RDO_ASSIGN
+
+%token RDO_Sprite
+%token RDO_sprite_call
 
 %{
 // ---------------------------------------------------------------------------- PCH
