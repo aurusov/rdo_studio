@@ -149,9 +149,7 @@
 %token RDO_Multithreading
 
 %token RDO_Frame
-%token RDO_Show_if
 %token RDO_Back_picture
-%token RDO_Show
 %token RDO_frm_cell
 %token RDO_text
 %token RDO_bitmap

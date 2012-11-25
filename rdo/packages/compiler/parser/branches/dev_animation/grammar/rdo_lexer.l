@@ -274,12 +274,8 @@ watch_stop                     return(RDO_WatchStop);
 
 $Frame                         return(RDO_Frame);
 $frame                         return(RDO_Frame);
-Show_if                        return(RDO_Show_if);
-show_if                        return(RDO_Show_if);
 $Back_picture                  return(RDO_Back_picture);
 $back_picture                  return(RDO_Back_picture);
-Show                           return(RDO_Show);
-show                           return(RDO_Show);
 frm_cell                       return(RDO_frm_cell);
 text                           return(RDO_text);
 bitmap                         return(RDO_bitmap);

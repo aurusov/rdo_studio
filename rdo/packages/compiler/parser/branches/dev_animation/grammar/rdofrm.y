@@ -149,9 +149,7 @@
 %token RDO_Multithreading
 
 %token RDO_Frame
-%token RDO_Show_if
 %token RDO_Back_picture
-%token RDO_Show
 %token RDO_frm_cell
 %token RDO_text
 %token RDO_bitmap
@@ -302,16 +300,6 @@ frm_begin
 		ASSERT(pFrame);
 		$$ = PARSER->stack().push(pFrame);
 	}
-	| RDO_Frame RDO_IDENTIF RDO_Show_if fun_logic
-	{
-		LPRDOFRMFrame pFrame = rdo::Factory<RDOFRMFrame>::create(PARSER->stack().pop<RDOValue>($2)->src_info());
-		ASSERT(pFrame);
-		$$ = PARSER->stack().push(pFrame);
-	}
-	| RDO_Frame RDO_IDENTIF RDO_Show_if error
-	{
-		PARSER->error().error(@4, _T("Ошибка в логическом выражении"))
-	}
 	;
 
 frm_background
@@ -358,14 +346,6 @@ frm_backpicture
 		ASSERT(pFrame);
 		pFrame->frame()->setBackPicture(PARSER->stack().pop<RDOValue>($2)->value().getInt(), PARSER->stack().pop<RDOValue>($3)->value().getInt());
 		$$ = PARSER->stack().push(pFrame);
-	}
-	| frm_background RDO_INT_CONST RDO_INT_CONST error
-	{
-		PARSER->error().error(@4, _T("Описание заголовка кадра окончено, ожидается ключевое слово $Show"));
-	}
-	| frm_background RDO_IDENTIF error
-	{
-		PARSER->error().error(@3, _T("Описание заголовка кадра окончено, ожидается ключевое слово $Show"));
 	}
 	| frm_background RDO_INT_CONST error
 	{
