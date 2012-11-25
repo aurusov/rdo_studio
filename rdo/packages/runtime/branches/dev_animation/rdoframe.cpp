@@ -234,10 +234,16 @@ void RDOFRMFrame::setBackPicture(int width, int height)
 
 void RDOFRMSprite::insertItem(CREF(LPRDOFRMItem) pItem)
 {
-	rdo::interface_ptr<IRDOFRMItemGetBitmap> pGetBitmap = pItem.interface_dynamic_cast<IRDOFRMItemGetBitmap>();
+	LPIRDOFRMItemGetBitmap pGetBitmap = pItem.interface_dynamic_cast<IRDOFRMItemGetBitmap>();
 	if (pGetBitmap)
 	{
-		m_getBitmapList.push_back(pGetBitmap);
+		insertGetBitmap(pGetBitmap);
+	}
+
+	LPRDOFRMRulet pRulet = pItem.object_dynamic_cast<RDOFRMRulet>();
+	if (pRulet)
+	{
+		insertRulet(pRulet);
 	}
 }
 
@@ -247,14 +253,18 @@ void RDOFRMSprite::setSpriteCalc(CREF(LPRDOCalc) pSpriteCalc)
 	m_pSpriteCalc = pSpriteCalc;
 }
 
-LPRDOCalc RDOFRMSprite::addRulet(CREF(LPRDOFRMRulet) pRulet)
+void RDOFRMSprite::insertGetBitmap(CREF(LPIRDOFRMItemGetBitmap) pGetBitmap)
+{
+	ASSERT(pGetBitmap);
+	m_getBitmapList.push_back(pGetBitmap);
+}
+
+void RDOFRMSprite::insertRulet(CREF(LPRDOFRMRulet) pRulet)
 {
 	ASSERT(pRulet);
 	std::pair<RuletList::const_iterator, rbool> result =
 		m_ruletList.insert(RuletList::value_type(pRulet->getIndex(), pRulet));
 	ASSERT(result.second);
-
-	return pRulet;
 }
 
 rbool RDOFRMSprite::checkCondition(CREF(LPRDORuntime) pRuntime)

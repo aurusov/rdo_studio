@@ -165,7 +165,6 @@ public:
 	void          setBackgroundColor(CREF(LPRDOFRMColor) pBgColor   );
 	void          insertItem        (CREF(LPRDOFRMItem)  pItem      );
 	void          setSpriteCalc     (CREF(LPRDOCalc)     pSpriteCalc);
-	LPRDOCalc     addRulet          (CREF(LPRDOFRMRulet) pRulet     );
 	rbool         checkCondition    (CREF(LPRDORuntime)  pRuntime   );
 
 	void setColorLastBG    (RDOFRMColor::ColorType type, CREF(rdo::animation::Color) lastBg);
@@ -203,6 +202,9 @@ private:
 	double                 m_lastHeight;
 	RuletList              m_ruletList;
 	GetBitmapList          m_getBitmapList;
+
+	void insertGetBitmap(CREF(LPIRDOFRMItemGetBitmap) pGetBitmap);
+	void insertRulet    (CREF(LPRDOFRMRulet)          pRulet);
 
 	DECLARE_ICalc;
 };

@@ -403,17 +403,17 @@ frm_show
 frm_item
 	: /* empty */
 	| frm_item frm_show
-	| frm_item frm_text    {CONVERTER->getLastFRMFrame()->addItem (CONVERTER->stack().pop<RDOFRMText         >($2), @2.m_last_seek);}
-	| frm_item frm_bitmap  {CONVERTER->getLastFRMFrame()->addItem (CONVERTER->stack().pop<RDOFRMBitmap       >($2), @2.m_last_seek);}
-	| frm_item frm_rect    {CONVERTER->getLastFRMFrame()->addItem (CONVERTER->stack().pop<RDOFRMRect         >($2), @2.m_last_seek);}
-	| frm_item frm_line    {CONVERTER->getLastFRMFrame()->addItem (CONVERTER->stack().pop<RDOFRMLine         >($2), @2.m_last_seek);}
-	| frm_item frm_ellipse {CONVERTER->getLastFRMFrame()->addItem (CONVERTER->stack().pop<RDOFRMEllipse      >($2), @2.m_last_seek);}
-	| frm_item frm_r_rect  {CONVERTER->getLastFRMFrame()->addItem (CONVERTER->stack().pop<RDOFRMRectRound    >($2), @2.m_last_seek);}
-	| frm_item frm_triang  {CONVERTER->getLastFRMFrame()->addItem (CONVERTER->stack().pop<RDOFRMTriang       >($2), @2.m_last_seek);}
-	| frm_item frm_s_bmp   {CONVERTER->getLastFRMFrame()->addItem (CONVERTER->stack().pop<RDOFRMBitmapStretch>($2), @2.m_last_seek);}
-	| frm_item frm_active  {CONVERTER->getLastFRMFrame()->addItem (CONVERTER->stack().pop<RDOFRMActive       >($2), @2.m_last_seek);}
-	| frm_item frm_ruler   {CONVERTER->getLastFRMFrame()->frame()->addRulet(CONVERTER->stack().pop<RDOFRMRulet>($2));}
-	| frm_item frm_space   {CONVERTER->getLastFRMFrame()->addItem (CONVERTER->stack().pop<RDOFRMSpace        >($2), @2.m_last_seek);}
+	| frm_item frm_text    {CONVERTER->getLastFRMFrame()->addItem(CONVERTER->stack().pop<RDOFRMText         >($2), @2.m_last_seek);}
+	| frm_item frm_bitmap  {CONVERTER->getLastFRMFrame()->addItem(CONVERTER->stack().pop<RDOFRMBitmap       >($2), @2.m_last_seek);}
+	| frm_item frm_rect    {CONVERTER->getLastFRMFrame()->addItem(CONVERTER->stack().pop<RDOFRMRect         >($2), @2.m_last_seek);}
+	| frm_item frm_line    {CONVERTER->getLastFRMFrame()->addItem(CONVERTER->stack().pop<RDOFRMLine         >($2), @2.m_last_seek);}
+	| frm_item frm_ellipse {CONVERTER->getLastFRMFrame()->addItem(CONVERTER->stack().pop<RDOFRMEllipse      >($2), @2.m_last_seek);}
+	| frm_item frm_r_rect  {CONVERTER->getLastFRMFrame()->addItem(CONVERTER->stack().pop<RDOFRMRectRound    >($2), @2.m_last_seek);}
+	| frm_item frm_triang  {CONVERTER->getLastFRMFrame()->addItem(CONVERTER->stack().pop<RDOFRMTriang       >($2), @2.m_last_seek);}
+	| frm_item frm_s_bmp   {CONVERTER->getLastFRMFrame()->addItem(CONVERTER->stack().pop<RDOFRMBitmapStretch>($2), @2.m_last_seek);}
+	| frm_item frm_active  {CONVERTER->getLastFRMFrame()->addItem(CONVERTER->stack().pop<RDOFRMActive       >($2), @2.m_last_seek);}
+	| frm_item frm_ruler   {CONVERTER->getLastFRMFrame()->addItem(CONVERTER->stack().pop<RDOFRMRulet        >($2), @2.m_last_seek);}
+	| frm_item frm_space   {CONVERTER->getLastFRMFrame()->addItem(CONVERTER->stack().pop<RDOFRMSpace        >($2), @2.m_last_seek);}
 	;
 
 frm_header
