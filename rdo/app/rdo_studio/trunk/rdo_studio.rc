@@ -963,8 +963,6 @@ BEGIN
             MENUITEM "FRM",                         ID_INSERT_FRM_FRM
             MENUITEM "$Frame",                      ID_INSERT_FRM_FRAME
             MENUITEM "$Back_picture",               ID_INSERT_FRM_BACKPICTURE
-            MENUITEM "Show",                        ID_INSERT_FRM_SHOW
-            MENUITEM "Show_if",                     ID_INSERT_FRM_SHOWIF
             MENUITEM "bitmap",                      ID_INSERT_FRM_BITMAP
             MENUITEM "text",                        ID_INSERT_FRM_TEXT
             MENUITEM "line",                        ID_INSERT_FRM_LINE
