@@ -45,9 +45,6 @@ public:
 	void  setFrameConditionPos(ruint firstSeek, ruint lastSeek);
 	void  onAfterBackPicture  (ruint lastSeek);
 
-	CREF(Seek) getFirstSeek() const;
-	CREF(Seek) getLastSeek () const;
-
 private:
 	RDOFRMFrame(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic = NULL);
 

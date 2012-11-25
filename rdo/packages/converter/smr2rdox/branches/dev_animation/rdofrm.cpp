@@ -107,14 +107,4 @@ void RDOFRMFrame::onAfterBackPicture(ruint lastSeek)
 	Converter::s_converter()->insertDocUpdate(pFrameConditionEndInsert);
 }
 
-CREF(RDOFRMFrame::Seek) RDOFRMFrame::getFirstSeek() const
-{
-	return m_firstSeek;
-}
-
-CREF(RDOFRMFrame::Seek) RDOFRMFrame::getLastSeek() const
-{
-	return m_lastSeek;
-}
-
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
