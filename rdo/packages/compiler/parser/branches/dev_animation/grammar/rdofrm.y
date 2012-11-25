@@ -396,19 +396,19 @@ frm_item_statement
 	;
 
 frm_item
-	: frm_text ';'
-	| frm_bitmap ';'
-	| frm_rect ';'
-	| frm_line ';'
-	| frm_circle ';'
-	| frm_ellipse ';'
-	| frm_r_rect ';'
-	| frm_triang ';'
-	| frm_s_bmp ';'
-	| frm_active ';'
-	| frm_ruler ';'
-	| frm_space ';'
-	| frm_sprite ';'
+	: frm_text
+	| frm_bitmap
+	| frm_rect
+	| frm_line
+	| frm_circle
+	| frm_ellipse
+	| frm_r_rect
+	| frm_triang
+	| frm_s_bmp
+	| frm_active
+	| frm_ruler
+	| frm_space
+	| frm_sprite
 	;
 
 frm_header
@@ -1851,7 +1851,11 @@ statement
 
 		$$ = PARSER->stack().push(pExpression);
 	}
+	| frm_item_statement ';'
 	| frm_item_statement
+	{
+		PARSER->error().error(@1, _T("Ожидается ';'"));
+	}
 	| error
 	{
 		PARSER->error().error(@1, _T("Неизвестная инструкция"));
