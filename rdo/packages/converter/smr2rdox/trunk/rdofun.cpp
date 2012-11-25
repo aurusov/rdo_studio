@@ -579,15 +579,6 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pResName, CREF(LPRDOValue) pParName)
 				}
 			}
 			break;
-
-		case rdo::converter::smr2rdox::FRM_IN:
-			if (Converter::s_converter()->getLastFRMFrame() && Converter::s_converter()->getLastFRMFrame()->frame()->getLastShow() && Converter::s_converter()->getLastFRMFrame()->frame()->getLastShow()->isShowIf())
-			{
-				m_pCalc = rdo::Factory<rdo::runtime::RDOCalcGetUnknowResParam>::create(pResName->value().getIdentificator(), pParName->value().getIdentificator());
-				m_pCalc->setSrcInfo(src_info());
-				return;
-			}
-			break;
 		}
 	}
 	Converter::s_converter()->error().error(pResName->src_info(), rdo::format(_T("Неизвестный ресурс: %s"), pResName->value().getIdentificator().c_str()));

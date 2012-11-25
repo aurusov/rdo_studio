@@ -283,7 +283,7 @@ void UpdateMove::insert(IDocument::Type type, CREF(Position) to, ruint size)
 	{
 		if (m_posTo.real())
 		{
-			if (to.begin() || to < m_posTo)
+			if (to.begin() || to <= m_posTo)
 			{
 				//! Вставка до, сдвинемся к концу
 				m_posTo += size;
