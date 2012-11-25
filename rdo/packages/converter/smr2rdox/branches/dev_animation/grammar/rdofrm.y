@@ -364,7 +364,6 @@ frm_show
 		ASSERT(pFrame);
 
 		pFrame->setShowIfBlock(RDOFRMFrame::Seek());
-		pFrame->frame()->startShow();
 	}
 	| RDO_Show_if fun_logic
 	{
@@ -394,7 +393,6 @@ frm_show
 		LPRDOFRMFrame pFrame = CONVERTER->getLastFRMFrame();
 		ASSERT(pFrame);
 		pFrame->setShowIfBlock(RDOFRMFrame::Seek(@2.m_last_seek + closeBrace.length()));
-		pFrame->frame()->startShow(CONVERTER->stack().pop<RDOFUNLogic>($2)->getCalc());
 	}
 	| RDO_Show_if error
 	{

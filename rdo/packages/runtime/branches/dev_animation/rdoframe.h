@@ -22,7 +22,6 @@
 
 OPEN_RDO_RUNTIME_NAMESPACE
 
-PREDECLARE_POINTER(RDOFRMShow);
 PREDECLARE_POINTER(RDOFRMItem);
 
 /*!
@@ -161,14 +160,11 @@ public:
 	};
 
 public:
-	LPRDOFRMShow  getLastShow       () const;
 	CREF(tstring) name              () const;
 
 	void          setBackgroundColor(CREF(LPRDOFRMColor) pBgColor   );
-	LPRDOCalc     startShow         (CREF(LPRDOCalc) pCalc = NULL   );
 	void          insertItem        (CREF(LPRDOFRMItem)  pItem      );
-	LPRDOCalc     addItem           (CREF(LPRDOCalc)     pItem      );
-	LPRDOCalc     addShow           (CREF(LPRDOFRMShow)  pShow      );
+	void          setSpriteCalc     (CREF(LPRDOCalc)     pSpriteCalc);
 	LPRDOCalc     addRulet          (CREF(LPRDOFRMRulet) pRulet     );
 	rbool         checkCondition    (CREF(LPRDORuntime)  pRuntime   );
 
@@ -190,14 +186,13 @@ protected:
 	DECLARE_IRDOFRMItemGetBitmap;
 
 private:
-	typedef std::list<LPRDOFRMShow>           ShowList;
 	typedef std::map<ruint, LPRDOFRMRulet>    RuletList;
 	typedef std::list<LPIRDOFRMItemGetBitmap> GetBitmapList;
 
 	LPRDOCalc              m_pConditionCalc;
 	LPRDOFRMColor          m_pBgColor;
 
-	ShowList               m_showList;
+	LPRDOCalc              m_pSpriteCalc;
 	rdo::animation::Color  m_colorLastBg;
 	rdo::animation::Color  m_colorLastFg;
 	rdo::animation::Color  m_colorLastBgText;
@@ -581,33 +576,6 @@ private:
 	virtual ~RDOFRMSpace();
 
 	DECLARE_ICalc;
-};
-
-/*!
-  \class     RDOFRMShow
-  \brief     Команды анимации Show и ShowIf
-*/
-CALC(RDOFRMShow)
-	IS IMPLEMENTATION_OF(IRDOFRMItemGetBitmap)
-{
-DECLARE_FACTORY(RDOFRMShow)
-public:
-	typedef std::list<LPRDOCalc> ItemList;
-
-	rbool         isShowIf      () const;
-
-	void          insertItem    (CREF(LPRDOCalc)    pItem             );
-	rbool         checkCondition(CREF(LPRDORuntime) pRuntime          );
-
-private:
-	RDOFRMShow(CREF(LPRDOCalc) pConditionCalc);
-	virtual ~RDOFRMShow();
-
-	ItemList  m_itemList;
-	LPRDOCalc m_pConditionCalc;
-
-	DECLARE_ICalc;
-	DECLARE_IRDOFRMItemGetBitmap;
 };
 
 /*!

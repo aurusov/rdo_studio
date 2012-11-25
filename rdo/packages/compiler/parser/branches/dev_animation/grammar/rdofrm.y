@@ -377,25 +377,6 @@ frm_backpicture
 	}
 	;
 
-frm_show
-	: RDO_Show
-	{
-		$$ = PARSER->stack().push(
-			rdo::Factory<rdo::runtime::RDOFRMShow>::create(rdo::runtime::LPRDOCalc())
-		);
-	}
-	| RDO_Show_if fun_logic
-	{
-		$$ = PARSER->stack().push(
-			rdo::Factory<rdo::runtime::RDOFRMShow>::create(PARSER->stack().pop<RDOFUNLogic>($2)->getCalc())
-		);
-	}
-	| RDO_Show_if error
-	{
-		PARSER->error().error(@2, _T("Ошибка в логическом выражении"))
-	}
-	;
-
 frm_item_statement
 	: frm_item
 	{
@@ -415,8 +396,7 @@ frm_item_statement
 	;
 
 frm_item
-	: frm_show
-	| frm_text ';'
+	: frm_text ';'
 	| frm_bitmap ';'
 	| frm_rect ';'
 	| frm_line ';'
@@ -459,7 +439,7 @@ frm_header
 		LPRDOFRMFrame pFrame = PARSER->stack().pop<RDOFRMFrame>($1);
 		ASSERT(pFrame);
 
-		PARSER->getLastFRMFrame()->frame()->addItem(pExpressionFrame->calc());
+		PARSER->getLastFRMFrame()->frame()->setSpriteCalc(pExpressionFrame->calc());
 
 		$$ = PARSER->stack().push(pFrame);
 	}

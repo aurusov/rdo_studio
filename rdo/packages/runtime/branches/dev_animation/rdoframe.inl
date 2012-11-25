@@ -143,11 +143,6 @@ inline RDOFRMSprite::RDOFRMRulet::~RDOFRMRulet()
 // --------------------------------------------------------------------------------
 // -------------------- RDOFRMSprite
 // --------------------------------------------------------------------------------
-inline LPRDOFRMShow RDOFRMSprite::getLastShow() const
-{
-	return !m_showList.empty() ? m_showList.back() : LPRDOFRMShow(NULL);
-}
-
 inline CREF(tstring) RDOFRMSprite::name() const
 {
 	return src_text();
@@ -292,14 +287,6 @@ inline void RDOFRMBitmapBase::getBitmaps(REF(IRDOFRMItemGetBitmap::ImageNameList
 	{
 		list.push_back(m_maskFilename);
 	}
-}
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOFRMShow
-// --------------------------------------------------------------------------------
-inline rbool RDOFRMShow::isShowIf() const
-{
-	return m_pConditionCalc != LPRDOCalc(NULL);
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

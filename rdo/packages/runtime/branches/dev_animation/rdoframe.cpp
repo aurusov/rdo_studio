@@ -136,10 +136,7 @@ RDOValue RDOFRMSprite::doCalc(CREF(LPRDORuntime) pRuntime)
 
 	if (checkCondition(pRuntime))
 	{
-		BOOST_FOREACH(const LPRDOFRMShow& pShow, m_showList)
-		{
-			pShow->calcValue(pRuntime);
-		}
+		m_pSpriteCalc->calcValue(pRuntime);
 
 #ifdef MODEL_DOROGA_HACK
 		RDORuntime::ResCIterator end = pRuntime->res_end();
@@ -235,13 +232,6 @@ void RDOFRMFrame::setBackPicture(int width, int height)
 	m_height      = height;
 }
 
-LPRDOCalc RDOFRMSprite::startShow(CREF(LPRDOCalc) pCalc)
-{
-	//! @todo Метод можно удалить
-	UNUSED(pCalc);
-	return NULL;
-}
-
 void RDOFRMSprite::insertItem(CREF(LPRDOFRMItem) pItem)
 {
 	rdo::interface_ptr<IRDOFRMItemGetBitmap> pGetBitmap = pItem.interface_dynamic_cast<IRDOFRMItemGetBitmap>();
@@ -251,35 +241,10 @@ void RDOFRMSprite::insertItem(CREF(LPRDOFRMItem) pItem)
 	}
 }
 
-LPRDOCalc RDOFRMSprite::addItem(CREF(LPRDOCalc) pItem)
+void RDOFRMSprite::setSpriteCalc(CREF(LPRDOCalc) pSpriteCalc)
 {
-	ASSERT(pItem);
-
-	LPRDOFRMShow pShow = pItem.object_dynamic_cast<RDOFRMShow>();
-	if (pShow)
-	{
-		return addShow(pShow);
-	}
-
-	LPRDOFRMRulet pRulet = pItem.object_dynamic_cast<RDOFRMRulet>();
-	if (pRulet)
-	{
-		return addRulet(pRulet);
-	}
-
-	if (m_showList.empty())
-	{
-		addShow(rdo::Factory<RDOFRMShow>::create(LPRDOCalc()));
-	}
-
-	m_showList.back()->insertItem(pItem);
-	return pItem;
-}
-
-LPRDOCalc RDOFRMSprite::addShow(CREF(LPRDOFRMShow) pShow)
-{
-	m_showList.push_back(pShow);
-	return pShow;
+	ASSERT(pSpriteCalc);
+	m_pSpriteCalc = pSpriteCalc;
 }
 
 LPRDOCalc RDOFRMSprite::addRulet(CREF(LPRDOFRMRulet) pRulet)
@@ -823,55 +788,6 @@ RDOValue RDOFRMSpace::doCalc(CREF(LPRDORuntime) pRuntime)
 	getFrame()->setLastXYWH(x, y, width, height);
 
 	return RDOValue();
-}
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOFRMShow
-// --------------------------------------------------------------------------------
-RDOFRMShow::RDOFRMShow(CREF(LPRDOCalc) pConditionCalc)
-	: m_pConditionCalc(pConditionCalc)
-{}
-
-RDOFRMShow::~RDOFRMShow()
-{}
-
-RDOValue RDOFRMShow::doCalc(CREF(LPRDORuntime) pRuntime)
-{
-	if (checkCondition(pRuntime))
-	{
-		BOOST_FOREACH(const LPRDOCalc& pItem, m_itemList)
-		{
-			pItem->calcValue(pRuntime);
-		}
-	}
-
-	return RDOValue();
-}
-
-void RDOFRMShow::insertItem(CREF(LPRDOCalc) pItem)
-{
-	ASSERT(pItem);
-	m_itemList.push_back(pItem);
-}
-
-void RDOFRMShow::getBitmaps(REF(IRDOFRMItemGetBitmap::ImageNameList) list) const
-{
-	BOOST_FOREACH(const LPRDOCalc& pItem, m_itemList)
-	{
-		rdo::interface_ptr<IRDOFRMItemGetBitmap> pGetBitmap = pItem.interface_dynamic_cast<IRDOFRMItemGetBitmap>();
-		if (pGetBitmap)
-		{
-			pGetBitmap->getBitmaps(list);
-		}
-	}
-}
-
-rbool RDOFRMShow::checkCondition(CREF(LPRDORuntime) pRuntime)
-{
-	if (!m_pConditionCalc)
-		return true;
-
-	return m_pConditionCalc->calcValue(pRuntime).getAsBool();
 }
 
 // --------------------------------------------------------------------------------
