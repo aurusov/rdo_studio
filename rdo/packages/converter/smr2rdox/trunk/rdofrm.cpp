@@ -12,7 +12,6 @@
 #include "converter/smr2rdox/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/rdoframe.h"
 #include "converter/smr2rdox/rdofrm.h"
 #include "converter/smr2rdox/rdoparser.h"
 #include "converter/smr2rdox/rdoparser_lexer.h"
