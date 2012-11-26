@@ -51,7 +51,7 @@ private:
 	Seek                        m_firstSeek;
 	Seek                        m_lastSeek;
 	ruint                       m_itemCount;
-	PosPair                     m_frame—onditionPos;
+	PosPair                     m_frameConditionPos;
 };
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE

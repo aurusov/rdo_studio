@@ -75,12 +75,12 @@ void RDOFRMFrame::addItem(CREF(rdo::runtime::LPRDOCalc), ruint lastSeek)
 
 void RDOFRMFrame::setFrameConditionPos(ruint firstSeek, ruint lastSeek)
 {
-	m_frame—onditionPos = std::make_pair(firstSeek, lastSeek);
+	m_frameConditionPos = std::make_pair(firstSeek, lastSeek);
 }
 
 void RDOFRMFrame::onAfterBackPicture(ruint lastSeek)
 {
-	if (!m_frame—onditionPos.is_initialized())
+	if (!m_frameConditionPos.is_initialized())
 		return;
 
 	LPDocUpdate pFrameConditionBeginInsert = rdo::Factory<UpdateInsert>::create(
@@ -91,8 +91,8 @@ void RDOFRMFrame::onAfterBackPicture(ruint lastSeek)
 	Converter::s_converter()->insertDocUpdate(pFrameConditionBeginInsert);
 
 	LPDocUpdate pConditionMove = rdo::Factory<UpdateMove>::create(
-		m_frame—onditionPos->first,
-		m_frame—onditionPos->second,
+		m_frameConditionPos->first,
+		m_frameConditionPos->second,
 		lastSeek
 	);
 	ASSERT(pConditionMove);
