@@ -221,7 +221,6 @@
 #include "simulator/compiler/parser/context/type.h"
 #include "simulator/compiler/parser/context/memory.h"
 #include "simulator/compiler/parser/context/statement.h"
-#include "simulator/runtime/rdoframe.h"
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/calc/calc_array.h"
 #include "simulator/runtime/calc/procedural/calc_locvar.h"
