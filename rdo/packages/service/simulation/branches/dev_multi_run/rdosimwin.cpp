@@ -1068,6 +1068,8 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 					{
 						m_pThreadRuntime = NULL;
 						sendMessage(this, RT_STUDIO_MODEL_RUN);
+						kernel->idle();
+						sendMessage(this, RT_SIMULATOR_MODEL_STOP_OK);
 					}
 					closeModel();
 				}
