@@ -82,7 +82,7 @@ private:
 	rbool                                  m_tempPause;
 	rdo::runtime::RunTimeMode              m_runtimeMode;
 	rdo::runtime::RunTimeMode              m_runtimeModePrev;
-	rdo::simulation::report::RDOExitCode  m_exitCode;
+	rdo::simulation::report::RDOExitCode   m_exitCode;
 	mutable rbool                          m_prevModify;
 
 	void  updateFrmDescribed      ();
