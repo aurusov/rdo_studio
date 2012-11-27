@@ -126,8 +126,10 @@ private:
 	RDOToolBarModel         modelToolBar;
 	RDOStudioStatusBar      statusBar;
 	int                     m_updateTimerID;
+
 	PTR(QLabel)             m_pSBCoord;
 	PTR(QLabel)             m_pSBModify;
+	PTR(QLabel)             m_pSBModelTime;
 
 	virtual void closeEvent(QCloseEvent* event);
 	virtual void showEvent (QShowEvent*  event);
