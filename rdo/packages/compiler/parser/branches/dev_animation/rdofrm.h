@@ -67,8 +67,6 @@ public:
 	CREF(rdo::runtime::LPRDOFRMSprite) sprite() const  { return m_pSprite;             }
 	void                               end  ();
 
-	static LPExpression generateExpression(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(RDOParserSrcInfo) srcInfo);
-
 private:
 	RDOFRMSprite(CREF(RDOParserSrcInfo) src_info);
 
