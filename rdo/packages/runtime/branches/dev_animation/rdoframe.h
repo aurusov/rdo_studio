@@ -205,6 +205,7 @@ private:
 
 	DECLARE_ICalc;
 };
+DECLARE_POINTER(RDOFRMSprite);
 
 /*!
   \class     RDOFRMBoundingItem
@@ -602,9 +603,7 @@ private:
 	ruint   m_width;
 	ruint   m_height;
 };
-
-DECLARE_POINTER(RDOFRMFrame );
-DECLARE_POINTER(RDOFRMSprite);
+DECLARE_POINTER(RDOFRMFrame);
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 
