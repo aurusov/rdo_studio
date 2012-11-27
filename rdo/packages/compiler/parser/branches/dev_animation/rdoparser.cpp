@@ -55,6 +55,7 @@ DECLARE_PARSER_OBJECT_CONTAINER(PATPattern );
 DECLARE_PARSER_OBJECT_CONTAINER(RTPResType );
 DECLARE_PARSER_OBJECT_CONTAINER(RSSResource);
 DECLARE_PARSER_OBJECT_CONTAINER(FRMFrame   );
+DECLARE_PARSER_OBJECT_CONTAINER(FRMSprite  );
 DECLARE_PARSER_OBJECT_CONTAINER(FUNConstant);
 DECLARE_PARSER_OBJECT_CONTAINER(FUNFunction);
 DECLARE_PARSER_OBJECT_CONTAINER(FUNSequence);
@@ -129,6 +130,7 @@ void RDOParser::deinit()
 	m_allRTPResType .clear();
 	m_allRSSResource.clear();
 	m_allFRMFrame   .clear();
+	m_allFRMSprite  .clear();
 	m_allFUNConstant.clear();
 	m_allFUNFunction.clear();
 	m_allFUNSequence.clear();

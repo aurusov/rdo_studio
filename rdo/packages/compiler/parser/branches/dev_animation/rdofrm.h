@@ -53,6 +53,33 @@ private:
 };
 DECLARE_POINTER(RDOFRMFrame);
 
+PREDECLARE_POINTER(RDOFRMSprite);
+// --------------------------------------------------------------------------------
+// -------------------- RDOFRMSprite
+// --------------------------------------------------------------------------------
+CLASS(RDOFRMSprite):
+	    INSTANCE_OF      (RDOParserSrcInfo)
+	AND INSTANCE_OF      (Context         )
+	AND IMPLEMENTATION_OF(IContextFind    )
+{
+DECLARE_FACTORY(RDOFRMSprite);
+public:
+	CREF(tstring)                      name  () const  { return src_info().src_text(); }
+	CREF(rdo::runtime::LPRDOFRMSprite) sprite() const  { return m_pSprite;             }
+	void                               end  ();
+
+	static LPExpression generateExpression(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(RDOParserSrcInfo) srcInfo);
+
+private:
+	RDOFRMSprite(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic = NULL);
+
+	rdo::runtime::LPRDOFRMSprite m_pSprite;
+	LPContextMemory              m_pContextMemory;
+
+	DECLARE_IContextFind;
+};
+DECLARE_POINTER(RDOFRMSprite);
+
 CLOSE_RDO_PARSER_NAMESPACE
 
 #endif // _RDOFRM_H_

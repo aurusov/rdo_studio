@@ -324,6 +324,16 @@ LPRDOFRMFrame RDORuntime::lastFrame() const
 	return !m_frameList.empty() ? m_frameList.front() : LPRDOFRMFrame(NULL);
 }
 
+void RDORuntime::addRuntimeSprite(CREF(LPRDOFRMSprite) pSprite)
+{ 
+	m_spriteList.push_back(pSprite);
+}
+
+LPRDOFRMSprite RDORuntime::lastSprite() const
+{
+	return !m_spriteList.empty() ? m_spriteList.front() : LPRDOFRMSprite(NULL);
+}
+
 rbool RDORuntime::isKeyDown() const
 {
 	return m_hotKey.isKeyDown();
