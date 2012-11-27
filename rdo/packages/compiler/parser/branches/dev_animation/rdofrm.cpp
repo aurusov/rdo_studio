@@ -115,7 +115,7 @@ void RDOFRMSprite::end()
 Context::FindResult RDOFRMSprite::onFindContext(CREF(LPRDOValue) pValue) const
 {
 	UNUSED(pValue);
-		return Context::FindResult();
+	return Context::FindResult();
 }
 
 CLOSE_RDO_PARSER_NAMESPACE
