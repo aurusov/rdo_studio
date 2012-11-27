@@ -70,7 +70,7 @@ public:
 	static LPExpression generateExpression(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(RDOParserSrcInfo) srcInfo);
 
 private:
-	RDOFRMSprite(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic = NULL);
+	RDOFRMSprite(CREF(RDOParserSrcInfo) src_info);
 
 	rdo::runtime::LPRDOFRMSprite m_pSprite;
 	LPContextMemory              m_pContextMemory;

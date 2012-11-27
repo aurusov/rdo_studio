@@ -90,7 +90,7 @@ LPExpression RDOFRMFrame::generateExpression(CREF(rdo::runtime::LPRDOCalc) pCalc
 // --------------------------------------------------------------------------------
 // -------------------- RDOFRMSprite
 // --------------------------------------------------------------------------------
-RDOFRMSprite::RDOFRMSprite(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic)
+RDOFRMSprite::RDOFRMSprite(CREF(RDOParserSrcInfo) src_info)
 	: RDOParserSrcInfo(src_info)
 {
 	m_pSprite = rdo::Factory<rdo::runtime::RDOFRMSprite>::create(src_info);
