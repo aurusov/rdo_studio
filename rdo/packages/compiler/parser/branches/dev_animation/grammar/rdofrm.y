@@ -1726,17 +1726,54 @@ frm_active
 // --------------------------------------------------------------------------------
 frm_sprite_end
 	: frm_sprite_begin RDO_End
-	{}
+	{
+		LPRDOFRMSprite pSprite = PARSER->stack().pop<RDOFRMSprite>($1);
+		ASSERT(pSprite);
+		pSprite->end();
+	}
 	;
 
 frm_sprite_begin
-	: frm_sprite_header frm_item
-	{}
+	: frm_sprite_header statement_list
+	{
+		LPExpression pExpressionSpriteBody = PARSER->stack().pop<Expression>($2);
+		ASSERT(pExpressionSpriteBody);
+
+		rdo::runtime::LPRDOCalcStatementList pCalcStatementList = pExpressionSpriteBody->calc().object_dynamic_cast<rdo::runtime::RDOCalcStatementList>();
+		ASSERT(pCalcStatementList);
+
+		rdo::runtime::LPRDOCalcBaseStatementList pCalcBaseStatementList = rdo::Factory<rdo::runtime::RDOCalcBaseStatementList>::create();
+		ASSERT(pCalcBaseStatementList);
+
+		rdo::runtime::LPRDOCalcOpenBrace pCalcOpenBrace = rdo::Factory<rdo::runtime::RDOCalcOpenBrace>::create();
+		ASSERT(pCalcOpenBrace);
+
+		rdo::runtime::LPRDOCalcCloseBrace pCalcCloseBrace = rdo::Factory<rdo::runtime::RDOCalcCloseBrace>::create();
+		ASSERT(pCalcCloseBrace);
+
+		pCalcBaseStatementList->addCalcStatement(pCalcOpenBrace);
+		pCalcBaseStatementList->addCalcStatement(pCalcStatementList);
+		pCalcBaseStatementList->addCalcStatement(pCalcCloseBrace);
+
+		LPExpression pExpressionSprite = rdo::Factory<Expression>::create(pExpressionSpriteBody->typeInfo(), pCalcBaseStatementList, pCalcStatementList->srcInfo());
+		ASSERT(pExpressionSprite);
+
+		LPRDOFRMSprite pSprite = PARSER->stack().pop<RDOFRMSprite>($1);
+		ASSERT(pSprite);
+
+		PARSER->getLastFRMSprite()->sprite()->setSpriteCalc(pExpressionSprite->calc());
+
+		$$ = PARSER->stack().push(pSprite);
+	}
 	;
 
 frm_sprite_header
 	: RDO_Sprite RDO_IDENTIF '(' param_list ')'
-	{}
+	{
+		LPRDOFRMSprite pSprite = rdo::Factory<RDOFRMSprite>::create(PARSER->stack().pop<RDOValue>($2)->src_info());
+		ASSERT(pSprite);
+		$$ = PARSER->stack().push(pSprite);
+	}
 	| RDO_Sprite RDO_IDENTIF '(' param_list error
 	{
 		PARSER->error().error(@5, _T("Ожидается закрывающая скобка"));
