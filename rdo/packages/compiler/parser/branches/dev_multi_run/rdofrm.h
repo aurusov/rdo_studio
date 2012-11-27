@@ -17,6 +17,7 @@
 #include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/compiler/parser/rdofun.h"
 #include "simulator/compiler/parser/context/context.h"
+#include "simulator/compiler/parser/context/memory.h"
 #include "simulator/compiler/parser/context/context_find_i.h"
 // --------------------------------------------------------------------------------
 
@@ -40,10 +41,13 @@ public:
 	CREF(rdo::runtime::LPRDOFRMFrame) frame() const  { return m_pFrame;              }
 	void                              end  ();
 
+	static LPExpression generateExpression(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(RDOParserSrcInfo) srcInfo);
+
 private:
-	RDOFRMFrame(CREF(RDOParserSrcInfo) src_info, LPRDOFUNLogic pLogic = NULL);
+	RDOFRMFrame(CREF(RDOParserSrcInfo) srcInfo);
 
 	rdo::runtime::LPRDOFRMFrame m_pFrame;
+	LPContextMemory             m_pContextMemory;
 
 	DECLARE_IContextFind;
 };

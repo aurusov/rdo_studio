@@ -19,6 +19,8 @@
 #endif // COMPILER_GCC
 #include <iomanip>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "utils/rdodebug.h"
+#include "utils/rdoanimation.h"
 #include "simulator/runtime/pch/stdpch.h"
 #include "simulator/runtime/keyboard.h"
 #include "simulator/runtime/rdo_runtime.h"
@@ -31,7 +33,6 @@
 #include "simulator/runtime/rdodptrtime.h"
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/calc/resource/calc_relevant.h"
-#include "utils/rdodebug.h"
 // --------------------------------------------------------------------------------
 
 typedef rdo::simulation::report::FileMessage RDOSyntaxMessage;
@@ -57,6 +58,7 @@ RDORuntime::RDORuntime(PTR(Error) pError)
 	, m_pStudioThread        (NULL               )
 	, m_currFuncTop          (0                  )
 	, m_pError               (pError             )
+	, m_pPreparingFrame      (NULL               )
 {
 	ASSERT(m_pError);
 	m_pTerminateIfCalc = NULL;
@@ -524,6 +526,24 @@ void RDORuntime::setFunBreakFlag(CREF(FunBreakFlag) flag)
 CREF(RDORuntime::FunBreakFlag) RDORuntime::getFunBreakFlag() const
 {
 	return m_funBreakFlag;
+}
+
+PTR(rdo::animation::Frame) RDORuntime::getPreparingFrame() const
+{
+	return m_pPreparingFrame;
+}
+
+void RDORuntime::setPreparingFrame(PTR(rdo::animation::Frame) pPreparingFrame)
+{
+	ASSERT(pPreparingFrame);
+	ASSERT(!m_pPreparingFrame);
+	m_pPreparingFrame = pPreparingFrame;
+}
+
+void RDORuntime::resetPreparingFrame()
+{
+	ASSERT(m_pPreparingFrame);
+	m_pPreparingFrame = NULL;
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE

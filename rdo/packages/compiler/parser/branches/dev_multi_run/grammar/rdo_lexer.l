@@ -277,17 +277,15 @@ Size                           return(RDO_Size);
 size                           return(RDO_Size);
 empty                          return(RDO_Empty);
 Empty                          return(RDO_Empty);
+getArray                       return(RDO_Select_Array);
+get_array                      return(RDO_Select_Array);
 watch_start                    return(RDO_WatchStart);
 watch_stop                     return(RDO_WatchStop);
 
 $Frame                         return(RDO_Frame);
 $frame                         return(RDO_Frame);
-Show_if                        return(RDO_Show_if);
-show_if                        return(RDO_Show_if);
 $Back_picture                  return(RDO_Back_picture);
 $back_picture                  return(RDO_Back_picture);
-Show                           return(RDO_Show);
-show                           return(RDO_Show);
 frm_cell                       return(RDO_frm_cell);
 text                           return(RDO_text);
 bitmap                         return(RDO_bitmap);
@@ -325,6 +323,10 @@ $Fuzzy                         return(RDO_Fuzzy);
 $fuzzy                         return(RDO_Fuzzy);
 $Term                          return(RDO_Fuzzy_Term);
 $term                          return(RDO_Fuzzy_Term);
+
+$Sprite                        return(RDO_Sprite);
+$sprite                        return(RDO_Sprite);
+sprite                         return(RDO_sprite_call);
 
 (\'[^\']*\') {
 	tstring n1(YYText());

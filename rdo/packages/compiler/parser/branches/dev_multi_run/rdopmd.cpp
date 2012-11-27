@@ -61,7 +61,7 @@ void RDOPMDResult::endOfCreation(CREF(LPIResult) pResult)
 		pResultGroup = RDOParser::s_parser()->findResultGroup(_T(""));
 		if (!pResultGroup)
 		{
-			//! Нет даже группы по-умолчанию
+			//! Нет даже группы по умолчанию
 			pResultGroup = rdo::Factory<RDOResultGroup>::create();
 			ASSERT(pResultGroup);
 			pResultGroup->init(RDOParserSrcInfo());

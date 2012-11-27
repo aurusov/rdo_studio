@@ -172,6 +172,14 @@ Context::FindResult RDORTPResType::onSwitchContext(CREF(LPExpression) pSwitchExp
 	ASSERT(pSwitchExpression);
 	ASSERT(pValue           );
 
+	if (!pSwitchExpression->calc())
+	{
+		RDOParser::s_parser()->error().error(
+			pSwitchExpression->src_info(),
+			rdo::format(_T("Ќедопустимое использование типа ресурса: %s"), src_text().c_str())
+		);
+	}
+
 	ruint parNumb = getRTPParamNumber(pValue->value().getIdentificator());
 	if (parNumb == RDORTPResType::UNDEFINED_PARAM)
 	{

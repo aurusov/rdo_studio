@@ -985,7 +985,7 @@ Context::FindResult RDORelevantResource::onSwitchContext(CREF(LPExpression) pSwi
 		{
 			if (!pParam->getDefault()->defined())
 			{
-				RDOParser::s_parser()->error().error(pValue->src_info(), rdo::format(_T("Параметр '%s' еще не определен, ему необходимо присвоить значение в текущем конверторе или указать значение по-умолчанию в типе ресурса"), pValue->value().getIdentificator().c_str()));
+				RDOParser::s_parser()->error().error(pValue->src_info(), rdo::format(_T("Параметр '%s' еще не определен, ему необходимо присвоить значение в текущем конверторе или указать значение по умолчанию в типе ресурса"), pValue->value().getIdentificator().c_str()));
 			}
 		}
 	}
@@ -998,7 +998,7 @@ Context::FindResult RDORelevantResource::onSwitchContext(CREF(LPExpression) pSwi
 			{
 				if (!pParam->getDefault()->defined())
 				{
-					RDOParser::s_parser()->error().error(pValue->src_info(), rdo::format(_T("Параметр '%s' еще не определен, ему необходимо присвоить значение в текущем конверторе или указать значение по-умолчанию в типе ресурса"), pValue->value().getIdentificator().c_str()));
+					RDOParser::s_parser()->error().error(pValue->src_info(), rdo::format(_T("Параметр '%s' еще не определен, ему необходимо присвоить значение в текущем конверторе или указать значение по умолчанию в типе ресурса"), pValue->value().getIdentificator().c_str()));
 				}
 			}
 		}

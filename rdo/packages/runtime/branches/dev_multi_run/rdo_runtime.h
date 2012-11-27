@@ -38,6 +38,10 @@
 
 class RDOThread;
 
+OPEN_RDO_ANIMATION_NAMESPACE
+struct Frame;
+CLOSE_RDO_ANIMATION_NAMESPACE
+
 OPEN_RDO_RUNTIME_NAMESPACE
 
 //! Результаты моделирования
@@ -196,6 +200,10 @@ public:
 
 	void setStudioThread(PTR(RDOThread) pStudioThread);
 
+	PTR(rdo::animation::Frame) getPreparingFrame() const;
+	void setPreparingFrame  (PTR(rdo::animation::Frame) pPreparingFrame);
+	void resetPreparingFrame();
+
 private:
 	RDORuntime(PTR(Error) pError);
 	virtual ~RDORuntime();
@@ -276,6 +284,8 @@ private:
 	virtual void onAfterCheckResult();
 
 	ruint m_currentTerm;
+
+	PTR(rdo::animation::Frame) m_pPreparingFrame;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE
