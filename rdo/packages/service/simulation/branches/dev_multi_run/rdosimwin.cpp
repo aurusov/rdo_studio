@@ -861,7 +861,7 @@ RDOThreadSimulator::RDOThreadSimulator()
 	: RDOThreadMT     (_T("RDOThreadSimulator")      )
 	, m_pThreadRuntime(NULL                          )
 	, m_exitCode      (rdo::simulation::report::EC_OK)
-	, m_runCount      (2                             )
+	, m_runCount      (3                             )
 {
 	notifies.push_back(RT_STUDIO_MODEL_BUILD              );
 	notifies.push_back(RT_STUDIO_MODEL_RUN                );
@@ -1063,15 +1063,18 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 				{
 					//! Остановились сами нормально
 					broadcastMessage(RT_SIMULATOR_MODEL_STOP_OK);
+					closeModel();
 					// место для добавления цикла //
 					if (--m_runCount)
+					//for( ruint i = 0; i <= m_runCount; ++i)
 					{
 						m_pThreadRuntime = NULL;
+						sendMessage(this, RT_STUDIO_MODEL_BUILD);
 						sendMessage(this, RT_STUDIO_MODEL_RUN);
 						kernel->idle();
 						sendMessage(this, RT_SIMULATOR_MODEL_STOP_OK);
 					}
-					closeModel();
+					
 				}
 				else
 				{
