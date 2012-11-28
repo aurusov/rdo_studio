@@ -749,6 +749,7 @@ void RDOStudioMainFrame::timerEvent(QTimerEvent* event)
 	{
 		update_stop();
 		model->update();
+		updateStatusBar<SB_MODEL_TIME>(QString(rdo::format( "Время: %f", model->getTimeNow() ).c_str()));
 		update_start();
 	}
 }
