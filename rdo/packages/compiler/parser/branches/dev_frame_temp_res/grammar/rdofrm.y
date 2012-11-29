@@ -3770,6 +3770,24 @@ fun_select_arithm
 	{
 		PARSER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
 	}
+	| fun_select_body '.' RDO_Select_Array '(' ')'
+	{
+		LPRDOFUNSelect pSelect = PARSER->stack().pop<RDOFUNSelect>($1);
+		ASSERT(pSelect);
+		pSelect->setSrcPos(@1, @5);
+		RDOParserSrcInfo arrayInfo(@3, @5, _T("Array()"));
+		LPRDOFUNArithm pArithm = pSelect->createFunSelectArray(arrayInfo);
+		ASSERT(pArithm);
+		$$ = PARSER->stack().push(pArithm);
+	}
+	| fun_select_body '.' RDO_Select_Array error
+	{
+		PARSER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
+	}
+	| fun_select_body '.' RDO_Select_Array '(' error
+	{
+		PARSER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
+	}
 	;
 
 %%
