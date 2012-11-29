@@ -15,6 +15,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/resource/calc_select.h"
 #include "simulator/runtime/rdo_runtime.h"
+#include "simulator/runtime/rdo_res_type.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -159,6 +160,28 @@ RDOValue RDOFunCalcSelectEmpty::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
 	return m_pSelect->res_list.empty();
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOFunCalcSelectArray
+// --------------------------------------------------------------------------------
+RDOValue RDOFunCalcSelectArray::doCalc(CREF(LPRDORuntime) pRuntime)
+{
+	m_pSelect->prepare(pRuntime);
+	std::list<LPRDOResource>::iterator it  = m_pSelect->res_list.begin();
+	std::list<LPRDOResource>::iterator end = m_pSelect->res_list.end();
+	if(it == end)
+		return RDOValue();
+
+	LPRDOResourceType pResourceType = (*it)->getResType();
+	rdo::runtime::LPRDOArrayType  pType  = rdo::Factory<rdo::runtime::RDOArrayType >::create(pResourceType);
+	ASSERT(pType);
+	rdo::runtime::LPRDOArrayValue pValue = rdo::Factory<rdo::runtime::RDOArrayValue>::create(pType);
+	ASSERT(pValue);
+
+	while (it != end)
+		pValue->push_back(rdo::runtime::RDOValue(pResourceType, *(it++)));
+	return RDOValue(pType, pValue);
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE
