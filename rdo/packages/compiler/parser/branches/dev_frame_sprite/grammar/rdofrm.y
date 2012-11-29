@@ -312,7 +312,7 @@ frm_background
 		{
 			PARSER->error().error(@4, _T("Цвет фона не может быть указан ссылкой на последнее значение"));
 		}
-		pFrame->frame()->setBackgroundColor(pBgColor);
+		pFrame->sprite()->setBackgroundColor(pBgColor);
 		$$ = PARSER->stack().push(pFrame);
 	}
 	| frm_begin RDO_Back_picture '='
@@ -362,9 +362,9 @@ frm_item_statement
 		rdo::runtime::LPRDOFRMItem pItem = PARSER->stack().pop<rdo::runtime::RDOFRMItem>($1);
 		ASSERT(pItem);
 
-		PARSER->getLastFRMFrame()->frame()->insertItem(pItem);
+		PARSER->getLastFRMSprite()->sprite()->insertItem(pItem);
 
-		LPExpression pExpression = RDOFRMFrame::generateExpression(
+		LPExpression pExpression = RDOFRMSprite::generateExpression(
 			pItem,
 			RDOParserSrcInfo(@1)
 		);
@@ -418,7 +418,7 @@ frm_header
 		LPRDOFRMFrame pFrame = PARSER->stack().pop<RDOFRMFrame>($1);
 		ASSERT(pFrame);
 
-		PARSER->getLastFRMFrame()->frame()->setSpriteCalc(pExpressionFrame->calc());
+		PARSER->getLastFRMFrame()->sprite()->setSpriteCalc(pExpressionFrame->calc());
 
 		$$ = PARSER->stack().push(pFrame);
 	}

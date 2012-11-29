@@ -28,32 +28,6 @@ int  frmlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
 void frmerror(PTR(char) message);
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOFRMFrame
-// --------------------------------------------------------------------------------
-CLASS(RDOFRMFrame):
-	    INSTANCE_OF      (RDOParserSrcInfo)
-	AND INSTANCE_OF      (Context         )
-	AND IMPLEMENTATION_OF(IContextFind    )
-{
-DECLARE_FACTORY(RDOFRMFrame);
-public:
-	CREF(tstring)                     name () const  { return src_info().src_text(); }
-	CREF(rdo::runtime::LPRDOFRMFrame) frame() const  { return m_pFrame;              }
-	void                              end  ();
-
-	static LPExpression generateExpression(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(RDOParserSrcInfo) srcInfo);
-
-private:
-	RDOFRMFrame(CREF(RDOParserSrcInfo) srcInfo);
-
-	rdo::runtime::LPRDOFRMFrame m_pFrame;
-	LPContextMemory             m_pContextMemory;
-
-	DECLARE_IContextFind;
-};
-DECLARE_POINTER(RDOFRMFrame);
-
-// --------------------------------------------------------------------------------
 // -------------------- RDOFRMSprite
 // --------------------------------------------------------------------------------
 CLASS(RDOFRMSprite):
@@ -65,17 +39,40 @@ DECLARE_FACTORY(RDOFRMSprite);
 public:
 	CREF(tstring)                      name  () const  { return src_info().src_text(); }
 	CREF(rdo::runtime::LPRDOFRMSprite) sprite() const  { return m_pSprite;             }
-	void                               end  ();
+	void                               end   ();
 
-private:
+	static LPExpression generateExpression(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(RDOParserSrcInfo) srcInfo);
+
+protected:
 	RDOFRMSprite(CREF(RDOParserSrcInfo) src_info);
-
+private:
 	rdo::runtime::LPRDOFRMSprite m_pSprite;
 	LPContextMemory              m_pContextMemory;
 
 	DECLARE_IContextFind;
 };
 DECLARE_POINTER(RDOFRMSprite);
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOFRMFrame
+// --------------------------------------------------------------------------------
+CLASS(RDOFRMFrame):
+	    INSTANCE_OF      (RDOFRMSprite)
+{
+DECLARE_FACTORY(RDOFRMFrame);
+public:
+	void                              end  ();
+	CREF(rdo::runtime::LPRDOFRMFrame) frame() const  { return m_pFrame;}
+
+private:
+	RDOFRMFrame(CREF(RDOParserSrcInfo) srcInfo);
+
+	rdo::runtime::LPRDOFRMFrame m_pFrame;
+	LPContextMemory             m_pContextMemory;
+
+	DECLARE_IContextFind;
+};
+DECLARE_POINTER(RDOFRMFrame);
 
 CLOSE_RDO_PARSER_NAMESPACE
 
