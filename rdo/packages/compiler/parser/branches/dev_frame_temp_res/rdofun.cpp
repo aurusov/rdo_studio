@@ -1825,4 +1825,26 @@ LPRDOFUNArithm RDOFUNSelect::createFunSelectSize(CREF(RDOParserSrcInfo) size_inf
 	return pArithm;
 }
 
+LPRDOFUNArithm RDOFUNSelect::createFunSelectArray(CREF(RDOParserSrcInfo) array_info)
+{
+	setSrcText(src_text() + _T(".") + array_info.src_text());
+	RDOParser::s_parser()->getFUNGroupStack().pop_back();
+	end();
+
+	LPRDOArrayType pArrayType = rdo::Factory<RDOArrayType>::create(rdo::Factory<TypeInfo>::create(getResType(), array_info), array_info);
+
+	LPExpression pExpression = rdo::Factory<Expression>::create(
+		rdo::Factory<TypeInfo>::create(pArrayType, array_info),
+		rdo::Factory<rdo::runtime::RDOFunCalcSelectArray>::create(m_pCalcSelect),
+		array_info
+	);
+	ASSERT(pExpression);
+
+	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
+	ASSERT(pArithm);
+
+	pArithm->setSrcInfo(array_info);
+	return pArithm;
+}
+
 CLOSE_RDO_PARSER_NAMESPACE
