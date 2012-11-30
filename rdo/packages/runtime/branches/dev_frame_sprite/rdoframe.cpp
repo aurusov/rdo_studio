@@ -109,26 +109,6 @@ RDOFRMSprite::~RDOFRMSprite()
 
 RDOValue RDOFRMSprite::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	PTR(rdo::animation::Frame) pFrame = pRuntime->getPreparingFrame();
-	ASSERT(pFrame);
-
-	if (m_pBgColor)
-	{
-		if (m_pBgColor->getType() == RDOFRMColor::CT_RGB)
-		{
-			rdo::animation::Color bgColor = m_pBgColor->getColor(pRuntime, this);
-			pFrame->m_bgColor = bgColor;
-		}
-		else
-		{
-			pFrame->m_bgColor = rdo::animation::Color();
-		}
-	}
-	else
-	{
-		pFrame->m_bgColor = rdo::animation::Color();
-	}
-
 	m_lastX      = 0;
 	m_lastY      = 0;
 	m_lastWidth  = 0;
@@ -212,7 +192,7 @@ void RDOFRMSprite::setColorLastFGText(RDOFRMColor::ColorType type, CREF(rdo::ani
 	}
 }
 
-void RDOFRMSprite::setBackgroundColor(CREF(LPRDOFRMColor) pBgColor)
+void RDOFRMFrame::setBackgroundColor(CREF(LPRDOFRMColor) pBgColor)
 {
 	m_pBgColor = pBgColor;
 }
@@ -807,5 +787,30 @@ RDOFRMFrame::RDOFRMFrame(CREF(RDOSrcInfo) srcInfo)
 
 RDOFRMFrame::~RDOFRMFrame()
 {}
+
+RDOValue RDOFRMFrame::doCalc(CREF(LPRDORuntime) pRuntime)
+{
+	PTR(rdo::animation::Frame) pFrame = pRuntime->getPreparingFrame();
+	ASSERT(pFrame);
+
+	if (m_pBgColor)
+	{
+		if (m_pBgColor->getType() == RDOFRMColor::CT_RGB)
+		{
+			rdo::animation::Color bgColor = m_pBgColor->getColor(pRuntime, this);
+			pFrame->m_bgColor = bgColor;
+		}
+		else
+		{
+			pFrame->m_bgColor = rdo::animation::Color();
+		}
+	}
+	else
+	{
+		pFrame->m_bgColor = rdo::animation::Color();
+	}
+	return RDOValue();
+}
+
 
 CLOSE_RDO_RUNTIME_NAMESPACE

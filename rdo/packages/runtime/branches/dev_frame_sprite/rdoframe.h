@@ -162,7 +162,6 @@ public:
 public:
 	CREF(tstring) name              () const;
 
-	void          setBackgroundColor(CREF(LPRDOFRMColor) pBgColor   );
 	void          insertItem        (CREF(LPRDOFRMItem)  pItem      );
 	void          setSpriteCalc     (CREF(LPRDOCalc)     pSpriteCalc);
 
@@ -187,7 +186,6 @@ private:
 	typedef std::map<ruint, LPRDOFRMRulet>    RuletList;
 	typedef std::list<LPIRDOFRMItemGetBitmap> GetBitmapList;
 
-	LPRDOFRMColor          m_pBgColor;
 	LPRDOCalc              m_pSpriteCalc;
 	rdo::animation::Color  m_colorLastBg;
 	rdo::animation::Color  m_colorLastFg;
@@ -593,15 +591,20 @@ public:
 	void prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORuntime) pRuntime);
 
 	//! @todo Нужно спрятатть в приват и поправить симулятор, из которого метод вызывается
+	
+	void setBackgroundColor(CREF(LPRDOFRMColor) pBgColor);
 	DECLARE_IRDOFRMItemGetBitmap;
 
 private:
 	RDOFRMFrame(CREF(RDOSrcInfo) srcInfo);
 	virtual ~RDOFRMFrame();
 
-	tstring m_picFileName;
-	ruint   m_width;
-	ruint   m_height;
+	LPRDOFRMColor m_pBgColor;
+	tstring       m_picFileName;
+	ruint         m_width;
+	ruint         m_height;
+
+	DECLARE_ICalc;
 };
 DECLARE_POINTER(RDOFRMFrame);
 

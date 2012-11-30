@@ -312,7 +312,7 @@ frm_background
 		{
 			PARSER->error().error(@4, _T("Цвет фона не может быть указан ссылкой на последнее значение"));
 		}
-		pFrame->sprite()->setBackgroundColor(pBgColor);
+		pFrame->frame()->setBackgroundColor(pBgColor);
 		$$ = PARSER->stack().push(pFrame);
 	}
 	| frm_begin RDO_Back_picture '='
