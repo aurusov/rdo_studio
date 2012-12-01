@@ -23,7 +23,10 @@ public:
 	);
 	~generalDB();
 
-	void queryExec(const QString& query);
+	typedef  std::list<QString>  QueryList;
+
+	void queryExec(const QString&   query);
+	void queryExec(const QueryList& query);
 
 private:
 	void initDB();

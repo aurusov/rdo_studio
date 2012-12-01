@@ -11,6 +11,8 @@
 #include <QtSql\QtSql>
 #include <QtSql\QSqlError>
 #include <iostream>
+#include <boost/foreach.hpp>
+
 #include "simulator\runtime\test\sql\include\general_db.h"
 
 generalDB::generalDB()
@@ -57,6 +59,14 @@ void generalDB::setDefParams()
 	m_qpass  = "rdo";
 	m_port   = 5432;
 	m_qdbase = "rdo";
+}
+
+void generalDB::queryExec(const QueryList& query)
+{
+	BOOST_FOREACH(const QString& queryItem, query)
+	{
+		queryExec(queryItem);
+	}
 }
 
 void generalDB::queryExec(const QString& query)
