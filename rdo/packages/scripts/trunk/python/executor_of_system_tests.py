@@ -12,14 +12,14 @@ import xml.dom.minidom
 ###############################################################################
 
 # data about rdo apps
-directory           = '.'
-model_directory     = '.'
-test_expansion      = '.rtestx'
-trace_expansion     = '.trc'
-result_expansion    = '.pmv'
-build_dir_substr    = 'build'
-rdo_ex_substr       = 'rdo'
-rdo_test_ex_substr  = 'rdo_check_results'
+directory          = '.'
+model_directory    = '.'
+test_expansion     = '.rtestx'
+trace_expansion    = '.trc'
+result_expansion   = '.pmv'
+build_dir_substr   = 'build'
+rdo_ex_substr      = 'rdo'
+rdo_test_ex_substr = 'rdo_check_results'
 
 if sys.platform == 'win32':
     rdo_ex_substr      = 'rdo.exe'
