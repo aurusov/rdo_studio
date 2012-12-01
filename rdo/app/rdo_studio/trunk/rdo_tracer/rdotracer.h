@@ -14,14 +14,15 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
 #include "simulator/service/rdosimwin.h"
+#include "app/rdo_studio_mfc/rdo_tracer/namespace.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracerbase.h"
 // --------------------------------------------------------------------------------
+
+OPEN_RDO_TRACER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOTracer
 // --------------------------------------------------------------------------------
-namespace rdoTracer {
-
 class RDOTracer: public RDOTracerBase
 {
 protected:
@@ -34,7 +35,7 @@ public:
 	void setRuntimeMode( const rdo::runtime::RunTimeMode value );
 };
 
-}; // namespace rdoTracer
+CLOSE_RDO_TRACER_NAMESPACE
 
 // --------------------------------------------------------------------------------
 extern rdoTracer::RDOTracer* tracer;
