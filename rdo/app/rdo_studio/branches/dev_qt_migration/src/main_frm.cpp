@@ -161,12 +161,14 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 	m_pSBCoord         = new QLabel(this);
 	m_pSBModify        = new QLabel(this);
 	m_pSBModelTime     = new QLabel(this);
+	m_pSBModelRuntype  = new QLabel(this);
 	m_pSBModelSpeed    = new QLabel(this);
 	m_pSBModelShowRate = new QLabel(this);
 
 	parent_type::statusBar()->addWidget(m_pSBCoord );
 	parent_type::statusBar()->addWidget(m_pSBModify);
 	parent_type::statusBar()->addWidget(m_pSBModelTime);
+	parent_type::statusBar()->addWidget(m_pSBModelRuntype);
 	parent_type::statusBar()->addWidget(m_pSBModelSpeed);
 	parent_type::statusBar()->addWidget(m_pSBModelShowRate);
 
@@ -867,6 +869,12 @@ template <>
 PTR(QLabel) RDOStudioMainFrame::getStatusBarLabel<RDOStudioMainFrame::SB_MODEL_TIME>(StatusBarType<SB_MODEL_TIME>)
 {
 	return m_pSBModelTime;
+}
+
+template <>
+PTR(QLabel) RDOStudioMainFrame::getStatusBarLabel<RDOStudioMainFrame::SB_MODEL_RUNTYPE>(StatusBarType<SB_MODEL_RUNTYPE>)
+{
+	return m_pSBModelRuntype;
 }
 
 template <>

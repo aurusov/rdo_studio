@@ -130,6 +130,7 @@ private:
 	PTR(QLabel)             m_pSBCoord;
 	PTR(QLabel)             m_pSBModify;
 	PTR(QLabel)             m_pSBModelTime;
+	PTR(QLabel)             m_pSBModelRuntype;
 	PTR(QLabel)             m_pSBModelSpeed;
 	PTR(QLabel)             m_pSBModelShowRate;
 
