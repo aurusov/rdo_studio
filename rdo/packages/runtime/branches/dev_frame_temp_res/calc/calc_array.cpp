@@ -68,6 +68,7 @@ RDOCalcArrayItemParam::RDOCalcArrayItemParam(CREF(LPRDOCalc) pArray, CREF(LPRDOC
 	ASSERT(m_pArrayInd);
 	ASSERT(m_pParamInd);
 
+	//! @todo Ќадо назначать на основе обоих индексов
 	setSrcInfo(m_pArrayInd->srcInfo());
 }
 
