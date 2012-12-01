@@ -238,27 +238,6 @@ void RDOFRMSprite::insertRulet(CREF(LPRDOFRMRulet) pRulet)
 	ASSERT(result.second);
 }
 
-void RDOFRMFrame::prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORuntime) pRuntime)
-{
-	ASSERT(pFrame);
-
-	pFrame->m_bgImageName   = m_picFileName;
-	pFrame->m_size.m_width  = m_width;
-	pFrame->m_size.m_height = m_height;
-
-	pRuntime->setPreparingFrame(pFrame);
-	calcValue(pRuntime);
-	pRuntime->resetPreparingFrame();
-}
-
-void RDOFRMFrame::getBitmaps(REF(IRDOFRMItemGetBitmap::ImageNameList) list) const
-{
-	if (!m_picFileName.empty())
-		list.push_back(m_picFileName);
-
-	RDOFRMSprite::getBitmaps(list);
-}
-
 // --------------------------------------------------------------------------------
 // -------------------- RDOFRMSprite::RDOFRMRulet
 // --------------------------------------------------------------------------------
@@ -816,6 +795,27 @@ void RDOFRMFrame::setBackPicture(int width, int height)
 	m_picFileName = _T("");
 	m_width       = width;
 	m_height      = height;
+}
+
+void RDOFRMFrame::prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORuntime) pRuntime)
+{
+	ASSERT(pFrame);
+
+	pFrame->m_bgImageName   = m_picFileName;
+	pFrame->m_size.m_width  = m_width;
+	pFrame->m_size.m_height = m_height;
+
+	pRuntime->setPreparingFrame(pFrame);
+	calcValue(pRuntime);
+	pRuntime->resetPreparingFrame();
+}
+
+void RDOFRMFrame::getBitmaps(REF(IRDOFRMItemGetBitmap::ImageNameList) list) const
+{
+	if (!m_picFileName.empty())
+		list.push_back(m_picFileName);
+
+	RDOFRMSprite::getBitmaps(list);
 }
 
 CLOSE_RDO_RUNTIME_NAMESPACE
