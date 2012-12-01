@@ -28,24 +28,40 @@ int  frmlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
 void frmerror(PTR(char) message);
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOFRMSprite
+// -------------------- RDOFRMCommandList
 // --------------------------------------------------------------------------------
-CLASS(RDOFRMSprite):
+CLASS(RDOFRMCommandList):
 	    INSTANCE_OF      (RDOParserSrcInfo)
 	AND INSTANCE_OF      (Context         )
 	AND IMPLEMENTATION_OF(IContextFind    )
 {
-DECLARE_FACTORY(RDOFRMSprite);
+DECLARE_FACTORY(RDOFRMCommandList);
 public:
-	CREF(tstring)                      name  () const  { return src_info().src_text(); }
-	CREF(rdo::runtime::LPRDOFRMSprite) sprite() const  { return m_pSprite;             }
-	void                               end   ();
+	CREF(tstring)                        name() const  { return src_info().src_text(); }
+	virtual rdo::runtime::LPRDOFRMSprite list() const = 0;
 
 	static LPExpression generateExpression(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(RDOParserSrcInfo) srcInfo);
 
 protected:
-	RDOFRMSprite(CREF(RDOParserSrcInfo) src_info);
+	RDOFRMCommandList(CREF(RDOParserSrcInfo) src_info);
+};
+DECLARE_POINTER(RDOFRMCommandList);
+
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOFRMSprite
+// --------------------------------------------------------------------------------
+CLASS(RDOFRMSprite):
+	INSTANCE_OF (RDOFRMCommandList)
+{
+DECLARE_FACTORY(RDOFRMSprite);
+public:
+	rdo::runtime::LPRDOFRMSprite list() const { return m_pSprite; }
+	void                         end ();
+
 private:
+	RDOFRMSprite(CREF(RDOParserSrcInfo) src_info);
+
 	rdo::runtime::LPRDOFRMSprite m_pSprite;
 	LPContextMemory              m_pContextMemory;
 
@@ -57,12 +73,13 @@ DECLARE_POINTER(RDOFRMSprite);
 // -------------------- RDOFRMFrame
 // --------------------------------------------------------------------------------
 CLASS(RDOFRMFrame):
-	    INSTANCE_OF      (RDOFRMSprite)
+	INSTANCE_OF (RDOFRMCommandList)
 {
 DECLARE_FACTORY(RDOFRMFrame);
 public:
 	void                              end  ();
-	CREF(rdo::runtime::LPRDOFRMFrame) frame() const  { return m_pFrame;}
+	CREF(rdo::runtime::LPRDOFRMFrame) frame() const { return m_pFrame; }
+	rdo::runtime::LPRDOFRMSprite      list () const { return m_pFrame; }
 
 private:
 	RDOFRMFrame(CREF(RDOParserSrcInfo) srcInfo);

@@ -362,9 +362,9 @@ frm_item_statement
 		rdo::runtime::LPRDOFRMItem pItem = PARSER->stack().pop<rdo::runtime::RDOFRMItem>($1);
 		ASSERT(pItem);
 
-		PARSER->getLastFRMSprite()->sprite()->insertItem(pItem);
+		PARSER->getLastFRMCommandList()->list()->insertItem(pItem);
 
-		LPExpression pExpression = RDOFRMSprite::generateExpression(
+		LPExpression pExpression = RDOFRMCommandList::generateExpression(
 			pItem,
 			RDOParserSrcInfo(@1)
 		);
@@ -418,7 +418,7 @@ frm_header
 		LPRDOFRMFrame pFrame = PARSER->stack().pop<RDOFRMFrame>($1);
 		ASSERT(pFrame);
 
-		PARSER->getLastFRMFrame()->sprite()->setSpriteCalc(pExpressionFrame->calc());
+		PARSER->getLastFRMCommandList()->list()->setSpriteCalc(pExpressionFrame->calc());
 
 		$$ = PARSER->stack().push(pFrame);
 	}
@@ -1761,7 +1761,7 @@ frm_sprite_begin
 		LPRDOFRMSprite pSprite = PARSER->stack().pop<RDOFRMSprite>($1);
 		ASSERT(pSprite);
 
-		PARSER->getLastFRMSprite()->sprite()->setSpriteCalc(pExpressionSprite->calc());
+		PARSER->getLastFRMCommandList()->list()->setSpriteCalc(pExpressionSprite->calc());
 
 		$$ = PARSER->stack().push(pSprite);
 	}
