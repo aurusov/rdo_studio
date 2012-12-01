@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      main.cpp
+  \file      app/rdo_console/main.cpp
   \author    Пройдаков Евгений (lord.tiran@gmail.com)
   \date      26.10.2011
   \brief     Консольная версия RDO
