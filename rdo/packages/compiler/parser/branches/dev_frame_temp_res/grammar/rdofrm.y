@@ -3478,7 +3478,7 @@ fun_arithm
 
 		$$ = PARSER->stack().push(pArithmArraySize);
 	}
-	| RDO_IDENTIF '[' fun_arithm ',' RDO_IDENTIF ']'
+	| RDO_IDENTIF '[' fun_arithm ']' '.' RDO_IDENTIF
 	{
 		LPRDOValue pValue = PARSER->stack().pop<RDOValue>($1);
 		ASSERT(pValue);
@@ -3488,57 +3488,37 @@ fun_arithm
 
 		LPRDOType pType = pArithm->typeInfo()->type();
 		ASSERT(pType);
-
+		
 		LPRDOArrayType pArrayType = pType.object_dynamic_cast<RDOArrayType>();
 		if (!pArrayType)
 		{
 			PARSER->error().error(@1, rdo::format(_T("'%s' не является массивом."), pValue->value().getIdentificator().c_str()));
 		}
 
-		LPRDOValue pParamName = PARSER->stack().pop<RDOValue>($5);
+		LPRDORTPResType pResType = pArrayType->getItemType()->type().object_dynamic_cast<RDORTPResType>();
+		if (!pResType)
+		{
+			PARSER->error().error(@1, rdo::format(_T("'%s' не является массивом ресурсов."), pValue->value().getIdentificator().c_str()));
+		}
+
+		LPRDOValue pParamName = PARSER->stack().pop<RDOValue>($6);
 		ASSERT(pParamName);
 
 		LPRDOFUNArithm pArithmInd = PARSER->stack().pop<RDOFUNArithm>($3);
 		ASSERT(pArithmInd);
 
-		LPRDORTPResType pResType = pArrayType->getItemType()->type().object_dynamic_cast<RDORTPResType>();
-		if (!pResType)
-		{
-			PARSER->error().error(@1, rdo::format(_T("'%s' не является массивом временных ресурсов."), pValue->value().getIdentificator().c_str()));
-		}
+		rsint paramIndex = pResType->getRTPParamNumber(pParamName->value().getAsString());
 
-		std::vector<LPRDORTPParam> pParams = pResType->getParams();
+		if(paramIndex == RDORTPResType::UNDEFINED_PARAM)
+			PARSER->error().error(@6, rdo::format(_T("'%s' не является параметром ресурса '%s'."), pParamName->value().getAsString().c_str(), pResType->name().c_str()));
 
-		std::vector<LPRDORTPParam>::iterator it  = pParams.begin();
-		std::vector<LPRDORTPParam>::iterator end = pParams.end();
-
-		rsint not_found   = 1;
-		rsint pParamIndex = 0;
-		while (it != end)
-			if ((*it)->name() == pParamName->value().getAsString())
-			{
-				end = it;
-				not_found = 0;
-			}
-			else
-			{
-				++pParamIndex;
-				++it;
-			}
-
-		if(not_found)
-			PARSER->error().error(@5, rdo::format(_T("'%s' не является параметром ресурса '%s'."), pParamName->value().getAsString().c_str(), pResType->name().c_str()));
-
-		LPRDOFUNArithm pArithmParam = RDOFUNArithm::generateByConst(rdo::Factory<RDOValue>::create(rdo::explicit_value<rsint>(pParamIndex), RDOParserSrcInfo(@5)));
+		LPRDOFUNArithm pArithmParam = RDOFUNArithm::generateByConst(rdo::Factory<RDOValue>::create(rdo::explicit_value<rsint>(paramIndex), RDOParserSrcInfo(@6)));
 		ASSERT(pArithmParam);
 
 		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcArrayItemParam>::create(pArithm->calc(), pArithmInd->calc(), pArithmParam->calc());
 		ASSERT(pCalc);
 
-		LPTypeInfo pItemType = pArrayType->getItemType();
-		ASSERT(pItemType);
-
-		LPExpression pExpression = rdo::Factory<Expression>::create((*it)->getTypeInfo(), pCalc, RDOParserSrcInfo(@1));
+		LPExpression pExpression = rdo::Factory<Expression>::create(pResType->getParams()[paramIndex]->getTypeInfo(), pCalc, RDOParserSrcInfo(@6));
 		ASSERT(pExpression);
 
 		LPRDOFUNArithm pArithmArrayItemParam = rdo::Factory<RDOFUNArithm>::create(pExpression);
