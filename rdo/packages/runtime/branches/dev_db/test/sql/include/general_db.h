@@ -14,7 +14,13 @@ class generalDB
 {
 public:
 	generalDB();
-	generalDB(const QString& qserv, const QString& qdbase, const QString&	quName, const	QString&	qpass, const int& port);
+	generalDB(
+		const QString& qserv,
+		const QString& qdbase,
+		const QString& quName,
+		const QString& qpass,
+		const int& port
+	);
 	~generalDB();
 
 	void initDB();
