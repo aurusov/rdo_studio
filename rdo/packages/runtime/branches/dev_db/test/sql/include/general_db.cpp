@@ -10,7 +10,7 @@
 
 #include <QtSql\QtSql>
 #include <iostream>
-#include "simulator\runtime\test\sql\include\generalDB.h"
+#include "simulator\runtime\test\sql\include\general_db.h"
 
 generalDB::generalDB()
 {
