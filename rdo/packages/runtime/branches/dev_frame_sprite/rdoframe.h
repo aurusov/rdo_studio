@@ -160,10 +160,9 @@ public:
 	};
 
 public:
-	CREF(tstring) name              () const;
-
-	void          insertItem        (CREF(LPRDOFRMItem)  pItem      );
-	void          setSpriteCalc     (CREF(LPRDOCalc)     pSpriteCalc);
+	CREF(tstring) name         () const;
+	void          insertItem   (CREF(LPRDOFRMItem) pItem      );
+	void          setSpriteCalc(CREF(LPRDOCalc)    pSpriteCalc);
 
 	void setColorLastBG    (RDOFRMColor::ColorType type, CREF(rdo::animation::Color) lastBg);
 	void setColorLastFG    (RDOFRMColor::ColorType type, CREF(rdo::animation::Color) lastFg);
@@ -590,9 +589,10 @@ public:
 
 	void prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORuntime) pRuntime);
 
-	//! @todo Нужно спрятатть в приват и поправить симулятор, из которого метод вызывается
-	
 	void setBackgroundColor(CREF(LPRDOFRMColor) pBgColor);
+
+	//! @todo Нужно спрятатть в приват и поправить симулятор, из которого метод вызывается
+`
 	DECLARE_IRDOFRMItemGetBitmap;
 
 private:

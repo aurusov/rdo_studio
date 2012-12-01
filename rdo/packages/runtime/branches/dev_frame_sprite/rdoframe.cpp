@@ -192,23 +192,6 @@ void RDOFRMSprite::setColorLastFGText(RDOFRMColor::ColorType type, CREF(rdo::ani
 	}
 }
 
-void RDOFRMFrame::setBackgroundColor(CREF(LPRDOFRMColor) pBgColor)
-{
-	m_pBgColor = pBgColor;
-}
-
-void RDOFRMFrame::setBackPicture(CREF(tstring) picFileName)
-{
-	m_picFileName = picFileName;
-}
-
-void RDOFRMFrame::setBackPicture(int width, int height)
-{
-	m_picFileName = _T("");
-	m_width       = width;
-	m_height      = height;
-}
-
 void RDOFRMSprite::insertItem(CREF(LPRDOFRMItem) pItem)
 {
 	LPIRDOFRMItemGetBitmap pGetBitmap = pItem.interface_dynamic_cast<IRDOFRMItemGetBitmap>();
@@ -812,5 +795,21 @@ RDOValue RDOFRMFrame::doCalc(CREF(LPRDORuntime) pRuntime)
 	return RDOValue();
 }
 
+void RDOFRMFrame::setBackgroundColor(CREF(LPRDOFRMColor) pBgColor)
+{
+	m_pBgColor = pBgColor;
+}
+
+void RDOFRMFrame::setBackPicture(CREF(tstring) picFileName)
+{
+	m_picFileName = picFileName;
+}
+
+void RDOFRMFrame::setBackPicture(int width, int height)
+{
+	m_picFileName = _T("");
+	m_width       = width;
+	m_height      = height;
+}
 
 CLOSE_RDO_RUNTIME_NAMESPACE
