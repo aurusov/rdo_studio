@@ -532,7 +532,7 @@ void RDOStudioMainFrame::endProgress()
 void RDOStudioMainFrame::OnHelpKeyword()
 {
 	QByteArray ba;
-	ba.append("setSource qthelp://language/doc/rdo_studio_rus/html/about.htm\n");
+	ba.append("setSource qthelp://language/doc/rdo_studio_rus/html/rdo_whats_new.htm\n");
 	studioApp.callQtAssistant(ba);
 }
 
