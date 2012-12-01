@@ -1062,19 +1062,20 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 				if (!m_pThreadRuntime->runtimeError())
 				{
 					//! Остановились сами нормально
-					broadcastMessage(RT_SIMULATOR_MODEL_STOP_OK);
 					closeModel();
 					// место для добавления цикла //
 					if (--m_runCount)
-					//for( ruint i = 0; i <= m_runCount; ++i)
 					{
-						m_pThreadRuntime = NULL;
-						sendMessage(this, RT_STUDIO_MODEL_BUILD);
-						sendMessage(this, RT_STUDIO_MODEL_RUN);
-						kernel->idle();
-						sendMessage(this, RT_SIMULATOR_MODEL_STOP_OK);
+						//sendMessage(this, RT_STUDIO_MODEL_BUILD);
+						//sendMessage(this, RT_STUDIO_MODEL_RUN);
+
+						parseModel();
+						runModel();
 					}
-					
+					else
+					{
+						broadcastMessage(RT_SIMULATOR_MODEL_STOP_OK);
+					}
 				}
 				else
 				{
@@ -1088,7 +1089,6 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 				delete m_pThreadRuntime->thread_destroy;
 				m_pThreadRuntime->thread_destroy = NULL;
 #endif
-				m_pThreadRuntime = NULL;
 			}
 			break;
 		}
@@ -1208,6 +1208,7 @@ void RDOThreadSimulator::closeModel()
 	}
 */
 	m_pRuntime = NULL;
+	m_pThreadRuntime = NULL;
 	try
 	{
 		if (m_pParser)
