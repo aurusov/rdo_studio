@@ -81,7 +81,8 @@ void RDOToolBarModel::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar
 	UNUSED(nPos      );
 	UNUSED(pScrollBar);
 
-	if ( nSBCode == SB_THUMBTRACK ) {
+	if ( nSBCode == SB_THUMBTRACK )
+	{
 		model->setSpeed( getSpeed() );
 	}
 }
@@ -157,13 +158,17 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 	setupUi(this);
 	mdiArea->setOption(QMdiArea::DontMaximizeSubWindowOnActivation);
 
-	m_pSBCoord     = new QLabel(this);
-	m_pSBModify    = new QLabel(this);
-	m_pSBModelTime = new QLabel(this);
+	m_pSBCoord         = new QLabel(this);
+	m_pSBModify        = new QLabel(this);
+	m_pSBModelTime     = new QLabel(this);
+	m_pSBModelSpeed    = new QLabel(this);
+	m_pSBModelShowRate = new QLabel(this);
 
 	parent_type::statusBar()->addWidget(m_pSBCoord );
 	parent_type::statusBar()->addWidget(m_pSBModify);
 	parent_type::statusBar()->addWidget(m_pSBModelTime);
+	parent_type::statusBar()->addWidget(m_pSBModelSpeed);
+	parent_type::statusBar()->addWidget(m_pSBModelShowRate);
 
 	QObject::connect(actFileNew,     SIGNAL(triggered(bool)), this, SLOT(onFileNew    ()));
 	QObject::connect(actFileOpen,    SIGNAL(triggered(bool)), this, SLOT(onFileOpen   ()));
@@ -862,6 +867,18 @@ template <>
 PTR(QLabel) RDOStudioMainFrame::getStatusBarLabel<RDOStudioMainFrame::SB_MODEL_TIME>(StatusBarType<SB_MODEL_TIME>)
 {
 	return m_pSBModelTime;
+}
+
+template <>
+PTR(QLabel) RDOStudioMainFrame::getStatusBarLabel<RDOStudioMainFrame::SB_MODEL_SPEED>(StatusBarType<SB_MODEL_SPEED>)
+{
+	return m_pSBModelSpeed;
+}
+
+template <>
+PTR(QLabel) RDOStudioMainFrame::getStatusBarLabel<RDOStudioMainFrame::SB_MODEL_SHOWRATE>(StatusBarType<SB_MODEL_SHOWRATE>)
+{
+	return m_pSBModelShowRate;
 }
 
 void RDOStudioMainFrame::onDockVisibleChanged(rbool visible)
