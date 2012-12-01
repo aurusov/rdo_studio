@@ -9,21 +9,22 @@
 */
 
 #include <QtSql\QtSql>
+#include <QtSql\QSqlError>
 #include <iostream>
 #include "simulator\runtime\test\sql\include\general_db.h"
 
 generalDB::generalDB()
 {
 	setDefParams();
-	initDB();
+	initDB      ();
 }
 
-generalDB::generalDB(const QString& qserv, const QString& qdbase, const QString& quName, const QString& qpass, const int& port):
-	m_qserv (qserv ),
-	m_quName(quName),
-	m_qpass (qpass ),
-	m_port  (port  ),
-	m_qdbase(qdbase)
+generalDB::generalDB(const QString& qserv, const QString& qdbase, const QString& quName, const QString& qpass, const int& port)
+	: m_qserv (qserv )
+	, m_quName(quName)
+	, m_qpass (qpass )
+	, m_port  (port  )
+	, m_qdbase(qdbase)
 {
 	initDB();
 }
@@ -35,19 +36,18 @@ generalDB::~generalDB()
 
 void generalDB::initDB()
 {
-	if (!m_db.contains())
-		m_db = QSqlDatabase::addDatabase("QPSQL");
-	else if (m_db.isOpen()) 
-		m_db.close();
+	m_db = QSqlDatabase::addDatabase("QPSQL");
 
-	m_db.setHostName     (m_qserv);
-	m_db.setDatabaseName (m_qdbase);
-	m_db.setUserName     (m_quName);
-	m_db.setPassword     (m_qpass);
-	m_db.setPort         (m_port);
+	m_db.setHostName    (m_qserv);
+	m_db.setDatabaseName(m_qdbase);
+	m_db.setUserName    (m_quName);
+	m_db.setPassword    (m_qpass);
+	m_db.setPort        (m_port);
 
-	if (!(m_db.open()))
+	if (!m_db.open())
+	{
 		std::cout << "Connection to datebase failed! :(" << std::endl;
+	}
 }
 
 void generalDB::setDefParams()
@@ -59,11 +59,21 @@ void generalDB::setDefParams()
 	m_qdbase = "rdo";
 }
 
-void generalDB::queryExec(const QString& quer)
+void generalDB::queryExec(const QString& query)
 {
-	QString str = m_db.exec(quer).lastError().text();
-	if (str != "")
-		std::cout << str.toStdString()<< "\n" << std::endl;
-	else 
-		std::cout << "OK! : " << quer.toStdString()<< "\n" << std::endl;	
+	std::cout << query.toStdString() << "..." << std::endl;
+
+	m_db.exec(query);
+
+	QSqlError lastError = m_db.lastError();
+	switch (lastError.type())
+	{
+	case QSqlError::NoError:
+		std::cout << query.toStdString() << "... ok" << std::endl;
+		break;
+
+	default:
+		std::cerr << query.toStdString() << "... failed: " << lastError.text().toStdString() << std::endl;
+		break;
+	}
 }

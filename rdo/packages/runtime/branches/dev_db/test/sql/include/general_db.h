@@ -23,9 +23,11 @@ public:
 	);
 	~generalDB();
 
+	void queryExec(const QString& query);
+
+private:
 	void initDB();
 	void setDefParams();
-	void queryExec(const QString& quer);
 
 	QString		 m_qserv ;
 	QString		 m_quName;
@@ -33,4 +35,5 @@ public:
 	int    		 m_port  ;
 	QString		 m_qdbase;
 	QSqlDatabase m_db    ;
+
 };
