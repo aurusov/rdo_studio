@@ -25,16 +25,10 @@ void dropDB()
 	db.queryExec("CREATE DATABASE rdo;");
 }
 
-int main(int argc, char *argv[])
+generalDB::QueryList generateCreateDBQuery()
 {
-	QCoreApplication app(argc, argv);
+	generalDB::QueryList queryList;
 
-	dropDB();
-
-	generalDB db;
-
-	QSqlQuery query;
-//------------------------
 	QString create_rtp = "CREATE TABLE rtp"
 						"("
 						"	r_t_id               serial,"
@@ -42,7 +36,7 @@ int main(int argc, char *argv[])
 						"	r_t_perm             boolean NOT NULL,"
 						"	PRIMARY KEY (r_t_id)"
 						");";
-	db.queryExec(create_rtp);
+	queryList.push_back(create_rtp);
 
 	QString create_list = "CREATE TABLE list_of_types_of_params"
 						"("
@@ -50,7 +44,7 @@ int main(int argc, char *argv[])
 						"	table_id      integer NOT NULL,"
 						"	PRIMARY KEY (type_id)"
 						");";
-	db.queryExec(create_list);
+	queryList.push_back(create_list);
 
 	QString create_param = "CREATE TABLE param_of_type"
 						"("
@@ -62,12 +56,12 @@ int main(int argc, char *argv[])
 						"	FOREIGN KEY (r_t_id) REFERENCES rtp,"
 						"	FOREIGN KEY (type_id) REFERENCES list_of_types_of_params"
 						");";
-	db.queryExec(create_param);
+	queryList.push_back(create_param);
 //------------------------
 
 //------------------------
 	QString create_seq = "CREATE SEQUENCE type_of_param_seq;";
-	db.queryExec(create_seq);
+	queryList.push_back(create_seq);
 
 	QString create_function = "CREATE FUNCTION copy_type_id() RETURNS TRIGGER AS $trig$"
 							"	BEGIN"
@@ -76,7 +70,7 @@ int main(int argc, char *argv[])
 							"		RETURN NULL;"
 							"	END;"
 							"	$trig$ LANGUAGE plpgsql;";
-	db.queryExec(create_function);
+	queryList.push_back(create_function);
 //------------------------
 
 
@@ -92,13 +86,13 @@ int main(int argc, char *argv[])
 						"	max          real,"
 						"	PRIMARY KEY (type_id)"
 						");";
-	db.queryExec(create_real);
+	queryList.push_back(create_real);
 
 	QString create_realTr = "CREATE TRIGGER real_trig"
 						"	AFTER INSERT ON real"
 						"	FOR EACH ROW"
 						"	EXECUTE PROCEDURE copy_type_id();";
-	db.queryExec(create_realTr);
+	queryList.push_back(create_realTr);
 //------------------------
 
 //------------------------
@@ -108,13 +102,13 @@ int main(int argc, char *argv[])
 						"	def_val      VARCHAR(40),"
 						"	PRIMARY KEY (type_id)"
 						");";
-	db.queryExec(create_enum);
+	queryList.push_back(create_enum);
 
 	QString create_enumTr = "CREATE TRIGGER enum_trig"
 						"	AFTER INSERT ON enum"
 						"	FOR EACH ROW"
 						"	EXECUTE PROCEDURE copy_type_id();";
-	db.queryExec(create_enumTr);
+	queryList.push_back(create_enumTr);
 
 	QString create_enumVv = "CREATE TABLE enum_valid_value"
 						"("
@@ -125,7 +119,7 @@ int main(int argc, char *argv[])
 						"	PRIMARY KEY (enum_id, vv_id),"
 						"	FOREIGN KEY (enum_id) REFERENCES enum"
 						");";
-	db.queryExec(create_enumVv);
+	queryList.push_back(create_enumVv);
 //------------------------
 
 //------------------------
@@ -137,14 +131,29 @@ int main(int argc, char *argv[])
 						"	max          integer,"
 						"	PRIMARY KEY (type_id)"
 						");";
-	db.queryExec(create_int);
+	queryList.push_back(create_int);
 
 	QString create_intTr = "CREATE TRIGGER int_trig"
 						"	AFTER INSERT ON int"
 						"	FOR EACH ROW"
 						"	EXECUTE PROCEDURE copy_type_id();";
-	db.queryExec(create_intTr);
-//------------------------
+	queryList.push_back(create_intTr);
+
+	return queryList;
+}
+
+void createDB()
+{
+	generalDB db;
+	db.queryExec(generateCreateDBQuery());
+}
+
+int main(int argc, char *argv[])
+{
+	QCoreApplication app(argc, argv);
+
+	dropDB  ();
+	createDB();
 
 	std::cout << "to be continued...\n";
 	getch();
