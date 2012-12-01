@@ -18,16 +18,20 @@
 #include "simulator\runtime\test\sql\include\general_db.h"
 // --------------------------------------------------------------------------------
 
+void dropDB()
+{
+	generalDB db("localhost", "postgres", "postgres", "rdo", 5432);
+	db.queryExec("DROP DATABASE IF EXISTS rdo;");
+	db.queryExec("CREATE DATABASE rdo;");
+}
+
 int main(int argc, char *argv[])
 {
 	QCoreApplication app(argc, argv);
-	generalDB db = generalDB::generalDB("localhost","postgres","postgres","rdo",5432);
 
-	db.queryExec("DROP DATABASE IF EXISTS rdo;");
-	db.queryExec("CREATE DATABASE rdo;");
+	dropDB();
 
-	db.setDefParams();
-	db.initDB();
+	generalDB db;
 
 	QSqlQuery query;
 //------------------------
