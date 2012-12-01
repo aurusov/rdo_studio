@@ -315,8 +315,6 @@
 #define ID_INSERT_FRM_FRM               32892
 #define ID_INSERT_FRM_FRAME             32893
 #define ID_INSERT_FRM_BACKPICTURE       32894
-#define ID_INSERT_FRM_SHOW              32895
-#define ID_INSERT_FRM_SHOWIF            32896
 #define ID_INSERT_FRM_BITMAP            32897
 #define ID_INSERT_FRM_TEXT              32898
 #define ID_INSERT_FRM_LINE              32899
