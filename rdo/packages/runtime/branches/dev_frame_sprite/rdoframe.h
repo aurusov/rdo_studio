@@ -179,6 +179,8 @@ protected:
 	RDOFRMSprite(CREF(RDOSrcInfo) srcInfo);
 	virtual ~RDOFRMSprite();
 
+	RDOValue prepareFrame(CREF(LPRDORuntime) pRuntime);
+
 	DECLARE_IRDOFRMItemGetBitmap;
 
 private:

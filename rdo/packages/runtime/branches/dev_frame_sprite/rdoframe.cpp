@@ -107,6 +107,11 @@ RDOFRMSprite::RDOFRMSprite(CREF(RDOSrcInfo) srcInfo)
 RDOFRMSprite::~RDOFRMSprite()
 {}
 
+RDOValue RDOFRMSprite::prepareFrame(CREF(LPRDORuntime) pRuntime)
+{
+	return RDOFRMSprite::doCalc(pRuntime);
+}
+
 RDOValue RDOFRMSprite::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_lastX      = 0;
@@ -242,7 +247,7 @@ void RDOFRMFrame::prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORunt
 	pFrame->m_size.m_height = m_height;
 
 	pRuntime->setPreparingFrame(pFrame);
-	RDOFRMSprite::calcValue(pRuntime);
+	calcValue(pRuntime);
 	pRuntime->resetPreparingFrame();
 }
 
@@ -792,7 +797,8 @@ RDOValue RDOFRMFrame::doCalc(CREF(LPRDORuntime) pRuntime)
 	{
 		pFrame->m_bgColor = rdo::animation::Color();
 	}
-	return RDOValue();
+
+	return RDOFRMSprite::prepareFrame(pRuntime);
 }
 
 void RDOFRMFrame::setBackgroundColor(CREF(LPRDOFRMColor) pBgColor)
