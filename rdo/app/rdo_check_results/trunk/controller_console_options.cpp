@@ -47,7 +47,7 @@ RDOControllerConsoleOptions::~RDOControllerConsoleOptions()
 
 void RDOControllerConsoleOptions::parseOptions()
 {
-	if (m_variables.empty() || m_variables.count(CHELP_COMMAND) && !m_variables.count(VERSION_COMMAND))
+	if (m_variables.empty() || m_variables.count(HELP_COMMAND) && !m_variables.count(VERSION_COMMAND))
 	{
 		std::cout << m_options << std::endl;
 		m_help = true;
@@ -92,5 +92,5 @@ void RDOControllerConsoleOptions::createGeneralOptions(REF(po::options_descripti
 			((TRACE_COMMAND + COMMA_STRING + TRACE_COMMAND_SHORT).c_str(), po::value<tstring>(), TRACE_COMMENT.c_str())
 			((RESULT_COMMAND + COMMA_STRING + RESULT_COMMAND_SHORT).c_str(), po::value<tstring>(), RESULT_COMMENT.c_str())
 			((VERSION_COMMAND + COMMA_STRING + VERSION_COMMAND_SHORT).c_str(), VERSION_COMMENT.c_str())
-			((CHELP_COMMAND + COMMA_STRING + HELP_COMMAND_SHORT).c_str(), HELP_COMMENT.c_str());
+			((HELP_COMMAND + COMMA_STRING + HELP_COMMAND_SHORT).c_str(), HELP_COMMENT.c_str());
 }

@@ -22,7 +22,7 @@ const tstring ETALON_TRACE_COMMAND          = _T("etalon-trace");
 const tstring ETALON_RESULT_COMMAND         = _T("etalon-result");
 const tstring TRACE_COMMAND                 = _T("trace");
 const tstring RESULT_COMMAND                = _T("result");
-const tstring CHELP_COMMAND                 = _T("help");
+const tstring HELP_COMMAND                 = _T("help");
 const tstring VERSION_COMMAND               = _T("version");
 
 const tstring ETALON_TRACE_COMMAND_SHORT    = _T("T");
