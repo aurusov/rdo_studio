@@ -52,7 +52,7 @@ RDOControllerConsoleOptions::~RDOControllerConsoleOptions()
 
 void RDOControllerConsoleOptions::parseOptions()
 {
-	if (m_variables.empty() || m_variables.count(CHELP_COMMAND) && 
+	if (m_variables.empty() || m_variables.count(HELP_COMMAND) && 
 			!m_variables.count(LANGUAGE_COMMAND) && !m_variables.count(VERSION_COMMAND))
 	{
 		std::cout << m_options << std::endl;
@@ -70,15 +70,24 @@ void RDOControllerConsoleOptions::parseOptions()
 	}
 }
 
-void RDOControllerConsoleOptions::getModelName(REF(tstring) modelName)
+const tstring RDOControllerConsoleOptions::getModelFileName()
 {
-	if(m_variables.count(INPUT_MODEL_COMMAND))
+	if(m_variables.count(MODEL_COMMAND))
 	{
-		///! @todo added control input data
-		modelName = m_variables[INPUT_MODEL_COMMAND].as<tstring>();
-		return;
+		tstring modelFileName = m_variables[MODEL_COMMAND].as<tstring>();
+		return modelFileName;
 	}
-	modelName = _T("");
+	return _T("");
+}
+
+const tstring RDOControllerConsoleOptions::getEventsFileName()
+{
+    if(m_variables.count(EVENTS_COMMAND))
+    {
+        tstring eventsFileName = m_variables[EVENTS_COMMAND].as<tstring>();
+        return eventsFileName;
+    }
+    return _T("");
 }
 
 rbool RDOControllerConsoleOptions::helpQuery()
@@ -89,9 +98,10 @@ rbool RDOControllerConsoleOptions::helpQuery()
 void RDOControllerConsoleOptions::createGeneralOptions(REF(po::options_description) options)
 {
 	options.add_options()
-			((INPUT_MODEL_COMMAND + COMMA_STRING + INPUT_MODEL_COMMAND_SHORT).c_str(), po::value<tstring>(), MODEL_COMMENT.c_str())
+			((MODEL_COMMAND + COMMA_STRING + MODEL_COMMAND_SHORT).c_str(), po::value<tstring>(), MODEL_COMMENT.c_str())
+            ((EVENTS_COMMAND + COMMA_STRING + EVENTS_COMMAND_SHORT).c_str(), po::value<tstring>(), EVENTS_COMMENT.c_str())
 			((VERSION_COMMAND + COMMA_STRING + VERSION_COMMAND_SHORT).c_str(), VERSION_COMMENT.c_str())
-			((CHELP_COMMAND + COMMA_STRING + HELP_COMMAND_SHORT).c_str(), HELP_COMMENT.c_str())
+			((HELP_COMMAND + COMMA_STRING + HELP_COMMAND_SHORT).c_str(), HELP_COMMENT.c_str())
 			((LANGUAGE_COMMAND + COMMA_STRING + LANGUAGE_COMMAND_SHORT).c_str(), LANGUAGE_COMMENT.c_str());
 }
 

@@ -14,14 +14,19 @@ SET(HEADER_FILES
 	terminate_codes.h
     controller_console_options.h
     controller_console_options_config.h
-    rdo_console_controller.h)
+    rdo_console_controller.h
+	rdo_event.h
+	)
 
 SET(SOURCE_FILES
     controller_console_options.cpp
-    rdo_console_controller.cpp)
+    rdo_console_controller.cpp
+    rdo_event.cpp
+	)
 
 SET(MAIN_FILES
-    main.cpp)
+    main.cpp
+	)
 
 ADD_EXECUTABLE(rdo ${HEADER_FILES} ${SOURCE_FILES} ${MAIN_FILES})
 
@@ -42,17 +47,24 @@ TARGET_LINK_LIBRARIES(rdo rdo_simulator_report)
 IF(MSVC) # lotions for windows #
 
 SOURCE_GROUP(".code" FILES
-	${HEADER_FILES}
-	${SOURCE_FILES}
+    ${HEADER_FILES}
+    ${SOURCE_FILES}
     ${MAIN_FILES})
 
 SOURCE_GROUP(".console_controller" FILES
     rdo_studio_console_controller.h
-    rdo_studio_console_controller.cpp)
+    rdo_studio_console_controller.cpp
+	)
 
 SOURCE_GROUP(".console_options" FILES
     controller_console_options.h
     controller_console_options.cpp
-    controller_console_options_config.h)
+    controller_console_options_config.h
+	)
+
+SOURCE_GROUP(".event" FILES
+    rdo_event.h
+    rdo_event.cpp
+    )
 
 ENDIF(MSVC)

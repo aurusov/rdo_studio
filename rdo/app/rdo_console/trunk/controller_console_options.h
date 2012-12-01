@@ -31,7 +31,9 @@ public:
 	~RDOControllerConsoleOptions();
 	
 	void parseOptions();
-	void getModelName(REF(tstring) modelName);
+
+	const tstring getModelFileName();
+    const tstring getEventsFileName();
 	
 	rbool helpQuery();
 	

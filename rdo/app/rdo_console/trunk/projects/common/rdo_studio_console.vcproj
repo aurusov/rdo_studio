@@ -213,6 +213,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name=".event"
+			>
+			<File
+				RelativePath="..\..\rdo_event.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_event.h"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
