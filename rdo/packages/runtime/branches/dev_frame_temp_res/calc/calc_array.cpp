@@ -60,9 +60,9 @@ RDOValue RDOCalcArrayItem::doCalc(CREF(LPRDORuntime) pRuntime)
 // -------------------- RDOCalcArrayItemParam
 // --------------------------------------------------------------------------------
 RDOCalcArrayItemParam::RDOCalcArrayItemParam(CREF(LPRDOCalc) pArray, CREF(LPRDOCalc) pArrayInd, CREF(LPRDOCalc) pParamInd)
-: m_pArray   (pArray   )
-, m_pArrayInd(pArrayInd)
-, m_pParamInd(pParamInd)
+	: m_pArray   (pArray   )
+	, m_pArrayInd(pArrayInd)
+	, m_pParamInd(pParamInd)
 {
 	ASSERT(m_pArray   );
 	ASSERT(m_pArrayInd);
