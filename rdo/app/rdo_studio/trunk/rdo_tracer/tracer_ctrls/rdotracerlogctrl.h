@@ -12,14 +12,13 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/rdo_tracer/namespace.h"
 #include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdologctrl.h"
 #include "app/rdo_studio_mfc/rdo_tracer/tracer_ctrls/rdotracerlogstyle.h"
 // --------------------------------------------------------------------------------
 
-OPEN_RDO_TRACER_NAMESPACE
+namespace rdoTracer {
 class RDOTracerBase;
-CLOSE_RDO_TRACER_NAMESPACE
+}
 
 namespace rdoTracerLog {
 

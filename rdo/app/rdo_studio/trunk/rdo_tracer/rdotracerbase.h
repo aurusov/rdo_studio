@@ -15,7 +15,6 @@
 #include "utils/rdostream.h"
 #include "kernel/rdothread.h"
 #include "kernel/rdokernel.h"
-#include "app/rdo_studio_mfc/rdo_tracer/namespace.h"
 #include "app/rdo_studio_mfc/resource.h"
 // --------------------------------------------------------------------------------
 
@@ -39,7 +38,7 @@ namespace rdoTracerLog {
 class RDOTracerLogCtrl;
 }
 
-OPEN_RDO_TRACER_NAMESPACE
+namespace rdoTracer {
 
 class RDOTracerBase: public RDOThreadGUI
 {
@@ -126,6 +125,6 @@ public:
 	void unlock() { mutex.Unlock(); };
 };
 
-CLOSE_RDO_TRACER_NAMESPACE
+}; // namespace rdoTracer
 
 #endif // _RDO_STUDIO_MFC_TRACER_RDOTRACERBASE_H_

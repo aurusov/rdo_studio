@@ -1481,10 +1481,6 @@
 			Name=".tracer"
 			>
 			<File
-				RelativePath="..\..\rdo_tracer\namespace.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\rdo_tracer\rdotracer.cpp"
 				>
 			</File>

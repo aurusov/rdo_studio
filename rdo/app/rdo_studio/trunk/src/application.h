@@ -16,7 +16,6 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdothread.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_method_manager.h"
-#include "app/rdo_studio_mfc/rdo_tracer/namespace.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"
 // --------------------------------------------------------------------------------
 
@@ -30,9 +29,10 @@ class RDOThreadStudio;
 class RDOThreadStudioGUI;
 class RDOStudioPlugin;
 
-OPEN_RDO_TRACER_NAMESPACE
+namespace rdoTracer
+{
 class RDOTracer;
-CLOSE_RDO_TRACER_NAMESPACE
+}
 
 class RDOStudioApp: public CWinApp
 {
