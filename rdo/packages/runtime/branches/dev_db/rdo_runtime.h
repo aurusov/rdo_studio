@@ -21,6 +21,7 @@
 #include <time.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdocommon.h"
+#include "utils/rdostream.h"
 #include "utils/smart_ptr/intrusive_ptr.h"
 #include "simulator/runtime/rdotrace.h"
 #include "simulator/runtime/simtrace.h"
@@ -37,6 +38,10 @@
 
 class RDOThread;
 
+OPEN_RDO_ANIMATION_NAMESPACE
+struct Frame;
+CLOSE_RDO_ANIMATION_NAMESPACE
+
 OPEN_RDO_RUNTIME_NAMESPACE
 
 //! Результаты моделирования
@@ -52,7 +57,7 @@ public:
 	REF(RDOResults) operator<< (CREF(T) value);
 
 	virtual void              flush     () = 0;
-	virtual REF(std::ostream) getOStream() = 0;
+	virtual REF(rdo::ostream) getOStream() = 0;
 };
 
 class RDOEvent;
@@ -195,6 +200,10 @@ public:
 
 	void setStudioThread(PTR(RDOThread) pStudioThread);
 
+	PTR(rdo::animation::Frame) getPreparingFrame() const;
+	void setPreparingFrame  (PTR(rdo::animation::Frame) pPreparingFrame);
+	void resetPreparingFrame();
+
 private:
 	RDORuntime(PTR(Error) pError);
 	virtual ~RDORuntime();
@@ -275,6 +284,8 @@ private:
 	virtual void onAfterCheckResult();
 
 	ruint m_currentTerm;
+
+	PTR(rdo::animation::Frame) m_pPreparingFrame;
 };
 
 CLOSE_RDO_RUNTIME_NAMESPACE

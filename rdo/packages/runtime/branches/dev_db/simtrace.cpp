@@ -66,7 +66,7 @@ ruint RDOSimulatorTrace::getResourceId()
 #ifdef _DEBUG
 		STL_FOR_ALL(freeResourcesIds, it)
 		{
-			TRACE1("getFreeResourceId: %d\n", *it);
+			TRACE1(_T("getFreeResourceId: %d\n"), *it);
 		}
 #endif
 		ruint id = freeResourcesIds.back();

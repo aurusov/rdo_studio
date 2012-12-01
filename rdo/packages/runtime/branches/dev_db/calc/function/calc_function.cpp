@@ -110,7 +110,7 @@ RDOValue RDOFunAlgorithmicCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 		++actionIt;
 	}
 
-	// ƒо сюда дело дойти не должно, т.к. последний conditions должен быть значением по-умолчанию
+	// ƒо сюда дело дойти не должно, т.к. последний conditions должен быть значением по молчанию
 	pRuntime->error().push(_T("¬нутренна€ ошибка, RDOFunAlgorithmicCalc"), srcInfo());
 	return RDOValue();
 }

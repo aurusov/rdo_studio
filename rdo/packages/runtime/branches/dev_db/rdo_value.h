@@ -49,6 +49,8 @@ public:
 	template <class T>
 	RDOValue(CREF(LPRDOType) pType, CREF(rdo::intrusive_ptr<T>) pObject);
 
+	static RDOValue fromDouble(CREF(LPRDOType) pType, double value);
+
 	rsint             getInt          () const;
 	ruint             getUInt         () const;
 	rsint             getEnumAsInt    () const;
