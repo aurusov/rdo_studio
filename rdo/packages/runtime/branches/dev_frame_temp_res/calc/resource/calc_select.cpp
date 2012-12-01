@@ -23,9 +23,11 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcSelect
 // --------------------------------------------------------------------------------
-RDOFunCalcSelect::RDOFunCalcSelect(int nResType, CREF(LPRDOCalc) pCondition)
+RDOFunCalcSelect::RDOFunCalcSelect(int nResType, CREF(LPRDOCalc) pCondition, CREF(LPIResourceType) pResType)
 	: RDOFunCalcGroup(nResType, pCondition)
-{}
+{
+	m_pResType = pResType;
+}
 
 void RDOFunCalcSelect::prepare(CREF(LPRDORuntime) pRuntime)
 {
@@ -50,6 +52,11 @@ RDOValue RDOFunCalcSelect::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	prepare(pRuntime);
 	return RDOValue();
+}
+
+CREF(LPIResourceType) RDOFunCalcSelect::getResType()
+{
+	return m_pResType;
 }
 
 // --------------------------------------------------------------------------------
@@ -169,25 +176,15 @@ RDOValue RDOFunCalcSelectArray::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	m_pSelect->prepare(pRuntime);
 	std::list<LPRDOResource>::iterator it  = m_pSelect->res_list.begin();
-	std::list<LPRDOResource>::iterator end = m_pSelect->res_list.end();
-	if(it == end)
-	{
-		LPRDOResourceType pNoResourceType;
-		rdo::runtime::LPRDOArrayType  pNoType  = rdo::Factory<rdo::runtime::RDOArrayType >::create(pNoResourceType);
-		ASSERT(pNoType);
-		rdo::runtime::LPRDOArrayValue pNoValue = rdo::Factory<rdo::runtime::RDOArrayValue>::create(pNoType);
-		ASSERT(pNoValue);
-		return RDOValue(pNoType, pNoValue);
-	}
-
-	LPRDOResourceType pResourceType = (*it)->getResType();
-	rdo::runtime::LPRDOArrayType  pType  = rdo::Factory<rdo::runtime::RDOArrayType >::create(pResourceType);
+	std::list<LPRDOResource>::iterator end = m_pSelect->res_list.end  ();
+	rdo::runtime::LPRDOArrayType  pType  = rdo::Factory<rdo::runtime::RDOArrayType >::create(m_pSelect->getResType());
 	ASSERT(pType);
 	rdo::runtime::LPRDOArrayValue pValue = rdo::Factory<rdo::runtime::RDOArrayValue>::create(pType);
 	ASSERT(pValue);
-
 	while (it != end)
-		pValue->push_back(rdo::runtime::RDOValue(pResourceType, *(it++)));
+	{
+		pValue->push_back(rdo::runtime::RDOValue(m_pSelect->getResType(), *(it++)));
+	}
 	return RDOValue(pType, pValue);
 }
 

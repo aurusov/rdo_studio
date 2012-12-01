@@ -30,8 +30,12 @@ public:
 	mutable std::list<LPRDOResource> res_list;
 	void prepare(CREF(LPRDORuntime) pRuntime);
 
+	CREF(LPIResourceType) getResType();
+
 private:
-	RDOFunCalcSelect(int nResType, CREF(LPRDOCalc) pCondition);
+	RDOFunCalcSelect(int nResType, CREF(LPRDOCalc) pCondition, CREF(LPIResourceType) pResType = LPIResourceType());
+
+	LPIResourceType m_pResType;
 
 	DECLARE_ICalc;
 };
