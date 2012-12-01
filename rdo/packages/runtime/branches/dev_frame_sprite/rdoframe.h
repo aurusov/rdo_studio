@@ -592,7 +592,6 @@ public:
 	void setBackgroundColor(CREF(LPRDOFRMColor) pBgColor);
 
 	//! @todo Нужно спрятатть в приват и поправить симулятор, из которого метод вызывается
-`
 	DECLARE_IRDOFRMItemGetBitmap;
 
 private:
