@@ -1062,6 +1062,7 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 				if (!m_pThreadRuntime->runtimeError())
 				{
 					//! Остановились сами нормально
+					broadcastMessage(RT_SIMULATOR_MODEL_STOP_OK);
 					closeModel();
 					// место для добавления цикла //
 					if (--m_runCount)
@@ -1071,10 +1072,6 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 
 						parseModel();
 						runModel();
-					}
-					else
-					{
-						broadcastMessage(RT_SIMULATOR_MODEL_STOP_OK);
 					}
 				}
 				else
