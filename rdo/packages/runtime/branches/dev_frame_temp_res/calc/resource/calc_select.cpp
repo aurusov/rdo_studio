@@ -23,7 +23,7 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOFunCalcSelect
 // --------------------------------------------------------------------------------
-RDOFunCalcSelect::RDOFunCalcSelect(int nResType, CREF(LPRDOCalc) pCondition, CREF(LPIResourceType) pResType)
+RDOFunCalcSelect::RDOFunCalcSelect(CREF(LPIResourceType) pResType, int nResType, CREF(LPRDOCalc) pCondition)
 	: RDOFunCalcGroup(nResType, pCondition)
 {
 	m_pResType = pResType;

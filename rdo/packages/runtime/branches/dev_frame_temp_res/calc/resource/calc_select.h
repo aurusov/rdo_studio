@@ -33,7 +33,7 @@ public:
 	CREF(LPIResourceType) getResType();
 
 private:
-	RDOFunCalcSelect(int nResType, CREF(LPRDOCalc) pCondition, CREF(LPIResourceType) pResType = LPIResourceType());
+	RDOFunCalcSelect(CREF(LPIResourceType) pResType, int nResType, CREF(LPRDOCalc) pCondition);
 
 	LPIResourceType m_pResType;
 
