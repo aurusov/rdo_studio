@@ -227,6 +227,7 @@
 #include "simulator/runtime/calc/procedural/calc_statement.h"
 #include "simulator/runtime/calc/procedural/calc_braces.h"
 #include "simulator/runtime/calc/procedural/calc_range.h"
+#include "simulator/runtime/calc/resource/calc_resource.h"
 // --------------------------------------------------------------------------------
 
 #define PARSER  LEXER->parser()
@@ -3515,7 +3516,10 @@ fun_arithm
 		LPRDOFUNArithm pArithmParam = RDOFUNArithm::generateByConst(rdo::Factory<RDOValue>::create(rdo::explicit_value<rsint>(paramIndex), RDOParserSrcInfo(@6)));
 		ASSERT(pArithmParam);
 
-		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcArrayItemParam>::create(pArithm->calc(), pArithmInd->calc(), pArithmParam->calc());
+		rdo::runtime::LPRDOCalc pItemCalc = rdo::Factory<rdo::runtime::RDOCalcArrayItem>::create(pArithm->calc(), pArithmInd->calc());
+		ASSERT(pItemCalc);
+
+		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcGetResourceParam>::create(pItemCalc, pArithmParam->calc());
 		ASSERT(pCalc);
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pResType->getParams()[paramIndex]->getTypeInfo(), pCalc, RDOParserSrcInfo(@6));
