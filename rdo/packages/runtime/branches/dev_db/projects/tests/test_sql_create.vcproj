@@ -46,7 +46,7 @@
 				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				WarningLevel="4"
+				WarningLevel="3"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -168,14 +168,6 @@
 		<Filter
 			Name=".test"
 			>
-			<File
-				RelativePath="..\..\test\sql\include\generalDB.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\test\sql\include\generalDB.h"
-				>
-			</File>
 			<File
 				RelativePath="..\..\test\sql\create\main.cpp"
 				>
