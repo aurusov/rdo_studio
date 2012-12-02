@@ -11,43 +11,40 @@
 #define _RDO_EVENT_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <list>
-
-#include <boost/any.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "utils/rdotypes.h"
-#include "utils/namespace.h"
+#include "utils/rdocommon.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_NAMESPACE
 
-struct event
+/// base event class
+class event
 {
-// types
-	enum types {
-		any = 0,
-		keyboard,
-		mouse
-	};
+public:
+    enum types {
+        none,
+        key,
+        mouse
+    };
 
-	static const tstring any_text;
-	static const tstring keyboard_text;
-	static const tstring mouse_text;
+public:
+    event(CREF(tstring) name, double time, types type = none);
+    virtual ~event();
 
- // methods
-	static types text_type2type(const tstring& text_type);
-	static tstring type2text_type(const types& type);
+    void setName(CREF(tstring) name);
+    void setTime(double time);
 
-	friend bool operator< (const event& left, const event& right);
+    tstring getName() const;
+    double  getTime() const;
+    types   getType() const;
 
-// data
-	tstring    name;
-	types      type;
-	double     time;
-	boost::any value;
+    friend bool operator< (CREF(event) left, CREF(event) right);
+
+private:
+	tstring m_name;
+	double  m_time;
+    types   m_type;
 };
-
-typedef std::list<rdo::event> event_list;
 
 CLOSE_RDO_NAMESPACE
 

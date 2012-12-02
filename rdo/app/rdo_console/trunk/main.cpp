@@ -8,11 +8,12 @@
 */
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <iostream>
+
 #include <boost/foreach.hpp>
 #include <boost/date_time.hpp>
 #include <boost/filesystem.hpp>
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/xml_parser.hpp>
+#include <boost/shared_ptr.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdocommon.h"
 #include "utils/rdolocale.h"
@@ -20,20 +21,25 @@
 #include "simulator/runtime/keyboard.h"
 #include "simulator/service/rdosimwin.h"
 #include "app/rdo_console/rdo_event.h"
-#include "app/rdo_console/terminate_codes.h"
-#include "app/rdo_console/controller_console_options.h"
+#include "app/rdo_console/rdo_event_xml_parser.h"
+#include "app/rdo_console/rdo_key_event_xml_reader.h"
+#include "app/rdo_console/rdo_mouse_event_xml_reader.h"
 #include "app/rdo_console/rdo_console_controller.h"
+#include "app/rdo_console/controller_console_options.h"
+#include "app/rdo_console/terminate_codes.h"
 // --------------------------------------------------------------------------------
 
-typedef std::list<tstring> StringList;
 namespace fs = boost::filesystem;
+
+typedef std::list<tstring> string_list;
+typedef rdo::event_xml_parser::event_list event_list;
 
 const tstring LOG_FILE_NAME = _T("log.txt");
 
 static ruint g_exitCode = TERMINATION_NORMAL;
 
-void read_events(std::istream& stream, rdo::event_list& list);
-void write_build_log(std::ostream& stream, const StringList& list);
+void read_events(REF(std::istream) stream, REF(event_list) list);
+void write_build_log(REF(std::ostream) stream, CREF(string_list) list);
 
 int main(int argc, PTR(char) argv[])
 {
@@ -66,11 +72,11 @@ int main(int argc, PTR(char) argv[])
     }
 
     // read events
-    std::list<rdo::event> event_list;
+    event_list list;
     if(event_exist) {
         std::ifstream stream(events_file_name.c_str(), std::ios::out);
-        read_events(stream, event_list);
-        event_list.sort();
+        read_events(stream, list);
+        list.sort();
     }
 
 	// simulation
@@ -93,7 +99,7 @@ int main(int argc, PTR(char) argv[])
 	bool buildError = pAppController->buildError();
 	if (buildError)
 	{
-		StringList buildList;
+		string_list buildList;
 		pAppController->getBuildLogList(buildList);
 
 		tstring fileName(model_dir + "/" + LOG_FILE_NAME);
@@ -119,24 +125,23 @@ int main(int argc, PTR(char) argv[])
 				g_exitCode = TERMINATION_WITH_AN_ERROR_RUNTIME_ERROR;
 			}
 
-            if(!event_list.empty())
+            if(!list.empty())
             {
                 double runtime_time = 0;
                 pAppController->broadcastMessage(RDOThread::RT_RUNTIME_GET_TIMENOW, &runtime_time);
 
-                rdo::event_list::iterator it = event_list.begin();
-                if(it->time < runtime_time)
+                event_list::iterator it = list.begin();
+                if((*it)->getTime() < runtime_time)
                 {
-                    std::cout << "push event : " << "time : " << it->time << " name : " << it->name << std::endl;
-                    event_list.pop_front();
+                    std::cout << "push event : " << "time : " << (*it)->getTime() << "  |  name : " << (*it)->getName() << std::endl;
+                    list.pop_front();
 
-                    for(int i = 0; i < 1000; i++)
-                    {
-                        ruint code = VK_SPACE;
+                    ruint code = VK_SPACE;
 
-                        pAppController->broadcastMessage(RDOThread::RT_RUNTIME_KEY_DOWN, &code);
-                        pAppController->broadcastMessage(RDOThread::RT_RUNTIME_KEY_UP, &code);
-                    }
+                    pAppController->broadcastMessage(RDOThread::RT_RUNTIME_KEY_DOWN, &code);
+                    pAppController->broadcastMessage(RDOThread::RT_RUNTIME_KEY_UP,   &code);
+                    pAppController->broadcastMessage(RDOThread::RT_RUNTIME_KEY_DOWN, &code);
+                    pAppController->broadcastMessage(RDOThread::RT_RUNTIME_KEY_UP,   &code);
                 }
             }
 		}
@@ -163,38 +168,31 @@ int main(int argc, PTR(char) argv[])
 	return g_exitCode;
 }
 
-void read_events(std::istream& stream, rdo::event_list& list)
+void read_events(REF(std::istream) stream, REF(event_list) list)
 {
     list.clear();
 
     if (stream.fail()) {
         exit(TERMINATION_WITH_APP_RUNTIME_ERROR);
     }
-    boost::property_tree::ptree pt;
-    boost::property_tree::read_xml(stream, pt);
+    rdo::event_xml_parser parser;
+    parser.register_parser("key", boost::shared_ptr<rdo::event_xml_reader>(new rdo::key_event_xml_reader));
+    parser.register_parser("mouse", boost::shared_ptr<rdo::event_xml_reader>(new rdo::mouse_event_xml_reader));
     
     try {
-        BOOST_FOREACH( boost::property_tree::ptree::value_type const& v, pt.get_child("events") )
-        {
-            rdo::event event;
-            event.name = v.second.get<tstring>("<xmlattr>.name", "");
-            tstring text_type = v.second.get<tstring>("type", rdo::event::any_text);
-            event.type = rdo::event::text_type2type(text_type);
-            event.time = v.second.get<double>("time");
-            list.push_back(event);
-        }
+        parser.parse(stream, list);
     }
     catch(...) {
         exit(TERMINATION_WITH_AN_ERROR_PARSE_EVENTS_ERROR);
     }
 }
 
-void write_build_log(std::ostream& stream, const StringList& list)
+void write_build_log(REF(std::ostream) stream, CREF(string_list) list)
 {
     if (stream.fail()) {
         exit(TERMINATION_WITH_APP_RUNTIME_ERROR);
     }
-    BOOST_FOREACH( StringList::value_type const& line, list )
+    BOOST_FOREACH( string_list::value_type const& line, list )
     {
         stream << line.c_str() << std::endl;
     }

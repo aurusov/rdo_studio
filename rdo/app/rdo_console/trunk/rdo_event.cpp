@@ -6,6 +6,7 @@
   \brief     Консольная версия RDO
   \indent    4T
 */
+
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_console/rdo_event.h"
@@ -13,38 +14,43 @@
 
 OPEN_RDO_NAMESPACE
 
-const tstring event::any_text      = _T("any");
-const tstring event::keyboard_text = _T("keyboard");
-const tstring event::mouse_text    = _T("mouse");
-
-event::types event::text_type2type(const tstring& text_type)
+event::event(CREF(tstring) name, double time, types type) :
+    m_name(name), m_time(time), m_type(type)
 {
-	if(text_type == keyboard_text) {
-	return keyboard;
-	}
-	else if(text_type == mouse_text) {
-	return mouse;
-	}
-	return any;
 }
 
-tstring event::type2text_type(const event::types& type)
+event::~event()
 {
-	switch(type) {
-	case keyboard:
-	return keyboard_text;
+}
 
-	case mouse:
-	return mouse_text;
+void event::setName(CREF(tstring) name)
+{
+    m_name = name;
+}
 
-	default:
-	return any_text;
-	}
+void event::setTime(double time)
+{
+    m_time =  time;
+}
+
+tstring event::getName() const
+{
+    return m_name;
+}
+
+double event::getTime() const
+{
+    return m_time;
+}
+
+event::types event::getType() const
+{
+    return m_type;
 }
 
 bool operator< (const event& left, const event& right)
 {
-	return left.time < right.time;
+	return left.m_time < right.m_time;
 }
 
 CLOSE_RDO_NAMESPACE

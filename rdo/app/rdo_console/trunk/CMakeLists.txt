@@ -16,12 +16,24 @@ SET(HEADER_FILES
     controller_console_options_config.h
     rdo_console_controller.h
 	rdo_event.h
+	rdo_key_event.h
+	rdo_mouse_event.h
+	rdo_event_xml_parser.h
+	rdo_event_xml_reader.h
+	rdo_key_event_xml_reader.h
+	rdo_mouse_event_xml_reader.h
 	)
 
 SET(SOURCE_FILES
     controller_console_options.cpp
     rdo_console_controller.cpp
     rdo_event.cpp
+	rdo_key_event.cpp
+	rdo_mouse_event.cpp
+	rdo_event_xml_parser.cpp
+	rdo_event_xml_reader.cpp
+	rdo_key_event_xml_reader.cpp
+	rdo_mouse_event_xml_reader.cpp
 	)
 
 SET(MAIN_FILES
@@ -49,11 +61,12 @@ IF(MSVC) # lotions for windows #
 SOURCE_GROUP(".code" FILES
     ${HEADER_FILES}
     ${SOURCE_FILES}
-    ${MAIN_FILES})
+    ${MAIN_FILES}
+	)
 
 SOURCE_GROUP(".console_controller" FILES
-    rdo_studio_console_controller.h
-    rdo_studio_console_controller.cpp
+    rdo_console_controller.h
+    rdo_console_controller.cpp
 	)
 
 SOURCE_GROUP(".console_options" FILES
@@ -65,6 +78,21 @@ SOURCE_GROUP(".console_options" FILES
 SOURCE_GROUP(".event" FILES
     rdo_event.h
     rdo_event.cpp
+	rdo_key_event.h
+	rdo_key_event.cpp
+	rdo_mouse_event.h
+	rdo_mouse_event.cpp
+    )
+
+SOURCE_GROUP(".xml" FILES
+    rdo_event_xml_parser.h
+	rdo_event_xml_parser.cpp
+	rdo_event_xml_reader.h
+	rdo_event_xml_reader.cpp
+	rdo_key_event_xml_reader.h
+	rdo_key_event_xml_reader.cpp
+	rdo_mouse_event_xml_reader.h
+	rdo_mouse_event_xml_reader.cpp
     )
 
 ENDIF(MSVC)
