@@ -296,7 +296,7 @@ dpt_search_begin
 		LPRDOValue  pName       = CONVERTER->stack().pop<RDOValue>($2);
 		LPRDOValue  pParentName = CONVERTER->stack().pop<RDOValue>($4);
 		LPRDODPTSearch pDPTSearch;
-		if (pParentName)
+		if (!pParentName->value().isType<rdo::runtime::RDOType__unknow>())
 		{
 			LPRDODPTPrior  pParentDPTPrior  = CONVERTER->findDPTPrior (pParentName->value().getIdentificator());
 			LPRDODPTSearch pParentDPTSearch = CONVERTER->findDPTSearch(pParentName->value().getIdentificator());
