@@ -2,10 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="test_insert"
-	ProjectGUID="{69D8E48E-D751-437A-8970-A0BC7157CB85}"
-	RootNamespace="test_insert"
-	Keyword="Win32Proj"
+	Name="test_sql_insert"
+	ProjectGUID="{E9BDC951-F0FC-40FC-9A73-90B5A6504223}"
+	RootNamespace="test_sql_insert"
 	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
@@ -17,17 +16,18 @@
 	</ToolFiles>
 	<Configurations>
 		<Configuration
-			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			Name="debug|Win32"
+			OutputDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="2"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
+				Outputs=""
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -41,11 +41,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
+				AdditionalIncludeDirectories="../../../../"
 				MinimalRebuild="true"
+				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				UsePrecompiledHeader="2"
 				WarningLevel="3"
 				DebugInformationFormat="4"
 			/>
@@ -61,9 +61,8 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="QtSqld4.lib QtCored4.lib $(QTDIR)\plugins\sqldrivers\qsqlpsqld4.lib"
-				LinkIncremental="2"
+				LinkIncremental="0"
 				GenerateDebugInformation="true"
-				SubSystem="1"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -86,14 +85,16 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				Description="copy qt-dll"
+				CommandLine="copy &quot;$(QTDIR)\bin\QtCored4.dll&quot; &quot;$(TargetDir)\QtCored4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\bin\QtSqld4.dll&quot; &quot;$(TargetDir)\QtSqld4.dll&quot;&#x0D;&#x0A;copy &quot;$(QTDIR)\plugins\sqldrivers\qsqlpsqld4.dll&quot; &quot;$(TargetDir)\qsqlpsqld4.dll&quot;&#x0D;&#x0A;copy &quot;C:\psql\bin\libeay32.dll&quot; &quot;$(TargetDir)\libeay32.dll&quot;&#x0D;&#x0A;copy &quot;C:\psql\bin\libintl.dll&quot; &quot;$(TargetDir)\libintl.dll&quot;&#x0D;&#x0A;copy &quot;C:\psql\bin\libpq.dll&quot; &quot;$(TargetDir)\libpq.dll&quot;&#x0D;&#x0A;copy &quot;C:\psql\bin\ssleay32.dll&quot; &quot;$(TargetDir)\ssleay32.dll&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			Name="release|Win32"
+			OutputDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(ProjectDir)bin\$(ProjectName)\$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -115,11 +116,10 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
+				AdditionalIncludeDirectories="../../../../"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
-				UsePrecompiledHeader="2"
-				WarningLevel="3"
+				WarningLevel="4"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -133,9 +133,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				LinkIncremental="1"
+				AdditionalDependencies="QtSql4.lib QtCore4.lib $(QTDIR)\plugins\sqldrivers\qsqlpsql4.lib"
 				GenerateDebugInformation="true"
-				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				TargetMachine="1"
@@ -167,59 +166,13 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Source Files"
-			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
+			Name=".test"
 			>
 			<File
-				RelativePath=".\stdafx.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\test_insert.cpp"
+				RelativePath="..\..\test\sql\insert\main.cpp"
 				>
 			</File>
 		</Filter>
-		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
-			>
-			<File
-				RelativePath=".\stdafx.h"
-				>
-			</File>
-			<File
-				RelativePath=".\targetver.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Resource Files"
-			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
-			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
-			>
-		</Filter>
-		<File
-			RelativePath=".\ReadMe.txt"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>

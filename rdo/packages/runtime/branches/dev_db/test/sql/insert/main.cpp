@@ -1,12 +1,24 @@
-﻿
-#include "stdafx.h"
+﻿/*!
+  \copyright (c) RDO-Team, 2012
+  \file      main.cpp
+  \authors   Клеванец Игорь (cerevra@gmail.com)
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
+  \date      05.11.2012
+  \brief     Инициализация базы данных информацией о типах ресурсов
+  \indent    4T
+*/
+
+// ---------------------------------------------------------------------------- PCH
+// ----------------------------------------------------------------------- INCLUDES
 #include <iostream>
 #include <conio.h>
 #include <map>
 #include <windows.h>
-
 #include <QtSql\QtSql>
 #include <QtCore\QCoreApplication>
+// ----------------------------------------------------------------------- SYNOPSIS
+// --------------------------------------------------------------------------------
+
 
 bool insertRow (QString tableName, QString qRow);
 QString rtpRow (QString r_t_name, QString r_t_perm);
