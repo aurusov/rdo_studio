@@ -3513,13 +3513,10 @@ fun_arithm
 		if(paramIndex == RDORTPResType::UNDEFINED_PARAM)
 			PARSER->error().error(@6, rdo::format(_T("'%s' не является параметром ресурса '%s'."), pParamName->value().getAsString().c_str(), pResType->name().c_str()));
 
-		LPRDOFUNArithm pArithmParam = RDOFUNArithm::generateByConst(rdo::Factory<RDOValue>::create(rdo::explicit_value<rsint>(paramIndex), RDOParserSrcInfo(@6)));
-		ASSERT(pArithmParam);
-
 		rdo::runtime::LPRDOCalc pItemCalc = rdo::Factory<rdo::runtime::RDOCalcArrayItem>::create(pArithm->calc(), pArithmInd->calc());
 		ASSERT(pItemCalc);
 
-		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcGetResourceParam>::create(pItemCalc, pArithmParam->calc());
+		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcGetResourceParam>::create(pItemCalc, paramIndex);
 		ASSERT(pCalc);
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pResType->getParams()[paramIndex]->getTypeInfo(), pCalc, RDOParserSrcInfo(@6));
