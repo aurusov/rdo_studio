@@ -1740,8 +1740,14 @@ RDOFUNSelect::RDOFUNSelect(CREF(RDOParserSrcInfo) res_info)
 //! Сам Select как выборка по типу и условию
 void RDOFUNSelect::initSelect(LPRDOFUNLogic pCondition)
 {
-	m_pCalcSelect = rdo::Factory<rdo::runtime::RDOFunCalcSelect>::create(getResType()->getNumber(), pCondition->getCalc());
-	m_pCalcSelect->setSrcInfo(pCondition->src_info());
+	//! @warning rdo::runtime::LPRDOFunCalcSelect в рантайме меняет сигнатуру
+	//! Для конвертора знать про рантайм не обязательно, поэтому не создаём объект m_pCalcSelect
+	//! Конвертор проверялся на пятнашках, где вместо Exist использовался
+	//! $Condition Select(Фишка: Фишка.Номер <> Фишка.Местоположение).Exist(1 == 2)
+	//! Метод createFunSelectGroup отработал с нулевым m_pCalcSelect
+
+	//m_pCalcSelect = rdo::Factory<rdo::runtime::RDOFunCalcSelect>::create(getResType()->getNumber(), pCondition->getCalc());
+	//m_pCalcSelect->setSrcInfo(pCondition->src_info());
 }
 
 //! Групповая функция над выборкой Select'а
