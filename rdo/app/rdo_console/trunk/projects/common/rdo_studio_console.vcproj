@@ -43,7 +43,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../../../"
-				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_WINDOWS;_UNISTD_H_;_CONSOLE;WINVER=0x0501;BOOST_TYPEOF_SILENT"
+				PreprocessorDefinitions="RDO_ST;WIN32;_DEBUG;_WINDOWS;_UNISTD_H_;_CONSOLE;WINVER=0x0501;nullptr=NULL;BOOST_TYPEOF_SILENT"
 				RuntimeLibrary="3"
 				BrowseInformation="1"
 				WarningLevel="4"
@@ -222,6 +222,58 @@
 			</File>
 			<File
 				RelativePath="..\..\rdo_event.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_key_event.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_key_event.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_mouse_event.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_mouse_event.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name=".xml"
+			>
+			<File
+				RelativePath="..\..\rdo_event_xml_parser.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_event_xml_parser.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_event_xml_reader.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_event_xml_reader.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_key_event_xml_reader.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_key_event_xml_reader.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_mouse_event_xml_reader.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\rdo_mouse_event_xml_reader.h"
 				>
 			</File>
 		</Filter>
