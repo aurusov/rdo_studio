@@ -27,7 +27,7 @@ OPEN_RDO_NAMESPACE
 class event_xml_parser
 {
 public:
-    typedef std::list<boost::shared_ptr<event>> event_list;
+    typedef std::list< boost::shared_ptr<event> > event_list;
 
 public:
     bool register_parser(CREF(tstring) name, boost::shared_ptr<event_xml_reader> reader);
