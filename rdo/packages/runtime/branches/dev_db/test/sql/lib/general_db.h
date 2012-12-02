@@ -39,12 +39,12 @@ private:
 	void initDB();
 	void setDefParams();
 
-	QString			m_hostName;
-	QString			m_databaseName;
-	QString			m_userName;
-	QString			m_password;
-	int				m_port;
-	QSqlDatabase	m_db;
+	QString      m_hostName;
+	QString      m_databaseName;
+	QString      m_userName;
+	QString      m_password;
+	int          m_port;
+	QSqlDatabase m_db;
 
 };
 
