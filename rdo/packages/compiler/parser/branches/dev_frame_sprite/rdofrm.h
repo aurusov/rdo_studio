@@ -56,14 +56,15 @@ CLASS(RDOFRMSprite):
 {
 DECLARE_FACTORY(RDOFRMSprite);
 public:
-	rdo::runtime::LPRDOFRMSprite list() const { return m_pSprite; }
-	void                         end ();
+	void end();
 
 private:
 	RDOFRMSprite(CREF(RDOParserSrcInfo) src_info);
 
 	rdo::runtime::LPRDOFRMSprite m_pSprite;
 	LPContextMemory              m_pContextMemory;
+
+	rdo::runtime::LPRDOFRMSprite list() const { return m_pSprite; }
 
 	DECLARE_IContextFind;
 };
@@ -79,13 +80,14 @@ DECLARE_FACTORY(RDOFRMFrame);
 public:
 	void                              end  ();
 	CREF(rdo::runtime::LPRDOFRMFrame) frame() const { return m_pFrame; }
-	rdo::runtime::LPRDOFRMSprite      list () const { return m_pFrame; }
 
 private:
 	RDOFRMFrame(CREF(RDOParserSrcInfo) srcInfo);
-
+	
 	rdo::runtime::LPRDOFRMFrame m_pFrame;
 	LPContextMemory             m_pContextMemory;
+
+	rdo::runtime::LPRDOFRMSprite list() const { return m_pFrame; }
 
 	DECLARE_IContextFind;
 };
