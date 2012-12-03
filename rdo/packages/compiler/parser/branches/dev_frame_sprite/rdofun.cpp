@@ -712,7 +712,7 @@ LPRDOFUNArithm RDOFUNParams::createCall(CREF(tstring) funName)
 		RDOParser::s_parser()->error().error(src_info(), rdo::format(_T("Неверное количество параметров функции: %s"), funName.c_str()));
 	}
 
-	rdo::runtime::LPRDOCalc pCalc = pFunction->getFunctionCalc().object_parent_cast<rdo::runtime::RDOCalc>();
+	rdo::runtime::LPRDOCalc pCalc = pFunction->getFunctionCalc();
 	ASSERT(pCalc);
 	pCalc = pFunction->getReturn()->getTypeInfo()->type()->calc_cast(pCalc, pFunction->getReturn()->getTypeInfo()->type());
 	ASSERT(pCalc);
