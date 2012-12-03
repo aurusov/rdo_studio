@@ -46,7 +46,7 @@ public:
 	//! calc_cast вызывается строго после type_cast, поэтому никаких RDOParserSrcInfo не передается
 	virtual rdo::runtime::LPRDOCalc calc_cast(
 		CREF(rdo::runtime::LPRDOCalc) pCalc,
-		CREF(LPRDOType)             pType
+		CREF(LPRDOType)               pType
 	) const = 0;
 	virtual rdo::runtime::RDOValue get_default() const = 0;
 };
