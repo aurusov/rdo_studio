@@ -1,3 +1,12 @@
+#include <iostream>
+#define BOOST_TEST_MODULE RDORuntime_Fuzzy_Test
+#include <boost/test/included/unit_test.hpp>
+
+#define __T(x)      x
+#define _T(x)       __T(x)
+#define _TEXT(x)    __T(x)
+
+
 #include <rule/variable.h>
 #include <QObject>
 #include <iostream>
@@ -20,220 +29,217 @@
 #include <defuzzifier/defuzzifier.h>
 #include <defuzzifier/defuzzifiercenterofgravitysingletons.h>
 
-#include "TestQHash.h"
-//#include <activation/ruleconnectionmethodandmin.h>
 
 
-int main( int argc, char* argv[] )
-{
-	RuleConnectionMethod *AND = NULL;
-	RuleConnectionMethod *OR = NULL;
+BOOST_AUTO_TEST_SUITE(RDOQtFuzzyTest)
 
-	JFuzzyQt* model = new JFuzzyQt();
-//	model->setVariable("inputVar1",)
-	// set inputVariable
-	FunctBlock* functionBlock = new FunctBlock(model,"fb");
-	Variable *const inputVar1 = new Variable(model, "inputvar1");
+	BOOST_AUTO_TEST_CASE(MembershipFunTrap)
+	{
+		RuleConnectionMethod *AND = NULL;
+		RuleConnectionMethod *OR = NULL;
 
-//	bool t = functionBlock->addVariable(inputVar1->getName(),inputVar1);
+		JFuzzyQt* model = new JFuzzyQt();
+		BOOST_CHECK(model);
 
-	// terms for var
-	MembershipFunctionTrap* functionTrap   = new MembershipFunctionTrap(functionBlock, 0,10,20,50);
-	MembershipFunction*     functionTrap11   = new MembershipFunctionTrap(functionBlock,1,8,16,24);
-	MembershipFunction*     functionTriang = new MembershipFunctionTrian(functionBlock, 20,50,60);
+		FunctBlock* functionBlock = new FunctBlock(model,"fb");
+		BOOST_CHECK(functionBlock->getName() == _T("fb"));
 
-	LinguisticTerm* term1var1 = new LinguisticTerm(inputVar1,"term1var1",functionTrap  );
-	LinguisticTerm* term2var1 = new LinguisticTerm(inputVar1,"term2var1",functionTrap11 );
-	LinguisticTerm* term3var1 = new LinguisticTerm(inputVar1,"term3var1",functionTriang);
-	
-	// var2
-	Variable* inputVar2 = new Variable(model,"inputvar2");
-	// terms for var2
-	MembershipFunctionTrap* functionTrap2   = new MembershipFunctionTrap(functionBlock, 10,15,20,60);
-	MembershipFunction*     functionSigm2   = new MembershipFunctionSigm(functionBlock,20,1);
-	MembershipFunction*     functionTriang2 = new MembershipFunctionTrian(functionBlock, 0,55,67);
+		Variable *const inputVar1 = new Variable(model, "inputvar1");
+		Variable* inputVar2 = new Variable(model,"inputvar2");
+		Variable* outVar = new Variable(functionBlock,"outvar");
 
-	functionTrap2->estimateUniverse();
-	functionSigm2->estimateUniverse();
-	functionTriang2->estimateUniverse();
 
-	LinguisticTerm* term1var2 = new LinguisticTerm(inputVar2,"term1var2",functionTrap2  );
-	LinguisticTerm* term2var2 = new LinguisticTerm(inputVar2,"term2var2",functionSigm2  );
-	LinguisticTerm* term3var2 = new LinguisticTerm(inputVar2,"term3var2",functionTriang2);
+		BOOST_CHECK(inputVar1->getName() == _T("inputvar1"));
 
-	
-	// output variable
-	Variable* outVar = new Variable(functionBlock,"outvar");
-	// terms for outputvar
-	MembershipFunctionTrap* functionTrap3   = new MembershipFunctionTrap(model, 10,15,20,60);
-	MembershipFunction*     functionSigm3   = new MembershipFunctionSigm(model,20,1);
-	MembershipFunction*     functionTriang3 = new MembershipFunctionTrian(model, 0,55,67);
+		MembershipFunctionTrap* functionTrap   = new MembershipFunctionTrap(functionBlock, 0,10,20,50);
+		BOOST_CHECK(functionTrap->toString() == _T("TRAPE 0 10 20 50"));
 
-	functionTrap3->estimateUniverse();
-	functionSigm3->estimateUniverse();
-	functionTriang3->estimateUniverse();
+		MembershipFunction*     functionTrap11   = new MembershipFunctionTrap(functionBlock,1,8,16,24);
+		BOOST_CHECK(functionTrap11->toString() == _T("TRAPE 1 8 16 24"));
 
-	LinguisticTerm* term1varOut = new LinguisticTerm(outVar,"term1varout",functionTrap3  );
-	LinguisticTerm* term2varOut = new LinguisticTerm(outVar,"term2varout",functionSigm3  );
-	LinguisticTerm* term3varOut = new LinguisticTerm(outVar,"term3varout",functionTriang3);
+		MembershipFunction*     functionTriang = new MembershipFunctionTrian(functionBlock, 20,50,60);
+		BOOST_CHECK(functionTriang->toString() == _T("TRIAN 20 50 60"));
+		
+		MembershipFunctionTrap* functionTrap2   = new MembershipFunctionTrap(functionBlock, 10,15,20,60);
+		MembershipFunction*     functionSigm2   = new MembershipFunctionSigm(functionBlock,20,1);
+		MembershipFunction*     functionTriang2 = new MembershipFunctionTrian(functionBlock, 0,55,67);
 
-	std::cout << outVar->isOutputVariable() << std::endl;
 
-	// rule terms for input vars
-	RuleTerm* ruleTerm1Var1 = new RuleTerm(functionBlock,inputVar1,"term1var1", false);
-	RuleTerm* ruleTerm2Var1 = new RuleTerm(functionBlock,inputVar1,"term2var1", false);
-	RuleTerm* ruleTerm3Var1 = new RuleTerm(functionBlock,inputVar1,"term3var1", true );
+		functionTrap2->estimateUniverse();
+		functionSigm2->estimateUniverse();
+		functionTriang2->estimateUniverse();
 
-	RuleTerm* ruleTerm1Var2 = new RuleTerm(functionBlock,inputVar2,"term1var2", true );
-	RuleTerm* ruleTerm2Var2 = new RuleTerm(functionBlock,inputVar2,"term2var2", false);
-	RuleTerm* ruleTerm3Var2 = new RuleTerm(functionBlock,inputVar2,"term3var2", false);
+		LinguisticTerm* term1var2 = new LinguisticTerm(inputVar2,"term1var2",functionTrap2  );
+		LinguisticTerm* term2var2 = new LinguisticTerm(inputVar2,"term2var2",functionSigm2  );
+		LinguisticTerm* term3var2 = new LinguisticTerm(inputVar2,"term3var2",functionTriang2);
 
-	RuleConnectionMethodAndMin* connectMethod = new RuleConnectionMethodAndMin();
+		MembershipFunctionTrap* functionTrap3   = new MembershipFunctionTrap(model, 10,15,20,60);
+		MembershipFunction*     functionSigm3   = new MembershipFunctionSigm(model,20,1);
+		MembershipFunction*     functionTriang3 = new MembershipFunctionTrian(model, 0,55,67);
 
-	// rule terms for output var
-	RuleTerm* ruleTerm1OutVar = new RuleTerm(functionBlock,outVar,"term1varout",true );
-	RuleTerm* ruleTerm2OutVar = new RuleTerm(functionBlock,outVar,"term2varout",false);
-	RuleTerm* ruleTerm3OutVar = new RuleTerm(functionBlock,outVar,"term3varout",true );
+		functionTrap3->estimateUniverse();
+		functionSigm3->estimateUniverse();
+		functionTriang3->estimateUniverse();
 
-	// ruleblock
+		LinguisticTerm* term1varOut = new LinguisticTerm(outVar,"term1varout",functionTrap3  );
+		LinguisticTerm* term2varOut = new LinguisticTerm(outVar,"term2varout",functionSigm3  );
+		LinguisticTerm* term3varOut = new LinguisticTerm(outVar,"term3varout",functionTriang3);
 
-	RuleBlock* rb = new RuleBlock("FirstRB");
-	RuleAccumulationMethod* ruleAccMethod = new RuleAccumulationMethodNormalisedSum(functionBlock);
-	rb->addRuleAccumulationMethod(ruleAccMethod);
+		LinguisticTerm* term1var1 = new LinguisticTerm(inputVar1,"term1var1",functionTrap  );
+		BOOST_CHECK(term1var1->getTermName() == _T("term1var1"));
 
-	RuleActivationMethod* ruleActMethod = new RuleActivationMethodMin(functionBlock);
-	rb->addRuleActivationMethod(ruleActMethod);
+		LinguisticTerm* term2var1 = new LinguisticTerm(inputVar1,"term2var1",functionTrap11 );
+		BOOST_CHECK(term2var1->getTermName() == _T("term2var1"));
 
-	std::string rbString = rb->toString().toLocal8Bit().constData();
-	std::cout << rbString << std::endl;
+		LinguisticTerm* term3var1 = new LinguisticTerm(inputVar1,"term3var1",functionTriang);
+		BOOST_CHECK(term3var1->getTermName() == _T("term3var1"));
 
-	// construct rules
+		// rule terms for input vars
 
-	Rule* rule1 = new Rule(rb,"rule1");
-	RuleExpression* expr1   = new RuleExpression(rule1);
-	expr1->setRuleConnectionMethod(connectMethod);
-	expr1->addTerm1Rule(ruleTerm1Var1);
-	expr1->addTerm2Rule(ruleTerm2Var2);
-	rule1->setWeight(0.5);
-	rule1->addAntecedents(expr1);
-	rule1->addConsequent(ruleTerm1OutVar);
-	rule1->setDegreeOfSupport(0.5);
- 
-	std::string rule1String = rule1->toString().toLocal8Bit().constData();
-	std::cout << rule1String << std::endl;
+		RuleTerm* ruleTerm1Var1 = new RuleTerm(functionBlock,inputVar1,"term1var1", false);
+		BOOST_CHECK(ruleTerm1Var1->toString() == "inputvar1 IS");
+		RuleTerm* ruleTerm2Var1 = new RuleTerm(functionBlock,inputVar1,"term2var1", false);
+		RuleTerm* ruleTerm3Var1 = new RuleTerm(functionBlock,inputVar1,"term3var1", true );
+		BOOST_CHECK(ruleTerm3Var1->toString() == "inputvar1 IS NOT");
 
-	Rule* rule2 = new Rule(rb,"rule2");
-	RuleExpression* expr2   = new RuleExpression(rule2);
-	expr2->setRuleConnectionMethod(connectMethod);
-	expr2->addTerm1Rule(ruleTerm2Var1);
-	expr2->addTerm2Rule(ruleTerm3Var2);
-	
-	rule2->setWeight(0.5);
-	rule2->addAntecedents(expr2);
-	rule2->addConsequent(ruleTerm2OutVar);
-	rule2->setDegreeOfSupport(0.5);
+		RuleTerm* ruleTerm1Var2 = new RuleTerm(functionBlock,inputVar2,"term1var2", true );
+		RuleTerm* ruleTerm2Var2 = new RuleTerm(functionBlock,inputVar2,"term2var2", false);
+		RuleTerm* ruleTerm3Var2 = new RuleTerm(functionBlock,inputVar2,"term3var2", false);
 
-	std::string rule2String = rule2->toString().toLocal8Bit().constData();
-	std::cout << rule2String << std::endl;
-	
-	Rule* rule3 = new Rule(rb,"rule3");
-	RuleExpression* expr3   = new RuleExpression(rule3);
-	expr3->setRuleConnectionMethod(connectMethod);
-	expr3->addTerm1Rule(ruleTerm3Var1);
-	expr3->addTerm2Rule(ruleTerm3Var2);
+		RuleConnectionMethodAndMin* connectMethod = new RuleConnectionMethodAndMin();
+		BOOST_CHECK(connectMethod->toString() == _T("and : min"));
 
-	rule3->setWeight(0.5);
-	rule3->addAntecedents(expr3);
-	rule3->addConsequent(ruleTerm3OutVar);
-	rule3->setDegreeOfSupport(0.5);
+		// rule terms for output var
+		RuleTerm* ruleTerm1OutVar = new RuleTerm(functionBlock,outVar,"term1varout",true );
+		RuleTerm* ruleTerm2OutVar = new RuleTerm(functionBlock,outVar,"term2varout",false);
+		RuleTerm* ruleTerm3OutVar = new RuleTerm(functionBlock,outVar,"term3varout",true );
 
-	std::string rule3String = rule3->toString().toLocal8Bit().constData();
-	std::cout << rule3String << std::endl;
+		// ruleblock
 
-	Rule* rule4 = new Rule(rb,"rule4");
-	RuleExpression* expr4   = new RuleExpression(rule4);
-	expr4->setRuleConnectionMethod(connectMethod);
-	expr4->addTerm1Rule(ruleTerm1Var2);
-	expr4->addTerm2Rule(ruleTerm2Var1);
+		RuleBlock* rb = new RuleBlock("FirstRB");
+		BOOST_CHECK(rb->getName() == _T("FirstRB"));
+		RuleAccumulationMethod* ruleAccMethod = new RuleAccumulationMethodNormalisedSum(functionBlock);
+		BOOST_CHECK(ruleAccMethod->toString() == _T("accu : nsum;"));
+		rb->addRuleAccumulationMethod(ruleAccMethod);
 
-	rule4->setWeight(0.5);
-	rule4->addAntecedents(expr4);
-	rule4->addConsequent(ruleTerm1OutVar);
-	rule4->setDegreeOfSupport(0.5);
+		RuleActivationMethod* ruleActMethod = new RuleActivationMethodMin(functionBlock);
 
-	std::string rule4String = rule4->toString().toLocal8Bit().constData();
-	std::cout << rule4String << std::endl;
+		rb->addRuleActivationMethod(ruleActMethod);
 
-	Rule* rule5 = new Rule(rb,"rule5");
-	RuleExpression* expr5   = new RuleExpression(rule5);
-	expr5->setRuleConnectionMethod(connectMethod);
-	expr5->addTerm1Rule(ruleTerm2Var2);
-	expr5->addTerm2Rule(ruleTerm1Var1);
+		// construct rules
 
-	rule5->setWeight(0.5);
-	rule5->addAntecedents(expr5);
-	rule5->addConsequent(ruleTerm2OutVar);
-	rule5->setDegreeOfSupport(0.5);
+		Rule* rule1 = new Rule(rb,"rule1");
+		RuleExpression* expr1   = new RuleExpression(rule1);
+		expr1->setRuleConnectionMethod(connectMethod);
+		expr1->addTerm1Rule(ruleTerm1Var1);
+		expr1->addTerm2Rule(ruleTerm2Var2);
+		rule1->setWeight(0.5);
+		rule1->addAntecedents(expr1);
+		rule1->addConsequent(ruleTerm1OutVar);
+		rule1->setDegreeOfSupport(0.5);
+		BOOST_CHECK(rule1->toString() == _T("IF term1var1 AND term2var2 THEN term1varout"));
 
-	std::string rule5String = rule5->toString().toLocal8Bit().constData();
-	std::cout << rule5String << std::endl;
 
-	Rule* rule6 = new Rule(rb,"rule6");
-	RuleExpression* expr6   = new RuleExpression(rule6);
-	expr6->setRuleConnectionMethod(connectMethod);
-	expr6->addTerm1Rule(ruleTerm3Var2);
-	expr6->addTerm2Rule(ruleTerm2Var1);
-	
-	rule6->setWeight(0.5);
-	rule6->addAntecedents(expr6);
-	rule6->addConsequent(ruleTerm3OutVar);
-	rule6->setDegreeOfSupport(0.5);
+		Rule* rule2 = new Rule(rb,"rule2");
+		RuleExpression* expr2   = new RuleExpression(rule2);
+		expr2->setRuleConnectionMethod(connectMethod);
+		expr2->addTerm1Rule(ruleTerm2Var1);
+		expr2->addTerm2Rule(ruleTerm3Var2);
 
-	std::string rule6String = rule6->toString().toLocal8Bit().constData();
-	std::cout << rule6String << std::endl;
+		rule2->setWeight(0.5);
+		rule2->addAntecedents(expr2);
+		rule2->addConsequent(ruleTerm2OutVar);
+		rule2->setDegreeOfSupport(0.5);
 
-	rb->addRule(*rule1);
-	rb->addRule(*rule2);
-	rb->addRule(*rule3);
-	rb->addRule(*rule4);
-	rb->addRule(*rule5);
-	rb->addRule(*rule6);
+		Rule* rule3 = new Rule(rb,"rule3");
+		RuleExpression* expr3   = new RuleExpression(rule3);
+		expr3->setRuleConnectionMethod(connectMethod);
+		expr3->addTerm1Rule(ruleTerm3Var1);
+		expr3->addTerm2Rule(ruleTerm3Var2);
 
-	functionBlock->addVariable(inputVar1->getName(),inputVar1);
+		rule3->setWeight(0.5);
+		rule3->addAntecedents(expr3);
+		rule3->addConsequent(ruleTerm3OutVar);
+		rule3->setDegreeOfSupport(0.5);
 
-	inputVar1->addLinguisticTerm(term1var1);
-	inputVar1->addLinguisticTerm(term2var1);
-	inputVar1->addLinguisticTerm(term3var1);
 
-	functionBlock->addVariable(inputVar2->getName(),inputVar2);
+		Rule* rule4 = new Rule(rb,"rule4");
+		RuleExpression* expr4   = new RuleExpression(rule4);
+		expr4->setRuleConnectionMethod(connectMethod);
+		expr4->addTerm1Rule(ruleTerm1Var2);
+		expr4->addTerm2Rule(ruleTerm2Var1);
 
-	inputVar2->addLinguisticTerm(term1var2);
-	inputVar2->addLinguisticTerm(term2var2);
-	inputVar2->addLinguisticTerm(term3var2);
+		rule4->setWeight(0.5);
+		rule4->addAntecedents(expr4);
+		rule4->addConsequent(ruleTerm1OutVar);
+		rule4->setDegreeOfSupport(0.5);
 
-	functionBlock->addVariable(outVar->getName(),outVar);
+		Rule* rule5 = new Rule(rb,"rule5");
+		RuleExpression* expr5   = new RuleExpression(rule5);
+		expr5->setRuleConnectionMethod(connectMethod);
+		expr5->addTerm1Rule(ruleTerm2Var2);
+		expr5->addTerm2Rule(ruleTerm1Var1);
 
-	outVar->addLinguisticTerm(term1varOut);
-	outVar->addLinguisticTerm(term2varOut);
-	outVar->addLinguisticTerm(term3varOut);
+		rule5->setWeight(0.5);
+		rule5->addAntecedents(expr5);
+		rule5->addConsequent(ruleTerm2OutVar);
+		rule5->setDegreeOfSupport(0.5);
 
-	functionBlock->addRuleBlock(rb);
-	const Variable *tP1 = functionBlock->getVariables().find(inputVar1->getName()).value();
 
-	model->addFunctionBlock(functionBlock);
-	
-	// set actual values for model
+		Rule* rule6 = new Rule(rb,"rule6");
+		RuleExpression* expr6   = new RuleExpression(rule6);
+		expr6->setRuleConnectionMethod(connectMethod);
+		expr6->addTerm1Rule(ruleTerm3Var2);
+		expr6->addTerm2Rule(ruleTerm2Var1);
 
-	Defuzzifier* d = functionBlock->createDefuzzifier("cog");
-	functionBlock->setDefuzzifier(outVar->getName(), d);
+		rule6->setWeight(0.5);
+		rule6->addAntecedents(expr6);
+		rule6->addConsequent(ruleTerm3OutVar);
+		rule6->setDegreeOfSupport(0.5);
 
-	model->setVariable("inputvar1",52, functionBlock->getName());
-	model->setVariable("inputvar2",30, functionBlock->getName());
+		rb->addRule(*rule1);
+		rb->addRule(*rule2);
+		rb->addRule(*rule3);
+		rb->addRule(*rule4);
+		rb->addRule(*rule5);
+		rb->addRule(*rule6);
 
-	// evaluate model
-	model->evaluate();
-	double result = model->getValue(outVar->getName());
+		functionBlock->addVariable(inputVar1->getName(),inputVar1);
 
-	std::cout << result << std::endl;
-	return 0;
-}
+		inputVar1->addLinguisticTerm(term1var1);
+		inputVar1->addLinguisticTerm(term2var1);
+		inputVar1->addLinguisticTerm(term3var1);
+
+		functionBlock->addVariable(inputVar2->getName(),inputVar2);
+
+		inputVar2->addLinguisticTerm(term1var2);
+		inputVar2->addLinguisticTerm(term2var2);
+		inputVar2->addLinguisticTerm(term3var2);
+
+		functionBlock->addVariable(outVar->getName(),outVar);
+
+		outVar->addLinguisticTerm(term1varOut);
+		outVar->addLinguisticTerm(term2varOut);
+		outVar->addLinguisticTerm(term3varOut);
+
+		functionBlock->addRuleBlock(rb);
+		const Variable *tP1 = functionBlock->getVariables().find(inputVar1->getName()).value();
+
+		model->addFunctionBlock(functionBlock);
+
+		// set actual values for model
+
+		Defuzzifier* d = functionBlock->createDefuzzifier("cog");
+		functionBlock->setDefuzzifier(outVar->getName(), d);
+
+		model->setVariable("inputvar1",52, functionBlock->getName());
+		model->setVariable("inputvar2",30, functionBlock->getName());
+
+		// evaluate model
+		model->evaluate();
+		double result = model->getValue(outVar->getName());
+
+		std::cout << result << std::endl;
+
+}	
+	BOOST_AUTO_TEST_SUITE_END() // RDORuntime_Fuzzy_Test
