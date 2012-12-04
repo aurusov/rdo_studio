@@ -1,5 +1,5 @@
 #include <iostream>
-#define BOOST_TEST_MODULE RDORuntime_Fuzzy_Test
+#define BOOST_TEST_MODULE RDOQtFuzzyTest
 #include <boost/test/included/unit_test.hpp>
 
 #define __T(x)      x
@@ -47,7 +47,6 @@ BOOST_AUTO_TEST_SUITE(RDOQtFuzzyTest)
 		Variable *const inputVar1 = new Variable(model, "inputvar1");
 		Variable* inputVar2 = new Variable(model,"inputvar2");
 		Variable* outVar = new Variable(functionBlock,"outvar");
-
 
 		BOOST_CHECK(inputVar1->getName() == _T("inputvar1"));
 
@@ -97,10 +96,14 @@ BOOST_AUTO_TEST_SUITE(RDOQtFuzzyTest)
 		// rule terms for input vars
 
 		RuleTerm* ruleTerm1Var1 = new RuleTerm(functionBlock,inputVar1,"term1var1", false);
-		BOOST_CHECK(ruleTerm1Var1->toString() == "inputvar1 IS");
+		
+		std::string rule4String = ruleTerm1Var1->toString().toLocal8Bit().constData();
+		std::cout << rule4String << std::endl;
+
+		BOOST_CHECK(ruleTerm1Var1->toString() == "inputvar1 IS term1var1");
 		RuleTerm* ruleTerm2Var1 = new RuleTerm(functionBlock,inputVar1,"term2var1", false);
 		RuleTerm* ruleTerm3Var1 = new RuleTerm(functionBlock,inputVar1,"term3var1", true );
-		BOOST_CHECK(ruleTerm3Var1->toString() == "inputvar1 IS NOT");
+		BOOST_CHECK(ruleTerm3Var1->toString() == "inputvar1 IS NOT term3var1");
 
 		RuleTerm* ruleTerm1Var2 = new RuleTerm(functionBlock,inputVar2,"term1var2", true );
 		RuleTerm* ruleTerm2Var2 = new RuleTerm(functionBlock,inputVar2,"term2var2", false);
@@ -119,7 +122,8 @@ BOOST_AUTO_TEST_SUITE(RDOQtFuzzyTest)
 		RuleBlock* rb = new RuleBlock("FirstRB");
 		BOOST_CHECK(rb->getName() == _T("FirstRB"));
 		RuleAccumulationMethod* ruleAccMethod = new RuleAccumulationMethodNormalisedSum(functionBlock);
-		BOOST_CHECK(ruleAccMethod->toString() == _T("accu : nsum;"));
+
+		BOOST_CHECK(ruleAccMethod->toString() == _T("accu : max"));
 		rb->addRuleAccumulationMethod(ruleAccMethod);
 
 		RuleActivationMethod* ruleActMethod = new RuleActivationMethodMin(functionBlock);
@@ -133,14 +137,13 @@ BOOST_AUTO_TEST_SUITE(RDOQtFuzzyTest)
 		expr1->setRuleConnectionMethod(connectMethod);
 		expr1->addTerm1Rule(ruleTerm1Var1);
 		expr1->addTerm2Rule(ruleTerm2Var2);
-		rule1->setWeight(0.5);
 		rule1->addAntecedents(expr1);
 		rule1->addConsequent(ruleTerm1OutVar);
-		rule1->setDegreeOfSupport(0.5);
-		BOOST_CHECK(rule1->toString() == _T("IF term1var1 AND term2var2 THEN term1varout"));
+
+		BOOST_CHECK(rule1->toString() == _T("RULE rule1 : IF inputvar1 IS term1var1 AND inputvar2 IS term2var2 THEN outvar IS NOT term1varout"));
 
 
-		Rule* rule2 = new Rule(rb,"rule2");
+		/*Rule* rule2 = new Rule(rb,"rule2");
 		RuleExpression* expr2   = new RuleExpression(rule2);
 		expr2->setRuleConnectionMethod(connectMethod);
 		expr2->addTerm1Rule(ruleTerm2Var1);
@@ -239,7 +242,7 @@ BOOST_AUTO_TEST_SUITE(RDOQtFuzzyTest)
 		model->evaluate();
 		double result = model->getValue(outVar->getName());
 
-		std::cout << result << std::endl;
+		std::cout << result << std::endl;*/ 
 
 }	
-	BOOST_AUTO_TEST_SUITE_END() // RDORuntime_Fuzzy_Test
+	BOOST_AUTO_TEST_SUITE_END()
