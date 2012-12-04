@@ -76,6 +76,9 @@ public:
 	}
 
 protected:
+	RDOType()
+	{}
+
 	RDOType(CREF(rdo::runtime::LPRDOType) pType)
 		: m_pType(pType)
 	{
@@ -86,8 +89,7 @@ protected:
 			UNUSED(i);
 		}
 	}
-	RDOType()
-	{}
+
 	virtual ~RDOType()
 	{}
 
