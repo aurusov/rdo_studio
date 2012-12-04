@@ -862,6 +862,7 @@ RDOThreadSimulator::RDOThreadSimulator()
 	, m_pThreadRuntime(NULL                          )
 	, m_exitCode      (rdo::simulation::report::EC_OK)
 	, m_runCount      (3                             )
+	, m_1             (0                             )
 {
 	notifies.push_back(RT_STUDIO_MODEL_BUILD              );
 	notifies.push_back(RT_STUDIO_MODEL_RUN                );
@@ -1065,13 +1066,26 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 					broadcastMessage(RT_SIMULATOR_MODEL_STOP_OK);
 					closeModel();
 					// место для добавления цикла //
-					if (--m_runCount)
+					if(m_1 == 0)
 					{
-						//sendMessage(this, RT_STUDIO_MODEL_BUILD);
-						//sendMessage(this, RT_STUDIO_MODEL_RUN);
-
-						parseModel();
-						runModel();
+						// место для инициализации кол-ва запусков m_runCount //
+						m_runCount = 3;
+						if (--m_runCount)
+						{
+							parseModel();
+							runModel();
+							++m_1;
+						}
+					}
+					else
+					{
+						if (--m_runCount)
+						{
+							parseModel();
+							runModel();
+						}
+						else
+						{--m_1;}
 					}
 				}
 				else
