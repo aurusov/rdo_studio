@@ -86,7 +86,7 @@ protected:
 			UNUSED(i);
 		}
 	}
-	inline RDOType()
+	RDOType()
 	{}
 	virtual ~RDOType()
 	{}
