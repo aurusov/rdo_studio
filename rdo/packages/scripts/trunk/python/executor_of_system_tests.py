@@ -91,10 +91,22 @@ def get_test_files(dir):
 
 
 def get_executables(dir):
-    # get rdo_studio_console executable and test_rdo_studio_console executable
     files = get_files_list(dir)
-    rdo_ex = filter(lambda x: x.endswith(rdo_ex_substr), files)[0]
-    rdo_test_ex = filter(lambda x: x.endswith(rdo_test_ex_substr), files)[0]
+
+    rdo_ex = ""
+    rdo_test_ex = ""
+
+    for file in files:
+        res = file.endswith(rdo_ex_substr)
+        if res == True:
+            rdo_ex = file
+
+        res = file.endswith(rdo_test_ex_substr)
+        if res == True:
+            rdo_test_ex = file
+
+        if rdo_ex and rdo_test_ex:
+           break
 
     return rdo_ex, rdo_test_ex
 
@@ -159,12 +171,12 @@ print '\nSTARTED TEST CYCLE\n'
 for task in files:
 
     print dividing_line
-    
+
     utask   = unicode(task, sys.getfilesystemencoding())
     dirname = os.path.dirname(utask) + u'/'
 
     text_task = open(utask, 'r').read()
-    
+
     dom = xml.dom.minidom.parseString(text_task)
 
     model_name_with_ex    = get_text_from_dom(dom, 'model')
@@ -184,7 +196,7 @@ for task in files:
     print 'Result file          :', safe_encode(etalon_result_name)
     print 'Log compilation file :', safe_encode(compile_log_file_name)
     print ''
-    
+
     model         = dirname + model_name_with_ex
     etalon_trace  = dirname + etalon_trace_name
     etalon_result = dirname + etalon_result_name
@@ -219,7 +231,7 @@ for task in files:
 
         # nornal simulation check
         elif simulation_code == RDO_CONSOLE_TERMINATION_NORMAL:
-        
+
             command = (rdo_test_ex + ' -T ' + wrap_the_string_in_quotes(etalon_trace) + ' -R ' + wrap_the_string_in_quotes(etalon_result) 
                                    + ' -t ' + wrap_the_string_in_quotes(simulation_trace) + ' -r ' + wrap_the_string_in_quotes(simulation_result)
                                    + ' >> ' + null_file)
@@ -253,7 +265,7 @@ for task in files:
         # .rdox model not found
         elif simulation_code == RDO_CONSOLE_TERMINATION_WITH_AN_ERROR_NO_MODEL:
             cycle_exit_code = APP_CODE_TERMINATION_NORMAL
-            
+
         # check compile error log
         elif simulation_code == RDO_CONSOLE_TERMINATION_WITH_AN_ERROR_PARSE_ERROR:
 
@@ -281,7 +293,7 @@ for task in files:
     else:
         print 'INVALID TARGET'
 
-    # remove temp file
+    # remove temp files
     #os.remove(simulation_trace)
     #os.remove(simulation_result)
 
