@@ -22,6 +22,7 @@
 #include "simulator/compiler/parser/context/context.h"
 #include "simulator/compiler/parser/context/memory.h"
 #include "simulator/compiler/parser/context/context_find_i.h"
+#include "simulator/compiler/parser/type/function_type.h"
 
 #include "simulator/runtime/rdo_object.h"
 #include "simulator/runtime/rdo_type.h"
@@ -219,6 +220,7 @@ public:
 
 	CREF(Container)     getContainer() const { return m_arithmList; }
 	void                addItem     (CREF(LPRDOFUNArithm) pArithm);
+	LPFunctionParamType getType     () const;
 
 private:
 	ArithmContainer();

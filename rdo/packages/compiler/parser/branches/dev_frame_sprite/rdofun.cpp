@@ -676,6 +676,27 @@ void ArithmContainer::addItem(CREF(LPRDOFUNArithm) pArithm)
 	m_arithmList.push_back(pArithm);
 }
 
+LPFunctionParamType ArithmContainer::getType() const
+{
+	FunctionParamType::ParamList paramList;
+
+	BOOST_FOREACH(const LPRDOFUNArithm& pArithm, m_arithmList)
+	{
+		paramList.push_back(pArithm->typeInfo());
+	}
+
+	if (paramList.empty())
+	{
+		paramList.push_back(
+			rdo::Factory<TypeInfo>::delegate<RDOType__void>(src_info())
+		);
+	}
+
+	LPFunctionParamType pParamType = rdo::Factory<FunctionParamType>::create(paramList, src_info());
+	ASSERT(pParamType);
+	return pParamType;
+}
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNParams
 // --------------------------------------------------------------------------------
@@ -706,13 +727,18 @@ LPExpression RDOFUNParams::createCallExpression(CREF(LPExpression) pExpression)
 	LPFunctionType pFunctionType = pExpression->typeInfo()->type().object_dynamic_cast<FunctionType>();
 	ASSERT(pFunctionType);
 
-	LPFunctionParamType pParamType = pFunctionType->paramType();
-	ASSERT(pParamType);
+	LPFunctionParamType pFunctionParamType = pFunctionType->paramType();
+	ASSERT(pFunctionParamType);
 
-	if (pParamType->paramList().size() != m_pArithmContainer->getContainer().size())
-	{
-		RDOParser::s_parser()->error().error(src_info(), rdo::format(_T("Неверное количество параметров функции: %s"), pExpression->src_text().c_str()));
-	}
+	LPFunctionParamType pCallerParamType = m_pArithmContainer->getType();
+	ASSERT(pCallerParamType);
+
+	pFunctionParamType.object_parent_cast<RDOType>()->type_cast(
+		pCallerParamType,
+		pCallerParamType->src_info(),
+		pFunctionParamType->src_info(),
+		src_info()
+	);
 
 	rdo::runtime::LPRDOCalc pCalc = pExpression->calc();
 	ASSERT(pCalc);
@@ -722,15 +748,18 @@ LPExpression RDOFUNParams::createCallExpression(CREF(LPExpression) pExpression)
 	pFuncCall->setSrcInfo(src_info());
 
 	ArithmContainer::Container::const_iterator arithmIt = m_pArithmContainer->getContainer().begin();
-	BOOST_FOREACH(const LPTypeInfo& pFuncParam, pParamType->paramList())
+	BOOST_FOREACH(const LPTypeInfo& pFuncParam, pFunctionParamType->paramList())
 	{
-		LPRDOFUNArithm pArithm = *arithmIt;
-		ASSERT(pArithm);
+		if (pFuncParam->type()->typeID() != rdo::runtime::RDOType::t_void)
+		{
+			LPRDOFUNArithm pArithm = *arithmIt;
+			ASSERT(pArithm);
 
-		pArithm->checkParamType(pFuncParam);
-		pFuncCall->addParameter(pFuncParam->type()->calc_cast(pArithm->createCalc(pFuncParam), pArithm->typeInfo()->type()));
+			pArithm->checkParamType(pFuncParam);
+			pFuncCall->addParameter(pFuncParam->type()->calc_cast(pArithm->createCalc(pFuncParam), pArithm->typeInfo()->type()));
 
-		++arithmIt;
+			++arithmIt;
+		}
 	}
 
 	LPExpression pResult = rdo::Factory<Expression>::create(

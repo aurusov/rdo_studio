@@ -104,9 +104,9 @@ RDOFRMSprite::RDOFRMSprite(CREF(RDOParserSrcInfo) src_info)
 	ASSERT(pReturnType);
 
 	FunctionParamType::ParamList paramList;
-	//paramList.push_back(
-	//	rdo::Factory<TypeInfo>::delegate<RDOType__void>(this->src_info())
-	//);
+	paramList.push_back(
+		rdo::Factory<TypeInfo>::delegate<RDOType__void>(this->src_info())
+	);
 	LPFunctionParamType pParamType = rdo::Factory<FunctionParamType>::create(paramList, this->src_info());
 	ASSERT(pParamType);
 

@@ -10,9 +10,11 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/type/function_type.h"
 #include "simulator/compiler/parser/rdo_value.h"
+#include "simulator/compiler/parser/rdoparser.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -40,8 +42,30 @@ tstring FunctionParamType::name() const
 
 LPRDOType FunctionParamType::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
 {
-	NEVER_REACH_HERE;
-	return LPRDOType();
+	LPFunctionParamType pFromParamType = pFrom.object_dynamic_cast<FunctionParamType>();
+	if (!pFromParamType)
+	{
+		parser::g_error().push_only(src_info,    rdo::format(_T("Ожидаеются параметры вызова, найдено: %s"), from_src_info.src_text().c_str()));
+		parser::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
+		parser::g_error().push_done();
+	}
+
+	if (paramList().size() != pFromParamType->paramList().size())
+	{
+		RDOParser::s_parser()->error().error(
+			src_info,
+			rdo::format(_T("Неверное количество параметров: %s"), from_src_info.src_text().c_str())
+		);
+	}
+
+	ParamList::const_iterator paramFromIt = pFromParamType->paramList().begin();
+	BOOST_FOREACH(const LPTypeInfo& pParamType, paramList())
+	{
+		pParamType->type_cast(*paramFromIt, src_info);
+		++paramFromIt;
+	}
+
+	return const_cast<PTR(FunctionParamType)>(this);
 }
 
 LPRDOValue FunctionParamType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const
