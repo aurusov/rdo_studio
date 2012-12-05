@@ -8,7 +8,7 @@
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6.0)
 
-PROJECT(rdo_nix_studio)
+PROJECT(rdo)
 
 MESSAGE(STATUS "Create RDO")
 
