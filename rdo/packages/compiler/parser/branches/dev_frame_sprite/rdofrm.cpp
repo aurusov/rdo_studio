@@ -72,8 +72,8 @@ void RDOFRMFrame::end()
 {
 	ContextMemory::pop();
 	RDOParser::s_parser()->contextStack()->pop();
+	RDOParser::s_parser()->contextStack()->pop();
 }
-
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFRMSprite
@@ -97,6 +97,7 @@ RDOFRMSprite::RDOFRMSprite(CREF(RDOParserSrcInfo) src_info)
 void RDOFRMSprite::end()
 {
 	ContextMemory::pop();
+	RDOParser::s_parser()->contextStack()->pop();
 	RDOParser::s_parser()->contextStack()->pop();
 }
 
