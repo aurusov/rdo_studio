@@ -12,8 +12,8 @@ import xml.dom.minidom
 ###############################################################################
 
 # data about rdo apps
-directory          = '.'
-model_directory    = '.'
+directory          = u'.'
+model_directory    = u'.'
 test_expansion     = '.rtestx'
 trace_expansion    = '.trc'
 result_expansion   = '.pmv'
@@ -52,12 +52,15 @@ RDO_CHECK_RESULT_TERMINATION_ERROR_TRACE            = 4
 RDO_CHECK_RESULT_TERMINATION_ERROR_RESULT_AND_TRACE = 5
 
 # ancillary data
-null_file = 'null_temp_file'
 dividing_line = '-------------------------------------------------------------------------------'
 
 ###############################################################################
 #                                 functions                                   #
 ###############################################################################
+
+def safe_encode(string):
+    return string.encode(sys.getfilesystemencoding())
+
 
 def print_list_of_line(list):
     for string in list:
@@ -86,15 +89,22 @@ def get_files_list(dir):
 
 def get_test_files(dir):
     files = get_files_list(dir)
-    nfile = filter(lambda x: x.endswith(test_expansion), files)
-    return nfile
+    
+    test_files = []
+    
+    for file in files:
+        res = file.endswith(test_expansion)
+        if res == True:
+            test_files.append(file)
+
+    return test_files
 
 
 def get_executables(dir):
     files = get_files_list(dir)
 
-    rdo_ex = ""
-    rdo_test_ex = ""
+    rdo_ex = u''
+    rdo_test_ex = u''
 
     for file in files:
         res = file.endswith(rdo_ex_substr)
@@ -115,24 +125,20 @@ def get_text_from_dom(dom, node_text):
 
     node = dom.getElementsByTagName(node_text)
     if not len(node):
-        return ''
+        return u''
 
     nodelist = node[0].childNodes
     rc = []
     for node in nodelist:
         if node.nodeType == node.TEXT_NODE:
             rc.append(node.data)
-    return ''.join(rc)
+    return u''.join(rc)
 
 
 def wrap_the_string_in_quotes(string):
-    new_string = '"' + string + '"'
+    new_string = u'"' + string + u'"'
     return new_string
 
-
-def safe_encode(string):
-    return string.encode(sys.getfilesystemencoding()).strip()
-    
 ###############################################################################
 #                                 main code                                   #
 ###############################################################################
@@ -172,7 +178,7 @@ for task in files:
 
     print dividing_line
 
-    utask   = unicode(task, sys.getfilesystemencoding())
+    utask   = task
     dirname = os.path.dirname(utask) + u'/'
 
     text_task = open(utask, 'r').read()
@@ -189,12 +195,12 @@ for task in files:
     exit_code = int(text_exit_code)
 
     print 'Project              :', task
-    print 'Model file           :', safe_encode(model_name_with_ex)
+    print 'Model file           :', model_name_with_ex
     print 'Target               :', target
     print 'Exit code            :', exit_code
-    print 'Trace file           :', safe_encode(etalon_trace_name)
-    print 'Result file          :', safe_encode(etalon_result_name)
-    print 'Log compilation file :', safe_encode(compile_log_file_name)
+    print 'Trace file           :', etalon_trace_name
+    print 'Result file          :', etalon_result_name
+    print 'Log compilation file :', compile_log_file_name
     print ''
 
     model         = dirname + model_name_with_ex
@@ -212,8 +218,8 @@ for task in files:
     if target == TARGET_CONSOLE:
 
         # run rdo_console app on test model
-        command = (rdo_ex + ' -i ' + wrap_the_string_in_quotes(model) + ' >> ' + null_file)
-        simulation_code = subprocess.call(command, shell=True)
+        command = (rdo_ex + u' -i ' + wrap_the_string_in_quotes(model))
+        simulation_code = subprocess.call(safe_encode(command), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         print "SIMYLATION EXIT CODE :", simulation_code
 
         # check simulation exit code
@@ -234,9 +240,9 @@ for task in files:
 
             command = (rdo_test_ex + ' -T ' + wrap_the_string_in_quotes(etalon_trace) + ' -R ' + wrap_the_string_in_quotes(etalon_result) 
                                    + ' -t ' + wrap_the_string_in_quotes(simulation_trace) + ' -r ' + wrap_the_string_in_quotes(simulation_result)
-                                   + ' >> ' + null_file)
+                                   )
 
-            test_code = subprocess.call(command, shell=True)
+            test_code = subprocess.call(safe_encode(command), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
             check_exit_code_string = 'ERROR UNKNOWN'
 
