@@ -52,7 +52,7 @@ RDOFRMFrame::RDOFRMFrame(CREF(RDOParserSrcInfo) srcInfo)
 
 Context::FindResult RDOFRMFrame::onFindContext(CREF(LPRDOValue) pValue) const
 {
-	UNUSED(pValue);
+	ASSERT(pValue);
 
 	//! Код из RDOFUNArithm::init(CREF(RDOValue) resName, CREF(RDOValue) parName)
 	//! Зачем он нужен - непонятно
@@ -64,6 +64,13 @@ Context::FindResult RDOFRMFrame::onFindContext(CREF(LPRDOValue) pValue) const
 	//	m_pCalc->setSrcInfo(src_info());
 	//	return;
 	//}
+
+	tstring name = pValue->value().getIdentificator();
+	LPRDOFRMSprite pSprite = RDOParser::s_parser()->findFRMSprite(name);
+	if (pSprite)
+	{
+		return Context::FindResult(const_cast<PTR(RDOFRMFrame)>(this), pSprite->expression(), pValue);
+	}
 
 	return Context::FindResult();
 }
@@ -92,6 +99,20 @@ RDOFRMSprite::RDOFRMSprite(CREF(RDOParserSrcInfo) src_info)
 	RDOParser::s_parser()->contextStack()->push(m_pContextMemory);
 
 	ContextMemory::push();
+
+	LPTypeInfo pReturnType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(this->src_info());
+	ASSERT(pReturnType);
+
+	FunctionParamType::ParamList paramList;
+	//paramList.push_back(
+	//	rdo::Factory<TypeInfo>::delegate<RDOType__void>(this->src_info())
+	//);
+	LPFunctionParamType pParamType = rdo::Factory<FunctionParamType>::create(paramList, this->src_info());
+	ASSERT(pParamType);
+
+	m_pFunctionType = rdo::Factory<FunctionType>::create(
+		pReturnType, pParamType, this->src_info()
+	);
 }
 
 void RDOFRMSprite::end()
@@ -105,6 +126,17 @@ Context::FindResult RDOFRMSprite::onFindContext(CREF(LPRDOValue) pValue) const
 {
 	UNUSED(pValue);
 	return Context::FindResult();
+}
+
+LPExpression RDOFRMSprite::expression() const
+{
+	LPExpression pExpression = rdo::Factory<Expression>::create(
+		rdo::Factory<TypeInfo>::create(m_pFunctionType, m_pFunctionType->src_info()),
+		sprite(),
+		src_info()
+	);
+	ASSERT(pExpression);
+	return pExpression;
 }
 
 // --------------------------------------------------------------------------------

@@ -19,6 +19,7 @@
 #include "simulator/compiler/parser/context/context.h"
 #include "simulator/compiler/parser/context/memory.h"
 #include "simulator/compiler/parser/context/context_find_i.h"
+#include "simulator/compiler/parser/type/function_type.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -58,11 +59,16 @@ DECLARE_FACTORY(RDOFRMSprite);
 public:
 	void end();
 
+	CREF(rdo::runtime::LPRDOFRMSprite) sprite() const { return m_pSprite; }
+
+	LPExpression expression() const;
+
 private:
 	RDOFRMSprite(CREF(RDOParserSrcInfo) src_info);
 
-	rdo::runtime::LPRDOFRMSprite m_pSprite;
-	LPContextMemory              m_pContextMemory;
+	rdo::runtime::LPRDOFRMSprite  m_pSprite;
+	LPContextMemory               m_pContextMemory;
+	LPFunctionType                m_pFunctionType;
 
 	rdo::runtime::LPRDOFRMSprite list() const { return m_pSprite; }
 

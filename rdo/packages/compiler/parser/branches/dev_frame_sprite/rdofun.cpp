@@ -11,6 +11,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdofun.h"
 #include "simulator/compiler/parser/rdoparser.h"
@@ -696,6 +697,50 @@ rdo::runtime::LPRDOCalc RDOFUNParams::getCalc(ruint paramID, CREF(LPTypeInfo) pT
 	rdo::runtime::LPRDOCalc pCalc = m_pArithmContainer->getContainer()[paramID]->createCalc(pType);
 	ASSERT(pCalc);
 	return pCalc;
+}
+
+LPExpression RDOFUNParams::createCallExpression(CREF(LPExpression) pExpression)
+{
+	ASSERT(pExpression);
+
+	LPFunctionType pFunctionType = pExpression->typeInfo()->type().object_dynamic_cast<FunctionType>();
+	ASSERT(pFunctionType);
+
+	LPFunctionParamType pParamType = pFunctionType->paramType();
+	ASSERT(pParamType);
+
+	if (pParamType->paramList().size() != m_pArithmContainer->getContainer().size())
+	{
+		RDOParser::s_parser()->error().error(src_info(), rdo::format(_T("Неверное количество параметров функции: %s"), pExpression->src_text().c_str()));
+	}
+
+	rdo::runtime::LPRDOCalc pCalc = pExpression->calc();
+	ASSERT(pCalc);
+
+	rdo::runtime::LPRDOCalcFunctionCaller pFuncCall = rdo::Factory<rdo::runtime::RDOCalcFunctionCaller>::create(pCalc);
+	ASSERT(pFuncCall);
+	pFuncCall->setSrcInfo(src_info());
+
+	ArithmContainer::Container::const_iterator arithmIt = m_pArithmContainer->getContainer().begin();
+	BOOST_FOREACH(const LPTypeInfo& pFuncParam, pParamType->paramList())
+	{
+		LPRDOFUNArithm pArithm = *arithmIt;
+		ASSERT(pArithm);
+
+		pArithm->checkParamType(pFuncParam);
+		pFuncCall->addParameter(pFuncParam->type()->calc_cast(pArithm->createCalc(pFuncParam), pArithm->typeInfo()->type()));
+
+		++arithmIt;
+	}
+
+	LPExpression pResult = rdo::Factory<Expression>::create(
+		pFunctionType->returnType(),
+		pFuncCall,
+		src_info()
+	);
+	ASSERT(pResult);
+
+	return pResult;
 }
 
 LPRDOFUNArithm RDOFUNParams::createCall(CREF(tstring) funName)

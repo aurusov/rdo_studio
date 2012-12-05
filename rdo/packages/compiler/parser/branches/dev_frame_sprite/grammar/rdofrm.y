@@ -372,6 +372,7 @@ frm_item_statement
 
 		$$ = PARSER->stack().push(pExpression);
 	}
+	| frm_sprite
 	;
 
 frm_item
@@ -387,7 +388,6 @@ frm_item
 	| frm_active
 	| frm_ruler
 	| frm_space
-	| frm_sprite
 	;
 
 frm_header
@@ -1789,7 +1789,28 @@ frm_sprite_header
 	;
 
 frm_sprite
-	: RDO_sprite_call RDO_IDENTIF '(' arithm_list ')' {} //использовать fun_arithm_func_call (?)
+	: RDO_sprite_call RDO_IDENTIF '(' arithm_list ')'
+	{
+		LPRDOValue        pValue           = PARSER->stack().pop<RDOValue>($2);
+		LPArithmContainer pArithmContainer = PARSER->stack().pop<ArithmContainer>($4);
+		ASSERT(pValue);
+		ASSERT(pArithmContainer);
+
+		tstring funName = pValue->value().getIdentificator();
+
+		LPExpression pFunctionExpression = RDOFUNArithm::generateByIdentificator(pValue)->expression();
+		ASSERT(pFunctionExpression);
+
+		LPRDOFUNParams pFunParams = rdo::Factory<RDOFUNParams>::create(pArithmContainer);
+		ASSERT(pFunParams);
+
+		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@2, funName));
+		pFunParams->setSrcPos (@2, @5);
+		pFunParams->setSrcText(funName + _T("(") + pArithmContainer->src_text() + _T(")"));
+		LPExpression pExpression = pFunParams->createCallExpression(pFunctionExpression);
+		ASSERT(pExpression);
+		$$ = PARSER->stack().push(pExpression);
+	}
 	| RDO_sprite_call RDO_IDENTIF '(' arithm_list error
 	{
 		PARSER->error().error(@5, _T("ќжидаетс€ закрывающа€ скобка"));

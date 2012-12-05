@@ -217,8 +217,8 @@ DECLARE_FACTORY(ArithmContainer);
 public:
 	typedef std::vector<LPRDOFUNArithm> Container;
 
-	CREF(Container) getContainer() const { return m_arithmList; }
-	void            addItem     (CREF(LPRDOFUNArithm) pArithm);
+	CREF(Container)     getContainer() const { return m_arithmList; }
+	void                addItem     (CREF(LPRDOFUNArithm) pArithm);
 
 private:
 	ArithmContainer();
@@ -242,6 +242,7 @@ public:
 	CREF(LPArithmContainer)  getParamList () const { return m_pArithmContainer ; }
 	rdo::runtime::LPRDOCalc  getCalc      (ruint paramID, CREF(LPTypeInfo) pType);
 
+	LPExpression   createCallExpression(CREF(LPExpression) pFunction);
 	LPRDOFUNArithm createCall   (CREF(tstring) funName);
 	LPRDOFUNArithm createSeqCall(CREF(tstring) seqName);
 

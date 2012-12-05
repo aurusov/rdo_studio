@@ -2865,6 +2865,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name=".function"
+				>
+				<File
+					RelativePath="..\..\type\function_type.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\type\function_type.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name=".value"
