@@ -146,7 +146,7 @@ def wrap_the_string_in_quotes(string):
 # global exit code variable
 G_EXIT_CODE = APP_CODE_TERMINATION_NORMAL
 
-print "STARTED SCRIPT :", sys.argv[0]
+print u"STARTED SCRIPT :", sys.argv[0]
 
 # search rdo and rdo_test executables
 executables = get_executables(directory)
@@ -155,23 +155,23 @@ rdo_ex      = executables[0]
 rdo_test_ex = executables[1]
 
 if not os.path.exists(rdo_ex) or not os.path.exists(rdo_test_ex):
-    print 'Build app not found. Critical error !!!'
+    print u'Build app not found. Critical error !!!'
     exit(EXIT_CODE_TERMINATION_ERROR)
 
 # search .rtestx files
 files = get_test_files(model_directory)
 files.sort()
 
-print '\nDEBUG INFO'
+print u'\nDEBUG INFO'
 
-print '\nFind RDO executables    :'
+print u'\nFind RDO executables    :'
 print_list_of_line(executables)
 
 print '\nFind test project files :'
 print_list_of_line(files)
 
 # parse xml and start tests
-print '\nSTARTED TEST CYCLE\n'
+print u'\nSTARTED TEST CYCLE\n'
 
 # check model cycle
 for task in files:
