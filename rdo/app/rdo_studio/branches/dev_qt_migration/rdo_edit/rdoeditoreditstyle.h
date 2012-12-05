@@ -81,26 +81,6 @@ public:
 };
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOEditorEditBuffer
-// --------------------------------------------------------------------------------
-class RDOEditorEditBuffer
-{
-public:
-	RDOEditorEditBuffer();
-	virtual ~RDOEditorEditBuffer();
-
-	RDOEditorEditBuffer& operator =( const RDOEditorEditBuffer& buffer );
-	rbool operator ==( const RDOEditorEditBuffer& buffer ) const;
-	rbool operator !=( const RDOEditorEditBuffer& buffer ) const;
-
-	virtual void load( tstring regPath );
-	virtual void save( tstring regPath ) const;
-
-	rbool canClearBuffer;
-	int   clearBufferDelay;
-};
-
-// --------------------------------------------------------------------------------
 // -------------------- RDOEditorEditMargin
 // --------------------------------------------------------------------------------
 class RDOEditorEditMargin
@@ -129,7 +109,6 @@ class RDOEditorEditStyle: public RDOEditorBaseEditStyle
 protected:
 	virtual void initTheme();
 	virtual void initAutoComplete();
-	virtual void initBuffer();
 	virtual void initMargin();
 
 public:
@@ -145,7 +124,6 @@ public:
 	virtual rbool save() const;
 
 	RDOEditorEditAutoComplete* autoComplete;
-	RDOEditorEditBuffer*       buffer;
 	RDOEditorEditMargin*       margin;
 };
 

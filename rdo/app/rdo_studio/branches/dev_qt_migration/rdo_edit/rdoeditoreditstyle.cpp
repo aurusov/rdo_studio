@@ -242,52 +242,6 @@ void RDOEditorEditAutoComplete::save( tstring regPath ) const
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOEditorEditBuffer
-// --------------------------------------------------------------------------------
-RDOEditorEditBuffer::RDOEditorEditBuffer()
-{
-	canClearBuffer   = true;
-	clearBufferDelay = 7;
-}
-
-RDOEditorEditBuffer::~RDOEditorEditBuffer()
-{
-}
-
-RDOEditorEditBuffer& RDOEditorEditBuffer::operator =( const RDOEditorEditBuffer& buffer )
-{
-	canClearBuffer   = buffer.canClearBuffer;
-	clearBufferDelay = buffer.clearBufferDelay;
-
-	return *this;
-}
-
-rbool RDOEditorEditBuffer::operator ==( const RDOEditorEditBuffer& buffer ) const
-{
-	return canClearBuffer   == buffer.canClearBuffer &&
-	       clearBufferDelay == buffer.clearBufferDelay;
-}
-
-rbool RDOEditorEditBuffer::operator !=( const RDOEditorEditBuffer& buffer ) const
-{
-	return !(*this == buffer);
-}
-
-void RDOEditorEditBuffer::load( tstring regPath )
-{
-	regPath += "buffer";
-	canClearBuffer   = AfxGetApp()->GetProfileInt( regPath.c_str(), "canClearBuffer", canClearBuffer ) ? true : false;
-	clearBufferDelay = AfxGetApp()->GetProfileInt( regPath.c_str(), "clearBufferDelay", clearBufferDelay );
-}
-
-void RDOEditorEditBuffer::save( tstring regPath ) const
-{
-	regPath += "buffer";
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "canClearBuffer", canClearBuffer );
-	AfxGetApp()->WriteProfileInt( regPath.c_str(), "clearBufferDelay", clearBufferDelay );
-}
-
-// --------------------------------------------------------------------------------
 // -------------------- RDOEditorEditMargin
 // --------------------------------------------------------------------------------
 RDOEditorEditMargin::RDOEditorEditMargin()
@@ -344,7 +298,6 @@ void RDOEditorEditMargin::save( tstring regPath ) const
 RDOEditorEditStyle::RDOEditorEditStyle():
 	RDOEditorBaseEditStyle(),
 	autoComplete( NULL ),
-	buffer( NULL ),
 	margin( NULL )
 {
 }
@@ -352,7 +305,6 @@ RDOEditorEditStyle::RDOEditorEditStyle():
 RDOEditorEditStyle::~RDOEditorEditStyle()
 {
 	if ( autoComplete ) { delete autoComplete; autoComplete = NULL; };
-	if ( buffer )       { delete buffer;       buffer = NULL; };
 	if ( margin )       { delete margin;       margin = NULL; };
 }
 
@@ -366,11 +318,6 @@ void RDOEditorEditStyle::initAutoComplete()
 	autoComplete = new RDOEditorEditAutoComplete;
 }
 
-void RDOEditorEditStyle::initBuffer()
-{
-	buffer = new RDOEditorEditBuffer;
-}
-
 void RDOEditorEditStyle::initMargin()
 {
 	margin = new RDOEditorEditMargin;
@@ -381,7 +328,6 @@ RDOEditorEditStyle& RDOEditorEditStyle::operator =( const RDOEditorEditStyle& st
 	RDOEditorBaseEditStyle::operator=( style );
 	if ( theme        && style.theme )        *static_cast<RDOEditorEditTheme*>(theme) = *static_cast<RDOEditorEditTheme*>(style.theme);
 	if ( autoComplete && style.autoComplete ) *autoComplete = *style.autoComplete;
-	if ( buffer       && style.buffer )       *buffer       = *style.buffer;
 	if ( margin       && style.margin )       *margin       = *style.margin;
 
 	return *this;
@@ -392,7 +338,6 @@ rbool RDOEditorEditStyle::operator ==( const RDOEditorEditStyle& style ) const
 	rbool flag = RDOEditorBaseEditStyle::operator==( style );
 	if ( theme        && style.theme        && flag ) flag &= *static_cast<RDOEditorEditTheme*>(theme) == *static_cast<RDOEditorEditTheme*>(style.theme);
 	if ( autoComplete && style.autoComplete && flag ) flag &= *autoComplete == *style.autoComplete;
-	if ( buffer       && style.buffer       && flag ) flag &= *buffer       == *style.buffer;
 	if ( margin       && style.margin       && flag ) flag &= *margin       == *style.margin;
 	return flag;
 }
@@ -406,7 +351,6 @@ void RDOEditorEditStyle::init( CREF(tstring) _regPath )
 {
 	RDOEditorBaseEditStyle::init( _regPath );
 	initAutoComplete();
-	initBuffer();
 	initMargin();
 }
 
@@ -414,7 +358,6 @@ rbool RDOEditorEditStyle::load()
 {
 	if ( RDOEditorBaseEditStyle::load() ) {
 		if ( autoComplete ) autoComplete->load( regPath );
-		if ( buffer )       buffer->load( regPath );
 		if ( margin )       margin->load( regPath );
 		return true;
 	}
@@ -425,7 +368,6 @@ rbool RDOEditorEditStyle::save() const
 {
 	if ( RDOEditorBaseEditStyle::save() ) {
 		if ( autoComplete ) autoComplete->save(  regPath );
-		if ( buffer )       buffer->save(  regPath );
 		if ( margin )       margin->save(  regPath );
 		return true;
 	}
