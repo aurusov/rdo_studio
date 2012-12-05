@@ -4,14 +4,20 @@
 
 MESSAGE(STATUS "CREATE  RDO_SIMULATOR  LIBRARY")
 
+FIND_PACKAGE(Boost COMPONENTS system filesystem thread REQUIRED)
+LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
+
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
 SET(HEADER_FILES
     namespace.h
-    rdosimwin.h)
+    rdosimwin.h
+    )
 
 SET(SOURCE_FILES
-    rdosimwin.cpp)
+    rdosimwin.cpp
+    )
 
 ADD_LIBRARY(rdo_simulator ${HEADER_FILES} ${SOURCE_FILES})
 
@@ -35,7 +41,7 @@ TARGET_LINK_LIBRARIES(rdo_simulator rdo_converter_smr2rdox)
 IF(MSVC) # lotions for windows #
 
 SOURCE_GROUP(".code" FILES 
-	${HEADER_FILES}
-	${SOURCE_FILES})
-	
+    ${HEADER_FILES}
+    ${SOURCE_FILES})
+
 ENDIF(MSVC)
