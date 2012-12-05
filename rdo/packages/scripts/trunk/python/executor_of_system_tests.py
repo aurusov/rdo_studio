@@ -307,8 +307,6 @@ for task in files:
     if cycle_exit_code == APP_CODE_TERMINATION_ERROR:
         G_EXIT_CODE = APP_CODE_TERMINATION_ERROR
 
-os.remove(null_file)
-
 print "\n", "PYTHON EXIT CODE :", G_EXIT_CODE, "\n"
 
 sys.exit(G_EXIT_CODE)
