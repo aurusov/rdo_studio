@@ -163,6 +163,8 @@ public slots:
 private slots:
 	void onModelStop ();
 
+	void onViewOptions();
+
 	void onHelpContext();
 	void onHelpAbout  ();
 
@@ -178,7 +180,6 @@ private:
 	afx_msg void OnUpdateViewZoomToolbar(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateViewModelToolbar(CCmdUI* pCmdUI);
 	afx_msg void OnDestroy();
-	afx_msg void OnViewOptions();
 	afx_msg void OnModelRuntimeMaxSpeed();
 	afx_msg void OnModelRuntimeJump();
 	afx_msg void OnModelRuntimeSync();

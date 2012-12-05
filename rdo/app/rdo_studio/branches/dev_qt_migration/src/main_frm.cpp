@@ -20,6 +20,7 @@
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/src/options.h"
 #include "app/rdo_studio_mfc/src/about.h"
+#include "app/rdo_studio_mfc/src/view_preferences.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
 #include "app/rdo_studio_mfc/htmlhelp.h"
@@ -182,6 +183,8 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 	QObject::connect(actModelBuild, SIGNAL(triggered(bool)), this, SLOT(onModelBuild()));
 	QObject::connect(actModelRun,   SIGNAL(triggered(bool)), this, SLOT(onModelRun  ()));
 	QObject::connect(actModelStop,  SIGNAL(triggered(bool)), this, SLOT(onModelStop ()));
+
+	QObject::connect(actViewSettings, SIGNAL(triggered(bool)), this, SLOT(onViewOptions()));
 
 	QObject::connect(actHelpContext, SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
 	QObject::connect(actHelpAbout,   SIGNAL(triggered(bool)), this, SLOT(onHelpAbout  ()));
@@ -542,10 +545,10 @@ void RDOStudioMainFrame::OnUpdateModelShowRateStatusBar( CCmdUI *pCmdUI )
 	}
 }
 
-void RDOStudioMainFrame::OnViewOptions()
+void RDOStudioMainFrame::onViewOptions()
 {
-	RDOStudioOptions dlg;
-	dlg.DoModal();
+	ViewPreferences dlg(this);
+	dlg.exec();
 }
 
 void RDOStudioMainFrame::updateAllStyles()
