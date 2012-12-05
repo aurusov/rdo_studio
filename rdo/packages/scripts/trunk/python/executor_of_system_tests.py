@@ -64,7 +64,7 @@ def safe_encode(string):
 
 def print_list_of_line(list):
     for string in list:
-        print string
+        print unicode(string)
 
 
 def cut_slash(list):
