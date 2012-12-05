@@ -64,7 +64,7 @@ def safe_encode(string):
 
 def print_list_of_line(list):
     for string in list:
-        print u'' + string
+        print string
 
 
 def cut_slash(list):
@@ -147,6 +147,7 @@ def wrap_the_string_in_quotes(string):
 G_EXIT_CODE = APP_CODE_TERMINATION_NORMAL
 
 print u"STARTED SCRIPT :", sys.argv[0]
+print u'ENCODING', sys.getfilesystemencoding()
 
 # search rdo and rdo_test executables
 executables = get_executables(directory)
