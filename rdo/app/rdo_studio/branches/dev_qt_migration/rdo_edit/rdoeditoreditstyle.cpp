@@ -373,3 +373,13 @@ rbool RDOEditorEditStyle::save() const
 	}
 	return false;
 }
+
+void RDOEditorEditStyle::attachSubscriber(NotifyCallback sub)
+{
+	//subscriberList.push_back(sub);
+}
+
+void RDOEditorEditStyle::detachSubscriber(NotifyCallback sub)
+{
+	//subscriberList.remove(sub);
+}
