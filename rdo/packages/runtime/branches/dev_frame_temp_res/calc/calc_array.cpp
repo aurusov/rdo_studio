@@ -13,7 +13,6 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/calc_array.h"
 #include "simulator/runtime/rdo_array.h"
-#include "simulator/runtime/rdo_res_type.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -54,38 +53,6 @@ RDOValue RDOCalcArrayItem::doCalc(CREF(LPRDORuntime) pRuntime)
 	ASSERT(pArrayValue);
 
 	return pArrayValue->getItem(m_pArrayInd->calcValue(pRuntime));
-}
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOCalcArrayItemParam
-// --------------------------------------------------------------------------------
-RDOCalcArrayItemParam::RDOCalcArrayItemParam(CREF(LPRDOCalc) pArray, CREF(LPRDOCalc) pArrayInd, CREF(LPRDOCalc) pParamInd)
-	: m_pArray   (pArray   )
-	, m_pArrayInd(pArrayInd)
-	, m_pParamInd(pParamInd)
-{
-	ASSERT(m_pArray   );
-	ASSERT(m_pArrayInd);
-	ASSERT(m_pParamInd);
-
-	//! @todo Ќадо назначать на основе обоих индексов
-	setSrcInfo(m_pArrayInd->srcInfo());
-}
-
-RDOValue RDOCalcArrayItemParam::doCalc(CREF(LPRDORuntime) pRuntime)
-{
-	RDOValue value = m_pArray->calcValue(pRuntime);
-	RDOValue param_ind = m_pParamInd->calcValue(pRuntime);
-
-	CREF(LPRDOArrayValue) pArrayValue = value.getPointerSafety<RDOArrayType>();
-	ASSERT(pArrayValue);
-
-	RDOValue pArrayItem = pArrayValue->getItem(m_pArrayInd->calcValue(pRuntime));
-
-	LPRDOResource pResource = pArrayItem.getPointerSafety<RDOResourceType>();
-	ASSERT(pResource);
-
-	return pResource->getParam(param_ind.getInt());
 }
 
 // --------------------------------------------------------------------------------

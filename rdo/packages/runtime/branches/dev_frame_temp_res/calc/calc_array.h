@@ -43,20 +43,6 @@ private:
 	DECLARE_ICalc;
 };
 
-//! Возвращает параметр ресурса из их массива
-CALC(RDOCalcArrayItemParam)
-{
-	DECLARE_FACTORY(RDOCalcArrayItemParam)
-private:
-	RDOCalcArrayItemParam(CREF(LPRDOCalc) pArray, CREF(LPRDOCalc) pArrayInd, CREF(LPRDOCalc) pParamInd);
-
-	LPRDOCalc m_pArray;
-	LPRDOCalc m_pArrayInd;
-	LPRDOCalc m_pParamInd;
-
-	DECLARE_ICalc;
-};
-
 //! Устанавливает элемент массива
 CALC(RDOCalcSetArrayItem)
 {
