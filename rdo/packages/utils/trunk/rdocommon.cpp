@@ -21,15 +21,18 @@
 #include <boost/range/algorithm/copy.hpp>
 
 #ifdef COMPILER_VISUAL_STUDIO
-#   include <windows.h>
-#   include <io.h>
+#	include <windows.h>
+#	include <io.h>
+#else
+#	include <stdarg.h>
+#	include <wchar.h>
 #endif
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdocommon.h"
 // --------------------------------------------------------------------------------
 
 #ifdef COMPILER_VISUAL_STUDIO
-#   pragma warning(disable : 4786)
+#	pragma warning(disable : 4786)
 #endif
 
 OPEN_RDO_NAMESPACE
@@ -50,18 +53,24 @@ tstring format( CPTR(tchar) str, REF(va_list) params )
 	int size = -1;
 	while ( size == -1 ) {
 #ifdef COMPILER_VISUAL_STUDIO
-#   pragma warning(disable: 4996)
+#	pragma warning(disable: 4996)
 #ifdef UNICODE
 		size = _vsnwprintf( &s[0], s.size(), str, params );
 #else
 		size = _vsnprintf( &s[0], s.size(), str, params );
 #endif
-#   pragma warning(default: 4996)
+#	pragma warning(default: 4996)
 #endif  // COMPILER_VISUAL_STUDIO
+
 #ifdef COMPILER_GCC
+#ifdef UNICODE
+		size = vswprintf( &s[0], s.size(), str, params );
+#else
 		size = vsnprintf( &s[0], s.size(), str, params );
+#endif
 #endif // COMPILER_GCC
-		if ( size == -1 ) {
+		if ( size == -1 )
+		{
 			s.resize( s.size() + 256 );
 		}
 	}
@@ -86,7 +95,7 @@ tstring format(ruint resource, REF(va_list) params)
 	if (hModule)
 	{
 		if (LoadString(hModule, resource, buffer, sizeof(buffer)/sizeof(tchar)))
-			return format(buffer, params);
+		return format(buffer, params);
 	}
 	return _T("");
 }
@@ -146,7 +155,7 @@ wstring toUnicode(CREF(astring) str)
 	}
 	catch (CREF(std::runtime_error))
 	{
-		return wstring();
+	return wstring();
 	}
 }
 
@@ -154,10 +163,12 @@ tstring extractFilePath( CREF(tstring) fileName )
 {
 	tstring s;
 	tstring::size_type pos = fileName.find_last_of( _T('\\') );
-	if ( pos == tstring::npos ) {
+	if ( pos == tstring::npos )
+	{
 		pos = fileName.find_last_of( _T('/') );
 	}
-	if ( pos == tstring::npos ) {
+	if ( pos == tstring::npos )
+	{
 		return _T("");
 	}
 	if ( pos != tstring::npos && pos < fileName.length() - 1 ) {

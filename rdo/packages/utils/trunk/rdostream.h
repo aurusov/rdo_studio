@@ -24,6 +24,7 @@ OPEN_RDO_NAMESPACE
 
 typedef  std::basic_istream<tchar, std::char_traits<tchar> >   istream;
 typedef  std::basic_ostream<tchar, std::char_traits<tchar> >   ostream;
+typedef  std::basic_ifstream<tchar, std::char_traits<tchar> >  ifstream;
 typedef  std::basic_ofstream<tchar, std::char_traits<tchar> >  ofstream;
 typedef  std::basic_stringstream<tchar>                        stringstream;
 typedef  std::basic_ostringstream<tchar>                       ostringstream;

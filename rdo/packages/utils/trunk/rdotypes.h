@@ -19,7 +19,11 @@
 #endif // COMPILER_VISUAL_STUDIO
 #ifdef COMPILER_GCC
 #   include <stdint.h>
-#   define _T(x) x
+#   ifdef UNICODE
+#       define _T(x) L##x
+#   else
+#       define _T(x) x
+#   endif
 #endif // COMPILER_GCC
 
 #include <string>

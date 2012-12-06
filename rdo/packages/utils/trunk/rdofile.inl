@@ -17,6 +17,7 @@
 
 #include <fstream>
 #include <boost/filesystem.hpp>
+#include <boost/lexical_cast.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdocommon.h"
 // --------------------------------------------------------------------------------
@@ -30,7 +31,7 @@ inline rbool File::create(CREF(tstring) name)
 
 inline rbool File::create(CREF(tstring) name, CREF(tstring) content)
 {
-	std::ofstream file(name.c_str(), std::ios::out | std::ios::binary);
+	rdo::ofstream file(name.c_str(), std::ios::out | std::ios::binary);
 	file << content.c_str() << std::endl;
 	file.close();
 	return true;
