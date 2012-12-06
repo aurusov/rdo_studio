@@ -1,5 +1,5 @@
 /*!
-  \copyright (c) RDO-Team, 2011
+  \copyright (c) RDO-Team, 2012
   \file      simulator/compiler/parser/type/type.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      06.12.2012
