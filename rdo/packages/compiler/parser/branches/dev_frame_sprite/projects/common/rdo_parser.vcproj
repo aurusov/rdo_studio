@@ -2542,6 +2542,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\context\context_type.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\context\context_type.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\context\memory.cpp"
 				>
 			</File>
@@ -2563,14 +2571,6 @@
 			</File>
 			<File
 				RelativePath="..\..\context\statement.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\context\type.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\context\type.h"
 				>
 			</File>
 		</Filter>
