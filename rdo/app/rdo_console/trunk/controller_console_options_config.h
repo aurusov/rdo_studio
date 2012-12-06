@@ -66,7 +66,7 @@ const tstring PLUGIN_START_COMMENT          = _T(": start plugin");
 const tstring PLUGIN_AUTO_EXIT_COMMENT      = _T(": plugin auto exit");
 
 // Auxiliary constants
-const tstring PROGRAM_VERSION               = _T("1.0");
+const tstring PROGRAM_VERSION               = _T("1.0.5");
 const tstring RDO_LANGUAGE_VERSION          = _T("2.0");
 
 const tstring RDO_SITE                      = _T("( http://rdo.rk9.bmstu.ru )");
