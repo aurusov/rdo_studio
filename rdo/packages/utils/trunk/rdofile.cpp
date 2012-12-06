@@ -13,9 +13,12 @@
 #include "utils/platform.h"
 // ----------------------------------------------------------------------- INCLUDES
 #ifdef COMPILER_VISUAL_STUDIO
-#include <Windows.h>
+#   include <Windows.h>
+#else
+#   include <unistd.h>
 #endif // COMPILER_VISUAL_STUDIO
 #include <boost/filesystem.hpp>
+#include <boost/filesystem/fstream.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_io.hpp>
@@ -110,9 +113,8 @@ tstring File::getTempFileName()
 rbool File::trimLeft(CREF(tstring) name)
 {
 	tstring tempFileName = getTempFileName();
-
-	rdo::ofstream tempStream(tempFileName.c_str(), std::ios::trunc | std::ios::binary);
-	rdo::ifstream fileStream(name.c_str(), std::ios::binary);
+	boost::filesystem::ofstream tempStream(tempFileName.c_str(), std::ios::trunc | std::ios::binary);
+	boost::filesystem::ifstream fileStream(name.c_str(), std::ios::binary);
 
 	if (!tempStream.good() || !fileStream.good())
 	{
@@ -122,7 +124,7 @@ rbool File::trimLeft(CREF(tstring) name)
 	rbool empty = true;
 	while (!fileStream.eof())
 	{
-		tchar byte;
+		char byte;
 		fileStream.get(byte);
 
 		if (empty)

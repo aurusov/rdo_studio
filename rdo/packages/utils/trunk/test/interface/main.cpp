@@ -10,8 +10,8 @@
 
 // ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
-#include <vector>
 #include <list>
+#include <vector>
 #include <iostream>
 #define BOOST_TEST_MODULE RDOInterfaceTest
 #include <boost/test/included/unit_test.hpp>
@@ -30,9 +30,9 @@ const tstring strMyClass2Create  = _T("MyClass2():"   );
 const tstring strMyClass2Destroy = _T("~MyClass2():"  );
 const tstring strMyClass3Create  = _T("MyClass3():"   );
 const tstring strMyClass3Destroy = _T("~MyClass3():"  );
-const char    initFValue         = _T('1');
-const char    initSValue         = _T('2');
-const char    initTValue         = _T('3');
+const tchar   initFValue         = _T('1');
+const tchar   initSValue         = _T('2');
+const tchar   initTValue         = _T('3');
 
 typedef std::list<tstring> LogList;
 LogList s_logList;
@@ -75,7 +75,7 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 protected:
-	MyClass1(char i)
+	MyClass1(tchar i)
 		: m_i(i)
 	{
 #ifndef DISABLE_CONSOLE_OUTPUT
@@ -96,7 +96,7 @@ protected:
 	}
 
 protected:
-	char m_i;
+	tchar m_i;
 
 private:
 	tstring fun1()
@@ -124,7 +124,7 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 private:
-	MyClass2(char i)
+	MyClass2(tchar i)
 		: MyClass1(i)
 	{
 #ifndef DISABLE_CONSOLE_OUTPUT
@@ -160,7 +160,7 @@ QUERY_INTERFACE_BEGIN
 QUERY_INTERFACE_END
 
 protected:
-	MyClass3(char i)
+	MyClass3(tchar i)
 		: m_i(i)
 	{
 #ifndef DISABLE_CONSOLE_OUTPUT
@@ -177,7 +177,7 @@ protected:
 	}
 
 protected:
-	char m_i;
+	tchar m_i;
 
 private:
 	tstring fun3()
@@ -200,22 +200,22 @@ BOOST_AUTO_TEST_CASE(RdoInterfaceTest)
 		rdo::UnknownPointer smptr = RF(MyClass2)::create(initFValue);
 		BOOST_REQUIRE(smptr);
 
-		BOOST_CHECK_EQUAL(s_logList.size(), LogList::size_type(2));
+		BOOST_CHECK(s_logList.size() == LogList::size_type(2));
 		LogList::const_iterator it = s_logList.begin();
-		BOOST_CHECK_EQUAL(*it,     strMyClass1Create + initFValue);
-		BOOST_CHECK_EQUAL(*(++it), strMyClass2Create + initFValue);
+		BOOST_CHECK(*it == strMyClass1Create + initFValue);
+		BOOST_CHECK(*(++it) == strMyClass2Create + initFValue);
 		s_logList.clear();
 
-		BOOST_CHECK_EQUAL(smptr.query_cast<IMy1>()->fun1(), strIMy1 + initFValue);
-		BOOST_CHECK_EQUAL(smptr.query_cast<IMy3>()->fun3(), strIMy3 + initFValue);
+		BOOST_CHECK(smptr.query_cast<IMy1>()->fun1() == strIMy1 + initFValue);
+		BOOST_CHECK(smptr.query_cast<IMy3>()->fun3() == strIMy3 + initFValue);
 
 		MyInterface         imy3 = smptr;
 		rdo::UnknownPointer smptr2;
 		smptr2 = RF(MyClass2)::create(initSValue);
-		BOOST_CHECK_EQUAL(s_logList.size(), LogList::size_type(2));
+		BOOST_CHECK(s_logList.size() == LogList::size_type(2));
 		it = s_logList.begin();
-		BOOST_CHECK_EQUAL(*it,     strMyClass1Create + initSValue);
-		BOOST_CHECK_EQUAL(*(++it), strMyClass2Create + initSValue);
+		BOOST_CHECK(*it == strMyClass1Create + initSValue);
+		BOOST_CHECK(*(++it) == strMyClass2Create + initSValue);
 		s_logList.clear();
 
 		rdo::UnknownPointer smptr2_2 = smptr2;
@@ -233,7 +233,7 @@ BOOST_AUTO_TEST_CASE(RdoInterfaceTest)
 		myInterfaceList.push_back(smptr);
 		myInterfaceList.push_back(smptr2);
 
-		char symbolT = _T('0');
+		tchar symbolT = _T('0');
 		STL_FOR_ALL_CONST(myInterfaceList, it)
 		{
 			rdo::Interface<IMy1> ptr1;
@@ -241,37 +241,37 @@ BOOST_AUTO_TEST_CASE(RdoInterfaceTest)
 			if (ptr1)
 			{
 				symbolT = (*it == smptr ? initFValue : (*it == smptr2 ? initSValue : initTValue));
-				BOOST_CHECK_EQUAL(ptr1->fun1(), strIMy1 + symbolT);
+				BOOST_CHECK(ptr1->fun1() == strIMy1 + symbolT);
 			}
 
 			rdo::Interface<IMy2> ptr2 = *it;
 			if (ptr2)
 			{
 				symbolT = (*it == smptr ? initFValue : (*it == smptr2 ? initSValue : initTValue));
-				BOOST_CHECK_EQUAL(ptr2->fun2(), strIMy2 + symbolT);
+				BOOST_CHECK(ptr2->fun2() == strIMy2 + symbolT);
 			}
 
 			rdo::Interface<IMy3> ptr3 = *it;
 			if (ptr3)
 			{
 				symbolT = (*it == smptr ? initFValue : (*it == smptr2 ? initSValue : initTValue));
-				BOOST_CHECK_EQUAL(ptr3->fun3(), strIMy3 + symbolT);
+				BOOST_CHECK(ptr3->fun3() == strIMy3 + symbolT);
 			}
 		}
 		s_logList.clear();
 	}
 
-	BOOST_CHECK_EQUAL(s_logList.size(), LogList::size_type(5));
+	BOOST_CHECK(s_logList.size() == LogList::size_type(5));
 	LogList::const_iterator it = s_logList.begin();
-	BOOST_CHECK_EQUAL(*it, strMyClass3Destroy + initTValue);
+	BOOST_CHECK(*it == strMyClass3Destroy + initTValue);
 	++it;
-	BOOST_CHECK_EQUAL(*it, strMyClass2Destroy + initSValue); 
+	BOOST_CHECK(*it == strMyClass2Destroy + initSValue);
 	++it;
-	BOOST_CHECK_EQUAL(*it, strMyClass1Destroy + initSValue);
+	BOOST_CHECK(*it == strMyClass1Destroy + initSValue);
 	++it;
-	BOOST_CHECK_EQUAL(*it, strMyClass2Destroy + initFValue);
+	BOOST_CHECK(*it == strMyClass2Destroy + initFValue);
 	++it;
-	BOOST_CHECK_EQUAL(*it, strMyClass1Destroy + initFValue);
+	BOOST_CHECK(*it == strMyClass1Destroy + initFValue);
 	s_logList.clear();
 }
 

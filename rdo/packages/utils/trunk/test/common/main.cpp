@@ -64,27 +64,27 @@ BOOST_AUTO_TEST_CASE(RDOCommon_FileRemove)
 
 BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitPathInLinux)
 {
-	tstring file(_T("/rdo/русский пробел/files/проект.smr"));
+	tstring file(_T("/rdo/run and space/files/project.smr"));
 	tstring dir;
 	tstring name;
 	tstring ext;
 
 	BOOST_CHECK(rdo::File::splitpath(file, dir, name, ext));
-	BOOST_CHECK(dir  == _T("/rdo/русский пробел/files/"));
-	BOOST_CHECK(name == _T("проект"));
+	BOOST_CHECK(dir  == _T("/rdo/run and space/files/"));
+	BOOST_CHECK(name == _T("project"));
 	BOOST_CHECK(ext  == _T(".smr"));
 }
 
 BOOST_AUTO_TEST_CASE(RDOCommon_FileSplitByRootPathInLinux)
 {
-	tstring file(_T("/проект.smr"));
+	tstring file(_T("/project.smr"));
 	tstring dir;
 	tstring name;
 	tstring ext;
 
 	BOOST_CHECK(rdo::File::splitpath(file, dir, name, ext));
 	BOOST_CHECK(dir  == _T("/"));
-	BOOST_CHECK(name == _T("проект"));
+	BOOST_CHECK(name == _T("project"));
 	BOOST_CHECK(ext  == _T(".smr"));
 }
 
@@ -157,7 +157,7 @@ BOOST_AUTO_TEST_CASE(RDOCommon_Time)
 {
 	rdo::Time timeValue = rdo::Time::local();
 	BOOST_CHECK(timeValue > s_createTestLocalTime);
-	std::cout << _T("Today:  ") << timeValue.asString() << _T("  is not it?");
+	std::cout << _T("Today:  ") << timeValue.asString().c_str() << _T("  is not it?");
 }
 
 BOOST_AUTO_TEST_SUITE_END() // RDOCommon_Test
