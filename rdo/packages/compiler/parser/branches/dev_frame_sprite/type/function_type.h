@@ -36,6 +36,9 @@ private:
 
 	ParamList  m_paramList;
 
+	virtual CREF(rdo::runtime::LPRDOType)    type() const;
+	virtual rdo::runtime::RDOType::TypeID  typeID() const;
+
 	DECLARE_IType;
 	DECLARE_IModelStructure;
 };
@@ -59,6 +62,9 @@ private:
 
 	LPTypeInfo           m_pReturnType;
 	LPFunctionParamType  m_pParamType;
+
+	virtual CREF(rdo::runtime::LPRDOType)    type() const;
+	virtual rdo::runtime::RDOType::TypeID  typeID() const;
 
 	DECLARE_IType;
 	DECLARE_IModelStructure;

@@ -35,6 +35,19 @@ CREF(FunctionParamType::ParamList) FunctionParamType::paramList() const
 	return m_paramList;
 }
 
+CREF(rdo::runtime::LPRDOType) FunctionParamType::type() const
+{
+	NEVER_REACH_HERE;
+	static rdo::runtime::LPRDOType s_Type;
+	return s_Type;
+}
+
+rdo::runtime::RDOType::TypeID FunctionParamType::typeID() const
+{
+	NEVER_REACH_HERE;
+	return rdo::runtime::RDOType::t_unknow;
+}
+
 tstring FunctionParamType::name() const
 {
 	return src_text();
@@ -106,6 +119,16 @@ FunctionType::FunctionType(CREF(LPTypeInfo) pReturnType, CREF(LPFunctionParamTyp
 
 FunctionType::~FunctionType()
 {}
+
+CREF(rdo::runtime::LPRDOType) FunctionType::type() const
+{
+	return m_pReturnType->type()->type();
+}
+
+rdo::runtime::RDOType::TypeID FunctionType::typeID() const
+{
+	return m_pReturnType->type()->typeID();
+}
 
 CREF(LPTypeInfo) FunctionType::returnType() const
 {

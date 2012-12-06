@@ -7,8 +7,8 @@
   \indent    4T
 */
 
-#ifndef _RDOPARSER_TYPE_H_
-#define _RDOPARSER_TYPE_H_
+#ifndef _SIMULATOR_COMPILER_PARSER_TYPE_H_
+#define _SIMULATOR_COMPILER_PARSER_TYPE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -18,25 +18,21 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-OBJECT_VIRTUAL(RDOType)
-	IS  IMPLEMENTATION_OF(IType          )
-	AND IMPLEMENTATION_OF(IModelStructure)
+class RDOType
+	: public virtual rdo::counter_reference
+	, public IType
+	, public IModelStructure
 {
 DECLARE_FACTORY(RDOType)
 public:
-	virtual CREF(rdo::runtime::LPRDOType)    type() const;
-	virtual rdo::runtime::RDOType::TypeID  typeID() const;
-
-	virtual rdo::runtime::LPRDOCalc calc_cast(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const;
+	virtual CREF(rdo::runtime::LPRDOType)    type() const = 0;
+	virtual rdo::runtime::RDOType::TypeID  typeID() const = 0;;
 
 protected:
 	RDOType();
-	RDOType(CREF(rdo::runtime::LPRDOType) pType);
 	virtual ~RDOType();
-
-	rdo::runtime::LPRDOType m_pType;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
 
-#endif // _RDOPARSER_TYPE_H_
+#endif // _SIMULATOR_COMPILER_PARSER_TYPE_H_
