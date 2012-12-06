@@ -373,6 +373,14 @@ frm_item_statement
 		$$ = PARSER->stack().push(pExpression);
 	}
 	| frm_sprite
+	{
+		LPExpression pExpression = PARSER->stack().pop<Expression>($1);
+		ASSERT(pExpression);
+
+		PARSER->getLastFRMCommandList()->list()->insertItem(pExpression->calc());
+
+		$$ = PARSER->stack().push(pExpression);
+	}
 	;
 
 frm_item

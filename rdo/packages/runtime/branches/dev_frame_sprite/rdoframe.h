@@ -161,8 +161,8 @@ public:
 
 public:
 	CREF(tstring) name         () const;
-	void          insertItem   (CREF(LPRDOFRMItem) pItem      );
-	void          setSpriteCalc(CREF(LPRDOCalc)    pSpriteCalc);
+	void          insertItem   (CREF(LPRDOCalc) pItem      );
+	void          setSpriteCalc(CREF(LPRDOCalc) pSpriteCalc);
 
 	void setColorLastBG    (RDOFRMColor::ColorType type, CREF(rdo::animation::Color) lastBg);
 	void setColorLastFG    (RDOFRMColor::ColorType type, CREF(rdo::animation::Color) lastFg);

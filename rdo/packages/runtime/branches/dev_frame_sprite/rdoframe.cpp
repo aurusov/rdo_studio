@@ -15,6 +15,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdoframe.h"
 #include "simulator/runtime/rdo_runtime.h"
+#include "simulator/runtime/calc/function/calc_function.h"
 #include "simulator/runtime/calc/procedural/calc_const.h"
 #include "simulator/runtime/calc/procedural/calc_statement.h"
 // --------------------------------------------------------------------------------
@@ -197,8 +198,22 @@ void RDOFRMSprite::setColorLastFGText(RDOFRMColor::ColorType type, CREF(rdo::ani
 	}
 }
 
-void RDOFRMSprite::insertItem(CREF(LPRDOFRMItem) pItem)
+void RDOFRMSprite::insertItem(CREF(LPRDOCalc) pItem)
 {
+	LPRDOCalcFunctionCaller pFunctionCaller = pItem.object_dynamic_cast<RDOCalcFunctionCaller>();
+	if (pFunctionCaller)
+	{
+		LPRDOFRMSprite pSprite = pFunctionCaller->function().object_dynamic_cast<RDOFRMSprite>();
+		if (pSprite)
+		{
+			LPIRDOFRMItemGetBitmap pGetBitmap = pSprite.interface_dynamic_cast<IRDOFRMItemGetBitmap>();
+			if (pGetBitmap)
+			{
+				insertGetBitmap(pGetBitmap);
+			}
+		}
+	}
+
 	LPIRDOFRMItemGetBitmap pGetBitmap = pItem.interface_dynamic_cast<IRDOFRMItemGetBitmap>();
 	if (pGetBitmap)
 	{
