@@ -21,18 +21,23 @@ const tstring program_description = PROGRAM_NAME + NOP_STRING + VERSION_COMMAND_
 PROGRAM_VERSION + NOP_STRING + SYSTEM_OS + NOP_STRING + SYSTEM_ARCHITECTURES + NOP_STRING + RDO_SITE;
 
 RDOControllerConsoleOptions::RDOControllerConsoleOptions(int argc, char *argv[]) :
-	m_help(false)
+	m_help(false),
+	m_convert(false)
 {
 	po::options_description options_header(program_description);
 	
 	po::options_description options_general(_T("General options"));
 	createGeneralOptions(options_general);
 	
+	po::options_description options_convertor(_T("Convertor options"));
+	createConvertorOptions(options_convertor);
+
 	po::options_description options_additional(_T("Compatibility options (skipped in console version)"));
 	createAdditionalOptions(options_additional);
 	
 	m_options.add(options_header);
 	m_options.add(options_general);
+	m_options.add(options_convertor);
 	m_options.add(options_additional);
 	
 	try
@@ -68,6 +73,10 @@ void RDOControllerConsoleOptions::parseOptions()
 		std::cout << PROGRAM_NAME + NOP_STRING + VERSION_COMMAND_SHORT + PROGRAM_VERSION << std::endl;
 		m_help = true;
 	}
+	else if(m_variables.count(CONVERTOR_COMMAND))
+	{
+		m_convert = true;
+	}
 }
 
 const tstring RDOControllerConsoleOptions::getModelFileName()
@@ -95,6 +104,11 @@ rbool RDOControllerConsoleOptions::helpQuery()
 	return m_help;
 }
 
+rbool RDOControllerConsoleOptions::convertQuery()
+{
+	return m_convert;
+}
+
 void RDOControllerConsoleOptions::createGeneralOptions(REF(po::options_description) options)
 {
 	options.add_options()
@@ -103,6 +117,12 @@ void RDOControllerConsoleOptions::createGeneralOptions(REF(po::options_descripti
 			((VERSION_COMMAND + COMMA_STRING + VERSION_COMMAND_SHORT).c_str(), VERSION_COMMENT.c_str())
 			((HELP_COMMAND + COMMA_STRING + HELP_COMMAND_SHORT).c_str(), HELP_COMMENT.c_str())
 			((LANGUAGE_COMMAND + COMMA_STRING + LANGUAGE_COMMAND_SHORT).c_str(), LANGUAGE_COMMENT.c_str());
+}
+
+void RDOControllerConsoleOptions::createConvertorOptions(REF(po::options_description) options)
+{
+	options.add_options()
+		((CONVERTOR_COMMAND + COMMA_STRING + CONVERTOR_COMMAND_SHORT).c_str(), CONVERTOR_COMMENT.c_str());
 }
 
 void RDOControllerConsoleOptions::createAdditionalOptions(REF(po::options_description) options)

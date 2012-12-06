@@ -35,6 +35,7 @@ const tstring EVENTS_COMMAND                = _T("events");
 const tstring HELP_COMMAND                  = _T("help");
 const tstring VERSION_COMMAND               = _T("version");
 const tstring LANGUAGE_COMMAND              = _T("language");
+const tstring CONVERTOR_COMMAND             = _T("convert");
 
 const tstring AUTO_RUN_COMMAND              = _T("autorun");
 const tstring AUTO_EXIT_COMMAND             = _T("autoexit");
@@ -47,6 +48,7 @@ const tstring EVENTS_COMMAND_SHORT          = _T("e");
 const tstring HELP_COMMAND_SHORT            = _T("h");
 const tstring VERSION_COMMAND_SHORT         = _T("v");
 const tstring LANGUAGE_COMMAND_SHORT        = _T("l");
+const tstring CONVERTOR_COMMAND_SHORT       = _T("c");
 
 // Input param comment
 const tstring MODEL_COMMENT                 = _T(": path to model file");
@@ -54,6 +56,8 @@ const tstring EVENTS_COMMENT                = _T(": path to events file");
 const tstring HELP_COMMENT                  = _T(": display help message");
 const tstring VERSION_COMMENT               = _T(": display program version");
 const tstring LANGUAGE_COMMENT              = _T(": display language version of rdo");
+
+const tstring CONVERTOR_COMMENT             = _T(": run convertor smr to rdox");
 
 const tstring AUTO_RUN_COMMENT              = _T(": autostart program");
 const tstring AUTO_EXIT_COMMENT             = _T(": autoexit program");

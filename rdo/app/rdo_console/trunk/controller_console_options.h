@@ -33,12 +33,14 @@ public:
 	void parseOptions();
 
 	const tstring getModelFileName();
-    const tstring getEventsFileName();
+	const tstring getEventsFileName();
 	
 	rbool helpQuery();
+	rbool convertQuery();
 	
 private:
 	void createGeneralOptions(REF(po::options_description) options);
+	void createConvertorOptions(REF(po::options_description) options);
 	void createAdditionalOptions(REF(po::options_description) options);
 	
 private:
@@ -46,6 +48,7 @@ private:
 	po::variables_map       m_variables;
 	
 	rbool                   m_help;
+	rbool                   m_convert;
 };
 
 #ifdef COMPILER_VISUAL_STUDIO

@@ -89,7 +89,20 @@ int main(int argc, PTR(char) argv[])
 
 	rdo::repository::RDOThreadRepository::OpenFile data(model_file_name);
 	pAppController->broadcastMessage(RDOThread::RT_STUDIO_MODEL_OPEN, &data);
-	pAppController->broadcastMessage(RDOThread::RT_STUDIO_MODEL_BUILD      );
+
+	if(options_controller.convertQuery())
+	{
+		tstring string;
+		pAppController->broadcastMessage(RDOThread::RT_DEBUG_STRING, &string);
+		std::cout << string << std::endl;
+		if(string == _T("Ошибка конвертора"))
+		{
+			exit(TERMINATION_WITH_AN_ERROR_CONVERTOR_ERROR);
+		}
+		exit(TERMINATION_NORMAL);
+	}
+
+	pAppController->broadcastMessage(RDOThread::RT_STUDIO_MODEL_BUILD);
 
 	bool simulationSuccessfully = false;
 
@@ -150,11 +163,11 @@ int main(int argc, PTR(char) argv[])
 		RDOKernel::close();
 	}
 
-    boost::posix_time::ptime endTime = boost::posix_time::microsec_clock::local_time();
+	boost::posix_time::ptime endTime = boost::posix_time::microsec_clock::local_time();
 
-    ruint64 simulationTimeMillisecond = ( endTime - startTime ).total_milliseconds();
+	ruint64 simulationTimeMillisecond = ( endTime - startTime ).total_milliseconds();
 
-    std::cout << "Total simulation time : " << simulationTimeMillisecond << " milliseconds" << std::endl;
+	std::cout << "Total simulation time : " << simulationTimeMillisecond << " milliseconds" << std::endl;
 
 	if (simulationSuccessfully)
 	{
@@ -170,30 +183,33 @@ int main(int argc, PTR(char) argv[])
 
 void read_events(REF(std::istream) stream, REF(event_list) list)
 {
-    list.clear();
+	list.clear();
 
-    if (stream.fail()) {
-        exit(TERMINATION_WITH_APP_RUNTIME_ERROR);
-    }
-    rdo::event_xml_parser parser;
-    parser.register_parser("key", boost::shared_ptr<rdo::event_xml_reader>(new rdo::key_event_xml_reader));
-    parser.register_parser("mouse", boost::shared_ptr<rdo::event_xml_reader>(new rdo::mouse_event_xml_reader));
-    
-    try {
-        parser.parse(stream, list);
-    }
-    catch(...) {
-        exit(TERMINATION_WITH_AN_ERROR_PARSE_EVENTS_ERROR);
-    }
+	if (stream.fail()) {
+		exit(TERMINATION_WITH_APP_RUNTIME_ERROR);
+	}
+	rdo::event_xml_parser parser;
+	parser.register_parser("key", boost::shared_ptr<rdo::event_xml_reader>(new rdo::key_event_xml_reader));
+	parser.register_parser("mouse", boost::shared_ptr<rdo::event_xml_reader>(new rdo::mouse_event_xml_reader));
+
+	try
+	{
+		parser.parse(stream, list);
+	}
+	catch(...)
+	{
+		exit(TERMINATION_WITH_AN_ERROR_PARSE_EVENTS_ERROR);
+	}
 }
 
 void write_build_log(REF(std::ostream) stream, CREF(string_list) list)
 {
-    if (stream.fail()) {
-        exit(TERMINATION_WITH_APP_RUNTIME_ERROR);
-    }
-    BOOST_FOREACH( string_list::value_type const& line, list )
-    {
-        stream << line.c_str() << std::endl;
-    }
+	if (stream.fail())
+	{
+		exit(TERMINATION_WITH_APP_RUNTIME_ERROR);
+	}
+	BOOST_FOREACH( string_list::value_type const& line, list )
+	{
+		stream << line.c_str() << std::endl;
+	}
 }
