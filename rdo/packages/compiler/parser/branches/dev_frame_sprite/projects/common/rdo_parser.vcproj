@@ -2802,6 +2802,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\type\type.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\type\type.h"
 				>
 			</File>

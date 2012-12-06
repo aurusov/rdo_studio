@@ -66,32 +66,15 @@ OBJECT_VIRTUAL(RDOType)
 {
 DECLARE_FACTORY(RDOType)
 public:
-	CREF(rdo::runtime::LPRDOType)    type() const { return m_pType;           }
-	rdo::runtime::RDOType::TypeID  typeID() const { return m_pType->typeID(); }
+	CREF(rdo::runtime::LPRDOType)    type() const;
+	rdo::runtime::RDOType::TypeID  typeID() const;
 
-	virtual rdo::runtime::LPRDOCalc calc_cast(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
-	{
-		UNUSED(pType);
-		return pCalc;
-	}
+	virtual rdo::runtime::LPRDOCalc calc_cast(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const;
 
 protected:
-	RDOType()
-	{}
-
-	RDOType(CREF(rdo::runtime::LPRDOType) pType)
-		: m_pType(pType)
-	{
-		ASSERT(m_pType);
-		if (typeID() == rdo::runtime::RDOType::t_unknow)
-		{
-			int i = 1;
-			UNUSED(i);
-		}
-	}
-
-	virtual ~RDOType()
-	{}
+	RDOType();
+	RDOType(CREF(rdo::runtime::LPRDOType) pType);
+	virtual ~RDOType();
 
 	rdo::runtime::LPRDOType m_pType;
 };
