@@ -11,7 +11,8 @@
 #define _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITOREDITSTYLE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/function.hpp>
+#include <boost/signal.hpp>
+#include <list>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditorbaseeditstyle.h"
 // --------------------------------------------------------------------------------
@@ -113,8 +114,6 @@ protected:
 	virtual void initMargin();
 
 public:
-	typedef boost::function<void (const RDOEditorEditStyle& options)> NotifyCallback;
-	typedef std::list<NotifyCallback>  CallbackList;
 
 	RDOEditorEditStyle();
 	virtual ~RDOEditorEditStyle();
@@ -129,12 +128,13 @@ public:
 
 	RDOEditorEditAutoComplete* autoComplete;
 	RDOEditorEditMargin*       margin;
-
-	void attachSubscriber(NotifyCallback sub);
-	void detachSubscriber(NotifyCallback sub);
+	template <class CallbackFun>
+	void attachSubscriber(const CallbackFun& sub);
+	template <class CallbackFun>
+	void detachSubscriber(const CallbackFun& sub);
 
 private:
-	CallbackList subscriberList;
+	boost::signal<void (const RDOEditorEditStyle&)> subscriber;
 };
 
 DECLARE_POINTER(RDOEditorEditStyle)

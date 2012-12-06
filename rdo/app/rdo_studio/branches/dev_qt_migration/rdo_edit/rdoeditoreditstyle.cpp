@@ -374,12 +374,15 @@ rbool RDOEditorEditStyle::save() const
 	return false;
 }
 
-void RDOEditorEditStyle::attachSubscriber(NotifyCallback sub)
+template <class CallbackFun>
+void RDOEditorEditStyle::attachSubscriber(const CallbackFun& sub)
 {
-	//subscriberList.push_back(sub);
+	subscriber.connect(sub);
+	sub(*this);
 }
 
-void RDOEditorEditStyle::detachSubscriber(NotifyCallback sub)
+template <class CallbackFun>
+void RDOEditorEditStyle::detachSubscriber(const CallbackFun& sub)
 {
-	//subscriberList.remove(sub);
+	subscriber.disconnect(sub);
 }
