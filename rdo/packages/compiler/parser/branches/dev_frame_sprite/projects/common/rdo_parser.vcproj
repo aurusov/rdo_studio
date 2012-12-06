@@ -2809,6 +2809,10 @@
 				RelativePath="..\..\type\type.h"
 				>
 			</File>
+			<File
+				RelativePath="..\..\type\type_i.h"
+				>
+			</File>
 			<Filter
 				Name=".enum"
 				>
