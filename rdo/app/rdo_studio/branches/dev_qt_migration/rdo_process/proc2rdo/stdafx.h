@@ -8,9 +8,12 @@
 #endif
 #endif
 
+#pragma warning(push)
+#pragma warning(disable: 4512)
 #include <boost/signal.hpp>
+#pragma warning(pop)
 
-#pragma warning( disable : 4786 )
+#pragma warning(disable: 4786)
 
 #include <afxwin.h>         // MFC core and standard components
 #include <afxext.h>         // MFC extensions

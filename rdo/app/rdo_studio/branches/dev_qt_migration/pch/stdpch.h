@@ -5,7 +5,10 @@
 #define WINVER 0x0501        // Change this to the appropriate value to target other versions of Windows.
 #endif
 
+#pragma warning(push)
+#pragma warning(disable: 4512)
 #include <boost/signal.hpp>
+#pragma warning(pop)
 
 #define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
 
