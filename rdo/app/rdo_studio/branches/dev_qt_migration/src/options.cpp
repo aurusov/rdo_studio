@@ -122,9 +122,6 @@ RDOStudioOptionsEditor::RDOStudioOptionsEditor(REF(RDOStudioOptions) sheet)
 	m_marginBookmark       = FALSE;
 	m_marginLineNumber     = FALSE;
 
-	m_bufferClearAuto = this->sheet->style_editor.buffer->canClearBuffer ? 1 : 0;
-	m_bufferDelay     = this->sheet->style_editor.buffer->clearBufferDelay;
-
 	m_codecompUse          = this->sheet->style_editor.autoComplete->useAutoComplete ? 1 : 0;
 	m_codecompShowFullList = this->sheet->style_editor.autoComplete->showFullList ? 0 : 1;
 
@@ -198,9 +195,6 @@ void RDOStudioOptionsEditor::OnUpdateModify()
 {
 	UpdateData();
 
-	sheet->style_editor.buffer->canClearBuffer   = m_bufferClearAuto ? true : false;
-	sheet->style_editor.buffer->clearBufferDelay = m_bufferDelay;
-
 	sheet->style_editor.autoComplete->useAutoComplete = m_codecompUse ? true : false;
 	sheet->style_editor.autoComplete->showFullList    = m_codecompShowFullList == 0;
 
@@ -210,7 +204,7 @@ void RDOStudioOptionsEditor::OnUpdateModify()
 
 	sheet->preview_editor.setEditorStyle(&sheet->style_editor);
 
-	SetModified(*sheet->style_editor.buffer != *studioApp.getStyle()->style_editor.buffer || *sheet->style_editor.autoComplete != *studioApp.getStyle()->style_editor.autoComplete || *sheet->style_editor.margin != *studioApp.getStyle()->style_editor.margin);
+	SetModified(*sheet->style_editor.autoComplete != *studioApp.getStyle()->style_editor.autoComplete || *sheet->style_editor.margin != *studioApp.getStyle()->style_editor.margin);
 }
 
 // --------------------------------------------------------------------------------
