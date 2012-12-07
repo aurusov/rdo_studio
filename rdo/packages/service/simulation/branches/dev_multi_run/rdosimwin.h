@@ -146,6 +146,7 @@ private:
 	rbool                                              m_runtimeError;
 	ruint64                                            m_timeStart;
 	ruint                                              m_runCount;
+	ruint                                              m_1;
 
 	RDOThreadRunTime();
 	virtual ~RDOThreadRunTime() //! Чтобы нельзя было удалить через delete
