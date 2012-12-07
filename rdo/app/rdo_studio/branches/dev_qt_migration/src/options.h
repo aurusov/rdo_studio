@@ -80,8 +80,6 @@ public:
 protected:
 	enum { IDD = IDD_OPTIONS_EDITOR };
 
-	BOOL m_bufferClearAuto;
-	int  m_bufferDelay;
 	BOOL m_codecompUse;
 	int  m_codecompShowFullList;
 	BOOL m_marginFold;
