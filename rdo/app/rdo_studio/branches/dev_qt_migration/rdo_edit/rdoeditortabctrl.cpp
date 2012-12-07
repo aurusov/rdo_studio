@@ -15,7 +15,6 @@
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
-#include "app/rdo_studio_mfc/src/edit/view_base.h"
 // --------------------------------------------------------------------------------
 
 using namespace rdoEditor;
@@ -23,7 +22,7 @@ using namespace rdoEditor;
 // --------------------------------------------------------------------------------
 // -------------------- RDOEditorTabCtrl
 // --------------------------------------------------------------------------------
-RDOEditorTabCtrl::RDOEditorTabCtrl(PTR(QWidget) pParent, PTR(RDOStudioEditBaseView) pView)
+RDOEditorTabCtrl::RDOEditorTabCtrl(PTR(QWidget) pParent, PTR(QWidget) pView)
 	: QTabWidget(pParent)
 {
 	createPage(pView, "RTP");
@@ -43,7 +42,7 @@ RDOEditorTabCtrl::RDOEditorTabCtrl(PTR(QWidget) pParent, PTR(RDOStudioEditBaseVi
 RDOEditorTabCtrl::~RDOEditorTabCtrl()
 {}
 
-void RDOEditorTabCtrl::createPage(PTR(RDOStudioEditBaseView) pView, CREF(QString) name)
+void RDOEditorTabCtrl::createPage(PTR(QWidget) pView, CREF(QString) name)
 {
 	PTR(context_type) pPage = new context_type(this, pView);
 

@@ -16,8 +16,6 @@
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditoredit.h"
 // --------------------------------------------------------------------------------
 
-class RDOStudioEditBaseView;
-
 namespace rdoEditor {
 
 // --------------------------------------------------------------------------------
@@ -28,7 +26,7 @@ class RDOEditorTabCtrl: public QTabWidget
 public:
 	typedef RDOEditorEdit context_type;
 
-	RDOEditorTabCtrl(PTR(QWidget) pParent, PTR(RDOStudioEditBaseView) pView);
+	RDOEditorTabCtrl(PTR(QWidget) pParent, PTR(QWidget) pView);
 	virtual ~RDOEditorTabCtrl();
 
 	rdoModelObjects::RDOFileType indexToType(int index) const;
@@ -45,7 +43,7 @@ public:
 private:
 	rdoEditCtrl::RDOBaseEditGroup group;
 
-	void createPage(PTR(RDOStudioEditBaseView) pView, CREF(QString) name);
+	void createPage(PTR(QWidget) pView, CREF(QString) name);
 };
 
 }; // namespace rdoEditor
