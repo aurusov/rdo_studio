@@ -114,8 +114,6 @@ RDOStudioOptionsEditor::RDOStudioOptionsEditor(REF(RDOStudioOptions) sheet)
 	: CPropertyPage(IDD   )
 	, sheet        (&sheet)
 {
-	m_bufferClearAuto      = FALSE;
-	m_bufferDelay          = 0;
 	m_codecompUse          = FALSE;
 	m_codecompShowFullList = -1;
 	m_marginFold           = FALSE;
@@ -138,10 +136,6 @@ RDOStudioOptionsEditor::~RDOStudioOptionsEditor()
 void RDOStudioOptionsEditor::DoDataExchange(CDataExchange* pDX)
 {
 	CPropertyPage::DoDataExchange(pDX);
-
-	DDX_Check(pDX, IDC_CLEARAUTO_CHECK, m_bufferClearAuto);
-	DDX_Text(pDX, IDC_CLEARAUTO_EDIT, m_bufferDelay);
-	DDV_MinMaxInt(pDX, m_bufferDelay, 1, 100);
 	DDX_Check(pDX, IDC_USEAUTOCOMPLETE_CHECK, m_codecompUse);
 	DDX_Radio(pDX, IDC_SHOWFULLLIST_RADIO, m_codecompShowFullList);
 	DDX_Check(pDX, IDC_MARGIN_FOLD_CHECK, m_marginFold);
