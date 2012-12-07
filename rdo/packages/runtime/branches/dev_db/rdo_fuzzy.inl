@@ -120,7 +120,7 @@ inline tstring RDOFuzzyTerm::getName() const
 }
 inline RDOFuzzyTerm::RDOFuzzyTerm(CREF(termName) pName, CREF(LPFuzzySet) pSet)
 {
-	m_term = std::make_pair<termName,LPFuzzySet>(pName,pSet);
+    m_term = std::make_pair(pName, pSet);
 }
 
 inline RDOFuzzyTerm::~RDOFuzzyTerm()
