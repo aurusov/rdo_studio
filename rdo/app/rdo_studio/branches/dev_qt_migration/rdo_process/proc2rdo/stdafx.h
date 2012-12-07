@@ -8,6 +8,8 @@
 #endif
 #endif
 
+#include <boost/signal.hpp>
+
 #pragma warning( disable : 4786 )
 
 #include <afxwin.h>         // MFC core and standard components
