@@ -32,6 +32,7 @@ RDOThreadRepository::RDOThreadRepository()
 	, m_hasModel     (false                    )
 	, m_realOnlyInDlg(false                    )
 	, m_firstStart   (0                        )
+	, m_count        (0                        )
 {
 	notifies.push_back(RT_STUDIO_MODEL_NEW                  );
 	notifies.push_back(RT_STUDIO_MODEL_OPEN                 );
@@ -663,6 +664,7 @@ void RDOThreadRepository::stopModel()
 {
 	if(m_firstStart == 0)
 	{
+		m_count = 3;
 		if (m_traceFile.is_open())
 		{
 			m_traceFile.close();
@@ -682,6 +684,7 @@ void RDOThreadRepository::stopModel()
 				sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS, &stream);
 				results_file << std::endl << stream.str() << std::endl;
 				++m_firstStart;
+				--m_count;
 			}
 		}
 	}
@@ -705,7 +708,12 @@ void RDOThreadRepository::stopModel()
 				stream.clear();
 				sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS, &stream);
 				results_file << std::endl << stream.str() << std::endl;
+				--m_count;
 			}
+		}
+		if ( m_count == 0)
+		{
+			m_firstStart = 0;
 		}
 	}
 }

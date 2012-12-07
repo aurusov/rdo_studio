@@ -167,6 +167,7 @@ private:
 	ProjectName    m_projectName;
 	SystemTime     m_systemTime;
 	ruint          m_firstStart;
+	ruint          m_count;
 
 	void      resetModelNames ();
 	FindModel updateModelNames();
