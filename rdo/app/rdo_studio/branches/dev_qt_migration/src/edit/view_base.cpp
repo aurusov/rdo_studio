@@ -31,20 +31,10 @@ using namespace rdoEditor;
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioEditBaseView
 // --------------------------------------------------------------------------------
-RDOStudioEditBaseView::Buffer::Buffer(QTimer* pTimer)
-	: value (""    )
-	, reset (false )
-	, pTimer(pTimer)
-{}
 
 RDOStudioEditBaseView::RDOStudioEditBaseView(QWidget* pParent)
 	: QWidget(pParent)
-	, m_currentBuffer(0)
 {
-	m_bufferList.insert(BufferList::value_type(0, Buffer(new QTimer(this))));
-	m_bufferList.insert(BufferList::value_type(1, Buffer(new QTimer(this))));
-	m_bufferList.insert(BufferList::value_type(2, Buffer(new QTimer(this))));
-	m_bufferList.insert(BufferList::value_type(3, Buffer(new QTimer(this))));
 
 	//! todo qt
 	//popupMenu.CreatePopupMenu();
@@ -71,35 +61,4 @@ RDOStudioEditBaseView::~RDOStudioEditBaseView()
 {
 	//! todo qt
 	// eraseMenu(&m_popupMenu);
-}
-
-void RDOStudioEditBaseView::restartBufTimer(ruint bufferID)
-{
-	BufferList::iterator it = m_bufferList.find(bufferID);
-	if (it == m_bufferList.end())
-		return;
-
-	stopTimer(it->second.pTimer);
-}
-
-void RDOStudioEditBaseView::stopTimer(QTimer* pTimer)
-{
-	ASSERT(pTimer);
-	if (pTimer->isActive())
-	{
-		pTimer->stop();
-	}
-}
-
-void RDOStudioEditBaseView::timerEvent(QTimerEvent* event)
-{
-	BOOST_FOREACH(BufferList::value_type& buffer, m_bufferList)
-	{
-		if (buffer.second.pTimer->timerId() == event->timerId())
-		{
-			buffer.second.reset = true;
-			stopTimer(buffer.second.pTimer);
-			break;
-		}
-	}
 }

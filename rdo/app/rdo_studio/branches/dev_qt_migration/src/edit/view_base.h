@@ -30,30 +30,10 @@ Q_OBJECT
 public:
 	virtual ~RDOStudioEditBaseView();
 
-	struct Buffer
-	{
-		tstring  value;
-		rbool    reset;
-		QTimer*  pTimer;
-
-		Buffer(QTimer* pTimer);
-	};
-	typedef  std::map<ruint, Buffer>  BufferList;
-
 	QMenu*      m_pPopupMenu;
-	BufferList  m_bufferList;
-	ruint       m_currentBuffer;
-
-	void restartBufTimer(ruint bufferID);
 
 protected:
 	RDOStudioEditBaseView(QWidget* pParent);
-
-private:
-	void stopTimer(QTimer* pTimer);
-
-private slots:
-	virtual void timerEvent(QTimerEvent* event);
 };
 
 #endif // _RDO_STUDIO_MFC_EDIT_VIEW_BASE_H_
