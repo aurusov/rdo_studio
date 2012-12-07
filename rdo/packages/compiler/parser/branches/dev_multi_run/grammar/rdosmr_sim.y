@@ -247,6 +247,7 @@ smr_multirun
 	{
 		PARSER->error().error(@2, _T("После описания констант ожидается ключевое слово $End"));
 	}
+	| '{' smr_multirun_body '}'
 	;
 
 smr_multirun_body
@@ -282,6 +283,77 @@ smr_multirun_body_desc
 	{
 		PARSER->error().error(@2, _T("я попал в нужную мне бизоновскую ветку - 5!"));
 	}
+	| RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')'
+	{
+		tstring    eventName          = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
+		LPArithmContainer pArithmList = PARSER->stack().pop<ArithmContainer>($5);
+		LPRDOEvent pEvent             = PARSER->findEvent(eventName);
+		if (!pEvent)
+		{
+			PARSER->error().error(@2, rdo::format(_T("Попытка запланировать неизвестное событие: %s"), eventName.c_str()));
+		}
+
+		ArithmContainer::Container::const_iterator arithmIt = pArithmList->getContainer().begin();
+		if (arithmIt == pArithmList->getContainer().end())
+		{
+			PARSER->error().error(@1, rdo::format(_T("Не указано время планирования события: %s"), eventName.c_str()));
+		}
+
+		LPRDOFUNArithm pTimeArithm = *arithmIt;
+		ASSERT(pTimeArithm);
+		++arithmIt;
+
+		LPArithmContainer pParamList = rdo::Factory<ArithmContainer>::create();
+		ASSERT(pParamList);
+
+		while (arithmIt != pArithmList->getContainer().end())
+		{
+			pParamList->addItem(*arithmIt);
+			++arithmIt;
+		}
+
+		rdo::runtime::LPRDOCalc pCalcTime = pTimeArithm->createCalc();
+		pCalcTime->setSrcInfo(pTimeArithm->src_info());
+		ASSERT(pCalcTime);
+
+		LPIBaseOperation pBaseOperation = pEvent->getRuntimeEvent();
+		ASSERT(pBaseOperation);
+
+		rdo::runtime::LPRDOCalcEventPlan pEventPlan = rdo::Factory<rdo::runtime::RDOCalcEventPlan>::create(pCalcTime);
+		pEventPlan->setSrcInfo(RDOParserSrcInfo(@1, @6, rdo::format(_T("Планирование события %s в момент времени %s"), eventName.c_str(), pCalcTime->srcInfo().src_text().c_str())));
+		ASSERT(pEventPlan);
+		pEvent->setParamList(pParamList);
+		pEventPlan->setEvent(pBaseOperation);
+		pEvent->setInitCalc(pEventPlan);
+	}
+	| RDO_IDENTIF '.' RDO_Seed '=' RDO_INT_CONST
+	{
+		LPRDOSMR pSMR = PARSER->getSMR();
+		ASSERT(pSMR);
+		pSMR->setSeed(PARSER->stack().pop<RDOValue>($2)->src_info(), PARSER->stack().pop<RDOValue>($5)->value().getInt());
+	}
+	| RDO_IDENTIF '.' RDO_Seed '=' error
+	{
+		PARSER->error().error(@4, @5, _T("Ожидается база генератора"));
+	}
+	| RDO_IDENTIF '.' RDO_Seed error
+	{
+		PARSER->error().error(@4, _T("Ожидается '='"));
+	}
+	| error
+	{
+		PARSER->error().error(@1, _T("Неизвестная ошибка"));
+	}
+	| RDO_Terminate_if fun_logic
+	{
+		LPRDOFUNLogic pLogic = PARSER->stack().pop<RDOFUNLogic>($2);
+		ASSERT(pLogic);
+		PARSER->getSMR()->setTerminateIf(pLogic);
+	}
+	| RDO_Terminate_if error
+	{
+		PARSER->error().error(@1, @2, _T("Ошибка логического выражения в терминальном условии"));
+	}
 	;
 
 // --------------------------------------------------------------------------------
@@ -308,6 +380,17 @@ smr_show_mode
 smr_cond
 	: /* empty */
 	| smr_cond smr_multirun
+	| smr_cond RDO_Run_Count '=' RDO_INT_CONST ';'
+	{
+		LPRDOSMR pSMR = PARSER->getSMR();
+		ASSERT(pSMR);
+		rsint count = PARSER->stack().pop<RDOValue>($4)->value().getInt();
+		if (count < 0)
+		{
+			PARSER->error().error(@4, _T("Число прогонов должно быть больше нуля"));
+		}
+		pSMR->setRunCount(ruint(count));
+	}
 	| smr_cond RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')'
 	{
 		tstring    eventName          = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
