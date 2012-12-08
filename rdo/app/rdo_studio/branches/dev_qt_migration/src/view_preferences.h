@@ -58,15 +58,17 @@ public:
 	void setMarginLineNumber    (BOOL m_value);
 };
 
-class ViewPreferences: public QDialog, private Ui::ViewPreferencesDialog
+class ViewPreferences
+	: public QDialog
+	, private Ui::ViewPreferencesDialog
 {
 Q_OBJECT
-
 public:
 	explicit ViewPreferences(PTR(QWidget) pParent = NULL);
 
-private slots:
+	void onUpdateStyleNotify(const rdoEditor::RDOEditorEditStyle& style);
 
+private slots:
 	void okButtonClicked();
 	void cancelButtonClicked();
 	void applyButtonClicked();

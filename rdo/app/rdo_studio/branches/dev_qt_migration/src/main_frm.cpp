@@ -11,6 +11,7 @@
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <limits>
+#include <boost/bind.hpp>
 #include <QtCore/qprocess.h>
 #include <QtGui/qmdisubwindow.h>
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -548,7 +549,16 @@ void RDOStudioMainFrame::OnUpdateModelShowRateStatusBar( CCmdUI *pCmdUI )
 void RDOStudioMainFrame::onViewOptions()
 {
 	ViewPreferences dlg(this);
+
+	studioApp.getEditorEditStyle()->attachSubscriber(
+		boost::bind(&ViewPreferences::onUpdateStyleNotify, &dlg, _1)
+	);
+
 	dlg.exec();
+
+	studioApp.getEditorEditStyle()->detachSubscriber(
+		boost::bind(&ViewPreferences::onUpdateStyleNotify, &dlg, _1)
+	);
 }
 
 void RDOStudioMainFrame::updateAllStyles()

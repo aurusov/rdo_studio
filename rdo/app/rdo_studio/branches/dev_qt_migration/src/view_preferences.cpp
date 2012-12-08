@@ -36,6 +36,10 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	connect(checkBoxMarginLineNum, SIGNAL(stateChanged(int)), this, SLOT(marginLineNumberChanged(int)));
 }
 
+void ViewPreferences::onUpdateStyleNotify(const rdoEditor::RDOEditorEditStyle& style)
+{
+}
+
 void ViewPreferences::okButtonClicked()
 {
 
