@@ -78,6 +78,26 @@ IF(WIN32)
     ENDIF()
 ENDIF(WIN32)
 
+SET(DOC_DIRECTORY ${RDO_BASE_DIRECTORY}/doc)
+
+SET(COMMON_FILES
+    ${DOC_DIRECTORY}/changes.txt
+    ${DOC_DIRECTORY}/configuring.environment.debian.txt
+    ${DOC_DIRECTORY}/install.boost.txt
+    ${DOC_DIRECTORY}/install.doxygen.txt
+    ${DOC_DIRECTORY}/install.mingw.txt
+    ${DOC_DIRECTORY}/install.qt.from.sources.txt
+    ${DOC_DIRECTORY}/rdodoc-src-html.doxyfile
+    ${DOC_DIRECTORY}/todo.txt
+    ${DOC_DIRECTORY}/coding.style.txt
+    ${DOC_DIRECTORY}/configuring.environment.opensuse.txt
+    ${DOC_DIRECTORY}/install.cmake.txt
+    ${DOC_DIRECTORY}/install.graphviz.txt
+    ${DOC_DIRECTORY}/install.qt.from.installer.txt
+    ${DOC_DIRECTORY}/make.project.txt
+    ${DOC_DIRECTORY}/system.test.txt
+    )
+
 SET(BISON_FLEX_DIRECTORY ${RDO_BASE_DIRECTORY}/thirdparty/bison_flex)
 
 # Compile the rdo_common
