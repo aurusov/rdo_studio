@@ -662,58 +662,28 @@ void RDOThreadRepository::beforeModelStart()
 
 void RDOThreadRepository::stopModel()
 {
-	if(m_firstStart == 0)
+	if (m_traceFile.is_open())
 	{
-		m_count = 3;
-		if (m_traceFile.is_open())
-		{
-			m_traceFile.close();
-		}
-		if (m_files[rdoModelObjects::PMV].m_described)
-		{
-			rdo::ofstream results_file;
-			results_file.open(getFullFileName(rdoModelObjects::PMV).c_str(), std::ios::out | std::ios::binary );
-			if (results_file.is_open())
-			{
-				writeModelFilesInfo(results_file);
-				rdo::textstream stream;
-				sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS_INFO, &stream);
-				results_file << std::endl << stream.str() << std::endl;
-				stream.str(_T(""));
-				stream.clear();
-				sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS, &stream);
-				results_file << std::endl << stream.str() << std::endl;
-				++m_firstStart;
-				--m_count;
-			}
-		}
+		m_traceFile.close();
 	}
-	else
+	if (m_files[rdoModelObjects::PMV].m_described)
 	{
-		if (m_traceFile.is_open())
+		m_count++;
+		//char buffer[100];
+		//_itoa (m_count, buffer, 10);
+		tstring buffer = rdo::format("%s", m_count);
+		rdo::ofstream results_file;
+		results_file.open((m_modelPath + buffer + getFileExtName(rdoModelObjects::PMV)).c_str(), std::ios::out | std::ios::binary );
+		if (results_file.is_open())
 		{
-			m_traceFile.close();
-		}
-		if (m_files[rdoModelObjects::PMV].m_described)
-		{
-			rdo::ofstream results_file;
-			results_file.open(getFullFileName(rdoModelObjects::PMV).c_str(), std::ios::app | std::ios::binary | std::ios::ate);
-			if (results_file.is_open())
-			{
-				writeModelFilesInfo(results_file);
-				rdo::textstream stream;
-				sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS_INFO, &stream);
-				results_file << std::endl << stream.str() << std::endl;
-				stream.str(_T(""));
-				stream.clear();
-				sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS, &stream);
-				results_file << std::endl << stream.str() << std::endl;
-				--m_count;
-			}
-		}
-		if ( m_count == 0)
-		{
-			m_firstStart = 0;
+			writeModelFilesInfo(results_file);
+			rdo::textstream stream;
+			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS_INFO, &stream);
+			results_file << std::endl << stream.str() << std::endl;
+			stream.str(_T(""));
+			stream.clear();
+			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_RESULTS, &stream);
+			results_file << std::endl << stream.str() << std::endl;
 		}
 	}
 }
