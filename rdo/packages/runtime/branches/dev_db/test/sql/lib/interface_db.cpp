@@ -24,9 +24,9 @@ void InterfaceDB::insertRow(const QString& tableName, const QString& qRow)
 	queryExec("INSERT INTO " + tableName + " VALUES(" + qRow + ");");
 }
 
-void InterfaceDB::insertRtpRow(const QString& r_t_name, const QString& r_t_perm)
+void InterfaceDB::insertRTPHeader(const QString& rtp_name, bool permanent)
 {
-	insertRow("rtp","DEFAULT,'" + r_t_name + "'," + r_t_perm);
+	insertRow("rtp", "DEFAULT,'" + rtp_name + "'," + (permanent ? "true" : "false"));
 }
 
 void InterfaceDB::insertIntRow()
@@ -39,12 +39,12 @@ void InterfaceDB::insertEnumRow(const QString& defaultValue)
 	insertRow("enum","DEFAULT,'" + defaultValue + "'");
 }
 
-void InterfaceDB::insertParamOfTypeRow(const QString& rtp_name, const QString& param_name, const int type_id)
+void InterfaceDB::insertRTPParam(const QString& rtp_name, const QString& param_name, const int param_type_id)
 {
 	QSqlQuery query;
 	query.exec("select r_t_id from rtp where r_t_name='" + rtp_name + "';");
 	query.next();
-	insertRow("param_of_type","DEFAULT,'" + param_name + "'," + QString::number(query.value(query.record().indexOf("r_t_id")).toInt()) + "," + QString::number(type_id));
+	insertRow("param_of_type","DEFAULT,'" + param_name + "'," + QString::number(query.value(query.record().indexOf("r_t_id")).toInt()) + "," + QString::number(param_type_id));
 }
 
 int InterfaceDB::getEnumTypeID(enumContainer& container, const QString defaultValue)

@@ -45,43 +45,43 @@ int main(int argc, char *argv[])
 	InterfaceDB::enumContainer enumCont;
 
 //------------------------
-	db.insertRtpRow("Парикмахерские","true");
+	db.insertRTPHeader("Парикмахерские", true);
 
 	db.insertIntRow();
 
-	db.insertParamOfTypeRow("Парикмахерские","количество_в_очереди",1);
+	db.insertRTPParam("Парикмахерские","количество_в_очереди",1);
 //------------------------
 
 //------------------------
-	db.insertRtpRow("Клиенты","false");
+	db.insertRTPHeader("Клиенты", false);
 
 	if(!enumCont.empty()) eraseMap(enumCont);
 	enumCont.insert(enumCont.begin(), std::pair<QString,int> ("Мальчик",0));
 	enumCont.insert(enumCont.begin(), std::pair<QString,int> ("Девочка",1));
-	db.insertParamOfTypeRow("Клиенты","тип",db.getEnumTypeID(enumCont,"NULL"));
+	db.insertRTPParam("Клиенты","тип",db.getEnumTypeID(enumCont,"NULL"));
 
 	if(!enumCont.empty()) eraseMap(enumCont);
 	enumCont.insert(enumCont.begin(), std::pair<QString,int> ("Пришел",0));
 	enumCont.insert(enumCont.begin(), std::pair<QString,int> ("Начал_стрижку",1));
-	db.insertParamOfTypeRow("Клиенты","состояние",db.getEnumTypeID(enumCont,"NULL"));
+	db.insertRTPParam("Клиенты","состояние",db.getEnumTypeID(enumCont,"NULL"));
 //------------------------
 
 //------------------------
-	db.insertRtpRow("Парикмахеры","true");
+	db.insertRTPHeader("Парикмахеры", true);
 
 	if(!enumCont.empty()) eraseMap(enumCont);
 	enumCont.insert(enumCont.begin(), std::pair<QString,int> ("Свободен",0));
 	enumCont.insert(enumCont.begin(), std::pair<QString,int> ("Занят",1));
-	db.insertParamOfTypeRow("Парикмахеры","состояние_парикмахера",db.getEnumTypeID(enumCont,"Свободен"));
+	db.insertRTPParam("Парикмахеры","состояние_парикмахера",db.getEnumTypeID(enumCont,"Свободен"));
 
-	db.insertParamOfTypeRow("Парикмахеры","количество_обслуженных",1);
+	db.insertRTPParam("Парикмахеры","количество_обслуженных",1);
 
-	db.insertParamOfTypeRow("Парикмахеры","длительность_min",1);
+	db.insertRTPParam("Парикмахеры","длительность_min",1);
 
-	db.insertParamOfTypeRow("Парикмахеры","длительность_max",1);
+	db.insertRTPParam("Парикмахеры","длительность_max",1);
 
 	if(!enumCont.empty()) eraseMap(enumCont);
-	db.insertParamOfTypeRow("Парикмахеры","тип_клиента",2);
+	db.insertRTPParam("Парикмахеры","тип_клиента",2);
 //------------------------
 
 
