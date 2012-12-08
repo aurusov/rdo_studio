@@ -145,8 +145,6 @@ private:
 	PTR(rdo::service::simulation::RDOThreadSimulator)  m_pSimulator;
 	rbool                                              m_runtimeError;
 	ruint64                                            m_timeStart;
-	ruint                                              m_runCount;
-	ruint                                              m_1;
 
 	RDOThreadRunTime();
 	virtual ~RDOThreadRunTime() //! Чтобы нельзя было удалить через delete
@@ -260,6 +258,7 @@ public:
 	ShowMode getInitialShowMode   () const;
 	int      getInitialFrameNumber() const;
 	double   getInitialShowRate   () const;
+	ruint    getInitialRunCount   () const;
 
 	struct GetList
 	{

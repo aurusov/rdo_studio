@@ -488,7 +488,6 @@ RDOThreadRunTime::RDOThreadRunTime()
 	: RDOThreadMT   (_T("RDOThreadRunTime"))
 	, m_pSimulator  (NULL                  )
 	, m_runtimeError(false                 )
-	, m_runCount    (2                     )
 {
 	rdo::Time time;
 	
@@ -861,7 +860,7 @@ RDOThreadSimulator::RDOThreadSimulator()
 	: RDOThreadMT     (_T("RDOThreadSimulator")      )
 	, m_pThreadRuntime(NULL                          )
 	, m_exitCode      (rdo::simulation::report::EC_OK)
-	, m_runCount      (3                             )
+	, m_runCount      (0                             )
 	, m_1             (0                             )
 {
 	notifies.push_back(RT_STUDIO_MODEL_BUILD              );
@@ -1067,7 +1066,7 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 					if(m_1 == 0)
 					{
 						// место для инициализации кол-ва запусков m_runCount //
-						m_runCount = 3;
+						m_runCount = getInitialRunCount();
 						broadcastMessage(RT_SIMULATOR_MODEL_STOP_OK);
 						closeModel();
 						if (--m_runCount)
@@ -1301,6 +1300,11 @@ ShowMode RDOThreadSimulator::getInitialShowMode() const
 int RDOThreadSimulator::getInitialFrameNumber() const
 {
 	return m_pParser->getSMR()->getFrameNumber();
+}
+
+ruint RDOThreadSimulator::getInitialRunCount() const
+{
+	return m_pParser->getSMR()->getRunCount();
 }
 
 double RDOThreadSimulator::getInitialShowRate() const
