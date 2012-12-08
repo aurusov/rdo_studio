@@ -86,7 +86,7 @@ public:
 	PTR(QProcess)  runQtAssistant      () const;
 	void           callQtAssistant     (CREF(QByteArray) ba);
 
-	rdoEditor::LPRDOEditorEditStyle  m_pEditorEditStyle;
+	CREF(rdoEditor::LPRDOEditorEditStyle) getEditorEditStyle() const;
 
 private:
 #ifdef RDO_MT
@@ -116,6 +116,7 @@ private:
 	PluginNameList                         m_pluginExitNameList;
 	QProcess*                              m_pAssistant;
 	PTR(RDOStudioMainFrame)                m_pMainFrame;
+	rdoEditor::LPRDOEditorEditStyle        m_pEditorEditStyle;
 
 	void setupFileAssociation();
 	void updateReopenSubMenu () const;

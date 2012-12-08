@@ -1090,3 +1090,9 @@ BOOL RDOStudioApp::OnIdle(LONG lCount)
 	}
 #endif
 }
+
+CREF(rdoEditor::LPRDOEditorEditStyle) RDOStudioApp::getEditorEditStyle() const
+{
+	ASSERT(m_pEditorEditStyle);
+	return m_pEditorEditStyle;
+}
