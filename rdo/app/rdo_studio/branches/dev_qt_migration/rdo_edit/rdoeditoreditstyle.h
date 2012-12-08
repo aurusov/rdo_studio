@@ -128,13 +128,23 @@ public:
 
 	RDOEditorEditAutoComplete* autoComplete;
 	RDOEditorEditMargin*       margin;
+
 	template <class CallbackFun>
-	void attachSubscriber(const CallbackFun& sub);
+	void attachSubscriber(const CallbackFun& subscriber)
+	{
+		m_subscriberList.connect(subscriber);
+		subscriber(*this);
+	}
+
 	template <class CallbackFun>
-	void detachSubscriber(const CallbackFun& sub);
+	void detachSubscriber(const CallbackFun& subscriber)
+	{
+		m_subscriberList.disconnect(subscriber);
+	}
 
 private:
-	boost::signal<void (const RDOEditorEditStyle&)> subscriber;
+	typedef boost::signal<void (const RDOEditorEditStyle&)> SubscriberList;
+	SubscriberList m_subscriberList;
 };
 
 DECLARE_POINTER(RDOEditorEditStyle)

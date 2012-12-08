@@ -373,16 +373,3 @@ rbool RDOEditorEditStyle::save() const
 	}
 	return false;
 }
-
-template <class CallbackFun>
-void RDOEditorEditStyle::attachSubscriber(const CallbackFun& sub)
-{
-	subscriber.connect(sub);
-	sub(*this);
-}
-
-template <class CallbackFun>
-void RDOEditorEditStyle::detachSubscriber(const CallbackFun& sub)
-{
-	subscriber.disconnect(sub);
-}
