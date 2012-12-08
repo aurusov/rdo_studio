@@ -8,10 +8,9 @@
   \indent    4T
 */
 
-#ifndef _LIB_RUNTIME_SQL_GENERAL_H_
-#define _LIB_RUNTIME_SQL_GENERAL_H_
+#ifndef _SIMULATOR_RUNTIME_SQL_GENERAL_DB_H_
+#define _SIMULATOR_RUNTIME_SQL_GENERAL_DB_H_
 
-// ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtSql\QtSql>
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -48,4 +47,4 @@ private:
 
 };
 
-#endif // _LIB_RUNTIME_SQL_GENERAL_H_
+#endif // _SIMULATOR_RUNTIME_SQL_GENERAL_DB_H_
