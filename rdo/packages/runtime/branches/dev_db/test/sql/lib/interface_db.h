@@ -8,10 +8,9 @@
   \indent    4T
 */
 
-#ifndef _LIB_RUNTIME_SQL_INTERFACE_H_
-#define _LIB_RUNTIME_SQL_INTERFACE_H_
+#ifndef _SIMULATOR_RUNTIME_SQL_INTERFACE_DB_H_
+#define _SIMULATOR_RUNTIME_SQL_INTERFACE_DB_H_
 
-// ---------------------------------------------------------------------------- PCH
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtSql\QtSql>
 #include <map>
@@ -19,7 +18,7 @@
 #include "simulator\runtime\test\sql\lib\general_db.h"
 // --------------------------------------------------------------------------------
 
-class InterfaceDB : GeneralDB
+class InterfaceDB: GeneralDB
 {
 public:
 	void insertRow           (const QString& tableName, const QString& qRow);
@@ -32,10 +31,7 @@ public:
 
 	int  getEnumTypeID       (enumContainer& container, const QString defaultValue = "NULL");
 
-
-
 private:
-
 };
 
-#endif // _LIB_RUNTIME_SQL_INTERFACE_H_
+#endif // _SIMULATOR_RUNTIME_SQL_INTERFACE_DB_H_
