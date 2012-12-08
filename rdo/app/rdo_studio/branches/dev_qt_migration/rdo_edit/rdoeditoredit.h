@@ -45,9 +45,6 @@ protected:
 	void commentSelection() const;
 	void completeWord();
 
-	void onBufferAppend(ruint bufferID);
-	void onBufferEdit  (ruint bufferID);
-
 	rbool canClearErrorLine;
 	void  clearErrorLine();
 	rbool hasErrorLine  () const;
