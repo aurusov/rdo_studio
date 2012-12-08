@@ -218,7 +218,6 @@ private:
 	ShowMode  m_showMode; //! current show mode
 	double    m_showRate; //! current show mode
 	ruint     m_runCount;
-	ruint     m_1;
 
 	rdo::textstream m_resultString;
 	rdo::textstream m_resultInfoString;
@@ -238,9 +237,10 @@ protected:
 
 	virtual void proc(REF(RDOMessageInfo) msg);
 
-	rbool parseModel();
-	void  runModel  ();
-	void  stopModel ();
+	rbool parseModel  ();
+	rbool parseModel_i();
+	void  runModel    ();
+	void  stopModel   ();
 
 	typedef std::vector<rdo::simulation::report::FileMessage> SyntaxMessageList;
 	SyntaxMessageList getErrors();
