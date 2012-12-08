@@ -18,7 +18,7 @@
 #include "simulator\runtime\test\sql\lib\general_db.h"
 // --------------------------------------------------------------------------------
 
-class InterfaceDB: GeneralDB
+class InterfaceDB: public GeneralDB
 {
 public:
 	void insertRow           (const QString& tableName, const QString& qRow);
