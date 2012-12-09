@@ -149,6 +149,14 @@ private:
 	template <StatusBar N>
 	PTR(QLabel) getStatusBarLabel(StatusBarType<N>);
 
+public:
+	void onUpdateCoord        ();
+	void onUpdateModify       ();
+	void onUpdateModelTime    (float time);
+	void onUpdateModelRuntype ();
+	void onUpdateModelSpeed   ();
+	void onUpdateModelShowRate();
+
 private slots:
 	void onFileNew    ();
 	void onFileOpen   ();
@@ -157,11 +165,11 @@ private slots:
 	void onFileSaveAs ();
 	void onFileSaveAll();
 
-	void onModelBuild();
+	void onModelBuild ();
 public slots:
-	void onModelRun  ();
+	void onModelRun   ();
 private slots:
-	void onModelStop ();
+	void onModelStop  ();
 
 	void onViewOptions();
 

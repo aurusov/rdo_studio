@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/bind.hpp>
 #include <limits>
 #include <QtGui/qmessagebox.h>
 #include <QtGui/qfiledialog.h>
@@ -23,6 +24,7 @@
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/src/model/view.h"
 #include "app/rdo_studio_mfc/src/thread.h"
+#include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/src/frame/view.h"
 #include "app/rdo_studio_mfc/src/plugins.h"
@@ -83,6 +85,8 @@ RDOStudioModel::RDOStudioModel()
 	, m_name             ("")
 {
 	model = this;
+
+	m_timeNowSignal.connect(boost::bind(&RDOStudioMainFrame::onUpdateModelTime, static_cast<RDOStudioMainFrame*>(studioApp.getIMainWnd()), _1));
 
 	ModelTemplate modelTemplate;
 	modelTemplate[ rdoModelObjects::SMR ] = ModelTemplateItem(IDR_MODEL_TMP0_SMR, 0);
@@ -1263,6 +1267,7 @@ void RDOStudioModel::setShowRate(double value)
 void RDOStudioModel::update()
 {
 	sendMessage(kernel->runtime(), RT_RUNTIME_GET_TIMENOW, &m_timeNow);
+	m_timeNowSignal(m_timeNow);
 	rdo::runtime::RunTimeMode rm;
 	sendMessage(kernel->runtime(), RT_RUNTIME_GET_MODE, &rm);
 	if (rm != m_runtimeMode)

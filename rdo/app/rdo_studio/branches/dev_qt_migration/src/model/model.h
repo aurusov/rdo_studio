@@ -11,6 +11,7 @@
 #define _RDO_STUDIO_MFC_MODEL_MODEL_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/signal.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdointerface.h"
 #include "kernel/rdothread.h"
@@ -84,6 +85,8 @@ private:
 	RDOStudioModelView*                    m_pModelView;
 	RPViewQt*                              m_pModelProcView;
 	tstring                                m_name;
+
+	boost::signal<void (float)>            m_timeNowSignal;
 
 	void  updateFrmDescribed      ();
 	void  newModelFromRepository  ();

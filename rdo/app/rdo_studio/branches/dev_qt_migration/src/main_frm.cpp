@@ -418,6 +418,31 @@ void RDOStudioMainFrame::onModelStop()
 	model->stopModel();
 }
 
+void RDOStudioMainFrame::onUpdateCoord()
+{
+}
+
+void RDOStudioMainFrame::onUpdateModify()
+{
+}
+
+void RDOStudioMainFrame::onUpdateModelTime(float time)
+{
+	updateStatusBar<SB_MODEL_TIME>(QString(rdo::format("Время: %f", time).c_str()));
+}
+
+void RDOStudioMainFrame::onUpdateModelRuntype()
+{
+}
+
+void RDOStudioMainFrame::onUpdateModelSpeed()
+{
+}
+
+void RDOStudioMainFrame::onUpdateModelShowRate()
+{
+}
+
 void RDOStudioMainFrame::OnViewFileToolbar()
 {
 	//! @todo qt
@@ -769,7 +794,6 @@ void RDOStudioMainFrame::timerEvent(QTimerEvent* event)
 	{
 		update_stop();
 		model->update();
-		updateStatusBar<SB_MODEL_TIME>(QString(rdo::format( "Время: %f", model->getTimeNow() ).c_str()));
 		update_start();
 	}
 }
