@@ -19,18 +19,18 @@ mouse_event_xml_reader::~mouse_event_xml_reader()
 {
 }
 
-PTR(event) mouse_event_xml_reader::read(CREF(boost::property_tree::ptree::value_type) value)
+PTR(event) mouse_event_xml_reader::read(CREF(boost::property_tree::ptree) pt)
 {
-    tstring name = value.second.get<tstring>("<xmlattr>.name", "");
-    double time  = value.second.get<double>("<xmlattr>.time", 0.0);
+	tstring name = pt.get<tstring>("<xmlattr>.name", "");
+	double time  = pt.get<double>("<xmlattr>.time", 0.0);
 
-    boost::property_tree::ptree const& param = value.second.get_child("param");
+	boost::property_tree::ptree const& param = pt.get_child("param");
 
-    int button = param.get<int>("<xmlattr>.button");
-    int x = param.get<int>("<xmlattr>.x");
-    int y = param.get<int>("<xmlattr>.y");
+	int button = param.get<int>("<xmlattr>.button");
+	int x = param.get<int>("<xmlattr>.x");
+	int y = param.get<int>("<xmlattr>.y");
 
-    return new mouse_event(name, time, static_cast<mouse_event::buttons>(button), x, y);
+	return new mouse_event(name, time, static_cast<mouse_event::buttons>(button), x, y);
 }
 
 CLOSE_RDO_NAMESPACE

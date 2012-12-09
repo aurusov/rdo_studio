@@ -27,8 +27,8 @@ class StudioConsoleController: public RDOThread
 public:
 	typedef  std::list<tstring>  StringList;
 
-    StudioConsoleController();
-    virtual ~StudioConsoleController();
+	StudioConsoleController();
+	virtual ~StudioConsoleController();
 
 	rbool finished              () const;
 	rbool converted             () const;

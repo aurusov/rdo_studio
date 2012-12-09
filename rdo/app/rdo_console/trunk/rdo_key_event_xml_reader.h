@@ -20,9 +20,9 @@ OPEN_RDO_NAMESPACE
 class key_event_xml_reader : public event_xml_reader
 {
 public:
-    virtual ~key_event_xml_reader();
+	virtual ~key_event_xml_reader();
 
-    virtual PTR(event) read(CREF(boost::property_tree::ptree::value_type) value);
+	virtual PTR(event) read(CREF(boost::property_tree::ptree) pt);
 };
 
 CLOSE_RDO_NAMESPACE

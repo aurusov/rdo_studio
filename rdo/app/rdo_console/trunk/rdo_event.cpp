@@ -15,7 +15,7 @@
 OPEN_RDO_NAMESPACE
 
 event::event(CREF(tstring) name, double time, types type) :
-    m_name(name), m_time(time), m_type(type)
+	m_name(name), m_time(time), m_type(type)
 {
 }
 
@@ -25,27 +25,27 @@ event::~event()
 
 void event::setName(CREF(tstring) name)
 {
-    m_name = name;
+	m_name = name;
 }
 
 void event::setTime(double time)
 {
-    m_time =  time;
+	m_time =  time;
 }
 
 tstring event::getName() const
 {
-    return m_name;
+	return m_name;
 }
 
 double event::getTime() const
 {
-    return m_time;
+	return m_time;
 }
 
 event::types event::getType() const
 {
-    return m_type;
+	return m_type;
 }
 
 bool operator< (const event& left, const event& right)

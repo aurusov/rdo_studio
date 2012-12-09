@@ -21,29 +21,29 @@ OPEN_RDO_NAMESPACE
 class event
 {
 public:
-    enum types {
-        none,
-        key,
-        mouse
-    };
+	enum types {
+		none,
+		key,
+		mouse
+	};
 
 public:
-    event(CREF(tstring) name, double time, types type = none);
-    virtual ~event();
+	event(CREF(tstring) name, double time, types type = none);
+	virtual ~event();
 
-    void setName(CREF(tstring) name);
-    void setTime(double time);
+	void setName(CREF(tstring) name);
+	void setTime(double time);
 
-    tstring getName() const;
-    double  getTime() const;
-    types   getType() const;
+	tstring getName() const;
+	double  getTime() const;
+	types   getType() const;
 
-    friend bool operator< (CREF(event) left, CREF(event) right);
+	friend bool operator< (CREF(event) left, CREF(event) right);
 
 private:
 	tstring m_name;
 	double  m_time;
-    types   m_type;
+	types   m_type;
 };
 
 CLOSE_RDO_NAMESPACE
