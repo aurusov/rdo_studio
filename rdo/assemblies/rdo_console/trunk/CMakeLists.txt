@@ -98,6 +98,13 @@ SET(COMMON_FILES
     ${DOC_DIRECTORY}/system.test.txt
     )
 
+SET(SCRIPTS_DIRECTORY ${RDO_BASE_DIRECTORY}/scripts)
+
+SET(SCRIPT_FILES
+    ${SCRIPTS_DIRECTORY}/python/executor_of_system_tests.py
+    ${SCRIPTS_DIRECTORY}/statistics/statistics.sh
+    )
+
 SET(BISON_FLEX_DIRECTORY ${RDO_BASE_DIRECTORY}/thirdparty/bison_flex)
 
 # Compile the rdo_common
