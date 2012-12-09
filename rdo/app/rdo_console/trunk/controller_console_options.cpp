@@ -17,10 +17,12 @@
 #include "app/rdo_console/controller_console_options_config.h"
 // --------------------------------------------------------------------------------
 
+using namespace rdo;
+
 const tstring program_description = PROGRAM_NAME + NOP_STRING + VERSION_COMMAND_SHORT +
 PROGRAM_VERSION + NOP_STRING + SYSTEM_OS + NOP_STRING + SYSTEM_ARCHITECTURES + NOP_STRING + RDO_SITE;
 
-RDOControllerConsoleOptions::RDOControllerConsoleOptions(int argc, char *argv[]) :
+ControllerConsoleOptions::ControllerConsoleOptions(int argc, char *argv[]) :
 	m_help(false),
 	m_convert(false)
 {
@@ -51,11 +53,11 @@ RDOControllerConsoleOptions::RDOControllerConsoleOptions(int argc, char *argv[])
 	}
 }
 
-RDOControllerConsoleOptions::~RDOControllerConsoleOptions()
+ControllerConsoleOptions::~ControllerConsoleOptions()
 {	
 }
 
-void RDOControllerConsoleOptions::parseOptions()
+void ControllerConsoleOptions::parseOptions()
 {
 	if (m_variables.empty() || m_variables.count(HELP_COMMAND) && 
 			!m_variables.count(LANGUAGE_COMMAND) && !m_variables.count(VERSION_COMMAND))
@@ -79,7 +81,7 @@ void RDOControllerConsoleOptions::parseOptions()
 	}
 }
 
-const tstring RDOControllerConsoleOptions::getModelFileName()
+const tstring ControllerConsoleOptions::getModelFileName()
 {
 	if(m_variables.count(MODEL_COMMAND))
 	{
@@ -89,7 +91,7 @@ const tstring RDOControllerConsoleOptions::getModelFileName()
 	return _T("");
 }
 
-const tstring RDOControllerConsoleOptions::getEventsFileName()
+const tstring ControllerConsoleOptions::getEventsFileName()
 {
     if(m_variables.count(EVENTS_COMMAND))
     {
@@ -99,17 +101,17 @@ const tstring RDOControllerConsoleOptions::getEventsFileName()
     return _T("");
 }
 
-rbool RDOControllerConsoleOptions::helpQuery()
+rbool ControllerConsoleOptions::helpQuery()
 {
 	return m_help;
 }
 
-rbool RDOControllerConsoleOptions::convertQuery()
+rbool ControllerConsoleOptions::convertQuery()
 {
 	return m_convert;
 }
 
-void RDOControllerConsoleOptions::createGeneralOptions(REF(po::options_description) options)
+void ControllerConsoleOptions::createGeneralOptions(REF(po::options_description) options)
 {
 	options.add_options()
 			((MODEL_COMMAND + COMMA_STRING + MODEL_COMMAND_SHORT).c_str(), po::value<tstring>(), MODEL_COMMENT.c_str())
@@ -119,13 +121,13 @@ void RDOControllerConsoleOptions::createGeneralOptions(REF(po::options_descripti
 			((LANGUAGE_COMMAND + COMMA_STRING + LANGUAGE_COMMAND_SHORT).c_str(), LANGUAGE_COMMENT.c_str());
 }
 
-void RDOControllerConsoleOptions::createConvertorOptions(REF(po::options_description) options)
+void ControllerConsoleOptions::createConvertorOptions(REF(po::options_description) options)
 {
 	options.add_options()
 		((CONVERTOR_COMMAND + COMMA_STRING + CONVERTOR_COMMAND_SHORT).c_str(), CONVERTOR_COMMENT.c_str());
 }
 
-void RDOControllerConsoleOptions::createAdditionalOptions(REF(po::options_description) options)
+void ControllerConsoleOptions::createAdditionalOptions(REF(po::options_description) options)
 {
 	options.add_options()
 			(AUTO_RUN_COMMAND.c_str(), AUTO_RUN_COMMENT.c_str())

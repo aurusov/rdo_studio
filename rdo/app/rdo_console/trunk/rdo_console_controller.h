@@ -20,18 +20,23 @@
 #include "simulator/report/file_message.h"
 // --------------------------------------------------------------------------------
 
-class RDOStudioConsoleController: public RDOThread
+OPEN_RDO_NAMESPACE
+
+class StudioConsoleController: public RDOThread
 {
 public:
 	typedef  std::list<tstring>  StringList;
 
-	RDOStudioConsoleController();
-	virtual ~RDOStudioConsoleController();
+    StudioConsoleController();
+    virtual ~StudioConsoleController();
+
+	rbool finished              () const;
+	rbool converted             () const;
+	rbool simulationSuccessfully();
 
 	rbool buildError            () const;
-	rbool finished              () const;
 	rbool runtimeError          () const;
-	rbool simulationSuccessfully();
+	rbool convertorError        () const;
 
 	void getBuildLogList(StringList& list) const;
 
@@ -52,12 +57,16 @@ private:
 	};
 
 	SimulatorState       m_state;
+	rbool                m_converted;
 	rbool                m_buildError; 
 	rbool                m_runtimeError;
+	rbool                m_convertorError;
 	RDOExitCode          m_exitCode;
 	StringList           m_buildLogList;
 
 	mutable boost::mutex m_stateMutex;
 };
+
+CLOSE_RDO_NAMESPACE
 
 #endif // _RDO_STUDIO_CONSOLE_CONTROLLER_H_

@@ -1,15 +1,16 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      app/rdo_console/main.cpp
-  \author    Пройдаков Евгений (lord.tiran@gmail.com)
-  \date      26.10.2011
-  \brief     Консольная версия RDO
-  \indent    4T
+  \file     app/rdo_console/main.cpp
+  \author   Пройдаков Евгений (lord.tiran@gmail.com)
+  \date     26.10.2011
+  \brief    Консольная версия RDO
+  \indent   4T
 */
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <iostream>
 
+#include <boost/thread.hpp>
 #include <boost/foreach.hpp>
 #include <boost/date_time.hpp>
 #include <boost/filesystem.hpp>
@@ -45,16 +46,16 @@ int main(int argc, PTR(char) argv[])
 {
 	rdo::setup_locale();
 
-    boost::posix_time::ptime startTime = boost::posix_time::microsec_clock::local_time();
+	boost::posix_time::ptime startTime = boost::posix_time::microsec_clock::local_time();
 
-	RDOControllerConsoleOptions options_controller(argc, argv);
+	rdo::ControllerConsoleOptions options_controller(argc, argv);
 	options_controller.parseOptions();
 
 	tstring model_file_name = options_controller.getModelFileName();
 	rbool model_exist = fs::exists(model_file_name);
 
-    tstring events_file_name = options_controller.getEventsFileName();
-    rbool event_exist = fs::exists(events_file_name);
+	tstring events_file_name = options_controller.getEventsFileName();
+	rbool event_exist = fs::exists(events_file_name);
 
 	if (options_controller.helpQuery())
 	{
@@ -65,37 +66,40 @@ int main(int argc, PTR(char) argv[])
 		std::cerr << _T("Model file does not exist") << std::endl;
 		return TERMINATION_WITH_AN_ERROR_NO_MODEL;
 	}
-    else if (!event_exist && !events_file_name.empty())
-    {
-        std::cerr << _T("Events file does not exist") << std::endl;
-        return TERMINATION_WITH_AN_ERROR_NO_EVENTS;
-    }
+	else if (!event_exist && !events_file_name.empty())
+	{
+		std::cerr << _T("Events file does not exist") << std::endl;
+		return TERMINATION_WITH_AN_ERROR_NO_EVENTS;
+	}
 
-    // read events
-    event_list list;
-    if(event_exist) {
-        std::ifstream stream(events_file_name.c_str(), std::ios::out);
-        read_events(stream, list);
-        list.sort();
-    }
+	// read events
+	event_list list;
+	if(event_exist) {
+		std::ifstream stream(events_file_name.c_str(), std::ios::out);
+		read_events(stream, list);
+		list.sort();
+	}
 
 	// simulation
 	RDOKernel::init();
 	new rdo::service::simulation::RDOThreadSimulator();
 	new rdo::repository::RDOThreadRepository();
 
-	PTR(RDOStudioConsoleController) pAppController = new RDOStudioConsoleController();
-	ASSERT(pAppController);
+	boost::shared_ptr<rdo::StudioConsoleController> pAppController = boost::shared_ptr<rdo::StudioConsoleController>(new rdo::StudioConsoleController());
+	ASSERT(pAppController.get());
 
 	rdo::repository::RDOThreadRepository::OpenFile data(model_file_name);
 	pAppController->broadcastMessage(RDOThread::RT_STUDIO_MODEL_OPEN, &data);
 
 	if(options_controller.convertQuery())
 	{
-		tstring string;
-		pAppController->broadcastMessage(RDOThread::RT_DEBUG_STRING, &string);
-		std::cout << string << std::endl;
-		if(string == _T("Ошибка конвертора"))
+		bool converted = false;
+		while(!converted)
+		{
+			converted = pAppController->converted();
+			boost::this_thread::sleep(boost::posix_time::milliseconds(500));
+		}
+		if(pAppController->convertorError())
 		{
 			exit(TERMINATION_WITH_AN_ERROR_CONVERTOR_ERROR);
 		}
@@ -106,8 +110,8 @@ int main(int argc, PTR(char) argv[])
 
 	bool simulationSuccessfully = false;
 
-    boost::filesystem::path path(model_file_name);
-    tstring model_dir = path.parent_path().string();
+	boost::filesystem::path path(model_file_name);
+	tstring model_dir = path.parent_path().string();
 
 	bool buildError = pAppController->buildError();
 	if (buildError)
@@ -119,7 +123,7 @@ int main(int argc, PTR(char) argv[])
 		boost::filesystem::remove(fileName);
 		std::ofstream stream(fileName.c_str(), std::ios::out);
 
-        write_build_log(stream, buildList);
+			write_build_log(stream, buildList);
 
 		std::cerr << _T("Build model error") << std::endl;
 		g_exitCode = TERMINATION_WITH_AN_ERROR_PARSE_MODEL_ERROR;
@@ -138,25 +142,25 @@ int main(int argc, PTR(char) argv[])
 				g_exitCode = TERMINATION_WITH_AN_ERROR_RUNTIME_ERROR;
 			}
 
-            if(!list.empty())
-            {
-                double runtime_time = 0;
-                pAppController->broadcastMessage(RDOThread::RT_RUNTIME_GET_TIMENOW, &runtime_time);
+			if(!list.empty())
+			{
+				double runtime_time = 0;
+				pAppController->broadcastMessage(RDOThread::RT_RUNTIME_GET_TIMENOW, &runtime_time);
 
-                event_list::iterator it = list.begin();
-                if((*it)->getTime() < runtime_time)
-                {
-                    std::cout << "push event : " << "time : " << (*it)->getTime() << "  |  name : " << (*it)->getName() << std::endl;
-                    list.pop_front();
+				event_list::iterator it = list.begin();
+				if((*it)->getTime() < runtime_time)
+				{
+					std::cout << "push event : " << "time : " << (*it)->getTime() << "  |  name : " << (*it)->getName() << std::endl;
+					list.pop_front();
 
-                    ruint code = VK_SPACE;
+					ruint code = VK_SPACE;
 
-                    pAppController->broadcastMessage(RDOThread::RT_RUNTIME_KEY_DOWN, &code);
-                    pAppController->broadcastMessage(RDOThread::RT_RUNTIME_KEY_UP,   &code);
-                    pAppController->broadcastMessage(RDOThread::RT_RUNTIME_KEY_DOWN, &code);
-                    pAppController->broadcastMessage(RDOThread::RT_RUNTIME_KEY_UP,   &code);
-                }
-            }
+					pAppController->broadcastMessage(RDOThread::RT_RUNTIME_KEY_DOWN, &code);
+					pAppController->broadcastMessage(RDOThread::RT_RUNTIME_KEY_UP,   &code);
+					pAppController->broadcastMessage(RDOThread::RT_RUNTIME_KEY_DOWN, &code);
+					pAppController->broadcastMessage(RDOThread::RT_RUNTIME_KEY_UP,   &code);
+				}
+			}
 		}
 		simulationSuccessfully = pAppController->simulationSuccessfully();
 

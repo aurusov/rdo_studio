@@ -22,13 +22,15 @@
 #include "utils/rdocommon.h"
 // --------------------------------------------------------------------------------
 
+OPEN_RDO_NAMESPACE
+
 namespace po = boost::program_options;
 
-class RDOControllerConsoleOptions
+class ControllerConsoleOptions
 {
 public:
-	RDOControllerConsoleOptions(int argc, char *argv[]);
-	~RDOControllerConsoleOptions();
+	ControllerConsoleOptions(int argc, char *argv[]);
+	~ControllerConsoleOptions();
 	
 	void parseOptions();
 
@@ -50,6 +52,8 @@ private:
 	rbool                   m_help;
 	rbool                   m_convert;
 };
+
+CLOSE_RDO_NAMESPACE
 
 #ifdef COMPILER_VISUAL_STUDIO
 #	pragma warning (default:4512)
