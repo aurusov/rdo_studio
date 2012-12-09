@@ -136,6 +136,9 @@ public:
 		RT_RUNTIME_KEY_DOWN,                   // param = scanCode:uint*
 		RT_RUNTIME_KEY_UP,                     // param = scanCode:uint*
 		RT_RUNTIME_FRAME_AREA_DOWN,            // param = area_name:tstring*
+		RT_CONVERTOR_NONE,
+		RT_CONVERTOR_OK,
+		RT_CONVERTOR_ERROR,
 		RT_CODECOMP_GET_DATA,                  // param = rdo::service::simulation::RDOThreadCodeComp::GetCodeComp* = { file_type:rdoModelObjects::RDOFileType, pos_x:int, pos_y:int, result:std::list< tstring >& }
 		RT_DEBUG_STRING,                       // param = tstring*
 		RT_RESULT_STRING,                      // param = tstring*
@@ -210,6 +213,9 @@ public:
 			case RT_RUNTIME_KEY_DOWN                  : return _T("RT_RUNTIME_KEY_DOWN");
 			case RT_RUNTIME_KEY_UP                    : return _T("RT_RUNTIME_KEY_UP");
 			case RT_RUNTIME_FRAME_AREA_DOWN           : return _T("RT_RUNTIME_FRAME_AREA_DOWN");
+			case RT_CONVERTOR_NONE                    : return _T("RT_CONVERTOR_NONE");
+			case RT_CONVERTOR_OK                      : return _T("RT_CONVERTOR_OK");
+			case RT_CONVERTOR_ERROR                   : return _T("RT_CONVERTOR_ERROR");
 			case RT_CODECOMP_GET_DATA                 : return _T("RT_CODECOMP_GET_DATA");
 			case RT_DEBUG_STRING                      : return _T("RT_DEBUG_STRING");
 			case RT_RESULT_STRING                     : return _T("RT_RESULT_STRING");
