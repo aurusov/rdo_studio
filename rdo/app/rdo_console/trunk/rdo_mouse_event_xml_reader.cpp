@@ -21,11 +21,14 @@ mouse_event_xml_reader::~mouse_event_xml_reader()
 
 PTR(event) mouse_event_xml_reader::read(CREF(boost::property_tree::ptree::value_type) value)
 {
-    tstring name = value.second.get<tstring>("<xmlattr>.name", "");;
-    double time  = value.second.get<double>("time");
-    int button = value.second.get<int>("button");
-    int x = value.second.get<int>("x");
-    int y = value.second.get<int>("y");
+    tstring name = value.second.get<tstring>("<xmlattr>.name", "");
+    double time  = value.second.get<double>("<xmlattr>.time", 0.0);
+
+    boost::property_tree::ptree const& param = value.second.get_child("param");
+
+    int button = param.get<int>("<xmlattr>.button");
+    int x = param.get<int>("<xmlattr>.x");
+    int y = param.get<int>("<xmlattr>.y");
 
     return new mouse_event(name, time, static_cast<mouse_event::buttons>(button), x, y);
 }

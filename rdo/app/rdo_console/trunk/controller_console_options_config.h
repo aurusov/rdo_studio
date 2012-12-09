@@ -31,7 +31,7 @@ const tstring SYSTEM_ARCHITECTURES = _T("x86");
 
 // Input param constant
 const tstring MODEL_COMMAND                 = _T("input");
-const tstring EVENTS_COMMAND                = _T("events");
+const tstring SCRIPT_COMMAND                = _T("script");
 const tstring HELP_COMMAND                  = _T("help");
 const tstring VERSION_COMMAND               = _T("version");
 const tstring LANGUAGE_COMMAND              = _T("language");
@@ -44,7 +44,7 @@ const tstring PLUGIN_START_COMMAND          = _T("pluginstart");
 const tstring PLUGIN_AUTO_EXIT_COMMAND      = _T("pluginautoexit");
 
 const tstring MODEL_COMMAND_SHORT           = _T("i");
-const tstring EVENTS_COMMAND_SHORT          = _T("e");
+const tstring SCRIPT_COMMAND_SHORT          = _T("s");
 const tstring HELP_COMMAND_SHORT            = _T("h");
 const tstring VERSION_COMMAND_SHORT         = _T("v");
 const tstring LANGUAGE_COMMAND_SHORT        = _T("l");
@@ -52,7 +52,7 @@ const tstring CONVERTOR_COMMAND_SHORT       = _T("c");
 
 // Input param comment
 const tstring MODEL_COMMENT                 = _T(": path to model file");
-const tstring EVENTS_COMMENT                = _T(": path to events file");
+const tstring SCRIPT_COMMENT                = _T(": path to script file");
 const tstring HELP_COMMENT                  = _T(": display help message");
 const tstring VERSION_COMMENT               = _T(": display program version");
 const tstring LANGUAGE_COMMENT              = _T(": display language version of rdo");
@@ -66,7 +66,7 @@ const tstring PLUGIN_START_COMMENT          = _T(": start plugin");
 const tstring PLUGIN_AUTO_EXIT_COMMENT      = _T(": plugin auto exit");
 
 // Auxiliary constants
-const tstring PROGRAM_VERSION               = _T("1.0.5");
+const tstring PROGRAM_VERSION               = _T("1.0.6");
 const tstring RDO_LANGUAGE_VERSION          = _T("2.0");
 
 const tstring RDO_SITE                      = _T("( http://rdo.rk9.bmstu.ru )");

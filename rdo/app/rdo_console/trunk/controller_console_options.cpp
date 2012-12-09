@@ -91,14 +91,14 @@ const tstring ControllerConsoleOptions::getModelFileName()
 	return _T("");
 }
 
-const tstring ControllerConsoleOptions::getEventsFileName()
+const tstring ControllerConsoleOptions::getScriptFileName()
 {
-    if(m_variables.count(EVENTS_COMMAND))
-    {
-        tstring eventsFileName = m_variables[EVENTS_COMMAND].as<tstring>();
-        return eventsFileName;
-    }
-    return _T("");
+	if(m_variables.count(SCRIPT_COMMAND))
+	{
+		tstring eventsFileName = m_variables[SCRIPT_COMMAND].as<tstring>();
+		return eventsFileName;
+	}
+	return _T("");
 }
 
 rbool ControllerConsoleOptions::helpQuery()
@@ -115,10 +115,10 @@ void ControllerConsoleOptions::createGeneralOptions(REF(po::options_description)
 {
 	options.add_options()
 			((MODEL_COMMAND + COMMA_STRING + MODEL_COMMAND_SHORT).c_str(), po::value<tstring>(), MODEL_COMMENT.c_str())
-            ((EVENTS_COMMAND + COMMA_STRING + EVENTS_COMMAND_SHORT).c_str(), po::value<tstring>(), EVENTS_COMMENT.c_str())
+			((SCRIPT_COMMAND + COMMA_STRING + SCRIPT_COMMAND_SHORT).c_str(), po::value<tstring>(), SCRIPT_COMMENT.c_str())
+			((LANGUAGE_COMMAND + COMMA_STRING + LANGUAGE_COMMAND_SHORT).c_str(), LANGUAGE_COMMENT.c_str())
 			((VERSION_COMMAND + COMMA_STRING + VERSION_COMMAND_SHORT).c_str(), VERSION_COMMENT.c_str())
-			((HELP_COMMAND + COMMA_STRING + HELP_COMMAND_SHORT).c_str(), HELP_COMMENT.c_str())
-			((LANGUAGE_COMMAND + COMMA_STRING + LANGUAGE_COMMAND_SHORT).c_str(), LANGUAGE_COMMENT.c_str());
+			((HELP_COMMAND + COMMA_STRING + HELP_COMMAND_SHORT).c_str(), HELP_COMMENT.c_str());
 }
 
 void ControllerConsoleOptions::createConvertorOptions(REF(po::options_description) options)

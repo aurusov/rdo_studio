@@ -35,7 +35,7 @@ public:
 	void parseOptions();
 
 	const tstring getModelFileName();
-	const tstring getEventsFileName();
+	const tstring getScriptFileName();
 	
 	rbool helpQuery();
 	rbool convertQuery();

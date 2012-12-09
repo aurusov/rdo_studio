@@ -54,7 +54,7 @@ int main(int argc, PTR(char) argv[])
 	tstring model_file_name = options_controller.getModelFileName();
 	rbool model_exist = fs::exists(model_file_name);
 
-	tstring events_file_name = options_controller.getEventsFileName();
+	tstring events_file_name = options_controller.getScriptFileName();
 	rbool event_exist = fs::exists(events_file_name);
 
 	if (options_controller.helpQuery())

@@ -36,7 +36,7 @@ void event_xml_parser::parse(REF(std::istream) stream, REF(event_list) list)
     boost::property_tree::ptree pt;
     boost::property_tree::read_xml(stream, pt);
 
-    BOOST_FOREACH( boost::property_tree::ptree::value_type const& v, pt.get_child("events") )
+    BOOST_FOREACH( boost::property_tree::ptree::value_type const& v, pt.get_child("rscript.events") )
     {
         tstring event_type = v.second.get<tstring>("<xmlattr>.type", "");
         parsers::iterator it = m_parsers.find(event_type);
