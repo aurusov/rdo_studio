@@ -57,7 +57,7 @@ rbool File::splitpath(CREF(tstring) name, REF(tstring) fileDir, REF(tstring) fil
 #else
 	if (_splitpath_s(name.c_str(), _drive, _MAX_DRIVE, _dir, _MAX_DIR, _name, _MAX_FNAME, _ext, _MAX_EXT) != 0)
 #endif
-        return false;
+		return false;
 
 	fileDir  = rdo::format(_T("%s%s"), _drive, _dir);
 	fileName = _name;
@@ -75,7 +75,9 @@ rbool File::splitpath(CREF(tstring) name, REF(tstring) fileDir, REF(tstring) fil
 #endif // UNICODE
 
 	if(fileDir[fileDir.size() - 1] != _T('/'))
+	{
 		fileDir += _T("/");
+	}
 
 #endif // COMPILER_VISUAL_STUDIO
 	return true;
@@ -112,20 +114,19 @@ tstring File::getTempFileName()
 
 rbool File::trimLeft(CREF(tstring) name)
 {
-	tstring tempFileName = getTempFileName();
-	boost::filesystem::ofstream tempStream(tempFileName.c_str(), std::ios::trunc | std::ios::binary);
-	boost::filesystem::ifstream fileStream(name.c_str(), std::ios::binary);
+	rdo::ifstream inputStream(name.c_str(), std::ios::binary);
+	std::stringstream sstream;
 
-	if (!tempStream.good() || !fileStream.good())
+    if (!inputStream.good())
 	{
 		return false;
 	}
 
 	rbool empty = true;
-	while (!fileStream.eof())
+	while (!inputStream.eof())
 	{
 		char byte;
-		fileStream.get(byte);
+		inputStream.get(byte);
 
 		if (empty)
 		{
@@ -137,14 +138,12 @@ rbool File::trimLeft(CREF(tstring) name)
 
 		if (!empty)
 		{
-			tempStream.write(&byte, 1);
+			sstream.write(&byte, 1);
 		}
 	}
 
-	tempStream.close();
-	fileStream.close();
+	inputStream.close();
 
-	boost::filesystem::path from(tempFileName);
 	boost::filesystem::path to  (name);
 
 	try
@@ -153,7 +152,8 @@ rbool File::trimLeft(CREF(tstring) name)
 		{
 			return false;
 		}
-		boost::filesystem::rename(from, to);
+		std::ofstream outStream(name.c_str(), std::ios::binary);
+		outStream << sstream.str();
 	}
 	catch (CREF(boost::system::error_code))
 	{
