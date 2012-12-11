@@ -41,13 +41,13 @@ RDOFRMFrame::RDOFRMFrame(CREF(RDOParserSrcInfo) srcInfo)
 	ASSERT(m_pFrame)
 	RDOParser::s_parser()->runtime()->addRuntimeFrame(m_pFrame);
 	RDOParser::s_parser()->insertFRMFrame(this);
-	RDOParser::s_parser()->contextStack()->push(this);
+	//RDOParser::s_parser()->contextStack()->push(this);
 
-	m_pContextMemory = rdo::Factory<ContextMemory>::create();
-	ASSERT(m_pContextMemory);
-	RDOParser::s_parser()->contextStack()->push(m_pContextMemory);
+	//m_pContextMemory = rdo::Factory<ContextMemory>::create();
+	//ASSERT(m_pContextMemory);
+	//RDOParser::s_parser()->contextStack()->push(m_pContextMemory);
 
-	ContextMemory::push();
+	//ContextMemory::push();
 }
 
 Context::FindResult RDOFRMFrame::onFindContext(CREF(LPRDOValue) pValue) const
@@ -77,9 +77,9 @@ Context::FindResult RDOFRMFrame::onFindContext(CREF(LPRDOValue) pValue) const
 
 void RDOFRMFrame::end()
 {
-	ContextMemory::pop();
-	RDOParser::s_parser()->contextStack()->pop();
-	RDOParser::s_parser()->contextStack()->pop();
+	//ContextMemory::pop();
+	//RDOParser::s_parser()->contextStack()->pop();
+	//RDOParser::s_parser()->contextStack()->pop();
 }
 
 // --------------------------------------------------------------------------------
@@ -92,13 +92,13 @@ RDOFRMSprite::RDOFRMSprite(CREF(RDOParserSrcInfo) src_info)
 	ASSERT(m_pSprite)
 	RDOParser::s_parser()->runtime()->addRuntimeSprite(m_pSprite);
 	RDOParser::s_parser()->insertFRMSprite(this);
-	RDOParser::s_parser()->contextStack()->push(this);
+	//RDOParser::s_parser()->contextStack()->push(this);
 
-	m_pContextMemory = rdo::Factory<ContextMemory>::create();
-	ASSERT(m_pContextMemory);
-	RDOParser::s_parser()->contextStack()->push(m_pContextMemory);
+	//m_pContextMemory = rdo::Factory<ContextMemory>::create();
+	//ASSERT(m_pContextMemory);
+	//RDOParser::s_parser()->contextStack()->push(m_pContextMemory);
 
-	ContextMemory::push();
+	//ContextMemory::push();
 
 	LPTypeInfo pReturnType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(this->src_info());
 	ASSERT(pReturnType);
@@ -117,9 +117,9 @@ RDOFRMSprite::RDOFRMSprite(CREF(RDOParserSrcInfo) src_info)
 
 void RDOFRMSprite::end()
 {
-	ContextMemory::pop();
-	RDOParser::s_parser()->contextStack()->pop();
-	RDOParser::s_parser()->contextStack()->pop();
+	//ContextMemory::pop();
+	//RDOParser::s_parser()->contextStack()->pop();
+	//RDOParser::s_parser()->contextStack()->pop();
 }
 
 Context::FindResult RDOFRMSprite::onFindContext(CREF(LPRDOValue) pValue) const

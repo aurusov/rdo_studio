@@ -2573,6 +2573,26 @@
 				RelativePath="..\..\context\statement.h"
 				>
 			</File>
+			<Filter
+				Name=".function"
+				>
+				<File
+					RelativePath="..\..\context\function\context_function_body.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\context\function\context_function_body.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\context\function\context_function_param_definition.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\context\function\context_function_param_definition.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name=".dpt"
