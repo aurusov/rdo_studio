@@ -300,6 +300,8 @@ RDOEditorEditStyle::RDOEditorEditStyle():
 	autoComplete( NULL ),
 	margin( NULL )
 {
+	autoComplete = new RDOEditorEditAutoComplete();
+	margin = new RDOEditorEditMargin();
 }
 
 RDOEditorEditStyle::~RDOEditorEditStyle()
