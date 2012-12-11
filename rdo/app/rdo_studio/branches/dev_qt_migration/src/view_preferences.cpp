@@ -18,7 +18,7 @@
 
 ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 	: QDialog(pParent),
-	  editor()
+	  style_editor()
 {
 	setupUi(this);
 
@@ -38,6 +38,9 @@ ViewPreferences::ViewPreferences(PTR(QWidget) pParent)
 
 void ViewPreferences::onUpdateStyleNotify(const rdoEditor::RDOEditorEditStyle& style)
 {
+	if(style_editor != style)
+		setEditorPreferences(style);
+	updateDialog();
 }
 
 void ViewPreferences::okButtonClicked()
@@ -62,7 +65,7 @@ void ViewPreferences::helpButtonClicked()
 
 void ViewPreferences::codeCompUseChanged(int state)
 {
-	editor.setCodeCompUse(state);
+	style_editor.autoComplete->useAutoComplete = state;
 	
 	switch(state)
 	{
@@ -83,32 +86,61 @@ void ViewPreferences::codeCompShowFullListChanged(bool state)
 	UNUSED(state);
 
 	if(radioButtonFullList->isChecked())
-		editor.setCodeCompShowFullList(true);
+		style_editor.autoComplete->showFullList = true;
 	if(radioButtonNearestWords->isChecked())
-		editor.setCodeCompShowFullList(false);
+		style_editor.autoComplete->showFullList = false;
 }
 
 void ViewPreferences::marginFoldChanged(int state)
 {
-	editor.setMarginFold(state);
+	style_editor.margin->fold = state;
 }
 
 void ViewPreferences::marginBookmarkChanged(int state)
 {
-	editor.setMarginBookmark(state);
+	style_editor.margin->bookmark = state;
 }
 
 void ViewPreferences::marginLineNumberChanged(int state)
 {
-	editor.setMarginLineNumber(state);
+	style_editor.margin->lineNumber = state;
+}
+
+void ViewPreferences::setEditorPreferences(const rdoEditor::RDOEditorEditStyle& style)
+{
+	style_editor = style;
+}
+
+void ViewPreferences::updateDialog()
+{
+	checkBoxCodeCompUse->setCheckState(style_editor.autoComplete->useAutoComplete
+		? Qt::Checked
+		: Qt::Unchecked
+		);
+	checkBoxMarginFold->setCheckState(style_editor.margin->fold
+		? Qt::Checked
+		: Qt::Unchecked
+		);
+	checkBoxMarginBookmark->setCheckState(style_editor.margin->bookmark
+		? Qt::Checked
+		: Qt::Unchecked
+		);
+	checkBoxMarginLineNum->setCheckState(style_editor.margin->lineNumber
+		? Qt::Checked
+		: Qt::Unchecked
+		);
+
+	style_editor.autoComplete->showFullList
+		? radioButtonFullList->toggle()
+		: radioButtonNearestWords->toggle();
 }
 
 RDOStudioPreferencesEditor::RDOStudioPreferencesEditor()
-	: m_codecompUse         (FALSE),
-	  m_codecompShowFullList(-1   ),
-	  m_marginFold          (FALSE),
-	  m_marginBookmark      (FALSE),
-	  m_marginLineNumber    (FALSE)
+	: m_codecompUse         (0),
+	  m_codecompShowFullList(-1),
+	  m_marginFold          (0),
+	  m_marginBookmark      (0),
+	  m_marginLineNumber    (0)
 {}
 
 RDOStudioPreferencesEditor::~RDOStudioPreferencesEditor()

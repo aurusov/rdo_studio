@@ -67,6 +67,9 @@ public:
 	explicit ViewPreferences(PTR(QWidget) pParent = NULL);
 
 	void onUpdateStyleNotify(const rdoEditor::RDOEditorEditStyle& style);
+	void setEditorPreferences(const rdoEditor::RDOEditorEditStyle& style);
+	void updateDialog();
+	rbool checkNewOptions(const rdoEditor::RDOEditorEditStyle& style);
 
 private slots:
 	void okButtonClicked();
@@ -81,7 +84,7 @@ private slots:
 	void marginLineNumberChanged(int state);
 
 private:
-	RDOStudioPreferencesEditor editor;
+	rdoEditor::RDOEditorEditStyle style_editor;
 };
 
 #endif // _RDO_STUDIO_VIEW_PREFERENCES_H_
