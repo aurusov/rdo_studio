@@ -17,47 +17,6 @@
 #include "app/rdo_studio_mfc/src/options.h"
 // --------------------------------------------------------------------------------
 
-class RDOStudioPreferences
-{
-public:
-	RDOStudioPreferences();
-	virtual ~RDOStudioPreferences();
-
-private:
-	rdoEditor::RDOEditorEditStyle style_editor;
-
-	//typedef boost::function<void (const RDOStudioPreferences& options)> NotifyCallback;
-	//typedef std::list<NotifyCallback>  CallbackList;
-};
-
-class RDOStudioPreferencesEditor
-{
-public:
-	RDOStudioPreferencesEditor();
-	virtual ~RDOStudioPreferencesEditor();
-
-private:
-	BOOL m_codecompUse;
-	int  m_codecompShowFullList;
-	BOOL m_marginFold;
-	BOOL m_marginBookmark;
-	BOOL m_marginLineNumber;
-
-public:
-
-	BOOL getCodeCompUse         () const;
-	int  getCodeCompShowFullList() const;
-	BOOL getMarginFold          () const;
-	BOOL getMarginBookmark      () const;
-	BOOL getMarginLineNumber    () const;
-
-	void setCodeCompUse         (BOOL m_value);
-	void setCodeCompShowFullList(int  m_value);
-	void setMarginFold          (BOOL m_value);
-	void setMarginBookmark      (BOOL m_value);
-	void setMarginLineNumber    (BOOL m_value);
-};
-
 class ViewPreferences
 	: public QDialog
 	, private Ui::ViewPreferencesDialog
