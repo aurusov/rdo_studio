@@ -218,6 +218,7 @@ private:
 	ShowMode  m_showMode; //! current show mode
 	double    m_showRate; //! current show mode
 	ruint     m_runCount;
+	ruint     m_run;
 
 	rdo::textstream m_resultString;
 	rdo::textstream m_resultInfoString;

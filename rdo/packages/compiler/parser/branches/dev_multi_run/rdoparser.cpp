@@ -421,6 +421,12 @@ void RDOParser::parse()
 	}
 }
 
+void RDOParser::parse(ruint count)
+{
+	getSMR()->setCount(count);
+	parse();
+}
+
 void RDOParser::parse(rdoModelObjects::RDOParseType file)
 {
 	ruint min, max;

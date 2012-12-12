@@ -142,6 +142,7 @@ public:
 	rbool    hasSMR() const              { return m_pSMR ? true : false; }
 
 	void parse();
+	void parse(ruint count);
 	void parse(REF(std::istream) stream);
 
 	CREF(Error) error() const { return m_error; }

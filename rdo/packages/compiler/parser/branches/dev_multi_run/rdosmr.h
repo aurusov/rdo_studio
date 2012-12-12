@@ -64,20 +64,26 @@ public:
 	double                             getTraceStartTime() const { return m_traceStartTime; }
 	double                             getTraceEndTime  () const { return m_traceEndTime;   }
 	ruint                              getRunCount      () const { return m_runCount;       }
+	ruint                              getRun           () const { return m_run;            }
 
-	void setShowMode      (rdo::service::simulation::ShowMode showMode);
-	void setFrameNumber   (int value,    CREF(YYLTYPE) pos);
-	void setShowRate      (double value, CREF(YYLTYPE) pos);
-	void setRunStartTime  (double value, CREF(YYLTYPE) pos);
-	void setTraceStartTime(double value, CREF(YYLTYPE) pos);
-	void setTraceEndTime  (double value, CREF(YYLTYPE) pos);
-	void setRunCount      (ruint  value);
+	void  setShowMode      (rdo::service::simulation::ShowMode showMode);
+	void  setFrameNumber   (int value,    CREF(YYLTYPE) pos);
+	void  setShowRate      (double value, CREF(YYLTYPE) pos);
+	void  setRunStartTime  (double value, CREF(YYLTYPE) pos);
+	void  setTraceStartTime(double value, CREF(YYLTYPE) pos);
+	void  setTraceEndTime  (double value, CREF(YYLTYPE) pos);
+	//! число экспериментов (прогонов) в серии
+	void  setRunCount      (ruint  value);
+	//! номер выполняемого прогона
+	void  setCount         (ruint  value);
+	rbool setCheck         ();
+	void  setIterator      ();
 
-	void setTerminateIf  (REF(LPRDOFUNLogic) pLogic);
-	void setConstValue   (CREF(RDOParserSrcInfo) const_info, REF(LPRDOFUNArithm)    pArithm);
-	void setResParValue  (CREF(RDOParserSrcInfo) res_info,   CREF(RDOParserSrcInfo) par_info, REF(LPRDOFUNArithm) pArithm);
-	void setSeed         (CREF(RDOParserSrcInfo) seq_info,   int base);
-	void insertBreakPoint(CREF(RDOParserSrcInfo) src_info,   REF(LPRDOFUNLogic) pLogic);
+	void  setTerminateIf  (REF(LPRDOFUNLogic) pLogic);
+	void  setConstValue   (CREF(RDOParserSrcInfo) const_info, REF(LPRDOFUNArithm)    pArithm);
+	void  setResParValue  (CREF(RDOParserSrcInfo) res_info,   CREF(RDOParserSrcInfo) par_info, REF(LPRDOFUNArithm) pArithm);
+	void  setSeed         (CREF(RDOParserSrcInfo) seq_info,   int base);
+	void  insertBreakPoint(CREF(RDOParserSrcInfo) src_info,   REF(LPRDOFUNLogic) pLogic);
 
 private:
 	RDOSMR();
@@ -98,6 +104,8 @@ private:
 	double                              m_traceStartTime;
 	double                              m_traceEndTime;
 	ruint                               m_runCount;
+	ruint                               m_run;
+	ruint                               m_iterator;
 	YYLTYPE                             m_traceStartTime_pos;
 	YYLTYPE                             m_traceEndTime_pos;
 	LPRDOFUNLogic                       m_pTerminateIf;

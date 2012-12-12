@@ -861,6 +861,7 @@ RDOThreadSimulator::RDOThreadSimulator()
 	, m_pThreadRuntime(NULL                          )
 	, m_exitCode      (rdo::simulation::report::EC_OK)
 	, m_runCount      (0                             )
+	, m_run           (0                             )
 {
 	notifies.push_back(RT_STUDIO_MODEL_BUILD              );
 	notifies.push_back(RT_STUDIO_MODEL_RUN                );
@@ -1065,12 +1066,16 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 						// место для инициализации кол-ва запусков m_runCount //
 					broadcastMessage(RT_SIMULATOR_MODEL_STOP_OK);
 					closeModel();
-					if (--m_runCount)
+					if (m_run < m_runCount)
 					{
 						parseModel_i();
 						runModel();
+						++m_run;
 					}
-					
+					else
+					{
+						m_run = 0;
+					}
 				}
 				else
 				{
@@ -1146,7 +1151,7 @@ rbool RDOThreadSimulator::parseModel_i()
 	try
 	{
 		m_exitCode = rdo::simulation::report::EC_OK;
-		m_pParser->parse();
+		m_pParser->parse(m_run);
 	}
 	catch (REF(rdo::compiler::parser::RDOSyntaxException))
 	{
@@ -1175,6 +1180,13 @@ rbool RDOThreadSimulator::parseModel_i()
 
 void RDOThreadSimulator::runModel()
 {
+	if (m_run == 0)
+	{
+		closeModel();
+		parseModel_i();
+		++m_run;
+	}
+
 	ASSERT(m_pParser );
 	ASSERT(m_pRuntime);
 
