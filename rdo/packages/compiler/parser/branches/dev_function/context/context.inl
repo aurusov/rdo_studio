@@ -29,17 +29,4 @@ inline rdo::intrusive_ptr<T> Context::cast()
 	return pPrev ? pPrev->cast<T>() : rdo::intrusive_ptr<T>();
 }
 
-template <class T>
-inline rdo::interface_ptr<T> Context::interface_cast()
-{
-	LPContext pThis = this;
-	rdo::interface_ptr<T> pThisResult = pThis.interface_dynamic_cast<T>();
-	if (pThisResult)
-	{
-		return pThisResult;
-	}
-	LPContext pPrev = m_pContextStack->prev(pThis);
-	return pPrev ? pPrev->interface_cast<T>() : rdo::interface_ptr<T>();
-}
-
 CLOSE_RDO_PARSER_NAMESPACE
