@@ -19,25 +19,25 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-class ContextParamDefinition: public Context
-{
-DECLARE_FACTORY(ContextParamDefinition)
-public:
-	typedef boost::optional<ruint> ParamID;
-
-	void       pushParamBegin();
-	void       pushParam     (CREF(LPRDOParam) pParam);
-	void       pushParamEnd  ();
-
-	LPRDOParam findParam  (CREF(tstring) paramName) const;
-	ParamID    findParamID(CREF(tstring) paramName) const;
-
-private:
-	typedef std::vector<LPRDOParam> ParamList;
-
-	ParamList m_paramList;
-};
-DECLARE_POINTER(ContextParamDefinition);
+//class ContextParamDefinition: public Context
+//{
+//DECLARE_FACTORY(ContextParamDefinition)
+//public:
+//	typedef boost::optional<ruint> ParamID;
+//
+//	void       pushParamBegin();
+//	void       pushParam     (CREF(LPRDOParam) pParam);
+//	void       pushParamEnd  ();
+//
+//	LPRDOParam findParam  (CREF(tstring) paramName) const;
+//	ParamID    findParamID(CREF(tstring) paramName) const;
+//
+//private:
+//	typedef std::vector<LPRDOParam> ParamList;
+//
+//	ParamList m_paramList;
+//};
+//DECLARE_POINTER(ContextParamDefinition);
 
 CLOSE_RDO_PARSER_NAMESPACE
 

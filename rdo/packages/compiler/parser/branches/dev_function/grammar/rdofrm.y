@@ -456,22 +456,22 @@ param_list
 param_list_open
 	: '('
 	{
-		//LPContext pContext = RDOParser::s_parser()->context();
-		//ASSERT(pContext);
-		//LPContextParamDefinition pContextParamDefinition = pContext->cast<ContextParamDefinition>();
-		//ASSERT(pContextParamDefinition);
-		//pContextParamDefinition->pushParamBegin();
+		LPContext pContext = RDOParser::s_parser()->context();
+		ASSERT(pContext);
+		LPIContextParamDefinitionManager pContextParamDefinitionManager = pContext->interface_cast<IContextParamDefinitionManager>();
+		ASSERT(pContextParamDefinitionManager);
+		pContextParamDefinitionManager->pushParamDefinitionContext();
 	}
 	;
 
 param_list_close
 	: ')'
 	{
-		//LPContext pContext = RDOParser::s_parser()->context();
-		//ASSERT(pContext);
-		//LPContextParamDefinition pContextParamDefinition = pContext->cast<ContextParamDefinition>();
-		//ASSERT(pContextParamDefinition);
-		//pContextParamDefinition->pushParamEnd();
+		LPContext pContext = RDOParser::s_parser()->context();
+		ASSERT(pContext);
+		LPIContextParamDefinitionManager pContextParamDefinitionManager = pContext->interface_cast<IContextParamDefinitionManager>();
+		ASSERT(pContextParamDefinitionManager);
+		pContextParamDefinitionManager->popParamDefinitionContext();
 	}
 	;
 
@@ -1832,9 +1832,6 @@ frm_sprite_header_begin
 	{
 		LPRDOFRMSprite pSprite = rdo::Factory<RDOFRMSprite>::create(PARSER->stack().pop<RDOValue>($2)->src_info());
 		ASSERT(pSprite);
-		LPIContextParamDefinitionManager pParamDefinitionManager = pSprite.interface_dynamic_cast<IContextParamDefinitionManager>();
-		ASSERT(pParamDefinitionManager);
-		pParamDefinitionManager->pushParamBegin();
 		$$ = PARSER->stack().push(pSprite);
 	}
 	;
@@ -1844,9 +1841,6 @@ frm_sprite_header
 	{
 		LPRDOFRMSprite pSprite = PARSER->stack().pop<RDOFRMSprite>($1);
 		ASSERT(pSprite);
-		LPIContextParamDefinitionManager pParamDefinitionManager = pSprite.interface_dynamic_cast<IContextParamDefinitionManager>();
-		ASSERT(pParamDefinitionManager);
-		pParamDefinitionManager->pushParamEnd();
 		$$ = PARSER->stack().push(pSprite);
 	}
 	;

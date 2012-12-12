@@ -19,7 +19,7 @@
 #include "simulator/compiler/parser/context/context.h"
 #include "simulator/compiler/parser/context/memory.h"
 #include "simulator/compiler/parser/context/context_find_i.h"
-#include "simulator/compiler/parser/context/context_param_definition.h"
+#include "simulator/compiler/parser/context/function/context_function_param_definition.h"
 #include "simulator/compiler/parser/type/function_type.h"
 // --------------------------------------------------------------------------------
 
@@ -34,7 +34,7 @@ void frmerror(PTR(char) message);
 // --------------------------------------------------------------------------------
 class RDOFRMCommandList
 	: public RDOParserSrcInfo
-	, public ContextParamDefinition
+	, public Context
 	, public IContextFind
 {
 DECLARE_FACTORY(RDOFRMCommandList);
@@ -53,8 +53,9 @@ DECLARE_POINTER(RDOFRMCommandList);
 // --------------------------------------------------------------------------------
 // -------------------- RDOFRMSprite
 // --------------------------------------------------------------------------------
-CLASS(RDOFRMSprite):
-	INSTANCE_OF (RDOFRMCommandList)
+class RDOFRMSprite
+	: public RDOFRMCommandList
+	, public IContextParamDefinitionManager
 {
 DECLARE_FACTORY(RDOFRMSprite);
 public:
@@ -73,7 +74,10 @@ private:
 
 	rdo::runtime::LPRDOFRMSprite list() const { return m_pSprite; }
 
+	void onPushParam(CREF(LPRDOParam) pParam);
+
 	DECLARE_IContextFind;
+	DECLARE_IContextParamDefinitionManager;
 };
 DECLARE_POINTER(RDOFRMSprite);
 

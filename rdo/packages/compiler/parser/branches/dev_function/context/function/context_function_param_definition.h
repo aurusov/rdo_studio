@@ -11,7 +11,7 @@
 #define _SIMULATOR_COMPILER_PARSER_CONTEXT_FUNCTION_PARAM_DEFINITION_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/optional.hpp>
+#include <boost/function.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/param.h"
 #include "simulator/compiler/parser/context/context.h"
@@ -43,26 +43,19 @@ protected:
 // --------------------------------------------------------------------------------
 // -------------------- ContextParamDefinition
 // --------------------------------------------------------------------------------
-class ContextParamDefinition
-	: public Context
-	, public IContextParamDefinitionManager
+class ContextParamDefinition: public Context
 {
 DECLARE_FACTORY(ContextParamDefinition)
 public:
-	typedef boost::optional<ruint> ParamID;
-
-	void       pushParam  (CREF(LPRDOParam) pParam);
-	LPRDOParam findParam  (CREF(tstring) paramName) const;
-	ParamID    findParamID(CREF(tstring) paramName) const;
+	void pushParam(const LPRDOParam& pParam);
 
 private:
-	typedef std::vector<LPRDOParam> ParamList;
+	typedef  boost::function<void (const LPRDOParam&)>  OnPushParam;
 
-	ParamList m_paramList;
+	ContextParamDefinition(const OnPushParam& onPushParam);
+	virtual ~ContextParamDefinition();
 
-	ParamList::const_iterator find(CREF(tstring) paramName) const;
-
-	DECLARE_IContextParamDefinitionManager;
+	OnPushParam m_onPushParam;
 };
 DECLARE_POINTER(ContextParamDefinition);
 
