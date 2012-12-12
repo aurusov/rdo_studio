@@ -242,11 +242,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------MultiRun
 // --------------------------------------------------------------------------------
 smr_multirun
-	: RDO_MultiRun smr_multirun_body error
-	{
-		PARSER->error().error(@2, _T("После описания констант ожидается ключевое слово $End"));
-	}
-	| '{' smr_multirun_body '}'
+	: '{' smr_multirun_body '}'
 	{
 		PARSER->getSMR()->setIterator();
 	}
@@ -255,37 +251,10 @@ smr_multirun
 smr_multirun_body
 	: /* empty */
 	| smr_multirun_body smr_multirun_body_desc
-	| smr_multirun_body error
-	{
-		PARSER->error().error(@2, _T("Ожидается описание MultiRun"));
-	}
 	;
 
 smr_multirun_body_desc
-	: RDO_Run_Count '=' RDO_INT_CONST ';'
-	{
-		LPRDOSMR pSMR = PARSER->getSMR();
-		ASSERT(pSMR);
-		rsint count = PARSER->stack().pop<RDOValue>($4)->value().getInt();
-		if (count < 0)
-		{
-			PARSER->error().error(@3, _T("Число прогонов должно быть больше нуля"));
-		}
-		pSMR->setRunCount(ruint(count));
-	}
-	| RDO_IDENTIF '.' RDO_Seek '=' fun_arithm';'
-	{
-		PARSER->error().error(@2, _T("я попал в нужную мне бизоновскую ветку - 3!"));
-	}
-	| RDO_IDENTIF '.' RDO_Seek '=' RDO_IDENTIF '.' RDO_Next
-	{
-		PARSER->error().error(@2, _T("я попал в нужную мне бизоновскую ветку - 4!"));
-	}
-	| RDO_IDENTIF '.' RDO_Seek '=' error
-	{
-		PARSER->error().error(@2, _T("я попал в нужную мне бизоновскую ветку - 5!"));
-	}
-	| RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')'
+	: RDO_IDENTIF '.' RDO_Planning '(' arithm_list ')'
 	{
 		LPRDOSMR pSMR = PARSER->getSMR();
 		ASSERT(pSMR);
