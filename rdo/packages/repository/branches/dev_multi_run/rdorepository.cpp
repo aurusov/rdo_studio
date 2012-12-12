@@ -648,7 +648,9 @@ void RDOThreadRepository::beforeModelStart()
 	}
 	if (m_files[rdoModelObjects::TRC].m_described)
 	{
-		m_traceFile.open(getFullFileName(rdoModelObjects::TRC).c_str(), std::ios::out | std::ios::binary);
+		++m_firstStart;
+		tstring m_buffer = rdo::format("%i", m_firstStart);
+		m_traceFile.open((m_modelPath + m_buffer + getFileExtName(rdoModelObjects::TRC)).c_str(), std::ios::out | std::ios::binary);
 		if (m_traceFile.is_open())
 		{
 			writeModelFilesInfo(m_traceFile);
