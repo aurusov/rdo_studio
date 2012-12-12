@@ -671,7 +671,7 @@ void RDOThreadRepository::stopModel()
 		m_count++;
 		//char buffer[100];
 		//_itoa (m_count, buffer, 10);
-		tstring buffer = rdo::format("%s", m_count);
+		tstring buffer = rdo::format("%i", m_count);
 		rdo::ofstream results_file;
 		results_file.open((m_modelPath + buffer + getFileExtName(rdoModelObjects::PMV)).c_str(), std::ios::out | std::ios::binary );
 		if (results_file.is_open())
