@@ -15,7 +15,7 @@
 #include <iostream>
 #include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator\runtime\test\sql\lib\interface_db.h"
+#include "simulator\runtime\headers\interface_db.h"
 // --------------------------------------------------------------------------------
 
 

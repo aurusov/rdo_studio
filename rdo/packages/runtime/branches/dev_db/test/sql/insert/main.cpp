@@ -16,8 +16,8 @@
 #include <QtSql\QtSql>
 #include <QtCore\QCoreApplication>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator\runtime\test\sql\lib\general_db.h"
-#include "simulator\runtime\test\sql\lib\interface_db.h"
+#include "simulator\runtime\headers\general_db.h"
+#include "simulator\runtime\headers\interface_db.h"
 // --------------------------------------------------------------------------------
 
 
@@ -44,12 +44,11 @@ int main(int argc, char *argv[])
 
 	InterfaceDB::enumContainer enumCont;
 
-//------------------------
-	db.insertRTPHeader("Парикмахерские", true);
-
 	db.insertIntRow();
 
-	db.insertRTPParam("Парикмахерские","количество_в_очереди",1);
+//------------------------
+	db.insertRTPHeader("Парикмахерские", true);
+	db.insertRTPParam("Парикмахерские", "количество_в_очереди", rdo::runtime::RDOType::t_int);
 //------------------------
 
 //------------------------

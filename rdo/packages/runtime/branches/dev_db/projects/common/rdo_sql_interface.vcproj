@@ -421,11 +421,11 @@
 	</References>
 	<Files>
 		<File
-			RelativePath="..\..\test\sql\lib\interface_db.cpp"
+			RelativePath="..\..\src\interface_db.cpp"
 			>
 		</File>
 		<File
-			RelativePath="..\..\test\sql\lib\interface_db.h"
+			RelativePath="..\..\headers\interface_db.h"
 			>
 		</File>
 	</Files>

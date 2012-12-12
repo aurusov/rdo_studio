@@ -15,7 +15,7 @@
 #include <QtSql\QtSql>
 #include <map>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator\runtime\test\sql\lib\general_db.h"
+#include "simulator\runtime\headers\general_db.h"
 // --------------------------------------------------------------------------------
 
 class InterfaceDB: public GeneralDB
