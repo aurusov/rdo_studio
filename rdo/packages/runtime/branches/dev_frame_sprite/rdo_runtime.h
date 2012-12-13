@@ -65,8 +65,7 @@ class RDORule;
 class RDOOperation;
 class RDOPROCProcess;
 class RDOPMDResult;
-PREDECLARE_POINTER(RDOFRMFrame );
-PREDECLARE_POINTER(RDOFRMSprite);
+PREDECLARE_POINTER(RDOFRMFrame);
 class RDOCalcCreateResource;
 PREDECLARE_POINTER(RDOEraseResRelCalc);
 
@@ -112,15 +111,13 @@ public:
 	REF(LPIActivity) getCurrentActivity();
 	void             setCurrentActivity(CREF(LPIActivity) activity);
 
-	void addRuntimeEvent     (LPIBaseOperationContainer pLogic, CREF(LPIEvent)      pEvent    );
-	void addRuntimeRule      (LPIBaseOperationContainer pLogic, CREF(LPIRule)       pRule     );
-	void addRuntimeOperation (LPIBaseOperationContainer pLogic, CREF(LPIOperation)  pOperation);
-	void addRuntimeResult    (CREF(LPIResult)      pResult);
-	void addRuntimeFrame     (CREF(LPRDOFRMFrame)  pFrame );
-	void addRuntimeSprite    (CREF(LPRDOFRMSprite) pSprite);
+	void addRuntimeEvent    (LPIBaseOperationContainer pLogic, CREF(LPIEvent)      pEvent    );
+	void addRuntimeRule     (LPIBaseOperationContainer pLogic, CREF(LPIRule)       pRule     );
+	void addRuntimeOperation(LPIBaseOperationContainer pLogic, CREF(LPIOperation)  pOperation);
+	void addRuntimeResult   (CREF(LPIResult)     pResult);
+	void addRuntimeFrame    (CREF(LPRDOFRMFrame) pFrame);
 
-	LPRDOFRMFrame  lastFrame () const;
-	LPRDOFRMSprite lastSprite() const;
+	LPRDOFRMFrame lastFrame() const;
 
 	CREF(LPIResultList) getResult() const;
 
@@ -165,9 +162,7 @@ public:
 
 	typedef  std::vector<LPRDOFRMFrame>  FrameList;
 	FrameList m_frameList;
-	typedef  std::vector<LPRDOFRMSprite>  SpriteList;
-	SpriteList m_spriteList;
-	
+
 	virtual void onPutToTreeNode();
 
 	rdo::simulation::report::RDOExitCode m_whyStop;
