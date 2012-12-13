@@ -281,7 +281,12 @@
 			</TR>
 			<TR valign="top"><A name="select_size"></A>
 				<TD class="visible" width="20%"><FONT class="syntax">Size</FONT></TD>
-				<TD class="visible" width="70%">Возвращает размер списка ресурсов, целое число. Если список пусто, то вовращается ноль. Формат использования: <PRE class="syntax">Size()</PRE></TD>
+				<TD class="visible" width="70%">Возвращает размер списка ресурсов, целое число. Если список пуст, то вовращается ноль. Формат использования: <PRE class="syntax">Size()</PRE></TD>
+				<TD class="visible" width="10%">Арифметическое</TD>
+			</TR>
+			<TR valign="top"><A name="select_array"></A>
+				<TD class="visible" width="20%"><FONT class="syntax">getArray</FONT></TD>
+				<TD class="visible" width="70%"><b>Работает только в системе анимации.</b> Возвращает массив с отобранными ресурсами, тип массива соответствует типу ресурса. Если список ресурсов пуст, возвращаемый массив также имеет нулевой размер. Формат использования: <PRE class="syntax">getArray() | get_array()</PRE>
 				<TD class="visible" width="10%">Арифметическое</TD>
 			</TR>
 		</TABLE>
@@ -292,6 +297,7 @@
             Станок.Состояние = свободен)</PRE>
 		<PRE class="samples">Select(Заявка: Заявка.Время_прихода &gt;= 480 and
        Заявка.Состояние = в_очереди).For_All(Заявка.Время_в_очереди &gt; 20)</PRE>
+       <PRE class="samples">array<Заявки> Z = Select(Заявки: Заявки.Время_прихода &gt;= 300).getArray();</PRE>
 		<H4>См. также</H4>
 		<P><A href="rdo_base_types.htm">Типы данных. Соответствие типов</A></P>
 	</DIV>
