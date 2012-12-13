@@ -91,7 +91,6 @@ RDOFRMSprite::RDOFRMSprite(CREF(RDOParserSrcInfo) src_info)
 {
 	m_pSprite = rdo::Factory<rdo::runtime::RDOFRMSprite>::create(src_info);
 	ASSERT(m_pSprite)
-	RDOParser::s_parser()->runtime()->addRuntimeSprite(m_pSprite);
 	RDOParser::s_parser()->insertFRMSprite(this);
 	RDOParser::s_parser()->contextStack()->push(this);
 
