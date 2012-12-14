@@ -89,7 +89,7 @@ LPRDOType RDOType__void::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo)
 	{
 		return rdo::Factory<RDOType__void>::create();
 	}
-	parser::g_error().error(src_info, rdo::format(_T("Внутренная ошибка парсера. Невозможно преобразовать тип '%s' к void"), from_src_info.src_text().c_str()));
+	parser::g_error().error(src_info, rdo::format(_T("Невозможно преобразовать '%s' к void"), from_src_info.src_text().c_str()));
 	return NULL;
 }
 
