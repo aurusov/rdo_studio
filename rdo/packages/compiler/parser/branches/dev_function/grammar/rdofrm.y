@@ -445,7 +445,11 @@ param_list
 	: param_list_open param_list_body param_list_close
 	| param_list_open param_list_body error
 	{
-		PARSER->error().error(@2, _T("Ожидается закрывающая скобка"));
+		PARSER->error().error(@3, _T("Ожидается закрывающая скобка"));
+	}
+	| param_list_open error
+	{
+		PARSER->error().error(@2, _T("Ошибка при описании параметра"));
 	}
 	| error
 	{
