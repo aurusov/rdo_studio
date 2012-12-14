@@ -442,16 +442,68 @@ frm_end
 	;
 
 param_list
-	: /*empty*/
-	| param_list_body
+	: param_list_open param_list_body param_list_close
+	| param_list_open param_list_body error
+	{
+		PARSER->error().error(@2, _T("Ожидается закрывающая скобка"));
+	}
+	| error
+	{
+		PARSER->error().error(@1, _T("Ожидается открывающая скобка"));
+	}
+	;
+
+param_list_open
+	: '('
+	{
+		LPContext pContext = RDOParser::s_parser()->context();
+		ASSERT(pContext);
+		LPIContextParamDefinitionManager pContextParamDefinitionManager = pContext->interface_cast<IContextParamDefinitionManager>();
+		ASSERT(pContextParamDefinitionManager);
+		pContextParamDefinitionManager->pushParamDefinitionContext();
+	}
+	;
+
+param_list_close
+	: ')'
+	{
+		LPContext pContext = RDOParser::s_parser()->context();
+		ASSERT(pContext);
+		LPIContextParamDefinitionManager pContextParamDefinitionManager = pContext->interface_cast<IContextParamDefinitionManager>();
+		ASSERT(pContextParamDefinitionManager);
+		pContextParamDefinitionManager->popParamDefinitionContext();
+	}
 	;
 
 param_list_body
-	: type_declaration RDO_IDENTIF {}
-	| param_list_body ',' type_declaration RDO_IDENTIF {}
+	: /* empty */
+	| param_declaration
+	| param_list_body ',' param_declaration
 	| param_list_body ',' error
 	{
-		PARSER->error().error(@3, _T("Ошибка в задании параметра!"));
+		PARSER->error().error(@3, _T("Ошибка в задании параметра"));
+	}
+	;
+
+param_declaration
+	: type_declaration RDO_IDENTIF
+	{
+		LPTypeInfo pType = PARSER->stack().pop<TypeInfo>($1);
+		ASSERT(pType);
+
+		LPRDOValue pName = PARSER->stack().pop<RDOValue>($2);
+		ASSERT(pName);
+
+		LPRDOParam pParam = rdo::Factory<RDOParam>::create(pName->src_info(), pType);
+		ASSERT(pParam);
+
+		PARSER->contextStack()->pop();
+
+		LPContext pContext = RDOParser::s_parser()->context();
+		ASSERT(pContext);
+		LPContextParamDefinition pContextParamDefinition = pContext->cast<ContextParamDefinition>();
+		ASSERT(pContextParamDefinition);
+		pContextParamDefinition->pushParam(pParam);
 	}
 	;
 
@@ -1775,24 +1827,21 @@ frm_sprite_begin
 	}
 	;
 
-frm_sprite_header
-	: RDO_Sprite RDO_IDENTIF '(' param_list ')'
+frm_sprite_header_begin
+	: RDO_Sprite RDO_IDENTIF
 	{
 		LPRDOFRMSprite pSprite = rdo::Factory<RDOFRMSprite>::create(PARSER->stack().pop<RDOValue>($2)->src_info());
 		ASSERT(pSprite);
 		$$ = PARSER->stack().push(pSprite);
 	}
-	| RDO_Sprite RDO_IDENTIF '(' param_list error
+	;
+
+frm_sprite_header
+	: frm_sprite_header_begin param_list
 	{
-		PARSER->error().error(@5, _T("Ожидается закрывающая скобка"));
-	}
-	| RDO_Sprite RDO_IDENTIF '(' error
-	{
-		PARSER->error().error(@4, _T("Ошибка задания параметров"));
-	}
-	| RDO_Sprite RDO_IDENTIF error
-	{
-		PARSER->error().error(@3, _T("Ожидается открывающая скобка"));
+		LPRDOFRMSprite pSprite = PARSER->stack().pop<RDOFRMSprite>($1);
+		ASSERT(pSprite);
+		$$ = PARSER->stack().push(pSprite);
 	}
 	;
 

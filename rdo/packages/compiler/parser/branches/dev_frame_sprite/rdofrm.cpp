@@ -11,6 +11,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/bind.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdofrm.h"
 #include "simulator/compiler/parser/rdoparser.h"
@@ -136,6 +137,25 @@ LPExpression RDOFRMSprite::expression() const
 	);
 	ASSERT(pExpression);
 	return pExpression;
+}
+
+void RDOFRMSprite::pushParamDefinitionContext()
+{
+	LPContextParamDefinition pContextParamDefinition = rdo::Factory<ContextParamDefinition>::create(
+		boost::bind(&RDOFRMSprite::onPushParam, this, _1)
+	);
+	ASSERT(pContextParamDefinition);
+	RDOParser::s_parser()->contextStack()->push(pContextParamDefinition);
+}
+
+void RDOFRMSprite::popParamDefinitionContext()
+{
+	ASSERT(RDOParser::s_parser()->context().object_dynamic_cast<ContextParamDefinition>());
+	RDOParser::s_parser()->contextStack()->pop();
+}
+
+void RDOFRMSprite::onPushParam(CREF(LPRDOParam) pParam)
+{
 }
 
 // --------------------------------------------------------------------------------
