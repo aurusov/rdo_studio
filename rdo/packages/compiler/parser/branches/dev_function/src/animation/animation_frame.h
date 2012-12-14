@@ -3,7 +3,7 @@
   \file      animation_frame.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
+  \date      Фрейм анимации в парсере
   \brief     
   \indent    4T
 */
@@ -18,8 +18,7 @@
 #include "simulator/compiler/parser/rdofun.h"
 #include "simulator/compiler/parser/context/context.h"
 #include "simulator/compiler/parser/context/context_find_i.h"
-#include "simulator/compiler/parser/context/function/context_function_param_definition.h"
-#include "simulator/compiler/parser/src/function/function.h"
+#include "simulator/compiler/parser/src/animation/animation_base.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -27,48 +26,6 @@ OPEN_RDO_PARSER_NAMESPACE
 int  frmparse(PTR(void) lexer);
 int  frmlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
 void frmerror(PTR(char) message);
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOFRMCommandList
-// --------------------------------------------------------------------------------
-class RDOFRMCommandList: public virtual rdo::counter_reference
-{
-DECLARE_FACTORY(RDOFRMCommandList);
-public:
-	virtual CREF(tstring)                name() const = 0;
-	virtual rdo::runtime::LPRDOFRMSprite list() const = 0;
-
-	static LPExpression generateExpression(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(RDOParserSrcInfo) srcInfo);
-
-protected:
-	RDOFRMCommandList();
-};
-DECLARE_POINTER(RDOFRMCommandList);
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOFRMSprite
-// --------------------------------------------------------------------------------
-class RDOFRMSprite
-	: public RDOFRMCommandList
-	, public Function
-{
-DECLARE_FACTORY(RDOFRMSprite);
-public:
-	void end();
-
-	CREF(tstring)                      name  () const { return src_info().src_text(); }
-	CREF(rdo::runtime::LPRDOFRMSprite) sprite() const { return m_pSprite; }
-
-private:
-	RDOFRMSprite(CREF(RDOParserSrcInfo) src_info);
-
-	rdo::runtime::LPRDOFRMSprite  m_pSprite;
-
-	rdo::runtime::LPRDOFRMSprite list() const { return m_pSprite; }
-
-	DECLARE_IContextFind;
-};
-DECLARE_POINTER(RDOFRMSprite);
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFRMFrame

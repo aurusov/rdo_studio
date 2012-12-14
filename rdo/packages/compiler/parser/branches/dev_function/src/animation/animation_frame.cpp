@@ -3,7 +3,7 @@
   \file      animation_frame.cpp
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
+  \date      Фрейм анимации в парсере
   \brief     
   \indent    4T
 */
@@ -30,53 +30,6 @@ int frmlex(PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer)
 void frmerror(PTR(char) message)
 {
 	UNUSED(message);
-}
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOFRMCommandList
-// --------------------------------------------------------------------------------
-RDOFRMCommandList::RDOFRMCommandList()
-{
-	RDOParser::s_parser()->insertFRMCommandList(this);
-}
-
-LPExpression RDOFRMCommandList::generateExpression(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(RDOParserSrcInfo) srcInfo)
-{
-	ASSERT(pCalc);
-
-	LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(srcInfo);
-	ASSERT(pType);
-
-	LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, srcInfo);
-	ASSERT(pExpression);
-
-	return pExpression;
-}
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOFRMSprite
-// --------------------------------------------------------------------------------
-RDOFRMSprite::RDOFRMSprite(CREF(RDOParserSrcInfo) src_info)
-	: RDOFRMCommandList()
-	, Function(rdo::Factory<TypeInfo>::delegate<RDOType__void>(src_info), src_info)
-{
-	m_pSprite = rdo::Factory<rdo::runtime::RDOFRMSprite>::create(this->src_info());
-	ASSERT(m_pSprite)
-	RDOParser::s_parser()->insertFRMSprite(this);
-
-	setCall(m_pSprite);
-
-	pushContext();
-}
-
-void RDOFRMSprite::end()
-{
-	popContext();
-}
-
-Context::FindResult RDOFRMSprite::onFindContext(CREF(LPRDOValue) pValue) const
-{
-	return Function::onFindContext(pValue);
 }
 
 // --------------------------------------------------------------------------------

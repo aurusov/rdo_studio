@@ -450,11 +450,27 @@
 			Name=".animation"
 			>
 			<File
+				RelativePath="..\..\src\animation\animation_base.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\animation\animation_base.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\animation\animation_frame.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\..\src\animation\animation_frame.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\animation\animation_sprite.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\animation\animation_sprite.h"
 				>
 			</File>
 		</Filter>
