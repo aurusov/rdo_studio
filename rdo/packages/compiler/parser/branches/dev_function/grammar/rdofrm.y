@@ -2543,6 +2543,27 @@ type_declaration
 		PARSER->contextStack()->push(pTypeContext);
 		$$ = PARSER->stack().push(pType);
 	}
+	| RDO_IDENTIF
+	{
+		LPRDOValue pValue = PARSER->stack().pop<RDOValue>($1);
+		ASSERT(pValue);
+
+		LPContext pContext = RDOParser::s_parser()->context();
+		ASSERT(pContext);
+
+		pContext = pContext->find(pValue);
+		ASSERT(pContext);
+
+		LPExpression pExpression = pContext->create(pValue);
+		ASSERT(pExpression);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pExpression->typeInfo());
+		ASSERT(pTypeContext);
+
+		PARSER->contextStack()->push(pTypeContext);
+
+		$$ = PARSER->stack().push(pExpression->typeInfo());
+	}
 	| param_type_such_as
 	{
 		LPTypeInfo pTypeSuchAs = PARSER->stack().pop<TypeInfo>($1);
