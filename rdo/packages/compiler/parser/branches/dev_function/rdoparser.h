@@ -35,7 +35,7 @@
 #include "simulator/compiler/parser/rdodpt.h"
 #include "simulator/compiler/parser/rdoprocess.h"
 #include "simulator/compiler/parser/rdopmd.h"
-#include "simulator/compiler/parser/rdofrm.h"
+#include "simulator/compiler/parser/src/animation/animation_frame.h"
 #include "simulator/compiler/parser/rdosmr.h"
 #include "simulator/compiler/parser/context/context.h"
 #include "simulator/compiler/parser/context/stack.h"

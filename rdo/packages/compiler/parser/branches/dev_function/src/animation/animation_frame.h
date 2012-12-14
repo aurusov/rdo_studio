@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      rdofrm.h
+  \file      animation_frame.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      
@@ -8,8 +8,8 @@
   \indent    4T
 */
 
-#ifndef _RDOFRM_H_
-#define _RDOFRM_H_
+#ifndef _SIMULATOR_COMPILER_PARSER_ANIMATION_FRAME_H_
+#define _SIMULATOR_COMPILER_PARSER_ANIMATION_FRAME_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -99,4 +99,4 @@ DECLARE_POINTER(RDOFRMFrame);
 
 CLOSE_RDO_PARSER_NAMESPACE
 
-#endif // _RDOFRM_H_
+#endif // _SIMULATOR_COMPILER_PARSER_ANIMATION_FRAME_H_

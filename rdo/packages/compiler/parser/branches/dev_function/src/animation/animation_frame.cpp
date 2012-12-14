@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      rdofrm.cpp
+  \file      animation_frame.cpp
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      
@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/compiler/parser/rdofrm.h"
+#include "simulator/compiler/parser/src/animation/animation_frame.h"
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/rdoparser_lexer.h"
 // --------------------------------------------------------------------------------
