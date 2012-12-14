@@ -1789,6 +1789,9 @@ frm_sprite_end
 	{
 		LPRDOFRMSprite pSprite = PARSER->stack().pop<RDOFRMSprite>($1);
 		ASSERT(pSprite);
+		LPIContextFunctionBodyManager pContextFunctionBodyManager = pSprite->interface_cast<IContextFunctionBodyManager>();
+		ASSERT(pContextFunctionBodyManager);
+		pContextFunctionBodyManager->popFunctionBodyContext();
 		pSprite->end();
 	}
 	;
@@ -1841,6 +1844,9 @@ frm_sprite_header
 	{
 		LPRDOFRMSprite pSprite = PARSER->stack().pop<RDOFRMSprite>($1);
 		ASSERT(pSprite);
+		LPIContextFunctionBodyManager pContextFunctionBodyManager = pSprite->interface_cast<IContextFunctionBodyManager>();
+		ASSERT(pContextFunctionBodyManager);
+		pContextFunctionBodyManager->pushFunctionBodyContext();
 		$$ = PARSER->stack().push(pSprite);
 	}
 	;

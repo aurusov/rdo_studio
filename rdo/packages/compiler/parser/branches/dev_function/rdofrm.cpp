@@ -36,7 +36,7 @@ void frmerror(PTR(char) message)
 // -------------------- RDOFRMFrame
 // --------------------------------------------------------------------------------
 RDOFRMFrame::RDOFRMFrame(CREF(RDOParserSrcInfo) srcInfo)
-	: RDOFRMCommandList(srcInfo)
+	: RDOFRMCommandList()
 {
 	m_pFrame = rdo::Factory<rdo::runtime::RDOFRMFrame>::create(srcInfo);
 	ASSERT(m_pFrame)
@@ -87,82 +87,32 @@ void RDOFRMFrame::end()
 // -------------------- RDOFRMSprite
 // --------------------------------------------------------------------------------
 RDOFRMSprite::RDOFRMSprite(CREF(RDOParserSrcInfo) src_info)
-	: RDOFRMCommandList(src_info)
+	: RDOFRMCommandList()
+	, Function(rdo::Factory<TypeInfo>::delegate<RDOType__void>(src_info), src_info)
 {
-	m_pSprite = rdo::Factory<rdo::runtime::RDOFRMSprite>::create(src_info);
+	m_pSprite = rdo::Factory<rdo::runtime::RDOFRMSprite>::create(this->src_info());
 	ASSERT(m_pSprite)
 	RDOParser::s_parser()->insertFRMSprite(this);
-	RDOParser::s_parser()->contextStack()->push(this);
 
-	m_pContextMemory = rdo::Factory<ContextMemory>::create();
-	ASSERT(m_pContextMemory);
-	RDOParser::s_parser()->contextStack()->push(m_pContextMemory);
+	setCall(m_pSprite);
 
-	ContextMemory::push();
-
-	LPTypeInfo pReturnType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(this->src_info());
-	ASSERT(pReturnType);
-
-	FunctionParamType::ParamList paramList;
-	paramList.push_back(
-		rdo::Factory<TypeInfo>::delegate<RDOType__void>(this->src_info())
-	);
-	LPFunctionParamType pParamType = rdo::Factory<FunctionParamType>::create(paramList, this->src_info());
-	ASSERT(pParamType);
-
-	m_pFunctionType = rdo::Factory<FunctionType>::create(
-		pReturnType, pParamType, this->src_info()
-	);
+	pushContext();
 }
 
 void RDOFRMSprite::end()
 {
-	ContextMemory::pop();
-	RDOParser::s_parser()->contextStack()->pop();
-	RDOParser::s_parser()->contextStack()->pop();
+	popContext();
 }
 
 Context::FindResult RDOFRMSprite::onFindContext(CREF(LPRDOValue) pValue) const
 {
-	UNUSED(pValue);
-	return Context::FindResult();
-}
-
-LPExpression RDOFRMSprite::expression() const
-{
-	LPExpression pExpression = rdo::Factory<Expression>::create(
-		rdo::Factory<TypeInfo>::create(m_pFunctionType, m_pFunctionType->src_info()),
-		sprite(),
-		src_info()
-	);
-	ASSERT(pExpression);
-	return pExpression;
-}
-
-void RDOFRMSprite::pushParamDefinitionContext()
-{
-	LPContextParamDefinition pContextParamDefinition = rdo::Factory<ContextParamDefinition>::create(
-		boost::bind(&RDOFRMSprite::onPushParam, this, _1)
-	);
-	ASSERT(pContextParamDefinition);
-	RDOParser::s_parser()->contextStack()->push(pContextParamDefinition);
-}
-
-void RDOFRMSprite::popParamDefinitionContext()
-{
-	ASSERT(RDOParser::s_parser()->context().object_dynamic_cast<ContextParamDefinition>());
-	RDOParser::s_parser()->contextStack()->pop();
-}
-
-void RDOFRMSprite::onPushParam(CREF(LPRDOParam) pParam)
-{
+	return Function::onFindContext(pValue);
 }
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOFRMCommandList
 // --------------------------------------------------------------------------------
-RDOFRMCommandList::RDOFRMCommandList(CREF(RDOParserSrcInfo) src_info)
-	:  RDOParserSrcInfo(src_info)
+RDOFRMCommandList::RDOFRMCommandList()
 {
 	RDOParser::s_parser()->insertFRMCommandList(this);
 }
