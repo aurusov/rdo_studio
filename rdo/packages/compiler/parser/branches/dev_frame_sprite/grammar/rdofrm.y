@@ -211,7 +211,7 @@
 #include "simulator/compiler/parser/rdoparser_lexer.h"
 #include "simulator/compiler/parser/rdortp.h"
 #include "simulator/compiler/parser/rdofun.h"
-#include "simulator/compiler/parser/rdofrm.h"
+#include "simulator/compiler/parser/src/animation/animation_frame.h"
 #include "simulator/compiler/parser/rdopat.h"
 #include "simulator/compiler/parser/rdodpt.h"
 #include "simulator/compiler/parser/type/range.h"
@@ -445,7 +445,11 @@ param_list
 	: param_list_open param_list_body param_list_close
 	| param_list_open param_list_body error
 	{
-		PARSER->error().error(@2, _T("Ожидается закрывающая скобка"));
+		PARSER->error().error(@3, _T("Ожидается закрывающая скобка"));
+	}
+	| param_list_open error
+	{
+		PARSER->error().error(@2, _T("Ошибка при описании параметра"));
 	}
 	| error
 	{
@@ -1789,6 +1793,9 @@ frm_sprite_end
 	{
 		LPRDOFRMSprite pSprite = PARSER->stack().pop<RDOFRMSprite>($1);
 		ASSERT(pSprite);
+		LPIContextFunctionBodyManager pContextFunctionBodyManager = pSprite->interface_cast<IContextFunctionBodyManager>();
+		ASSERT(pContextFunctionBodyManager);
+		pContextFunctionBodyManager->popFunctionBodyContext();
 		pSprite->end();
 	}
 	;
@@ -1841,6 +1848,9 @@ frm_sprite_header
 	{
 		LPRDOFRMSprite pSprite = PARSER->stack().pop<RDOFRMSprite>($1);
 		ASSERT(pSprite);
+		LPIContextFunctionBodyManager pContextFunctionBodyManager = pSprite->interface_cast<IContextFunctionBodyManager>();
+		ASSERT(pContextFunctionBodyManager);
+		pContextFunctionBodyManager->pushFunctionBodyContext();
 		$$ = PARSER->stack().push(pSprite);
 	}
 	;
@@ -2532,6 +2542,27 @@ type_declaration
 
 		PARSER->contextStack()->push(pTypeContext);
 		$$ = PARSER->stack().push(pType);
+	}
+	| RDO_IDENTIF
+	{
+		LPRDOValue pValue = PARSER->stack().pop<RDOValue>($1);
+		ASSERT(pValue);
+
+		LPContext pContext = RDOParser::s_parser()->context();
+		ASSERT(pContext);
+
+		pContext = pContext->find(pValue);
+		ASSERT(pContext);
+
+		LPExpression pExpression = pContext->create(pValue);
+		ASSERT(pExpression);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pExpression->typeInfo());
+		ASSERT(pTypeContext);
+
+		PARSER->contextStack()->push(pTypeContext);
+
+		$$ = PARSER->stack().push(pExpression->typeInfo());
 	}
 	| param_type_such_as
 	{
