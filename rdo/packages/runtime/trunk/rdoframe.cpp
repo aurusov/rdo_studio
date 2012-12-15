@@ -549,10 +549,10 @@ RDOFRMCircle::RDOFRMCircle(
 		CREF(RDOFRMSprite::LPRDOFRMColor)    pFgColor
 	)
 	: RDOFRMItem       (pSprite)
+	, RDOFRMColoredItem(pBgColor, pFgColor)
 	, m_pX             (pX     )
 	, m_pY             (pY     )
 	, m_pRadius        (pRadius)
-	, RDOFRMColoredItem(pBgColor, pFgColor)
 {}
 
 RDOFRMCircle::~RDOFRMCircle()

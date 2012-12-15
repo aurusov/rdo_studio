@@ -28,11 +28,11 @@ TreeRoot::TreeRoot(CREF(LPRDORuntime) pRuntime, PTR(RDODPTSearch) pDP)
 	, m_rootNode          (NULL    )
 	, m_targetNode        (NULL    )
 	, m_theRealSimulator  (pRuntime)
-	, m_nodesCount        (0       )
 	, m_nodesInGraphCount (1       ) //! Учёт начальной вершины
 	, m_expandedNodesCount(0       )
 	, m_fullNodesCount    (0       )
 	, m_sizeof_dpt        (0       )
+	, m_nodesCount        (0       )
 {
 	m_ptime = boost::posix_time::microsec_clock::local_time();
 }
@@ -42,10 +42,6 @@ TreeRoot::TreeRoot(CREF(LPRDORuntime) pRuntime, PTR(RDODPTSearch) pDP)
 // --------------------------------------------------------------------------------
 TreeNode::TreeNode(CREF(LPRDORuntime) pRuntime, PTR(TreeNode) pParent, PTR(TreeRoot) pRoot, LPIDPTSearchActivity pActivity, double cost, int cnt)
 	: m_pRuntime     (pRuntime )
-	, m_pChildRuntime(NULL     )
-	, m_newCostPath  (0        )
-	, m_newCostRest  (0        )
-	, m_newCostRule  (0        )
 	, m_parent       (pParent  )
 	, m_root         (pRoot    )
 	, m_activity     (pActivity)
@@ -53,6 +49,9 @@ TreeNode::TreeNode(CREF(LPRDORuntime) pRuntime, PTR(TreeNode) pParent, PTR(TreeR
 	, m_costPath     (cost     )
 	, m_costRest     (0        )
 	, m_number       (cnt      )
+	, m_newCostPath  (0        )
+	, m_newCostRest  (0        )
+	, m_newCostRule  (0        )
 {
 	m_pRuntime->onPutToTreeNode();
 }

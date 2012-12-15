@@ -147,7 +147,7 @@ void RDOPMDWatchPar::resetResult(CREF(LPRDORuntime) pRuntime)
 
 void RDOPMDWatchPar::checkResult(CREF(LPRDORuntime) pRuntime)
 {
-	if (m_resourceID == ~0)
+	if (m_resourceID == ruint(~0))
 	{
 		return;
 	}

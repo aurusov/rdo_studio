@@ -24,11 +24,11 @@ OPEN_RDO_RUNTIME_NAMESPACE
 RDOResource::RDOResource(CREF(LPRDORuntime) pRuntime, CREF(ParamList) paramList, LPIResourceType pResType, ruint resID, ruint typeID, rbool trace, rbool temporary)
 	: RDORuntimeObject   (                                      )
 	, RDOTraceableObject (trace, resID, rdo::toString(resID + 1))
+	, m_temporary        (temporary                             )
 	, m_state            (RDOResource::CS_None                  )
 	, m_type             (typeID                                )
 	, m_referenceCount   (0                                     )
 	, m_resType          (pResType                              )
-	, m_temporary        (temporary                             )
 {
 	UNUSED(pRuntime);
 	appendParams(paramList.begin(), paramList.end());
@@ -38,13 +38,13 @@ RDOResource::RDOResource(CREF(LPRDORuntime) pRuntime, CREF(ParamList) paramList,
 RDOResource::RDOResource(CREF(LPRDORuntime) pRuntime, CREF(RDOResource) copy)
 	: RDORuntimeObject   (                 )
 	, RDOTraceableObject (copy.traceable(), copy.getTraceID(), copy.traceId())
-	, m_type             (copy.m_type      )
-	, m_state            (copy.m_state     )
-	, m_typeId           (copy.m_typeId    )
 	, m_paramList        (copy.m_paramList )
+	, m_temporary        (copy.m_temporary )
+	, m_state            (copy.m_state     )
+	, m_type             (copy.m_type      )
 	, m_referenceCount   (0                )
 	, m_resType          (copy.m_resType   )
-	, m_temporary        (copy.m_temporary )
+	, m_typeId           (copy.m_typeId    )
 {
 	UNUSED(pRuntime);
 	appendParams(copy.m_paramList.begin(), copy.m_paramList.end());

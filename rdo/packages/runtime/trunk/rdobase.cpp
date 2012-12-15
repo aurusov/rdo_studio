@@ -32,7 +32,8 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // -------------------- RDOSimulatorBase
 // --------------------------------------------------------------------------------
 RDOSimulatorBase::RDOSimulatorBase()
-	: m_startTime         (0           )
+	: m_checkOperation    (true        )
+	, m_startTime         (0           )
 	, m_currentTime       (0           )
 	, m_nextTime          (0           )
 	, m_mode              (RTM_MaxSpeed)
@@ -45,7 +46,6 @@ RDOSimulatorBase::RDOSimulatorBase()
 	, m_msec_prev         (0           )
 	, m_cnt_events        (0           )
 	, m_cnt_choice_from   (0           )
-	, m_checkOperation    (true        )
 {}
 
 ruint RDOSimulatorBase::get_cnt_calc_arithm() const
