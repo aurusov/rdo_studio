@@ -12,10 +12,10 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/compiler/parser/type/type.h"
-#include "simulator/compiler/parser/rdo_value.h"
-#include "simulator/runtime/rdo_enum.h"
 #include "utils/smart_ptr/factory.h"
+#include "simulator/runtime/rdo_enum.h"
+#include "simulator/compiler/parser/type/runtime_wrapper_type.h"
+#include "simulator/compiler/parser/rdo_value.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -25,7 +25,7 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 PREDECLARE_POINTER(RDOEnumType);
 
-class RDOEnumType: public RDOType
+class RDOEnumType: public RuntimeWrapperType
 {
 DECLARE_FACTORY(RDOEnumType);
 public:

@@ -65,7 +65,7 @@ public:
 		LPRDOValue m_pValue;
 	};
 	typedef std::vector<Param> ParamList;
-	enum { UNDEFINED_ID = ~0 };
+	static const ruint UNDEFINED_ID = ruint(~0);
 
 	virtual rdo::runtime::LPRDOCalc createCalc() const;
 

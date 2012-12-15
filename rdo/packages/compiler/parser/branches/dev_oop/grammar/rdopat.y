@@ -150,9 +150,7 @@
 %token RDO_Multithreading
 
 %token RDO_Frame
-%token RDO_Show_if
 %token RDO_Back_picture
-%token RDO_Show
 %token RDO_frm_cell
 %token RDO_text
 %token RDO_bitmap
@@ -188,6 +186,7 @@
 %token RDO_Select
 %token RDO_Size
 %token RDO_Empty
+%token RDO_Select_Array
 %token RDO_not
 %token RDO_UMINUS
 %token RDO_string
@@ -200,6 +199,9 @@
 %token RDO_QUEUE
 %token RDO_DEPART
 %token RDO_ASSIGN
+
+%token RDO_Sprite
+%token RDO_sprite_call
 
 %{
 // ---------------------------------------------------------------------------- PCH
@@ -215,7 +217,7 @@
 #include "simulator/compiler/parser/rdo_array.h"
 #include "simulator/compiler/parser/local_variable.h"
 #include "simulator/compiler/parser/type/such_as.h"
-#include "simulator/compiler/parser/context/type.h"
+#include "simulator/compiler/parser/context/context_type.h"
 #include "simulator/compiler/parser/context/memory.h"
 #include "simulator/compiler/parser/context/statement.h"
 
@@ -1055,6 +1057,8 @@ pat_time
 				PARSER->error().error(@2, _T("Перед $Body пропущено ключевое слово $Time"));
 				break;
 			}
+			default:
+				break;
 		}
 		$$ = PARSER->stack().push(pPattern);
 	}
@@ -1073,6 +1077,8 @@ pat_time
 				PARSER->error().error(@2, _T("Поле $Time не используется в продукционном правиле"));
 				break;
 			}
+			default:
+				break;
 		}
 		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($4);
 		ASSERT(pArithm);
@@ -1339,6 +1345,7 @@ pat_convert
 			{
 			case RDOPATPattern::PT_Event: type = _T("событии");               break;
 			case RDOPATPattern::PT_Rule : type = _T("продукционном правиле"); break;
+			default                     : break;
 			}
 			PARSER->error().error(@2, rdo::format(_T("Ключевое слово Convert_begin может быть использовано в обыкновенной или клавиатурной операции, но не в %s '%s'"), type.c_str(), pPattern->name().c_str()));
 		}
@@ -1379,6 +1386,7 @@ pat_convert
 			{
 			case RDOPATPattern::PT_Event: type = _T("событии");               break;
 			case RDOPATPattern::PT_Rule : type = _T("продукционном правиле"); break;
+			default                     : break;
 			}
 			PARSER->error().error(@2, rdo::format(_T("Ключевое слово Convert_end может быть использовано в обыкновенной и клавиатурной операции, но не в %s '%s'"), type.c_str(), pPattern->name().c_str()));
 		}
@@ -1419,6 +1427,7 @@ pat_convert
 			{
 			case RDOPATPattern::PT_Event: type = _T("событии");               break;
 			case RDOPATPattern::PT_Rule : type = _T("продукционном правиле"); break;
+			default                     : break;
 			}
 			PARSER->error().error(@2, rdo::format(_T("Ключевые слова Convert_begin и Convert_end могут быть использованы в обыкновенной и клавиатурной операции, но не в %s '%s'"), type.c_str(), pPattern->name().c_str()));
 		}
@@ -1480,6 +1489,7 @@ pat_convert
 			case RDOPATPattern::PT_Event    : type = _T("событии");               break;
 			case RDOPATPattern::PT_Operation: type = _T("операции");              break;
 			case RDOPATPattern::PT_Keyboard : type = _T("клавиатурной операции"); break;
+			default                         : break;
 			}
 			PARSER->error().error(@2, rdo::format(_T("Ключевое слово Convert_rule может быть использовано в продукционном правиле, но не в %s '%s'"), type.c_str(), pPattern->name().c_str()));
 		}
@@ -1525,6 +1535,7 @@ pat_convert
 			case RDOPATPattern::PT_Rule     : type = _T("продукционном правиле"); break;
 			case RDOPATPattern::PT_Operation: type = _T("операции");              break;
 			case RDOPATPattern::PT_Keyboard : type = _T("клавиатурной операции"); break;
+			default                         : break;
 			}
 			PARSER->error().error(@2, rdo::format(_T("Ключевое слово Convert_event может быть использовано в событии, но не в %s '%s'"), type.c_str(), pPattern->name().c_str()));
 		}
@@ -2271,10 +2282,6 @@ equal_statement
 	| RDO_IDENTIF param_equal_type error
 	{
 		PARSER->error().error(@3, _T("Ошибка в арифметическом выражении"));
-	}
-	| RDO_IDENTIF error fun_arithm
-	{
-		PARSER->error().error(@2, _T("Ошибка в операторе присваивания"));
 	}
 	;
 
@@ -3238,11 +3245,11 @@ param_value_default
 		RDOParserSrcInfo src_info(@1, @2, true);
 		if (src_info.src_pos().point())
 		{
-			PARSER->error().error(src_info, _T("Не указано значение по-умолчанию"));
+			PARSER->error().error(src_info, _T("Не указано значение по умолчанию"));
 		}
 		else
 		{
-			PARSER->error().error(src_info, _T("Неверное значение по-умолчанию"));
+			PARSER->error().error(src_info, _T("Неверное значение по умолчанию"));
 		}
 	}
 	;

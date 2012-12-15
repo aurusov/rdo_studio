@@ -23,9 +23,9 @@ OPEN_RDO_PARSER_NAMESPACE
  //---------- RDOArrayType
  //----------------------------------------------------------------------------
 RDOArrayType::RDOArrayType(CREF(LPTypeInfo) pItemType, CREF(RDOParserSrcInfo) src_info)
-	: RDOType          (rdo::Factory<rdo::runtime::RDOArrayType>::create(pItemType->type()->type()))
-	, RDOParserSrcInfo (src_info )
-	, m_pItemType      (pItemType)
+	: RuntimeWrapperType(rdo::Factory<rdo::runtime::RDOArrayType>::create(pItemType->type()->type()))
+	, RDOParserSrcInfo  (src_info )
+	, m_pItemType       (pItemType)
 {
 	ASSERT(m_pType  );
 	ASSERT(pItemType);
@@ -101,7 +101,7 @@ LPRDOValue RDOArrayType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInf
 
 rdo::runtime::LPRDOCalc RDOArrayType::calc_cast(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
 {
-	return RDOType::calc_cast(pCalc, pType);
+	return RuntimeWrapperType::calc_cast(pCalc, pType);
 }
 
 rdo::runtime::RDOValue RDOArrayType::get_default() const

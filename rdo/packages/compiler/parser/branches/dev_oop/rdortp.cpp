@@ -157,7 +157,7 @@ LPRDOValue RDORTPResType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcIn
 
 rdo::runtime::LPRDOCalc RDORTPResType::calc_cast(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
 {
-	return RDOType::calc_cast(pCalc, pType);
+	return RuntimeWrapperType::calc_cast(pCalc, pType);
 }
 
 rdo::runtime::RDOValue RDORTPResType::get_default() const
@@ -171,6 +171,14 @@ Context::FindResult RDORTPResType::onSwitchContext(CREF(LPExpression) pSwitchExp
 {
 	ASSERT(pSwitchExpression);
 	ASSERT(pValue           );
+
+	if (!pSwitchExpression->calc())
+	{
+		RDOParser::s_parser()->error().error(
+			pSwitchExpression->src_info(),
+			rdo::format(_T("Ќедопустимое использование типа ресурса: %s"), src_text().c_str())
+		);
+	}
 
 	ruint parNumb = getRTPParamNumber(pValue->value().getIdentificator());
 	if (parNumb == RDORTPResType::UNDEFINED_PARAM)
@@ -198,7 +206,7 @@ Context::FindResult RDORTPResType::onSwitchContext(CREF(LPExpression) pSwitchExp
 RDORTPFuzzyMembershiftFun::RDORTPFuzzyMembershiftFun(CREF(LPRDOParser) pParser):
 	RDOParserObject(pParser)
 {
-/*	for (ruint i = 0; i < m_points.size(); i++)
+	for (ruint i = 0; i < m_points.size(); i++)
 	{
 //		double x = m_points[i]->getX();
 	}

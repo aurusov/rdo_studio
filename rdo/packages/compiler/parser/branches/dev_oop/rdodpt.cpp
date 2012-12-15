@@ -97,7 +97,7 @@ void RDODPTActivity::addParam(CREF(LPRDOValue) pParam)
 	{
 		if (!pPatternParam->getDefault()->defined())
 		{
-			RDOParser::s_parser()->error().push_only(pParam->src_pos(), rdo::format(_T("Нет значения по-умолчанию для параметра '%s'"), pPatternParam->src_text().c_str()));
+			RDOParser::s_parser()->error().push_only(pParam->src_pos(), rdo::format(_T("Нет значения по умолчанию для параметра '%s'"), pPatternParam->src_text().c_str()));
 			RDOParser::s_parser()->error().push_only(pPatternParam->src_info(), rdo::format(_T("См. параметр '%s', тип '%s'"), pPatternParam->src_text().c_str(), pPatternParam->getTypeInfo()->src_info().src_text().c_str()));
 			RDOParser::s_parser()->error().push_done();
 		}
@@ -330,9 +330,9 @@ void RDODPTSearchActivity::setValue(IDPTSearchActivity::ValueTime value, CREF(LP
 // --------------------------------------------------------------------------------
 RDODPTSearch::RDODPTSearch(CREF(RDOParserSrcInfo) src_info, rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag trace, LPILogic pParent)
 	: RDOLogic<rdo::runtime::RDODPTSearchRuntime, RDODPTSearchActivity>(src_info)
-	, m_trace  (trace  )
-	, m_closed (false  )
 	, m_pParent(pParent)
+	, m_closed (false  )
+	, m_trace  (trace  )
 {
 	RDOParser::s_parser()->checkDPTName   (this->src_info());
 	RDOParser::s_parser()->insertDPTSearch(this);

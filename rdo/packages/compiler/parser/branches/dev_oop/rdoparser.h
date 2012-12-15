@@ -35,7 +35,8 @@
 #include "simulator/compiler/parser/rdodpt.h"
 #include "simulator/compiler/parser/rdoprocess.h"
 #include "simulator/compiler/parser/rdopmd.h"
-#include "simulator/compiler/parser/rdofrm.h"
+#include "simulator/compiler/parser/src/animation/animation_frame.h"
+#include "simulator/compiler/parser/src/animation/animation_sprite.h"
 #include "simulator/compiler/parser/rdosmr.h"
 #include "simulator/compiler/parser/context/context.h"
 #include "simulator/compiler/parser/context/stack.h"
@@ -69,9 +70,6 @@ public: \
 #define DEFINE_OBJECT_CONTAINER_NONAME(NAME) \
 DEFINE_OBJECT_CONTAINER_MINIMUM(LPRDO##NAME, NAME)
 
-#define DEFINE_OBJECT_CONTAINER_NONAME_LP(NAME) \
-DEFINE_OBJECT_CONTAINER_MINIMUM(LPRDO##NAME, NAME)
-
 #define DEFINE_OBJECT_CONTAINER(NAME) \
 DEFINE_OBJECT_CONTAINER_MINIMUM(LPRDO##NAME, NAME) \
 DEFINE_OBJECT_CONTAINER_WITHNAME(LPRDO##NAME, NAME)
@@ -91,20 +89,22 @@ CLASS(RDOParser):
 DECLARE_FACTORY(RDOParser);
 
 public:
-DEFINE_OBJECT_CONTAINER(PATPattern );
-DEFINE_OBJECT_CONTAINER(RTPResType );
-DEFINE_OBJECT_CONTAINER(RSSResource);
-DEFINE_OBJECT_CONTAINER(FRMFrame   );
-DEFINE_OBJECT_CONTAINER(FUNConstant);
-DEFINE_OBJECT_CONTAINER(FUNFunction);
-DEFINE_OBJECT_CONTAINER(FUNSequence);
-DEFINE_OBJECT_CONTAINER(DPTSearch  );
-DEFINE_OBJECT_CONTAINER(DPTSome    );
-DEFINE_OBJECT_CONTAINER(DPTPrior   );
-DEFINE_OBJECT_CONTAINER(DPTActivity);
-DEFINE_OBJECT_CONTAINER(Event      );
-DEFINE_OBJECT_CONTAINER(ResultGroup);
-DEFINE_OBJECT_CONTAINER(PROCProcess);
+DEFINE_OBJECT_CONTAINER(PATPattern    );
+DEFINE_OBJECT_CONTAINER(RTPResType    );
+DEFINE_OBJECT_CONTAINER(RSSResource   );
+DEFINE_OBJECT_CONTAINER(FRMFrame      );
+DEFINE_OBJECT_CONTAINER(FRMSprite     );
+DEFINE_OBJECT_CONTAINER(FRMCommandList);
+DEFINE_OBJECT_CONTAINER(FUNConstant   );
+DEFINE_OBJECT_CONTAINER(FUNFunction   );
+DEFINE_OBJECT_CONTAINER(FUNSequence   );
+DEFINE_OBJECT_CONTAINER(DPTSearch     );
+DEFINE_OBJECT_CONTAINER(DPTSome       );
+DEFINE_OBJECT_CONTAINER(DPTPrior      );
+DEFINE_OBJECT_CONTAINER(DPTActivity   );
+DEFINE_OBJECT_CONTAINER(Event         );
+DEFINE_OBJECT_CONTAINER(ResultGroup   );
+DEFINE_OBJECT_CONTAINER(PROCProcess   );
 
 DEFINE_OBJECT_CONTAINER_NONAME(FUNGroup);
 

@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/calc_base.h"
+#include "simulator/runtime/result/result.h"
 #include "simulator/runtime/result/result_group.h"
 #include "simulator/compiler/parser/rdopmd.h"
 #include "simulator/compiler/parser/rdoparser.h"
@@ -60,7 +61,7 @@ void RDOPMDResult::endOfCreation(CREF(LPIResult) pResult)
 		pResultGroup = RDOParser::s_parser()->findResultGroup(_T(""));
 		if (!pResultGroup)
 		{
-			//! Нет даже группы по-умолчанию
+			//! Нет даже группы по умолчанию
 			pResultGroup = rdo::Factory<RDOResultGroup>::create();
 			ASSERT(pResultGroup);
 			pResultGroup->init(RDOParserSrcInfo());

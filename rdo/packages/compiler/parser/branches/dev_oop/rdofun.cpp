@@ -11,13 +11,14 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdofun.h"
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/rdortp.h"
 #include "simulator/compiler/parser/rdorss.h"
 #include "simulator/compiler/parser/rdopat.h"
-#include "simulator/compiler/parser/rdofrm.h"
+#include "simulator/compiler/parser/src/animation/animation_frame.h"
 #include "simulator/compiler/parser/rdodpt.h"
 #include "simulator/compiler/parser/rdoparser_lexer.h"
 #include "simulator/compiler/parser/type/range.h"
@@ -675,6 +676,27 @@ void ArithmContainer::addItem(CREF(LPRDOFUNArithm) pArithm)
 	m_arithmList.push_back(pArithm);
 }
 
+LPFunctionParamType ArithmContainer::getType() const
+{
+	FunctionParamType::ParamList paramList;
+
+	BOOST_FOREACH(const LPRDOFUNArithm& pArithm, m_arithmList)
+	{
+		paramList.push_back(pArithm->typeInfo());
+	}
+
+	if (paramList.empty())
+	{
+		paramList.push_back(
+			rdo::Factory<TypeInfo>::delegate<RDOType__void>(src_info())
+		);
+	}
+
+	LPFunctionParamType pParamType = rdo::Factory<FunctionParamType>::create(paramList, src_info());
+	ASSERT(pParamType);
+	return pParamType;
+}
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOFUNParams
 // --------------------------------------------------------------------------------
@@ -698,6 +720,58 @@ rdo::runtime::LPRDOCalc RDOFUNParams::getCalc(ruint paramID, CREF(LPTypeInfo) pT
 	return pCalc;
 }
 
+LPExpression RDOFUNParams::createCallExpression(CREF(LPExpression) pExpression)
+{
+	ASSERT(pExpression);
+
+	LPFunctionType pFunctionType = pExpression->typeInfo()->type().object_dynamic_cast<FunctionType>();
+	ASSERT(pFunctionType);
+
+	LPFunctionParamType pFunctionParamType = pFunctionType->paramType();
+	ASSERT(pFunctionParamType);
+
+	LPFunctionParamType pCallerParamType = m_pArithmContainer->getType();
+	ASSERT(pCallerParamType);
+
+	pFunctionParamType.object_parent_cast<RDOType>()->type_cast(
+		pCallerParamType,
+		pCallerParamType->src_info(),
+		pFunctionParamType->src_info(),
+		src_info()
+	);
+
+	rdo::runtime::LPRDOCalc pCalc = pExpression->calc();
+	ASSERT(pCalc);
+
+	rdo::runtime::LPRDOCalcFunctionCaller pFuncCall = rdo::Factory<rdo::runtime::RDOCalcFunctionCaller>::create(pCalc);
+	ASSERT(pFuncCall);
+	pFuncCall->setSrcInfo(src_info());
+
+	ArithmContainer::Container::const_iterator arithmIt = m_pArithmContainer->getContainer().begin();
+	BOOST_FOREACH(const LPTypeInfo& pFuncParam, pFunctionParamType->paramList())
+	{
+		if (pFuncParam->type()->typeID() != rdo::runtime::RDOType::t_void)
+		{
+			LPRDOFUNArithm pArithm = *arithmIt;
+			ASSERT(pArithm);
+
+			pArithm->checkParamType(pFuncParam);
+			pFuncCall->addParameter(pFuncParam->type()->calc_cast(pArithm->createCalc(pFuncParam), pArithm->typeInfo()->type()));
+
+			++arithmIt;
+		}
+	}
+
+	LPExpression pResult = rdo::Factory<Expression>::create(
+		pFunctionType->returnType(),
+		pFuncCall,
+		src_info()
+	);
+	ASSERT(pResult);
+
+	return pResult;
+}
+
 LPRDOFUNArithm RDOFUNParams::createCall(CREF(tstring) funName)
 {
 	LPRDOFUNFunction pFunction = RDOParser::s_parser()->findFUNFunction(funName);
@@ -712,7 +786,7 @@ LPRDOFUNArithm RDOFUNParams::createCall(CREF(tstring) funName)
 		RDOParser::s_parser()->error().error(src_info(), rdo::format(_T("Неверное количество параметров функции: %s"), funName.c_str()));
 	}
 
-	rdo::runtime::LPRDOCalc pCalc = pFunction->getFunctionCalc().object_parent_cast<rdo::runtime::RDOCalc>();
+	rdo::runtime::LPRDOCalc pCalc = pFunction->getFunctionCalc();
 	ASSERT(pCalc);
 	pCalc = pFunction->getReturn()->getTypeInfo()->type()->calc_cast(pCalc, pFunction->getReturn()->getTypeInfo()->type());
 	ASSERT(pCalc);
@@ -794,6 +868,8 @@ void RDOFUNSequence::initResult()
 			}
 			break;
 		}
+		default:
+			break;
 	}
 }
 
@@ -1424,7 +1500,7 @@ void RDOFUNFunction::createListCalc()
 {
 	if (!m_pReturn->getDefault()->defined())
 	{
-		RDOParser::s_parser()->error().error(m_pReturn->src_info(), rdo::format(_T("Функция '%s' должна иметь значение по-умолчанию"), name().c_str()));
+		RDOParser::s_parser()->error().error(m_pReturn->src_info(), rdo::format(_T("Функция '%s' должна иметь значение по умолчанию"), name().c_str()));
 	}
 	if (m_paramList.empty())
 	{
@@ -1607,9 +1683,9 @@ void RDOFUNFunction::createAlgorithmicCalc()
 		}
 		else
 		{
-			//! Присвоить автоматическое значение по-умолчанию, если оно не задано в явном виде
+			//! Присвоить автоматическое значение по умолчанию, если оно не задано в явном виде
 			pCalcDefault = rdo::Factory<rdo::runtime::RDOCalcConst>::create(m_pReturn->getTypeInfo()->type()->get_default());
-			RDOParser::s_parser()->error().warning(src_info(), rdo::format(_T("Для функции '%s' неопределено значение по-умолчанию"), name().c_str()));
+			RDOParser::s_parser()->error().warning(src_info(), rdo::format(_T("Для функции '%s' неопределено значение по умолчанию"), name().c_str()));
 		}
 		ASSERT(pCalcDefault);
 		pCalcDefault->setSrcInfo(m_pReturn->getTypeInfo()->src_info());
@@ -1747,7 +1823,7 @@ RDOFUNSelect::RDOFUNSelect(CREF(RDOParserSrcInfo) res_info)
 //! Сам Select как выборка по типу и условию
 void RDOFUNSelect::initSelect(LPRDOFUNLogic pCondition)
 {
-	m_pCalcSelect = rdo::Factory<rdo::runtime::RDOFunCalcSelect>::create(getResType()->getNumber(), pCondition->getCalc());
+	m_pCalcSelect = rdo::Factory<rdo::runtime::RDOFunCalcSelect>::create(getResType()->getRuntimeResType(), getResType()->getNumber(), pCondition->getCalc());
 	m_pCalcSelect->setSrcInfo(pCondition->src_info());
 }
 
@@ -1822,6 +1898,28 @@ LPRDOFUNArithm RDOFUNSelect::createFunSelectSize(CREF(RDOParserSrcInfo) size_inf
 	ASSERT(pArithm);
 
 	pArithm->setSrcInfo(size_info);
+	return pArithm;
+}
+
+LPRDOFUNArithm RDOFUNSelect::createFunSelectArray(CREF(RDOParserSrcInfo) array_info)
+{
+	setSrcText(src_text() + _T(".") + array_info.src_text());
+	RDOParser::s_parser()->getFUNGroupStack().pop_back();
+	end();
+
+	LPRDOArrayType pArrayType = rdo::Factory<RDOArrayType>::create(rdo::Factory<TypeInfo>::create(getResType(), array_info), array_info);
+
+	LPExpression pExpression = rdo::Factory<Expression>::create(
+		rdo::Factory<TypeInfo>::create(pArrayType, array_info),
+		rdo::Factory<rdo::runtime::RDOFunCalcSelectArray>::create(m_pCalcSelect),
+		array_info
+	);
+	ASSERT(pExpression);
+
+	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
+	ASSERT(pArithm);
+
+	pArithm->setSrcInfo(array_info);
 	return pArithm;
 }
 

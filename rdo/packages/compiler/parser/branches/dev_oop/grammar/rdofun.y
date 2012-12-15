@@ -149,9 +149,7 @@
 %token RDO_Multithreading
 
 %token RDO_Frame
-%token RDO_Show_if
 %token RDO_Back_picture
-%token RDO_Show
 %token RDO_frm_cell
 %token RDO_text
 %token RDO_bitmap
@@ -187,6 +185,7 @@
 %token RDO_Select
 %token RDO_Size
 %token RDO_Empty
+%token RDO_Select_Array
 %token RDO_not
 %token RDO_UMINUS
 %token RDO_string
@@ -199,6 +198,9 @@
 %token RDO_QUEUE
 %token RDO_DEPART
 %token RDO_ASSIGN
+
+%token RDO_Sprite
+%token RDO_sprite_call
 
 %{
 // ---------------------------------------------------------------------------- PCH
@@ -213,7 +215,7 @@
 #include "simulator/compiler/parser/rdo_array.h"
 #include "simulator/compiler/parser/type/such_as.h"
 #include "simulator/compiler/parser/local_variable.h"
-#include "simulator/compiler/parser/context/type.h"
+#include "simulator/compiler/parser/context/context_type.h"
 #include "simulator/compiler/parser/context/memory.h"
 #include "simulator/compiler/parser/context/statement.h"
 #include "simulator/runtime/calc/procedural/calc_locvar.h"
@@ -1643,10 +1645,6 @@ equal_statement
 	{
 		PARSER->error().error(@3, _T("Ошибка в арифметическом выражении"));
 	}
-	| RDO_IDENTIF error fun_arithm
-	{
-		PARSER->error().error(@2, _T("Ошибка в операторе присваивания"));
-	}
 	;
 
 increment_or_decrement_type
@@ -2612,11 +2610,11 @@ param_value_default
 		RDOParserSrcInfo src_info(@1, @2, true);
 		if (src_info.src_pos().point())
 		{
-			PARSER->error().error(src_info, _T("Не указано значение по-умолчанию"));
+			PARSER->error().error(src_info, _T("Не указано значение по умолчанию"));
 		}
 		else
 		{
-			PARSER->error().error(src_info, _T("Неверное значение по-умолчанию"));
+			PARSER->error().error(src_info, _T("Неверное значение по умолчанию"));
 		}
 	}
 	;
