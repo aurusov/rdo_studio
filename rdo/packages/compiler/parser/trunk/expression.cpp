@@ -53,8 +53,8 @@ Expression::Expression(CREF(LPRDOValue) pValue)
 
 Expression::Expression(CREF(LPExpression) pExpression)
 	: m_pType (pExpression->m_pType )
-	, m_pCalc (pExpression->m_pCalc )
 	, m_pValue(pExpression->m_pValue)
+	, m_pCalc (pExpression->m_pCalc )
 {}
 
 Expression::~Expression()

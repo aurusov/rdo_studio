@@ -206,7 +206,7 @@ Context::FindResult RDORTPResType::onSwitchContext(CREF(LPExpression) pSwitchExp
 RDORTPFuzzyMembershiftFun::RDORTPFuzzyMembershiftFun(CREF(LPRDOParser) pParser):
 	RDOParserObject(pParser)
 {
-/*	for (ruint i = 0; i < m_points.size(); i++)
+	for (ruint i = 0; i < m_points.size(); i++)
 	{
 //		double x = m_points[i]->getX();
 	}

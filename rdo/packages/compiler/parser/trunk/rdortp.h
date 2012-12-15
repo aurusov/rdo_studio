@@ -88,9 +88,9 @@ private:
 	virtual ~RDORTPResType();
 
 	rdo::runtime::LPIResourceType m_pRuntimeResType;
-	TypeRDOResType                m_type;
 	const ruint                   m_number;
 	const rbool                   m_permanent;
+	TypeRDOResType                m_type;
 	ParamList                     m_params;
 
 	DECLARE_IContextSwitch;
