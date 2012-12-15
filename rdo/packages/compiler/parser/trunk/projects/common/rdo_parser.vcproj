@@ -2542,6 +2542,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\context\context_type.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\context\context_type.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\context\memory.cpp"
 				>
 			</File>
@@ -2563,14 +2571,6 @@
 			</File>
 			<File
 				RelativePath="..\..\context\statement.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\context\type.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\context\type.h"
 				>
 			</File>
 		</Filter>
@@ -2790,66 +2790,102 @@
 			Name=".type"
 			>
 			<File
-				RelativePath="..\..\type\info.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\type\info.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\type\info.inl"
+				RelativePath="..\..\type\type.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\..\type\type.h"
 				>
 			</File>
+			<File
+				RelativePath="..\..\type\type_i.h"
+				>
+			</File>
 			<Filter
-				Name=".enum"
+				Name=".runtime_wrapper"
 				>
 				<File
-					RelativePath="..\..\type\enum.cpp"
+					RelativePath="..\..\type\runtime_wrapper_type.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\type\enum.h"
+					RelativePath="..\..\type\runtime_wrapper_type.h"
+					>
+				</File>
+				<Filter
+					Name=".array"
+					>
+					<File
+						RelativePath="..\..\type\array.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\type\array.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".atom"
+					>
+					<File
+						RelativePath="..\..\type\atom.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\type\atom.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".enum"
+					>
+					<File
+						RelativePath="..\..\type\enum.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\type\enum.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".range"
+					>
+					<File
+						RelativePath="..\..\type\range.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\type\range.inl"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name=".info"
+				>
+				<File
+					RelativePath="..\..\type\info.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\type\info.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\type\info.inl"
 					>
 				</File>
 			</Filter>
 			<Filter
-				Name=".range"
+				Name=".function"
 				>
 				<File
-					RelativePath="..\..\type\range.h"
+					RelativePath="..\..\type\function_type.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\type\range.inl"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name=".array"
-				>
-				<File
-					RelativePath="..\..\type\array.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\type\array.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name=".atom"
-				>
-				<File
-					RelativePath="..\..\type\atom.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\type\atom.h"
+					RelativePath="..\..\type\function_type.h"
 					>
 				</File>
 			</Filter>
