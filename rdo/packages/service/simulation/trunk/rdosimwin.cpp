@@ -613,6 +613,7 @@ void RDOThreadRunTime::proc(REF(RDOMessageInfo) msg)
 			m_pSimulator->m_pRuntime->setShowRate(m_pSimulator->m_pRuntime->getShowRate());
 			break;
 		}
+		default: break;
 	}
 }
 
@@ -734,6 +735,8 @@ void RDOThreadRunTime::writeResultsInfo()
 			break;
 		case rdo::simulation::report::EC_UserBreak:
 			m_pSimulator->m_pRuntime->getResultsInfo() << _T("$Status = ") << _T("USER_BREAK");
+			break;
+		default:
 			break;
 	}
 	m_pSimulator->m_pRuntime->getResultsInfo() << '\n' << _T("$Result_values  0  ") << m_pSimulator->m_pRuntime->getTimeNow();
@@ -1079,6 +1082,7 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 			}
 			break;
 		}
+		default: break;
 	}
 }
 
@@ -1577,7 +1581,7 @@ void RDOThreadSimulator::corbaGetRSS(REF(rdo::compiler::parser::RDOCorba::GetRSS
 	//! ѕробежались по всем ресурсам и переписали в RSSList
 	rdo::compiler::mbuilder::RDOResourceList rssList(&parser);
 	rdo::compiler::mbuilder::RDOResourceList::List::const_iterator rss_it = rssList.begin();
-	/*while (rss_it != rssList.end())
+	while (rss_it != rssList.end())
 	{
 		//! —оздаем текстовую структуру
 		RSS rss;
@@ -1633,6 +1637,7 @@ void RDOThreadCodeComp::proc(REF(RDOMessageInfo) msg)
 			m_pParser = NULL;
 			break;
 		}
+		default: break;
 	}
 }
 
