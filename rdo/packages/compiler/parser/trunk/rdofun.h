@@ -678,6 +678,7 @@ public:
 	LPRDOFUNLogic  createFunSelectGroup(RDOFUNGroupLogic::FunGroupType funType, REF(LPRDOFUNLogic) pCondition);
 	LPRDOFUNLogic  createFunSelectEmpty(CREF(RDOParserSrcInfo) empty_info);
 	LPRDOFUNArithm createFunSelectSize (CREF(RDOParserSrcInfo) size_info );
+	LPRDOFUNArithm createFunSelectArray(CREF(RDOParserSrcInfo) array_info);
 
 private:
 	RDOFUNSelect(CREF(RDOParserSrcInfo) res_info);

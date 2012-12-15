@@ -1823,7 +1823,7 @@ RDOFUNSelect::RDOFUNSelect(CREF(RDOParserSrcInfo) res_info)
 //! —ам Select как выборка по типу и условию
 void RDOFUNSelect::initSelect(LPRDOFUNLogic pCondition)
 {
-	m_pCalcSelect = rdo::Factory<rdo::runtime::RDOFunCalcSelect>::create(getResType()->getNumber(), pCondition->getCalc());
+	m_pCalcSelect = rdo::Factory<rdo::runtime::RDOFunCalcSelect>::create(getResType()->getRuntimeResType(), getResType()->getNumber(), pCondition->getCalc());
 	m_pCalcSelect->setSrcInfo(pCondition->src_info());
 }
 
@@ -1898,6 +1898,28 @@ LPRDOFUNArithm RDOFUNSelect::createFunSelectSize(CREF(RDOParserSrcInfo) size_inf
 	ASSERT(pArithm);
 
 	pArithm->setSrcInfo(size_info);
+	return pArithm;
+}
+
+LPRDOFUNArithm RDOFUNSelect::createFunSelectArray(CREF(RDOParserSrcInfo) array_info)
+{
+	setSrcText(src_text() + _T(".") + array_info.src_text());
+	RDOParser::s_parser()->getFUNGroupStack().pop_back();
+	end();
+
+	LPRDOArrayType pArrayType = rdo::Factory<RDOArrayType>::create(rdo::Factory<TypeInfo>::create(getResType(), array_info), array_info);
+
+	LPExpression pExpression = rdo::Factory<Expression>::create(
+		rdo::Factory<TypeInfo>::create(pArrayType, array_info),
+		rdo::Factory<rdo::runtime::RDOFunCalcSelectArray>::create(m_pCalcSelect),
+		array_info
+	);
+	ASSERT(pExpression);
+
+	LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
+	ASSERT(pArithm);
+
+	pArithm->setSrcInfo(array_info);
 	return pArithm;
 }
 
