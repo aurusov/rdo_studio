@@ -211,7 +211,7 @@
 #include "simulator/compiler/parser/rdoparser_lexer.h"
 #include "simulator/compiler/parser/rdortp.h"
 #include "simulator/compiler/parser/rdofun.h"
-#include "simulator/compiler/parser/rdofrm.h"
+#include "simulator/compiler/parser/src/animation/animation_frame.h"
 #include "simulator/compiler/parser/rdopat.h"
 #include "simulator/compiler/parser/rdodpt.h"
 #include "simulator/compiler/parser/type/range.h"
@@ -442,16 +442,72 @@ frm_end
 	;
 
 param_list
-	: /*empty*/
-	| param_list_body
+	: param_list_open param_list_body param_list_close
+	| param_list_open param_list_body error
+	{
+		PARSER->error().error(@3, _T("Ожидается закрывающая скобка"));
+	}
+	| param_list_open error
+	{
+		PARSER->error().error(@2, _T("Ошибка при описании параметра"));
+	}
+	| error
+	{
+		PARSER->error().error(@1, _T("Ожидается открывающая скобка"));
+	}
+	;
+
+param_list_open
+	: '('
+	{
+		LPContext pContext = RDOParser::s_parser()->context();
+		ASSERT(pContext);
+		LPIContextParamDefinitionManager pContextParamDefinitionManager = pContext->interface_cast<IContextParamDefinitionManager>();
+		ASSERT(pContextParamDefinitionManager);
+		pContextParamDefinitionManager->pushParamDefinitionContext();
+	}
+	;
+
+param_list_close
+	: ')'
+	{
+		LPContext pContext = RDOParser::s_parser()->context();
+		ASSERT(pContext);
+		LPIContextParamDefinitionManager pContextParamDefinitionManager = pContext->interface_cast<IContextParamDefinitionManager>();
+		ASSERT(pContextParamDefinitionManager);
+		pContextParamDefinitionManager->popParamDefinitionContext();
+	}
 	;
 
 param_list_body
-	: type_declaration RDO_IDENTIF {}
-	| param_list_body ',' type_declaration RDO_IDENTIF {}
+	: /* empty */
+	| param_declaration
+	| param_list_body ',' param_declaration
 	| param_list_body ',' error
 	{
-		PARSER->error().error(@3, _T("Ошибка в задании параметра!"));
+		PARSER->error().error(@3, _T("Ошибка в задании параметра"));
+	}
+	;
+
+param_declaration
+	: type_declaration RDO_IDENTIF
+	{
+		LPTypeInfo pType = PARSER->stack().pop<TypeInfo>($1);
+		ASSERT(pType);
+
+		LPRDOValue pName = PARSER->stack().pop<RDOValue>($2);
+		ASSERT(pName);
+
+		LPRDOParam pParam = rdo::Factory<RDOParam>::create(pName->src_info(), pType);
+		ASSERT(pParam);
+
+		PARSER->contextStack()->pop();
+
+		LPContext pContext = RDOParser::s_parser()->context();
+		ASSERT(pContext);
+		LPContextParamDefinition pContextParamDefinition = pContext->cast<ContextParamDefinition>();
+		ASSERT(pContextParamDefinition);
+		pContextParamDefinition->pushParam(pParam);
 	}
 	;
 
@@ -1737,6 +1793,9 @@ frm_sprite_end
 	{
 		LPRDOFRMSprite pSprite = PARSER->stack().pop<RDOFRMSprite>($1);
 		ASSERT(pSprite);
+		LPIContextFunctionBodyManager pContextFunctionBodyManager = pSprite->interface_cast<IContextFunctionBodyManager>();
+		ASSERT(pContextFunctionBodyManager);
+		pContextFunctionBodyManager->popFunctionBodyContext();
 		pSprite->end();
 	}
 	;
@@ -1775,24 +1834,24 @@ frm_sprite_begin
 	}
 	;
 
-frm_sprite_header
-	: RDO_Sprite RDO_IDENTIF '(' param_list ')'
+frm_sprite_header_begin
+	: RDO_Sprite RDO_IDENTIF
 	{
 		LPRDOFRMSprite pSprite = rdo::Factory<RDOFRMSprite>::create(PARSER->stack().pop<RDOValue>($2)->src_info());
 		ASSERT(pSprite);
 		$$ = PARSER->stack().push(pSprite);
 	}
-	| RDO_Sprite RDO_IDENTIF '(' param_list error
+	;
+
+frm_sprite_header
+	: frm_sprite_header_begin param_list
 	{
-		PARSER->error().error(@5, _T("Ожидается закрывающая скобка"));
-	}
-	| RDO_Sprite RDO_IDENTIF '(' error
-	{
-		PARSER->error().error(@4, _T("Ошибка задания параметров"));
-	}
-	| RDO_Sprite RDO_IDENTIF error
-	{
-		PARSER->error().error(@3, _T("Ожидается открывающая скобка"));
+		LPRDOFRMSprite pSprite = PARSER->stack().pop<RDOFRMSprite>($1);
+		ASSERT(pSprite);
+		LPIContextFunctionBodyManager pContextFunctionBodyManager = pSprite->interface_cast<IContextFunctionBodyManager>();
+		ASSERT(pContextFunctionBodyManager);
+		pContextFunctionBodyManager->pushFunctionBodyContext();
+		$$ = PARSER->stack().push(pSprite);
 	}
 	;
 
@@ -2483,6 +2542,27 @@ type_declaration
 
 		PARSER->contextStack()->push(pTypeContext);
 		$$ = PARSER->stack().push(pType);
+	}
+	| RDO_IDENTIF
+	{
+		LPRDOValue pValue = PARSER->stack().pop<RDOValue>($1);
+		ASSERT(pValue);
+
+		LPContext pContext = RDOParser::s_parser()->context();
+		ASSERT(pContext);
+
+		pContext = pContext->find(pValue);
+		ASSERT(pContext);
+
+		LPExpression pExpression = pContext->create(pValue);
+		ASSERT(pExpression);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pExpression->typeInfo());
+		ASSERT(pTypeContext);
+
+		PARSER->contextStack()->push(pTypeContext);
+
+		$$ = PARSER->stack().push(pExpression->typeInfo());
 	}
 	| param_type_such_as
 	{

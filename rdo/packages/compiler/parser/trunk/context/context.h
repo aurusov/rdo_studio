@@ -43,6 +43,9 @@ public:
 	template <class T>
 	rdo::intrusive_ptr<T> cast();
 
+	template <class T>
+	rdo::interface_ptr<T> interface_cast();
+
 	LPContext    find  (CREF(LPRDOValue) pValue) const;
 	LPContext    swch  (CREF(LPRDOValue) pValue) const;
 	LPExpression create(CREF(LPRDOValue) pValue);

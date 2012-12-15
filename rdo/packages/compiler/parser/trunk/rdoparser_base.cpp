@@ -19,7 +19,7 @@
 #include "simulator/compiler/parser/rdopat.h"
 #include "simulator/compiler/parser/rdodpt.h"
 #include "simulator/compiler/parser/rdosmr.h"
-#include "simulator/compiler/parser/rdofrm.h"
+#include "simulator/compiler/parser/src/animation/animation_frame.h"
 #include "simulator/compiler/parser/rdopmd.h"
 #include "simulator/compiler/parser/rdortp.h"
 // --------------------------------------------------------------------------------

@@ -450,11 +450,27 @@
 			Name=".animation"
 			>
 			<File
-				RelativePath="..\..\rdofrm.cpp"
+				RelativePath="..\..\src\animation\animation_base.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\rdofrm.h"
+				RelativePath="..\..\src\animation\animation_base.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\animation\animation_frame.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\animation\animation_frame.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\animation\animation_sprite.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\animation\animation_sprite.h"
 				>
 			</File>
 		</Filter>
@@ -2573,6 +2589,26 @@
 				RelativePath="..\..\context\statement.h"
 				>
 			</File>
+			<Filter
+				Name=".function"
+				>
+				<File
+					RelativePath="..\..\context\function\context_function_body.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\context\function\context_function_body.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\context\function\context_function_param_definition.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\context\function\context_function_param_definition.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name=".dpt"
@@ -2617,6 +2653,14 @@
 		<Filter
 			Name=".function"
 			>
+			<File
+				RelativePath="..\..\src\function\function.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\function\function.h"
+				>
+			</File>
 			<File
 				RelativePath="..\..\rdofun.cpp"
 				>
