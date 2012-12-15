@@ -79,8 +79,8 @@ void RDOResource::operator= (CREF(RDOResource) obj)
 RDOResType::RDOResType(CREF(parser::LPRDORTPResType) rtp)
 	: parser::RDOParserSrcInfo(rtp->src_info()                )
 	, m_name (rtp->name()                                     )
-	, m_type (rtp->isPermanent() ? rt_permanent : rt_temporary)
 	, m_exist(true                                            )
+	, m_type (rtp->isPermanent() ? rt_permanent : rt_temporary)
 	, m_id   (rtp->getNumber()                                )
 {
 	STL_FOR_ALL_CONST(rtp->getParams(), param_it)
@@ -94,10 +94,10 @@ RDOResType::RDOResType(CREF(parser::LPRDORTPResType) rtp)
 RDOResType::Param::Param(CREF(parser::LPRDORTPParam) param)
 	: parser::RDOParserSrcInfo(param->src_info())
 	, m_name    (param->name()                  )
-	, m_pType   (param->getTypeInfo()           )
 	, m_exist   (true                           )
-	, m_id      (-1                             )
+	, m_pType   (param->getTypeInfo()           )
 	, m_pDefault(param->getDefault()            )
+	, m_id      (-1                             )
 {
 	switch (typeID())
 	{
@@ -121,6 +121,8 @@ RDOResType::Param::Param(CREF(parser::LPRDORTPParam) param)
 			}
 			break;
 		}
+		default:
+			break;
 	}
 }
 
@@ -129,8 +131,8 @@ RDOResType::Param::Param(CREF(parser::LPRDORTPParam) param)
 // --------------------------------------------------------------------------------
 RDOResType::RDOResType(CREF(tstring) name, Type type)
 	: m_name (name     )
-	, m_type (type     )
 	, m_exist(false    )
+	, m_type (type     )
 	, m_id   (ruint(~0))
 {}
 
@@ -147,17 +149,17 @@ rbool RDOResType::ParamList::append(REF(Param) param)
 
 RDOResType::Param::Param(CREF(tstring) name, CREF(parser::LPTypeInfo) pType, CREF(parser::LPRDOValue) pDefault)
 	: m_name    (name    )
-	, m_pType   (pType   )
 	, m_exist   (true    )
-	, m_id      (-1      )
+	, m_pType   (pType   )
 	, m_pDefault(pDefault)
+	, m_id      (-1      )
 {}
 
 RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<parser::RDOType__int>) pType, CREF(parser::LPRDOValue) pDefault)
 	: m_name    (name    )
 	, m_exist   (true    )
-	, m_id      (-1      )
 	, m_pDefault(pDefault)
+	, m_id      (-1      )
 {
 	initType(pType);
 }
@@ -165,8 +167,8 @@ RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<parser::RDO
 RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<parser::RDOType__real>) pType, CREF(parser::LPRDOValue) pDefault)
 	: m_name    (name    )
 	, m_exist   (true    )
-	, m_id      (-1      )
 	, m_pDefault(pDefault)
+	, m_id      (-1      )
 {
 	initType(pType);
 }
@@ -174,8 +176,8 @@ RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::intrusive_ptr<parser::RDO
 RDOResType::Param::Param(CREF(tstring) name, CREF(rdo::runtime::RDOEnumType::Enums) enums, CREF(parser::LPRDOValue) pDefault)
 	: m_name    (name    )
 	, m_exist   (true    )
-	, m_id      (-1      )
 	, m_pDefault(pDefault)
+	, m_id      (-1      )
 {
 	initType(enums);
 }
@@ -302,8 +304,8 @@ rbool RDOResTypeList::appendAfter(REF(RDOResType) rtp, CREF(parser::LPRDORTPResT
 RDOResource::RDOResource(CREF(parser::LPRDORSSResource) rss)
 	: parser::RDOParserSrcInfo(rss->src_info())
 	, m_name (rss->name()                     )
-	, m_rtp  (rss->getType()                  )
 	, m_exist(true                            )
+	, m_rtp  (rss->getType()                  )
 	, m_id   (rss->getID()                    )
 {
 	if (m_rtp.m_params.size() == rss->params().size())
@@ -369,8 +371,8 @@ rbool RDOResource::fillParserResourceParams(REF(parser::LPRDORSSResource) pToPar
 // --------------------------------------------------------------------------------
 RDOResource::RDOResource(CREF(RDOResType) rtp, CREF(tstring) name)
 	: m_name (name                                )
-	, m_rtp  (rtp                                 )
 	, m_exist(false                               )
+	, m_rtp  (rtp                                 )
 	, m_id   (parser::RDORSSResource::UNDEFINED_ID)
 {
 	STL_FOR_ALL_CONST(m_rtp.m_params, param_it)

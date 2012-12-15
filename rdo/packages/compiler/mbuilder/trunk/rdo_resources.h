@@ -240,7 +240,7 @@ public:
 	}
 
 	template <class T>
-	parser::LPRDORSSResource createParserResource(CREF(parser::LPRDOParser) pParser, rsint id = parser::RDORSSResource::UNDEFINED_ID) const
+	parser::LPRDORSSResource createParserResource(CREF(parser::LPRDOParser) pParser, ruint id = parser::RDORSSResource::UNDEFINED_ID) const
 	{
 		parser::LPRDORTPResType pRTP = pParser->findRTPResType(getType().name());
 		if (!pRTP)
