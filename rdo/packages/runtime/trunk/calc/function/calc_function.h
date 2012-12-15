@@ -126,6 +126,8 @@ public:
 	void addParameter   (CREF(LPRDOCalc) pParam   );
 	void setFunctionCalc(CREF(LPRDOCalc) pFunction);
 
+	CREF(LPRDOCalc) function() const;
+
 private:
 	RDOCalcFunctionCaller(CREF(LPRDOCalc) pFunction);
 
