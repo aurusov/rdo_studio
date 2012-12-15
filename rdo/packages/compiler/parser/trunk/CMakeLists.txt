@@ -70,6 +70,7 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/type)
 
 SET(HEADER_FILES
     ${GRAMMA_PATH}/rdobison.h
+    rdortp.h
     expression.h
     local_variable.h
     namespace.h
@@ -87,6 +88,10 @@ SET(HEADER_FILES
     rdoparser.h
     rdoparser_lexer.h
     rdoparser_rdo.h
+    src/animation/animation_base.h
+    src/animation/animation_frame.h
+    src/animation/animation_sprite.h
+    src/function/function.h
     rdopat.h
     rdopatpreparse.h
     rdopmd.h
@@ -115,6 +120,11 @@ SET(HEADER_FILES
     type/range.h
     type/such_as.h
     type/type.h
+    type/function_type.h
+    type/runtime_wrapper_type.h
+    context/context_type.h
+    context/function/context_function_body.h
+    context/function/context_function_param_definition.h
     )
 
 SET(INLITE_FILES
@@ -132,6 +142,7 @@ SET(INLITE_FILES
     )
 
 SET(SOURCE_FILES
+    rdortp.cpp
     expression.cpp
     local_variable.cpp
     param.cpp
@@ -148,6 +159,10 @@ SET(SOURCE_FILES
     rdoparser_error.cpp
     rdoparser_lexer.cpp
     rdoparser_rdo.cpp
+    src/animation/animation_base.cpp
+    src/animation/animation_frame.cpp
+    src/animation/animation_sprite.cpp
+    src/function/function.cpp
     rdopat.cpp
     rdopmd.cpp
     rdoprocess.cpp
@@ -170,6 +185,12 @@ SET(SOURCE_FILES
     type/enum.cpp
     type/info.cpp
     type/such_as.cpp
+    type/type.cpp
+    type/function_type.cpp
+    type/runtime_wrapper_type.cpp
+    context/context_type.cpp
+    context/function/context_function_body.cpp
+    context/function/context_function_param_definition.cpp
     )
 
 SET(BISON_FILES
@@ -321,10 +342,14 @@ SOURCE_GROUP(".resorces_param" FILES
     )
 
 SOURCE_GROUP(".type" FILES
+    type.h
+    type.cpp
     type/type.h
     type/info.h
     type/info.inl
     type/info.cpp
+    type/runtime_wrapper_type.h
+    type/runtime_wrapper_type.cpp
     )
 
 SOURCE_GROUP(".value_array" FILES
