@@ -396,9 +396,9 @@ void RDODPTSearchActivity::setValue(IDPTSearchActivity::ValueTime value, CREF(LP
 // --------------------------------------------------------------------------------
 RDODPTSearch::RDODPTSearch(CREF(RDOParserSrcInfo) src_info, rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag trace, LPILogic pParent)
 	: RDOLogicActivity<rdo::runtime::RDODPTSearchRuntime, RDODPTSearchActivity>(src_info)
-	, m_trace  (trace  )
-	, m_closed (false  )
 	, m_pParent(pParent)
+	, m_closed (false  )
+	, m_trace  (trace  )
 {
 	Converter::s_converter()->checkDPTName   (this->src_info());
 	Converter::s_converter()->insertDPTSearch(this);

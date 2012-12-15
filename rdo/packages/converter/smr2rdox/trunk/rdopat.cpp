@@ -52,11 +52,8 @@ void pat_preparse_error(PTR(char) message)
 // --------------------------------------------------------------------------------
 RDOPATPattern::RDOPATPattern(CREF(RDOParserSrcInfo) name_src_info)
 	: RDOParserSrcInfo    (name_src_info)
-	, m_pCommonChoice     (NULL         )
-	, m_pPatRuntime       (NULL         )
-	, m_pCurrRelRes       (NULL         )
-	, m_currentRelResIndex(0            )
 	, m_useCommonChoice   (false        )
+	, m_currentRelResIndex(0            )
 {
 	LPRDOPATPattern pPatternExist = Converter::s_converter()->findPATPattern(src_info().src_text());
 	if (pPatternExist)
@@ -425,6 +422,7 @@ void RDOPatternIrregEvent::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOPa
 		{
 		case rdo::runtime::RDOResource::CS_Create: rdo::converter::smr2rdox::g_error().error(type_info, rdo::format(_T("При создания ресурса '%s' требуется указать его тип, но указан просто ресурс (%s)"), rel_info.src_text().c_str(), type_info.src_text().c_str())); break;
 		case rdo::runtime::RDOResource::CS_Erase : rdo::converter::smr2rdox::g_error().error(convertor_pos, _T("Удалять ресурсы в нерегулярном событии нельзя")); break;
+		default                                  : break;
 		}
 		pRelevantResource = rdo::Factory<RDORelevantResourceDirect>::create(rel_info, rel_res_count(), res, beg);
 		ASSERT(pRelevantResource);
@@ -442,6 +440,7 @@ void RDOPatternIrregEvent::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOPa
 		case rdo::runtime::RDOResource::CS_Create: if (!pResType->isTemporary()) rdo::converter::smr2rdox::g_error().error(type_info, rdo::format(_T("Тип ресурса '%s' постоянный. Динамически создавать от него ресурсы нельзя"), type_info.src_text().c_str())); break;
 		case rdo::runtime::RDOResource::CS_Keep  :
 		case rdo::runtime::RDOResource::CS_Erase : rdo::converter::smr2rdox::g_error().error(convertor_pos, _T("Статусы конверторов Keep и Erase могут быть использованы в нерегулярном событии с описателем в виде ресурса, но не типа ресурса")); break;
+		default                                  : break;
 		}
 		pRelevantResource = rdo::Factory<RDORelevantResourceByType>::create(rel_info, rel_res_count(), pResType, beg);
 		ASSERT(pRelevantResource);
@@ -652,6 +651,8 @@ void RDOPatternOperation::addRelRes(CREF(RDOParserSrcInfo) rel_info, CREF(RDOPar
 		{
 			rdo::converter::smr2rdox::g_error().error(convertor_end_pos, rdo::format(_T("Статус конвертора конца несовместим со статусом конвертора начала: %s и %s"), RDOPATPattern::StatusToStr(beg).c_str(), RDOPATPattern::StatusToStr(end).c_str()));
 		}
+		break;
+	default:
 		break;
 	};
 

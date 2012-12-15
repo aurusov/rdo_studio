@@ -95,7 +95,7 @@ void RDORTPResType::writeModelStructure(REF(std::ostream) stream) const
 RDORTPFuzzyMembershiftFun::RDORTPFuzzyMembershiftFun(PTR(Converter) pParser):
 	RDOParserObject(pParser)
 {
-/*	for (ruint i = 0; i < m_points.size(); i++)
+	for (ruint i = 0; i < m_points.size(); i++)
 	{
 //		double x = m_points[i]->getX();
 	}

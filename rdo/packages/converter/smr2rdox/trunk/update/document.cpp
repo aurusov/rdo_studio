@@ -119,6 +119,7 @@ Document::TypeOut Document::typeToOut(CREF(Type) typeIn) const
 	case TRC: return rdo::converter::smr2rdox::TRC_OUT;
 	case EVN: return rdo::converter::smr2rdox::EVN_OUT;
 	case PRC: return rdo::converter::smr2rdox::PRC_OUT;
+	default : break;
 	}
 	return rdo::converter::smr2rdox::UNDEFINED_OUT;
 }

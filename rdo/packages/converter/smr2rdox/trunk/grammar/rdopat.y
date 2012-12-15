@@ -247,6 +247,9 @@ pat_main
 				ASSERT(pReturnInsert);
 				CONVERTER->insertDocUpdate(pReturnInsert);
 			}
+
+			default:
+				break;
 		}
 		CONVERTER->stack().push(pPattern);
 	}
@@ -1047,6 +1050,7 @@ pat_time
 				CONVERTER->error().error(@2, _T("Перед $Body пропущено ключевое слово $Time"));
 				break;
 			}
+			default: break;
 		}
 		$$ = CONVERTER->stack().push(pPattern);
 	}
@@ -1060,6 +1064,7 @@ pat_time
 				CONVERTER->error().error(@2, _T("Поле $Time не используется в продукционном правиле"));
 				break;
 			}
+			default: break;
 		}
 		LPRDOFUNArithm pArithm = CONVERTER->stack().pop<RDOFUNArithm>($4);
 		ASSERT(pArithm);
@@ -1082,6 +1087,9 @@ pat_time
 				ASSERT(pTimeDelete3);
 				CONVERTER->insertDocUpdate(pTimeDelete3);
 			}
+
+			default:
+				break;
 		}
 		$$ = CONVERTER->stack().push(pPattern);
 	}
@@ -1346,6 +1354,7 @@ pat_convert
 					type = _T("продукционном правиле");
 					break;
 				}
+				default: break;
 			}
 			CONVERTER->error().error(@2, rdo::format(_T("Ключевое слово Convert_begin может быть использовано в обыкновенной или клавиатурной операции, но не в %s '%s'"), type.c_str(), pPattern->name().c_str()));
 		}
@@ -1372,6 +1381,7 @@ pat_convert
 					type = _T("продукционном правиле");
 					break;
 				}
+				default: break;
 			}
 			CONVERTER->error().error(@2, rdo::format(_T("Ключевое слово Convert_end может быть использовано в обыкновенной и клавиатурной операции, но не в %s '%s'"), type.c_str(), pPattern->name().c_str()));
 		}
@@ -1398,6 +1408,7 @@ pat_convert
 					type = _T("продукционном правиле");
 					break;
 				}
+				default: break;
 			}
 			CONVERTER->error().error(@2, rdo::format(_T("Ключевые слова Convert_begin и Convert_end могут быть использованы в обыкновенной и клавиатурной операции, но не в %s '%s'"), type.c_str(), pPattern->name().c_str()));
 		}
@@ -1430,6 +1441,7 @@ pat_convert
 					type = _T("клавиатурной операции");
 					break;
 				}
+				default: break;
 			}
 			CONVERTER->error().error(@2, rdo::format(_T("Ключевое слово Convert_rule может быть использовано в продукционном правиле, но не в %s '%s'"), type.c_str(), pPattern->name().c_str()));
 		}
@@ -1462,6 +1474,7 @@ pat_convert
 					type = _T("клавиатурной операции");
 					break;
 				}
+				default: break;
 			}
 			CONVERTER->error().error(@2, rdo::format(_T("Ключевое слово Convert_event может быть использовано в событии или в нерегулярном событии, но не в %s '%s'"), type.c_str(), pPattern->name().c_str()));
 		}

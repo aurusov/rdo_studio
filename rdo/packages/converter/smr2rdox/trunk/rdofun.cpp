@@ -127,6 +127,7 @@ RDOFUNLogic::RDOFUNLogic(CREF(LPRDOFUNArithm) pArithm)
 	switch (pArithm->typeID())
 	{
 	case rdo::runtime::RDOType::t_bool: m_pCalc = pArithm->calc(); break;
+	default                           : break;
 	}
 	if (!m_pCalc)
 	{
@@ -327,6 +328,7 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pValue)
 	{
 	case rdo::converter::smr2rdox::PAT_IN: pFunctionParam = Converter::s_converter()->getLastPATPattern ()->findPATPatternParam (pValue->value().getIdentificator()); break;
 	case rdo::converter::smr2rdox::FUN_IN: pFunctionParam = Converter::s_converter()->getLastFUNFunction()->findFUNFunctionParam(pValue->value().getIdentificator()); break;
+	default                              : break;
 	}
 
 	//! »щем константы по имени
@@ -372,6 +374,7 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pValue)
 		{
 		case rdo::converter::smr2rdox::PAT_IN: m_pCalc = rdo::Factory<rdo::runtime::RDOCalcPatParam> ::create(Converter::s_converter()->getLastPATPattern ()->findPATPatternParamNum (pValue->value().getIdentificator())); break;
 		case rdo::converter::smr2rdox::FUN_IN: m_pCalc = rdo::Factory<rdo::runtime::RDOCalcFuncParam>::create(Converter::s_converter()->getLastFUNFunction()->findFUNFunctionParamNum(pValue->value().getIdentificator()), pFunctionParam->src_info()); break;
+		default                              : break;
 		}
 		if (m_pCalc)
 		{
@@ -578,6 +581,9 @@ void RDOFUNArithm::init(CREF(LPRDOValue) pResName, CREF(LPRDOValue) pParName)
 					return;
 				}
 			}
+			break;
+
+		default:
 			break;
 		}
 	}
@@ -943,6 +949,8 @@ void RDOFUNSequence::initResult()
 			}
 			break;
 		}
+		default:
+			break;
 	}
 }
 

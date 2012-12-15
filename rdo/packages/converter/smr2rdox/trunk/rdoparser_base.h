@@ -86,7 +86,7 @@ public:
 	typedef std::map<ruint, LPRDOParserItem> List;
 	typedef List::iterator                   Iterator;
 
-	enum {UNDEFINED_ID = ~0};
+	static const ruint UNDEFINED_ID = ruint(~0);
 
 	Iterator begin()            { return m_list.begin();     }
 	Iterator end  ()            { return m_list.end();       }

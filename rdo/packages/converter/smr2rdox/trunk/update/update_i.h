@@ -29,11 +29,8 @@ public:
 	class Position
 	{
 	public:
-		enum
-		{
-			POSITION_BEGIN = ~0,
-			POSITION_END   = ~1
-		};
+		static const ruint POSITION_BEGIN = ruint(~0);
+		static const ruint POSITION_END   = ruint(~1);
 
 		Position(ruint          pos);
 		Position(CREF(Position) pos);

@@ -43,7 +43,7 @@ DECLARE_FACTORY(RDORTPResType);
 public:
 	typedef std::vector<LPRDORTPParam> ParamList;
 
-	enum { UNDEFINED_PARAM = ~0 };
+	static const ruint UNDEFINED_PARAM = ruint(~0);
 
 	CREF(tstring) name       () const   { return src_text();   };
 	rsint         getNumber  () const   { return m_number;     };

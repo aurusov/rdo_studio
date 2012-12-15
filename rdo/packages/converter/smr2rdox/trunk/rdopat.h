@@ -366,13 +366,11 @@ public:
 
 protected:
 	RDORelevantResource(CREF(RDOParserSrcInfo) src_info, const int relResID, const rdo::runtime::RDOResource::ConvertStatus statusBegin, const rdo::runtime::RDOResource::ConvertStatus statusEnd)
-		: RDOParserSrcInfo      (src_info  )
+		: RDOParserSrcInfo      (src_info   )
 		, m_relResID            (relResID   )
+		, m_alreadyHaveConverter(false      )
 		, m_statusBegin         (statusBegin)
 		, m_statusEnd           (statusEnd  )
-		, m_alreadyHaveConverter(false      )
-		, m_pChoiceFrom         (NULL       )
-		, m_pChoiceOrder        (NULL       )
 		, m_currentState        (stateNone  )
 	{}
 
