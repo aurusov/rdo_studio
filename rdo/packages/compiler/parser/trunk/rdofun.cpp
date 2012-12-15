@@ -794,6 +794,8 @@ void RDOFUNSequence::initResult()
 			}
 			break;
 		}
+		default:
+			break;
 	}
 }
 

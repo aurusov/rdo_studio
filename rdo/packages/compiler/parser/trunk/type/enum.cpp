@@ -155,6 +155,9 @@ LPRDOValue RDOEnumType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo
 			if (m_pType == pFrom->typeInfo()->type()->type())
 				pToValue = rdo::Factory<RDOValue>::create(pFrom);
 			break;
+
+		defualt:
+			break;
 		}
 	}
 	catch (CREF(rdo::runtime::RDOValueException))

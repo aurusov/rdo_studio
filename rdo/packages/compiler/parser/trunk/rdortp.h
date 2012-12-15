@@ -58,7 +58,7 @@ public:
 		procRes,
 		procTran
 	};
-	enum { UNDEFINED_PARAM = ~0 };
+	static const ruint UNDEFINED_PARAM = ruint(~0);
 
 	rsint getNumber  () const;
 	rbool isPermanent() const;
