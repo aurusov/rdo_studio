@@ -132,6 +132,7 @@ void RDOParser::deinit()
 	m_allRSSResource.clear();
 	m_allFRMFrame   .clear();
 	m_allFRMSprite  .clear();
+	m_allFRMCommandList.clear();
 	m_allFUNConstant.clear();
 	m_allFUNFunction.clear();
 	m_allFUNSequence.clear();
