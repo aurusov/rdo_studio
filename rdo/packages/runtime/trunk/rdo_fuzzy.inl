@@ -46,10 +46,12 @@ inline FuzzySet::FuzzySet()
 inline FuzzySet::FuzzySet(CREF(LPDefineArea) pDefineArea)
 	: m_defineArea(pDefineArea)
 {}
+
 inline FuzzySet::FuzzySet(CREF(LPFuzzySet) pSet)
-	: m_defineArea(pSet->m_defineArea)
-	, m_fuzzySet  (pSet->m_fuzzySet)
+	: m_fuzzySet  (pSet->m_fuzzySet  )
+	, m_defineArea(pSet->m_defineArea)
 {}
+
 inline FuzzySet::~FuzzySet()
 {}
 
@@ -57,6 +59,7 @@ inline void FuzzySet::setValues(CREF(FuzzySetDefinition) values)
 {
 	m_fuzzySet = values;
 }
+
 inline LPFuzzySet FuzzySet::append(CREF(RDOValue) rdovalue, double appertain)
 {
 	std::pair<FuzzySet::FuzzySetDefinition::iterator, rbool> checkValue;

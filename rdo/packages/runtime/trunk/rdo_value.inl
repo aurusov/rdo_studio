@@ -171,6 +171,8 @@ inline void RDOValue::deleteValue()
 	case RDOType::t_pointer      :
 		reinterpret_cast<rdo::LPIRefCounter>(&m_value)->release();
 		break;
+	default:
+		break;
 	}
 }
 
@@ -186,6 +188,7 @@ inline rsint RDOValue::getInt() const
 	case RDOType::t_enum   : return __get<ruint>();
 	case RDOType::t_bool   : return __get<rbool>() ? 1 : 0;
 	case RDOType::t_pointer: return onPointerGetInt();
+	default                : break;
 	}
 	throw RDOValueException();
 }
@@ -202,6 +205,7 @@ inline ruint RDOValue::getUInt() const
 	case RDOType::t_enum   : return __get<ruint>();
 	case RDOType::t_bool   : return __get<rbool>() ? 1 : 0;
 	case RDOType::t_pointer: return onPointerGetUInt();
+	default                : break;
 	}
 	throw RDOValueException();
 }
@@ -217,6 +221,7 @@ inline rsint RDOValue::getEnumAsInt() const
 	case RDOType::t_real: return (rsint)__get<double>();
 	case RDOType::t_enum: return __get<ruint>();
 	case RDOType::t_bool: return __get<rbool>() ? 1 : 0;
+	default             : break;
 	}
 	throw RDOValueException();
 }
@@ -229,6 +234,7 @@ inline LPRDOEnumType RDOValue::getEnum() const
 	switch (typeID())
 	{
 	case RDOType::t_enum: return __enumT();
+	default             : break;
 	}
 	throw RDOValueException();
 }
@@ -244,6 +250,7 @@ inline double RDOValue::getDouble() const
 	case RDOType::t_real: return __get<double>();
 	case RDOType::t_enum: return __get<ruint> ();
 	case RDOType::t_bool: return __get<rbool> () ? 1 : 0;
+	default             : break;
 	}
 	throw RDOValueException();
 }
@@ -256,6 +263,7 @@ inline rbool RDOValue::getBool() const
 	switch (typeID())
 	{
 	case RDOType::t_bool: return __get<rbool>();
+	default             : break;
 	}
 	throw RDOValueException();
 }
@@ -272,6 +280,7 @@ inline rbool RDOValue::getAsBool() const
 	case RDOType::t_enum  : return __get<ruint> ()      ? true : false;
 	case RDOType::t_string: return !__stringV().empty() ? true : false;
 	case RDOType::t_bool  : return __get<rbool> ();
+	default               : break;
 	}
 	throw RDOValueException();
 }
@@ -284,6 +293,7 @@ inline CREF(tstring) RDOValue::getString() const
 	switch (typeID())
 	{
 	case RDOType::t_string: return __stringV();
+	default               : break;
 	}
 	throw RDOValueException();
 }
@@ -296,6 +306,7 @@ inline CREF(tstring) RDOValue::getIdentificator() const
 	switch (typeID())
 	{
 	case RDOType::t_identificator: return __stringV();
+	default                      : break;
 	}
 	throw RDOValueException();
 }
@@ -314,6 +325,7 @@ inline tstring RDOValue::getAsString() const
 	case RDOType::t_string       : return __stringV();
 	case RDOType::t_identificator: return __stringV();
 	case RDOType::t_pointer      : return onPointerAsString();
+	default                      : break;
 	}
 	throw RDOValueException(_T("Для rdo::runtime::RDOValue не определен метод getAsString()"));
 }
@@ -331,6 +343,7 @@ inline tstring RDOValue::getAsStringForTrace() const
 	case RDOType::t_bool   : return __get<rbool>() ? _T("true") : _T("false");
 	case RDOType::t_string : return __stringV();
 	case RDOType::t_pointer: return onPointerAsString();
+	default                : break;
 	}
 	throw RDOValueException(_T("Для rdo::runtime::RDOValue не определен метод getAsStringForTrace()"));
 }
@@ -377,6 +390,7 @@ inline rbool RDOValue::operator== (CREF(RDOValue) rdovalue) const
 			{
 			case RDOType::t_int : return __get<int>() == rdovalue.__get<int>();
 			case RDOType::t_real: return __get<int>() == rdovalue.__get<double>();
+			default             : break;
 			}
 			break;
 		}
@@ -386,6 +400,7 @@ inline rbool RDOValue::operator== (CREF(RDOValue) rdovalue) const
 			{
 			case RDOType::t_int : return __get<double>()  == rdovalue.__get<int>();
 			case RDOType::t_real: return __get<double>()  == rdovalue.__get<double>();
+			default             : break;
 			}
 			break;
 		}
@@ -394,6 +409,7 @@ inline rbool RDOValue::operator== (CREF(RDOValue) rdovalue) const
 			switch (rdovalue.typeID())
 			{
 			case RDOType::t_bool: return __get<rbool>() == rdovalue.__get<rbool>();
+			default             : break;
 			}
 			break;
 		}
@@ -402,6 +418,7 @@ inline rbool RDOValue::operator== (CREF(RDOValue) rdovalue) const
 			switch (rdovalue.typeID())
 			{
 			case RDOType::t_enum: if (m_pType == rdovalue.m_pType) return __get<ruint>() == rdovalue.__get<ruint>(); break;
+			default             : break;
 			}
 			break;
 		}
@@ -410,6 +427,7 @@ inline rbool RDOValue::operator== (CREF(RDOValue) rdovalue) const
 			switch (rdovalue.typeID())
 			{
 			case RDOType::t_string: return __stringV() == rdovalue.__stringV();
+			default               : break;
 			}
 			break;
 		}
@@ -418,6 +436,7 @@ inline rbool RDOValue::operator== (CREF(RDOValue) rdovalue) const
 			switch (rdovalue.typeID())
 			{
 			case RDOType::t_identificator: return __stringV() == rdovalue.__stringV();
+			default                      : break;
 			}
 			break;
 		}
@@ -425,6 +444,8 @@ inline rbool RDOValue::operator== (CREF(RDOValue) rdovalue) const
 		{
 			return onPointerEqual(rdovalue);
 		}
+	default:
+		break;
 	}
 	throw RDOValueException();
 }
@@ -447,6 +468,7 @@ inline rbool RDOValue::operator< (CREF(RDOValue) rdovalue) const
 			{
 			case RDOType::t_int : return __get<int>() < rdovalue.__get<int>();
 			case RDOType::t_real: return __get<int>() < rdovalue.__get<double>();
+			default             : break;
 			}
 			break;
 		}
@@ -456,6 +478,7 @@ inline rbool RDOValue::operator< (CREF(RDOValue) rdovalue) const
 			{
 			case RDOType::t_int : return __get<double>() < rdovalue.__get<int>();
 			case RDOType::t_real: return __get<double>() < rdovalue.__get<double>();
+			default             : break;
 			}
 			break;
 		}
@@ -464,6 +487,7 @@ inline rbool RDOValue::operator< (CREF(RDOValue) rdovalue) const
 			switch (rdovalue.typeID())
 			{
 			case RDOType::t_bool: return __get<rbool>() < rdovalue.__get<rbool>();
+			default             : break;
 			}
 			break;
 		}
@@ -472,9 +496,12 @@ inline rbool RDOValue::operator< (CREF(RDOValue) rdovalue) const
 			switch (rdovalue.typeID())
 			{
 			case RDOType::t_string: return __stringV() < rdovalue.__stringV();
+			default               : break;
 			}
 			break;
 		}
+	default:
+		break;
 	}
 	throw RDOValueException();
 }
@@ -506,6 +533,7 @@ inline RDOValue RDOValue::operator&& (CREF(RDOValue) rdovalue) const
 			switch (rdovalue.typeID())
 			{
 			case RDOType::t_bool: return __get<rbool>() && rdovalue.__get<rbool>();
+			default             : break;
 			}
 			break;
 		}
@@ -513,6 +541,8 @@ inline RDOValue RDOValue::operator&& (CREF(RDOValue) rdovalue) const
 		{
 			return onPointerAnd(rdovalue);
 		}
+	default:
+		break;
 	}
 	throw RDOValueException();
 }
@@ -529,6 +559,7 @@ inline RDOValue RDOValue::operator|| (CREF(RDOValue) rdovalue) const
 			switch (rdovalue.typeID())
 			{
 			case RDOType::t_bool: return __get<rbool>() || rdovalue.__get<rbool>();
+			default             : break;
 			}
 			break;
 		}
@@ -536,6 +567,8 @@ inline RDOValue RDOValue::operator|| (CREF(RDOValue) rdovalue) const
 		{
 			return onPointerAnd(rdovalue);
 		}
+	default:
+		break;
 	}
 	throw RDOValueException();
 }
@@ -582,6 +615,7 @@ inline REF(RDOValue) RDOValue::operator+= (CREF(RDOValue) rdovalue)
 			{
 			case RDOType::t_int :
 			case RDOType::t_real: __get<int>() += rdovalue.getInt(); return *this;
+			default             : break;
 			}
 			break;
 		}
@@ -591,6 +625,7 @@ inline REF(RDOValue) RDOValue::operator+= (CREF(RDOValue) rdovalue)
 			{
 			case RDOType::t_int :
 			case RDOType::t_real: __get<double>() += rdovalue.getDouble(); return *this;
+			default             : break;
 			}
 			break;
 		}
@@ -612,6 +647,7 @@ inline REF(RDOValue) RDOValue::operator+= (CREF(RDOValue) rdovalue)
 					__stringV() += rdovalue.__stringV();
 					return *this;
 				}
+			default: break;
 			}
 			break;
 		}
@@ -619,6 +655,8 @@ inline REF(RDOValue) RDOValue::operator+= (CREF(RDOValue) rdovalue)
 		{
 			return onPointerPlus(rdovalue);
 		}
+	default:
+		break;
 	}
 
 	throw RDOValueException();
@@ -676,6 +714,7 @@ inline REF(RDOValue) RDOValue::operator-= (CREF(RDOValue) rdovalue)
 			{
 			case RDOType::t_int :
 			case RDOType::t_real: __get<int>() -= rdovalue.getInt(); return *this;
+			default             : break;
 			}
 			break;
 		}
@@ -685,6 +724,7 @@ inline REF(RDOValue) RDOValue::operator-= (CREF(RDOValue) rdovalue)
 			{
 			case RDOType::t_int :
 			case RDOType::t_real: __get<double>() -= rdovalue.getDouble(); return *this;
+			default             : break;
 			}
 			break;
 		}
@@ -692,6 +732,8 @@ inline REF(RDOValue) RDOValue::operator-= (CREF(RDOValue) rdovalue)
 		{
 			return onPointerMinus(rdovalue);
 		}
+	default:
+		break;
 	}
 
 	throw RDOValueException();
@@ -710,6 +752,7 @@ inline REF(RDOValue) RDOValue::operator*= (CREF(RDOValue) rdovalue)
 			{
 			case RDOType::t_int : __get<int>() *= rdovalue.__get<int>(); return *this;
 			case RDOType::t_real: __get<double>() = ((double)__get<int>()) * rdovalue.__get<double>(); m_pType = g_real; return *this;
+			default             : break;
 			}
 			break;
 		}
@@ -719,6 +762,7 @@ inline REF(RDOValue) RDOValue::operator*= (CREF(RDOValue) rdovalue)
 			{
 			case RDOType::t_int :
 			case RDOType::t_real: __get<double>() *= rdovalue.getDouble(); return *this;
+			default             : break;
 			}
 			break;
 		}
@@ -726,6 +770,8 @@ inline REF(RDOValue) RDOValue::operator*= (CREF(RDOValue) rdovalue)
 		{
 			return onPointerMult(rdovalue);
 		}
+	default:
+		break;
 	}
 
 	throw RDOValueException();
@@ -744,6 +790,7 @@ inline REF(RDOValue) RDOValue::operator/= (CREF(RDOValue) rdovalue)
 			{
 			case RDOType::t_int :
 			case RDOType::t_real: __get<double>() = ((double)__get<int>()) / rdovalue.getDouble(); m_pType = g_real; return *this;
+			default             : break;
 			}
 			break;
 		}
@@ -753,6 +800,7 @@ inline REF(RDOValue) RDOValue::operator/= (CREF(RDOValue) rdovalue)
 			{
 			case RDOType::t_int :
 			case RDOType::t_real: __get<double>() = __get<double>() / rdovalue.getDouble(); return *this;
+			default             : break;
 			}
 			break;
 		}
@@ -760,6 +808,8 @@ inline REF(RDOValue) RDOValue::operator/= (CREF(RDOValue) rdovalue)
 		{
 			return onPointerDiv(rdovalue);
 		}
+	default:
+		break;
 	}
 
 	throw RDOValueException();
