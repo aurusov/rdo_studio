@@ -23,11 +23,11 @@ const tstring SYSTEM_OS = _T("Windows");
 const tstring SYSTEM_OS = _T("Linux");
 #endif // OST_WINDOWS
 
-#ifdef ARCHITECTURES_AMD64
+#ifdef ARCHITECTURE_AMD64
 const tstring SYSTEM_ARCHITECTURES = _T("AMD64");
-#elif defined( ARCHITECTURES_X86 )
+#elif defined( ARCHITECTURE_X86 )
 const tstring SYSTEM_ARCHITECTURES = _T("x86");
-#endif // ARCHITECTURES_AMD64
+#endif // ARCHITECTURE_AMD64
 
 // Input param constant
 const tstring MODEL_COMMAND                 = _T("input");

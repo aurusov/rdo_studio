@@ -39,9 +39,9 @@
 
 // architectures
 #if defined( __amd64__ ) || defined( _M_X64 )
-	#define ARCHITECTURES_AMD64
+	#define ARCHITECTURE_AMD64
 #elif defined( __i386__ ) || defined( _M_IX86 )
-	#define ARCHITECTURES_X86
+	#define ARCHITECTURE_X86
 #endif
 
 #endif // _UTILS_PLATFORM_H_

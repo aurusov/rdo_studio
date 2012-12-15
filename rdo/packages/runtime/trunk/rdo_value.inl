@@ -69,7 +69,7 @@ inline RDOValue::RDOValue(ruint value)
 	setUndefined(true);
 }
 
-#ifdef ARCHITECTURES_AMD64
+#ifdef ARCHITECTURE_AMD64
 inline RDOValue::RDOValue(ruint64 value)
 	: m_pType(g_int)
 {

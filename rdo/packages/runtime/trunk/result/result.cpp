@@ -26,9 +26,9 @@
 #include "simulator/runtime/notify.h"
 // --------------------------------------------------------------------------------
 
-#if defined( ARCHITECTURES_AMD64 )
+#if defined( ARCHITECTURE_AMD64 )
 typedef ruint64 ruint_type;
-#elif defined( ARCHITECTURES_X86 )
+#elif defined( ARCHITECTURE_X86 )
 typedef ruint ruint_type;
 #endif // ARCHITECTURES_AMD64
 
