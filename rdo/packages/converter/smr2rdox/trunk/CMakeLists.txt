@@ -74,7 +74,8 @@ SET(GENERATED_FILES
     ${BISON_rdoproc_rtp_OUTPUTS}
     ${BISON_rdorss_OUTPUTS}
     ${BISON_rdosmr_file_OUTPUTS}
-    ${BISON_rdosmr_sim_OUTPUTS})
+    ${BISON_rdosmr_sim_OUTPUTS}
+	)
 
 SET(HEADER_FILES
     namespace.h
@@ -104,23 +105,21 @@ SET(HEADER_FILES
     rdo_type_param_suchas.h
     rdo_type_range.h
     rdo_value.h
-
     runtime/rdo_ie.h
     runtime/rdo_logic_dptfree.h
-
     update/document.h
     update/document_i.h
     update/update.h
-    update/update_i.h)
+    update/update_i.h
+	)
 
 SET(INLINE_FILES
     rdoparser_lexer.inl
     rdo_type_range.inl
     rdo_value.inl
-
     runtime/rdo_logic_dptfree.inl
-
-    update/update_i.inl)
+    update/update_i.inl
+	)
 
 SET(SOURCE_FILES
     param.cpp
@@ -147,12 +146,11 @@ SET(SOURCE_FILES
     rdo_type_param.cpp
     rdo_type_param_suchas.cpp
     rdo_value.cpp
-
     runtime/rdo_ie.cpp
     runtime/rdo_logic_dptfree.cpp
-
     update/document.cpp
-    update/update.cpp)
+    update/update.cpp
+	)
 
 SET(GRAMMA_FILES
     ${GRAMMA_PATH}/rdo_lexer.l
@@ -168,9 +166,10 @@ SET(GRAMMA_FILES
     ${GRAMMA_PATH}/rdoopr.y
     ${GRAMMA_PATH}/rdofun.y
     ${GRAMMA_PATH}/rdofrm.y
-    ${GRAMMA_PATH}/rdodpt.y)
+    ${GRAMMA_PATH}/rdodpt.y
+	)
 
-ADD_LIBRARY(rdo_converter_smr2rdox ${HEADER_FILES} ${SOURCE_FILES} ${GENERATED_FILES} ${GRAMMA_FILES})
+ADD_LIBRARY(rdo_converter_smr2rdox ${HEADER_FILES} ${INLINE_FILES} ${SOURCE_FILES} ${GENERATED_FILES} ${GRAMMA_FILES})
 SET_TARGET_PROPERTIES(rdo_converter_smr2rdox PROPERTIES LINKER_LANGUAGE CXX)
 
 ADD_DEPENDENCIES(rdo_converter_smr2rdox rdo_utils)
@@ -188,12 +187,14 @@ IF(MSVC) # lotions for windows #
 
 SOURCE_GROUP(".animation" FILES 
     rdofrm.h
-    rdofrm.cpp)
+    rdofrm.cpp
+	)
 	
 SOURCE_GROUP(".common" FILES 
     namespace.h
     rdo_object.h
-    rdo_object.cpp)	
+    rdo_object.cpp
+	)	
 
 SOURCE_GROUP(".converter" FILES 
     ${GRAMMA_PATH}/rdobison.h
@@ -202,49 +203,60 @@ SOURCE_GROUP(".converter" FILES
     rdoparser_base.cpp
     rdoparser_base.h
     rdoparser_rdo.cpp
-    rdoparser_rdo.h)
+    rdoparser_rdo.h
+	)
 	
 SOURCE_GROUP(".converter_error" FILES 
     rdoparser_error.cpp
-    rdoparser_error.h)
+    rdoparser_error.h
+	)
 	
 SOURCE_GROUP(".converter_lexer" FILES
     rdoparser_lexer.cpp
     rdoparser_lexer.inl
-    rdoparser_lexer.h)
+    rdoparser_lexer.h
+	)
 	
 SOURCE_GROUP(".dpt" FILES
     rdodpt.h
     rdodpt.cpp
     rdo_logic.h
-    rdo_logic.cpp)	
+    rdo_logic.cpp
+	)	
 
 SOURCE_GROUP(".function" FILES
     rdofun.h
-    rdofun.cpp)
+    rdofun.cpp
+	)
 
 SOURCE_GROUP(".grammar" FILES
     ${GRAMMA_FILES}
-    ${GENERATED_FILES})
+    ${GENERATED_FILES}
+	)
 	
 SOURCE_GROUP(".opt" FILES
     rdoopr.cpp
-    rdoopr.h)
+    rdoopr.h
+	)
 	
 SOURCE_GROUP(".pattern" FILES	
     rdopat.cpp
-    rdopat.h)
+    rdopat.h
+	)
 
 SOURCE_GROUP(".pch" FILES
     pch.h
-    pch.cpp)
+    pch.cpp
+	)
 
 SOURCE_GROUP(".project" FILES
     rdosmr.h
-    rdosmr.cpp)
+    rdosmr.cpp
+	)
 
 SOURCE_GROUP(".rdo_common" FILES
-    rdo_common/model_objects_convertor.h)
+    rdo_common/model_objects_convertor.h
+	)
 
 SOURCE_GROUP(".resorces" FILES
     rdortp_param.h
@@ -252,47 +264,57 @@ SOURCE_GROUP(".resorces" FILES
     rdortp.h
     rdortp.cpp
     rdorss.h
-    rdorss.cpp)
+    rdorss.cpp
+	)
 
 SOURCE_GROUP(".resorces_param" FILES
     param.h
-    param.cpp)
+    param.cpp
+	)
 
 SOURCE_GROUP(".value" FILES
     rdo_value.h
     rdo_value.inl
-    rdo_value.cpp)
+    rdo_value.cpp
+	)
 
 SOURCE_GROUP(".watch" FILES
     rdopmd.h
-    rdopmd.cpp)
+    rdopmd.cpp
+	)
 
 SOURCE_GROUP(".type" FILES
     rdo_type.h
-    rdo_type.cpp)
+    rdo_type.cpp
+	)
 
 SOURCE_GROUP(".type_enum" FILES
     rdo_enum.h
-    rdo_enum.cpp)
+    rdo_enum.cpp
+	)
 
 SOURCE_GROUP(".type_param" FILES
     rdo_type_param.cpp
-    rdo_type_param.h)
+    rdo_type_param.h
+	)
 
 SOURCE_GROUP(".type_such_as" FILES
     rdo_type_param_suchas.h
-    rdo_type_param_suchas.cpp)
+    rdo_type_param_suchas.cpp
+	)
 
 SOURCE_GROUP(".type_param" FILES
     rdo_type_range.h
-    rdo_type_range.cpp)
+    rdo_type_range.cpp
+	)
 
 SOURCE_GROUP(".runtime" FILES
     runtime/rdo_ie.cpp
     runtime/rdo_ie.h
     runtime/rdo_logic_dptfree.cpp
     runtime/rdo_logic_dptfree.inl
-    runtime/rdo_logic_dptfree.h)
+    runtime/rdo_logic_dptfree.h
+	)
 
 SOURCE_GROUP(".update" FILES
     update/document.cpp
@@ -301,6 +323,7 @@ SOURCE_GROUP(".update" FILES
     update/update.cpp
     update/update.h
     update/update_i.inl
-    update/update_i.h)
+    update/update_i.h
+	)
 	
 ENDIF(MSVC)
