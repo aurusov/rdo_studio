@@ -132,7 +132,7 @@ private:
 #endif
 		s_logList.push_back(strMyClass2Create + i);
 	}
-	~MyClass2()
+	virtual ~MyClass2()
 	{
 #ifndef DISABLE_CONSOLE_OUTPUT
 		std::cout << strMyClass2Destroy << m_i << std::endl;
@@ -168,7 +168,7 @@ protected:
 #endif
 		s_logList.push_back(strMyClass3Create + i);
 	}
-	~MyClass3()
+	virtual ~MyClass3()
 	{
 #ifndef DISABLE_CONSOLE_OUTPUT
 		std::cout << strMyClass3Destroy << m_i << std::endl;
