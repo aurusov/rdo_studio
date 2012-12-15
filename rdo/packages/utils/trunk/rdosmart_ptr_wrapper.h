@@ -39,7 +39,7 @@ public:
 	smart_ptr_wrapper(CREF(intrusive_ptr<T>) intrusive_ptr)
 		: m_intrusive_ptr(intrusive_ptr)
 	{}
-	~smart_ptr_wrapper()
+	virtual ~smart_ptr_wrapper()
 	{}
 	void destroy()
 	{
