@@ -153,6 +153,8 @@ void StudioConsoleController::proc(REF(RDOThread::RDOMessageInfo) msg)
 		m_converted = true;
 		m_convertorError = true;
 		break;
+
+	default: break;
 	}
 }
 
