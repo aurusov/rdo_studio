@@ -59,7 +59,8 @@ SET(GENERATED_FILES
     ${BISON_rdoproc_rtp_OUTPUTS}
     ${BISON_rdorss_OUTPUTS}
     ${BISON_rdosmr_file_OUTPUTS}
-    ${BISON_rdosmr_sim_OUTPUTS})
+    ${BISON_rdosmr_sim_OUTPUTS}
+    )
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
@@ -76,7 +77,6 @@ SET(HEADER_FILES
     pch.h
     rdo_array.h
     rdodpt.h
-    rdofrm.h
     rdofun.h
     rdo_logic_base.h
     rdo_logic.h
@@ -105,7 +105,6 @@ SET(HEADER_FILES
     context/memory.h
     context/statement.h
     context/stack.h
-    context/type.h
     # parses paht
     parser/std_fun.h
     # type path
@@ -115,7 +114,8 @@ SET(HEADER_FILES
     type/info.h
     type/range.h
     type/such_as.h
-    type/type.h)
+    type/type.h
+    )
 
 SET(INLITE_FILES
     rdo_logic.inl
@@ -128,7 +128,8 @@ SET(INLITE_FILES
     context/context.inl
     # type path
     type/info.inl
-    type/range.inl)
+    type/range.inl
+    )
 
 SET(SOURCE_FILES
     expression.cpp
@@ -137,7 +138,6 @@ SET(SOURCE_FILES
     pch.cpp
     rdo_array.cpp
     rdodpt.cpp
-    rdofrm.cpp
     rdofun.cpp
     rdo_logic_base.cpp
     rdo_logic.cpp
@@ -162,7 +162,6 @@ SET(SOURCE_FILES
     context/memory.cpp
     context/statement.cpp
     context/stack.cpp
-    context/type.cpp
     # parses paht
     parser/std_fun.cpp
     # type path
@@ -170,7 +169,8 @@ SET(SOURCE_FILES
     type/atom.cpp
     type/enum.cpp
     type/info.cpp
-    type/such_as.cpp)
+    type/such_as.cpp
+    )
 
 SET(BISON_FILES
     # *.y files
@@ -188,7 +188,8 @@ SET(BISON_FILES
     ${GRAMMA_PATH}/rdortp.y
     ${GRAMMA_PATH}/rdosmr_file.y
     ${GRAMMA_PATH}/rdosmr_sim.y
-    ${GRAMMA_PATH}/rdo_lexer.l)
+    ${GRAMMA_PATH}/rdo_lexer.l
+    )
 
 ADD_LIBRARY(rdo_parser ${HEADER_FILES} ${INLITE_FILES} ${SOURCE_FILES} ${BISON_FILES} ${GENERATED_FILES})
 
@@ -210,11 +211,13 @@ IF(MSVC) # lotions for windows #
 
 SOURCE_GROUP(".animation" FILES 
     rdofrm.h
-    rdofrm.cpp)
+    rdofrm.cpp
+    )
 
 SOURCE_GROUP(".bison" FILES 
     ${BISON_FILES}
-    ${GRAMMA_PATH}/rdobison.h)
+    ${GRAMMA_PATH}/rdobison.h
+    )
     
 SOURCE_GROUP(".common" FILES 
     local_variable.h
@@ -222,7 +225,8 @@ SOURCE_GROUP(".common" FILES
     rdo_object.h
     rdo_object.cpp
     variable_container.h
-    variable_container.cpp)    
+    variable_container.cpp
+    )    
 
 SOURCE_GROUP(".context" FILES 
     context/context.h
@@ -238,7 +242,8 @@ SOURCE_GROUP(".context" FILES
     context/type.cpp
     context/context_find_i.h
     context/context_find.cpp
-    context/context_switch_i.h)
+    context/context_switch_i.h
+    )
     
 SOURCE_GROUP(".dpt" FILES
     rdodpt.h
@@ -246,15 +251,18 @@ SOURCE_GROUP(".dpt" FILES
     rdodpt.cpp
     rdoprocess.cpp
     rdo_logic.h
-    rdo_logic.cpp)    
+    rdo_logic.cpp
+    )    
 
 SOURCE_GROUP(".expression" FILES
     expression.h
-    expression.cpp)    
+    expression.cpp
+    )    
 
 SOURCE_GROUP(".function" FILES
     rdofun.h
-    rdofun.cpp)    
+    rdofun.cpp
+    )    
 
 SOURCE_GROUP(".parser" FILES
     parser/std_fun.h
@@ -266,30 +274,36 @@ SOURCE_GROUP(".parser" FILES
     rdoparser_base.h
     rdoparser_base.cpp
     rdoparser.h
-    rdoparser.cpp)
+    rdoparser.cpp
+    )
 
 SOURCE_GROUP(".parser_error" FILES
     rdoparser_error.h
-    rdoparser_error.cpp)        
+    rdoparser_error.cpp
+    )        
 
 SOURCE_GROUP(".parser_lexer" FILES
     rdoparser_lexer.h
     rdoparser_lexer.inl
-    rdoparser_lexer.cpp)
+    rdoparser_lexer.cpp
+    )
 
 SOURCE_GROUP(".pattern" FILES
     rdopat.h
     rdopat.cpp
     rdopatpreparse.h
-    rdopatpreparse.inl)
+    rdopatpreparse.inl
+    )
 
 SOURCE_GROUP(".pch" FILES
     pch.h
-    pch.cpp)
+    pch.cpp
+    )
 
 SOURCE_GROUP(".project" FILES
     rdosmr.h
-    rdosmr.cpp)
+    rdosmr.cpp
+    )
 
 SOURCE_GROUP(".resorces" FILES
     rdortp_param.h
@@ -298,52 +312,64 @@ SOURCE_GROUP(".resorces" FILES
     rdortp.cpp
     rdortp.inl
     rdorss.h
-    rdorss.cpp)
+    rdorss.cpp
+    )
 
 SOURCE_GROUP(".resorces_param" FILES
     param.h
-    param.cpp)
+    param.cpp
+    )
 
 SOURCE_GROUP(".type" FILES
     type/type.h
     type/info.h
     type/info.inl
-    type/info.cpp)
+    type/info.cpp
+    )
 
 SOURCE_GROUP(".value_array" FILES
     rdo_array.h
-    rdo_array.cpp)
+    rdo_array.cpp
+    )
 
 SOURCE_GROUP(".value" FILES
     rdo_value.h
     rdo_value.inl
-    rdo_value.cpp)
+    rdo_value.cpp
+    )
 
 SOURCE_GROUP(".watch" FILES
     rdopmd.h
-    rdopmd.cpp)
+    rdopmd.cpp
+    )
 
 SOURCE_GROUP(".type_array" FILES
     type/array.h
-    type/array.cpp)
+    type/array.cpp
+    )
 
 SOURCE_GROUP(".type_atom" FILES
     type/atom.h
-    type/atom.cpp)
+    type/atom.cpp
+    )
 
 SOURCE_GROUP(".type_enum" FILES
     type/enum.h
-    type/enum.cpp)
+    type/enum.cpp
+    )
 
 SOURCE_GROUP(".type_range" FILES
     type/range.h
-    type/range.inl)
+    type/range.inl
+    )
 
 SOURCE_GROUP(".type_such_as" FILES
     type/such_as.h
-    type/such_as.cpp)
+    type/such_as.cpp
+    )
 
 SOURCE_GROUP(".generated" FILES
-    ${GENERATED_FILES})
+    ${GENERATED_FILES}
+    )
 
 ENDIF(MSVC)
