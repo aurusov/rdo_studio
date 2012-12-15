@@ -19,6 +19,7 @@
 #include "simulator/compiler/parser/context/context.h"
 #include "simulator/compiler/parser/context/memory.h"
 #include "simulator/compiler/parser/context/context_find_i.h"
+#include "simulator/compiler/parser/type/function_type.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -28,26 +29,71 @@ int  frmlex  (PTR(YYSTYPE) lpval, PTR(YYLTYPE) llocp, PTR(void) lexer);
 void frmerror(PTR(char) message);
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOFRMFrame
+// -------------------- RDOFRMCommandList
 // --------------------------------------------------------------------------------
-CLASS(RDOFRMFrame):
+CLASS(RDOFRMCommandList):
 	    INSTANCE_OF      (RDOParserSrcInfo)
 	AND INSTANCE_OF      (Context         )
 	AND IMPLEMENTATION_OF(IContextFind    )
 {
-DECLARE_FACTORY(RDOFRMFrame);
+DECLARE_FACTORY(RDOFRMCommandList);
 public:
-	CREF(tstring)                     name () const  { return src_info().src_text(); }
-	CREF(rdo::runtime::LPRDOFRMFrame) frame() const  { return m_pFrame;              }
-	void                              end  ();
+	CREF(tstring)                        name() const  { return src_info().src_text(); }
+	virtual rdo::runtime::LPRDOFRMSprite list() const = 0;
 
 	static LPExpression generateExpression(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(RDOParserSrcInfo) srcInfo);
 
+protected:
+	RDOFRMCommandList(CREF(RDOParserSrcInfo) src_info);
+};
+DECLARE_POINTER(RDOFRMCommandList);
+
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOFRMSprite
+// --------------------------------------------------------------------------------
+CLASS(RDOFRMSprite):
+	INSTANCE_OF (RDOFRMCommandList)
+{
+DECLARE_FACTORY(RDOFRMSprite);
+public:
+	void end();
+
+	CREF(rdo::runtime::LPRDOFRMSprite) sprite() const { return m_pSprite; }
+
+	LPExpression expression() const;
+
+private:
+	RDOFRMSprite(CREF(RDOParserSrcInfo) src_info);
+
+	rdo::runtime::LPRDOFRMSprite  m_pSprite;
+	LPContextMemory               m_pContextMemory;
+	LPFunctionType                m_pFunctionType;
+
+	rdo::runtime::LPRDOFRMSprite list() const { return m_pSprite; }
+
+	DECLARE_IContextFind;
+};
+DECLARE_POINTER(RDOFRMSprite);
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOFRMFrame
+// --------------------------------------------------------------------------------
+CLASS(RDOFRMFrame):
+	INSTANCE_OF (RDOFRMCommandList)
+{
+DECLARE_FACTORY(RDOFRMFrame);
+public:
+	void                              end  ();
+	CREF(rdo::runtime::LPRDOFRMFrame) frame() const { return m_pFrame; }
+
 private:
 	RDOFRMFrame(CREF(RDOParserSrcInfo) srcInfo);
-
+	
 	rdo::runtime::LPRDOFRMFrame m_pFrame;
 	LPContextMemory             m_pContextMemory;
+
+	rdo::runtime::LPRDOFRMSprite list() const { return m_pFrame; }
 
 	DECLARE_IContextFind;
 };

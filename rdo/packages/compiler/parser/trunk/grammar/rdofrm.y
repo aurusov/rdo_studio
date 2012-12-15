@@ -218,7 +218,7 @@
 #include "simulator/compiler/parser/rdo_array.h"
 #include "simulator/compiler/parser/local_variable.h"
 #include "simulator/compiler/parser/type/such_as.h"
-#include "simulator/compiler/parser/context/type.h"
+#include "simulator/compiler/parser/context/context_type.h"
 #include "simulator/compiler/parser/context/memory.h"
 #include "simulator/compiler/parser/context/statement.h"
 #include "simulator/runtime/calc/calc_base.h"
@@ -362,13 +362,22 @@ frm_item_statement
 		rdo::runtime::LPRDOFRMItem pItem = PARSER->stack().pop<rdo::runtime::RDOFRMItem>($1);
 		ASSERT(pItem);
 
-		PARSER->getLastFRMFrame()->frame()->insertItem(pItem);
+		PARSER->getLastFRMCommandList()->list()->insertItem(pItem);
 
-		LPExpression pExpression = RDOFRMFrame::generateExpression(
+		LPExpression pExpression = RDOFRMCommandList::generateExpression(
 			pItem,
 			RDOParserSrcInfo(@1)
 		);
 		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	| frm_sprite
+	{
+		LPExpression pExpression = PARSER->stack().pop<Expression>($1);
+		ASSERT(pExpression);
+
+		PARSER->getLastFRMCommandList()->list()->insertItem(pExpression->calc());
 
 		$$ = PARSER->stack().push(pExpression);
 	}
@@ -387,7 +396,6 @@ frm_item
 	| frm_active
 	| frm_ruler
 	| frm_space
-	| frm_sprite
 	;
 
 frm_header
@@ -418,7 +426,7 @@ frm_header
 		LPRDOFRMFrame pFrame = PARSER->stack().pop<RDOFRMFrame>($1);
 		ASSERT(pFrame);
 
-		PARSER->getLastFRMFrame()->frame()->setSpriteCalc(pExpressionFrame->calc());
+		PARSER->getLastFRMCommandList()->list()->setSpriteCalc(pExpressionFrame->calc());
 
 		$$ = PARSER->stack().push(pFrame);
 	}
@@ -629,7 +637,7 @@ frm_postype
 		{
 			PARSER->error().error(@2, _T("Номер рулетки должен быть больше нуля"));
 		}
-		if (!RUNTIME->lastFrame()->findRulet(rilet_id))
+		if (!PARSER->getLastFRMCommandList()->list()->findRulet(rilet_id))
 		{
 			PARSER->error().error(@2, rdo::format(_T("Рулетки с номером '%d' не существует"), rilet_id));
 		}
@@ -719,7 +727,7 @@ frm_ruler
 	{
 		LPRDOValue pRuletID = PARSER->stack().pop<RDOValue>($3);
 		ASSERT(pRuletID);
-		LPRDOFRMRulet pRulet = RUNTIME->lastFrame()->findRulet(pRuletID->value().getInt());
+		LPRDOFRMRulet pRulet = PARSER->getLastFRMCommandList()->list()->findRulet(pRuletID->value().getInt());
 		if (pRulet)
 		{
 			PARSER->error().push_only(@3, rdo::format(_T("Рулетка с номером '%d' уже существует"), pRuletID->value().getInt()));
@@ -783,7 +791,7 @@ frm_space
 		ASSERT(pY     );
 		ASSERT(pWidth );
 		ASSERT(pHeight);
-		LPRDOFRMSpace pSpace = rdo::Factory<RDOFRMSpace>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight);
+		LPRDOFRMSpace pSpace = rdo::Factory<RDOFRMSpace>::create(PARSER->getLastFRMCommandList()->list(), pX, pY, pWidth, pHeight);
 		ASSERT(pSpace);
 		$$ = PARSER->stack().push(pSpace);
 	}
@@ -849,7 +857,7 @@ frm_text_common
 		ASSERT(pFgColor);
 		pBgColor->setType(RDOFRMColor::CT_LAST_BG_TEXT);
 		pFgColor->setType(RDOFRMColor::CT_LAST_FG_TEXT);
-		LPRDOFRMText pText = rdo::Factory<RDOFRMText>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
+		LPRDOFRMText pText = rdo::Factory<RDOFRMText>::create(PARSER->getLastFRMCommandList()->list(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
 		ASSERT(pText);
 		$$ = PARSER->stack().push(pText);
 	}
@@ -870,7 +878,7 @@ frm_text_common
 		ASSERT(pFgColor);
 		pBgColor->setType(RDOFRMColor::CT_LAST_BG_TEXT);
 		pFgColor->setType(RDOFRMColor::CT_LAST_FG_TEXT);
-		LPRDOFRMText pText = rdo::Factory<RDOFRMText>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
+		LPRDOFRMText pText = rdo::Factory<RDOFRMText>::create(PARSER->getLastFRMCommandList()->list(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
 		ASSERT(pText);
 		$$ = PARSER->stack().push(pText);
 	}
@@ -890,7 +898,7 @@ frm_text_common
 		ASSERT(pFgColor);
 		pBgColor->setType(RDOFRMColor::CT_LAST_BG_TEXT);
 		pFgColor->setType(RDOFRMColor::CT_LAST_FG_TEXT);
-		LPRDOFRMText pText = rdo::Factory<RDOFRMText>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
+		LPRDOFRMText pText = rdo::Factory<RDOFRMText>::create(PARSER->getLastFRMCommandList()->list(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
 		ASSERT(pText);
 		$$ = PARSER->stack().push(pText);
 	}
@@ -985,7 +993,7 @@ frm_bitmap
 		LPRDOFRMPosition pY = PARSER->stack().pop<RDOFRMPosition>($5);
 		ASSERT(pX);
 		ASSERT(pY);
-		LPRDOFRMBitmap pBitmap = rdo::Factory<RDOFRMBitmap>::create(RUNTIME->lastFrame(), pX, pY, PARSER->stack().pop<RDOValue>($7)->value().getIdentificator());
+		LPRDOFRMBitmap pBitmap = rdo::Factory<RDOFRMBitmap>::create(PARSER->getLastFRMCommandList()->list(), pX, pY, PARSER->stack().pop<RDOValue>($7)->value().getIdentificator());
 		ASSERT(pBitmap);
 		$$ = PARSER->stack().push(pBitmap);
 	}
@@ -995,7 +1003,7 @@ frm_bitmap
 		LPRDOFRMPosition pY = PARSER->stack().pop<RDOFRMPosition>($5);
 		ASSERT(pX);
 		ASSERT(pY);
-		LPRDOFRMBitmap pBitmap = rdo::Factory<RDOFRMBitmap>::create(RUNTIME->lastFrame(), pX, pY, PARSER->stack().pop<RDOValue>($7)->value().getIdentificator(), PARSER->stack().pop<RDOValue>($9)->value().getIdentificator());
+		LPRDOFRMBitmap pBitmap = rdo::Factory<RDOFRMBitmap>::create(PARSER->getLastFRMCommandList()->list(), pX, pY, PARSER->stack().pop<RDOValue>($7)->value().getIdentificator(), PARSER->stack().pop<RDOValue>($9)->value().getIdentificator());
 		ASSERT(pBitmap);
 		$$ = PARSER->stack().push(pBitmap);
 	}
@@ -1048,7 +1056,7 @@ frm_s_bmp
 		ASSERT(pY     );
 		ASSERT(pWidth );
 		ASSERT(pHeight);
-		LPRDOFRMBitmapStretch pBitmap = rdo::Factory<RDOFRMBitmapStretch>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, PARSER->stack().pop<RDOValue>($11)->value().getIdentificator());
+		LPRDOFRMBitmapStretch pBitmap = rdo::Factory<RDOFRMBitmapStretch>::create(PARSER->getLastFRMCommandList()->list(), pX, pY, pWidth, pHeight, PARSER->stack().pop<RDOValue>($11)->value().getIdentificator());
 		ASSERT(pBitmap);
 		$$ = PARSER->stack().push(pBitmap);
 	}
@@ -1062,7 +1070,7 @@ frm_s_bmp
 		ASSERT(pY     );
 		ASSERT(pWidth );
 		ASSERT(pHeight);
-		LPRDOFRMBitmapStretch pBitmap = rdo::Factory<RDOFRMBitmapStretch>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, PARSER->stack().pop<RDOValue>($11)->value().getIdentificator(), PARSER->stack().pop<RDOValue>($13)->value().getIdentificator());
+		LPRDOFRMBitmapStretch pBitmap = rdo::Factory<RDOFRMBitmapStretch>::create(PARSER->getLastFRMCommandList()->list(), pX, pY, pWidth, pHeight, PARSER->stack().pop<RDOValue>($11)->value().getIdentificator(), PARSER->stack().pop<RDOValue>($13)->value().getIdentificator());
 		ASSERT(pBitmap);
 		$$ = PARSER->stack().push(pBitmap);
 	}
@@ -1137,7 +1145,7 @@ frm_rect
 		ASSERT(pFgColor);
 		pBgColor->setType(RDOFRMColor::CT_LAST_BG);
 		pFgColor->setType(RDOFRMColor::CT_LAST_FG);
-		LPRDOFRMRect pRect = rdo::Factory<RDOFRMRect>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
+		LPRDOFRMRect pRect = rdo::Factory<RDOFRMRect>::create(PARSER->getLastFRMCommandList()->list(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
 		ASSERT(pRect);
 		$$ = PARSER->stack().push(pRect);
 	}
@@ -1157,7 +1165,7 @@ frm_rect
 		ASSERT(pFgColor);
 		pBgColor->setType(RDOFRMColor::CT_LAST_BG);
 		pFgColor->setType(RDOFRMColor::CT_LAST_FG);
-		LPRDOFRMRect pRect = rdo::Factory<RDOFRMRect>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
+		LPRDOFRMRect pRect = rdo::Factory<RDOFRMRect>::create(PARSER->getLastFRMCommandList()->list(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
 		ASSERT(pRect);
 		$$ = PARSER->stack().push(pRect);
 	}
@@ -1177,7 +1185,7 @@ frm_rect
 		ASSERT(pFgColor);
 		pBgColor->setType(RDOFRMColor::CT_LAST_BG);
 		pFgColor->setType(RDOFRMColor::CT_LAST_FG);
-		LPRDOFRMRect pRect = rdo::Factory<RDOFRMRect>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
+		LPRDOFRMRect pRect = rdo::Factory<RDOFRMRect>::create(PARSER->getLastFRMCommandList()->list(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
 		ASSERT(pRect);
 		$$ = PARSER->stack().push(pRect);
 	}
@@ -1197,7 +1205,7 @@ frm_rect
 		ASSERT(pFgColor);
 		pBgColor->setType(RDOFRMColor::CT_LAST_BG);
 		pFgColor->setType(RDOFRMColor::CT_LAST_FG);
-		LPRDOFRMRect pRect = rdo::Factory<RDOFRMRect>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
+		LPRDOFRMRect pRect = rdo::Factory<RDOFRMRect>::create(PARSER->getLastFRMCommandList()->list(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
 		ASSERT(pRect);
 		$$ = PARSER->stack().push(pRect);
 	}
@@ -1217,7 +1225,7 @@ frm_rect
 		ASSERT(pFgColor);
 		pBgColor->setType(RDOFRMColor::CT_LAST_BG);
 		pFgColor->setType(RDOFRMColor::CT_LAST_FG);
-		LPRDOFRMRect pRect = rdo::Factory<RDOFRMRect>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
+		LPRDOFRMRect pRect = rdo::Factory<RDOFRMRect>::create(PARSER->getLastFRMCommandList()->list(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
 		ASSERT(pRect);
 		$$ = PARSER->stack().push(pRect);
 	}
@@ -1292,7 +1300,7 @@ frm_r_rect
 		ASSERT(pFgColor);
 		pBgColor->setType(RDOFRMColor::CT_LAST_BG);
 		pFgColor->setType(RDOFRMColor::CT_LAST_FG);
-		LPRDOFRMRectRound pRoundRect = rdo::Factory<RDOFRMRectRound>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
+		LPRDOFRMRectRound pRoundRect = rdo::Factory<RDOFRMRectRound>::create(PARSER->getLastFRMCommandList()->list(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
 		ASSERT(pRoundRect);
 		$$ = PARSER->stack().push(pRoundRect);
 	}
@@ -1365,7 +1373,7 @@ frm_circle
 		ASSERT(pFgColor);
 		pBgColor->setType(RDOFRMColor::CT_LAST_BG);
 		pFgColor->setType(RDOFRMColor::CT_LAST_FG);
-		LPRDOFRMCircle pCircle = rdo::Factory<RDOFRMCircle>::create(RUNTIME->lastFrame(), pX, pY, pRadius, pBgColor, pFgColor);
+		LPRDOFRMCircle pCircle = rdo::Factory<RDOFRMCircle>::create(PARSER->getLastFRMCommandList()->list(), pX, pY, pRadius, pBgColor, pFgColor);
 		ASSERT(pCircle);
 		$$ = PARSER->stack().push(pCircle);
 	}
@@ -1431,7 +1439,7 @@ frm_ellipse
 		ASSERT(pFgColor);
 		pBgColor->setType(RDOFRMColor::CT_LAST_BG);
 		pFgColor->setType(RDOFRMColor::CT_LAST_FG);
-		LPRDOFRMEllipse pEllipse = rdo::Factory<RDOFRMEllipse>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
+		LPRDOFRMEllipse pEllipse = rdo::Factory<RDOFRMEllipse>::create(PARSER->getLastFRMCommandList()->list(), pX, pY, pWidth, pHeight, pBgColor, pFgColor);
 		ASSERT(pEllipse);
 		$$ = PARSER->stack().push(pEllipse);
 	}
@@ -1503,7 +1511,7 @@ frm_line
 		LPRDOFRMColor pColor = PARSER->stack().pop<RDOFRMColor>($11);
 		ASSERT(pColor);
 		pColor->setType(RDOFRMColor::CT_LAST_FG);
-		LPRDOFRMLine pLine = rdo::Factory<RDOFRMLine>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, pColor);
+		LPRDOFRMLine pLine = rdo::Factory<RDOFRMLine>::create(PARSER->getLastFRMCommandList()->list(), pX, pY, pWidth, pHeight, pColor);
 		ASSERT(pLine);
 		$$ = PARSER->stack().push(pLine);
 	}
@@ -1574,7 +1582,7 @@ frm_triang
 		ASSERT(pFgColor);
 		pBgColor->setType(RDOFRMColor::CT_LAST_BG);
 		pFgColor->setType(RDOFRMColor::CT_LAST_FG);
-		LPRDOFRMTriang pTriang = rdo::Factory<RDOFRMTriang>::create(RUNTIME->lastFrame(), pX1, pY1, pX2, pY2, pX3, pY3, pBgColor, pFgColor);
+		LPRDOFRMTriang pTriang = rdo::Factory<RDOFRMTriang>::create(PARSER->getLastFRMCommandList()->list(), pX1, pY1, pX2, pY2, pX3, pY3, pBgColor, pFgColor);
 		ASSERT(pTriang);
 		$$ = PARSER->stack().push(pTriang);
 	}
@@ -1675,7 +1683,7 @@ frm_active
 		ASSERT(pY     );
 		ASSERT(pWidth );
 		ASSERT(pHeight);
-		LPRDOFRMActive pActive = rdo::Factory<RDOFRMActive>::create(RUNTIME->lastFrame(), pX, pY, pWidth, pHeight, oprName);
+		LPRDOFRMActive pActive = rdo::Factory<RDOFRMActive>::create(PARSER->getLastFRMCommandList()->list(), pX, pY, pWidth, pHeight, oprName);
 		ASSERT(pActive);
 		$$ = PARSER->stack().push(pActive);
 	}
@@ -1726,17 +1734,54 @@ frm_active
 // --------------------------------------------------------------------------------
 frm_sprite_end
 	: frm_sprite_begin RDO_End
-	{}
+	{
+		LPRDOFRMSprite pSprite = PARSER->stack().pop<RDOFRMSprite>($1);
+		ASSERT(pSprite);
+		pSprite->end();
+	}
 	;
 
 frm_sprite_begin
-	: frm_sprite_header frm_item
-	{}
+	: frm_sprite_header statement_list
+	{
+		LPExpression pExpressionSpriteBody = PARSER->stack().pop<Expression>($2);
+		ASSERT(pExpressionSpriteBody);
+
+		rdo::runtime::LPRDOCalcStatementList pCalcStatementList = pExpressionSpriteBody->calc().object_dynamic_cast<rdo::runtime::RDOCalcStatementList>();
+		ASSERT(pCalcStatementList);
+
+		rdo::runtime::LPRDOCalcBaseStatementList pCalcBaseStatementList = rdo::Factory<rdo::runtime::RDOCalcBaseStatementList>::create();
+		ASSERT(pCalcBaseStatementList);
+
+		rdo::runtime::LPRDOCalcOpenBrace pCalcOpenBrace = rdo::Factory<rdo::runtime::RDOCalcOpenBrace>::create();
+		ASSERT(pCalcOpenBrace);
+
+		rdo::runtime::LPRDOCalcCloseBrace pCalcCloseBrace = rdo::Factory<rdo::runtime::RDOCalcCloseBrace>::create();
+		ASSERT(pCalcCloseBrace);
+
+		pCalcBaseStatementList->addCalcStatement(pCalcOpenBrace);
+		pCalcBaseStatementList->addCalcStatement(pCalcStatementList);
+		pCalcBaseStatementList->addCalcStatement(pCalcCloseBrace);
+
+		LPExpression pExpressionSprite = rdo::Factory<Expression>::create(pExpressionSpriteBody->typeInfo(), pCalcBaseStatementList, pCalcStatementList->srcInfo());
+		ASSERT(pExpressionSprite);
+
+		LPRDOFRMSprite pSprite = PARSER->stack().pop<RDOFRMSprite>($1);
+		ASSERT(pSprite);
+
+		PARSER->getLastFRMCommandList()->list()->setSpriteCalc(pExpressionSprite->calc());
+
+		$$ = PARSER->stack().push(pSprite);
+	}
 	;
 
 frm_sprite_header
 	: RDO_Sprite RDO_IDENTIF '(' param_list ')'
-	{}
+	{
+		LPRDOFRMSprite pSprite = rdo::Factory<RDOFRMSprite>::create(PARSER->stack().pop<RDOValue>($2)->src_info());
+		ASSERT(pSprite);
+		$$ = PARSER->stack().push(pSprite);
+	}
 	| RDO_Sprite RDO_IDENTIF '(' param_list error
 	{
 		PARSER->error().error(@5, _T("Ожидается закрывающая скобка"));
@@ -1752,7 +1797,28 @@ frm_sprite_header
 	;
 
 frm_sprite
-	: RDO_sprite_call RDO_IDENTIF '(' arithm_list ')' {} //использовать fun_arithm_func_call (?)
+	: RDO_sprite_call RDO_IDENTIF '(' arithm_list ')'
+	{
+		LPRDOValue        pValue           = PARSER->stack().pop<RDOValue>($2);
+		LPArithmContainer pArithmContainer = PARSER->stack().pop<ArithmContainer>($4);
+		ASSERT(pValue);
+		ASSERT(pArithmContainer);
+
+		tstring funName = pValue->value().getIdentificator();
+
+		LPExpression pFunctionExpression = RDOFUNArithm::generateByIdentificator(pValue)->expression();
+		ASSERT(pFunctionExpression);
+
+		LPRDOFUNParams pFunParams = rdo::Factory<RDOFUNParams>::create(pArithmContainer);
+		ASSERT(pFunParams);
+
+		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@2, funName));
+		pFunParams->setSrcPos (@2, @5);
+		pFunParams->setSrcText(funName + _T("(") + pArithmContainer->src_text() + _T(")"));
+		LPExpression pExpression = pFunParams->createCallExpression(pFunctionExpression);
+		ASSERT(pExpression);
+		$$ = PARSER->stack().push(pExpression);
+	}
 	| RDO_sprite_call RDO_IDENTIF '(' arithm_list error
 	{
 		PARSER->error().error(@5, _T("Ожидается закрывающая скобка"));

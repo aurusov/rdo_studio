@@ -157,7 +157,7 @@ LPRDOValue RDORTPResType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcIn
 
 rdo::runtime::LPRDOCalc RDORTPResType::calc_cast(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
 {
-	return RDOType::calc_cast(pCalc, pType);
+	return RuntimeWrapperType::calc_cast(pCalc, pType);
 }
 
 rdo::runtime::RDOValue RDORTPResType::get_default() const

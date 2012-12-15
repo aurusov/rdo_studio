@@ -22,6 +22,7 @@
 #include "simulator/compiler/parser/context/context.h"
 #include "simulator/compiler/parser/context/memory.h"
 #include "simulator/compiler/parser/context/context_find_i.h"
+#include "simulator/compiler/parser/type/function_type.h"
 
 #include "simulator/runtime/rdo_object.h"
 #include "simulator/runtime/rdo_type.h"
@@ -217,8 +218,9 @@ DECLARE_FACTORY(ArithmContainer);
 public:
 	typedef std::vector<LPRDOFUNArithm> Container;
 
-	CREF(Container) getContainer() const { return m_arithmList; }
-	void            addItem     (CREF(LPRDOFUNArithm) pArithm);
+	CREF(Container)     getContainer() const { return m_arithmList; }
+	void                addItem     (CREF(LPRDOFUNArithm) pArithm);
+	LPFunctionParamType getType     () const;
 
 private:
 	ArithmContainer();
@@ -242,6 +244,7 @@ public:
 	CREF(LPArithmContainer)  getParamList () const { return m_pArithmContainer ; }
 	rdo::runtime::LPRDOCalc  getCalc      (ruint paramID, CREF(LPTypeInfo) pType);
 
+	LPExpression   createCallExpression(CREF(LPExpression) pFunction);
 	LPRDOFUNArithm createCall   (CREF(tstring) funName);
 	LPRDOFUNArithm createSeqCall(CREF(tstring) seqName);
 

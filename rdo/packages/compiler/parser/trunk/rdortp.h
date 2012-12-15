@@ -17,7 +17,7 @@
 #include "utils/rdomacros.h"
 #include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/compiler/parser/rdo_value.h"
-#include "simulator/compiler/parser/type/type.h"
+#include "simulator/compiler/parser/type/runtime_wrapper_type.h"
 #include "simulator/compiler/parser/type/enum.h"
 #include "simulator/compiler/parser/rdortp_param.h"
 #include "simulator/runtime/rdo_object.h"
@@ -44,7 +44,7 @@ PREDECLARE_POINTER(RDORSSResource);
 CLASS(RDORTPResType):
 	    INSTANCE_OF      (RDOParserSrcInfo  )
 	AND INSTANCE_OF      (boost::noncopyable)
-	AND INSTANCE_OF      (RDOType           )
+	AND INSTANCE_OF      (RuntimeWrapperType)
 	AND INSTANCE_OF      (Context           )
 	AND IMPLEMENTATION_OF(IContextSwitch    )
 {
