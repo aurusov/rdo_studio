@@ -13,12 +13,14 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 SET(HEADER_FILES
     pch.h
     procgui.h
-    procgui_datablock.h)
+    procgui_datablock.h
+    )
 
 SET(SOURCE_FILES
     pch.cpp
     procgui.cpp
-    procgui_datablock.cpp)
+    procgui_datablock.cpp
+    )
 
 ADD_LIBRARY(rdo_procgui ${HEADER_FILES} ${SOURCE_FILES})
 
@@ -30,6 +32,7 @@ IF(MSVC) # lotions for windows #
 
 SOURCE_GROUP(".code" FILES 
     ${HEADER_FILES}
-    ${SOURCE_FILES})
+    ${SOURCE_FILES}
+    )
 
 ENDIF(MSVC)
