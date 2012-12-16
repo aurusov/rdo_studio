@@ -55,6 +55,8 @@ RDORuntime::RDORuntime(PTR(Error) pError)
 	, m_currFuncTop    (0       )
 	, m_currentTerm    (0       )
 	, m_pPreparingFrame(NULL    )
+	, m_resultList     (NULL    )
+	, m_resultListInfo (NULL    )
 {
 	ASSERT(m_pError);
 	m_pTerminateIfCalc = NULL;
