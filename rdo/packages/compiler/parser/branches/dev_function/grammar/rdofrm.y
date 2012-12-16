@@ -2638,7 +2638,7 @@ init_declaration
 if_else_statement
 	: if_statement
 	{
-		PARSER->contextStack()->pop();
+		PARSER->contextStack()->pop_safe<ContextReturnable>();
 	}
 	| if_statement RDO_else statement
 	{
@@ -2661,7 +2661,7 @@ if_else_statement
 			LPContextReturnable pContextReturnableChild = PARSER->context()->cast<ContextReturnable>();
 			ASSERT(pContextReturnableChild);
 
-			PARSER->contextStack()->pop();
+			PARSER->contextStack()->pop_safe<ContextReturnable>();
 
 			LPContextReturnable pContextReturnableParent = PARSER->context()->cast<ContextReturnable>();
 			ASSERT(pContextReturnableParent);
@@ -2697,7 +2697,7 @@ if_statement
 		LPContextReturnable pContextReturnableChild = PARSER->context()->cast<ContextReturnable>();
 		ASSERT(pContextReturnableChild);
 
-		PARSER->contextStack()->pop();
+		PARSER->contextStack()->pop_safe<ContextReturnable>();
 
 		LPContextReturnable pContextReturnableParent = PARSER->context()->cast<ContextReturnable>();
 		ASSERT(pContextReturnableParent);
@@ -2771,7 +2771,7 @@ for_statement
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pExpressionStatement->typeInfo(), pCalcBreakCatch, RDOParserSrcInfo(@1, @2));
 
-		PARSER->contextStack()->pop();
+		PARSER->contextStack()->pop_safe<ContextBreakable>();
 
 		$$ = PARSER->stack().push(pExpression);
 	}
