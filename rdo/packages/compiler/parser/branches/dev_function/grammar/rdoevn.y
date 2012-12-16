@@ -1501,6 +1501,9 @@ pat_convert
 
 		ASSERT(pPattern->m_pCurrRelRes);
 		pPattern->addRelResConvert($3 != 0, pExpressionConvert, @2, @3, pPattern->m_pCurrRelRes->m_statusBegin);
+
+		RDOParser::s_parser()->contextStack()->pop_safe<ContextReturnable>();
+
 		$$ = PARSER->stack().push(pPattern);
 	}
 	;
