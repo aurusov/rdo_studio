@@ -56,7 +56,7 @@ void Function::pushContext()
 
 void Function::popContext()
 {
-	RDOParser::s_parser()->contextStack()->pop();
+	RDOParser::s_parser()->contextStack()->pop_safe<Function>();
 }
 
 void Function::pushParamDefinitionContext()
@@ -70,8 +70,7 @@ void Function::pushParamDefinitionContext()
 
 void Function::popParamDefinitionContext()
 {
-	ASSERT(RDOParser::s_parser()->context().object_dynamic_cast<ContextParamDefinition>());
-	RDOParser::s_parser()->contextStack()->pop();
+	RDOParser::s_parser()->contextStack()->pop_safe<ContextParamDefinition>();
 
 	m_pFunctionType = generateType();
 	ASSERT(m_pFunctionType);
@@ -141,7 +140,7 @@ void Function::pushFunctionBodyContext()
 void Function::popFunctionBodyContext()
 {
 	ContextMemory::pop();
-	RDOParser::s_parser()->contextStack()->pop();
+	RDOParser::s_parser()->contextStack()->pop_safe<ContextMemory>();
 }
 
 Context::FindResult Function::onFindContext(CREF(LPRDOValue) pValue) const

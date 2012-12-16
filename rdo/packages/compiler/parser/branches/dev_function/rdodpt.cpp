@@ -142,7 +142,7 @@ void RDODPTActivity::endParam(CREF(YYLTYPE) param_pos)
 			RDOParser::s_parser()->error().push_done();
 		}
 	}
-	RDOParser::s_parser()->contextStack()->pop();
+	RDOParser::s_parser()->contextStack()->pop_safe<RDODPTActivity>();
 }
 
 rbool RDODPTActivity::setPrior(REF(LPRDOFUNArithm) pPrior)

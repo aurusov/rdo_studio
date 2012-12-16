@@ -29,6 +29,7 @@ class Function
 	, public IContextFind
 	, public RDOParserSrcInfo
 {
+DECLARE_FACTORY(Function);
 public:
 	typedef boost::optional<ruint> ParamID;
 

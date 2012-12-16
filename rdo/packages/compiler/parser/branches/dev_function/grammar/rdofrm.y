@@ -2469,8 +2469,8 @@ local_variable_declaration
 		);
 		ASSERT(pExpression);
 
-		PARSER->contextStack()->pop();
-		PARSER->contextStack()->pop();
+		PARSER->contextStack()->pop_safe<ContextLocalVariable>();
+		PARSER->contextStack()->pop_safe<TypeContext>();
 
 		$$ = PARSER->stack().push(pExpression);
 	}
