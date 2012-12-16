@@ -20,30 +20,6 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-// --------------------------------------------------------------------------------
-// -------------------- IContextLocalVariableManager
-// --------------------------------------------------------------------------------
-OBJECT_INTERFACE(IContextLocalVariableManager)
-{
-DECLARE_FACTORY(IContextLocalVariableManager)
-public:
-	virtual void pushLocalVariableContext() = 0;
-	virtual void popLocalVariableContext () = 0;
-
-protected:
-	IContextLocalVariableManager()
-	{}
-	virtual ~IContextLocalVariableManager()
-	{}
-};
-
-#define DECLARE_IContextLocalVariableManager \
-	void pushLocalVariableContext();         \
-	void popLocalVariableContext ();
-
-// --------------------------------------------------------------------------------
-// -------------------- ContextLocalVariable
-// --------------------------------------------------------------------------------
 class ContextLocalVariable: public Context
 {
 DECLARE_FACTORY(ContextLocalVariable)
