@@ -31,7 +31,8 @@ RDOParserSrcInfo::RDOParserSrcInfo(CREF(YYLTYPE) pos)
 	: RDOSrcInfo()
 {
 	init();
-	setSrcPos(pos);
+	setSrcPos (pos);
+	setSrcText(RDOParser::lexer_text());
 }
 
 RDOParserSrcInfo::RDOParserSrcInfo(CREF(rdo::runtime::RDOSrcInfo) info)
@@ -46,6 +47,7 @@ RDOParserSrcInfo::RDOParserSrcInfo(CREF(rdo::runtime::RDOSrcInfo::Position) pos)
 {
 	init();
 	RDOSrcInfo::setSrcPos(pos);
+	setSrcText(RDOParser::lexer_text());
 }
 
 RDOParserSrcInfo::RDOParserSrcInfo(CREF(tstring) text)
