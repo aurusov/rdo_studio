@@ -2431,7 +2431,7 @@ init_declaration_list
 		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
 		ASSERT(pLocalVariableListStack);
 
-		pLocalVariableListStack->append(pLocalVariable);
+		pLocalVariableListStack->top()->append(pLocalVariable);
 
 		rdo::runtime::LPRDOCalc pCalc = pVariableWrapper->getFirst();
 		ASSERT(pCalc);
@@ -2460,7 +2460,7 @@ init_declaration_list
 		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
 		ASSERT(pLocalVariableListStack);
 
-		pLocalVariableListStack->append(pLocalVariable);
+		pLocalVariableListStack->top()->append(pLocalVariable);
 
 		rdo::runtime::LPRDOCalc pCalc = pVariableWrapper->getFirst();
 		ASSERT(pCalc);
