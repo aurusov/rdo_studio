@@ -15,7 +15,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/procedural/calc_locvar.h"
 #include "simulator/compiler/parser/context/context.h"
-#include "simulator/compiler/parser/local_variable.h"
+#include "simulator/compiler/parser/src/function/local_variable/local_variable.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE

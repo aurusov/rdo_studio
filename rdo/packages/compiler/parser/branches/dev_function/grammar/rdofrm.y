@@ -217,7 +217,7 @@
 #include "simulator/compiler/parser/rdodpt.h"
 #include "simulator/compiler/parser/type/range.h"
 #include "simulator/compiler/parser/rdo_array.h"
-#include "simulator/compiler/parser/local_variable.h"
+#include "simulator/compiler/parser/src/function/local_variable/local_variable.h"
 #include "simulator/compiler/parser/type/such_as.h"
 #include "simulator/compiler/parser/context/context_type.h"
 #include "simulator/compiler/parser/context/memory.h"
