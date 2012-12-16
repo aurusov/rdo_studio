@@ -121,6 +121,14 @@ LPFunctionType Function::generateType() const
 	{
 		paramTypeList.push_back(pParam->getTypeInfo());
 	}
+
+	if (paramTypeList.empty())
+	{
+		paramTypeList.push_back(
+			rdo::Factory<TypeInfo>::delegate<RDOType__void>(src_info())
+		);
+	}
+
 	LPFunctionParamType pParamType = rdo::Factory<FunctionParamType>::create(paramTypeList, src_info());
 	ASSERT(pParamType);
 
