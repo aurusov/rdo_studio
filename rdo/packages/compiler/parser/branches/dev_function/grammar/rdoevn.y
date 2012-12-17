@@ -1271,7 +1271,7 @@ pat_convert
 			}
 		}
 
-		RDOParser::s_parser()->contextStack()->pop_safe<ContextReturnable>();
+		RDOParser::s_parser()->contextStack()->pop<ContextReturnable>();
 
 		$$ = PARSER->stack().push(pPattern);
 	}
@@ -1315,7 +1315,7 @@ pat_convert
 
 		pPattern.object_static_cast<RDOPatternOperation>()->addRelResConvertBeginEnd($3 != 0, pExpressionConvert, false, NULL, @2, @2, @3, @3);
 
-		RDOParser::s_parser()->contextStack()->pop_safe<ContextReturnable>();
+		RDOParser::s_parser()->contextStack()->pop<ContextReturnable>();
 
 		$$ = PARSER->stack().push(pPattern);
 	}
@@ -1359,7 +1359,7 @@ pat_convert
 
 		pPattern.object_static_cast<RDOPatternOperation>()->addRelResConvertBeginEnd(false, NULL, $3 != 0, pExpressionConvert, @2, @2, @3, @3);
 
-		RDOParser::s_parser()->contextStack()->pop_safe<ContextReturnable>();
+		RDOParser::s_parser()->contextStack()->pop<ContextReturnable>();
 
 		$$ = PARSER->stack().push(pPattern);
 	}
@@ -1423,8 +1423,8 @@ pat_convert
 			@2, @5, @3, @6          );
 
 
-		RDOParser::s_parser()->contextStack()->pop_safe<ContextReturnable>();
-		RDOParser::s_parser()->contextStack()->pop_safe<ContextReturnable>();
+		RDOParser::s_parser()->contextStack()->pop<ContextReturnable>();
+		RDOParser::s_parser()->contextStack()->pop<ContextReturnable>();
 
 		$$ = PARSER->stack().push(pPattern);
 	}
@@ -1472,7 +1472,7 @@ pat_convert
 
 		pPattern->addRelResConvert($3 != 0, pExpressionConvert, @2, @3, pRelRes->m_statusBegin);
 
-		RDOParser::s_parser()->contextStack()->pop_safe<ContextReturnable>();
+		RDOParser::s_parser()->contextStack()->pop<ContextReturnable>();
 
 		$$ = PARSER->stack().push(pPattern);
 	}
@@ -1519,7 +1519,7 @@ pat_convert
 		ASSERT(pPattern->m_pCurrRelRes);
 		pPattern->addRelResConvert($3 != 0, pExpressionConvert, @2, @3, pPattern->m_pCurrRelRes->m_statusBegin);
 
-		RDOParser::s_parser()->contextStack()->pop_safe<ContextReturnable>();
+		RDOParser::s_parser()->contextStack()->pop<ContextReturnable>();
 
 		$$ = PARSER->stack().push(pPattern);
 	}
@@ -2342,8 +2342,8 @@ local_variable_declaration
 		);
 		ASSERT(pExpression);
 
-		PARSER->contextStack()->pop_safe<ContextLocalVariable>();
-		PARSER->contextStack()->pop_safe<TypeContext>();
+		PARSER->contextStack()->pop<ContextLocalVariable>();
+		PARSER->contextStack()->pop<TypeContext>();
 
 		$$ = PARSER->stack().push(pExpression);
 	}
@@ -2503,7 +2503,7 @@ init_declaration_value
 if_else_statement
 	: if_statement
 	{
-		PARSER->contextStack()->pop_safe<ContextReturnable>();
+		PARSER->contextStack()->pop<ContextReturnable>();
 	}
 	| if_statement RDO_else statement
 	{
@@ -2526,7 +2526,7 @@ if_else_statement
 			LPContextReturnable pContextReturnableChild = PARSER->context()->cast<ContextReturnable>();
 			ASSERT(pContextReturnableChild);
 
-			PARSER->contextStack()->pop_safe<ContextReturnable>();
+			PARSER->contextStack()->pop<ContextReturnable>();
 
 			LPContextReturnable pContextReturnableParent = PARSER->context()->cast<ContextReturnable>();
 			ASSERT(pContextReturnableParent);
@@ -2562,7 +2562,7 @@ if_statement
 		LPContextReturnable pContextReturnableChild = PARSER->context()->cast<ContextReturnable>();
 		ASSERT(pContextReturnableChild);
 
-		PARSER->contextStack()->pop_safe<ContextReturnable>();
+		PARSER->contextStack()->pop<ContextReturnable>();
 
 		LPContextReturnable pContextReturnableParent = PARSER->context()->cast<ContextReturnable>();
 		ASSERT(pContextReturnableParent);
@@ -2636,7 +2636,7 @@ for_statement
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pExpressionStatement->typeInfo(), pCalcBreakCatch, RDOParserSrcInfo(@1, @2));
 
-		PARSER->contextStack()->pop_safe<ContextBreakable>();
+		PARSER->contextStack()->pop<ContextBreakable>();
 
 		$$ = PARSER->stack().push(pExpression);
 	}

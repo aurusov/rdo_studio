@@ -24,7 +24,7 @@ ContextStack::ContextStack()
 ContextStack::~ContextStack()
 {
 	while (!m_container.empty())
-		pop();
+		pop_not_safed();
 }
 
 void ContextStack::push(LPContext pContext)
@@ -33,7 +33,7 @@ void ContextStack::push(LPContext pContext)
 	pContext->setContextStack(this);
 }
 
-void ContextStack::pop()
+void ContextStack::pop_not_safed()
 {
 	ASSERT(!m_container.empty());
 	m_container.pop_back();

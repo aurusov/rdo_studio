@@ -1417,8 +1417,8 @@ void RDOFUNFunction::init()
 void RDOFUNFunction::end()
 {
 	ContextMemory::pop();
-	RDOParser::s_parser()->contextStack()->pop_safe<ContextMemory>();
-	RDOParser::s_parser()->contextStack()->pop_safe<RDOFUNFunction>();
+	RDOParser::s_parser()->contextStack()->pop<ContextMemory>();
+	RDOParser::s_parser()->contextStack()->pop<RDOFUNFunction>();
 }
 
 Context::FindResult RDOFUNFunction::onFindContext(CREF(LPRDOValue) pValue) const
@@ -1752,7 +1752,7 @@ void RDOFUNGroup::init(CREF(RDOParserSrcInfo) res_info)
 
 void RDOFUNGroup::end()
 {
-	RDOParser::s_parser()->contextStack()->pop_safe<RDOFUNGroup>();
+	RDOParser::s_parser()->contextStack()->pop<RDOFUNGroup>();
 }
 
 Context::FindResult RDOFUNGroup::onFindContext(CREF(LPRDOValue) pValue) const

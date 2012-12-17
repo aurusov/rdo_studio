@@ -28,19 +28,16 @@ OBJECT(ContextStack)
 {
 DECLARE_FACTORY(ContextStack);
 public:
-	void      push  (LPContext pContext);
-	void      pop   ();
+	void                     push(LPContext pContext);
+	template <class T> void  pop ()
+	{
+		ASSERT(top().object_dynamic_cast<T>());
+		pop_not_safed();
+	}
 
 	LPContext top   () const;
 	LPContext global() const;
 	LPContext prev  (CREF(LPContext) pContext) const;
-
-	template <class T>
-	void pop_safe()
-	{
-		ASSERT(top().object_dynamic_cast<T>());
-		pop();
-	}
 
 private:
 	ContextStack();
@@ -49,6 +46,8 @@ private:
 	typedef std::list<LPContext> Container;
 
 	Container m_container;
+
+	void pop_not_safed();
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

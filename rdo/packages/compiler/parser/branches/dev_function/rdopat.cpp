@@ -559,8 +559,8 @@ void RDOPATPattern::end()
 		}
 	}
 	ContextMemory::pop();
-	RDOParser::s_parser()->contextStack()->pop_safe<ContextMemory>();
-	RDOParser::s_parser()->contextStack()->pop_safe<RDOPATPattern>();
+	RDOParser::s_parser()->contextStack()->pop<ContextMemory>();
+	RDOParser::s_parser()->contextStack()->pop<RDOPATPattern>();
 }
 
 // --------------------------------------------------------------------------------

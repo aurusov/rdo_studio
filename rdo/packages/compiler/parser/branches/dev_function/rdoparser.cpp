@@ -134,7 +134,7 @@ void RDOParser::init()
 
 void RDOParser::deinit()
 {
-	m_pContextStack->pop();
+	m_pContextStack->pop<RDOParser>();
 
 	Context::deinit();
 

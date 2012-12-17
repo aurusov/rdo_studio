@@ -259,11 +259,11 @@ pmd_result_group_name
 pmd_result_group
 	: RDO_Results pmd_result_group_name pmd_body RDO_End
 	{
-		PARSER->contextStack()->pop();
+		PARSER->contextStack()->pop<RDOResultGroup>();
 	}
 	| RDO_Results pmd_result_group_name pmd_body error
 	{
-		PARSER->contextStack()->pop();
+		PARSER->contextStack()->pop<RDOResultGroup>();
 		PARSER->error().error(@3, _T("Ожидается ключевое слово $End"));
 	}
 	| error
