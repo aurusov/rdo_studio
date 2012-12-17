@@ -2551,27 +2551,11 @@ type_declaration
 	;
 
 init_declaration_list
-	: init_declaration
-	{
-		LPLocalVariable pLocalVariable = PARSER->stack().pop<LocalVariable>($1);
-		ASSERT(pLocalVariable);
-
-		LPContextLocalVariable pContextLocalVariable = PARSER->context().object_dynamic_cast<ContextLocalVariable>();
-		ASSERT(pContextLocalVariable);
-		pContextLocalVariable->pushLocalVariable(pLocalVariable);
-	}
-	| init_declaration_list ',' init_declaration
-	{
-		LPLocalVariable pLocalVariable = PARSER->stack().pop<LocalVariable>($3);
-		ASSERT(pLocalVariable);
-
-		LPContextLocalVariable pContextLocalVariable = PARSER->context().object_dynamic_cast<ContextLocalVariable>();
-		ASSERT(pContextLocalVariable);
-		pContextLocalVariable->pushLocalVariable(pLocalVariable);
-	}
+	: init_declaration_list_item
+	| init_declaration_list ',' init_declaration_list_item
 	;
 
-init_declaration
+init_declaration_list_item
 	: RDO_IDENTIF init_declaration_value
 	{
 		LPRDOValue pVariableName = PARSER->stack().pop<RDOValue>($1);
@@ -2584,7 +2568,10 @@ init_declaration
 
 		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(pVariableName, pExpression);
 		ASSERT(pLocalVariable);
-		$$ = PARSER->stack().push(pLocalVariable);
+
+		LPContextLocalVariable pContextLocalVariable = PARSER->context().object_dynamic_cast<ContextLocalVariable>();
+		ASSERT(pContextLocalVariable);
+		pContextLocalVariable->pushLocalVariable(pLocalVariable);
 	}
 	;
 
