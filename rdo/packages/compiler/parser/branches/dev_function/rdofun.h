@@ -567,7 +567,6 @@ CLASS(RDOFUNFunction):
 	AND IMPLEMENTATION_OF(IContextFind    )
 {
 DECLARE_FACTORY(RDOFUNFunction)
-friend class Converter;
 public:
 	typedef std::vector<LPRDOParam> ParamList;
 
