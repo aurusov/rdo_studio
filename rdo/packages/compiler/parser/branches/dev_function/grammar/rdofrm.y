@@ -504,9 +504,8 @@ param_declaration
 		LPRDOParam pParam = rdo::Factory<RDOParam>::create(pName->src_info(), pType);
 		ASSERT(pParam);
 
-		LPContext pContext = RDOParser::s_parser()->context();
-		ASSERT(pContext);
-		LPContextParamDefinition pContextParamDefinition = pContext->cast<ContextParamDefinition>();
+		LPContextParamDefinition pContextParamDefinition =
+			RDOParser::s_parser()->context().object_dynamic_cast<ContextParamDefinition>();
 		ASSERT(pContextParamDefinition);
 		pContextParamDefinition->pushParam(pParam);
 	}
