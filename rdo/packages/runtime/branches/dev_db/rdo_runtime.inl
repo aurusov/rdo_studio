@@ -163,7 +163,7 @@ inline void RDORuntime::popFuncTop()
 
 inline LPRDOResource RDORuntime::getResourceByID(ruint resourceID) const
 {
-	return resourceID != ~0 && resourceID < m_resourceListByID.size()
+	return resourceID != ruint(~0) && resourceID < m_resourceListByID.size()
 		? m_resourceListByID[resourceID]
 		: LPRDOResource(NULL);
 }

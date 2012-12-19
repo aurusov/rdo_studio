@@ -175,6 +175,8 @@ void RDODPTSearchTrace::getStatsDOUBLE(Type type, REF(double) min, REF(double) m
 		return __getStats<double>(calc_times, min, max, med);
 	case IDPTSearchTraceStatistics::ST_COST:
 		return __getStats<double>(calc_cost , min, max, med);
+	default:
+		break;
 	}
 	NEVER_REACH_HERE;
 }
@@ -193,6 +195,8 @@ void RDODPTSearchTrace::getStatsRUINT(Type type, REF(ruint) min, REF(ruint) max,
 		return __getStats<ruint>(calc_nodes_expended, min, max, med);
 	case IDPTSearchTraceStatistics::ST_NODES_IN_GRAPH:
 		return __getStats<ruint>(calc_mems, min, max, med);
+	default:
+		break;
 	}
 	NEVER_REACH_HERE;
 }

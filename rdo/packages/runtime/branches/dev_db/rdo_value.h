@@ -34,7 +34,7 @@ public:
 	RDOValue(CREF(LPRDOType)     pType   );
 	RDOValue(rsint               value   );
 	RDOValue(ruint               value   );
-#ifdef ARCHITECTURES_AMD64
+#ifdef ARCHITECTURE_AMD64
 	RDOValue(ruint64             value   );
 #endif // ARCHITECTURES_AMD64
 	RDOValue(double              value   );

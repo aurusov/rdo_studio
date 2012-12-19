@@ -46,8 +46,8 @@ private:
 
 	typedef std::vector<LPIResult> ResultList;
 	ResultList     m_resultList;
-	State          m_state;
 	tstring        m_name;
+	State          m_state;
 	double         m_timeStart;
 	rdo::ofstream  m_streamFull;
 	rdo::ofstream  m_streamTable;

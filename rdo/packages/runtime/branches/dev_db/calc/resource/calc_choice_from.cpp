@@ -149,7 +149,7 @@ RDOValue RDOSelectResourceByTypeCalc::doCalc(CREF(LPRDORuntime) pRuntime)
 		}
 	}
 
-	if (resMinMaxID != ~0)
+	if (resMinMaxID != ResourceID(~0))
 	{
 		pRuntime->getCurrentActivity()->setRelRes(m_relResID, resMinMaxID);
 		return RDOValue(1);
@@ -170,9 +170,9 @@ IRDOSelectResourceCommon::~IRDOSelectResourceCommon()
 // -------------------- RDOSelectResourceCommonCalc
 // --------------------------------------------------------------------------------
 RDOSelectResourceCommonCalc::RDOSelectResourceCommonCalc(CREF(SelectResourceCommonList) resSelectorList, rbool useCommonWithMax, CREF(LPRDOCalc) pCalcChoiceFrom)
-	: m_resSelectorList (resSelectorList )
+	: m_pCalcChoiceFrom (pCalcChoiceFrom )
+	, m_resSelectorList (resSelectorList )
 	, m_useCommonWithMax(useCommonWithMax)
-	, m_pCalcChoiceFrom (pCalcChoiceFrom )
 {
 	if (m_pCalcChoiceFrom)
 	{

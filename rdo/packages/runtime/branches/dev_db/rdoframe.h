@@ -161,10 +161,8 @@ public:
 
 public:
 	CREF(tstring) name              () const;
-
-	void          setBackgroundColor(CREF(LPRDOFRMColor) pBgColor   );
-	void          insertItem        (CREF(LPRDOFRMItem)  pItem      );
-	void          setSpriteCalc     (CREF(LPRDOCalc)     pSpriteCalc);
+	void          insertItem   (CREF(LPRDOCalc) pItem      );
+	void          setSpriteCalc(CREF(LPRDOCalc) pSpriteCalc);
 
 	void setColorLastBG    (RDOFRMColor::ColorType type, CREF(rdo::animation::Color) lastBg);
 	void setColorLastFG    (RDOFRMColor::ColorType type, CREF(rdo::animation::Color) lastFg);
@@ -181,13 +179,14 @@ protected:
 	RDOFRMSprite(CREF(RDOSrcInfo) srcInfo);
 	virtual ~RDOFRMSprite();
 
+	RDOValue prepareFrame(CREF(LPRDORuntime) pRuntime);
+
 	DECLARE_IRDOFRMItemGetBitmap;
 
 private:
 	typedef std::map<ruint, LPRDOFRMRulet> RuletList;
 	typedef std::list<LPIRDOFRMItemGetBitmap> GetBitmapList;
 
-	LPRDOFRMColor          m_pBgColor;
 	LPRDOCalc              m_pSpriteCalc;
 	rdo::animation::Color  m_colorLastBg;
 	rdo::animation::Color  m_colorLastFg;
@@ -205,6 +204,7 @@ private:
 
 	DECLARE_ICalc;
 };
+DECLARE_POINTER(RDOFRMSprite);
 
 /*!
   \class     RDOFRMBoundingItem
@@ -591,6 +591,8 @@ public:
 
 	void prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORuntime) pRuntime);
 
+	void setBackgroundColor(CREF(LPRDOFRMColor) pBgColor);
+
 	//! @todo Нужно спрятатть в приват и поправить симулятор, из которого метод вызывается
 	DECLARE_IRDOFRMItemGetBitmap;
 
@@ -598,11 +600,13 @@ private:
 	RDOFRMFrame(CREF(RDOSrcInfo) srcInfo);
 	virtual ~RDOFRMFrame();
 
+	LPRDOFRMColor m_pBgColor;
 	tstring m_picFileName;
 	ruint   m_width;
 	ruint   m_height;
-};
 
+	DECLARE_ICalc;
+};
 DECLARE_POINTER(RDOFRMFrame);
 
 CLOSE_RDO_RUNTIME_NAMESPACE

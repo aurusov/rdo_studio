@@ -54,6 +54,7 @@ inline int RDOFRMSprite::RDOFRMPosition::getX(CREF(LPRDORuntime) pRuntime, CREF(
 	case RDOFRMPosition::PT_GABARIT: res += pSprite->m_lastX + pSprite->m_lastWidth; break;
 	case RDOFRMPosition::PT_MULT   : res *= pSprite->m_lastX;                        break;
 	case RDOFRMPosition::PT_RULET  : res += pSprite->getRuletX(pRuntime, m_ruletID); break;
+	default                        : break;
 	}
 	return res.getInt();
 }
@@ -67,6 +68,7 @@ inline int RDOFRMSprite::RDOFRMPosition::getY(CREF(LPRDORuntime) pRuntime, CREF(
 	case RDOFRMPosition::PT_GABARIT: res += pSprite->m_lastY + pSprite->m_lastHeight; break;
 	case RDOFRMPosition::PT_MULT   : res *= pSprite->m_lastY;                         break;
 	case RDOFRMPosition::PT_RULET  : res += pSprite->getRuletY(pRuntime, m_ruletID);  break;
+	default                        : break;
 	}
 	return res.getInt();
 }
@@ -79,6 +81,7 @@ inline int RDOFRMSprite::RDOFRMPosition::getWidth(CREF(LPRDORuntime) pRuntime, C
 	case RDOFRMPosition::PT_DELTA: res += pSprite->m_lastWidth; break;
 	case RDOFRMPosition::PT_MULT : res *= pSprite->m_lastWidth; break;
 	case RDOFRMPosition::PT_RULET: res += pSprite->getRuletX(pRuntime, m_ruletID); break;
+	default                      : break;
 	}
 	return res.getInt();
 }
@@ -91,6 +94,7 @@ inline int RDOFRMSprite::RDOFRMPosition::getHeight(CREF(LPRDORuntime) pRuntime, 
 	case RDOFRMPosition::PT_DELTA: res += pSprite->m_lastHeight; break;
 	case RDOFRMPosition::PT_MULT : res *= pSprite->m_lastHeight; break;
 	case RDOFRMPosition::PT_RULET: res += pSprite->getRuletY(pRuntime, m_ruletID); break;
+	default                      : break;
 	}
 	return res.getInt();
 }

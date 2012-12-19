@@ -161,7 +161,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Rsint_Arifmethic)
 	const rsint val1 = 30;
 	RDOValue value1(val1);
 	BOOST_CHECK(value1.getInt      () == val1);
-	BOOST_CHECK(value1.getUInt     () == val1);
+	BOOST_CHECK(value1.getUInt     () == ruint(val1));
 	BOOST_CHECK(value1.getDouble   () == val1);
 	BOOST_CHECK(value1.getAsString () == "30");
 	BOOST_CHECK(value1.getEnumAsInt() == 30  );
@@ -217,7 +217,7 @@ BOOST_AUTO_TEST_CASE(RDOValue_Ruint_Arifmethic)
 	const ruint val1 = 30;
 	RDOValue value1(val1);
 	BOOST_CHECK(value1 == val1);
-	BOOST_CHECK(value1.getInt      () == val1);
+	BOOST_CHECK(value1.getInt      () == rsint(val1));
 	BOOST_CHECK(value1.getUInt     () == val1);
 	BOOST_CHECK(value1.getDouble   () == val1);
 	BOOST_CHECK(value1.getAsString () == "30");

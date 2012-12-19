@@ -26,9 +26,9 @@
 #include "simulator/runtime/notify.h"
 // --------------------------------------------------------------------------------
 
-#if defined( ARCHITECTURES_AMD64 )
+#if defined( ARCHITECTURE_AMD64 )
 typedef ruint64 ruint_type;
-#elif defined( ARCHITECTURES_X86 )
+#elif defined( ARCHITECTURE_X86 )
 typedef ruint ruint_type;
 #endif // ARCHITECTURES_AMD64
 
@@ -147,7 +147,7 @@ void RDOPMDWatchPar::resetResult(CREF(LPRDORuntime) pRuntime)
 
 void RDOPMDWatchPar::checkResult(CREF(LPRDORuntime) pRuntime)
 {
-	if (m_resourceID == ~0)
+	if (m_resourceID == ruint(~0))
 	{
 		return;
 	}

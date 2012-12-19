@@ -47,18 +47,16 @@ OPEN_RDO_RUNTIME_NAMESPACE
 // -------------------- RDORuntime
 // --------------------------------------------------------------------------------
 RDORuntime::RDORuntime(PTR(Error) pError)
-	: RDOSimulatorTrace      (                   )
-	, m_currActivity         (NULL               )
-	, m_resultList           (NULL               )
-	, m_resultListInfo       (NULL               )
-	, m_pLastActiveBreakPoint(NULL               )
+	: RDOSimulatorTrace()
 	, m_whyStop              (rdo::simulation::report::EC_OK)
-	, m_currentTerm          (0                  )
-	, m_funBreakFlag         (FBF_NONE           )
+	, m_funBreakFlag   (FBF_NONE)
 	, m_pStudioThread        (NULL               )
+	, m_pError         (pError  )
 	, m_currFuncTop          (0                  )
-	, m_pError               (pError             )
-	, m_pPreparingFrame      (NULL               )
+	, m_currentTerm    (0       )
+	, m_pPreparingFrame(NULL    )
+	, m_resultList     (NULL    )
+	, m_resultListInfo (NULL    )
 {
 	ASSERT(m_pError);
 	m_pTerminateIfCalc = NULL;

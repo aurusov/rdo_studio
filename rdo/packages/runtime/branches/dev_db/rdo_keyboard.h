@@ -38,7 +38,7 @@ private:
 
 	rbool m_shift;
 	rbool m_control;
-	int   m_scan_code;
+	ruint m_scan_code;
 
 	virtual rbool choiceFrom(CREF(LPRDORuntime) pRuntime);
 

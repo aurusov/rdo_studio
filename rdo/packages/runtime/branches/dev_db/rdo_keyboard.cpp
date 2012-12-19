@@ -45,7 +45,7 @@ RDOKeyboard::~RDOKeyboard()
 
 rbool RDOKeyboard::hasHotKey() const
 {
-	return m_scan_code != -1 ? true : false;
+	return m_scan_code != ruint(-1) ? true : false;
 }
 
 IKeyboard::AddHotKeyResult RDOKeyboard::addHotKey(CREF(LPRDORuntime) pRuntime, CREF(tstring) hotKey)

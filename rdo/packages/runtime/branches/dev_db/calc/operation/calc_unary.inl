@@ -87,8 +87,8 @@ inline void RDOCalcDoubleToIntByResult::needRound()
 }
 
 inline RDOCalcDoubleToIntByResult::RDOCalcDoubleToIntByResult(CREF(LPRDOCalc) pOper)
-	: m_pOperation(pOper)
-	, m_round     (false)
+	: m_round     (false)
+	, m_pOperation(pOper)
 {}
 
 // --------------------------------------------------------------------------------

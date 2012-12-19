@@ -177,6 +177,11 @@ void RDOCalcFunctionCaller::setFunctionCalc(CREF(LPRDOCalc) pFunction)
 	m_pFunction = pFunction;
 }
 
+CREF(LPRDOCalc) RDOCalcFunctionCaller::function() const
+{
+	return m_pFunction;
+}
+
 RDOValue RDOCalcFunctionCaller::doCalc(CREF(LPRDORuntime) pRuntime)
 {
 	pRuntime->pushFuncTop();
