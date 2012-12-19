@@ -23,11 +23,11 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 RDOLexer::RDOLexer(CREF(LPRDOParser) pParser, PTR(std::istream) yyin, PTR(std::ostream) yyout)
 	: yyFlexLexer(yyin, yyout)
-	, m_pParser  (pParser    )
-	, m_yyin     (yyin       )
-	, m_yyout    (yyout      )
 	, m_lpval    (NULL       )
 	, m_lploc    (NULL       )
+	, m_yyin     (yyin       )
+	, m_yyout    (yyout      )
+	, m_pParser  (pParser    )
 	, m_enumEmpty(true       )
 	, m_array_param_cnt(0    )
 {}

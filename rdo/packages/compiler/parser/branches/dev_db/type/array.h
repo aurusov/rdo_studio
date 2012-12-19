@@ -12,8 +12,9 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/compiler/parser/type/info.h"
 #include "simulator/runtime/rdo_array.h"
+#include "simulator/compiler/parser/type/info.h"
+#include "simulator/compiler/parser/type/runtime_wrapper_type.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -21,7 +22,9 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- RDOArrayType
 // --------------------------------------------------------------------------------
-class RDOArrayType: public RDOType, public RDOParserSrcInfo
+class RDOArrayType
+	: public RuntimeWrapperType
+	, public RDOParserSrcInfo
 {
 DECLARE_FACTORY(RDOArrayType);
 public:

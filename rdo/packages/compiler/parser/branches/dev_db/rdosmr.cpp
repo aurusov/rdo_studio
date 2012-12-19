@@ -50,12 +50,12 @@ void smr_sim_error(PTR(char) message)
 // -------------------- RDOSMR
 // --------------------------------------------------------------------------------
 RDOSMR::RDOSMR()
-	: m_frameNumber   (1 )
+	: m_showMode      (rdo::service::simulation::SM_NoShow)
+	, m_frameNumber   (1 )
 	, m_showRate      (60)
 	, m_runStartTime  (0 )
 	, m_traceStartTime(rdo::runtime::RDOSimulatorTrace::UNDEFINE_TIME)
 	, m_traceEndTime  (rdo::runtime::RDOSimulatorTrace::UNDEFINE_TIME)
-	, m_showMode      (rdo::service::simulation::SM_NoShow           )
 {}
 
 void RDOSMR::setShowMode(rdo::service::simulation::ShowMode showMode)

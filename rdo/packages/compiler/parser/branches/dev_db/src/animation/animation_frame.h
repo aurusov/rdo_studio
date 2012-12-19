@@ -1,15 +1,15 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      rdofrm.h
+  \file      animation_frame.h
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
+  \date      Фрейм анимации в парсере
   \brief     
   \indent    4T
 */
 
-#ifndef _RDOFRM_H_
-#define _RDOFRM_H_
+#ifndef _SIMULATOR_COMPILER_PARSER_ANIMATION_FRAME_H_
+#define _SIMULATOR_COMPILER_PARSER_ANIMATION_FRAME_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -17,8 +17,8 @@
 #include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/compiler/parser/rdofun.h"
 #include "simulator/compiler/parser/context/context.h"
-#include "simulator/compiler/parser/context/memory.h"
 #include "simulator/compiler/parser/context/context_find_i.h"
+#include "simulator/compiler/parser/src/animation/animation_base.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -30,18 +30,17 @@ void frmerror(PTR(char) message);
 // --------------------------------------------------------------------------------
 // -------------------- RDOFRMFrame
 // --------------------------------------------------------------------------------
-CLASS(RDOFRMFrame):
-	    INSTANCE_OF      (RDOParserSrcInfo)
-	AND INSTANCE_OF      (Context         )
-	AND IMPLEMENTATION_OF(IContextFind    )
+class RDOFRMFrame
+	: public RDOFRMCommandList
+	, public RDOParserSrcInfo
+	, public Context
+	, public IContextFind
 {
 DECLARE_FACTORY(RDOFRMFrame);
 public:
-	CREF(tstring)                     name () const  { return src_info().src_text(); }
-	CREF(rdo::runtime::LPRDOFRMFrame) frame() const  { return m_pFrame;              }
+	CREF(tstring)                     name () const { return src_info().src_text(); }
 	void                              end  ();
-
-	static LPExpression generateExpression(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(RDOParserSrcInfo) srcInfo);
+	CREF(rdo::runtime::LPRDOFRMFrame) frame() const { return m_pFrame; }
 
 private:
 	RDOFRMFrame(CREF(RDOParserSrcInfo) srcInfo);
@@ -49,10 +48,12 @@ private:
 	rdo::runtime::LPRDOFRMFrame m_pFrame;
 	LPContextMemory             m_pContextMemory;
 
+	rdo::runtime::LPRDOFRMSprite list() const { return m_pFrame; }
+
 	DECLARE_IContextFind;
 };
 DECLARE_POINTER(RDOFRMFrame);
 
 CLOSE_RDO_PARSER_NAMESPACE
 
-#endif // _RDOFRM_H_
+#endif // _SIMULATOR_COMPILER_PARSER_ANIMATION_FRAME_H_

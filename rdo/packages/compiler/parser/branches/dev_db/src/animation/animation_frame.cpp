@@ -1,9 +1,9 @@
 /*!
   \copyright (c) RDO-Team, 2011
-  \file      rdofrm.cpp
+  \file      animation_frame.cpp
   \authors   Барс Александр
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
-  \date      
+  \date      Фрейм анимации в парсере
   \brief     
   \indent    4T
 */
@@ -11,8 +11,9 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/bind.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/compiler/parser/rdofrm.h"
+#include "simulator/compiler/parser/src/animation/animation_frame.h"
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/rdoparser_lexer.h"
 // --------------------------------------------------------------------------------
@@ -35,7 +36,7 @@ void frmerror(PTR(char) message)
 // -------------------- RDOFRMFrame
 // --------------------------------------------------------------------------------
 RDOFRMFrame::RDOFRMFrame(CREF(RDOParserSrcInfo) srcInfo)
-	: RDOParserSrcInfo(srcInfo)
+	: RDOFRMCommandList()
 {
 	m_pFrame = rdo::Factory<rdo::runtime::RDOFRMFrame>::create(srcInfo);
 	ASSERT(m_pFrame)
@@ -52,7 +53,7 @@ RDOFRMFrame::RDOFRMFrame(CREF(RDOParserSrcInfo) srcInfo)
 
 Context::FindResult RDOFRMFrame::onFindContext(CREF(LPRDOValue) pValue) const
 {
-	UNUSED(pValue);
+	ASSERT(pValue);
 
 	//! Код из RDOFUNArithm::init(CREF(RDOValue) resName, CREF(RDOValue) parName)
 	//! Зачем он нужен - непонятно
@@ -65,6 +66,13 @@ Context::FindResult RDOFRMFrame::onFindContext(CREF(LPRDOValue) pValue) const
 	//	return;
 	//}
 
+	tstring name = pValue->value().getIdentificator();
+	LPRDOFRMSprite pSprite = RDOParser::s_parser()->findFRMSprite(name);
+	if (pSprite)
+	{
+		return Context::FindResult(const_cast<PTR(RDOFRMFrame)>(this), pSprite->expression(), pValue);
+	}
+
 	return Context::FindResult();
 }
 
@@ -72,19 +80,7 @@ void RDOFRMFrame::end()
 {
 	ContextMemory::pop();
 	RDOParser::s_parser()->contextStack()->pop();
-}
-
-LPExpression RDOFRMFrame::generateExpression(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(RDOParserSrcInfo) srcInfo)
-{
-	ASSERT(pCalc);
-
-	LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(srcInfo);
-	ASSERT(pType);
-
-	LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, srcInfo);
-	ASSERT(pExpression);
-
-	return pExpression;
+	RDOParser::s_parser()->contextStack()->pop();
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

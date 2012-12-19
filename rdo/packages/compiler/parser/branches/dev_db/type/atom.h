@@ -12,7 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/compiler/parser/type/type.h"
+#include "simulator/compiler/parser/type/runtime_wrapper_type.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -20,20 +20,20 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- ATOM_TYPE_PARSER
 // --------------------------------------------------------------------------------
-#define DEFINE_ATOM_TYPE_PARSER(Type)    \
-class RDOType__##Type: public RDOType    \
-{                                        \
-private:                                 \
-typedef RDOType parent_type;             \
-public:                                  \
-	RDOType__##Type():                   \
-		RDOType(rdo::runtime::g_##Type)  \
-	{}                                   \
-	~RDOType__##Type()                   \
-	{}                                   \
-	DECLARE_IType;                       \
-	DECLARE_IModelStructure;             \
-};                                       \
+#define DEFINE_ATOM_TYPE_PARSER(Type)              \
+class RDOType__##Type: public RuntimeWrapperType   \
+{                                                  \
+private:                                           \
+typedef RuntimeWrapperType parent_type;            \
+public:                                            \
+	RDOType__##Type():                             \
+		RuntimeWrapperType(rdo::runtime::g_##Type) \
+	{}                                             \
+	~RDOType__##Type()                             \
+	{}                                             \
+	DECLARE_IType;                                 \
+	DECLARE_IModelStructure;                       \
+};                                                 \
 DECLARE_POINTER(RDOType__##Type);
 
 DEFINE_ATOM_TYPE_PARSER(unknow       );
