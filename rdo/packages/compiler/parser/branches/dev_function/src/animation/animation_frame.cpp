@@ -51,6 +51,21 @@ RDOFRMFrame::RDOFRMFrame(CREF(RDOParserSrcInfo) srcInfo)
 	ContextMemory::push();
 }
 
+CREF(tstring) RDOFRMFrame::name() const
+{
+	return src_info().src_text();
+}
+
+CREF(rdo::runtime::LPRDOFRMFrame) RDOFRMFrame::frame() const
+{
+	return m_pFrame;
+}
+
+rdo::runtime::LPRDOFRMSprite RDOFRMFrame::list() const
+{
+	return m_pFrame;
+}
+
 Context::FindResult RDOFRMFrame::onFindContext(CREF(LPRDOValue) pValue) const
 {
 	ASSERT(pValue);

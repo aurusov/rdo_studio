@@ -38,9 +38,9 @@ class RDOFRMFrame
 {
 DECLARE_FACTORY(RDOFRMFrame);
 public:
-	CREF(tstring)                     name () const { return src_info().src_text(); }
+	CREF(tstring)                     name () const;
 	void                              end  ();
-	CREF(rdo::runtime::LPRDOFRMFrame) frame() const { return m_pFrame; }
+	CREF(rdo::runtime::LPRDOFRMFrame) frame() const;
 
 private:
 	RDOFRMFrame(CREF(RDOParserSrcInfo) srcInfo);
@@ -48,7 +48,7 @@ private:
 	rdo::runtime::LPRDOFRMFrame m_pFrame;
 	LPContextMemory             m_pContextMemory;
 
-	rdo::runtime::LPRDOFRMSprite list() const { return m_pFrame; }
+	rdo::runtime::LPRDOFRMSprite list() const;
 
 	DECLARE_IContextFind;
 };
