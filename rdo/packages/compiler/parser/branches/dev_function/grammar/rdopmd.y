@@ -997,6 +997,7 @@ fun_group
 		ASSERT(pGroupFun);
 		ASSERT(pLogic   );
 		pGroupFun->setSrcPos(@1, @3);
+		pGroupFun->end();
 		$$ = PARSER->stack().push(pGroupFun->createFunLogic(pLogic));
 	}
 	| fun_group_header RDO_NoCheck ')'
@@ -1004,6 +1005,7 @@ fun_group
 		LPRDOFUNGroupLogic pGroupFun = PARSER->stack().pop<RDOFUNGroupLogic>($1);
 		ASSERT(pGroupFun);
 		pGroupFun->setSrcPos(@1, @3);
+		pGroupFun->end();
 		LPRDOFUNLogic pTrueLogic = RDOFUNLogic::generateTrue(RDOParserSrcInfo(@2, _T("NoCheck")));
 		ASSERT(pTrueLogic);
 		$$ = PARSER->stack().push(pGroupFun->createFunLogic(pTrueLogic));

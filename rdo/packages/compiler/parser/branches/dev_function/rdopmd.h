@@ -125,6 +125,8 @@ public:
 private:
 	RDOPMDWatchQuant(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) res_type_src_info);
 	virtual ~RDOPMDWatchQuant();
+
+	LPRDOFUNGroupLogic m_pGroupLogic;
 };
 DECLARE_POINTER(RDOPMDWatchQuant);
 
@@ -142,6 +144,8 @@ public:
 private:
 	RDOPMDWatchValue(CREF(RDOParserSrcInfo) src_info, CREF(RDOParserSrcInfo) res_type_src_info);
 	virtual ~RDOPMDWatchValue();
+
+	LPRDOFUNGroupLogic m_pGroupLogic;
 };
 DECLARE_POINTER(RDOPMDWatchValue);
 
