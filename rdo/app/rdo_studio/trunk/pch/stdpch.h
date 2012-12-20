@@ -29,6 +29,16 @@
 #include <list>
 #include <algorithm>
 
+#ifdef COMPILER_VISUAL_STUDIO
+	#pragma warning(disable: 4512) 
+#endif // COMPILER_VISUAL_STUDIO
+
+#include <boost/signal.hpp>
+
+#ifdef COMPILER_VISUAL_STUDIO
+	#pragma warning(default: 4512) 
+#endif // COMPILER_VISUAL_STUDIO
+
 #include "utils/rdodebug.h"
 #include "utils/rdocommon.h"
 #include "utils/rdotypes.h"

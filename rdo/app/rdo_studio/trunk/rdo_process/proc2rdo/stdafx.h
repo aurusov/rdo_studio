@@ -73,6 +73,16 @@
 #include <list>
 #include <algorithm>
 
+#ifdef COMPILER_VISUAL_STUDIO
+	#pragma warning(disable: 4512) 
+#endif // COMPILER_VISUAL_STUDIO
+
+#include <boost/signal.hpp>
+
+#ifdef COMPILER_VISUAL_STUDIO
+	#pragma warning(default: 4512) 
+#endif // COMPILER_VISUAL_STUDIO
+
 #ifdef ASSERT
 #undef ASSERT
 #endif
