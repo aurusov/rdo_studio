@@ -27,7 +27,6 @@ public:
 	void end();
 
 	CREF(tstring)                      name  () const { return src_info().src_text(); }
-	CREF(rdo::runtime::LPRDOFRMSprite) sprite() const { return m_pSprite; }
 
 private:
 	RDOFRMSprite(CREF(RDOParserSrcInfo) src_info);
