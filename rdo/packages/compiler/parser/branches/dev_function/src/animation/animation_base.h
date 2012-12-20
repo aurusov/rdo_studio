@@ -14,22 +14,31 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdoframe.h"
 #include "simulator/compiler/parser/expression.h"
+#include "simulator/compiler/parser/context/context.h"
+#include "simulator/compiler/parser/context/context_find_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
 
-class RDOFRMCommandList: public virtual rdo::counter_reference
+class RDOFRMCommandList
+	: public Context
+	, public IContextFind
 {
 DECLARE_FACTORY(RDOFRMCommandList);
 public:
 	virtual CREF(tstring)                name() const = 0;
 	virtual rdo::runtime::LPRDOFRMSprite list() const = 0;
 
+	virtual void end();
+
 	static LPExpression generateExpression(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(RDOParserSrcInfo) srcInfo);
 
 protected:
 	RDOFRMCommandList();
 	virtual ~RDOFRMCommandList();
+
+private:
+	DECLARE_IContextFind;
 };
 DECLARE_POINTER(RDOFRMCommandList);
 

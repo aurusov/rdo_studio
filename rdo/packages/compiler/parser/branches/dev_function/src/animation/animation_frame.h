@@ -15,8 +15,6 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/src/animation/animation_base.h"
 #include "simulator/compiler/parser/src/function/function.h"
-#include "simulator/compiler/parser/context/context.h"
-#include "simulator/compiler/parser/context/context_find_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -28,10 +26,7 @@ void frmerror(PTR(char) message);
 // --------------------------------------------------------------------------------
 // -------------------- RDOFRMFrame
 // --------------------------------------------------------------------------------
-class RDOFRMFrame
-	: public RDOFRMCommandList
-	, public Context
-	, public IContextFind
+class RDOFRMFrame: public RDOFRMCommandList
 {
 DECLARE_FACTORY(RDOFRMFrame);
 public:
@@ -49,8 +44,6 @@ private:
 	rdo::runtime::LPRDOFRMFrame m_pFrame;
 
 	rdo::runtime::LPRDOFRMSprite list() const;
-
-	DECLARE_IContextFind;
 };
 DECLARE_POINTER(RDOFRMFrame);
 

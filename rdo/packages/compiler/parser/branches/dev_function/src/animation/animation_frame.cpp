@@ -49,7 +49,6 @@ RDOFRMFrame::RDOFRMFrame(CREF(RDOParserSrcInfo) srcInfo)
 	RDOParser::s_parser()->runtime()->addRuntimeFrame(m_pFrame);
 
 	RDOParser::s_parser()->insertFRMFrame(this);
-	RDOParser::s_parser()->contextStack()->push(this);
 
 	m_pFunction->pushContext();
 }
@@ -72,20 +71,6 @@ rdo::runtime::LPRDOFRMSprite RDOFRMFrame::list() const
 	return m_pFrame;
 }
 
-Context::FindResult RDOFRMFrame::onFindContext(CREF(LPRDOValue) pValue) const
-{
-	ASSERT(pValue);
-
-	tstring name = pValue->value().getIdentificator();
-	LPRDOFRMSprite pSprite = RDOParser::s_parser()->findFRMSprite(name);
-	if (pSprite)
-	{
-		return Context::FindResult(const_cast<PTR(RDOFRMFrame)>(this), pSprite->expression(), pValue);
-	}
-
-	return Context::FindResult();
-}
-
 LPExpression RDOFRMFrame::expression() const
 {
 	return m_pFunction->expression();
@@ -94,7 +79,7 @@ LPExpression RDOFRMFrame::expression() const
 void RDOFRMFrame::end()
 {
 	m_pFunction->popContext();
-	RDOParser::s_parser()->contextStack()->pop<RDOFRMFrame>();
+	RDOFRMCommandList::end();
 	m_pFrame->setSpriteCalc(expression()->calc());
 }
 

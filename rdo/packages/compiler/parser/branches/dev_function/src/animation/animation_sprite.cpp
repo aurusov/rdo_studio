@@ -11,7 +11,7 @@
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/compiler/parser/src/animation/animation_frame.h"
+#include "simulator/compiler/parser/src/animation/animation_sprite.h"
 #include "simulator/compiler/parser/rdoparser.h"
 // --------------------------------------------------------------------------------
 
@@ -55,6 +55,7 @@ LPExpression RDOFRMSprite::expression() const
 void RDOFRMSprite::end()
 {
 	m_pFunction->popContext();
+	RDOFRMCommandList::end();
 	m_pSprite->setSpriteCalc(expression()->calc());
 }
 
