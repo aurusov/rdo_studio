@@ -515,8 +515,6 @@ fun_func_footer
 alg_body
 	: RDO_Body
 	{
-		ContextMemory::push();
-
 		rdo::runtime::LPRDOCalcReturnCatch pCalcReturnCatch = rdo::Factory<rdo::runtime::RDOCalcReturnCatch>::create();
 		ASSERT(pCalcReturnCatch);
 
@@ -541,9 +539,6 @@ alg_body
 
 alg_end
 	: RDO_End
-	{
-		ContextMemory::pop();
-	}
 	;
 
 fun_func_list_body
