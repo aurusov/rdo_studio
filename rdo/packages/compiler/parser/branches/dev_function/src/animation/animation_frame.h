@@ -44,6 +44,7 @@ public:
 
 private:
 	RDOFRMFrame(CREF(RDOParserSrcInfo) srcInfo);
+	virtual ~RDOFRMFrame();
 
 	rdo::runtime::LPRDOFRMFrame m_pFrame;
 	LPContextMemory             m_pContextMemory;

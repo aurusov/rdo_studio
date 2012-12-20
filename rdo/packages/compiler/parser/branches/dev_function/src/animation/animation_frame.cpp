@@ -51,6 +51,9 @@ RDOFRMFrame::RDOFRMFrame(CREF(RDOParserSrcInfo) srcInfo)
 	ContextMemory::push();
 }
 
+RDOFRMFrame::~RDOFRMFrame()
+{}
+
 CREF(tstring) RDOFRMFrame::name() const
 {
 	return src_info().src_text();
