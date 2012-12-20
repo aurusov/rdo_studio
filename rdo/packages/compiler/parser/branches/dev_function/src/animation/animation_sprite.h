@@ -18,24 +18,22 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-class RDOFRMSprite
-	: public RDOFRMCommandList
-	, public Function
+class RDOFRMSprite: public RDOFRMCommandList
 {
 DECLARE_FACTORY(RDOFRMSprite);
 public:
-	CREF(tstring) name() const;
-	void          end ();
+	CREF(tstring) name      () const;
+	LPExpression  expression() const;
+	void          end       ();
 
 private:
 	RDOFRMSprite(CREF(RDOParserSrcInfo) src_info);
 	virtual ~RDOFRMSprite();
 
+	LPFunction                    m_pFunction;
 	rdo::runtime::LPRDOFRMSprite  m_pSprite;
 
 	rdo::runtime::LPRDOFRMSprite list() const;
-
-	DECLARE_IContextFind;
 };
 DECLARE_POINTER(RDOFRMSprite);
 

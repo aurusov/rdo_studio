@@ -1793,9 +1793,6 @@ frm_sprite_end
 	{
 		LPRDOFRMSprite pSprite = PARSER->stack().pop<RDOFRMSprite>($1);
 		ASSERT(pSprite);
-		LPIContextFunctionBodyManager pContextFunctionBodyManager = pSprite->interface_cast<IContextFunctionBodyManager>();
-		ASSERT(pContextFunctionBodyManager);
-		pContextFunctionBodyManager->popFunctionBodyContext();
 		pSprite->end();
 	}
 	;
@@ -1806,30 +1803,16 @@ frm_sprite_begin
 		LPExpression pExpressionSpriteBody = PARSER->stack().pop<Expression>($2);
 		ASSERT(pExpressionSpriteBody);
 
-		rdo::runtime::LPRDOCalcStatementList pCalcStatementList = pExpressionSpriteBody->calc().object_dynamic_cast<rdo::runtime::RDOCalcStatementList>();
-		ASSERT(pCalcStatementList);
+		LPContextFunctionBody pContextFunctionBody = PARSER->context()->cast<ContextFunctionBody>();
+		ASSERT(pContextFunctionBody);
+		pContextFunctionBody->setBody(pExpressionSpriteBody->calc());
 
-		rdo::runtime::LPRDOCalcBaseStatementList pCalcBaseStatementList = rdo::Factory<rdo::runtime::RDOCalcBaseStatementList>::create();
-		ASSERT(pCalcBaseStatementList);
-
-		rdo::runtime::LPRDOCalcOpenBrace pCalcOpenBrace = rdo::Factory<rdo::runtime::RDOCalcOpenBrace>::create();
-		ASSERT(pCalcOpenBrace);
-
-		rdo::runtime::LPRDOCalcCloseBrace pCalcCloseBrace = rdo::Factory<rdo::runtime::RDOCalcCloseBrace>::create();
-		ASSERT(pCalcCloseBrace);
-
-		pCalcBaseStatementList->addCalcStatement(pCalcOpenBrace);
-		pCalcBaseStatementList->addCalcStatement(pCalcStatementList);
-		pCalcBaseStatementList->addCalcStatement(pCalcCloseBrace);
-
-		LPExpression pExpressionSprite = rdo::Factory<Expression>::create(pExpressionSpriteBody->typeInfo(), pCalcBaseStatementList, pCalcStatementList->srcInfo());
-		ASSERT(pExpressionSprite);
+		LPIContextFunctionBodyManager pContextFunctionBodyManager = PARSER->context()->interface_cast<IContextFunctionBodyManager>();
+		ASSERT(pContextFunctionBodyManager);
+		pContextFunctionBodyManager->popFunctionBodyContext();
 
 		LPRDOFRMSprite pSprite = PARSER->stack().pop<RDOFRMSprite>($1);
 		ASSERT(pSprite);
-
-		PARSER->getLastFRMCommandList()->list()->setSpriteCalc(pExpressionSprite->calc());
-
 		$$ = PARSER->stack().push(pSprite);
 	}
 	;
@@ -1846,11 +1829,12 @@ frm_sprite_header_begin
 frm_sprite_header
 	: frm_sprite_header_begin param_list
 	{
-		LPRDOFRMSprite pSprite = PARSER->stack().pop<RDOFRMSprite>($1);
-		ASSERT(pSprite);
-		LPIContextFunctionBodyManager pContextFunctionBodyManager = pSprite->interface_cast<IContextFunctionBodyManager>();
+		LPIContextFunctionBodyManager pContextFunctionBodyManager = PARSER->context()->interface_cast<IContextFunctionBodyManager>();
 		ASSERT(pContextFunctionBodyManager);
 		pContextFunctionBodyManager->pushFunctionBodyContext();
+
+		LPRDOFRMSprite pSprite = PARSER->stack().pop<RDOFRMSprite>($1);
+		ASSERT(pSprite);
 		$$ = PARSER->stack().push(pSprite);
 	}
 	;

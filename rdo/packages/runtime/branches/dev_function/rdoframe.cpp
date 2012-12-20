@@ -17,7 +17,6 @@
 #include "simulator/runtime/rdo_runtime.h"
 #include "simulator/runtime/calc/function/calc_function.h"
 #include "simulator/runtime/calc/procedural/calc_const.h"
-#include "simulator/runtime/calc/procedural/calc_statement.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -231,12 +230,7 @@ void RDOFRMSprite::setSpriteCalc(CREF(LPRDOCalc) pSpriteCalc)
 {
 	ASSERT(pSpriteCalc);
 	ASSERT(!m_pSpriteCalc);
-
-	LPRDOCalcReturnCatch pCalcReturnCatch = rdo::Factory<RDOCalcReturnCatch>::create();
-	ASSERT(pCalcReturnCatch);
-	pCalcReturnCatch->setTryCalc(pSpriteCalc);
-
-	m_pSpriteCalc = pCalcReturnCatch;
+	m_pSpriteCalc = pSpriteCalc;
 }
 
 void RDOFRMSprite::insertGetBitmap(CREF(LPIRDOFRMItemGetBitmap) pGetBitmap)

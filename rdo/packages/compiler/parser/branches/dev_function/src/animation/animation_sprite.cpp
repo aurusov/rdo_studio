@@ -19,23 +19,29 @@ OPEN_RDO_PARSER_NAMESPACE
 
 RDOFRMSprite::RDOFRMSprite(CREF(RDOParserSrcInfo) src_info)
 	: RDOFRMCommandList()
-	, Function(rdo::Factory<TypeInfo>::delegate<RDOType__void>(src_info), src_info)
 {
-	m_pSprite = rdo::Factory<rdo::runtime::RDOFRMSprite>::create(this->src_info());
+	m_pFunction = rdo::Factory<Function>::create(
+		rdo::Factory<TypeInfo>::delegate<RDOType__void>(src_info),
+		src_info
+	);
+	ASSERT(m_pFunction);
+
+	m_pSprite = rdo::Factory<rdo::runtime::RDOFRMSprite>::create(m_pFunction->src_info());
 	ASSERT(m_pSprite)
+
 	RDOParser::s_parser()->insertFRMSprite(this);
 
-	setCall(m_pSprite);
-
-	pushContext();
+	m_pFunction->pushContext();
 }
 
 RDOFRMSprite::~RDOFRMSprite()
-{}
+{
+	m_pFunction->popContext();
+}
 
 CREF(tstring) RDOFRMSprite::name() const
 {
-	return src_info().src_text();
+	return m_pFunction->src_text();
 }
 
 rdo::runtime::LPRDOFRMSprite RDOFRMSprite::list() const
@@ -43,14 +49,14 @@ rdo::runtime::LPRDOFRMSprite RDOFRMSprite::list() const
 	return m_pSprite;
 }
 
-void RDOFRMSprite::end()
+LPExpression RDOFRMSprite::expression() const
 {
-	popContext();
+	return m_pFunction->expression();
 }
 
-Context::FindResult RDOFRMSprite::onFindContext(CREF(LPRDOValue) pValue) const
+void RDOFRMSprite::end()
 {
-	return Function::onFindContext(pValue);
+	m_pSprite->setSpriteCalc(expression()->calc());
 }
 
 CLOSE_RDO_PARSER_NAMESPACE
