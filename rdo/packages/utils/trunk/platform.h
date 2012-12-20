@@ -23,7 +23,9 @@
 #elif defined( __MINGW32__ )
 	#define COMPILER_GCC
 	#define COMPILER_MINGW
-#endif // _MSC_VER
+#else
+	#error Unknown compiler!
+#endif
 
 // operating systems
 #ifdef _WIN32
@@ -35,13 +37,17 @@
 	#endif
 #elif defined( __linux__ )
 	#define OST_LINUX
+#else
+	#error Unknown OS!
 #endif
 
-// architectures
+// architecture
 #if defined( __amd64__ ) || defined( _M_X64 )
 	#define ARCHITECTURE_AMD64
 #elif defined( __i386__ ) || defined( _M_IX86 )
 	#define ARCHITECTURE_X86
+#else
+	#error Unknown architecture!
 #endif
 
 #endif // _UTILS_PLATFORM_H_
