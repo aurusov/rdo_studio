@@ -30,6 +30,9 @@ RDOFRMSprite::RDOFRMSprite(CREF(RDOParserSrcInfo) src_info)
 	pushContext();
 }
 
+RDOFRMSprite::~RDOFRMSprite()
+{}
+
 CREF(tstring) RDOFRMSprite::name() const
 {
 	return src_info().src_text();

@@ -29,6 +29,7 @@ public:
 
 private:
 	RDOFRMSprite(CREF(RDOParserSrcInfo) src_info);
+	virtual ~RDOFRMSprite();
 
 	rdo::runtime::LPRDOFRMSprite  m_pSprite;
 
