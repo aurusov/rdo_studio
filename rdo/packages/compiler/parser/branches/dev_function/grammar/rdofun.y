@@ -366,7 +366,25 @@ fun_func_header
 
 fun_func_parameters
 	: /* empty */
-	| RDO_Parameters fun_func_params
+	| param_list_open fun_func_params
+	{
+		LPContext pContext = RDOParser::s_parser()->context();
+		ASSERT(pContext);
+		LPIContextParamDefinitionManager pContextParamDefinitionManager = pContext->interface_cast<IContextParamDefinitionManager>();
+		ASSERT(pContextParamDefinitionManager);
+		pContextParamDefinitionManager->popParamDefinitionContext();
+	}
+	;
+
+param_list_open
+	: RDO_Parameters
+	{
+		LPContext pContext = RDOParser::s_parser()->context();
+		ASSERT(pContext);
+		LPIContextParamDefinitionManager pContextParamDefinitionManager = pContext->interface_cast<IContextParamDefinitionManager>();
+		ASSERT(pContextParamDefinitionManager);
+		pContextParamDefinitionManager->pushParamDefinitionContext();
+	}
 	;
 
 fun_func_params
@@ -379,7 +397,11 @@ fun_func_params
 		ASSERT(pType);
 		LPRDOParam pParam = rdo::Factory<RDOParam>::create(pName->src_info(), pType, PARSER->stack().pop<RDOValue>($4));
 		ASSERT(pParam);
-		PARSER->getLastFUNFunction()->add(pParam);
+
+		LPContextParamDefinition pContextParamDefinition =
+			RDOParser::s_parser()->context().object_dynamic_cast<ContextParamDefinition>();
+		ASSERT(pContextParamDefinition);
+		pContextParamDefinition->pushParam(pParam);
 	}
 	| fun_func_params RDO_IDENTIF_COLON error
 	{
