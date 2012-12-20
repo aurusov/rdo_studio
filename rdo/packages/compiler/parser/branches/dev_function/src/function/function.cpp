@@ -112,6 +112,11 @@ Function::ParamList::const_iterator Function::find(CREF(tstring) paramName) cons
 	return boost::range::find_if(m_paramList, compareName<RDOParam>(paramName));
 }
 
+CREF(Function::ParamList) Function::getParams() const
+{
+	return m_paramList;
+}
+
 LPFunctionType Function::generateType() const
 {
 	ASSERT(m_pReturnType);

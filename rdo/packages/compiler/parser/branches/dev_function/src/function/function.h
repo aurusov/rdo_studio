@@ -31,11 +31,13 @@ class Function
 {
 DECLARE_FACTORY(Function);
 public:
-	typedef boost::optional<ruint> ParamID;
+	typedef boost::optional<ruint>  ParamID;
+	typedef std::vector<LPRDOParam> ParamList;
 
 	LPRDOParam findParam  (CREF(tstring) paramName) const;
 	ParamID    findParamID(CREF(tstring) paramName) const;
 
+	CREF(ParamList) getParams() const;
 	void setCall(CREF(rdo::runtime::LPRDOCalc) pCalc);
 
 	LPExpression expression() const;
@@ -50,8 +52,6 @@ protected:
 	DECLARE_IContextFind;
 
 private:
-	typedef std::vector<LPRDOParam> ParamList;
-
 	LPFunctionType           m_pFunctionType;
 	LPTypeInfo               m_pReturnType;
 	ParamList                m_paramList;
