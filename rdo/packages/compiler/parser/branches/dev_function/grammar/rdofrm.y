@@ -1800,12 +1800,12 @@ frm_sprite_end
 frm_sprite_begin
 	: frm_sprite_header statement_list
 	{
-		LPExpression pExpressionSpriteBody = PARSER->stack().pop<Expression>($2);
-		ASSERT(pExpressionSpriteBody);
+		LPExpression pExpressionBody = PARSER->stack().pop<Expression>($2);
+		ASSERT(pExpressionBody);
 
 		LPContextFunctionBody pContextFunctionBody = PARSER->context()->cast<ContextFunctionBody>();
 		ASSERT(pContextFunctionBody);
-		pContextFunctionBody->setBody(pExpressionSpriteBody->calc());
+		pContextFunctionBody->setBody(pExpressionBody->calc());
 
 		LPIContextFunctionBodyManager pContextFunctionBodyManager = PARSER->context()->interface_cast<IContextFunctionBodyManager>();
 		ASSERT(pContextFunctionBodyManager);
