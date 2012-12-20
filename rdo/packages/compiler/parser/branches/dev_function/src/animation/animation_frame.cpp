@@ -73,17 +73,6 @@ Context::FindResult RDOFRMFrame::onFindContext(CREF(LPRDOValue) pValue) const
 {
 	ASSERT(pValue);
 
-	//! Код из RDOFUNArithm::init(CREF(RDOValue) resName, CREF(RDOValue) parName)
-	//! Зачем он нужен - непонятно
-	//! Его задача - сгенерить исключение в рантайме, почему это не сделать в парсере ?
-
-	//if (RDOParser::s_parser()->getLastFRMFrame() && RDOParser::s_parser()->getLastFRMFrame()->frame()->getLastShow() && RDOParser::s_parser()->getLastFRMFrame()->frame()->getLastShow()->isShowIf())
-	//{
-	//	m_pCalc = rdo::Factory<rdo::runtime::RDOCalcGetUnknowResParam>::create(resName->getIdentificator(), parName->getIdentificator());
-	//	m_pCalc->setSrcInfo(src_info());
-	//	return;
-	//}
-
 	tstring name = pValue->value().getIdentificator();
 	LPRDOFRMSprite pSprite = RDOParser::s_parser()->findFRMSprite(name);
 	if (pSprite)
