@@ -1271,8 +1271,6 @@ pat_convert
 			}
 		}
 
-		RDOParser::s_parser()->contextStack()->pop<ContextReturnable>();
-
 		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_res_usage convert_begin pat_trace statement_list
