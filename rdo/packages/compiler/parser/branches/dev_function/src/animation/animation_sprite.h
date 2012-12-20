@@ -13,7 +13,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/src/animation/animation_base.h"
-#include "simulator/compiler/parser/src/function/function.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -21,17 +20,11 @@ OPEN_RDO_PARSER_NAMESPACE
 class RDOFRMSprite: public RDOFRMCommandList
 {
 DECLARE_FACTORY(RDOFRMSprite);
-public:
-	CREF(tstring) name      () const;
-	LPExpression  expression() const;
-	void          end       ();
-
 private:
 	RDOFRMSprite(CREF(RDOParserSrcInfo) src_info);
 	virtual ~RDOFRMSprite();
 
-	LPFunction                    m_pFunction;
-	rdo::runtime::LPRDOFRMSprite  m_pSprite;
+	rdo::runtime::LPRDOFRMSprite m_pSprite;
 
 	rdo::runtime::LPRDOFRMSprite list() const;
 };

@@ -18,45 +18,20 @@
 OPEN_RDO_PARSER_NAMESPACE
 
 RDOFRMSprite::RDOFRMSprite(CREF(RDOParserSrcInfo) src_info)
-	: RDOFRMCommandList()
+	: RDOFRMCommandList(src_info)
 {
-	m_pFunction = rdo::Factory<Function>::create(
-		rdo::Factory<TypeInfo>::delegate<RDOType__void>(src_info),
-		src_info
-	);
-	ASSERT(m_pFunction);
-
-	m_pSprite = rdo::Factory<rdo::runtime::RDOFRMSprite>::create(m_pFunction->src_info());
+	m_pSprite = rdo::Factory<rdo::runtime::RDOFRMSprite>::create(function()->src_info());
 	ASSERT(m_pSprite)
 
 	RDOParser::s_parser()->insertFRMSprite(this);
-
-	m_pFunction->pushContext();
 }
 
 RDOFRMSprite::~RDOFRMSprite()
 {}
 
-CREF(tstring) RDOFRMSprite::name() const
-{
-	return m_pFunction->src_text();
-}
-
 rdo::runtime::LPRDOFRMSprite RDOFRMSprite::list() const
 {
 	return m_pSprite;
-}
-
-LPExpression RDOFRMSprite::expression() const
-{
-	return m_pFunction->expression();
-}
-
-void RDOFRMSprite::end()
-{
-	m_pFunction->popContext();
-	RDOFRMCommandList::end();
-	m_pSprite->setSpriteCalc(expression()->calc());
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

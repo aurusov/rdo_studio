@@ -16,6 +16,7 @@
 #include "simulator/compiler/parser/expression.h"
 #include "simulator/compiler/parser/context/context.h"
 #include "simulator/compiler/parser/context/context_find_i.h"
+#include "simulator/compiler/parser/src/function/function.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -26,18 +27,23 @@ class RDOFRMCommandList
 {
 DECLARE_FACTORY(RDOFRMCommandList);
 public:
-	virtual CREF(tstring)                name() const = 0;
-	virtual rdo::runtime::LPRDOFRMSprite list() const = 0;
+	CREF(tstring) name      () const;
+	LPExpression  expression() const;
+	void          end       ();
 
-	virtual void end();
+	virtual rdo::runtime::LPRDOFRMSprite list() const = 0;
 
 	static LPExpression generateExpression(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(RDOParserSrcInfo) srcInfo);
 
 protected:
-	RDOFRMCommandList();
+	RDOFRMCommandList(CREF(RDOParserSrcInfo) srcInfo);
 	virtual ~RDOFRMCommandList();
 
+	CREF(LPFunction) function() const;
+
 private:
+	LPFunction m_pFunction;
+
 	DECLARE_IContextFind;
 };
 DECLARE_POINTER(RDOFRMCommandList);

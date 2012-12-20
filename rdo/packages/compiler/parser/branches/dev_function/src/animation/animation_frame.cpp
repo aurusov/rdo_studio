@@ -36,30 +36,17 @@ void frmerror(PTR(char) message)
 // -------------------- RDOFRMFrame
 // --------------------------------------------------------------------------------
 RDOFRMFrame::RDOFRMFrame(CREF(RDOParserSrcInfo) srcInfo)
-	: RDOFRMCommandList()
+	: RDOFRMCommandList(srcInfo)
 {
-	m_pFunction = rdo::Factory<Function>::create(
-		rdo::Factory<TypeInfo>::delegate<RDOType__void>(srcInfo),
-		srcInfo
-	);
-	ASSERT(m_pFunction);
-
-	m_pFrame = rdo::Factory<rdo::runtime::RDOFRMFrame>::create(m_pFunction->src_info());
+	m_pFrame = rdo::Factory<rdo::runtime::RDOFRMFrame>::create(function()->src_info());
 	ASSERT(m_pFrame)
 	RDOParser::s_parser()->runtime()->addRuntimeFrame(m_pFrame);
 
 	RDOParser::s_parser()->insertFRMFrame(this);
-
-	m_pFunction->pushContext();
 }
 
 RDOFRMFrame::~RDOFRMFrame()
 {}
-
-CREF(tstring) RDOFRMFrame::name() const
-{
-	return m_pFunction->src_text();
-}
 
 CREF(rdo::runtime::LPRDOFRMFrame) RDOFRMFrame::frame() const
 {
@@ -69,18 +56,6 @@ CREF(rdo::runtime::LPRDOFRMFrame) RDOFRMFrame::frame() const
 rdo::runtime::LPRDOFRMSprite RDOFRMFrame::list() const
 {
 	return m_pFrame;
-}
-
-LPExpression RDOFRMFrame::expression() const
-{
-	return m_pFunction->expression();
-}
-
-void RDOFRMFrame::end()
-{
-	m_pFunction->popContext();
-	RDOFRMCommandList::end();
-	m_pFrame->setSpriteCalc(expression()->calc());
 }
 
 CLOSE_RDO_PARSER_NAMESPACE
