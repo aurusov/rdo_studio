@@ -613,11 +613,11 @@ DECLARE_FACTORY(RDOFUNGroup);
 public:
 	CREF(LPRDORTPResType) getResType()const { return m_pResType; }
 
+	void end();
+
 protected:
 	RDOFUNGroup(CREF(RDOParserSrcInfo) res_info);
 	virtual ~RDOFUNGroup();
-
-	void end();
 
 private:
 	void init(CREF(RDOParserSrcInfo) res_info);
