@@ -29,6 +29,7 @@ public:
 
 protected:
 	RDOFRMCommandList();
+	virtual ~RDOFRMCommandList();
 };
 DECLARE_POINTER(RDOFRMCommandList);
 

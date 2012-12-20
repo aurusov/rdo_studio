@@ -22,6 +22,9 @@ RDOFRMCommandList::RDOFRMCommandList()
 	RDOParser::s_parser()->insertFRMCommandList(this);
 }
 
+RDOFRMCommandList::~RDOFRMCommandList()
+{}
+
 LPExpression RDOFRMCommandList::generateExpression(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(RDOParserSrcInfo) srcInfo)
 {
 	ASSERT(pCalc);
