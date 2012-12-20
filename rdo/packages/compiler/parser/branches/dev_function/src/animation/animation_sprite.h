@@ -24,16 +24,15 @@ class RDOFRMSprite
 {
 DECLARE_FACTORY(RDOFRMSprite);
 public:
-	void end();
-
-	CREF(tstring)                      name  () const { return src_info().src_text(); }
+	CREF(tstring) name() const;
+	void          end ();
 
 private:
 	RDOFRMSprite(CREF(RDOParserSrcInfo) src_info);
 
 	rdo::runtime::LPRDOFRMSprite  m_pSprite;
 
-	rdo::runtime::LPRDOFRMSprite list() const { return m_pSprite; }
+	rdo::runtime::LPRDOFRMSprite list() const;
 
 	DECLARE_IContextFind;
 };
