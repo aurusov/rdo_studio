@@ -368,48 +368,6 @@ frm_backpicture
 	}
 	;
 
-frm_item_statement
-	: frm_item
-	{
-		rdo::runtime::LPRDOFRMItem pItem = PARSER->stack().pop<rdo::runtime::RDOFRMItem>($1);
-		ASSERT(pItem);
-
-		PARSER->getLastFRMCommandList()->list()->insertItem(pItem);
-
-		LPExpression pExpression = RDOFRMCommandList::generateExpression(
-			pItem,
-			RDOParserSrcInfo(@1)
-		);
-		ASSERT(pExpression);
-
-		$$ = PARSER->stack().push(pExpression);
-	}
-	| frm_sprite
-	{
-		LPExpression pExpression = PARSER->stack().pop<Expression>($1);
-		ASSERT(pExpression);
-
-		PARSER->getLastFRMCommandList()->list()->insertItem(pExpression->calc());
-
-		$$ = PARSER->stack().push(pExpression);
-	}
-	;
-
-frm_item
-	: frm_text
-	| frm_bitmap
-	| frm_rect
-	| frm_line
-	| frm_circle
-	| frm_ellipse
-	| frm_r_rect
-	| frm_triang
-	| frm_s_bmp
-	| frm_active
-	| frm_ruler
-	| frm_space
-	;
-
 frm_header
 	: frm_backpicture statement_list
 	{
@@ -436,6 +394,97 @@ frm_end
 		LPRDOFRMFrame pFrame = PARSER->stack().pop<RDOFRMFrame>($1);
 		ASSERT(pFrame);
 		pFrame->end();
+	}
+	;
+
+// --------------------------------------------------------------------------------
+// -------------------- Спрайт
+// --------------------------------------------------------------------------------
+frm_sprite_end
+	: frm_sprite_begin RDO_End
+	{
+		LPRDOFRMSprite pSprite = PARSER->stack().pop<RDOFRMSprite>($1);
+		ASSERT(pSprite);
+		pSprite->end();
+	}
+	;
+
+frm_sprite_begin
+	: frm_sprite_header statement_list
+	{
+		LPExpression pExpressionBody = PARSER->stack().pop<Expression>($2);
+		ASSERT(pExpressionBody);
+
+		LPContextFunctionBody pContextFunctionBody = PARSER->context()->cast<ContextFunctionBody>();
+		ASSERT(pContextFunctionBody);
+		pContextFunctionBody->setBody(pExpressionBody->calc());
+
+		LPIContextFunctionBodyManager pContextFunctionBodyManager = PARSER->context()->interface_cast<IContextFunctionBodyManager>();
+		ASSERT(pContextFunctionBodyManager);
+		pContextFunctionBodyManager->popFunctionBodyContext();
+
+		LPRDOFRMSprite pSprite = PARSER->stack().pop<RDOFRMSprite>($1);
+		ASSERT(pSprite);
+		$$ = PARSER->stack().push(pSprite);
+	}
+	;
+
+frm_sprite_header_begin
+	: RDO_Sprite RDO_IDENTIF
+	{
+		LPRDOFRMSprite pSprite = rdo::Factory<RDOFRMSprite>::create(PARSER->stack().pop<RDOValue>($2)->src_info());
+		ASSERT(pSprite);
+		$$ = PARSER->stack().push(pSprite);
+	}
+	;
+
+frm_sprite_header
+	: frm_sprite_header_begin param_list
+	{
+		LPIContextFunctionBodyManager pContextFunctionBodyManager = PARSER->context()->interface_cast<IContextFunctionBodyManager>();
+		ASSERT(pContextFunctionBodyManager);
+		pContextFunctionBodyManager->pushFunctionBodyContext();
+
+		LPRDOFRMSprite pSprite = PARSER->stack().pop<RDOFRMSprite>($1);
+		ASSERT(pSprite);
+		$$ = PARSER->stack().push(pSprite);
+	}
+	;
+
+frm_sprite
+	: RDO_sprite_call RDO_IDENTIF '(' arithm_list ')'
+	{
+		LPRDOValue        pValue           = PARSER->stack().pop<RDOValue>($2);
+		LPArithmContainer pArithmContainer = PARSER->stack().pop<ArithmContainer>($4);
+		ASSERT(pValue);
+		ASSERT(pArithmContainer);
+
+		tstring funName = pValue->value().getIdentificator();
+
+		LPExpression pFunctionExpression = RDOFUNArithm::generateByIdentificator(pValue)->expression();
+		ASSERT(pFunctionExpression);
+
+		LPRDOFUNParams pFunParams = rdo::Factory<RDOFUNParams>::create(pArithmContainer);
+		ASSERT(pFunParams);
+
+		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@2, funName));
+		pFunParams->setSrcPos (@2, @5);
+		pFunParams->setSrcText(funName + _T("(") + pArithmContainer->src_text() + _T(")"));
+		LPExpression pExpression = pFunParams->createCallExpression(pFunctionExpression);
+		ASSERT(pExpression);
+		$$ = PARSER->stack().push(pExpression);
+	}
+	| RDO_sprite_call RDO_IDENTIF '(' arithm_list error
+	{
+		PARSER->error().error(@5, _T("Ожидается закрывающая скобка"));
+	}
+	| RDO_sprite_call RDO_IDENTIF '(' error
+	{
+		PARSER->error().error(@4, _T("Ошибка задания параметров"));
+	}
+	| RDO_sprite_call RDO_IDENTIF error
+	{
+		PARSER->error().error(@3, _T("Ожидается открывающая скобка"));
 	}
 	;
 
@@ -509,6 +558,48 @@ param_declaration
 // --------------------------------------------------------------------------------
 // -------------------- Элементы
 // --------------------------------------------------------------------------------
+frm_item_statement
+	: frm_item
+	{
+		rdo::runtime::LPRDOFRMItem pItem = PARSER->stack().pop<rdo::runtime::RDOFRMItem>($1);
+		ASSERT(pItem);
+
+		PARSER->getLastFRMCommandList()->list()->insertItem(pItem);
+
+		LPExpression pExpression = RDOFRMCommandList::generateExpression(
+			pItem,
+			RDOParserSrcInfo(@1)
+		);
+		ASSERT(pExpression);
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	| frm_sprite
+	{
+		LPExpression pExpression = PARSER->stack().pop<Expression>($1);
+		ASSERT(pExpression);
+
+		PARSER->getLastFRMCommandList()->list()->insertItem(pExpression->calc());
+
+		$$ = PARSER->stack().push(pExpression);
+	}
+	;
+
+frm_item
+	: frm_text
+	| frm_bitmap
+	| frm_rect
+	| frm_line
+	| frm_circle
+	| frm_ellipse
+	| frm_r_rect
+	| frm_triang
+	| frm_s_bmp
+	| frm_active
+	| frm_ruler
+	| frm_space
+	;
+
 frm_color
 	: RDO_color_transparent
 	{
@@ -1777,97 +1868,6 @@ frm_active
 	| RDO_active error
 	{
 		PARSER->error().error(@1, _T("Ожидается имя клавиатурной операции"));
-	}
-	;
-
-// --------------------------------------------------------------------------------
-// -------------------- Спрайт
-// --------------------------------------------------------------------------------
-frm_sprite_end
-	: frm_sprite_begin RDO_End
-	{
-		LPRDOFRMSprite pSprite = PARSER->stack().pop<RDOFRMSprite>($1);
-		ASSERT(pSprite);
-		pSprite->end();
-	}
-	;
-
-frm_sprite_begin
-	: frm_sprite_header statement_list
-	{
-		LPExpression pExpressionBody = PARSER->stack().pop<Expression>($2);
-		ASSERT(pExpressionBody);
-
-		LPContextFunctionBody pContextFunctionBody = PARSER->context()->cast<ContextFunctionBody>();
-		ASSERT(pContextFunctionBody);
-		pContextFunctionBody->setBody(pExpressionBody->calc());
-
-		LPIContextFunctionBodyManager pContextFunctionBodyManager = PARSER->context()->interface_cast<IContextFunctionBodyManager>();
-		ASSERT(pContextFunctionBodyManager);
-		pContextFunctionBodyManager->popFunctionBodyContext();
-
-		LPRDOFRMSprite pSprite = PARSER->stack().pop<RDOFRMSprite>($1);
-		ASSERT(pSprite);
-		$$ = PARSER->stack().push(pSprite);
-	}
-	;
-
-frm_sprite_header_begin
-	: RDO_Sprite RDO_IDENTIF
-	{
-		LPRDOFRMSprite pSprite = rdo::Factory<RDOFRMSprite>::create(PARSER->stack().pop<RDOValue>($2)->src_info());
-		ASSERT(pSprite);
-		$$ = PARSER->stack().push(pSprite);
-	}
-	;
-
-frm_sprite_header
-	: frm_sprite_header_begin param_list
-	{
-		LPIContextFunctionBodyManager pContextFunctionBodyManager = PARSER->context()->interface_cast<IContextFunctionBodyManager>();
-		ASSERT(pContextFunctionBodyManager);
-		pContextFunctionBodyManager->pushFunctionBodyContext();
-
-		LPRDOFRMSprite pSprite = PARSER->stack().pop<RDOFRMSprite>($1);
-		ASSERT(pSprite);
-		$$ = PARSER->stack().push(pSprite);
-	}
-	;
-
-frm_sprite
-	: RDO_sprite_call RDO_IDENTIF '(' arithm_list ')'
-	{
-		LPRDOValue        pValue           = PARSER->stack().pop<RDOValue>($2);
-		LPArithmContainer pArithmContainer = PARSER->stack().pop<ArithmContainer>($4);
-		ASSERT(pValue);
-		ASSERT(pArithmContainer);
-
-		tstring funName = pValue->value().getIdentificator();
-
-		LPExpression pFunctionExpression = RDOFUNArithm::generateByIdentificator(pValue)->expression();
-		ASSERT(pFunctionExpression);
-
-		LPRDOFUNParams pFunParams = rdo::Factory<RDOFUNParams>::create(pArithmContainer);
-		ASSERT(pFunParams);
-
-		pFunParams->getFunseqName().setSrcInfo(RDOParserSrcInfo(@2, funName));
-		pFunParams->setSrcPos (@2, @5);
-		pFunParams->setSrcText(funName + _T("(") + pArithmContainer->src_text() + _T(")"));
-		LPExpression pExpression = pFunParams->createCallExpression(pFunctionExpression);
-		ASSERT(pExpression);
-		$$ = PARSER->stack().push(pExpression);
-	}
-	| RDO_sprite_call RDO_IDENTIF '(' arithm_list error
-	{
-		PARSER->error().error(@5, _T("Ожидается закрывающая скобка"));
-	}
-	| RDO_sprite_call RDO_IDENTIF '(' error
-	{
-		PARSER->error().error(@4, _T("Ошибка задания параметров"));
-	}
-	| RDO_sprite_call RDO_IDENTIF error
-	{
-		PARSER->error().error(@3, _T("Ожидается открывающая скобка"));
 	}
 	;
 
