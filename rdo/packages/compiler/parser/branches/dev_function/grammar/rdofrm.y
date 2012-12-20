@@ -301,6 +301,15 @@ frm_begin
 		LPRDOFRMFrame pFrame = rdo::Factory<RDOFRMFrame>::create(PARSER->stack().pop<RDOValue>($2)->src_info());
 		ASSERT(pFrame);
 		$$ = PARSER->stack().push(pFrame);
+
+		LPIContextParamDefinitionManager pContextParamDefinitionManager = PARSER->context()->interface_cast<IContextParamDefinitionManager>();
+		ASSERT(pContextParamDefinitionManager);
+		pContextParamDefinitionManager->pushParamDefinitionContext();
+		pContextParamDefinitionManager->popParamDefinitionContext ();
+
+		LPIContextFunctionBodyManager pContextFunctionBodyManager = PARSER->context()->interface_cast<IContextFunctionBodyManager>();
+		ASSERT(pContextFunctionBodyManager);
+		pContextFunctionBodyManager->pushFunctionBodyContext();
 	}
 	;
 
@@ -404,33 +413,19 @@ frm_item
 frm_header
 	: frm_backpicture statement_list
 	{
-		LPExpression pExpressionFrameBody = PARSER->stack().pop<Expression>($2);
-		ASSERT(pExpressionFrameBody);
+		LPExpression pExpressionBody = PARSER->stack().pop<Expression>($2);
+		ASSERT(pExpressionBody);
 
-		rdo::runtime::LPRDOCalcStatementList pCalcStatementList = pExpressionFrameBody->calc().object_dynamic_cast<rdo::runtime::RDOCalcStatementList>();
-		ASSERT(pCalcStatementList);
+		LPContextFunctionBody pContextFunctionBody = PARSER->context()->cast<ContextFunctionBody>();
+		ASSERT(pContextFunctionBody);
+		pContextFunctionBody->setBody(pExpressionBody->calc());
 
-		rdo::runtime::LPRDOCalcBaseStatementList pCalcBaseStatementList = rdo::Factory<rdo::runtime::RDOCalcBaseStatementList>::create();
-		ASSERT(pCalcBaseStatementList);
-
-		rdo::runtime::LPRDOCalcOpenBrace pCalcOpenBrace = rdo::Factory<rdo::runtime::RDOCalcOpenBrace>::create();
-		ASSERT(pCalcOpenBrace);
-
-		rdo::runtime::LPRDOCalcCloseBrace pCalcCloseBrace = rdo::Factory<rdo::runtime::RDOCalcCloseBrace>::create();
-		ASSERT(pCalcCloseBrace);
-
-		pCalcBaseStatementList->addCalcStatement(pCalcOpenBrace);
-		pCalcBaseStatementList->addCalcStatement(pCalcStatementList);
-		pCalcBaseStatementList->addCalcStatement(pCalcCloseBrace);
-
-		LPExpression pExpressionFrame = rdo::Factory<Expression>::create(pExpressionFrameBody->typeInfo(), pCalcBaseStatementList, pCalcStatementList->srcInfo());
-		ASSERT(pExpressionFrame);
+		LPIContextFunctionBodyManager pContextFunctionBodyManager = PARSER->context()->interface_cast<IContextFunctionBodyManager>();
+		ASSERT(pContextFunctionBodyManager);
+		pContextFunctionBodyManager->popFunctionBodyContext();
 
 		LPRDOFRMFrame pFrame = PARSER->stack().pop<RDOFRMFrame>($1);
 		ASSERT(pFrame);
-
-		PARSER->getLastFRMCommandList()->list()->setSpriteCalc(pExpressionFrame->calc());
-
 		$$ = PARSER->stack().push(pFrame);
 	}
 	;

@@ -13,12 +13,10 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/rdoframe.h"
-#include "simulator/compiler/parser/rdo_object.h"
-#include "simulator/compiler/parser/rdofun.h"
+#include "simulator/compiler/parser/src/animation/animation_base.h"
+#include "simulator/compiler/parser/src/function/function.h"
 #include "simulator/compiler/parser/context/context.h"
 #include "simulator/compiler/parser/context/context_find_i.h"
-#include "simulator/compiler/parser/src/animation/animation_base.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -32,22 +30,23 @@ void frmerror(PTR(char) message);
 // --------------------------------------------------------------------------------
 class RDOFRMFrame
 	: public RDOFRMCommandList
-	, public RDOParserSrcInfo
 	, public Context
 	, public IContextFind
 {
 DECLARE_FACTORY(RDOFRMFrame);
 public:
-	CREF(tstring)                     name () const;
-	void                              end  ();
+	CREF(tstring) name      () const;
+	LPExpression  expression() const;
+	void          end       ();
+
 	CREF(rdo::runtime::LPRDOFRMFrame) frame() const;
 
 private:
 	RDOFRMFrame(CREF(RDOParserSrcInfo) srcInfo);
 	virtual ~RDOFRMFrame();
 
+	LPFunction                  m_pFunction;
 	rdo::runtime::LPRDOFRMFrame m_pFrame;
-	LPContextMemory             m_pContextMemory;
 
 	rdo::runtime::LPRDOFRMSprite list() const;
 

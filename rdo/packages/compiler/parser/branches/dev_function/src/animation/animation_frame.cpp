@@ -38,17 +38,20 @@ void frmerror(PTR(char) message)
 RDOFRMFrame::RDOFRMFrame(CREF(RDOParserSrcInfo) srcInfo)
 	: RDOFRMCommandList()
 {
-	m_pFrame = rdo::Factory<rdo::runtime::RDOFRMFrame>::create(srcInfo);
+	m_pFunction = rdo::Factory<Function>::create(
+		rdo::Factory<TypeInfo>::delegate<RDOType__void>(srcInfo),
+		srcInfo
+	);
+	ASSERT(m_pFunction);
+
+	m_pFrame = rdo::Factory<rdo::runtime::RDOFRMFrame>::create(m_pFunction->src_info());
 	ASSERT(m_pFrame)
 	RDOParser::s_parser()->runtime()->addRuntimeFrame(m_pFrame);
+
 	RDOParser::s_parser()->insertFRMFrame(this);
 	RDOParser::s_parser()->contextStack()->push(this);
 
-	m_pContextMemory = rdo::Factory<ContextMemory>::create();
-	ASSERT(m_pContextMemory);
-	RDOParser::s_parser()->contextStack()->push(m_pContextMemory);
-
-	ContextMemory::push();
+	m_pFunction->pushContext();
 }
 
 RDOFRMFrame::~RDOFRMFrame()
@@ -56,7 +59,7 @@ RDOFRMFrame::~RDOFRMFrame()
 
 CREF(tstring) RDOFRMFrame::name() const
 {
-	return src_info().src_text();
+	return m_pFunction->src_text();
 }
 
 CREF(rdo::runtime::LPRDOFRMFrame) RDOFRMFrame::frame() const
@@ -83,11 +86,16 @@ Context::FindResult RDOFRMFrame::onFindContext(CREF(LPRDOValue) pValue) const
 	return Context::FindResult();
 }
 
+LPExpression RDOFRMFrame::expression() const
+{
+	return m_pFunction->expression();
+}
+
 void RDOFRMFrame::end()
 {
-	ContextMemory::pop();
-	RDOParser::s_parser()->contextStack()->pop<ContextMemory>();
+	m_pFunction->popContext();
 	RDOParser::s_parser()->contextStack()->pop<RDOFRMFrame>();
+	m_pFrame->setSpriteCalc(expression()->calc());
 }
 
 CLOSE_RDO_PARSER_NAMESPACE
