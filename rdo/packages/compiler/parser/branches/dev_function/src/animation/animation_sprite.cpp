@@ -35,9 +35,7 @@ RDOFRMSprite::RDOFRMSprite(CREF(RDOParserSrcInfo) src_info)
 }
 
 RDOFRMSprite::~RDOFRMSprite()
-{
-	m_pFunction->popContext();
-}
+{}
 
 CREF(tstring) RDOFRMSprite::name() const
 {
@@ -56,6 +54,7 @@ LPExpression RDOFRMSprite::expression() const
 
 void RDOFRMSprite::end()
 {
+	m_pFunction->popContext();
 	m_pSprite->setSpriteCalc(expression()->calc());
 }
 
