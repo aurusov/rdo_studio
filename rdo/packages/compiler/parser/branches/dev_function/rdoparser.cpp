@@ -134,6 +134,10 @@ void RDOParser::init()
 
 void RDOParser::deinit()
 {
+	while (!m_pContextStack->top().object_dynamic_cast<RDOParser>())
+	{
+		m_pContextStack->pop_not_safed();
+	}
 	m_pContextStack->pop<RDOParser>();
 
 	Context::deinit();
