@@ -1368,12 +1368,6 @@ statement
 		PARSER->error().error(@1, _T("Не найден символ окончания инструкции - точка с запятой"));
 	}
 	| if_statement
-	| RDO_else statement
-	{
-		PARSER->error().push_only(@1, rdo::format(_T("Нельзя использовать инструкцию else вне оператора if")));
-		PARSER->error().push_only(@1, rdo::format(_T("Возможно вы использовали два else для одного if")));
-		PARSER->error().push_done();
-	}
 	| for_statement
 	| break_statement ';'
 	| break_statement error
@@ -1414,6 +1408,29 @@ statement
 	| error
 	{
 		PARSER->error().error(@1, _T("Неизвестная инструкция"));
+	}
+	;
+
+returnable_statement
+	: returnable_context_push statement returnable_context_pop
+	{
+		$$ = $2;
+	}
+	;
+
+returnable_context_push
+	: /* empty */
+	{
+		LPContextReturnable pContextReturnable = PARSER->context()->cast<ContextReturnable>();
+		ASSERT(pContextReturnable);
+		pContextReturnable->addChildContext();
+	}
+	;
+
+returnable_context_pop
+	: /* empty */
+	{
+		PARSER->contextStack()->pop<ContextReturnable>();
 	}
 	;
 
@@ -1936,76 +1953,28 @@ init_declaration_value
 	}
 	;
 
-else_statement
-	: RDO_else statement
-	{
-		LPExpression pExpressionStatement = PARSER->stack().pop<Expression>($2);
-		ASSERT(pExpressionStatement);
-
-		PARSER->contextStack()->pop<ContextReturnable>();
-
-		$$ = PARSER->stack().push(pExpressionStatement);
-	}
-	;
-
-then_statement
-	: statement
-	{
-		LPContextReturnable pContextReturnable = PARSER->context()->cast<ContextReturnable>();
-		ASSERT(pContextReturnable);
-		pContextReturnable->addChildContext();
-
-		LPExpression pExpressionStatement = PARSER->stack().pop<Expression>($1);
-		ASSERT(pExpressionStatement);
-		$$ = PARSER->stack().push(pExpressionStatement);
-	}
-	;
-
 if_statement
-	: if_condition then_statement
+	: if_condition if_then_statement if_else_statement
 	{
-		LPExpression pExpressionCondition = PARSER->stack().pop<Expression>($1);
-		ASSERT(pExpressionCondition);
+		LPExpression pIfExpression = PARSER->stack().pop<Expression>($1);
+		ASSERT(pIfExpression);
 
-		LPExpression pExpressionStatement = PARSER->stack().pop<Expression>($2);
-		ASSERT(pExpressionStatement);
+		rdo::runtime::LPRDOCalcIf pIfCalc = pIfExpression->calc().object_dynamic_cast<rdo::runtime::RDOCalcIf>();
+		ASSERT(pIfCalc);
 
-		rdo::runtime::LPRDOCalcIf pCalc = pExpressionCondition->calc().object_dynamic_cast<rdo::runtime::RDOCalcIf>();
-		ASSERT(pCalc);
+		pIfCalc->setThenStatement(PARSER->stack().pop<Expression>($2)->calc());
 
-		rdo::runtime::LPRDOCalc pCalcStatement = pExpressionStatement->calc();
-		ASSERT(pCalcStatement);
+		LPExpression pIfElseExpression = PARSER->stack().pop<Expression>($3);
+		ASSERT(pIfElseExpression);
 
-		pCalc->setThenStatement(pCalcStatement);
+		if (!pIfElseExpression.object_dynamic_cast<ExpressionEmpty>())
+		{
+			pIfCalc->setElseStatement(pIfElseExpression->calc());
+		}
 
 		PARSER->contextStack()->pop<ContextReturnable>();
 
-		$$ = PARSER->stack().push(pExpressionCondition);
-	}
-	| if_condition then_statement else_statement
-	{
-		LPExpression pExpressionCondition = PARSER->stack().pop<Expression>($1);
-		ASSERT(pExpressionCondition);
-
-		LPExpression pExpressionThenStatement = PARSER->stack().pop<Expression>($2);
-		ASSERT(pExpressionThenStatement);
-
-		LPExpression pExpressionElseStatement = PARSER->stack().pop<Expression>($3);
-		ASSERT(pExpressionElseStatement);
-
-		rdo::runtime::LPRDOCalcIf pCalc = pExpressionCondition->calc().object_dynamic_cast<rdo::runtime::RDOCalcIf>();
-		ASSERT(pCalc);
-
-		rdo::runtime::LPRDOCalc pCalcThenStatement = pExpressionThenStatement->calc();
-		ASSERT(pCalcThenStatement);
-
-		rdo::runtime::LPRDOCalc pCalcElseStatement = pExpressionThenStatement->calc();
-		ASSERT(pCalcElseStatement);
-
-		pCalc->setThenStatement(pCalcThenStatement);
-		pCalc->setElseStatement(pCalcElseStatement);
-
-		$$ = PARSER->stack().push(pExpressionCondition);
+		$$ = PARSER->stack().push(pIfExpression);
 	}
 	;
 
@@ -2024,13 +1993,12 @@ if_condition
 		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcIf>::create(pConditionCalc);
 		ASSERT(pCalc);
 
-		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
-		ASSERT(pExpression);
-
 		LPContextReturnable pContextReturnable = PARSER->context()->cast<ContextReturnable>();
 		ASSERT(pContextReturnable);
 		pContextReturnable->addChildContext();
 
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
 		$$ = PARSER->stack().push(pExpression);
 	}
 	| RDO_if error fun_logic
@@ -2040,6 +2008,21 @@ if_condition
 	| RDO_if '(' fun_logic error
 	{
 		PARSER->error().error(@4, _T("Ожидается закрывающая скобка"));
+	}
+	;
+
+if_then_statement
+	: returnable_statement
+	;
+
+if_else_statement
+	: /* empty */
+	{
+		$$ = PARSER->stack().push(rdo::Factory<ExpressionEmpty>::create());
+	}
+	| RDO_else returnable_statement
+	{
+		$$ = $2;
 	}
 	;
 
