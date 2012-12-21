@@ -34,7 +34,7 @@ public:                                                     \
 	{}                                                      \
 	DECLARE_IType;                                          \
 	DECLARE_IModelStructure;                                \
-	virtual int selfInsertToDB(CREF(InterfaceDB) db) const; \
+	virtual int selfInsertToDB(REF(InterfaceDB) db) const;  \
 };                                                          \
 DECLARE_POINTER(RDOType__##Type);
 

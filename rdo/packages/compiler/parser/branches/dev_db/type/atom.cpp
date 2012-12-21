@@ -191,9 +191,14 @@ void RDOType__int::writeModelStructure(REF(rdo::ostream) stream) const
 	stream << _T("I") << std::endl;
 }
 
-int RDOType__int::selfInsertToDB(CREF(InterfaceDB) db) const
+int RDOType__int::selfInsertToDB(REF(InterfaceDB) db) const
 {
-	return 1;
+	db.insertRow("int","DEFAULT,NULL,NULL,NULL");
+
+	QSqlQuery query;
+	query.exec("select max(type_id) as alt from int;");
+	query.next();
+	return query.value(query.record().indexOf("alt")).toInt();
 }
 
 // --------------------------------------------------------------------------------

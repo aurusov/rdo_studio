@@ -24,7 +24,7 @@ class InterfaceDB: public GeneralDB
 public:
 	void insertRow           (const QString& tableName, const QString& qRow);
 	void insertRTPHeader     (const QString& rtp_name, bool permanent);
-	void insertRTPParam      (const QString& rtp_name, const QString& param_name, const int param_type_id);
+	void insertRTPParam      (const QString& rtp_name, const QString& param_name, REF(rdo::compiler::parser::RuntimeWrapperType) type);
 	void insertIntRow        ();
 	void insertEnumRow       (const QString& defaultValue);
 

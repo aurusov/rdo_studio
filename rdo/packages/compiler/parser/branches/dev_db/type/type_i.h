@@ -46,7 +46,6 @@ public:
 		CREF(LPRDOType)               pType
 	) const = 0;
 	virtual rdo::runtime::RDOValue get_default() const = 0;
-	virtual int selfInsertToDB() const;
 };
 #define DECLARE_IType                                                                                                                                                                      \
 	virtual tstring                  name       () const;                                                                                                                                  \
