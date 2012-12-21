@@ -13,7 +13,6 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/context/context.h"
-#include "simulator/compiler/parser/rdoparser.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -44,10 +43,11 @@ public:
 	void addChildContext  ();
 	void resetChildContext();
 
-private:
+protected:
 	ContextReturnable();
 	virtual ~ContextReturnable();
 
+private:
 	typedef std::vector<LPContextReturnable> ContextReturnableList;
 
 	ContextReturnableList m_contextReturnableList;

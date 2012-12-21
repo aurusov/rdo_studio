@@ -2521,15 +2521,9 @@ if_else_statement
 
 			pCalc->setElseStatement(pCalcStatement);
 
-			LPContextReturnable pContextReturnableChild = PARSER->context()->cast<ContextReturnable>();
-			ASSERT(pContextReturnableChild);
-
-			PARSER->contextStack()->pop<ContextReturnable>();
-
-			LPContextReturnable pContextReturnableParent = PARSER->context()->cast<ContextReturnable>();
-			ASSERT(pContextReturnableParent);
-
-			pContextReturnableParent->addContext(pContextReturnableChild);
+			LPContextReturnable pContextReturnable = PARSER->context()->cast<ContextReturnable>();
+			ASSERT(pContextReturnable);
+			pContextReturnable->addChildContext();
 
 			$$ = PARSER->stack().push(pExpression);
 		}
@@ -2557,20 +2551,9 @@ if_statement
 
 		pCalc->setThenStatement(pCalcStatement);
 
-		LPContextReturnable pContextReturnableChild = PARSER->context()->cast<ContextReturnable>();
-		ASSERT(pContextReturnableChild);
-
-		PARSER->contextStack()->pop<ContextReturnable>();
-
-		LPContextReturnable pContextReturnableParent = PARSER->context()->cast<ContextReturnable>();
-		ASSERT(pContextReturnableParent);
-
-		pContextReturnableParent->addContext(pContextReturnableChild);
-
-		LPContextReturnable pContextReturnable = rdo::Factory<ContextReturnable>::create();
+		LPContextReturnable pContextReturnable = PARSER->context()->cast<ContextReturnable>();
 		ASSERT(pContextReturnable);
-
-		PARSER->contextStack()->push(pContextReturnable);
+		pContextReturnable->addChildContext();
 
 		$$ = PARSER->stack().push(pExpression);
 	}

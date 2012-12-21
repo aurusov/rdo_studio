@@ -19,6 +19,7 @@
 #include "simulator/compiler/parser/src/function/function.h"
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/context/function/context_function_body.h"
+#include "simulator/compiler/parser/context/statement.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -138,16 +139,33 @@ LPFunctionType Function::generateType() const
 
 void Function::pushFunctionBodyContext()
 {
-	LPContextFunctionBody pContextFunctionBody = rdo::Factory<ContextFunctionBody>::create(
+	ASSERT(!m_pContextFunctionBody);
+	m_pContextFunctionBody = rdo::Factory<ContextFunctionBody>::create(
 		boost::bind(&Function::setBody, this, _1)
 	);
-	ASSERT(pContextFunctionBody);
-	RDOParser::s_parser()->contextStack()->push(pContextFunctionBody);
+	ASSERT(m_pContextFunctionBody);
+	RDOParser::s_parser()->contextStack()->push(m_pContextFunctionBody);
+	m_pContextFunctionBody->pushContext();
 }
 
 void Function::popFunctionBodyContext()
 {
+	ASSERT(m_pContextFunctionBody);
+
+	if (m_pReturnType->type()->typeID() != rdo::runtime::RDOType::t_void)
+	{
+		if (!m_pContextFunctionBody->getReturnFlag())
+		{
+			RDOParser::s_parser()->error().warning(
+				src_info(),
+				rdo::format(_T("Возможно, не все ветки функции '%s' могут вернуть значение."), src_text().c_str())
+			);
+		}
+	}
+
+	m_pContextFunctionBody->popContext();
 	RDOParser::s_parser()->contextStack()->pop<ContextFunctionBody>();
+	m_pContextFunctionBody = NULL;
 }
 
 void Function::setBody(CREF(rdo::runtime::LPRDOCalc) pBody)

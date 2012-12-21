@@ -53,6 +53,7 @@ private:
 	LPFunctionType           m_pFunctionType;
 	LPTypeInfo               m_pReturnType;
 	ParamList                m_paramList;
+	LPContextFunctionBody    m_pContextFunctionBody;
 	rdo::runtime::LPRDOCalc  m_pBody;
 
 	void onPushParam(CREF(LPRDOParam) pParam);

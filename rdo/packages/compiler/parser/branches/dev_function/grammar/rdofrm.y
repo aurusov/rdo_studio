@@ -1889,6 +1889,10 @@ return_statement
 		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalcReturn, RDOParserSrcInfo(@1));
 		ASSERT(pExpression);
 
+		LPContextReturnable pContextReturnable = PARSER->context()->cast<ContextReturnable>();
+		ASSERT(pContextReturnable);
+		pContextReturnable->setReturnFlag();
+
 		$$ = PARSER->stack().push(pExpression);
 	}
 	;
@@ -2607,10 +2611,7 @@ init_declaration_value
 
 if_else_statement
 	: if_statement
-	{
-		PARSER->contextStack()->pop<ContextReturnable>();
-	}
-	| if_statement RDO_else statement
+	| if_statement RDO_else returnable_statement
 	{
 		LPExpression pExpression = PARSER->stack().pop<Expression>($1);
 		ASSERT(pExpression);
@@ -2628,16 +2629,6 @@ if_else_statement
 
 			pCalc->setElseStatement(pCalcStatement);
 
-			LPContextReturnable pContextReturnableChild = PARSER->context()->cast<ContextReturnable>();
-			ASSERT(pContextReturnableChild);
-
-			PARSER->contextStack()->pop<ContextReturnable>();
-
-			LPContextReturnable pContextReturnableParent = PARSER->context()->cast<ContextReturnable>();
-			ASSERT(pContextReturnableParent);
-
-			pContextReturnableParent->addContext(pContextReturnableChild);
-
 			$$ = PARSER->stack().push(pExpression);
 		}
 		else
@@ -2648,7 +2639,7 @@ if_else_statement
 	;
 
 if_statement
-	: if_header statement
+	: if_header returnable_statement
 	{
 		LPExpression pExpression = PARSER->stack().pop<Expression>($1);
 		ASSERT(pExpression);
@@ -2664,22 +2655,30 @@ if_statement
 
 		pCalc->setThenStatement(pCalcStatement);
 
-		LPContextReturnable pContextReturnableChild = PARSER->context()->cast<ContextReturnable>();
-		ASSERT(pContextReturnableChild);
-
-		PARSER->contextStack()->pop<ContextReturnable>();
-
-		LPContextReturnable pContextReturnableParent = PARSER->context()->cast<ContextReturnable>();
-		ASSERT(pContextReturnableParent);
-
-		pContextReturnableParent->addContext(pContextReturnableChild);
-
-		LPContextReturnable pContextReturnable = rdo::Factory<ContextReturnable>::create();
-		ASSERT(pContextReturnable);
-
-		PARSER->contextStack()->push(pContextReturnable);
-
 		$$ = PARSER->stack().push(pExpression);
+	}
+	;
+
+returnable_statement
+	: returnable_context_push statement returnable_context_pop
+	{
+		$$ = $2;
+	}
+	;
+
+returnable_context_push
+	: /* empty */
+	{
+		LPContextReturnable pContextReturnable = PARSER->context()->cast<ContextReturnable>();
+		ASSERT(pContextReturnable);
+		pContextReturnable->addChildContext();
+	}
+	;
+
+returnable_context_pop
+	: /* empty */
+	{
+		PARSER->contextStack()->pop<ContextReturnable>();
 	}
 	;
 
@@ -2700,11 +2699,6 @@ if_header
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
 		ASSERT(pExpression);
-
-		LPContextReturnable pContextReturnableChild = rdo::Factory<ContextReturnable>::create();
-		ASSERT(pContextReturnableChild);
-
-		PARSER->contextStack()->push(pContextReturnableChild);
 
 		$$ = PARSER->stack().push(pExpression);
 	}

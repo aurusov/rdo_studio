@@ -23,6 +23,12 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 ContextFunctionBody::ContextFunctionBody(const OnBody& onBody)
 	: m_onBody(onBody)
+{}
+
+ContextFunctionBody::~ContextFunctionBody()
+{}
+
+void ContextFunctionBody::pushContext()
 {
 	LPContextMemory pContextMemory = rdo::Factory<ContextMemory>::create();
 	ASSERT(pContextMemory);
@@ -31,8 +37,9 @@ ContextFunctionBody::ContextFunctionBody(const OnBody& onBody)
 	ContextMemory::push();
 }
 
-ContextFunctionBody::~ContextFunctionBody()
+void ContextFunctionBody::popContext()
 {
+	ContextReturnable::resetChildContext();
 	ContextMemory::pop();
 	RDOParser::s_parser()->contextStack()->pop<ContextMemory>();
 }

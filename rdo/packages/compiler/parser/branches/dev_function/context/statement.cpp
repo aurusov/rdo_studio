@@ -13,6 +13,7 @@
 #include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/context/statement.h"
+#include "simulator/compiler/parser/rdoparser.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -51,12 +52,22 @@ void ContextReturnable::setReturnFlag()
 	m_returnFlag = true;
 }
 
-void ContextReturnable::addContext(REF(LPContextReturnable) pContext)
+void ContextReturnable::addChildContext()
 {
+	LPContextReturnable pContext = rdo::Factory<ContextReturnable>::create();
 	ASSERT(pContext);
 
 	m_contextReturnableList.push_back(pContext);
-	ASSERT(!m_contextReturnableList.empty());
+	RDOParser::s_parser()->contextStack()->push(pContext);
+}
+
+void ContextReturnable::resetChildContext()
+{
+	BOOST_FOREACH(const LPContextReturnable& pContext, m_contextReturnableList)
+	{
+		pContext->resetChildContext();
+	}
+	m_contextReturnableList.clear();
 }
 
 bool ContextReturnable::checkChildFlags() const
