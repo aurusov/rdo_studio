@@ -2017,6 +2017,7 @@ equal_statement
 		rdo::runtime::LPRDOCalc pCalc;
 		rdo::runtime::LPRDOCalc pCalcRight;
 		LPTypeInfo pLeftExpressionType;
+		LPExpression pExpressionLeft;
 		if (pLocalVariable)
 		{
 			pLeftExpressionType = pLocalVariable->getTypeInfo();
@@ -2072,6 +2073,7 @@ equal_statement
 			pLeftExpressionType = pParam->getTypeInfo();
 
 			pCalcRight = pRightExpression->calc();
+			
 			switch (equalType)
 			{
 				case rdo::runtime::ET_NOCHANGE:
@@ -2084,16 +2086,12 @@ equal_statement
 					ASSERT(pCalc);
 					pCalc->setSrcInfo(RDOParserSrcInfo(@1, rdo::format(_T("%s.%s"), pRelRes->src_text().c_str(), paramName.c_str())));
 
-					LPExpression pExpressionLeft = rdo::Factory<Expression>::create(
+					pExpressionLeft = rdo::Factory<Expression>::create(
 						pParam->getTypeInfo(),
 						pCalc,
 						pCalc->srcInfo()
 					);
-					ASSERT(pExpressionLeft);
-
-					LPRDOFUNArithm pArithmLeft = rdo::Factory<RDOFUNArithm>::create(pExpressionLeft);
-					ASSERT(pArithmLeft);
-					pArithmLeft->setEqual(pRightArithm);
+					ASSERT(pExpressionLeft)
 
 					pRelRes->getParamSetList().insert(pParam);
 					break;
@@ -2175,10 +2173,7 @@ equal_statement
 		}
 		pCalc->setSrcInfo(RDOParserSrcInfo(@1, @3, rdo::format(_T("%s %s %s"), paramName.c_str(), oprStr.c_str(), pCalcRight->srcInfo().src_text().c_str())));
 
-		LPExpression pExpression = rdo::Factory<Expression>::create(pLeftArithmType, pCalc, pCalc->srcInfo());
-		ASSERT(pExpression);
-
-		$$ = PARSER->stack().push(pExpression);
+		$$ = PARSER->stack().push(pExpressionLeft);
 	}
 	| RDO_IDENTIF param_equal_type error
 	{
