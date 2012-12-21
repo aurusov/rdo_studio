@@ -38,6 +38,9 @@ ContextReturnable::~ContextReturnable()
 
 bool ContextReturnable::getReturnFlag() const
 {
+	if (m_returnFlag)
+		return true;
+
 	return !m_contextReturnableList.empty()
 		? checkChildFlags()
 		: m_returnFlag;

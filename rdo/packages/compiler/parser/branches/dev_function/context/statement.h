@@ -38,10 +38,11 @@ class ContextReturnable: public Context
 {
 DECLARE_FACTORY(ContextReturnable);
 public:
-	void addContext(REF(LPContextReturnable) pContext);
-
 	bool getReturnFlag() const;
 	void setReturnFlag();
+
+	void addChildContext  ();
+	void resetChildContext();
 
 private:
 	ContextReturnable();
