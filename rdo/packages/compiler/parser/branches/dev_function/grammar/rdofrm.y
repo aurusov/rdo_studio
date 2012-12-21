@@ -1976,6 +1976,29 @@ statement
 	}
 	;
 
+returnable_statement
+	: returnable_context_push statement returnable_context_pop
+	{
+		$$ = $2;
+	}
+	;
+
+returnable_context_push
+	: /* empty */
+	{
+		LPContextReturnable pContextReturnable = PARSER->context()->cast<ContextReturnable>();
+		ASSERT(pContextReturnable);
+		pContextReturnable->addChildContext();
+	}
+	;
+
+returnable_context_pop
+	: /* empty */
+	{
+		PARSER->contextStack()->pop<ContextReturnable>();
+	}
+	;
+
 open_brace
 	: '{'
 	{
@@ -2609,35 +2632,6 @@ init_declaration_value
 	}
 	;
 
-if_else_statement
-	: if_statement
-	| if_statement RDO_else returnable_statement
-	{
-		LPExpression pExpression = PARSER->stack().pop<Expression>($1);
-		ASSERT(pExpression);
-
-		rdo::runtime::LPRDOCalcIf pCalc = pExpression->calc().object_dynamic_cast<rdo::runtime::RDOCalcIf>();
-		ASSERT(pCalc);
-
-		if (!pCalc->hasElse())
-		{
-			LPExpression pExpressionStatement = PARSER->stack().pop<Expression>($3);
-			ASSERT(pExpressionStatement);
-
-			rdo::runtime::LPRDOCalc pCalcStatement = pExpressionStatement->calc();
-			ASSERT(pCalcStatement);
-
-			pCalc->setElseStatement(pCalcStatement);
-
-			$$ = PARSER->stack().push(pExpression);
-		}
-		else
-		{
-			PARSER->error().error(@2, rdo::format(_T("С одним If нельзя использовать больше одного Else")));
-		}
-	}
-	;
-
 if_statement
 	: if_header returnable_statement
 	{
@@ -2656,29 +2650,6 @@ if_statement
 		pCalc->setThenStatement(pCalcStatement);
 
 		$$ = PARSER->stack().push(pExpression);
-	}
-	;
-
-returnable_statement
-	: returnable_context_push statement returnable_context_pop
-	{
-		$$ = $2;
-	}
-	;
-
-returnable_context_push
-	: /* empty */
-	{
-		LPContextReturnable pContextReturnable = PARSER->context()->cast<ContextReturnable>();
-		ASSERT(pContextReturnable);
-		pContextReturnable->addChildContext();
-	}
-	;
-
-returnable_context_pop
-	: /* empty */
-	{
-		PARSER->contextStack()->pop<ContextReturnable>();
 	}
 	;
 
@@ -2709,6 +2680,35 @@ if_header
 	| RDO_if '(' fun_logic error
 	{
 		PARSER->error().error(@4, _T("Ожидается закрывающая скобка"));
+	}
+	;
+
+if_else_statement
+	: if_statement
+	| if_statement RDO_else returnable_statement
+	{
+		LPExpression pExpression = PARSER->stack().pop<Expression>($1);
+		ASSERT(pExpression);
+
+		rdo::runtime::LPRDOCalcIf pCalc = pExpression->calc().object_dynamic_cast<rdo::runtime::RDOCalcIf>();
+		ASSERT(pCalc);
+
+		if (!pCalc->hasElse())
+		{
+			LPExpression pExpressionStatement = PARSER->stack().pop<Expression>($3);
+			ASSERT(pExpressionStatement);
+
+			rdo::runtime::LPRDOCalc pCalcStatement = pExpressionStatement->calc();
+			ASSERT(pCalcStatement);
+
+			pCalc->setElseStatement(pCalcStatement);
+
+			$$ = PARSER->stack().push(pExpression);
+		}
+		else
+		{
+			PARSER->error().error(@2, rdo::format(_T("С одним If нельзя использовать больше одного Else")));
+		}
 	}
 	;
 
