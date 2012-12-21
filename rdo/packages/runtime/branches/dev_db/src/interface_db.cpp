@@ -15,6 +15,7 @@
 #include <iostream>
 #include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "simulator\compiler\parser\type\atom.h"
 #include "simulator\runtime\headers\interface_db.h"
 // --------------------------------------------------------------------------------
 

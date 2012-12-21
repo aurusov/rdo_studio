@@ -16,6 +16,7 @@
 #include <QtSql\QtSql>
 #include <QtCore\QCoreApplication>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "simulator\compiler\parser\type\atom.h"
 #include "simulator\runtime\headers\general_db.h"
 #include "simulator\runtime\headers\interface_db.h"
 // --------------------------------------------------------------------------------
@@ -48,7 +49,7 @@ int main(int argc, char *argv[])
 
 //------------------------
 	db.insertRTPHeader("Парикмахерские", true);
-	db.insertRTPParam("Парикмахерские", "количество_в_очереди", rdo::runtime::RDOType::t_int);
+	db.insertRTPParam("Парикмахерские", "количество_в_очереди", 1);
 //------------------------
 
 //------------------------

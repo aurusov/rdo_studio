@@ -3,6 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_sql_insert", "..\projects\tests\test_sql_insert.vcproj", "{E9BDC951-F0FC-40FC-9A73-90B5A6504223}"
 	ProjectSection(ProjectDependencies) = postProject
+		{7FDB2504-B35B-4698-88A5-55B7112E01F4} = {7FDB2504-B35B-4698-88A5-55B7112E01F4}
 		{57EDB921-2631-4312-9887-A84E98616359} = {57EDB921-2631-4312-9887-A84E98616359}
 		{046B4485-25CA-4935-B217-03B6E8CFB98C} = {046B4485-25CA-4935-B217-03B6E8CFB98C}
 	EndProjectSection
@@ -10,6 +11,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_sql_general_db", "..\projects\common\rdo_sql_general_db.vcproj", "{046B4485-25CA-4935-B217-03B6E8CFB98C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_sql_interface", "..\projects\common\rdo_sql_interface.vcproj", "{57EDB921-2631-4312-9887-A84E98616359}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdo_parser", "..\..\compiler\parser\projects\common\rdo_parser.vcproj", "{7FDB2504-B35B-4698-88A5-55B7112E01F4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +32,10 @@ Global
 		{57EDB921-2631-4312-9887-A84E98616359}.debug|Win32.Build.0 = debug|Win32
 		{57EDB921-2631-4312-9887-A84E98616359}.release|Win32.ActiveCfg = release|Win32
 		{57EDB921-2631-4312-9887-A84E98616359}.release|Win32.Build.0 = release|Win32
+		{7FDB2504-B35B-4698-88A5-55B7112E01F4}.debug|Win32.ActiveCfg = debug|Win32
+		{7FDB2504-B35B-4698-88A5-55B7112E01F4}.debug|Win32.Build.0 = debug|Win32
+		{7FDB2504-B35B-4698-88A5-55B7112E01F4}.release|Win32.ActiveCfg = release|Win32
+		{7FDB2504-B35B-4698-88A5-55B7112E01F4}.release|Win32.Build.0 = release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

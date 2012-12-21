@@ -15,6 +15,7 @@
 #include <QtSql\QtSql>
 #include <map>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "simulator\compiler\parser\type\atom.h"
 #include "simulator\runtime\headers\general_db.h"
 // --------------------------------------------------------------------------------
 

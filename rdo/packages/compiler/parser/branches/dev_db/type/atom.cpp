@@ -190,6 +190,11 @@ void RDOType__int::writeModelStructure(REF(rdo::ostream) stream) const
 	stream << _T("I") << std::endl;
 }
 
+int RDOType__int::selfInsertToDB() const
+{
+	return 1;
+}
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOType__real
 // --------------------------------------------------------------------------------
