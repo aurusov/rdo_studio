@@ -10,16 +10,12 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/context/statement.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
-// --------------------------------------------------------------------------------
-// -------------------- ContextStatementBase
-// --------------------------------------------------------------------------------
-ContextStatementBase::ContextStatementBase()
-{}
 
 // --------------------------------------------------------------------------------
 // -------------------- ContextBreakable
@@ -27,16 +23,22 @@ ContextStatementBase::ContextStatementBase()
 ContextBreakable::ContextBreakable()
 {}
 
+ContextBreakable::~ContextBreakable()
+{}
+
 // --------------------------------------------------------------------------------
 // -------------------- ContextReturnable
 // --------------------------------------------------------------------------------
 ContextReturnable::ContextReturnable()
-	:m_returnFlag(false)
+	: m_returnFlag(false)
+{}
+
+ContextReturnable::~ContextReturnable()
 {}
 
 bool ContextReturnable::returnFlag()
 {
-	if((m_returnFlag==false) && (!m_contextReturnableList.empty()))
+	if ((m_returnFlag == false) && (!m_contextReturnableList.empty()))
 	{
 		m_returnFlag = checkChildFlags();
 	}
@@ -58,10 +60,9 @@ void ContextReturnable::addContext(REF(LPContextReturnable) pContext)
 
 bool ContextReturnable::checkChildFlags()
 {
-	STL_FOR_ALL(m_contextReturnableList, contextIt)
+	BOOST_FOREACH(const LPContextReturnable& pContext, m_contextReturnableList)
 	{
-		LPContextReturnable pContext = *contextIt;
-		if(!pContext->returnFlag())
+		if (!pContext->returnFlag())
 		{
 			return false;
 		}

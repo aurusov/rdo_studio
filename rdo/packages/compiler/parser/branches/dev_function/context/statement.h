@@ -19,26 +19,14 @@
 OPEN_RDO_PARSER_NAMESPACE
 
 // --------------------------------------------------------------------------------
-// -------------------- ContextStatementBase
-// --------------------------------------------------------------------------------
-CLASS(ContextStatementBase):
-	             INSTANCE_OF (Context)
-{
-DECLARE_FACTORY(ContextStatementBase);
-protected:
-	ContextStatementBase();
-};
-DECLARE_POINTER(ContextStatementBase);
-
-// --------------------------------------------------------------------------------
 // -------------------- ContextBreakable
 // --------------------------------------------------------------------------------
-CLASS(ContextBreakable):
-	         INSTANCE_OF (ContextStatementBase)
+class ContextBreakable: public Context
 {
 DECLARE_FACTORY(ContextBreakable);
-protected:
+private:
 	ContextBreakable();
+	virtual ~ContextBreakable();
 };
 DECLARE_POINTER(ContextBreakable);
 
@@ -46,27 +34,25 @@ DECLARE_POINTER(ContextBreakable);
 // -------------------- ContextReturnable
 // --------------------------------------------------------------------------------
 PREDECLARE_POINTER(ContextReturnable);
-CLASS(ContextReturnable):
-	         INSTANCE_OF (ContextStatementBase)
+class ContextReturnable: public Context
 {
 DECLARE_FACTORY(ContextReturnable);
 public:
-
-	typedef std::vector<LPContextReturnable> ContextReturnableList;
 	void addContext(REF(LPContextReturnable) pContext);
 
 	void setReturnFlag();
-	bool returnFlag();
+	bool returnFlag   ();
 
 private:
-	bool checkChildFlags();
-
-protected:
 	ContextReturnable();
+	virtual ~ContextReturnable();
+
+	typedef std::vector<LPContextReturnable> ContextReturnableList;
 
 	ContextReturnableList m_contextReturnableList;
 	bool                  m_returnFlag;
 
+	bool checkChildFlags();
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
