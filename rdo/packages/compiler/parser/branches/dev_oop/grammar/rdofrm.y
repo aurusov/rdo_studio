@@ -502,8 +502,6 @@ param_declaration
 		LPRDOParam pParam = rdo::Factory<RDOParam>::create(pName->src_info(), pType);
 		ASSERT(pParam);
 
-		PARSER->contextStack()->pop();
-
 		LPContext pContext = RDOParser::s_parser()->context();
 		ASSERT(pContext);
 		LPContextParamDefinition pContextParamDefinition = pContext->cast<ContextParamDefinition>();
@@ -2453,7 +2451,7 @@ set_array_item_statement
 	;
 
 local_variable_declaration
-	: type_declaration init_declaration_list
+	: type_declaration_context init_declaration_list
 	{
 		LPTypeInfo pType = PARSER->stack().pop<TypeInfo>($1);
 		ASSERT(pType);
@@ -2464,44 +2462,42 @@ local_variable_declaration
 		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1, @2));
 		ASSERT(pExpression);
 
-		$$ = PARSER->stack().push(pExpression);
-
 		PARSER->contextStack()->pop();
+
+		$$ = PARSER->stack().push(pExpression);
 	}
 	;
+
+type_declaration_context
+	: type_declaration
+	{
+		LPTypeInfo pType = PARSER->stack().pop<TypeInfo>($1);
+		ASSERT(pType);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
+		ASSERT(pTypeContext);
+		PARSER->contextStack()->push(pTypeContext);
+
+		$$ = PARSER->stack().push(pType);
+	}
 
 type_declaration
 	: RDO_integer
 	{
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__int>(RDOParserSrcInfo(@1));
 		ASSERT(pType);
-
-		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
-		ASSERT(pTypeContext);
-
-		PARSER->contextStack()->push(pTypeContext);
 		$$ = PARSER->stack().push(pType);
 	}
 	| RDO_real
 	{
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__real>(RDOParserSrcInfo(@1));
 		ASSERT(pType);
-
-		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
-		ASSERT(pTypeContext);
-
-		PARSER->contextStack()->push(pTypeContext);
 		$$ = PARSER->stack().push(pType);
 	}
 	| RDO_string
 	{
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__string>(RDOParserSrcInfo(@1));
 		ASSERT(pType);
-
-		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
-		ASSERT(pTypeContext);
-
-		PARSER->contextStack()->push(pTypeContext);
 		$$ = PARSER->stack().push(pType);
 	}
 	| param_type_array
@@ -2511,22 +2507,12 @@ type_declaration
 
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pArray, RDOParserSrcInfo(@1));
 		ASSERT(pType);
-
-		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
-		ASSERT(pTypeContext);
-
-		PARSER->contextStack()->push(pTypeContext);
 		$$ = PARSER->stack().push(pType);
 	}
 	| RDO_bool
 	{
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__bool>(RDOParserSrcInfo(@1));
 		ASSERT(pType);
-
-		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
-		ASSERT(pTypeContext);
-
-		PARSER->contextStack()->push(pTypeContext);
 		$$ = PARSER->stack().push(pType);
 	}
 	| param_type_enum
@@ -2537,11 +2523,6 @@ type_declaration
 
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pEnum, RDOParserSrcInfo(@1));
 		ASSERT(pType);
-
-		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
-		ASSERT(pTypeContext);
-
-		PARSER->contextStack()->push(pTypeContext);
 		$$ = PARSER->stack().push(pType);
 	}
 	| RDO_IDENTIF
@@ -2557,12 +2538,6 @@ type_declaration
 
 		LPExpression pExpression = pContext->create(pValue);
 		ASSERT(pExpression);
-
-		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pExpression->typeInfo());
-		ASSERT(pTypeContext);
-
-		PARSER->contextStack()->push(pTypeContext);
-
 		$$ = PARSER->stack().push(pExpression->typeInfo());
 	}
 	| param_type_such_as
@@ -2572,11 +2547,6 @@ type_declaration
 
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pTypeSuchAs->type(), RDOParserSrcInfo(@1));
 		ASSERT(pType);
-
-		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
-		ASSERT(pTypeContext);
-
-		PARSER->contextStack()->push(pTypeContext);
 		$$ = PARSER->stack().push(pType);
 	}
 	;
