@@ -37,11 +37,10 @@ class ContextReturnable: public Context
 {
 DECLARE_FACTORY(ContextReturnable);
 public:
-	bool getReturnFlag() const;
-	void setReturnFlag();
+	rbool getReturnFlag() const;
+	void  setReturnFlag();
 
-	void addChildContext  ();
-	void resetChildContext();
+	void addChildContext();
 
 protected:
 	ContextReturnable();
@@ -51,9 +50,9 @@ private:
 	typedef std::vector<LPContextReturnable> ContextReturnableList;
 
 	ContextReturnableList m_contextReturnableList;
-	bool                  m_returnFlag;
+	rbool                 m_returnFlag;
 
-	bool checkChildFlags() const;
+	rbool getChildFlags() const;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

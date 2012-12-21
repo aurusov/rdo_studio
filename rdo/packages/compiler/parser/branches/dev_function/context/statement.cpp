@@ -37,14 +37,14 @@ ContextReturnable::ContextReturnable()
 ContextReturnable::~ContextReturnable()
 {}
 
-bool ContextReturnable::getReturnFlag() const
+rbool ContextReturnable::getReturnFlag() const
 {
 	if (m_returnFlag)
 		return true;
 
 	return !m_contextReturnableList.empty()
-		? checkChildFlags()
-		: m_returnFlag;
+		? getChildFlags()
+		: false;
 }
 
 void ContextReturnable::setReturnFlag()
@@ -61,23 +61,12 @@ void ContextReturnable::addChildContext()
 	RDOParser::s_parser()->contextStack()->push(pContext);
 }
 
-void ContextReturnable::resetChildContext()
-{
-	BOOST_FOREACH(const LPContextReturnable& pContext, m_contextReturnableList)
-	{
-		pContext->resetChildContext();
-	}
-	m_contextReturnableList.clear();
-}
-
-bool ContextReturnable::checkChildFlags() const
+rbool ContextReturnable::getChildFlags() const
 {
 	BOOST_FOREACH(const LPContextReturnable& pContext, m_contextReturnableList)
 	{
 		if (!pContext->getReturnFlag())
-		{
 			return false;
-		}
 	}
 	return true;
 }

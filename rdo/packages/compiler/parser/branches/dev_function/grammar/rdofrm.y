@@ -2668,9 +2668,12 @@ if_header
 		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcIf>::create(pConditionCalc);
 		ASSERT(pCalc);
 
+		LPContextReturnable pContextReturnable = PARSER->context()->cast<ContextReturnable>();
+		ASSERT(pContextReturnable);
+		pContextReturnable->addChildContext();
+
 		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
 		ASSERT(pExpression);
-
 		$$ = PARSER->stack().push(pExpression);
 	}
 	| RDO_if error fun_logic
@@ -2684,7 +2687,10 @@ if_header
 	;
 
 if_else_statement
-	: if_statement
+	: if_statement returnable_context_push returnable_context_pop
+	{
+		PARSER->contextStack()->pop<ContextReturnable>();
+	}
 	| if_statement RDO_else returnable_statement
 	{
 		LPExpression pExpression = PARSER->stack().pop<Expression>($1);
@@ -2709,6 +2715,8 @@ if_else_statement
 		{
 			PARSER->error().error(@2, rdo::format(_T("— одним If нельз€ использовать больше одного Else")));
 		}
+
+		PARSER->contextStack()->pop<ContextReturnable>();
 	}
 	;
 

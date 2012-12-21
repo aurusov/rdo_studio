@@ -39,7 +39,6 @@ void ContextFunctionBody::pushContext()
 
 void ContextFunctionBody::popContext()
 {
-	ContextReturnable::resetChildContext();
 	ContextMemory::pop();
 	RDOParser::s_parser()->contextStack()->pop<ContextMemory>();
 }
