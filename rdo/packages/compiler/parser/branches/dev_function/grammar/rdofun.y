@@ -445,17 +445,6 @@ fun_func_footer
 
 		LPRDOFUNFunction pFunction = PARSER->getLastFUNFunction();
 		ASSERT(pFunction);
-
-		LPContextReturnable pContextReturnableFun = PARSER->context()->cast<ContextReturnable>();
-		ASSERT(pContextReturnableFun);
-
-		pFunction->setReturnFlag(pContextReturnableFun->getReturnFlag());
-
-		if (!pFunction->getReturnFlag())
-		{
-			PARSER->error().warning(pFunction->src_info(), rdo::format(_T("Возможно, не все ветки функции '%s' могут вернуть значение."), pFunction->name().c_str()));
-		}
-
 		pFunction->createAlgorithmicCalc();
 
 		PARSER->contextStack()->pop<ContextReturnable>();
