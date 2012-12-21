@@ -122,7 +122,7 @@
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="simulator/compiler/parser/pch.h"
 				BrowseInformation="1"
-				WarningLevel="4"
+				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -2592,14 +2592,14 @@
 			<Filter
 				Name=".function"
 				>
-			<File
+				<File
 					RelativePath="..\..\context\function\context_function_body.cpp"
-				>
-			</File>
-			<File
+					>
+				</File>
+				<File
 					RelativePath="..\..\context\function\context_function_body.h"
-				>
-			</File>
+					>
+				</File>
 				<File
 					RelativePath="..\..\context\function\context_function_param_definition.cpp"
 					>
@@ -2608,7 +2608,7 @@
 					RelativePath="..\..\context\function\context_function_param_definition.h"
 					>
 				</File>
-		</Filter>
+			</Filter>
 		</Filter>
 		<Filter
 			Name=".dpt"
@@ -2848,15 +2848,15 @@
 			<Filter
 				Name=".runtime_wrapper"
 				>
-			<File
+				<File
 					RelativePath="..\..\type\runtime_wrapper_type.cpp"
-				>
-			</File>
+					>
+				</File>
 				<File
 					RelativePath="..\..\type\runtime_wrapper_type.h"
 					>
 				</File>
-			<Filter
+				<Filter
 					Name=".array"
 					>
 					<File
@@ -2881,29 +2881,29 @@
 					</File>
 				</Filter>
 				<Filter
-				Name=".enum"
-				>
-				<File
-					RelativePath="..\..\type\enum.cpp"
+					Name=".enum"
 					>
-				</File>
-				<File
-					RelativePath="..\..\type\enum.h"
+					<File
+						RelativePath="..\..\type\enum.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\type\enum.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name=".range"
 					>
-				</File>
-			</Filter>
-			<Filter
-				Name=".range"
-				>
-				<File
-					RelativePath="..\..\type\range.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\type\range.inl"
-					>
-				</File>
-			</Filter>
+					<File
+						RelativePath="..\..\type\range.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\type\range.inl"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name=".info"

@@ -53,8 +53,7 @@ public:
 	virtual LPRDOType                type_cast  (CREF(LPRDOType)  pFrom, CREF(RDOParserSrcInfo) from_src_info, CREF(RDOParserSrcInfo) to_src_info, CREF(RDOParserSrcInfo) src_info) const; \
 	virtual LPRDOValue               value_cast (CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo) to_src_info,   CREF(RDOParserSrcInfo) src_info)                                     const; \
 	virtual rdo::runtime::LPRDOCalc  calc_cast  (CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const;                                                                        \
-	virtual rdo::runtime::RDOValue   get_default() const;                                                                                                                                  \
-	virtual int selfInsertToDB() const;
+	virtual rdo::runtime::RDOValue   get_default() const;
 
 CLOSE_RDO_PARSER_NAMESPACE
 
