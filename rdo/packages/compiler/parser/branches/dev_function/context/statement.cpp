@@ -36,13 +36,11 @@ ContextReturnable::ContextReturnable()
 ContextReturnable::~ContextReturnable()
 {}
 
-bool ContextReturnable::returnFlag()
+bool ContextReturnable::getReturnFlag() const
 {
-	if ((m_returnFlag == false) && (!m_contextReturnableList.empty()))
-	{
-		m_returnFlag = checkChildFlags();
-	}
-	return m_returnFlag;
+	return !m_contextReturnableList.empty()
+		? checkChildFlags()
+		: m_returnFlag;
 }
 
 void ContextReturnable::setReturnFlag()
@@ -58,11 +56,11 @@ void ContextReturnable::addContext(REF(LPContextReturnable) pContext)
 	ASSERT(!m_contextReturnableList.empty());
 }
 
-bool ContextReturnable::checkChildFlags()
+bool ContextReturnable::checkChildFlags() const
 {
 	BOOST_FOREACH(const LPContextReturnable& pContext, m_contextReturnableList)
 	{
-		if (!pContext->returnFlag())
+		if (!pContext->getReturnFlag())
 		{
 			return false;
 		}

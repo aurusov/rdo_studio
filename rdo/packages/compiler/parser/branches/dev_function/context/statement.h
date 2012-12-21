@@ -40,8 +40,8 @@ DECLARE_FACTORY(ContextReturnable);
 public:
 	void addContext(REF(LPContextReturnable) pContext);
 
+	bool getReturnFlag() const;
 	void setReturnFlag();
-	bool returnFlag   ();
 
 private:
 	ContextReturnable();
@@ -52,7 +52,7 @@ private:
 	ContextReturnableList m_contextReturnableList;
 	bool                  m_returnFlag;
 
-	bool checkChildFlags();
+	bool checkChildFlags() const;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

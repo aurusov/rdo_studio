@@ -449,7 +449,7 @@ fun_func_footer
 		LPContextReturnable pContextReturnableFun = PARSER->context()->cast<ContextReturnable>();
 		ASSERT(pContextReturnableFun);
 
-		pFunction->setReturnFlag(pContextReturnableFun->returnFlag());
+		pFunction->setReturnFlag(pContextReturnableFun->getReturnFlag());
 
 		if (!pFunction->getReturnFlag())
 		{
