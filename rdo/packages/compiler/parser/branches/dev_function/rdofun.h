@@ -566,14 +566,13 @@ class RDOFUNFunction: public Function
 {
 DECLARE_FACTORY(RDOFUNFunction)
 public:
-	CREF(tstring)    name                 () const;
-	void             add                  (CREF(LPRDOFUNFunctionListElement) pListElement);
-	void             add                  (CREF(LPRDOFUNCalculateIf)         pCalculateIf);
-	void             createListCalc       ();
-	void             createTableCalc      (CREF(YYLTYPE)                     elements_pos);
-	void             createAlgorithmicCalc();
-	CREF(LPRDOParam) getReturn            () const;
-	void             end                  ();
+	CREF(tstring)    name           () const;
+	void             add            (CREF(LPRDOFUNFunctionListElement) pListElement);
+	void             add            (CREF(LPRDOFUNCalculateIf)         pCalculateIf);
+	void             createListCalc ();
+	void             createTableCalc(CREF(YYLTYPE)                     elements_pos);
+	CREF(LPRDOParam) getReturn      () const;
+	void             end            ();
 
 	rdo::runtime::LPRDOCalc  getFunctionCalc() const;
 	void                     setFunctionCalc(CREF(rdo::runtime::LPRDOCalc) pCalc);

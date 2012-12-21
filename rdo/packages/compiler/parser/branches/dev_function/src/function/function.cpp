@@ -187,12 +187,38 @@ void Function::setBody(CREF(rdo::runtime::LPRDOCalc) pBody)
 	pCalcStatementList->addCalcStatement(pBody);
 	pCalcStatementList->addCalcStatement(pCalcCloseBrace);
 
+	if (m_pReturnType->type()->typeID() != rdo::runtime::RDOType::t_void && !m_pContextFunctionBody->getReturnFlag())
+	{
+		rdo::runtime::LPRDOCalc pCalcDefault = m_pDefaultValue;
+		if (!pCalcDefault)
+		{
+			//! Присвоить автоматическое значение по умолчанию, если оно не задано в явном виде
+			pCalcDefault = rdo::Factory<rdo::runtime::RDOCalcConst>::create(m_pReturnType->type()->get_default());
+			ASSERT(pCalcDefault);
+			pCalcDefault->setSrcInfo(m_pReturnType->src_info());
+		}
+		rdo::runtime::LPRDOCalc pCalcReturn = rdo::Factory<rdo::runtime::RDOCalcFunReturn>::create(pCalcDefault);
+		ASSERT(pCalcReturn);
+
+		rdo::runtime::LPRDOCalcBaseStatementList pBodyStatementList =
+			pBody.object_dynamic_cast<rdo::runtime::RDOCalcBaseStatementList>();
+		ASSERT(pBodyStatementList);
+		pBodyStatementList->addCalcStatement(pCalcReturn);
+	}
+
 	rdo::runtime::LPRDOCalcReturnCatch pCalcReturnCatch =
 		rdo::Factory<rdo::runtime::RDOCalcReturnCatch>::create();
 	ASSERT(pCalcReturnCatch);
 	pCalcReturnCatch->setTryCalc(pCalcStatementList);
 
 	m_pBody = pCalcReturnCatch;
+}
+
+void Function::setDefaultCalc(CREF(rdo::runtime::LPRDOCalc) pDefaultValue)
+{
+	ASSERT(pDefaultValue);
+	ASSERT(!m_pDefaultValue);
+	m_pDefaultValue = pDefaultValue;
 }
 
 Context::FindResult Function::onFindContext(CREF(LPRDOValue) pValue) const

@@ -1387,8 +1387,20 @@ RDOFUNCalculateIf::~RDOFUNCalculateIf()
 // --------------------------------------------------------------------------------
 RDOFUNFunction::RDOFUNFunction(CREF(RDOParserSrcInfo) srcInfo, CREF(LPRDOParam) pReturn)
 	: Function (pReturn->getTypeInfo(), srcInfo)
-	, m_pReturn(pReturn )
+	, m_pReturn(pReturn)
 {
+	if (m_pReturn->getDefault()->defined())
+	{
+		LPRDOValue pDefault = m_pReturn->getTypeInfo()->value_cast(m_pReturn->getDefault());
+		ASSERT(pDefault);
+
+		rdo::runtime::LPRDOCalcConst pCalcDefault = rdo::Factory<rdo::runtime::RDOCalcConst>::create(pDefault->value());
+		ASSERT(pCalcDefault);
+		pCalcDefault->setSrcInfo(m_pReturn->getTypeInfo()->src_info());
+
+		Function::setDefaultCalc(pCalcDefault);
+	}
+
 	init();
 }
 
@@ -1600,28 +1612,6 @@ void RDOFUNFunction::createTableCalc(CREF(YYLTYPE) elements_pos)
 		pFuncTableCalc->addResultCalc(pResultCalc);
 	}
 	setFunctionCalc(pFuncTableCalc);
-}
-
-void RDOFUNFunction::createAlgorithmicCalc()
-{
-	//if (!m_returnFlag)
-	//{
-	//	rdo::runtime::LPRDOCalcConst pCalcDefault;
-	//	if (m_pReturn->getDefault()->defined())
-	//	{
-	//		LPRDOValue pDefault = m_pReturn->getTypeInfo()->value_cast(m_pReturn->getDefault());
-	//		ASSERT(pDefault);
-	//		pCalcDefault = rdo::Factory<rdo::runtime::RDOCalcConst>::create(pDefault->value());
-	//	}
-	//	else
-	//	{
-	//		//! Присвоить автоматическое значение по умолчанию, если оно не задано в явном виде
-	//		pCalcDefault = rdo::Factory<rdo::runtime::RDOCalcConst>::create(m_pReturn->getTypeInfo()->type()->get_default());
-	//		RDOParser::s_parser()->error().warning(src_info(), rdo::format(_T("Для функции '%s' неопределено значение по умолчанию"), name().c_str()));
-	//	}
-	//	ASSERT(pCalcDefault);
-	//	pCalcDefault->setSrcInfo(m_pReturn->getTypeInfo()->src_info());
-	//}
 }
 
 CREF(LPRDOParam) RDOFUNFunction::getReturn() const

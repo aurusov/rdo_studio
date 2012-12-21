@@ -47,6 +47,9 @@ protected:
 	Function(CREF(LPTypeInfo) pReturnType, CREF(RDOParserSrcInfo) srcInfo);
 	virtual ~Function();
 
+	//! @todo Для передачи значения по умолчанию алгоритмической функции. В идеале, это надо переложить на конвертор.
+	void setDefaultCalc(CREF(rdo::runtime::LPRDOCalc) pDefaultValue);
+
 	DECLARE_IContextFind;
 
 private:
@@ -55,6 +58,7 @@ private:
 	ParamList                m_paramList;
 	LPContextFunctionBody    m_pContextFunctionBody;
 	rdo::runtime::LPRDOCalc  m_pBody;
+	rdo::runtime::LPRDOCalc  m_pDefaultValue;
 
 	void onPushParam(CREF(LPRDOParam) pParam);
 	void setBody    (CREF(rdo::runtime::LPRDOCalc) pBody);
