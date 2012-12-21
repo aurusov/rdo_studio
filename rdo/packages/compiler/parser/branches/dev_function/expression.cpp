@@ -88,24 +88,17 @@ LPRDOValue Expression::constant() const
 	return LPRDOValue(NULL);
 }
 // --------------------------------------------------------------------------------
-// -------------------- ExpressionStatement
+// -------------------- ExpressionEmpty
 // --------------------------------------------------------------------------------
-ExpressionStatement::ExpressionStatement(CREF(LPTypeInfo) pType, CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(rdo::runtime::RDOSrcInfo) src_info)
-	:Expression  (pType, pCalc, src_info),
-	 m_returnFlag(true                  )
+ExpressionEmpty::ExpressionEmpty()
+	: Expression(
+		rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo()),
+		rdo::runtime::LPRDOCalc(),
+		RDOParserSrcInfo()
+	)
 {}
 
-ExpressionStatement::ExpressionStatement(CREF(LPExpression) pExpression)
-	:Expression  (pExpression),
-	 m_returnFlag(true       )
+ExpressionEmpty::~ExpressionEmpty()
 {}
-
-ExpressionStatement::~ExpressionStatement()
-{}
-
-rbool ExpressionStatement::getReturn()
-{
-	return m_returnFlag;
-}
 
 CLOSE_RDO_PARSER_NAMESPACE
