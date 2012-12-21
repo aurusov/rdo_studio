@@ -1631,7 +1631,9 @@ CREF(LPRDOParam) RDOFUNFunction::getReturn() const
 
 rdo::runtime::LPRDOCalc RDOFUNFunction::getFunctionCalc() const
 {
-	return m_pFunctionCalc;
+	return m_pFunctionCalc
+		? m_pFunctionCalc
+		: expression()->calc();
 }
 
 void RDOFUNFunction::setFunctionCalc(CREF(rdo::runtime::LPRDOCalc) pCalc)

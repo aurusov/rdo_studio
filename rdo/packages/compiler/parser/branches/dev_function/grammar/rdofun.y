@@ -416,38 +416,16 @@ fun_func_params
 fun_func_footer
 	: RDO_Type '=' RDO_algorithmic fun_func_parameters alg_body statement_list alg_end
 	{
-		LPExpression pExpressionFunBody = PARSER->stack().pop<Expression>($6);
-		ASSERT(pExpressionFunBody);
+		LPExpression pExpressionBody = PARSER->stack().pop<Expression>($6);
+		ASSERT(pExpressionBody);
 
-		rdo::runtime::LPRDOCalcStatementList pCalcStatementList = pExpressionFunBody->calc().object_dynamic_cast<rdo::runtime::RDOCalcStatementList>();
-		ASSERT(pCalcStatementList);
+		LPContextFunctionBody pContextFunctionBody = PARSER->context()->cast<ContextFunctionBody>();
+		ASSERT(pContextFunctionBody);
+		pContextFunctionBody->setBody(pExpressionBody->calc());
 
-		rdo::runtime::LPRDOCalcBaseStatementList pCalcBaseStatementList = rdo::Factory<rdo::runtime::RDOCalcBaseStatementList>::create();
-		ASSERT(pCalcBaseStatementList);
-
-		rdo::runtime::LPRDOCalcOpenBrace pCalcOpenBrace = rdo::Factory<rdo::runtime::RDOCalcOpenBrace>::create();
-		ASSERT(pCalcOpenBrace);
-
-		rdo::runtime::LPRDOCalcCloseBrace pCalcCloseBrace = rdo::Factory<rdo::runtime::RDOCalcCloseBrace>::create();
-		ASSERT(pCalcCloseBrace);
-
-		pCalcBaseStatementList->addCalcStatement(pCalcOpenBrace);
-		pCalcBaseStatementList->addCalcStatement(pCalcStatementList);
-		pCalcBaseStatementList->addCalcStatement(pCalcCloseBrace);
-
-		LPExpression pExpressionReturnCatch = PARSER->stack().pop<Expression>($5);
-		ASSERT(pExpressionReturnCatch);
-
-		rdo::runtime::LPRDOCalcReturnCatch pCalcReturnCatch = pExpressionReturnCatch->calc().object_dynamic_cast<rdo::runtime::RDOCalcReturnCatch>();
-		ASSERT(pCalcReturnCatch);
-
-		pCalcReturnCatch->setTryCalc(pCalcBaseStatementList);
-
-		LPRDOFUNFunction pFunction = PARSER->getLastFUNFunction();
-		ASSERT(pFunction);
-		pFunction->createAlgorithmicCalc();
-
-		PARSER->contextStack()->pop<ContextReturnable>();
+		LPIContextFunctionBodyManager pContextFunctionBodyManager = PARSER->context()->interface_cast<IContextFunctionBodyManager>();
+		ASSERT(pContextFunctionBodyManager);
+		pContextFunctionBodyManager->popFunctionBodyContext();
 	}
 	| RDO_Type '=' RDO_list fun_func_parameters RDO_Body fun_func_list_body RDO_End
 	{
@@ -504,25 +482,9 @@ fun_func_footer
 alg_body
 	: RDO_Body
 	{
-		rdo::runtime::LPRDOCalcReturnCatch pCalcReturnCatch = rdo::Factory<rdo::runtime::RDOCalcReturnCatch>::create();
-		ASSERT(pCalcReturnCatch);
-
-		LPRDOFUNFunction pFunction = PARSER->getLastFUNFunction();
-		ASSERT(pFunction);
-
-		pFunction->setFunctionCalc(pCalcReturnCatch);
-
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__void>(RDOParserSrcInfo(@1));
-		ASSERT(pType);
-
-		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalcReturnCatch, RDOParserSrcInfo(@1));
-
-		LPContextReturnable pContextReturnable = rdo::Factory<ContextReturnable>::create();
-		ASSERT(pContextReturnable);
-
-		PARSER->contextStack()->push(pContextReturnable);
-		
-		$$ = PARSER->stack().push(pExpression);
+		LPIContextFunctionBodyManager pContextFunctionBodyManager = PARSER->context()->interface_cast<IContextFunctionBodyManager>();
+		ASSERT(pContextFunctionBodyManager);
+		pContextFunctionBodyManager->pushFunctionBodyContext();
 	}
 	;
 
