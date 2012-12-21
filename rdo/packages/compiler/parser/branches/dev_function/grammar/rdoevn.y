@@ -2578,7 +2578,7 @@ if_then_statement
 	;
 
 if_else_statement
-	: /* empty */
+	: returnable_context_push returnable_context_pop
 	{
 		$$ = PARSER->stack().push(rdo::Factory<ExpressionEmpty>::create());
 	}
