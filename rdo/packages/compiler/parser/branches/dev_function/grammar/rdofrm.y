@@ -2872,9 +2872,9 @@ param_type
 	}
 	| param_type_array
 	{
-		LEXER->array_cnt_rst();
 		LPRDOArrayType pArray = PARSER->stack().pop<RDOArrayType>($1);
 		ASSERT(pArray);
+
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pArray, RDOParserSrcInfo(@1));
 		ASSERT(pType);
 		$$ = PARSER->stack().push(pType);
@@ -2890,6 +2890,7 @@ param_type
 		LEXER->enumReset();
 		LPRDOEnumType pEnum = PARSER->stack().pop<RDOEnumType>($1);
 		ASSERT(pEnum);
+
 		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pEnum, RDOParserSrcInfo(@1));
 		ASSERT(pType);
 		$$ = PARSER->stack().push(pType);
@@ -2907,14 +2908,14 @@ param_type
 
 		LPExpression pExpression = pContext->create(pValue);
 		ASSERT(pExpression);
-
 		$$ = PARSER->stack().push(pExpression->typeInfo());
 	}
 	| param_type_such_as
 	{
-		LPRDOTypeParamSuchAs pTypeSuchAs = PARSER->stack().pop<RDOTypeParamSuchAs>($1);
+		LPTypeInfo pTypeSuchAs = PARSER->stack().pop<TypeInfo>($1);
 		ASSERT(pTypeSuchAs);
-		LPTypeInfo pType = pTypeSuchAs.object_parent_cast<TypeInfo>();
+
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pTypeSuchAs->type(), RDOParserSrcInfo(@1));
 		ASSERT(pType);
 		$$ = PARSER->stack().push(pType);
 	}
