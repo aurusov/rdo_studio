@@ -104,16 +104,5 @@ inline rbool RDOLexer::enumEmpty()
 {
 	return m_enumEmpty;
 }
-inline void RDOLexer::array_cnt_pls()
-{
-	m_array_param_cnt++;
-}
-inline void RDOLexer::array_cnt_rst()
-{
-	m_array_param_cnt = 0;
-}
-inline rsint RDOLexer::array_cnt_shw()
-{
-	return m_array_param_cnt;
-}
+
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
