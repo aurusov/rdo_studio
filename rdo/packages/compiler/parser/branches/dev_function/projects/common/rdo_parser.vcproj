@@ -2908,6 +2908,10 @@
 					Name=".range"
 					>
 					<File
+						RelativePath="..\..\type\range.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\..\type\range.h"
 						>
 					</File>
