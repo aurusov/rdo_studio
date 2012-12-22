@@ -281,7 +281,7 @@ fun_const_body
 	;
 
 fun_const_param_desc
-	: RDO_IDENTIF_COLON param_type param_value_default
+	: RDO_IDENTIF_COLON type_declaration param_value_default
 	{
 		LPRDOValue pName = PARSER->stack().pop<RDOValue>($1);
 		ASSERT(pName);
@@ -339,7 +339,7 @@ fun_func_descr
 	;
 
 fun_func_header
-	: RDO_Function RDO_IDENTIF_COLON param_type param_value_default
+	: RDO_Function RDO_IDENTIF_COLON type_declaration param_value_default
 	{
 		LPRDOValue pName = PARSER->stack().pop<RDOValue>($2);
 		ASSERT(pName);
@@ -389,7 +389,7 @@ param_list_open
 
 fun_func_params
 	: /* empty */
-	| fun_func_params RDO_IDENTIF_COLON param_type param_value_default
+	| fun_func_params RDO_IDENTIF_COLON type_declaration param_value_default
 	{
 		LPRDOValue pName = PARSER->stack().pop<RDOValue>($2);
 		ASSERT(pName);
@@ -547,7 +547,7 @@ fun_seq_descr
 	;
 
 fun_seq_header
-	: RDO_Sequence RDO_IDENTIF_COLON param_type RDO_Type '='
+	: RDO_Sequence RDO_IDENTIF_COLON type_declaration RDO_Type '='
 	{
 		LPRDOValue pName = PARSER->stack().pop<RDOValue>($2);
 		ASSERT(pName);
@@ -558,15 +558,15 @@ fun_seq_header
 		ASSERT(pHeader);
 		$$ = PARSER->stack().push(pHeader);
 	}
-	| RDO_Sequence RDO_IDENTIF_COLON param_type RDO_Type '=' error
+	| RDO_Sequence RDO_IDENTIF_COLON type_declaration RDO_Type '=' error
 	{
 		PARSER->error().error(@6, _T("После знака равенства ожидается тип последовательности"));
 	}
-	| RDO_Sequence RDO_IDENTIF_COLON param_type RDO_Type error
+	| RDO_Sequence RDO_IDENTIF_COLON type_declaration RDO_Type error
 	{
 		PARSER->error().error(@5, _T("После ключевого слова $Type ожидается знак равенства и тип последовательности"));
 	}
-	| RDO_Sequence RDO_IDENTIF_COLON param_type error
+	| RDO_Sequence RDO_IDENTIF_COLON type_declaration error
 	{
 		PARSER->error().error(@4, _T("Ожидается ключевое слово $Type"));
 	}
@@ -1772,88 +1772,6 @@ local_variable_declaration_context
 	}
 	;
 
-type_declaration_context
-	: type_declaration
-	{
-		LPTypeInfo pType = PARSER->stack().pop<TypeInfo>($1);
-		ASSERT(pType);
-
-		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
-		ASSERT(pTypeContext);
-		PARSER->contextStack()->push(pTypeContext);
-	}
-	;
-
-type_declaration
-	: RDO_integer
-	{
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__int>(RDOParserSrcInfo(@1));
-		ASSERT(pType);
-		$$ = PARSER->stack().push(pType);
-	}
-	| RDO_real
-	{
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__real>(RDOParserSrcInfo(@1));
-		ASSERT(pType);
-		$$ = PARSER->stack().push(pType);
-	}
-	| RDO_string
-	{
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__string>(RDOParserSrcInfo(@1));
-		ASSERT(pType);
-		$$ = PARSER->stack().push(pType);
-	}
-	| param_type_array
-	{
-		LPRDOArrayType pArray = PARSER->stack().pop<RDOArrayType>($1);
-		ASSERT(pArray);
-
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pArray, RDOParserSrcInfo(@1));
-		ASSERT(pType);
-		$$ = PARSER->stack().push(pType);
-	}
-	| RDO_bool
-	{
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__bool>(RDOParserSrcInfo(@1));
-		ASSERT(pType);
-		$$ = PARSER->stack().push(pType);
-	}
-	| param_type_enum
-	{
-		LEXER->enumReset();
-		LPRDOEnumType pEnum = PARSER->stack().pop<RDOEnumType>($1);
-		ASSERT(pEnum);
-
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pEnum, RDOParserSrcInfo(@1));
-		ASSERT(pType);
-		$$ = PARSER->stack().push(pType);
-	}
-	| RDO_IDENTIF
-	{
-		LPRDOValue pValue = PARSER->stack().pop<RDOValue>($1);
-		ASSERT(pValue);
-
-		LPContext pContext = RDOParser::s_parser()->context();
-		ASSERT(pContext);
-
-		pContext = pContext->find(pValue);
-		ASSERT(pContext);
-
-		LPExpression pExpression = pContext->create(pValue);
-		ASSERT(pExpression);
-		$$ = PARSER->stack().push(pExpression->typeInfo());
-	}
-	| param_type_such_as
-	{
-		LPTypeInfo pTypeSuchAs = PARSER->stack().pop<TypeInfo>($1);
-		ASSERT(pTypeSuchAs);
-
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pTypeSuchAs->type(), RDOParserSrcInfo(@1));
-		ASSERT(pType);
-		$$ = PARSER->stack().push(pType);
-	}
-	;
-
 init_declaration_list
 	: init_declaration_list_item
 	| init_declaration_list ',' init_declaration_list_item
@@ -2102,7 +2020,19 @@ break_statement
 // --------------------------------------------------------------------------------
 // -------------------- Описание типа параметра
 // --------------------------------------------------------------------------------
-param_type
+type_declaration_context
+	: type_declaration
+	{
+		LPTypeInfo pType = PARSER->stack().pop<TypeInfo>($1);
+		ASSERT(pType);
+
+		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
+		ASSERT(pTypeContext);
+		PARSER->contextStack()->push(pTypeContext);
+	}
+	;
+
+type_declaration
 	: RDO_integer param_type_range
 	{
 		LPRDOTypeRangeRange pRange = PARSER->stack().pop<RDOTypeRangeRange>($2);
@@ -2398,7 +2328,7 @@ param_type_such_as
 	;
 
 param_type_array
-	: RDO_array '<' param_type '>'
+	: RDO_array '<' type_declaration '>'
 	{
 		LPTypeInfo pParamType = PARSER->stack().pop<TypeInfo>($3);
 		ASSERT(pParamType);
