@@ -47,10 +47,6 @@ public:
 	void  enumReset();
 	rbool enumEmpty();
 
-	void  array_cnt_pls();
-	void  array_cnt_rst();
-	rsint array_cnt_shw();
-
 	PTR(int)         m_lpval;
 	PTR(YYLTYPE)     m_lploc;
 
