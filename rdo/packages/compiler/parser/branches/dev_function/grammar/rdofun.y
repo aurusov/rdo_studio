@@ -2078,7 +2078,7 @@ type_declaration
 		ASSERT(pType);
 		$$ = PARSER->stack().push(pType);
 	}
-	| param_type_array
+	| type_declaration_array
 	{
 		LPRDOArrayType pArray = PARSER->stack().pop<RDOArrayType>($1);
 		ASSERT(pArray);
@@ -2093,7 +2093,7 @@ type_declaration
 		ASSERT(pType);
 		$$ = PARSER->stack().push(pType);
 	}
-	| param_type_enum
+	| type_declaration_enum
 	{
 		LEXER->enumReset();
 		LPRDOEnumType pEnum = PARSER->stack().pop<RDOEnumType>($1);
@@ -2118,7 +2118,7 @@ type_declaration
 		ASSERT(pExpression);
 		$$ = PARSER->stack().push(pExpression->typeInfo());
 	}
-	| param_type_such_as
+	| type_declaration_such_as
 	{
 		LPTypeInfo pTypeSuchAs = PARSER->stack().pop<TypeInfo>($1);
 		ASSERT(pTypeSuchAs);
@@ -2192,7 +2192,7 @@ param_type_range
 	}
 	;
 
-param_type_enum
+type_declaration_enum
 	: '(' param_type_enum_list ')'
 	{
 		LPRDOEnumType pEnum = PARSER->stack().pop<RDOEnumType>($2);
@@ -2273,7 +2273,7 @@ param_type_enum_list
 	}
 	;
 
-param_type_such_as
+type_declaration_such_as
 	: RDO_such_as RDO_IDENTIF '.' RDO_IDENTIF
 	{
 		tstring type  = PARSER->stack().pop<RDOValue>($2)->value().getIdentificator();
@@ -2327,7 +2327,7 @@ param_type_such_as
 	}
 	;
 
-param_type_array
+type_declaration_array
 	: RDO_array '<' type_declaration '>'
 	{
 		LPTypeInfo pParamType = PARSER->stack().pop<TypeInfo>($3);
