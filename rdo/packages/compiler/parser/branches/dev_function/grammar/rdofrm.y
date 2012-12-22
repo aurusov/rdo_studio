@@ -2841,14 +2841,6 @@ type_declaration
 		$$ = PARSER->stack().push(pExpression->typeInfo());
 	}
 	| type_declaration_such_as
-	{
-		LPTypeInfo pTypeSuchAs = PARSER->stack().pop<TypeInfo>($1);
-		ASSERT(pTypeSuchAs);
-
-		LPTypeInfo pType = rdo::Factory<TypeInfo>::create(pTypeSuchAs->type(), RDOParserSrcInfo(@1));
-		ASSERT(pType);
-		$$ = PARSER->stack().push(pType);
-	}
 	;
 
 param_type_range
