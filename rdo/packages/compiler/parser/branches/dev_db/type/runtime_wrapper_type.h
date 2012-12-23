@@ -13,12 +13,13 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/type/type.h"
+#include "simulator/compiler/parser/type/type_i_db.h"
 #include "simulator/runtime/headers/interface_db.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
 
-class RuntimeWrapperType: public RDOType
+class RuntimeWrapperType: public RDOType, ITypeDB
 {
 DECLARE_FACTORY(RuntimeWrapperType)
 public:
@@ -31,8 +32,6 @@ protected:
 	RuntimeWrapperType();
 	RuntimeWrapperType(CREF(rdo::runtime::LPRDOType) pType);
 	virtual ~RuntimeWrapperType();
-
-	virtual int selfInsertToDB(REF(InterfaceDB) db) const;
 
 	rdo::runtime::LPRDOType m_pType;
 };

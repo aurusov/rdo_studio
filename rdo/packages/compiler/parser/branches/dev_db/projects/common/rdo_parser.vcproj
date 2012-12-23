@@ -2856,6 +2856,10 @@
 					RelativePath="..\..\type\runtime_wrapper_type.h"
 					>
 				</File>
+				<File
+					RelativePath="..\..\type\type_i_db.h"
+					>
+				</File>
 				<Filter
 					Name=".array"
 					>

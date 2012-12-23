@@ -15,7 +15,7 @@
 #include <iostream>
 #include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator\compiler\parser\type\atom.h"
+#include "simulator\compiler\parser\type\type_i_db.h"
 #include "simulator\runtime\headers\interface_db.h"
 // --------------------------------------------------------------------------------
 
@@ -40,7 +40,7 @@ void InterfaceDB::insertEnumRow(const QString& defaultValue)
 	insertRow("enum","DEFAULT,'" + defaultValue + "'");
 }
 
-void InterfaceDB::insertRTPParam(const QString& rtp_name, const QString& param_name, REF(rdo::compiler::parser::RuntimeWrapperType) type)
+void InterfaceDB::insertRTPParam(const QString& rtp_name, const QString& param_name, rdo::compiler::parser::ITypeDB type)
 {
 	QSqlQuery query;
 	query.exec("select r_t_id from rtp where r_t_name='" + rtp_name + "';");
