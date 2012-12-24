@@ -421,7 +421,7 @@
 	</References>
 	<Files>
 		<File
-			RelativePath="..\..\src\interface_db.cpp"
+			RelativePath="..\..\src\db\interface_db.cpp"
 			>
 		</File>
 		<File

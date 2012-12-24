@@ -16,7 +16,7 @@
 #include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator\compiler\parser\type\runtime_wrapper_type.h"
-#include "simulator\runtime\headers\interface_db.h"
+#include "simulator\compiler\parser\headers\general_db.h"
 // --------------------------------------------------------------------------------
 
 

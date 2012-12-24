@@ -16,7 +16,7 @@
 #include <map>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator\compiler\parser\type\runtime_wrapper_type.h"
-#include "simulator\runtime\headers\general_db.h"
+#include "simulator\compiler\parser\headers\general_db.h"
 // --------------------------------------------------------------------------------
 
 class InterfaceDB: public GeneralDB
