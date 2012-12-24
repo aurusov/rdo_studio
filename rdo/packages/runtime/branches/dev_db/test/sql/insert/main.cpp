@@ -17,8 +17,8 @@
 #include <QtCore\QCoreApplication>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator\compiler\parser\type\atom.h"
-#include "simulator\runtime\headers\general_db.h"
-#include "simulator\runtime\headers\interface_db.h"
+#include "simulator\compiler\parser\headers\general_db.h"
+#include "simulator\compiler\parser\headers\interface_db.h"
 // --------------------------------------------------------------------------------
 
 
