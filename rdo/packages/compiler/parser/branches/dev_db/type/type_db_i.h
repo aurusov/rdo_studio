@@ -17,9 +17,10 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-class ITypeDB
+class ISerializeTypeInDB
 {
-	virtual int selfInsertToDB(REF(InterfaceDB) db) const;
+public:
+	virtual int selfInsertToDB(REF(InterfaceDB) db) const = 0;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE
