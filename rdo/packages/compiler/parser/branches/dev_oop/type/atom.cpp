@@ -140,7 +140,14 @@ LPRDOType RDOType__int::type_cast(CREF(LPRDOType) pFrom, CREF(RDOParserSrcInfo) 
 			parser::g_error().warning(src_info, rdo::format(_T("Преобразование '%s' в '%s', возможна потеря данных"), pFrom->name().c_str(), name().c_str()));
 			return rdo::Factory<RDOType__real>::create();
 		default:
-			parser::g_error().push_only(src_info,    rdo::format(_T("Ожидается целочисленное значение, найдено: %s"), from_src_info.src_text().c_str()));
+			if (!from_src_info.src_text().empty())
+			{
+				parser::g_error().push_only(src_info, rdo::format(_T("Ожидается целочисленное значение, найдено: %s"), from_src_info.src_text().c_str()));
+			}
+			else
+			{
+				parser::g_error().push_only(from_src_info, rdo::format(_T("Ожидается целочисленное значение, найдено: %s"), pFrom->name().c_str()));
+			}
 			parser::g_error().push_only(to_src_info, rdo::format(_T("См. тип: %s"), to_src_info.src_text().c_str()));
 			parser::g_error().push_done();
 	}

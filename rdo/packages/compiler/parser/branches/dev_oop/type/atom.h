@@ -29,7 +29,7 @@ public:                                            \
 	RDOType__##Type():                             \
 		RuntimeWrapperType(rdo::runtime::g_##Type) \
 	{}                                             \
-	~RDOType__##Type()                             \
+	virtual ~RDOType__##Type()                     \
 	{}                                             \
 	DECLARE_IType;                                 \
 	DECLARE_IModelStructure;                       \

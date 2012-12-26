@@ -1332,6 +1332,8 @@ pat_convert
 			}
 		}
 
+		RDOParser::s_parser()->contextStack()->pop_safe<ContextReturnable>();
+
 		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_res_usage convert_begin pat_trace statement_list
@@ -1373,6 +1375,9 @@ pat_convert
 		ASSERT(pExpressionConvert);
 
 		pPattern.object_static_cast<RDOPatternOperation>()->addRelResConvertBeginEnd($3 != 0, pExpressionConvert, false, NULL, @2, @2, @3, @3);
+
+		RDOParser::s_parser()->contextStack()->pop_safe<ContextReturnable>();
+
 		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_res_usage convert_end pat_trace statement_list
@@ -1414,6 +1419,9 @@ pat_convert
 		ASSERT(pExpressionConvert);
 
 		pPattern.object_static_cast<RDOPatternOperation>()->addRelResConvertBeginEnd(false, NULL, $3 != 0, pExpressionConvert, @2, @2, @3, @3);
+
+		RDOParser::s_parser()->contextStack()->pop_safe<ContextReturnable>();
+
 		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_res_usage convert_begin pat_trace statement_list convert_end pat_trace statement_list
@@ -1475,6 +1483,10 @@ pat_convert
 			pExpressionConvertEnd   ,
 			@2, @5, @3, @6          );
 
+
+		RDOParser::s_parser()->contextStack()->pop_safe<ContextReturnable>();
+		RDOParser::s_parser()->contextStack()->pop_safe<ContextReturnable>();
+
 		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_res_usage convert_rule pat_trace statement_list
@@ -1520,6 +1532,9 @@ pat_convert
 		ASSERT(pExpressionConvert);
 
 		pPattern->addRelResConvert($3 != 0, pExpressionConvert, @2, @3, pRelRes->m_statusBegin);
+
+		RDOParser::s_parser()->contextStack()->pop_safe<ContextReturnable>();
+
 		$$ = PARSER->stack().push(pPattern);
 	}
 	| pat_res_usage convert_event pat_trace statement_list
@@ -1564,6 +1579,9 @@ pat_convert
 
 		ASSERT(pPattern->m_pCurrRelRes);
 		pPattern->addRelResConvert($3 != 0, pExpressionConvert, @2, @3, pPattern->m_pCurrRelRes->m_statusBegin);
+
+		RDOParser::s_parser()->contextStack()->pop_safe<ContextReturnable>();
+
 		$$ = PARSER->stack().push(pPattern);
 	}
 	;

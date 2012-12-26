@@ -35,6 +35,13 @@ public:
 	LPContext global() const;
 	LPContext prev  (CREF(LPContext) pContext) const;
 
+	template <class T>
+	void pop_safe()
+	{
+		ASSERT(top().object_dynamic_cast<T>());
+		pop();
+	}
+
 private:
 	ContextStack();
 	virtual ~ContextStack();
