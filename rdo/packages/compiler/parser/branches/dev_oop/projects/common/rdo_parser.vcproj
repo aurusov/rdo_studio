@@ -2674,7 +2674,7 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="local_variable"
+				Name=".local_variable"
 				>
 				<File
 					RelativePath="..\..\src\function\local_variable\local_variable.cpp"

@@ -11,7 +11,7 @@
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/compiler/parser/local_variable.h"
+#include "simulator/compiler/parser/src/function/local_variable/local_variable.h"
 #include "simulator/compiler/parser/rdoparser_error.h"
 #include "simulator/runtime/rdo_resource.h"
 // --------------------------------------------------------------------------------
