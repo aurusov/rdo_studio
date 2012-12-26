@@ -218,11 +218,11 @@
 #include "simulator/compiler/parser/type/range.h"
 #include "simulator/compiler/parser/rdo_array.h"
 #include "simulator/compiler/parser/src/function/local_variable/local_variable.h"
+#include "simulator/compiler/parser/src/function/local_variable/local_variable_context.h"
 #include "simulator/compiler/parser/type/such_as.h"
 #include "simulator/compiler/parser/context/context_type.h"
 #include "simulator/compiler/parser/context/memory.h"
 #include "simulator/compiler/parser/context/statement.h"
-#include "simulator/compiler/parser/src/function/local_variable/local_variable_context.h"
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/calc/calc_array.h"
 #include "simulator/runtime/calc/procedural/calc_locvar.h"
@@ -2599,11 +2599,25 @@ init_declaration_list
 	;
 
 init_declaration
-	: RDO_IDENTIF
+	: RDO_IDENTIF init_declaration_value
 	{
 		LPRDOValue pVariableName = PARSER->stack().pop<RDOValue>($1);
 		ASSERT(pVariableName);
 
+		LPExpression pExpression = PARSER->stack().pop<Expression>($2);
+		ASSERT(pExpression);
+
+		pExpression->setSrcInfo(RDOParserSrcInfo(@1, @2, pVariableName->src_text()));
+
+		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(pVariableName, pExpression);
+		ASSERT(pLocalVariable);
+		$$ = PARSER->stack().push(pLocalVariable);
+	}
+	;
+
+init_declaration_value
+	: /* empty */
+	{
 		LPTypeContext pTypeContext = PARSER->context()->cast<TypeContext>();
 		ASSERT(pTypeContext);
 
@@ -2613,25 +2627,16 @@ init_declaration
 		LPExpression pExpression = rdo::Factory<Expression>::create(
 			pTypeInfo,
 			rdo::Factory<rdo::runtime::RDOCalcConst>::create(pTypeInfo->type()->get_default()),
-			pVariableName->src_info()
+			RDOParserSrcInfo()
 		);
 		ASSERT(pExpression);
-
-		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(pVariableName, pExpression);
-		ASSERT(pLocalVariable);
-		$$ = PARSER->stack().push(pLocalVariable);
+		$$ = PARSER->stack().push(pExpression);
 	}
-	| RDO_IDENTIF '=' fun_arithm
+	| '=' fun_arithm
 	{
-		LPRDOValue pVariableName = PARSER->stack().pop<RDOValue>($1);
-		ASSERT(pVariableName);
-
-		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($3);
+		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
 		ASSERT(pArithm);
-
-		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(pVariableName, pArithm->expression());
-		ASSERT(pLocalVariable);
-		$$ = PARSER->stack().push(pLocalVariable);
+		$$ = PARSER->stack().push(pArithm->expression());
 	}
 	;
 
