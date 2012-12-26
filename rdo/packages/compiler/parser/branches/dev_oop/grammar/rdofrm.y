@@ -206,6 +206,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "simulator/compiler/parser/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/bind.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/rdoparser_lexer.h"
@@ -221,6 +222,7 @@
 #include "simulator/compiler/parser/context/context_type.h"
 #include "simulator/compiler/parser/context/memory.h"
 #include "simulator/compiler/parser/context/statement.h"
+#include "simulator/compiler/parser/src/function/local_variable/local_variable_context.h"
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/runtime/calc/calc_array.h"
 #include "simulator/runtime/calc/procedural/calc_locvar.h"
@@ -2451,20 +2453,45 @@ set_array_item_statement
 	;
 
 local_variable_declaration
-	: type_declaration_context init_declaration_list
+	: local_variable_declaration_context init_declaration_list
 	{
-		LPTypeInfo pType = PARSER->stack().pop<TypeInfo>($1);
+		LPTypeContext pTypeContext = PARSER->context()->cast<TypeContext>();
+		ASSERT(pTypeContext);
+
+		LPTypeInfo pType = pTypeContext->getTypeInfo();
 		ASSERT(pType);
 
-		rdo::runtime::LPRDOCalc pCalc = PARSER->stack().pop<rdo::runtime::RDOCalc>($2);
-		ASSERT(pCalc);
+		LPContextLocalVariable pContextLocalVariable = PARSER->context().object_dynamic_cast<ContextLocalVariable>();
+		ASSERT(pContextLocalVariable);
 
-		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1, @2));
+		LPExpression pExpression = rdo::Factory<Expression>::create(
+			pType, pContextLocalVariable->calc(), RDOParserSrcInfo(@1, @2)
+		);
 		ASSERT(pExpression);
 
 		PARSER->contextStack()->pop();
+		PARSER->contextStack()->pop();
 
 		$$ = PARSER->stack().push(pExpression);
+	}
+	;
+
+local_variable_declaration_context
+	: type_declaration_context
+	{
+		LPContextMemory pContextMemory = PARSER->context()->cast<ContextMemory>();
+		ASSERT(pContextMemory);
+
+		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
+		ASSERT(pLocalVariableListStack);
+		LPLocalVariableList pLocalVariableList = pLocalVariableListStack->top();
+		ASSERT(pLocalVariableList);
+
+		LPContextLocalVariable pContextLocalVariable = rdo::Factory<ContextLocalVariable>::create(
+			boost::bind(&LocalVariableList::append, pLocalVariableList.get(), _1)
+		);
+		ASSERT(pContextLocalVariable);
+		PARSER->contextStack()->push(pContextLocalVariable);
 	}
 	;
 
@@ -2477,9 +2504,8 @@ type_declaration_context
 		LPContext pTypeContext = rdo::Factory<TypeContext>::create(pType);
 		ASSERT(pTypeContext);
 		PARSER->contextStack()->push(pTypeContext);
-
-		$$ = PARSER->stack().push(pType);
 	}
+	;
 
 type_declaration
 	: RDO_integer
@@ -2554,61 +2580,21 @@ type_declaration
 init_declaration_list
 	: init_declaration
 	{
-		LPVariableWrapper pVariableWrapper = PARSER->stack().pop<VariableWrapper>($1);
-		ASSERT(pVariableWrapper);
-
-		LPLocalVariable pLocalVariable = pVariableWrapper->getSecond();
+		LPLocalVariable pLocalVariable = PARSER->stack().pop<LocalVariable>($1);
 		ASSERT(pLocalVariable);
 
-		LPContext pContext = PARSER->context();
-		ASSERT(pContext);
-
-		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
-		ASSERT(pContextMemory);
-
-		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
-		ASSERT(pLocalVariableListStack);
-
-		pLocalVariableListStack->top()->append(pLocalVariable);
-
-		rdo::runtime::LPRDOCalc pCalc = pVariableWrapper->getFirst();
-		ASSERT(pCalc);
-
-		rdo::runtime::LPRDOCalcLocalVariableList pCalcLocalVariableList = rdo::Factory<rdo::runtime::RDOCalcLocalVariableList>::create();
-		ASSERT(pCalcLocalVariableList);
-
-		pCalcLocalVariableList->addCalcLocalVariable(pCalc);
-
-		$$ = PARSER->stack().push(pCalcLocalVariableList);
+		LPContextLocalVariable pContextLocalVariable = PARSER->context().object_dynamic_cast<ContextLocalVariable>();
+		ASSERT(pContextLocalVariable);
+		pContextLocalVariable->pushLocalVariable(pLocalVariable);
 	}
 	| init_declaration_list ',' init_declaration
 	{
-		LPVariableWrapper pVariableWrapper = PARSER->stack().pop<VariableWrapper>($3);
-		ASSERT(pVariableWrapper);
-
-		LPLocalVariable pLocalVariable = pVariableWrapper->getSecond();
+		LPLocalVariable pLocalVariable = PARSER->stack().pop<LocalVariable>($3);
 		ASSERT(pLocalVariable);
 
-		LPContext pContext = PARSER->context();
-		ASSERT(pContext);
-
-		LPContextMemory pContextMemory = pContext->cast<ContextMemory>();
-		ASSERT(pContextMemory);
-
-		LPLocalVariableListStack pLocalVariableListStack = pContextMemory->getLocalMemory();
-		ASSERT(pLocalVariableListStack);
-
-		pLocalVariableListStack->top()->append(pLocalVariable);
-
-		rdo::runtime::LPRDOCalc pCalc = pVariableWrapper->getFirst();
-		ASSERT(pCalc);
-
-		rdo::runtime::LPRDOCalcLocalVariableList pCalcLocalVariableList = PARSER->stack().pop<rdo::runtime::RDOCalcLocalVariableList>($1);
-		ASSERT(pCalcLocalVariableList);
-
-		pCalcLocalVariableList->addCalcLocalVariable(pCalc);
-
-		$$ = PARSER->stack().push(pCalcLocalVariableList);
+		LPContextLocalVariable pContextLocalVariable = PARSER->context().object_dynamic_cast<ContextLocalVariable>();
+		ASSERT(pContextLocalVariable);
+		pContextLocalVariable->pushLocalVariable(pLocalVariable);
 	}
 	;
 
@@ -2618,10 +2604,7 @@ init_declaration
 		LPRDOValue pVariableName = PARSER->stack().pop<RDOValue>($1);
 		ASSERT(pVariableName);
 
-		LPContext pContext = PARSER->context();
-		ASSERT(pContext);
-
-		LPTypeContext pTypeContext = pContext.object_static_cast<TypeContext>();
+		LPTypeContext pTypeContext = PARSER->context()->cast<TypeContext>();
 		ASSERT(pTypeContext);
 
 		LPTypeInfo pTypeInfo = pTypeContext->getTypeInfo();
@@ -2636,14 +2619,7 @@ init_declaration
 
 		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(pVariableName, pExpression);
 		ASSERT(pLocalVariable);
-
-		rdo::runtime::LPRDOCalcCreateLocalVariable pCalcCreateLocalVariable = rdo::Factory<rdo::runtime::RDOCalcCreateLocalVariable>::create(pLocalVariable->getName(), pLocalVariable->getExpression()->calc());
-		ASSERT(pCalcCreateLocalVariable);
-
-		LPVariableWrapper pVariableWrapper = rdo::Factory<VariableWrapper>::create(pCalcCreateLocalVariable, pLocalVariable);
-		ASSERT(pVariableWrapper);
-
-		$$ = PARSER->stack().push(pVariableWrapper);
+		$$ = PARSER->stack().push(pLocalVariable);
 	}
 	| RDO_IDENTIF '=' fun_arithm
 	{
@@ -2655,14 +2631,7 @@ init_declaration
 
 		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(pVariableName, pArithm->expression());
 		ASSERT(pLocalVariable);
-
-		rdo::runtime::LPRDOCalcCreateLocalVariable pCalcCreateLocalVariable = rdo::Factory<rdo::runtime::RDOCalcCreateLocalVariable>::create(pLocalVariable->getName(), pLocalVariable->getExpression()->calc());
-		ASSERT(pCalcCreateLocalVariable);
-
-		LPVariableWrapper pVariableWrapper = rdo::Factory<VariableWrapper>::create(pCalcCreateLocalVariable, pLocalVariable);
-		ASSERT(pVariableWrapper);
-
-		$$ = PARSER->stack().push(pVariableWrapper);
+		$$ = PARSER->stack().push(pLocalVariable);
 	}
 	;
 

@@ -2506,14 +2506,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\local_variable.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\local_variable.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\namespace.h"
 				>
 			</File>
@@ -2678,6 +2670,26 @@
 				</File>
 				<File
 					RelativePath="..\..\expression.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="local_variable"
+				>
+				<File
+					RelativePath="..\..\src\function\local_variable\local_variable.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\function\local_variable\local_variable.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\function\local_variable\local_variable_context.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\function\local_variable\local_variable_context.h"
 					>
 				</File>
 			</Filter>
