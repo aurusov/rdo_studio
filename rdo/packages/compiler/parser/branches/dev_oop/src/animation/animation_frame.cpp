@@ -36,51 +36,26 @@ void frmerror(PTR(char) message)
 // -------------------- RDOFRMFrame
 // --------------------------------------------------------------------------------
 RDOFRMFrame::RDOFRMFrame(CREF(RDOParserSrcInfo) srcInfo)
-	: RDOFRMCommandList()
+	: RDOFRMCommandList(srcInfo)
 {
-	m_pFrame = rdo::Factory<rdo::runtime::RDOFRMFrame>::create(srcInfo);
+	m_pFrame = rdo::Factory<rdo::runtime::RDOFRMFrame>::create(function()->src_info());
 	ASSERT(m_pFrame)
 	RDOParser::s_parser()->runtime()->addRuntimeFrame(m_pFrame);
+
 	RDOParser::s_parser()->insertFRMFrame(this);
-	RDOParser::s_parser()->contextStack()->push(this);
-
-	m_pContextMemory = rdo::Factory<ContextMemory>::create();
-	ASSERT(m_pContextMemory);
-	RDOParser::s_parser()->contextStack()->push(m_pContextMemory);
-
-	ContextMemory::push();
 }
 
-Context::FindResult RDOFRMFrame::onFindContext(CREF(LPRDOValue) pValue) const
+RDOFRMFrame::~RDOFRMFrame()
+{}
+
+CREF(rdo::runtime::LPRDOFRMFrame) RDOFRMFrame::frame() const
 {
-	ASSERT(pValue);
-
-	//! Код из RDOFUNArithm::init(CREF(RDOValue) resName, CREF(RDOValue) parName)
-	//! Зачем он нужен - непонятно
-	//! Его задача - сгенерить исключение в рантайме, почему это не сделать в парсере ?
-
-	//if (RDOParser::s_parser()->getLastFRMFrame() && RDOParser::s_parser()->getLastFRMFrame()->frame()->getLastShow() && RDOParser::s_parser()->getLastFRMFrame()->frame()->getLastShow()->isShowIf())
-	//{
-	//	m_pCalc = rdo::Factory<rdo::runtime::RDOCalcGetUnknowResParam>::create(resName->getIdentificator(), parName->getIdentificator());
-	//	m_pCalc->setSrcInfo(src_info());
-	//	return;
-	//}
-
-	tstring name = pValue->value().getIdentificator();
-	LPRDOFRMSprite pSprite = RDOParser::s_parser()->findFRMSprite(name);
-	if (pSprite)
-	{
-		return Context::FindResult(const_cast<PTR(RDOFRMFrame)>(this), pSprite->expression(), pValue);
-	}
-
-	return Context::FindResult();
+	return m_pFrame;
 }
 
-void RDOFRMFrame::end()
+rdo::runtime::LPRDOFRMSprite RDOFRMFrame::list() const
 {
-	ContextMemory::pop();
-	RDOParser::s_parser()->contextStack()->pop<ContextMemory>();
-	RDOParser::s_parser()->contextStack()->pop<RDOFRMFrame>();
+	return m_pFrame;
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

@@ -13,11 +13,6 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/rdoframe.h"
-#include "simulator/compiler/parser/rdo_object.h"
-#include "simulator/compiler/parser/rdofun.h"
-#include "simulator/compiler/parser/context/context.h"
-#include "simulator/compiler/parser/context/context_find_i.h"
 #include "simulator/compiler/parser/src/animation/animation_base.h"
 // --------------------------------------------------------------------------------
 
@@ -30,27 +25,19 @@ void frmerror(PTR(char) message);
 // --------------------------------------------------------------------------------
 // -------------------- RDOFRMFrame
 // --------------------------------------------------------------------------------
-class RDOFRMFrame
-	: public RDOFRMCommandList
-	, public RDOParserSrcInfo
-	, public Context
-	, public IContextFind
+class RDOFRMFrame: public RDOFRMCommandList
 {
 DECLARE_FACTORY(RDOFRMFrame);
 public:
-	CREF(tstring)                     name () const { return src_info().src_text(); }
-	void                              end  ();
-	CREF(rdo::runtime::LPRDOFRMFrame) frame() const { return m_pFrame; }
+	CREF(rdo::runtime::LPRDOFRMFrame) frame() const;
 
 private:
 	RDOFRMFrame(CREF(RDOParserSrcInfo) srcInfo);
+	virtual ~RDOFRMFrame();
 
 	rdo::runtime::LPRDOFRMFrame m_pFrame;
-	LPContextMemory             m_pContextMemory;
 
-	rdo::runtime::LPRDOFRMSprite list() const { return m_pFrame; }
-
-	DECLARE_IContextFind;
+	rdo::runtime::LPRDOFRMSprite list() const;
 };
 DECLARE_POINTER(RDOFRMFrame);
 

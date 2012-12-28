@@ -39,6 +39,8 @@ public:
 	LPContext global() const;
 	LPContext prev  (CREF(LPContext) pContext) const;
 
+	void pop_not_safed();
+
 private:
 	ContextStack();
 	virtual ~ContextStack();
@@ -46,8 +48,6 @@ private:
 	typedef std::list<LPContext> Container;
 
 	Container m_container;
-
-	void pop_not_safed();
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

@@ -18,6 +18,7 @@
 #include "simulator/compiler/parser/parser/std_fun.h"
 #include "simulator/compiler/parser/param.h"
 #include "simulator/compiler/parser/rdofun.h"
+#include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/runtime/calc/function/calc_function_internal.h"
 // --------------------------------------------------------------------------------
 
@@ -127,14 +128,25 @@ void RDOParserSTDFUN::generateReal(CREF(tstring) name, CREF(rdo::runtime::LPRDOF
 	LPRDOFUNFunction pFunction = rdo::Factory<RDOFUNFunction>::create(name, pReturnType);
 	ASSERT(pFunction);
 
+	LPIContextParamDefinitionManager pParamDefinitionManager = pFunction.interface_dynamic_cast<IContextParamDefinitionManager>();
+	ASSERT(pParamDefinitionManager);
+	pParamDefinitionManager->pushParamDefinitionContext();
+
+	LPContext pContext = RDOParser::s_parser()->context();
+	ASSERT(pContext);
+	LPContextParamDefinition pContextParamDefinition = pContext->cast<ContextParamDefinition>();
+	ASSERT(pContextParamDefinition);
+
 	ruint paramIndex = 1;
 	STL_FOR_ALL_CONST(paramList, it)
 	{
 		LPRDOParam pParam = rdo::Factory<RDOParam>::create(rdo::format(_T("p%d"), paramIndex), *it);
 		ASSERT(pParam);
-		pFunction->add(pParam);
+		pContextParamDefinition->pushParam(pParam);
 		paramIndex++;
 	}
+
+	pParamDefinitionManager->popParamDefinitionContext();
 
 	pFunction->setFunctionCalc(pCalc);
 	pFunction->end();
