@@ -436,7 +436,7 @@ fun_func_footer
 
 		pFunction->createAlgorithmicCalc();
 
-		PARSER->contextStack()->pop_safe<ContextReturnable>();
+		PARSER->contextStack()->pop<ContextReturnable>();
 	}
 	| RDO_Type '=' RDO_list fun_func_parameters RDO_Body fun_func_list_body RDO_End
 	{
@@ -452,12 +452,12 @@ fun_func_footer
 	}
 	| RDO_Type '=' RDO_algorithmic fun_func_parameters alg_body statement_list error
 	{
-		PARSER->contextStack()->pop_safe<ContextReturnable>();
+		PARSER->contextStack()->pop<ContextReturnable>();
 		PARSER->error().error(@7, _T("Ожидается ключевое слово $End"));
 	}
 	| RDO_Type '=' RDO_algorithmic fun_func_parameters alg_body error
 	{
-		PARSER->contextStack()->pop_safe<ContextReturnable>();
+		PARSER->contextStack()->pop<ContextReturnable>();
 		PARSER->error().error(@6, _T("Неверный синтаксис алгоритмической функции"));
 	}
 	| RDO_Type '=' RDO_list fun_func_parameters RDO_Body fun_func_list_body error
@@ -1762,8 +1762,8 @@ local_variable_declaration
 		);
 		ASSERT(pExpression);
 
-		PARSER->contextStack()->pop_safe<ContextLocalVariable>();
-		PARSER->contextStack()->pop_safe<TypeContext>();
+		PARSER->contextStack()->pop<ContextLocalVariable>();
+		PARSER->contextStack()->pop<TypeContext>();
 
 		$$ = PARSER->stack().push(pExpression);
 	}
@@ -1871,27 +1871,11 @@ type_declaration
 	;
 
 init_declaration_list
-	: init_declaration
-	{
-		LPLocalVariable pLocalVariable = PARSER->stack().pop<LocalVariable>($1);
-		ASSERT(pLocalVariable);
-
-		LPContextLocalVariable pContextLocalVariable = PARSER->context().object_dynamic_cast<ContextLocalVariable>();
-		ASSERT(pContextLocalVariable);
-		pContextLocalVariable->pushLocalVariable(pLocalVariable);
-	}
-	| init_declaration_list ',' init_declaration
-	{
-		LPLocalVariable pLocalVariable = PARSER->stack().pop<LocalVariable>($3);
-		ASSERT(pLocalVariable);
-
-		LPContextLocalVariable pContextLocalVariable = PARSER->context().object_dynamic_cast<ContextLocalVariable>();
-		ASSERT(pContextLocalVariable);
-		pContextLocalVariable->pushLocalVariable(pLocalVariable);
-	}
+	: init_declaration_list_item
+	| init_declaration_list ',' init_declaration_list_item
 	;
 
-init_declaration
+init_declaration_list_item
 	: RDO_IDENTIF init_declaration_value
 	{
 		LPRDOValue pVariableName = PARSER->stack().pop<RDOValue>($1);
@@ -1904,7 +1888,10 @@ init_declaration
 
 		LPLocalVariable pLocalVariable = rdo::Factory<LocalVariable>::create(pVariableName, pExpression);
 		ASSERT(pLocalVariable);
-		$$ = PARSER->stack().push(pLocalVariable);
+
+		LPContextLocalVariable pContextLocalVariable = PARSER->context().object_dynamic_cast<ContextLocalVariable>();
+		ASSERT(pContextLocalVariable);
+		pContextLocalVariable->pushLocalVariable(pLocalVariable);
 	}
 	;
 
@@ -1939,7 +1926,7 @@ else_statement
 		LPExpression pExpressionStatement = PARSER->stack().pop<Expression>($2);
 		ASSERT(pExpressionStatement);
 
-		PARSER->contextStack()->pop_safe<ContextReturnable>();
+		PARSER->contextStack()->pop<ContextReturnable>();
 
 		$$ = PARSER->stack().push(pExpressionStatement);
 	}
@@ -1954,7 +1941,7 @@ then_statement
 		LPContextReturnable pContextReturnableChild = rdo::Factory<ContextReturnable>::create();
 		ASSERT(pContextReturnableChild);
 
-		PARSER->contextStack()->pop_safe<ContextReturnable>();
+		PARSER->contextStack()->pop<ContextReturnable>();
 
 		LPContextReturnable pContextReturnableParent = PARSER->context()->cast<ContextReturnable>();
 		ASSERT(pContextReturnableParent);
@@ -1984,7 +1971,7 @@ if_statement
 
 		pCalc->setThenStatement(pCalcStatement);
 
-		PARSER->contextStack()->pop_safe<ContextReturnable>();
+		PARSER->contextStack()->pop<ContextReturnable>();
 
 		$$ = PARSER->stack().push(pExpressionCondition);
 	}
@@ -2078,7 +2065,7 @@ for_statement
 
 		LPExpression pExpression = rdo::Factory<Expression>::create(pExpressionStatement->typeInfo(), pCalcBreakCatch, RDOParserSrcInfo(@1, @2));
 
-		PARSER->contextStack()->pop_safe<ContextBreakable>();
+		PARSER->contextStack()->pop<ContextBreakable>();
 
 		$$ = PARSER->stack().push(pExpression);
 	}

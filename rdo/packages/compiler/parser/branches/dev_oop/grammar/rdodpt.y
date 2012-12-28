@@ -214,6 +214,7 @@
 #include "simulator/compiler/parser/rdortp.h"
 #include "simulator/compiler/parser/rdorss.h"
 #include "simulator/runtime/calc/calc_array.h"
+#include "simulator/runtime/calc/resource/calc_resource.h"
 // --------------------------------------------------------------------------------
 
 #define PARSER  LEXER->parser()
@@ -1377,7 +1378,210 @@ fun_logic
 // -------------------- Арифметические выражения
 // --------------------------------------------------------------------------------
 fun_arithm
-	: RDO_REAL_CONST                     { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
+	: RDO_INT_CONST                      { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
+	| RDO_REAL_CONST                     { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
+	| RDO_BOOL_CONST                     { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
+	| RDO_STRING_CONST                   { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
+	| param_array_value                  { $$ = PARSER->stack().push(RDOFUNArithm::generateByConst(PARSER->stack().pop<RDOValue>($1))); }
+	| RDO_IDENTIF                        { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1))); }
+	| RDO_IDENTIF_RELRES                 { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1))); }
+	| RDO_IDENTIF '.' RDO_IDENTIF        { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1), PARSER->stack().pop<RDOValue>($3))); }
+	| RDO_IDENTIF_RELRES '.' RDO_IDENTIF { $$ = PARSER->stack().push(RDOFUNArithm::generateByIdentificator(PARSER->stack().pop<RDOValue>($1), PARSER->stack().pop<RDOValue>($3))); }
+	| '*' 
+	{
+		LPRDOValue pValue = rdo::Factory<RDOValue>::create(RDOParserSrcInfo(@1, _T("*")));
+		ASSERT(pValue);
+		LPExpression pExpression = rdo::Factory<Expression>::create(pValue);
+		ASSERT(pExpression);
+		LPRDOFUNArithm pArithm = rdo::Factory<RDOFUNArithm>::create(pExpression);
+		ASSERT(pArithm);
+		$$ = PARSER->stack().push(pArithm);
+	}
+	| fun_arithm '+' fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = PARSER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNArithm pResult = pArithm1->operator +(pArithm2);
+		ASSERT(pResult);
+		$$ = PARSER->stack().push(pResult);
+	}
+	| fun_arithm '-' fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = PARSER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNArithm pResult = pArithm1->operator -(pArithm2);
+		ASSERT(pResult);
+		$$ = PARSER->stack().push(pResult);
+	}
+	| fun_arithm '*' fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = PARSER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNArithm pResult = pArithm1->operator *(pArithm2);
+		ASSERT(pResult);
+		$$ = PARSER->stack().push(pResult);
+	}
+	| fun_arithm '/' fun_arithm
+	{
+		LPRDOFUNArithm pArithm1 = PARSER->stack().pop<RDOFUNArithm>($1);
+		LPRDOFUNArithm pArithm2 = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithm1);
+		ASSERT(pArithm2);
+		LPRDOFUNArithm pResult = pArithm1->operator /(pArithm2);
+		ASSERT(pResult);
+		$$ = PARSER->stack().push(pResult);
+	}
+	| fun_arithm_func_call
+	| fun_select_arithm
+	| '(' fun_arithm ')'
+	{
+		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
+		ASSERT(pArithm);
+		pArithm->setSrcPos (@1, @3);
+		pArithm->setSrcText(_T("(") + pArithm->src_text() + _T(")"));
+		$$ = PARSER->stack().push(pArithm);
+	}
+	| '-' fun_arithm %prec RDO_UMINUS
+	{
+		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
+		ASSERT(pArithm);
+		RDOParserSrcInfo info;
+		info.setSrcPos(@1, @2);
+		$$ = PARSER->stack().push(pArithm->uminus(info.src_pos()));
+	}
+	| RDO_IDENTIF '.' RDO_Size
+	{
+		LPRDOValue pValue = PARSER->stack().pop<RDOValue>($1);
+		ASSERT(pValue);
+
+		LPRDOFUNArithm pArithm = RDOFUNArithm::generateByIdentificator(pValue);
+		ASSERT(pArithm);
+
+		rdo::runtime::LPRDOCalc pCalc;
+		if (pArithm->typeInfo()->type().object_dynamic_cast<RDOArrayType>())
+		{
+			pCalc = rdo::Factory<rdo::runtime::RDOCalcArraySize>::create(pArithm->calc());
+			ASSERT(pCalc);
+		}
+		else
+		{
+			PARSER->error().error(@1, rdo::format(_T("'%s' не является массивом."), pValue->value().getIdentificator().c_str()));
+		}
+
+		LPTypeInfo pType = rdo::Factory<TypeInfo>::delegate<RDOType__int>(RDOParserSrcInfo(@1));
+		ASSERT(pType);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		LPRDOFUNArithm pArithmArraySize = rdo::Factory<RDOFUNArithm>::create(pExpression);
+		ASSERT(pArithmArraySize);
+
+		$$ = PARSER->stack().push(pArithmArraySize);
+	}
+	| RDO_IDENTIF '[' fun_arithm ']' '.' RDO_IDENTIF
+	{
+		LPRDOValue pArrayValue = PARSER->stack().pop<RDOValue>($1);
+		ASSERT(pArrayValue);
+
+		LPRDOFUNArithm pArrayArithm = RDOFUNArithm::generateByIdentificator(pArrayValue);
+		ASSERT(pArrayArithm);
+
+		LPRDOArrayType pArrayType = pArrayArithm->typeInfo()->type().object_dynamic_cast<RDOArrayType>();
+		if (!pArrayType)
+		{
+			PARSER->error().error(@1, rdo::format(_T("'%s' не является массивом")
+				, pArrayValue->value().getIdentificator().c_str())
+			);
+		}
+
+		LPRDORTPResType pResType = pArrayType->getItemType()->type().object_dynamic_cast<RDORTPResType>();
+		if (!pResType)
+		{
+			PARSER->error().error(@1, rdo::format(_T("'%s' не является массивом ресурсов")
+				, pArrayValue->value().getIdentificator().c_str())
+			);
+		}
+
+		LPRDOFUNArithm pArrayIndex = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArrayIndex);
+
+		LPRDOValue pParamName = PARSER->stack().pop<RDOValue>($6);
+		ASSERT(pParamName);
+
+		rsint paramIndex = pResType->getRTPParamNumber(pParamName->value().getAsString());
+
+		if (paramIndex == RDORTPResType::UNDEFINED_PARAM)
+		{
+			PARSER->error().error(@6, rdo::format(_T("'%s' не является параметром ресурса '%s'")
+				, pParamName->value().getAsString().c_str()
+				, pResType->name().c_str())
+			);
+		}
+
+		rdo::runtime::LPRDOCalc pArrayItem = rdo::Factory<rdo::runtime::RDOCalcArrayItem>::create(
+			pArrayArithm->calc(),
+			pArrayIndex->calc()
+		);
+		ASSERT(pArrayItem);
+
+		rdo::runtime::LPRDOCalc pParamValue = rdo::Factory<rdo::runtime::RDOCalcGetResourceParam>::create(
+			pArrayItem, paramIndex
+		);
+		ASSERT(pParamValue);
+
+		LPExpression pParamExpression = rdo::Factory<Expression>::create(
+			pResType->getParams()[paramIndex]->getTypeInfo(),
+			pParamValue,
+			RDOParserSrcInfo(@6)
+		);
+		ASSERT(pParamExpression);
+
+		LPRDOFUNArithm pParamArithm = rdo::Factory<RDOFUNArithm>::create(pParamExpression);
+		ASSERT(pParamArithm);
+
+		$$ = PARSER->stack().push(pParamArithm);
+	}
+	| RDO_IDENTIF '[' fun_arithm ']'
+	{
+		LPRDOValue pValue = PARSER->stack().pop<RDOValue>($1);
+		ASSERT(pValue);
+
+		LPRDOFUNArithm pArithm = RDOFUNArithm::generateByIdentificator(pValue);
+		ASSERT(pArithm);
+
+		LPRDOFUNArithm pArithmInd = PARSER->stack().pop<RDOFUNArithm>($3);
+		ASSERT(pArithmInd);
+
+		LPRDOType pType = pArithm->typeInfo()->type();
+		ASSERT(pType);
+
+		LPRDOArrayType pArrayType = pType.object_dynamic_cast<RDOArrayType>();
+		if (!pArrayType)
+		{
+			PARSER->error().error(@1, rdo::format(_T("'%s' не является массивом."), pValue->value().getIdentificator().c_str()));
+		}
+
+		rdo::runtime::LPRDOCalc pCalc = rdo::Factory<rdo::runtime::RDOCalcArrayItem>::create(pArithm->calc(), pArithmInd->calc());
+		ASSERT(pCalc);
+
+		LPTypeInfo pItemType = pArrayType->getItemType();
+		ASSERT(pItemType);
+
+		LPExpression pExpression = rdo::Factory<Expression>::create(pItemType, pCalc, RDOParserSrcInfo(@1));
+		ASSERT(pExpression);
+
+		LPRDOFUNArithm pArithmArrayItem = rdo::Factory<RDOFUNArithm>::create(pExpression);
+		ASSERT(pArithmArrayItem);
+
+		$$ = PARSER->stack().push(pArithmArrayItem);
+	}
 	;
 // --------------------------------------------------------------------------------
 // -------------------- Замена арифметическх выражений, Экспрешены
@@ -1638,6 +1842,24 @@ fun_select_arithm
 		PARSER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
 	}
 	| fun_select_body '.' RDO_Size '(' error
+	{
+		PARSER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
+	}
+	| fun_select_body '.' RDO_Select_Array '(' ')'
+	{
+		LPRDOFUNSelect pSelect = PARSER->stack().pop<RDOFUNSelect>($1);
+		ASSERT(pSelect);
+		pSelect->setSrcPos(@1, @5);
+		RDOParserSrcInfo arrayInfo(@3, @5, _T("Array()"));
+		LPRDOFUNArithm pArithm = pSelect->createFunSelectArray(arrayInfo);
+		ASSERT(pArithm);
+		$$ = PARSER->stack().push(pArithm);
+	}
+	| fun_select_body '.' RDO_Select_Array error
+	{
+		PARSER->error().error(@3, _T("Ожидается октрывающаяся скобка"));
+	}
+	| fun_select_body '.' RDO_Select_Array '(' error
 	{
 		PARSER->error().error(@4, _T("Ожидается закрывающаяся скобка"));
 	}
