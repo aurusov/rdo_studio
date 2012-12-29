@@ -449,7 +449,7 @@ fun_func_footer
 		LPContextReturnable pContextReturnableFun = PARSER->context()->cast<ContextReturnable>();
 		ASSERT(pContextReturnableFun);
 
-		pFunction->setReturnFlag(pContextReturnableFun->returnFlag());
+		pFunction->setReturnFlag(pContextReturnableFun->getReturnFlag());
 
 		if (!pFunction->getReturnFlag())
 		{
@@ -1318,7 +1318,7 @@ fun_seq_enumerative_body
 // -------------------- Список statement'ов для функций
 // --------------------------------------------------------------------------------
 return_statement
-	:RDO_Return fun_arithm
+	: RDO_Return fun_arithm
 	{
 		LPRDOFUNArithm pArithm = PARSER->stack().pop<RDOFUNArithm>($2);
 		ASSERT(pArithm);
@@ -1337,7 +1337,6 @@ return_statement
 
 		LPContextReturnable pContextReturnable = PARSER->context()->cast<ContextReturnable>();
 		ASSERT(pContextReturnable);
-
 		pContextReturnable->setReturnFlag();
 
 		$$ = PARSER->stack().push(pExpression);
@@ -1952,21 +1951,12 @@ else_statement
 then_statement
 	: statement
 	{
+		LPContextReturnable pContextReturnable = PARSER->context()->cast<ContextReturnable>();
+		ASSERT(pContextReturnable);
+		pContextReturnable->addChildContext();
+
 		LPExpression pExpressionStatement = PARSER->stack().pop<Expression>($1);
 		ASSERT(pExpressionStatement);
-		
-		LPContextReturnable pContextReturnableChild = rdo::Factory<ContextReturnable>::create();
-		ASSERT(pContextReturnableChild);
-
-		PARSER->contextStack()->pop<ContextReturnable>();
-
-		LPContextReturnable pContextReturnableParent = PARSER->context()->cast<ContextReturnable>();
-		ASSERT(pContextReturnableParent);
-
-		pContextReturnableParent->addContext(pContextReturnableChild);
-
-		PARSER->contextStack()->push(pContextReturnableChild);
-
 		$$ = PARSER->stack().push(pExpressionStatement);
 	}
 	;
@@ -2037,15 +2027,9 @@ if_condition
 		LPExpression pExpression = rdo::Factory<Expression>::create(pType, pCalc, RDOParserSrcInfo(@1));
 		ASSERT(pExpression);
 
-		LPContextReturnable pContextReturnableChild = rdo::Factory<ContextReturnable>::create();
-		ASSERT(pContextReturnableChild);
-
-		LPContextReturnable pContextReturnableParent = PARSER->context()->cast<ContextReturnable>();
-		ASSERT(pContextReturnableParent);
-
-		pContextReturnableParent->addContext(pContextReturnableChild);
-
-		PARSER->contextStack()->push(pContextReturnableChild);
+		LPContextReturnable pContextReturnable = PARSER->context()->cast<ContextReturnable>();
+		ASSERT(pContextReturnable);
+		pContextReturnable->addChildContext();
 
 		$$ = PARSER->stack().push(pExpression);
 	}

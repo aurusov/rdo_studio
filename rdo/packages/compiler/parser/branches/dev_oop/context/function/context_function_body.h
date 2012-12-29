@@ -17,6 +17,7 @@
 #include "simulator/runtime/calc/calc_base.h"
 #include "simulator/compiler/parser/namespace.h"
 #include "simulator/compiler/parser/context/context.h"
+#include "simulator/compiler/parser/context/statement.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -45,11 +46,14 @@ protected:
 // --------------------------------------------------------------------------------
 // -------------------- ContextFunctionBody
 // --------------------------------------------------------------------------------
-class ContextFunctionBody: public Context
+class ContextFunctionBody: public ContextReturnable
 {
 DECLARE_FACTORY(ContextFunctionBody)
 public:
 	void setBody(CREF(rdo::runtime::LPRDOCalc) pBody);
+
+	void pushContext();
+	void popContext ();
 
 private:
 	typedef  boost::function<void (const rdo::runtime::LPRDOCalc&)>  OnBody;
