@@ -96,7 +96,7 @@ protected:
 	rbool drawLog;
 
 	QFont m_font;
-	void setFont(rbool needRedraw);
+	void setFont();
 
 	PTR(QAbstractScrollArea) m_pScrollArea;
 	int m_prevVertSBValue;

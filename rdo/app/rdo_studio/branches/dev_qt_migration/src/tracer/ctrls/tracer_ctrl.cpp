@@ -233,7 +233,7 @@ RDOLogCtrl::RDOLogCtrl(PTR(QAbstractScrollArea) pParent, PTR(RDOLogStyle) pStyle
 
 	setFocusPolicy(Qt::ClickFocus);
 
-	setFont(false);
+	setFont();
 	updateScrollBars();
 }
 
@@ -870,7 +870,7 @@ CREF(RDOLogStyle) RDOLogCtrl::getStyle() const
 void RDOLogCtrl::setStyle(RDOLogStyle* style, rbool needRedraw)
 {
 	logStyle = style;
-	setFont(false);
+	setFont();
 
 	recalcWidth(maxStrWidth);
 	updateScrollBars();
@@ -882,7 +882,7 @@ void RDOLogCtrl::setStyle(RDOLogStyle* style, rbool needRedraw)
 	}
 }
 
-void RDOLogCtrl::setFont(rbool needRedraw)
+void RDOLogCtrl::setFont()
 {
 	if (!logStyle)
 	{
@@ -900,11 +900,6 @@ void RDOLogCtrl::setFont(rbool needRedraw)
 	QFontMetrics fontMetrics(m_font);
 	lineHeight = fontMetrics.height() + 2 * logStyle->borders->vertBorder;
 	charWidth  = fontMetrics.averageCharWidth(); // fontMetrics.maxWidth()
-
-	if (needRedraw)
-	{
-		update();
-	}
 
 	mutex.Unlock();
 }
