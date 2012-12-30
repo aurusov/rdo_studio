@@ -298,7 +298,6 @@ void RDOLogCtrl::resizeEvent(QResizeEvent* pEvent)
 
 	if (!topChanged)
 	{
-
 		update(newClientRect);
 
 		if (dx < 0 && dy < 0)
@@ -320,7 +319,6 @@ void RDOLogCtrl::resizeEvent(QResizeEvent* pEvent)
 		if (invalidRgn.isEmpty())
 		{
 			invalidRgn = QRegion(newClientRect.left(), newClientRect.top(), newClientRect.right(), newClientRect.bottom());
-
 		}
 		else if (needShiftVert || needShiftHorz)
 		{
