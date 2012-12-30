@@ -152,7 +152,7 @@ void RDOTracerLogCtrlView::addStringToLog(CREF(tstring) logStr)
 		}
 		else if (addingSubitems)
 		{
-			subitemColors.insert(RDOColorMap::value_type(strings.count(), itemColor));
+			subitemColors.insert(RDOColorMap::value_type(m_strings.count(), itemColor));
 		}
 
 		if (key == "SD")
@@ -271,7 +271,7 @@ void RDOTracerLogCtrlView::OnUpdateFindNextPrev(CCmdUI* pCmdUI)
 
 void RDOTracerLogCtrlView::OnUpdateFind(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable(strings.count());
+	pCmdUI->Enable(m_strings.count());
 }
 
 void RDOTracerLogCtrlView::onHelpContext()

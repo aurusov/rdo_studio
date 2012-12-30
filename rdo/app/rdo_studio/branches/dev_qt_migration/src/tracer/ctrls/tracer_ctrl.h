@@ -29,7 +29,34 @@ Q_OBJECT
 
 friend class RDOLogCtrlFindInList;
 
-private:
+public:
+	RDOLogCtrl(PTR(QAbstractScrollArea) pParent, PTR(RDOLogStyle) pStyle = NULL);
+	virtual ~RDOLogCtrl();
+
+	virtual void addStringToLog(CREF(tstring) logStr);
+	
+	rbool getFocusOnly() const { return focusOnly; }
+	virtual void setFocusOnly(rbool value) { focusOnly = value; }
+
+	virtual void getString(int index, tstring& str) const;
+	virtual int getSelectedIndex() const;
+	virtual void getSelected(tstring& str) const;
+	virtual rbool makeLineVisible(int index);
+	virtual void selectLine(int index);
+	virtual void copy();
+	virtual void findNext()     { int res; find(res, bSearchDown, bMatchCase, bMatchWholeWord); selectLine(res);  };
+	virtual void findPrevious() { int res; find(res, !bSearchDown, bMatchCase, bMatchWholeWord); selectLine(res); };
+	virtual void clear();
+	
+	virtual CREF(RDOLogStyle) getStyle() const;
+	virtual void setStyle(RDOLogStyle* style, rbool needRedraw = true);
+
+	void setText(tstring text);
+
+	void  setDrawLog(rbool value);
+	rbool getDrawLog() const { return drawLog; };
+
+protected:
 	class StringList
 	{
 	public:
@@ -70,8 +97,21 @@ private:
 		void seek(rsint delta, REF(StringList::const_iterator) it) const;
 	};
 
-protected:
-	CMutex mutex;
+	CMutex     mutex;
+	StringList m_strings;
+
+	int selectedLine;
+
+	int     firstFoundLine;
+	rbool   bHaveFound;
+	tstring findStr;
+
+	RDOLogStyle*  logStyle;
+	virtual rbool getItemColors(CREF(tstring) item, RDOLogColorPair* &colors) const;
+
+	rbool canCopy() const { return selectedLine != -1; };
+
+private:
 
 	int lineHeight;
 	int charWidth;
@@ -88,24 +128,16 @@ protected:
 	QRect m_prevWindowRect;
 
 	int lastViewableLine;
-	int selectedLine;
 	int fullRepaintLines;
 	rbool focusOnly;
 
-	StringList strings;
-
-	int   firstFoundLine;
 	int   posFind;
-	rbool bHaveFound;
 	rbool bSearchDown;
 	rbool bMatchCase;
 	rbool bMatchWholeWord;
-	tstring findStr;
 	void find(int& result, rbool searchDown, rbool matchCase, rbool matchWholeWord);
 
-	RDOLogStyle*  logStyle;
 	virtual rbool getItemColors(int index, RDOLogColorPair* &colors) const;
-	virtual rbool getItemColors(CREF(tstring) item, RDOLogColorPair* &colors) const;
 	
 	void  recalcWidth(int newMaxStrWidth);
 	void  updateScrollBars();
@@ -119,8 +151,6 @@ protected:
 	QRect getLineRect(int index) const;
 	void  repaintLine (int index);
 
-	rbool canCopy() const { return selectedLine != -1; };
-
 	void  updateWindow();
 
 	rbool drawLog;
@@ -132,10 +162,6 @@ protected:
 	int m_prevVertSBValue;
 	int m_prevHorzSBValue;
 
-protected:
-	afx_msg int  OnCreate(LPCREATESTRUCT lpCreateStruct);
-
-private:
 	typedef  QWidget  parent_type;
 	virtual void resizeEvent    (QResizeEvent* pEvent);
 	virtual void paintEvent     (QPaintEvent*  pEvent);
@@ -146,38 +172,9 @@ private:
 	REF(QScrollBar) getVertScrollBar();
 	REF(QScrollBar) getHorzScrollBar();
 
-	void seek(rsint delta, REF(StringList::const_iterator) it) const;
-
 private slots:
 	void onVertScrollBarValueChanged(int value);
 	void onHorzScrollBarValueChanged(int value);
-
-public:
-	RDOLogCtrl(PTR(QAbstractScrollArea) pParent, PTR(RDOLogStyle) pStyle = NULL);
-	virtual ~RDOLogCtrl();
-
-	virtual void addStringToLog(CREF(tstring) logStr);
-	
-	rbool getFocusOnly() const { return focusOnly; }
-	virtual void setFocusOnly(rbool value) { focusOnly = value; }
-
-	virtual void getString(int index, tstring& str) const;
-	virtual int getSelectedIndex() const;
-	virtual void getSelected(tstring& str) const;
-	virtual rbool makeLineVisible(int index);
-	virtual void selectLine(int index);
-	virtual void copy();
-	virtual void findNext()     { int res; find(res, bSearchDown, bMatchCase, bMatchWholeWord); selectLine(res);  };
-	virtual void findPrevious() { int res; find(res, !bSearchDown, bMatchCase, bMatchWholeWord); selectLine(res); };
-	virtual void clear();
-	
-	virtual CREF(RDOLogStyle) getStyle() const;
-	virtual void setStyle(RDOLogStyle* style, rbool needRedraw = true);
-
-	void setText(tstring text);
-
-	void  setDrawLog(rbool value);
-	rbool getDrawLog() const { return drawLog; };
 };
 
 }; // namespace rdoTracerLog
