@@ -212,7 +212,6 @@ RDOLogCtrl::RDOLogCtrl(PTR(QAbstractScrollArea) pParent, PTR(RDOLogStyle) pStyle
 	, fullRepaintLines(0)
 	, focusOnly(false)
 	, logStyle(pStyle)
-	, stringsCount(0)
 	, firstFoundLine(-1)
 	, posFind(-1)
 	, bHaveFound(false)
@@ -271,7 +270,7 @@ void RDOLogCtrl::resizeEvent(QResizeEvent* pEvent)
 	int prevXPos = xPos;
 	updateScrollBars();
 
-	rbool lastLineVisible = isFullyVisible(stringsCount - 1);
+	rbool lastLineVisible = isFullyVisible(strings.count() - 1);
 	rbool lastCharVisible = maxStrWidth == xPos + newClientRect.width() / charWidth;
 
 	rbool fullVisibleVert = !yPos && lastLineVisible;
@@ -393,7 +392,7 @@ void RDOLogCtrl::paintEvent(QPaintEvent* pEvent)
 			{
 				mul++;
 			}
-			int lastLine = min (stringsCount - 1, yPos + mul - 1);
+			int lastLine = (std::min)(strings.count() - 1, yPos + mul - 1);
 
 			RDOLogColorPair* colors = NULL;
 
@@ -406,7 +405,7 @@ void RDOLogCtrl::paintEvent(QPaintEvent* pEvent)
 				rect.height() - logStyle->borders->vertBorder * 2
 			);
 
-			StringList::const_iterator it = const_findString(firstLine);
+			StringList::const_iterator it = strings.findString(firstLine);
 			for (int i = firstLine; i < lastLine + 1; i++)
 			{
 				if (i != selectedLine || focusOnly)
@@ -536,7 +535,7 @@ void RDOLogCtrl::keyPressEvent(QKeyEvent* pEvent)
 		break;
 
 	case Qt::Key_PageDown:
-		selectLine(min (selectedLine + yPageSize, stringsCount - 1));
+		selectLine(min (selectedLine + yPageSize, strings.count() - 1));
 		break;
 
 	case Qt::Key_Down:
@@ -548,7 +547,7 @@ void RDOLogCtrl::keyPressEvent(QKeyEvent* pEvent)
 		break;
 
 	case Qt::Key_End:
-		selectLine(stringsCount - 1);
+		selectLine(strings.count() - 1);
 		break;
 
 	case Qt::Key_Left:
@@ -575,7 +574,7 @@ void RDOLogCtrl::mousePressEvent(QMouseEvent* pEvent)
 	{
 		//! @todo qt
 		//	SetFocus();
-		selectLine(min(yPos + pEvent->pos().y() / lineHeight, stringsCount - 1));
+		selectLine(min(yPos + pEvent->pos().y() / lineHeight, strings.count() - 1));
 	}
 }
 
@@ -602,10 +601,9 @@ void RDOLogCtrl::updateScrollBars()
 	xPageSize = newClientRect.width () / charWidth;
 	yPageSize = newClientRect.height() / lineHeight;
 
-	yMax = max (0, stringsCount - yPageSize);
-	int prev_ypos = yPos;
+	yMax = max (0, strings.count() - yPageSize);
 	yPos = min (yPos, yMax);
-	setYPosIterator(prev_ypos);
+	strings.setCursor(yPos, yMax);
 	int mul = yPageSize;
 	if (mul * lineHeight < newClientRect.height())
 	{
@@ -621,7 +619,7 @@ void RDOLogCtrl::updateScrollBars()
 	if (drawLog)
 	{
 		getVertScrollBar().setMinimum (0);
-		getVertScrollBar().setMaximum (stringsCount - 1);
+		getVertScrollBar().setMaximum (strings.count() - 1);
 		getVertScrollBar().setPageStep(yPageSize);
 		getVertScrollBar().setValue   (yPos);
 
@@ -664,9 +662,8 @@ rbool RDOLogCtrl::scrollVertically(int inc)
 	// of the scroll box, and update the window.
 	if (inc == max (-yPos, min (inc, yMax - yPos)))
 	{
-		int prev_ypos = yPos;
 		yPos += inc;
-		setYPosIterator(prev_ypos);
+		strings.setCursor(yPos, yMax);
 		lastViewableLine += inc;
 
 		updateWindow();
@@ -722,13 +719,13 @@ rbool RDOLogCtrl::isFullyVisible(int index) const
 
 void RDOLogCtrl::selectLine(int index)
 {
-	if (index < 0 || index > stringsCount - 1 || index == selectedLine)
+	if (index < 0 || index > strings.count() - 1 || index == selectedLine)
 	{
 		return;
 	}
 
 	int prevSel = selectedLine;
-	int inc = max (- prevSel, min (index - prevSel, stringsCount - 1 - prevSel));
+	int inc = max (- prevSel, min (index - prevSel, strings.count() - 1 - prevSel));
 
 	if (inc)
 	{
@@ -808,18 +805,13 @@ void RDOLogCtrl::addStringToLog(CREF(tstring) logStr)
 	//if (!hwnd)
 	//	return;
 
-	rbool prevVisible = isVisible(stringsCount - 1);
+	rbool prevVisible = isVisible(strings.count() - 1);
 
 	strings.push_back(logStr);
-	if (!stringsCount)
-	{
-		yPos_iterator = strings.begin();
-	}
-	stringsCount ++;
 
 	recalcWidth(logStr.length());
 
-	int lastString = stringsCount - 1;
+	int lastString = strings.count() - 1;
 
 	if (drawLog)
 	{
@@ -908,9 +900,9 @@ void RDOLogCtrl::getString(int index, tstring& str) const
 
 	tstring res = "";
 
-	if (index >= 0 && index < stringsCount)
+	if (index >= 0 && index < strings.count())
 	{
-		str.assign(*const_findString(index));
+		str.assign(*strings.findString(index));
 	}
 
 	const_cast<CMutex&>(mutex).Unlock();
@@ -949,7 +941,6 @@ void RDOLogCtrl::clear()
 
 	strings.clear();
 
-	stringsCount      = 0;
 	maxStrWidth       = 0;
 	lastViewableLine  = 0;
 	selectedLine = -1;
@@ -959,154 +950,6 @@ void RDOLogCtrl::clear()
 	updateWindow();
 
 	mutex.Unlock();
-}
-
-void RDOLogCtrl::setYPosIterator(int prev_yPos)
-{
-	if (yPos != prev_yPos)
-	{
-		if (yPos == 0)
-		{
-			yPos_iterator = strings.begin();
-		}
-		else if (yPos == yMax)
-		{
-			yPos_iterator = strings.end();
-			for (int i = stringsCount; i > yMax; i--)
-			{
-				--yPos_iterator;
-			}
-		}
-		else
-		{
-			int delta = yPos - prev_yPos;
-			seek(delta, yPos_iterator);
-		}
-	}
-}
-
-RDOLogCtrl::StringList::iterator RDOLogCtrl::findString(int index)
-{
-	StringList::iterator res;
-
-	if (index == 0)
-	{
-		res = strings.begin();
-	}
-	else if (index == yPos)
-	{
-		res = yPos_iterator;
-	}
-	else if (index == stringsCount - 1)
-	{
-		res = strings.end();
-		--res;
-	}
-	else
-	{
-		int deltaPos = index - yPos;
-		int deltaEnd = index - (stringsCount - 1);
-		int mod_deltaPos = deltaPos >= 0 ? deltaPos : -1 * deltaPos;
-		int mod_deltaEnd = deltaEnd >= 0 ? deltaEnd : -1 * deltaEnd;
-		int delta = min(index, mod_deltaPos);
-		delta = min(delta, mod_deltaEnd);
-		if (delta == index)
-		{
-			res = strings.begin();
-		}
-		else if (delta == mod_deltaPos)
-		{
-			res = yPos_iterator;
-			delta = deltaPos;
-		}
-		else if (delta == mod_deltaEnd)
-		{
-			res = strings.end();
-			--res;
-			delta = deltaEnd;
-		}
-		seek(delta, res);
-	}
-
-	return res;
-}
-
-void RDOLogCtrl::seek(rsint delta, REF(StringList::const_iterator) it) const
-{
-	ASSERT(it != strings.end());
-
-	if (delta > 0)
-	{
-		for (int i = 0; i < delta; i++)
-		{
-			++it;
-		}
-	}
-	else
-	{
-		for (int i = delta; i < 0; i++)
-		{
-			--it;
-		}
-	}
-}
-
-RDOLogCtrl::StringList::reverse_iterator RDOLogCtrl::reverse_findString(int index)
-{
-	StringList::reverse_iterator rit(findString(index));
-	return rit;
-}
-
-RDOLogCtrl::StringList::const_iterator RDOLogCtrl::const_findString(int index) const
-{
-	StringList::const_iterator res = strings.end();
-
-	if (index == 0)
-	{
-		res = strings.begin();
-	}
-	else if (index == yPos)
-	{
-		res = yPos_iterator;
-	}
-	else if (index == stringsCount - 1)
-	{
-		res = strings.end();
-		--res;
-	}
-	else
-	{
-		int deltaPos = index - yPos;
-		int deltaEnd = index - (stringsCount - 1);
-		int mod_deltaPos = deltaPos >= 0 ? deltaPos : -1 * deltaPos;
-		int mod_deltaEnd = deltaEnd >= 0 ? deltaEnd : -1 * deltaEnd;
-		int delta = min(index, mod_deltaPos);
-		delta = min(delta, mod_deltaEnd);
-		if (delta == index)
-		{
-			res = strings.begin();
-		}
-		else if (delta == mod_deltaPos)
-		{
-			res = yPos_iterator;
-			delta = deltaPos;
-		}
-		else if (delta == mod_deltaEnd)
-		{
-			res = strings.end();
-			--res;
-			delta = deltaEnd;
-		}
-		seek(delta, res);
-	}
-
-	return res;
-}
-
-RDOLogCtrl::StringList::const_reverse_iterator RDOLogCtrl::const_reverse_findString(int index) const
-{
-	StringList::const_reverse_iterator rit(const_findString(index));
-	return rit;
 }
 
 void RDOLogCtrl::find(int& result, rbool searchDown, rbool matchCase, rbool matchWholeWord)
@@ -1121,7 +964,7 @@ void RDOLogCtrl::find(int& result, rbool searchDown, rbool matchCase, rbool matc
 	StringList::reverse_iterator it_r;
 
 	int startPos = selectedLine + 1;
-	int endPos = stringsCount - 1;
+	int endPos = strings.count() - 1;
 	if (!searchDown)
 	{
 		startPos = selectedLine - 1;
@@ -1132,7 +975,7 @@ void RDOLogCtrl::find(int& result, rbool searchDown, rbool matchCase, rbool matc
 	if (searchDown)
 	{
 		it = std::find_if(
-			findString(startPos),
+			strings.findString(startPos),
 			strings.end(),
 			RDOLogCtrlFindInList(this, findStr, matchCase, matchWholeWord)
 		);
@@ -1140,7 +983,7 @@ void RDOLogCtrl::find(int& result, rbool searchDown, rbool matchCase, rbool matc
 		{
 			posFind = -1;
 			startPos = 0;
-			endPos   = stringsCount - 1;
+			endPos   = strings.count() - 1;
 			it = std::find_if(
 				strings.begin(),
 				strings.end(),
@@ -1159,14 +1002,14 @@ void RDOLogCtrl::find(int& result, rbool searchDown, rbool matchCase, rbool matc
 	else
 	{
 		it_r = std::find_if(
-			reverse_findString(startPos + 1),
+			strings.rFindString(startPos + 1),
 			strings.rend(),
 			RDOLogCtrlFindInList(this, findStr, matchCase, matchWholeWord)
 		);
 		if (it_r == strings.rend())
 		{
 			posFind = -1;
-			startPos = stringsCount - 1;
+			startPos = strings.count() - 1;
 			endPos   = 0;
 			it_r = std::find_if(
 				strings.rbegin(),
