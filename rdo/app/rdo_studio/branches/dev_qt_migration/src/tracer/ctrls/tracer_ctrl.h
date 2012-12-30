@@ -116,6 +116,8 @@ private:
 	REF(QScrollBar) getVertScrollBar();
 	REF(QScrollBar) getHorzScrollBar();
 
+	void seek(rsint delta, REF(stringList::const_iterator) it) const;
+
 private slots:
 	void onVertScrollBarValueChanged(int value);
 	void onHorzScrollBarValueChanged(int value);

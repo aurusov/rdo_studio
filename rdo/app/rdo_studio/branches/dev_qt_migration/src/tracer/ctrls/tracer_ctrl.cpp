@@ -987,20 +987,7 @@ void RDOLogCtrl::setYPosIterator(int prev_yPos)
 		else
 		{
 			int delta = yPos - prev_yPos;
-			if (delta > 0)
-			{
-				for (int i = 0; i < delta; i++)
-				{
-					++yPos_iterator;
-				}
-			}
-			else
-			{
-				for (int i = delta; i < 0; i++)
-				{
-					--yPos_iterator;
-				}
-			}
+			seek(delta, yPos_iterator);
 		}
 	}
 }
@@ -1045,23 +1032,30 @@ stringList::iterator RDOLogCtrl::findString(int index)
 			--res;
 			delta = deltaEnd;
 		}
-		if (delta > 0)
-		{
-			for (int i = 0; i < delta; i++)
-			{
-				++res;
-			}
-		}
-		else
-		{
-			for (int i = delta; i < 0; i++)
-			{
-				--res;
-			}
-		}
+		seek(delta, res);
 	}
 
 	return res;
+}
+
+void RDOLogCtrl::seek(rsint delta, REF(stringList::const_iterator) it) const
+{
+	ASSERT(it != strings.end());
+
+	if (delta > 0)
+	{
+		for (int i = 0; i < delta; i++)
+		{
+			++it;
+		}
+	}
+	else
+	{
+		for (int i = delta; i < 0; i++)
+		{
+			--it;
+		}
+	}
 }
 
 stringList::reverse_iterator RDOLogCtrl::reverse_findString(int index)
@@ -1110,23 +1104,7 @@ stringList::const_iterator RDOLogCtrl::const_findString(int index) const
 			--res;
 			delta = deltaEnd;
 		}
-		if (res != strings.end())
-		{
-			if (delta > 0)
-			{
-				for (int i = 0; i < delta; i++)
-				{
-					++res;
-				}
-			}
-			else
-			{
-				for (int i = delta; i < 0; i++)
-				{
-					--res;
-				}
-			}
-		}
+		seek(delta, res);
 	}
 
 	return res;
