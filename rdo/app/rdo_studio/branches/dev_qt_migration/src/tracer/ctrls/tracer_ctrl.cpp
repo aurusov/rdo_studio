@@ -376,10 +376,8 @@ RDOLogCtrl::RDOLogCtrl(PTR(QAbstractScrollArea) pParent, PTR(RDOLogStyle) pStyle
 	, yMax(0)
 	, xPageSize(0)
 	, yPageSize(0)
-	, clipRect(0, 0, 0, 0)
-	, prevClientRect(0, 0, 0, 0)
-	, newClientRect (0, 0, 0, 0)
-	, prevWindowRect(0, 0, 0, 0)
+	, m_clientRect    (0, 0, 0, 0)
+	, m_prevWindowRect(0, 0, 0, 0)
 	, lastViewableLine(0)
 	, selectedLine(-1)
 	, fullRepaintLines(0)
@@ -432,11 +430,12 @@ void RDOLogCtrl::resizeEvent(QResizeEvent* pEvent)
 {
 	parent_type::resizeEvent(pEvent);
 
-	newClientRect = QRect(QPoint(0, 0), pEvent->size());
+	QRect prevClientRect(m_clientRect);
+	m_clientRect = QRect(QPoint(0, 0), pEvent->size());
 
 	QRect newWindowRect(
-		mapToGlobal(newClientRect.topLeft()),
-		mapToGlobal(newClientRect.bottomRight())
+		mapToGlobal(m_clientRect.topLeft()),
+		mapToGlobal(m_clientRect.bottomRight())
 	);
 
 	int prevYPos = yPos;
@@ -444,7 +443,7 @@ void RDOLogCtrl::resizeEvent(QResizeEvent* pEvent)
 	updateScrollBars();
 
 	rbool lastLineVisible = isFullyVisible(strings.count() - 1);
-	rbool lastCharVisible = maxStrWidth == xPos + newClientRect.width() / charWidth;
+	rbool lastCharVisible = maxStrWidth == xPos + m_clientRect.width() / charWidth;
 
 	rbool fullVisibleVert = !yPos && lastLineVisible;
 	rbool fullVisibleHorz = !xPos && lastCharVisible;
@@ -452,25 +451,22 @@ void RDOLogCtrl::resizeEvent(QResizeEvent* pEvent)
 	rbool needShiftVert = yPos < prevYPos && !fullVisibleVert;
 	rbool needShiftHorz = xPos < prevXPos && !fullVisibleHorz;
 
-	rbool topChanged = prevWindowRect.top() != newWindowRect.top();
-	int dx = newClientRect.right() - prevClientRect.right();
-	int dy = newClientRect.bottom() - prevClientRect.bottom();
+	rbool topChanged = m_prevWindowRect.top() != newWindowRect.top();
+	int dx = m_clientRect.right() - prevClientRect.right();
+	int dy = m_clientRect.bottom() - prevClientRect.bottom();
 
-	QRect prevClRectBackup(prevClientRect);
-
-	int mul = newClientRect.height() / lineHeight;
-	if (mul * lineHeight < newClientRect.height())
+	int mul = m_clientRect.height() / lineHeight;
+	if (mul * lineHeight < m_clientRect.height())
 	{
 		++mul;
 	}
 	lastViewableLine = yPos + mul - 1;
 
-	prevClientRect = newClientRect;
-	prevWindowRect = newWindowRect;
+	m_prevWindowRect = newWindowRect;
 
 	if (!topChanged)
 	{
-		update(newClientRect);
+		update(m_clientRect);
 
 		if (dx < 0 && dy < 0)
 		{
@@ -478,19 +474,19 @@ void RDOLogCtrl::resizeEvent(QResizeEvent* pEvent)
 		}
 
 		QRegion bottomRgn = dy
-			? QRegion(newClientRect.left(), prevClRectBackup.bottom() - 1, newClientRect.right(), newClientRect.bottom())
+			? QRegion(m_clientRect.left(), prevClientRect.bottom() - 1, m_clientRect.right(), m_clientRect.bottom())
 			: QRegion(0, 0, 0, 0);
 
 		//Substracting 1 pixel to remove old focus rectangle.
 		QRegion rightRgn = dx
-			? QRegion(prevClRectBackup.right() - 1, newClientRect.top(), newClientRect.right(), newClientRect.bottom())
+			? QRegion(prevClientRect.right() - 1, m_clientRect.top(), m_clientRect.right(), m_clientRect.bottom())
 			: QRegion(0, 0, 0, 0);
 
 		QRegion invalidRgn = bottomRgn.united(rightRgn);
 
 		if (invalidRgn.isEmpty())
 		{
-			invalidRgn = QRegion(newClientRect.left(), newClientRect.top(), newClientRect.right(), newClientRect.bottom());
+			invalidRgn = QRegion(m_clientRect.left(), m_clientRect.top(), m_clientRect.right(), m_clientRect.bottom());
 		}
 		else if (needShiftVert || needShiftHorz)
 		{
@@ -533,7 +529,7 @@ void RDOLogCtrl::resizeEvent(QResizeEvent* pEvent)
 	}
 	else
 	{
-		update(newClientRect);
+		update(m_clientRect);
 	}
 }
 
@@ -610,7 +606,7 @@ void RDOLogCtrl::paintEvent(QPaintEvent* pEvent)
 
 				if (i == selectedLine && hasFocus())
 				{
-					QRect focusRect(newClientRect);
+					QRect focusRect(m_clientRect);
 					focusRect.setTop   (rect.top   ());
 					focusRect.setBottom(rect.bottom());
 					QStyleOptionFocusRect option;
@@ -646,7 +642,7 @@ void RDOLogCtrl::paintEvent(QPaintEvent* pEvent)
 		getItemColors("", colors);
 
 		painter.fillRect(
-			newClientRect,
+			m_clientRect,
 			colors->backgroundColor
 		);
 	}
@@ -771,14 +767,14 @@ void RDOLogCtrl::recalcWidth(int newMaxStrWidth)
 
 void RDOLogCtrl::updateScrollBars()
 {
-	xPageSize = newClientRect.width () / charWidth;
-	yPageSize = newClientRect.height() / lineHeight;
+	xPageSize = m_clientRect.width () / charWidth;
+	yPageSize = m_clientRect.height() / lineHeight;
 
 	yMax = max (0, strings.count() - yPageSize);
 	yPos = min (yPos, yMax);
 	strings.setCursor(yPos, yMax);
 	int mul = yPageSize;
-	if (mul * lineHeight < newClientRect.height())
+	if (mul * lineHeight < m_clientRect.height())
 	{
 		mul++;
 	}
@@ -886,7 +882,7 @@ rbool RDOLogCtrl::isVisible(int index) const
 
 rbool RDOLogCtrl::isFullyVisible(int index) const
 {
-	int lastVisible = yPos + newClientRect.height() / lineHeight - 1;
+	int lastVisible = yPos + m_clientRect.height() / lineHeight - 1;
 	return index <= lastVisible && index >= yPos;
 }
 
@@ -920,7 +916,7 @@ void RDOLogCtrl::selectLine(int index)
 
 QRect RDOLogCtrl::getLineRect(int index) const
 {
-	QRect rect(newClientRect);
+	QRect rect(m_clientRect);
 	rect.setTop((index - yPos) * lineHeight);
 	rect.setBottom(min(rect.top() + lineHeight, rect.bottom()));
 	return rect;
@@ -952,7 +948,7 @@ rbool RDOLogCtrl::makeLineVisible(int index)
 	int inc;
 	if (yPos < index)
 	{
-		int lastVisible = yPos + newClientRect.height() / lineHeight - 1;
+		int lastVisible = yPos + m_clientRect.height() / lineHeight - 1;
 		inc = index - lastVisible;
 	}
 	else

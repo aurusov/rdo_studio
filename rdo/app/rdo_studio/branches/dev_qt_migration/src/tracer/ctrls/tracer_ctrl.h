@@ -83,12 +83,10 @@ protected:
 	int yMax;
 	int xPageSize;
 	int yPageSize;
-	
-	CRect clipRect;
-	QRect prevClientRect;
-	QRect newClientRect;
-	QRect prevWindowRect;
-	
+
+	QRect m_clientRect;
+	QRect m_prevWindowRect;
+
 	int lastViewableLine;
 	int selectedLine;
 	int fullRepaintLines;
