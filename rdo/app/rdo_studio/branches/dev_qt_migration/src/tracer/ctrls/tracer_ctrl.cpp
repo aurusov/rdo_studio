@@ -555,7 +555,7 @@ void RDOLogCtrl::paintEvent(QPaintEvent* pEvent)
 		{
 			painter.setFont(m_font);
 
-			int firstLine = max (0, yPos + pEvent->rect().top() / lineHeight);
+			int firstLine = (std::max)(0, yPos + pEvent->rect().top() / lineHeight);
 			int mul = pEvent->rect().bottom() / lineHeight;
 			if (pEvent->rect().bottom() > mul * lineHeight)
 			{
@@ -700,11 +700,11 @@ void RDOLogCtrl::keyPressEvent(QKeyEvent* pEvent)
 		break;
 
 	case Qt::Key_PageUp:
-		selectLine(max (selectedLine - yPageSize, 0));
+		selectLine((std::max)(selectedLine - yPageSize, 0));
 		break;
 
 	case Qt::Key_PageDown:
-		selectLine(min (selectedLine + yPageSize, m_strings.count() - 1));
+		selectLine((std::min)(selectedLine + yPageSize, m_strings.count() - 1));
 		break;
 
 	case Qt::Key_Down:
@@ -743,7 +743,7 @@ void RDOLogCtrl::mousePressEvent(QMouseEvent* pEvent)
 	{
 		//! @todo qt
 		//	SetFocus();
-		selectLine(min(yPos + pEvent->pos().y() / lineHeight, m_strings.count() - 1));
+		selectLine((std::min)(yPos + pEvent->pos().y() / lineHeight, m_strings.count() - 1));
 	}
 }
 
@@ -770,8 +770,8 @@ void RDOLogCtrl::updateScrollBars()
 	xPageSize = m_clientRect.width () / charWidth;
 	yPageSize = m_clientRect.height() / lineHeight;
 
-	yMax = max (0, m_strings.count() - yPageSize);
-	yPos = min (yPos, yMax);
+	yMax = (std::max)(0, m_strings.count() - yPageSize);
+	yPos = (std::min)(yPos, yMax);
 	m_strings.setCursor(yPos, yMax);
 	int mul = yPageSize;
 	if (mul * lineHeight < m_clientRect.height())
@@ -792,8 +792,8 @@ void RDOLogCtrl::updateScrollBars()
 		getVertScrollBar().setPageStep(yPageSize);
 		getVertScrollBar().setValue   (yPos);
 
-		xMax = max (0, maxStrWidth - xPageSize);
-		xPos = min (xPos, xMax);
+		xMax = (std::max)(0, maxStrWidth - xPageSize);
+		xPos = (std::min)(xPos, xMax);
 
 		getHorzScrollBar().setMinimum (0);
 		getHorzScrollBar().setMaximum (maxStrWidth - 1);
@@ -807,8 +807,8 @@ void RDOLogCtrl::updateScrollBars()
 		getVertScrollBar().setPageStep(0);
 		getVertScrollBar().setValue   (0);
 
-		xMax = max (0, maxStrWidth - xPageSize);
-		xPos = min (xPos, xMax);
+		xMax = (std::max)(0, maxStrWidth - xPageSize);
+		xPos = (std::min)(xPos, xMax);
 
 		getHorzScrollBar().setMinimum (0);
 		getHorzScrollBar().setMaximum (0);
@@ -829,7 +829,7 @@ rbool RDOLogCtrl::scrollVertically(int inc)
 	// take the scrolling position out of the scrolling range,
 	// increment the scrolling position, adjust the position
 	// of the scroll box, and update the window.
-	if (inc == max (-yPos, min (inc, yMax - yPos)))
+	if (inc == (std::max)(-yPos, (std::min)(inc, yMax - yPos)))
 	{
 		yPos += inc;
 		m_strings.setCursor(yPos, yMax);
@@ -860,7 +860,7 @@ rbool RDOLogCtrl::scrollHorizontally(int inc)
 	// take the scrolling position out of the scrolling range,
 	// increment the scrolling position, adjust the position
 	// of the scroll box, and update the window.
-	if (inc == max (-xPos, min (inc, xMax - xPos)))
+	if (inc == (std::max)(-xPos, (std::min)(inc, xMax - xPos)))
 	{
 		xPos += inc;
 
@@ -894,7 +894,7 @@ void RDOLogCtrl::selectLine(int index)
 	}
 
 	int prevSel = selectedLine;
-	int inc = max (- prevSel, min (index - prevSel, m_strings.count() - 1 - prevSel));
+	int inc = (std::max)(-prevSel, (std::min)(index - prevSel, m_strings.count() - 1 - prevSel));
 
 	if (inc)
 	{
@@ -918,7 +918,7 @@ QRect RDOLogCtrl::getLineRect(int index) const
 {
 	QRect rect(m_clientRect);
 	rect.setTop((index - yPos) * lineHeight);
-	rect.setBottom(min(rect.top() + lineHeight, rect.bottom()));
+	rect.setBottom((std::min)(rect.top() + lineHeight, rect.bottom()));
 	return rect;
 }
 
