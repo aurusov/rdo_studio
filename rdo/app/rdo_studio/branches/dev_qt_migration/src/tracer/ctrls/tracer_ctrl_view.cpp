@@ -96,7 +96,7 @@ RDOTracerLogCtrlView::RDOTracerLogCtrlView(PTR(QAbstractScrollArea) pParent)
 RDOTracerLogCtrlView::~RDOTracerLogCtrlView()
 {}
 
-rbool RDOTracerLogCtrlView::getItemColors(const int index, RDOLogColorPair* &colors) const
+rbool RDOTracerLogCtrlView::getItemColors(int index, RDOLogColorPair* &colors) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 

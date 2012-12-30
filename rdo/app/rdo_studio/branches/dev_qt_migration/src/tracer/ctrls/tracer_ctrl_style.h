@@ -92,7 +92,7 @@ public:
 	RDOLogStyle();
 	virtual ~RDOLogStyle();
 
-	virtual rbool getItemColors( const int index, RDOLogColorPair* &colors ) const;
+	virtual rbool getItemColors( int index, RDOLogColorPair* &colors ) const;
 	virtual rbool getItemColors( CREF(tstring) item, RDOLogColorPair* &colors ) const;
 
 	RDOLogStyle& operator =( const RDOLogStyle& style );

@@ -189,7 +189,7 @@ void RDOLogStyle::initBorders()
 	borders = new RDOLogBorders;
 }
 
-rbool RDOLogStyle::getItemColors( const int index, RDOLogColorPair* &colors ) const
+rbool RDOLogStyle::getItemColors( int index, RDOLogColorPair* &colors ) const
 {
 	UNUSED(index);
 

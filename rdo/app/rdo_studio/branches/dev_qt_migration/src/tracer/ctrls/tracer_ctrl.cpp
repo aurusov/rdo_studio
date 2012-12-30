@@ -39,34 +39,34 @@ class RDOLogCtrlFindInList
 	rbool matchCase;
 	rbool matchWholeWord;
 	
-	rbool scan( tstring::iterator &wildCards, tstring::iterator &wildend, tstring::iterator &str, tstring::iterator &strend ) const;
-	rbool match( tstring::iterator &wildcards, tstring::iterator &wildend, tstring::iterator &strcomp, tstring::iterator &strend ) const;
+	rbool scan(tstring::iterator &wildCards, tstring::iterator &wildend, tstring::iterator &str, tstring::iterator &strend) const;
+	rbool match(tstring::iterator &wildcards, tstring::iterator &wildend, tstring::iterator &strcomp, tstring::iterator &strend) const;
 public:
-	RDOLogCtrlFindInList( RDOLogCtrl* _log, tstring _strToFind, rbool _matchCase, rbool _matchWholeWord );
-	rbool operator()( tstring nextstr );
+	RDOLogCtrlFindInList(RDOLogCtrl* _log, tstring _strToFind, rbool _matchCase, rbool _matchWholeWord);
+	rbool operator()(tstring nextstr);
 };
 
 }; // namespace rdoTracerLog
 
-RDOLogCtrlFindInList::RDOLogCtrlFindInList( RDOLogCtrl* _log, tstring _strToFind, rbool _matchCase, rbool _matchWholeWord )
-	: log( _log ),
-	strToFind( _strToFind ),
-	matchCase( _matchCase ),
-	matchWholeWord( _matchWholeWord )
+RDOLogCtrlFindInList::RDOLogCtrlFindInList(RDOLogCtrl* _log, tstring _strToFind, rbool _matchCase, rbool _matchWholeWord)
+	: log(_log),
+	strToFind(_strToFind),
+	matchCase(_matchCase),
+	matchWholeWord(_matchWholeWord)
 {
 }
 
-rbool RDOLogCtrlFindInList::scan( tstring::iterator &wildCards, tstring::iterator &wildend, tstring::iterator &str, tstring::iterator &strend ) const
+rbool RDOLogCtrlFindInList::scan(tstring::iterator &wildCards, tstring::iterator &wildend, tstring::iterator &str, tstring::iterator &strend) const
 {
 	// remove the '?' and '*'
-	for( wildCards ++; str != strend && ( *wildCards == '?' || *wildCards == '*' ); wildCards ++ )
-		if ( *wildCards == '?') str ++;
-	while ( *wildCards == '*') wildCards ++;
+	for(wildCards ++; str != strend && (*wildCards == '?' || *wildCards == '*'); wildCards ++)
+		if (*wildCards == '?') str ++;
+	while (*wildCards == '*') wildCards ++;
 	
 	// if str is empty and Wildcards has more characters or,
 	// Wildcards is empty, return 
-	if ( str == strend && wildCards != wildend ) return false;
-	if ( str == strend && wildCards == wildend ) return true; 
+	if (str == strend && wildCards != wildend) return false;
+	if (str == strend && wildCards == wildend) return true; 
 	// else search substring
 	else
 	{
@@ -75,31 +75,31 @@ rbool RDOLogCtrlFindInList::scan( tstring::iterator &wildCards, tstring::iterato
 		rbool res = 1;
 		do 
 		{
-			if ( !match( wildCards, wildend, str, strend ) ) strCopy ++;
+			if (!match(wildCards, wildend, str, strend)) strCopy ++;
 			wildCards = wdsCopy;
 			str		  = strCopy;
-			while ( ( *wildCards != *str ) && ( str != strend ) ) str ++;
+			while ((*wildCards != *str) && (str != strend)) str ++;
 			wdsCopy = wildCards;
 			strCopy = str;
-		} while ( ( str != strend ) ? !match( wildCards, wildend, str, strend ) : ( res = false ) != false );
+		} while ((str != strend) ? !match(wildCards, wildend, str, strend) : (res = false) != false);
 
-		if ( str == strend && wildCards == wildend ) return true;
+		if (str == strend && wildCards == wildend) return true;
 
 		return res;
 	}
 }
 
-rbool RDOLogCtrlFindInList::match( tstring::iterator &wildcards, tstring::iterator &wildend, tstring::iterator &strcomp, tstring::iterator &strend ) const
+rbool RDOLogCtrlFindInList::match(tstring::iterator &wildcards, tstring::iterator &wildend, tstring::iterator &strcomp, tstring::iterator &strend) const
 {
 	rbool res = true;
 	
 	tstring strWild;
 	tstring strComp;
-	if ( wildcards != wildend ) {
-		strWild.assign( &(*wildcards) );
+	if (wildcards != wildend) {
+		strWild.assign(&(*wildcards));
 	}
-	if ( strcomp != strend ) {
-		strComp.assign( &(*strcomp) );
+	if (strcomp != strend) {
+		strComp.assign(&(*strcomp));
 	}
 	tstring::iterator strWildb = strWild.begin();
 	tstring::iterator strWilde = strWild.end();
@@ -107,51 +107,51 @@ rbool RDOLogCtrlFindInList::match( tstring::iterator &wildcards, tstring::iterat
 	tstring::iterator strCompe = strComp.end();
 
 	//iterate and delete '?' and '*' one by one
-	while( strWildb != strWilde && res && strCompb != strCompe )
+	while(strWildb != strWilde && res && strCompb != strCompe)
 	{
-		if ( *strWildb == '?' )
+		if (*strWildb == '?')
 			strCompb ++;
-		else if ( *strWildb == '*' )
+		else if (*strWildb == '*')
 		{
-			res = scan( strWildb, strWilde, strCompb, strCompe );
+			res = scan(strWildb, strWilde, strCompb, strCompe);
 			strWildb --;
 		}
 		else
 		{
-			res = ( *strWildb == *strCompb );
+			res = (*strWildb == *strCompb);
 			strCompb ++;
 		}
 		strWildb ++;
 	}
-	while ( *strWildb && *strWildb == '*' && res )  strWildb ++;
+	while (*strWildb && *strWildb == '*' && res)  strWildb ++;
 
 	return res && strCompb == strCompe && strWildb == strWilde;
 }
 
-rbool RDOLogCtrlFindInList::operator()( tstring nextstr )
+rbool RDOLogCtrlFindInList::operator()(tstring nextstr)
 {
-	if ( !matchWholeWord && strToFind.find_first_of( "*?" ) == tstring::npos ) {
-		strToFind.insert( 0, "*");
+	if (!matchWholeWord && strToFind.find_first_of("*?") == tstring::npos) {
+		strToFind.insert(0, "*");
 		strToFind += "*";
 	}
 
 	tstring str = nextstr;
 	
-	if ( !matchCase ) {
-		std::transform( strToFind.begin(), strToFind.end(), strToFind.begin(), tolower );
-		std::transform( str.begin(), str.end(), str.begin(), tolower );
+	if (!matchCase) {
+		std::transform(strToFind.begin(), strToFind.end(), strToFind.begin(), tolower);
+		std::transform(str.begin(), str.end(), str.begin(), tolower);
 	}
 	
 	log->posFind ++;
 
-	if ( matchWholeWord )
+	if (matchWholeWord)
 		return strToFind == str;
 
 	tstring::iterator findstrb = strToFind.begin();
 	tstring::iterator findstre = strToFind.end();
 	tstring::iterator strb = str.begin();
 	tstring::iterator stre = str.end();
-	return match( findstrb, findstre,  strb, stre );
+	return match(findstrb, findstre,  strb, stre);
 }
 
 // --------------------------------------------------------------------------------
@@ -160,32 +160,32 @@ rbool RDOLogCtrlFindInList::operator()( tstring nextstr )
 RDOLogCtrl::RDOLogCtrl(PTR(QAbstractScrollArea) pParent, PTR(RDOLogStyle) pStyle)
 	: parent_type(pParent)
 	, m_pScrollArea(pParent)
-	, lineHeight( 0 )
-	, charWidth( 0 )
-	, maxStrWidth( 0 )
-	, xPos( 0 )
-	, yPos( 0 )
-	, xMax( 0 )
-	, yMax( 0 )
-	, xPageSize( 0 )
-	, yPageSize( 0 )
-	, clipRect( 0, 0, 0, 0 )
+	, lineHeight(0)
+	, charWidth(0)
+	, maxStrWidth(0)
+	, xPos(0)
+	, yPos(0)
+	, xMax(0)
+	, yMax(0)
+	, xPageSize(0)
+	, yPageSize(0)
+	, clipRect(0, 0, 0, 0)
 	, prevClientRect(0, 0, 0, 0)
 	, newClientRect (0, 0, 0, 0)
 	, prevWindowRect(0, 0, 0, 0)
-	, lastViewableLine( 0 )
-	, selectedLine( -1 )
-	, fullRepaintLines( 0 )
-	, focusOnly( false )
-	, logStyle( pStyle )
-	, stringsCount( 0 )
-	, firstFoundLine( -1 )
-	, posFind( -1 )
-	, bHaveFound( false )
-	, bSearchDown( true )
-	, bMatchCase( false )
-	, bMatchWholeWord( false )
-	, drawLog( true )
+	, lastViewableLine(0)
+	, selectedLine(-1)
+	, fullRepaintLines(0)
+	, focusOnly(false)
+	, logStyle(pStyle)
+	, stringsCount(0)
+	, firstFoundLine(-1)
+	, posFind(-1)
+	, bHaveFound(false)
+	, bSearchDown(true)
+	, bMatchCase(false)
+	, bMatchWholeWord(false)
+	, drawLog(true)
 	, m_prevVertSBValue(0)
 	, m_prevHorzSBValue(0)
 {
@@ -226,10 +226,6 @@ void RDOLogCtrl::resizeEvent(QResizeEvent* pEvent)
 {
 	parent_type::resizeEvent(pEvent);
 
-		//In our case OnSize() invalidates all needed rectangles.
-		//Default handler invalidates all client area.
-//		CWnd::OnSize(  nType, cx, cy );
-
 	newClientRect = QRect(QPoint(0, 0), pEvent->size());
 
 	QRect newWindowRect(
@@ -239,13 +235,9 @@ void RDOLogCtrl::resizeEvent(QResizeEvent* pEvent)
 
 	int prevYPos = yPos;
 	int prevXPos = xPos;
-	//updateScrollBars() uses newClientRect so call it
-	//after setting up newClientRect
 	updateScrollBars();
 
-	//isFullyVisible() uses newClientRect so call it
-	//after setting up newClientRect
-	rbool lastLineVisible = isFullyVisible( stringsCount - 1 );
+	rbool lastLineVisible = isFullyVisible(stringsCount - 1);
 	rbool lastCharVisible = maxStrWidth == xPos + newClientRect.width() / charWidth;
 	
 	rbool fullVisibleVert = !yPos && lastLineVisible;
@@ -261,99 +253,92 @@ void RDOLogCtrl::resizeEvent(QResizeEvent* pEvent)
 	QRect prevClRectBackup(prevClientRect);
 	
 	int mul = newClientRect.height() / lineHeight;
-	if ( mul * lineHeight < newClientRect.height() )
-		mul++;
+	if (mul * lineHeight < newClientRect.height())
+	{
+		++mul;
+	}
 	lastViewableLine = yPos + mul - 1;
 
 	prevClientRect = newClientRect;
 	prevWindowRect = newWindowRect;
 
-	//If top of the window changed repainting all window
-	//because default OnSize() handler invalidates all
-	//client rectangle.
-	//If top is the same validating all client rectangle
-	//and calculating invalid rectangle.
-	if ( !topChanged ) {
+	if (!topChanged)
+	{
 
 		update(newClientRect);
 
-		//If new window size is smaller than the previous
-		//no repainting is needed.
-		if ( dx < 0 && dy < 0 )
+		if (dx < 0 && dy < 0)
 			return;
-		
-		QRegion bottomRgn;
-		if ( dy )
-			bottomRgn = QRegion( newClientRect.left(), prevClRectBackup.bottom() - 1, newClientRect.right(), newClientRect.bottom() );
-		else
-			bottomRgn = QRegion( 0, 0, 0, 0 );
+
+		QRegion bottomRgn = dy
+			? QRegion(newClientRect.left(), prevClRectBackup.bottom() - 1, newClientRect.right(), newClientRect.bottom())
+			: QRegion(0, 0, 0, 0);
 
 		//Substracting 1 pixel to remove old focus rectangle.
-		QRegion rightRgn;
-		if ( dx )
-			rightRgn = QRegion( prevClRectBackup.right() - 1, newClientRect.top(), newClientRect.right(), newClientRect.bottom() );
-		else
-			rightRgn = QRegion( 0, 0, 0, 0 );
-		
+		QRegion rightRgn = dx
+			? QRegion(prevClRectBackup.right() - 1, newClientRect.top(), newClientRect.right(), newClientRect.bottom())
+			: QRegion(0, 0, 0, 0);
+
 		QRegion invalidRgn = bottomRgn.united(rightRgn);
 
-		if ( invalidRgn.isEmpty() ) {
-			
-			invalidRgn = QRegion( newClientRect.left(), newClientRect.top(), newClientRect.right(), newClientRect.bottom() );
+		if (invalidRgn.isEmpty())
+		{
+			invalidRgn = QRegion(newClientRect.left(), newClientRect.top(), newClientRect.right(), newClientRect.bottom());
 		
-		} else if ( needShiftVert || needShiftHorz ) {
-			
-			//If scrolled vertically to the end of log
-			//and resizing forces to appear new line
-			//at the top of the log.
-			if ( needShiftVert ) {
-				getVertScrollBar().setValue(lineHeight * ( prevYPos - yPos ));
+		}
+		else if (needShiftVert || needShiftHorz)
+		{
+			if (needShiftVert)
+			{
+				getVertScrollBar().setValue(lineHeight * (prevYPos - yPos));
 				if (getVertScrollBar().isHidden())
 				{
 					getVertScrollBar().show();
 				}
 
-				if ( dx )
-					update( rightRgn );
+				if (dx)
+				{
+					update(rightRgn);
+				}
 			}
-			
-			//If scrolled horizontally to the end of log
-			//and resizing forces to appear new char
-			//at the left of the log.
-			if ( needShiftHorz ) {
 
-				getHorzScrollBar().setValue(charWidth * ( prevXPos - xPos ));
+			if (needShiftHorz)
+			{
+				getHorzScrollBar().setValue(charWidth * (prevXPos - xPos));
 				if (getHorzScrollBar().isHidden())
 				{
 					getHorzScrollBar().show();
 				}
 		
-				if ( isVisible( selectedLine) ) {
+				if (isVisible(selectedLine))
+				{
 					update(getLineRect(selectedLine));
 				}
 				
-				if ( dy )
-					update( bottomRgn );
+				if (dy)
+				{
+					update(bottomRgn);
+				}
 			}
-			//All needed rectangles invalidated
 			return;
 		}
 		
-		update( invalidRgn );
-		
-	} else {
-		update( newClientRect );
+		update(invalidRgn);
+	}
+	else
+	{
+		update(newClientRect);
 	}
 }
 
-rbool RDOLogCtrl::getItemColors( const int index, RDOLogColorPair* &colors ) const
+rbool RDOLogCtrl::getItemColors(int index, RDOLogColorPair* &colors) const
 {
-	return logStyle->getItemColors( index, colors );
+	return logStyle->getItemColors(index, colors);
 }
 
-rbool RDOLogCtrl::getItemColors( CREF(tstring) item, RDOLogColorPair* &colors ) const
+rbool RDOLogCtrl::getItemColors(CREF(tstring) item, RDOLogColorPair* &colors) const
 {
-	return logStyle->getItemColors( item, colors );
+	return logStyle->getItemColors(item, colors);
 }
 
 void RDOLogCtrl::paintEvent(QPaintEvent* pEvent)
@@ -362,21 +347,21 @@ void RDOLogCtrl::paintEvent(QPaintEvent* pEvent)
 
 	QPainter painter(this);
 
-	if ( drawLog ) {
-
-		if ( !pEvent->rect().isEmpty() && !pEvent->rect().isNull() ) {
-
+	if (drawLog)
+	{
+		if (!pEvent->rect().isEmpty() && !pEvent->rect().isNull())
+		{
 			painter.setFont(m_font);
 		
-			int firstLine = max ( 0, yPos + pEvent->rect().top() / lineHeight );
+			int firstLine = max (0, yPos + pEvent->rect().top() / lineHeight);
 			int mul = pEvent->rect().bottom() / lineHeight;
-			if ( pEvent->rect().bottom() > mul * lineHeight ) mul++;
-			int lastLine = min ( stringsCount - 1, yPos + mul - 1 );
+			if (pEvent->rect().bottom() > mul * lineHeight) mul++;
+			int lastLine = min (stringsCount - 1, yPos + mul - 1);
 
 			RDOLogColorPair* colors = NULL;
 
-			int y = lineHeight * ( -yPos + firstLine - 1);
-			QRect rect( charWidth * ( -xPos ), y, pEvent->rect().width(), lineHeight );
+			int y = lineHeight * (-yPos + firstLine - 1);
+			QRect rect(charWidth * (-xPos), y, pEvent->rect().width(), lineHeight);
 			QRect textRect(
 				rect.left  () + logStyle->borders->horzBorder,
 				rect.top   () + logStyle->borders->vertBorder,
@@ -384,20 +369,25 @@ void RDOLogCtrl::paintEvent(QPaintEvent* pEvent)
 				rect.height() - logStyle->borders->vertBorder * 2
 			);
 
-			stringList::const_iterator it = const_findString( firstLine );
-			for ( int i = firstLine; i < lastLine + 1; i++ ) {
+			stringList::const_iterator it = const_findString(firstLine);
+			for (int i = firstLine; i < lastLine + 1; i++) {
 
-				if ( i != selectedLine || focusOnly ) {
-					if ( !getItemColors( (*it), colors ) )
-						getItemColors( i, colors );
-				} else {
+				if (i != selectedLine || focusOnly)
+				{
+					if (!getItemColors((*it), colors))
+					{
+						getItemColors(i, colors);
+					}
+				}
+				else
+				{
 					colors = new RDOLogColorPair();
 					colors->foregroundColor = palette().color(QPalette::HighlightedText);
 					colors->backgroundColor = palette().color(QPalette::Highlight);
 				}
 
-				rect    .translate( 0, lineHeight );
-				textRect.translate( 0, lineHeight );
+				rect    .translate(0, lineHeight);
+				textRect.translate(0, lineHeight);
 
 				//Main drawing cycle
 				painter.setBackgroundMode(Qt::TransparentMode);
@@ -409,7 +399,8 @@ void RDOLogCtrl::paintEvent(QPaintEvent* pEvent)
 				);
 				//End of main drawing cycle :)
 
-				if ( i == selectedLine && hasFocus() ) {
+				if (i == selectedLine && hasFocus())
+				{
 					QRect focusRect(newClientRect);
 					focusRect.setTop   (rect.top   ());
 					focusRect.setBottom(rect.bottom());
@@ -420,14 +411,15 @@ void RDOLogCtrl::paintEvent(QPaintEvent* pEvent)
 					style()->drawPrimitive(QStyle::PE_FrameFocusRect, &option, &painter, this);
 				}
 
-				it++;
+				++it;
 				
-				if ( i == selectedLine && !focusOnly && colors ) {
+				if (i == selectedLine && !focusOnly && colors)
+				{
 					delete colors; colors = NULL;
 				}
 			}
 
-			getItemColors( "", colors );
+			getItemColors("", colors);
 			
 			painter.fillRect(
 				pEvent->rect().left(),
@@ -437,9 +429,11 @@ void RDOLogCtrl::paintEvent(QPaintEvent* pEvent)
 				colors->backgroundColor
 			);
 		}
-	} else {
+	}
+	else
+	{
 		RDOLogColorPair* colors = NULL;
-		getItemColors( "", colors );
+		getItemColors("", colors);
 
 		painter.fillRect(
 			newClientRect,
@@ -475,16 +469,16 @@ void RDOLogCtrl::onHorzScrollBarValueChanged(int value)
 }
 
 //! @todo qt
-//void RDOLogCtrl::OnSetFocus( CWnd* pOldWnd )
+//void RDOLogCtrl::OnSetFocus(CWnd* pOldWnd)
 //{
-//	CWnd::OnSetFocus( pOldWnd );
-//	repaintLine( selectedLine );
+//	CWnd::OnSetFocus(pOldWnd);
+//	repaintLine(selectedLine);
 //}
 //
-//void RDOLogCtrl::OnKillFocus( CWnd* pNewWnd )
+//void RDOLogCtrl::OnKillFocus(CWnd* pNewWnd)
 //{
-//	CWnd::OnKillFocus( pNewWnd );
-//	repaintLine( selectedLine );
+//	CWnd::OnKillFocus(pNewWnd);
+//	repaintLine(selectedLine);
 //}
 
 void RDOLogCtrl::keyPressEvent(QKeyEvent* pEvent)
@@ -492,27 +486,27 @@ void RDOLogCtrl::keyPressEvent(QKeyEvent* pEvent)
 	switch (pEvent->key())
 	{
 		case Qt::Key_Up:
-			selectLine( selectedLine - 1 );
+			selectLine(selectedLine - 1);
 			break;
 
 		case Qt::Key_PageUp:
-			selectLine( max ( selectedLine - yPageSize, 0 ) );
+			selectLine(max (selectedLine - yPageSize, 0));
 			break;
 
 		case Qt::Key_PageDown:
-			selectLine( min ( selectedLine + yPageSize, stringsCount - 1 ) );
+			selectLine(min (selectedLine + yPageSize, stringsCount - 1));
 			break;
 
 		case Qt::Key_Down:
-			selectLine( selectedLine + 1 );
+			selectLine(selectedLine + 1);
 			break;
 
 		case Qt::Key_Home:
-			selectLine( 0 );
+			selectLine(0);
 			break;
 
 		case Qt::Key_End:
-			selectLine( stringsCount - 1 );
+			selectLine(stringsCount - 1);
 			break;
 
 		case Qt::Key_Left:
@@ -538,20 +532,24 @@ void RDOLogCtrl::mousePressEvent(QMouseEvent* pEvent)
 	{
 		//! @todo qt
 		//	SetFocus();
-		selectLine( min( yPos + pEvent->pos().y() / lineHeight, stringsCount - 1 ) );
+		selectLine(min(yPos + pEvent->pos().y() / lineHeight, stringsCount - 1));
 	}
 }
 
-void RDOLogCtrl::recalcWidth( const int newMaxStrWidth )
+void RDOLogCtrl::recalcWidth(int newMaxStrWidth)
 {
-	if ( maxStrWidth != newMaxStrWidth ) {
+	if (maxStrWidth != newMaxStrWidth)
+	{
 		int width = maxStrWidth * charWidth;
 		int newwidth = newMaxStrWidth * charWidth + 2 * logStyle->borders->horzBorder;
 
-		if ( newwidth > width ) {
+		if (newwidth > width)
+		{
 			maxStrWidth = newwidth / charWidth;
-			if ( maxStrWidth * charWidth < newwidth )
-				maxStrWidth++;
+			if (maxStrWidth * charWidth < newwidth)
+			{
+				++maxStrWidth;
+			}
 		}
 	}
 }
@@ -561,41 +559,46 @@ void RDOLogCtrl::updateScrollBars()
 	xPageSize = newClientRect.width () / charWidth;
 	yPageSize = newClientRect.height() / lineHeight;
 
-	yMax = max ( 0, stringsCount - yPageSize );
+	yMax = max (0, stringsCount - yPageSize);
 	int prev_ypos = yPos;
-	yPos = min ( yPos, yMax );
-	setYPosIterator( prev_ypos );
+	yPos = min (yPos, yMax);
+	setYPosIterator(prev_ypos);
 	int mul = yPageSize;
-	if ( mul * lineHeight < newClientRect.height() )
+	if (mul * lineHeight < newClientRect.height())
+	{
 		mul++;
+	}
 	lastViewableLine = yPos + mul - 1;
 
 	SCROLLINFO si;
-	si.cbSize = sizeof( si );
+	si.cbSize = sizeof(si);
 	si.fMask  = SIF_RANGE | SIF_PAGE | SIF_POS;
 	si.nMin   = 0;
 
-	if ( drawLog ) { 
+	if (drawLog)
+	{
 		getVertScrollBar().setMinimum (0);
 		getVertScrollBar().setMaximum (stringsCount - 1);
 		getVertScrollBar().setPageStep(yPageSize);
 		getVertScrollBar().setValue   (yPos);
 
-		xMax = max ( 0, maxStrWidth - xPageSize );
-		xPos = min ( xPos, xMax ); 
+		xMax = max (0, maxStrWidth - xPageSize);
+		xPos = min (xPos, xMax); 
 
 		getHorzScrollBar().setMinimum (0);
 		getHorzScrollBar().setMaximum (maxStrWidth - 1);
 		getHorzScrollBar().setPageStep(xPageSize);
 		getHorzScrollBar().setValue   (xPos);
-	} else {
+	}
+	else
+	{
 		getVertScrollBar().setMinimum (0);
 		getVertScrollBar().setMaximum (0);
 		getVertScrollBar().setPageStep(0);
 		getVertScrollBar().setValue   (0);
 
-		xMax = max ( 0, maxStrWidth - xPageSize );
-		xPos = min ( xPos, xMax ); 
+		xMax = max (0, maxStrWidth - xPageSize);
+		xPos = min (xPos, xMax); 
 
 		getHorzScrollBar().setMinimum (0);
 		getHorzScrollBar().setMaximum (0);
@@ -604,19 +607,23 @@ void RDOLogCtrl::updateScrollBars()
 	}
 }
 
-rbool RDOLogCtrl::scrollVertically( int inc )
+rbool RDOLogCtrl::scrollVertically(int inc)
 {
 	rbool res = false;
-	if ( !inc ) return res;
+	if (!inc)
+	{
+		return res;
+	}
 
 	// If applying the vertical scrolling increment does not
 	// take the scrolling position out of the scrolling range, 
 	// increment the scrolling position, adjust the position 
 	// of the scroll box, and update the window.
-	if ( inc == max ( -yPos, min ( inc, yMax - yPos ) ) ) {
+	if (inc == max (-yPos, min (inc, yMax - yPos)))
+	{
 		int prev_ypos = yPos;
 		yPos += inc;
-		setYPosIterator( prev_ypos );
+		setYPosIterator(prev_ypos);
 		lastViewableLine += inc;
 
 		updateWindow();
@@ -632,19 +639,24 @@ rbool RDOLogCtrl::scrollVertically( int inc )
 	return res;
 }
 
-rbool RDOLogCtrl::scrollHorizontally( int inc )
+rbool RDOLogCtrl::scrollHorizontally(int inc)
 {
 	rbool res = false;
-	if ( !inc ) return res;
+	if (!inc)
+	{
+		return res;
+	}
 
 	// If applying the horizontal scrolling increment does not 
 	// take the scrolling position out of the scrolling range, 
 	// increment the scrolling position, adjust the position 
 	// of the scroll box, and update the window.
-	if ( inc == max ( -xPos, min ( inc, xMax - xPos ) ) ) {
+	if (inc == max (-xPos, min (inc, xMax - xPos)))
+	{
 		xPos += inc;
 		
-		if ( isVisible( selectedLine) ) {
+		if (isVisible(selectedLine))
+		{
 			update(getLineRect(selectedLine));
 		}
 		
@@ -654,50 +666,55 @@ rbool RDOLogCtrl::scrollHorizontally( int inc )
 	return res;
 }
 
-rbool RDOLogCtrl::isVisible( const int index ) const
+rbool RDOLogCtrl::isVisible(int index) const
 {
 	return index <= lastViewableLine && index >= yPos;
 }
 
-rbool RDOLogCtrl::isFullyVisible( const int index ) const
+rbool RDOLogCtrl::isFullyVisible(int index) const
 {
 	int lastVisible = yPos + newClientRect.height() / lineHeight - 1;
 	return index <= lastVisible && index >= yPos;
 }
 
-void RDOLogCtrl::selectLine( const int index )
+void RDOLogCtrl::selectLine(int index)
 {
-	if ( index < 0 || index > stringsCount - 1 || index == selectedLine )
+	if (index < 0 || index > stringsCount - 1 || index == selectedLine)
 		return;
-	int prevSel = selectedLine;
-	int inc = max ( - prevSel, min ( index - prevSel, stringsCount - 1 - prevSel ) );
 
-	if ( inc ) {
+	int prevSel = selectedLine;
+	int inc = max (- prevSel, min (index - prevSel, stringsCount - 1 - prevSel));
+
+	if (inc)
+	{
 		selectedLine += inc;
 		
 		//makeLineVisible() scrolls to the line and repaints
 		//it and nearby line if scrolling occurs.
 		//If no scrolling is done repaint line
-		rbool needrepaint = !makeLineVisible( selectedLine );
-		if ( needrepaint )
-			repaintLine( selectedLine );
+		rbool needrepaint = !makeLineVisible(selectedLine);
+		if (needrepaint)
+		{
+			repaintLine(selectedLine);
+		}
 
 		//repaintLine() repaints line only if it's visible
-		repaintLine( prevSel );
+		repaintLine(prevSel);
 	}
 }
 
 QRect RDOLogCtrl::getLineRect(int index) const
 {
 	QRect rect(newClientRect);
-	rect.setTop(( index - yPos ) * lineHeight);
-	rect.setBottom(min( rect.top() + lineHeight, rect.bottom() ));
+	rect.setTop((index - yPos) * lineHeight);
+	rect.setBottom(min(rect.top() + lineHeight, rect.bottom()));
 	return rect;
 }
 
-void RDOLogCtrl::repaintLine ( const int index )
+void RDOLogCtrl::repaintLine(int index)
 {
-	if ( isVisible( index ) ) {
+	if (isVisible(index))
+	{
 		update(getLineRect(index));
 		updateWindow();
 	}
@@ -708,74 +725,89 @@ void RDOLogCtrl::updateWindow()
 	update();
 }
 
-rbool RDOLogCtrl::makeLineVisible( const int index )
+rbool RDOLogCtrl::makeLineVisible(int index)
 {
 	rbool res = false;
 	
-	if ( isFullyVisible( index ) )
+	if (isFullyVisible(index))
 		return res;
 
 	int inc;
-	if ( yPos < index ) {
+	if (yPos < index)
+	{
 		int lastVisible = yPos + newClientRect.height() / lineHeight - 1;
 		inc = index - lastVisible;
-	} else
+	}
+	else
+	{
 		inc = index - yPos;
+	}
 	
 	//Repainting nearby lines after scrolling
 	fullRepaintLines = 2;
 	
-	res = scrollVertically( inc );
+	res = scrollVertically(inc);
 	
 	fullRepaintLines = 0;
 	
 	return res;
 }
 
-void RDOLogCtrl::addStringToLog( const tstring logStr )
+void RDOLogCtrl::addStringToLog(CREF(tstring) logStr)
 {
 	mutex.Lock();
 
 //! @todo qt
-	//if ( !hwnd )
+	//if (!hwnd)
 	//	return;
 
-	rbool prevVisible = isVisible( stringsCount - 1 );
+	rbool prevVisible = isVisible(stringsCount - 1);
 
-	strings.push_back( logStr );
-	if ( !stringsCount )
+	strings.push_back(logStr);
+	if (!stringsCount)
+	{
 		yPos_iterator = strings.begin();
+	}
 	stringsCount ++;
 
-	recalcWidth( logStr.length() );
+	recalcWidth(logStr.length());
 
 	int lastString = stringsCount - 1;
 
-	if ( drawLog ) {
-
+	if (drawLog)
+	{
 		updateScrollBars();
-
 
 		fullRepaintLines = 1;
 
-		if (  selectedLine != -1 && selectedLine == lastString - 1 ) {
+		if ( selectedLine != -1 && selectedLine == lastString - 1)
+		{
 			selectedLine = lastString;
 			fullRepaintLines ++;
 		}
 
-		if ( !isFullyVisible( lastString ) && prevVisible && ( !isVisible( selectedLine ) || selectedLine == lastString ) )
-			//::SendMessage( m_hWnd, WM_VSCROLL, MAKELONG(SB_BOTTOM, 0), NULL );
-			scrollVertically( yMax - yPos );
-		else if ( isVisible( lastString ) ) {
-			repaintLine( lastString );
-			if ( fullRepaintLines == 2 )
-				repaintLine( lastString - 1 );
+		if (!isFullyVisible(lastString) && prevVisible && (!isVisible(selectedLine) || selectedLine == lastString))
+		{
+			//::SendMessage(m_hWnd, WM_VSCROLL, MAKELONG(SB_BOTTOM, 0), NULL);
+			scrollVertically(yMax - yPos);
+		}
+		else if (isVisible(lastString))
+		{
+			repaintLine(lastString);
+			if (fullRepaintLines == 2)
+			{
+				repaintLine(lastString - 1);
+			}
 		}
 
 		fullRepaintLines = 0;
-	} else {
-		if (  selectedLine != -1 && selectedLine == lastString - 1 )
+	}
+	else
+	{
+		if (selectedLine != -1 && selectedLine == lastString - 1)
+		{
 			selectedLine = lastString;
+		}
 	}
 
 	mutex.Unlock();
@@ -786,15 +818,16 @@ CREF(RDOLogStyle) RDOLogCtrl::getStyle() const
 	return *logStyle;
 }
 
-void RDOLogCtrl::setStyle( RDOLogStyle* style, const rbool needRedraw )
+void RDOLogCtrl::setStyle(RDOLogStyle* style, rbool needRedraw)
 {
 	logStyle = style;
 	setFont(false);
 	
-	recalcWidth( maxStrWidth );
+	recalcWidth(maxStrWidth);
 	updateScrollBars();
 	
-	if ( needRedraw ) {
+	if (needRedraw)
+	{
 		update();
 		updateWindow();
 	}
@@ -825,14 +858,16 @@ void RDOLogCtrl::setFont(rbool needRedraw)
 	mutex.Unlock();
 }
 
-void RDOLogCtrl::getString( const int index, tstring& str ) const
+void RDOLogCtrl::getString(int index, tstring& str) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
 	tstring res = "";
 
-	if ( index >= 0 && index < stringsCount )
-		str.assign( *const_findString( index ) );
+	if (index >= 0 && index < stringsCount)
+	{
+		str.assign(*const_findString(index));
+	}
 
 	const_cast<CMutex&>(mutex).Unlock();
 }
@@ -842,24 +877,24 @@ int RDOLogCtrl::getSelectedIndex() const
 	return selectedLine;
 }
 
-void RDOLogCtrl::getSelected( tstring& str ) const
+void RDOLogCtrl::getSelected(tstring& str) const
 {
-	getString( selectedLine, str );
+	getString(selectedLine, str);
 }
 
 void RDOLogCtrl::copy()
 {
 //! @todo qt
-//	if ( canCopy() ) {
-//		if ( !OpenClipboard() || !::EmptyClipboard() )
+//	if (canCopy()) {
+//		if (!OpenClipboard() || !::EmptyClipboard())
 //			return;
 //		tstring str;
-//		getSelected( str );
-//		char* ptr = (char*)::LocalAlloc( LMEM_FIXED, str.length() + 1 );
+//		getSelected(str);
+//		char* ptr = (char*)::LocalAlloc(LMEM_FIXED, str.length() + 1);
 //#pragma warning(disable: 4996)
-//		strcpy( ptr, str.c_str() );
+//		strcpy(ptr, str.c_str());
 //#pragma warning(default: 4996)
-//		::SetClipboardData( CF_TEXT, ptr );
+//		::SetClipboardData(CF_TEXT, ptr);
 //		CloseClipboard();
 //	}
 }
@@ -882,110 +917,163 @@ void RDOLogCtrl::clear()
 	mutex.Unlock();
 }
 
-void RDOLogCtrl::setYPosIterator( const int prev_yPos )
+void RDOLogCtrl::setYPosIterator(int prev_yPos)
 {
-	if ( yPos != prev_yPos ) {
-		if ( yPos == 0 ) {
+	if (yPos != prev_yPos)
+	{
+		if (yPos == 0)
+		{
 			yPos_iterator = strings.begin();
-		} else if ( yPos == yMax ) {
+		}
+		else if (yPos == yMax)
+		{
 			yPos_iterator = strings.end();
-			for ( int i = stringsCount; i > yMax; i-- )
-				yPos_iterator--;
-		} else {
+			for (int i = stringsCount; i > yMax; i--)
+			{
+				--yPos_iterator;
+			}
+		}
+		else
+		{
 			int delta = yPos - prev_yPos;
-			if ( delta > 0 ) {
-				for ( int i = 0; i < delta; i++ )
-					yPos_iterator++;
-			} else {
-				for ( int i = delta; i < 0; i++ )
-					yPos_iterator--;
+			if (delta > 0)
+			{
+				for (int i = 0; i < delta; i++)
+				{
+					++yPos_iterator;
+				}
+			}
+			else
+			{
+				for (int i = delta; i < 0; i++)
+				{
+					--yPos_iterator;
+				}
 			}
 		}
 	}
 }
 
-stringList::iterator RDOLogCtrl::findString( int index )
+stringList::iterator RDOLogCtrl::findString(int index)
 {
 	stringList::iterator res;
 	
-	if ( index == 0 ) {
+	if (index == 0)
+	{
 		res = strings.begin();
-	} else if ( index == yPos ) {
+	}
+	else if (index == yPos)
+	{
 		res = yPos_iterator;
-	} else if ( index == stringsCount - 1 ) {
+	}
+	else if (index == stringsCount - 1)
+	{
 		res = strings.end();
-		res --;
-	} else {
+		--res;
+	}
+	else
+	{
 		int deltaPos = index - yPos;
-		int deltaEnd = index - ( stringsCount - 1 );
+		int deltaEnd = index - (stringsCount - 1);
 		int mod_deltaPos = deltaPos >= 0 ? deltaPos : -1 * deltaPos;
 		int mod_deltaEnd = deltaEnd >= 0 ? deltaEnd : -1 * deltaEnd;
-		int delta = min( index, mod_deltaPos );
-		delta = min( delta, mod_deltaEnd );
-		if ( delta == index ) {
+		int delta = min(index, mod_deltaPos);
+		delta = min(delta, mod_deltaEnd);
+		if (delta == index)
+		{
 			res = strings.begin();
-		} else if ( delta == mod_deltaPos ) {
+		}
+		else if (delta == mod_deltaPos)
+		{
 			res = yPos_iterator;
 			delta = deltaPos;
-		} else if ( delta == mod_deltaEnd ) {
+		}
+		else if (delta == mod_deltaEnd)
+		{
 			res = strings.end();
-			res --;
+			--res;
 			delta = deltaEnd;
 		}
-		if ( delta > 0 ) {
-			for ( int i = 0; i < delta; i++ )
-				res++;
-		} else {
-			for ( int i = delta; i < 0; i++ )
-				res--;
+		if (delta > 0)
+		{
+			for (int i = 0; i < delta; i++)
+			{
+				++res;
+			}
+		}
+		else
+		{
+			for (int i = delta; i < 0; i++)
+			{
+				--res;
+			}
 		}
 	}
 
 	return res;
 }
 
-stringList::reverse_iterator RDOLogCtrl::reverse_findString( int index )
+stringList::reverse_iterator RDOLogCtrl::reverse_findString(int index)
 {
-	stringList::reverse_iterator rit(findString( index ));
+	stringList::reverse_iterator rit(findString(index));
 	return rit;
 }
 
-stringList::const_iterator RDOLogCtrl::const_findString( int index ) const
+stringList::const_iterator RDOLogCtrl::const_findString(int index) const
 {
 	stringList::const_iterator res = strings.end();
 	
-	if ( index == 0 ) {
+	if (index == 0)
+	{
 		res = strings.begin();
-	} else if ( index == yPos ) {
+	}
+	else if (index == yPos)
+	{
 		res = yPos_iterator;
-	} else if ( index == stringsCount - 1 ) {
+	}
+	else if (index == stringsCount - 1)
+	{
 		res = strings.end();
-		res --;
-	} else {
+		--res;
+	}
+	else
+	{
 		int deltaPos = index - yPos;
-		int deltaEnd = index - ( stringsCount - 1 );
+		int deltaEnd = index - (stringsCount - 1);
 		int mod_deltaPos = deltaPos >= 0 ? deltaPos : -1 * deltaPos;
 		int mod_deltaEnd = deltaEnd >= 0 ? deltaEnd : -1 * deltaEnd;
-		int delta = min( index, mod_deltaPos );
-		delta = min( delta, mod_deltaEnd );
-		if ( delta == index ) {
+		int delta = min(index, mod_deltaPos);
+		delta = min(delta, mod_deltaEnd);
+		if (delta == index)
+		{
 			res = strings.begin();
-		} else if ( delta == mod_deltaPos ) {
+		}
+		else if (delta == mod_deltaPos)
+		{
 			res = yPos_iterator;
 			delta = deltaPos;
-		} else if ( delta == mod_deltaEnd ) {
+		}
+		else if (delta == mod_deltaEnd)
+		{
 			res = strings.end();
-			res --;
+			--res;
 			delta = deltaEnd;
 		}
 		if (res != strings.end())
 		{
-			if ( delta > 0 ) {
-				for ( int i = 0; i < delta; i++ )
-					res++;
-			} else {
-				for ( int i = delta; i < 0; i++ )
-					res--;
+			if (delta > 0)
+			{
+				for (int i = 0; i < delta; i++)
+				{
+					++res;
+				}
+			}
+			else
+			{
+				for (int i = delta; i < 0; i++)
+				{
+					--res;
+				}
 			}
 		}
 	}
@@ -993,13 +1081,13 @@ stringList::const_iterator RDOLogCtrl::const_findString( int index ) const
 	return res;
 }
 
-stringList::const_reverse_iterator RDOLogCtrl::const_reverse_findString( int index ) const
+stringList::const_reverse_iterator RDOLogCtrl::const_reverse_findString(int index) const
 {
-	stringList::const_reverse_iterator rit(const_findString( index ));
+	stringList::const_reverse_iterator rit(const_findString(index));
 	return rit;
 }
 
-void RDOLogCtrl::find( int& result, const rbool searchDown, const rbool matchCase, const rbool matchWholeWord )
+void RDOLogCtrl::find(int& result, rbool searchDown, rbool matchCase, rbool matchWholeWord)
 {
 	mutex.Lock();
 
@@ -1012,64 +1100,79 @@ void RDOLogCtrl::find( int& result, const rbool searchDown, const rbool matchCas
 
 	int startPos = selectedLine + 1;
 	int endPos = stringsCount - 1;
-	if ( !searchDown ) {
+	if (!searchDown)
+	{
 		startPos = selectedLine - 1;
 		endPos   = 0;
 	}
 
 	posFind = -1;
-	if ( searchDown ) {
+	if (searchDown)
+	{
 		it = std::find_if(
-				findString( startPos ),
-				strings.end(),
-				RDOLogCtrlFindInList( this, findStr, matchCase, matchWholeWord )
-			);
-		if ( it == strings.end() ) {
+			findString(startPos),
+			strings.end(),
+			RDOLogCtrlFindInList(this, findStr, matchCase, matchWholeWord)
+		);
+		if (it == strings.end())
+		{
 			posFind = -1;
 			startPos = 0;
 			endPos   = stringsCount - 1;
 			it = std::find_if(
 				strings.begin(),
 				strings.end(),
-				RDOLogCtrlFindInList( this, findStr, matchCase, matchWholeWord )
+				RDOLogCtrlFindInList(this, findStr, matchCase, matchWholeWord)
 			);
 		}
-		if ( it == strings.end() )
+		if (it == strings.end())
+		{
 			posFind = -1;
+		}
 		else
+		{
 			posFind += startPos;
-	} else {
+		}
+	}
+	else
+	{
 		it_r = std::find_if(
-				reverse_findString( startPos + 1 ),
-				strings.rend(),
-				RDOLogCtrlFindInList( this, findStr, matchCase, matchWholeWord )
-			);
-		if ( it_r == strings.rend() ) {
+			reverse_findString(startPos + 1),
+			strings.rend(),
+			RDOLogCtrlFindInList(this, findStr, matchCase, matchWholeWord)
+		);
+		if (it_r == strings.rend())
+		{
 			posFind = -1;
 			startPos = stringsCount - 1;
 			endPos   = 0;
 			it_r = std::find_if(
 				strings.rbegin(),
 				strings.rend(),
-				RDOLogCtrlFindInList( this, findStr, matchCase, matchWholeWord )
+				RDOLogCtrlFindInList(this, findStr, matchCase, matchWholeWord)
 			);
 		}
-		if ( it_r == strings.rend() )
-			posFind = -1;
-		else
-			posFind = startPos - posFind;
+		posFind = it_r == strings.rend()
+			? -1
+			: startPos - posFind;
 	}
 	
-	if ( posFind == -1 ) {
+	if (posFind == -1)
+	{
 		firstFoundLine = -1;
 		bHaveFound    = false;
 		result = -1;
-	} else {
+	}
+	else
+	{
 		bHaveFound = true;
 		result = posFind;
-		if ( firstFoundLine == -1 ) {
+		if (firstFoundLine == -1)
+		{
 			firstFoundLine = posFind;
-		} else if ( posFind == firstFoundLine ) {
+		}
+		else if (posFind == firstFoundLine)
+		{
 			firstFoundLine = -1;
 			bHaveFound    = false;
 			result = -1;
@@ -1079,26 +1182,30 @@ void RDOLogCtrl::find( int& result, const rbool searchDown, const rbool matchCas
 	mutex.Unlock();
 }
 
-void RDOLogCtrl::setText( tstring text )
+void RDOLogCtrl::setText(tstring text)
 {
 	clear();
-	while ( !text.empty() ) {
-		ruint pos = text.find_first_of( "\r\n" );
-		if ( pos == tstring::npos )
+	while (!text.empty())
+	{
+		ruint pos = text.find_first_of("\r\n");
+		if (pos == tstring::npos)
+		{
 			pos = text.length();
-		addStringToLog( pos ? text.substr( 0, pos ) : "" );
-		text.erase( 0, pos );
-		text.erase( 0, text.find_first_not_of( "\r\n" ) );
+		}
+		addStringToLog(pos ? text.substr(0, pos) : "");
+		text.erase(0, pos);
+		text.erase(0, text.find_first_not_of("\r\n"));
 	}
 }
 
-void RDOLogCtrl::setDrawLog( rbool value )
+void RDOLogCtrl::setDrawLog(rbool value)
 {
-	if ( drawLog != value ) {
+	if (drawLog != value)
+	{
 		drawLog = value;
 		updateScrollBars();
 		update();
 		updateWindow();
-		makeLineVisible( selectedLine );
+		makeLineVisible(selectedLine);
 	}
 }

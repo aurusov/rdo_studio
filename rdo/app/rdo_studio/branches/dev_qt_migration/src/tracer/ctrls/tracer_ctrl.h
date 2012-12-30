@@ -58,11 +58,11 @@ protected:
 	stringList strings;
 	int stringsCount;
 	stringList::iterator yPos_iterator;
-	void setYPosIterator( const int prev_yPos );
-	stringList::iterator findString( int index );
-	stringList::reverse_iterator reverse_findString( int index );
-	stringList::const_iterator const_findString( int index ) const;
-	stringList::const_reverse_iterator const_reverse_findString( int index ) const;
+	void setYPosIterator(int prev_yPos);
+	stringList::iterator findString(int index);
+	stringList::reverse_iterator reverse_findString(int index);
+	stringList::const_iterator const_findString(int index) const;
+	stringList::const_reverse_iterator const_reverse_findString(int index) const;
 
 	int   firstFoundLine;
 	int   posFind;
@@ -71,23 +71,23 @@ protected:
 	rbool bMatchCase;
 	rbool bMatchWholeWord;
 	tstring findStr;
-	void find( int& result, const rbool searchDown, const rbool matchCase, const rbool matchWholeWord );
+	void find(int& result, rbool searchDown, rbool matchCase, rbool matchWholeWord);
 
 	RDOLogStyle*  logStyle;
-	virtual rbool getItemColors( const int index, RDOLogColorPair* &colors ) const;
-	virtual rbool getItemColors( CREF(tstring) item, RDOLogColorPair* &colors ) const;
+	virtual rbool getItemColors(int index, RDOLogColorPair* &colors) const;
+	virtual rbool getItemColors(CREF(tstring) item, RDOLogColorPair* &colors) const;
 	
-	void  recalcWidth( const int newMaxStrWidth );
+	void  recalcWidth(int newMaxStrWidth);
 	void  updateScrollBars();
 
 	rbool scrollVertically  (int pos);
 	rbool scrollHorizontally(int pos);
 	
-	rbool isVisible( const int index ) const;
-	rbool isFullyVisible( const int index ) const;
+	rbool isVisible(int index) const;
+	rbool isFullyVisible(int index) const;
 
 	QRect getLineRect(int index) const;
-	void  repaintLine ( const int index );
+	void  repaintLine (int index);
 
 	rbool canCopy() const { return selectedLine != -1; };
 
@@ -103,7 +103,7 @@ protected:
 	int m_prevHorzSBValue;
 
 protected:
-	afx_msg int  OnCreate( LPCREATESTRUCT lpCreateStruct );
+	afx_msg int  OnCreate(LPCREATESTRUCT lpCreateStruct);
 
 private:
 	typedef  QWidget  parent_type;
@@ -124,27 +124,27 @@ public:
 	RDOLogCtrl(PTR(QAbstractScrollArea) pParent, PTR(RDOLogStyle) pStyle = NULL);
 	virtual ~RDOLogCtrl();
 
-	virtual void addStringToLog( const tstring logStr );
+	virtual void addStringToLog(CREF(tstring) logStr);
 	
 	rbool getFocusOnly() const { return focusOnly; }
-	virtual void setFocusOnly( const rbool value ) { focusOnly = value; }
+	virtual void setFocusOnly(rbool value) { focusOnly = value; }
 
-	virtual void getString( const int index, tstring& str ) const;
+	virtual void getString(int index, tstring& str) const;
 	virtual int getSelectedIndex() const;
-	virtual void getSelected( tstring& str ) const;
-	virtual rbool makeLineVisible( const int index );
-	virtual void selectLine( const int index );
+	virtual void getSelected(tstring& str) const;
+	virtual rbool makeLineVisible(int index);
+	virtual void selectLine(int index);
 	virtual void copy();
-	virtual void findNext()     { int res; find( res, bSearchDown, bMatchCase, bMatchWholeWord ); selectLine( res );  };
-	virtual void findPrevious() { int res; find( res, !bSearchDown, bMatchCase, bMatchWholeWord ); selectLine( res ); };
+	virtual void findNext()     { int res; find(res, bSearchDown, bMatchCase, bMatchWholeWord); selectLine(res);  };
+	virtual void findPrevious() { int res; find(res, !bSearchDown, bMatchCase, bMatchWholeWord); selectLine(res); };
 	virtual void clear();
 	
 	virtual CREF(RDOLogStyle) getStyle() const;
-	virtual void setStyle( RDOLogStyle* style, const rbool needRedraw = true );
+	virtual void setStyle(RDOLogStyle* style, rbool needRedraw = true);
 
-	void setText( tstring text );
+	void setText(tstring text);
 
-	void  setDrawLog( rbool value );
+	void  setDrawLog(rbool value);
 	rbool getDrawLog() const { return drawLog; };
 
 	int getStringsCount() const { return stringsCount; };

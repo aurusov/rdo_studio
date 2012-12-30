@@ -38,7 +38,7 @@ protected:
 	rbool            addingSubitems;
 	RDOLogColorPair* itemColor;
 
-	virtual rbool getItemColors(const int index, RDOLogColorPair* &colors) const;
+	virtual rbool getItemColors(int index, RDOLogColorPair* &colors) const;
 	void showFindError(REF(tstring) findStr);
 
 	CMenu popupMenu;
