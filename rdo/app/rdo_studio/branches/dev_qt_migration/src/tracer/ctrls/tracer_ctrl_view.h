@@ -32,12 +32,14 @@ class RDOTracerLogCtrlView
 	, public IHelpContext
 {
 protected:
-	typedef std::map< int, RDOLogColorPair* > RDOColorMap;
-	RDOColorMap subitemColors;
-	rbool addingSubitems;
+	typedef std::map<int, RDOLogColorPair*> RDOColorMap;
+
+	RDOColorMap      subitemColors;
+	rbool            addingSubitems;
 	RDOLogColorPair* itemColor;
-	virtual rbool getItemColors( const int index, RDOLogColorPair* &colors ) const;
-	void showFindError( tstring& findStr );
+
+	virtual rbool getItemColors(const int index, RDOLogColorPair* &colors) const;
+	void showFindError(REF(tstring) findStr);
 
 	CMenu popupMenu;
 	rbool bShowMenu;
@@ -49,28 +51,28 @@ private:
 	afx_msg void OnFindNext();
 	afx_msg void OnFindPrev();
 	afx_msg void OnCopy();
-	afx_msg LRESULT OnFindReplaceMsg( WPARAM wParam, LPARAM lParam );
-	afx_msg void OnCanCopy( CCmdUI* pCmdUI );
-	afx_msg void OnUpdateFindNextPrev( CCmdUI* pCmdUI );
-	afx_msg void OnUpdateFind( CCmdUI* pCmdUI );
+	afx_msg LRESULT OnFindReplaceMsg(WPARAM wParam, LPARAM lParam);
+	afx_msg void OnCanCopy(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateFindNextPrev(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateFind(CCmdUI* pCmdUI);
 	//! todo qt
-	//afx_msg void OnInitMenuPopup( CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu );
-	//afx_msg void OnContextMenu( CWnd* pWnd, CPoint pos );
-	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
-	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );
+	//afx_msg void OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu);
+	//afx_msg void OnContextMenu(CWnd* pWnd, CPoint pos);
+	afx_msg void OnUpdateCoordStatusBar(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateModifyStatusBar(CCmdUI* pCmdUI);
 	
 public:
 	RDOTracerLogCtrlView(PTR(QAbstractScrollArea) pParent);
 	virtual ~RDOTracerLogCtrlView();
 
-	virtual void addStringToLog( const tstring logStr );
+	virtual void addStringToLog(CREF(tstring) logStr);
 
-	virtual void setStyle( RDOTracerLogStyle* style, const rbool needRedraw = true );
+	virtual void setStyle(RDOTracerLogStyle* style, const rbool needRedraw = true);
 
 	virtual void clear();
 
-	rbool getShowMenu() const              { return bShowMenu;  };
-	void  setShowMenu( const rbool value ) { bShowMenu = value; };
+	rbool getShowMenu() const      { return bShowMenu;  };
+	void  setShowMenu(rbool value) { bShowMenu = value; };
 
 };
 
