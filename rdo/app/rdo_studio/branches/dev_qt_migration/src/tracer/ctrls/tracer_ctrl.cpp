@@ -189,6 +189,179 @@ rbool RDOLogCtrlFindInList::operator()(tstring nextstr)
 }
 
 // --------------------------------------------------------------------------------
+// -------------------- RDOLogCtrl::StringList
+// --------------------------------------------------------------------------------
+RDOLogCtrl::StringList::StringList()
+	: m_count   (0)
+	, m_cursor  (0)
+	, m_cursorIt(m_list.end())
+{}
+
+void RDOLogCtrl::StringList::push_back(CREF(tstring) value)
+{
+	m_list.push_back(value);
+	++m_count;
+
+	if (m_count == 1)
+	{
+		m_cursorIt = m_list.begin();
+	}
+}
+
+RDOLogCtrl::StringList::const_iterator RDOLogCtrl::StringList::begin() const
+{
+	return const_cast<StringList*>(this)->begin();
+}
+
+RDOLogCtrl::StringList::iterator RDOLogCtrl::StringList::begin()
+{
+	return m_list.end();
+}
+
+RDOLogCtrl::StringList::const_iterator RDOLogCtrl::StringList::end() const
+{
+	return const_cast<StringList*>(this)->end();
+}
+
+RDOLogCtrl::StringList::iterator RDOLogCtrl::StringList::end()
+{
+	return m_list.end();
+}
+
+RDOLogCtrl::StringList::const_reverse_iterator RDOLogCtrl::StringList::rbegin() const
+{
+	return m_list.rbegin();
+}
+
+RDOLogCtrl::StringList::reverse_iterator RDOLogCtrl::StringList::rbegin()
+{
+	return m_list.rbegin();
+}
+
+RDOLogCtrl::StringList::const_reverse_iterator RDOLogCtrl::StringList::rend() const
+{
+	return m_list.rend();
+}
+
+RDOLogCtrl::StringList::reverse_iterator RDOLogCtrl::StringList::rend()
+{
+	return m_list.rend();
+}
+
+void RDOLogCtrl::StringList::clear()
+{
+	m_list.clear();
+	m_count = 0;
+}
+
+rsint RDOLogCtrl::StringList::count() const
+{
+	return m_count;
+}
+
+void RDOLogCtrl::StringList::setCursor(rsint pos, rsint max)
+{
+	if (pos == m_cursor)
+		return;
+
+	if (pos == 0)
+	{
+		m_cursorIt = m_list.begin();
+	}
+	else if (pos == max)
+	{
+		m_cursorIt = m_list.end();
+		for (int i = m_count; i > max; --i)
+		{
+			--m_cursorIt;
+		}
+	}
+	else
+	{
+		int delta = pos - m_cursor;
+		seek(delta, m_cursorIt);
+	}
+	m_cursor = pos;
+}
+
+RDOLogCtrl::StringList::const_iterator RDOLogCtrl::StringList::findString(int index) const
+{
+	return const_cast<StringList*>(this)->findString(index);
+}
+
+RDOLogCtrl::StringList::iterator RDOLogCtrl::StringList::findString(int index)
+{
+	iterator res;
+
+	if (index == 0)
+	{
+		res = m_list.begin();
+	}
+	else if (index == m_cursor)
+	{
+		res = m_cursorIt;
+	}
+	else if (index == m_count - 1)
+	{
+		res = m_list.end();
+		--res;
+	}
+	else
+	{
+		int deltaPos = index - m_cursor;
+		int deltaEnd = index - (m_count - 1);
+		int mod_deltaPos = deltaPos >= 0 ? deltaPos : -1 * deltaPos;
+		int mod_deltaEnd = deltaEnd >= 0 ? deltaEnd : -1 * deltaEnd;
+		int delta = (std::min)(index, mod_deltaPos);
+		delta = (std::min)(delta, mod_deltaEnd);
+		if (delta == index)
+		{
+			res = m_list.begin();
+		}
+		else if (delta == mod_deltaPos)
+		{
+			res = m_cursorIt;
+			delta = deltaPos;
+		}
+		else if (delta == mod_deltaEnd)
+		{
+			res = m_list.end();
+			--res;
+			delta = deltaEnd;
+		}
+		seek(delta, res);
+	}
+
+	return res;
+}
+
+RDOLogCtrl::StringList::reverse_iterator RDOLogCtrl::StringList::rFindString(int index)
+{
+	reverse_iterator rit(findString(index));
+	return rit;
+}
+
+void RDOLogCtrl::StringList::seek(rsint delta, REF(StringList::const_iterator) it) const
+{
+	ASSERT(it != m_list.end());
+
+	if (delta > 0)
+	{
+		for (int i = 0; i < delta; i++)
+		{
+			++it;
+		}
+	}
+	else
+	{
+		for (int i = delta; i < 0; i++)
+		{
+			--it;
+		}
+	}
+}
+
+// --------------------------------------------------------------------------------
 // -------------------- RDOLogCtrl
 // --------------------------------------------------------------------------------
 RDOLogCtrl::RDOLogCtrl(PTR(QAbstractScrollArea) pParent, PTR(RDOLogStyle) pStyle)

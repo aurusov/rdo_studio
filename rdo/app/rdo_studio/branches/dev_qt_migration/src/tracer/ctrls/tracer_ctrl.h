@@ -39,155 +39,27 @@ private:
 		typedef  List::reverse_iterator        reverse_iterator;
 		typedef  List::const_reverse_iterator  const_reverse_iterator;
 
-		StringList()
-			: m_count   (0)
-			, m_cursor  (0)
-			, m_cursorIt(m_list.end())
-		{}
+		StringList();
 
-		void push_back(CREF(tstring) value)
-		{
-			m_list.push_back(value);
-			++m_count;
+		void push_back(CREF(tstring) value);
 
-			if (m_count == 1)
-			{
-				m_cursorIt = m_list.begin();
-			}
-		}
+		const_iterator begin() const;
+		iterator       begin();
+		const_iterator end  () const;
+		iterator       end  ();
 
-		iterator begin()
-		{
-			return m_list.end();
-		}
+		const_reverse_iterator rbegin() const;
+		reverse_iterator       rbegin();
+		const_reverse_iterator rend  () const;
+		reverse_iterator       rend  ();
 
-		const_iterator begin() const
-		{
-			return const_cast<StringList*>(this)->begin();
-		}
+		void  clear();
+		rsint count() const;
+		void setCursor(rsint pos, rsint max);
 
-		const_reverse_iterator rbegin() const
-		{
-			return m_list.rbegin();
-		}
-
-		reverse_iterator rbegin()
-		{
-			return m_list.rbegin();
-		}
-
-		const_reverse_iterator rend() const
-		{
-			return m_list.rend();
-		}
-
-		reverse_iterator rend()
-		{
-			return m_list.rend();
-		}
-
-		iterator end()
-		{
-			return m_list.end();
-		}
-
-		const_iterator end() const
-		{
-			return const_cast<StringList*>(this)->end();
-		}
-
-		void clear()
-		{
-			m_list.clear();
-			m_count = 0;
-		}
-
-		rsint count() const
-		{
-			return m_count;
-		}
-
-		void setCursor(rsint pos, rsint max)
-		{
-			if (pos == m_cursor)
-				return;
-
-			if (pos == 0)
-			{
-				m_cursorIt = m_list.begin();
-			}
-			else if (pos == max)
-			{
-				m_cursorIt = m_list.end();
-				for (int i = m_count; i > max; --i)
-				{
-					--m_cursorIt;
-				}
-			}
-			else
-			{
-				int delta = pos - m_cursor;
-				seek(delta, m_cursorIt);
-			}
-			m_cursor = pos;
-		}
-
-		iterator findString(int index)
-		{
-			iterator res;
-
-			if (index == 0)
-			{
-				res = m_list.begin();
-			}
-			else if (index == m_cursor)
-			{
-				res = m_cursorIt;
-			}
-			else if (index == m_count - 1)
-			{
-				res = m_list.end();
-				--res;
-			}
-			else
-			{
-				int deltaPos = index - m_cursor;
-				int deltaEnd = index - (m_count - 1);
-				int mod_deltaPos = deltaPos >= 0 ? deltaPos : -1 * deltaPos;
-				int mod_deltaEnd = deltaEnd >= 0 ? deltaEnd : -1 * deltaEnd;
-				int delta = (std::min)(index, mod_deltaPos);
-				delta = (std::min)(delta, mod_deltaEnd);
-				if (delta == index)
-				{
-					res = m_list.begin();
-				}
-				else if (delta == mod_deltaPos)
-				{
-					res = m_cursorIt;
-					delta = deltaPos;
-				}
-				else if (delta == mod_deltaEnd)
-				{
-					res = m_list.end();
-					--res;
-					delta = deltaEnd;
-				}
-				seek(delta, res);
-			}
-
-			return res;
-		}
-
-		const_iterator findString(int index) const
-		{
-			return const_cast<StringList*>(this)->findString(index);
-		}
-
-		reverse_iterator rFindString(int index)
-		{
-			reverse_iterator rit(findString(index));
-			return rit;
-		}
+		const_iterator   findString (int index) const;
+		iterator         findString (int index);
+		reverse_iterator rFindString(int index);
 
 	private:
 		List            m_list;
@@ -195,25 +67,7 @@ private:
 		List::iterator  m_cursorIt;
 		rsint           m_cursor;
 
-		void seek(rsint delta, REF(StringList::const_iterator) it) const
-		{
-			ASSERT(it != m_list.end());
-
-			if (delta > 0)
-			{
-				for (int i = 0; i < delta; i++)
-				{
-					++it;
-				}
-			}
-			else
-			{
-				for (int i = delta; i < 0; i++)
-				{
-					--it;
-				}
-			}
-		}
+		void seek(rsint delta, REF(StringList::const_iterator) it) const;
 	};
 
 protected:
