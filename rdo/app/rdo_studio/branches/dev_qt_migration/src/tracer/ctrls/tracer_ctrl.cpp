@@ -307,13 +307,13 @@ void RDOLogCtrl::resizeEvent(QResizeEvent* pEvent)
 		}
 
 		QRegion bottomRgn = dy
-							? QRegion(newClientRect.left(), prevClRectBackup.bottom() - 1, newClientRect.right(), newClientRect.bottom())
-							: QRegion(0, 0, 0, 0);
+			? QRegion(newClientRect.left(), prevClRectBackup.bottom() - 1, newClientRect.right(), newClientRect.bottom())
+			: QRegion(0, 0, 0, 0);
 
 		//Substracting 1 pixel to remove old focus rectangle.
 		QRegion rightRgn = dx
-						   ? QRegion(prevClRectBackup.right() - 1, newClientRect.top(), newClientRect.right(), newClientRect.bottom())
-						   : QRegion(0, 0, 0, 0);
+			? QRegion(prevClRectBackup.right() - 1, newClientRect.top(), newClientRect.right(), newClientRect.bottom())
+			: QRegion(0, 0, 0, 0);
 
 		QRegion invalidRgn = bottomRgn.united(rightRgn);
 
@@ -411,7 +411,6 @@ void RDOLogCtrl::paintEvent(QPaintEvent* pEvent)
 			stringList::const_iterator it = const_findString(firstLine);
 			for (int i = firstLine; i < lastLine + 1; i++)
 			{
-
 				if (i != selectedLine || focusOnly)
 				{
 					if (!getItemColors((*it), colors))
@@ -1162,20 +1161,20 @@ void RDOLogCtrl::find(int& result, rbool searchDown, rbool matchCase, rbool matc
 	if (searchDown)
 	{
 		it = std::find_if(
-				 findString(startPos),
-				 strings.end(),
-				 RDOLogCtrlFindInList(this, findStr, matchCase, matchWholeWord)
-			 );
+			findString(startPos),
+			strings.end(),
+			RDOLogCtrlFindInList(this, findStr, matchCase, matchWholeWord)
+		);
 		if (it == strings.end())
 		{
 			posFind = -1;
 			startPos = 0;
 			endPos   = stringsCount - 1;
 			it = std::find_if(
-					 strings.begin(),
-					 strings.end(),
-					 RDOLogCtrlFindInList(this, findStr, matchCase, matchWholeWord)
-				 );
+				strings.begin(),
+				strings.end(),
+				RDOLogCtrlFindInList(this, findStr, matchCase, matchWholeWord)
+			);
 		}
 		if (it == strings.end())
 		{
@@ -1189,24 +1188,24 @@ void RDOLogCtrl::find(int& result, rbool searchDown, rbool matchCase, rbool matc
 	else
 	{
 		it_r = std::find_if(
-				   reverse_findString(startPos + 1),
-				   strings.rend(),
-				   RDOLogCtrlFindInList(this, findStr, matchCase, matchWholeWord)
-			   );
+			reverse_findString(startPos + 1),
+			strings.rend(),
+			RDOLogCtrlFindInList(this, findStr, matchCase, matchWholeWord)
+		);
 		if (it_r == strings.rend())
 		{
 			posFind = -1;
 			startPos = stringsCount - 1;
 			endPos   = 0;
 			it_r = std::find_if(
-					   strings.rbegin(),
-					   strings.rend(),
-					   RDOLogCtrlFindInList(this, findStr, matchCase, matchWholeWord)
-				   );
+				strings.rbegin(),
+				strings.rend(),
+				RDOLogCtrlFindInList(this, findStr, matchCase, matchWholeWord)
+			);
 		}
 		posFind = it_r == strings.rend()
-				  ? -1
-				  : startPos - posFind;
+			? -1
+			: startPos - posFind;
 	}
 
 	if (posFind == -1)
