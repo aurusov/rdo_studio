@@ -89,8 +89,8 @@ BOOST_AUTO_TEST_CASE(RDOCommonAnimationRadius)
 
 BOOST_AUTO_TEST_CASE(RDOCommonAnimationTextElement)
 {
-	rdo::animation::Color background;
-	rdo::animation::Color foreground;
+	rdo::animation::Color background(0, 0, 0);
+	rdo::animation::Color foreground(0, 0, 0);
 	rdo::animation::ColoredElement elem(background, foreground);
 
 	rdo::animation::Point point(0,0);
