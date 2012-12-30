@@ -780,11 +780,6 @@ void RDOLogCtrl::updateScrollBars()
 	}
 	lastViewableLine = yPos + mul - 1;
 
-	SCROLLINFO si;
-	si.cbSize = sizeof(si);
-	si.fMask  = SIF_RANGE | SIF_PAGE | SIF_POS;
-	si.nMin   = 0;
-
 	if (drawLog)
 	{
 		getVertScrollBar().setMinimum (0);
