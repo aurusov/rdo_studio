@@ -27,7 +27,6 @@ DocUpdate::DocUpdate(IDocument::Type file)
 	{
 		m_file = getCurrentType();
 	}
-	ASSERT(Position::POSITION_BEGIN != Position::POSITION_END);
 }
 
 IDocument::Type DocUpdate::getCurrentType() const
