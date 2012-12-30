@@ -2616,11 +2616,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\update\update_i.h"
+				RelativePath="..\..\update\update_i.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\update\update_i.inl"
+				RelativePath="..\..\update\update_i.h"
 				>
 			</File>
 		</Filter>

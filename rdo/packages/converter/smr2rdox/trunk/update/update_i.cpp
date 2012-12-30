@@ -1,14 +1,17 @@
 /*!
-  \copyright (c) RDO-Team, 2011
-  \file      update_i.inl
+  \copyright (c) RDO-Team, 2012
+  \file      update_i.cpp
   \author    Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      24.01.2011
   \brief     
   \indent    4T
 */
 
+// ---------------------------------------------------------------------------- PCH
+#include "converter/smr2rdox/pch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "converter/smr2rdox/update/update_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
@@ -16,35 +19,35 @@ OPEN_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- IDocUpdate::Position
 // --------------------------------------------------------------------------------
-inline IDocUpdate::Position::Position(ruint pos)
+IDocUpdate::Position::Position(ruint pos)
 	: m_position(pos)
 {}
 
-inline IDocUpdate::Position::Position(CREF(Position) pos)
+IDocUpdate::Position::Position(CREF(Position) pos)
 	: m_position(pos.m_position)
 {}
 
-inline ruint IDocUpdate::Position::get() const
+ruint IDocUpdate::Position::get() const
 {
 	return m_position;
 }
 
-inline rbool IDocUpdate::Position::begin() const
+rbool IDocUpdate::Position::begin() const
 {
 	return m_position == POSITION_BEGIN;
 }
 
-inline rbool IDocUpdate::Position::end() const
+rbool IDocUpdate::Position::end() const
 {
 	return m_position == POSITION_END;
 }
 
-inline rbool IDocUpdate::Position::real() const
+rbool IDocUpdate::Position::real() const
 {
 	return m_position != POSITION_BEGIN && m_position != POSITION_END;
 }
 
-inline void IDocUpdate::Position::operator+= (CREF(Position) pos)
+void IDocUpdate::Position::operator+= (CREF(Position) pos)
 {
 	if (real() && pos.real())
 	{
@@ -52,7 +55,7 @@ inline void IDocUpdate::Position::operator+= (CREF(Position) pos)
 	}
 }
 
-inline void IDocUpdate::Position::operator-= (CREF(Position) pos)
+void IDocUpdate::Position::operator-= (CREF(Position) pos)
 {
 	if (real() && pos.real())
 	{
@@ -60,7 +63,7 @@ inline void IDocUpdate::Position::operator-= (CREF(Position) pos)
 	}
 }
 
-inline IDocUpdate::Position IDocUpdate::Position::operator+ (CREF(Position) pos) const
+IDocUpdate::Position IDocUpdate::Position::operator+ (CREF(Position) pos) const
 {
 	if (real() && pos.real())
 	{
@@ -71,7 +74,7 @@ inline IDocUpdate::Position IDocUpdate::Position::operator+ (CREF(Position) pos)
 	return Position(0);
 }
 
-inline IDocUpdate::Position IDocUpdate::Position::operator- (CREF(Position) pos) const
+IDocUpdate::Position IDocUpdate::Position::operator- (CREF(Position) pos) const
 {
 	if (real() && pos.real())
 	{
@@ -82,7 +85,7 @@ inline IDocUpdate::Position IDocUpdate::Position::operator- (CREF(Position) pos)
 	return Position(0);
 }
 
-inline rbool IDocUpdate::Position::operator<= (CREF(Position) pos) const
+rbool IDocUpdate::Position::operator<= (CREF(Position) pos) const
 {
 	switch(get())
 	{
@@ -102,7 +105,7 @@ inline rbool IDocUpdate::Position::operator<= (CREF(Position) pos) const
 	}
 }
 
-inline rbool IDocUpdate::Position::operator>= (CREF(Position) pos) const
+rbool IDocUpdate::Position::operator>= (CREF(Position) pos) const
 {
 	switch(get())
 	{
@@ -122,7 +125,7 @@ inline rbool IDocUpdate::Position::operator>= (CREF(Position) pos) const
 	}
 }
 
-inline rbool IDocUpdate::Position::operator< (CREF(Position) pos) const
+rbool IDocUpdate::Position::operator< (CREF(Position) pos) const
 {
 	switch(get())
 	{
@@ -147,7 +150,7 @@ inline rbool IDocUpdate::Position::operator< (CREF(Position) pos) const
 	}
 }
 
-inline rbool IDocUpdate::Position::operator> (CREF(Position) pos) const
+rbool IDocUpdate::Position::operator> (CREF(Position) pos) const
 {
 	switch(get())
 	{
@@ -172,12 +175,12 @@ inline rbool IDocUpdate::Position::operator> (CREF(Position) pos) const
 	}
 }
 
-inline rbool IDocUpdate::Position::operator== (CREF(Position) pos) const
+rbool IDocUpdate::Position::operator== (CREF(Position) pos) const
 {
 	return m_position == pos.m_position;
 }
 
-inline rbool IDocUpdate::Position::operator!= (CREF(Position) pos) const
+rbool IDocUpdate::Position::operator!= (CREF(Position) pos) const
 {
 	return !operator==(pos);
 }

@@ -79,6 +79,4 @@ protected:
 
 CLOSE_RDO_CONVERTER_SMR2RDOX_NAMESPACE
 
-#include "converter/smr2rdox/update/update_i.inl"
-
 #endif // _CONVERTOR_UPDATE_I_H_

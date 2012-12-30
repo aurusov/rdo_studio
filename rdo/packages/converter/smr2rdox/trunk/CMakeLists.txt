@@ -118,7 +118,6 @@ SET(INLINE_FILES
     rdo_type_range.inl
     rdo_value.inl
     runtime/rdo_logic_dptfree.inl
-    update/update_i.inl
 	)
 
 SET(SOURCE_FILES
@@ -150,6 +149,7 @@ SET(SOURCE_FILES
     runtime/rdo_logic_dptfree.cpp
     update/document.cpp
     update/update.cpp
+    update/update_i.cpp
 	)
 
 SET(GRAMMA_FILES
@@ -322,7 +322,7 @@ SOURCE_GROUP(".update" FILES
     update/document_i.h
     update/update.cpp
     update/update.h
-    update/update_i.inl
+    update/update_i.cpp
     update/update_i.h
 	)
 	
