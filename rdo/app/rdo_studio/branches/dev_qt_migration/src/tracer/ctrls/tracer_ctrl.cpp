@@ -406,7 +406,7 @@ void RDOLogCtrl::paintEvent(QPaintEvent* pEvent)
 				rect.height() - logStyle->borders->vertBorder * 2
 			);
 
-			stringList::const_iterator it = const_findString(firstLine);
+			StringList::const_iterator it = const_findString(firstLine);
 			for (int i = firstLine; i < lastLine + 1; i++)
 			{
 				if (i != selectedLine || focusOnly)
@@ -985,9 +985,9 @@ void RDOLogCtrl::setYPosIterator(int prev_yPos)
 	}
 }
 
-stringList::iterator RDOLogCtrl::findString(int index)
+RDOLogCtrl::StringList::iterator RDOLogCtrl::findString(int index)
 {
-	stringList::iterator res;
+	StringList::iterator res;
 
 	if (index == 0)
 	{
@@ -1031,7 +1031,7 @@ stringList::iterator RDOLogCtrl::findString(int index)
 	return res;
 }
 
-void RDOLogCtrl::seek(rsint delta, REF(stringList::const_iterator) it) const
+void RDOLogCtrl::seek(rsint delta, REF(StringList::const_iterator) it) const
 {
 	ASSERT(it != strings.end());
 
@@ -1051,15 +1051,15 @@ void RDOLogCtrl::seek(rsint delta, REF(stringList::const_iterator) it) const
 	}
 }
 
-stringList::reverse_iterator RDOLogCtrl::reverse_findString(int index)
+RDOLogCtrl::StringList::reverse_iterator RDOLogCtrl::reverse_findString(int index)
 {
-	stringList::reverse_iterator rit(findString(index));
+	StringList::reverse_iterator rit(findString(index));
 	return rit;
 }
 
-stringList::const_iterator RDOLogCtrl::const_findString(int index) const
+RDOLogCtrl::StringList::const_iterator RDOLogCtrl::const_findString(int index) const
 {
-	stringList::const_iterator res = strings.end();
+	StringList::const_iterator res = strings.end();
 
 	if (index == 0)
 	{
@@ -1103,9 +1103,9 @@ stringList::const_iterator RDOLogCtrl::const_findString(int index) const
 	return res;
 }
 
-stringList::const_reverse_iterator RDOLogCtrl::const_reverse_findString(int index) const
+RDOLogCtrl::StringList::const_reverse_iterator RDOLogCtrl::const_reverse_findString(int index) const
 {
-	stringList::const_reverse_iterator rit(const_findString(index));
+	StringList::const_reverse_iterator rit(const_findString(index));
 	return rit;
 }
 
@@ -1117,8 +1117,8 @@ void RDOLogCtrl::find(int& result, rbool searchDown, rbool matchCase, rbool matc
 
 	tstring strtofind = findStr;
 
-	stringList::iterator it;
-	stringList::reverse_iterator it_r;
+	StringList::iterator it;
+	StringList::reverse_iterator it_r;
 
 	int startPos = selectedLine + 1;
 	int endPos = stringsCount - 1;

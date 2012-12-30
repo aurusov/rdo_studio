@@ -23,13 +23,16 @@ namespace rdoTracerLog {
 // --------------------------------------------------------------------------------
 // -------------------- RDOLogCtrl
 // --------------------------------------------------------------------------------
-typedef std::list< tstring > stringList;
-
 class RDOLogCtrl: public QWidget
 {
 Q_OBJECT
 
 friend class RDOLogCtrlFindInList;
+
+private:
+	class StringList: public std::list<tstring>
+	{
+	};
 
 protected:
 	CMutex mutex;
@@ -55,14 +58,14 @@ protected:
 	int fullRepaintLines;
 	rbool focusOnly;
 
-	stringList strings;
+	StringList strings;
 	int stringsCount;
-	stringList::iterator yPos_iterator;
+	StringList::iterator yPos_iterator;
 	void setYPosIterator(int prev_yPos);
-	stringList::iterator findString(int index);
-	stringList::reverse_iterator reverse_findString(int index);
-	stringList::const_iterator const_findString(int index) const;
-	stringList::const_reverse_iterator const_reverse_findString(int index) const;
+	StringList::iterator findString(int index);
+	StringList::reverse_iterator reverse_findString(int index);
+	StringList::const_iterator const_findString(int index) const;
+	StringList::const_reverse_iterator const_reverse_findString(int index) const;
 
 	int   firstFoundLine;
 	int   posFind;
@@ -116,7 +119,7 @@ private:
 	REF(QScrollBar) getVertScrollBar();
 	REF(QScrollBar) getHorzScrollBar();
 
-	void seek(rsint delta, REF(stringList::const_iterator) it) const;
+	void seek(rsint delta, REF(StringList::const_iterator) it) const;
 
 private slots:
 	void onVertScrollBarValueChanged(int value);
