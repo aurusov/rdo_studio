@@ -124,15 +124,25 @@ private:
 		rsint pageSize;
 
 		ScrollMetric();
+
+		rbool applyInc(rsint delta);
 	};
 
-	ScrollMetric m_SM_Y;
-	ScrollMetric m_SM_X;
+	struct ScrollMetricVert: public ScrollMetric
+	{
+		rsint lastViewableLine;
+
+		ScrollMetricVert();
+		rbool isVisible(rsint index) const;
+		rbool applyInc (rsint delta);
+	};
+
+	ScrollMetric      m_SM_X;
+	ScrollMetricVert  m_SM_Y;
 
 	QRect m_clientRect;
 	QRect m_prevWindowRect;
 
-	int lastViewableLine;
 	int fullRepaintLines;
 	rbool focusOnly;
 
@@ -149,7 +159,6 @@ private:
 	rbool scrollVertically  (int pos);
 	rbool scrollHorizontally(int pos);
 	
-	rbool isVisible(int index) const;
 	rbool isFullyVisible(int index) const;
 
 	QRect getLineRect(int index) const;
@@ -163,8 +172,6 @@ private:
 	void setFont();
 
 	PTR(QAbstractScrollArea) m_pScrollArea;
-	int m_prevVertSBValue;
-	int m_prevHorzSBValue;
 
 	typedef  QWidget  parent_type;
 	virtual void resizeEvent    (QResizeEvent* pEvent);

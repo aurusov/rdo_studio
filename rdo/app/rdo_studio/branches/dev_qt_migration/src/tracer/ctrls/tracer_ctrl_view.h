@@ -90,7 +90,8 @@ public:
 	}
 
 private:
-	rbool viewportEvent(PTR(QEvent) pEvent);
+	virtual rbool viewportEvent(PTR(QEvent)    pEvent);
+	virtual void  keyPressEvent(PTR(QKeyEvent) pEvent);
 };
 
 }; // namespace rdoTracerLog

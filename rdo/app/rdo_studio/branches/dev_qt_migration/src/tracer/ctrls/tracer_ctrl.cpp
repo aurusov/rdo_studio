@@ -378,9 +378,50 @@ void RDOLogCtrl::StringList::seek(rsint delta, REF(StringList::const_iterator) i
 // --------------------------------------------------------------------------------
 RDOLogCtrl::ScrollMetric::ScrollMetric()
 	: position(0)
-	, posMax     (0)
+	, posMax  (0)
 	, pageSize(0)
 {}
+
+rbool RDOLogCtrl::ScrollMetric::applyInc(rsint delta)
+{
+	if (delta == 0)
+	{
+		return false;
+	}
+
+	if (position + delta < 0 || position + delta > posMax)
+	{
+		return false;
+	}
+
+	position += delta;
+	return true;
+}
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOLogCtrl::ScrollMetricVert
+// --------------------------------------------------------------------------------
+RDOLogCtrl::ScrollMetricVert::ScrollMetricVert()
+	: ScrollMetric    ()
+	, lastViewableLine(0)
+{}
+
+rbool RDOLogCtrl::ScrollMetricVert::isVisible(rsint index) const
+{
+	return index >= position &&
+		   index <= lastViewableLine;
+}
+
+rbool RDOLogCtrl::ScrollMetricVert::applyInc(rsint delta)
+{
+	if (!ScrollMetric::applyInc(delta))
+	{
+		return false;
+	}
+
+	lastViewableLine += delta;
+	return true;
+}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOLogCtrl
@@ -390,7 +431,6 @@ RDOLogCtrl::RDOLogCtrl(PTR(QAbstractScrollArea) pParent, PTR(RDOLogStyle) pStyle
 	, m_pScrollArea(pParent)
 	, lineHeight(0)
 	, charWidth(0)
-	, lastViewableLine(0)
 	, selectedLine(-1)
 	, fullRepaintLines(0)
 	, focusOnly(false)
@@ -402,8 +442,6 @@ RDOLogCtrl::RDOLogCtrl(PTR(QAbstractScrollArea) pParent, PTR(RDOLogStyle) pStyle
 	, bMatchCase(false)
 	, bMatchWholeWord(false)
 	, drawLog(true)
-	, m_prevVertSBValue(0)
-	, m_prevHorzSBValue(0)
 {
 	if (!logStyle)
 	{
@@ -442,99 +480,8 @@ void RDOLogCtrl::resizeEvent(QResizeEvent* pEvent)
 {
 	parent_type::resizeEvent(pEvent);
 
-	QRect prevClientRect(m_clientRect);
 	m_clientRect = QRect(QPoint(0, 0), pEvent->size());
-
-	QRect newWindowRect(
-		mapToGlobal(m_clientRect.topLeft()),
-		mapToGlobal(m_clientRect.bottomRight())
-	);
-
-	int prevYPos = m_SM_Y.position;
-	int prevXPos = m_SM_X.position;
 	updateScrollBars();
-
-	rbool lastLineVisible = isFullyVisible(m_strings.count() - 1);
-	rbool lastCharVisible = m_strings.maxLegth() == tstring::size_type(m_SM_X.position + m_clientRect.width() / charWidth);
-
-	rbool fullVisibleVert = !m_SM_Y.position && lastLineVisible;
-	rbool fullVisibleHorz = !m_SM_X.position && lastCharVisible;
-
-	rbool needShiftVert = m_SM_Y.position < prevYPos && !fullVisibleVert;
-	rbool needShiftHorz = m_SM_X.position < prevXPos && !fullVisibleHorz;
-
-	rbool topChanged = m_prevWindowRect.top() != newWindowRect.top();
-	int dx = m_clientRect.right() - prevClientRect.right();
-	int dy = m_clientRect.bottom() - prevClientRect.bottom();
-
-	int mul = m_clientRect.height() / lineHeight;
-	if (mul * lineHeight < m_clientRect.height())
-	{
-		++mul;
-	}
-	lastViewableLine = m_SM_Y.position + mul - 1;
-
-	m_prevWindowRect = newWindowRect;
-
-	if (!topChanged)
-	{
-		update(m_clientRect);
-
-		if (dx < 0 && dy < 0)
-		{
-			return;
-		}
-
-		QRegion bottomRgn = dy
-			? QRegion(m_clientRect.left(), prevClientRect.bottom() - 1, m_clientRect.right(), m_clientRect.bottom())
-			: QRegion(0, 0, 0, 0);
-
-		//Substracting 1 pixel to remove old focus rectangle.
-		QRegion rightRgn = dx
-			? QRegion(prevClientRect.right() - 1, m_clientRect.top(), m_clientRect.right(), m_clientRect.bottom())
-			: QRegion(0, 0, 0, 0);
-
-		QRegion invalidRgn = bottomRgn.united(rightRgn);
-
-		if (invalidRgn.isEmpty())
-		{
-			invalidRgn = QRegion(m_clientRect.left(), m_clientRect.top(), m_clientRect.right(), m_clientRect.bottom());
-		}
-		else if (needShiftVert || needShiftHorz)
-		{
-			if (needShiftVert)
-			{
-				getVertScrollBar().setValue(lineHeight * (prevYPos - m_SM_Y.position));
-
-				if (dx)
-				{
-					update(rightRgn);
-				}
-			}
-
-			if (needShiftHorz)
-			{
-				getHorzScrollBar().setValue(charWidth * (prevXPos - m_SM_X.position));
-
-				if (isVisible(selectedLine))
-				{
-					update(getLineRect(selectedLine));
-				}
-
-				if (dy)
-				{
-					update(bottomRgn);
-				}
-			}
-			return;
-		}
-
-		update(invalidRgn);
-	}
-	else
-	{
-		update(m_clientRect);
-	}
 }
 
 rbool RDOLogCtrl::getItemColors(int index, RDOLogColorPair* &colors) const
@@ -663,10 +610,7 @@ void RDOLogCtrl::onVertScrollBarValueChanged(int value)
 		return;
 	}
 
-	int inc = value - m_prevVertSBValue;
-	TRACE3("onVertScrollBarValueChanged %d, %d, %d\n", value, m_prevVertSBValue, inc);
-	m_prevVertSBValue = value;
-	scrollVertically(inc);
+	scrollVertically(value - m_SM_Y.position);
 }
 
 void RDOLogCtrl::onHorzScrollBarValueChanged(int value)
@@ -676,10 +620,7 @@ void RDOLogCtrl::onHorzScrollBarValueChanged(int value)
 		return;
 	}
 
-	int inc = value - m_prevHorzSBValue;
-	TRACE3("onHorzScrollBarValueChanged %d, %d, %d\n", value, m_prevVertSBValue, inc);
-	m_prevHorzSBValue = value;
-	scrollHorizontally(inc);
+	scrollHorizontally(value - m_SM_X.position);
 }
 
 //! @todo qt
@@ -703,6 +644,10 @@ void RDOLogCtrl::keyPressEvent(QKeyEvent* pEvent)
 		selectLine(selectedLine - 1);
 		break;
 
+	case Qt::Key_Down:
+		selectLine(selectedLine + 1);
+		break;
+
 	case Qt::Key_PageUp:
 		selectLine((std::max)(selectedLine - m_SM_Y.pageSize, 0));
 		break;
@@ -711,24 +656,12 @@ void RDOLogCtrl::keyPressEvent(QKeyEvent* pEvent)
 		selectLine((std::min)(selectedLine + m_SM_Y.pageSize, m_strings.count() - 1));
 		break;
 
-	case Qt::Key_Down:
-		selectLine(selectedLine + 1);
-		break;
-
 	case Qt::Key_Home:
 		selectLine(0);
 		break;
 
 	case Qt::Key_End:
 		selectLine(m_strings.count() - 1);
-		break;
-
-	case Qt::Key_Left:
-		getHorzScrollBar().setValue(getHorzScrollBar().value() - 1);
-		break;
-
-	case Qt::Key_Right:
-		getHorzScrollBar().setValue(getHorzScrollBar().value() + 1);
 		break;
 
 	default:
@@ -745,8 +678,6 @@ void RDOLogCtrl::mousePressEvent(QMouseEvent* pEvent)
 {
 	if (pEvent->button() == Qt::LeftButton)
 	{
-		//! @todo qt
-		//	SetFocus();
 		selectLine((std::min)(m_SM_Y.position + pEvent->pos().y() / lineHeight, m_strings.count() - 1));
 	}
 }
@@ -766,7 +697,7 @@ void RDOLogCtrl::updateScrollBars()
 	{
 		mul++;
 	}
-	lastViewableLine = m_SM_Y.position + mul - 1;
+	m_SM_Y.lastViewableLine = m_SM_Y.position + mul - 1;
 
 	m_strings.setCursor(m_SM_Y.position, m_SM_Y.posMax);
 
@@ -781,65 +712,27 @@ void RDOLogCtrl::updateScrollBars()
 
 rbool RDOLogCtrl::scrollVertically(int inc)
 {
-	rbool res = false;
-	if (!inc)
+	if (!m_SM_Y.applyInc(inc))
 	{
-		return res;
+		return false;
 	}
 
-	// If applying the vertical scrolling increment does not
-	// take the scrolling position out of the scrolling range,
-	// increment the scrolling position, adjust the position
-	// of the scroll box, and update the window.
-	if (inc == (std::max)(-m_SM_Y.position, (std::min)(inc, m_SM_Y.posMax - m_SM_Y.position)))
-	{
-		m_SM_Y.position += inc;
-		m_strings.setCursor(m_SM_Y.position, m_SM_Y.posMax);
-		lastViewableLine += inc;
-
-		updateWindow();
-		res = true;
-
-		TRACE1("scrollVertically %d ok\n", inc);
-	}
-	else
-	{
-		TRACE1("scrollVertically %d error\n", inc);
-	}
-
-	return res;
+	m_strings.setCursor(m_SM_Y.position, m_SM_Y.posMax);
+	getVertScrollBar().setValue(m_SM_Y.position);
+	updateWindow();
+	return true;
 }
 
 rbool RDOLogCtrl::scrollHorizontally(int inc)
 {
-	rbool res = false;
-	if (!inc)
+	if (!m_SM_X.applyInc(inc))
 	{
-		return res;
+		return false;
 	}
 
-	// If applying the horizontal scrolling increment does not
-	// take the scrolling position out of the scrolling range,
-	// increment the scrolling position, adjust the position
-	// of the scroll box, and update the window.
-	if (inc == (std::max)(-m_SM_X.position, (std::min)(inc, m_SM_X.posMax - m_SM_X.position)))
-	{
-		m_SM_X.position += inc;
-
-		if (isVisible(selectedLine))
-		{
-			update(getLineRect(selectedLine));
-		}
-
-		updateWindow();
-		res = true;
-	}
-	return res;
-}
-
-rbool RDOLogCtrl::isVisible(int index) const
-{
-	return index <= lastViewableLine && index >= m_SM_Y.position;
+	getVertScrollBar().setValue(m_SM_X.position);
+	updateWindow();
+	return true;
 }
 
 rbool RDOLogCtrl::isFullyVisible(int index) const
@@ -886,7 +779,7 @@ QRect RDOLogCtrl::getLineRect(int index) const
 
 void RDOLogCtrl::repaintLine(int index)
 {
-	if (isVisible(index))
+	if (m_SM_Y.isVisible(index))
 	{
 		update(getLineRect(index));
 		updateWindow();
@@ -936,7 +829,7 @@ void RDOLogCtrl::addStringToLog(CREF(tstring) logStr)
 	//if (!hwnd)
 	//	return;
 
-	rbool prevVisible = isVisible(m_strings.count() - 1);
+	rbool prevVisible = m_SM_Y.isVisible(m_strings.count() - 1);
 
 	m_strings.push_back(logStr);
 
@@ -954,12 +847,12 @@ void RDOLogCtrl::addStringToLog(CREF(tstring) logStr)
 			fullRepaintLines ++;
 		}
 
-		if (!isFullyVisible(lastString) && prevVisible && (!isVisible(selectedLine) || selectedLine == lastString))
+		if (!isFullyVisible(lastString) && prevVisible && (!m_SM_Y.isVisible(selectedLine) || selectedLine == lastString))
 		{
 			//::SendMessage(m_hWnd, WM_VSCROLL, MAKELONG(SB_BOTTOM, 0), NULL);
 			scrollVertically(m_SM_Y.posMax - m_SM_Y.position);
 		}
-		else if (isVisible(lastString))
+		else if (m_SM_Y.isVisible(lastString))
 		{
 			repaintLine(lastString);
 			if (fullRepaintLines == 2)
@@ -1026,8 +919,6 @@ void RDOLogCtrl::getString(int index, tstring& str) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
-	tstring res = "";
-
 	if (index >= 0 && index < m_strings.count())
 	{
 		str.assign(*m_strings.findString(index));
@@ -1069,7 +960,8 @@ void RDOLogCtrl::clear()
 
 	m_strings.clear();
 
-	lastViewableLine = 0;
+	m_SM_X = ScrollMetric();
+	m_SM_Y = ScrollMetricVert();
 	selectedLine = -1;
 
 	updateScrollBars();

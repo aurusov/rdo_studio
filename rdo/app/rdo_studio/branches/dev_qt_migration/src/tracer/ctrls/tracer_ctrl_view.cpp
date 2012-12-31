@@ -46,6 +46,25 @@ rbool RDOTracerLogCtrl::viewportEvent(PTR(QEvent) pEvent)
 	return false;
 }
 
+void RDOTracerLogCtrl::keyPressEvent(PTR(QKeyEvent) pEvent)
+{
+	switch (pEvent->key())
+	{
+	case Qt::Key_Up      :
+	case Qt::Key_Down    :
+	case Qt::Key_PageUp  :
+	case Qt::Key_PageDown:
+	case Qt::Key_Home    :
+	case Qt::Key_End     :
+		static_cast<QObject*>(viewport())->event(pEvent);
+		break;
+
+	default:
+		QAbstractScrollArea::keyPressEvent(pEvent);
+		break;
+	}
+}
+
 // --------------------------------------------------------------------------------
 // -------------------- RDOTracerLogCtrlView
 // --------------------------------------------------------------------------------
