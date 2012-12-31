@@ -730,7 +730,7 @@ rbool RDOLogCtrl::scrollHorizontally(int inc)
 		return false;
 	}
 
-	getVertScrollBar().setValue(m_SM_X.position);
+	getHorzScrollBar().setValue(m_SM_X.position);
 	updateWindow();
 	return true;
 }
