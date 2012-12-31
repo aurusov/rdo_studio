@@ -376,8 +376,6 @@ RDOLogCtrl::RDOLogCtrl(PTR(QAbstractScrollArea) pParent, PTR(RDOLogStyle) pStyle
 	, yMax(0)
 	, xPageSize(0)
 	, yPageSize(0)
-	, m_clientRect    (0, 0, 0, 0)
-	, m_prevWindowRect(0, 0, 0, 0)
 	, lastViewableLine(0)
 	, selectedLine(-1)
 	, fullRepaintLines(0)
