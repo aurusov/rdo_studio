@@ -491,10 +491,6 @@ void RDOLogCtrl::resizeEvent(QResizeEvent* pEvent)
 			if (needShiftVert)
 			{
 				getVertScrollBar().setValue(lineHeight * (prevYPos - yPos));
-				if (getVertScrollBar().isHidden())
-				{
-					getVertScrollBar().show();
-				}
 
 				if (dx)
 				{
@@ -505,10 +501,6 @@ void RDOLogCtrl::resizeEvent(QResizeEvent* pEvent)
 			if (needShiftHorz)
 			{
 				getHorzScrollBar().setValue(charWidth * (prevXPos - xPos));
-				if (getHorzScrollBar().isHidden())
-				{
-					getHorzScrollBar().show();
-				}
 
 				if (isVisible(selectedLine))
 				{
