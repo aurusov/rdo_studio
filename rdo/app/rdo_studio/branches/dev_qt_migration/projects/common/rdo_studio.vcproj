@@ -1618,6 +1618,70 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\..\res\ui\find_dialog.ui"
+					>
+					<FileConfiguration
+						Name="debug|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="UIC $(InputFileName)"
+							CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="UIC $(InputFileName)"
+							CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.corba|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="UIC $(InputFileName)"
+							CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.corba|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="UIC $(InputFileName)"
+							CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="debug.mt|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="UIC $(InputFileName)"
+							CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="release.mt|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="UIC $(InputFileName)"
+							CommandLine="&quot;$(QTDIR)\bin\uic.exe&quot; &quot;$(InputPath)&quot; -o &quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+							Outputs="&quot;$(ProjectDir)bin\$(ProjectName)\generated\ui_$(InputName).h&quot;"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\..\res\ui\main_window.ui"
 					>
 					<FileConfiguration
@@ -2874,6 +2938,10 @@
 				>
 				<File
 					RelativePath=".\bin\rdo_studio\generated\ui_about.h"
+					>
+				</File>
+				<File
+					RelativePath=".\bin\rdo_studio\generated\ui_find_dialog.h"
 					>
 				</File>
 				<File
