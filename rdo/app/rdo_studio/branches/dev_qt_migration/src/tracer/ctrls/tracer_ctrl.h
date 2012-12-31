@@ -80,19 +80,21 @@ protected:
 		const_reverse_iterator rend  () const;
 		reverse_iterator       rend  ();
 
-		void  clear();
-		rsint count() const;
-		void setCursor(rsint pos, rsint max);
+		void               clear    ();
+		rsint              count    () const;
+		tstring::size_type maxLegth () const;
+		void               setCursor(rsint pos, rsint max);
 
 		const_iterator   findString (int index) const;
 		iterator         findString (int index);
 		reverse_iterator rFindString(int index);
 
 	private:
-		List            m_list;
-		rsint           m_count;
-		List::iterator  m_cursorIt;
-		rsint           m_cursor;
+		List                m_list;
+		rsint               m_count;
+		List::iterator      m_cursorIt;
+		rsint               m_cursor;
+		tstring::size_type  m_maxLegth;
 
 		void seek(rsint delta, REF(StringList::const_iterator) it) const;
 	};
@@ -115,7 +117,6 @@ private:
 
 	int lineHeight;
 	int charWidth;
-	int maxStrWidth;
 
 	int xPos;
 	int yPos;
@@ -139,7 +140,6 @@ private:
 
 	virtual rbool getItemColors(int index, RDOLogColorPair* &colors) const;
 	
-	void  recalcWidth(int newMaxStrWidth);
 	void  updateScrollBars();
 
 	rbool scrollVertically  (int pos);

@@ -195,6 +195,7 @@ RDOLogCtrl::StringList::StringList()
 	: m_count   (0)
 	, m_cursor  (0)
 	, m_cursorIt(m_list.end())
+	, m_maxLegth(0)
 {}
 
 void RDOLogCtrl::StringList::push_back(CREF(tstring) value)
@@ -205,6 +206,11 @@ void RDOLogCtrl::StringList::push_back(CREF(tstring) value)
 	if (m_count == 1)
 	{
 		m_cursorIt = m_list.begin();
+	}
+
+	if (value.length() > m_maxLegth)
+	{
+		m_maxLegth = value.length();
 	}
 }
 
@@ -251,12 +257,18 @@ RDOLogCtrl::StringList::reverse_iterator RDOLogCtrl::StringList::rend()
 void RDOLogCtrl::StringList::clear()
 {
 	m_list.clear();
-	m_count = 0;
+	m_count    = 0;
+	m_maxLegth = 0;
 }
 
 rsint RDOLogCtrl::StringList::count() const
 {
 	return m_count;
+}
+
+tstring::size_type RDOLogCtrl::StringList::maxLegth() const
+{
+	return m_maxLegth;
 }
 
 void RDOLogCtrl::StringList::setCursor(rsint pos, rsint max)
@@ -369,7 +381,6 @@ RDOLogCtrl::RDOLogCtrl(PTR(QAbstractScrollArea) pParent, PTR(RDOLogStyle) pStyle
 	, m_pScrollArea(pParent)
 	, lineHeight(0)
 	, charWidth(0)
-	, maxStrWidth(0)
 	, xPos(0)
 	, yPos(0)
 	, xMax(0)
@@ -441,7 +452,7 @@ void RDOLogCtrl::resizeEvent(QResizeEvent* pEvent)
 	updateScrollBars();
 
 	rbool lastLineVisible = isFullyVisible(m_strings.count() - 1);
-	rbool lastCharVisible = maxStrWidth == xPos + m_clientRect.width() / charWidth;
+	rbool lastCharVisible = m_strings.maxLegth() == tstring::size_type(xPos + m_clientRect.width() / charWidth);
 
 	rbool fullVisibleVert = !yPos && lastLineVisible;
 	rbool fullVisibleHorz = !xPos && lastCharVisible;
@@ -737,14 +748,6 @@ void RDOLogCtrl::mousePressEvent(QMouseEvent* pEvent)
 	}
 }
 
-void RDOLogCtrl::recalcWidth(int newMaxStrWidth)
-{
-	if (maxStrWidth < newMaxStrWidth)
-	{
-		maxStrWidth = newMaxStrWidth;
-	}
-}
-
 void RDOLogCtrl::updateScrollBars()
 {
 	yPageSize = m_clientRect.height() / lineHeight;
@@ -752,7 +755,7 @@ void RDOLogCtrl::updateScrollBars()
 	yPos = (std::min)(yPos, yMax);
 
 	xPageSize = (m_clientRect.width() - logStyle->borders->horzBorder) / charWidth;
-	xMax = (std::max)(0, maxStrWidth - xPageSize);
+	xMax = (std::max)(0, rsint(m_strings.maxLegth()) - xPageSize);
 	xPos = (std::min)(xPos, xMax);
 
 	int mul = yPageSize;
@@ -934,8 +937,6 @@ void RDOLogCtrl::addStringToLog(CREF(tstring) logStr)
 
 	m_strings.push_back(logStr);
 
-	recalcWidth(logStr.length());
-
 	int lastString = m_strings.count() - 1;
 
 	if (drawLog)
@@ -987,7 +988,6 @@ void RDOLogCtrl::setStyle(RDOLogStyle* style, rbool needRedraw)
 	logStyle = style;
 	setFont();
 
-	recalcWidth(maxStrWidth);
 	updateScrollBars();
 
 	if (needRedraw)
@@ -1066,8 +1066,7 @@ void RDOLogCtrl::clear()
 
 	m_strings.clear();
 
-	maxStrWidth       = 0;
-	lastViewableLine  = 0;
+	lastViewableLine = 0;
 	selectedLine = -1;
 
 	updateScrollBars();
