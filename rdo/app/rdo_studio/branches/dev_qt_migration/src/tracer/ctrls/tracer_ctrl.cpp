@@ -739,19 +739,9 @@ void RDOLogCtrl::mousePressEvent(QMouseEvent* pEvent)
 
 void RDOLogCtrl::recalcWidth(int newMaxStrWidth)
 {
-	if (maxStrWidth != newMaxStrWidth)
+	if (maxStrWidth < newMaxStrWidth)
 	{
-		int width = maxStrWidth * charWidth;
-		int newwidth = newMaxStrWidth * charWidth + 2 * logStyle->borders->horzBorder;
-
-		if (newwidth > width)
-		{
-			maxStrWidth = newwidth / charWidth;
-			if (maxStrWidth * charWidth < newwidth)
-			{
-				++maxStrWidth;
-			}
-		}
+		maxStrWidth = newMaxStrWidth;
 	}
 }
 
