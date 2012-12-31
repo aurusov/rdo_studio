@@ -35,27 +35,28 @@ namespace rdoTracerLog
 // --------------------------------------------------------------------------------
 class RDOLogCtrlFindInList
 {
+public:
+	RDOLogCtrlFindInList(RDOLogCtrl* log, CREF(tstring) strToFind, rbool matchCase, rbool matchWholeWord);
+	rbool operator() (CREF(tstring) nextstr);
+
+private:
 	RDOLogCtrl* log;
-	tstring strToFind;
-	rbool matchCase;
-	rbool matchWholeWord;
+	tstring     strToFind;
+	rbool       matchCase;
+	rbool       matchWholeWord;
 
 	rbool scan(tstring::iterator &wildCards, tstring::iterator &wildend, tstring::iterator &str, tstring::iterator &strend) const;
 	rbool match(tstring::iterator &wildcards, tstring::iterator &wildend, tstring::iterator &strcomp, tstring::iterator &strend) const;
-public:
-	RDOLogCtrlFindInList(RDOLogCtrl* _log, tstring _strToFind, rbool _matchCase, rbool _matchWholeWord);
-	rbool operator()(tstring nextstr);
 };
 
 }; // namespace rdoTracerLog
 
-RDOLogCtrlFindInList::RDOLogCtrlFindInList(RDOLogCtrl* _log, tstring _strToFind, rbool _matchCase, rbool _matchWholeWord)
-	: log(_log),
-	  strToFind(_strToFind),
-	  matchCase(_matchCase),
-	  matchWholeWord(_matchWholeWord)
-{
-}
+RDOLogCtrlFindInList::RDOLogCtrlFindInList(RDOLogCtrl* log, CREF(tstring) strToFind, rbool matchCase, rbool matchWholeWord)
+	: log           (log      )
+	, strToFind     (strToFind)
+	, matchCase     (matchCase)
+	, matchWholeWord(matchWholeWord)
+{}
 
 rbool RDOLogCtrlFindInList::scan(tstring::iterator &wildCards, tstring::iterator &wildend, tstring::iterator &str, tstring::iterator &strend) const
 {
@@ -158,7 +159,7 @@ rbool RDOLogCtrlFindInList::match(tstring::iterator &wildcards, tstring::iterato
 	return res && strCompb == strCompe && strWildb == strWilde;
 }
 
-rbool RDOLogCtrlFindInList::operator()(tstring nextstr)
+rbool RDOLogCtrlFindInList::operator()(CREF(tstring) nextstr)
 {
 	if (!matchWholeWord && strToFind.find_first_of("*?") == tstring::npos)
 	{
