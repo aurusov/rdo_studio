@@ -556,7 +556,7 @@ void RDOLogCtrl::paintEvent(QPaintEvent* pEvent)
 			RDOLogColorPair* colors = NULL;
 
 			int y = lineHeight * (-yPos + firstLine - 1);
-			QRect rect(charWidth * (-xPos), y, pEvent->rect().width(), lineHeight);
+			QRect rect(charWidth * (-xPos), y, pEvent->rect().width() + charWidth * xPos, lineHeight);
 			QRect textRect(
 				rect.left  () + logStyle->borders->horzBorder,
 				rect.top   () + logStyle->borders->vertBorder,
