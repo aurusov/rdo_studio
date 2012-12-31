@@ -114,16 +114,20 @@ protected:
 	rbool canCopy() const { return selectedLine != -1; };
 
 private:
-
 	int lineHeight;
 	int charWidth;
 
-	int xPos;
-	int yPos;
-	int xMax;
-	int yMax;
-	int xPageSize;
-	int yPageSize;
+	struct ScrollMetric
+	{
+		rsint position;
+		rsint posMax;
+		rsint pageSize;
+
+		ScrollMetric();
+	};
+
+	ScrollMetric m_SM_Y;
+	ScrollMetric m_SM_X;
 
 	QRect m_clientRect;
 	QRect m_prevWindowRect;
