@@ -46,6 +46,16 @@ rbool RDOTracerLogCtrl::viewportEvent(PTR(QEvent) pEvent)
 	return false;
 }
 
+void RDOTracerLogCtrl::focusInEvent(QFocusEvent* pEvent)
+{
+	static_cast<QObject*>(viewport())->event(pEvent);
+}
+
+void RDOTracerLogCtrl::focusOutEvent(QFocusEvent* pEvent)
+{
+	static_cast<QObject*>(viewport())->event(pEvent);
+}
+
 void RDOTracerLogCtrl::keyPressEvent(PTR(QKeyEvent) pEvent)
 {
 	switch (pEvent->key())

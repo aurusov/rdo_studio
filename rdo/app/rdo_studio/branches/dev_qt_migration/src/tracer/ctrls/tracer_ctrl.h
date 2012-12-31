@@ -176,6 +176,8 @@ private:
 	typedef  QWidget  parent_type;
 	virtual void resizeEvent    (QResizeEvent* pEvent);
 	virtual void paintEvent     (QPaintEvent*  pEvent);
+	virtual void focusInEvent   (QFocusEvent*  pEvent);
+	virtual void focusOutEvent  (QFocusEvent*  pEvent);
 	virtual void keyPressEvent  (QKeyEvent*    pEvent);
 	virtual void wheelEvent     (QWheelEvent*  pEvent);
 	virtual void mousePressEvent(QMouseEvent*  pEvent);

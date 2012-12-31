@@ -623,18 +623,17 @@ void RDOLogCtrl::onHorzScrollBarValueChanged(int value)
 	scrollHorizontally(value - m_SM_X.position);
 }
 
-//! @todo qt
-//void RDOLogCtrl::OnSetFocus(CWnd* pOldWnd)
-//{
-//	CWnd::OnSetFocus(pOldWnd);
-//	repaintLine(selectedLine);
-//}
-//
-//void RDOLogCtrl::OnKillFocus(CWnd* pNewWnd)
-//{
-//	CWnd::OnKillFocus(pNewWnd);
-//	repaintLine(selectedLine);
-//}
+void RDOLogCtrl::focusInEvent(QFocusEvent* pEvent)
+{
+	parent_type::focusInEvent(pEvent);
+	repaintLine(selectedLine);
+}
+
+void RDOLogCtrl::focusOutEvent(QFocusEvent* pEvent)
+{
+	parent_type::focusOutEvent(pEvent);
+	repaintLine(selectedLine);
+}
 
 void RDOLogCtrl::keyPressEvent(QKeyEvent* pEvent)
 {
