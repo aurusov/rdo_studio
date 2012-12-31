@@ -747,12 +747,14 @@ void RDOLogCtrl::recalcWidth(int newMaxStrWidth)
 
 void RDOLogCtrl::updateScrollBars()
 {
-	xPageSize = m_clientRect.width () / charWidth;
 	yPageSize = m_clientRect.height() / lineHeight;
-
 	yMax = (std::max)(0, m_strings.count() - yPageSize);
 	yPos = (std::min)(yPos, yMax);
-	m_strings.setCursor(yPos, yMax);
+
+	xPageSize = (m_clientRect.width() - logStyle->borders->horzBorder) / charWidth;
+	xMax = (std::max)(0, maxStrWidth - xPageSize);
+	xPos = (std::min)(xPos, xMax);
+
 	int mul = yPageSize;
 	if (mul * lineHeight < m_clientRect.height())
 	{
@@ -760,36 +762,15 @@ void RDOLogCtrl::updateScrollBars()
 	}
 	lastViewableLine = yPos + mul - 1;
 
-	if (drawLog)
-	{
-		getVertScrollBar().setMinimum (0);
-		getVertScrollBar().setMaximum (m_strings.count() - 1);
-		getVertScrollBar().setPageStep(yPageSize);
-		getVertScrollBar().setValue   (yPos);
+	m_strings.setCursor(yPos, yMax);
 
-		xMax = (std::max)(0, maxStrWidth - xPageSize);
-		xPos = (std::min)(xPos, xMax);
+	getVertScrollBar().setRange   (0, yMax);
+	getVertScrollBar().setPageStep(drawLog && yMax > 0 ? yPageSize : 0);
+	getVertScrollBar().setValue   (yPos);
 
-		getHorzScrollBar().setMinimum (0);
-		getHorzScrollBar().setMaximum (maxStrWidth - 1);
-		getHorzScrollBar().setPageStep(xPageSize);
-		getHorzScrollBar().setValue   (xPos);
-	}
-	else
-	{
-		getVertScrollBar().setMinimum (0);
-		getVertScrollBar().setMaximum (0);
-		getVertScrollBar().setPageStep(0);
-		getVertScrollBar().setValue   (0);
-
-		xMax = (std::max)(0, maxStrWidth - xPageSize);
-		xPos = (std::min)(xPos, xMax);
-
-		getHorzScrollBar().setMinimum (0);
-		getHorzScrollBar().setMaximum (0);
-		getHorzScrollBar().setPageStep(0);
-		getHorzScrollBar().setValue   (0);
-	}
+	getHorzScrollBar().setRange   (0, xMax);
+	getHorzScrollBar().setPageStep(drawLog && xMax > 0 ? xPageSize : 0);
+	getHorzScrollBar().setValue   (xPos);
 }
 
 rbool RDOLogCtrl::scrollVertically(int inc)
