@@ -1133,12 +1133,10 @@ void RDOLogCtrl::setSelectedLine(rsint selectedLine)
 
 void RDOLogCtrl::onEditCopy(bool)
 {
-	QClipboard* pClipboard = QApplication::clipboard();
-	ASSERT(pClipboard);
-
 	tstring str;
 	getSelected(str);
-	pClipboard->setText(QString::fromStdString(str));
+
+	QApplication::clipboard()->setText(QString::fromStdString(str));
 }
 
 void RDOLogCtrl::onSearchFind(bool)
