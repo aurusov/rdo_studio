@@ -12,6 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qpainter.h>
 #include <QtGui/qscrollbar.h>
+#include <QtGui/qclipboard.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl.h"
 #include "app/rdo_studio_mfc/src/application.h"
@@ -923,23 +924,6 @@ void RDOLogCtrl::getSelected(tstring& str) const
 	getString(selectedLine(), str);
 }
 
-void RDOLogCtrl::copy()
-{
-//! @todo qt
-//	if (canCopy()) {
-//		if (!OpenClipboard() || !::EmptyClipboard())
-//			return;
-//		tstring str;
-//		getSelected(str);
-//		char* ptr = (char*)::LocalAlloc(LMEM_FIXED, str.length() + 1);
-//#pragma warning(disable: 4996)
-//		strcpy(ptr, str.c_str());
-//#pragma warning(default: 4996)
-//		::SetClipboardData(CF_TEXT, ptr);
-//		CloseClipboard();
-//	}
-}
-
 void RDOLogCtrl::clear()
 {
 	mutex.Lock();
@@ -1090,6 +1074,8 @@ void RDOLogCtrl::onActivate()
 
 	pMainWindow->actSearchFind->setEnabled(true);
 	connect(pMainWindow->actSearchFind, SIGNAL(triggered(bool)), this, SLOT(onSearchFind(bool)));
+
+	setUpActionEditCopy(true);
 }
 
 void RDOLogCtrl::onDeactivate()
@@ -1102,10 +1088,31 @@ void RDOLogCtrl::onDeactivate()
 
 	pMainWindow->actSearchFind->setEnabled(false);
 	disconnect(pMainWindow->actSearchFind, SIGNAL(triggered(bool)), this, SLOT(onSearchFind(bool)));
+
+	setUpActionEditCopy(false);
 }
 
-void RDOLogCtrl::onSearchFind(bool checked)
+void RDOLogCtrl::setUpActionEditCopy(rbool activate)
 {
+	Ui::MainWindow* pMainWindow = dynamic_cast<Ui::MainWindow*>(studioApp.getMainWnd());
+	ASSERT(pMainWindow);
+
+	if (activate && canCopy())
+	{
+		if (!pMainWindow->actEditCopy->isEnabled())
+		{
+			pMainWindow->actEditCopy->setEnabled(true);
+			connect(pMainWindow->actEditCopy, SIGNAL(triggered(bool)), this, SLOT(onEditCopy(bool)));
+		}
+	}
+	else
+	{
+		if (pMainWindow->actEditCopy->isEnabled())
+		{
+			pMainWindow->actEditCopy->setEnabled(false);
+			disconnect(pMainWindow->actEditCopy, SIGNAL(triggered(bool)), this, SLOT(onEditCopy(bool)));
+		}
+	}
 }
 
 rbool RDOLogCtrl::canCopy() const
@@ -1121,4 +1128,19 @@ rsint RDOLogCtrl::selectedLine() const
 void RDOLogCtrl::setSelectedLine(rsint selectedLine)
 {
 	m_selectedLine = selectedLine;
+	setUpActionEditCopy(true);
+}
+
+void RDOLogCtrl::onEditCopy(bool)
+{
+	QClipboard* pClipboard = QApplication::clipboard();
+	ASSERT(pClipboard);
+
+	tstring str;
+	getSelected(str);
+	pClipboard->setText(QString::fromStdString(str));
+}
+
+void RDOLogCtrl::onSearchFind(bool)
+{
 }

@@ -85,9 +85,7 @@ static const UINT FIND_REPLASE_MSG = ::RegisterWindowMessage(FINDMSGSTRING);
 //	ON_COMMAND(ID_SEARCH_FIND, OnFind)
 //	ON_COMMAND(ID_SEARCH_FIND_NEXT    , OnFindNext)
 //	ON_COMMAND(ID_SEARCH_FIND_PREVIOUS, OnFindPrev)
-//	ON_COMMAND(ID_EDIT_COPY, OnCopy)
 //	ON_REGISTERED_MESSAGE(FIND_REPLASE_MSG, OnFindReplaceMsg)
-//	ON_UPDATE_COMMAND_UI(ID_EDIT_COPY           , OnCanCopy)
 //	ON_UPDATE_COMMAND_UI(ID_SEARCH_FIND_NEXT    , OnUpdateFindNextPrev)
 //	ON_UPDATE_COMMAND_UI(ID_SEARCH_FIND         , OnUpdateFind)
 //	ON_UPDATE_COMMAND_UI(ID_SEARCH_FIND_PREVIOUS, OnUpdateFindNextPrev)
@@ -202,11 +200,6 @@ void RDOTracerLogCtrlView::setStyle(RDOTracerLogStyle* style, rbool needRedraw)
 	RDOLogCtrl::setStyle(style, needRedraw);
 }
 
-void RDOTracerLogCtrlView::OnCopy()
-{
-	copy();
-}
-
 void RDOTracerLogCtrlView::OnFind()
 {
 	//! @todo qt
@@ -287,11 +280,6 @@ LRESULT RDOTracerLogCtrlView::OnFindReplaceMsg(WPARAM wParam, LPARAM lParam)
 //	CWnd::OnContextMenu(pWnd, pos);
 //	if (popupMenu.m_hMenu) popupMenu.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, pos.x, pos.y, this);
 //}
-
-void RDOTracerLogCtrlView::OnCanCopy(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(canCopy());
-}
 
 void RDOTracerLogCtrlView::OnUpdateFindNextPrev(CCmdUI* pCmdUI)
 {

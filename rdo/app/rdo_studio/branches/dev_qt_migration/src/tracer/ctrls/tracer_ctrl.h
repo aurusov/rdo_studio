@@ -44,7 +44,6 @@ public:
 	virtual void getSelected(tstring& str) const;
 	virtual rbool makeLineVisible(int index);
 	virtual void selectLine(int index);
-	virtual void copy();
 	virtual void findNext()     { int res; find(res, bSearchDown, bMatchCase, bMatchWholeWord); selectLine(res);  };
 	virtual void findPrevious() { int res; find(res, !bSearchDown, bMatchCase, bMatchWholeWord); selectLine(res); };
 	virtual void clear();
@@ -111,14 +110,13 @@ protected:
 	virtual rbool getItemColors(CREF(tstring) item, RDOLogColorPair* &colors) const;
 
 	rsint selectedLine() const;
-	rbool canCopy() const;
 
 private:
 	rsint lineHeight;
 	rsint charWidth;
 	rsint m_selectedLine;
 
-	void setSelectedLine(rsint selectedLine);
+	void  setSelectedLine(rsint selectedLine);
 
 	struct ScrollMetric
 	{
@@ -186,11 +184,15 @@ private:
 	REF(QScrollBar) getVertScrollBar();
 	REF(QScrollBar) getHorzScrollBar();
 
+	void  setUpActionEditCopy(rbool activate);
+	rbool canCopy() const;
+
 	DECLARE_ActionActivatorWidget;
 
 private slots:
 	void onVertScrollBarValueChanged(int value);
 	void onHorzScrollBarValueChanged(int value);
+	void onEditCopy                 (bool checked);
 	void onSearchFind               (bool checked);
 };
 

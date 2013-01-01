@@ -50,9 +50,7 @@ private:
 	afx_msg void OnFind();
 	afx_msg void OnFindNext();
 	afx_msg void OnFindPrev();
-	afx_msg void OnCopy();
 	afx_msg LRESULT OnFindReplaceMsg(WPARAM wParam, LPARAM lParam);
-	afx_msg void OnCanCopy(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateFindNextPrev(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateFind(CCmdUI* pCmdUI);
 	//! todo qt
