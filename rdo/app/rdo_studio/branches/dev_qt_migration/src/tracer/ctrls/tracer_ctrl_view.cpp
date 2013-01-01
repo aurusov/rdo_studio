@@ -322,7 +322,7 @@ void RDOTracerLogCtrlView::onHelpContext()
 			RDOLogColorPair* colors;
 			if (!logStyle->getItemColors(keyword, colors))
 			{
-				getItemColors(selectedLine, colors);
+				getItemColors(selectedLine(), colors);
 				if (*colors == static_cast<RDOTracerLogTheme*>(logStyle->theme)->sd)
 				{
 					keyword = "SD";
@@ -341,9 +341,9 @@ void RDOTracerLogCtrlView::onHelpContext()
 void RDOTracerLogCtrlView::OnUpdateCoordStatusBar(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable();
-	if (selectedLine != -1)
+	if (selectedLine() != -1)
 	{
-		pCmdUI->SetText(rdo::format("%d: %d", 1, selectedLine + 1).c_str());
+		pCmdUI->SetText(rdo::format("%d: %d", 1, selectedLine() + 1).c_str());
 	}
 	else
 	{

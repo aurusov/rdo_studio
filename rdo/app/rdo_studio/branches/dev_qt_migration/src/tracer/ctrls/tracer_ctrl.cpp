@@ -432,7 +432,7 @@ RDOLogCtrl::RDOLogCtrl(PTR(QAbstractScrollArea) pParent, PTR(RDOLogStyle) pStyle
 	, m_pScrollArea(pParent)
 	, lineHeight(0)
 	, charWidth(0)
-	, selectedLine(-1)
+	, m_selectedLine(-1)
 	, fullRepaintLines(0)
 	, focusOnly(false)
 	, logStyle(pStyle)
@@ -527,7 +527,7 @@ void RDOLogCtrl::paintEvent(QPaintEvent* pEvent)
 			StringList::const_iterator it = m_strings.findString(firstLine);
 			for (int i = firstLine; i < lastLine + 1; i++)
 			{
-				if (i != selectedLine || focusOnly)
+				if (i != selectedLine() || focusOnly)
 				{
 					if (!getItemColors((*it), colors))
 					{
@@ -554,7 +554,7 @@ void RDOLogCtrl::paintEvent(QPaintEvent* pEvent)
 				);
 				//End of main drawing cycle :)
 
-				if (i == selectedLine && hasFocus())
+				if (i == selectedLine() && hasFocus())
 				{
 					QRect focusRect(m_clientRect);
 					focusRect.setTop   (rect.top   ());
@@ -568,7 +568,7 @@ void RDOLogCtrl::paintEvent(QPaintEvent* pEvent)
 
 				++it;
 
-				if (i == selectedLine && !focusOnly && colors)
+				if (i == selectedLine() && !focusOnly && colors)
 				{
 					delete colors;
 					colors = NULL;
@@ -627,19 +627,19 @@ void RDOLogCtrl::keyPressEvent(QKeyEvent* pEvent)
 	switch (pEvent->key())
 	{
 	case Qt::Key_Up:
-		selectLine(selectedLine - 1);
+		selectLine(selectedLine() - 1);
 		break;
 
 	case Qt::Key_Down:
-		selectLine(selectedLine + 1);
+		selectLine(selectedLine() + 1);
 		break;
 
 	case Qt::Key_PageUp:
-		selectLine((std::max)(selectedLine - m_SM_Y.pageSize, 0));
+		selectLine((std::max)(selectedLine() - m_SM_Y.pageSize, 0));
 		break;
 
 	case Qt::Key_PageDown:
-		selectLine((std::min)(selectedLine + m_SM_Y.pageSize, m_strings.count() - 1));
+		selectLine((std::min)(selectedLine() + m_SM_Y.pageSize, m_strings.count() - 1));
 		break;
 
 	case Qt::Key_Home:
@@ -729,25 +729,25 @@ rbool RDOLogCtrl::isFullyVisible(int index) const
 
 void RDOLogCtrl::selectLine(int index)
 {
-	if (index < 0 || index > m_strings.count() - 1 || index == selectedLine)
+	if (index < 0 || index > m_strings.count() - 1 || index == selectedLine())
 	{
 		return;
 	}
 
-	int prevSel = selectedLine;
+	int prevSel = selectedLine();
 	int inc = (std::max)(-prevSel, (std::min)(index - prevSel, m_strings.count() - 1 - prevSel));
 
 	if (inc)
 	{
-		selectedLine += inc;
+		setSelectedLine(selectedLine() + inc);
 
 		//makeLineVisible() scrolls to the line and repaints
 		//it and nearby line if scrolling occurs.
 		//If no scrolling is done repaint line
-		rbool needrepaint = !makeLineVisible(selectedLine);
+		rbool needrepaint = !makeLineVisible(selectedLine());
 		if (needrepaint)
 		{
-			repaintLine(selectedLine);
+			repaintLine(selectedLine());
 		}
 
 		//repaintLine() repaints line only if it's visible
@@ -827,13 +827,13 @@ void RDOLogCtrl::addStringToLog(CREF(tstring) logStr)
 
 		fullRepaintLines = 1;
 
-		if ( selectedLine != -1 && selectedLine == lastString - 1)
+		if ( selectedLine() != -1 && selectedLine() == lastString - 1)
 		{
-			selectedLine = lastString;
-			fullRepaintLines ++;
+			setSelectedLine(lastString);
+			fullRepaintLines++;
 		}
 
-		if (!isFullyVisible(lastString) && prevVisible && (!m_SM_Y.isVisible(selectedLine) || selectedLine == lastString))
+		if (!isFullyVisible(lastString) && prevVisible && (!m_SM_Y.isVisible(selectedLine()) || selectedLine() == lastString))
 		{
 			//::SendMessage(m_hWnd, WM_VSCROLL, MAKELONG(SB_BOTTOM, 0), NULL);
 			scrollVertically(m_SM_Y.posMax - m_SM_Y.position);
@@ -851,9 +851,9 @@ void RDOLogCtrl::addStringToLog(CREF(tstring) logStr)
 	}
 	else
 	{
-		if (selectedLine != -1 && selectedLine == lastString - 1)
+		if (selectedLine() != -1 && selectedLine() == lastString - 1)
 		{
-			selectedLine = lastString;
+			setSelectedLine(lastString);
 		}
 	}
 
@@ -915,12 +915,12 @@ void RDOLogCtrl::getString(int index, tstring& str) const
 
 int RDOLogCtrl::getSelectedIndex() const
 {
-	return selectedLine;
+	return selectedLine();
 }
 
 void RDOLogCtrl::getSelected(tstring& str) const
 {
-	getString(selectedLine, str);
+	getString(selectedLine(), str);
 }
 
 void RDOLogCtrl::copy()
@@ -948,7 +948,7 @@ void RDOLogCtrl::clear()
 
 	m_SM_X = ScrollMetric();
 	m_SM_Y = ScrollMetricVert();
-	selectedLine = -1;
+	setSelectedLine(-1);
 
 	updateScrollBars();
 	update();
@@ -968,11 +968,11 @@ void RDOLogCtrl::find(int& result, rbool searchDown, rbool matchCase, rbool matc
 	StringList::iterator it;
 	StringList::reverse_iterator it_r;
 
-	int startPos = selectedLine + 1;
+	int startPos = selectedLine() + 1;
 	int endPos = m_strings.count() - 1;
 	if (!searchDown)
 	{
-		startPos = selectedLine - 1;
+		startPos = selectedLine() - 1;
 		endPos   = 0;
 	}
 
@@ -1076,14 +1076,14 @@ void RDOLogCtrl::setDrawLog(rbool value)
 		updateScrollBars();
 		update();
 		updateWindow();
-		makeLineVisible(selectedLine);
+		makeLineVisible(selectedLine());
 	}
 }
 
 void RDOLogCtrl::onActivate()
 {
 	TRACE("RDOLogCtrl::onActivate\n");
-	repaintLine(selectedLine);
+	repaintLine(selectedLine());
 
 	Ui::MainWindow* pMainWindow = dynamic_cast<Ui::MainWindow*>(studioApp.getMainWnd());
 	ASSERT(pMainWindow);
@@ -1095,7 +1095,7 @@ void RDOLogCtrl::onActivate()
 void RDOLogCtrl::onDeactivate()
 {
 	TRACE("RDOLogCtrl::onDeactivate\n");
-	repaintLine(selectedLine);
+	repaintLine(selectedLine());
 
 	Ui::MainWindow* pMainWindow = dynamic_cast<Ui::MainWindow*>(studioApp.getMainWnd());
 	ASSERT(pMainWindow);
@@ -1106,4 +1106,19 @@ void RDOLogCtrl::onDeactivate()
 
 void RDOLogCtrl::onSearchFind(bool checked)
 {
+}
+
+rbool RDOLogCtrl::canCopy() const
+{
+	return selectedLine() != -1;
+}
+
+rsint RDOLogCtrl::selectedLine() const
+{
+	return m_selectedLine;
+}
+
+void RDOLogCtrl::setSelectedLine(rsint selectedLine)
+{
+	m_selectedLine = selectedLine;
 }

@@ -103,8 +103,6 @@ protected:
 	CMutex     mutex;
 	StringList m_strings;
 
-	int selectedLine;
-
 	int     firstFoundLine;
 	rbool   bHaveFound;
 	tstring findStr;
@@ -112,11 +110,15 @@ protected:
 	RDOLogStyle*  logStyle;
 	virtual rbool getItemColors(CREF(tstring) item, RDOLogColorPair* &colors) const;
 
-	rbool canCopy() const { return selectedLine != -1; };
+	rsint selectedLine() const;
+	rbool canCopy() const;
 
 private:
-	int lineHeight;
-	int charWidth;
+	rsint lineHeight;
+	rsint charWidth;
+	rsint m_selectedLine;
+
+	void setSelectedLine(rsint selectedLine);
 
 	struct ScrollMetric
 	{
