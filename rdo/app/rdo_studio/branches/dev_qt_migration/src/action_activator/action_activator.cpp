@@ -23,6 +23,11 @@ ActionActivator::ActionActivator(CREF(Callback) onActivate, CREF(Callback) onDea
 ActionActivator::~ActionActivator()
 {}
 
+rbool ActionActivator::isActivated() const
+{
+	return m_activated;
+}
+
 void ActionActivator::activate(QFocusEvent* pEvent)
 {
 	ASSERT(pEvent);

@@ -24,13 +24,15 @@ protected:
 	ActionActivator(CREF(Callback) onActivate, CREF(Callback) onDeactivate);
 	virtual ~ActionActivator();
 
+	rbool isActivated() const;
+
 	void activate  (QFocusEvent* pEvent);
 	void deactivate(QFocusEvent* pEvent);
 
 private:
-	Callback m_onActivate;
-	Callback m_onDeactivate;
-	rbool    m_activated;
+	Callback  m_onActivate;
+	Callback  m_onDeactivate;
+	rbool     m_activated;
 };
 
 #endif // _RDO_STUDIO_ACTION_ACTIVATOR_H_
