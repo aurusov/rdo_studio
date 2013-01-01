@@ -254,6 +254,9 @@
    </property>
   </action>
   <action name="actEditUndo">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Отменить</string>
    </property>
@@ -262,6 +265,9 @@
    </property>
   </action>
   <action name="acteditRedo">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Повторить</string>
    </property>
@@ -270,6 +276,9 @@
    </property>
   </action>
   <action name="actEditCut">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Вырезать</string>
    </property>
@@ -278,6 +287,9 @@
    </property>
   </action>
   <action name="actEditCopy">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Копировать</string>
    </property>
@@ -286,6 +298,9 @@
    </property>
   </action>
   <action name="actEditPaste">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Вставить</string>
    </property>
@@ -294,6 +309,9 @@
    </property>
   </action>
   <action name="actEditClear">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Удалить</string>
    </property>
@@ -302,6 +320,9 @@
    </property>
   </action>
   <action name="actEditCopyAsRTF">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Копировать как RTF</string>
    </property>
@@ -310,6 +331,9 @@
    </property>
   </action>
   <action name="actEditSelectAll">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Выделить все</string>
    </property>
@@ -318,6 +342,9 @@
    </property>
   </action>
   <action name="actEditUpPercase">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>В верхний регистр</string>
    </property>
@@ -326,6 +353,9 @@
    </property>
   </action>
   <action name="actEditLowPercase">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>В нижний регистр</string>
    </property>
@@ -334,6 +364,9 @@
    </property>
   </action>
   <action name="actEditCommentSelection">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Закомментировать выделенное</string>
    </property>
@@ -342,6 +375,9 @@
    </property>
   </action>
   <action name="actEditCompleteWord">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Завершить слово</string>
    </property>
@@ -361,6 +397,9 @@
    </property>
   </action>
   <action name="actSearchFindNext">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Найти следующий</string>
    </property>
@@ -369,6 +408,9 @@
    </property>
   </action>
   <action name="actSearchFindPrevious">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Найти предыдущий</string>
    </property>
@@ -377,6 +419,9 @@
    </property>
   </action>
   <action name="actSearchReplace">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Заменить</string>
    </property>
@@ -385,6 +430,9 @@
    </property>
   </action>
   <action name="actSearchFinInModel">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Найти в модели</string>
    </property>
@@ -393,6 +441,9 @@
    </property>
   </action>
   <action name="actSearchBookmarksAddClear">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Поставить/снять закладку</string>
    </property>
@@ -401,6 +452,9 @@
    </property>
   </action>
   <action name="actSearchBookmarkNext">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Перейти к след. закладке</string>
    </property>
@@ -409,6 +463,9 @@
    </property>
   </action>
   <action name="actSearchBookmarkPrevious">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Перейти к пред. закладке</string>
    </property>
@@ -417,6 +474,9 @@
    </property>
   </action>
   <action name="actSearchBookmarksClearAll">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Очистить все закладки</string>
    </property>
@@ -425,6 +485,9 @@
    </property>
   </action>
   <action name="actSearchGotoLine">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Перейти на строчку</string>
    </property>
@@ -433,6 +496,9 @@
    </property>
   </action>
   <action name="actViewToggleAllfolds">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Свернуть/развернуть все группы</string>
    </property>
@@ -441,11 +507,17 @@
    </property>
   </action>
   <action name="actViewToggleCurrentfold">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Свернуть/развернуть текущую группу</string>
    </property>
   </action>
   <action name="actViewShowSpace">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Показать пробелы</string>
    </property>
@@ -454,6 +526,9 @@
    </property>
   </action>
   <action name="actViewShowEndSymbol">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Показать символ конца строки</string>
    </property>
@@ -462,6 +537,9 @@
    </property>
   </action>
   <action name="actViewZoomMax">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Увеличить масштаб</string>
    </property>
@@ -470,6 +548,9 @@
    </property>
   </action>
   <action name="actViewZoomMin">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Уменьшить масштаб</string>
    </property>
@@ -478,11 +559,17 @@
    </property>
   </action>
   <action name="actViewZoomAuto">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Автоматический масштаб</string>
    </property>
   </action>
   <action name="actViewZoomReset">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Восстановить масштаб</string>
    </property>
@@ -520,26 +607,41 @@
    </property>
   </action>
   <action name="actModelRuntimeMaxSpeed">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Максимальная скорость</string>
    </property>
   </action>
   <action name="actModelRuntimeJump">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Дискретная имитация</string>
    </property>
   </action>
   <action name="actModelRuntimeSync">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Синхронная имитация</string>
    </property>
   </action>
   <action name="actModelRuntimePause">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Пауза</string>
    </property>
   </action>
   <action name="actModelShowrateInc">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Увеличить масштаб</string>
    </property>
@@ -548,16 +650,25 @@
    </property>
   </action>
   <action name="actModelShowrateDec">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Уменьшить масштаб</string>
    </property>
   </action>
   <action name="actModelFrameNext">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>След. кадр анимации</string>
    </property>
   </action>
   <action name="actModelFramePrev">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Пред. кадр анимации</string>
    </property>
