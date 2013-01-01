@@ -15,7 +15,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl.h"
 #include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/src/main_windows_base.h"
+#include "app/rdo_studio_mfc/src/main_frm.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
@@ -452,8 +452,6 @@ RDOLogCtrl::RDOLogCtrl(PTR(QAbstractScrollArea) pParent, PTR(RDOLogStyle) pStyle
 	connect(&getVertScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(onVertScrollBarValueChanged(int)));
 	connect(&getHorzScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(onHorzScrollBarValueChanged(int)));
 
-	setFocusPolicy(Qt::ClickFocus);
-
 	setFont();
 	updateScrollBars();
 }
@@ -622,18 +620,6 @@ void RDOLogCtrl::onHorzScrollBarValueChanged(int value)
 	}
 
 	scrollHorizontally(value - m_SM_X.position);
-}
-
-void RDOLogCtrl::focusInEvent(QFocusEvent* pEvent)
-{
-	parent_type::focusInEvent(pEvent);
-	repaintLine(selectedLine);
-}
-
-void RDOLogCtrl::focusOutEvent(QFocusEvent* pEvent)
-{
-	parent_type::focusOutEvent(pEvent);
-	repaintLine(selectedLine);
 }
 
 void RDOLogCtrl::keyPressEvent(QKeyEvent* pEvent)
@@ -1092,4 +1078,32 @@ void RDOLogCtrl::setDrawLog(rbool value)
 		updateWindow();
 		makeLineVisible(selectedLine);
 	}
+}
+
+void RDOLogCtrl::onActivate()
+{
+	TRACE("RDOLogCtrl::onActivate\n");
+	repaintLine(selectedLine);
+
+	Ui::MainWindow* pMainWindow = dynamic_cast<Ui::MainWindow*>(studioApp.getMainWnd());
+	ASSERT(pMainWindow);
+
+	pMainWindow->actSearchFind->setEnabled(true);
+	connect(pMainWindow->actSearchFind, SIGNAL(triggered(bool)), this, SLOT(onSearchFind(bool)));
+}
+
+void RDOLogCtrl::onDeactivate()
+{
+	TRACE("RDOLogCtrl::onDeactivate\n");
+	repaintLine(selectedLine);
+
+	Ui::MainWindow* pMainWindow = dynamic_cast<Ui::MainWindow*>(studioApp.getMainWnd());
+	ASSERT(pMainWindow);
+
+	pMainWindow->actSearchFind->setEnabled(false);
+	disconnect(pMainWindow->actSearchFind, SIGNAL(triggered(bool)), this, SLOT(onSearchFind(bool)));
+}
+
+void RDOLogCtrl::onSearchFind(bool checked)
+{
 }

@@ -62,9 +62,9 @@ private:
 // -------------------- RDOStudioMainFrame
 // --------------------------------------------------------------------------------
 class RDOStudioMainFrame
-	: public  QMainWindow
-	, public  MainWindowBase
-	, private Ui::MainWindow
+	: public QMainWindow
+	, public MainWindowBase
+	, public Ui::MainWindow
 {
 Q_OBJECT
 

@@ -350,6 +350,9 @@
    </property>
   </action>
   <action name="actSearchFind">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Найти...</string>
    </property>

@@ -16,6 +16,7 @@
 #include <QtGui/qabstractscrollarea.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl_style.h"
+#include "app/rdo_studio_mfc/src/action_activator/action_activator_widget.h"
 // --------------------------------------------------------------------------------
 
 namespace rdoTracerLog {
@@ -23,7 +24,7 @@ namespace rdoTracerLog {
 // --------------------------------------------------------------------------------
 // -------------------- RDOLogCtrl
 // --------------------------------------------------------------------------------
-class RDOLogCtrl: public QWidget
+class RDOLogCtrl: public ActionActivatorWidget
 {
 Q_OBJECT
 
@@ -173,11 +174,9 @@ private:
 
 	PTR(QAbstractScrollArea) m_pScrollArea;
 
-	typedef  QWidget  parent_type;
+	typedef  ActionActivatorWidget  parent_type;
 	virtual void resizeEvent    (QResizeEvent* pEvent);
 	virtual void paintEvent     (QPaintEvent*  pEvent);
-	virtual void focusInEvent   (QFocusEvent*  pEvent);
-	virtual void focusOutEvent  (QFocusEvent*  pEvent);
 	virtual void keyPressEvent  (QKeyEvent*    pEvent);
 	virtual void wheelEvent     (QWheelEvent*  pEvent);
 	virtual void mousePressEvent(QMouseEvent*  pEvent);
@@ -185,9 +184,12 @@ private:
 	REF(QScrollBar) getVertScrollBar();
 	REF(QScrollBar) getHorzScrollBar();
 
+	DECLARE_ActionActivatorWidget;
+
 private slots:
 	void onVertScrollBarValueChanged(int value);
 	void onHorzScrollBarValueChanged(int value);
+	void onSearchFind               (bool checked);
 };
 
 }; // namespace rdoTracerLog
