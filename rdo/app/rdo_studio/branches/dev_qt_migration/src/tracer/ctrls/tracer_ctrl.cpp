@@ -1066,10 +1066,9 @@ void RDOLogCtrl::setDrawLog(rbool value)
 
 void RDOLogCtrl::onActivate()
 {
-	TRACE("RDOLogCtrl::onActivate\n");
 	repaintLine(selectedLine());
 
-	Ui::MainWindow* pMainWindow = dynamic_cast<Ui::MainWindow*>(studioApp.getMainWnd());
+	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
 	ASSERT(pMainWindow);
 
 	pMainWindow->actSearchFind->setEnabled(true);
@@ -1080,10 +1079,9 @@ void RDOLogCtrl::onActivate()
 
 void RDOLogCtrl::onDeactivate()
 {
-	TRACE("RDOLogCtrl::onDeactivate\n");
 	repaintLine(selectedLine());
 
-	Ui::MainWindow* pMainWindow = dynamic_cast<Ui::MainWindow*>(studioApp.getMainWnd());
+	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
 	ASSERT(pMainWindow);
 
 	pMainWindow->actSearchFind->setEnabled(false);
@@ -1094,7 +1092,7 @@ void RDOLogCtrl::onDeactivate()
 
 void RDOLogCtrl::setUpActionEditCopy(rbool activate)
 {
-	Ui::MainWindow* pMainWindow = dynamic_cast<Ui::MainWindow*>(studioApp.getMainWnd());
+	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
 	ASSERT(pMainWindow);
 
 	if (activate && canCopy())

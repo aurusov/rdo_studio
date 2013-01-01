@@ -297,7 +297,7 @@ BOOL RDOStudioApp::InitInstance()
 	m_pEditorEditStyle = rdo::Factory<rdoEditor::RDOEditorEditStyle>::create();
 
 	// Внутри создается объект модели
-	m_pMainFrame = new RDOStudioMainFrame;
+	m_pMainFrame = new RDOStudioMainFrame();
 	m_pMainFrame->init();
 	m_pMainWnd = m_pMainFrame->c_wnd();
 	m_pMainFrame->show();
@@ -439,6 +439,11 @@ int RDOStudioApp::ExitInstance()
 	{
 		return CWinApp::ExitInstance();
 	}
+}
+
+PTR(RDOStudioMainFrame) RDOStudioApp::getMainWndUI()
+{
+	return m_pMainFrame;
 }
 
 PTR(QMainWindow) RDOStudioApp::getMainWnd()

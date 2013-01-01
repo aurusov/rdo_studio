@@ -45,9 +45,10 @@ public:
 	RDOStudioApp();
 	virtual ~RDOStudioApp();
 
-	PTR(QMainWindow)    getMainWnd ();
-	PTR(MainWindowBase) getIMainWnd();
-	PTR(MainWindowBase) getStyle   ();
+	PTR(RDOStudioMainFrame) getMainWndUI();
+	PTR(QMainWindow)        getMainWnd ();
+	PTR(MainWindowBase)     getIMainWnd();
+	PTR(MainWindowBase)     getStyle   ();
 
 	//! см. описание RDOKernelGUI
 	//! Главная треда самого приложения, т.е. кернет для win32-gui, но не кернел системы
