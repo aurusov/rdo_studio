@@ -1128,7 +1128,7 @@ rsint RDOLogCtrl::selectedLine() const
 void RDOLogCtrl::setSelectedLine(rsint selectedLine)
 {
 	m_selectedLine = selectedLine;
-	setUpActionEditCopy(true);
+	setUpActionEditCopy(isActivated());
 }
 
 void RDOLogCtrl::onEditCopy(bool)
