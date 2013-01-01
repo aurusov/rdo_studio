@@ -11,13 +11,12 @@
 #define _RDO_STUDIO_DOCK_FIND_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtGui/qdockwidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/dock/dock_base.h"
+#include "app/rdo_studio_mfc/src/dock/dock_focusable.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdofindedit.h"
 // --------------------------------------------------------------------------------
 
-class DockFind: public QDockWidget
+class DockFind: public DockFocusable
 {
 public:
 	typedef rdoEditCtrl::RDOFindEdit context_type;

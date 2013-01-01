@@ -17,7 +17,7 @@
 // --------------------------------------------------------------------------------
 
 DockChartTree::DockChartTree(PTR(QWidget) pParent)
-	: QDockWidget("Графики", pParent)
+	: DockFocusable("Графики", pParent)
 {
 	PTR(context_type) pWidget = new context_type(this);
 	pWidget->setMinimumSize(QSize(200, 300));

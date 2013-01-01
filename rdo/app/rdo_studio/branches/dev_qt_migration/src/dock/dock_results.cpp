@@ -16,7 +16,7 @@
 // --------------------------------------------------------------------------------
 
 DockResults::DockResults(PTR(QWidget) pParent)
-	: QDockWidget("Результаты", pParent)
+	: DockFocusable("Результаты", pParent)
 {
 	PTR(context_type) pWidget = new context_type(this);
 	pWidget->setMinimumSize(QSize(300, 150));

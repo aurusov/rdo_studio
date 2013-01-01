@@ -11,12 +11,12 @@
 #define _RDO_STUDIO_DOCK_TRACE_TREE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtGui/qdockwidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "app/rdo_studio_mfc/src/dock/dock_focusable.h"
 #include "app/rdo_studio_mfc/src/chart/chart_tree.h"
 // --------------------------------------------------------------------------------
 
-class DockChartTree: public QDockWidget
+class DockChartTree: public DockFocusable
 {
 public:
 	typedef  ChartTree  context_type;

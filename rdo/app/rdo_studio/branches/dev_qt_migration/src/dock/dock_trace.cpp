@@ -17,7 +17,7 @@
 // --------------------------------------------------------------------------------
 
 DockTrace::DockTrace(PTR(QWidget) pParent)
-	: QDockWidget("Трассировка", pParent)
+	: DockFocusable("Трассировка", pParent)
 {
 	PTR(context_type) pWidget = new context_type(this);
 	pWidget->setMinimumSize(QSize(300, 150));

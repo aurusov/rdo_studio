@@ -11,12 +11,12 @@
 #define _RDO_STUDIO_DOCK_TRACE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtGui/qdockwidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "app/rdo_studio_mfc/src/dock/dock_focusable.h"
 #include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl_view.h"
 // --------------------------------------------------------------------------------
 
-class DockTrace: public QDockWidget
+class DockTrace: public DockFocusable
 {
 public:
 	typedef  rdoTracerLog::RDOTracerLogCtrl  context_type;

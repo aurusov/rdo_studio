@@ -11,12 +11,12 @@
 #define _RDO_STUDIO_DOCK_BUILD_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtGui/qdockwidget.h>
 // ----------------------------------------------------------------------- SYNOPSIS
+#include "app/rdo_studio_mfc/src/dock/dock_focusable.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdobuildedit.h"
 // --------------------------------------------------------------------------------
 
-class DockBuild: public QDockWidget
+class DockBuild: public DockFocusable
 {
 public:
 	typedef rdoEditCtrl::RDOBuildEdit context_type;
