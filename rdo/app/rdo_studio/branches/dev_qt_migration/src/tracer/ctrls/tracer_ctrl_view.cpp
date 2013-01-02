@@ -82,13 +82,6 @@ static const UINT FIND_REPLASE_MSG = ::RegisterWindowMessage(FINDMSGSTRING);
 
 //! @todo qt
 //BEGIN_MESSAGE_MAP(RDOTracerLogCtrlView, RDOLogCtrl)
-//	ON_COMMAND(ID_SEARCH_FIND, OnFind)
-//	ON_COMMAND(ID_SEARCH_FIND_NEXT    , OnFindNext)
-//	ON_COMMAND(ID_SEARCH_FIND_PREVIOUS, OnFindPrev)
-//	ON_REGISTERED_MESSAGE(FIND_REPLASE_MSG, OnFindReplaceMsg)
-//	ON_UPDATE_COMMAND_UI(ID_SEARCH_FIND_NEXT    , OnUpdateFindNextPrev)
-//	ON_UPDATE_COMMAND_UI(ID_SEARCH_FIND         , OnUpdateFind)
-//	ON_UPDATE_COMMAND_UI(ID_SEARCH_FIND_PREVIOUS, OnUpdateFindNextPrev)
 //	ON_WM_INITMENUPOPUP()
 //	ON_WM_CONTEXTMENU()
 //	ON_UPDATE_COMMAND_UI(ID_COORD_STATUSBAR , OnUpdateCoordStatusBar)
@@ -200,72 +193,6 @@ void RDOTracerLogCtrlView::setStyle(RDOTracerLogStyle* style, rbool needRedraw)
 	RDOLogCtrl::setStyle(style, needRedraw);
 }
 
-void RDOTracerLogCtrlView::OnFind()
-{
-	//! @todo qt
-	//firstFoundLine = -1;
-	//CFindReplaceDialog* pDlg = new CFindReplaceDialog();
-	//DWORD flag = (bSearchDown ? FR_DOWN : 0) | (bMatchCase ? FR_MATCHCASE : 0) | (bMatchWholeWord ? FR_WHOLEWORD : 0);
-	//tstring str;
-	//getSelected(str);
-	//pDlg->Create(true, str.c_str(), NULL, flag, this);
-}
-
-void RDOTracerLogCtrlView::OnFindNext()
-{
-	//firstFoundLine = -1;
-	//findNext();
-	//if (!bHaveFound)
-	//{
-	//	showFindError(findStr);
-	//}
-}
-
-void RDOTracerLogCtrlView::OnFindPrev()
-{
-	//firstFoundLine = -1;
-	//findPrevious();
-	//if (!bHaveFound)
-	//{
-	//	showFindError(findStr);
-	//}
-}
-
-LRESULT RDOTracerLogCtrlView::OnFindReplaceMsg(WPARAM wParam, LPARAM lParam)
-{
-	UNUSED(wParam);
-	UNUSED(lParam);
-
-	//! todo qt
-	//CFindReplaceDialog* pDialog = CFindReplaceDialog::GetNotifier(lParam);
-
-	//findStr = pDialog->GetFindString();
-
-	//if (pDialog->IsTerminating()) {
-	//	firstFoundLine = -1;
-	//	SetFocus();
-	//	return 0;
-	//} else {
-	//	rbool newSearchDown     = pDialog->SearchDown() ? true : false;
-	//	rbool newMatchCase      = pDialog->MatchCase() ? true : false;
-	//	rbool newMatchWholeWord = pDialog->MatchWholeWord() ? true : false;
-	//	if (newSearchDown != bSearchDown || newMatchCase != bMatchCase || newMatchWholeWord != bMatchWholeWord) {
-	//		firstFoundLine = -1;
-	//	}
-	//	bSearchDown     = newSearchDown;
-	//	bMatchCase      = newMatchCase;
-	//	bMatchWholeWord = newMatchWholeWord;
-
-	//	if (pDialog->FindNext()) {
-	//		findNext();
-	//		if (!bHaveFound) {
-	//			showFindError(findStr);
-	//		}
-	//	}
-	//}
-	return 0;
-}
-
 //! todo qt
 //void RDOTracerLogCtrlView::OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu)
 //{
@@ -280,16 +207,6 @@ LRESULT RDOTracerLogCtrlView::OnFindReplaceMsg(WPARAM wParam, LPARAM lParam)
 //	CWnd::OnContextMenu(pWnd, pos);
 //	if (popupMenu.m_hMenu) popupMenu.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, pos.x, pos.y, this);
 //}
-
-void RDOTracerLogCtrlView::OnUpdateFindNextPrev(CCmdUI* pCmdUI)
-{
-	//pCmdUI->Enable(!findStr.empty());
-}
-
-void RDOTracerLogCtrlView::OnUpdateFind(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(m_strings.count());
-}
 
 void RDOTracerLogCtrlView::onHelpContext()
 {

@@ -47,12 +47,6 @@ protected:
 private:
 	DECLARE_IHelpContext;
 
-	afx_msg void OnFind();
-	afx_msg void OnFindNext();
-	afx_msg void OnFindPrev();
-	afx_msg LRESULT OnFindReplaceMsg(WPARAM wParam, LPARAM lParam);
-	afx_msg void OnUpdateFindNextPrev(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateFind(CCmdUI* pCmdUI);
 	//! todo qt
 	//afx_msg void OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu);
 	//afx_msg void OnContextMenu(CWnd* pWnd, CPoint pos);
