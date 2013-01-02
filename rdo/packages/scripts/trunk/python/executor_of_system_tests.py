@@ -4,6 +4,8 @@
 
 import os
 import sys
+import uuid
+import shutil
 import subprocess
 import xml.dom.minidom
 
@@ -197,129 +199,148 @@ for task in files:
 
     text_task = open(utask, 'r').read()
 
-    dom = xml.dom.minidom.parseString(text_task)
-
-    model_name_with_ex    = get_node_attribute_from_dom(dom, u'model', u'name'           )
-    target                = get_node_attribute_from_dom(dom, u'model', u'target'         )
-    text_exit_code        = get_node_attribute_from_dom(dom, u'model', u'exit_code'      )
-    etalon_trace_name     = get_node_attribute_from_dom(dom, u'model', u'trace'          )
-    etalon_result_name    = get_node_attribute_from_dom(dom, u'model', u'result'         ) 
-    compile_log_file_name = get_node_attribute_from_dom(dom, u'model', u'log_compilation')
+    parse_result = False
     
-    exit_code = int(text_exit_code)
-
-    print 'Project              :', task
-    print 'Model file           :', model_name_with_ex
-    print 'Target               :', target
-    print 'Exit code            :', exit_code
-    print 'Trace file           :', etalon_trace_name
-    print 'Result file          :', etalon_result_name
-    print 'Log compilation file :', compile_log_file_name
-    print ''
-
-    model         = dirname + model_name_with_ex
-    etalon_trace  = dirname + etalon_trace_name
-    etalon_result = dirname + etalon_result_name
-
-    model_name = model_name_with_ex.partition('.')[0]
-
-    simulation_trace = dirname + model_name + trace_expansion
-    simulation_result = dirname + model_name + result_expansion
-
-    cycle_exit_code = APP_CODE_TERMINATION_ERROR
-
-    # select console target
-    if target == TARGET_CONSOLE:
-        # run rdo_console app on test model
-        command = (rdo_ex + u' -i ' + wrap_the_string_in_quotes(model))
-        simulation_code = subprocess.call(safe_encode(command), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        print "SIMYLATION EXIT CODE :", simulation_code
-
-        # check simulation exit code
-        simulation_exit_code_string = 'ERROR'
-
-        cmp_exit_code = simulation_code == exit_code
-        if cmp_exit_code:
-            simulation_exit_code_string = "OK"
-
-        print "CHECK SIM EXIT CODE  :", simulation_exit_code_string
-
-        # bad simulation exit code
-        if not cmp_exit_code:
-            cycle_exit_code = APP_CODE_TERMINATION_ERROR
-
-        # nornal simulation check
-        elif simulation_code == RDO_CONSOLE_TERMINATION_NORMAL:
-
-            command = (rdo_test_ex + ' -T ' + wrap_the_string_in_quotes(etalon_trace) + ' -R ' + wrap_the_string_in_quotes(etalon_result) 
-                                   + ' -t ' + wrap_the_string_in_quotes(simulation_trace) + ' -r ' + wrap_the_string_in_quotes(simulation_result)
-                                   )
-
-            test_code = subprocess.call(safe_encode(command), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-
-            check_exit_code_string = 'ERROR UNKNOWN'
-
-            if test_code == RDO_CHECK_RESULT_TERMINATION_NORMAL:
-                cycle_exit_code = APP_CODE_TERMINATION_NORMAL
-                check_exit_code_string = 'OK'
-
-            elif test_code == RDO_CHECK_RESULT_TERMINATION_ERROR_FILE_NOT_FOUND:
-                check_exit_code_string = 'ERROR FILE NOT FOUND'
-
-            elif test_code == RDO_CHECK_RESULT_TERMINATION_ERROR_INVALID_INPUT:
-                check_exit_code_string = 'ERROR INVALID INPUT'
-
-            elif test_code == RDO_CHECK_RESULT_TERMINATION_ERROR_RESULT:
-                check_exit_code_string = 'ERROR RESULT'
-
-            elif test_code == RDO_CHECK_RESULT_TERMINATION_ERROR_TRACE:
-                check_exit_code_string = 'ERROR TRACE'            
-
-            elif test_code == RDO_CHECK_RESULT_TERMINATION_ERROR_RESULT_AND_TRACE:
-                check_exit_code_string = 'ERROR RESULT AND TRACE'            
-
-            print "TEST EXIT CODE       :", test_code
-            print "CHECK TEST CODE      :", check_exit_code_string
-
-        # .rdox model not found
-        elif simulation_code == RDO_CONSOLE_TERMINATION_WITH_AN_ERROR_NO_MODEL:
-            cycle_exit_code = APP_CODE_TERMINATION_NORMAL
-
-        # check compile error log
-        elif simulation_code == RDO_CONSOLE_TERMINATION_WITH_AN_ERROR_PARSE_ERROR:
-
-            simulation_log_file = dirname + RDO_CONSOLE_COMPILE_LOG_FILE_NAME
-            simulation_log_file_etalon = dirname + compile_log_file_name
-
-            res = compare_text_files(simulation_log_file, simulation_log_file_etalon)
-
-            check_message_cmp_string = 'ERROR'
-  
-            if res:
-                cycle_exit_code = APP_CODE_TERMINATION_NORMAL
-                check_message_cmp_string = 'OK'
-
-            print "CHECK ERROR LIST     :", check_message_cmp_string 
-
-        elif simulation_code == RDO_CONSOLE_TERMINATION_WITH_AN_ERROR_RUNTIME_ERROR:
-            cycle_exit_code = APP_CODE_TERMINATION_NORMAL
-            
-        # runtime error in rdo_console
-        else:
-            cycle_exit_code = APP_CODE_TERMINATION_ERROR
-
-    elif target == TAGRET_CONVERTER:
-        break
-
-    else:
-        print 'INVALID TARGET'
-
-    # remove temp files
-    #os.remove(simulation_trace)
-    #os.remove(simulation_result)
-
-    if cycle_exit_code == APP_CODE_TERMINATION_ERROR:
+    try:
+        dom = xml.dom.minidom.parseString(text_task)
+        parse_result = True
+    
+    except:
+        print u'PARSE XML ERROR:', utask
         G_EXIT_CODE = APP_CODE_TERMINATION_ERROR
+    
+    if parse_result:
+        model = {}
+        model['name']            = get_node_attribute_from_dom(dom, u'model', u'name'           )
+        model['target']          = get_node_attribute_from_dom(dom, u'model', u'target'         )
+        model['exit_code']       = get_node_attribute_from_dom(dom, u'model', u'exit_code'      )
+        model['trace']           = get_node_attribute_from_dom(dom, u'model', u'trace'          )
+        model['result']          = get_node_attribute_from_dom(dom, u'model', u'result'         )
+        model['log_compilation'] = get_node_attribute_from_dom(dom, u'model', u'log_compilation')
+        
+        print 'Project              :', task
+        print 'Model file           :', model['name']
+        print 'Target               :', model['target']
+        print 'Exit code            :', model['exit_code']
+        print 'Trace file           :', model['trace']
+        print 'Result file          :', model['result']
+        print 'Log compilation file :', model['log_compilation']
+        print ''
+
+        node_etalons = dom.getElementsByTagName('etalons')
+        if len(node_etalons):
+            files = node_etalons[0].getElementsByTagName('file')
+
+            etalons = []
+
+            for file in files:
+                etalon = {}
+                etalon['source'] = file.getAttribute('source')
+                etalon['target'] = file.getAttribute('target')
+            
+                etalons.append(etalon)
+
+        model_file    = dirname + model['name']
+        etalon_trace  = dirname + model['trace']
+        etalon_result = dirname + model['result']
+
+        model_name = model['name'].partition('.')[0]
+
+        simulation_trace = dirname + model_name + trace_expansion
+        simulation_result = dirname + model_name + result_expansion
+
+        cycle_exit_code = APP_CODE_TERMINATION_ERROR
+
+        # select console target
+        if model['target'] == TARGET_CONSOLE and False:
+            # run rdo_console app on test model
+            command = (rdo_ex + u' -i ' + wrap_the_string_in_quotes(model_file))
+            simulation_code = subprocess.call(safe_encode(command), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            print "SIMYLATION EXIT CODE :", simulation_code
+
+            # check simulation exit code
+            simulation_exit_code_string = 'ERROR'
+
+            exit_code = int(model['exit_code'])
+            
+            if simulation_code == exit_code:
+                simulation_exit_code_string = "OK"
+            else:
+                cycle_exit_code = APP_CODE_TERMINATION_ERROR
+            
+            print "CHECK SIM EXIT CODE  :", simulation_exit_code_string    
+            
+            # nornal simulation check
+            if simulation_code != RDO_CONSOLE_TERMINATION_NORMAL:
+
+                command = (rdo_test_ex + ' -T ' + wrap_the_string_in_quotes(etalon_trace) + ' -R ' + wrap_the_string_in_quotes(etalon_result) 
+                                       + ' -t ' + wrap_the_string_in_quotes(simulation_trace) + ' -r ' + wrap_the_string_in_quotes(simulation_result)
+                                       )
+
+                test_code = subprocess.call(safe_encode(command), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+
+                check_exit_code_string = 'ERROR UNKNOWN'
+
+                if test_code == RDO_CHECK_RESULT_TERMINATION_NORMAL:
+                    cycle_exit_code = APP_CODE_TERMINATION_NORMAL
+                    check_exit_code_string = 'OK'
+
+                elif test_code == RDO_CHECK_RESULT_TERMINATION_ERROR_FILE_NOT_FOUND:
+                    check_exit_code_string = 'ERROR FILE NOT FOUND'
+
+                elif test_code == RDO_CHECK_RESULT_TERMINATION_ERROR_INVALID_INPUT:
+                    check_exit_code_string = 'ERROR INVALID INPUT'
+
+                elif test_code == RDO_CHECK_RESULT_TERMINATION_ERROR_RESULT:
+                    check_exit_code_string = 'ERROR RESULT'
+
+                elif test_code == RDO_CHECK_RESULT_TERMINATION_ERROR_TRACE:
+                    check_exit_code_string = 'ERROR TRACE'            
+
+                elif test_code == RDO_CHECK_RESULT_TERMINATION_ERROR_RESULT_AND_TRACE:
+                    check_exit_code_string = 'ERROR RESULT AND TRACE'            
+
+                print "TEST EXIT CODE       :", test_code
+                print "CHECK TEST CODE      :", check_exit_code_string
+
+            # .rdox model not found
+            elif simulation_code == RDO_CONSOLE_TERMINATION_WITH_AN_ERROR_NO_MODEL:
+                cycle_exit_code = APP_CODE_TERMINATION_NORMAL
+
+            # check compile error log
+            elif simulation_code == RDO_CONSOLE_TERMINATION_WITH_AN_ERROR_PARSE_ERROR:
+
+                simulation_log_file = dirname + RDO_CONSOLE_COMPILE_LOG_FILE_NAME
+                simulation_log_file_etalon = dirname + model['log_compilation']
+
+                res = compare_text_files(simulation_log_file, simulation_log_file_etalon)
+
+                check_message_cmp_string = 'ERROR'
+
+                if res:
+                    cycle_exit_code = APP_CODE_TERMINATION_NORMAL
+                    check_message_cmp_string = 'OK'
+
+                print "CHECK ERROR LIST     :", check_message_cmp_string 
+
+            elif simulation_code == RDO_CONSOLE_TERMINATION_WITH_AN_ERROR_RUNTIME_ERROR:
+                cycle_exit_code = APP_CODE_TERMINATION_NORMAL
+
+        elif model['target'] == TAGRET_CONVERTER:
+            text_uuid = str(uuid.uuid1())
+            temp_directory_name = dirname + text_uuid
+            shutil.copytree(dirname, temp_directory_name)
+            shutil.rmtree(temp_directory_name)
+
+        else:
+            print 'INVALID TARGET'
+
+        # remove temp files
+        #os.remove(simulation_trace)
+        #os.remove(simulation_result)
+
+        if cycle_exit_code == APP_CODE_TERMINATION_ERROR:
+            G_EXIT_CODE = APP_CODE_TERMINATION_ERROR
 
 print "\n", "PYTHON EXIT CODE :", G_EXIT_CODE, "\n"
 
