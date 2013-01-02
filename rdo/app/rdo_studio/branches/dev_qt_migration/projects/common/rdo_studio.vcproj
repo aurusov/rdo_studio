@@ -735,14 +735,22 @@
 				</File>
 			</Filter>
 			<Filter
-				Name=".tracer"
+				Name=".tracer_log"
 				>
 				<File
-					RelativePath="..\..\src\tracer\ctrls\log_ctrl.cpp"
+					RelativePath="..\..\src\tracer\ctrls\log_main_wnd.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\tracer\ctrls\log_ctrl.h"
+					RelativePath="..\..\src\tracer\ctrls\log_main_wnd.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\tracer\ctrls\log_view.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\tracer\ctrls\log_view.h"
 					>
 					<FileConfiguration
 						Name="debug|Win32"
@@ -806,19 +814,11 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\..\src\tracer\ctrls\log_ctrl_style.cpp"
+					RelativePath="..\..\src\tracer\ctrls\log_view_style.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\tracer\ctrls\log_ctrl_style.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\tracer\ctrls\log_ctrl_view.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\src\tracer\ctrls\log_ctrl_view.h"
+					RelativePath="..\..\src\tracer\ctrls\log_view_style.h"
 					>
 				</File>
 			</Filter>
@@ -2865,7 +2865,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\bin\rdo_studio\generated\moc_log_ctrl.cpp"
+					RelativePath=".\bin\rdo_studio\generated\moc_log_view.cpp"
 					>
 				</File>
 				<File

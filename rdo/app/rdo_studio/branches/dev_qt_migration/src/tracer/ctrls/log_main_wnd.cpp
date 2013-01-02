@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      log_ctrl_view.cpp
+  \file      log_main_wnd.cpp
   \authors   Захаров Павел
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      12.03.2003
@@ -12,8 +12,8 @@
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/tracer/ctrls/log_ctrl_view.h"
-#include "app/rdo_studio_mfc/src/tracer/ctrls/log_ctrl_style.h"
+#include "app/rdo_studio_mfc/src/tracer/ctrls/log_main_wnd.h"
+#include "app/rdo_studio_mfc/src/tracer/ctrls/log_view_style.h"
 #include "app/rdo_studio_mfc/src/application.h"
 // --------------------------------------------------------------------------------
 

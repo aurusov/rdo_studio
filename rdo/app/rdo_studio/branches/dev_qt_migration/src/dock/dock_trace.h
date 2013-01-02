@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/dock/dock_focusable.h"
-#include "app/rdo_studio_mfc/src/tracer/ctrls/log_ctrl_view.h"
+#include "app/rdo_studio_mfc/src/tracer/ctrls/log_main_wnd.h"
 // --------------------------------------------------------------------------------
 
 class DockTrace: public DockFocusable

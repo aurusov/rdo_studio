@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      log_ctrl_view.h
+  \file      log_main_wnd.h
   \authors   Захаров Павел
   \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      12.03.2003
@@ -8,13 +8,13 @@
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_TRACER_CTRLS_LOG_CTRL_VIEW_H_
-#define _RDO_STUDIO_TRACER_CTRLS_LOG_CTRL_VIEW_H_
+#ifndef _RDO_STUDIO_TRACER_CTRLS_LOG_MAIN_WND_H_
+#define _RDO_STUDIO_TRACER_CTRLS_LOG_MAIN_WND_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qabstractscrollarea.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/tracer/ctrls/log_ctrl.h"
+#include "app/rdo_studio_mfc/src/tracer/ctrls/log_view.h"
 // --------------------------------------------------------------------------------
 
 namespace rdo { namespace gui { namespace tracer {
@@ -41,4 +41,4 @@ private:
 
 }}} // namespace rdo::gui::tracer
 
-#endif // _RDO_STUDIO_TRACER_CTRLS_LOG_CTRL_VIEW_H_
+#endif // _RDO_STUDIO_TRACER_CTRLS_LOG_MAIN_WND_H_
