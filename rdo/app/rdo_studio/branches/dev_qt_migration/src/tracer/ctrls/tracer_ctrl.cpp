@@ -949,6 +949,13 @@ void RDOLogCtrl::onActivate()
 	connect(pMainWindow->actHelpContext,        SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
 
 	setUpActionEditCopy(true);
+	setUpCoordStatusBar(true);
+
+	{
+		RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
+		ASSERT(pMainWindow);
+		pMainWindow->updateStatusBar<RDOStudioMainFrame::SB_MODIFY>("Только чтение");
+	}
 }
 
 void RDOLogCtrl::onDeactivate()
@@ -967,6 +974,12 @@ void RDOLogCtrl::onDeactivate()
 	disconnect(pMainWindow->actHelpContext,        SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
 
 	setUpActionEditCopy(false);
+	setUpCoordStatusBar(false);
+	{
+		RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
+		ASSERT(pMainWindow);
+		pMainWindow->updateStatusBar<RDOStudioMainFrame::SB_MODIFY>("");
+	}
 }
 
 void RDOLogCtrl::setUpActionEditCopy(rbool activate)
@@ -1006,6 +1019,18 @@ void RDOLogCtrl::setSelectedLine(rsint selectedLine)
 {
 	m_selectedLine = selectedLine;
 	setUpActionEditCopy(isActivated());
+	setUpCoordStatusBar(isActivated());
+}
+
+void RDOLogCtrl::setUpCoordStatusBar(rbool activate)
+{
+	QString coord = activate && selectedLine() != -1
+		? QString("1 : %1").arg(selectedLine())
+		: QString();
+
+	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
+	ASSERT(pMainWindow);
+	pMainWindow->updateStatusBar<RDOStudioMainFrame::SB_COORD>(coord);
 }
 
 void RDOLogCtrl::onEditCopy()

@@ -114,7 +114,10 @@ public:
 	virtual void connectOnActivateSubWindow(QObject* pObject);
 
 	template <StatusBar N>
-	void updateStatusBar(CREF(QString) message);
+	void updateStatusBar(CREF(QString) message)
+	{
+		updateStatusBar(StatusBarType<N>(), message);
+	}
 
 private:
 	typedef  QMainWindow  parent_type;
@@ -144,13 +147,17 @@ private:
 	{};
 
 	template <StatusBar N>
-	void updateStatusBar(StatusBarType<N>, CREF(QString) message);
+	void updateStatusBar(StatusBarType<N> statusBar, CREF(QString) message)
+	{
+		PTR(QLabel) pLabel = getStatusBarLabel(statusBar);
+		ASSERT(pLabel);
+		pLabel->setText(message);
+	}
 
 	template <StatusBar N>
 	PTR(QLabel) getStatusBarLabel(StatusBarType<N>);
 
 public:
-	void onUpdateCoord        ();
 	void onUpdateModify       ();
 	void onUpdateModelTime    (float time);
 	void onUpdateModelRuntype ();

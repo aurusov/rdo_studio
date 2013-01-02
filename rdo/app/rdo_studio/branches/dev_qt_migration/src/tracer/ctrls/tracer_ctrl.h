@@ -193,6 +193,7 @@ private:
 	REF(QScrollBar) getHorzScrollBar();
 
 	void  setUpActionEditCopy(rbool activate);
+	void  setUpCoordStatusBar(rbool activate);
 	rbool canCopy() const;
 
 	DECLARE_ActionActivatorWidget;

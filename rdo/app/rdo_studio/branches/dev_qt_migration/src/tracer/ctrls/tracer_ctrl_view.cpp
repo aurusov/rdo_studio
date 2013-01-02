@@ -78,34 +78,9 @@ void RDOTracerLogCtrl::keyPressEvent(PTR(QKeyEvent) pEvent)
 // --------------------------------------------------------------------------------
 // -------------------- RDOTracerLogCtrlView
 // --------------------------------------------------------------------------------
-//! @todo qt
-//BEGIN_MESSAGE_MAP(RDOTracerLogCtrlView, RDOLogCtrl)
-//	ON_UPDATE_COMMAND_UI(ID_COORD_STATUSBAR , OnUpdateCoordStatusBar)
-//	ON_UPDATE_COMMAND_UI(ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar)
-//END_MESSAGE_MAP()
-
 RDOTracerLogCtrlView::RDOTracerLogCtrlView(PTR(QAbstractScrollArea) pParent)
 	: RDOLogCtrl(pParent, &studioApp.getStyle()->style_trace)
 {}
 
 RDOTracerLogCtrlView::~RDOTracerLogCtrlView()
 {}
-
-void RDOTracerLogCtrlView::OnUpdateCoordStatusBar(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable();
-	//if (selectedLine() != -1)
-	//{
-	//	pCmdUI->SetText(rdo::format("%d: %d", 1, selectedLine() + 1).c_str());
-	//}
-	//else
-	//{
-	//	pCmdUI->SetText("");
-	//}
-}
-
-void RDOTracerLogCtrlView::OnUpdateModifyStatusBar(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable();
-	pCmdUI->SetText(rdo::format(ID_STATUSBAR_READONLY).c_str());
-}

@@ -418,10 +418,6 @@ void RDOStudioMainFrame::onModelStop()
 	model->stopModel();
 }
 
-void RDOStudioMainFrame::onUpdateCoord()
-{
-}
-
 void RDOStudioMainFrame::onUpdateModify()
 {
 }
@@ -874,20 +870,6 @@ void RDOStudioMainFrame::connectOnActivateSubWindow(QObject* pObject)
 	ASSERT(pObject);
 
 	QObject::connect(mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), pObject, SLOT(onSubWindowActivated(QMdiSubWindow*)));
-}
-
-template <RDOStudioMainFrame::StatusBar N>
-void RDOStudioMainFrame::updateStatusBar(CREF(QString) message)
-{
-	updateStatusBar(StatusBarType<N>(), message);
-}
-
-template <RDOStudioMainFrame::StatusBar N>
-void RDOStudioMainFrame::updateStatusBar(StatusBarType<N> statusBar, CREF(QString) message)
-{
-	PTR(QLabel) pLabel = getStatusBarLabel(statusBar);
-	ASSERT(pLabel);
-	pLabel->setText(message);
 }
 
 template <>

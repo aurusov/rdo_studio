@@ -28,10 +28,6 @@ namespace rdoTracerLog {
 // --------------------------------------------------------------------------------
 class RDOTracerLogCtrlView: public RDOLogCtrl
 {
-private:
-	afx_msg void OnUpdateCoordStatusBar(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateModifyStatusBar(CCmdUI* pCmdUI);
-
 public:
 	RDOTracerLogCtrlView(PTR(QAbstractScrollArea) pParent);
 	virtual ~RDOTracerLogCtrlView();
