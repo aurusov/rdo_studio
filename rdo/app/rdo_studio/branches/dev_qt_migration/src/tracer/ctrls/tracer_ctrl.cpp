@@ -439,6 +439,7 @@ void RDOLogCtrl::paintEvent(QPaintEvent* pEvent)
 					focusRect.setBottom(rect.bottom());
 					QStyleOptionFocusRect option;
 					option.initFrom(this);
+					option.state |= QStyle::State_KeyboardFocusChange;
 					option.backgroundColor = palette().color(QPalette::Background);
 					option.rect = focusRect;
 					style()->drawPrimitive(QStyle::PE_FrameFocusRect, &option, &painter, this);
