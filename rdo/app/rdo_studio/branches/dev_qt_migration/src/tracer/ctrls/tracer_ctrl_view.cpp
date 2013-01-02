@@ -10,14 +10,10 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtCore/qprocess.h>
-#include <QtGui/qmessagebox.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl_view.h"
+#include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl_view_style.h"
 #include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/src/main_windows_base.h"
-#include "app/rdo_studio_mfc/resource.h"
-#include "app/rdo_studio_mfc/htmlhelp.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
@@ -34,7 +30,7 @@ using namespace rdoTracerLog;
 RDOTracerLogCtrl::RDOTracerLogCtrl(PTR(QWidget) pParent)
 	: QAbstractScrollArea(pParent)
 {
-	PTR(RDOTracerLogCtrlView) pLog = new RDOTracerLogCtrlView(this);
+	PTR(RDOLogCtrl) pLog = new RDOLogCtrl(this, &studioApp.getStyle()->style_trace);
 	pLog->show();
 
 	setViewport(pLog);
@@ -74,13 +70,3 @@ void RDOTracerLogCtrl::keyPressEvent(PTR(QKeyEvent) pEvent)
 		break;
 	}
 }
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOTracerLogCtrlView
-// --------------------------------------------------------------------------------
-RDOTracerLogCtrlView::RDOTracerLogCtrlView(PTR(QAbstractScrollArea) pParent)
-	: RDOLogCtrl(pParent, &studioApp.getStyle()->style_trace)
-{}
-
-RDOTracerLogCtrlView::~RDOTracerLogCtrlView()
-{}

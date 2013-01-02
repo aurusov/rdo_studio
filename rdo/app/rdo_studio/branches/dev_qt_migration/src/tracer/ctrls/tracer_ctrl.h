@@ -32,7 +32,7 @@ Q_OBJECT
 friend class RDOLogCtrlFindInList;
 
 public:
-	RDOLogCtrl(PTR(QAbstractScrollArea) pParent, PTR(RDOLogStyle) pStyle = NULL);
+	RDOLogCtrl(PTR(QAbstractScrollArea) pParent, PTR(RDOLogStyle) pStyle);
 	virtual ~RDOLogCtrl();
 
 	virtual void addStringToLog(CREF(tstring) logStr);

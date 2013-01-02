@@ -14,7 +14,6 @@
 #include <QtGui/qabstractscrollarea.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl.h"
-#include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl_view_style.h"
 // --------------------------------------------------------------------------------
 
 namespace rdoTracer {
@@ -24,16 +23,6 @@ class RDOTracerBase;
 namespace rdoTracerLog {
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOTracerLogCtrlView
-// --------------------------------------------------------------------------------
-class RDOTracerLogCtrlView: public RDOLogCtrl
-{
-public:
-	RDOTracerLogCtrlView(PTR(QAbstractScrollArea) pParent);
-	virtual ~RDOTracerLogCtrlView();
-};
-
-// --------------------------------------------------------------------------------
 // -------------------- RDOTracerLogCtrl
 // --------------------------------------------------------------------------------
 class RDOTracerLogCtrl: public QAbstractScrollArea
@@ -41,9 +30,9 @@ class RDOTracerLogCtrl: public QAbstractScrollArea
 public:
 	RDOTracerLogCtrl(PTR(QWidget) pParent);
 
-	REF(RDOTracerLogCtrlView) view()
+	REF(RDOLogCtrl) view()
 	{
-		return *static_cast<PTR(RDOTracerLogCtrlView)>(viewport());
+		return *static_cast<PTR(RDOLogCtrl)>(viewport());
 	}
 
 private:
