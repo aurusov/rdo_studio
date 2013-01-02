@@ -136,8 +136,22 @@ def get_text_from_dom(dom, node_text):
 
 
 def wrap_the_string_in_quotes(string):
+
     new_string = u'"' + string + u'"'
     return new_string
+
+def compare_text_files(file1, file2):
+
+    file1_data = open(file1, 'r').readlines()
+    file2_data = open(file2, 'r').readlines()
+
+    cut_slash(file1_data)
+    cut_slash(file2_data)
+    
+    if cmp(string_list_log, string_list_log_etalon) == 0:
+        return True
+    
+    return False
 
 ###############################################################################
 #                                 main code                                   #
@@ -217,7 +231,6 @@ for task in files:
 
     # select console target
     if target == TARGET_CONSOLE:
-
         # run rdo_console app on test model
         command = (rdo_ex + u' -i ' + wrap_the_string_in_quotes(model))
         simulation_code = subprocess.call(safe_encode(command), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -279,23 +292,22 @@ for task in files:
             simulation_log_file = dirname + RDO_CONSOLE_COMPILE_LOG_FILE_NAME
             simulation_log_file_etalon = dirname + compile_log_file_name
 
-            string_list_log = open(simulation_log_file, 'r').readlines()
-            string_list_log_etalon = open(simulation_log_file_etalon, 'r').readlines()
-
-            cut_slash(string_list_log)
-            cut_slash(string_list_log_etalon)
+            res = compare_text_files(simulation_log_file, simulation_log_file_etalon)
 
             check_message_cmp_string = 'ERROR'
   
-            if cmp(string_list_log, string_list_log_etalon) == 0:
+            if res:
                 cycle_exit_code = APP_CODE_TERMINATION_NORMAL
                 check_message_cmp_string = 'OK'
 
             print "CHECK ERROR LIST     :", check_message_cmp_string 
 
         # runtime error in rdo_console
-        elif simulation_code == RDO_CONSOLE_TERMINATION_WITH_AN_ERROR_RUNTIME_ERROR:
-            cycle_exit_code = APP_CODE_TERMINATION_NORMAL
+        else:
+            cycle_exit_code = APP_CODE_TERMINATION_ERROR
+
+    elif target == TAGRET_CONVERTER:
+        break
 
     else:
         print 'INVALID TARGET'
