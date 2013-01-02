@@ -34,6 +34,8 @@ TARGET_CONSOLE   = u'CONSOLE'
 TAGRET_CONVERTER = u'CONVERTOR'
 TARGET_GUI       = u'uGUI'
 
+DEFAULT_EXIT_CODE = 0
+
 # python script exit code
 APP_CODE_TERMINATION_NORMAL = 0
 APP_CODE_TERMINATION_ERROR  = 1
@@ -227,8 +229,13 @@ for task in files:
                 etalon = {}
                 etalon['source'] = file.getAttribute('source')
                 etalon['target'] = file.getAttribute('target')
-            
+                
                 etalons.append(etalon)
+        
+        try:
+            exit_code = int(model['exit_code'])
+        except:
+            exit_code = DEFAULT_EXIT_CODE
         
         print u'Project              :', task
         print u'Model file           :', model['name']
@@ -267,8 +274,6 @@ for task in files:
             # check simulation exit code
             simulation_exit_code_string = u'ERROR'
 
-            exit_code = int(model['exit_code'])
-            
             if simulation_code == exit_code:
                 simulation_exit_code_string = u'OK'
             else:
@@ -339,10 +344,11 @@ for task in files:
             
             model_file    = temp_directory_name + model['name']
             command = (rdo_ex + u' -i ' + wrap_the_string_in_quotes(model_file) + u' -c')
-            exit_code = subprocess.call(safe_encode(command), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            print u'CONVERT EXIT CODE :', exit_code, u'\n'
+            convertor_exit_code = subprocess.call(safe_encode(command), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            print u'CONVERT EXIT CODE :', convertor_exit_code, u'\n'
             
-            if exit_code == 0:
+            if convertor_exit_code == exit_code:
+                
                 # compare etalons
                 for etalon in etalons:
                     source_file = temp_directory_name + etalon['source']
