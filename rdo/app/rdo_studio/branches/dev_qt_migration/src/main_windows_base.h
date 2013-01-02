@@ -17,7 +17,7 @@
 #include "app/rdo_studio_mfc/edit_ctrls/rdobuildeditstyle.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdobaseeditstyle.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdofindeditstyle.h"
-#include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl_style.h"
+#include "app/rdo_studio_mfc/src/tracer/ctrls/log_ctrl_style.h"
 #include "app/rdo_studio_mfc/src/style.h"
 #include "app/rdo_studio_mfc/src/chart/view_style.h"
 #include "app/rdo_studio_mfc/src/frame/style.h"

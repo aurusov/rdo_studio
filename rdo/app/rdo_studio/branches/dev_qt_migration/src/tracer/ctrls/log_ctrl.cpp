@@ -1,7 +1,8 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      tracer_ctrl.cpp
-  \author    Захаров Павел
+  \file      log_ctrl.cpp
+  \authors   Захаров Павел
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      12.03.2003
   \brief
   \indent    4T
@@ -16,7 +17,7 @@
 #include <QtGui/qscrollbar.h>
 #include <QtGui/qclipboard.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl.h"
+#include "app/rdo_studio_mfc/src/tracer/ctrls/log_ctrl.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"
 // --------------------------------------------------------------------------------

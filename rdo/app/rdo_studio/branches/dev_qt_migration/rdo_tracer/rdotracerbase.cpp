@@ -19,7 +19,7 @@
 #include "app/rdo_studio_mfc/rdo_tracer/rdotraceroperation.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracerresult.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracervalues.h"
-#include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl_view.h"
+#include "app/rdo_studio_mfc/src/tracer/ctrls/log_ctrl_view.h"
 #include "app/rdo_studio_mfc/src/chart/chart_tree.h"
 #include "app/rdo_studio_mfc/src/chart/document.h"
 #include "app/rdo_studio_mfc/src/chart/view.h"

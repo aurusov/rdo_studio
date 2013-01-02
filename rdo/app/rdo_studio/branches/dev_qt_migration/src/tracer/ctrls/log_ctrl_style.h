@@ -1,14 +1,14 @@
 /*!
   \copyright (c) RDO-Team, 2003-2012
-  \file      tracer_ctrl_style.h
+  \file      log_ctrl_style.h
   \author    Захаров Павел
   \date      12.03.2003
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MFC_TRACER_CTRLS_TRACER_CTRL_STYLE_H_
-#define _RDO_STUDIO_MFC_TRACER_CTRLS_TRACER_CTRL_STYLE_H_
+#ifndef _RDO_STUDIO_TRACER_CTRLS_LOG_CTRL_STYLE_H_
+#define _RDO_STUDIO_TRACER_CTRLS_LOG_CTRL_STYLE_H_
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qcolor.h>
@@ -142,4 +142,4 @@ private:
 
 }}} // namespace rdo::gui::tracer
 
-#endif // _RDO_STUDIO_MFC_TRACER_CTRLS_TRACER_CTRL_STYLE_H_
+#endif // _RDO_STUDIO_TRACER_CTRLS_LOG_CTRL_STYLE_H_
