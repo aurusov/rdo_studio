@@ -152,7 +152,7 @@ void RDOTracerResource::setParams( tstring& line, RDOTracerTimeNow* const time, 
 	for ( int i = 0; i < count; i++ ) {
 		RDOTracerValue* prevval;
 		params.at( i )->getLastValue( prevval );
-		tstring nextValue = tracer->getNextValue( line );
+		tstring nextValue = g_pTracer->getNextValue( line );
 		double newval;
 		if (erasing)
 		{

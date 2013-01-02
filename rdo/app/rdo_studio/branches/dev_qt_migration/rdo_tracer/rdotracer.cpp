@@ -31,9 +31,9 @@ static char THIS_FILE[] = __FILE__;
 
 using namespace rdo::repository;
 using namespace rdo::service::simulation;
-using namespace rdoTracer;
+using namespace rdo::gui::tracer;
 
-RDOTracer* tracer = NULL;
+RDOTracer* g_pTracer = NULL;
 
 static rbool clear_after_stop = false;
 
@@ -44,7 +44,7 @@ RDOTracer::RDOTracer(): RDOTracerBase( "RDOStudioTracerGUI", static_cast<RDOKern
 {
 	clear_after_stop = false;
 
-	tracer = this;
+	g_pTracer = this;
 
 	notifies.push_back( RT_REPOSITORY_MODEL_CLOSE );
 	notifies.push_back( RT_SIMULATOR_MODEL_STOP_OK );
@@ -59,7 +59,7 @@ RDOTracer::RDOTracer(): RDOTracerBase( "RDOStudioTracerGUI", static_cast<RDOKern
 
 RDOTracer::~RDOTracer()
 {
-	tracer = NULL;
+	g_pTracer = NULL;
 }
 
 void RDOTracer::proc( RDOThread::RDOMessageInfo& msg )

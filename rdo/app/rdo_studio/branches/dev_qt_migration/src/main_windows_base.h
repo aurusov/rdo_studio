@@ -37,7 +37,7 @@ public:
 	rdoEditor::RDOEditorEditStyle    style_editor;
 	rdoEditCtrl::RDOBuildEditStyle   style_build;
 	rdoEditCtrl::RDOBaseEditStyle    style_debug;
-	rdoTracerLog::RDOTracerLogStyle  style_trace;
+	rdo::gui::tracer::RDOTracerLogStyle  style_trace;
 	rdoEditor::RDOEditorResultsStyle style_results;
 	rdoEditCtrl::RDOFindEditStyle    style_find;
 	RDOStudioFrameStyle              style_frame;

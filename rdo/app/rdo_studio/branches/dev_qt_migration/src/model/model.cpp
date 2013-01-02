@@ -1212,7 +1212,7 @@ void RDOStudioModel::setRuntimeMode(const rdo::runtime::RunTimeMode value)
 		}
 		m_runtimeMode = value;
 		sendMessage(kernel->runtime(), RT_RUNTIME_SET_MODE, &m_runtimeMode);
-		tracer->setRuntimeMode(m_runtimeMode);
+		g_pTracer->setRuntimeMode(m_runtimeMode);
 		if (plugins)
 		{
 			plugins->pluginProc(rdoPlugin::PM_MODEL_RUNTIMEMODE);

@@ -34,18 +34,16 @@ class RDOTracerResParamInfo;
 class ChartTree;
 class RDOStudioChartDoc;
 
-namespace rdoTracerLog {
-class RDOTracerLogCtrl;
-}
+namespace rdo { namespace gui { namespace tracer {
 
-namespace rdoTracer {
+class RDOTracerLogCtrl;
 
 class RDOTracerBase: public RDOThreadGUI
 {
 private:
 	CMutex mutex;
 
-	rdoTracerLog::RDOTracerLogCtrl* log;
+	RDOTracerLogCtrl* log;
 	ChartTree*  tree;
 
 	RDOTracerResParamInfo* getParam( rdo::textstream& stream );
@@ -101,8 +99,8 @@ protected:
 	virtual ~RDOTracerBase();
 
 public:
-	void setLog (PTR(rdoTracerLog::RDOTracerLogCtrl) pTracerLog);
-	void setTree(PTR(ChartTree)                      pTreeCtrl );
+	void setLog (PTR(RDOTracerLogCtrl) pTracerLog);
+	void setTree(PTR(ChartTree)        pTreeCtrl );
 
 	void startTrace();
 	void getModelStructure( rdo::textstream& stream );
@@ -123,6 +121,6 @@ public:
 	void unlock() { mutex.Unlock(); };
 };
 
-}; // namespace rdoTracer
+}}} // namespace rdo::gui::tracer
 
 #endif // _RDO_STUDIO_MFC_TRACER_RDOTRACERBASE_H_

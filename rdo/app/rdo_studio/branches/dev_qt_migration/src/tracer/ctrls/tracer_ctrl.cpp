@@ -27,11 +27,10 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-using namespace rdoTracerLog;
+using namespace rdo::gui::tracer;
 using namespace rdoStyle;
 
-namespace rdoTracerLog
-{
+namespace rdo { namespace gui { namespace tracer {
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOLogCtrlFindInList
@@ -47,7 +46,7 @@ private:
 	REF(rsint)                    m_checkCounter;
 };
 
-}; // namespace rdoTracerLog
+}}} // namespace rdo::gui::tracer
 
 RDOLogCtrlFindInList::RDOLogCtrlFindInList(REF(rsint) checkCounter, CREF(tstring) strToFind, rbool matchCase, rbool matchWholeWord)
 	: m_checkCounter(checkCounter)

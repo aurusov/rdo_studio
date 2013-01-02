@@ -758,7 +758,7 @@ DROPEFFECT RDOStudioChartView::OnDragEnter( COleDataObject* pDataObject, DWORD d
 	UNUSED(point     );
 
 	HGLOBAL glb = NULL;
-	UINT format = tracer->getClipboardFormat();
+	UINT format = g_pTracer->getClipboardFormat();
 	if ( pDataObject->IsDataAvailable( CLIPFORMAT(format) ) ) {
 		glb = pDataObject->GetGlobalData( CLIPFORMAT(format) );
 		if ( glb ) {
@@ -784,7 +784,7 @@ DROPEFFECT RDOStudioChartView::OnDragOver( COleDataObject* pDataObject, DWORD dw
 	UNUSED(dwKeyState);
 	UNUSED(point     );
 
-	if ( pDataObject->IsDataAvailable( CLIPFORMAT(tracer->getClipboardFormat()) ) && dragedSerie )
+	if ( pDataObject->IsDataAvailable( CLIPFORMAT(g_pTracer->getClipboardFormat()) ) && dragedSerie )
 		return DROPEFFECT_COPY;
 	else
 		return DROPEFFECT_NONE;

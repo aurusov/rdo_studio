@@ -26,7 +26,7 @@ DockChartTree::DockChartTree(PTR(QWidget) pParent)
 
 	toggleViewAction()->setIcon(QIcon(QString::fromUtf8(":/images/images/dock_chart.png")));
 
-	tracer->setTree(pWidget);
+	g_pTracer->setTree(pWidget);
 }
 
 DockChartTree::~DockChartTree()

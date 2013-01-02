@@ -21,7 +21,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-using namespace rdoTracerLog;
+using namespace rdo::gui::tracer;
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOTracerLogTheme

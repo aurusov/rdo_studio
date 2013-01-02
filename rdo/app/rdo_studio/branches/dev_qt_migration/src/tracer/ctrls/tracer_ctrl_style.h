@@ -16,7 +16,7 @@
 #include "app/rdo_studio_mfc/src/style.h"
 // --------------------------------------------------------------------------------
 
-namespace rdoTracerLog {
+namespace rdo { namespace gui { namespace tracer {
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOLogColorPair
@@ -109,6 +109,6 @@ public:
 	//static RDOLogStyle getDefaultStyle();
 };
 
-}; // namespace rdoTracerLog
+}}} // namespace rdo::gui::tracer
 
 #endif // _RDO_STUDIO_MFC_TRACER_CTRLS_TRACER_CTRL_STYLE_H_

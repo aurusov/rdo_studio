@@ -17,12 +17,12 @@
 
 class RDOStudioOptionsStylesAndColors;
 
-namespace rdoTracerLog {
+namespace rdo { namespace gui { namespace tracer {
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOTracerLogTheme
 // --------------------------------------------------------------------------------
-class RDOTracerLogTheme : public RDOLogTheme
+class RDOTracerLogTheme: public RDOLogTheme
 {
 public:
 	RDOTracerLogTheme();
@@ -88,6 +88,6 @@ public:
 	virtual void init( CREF(tstring) _regPath = "" );
 };
 
-}; // namespace rdoTracerLog
+}}} // namespace rdo::gui::tracer
 
 #endif // _RDO_STUDIO_MFC_TRACER_CTRLS_TRACER_CTRL_VIEW_STYLE_H_

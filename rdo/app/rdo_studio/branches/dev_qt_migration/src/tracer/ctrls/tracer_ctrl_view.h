@@ -16,8 +16,7 @@
 #include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl.h"
 // --------------------------------------------------------------------------------
 
-namespace rdoTracerLog
-{
+namespace rdo { namespace gui { namespace tracer {
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOTracerLogCtrl
@@ -39,6 +38,6 @@ private:
 	virtual void  keyPressEvent(PTR(QKeyEvent)   pEvent);
 };
 
-} // namespace rdoTracerLog
+}}} // namespace rdo::gui::tracer
 
 #endif // _RDO_STUDIO_MFC_TRACER_CTRLSTRACER_CTRL_VIEW_H_

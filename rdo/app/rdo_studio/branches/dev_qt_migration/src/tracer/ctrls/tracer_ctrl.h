@@ -20,7 +20,7 @@
 #include "app/rdo_studio_mfc/src/dialog/find_dialog.h"
 // --------------------------------------------------------------------------------
 
-namespace rdoTracerLog {
+namespace rdo { namespace gui { namespace tracer {
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOLogCtrl
@@ -208,6 +208,6 @@ private slots:
 	void onHelpContext              ();
 };
 
-}; // namespace rdoTracerLog
+}}} // namespace rdo::gui::tracer
 
 #endif // _RDO_STUDIO_MFC_TRACER_CTRLS_TRACER_CTRL_H_

@@ -413,7 +413,7 @@ private:
 	rdoEditor::RDOEditorEditStyle    style_editor;
 	rdoEditCtrl::RDOBuildEditStyle   style_build;
 	rdoEditCtrl::RDOBaseEditStyle    style_debug;
-	rdoTracerLog::RDOTracerLogStyle  style_trace;
+	rdo::gui::tracer::RDOTracerLogStyle  style_trace;
 	rdoEditor::RDOEditorResultsStyle style_results;
 	rdoEditCtrl::RDOFindEditStyle    style_find;
 	RDOStudioChartViewStyle          style_chart;
@@ -428,7 +428,7 @@ private:
 	rdoEditor::RDOEditorEdit       preview_editor;
 	rdoEditCtrl::RDOBuildEdit      preview_build;
 	rdoEditCtrl::RDODebugEdit      preview_debug;
-	rdoTracerLog::RDOTracerLogCtrl preview_trace;
+	rdo::gui::tracer::RDOTracerLogCtrl preview_trace;
 	rdoEditor::RDOEditorResults    preview_results;
 	rdoEditCtrl::RDOFindEdit       preview_find;
 

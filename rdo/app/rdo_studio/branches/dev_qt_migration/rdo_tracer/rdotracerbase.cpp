@@ -33,8 +33,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-using namespace rdoTracer;
-using namespace rdoTracerLog;
+using namespace rdo::gui::tracer;
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOTracerBase
@@ -616,7 +615,7 @@ void RDOTracerBase::clearCharts()
 	mutex.Unlock();
 }
 
-void RDOTracerBase::setLog(PTR(rdoTracerLog::RDOTracerLogCtrl) pTracerLog)
+void RDOTracerBase::setLog(PTR(RDOTracerLogCtrl) pTracerLog)
 {
 	log = pTracerLog;
 }

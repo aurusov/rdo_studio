@@ -74,12 +74,12 @@ RDOStudioChartDoc::RDOStudioChartDoc(const rbool preview)
 	, previewMode  (preview )
 {
 	if ( !previewMode )
-		tracer->addChart( this );
+		g_pTracer->addChart( this );
 }
 
 RDOStudioChartDoc::~RDOStudioChartDoc()
 {
-	tracer->lock();
+	g_pTracer->lock();
 
 	mutex.Lock();
 
@@ -88,11 +88,11 @@ RDOStudioChartDoc::~RDOStudioChartDoc()
 		delete (*it);
 	}
 	if ( !previewMode )
-		tracer->removeChart( this );
+		g_pTracer->removeChart( this );
 
 	mutex.Unlock();
 
-	tracer->unlock();
+	g_pTracer->unlock();
 }
 
 void RDOStudioChartDoc::attachView(RDOStudioChartView* pView)

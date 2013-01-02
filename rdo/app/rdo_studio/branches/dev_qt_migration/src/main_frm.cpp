@@ -333,7 +333,7 @@ void RDOStudioMainFrame::init()
 	//modelToolBar.SetButtonStyle( 4, TBBS_CHECKBOX | TBBS_CHECKGROUP );
 	//modelToolBar.SetButtonStyle( 5, TBBS_CHECKBOX | TBBS_CHECKGROUP );
 
-	tracer->registerClipboardFormat();
+	g_pTracer->registerClipboardFormat();
 
 	PTR(IInit) pModelInit = dynamic_cast<PTR(IInit)>(model);
 	ASSERT(pModelInit);
@@ -590,7 +590,7 @@ void RDOStudioMainFrame::updateAllStyles()
 	getDockTrace  ().getContext().view().setStyle(&style_trace  );
 	getDockResults().getContext().setEditorStyle (&style_results);
 	getDockFind   ().getContext().setEditorStyle (&style_find   );
-	tracer->updateChartsStyles();
+	g_pTracer->updateChartsStyles();
 }
 
 void RDOStudioMainFrame::beginProgress( const int lower, const int upper, const int step )

@@ -129,7 +129,7 @@ PTR(ChartTreeItem) ChartTree::getIfItemIsDrawable(CPTR(QTreeWidgetItem) pCtrlIte
 //{
 //	UNUSED(point);
 //
-//	UINT format = tracer->getClipboardFormat();
+//	UINT format = g_pTracer->getClipboardFormat();
 //	if ( format ) {
 //		RDOTracerSerie** ptr = (RDOTracerSerie**)::GlobalAlloc( LMEM_FIXED, sizeof( RDOTracerSerie* ) );
 //		*ptr = (RDOTracerSerie*)item;
@@ -245,7 +245,7 @@ void ChartTree::addToNewChart(PTR(QTreeWidgetItem) pCtrlItem) const
 	PTR(ChartTreeItem) pTreeItem = getIfItemIsDrawable(pCtrlItem);
 	if (pTreeItem)
 	{
-		tracer->addSerieToChart(static_cast<PTR(RDOTracerSerie)>(pTreeItem));
+		g_pTracer->addSerieToChart(static_cast<PTR(RDOTracerSerie)>(pTreeItem));
 	}
 }
 
@@ -275,12 +275,12 @@ void ChartTree::OnAddToNewChart()
 
 void ChartTree::OnUpdateAddToNewChart( CCmdUI* pCmdUI )
 {
-	pCmdUI->Enable(tracer->getDrawTrace() && getIfItemIsDrawable(getSelected()));
+	pCmdUI->Enable(g_pTracer->getDrawTrace() && getIfItemIsDrawable(getSelected()));
 }
 
 void ChartTree::onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pCtrlItem, int)
 {
-	if (!tracer->getDrawTrace())
+	if (!g_pTracer->getDrawTrace())
 		return;
 
 	if (!findInCharts(pCtrlItem))
@@ -308,7 +308,7 @@ void ChartTree::onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pCtrlItem, int)
 //
 //void RDOTracerTreeCtrl::OnExportChart()
 //{
-//	if (!tracer->getDrawTrace())
+//	if (!g_pTracer->getDrawTrace())
 //		return;
 //
 //	PTR(RDOTracerTreeItem) pItem = getIfItemIsDrawable(GetSelectedItem());
@@ -341,13 +341,13 @@ void ChartTree::onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pCtrlItem, int)
 //
 //void RDOTracerTreeCtrl::OnUpdateExportChart( CCmdUI* pCmdUI )
 //{
-//	pCmdUI->Enable( tracer->getDrawTrace() && getIfItemIsDrawable( GetSelectedItem() ) != NULL );
+//	pCmdUI->Enable( g_pTracer->getDrawTrace() && getIfItemIsDrawable( GetSelectedItem() ) != NULL );
 //}
 
 void ChartTree::OnUpdateChartFindincharts(CCmdUI* pCmdUI)
 {
 	rbool enable = false;
-	if (tracer->getDrawTrace())
+	if (g_pTracer->getDrawTrace())
 	{
 		PTR(ChartTreeItem) pTreeItem = getIfItemIsDrawable(getSelected());
 		if (pTreeItem)
