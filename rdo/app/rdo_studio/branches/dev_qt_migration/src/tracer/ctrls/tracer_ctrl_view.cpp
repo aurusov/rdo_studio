@@ -12,7 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl_view.h"
-#include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl_view_style.h"
+#include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl_style.h"
 #include "app/rdo_studio_mfc/src/application.h"
 // --------------------------------------------------------------------------------
 

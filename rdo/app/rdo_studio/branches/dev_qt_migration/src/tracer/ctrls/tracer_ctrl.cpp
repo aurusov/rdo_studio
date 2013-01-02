@@ -1100,7 +1100,7 @@ void LogCtrl::onHelpContext()
 			if (!logStyle->getItemColors(keyword, colors))
 			{
 				getItemColors(selectedLine(), colors);
-				if (*colors == static_cast<TracerLogTheme*>(logStyle->theme)->sd)
+				if (*colors == logStyle->theme->sd)
 				{
 					keyword = "SD";
 				}

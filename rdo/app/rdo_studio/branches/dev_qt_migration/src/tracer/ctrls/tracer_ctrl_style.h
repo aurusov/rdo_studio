@@ -57,6 +57,33 @@ public:
 	rdoStyle::RDOStyleFont::style style;
 
 	LogColorPair defaultColor;
+	LogColorPair es;
+	LogColorPair eb;
+	LogColorPair ef;
+	LogColorPair ei;
+	LogColorPair er;
+	LogColorPair rc;
+	LogColorPair re;
+	LogColorPair rk;
+	LogColorPair v;
+	LogColorPair s;
+	LogColorPair dps;
+	LogColorPair sb;
+	LogColorPair so;
+	LogColorPair stn;
+	LogColorPair std;
+	LogColorPair str;
+	LogColorPair src;
+	LogColorPair sre;
+	LogColorPair srk;
+	LogColorPair sd;
+	LogColorPair ses;
+	LogColorPair sen;
+	LogColorPair sem;
+	LogColorPair sef;
+	LogColorPair seu;
+
+	static LogTheme getDefaultTheme();
 };
 
 // --------------------------------------------------------------------------------
@@ -82,11 +109,11 @@ public:
 // --------------------------------------------------------------------------------
 // -------------------- LogStyle
 // --------------------------------------------------------------------------------
+//class RDOStudioOptionsStylesAndColors;
+
 class LogStyle: public rdoStyle::RDOStyle
 {
-protected:
-	virtual void initTheme();
-	virtual void initBorders();
+//friend class RDOStudioOptionsStylesAndColors;
 
 public:
 	LogStyle();
@@ -106,7 +133,11 @@ public:
 	LogTheme*   theme;
 	LogBorders* borders;
 
-	//static LogStyle getDefaultStyle();
+private:
+	virtual void initTheme();
+	        void initBorders();
+
+	rbool getDefaultColor(LogColorPair* &colors) const;
 };
 
 }}} // namespace rdo::gui::tracer

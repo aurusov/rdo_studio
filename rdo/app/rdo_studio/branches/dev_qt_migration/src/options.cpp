@@ -384,7 +384,7 @@ RDOStudioOptionsColorsStyles::RDOStudioOptionsColorsStyles(REF(RDOStudioOptions)
 	object->properties.push_back(new STYLEProperty(object, rdo::format(IDS_COLORSTYLE_EDITOR_BOOKMARK), null_font_style, null_fg_color, debug_theme->bookmarkBgColor));
 	objects.push_back(object);
 
-	TracerLogTheme* trace_theme = static_cast<TracerLogTheme*>(this->sheet->style_trace.theme);
+	LogTheme* trace_theme = this->sheet->style_trace.theme;
 	object = new STYLEObject(STYLEObject::trace, this->sheet->style_trace.font->name, this->sheet->style_trace.font->size);
 	//! todo qt
 	//object->properties.push_back(new STYLEProperty(object, rdo::format(IDS_COLORSTYLE_LOG), trace_theme->style, trace_theme->defaultColor.foregroundColor, trace_theme->defaultColor.backgroundColor));
@@ -928,7 +928,7 @@ void RDOStudioOptionsColorsStyles::updateTheme()
 		if (*static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme) == RDOEditorEditTheme::getDefaultTheme() &&
 			 *static_cast<RDOBuildEditTheme*>(sheet->style_build.theme) == RDOBuildEditTheme::getDefaultTheme() &&
 			 *static_cast<RDOBaseEditTheme*>(sheet->style_debug.theme) == RDOBaseEditTheme::getDefaultTheme() &&
-			 *static_cast<TracerLogTheme*>(sheet->style_trace.theme) == TracerLogTheme::getDefaultTheme() &&
+			 *sheet->style_trace.theme == LogTheme::getDefaultTheme() &&
 			 *static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme) == RDOEditorBaseEditTheme::getDefaultTheme() &&
 			 *static_cast<RDOFindEditTheme*>(sheet->style_find.theme) == RDOFindEditTheme::getDefaultTheme() &&
 			 *static_cast<RDOStudioChartViewTheme*>(sheet->style_chart.theme) == RDOStudioChartViewTheme::getDefaultTheme() &&
@@ -1011,9 +1011,9 @@ void RDOStudioOptionsColorsStyles::updateTheme()
 
 	case STYLEObject::trace:
 		{
-			TracerLogTheme* theme = static_cast<TracerLogTheme*>(sheet->style_trace.theme);
+			LogTheme* theme = sheet->style_trace.theme;
 			RDOStyleFont* font = sheet->style_trace.font;
-			if (*theme == TracerLogTheme::getDefaultTheme() && *font == RDOStyleFont::getTracerLogFont()) {
+			if (*theme == LogTheme::getDefaultTheme() && *font == RDOStyleFont::getTracerLogFont()) {
 				m_theme.SetCurSel(1);
 			} else {
 				m_theme.SetCurSel(0);
@@ -1105,7 +1105,7 @@ void RDOStudioOptionsColorsStyles::OnThemeChanged()
 				*static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme) = RDOEditorEditTheme::getDefaultTheme();
 				*static_cast<RDOBuildEditTheme*>(sheet->style_build.theme) = RDOBuildEditTheme::getDefaultTheme();
 				*static_cast<RDOBaseEditTheme*>(sheet->style_debug.theme) = RDOBaseEditTheme::getDefaultTheme();
-				*static_cast<TracerLogTheme*>(sheet->style_trace.theme) = TracerLogTheme::getDefaultTheme();
+				*sheet->style_trace.theme = LogTheme::getDefaultTheme();
 				*static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme) = RDOEditorBaseEditTheme::getDefaultTheme();
 				*static_cast<RDOFindEditTheme*>(sheet->style_find.theme) = RDOFindEditTheme::getDefaultTheme();
 				*static_cast<RDOStudioChartViewTheme*>(sheet->style_chart.theme) = RDOStudioChartViewTheme::getDefaultTheme();
@@ -1165,10 +1165,10 @@ void RDOStudioOptionsColorsStyles::OnThemeChanged()
 
 		case STYLEObject::trace:
 			{
-				TracerLogTheme* theme = static_cast<TracerLogTheme*>(sheet->style_trace.theme);
+				LogTheme* theme = sheet->style_trace.theme;
 				switch (index)
 				{
-				case 1: *theme = TracerLogTheme::getDefaultTheme(); *sheet->style_trace.font = RDOStyleFont::getTracerLogFont(); break;
+				case 1: *theme = LogTheme::getDefaultTheme(); *sheet->style_trace.font = RDOStyleFont::getTracerLogFont(); break;
 				}
 			}
 			break;
@@ -1601,7 +1601,7 @@ void RDOStudioOptionsColorsStyles::OnUpdateModify()
 	            *static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme) != *static_cast<RDOEditorEditTheme*>(studioApp.getStyle()->style_editor.theme) ||
 	            *static_cast<RDOBuildEditTheme*>(sheet->style_build.theme) != *static_cast<RDOBuildEditTheme*>(studioApp.getStyle()->style_build.theme) ||
 	            *static_cast<RDOBaseEditTheme*>(sheet->style_debug.theme) != *static_cast<RDOBaseEditTheme*>(studioApp.getStyle()->style_debug.theme) ||
-	            *static_cast<TracerLogTheme*>(sheet->style_trace.theme) != *static_cast<TracerLogTheme*>(studioApp.getStyle()->style_trace.theme) ||
+	            *sheet->style_trace.theme != *studioApp.getStyle()->style_trace.theme ||
 	            *static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme) != *static_cast<RDOEditorBaseEditTheme*>(studioApp.getStyle()->style_results.theme) ||
 	            *static_cast<RDOFindEditTheme*>(sheet->style_find.theme) != *static_cast<RDOFindEditTheme*>(studioApp.getStyle()->style_find.theme) ||
 	            *static_cast<RDOStudioChartViewTheme*>(sheet->style_chart.theme) != *static_cast<RDOStudioChartViewTheme*>(studioApp.getStyle()->style_chart.theme) ||
