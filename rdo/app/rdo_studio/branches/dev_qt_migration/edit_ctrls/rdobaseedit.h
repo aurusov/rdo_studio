@@ -242,6 +242,6 @@ public:
 	void saveAsRTF( CFile& file, int start = 0, int end = -1 ) const;
 };
 
-}; // namespace rdoEditCtrl
+} // namespace rdoEditCtrl
 
 #endif // _RDO_STUDIO_MFC_EDIT_CTRLS_RDOBASEEDIT_H_

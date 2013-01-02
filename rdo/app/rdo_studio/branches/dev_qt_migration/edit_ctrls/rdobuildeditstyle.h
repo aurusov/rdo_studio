@@ -58,6 +58,6 @@ public:
 	rbool operator !=( const RDOBuildEditStyle& style ) const;
 };
 
-}; // namespace rdoEditCtrl
+} // namespace rdoEditCtrl
 
 #endif // _RDO_STUDIO_MFC_EDIT_CTRLS_RDOBUILDEDITSTYLE_H_

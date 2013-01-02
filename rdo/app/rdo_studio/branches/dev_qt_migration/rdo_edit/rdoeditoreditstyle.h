@@ -148,6 +148,6 @@ private:
 
 DECLARE_POINTER(RDOEditorEditStyle)
 
-}; // namespace rdoEditor
+} // namespace rdoEditor
 
 #endif // _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITOREDITSTYLE_H_

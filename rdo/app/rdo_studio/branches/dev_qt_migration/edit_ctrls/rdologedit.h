@@ -75,6 +75,6 @@ private slots:
 	void catchModified   ();
 };
 
-}; // namespace rdoEditCtrl
+} // namespace rdoEditCtrl
 
 #endif // _RDO_STUDIO_MFC_EDIT_CTRLS_RDOLOGEDIT_H_

@@ -27,6 +27,6 @@ public:
 	virtual ~RDOEditorResultsStyle();
 };
 
-}; // namespace rdoEditor
+} // namespace rdoEditor
 
 #endif // _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITORRESULTSSTYLE_H_

@@ -39,6 +39,6 @@ private:
 	DECLARE_IHelpContext;
 };
 
-}; // namespace rdoEditor
+} // namespace rdoEditor
 
 #endif // _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITORRESULTS_H_

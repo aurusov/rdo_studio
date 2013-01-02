@@ -80,6 +80,6 @@ private slots:
 	void catchMarginClick  (int position, int modifiers, int margin);
 };
 
-}; // namespace rdoEditor
+} // namespace rdoEditor
 
 #endif // _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITOREDIT_H_

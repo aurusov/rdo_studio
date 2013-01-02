@@ -46,6 +46,6 @@ private:
 	void createPage(PTR(QWidget) pView, CREF(QString) name);
 };
 
-}; // namespace rdoEditor
+} // namespace rdoEditor
 
 #endif // _RDO_STUDIO_MFC_RDO_EDIT_RDOEDITORTABCTRL_H_

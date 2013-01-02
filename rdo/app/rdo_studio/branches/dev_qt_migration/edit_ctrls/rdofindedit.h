@@ -41,6 +41,6 @@ public:
 	void setKeyword( CREF(tstring) keyword, const rbool matchCase = false ) const;
 };
 
-}; // namespace rdoEditCtrl
+} // namespace rdoEditCtrl
 
 #endif // _RDO_STUDIO_MFC_EDIT_CTRLS_RDOFINDEDIT_H_

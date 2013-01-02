@@ -126,4 +126,4 @@ void RDOBuildEdit::onHelpContext()
 	studioApp.callQtAssistant(ba);
 }
 
-}; // namespace rdoEditCtrl
+} // namespace rdoEditCtrl
