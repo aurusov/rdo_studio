@@ -36,7 +36,6 @@ protected:
 	RDOLogColorPair* itemColor;
 
 	virtual rbool getItemColors(int index, RDOLogColorPair* &colors) const;
-	void showFindError(REF(tstring) findStr);
 
 	CMenu popupMenu;
 	rbool bShowMenu;

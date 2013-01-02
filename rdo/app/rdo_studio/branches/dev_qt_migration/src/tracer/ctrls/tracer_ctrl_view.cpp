@@ -78,8 +78,6 @@ void RDOTracerLogCtrl::keyPressEvent(PTR(QKeyEvent) pEvent)
 // --------------------------------------------------------------------------------
 // -------------------- RDOTracerLogCtrlView
 // --------------------------------------------------------------------------------
-static const UINT FIND_REPLASE_MSG = ::RegisterWindowMessage(FINDMSGSTRING);
-
 //! @todo qt
 //BEGIN_MESSAGE_MAP(RDOTracerLogCtrlView, RDOLogCtrl)
 //	ON_WM_INITMENUPOPUP()
@@ -134,13 +132,6 @@ rbool RDOTracerLogCtrlView::getItemColors(int index, RDOLogColorPair* &colors) c
 	const_cast<CMutex&>(mutex).Unlock();
 
 	return res;
-}
-
-void RDOTracerLogCtrlView::showFindError(REF(tstring) findStr)
-{
-	QMessageBox::warning(this, "RAO-Studio", rdo::format(ID_MSG_CANTFIND, findStr.c_str()).c_str());
-	//! @todo qt
-	// SetFocus();
 }
 
 void RDOTracerLogCtrlView::clear()
