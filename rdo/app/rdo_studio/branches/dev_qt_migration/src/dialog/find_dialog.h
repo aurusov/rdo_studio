@@ -11,6 +11,7 @@
 #define _RDO_STUDIO_MFC_DIALOG_FIND_DIALOG_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/function.hpp>
 #include <QtGui/qdialog.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/projects/common/bin/rdo_studio/generated/ui_find_dialog.h"
@@ -23,7 +24,31 @@ class FindDialog
 Q_OBJECT
 
 public:
-	explicit FindDialog(PTR(QWidget) pParent = NULL);
+	struct Settings
+	{
+		tstring what;
+		rbool   matchCase;
+		rbool   matchWholeWord;
+		rbool   searchDown;
+
+		Settings();
+		Settings(CREF(Settings) settings);
+	};
+
+	typedef  boost::function<void ()>  OnFindCallback;
+
+	FindDialog(PTR(QWidget) pParent, REF(Settings) settings, CREF(OnFindCallback) onFindCallback);
+
+private:
+	REF(Settings)   m_settings;
+	OnFindCallback  m_onFindCallback;
+
+private slots:
+	void onFindButton           (bool);
+	void onWhatEdited           (const QString& text);
+	void onMatchCaseChanged     (int value);
+	void onMatchWholeWordChanged(int value);
+	void onDirectionDownToggled (bool checked);
 };
 
 #endif // _RDO_STUDIO_MFC_DIALOG_FIND_DIALOG_H_

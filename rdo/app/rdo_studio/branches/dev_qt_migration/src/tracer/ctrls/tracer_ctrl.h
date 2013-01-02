@@ -17,6 +17,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl_style.h"
 #include "app/rdo_studio_mfc/src/action_activator/action_activator_widget.h"
+#include "app/rdo_studio_mfc/src/dialog/find_dialog.h"
 // --------------------------------------------------------------------------------
 
 namespace rdoTracerLog {
@@ -44,8 +45,7 @@ public:
 	virtual void getSelected(tstring& str) const;
 	virtual rbool makeLineVisible(int index);
 	virtual void selectLine(int index);
-	virtual void findNext()     { int res; find(res, bSearchDown, bMatchCase, bMatchWholeWord); selectLine(res);  };
-	virtual void findPrevious() { int res; find(res, !bSearchDown, bMatchCase, bMatchWholeWord); selectLine(res); };
+	void findPrevious();
 	virtual void clear();
 	
 	virtual CREF(RDOLogStyle) getStyle() const;
@@ -61,9 +61,7 @@ protected:
 	{
 	public:
 		typedef  std::list<tstring>            List;
-		typedef  List::iterator                iterator;
 		typedef  List::const_iterator          const_iterator;
-		typedef  List::reverse_iterator        reverse_iterator;
 		typedef  List::const_reverse_iterator  const_reverse_iterator;
 
 		StringList();
@@ -71,23 +69,18 @@ protected:
 		void push_back(CREF(tstring) value);
 
 		const_iterator begin() const;
-		iterator       begin();
 		const_iterator end  () const;
-		iterator       end  ();
 
 		const_reverse_iterator rbegin() const;
-		reverse_iterator       rbegin();
 		const_reverse_iterator rend  () const;
-		reverse_iterator       rend  ();
 
 		void               clear    ();
 		rsint              count    () const;
 		tstring::size_type maxLegth () const;
 		void               setCursor(rsint pos, rsint max);
 
-		const_iterator   findString (int index) const;
-		iterator         findString (int index);
-		reverse_iterator rFindString(int index);
+		const_iterator         findString (int index) const;
+		const_reverse_iterator rFindString(int index) const;
 
 	private:
 		List                m_list;
@@ -104,7 +97,6 @@ protected:
 
 	int     firstFoundLine;
 	rbool   bHaveFound;
-	tstring findStr;
 
 	RDOLogStyle*  logStyle;
 	virtual rbool getItemColors(CREF(tstring) item, RDOLogColorPair* &colors) const;
@@ -147,11 +139,10 @@ private:
 	int fullRepaintLines;
 	rbool focusOnly;
 
-	int   posFind;
-	rbool bSearchDown;
-	rbool bMatchCase;
-	rbool bMatchWholeWord;
-	void find(int& result, rbool searchDown, rbool matchCase, rbool matchWholeWord);
+	FindDialog*          m_pFindDialog;
+	FindDialog::Settings m_findSettings;
+	rsint find(rbool searchDown);
+	void  onFindNext();
 
 	virtual rbool getItemColors(int index, RDOLogColorPair* &colors) const;
 	

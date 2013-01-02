@@ -213,22 +213,22 @@ void RDOTracerLogCtrlView::OnFind()
 
 void RDOTracerLogCtrlView::OnFindNext()
 {
-	firstFoundLine = -1;
-	findNext();
-	if (!bHaveFound)
-	{
-		showFindError(findStr);
-	}
+	//firstFoundLine = -1;
+	//findNext();
+	//if (!bHaveFound)
+	//{
+	//	showFindError(findStr);
+	//}
 }
 
 void RDOTracerLogCtrlView::OnFindPrev()
 {
-	firstFoundLine = -1;
-	findPrevious();
-	if (!bHaveFound)
-	{
-		showFindError(findStr);
-	}
+	//firstFoundLine = -1;
+	//findPrevious();
+	//if (!bHaveFound)
+	//{
+	//	showFindError(findStr);
+	//}
 }
 
 LRESULT RDOTracerLogCtrlView::OnFindReplaceMsg(WPARAM wParam, LPARAM lParam)
@@ -283,7 +283,7 @@ LRESULT RDOTracerLogCtrlView::OnFindReplaceMsg(WPARAM wParam, LPARAM lParam)
 
 void RDOTracerLogCtrlView::OnUpdateFindNextPrev(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable(!findStr.empty());
+	//pCmdUI->Enable(!findStr.empty());
 }
 
 void RDOTracerLogCtrlView::OnUpdateFind(CCmdUI* pCmdUI)

@@ -10,6 +10,8 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/bind.hpp>
+#include <boost/regex.hpp>
 #include <QtGui/qpainter.h>
 #include <QtGui/qscrollbar.h>
 #include <QtGui/qclipboard.h>
@@ -37,157 +39,58 @@ namespace rdoTracerLog
 class RDOLogCtrlFindInList
 {
 public:
-	RDOLogCtrlFindInList(RDOLogCtrl* log, CREF(tstring) strToFind, rbool matchCase, rbool matchWholeWord);
+	RDOLogCtrlFindInList(CREF(tstring) strToFind, rbool matchCase, rbool matchWholeWord);
 	rbool operator() (CREF(tstring) nextstr);
 
-private:
-	RDOLogCtrl* log;
-	tstring     strToFind;
-	rbool       matchCase;
-	rbool       matchWholeWord;
+	rsint m_checkCount;
 
-	rbool scan(tstring::iterator &wildCards, tstring::iterator &wildend, tstring::iterator &str, tstring::iterator &strend) const;
-	rbool match(tstring::iterator &wildcards, tstring::iterator &wildend, tstring::iterator &strcomp, tstring::iterator &strend) const;
+private:
+	boost::optional<boost::regex> m_expression;
 };
 
 }; // namespace rdoTracerLog
 
-RDOLogCtrlFindInList::RDOLogCtrlFindInList(RDOLogCtrl* log, CREF(tstring) strToFind, rbool matchCase, rbool matchWholeWord)
-	: log           (log      )
-	, strToFind     (strToFind)
-	, matchCase     (matchCase)
-	, matchWholeWord(matchWholeWord)
-{}
-
-rbool RDOLogCtrlFindInList::scan(tstring::iterator &wildCards, tstring::iterator &wildend, tstring::iterator &str, tstring::iterator &strend) const
+RDOLogCtrlFindInList::RDOLogCtrlFindInList(CREF(tstring) strToFind, rbool matchCase, rbool matchWholeWord)
+	: m_checkCount(0)
 {
-	// remove the '?' and '*'
-	for(wildCards ++; str != strend && (*wildCards == '?' || *wildCards == '*'); wildCards ++)
-		if (*wildCards == '?')
-		{
-			str ++;
-		}
-	while (*wildCards == '*')
+	tstring what = matchWholeWord
+		? rdo::format("^%s$",   strToFind.c_str())
+		: rdo::format(".*%s.*", strToFind.c_str());
+
+	boost::regex_constants::syntax_option_type regex_constants(boost::regex::perl);
+
+	if (!matchCase)
 	{
-		wildCards ++;
+		regex_constants |= boost::regex::icase;
 	}
 
-	// if str is empty and Wildcards has more characters or,
-	// Wildcards is empty, return
-	if (str == strend && wildCards != wildend)
+	try
 	{
-		return false;
+		m_expression = boost::regex(what, regex_constants);
 	}
-	if (str == strend && wildCards == wildend)
-	{
-		return true;
-	}
-	// else search substring
-	else
-	{
-		tstring::iterator wdsCopy = wildCards;
-		tstring::iterator strCopy = str;
-		rbool res = 1;
-		do
-		{
-			if (!match(wildCards, wildend, str, strend))
-			{
-				strCopy ++;
-			}
-			wildCards = wdsCopy;
-			str		  = strCopy;
-			while ((*wildCards != *str) && (str != strend))
-			{
-				str ++;
-			}
-			wdsCopy = wildCards;
-			strCopy = str;
-		}
-		while ((str != strend) ? !match(wildCards, wildend, str, strend) : (res = false) != false);
-
-		if (str == strend && wildCards == wildend)
-		{
-			return true;
-		}
-
-		return res;
-	}
-}
-
-rbool RDOLogCtrlFindInList::match(tstring::iterator &wildcards, tstring::iterator &wildend, tstring::iterator &strcomp, tstring::iterator &strend) const
-{
-	rbool res = true;
-
-	tstring strWild;
-	tstring strComp;
-	if (wildcards != wildend)
-	{
-		strWild.assign(&(*wildcards));
-	}
-	if (strcomp != strend)
-	{
-		strComp.assign(&(*strcomp));
-	}
-	tstring::iterator strWildb = strWild.begin();
-	tstring::iterator strWilde = strWild.end();
-	tstring::iterator strCompb = strComp.begin();
-	tstring::iterator strCompe = strComp.end();
-
-	//iterate and delete '?' and '*' one by one
-	while(strWildb != strWilde && res && strCompb != strCompe)
-	{
-		if (*strWildb == '?')
-		{
-			strCompb ++;
-		}
-		else if (*strWildb == '*')
-		{
-			res = scan(strWildb, strWilde, strCompb, strCompe);
-			strWildb --;
-		}
-		else
-		{
-			res = (*strWildb == *strCompb);
-			strCompb ++;
-		}
-		strWildb ++;
-	}
-	while (*strWildb && *strWildb == '*' && res)
-	{
-		strWildb ++;
-	}
-
-	return res && strCompb == strCompe && strWildb == strWilde;
+	catch (const std::exception&)
+	{}
 }
 
 rbool RDOLogCtrlFindInList::operator()(CREF(tstring) nextstr)
 {
-	if (!matchWholeWord && strToFind.find_first_of("*?") == tstring::npos)
+	++m_checkCount;
+
+	if (!m_expression.is_initialized())
+		return false;
+
+	try
 	{
-		strToFind.insert(0, "*");
-		strToFind += "*";
+		rbool result = boost::regex_match(nextstr, m_expression.get());
+		if (result)
+		{
+			TRACE1("found %s\n", nextstr.c_str());
+		}
+		return result;
 	}
-
-	tstring str = nextstr;
-
-	if (!matchCase)
-	{
-		std::transform(strToFind.begin(), strToFind.end(), strToFind.begin(), tolower);
-		std::transform(str.begin(), str.end(), str.begin(), tolower);
-	}
-
-	log->posFind ++;
-
-	if (matchWholeWord)
-	{
-		return strToFind == str;
-	}
-
-	tstring::iterator findstrb = strToFind.begin();
-	tstring::iterator findstre = strToFind.end();
-	tstring::iterator strb = str.begin();
-	tstring::iterator stre = str.end();
-	return match(findstrb, findstre,  strb, stre);
+	catch (const std::exception&)
+	{}
+	return false;
 }
 
 // --------------------------------------------------------------------------------
@@ -218,20 +121,10 @@ void RDOLogCtrl::StringList::push_back(CREF(tstring) value)
 
 RDOLogCtrl::StringList::const_iterator RDOLogCtrl::StringList::begin() const
 {
-	return const_cast<StringList*>(this)->begin();
-}
-
-RDOLogCtrl::StringList::iterator RDOLogCtrl::StringList::begin()
-{
-	return m_list.end();
+	return m_list.begin();
 }
 
 RDOLogCtrl::StringList::const_iterator RDOLogCtrl::StringList::end() const
-{
-	return const_cast<StringList*>(this)->end();
-}
-
-RDOLogCtrl::StringList::iterator RDOLogCtrl::StringList::end()
 {
 	return m_list.end();
 }
@@ -241,17 +134,7 @@ RDOLogCtrl::StringList::const_reverse_iterator RDOLogCtrl::StringList::rbegin() 
 	return m_list.rbegin();
 }
 
-RDOLogCtrl::StringList::reverse_iterator RDOLogCtrl::StringList::rbegin()
-{
-	return m_list.rbegin();
-}
-
 RDOLogCtrl::StringList::const_reverse_iterator RDOLogCtrl::StringList::rend() const
-{
-	return m_list.rend();
-}
-
-RDOLogCtrl::StringList::reverse_iterator RDOLogCtrl::StringList::rend()
 {
 	return m_list.rend();
 }
@@ -300,12 +183,7 @@ void RDOLogCtrl::StringList::setCursor(rsint pos, rsint max)
 
 RDOLogCtrl::StringList::const_iterator RDOLogCtrl::StringList::findString(int index) const
 {
-	return const_cast<StringList*>(this)->findString(index);
-}
-
-RDOLogCtrl::StringList::iterator RDOLogCtrl::StringList::findString(int index)
-{
-	iterator res;
+	const_iterator res;
 
 	if (index == 0)
 	{
@@ -349,9 +227,9 @@ RDOLogCtrl::StringList::iterator RDOLogCtrl::StringList::findString(int index)
 	return res;
 }
 
-RDOLogCtrl::StringList::reverse_iterator RDOLogCtrl::StringList::rFindString(int index)
+RDOLogCtrl::StringList::const_reverse_iterator RDOLogCtrl::StringList::rFindString(int index) const
 {
-	reverse_iterator rit(findString(index));
+	const_reverse_iterator rit(findString(index));
 	return rit;
 }
 
@@ -438,11 +316,8 @@ RDOLogCtrl::RDOLogCtrl(PTR(QAbstractScrollArea) pParent, PTR(RDOLogStyle) pStyle
 	, focusOnly(false)
 	, logStyle(pStyle)
 	, firstFoundLine(-1)
-	, posFind(-1)
+	, m_pFindDialog(NULL)
 	, bHaveFound(false)
-	, bSearchDown(true)
-	, bMatchCase(false)
-	, bMatchWholeWord(false)
 	, drawLog(true)
 {
 	if (!logStyle)
@@ -941,99 +816,34 @@ void RDOLogCtrl::clear()
 	mutex.Unlock();
 }
 
-void RDOLogCtrl::find(int& result, rbool searchDown, rbool matchCase, rbool matchWholeWord)
+rsint RDOLogCtrl::find(rbool searchDown)
 {
+	rsint result = -1;
+
 	mutex.Lock();
 
-	result = -1;
+	int startPos = selectedLine() == -1
+		? searchDown
+			? 0
+			: m_strings.count()
+		: searchDown
+			? selectedLine() + 1
+			: selectedLine() - 1;
 
-	tstring strtofind = findStr;
+	RDOLogCtrlFindInList findInList(m_findSettings.what, m_findSettings.matchCase, m_findSettings.matchWholeWord);
 
-	StringList::iterator it;
-	StringList::reverse_iterator it_r;
+	bHaveFound = searchDown
+		? std::find_if(m_strings.findString(startPos), m_strings.end(), findInList) != m_strings.end()
+		: std::find_if(m_strings.rFindString(startPos + 1), m_strings.rend(), findInList) != m_strings.rend();
 
-	int startPos = selectedLine() + 1;
-	int endPos = m_strings.count() - 1;
-	if (!searchDown)
+	if (bHaveFound)
 	{
-		startPos = selectedLine() - 1;
-		endPos   = 0;
-	}
-
-	posFind = -1;
-	if (searchDown)
-	{
-		it = std::find_if(
-			m_strings.findString(startPos),
-			m_strings.end(),
-			RDOLogCtrlFindInList(this, findStr, matchCase, matchWholeWord)
-		);
-		if (it == m_strings.end())
-		{
-			posFind = -1;
-			startPos = 0;
-			endPos   = m_strings.count() - 1;
-			it = std::find_if(
-				m_strings.begin(),
-				m_strings.end(),
-				RDOLogCtrlFindInList(this, findStr, matchCase, matchWholeWord)
-			);
-		}
-		if (it == m_strings.end())
-		{
-			posFind = -1;
-		}
-		else
-		{
-			posFind += startPos;
-		}
-	}
-	else
-	{
-		it_r = std::find_if(
-			m_strings.rFindString(startPos + 1),
-			m_strings.rend(),
-			RDOLogCtrlFindInList(this, findStr, matchCase, matchWholeWord)
-		);
-		if (it_r == m_strings.rend())
-		{
-			posFind = -1;
-			startPos = m_strings.count() - 1;
-			endPos   = 0;
-			it_r = std::find_if(
-				m_strings.rbegin(),
-				m_strings.rend(),
-				RDOLogCtrlFindInList(this, findStr, matchCase, matchWholeWord)
-			);
-		}
-		posFind = it_r == m_strings.rend()
-			? -1
-			: startPos - posFind;
-	}
-
-	if (posFind == -1)
-	{
-		firstFoundLine = -1;
-		bHaveFound    = false;
-		result = -1;
-	}
-	else
-	{
-		bHaveFound = true;
-		result = posFind;
-		if (firstFoundLine == -1)
-		{
-			firstFoundLine = posFind;
-		}
-		else if (posFind == firstFoundLine)
-		{
-			firstFoundLine = -1;
-			bHaveFound    = false;
-			result = -1;
-		}
+		result = startPos + findInList.m_checkCount * (searchDown ? 1 : -1);
 	}
 
 	mutex.Unlock();
+
+	return result;
 }
 
 void RDOLogCtrl::setText(tstring text)
@@ -1131,12 +941,30 @@ void RDOLogCtrl::setSelectedLine(rsint selectedLine)
 
 void RDOLogCtrl::onEditCopy(bool)
 {
-	tstring str;
-	getSelected(str);
+	tstring selected;
+	getSelected(selected);
 
-	QApplication::clipboard()->setText(QString::fromStdString(str));
+	QApplication::clipboard()->setText(QString::fromStdString(selected));
 }
 
 void RDOLogCtrl::onSearchFind(bool)
 {
+	if (!m_pFindDialog)
+	{
+		getSelected(m_findSettings.what);
+		m_pFindDialog = new FindDialog(this, m_findSettings, boost::bind(&RDOLogCtrl::onFindNext, this));
+	}
+	m_pFindDialog->show();
+	m_pFindDialog->raise();
+	m_pFindDialog->activateWindow();
+}
+
+void RDOLogCtrl::onFindNext()
+{
+	selectLine(find(m_findSettings.searchDown));
+}
+
+void RDOLogCtrl::findPrevious()
+{
+	selectLine(find(!m_findSettings.searchDown));
 }
