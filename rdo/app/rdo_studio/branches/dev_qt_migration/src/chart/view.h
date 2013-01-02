@@ -23,22 +23,22 @@
 // -------------------- RDOStudioChartView
 // --------------------------------------------------------------------------------
 class RDOStudioChartViewStyle;
-class RDOTracerSerie;
+class TracerSerie;
 class RDOStudioDocSerie;
 
 class RDOStudioChartView : public CWnd
 {
-friend class RDOTracerSerieFindValue;
+friend class TracerSerieFindValue;
 friend class RDOStudioChartOptionsChart;
 friend class RDOStudioChartViewQt;
-friend class RDOTracerSerie;
+friend class TracerSerie;
 friend class RDOStudioChartDoc;
 
 protected:
 	CMutex mutex;
 
 	COleDropTarget target;
-	RDOTracerSerie* dragedSerie;
+	TracerSerie* dragedSerie;
 
 	CRect bmpRect;
 	CRect newClientRect;
@@ -62,9 +62,9 @@ protected:
 	void  updateScrollBars( const rbool need_update = true );
 
 	long double timeScale;
-	RDOTracerTimeNow drawFromX;
+	TracerTimeNow drawFromX;
 	int drawFromEventIndex;
-	RDOTracerTimeNow drawToX;
+	TracerTimeNow drawToX;
 	int drawToEventCount;
 	int chartShift;
 	rbool setTo( const int from_max_pos );

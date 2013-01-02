@@ -33,12 +33,12 @@ using namespace rdoStyle;
 namespace rdo { namespace gui { namespace tracer {
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOLogCtrlFindInList
+// -------------------- LogCtrlFindInList
 // --------------------------------------------------------------------------------
-class RDOLogCtrlFindInList
+class LogCtrlFindInList
 {
 public:
-	RDOLogCtrlFindInList(REF(rsint) checkCounter, CREF(tstring) strToFind, rbool matchCase, rbool matchWholeWord);
+	LogCtrlFindInList(REF(rsint) checkCounter, CREF(tstring) strToFind, rbool matchCase, rbool matchWholeWord);
 	rbool operator() (CREF(tstring) nextstr);
 
 private:
@@ -48,7 +48,7 @@ private:
 
 }}} // namespace rdo::gui::tracer
 
-RDOLogCtrlFindInList::RDOLogCtrlFindInList(REF(rsint) checkCounter, CREF(tstring) strToFind, rbool matchCase, rbool matchWholeWord)
+LogCtrlFindInList::LogCtrlFindInList(REF(rsint) checkCounter, CREF(tstring) strToFind, rbool matchCase, rbool matchWholeWord)
 	: m_checkCounter(checkCounter)
 {
 	tstring what = matchWholeWord
@@ -70,7 +70,7 @@ RDOLogCtrlFindInList::RDOLogCtrlFindInList(REF(rsint) checkCounter, CREF(tstring
 	{}
 }
 
-rbool RDOLogCtrlFindInList::operator()(CREF(tstring) nextstr)
+rbool LogCtrlFindInList::operator()(CREF(tstring) nextstr)
 {
 	++m_checkCounter;
 
@@ -92,16 +92,16 @@ rbool RDOLogCtrlFindInList::operator()(CREF(tstring) nextstr)
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOLogCtrl::StringList
+// -------------------- LogCtrl::StringList
 // --------------------------------------------------------------------------------
-RDOLogCtrl::StringList::StringList()
+LogCtrl::StringList::StringList()
 	: m_count   (0)
 	, m_cursor  (0)
 	, m_cursorIt(m_list.end())
 	, m_maxLegth(0)
 {}
 
-void RDOLogCtrl::StringList::push_back(CREF(tstring) value)
+void LogCtrl::StringList::push_back(CREF(tstring) value)
 {
 	m_list.push_back(value);
 	++m_count;
@@ -117,44 +117,44 @@ void RDOLogCtrl::StringList::push_back(CREF(tstring) value)
 	}
 }
 
-RDOLogCtrl::StringList::const_iterator RDOLogCtrl::StringList::begin() const
+LogCtrl::StringList::const_iterator LogCtrl::StringList::begin() const
 {
 	return m_list.begin();
 }
 
-RDOLogCtrl::StringList::const_iterator RDOLogCtrl::StringList::end() const
+LogCtrl::StringList::const_iterator LogCtrl::StringList::end() const
 {
 	return m_list.end();
 }
 
-RDOLogCtrl::StringList::const_reverse_iterator RDOLogCtrl::StringList::rbegin() const
+LogCtrl::StringList::const_reverse_iterator LogCtrl::StringList::rbegin() const
 {
 	return m_list.rbegin();
 }
 
-RDOLogCtrl::StringList::const_reverse_iterator RDOLogCtrl::StringList::rend() const
+LogCtrl::StringList::const_reverse_iterator LogCtrl::StringList::rend() const
 {
 	return m_list.rend();
 }
 
-void RDOLogCtrl::StringList::clear()
+void LogCtrl::StringList::clear()
 {
 	m_list.clear();
 	m_count    = 0;
 	m_maxLegth = 0;
 }
 
-rsint RDOLogCtrl::StringList::count() const
+rsint LogCtrl::StringList::count() const
 {
 	return m_count;
 }
 
-tstring::size_type RDOLogCtrl::StringList::maxLegth() const
+tstring::size_type LogCtrl::StringList::maxLegth() const
 {
 	return m_maxLegth;
 }
 
-void RDOLogCtrl::StringList::setCursor(rsint pos, rsint max)
+void LogCtrl::StringList::setCursor(rsint pos, rsint max)
 {
 	if (pos == m_cursor)
 		return;
@@ -179,7 +179,7 @@ void RDOLogCtrl::StringList::setCursor(rsint pos, rsint max)
 	m_cursor = pos;
 }
 
-RDOLogCtrl::StringList::const_iterator RDOLogCtrl::StringList::findString(int index) const
+LogCtrl::StringList::const_iterator LogCtrl::StringList::findString(int index) const
 {
 	const_iterator res;
 
@@ -229,13 +229,13 @@ RDOLogCtrl::StringList::const_iterator RDOLogCtrl::StringList::findString(int in
 	return res;
 }
 
-RDOLogCtrl::StringList::const_reverse_iterator RDOLogCtrl::StringList::rFindString(int index) const
+LogCtrl::StringList::const_reverse_iterator LogCtrl::StringList::rFindString(int index) const
 {
 	const_reverse_iterator rit(findString(index));
 	return rit;
 }
 
-void RDOLogCtrl::StringList::seek(rsint delta, REF(StringList::const_iterator) it) const
+void LogCtrl::StringList::seek(rsint delta, REF(StringList::const_iterator) it) const
 {
 	ASSERT(it != m_list.end());
 
@@ -256,15 +256,15 @@ void RDOLogCtrl::StringList::seek(rsint delta, REF(StringList::const_iterator) i
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOLogCtrl::ScrollMetric
+// -------------------- LogCtrl::ScrollMetric
 // --------------------------------------------------------------------------------
-RDOLogCtrl::ScrollMetric::ScrollMetric()
+LogCtrl::ScrollMetric::ScrollMetric()
 	: position(0)
 	, posMax  (0)
 	, pageSize(0)
 {}
 
-rbool RDOLogCtrl::ScrollMetric::applyInc(rsint delta)
+rbool LogCtrl::ScrollMetric::applyInc(rsint delta)
 {
 	if (delta == 0)
 	{
@@ -281,20 +281,20 @@ rbool RDOLogCtrl::ScrollMetric::applyInc(rsint delta)
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOLogCtrl::ScrollMetricVert
+// -------------------- LogCtrl::ScrollMetricVert
 // --------------------------------------------------------------------------------
-RDOLogCtrl::ScrollMetricVert::ScrollMetricVert()
+LogCtrl::ScrollMetricVert::ScrollMetricVert()
 	: ScrollMetric    ()
 	, lastViewableLine(0)
 {}
 
-rbool RDOLogCtrl::ScrollMetricVert::isVisible(rsint index) const
+rbool LogCtrl::ScrollMetricVert::isVisible(rsint index) const
 {
 	return index >= position &&
 		   index <= lastViewableLine;
 }
 
-rbool RDOLogCtrl::ScrollMetricVert::applyInc(rsint delta)
+rbool LogCtrl::ScrollMetricVert::applyInc(rsint delta)
 {
 	if (!ScrollMetric::applyInc(delta))
 	{
@@ -306,9 +306,9 @@ rbool RDOLogCtrl::ScrollMetricVert::applyInc(rsint delta)
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOLogCtrl
+// -------------------- LogCtrl
 // --------------------------------------------------------------------------------
-RDOLogCtrl::RDOLogCtrl(PTR(QAbstractScrollArea) pParent, PTR(RDOLogStyle) pStyle)
+LogCtrl::LogCtrl(PTR(QAbstractScrollArea) pParent, PTR(LogStyle) pStyle)
 	: parent_type(pParent)
 	, m_pScrollArea(pParent)
 	, lineHeight(0)
@@ -347,26 +347,26 @@ RDOLogCtrl::RDOLogCtrl(PTR(QAbstractScrollArea) pParent, PTR(RDOLogStyle) pStyle
 	m_pPopupMenu->addAction(pMainWindow->actSearchFindPrevious);
 }
 
-RDOLogCtrl::~RDOLogCtrl()
+LogCtrl::~LogCtrl()
 {
 	clear();
 }
 
-REF(QScrollBar) RDOLogCtrl::getVertScrollBar()
+REF(QScrollBar) LogCtrl::getVertScrollBar()
 {
 	PTR(QScrollBar) pScrollBar = m_pScrollArea->verticalScrollBar();
 	ASSERT(pScrollBar);
 	return *pScrollBar;
 }
 
-REF(QScrollBar) RDOLogCtrl::getHorzScrollBar()
+REF(QScrollBar) LogCtrl::getHorzScrollBar()
 {
 	PTR(QScrollBar) pScrollBar = m_pScrollArea->horizontalScrollBar();
 	ASSERT(pScrollBar);
 	return *pScrollBar;
 }
 
-void RDOLogCtrl::resizeEvent(QResizeEvent* pEvent)
+void LogCtrl::resizeEvent(QResizeEvent* pEvent)
 {
 	parent_type::resizeEvent(pEvent);
 
@@ -374,7 +374,7 @@ void RDOLogCtrl::resizeEvent(QResizeEvent* pEvent)
 	updateScrollBars();
 }
 
-rbool RDOLogCtrl::getItemColors(int index, RDOLogColorPair* &colors) const
+rbool LogCtrl::getItemColors(int index, LogColorPair* &colors) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
@@ -386,7 +386,7 @@ rbool RDOLogCtrl::getItemColors(int index, RDOLogColorPair* &colors) const
 	}
 	else
 	{
-		res = RDOLogCtrl::getItemColors("", colors);
+		res = LogCtrl::getItemColors("", colors);
 	}
 
 	const_cast<CMutex&>(mutex).Unlock();
@@ -394,12 +394,12 @@ rbool RDOLogCtrl::getItemColors(int index, RDOLogColorPair* &colors) const
 	return res;
 }
 
-rbool RDOLogCtrl::getItemColors(CREF(tstring) item, RDOLogColorPair* &colors) const
+rbool LogCtrl::getItemColors(CREF(tstring) item, LogColorPair* &colors) const
 {
 	return logStyle->getItemColors(item, colors);
 }
 
-void RDOLogCtrl::paintEvent(QPaintEvent* pEvent)
+void LogCtrl::paintEvent(QPaintEvent* pEvent)
 {
 	mutex.Lock();
 
@@ -419,7 +419,7 @@ void RDOLogCtrl::paintEvent(QPaintEvent* pEvent)
 			}
 			int lastLine = (std::min)(m_strings.count() - 1, m_SM_Y.position + mul - 1);
 
-			RDOLogColorPair* colors = NULL;
+			LogColorPair* colors = NULL;
 
 			int y = lineHeight * (-m_SM_Y.position + firstLine - 1);
 			QRect rect(charWidth * (-m_SM_X.position), y, pEvent->rect().width() + charWidth * m_SM_X.position, lineHeight);
@@ -442,7 +442,7 @@ void RDOLogCtrl::paintEvent(QPaintEvent* pEvent)
 				}
 				else
 				{
-					colors = new RDOLogColorPair();
+					colors = new LogColorPair();
 					colors->foregroundColor = palette().color(QPalette::HighlightedText);
 					colors->backgroundColor = palette().color(QPalette::Highlight);
 				}
@@ -495,7 +495,7 @@ void RDOLogCtrl::paintEvent(QPaintEvent* pEvent)
 	}
 	else
 	{
-		RDOLogColorPair* colors = NULL;
+		LogColorPair* colors = NULL;
 		getItemColors("", colors);
 
 		painter.fillRect(
@@ -509,7 +509,7 @@ void RDOLogCtrl::paintEvent(QPaintEvent* pEvent)
 	parent_type::paintEvent(pEvent);
 }
 
-void RDOLogCtrl::onVertScrollBarValueChanged(int value)
+void LogCtrl::onVertScrollBarValueChanged(int value)
 {
 	if (value < 0)
 	{
@@ -519,7 +519,7 @@ void RDOLogCtrl::onVertScrollBarValueChanged(int value)
 	scrollVertically(value - m_SM_Y.position);
 }
 
-void RDOLogCtrl::onHorzScrollBarValueChanged(int value)
+void LogCtrl::onHorzScrollBarValueChanged(int value)
 {
 	if (value < 0)
 	{
@@ -529,7 +529,7 @@ void RDOLogCtrl::onHorzScrollBarValueChanged(int value)
 	scrollHorizontally(value - m_SM_X.position);
 }
 
-void RDOLogCtrl::keyPressEvent(QKeyEvent* pEvent)
+void LogCtrl::keyPressEvent(QKeyEvent* pEvent)
 {
 	switch (pEvent->key())
 	{
@@ -562,12 +562,12 @@ void RDOLogCtrl::keyPressEvent(QKeyEvent* pEvent)
 	}
 }
 
-void RDOLogCtrl::wheelEvent(QWheelEvent* pEvent)
+void LogCtrl::wheelEvent(QWheelEvent* pEvent)
 {
 	getVertScrollBar().setValue(getVertScrollBar().value() + (pEvent->delta() < 0 ? 1 : -1));
 }
 
-void RDOLogCtrl::mousePressEvent(QMouseEvent* pEvent)
+void LogCtrl::mousePressEvent(QMouseEvent* pEvent)
 {
 	if (pEvent->button() == Qt::LeftButton)
 	{
@@ -579,7 +579,7 @@ void RDOLogCtrl::mousePressEvent(QMouseEvent* pEvent)
 	}
 }
 
-void RDOLogCtrl::updateScrollBars()
+void LogCtrl::updateScrollBars()
 {
 	m_SM_Y.pageSize = m_clientRect.height() / lineHeight;
 	m_SM_Y.posMax   = (std::max)(0, m_strings.count() - m_SM_Y.pageSize);
@@ -607,7 +607,7 @@ void RDOLogCtrl::updateScrollBars()
 	getHorzScrollBar().setValue   (m_SM_X.position);
 }
 
-rbool RDOLogCtrl::scrollVertically(int inc)
+rbool LogCtrl::scrollVertically(int inc)
 {
 	if (!m_SM_Y.applyInc(inc))
 	{
@@ -620,7 +620,7 @@ rbool RDOLogCtrl::scrollVertically(int inc)
 	return true;
 }
 
-rbool RDOLogCtrl::scrollHorizontally(int inc)
+rbool LogCtrl::scrollHorizontally(int inc)
 {
 	if (!m_SM_X.applyInc(inc))
 	{
@@ -632,13 +632,13 @@ rbool RDOLogCtrl::scrollHorizontally(int inc)
 	return true;
 }
 
-rbool RDOLogCtrl::isFullyVisible(int index) const
+rbool LogCtrl::isFullyVisible(int index) const
 {
 	int lastVisible = m_SM_Y.position + m_clientRect.height() / lineHeight - 1;
 	return index <= lastVisible && index >= m_SM_Y.position;
 }
 
-void RDOLogCtrl::selectLine(int index)
+void LogCtrl::selectLine(int index)
 {
 	if (index < 0 || index > m_strings.count() - 1 || index == selectedLine())
 	{
@@ -666,7 +666,7 @@ void RDOLogCtrl::selectLine(int index)
 	}
 }
 
-QRect RDOLogCtrl::getLineRect(int index) const
+QRect LogCtrl::getLineRect(int index) const
 {
 	QRect rect(m_clientRect);
 	rect.setTop((index - m_SM_Y.position) * lineHeight);
@@ -674,7 +674,7 @@ QRect RDOLogCtrl::getLineRect(int index) const
 	return rect;
 }
 
-void RDOLogCtrl::repaintLine(int index)
+void LogCtrl::repaintLine(int index)
 {
 	if (m_SM_Y.isVisible(index))
 	{
@@ -683,12 +683,12 @@ void RDOLogCtrl::repaintLine(int index)
 	}
 }
 
-void RDOLogCtrl::updateWindow()
+void LogCtrl::updateWindow()
 {
 	update();
 }
 
-rbool RDOLogCtrl::makeLineVisible(int index)
+rbool LogCtrl::makeLineVisible(int index)
 {
 	rbool res = false;
 
@@ -718,7 +718,7 @@ rbool RDOLogCtrl::makeLineVisible(int index)
 	return res;
 }
 
-void RDOLogCtrl::addStringToLog(CREF(tstring) logStr)
+void LogCtrl::addStringToLog(CREF(tstring) logStr)
 {
 	mutex.Lock();
 
@@ -729,7 +729,7 @@ void RDOLogCtrl::addStringToLog(CREF(tstring) logStr)
 		tstring key  = logStr.substr(posstart, posend - posstart);
 		rdo::trim(key);
 
-		RDOLogColorPair* colors = NULL;
+		LogColorPair* colors = NULL;
 
 		if (logStyle->getItemColors(key, colors))
 		{
@@ -792,12 +792,12 @@ void RDOLogCtrl::addStringToLog(CREF(tstring) logStr)
 	mutex.Unlock();
 }
 
-CREF(RDOLogStyle) RDOLogCtrl::getStyle() const
+CREF(LogStyle) LogCtrl::getStyle() const
 {
 	return *logStyle;
 }
 
-void RDOLogCtrl::setStyle(RDOLogStyle* style, rbool needRedraw)
+void LogCtrl::setStyle(LogStyle* style, rbool needRedraw)
 {
 	logStyle = style;
 	setFont();
@@ -811,7 +811,7 @@ void RDOLogCtrl::setStyle(RDOLogStyle* style, rbool needRedraw)
 	}
 }
 
-void RDOLogCtrl::setFont()
+void LogCtrl::setFont()
 {
 	if (!logStyle)
 	{
@@ -833,7 +833,7 @@ void RDOLogCtrl::setFont()
 	mutex.Unlock();
 }
 
-void RDOLogCtrl::getString(int index, tstring& str) const
+void LogCtrl::getString(int index, tstring& str) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
@@ -845,17 +845,17 @@ void RDOLogCtrl::getString(int index, tstring& str) const
 	const_cast<CMutex&>(mutex).Unlock();
 }
 
-int RDOLogCtrl::getSelectedIndex() const
+int LogCtrl::getSelectedIndex() const
 {
 	return selectedLine();
 }
 
-void RDOLogCtrl::getSelected(tstring& str) const
+void LogCtrl::getSelected(tstring& str) const
 {
 	getString(selectedLine(), str);
 }
 
-void RDOLogCtrl::clear()
+void LogCtrl::clear()
 {
 	mutex.Lock();
 
@@ -873,7 +873,7 @@ void RDOLogCtrl::clear()
 	mutex.Unlock();
 }
 
-rsint RDOLogCtrl::find(rbool searchDown)
+rsint LogCtrl::find(rbool searchDown)
 {
 	rsint result = -1;
 
@@ -888,7 +888,7 @@ rsint RDOLogCtrl::find(rbool searchDown)
 			: selectedLine() - 1;
 
 	rsint checkCounter = 0;
-	RDOLogCtrlFindInList findInList(checkCounter, m_findSettings.what, m_findSettings.matchCase, m_findSettings.matchWholeWord);
+	LogCtrlFindInList findInList(checkCounter, m_findSettings.what, m_findSettings.matchCase, m_findSettings.matchWholeWord);
 
 	rbool found = searchDown
 		? std::find_if(m_strings.findString(startPos), m_strings.end(), findInList) != m_strings.end()
@@ -904,7 +904,7 @@ rsint RDOLogCtrl::find(rbool searchDown)
 	return result;
 }
 
-void RDOLogCtrl::setText(tstring text)
+void LogCtrl::setText(tstring text)
 {
 	clear();
 	while (!text.empty())
@@ -920,7 +920,7 @@ void RDOLogCtrl::setText(tstring text)
 	}
 }
 
-void RDOLogCtrl::setDrawLog(rbool value)
+void LogCtrl::setDrawLog(rbool value)
 {
 	if (drawLog != value)
 	{
@@ -932,7 +932,7 @@ void RDOLogCtrl::setDrawLog(rbool value)
 	}
 }
 
-void RDOLogCtrl::onActivate()
+void LogCtrl::onActivate()
 {
 	repaintLine(selectedLine());
 
@@ -957,7 +957,7 @@ void RDOLogCtrl::onActivate()
 	}
 }
 
-void RDOLogCtrl::onDeactivate()
+void LogCtrl::onDeactivate()
 {
 	repaintLine(selectedLine());
 
@@ -981,7 +981,7 @@ void RDOLogCtrl::onDeactivate()
 	}
 }
 
-void RDOLogCtrl::setUpActionEditCopy(rbool activate)
+void LogCtrl::setUpActionEditCopy(rbool activate)
 {
 	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
 	ASSERT(pMainWindow);
@@ -1004,24 +1004,24 @@ void RDOLogCtrl::setUpActionEditCopy(rbool activate)
 	}
 }
 
-rbool RDOLogCtrl::canCopy() const
+rbool LogCtrl::canCopy() const
 {
 	return selectedLine() != -1;
 }
 
-rsint RDOLogCtrl::selectedLine() const
+rsint LogCtrl::selectedLine() const
 {
 	return m_selectedLine;
 }
 
-void RDOLogCtrl::setSelectedLine(rsint selectedLine)
+void LogCtrl::setSelectedLine(rsint selectedLine)
 {
 	m_selectedLine = selectedLine;
 	setUpActionEditCopy(isActivated());
 	setUpCoordStatusBar(isActivated());
 }
 
-void RDOLogCtrl::setUpCoordStatusBar(rbool activate)
+void LogCtrl::setUpCoordStatusBar(rbool activate)
 {
 	QString coord = activate && selectedLine() != -1
 		? QString("1 : %1").arg(selectedLine())
@@ -1032,7 +1032,7 @@ void RDOLogCtrl::setUpCoordStatusBar(rbool activate)
 	pMainWindow->updateStatusBar<RDOStudioMainFrame::SB_COORD>(coord);
 }
 
-void RDOLogCtrl::onEditCopy()
+void LogCtrl::onEditCopy()
 {
 	tstring selected;
 	getSelected(selected);
@@ -1040,7 +1040,7 @@ void RDOLogCtrl::onEditCopy()
 	QApplication::clipboard()->setText(QString::fromStdString(selected));
 }
 
-void RDOLogCtrl::onSearchFind()
+void LogCtrl::onSearchFind()
 {
 	getSelected(m_findSettings.what);
 
@@ -1048,8 +1048,8 @@ void RDOLogCtrl::onSearchFind()
 	{
 		m_pFindDialog = new FindDialog(
 			this,
-			boost::bind(&RDOLogCtrl::onFindDlgFind, this, _1),
-			boost::bind(&RDOLogCtrl::onFindDlgClose, this)
+			boost::bind(&LogCtrl::onFindDlgFind, this, _1),
+			boost::bind(&LogCtrl::onFindDlgClose, this)
 		);
 	}
 
@@ -1059,28 +1059,28 @@ void RDOLogCtrl::onSearchFind()
 	m_pFindDialog->activateWindow();
 }
 
-void RDOLogCtrl::onFindDlgClose()
+void LogCtrl::onFindDlgClose()
 {
 	m_pFindDialog = NULL;
 }
 
-void RDOLogCtrl::onFindDlgFind(CREF(FindDialog::Settings) settings)
+void LogCtrl::onFindDlgFind(CREF(FindDialog::Settings) settings)
 {
 	m_findSettings = settings;
 	onSearchFindNext();
 }
 
-void RDOLogCtrl::onSearchFindNext()
+void LogCtrl::onSearchFindNext()
 {
 	selectLine(find(m_findSettings.searchDown));
 }
 
-void RDOLogCtrl::onSearchFindPrevious()
+void LogCtrl::onSearchFindPrevious()
 {
 	selectLine(find(!m_findSettings.searchDown));
 }
 
-void RDOLogCtrl::onHelpContext()
+void LogCtrl::onHelpContext()
 {
 	tstring line;
 
@@ -1096,11 +1096,11 @@ void RDOLogCtrl::onHelpContext()
 
 		if (!keyword.empty())
 		{
-			RDOLogColorPair* colors;
+			LogColorPair* colors;
 			if (!logStyle->getItemColors(keyword, colors))
 			{
 				getItemColors(selectedLine(), colors);
-				if (*colors == static_cast<RDOTracerLogTheme*>(logStyle->theme)->sd)
+				if (*colors == static_cast<TracerLogTheme*>(logStyle->theme)->sd)
 				{
 					keyword = "SD";
 				}

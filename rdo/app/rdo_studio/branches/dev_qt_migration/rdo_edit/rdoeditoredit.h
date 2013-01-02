@@ -34,7 +34,7 @@ private:
 protected:
 	QWidget* view;
 
-	rdoEditCtrl::RDOLogEdit* log;
+	rdoEditCtrl::LogEdit* log;
 
 	void expand( int& line, rbool doExpand, rbool force = false, int visLevels = 0, int level = -1 ) const;
 	void foldChanged( int line, int levelNow, int levelPrev ) const;
@@ -70,8 +70,8 @@ public:
 
 	void setErrorLine(int line = -1);
 
-	CPTR(rdoEditCtrl::RDOLogEdit) getLog() const;
-	void setLog(REF(rdoEditCtrl::RDOLogEdit) log);
+	CPTR(rdoEditCtrl::LogEdit) getLog() const;
+	void setLog(REF(rdoEditCtrl::LogEdit) log);
 
 	void setCanClearErrorLine( rbool value ) { canClearErrorLine = value; }
 

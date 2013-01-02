@@ -23,17 +23,17 @@
 namespace rdo { namespace gui { namespace tracer {
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOLogCtrl
+// -------------------- LogCtrl
 // --------------------------------------------------------------------------------
-class RDOLogCtrl: public ActionActivatorWidget
+class LogCtrl: public ActionActivatorWidget
 {
 Q_OBJECT
 
-friend class RDOLogCtrlFindInList;
+friend class LogCtrlFindInList;
 
 public:
-	RDOLogCtrl(PTR(QAbstractScrollArea) pParent, PTR(RDOLogStyle) pStyle);
-	virtual ~RDOLogCtrl();
+	LogCtrl(PTR(QAbstractScrollArea) pParent, PTR(LogStyle) pStyle);
+	virtual ~LogCtrl();
 
 	virtual void addStringToLog(CREF(tstring) logStr);
 
@@ -47,8 +47,8 @@ public:
 	virtual void selectLine(int index);
 	virtual void clear();
 	
-	virtual CREF(RDOLogStyle) getStyle() const;
-	virtual void setStyle(RDOLogStyle* style, rbool needRedraw = true);
+	virtual CREF(LogStyle) getStyle() const;
+	virtual void setStyle(LogStyle* style, rbool needRedraw = true);
 
 	void setText(tstring text);
 
@@ -94,9 +94,9 @@ private:
 	CMutex     mutex;
 	StringList m_strings;
 
-	RDOLogStyle*  logStyle;
-	rbool getItemColors(CREF(tstring) item, RDOLogColorPair* &colors) const;
-	rbool getItemColors(int index, RDOLogColorPair* &colors) const;
+	LogStyle*  logStyle;
+	rbool getItemColors(CREF(tstring) item, LogColorPair* &colors) const;
+	rbool getItemColors(int index, LogColorPair* &colors) const;
 
 	rsint selectedLine() const;
 
@@ -133,11 +133,11 @@ private:
 
 	struct SubitemColors
 	{
-		typedef std::map<int, PTR(RDOLogColorPair)> List;
+		typedef std::map<int, PTR(LogColorPair)> List;
 
-		List                 m_colorList;
-		rbool                m_addingSubitems;
-		PTR(RDOLogColorPair) m_parentColor;
+		List              m_colorList;
+		rbool             m_addingSubitems;
+		PTR(LogColorPair) m_parentColor;
 
 		SubitemColors()
 			: m_addingSubitems(false)

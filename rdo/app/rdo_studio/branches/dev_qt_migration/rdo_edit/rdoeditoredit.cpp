@@ -640,12 +640,12 @@ void RDOEditorEdit::OnInsertCommand(UINT nID)
 	replaceCurrent(static_cast<LPCTSTR>(s), incPos);
 }
 
-CPTR(rdoEditCtrl::RDOLogEdit) RDOEditorEdit::getLog() const
+CPTR(rdoEditCtrl::LogEdit) RDOEditorEdit::getLog() const
 {
 	return log;
 }
 
-void RDOEditorEdit::setLog(REF(RDOLogEdit) log)
+void RDOEditorEdit::setLog(REF(LogEdit) log)
 {
 	this->log = &log;
 }

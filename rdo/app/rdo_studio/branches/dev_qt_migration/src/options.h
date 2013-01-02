@@ -413,7 +413,7 @@ private:
 	rdoEditor::RDOEditorEditStyle    style_editor;
 	rdoEditCtrl::RDOBuildEditStyle   style_build;
 	rdoEditCtrl::RDOBaseEditStyle    style_debug;
-	rdo::gui::tracer::RDOTracerLogStyle  style_trace;
+	rdo::gui::tracer::TracerLogStyle style_trace;
 	rdoEditor::RDOEditorResultsStyle style_results;
 	rdoEditCtrl::RDOFindEditStyle    style_find;
 	RDOStudioChartViewStyle          style_chart;
@@ -428,15 +428,15 @@ private:
 	rdoEditor::RDOEditorEdit       preview_editor;
 	rdoEditCtrl::RDOBuildEdit      preview_build;
 	rdoEditCtrl::RDODebugEdit      preview_debug;
-	rdo::gui::tracer::RDOTracerLogCtrl preview_trace;
+	rdo::gui::tracer::LogCtrlView  preview_trace;
 	rdoEditor::RDOEditorResults    preview_results;
 	rdoEditCtrl::RDOFindEdit       preview_find;
 
 	rbool                          chart_need_delete;
 	RDOStudioChartDoc*             preview_chart_doc;
 	RDOStudioChartView*            preview_chart;
-	std::vector<RDOTracerTimeNow>  preview_times;
-	RDOTracerSerie                 preview_serie;
+	std::vector<TracerTimeNow>     preview_times;
+	TracerSerie                    preview_serie;
 
 	RDOStudioFrameOptionsCtrl      preview_frame;
 

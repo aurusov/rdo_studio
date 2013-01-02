@@ -19,17 +19,17 @@
 namespace rdo { namespace gui { namespace tracer {
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOLogColorPair
+// -------------------- LogColorPair
 // --------------------------------------------------------------------------------
-class RDOLogColorPair
+class LogColorPair
 {
 public:
-	RDOLogColorPair();
-	virtual ~RDOLogColorPair();
+	LogColorPair();
+	virtual ~LogColorPair();
 
-	RDOLogColorPair& operator =( const RDOLogColorPair& colors );
-	rbool operator ==( const RDOLogColorPair& colors ) const;
-	rbool operator !=( const RDOLogColorPair& colors ) const;
+	LogColorPair& operator =( const LogColorPair& colors );
+	rbool operator ==( const LogColorPair& colors ) const;
+	rbool operator !=( const LogColorPair& colors ) const;
 
 	virtual void load( tstring regPath, tstring regParam );
 	virtual void save( tstring regPath, tstring regParam ) const;
@@ -39,38 +39,38 @@ public:
 };
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOLogTheme
+// -------------------- LogTheme
 // --------------------------------------------------------------------------------
-class RDOLogTheme
+class LogTheme
 {
 public:
-	RDOLogTheme();
-	virtual ~RDOLogTheme();
+	LogTheme();
+	virtual ~LogTheme();
 
-	RDOLogTheme& operator =( const RDOLogTheme& theme );
-	rbool operator ==( const RDOLogTheme& theme ) const;
-	rbool operator !=( const RDOLogTheme& theme ) const;
+	LogTheme& operator =( const LogTheme& theme );
+	rbool operator ==( const LogTheme& theme ) const;
+	rbool operator !=( const LogTheme& theme ) const;
 
 	virtual void load( tstring regPath );
 	virtual void save( tstring regPath ) const;
 
 	rdoStyle::RDOStyleFont::style style;
 
-	RDOLogColorPair defaultColor;
+	LogColorPair defaultColor;
 };
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOLogBorders
+// -------------------- LogBorders
 // --------------------------------------------------------------------------------
-class RDOLogBorders
+class LogBorders
 {
 public:
-	RDOLogBorders();
-	virtual ~RDOLogBorders();
+	LogBorders();
+	virtual ~LogBorders();
 
-	RDOLogBorders& operator =( const RDOLogBorders& borders );
-	rbool operator ==( const RDOLogBorders& borders ) const;
-	rbool operator !=( const RDOLogBorders& borders ) const;
+	LogBorders& operator =( const LogBorders& borders );
+	rbool operator ==( const LogBorders& borders ) const;
+	rbool operator !=( const LogBorders& borders ) const;
 
 	virtual void load( tstring regPath );
 	virtual void save( tstring regPath ) const;
@@ -80,33 +80,33 @@ public:
 };
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOLogStyle
+// -------------------- LogStyle
 // --------------------------------------------------------------------------------
-class RDOLogStyle: public rdoStyle::RDOStyle
+class LogStyle: public rdoStyle::RDOStyle
 {
 protected:
 	virtual void initTheme();
 	virtual void initBorders();
 
 public:
-	RDOLogStyle();
-	virtual ~RDOLogStyle();
+	LogStyle();
+	virtual ~LogStyle();
 
-	virtual rbool getItemColors( int index, RDOLogColorPair* &colors ) const;
-	virtual rbool getItemColors( CREF(tstring) item, RDOLogColorPair* &colors ) const;
+	virtual rbool getItemColors( int index, LogColorPair* &colors ) const;
+	virtual rbool getItemColors( CREF(tstring) item, LogColorPair* &colors ) const;
 
-	RDOLogStyle& operator =( const RDOLogStyle& style );
-	rbool operator ==( const RDOLogStyle& style ) const;
-	rbool operator !=( const RDOLogStyle& style ) const;
+	LogStyle& operator =( const LogStyle& style );
+	rbool operator ==( const LogStyle& style ) const;
+	rbool operator !=( const LogStyle& style ) const;
 
 	virtual void  init( CREF(tstring) _regPath = "" );
 	virtual rbool load();
 	virtual rbool save() const;
 
-	RDOLogTheme*   theme;
-	RDOLogBorders* borders;
+	LogTheme*   theme;
+	LogBorders* borders;
 
-	//static RDOLogStyle getDefaultStyle();
+	//static LogStyle getDefaultStyle();
 };
 
 }}} // namespace rdo::gui::tracer

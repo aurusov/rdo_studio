@@ -23,18 +23,18 @@ static char THIS_FILE[] = __FILE__;
 using namespace rdoEditCtrl;
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOLogEditTheme
+// -------------------- LogEditTheme
 // --------------------------------------------------------------------------------
-RDOLogEditTheme::RDOLogEditTheme(): RDOBaseEditTheme()
+LogEditTheme::LogEditTheme(): RDOBaseEditTheme()
 {
 	selectLineBgColor = RGB( 0x00, 0xC0, 0xEF );
 }
 
-RDOLogEditTheme::~RDOLogEditTheme()
+LogEditTheme::~LogEditTheme()
 {
 }
 
-RDOLogEditTheme& RDOLogEditTheme::operator =( const RDOLogEditTheme& theme )
+LogEditTheme& LogEditTheme::operator =( const LogEditTheme& theme )
 {
 	RDOBaseEditTheme::operator=( theme );
 	selectLineBgColor = theme.selectLineBgColor;
@@ -42,19 +42,19 @@ RDOLogEditTheme& RDOLogEditTheme::operator =( const RDOLogEditTheme& theme )
 	return *this;
 }
 
-rbool RDOLogEditTheme::operator ==( const RDOLogEditTheme& theme ) const
+rbool LogEditTheme::operator ==( const LogEditTheme& theme ) const
 {
 	rbool flag = RDOBaseEditTheme::operator==( theme );
 	if ( flag )	flag &= selectLineBgColor == theme.selectLineBgColor ? true : false;
 	return flag;
 }
 
-rbool RDOLogEditTheme::operator !=( const RDOLogEditTheme& theme ) const
+rbool LogEditTheme::operator !=( const LogEditTheme& theme ) const
 {
 	return !(*this == theme);
 }
 
-void RDOLogEditTheme::load( tstring regPath )
+void LogEditTheme::load( tstring regPath )
 {
 	RDOBaseEditTheme::load( regPath );
 
@@ -62,7 +62,7 @@ void RDOLogEditTheme::load( tstring regPath )
 	selectLineBgColor = AfxGetApp()->GetProfileInt( regPath.c_str(), "selectLineBgColor", selectLineBgColor );
 }
 
-void RDOLogEditTheme::save( tstring regPath ) const
+void LogEditTheme::save( tstring regPath ) const
 {
 	RDOBaseEditTheme::save( regPath );
 
@@ -70,15 +70,15 @@ void RDOLogEditTheme::save( tstring regPath ) const
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "selectLineBgColor", selectLineBgColor );
 }
 
-RDOLogEditTheme RDOLogEditTheme::getDefaultTheme()
+LogEditTheme LogEditTheme::getDefaultTheme()
 {
-	RDOLogEditTheme theme;
+	LogEditTheme theme;
 	return theme;
 }
 
-RDOLogEditTheme RDOLogEditTheme::getClassicTheme()
+LogEditTheme LogEditTheme::getClassicTheme()
 {
-	RDOLogEditTheme theme;
+	LogEditTheme theme;
 	*static_cast<RDOBaseEditTheme*>(&theme) = RDOBaseEditTheme::getClassicTheme();
 
 	theme.selectLineBgColor = RGB( 0x00, 0xC0, 0xEF );
@@ -86,9 +86,9 @@ RDOLogEditTheme RDOLogEditTheme::getClassicTheme()
 	return theme;
 }
 
-RDOLogEditTheme RDOLogEditTheme::getTwilightTheme()
+LogEditTheme LogEditTheme::getTwilightTheme()
 {
-	RDOLogEditTheme theme;
+	LogEditTheme theme;
 	*static_cast<RDOBaseEditTheme*>(&theme) = RDOBaseEditTheme::getTwilightTheme();
 
 	theme.selectLineBgColor = RGB( 0x00, 0x96, 0xBB );
@@ -96,9 +96,9 @@ RDOLogEditTheme RDOLogEditTheme::getTwilightTheme()
 	return theme;
 }
 
-RDOLogEditTheme RDOLogEditTheme::getOceanTheme()
+LogEditTheme LogEditTheme::getOceanTheme()
 {
-	RDOLogEditTheme theme;
+	LogEditTheme theme;
 	*static_cast<RDOBaseEditTheme*>(&theme) = RDOBaseEditTheme::getOceanTheme();
 
 	theme.selectLineBgColor = RGB( 0xCA, 0xF4, 0xFF );
@@ -107,37 +107,37 @@ RDOLogEditTheme RDOLogEditTheme::getOceanTheme()
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOLogEditStyle
+// -------------------- LogEditStyle
 // --------------------------------------------------------------------------------
-RDOLogEditStyle::RDOLogEditStyle(): RDOBaseEditStyle()
+LogEditStyle::LogEditStyle(): RDOBaseEditStyle()
 {
 }
 
-RDOLogEditStyle::~RDOLogEditStyle()
+LogEditStyle::~LogEditStyle()
 {
 }
 
-void RDOLogEditStyle::initTheme()
+void LogEditStyle::initTheme()
 {
-	theme = new RDOLogEditTheme;
+	theme = new LogEditTheme;
 }
 
-RDOLogEditStyle& RDOLogEditStyle::operator =( const RDOLogEditStyle& style )
+LogEditStyle& LogEditStyle::operator =( const LogEditStyle& style )
 {
 	RDOBaseEditStyle::operator=( style );
-	if ( theme && style.theme ) *static_cast<RDOLogEditTheme*>(theme) = *static_cast<RDOLogEditTheme*>(style.theme);
+	if ( theme && style.theme ) *static_cast<LogEditTheme*>(theme) = *static_cast<LogEditTheme*>(style.theme);
 
 	return *this;
 }
 
-rbool RDOLogEditStyle::operator ==( const RDOLogEditStyle& style ) const
+rbool LogEditStyle::operator ==( const LogEditStyle& style ) const
 {
 	rbool flag = RDOBaseEditStyle::operator==( style );
-	if ( theme && style.theme && flag ) flag &= *static_cast<RDOLogEditTheme*>(theme) == *static_cast<RDOLogEditTheme*>(style.theme);
+	if ( theme && style.theme && flag ) flag &= *static_cast<LogEditTheme*>(theme) == *static_cast<LogEditTheme*>(style.theme);
 	return flag;
 }
 
-rbool RDOLogEditStyle::operator !=( const RDOLogEditStyle& style ) const
+rbool LogEditStyle::operator !=( const LogEditStyle& style ) const
 {
 	return !(*this == style);
 }

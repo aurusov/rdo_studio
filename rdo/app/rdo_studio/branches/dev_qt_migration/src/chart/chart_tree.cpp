@@ -131,8 +131,8 @@ PTR(ChartTreeItem) ChartTree::getIfItemIsDrawable(CPTR(QTreeWidgetItem) pCtrlIte
 //
 //	UINT format = g_pTracer->getClipboardFormat();
 //	if ( format ) {
-//		RDOTracerSerie** ptr = (RDOTracerSerie**)::GlobalAlloc( LMEM_FIXED, sizeof( RDOTracerSerie* ) );
-//		*ptr = (RDOTracerSerie*)item;
+//		TracerSerie** ptr = (TracerSerie**)::GlobalAlloc( LMEM_FIXED, sizeof( TracerSerie* ) );
+//		*ptr = (TracerSerie*)item;
 //		source.CacheGlobalData( CLIPFORMAT(format), ptr );
 //		source.DoDragDrop( DROPEFFECT_COPY, NULL, &dropsource );
 //		source.Empty();
@@ -171,14 +171,14 @@ void ChartTree::createItem(REF(ChartTreeItem) parent, REF(ChartTreeItem) item, C
 	item.setCtrlItem(pCtrlItem);
 }
 
-void ChartTree::addResourceType(PTR(RDOTracerResType) pRTP)
+void ChartTree::addResourceType(PTR(TracerResType) pRTP)
 {
 	createItem(m_rootRTP, *pRTP, QString::fromStdString(pRTP->Name), IT_SUB_ROOT_2);
 }
 
-void ChartTree::addResource(PTR(RDOTracerResource) pRSS)
+void ChartTree::addResource(PTR(TracerResource) pRSS)
 {
-	PTR(RDOTracerResType) pRTP = pRSS->getType();
+	PTR(TracerResType) pRTP = pRSS->getType();
 	createItem(*pRTP, *pRSS, QString::fromStdString(pRSS->Name), IT_SUB_ROOT_3);
 
 	int count = pRTP->getParamsCount();
@@ -191,7 +191,7 @@ void ChartTree::addResource(PTR(RDOTracerResource) pRSS)
 	updateResource(pRSS);
 }
 
-void ChartTree::updateResource(PTR(RDOTracerResource) pRSS)
+void ChartTree::updateResource(PTR(TracerResource) pRSS)
 {
 	if (pRSS->isErased())
 	{
@@ -203,22 +203,22 @@ void ChartTree::updateResource(PTR(RDOTracerResource) pRSS)
 	}
 }
 
-void ChartTree::addPattern(PTR(RDOTracerPattern) pPAT)
+void ChartTree::addPattern(PTR(TracerPattern) pPAT)
 {
 	createItem(m_rootPAT, *pPAT, QString::fromStdString(pPAT->Name), IT_SUB_ROOT_2);
 }
 
-void ChartTree::addOperation(PTR(RDOTracerOperationBase) pOPR)
+void ChartTree::addOperation(PTR(TracerOperationBase) pOPR)
 {
 	createItem(*pOPR->getPattern(), *pOPR, QString::fromStdString(pOPR->getName()), IT_VALUE);
 }
 
-/*void ChartTree::addIrregularEvent(PTR(RDOTracerOperation) pOpr)
+/*void ChartTree::addIrregularEvent(PTR(TracerOperation) pOpr)
 {
 	addOperation(pOpr);
 }*/
 
-void ChartTree::addResult(PTR(RDOTracerResult) pPMV)
+void ChartTree::addResult(PTR(TracerResult) pPMV)
 {
 	createItem(m_rootPMV, *pPMV, QString::fromStdString(pPMV->getName()), IT_VALUE);
 }
@@ -245,7 +245,7 @@ void ChartTree::addToNewChart(PTR(QTreeWidgetItem) pCtrlItem) const
 	PTR(ChartTreeItem) pTreeItem = getIfItemIsDrawable(pCtrlItem);
 	if (pTreeItem)
 	{
-		g_pTracer->addSerieToChart(static_cast<PTR(RDOTracerSerie)>(pTreeItem));
+		g_pTracer->addSerieToChart(static_cast<PTR(TracerSerie)>(pTreeItem));
 	}
 }
 
@@ -254,7 +254,7 @@ rbool ChartTree::findInCharts(PTR(QTreeWidgetItem) pCtrlItem) const
 	PTR(ChartTreeItem) pTreeItem = getIfItemIsDrawable(pCtrlItem);
 	if (pTreeItem)
 	{
-		PTR(RDOTracerSerie) pSerie = static_cast<PTR(RDOTracerSerie)>(pTreeItem);
+		PTR(TracerSerie) pSerie = static_cast<PTR(TracerSerie)>(pTreeItem);
 		return pSerie->activateFirstDoc();
 	}
 	return false;
@@ -306,18 +306,18 @@ void ChartTree::onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pCtrlItem, int)
 //	if ( popupMenu.m_hMenu ) popupMenu.TrackPopupMenu( TPM_LEFTALIGN | TPM_RIGHTBUTTON, pos.x, pos.y, this );
 //}
 //
-//void RDOTracerTreeCtrl::OnExportChart()
+//void TracerTreeCtrl::OnExportChart()
 //{
 //	if (!g_pTracer->getDrawTrace())
 //		return;
 //
-//	PTR(RDOTracerTreeItem) pItem = getIfItemIsDrawable(GetSelectedItem());
+//	PTR(TracerTreeItem) pItem = getIfItemIsDrawable(GetSelectedItem());
 //	if (!pItem)
 //		return;
 //
-//	PTR(RDOTracerSerie) pSerie = static_cast<PTR(RDOTracerSerie)>(pItem);
+//	PTR(TracerSerie) pSerie = static_cast<PTR(TracerSerie)>(pItem);
 //	ASSERT(pSerie);
-//	RDOTracerSerie::ExportData exportData = pSerie->exportData();
+//	TracerSerie::ExportData exportData = pSerie->exportData();
 //	if (exportData.empty())
 //		return;
 //
@@ -331,7 +331,7 @@ void ChartTree::onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pCtrlItem, int)
 //	if (!stream.is_open())
 //		return;
 //
-//	BOOST_FOREACH(CREF(RDOTracerSerie::ExportData::value_type) exportItem, exportData)
+//	BOOST_FOREACH(CREF(TracerSerie::ExportData::value_type) exportItem, exportData)
 //	{
 //		stream << exportItem << std::endl;
 //	}
@@ -339,7 +339,7 @@ void ChartTree::onTreeWidgetItemDoubleClicked(QTreeWidgetItem* pCtrlItem, int)
 //	stream.close();
 //}
 //
-//void RDOTracerTreeCtrl::OnUpdateExportChart( CCmdUI* pCmdUI )
+//void TracerTreeCtrl::OnUpdateExportChart( CCmdUI* pCmdUI )
 //{
 //	pCmdUI->Enable( g_pTracer->getDrawTrace() && getIfItemIsDrawable( GetSelectedItem() ) != NULL );
 //}
@@ -352,7 +352,7 @@ void ChartTree::OnUpdateChartFindincharts(CCmdUI* pCmdUI)
 		PTR(ChartTreeItem) pTreeItem = getIfItemIsDrawable(getSelected());
 		if (pTreeItem)
 		{
-			PTR(RDOTracerSerie) pSerie = static_cast<PTR(RDOTracerSerie)>(pTreeItem);
+			PTR(TracerSerie) pSerie = static_cast<PTR(TracerSerie)>(pTreeItem);
 			enable = pSerie->isInOneOrMoreDocs();
 		}
 	}

@@ -20,7 +20,7 @@ namespace rdoEditCtrl {
 // --------------------------------------------------------------------------------
 // -------------------- RDOBuildEditTheme
 // --------------------------------------------------------------------------------
-class RDOBuildEditTheme: public RDOLogEditTheme
+class RDOBuildEditTheme: public LogEditTheme
 {
 public:
 	RDOBuildEditTheme();
@@ -42,9 +42,9 @@ public:
 };
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOLogEditStyle
+// -------------------- LogEditStyle
 // --------------------------------------------------------------------------------
-class RDOBuildEditStyle: public RDOLogEditStyle
+class RDOBuildEditStyle: public LogEditStyle
 {
 protected:
 	virtual void initTheme();

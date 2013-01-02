@@ -25,29 +25,29 @@ class RDOEditorEdit;
 namespace rdoEditCtrl {
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOLogEdit
+// -------------------- LogEdit
 // --------------------------------------------------------------------------------
-class RDOLogEdit: public RDOBaseEdit
+class LogEdit: public RDOBaseEdit
 {
 Q_OBJECT
 
 public:
-	typedef rdo::simulation::report::LogEditLineInfo RDOLogEditLineInfo;
-	typedef std::list<PTR(RDOLogEditLineInfo)> RDOLogEditLineInfoList;
+	typedef rdo::simulation::report::LogEditLineInfo LogEditLineInfo;
+	typedef std::list<PTR(LogEditLineInfo)> LogEditLineInfoList;
 
-	RDOLogEdit(PTR(QWidget) pParent);
-	virtual ~RDOLogEdit();
+	LogEdit(PTR(QWidget) pParent);
+	virtual ~LogEdit();
 
-	virtual void setEditorStyle(PTR(RDOLogEditStyle) pStyle);
+	virtual void setEditorStyle(PTR(LogEditStyle) pStyle);
 
 	virtual void gotoNext();
 	virtual void gotoPrev();
 
 	virtual void clearAll();
-	virtual void appendLine(PTR(RDOLogEditLineInfo) pLine);
+	virtual void appendLine(PTR(LogEditLineInfo) pLine);
 
 protected:
-	void  getLines        (REF(RDOLogEditLineInfoList) pLines) const;
+	void  getLines        (REF(LogEditLineInfoList) pLines) const;
 	rsint getCurrentLine  () const;
 	rsint getSciMarkerLine() const;
 
@@ -55,10 +55,10 @@ protected:
 	void  setSciMarkerLine(rsint sciMarkerLine);
 
 protected:
-	virtual void updateEdit(PTR(rdoEditor::RDOEditorEdit) pEdit, CPTR(RDOLogEditLineInfo) pLineInfo);
+	virtual void updateEdit(PTR(rdoEditor::RDOEditorEdit) pEdit, CPTR(LogEditLineInfo) pLineInfo);
 
 	void  clearLines     ();
-	void  setSelectLine  (int line, CPTR(RDOLogEditLineInfo) pLineInfo, rbool useScroll = false);
+	void  setSelectLine  (int line, CPTR(LogEditLineInfo) pLineInfo, rbool useScroll = false);
 	void  clearSelectLine();
 	rbool hasSelectLine  () const;
 
@@ -66,9 +66,9 @@ protected:
 	afx_msg void OnGotoPrev();
 
 private:
-	RDOLogEditLineInfoList  m_lines;
-	rsint                   m_currentLine;
-	rsint                   m_sciMarkerLine;
+	LogEditLineInfoList  m_lines;
+	rsint                m_currentLine;
+	rsint                m_sciMarkerLine;
 
 private slots:
 	void catchDoubleClick(int position, int line);

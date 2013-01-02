@@ -384,7 +384,7 @@ RDOStudioOptionsColorsStyles::RDOStudioOptionsColorsStyles(REF(RDOStudioOptions)
 	object->properties.push_back(new STYLEProperty(object, rdo::format(IDS_COLORSTYLE_EDITOR_BOOKMARK), null_font_style, null_fg_color, debug_theme->bookmarkBgColor));
 	objects.push_back(object);
 
-	RDOTracerLogTheme* trace_theme = static_cast<RDOTracerLogTheme*>(this->sheet->style_trace.theme);
+	TracerLogTheme* trace_theme = static_cast<TracerLogTheme*>(this->sheet->style_trace.theme);
 	object = new STYLEObject(STYLEObject::trace, this->sheet->style_trace.font->name, this->sheet->style_trace.font->size);
 	//! todo qt
 	//object->properties.push_back(new STYLEProperty(object, rdo::format(IDS_COLORSTYLE_LOG), trace_theme->style, trace_theme->defaultColor.foregroundColor, trace_theme->defaultColor.backgroundColor));
@@ -600,19 +600,19 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 	sheet->preview_chart_doc->attachView(sheet->preview_chart);
 	sheet->preview_chart->setStyle(&sheet->style_chart, false);
 	//initializing times vector
-	sheet->preview_times.push_back(RDOTracerTimeNow(0, 3));
-	sheet->preview_times.push_back(RDOTracerTimeNow(2, 3));
-	sheet->preview_times.push_back(RDOTracerTimeNow(4, 3));
-	sheet->preview_times.push_back(RDOTracerTimeNow(6, 3));
-	sheet->preview_times.push_back(RDOTracerTimeNow(8, 3));
-	sheet->preview_times.push_back(RDOTracerTimeNow(10, 3));
+	sheet->preview_times.push_back(TracerTimeNow(0, 3));
+	sheet->preview_times.push_back(TracerTimeNow(2, 3));
+	sheet->preview_times.push_back(TracerTimeNow(4, 3));
+	sheet->preview_times.push_back(TracerTimeNow(6, 3));
+	sheet->preview_times.push_back(TracerTimeNow(8, 3));
+	sheet->preview_times.push_back(TracerTimeNow(10, 3));
 	sheet->preview_serie.setTitle(rdo::format(IDS_COLORSTYLE_CHART_SAMPLE2));
-	sheet->preview_serie.addValue(new RDOTracerValue(&sheet->preview_times.at(0), 2, 0));
-	sheet->preview_serie.addValue(new RDOTracerValue(&sheet->preview_times.at(1), 1, 1));
-	sheet->preview_serie.addValue(new RDOTracerValue(&sheet->preview_times.at(2), 0, 4));
-	sheet->preview_serie.addValue(new RDOTracerValue(&sheet->preview_times.at(3), 3, 3));
-	sheet->preview_serie.addValue(new RDOTracerValue(&sheet->preview_times.at(4), 1, 2));
-	sheet->preview_serie.addValue(new RDOTracerValue(&sheet->preview_times.at(5), 0, 3));
+	sheet->preview_serie.addValue(new TracerValue(&sheet->preview_times.at(0), 2, 0));
+	sheet->preview_serie.addValue(new TracerValue(&sheet->preview_times.at(1), 1, 1));
+	sheet->preview_serie.addValue(new TracerValue(&sheet->preview_times.at(2), 0, 4));
+	sheet->preview_serie.addValue(new TracerValue(&sheet->preview_times.at(3), 3, 3));
+	sheet->preview_serie.addValue(new TracerValue(&sheet->preview_times.at(4), 1, 2));
+	sheet->preview_serie.addValue(new TracerValue(&sheet->preview_times.at(5), 0, 3));
 	sheet->preview_chart_doc->addSerie(&sheet->preview_serie);
 	sheet->chart_need_delete = false;
 
@@ -928,7 +928,7 @@ void RDOStudioOptionsColorsStyles::updateTheme()
 		if (*static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme) == RDOEditorEditTheme::getDefaultTheme() &&
 			 *static_cast<RDOBuildEditTheme*>(sheet->style_build.theme) == RDOBuildEditTheme::getDefaultTheme() &&
 			 *static_cast<RDOBaseEditTheme*>(sheet->style_debug.theme) == RDOBaseEditTheme::getDefaultTheme() &&
-			 *static_cast<RDOTracerLogTheme*>(sheet->style_trace.theme) == RDOTracerLogTheme::getDefaultTheme() &&
+			 *static_cast<TracerLogTheme*>(sheet->style_trace.theme) == TracerLogTheme::getDefaultTheme() &&
 			 *static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme) == RDOEditorBaseEditTheme::getDefaultTheme() &&
 			 *static_cast<RDOFindEditTheme*>(sheet->style_find.theme) == RDOFindEditTheme::getDefaultTheme() &&
 			 *static_cast<RDOStudioChartViewTheme*>(sheet->style_chart.theme) == RDOStudioChartViewTheme::getDefaultTheme() &&
@@ -1011,9 +1011,9 @@ void RDOStudioOptionsColorsStyles::updateTheme()
 
 	case STYLEObject::trace:
 		{
-			RDOTracerLogTheme* theme = static_cast<RDOTracerLogTheme*>(sheet->style_trace.theme);
+			TracerLogTheme* theme = static_cast<TracerLogTheme*>(sheet->style_trace.theme);
 			RDOStyleFont* font = sheet->style_trace.font;
-			if (*theme == RDOTracerLogTheme::getDefaultTheme() && *font == RDOStyleFont::getTracerLogFont()) {
+			if (*theme == TracerLogTheme::getDefaultTheme() && *font == RDOStyleFont::getTracerLogFont()) {
 				m_theme.SetCurSel(1);
 			} else {
 				m_theme.SetCurSel(0);
@@ -1105,7 +1105,7 @@ void RDOStudioOptionsColorsStyles::OnThemeChanged()
 				*static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme) = RDOEditorEditTheme::getDefaultTheme();
 				*static_cast<RDOBuildEditTheme*>(sheet->style_build.theme) = RDOBuildEditTheme::getDefaultTheme();
 				*static_cast<RDOBaseEditTheme*>(sheet->style_debug.theme) = RDOBaseEditTheme::getDefaultTheme();
-				*static_cast<RDOTracerLogTheme*>(sheet->style_trace.theme) = RDOTracerLogTheme::getDefaultTheme();
+				*static_cast<TracerLogTheme*>(sheet->style_trace.theme) = TracerLogTheme::getDefaultTheme();
 				*static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme) = RDOEditorBaseEditTheme::getDefaultTheme();
 				*static_cast<RDOFindEditTheme*>(sheet->style_find.theme) = RDOFindEditTheme::getDefaultTheme();
 				*static_cast<RDOStudioChartViewTheme*>(sheet->style_chart.theme) = RDOStudioChartViewTheme::getDefaultTheme();
@@ -1165,10 +1165,10 @@ void RDOStudioOptionsColorsStyles::OnThemeChanged()
 
 		case STYLEObject::trace:
 			{
-				RDOTracerLogTheme* theme = static_cast<RDOTracerLogTheme*>(sheet->style_trace.theme);
+				TracerLogTheme* theme = static_cast<TracerLogTheme*>(sheet->style_trace.theme);
 				switch (index)
 				{
-				case 1: *theme = RDOTracerLogTheme::getDefaultTheme(); *sheet->style_trace.font = RDOStyleFont::getTracerLogFont(); break;
+				case 1: *theme = TracerLogTheme::getDefaultTheme(); *sheet->style_trace.font = RDOStyleFont::getTracerLogFont(); break;
 				}
 			}
 			break;
@@ -1601,7 +1601,7 @@ void RDOStudioOptionsColorsStyles::OnUpdateModify()
 	            *static_cast<RDOEditorEditTheme*>(sheet->style_editor.theme) != *static_cast<RDOEditorEditTheme*>(studioApp.getStyle()->style_editor.theme) ||
 	            *static_cast<RDOBuildEditTheme*>(sheet->style_build.theme) != *static_cast<RDOBuildEditTheme*>(studioApp.getStyle()->style_build.theme) ||
 	            *static_cast<RDOBaseEditTheme*>(sheet->style_debug.theme) != *static_cast<RDOBaseEditTheme*>(studioApp.getStyle()->style_debug.theme) ||
-	            *static_cast<RDOTracerLogTheme*>(sheet->style_trace.theme) != *static_cast<RDOTracerLogTheme*>(studioApp.getStyle()->style_trace.theme) ||
+	            *static_cast<TracerLogTheme*>(sheet->style_trace.theme) != *static_cast<TracerLogTheme*>(studioApp.getStyle()->style_trace.theme) ||
 	            *static_cast<RDOEditorBaseEditTheme*>(sheet->style_results.theme) != *static_cast<RDOEditorBaseEditTheme*>(studioApp.getStyle()->style_results.theme) ||
 	            *static_cast<RDOFindEditTheme*>(sheet->style_find.theme) != *static_cast<RDOFindEditTheme*>(studioApp.getStyle()->style_find.theme) ||
 	            *static_cast<RDOStudioChartViewTheme*>(sheet->style_chart.theme) != *static_cast<RDOStudioChartViewTheme*>(studioApp.getStyle()->style_chart.theme) ||

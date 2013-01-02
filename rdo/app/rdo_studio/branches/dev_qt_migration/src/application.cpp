@@ -268,7 +268,7 @@ BOOL RDOStudioApp::InitInstance()
 //	new RDOThreadStudio1();
 //	new RDOThreadStudio2();
 
-	g_pTracer = new rdo::gui::tracer::RDOTracer();
+	g_pTracer = new rdo::gui::tracer::Tracer();
 
 #ifdef PROCGUI_ENABLE
 	rpMethod::project->cursors[ RPProject::cursor_flow_select ]        = AfxGetApp()->LoadCursor(IDC_FLOW_SELECT);

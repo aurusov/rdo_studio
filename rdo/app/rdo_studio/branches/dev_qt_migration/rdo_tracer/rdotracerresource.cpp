@@ -24,19 +24,19 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOTracerResParam
+// -------------------- TracerResParam
 // --------------------------------------------------------------------------------
-RDOTracerResParam::RDOTracerResParam( RDOTracerResource* const res ) :
-	RDOTracerSerie( RDOST_RESPARAM ),
+TracerResParam::TracerResParam( TracerResource* const res ) :
+	TracerSerie( RDOST_RESPARAM ),
 	resource( res )
 {
 }
 
-RDOTracerResParam::~RDOTracerResParam()
+TracerResParam::~TracerResParam()
 {
 }
 
-RDOTracerResParamInfo* RDOTracerResParam::getParamInfo() const
+TracerResParamInfo* TracerResParam::getParamInfo() const
 {
 	int index = resource->getParamIndex( this );
 	if ( index != -1 )
@@ -45,23 +45,23 @@ RDOTracerResParamInfo* RDOTracerResParam::getParamInfo() const
 		return NULL;
 }
 
-void RDOTracerResParam::getCaptions( std::vector<tstring> &captions, const int val_count ) const
+void TracerResParam::getCaptions( std::vector<tstring> &captions, const int val_count ) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
 	switch( getParamInfo()->getParamType() ) {
 		case RDOPT_INTEGER: {
-			RDOTracerSerie::getCaptionsInt( captions, val_count );
+			TracerSerie::getCaptionsInt( captions, val_count );
 			break;
 		}
 		case RDOPT_REAL: {
-			RDOTracerSerie::getCaptionsDouble( captions, val_count );
+			TracerSerie::getCaptionsDouble( captions, val_count );
 			break;
 		}
 		case RDOPT_ENUMERATIVE:
 		case RDOPT_BOOL       :
 		case RDOPT_STRING     : {
-			RDOTracerSerie::getCaptions( captions, val_count );
+			TracerSerie::getCaptions( captions, val_count );
 			int delta = getParamInfo()->getEnumCount();
 			minValue = 0;
 			maxValue = delta - 1;
@@ -88,9 +88,9 @@ void RDOTracerResParam::getCaptions( std::vector<tstring> &captions, const int v
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOTracerResource
+// -------------------- TracerResource
 // --------------------------------------------------------------------------------
-RDOTracerResource::RDOTracerResource( RDOTracerResType* const type, CREF(tstring) name ) :
+TracerResource::TracerResource( TracerResType* const type, CREF(tstring) name ) :
 	ChartTreeItem(),
 	erased( false ),
 	resType( type ),
@@ -101,13 +101,13 @@ RDOTracerResource::RDOTracerResource( RDOTracerResType* const type, CREF(tstring
 
 	int count = resType->getParamsCount();
 	for ( int i = 0; i < count; i++ ) {
-		addParam( new RDOTracerResParam( this ) );
+		addParam( new TracerResParam( this ) );
 	}
 
 	mutex.Unlock();
 }
 
-RDOTracerResource::~RDOTracerResource()
+TracerResource::~TracerResource()
 {
 	mutex.Lock();
 
@@ -119,7 +119,7 @@ RDOTracerResource::~RDOTracerResource()
 	mutex.Unlock();
 }
 
-void RDOTracerResource::addParam( RDOTracerResParam* const value )
+void TracerResource::addParam( TracerResParam* const value )
 {
 	mutex.Lock();
 
@@ -129,14 +129,14 @@ void RDOTracerResource::addParam( RDOTracerResParam* const value )
 	mutex.Unlock();
 }
 
-RDOTracerResParam* RDOTracerResource::getParam( unsigned int index ) const
+TracerResParam* TracerResource::getParam( unsigned int index ) const
 {
 	if ( index >= params.size() || index < 0 )
 		return NULL;
 	return params.at( index );
 }
 
-int RDOTracerResource::getParamIndex( const RDOTracerResParam* const param ) const
+int TracerResource::getParamIndex( const TracerResParam* const param ) const
 {
 	int count = params.size();
 	for ( int i = 0; i < count; i++ ) {
@@ -146,11 +146,11 @@ int RDOTracerResource::getParamIndex( const RDOTracerResParam* const param ) con
 	return -1;
 }
 
-void RDOTracerResource::setParams( tstring& line, RDOTracerTimeNow* const time, const int eventIndex, const rbool erasing )
+void TracerResource::setParams( tstring& line, TracerTimeNow* const time, const int eventIndex, const rbool erasing )
 {
 	int count = params.size();
 	for ( int i = 0; i < count; i++ ) {
-		RDOTracerValue* prevval;
+		TracerValue* prevval;
 		params.at( i )->getLastValue( prevval );
 		tstring nextValue = g_pTracer->getNextValue( line );
 		double newval;
@@ -179,14 +179,14 @@ void RDOTracerResource::setParams( tstring& line, RDOTracerTimeNow* const time, 
 		}
 
 		if ( true /*!prevval || erasing || prevval->value != newval*/ ) {
-			RDOTracerValue* newvalue = new RDOTracerValue( time, eventIndex );
+			TracerValue* newvalue = new TracerValue( time, eventIndex );
 			newvalue->value = newval;
 			params.at( i )->addValue( newvalue );
 		}
 	}
 }
 
-void RDOTracerResource::setErased( const rbool value )
+void TracerResource::setErased( const rbool value )
 {
 	if ( erased != value )
 		erased = value;

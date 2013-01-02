@@ -24,7 +24,7 @@ namespace rdoEditCtrl {
 // -------------------- RDOBuildEdit
 // --------------------------------------------------------------------------------
 class RDOBuildEdit
-	: public RDOLogEdit
+	: public LogEdit
 	, public IHelpContext
 {
 public:
@@ -34,7 +34,7 @@ public:
 	virtual void showFirstError();
 
 protected:
-	virtual void updateEdit( rdoEditor::RDOEditorEdit* edit, const RDOLogEditLineInfo* lineInfo );
+	virtual void updateEdit( rdoEditor::RDOEditorEdit* edit, const LogEditLineInfo* lineInfo );
 
 private:
 	typedef rdo::simulation::report::FileMessage RDOSyntaxMessage;

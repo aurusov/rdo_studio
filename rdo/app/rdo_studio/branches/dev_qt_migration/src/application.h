@@ -34,7 +34,7 @@ class RDOThreadStudioGUI;
 class RDOStudioPlugin;
 
 namespace rdo { namespace gui { namespace tracer {
-class RDOTracer;
+class Tracer;
 }}}
 
 class RDOStudioApp: public CWinApp

@@ -23,7 +23,7 @@ namespace rdoEditCtrl {
 // -------------------- RDOFindEdit
 // --------------------------------------------------------------------------------
 class RDOFindEdit
-	: public RDOLogEdit
+	: public LogEdit
 	, public IHelpContext
 {
 private:

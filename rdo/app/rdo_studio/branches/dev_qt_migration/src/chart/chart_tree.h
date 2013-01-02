@@ -34,11 +34,11 @@ public:
 	{}
 };
 
-class RDOTracerResType;
-class RDOTracerResource;
-class RDOTracerPattern;
-class RDOTracerOperationBase;
-class RDOTracerResult;
+class TracerResType;
+class TracerResource;
+class TracerPattern;
+class TracerOperationBase;
+class TracerResult;
 
 class ChartTree
 	: public QTreeWidget
@@ -51,15 +51,15 @@ public:
 	virtual ~ChartTree();
 
 	void setModelName   (CREF(tstring) modelName);
-	void addResourceType(PTR(RDOTracerResType)       pRTP);
-	void addResource    (PTR(RDOTracerResource)      pRSS);
-	void updateResource (PTR(RDOTracerResource)      pRSS);
-	void addPattern     (PTR(RDOTracerPattern)       pPAT);
-	void addOperation   (PTR(RDOTracerOperationBase) pOPR);
-	void addResult      (PTR(RDOTracerResult)        pPMV);
-	void deleteChildren (REF(ChartTreeItem)          parent);
+	void addResourceType(PTR(TracerResType)       pRTP);
+	void addResource    (PTR(TracerResource)      pRSS);
+	void updateResource (PTR(TracerResource)      pRSS);
+	void addPattern     (PTR(TracerPattern)       pPAT);
+	void addOperation   (PTR(TracerOperationBase) pOPR);
+	void addResult      (PTR(TracerResult)        pPMV);
+	void deleteChildren (REF(ChartTreeItem)       parent);
 	void clear();
-	//void addIrregularEvent( RDOTracerOperation* opr );
+	//void addIrregularEvent( TracerOperation* opr );
 
 private:
 	typedef  QTreeWidget  parent_type;

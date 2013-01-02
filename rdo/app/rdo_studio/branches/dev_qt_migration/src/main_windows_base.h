@@ -34,14 +34,14 @@
 class MainWindowBase
 {
 public:
-	rdoEditor::RDOEditorEditStyle    style_editor;
-	rdoEditCtrl::RDOBuildEditStyle   style_build;
-	rdoEditCtrl::RDOBaseEditStyle    style_debug;
-	rdo::gui::tracer::RDOTracerLogStyle  style_trace;
-	rdoEditor::RDOEditorResultsStyle style_results;
-	rdoEditCtrl::RDOFindEditStyle    style_find;
-	RDOStudioFrameStyle              style_frame;
-	RDOStudioChartViewStyle          style_chart;
+	rdoEditor::RDOEditorEditStyle     style_editor;
+	rdoEditCtrl::RDOBuildEditStyle    style_build;
+	rdoEditCtrl::RDOBaseEditStyle     style_debug;
+	rdo::gui::tracer::TracerLogStyle  style_trace;
+	rdoEditor::RDOEditorResultsStyle  style_results;
+	rdoEditCtrl::RDOFindEditStyle     style_find;
+	RDOStudioFrameStyle               style_frame;
+	RDOStudioChartViewStyle           style_chart;
 
 	rbool isMDIMaximazed() const { return true; }
 

@@ -19,7 +19,7 @@
 class DockTrace: public DockFocusable
 {
 public:
-	typedef  rdo::gui::tracer::RDOTracerLogCtrl  context_type;
+	typedef  rdo::gui::tracer::LogCtrlView  context_type;
 
 	DockTrace(PTR(QWidget) pParent);
 	virtual ~DockTrace();

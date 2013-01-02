@@ -16,49 +16,49 @@
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOTracerResParam
+// -------------------- TracerResParam
 // --------------------------------------------------------------------------------
-class RDOTracerResParamInfo;
-class RDOTracerResource;
+class TracerResParamInfo;
+class TracerResource;
 
-class RDOTracerResParam: public RDOTracerSerie
+class TracerResParam: public TracerSerie
 {
 protected:
-	RDOTracerResParamInfo* paramInfo;
-	RDOTracerResource* resource;
+	TracerResParamInfo* paramInfo;
+	TracerResource* resource;
 public:
-	RDOTracerResParam( RDOTracerResource* const res );
-	virtual ~RDOTracerResParam();
+	TracerResParam( TracerResource* const res );
+	virtual ~TracerResParam();
 
-	RDOTracerResource* getResource() const { return resource; };
-	RDOTracerResParamInfo* getParamInfo() const;
+	TracerResource* getResource() const { return resource; };
+	TracerResParamInfo* getParamInfo() const;
 
 	virtual void getCaptions( std::vector<tstring> &captions, const int val_count ) const;
 };
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOTracerResource
+// -------------------- TracerResource
 // --------------------------------------------------------------------------------
-class RDOTracerResType;
+class TracerResType;
 
-class RDOTracerResource : public ChartTreeItem
+class TracerResource : public ChartTreeItem
 {
 protected:
 	CMutex mutex;
-	std::vector <RDOTracerResParam*> params;
-	RDOTracerResType* resType;
+	std::vector <TracerResParam*> params;
+	TracerResType* resType;
 	rbool erased;
 public:
-	RDOTracerResource( RDOTracerResType* const type, CREF(tstring) name );
-	virtual ~RDOTracerResource();
+	TracerResource( TracerResType* const type, CREF(tstring) name );
+	virtual ~TracerResource();
 
 	tstring Name;
 	int id;
-	RDOTracerResType* getType() const { return resType; };
-	void addParam( RDOTracerResParam* const value );
-	RDOTracerResParam* getParam( unsigned int index ) const;
-	int getParamIndex( const RDOTracerResParam* const param ) const;
-	void  setParams( tstring& line, RDOTracerTimeNow* const time, const int eventIndex, const rbool erasing = false );
+	TracerResType* getType() const { return resType; };
+	void addParam( TracerResParam* const value );
+	TracerResParam* getParam( unsigned int index ) const;
+	int getParamIndex( const TracerResParam* const param ) const;
+	void  setParams( tstring& line, TracerTimeNow* const time, const int eventIndex, const rbool erasing = false );
 	void  setErased( const rbool value );
 	rbool isErased() { return erased; };
 };

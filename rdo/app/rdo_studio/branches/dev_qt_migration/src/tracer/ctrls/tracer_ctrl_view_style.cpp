@@ -24,9 +24,9 @@ static char THIS_FILE[] = __FILE__;
 using namespace rdo::gui::tracer;
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOTracerLogTheme
+// -------------------- TracerLogTheme
 // --------------------------------------------------------------------------------
-RDOTracerLogTheme::RDOTracerLogTheme(): RDOLogTheme()
+TracerLogTheme::TracerLogTheme(): LogTheme()
 {
 	es.foregroundColor = QColor( 0x8B, 0x00, 0x00 );
 	es.backgroundColor = QColor( 0xFF, 0xC0, 0xCB );
@@ -104,13 +104,13 @@ RDOTracerLogTheme::RDOTracerLogTheme(): RDOLogTheme()
 	seu.backgroundColor = sem.backgroundColor;
 }
 
-RDOTracerLogTheme::~RDOTracerLogTheme()
+TracerLogTheme::~TracerLogTheme()
 {
 }
 
-RDOTracerLogTheme& RDOTracerLogTheme::operator =( const RDOTracerLogTheme& theme )
+TracerLogTheme& TracerLogTheme::operator =( const TracerLogTheme& theme )
 {
-	RDOLogTheme::operator=( theme );
+	LogTheme::operator=( theme );
 	
 	es  = theme.es;
 	eb  = theme.eb;
@@ -141,9 +141,9 @@ RDOTracerLogTheme& RDOTracerLogTheme::operator =( const RDOTracerLogTheme& theme
 	return *this;
 }
 
-rbool RDOTracerLogTheme::operator ==( const RDOTracerLogTheme& theme ) const
+rbool TracerLogTheme::operator ==( const TracerLogTheme& theme ) const
 {
-	rbool flag = RDOLogTheme::operator==( theme );
+	rbool flag = LogTheme::operator==( theme );
 	if ( flag )	flag &= es  == theme.es;
 	if ( flag )	flag &= eb  == theme.eb;
 	if ( flag )	flag &= ef  == theme.ef;
@@ -172,14 +172,14 @@ rbool RDOTracerLogTheme::operator ==( const RDOTracerLogTheme& theme ) const
 	return flag;
 }
 
-rbool RDOTracerLogTheme::operator !=( const RDOTracerLogTheme& theme ) const
+rbool TracerLogTheme::operator !=( const TracerLogTheme& theme ) const
 {
 	return !(*this == theme);
 }
 
-void RDOTracerLogTheme::load( tstring regPath )
+void TracerLogTheme::load( tstring regPath )
 {
-	RDOLogTheme::load( regPath );
+	LogTheme::load( regPath );
 
 	regPath += "theme";
 	es.load( regPath, "es" );
@@ -209,9 +209,9 @@ void RDOTracerLogTheme::load( tstring regPath )
 	seu.load( regPath, "seu" );
 }
 
-void RDOTracerLogTheme::save( tstring regPath ) const
+void TracerLogTheme::save( tstring regPath ) const
 {
-	RDOLogTheme::save( regPath );
+	LogTheme::save( regPath );
 
 	regPath += "theme";
 	es.save( regPath, "es" );
@@ -241,46 +241,46 @@ void RDOTracerLogTheme::save( tstring regPath ) const
 	seu.save( regPath, "seu" );
 }
 
-RDOTracerLogTheme RDOTracerLogTheme::getDefaultTheme()
+TracerLogTheme TracerLogTheme::getDefaultTheme()
 {
-	RDOTracerLogTheme theme;
+	TracerLogTheme theme;
 	return theme;
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOTracerLogStyle
+// -------------------- TracerLogStyle
 // --------------------------------------------------------------------------------
-RDOTracerLogStyle::RDOTracerLogStyle() : RDOLogStyle()
+TracerLogStyle::TracerLogStyle() : LogStyle()
 {
 }
 
-RDOTracerLogStyle::~RDOTracerLogStyle()
+TracerLogStyle::~TracerLogStyle()
 {
 }
 
-void RDOTracerLogStyle::initTheme()
+void TracerLogStyle::initTheme()
 {
-	theme = new RDOTracerLogTheme;
+	theme = new TracerLogTheme;
 }
 
-void RDOTracerLogStyle::initBorders()
+void TracerLogStyle::initBorders()
 {
-	RDOLogStyle::initBorders();
+	LogStyle::initBorders();
 	borders->vertBorder = 1;
 	borders->horzBorder = 2;
 }
 
-rbool RDOTracerLogStyle::getItemColors( CREF(tstring) item, RDOLogColorPair* &colors ) const
+rbool TracerLogStyle::getItemColors( CREF(tstring) item, LogColorPair* &colors ) const
 {
 	if ( item.empty() )
-		return RDOLogStyle::getItemColors( "", colors );
+		return LogStyle::getItemColors( "", colors );
 	int posstart = item.find_first_not_of( ' ' );
 	int posend = item.find_first_of( ' ', posstart );
 	tstring key = item.substr( posstart, posend - posstart );
 	rdo::trim( key );
 	rbool res = true;
 	if ( theme ) {
-		RDOTracerLogTheme* _theme = static_cast<RDOTracerLogTheme*>(theme);
+		TracerLogTheme* _theme = static_cast<TracerLogTheme*>(theme);
 		if ( key == "ES" ) {
 			colors = &_theme->es;
 		} else if ( key == "EB" ) {
@@ -332,36 +332,36 @@ rbool RDOTracerLogStyle::getItemColors( CREF(tstring) item, RDOLogColorPair* &co
 		} else if ( key == "SEU" ) {
 			colors = &_theme->seu;
 		} else {
-			res = RDOLogStyle::getItemColors( "", colors );
+			res = LogStyle::getItemColors( "", colors );
 		}
 	} else {
-		res = RDOLogStyle::getItemColors( "", colors );
+		res = LogStyle::getItemColors( "", colors );
 	}
 	return res;
 }
 
-RDOTracerLogStyle& RDOTracerLogStyle::operator =( const RDOTracerLogStyle& style )
+TracerLogStyle& TracerLogStyle::operator =( const TracerLogStyle& style )
 {
-	RDOLogStyle::operator=( style );
-	if ( theme && style.theme ) *static_cast<RDOTracerLogTheme*>(theme) = *static_cast<RDOTracerLogTheme*>(style.theme);
+	LogStyle::operator=( style );
+	if ( theme && style.theme ) *static_cast<TracerLogTheme*>(theme) = *static_cast<TracerLogTheme*>(style.theme);
 
 	return *this;
 }
 
-rbool RDOTracerLogStyle::operator ==( const RDOTracerLogStyle& style ) const
+rbool TracerLogStyle::operator ==( const TracerLogStyle& style ) const
 {
-	rbool flag = RDOLogStyle::operator==( style );
-	if ( theme && style.theme && flag ) flag &= *static_cast<RDOTracerLogTheme*>(theme) == *static_cast<RDOTracerLogTheme*>(style.theme);
+	rbool flag = LogStyle::operator==( style );
+	if ( theme && style.theme && flag ) flag &= *static_cast<TracerLogTheme*>(theme) == *static_cast<TracerLogTheme*>(style.theme);
 	return flag;
 }
 
-rbool RDOTracerLogStyle::operator !=( const RDOTracerLogStyle& style ) const
+rbool TracerLogStyle::operator !=( const TracerLogStyle& style ) const
 {
 	return !(*this == style);
 }
 
-void RDOTracerLogStyle::init( CREF(tstring) _regPath )
+void TracerLogStyle::init( CREF(tstring) _regPath )
 {
-	RDOLogStyle::init( _regPath );
+	LogStyle::init( _regPath );
 	*font = rdoStyle::RDOStyleFont::getTracerLogFont();
 }

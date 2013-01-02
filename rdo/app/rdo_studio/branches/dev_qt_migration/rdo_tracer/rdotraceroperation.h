@@ -16,53 +16,53 @@
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOTracerOperationBase
+// -------------------- TracerOperationBase
 // --------------------------------------------------------------------------------
-class RDOTracerPattern;
+class TracerPattern;
 
-class RDOTracerOperationBase: public RDOTracerSerie
+class TracerOperationBase: public TracerSerie
 {
 protected:
-	RDOTracerPattern* pattern;
+	TracerPattern* pattern;
 	tstring Name;
-	void incOperationsCount( RDOTracerTimeNow* const time, const int eventIndex );
+	void incOperationsCount( TracerTimeNow* const time, const int eventIndex );
 public:
-	RDOTracerOperationBase( RDOTracerPattern* const pat );
-	virtual ~RDOTracerOperationBase();
+	TracerOperationBase( TracerPattern* const pat );
+	virtual ~TracerOperationBase();
 
-	RDOTracerPattern* getPattern() const { return pattern; };
-	//void start( RDOTracerTimeNow* const time, const int eventIndex );
-	//void accomplish( RDOTracerTimeNow* const time, const int eventIndex );
+	TracerPattern* getPattern() const { return pattern; };
+	//void start( TracerTimeNow* const time, const int eventIndex );
+	//void accomplish( TracerTimeNow* const time, const int eventIndex );
 	void setName( CREF(tstring) name ) { Name = name; if ( title.empty() ) title = Name; };
 	const tstring getName() const { return Name; };
 	virtual void getCaptions( std::vector<tstring> &captions, const int val_count ) const;
-	virtual void monitorTime( RDOTracerTimeNow* const time, const int eventIndex );
+	virtual void monitorTime( TracerTimeNow* const time, const int eventIndex );
 };
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOTracerOperation
+// -------------------- TracerOperation
 // --------------------------------------------------------------------------------
-class RDOTracerOperation: public RDOTracerOperationBase
+class TracerOperation: public TracerOperationBase
 {
 public:
-	RDOTracerOperation( RDOTracerPattern* const pat );
-	virtual ~RDOTracerOperation();
+	TracerOperation( TracerPattern* const pat );
+	virtual ~TracerOperation();
 
-	void start( RDOTracerTimeNow* const time, const int eventIndex );
-	void accomplish( RDOTracerTimeNow* const time, const int eventIndex );
+	void start( TracerTimeNow* const time, const int eventIndex );
+	void accomplish( TracerTimeNow* const time, const int eventIndex );
 };
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOTracerEvent
+// -------------------- TracerEvent
 // --------------------------------------------------------------------------------
-class RDOTracerEvent: public RDOTracerOperationBase
+class TracerEvent: public TracerOperationBase
 {
 public:
-	RDOTracerEvent( RDOTracerPattern* const pat );
-	virtual ~RDOTracerEvent();
+	TracerEvent( TracerPattern* const pat );
+	virtual ~TracerEvent();
 	
-	void occurs( RDOTracerTimeNow* const time, const int eventIndex );
-	virtual void monitorTime( RDOTracerTimeNow* const time, const int eventIndex );
+	void occurs( TracerTimeNow* const time, const int eventIndex );
+	virtual void monitorTime( TracerTimeNow* const time, const int eventIndex );
 };
 
 #endif // _RDO_STUDIO_MFC_TRACER_RDOTRACEROPERATION_H_

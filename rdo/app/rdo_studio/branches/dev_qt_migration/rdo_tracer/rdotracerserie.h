@@ -19,16 +19,16 @@
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOTracerSerie
+// -------------------- TracerSerie
 // --------------------------------------------------------------------------------
-enum RDOTracerSerieKind{
+enum TracerSerieKind{
 	RDOST_RESPARAM = 0,
 	RDOST_OPERATION,
 	RDOST_RESULT,
 	RDOST_PREVIEW
 };
 
-enum RDOTracerSerieMarker{
+enum TracerSerieMarker{
 	RDOSM_NONE = 0,
 	RDOSM_CIRCLE,
 	RDOSM_SQUARE,
@@ -38,19 +38,19 @@ enum RDOTracerSerieMarker{
 
 class RDOStudioChartView;
 class RDOStudioChartDoc;
-class RDOTracerValue;
-class RDOTracerTimeNow;
+class TracerValue;
+class TracerTimeNow;
 
-typedef std::list< RDOTracerValue* > valuesList;
+typedef std::list< TracerValue* > valuesList;
 
-class RDOTracerSerie : public ChartTreeItem
+class TracerSerie : public ChartTreeItem
 {
 friend class RDOStudioDocSerie;
 
 protected:
 	CMutex mutex;
 
-	RDOTracerSerieKind serieKind;
+	TracerSerieKind serieKind;
 	tstring title;
 
 	valuesList values;
@@ -67,26 +67,26 @@ protected:
 	void getCaptionsBool( std::vector<tstring> &captions, const int val_count ) const;
 
 public:
-	RDOTracerSerie( RDOTracerSerieKind _serieKind = RDOST_PREVIEW );
-	virtual ~RDOTracerSerie();
+	TracerSerie( TracerSerieKind _serieKind = RDOST_PREVIEW );
+	virtual ~TracerSerie();
 	
-	RDOTracerSerieKind getSerieKind() const { return serieKind; };
+	TracerSerieKind getSerieKind() const { return serieKind; };
 
 	tstring getTitle() const;
 	void setTitle( CREF(tstring) value );
 
-	void  addValue( RDOTracerValue* const value );
+	void  addValue( TracerValue* const value );
 	void  getValueCount( int& count ) const;
 	rbool empty() const { return values.empty(); };
 	valuesList::const_iterator begin() const { return values.begin(); };
 	valuesList::const_iterator end() const { return values.end(); };
-	void getLastValue( RDOTracerValue*& val ) const;
+	void getLastValue( TracerValue*& val ) const;
 	//double getMinValue() const { return minValue; };
 	//double getMaxValue() const { return maxValue; };
 	virtual void getCaptions( std::vector<tstring> &captions, const int val_count ) const;
 
-	void drawSerie( RDOStudioChartView* const view, HDC &dc, CRect &rect, const COLORREF color, RDOTracerSerieMarker marker, const int marker_size, const rbool draw_marker, const rbool transparent_marker ) const;
-	void drawMarker( HDC &dc, const int x, const int y, RDOTracerSerieMarker marker, const int marker_size ) const;
+	void drawSerie( RDOStudioChartView* const view, HDC &dc, CRect &rect, const COLORREF color, TracerSerieMarker marker, const int marker_size, const rbool draw_marker, const rbool transparent_marker ) const;
+	void drawMarker( HDC &dc, const int x, const int y, TracerSerieMarker marker, const int marker_size ) const;
 
 	void  addToDoc( RDOStudioChartDoc* const doc );
 	void  removeFromDoc( RDOStudioChartDoc* const doc );

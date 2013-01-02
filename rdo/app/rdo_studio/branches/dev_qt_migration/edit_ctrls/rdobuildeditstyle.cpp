@@ -25,7 +25,7 @@ using namespace rdoEditCtrl;
 // --------------------------------------------------------------------------------
 // -------------------- RDOBuildEditTheme
 // --------------------------------------------------------------------------------
-RDOBuildEditTheme::RDOBuildEditTheme(): RDOLogEditTheme()
+RDOBuildEditTheme::RDOBuildEditTheme(): LogEditTheme()
 {
 	warning = true;
 }
@@ -36,7 +36,7 @@ RDOBuildEditTheme::~RDOBuildEditTheme()
 
 RDOBuildEditTheme& RDOBuildEditTheme::operator =( const RDOBuildEditTheme& theme )
 {
-	RDOLogEditTheme::operator=( theme );
+	LogEditTheme::operator=( theme );
 	warning = theme.warning;
 
 	return *this;
@@ -44,7 +44,7 @@ RDOBuildEditTheme& RDOBuildEditTheme::operator =( const RDOBuildEditTheme& theme
 
 rbool RDOBuildEditTheme::operator ==( const RDOBuildEditTheme& theme ) const
 {
-	rbool flag = RDOLogEditTheme::operator==( theme );
+	rbool flag = LogEditTheme::operator==( theme );
 	if ( flag )	flag &= warning == theme.warning ? true : false;
 	return flag;
 }
@@ -56,7 +56,7 @@ rbool RDOBuildEditTheme::operator !=( const RDOBuildEditTheme& theme ) const
 
 void RDOBuildEditTheme::load( tstring regPath )
 {
-	RDOLogEditTheme::load( regPath );
+	LogEditTheme::load( regPath );
 
 	regPath += "build";
 	warning = AfxGetApp()->GetProfileInt( regPath.c_str(), "warning", warning ) ? true : false;
@@ -64,7 +64,7 @@ void RDOBuildEditTheme::load( tstring regPath )
 
 void RDOBuildEditTheme::save( tstring regPath ) const
 {
-	RDOLogEditTheme::save( regPath );
+	LogEditTheme::save( regPath );
 
 	regPath += "build";
 	AfxGetApp()->WriteProfileInt( regPath.c_str(), "warning", warning );
@@ -79,7 +79,7 @@ RDOBuildEditTheme RDOBuildEditTheme::getDefaultTheme()
 RDOBuildEditTheme RDOBuildEditTheme::getClassicTheme()
 {
 	RDOBuildEditTheme theme;
-	*static_cast<RDOLogEditTheme*>(&theme) = RDOLogEditTheme::getClassicTheme();
+	*static_cast<LogEditTheme*>(&theme) = LogEditTheme::getClassicTheme();
 
 	return theme;
 }
@@ -87,7 +87,7 @@ RDOBuildEditTheme RDOBuildEditTheme::getClassicTheme()
 RDOBuildEditTheme RDOBuildEditTheme::getTwilightTheme()
 {
 	RDOBuildEditTheme theme;
-	*static_cast<RDOLogEditTheme*>(&theme) = RDOLogEditTheme::getTwilightTheme();
+	*static_cast<LogEditTheme*>(&theme) = LogEditTheme::getTwilightTheme();
 
 	return theme;
 }
@@ -95,7 +95,7 @@ RDOBuildEditTheme RDOBuildEditTheme::getTwilightTheme()
 RDOBuildEditTheme RDOBuildEditTheme::getOceanTheme()
 {
 	RDOBuildEditTheme theme;
-	*static_cast<RDOLogEditTheme*>(&theme) = RDOLogEditTheme::getOceanTheme();
+	*static_cast<LogEditTheme*>(&theme) = LogEditTheme::getOceanTheme();
 
 	return theme;
 }
@@ -103,7 +103,7 @@ RDOBuildEditTheme RDOBuildEditTheme::getOceanTheme()
 // --------------------------------------------------------------------------------
 // -------------------- RDOBuildEditStyle
 // --------------------------------------------------------------------------------
-RDOBuildEditStyle::RDOBuildEditStyle(): RDOLogEditStyle()
+RDOBuildEditStyle::RDOBuildEditStyle(): LogEditStyle()
 {
 }
 
@@ -118,7 +118,7 @@ void RDOBuildEditStyle::initTheme()
 
 RDOBuildEditStyle& RDOBuildEditStyle::operator =( const RDOBuildEditStyle& style )
 {
-	RDOLogEditStyle::operator=( style );
+	LogEditStyle::operator=( style );
 	if ( theme && style.theme ) *static_cast<RDOBuildEditTheme*>(theme) = *static_cast<RDOBuildEditTheme*>(style.theme);
 
 	return *this;
@@ -126,7 +126,7 @@ RDOBuildEditStyle& RDOBuildEditStyle::operator =( const RDOBuildEditStyle& style
 
 rbool RDOBuildEditStyle::operator ==( const RDOBuildEditStyle& style ) const
 {
-	rbool flag = RDOLogEditStyle::operator==( style );
+	rbool flag = LogEditStyle::operator==( style );
 	if ( theme && style.theme && flag ) flag &= *static_cast<RDOBuildEditTheme*>(theme) == *static_cast<RDOBuildEditTheme*>(style.theme);
 	return flag;
 }

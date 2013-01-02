@@ -23,7 +23,7 @@ static char THIS_FILE[] = __FILE__;
 using namespace rdoStyle;
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOLogTheme
+// -------------------- RDOStudioChartViewTheme
 // --------------------------------------------------------------------------------
 RDOStudioChartViewTheme::RDOStudioChartViewTheme(): RDOStyleTheme()
 {

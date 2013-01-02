@@ -15,44 +15,44 @@
 // --------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOTracerTimeNow
+// -------------------- TracerTimeNow
 // --------------------------------------------------------------------------------
-class RDOTracerTimeNow
+class TracerTimeNow
 {
 public:
-	RDOTracerTimeNow( const double _time = 0 );
-	RDOTracerTimeNow( const double _time, const int _event_count );
-	~RDOTracerTimeNow() {};
+	TracerTimeNow( const double _time = 0 );
+	TracerTimeNow( const double _time, const int _event_count );
+	~TracerTimeNow() {};
 
 	double time;
 	int eventCount;
 	
-	RDOTracerTimeNow& operator =( const RDOTracerTimeNow& timenow );
-	rbool operator ==( const RDOTracerTimeNow& timenow ) const;
-	rbool operator !=( const RDOTracerTimeNow& timenow ) const;
+	TracerTimeNow& operator =( const TracerTimeNow& timenow );
+	rbool operator ==( const TracerTimeNow& timenow ) const;
+	rbool operator !=( const TracerTimeNow& timenow ) const;
 
-	rbool compareTimes( const RDOTracerTimeNow* timenow );
+	rbool compareTimes( const TracerTimeNow* timenow );
 };
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOTracerValue
+// -------------------- TracerValue
 // --------------------------------------------------------------------------------
-class RDOTracerValue
+class TracerValue
 {
-friend class RDOTracerSerie;
+friend class TracerSerie;
 friend class RDOStudioChartDoc;
 friend class RDOStudioChartDocInsertTime;
 friend class RDOStudioChartDocInsertTime;
-friend class RDOTracerSerieFindValue;
+friend class TracerSerieFindValue;
 
 protected:
-	RDOTracerTimeNow* modeltime;
+	TracerTimeNow* modeltime;
 	int eventIndex;
 public:
 	double value;
-	RDOTracerValue( RDOTracerTimeNow* const timenow, const int _eventIndex, const double _value = 0 );
-	~RDOTracerValue();
-	RDOTracerTimeNow* const getModelTime() const { return modeltime; };
+	TracerValue( TracerTimeNow* const timenow, const int _eventIndex, const double _value = 0 );
+	~TracerValue();
+	TracerTimeNow* const getModelTime() const { return modeltime; };
 };
 
 #endif // _RDO_STUDIO_MFC_TRACER_RDOTRACERVALUES_H_

@@ -762,7 +762,7 @@ DROPEFFECT RDOStudioChartView::OnDragEnter( COleDataObject* pDataObject, DWORD d
 	if ( pDataObject->IsDataAvailable( CLIPFORMAT(format) ) ) {
 		glb = pDataObject->GetGlobalData( CLIPFORMAT(format) );
 		if ( glb ) {
-			dragedSerie = *(RDOTracerSerie**)::GlobalLock( glb );
+			dragedSerie = *(TracerSerie**)::GlobalLock( glb );
 			::GlobalUnlock( glb );
 			::GlobalFree( glb );
 		}
