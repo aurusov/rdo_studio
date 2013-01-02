@@ -16,23 +16,23 @@ import xml.dom.minidom
 # data about rdo apps
 directory          = u'.'
 model_directory    = u'.'
-test_expansion     = '.rtestx'
-trace_expansion    = '.trc'
-result_expansion   = '.pmv'
-build_dir_substr   = 'build'
-rdo_ex_substr      = 'rdo'
-rdo_test_ex_substr = 'rdo_check_results'
+test_expansion     = u'.rtestx'
+trace_expansion    = u'.trc'
+result_expansion   = u'.pmv'
+build_dir_substr   = u'build'
+rdo_ex_substr      = u'rdo'
+rdo_test_ex_substr = u'rdo_check_results'
 
 if sys.platform == 'win32':
-    rdo_ex_substr      = 'rdo.exe'
-    rdo_test_ex_substr = 'rdo_check_results.exe'
+    rdo_ex_substr      = u'rdo.exe'
+    rdo_test_ex_substr = u'rdo_check_results.exe'
 
 RDO_CONSOLE_COMPILE_LOG_FILE_NAME = 'log.txt'
     
 # test target type
-TARGET_CONSOLE   = 'CONSOLE'
-TAGRET_CONVERTER = 'CONVERTOR'
-TARGET_GUI       = 'GUI'
+TARGET_CONSOLE   = u'CONSOLE'
+TAGRET_CONVERTER = u'CONVERTOR'
+TARGET_GUI       = u'uGUI'
 
 # python script exit code
 APP_CODE_TERMINATION_NORMAL = 0
@@ -149,7 +149,7 @@ def compare_text_files(file1, file2):
     cut_slash(file1_data)
     cut_slash(file2_data)
     
-    if cmp(string_list_log, string_list_log_etalon) == 0:
+    if cmp(file1_data, file2_data) == 0:
         return True
     
     return False
@@ -161,7 +161,7 @@ def compare_text_files(file1, file2):
 # global exit code variable
 G_EXIT_CODE = APP_CODE_TERMINATION_NORMAL
 
-print u"STARTED SCRIPT :", sys.argv[0]
+print u'STARTED SCRIPT :', sys.argv[0]
 print u'ENCODING', sys.getfilesystemencoding()
 
 # search rdo and rdo_test executables
@@ -218,20 +218,10 @@ for task in files:
         model['result']          = get_node_attribute_from_dom(dom, u'model', u'result'         )
         model['log_compilation'] = get_node_attribute_from_dom(dom, u'model', u'log_compilation')
         
-        print 'Project              :', task
-        print 'Model file           :', model['name']
-        print 'Target               :', model['target']
-        print 'Exit code            :', model['exit_code']
-        print 'Trace file           :', model['trace']
-        print 'Result file          :', model['result']
-        print 'Log compilation file :', model['log_compilation']
-        print ''
-
+        etalons = []
         node_etalons = dom.getElementsByTagName('etalons')
         if len(node_etalons):
             files = node_etalons[0].getElementsByTagName('file')
-
-            etalons = []
 
             for file in files:
                 etalon = {}
@@ -239,6 +229,22 @@ for task in files:
                 etalon['target'] = file.getAttribute('target')
             
                 etalons.append(etalon)
+        
+        print u'Project              :', task
+        print u'Model file           :', model['name']
+        print u'Target               :', model['target']
+        print u'Exit code            :', model['exit_code']
+        print u'Trace file           :', model['trace']
+        print u'Result file          :', model['result']
+        print u'Log compilation file :', model['log_compilation']
+
+        if len(etalons):
+            print '\n', u'Etalons :', '\n'
+        
+        for etalon in etalons:
+            print u'source:', etalon['source'], u'target', etalon['target']
+
+        print ''
 
         model_file    = dirname + model['name']
         etalon_trace  = dirname + model['trace']
@@ -252,23 +258,23 @@ for task in files:
         cycle_exit_code = APP_CODE_TERMINATION_ERROR
 
         # select console target
-        if model['target'] == TARGET_CONSOLE and False:
+        if model['target'] == TARGET_CONSOLE:
             # run rdo_console app on test model
             command = (rdo_ex + u' -i ' + wrap_the_string_in_quotes(model_file))
             simulation_code = subprocess.call(safe_encode(command), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            print "SIMYLATION EXIT CODE :", simulation_code
+            print u'SIMYLATION EXIT CODE :', simulation_code
 
             # check simulation exit code
-            simulation_exit_code_string = 'ERROR'
+            simulation_exit_code_string = u'ERROR'
 
             exit_code = int(model['exit_code'])
             
             if simulation_code == exit_code:
-                simulation_exit_code_string = "OK"
+                simulation_exit_code_string = u'OK'
             else:
                 cycle_exit_code = APP_CODE_TERMINATION_ERROR
             
-            print "CHECK SIM EXIT CODE  :", simulation_exit_code_string    
+            print u'CHECK SIM EXIT CODE  :', simulation_exit_code_string    
             
             # nornal simulation check
             if simulation_code != RDO_CONSOLE_TERMINATION_NORMAL:
@@ -279,29 +285,29 @@ for task in files:
 
                 test_code = subprocess.call(safe_encode(command), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
-                check_exit_code_string = 'ERROR UNKNOWN'
+                check_exit_code_string = u'ERROR UNKNOWN'
 
                 if test_code == RDO_CHECK_RESULT_TERMINATION_NORMAL:
                     cycle_exit_code = APP_CODE_TERMINATION_NORMAL
-                    check_exit_code_string = 'OK'
+                    check_exit_code_string = u'OK'
 
                 elif test_code == RDO_CHECK_RESULT_TERMINATION_ERROR_FILE_NOT_FOUND:
-                    check_exit_code_string = 'ERROR FILE NOT FOUND'
+                    check_exit_code_string = u'ERROR FILE NOT FOUND'
 
                 elif test_code == RDO_CHECK_RESULT_TERMINATION_ERROR_INVALID_INPUT:
-                    check_exit_code_string = 'ERROR INVALID INPUT'
+                    check_exit_code_string = u'ERROR INVALID INPUT'
 
                 elif test_code == RDO_CHECK_RESULT_TERMINATION_ERROR_RESULT:
-                    check_exit_code_string = 'ERROR RESULT'
+                    check_exit_code_string = u'ERROR RESULT'
 
                 elif test_code == RDO_CHECK_RESULT_TERMINATION_ERROR_TRACE:
-                    check_exit_code_string = 'ERROR TRACE'            
+                    check_exit_code_string = u'ERROR TRACE'            
 
                 elif test_code == RDO_CHECK_RESULT_TERMINATION_ERROR_RESULT_AND_TRACE:
-                    check_exit_code_string = 'ERROR RESULT AND TRACE'            
+                    check_exit_code_string = u'ERROR RESULT AND TRACE'            
 
-                print "TEST EXIT CODE       :", test_code
-                print "CHECK TEST CODE      :", check_exit_code_string
+                print u'TEST EXIT CODE       :', test_code
+                print u'CHECK TEST CODE      :', check_exit_code_string
 
             # .rdox model not found
             elif simulation_code == RDO_CONSOLE_TERMINATION_WITH_AN_ERROR_NO_MODEL:
@@ -315,21 +321,46 @@ for task in files:
 
                 res = compare_text_files(simulation_log_file, simulation_log_file_etalon)
 
-                check_message_cmp_string = 'ERROR'
+                check_message_cmp_string = u'ERROR'
 
                 if res:
                     cycle_exit_code = APP_CODE_TERMINATION_NORMAL
-                    check_message_cmp_string = 'OK'
+                    check_message_cmp_string = u'OK'
 
-                print "CHECK ERROR LIST     :", check_message_cmp_string 
+                print u'CHECK ERROR LIST     :', check_message_cmp_string 
 
             elif simulation_code == RDO_CONSOLE_TERMINATION_WITH_AN_ERROR_RUNTIME_ERROR:
                 cycle_exit_code = APP_CODE_TERMINATION_NORMAL
 
         elif model['target'] == TAGRET_CONVERTER:
             text_uuid = str(uuid.uuid1())
-            temp_directory_name = dirname + text_uuid
+            temp_directory_name = dirname + text_uuid + u'/'
             shutil.copytree(dirname, temp_directory_name)
+            
+            model_file    = temp_directory_name + model['name']
+            command = (rdo_ex + u' -i ' + wrap_the_string_in_quotes(model_file) + u' -c')
+            exit_code = subprocess.call(safe_encode(command), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            print u'CONVERT EXIT CODE :', exit_code, u'\n'
+            
+            if exit_code == 0:
+                # compare etalons
+                for etalon in etalons:
+                    source_file = temp_directory_name + etalon['source']
+                    target_file = temp_directory_name + etalon['target']
+                    res = compare_text_files(source_file, target_file)
+                    
+                    compare_string = u'ERROR'
+                    
+                    if res == True:
+                        compare_string = u'OK'
+                    else:
+                        cycle_exit_code = APP_CODE_TERMINATION_ERROR
+                    
+                    print u'COMPARE', etalon['source'], u'AND', etalon['target'], u':', compare_string
+            
+            else:
+                cycle_exit_code = APP_CODE_TERMINATION_ERROR
+            
             shutil.rmtree(temp_directory_name)
 
         else:
@@ -342,6 +373,6 @@ for task in files:
         if cycle_exit_code == APP_CODE_TERMINATION_ERROR:
             G_EXIT_CODE = APP_CODE_TERMINATION_ERROR
 
-print "\n", "PYTHON EXIT CODE :", G_EXIT_CODE, "\n"
+print '\n', u'PYTHON EXIT CODE :', G_EXIT_CODE, '\n'
 
 sys.exit(G_EXIT_CODE)
