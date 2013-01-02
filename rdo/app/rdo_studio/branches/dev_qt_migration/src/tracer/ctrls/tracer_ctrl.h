@@ -94,8 +94,6 @@ protected:
 	CMutex     mutex;
 	StringList m_strings;
 
-	int     firstFoundLine;
-
 	RDOLogStyle*  logStyle;
 	virtual rbool getItemColors(CREF(tstring) item, RDOLogColorPair* &colors) const;
 

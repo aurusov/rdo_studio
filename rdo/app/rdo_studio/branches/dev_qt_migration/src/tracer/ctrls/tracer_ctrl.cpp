@@ -314,7 +314,6 @@ RDOLogCtrl::RDOLogCtrl(PTR(QAbstractScrollArea) pParent, PTR(RDOLogStyle) pStyle
 	, fullRepaintLines(0)
 	, focusOnly(false)
 	, logStyle(pStyle)
-	, firstFoundLine(-1)
 	, m_pFindDialog(NULL)
 	, drawLog(true)
 {
