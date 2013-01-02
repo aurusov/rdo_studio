@@ -86,7 +86,6 @@ void RDOTracerLogCtrl::keyPressEvent(PTR(QKeyEvent) pEvent)
 
 RDOTracerLogCtrlView::RDOTracerLogCtrlView(PTR(QAbstractScrollArea) pParent)
 	: RDOLogCtrl(pParent, &studioApp.getStyle()->style_trace)
-	, addingSubitems(false)
 {}
 
 RDOTracerLogCtrlView::~RDOTracerLogCtrlView()
@@ -97,8 +96,8 @@ rbool RDOTracerLogCtrlView::getItemColors(int index, RDOLogColorPair* &colors) c
 	const_cast<CMutex&>(mutex).Lock();
 
 	rbool res = true;
-	RDOColorMap::const_iterator it = subitemColors.find(index);
-	if (it != subitemColors.end())
+	SubitemColors::List::const_iterator it = m_subitemColors.m_colorList.find(index);
+	if (it != m_subitemColors.m_colorList.end())
 	{
 		colors = (*it).second;
 	}
@@ -117,7 +116,7 @@ void RDOTracerLogCtrlView::clear()
 	mutex.Lock();
 
 	RDOLogCtrl::clear();
-	subitemColors.clear();
+	m_subitemColors = SubitemColors();
 
 	mutex.Unlock();
 }
@@ -137,17 +136,17 @@ void RDOTracerLogCtrlView::addStringToLog(CREF(tstring) logStr)
 
 		if (logStyle->getItemColors(key, colors))
 		{
-			addingSubitems = false;
+			m_subitemColors.m_addingSubitems = false;
 		}
-		else if (addingSubitems)
+		else if (m_subitemColors.m_addingSubitems)
 		{
-			subitemColors.insert(RDOColorMap::value_type(m_strings.count(), itemColor));
+			m_subitemColors.m_colorList.insert(SubitemColors::List::value_type(m_strings.count(), m_subitemColors.m_parentColor));
 		}
 
 		if (key == "SD")
 		{
-			addingSubitems = true;
-			logStyle->getItemColors(key, itemColor);
+			m_subitemColors.m_addingSubitems = true;
+			logStyle->getItemColors(key, m_subitemColors.m_parentColor);
 		}
 	}
 

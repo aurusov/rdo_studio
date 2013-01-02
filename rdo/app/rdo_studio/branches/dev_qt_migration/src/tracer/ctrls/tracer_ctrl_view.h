@@ -29,11 +29,25 @@ namespace rdoTracerLog {
 class RDOTracerLogCtrlView: public RDOLogCtrl
 {
 protected:
-	typedef std::map<int, RDOLogColorPair*> RDOColorMap;
+	struct SubitemColors
+	{
+		typedef std::map<int, PTR(RDOLogColorPair)> List;
 
-	RDOColorMap      subitemColors;
-	rbool            addingSubitems;
-	RDOLogColorPair* itemColor;
+		List                 m_colorList;
+		rbool                m_addingSubitems;
+		PTR(RDOLogColorPair) m_parentColor;
+
+		SubitemColors()
+			: m_addingSubitems(false)
+			, m_parentColor   (NULL )
+		{}
+		SubitemColors(CREF(SubitemColors) subitemColors)
+			: m_colorList     (subitemColors.m_colorList     )
+			, m_addingSubitems(subitemColors.m_addingSubitems)
+			, m_parentColor   (subitemColors.m_parentColor   )
+		{}
+	};
+	SubitemColors m_subitemColors;
 
 	virtual rbool getItemColors(int index, RDOLogColorPair* &colors) const;
 
