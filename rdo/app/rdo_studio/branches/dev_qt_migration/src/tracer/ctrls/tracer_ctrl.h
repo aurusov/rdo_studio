@@ -55,7 +55,7 @@ public:
 	void  setDrawLog(rbool value);
 	rbool getDrawLog() const { return drawLog; };
 
-protected:
+private:
 	class StringList
 	{
 	public:
@@ -95,11 +95,11 @@ protected:
 	StringList m_strings;
 
 	RDOLogStyle*  logStyle;
-	virtual rbool getItemColors(CREF(tstring) item, RDOLogColorPair* &colors) const;
+	rbool getItemColors(CREF(tstring) item, RDOLogColorPair* &colors) const;
+	rbool getItemColors(int index, RDOLogColorPair* &colors) const;
 
 	rsint selectedLine() const;
 
-private:
 	rsint lineHeight;
 	rsint charWidth;
 	rsint m_selectedLine;
@@ -131,6 +131,26 @@ private:
 	ScrollMetric      m_SM_X;
 	ScrollMetricVert  m_SM_Y;
 
+	struct SubitemColors
+	{
+		typedef std::map<int, PTR(RDOLogColorPair)> List;
+
+		List                 m_colorList;
+		rbool                m_addingSubitems;
+		PTR(RDOLogColorPair) m_parentColor;
+
+		SubitemColors()
+			: m_addingSubitems(false)
+			, m_parentColor   (NULL )
+		{}
+		SubitemColors(CREF(SubitemColors) subitemColors)
+			: m_colorList     (subitemColors.m_colorList     )
+			, m_addingSubitems(subitemColors.m_addingSubitems)
+			, m_parentColor   (subitemColors.m_parentColor   )
+		{}
+	};
+	SubitemColors m_subitemColors;
+
 	QRect m_clientRect;
 	QRect m_prevWindowRect;
 
@@ -143,8 +163,6 @@ private:
 	void  onFindDlgFind (CREF(FindDialog::Settings) settings);
 	void  onFindDlgClose();
 
-	virtual rbool getItemColors(int index, RDOLogColorPair* &colors) const;
-	
 	void  updateScrollBars();
 
 	rbool scrollVertically  (int pos);

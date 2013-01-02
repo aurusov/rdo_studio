@@ -91,87 +91,17 @@ RDOTracerLogCtrlView::RDOTracerLogCtrlView(PTR(QAbstractScrollArea) pParent)
 RDOTracerLogCtrlView::~RDOTracerLogCtrlView()
 {}
 
-rbool RDOTracerLogCtrlView::getItemColors(int index, RDOLogColorPair* &colors) const
-{
-	const_cast<CMutex&>(mutex).Lock();
-
-	rbool res = true;
-	SubitemColors::List::const_iterator it = m_subitemColors.m_colorList.find(index);
-	if (it != m_subitemColors.m_colorList.end())
-	{
-		colors = (*it).second;
-	}
-	else
-	{
-		res = RDOLogCtrl::getItemColors("", colors);
-	}
-
-	const_cast<CMutex&>(mutex).Unlock();
-
-	return res;
-}
-
-void RDOTracerLogCtrlView::clear()
-{
-	mutex.Lock();
-
-	RDOLogCtrl::clear();
-	m_subitemColors = SubitemColors();
-
-	mutex.Unlock();
-}
-
-void RDOTracerLogCtrlView::addStringToLog(CREF(tstring) logStr)
-{
-	mutex.Lock();
-	
-	if (!logStr.empty())
-	{
-		int posstart = logStr.find_first_not_of(' ');
-		int posend   = logStr.find_first_of(' ', posstart);
-		tstring key  = logStr.substr(posstart, posend - posstart);
-		rdo::trim(key);
-
-		RDOLogColorPair* colors = NULL;
-
-		if (logStyle->getItemColors(key, colors))
-		{
-			m_subitemColors.m_addingSubitems = false;
-		}
-		else if (m_subitemColors.m_addingSubitems)
-		{
-			m_subitemColors.m_colorList.insert(SubitemColors::List::value_type(m_strings.count(), m_subitemColors.m_parentColor));
-		}
-
-		if (key == "SD")
-		{
-			m_subitemColors.m_addingSubitems = true;
-			logStyle->getItemColors(key, m_subitemColors.m_parentColor);
-		}
-	}
-
-	RDOLogCtrl::addStringToLog(logStr);
-
-	mutex.Unlock();
-}
-
-void RDOTracerLogCtrlView::setStyle(RDOTracerLogStyle* style, rbool needRedraw)
-{
-	logStyle = style;
-	RDOLogCtrl::setStyle(style, needRedraw);
-}
-
 void RDOTracerLogCtrlView::OnUpdateCoordStatusBar(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable();
-	if (selectedLine() != -1)
-	{
-		pCmdUI->SetText(rdo::format("%d: %d", 1, selectedLine() + 1).c_str());
-	}
-	else
-	{
-		pCmdUI->SetText("");
-	}
+	//if (selectedLine() != -1)
+	//{
+	//	pCmdUI->SetText(rdo::format("%d: %d", 1, selectedLine() + 1).c_str());
+	//}
+	//else
+	//{
+	//	pCmdUI->SetText("");
+	//}
 }
 
 void RDOTracerLogCtrlView::OnUpdateModifyStatusBar(CCmdUI* pCmdUI)

@@ -377,7 +377,22 @@ void RDOLogCtrl::resizeEvent(QResizeEvent* pEvent)
 
 rbool RDOLogCtrl::getItemColors(int index, RDOLogColorPair* &colors) const
 {
-	return logStyle->getItemColors(index, colors);
+	const_cast<CMutex&>(mutex).Lock();
+
+	rbool res = true;
+	SubitemColors::List::const_iterator it = m_subitemColors.m_colorList.find(index);
+	if (it != m_subitemColors.m_colorList.end())
+	{
+		colors = (*it).second;
+	}
+	else
+	{
+		res = RDOLogCtrl::getItemColors("", colors);
+	}
+
+	const_cast<CMutex&>(mutex).Unlock();
+
+	return res;
 }
 
 rbool RDOLogCtrl::getItemColors(CREF(tstring) item, RDOLogColorPair* &colors) const
@@ -708,9 +723,30 @@ void RDOLogCtrl::addStringToLog(CREF(tstring) logStr)
 {
 	mutex.Lock();
 
-//! @todo qt
-	//if (!hwnd)
-	//	return;
+	if (!logStr.empty())
+	{
+		int posstart = logStr.find_first_not_of(' ');
+		int posend   = logStr.find_first_of(' ', posstart);
+		tstring key  = logStr.substr(posstart, posend - posstart);
+		rdo::trim(key);
+
+		RDOLogColorPair* colors = NULL;
+
+		if (logStyle->getItemColors(key, colors))
+		{
+			m_subitemColors.m_addingSubitems = false;
+		}
+		else if (m_subitemColors.m_addingSubitems)
+		{
+			m_subitemColors.m_colorList.insert(SubitemColors::List::value_type(m_strings.count(), m_subitemColors.m_parentColor));
+		}
+
+		if (key == "SD")
+		{
+			m_subitemColors.m_addingSubitems = true;
+			logStyle->getItemColors(key, m_subitemColors.m_parentColor);
+		}
+	}
 
 	rbool prevVisible = m_SM_Y.isVisible(m_strings.count() - 1);
 
@@ -825,6 +861,7 @@ void RDOLogCtrl::clear()
 	mutex.Lock();
 
 	m_strings.clear();
+	m_subitemColors = SubitemColors();
 
 	m_SM_X = ScrollMetric();
 	m_SM_Y = ScrollMetricVert();

@@ -28,43 +28,13 @@ namespace rdoTracerLog {
 // --------------------------------------------------------------------------------
 class RDOTracerLogCtrlView: public RDOLogCtrl
 {
-protected:
-	struct SubitemColors
-	{
-		typedef std::map<int, PTR(RDOLogColorPair)> List;
-
-		List                 m_colorList;
-		rbool                m_addingSubitems;
-		PTR(RDOLogColorPair) m_parentColor;
-
-		SubitemColors()
-			: m_addingSubitems(false)
-			, m_parentColor   (NULL )
-		{}
-		SubitemColors(CREF(SubitemColors) subitemColors)
-			: m_colorList     (subitemColors.m_colorList     )
-			, m_addingSubitems(subitemColors.m_addingSubitems)
-			, m_parentColor   (subitemColors.m_parentColor   )
-		{}
-	};
-	SubitemColors m_subitemColors;
-
-	virtual rbool getItemColors(int index, RDOLogColorPair* &colors) const;
-
 private:
 	afx_msg void OnUpdateCoordStatusBar(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateModifyStatusBar(CCmdUI* pCmdUI);
-	
+
 public:
 	RDOTracerLogCtrlView(PTR(QAbstractScrollArea) pParent);
 	virtual ~RDOTracerLogCtrlView();
-
-	virtual void addStringToLog(CREF(tstring) logStr);
-
-	virtual void setStyle(RDOTracerLogStyle* style, const rbool needRedraw = true);
-
-	virtual void clear();
-
 };
 
 // --------------------------------------------------------------------------------
