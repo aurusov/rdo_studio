@@ -95,7 +95,6 @@ protected:
 	StringList m_strings;
 
 	int     firstFoundLine;
-	rbool   bHaveFound;
 
 	RDOLogStyle*  logStyle;
 	virtual rbool getItemColors(CREF(tstring) item, RDOLogColorPair* &colors) const;

@@ -316,7 +316,6 @@ RDOLogCtrl::RDOLogCtrl(PTR(QAbstractScrollArea) pParent, PTR(RDOLogStyle) pStyle
 	, logStyle(pStyle)
 	, firstFoundLine(-1)
 	, m_pFindDialog(NULL)
-	, bHaveFound(false)
 	, drawLog(true)
 {
 	if (!logStyle)
@@ -832,11 +831,11 @@ rsint RDOLogCtrl::find(rbool searchDown)
 	rsint checkCounter = 0;
 	RDOLogCtrlFindInList findInList(checkCounter, m_findSettings.what, m_findSettings.matchCase, m_findSettings.matchWholeWord);
 
-	bHaveFound = searchDown
+	rbool found = searchDown
 		? std::find_if(m_strings.findString(startPos), m_strings.end(), findInList) != m_strings.end()
 		: std::find_if(m_strings.rFindString(startPos + 1), m_strings.rend(), findInList) != m_strings.rend();
 
-	if (bHaveFound)
+	if (found)
 	{
 		result = startPos + (checkCounter - 1) * (searchDown ? 1 : -1);
 	}
