@@ -17,7 +17,7 @@ SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 # call system info script
 INCLUDE(FindOS)
-INCLUDE(add_boost_test)
+INCLUDE(add.boost.test)
 
 IF(NOT MSVC)
     SET(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -Wall")
