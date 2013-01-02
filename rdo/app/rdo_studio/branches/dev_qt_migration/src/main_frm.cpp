@@ -167,12 +167,12 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 	m_pSBModelSpeed    = new QLabel(this);
 	m_pSBModelShowRate = new QLabel(this);
 
-	parent_type::statusBar()->addWidget(m_pSBCoord );
-	parent_type::statusBar()->addWidget(m_pSBModify);
-	parent_type::statusBar()->addWidget(m_pSBModelTime);
-	parent_type::statusBar()->addWidget(m_pSBModelRuntype);
-	parent_type::statusBar()->addWidget(m_pSBModelSpeed);
-	parent_type::statusBar()->addWidget(m_pSBModelShowRate);
+	parent_type::statusBar()->addWidget(m_pSBCoord,         5);
+	parent_type::statusBar()->addWidget(m_pSBModify,        5);
+	parent_type::statusBar()->addWidget(m_pSBModelTime,     5);
+	parent_type::statusBar()->addWidget(m_pSBModelRuntype,  5);
+	parent_type::statusBar()->addWidget(m_pSBModelSpeed,    5);
+	parent_type::statusBar()->addWidget(m_pSBModelShowRate, 5);
 
 	QObject::connect(actFileNew,     SIGNAL(triggered(bool)), this, SLOT(onFileNew    ()));
 	QObject::connect(actFileOpen,    SIGNAL(triggered(bool)), this, SLOT(onFileOpen   ()));
