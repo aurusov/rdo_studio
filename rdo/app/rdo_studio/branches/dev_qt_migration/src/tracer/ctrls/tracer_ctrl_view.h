@@ -15,7 +15,6 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl.h"
 #include "app/rdo_studio_mfc/src/tracer/ctrls/tracer_ctrl_view_style.h"
-#include "app/rdo_studio_mfc/src/help_context_i.h"
 // --------------------------------------------------------------------------------
 
 namespace rdoTracer {
@@ -27,9 +26,7 @@ namespace rdoTracerLog {
 // --------------------------------------------------------------------------------
 // -------------------- RDOTracerLogCtrlView
 // --------------------------------------------------------------------------------
-class RDOTracerLogCtrlView
-	: public RDOLogCtrl
-	, public IHelpContext
+class RDOTracerLogCtrlView: public RDOLogCtrl
 {
 protected:
 	typedef std::map<int, RDOLogColorPair*> RDOColorMap;
@@ -45,8 +42,6 @@ protected:
 	rbool bShowMenu;
 
 private:
-	DECLARE_IHelpContext;
-
 	//! todo qt
 	//afx_msg void OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu);
 	//afx_msg void OnContextMenu(CWnd* pWnd, CPoint pos);

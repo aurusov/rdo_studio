@@ -208,41 +208,6 @@ void RDOTracerLogCtrlView::setStyle(RDOTracerLogStyle* style, rbool needRedraw)
 //	if (popupMenu.m_hMenu) popupMenu.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, pos.x, pos.y, this);
 //}
 
-void RDOTracerLogCtrlView::onHelpContext()
-{
-	tstring line;
-
-	getSelected(line);
-
-	tstring keyword = "trc";
-	if (!line.empty())
-	{
-		int posstart = line.find_first_not_of(' ');
-		int posend   = line.find_first_of(' ', posstart);
-		keyword      = line.substr(posstart, posend - posstart);
-		rdo::trim(keyword);
-
-		if (!keyword.empty())
-		{
-			RDOLogColorPair* colors;
-			if (!logStyle->getItemColors(keyword, colors))
-			{
-				getItemColors(selectedLine(), colors);
-				if (*colors == static_cast<RDOTracerLogTheme*>(logStyle->theme)->sd)
-				{
-					keyword = "SD";
-				}
-			}
-		}
-	}
-
-	QByteArray ba;
-	ba.append("activateKeyword ");
-	ba.append(keyword.c_str());
-	ba.append("\n");
-	studioApp.callQtAssistant(ba);
-}
-
 void RDOTracerLogCtrlView::OnUpdateCoordStatusBar(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable();

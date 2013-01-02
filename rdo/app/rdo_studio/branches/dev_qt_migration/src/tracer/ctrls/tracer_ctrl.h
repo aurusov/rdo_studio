@@ -184,6 +184,7 @@ private slots:
 	void onSearchFind               ();
 	void onSearchFindNext           ();
 	void onSearchFindPrevious       ();
+	void onHelpContext              ();
 };
 
 }; // namespace rdoTracerLog

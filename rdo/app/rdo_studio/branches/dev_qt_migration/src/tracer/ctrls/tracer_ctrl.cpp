@@ -891,6 +891,7 @@ void RDOLogCtrl::onActivate()
 	connect(pMainWindow->actSearchFind,         SIGNAL(triggered(bool)), this, SLOT(onSearchFind()));
 	connect(pMainWindow->actSearchFindNext,     SIGNAL(triggered(bool)), this, SLOT(onSearchFindNext()));
 	connect(pMainWindow->actSearchFindPrevious, SIGNAL(triggered(bool)), this, SLOT(onSearchFindPrevious()));
+	connect(pMainWindow->actHelpContext,        SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
 
 	setUpActionEditCopy(true);
 }
@@ -908,6 +909,7 @@ void RDOLogCtrl::onDeactivate()
 	disconnect(pMainWindow->actSearchFind,         SIGNAL(triggered(bool)), this, SLOT(onSearchFind()));
 	disconnect(pMainWindow->actSearchFindNext,     SIGNAL(triggered(bool)), this, SLOT(onSearchFindNext()));
 	disconnect(pMainWindow->actSearchFindPrevious, SIGNAL(triggered(bool)), this, SLOT(onSearchFindPrevious()));
+	disconnect(pMainWindow->actHelpContext,        SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
 
 	setUpActionEditCopy(false);
 }
@@ -997,4 +999,39 @@ void RDOLogCtrl::onSearchFindNext()
 void RDOLogCtrl::onSearchFindPrevious()
 {
 	selectLine(find(!m_findSettings.searchDown));
+}
+
+void RDOLogCtrl::onHelpContext()
+{
+	tstring line;
+
+	getSelected(line);
+
+	tstring keyword = "trc";
+	if (!line.empty())
+	{
+		int posstart = line.find_first_not_of(' ');
+		int posend   = line.find_first_of(' ', posstart);
+		keyword      = line.substr(posstart, posend - posstart);
+		rdo::trim(keyword);
+
+		if (!keyword.empty())
+		{
+			RDOLogColorPair* colors;
+			if (!logStyle->getItemColors(keyword, colors))
+			{
+				getItemColors(selectedLine(), colors);
+				if (*colors == static_cast<RDOTracerLogTheme*>(logStyle->theme)->sd)
+				{
+					keyword = "SD";
+				}
+			}
+		}
+	}
+
+	QByteArray ba;
+	ba.append("activateKeyword ");
+	ba.append(keyword.c_str());
+	ba.append("\n");
+	studioApp.callQtAssistant(ba);
 }
