@@ -93,16 +93,16 @@ rbool LogCtrlFindInList::operator()(CREF(tstring) nextstr)
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- LogCtrl::StringList
+// -------------------- LogView::StringList
 // --------------------------------------------------------------------------------
-LogCtrl::StringList::StringList()
+LogView::StringList::StringList()
 	: m_count   (0)
 	, m_cursor  (0)
 	, m_cursorIt(m_list.end())
 	, m_maxLegth(0)
 {}
 
-void LogCtrl::StringList::push_back(CREF(tstring) value)
+void LogView::StringList::push_back(CREF(tstring) value)
 {
 	m_list.push_back(value);
 	++m_count;
@@ -118,44 +118,44 @@ void LogCtrl::StringList::push_back(CREF(tstring) value)
 	}
 }
 
-LogCtrl::StringList::const_iterator LogCtrl::StringList::begin() const
+LogView::StringList::const_iterator LogView::StringList::begin() const
 {
 	return m_list.begin();
 }
 
-LogCtrl::StringList::const_iterator LogCtrl::StringList::end() const
+LogView::StringList::const_iterator LogView::StringList::end() const
 {
 	return m_list.end();
 }
 
-LogCtrl::StringList::const_reverse_iterator LogCtrl::StringList::rbegin() const
+LogView::StringList::const_reverse_iterator LogView::StringList::rbegin() const
 {
 	return m_list.rbegin();
 }
 
-LogCtrl::StringList::const_reverse_iterator LogCtrl::StringList::rend() const
+LogView::StringList::const_reverse_iterator LogView::StringList::rend() const
 {
 	return m_list.rend();
 }
 
-void LogCtrl::StringList::clear()
+void LogView::StringList::clear()
 {
 	m_list.clear();
 	m_count    = 0;
 	m_maxLegth = 0;
 }
 
-rsint LogCtrl::StringList::count() const
+rsint LogView::StringList::count() const
 {
 	return m_count;
 }
 
-tstring::size_type LogCtrl::StringList::maxLegth() const
+tstring::size_type LogView::StringList::maxLegth() const
 {
 	return m_maxLegth;
 }
 
-void LogCtrl::StringList::setCursor(rsint pos, rsint max)
+void LogView::StringList::setCursor(rsint pos, rsint max)
 {
 	if (pos == m_cursor)
 		return;
@@ -180,7 +180,7 @@ void LogCtrl::StringList::setCursor(rsint pos, rsint max)
 	m_cursor = pos;
 }
 
-LogCtrl::StringList::const_iterator LogCtrl::StringList::findString(int index) const
+LogView::StringList::const_iterator LogView::StringList::findString(int index) const
 {
 	const_iterator res;
 
@@ -230,13 +230,13 @@ LogCtrl::StringList::const_iterator LogCtrl::StringList::findString(int index) c
 	return res;
 }
 
-LogCtrl::StringList::const_reverse_iterator LogCtrl::StringList::rFindString(int index) const
+LogView::StringList::const_reverse_iterator LogView::StringList::rFindString(int index) const
 {
 	const_reverse_iterator rit(findString(index));
 	return rit;
 }
 
-void LogCtrl::StringList::seek(rsint delta, REF(StringList::const_iterator) it) const
+void LogView::StringList::seek(rsint delta, REF(StringList::const_iterator) it) const
 {
 	ASSERT(it != m_list.end());
 
@@ -257,15 +257,15 @@ void LogCtrl::StringList::seek(rsint delta, REF(StringList::const_iterator) it) 
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- LogCtrl::ScrollMetric
+// -------------------- LogView::ScrollMetric
 // --------------------------------------------------------------------------------
-LogCtrl::ScrollMetric::ScrollMetric()
+LogView::ScrollMetric::ScrollMetric()
 	: position(0)
 	, posMax  (0)
 	, pageSize(0)
 {}
 
-rbool LogCtrl::ScrollMetric::applyInc(rsint delta)
+rbool LogView::ScrollMetric::applyInc(rsint delta)
 {
 	if (delta == 0)
 	{
@@ -282,20 +282,20 @@ rbool LogCtrl::ScrollMetric::applyInc(rsint delta)
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- LogCtrl::ScrollMetricVert
+// -------------------- LogView::ScrollMetricVert
 // --------------------------------------------------------------------------------
-LogCtrl::ScrollMetricVert::ScrollMetricVert()
+LogView::ScrollMetricVert::ScrollMetricVert()
 	: ScrollMetric    ()
 	, lastViewableLine(0)
 {}
 
-rbool LogCtrl::ScrollMetricVert::isVisible(rsint index) const
+rbool LogView::ScrollMetricVert::isVisible(rsint index) const
 {
 	return index >= position &&
 		   index <= lastViewableLine;
 }
 
-rbool LogCtrl::ScrollMetricVert::applyInc(rsint delta)
+rbool LogView::ScrollMetricVert::applyInc(rsint delta)
 {
 	if (!ScrollMetric::applyInc(delta))
 	{
@@ -307,9 +307,9 @@ rbool LogCtrl::ScrollMetricVert::applyInc(rsint delta)
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- LogCtrl
+// -------------------- LogView
 // --------------------------------------------------------------------------------
-LogCtrl::LogCtrl(PTR(QAbstractScrollArea) pParent, PTR(LogStyle) pStyle)
+LogView::LogView(PTR(QAbstractScrollArea) pParent, PTR(LogStyle) pStyle)
 	: parent_type(pParent)
 	, m_pScrollArea(pParent)
 	, lineHeight(0)
@@ -348,26 +348,26 @@ LogCtrl::LogCtrl(PTR(QAbstractScrollArea) pParent, PTR(LogStyle) pStyle)
 	m_pPopupMenu->addAction(pMainWindow->actSearchFindPrevious);
 }
 
-LogCtrl::~LogCtrl()
+LogView::~LogView()
 {
 	clear();
 }
 
-REF(QScrollBar) LogCtrl::getVertScrollBar()
+REF(QScrollBar) LogView::getVertScrollBar()
 {
 	PTR(QScrollBar) pScrollBar = m_pScrollArea->verticalScrollBar();
 	ASSERT(pScrollBar);
 	return *pScrollBar;
 }
 
-REF(QScrollBar) LogCtrl::getHorzScrollBar()
+REF(QScrollBar) LogView::getHorzScrollBar()
 {
 	PTR(QScrollBar) pScrollBar = m_pScrollArea->horizontalScrollBar();
 	ASSERT(pScrollBar);
 	return *pScrollBar;
 }
 
-void LogCtrl::resizeEvent(QResizeEvent* pEvent)
+void LogView::resizeEvent(QResizeEvent* pEvent)
 {
 	parent_type::resizeEvent(pEvent);
 
@@ -375,7 +375,7 @@ void LogCtrl::resizeEvent(QResizeEvent* pEvent)
 	updateScrollBars();
 }
 
-rbool LogCtrl::getItemColors(int index, LogColorPair* &colors) const
+rbool LogView::getItemColors(int index, LogColorPair* &colors) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
@@ -387,7 +387,7 @@ rbool LogCtrl::getItemColors(int index, LogColorPair* &colors) const
 	}
 	else
 	{
-		res = LogCtrl::getItemColors("", colors);
+		res = LogView::getItemColors("", colors);
 	}
 
 	const_cast<CMutex&>(mutex).Unlock();
@@ -395,12 +395,12 @@ rbool LogCtrl::getItemColors(int index, LogColorPair* &colors) const
 	return res;
 }
 
-rbool LogCtrl::getItemColors(CREF(tstring) item, LogColorPair* &colors) const
+rbool LogView::getItemColors(CREF(tstring) item, LogColorPair* &colors) const
 {
 	return logStyle->getItemColors(item, colors);
 }
 
-void LogCtrl::paintEvent(QPaintEvent* pEvent)
+void LogView::paintEvent(QPaintEvent* pEvent)
 {
 	mutex.Lock();
 
@@ -510,7 +510,7 @@ void LogCtrl::paintEvent(QPaintEvent* pEvent)
 	parent_type::paintEvent(pEvent);
 }
 
-void LogCtrl::onVertScrollBarValueChanged(int value)
+void LogView::onVertScrollBarValueChanged(int value)
 {
 	if (value < 0)
 	{
@@ -520,7 +520,7 @@ void LogCtrl::onVertScrollBarValueChanged(int value)
 	scrollVertically(value - m_SM_Y.position);
 }
 
-void LogCtrl::onHorzScrollBarValueChanged(int value)
+void LogView::onHorzScrollBarValueChanged(int value)
 {
 	if (value < 0)
 	{
@@ -530,7 +530,7 @@ void LogCtrl::onHorzScrollBarValueChanged(int value)
 	scrollHorizontally(value - m_SM_X.position);
 }
 
-void LogCtrl::keyPressEvent(QKeyEvent* pEvent)
+void LogView::keyPressEvent(QKeyEvent* pEvent)
 {
 	switch (pEvent->key())
 	{
@@ -563,12 +563,12 @@ void LogCtrl::keyPressEvent(QKeyEvent* pEvent)
 	}
 }
 
-void LogCtrl::wheelEvent(QWheelEvent* pEvent)
+void LogView::wheelEvent(QWheelEvent* pEvent)
 {
 	getVertScrollBar().setValue(getVertScrollBar().value() + (pEvent->delta() < 0 ? 1 : -1));
 }
 
-void LogCtrl::mousePressEvent(QMouseEvent* pEvent)
+void LogView::mousePressEvent(QMouseEvent* pEvent)
 {
 	if (pEvent->button() == Qt::LeftButton)
 	{
@@ -580,7 +580,7 @@ void LogCtrl::mousePressEvent(QMouseEvent* pEvent)
 	}
 }
 
-void LogCtrl::updateScrollBars()
+void LogView::updateScrollBars()
 {
 	m_SM_Y.pageSize = m_clientRect.height() / lineHeight;
 	m_SM_Y.posMax   = (std::max)(0, m_strings.count() - m_SM_Y.pageSize);
@@ -608,7 +608,7 @@ void LogCtrl::updateScrollBars()
 	getHorzScrollBar().setValue   (m_SM_X.position);
 }
 
-rbool LogCtrl::scrollVertically(int inc)
+rbool LogView::scrollVertically(int inc)
 {
 	if (!m_SM_Y.applyInc(inc))
 	{
@@ -621,7 +621,7 @@ rbool LogCtrl::scrollVertically(int inc)
 	return true;
 }
 
-rbool LogCtrl::scrollHorizontally(int inc)
+rbool LogView::scrollHorizontally(int inc)
 {
 	if (!m_SM_X.applyInc(inc))
 	{
@@ -633,13 +633,13 @@ rbool LogCtrl::scrollHorizontally(int inc)
 	return true;
 }
 
-rbool LogCtrl::isFullyVisible(int index) const
+rbool LogView::isFullyVisible(int index) const
 {
 	int lastVisible = m_SM_Y.position + m_clientRect.height() / lineHeight - 1;
 	return index <= lastVisible && index >= m_SM_Y.position;
 }
 
-void LogCtrl::selectLine(int index)
+void LogView::selectLine(int index)
 {
 	if (index < 0 || index > m_strings.count() - 1 || index == selectedLine())
 	{
@@ -667,7 +667,7 @@ void LogCtrl::selectLine(int index)
 	}
 }
 
-QRect LogCtrl::getLineRect(int index) const
+QRect LogView::getLineRect(int index) const
 {
 	QRect rect(m_clientRect);
 	rect.setTop((index - m_SM_Y.position) * lineHeight);
@@ -675,7 +675,7 @@ QRect LogCtrl::getLineRect(int index) const
 	return rect;
 }
 
-void LogCtrl::repaintLine(int index)
+void LogView::repaintLine(int index)
 {
 	if (m_SM_Y.isVisible(index))
 	{
@@ -684,12 +684,12 @@ void LogCtrl::repaintLine(int index)
 	}
 }
 
-void LogCtrl::updateWindow()
+void LogView::updateWindow()
 {
 	update();
 }
 
-rbool LogCtrl::makeLineVisible(int index)
+rbool LogView::makeLineVisible(int index)
 {
 	rbool res = false;
 
@@ -719,7 +719,7 @@ rbool LogCtrl::makeLineVisible(int index)
 	return res;
 }
 
-void LogCtrl::addStringToLog(CREF(tstring) logStr)
+void LogView::addStringToLog(CREF(tstring) logStr)
 {
 	mutex.Lock();
 
@@ -793,12 +793,12 @@ void LogCtrl::addStringToLog(CREF(tstring) logStr)
 	mutex.Unlock();
 }
 
-CREF(LogStyle) LogCtrl::getStyle() const
+CREF(LogStyle) LogView::getStyle() const
 {
 	return *logStyle;
 }
 
-void LogCtrl::setStyle(LogStyle* style, rbool needRedraw)
+void LogView::setStyle(LogStyle* style, rbool needRedraw)
 {
 	logStyle = style;
 	setFont();
@@ -812,7 +812,7 @@ void LogCtrl::setStyle(LogStyle* style, rbool needRedraw)
 	}
 }
 
-void LogCtrl::setFont()
+void LogView::setFont()
 {
 	if (!logStyle)
 	{
@@ -834,7 +834,7 @@ void LogCtrl::setFont()
 	mutex.Unlock();
 }
 
-void LogCtrl::getString(int index, tstring& str) const
+void LogView::getString(int index, tstring& str) const
 {
 	const_cast<CMutex&>(mutex).Lock();
 
@@ -846,17 +846,17 @@ void LogCtrl::getString(int index, tstring& str) const
 	const_cast<CMutex&>(mutex).Unlock();
 }
 
-int LogCtrl::getSelectedIndex() const
+int LogView::getSelectedIndex() const
 {
 	return selectedLine();
 }
 
-void LogCtrl::getSelected(tstring& str) const
+void LogView::getSelected(tstring& str) const
 {
 	getString(selectedLine(), str);
 }
 
-void LogCtrl::clear()
+void LogView::clear()
 {
 	mutex.Lock();
 
@@ -874,7 +874,7 @@ void LogCtrl::clear()
 	mutex.Unlock();
 }
 
-rsint LogCtrl::find(rbool searchDown)
+rsint LogView::find(rbool searchDown)
 {
 	rsint result = -1;
 
@@ -905,7 +905,7 @@ rsint LogCtrl::find(rbool searchDown)
 	return result;
 }
 
-void LogCtrl::setText(tstring text)
+void LogView::setText(tstring text)
 {
 	clear();
 	while (!text.empty())
@@ -921,7 +921,7 @@ void LogCtrl::setText(tstring text)
 	}
 }
 
-void LogCtrl::setDrawLog(rbool value)
+void LogView::setDrawLog(rbool value)
 {
 	if (drawLog != value)
 	{
@@ -933,7 +933,7 @@ void LogCtrl::setDrawLog(rbool value)
 	}
 }
 
-void LogCtrl::onActivate()
+void LogView::onActivate()
 {
 	repaintLine(selectedLine());
 
@@ -958,7 +958,7 @@ void LogCtrl::onActivate()
 	}
 }
 
-void LogCtrl::onDeactivate()
+void LogView::onDeactivate()
 {
 	repaintLine(selectedLine());
 
@@ -982,7 +982,7 @@ void LogCtrl::onDeactivate()
 	}
 }
 
-void LogCtrl::setUpActionEditCopy(rbool activate)
+void LogView::setUpActionEditCopy(rbool activate)
 {
 	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
 	ASSERT(pMainWindow);
@@ -1005,24 +1005,24 @@ void LogCtrl::setUpActionEditCopy(rbool activate)
 	}
 }
 
-rbool LogCtrl::canCopy() const
+rbool LogView::canCopy() const
 {
 	return selectedLine() != -1;
 }
 
-rsint LogCtrl::selectedLine() const
+rsint LogView::selectedLine() const
 {
 	return m_selectedLine;
 }
 
-void LogCtrl::setSelectedLine(rsint selectedLine)
+void LogView::setSelectedLine(rsint selectedLine)
 {
 	m_selectedLine = selectedLine;
 	setUpActionEditCopy(isActivated());
 	setUpCoordStatusBar(isActivated());
 }
 
-void LogCtrl::setUpCoordStatusBar(rbool activate)
+void LogView::setUpCoordStatusBar(rbool activate)
 {
 	QString coord = activate && selectedLine() != -1
 		? QString("1 : %1").arg(selectedLine())
@@ -1033,7 +1033,7 @@ void LogCtrl::setUpCoordStatusBar(rbool activate)
 	pMainWindow->updateStatusBar<RDOStudioMainFrame::SB_COORD>(coord);
 }
 
-void LogCtrl::onEditCopy()
+void LogView::onEditCopy()
 {
 	tstring selected;
 	getSelected(selected);
@@ -1041,7 +1041,7 @@ void LogCtrl::onEditCopy()
 	QApplication::clipboard()->setText(QString::fromStdString(selected));
 }
 
-void LogCtrl::onSearchFind()
+void LogView::onSearchFind()
 {
 	getSelected(m_findSettings.what);
 
@@ -1049,8 +1049,8 @@ void LogCtrl::onSearchFind()
 	{
 		m_pFindDialog = new FindDialog(
 			this,
-			boost::bind(&LogCtrl::onFindDlgFind, this, _1),
-			boost::bind(&LogCtrl::onFindDlgClose, this)
+			boost::bind(&LogView::onFindDlgFind, this, _1),
+			boost::bind(&LogView::onFindDlgClose, this)
 		);
 	}
 
@@ -1060,28 +1060,28 @@ void LogCtrl::onSearchFind()
 	m_pFindDialog->activateWindow();
 }
 
-void LogCtrl::onFindDlgClose()
+void LogView::onFindDlgClose()
 {
 	m_pFindDialog = NULL;
 }
 
-void LogCtrl::onFindDlgFind(CREF(FindDialog::Settings) settings)
+void LogView::onFindDlgFind(CREF(FindDialog::Settings) settings)
 {
 	m_findSettings = settings;
 	onSearchFindNext();
 }
 
-void LogCtrl::onSearchFindNext()
+void LogView::onSearchFindNext()
 {
 	selectLine(find(m_findSettings.searchDown));
 }
 
-void LogCtrl::onSearchFindPrevious()
+void LogView::onSearchFindPrevious()
 {
 	selectLine(find(!m_findSettings.searchDown));
 }
 
-void LogCtrl::onHelpContext()
+void LogView::onHelpContext()
 {
 	tstring line;
 

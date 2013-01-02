@@ -615,7 +615,7 @@ void TracerBase::clearCharts()
 	mutex.Unlock();
 }
 
-void TracerBase::setLog(PTR(LogCtrlView) pTracerLog)
+void TracerBase::setLog(PTR(LogMainWnd) pTracerLog)
 {
 	log = pTracerLog;
 }

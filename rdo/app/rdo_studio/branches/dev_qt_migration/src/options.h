@@ -428,7 +428,7 @@ private:
 	rdoEditor::RDOEditorEdit       preview_editor;
 	rdoEditCtrl::RDOBuildEdit      preview_build;
 	rdoEditCtrl::RDODebugEdit      preview_debug;
-	rdo::gui::tracer::LogCtrlView  preview_trace;
+	rdo::gui::tracer::LogMainWnd   preview_trace;
 	rdoEditor::RDOEditorResults    preview_results;
 	rdoEditCtrl::RDOFindEdit       preview_find;
 

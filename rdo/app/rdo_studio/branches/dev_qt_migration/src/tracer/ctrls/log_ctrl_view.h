@@ -20,16 +20,16 @@
 namespace rdo { namespace gui { namespace tracer {
 
 // --------------------------------------------------------------------------------
-// -------------------- LogCtrlView
+// -------------------- LogMainWnd
 // --------------------------------------------------------------------------------
-class LogCtrlView: public QAbstractScrollArea
+class LogMainWnd: public QAbstractScrollArea
 {
 public:
-	LogCtrlView(PTR(QWidget) pParent);
+	LogMainWnd(PTR(QWidget) pParent);
 
-	REF(LogCtrl) view()
+	REF(LogView) view()
 	{
-		return *static_cast<PTR(LogCtrl)>(viewport());
+		return *static_cast<PTR(LogView)>(viewport());
 	}
 
 private:

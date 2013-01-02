@@ -26,34 +26,34 @@ static char THIS_FILE[] = __FILE__;
 using namespace rdo::gui::tracer;
 
 // --------------------------------------------------------------------------------
-// -------------------- LogCtrlView
+// -------------------- LogMainWnd
 // --------------------------------------------------------------------------------
-LogCtrlView::LogCtrlView(PTR(QWidget) pParent)
+LogMainWnd::LogMainWnd(PTR(QWidget) pParent)
 	: QAbstractScrollArea(pParent)
 {
-	PTR(LogCtrl) pLog = new LogCtrl(this, &studioApp.getStyle()->style_trace);
+	PTR(LogView) pLog = new LogView(this, &studioApp.getStyle()->style_trace);
 	pLog->show();
 
 	setViewport(pLog);
 }
 
-rbool LogCtrlView::viewportEvent(PTR(QEvent) pEvent)
+rbool LogMainWnd::viewportEvent(PTR(QEvent) pEvent)
 {
 	UNUSED(pEvent);
 	return false;
 }
 
-void LogCtrlView::focusInEvent(QFocusEvent* pEvent)
+void LogMainWnd::focusInEvent(QFocusEvent* pEvent)
 {
 	static_cast<QObject*>(viewport())->event(pEvent);
 }
 
-void LogCtrlView::focusOutEvent(QFocusEvent* pEvent)
+void LogMainWnd::focusOutEvent(QFocusEvent* pEvent)
 {
 	static_cast<QObject*>(viewport())->event(pEvent);
 }
 
-void LogCtrlView::keyPressEvent(PTR(QKeyEvent) pEvent)
+void LogMainWnd::keyPressEvent(PTR(QKeyEvent) pEvent)
 {
 	switch (pEvent->key())
 	{

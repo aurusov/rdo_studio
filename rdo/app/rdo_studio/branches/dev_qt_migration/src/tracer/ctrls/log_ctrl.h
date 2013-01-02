@@ -24,17 +24,17 @@
 namespace rdo { namespace gui { namespace tracer {
 
 // --------------------------------------------------------------------------------
-// -------------------- LogCtrl
+// -------------------- LogView
 // --------------------------------------------------------------------------------
-class LogCtrl: public ActionActivatorWidget
+class LogView: public ActionActivatorWidget
 {
 Q_OBJECT
 
 friend class LogCtrlFindInList;
 
 public:
-	LogCtrl(PTR(QAbstractScrollArea) pParent, PTR(LogStyle) pStyle);
-	virtual ~LogCtrl();
+	LogView(PTR(QAbstractScrollArea) pParent, PTR(LogStyle) pStyle);
+	virtual ~LogView();
 
 	virtual void addStringToLog(CREF(tstring) logStr);
 
