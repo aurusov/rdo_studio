@@ -28,14 +28,38 @@ FindDialog::Settings::Settings(CREF(Settings) settings)
 	, searchDown    (settings.searchDown    )
 {}
 
-FindDialog::FindDialog(PTR(QWidget) pParent, REF(Settings) settings, CREF(OnFindCallback) onFindCallback)
+FindDialog::FindDialog(PTR(QWidget) pParent, CREF(OnFindCallback) onFindCallback, CREF(OnCloseCallback) onCloseCallback)
 	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
-	, m_settings(settings)
-	, m_onFindCallback(onFindCallback)
+	, m_onFindCallback (onFindCallback )
+	, m_onCloseCallback(onCloseCallback)
 {
 	setupUi(this);
 
-	lineEdit->setText(QString::fromStdString(settings.what));
+	connect(findButton,    SIGNAL(clicked(bool)),              this, SLOT(onFindButton()));
+	connect(cancelButton,  SIGNAL(clicked(bool)),              this, SLOT(reject()));
+	connect(lineEdit,      SIGNAL(textEdited(const QString&)), this, SLOT(onWhatEdited(const QString&)));
+	connect(matchCase,     SIGNAL(stateChanged(int)),          this, SLOT(onMatchCaseChanged(int)));
+	connect(wholeWord,     SIGNAL(stateChanged(int)),          this, SLOT(onMatchWholeWordChanged(int)));
+	connect(directionDown, SIGNAL(toggled(bool)),              this, SLOT(onDirectionDownToggled(bool)));
+
+	setAttribute(Qt::WA_DeleteOnClose, true);
+
+	if (pParent)
+	{
+//		move(pParent->frameGeometry().center() - frameGeometry().center());
+	}
+}
+
+FindDialog::~FindDialog()
+{
+	m_onCloseCallback();
+}
+
+void FindDialog::setSettings(CREF(Settings) settings)
+{
+	m_settings = settings;
+
+	lineEdit->setText(QString::fromStdString(m_settings.what));
 	matchCase->setChecked(m_settings.matchCase);
 	wholeWord->setChecked(m_settings.matchWholeWord);
 	if (m_settings.searchDown)
@@ -46,23 +70,11 @@ FindDialog::FindDialog(PTR(QWidget) pParent, REF(Settings) settings, CREF(OnFind
 	{
 		directionUp->setChecked(true);
 	}
-
-	connect(findButton,    SIGNAL(clicked(bool)),              this, SLOT(onFindButton(bool)));
-	connect(cancelButton,  SIGNAL(clicked(bool)),              this, SLOT(reject()));
-	connect(lineEdit,      SIGNAL(textEdited(const QString&)), this, SLOT(onWhatEdited(const QString&)));
-	connect(matchCase,     SIGNAL(stateChanged(int)),          this, SLOT(onMatchCaseChanged(int)));
-	connect(wholeWord,     SIGNAL(stateChanged(int)),          this, SLOT(onMatchWholeWordChanged(int)));
-	connect(directionDown, SIGNAL(toggled(bool)),              this, SLOT(onDirectionDownToggled(bool)));
-
-	if (pParent)
-	{
-//		move(pParent->frameGeometry().center() - frameGeometry().center());
-	}
 }
 
-void FindDialog::onFindButton(rbool)
+void FindDialog::onFindButton()
 {
-	m_onFindCallback();
+	m_onFindCallback(m_settings);
 }
 
 void FindDialog::onWhatEdited(const QString& text)

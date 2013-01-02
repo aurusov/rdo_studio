@@ -36,7 +36,7 @@ public:
 	virtual ~RDOLogCtrl();
 
 	virtual void addStringToLog(CREF(tstring) logStr);
-	
+
 	rbool getFocusOnly() const { return focusOnly; }
 	virtual void setFocusOnly(rbool value) { focusOnly = value; }
 
@@ -45,7 +45,6 @@ public:
 	virtual void getSelected(tstring& str) const;
 	virtual rbool makeLineVisible(int index);
 	virtual void selectLine(int index);
-	void findPrevious();
 	virtual void clear();
 	
 	virtual CREF(RDOLogStyle) getStyle() const;
@@ -142,7 +141,8 @@ private:
 	FindDialog*          m_pFindDialog;
 	FindDialog::Settings m_findSettings;
 	rsint find(rbool searchDown);
-	void  onFindNext();
+	void  onFindDlgFind (CREF(FindDialog::Settings) settings);
+	void  onFindDlgClose();
 
 	virtual rbool getItemColors(int index, RDOLogColorPair* &colors) const;
 	
@@ -183,8 +183,10 @@ private:
 private slots:
 	void onVertScrollBarValueChanged(int value);
 	void onHorzScrollBarValueChanged(int value);
-	void onEditCopy                 (bool checked);
-	void onSearchFind               (bool checked);
+	void onEditCopy                 ();
+	void onSearchFind               ();
+	void onSearchFindNext           ();
+	void onSearchFindPrevious       ();
 };
 
 }; // namespace rdoTracerLog

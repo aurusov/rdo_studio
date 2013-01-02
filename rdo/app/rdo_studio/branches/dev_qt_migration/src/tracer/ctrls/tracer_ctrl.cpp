@@ -39,19 +39,18 @@ namespace rdoTracerLog
 class RDOLogCtrlFindInList
 {
 public:
-	RDOLogCtrlFindInList(CREF(tstring) strToFind, rbool matchCase, rbool matchWholeWord);
+	RDOLogCtrlFindInList(REF(rsint) checkCounter, CREF(tstring) strToFind, rbool matchCase, rbool matchWholeWord);
 	rbool operator() (CREF(tstring) nextstr);
-
-	rsint m_checkCount;
 
 private:
 	boost::optional<boost::regex> m_expression;
+	REF(rsint)                    m_checkCounter;
 };
 
 }; // namespace rdoTracerLog
 
-RDOLogCtrlFindInList::RDOLogCtrlFindInList(CREF(tstring) strToFind, rbool matchCase, rbool matchWholeWord)
-	: m_checkCount(0)
+RDOLogCtrlFindInList::RDOLogCtrlFindInList(REF(rsint) checkCounter, CREF(tstring) strToFind, rbool matchCase, rbool matchWholeWord)
+	: m_checkCounter(checkCounter)
 {
 	tstring what = matchWholeWord
 		? rdo::format("^%s$",   strToFind.c_str())
@@ -74,7 +73,7 @@ RDOLogCtrlFindInList::RDOLogCtrlFindInList(CREF(tstring) strToFind, rbool matchC
 
 rbool RDOLogCtrlFindInList::operator()(CREF(tstring) nextstr)
 {
-	++m_checkCount;
+	++m_checkCounter;
 
 	if (!m_expression.is_initialized())
 		return false;
@@ -830,7 +829,8 @@ rsint RDOLogCtrl::find(rbool searchDown)
 			? selectedLine() + 1
 			: selectedLine() - 1;
 
-	RDOLogCtrlFindInList findInList(m_findSettings.what, m_findSettings.matchCase, m_findSettings.matchWholeWord);
+	rsint checkCounter = 0;
+	RDOLogCtrlFindInList findInList(checkCounter, m_findSettings.what, m_findSettings.matchCase, m_findSettings.matchWholeWord);
 
 	bHaveFound = searchDown
 		? std::find_if(m_strings.findString(startPos), m_strings.end(), findInList) != m_strings.end()
@@ -838,7 +838,7 @@ rsint RDOLogCtrl::find(rbool searchDown)
 
 	if (bHaveFound)
 	{
-		result = startPos + findInList.m_checkCount * (searchDown ? 1 : -1);
+		result = startPos + (checkCounter - 1) * (searchDown ? 1 : -1);
 	}
 
 	mutex.Unlock();
@@ -882,7 +882,11 @@ void RDOLogCtrl::onActivate()
 	ASSERT(pMainWindow);
 
 	pMainWindow->actSearchFind->setEnabled(true);
-	connect(pMainWindow->actSearchFind, SIGNAL(triggered(bool)), this, SLOT(onSearchFind(bool)));
+	pMainWindow->actSearchFindNext->setEnabled(true);
+	pMainWindow->actSearchFindPrevious->setEnabled(true);
+	connect(pMainWindow->actSearchFind,         SIGNAL(triggered(bool)), this, SLOT(onSearchFind()));
+	connect(pMainWindow->actSearchFindNext,     SIGNAL(triggered(bool)), this, SLOT(onSearchFindNext()));
+	connect(pMainWindow->actSearchFindPrevious, SIGNAL(triggered(bool)), this, SLOT(onSearchFindPrevious()));
 
 	setUpActionEditCopy(true);
 }
@@ -895,7 +899,11 @@ void RDOLogCtrl::onDeactivate()
 	ASSERT(pMainWindow);
 
 	pMainWindow->actSearchFind->setEnabled(false);
-	disconnect(pMainWindow->actSearchFind, SIGNAL(triggered(bool)), this, SLOT(onSearchFind(bool)));
+	pMainWindow->actSearchFindNext->setEnabled(false);
+	pMainWindow->actSearchFindPrevious->setEnabled(false);
+	disconnect(pMainWindow->actSearchFind,         SIGNAL(triggered(bool)), this, SLOT(onSearchFind()));
+	disconnect(pMainWindow->actSearchFindNext,     SIGNAL(triggered(bool)), this, SLOT(onSearchFindNext()));
+	disconnect(pMainWindow->actSearchFindPrevious, SIGNAL(triggered(bool)), this, SLOT(onSearchFindPrevious()));
 
 	setUpActionEditCopy(false);
 }
@@ -910,7 +918,7 @@ void RDOLogCtrl::setUpActionEditCopy(rbool activate)
 		if (!pMainWindow->actEditCopy->isEnabled())
 		{
 			pMainWindow->actEditCopy->setEnabled(true);
-			connect(pMainWindow->actEditCopy, SIGNAL(triggered(bool)), this, SLOT(onEditCopy(bool)));
+			connect(pMainWindow->actEditCopy, SIGNAL(triggered(bool)), this, SLOT(onEditCopy()));
 		}
 	}
 	else
@@ -918,7 +926,7 @@ void RDOLogCtrl::setUpActionEditCopy(rbool activate)
 		if (pMainWindow->actEditCopy->isEnabled())
 		{
 			pMainWindow->actEditCopy->setEnabled(false);
-			disconnect(pMainWindow->actEditCopy, SIGNAL(triggered(bool)), this, SLOT(onEditCopy(bool)));
+			disconnect(pMainWindow->actEditCopy, SIGNAL(triggered(bool)), this, SLOT(onEditCopy()));
 		}
 	}
 }
@@ -939,7 +947,7 @@ void RDOLogCtrl::setSelectedLine(rsint selectedLine)
 	setUpActionEditCopy(isActivated());
 }
 
-void RDOLogCtrl::onEditCopy(bool)
+void RDOLogCtrl::onEditCopy()
 {
 	tstring selected;
 	getSelected(selected);
@@ -947,24 +955,42 @@ void RDOLogCtrl::onEditCopy(bool)
 	QApplication::clipboard()->setText(QString::fromStdString(selected));
 }
 
-void RDOLogCtrl::onSearchFind(bool)
+void RDOLogCtrl::onSearchFind()
 {
+	getSelected(m_findSettings.what);
+
 	if (!m_pFindDialog)
 	{
-		getSelected(m_findSettings.what);
-		m_pFindDialog = new FindDialog(this, m_findSettings, boost::bind(&RDOLogCtrl::onFindNext, this));
+		m_pFindDialog = new FindDialog(
+			this,
+			boost::bind(&RDOLogCtrl::onFindDlgFind, this, _1),
+			boost::bind(&RDOLogCtrl::onFindDlgClose, this)
+		);
 	}
+
+	m_pFindDialog->setSettings(m_findSettings);
 	m_pFindDialog->show();
 	m_pFindDialog->raise();
 	m_pFindDialog->activateWindow();
 }
 
-void RDOLogCtrl::onFindNext()
+void RDOLogCtrl::onFindDlgClose()
+{
+	m_pFindDialog = NULL;
+}
+
+void RDOLogCtrl::onFindDlgFind(CREF(FindDialog::Settings) settings)
+{
+	m_findSettings = settings;
+	onSearchFindNext();
+}
+
+void RDOLogCtrl::onSearchFindNext()
 {
 	selectLine(find(m_findSettings.searchDown));
 }
 
-void RDOLogCtrl::findPrevious()
+void RDOLogCtrl::onSearchFindPrevious()
 {
 	selectLine(find(!m_findSettings.searchDown));
 }

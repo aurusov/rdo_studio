@@ -35,16 +35,21 @@ public:
 		Settings(CREF(Settings) settings);
 	};
 
-	typedef  boost::function<void ()>  OnFindCallback;
+	typedef  boost::function<void (const Settings&)>  OnFindCallback;
+	typedef  boost::function<void ()>                 OnCloseCallback;
 
-	FindDialog(PTR(QWidget) pParent, REF(Settings) settings, CREF(OnFindCallback) onFindCallback);
+	FindDialog(PTR(QWidget) pParent, CREF(OnFindCallback) onFindCallback, CREF(OnCloseCallback) onCloseCallback);
+	virtual ~FindDialog();
+
+	void setSettings(CREF(Settings) settings);
 
 private:
-	REF(Settings)   m_settings;
-	OnFindCallback  m_onFindCallback;
+	Settings         m_settings;
+	OnFindCallback   m_onFindCallback;
+	OnCloseCallback  m_onCloseCallback;
 
 private slots:
-	void onFindButton           (bool);
+	void onFindButton           ();
 	void onWhatEdited           (const QString& text);
 	void onMatchCaseChanged     (int value);
 	void onMatchWholeWordChanged(int value);
