@@ -302,6 +302,9 @@ for task in files:
 
             print "CHECK ERROR LIST     :", check_message_cmp_string 
 
+         elif simulation_code == RDO_CONSOLE_TERMINATION_WITH_AN_ERROR_RUNTIME_ERROR:
+            cycle_exit_code = APP_CODE_TERMINATION_NORMAL
+            
         # runtime error in rdo_console
         else:
             cycle_exit_code = APP_CODE_TERMINATION_ERROR
