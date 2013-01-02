@@ -121,24 +121,23 @@ def get_executables(dir):
     return rdo_ex, rdo_test_ex
 
 
-def get_text_from_dom(dom, node_text):
+def get_node_attribute_from_dom(dom, node_text, attribute_text):
 
-    node = dom.getElementsByTagName(node_text)
-    if not len(node):
+    nodes = dom.getElementsByTagName(node_text)
+    if not len(nodes):
         return u''
 
-    nodelist = node[0].childNodes
-    rc = []
-    for node in nodelist:
-        if node.nodeType == node.TEXT_NODE:
-            rc.append(node.data)
-    return u''.join(rc)
+    node = nodes[0]
+    attribute_text_data = node.getAttribute(attribute_text)
+
+    return attribute_text_data
 
 
 def wrap_the_string_in_quotes(string):
 
     new_string = u'"' + string + u'"'
     return new_string
+
 
 def compare_text_files(file1, file2):
 
@@ -200,13 +199,13 @@ for task in files:
 
     dom = xml.dom.minidom.parseString(text_task)
 
-    model_name_with_ex    = get_text_from_dom(dom, 'model')
-    target                = get_text_from_dom(dom, 'target')
-    text_exit_code        = get_text_from_dom(dom, 'exit_code')
-    etalon_trace_name     = get_text_from_dom(dom, 'trace')
-    etalon_result_name    = get_text_from_dom(dom, 'result') 
-    compile_log_file_name = get_text_from_dom(dom, 'log_compilation')
-
+    model_name_with_ex    = get_node_attribute_from_dom(dom, u'model', u'name'           )
+    target                = get_node_attribute_from_dom(dom, u'model', u'target'         )
+    text_exit_code        = get_node_attribute_from_dom(dom, u'model', u'exit_code'      )
+    etalon_trace_name     = get_node_attribute_from_dom(dom, u'model', u'trace'          )
+    etalon_result_name    = get_node_attribute_from_dom(dom, u'model', u'result'         ) 
+    compile_log_file_name = get_node_attribute_from_dom(dom, u'model', u'log_compilation')
+    
     exit_code = int(text_exit_code)
 
     print 'Project              :', task
@@ -302,7 +301,7 @@ for task in files:
 
             print "CHECK ERROR LIST     :", check_message_cmp_string 
 
-         elif simulation_code == RDO_CONSOLE_TERMINATION_WITH_AN_ERROR_RUNTIME_ERROR:
+        elif simulation_code == RDO_CONSOLE_TERMINATION_WITH_AN_ERROR_RUNTIME_ERROR:
             cycle_exit_code = APP_CODE_TERMINATION_NORMAL
             
         # runtime error in rdo_console
