@@ -37,13 +37,7 @@ protected:
 
 	virtual rbool getItemColors(int index, RDOLogColorPair* &colors) const;
 
-	CMenu popupMenu;
-	rbool bShowMenu;
-
 private:
-	//! todo qt
-	//afx_msg void OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu);
-	//afx_msg void OnContextMenu(CWnd* pWnd, CPoint pos);
 	afx_msg void OnUpdateCoordStatusBar(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateModifyStatusBar(CCmdUI* pCmdUI);
 	
@@ -56,9 +50,6 @@ public:
 	virtual void setStyle(RDOTracerLogStyle* style, const rbool needRedraw = true);
 
 	virtual void clear();
-
-	rbool getShowMenu() const      { return bShowMenu;  };
-	void  setShowMenu(rbool value) { bShowMenu = value; };
 
 };
 

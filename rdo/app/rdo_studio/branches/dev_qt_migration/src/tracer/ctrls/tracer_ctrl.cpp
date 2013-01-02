@@ -220,7 +220,11 @@ RDOLogCtrl::StringList::const_iterator RDOLogCtrl::StringList::findString(int in
 			--res;
 			delta = deltaEnd;
 		}
-		seek(delta, res);
+
+		if (res != m_list.end())
+		{
+			seek(delta, res);
+		}
 	}
 
 	return res;
@@ -311,6 +315,7 @@ RDOLogCtrl::RDOLogCtrl(PTR(QAbstractScrollArea) pParent, PTR(RDOLogStyle) pStyle
 	, lineHeight(0)
 	, charWidth(0)
 	, m_selectedLine(-1)
+	, m_pPopupMenu(NULL)
 	, fullRepaintLines(0)
 	, focusOnly(false)
 	, logStyle(pStyle)
@@ -332,6 +337,15 @@ RDOLogCtrl::RDOLogCtrl(PTR(QAbstractScrollArea) pParent, PTR(RDOLogStyle) pStyle
 
 	setFont();
 	updateScrollBars();
+
+	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
+	ASSERT(pMainWindow);
+	m_pPopupMenu = new QMenu(this);
+	m_pPopupMenu->addAction(pMainWindow->actEditCopy);
+	m_pPopupMenu->addSeparator();
+	m_pPopupMenu->addAction(pMainWindow->actSearchFind);
+	m_pPopupMenu->addAction(pMainWindow->actSearchFindNext);
+	m_pPopupMenu->addAction(pMainWindow->actSearchFindPrevious);
 }
 
 RDOLogCtrl::~RDOLogCtrl()
@@ -544,6 +558,10 @@ void RDOLogCtrl::mousePressEvent(QMouseEvent* pEvent)
 	if (pEvent->button() == Qt::LeftButton)
 	{
 		selectLine((std::min)(m_SM_Y.position + pEvent->pos().y() / lineHeight, m_strings.count() - 1));
+	}
+	else if (pEvent->button() == Qt::RightButton)
+	{
+		m_pPopupMenu->exec(pEvent->globalPos());
 	}
 }
 

@@ -571,7 +571,8 @@ BOOL RDOStudioOptionsColorsStyles::OnInitDialog()
 	//sheet->preview_trace.Create(NULL, NULL, WS_CHILD, CRect(0, 0, 444, 223), this, 0);
 	sheet->preview_trace.view().setStyle(&sheet->style_trace);
 	sheet->preview_trace.view().setFocusOnly(true);
-	sheet->preview_trace.view().setShowMenu(false);
+	//! todo надо протестить popup-menu в режиме настроект
+	//sheet->preview_trace.view().setShowMenu(false);
 	sheet->preview_trace.view().setText(rdo::format(IDS_COLORSTYLE_LOG_SAMPLE));
 	sheet->preview_trace.view().selectLine(0);
 

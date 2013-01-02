@@ -104,6 +104,8 @@ private:
 	rsint charWidth;
 	rsint m_selectedLine;
 
+	QMenu* m_pPopupMenu;
+
 	void  setSelectedLine(rsint selectedLine);
 
 	struct ScrollMetric

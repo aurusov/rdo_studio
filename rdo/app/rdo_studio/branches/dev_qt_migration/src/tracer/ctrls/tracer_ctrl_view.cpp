@@ -80,8 +80,6 @@ void RDOTracerLogCtrl::keyPressEvent(PTR(QKeyEvent) pEvent)
 // --------------------------------------------------------------------------------
 //! @todo qt
 //BEGIN_MESSAGE_MAP(RDOTracerLogCtrlView, RDOLogCtrl)
-//	ON_WM_INITMENUPOPUP()
-//	ON_WM_CONTEXTMENU()
 //	ON_UPDATE_COMMAND_UI(ID_COORD_STATUSBAR , OnUpdateCoordStatusBar)
 //	ON_UPDATE_COMMAND_UI(ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar)
 //END_MESSAGE_MAP()
@@ -89,27 +87,7 @@ void RDOTracerLogCtrl::keyPressEvent(PTR(QKeyEvent) pEvent)
 RDOTracerLogCtrlView::RDOTracerLogCtrlView(PTR(QAbstractScrollArea) pParent)
 	: RDOLogCtrl(pParent, &studioApp.getStyle()->style_trace)
 	, addingSubitems(false)
-	, bShowMenu(true)
-{
-	//! todo qt
-	//popupMenu.CreatePopupMenu();
-
-	//if (AfxGetMainWnd())
-	//{
-	//	CMenu* mainMenu = AfxGetMainWnd()->GetMenu();
-	//	if (mainMenu)
-	//	{
-	//		rbool maximized = studioApp.getIMainWnd()->isMDIMaximazed();
-	//		int delta = maximized ? 1 : 0;
-
-	//		appendMenu(mainMenu->GetSubMenu(1 + delta), 4, &popupMenu);
-	//		popupMenu.AppendMenu(MF_SEPARATOR);
-	//		appendMenu(mainMenu->GetSubMenu(2 + delta), 0, &popupMenu);
-	//		appendMenu(mainMenu->GetSubMenu(2 + delta), 1, &popupMenu);
-	//		appendMenu(mainMenu->GetSubMenu(2 + delta), 2, &popupMenu);
-	//	}
-	//}
-}
+{}
 
 RDOTracerLogCtrlView::~RDOTracerLogCtrlView()
 {}
@@ -183,21 +161,6 @@ void RDOTracerLogCtrlView::setStyle(RDOTracerLogStyle* style, rbool needRedraw)
 	logStyle = style;
 	RDOLogCtrl::setStyle(style, needRedraw);
 }
-
-//! todo qt
-//void RDOTracerLogCtrlView::OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu)
-//{
-//	CWnd::OnInitMenuPopup(pPopupMenu, nIndex, bSysMenu);
-//	CFrameWnd* pwndFrame = (CFrameWnd*)AfxGetMainWnd();
-//	if(pwndFrame) pwndFrame->SendMessage(WM_INITMENUPOPUP, WPARAM(pPopupMenu->m_hMenu), MAKELPARAM(nIndex, bSysMenu));
-//}
-//
-//void RDOTracerLogCtrlView::OnContextMenu(CWnd* pWnd, CPoint pos)
-//{
-//	if (!bShowMenu) return;
-//	CWnd::OnContextMenu(pWnd, pos);
-//	if (popupMenu.m_hMenu) popupMenu.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, pos.x, pos.y, this);
-//}
 
 void RDOTracerLogCtrlView::OnUpdateCoordStatusBar(CCmdUI* pCmdUI)
 {
