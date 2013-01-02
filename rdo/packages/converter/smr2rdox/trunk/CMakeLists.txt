@@ -171,6 +171,7 @@ SET(GRAMMA_FILES
 
 ADD_LIBRARY(rdo_converter_smr2rdox ${HEADER_FILES} ${INLINE_FILES} ${SOURCE_FILES} ${GENERATED_FILES} ${GRAMMA_FILES})
 SET_TARGET_PROPERTIES(rdo_converter_smr2rdox PROPERTIES LINKER_LANGUAGE CXX)
+SET_TARGET_PROPERTIES(rdo_converter_smr2rdox PROPERTIES FOLDER ${LIBRARY_FOLDERS})
 
 ADD_DEPENDENCIES(rdo_converter_smr2rdox rdo_utils)
 ADD_DEPENDENCIES(rdo_converter_smr2rdox rdo_runtime)
@@ -286,6 +287,7 @@ SOURCE_GROUP(".watch" FILES
 SOURCE_GROUP(".type" FILES
     rdo_type.h
     rdo_type.cpp
+	rdo_type_range.inl
 	)
 
 SOURCE_GROUP(".type_enum" FILES

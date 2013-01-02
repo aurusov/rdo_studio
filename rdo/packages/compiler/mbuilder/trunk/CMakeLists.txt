@@ -22,6 +22,7 @@ SET(SOURCE_FILES
     rdo_resources.cpp)
 
 ADD_LIBRARY(rdo_mbuilder ${HEADER_FILES} ${SOURCE_FILES})
+SET_TARGET_PROPERTIES(rdo_mbuilder PROPERTIES FOLDER ${LIBRARY_FOLDERS})
 
 ADD_DEPENDENCIES(rdo_mbuilder rdo_parser)
 
