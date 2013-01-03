@@ -19,7 +19,6 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
-#include "app/rdo_studio_mfc/src/status_bar.h"
 #include "app/rdo_studio_mfc/projects/common/bin/rdo_studio/generated/ui_main_window.h"
 // --------------------------------------------------------------------------------
 
@@ -124,7 +123,6 @@ private:
 	RDOToolBar              editToolBar;
 	RDOToolBar              zoomToolBar;
 	RDOToolBarModel         modelToolBar;
-	RDOStudioStatusBar      statusBar;
 	int                     m_updateTimerID;
 	QProgressBar*           m_pProgressBar;
 	QWidget*                m_pProgressBarFakeWidget;
