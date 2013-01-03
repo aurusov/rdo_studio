@@ -12,6 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/signal.hpp>
+#include <QtCore/qobject.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdointerface.h"
 #include "kernel/rdothread.h"
@@ -34,9 +35,12 @@ namespace rdoEditor {
 class RDOStudioModelView;
 
 class RDOStudioModel
-	: public RDOThreadGUI
+	: public QObject
+	, public RDOThreadGUI
 	, public IInit
 {
+Q_OBJECT
+
 friend class RDOStudioFrameTreeCtrl;
 friend class RDOStudioApp;
 friend class RDOThreadStudioGUI;
@@ -214,6 +218,11 @@ public:
 	REF(RDOStudioFrameManager) getFrameManager();
 
 	PTR(RPViewQt) getProcView();
+
+private slots:
+	void onModelBuild();
+	void onModelRun  ();
+	void onModelStop ();
 };
 
 // --------------------------------------------------------------------------------

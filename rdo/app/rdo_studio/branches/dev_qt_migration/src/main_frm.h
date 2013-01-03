@@ -171,6 +171,7 @@ public:
 	void onUpdateModelRuntype ();
 	void onUpdateModelSpeed   ();
 	void onUpdateModelShowRate();
+	void onModelRun           ();
 
 private slots:
 	void onFileNew    ();
@@ -179,12 +180,6 @@ private slots:
 	void onFileSave   ();
 	void onFileSaveAs ();
 	void onFileSaveAll();
-
-	void onModelBuild ();
-public slots:
-	void onModelRun   ();
-private slots:
-	void onModelStop  ();
 
 	void onViewOptions();
 

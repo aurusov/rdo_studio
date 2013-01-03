@@ -86,6 +86,12 @@ RDOStudioModel::RDOStudioModel()
 {
 	model = this;
 
+	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
+	ASSERT(pMainWindow);
+	connect(pMainWindow->actModelBuild, SIGNAL(triggered(bool)), this, SLOT(onModelBuild()));
+	connect(pMainWindow->actModelRun,   SIGNAL(triggered(bool)), this, SLOT(onModelRun  ()));
+	connect(pMainWindow->actModelStop,  SIGNAL(triggered(bool)), this, SLOT(onModelStop ()));
+
 	m_timeNowSignal.connect(boost::bind(&RDOStudioMainFrame::onUpdateModelTime, static_cast<RDOStudioMainFrame*>(studioApp.getIMainWnd()), _1));
 
 	ModelTemplate modelTemplate;
@@ -1422,4 +1428,19 @@ CPTR(rdoEditor::RDOEditorTabCtrl) RDOStudioModel::getTab() const
 		return NULL;
 
 	return &m_pModelView->getTab();
+}
+
+void RDOStudioModel::onModelBuild()
+{
+	buildModel();
+}
+
+void RDOStudioModel::onModelRun()
+{
+	runModel();
+}
+
+void RDOStudioModel::onModelStop()
+{
+	stopModel();
 }
