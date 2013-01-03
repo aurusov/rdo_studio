@@ -158,6 +158,7 @@ private:
 	void        repaintLine        (rsint index);
 
 	void        setFont            ();
+	void        setUpActionFind    (rbool activate);
 	void        setUpActionEditCopy(rbool activate);
 	void        setUpCoordStatusBar(rbool activate);
 	rbool       canCopy            () const;

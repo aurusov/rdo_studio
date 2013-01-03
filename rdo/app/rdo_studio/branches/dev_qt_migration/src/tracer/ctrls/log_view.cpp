@@ -399,6 +399,10 @@ void LogView::push_back(CREF(tstring) log)
 	m_strings.push_back(log);
 
 	rsint lastString = m_strings.count() - 1;
+	if (lastString == 1)
+	{
+		setUpActionFind(isActivated());
+	}
 
 	if (m_drawLog)
 	{
@@ -742,6 +746,50 @@ void LogView::setFont()
 	m_charWidth  = fontMetrics.averageCharWidth(); // fontMetrics.maxWidth()
 }
 
+void LogView::setUpActionFind(rbool activate)
+{
+	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
+	ASSERT(pMainWindow);
+
+	if (activate && m_strings.count())
+	{
+		if (!pMainWindow->actSearchFind->isEnabled())
+		{
+			pMainWindow->actSearchFind->setEnabled(true);
+			connect(pMainWindow->actSearchFind, SIGNAL(triggered(bool)), this, SLOT(onSearchFind()));
+		}
+	}
+	else
+	{
+		if (pMainWindow->actSearchFind->isEnabled())
+		{
+			pMainWindow->actSearchFind->setEnabled(false);
+			disconnect(pMainWindow->actSearchFind, SIGNAL(triggered(bool)), this, SLOT(onSearchFind()));
+		}
+	}
+
+	if (activate && !m_findSettings.what.empty())
+	{
+		if (!pMainWindow->actSearchFindNext->isEnabled())
+		{
+			pMainWindow->actSearchFindNext->setEnabled(true);
+			pMainWindow->actSearchFindPrevious->setEnabled(true);
+			connect(pMainWindow->actSearchFindNext,     SIGNAL(triggered(bool)), this, SLOT(onSearchFindNext()));
+			connect(pMainWindow->actSearchFindPrevious, SIGNAL(triggered(bool)), this, SLOT(onSearchFindPrevious()));
+		}
+	}
+	else
+	{
+		if (pMainWindow->actSearchFindNext->isEnabled())
+		{
+			pMainWindow->actSearchFindNext->setEnabled(false);
+			pMainWindow->actSearchFindPrevious->setEnabled(false);
+			disconnect(pMainWindow->actSearchFindNext,     SIGNAL(triggered(bool)), this, SLOT(onSearchFindNext()));
+			disconnect(pMainWindow->actSearchFindPrevious, SIGNAL(triggered(bool)), this, SLOT(onSearchFindPrevious()));
+		}
+	}
+}
+
 void LogView::setUpActionEditCopy(rbool activate)
 {
 	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
@@ -811,6 +859,7 @@ rsint LogView::find(rbool searchDown)
 void LogView::onFindDlgFind(CREF(FindDialog::Settings) settings)
 {
 	m_findSettings = settings;
+	setUpActionFind(isActivated());
 	onSearchFindNext();
 }
 
@@ -1016,49 +1065,26 @@ void LogView::onActivate()
 {
 	repaintLine(selectedLine());
 
-	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
-	ASSERT(pMainWindow);
+	connect(studioApp.getMainWndUI()->actHelpContext, SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
 
-	pMainWindow->actSearchFind->setEnabled(true);
-	pMainWindow->actSearchFindNext->setEnabled(true);
-	pMainWindow->actSearchFindPrevious->setEnabled(true);
-	connect(pMainWindow->actSearchFind,         SIGNAL(triggered(bool)), this, SLOT(onSearchFind()));
-	connect(pMainWindow->actSearchFindNext,     SIGNAL(triggered(bool)), this, SLOT(onSearchFindNext()));
-	connect(pMainWindow->actSearchFindPrevious, SIGNAL(triggered(bool)), this, SLOT(onSearchFindPrevious()));
-	connect(pMainWindow->actHelpContext,        SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
-
+	setUpActionFind    (true);
 	setUpActionEditCopy(true);
 	setUpCoordStatusBar(true);
 
-	{
-		RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
-		ASSERT(pMainWindow);
-		pMainWindow->updateStatusBar<RDOStudioMainFrame::SB_MODIFY>("Только чтение");
-	}
+	studioApp.getMainWndUI()->updateStatusBar<RDOStudioMainFrame::SB_MODIFY>("Только чтение");
 }
 
 void LogView::onDeactivate()
 {
 	repaintLine(selectedLine());
 
-	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
-	ASSERT(pMainWindow);
+	disconnect(studioApp.getMainWndUI()->actHelpContext, SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
 
-	pMainWindow->actSearchFind->setEnabled(false);
-	pMainWindow->actSearchFindNext->setEnabled(false);
-	pMainWindow->actSearchFindPrevious->setEnabled(false);
-	disconnect(pMainWindow->actSearchFind,         SIGNAL(triggered(bool)), this, SLOT(onSearchFind()));
-	disconnect(pMainWindow->actSearchFindNext,     SIGNAL(triggered(bool)), this, SLOT(onSearchFindNext()));
-	disconnect(pMainWindow->actSearchFindPrevious, SIGNAL(triggered(bool)), this, SLOT(onSearchFindPrevious()));
-	disconnect(pMainWindow->actHelpContext,        SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
-
+	setUpActionFind    (false);
 	setUpActionEditCopy(false);
 	setUpCoordStatusBar(false);
-	{
-		RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
-		ASSERT(pMainWindow);
-		pMainWindow->updateStatusBar<RDOStudioMainFrame::SB_MODIFY>("");
-	}
+
+	studioApp.getMainWndUI()->updateStatusBar<RDOStudioMainFrame::SB_MODIFY>("");
 }
 
 void LogView::onEditCopy()
