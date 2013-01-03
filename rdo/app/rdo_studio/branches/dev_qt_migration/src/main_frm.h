@@ -137,6 +137,8 @@ private:
 	PTR(QLabel)             m_pSBModelSpeed;
 	PTR(QLabel)             m_pSBModelShowRate;
 
+	void createStatusBar();
+
 	virtual void closeEvent(QCloseEvent* event);
 	virtual void showEvent (QShowEvent*  event);
 	virtual void hideEvent (QHideEvent*  event);

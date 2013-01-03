@@ -160,19 +160,7 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 	setupUi(this);
 	mdiArea->setOption(QMdiArea::DontMaximizeSubWindowOnActivation);
 
-	m_pSBCoord         = new QLabel(this);
-	m_pSBModify        = new QLabel(this);
-	m_pSBModelTime     = new QLabel(this);
-	m_pSBModelRuntype  = new QLabel(this);
-	m_pSBModelSpeed    = new QLabel(this);
-	m_pSBModelShowRate = new QLabel(this);
-
-	parent_type::statusBar()->addWidget(m_pSBCoord,         5);
-	parent_type::statusBar()->addWidget(m_pSBModify,        5);
-	parent_type::statusBar()->addWidget(m_pSBModelTime,     5);
-	parent_type::statusBar()->addWidget(m_pSBModelRuntype,  5);
-	parent_type::statusBar()->addWidget(m_pSBModelSpeed,    5);
-	parent_type::statusBar()->addWidget(m_pSBModelShowRate, 5);
+	createStatusBar();
 
 	QObject::connect(actFileNew,     SIGNAL(triggered(bool)), this, SLOT(onFileNew    ()));
 	QObject::connect(actFileOpen,    SIGNAL(triggered(bool)), this, SLOT(onFileOpen   ()));
@@ -195,6 +183,23 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 
 RDOStudioMainFrame::~RDOStudioMainFrame()
 {}
+
+void RDOStudioMainFrame::createStatusBar()
+{
+	m_pSBCoord         = new QLabel(this);
+	m_pSBModify        = new QLabel(this);
+	m_pSBModelTime     = new QLabel(this);
+	m_pSBModelRuntype  = new QLabel(this);
+	m_pSBModelSpeed    = new QLabel(this);
+	m_pSBModelShowRate = new QLabel(this);
+
+	parent_type::statusBar()->addWidget(m_pSBCoord,         5);
+	parent_type::statusBar()->addWidget(m_pSBModify,        5);
+	parent_type::statusBar()->addWidget(m_pSBModelTime,     5);
+	parent_type::statusBar()->addWidget(m_pSBModelRuntype,  5);
+	parent_type::statusBar()->addWidget(m_pSBModelSpeed,    5);
+	parent_type::statusBar()->addWidget(m_pSBModelShowRate, 5);
+}
 
 void RDOStudioMainFrame::init()
 {
