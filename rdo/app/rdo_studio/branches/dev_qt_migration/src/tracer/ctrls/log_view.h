@@ -37,7 +37,7 @@ public:
 	void  push_back (CREF(tstring) log );
 	void  setText   (tstring       text);
 	void  clear     ();
-	void  selectLine(int index);
+	void  selectLine(rsint index);
 
 	rbool getFocusOnly() const;
 	void  setFocusOnly(rbool value);
@@ -49,6 +49,8 @@ public:
 	void  setDrawLog(rbool value);
 
 private:
+	typedef  ActionActivatorWidget  parent_type;
+
 	class StringList
 	{
 	public:
@@ -71,8 +73,8 @@ private:
 		tstring::size_type maxLegth () const;
 		void               setCursor(rsint pos, rsint max);
 
-		const_iterator         findString (int index) const;
-		const_reverse_iterator rFindString(int index) const;
+		const_iterator         findString (rsint index) const;
+		const_reverse_iterator rFindString(rsint index) const;
 
 	private:
 		List                m_list;
@@ -84,21 +86,17 @@ private:
 		void seek(rsint delta, REF(StringList::const_iterator) it) const;
 	};
 
-	StringList m_strings;
+	struct SubitemColors
+	{
+		typedef std::map<rsint, PTR(LogColorPair)> List;
 
-	LogStyle*  m_logStyle;
-	rbool getItemColors(CREF(tstring) item, LogColorPair* &colors) const;
-	rbool getItemColors(int index, LogColorPair* &colors) const;
+		List              m_colorList;
+		rbool             m_addingSubitems;
+		PTR(LogColorPair) m_parentColor;
 
-	rsint selectedLine() const;
-
-	rsint m_lineHeight;
-	rsint m_charWidth;
-	rsint m_selectedLine;
-
-	QMenu* m_pPopupMenu;
-
-	void  setSelectedLine(rsint selectedLine);
+		SubitemColors();
+		SubitemColors(CREF(SubitemColors) subitemColors);
+	};
 
 	struct ScrollMetric
 	{
@@ -120,83 +118,65 @@ private:
 		rbool applyInc (rsint delta);
 	};
 
-	ScrollMetric      m_SM_X;
-	ScrollMetricVert  m_SM_Y;
-
-	struct SubitemColors
-	{
-		typedef std::map<int, PTR(LogColorPair)> List;
-
-		List              m_colorList;
-		rbool             m_addingSubitems;
-		PTR(LogColorPair) m_parentColor;
-
-		SubitemColors()
-			: m_addingSubitems(false)
-			, m_parentColor   (NULL )
-		{}
-		SubitemColors(CREF(SubitemColors) subitemColors)
-			: m_colorList     (subitemColors.m_colorList     )
-			, m_addingSubitems(subitemColors.m_addingSubitems)
-			, m_parentColor   (subitemColors.m_parentColor   )
-		{}
-	};
-	SubitemColors m_subitemColors;
-
-	QRect m_clientRect;
-	QRect m_prevWindowRect;
-
-	int m_fullRepaintLines;
-	rbool m_focusOnly;
-
+	QAbstractScrollArea* m_pScrollArea;
+	StringList           m_strings;
+	LogStyle*            m_logStyle;
+	rsint                m_lineHeight;
+	rsint                m_charWidth;
+	rsint                m_selectedLine;
+	QMenu*               m_pPopupMenu;
+	ScrollMetric         m_SM_X;
+	ScrollMetricVert     m_SM_Y;
+	SubitemColors        m_subitemColors;
+	QRect                m_clientRect;
+	QRect                m_prevWindowRect;
+	rsint                m_fullRepaintLines;
+	rbool                m_focusOnly;
 	FindDialog*          m_pFindDialog;
 	FindDialog::Settings m_findSettings;
-	rsint find(rbool searchDown);
-	void  onFindDlgFind (CREF(FindDialog::Settings) settings);
-	void  onFindDlgClose();
+	rbool                m_drawLog;
+	QFont                m_font;
 
-	tstring getString      (int index) const;
-	tstring getSelected    () const;
-	rbool   makeLineVisible(int index);
+	rbool getItemColors(CREF(tstring) item, LogColorPair* &colors) const;
+	rbool getItemColors(rsint index, LogColorPair* &colors) const;
 
-	void  updateScrollBars();
+	rsint selectedLine() const;
+	void  setSelectedLine(rsint selectedLine);
 
-	rbool scrollVertically  (int pos);
-	rbool scrollHorizontally(int pos);
-	
-	rbool isFullyVisible(int index) const;
+	tstring     getString          (rsint index) const;
+	tstring     getSelected        () const;
 
-	QRect getLineRect(int index) const;
-	void  repaintLine (int index);
+	QScrollBar& getVertScrollBar   ();
+	QScrollBar& getHorzScrollBar   ();
+	void        updateScrollBars   ();
+	rbool       scrollVertically   (rsint pos);
+	rbool       scrollHorizontally (rsint pos);
 
-	void  updateWindow();
+	rbool       makeLineVisible    (rsint index);
+	rbool       isFullyVisible     (rsint index) const;
+	QRect       getLineRect        (rsint index) const;
+	void        repaintLine        (rsint index);
 
-	rbool m_drawLog;
+	void        setFont            ();
+	void        setUpActionEditCopy(rbool activate);
+	void        setUpCoordStatusBar(rbool activate);
+	rbool       canCopy            () const;
 
-	QFont m_font;
-	void setFont();
+	rsint       find               (rbool searchDown);
+	void        onFindDlgFind      (CREF(FindDialog::Settings) settings);
+	void        onFindDlgClose     ();
 
-	PTR(QAbstractScrollArea) m_pScrollArea;
-
-	typedef  ActionActivatorWidget  parent_type;
 	virtual void resizeEvent    (QResizeEvent* pEvent);
 	virtual void paintEvent     (QPaintEvent*  pEvent);
 	virtual void keyPressEvent  (QKeyEvent*    pEvent);
 	virtual void wheelEvent     (QWheelEvent*  pEvent);
 	virtual void mousePressEvent(QMouseEvent*  pEvent);
 
-	REF(QScrollBar) getVertScrollBar();
-	REF(QScrollBar) getHorzScrollBar();
-
-	void  setUpActionEditCopy(rbool activate);
-	void  setUpCoordStatusBar(rbool activate);
-	rbool canCopy() const;
-
 	DECLARE_ActionActivatorWidget;
 
 private slots:
-	void onVertScrollBarValueChanged(int value);
-	void onHorzScrollBarValueChanged(int value);
+	void onVertScrollBarValueChanged(rsint value);
+	void onHorzScrollBarValueChanged(rsint value);
 	void onEditCopy                 ();
 	void onSearchFind               ();
 	void onSearchFindNext           ();
