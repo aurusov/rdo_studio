@@ -41,7 +41,6 @@ class RDOStudioModel
 Q_OBJECT
 
 friend class RDOStudioFrameTreeCtrl;
-friend class RDOStudioApp;
 friend class RDOThreadStudioGUI;
 
 private:
