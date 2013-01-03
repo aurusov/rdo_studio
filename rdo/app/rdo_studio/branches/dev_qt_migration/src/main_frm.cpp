@@ -76,10 +76,11 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 	createStatusBar();
 	createToolBar  ();
 
-	QObject::connect(actViewSettings, SIGNAL(triggered(bool)), this, SLOT(onViewOptions()));
+	connect(actViewSettings, SIGNAL(triggered(bool)), this, SLOT(onViewOptions()));
+	connect(actHelpContext,  SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
+	connect(actHelpAbout,    SIGNAL(triggered(bool)), this, SLOT(onHelpAbout  ()));
 
-	QObject::connect(actHelpContext, SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
-	QObject::connect(actHelpAbout,   SIGNAL(triggered(bool)), this, SLOT(onHelpAbout  ()));
+	connect(m_pModelToolBar, SIGNAL(orientationChanged(Qt::Orientation)), this, SLOT(onModelToolBarOrientationChanged(Qt::Orientation)));
 
 	Scintilla_LinkLexers();
 }
@@ -151,7 +152,7 @@ void RDOStudioMainFrame::createToolBar()
 	m_pModelSpeedSlider = new QSlider(Qt::Horizontal, this);
 	m_pModelSpeedSlider->setRange(0, 100);
 	m_pModelSpeedSlider->setValue(100);
-	m_pModelSpeedSlider->setMaximumSize(100, QWIDGETSIZE_MAX);
+	m_pModelSpeedSlider->setMaximumSize(100, 100);
 
 	m_pModelToolBar = addToolBar("Модель");
 	m_pModelToolBar->setIconSize(iconSize);
@@ -561,4 +562,9 @@ void RDOStudioMainFrame::onDockVisibleChanged(rbool visible)
 			pEditorTab->getItemEdit(i)->setLog(*pLog);
 		}
 	}
+}
+
+void RDOStudioMainFrame::onModelToolBarOrientationChanged(Qt::Orientation orientation)
+{
+	m_pModelSpeedSlider->setOrientation(orientation);
 }

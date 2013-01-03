@@ -122,11 +122,11 @@ private:
 
 private slots:
 	void onViewOptions();
-
 	void onHelpContext();
 	void onHelpAbout  ();
 
 	void onDockVisibleChanged(bool visible);
+	void onModelToolBarOrientationChanged(Qt::Orientation orientation);
 
 private:
 	afx_msg void OnDestroy();
