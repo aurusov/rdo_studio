@@ -39,20 +39,6 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOToolBar
-// --------------------------------------------------------------------------------
-void RDOToolBar::init( CWnd* parent, unsigned int tbResID, unsigned int tbDisabledImageResID )
-{
-	CreateEx( parent, 0, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLOATING | CBRS_FLYBY | CBRS_SIZE_DYNAMIC );
-	LoadToolBar( tbResID );
-	ModifyStyle( 0, TBSTYLE_FLAT | TBSTYLE_TRANSPARENT );
-	SetWindowText( rdo::format( tbResID ).c_str() );
-
-	disabledImage.Create( tbDisabledImageResID, 16, 0, 0xFF00FF );
-	GetToolBarCtrl().SetDisabledImageList( &disabledImage );
-}
-
-// --------------------------------------------------------------------------------
 // -------------------- RDOStudioMainFrame
 // --------------------------------------------------------------------------------
 //! @todo qt
