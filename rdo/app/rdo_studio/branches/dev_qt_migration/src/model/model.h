@@ -62,12 +62,6 @@ private:
 	rbool                                  m_GUI_HAS_MODEL;
 	rbool                                  m_GUI_CAN_RUN;
 	rbool                                  m_GUI_IS_RUNING;
-	rbool                                  m_GUI_ACTION_NEW;
-	rbool                                  m_GUI_ACTION_OPEN;
-	rbool                                  m_GUI_ACTION_SAVE;
-	rbool                                  m_GUI_ACTION_CLOSE;
-	rbool                                  m_GUI_ACTION_BUILD;
-	rbool                                  m_GUI_ACTION_RUN;
 
 	SYSTEMTIME                             m_timeStart;
 	BuildState                             m_buildState;

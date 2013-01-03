@@ -77,12 +77,6 @@ RDOStudioModel::RDOStudioModel()
 	, m_GUI_HAS_MODEL    (false                     )
 	, m_GUI_CAN_RUN      (true                      )
 	, m_GUI_IS_RUNING    (false                     )
-	, m_GUI_ACTION_NEW   (true                      )
-	, m_GUI_ACTION_OPEN  (true                      )
-	, m_GUI_ACTION_SAVE  (true                      )
-	, m_GUI_ACTION_CLOSE (true                      )
-	, m_GUI_ACTION_BUILD (true                      )
-	, m_GUI_ACTION_RUN   (true                      )
 	, m_openError        (false                     )
 	, m_smrEmptyError    (false                     )
 	, m_modelClosed      (true                      )
@@ -1387,32 +1381,32 @@ rbool RDOStudioModel::isModify() const
 
 rbool RDOStudioModel::canNew() const
 {
-	return ((hasModel() && m_GUI_CAN_RUN) || !hasModel()) && m_GUI_ACTION_NEW;
+	return ((hasModel() && m_GUI_CAN_RUN) || !hasModel());
 }
 
 rbool RDOStudioModel::canOpen() const
 {
-	return ((hasModel() && m_GUI_CAN_RUN) || !hasModel()) && m_GUI_ACTION_OPEN;
+	return ((hasModel() && m_GUI_CAN_RUN) || !hasModel());
 }
 
 rbool RDOStudioModel::canSave() const
 {
-	return isModify() && m_GUI_ACTION_SAVE;
+	return isModify();
 }
 
 rbool RDOStudioModel::canClose() const
 {
-	return hasModel() && !isRunning() && m_GUI_ACTION_CLOSE;
+	return hasModel() && !isRunning();
 }
 
 rbool RDOStudioModel::canBuild() const
 {
-	return hasModel() && m_GUI_CAN_RUN && m_GUI_ACTION_BUILD;
+	return hasModel() && m_GUI_CAN_RUN;
 }
 
 rbool RDOStudioModel::canRun() const
 {
-	return hasModel() && m_GUI_CAN_RUN && m_GUI_ACTION_RUN;
+	return hasModel() && m_GUI_CAN_RUN;
 }
 
 rbool RDOStudioModel::isRunning() const
