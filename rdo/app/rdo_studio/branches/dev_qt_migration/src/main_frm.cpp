@@ -97,7 +97,6 @@ void RDOToolBarModel::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar
 //BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
 //	ON_WM_CREATE()
 //	ON_WM_DESTROY()
-//	ON_COMMAND(ID_VIEW_OPTIONS, OnViewOptions)
 //	ON_COMMAND(ID_MODEL_RUNTIME_MAXSPEED, OnModelRuntimeMaxSpeed)
 //	ON_COMMAND(ID_MODEL_RUNTIME_JUMP, OnModelRuntimeJump)
 //	ON_COMMAND(ID_MODEL_RUNTIME_SYNC, OnModelRuntimeSync)
