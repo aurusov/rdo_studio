@@ -93,9 +93,9 @@ public:
 
 	double getSpeed() const { return modelToolBar.getSpeed(); }
 
-	virtual void beginProgress(rsint lower, rsint upper);
-	virtual void stepProgress ();
-	virtual void endProgress  ();
+	void beginProgress(rsint lower, rsint upper);
+	void stepProgress ();
+	void endProgress  ();
 
 	void update_start();
 	void update_stop ();

@@ -60,10 +60,6 @@ public:
 
 	virtual double getSpeed() const = 0;
 
-	virtual void beginProgress(rsint lower, rsint upper) = 0;
-	virtual void stepProgress ()                         = 0;
-	virtual void endProgress  ()                         = 0;
-
 	virtual void update_start() = 0;
 	virtual void update_stop () = 0;
 

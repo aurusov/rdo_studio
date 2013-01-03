@@ -824,8 +824,8 @@ void RDOStudioModel::openModelFromRepository()
 	setName(data_smr.m_name);
 
 	int cnt = m_pModelView->getTab().count();
-	studioApp.getIMainWnd()->beginProgress(0, cnt * 2 + 1);
-	studioApp.getIMainWnd()->stepProgress();
+	studioApp.getMainWndUI()->beginProgress(0, cnt * 2 + 1);
+	studioApp.getMainWndUI()->stepProgress();
 	for (int i = 0; i < cnt; i++)
 	{
 		PTR(RDOEditorEdit) edit = m_pModelView->getTab().getItemEdit(i);
@@ -843,7 +843,7 @@ void RDOStudioModel::openModelFromRepository()
 		{
 			canLoad = false;
 		}
-		studioApp.getIMainWnd()->stepProgress();
+		studioApp.getMainWndUI()->stepProgress();
 		if (canLoad)
 		{
 			rdo::repository::RDOThreadRepository::FileInfo data(type);
@@ -883,9 +883,9 @@ void RDOStudioModel::openModelFromRepository()
 		edit->setCurrentPos(0);
 		edit->setModifyFalse();
 		edit->clearUndoBuffer();
-		studioApp.getIMainWnd()->stepProgress();
+		studioApp.getMainWndUI()->stepProgress();
 	}
-	studioApp.getIMainWnd()->endProgress();
+	studioApp.getMainWndUI()->endProgress();
 
 	updateFrmDescribed();
 
@@ -923,8 +923,8 @@ void RDOStudioModel::saveModelToRepository()
 	}
 	if (progress_cnt)
 	{
-		studioApp.getIMainWnd()->beginProgress(0, progress_cnt * 2 + 1);
-		studioApp.getIMainWnd()->stepProgress();
+		studioApp.getMainWndUI()->beginProgress(0, progress_cnt * 2 + 1);
+		studioApp.getMainWndUI()->stepProgress();
 		for (int i = 0; i < cnt; i++)
 		{
 			PTR(RDOEditorEdit) edit = m_pModelView->getTab().getItemEdit(i);
@@ -932,7 +932,7 @@ void RDOStudioModel::saveModelToRepository()
 			{
 				rdo::binarystream stream;
 				edit->save(stream);
-				studioApp.getIMainWnd()->stepProgress();
+				studioApp.getMainWndUI()->stepProgress();
 				rdoModelObjects::RDOFileType type = m_pModelView->getTab().indexToType(i);
 				switch (type)
 				{
@@ -954,9 +954,9 @@ void RDOStudioModel::saveModelToRepository()
 				}
 				edit->setModifyFalse();
 			}
-			studioApp.getIMainWnd()->stepProgress();
+			studioApp.getMainWndUI()->stepProgress();
 		}
-		studioApp.getIMainWnd()->endProgress();
+		studioApp.getMainWndUI()->endProgress();
 		wasSaved = true;
 	}
 
