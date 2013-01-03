@@ -40,7 +40,7 @@ SET(MAIN_FILES
     main.cpp
 	)
 
-ADD_EXECUTABLE(rdo ${HEADER_FILES} ${SOURCE_FILES} ${MAIN_FILES})
+ADD_EXECUTABLE(rdo ${HEADER_FILES} ${SOURCE_FILES} ${MAIN_FILES} ${COMMON_FILES} ${SCRIPT_FILES})
 SET_TARGET_PROPERTIES(rdo PROPERTIES FOLDER ${APPS_FOLDERS})
 
 ADD_DEPENDENCIES(rdo rdo_utils)
@@ -95,5 +95,13 @@ SOURCE_GROUP(".xml" FILES
 	rdo_mouse_event_xml_reader.h
 	rdo_mouse_event_xml_reader.cpp
     )
+
+SOURCE_GROUP(".doc" FILES
+	${COMMON_FILES}
+	)
+
+SOURCE_GROUP(".scripts" FILES
+	${SCRIPT_FILES}
+	)
 
 ENDIF(MSVC)
