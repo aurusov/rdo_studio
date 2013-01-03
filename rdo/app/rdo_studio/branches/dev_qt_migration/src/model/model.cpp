@@ -76,7 +76,7 @@ RDOStudioModel::RDOStudioModel()
 	, m_showCanNotCloseModelMessage(true            )
 	, m_GUI_HAS_MODEL    (false                     )
 	, m_GUI_CAN_RUN      (true                      )
-	, m_GUI_IS_RUNING    (false                     )
+	, m_GUI_IS_RUNNING   (false                     )
 	, m_openError        (false                     )
 	, m_smrEmptyError    (false                     )
 	, m_modelClosed      (true                      )
@@ -101,6 +101,10 @@ RDOStudioModel::RDOStudioModel()
 	connect(pMainWindow->actModelBuild, SIGNAL(triggered(bool)), this, SLOT(onModelBuild()));
 	connect(pMainWindow->actModelRun,   SIGNAL(triggered(bool)), this, SLOT(onModelRun  ()));
 	connect(pMainWindow->actModelStop,  SIGNAL(triggered(bool)), this, SLOT(onModelStop ()));
+
+	setHasModel (m_GUI_HAS_MODEL );
+	setCanRun   (m_GUI_CAN_RUN   );
+	setIsRunning(m_GUI_IS_RUNNING);
 
 	m_timeNowSignal.connect(boost::bind(&RDOStudioMainFrame::onUpdateModelTime, static_cast<RDOStudioMainFrame*>(studioApp.getIMainWnd()), _1));
 
@@ -326,7 +330,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		}
 		case RDOThread::RT_RUNTIME_MODEL_START_AFTER:
 		{
-			m_GUI_IS_RUNING = true;
+			setIsRunning(true);
 			sendMessage(kernel->runtime(), RT_RUNTIME_GET_MODE, &m_runtimeMode);
 			sendMessage(kernel->runtime(), RT_RUNTIME_GET_SPEED, &m_speed);
 			setSpeed(studioApp.getIMainWnd()->getSpeed());
@@ -364,8 +368,8 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			{
 				studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(IDS_MODEL_DURATION, delay));
 			}
-			m_GUI_CAN_RUN   = true;
-			m_GUI_IS_RUNING = false;
+			setCanRun   (true );
+			setIsRunning(false);
 			break;
 		}
 		case RDOThread::RT_SIMULATOR_MODEL_STOP_OK:
@@ -455,7 +459,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		}
 		case RDOThread::RT_SIMULATOR_PARSE_ERROR:
 		{
-			m_GUI_IS_RUNING = false;
+			setIsRunning(false);
 			sendMessage(kernel->simulator(), RT_SIMULATOR_GET_MODEL_EXITCODE, &m_exitCode);
 			std::vector<FileMessage> errors;
 			studioApp.m_pStudioGUI->sendMessage(kernel->simulator(), RDOThread::RT_SIMULATOR_GET_ERRORS, &errors);
@@ -479,7 +483,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 				studioApp.getIMainWnd()->getDockBuild().getContext().showFirstError();
 			}
 
-			m_GUI_CAN_RUN = true;
+			setCanRun(true);
 			m_buildState  = BS_ERROR;
 			studioApp.autoCloseByModel();
 			break;
@@ -648,7 +652,7 @@ rbool RDOStudioModel::runModel()
 {
 	if (buildModel())
 	{
-		m_GUI_CAN_RUN = false;
+		setCanRun(false);
 		studioApp.getIMainWnd()->getDockBuild().clear();
 		studioApp.getIMainWnd()->getDockDebug().clear();
 		studioApp.getIMainWnd()->getDockResults().clear();
@@ -697,7 +701,7 @@ void RDOStudioModel::createProcView()
 
 void RDOStudioModel::newModelFromRepository()
 {
-	m_GUI_HAS_MODEL = true;
+	setHasModel(true);
 
 	PTR(RPMethodProc2RDO) pMethod = getProc2rdo();
 	if (pMethod)
@@ -777,7 +781,7 @@ void RDOStudioModel::newModelFromRepository()
 
 void RDOStudioModel::openModelFromRepository()
 {
-	m_GUI_HAS_MODEL = true;
+	setHasModel(true);
 
 	PTR(RPMethodProc2RDO) pMethod = getProc2rdo();
 	if (pMethod)
@@ -1047,7 +1051,7 @@ void RDOStudioModel::closeModelFromRepository()
 		m_pModelProcView->parentWidget()->close();
 		m_pModelProcView = NULL;
 	}
-	m_GUI_HAS_MODEL = false;
+	setHasModel(false);
 	if (!m_showCanNotCloseModelMessage)
 	{
 		m_showCanNotCloseModelMessage = true;
@@ -1286,6 +1290,34 @@ rbool RDOStudioModel::hasModel() const
 	return m_GUI_HAS_MODEL;
 }
 
+void RDOStudioModel::setHasModel(rbool value)
+{
+	m_GUI_HAS_MODEL = value;
+	setUpActions();
+}
+
+void RDOStudioModel::setCanRun(rbool value)
+{
+	m_GUI_CAN_RUN = value;
+	setUpActions();
+}
+
+void RDOStudioModel::setUpActions()
+{
+	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
+	ASSERT(pMainWindow);
+	pMainWindow->actFileNew->setEnabled(canNew());
+	pMainWindow->actFileOpen->setEnabled(canOpen());
+	pMainWindow->actFileSave->setEnabled(canSave());
+	pMainWindow->actFileSaveAs->setEnabled(hasModel() && !isRunning());
+	pMainWindow->actFileSaveAll->setEnabled(canSave());
+	pMainWindow->actFileClose->setEnabled(canClose());
+
+	pMainWindow->actModelBuild->setEnabled(canBuild());
+	pMainWindow->actModelRun->setEnabled(canRun());
+	pMainWindow->actModelStop->setEnabled(isRunning());
+}
+
 void RDOStudioModel::update()
 {
 	sendMessage(kernel->runtime(), RT_RUNTIME_GET_TIMENOW, &m_timeNow);
@@ -1381,12 +1413,12 @@ rbool RDOStudioModel::isModify() const
 
 rbool RDOStudioModel::canNew() const
 {
-	return ((hasModel() && m_GUI_CAN_RUN) || !hasModel());
+	return (canRun() || !hasModel());
 }
 
 rbool RDOStudioModel::canOpen() const
 {
-	return ((hasModel() && m_GUI_CAN_RUN) || !hasModel());
+	return (canRun() || !hasModel());
 }
 
 rbool RDOStudioModel::canSave() const
@@ -1401,7 +1433,7 @@ rbool RDOStudioModel::canClose() const
 
 rbool RDOStudioModel::canBuild() const
 {
-	return hasModel() && m_GUI_CAN_RUN;
+	return canRun();
 }
 
 rbool RDOStudioModel::canRun() const
@@ -1411,7 +1443,13 @@ rbool RDOStudioModel::canRun() const
 
 rbool RDOStudioModel::isRunning() const
 {
-	return m_GUI_IS_RUNING;
+	return m_GUI_IS_RUNNING;
+}
+
+void RDOStudioModel::setIsRunning(rbool value)
+{
+	m_GUI_IS_RUNNING = value;
+	setUpActions();
 }
 
 rbool RDOStudioModel::isFrmDescribed() const
@@ -1466,7 +1504,7 @@ rbool RDOStudioModel::saveModified()
 		m_autoDeleteDoc = false;
 		closeModel();
 		m_autoDeleteDoc = true;
-		m_GUI_HAS_MODEL = false;
+		setHasModel(false);
 	}
 	return result;
 }

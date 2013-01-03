@@ -145,17 +145,7 @@ void g_messageOutput(QtMsgType type, const char *msg)
 #endif
 
 BEGIN_MESSAGE_MAP(RDOStudioApp, CWinApp)
-	ON_UPDATE_COMMAND_UI(ID_FILE_MODEL_SAVE,    OnUpdateFileSave   )
-	ON_UPDATE_COMMAND_UI(ID_FILE_SAVE_ALL,      OnUpdateFileSaveAll)
-	ON_UPDATE_COMMAND_UI(ID_FILE_MODEL_CLOSE,   OnUpdateFileClose  )
-	ON_UPDATE_COMMAND_UI(ID_FILE_MODEL_SAVE_AS, OnUpdateFileSaveAs )
-	ON_UPDATE_COMMAND_UI(ID_MODEL_BUILD,        OnUpdateModelBuild )
-	ON_UPDATE_COMMAND_UI(ID_MODEL_RUN,          OnUpdateModelRun   )
-	ON_UPDATE_COMMAND_UI(ID_MODEL_STOP,         OnUpdateModelStop  )
-	ON_UPDATE_COMMAND_UI(ID_FILE_NEW,           OnUpdateFileNew    )
-	ON_UPDATE_COMMAND_UI(ID_FILE_OPEN,          OnUpdateFileOpen   )
-	ON_COMMAND_RANGE    (ID_FILE_REOPEN_1, ID_FILE_REOPEN_10, OnProjectReopen)
-	ON_COMMAND          (ID_FILE_PRINT_SETUP,   CWinApp::OnFilePrintSetup)
+	ON_COMMAND_RANGE(ID_FILE_REOPEN_1, ID_FILE_REOPEN_10, OnProjectReopen)
 END_MESSAGE_MAP()
 
 RDOStudioApp::RDOStudioApp()
@@ -472,36 +462,6 @@ rbool RDOStudioApp::shortToLongPath(CREF(tstring) shortPath, REF(tstring) longPa
 	}
 }
 
-void RDOStudioApp::OnUpdateFileNew(PTR(CCmdUI) pCmdUI)
-{
-	pCmdUI->Enable(model->canNew());
-}
-
-void RDOStudioApp::OnUpdateFileOpen(PTR(CCmdUI) pCmdUI)
-{
-	pCmdUI->Enable(model->canOpen());
-}
-
-void RDOStudioApp::OnUpdateFileClose(PTR(CCmdUI) pCmdUI) 
-{
-	pCmdUI->Enable(model->canClose());
-}
-
-void RDOStudioApp::OnUpdateFileSave(PTR(CCmdUI) pCmdUI) 
-{
-	pCmdUI->Enable(model->canSave());
-}
-
-void RDOStudioApp::OnUpdateFileSaveAs(PTR(CCmdUI) pCmdUI) 
-{
-	pCmdUI->Enable(model->hasModel() && !model->isRunning());
-}
-
-void RDOStudioApp::OnUpdateFileSaveAll(PTR(CCmdUI) pCmdUI) 
-{
-	pCmdUI->Enable(model->canSave());
-}
-
 void RDOStudioApp::OnProjectReopen(UINT nID)
 {
 	ruint i = 0;
@@ -693,21 +653,6 @@ void RDOStudioApp::saveReopen() const
 		{}
 		END_CATCH
 	}
-}
-
-void RDOStudioApp::OnUpdateModelBuild(PTR(CCmdUI) pCmdUI) 
-{
-	pCmdUI->Enable(model->canBuild());
-}
-
-void RDOStudioApp::OnUpdateModelRun(PTR(CCmdUI) pCmdUI) 
-{
-	pCmdUI->Enable(model->canRun());
-}
-
-void RDOStudioApp::OnUpdateModelStop(PTR(CCmdUI) pCmdUI) 
-{
-	pCmdUI->Enable(model->isRunning());
 }
 
 tstring RDOStudioApp::getFullExtName()

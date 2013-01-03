@@ -61,7 +61,20 @@ private:
 
 	rbool                                  m_GUI_HAS_MODEL;
 	rbool                                  m_GUI_CAN_RUN;
-	rbool                                  m_GUI_IS_RUNING;
+	rbool                                  m_GUI_IS_RUNNING;
+
+	void setHasModel (rbool value);
+	void setCanRun   (rbool value);
+	void setIsRunning(rbool value);
+	void setUpActions();
+
+	rbool  isModify      () const;
+	rbool  canNew        () const;
+	rbool  canOpen       () const;
+	rbool  canSave       () const;
+	rbool  canClose      () const;
+	rbool  canBuild      () const;
+	rbool  canRun        () const;
 
 	SYSTEMTIME                             m_timeStart;
 	BuildState                             m_buildState;
@@ -142,13 +155,6 @@ public:
 	void          setName    (CREF(tstring) str);
 	tstring       getFullName() const;
 
-	rbool  isModify      () const;
-	rbool  canNew        () const;
-	rbool  canOpen       () const;
-	rbool  canSave       () const;
-	rbool  canClose      () const;
-	rbool  canBuild      () const;
-	rbool  canRun        () const;
 	rbool  isRunning     () const;
 	rbool  isFrmDescribed() const;
 	double getTimeNow    () const;

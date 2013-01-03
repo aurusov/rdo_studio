@@ -125,17 +125,7 @@ private:
 	virtual BOOL OnIdle              (LONG lCount);
 	virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
 
-	afx_msg void OnWindowNew        ();
-	afx_msg void OnProjectReopen    (UINT nID);
-	afx_msg void OnUpdateFileSave   (PTR(CCmdUI) pCmdUI);
-	afx_msg void OnUpdateFileSaveAll(PTR(CCmdUI) pCmdUI);
-	afx_msg void OnUpdateFileClose  (PTR(CCmdUI) pCmdUI);
-	afx_msg void OnUpdateFileSaveAs (PTR(CCmdUI) pCmdUI);
-	afx_msg void OnUpdateModelBuild (PTR(CCmdUI) pCmdUI);
-	afx_msg void OnUpdateModelRun   (PTR(CCmdUI) pCmdUI);
-	afx_msg void OnUpdateModelStop  (PTR(CCmdUI) pCmdUI);
-	afx_msg void OnUpdateFileNew    (PTR(CCmdUI) pCmdUI);
-	afx_msg void OnUpdateFileOpen   (PTR(CCmdUI) pCmdUI);
+	afx_msg void OnProjectReopen(UINT nID);
 	DECLARE_MESSAGE_MAP()
 };
 
