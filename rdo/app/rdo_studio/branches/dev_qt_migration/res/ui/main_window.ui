@@ -68,7 +68,7 @@
      <string>Правка</string>
     </property>
     <addaction name="actEditUndo"/>
-    <addaction name="acteditRedo"/>
+    <addaction name="actEditRedo"/>
     <addaction name="separator"/>
     <addaction name="actEditCut"/>
     <addaction name="actEditCopy"/>
@@ -97,7 +97,7 @@
     <addaction name="separator"/>
     <addaction name="actSearchBookmarksAddClear"/>
     <addaction name="actSearchBookmarkNext"/>
-    <addaction name="actSearchBookmarkPrevious"/>
+    <addaction name="actSearchBookmarkPrev"/>
     <addaction name="actSearchBookmarksClearAll"/>
     <addaction name="separator"/>
     <addaction name="actSearchGotoLine"/>
@@ -121,8 +121,8 @@
     <addaction name="actViewShowSpace"/>
     <addaction name="actViewShowEndSymbol"/>
     <addaction name="separator"/>
-    <addaction name="actViewZoomMax"/>
-    <addaction name="actViewZoomMin"/>
+    <addaction name="actViewZoomInc"/>
+    <addaction name="actViewZoomDec"/>
     <addaction name="actViewZoomAuto"/>
     <addaction name="actViewZoomReset"/>
     <addaction name="separator"/>
@@ -148,8 +148,10 @@
     <addaction name="actModelRuntimeSync"/>
     <addaction name="actModelRuntimePause"/>
     <addaction name="separator"/>
-    <addaction name="actModelShowrateInc"/>
-    <addaction name="actModelShowrateDec"/>
+    <addaction name="actModelShowRateInc"/>
+    <addaction name="actModelShowRateIncFour"/>
+    <addaction name="actModelShowRateDecFour"/>
+    <addaction name="actModelShowRateDec"/>
     <addaction name="separator"/>
     <addaction name="actModelFrameNext"/>
     <addaction name="actModelFramePrev"/>
@@ -184,6 +186,11 @@
    <addaction name="menuHelp"/>
   </widget>
   <action name="actFileNew">
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/file_new.png</normaloff>
+     <disabledoff>:/images/images/file_new_d.png</disabledoff>:/images/images/file_new.png</iconset>
+   </property>
    <property name="text">
     <string>Новая модель...</string>
    </property>
@@ -192,6 +199,11 @@
    </property>
   </action>
   <action name="actFileOpen">
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/file_open.png</normaloff>
+     <disabledoff>:/images/images/file_open_d.png</disabledoff>:/images/images/file_open.png</iconset>
+   </property>
    <property name="text">
     <string>Открыть...</string>
    </property>
@@ -210,6 +222,11 @@
    </property>
   </action>
   <action name="actFileSave">
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/file_save.png</normaloff>
+     <disabledoff>:/images/images/file_save_d.png</disabledoff>:/images/images/file_save.png</iconset>
+   </property>
    <property name="text">
     <string>Сохранить</string>
    </property>
@@ -223,6 +240,11 @@
    </property>
   </action>
   <action name="actFileSaveAll">
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/file_save_all.png</normaloff>
+     <disabledoff>:/images/images/file_save_all_d.png</disabledoff>:/images/images/file_save_all.png</iconset>
+   </property>
    <property name="text">
     <string>Сохранить всё</string>
    </property>
@@ -257,6 +279,11 @@
    <property name="enabled">
     <bool>false</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/edit_undo.png</normaloff>
+     <disabledoff>:/images/images/edit_undo_d.png</disabledoff>:/images/images/edit_undo.png</iconset>
+   </property>
    <property name="text">
     <string>Отменить</string>
    </property>
@@ -264,9 +291,14 @@
     <string>Ctrl+Z</string>
    </property>
   </action>
-  <action name="acteditRedo">
+  <action name="actEditRedo">
    <property name="enabled">
     <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/edit_redo.png</normaloff>
+     <disabledoff>:/images/images/edit_redo_d.png</disabledoff>:/images/images/edit_redo.png</iconset>
    </property>
    <property name="text">
     <string>Повторить</string>
@@ -279,6 +311,11 @@
    <property name="enabled">
     <bool>false</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/edit_cut.png</normaloff>
+     <disabledoff>:/images/images/edit_cut_d.png</disabledoff>:/images/images/edit_cut.png</iconset>
+   </property>
    <property name="text">
     <string>Вырезать</string>
    </property>
@@ -290,6 +327,11 @@
    <property name="enabled">
     <bool>false</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/edit_copy.png</normaloff>
+     <disabledoff>:/images/images/edit_copy_d.png</disabledoff>:/images/images/edit_copy.png</iconset>
+   </property>
    <property name="text">
     <string>Копировать</string>
    </property>
@@ -300,6 +342,11 @@
   <action name="actEditPaste">
    <property name="enabled">
     <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/edit_paste.png</normaloff>
+     <disabledoff>:/images/images/edit_paste_d.png</disabledoff>:/images/images/edit_paste.png</iconset>
    </property>
    <property name="text">
     <string>Вставить</string>
@@ -389,6 +436,11 @@
    <property name="enabled">
     <bool>false</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/search_find.png</normaloff>
+     <disabledoff>:/images/images/search_find_d.png</disabledoff>:/images/images/search_find.png</iconset>
+   </property>
    <property name="text">
     <string>Найти...</string>
    </property>
@@ -421,6 +473,11 @@
   <action name="actSearchReplace">
    <property name="enabled">
     <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/search_replace.png</normaloff>
+     <disabledoff>:/images/images/search_replace_d.png</disabledoff>:/images/images/search_replace.png</iconset>
    </property>
    <property name="text">
     <string>Заменить</string>
@@ -455,6 +512,11 @@
    <property name="enabled">
     <bool>false</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/search_bookmark_next.png</normaloff>
+     <disabledoff>:/images/images/search_bookmark_next_d.png</disabledoff>:/images/images/search_bookmark_next.png</iconset>
+   </property>
    <property name="text">
     <string>Перейти к след. закладке</string>
    </property>
@@ -462,9 +524,14 @@
     <string>F2</string>
    </property>
   </action>
-  <action name="actSearchBookmarkPrevious">
+  <action name="actSearchBookmarkPrev">
    <property name="enabled">
     <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/search_bookmark_prev.png</normaloff>
+     <disabledoff>:/images/images/search_bookmark_prev_d.png</disabledoff>:/images/images/search_bookmark_prev.png</iconset>
    </property>
    <property name="text">
     <string>Перейти к пред. закладке</string>
@@ -536,9 +603,14 @@
     <string>Ctrl+9</string>
    </property>
   </action>
-  <action name="actViewZoomMax">
+  <action name="actViewZoomInc">
    <property name="enabled">
     <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/view_zoom_inc.png</normaloff>
+     <disabledoff>:/images/images/view_zoom_inc_d.png</disabledoff>:/images/images/view_zoom_inc.png</iconset>
    </property>
    <property name="text">
     <string>Увеличить масштаб</string>
@@ -547,9 +619,14 @@
     <string>Ctrl+=</string>
    </property>
   </action>
-  <action name="actViewZoomMin">
+  <action name="actViewZoomDec">
    <property name="enabled">
     <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/view_zoom_dec.png</normaloff>
+     <disabledoff>:/images/images/view_zoom_dec_d.png</disabledoff>:/images/images/view_zoom_dec.png</iconset>
    </property>
    <property name="text">
     <string>Уменьшить масштаб</string>
@@ -562,6 +639,11 @@
    <property name="enabled">
     <bool>false</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/view_zoom_auto.png</normaloff>
+     <disabledoff>:/images/images/view_zoom_auto_d.png</disabledoff>:/images/images/view_zoom_auto.png</iconset>
+   </property>
    <property name="text">
     <string>Автоматический масштаб</string>
    </property>
@@ -569,6 +651,11 @@
   <action name="actViewZoomReset">
    <property name="enabled">
     <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/view_zoom_reset.png</normaloff>
+     <disabledoff>:/images/images/view_zoom_reset_d.png</disabledoff>:/images/images/view_zoom_reset.png</iconset>
    </property>
    <property name="text">
     <string>Восстановить масштаб</string>
@@ -591,6 +678,11 @@
    </property>
   </action>
   <action name="actModelRun">
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/model_run.png</normaloff>
+     <disabledoff>:/images/images/model_run_d.png</disabledoff>:/images/images/model_run.png</iconset>
+   </property>
    <property name="text">
     <string>Запустить</string>
    </property>
@@ -599,6 +691,11 @@
    </property>
   </action>
   <action name="actModelStop">
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/model_stop.png</normaloff>
+     <disabledoff>:/images/images/model_stop_d.png</disabledoff>:/images/images/model_stop.png</iconset>
+   </property>
    <property name="text">
     <string>Остановить</string>
    </property>
@@ -610,6 +707,11 @@
    <property name="enabled">
     <bool>false</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/model_runtime_max_speed.png</normaloff>
+     <disabledoff>:/images/images/model_runtime_max_speed_d.png</disabledoff>:/images/images/model_runtime_max_speed.png</iconset>
+   </property>
    <property name="text">
     <string>Максимальная скорость</string>
    </property>
@@ -617,6 +719,11 @@
   <action name="actModelRuntimeJump">
    <property name="enabled">
     <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/model_runtime_jump.png</normaloff>
+     <disabledoff>:/images/images/model_runtime_jump_d.png</disabledoff>:/images/images/model_runtime_jump.png</iconset>
    </property>
    <property name="text">
     <string>Дискретная имитация</string>
@@ -626,6 +733,11 @@
    <property name="enabled">
     <bool>false</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/model_runtime_sync.png</normaloff>
+     <disabledoff>:/images/images/model_runtime_sync_d.png</disabledoff>:/images/images/model_runtime_sync.png</iconset>
+   </property>
    <property name="text">
     <string>Синхронная имитация</string>
    </property>
@@ -634,13 +746,23 @@
    <property name="enabled">
     <bool>false</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/model_runtime_pause.png</normaloff>
+     <disabledoff>:/images/images/model_runtime_pause_d.png</disabledoff>:/images/images/model_runtime_pause.png</iconset>
+   </property>
    <property name="text">
     <string>Пауза</string>
    </property>
   </action>
-  <action name="actModelShowrateInc">
+  <action name="actModelShowRateInc">
    <property name="enabled">
     <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/model_show_rate_inc.png</normaloff>
+     <disabledoff>:/images/images/model_show_rate_inc_d.png</disabledoff>:/images/images/model_show_rate_inc.png</iconset>
    </property>
    <property name="text">
     <string>Увеличить масштаб</string>
@@ -649,17 +771,30 @@
     <string>Alt++</string>
    </property>
   </action>
-  <action name="actModelShowrateDec">
+  <action name="actModelShowRateDec">
    <property name="enabled">
     <bool>false</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/model_show_rate_dec.png</normaloff>
+     <disabledoff>:/images/images/model_show_rate_dec_d.png</disabledoff>:/images/images/model_show_rate_dec.png</iconset>
+   </property>
    <property name="text">
     <string>Уменьшить масштаб</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+-</string>
    </property>
   </action>
   <action name="actModelFrameNext">
    <property name="enabled">
     <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/model_frame_next.png</normaloff>
+     <disabledoff>:/images/images/model_frame_next_d.png</disabledoff>:/images/images/model_frame_next.png</iconset>
    </property>
    <property name="text">
     <string>След. кадр анимации</string>
@@ -669,11 +804,13 @@
    <property name="enabled">
     <bool>false</bool>
    </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/model_frame_prev.png</normaloff>
+     <disabledoff>:/images/images/model_frame_prev_d.png</disabledoff>:/images/images/model_frame_prev.png</iconset>
+   </property>
    <property name="text">
     <string>Пред. кадр анимации</string>
-   </property>
-   <property name="shortcut">
-    <string>Alt+-</string>
    </property>
   </action>
   <action name="actChartFindInChart">
@@ -732,6 +869,32 @@
   <action name="actViewToolbarModel">
    <property name="text">
     <string>Панель модели</string>
+   </property>
+  </action>
+  <action name="actModelShowRateIncFour">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/model_show_rate_inc_four.png</normaloff>
+     <disabledoff>:/images/images/model_show_rate_inc_four_d.png</disabledoff>:/images/images/model_show_rate_inc_four.png</iconset>
+   </property>
+   <property name="text">
+    <string>Увеличить масштаб в 4-ре раза</string>
+   </property>
+  </action>
+  <action name="actModelShowRateDecFour">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/model_show_rate_dec_four.png</normaloff>
+     <disabledoff>:/images/images/model_show_rate_dec_four_d.png</disabledoff>:/images/images/model_show_rate_dec_four.png</iconset>
+   </property>
+   <property name="text">
+    <string>Уменьшить масштаб в 4-ре раза</string>
    </property>
   </action>
  </widget>

@@ -1237,22 +1237,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\res\editToolbar.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\editToolbar_d.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\fileToolbar.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\fileToolbar_d.bmp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\res\flow_connector.cur"
 				>
 			</File>
@@ -1310,14 +1294,6 @@
 			</File>
 			<File
 				RelativePath="..\..\res\frameoptionsctrl.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\modelToolbar_d.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\modeToolbar.bmp"
 				>
 			</File>
 			<File
@@ -1532,14 +1508,6 @@
 			</File>
 			<File
 				RelativePath="..\..\res\version.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\zoomToolbar.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\res\zoomToolbar_d.bmp"
 				>
 			</File>
 			<Filter

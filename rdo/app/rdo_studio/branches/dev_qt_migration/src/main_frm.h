@@ -137,7 +137,13 @@ private:
 	PTR(QLabel)             m_pSBModelSpeed;
 	PTR(QLabel)             m_pSBModelShowRate;
 
+	PTR(QToolBar)           m_pFileToolBar;
+	PTR(QToolBar)           m_pEditToolBar;
+	PTR(QToolBar)           m_pZoomToolBar;
+	PTR(QToolBar)           m_pModelToolBar;
+
 	void createStatusBar();
+	void createToolBar  ();
 
 	virtual void closeEvent(QCloseEvent* event);
 	virtual void showEvent (QShowEvent*  event);

@@ -14,6 +14,7 @@
 #include <boost/bind.hpp>
 #include <QtCore/qprocess.h>
 #include <QtGui/qmdisubwindow.h>
+#include <QtGui/qtoolbar.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/src/application.h"
@@ -161,6 +162,7 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 	mdiArea->setOption(QMdiArea::DontMaximizeSubWindowOnActivation);
 
 	createStatusBar();
+	createToolBar  ();
 
 	QObject::connect(actFileNew,     SIGNAL(triggered(bool)), this, SLOT(onFileNew    ()));
 	QObject::connect(actFileOpen,    SIGNAL(triggered(bool)), this, SLOT(onFileOpen   ()));
@@ -199,6 +201,58 @@ void RDOStudioMainFrame::createStatusBar()
 	parent_type::statusBar()->addWidget(m_pSBModelRuntype,  5);
 	parent_type::statusBar()->addWidget(m_pSBModelSpeed,    5);
 	parent_type::statusBar()->addWidget(m_pSBModelShowRate, 5);
+}
+
+void RDOStudioMainFrame::createToolBar()
+{
+	QSize iconSize(16, 15);
+
+	m_pFileToolBar = addToolBar("Файл");
+	m_pFileToolBar->setIconSize(iconSize);
+	m_pFileToolBar->addAction(actFileNew);
+	m_pFileToolBar->addAction(actFileOpen);
+	m_pFileToolBar->addAction(actFileSave);
+	m_pFileToolBar->addAction(actFileSaveAll);
+
+	m_pEditToolBar = addToolBar("Редактирование");
+	m_pEditToolBar->setIconSize(iconSize);
+	m_pEditToolBar->addAction(actEditCut);
+	m_pEditToolBar->addAction(actEditCopy);
+	m_pEditToolBar->addAction(actEditPaste);
+	m_pEditToolBar->addSeparator();
+	m_pEditToolBar->addAction(actEditUndo);
+	m_pEditToolBar->addAction(actEditRedo);
+	m_pEditToolBar->addSeparator();
+	m_pEditToolBar->addAction(actSearchFind);
+	m_pEditToolBar->addAction(actSearchReplace);
+	m_pEditToolBar->addSeparator();
+	m_pEditToolBar->addAction(actSearchBookmarkPrev);
+	m_pEditToolBar->addAction(actSearchBookmarkNext);
+
+	m_pZoomToolBar = addToolBar("Масштаб");
+	m_pZoomToolBar->setIconSize(iconSize);
+	m_pZoomToolBar->addAction(actViewZoomInc);
+	m_pZoomToolBar->addAction(actViewZoomDec);
+	m_pZoomToolBar->addAction(actViewZoomAuto);
+	m_pZoomToolBar->addAction(actViewZoomReset);
+
+	m_pModelToolBar = addToolBar("Модель");
+	m_pModelToolBar->setIconSize(iconSize);
+	m_pModelToolBar->addAction(actModelRun);
+	m_pModelToolBar->addAction(actModelStop);
+	m_pModelToolBar->addSeparator();
+	m_pModelToolBar->addAction(actModelRuntimeMaxSpeed);
+	m_pModelToolBar->addAction(actModelRuntimeJump);
+	m_pModelToolBar->addAction(actModelRuntimeSync);
+	m_pModelToolBar->addAction(actModelRuntimePause);
+	m_pModelToolBar->addSeparator();
+	m_pModelToolBar->addAction(actModelShowRateInc);
+	m_pModelToolBar->addAction(actModelShowRateIncFour);
+	m_pModelToolBar->addAction(actModelShowRateDecFour);
+	m_pModelToolBar->addAction(actModelShowRateDec);
+	m_pModelToolBar->addSeparator();
+	m_pModelToolBar->addAction(actModelFrameNext);
+	m_pModelToolBar->addAction(actModelFramePrev);
 }
 
 void RDOStudioMainFrame::init()

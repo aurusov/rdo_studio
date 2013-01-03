@@ -444,14 +444,6 @@ IDR_TOOLBAR_STYLEANDCOLOR BITMAP                  "res\\toolbar_styleandcolor.bm
 IDR_TOOLBAR_MAINFRAME   BITMAP                  "res\\toolbar_mainframe.bmp"
 IDR_TOOLBAR_EMPTY       BITMAP                  "res\\toolbar_empty.bmp"
 IDR_TOOLBAR_MAINFRAME_D BITMAP                  "res\\toolbar_mainframe_d.bmp"
-IDB_FILE_TOOLBAR_D      BITMAP                  "res\\fileToolbar_d.bmp"
-IDB_EDIT_TOOLBAR_D      BITMAP                  "res\\editToolbar_d.bmp"
-IDR_FILE_TOOLBAR        BITMAP                  "res\\fileToolbar.bmp"
-IDR_EDIT_TOOLBAR        BITMAP                  "res\\editToolbar.bmp"
-IDR_MODEL_TOOLBAR       BITMAP                  "res\\modeToolbar.bmp"
-IDB_MODEL_TOOLBAR_D     BITMAP                  "res\\modelToolbar_d.bmp"
-IDR_ZOOM_TOOLBAR        BITMAP                  "res\\zoomToolbar.bmp"
-IDB_ZOOM_TOOLBAR_D      BITMAP                  "res\\zoomToolbar_d.bmp"
 IDB_FRAME_OPTIONS_CTRL  BITMAP                  "res\\frameoptionsctrl.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
@@ -496,57 +488,6 @@ END
 IDR_TOOLBAR_EMPTY TOOLBAR  16, 15
 BEGIN
     BUTTON      ID_BTN_EMPTY
-END
-
-IDR_FILE_TOOLBAR TOOLBAR  16, 15
-BEGIN
-    BUTTON      ID_FILE_NEW
-    BUTTON      ID_FILE_OPEN
-    BUTTON      ID_FILE_MODEL_SAVE
-    BUTTON      ID_FILE_SAVE_ALL
-END
-
-IDR_EDIT_TOOLBAR TOOLBAR  16, 15
-BEGIN
-    BUTTON      ID_EDIT_CUT
-    BUTTON      ID_EDIT_COPY
-    BUTTON      ID_EDIT_PASTE
-    SEPARATOR
-    BUTTON      ID_EDIT_UNDO
-    BUTTON      ID_EDIT_REDO
-    SEPARATOR
-    BUTTON      ID_SEARCH_FIND
-    BUTTON      ID_SEARCH_REPLACE
-    SEPARATOR
-    BUTTON      ID_SEARCH_BOOKMARK_PREVIOUS
-    BUTTON      ID_SEARCH_BOOKMARK_NEXT
-END
-
-IDR_MODEL_TOOLBAR TOOLBAR  16, 15
-BEGIN
-    BUTTON      ID_MODEL_RUN
-    BUTTON      ID_MODEL_STOP
-    SEPARATOR
-    BUTTON      ID_MODEL_RUNTIME_MAXSPEED
-    BUTTON      ID_MODEL_RUNTIME_JUMP
-    BUTTON      ID_MODEL_RUNTIME_SYNC
-    BUTTON      ID_MODEL_RUNTIME_PAUSE
-    SEPARATOR
-    BUTTON      ID_MODEL_SHOWRATE_INC
-    BUTTON      ID_MODEL_SHOWRATE_INCFOUR
-    BUTTON      ID_MODEL_SHOWRATE_DECFOUR
-    BUTTON      ID_MODEL_SHOWRATE_DEC
-    BUTTON      ID_MODEL_SPEED_SLIDER
-    BUTTON      ID_MODEL_FRAME_NEXT
-    BUTTON      ID_MODEL_FRAME_PREV
-END
-
-IDR_ZOOM_TOOLBAR TOOLBAR  16, 15
-BEGIN
-    BUTTON      ID_VIEW_ZOOMIN
-    BUTTON      ID_VIEW_ZOOMOUT
-    BUTTON      ID_VIEW_ZOOMAUTO
-    BUTTON      ID_VIEW_ZOOMRESET
 END
 
 
