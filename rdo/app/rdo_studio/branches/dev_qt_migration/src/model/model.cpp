@@ -98,6 +98,14 @@ RDOStudioModel::RDOStudioModel()
 
 	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
 	ASSERT(pMainWindow);
+
+	connect(pMainWindow->actFileNew,     SIGNAL(triggered(bool)), this, SLOT(onFileNew    ()));
+	connect(pMainWindow->actFileOpen,    SIGNAL(triggered(bool)), this, SLOT(onFileOpen   ()));
+	connect(pMainWindow->actFileClose,   SIGNAL(triggered(bool)), this, SLOT(onFileClose  ()));
+	connect(pMainWindow->actFileSave,    SIGNAL(triggered(bool)), this, SLOT(onFileSave   ()));
+	connect(pMainWindow->actFileSaveAs,  SIGNAL(triggered(bool)), this, SLOT(onFileSaveAs ()));
+	connect(pMainWindow->actFileSaveAll, SIGNAL(triggered(bool)), this, SLOT(onFileSaveAll()));
+
 	connect(pMainWindow->actModelBuild, SIGNAL(triggered(bool)), this, SLOT(onModelBuild()));
 	connect(pMainWindow->actModelRun,   SIGNAL(triggered(bool)), this, SLOT(onModelRun  ()));
 	connect(pMainWindow->actModelStop,  SIGNAL(triggered(bool)), this, SLOT(onModelStop ()));
@@ -1533,6 +1541,41 @@ CPTR(rdoEditor::RDOEditorTabCtrl) RDOStudioModel::getTab() const
 		return NULL;
 
 	return &m_pModelView->getTab();
+}
+
+void RDOStudioModel::onFileNew()
+{
+	//! @todo qt
+	//RDOStudioModelNew dlg;
+	//if (dlg.DoModal() == IDOK)
+	//{
+	//	model->newModel(dlg.getModelName(), dlg.getModelPath() + dlg.getModelName(), dlg.getModelTemplate());
+	//}
+}
+
+void RDOStudioModel::onFileOpen()
+{
+	openModel();
+}
+
+void RDOStudioModel::onFileClose()
+{
+	closeModel();
+}
+
+void RDOStudioModel::onFileSave()
+{
+	saveModel();
+}
+
+void RDOStudioModel::onFileSaveAs()
+{
+	saveAsModel();
+}
+
+void RDOStudioModel::onFileSaveAll()
+{
+	saveModel();
 }
 
 void RDOStudioModel::onModelBuild()

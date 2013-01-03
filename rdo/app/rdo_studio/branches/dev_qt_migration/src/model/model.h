@@ -98,6 +98,15 @@ private:
 
 	boost::signal<void (float)>            m_timeNowSignal;
 
+	rbool newModel      (tstring _model_name = _T(""), tstring _model_path = _T(""), const int _useTemplate = -1);
+	rbool saveModel     () const;
+	void  saveAsModel   () const;
+	void  saveToXML     ();
+	void  loadFromXML   ();
+	rbool closeModel    ();
+	rbool buildModel    ();
+	rbool stopModel     () const;
+
 	void  updateFrmDescribed      ();
 	void  newModelFromRepository  ();
 	void  openModelFromRepository ();
@@ -135,16 +144,8 @@ public:
 	RDOStudioModel();
 	virtual ~RDOStudioModel();
 
-	rbool newModel      (tstring _model_name = _T(""), tstring _model_path = _T(""), const int _useTemplate = -1);
 	rbool openModel     (CREF(tstring) modelName = _T(""));
-	rbool saveModel     () const;
-	void  saveAsModel   () const;
-	void  saveToXML     ();
-	void  loadFromXML   ();
-	rbool closeModel    ();
-	rbool buildModel    ();
 	rbool runModel      ();
-	rbool stopModel     () const;
 	void  update        ();
 	void  setGUIPause   ();
 	void  setGUIContinue();
@@ -191,6 +192,13 @@ public:
 	PTR(RPViewQt) getProcView();
 
 private slots:
+	void onFileNew    ();
+	void onFileOpen   ();
+	void onFileClose  ();
+	void onFileSave   ();
+	void onFileSaveAs ();
+	void onFileSaveAll();
+
 	void onModelBuild();
 	void onModelRun  ();
 	void onModelStop ();

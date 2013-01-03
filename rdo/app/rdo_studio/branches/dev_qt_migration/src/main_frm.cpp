@@ -155,13 +155,6 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 	createStatusBar();
 	createToolBar  ();
 
-	QObject::connect(actFileNew,     SIGNAL(triggered(bool)), this, SLOT(onFileNew    ()));
-	QObject::connect(actFileOpen,    SIGNAL(triggered(bool)), this, SLOT(onFileOpen   ()));
-	QObject::connect(actFileClose,   SIGNAL(triggered(bool)), this, SLOT(onFileClose  ()));
-	QObject::connect(actFileSave,    SIGNAL(triggered(bool)), this, SLOT(onFileSave   ()));
-	QObject::connect(actFileSaveAs,  SIGNAL(triggered(bool)), this, SLOT(onFileSaveAs ()));
-	QObject::connect(actFileSaveAll, SIGNAL(triggered(bool)), this, SLOT(onFileSaveAll()));
-
 	QObject::connect(actViewSettings, SIGNAL(triggered(bool)), this, SLOT(onViewOptions()));
 
 	QObject::connect(actHelpContext, SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
@@ -421,41 +414,6 @@ void RDOStudioMainFrame::closeEvent(QCloseEvent* event)
 		style_frame.save();
 		style_chart.save();
 	}
-}
-
-void RDOStudioMainFrame::onFileNew()
-{
-	//! @todo qt
-	//RDOStudioModelNew dlg;
-	//if (dlg.DoModal() == IDOK)
-	//{
-	//	model->newModel(dlg.getModelName(), dlg.getModelPath() + dlg.getModelName(), dlg.getModelTemplate());
-	//}
-}
-
-void RDOStudioMainFrame::onFileOpen()
-{
-	model->openModel();
-}
-
-void RDOStudioMainFrame::onFileClose()
-{
-	model->closeModel();
-}
-
-void RDOStudioMainFrame::onFileSave()
-{
-	model->saveModel();
-}
-
-void RDOStudioMainFrame::onFileSaveAs()
-{
-	model->saveAsModel();
-}
-
-void RDOStudioMainFrame::onFileSaveAll()
-{
-	model->saveModel();
 }
 
 void RDOStudioMainFrame::onModelRun()

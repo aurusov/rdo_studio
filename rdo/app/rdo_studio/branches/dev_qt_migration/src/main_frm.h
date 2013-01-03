@@ -174,13 +174,6 @@ public:
 	void onModelRun           ();
 
 private slots:
-	void onFileNew    ();
-	void onFileOpen   ();
-	void onFileClose  ();
-	void onFileSave   ();
-	void onFileSaveAs ();
-	void onFileSaveAll();
-
 	void onViewOptions();
 
 	void onHelpContext();
