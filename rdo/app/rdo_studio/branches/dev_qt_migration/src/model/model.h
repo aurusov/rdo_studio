@@ -65,15 +65,13 @@ private:
 	void setIsRunning(rbool value);
 	void setUpActions();
 
-	rbool  isModify        () const;
-	rbool  canNew          () const;
-	rbool  canOpen         () const;
-	rbool  canSave         () const;
-	rbool  canClose        () const;
-	rbool  canBuild        () const;
-	rbool  canRun          () const;
-	rbool  canShowNextFrame() const;
-	rbool  canShowPrevFrame() const;
+	rbool  isModify  () const;
+	rbool  canNew    () const;
+	rbool  canOpen   () const;
+	rbool  canSave   () const;
+	rbool  canClose  () const;
+	rbool  canBuild  () const;
+	rbool  canRun    () const;
 
 	SYSTEMTIME                             m_timeStart;
 	BuildState                             m_buildState;

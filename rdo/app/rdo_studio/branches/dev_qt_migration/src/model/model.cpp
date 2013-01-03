@@ -1285,16 +1285,6 @@ void RDOStudioModel::onShowPrevFrame()
 	m_frameManager.showPrevFrame();
 }
 
-rbool RDOStudioModel::canShowNextFrame() const
-{
-	return m_frameManager.canShowNextFrame();
-}
-
-rbool RDOStudioModel::canShowPrevFrame() const
-{
-	return m_frameManager.canShowPrevFrame();
-}
-
 int RDOStudioModel::getFrameCount() const
 {
 	return m_frameManager.count();
@@ -1362,8 +1352,8 @@ void RDOStudioModel::setUpActions()
 	pMainWindow->actModelShowRateDecFour->setEnabled(canShowRate && getShowRate() / 4.0 >= DBL_MIN);
 	pMainWindow->actModelShowRateDec->setEnabled    (canShowRate && getShowRate() / 1.5 >= DBL_MIN);
 
-	pMainWindow->actModelFrameNext->setEnabled(canShowNextFrame());
-	pMainWindow->actModelFramePrev->setEnabled(canShowPrevFrame());
+	pMainWindow->actModelFrameNext->setEnabled(m_frameManager.canShowNextFrame());
+	pMainWindow->actModelFramePrev->setEnabled(m_frameManager.canShowPrevFrame());
 }
 
 void RDOStudioModel::update()
