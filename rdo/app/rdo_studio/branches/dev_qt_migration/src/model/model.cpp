@@ -362,6 +362,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			sendMessage(kernel->runtime(), RT_RUNTIME_GET_MODE, &m_runtimeMode);
 			setRuntimeMode(m_runtimeMode);
 			sendMessage(kernel->runtime(), RT_RUNTIME_GET_SHOWRATE, &m_showRate);
+			setSpeed(m_speed);
 			afterModelStart();
 			studioApp.getIMainWnd()->getDockDebug().raise();
 			studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(IDS_MODEL_STARTED));
@@ -1246,15 +1247,15 @@ double RDOStudioModel::getSpeed() const
 
 void RDOStudioModel::setSpeed(double persent)
 {
-	if (persent >= 0 && persent <= 1 && m_speed != persent)
+	if (persent >= 0 && persent <= 1)
 	{
 		m_speed = persent;
 		if (isRunning())
 		{
 			sendMessage(kernel->runtime(), RT_RUNTIME_SET_SPEED, &m_speed);
 		}
+		setUpActions();
 	}
-	setUpActions();
 }
 
 double RDOStudioModel::getShowRate() const
