@@ -97,10 +97,6 @@ void RDOToolBarModel::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar
 //BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
 //	ON_WM_CREATE()
 //	ON_WM_DESTROY()
-//	ON_COMMAND(ID_MODEL_FRAME_NEXT, OnModelFrameNext)
-//	ON_COMMAND(ID_MODEL_FRAME_PREV, OnModelFramePrev)
-//	ON_UPDATE_COMMAND_UI(ID_MODEL_FRAME_NEXT, OnUpdateModelFrameNext)
-//	ON_UPDATE_COMMAND_UI(ID_MODEL_FRAME_PREV, OnUpdateModelFramePrev)
 //	ON_WM_TIMER()
 //	ON_WM_CLOSE()
 //	ON_WM_SHOWWINDOW()
@@ -601,26 +597,6 @@ void RDOStudioMainFrame::onHelpAbout()
 {
 	About dlg(this);
 	dlg.exec();
-}
-
-void RDOStudioMainFrame::OnModelFrameNext()
-{
-	model->showNextFrame();
-}
-
-void RDOStudioMainFrame::OnModelFramePrev()
-{
-	model->showPrevFrame();
-}
-
-void RDOStudioMainFrame::OnUpdateModelFrameNext(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable( model->canShowNextFrame() );
-}
-
-void RDOStudioMainFrame::OnUpdateModelFramePrev(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable( model->canShowPrevFrame() );
 }
 
 void RDOStudioMainFrame::update_start()

@@ -40,7 +40,6 @@ class RDOStudioModel
 {
 Q_OBJECT
 
-friend class RDOStudioFrameTreeCtrl;
 friend class RDOThreadStudioGUI;
 
 private:
@@ -66,13 +65,15 @@ private:
 	void setIsRunning(rbool value);
 	void setUpActions();
 
-	rbool  isModify      () const;
-	rbool  canNew        () const;
-	rbool  canOpen       () const;
-	rbool  canSave       () const;
-	rbool  canClose      () const;
-	rbool  canBuild      () const;
-	rbool  canRun        () const;
+	rbool  isModify        () const;
+	rbool  canNew          () const;
+	rbool  canOpen         () const;
+	rbool  canSave         () const;
+	rbool  canClose        () const;
+	rbool  canBuild        () const;
+	rbool  canRun          () const;
+	rbool  canShowNextFrame() const;
+	rbool  canShowPrevFrame() const;
 
 	SYSTEMTIME                             m_timeStart;
 	BuildState                             m_buildState;
@@ -167,10 +168,6 @@ public:
 	double  getShowRate          () const;
 	void    setShowRate          (double value);
 
-	void       showNextFrame   ();
-	void       showPrevFrame   ();
-	rbool      canShowNextFrame() const;
-	rbool      canShowPrevFrame() const;
 	int        getFrameCount   () const;
 	CPTR(char) getFrameName    (int index) const;
 	void       showFrame       (int index);
@@ -186,6 +183,7 @@ public:
 	rbool saveModified();
 
 	REF(RDOStudioFrameManager) getFrameManager();
+	void onChangeFrame(ruint index);
 
 	PTR(RPViewQt) getProcView();
 
@@ -210,6 +208,9 @@ private slots:
 	void onModelShowRateIncFour();
 	void onModelShowRateDecFour();
 	void onModelShowRateDec    ();
+
+	void onShowNextFrame();
+	void onShowPrevFrame();
 };
 
 // --------------------------------------------------------------------------------

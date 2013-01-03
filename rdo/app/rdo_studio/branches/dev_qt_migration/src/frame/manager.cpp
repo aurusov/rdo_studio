@@ -49,10 +49,11 @@ void RDOStudioFrameManager::Frame::clear()
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioFrameManager
 // --------------------------------------------------------------------------------
-RDOStudioFrameManager::RDOStudioFrameManager()
+RDOStudioFrameManager::RDOStudioFrameManager(CREF(OnChangeFrame) onChangeFrame)
 	: m_lastShowedFrame    (ruint(~0))
 	, m_currentShowingFrame(ruint(~0))
 	, m_changed            (false    )
+	, m_onChangeFrame      (onChangeFrame)
 {
 	//! @todo А почему объект не удаляется ? Это происходит автоматически ?
 
@@ -285,6 +286,7 @@ void RDOStudioFrameManager::setCurrentShowingFrame(ruint index)
 				studioApp.getIMainWnd()->getDockFrame().getContext().setCurrentItem(NULL);
 			}
 		}
+		m_onChangeFrame(index);
 	}
 }
 
@@ -352,6 +354,7 @@ void RDOStudioFrameManager::showNextFrame()
 		}
 		else
 		{
+			pView->parentWidget()->raise();
 			pView->parentWidget()->activateWindow();
 			setLastShowedFrame    (index);
 			setCurrentShowingFrame(index);
@@ -372,6 +375,7 @@ void RDOStudioFrameManager::showPrevFrame()
 		}
 		else
 		{
+			pView->parentWidget()->raise();
 			pView->parentWidget()->activateWindow();
 			setLastShowedFrame    (index);
 			setCurrentShowingFrame(index);
@@ -391,6 +395,7 @@ void RDOStudioFrameManager::showFrame(ruint index)
 		}
 		else
 		{
+			pView->parentWidget()->raise();
 			pView->parentWidget()->activateWindow();
 			setLastShowedFrame    (index);
 			setCurrentShowingFrame(index);

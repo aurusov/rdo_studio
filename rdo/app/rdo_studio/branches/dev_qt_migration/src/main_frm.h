@@ -183,10 +183,6 @@ private slots:
 
 private:
 	afx_msg void OnDestroy();
-	afx_msg void OnModelFrameNext();
-	afx_msg void OnModelFramePrev();
-	afx_msg void OnUpdateModelFrameNext(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateModelFramePrev(CCmdUI* pCmdUI);
 	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );

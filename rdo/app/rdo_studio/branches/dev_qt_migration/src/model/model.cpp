@@ -71,6 +71,7 @@ PTR(RDOStudioModel) model = NULL;
 
 RDOStudioModel::RDOStudioModel()
 	: RDOThreadGUI(_T("RDOThreadModelGUI"), static_cast<PTR(RDOKernelGUI)>(studioApp.m_pStudioGUI))
+	, m_frameManager     (boost::bind(&RDOStudioModel::onChangeFrame, this, _1))
 	, m_useTemplate      (-1                        )
 	, m_autoDeleteDoc    (true                      )
 	, m_showCanNotCloseModelMessage(true            )
@@ -125,6 +126,9 @@ RDOStudioModel::RDOStudioModel()
 	runtimeGroup->addAction(pMainWindow->actModelRuntimeJump);
 	runtimeGroup->addAction(pMainWindow->actModelRuntimeSync);
 	runtimeGroup->addAction(pMainWindow->actModelRuntimePause);
+
+	connect(pMainWindow->actModelFrameNext, SIGNAL(triggered(bool)), this, SLOT(onShowNextFrame()));
+	connect(pMainWindow->actModelFramePrev, SIGNAL(triggered(bool)), this, SLOT(onShowPrevFrame()));
 
 	setHasModel (m_GUI_HAS_MODEL );
 	setCanRun   (m_GUI_CAN_RUN   );
@@ -1271,12 +1275,12 @@ void RDOStudioModel::setShowRate(double value)
 	}
 }
 
-void RDOStudioModel::showNextFrame()
+void RDOStudioModel::onShowNextFrame()
 {
 	m_frameManager.showNextFrame();
 }
 
-void RDOStudioModel::showPrevFrame()
+void RDOStudioModel::onShowPrevFrame()
 {
 	m_frameManager.showPrevFrame();
 }
@@ -1357,6 +1361,9 @@ void RDOStudioModel::setUpActions()
 	pMainWindow->actModelShowRateIncFour->setEnabled(canShowRate && getShowRate() * 4.0 <= DBL_MAX);
 	pMainWindow->actModelShowRateDecFour->setEnabled(canShowRate && getShowRate() / 4.0 >= DBL_MIN);
 	pMainWindow->actModelShowRateDec->setEnabled    (canShowRate && getShowRate() / 1.5 >= DBL_MIN);
+
+	pMainWindow->actModelFrameNext->setEnabled(canShowNextFrame());
+	pMainWindow->actModelFramePrev->setEnabled(canShowPrevFrame());
 }
 
 void RDOStudioModel::update()
@@ -1553,6 +1560,11 @@ rbool RDOStudioModel::saveModified()
 REF(RDOStudioFrameManager) RDOStudioModel::getFrameManager()
 {
 	return m_frameManager;
+}
+
+void RDOStudioModel::onChangeFrame(ruint)
+{
+	setUpActions();
 }
 
 PTR(RPViewQt) RDOStudioModel::getProcView()
