@@ -12,9 +12,10 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 #include <math.h>
+#include <boost/mpl/integral_c.hpp>
 #include <QtGui/qmainwindow.h>
 #include <QtGui/qlabel.h>
-#include <boost/mpl/integral_c.hpp>
+#include <QtGui/qprogressbar.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
@@ -94,13 +95,9 @@ public:
 
 	double getSpeed() const { return modelToolBar.getSpeed(); }
 
-	void beginProgress   (const int lower = 0, const int upper = 100, const int step = 1);
-	void getProgressRange(int& lower, int& upper) const;
-	void setProgress     (const int pos);
-	int  getProgress     () const;
-	void offsetProgress  (const int offset);
-	void stepProgress    ();
-	void endProgress     ();
+	virtual void beginProgress(rsint lower, rsint upper);
+	virtual void stepProgress ();
+	virtual void endProgress  ();
 
 	void update_start();
 	void update_stop ();
@@ -129,6 +126,8 @@ private:
 	RDOToolBarModel         modelToolBar;
 	RDOStudioStatusBar      statusBar;
 	int                     m_updateTimerID;
+	QProgressBar*           m_pProgressBar;
+	QWidget*                m_pProgressBarFakeWidget;
 
 	PTR(QLabel)             m_pSBCoord;
 	PTR(QLabel)             m_pSBModify;
