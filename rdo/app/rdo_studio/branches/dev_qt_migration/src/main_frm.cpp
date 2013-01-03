@@ -104,9 +104,6 @@ void RDOToolBarModel::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar
 //	ON_WM_ENTERMENULOOP()
 //	ON_WM_EXITMENULOOP()
 //	ON_WM_ENTERIDLE()
-//	ON_UPDATE_COMMAND_UI( ID_MODEL_RUNTYPE_STATUSBAR   , OnUpdateModelRunTypeStatusBar )
-//	ON_UPDATE_COMMAND_UI( ID_MODEL_SPEED_STATUSBAR     , OnUpdateModelSpeedStatusBar )
-//	ON_UPDATE_COMMAND_UI( ID_MODEL_SHOWRATE_STATUSBAR  , OnUpdateModelShowRateStatusBar )
 //END_MESSAGE_MAP()
 
 static UINT indicators[] = {
@@ -154,9 +151,9 @@ void RDOStudioMainFrame::createStatusBar()
 	parent_type::statusBar()->addWidget(m_pSBCoord,         5);
 	parent_type::statusBar()->addWidget(m_pSBModify,        5);
 	parent_type::statusBar()->addWidget(m_pSBModelTime,     5);
-	parent_type::statusBar()->addWidget(m_pSBModelRuntype,  5);
+	parent_type::statusBar()->addWidget(m_pSBModelRuntype,  7);
 	parent_type::statusBar()->addWidget(m_pSBModelSpeed,    5);
-	parent_type::statusBar()->addWidget(m_pSBModelShowRate, 5);
+	parent_type::statusBar()->addWidget(m_pSBModelShowRate, 7);
 }
 
 void RDOStudioMainFrame::createToolBar()
@@ -389,66 +386,6 @@ void RDOStudioMainFrame::closeEvent(QCloseEvent* event)
 		style_find.save();
 		style_frame.save();
 		style_chart.save();
-	}
-}
-
-void RDOStudioMainFrame::OnUpdateModelRunTypeStatusBar( CCmdUI *pCmdUI )
-{
-	pCmdUI->Enable();
-	tstring s = "";
-	if ( model->isRunning() ) {
-		switch ( model->getRuntimeMode() ) {
-			case rdo::runtime::RTM_MaxSpeed  : s = rdo::format( ID_STATUSBAR_MODEL_RUNTIME_MAXSPEED ); break;
-			case rdo::runtime::RTM_Jump      : s = rdo::format( ID_STATUSBAR_MODEL_RUNTIME_JUMP ); break;
-			case rdo::runtime::RTM_Sync      : s = rdo::format( ID_STATUSBAR_MODEL_RUNTIME_SYNC ); break;
-			case rdo::runtime::RTM_Pause     : s = rdo::format( ID_STATUSBAR_MODEL_RUNTIME_PAUSE ); break;
-			case rdo::runtime::RTM_BreakPoint: s = rdo::format( ID_STATUSBAR_MODEL_RUNTIME_BREAKPOINT, model->getLastBreakPointName().c_str() ); break;
-		}
-	}
-	pCmdUI->SetText( s.c_str() );
-}
-
-void RDOStudioMainFrame::OnUpdateModelSpeedStatusBar( CCmdUI *pCmdUI )
-{
-	pCmdUI->Enable();
-	if ( model->getRuntimeMode() != rdo::runtime::RTM_MaxSpeed || !model->isRunning() ) {
-		pCmdUI->SetText( rdo::format( IDS_MODEL_SPEED, static_cast<int>(model->getSpeed() * 100) ).c_str() );
-	} else {
-		pCmdUI->SetText( "" );
-	}
-}
-
-void RDOStudioMainFrame::OnUpdateModelShowRateStatusBar( CCmdUI *pCmdUI )
-{
-	pCmdUI->Enable();
-	if ( model->isRunning() ) {
-		switch ( model->getRuntimeMode() ) {
-			case rdo::runtime::RTM_MaxSpeed:
-			case rdo::runtime::RTM_Jump: {
-				pCmdUI->SetText( rdo::format( IDS_MODEL_SHOWRATE_S, rdo::format( IDS_INFINITI ).c_str() ).c_str()  );
-				break;
-			}
-			case rdo::runtime::RTM_Pause     :
-			case rdo::runtime::RTM_BreakPoint: {
-				pCmdUI->SetText( rdo::format( IDS_MODEL_SHOWRATE_S, "0.0" ).c_str() );
-				break;
-			}
-			case rdo::runtime::RTM_Sync: {
-				tstring s;
-				double showRate = model->getShowRate();
-				if ( showRate < 1e-10 || showRate > 1e10 ) {
-					s = rdo::format( IDS_MODEL_SHOWRATE_E, showRate );
-				} else if ( showRate >= 1 ) {
-					s = rdo::format( IDS_MODEL_SHOWRATE_FMOREONE, showRate );
-				} else {
-					s = rdo::format( IDS_MODEL_SHOWRATE_FLESSONE, showRate );
-				}
-				pCmdUI->SetText( s.c_str() );
-				break;
-			}
-		}
-	} else {
-		pCmdUI->SetText( "" );
 	}
 }
 

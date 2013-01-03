@@ -1254,6 +1254,7 @@ void RDOStudioModel::setSpeed(double persent)
 			sendMessage(kernel->runtime(), RT_RUNTIME_SET_SPEED, &m_speed);
 		}
 	}
+	setUpActions();
 }
 
 double RDOStudioModel::getShowRate() const
@@ -1270,6 +1271,7 @@ void RDOStudioModel::setShowRate(double value)
 	{
 		m_showRate = value;
 		sendMessage(kernel->runtime(), RT_RUNTIME_SET_SHOWRATE, &m_showRate);
+		setUpActions();
 	}
 }
 
@@ -1352,6 +1354,63 @@ void RDOStudioModel::setUpActions()
 
 	pMainWindow->actModelFrameNext->setEnabled(m_frameManager.canShowNextFrame());
 	pMainWindow->actModelFramePrev->setEnabled(m_frameManager.canShowPrevFrame());
+
+	tstring runTimeMode;
+	if (isRunning())
+	{
+		switch (getRuntimeMode())
+		{
+		case rdo::runtime::RTM_MaxSpeed  : runTimeMode = rdo::format(ID_STATUSBAR_MODEL_RUNTIME_MAXSPEED); break;
+		case rdo::runtime::RTM_Jump      : runTimeMode = rdo::format(ID_STATUSBAR_MODEL_RUNTIME_JUMP    ); break;
+		case rdo::runtime::RTM_Sync      : runTimeMode = rdo::format(ID_STATUSBAR_MODEL_RUNTIME_SYNC    ); break;
+		case rdo::runtime::RTM_Pause     : runTimeMode = rdo::format(ID_STATUSBAR_MODEL_RUNTIME_PAUSE   ); break;
+		case rdo::runtime::RTM_BreakPoint: runTimeMode = rdo::format(ID_STATUSBAR_MODEL_RUNTIME_BREAKPOINT, getLastBreakPointName().c_str()); break;
+		}
+	}
+	studioApp.getMainWndUI()->updateStatusBar<RDOStudioMainFrame::SB_MODEL_RUNTYPE>(QString::fromStdString(runTimeMode));
+
+	studioApp.getMainWndUI()->updateStatusBar<RDOStudioMainFrame::SB_MODEL_SPEED>(
+		getRuntimeMode() != rdo::runtime::RTM_MaxSpeed || !isRunning()
+			? QString("Скорость: %1%").arg(rsint(getSpeed() * 100))
+			: ""
+	);
+
+	QString showRateStr;
+	if (isRunning())
+	{
+		showRateStr = "Масштаб: ";
+		switch (getRuntimeMode())
+		{
+		case rdo::runtime::RTM_MaxSpeed:
+		case rdo::runtime::RTM_Jump    :
+			showRateStr += "Бесконечность";
+			break;
+
+		case rdo::runtime::RTM_Pause     :
+		case rdo::runtime::RTM_BreakPoint:
+			showRateStr += "0.0";
+			break;
+
+		case rdo::runtime::RTM_Sync:
+			{
+				double showRate = model->getShowRate();
+				if (showRate < 1e-10 || showRate > 1e10)
+				{
+					showRateStr += QString::fromStdString(rdo::format("%e", showRate));
+				}
+				else if (showRate >= 1)
+				{
+					showRateStr += QString::fromStdString(rdo::format("%1.1f", showRate));
+				}
+				else
+				{
+					showRateStr += QString::fromStdString(rdo::format("%1.10f", showRate));
+				}
+			}
+			break;
+		}
+	}
+	studioApp.getMainWndUI()->updateStatusBar<RDOStudioMainFrame::SB_MODEL_SHOWRATE>(showRateStr);
 }
 
 void RDOStudioModel::update()
