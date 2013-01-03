@@ -104,10 +104,6 @@ void RDOToolBarModel::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar
 //	ON_WM_ENTERMENULOOP()
 //	ON_WM_EXITMENULOOP()
 //	ON_WM_ENTERIDLE()
-//	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR           , OnUpdateCoordStatusBar )
-//	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR          , OnUpdateModifyStatusBar )
-//	ON_UPDATE_COMMAND_UI( ID_INSERTOVERWRITE_STATUSBAR , OnUpdateInsertOverwriteStatusBar )
-//	ON_UPDATE_COMMAND_UI( ID_MODEL_TIME_STATUSBAR      , OnUpdateModelTimeStatusBar )
 //	ON_UPDATE_COMMAND_UI( ID_MODEL_RUNTYPE_STATUSBAR   , OnUpdateModelRunTypeStatusBar )
 //	ON_UPDATE_COMMAND_UI( ID_MODEL_SPEED_STATUSBAR     , OnUpdateModelSpeedStatusBar )
 //	ON_UPDATE_COMMAND_UI( ID_MODEL_SHOWRATE_STATUSBAR  , OnUpdateModelShowRateStatusBar )
@@ -420,30 +416,6 @@ void RDOStudioMainFrame::onUpdateModelSpeed()
 
 void RDOStudioMainFrame::onUpdateModelShowRate()
 {
-}
-
-void RDOStudioMainFrame::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
-{
-	pCmdUI->Enable();
-	pCmdUI->SetText( "" );
-}
-
-void RDOStudioMainFrame::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
-{
-	pCmdUI->Enable();
-	pCmdUI->SetText( "" );
-}
-
-void RDOStudioMainFrame::OnUpdateInsertOverwriteStatusBar( CCmdUI *pCmdUI )
-{
-	pCmdUI->Enable();
-	pCmdUI->SetText( "" );
-}
-
-void RDOStudioMainFrame::OnUpdateModelTimeStatusBar( CCmdUI *pCmdUI )
-{
-	pCmdUI->Enable();
-	pCmdUI->SetText( rdo::format( ID_STATUSBAR_MODEL_TIME, model->getTimeNow() ).c_str() );
 }
 
 void RDOStudioMainFrame::OnUpdateModelRunTypeStatusBar( CCmdUI *pCmdUI )

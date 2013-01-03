@@ -185,10 +185,6 @@ private:
 	afx_msg void OnDestroy();
 	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
-	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
-	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );
-	afx_msg void OnUpdateInsertOverwriteStatusBar( CCmdUI *pCmdUI );
-	afx_msg void OnUpdateModelTimeStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModelRunTypeStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModelSpeedStatusBar( CCmdUI *pCmdUI );
 	afx_msg void OnUpdateModelShowRateStatusBar( CCmdUI *pCmdUI );
