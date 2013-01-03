@@ -205,6 +205,11 @@ private slots:
 	void onModelRuntimeJump    ();
 	void onModelRuntimeSync    ();
 	void onModelRuntimePause   ();
+
+	void onModelShowRateInc    ();
+	void onModelShowRateIncFour();
+	void onModelShowRateDecFour();
+	void onModelShowRateDec    ();
 };
 
 // --------------------------------------------------------------------------------

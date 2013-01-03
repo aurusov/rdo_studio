@@ -115,6 +115,11 @@ RDOStudioModel::RDOStudioModel()
 	connect(pMainWindow->actModelRuntimeSync,     SIGNAL(triggered(bool)), this, SLOT(onModelRuntimeSync()));
 	connect(pMainWindow->actModelRuntimePause,    SIGNAL(triggered(bool)), this, SLOT(onModelRuntimePause()));
 
+	connect(pMainWindow->actModelShowRateInc,     SIGNAL(triggered(bool)), this, SLOT(onModelShowRateInc()));
+	connect(pMainWindow->actModelShowRateIncFour, SIGNAL(triggered(bool)), this, SLOT(onModelShowRateIncFour()));
+	connect(pMainWindow->actModelShowRateDecFour, SIGNAL(triggered(bool)), this, SLOT(onModelShowRateDecFour()));
+	connect(pMainWindow->actModelShowRateDec,     SIGNAL(triggered(bool)), this, SLOT(onModelShowRateDec()));
+
 	QActionGroup* runtimeGroup = new QActionGroup(this);
 	runtimeGroup->addAction(pMainWindow->actModelRuntimeMaxSpeed);
 	runtimeGroup->addAction(pMainWindow->actModelRuntimeJump);
@@ -1339,14 +1344,19 @@ void RDOStudioModel::setUpActions()
 	pMainWindow->actModelStop->setEnabled(isRunning());
 
 	pMainWindow->actModelRuntimeMaxSpeed->setEnabled(isRunning());
-	pMainWindow->actModelRuntimeJump->setEnabled(isRunning());
-	pMainWindow->actModelRuntimeSync->setEnabled(isRunning());
-	pMainWindow->actModelRuntimePause->setEnabled(isRunning());
-
+	pMainWindow->actModelRuntimeJump->setEnabled    (isRunning());
+	pMainWindow->actModelRuntimeSync->setEnabled    (isRunning());
+	pMainWindow->actModelRuntimePause->setEnabled   (isRunning());
 	pMainWindow->actModelRuntimeMaxSpeed->setChecked(getRuntimeMode() == rdo::runtime::RTM_MaxSpeed);
 	pMainWindow->actModelRuntimeJump->setChecked    (getRuntimeMode() == rdo::runtime::RTM_Jump);
 	pMainWindow->actModelRuntimeSync->setChecked    (getRuntimeMode() == rdo::runtime::RTM_Sync);
 	pMainWindow->actModelRuntimePause->setChecked   (getRuntimeMode() == rdo::runtime::RTM_Pause || getRuntimeMode() == rdo::runtime::RTM_BreakPoint);
+
+	rbool canShowRate = isRunning() && getRuntimeMode() == rdo::runtime::RTM_Sync;
+	pMainWindow->actModelShowRateInc->setEnabled    (canShowRate && getShowRate() * 1.5 <= DBL_MAX);
+	pMainWindow->actModelShowRateIncFour->setEnabled(canShowRate && getShowRate() * 4.0 <= DBL_MAX);
+	pMainWindow->actModelShowRateDecFour->setEnabled(canShowRate && getShowRate() / 4.0 >= DBL_MIN);
+	pMainWindow->actModelShowRateDec->setEnabled    (canShowRate && getShowRate() / 1.5 >= DBL_MIN);
 }
 
 void RDOStudioModel::update()
@@ -1634,4 +1644,24 @@ void RDOStudioModel::onModelRuntimeSync()
 void RDOStudioModel::onModelRuntimePause()
 {
 	setRuntimeMode(rdo::runtime::RTM_Pause);
+}
+
+void RDOStudioModel::onModelShowRateInc()
+{
+	setShowRate(getShowRate() * 1.5);
+}
+
+void RDOStudioModel::onModelShowRateIncFour()
+{
+	setShowRate(getShowRate() * 4);
+}
+
+void RDOStudioModel::onModelShowRateDecFour()
+{
+	setShowRate(getShowRate() / 4);
+}
+
+void RDOStudioModel::onModelShowRateDec()
+{
+	setShowRate(getShowRate() / 1.5);
 }

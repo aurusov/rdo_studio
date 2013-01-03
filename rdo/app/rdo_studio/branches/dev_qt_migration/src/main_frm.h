@@ -183,14 +183,6 @@ private slots:
 
 private:
 	afx_msg void OnDestroy();
-	afx_msg void OnModelShowRateInc();
-	afx_msg void OnModelShowRateIncFour();
-	afx_msg void OnModelShowRateDecFour();
-	afx_msg void OnModelShowRateDec();
-	afx_msg void OnUpdateModelShowRateInc(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateModelShowRateIncFour(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateModelShowRateDecFour(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateModelShowRateDec(CCmdUI* pCmdUI);
 	afx_msg void OnModelFrameNext();
 	afx_msg void OnModelFramePrev();
 	afx_msg void OnUpdateModelFrameNext(CCmdUI* pCmdUI);

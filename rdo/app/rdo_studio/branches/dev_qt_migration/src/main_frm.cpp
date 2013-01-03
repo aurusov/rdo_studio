@@ -97,14 +97,6 @@ void RDOToolBarModel::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar
 //BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
 //	ON_WM_CREATE()
 //	ON_WM_DESTROY()
-//	ON_COMMAND(ID_MODEL_SHOWRATE_INC, OnModelShowRateInc)
-//	ON_COMMAND(ID_MODEL_SHOWRATE_INCFOUR, OnModelShowRateIncFour)
-//	ON_COMMAND(ID_MODEL_SHOWRATE_DECFOUR, OnModelShowRateDecFour)
-//	ON_COMMAND(ID_MODEL_SHOWRATE_DEC, OnModelShowRateDec)
-//	ON_UPDATE_COMMAND_UI(ID_MODEL_SHOWRATE_INC, OnUpdateModelShowRateInc)
-//	ON_UPDATE_COMMAND_UI(ID_MODEL_SHOWRATE_INCFOUR, OnUpdateModelShowRateIncFour)
-//	ON_UPDATE_COMMAND_UI(ID_MODEL_SHOWRATE_DECFOUR, OnUpdateModelShowRateDecFour)
-//	ON_UPDATE_COMMAND_UI(ID_MODEL_SHOWRATE_DEC, OnUpdateModelShowRateDec)
 //	ON_COMMAND(ID_MODEL_FRAME_NEXT, OnModelFrameNext)
 //	ON_COMMAND(ID_MODEL_FRAME_PREV, OnModelFramePrev)
 //	ON_UPDATE_COMMAND_UI(ID_MODEL_FRAME_NEXT, OnUpdateModelFrameNext)
@@ -609,46 +601,6 @@ void RDOStudioMainFrame::onHelpAbout()
 {
 	About dlg(this);
 	dlg.exec();
-}
-
-void RDOStudioMainFrame::OnModelShowRateInc()
-{
-	model->setShowRate( model->getShowRate() * 1.5 );
-}
-
-void RDOStudioMainFrame::OnModelShowRateIncFour()
-{
-	model->setShowRate( model->getShowRate() * 4 );
-}
-
-void RDOStudioMainFrame::OnModelShowRateDecFour()
-{
-	model->setShowRate( model->getShowRate() / 4 );
-}
-
-void RDOStudioMainFrame::OnModelShowRateDec()
-{
-	model->setShowRate( model->getShowRate() / 1.5 );
-}
-
-void RDOStudioMainFrame::OnUpdateModelShowRateInc(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable( model->isRunning() && model->getRuntimeMode() == rdo::runtime::RTM_Sync && model->getShowRate() * 1.5 <= DBL_MAX );
-}
-
-void RDOStudioMainFrame::OnUpdateModelShowRateIncFour(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable( model->isRunning() && model->getRuntimeMode() == rdo::runtime::RTM_Sync && model->getShowRate() * 4 <= DBL_MAX );
-}
-
-void RDOStudioMainFrame::OnUpdateModelShowRateDecFour(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable( model->isRunning() && model->getRuntimeMode() == rdo::runtime::RTM_Sync && model->getShowRate() / 4 >= DBL_MIN );
-}
-
-void RDOStudioMainFrame::OnUpdateModelShowRateDec(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable( model->isRunning() && model->getRuntimeMode() == rdo::runtime::RTM_Sync && model->getShowRate() / 1.5 >= DBL_MIN );
 }
 
 void RDOStudioMainFrame::OnModelFrameNext()
