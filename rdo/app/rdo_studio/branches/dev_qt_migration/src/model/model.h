@@ -109,6 +109,9 @@ private:
 	rbool canCloseModel           ();
 	void  afterModelStart         ();
 
+	double  getSpeed() const;
+	void    setSpeed(double persent);
+
 	PTR(RPMethodProc2RDO) getProc2rdo() const;
 
 	struct ModelTemplateItem
@@ -158,8 +161,6 @@ public:
 	rdo::runtime::RunTimeMode            getRuntimeMode() const;
 	void    setRuntimeMode       (const rdo::runtime::RunTimeMode value);
 	tstring getLastBreakPointName();
-	double  getSpeed             () const;
-	void    setSpeed             (double persent);
 	double  getShowRate          () const;
 	void    setShowRate          (double value);
 
@@ -206,6 +207,8 @@ private slots:
 
 	void onShowNextFrame();
 	void onShowPrevFrame();
+
+	void onModelSpeedValueChanged(int value);
 };
 
 // --------------------------------------------------------------------------------

@@ -121,6 +121,8 @@ RDOStudioModel::RDOStudioModel()
 	connect(pMainWindow->actModelShowRateDecFour, SIGNAL(triggered(bool)), this, SLOT(onModelShowRateDecFour()));
 	connect(pMainWindow->actModelShowRateDec,     SIGNAL(triggered(bool)), this, SLOT(onModelShowRateDec()));
 
+	connect(studioApp.getMainWndUI()->m_pModelSpeedSlider, SIGNAL(valueChanged(int)), this, SLOT(onModelSpeedValueChanged(int)));
+
 	QActionGroup* runtimeGroup = new QActionGroup(this);
 	runtimeGroup->addAction(pMainWindow->actModelRuntimeMaxSpeed);
 	runtimeGroup->addAction(pMainWindow->actModelRuntimeJump);
@@ -359,8 +361,6 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			setIsRunning(true);
 			sendMessage(kernel->runtime(), RT_RUNTIME_GET_MODE, &m_runtimeMode);
 			setRuntimeMode(m_runtimeMode);
-			sendMessage(kernel->runtime(), RT_RUNTIME_GET_SPEED, &m_speed);
-			setSpeed(studioApp.getIMainWnd()->getSpeed());
 			sendMessage(kernel->runtime(), RT_RUNTIME_GET_SHOWRATE, &m_showRate);
 			afterModelStart();
 			studioApp.getIMainWnd()->getDockDebug().raise();
@@ -1725,4 +1725,9 @@ void RDOStudioModel::onModelShowRateDecFour()
 void RDOStudioModel::onModelShowRateDec()
 {
 	setShowRate(getShowRate() / 1.5);
+}
+
+void RDOStudioModel::onModelSpeedValueChanged(int value)
+{
+	setSpeed(log( double(value + 1) ) / log(101.0));
 }

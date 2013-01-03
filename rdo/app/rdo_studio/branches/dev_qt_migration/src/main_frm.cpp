@@ -53,44 +53,6 @@ void RDOToolBar::init( CWnd* parent, unsigned int tbResID, unsigned int tbDisabl
 }
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOToolBarModel
-// --------------------------------------------------------------------------------
-BEGIN_MESSAGE_MAP(RDOToolBarModel, RDOToolBar)
-	ON_WM_HSCROLL()
-END_MESSAGE_MAP()
-
-void RDOToolBarModel::init( CWnd* parent, unsigned int tbResID, unsigned int tbDisabledImageResID )
-{
-	RDOToolBar::init( parent, tbResID, tbDisabledImageResID );
-	SetButtonInfo( CommandToIndex(ID_MODEL_SPEED_SLIDER), ID_MODEL_SPEED_SLIDER, TBBS_SEPARATOR, 100 );
-	CRect rc;
-	GetItemRect( CommandToIndex(ID_MODEL_SPEED_SLIDER), rc );
-	rc.top    += 1;
-	rc.bottom -= 1;
-
-#define VISTA_TRANSPARENT_FLAG 0x1000
-	slider.Create( WS_CHILD | WS_VISIBLE | WS_TABSTOP | TBS_HORZ | VISTA_TRANSPARENT_FLAG, rc, this, ID_MODEL_SPEED_SLIDER );
-#undef VISTA_TRANSPARENT_FLAG
-
-	slider.SetRange( 0, 100 );
-	for ( int i = 1; i <= 101; i += 10 ) {
-		slider.SetTic( (int)(log( (double)i ) / log101 * 100) );
-	}
-	slider.SetPos( 100 );
-}
-
-void RDOToolBarModel::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar )
-{
-	UNUSED(nPos      );
-	UNUSED(pScrollBar);
-
-	if ( nSBCode == SB_THUMBTRACK )
-	{
-		model->setSpeed( getSpeed() );
-	}
-}
-
-// --------------------------------------------------------------------------------
 // -------------------- RDOStudioMainFrame
 // --------------------------------------------------------------------------------
 //! @todo qt
@@ -200,6 +162,11 @@ void RDOStudioMainFrame::createToolBar()
 	m_pZoomToolBar->addAction(actViewZoomAuto);
 	m_pZoomToolBar->addAction(actViewZoomReset);
 
+	m_pModelSpeedSlider = new QSlider(Qt::Horizontal, this);
+	m_pModelSpeedSlider->setRange(0, 100);
+	m_pModelSpeedSlider->setValue(100);
+	m_pModelSpeedSlider->setMaximumSize(100, QWIDGETSIZE_MAX);
+
 	m_pModelToolBar = addToolBar("Модель");
 	m_pModelToolBar->setIconSize(iconSize);
 	m_pModelToolBar->addAction(actModelRun);
@@ -214,6 +181,8 @@ void RDOStudioMainFrame::createToolBar()
 	m_pModelToolBar->addAction(actModelShowRateIncFour);
 	m_pModelToolBar->addAction(actModelShowRateDecFour);
 	m_pModelToolBar->addAction(actModelShowRateDec);
+	m_pModelToolBar->addSeparator();
+	m_pModelToolBar->addWidget(m_pModelSpeedSlider);
 	m_pModelToolBar->addSeparator();
 	m_pModelToolBar->addAction(actModelFrameNext);
 	m_pModelToolBar->addAction(actModelFramePrev);
@@ -336,22 +305,6 @@ void RDOStudioMainFrame::init()
 	//debug->setPopupMenu( &popupMenu );
 	//results->setPopupMenu( &popupMenu );
 	//find->setPopupMenu( &popupMenu );
-
-	//! @todo qt
-	//fileToolBar.init( c_wnd(), IDR_FILE_TOOLBAR, IDB_FILE_TOOLBAR_D );
-	//editToolBar.init( c_wnd(), IDR_EDIT_TOOLBAR, IDB_EDIT_TOOLBAR_D );
-	//zoomToolBar.init( c_wnd(), IDR_ZOOM_TOOLBAR, IDB_ZOOM_TOOLBAR_D );
-	//modelToolBar.init( c_wnd(), IDR_MODEL_TOOLBAR, IDB_MODEL_TOOLBAR_D );
-
-	//! @todo qt
-	//fileToolBar.EnableDocking( CBRS_ALIGN_ANY );
-	//editToolBar.EnableDocking( CBRS_ALIGN_ANY );
-	//zoomToolBar.EnableDocking( CBRS_ALIGN_ANY );
-	//modelToolBar.EnableDocking( CBRS_ALIGN_ANY );
-
-	//modelToolBar.SetButtonStyle( 3, TBBS_CHECKBOX | TBBS_CHECKGROUP );
-	//modelToolBar.SetButtonStyle( 4, TBBS_CHECKBOX | TBBS_CHECKGROUP );
-	//modelToolBar.SetButtonStyle( 5, TBBS_CHECKBOX | TBBS_CHECKGROUP );
 
 	g_pTracer->registerClipboardFormat();
 

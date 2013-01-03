@@ -16,6 +16,7 @@
 #include <QtGui/qmainwindow.h>
 #include <QtGui/qlabel.h>
 #include <QtGui/qprogressbar.h>
+#include <QtGui/qslider.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
@@ -32,30 +33,6 @@ public:
 
 private:
 	CImageList disabledImage;
-};
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOToolBarModel
-// --------------------------------------------------------------------------------
-class RDOToolBarModel: public RDOToolBar
-{
-public:
-	RDOToolBarModel()
-		: RDOToolBar()
-		, log101    (log(101.0))
-	{}
-
-	virtual void init(CWnd* parent, unsigned int tbResID, unsigned int tbDisabledImageResID);
-
-	double getSpeed() const { return 1; /*log( double(slider.GetPos() + 1) ) / log101;*/ } //! @todo qt
-
-private:
-	double       log101;
-	CSliderCtrl  slider;
-
-	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-	DECLARE_MESSAGE_MAP()
-
 };
 
 // --------------------------------------------------------------------------------
@@ -91,8 +68,6 @@ public:
 
 	virtual void setVisible(rbool visible);
 
-	double getSpeed() const { return modelToolBar.getSpeed(); }
-
 	void beginProgress(rsint lower, rsint upper);
 	void stepProgress ();
 	void endProgress  ();
@@ -112,14 +87,12 @@ public:
 		updateStatusBar(StatusBarType<N>(), message);
 	}
 
+	PTR(QSlider) m_pModelSpeedSlider;
+
 private:
 	typedef  QMainWindow  parent_type;
 
 	CWnd                    m_thisCWnd;
-	RDOToolBar              fileToolBar;
-	RDOToolBar              editToolBar;
-	RDOToolBar              zoomToolBar;
-	RDOToolBarModel         modelToolBar;
 	int                     m_updateTimerID;
 	QProgressBar*           m_pProgressBar;
 	QWidget*                m_pProgressBarFakeWidget;

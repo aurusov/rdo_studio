@@ -58,8 +58,6 @@ public:
 
 	virtual void updateAllStyles() = 0;
 
-	virtual double getSpeed() const = 0;
-
 	virtual void update_start() = 0;
 	virtual void update_stop () = 0;
 
