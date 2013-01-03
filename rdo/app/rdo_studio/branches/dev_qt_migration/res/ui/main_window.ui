@@ -693,6 +693,9 @@
    </property>
   </action>
   <action name="actModelRuntimeMaxSpeed">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -706,6 +709,9 @@
    </property>
   </action>
   <action name="actModelRuntimeJump">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -719,6 +725,9 @@
    </property>
   </action>
   <action name="actModelRuntimeSync">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -732,6 +741,9 @@
    </property>
   </action>
   <action name="actModelRuntimePause">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="enabled">
     <bool>false</bool>
    </property>

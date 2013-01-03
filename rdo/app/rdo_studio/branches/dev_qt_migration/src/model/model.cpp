@@ -110,6 +110,17 @@ RDOStudioModel::RDOStudioModel()
 	connect(pMainWindow->actModelRun,   SIGNAL(triggered(bool)), this, SLOT(onModelRun  ()));
 	connect(pMainWindow->actModelStop,  SIGNAL(triggered(bool)), this, SLOT(onModelStop ()));
 
+	connect(pMainWindow->actModelRuntimeMaxSpeed, SIGNAL(triggered(bool)), this, SLOT(onModelRuntimeMaxSpeed()));
+	connect(pMainWindow->actModelRuntimeJump,     SIGNAL(triggered(bool)), this, SLOT(onModelRuntimeJump()));
+	connect(pMainWindow->actModelRuntimeSync,     SIGNAL(triggered(bool)), this, SLOT(onModelRuntimeSync()));
+	connect(pMainWindow->actModelRuntimePause,    SIGNAL(triggered(bool)), this, SLOT(onModelRuntimePause()));
+
+	QActionGroup* runtimeGroup = new QActionGroup(this);
+	runtimeGroup->addAction(pMainWindow->actModelRuntimeMaxSpeed);
+	runtimeGroup->addAction(pMainWindow->actModelRuntimeJump);
+	runtimeGroup->addAction(pMainWindow->actModelRuntimeSync);
+	runtimeGroup->addAction(pMainWindow->actModelRuntimePause);
+
 	setHasModel (m_GUI_HAS_MODEL );
 	setCanRun   (m_GUI_CAN_RUN   );
 	setIsRunning(m_GUI_IS_RUNNING);
@@ -340,6 +351,7 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		{
 			setIsRunning(true);
 			sendMessage(kernel->runtime(), RT_RUNTIME_GET_MODE, &m_runtimeMode);
+			setRuntimeMode(m_runtimeMode);
 			sendMessage(kernel->runtime(), RT_RUNTIME_GET_SPEED, &m_speed);
 			setSpeed(studioApp.getIMainWnd()->getSpeed());
 			sendMessage(kernel->runtime(), RT_RUNTIME_GET_SHOWRATE, &m_showRate);
@@ -1195,8 +1207,8 @@ void RDOStudioModel::setRuntimeMode(const rdo::runtime::RunTimeMode value)
 		}
 		m_runtimeMode = value;
 		sendMessage(kernel->runtime(), RT_RUNTIME_SET_MODE, &m_runtimeMode);
-		g_pTracer->setRuntimeMode(m_runtimeMode);
-		switch (m_runtimeMode)
+		g_pTracer->setRuntimeMode(getRuntimeMode());
+		switch (getRuntimeMode())
 		{
 			case rdo::runtime::RTM_MaxSpeed: closeAllFrame(); break;
 			default:
@@ -1210,6 +1222,7 @@ void RDOStudioModel::setRuntimeMode(const rdo::runtime::RunTimeMode value)
 			}
 		}
 	}
+	setUpActions();
 }
 
 tstring RDOStudioModel::getLastBreakPointName()
@@ -1324,6 +1337,16 @@ void RDOStudioModel::setUpActions()
 	pMainWindow->actModelBuild->setEnabled(canBuild());
 	pMainWindow->actModelRun->setEnabled(canRun());
 	pMainWindow->actModelStop->setEnabled(isRunning());
+
+	pMainWindow->actModelRuntimeMaxSpeed->setEnabled(isRunning());
+	pMainWindow->actModelRuntimeJump->setEnabled(isRunning());
+	pMainWindow->actModelRuntimeSync->setEnabled(isRunning());
+	pMainWindow->actModelRuntimePause->setEnabled(isRunning());
+
+	pMainWindow->actModelRuntimeMaxSpeed->setChecked(getRuntimeMode() == rdo::runtime::RTM_MaxSpeed);
+	pMainWindow->actModelRuntimeJump->setChecked    (getRuntimeMode() == rdo::runtime::RTM_Jump);
+	pMainWindow->actModelRuntimeSync->setChecked    (getRuntimeMode() == rdo::runtime::RTM_Sync);
+	pMainWindow->actModelRuntimePause->setChecked   (getRuntimeMode() == rdo::runtime::RTM_Pause || getRuntimeMode() == rdo::runtime::RTM_BreakPoint);
 }
 
 void RDOStudioModel::update()
@@ -1332,7 +1355,7 @@ void RDOStudioModel::update()
 	m_timeNowSignal(m_timeNow);
 	rdo::runtime::RunTimeMode rm;
 	sendMessage(kernel->runtime(), RT_RUNTIME_GET_MODE, &rm);
-	if (rm != m_runtimeMode)
+	if (rm != getRuntimeMode())
 	{
 		if (rm == rdo::runtime::RTM_BreakPoint)
 		{
@@ -1591,4 +1614,24 @@ void RDOStudioModel::onModelRun()
 void RDOStudioModel::onModelStop()
 {
 	stopModel();
+}
+
+void RDOStudioModel::onModelRuntimeMaxSpeed()
+{
+	setRuntimeMode(rdo::runtime::RTM_MaxSpeed);
+}
+
+void RDOStudioModel::onModelRuntimeJump()
+{
+	setRuntimeMode(rdo::runtime::RTM_Jump);
+}
+
+void RDOStudioModel::onModelRuntimeSync()
+{
+	setRuntimeMode(rdo::runtime::RTM_Sync);
+}
+
+void RDOStudioModel::onModelRuntimePause()
+{
+	setRuntimeMode(rdo::runtime::RTM_Pause);
 }

@@ -200,6 +200,11 @@ private slots:
 	void onModelBuild();
 	void onModelRun  ();
 	void onModelStop ();
+
+	void onModelRuntimeMaxSpeed();
+	void onModelRuntimeJump    ();
+	void onModelRuntimeSync    ();
+	void onModelRuntimePause   ();
 };
 
 // --------------------------------------------------------------------------------
