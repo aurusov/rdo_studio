@@ -11,7 +11,6 @@
 #define _RDO_STUDIO_MFC_MODEL_MODEL_H_
 
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/signal.hpp>
 #include <QtCore/qobject.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdointerface.h"
@@ -92,8 +91,6 @@ private:
 	RDOStudioModelView*                    m_pModelView;
 	RPViewQt*                              m_pModelProcView;
 	tstring                                m_name;
-
-	boost::signal<void (float)>            m_timeNowSignal;
 
 	rbool newModel      (tstring _model_name = _T(""), tstring _model_path = _T(""), const int _useTemplate = -1);
 	rbool saveModel     () const;

@@ -166,11 +166,6 @@ private:
 	PTR(QLabel) getStatusBarLabel(StatusBarType<N>);
 
 public:
-	void onUpdateModify       ();
-	void onUpdateModelTime    (float time);
-	void onUpdateModelRuntype ();
-	void onUpdateModelSpeed   ();
-	void onUpdateModelShowRate();
 	void onModelRun           ();
 
 private slots:

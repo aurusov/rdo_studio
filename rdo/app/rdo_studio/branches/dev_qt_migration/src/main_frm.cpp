@@ -397,27 +397,6 @@ void RDOStudioMainFrame::onModelRun()
 	model->runModel();
 }
 
-void RDOStudioMainFrame::onUpdateModify()
-{
-}
-
-void RDOStudioMainFrame::onUpdateModelTime(float time)
-{
-	updateStatusBar<SB_MODEL_TIME>(QString(rdo::format("Время: %f", time).c_str()));
-}
-
-void RDOStudioMainFrame::onUpdateModelRuntype()
-{
-}
-
-void RDOStudioMainFrame::onUpdateModelSpeed()
-{
-}
-
-void RDOStudioMainFrame::onUpdateModelShowRate()
-{
-}
-
 void RDOStudioMainFrame::OnUpdateModelRunTypeStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();

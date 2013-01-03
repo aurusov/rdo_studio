@@ -134,8 +134,6 @@ RDOStudioModel::RDOStudioModel()
 	setCanRun   (m_GUI_CAN_RUN   );
 	setIsRunning(m_GUI_IS_RUNNING);
 
-	m_timeNowSignal.connect(boost::bind(&RDOStudioMainFrame::onUpdateModelTime, static_cast<RDOStudioMainFrame*>(studioApp.getIMainWnd()), _1));
-
 	ModelTemplate modelTemplate;
 	modelTemplate[ rdoModelObjects::SMR ] = ModelTemplateItem(IDR_MODEL_TMP0_SMR, 0);
 	m_modelTemplates[0] = modelTemplate;
@@ -1359,7 +1357,9 @@ void RDOStudioModel::setUpActions()
 void RDOStudioModel::update()
 {
 	sendMessage(kernel->runtime(), RT_RUNTIME_GET_TIMENOW, &m_timeNow);
-	m_timeNowSignal(m_timeNow);
+
+	studioApp.getMainWndUI()->updateStatusBar<RDOStudioMainFrame::SB_MODEL_TIME>(QString("Время: %1").arg(m_timeNow));
+
 	rdo::runtime::RunTimeMode rm;
 	sendMessage(kernel->runtime(), RT_RUNTIME_GET_MODE, &rm);
 	if (rm != getRuntimeMode())
