@@ -392,11 +392,6 @@ void RDOStudioMainFrame::closeEvent(QCloseEvent* event)
 	}
 }
 
-void RDOStudioMainFrame::onModelRun()
-{
-	model->runModel();
-}
-
 void RDOStudioMainFrame::OnUpdateModelRunTypeStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();

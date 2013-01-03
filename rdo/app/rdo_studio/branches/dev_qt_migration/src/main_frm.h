@@ -165,9 +165,6 @@ private:
 	template <StatusBar N>
 	PTR(QLabel) getStatusBarLabel(StatusBarType<N>);
 
-public:
-	void onModelRun           ();
-
 private slots:
 	void onViewOptions();
 

@@ -340,7 +340,7 @@ BOOL RDOStudioApp::InitInstance()
 
 	if (m_autoRun)
 	{
-		m_pMainFrame->onModelRun();
+		model->runModel();
 	}
 
 	return TRUE;
