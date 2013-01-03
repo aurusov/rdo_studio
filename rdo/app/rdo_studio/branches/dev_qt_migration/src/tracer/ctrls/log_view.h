@@ -30,31 +30,23 @@ class LogView: public ActionActivatorWidget
 {
 Q_OBJECT
 
-friend class LogCtrlFindInList;
-
 public:
 	LogView(PTR(QAbstractScrollArea) pParent, PTR(LogStyle) pStyle);
 	virtual ~LogView();
 
-	virtual void addStringToLog(CREF(tstring) logStr);
+	void  push_back (CREF(tstring) log );
+	void  setText   (tstring       text);
+	void  clear     ();
+	void  selectLine(int index);
 
-	rbool getFocusOnly() const { return focusOnly; }
-	virtual void setFocusOnly(rbool value) { focusOnly = value; }
+	rbool getFocusOnly() const;
+	void  setFocusOnly(rbool value);
 
-	virtual void getString(int index, tstring& str) const;
-	virtual int getSelectedIndex() const;
-	virtual void getSelected(tstring& str) const;
-	virtual rbool makeLineVisible(int index);
-	virtual void selectLine(int index);
-	virtual void clear();
-	
-	virtual CREF(LogStyle) getStyle() const;
-	virtual void setStyle(LogStyle* style, rbool needRedraw = true);
+	CREF(LogStyle) getStyle() const;
+	void setStyle(LogStyle* style, rbool needRedraw = true);
 
-	void setText(tstring text);
-
+	rbool getDrawLog() const;
 	void  setDrawLog(rbool value);
-	rbool getDrawLog() const { return drawLog; };
 
 private:
 	class StringList
@@ -92,17 +84,17 @@ private:
 		void seek(rsint delta, REF(StringList::const_iterator) it) const;
 	};
 
-	CMutex     mutex;
+	CMutex     m_mutex;
 	StringList m_strings;
 
-	LogStyle*  logStyle;
+	LogStyle*  m_logStyle;
 	rbool getItemColors(CREF(tstring) item, LogColorPair* &colors) const;
 	rbool getItemColors(int index, LogColorPair* &colors) const;
 
 	rsint selectedLine() const;
 
-	rsint lineHeight;
-	rsint charWidth;
+	rsint m_lineHeight;
+	rsint m_charWidth;
 	rsint m_selectedLine;
 
 	QMenu* m_pPopupMenu;
@@ -155,14 +147,18 @@ private:
 	QRect m_clientRect;
 	QRect m_prevWindowRect;
 
-	int fullRepaintLines;
-	rbool focusOnly;
+	int m_fullRepaintLines;
+	rbool m_focusOnly;
 
 	FindDialog*          m_pFindDialog;
 	FindDialog::Settings m_findSettings;
 	rsint find(rbool searchDown);
 	void  onFindDlgFind (CREF(FindDialog::Settings) settings);
 	void  onFindDlgClose();
+
+	tstring getString      (int index) const;
+	tstring getSelected    () const;
+	rbool   makeLineVisible(int index);
 
 	void  updateScrollBars();
 
@@ -176,7 +172,7 @@ private:
 
 	void  updateWindow();
 
-	rbool drawLog;
+	rbool m_drawLog;
 
 	QFont m_font;
 	void setFont();

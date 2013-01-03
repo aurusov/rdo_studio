@@ -739,7 +739,7 @@ void TracerBase::getTraceString( tstring trace_string )
 	mutex.Lock();
 
 	if ( log ) {
-		log->view().addStringToLog( trace_string );
+		log->view().push_back( trace_string );
 	}
 
 	action = RUA_NONE;

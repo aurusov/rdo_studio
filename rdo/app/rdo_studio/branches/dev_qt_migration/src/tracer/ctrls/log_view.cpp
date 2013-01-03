@@ -312,19 +312,19 @@ rbool LogView::ScrollMetricVert::applyInc(rsint delta)
 LogView::LogView(PTR(QAbstractScrollArea) pParent, PTR(LogStyle) pStyle)
 	: parent_type(pParent)
 	, m_pScrollArea(pParent)
-	, lineHeight(0)
-	, charWidth(0)
+	, m_lineHeight(0)
+	, m_charWidth(0)
 	, m_selectedLine(-1)
 	, m_pPopupMenu(NULL)
-	, fullRepaintLines(0)
-	, focusOnly(false)
-	, logStyle(pStyle)
+	, m_fullRepaintLines(0)
+	, m_focusOnly(false)
+	, m_logStyle(pStyle)
 	, m_pFindDialog(NULL)
-	, drawLog(true)
+	, m_drawLog(true)
 {
-	if (!logStyle)
+	if (!m_logStyle)
 	{
-		logStyle = &studioApp.getStyle()->style_trace;
+		m_logStyle = &studioApp.getStyle()->style_trace;
 	}
 
 	connect(&getVertScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(onVertScrollBarValueChanged(int)));
@@ -377,7 +377,7 @@ void LogView::resizeEvent(QResizeEvent* pEvent)
 
 rbool LogView::getItemColors(int index, LogColorPair* &colors) const
 {
-	const_cast<CMutex&>(mutex).Lock();
+	const_cast<CMutex&>(m_mutex).Lock();
 
 	rbool res = true;
 	SubitemColors::List::const_iterator it = m_subitemColors.m_colorList.find(index);
@@ -390,31 +390,31 @@ rbool LogView::getItemColors(int index, LogColorPair* &colors) const
 		res = LogView::getItemColors("", colors);
 	}
 
-	const_cast<CMutex&>(mutex).Unlock();
+	const_cast<CMutex&>(m_mutex).Unlock();
 
 	return res;
 }
 
 rbool LogView::getItemColors(CREF(tstring) item, LogColorPair* &colors) const
 {
-	return logStyle->getItemColors(item, colors);
+	return m_logStyle->getItemColors(item, colors);
 }
 
 void LogView::paintEvent(QPaintEvent* pEvent)
 {
-	mutex.Lock();
+	m_mutex.Lock();
 
 	QPainter painter(this);
 
-	if (drawLog)
+	if (m_drawLog)
 	{
 		if (!pEvent->rect().isEmpty() && !pEvent->rect().isNull())
 		{
 			painter.setFont(m_font);
 
-			int firstLine = (std::max)(0, m_SM_Y.position + pEvent->rect().top() / lineHeight);
-			int mul = pEvent->rect().bottom() / lineHeight;
-			if (pEvent->rect().bottom() > mul * lineHeight)
+			int firstLine = (std::max)(0, m_SM_Y.position + pEvent->rect().top() / m_lineHeight);
+			int mul = pEvent->rect().bottom() / m_lineHeight;
+			if (pEvent->rect().bottom() > mul * m_lineHeight)
 			{
 				mul++;
 			}
@@ -422,19 +422,19 @@ void LogView::paintEvent(QPaintEvent* pEvent)
 
 			LogColorPair* colors = NULL;
 
-			int y = lineHeight * (-m_SM_Y.position + firstLine - 1);
-			QRect rect(charWidth * (-m_SM_X.position), y, pEvent->rect().width() + charWidth * m_SM_X.position, lineHeight);
+			int y = m_lineHeight * (-m_SM_Y.position + firstLine - 1);
+			QRect rect(m_charWidth * (-m_SM_X.position), y, pEvent->rect().width() + m_charWidth * m_SM_X.position, m_lineHeight);
 			QRect textRect(
-				rect.left  () + logStyle->borders->horzBorder,
-				rect.top   () + logStyle->borders->vertBorder,
-				rect.width () - logStyle->borders->horzBorder * 2,
-				rect.height() - logStyle->borders->vertBorder * 2
+				rect.left  () + m_logStyle->borders->horzBorder,
+				rect.top   () + m_logStyle->borders->vertBorder,
+				rect.width () - m_logStyle->borders->horzBorder * 2,
+				rect.height() - m_logStyle->borders->vertBorder * 2
 			);
 
 			StringList::const_iterator it = m_strings.findString(firstLine);
 			for (int i = firstLine; i < lastLine + 1; i++)
 			{
-				if (i != selectedLine() || focusOnly)
+				if (i != selectedLine() || m_focusOnly)
 				{
 					if (!getItemColors((*it), colors))
 					{
@@ -448,8 +448,8 @@ void LogView::paintEvent(QPaintEvent* pEvent)
 					colors->backgroundColor = palette().color(QPalette::Highlight);
 				}
 
-				rect    .translate(0, lineHeight);
-				textRect.translate(0, lineHeight);
+				rect    .translate(0, m_lineHeight);
+				textRect.translate(0, m_lineHeight);
 
 				//Main drawing cycle
 				painter.setBackgroundMode(Qt::TransparentMode);
@@ -476,7 +476,7 @@ void LogView::paintEvent(QPaintEvent* pEvent)
 
 				++it;
 
-				if (i == selectedLine() && !focusOnly && colors)
+				if (i == selectedLine() && !m_focusOnly && colors)
 				{
 					delete colors;
 					colors = NULL;
@@ -505,7 +505,7 @@ void LogView::paintEvent(QPaintEvent* pEvent)
 		);
 	}
 
-	mutex.Unlock();
+	m_mutex.Unlock();
 
 	parent_type::paintEvent(pEvent);
 }
@@ -572,7 +572,7 @@ void LogView::mousePressEvent(QMouseEvent* pEvent)
 {
 	if (pEvent->button() == Qt::LeftButton)
 	{
-		selectLine((std::min)(m_SM_Y.position + pEvent->pos().y() / lineHeight, m_strings.count() - 1));
+		selectLine((std::min)(m_SM_Y.position + pEvent->pos().y() / m_lineHeight, m_strings.count() - 1));
 	}
 	else if (pEvent->button() == Qt::RightButton)
 	{
@@ -582,16 +582,16 @@ void LogView::mousePressEvent(QMouseEvent* pEvent)
 
 void LogView::updateScrollBars()
 {
-	m_SM_Y.pageSize = m_clientRect.height() / lineHeight;
+	m_SM_Y.pageSize = m_clientRect.height() / m_lineHeight;
 	m_SM_Y.posMax   = (std::max)(0, m_strings.count() - m_SM_Y.pageSize);
 	m_SM_Y.position = (std::min)(m_SM_Y.position, m_SM_Y.posMax);
 
-	m_SM_X.pageSize = (m_clientRect.width() - logStyle->borders->horzBorder) / charWidth;
+	m_SM_X.pageSize = (m_clientRect.width() - m_logStyle->borders->horzBorder) / m_charWidth;
 	m_SM_X.posMax   = (std::max)(0, rsint(m_strings.maxLegth()) - m_SM_X.pageSize);
 	m_SM_X.position = (std::min)(m_SM_X.position, m_SM_X.posMax);
 
 	int mul = m_SM_Y.pageSize;
-	if (mul * lineHeight < m_clientRect.height())
+	if (mul * m_lineHeight < m_clientRect.height())
 	{
 		mul++;
 	}
@@ -600,11 +600,11 @@ void LogView::updateScrollBars()
 	m_strings.setCursor(m_SM_Y.position, m_SM_Y.posMax);
 
 	getVertScrollBar().setRange   (0, m_SM_Y.posMax);
-	getVertScrollBar().setPageStep(drawLog && m_SM_Y.posMax > 0 ? m_SM_Y.pageSize : 0);
+	getVertScrollBar().setPageStep(m_drawLog && m_SM_Y.posMax > 0 ? m_SM_Y.pageSize : 0);
 	getVertScrollBar().setValue   (m_SM_Y.position);
 
 	getHorzScrollBar().setRange   (0, m_SM_X.posMax);
-	getHorzScrollBar().setPageStep(drawLog && m_SM_X.posMax > 0 ? m_SM_X.pageSize : 0);
+	getHorzScrollBar().setPageStep(m_drawLog && m_SM_X.posMax > 0 ? m_SM_X.pageSize : 0);
 	getHorzScrollBar().setValue   (m_SM_X.position);
 }
 
@@ -635,7 +635,7 @@ rbool LogView::scrollHorizontally(int inc)
 
 rbool LogView::isFullyVisible(int index) const
 {
-	int lastVisible = m_SM_Y.position + m_clientRect.height() / lineHeight - 1;
+	int lastVisible = m_SM_Y.position + m_clientRect.height() / m_lineHeight - 1;
 	return index <= lastVisible && index >= m_SM_Y.position;
 }
 
@@ -653,16 +653,12 @@ void LogView::selectLine(int index)
 	{
 		setSelectedLine(selectedLine() + inc);
 
-		//makeLineVisible() scrolls to the line and repaints
-		//it and nearby line if scrolling occurs.
-		//If no scrolling is done repaint line
 		rbool needrepaint = !makeLineVisible(selectedLine());
 		if (needrepaint)
 		{
 			repaintLine(selectedLine());
 		}
 
-		//repaintLine() repaints line only if it's visible
 		repaintLine(prevSel);
 	}
 }
@@ -670,8 +666,8 @@ void LogView::selectLine(int index)
 QRect LogView::getLineRect(int index) const
 {
 	QRect rect(m_clientRect);
-	rect.setTop((index - m_SM_Y.position) * lineHeight);
-	rect.setBottom((std::min)(rect.top() + lineHeight, rect.bottom()));
+	rect.setTop((index - m_SM_Y.position) * m_lineHeight);
+	rect.setBottom((std::min)(rect.top() + m_lineHeight, rect.bottom()));
 	return rect;
 }
 
@@ -701,7 +697,7 @@ rbool LogView::makeLineVisible(int index)
 	int inc;
 	if (m_SM_Y.position < index)
 	{
-		int lastVisible = m_SM_Y.position + m_clientRect.height() / lineHeight - 1;
+		int lastVisible = m_SM_Y.position + m_clientRect.height() / m_lineHeight - 1;
 		inc = index - lastVisible;
 	}
 	else
@@ -710,29 +706,29 @@ rbool LogView::makeLineVisible(int index)
 	}
 
 	//Repainting nearby lines after scrolling
-	fullRepaintLines = 2;
+	m_fullRepaintLines = 2;
 
 	res = scrollVertically(inc);
 
-	fullRepaintLines = 0;
+	m_fullRepaintLines = 0;
 
 	return res;
 }
 
-void LogView::addStringToLog(CREF(tstring) logStr)
+void LogView::push_back(CREF(tstring) log)
 {
-	mutex.Lock();
+	m_mutex.Lock();
 
-	if (!logStr.empty())
+	if (!log.empty())
 	{
-		int posstart = logStr.find_first_not_of(' ');
-		int posend   = logStr.find_first_of(' ', posstart);
-		tstring key  = logStr.substr(posstart, posend - posstart);
+		int posstart = log.find_first_not_of(' ');
+		int posend   = log.find_first_of(' ', posstart);
+		tstring key  = log.substr(posstart, posend - posstart);
 		rdo::trim(key);
 
 		LogColorPair* colors = NULL;
 
-		if (logStyle->getItemColors(key, colors))
+		if (m_logStyle->getItemColors(key, colors))
 		{
 			m_subitemColors.m_addingSubitems = false;
 		}
@@ -744,26 +740,26 @@ void LogView::addStringToLog(CREF(tstring) logStr)
 		if (key == "SD")
 		{
 			m_subitemColors.m_addingSubitems = true;
-			logStyle->getItemColors(key, m_subitemColors.m_parentColor);
+			m_logStyle->getItemColors(key, m_subitemColors.m_parentColor);
 		}
 	}
 
 	rbool prevVisible = m_SM_Y.isVisible(m_strings.count() - 1);
 
-	m_strings.push_back(logStr);
+	m_strings.push_back(log);
 
 	int lastString = m_strings.count() - 1;
 
-	if (drawLog)
+	if (m_drawLog)
 	{
 		updateScrollBars();
 
-		fullRepaintLines = 1;
+		m_fullRepaintLines = 1;
 
 		if ( selectedLine() != -1 && selectedLine() == lastString - 1)
 		{
 			setSelectedLine(lastString);
-			fullRepaintLines++;
+			m_fullRepaintLines++;
 		}
 
 		if (!isFullyVisible(lastString) && prevVisible && (!m_SM_Y.isVisible(selectedLine()) || selectedLine() == lastString))
@@ -774,13 +770,13 @@ void LogView::addStringToLog(CREF(tstring) logStr)
 		else if (m_SM_Y.isVisible(lastString))
 		{
 			repaintLine(lastString);
-			if (fullRepaintLines == 2)
+			if (m_fullRepaintLines == 2)
 			{
 				repaintLine(lastString - 1);
 			}
 		}
 
-		fullRepaintLines = 0;
+		m_fullRepaintLines = 0;
 	}
 	else
 	{
@@ -790,17 +786,17 @@ void LogView::addStringToLog(CREF(tstring) logStr)
 		}
 	}
 
-	mutex.Unlock();
+	m_mutex.Unlock();
 }
 
 CREF(LogStyle) LogView::getStyle() const
 {
-	return *logStyle;
+	return *m_logStyle;
 }
 
 void LogView::setStyle(LogStyle* style, rbool needRedraw)
 {
-	logStyle = style;
+	m_logStyle = style;
 	setFont();
 
 	updateScrollBars();
@@ -814,51 +810,48 @@ void LogView::setStyle(LogStyle* style, rbool needRedraw)
 
 void LogView::setFont()
 {
-	if (!logStyle)
+	if (!m_logStyle)
 	{
 		return;
 	}
 
-	mutex.Lock();
+	m_mutex.Lock();
 
-	m_font = QFont(logStyle->font->name.c_str());
-	m_font.setBold     (logStyle->theme->style & rdoStyle::RDOStyleFont::BOLD     );
-	m_font.setItalic   (logStyle->theme->style & rdoStyle::RDOStyleFont::ITALIC   );
-	m_font.setUnderline(logStyle->theme->style & rdoStyle::RDOStyleFont::UNDERLINE);
-	m_font.setPointSize(logStyle->font->size);
+	m_font = QFont(m_logStyle->font->name.c_str());
+	m_font.setBold     (m_logStyle->theme->style & rdoStyle::RDOStyleFont::BOLD     );
+	m_font.setItalic   (m_logStyle->theme->style & rdoStyle::RDOStyleFont::ITALIC   );
+	m_font.setUnderline(m_logStyle->theme->style & rdoStyle::RDOStyleFont::UNDERLINE);
+	m_font.setPointSize(m_logStyle->font->size);
 
 	QFontMetrics fontMetrics(m_font);
-	lineHeight = fontMetrics.height() + 2 * logStyle->borders->vertBorder;
-	charWidth  = fontMetrics.averageCharWidth(); // fontMetrics.maxWidth()
+	m_lineHeight = fontMetrics.height() + 2 * m_logStyle->borders->vertBorder;
+	m_charWidth  = fontMetrics.averageCharWidth(); // fontMetrics.maxWidth()
 
-	mutex.Unlock();
+	m_mutex.Unlock();
 }
 
-void LogView::getString(int index, tstring& str) const
+tstring LogView::getString(int index) const
 {
-	const_cast<CMutex&>(mutex).Lock();
+	tstring result;
+	const_cast<CMutex&>(m_mutex).Lock();
 
 	if (index >= 0 && index < m_strings.count())
 	{
-		str.assign(*m_strings.findString(index));
+		result = *m_strings.findString(index);
 	}
 
-	const_cast<CMutex&>(mutex).Unlock();
+	const_cast<CMutex&>(m_mutex).Unlock();
+	return result;
 }
 
-int LogView::getSelectedIndex() const
+tstring LogView::getSelected() const
 {
-	return selectedLine();
-}
-
-void LogView::getSelected(tstring& str) const
-{
-	getString(selectedLine(), str);
+	return getString(selectedLine());
 }
 
 void LogView::clear()
 {
-	mutex.Lock();
+	m_mutex.Lock();
 
 	m_strings.clear();
 	m_subitemColors = SubitemColors();
@@ -871,14 +864,14 @@ void LogView::clear()
 	update();
 	updateWindow();
 
-	mutex.Unlock();
+	m_mutex.Unlock();
 }
 
 rsint LogView::find(rbool searchDown)
 {
 	rsint result = -1;
 
-	mutex.Lock();
+	m_mutex.Lock();
 
 	int startPos = selectedLine() == -1
 		? searchDown
@@ -900,7 +893,7 @@ rsint LogView::find(rbool searchDown)
 		result = startPos + (checkCounter - 1) * (searchDown ? 1 : -1);
 	}
 
-	mutex.Unlock();
+	m_mutex.Unlock();
 
 	return result;
 }
@@ -915,17 +908,32 @@ void LogView::setText(tstring text)
 		{
 			pos = text.length();
 		}
-		addStringToLog(pos ? text.substr(0, pos) : "");
+		push_back(pos ? text.substr(0, pos) : "");
 		text.erase(0, pos);
 		text.erase(0, text.find_first_not_of("\r\n"));
 	}
 }
 
+rbool LogView::getFocusOnly() const
+{
+	return m_focusOnly;
+}
+
+void LogView::setFocusOnly(rbool value)
+{
+	m_focusOnly = value;
+}
+
+rbool LogView::getDrawLog() const
+{
+	return m_drawLog;
+}
+
 void LogView::setDrawLog(rbool value)
 {
-	if (drawLog != value)
+	if (m_drawLog != value)
 	{
-		drawLog = value;
+		m_drawLog = value;
 		updateScrollBars();
 		update();
 		updateWindow();
@@ -1035,15 +1043,12 @@ void LogView::setUpCoordStatusBar(rbool activate)
 
 void LogView::onEditCopy()
 {
-	tstring selected;
-	getSelected(selected);
-
-	QApplication::clipboard()->setText(QString::fromStdString(selected));
+	QApplication::clipboard()->setText(QString::fromStdString(getSelected()));
 }
 
 void LogView::onSearchFind()
 {
-	getSelected(m_findSettings.what);
+	m_findSettings.what = getSelected();
 
 	if (!m_pFindDialog)
 	{
@@ -1083,9 +1088,7 @@ void LogView::onSearchFindPrevious()
 
 void LogView::onHelpContext()
 {
-	tstring line;
-
-	getSelected(line);
+	tstring line = getSelected();
 
 	tstring keyword = "trc";
 	if (!line.empty())
@@ -1098,10 +1101,10 @@ void LogView::onHelpContext()
 		if (!keyword.empty())
 		{
 			LogColorPair* colors;
-			if (!logStyle->getItemColors(keyword, colors))
+			if (!m_logStyle->getItemColors(keyword, colors))
 			{
 				getItemColors(selectedLine(), colors);
-				if (*colors == logStyle->theme->sd)
+				if (*colors == m_logStyle->theme->sd)
 				{
 					keyword = "SD";
 				}
