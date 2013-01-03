@@ -31,7 +31,6 @@
 class RDOStudioMainFrame;
 class RDOThreadStudio;
 class RDOThreadStudioGUI;
-class RDOStudioPlugin;
 
 namespace rdo { namespace gui { namespace tracer {
 class Tracer;
@@ -75,8 +74,6 @@ public:
 	void           setShowCaptionFullName(rbool value);
 
 	void           autoCloseByModel ();
-	void           autoCloseByPlugin(PTR(RDOStudioPlugin) plugin);
-	rbool          isPluginAutoStart(PTR(RDOStudioPlugin) plugin) const;
 
 	static tstring getFullExtName      ();
 	tstring        getFullHelpFileName (tstring str = "RAO-help.qhc") const;
@@ -97,7 +94,6 @@ private:
 #endif
 
 	typedef  std::vector<tstring>  ReopenList;
-	typedef  std::list<tstring>    PluginNameList;
 
 	RPMethodManager                        m_methodManager;
 	std::ofstream                          m_log;
@@ -112,8 +108,6 @@ private:
 	rbool                                  m_dontCloseIfError;
 	rdo::simulation::report::RDOExitCode  m_exitCode;
 	tstring                                m_openModelName;
-	PluginNameList                         m_pluginStartNameList;
-	PluginNameList                         m_pluginExitNameList;
 	QProcess*                              m_pAssistant;
 	PTR(RDOStudioMainFrame)                m_pMainFrame;
 	rdoEditor::LPRDOEditorEditStyle        m_pEditorEditStyle;

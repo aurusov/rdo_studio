@@ -105,7 +105,6 @@ void Tracer::proc( RDOThread::RDOMessageInfo& msg )
 		}
 		case RDOThread::RT_RUNTIME_TRACE_STRING: {
 			msg.lock();
-			plugins->traceProc( *static_cast<tstring*>(msg.param) );
 			getTraceString( *static_cast<tstring*>(msg.param) );
 			msg.unlock();
 			break;

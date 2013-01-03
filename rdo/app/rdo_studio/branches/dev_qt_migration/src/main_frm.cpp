@@ -796,20 +796,10 @@ void RDOStudioMainFrame::timerEvent(QTimerEvent* event)
 }
 
 void RDOStudioMainFrame::showEvent(QShowEvent*)
-{
-	if (plugins)
-	{
-		plugins->saveMainFrameState(SW_SHOW);
-	}
-}
+{}
 
 void RDOStudioMainFrame::hideEvent(QHideEvent*)
-{
-	if (plugins)
-	{
-		plugins->saveMainFrameState(SW_HIDE);
-	}
-}
+{}
 
 //! @todo qt
 //void RDOStudioMainFrame::OnEnterMenuLoop( BOOL bIsTrackPopupMenu )

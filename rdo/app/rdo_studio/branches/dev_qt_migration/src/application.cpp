@@ -21,12 +21,10 @@
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
-#include "app/rdo_studio_mfc/src/plugins.h"
 #include "app/rdo_studio_mfc/src/thread.h"
 #include "app/rdo_studio_mfc/src/model/new.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
 #include "app/rdo_studio_mfc/htmlhelp.h"
-#include "app/rdo_studio_mfc/plugins/common/rdoplugin.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_factory.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_method.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_project.h"
@@ -84,14 +82,9 @@ class RDOStudioCommandLineInfo: public CCommandLineInfo
 public:
 	RDOStudioCommandLineInfo()
 		: CCommandLineInfo()
-		, m_pluginStartFound(false)
-		, m_pluginExitFound (false)
 	{}
 
 protected:
-	rbool m_pluginStartFound;
-	rbool m_pluginExitFound;
-
 	virtual void ParseParam(LPCTSTR lpszParam, BOOL bFlag, BOOL bLast);
 };
 
@@ -100,9 +93,6 @@ void RDOStudioCommandLineInfo::ParseParam(LPCTSTR lpszParam, BOOL bFlag, BOOL bL
 	CCommandLineInfo::ParseParam(lpszParam, bFlag, bLast);
 	if (bFlag)
 	{
-		m_pluginStartFound = false;
-		m_pluginExitFound  = false;
-
 		if (CString(lpszParam).CompareNoCase(_T("autorun")) == 0)
 		{
 			studioApp.m_autoRun = true;
@@ -115,31 +105,13 @@ void RDOStudioCommandLineInfo::ParseParam(LPCTSTR lpszParam, BOOL bFlag, BOOL bL
 		{
 			studioApp.m_dontCloseIfError = true;
 		}
-		else if (CString(lpszParam).CompareNoCase(_T("pluginstart")) == 0)
-		{
-			m_pluginStartFound = true;
-		}
-		else if (CString(lpszParam).CompareNoCase(_T("pluginautoexit")) == 0)
-		{
-			m_pluginExitFound = true;
-		}
 	}
 	else
 	{
-		if (m_pluginStartFound)
-		{
-			studioApp.m_pluginStartNameList.push_back(lpszParam);
-		}
-		else if (m_pluginExitFound)
-		{
-			studioApp.m_pluginExitNameList.push_back(lpszParam);
-		}
-		else if (studioApp.m_openModelName.empty())
+		if (studioApp.m_openModelName.empty())
 		{
 			studioApp.m_openModelName = lpszParam;
 		}
-		m_pluginStartFound = false;
-		m_pluginExitFound  = false;
 	}
 }
 
@@ -323,9 +295,6 @@ BOOL RDOStudioApp::InitInstance()
 	RDOStudioCommandLineInfo cmdInfo;
 	ParseCommandLine(cmdInfo);
 
-	// —оздаем менеджер плагинов после создани€ главного окна и парсера командной строки
-	plugins = new RDOStudioPlugins;
-
 	rbool newModel  = true;
 	rbool autoModel = false;
 	if (!m_openModelName.empty())
@@ -419,18 +388,12 @@ int RDOStudioApp::ExitInstance()
 	}
 #endif
 
-	if (plugins)
-	{
-		delete plugins;
-		plugins = NULL;
-	}
-
 	// –он€ем кернел и закрываем все треды
 	RDOKernel::close();
 
 	::HtmlHelp(NULL, NULL, HH_CLOSE_ALL, 0);
 
-	if (m_autoExitByModel || !m_pluginExitNameList.empty())
+	if (m_autoExitByModel)
 	{
 		CWinApp::ExitInstance();
 		return m_exitCode;
@@ -1017,19 +980,6 @@ void RDOStudioApp::autoCloseByModel()
 	}
 }
 
-void RDOStudioApp::autoCloseByPlugin(PTR(RDOStudioPlugin) plugin)
-{
-	if (std::find(m_pluginExitNameList.begin(), m_pluginExitNameList.end(), plugin->getFileName()) != m_pluginExitNameList.end())
-	{
-		m_pMainFrame->close();
-	}
-}
-
-rbool RDOStudioApp::isPluginAutoStart(PTR(RDOStudioPlugin) plugin) const
-{
-	return std::find(m_pluginStartNameList.begin(), m_pluginStartNameList.end(), plugin->getFileName()) != m_pluginStartNameList.end();
-}
-
 BOOL RDOStudioApp::PreTranslateMessage(PTR(MSG) pMsg) 
 {
 	if (pMsg->message == WM_KEYDOWN)
@@ -1045,10 +995,6 @@ BOOL RDOStudioApp::PreTranslateMessage(PTR(MSG) pMsg)
 		//		return true;
 		//	}
 		//}
-	}
-	if (pMsg->message == PLUGIN_MUSTEXIT_MESSAGE)
-	{
-		plugins->stopPluginByStudio(reinterpret_cast<HMODULE>(pMsg->wParam));
 	}
 	return CWinApp::PreTranslateMessage(pMsg);
 }

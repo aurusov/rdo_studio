@@ -341,60 +341,6 @@ private:
 };
 
 // --------------------------------------------------------------------------------
-// -------------------- RDOStudioOptionsPlugins
-// --------------------------------------------------------------------------------
-class RDOStudioPlugin;
-
-class RDOStudioOptionsPlugins: public CPropertyPage
-{
-public:
-	RDOStudioOptionsPlugins(REF(RDOStudioOptions) sheet);
-	virtual ~RDOStudioOptionsPlugins();
-
-protected:
-	enum { IDD = IDD_OPTIONS_PLUGINS };
-
-	CButton   m_restoreStateCheckBox;
-	CButton   m_stopButton;
-	CButton   m_startButton;
-	CComboBox m_runModeComboBox;
-	CButton   m_runModeButton;
-	CStatic   m_runModeStatic;
-	CListCtrl m_pluginList;
-
-private:
-	PTR(RDOStudioOptions) sheet;
-
-	rbool sortPluginNameAsceding;
-	rbool sortPluginVersionAsceding;
-	rbool sortPluginRunModeAsceding;
-	rbool sortPluginStateAsceding;
-	rbool sortPluginDescriptionAsceding;
-
-	UINT timer;
-
-	void updateRunModeInGrid(const RDOStudioPlugin* plugin, const int index);
-	void updateStateInGrid(const RDOStudioPlugin* plugin, const int index);
-	void updateControls(const RDOStudioPlugin* plugin);
-
-	virtual void OnOK();
-	virtual void DoDataExchange(CDataExchange* pDX);
-	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
-
-	virtual BOOL OnInitDialog();
-	afx_msg void OnPluginListColumnClick(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnPluginListSelectChanged(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnPluginRunModeComboBoxChanged();
-	afx_msg void OnPluginRunModeButtonClicked();
-	afx_msg void OnPluginStart();
-	afx_msg void OnPluginStop();
-	afx_msg void OnPluginRestoreStateCheckBoxClicked();
-	afx_msg void OnTimer(UINT nIDEvent);
-	afx_msg void OnDestroy();
-	DECLARE_MESSAGE_MAP()
-};
-
-// --------------------------------------------------------------------------------
 // -------------------- RDOStudioOptions
 // --------------------------------------------------------------------------------
 class RDOStudioOptions: public CPropertySheet
@@ -403,7 +349,6 @@ friend class RDOStudioOptionsGeneral;
 friend class RDOStudioOptionsEditor;
 friend class RDOStudioOptionsTabs;
 friend class RDOStudioOptionsColorsStyles;
-friend class RDOStudioOptionsPlugins;
 
 public:
 	RDOStudioOptions();
@@ -423,7 +368,6 @@ private:
 	RDOStudioOptionsEditor*       editor;
 	RDOStudioOptionsTabs*         tabs;
 	RDOStudioOptionsColorsStyles* styles;
-	RDOStudioOptionsPlugins*      plugins;
 
 	rdoEditor::RDOEditorEdit       preview_editor;
 	rdoEditCtrl::RDOBuildEdit      preview_build;
