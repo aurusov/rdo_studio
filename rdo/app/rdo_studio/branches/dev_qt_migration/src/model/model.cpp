@@ -49,6 +49,24 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // --------------------------------------------------------------------------------
+// -------------------- RDOStudioModel::ModelTemplateItem
+// --------------------------------------------------------------------------------
+RDOStudioModel::ModelTemplateItem::ModelTemplateItem()
+	: m_resID   (ruint(~0))
+	, m_position(~0       )
+{}
+
+RDOStudioModel::ModelTemplateItem::ModelTemplateItem(CREF(ModelTemplateItem) copy)
+	: m_resID   (copy.m_resID   )
+	, m_position(copy.m_position)
+{}
+
+RDOStudioModel::ModelTemplateItem::ModelTemplateItem(ruint resID, int position)
+	: m_resID   (resID   )
+	, m_position(position)
+{}
+
+// --------------------------------------------------------------------------------
 // -------------------- RDOStudioModel
 // --------------------------------------------------------------------------------
 PTR(RDOStudioModel) model = NULL;
@@ -1116,6 +1134,11 @@ void RDOStudioModel::closeModelFromRepository()
 	setName("");
 }
 
+CREF(tstring) RDOStudioModel::getName() const
+{
+	return m_name;
+}
+
 void RDOStudioModel::setName(CREF(tstring) str)
 {
 	tstring newName(str);
@@ -1193,6 +1216,24 @@ void RDOStudioModel::afterModelStart()
 	}
 }
 
+PTR(RPMethodProc2RDO) RDOStudioModel::getProc2rdo() const
+{
+	RPMethodManager::MethodList::const_iterator it = studioApp.getMethodManager().getList().begin();
+	while (it != studioApp.getMethodManager().getList().end())
+	{
+		PTR(rpMethod::RPMethod) pMethod = *it;
+		ASSERT(pMethod);
+		if (pMethod->getClassName() == _T("RPMethodProc2RDO"))
+		{
+			PTR(RPMethodProc2RDO) pProc2RDO = dynamic_cast<PTR(RPMethodProc2RDO)>(pMethod);
+			ASSERT(pProc2RDO);
+			return pProc2RDO;
+		}
+		it++;
+	}
+	return NULL;
+}
+
 void RDOStudioModel::updateStyleOfAllModel() const
 {
 	if (m_pModelView)
@@ -1204,6 +1245,11 @@ void RDOStudioModel::updateStyleOfAllModel() const
 	}
 
 	m_frameManager.updateStyles();
+}
+
+rbool RDOStudioModel::isPrevModelClosed() const
+{
+	return m_modelClosed;
 }
 
 void RDOStudioModel::setRuntimeMode(const rdo::runtime::RunTimeMode value)
@@ -1246,6 +1292,11 @@ tstring RDOStudioModel::getLastBreakPointName()
 	return str;
 }
 
+double RDOStudioModel::getSpeed() const
+{
+	return m_speed;
+}
+
 void RDOStudioModel::setSpeed(double persent)
 {
 	if (persent >= 0 && persent <= 1 && m_speed != persent)
@@ -1258,6 +1309,11 @@ void RDOStudioModel::setSpeed(double persent)
 	}
 }
 
+double RDOStudioModel::getShowRate() const
+{
+	return m_showRate;
+}
+
 void RDOStudioModel::setShowRate(double value)
 {
 	if (!isRunning())
@@ -1268,6 +1324,51 @@ void RDOStudioModel::setShowRate(double value)
 		m_showRate = value;
 		sendMessage(kernel->runtime(), RT_RUNTIME_SET_SHOWRATE, &m_showRate);
 	}
+}
+
+void RDOStudioModel::showNextFrame()
+{
+	m_frameManager.showNextFrame();
+}
+
+void RDOStudioModel::showPrevFrame()
+{
+	m_frameManager.showPrevFrame();
+}
+
+rbool RDOStudioModel::canShowNextFrame() const
+{
+	return m_frameManager.canShowNextFrame();
+}
+
+rbool RDOStudioModel::canShowPrevFrame() const
+{
+	return m_frameManager.canShowPrevFrame();
+}
+
+int RDOStudioModel::getFrameCount() const
+{
+	return m_frameManager.count();
+}
+
+CPTR(char) RDOStudioModel::getFrameName(int index) const
+{
+	return m_frameManager.getFrameName(index).c_str();
+}
+
+void RDOStudioModel::showFrame(int index)
+{
+	m_frameManager.showFrame(index);
+}
+
+void RDOStudioModel::closeAllFrame()
+{
+	m_frameManager.closeAll();
+}
+
+rbool RDOStudioModel::hasModel() const
+{
+	return m_GUI_HAS_MODEL;
 }
 
 void RDOStudioModel::update()
@@ -1365,6 +1466,61 @@ rbool RDOStudioModel::isModify() const
 	}
 
 	return result;
+}
+
+rbool RDOStudioModel::canNew() const
+{
+	return ((hasModel() && m_GUI_CAN_RUN) || !hasModel()) && m_GUI_ACTION_NEW;
+}
+
+rbool RDOStudioModel::canOpen() const
+{
+	return ((hasModel() && m_GUI_CAN_RUN) || !hasModel()) && m_GUI_ACTION_OPEN;
+}
+
+rbool RDOStudioModel::canSave() const
+{
+	return isModify() && m_GUI_ACTION_SAVE;
+}
+
+rbool RDOStudioModel::canClose() const
+{
+	return hasModel() && !isRunning() && m_GUI_ACTION_CLOSE;
+}
+
+rbool RDOStudioModel::canBuild() const
+{
+	return hasModel() && m_GUI_CAN_RUN && m_GUI_ACTION_BUILD;
+}
+
+rbool RDOStudioModel::canRun() const
+{
+	return hasModel() && m_GUI_CAN_RUN && m_GUI_ACTION_RUN;
+}
+
+rbool RDOStudioModel::isRunning() const
+{
+	return m_GUI_IS_RUNING;
+}
+
+rbool RDOStudioModel::isFrmDescribed() const
+{
+	return m_frmDescribed;
+}
+
+double RDOStudioModel::getTimeNow() const
+{
+	return m_timeNow;
+}
+
+rdo::simulation::report::RDOExitCode RDOStudioModel::getExitCode() const
+{
+	return m_exitCode;
+}
+
+rdo::runtime::RunTimeMode RDOStudioModel::getRuntimeMode() const
+{
+	return m_runtimeMode;
 }
 
 rbool RDOStudioModel::saveModified()
