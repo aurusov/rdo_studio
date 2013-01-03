@@ -341,8 +341,8 @@ LogView::LogView(PTR(QAbstractScrollArea) pParent, PTR(LogStyle) pStyle)
 		m_logStyle = &studioApp.getStyle()->style_trace;
 	}
 
-	connect(&getVertScrollBar(), SIGNAL(valueChanged(rsint)), this, SLOT(onVertScrollBarValueChanged(rsint)));
-	connect(&getHorzScrollBar(), SIGNAL(valueChanged(rsint)), this, SLOT(onHorzScrollBarValueChanged(rsint)));
+	connect(&getVertScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(onVertScrollBarValueChanged(int)));
+	connect(&getHorzScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(onHorzScrollBarValueChanged(int)));
 
 	QPalette p = palette();
 	p.setColor(QPalette::Inactive, QPalette::Highlight,       p.color(QPalette::Active, QPalette::Highlight));
@@ -651,7 +651,7 @@ rbool LogView::scrollHorizontally(rsint inc)
 	return true;
 }
 
-void LogView::onVertScrollBarValueChanged(rsint value)
+void LogView::onVertScrollBarValueChanged(int value)
 {
 	if (value < 0)
 	{
@@ -661,7 +661,7 @@ void LogView::onVertScrollBarValueChanged(rsint value)
 	scrollVertically(value - m_SM_Y.position);
 }
 
-void LogView::onHorzScrollBarValueChanged(rsint value)
+void LogView::onHorzScrollBarValueChanged(int value)
 {
 	if (value < 0)
 	{

@@ -175,8 +175,8 @@ private:
 	DECLARE_ActionActivatorWidget;
 
 private slots:
-	void onVertScrollBarValueChanged(rsint value);
-	void onHorzScrollBarValueChanged(rsint value);
+	void onVertScrollBarValueChanged(int value);
+	void onHorzScrollBarValueChanged(int value);
 	void onEditCopy                 ();
 	void onSearchFind               ();
 	void onSearchFindNext           ();
