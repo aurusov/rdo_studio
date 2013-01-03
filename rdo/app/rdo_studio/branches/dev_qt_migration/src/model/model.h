@@ -43,7 +43,6 @@ Q_OBJECT
 friend class RDOStudioFrameTreeCtrl;
 friend class RDOStudioApp;
 friend class RDOThreadStudioGUI;
-friend class RDOStudioPlugins;
 
 private:
 	enum BuildState
