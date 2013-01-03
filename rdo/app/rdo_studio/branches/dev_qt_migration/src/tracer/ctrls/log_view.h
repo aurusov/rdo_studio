@@ -84,7 +84,6 @@ private:
 		void seek(rsint delta, REF(StringList::const_iterator) it) const;
 	};
 
-	CMutex     m_mutex;
 	StringList m_strings;
 
 	LogStyle*  m_logStyle;

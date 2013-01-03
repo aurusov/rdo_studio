@@ -377,8 +377,6 @@ void LogView::resizeEvent(QResizeEvent* pEvent)
 
 rbool LogView::getItemColors(int index, LogColorPair* &colors) const
 {
-	const_cast<CMutex&>(m_mutex).Lock();
-
 	rbool res = true;
 	SubitemColors::List::const_iterator it = m_subitemColors.m_colorList.find(index);
 	if (it != m_subitemColors.m_colorList.end())
@@ -390,8 +388,6 @@ rbool LogView::getItemColors(int index, LogColorPair* &colors) const
 		res = LogView::getItemColors("", colors);
 	}
 
-	const_cast<CMutex&>(m_mutex).Unlock();
-
 	return res;
 }
 
@@ -402,8 +398,6 @@ rbool LogView::getItemColors(CREF(tstring) item, LogColorPair* &colors) const
 
 void LogView::paintEvent(QPaintEvent* pEvent)
 {
-	m_mutex.Lock();
-
 	QPainter painter(this);
 
 	if (m_drawLog)
@@ -504,8 +498,6 @@ void LogView::paintEvent(QPaintEvent* pEvent)
 			colors->backgroundColor
 		);
 	}
-
-	m_mutex.Unlock();
 
 	parent_type::paintEvent(pEvent);
 }
@@ -717,8 +709,6 @@ rbool LogView::makeLineVisible(int index)
 
 void LogView::push_back(CREF(tstring) log)
 {
-	m_mutex.Lock();
-
 	if (!log.empty())
 	{
 		int posstart = log.find_first_not_of(' ');
@@ -785,8 +775,6 @@ void LogView::push_back(CREF(tstring) log)
 			setSelectedLine(lastString);
 		}
 	}
-
-	m_mutex.Unlock();
 }
 
 CREF(LogStyle) LogView::getStyle() const
@@ -815,8 +803,6 @@ void LogView::setFont()
 		return;
 	}
 
-	m_mutex.Lock();
-
 	m_font = QFont(m_logStyle->font->name.c_str());
 	m_font.setBold     (m_logStyle->theme->style & rdoStyle::RDOStyleFont::BOLD     );
 	m_font.setItalic   (m_logStyle->theme->style & rdoStyle::RDOStyleFont::ITALIC   );
@@ -826,21 +812,17 @@ void LogView::setFont()
 	QFontMetrics fontMetrics(m_font);
 	m_lineHeight = fontMetrics.height() + 2 * m_logStyle->borders->vertBorder;
 	m_charWidth  = fontMetrics.averageCharWidth(); // fontMetrics.maxWidth()
-
-	m_mutex.Unlock();
 }
 
 tstring LogView::getString(int index) const
 {
 	tstring result;
-	const_cast<CMutex&>(m_mutex).Lock();
 
 	if (index >= 0 && index < m_strings.count())
 	{
 		result = *m_strings.findString(index);
 	}
 
-	const_cast<CMutex&>(m_mutex).Unlock();
 	return result;
 }
 
@@ -851,8 +833,6 @@ tstring LogView::getSelected() const
 
 void LogView::clear()
 {
-	m_mutex.Lock();
-
 	m_strings.clear();
 	m_subitemColors = SubitemColors();
 
@@ -863,15 +843,11 @@ void LogView::clear()
 	updateScrollBars();
 	update();
 	updateWindow();
-
-	m_mutex.Unlock();
 }
 
 rsint LogView::find(rbool searchDown)
 {
 	rsint result = -1;
-
-	m_mutex.Lock();
 
 	int startPos = selectedLine() == -1
 		? searchDown
@@ -892,8 +868,6 @@ rsint LogView::find(rbool searchDown)
 	{
 		result = startPos + (checkCounter - 1) * (searchDown ? 1 : -1);
 	}
-
-	m_mutex.Unlock();
 
 	return result;
 }
