@@ -100,8 +100,6 @@ public:
 	void update_start();
 	void update_stop ();
 
-	PTR(QMenu) getMenuFile() { return menuFile; }
-
 	PTR(CWnd) c_wnd() { return &m_thisCWnd; }
 
 	virtual void addSubWindow              (QWidget* pWidget);

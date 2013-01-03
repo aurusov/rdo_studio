@@ -514,8 +514,7 @@ void RDOStudioApp::insertReopenItem(CREF(tstring) item)
 
 void RDOStudioApp::updateReopenSubMenu() const
 {
-	QMenu* pMenuFile = m_pMainFrame->getMenuFile();
-	QList<QAction*> actionList = pMenuFile->actions();
+	QList<QAction*> actionList = m_pMainFrame->menuFile->actions();
 	for (int actionIndex = 0; actionIndex < actionList.size(); ++actionIndex)
 	{
 		QAction* pAction = actionList[actionIndex];
