@@ -96,14 +96,6 @@ void RDOToolBarModel::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar* pScrollBar
 //! @todo qt
 //BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
 //	ON_WM_CREATE()
-//	ON_COMMAND(ID_VIEW_TOOLBAR_FILE_TOOLBAR, OnViewFileToolbar)
-//	ON_COMMAND(ID_VIEW_TOOLBAR_EDIT_TOOLBAR, OnViewEditToolbar)
-//	ON_COMMAND(ID_VIEW_TOOLBAR_ZOOM_TOOLBAR, OnViewZoomToolbar)
-//	ON_COMMAND(ID_VIEW_TOOLBAR_MODEL_TOOLBAR, OnViewModelToolbar)
-//	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_FILE_TOOLBAR, OnUpdateViewFileToolbar)
-//	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_EDIT_TOOLBAR, OnUpdateViewEditToolbar)
-//	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_ZOOM_TOOLBAR, OnUpdateViewZoomToolbar)
-//	ON_UPDATE_COMMAND_UI(ID_VIEW_TOOLBAR_MODEL_TOOLBAR, OnUpdateViewModelToolbar)
 //	ON_WM_DESTROY()
 //	ON_COMMAND(ID_VIEW_OPTIONS, OnViewOptions)
 //	ON_COMMAND(ID_MODEL_RUNTIME_MAXSPEED, OnModelRuntimeMaxSpeed)
@@ -491,50 +483,6 @@ void RDOStudioMainFrame::onUpdateModelSpeed()
 
 void RDOStudioMainFrame::onUpdateModelShowRate()
 {
-}
-
-void RDOStudioMainFrame::OnViewFileToolbar()
-{
-	//! @todo qt
-	//ShowControlBar( &fileToolBar, !(fileToolBar.GetStyle() & WS_VISIBLE), false );
-}
-
-void RDOStudioMainFrame::OnViewEditToolbar()
-{
-	//! @todo qt
-	//ShowControlBar( &editToolBar, !(editToolBar.GetStyle() & WS_VISIBLE), false );
-}
-
-void RDOStudioMainFrame::OnViewZoomToolbar()
-{
-	//! @todo qt
-	//ShowControlBar( &zoomToolBar, !(zoomToolBar.GetStyle() & WS_VISIBLE), false );
-}
-
-void RDOStudioMainFrame::OnViewModelToolbar()
-{
-	//! @todo qt
-	//ShowControlBar( &modelToolBar, !(modelToolBar.GetStyle() & WS_VISIBLE), false );
-}
-
-void RDOStudioMainFrame::OnUpdateViewFileToolbar(CCmdUI* pCmdUI)
-{
-	pCmdUI->SetCheck( fileToolBar.GetStyle() & WS_VISIBLE );
-}
-
-void RDOStudioMainFrame::OnUpdateViewEditToolbar(CCmdUI* pCmdUI)
-{
-	pCmdUI->SetCheck( editToolBar.GetStyle() & WS_VISIBLE );
-}
-
-void RDOStudioMainFrame::OnUpdateViewZoomToolbar(CCmdUI* pCmdUI)
-{
-	pCmdUI->SetCheck( zoomToolBar.GetStyle() & WS_VISIBLE );
-}
-
-void RDOStudioMainFrame::OnUpdateViewModelToolbar(CCmdUI* pCmdUI)
-{
-	pCmdUI->SetCheck( modelToolBar.GetStyle() & WS_VISIBLE );
 }
 
 void RDOStudioMainFrame::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )

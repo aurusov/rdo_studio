@@ -189,14 +189,6 @@ private slots:
 	void onDockVisibleChanged(bool visible);
 
 private:
-	afx_msg void OnViewFileToolbar();
-	afx_msg void OnViewEditToolbar();
-	afx_msg void OnViewZoomToolbar();
-	afx_msg void OnViewModelToolbar();
-	afx_msg void OnUpdateViewFileToolbar(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateViewEditToolbar(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateViewZoomToolbar(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateViewModelToolbar(CCmdUI* pCmdUI);
 	afx_msg void OnDestroy();
 	afx_msg void OnModelRuntimeMaxSpeed();
 	afx_msg void OnModelRuntimeJump();
