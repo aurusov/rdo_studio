@@ -311,8 +311,7 @@ void RDOStudioMainFrame::init()
 
 	PTR(QMenu) pMenuDockView = new QMenu("Окна");
 	ASSERT(pMenuDockView);
-	menuView->insertMenu(menuViewToolbar->menuAction(), pMenuDockView);
-
+	menuView->insertMenu(actViewSettings, pMenuDockView);
 	pMenuDockView->addAction(m_pDockBuild->toggleViewAction());
 	pMenuDockView->addAction(m_pDockDebug->toggleViewAction());
 	pMenuDockView->addAction(m_pDockTrace->toggleViewAction());
@@ -320,6 +319,16 @@ void RDOStudioMainFrame::init()
 	pMenuDockView->addAction(m_pDockFind->toggleViewAction());
 	pMenuDockView->addAction(m_pDockChartTree->toggleViewAction());
 	pMenuDockView->addAction(m_pDockFrame->toggleViewAction());
+
+	PTR(QMenu) pMenuToolbarView = new QMenu("Панели");
+	ASSERT(pMenuToolbarView);
+	menuView->insertMenu(actViewSettings, pMenuToolbarView);
+	pMenuToolbarView->addAction(m_pFileToolBar->toggleViewAction());
+	pMenuToolbarView->addAction(m_pEditToolBar->toggleViewAction());
+	pMenuToolbarView->addAction(m_pZoomToolBar->toggleViewAction());
+	pMenuToolbarView->addAction(m_pModelToolBar->toggleViewAction());
+
+	menuView->insertSeparator(actViewSettings);
 
 #ifdef PROCGUI_ENABLE
 	m_pDockProcess = new DockProcess(this);

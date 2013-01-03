@@ -106,15 +106,6 @@
     <property name="title">
      <string>Просмотр</string>
     </property>
-    <widget class="QMenu" name="menuViewToolbar">
-     <property name="title">
-      <string>Панели</string>
-     </property>
-     <addaction name="actViewToolbarFile"/>
-     <addaction name="actViewToolbarEdit"/>
-     <addaction name="actViewToolbarZoom"/>
-     <addaction name="actViewToolbarModel"/>
-    </widget>
     <addaction name="actViewToggleAllfolds"/>
     <addaction name="actViewToggleCurrentfold"/>
     <addaction name="separator"/>
@@ -125,8 +116,6 @@
     <addaction name="actViewZoomDec"/>
     <addaction name="actViewZoomAuto"/>
     <addaction name="actViewZoomReset"/>
-    <addaction name="separator"/>
-    <addaction name="menuViewToolbar"/>
     <addaction name="separator"/>
     <addaction name="actViewSettings"/>
    </widget>
