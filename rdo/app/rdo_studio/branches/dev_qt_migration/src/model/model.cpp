@@ -71,28 +71,27 @@ PTR(RDOStudioModel) model = NULL;
 
 RDOStudioModel::RDOStudioModel()
 	: RDOThreadGUI(_T("RDOThreadModelGUI"), static_cast<PTR(RDOKernelGUI)>(studioApp.m_pStudioGUI))
-	, m_frameManager     (boost::bind(&RDOStudioModel::onChangeFrame, this, _1))
-	, m_useTemplate      (-1                        )
-	, m_showCanNotCloseModelMessage(true            )
-	, m_GUI_HAS_MODEL    (false                     )
-	, m_GUI_CAN_RUN      (true                      )
-	, m_GUI_IS_RUNNING   (false                     )
-	, m_openError        (false                     )
-	, m_smrEmptyError    (false                     )
-	, m_modelClosed      (true                      )
-	, m_frmDescribed     (false                     )
-	, m_timeNow          (0                         )
-	, m_speed            (1                         )
-	, m_showRate         (60                        )
-	, m_tempPause        (false                     )
-	, m_runtimeMode      (rdo::runtime::RTM_MaxSpeed)
-	, m_runtimeModePrev  (rdo::runtime::RTM_MaxSpeed)
-	, m_exitCode         (rdo::simulation::report::EC_ModelNotFound)
-	, m_modify           (false                     )
-	, m_buildState       (BS_UNDEFINED              )
-	, m_pModelView       (NULL                      )
-	, m_pModelProcView   (NULL                      )
-	, m_name             ("")
+	, m_frameManager   (boost::bind(&RDOStudioModel::onChangeFrame, this, _1))
+	, m_useTemplate    (-1                        )
+	, m_GUI_HAS_MODEL  (false                     )
+	, m_GUI_CAN_RUN    (true                      )
+	, m_GUI_IS_RUNNING (false                     )
+	, m_openError      (false                     )
+	, m_smrEmptyError  (false                     )
+	, m_modelClosed    (true                      )
+	, m_frmDescribed   (false                     )
+	, m_timeNow        (0                         )
+	, m_speed          (1                         )
+	, m_showRate       (60                        )
+	, m_tempPause      (false                     )
+	, m_runtimeMode    (rdo::runtime::RTM_MaxSpeed)
+	, m_runtimeModePrev(rdo::runtime::RTM_MaxSpeed)
+	, m_exitCode       (rdo::simulation::report::EC_ModelNotFound)
+	, m_modify         (false                     )
+	, m_buildState     (BS_UNDEFINED              )
+	, m_pModelView     (NULL                      )
+	, m_pModelProcView (NULL                      )
+	, m_name           ("")
 {
 	model = this;
 
@@ -1032,10 +1031,6 @@ rbool RDOStudioModel::canCloseModel()
 			case QMessageBox::Cancel: result = false; break;
 		}
 	}
-	if (!result)
-	{
-		m_showCanNotCloseModelMessage = false;
-	}
 	return result;
 }
 
@@ -1047,10 +1042,6 @@ void RDOStudioModel::closeModelFromRepository()
 		m_pModelProcView = NULL;
 	}
 	setHasModel(false);
-	if (!m_showCanNotCloseModelMessage)
-	{
-		m_showCanNotCloseModelMessage = true;
-	}
 	m_pModelView->parentWidget()->close();
 	m_pModelView  = NULL;
 	m_modelClosed = true;

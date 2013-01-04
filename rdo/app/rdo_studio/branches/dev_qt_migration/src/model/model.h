@@ -50,10 +50,7 @@ private:
 	};
 
 	RDOStudioFrameManager                  m_frameManager;
-
-	int                                    m_useTemplate;
-	rbool                                  m_showCanNotCloseModelMessage;
-
+	rsint                                  m_useTemplate;
 	rbool                                  m_GUI_HAS_MODEL;
 	rbool                                  m_GUI_CAN_RUN;
 	rbool                                  m_GUI_IS_RUNNING;
