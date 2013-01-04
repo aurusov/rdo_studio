@@ -97,23 +97,14 @@ void RDOStudioMainFrame::createStatusBar()
 	m_pSBModelSpeed    = new QLabel(this);
 	m_pSBModelShowRate = new QLabel(this);
 
-	m_pProgressBar     = new QProgressBar(this);
-	m_pProgressBar->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
-	m_pProgressBar->setMaximumSize(QWIDGETSIZE_MAX, 15);
-	m_pProgressBar->setVisible(false);
-
-	m_pProgressBarFakeWidget = new QWidget(this);
-	m_pProgressBarFakeWidget->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
-	m_pProgressBarFakeWidget->setMaximumSize(QWIDGETSIZE_MAX, 15);
-	m_pProgressBarFakeWidget->setVisible(true);
-
 	parent_type::statusBar()->addWidget(m_pSBCoord,         5);
 	parent_type::statusBar()->addWidget(m_pSBModify,        5);
 	parent_type::statusBar()->addWidget(m_pSBModelTime,     5);
 	parent_type::statusBar()->addWidget(m_pSBModelRuntype,  7);
 	parent_type::statusBar()->addWidget(m_pSBModelSpeed,    5);
 	parent_type::statusBar()->addWidget(m_pSBModelShowRate, 7);
-	parent_type::statusBar()->addWidget(m_pProgressBarFakeWidget, 7);
+
+	m_pStatusBar = rdo::Factory<::StatusBar>::create(this);
 }
 
 void RDOStudioMainFrame::createToolBar()
@@ -356,29 +347,17 @@ void RDOStudioMainFrame::updateAllStyles()
 
 void RDOStudioMainFrame::beginProgress(rsint lower, rsint upper)
 {
-	m_pProgressBar->setRange(lower, upper);
-	m_pProgressBar->setValue(lower);
-	m_pProgressBar->setVisible(true);
-
-	parent_type::statusBar()->removeWidget(m_pProgressBarFakeWidget);
-	parent_type::statusBar()->addWidget(m_pProgressBar, 7);
-
-	m_pProgressBarFakeWidget->setVisible(false);
+	m_pStatusBar->beginProgress(lower, upper);
 }
 
 void RDOStudioMainFrame::stepProgress()
 {
-	m_pProgressBar->setValue(m_pProgressBar->value() + 1);
+	m_pStatusBar->stepProgress();
 };
 
 void RDOStudioMainFrame::endProgress()
 {
-	m_pProgressBarFakeWidget->setVisible(true);
-
-	parent_type::statusBar()->removeWidget(m_pProgressBar);
-	parent_type::statusBar()->addWidget(m_pProgressBarFakeWidget, 7);
-
-	m_pProgressBar->setVisible(false);
+	m_pStatusBar->endProgress();
 }
 
 void RDOStudioMainFrame::onHelpContext()

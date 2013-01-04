@@ -1,53 +1,38 @@
 /*!
-  \copyright (c) RDO-Team, 2003-2012
+  \copyright (c) RDO-Team, 2003-2013
   \file      status_bar.h
-  \author    Захаров Павел
+  \authors   Захаров Павел
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      09.04.2003
   \brief     
   \indent    4T
 */
 
-#ifndef _RDO_STUDIO_MFC_STATUS_BAR_H_
-#define _RDO_STUDIO_MFC_STATUS_BAR_H_
+#ifndef _RDO_STUDIO_STATUS_BAR_H_
+#define _RDO_STUDIO_STATUS_BAR_H_
 
+// ----------------------------------------------------------------------- INCLUDES
+#include <QtGui/qprogressbar.h>
+#include <QtGui/qmainwindow.h>
+// ----------------------------------------------------------------------- SYNOPSIS
+#include <utils/smart_ptr/intrusive_ptr.h>
 // --------------------------------------------------------------------------------
-// -------------------- RDOStudioStatusBar
-// --------------------------------------------------------------------------------
-class RDOStudioStatusBar: public CStatusBar
+
+OBJECT(StatusBar)
 {
-DECLARE_DYNAMIC(RDOStudioStatusBar)
-
-private:
-	CProgressCtrl progress;
-
-	UINT indicator;
-
-	rbool visible;
-
-	void repositionProgressCtrl( const rbool redraw = true );
-
+DECLARE_FACTORY(StatusBar)
 public:
-	RDOStudioStatusBar();
-	virtual ~RDOStudioStatusBar();
-
-	void setProgressIndicator( const UINT ind ) { indicator = ind; };
-	UINT getProgressIndicator() const { return indicator; };
-
-	void  setProgressVisible( const rbool _visible );
-	rbool getProgressVisible() { return visible; };
-
-	void setRange( const int lower = 0, const int upper = 100 ) { progress.SetRange32( lower, upper ); };
-	void getRange( int& lower, int& upper ) const { const_cast<CProgressCtrl&>(progress).GetRange( lower, upper ); };
-	int setPos( const int pos ) { return progress.SetPos( pos ); };
-	int getPos() const { return const_cast<CProgressCtrl&>(progress).GetPos(); };
-	int offsetPos( const int offset = 1 ) { return progress.OffsetPos( offset ); };
-	int setStep( const int step = 1 ) { return progress.SetStep( step ); };
-	int stepIt() { return progress.StepIt(); };
+	void beginProgress(rsint lower, rsint upper);
+	void stepProgress ();
+	void endProgress  ();
 
 private:
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnSize(UINT nType, int cx, int cy);
-	DECLARE_MESSAGE_MAP()
+	StatusBar(QMainWindow* pParent);
+	virtual ~StatusBar();
+
+	QMainWindow*   m_pParent;
+	QProgressBar*  m_pProgressBar;
+	QWidget*       m_pProgressBarFakeWidget;
 };
 
-#endif // _RDO_STUDIO_MFC_STATUS_BAR_H_
+#endif // _RDO_STUDIO_STATUS_BAR_H_

@@ -15,7 +15,6 @@
 #include <boost/mpl/integral_c.hpp>
 #include <QtGui/qmainwindow.h>
 #include <QtGui/qlabel.h>
-#include <QtGui/qprogressbar.h>
 #include <QtGui/qslider.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
@@ -82,10 +81,7 @@ private:
 	typedef  QMainWindow  parent_type;
 
 	CWnd                    m_thisCWnd;
-	RDOStudioStatusBar      statusBar;
 	int                     m_updateTimerID;
-	QProgressBar*           m_pProgressBar;
-	QWidget*                m_pProgressBarFakeWidget;
 
 	PTR(QLabel)             m_pSBCoord;
 	PTR(QLabel)             m_pSBModify;
@@ -93,6 +89,7 @@ private:
 	PTR(QLabel)             m_pSBModelRuntype;
 	PTR(QLabel)             m_pSBModelSpeed;
 	PTR(QLabel)             m_pSBModelShowRate;
+	LPStatusBar             m_pStatusBar;
 
 	PTR(QToolBar)           m_pFileToolBar;
 	PTR(QToolBar)           m_pEditToolBar;

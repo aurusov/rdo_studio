@@ -1,7 +1,8 @@
 /*!
-  \copyright (c) RDO-Team, 2003-2012
+  \copyright (c) RDO-Team, 2003-2013
   \file      status_bar.cpp
-  \author    Захаров Павел
+  \authors   Захаров Павел
+  \authors   Урусов Андрей (rdo@rk9.bmstu.ru)
   \date      09.04.2003
   \brief     
   \indent    4T
@@ -10,65 +11,53 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtGui/qstatusbar.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/status_bar.h"
 // --------------------------------------------------------------------------------
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-// --------------------------------------------------------------------------------
-// -------------------- RDOStudioStatusBar
-// --------------------------------------------------------------------------------
-IMPLEMENT_DYNAMIC(RDOStudioStatusBar, CStatusBar)
-
-BEGIN_MESSAGE_MAP(RDOStudioStatusBar, CStatusBar)
-	ON_WM_CREATE()
-	ON_WM_SIZE()
-END_MESSAGE_MAP()
-
-RDOStudioStatusBar::RDOStudioStatusBar():
-	CStatusBar(),
-	visible( false ),
-	indicator( 0 )
+StatusBar::StatusBar(QMainWindow* pParent)
+	: m_pParent(pParent)
 {
+	m_pProgressBar = new QProgressBar(m_pParent);
+	m_pProgressBar->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
+	m_pProgressBar->setMaximumSize(QWIDGETSIZE_MAX, 15);
+	m_pProgressBar->setVisible(false);
+
+	m_pProgressBarFakeWidget = new QWidget(m_pParent);
+	m_pProgressBarFakeWidget->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
+	m_pProgressBarFakeWidget->setMaximumSize(QWIDGETSIZE_MAX, 15);
+	m_pProgressBarFakeWidget->setVisible(true);
+
+	m_pParent->statusBar()->addWidget(m_pProgressBarFakeWidget, 7);
 }
 
-RDOStudioStatusBar::~RDOStudioStatusBar()
+StatusBar::~StatusBar()
+{}
+
+void StatusBar::beginProgress(rsint lower, rsint upper)
 {
+	m_pProgressBar->setRange(lower, upper);
+	m_pProgressBar->setValue(lower);
+	m_pProgressBar->setVisible(true);
+
+	m_pParent->statusBar()->removeWidget(m_pProgressBarFakeWidget);
+	m_pParent->statusBar()->addWidget(m_pProgressBar, 7);
+
+	m_pProgressBarFakeWidget->setVisible(false);
 }
 
-int RDOStudioStatusBar::OnCreate(LPCREATESTRUCT lpCreateStruct)
+void StatusBar::stepProgress()
 {
-	if ( CStatusBar::OnCreate(lpCreateStruct) == -1 ) return -1;
-
-	progress.Create( WS_CHILD | PBS_SMOOTH, CRect( 0, 0, 0, 0 ), this, 1 );
-
-	return 0;
+	m_pProgressBar->setValue(m_pProgressBar->value() + 1);
 }
 
-void RDOStudioStatusBar::repositionProgressCtrl( const rbool redraw )
+void StatusBar::endProgress()
 {
-	CRect rect;
-	GetItemRect( CommandToIndex( indicator ), rect );
-	progress.MoveWindow( rect, redraw );
-}
+	m_pProgressBarFakeWidget->setVisible(true);
 
-void RDOStudioStatusBar::setProgressVisible( const rbool _visible )
-{
-	if ( visible != _visible && GetSafeHwnd() ) {
-		visible = _visible;
-		if ( visible )
-			repositionProgressCtrl();
-		progress.ShowWindow( visible ? SW_SHOWNA : SW_HIDE );
-	}
-}
+	m_pParent->statusBar()->removeWidget(m_pProgressBar);
+	m_pParent->statusBar()->addWidget(m_pProgressBarFakeWidget, 7);
 
-void RDOStudioStatusBar::OnSize(UINT nType, int cx, int cy) 
-{
-	CStatusBar::OnSize(nType, cx, cy);
-	repositionProgressCtrl( visible );
+	m_pProgressBar->setVisible(false);
 }
