@@ -22,14 +22,14 @@ namespace rdoEditCtrl {
 // --------------------------------------------------------------------------------
 class RDODebugEdit: public RDOBaseEdit
 {
-private:
-	virtual void onHelpContext();
-
 public:
 	RDODebugEdit(PTR(QWidget) pParent);
 	virtual ~RDODebugEdit();
 
-	void appendLine( CREF(tstring) str );
+	void appendLine(CREF(tstring) str);
+
+private:
+	virtual void onHelpContext();
 };
 
 } // namespace rdoEditCtrl

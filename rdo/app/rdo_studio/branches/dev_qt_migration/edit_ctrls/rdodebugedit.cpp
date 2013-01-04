@@ -39,7 +39,7 @@ RDODebugEdit::RDODebugEdit(PTR(QWidget) pParent)
 RDODebugEdit::~RDODebugEdit()
 {}
 
-void RDODebugEdit::appendLine( CREF(tstring) str )
+void RDODebugEdit::appendLine(CREF(tstring) str)
 {
 	rbool readOnly = isReadOnly();
 	setReadOnly( false );

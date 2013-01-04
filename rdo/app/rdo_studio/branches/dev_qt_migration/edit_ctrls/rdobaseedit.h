@@ -172,7 +172,6 @@ public:
 
 	rbool isEmpty() const                                  { return getLength() == 0;                                                         };
 	rbool isSelected() const                               { return sendEditor( SCI_GETSELECTIONSTART ) != sendEditor( SCI_GETSELECTIONEND ); };
-	rbool isOverwrite() const                              { return sendEditor( SCI_GETOVERTYPE ) ? true : false;                             };
 
 	rbool isModify() const                                 { return sendEditor(SCI_GETMODIFY) ? true : false; };
 	void  setModifyFalse()                                 { sendEditor(SCI_SETSAVEPOINT); };
@@ -210,8 +209,6 @@ public:
 	int getLineFromPosition( const int pos ) const  { return sendEditor( SCI_LINEFROMPOSITION, pos );      };
 	void setCurrentPos( const int value ) const;
 	void setCurrentPos( const int line, int pos_in_line, const rbool convert_rdo_tab = false ) const;
-	int getCurrentLineNumber() const                { return getLineFromPosition( getCurrentPos() );       };
-	int getCurrentColumnNumber() const              { return sendEditor( SCI_GETCOLUMN, getCurrentPos() ); };
 	rbool isLineVisible( const int line ) const;
 	void scrollToLine( const int line ) const;
 	void scrollToLine2( const int line ) const;
@@ -229,6 +226,10 @@ public:
 	void load( rdo::stream& stream );
 	void save( rdo::stream& stream ) const;
 	tstring saveAsRTF(int start, int end) const;
+
+protected:
+	int getCurrentLineNumber  () const { return getLineFromPosition(getCurrentPos());       };
+	int getCurrentColumnNumber() const { return sendEditor(SCI_GETCOLUMN, getCurrentPos()); };
 };
 
 } // namespace rdoEditCtrl
