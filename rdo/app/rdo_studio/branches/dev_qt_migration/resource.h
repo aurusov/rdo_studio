@@ -720,13 +720,6 @@
 #define ID_MODEL                        40917
 #define ID_RAO_CLIPBRD                  40918
 #define IDS_MODEL_RUNTIMEERROR_STOPED   40919
-#define ID_COORD_STATUSBAR              59394
-#define ID_MODIFY_STATUSBAR             59395
-#define ID_INSERTOVERWRITE_STATUSBAR    59396
-#define ID_MODEL_TIME_STATUSBAR         59397
-#define ID_MODEL_RUNTYPE_STATUSBAR      59398
-#define ID_MODEL_SHOWRATE_STATUSBAR     59399
-#define ID_MODEL_SPEED_STATUSBAR        59400
 #define ID_MSG_NO_HELP_FILE             60000
 #define ID_MSG_CANTFIND                 60001
 #define ID_MSG_MODELOPEN_ERROR          60002

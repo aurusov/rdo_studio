@@ -3420,17 +3420,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    ID_COORD_STATUSBAR      " "
-    ID_MODIFY_STATUSBAR     " "
-    ID_INSERTOVERWRITE_STATUSBAR " "
-    ID_MODEL_TIME_STATUSBAR " "
-    ID_MODEL_RUNTYPE_STATUSBAR " "
-    ID_MODEL_SHOWRATE_STATUSBAR " "
-    ID_MODEL_SPEED_STATUSBAR " "
-END
-
-STRINGTABLE 
-BEGIN
     ID_MSG_NO_HELP_FILE     "Невозможно найти файл справки '%s'.\r\nОн должен быть расположен в директории с RAO-studio."
     ID_MSG_CANTFIND         "Невозможно найти строчку '%s'."
     ID_MSG_MODELOPEN_ERROR  "Невозможно открыть модель '%s'."
