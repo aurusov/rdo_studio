@@ -79,7 +79,7 @@ border: none;
     <addaction name="actEditCut"/>
     <addaction name="actEditCopy"/>
     <addaction name="actEditPaste"/>
-    <addaction name="actEditClear"/>
+    <addaction name="actEditDel"/>
     <addaction name="separator"/>
     <addaction name="actEditCopyAsRTF"/>
     <addaction name="separator"/>
@@ -350,7 +350,7 @@ border: none;
     <string>Ctrl+V</string>
    </property>
   </action>
-  <action name="actEditClear">
+  <action name="actEditDel">
    <property name="enabled">
     <bool>false</bool>
    </property>

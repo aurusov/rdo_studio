@@ -62,7 +62,7 @@ void RDODebugEdit::appendLine( CREF(tstring) str )
 		setCurrentPos( getLength() );
 	}
 	setReadOnly( readOnly );
-	updateEditGUI();
+	onUpdateEditGUI();
 }
 
 void RDODebugEdit::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )

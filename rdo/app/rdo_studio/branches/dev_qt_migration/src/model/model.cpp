@@ -789,7 +789,7 @@ void RDOStudioModel::newModelFromRepository()
 					if (!s.empty())
 					{
 						edit->replaceCurrent(s);
-						edit->updateEditGUI();
+//						edit->updateEditGUI();
 						edit->scrollToLine(0);
 						edit->setCurrentPos(it->second.m_position);
 					}

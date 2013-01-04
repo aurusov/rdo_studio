@@ -400,12 +400,12 @@ void RDOEditorEdit::OnToggleAllFolds()
 
 void RDOEditorEdit::OnUpdateFold(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable(!GUI_IS_EMPTY);
+	pCmdUI->Enable(!isEmpty());
 }
 
 void RDOEditorEdit::commentSelection() const
 {
-	if (GUI_IS_SELECTED)
+	if (isSelected())
 	{
 		tstring startComment("/*");
 		tstring endComment("*/");

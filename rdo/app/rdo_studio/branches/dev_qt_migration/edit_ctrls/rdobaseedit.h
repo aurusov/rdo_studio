@@ -67,13 +67,6 @@ private:
 	int markerCount;
 
 protected:
-	rbool GUI_ID_EDIT_UNDO;
-	rbool GUI_ID_EDIT_REDO;
-	rbool GUI_ID_EDIT_CUT;
-	rbool GUI_IS_SELECTED;
-	rbool GUI_IS_EMPTY;
-	rbool GUI_IS_READONLY;
-	rbool GUI_IS_MODIFY;
 	rbool GUI_HAS_BOOKMARK;
 	rbool GUI_ID_VIEW_WHITESPACE;
 	rbool GUI_ID_VIEW_ENDOFLINE;
@@ -118,27 +111,19 @@ protected:
 	afx_msg void OnIsSelected(CCmdUI* pCmdUI);
 
 protected slots:
-	virtual void onHelpContext() = 0;
+	        void onUpdateEditGUI();
+	virtual void onHelpContext  () = 0;
 
 private:
+	void updateActions(rbool activated);
+
 	//! @todo qt
 	//afx_msg void OnSetFocus( CWnd *pOldWnd );
 	//afx_msg void OnContextMenu( CWnd* pWnd, CPoint pos );
-	afx_msg void OnEditUndo();
-	afx_msg void OnEditRedo();
-	afx_msg void OnEditCut();
-	afx_msg void OnEditCopy();
-	afx_msg void OnEditPaste();
-	afx_msg void OnEditClear();
 	afx_msg void OnEditCopyAsRTF();
 	afx_msg void OnEditSelectAll();
 	afx_msg void OnEditUpperCase();
 	afx_msg void OnEditLowerCase();
-	afx_msg void OnUpdateEditUndo(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateEditRedo(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateEditCut(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateEditPaste(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateEditClear(CCmdUI* pCmdUI);
 	afx_msg void OnSelectAll( CCmdUI* pCmdUI );
 	afx_msg void OnSearchFind();
 	afx_msg void OnSearchReplace();
@@ -170,7 +155,13 @@ private:
 private slots:
 	void catchNeedShown(int position, int length);
 	void catchCharAdded(int ch);
-	void catchUpdateUi();
+
+	void onEditUndo ();
+	void onEditRedo ();
+	void onEditCut  ();
+	void onEditCopy ();
+	void onEditPaste();
+	void onEditDel  ();
 
 public:
 	RDOBaseEdit(PTR(QWidget) pParent);
@@ -186,15 +177,14 @@ public:
 	rbool isSelected() const                               { return sendEditor( SCI_GETSELECTIONSTART ) != sendEditor( SCI_GETSELECTIONEND ); };
 	rbool isOverwrite() const                              { return sendEditor( SCI_GETOVERTYPE ) ? true : false;                             };
 
-	void updateEditGUI();
-	rbool isModify() const                                 { return GUI_IS_MODIFY;                                  };
-	void setModifyFalse()                                  { GUI_IS_MODIFY = false; sendEditor( SCI_SETSAVEPOINT ); };
+	rbool isModify() const                                 { return sendEditor(SCI_GETMODIFY) ? true : false; };
+	void  setModifyFalse()                                 { sendEditor(SCI_SETSAVEPOINT); };
 
 	virtual void clearAll();
 	void clearUndoBuffer() const                           { sendEditor( SCI_EMPTYUNDOBUFFER ); };
 
 	rbool isReadOnly() const                               { return sendEditor( SCI_GETREADONLY ) ? true : false;           };
-	void setReadOnly( const rbool value )                  { GUI_IS_READONLY = value; sendEditor( SCI_SETREADONLY, value ); };
+	void setReadOnly( const rbool value )                  { sendEditor( SCI_SETREADONLY, value ); };
 
 	rbool isViewWhiteSpace() const                         { return sendEditor( SCI_GETVIEWWS ) != SCWS_INVISIBLE;                                                     };
 	void setViewWhiteSpace( const rbool value )            { GUI_ID_VIEW_WHITESPACE = value; sendEditor( SCI_SETVIEWWS, value ? SCWS_VISIBLEALWAYS : SCWS_INVISIBLE ); };

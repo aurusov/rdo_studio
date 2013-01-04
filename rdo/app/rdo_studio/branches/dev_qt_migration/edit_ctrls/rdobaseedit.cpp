@@ -77,21 +77,10 @@ static const UINT FIND_REPLASE_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 //BEGIN_MESSAGE_MAP( RDOBaseEdit, CWnd )
 //	ON_WM_SETFOCUS()
 //	ON_WM_CONTEXTMENU()
-//	ON_COMMAND(ID_EDIT_UNDO, OnEditUndo)
-//	ON_COMMAND(ID_EDIT_REDO, OnEditRedo)
-//	ON_COMMAND(ID_EDIT_CUT, OnEditCut)
-//	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
-//	ON_COMMAND(ID_EDIT_PASTE, OnEditPaste)
-//	ON_COMMAND(ID_EDIT_CLEAR, OnEditClear)
 //	ON_COMMAND(ID_EDIT_COPYASRTF, OnEditCopyAsRTF)
 //	ON_COMMAND(ID_EDIT_SELECT_ALL, OnEditSelectAll)
 //	ON_COMMAND(ID_EDIT_UPPERCASE, OnEditUpperCase)
 //	ON_COMMAND(ID_EDIT_LOWERCASE, OnEditLowerCase)
-//	ON_UPDATE_COMMAND_UI(ID_EDIT_UNDO, OnUpdateEditUndo)
-//	ON_UPDATE_COMMAND_UI(ID_EDIT_REDO, OnUpdateEditRedo)
-//	ON_UPDATE_COMMAND_UI(ID_EDIT_CUT, OnUpdateEditCut)
-//	ON_UPDATE_COMMAND_UI(ID_EDIT_PASTE, OnUpdateEditPaste)
-//	ON_UPDATE_COMMAND_UI(ID_EDIT_CLEAR, OnUpdateEditClear)
 //	ON_UPDATE_COMMAND_UI( ID_EDIT_SELECT_ALL, OnSelectAll )
 //	ON_COMMAND(ID_SEARCH_FIND, OnSearchFind)
 //	ON_COMMAND(ID_SEARCH_REPLACE, OnSearchReplace)
@@ -123,7 +112,6 @@ static const UINT FIND_REPLASE_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 //	ON_UPDATE_COMMAND_UI( ID_SEARCH_BOOKMARK_PREVIOUS, OnHasBookmarks )
 //	ON_UPDATE_COMMAND_UI( ID_SEARCH_BOOKMARKS_CLEAR  , OnHasBookmarks )
 //	ON_UPDATE_COMMAND_UI( ID_SEARCH_FIND_PREVIOUS, OnUpdateSearchFindNextPrev )
-//	ON_UPDATE_COMMAND_UI( ID_EDIT_COPY, OnIsSelected )
 //	ON_COMMAND(ID_SEARCH_GOTO_LINE, OnSearchGotoLine)
 //
 //	ON_REGISTERED_MESSAGE( FIND_REPLASE_MSG, OnFindReplaceMsg )
@@ -133,13 +121,6 @@ static const UINT FIND_REPLASE_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent):
 	super(pParent),
 	ActionActivator(boost::bind(&RDOBaseEdit::onActivate, this), boost::bind(&RDOBaseEdit::onDeactivate, this)),
-	GUI_ID_EDIT_UNDO( false ),
-	GUI_ID_EDIT_REDO( false ),
-	GUI_ID_EDIT_CUT( false ),
-	GUI_IS_SELECTED( false ),
-	GUI_IS_EMPTY( false ),
-	GUI_IS_READONLY( false ),
-	GUI_IS_MODIFY( false ),
 	GUI_HAS_BOOKMARK( false ),
 	GUI_ID_VIEW_WHITESPACE( false ),
 	GUI_ID_VIEW_ENDOFLINE( false ),
@@ -151,8 +132,8 @@ RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent):
 	bHaveFound( false )
 {
 	QObject::connect(this, SIGNAL(needShown(int, int)), this, SLOT(catchNeedShown(int, int)));
-	QObject::connect(this, SIGNAL(charAdded(int)), this, SLOT(catchCharAdded(int)));
-	QObject::connect(this, SIGNAL(updateUi()), this, SLOT(catchUpdateUi()));
+	QObject::connect(this, SIGNAL(charAdded(int)),      this, SLOT(catchCharAdded(int)));
+	QObject::connect(this, SIGNAL(updateUi()),          this, SLOT(onUpdateEditGUI()));
 
 	sci_MARKER_BOOKMARK = getNewMarker();
 
@@ -186,11 +167,6 @@ void RDOBaseEdit::catchCharAdded(int ch)
 {
 	if ( style && style->tab->autoIndent && ( ch == '\r' || ch == '\n' ) )
 		autoIndent();
-}
-
-void RDOBaseEdit::catchUpdateUi()
-{
-	updateEditGUI();
 }
 
 //! @todo qt
@@ -285,34 +261,34 @@ void RDOBaseEdit::setGroup( RDOBaseEditGroup* _group )
 	group = _group;
 }
 
-void RDOBaseEdit::OnEditUndo() 
+void RDOBaseEdit::onEditUndo() 
 {
-	sendEditor( SCI_UNDO );
+	sendEditor(SCI_UNDO);
 }
 
-void RDOBaseEdit::OnEditRedo() 
+void RDOBaseEdit::onEditRedo() 
 {
-	sendEditor( SCI_REDO );
+	sendEditor(SCI_REDO);
 }
 
-void RDOBaseEdit::OnEditCut() 
+void RDOBaseEdit::onEditCut() 
 {
-	sendEditor( SCI_CUT );
+	sendEditor(SCI_CUT);
 }
 
-void RDOBaseEdit::OnEditCopy() 
+void RDOBaseEdit::onEditCopy() 
 {
-	sendEditor( SCI_COPY );
+	sendEditor(SCI_COPY);
 }
 
-void RDOBaseEdit::OnEditPaste() 
+void RDOBaseEdit::onEditPaste() 
 {
-	sendEditor( SCI_PASTE );
+	sendEditor(SCI_PASTE);
 }
 
-void RDOBaseEdit::OnEditClear() 
+void RDOBaseEdit::onEditDel() 
 {
-	sendEditor( SCI_CLEAR );
+	sendEditor(SCI_CLEAR);
 }
 
 void RDOBaseEdit::OnEditCopyAsRTF() 
@@ -335,39 +311,14 @@ void RDOBaseEdit::OnEditLowerCase()
 	sendEditor( SCI_LOWERCASE );
 }
 
-void RDOBaseEdit::OnUpdateEditUndo(CCmdUI* pCmdUI) 
-{
-	pCmdUI->Enable( GUI_ID_EDIT_UNDO );
-}
-
-void RDOBaseEdit::OnUpdateEditRedo(CCmdUI* pCmdUI) 
-{
-	pCmdUI->Enable( GUI_ID_EDIT_REDO );
-}
-
 void RDOBaseEdit::OnIsSelected( CCmdUI* pCmdUI )
 {
-	pCmdUI->Enable( GUI_IS_SELECTED );
-}
-
-void RDOBaseEdit::OnUpdateEditCut( CCmdUI* pCmdUI )
-{
-	pCmdUI->Enable( GUI_ID_EDIT_CUT );
-}
-
-void RDOBaseEdit::OnUpdateEditPaste(CCmdUI* pCmdUI) 
-{
-	pCmdUI->Enable( sendEditor( SCI_CANPASTE ) ? true : false );
-}
-
-void RDOBaseEdit::OnUpdateEditClear(CCmdUI* pCmdUI) 
-{
-	pCmdUI->Enable( getCurrentPos() != getLength() || GUI_IS_SELECTED );
+	pCmdUI->Enable( isSelected() );
 }
 
 void RDOBaseEdit::OnSelectAll( CCmdUI* pCmdUI )
 {
-	pCmdUI->Enable( !GUI_IS_EMPTY );
+	pCmdUI->Enable( !isEmpty() );
 }
 
 tstring RDOBaseEdit::getCurrentWord() const
@@ -543,12 +494,12 @@ void RDOBaseEdit::OnUpdateSearchFindNextPrev(CCmdUI* pCmdUI)
 
 void RDOBaseEdit::OnUpdateSearchFind(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( !GUI_IS_EMPTY );
+	pCmdUI->Enable( !isEmpty() );
 }
 
 void RDOBaseEdit::OnUpdateSearchReplace(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( !GUI_IS_READONLY && !GUI_IS_EMPTY );
+	pCmdUI->Enable( !isReadOnly() && !isEmpty() );
 }
 
 void RDOBaseEdit::findNext( REF(tstring) findWhat, const rbool searchDown, const rbool matchCase, const rbool matchWholeWord )
@@ -1272,19 +1223,14 @@ void RDOBaseEdit::updateBookmarksGUI()
 	}
 }
 
-void RDOBaseEdit::updateEditGUI()
+void RDOBaseEdit::onUpdateEditGUI()
 {
-	GUI_IS_SELECTED  = isSelected();
-	GUI_IS_EMPTY     = isEmpty();
-	GUI_ID_EDIT_UNDO = sendEditor( SCI_CANUNDO  ) ? true : false;
-	GUI_ID_EDIT_REDO = sendEditor( SCI_CANREDO  ) ? true : false;
-	GUI_ID_EDIT_CUT  = !GUI_IS_READONLY && GUI_IS_SELECTED;
-	GUI_IS_MODIFY    = sendEditor( SCI_GETMODIFY ) ? true : false;
+	updateActions(isActivated());
 }
 
 void RDOBaseEdit::updateAllGUI()
 {
-	updateEditGUI();
+	onUpdateEditGUI();
 	updateBookmarksGUI();
 }
 
@@ -1452,6 +1398,8 @@ void RDOBaseEdit::onActivate()
 
 	pMainWindow->actHelpContext->setEnabled(true);
 	connect(pMainWindow->actHelpContext, SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
+
+	updateActions(true);
 }
 
 void RDOBaseEdit::onDeactivate()
@@ -1461,4 +1409,62 @@ void RDOBaseEdit::onDeactivate()
 
 	pMainWindow->actHelpContext->setEnabled(false);
 	disconnect(pMainWindow->actHelpContext, SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
+
+	updateActions(false);
+}
+
+void updateAction(QAction* pAction, rbool enabled, QObject* pObject, const char* method)
+{
+	ASSERT(pAction);
+	ASSERT(pObject);
+
+	if (pAction->isEnabled() != enabled)
+	{
+		pAction->setEnabled(enabled);
+		if (enabled)
+		{
+			QObject::connect(pAction, SIGNAL(triggered(bool)), pObject, qFlagLocation(method));
+		}
+		else
+		{
+			QObject::disconnect(pAction, SIGNAL(triggered(bool)), pObject, qFlagLocation(method));
+		}
+	}
+}
+
+void RDOBaseEdit::updateActions(rbool activated)
+{
+	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
+	ASSERT(pMainWindow);
+
+	updateAction(
+		pMainWindow->actEditUndo,
+		activated && sendEditor(SCI_CANUNDO),
+		this, "1onEditUndo() " QLOCATION
+	);
+	updateAction(
+		pMainWindow->actEditRedo,
+		activated && sendEditor(SCI_CANREDO),
+		this, "1onEditRedo() " QLOCATION
+	);
+	updateAction(
+		pMainWindow->actEditCut,
+		activated && !isReadOnly() && isSelected(),
+		this, "1onEditCut() " QLOCATION
+	);
+	updateAction(
+		pMainWindow->actEditCopy,
+		activated && isSelected(),
+		this, "1onEditCopy() " QLOCATION
+	);
+	updateAction(
+		pMainWindow->actEditPaste,
+		activated && sendEditor(SCI_CANPASTE),
+		this, "1onEditPaste() " QLOCATION
+	);
+	updateAction(
+		pMainWindow->actEditDel,
+		activated && getCurrentPos() != getLength() || isSelected(),
+		this, "1onEditDel() " QLOCATION
+	);
 }
