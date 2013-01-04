@@ -27,6 +27,7 @@
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
 #include "app/rdo_studio_mfc/src/frame/view.h"
+#include "app/rdo_studio_mfc/src/dialog/new_model_dialog.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdobuildedit.h"
 #include "app/rdo_studio_mfc/edit_ctrls/rdodebugedit.h"
@@ -535,6 +536,7 @@ void RDOStudioModel::show_result()
 
 rbool RDOStudioModel::newModel(CREF(tstring) modelName, CREF(tstring) modelPath, rsint useTemplate)
 {
+	return true;
 	m_useTemplate = useTemplate;
 	studioApp.getIMainWnd()->getDockBuild  ().clear();
 	studioApp.getIMainWnd()->getDockDebug  ().clear();
@@ -1536,12 +1538,15 @@ CPTR(rdoEditor::RDOEditorTabCtrl) RDOStudioModel::getTab() const
 
 void RDOStudioModel::onFileNew()
 {
-	//! @todo qt
-	//RDOStudioModelNew dlg;
-	//if (dlg.DoModal() == IDOK)
-	//{
-	//	model->newModel(dlg.getModelName(), dlg.getModelPath() + dlg.getModelName(), dlg.getModelTemplate());
-	//}
+	NewModelDialog dlg(studioApp.getMainWndUI());
+	if (dlg.exec() == QDialog::Accepted)
+	{
+		newModel(
+			dlg.modelName->text().toStdString(),
+			dlg.modelPath->text().toStdString() + dlg.modelName->text().toStdString(),
+			1
+		);
+	}
 }
 
 void RDOStudioModel::onFileOpen()

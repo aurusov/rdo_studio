@@ -22,7 +22,6 @@
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/src/thread.h"
-#include "app/rdo_studio_mfc/src/model/new.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_factory.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_method.h"
