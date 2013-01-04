@@ -85,6 +85,7 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 	Scintilla_LinkLexers();
 }
 
+//! todo не вызывается диструктор
 RDOStudioMainFrame::~RDOStudioMainFrame()
 {}
 
