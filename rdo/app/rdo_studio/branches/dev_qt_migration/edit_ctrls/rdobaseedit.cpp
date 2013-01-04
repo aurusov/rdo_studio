@@ -78,10 +78,8 @@ static const UINT FIND_REPLASE_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 //BEGIN_MESSAGE_MAP( RDOBaseEdit, CWnd )
 //	ON_WM_SETFOCUS()
 //	ON_WM_CONTEXTMENU()
-//	ON_COMMAND(ID_EDIT_SELECT_ALL, OnEditSelectAll)
 //	ON_COMMAND(ID_EDIT_UPPERCASE, OnEditUpperCase)
 //	ON_COMMAND(ID_EDIT_LOWERCASE, OnEditLowerCase)
-//	ON_UPDATE_COMMAND_UI( ID_EDIT_SELECT_ALL, OnSelectAll )
 //	ON_COMMAND(ID_SEARCH_FIND, OnSearchFind)
 //	ON_COMMAND(ID_SEARCH_REPLACE, OnSearchReplace)
 //	ON_COMMAND(ID_SEARCH_FIND_NEXT, OnSearchFindNext)
@@ -290,9 +288,9 @@ void RDOBaseEdit::onEditDel()
 	sendEditor(SCI_CLEAR);
 }
 
-void RDOBaseEdit::OnEditSelectAll() 
+void RDOBaseEdit::onEditSelectAll() 
 {
-	sendEditor( SCI_SELECTALL );
+	sendEditor(SCI_SELECTALL);
 }
 
 void RDOBaseEdit::OnEditUpperCase() 
@@ -308,11 +306,6 @@ void RDOBaseEdit::OnEditLowerCase()
 void RDOBaseEdit::OnIsSelected( CCmdUI* pCmdUI )
 {
 	pCmdUI->Enable( isSelected() );
-}
-
-void RDOBaseEdit::OnSelectAll( CCmdUI* pCmdUI )
-{
-	pCmdUI->Enable( !isEmpty() );
 }
 
 tstring RDOBaseEdit::getCurrentWord() const
@@ -1468,5 +1461,10 @@ void RDOBaseEdit::updateActions(rbool activated)
 		pMainWindow->actEditCopyAsRTF,
 		activated && isSelected(),
 		this, "1onEditCopyAsRTF() " QLOCATION
+	);
+	updateAction(
+		pMainWindow->actEditSelectAll,
+		activated && !isEmpty(),
+		this, "1onEditSelectAll() " QLOCATION
 	);
 }
