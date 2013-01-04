@@ -1326,7 +1326,9 @@ void RDOStudioModel::setCanRun(rbool value)
 void RDOStudioModel::setUpActions()
 {
 	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
-	ASSERT(pMainWindow);
+	if (!pMainWindow)
+		return;
+
 	pMainWindow->actFileNew->setEnabled(canNew());
 	pMainWindow->actFileOpen->setEnabled(canOpen());
 	pMainWindow->actFileSave->setEnabled(canSave());
