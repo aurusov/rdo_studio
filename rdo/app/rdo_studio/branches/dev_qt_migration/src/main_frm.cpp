@@ -61,6 +61,7 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 	createToolBar  ();
 
 	connect(menuFileReopen, SIGNAL(triggered(QAction*)), this, SLOT(onMenuFileReopen(QAction*)));
+	connect(actFileExit,    SIGNAL(triggered(bool)),     this, SLOT(close()));
 
 	connect(actViewSettings, SIGNAL(triggered(bool)), this, SLOT(onViewOptions()));
 	connect(actHelpContext,  SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));

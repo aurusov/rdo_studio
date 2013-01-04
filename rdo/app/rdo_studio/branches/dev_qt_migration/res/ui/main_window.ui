@@ -370,9 +370,6 @@ border: none;
    </property>
   </action>
   <action name="actFileExit">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
    <property name="text">
     <string>Выход</string>
    </property>
