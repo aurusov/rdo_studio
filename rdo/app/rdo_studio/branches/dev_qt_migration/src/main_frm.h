@@ -62,13 +62,7 @@ private:
 
 	CWnd                    m_thisCWnd;
 	int                     m_updateTimerID;
-
 	LPStatusBar             m_pStatusBar;
-
-	PTR(QToolBar)           m_pFileToolBar;
-	PTR(QToolBar)           m_pEditToolBar;
-	PTR(QToolBar)           m_pZoomToolBar;
-	PTR(QToolBar)           m_pModelToolBar;
 
 	void createStatusBar();
 	void createToolBar  ();
@@ -84,7 +78,7 @@ private slots:
 	void onHelpAbout  ();
 
 	void onDockVisibleChanged(bool visible);
-	void onModelToolBarOrientationChanged(Qt::Orientation orientation);
+	void onToolBarModelOrientationChanged(Qt::Orientation orientation);
 
 private:
 	afx_msg void OnDestroy();

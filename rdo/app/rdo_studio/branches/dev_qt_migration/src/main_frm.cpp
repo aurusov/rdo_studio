@@ -10,11 +10,9 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <limits>
 #include <boost/bind.hpp>
 #include <QtCore/qprocess.h>
 #include <QtGui/qmdisubwindow.h>
-#include <QtGui/qtoolbar.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/src/application.h"
@@ -68,7 +66,7 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 	connect(actHelpContext,  SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
 	connect(actHelpAbout,    SIGNAL(triggered(bool)), this, SLOT(onHelpAbout  ()));
 
-	connect(m_pModelToolBar, SIGNAL(orientationChanged(Qt::Orientation)), this, SLOT(onModelToolBarOrientationChanged(Qt::Orientation)));
+	connect(toolBarModel, SIGNAL(orientationChanged(Qt::Orientation)), this, SLOT(onToolBarModelOrientationChanged(Qt::Orientation)));
 
 	Scintilla_LinkLexers();
 }
@@ -84,61 +82,13 @@ void RDOStudioMainFrame::createStatusBar()
 
 void RDOStudioMainFrame::createToolBar()
 {
-	QSize iconSize(16, 15);
-
-	m_pFileToolBar = addToolBar("Файл");
-	m_pFileToolBar->setIconSize(iconSize);
-	m_pFileToolBar->addAction(actFileNew);
-	m_pFileToolBar->addAction(actFileOpen);
-	m_pFileToolBar->addAction(actFileSave);
-	m_pFileToolBar->addAction(actFileSaveAll);
-
-	m_pEditToolBar = addToolBar("Редактирование");
-	m_pEditToolBar->setIconSize(iconSize);
-	m_pEditToolBar->addAction(actEditCut);
-	m_pEditToolBar->addAction(actEditCopy);
-	m_pEditToolBar->addAction(actEditPaste);
-	m_pEditToolBar->addSeparator();
-	m_pEditToolBar->addAction(actEditUndo);
-	m_pEditToolBar->addAction(actEditRedo);
-	m_pEditToolBar->addSeparator();
-	m_pEditToolBar->addAction(actSearchFind);
-	m_pEditToolBar->addAction(actSearchReplace);
-	m_pEditToolBar->addSeparator();
-	m_pEditToolBar->addAction(actSearchBookmarkPrev);
-	m_pEditToolBar->addAction(actSearchBookmarkNext);
-
-	m_pZoomToolBar = addToolBar("Масштаб");
-	m_pZoomToolBar->setIconSize(iconSize);
-	m_pZoomToolBar->addAction(actViewZoomInc);
-	m_pZoomToolBar->addAction(actViewZoomDec);
-	m_pZoomToolBar->addAction(actViewZoomAuto);
-	m_pZoomToolBar->addAction(actViewZoomReset);
-
 	m_pModelSpeedSlider = new QSlider(Qt::Horizontal, this);
 	m_pModelSpeedSlider->setRange(0, 100);
 	m_pModelSpeedSlider->setValue(100);
 	m_pModelSpeedSlider->setMaximumSize(100, 100);
 
-	m_pModelToolBar = addToolBar("Модель");
-	m_pModelToolBar->setIconSize(iconSize);
-	m_pModelToolBar->addAction(actModelRun);
-	m_pModelToolBar->addAction(actModelStop);
-	m_pModelToolBar->addSeparator();
-	m_pModelToolBar->addAction(actModelRuntimeMaxSpeed);
-	m_pModelToolBar->addAction(actModelRuntimeJump);
-	m_pModelToolBar->addAction(actModelRuntimeSync);
-	m_pModelToolBar->addAction(actModelRuntimePause);
-	m_pModelToolBar->addSeparator();
-	m_pModelToolBar->addAction(actModelShowRateInc);
-	m_pModelToolBar->addAction(actModelShowRateIncFour);
-	m_pModelToolBar->addAction(actModelShowRateDecFour);
-	m_pModelToolBar->addAction(actModelShowRateDec);
-	m_pModelToolBar->addSeparator();
-	m_pModelToolBar->addWidget(m_pModelSpeedSlider);
-	m_pModelToolBar->addSeparator();
-	m_pModelToolBar->addAction(actModelFrameNext);
-	m_pModelToolBar->addAction(actModelFramePrev);
+	toolBarModel->insertWidget(actModelFrameNext, m_pModelSpeedSlider);
+	toolBarModel->insertSeparator(actModelFrameNext);
 }
 
 void RDOStudioMainFrame::init()
@@ -213,10 +163,10 @@ void RDOStudioMainFrame::init()
 	PTR(QMenu) pMenuToolbarView = new QMenu("Панели");
 	ASSERT(pMenuToolbarView);
 	menuView->insertMenu(actViewSettings, pMenuToolbarView);
-	pMenuToolbarView->addAction(m_pFileToolBar->toggleViewAction());
-	pMenuToolbarView->addAction(m_pEditToolBar->toggleViewAction());
-	pMenuToolbarView->addAction(m_pZoomToolBar->toggleViewAction());
-	pMenuToolbarView->addAction(m_pModelToolBar->toggleViewAction());
+	pMenuToolbarView->addAction(toolBarFile->toggleViewAction());
+	pMenuToolbarView->addAction(toolBarEdit->toggleViewAction());
+	pMenuToolbarView->addAction(toolBarZoom->toggleViewAction());
+	pMenuToolbarView->addAction(toolBarModel->toggleViewAction());
 
 	menuView->insertSeparator(actViewSettings);
 
@@ -472,7 +422,7 @@ void RDOStudioMainFrame::onDockVisibleChanged(rbool visible)
 	}
 }
 
-void RDOStudioMainFrame::onModelToolBarOrientationChanged(Qt::Orientation orientation)
+void RDOStudioMainFrame::onToolBarModelOrientationChanged(Qt::Orientation orientation)
 {
 	m_pModelSpeedSlider->setOrientation(orientation);
 }
