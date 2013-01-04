@@ -398,7 +398,6 @@ void RDOThreadRepository::realCloseModel()
 {
 	if (m_hasModel)
 	{
-//	if (!m_modelName.empty()) {
 		m_hasModel = false;
 		broadcastMessage(RT_REPOSITORY_MODEL_CLOSE);
 		m_modelName = _T("");
