@@ -34,14 +34,6 @@ static char* wordCharacters = "0123456789_$abcdefghijklmnopqrstuvwxyzABCDEFGHIJK
 // --------------------------------------------------------------------------------
 // -------------------- RDOFindEdit
 // ---------------------------------------------------------------------------
-
-// ON_UPDATE_COMMAND_UI сделано
-
-//! @todo qt
-//BEGIN_MESSAGE_MAP( RDOFindEdit, LogEdit )
-//	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR , OnUpdateCoordStatusBar )
-//END_MESSAGE_MAP()
-
 RDOFindEdit::RDOFindEdit(PTR(QWidget) pParent): LogEdit(pParent)
 {
 	sendEditor( SCI_SETLEXER, SCLEX_FIND );
@@ -96,12 +88,6 @@ void RDOFindEdit::setKeyword( CREF(tstring) keyword, const rbool matchCase ) con
 {
 	sendEditorString( SCI_SETPROPERTY, reinterpret_cast<unsigned long>("find_matchcase"), matchCase ? "1" : "0" );
 	sendEditorString( SCI_SETKEYWORDS, SCI_RDO_ENDOFLINEONLY_KEYWORDSINDEX, keyword.c_str() );
-}
-
-void RDOFindEdit::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
-{
-	pCmdUI->Enable();
-	pCmdUI->SetText( rdo::format( "%d: %d", getCurrentColumnNumber() + 1, getCurrentLineNumber() + 1 ).c_str() );
 }
 
 void RDOFindEdit::onHelpContext()

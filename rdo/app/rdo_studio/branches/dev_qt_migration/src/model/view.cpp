@@ -38,7 +38,6 @@ static const UINT FINDINMODEL_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 //	ON_WM_SIZE()
 //	ON_COMMAND(ID_SEARCH_FIND_INMODEL, OnSearchFindInModel)
 //	ON_REGISTERED_MESSAGE( FINDINMODEL_MSG, OnFindInModelMsg )
-//	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR          , OnUpdateCoordStatusBar )
 //	ON_UPDATE_COMMAND_UI( ID_INSERTOVERWRITE_STATUSBAR, OnUpdateInsertOverwriteStatusBar )
 //	ON_COMMAND(ID_FILE_PRINT, RDOStudioEditBaseView::OnFilePrint)
 //	ON_COMMAND(ID_FILE_PRINT_DIRECT, RDOStudioEditBaseView::OnFilePrint)
@@ -146,16 +145,6 @@ LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM /*wParam*/, LPARAM lParam )
 		studioApp.getIMainWnd()->getDockFind().appendString(s);
 	}
 	return 0;
-}
-
-void RDOStudioModelView::OnUpdateCoordStatusBar(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable();
-	PTR(RDOEditorEdit) pEdit = m_pTabCtrl->getCurrentEdit();
-	pCmdUI->SetText(pEdit
-		? rdo::format("%d: %d", pEdit->getCurrentColumnNumber() + 1, pEdit->getCurrentLineNumber() + 1).c_str()
-		: ""
-	);
 }
 
 void RDOStudioModelView::OnUpdateInsertOverwriteStatusBar(CCmdUI* pCmdUI)

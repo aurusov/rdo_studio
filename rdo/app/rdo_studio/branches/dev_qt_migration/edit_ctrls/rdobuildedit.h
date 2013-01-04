@@ -36,8 +36,6 @@ protected:
 private:
 	typedef rdo::simulation::report::FileMessage RDOSyntaxMessage;
 
-	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
-
 	virtual void onHelpContext();
 };
 

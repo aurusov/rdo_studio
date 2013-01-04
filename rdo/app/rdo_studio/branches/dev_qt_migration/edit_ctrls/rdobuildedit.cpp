@@ -33,14 +33,6 @@ namespace rdoEditCtrl {
 // --------------------------------------------------------------------------------
 // -------------------- RDOBuildEdit
 // ---------------------------------------------------------------------------
-
-// ON_UPDATE_COMMAND_UI сделано
-
-//! @todo qt
-//BEGIN_MESSAGE_MAP( RDOBuildEdit, LogEdit )
-//	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR , OnUpdateCoordStatusBar )
-//END_MESSAGE_MAP()
-
 RDOBuildEdit::RDOBuildEdit(PTR(QWidget) pParent)
 	: LogEdit(pParent)
 {}
@@ -104,12 +96,6 @@ void RDOBuildEdit::updateEdit( rdoEditor::RDOEditorEdit* edit, const LogEditLine
 {
 	LogEdit::updateEdit( edit, lineInfo );
 	edit->setErrorLine( lineInfo->getLineNumber() );
-}
-
-void RDOBuildEdit::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
-{
-	pCmdUI->Enable();
-	pCmdUI->SetText( rdo::format( "%d: %d", getCurrentColumnNumber() + 1, getCurrentLineNumber() + 1 ).c_str() );
 }
 
 void RDOBuildEdit::onHelpContext()

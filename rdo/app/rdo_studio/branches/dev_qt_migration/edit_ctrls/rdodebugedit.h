@@ -23,8 +23,6 @@ namespace rdoEditCtrl {
 class RDODebugEdit: public RDOBaseEdit
 {
 private:
-	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
-
 	virtual void onHelpContext();
 
 public:

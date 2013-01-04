@@ -30,14 +30,6 @@ using namespace rdoEditCtrl;
 // --------------------------------------------------------------------------------
 // -------------------- RDODebugEdit
 // ---------------------------------------------------------------------------
-
-// ON_UPDATE_COMMAND_UI сделано
-
-//! @todo qt
-//BEGIN_MESSAGE_MAP( RDODebugEdit, RDOBaseEdit )
-//	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR , OnUpdateCoordStatusBar )
-//END_MESSAGE_MAP()
-
 RDODebugEdit::RDODebugEdit(PTR(QWidget) pParent)
 	: RDOBaseEdit(pParent)
 {
@@ -62,12 +54,6 @@ void RDODebugEdit::appendLine( CREF(tstring) str )
 	}
 	setReadOnly( readOnly );
 	onUpdateEditGUI();
-}
-
-void RDODebugEdit::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
-{
-	pCmdUI->Enable();
-	pCmdUI->SetText( rdo::format( "%d: %d", getCurrentColumnNumber() + 1, getCurrentLineNumber() + 1 ).c_str() );
 }
 
 void RDODebugEdit::onHelpContext()

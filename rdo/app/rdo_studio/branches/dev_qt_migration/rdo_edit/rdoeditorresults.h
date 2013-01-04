@@ -30,8 +30,6 @@ public:
 	void setEditorStyle(PTR(RDOEditorResultsStyle) pStyle);
 
 private:
-	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
-
 	virtual void onHelpContext();
 };
 

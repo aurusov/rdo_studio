@@ -1468,7 +1468,7 @@ void RDOBaseEdit::updateActions(rbool activated)
 		this, "1onEditSelectAll() " QLOCATION
 	);
 
-	QString readOnly = activated
+	QString modify = activated
 		? isReadOnly()
 			? QString("Только чтение")
 			: isModify()
@@ -1476,5 +1476,11 @@ void RDOBaseEdit::updateActions(rbool activated)
 				: QString()
 		: QString();
 
-	pMainWindow->statusBar()->update<StatusBar::SB_MODIFY>(readOnly);
+	pMainWindow->statusBar()->update<StatusBar::SB_MODIFY>(modify);
+
+	QString coord = activated
+		? QString("%1: %2").arg(getCurrentColumnNumber() + 1).arg(getCurrentLineNumber() + 1)
+		: QString();
+
+	pMainWindow->statusBar()->update<StatusBar::SB_COORD>(coord);
 }
