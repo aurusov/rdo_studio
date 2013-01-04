@@ -68,7 +68,7 @@ RDOStudioMainFrame::~RDOStudioMainFrame()
 
 void RDOStudioMainFrame::createStatusBar()
 {
-	m_pStatusBar = rdo::Factory<::StatusBar>::create(this);
+	m_pStatusBar = rdo::Factory<StatusBar>::create(this);
 }
 
 void RDOStudioMainFrame::createToolBar()
