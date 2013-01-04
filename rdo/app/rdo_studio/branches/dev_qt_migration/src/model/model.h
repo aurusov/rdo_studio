@@ -87,7 +87,7 @@ private:
 	RPViewQt*                              m_pModelProcView;
 	tstring                                m_name;
 
-	rbool newModel      (tstring _model_name = _T(""), tstring _model_path = _T(""), const int _useTemplate = -1);
+	rbool newModel      (CREF(tstring) modelName, CREF(tstring) modelPath, rsint useTemplate);
 	rbool saveModel     () const;
 	void  saveAsModel   () const;
 	void  saveToXML     ();

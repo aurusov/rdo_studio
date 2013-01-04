@@ -533,16 +533,16 @@ void RDOStudioModel::show_result()
 	}
 }
 
-rbool RDOStudioModel::newModel(tstring _model_name, tstring _model_path, const int _useTemplate )
+rbool RDOStudioModel::newModel(CREF(tstring) modelName, CREF(tstring) modelPath, rsint useTemplate)
 {
-	m_useTemplate = _useTemplate;
+	m_useTemplate = useTemplate;
 	studioApp.getIMainWnd()->getDockBuild  ().clear();
 	studioApp.getIMainWnd()->getDockDebug  ().clear();
 	studioApp.getIMainWnd()->getDockResults().clear();
 	studioApp.getIMainWnd()->getDockFind   ().clear();
 	rdo::repository::RDOThreadRepository::NewModel data;
-	data.m_name = _model_name;
-	data.m_path = _model_path;
+	data.m_name = modelName;
+	data.m_path = modelPath;
 	studioApp.broadcastMessage(RDOThread::RT_STUDIO_MODEL_NEW, &data);
 	return true;
 }
