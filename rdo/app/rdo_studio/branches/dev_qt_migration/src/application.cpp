@@ -24,7 +24,6 @@
 #include "app/rdo_studio_mfc/src/thread.h"
 #include "app/rdo_studio_mfc/src/model/new.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
-#include "app/rdo_studio_mfc/htmlhelp.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_factory.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_method.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_project.h"
@@ -380,8 +379,6 @@ int RDOStudioApp::ExitInstance()
 
 	// Роняем кернел и закрываем все треды
 	RDOKernel::close();
-
-	::HtmlHelp(NULL, NULL, HH_CLOSE_ALL, 0);
 
 	if (m_autoExitByModel)
 	{

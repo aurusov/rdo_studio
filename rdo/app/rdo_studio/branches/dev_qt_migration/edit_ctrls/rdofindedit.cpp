@@ -15,7 +15,6 @@
 #include "app/rdo_studio_mfc/edit_ctrls/rdofindedit.h"
 #include "app/rdo_studio_mfc/src/application.h"
 #include "app/rdo_studio_mfc/resource.h"
-#include "app/rdo_studio_mfc/htmlhelp.h"
 #include "thirdparty/sci/include/SciLexer.h"
 #include "thirdparty/sci/rdo/LexFind.h"
 // --------------------------------------------------------------------------------

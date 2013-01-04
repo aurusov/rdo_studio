@@ -25,7 +25,6 @@
 #include "app/rdo_studio_mfc/src/view_preferences.h"
 #include "app/rdo_studio_mfc/rdo_edit/rdoeditortabctrl.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
-#include "app/rdo_studio_mfc/htmlhelp.h"
 #include "app/rdo_studio_mfc/resource.h"
 #include "app/rdo_studio_mfc/rdo_process/rdoprocess_project.h"
 #include "app/rdo_studio_mfc/rdo_process/rp_method/rdoprocess_method.h"
