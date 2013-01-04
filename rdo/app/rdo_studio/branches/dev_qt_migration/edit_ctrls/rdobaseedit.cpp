@@ -1483,4 +1483,10 @@ void RDOBaseEdit::updateActions(rbool activated)
 		: QString();
 
 	pMainWindow->statusBar()->update<StatusBar::SB_COORD>(coord);
+
+	QString overwrite = activated && isOverwrite()
+		? QString("Замена")
+		: QString();
+
+	pMainWindow->statusBar()->update<StatusBar::SB_OVERWRITE>(overwrite);
 }

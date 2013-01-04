@@ -21,6 +21,7 @@ StatusBar::StatusBar(QMainWindow* pParent)
 {
 	m_pSBCoord         = new QLabel(m_pParent);
 	m_pSBModify        = new QLabel(m_pParent);
+	m_pSBOverwrite     = new QLabel(m_pParent);
 	m_pSBModelTime     = new QLabel(m_pParent);
 	m_pSBModelRuntype  = new QLabel(m_pParent);
 	m_pSBModelSpeed    = new QLabel(m_pParent);
@@ -28,6 +29,7 @@ StatusBar::StatusBar(QMainWindow* pParent)
 
 	m_pParent->statusBar()->addWidget(m_pSBCoord,         5);
 	m_pParent->statusBar()->addWidget(m_pSBModify,        5);
+	m_pParent->statusBar()->addWidget(m_pSBOverwrite,     3);
 	m_pParent->statusBar()->addWidget(m_pSBModelTime,     5);
 	m_pParent->statusBar()->addWidget(m_pSBModelRuntype,  7);
 	m_pParent->statusBar()->addWidget(m_pSBModelSpeed,    5);
@@ -86,6 +88,12 @@ template <>
 PTR(QLabel) StatusBar::getLabel<StatusBar::SB_MODIFY>(StatusBarType<SB_MODIFY>)
 {
 	return m_pSBModify;
+}
+
+template <>
+PTR(QLabel) StatusBar::getLabel<StatusBar::SB_OVERWRITE>(StatusBarType<SB_OVERWRITE>)
+{
+	return m_pSBOverwrite;
 }
 
 template <>

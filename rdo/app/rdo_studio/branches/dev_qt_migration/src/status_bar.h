@@ -27,7 +27,7 @@ public:
 	{
 		SB_COORD,
 		SB_MODIFY,
-		SB_INSERTOVERWRITE,
+		SB_OVERWRITE,
 		SB_MODEL_TIME,
 		SB_MODEL_RUNTYPE,
 		SB_MODEL_SPEED,
@@ -51,6 +51,7 @@ private:
 	QMainWindow*   m_pParent;
 	QLabel*        m_pSBCoord;
 	QLabel*        m_pSBModify;
+	QLabel*        m_pSBOverwrite;
 	QLabel*        m_pSBModelTime;
 	QLabel*        m_pSBModelRuntype;
 	QLabel*        m_pSBModelSpeed;

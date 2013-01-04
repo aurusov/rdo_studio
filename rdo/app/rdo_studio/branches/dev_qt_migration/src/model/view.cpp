@@ -38,7 +38,6 @@ static const UINT FINDINMODEL_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 //	ON_WM_SIZE()
 //	ON_COMMAND(ID_SEARCH_FIND_INMODEL, OnSearchFindInModel)
 //	ON_REGISTERED_MESSAGE( FINDINMODEL_MSG, OnFindInModelMsg )
-//	ON_UPDATE_COMMAND_UI( ID_INSERTOVERWRITE_STATUSBAR, OnUpdateInsertOverwriteStatusBar )
 //	ON_COMMAND(ID_FILE_PRINT, RDOStudioEditBaseView::OnFilePrint)
 //	ON_COMMAND(ID_FILE_PRINT_DIRECT, RDOStudioEditBaseView::OnFilePrint)
 //	ON_COMMAND(ID_FILE_PRINT_PREVIEW, RDOStudioEditBaseView::OnFilePrintPreview)
@@ -145,18 +144,4 @@ LRESULT RDOStudioModelView::OnFindInModelMsg( WPARAM /*wParam*/, LPARAM lParam )
 		studioApp.getIMainWnd()->getDockFind().appendString(s);
 	}
 	return 0;
-}
-
-void RDOStudioModelView::OnUpdateInsertOverwriteStatusBar(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable();
-	PTR(RDOEditorEdit) pEdit = m_pTabCtrl->getCurrentEdit();
-	if (pEdit && pEdit->isOverwrite())
-	{
-		pCmdUI->SetText(rdo::format(ID_STATUSBAR_OVERWRITE).c_str());
-	}
-	else
-	{
-		pCmdUI->SetText("");
-	}
 }
