@@ -25,7 +25,6 @@ class RDOFindEdit: public LogEdit
 {
 private:
 	afx_msg void OnUpdateCoordStatusBar( CCmdUI *pCmdUI );
-	afx_msg void OnUpdateModifyStatusBar( CCmdUI *pCmdUI );
 
 	virtual void onHelpContext();
 

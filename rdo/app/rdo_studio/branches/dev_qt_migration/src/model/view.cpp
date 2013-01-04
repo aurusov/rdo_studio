@@ -39,7 +39,6 @@ static const UINT FINDINMODEL_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 //	ON_COMMAND(ID_SEARCH_FIND_INMODEL, OnSearchFindInModel)
 //	ON_REGISTERED_MESSAGE( FINDINMODEL_MSG, OnFindInModelMsg )
 //	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR          , OnUpdateCoordStatusBar )
-//	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR         , OnUpdateModifyStatusBar )
 //	ON_UPDATE_COMMAND_UI( ID_INSERTOVERWRITE_STATUSBAR, OnUpdateInsertOverwriteStatusBar )
 //	ON_COMMAND(ID_FILE_PRINT, RDOStudioEditBaseView::OnFilePrint)
 //	ON_COMMAND(ID_FILE_PRINT_DIRECT, RDOStudioEditBaseView::OnFilePrint)
@@ -157,31 +156,6 @@ void RDOStudioModelView::OnUpdateCoordStatusBar(CCmdUI* pCmdUI)
 		? rdo::format("%d: %d", pEdit->getCurrentColumnNumber() + 1, pEdit->getCurrentLineNumber() + 1).c_str()
 		: ""
 	);
-}
-
-void RDOStudioModelView::OnUpdateModifyStatusBar(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable();
-	PTR(RDOEditorEdit) pEdit = m_pTabCtrl->getCurrentEdit();
-	if (pEdit)
-	{
-		if (pEdit->isReadOnly())
-		{
-			pCmdUI->SetText(rdo::format(ID_STATUSBAR_READONLY).c_str());
-		}
-		else if (pEdit->isModify())
-		{
-			pCmdUI->SetText(rdo::format( ID_STATUSBAR_MODIFIED ).c_str());
-		}
-		else
-		{
-			pCmdUI->SetText("");
-		}
-	}
-	else
-	{
-		pCmdUI->SetText("");
-	}
 }
 
 void RDOStudioModelView::OnUpdateInsertOverwriteStatusBar(CCmdUI* pCmdUI)

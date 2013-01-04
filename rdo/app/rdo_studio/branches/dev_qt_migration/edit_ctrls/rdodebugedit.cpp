@@ -36,7 +36,6 @@ using namespace rdoEditCtrl;
 //! @todo qt
 //BEGIN_MESSAGE_MAP( RDODebugEdit, RDOBaseEdit )
 //	ON_UPDATE_COMMAND_UI( ID_COORD_STATUSBAR , OnUpdateCoordStatusBar )
-//	ON_UPDATE_COMMAND_UI( ID_MODIFY_STATUSBAR, OnUpdateModifyStatusBar )
 //END_MESSAGE_MAP()
 
 RDODebugEdit::RDODebugEdit(PTR(QWidget) pParent)
@@ -69,12 +68,6 @@ void RDODebugEdit::OnUpdateCoordStatusBar( CCmdUI *pCmdUI )
 {
 	pCmdUI->Enable();
 	pCmdUI->SetText( rdo::format( "%d: %d", getCurrentColumnNumber() + 1, getCurrentLineNumber() + 1 ).c_str() );
-}
-
-void RDODebugEdit::OnUpdateModifyStatusBar( CCmdUI *pCmdUI )
-{
-	pCmdUI->Enable();
-	pCmdUI->SetText( rdo::format( ID_STATUSBAR_READONLY ).c_str() );
 }
 
 void RDODebugEdit::onHelpContext()

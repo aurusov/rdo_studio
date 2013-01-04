@@ -1467,4 +1467,14 @@ void RDOBaseEdit::updateActions(rbool activated)
 		activated && !isEmpty(),
 		this, "1onEditSelectAll() " QLOCATION
 	);
+
+	QString readOnly = activated
+		? isReadOnly()
+			? QString("Только чтение")
+			: isModify()
+				? QString("Изменён")
+				: QString()
+		: QString();
+
+	pMainWindow->statusBar()->update<StatusBar::SB_MODIFY>(readOnly);
 }
