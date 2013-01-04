@@ -19,6 +19,20 @@
 StatusBar::StatusBar(QMainWindow* pParent)
 	: m_pParent(pParent)
 {
+	m_pSBCoord         = new QLabel(m_pParent);
+	m_pSBModify        = new QLabel(m_pParent);
+	m_pSBModelTime     = new QLabel(m_pParent);
+	m_pSBModelRuntype  = new QLabel(m_pParent);
+	m_pSBModelSpeed    = new QLabel(m_pParent);
+	m_pSBModelShowRate = new QLabel(m_pParent);
+
+	m_pParent->statusBar()->addWidget(m_pSBCoord,         5);
+	m_pParent->statusBar()->addWidget(m_pSBModify,        5);
+	m_pParent->statusBar()->addWidget(m_pSBModelTime,     5);
+	m_pParent->statusBar()->addWidget(m_pSBModelRuntype,  7);
+	m_pParent->statusBar()->addWidget(m_pSBModelSpeed,    5);
+	m_pParent->statusBar()->addWidget(m_pSBModelShowRate, 7);
+
 	m_pProgressBar = new QProgressBar(m_pParent);
 	m_pProgressBar->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
 	m_pProgressBar->setMaximumSize(QWIDGETSIZE_MAX, 15);
@@ -60,4 +74,40 @@ void StatusBar::endProgress()
 	m_pParent->statusBar()->addWidget(m_pProgressBarFakeWidget, 7);
 
 	m_pProgressBar->setVisible(false);
+}
+
+template <>
+PTR(QLabel) StatusBar::getLabel<StatusBar::SB_COORD>(StatusBarType<SB_COORD>)
+{
+	return m_pSBCoord;
+}
+
+template <>
+PTR(QLabel) StatusBar::getLabel<StatusBar::SB_MODIFY>(StatusBarType<SB_MODIFY>)
+{
+	return m_pSBModify;
+}
+
+template <>
+PTR(QLabel) StatusBar::getLabel<StatusBar::SB_MODEL_TIME>(StatusBarType<SB_MODEL_TIME>)
+{
+	return m_pSBModelTime;
+}
+
+template <>
+PTR(QLabel) StatusBar::getLabel<StatusBar::SB_MODEL_RUNTYPE>(StatusBarType<SB_MODEL_RUNTYPE>)
+{
+	return m_pSBModelRuntype;
+}
+
+template <>
+PTR(QLabel) StatusBar::getLabel<StatusBar::SB_MODEL_SPEED>(StatusBarType<SB_MODEL_SPEED>)
+{
+	return m_pSBModelSpeed;
+}
+
+template <>
+PTR(QLabel) StatusBar::getLabel<StatusBar::SB_MODEL_SHOWRATE>(StatusBarType<SB_MODEL_SHOWRATE>)
+{
+	return m_pSBModelShowRate;
 }

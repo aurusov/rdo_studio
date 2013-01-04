@@ -821,7 +821,7 @@ void LogView::setUpCoordStatusBar(rbool activate)
 
 	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
 	ASSERT(pMainWindow);
-	pMainWindow->updateStatusBar<RDOStudioMainFrame::SB_COORD>(coord);
+	pMainWindow->statusBar()->update<StatusBar::SB_COORD>(coord);
 }
 
 rbool LogView::canCopy() const
@@ -1071,7 +1071,7 @@ void LogView::onActivate()
 	setUpActionEditCopy(true);
 	setUpCoordStatusBar(true);
 
-	studioApp.getMainWndUI()->updateStatusBar<RDOStudioMainFrame::SB_MODIFY>("Только чтение");
+	studioApp.getMainWndUI()->statusBar()->update<StatusBar::SB_MODIFY>("Только чтение");
 }
 
 void LogView::onDeactivate()
@@ -1084,7 +1084,7 @@ void LogView::onDeactivate()
 	setUpActionEditCopy(false);
 	setUpCoordStatusBar(false);
 
-	studioApp.getMainWndUI()->updateStatusBar<RDOStudioMainFrame::SB_MODIFY>("");
+	studioApp.getMainWndUI()->statusBar()->update<StatusBar::SB_MODIFY>("");
 }
 
 void LogView::onEditCopy()

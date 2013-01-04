@@ -14,7 +14,6 @@
 #include <math.h>
 #include <boost/mpl/integral_c.hpp>
 #include <QtGui/qmainwindow.h>
-#include <QtGui/qlabel.h>
 #include <QtGui/qslider.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "kernel/rdokernel.h"
@@ -39,17 +38,6 @@ public:
 	RDOStudioMainFrame();
 	virtual ~RDOStudioMainFrame();
 
-	enum StatusBar
-	{
-		SB_COORD,
-		SB_MODIFY,
-		SB_INSERTOVERWRITE,
-		SB_MODEL_TIME,
-		SB_MODEL_RUNTYPE,
-		SB_MODEL_SPEED,
-		SB_MODEL_SHOWRATE
-	};
-
 	void init();
 
 	virtual void updateAllStyles();
@@ -67,12 +55,6 @@ public:
 	virtual void activateSubWindow         (QWidget* pWidget);
 	virtual void connectOnActivateSubWindow(QObject* pObject);
 
-	template <StatusBar N>
-	void updateStatusBar(CREF(QString) message)
-	{
-		updateStatusBar(StatusBarType<N>(), message);
-	}
-
 	PTR(QSlider) m_pModelSpeedSlider;
 
 private:
@@ -81,12 +63,6 @@ private:
 	CWnd                    m_thisCWnd;
 	int                     m_updateTimerID;
 
-	PTR(QLabel)             m_pSBCoord;
-	PTR(QLabel)             m_pSBModify;
-	PTR(QLabel)             m_pSBModelTime;
-	PTR(QLabel)             m_pSBModelRuntype;
-	PTR(QLabel)             m_pSBModelSpeed;
-	PTR(QLabel)             m_pSBModelShowRate;
 	LPStatusBar             m_pStatusBar;
 
 	PTR(QToolBar)           m_pFileToolBar;
@@ -101,21 +77,6 @@ private:
 	virtual void showEvent (QShowEvent*  event);
 	virtual void hideEvent (QHideEvent*  event);
 	virtual void timerEvent(QTimerEvent* event);
-
-	template <StatusBar N>
-	struct StatusBarType: boost::mpl::integral_c<StatusBar, N>
-	{};
-
-	template <StatusBar N>
-	void updateStatusBar(StatusBarType<N> statusBar, CREF(QString) message)
-	{
-		PTR(QLabel) pLabel = getStatusBarLabel(statusBar);
-		ASSERT(pLabel);
-		pLabel->setText(message);
-	}
-
-	template <StatusBar N>
-	PTR(QLabel) getStatusBarLabel(StatusBarType<N>);
 
 private slots:
 	void onViewOptions();

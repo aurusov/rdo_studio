@@ -1370,9 +1370,9 @@ void RDOStudioModel::setUpActions()
 		case rdo::runtime::RTM_BreakPoint: runTimeMode = rdo::format(ID_STATUSBAR_MODEL_RUNTIME_BREAKPOINT, getLastBreakPointName().c_str()); break;
 		}
 	}
-	studioApp.getMainWndUI()->updateStatusBar<RDOStudioMainFrame::SB_MODEL_RUNTYPE>(QString::fromStdString(runTimeMode));
+	studioApp.getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_RUNTYPE>(QString::fromStdString(runTimeMode));
 
-	studioApp.getMainWndUI()->updateStatusBar<RDOStudioMainFrame::SB_MODEL_SPEED>(
+	studioApp.getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_SPEED>(
 		getRuntimeMode() != rdo::runtime::RTM_MaxSpeed || !isRunning()
 			? QString("Скорость: %1%").arg(rsint(getSpeed() * 100))
 			: ""
@@ -1413,14 +1413,14 @@ void RDOStudioModel::setUpActions()
 			break;
 		}
 	}
-	studioApp.getMainWndUI()->updateStatusBar<RDOStudioMainFrame::SB_MODEL_SHOWRATE>(showRateStr);
+	studioApp.getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_SHOWRATE>(showRateStr);
 }
 
 void RDOStudioModel::update()
 {
 	sendMessage(kernel->runtime(), RT_RUNTIME_GET_TIMENOW, &m_timeNow);
 
-	studioApp.getMainWndUI()->updateStatusBar<RDOStudioMainFrame::SB_MODEL_TIME>(QString("Время: %1").arg(m_timeNow));
+	studioApp.getMainWndUI()->statusBar()->update<StatusBar::SB_MODEL_TIME>(QString("Время: %1").arg(m_timeNow));
 
 	rdo::runtime::RunTimeMode rm;
 	sendMessage(kernel->runtime(), RT_RUNTIME_GET_MODE, &rm);
