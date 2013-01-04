@@ -83,9 +83,7 @@ RDOStudioModel::RDOStudioModel()
 	, m_timeNow        (0                         )
 	, m_speed          (1                         )
 	, m_showRate       (60                        )
-	, m_tempPause      (false                     )
 	, m_runtimeMode    (rdo::runtime::RTM_MaxSpeed)
-	, m_runtimeModePrev(rdo::runtime::RTM_MaxSpeed)
 	, m_exitCode       (rdo::simulation::report::EC_ModelNotFound)
 	, m_modify         (false                     )
 	, m_buildState     (BS_UNDEFINED              )
@@ -1165,12 +1163,6 @@ void RDOStudioModel::setRuntimeMode(const rdo::runtime::RunTimeMode value)
 {
 	if (isRunning())
 	{
-		if (m_tempPause)
-		{
-			rdo::runtime::RunTimeMode _value = value;
-			sendMessage(kernel->runtime(), RT_RUNTIME_SET_MODE, &_value);
-			return;
-		}
 		m_runtimeMode = value;
 		sendMessage(kernel->runtime(), RT_RUNTIME_SET_MODE, &m_runtimeMode);
 		g_pTracer->setRuntimeMode(getRuntimeMode());
@@ -1423,25 +1415,6 @@ void RDOStudioModel::update()
 				}
 			}
 		}
-	}
-}
-
-void RDOStudioModel::setGUIPause()
-{
-	m_tempPause = true;
-	if (isRunning())
-	{
-		sendMessage(kernel->runtime(), RT_RUNTIME_GET_MODE, &m_runtimeModePrev);
-		setRuntimeMode(rdo::runtime::RTM_Pause);
-	}
-}
-
-void RDOStudioModel::setGUIContinue()
-{
-	m_tempPause = false;
-	if (isRunning())
-	{
-		setRuntimeMode(m_runtimeModePrev);
 	}
 }
 

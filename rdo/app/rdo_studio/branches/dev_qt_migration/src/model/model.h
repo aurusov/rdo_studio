@@ -81,7 +81,6 @@ private:
 	double                                 m_showRate;
 	rbool                                  m_tempPause;
 	rdo::runtime::RunTimeMode              m_runtimeMode;
-	rdo::runtime::RunTimeMode              m_runtimeModePrev;
 	rdo::simulation::report::RDOExitCode   m_exitCode;
 	mutable rbool                          m_modify;
 	RDOStudioModelView*                    m_pModelView;
@@ -136,12 +135,10 @@ public:
 	RDOStudioModel();
 	virtual ~RDOStudioModel();
 
-	rbool openModel     (CREF(tstring) modelName = _T(""));
-	rbool runModel      ();
-	rbool closeModel    ();
-	void  update        ();
-	void  setGUIPause   ();
-	void  setGUIContinue();
+	rbool openModel (CREF(tstring) modelName = _T(""));
+	rbool runModel  ();
+	rbool closeModel();
+	void  update    ();
 
 	void resetView();
 

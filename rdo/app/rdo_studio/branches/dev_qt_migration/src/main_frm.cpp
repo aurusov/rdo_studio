@@ -38,12 +38,6 @@ static char THIS_FILE[] = __FILE__;
 // --------------------------------------------------------------------------------
 // -------------------- RDOStudioMainFrame
 // --------------------------------------------------------------------------------
-//! @todo qt
-//BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
-//	ON_WM_ENTERMENULOOP()
-//	ON_WM_EXITMENULOOP()
-//END_MESSAGE_MAP()
-
 RDOStudioMainFrame::RDOStudioMainFrame()
 	: m_updateTimerID(0)
 {
@@ -322,17 +316,6 @@ void RDOStudioMainFrame::showEvent(QShowEvent*)
 
 void RDOStudioMainFrame::hideEvent(QHideEvent*)
 {}
-
-//! @todo qt
-//void RDOStudioMainFrame::OnEnterMenuLoop( BOOL bIsTrackPopupMenu )
-//{
-//	model->setGUIPause();
-//}
-//
-//void RDOStudioMainFrame::OnExitMenuLoop( BOOL bIsTrackPopupMenu )
-//{
-//	model->setGUIContinue();
-//}
 
 void RDOStudioMainFrame::addSubWindow(QWidget* pWidget)
 {
