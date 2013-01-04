@@ -15,7 +15,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/edit_ctrls/rdobaseedit.h"
 #include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/src/main_windows_base.h"
+#include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/resource.h"
 #include "thirdparty/sci/include/SciLexer.h"
 #include "thirdparty/sci/lexlib/WordList.h"
@@ -1447,10 +1447,18 @@ void RDOBaseEdit::focusOutEvent(QFocusEvent* pEvent)
 
 void RDOBaseEdit::onActivate()
 {
-	TRACE("RDOBaseEdit::onActivate\n");
+	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
+	ASSERT(pMainWindow);
+
+	pMainWindow->actHelpContext->setEnabled(true);
+	connect(pMainWindow->actHelpContext, SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
 }
 
 void RDOBaseEdit::onDeactivate()
 {
-	TRACE("RDOBaseEdit::onDeactivate\n");
+	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
+	ASSERT(pMainWindow);
+
+	pMainWindow->actHelpContext->setEnabled(false);
+	disconnect(pMainWindow->actHelpContext, SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
 }

@@ -112,13 +112,15 @@ protected:
 protected:
 	virtual void focusInEvent (QFocusEvent* pEvent);
 	virtual void focusOutEvent(QFocusEvent* pEvent);
+	virtual void onActivate   ();
+	virtual void onDeactivate ();
 
 	afx_msg void OnIsSelected(CCmdUI* pCmdUI);
 
-private:
-	void onActivate  ();
-	void onDeactivate();
+protected slots:
+	virtual void onHelpContext() = 0;
 
+private:
 	//! @todo qt
 	//afx_msg void OnSetFocus( CWnd *pOldWnd );
 	//afx_msg void OnContextMenu( CWnd* pWnd, CPoint pos );

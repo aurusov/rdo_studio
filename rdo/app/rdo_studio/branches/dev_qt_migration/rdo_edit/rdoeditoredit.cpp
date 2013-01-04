@@ -51,7 +51,6 @@ using namespace rdoEditCtrl;
 //	ON_UPDATE_COMMAND_UI(ID_VIEW_TOGGLE_ALLFOLDS, OnUpdateFold)
 //	ON_UPDATE_COMMAND_UI(ID_VIEW_TOGGLE_CURRENTFOLD, OnUpdateFold)
 //	ON_UPDATE_COMMAND_UI( ID_EDIT_COMMENTSELECTION, OnIsSelected )
-//	ON_COMMAND(ID_HELP_KEYWORD, OnHelpKeyword)
 //
 //	ON_COMMAND_RANGE( ID_INSERT_PAT_TEMPL_OPERATION, ID_INSERT_ALGO_RETURN, OnInsertCommand )
 //
@@ -676,7 +675,7 @@ void RDOEditorEdit::OnUpdateGotoPrev(CCmdUI* pCmdUI)
 	pCmdUI->Enable(log ? true : false);
 }
 
-void RDOEditorEdit::OnHelpKeyword()
+void RDOEditorEdit::onHelpContext()
 {
 	tstring keyword = getCurrentOrSelectedWord();
 	tstring s = getAllKW();

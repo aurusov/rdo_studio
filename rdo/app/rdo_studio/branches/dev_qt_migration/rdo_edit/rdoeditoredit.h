@@ -50,6 +50,8 @@ protected:
 	rbool hasErrorLine  () const;
 
 private:
+	virtual void onHelpContext();
+
 	afx_msg void OnEditCommentSelection();
 	afx_msg void OnEditCompleteWord();
 	afx_msg void OnGotoNext();
@@ -59,7 +61,6 @@ private:
 	afx_msg void OnToggleAllFolds();
 	afx_msg void OnToggleCurrentFold();
 	afx_msg void OnUpdateFold(CCmdUI* pCmdUI);
-	afx_msg void OnHelpKeyword();
 	afx_msg void OnInsertCommand( UINT nID );
 
 public:
