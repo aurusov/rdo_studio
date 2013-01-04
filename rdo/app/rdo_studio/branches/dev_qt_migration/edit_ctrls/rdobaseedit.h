@@ -93,8 +93,6 @@ protected:
 	void replace( REF(tstring) findWhat, REF(tstring) replaceWhat, const rbool searchDown = true, const rbool matchCase = false, const rbool matchWholeWord = false );
 	void replaceAll( REF(tstring) findWhat, REF(tstring) replaceWhat, const rbool matchCase = false, const rbool matchWholeWord = false );
 
-	void copyAsRTF();
-
 	int indentOfBlock( int line ) const;
 	void setLineIndentation( int line, int indent ) const;
 	void autoIndent() const;
@@ -120,7 +118,6 @@ private:
 	//! @todo qt
 	//afx_msg void OnSetFocus( CWnd *pOldWnd );
 	//afx_msg void OnContextMenu( CWnd* pWnd, CPoint pos );
-	afx_msg void OnEditCopyAsRTF();
 	afx_msg void OnEditSelectAll();
 	afx_msg void OnEditUpperCase();
 	afx_msg void OnEditLowerCase();
@@ -156,12 +153,13 @@ private slots:
 	void catchNeedShown(int position, int length);
 	void catchCharAdded(int ch);
 
-	void onEditUndo ();
-	void onEditRedo ();
-	void onEditCut  ();
-	void onEditCopy ();
-	void onEditPaste();
-	void onEditDel  ();
+	void onEditUndo     ();
+	void onEditRedo     ();
+	void onEditCut      ();
+	void onEditCopy     ();
+	void onEditPaste    ();
+	void onEditDel      ();
+	void onEditCopyAsRTF();
 
 public:
 	RDOBaseEdit(PTR(QWidget) pParent);
@@ -231,7 +229,7 @@ public:
 
 	void load( rdo::stream& stream );
 	void save( rdo::stream& stream ) const;
-	void saveAsRTF( CFile& file, int start = 0, int end = -1 ) const;
+	tstring saveAsRTF(int start, int end) const;
 };
 
 } // namespace rdoEditCtrl

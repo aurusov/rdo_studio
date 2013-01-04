@@ -12,6 +12,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
 #include <QtGui/qmessagebox.h>
+#include <QtGui/qclipboard.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/edit_ctrls/rdobaseedit.h"
 #include "app/rdo_studio_mfc/src/application.h"
@@ -77,7 +78,6 @@ static const UINT FIND_REPLASE_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 //BEGIN_MESSAGE_MAP( RDOBaseEdit, CWnd )
 //	ON_WM_SETFOCUS()
 //	ON_WM_CONTEXTMENU()
-//	ON_COMMAND(ID_EDIT_COPYASRTF, OnEditCopyAsRTF)
 //	ON_COMMAND(ID_EDIT_SELECT_ALL, OnEditSelectAll)
 //	ON_COMMAND(ID_EDIT_UPPERCASE, OnEditUpperCase)
 //	ON_COMMAND(ID_EDIT_LOWERCASE, OnEditLowerCase)
@@ -106,7 +106,6 @@ static const UINT FIND_REPLASE_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 //	ON_UPDATE_COMMAND_UI( ID_VIEW_ZOOMIN          , OnUpdateZoomIn )
 //	ON_UPDATE_COMMAND_UI( ID_VIEW_ZOOMOUT         , OnUpdateZoomOut )
 //	ON_UPDATE_COMMAND_UI( ID_VIEW_ZOOMRESET       , OnUpdateZoomReset )
-//	ON_UPDATE_COMMAND_UI( ID_EDIT_COPYASRTF       , OnIsSelected )
 //	ON_UPDATE_COMMAND_UI( ID_EDIT_UPPERCASE       , OnIsSelected )
 //	ON_UPDATE_COMMAND_UI( ID_EDIT_LOWERCASE       , OnIsSelected )
 //	ON_UPDATE_COMMAND_UI( ID_SEARCH_BOOKMARK_PREVIOUS, OnHasBookmarks )
@@ -289,11 +288,6 @@ void RDOBaseEdit::onEditPaste()
 void RDOBaseEdit::onEditDel() 
 {
 	sendEditor(SCI_CLEAR);
-}
-
-void RDOBaseEdit::OnEditCopyAsRTF() 
-{
-	copyAsRTF();
 }
 
 void RDOBaseEdit::OnEditSelectAll() 
@@ -687,24 +681,24 @@ rbool RDOBaseEdit::hasBookmarks() const
 	return nextLine >= 0;
 }
 
-void RDOBaseEdit::copyAsRTF()
+void RDOBaseEdit::onEditCopyAsRTF()
 {
-	//! @todo qt
-	//if ( isSelected() ) {
+	if (!isSelected())
+		return;
 
-	//	CSharedFile memFile;
+	CharacterRange cr = getSelectionRange();
+	tstring result = saveAsRTF(cr.cpMin, cr.cpMax);
+	if (result.empty())
+		return;
 
-	//	CharacterRange cr = getSelectionRange();
-	//	saveAsRTF( memFile, cr.cpMin, cr.cpMax );
+	QMimeData* pMimeData = new QMimeData();
+	QByteArray ba;
+	ba.append(QString::fromStdString(result));
+	//! @todo для линуха надо будет использовать "text/rtf" ?
+	pMimeData->setData("Rich Text Format", ba);
 
-	//	HGLOBAL hData = memFile.Detach();
-	//	if ( OpenClipboard() ) {
-	//		::EmptyClipboard();
-	//		::SetClipboardData( ::RegisterClipboardFormat( CF_RTF ), hData );
-	//		CloseClipboard();
-	//	}
-
-	//}
+	QClipboard* pClipboard = QApplication::clipboard();
+	pClipboard->setMimeData(pMimeData, QClipboard::Clipboard);
 }
 
 // --------------------------------------------------------------------------------
@@ -859,9 +853,14 @@ void GetRTFStyleChange( char *delta, char *last, const char *current ) // \f0\fs
 // -------------------- RDOBaseEdit: some functions for RTF export ---------- END
 // --------------------------------------------------------------------------------
 
-void RDOBaseEdit::saveAsRTF( CFile& file, int start, int end ) const
+tstring RDOBaseEdit::saveAsRTF(int start, int end) const
 {
-	if ( !style ) return;
+	tstring saveStr;
+
+	if (!style)
+	{
+		return saveStr;
+	}
 
 	int lengthDoc = getLength();
 	if ( end < 0 ) end = lengthDoc;
@@ -873,8 +872,6 @@ void RDOBaseEdit::saveAsRTF( CFile& file, int start, int end ) const
 	int fontCount  = 1;
 	int colorCount = 1;
 	int i;
-
-	tstring saveStr;
 
 	saveStr = "";
 	saveStr += RTF_HEADEROPEN;
@@ -949,7 +946,7 @@ void RDOBaseEdit::saveAsRTF( CFile& file, int start, int end ) const
 	}
 	saveStr += RTF_BODYCLOSE;
 
-	file.Write( saveStr.c_str(), saveStr.length() );
+	return saveStr;
 }
 #pragma warning(default: 4996)
 
@@ -1466,5 +1463,10 @@ void RDOBaseEdit::updateActions(rbool activated)
 		pMainWindow->actEditDel,
 		activated && getCurrentPos() != getLength() || isSelected(),
 		this, "1onEditDel() " QLOCATION
+	);
+	updateAction(
+		pMainWindow->actEditCopyAsRTF,
+		activated && isSelected(),
+		this, "1onEditCopyAsRTF() " QLOCATION
 	);
 }
