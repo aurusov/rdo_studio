@@ -50,9 +50,18 @@ border: none;
     <property name="title">
      <string>Файл</string>
     </property>
+    <widget class="QMenu" name="menuFileReopen">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="title">
+      <string>Недавние</string>
+     </property>
+     <addaction name="action"/>
+    </widget>
     <addaction name="actFileNew"/>
     <addaction name="actFileOpen"/>
-    <addaction name="actFileReopen"/>
+    <addaction name="menuFileReopen"/>
     <addaction name="actFileClose"/>
     <addaction name="separator"/>
     <addaction name="actFileSave"/>
@@ -313,11 +322,6 @@ border: none;
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
-   </property>
-  </action>
-  <action name="actFileReopen">
-   <property name="text">
-    <string>Недавние</string>
    </property>
   </action>
   <action name="actFileClose">
@@ -1059,6 +1063,11 @@ border: none;
    </property>
    <property name="text">
     <string>Уменьшить масштаб в 4-ре раза</string>
+   </property>
+  </action>
+  <action name="action">
+   <property name="text">
+    <string>Пусто</string>
    </property>
   </action>
  </widget>

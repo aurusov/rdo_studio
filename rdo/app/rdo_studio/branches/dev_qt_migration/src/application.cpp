@@ -511,35 +511,18 @@ void RDOStudioApp::insertReopenItem(CREF(tstring) item)
 
 void RDOStudioApp::updateReopenSubMenu() const
 {
-	QList<QAction*> actionList = m_pMainFrame->menuFile->actions();
-	for (int actionIndex = 0; actionIndex < actionList.size(); ++actionIndex)
+	m_pMainFrame->menuFileReopen->clear();
+
+	for (ReopenList::size_type reopenIndex = 0; reopenIndex < m_reopenList.size(); ++reopenIndex)
 	{
-		QAction* pAction = actionList[actionIndex];
-		if (pAction->text() == "Недавние")
+		if (reopenIndex == 4)
 		{
-			QMenu* pMenuReopen = pAction->menu();
-			if (pMenuReopen)
-			{
-				pMenuReopen->clear();
-			}
-			else
-			{
-				pMenuReopen = new QMenu();
-			}
-
-			for (ReopenList::size_type reopenIndex = 0; reopenIndex < m_reopenList.size(); ++reopenIndex)
-			{
-				if (reopenIndex == 4)
-				{
-					pMenuReopen->addSeparator();
-				}
-				pMenuReopen->addAction(rdo::format("%d. %s", reopenIndex+1, m_reopenList[reopenIndex].c_str()).c_str());
-			}
-
-			pAction->setMenu(pMenuReopen);
-			break;
+			m_pMainFrame->menuFileReopen->addSeparator();
 		}
+		m_pMainFrame->menuFileReopen->addAction(rdo::format("%d. %s", reopenIndex+1, m_reopenList[reopenIndex].c_str()).c_str());
 	}
+
+	m_pMainFrame->menuFileReopen->setEnabled(!m_pMainFrame->menuFileReopen->isEmpty());
 
 	saveReopen();
 
