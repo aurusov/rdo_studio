@@ -40,15 +40,8 @@ static char THIS_FILE[] = __FILE__;
 // --------------------------------------------------------------------------------
 //! @todo qt
 //BEGIN_MESSAGE_MAP(RDOStudioMainFrame, CMDIFrameWnd)
-//	ON_WM_CREATE()
-//	ON_WM_DESTROY()
-//	ON_WM_TIMER()
-//	ON_WM_CLOSE()
-//	ON_WM_SHOWWINDOW()
-//	ON_WM_SIZE()
 //	ON_WM_ENTERMENULOOP()
 //	ON_WM_EXITMENULOOP()
-//	ON_WM_ENTERIDLE()
 //END_MESSAGE_MAP()
 
 RDOStudioMainFrame::RDOStudioMainFrame()
