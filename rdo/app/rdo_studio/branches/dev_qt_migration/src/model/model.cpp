@@ -1488,7 +1488,7 @@ rbool RDOStudioModel::isModify() const
 
 	for (int i = 0; i < getTab()->count(); i++)
 	{
-		if (getTab()->getItemEdit( i )->isModify())
+		if (getTab()->getItemEdit(i)->isModify())
 		{
 			result = true;
 			break;
@@ -1515,7 +1515,7 @@ rbool RDOStudioModel::canOpen() const
 
 rbool RDOStudioModel::canSave() const
 {
-	return isModify();
+	return hasModel() && isModify();
 }
 
 rbool RDOStudioModel::canClose() const
