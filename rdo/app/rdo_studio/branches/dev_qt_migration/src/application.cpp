@@ -143,10 +143,6 @@ void g_messageOutput(QtMsgType type, const char *msg)
 }
 #endif
 
-BEGIN_MESSAGE_MAP(RDOStudioApp, CWinApp)
-	ON_COMMAND_RANGE(ID_FILE_REOPEN_1, ID_FILE_REOPEN_10, OnProjectReopen)
-END_MESSAGE_MAP()
-
 RDOStudioApp::RDOStudioApp()
 	: CWinApp()
 	, m_pStudioGUI                  (NULL  )
@@ -268,9 +264,6 @@ BOOL RDOStudioApp::InitInstance()
 #else
 	kernel->thread_studio = model;
 #endif
-
-	loadReopen();
-	updateReopenSubMenu();
 
 	if (getFileAssociationCheckInFuture())
 	{
@@ -459,134 +452,6 @@ rbool RDOStudioApp::shortToLongPath(CREF(tstring) shortPath, REF(tstring) longPa
 	}
 }
 
-void RDOStudioApp::OnProjectReopen(UINT nID)
-{
-	ruint i = 0;
-	switch (nID)
-	{
-	case ID_FILE_REOPEN_1 : i = 0; break;
-	case ID_FILE_REOPEN_2 : i = 1; break;
-	case ID_FILE_REOPEN_3 : i = 2; break;
-	case ID_FILE_REOPEN_4 : i = 3; break;
-	case ID_FILE_REOPEN_5 : i = 4; break;
-	case ID_FILE_REOPEN_6 : i = 5; break;
-	case ID_FILE_REOPEN_7 : i = 6; break;
-	case ID_FILE_REOPEN_8 : i = 7; break;
-	case ID_FILE_REOPEN_9 : i = 8; break;
-	case ID_FILE_REOPEN_10: i = 9; break;
-	}
-
-	if (!model->openModel(m_reopenList[i]) && model->isPrevModelClosed())
-	{
-		m_reopenList.erase(m_reopenList.begin() + i);
-		updateReopenSubMenu();
-	}
-}
-
-void RDOStudioApp::insertReopenItem(CREF(tstring) item)
-{
-	if (!item.empty())
-	{
-		STL_FOR_ALL(m_reopenList, it)
-		{
-			if (*it == item)
-			{
-				m_reopenList.erase(it);
-				break;
-			}
-		}
-
-		m_reopenList.insert(m_reopenList.begin(), item);
-
-		while (m_reopenList.size() > 10)
-		{
-			ReopenList::iterator it = m_reopenList.end();
-			--it;
-			m_reopenList.erase(it);
-		}
-
-		updateReopenSubMenu();
-	}
-}
-
-void RDOStudioApp::updateReopenSubMenu() const
-{
-	m_pMainFrame->menuFileReopen->clear();
-
-	for (ReopenList::size_type reopenIndex = 0; reopenIndex < m_reopenList.size(); ++reopenIndex)
-	{
-		if (reopenIndex == 4)
-		{
-			m_pMainFrame->menuFileReopen->addSeparator();
-		}
-		m_pMainFrame->menuFileReopen->addAction(rdo::format("%d. %s", reopenIndex+1, m_reopenList[reopenIndex].c_str()).c_str());
-	}
-
-	m_pMainFrame->menuFileReopen->setEnabled(!m_pMainFrame->menuFileReopen->isEmpty());
-
-	saveReopen();
-}
-
-void RDOStudioApp::loadReopen()
-{
-	m_reopenList.clear();
-	for (ruint i = 0; i < 10; i++)
-	{
-		tstring sec;
-		if (i+1 < 10)
-		{
-			sec = rdo::format(_T("0%d"), i+1);
-		}
-		else
-		{
-			sec = rdo::format(_T("%d"), i+1);
-		}
-		TRY
-		{
-			tstring s = AfxGetApp()->GetProfileString(_T("reopen"), sec.c_str(), _T(""));
-			if (!s.empty())
-			{
-				m_reopenList.insert(m_reopenList.end(), s);
-			}
-		}
-		CATCH(CException, e)
-		{}
-		END_CATCH
-	}
-}
-
-void RDOStudioApp::saveReopen() const
-{
-	for (ReopenList::size_type i = 0; i < 10; i++)
-	{
-		tstring sec;
-		if (i+1 < 10)
-		{
-			sec = rdo::format(_T("0%d"), i+1);
-		}
-		else
-		{
-			sec = rdo::format(_T("%d"), i+1);
-		}
-		tstring s;
-		if (i < m_reopenList.size())
-		{
-			s = m_reopenList[i];
-		}
-		else
-		{
-			s = _T("");
-		}
-		TRY
-		{
-			AfxGetApp()->WriteProfileString(_T("reopen"), sec.c_str(), s.c_str());
-		}
-		CATCH(CException, e)
-		{}
-		END_CATCH
-	}
-}
-
 tstring RDOStudioApp::getFullExtName()
 {
 	tstring fileName = _T("");
@@ -701,7 +566,7 @@ CREF(tstring) RDOStudioApp::getLastProjectName() const
 
 void RDOStudioApp::setLastProjectName(CREF(tstring) projectName)
 {
-	insertReopenItem(projectName);
+	m_pMainFrame->insertMenuFileReopenItem(projectName);
 	if (m_lastProjectName != projectName)
 	{
 		m_lastProjectName = projectName;

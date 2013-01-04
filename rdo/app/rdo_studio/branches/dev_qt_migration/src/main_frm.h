@@ -57,15 +57,23 @@ public:
 
 	PTR(QSlider) m_pModelSpeedSlider;
 
+	void insertMenuFileReopenItem(CREF(tstring) item);
+
 private:
-	typedef  QMainWindow  parent_type;
+	typedef  QMainWindow           parent_type;
+	typedef  std::vector<tstring>  ReopenList;
 
 	CWnd                    m_thisCWnd;
 	int                     m_updateTimerID;
 	LPStatusBar             m_pStatusBar;
+	ReopenList              m_reopenList;
 
 	void createStatusBar();
 	void createToolBar  ();
+
+	void updateMenuFileReopen();
+	void loadMenuFileReopen  ();
+	void saveMenuFileReopen  () const;
 
 	virtual void closeEvent(QCloseEvent* event);
 	virtual void showEvent (QShowEvent*  event);
@@ -79,6 +87,8 @@ private slots:
 
 	void onDockVisibleChanged(bool visible);
 	void onToolBarModelOrientationChanged(Qt::Orientation orientation);
+
+	void onMenuFileReopen(QAction* pAction);
 
 private:
 	afx_msg void OnDestroy();

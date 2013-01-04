@@ -970,7 +970,7 @@ void RDOStudioModel::saveModelToRepository()
 		saveToXML();
 	}
 
-	studioApp.insertReopenItem(getFullName());
+	studioApp.getMainWndUI()->insertMenuFileReopenItem(getFullName());
 
 	if (smr_modified)
 	{

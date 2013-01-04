@@ -62,6 +62,8 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 	createStatusBar();
 	createToolBar  ();
 
+	connect(menuFileReopen, SIGNAL(triggered(QAction*)), this, SLOT(onMenuFileReopen(QAction*)));
+
 	connect(actViewSettings, SIGNAL(triggered(bool)), this, SLOT(onViewOptions()));
 	connect(actHelpContext,  SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
 	connect(actHelpAbout,    SIGNAL(triggered(bool)), this, SLOT(onHelpAbout  ()));
@@ -69,6 +71,9 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 	connect(toolBarModel, SIGNAL(orientationChanged(Qt::Orientation)), this, SLOT(onToolBarModelOrientationChanged(Qt::Orientation)));
 
 	Scintilla_LinkLexers();
+
+	loadMenuFileReopen  ();
+	updateMenuFileReopen();
 }
 
 //! todo не вызывается диструктор
@@ -425,4 +430,127 @@ void RDOStudioMainFrame::onDockVisibleChanged(rbool visible)
 void RDOStudioMainFrame::onToolBarModelOrientationChanged(Qt::Orientation orientation)
 {
 	m_pModelSpeedSlider->setOrientation(orientation);
+}
+
+void RDOStudioMainFrame::onMenuFileReopen(QAction* pAction)
+{
+	tstring fileName = pAction->text().toStdString();
+	tstring::size_type pos = fileName.find(' ');
+	if (pos == tstring::npos)
+		return;
+
+	fileName = fileName.substr(pos + 1);
+	if (!model->openModel(fileName) && model->isPrevModelClosed())
+	{
+		ReopenList::iterator it = std::find(m_reopenList.begin(), m_reopenList.end(), pAction->text().toStdString());
+		if (it != m_reopenList.end())
+		{
+			m_reopenList.erase(it);
+		}
+		updateMenuFileReopen();
+	}
+}
+
+void RDOStudioMainFrame::insertMenuFileReopenItem(CREF(tstring) item)
+{
+	if (!item.empty())
+	{
+		STL_FOR_ALL(m_reopenList, it)
+		{
+			if (*it == item)
+			{
+				m_reopenList.erase(it);
+				break;
+			}
+		}
+
+		m_reopenList.insert(m_reopenList.begin(), item);
+
+		while (m_reopenList.size() > 10)
+		{
+			ReopenList::iterator it = m_reopenList.end();
+			--it;
+			m_reopenList.erase(it);
+		}
+
+		updateMenuFileReopen();
+	}
+}
+
+void RDOStudioMainFrame::updateMenuFileReopen()
+{
+	menuFileReopen->clear();
+
+	for (ReopenList::size_type reopenIndex = 0; reopenIndex < m_reopenList.size(); ++reopenIndex)
+	{
+		if (reopenIndex == 4)
+		{
+			menuFileReopen->addSeparator();
+		}
+		menuFileReopen->addAction(rdo::format("%d. %s", reopenIndex+1, m_reopenList[reopenIndex].c_str()).c_str());
+	}
+
+	menuFileReopen->setEnabled(!menuFileReopen->isEmpty());
+
+	saveMenuFileReopen();
+}
+
+void RDOStudioMainFrame::loadMenuFileReopen()
+{
+	m_reopenList.clear();
+	for (ruint i = 0; i < 10; i++)
+	{
+		tstring sec;
+		if (i+1 < 10)
+		{
+			sec = rdo::format(_T("0%d"), i+1);
+		}
+		else
+		{
+			sec = rdo::format(_T("%d"), i+1);
+		}
+		TRY
+		{
+			tstring s = AfxGetApp()->GetProfileString(_T("reopen"), sec.c_str(), _T(""));
+			if (!s.empty())
+			{
+				m_reopenList.insert(m_reopenList.end(), s);
+			}
+		}
+		CATCH(CException, e)
+		{}
+		END_CATCH
+	}
+}
+
+void RDOStudioMainFrame::saveMenuFileReopen() const
+{
+	for (ReopenList::size_type i = 0; i < 10; i++)
+	{
+		tstring sec;
+		if (i+1 < 10)
+		{
+			sec = rdo::format(_T("0%d"), i+1);
+		}
+		else
+		{
+			sec = rdo::format(_T("%d"), i+1);
+		}
+		tstring s;
+		if (i < m_reopenList.size())
+		{
+			s = m_reopenList[i];
+		}
+		else
+		{
+			s = _T("");
+		}
+		TRY
+		{
+			AfxGetApp()->WriteProfileString(_T("reopen"), sec.c_str(), s.c_str());
+		}
+		CATCH(CException, e)
+		{}
+		END_CATCH
+	}
 }
