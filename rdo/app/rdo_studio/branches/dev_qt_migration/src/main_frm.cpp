@@ -51,8 +51,6 @@ static char THIS_FILE[] = __FILE__;
 //	ON_WM_ENTERIDLE()
 //END_MESSAGE_MAP()
 
-rbool MainWindowBase::close_mode = false;
-
 RDOStudioMainFrame::RDOStudioMainFrame()
 	: m_updateTimerID(0)
 {
@@ -228,12 +226,10 @@ void RDOStudioMainFrame::setVisible(rbool visible)
 
 void RDOStudioMainFrame::closeEvent(QCloseEvent* event)
 {
-	close_mode = true;
-	if (model && !model->saveModified())
+	if (model && !model->closeModel())
 	{
 		event->ignore();
 	}
-	close_mode = false;
 
 	if (event->isAccepted())
 	{

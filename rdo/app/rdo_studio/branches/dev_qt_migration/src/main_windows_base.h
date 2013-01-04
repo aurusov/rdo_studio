@@ -54,8 +54,6 @@ public:
 	REF(DockFrame)      getDockFrame    () { ASSERT(m_pDockFrame    ); return *m_pDockFrame;     }
 	REF(DockProcess)    getDockProcess  () { ASSERT(m_pDockProcess  ); return *m_pDockProcess;   }
 
-	static rbool is_close_mode() { return close_mode; }
-
 	virtual void updateAllStyles() = 0;
 
 	virtual void update_start() = 0;
@@ -66,9 +64,6 @@ public:
 	virtual void connectOnActivateSubWindow(QObject* pObject) = 0;
 
 protected:
-	// Используется при закрытии модели. Задается вопрос.
-	static rbool close_mode;
-
 	PTR(DockBuild)      m_pDockBuild;
 	PTR(DockDebug)      m_pDockDebug;
 	PTR(DockTrace)      m_pDockTrace;

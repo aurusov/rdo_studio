@@ -73,7 +73,6 @@ RDOStudioModel::RDOStudioModel()
 	: RDOThreadGUI(_T("RDOThreadModelGUI"), static_cast<PTR(RDOKernelGUI)>(studioApp.m_pStudioGUI))
 	, m_frameManager     (boost::bind(&RDOStudioModel::onChangeFrame, this, _1))
 	, m_useTemplate      (-1                        )
-	, m_autoDeleteDoc    (true                      )
 	, m_showCanNotCloseModelMessage(true            )
 	, m_GUI_HAS_MODEL    (false                     )
 	, m_GUI_CAN_RUN      (true                      )
@@ -220,8 +219,6 @@ RDOStudioModel::RDOStudioModel()
 	notifies.push_back(RT_REPOSITORY_MODEL_OPEN_GET_NAME    );
 	notifies.push_back(RT_REPOSITORY_MODEL_OPEN_ERROR       );
 	notifies.push_back(RT_REPOSITORY_MODEL_CLOSE            );
-	notifies.push_back(RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE  );
-	notifies.push_back(RT_REPOSITORY_MODEL_CLOSE_ERROR      );
 	notifies.push_back(RT_REPOSITORY_MODEL_SAVE             );
 	notifies.push_back(RT_REPOSITORY_MODEL_SAVE_GET_NAME    );
 	notifies.push_back(RT_SIMULATOR_PARSE_STRING            );
@@ -324,32 +321,6 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		case RDOThread::RT_REPOSITORY_MODEL_CLOSE:
 		{
 			closeModelFromRepository();
-			break;
-		}
-		case RDOThread::RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE:
-		{
-			msg.lock();
-			if (*static_cast<PTR(rbool)>(msg.param) == false)
-			{
-				msg.unlock();
-				break;
-			}
-			msg.unlock();
-			rbool res = canCloseModel();
-			msg.lock();
-			if (*static_cast<PTR(rbool)>(msg.param) == true)
-			{
-				*static_cast<PTR(rbool)>(msg.param) = res;
-			}
-			msg.unlock();
-			break;
-		}
-		case RDOThread::RT_REPOSITORY_MODEL_CLOSE_ERROR:
-		{
-			if (m_showCanNotCloseModelMessage)
-			{
-				AfxMessageBox(rdo::format(ID_MSG_MODELCLOSE_ERROR).c_str(), MB_ICONSTOP | MB_OK);
-			}
 			break;
 		}
 		case RDOThread::RT_RUNTIME_MODEL_START_BEFORE:
@@ -641,22 +612,26 @@ void RDOStudioModel::saveAsModel() const
 
 rbool RDOStudioModel::closeModel()
 {
-	if (!isRunning())
+	if (isRunning())
 	{
-		resetView();
-		stopModel();
-		studioApp.getIMainWnd()->getDockBuild  ().clear();
-		studioApp.getIMainWnd()->getDockDebug  ().clear();
-		studioApp.getIMainWnd()->getDockResults().clear();
-		studioApp.getIMainWnd()->getDockFind   ().clear();
-		studioApp.broadcastMessage(RDOThread::RT_STUDIO_MODEL_CLOSE);
-		return true;
-	}
-	else
-	{
-		AfxGetMainWnd()->MessageBox(rdo::format(ID_MSG_MODEL_NEED_STOPED_FOR_CLOSE).c_str(), NULL, MB_ICONWARNING | MB_OK);
+		QMessageBox::warning(studioApp.getMainWnd(), "RAO-Studio", rdo::format(ID_MSG_MODEL_NEED_STOPED_FOR_CLOSE).c_str());
 		return false;
 	}
+
+	if (!canCloseModel())
+	{
+		return false;
+	}
+
+	setHasModel(false);
+	resetView();
+	stopModel();
+	studioApp.getIMainWnd()->getDockBuild  ().clear();
+	studioApp.getIMainWnd()->getDockDebug  ().clear();
+	studioApp.getIMainWnd()->getDockResults().clear();
+	studioApp.getIMainWnd()->getDockFind   ().clear();
+	studioApp.broadcastMessage(RDOThread::RT_STUDIO_MODEL_CLOSE);
+	return true;
 }
 
 rbool RDOStudioModel::buildModel()
@@ -1048,7 +1023,7 @@ void RDOStudioModel::updateFrmDescribed()
 rbool RDOStudioModel::canCloseModel()
 {
 	rbool result = true;
-	if (isModify() && m_autoDeleteDoc)
+	if (isModify())
 	{
 		switch (QMessageBox::question(studioApp.getMainWnd(), "RAO-Studio", rdo::format(ID_MSG_MODELSAVE_QUERY).c_str(), QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel))
 		{
@@ -1562,43 +1537,6 @@ rdo::simulation::report::RDOExitCode RDOStudioModel::getExitCode() const
 rdo::runtime::RunTimeMode RDOStudioModel::getRuntimeMode() const
 {
 	return m_runtimeMode;
-}
-
-rbool RDOStudioModel::saveModified()
-{
-	if (isRunning())
-	{
-		QMessageBox::warning(studioApp.getMainWnd(), "RAO-Studio", rdo::format(ID_MSG_MODEL_NEED_STOPED_FOR_CLOSE).c_str());
-		return false;
-	}
-	rbool result = true;
-
-	if (isModify())
-	{
-		switch (QMessageBox::question(studioApp.getMainWnd(), "RAO-Studio", rdo::format(ID_MSG_MODELSAVE_QUERY).c_str(), QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel))
-		{
-			case QMessageBox::Yes   : result = saveModel(); break;
-			case QMessageBox::No    : result = true; break;
-			case QMessageBox::Cancel: result = false; break;
-		}
-	}
-	else if (!MainWindowBase::is_close_mode())
-	{
-		switch (QMessageBox::question(studioApp.getMainWnd(), "RAO-Studio", "Закрыть модель ?", QMessageBox::Yes | QMessageBox::No))
-		{
-			case QMessageBox::Yes: result = true; break;
-			case QMessageBox::No : result = false; break;
-		}
-	}
-
-	if (result)
-	{
-		m_autoDeleteDoc = false;
-		closeModel();
-		m_autoDeleteDoc = true;
-		setHasModel(false);
-	}
-	return result;
 }
 
 REF(RDOStudioFrameManager) RDOStudioModel::getFrameManager()

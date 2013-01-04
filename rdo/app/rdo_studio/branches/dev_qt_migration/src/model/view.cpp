@@ -69,7 +69,7 @@ void RDOStudioModelView::closeEvent(PTR(QCloseEvent) event)
 {
 	if (m_pModel)
 	{
-		if (m_pModel->saveModified())
+		if (m_pModel->closeModel())
 		{
 			event->accept();
 		}

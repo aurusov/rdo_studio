@@ -52,7 +52,6 @@ private:
 	RDOStudioFrameManager                  m_frameManager;
 
 	int                                    m_useTemplate;
-	rbool                                  m_autoDeleteDoc;
 	rbool                                  m_showCanNotCloseModelMessage;
 
 	rbool                                  m_GUI_HAS_MODEL;
@@ -97,7 +96,6 @@ private:
 	void  saveAsModel   () const;
 	void  saveToXML     ();
 	void  loadFromXML   ();
-	rbool closeModel    ();
 	rbool buildModel    ();
 	rbool stopModel     () const;
 
@@ -143,6 +141,7 @@ public:
 
 	rbool openModel     (CREF(tstring) modelName = _T(""));
 	rbool runModel      ();
+	rbool closeModel    ();
 	void  update        ();
 	void  setGUIPause   ();
 	void  setGUIContinue();
@@ -175,8 +174,6 @@ public:
 
 	void  updateStyleOfAllModel() const;
 	rbool isPrevModelClosed    () const;
-
-	rbool saveModified();
 
 	REF(RDOStudioFrameManager) getFrameManager();
 	void onChangeFrame(ruint index);
