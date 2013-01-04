@@ -1066,14 +1066,6 @@ rbool RDOStudioModel::canCloseModel()
 
 void RDOStudioModel::closeModelFromRepository()
 {
-	if (m_autoDeleteDoc)
-	{
-		if (isModify())
-		{
-			if (!saveModified())
-				return;
-		}
-	}
 	if (m_pModelProcView)
 	{
 		m_pModelProcView->parentWidget()->close();
