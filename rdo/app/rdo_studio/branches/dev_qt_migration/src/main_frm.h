@@ -56,9 +56,7 @@ public:
 
 	virtual void setVisible(rbool visible);
 
-	void beginProgress(rsint lower, rsint upper);
-	void stepProgress ();
-	void endProgress  ();
+	CREF(LPStatusBar) statusBar() const;
 
 	void update_start();
 	void update_stop ();

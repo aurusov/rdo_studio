@@ -346,19 +346,9 @@ void RDOStudioMainFrame::updateAllStyles()
 	g_pTracer->updateChartsStyles();
 }
 
-void RDOStudioMainFrame::beginProgress(rsint lower, rsint upper)
+CREF(LPStatusBar) RDOStudioMainFrame::statusBar() const
 {
-	m_pStatusBar->beginProgress(lower, upper);
-}
-
-void RDOStudioMainFrame::stepProgress()
-{
-	m_pStatusBar->stepProgress();
-};
-
-void RDOStudioMainFrame::endProgress()
-{
-	m_pStatusBar->endProgress();
+	return m_pStatusBar;
 }
 
 void RDOStudioMainFrame::onHelpContext()
