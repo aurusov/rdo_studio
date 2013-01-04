@@ -33,7 +33,7 @@ using namespace rdoEditCtrl;
 RDODebugEdit::RDODebugEdit(PTR(QWidget) pParent)
 	: RDOBaseEdit(pParent)
 {
-	setReadOnly( true );
+	setReadOnly(true);
 }
 
 RDODebugEdit::~RDODebugEdit()
@@ -42,17 +42,18 @@ RDODebugEdit::~RDODebugEdit()
 void RDODebugEdit::appendLine(CREF(tstring) str)
 {
 	rbool readOnly = isReadOnly();
-	setReadOnly( false );
+	setReadOnly(false);
 	rbool scroll = isLineVisible( getLineCount() - 1 );
-	setCurrentPos( getLength() );
-	appendText( str );
-	if ( scroll ) {
+	setCurrentPos(getLength());
+	appendText(str);
+	if (scroll)
+	{
 		int line = getLineCount();
 		int line_to_scroll = line > 0 ? line - 1 : 0;
-		scrollToLine( line_to_scroll );
-		setCurrentPos( getLength() );
+		scrollToLine (line_to_scroll);
+		setCurrentPos(getLength());
 	}
-	setReadOnly( readOnly );
+	setReadOnly(readOnly);
 	onUpdateEditGUI();
 }
 
