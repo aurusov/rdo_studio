@@ -219,7 +219,7 @@
 #include "simulator/compiler/parser/rdo_array.h"
 #include "simulator/compiler/parser/type/such_as.h"
 #include "simulator/compiler/parser/local_variable.h"
-#include "simulator/compiler/parser/context/type.h"
+#include "simulator/compiler/parser/context/context_type.h"
 #include "simulator/compiler/parser/context/memory.h"
 #include "simulator/compiler/parser/context/statement.h"
 #include "simulator/runtime/calc/procedural/calc_locvar.h"

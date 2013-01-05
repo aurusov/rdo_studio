@@ -221,7 +221,7 @@
 #include "simulator/compiler/parser/rdo_array.h"
 #include "simulator/compiler/parser/local_variable.h"
 #include "simulator/compiler/parser/type/such_as.h"
-#include "simulator/compiler/parser/context/type.h"
+#include "simulator/compiler/parser/context/context_type.h"
 #include "simulator/compiler/parser/context/memory.h"
 #include "simulator/compiler/parser/context/statement.h"
 
@@ -1286,6 +1286,7 @@ pat_convert
 			{
 			case RDOPATPattern::PT_Event: type = _T("событии");               break;
 			case RDOPATPattern::PT_Rule : type = _T("продукционном правиле"); break;
+			default                     : break;
 			}
 			PARSER->error().error(@2, rdo::format(_T("Ключевое слово Convert_begin может быть использовано в обыкновенной или клавиатурной операции, но не в %s '%s'"), type.c_str(), pPattern->name().c_str()));
 		}
@@ -1326,6 +1327,7 @@ pat_convert
 			{
 			case RDOPATPattern::PT_Event: type = _T("событии");               break;
 			case RDOPATPattern::PT_Rule : type = _T("продукционном правиле"); break;
+			default                     : break;
 			}
 			PARSER->error().error(@2, rdo::format(_T("Ключевое слово Convert_end может быть использовано в обыкновенной и клавиатурной операции, но не в %s '%s'"), type.c_str(), pPattern->name().c_str()));
 		}
@@ -1366,6 +1368,7 @@ pat_convert
 			{
 			case RDOPATPattern::PT_Event: type = _T("событии");               break;
 			case RDOPATPattern::PT_Rule : type = _T("продукционном правиле"); break;
+			default                     : break;
 			}
 			PARSER->error().error(@2, rdo::format(_T("Ключевые слова Convert_begin и Convert_end могут быть использованы в обыкновенной и клавиатурной операции, но не в %s '%s'"), type.c_str(), pPattern->name().c_str()));
 		}
@@ -1427,6 +1430,7 @@ pat_convert
 			case RDOPATPattern::PT_Event    : type = _T("событии");               break;
 			case RDOPATPattern::PT_Operation: type = _T("операции");              break;
 			case RDOPATPattern::PT_Keyboard : type = _T("клавиатурной операции"); break;
+			default                         : break;
 			}
 			PARSER->error().error(@2, rdo::format(_T("Ключевое слово Convert_rule может быть использовано в продукционном правиле, но не в %s '%s'"), type.c_str(), pPattern->name().c_str()));
 		}
@@ -1472,6 +1476,7 @@ pat_convert
 			case RDOPATPattern::PT_Rule     : type = _T("продукционном правиле"); break;
 			case RDOPATPattern::PT_Operation: type = _T("операции");              break;
 			case RDOPATPattern::PT_Keyboard : type = _T("клавиатурной операции"); break;
+			default                         : break;
 			}
 			PARSER->error().error(@2, rdo::format(_T("Ключевое слово Convert_event может быть использовано в событии, но не в %s '%s'"), type.c_str(), pPattern->name().c_str()));
 		}

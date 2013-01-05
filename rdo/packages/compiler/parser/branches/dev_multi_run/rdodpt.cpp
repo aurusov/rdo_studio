@@ -330,9 +330,9 @@ void RDODPTSearchActivity::setValue(IDPTSearchActivity::ValueTime value, CREF(LP
 // --------------------------------------------------------------------------------
 RDODPTSearch::RDODPTSearch(CREF(RDOParserSrcInfo) src_info, rdo::runtime::RDODPTSearchTrace::DPT_TraceFlag trace, LPILogic pParent)
 	: RDOLogic<rdo::runtime::RDODPTSearchRuntime, RDODPTSearchActivity>(src_info)
-	, m_trace  (trace  )
-	, m_closed (false  )
 	, m_pParent(pParent)
+	, m_closed (false  )
+	, m_trace  (trace  )
 {
 	RDOParser::s_parser()->checkDPTName   (this->src_info());
 	RDOParser::s_parser()->insertDPTSearch(this);

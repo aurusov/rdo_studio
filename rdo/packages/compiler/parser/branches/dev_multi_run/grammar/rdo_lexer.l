@@ -523,6 +523,9 @@ false {
 			}
 		}
 		break;
+
+	default:
+		break;
 	}
 	return RDO_IDENTIF;
 }

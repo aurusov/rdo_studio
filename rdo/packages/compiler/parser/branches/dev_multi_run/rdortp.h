@@ -17,7 +17,7 @@
 #include "utils/rdomacros.h"
 #include "simulator/compiler/parser/rdo_object.h"
 #include "simulator/compiler/parser/rdo_value.h"
-#include "simulator/compiler/parser/type/type.h"
+#include "simulator/compiler/parser/type/runtime_wrapper_type.h"
 #include "simulator/compiler/parser/type/enum.h"
 #include "simulator/compiler/parser/rdortp_param.h"
 #include "simulator/runtime/rdo_object.h"
@@ -44,7 +44,7 @@ PREDECLARE_POINTER(RDORSSResource);
 CLASS(RDORTPResType):
 	    INSTANCE_OF      (RDOParserSrcInfo  )
 	AND INSTANCE_OF      (boost::noncopyable)
-	AND INSTANCE_OF      (RDOType           )
+	AND INSTANCE_OF      (RuntimeWrapperType)
 	AND INSTANCE_OF      (Context           )
 	AND IMPLEMENTATION_OF(IContextSwitch    )
 {
@@ -58,7 +58,7 @@ public:
 		procRes,
 		procTran
 	};
-	enum { UNDEFINED_PARAM = ~0 };
+	static const ruint UNDEFINED_PARAM = ruint(~0);
 
 	rsint getNumber  () const;
 	rbool isPermanent() const;
@@ -88,9 +88,9 @@ private:
 	virtual ~RDORTPResType();
 
 	rdo::runtime::LPIResourceType m_pRuntimeResType;
-	TypeRDOResType                m_type;
 	const ruint                   m_number;
 	const rbool                   m_permanent;
+	TypeRDOResType                m_type;
 	ParamList                     m_params;
 
 	DECLARE_IContextSwitch;

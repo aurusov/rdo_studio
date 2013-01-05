@@ -22,13 +22,13 @@ OPEN_RDO_PARSER_NAMESPACE
 // -------------------- RDOEnumType
 // --------------------------------------------------------------------------------
 RDOEnumType::RDOEnumType()
-	: RDOType(rdo::Factory<rdo::runtime::RDOEnumType>::create())
+	: RuntimeWrapperType(rdo::Factory<rdo::runtime::RDOEnumType>::create())
 {
 	ASSERT(m_pType);
 }
 
 RDOEnumType::RDOEnumType(CREF(rdo::runtime::LPRDOEnumType) pEnumType)
-	: RDOType(rdo::runtime::g_unknow)
+	: RuntimeWrapperType(rdo::runtime::g_unknow)
 {
 	rdo::runtime::LPRDOEnumType pType = rdo::Factory<rdo::runtime::RDOEnumType>::create();
 	m_pType = pType;
@@ -155,6 +155,9 @@ LPRDOValue RDOEnumType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo
 			if (m_pType == pFrom->typeInfo()->type()->type())
 				pToValue = rdo::Factory<RDOValue>::create(pFrom);
 			break;
+
+		default:
+			break;
 		}
 	}
 	catch (CREF(rdo::runtime::RDOValueException))
@@ -171,7 +174,7 @@ LPRDOValue RDOEnumType::value_cast(CREF(LPRDOValue) pFrom, CREF(RDOParserSrcInfo
 
 rdo::runtime::LPRDOCalc RDOEnumType::calc_cast(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const
 {
-	return RDOType::calc_cast(pCalc, pType);
+	return RuntimeWrapperType::calc_cast(pCalc, pType);
 }
 
 rdo::runtime::RDOValue RDOEnumType::get_default() const
