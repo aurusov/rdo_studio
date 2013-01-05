@@ -41,7 +41,7 @@
 #include "simulator/runtime/rdoframe.h"
 #include "simulator/compiler/parser/rdoparser.h"
 #include "simulator/compiler/parser/rdosmr.h"
-#include "simulator/compiler/parser/rdofrm.h"
+#include "simulator/compiler/parser/src/animation/animation_frame.h"
 #include "simulator/compiler/parser/rdortp.h"
 #include "simulator/compiler/mbuilder/rdo_resources.h"
 #include "simulator/compiler/procgui/procgui_datablock.h"
@@ -613,6 +613,7 @@ void RDOThreadRunTime::proc(REF(RDOMessageInfo) msg)
 			m_pSimulator->m_pRuntime->setShowRate(m_pSimulator->m_pRuntime->getShowRate());
 			break;
 		}
+		default: break;
 	}
 }
 
@@ -734,6 +735,8 @@ void RDOThreadRunTime::writeResultsInfo()
 			break;
 		case rdo::simulation::report::EC_UserBreak:
 			m_pSimulator->m_pRuntime->getResultsInfo() << _T("$Status = ") << _T("USER_BREAK");
+			break;
+		default:
 			break;
 	}
 	m_pSimulator->m_pRuntime->getResultsInfo() << '\n' << _T("$Result_values  0  ") << m_pSimulator->m_pRuntime->getTimeNow();
@@ -1092,6 +1095,7 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 			}
 			break;
 		}
+		default: break;
 	}
 }
 
@@ -1285,12 +1289,25 @@ void RDOThreadSimulator::parseSMRFileInfo(REF(rdo::textstream) smr, REF(rdo::con
 		rdo::converter::smr2rdox::RDOParserModel converter;
 		rdo::repository::RDOThreadRepository::FileInfo fileInfo(rdoModelObjects::SMR);
 		kernel->sendMessage(kernel->repository(), RT_REPOSITORY_MODEL_GET_FILEINFO, &fileInfo);
-		switch (converter.convert(fileInfo.m_fullName, info))
+		rdo::converter::smr2rdox::RDOParserModel::Result res = converter.convert(fileInfo.m_fullName, info);
+		switch (res)
 		{
-		case rdo::converter::smr2rdox::RDOParserModel::CNV_NONE : break;
-		case rdo::converter::smr2rdox::RDOParserModel::CNV_OK   : break;
+		case rdo::converter::smr2rdox::RDOParserModel::CNV_NONE :
+			{
+				broadcastMessage(RT_CONVERTOR_NONE);
+			}
+			break;
+
+		case rdo::converter::smr2rdox::RDOParserModel::CNV_OK   :
+			{
+				broadcastMessage(RT_CONVERTOR_OK);
+			}
+			break;
+
 		case rdo::converter::smr2rdox::RDOParserModel::CNV_ERROR:
 			{
+				broadcastMessage(RT_CONVERTOR_ERROR);
+
 				tstring mess(_T("Ошибка конвертора\n"));
 				broadcastMessage(RT_DEBUG_STRING, &mess);
 				CREF(rdo::converter::smr2rdox::Error::ErrorList) errorList = converter.error().getList();
@@ -1303,7 +1320,8 @@ void RDOThreadSimulator::parseSMRFileInfo(REF(rdo::textstream) smr, REF(rdo::con
 				}
 			}
 			break;
-		default: NEVER_REACH_HERE;
+
+		default : NEVER_REACH_HERE;
 		}
 	}
 	catch (REF(rdo::converter::smr2rdox::RDOSyntaxException))
@@ -1631,7 +1649,7 @@ void RDOThreadSimulator::corbaGetRSS(REF(rdo::compiler::parser::RDOCorba::GetRSS
 	//! Пробежались по всем ресурсам и переписали в RSSList
 	rdo::compiler::mbuilder::RDOResourceList rssList(&parser);
 	rdo::compiler::mbuilder::RDOResourceList::List::const_iterator rss_it = rssList.begin();
-	/*while (rss_it != rssList.end())
+	while (rss_it != rssList.end())
 	{
 		//! Создаем текстовую структуру
 		RSS rss;
@@ -1687,6 +1705,7 @@ void RDOThreadCodeComp::proc(REF(RDOMessageInfo) msg)
 			m_pParser = NULL;
 			break;
 		}
+		default: break;
 	}
 }
 
