@@ -97,6 +97,8 @@ public:
 		RT_REPOSITORY_MODEL_OPEN_GET_NAME,     // param = rdo::repository::RDOThreadRepository::OpenFile* = { model_name:tstring, readonly:rbool, result:rbool }
 		RT_REPOSITORY_MODEL_SAVE_GET_NAME,     // param = rdo::repository::RDOThreadRepository::OpenFile* = { model_name:tstring, readonly:rbool, result:rbool }
 		RT_REPOSITORY_MODEL_CLOSE,
+		RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE,   // param = result:rbool*, работает как И
+		RT_REPOSITORY_MODEL_CLOSE_ERROR,
 		RT_REPOSITORY_MODEL_GET_FILEINFO,      // param = rdo::repository::RDOThreadRepository::FileInfo* = { type:rdoModelObjects::RDOFileType, name:tstring, full_name:tstring, extention:tstring, readonly:rbool, described:rbool }
 		RT_REPOSITORY_LOAD,                    // param = rdo::repository::RDOThreadRepository::FileData* = { file_type:rdoModelObjects::RDOFileType, result:rdo::binarystream& }
 		RT_REPOSITORY_SAVE,                    // param = rdo::repository::RDOThreadRepository::FileData* = { file_type:rdoModelObjects::RDOFileType, stream:rdo::binarystream& }
@@ -172,6 +174,8 @@ public:
 			case RT_REPOSITORY_MODEL_OPEN_GET_NAME    : return _T("RT_REPOSITORY_MODEL_OPEN_GET_NAME");
 			case RT_REPOSITORY_MODEL_SAVE_GET_NAME    : return _T("RT_REPOSITORY_MODEL_SAVE_GET_NAME");
 			case RT_REPOSITORY_MODEL_CLOSE            : return _T("RT_REPOSITORY_MODEL_CLOSE");
+			case RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE  : return _T("RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE");
+			case RT_REPOSITORY_MODEL_CLOSE_ERROR      : return _T("RT_REPOSITORY_MODEL_CLOSE_ERROR");
 			case RT_REPOSITORY_MODEL_GET_FILEINFO     : return _T("RT_REPOSITORY_MODEL_GET_FILEINFO");
 			case RT_REPOSITORY_LOAD                   : return _T("RT_REPOSITORY_LOAD");
 			case RT_REPOSITORY_SAVE                   : return _T("RT_REPOSITORY_SAVE");
