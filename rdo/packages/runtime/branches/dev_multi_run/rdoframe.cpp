@@ -15,6 +15,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/rdoframe.h"
 #include "simulator/runtime/rdo_runtime.h"
+#include "simulator/runtime/calc/function/calc_function.h"
 #include "simulator/runtime/calc/procedural/calc_const.h"
 #include "simulator/runtime/calc/procedural/calc_statement.h"
 // --------------------------------------------------------------------------------
@@ -107,28 +108,13 @@ RDOFRMSprite::RDOFRMSprite(CREF(RDOSrcInfo) srcInfo)
 RDOFRMSprite::~RDOFRMSprite()
 {}
 
+RDOValue RDOFRMSprite::prepareFrame(CREF(LPRDORuntime) pRuntime)
+{
+	return RDOFRMSprite::doCalc(pRuntime);
+}
+
 RDOValue RDOFRMSprite::doCalc(CREF(LPRDORuntime) pRuntime)
 {
-	PTR(rdo::animation::Frame) pFrame = pRuntime->getPreparingFrame();
-	ASSERT(pFrame);
-
-	if (m_pBgColor)
-	{
-		if (m_pBgColor->getType() == RDOFRMColor::CT_RGB)
-		{
-			rdo::animation::Color bgColor = m_pBgColor->getColor(pRuntime, this);
-			pFrame->m_bgColor = bgColor;
-		}
-		else
-		{
-			pFrame->m_bgColor = rdo::animation::Color();
-		}
-	}
-	else
-	{
-		pFrame->m_bgColor = rdo::animation::Color();
-	}
-
 	m_lastX      = 0;
 	m_lastY      = 0;
 	m_lastWidth  = 0;
@@ -212,25 +198,22 @@ void RDOFRMSprite::setColorLastFGText(RDOFRMColor::ColorType type, CREF(rdo::ani
 	}
 }
 
-void RDOFRMSprite::setBackgroundColor(CREF(LPRDOFRMColor) pBgColor)
+void RDOFRMSprite::insertItem(CREF(LPRDOCalc) pItem)
 {
-	m_pBgColor = pBgColor;
-}
+	LPRDOCalcFunctionCaller pFunctionCaller = pItem.object_dynamic_cast<RDOCalcFunctionCaller>();
+	if (pFunctionCaller)
+	{
+		LPRDOFRMSprite pSprite = pFunctionCaller->function().object_dynamic_cast<RDOFRMSprite>();
+		if (pSprite)
+		{
+			LPIRDOFRMItemGetBitmap pGetBitmap = pSprite.interface_dynamic_cast<IRDOFRMItemGetBitmap>();
+			if (pGetBitmap)
+			{
+				insertGetBitmap(pGetBitmap);
+			}
+		}
+	}
 
-void RDOFRMFrame::setBackPicture(CREF(tstring) picFileName)
-{
-	m_picFileName = picFileName;
-}
-
-void RDOFRMFrame::setBackPicture(int width, int height)
-{
-	m_picFileName = _T("");
-	m_width       = width;
-	m_height      = height;
-}
-
-void RDOFRMSprite::insertItem(CREF(LPRDOFRMItem) pItem)
-{
 	LPIRDOFRMItemGetBitmap pGetBitmap = pItem.interface_dynamic_cast<IRDOFRMItemGetBitmap>();
 	if (pGetBitmap)
 	{
@@ -268,27 +251,6 @@ void RDOFRMSprite::insertRulet(CREF(LPRDOFRMRulet) pRulet)
 	std::pair<RuletList::const_iterator, rbool> result =
 		m_ruletList.insert(RuletList::value_type(pRulet->getIndex(), pRulet));
 	ASSERT(result.second);
-}
-
-void RDOFRMFrame::prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORuntime) pRuntime)
-{
-	ASSERT(pFrame);
-
-	pFrame->m_bgImageName   = m_picFileName;
-	pFrame->m_size.m_width  = m_width;
-	pFrame->m_size.m_height = m_height;
-
-	pRuntime->setPreparingFrame(pFrame);
-	RDOFRMSprite::calcValue(pRuntime);
-	pRuntime->resetPreparingFrame();
-}
-
-void RDOFRMFrame::getBitmaps(REF(IRDOFRMItemGetBitmap::ImageNameList) list) const
-{
-	if (!m_picFileName.empty())
-		list.push_back(m_picFileName);
-
-	RDOFRMSprite::getBitmaps(list);
 }
 
 // --------------------------------------------------------------------------------
@@ -549,10 +511,10 @@ RDOFRMCircle::RDOFRMCircle(
 		CREF(RDOFRMSprite::LPRDOFRMColor)    pFgColor
 	)
 	: RDOFRMItem       (pSprite)
+	, RDOFRMColoredItem(pBgColor, pFgColor)
 	, m_pX             (pX     )
 	, m_pY             (pY     )
 	, m_pRadius        (pRadius)
-	, RDOFRMColoredItem(pBgColor, pFgColor)
 {}
 
 RDOFRMCircle::~RDOFRMCircle()
@@ -807,5 +769,68 @@ RDOFRMFrame::RDOFRMFrame(CREF(RDOSrcInfo) srcInfo)
 
 RDOFRMFrame::~RDOFRMFrame()
 {}
+
+RDOValue RDOFRMFrame::doCalc(CREF(LPRDORuntime) pRuntime)
+{
+	PTR(rdo::animation::Frame) pFrame = pRuntime->getPreparingFrame();
+	ASSERT(pFrame);
+
+	if (m_pBgColor)
+	{
+		if (m_pBgColor->getType() == RDOFRMColor::CT_RGB)
+		{
+			rdo::animation::Color bgColor = m_pBgColor->getColor(pRuntime, this);
+			pFrame->m_bgColor = bgColor;
+		}
+		else
+		{
+			pFrame->m_bgColor = rdo::animation::Color();
+		}
+	}
+	else
+	{
+		pFrame->m_bgColor = rdo::animation::Color();
+	}
+
+	return RDOFRMSprite::prepareFrame(pRuntime);
+}
+
+void RDOFRMFrame::setBackgroundColor(CREF(LPRDOFRMColor) pBgColor)
+{
+	m_pBgColor = pBgColor;
+}
+
+void RDOFRMFrame::setBackPicture(CREF(tstring) picFileName)
+{
+	m_picFileName = picFileName;
+}
+
+void RDOFRMFrame::setBackPicture(int width, int height)
+{
+	m_picFileName = _T("");
+	m_width       = width;
+	m_height      = height;
+}
+
+void RDOFRMFrame::prepareFrame(PTR(rdo::animation::Frame) pFrame, CREF(LPRDORuntime) pRuntime)
+{
+	ASSERT(pFrame);
+
+	pFrame->m_bgImageName   = m_picFileName;
+	pFrame->m_size.m_width  = m_width;
+	pFrame->m_size.m_height = m_height;
+
+	pRuntime->setPreparingFrame(pFrame);
+	calcValue(pRuntime);
+	pRuntime->resetPreparingFrame();
+}
+
+void RDOFRMFrame::getBitmaps(REF(IRDOFRMItemGetBitmap::ImageNameList) list) const
+{
+	if (!m_picFileName.empty())
+		list.push_back(m_picFileName);
+
+	RDOFRMSprite::getBitmaps(list);
+}
 
 CLOSE_RDO_RUNTIME_NAMESPACE

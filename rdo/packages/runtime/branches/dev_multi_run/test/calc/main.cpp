@@ -111,7 +111,7 @@ BOOST_AUTO_TEST_CASE(RDOCalc_RecursSimulator)
 			int m_value;
 		};
 
-		int funError(Param& param)
+		int funErrorOrOK(Param& param)
 		{
 			if (param.value() == 1)
 			{
@@ -119,7 +119,7 @@ BOOST_AUTO_TEST_CASE(RDOCalc_RecursSimulator)
 			}
 			else
 			{
-				return funError(param.dec()) * param.value();
+				return funErrorOrOK(param.dec()) * param.value();
 			}
 		}
 
@@ -141,10 +141,11 @@ BOOST_AUTO_TEST_CASE(RDOCalc_RecursSimulator)
 	RecursCalcSimulator::Param param1(5);
 	RecursCalcSimulator::Param param2(5);
 
-	int resultError = calc1.funError(param1);
-	int resultOk    = calc2.funOk   (param2);
-	BOOST_CHECK(resultError == 1);
-	BOOST_CHECK(resultOk    == 120);
+	int resultErrorOrOK = calc1.funErrorOrOK(param1);
+	int resultOk        = calc2.funOk       (param2);
+
+	BOOST_CHECK_MESSAGE(resultErrorOrOK == 1 || resultErrorOrOK == 24, "resultErrorOrOK " << resultErrorOrOK << " != (1 or 24)");
+	BOOST_CHECK_MESSAGE(resultOk == 120, "resultOk " << resultOk << " != 120");
 }
 
 BOOST_AUTO_TEST_CASE(RDOCalc_Recurs)

@@ -81,6 +81,7 @@ void RDOActivity::updateConvertStatus(CREF(LPRDORuntime) pRuntime, const std::ve
 					res->makeTemporary(true);
 					break;
 				}
+			default: break;
 			}
 		}
 		++i;

@@ -31,7 +31,7 @@ private:
 	typedef  std::list<KeyCode>  KeyList;
 
 public:
-	enum { UNDEFINED_KEY = ~0 };
+	static const ruint UNDEFINED_KEY = ruint(~0);
 
 	//! Вспомогательный класс
 	class Toolkit

@@ -17,6 +17,7 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/runtime/calc/resource/calc_group.h"
 #include "simulator/runtime/rdo_resource.h"
+#include "simulator/runtime/rdo_array.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_RUNTIME_NAMESPACE
@@ -29,8 +30,12 @@ public:
 	mutable std::list<LPRDOResource> res_list;
 	void prepare(CREF(LPRDORuntime) pRuntime);
 
+	CREF(LPIResourceType) getResType();
+
 private:
-	RDOFunCalcSelect(int nResType, CREF(LPRDOCalc) pCondition);
+	RDOFunCalcSelect(CREF(LPIResourceType) pResType, int nResType, CREF(LPRDOCalc) pCondition);
+
+	LPIResourceType m_pResType;
 
 	DECLARE_ICalc;
 };
@@ -110,6 +115,12 @@ DEFINE_CALC_SELECT_METHOD(Empty    );
   \brief   Размер множества
 */
 DEFINE_CALC_SELECT_METHOD(Size     );
+
+/*!
+  \class   RDOFunCalcSelectArray
+  \brief   Получение массива из множества
+*/
+DEFINE_CALC_SELECT_METHOD(Array    );
 
 CLOSE_RDO_RUNTIME_NAMESPACE
 

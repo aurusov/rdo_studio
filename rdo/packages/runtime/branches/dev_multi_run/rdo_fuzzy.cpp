@@ -96,6 +96,7 @@ LPFuzzySet MemberFunctionProperties::ext_binary(ExtBinaryFun fun, CREF(LPFuzzySe
 		}
 		++it1;
 	}
+
 	if (!values.empty())
 	{
 		LPFuzzySet pFuzzySetResult = rdo::Factory<FuzzySet>::create();
@@ -104,6 +105,8 @@ LPFuzzySet MemberFunctionProperties::ext_binary(ExtBinaryFun fun, CREF(LPFuzzySe
 
 		return pFuzzySetResult;
 	}
+
+	return LPFuzzySet();
 }
 
 //! Преобразование элементов через произвольную функцию fun
@@ -125,6 +128,7 @@ LPFuzzySet MemberFunctionProperties::ext_unary(ExtUnaryFun fun, CREF(LPFuzzySet)
 		}
 		++it;
 	}
+
 	if (!values.empty())
 	{
 
@@ -134,6 +138,8 @@ LPFuzzySet MemberFunctionProperties::ext_unary(ExtUnaryFun fun, CREF(LPFuzzySet)
 
 		return pFuzzySetResult;
 	}
+
+	return LPFuzzySet();
 }
 
 LPFuzzySet MemberFunctionProperties::ext_unary(ExtUnaryFunP fun, PTR(void) pParam, CREF(LPFuzzySet) pSet)
@@ -154,6 +160,7 @@ LPFuzzySet MemberFunctionProperties::ext_unary(ExtUnaryFunP fun, PTR(void) pPara
 		}
 		++it;
 	}
+
 	if (!values.empty())
 	{
 
@@ -162,6 +169,8 @@ LPFuzzySet MemberFunctionProperties::ext_unary(ExtUnaryFunP fun, PTR(void) pPara
 		pFuzzySetResult->setValues(values);
 		return pFuzzySetResult;
 	}
+
+	return LPFuzzySet();
 }
 
 RDOValue fun_add (CREF(RDOValue) value1, CREF(RDOValue) value2) { return value1 + value2; }

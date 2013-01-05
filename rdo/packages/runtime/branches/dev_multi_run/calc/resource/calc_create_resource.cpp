@@ -45,7 +45,7 @@ RDOValue RDOCalcCreateResource::doCalc(CREF(LPRDORuntime) pRuntime)
 	LPRDOResource pResource = m_pResType->createRes(pRuntime, pRuntime->getResourceId(), m_paramsCalcs, m_traceFlag, m_permanentFlag);
 	ASSERT(pResource);
 
-	if (m_relResID != ~0)
+	if (m_relResID != ruint(~0))
 	{
 		pRuntime->getCurrentActivity()->setRelRes(m_relResID, pResource->getTraceID());
 	}
