@@ -219,104 +219,119 @@ RDOThreadRepository::FindModel RDOThreadRepository::updateModelNames()
 
 void RDOThreadRepository::newModel(CPTRC(NewModel) data)
 {
-	closeModel();
-	if (data)
+	if (canCloseModel())
 	{
-		tstring path = data->m_path;
-		tstring::size_type pos = path.find_last_of(_T('\\'));
-		if (pos == tstring::npos)
+		realCloseModel();
+		if (data)
 		{
-			pos = path.find_last_of(_T('/'));
+			tstring path = data->m_path;
+			tstring::size_type pos = path.find_last_of(_T('\\'));
+			if (pos == tstring::npos)
+			{
+				pos = path.find_last_of(_T('/'));
+			}
+			if (pos != path.length() - 1)
+			{
+				path += _T('\\');
+			}
+			extractName(path + data->m_name + m_files[rdoModelObjects::RDOX].m_extention);
+			if (!rdo::File::exist(path))
+			{
+				boost::filesystem::create_directory(path.c_str());
+			}
+			createRDOX();
 		}
-		if (pos != path.length() - 1)
+		else
 		{
-			path += _T('\\');
+			m_modelName = _T("noname");
+			m_modelPath = _T("");
 		}
-		extractName(path + data->m_name + m_files[rdoModelObjects::RDOX].m_extention);
-		if (!rdo::File::exist(path))
+		STL_FOR_ALL(m_files, it)
 		{
-			boost::filesystem::create_directory(path.c_str());
+			it->second.m_fileName = m_modelName;
 		}
-		createRDOX();
+		m_hasModel = true;
+		broadcastMessage(RT_REPOSITORY_MODEL_NEW);
 	}
 	else
 	{
-		m_modelName = _T("noname");
-		m_modelPath = _T("");
+		broadcastMessage(RT_REPOSITORY_MODEL_CLOSE_ERROR);
 	}
-	STL_FOR_ALL(m_files, it)
-	{
-		it->second.m_fileName = m_modelName;
-	}
-	m_hasModel = true;
-	broadcastMessage(RT_REPOSITORY_MODEL_NEW);
 }
 
 rbool RDOThreadRepository::openModel(CREF(tstring) modelFileName)
 {
-	closeModel();
-
-	rbool canOpen   = true;
-	m_realOnlyInDlg = false;
-	if (modelFileName.empty())
+	if (canCloseModel())
 	{
-		OpenFile data;
-		broadcastMessage(RT_REPOSITORY_MODEL_OPEN_GET_NAME, &data, true);
-		if (data.m_result)
-		{
-			m_realOnlyInDlg = data.m_readOnly;
-			extractName(data.m_name);
-		}
-		else
-		{
-			canOpen = false;
-		}
-	}
-	else
-	{
-		extractName(modelFileName);
-		canOpen = !m_modelName.empty();
-	}
+		realCloseModel();
 
-	if (canOpen)
-	{
-		STL_FOR_ALL(m_files, it)
+		rbool canOpen   = true;
+		m_realOnlyInDlg = false;
+		if (modelFileName.empty())
 		{
-			it->second.m_readOnly = m_realOnlyInDlg;
-		}
-
-		tstring rdoxFileName = m_modelPath + m_modelName + m_files[rdoModelObjects::RDOX].m_extention;
-		tstring smrFileName  = m_modelPath + m_modelName + m_files[rdoModelObjects::SMR ].m_extention;
-
-		if (rdo::File::exist(rdoxFileName))
-		{
-			m_projectName.m_fullFileName = rdoxFileName;
-			m_projectName.m_rdox         = true;
-			m_hasModel                   = true;
-		}
-		else if (rdo::File::exist(smrFileName))
-		{
-			m_projectName.m_fullFileName             = smrFileName;
-			m_projectName.m_rdox                     = false;
-			m_files[rdoModelObjects::SMR].m_fileName = m_modelName;
-			m_hasModel                               = true;
-		}
-
-		if (m_hasModel)
-		{
-			switch (updateModelNames())
+			OpenFile data;
+			broadcastMessage(RT_REPOSITORY_MODEL_OPEN_GET_NAME, &data, true);
+			if (data.m_result)
 			{
-			case fm_ok       : broadcastMessage(RT_REPOSITORY_MODEL_OPEN); return true;
-			case fm_smr_error: broadcastMessage(RT_REPOSITORY_MODEL_OPEN); return false;
-			case fm_smr_empty: return false;
+				m_realOnlyInDlg = data.m_readOnly;
+				extractName(data.m_name);
+			}
+			else
+			{
+				canOpen = false;
 			}
 		}
 		else
 		{
-			setName(_T(""));
-			broadcastMessage(RT_REPOSITORY_MODEL_OPEN_ERROR, const_cast<PTR(tstring)>(&modelFileName));
+			extractName(modelFileName);
+			canOpen = !m_modelName.empty();
+		}
+
+		if (canOpen)
+		{
+			STL_FOR_ALL(m_files, it)
+			{
+				it->second.m_readOnly = m_realOnlyInDlg;
+			}
+
+			tstring rdoxFileName = m_modelPath + m_modelName + m_files[rdoModelObjects::RDOX].m_extention;
+			tstring smrFileName  = m_modelPath + m_modelName + m_files[rdoModelObjects::SMR ].m_extention;
+
+			if (rdo::File::exist(rdoxFileName))
+			{
+				m_projectName.m_fullFileName = rdoxFileName;
+				m_projectName.m_rdox         = true;
+				m_hasModel                   = true;
+			}
+			else if (rdo::File::exist(smrFileName))
+			{
+				m_projectName.m_fullFileName             = smrFileName;
+				m_projectName.m_rdox                     = false;
+				m_files[rdoModelObjects::SMR].m_fileName = m_modelName;
+				m_hasModel                               = true;
+			}
+
+			if (m_hasModel)
+			{
+				switch (updateModelNames())
+				{
+				case fm_ok       : broadcastMessage(RT_REPOSITORY_MODEL_OPEN); return true;
+				case fm_smr_error: broadcastMessage(RT_REPOSITORY_MODEL_OPEN); return false;
+				case fm_smr_empty: return false;
+				}
+			}
+			else
+			{
+				setName(_T(""));
+				broadcastMessage(RT_REPOSITORY_MODEL_OPEN_ERROR, const_cast<PTR(tstring)>(&modelFileName));
+			}
 		}
 	}
+	else
+	{
+		broadcastMessage(RT_REPOSITORY_MODEL_CLOSE_ERROR);
+	}
+
 	return false;
 }
 
@@ -365,7 +380,21 @@ rbool RDOThreadRepository::saveAsDlg()
 	}
 }
 
-void RDOThreadRepository::closeModel()
+rbool RDOThreadRepository::canCloseModel()
+{
+	if (m_hasModel)
+	{
+		rbool res = true;
+		broadcastMessage(RT_REPOSITORY_MODEL_CLOSE_CAN_CLOSE, &res, true);
+		return res;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+void RDOThreadRepository::realCloseModel()
 {
 	if (m_hasModel)
 	{
@@ -374,6 +403,18 @@ void RDOThreadRepository::closeModel()
 		m_modelName = _T("");
 		m_modelPath = _T("");
 		resetModelNames();
+	}
+}
+
+void RDOThreadRepository::closeModel()
+{
+	if (canCloseModel())
+	{
+		realCloseModel();
+	}
+	else
+	{
+		broadcastMessage(RT_REPOSITORY_MODEL_CLOSE_ERROR);
 	}
 }
 

@@ -170,6 +170,8 @@ private:
 	void      resetModelNames ();
 	FindModel updateModelNames();
 	rbool     saveAsDlg       ();
+	rbool     canCloseModel   ();
+	void      realCloseModel  ();
 	void      extractName     (CREF(tstring) fullName);
 	void      setName         (CREF(tstring) name);
 	void      createRDOX      ();
