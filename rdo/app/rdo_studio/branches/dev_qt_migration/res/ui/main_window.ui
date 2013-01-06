@@ -72,7 +72,6 @@ border: none;
     <property name="title">
      <string>Помощь</string>
     </property>
-    <addaction name="actHelpWhatsNew"/>
     <addaction name="actHelpContext"/>
     <addaction name="separator"/>
     <addaction name="actHelpAbout"/>
@@ -351,9 +350,19 @@ border: none;
     <string>Выход</string>
    </property>
   </action>
-  <action name="actHelpWhatsNew">
+  <action name="actHelpContext">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../rdo_studio.qrc">
+     <normaloff>:/images/images/help_context.png</normaloff>:/images/images/help_context.png</iconset>
+   </property>
    <property name="text">
-    <string>Что нового</string>
+    <string>Содержание</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
    </property>
   </action>
   <action name="actHelpAbout">
@@ -1032,21 +1041,6 @@ border: none;
   <action name="action">
    <property name="text">
     <string>Пусто</string>
-   </property>
-  </action>
-  <action name="actHelpContext">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../rdo_studio.qrc">
-     <normaloff>:/images/images/help_context.png</normaloff>:/images/images/help_context.png</iconset>
-   </property>
-   <property name="text">
-    <string>Контекстная помощь</string>
-   </property>
-   <property name="shortcut">
-    <string>F1</string>
    </property>
   </action>
  </widget>
