@@ -274,7 +274,11 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		}
 		case RDOThread::RT_REPOSITORY_MODEL_OPEN_ERROR:
 		{
-			AfxMessageBox(rdo::format(ID_MSG_MODELOPEN_ERROR, static_cast<PTR(tstring)>(msg.param)->c_str()).c_str(), MB_ICONSTOP | MB_OK);
+			QMessageBox::critical(
+				studioApp.getMainWnd(),
+				"Ошибка открытия модели",
+				QString("Невозможно открыть модель '%1'.").arg(static_cast<PTR(tstring)>(msg.param)->c_str())
+			);
 			break;
 		}
 		case RDOThread::RT_REPOSITORY_MODEL_SAVE:
