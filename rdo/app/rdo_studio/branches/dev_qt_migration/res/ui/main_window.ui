@@ -73,6 +73,7 @@ border: none;
      <string>Помощь</string>
     </property>
     <addaction name="actHelpContext"/>
+    <addaction name="actHelpWhatsNew"/>
     <addaction name="separator"/>
     <addaction name="actHelpAbout"/>
    </widget>
@@ -359,7 +360,7 @@ border: none;
      <normaloff>:/images/images/help_context.png</normaloff>:/images/images/help_context.png</iconset>
    </property>
    <property name="text">
-    <string>Содержание</string>
+    <string>Контекстная справка</string>
    </property>
    <property name="shortcut">
     <string>F1</string>
@@ -1041,6 +1042,11 @@ border: none;
   <action name="action">
    <property name="text">
     <string>Пусто</string>
+   </property>
+  </action>
+  <action name="actHelpWhatsNew">
+   <property name="text">
+    <string>Что нового</string>
    </property>
   </action>
  </widget>
