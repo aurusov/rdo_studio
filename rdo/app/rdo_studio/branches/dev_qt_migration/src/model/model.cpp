@@ -743,8 +743,6 @@ void RDOStudioModel::newModelFromRepository()
 					}
 				}
 			}
-//			edit->setModifyFalse();
-//			edit->clearUndoBuffer();
 		}
 	}
 
@@ -752,6 +750,11 @@ void RDOStudioModel::newModelFromRepository()
 	if (templateIt != m_modelTemplates.end())
 	{
 		saveModel();
+		for (int i = 0; i < m_pModelView->getTab().count(); i++)
+		{
+			PTR(RDOEditorEdit) pEdit = m_pModelView->getTab().getItemEdit(i);
+			pEdit->clearUndoBuffer();
+		}
 	}
 }
 
