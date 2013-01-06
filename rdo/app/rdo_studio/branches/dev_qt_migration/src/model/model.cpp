@@ -256,10 +256,10 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 		{
 			msg.lock();
 			PTR(rdo::repository::RDOThreadRepository::FileData) fdata = static_cast<PTR(rdo::repository::RDOThreadRepository::FileData)>(msg.param);
-			PTR(RDOEditorEdit) edit = m_pModelView->getTab().getItemEdit(fdata->m_type);
-			if (edit)
+			PTR(RDOEditorEdit) pEdit = m_pModelView->getTab().getItemEdit(fdata->m_type);
+			if (pEdit)
 			{
-				edit->save(fdata->m_stream);
+				pEdit->save(fdata->m_stream);
 			}
 			msg.unlock();
 			break;
@@ -718,9 +718,9 @@ void RDOStudioModel::newModelFromRepository()
 
 	for (int i = 0; i < m_pModelView->getTab().count(); i++)
 	{
-		PTR(RDOEditorEdit) edit = m_pModelView->getTab().getItemEdit(i);
-		edit->setReadOnly(false);
-		edit->clearAll();
+		PTR(RDOEditorEdit) pEdit = m_pModelView->getTab().getItemEdit(i);
+		pEdit->setReadOnly(false);
+		pEdit->clearAll();
 		if (templateIt != m_modelTemplates.end())
 		{
 			ModelTemplate::const_iterator it = templateIt->second.find(m_pModelView->getTab().indexToType(i));
@@ -735,11 +735,11 @@ void RDOStudioModel::newModelFromRepository()
 				}
 				if (!resourceData.isEmpty())
 				{
-					edit->replaceCurrent(resourceData.toStdString());
-					edit->scrollToLine(0);
+					pEdit->replaceCurrent(resourceData.toStdString());
+					pEdit->scrollToLine(0);
 					if (it->second.position.is_initialized())
 					{
-						edit->setCurrentPos(*it->second.position);
+						pEdit->setCurrentPos(*it->second.position);
 					}
 				}
 			}
@@ -780,9 +780,9 @@ void RDOStudioModel::openModelFromRepository()
 	studioApp.getMainWndUI()->statusBar()->stepProgress();
 	for (int i = 0; i < cnt; i++)
 	{
-		PTR(RDOEditorEdit) edit = m_pModelView->getTab().getItemEdit(i);
-		edit->setReadOnly(false);
-		edit->clearAll();
+		PTR(RDOEditorEdit) pEdit = m_pModelView->getTab().getItemEdit(i);
+		pEdit->setReadOnly(false);
+		pEdit->clearAll();
 		rdo::binarystream stream;
 		rbool canLoad = true;
 		rdoModelObjects::RDOFileType type = m_pModelView->getTab().indexToType(i);
@@ -803,8 +803,8 @@ void RDOStudioModel::openModelFromRepository()
 			rbool stream_error = stream.rdstate() & std::ios_base::failbit ? true : false;
 			if (!stream_error)
 			{
-				edit->load(stream);
-				edit->setReadOnly(data.m_readOnly);
+				pEdit->load(stream);
+				pEdit->setReadOnly(data.m_readOnly);
 				if (data.m_readOnly)
 				{
 					studioApp.getIMainWnd()->getDockDebug().appendString(rdo::format(IDS_MODEL_FILE_READONLY, tstring(data.m_name + data.m_extention).c_str()));
@@ -832,9 +832,9 @@ void RDOStudioModel::openModelFromRepository()
 				m_openError = true;
 			}
 		}
-		edit->setCurrentPos(0);
-		edit->setModifyFalse();
-		edit->clearUndoBuffer();
+		pEdit->setCurrentPos(0);
+		pEdit->setModifyFalse();
+		pEdit->clearUndoBuffer();
 		studioApp.getMainWndUI()->statusBar()->stepProgress();
 	}
 	studioApp.getMainWndUI()->statusBar()->endProgress();
@@ -880,11 +880,11 @@ void RDOStudioModel::saveModelToRepository()
 		studioApp.getMainWndUI()->statusBar()->stepProgress();
 		for (int i = 0; i < cnt; i++)
 		{
-			PTR(RDOEditorEdit) edit = m_pModelView->getTab().getItemEdit(i);
-			if (smr_modified || edit->isModify())
+			PTR(RDOEditorEdit) pEdit = m_pModelView->getTab().getItemEdit(i);
+			if (smr_modified || pEdit->isModify())
 			{
 				rdo::binarystream stream;
-				edit->save(stream);
+				pEdit->save(stream);
 				studioApp.getMainWndUI()->statusBar()->stepProgress();
 				rdoModelObjects::RDOFileType type = m_pModelView->getTab().indexToType(i);
 				switch (type)
@@ -905,7 +905,7 @@ void RDOStudioModel::saveModelToRepository()
 					}
 				default: break;
 				}
-				edit->setModifyFalse();
+				pEdit->setModifyFalse();
 			}
 			studioApp.getMainWndUI()->statusBar()->stepProgress();
 		}
