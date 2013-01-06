@@ -1,5 +1,5 @@
 // Здесь определяются все правила функционирования модели, которые могут группироваться по точкам принятия решений
-$Decision_point model: some
+$Decision_point /* <имя_точки> */: some
 $Condition NoCheck
 $Activities
 /*
@@ -10,7 +10,7 @@ $Activities
 */
 $End
 
-$Decision_point model: prior
+$Decision_point /* <имя_точки> */: prior
 $Parent /* <имя_родительской_точки_принятия_решений>, например model */
 $Condition /* <логическое_выражение> */
 $Activities
