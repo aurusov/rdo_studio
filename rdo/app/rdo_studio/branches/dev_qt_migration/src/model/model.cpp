@@ -712,15 +712,19 @@ void RDOStudioModel::newModelFromRepository()
 	studioApp.m_pStudioGUI->sendMessage(kernel->repository(), RDOThread::RT_REPOSITORY_MODEL_GET_FILEINFO, &data_smr);
 	setName(data_smr.m_name);
 
+	ModelTemplateList::const_iterator templateIt = m_templateIndex.is_initialized()
+		? m_modelTemplates.find(*m_templateIndex)
+		: m_modelTemplates.end();
+
 	for (int i = 0; i < m_pModelView->getTab().count(); i++)
 	{
 		PTR(RDOEditorEdit) edit = m_pModelView->getTab().getItemEdit(i);
 		edit->setReadOnly(false);
 		edit->clearAll();
-		if (m_templateIndex.is_initialized() && m_modelTemplates.find(*m_templateIndex) != m_modelTemplates.end())
+		if (templateIt != m_modelTemplates.end())
 		{
-			ModelTemplate::const_iterator it = m_modelTemplates[*m_templateIndex].find(m_pModelView->getTab().indexToType(i));
-			if (it != m_modelTemplates[*m_templateIndex].end())
+			ModelTemplate::const_iterator it = templateIt->second.find(m_pModelView->getTab().indexToType(i));
+			if (it != templateIt->second.end())
 			{
 				ASSERT(!it->second.resName.isEmpty())
 				QString resourceData;
@@ -745,7 +749,7 @@ void RDOStudioModel::newModelFromRepository()
 	}
 
 	studioApp.setLastProjectName(getFullName());
-	if (m_templateIndex.is_initialized())
+	if (templateIt != m_modelTemplates.end())
 	{
 		saveModel();
 	}
@@ -1590,7 +1594,7 @@ void RDOStudioModel::onModelSpeedValueChanged(int value)
 	setSpeed(log( double(value + 1) ) / log(101.0));
 }
 
-void RDOStudioModel::onEditModifyChanged(bool value)
+void RDOStudioModel::onEditModifyChanged(bool)
 {
 	setUpActions();
 }
