@@ -1263,7 +1263,6 @@ void RDOStudioModel::setUpActions()
 	pMainWindow->actFileNew->setEnabled(canNew());
 	pMainWindow->actFileOpen->setEnabled(canOpen());
 	pMainWindow->actFileSave->setEnabled(canSave());
-	pMainWindow->actFileSaveAs->setEnabled(hasModel() && !isRunning());
 	pMainWindow->actFileSaveAll->setEnabled(canSave());
 	pMainWindow->actFileClose->setEnabled(canClose());
 

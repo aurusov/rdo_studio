@@ -347,14 +347,6 @@ border: none;
     <string>Ctrl+S</string>
    </property>
   </action>
-  <action name="actFileSaveAs">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>Сохранить как...</string>
-   </property>
-  </action>
   <action name="actFileSaveAll">
    <property name="enabled">
     <bool>false</bool>
