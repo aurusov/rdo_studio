@@ -49,9 +49,9 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 	connect(menuFileReopen, SIGNAL(triggered(QAction*)), this, SLOT(onMenuFileReopen(QAction*)));
 	connect(actFileExit,    SIGNAL(triggered(bool)),     this, SLOT(close()));
 
-	connect(actViewSettings, SIGNAL(triggered(bool)), this, SLOT(onViewOptions()));
-//	connect(actHelpContext,  SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
-	connect(actHelpAbout,    SIGNAL(triggered(bool)), this, SLOT(onHelpAbout  ()));
+	connect(actViewSettings, SIGNAL(triggered(bool)), this, SLOT(onViewOptions ()));
+	connect(actHelpWhatsNew, SIGNAL(triggered(bool)), this, SLOT(onHelpWhatsNew()));
+	connect(actHelpAbout,    SIGNAL(triggered(bool)), this, SLOT(onHelpAbout   ()));
 
 	connect(toolBarModel, SIGNAL(orientationChanged(Qt::Orientation)), this, SLOT(onToolBarModelOrientationChanged(Qt::Orientation)));
 
@@ -263,7 +263,7 @@ CREF(LPStatusBar) RDOStudioMainFrame::statusBar() const
 	return m_pStatusBar;
 }
 
-void RDOStudioMainFrame::onHelpContext()
+void RDOStudioMainFrame::onHelpWhatsNew()
 {
 	QByteArray ba;
 	ba.append("setSource qthelp://language/doc/rdo_studio_rus/html/rdo_whats_new.htm\n");

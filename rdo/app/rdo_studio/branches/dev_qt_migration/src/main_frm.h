@@ -81,9 +81,9 @@ private:
 	virtual void timerEvent(QTimerEvent* event);
 
 private slots:
-	void onViewOptions();
-	void onHelpContext();
-	void onHelpAbout  ();
+	void onViewOptions ();
+	void onHelpWhatsNew();
+	void onHelpAbout   ();
 
 	void onDockVisibleChanged(bool visible);
 	void onToolBarModelOrientationChanged(Qt::Orientation orientation);
