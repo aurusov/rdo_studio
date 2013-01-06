@@ -717,7 +717,6 @@ void RDOStudioModel::newModelFromRepository()
 				if (!resourceData.isEmpty())
 				{
 					edit->replaceCurrent(resourceData.toStdString());
-//					edit->updateEditGUI();
 					edit->scrollToLine(0);
 					if (it->second.position.is_initialized())
 					{
