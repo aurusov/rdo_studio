@@ -122,6 +122,7 @@ RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent):
 	GUI_ID_VIEW_WHITESPACE( false ),
 	GUI_ID_VIEW_ENDOFLINE( false ),
 	markerCount( 0 ),
+	m_prevModify(false),
 	popupMenu( NULL ),
 	style( NULL ),
 	group( NULL ),
@@ -131,6 +132,7 @@ RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent):
 	QObject::connect(this, SIGNAL(needShown(int, int)), this, SLOT(catchNeedShown(int, int)));
 	QObject::connect(this, SIGNAL(charAdded(int)),      this, SLOT(catchCharAdded(int)));
 	QObject::connect(this, SIGNAL(updateUi()),          this, SLOT(onUpdateEditGUI()));
+	QObject::connect(this, SIGNAL(modified(int, int, int, int, const QByteArray&, int, int, int)), this, SLOT(onUpdateModify()));
 
 	sci_MARKER_BOOKMARK = getNewMarker();
 
@@ -1489,4 +1491,14 @@ void RDOBaseEdit::updateActions(rbool activated)
 		: QString();
 
 	pMainWindow->statusBar()->update<StatusBar::SB_OVERWRITE>(overwrite);
+}
+
+void RDOBaseEdit::onUpdateModify()
+{
+	rbool modify = isModify();
+	if (modify != m_prevModify)
+	{
+		m_prevModify = modify;
+		emit modifyChanged(modify);
+	}
 }

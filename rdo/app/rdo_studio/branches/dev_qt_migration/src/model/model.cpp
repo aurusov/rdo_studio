@@ -667,12 +667,23 @@ void RDOStudioModel::createView()
 	m_pModelView->setModel(this);
 	studioApp.getIMainWnd()->addSubWindow(m_pModelView);
 	m_pModelView->parentWidget()->setWindowIcon(QIcon(QString::fromUtf8(":/images/images/mdi_model.png")));
+
+	for (int i = 0; i < m_pModelView->getTab().count(); i++)
+	{
+		PTR(RDOEditorEdit) pEdit = m_pModelView->getTab().getItemEdit(i);
+		connect(pEdit, SIGNAL(modifyChanged(bool)), this, SLOT(onEditModifyChanged(bool)));
+	}
 }
 
 void RDOStudioModel::resetView()
 {
 	if (m_pModelView)
 	{
+		for (int i = 0; i < m_pModelView->getTab().count(); i++)
+		{
+			PTR(RDOEditorEdit) pEdit = m_pModelView->getTab().getItemEdit(i);
+			disconnect(pEdit, SIGNAL(modifyChanged(bool)), this, SLOT(onEditModifyChanged(bool)));
+		}
 		m_pModelView->setModel(NULL);
 	}
 }
@@ -822,6 +833,7 @@ void RDOStudioModel::openModelFromRepository()
 	studioApp.getMainWndUI()->statusBar()->endProgress();
 
 	updateFrmDescribed();
+	setUpActions();
 
 	if (active) active->SetFocus();
 }
@@ -909,6 +921,7 @@ void RDOStudioModel::saveModelToRepository()
 	{
 		updateFrmDescribed();
 	}
+	setUpActions();
 }
 
 void RDOStudioModel::saveToXML()
@@ -1575,4 +1588,9 @@ void RDOStudioModel::onModelShowRateDec()
 void RDOStudioModel::onModelSpeedValueChanged(int value)
 {
 	setSpeed(log( double(value + 1) ) / log(101.0));
+}
+
+void RDOStudioModel::onEditModifyChanged(bool value)
+{
+	setUpActions();
 }

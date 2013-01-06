@@ -64,7 +64,8 @@ class RDOBaseEdit
 Q_OBJECT
 private:
 	typedef  ScintillaEditBase  super;
-	int markerCount;
+	int   markerCount;
+	rbool m_prevModify;
 
 protected:
 	rbool GUI_HAS_BOOKMARK;
@@ -160,6 +161,8 @@ private slots:
 	void onEditCopyAsRTF();
 	void onEditSelectAll();
 
+	void onUpdateModify ();
+
 public:
 	RDOBaseEdit(PTR(QWidget) pParent);
 	virtual ~RDOBaseEdit();
@@ -226,6 +229,9 @@ public:
 	void load( rdo::stream& stream );
 	void save( rdo::stream& stream ) const;
 	tstring saveAsRTF(int start, int end) const;
+
+signals:
+	void modifyChanged(bool value);
 
 protected:
 	int getCurrentLineNumber  () const { return getLineFromPosition(getCurrentPos());       };

@@ -199,6 +199,8 @@ private slots:
 	void onShowPrevFrame();
 
 	void onModelSpeedValueChanged(int value);
+
+	void onEditModifyChanged(bool value);
 };
 
 // --------------------------------------------------------------------------------
