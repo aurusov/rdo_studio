@@ -266,6 +266,7 @@ CREF(LPStatusBar) RDOStudioMainFrame::statusBar() const
 
 void RDOStudioMainFrame::onHelpContext()
 {
+	return;
 	PTR(IHelpContext) pHelpContext = dynamic_cast<PTR(IHelpContext)>(focusWidget());
 	if (pHelpContext)
 	{
