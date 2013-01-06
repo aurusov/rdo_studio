@@ -90,7 +90,6 @@ private:
 
 	rbool newModel      (CREF(tstring) modelName, CREF(tstring) modelPath, ruint templateIndex);
 	rbool saveModel     () const;
-	void  saveAsModel   () const;
 	void  saveToXML     ();
 	void  loadFromXML   ();
 	rbool buildModel    ();
@@ -180,7 +179,6 @@ private slots:
 	void onFileOpen   ();
 	void onFileClose  ();
 	void onFileSave   ();
-	void onFileSaveAs ();
 	void onFileSaveAll();
 
 	void onModelBuild();

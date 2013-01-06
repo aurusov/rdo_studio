@@ -65,7 +65,6 @@ border: none;
     <addaction name="actFileClose"/>
     <addaction name="separator"/>
     <addaction name="actFileSave"/>
-    <addaction name="actFileSaveAs"/>
     <addaction name="actFileSaveAll"/>
     <addaction name="separator"/>
     <addaction name="actFileExit"/>

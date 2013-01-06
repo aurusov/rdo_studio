@@ -100,7 +100,6 @@ RDOStudioModel::RDOStudioModel()
 	connect(pMainWindow->actFileOpen,    SIGNAL(triggered(bool)), this, SLOT(onFileOpen   ()));
 	connect(pMainWindow->actFileClose,   SIGNAL(triggered(bool)), this, SLOT(onFileClose  ()));
 	connect(pMainWindow->actFileSave,    SIGNAL(triggered(bool)), this, SLOT(onFileSave   ()));
-	connect(pMainWindow->actFileSaveAs,  SIGNAL(triggered(bool)), this, SLOT(onFileSaveAs ()));
 	connect(pMainWindow->actFileSaveAll, SIGNAL(triggered(bool)), this, SLOT(onFileSaveAll()));
 
 	connect(pMainWindow->actModelBuild, SIGNAL(triggered(bool)), this, SLOT(onModelBuild()));
@@ -217,7 +216,6 @@ RDOStudioModel::RDOStudioModel()
 	notifies.push_back(RT_REPOSITORY_MODEL_OPEN_ERROR       );
 	notifies.push_back(RT_REPOSITORY_MODEL_CLOSE            );
 	notifies.push_back(RT_REPOSITORY_MODEL_SAVE             );
-	notifies.push_back(RT_REPOSITORY_MODEL_SAVE_GET_NAME    );
 	notifies.push_back(RT_SIMULATOR_PARSE_STRING            );
 	notifies.push_back(RT_SIMULATOR_PARSE_OK                );
 	notifies.push_back(RT_SIMULATOR_PARSE_ERROR             );
@@ -300,18 +298,6 @@ void RDOStudioModel::proc(REF(RDOThread::RDOMessageInfo) msg)
 			data->m_name     = modelName.toStdString();
 			data->m_readOnly = false;
 
-			msg.unlock();
-			break;
-		}
-		case RDOThread::RT_REPOSITORY_MODEL_SAVE_GET_NAME:
-		{
-			msg.lock();
-			PTR(rdo::repository::RDOThreadRepository::OpenFile) data = static_cast<PTR(rdo::repository::RDOThreadRepository::OpenFile)>(msg.param);
-			CString filter;
-			filter.LoadString(ID_MODEL_FILETYPE);
-			CFileDialog dlg(false, _T("smr"), _T(""), OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, filter, AfxGetMainWnd());
-			data->m_result = dlg.DoModal() == IDOK;
-			data->m_name   = dlg.GetPathName();
 			msg.unlock();
 			break;
 		}
@@ -600,11 +586,6 @@ rbool RDOStudioModel::saveModel() const
 	rbool res = true;
 	studioApp.broadcastMessage(RDOThread::RT_STUDIO_MODEL_SAVE, &res);
 	return res;
-}
-
-void RDOStudioModel::saveAsModel() const
-{
-	studioApp.broadcastMessage(RDOThread::RT_STUDIO_MODEL_SAVE_AS);
 }
 
 rbool RDOStudioModel::closeModel()
@@ -1556,11 +1537,6 @@ void RDOStudioModel::onFileClose()
 void RDOStudioModel::onFileSave()
 {
 	saveModel();
-}
-
-void RDOStudioModel::onFileSaveAs()
-{
-	saveAsModel();
 }
 
 void RDOStudioModel::onFileSaveAll()
