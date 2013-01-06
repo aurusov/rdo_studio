@@ -737,11 +737,6 @@ void RDOStudioModel::newModelFromRepository()
 							}
 						}
 					}
-					if (m_pModelView->getTab().indexToType(i) == rdoModelObjects::SMR)
-					{
-						tstring name = getName();
-						s = rdo::format(s.c_str(), name.c_str(), name.c_str(), name.c_str(), name.c_str(), name.c_str(), name.c_str(), name.c_str());
-					}
 					if (!s.empty())
 					{
 						edit->replaceCurrent(s);
