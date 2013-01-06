@@ -137,13 +137,13 @@ RDOStudioModel::RDOStudioModel()
 	m_modelTemplates[1] = modelTemplate;
 
 	modelTemplate.clear();
-	modelTemplate[rdoModelObjects::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.evn");
-	modelTemplate[rdoModelObjects::PRC] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.prc");
-	modelTemplate[rdoModelObjects::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.pmd");
+	modelTemplate[rdoModelObjects::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.evn", 9);
+	modelTemplate[rdoModelObjects::PRC] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.prc", 10);
+	modelTemplate[rdoModelObjects::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.pmd", 10);
 	modelTemplate[rdoModelObjects::PAT] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.pat", 9);
 	modelTemplate[rdoModelObjects::RTP] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.rtp", 15);
 	modelTemplate[rdoModelObjects::RSS] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.rss", 12);
-	modelTemplate[rdoModelObjects::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.dpt", 13);
+	modelTemplate[rdoModelObjects::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.dpt", 16);
 	modelTemplate[rdoModelObjects::FRM] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.frm", 7);
 	modelTemplate[rdoModelObjects::FUN] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.fun", 10);
 	modelTemplate[rdoModelObjects::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.smr");
