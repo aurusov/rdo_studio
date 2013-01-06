@@ -64,7 +64,6 @@ border: none;
     <addaction name="menuFileReopen"/>
     <addaction name="actFileClose"/>
     <addaction name="separator"/>
-    <addaction name="actFileSave"/>
     <addaction name="actFileSaveAll"/>
     <addaction name="separator"/>
     <addaction name="actFileExit"/>
@@ -206,7 +205,6 @@ border: none;
    </attribute>
    <addaction name="actFileNew"/>
    <addaction name="actFileOpen"/>
-   <addaction name="actFileSave"/>
    <addaction name="actFileSaveAll"/>
   </widget>
   <widget class="QToolBar" name="toolBarEdit">
@@ -331,22 +329,6 @@ border: none;
     <string>Закрыть</string>
    </property>
   </action>
-  <action name="actFileSave">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../rdo_studio.qrc">
-     <normaloff>:/images/images/file_save.png</normaloff>
-     <disabledoff>:/images/images/file_save_d.png</disabledoff>:/images/images/file_save.png</iconset>
-   </property>
-   <property name="text">
-    <string>Сохранить</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+S</string>
-   </property>
-  </action>
   <action name="actFileSaveAll">
    <property name="enabled">
     <bool>false</bool>
@@ -358,6 +340,9 @@ border: none;
    </property>
    <property name="text">
     <string>Сохранить всё</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
   <action name="actFileExit">

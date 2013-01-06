@@ -178,7 +178,6 @@ private slots:
 	void onFileNew    ();
 	void onFileOpen   ();
 	void onFileClose  ();
-	void onFileSave   ();
 	void onFileSaveAll();
 
 	void onModelBuild();

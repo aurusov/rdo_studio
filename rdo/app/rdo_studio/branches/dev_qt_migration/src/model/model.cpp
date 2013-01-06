@@ -99,7 +99,6 @@ RDOStudioModel::RDOStudioModel()
 	connect(pMainWindow->actFileNew,     SIGNAL(triggered(bool)), this, SLOT(onFileNew    ()));
 	connect(pMainWindow->actFileOpen,    SIGNAL(triggered(bool)), this, SLOT(onFileOpen   ()));
 	connect(pMainWindow->actFileClose,   SIGNAL(triggered(bool)), this, SLOT(onFileClose  ()));
-	connect(pMainWindow->actFileSave,    SIGNAL(triggered(bool)), this, SLOT(onFileSave   ()));
 	connect(pMainWindow->actFileSaveAll, SIGNAL(triggered(bool)), this, SLOT(onFileSaveAll()));
 
 	connect(pMainWindow->actModelBuild, SIGNAL(triggered(bool)), this, SLOT(onModelBuild()));
@@ -1262,7 +1261,6 @@ void RDOStudioModel::setUpActions()
 
 	pMainWindow->actFileNew->setEnabled(canNew());
 	pMainWindow->actFileOpen->setEnabled(canOpen());
-	pMainWindow->actFileSave->setEnabled(canSave());
 	pMainWindow->actFileSaveAll->setEnabled(canSave());
 	pMainWindow->actFileClose->setEnabled(canClose());
 
@@ -1531,11 +1529,6 @@ void RDOStudioModel::onFileOpen()
 void RDOStudioModel::onFileClose()
 {
 	closeModel();
-}
-
-void RDOStudioModel::onFileSave()
-{
-	saveModel();
 }
 
 void RDOStudioModel::onFileSaveAll()
