@@ -122,7 +122,6 @@ RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent):
 	GUI_ID_VIEW_WHITESPACE( false ),
 	GUI_ID_VIEW_ENDOFLINE( false ),
 	markerCount( 0 ),
-	m_prevModify(false),
 	popupMenu( NULL ),
 	style( NULL ),
 	group( NULL ),
@@ -1495,10 +1494,5 @@ void RDOBaseEdit::updateActions(rbool activated)
 
 void RDOBaseEdit::onUpdateModify()
 {
-	rbool modify = isModify();
-	if (modify != m_prevModify)
-	{
-		m_prevModify = modify;
-		emit modifyChanged(modify);
-	}
+	emit modifyChanged(isModify());
 }

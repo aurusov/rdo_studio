@@ -65,7 +65,6 @@ Q_OBJECT
 private:
 	typedef  ScintillaEditBase  super;
 	int   markerCount;
-	rbool m_prevModify;
 
 protected:
 	rbool GUI_HAS_BOOKMARK;
