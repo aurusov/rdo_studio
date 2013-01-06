@@ -18,13 +18,17 @@
 
 class NewModelDialog
 	: public  QDialog
-	, public  Ui::NewModelDialog
+	, private Ui::NewModelDialog
 {
 Q_OBJECT
 
 public:
 	NewModelDialog(PTR(QWidget) pParent);
 	virtual ~NewModelDialog();
+
+	tstring getModelName() const;
+	tstring getModelPath() const;
+	ruint   getTemplateIndex() const;
 
 private:
 	QFont    m_font;

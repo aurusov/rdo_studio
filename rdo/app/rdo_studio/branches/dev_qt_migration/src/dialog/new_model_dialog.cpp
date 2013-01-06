@@ -96,3 +96,42 @@ void NewModelDialog::onPathButtonClicked()
 		setPath(path);
 	}
 }
+
+tstring NewModelDialog::getModelName() const
+{
+	return modelName->text().toStdString();
+}
+
+tstring NewModelDialog::getModelPath() const
+{
+	return modelPath->text().toStdString();
+}
+
+ruint NewModelDialog::getTemplateIndex() const
+{
+	ruint result = 0;
+	if (template2->isChecked())
+	{
+		result = 2;
+	}
+	else if (template3->isChecked())
+	{
+		result = 4;
+	}
+	else if (template4->isChecked())
+	{
+		result = 6;
+	}
+	else
+	{
+		ASSERT(template1->isChecked());
+		result = 0;
+	}
+
+	if (comments->isChecked())
+	{
+		++result;
+	}
+
+	return result;
+}

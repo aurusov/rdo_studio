@@ -11,6 +11,7 @@
 #define _RDO_STUDIO_MFC_MODEL_MODEL_H_
 
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/optional.hpp>
 #include <QtCore/qobject.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdointerface.h"
@@ -50,7 +51,7 @@ private:
 	};
 
 	RDOStudioFrameManager                  m_frameManager;
-	rsint                                  m_useTemplate;
+	boost::optional<ruint>                 m_templateIndex;
 	rbool                                  m_GUI_HAS_MODEL;
 	rbool                                  m_GUI_CAN_RUN;
 	rbool                                  m_GUI_IS_RUNNING;
@@ -87,7 +88,7 @@ private:
 	RPViewQt*                              m_pModelProcView;
 	tstring                                m_name;
 
-	rbool newModel      (CREF(tstring) modelName, CREF(tstring) modelPath, rsint useTemplate);
+	rbool newModel      (CREF(tstring) modelName, CREF(tstring) modelPath, ruint templateIndex);
 	rbool saveModel     () const;
 	void  saveAsModel   () const;
 	void  saveToXML     ();

@@ -73,7 +73,6 @@ PTR(RDOStudioModel) model = NULL;
 RDOStudioModel::RDOStudioModel()
 	: RDOThreadGUI(_T("RDOThreadModelGUI"), static_cast<PTR(RDOKernelGUI)>(studioApp.m_pStudioGUI))
 	, m_frameManager   (boost::bind(&RDOStudioModel::onChangeFrame, this, _1))
-	, m_useTemplate    (-1                        )
 	, m_GUI_HAS_MODEL  (false                     )
 	, m_GUI_CAN_RUN    (true                      )
 	, m_GUI_IS_RUNNING (false                     )
@@ -534,10 +533,9 @@ void RDOStudioModel::show_result()
 	}
 }
 
-rbool RDOStudioModel::newModel(CREF(tstring) modelName, CREF(tstring) modelPath, rsint useTemplate)
+rbool RDOStudioModel::newModel(CREF(tstring) modelName, CREF(tstring) modelPath, ruint templateIndex)
 {
-	return true;
-	m_useTemplate = useTemplate;
+	m_templateIndex = templateIndex;
 	studioApp.getIMainWnd()->getDockBuild  ().clear();
 	studioApp.getIMainWnd()->getDockDebug  ().clear();
 	studioApp.getIMainWnd()->getDockResults().clear();
@@ -722,10 +720,10 @@ void RDOStudioModel::newModelFromRepository()
 		PTR(RDOEditorEdit) edit = m_pModelView->getTab().getItemEdit(i);
 		edit->setReadOnly(false);
 		edit->clearAll();
-		if (m_useTemplate != -1 && m_modelTemplates.find(m_useTemplate) != m_modelTemplates.end())
+		if (m_templateIndex.is_initialized() && m_modelTemplates.find(*m_templateIndex) != m_modelTemplates.end())
 		{
-			ModelTemplate::const_iterator it = m_modelTemplates[ m_useTemplate ].find(m_pModelView->getTab().indexToType(i));
-			if (it != m_modelTemplates[ m_useTemplate ].end())
+			ModelTemplate::const_iterator it = m_modelTemplates[*m_templateIndex].find(m_pModelView->getTab().indexToType(i));
+			if (it != m_modelTemplates[*m_templateIndex].end())
 			{
 				ruint resID = it->second.m_resID;
 				if (resID != - 1)
@@ -775,7 +773,7 @@ void RDOStudioModel::newModelFromRepository()
 	}
 
 	studioApp.setLastProjectName(getFullName());
-	if (m_useTemplate != -1)
+	if (m_templateIndex.is_initialized())
 	{
 		saveModel();
 	}
@@ -1541,11 +1539,7 @@ void RDOStudioModel::onFileNew()
 	NewModelDialog dlg(studioApp.getMainWndUI());
 	if (dlg.exec() == QDialog::Accepted)
 	{
-		newModel(
-			dlg.modelName->text().toStdString(),
-			dlg.modelPath->text().toStdString() + dlg.modelName->text().toStdString(),
-			1
-		);
+		newModel(dlg.getModelName(), dlg.getModelPath() + dlg.getModelName(), dlg.getTemplateIndex());
 	}
 }
 
