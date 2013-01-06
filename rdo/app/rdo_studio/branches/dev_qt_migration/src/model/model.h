@@ -115,7 +115,8 @@ private:
 
 		ModelTemplateItem();
 		ModelTemplateItem(CREF(ModelTemplateItem) copy);
-		ModelTemplateItem(CREF(QString) resName, ruint position = 0);
+		ModelTemplateItem(CREF(QString) resName);
+		ModelTemplateItem(CREF(QString) resName, ruint position);
 	};
 	typedef  std::map<rdoModelObjects::RDOFileType, ModelTemplateItem>  ModelTemplate;
 	typedef  std::map<int, ModelTemplate>                               ModelTemplateList;

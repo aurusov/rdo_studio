@@ -58,6 +58,10 @@ RDOStudioModel::ModelTemplateItem::ModelTemplateItem(CREF(ModelTemplateItem) cop
 	, position(copy.position)
 {}
 
+RDOStudioModel::ModelTemplateItem::ModelTemplateItem(CREF(QString) resName)
+	: resName(resName)
+{}
+
 RDOStudioModel::ModelTemplateItem::ModelTemplateItem(CREF(QString) resName, ruint position)
 	: resName (resName )
 	, position(position)
