@@ -415,7 +415,7 @@ void RDOStudioMainFrame::onMenuFileReopen(QAction* pAction)
 	fileName = fileName.substr(pos + 1);
 	if (!model->openModel(fileName) && model->isPrevModelClosed())
 	{
-		ReopenList::iterator it = std::find(m_reopenList.begin(), m_reopenList.end(), pAction->text().toStdString());
+		ReopenList::iterator it = std::find(m_reopenList.begin(), m_reopenList.end(), fileName);
 		if (it != m_reopenList.end())
 		{
 			m_reopenList.erase(it);
