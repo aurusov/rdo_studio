@@ -16,7 +16,6 @@
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/src/help_context_i.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
 #include "app/rdo_studio_mfc/src/options.h"
 #include "app/rdo_studio_mfc/src/about.h"
@@ -51,7 +50,7 @@ RDOStudioMainFrame::RDOStudioMainFrame()
 	connect(actFileExit,    SIGNAL(triggered(bool)),     this, SLOT(close()));
 
 	connect(actViewSettings, SIGNAL(triggered(bool)), this, SLOT(onViewOptions()));
-	connect(actHelpContext,  SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
+//	connect(actHelpContext,  SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
 	connect(actHelpAbout,    SIGNAL(triggered(bool)), this, SLOT(onHelpAbout  ()));
 
 	connect(toolBarModel, SIGNAL(orientationChanged(Qt::Orientation)), this, SLOT(onToolBarModelOrientationChanged(Qt::Orientation)));
@@ -266,18 +265,9 @@ CREF(LPStatusBar) RDOStudioMainFrame::statusBar() const
 
 void RDOStudioMainFrame::onHelpContext()
 {
-	return;
-	PTR(IHelpContext) pHelpContext = dynamic_cast<PTR(IHelpContext)>(focusWidget());
-	if (pHelpContext)
-	{
-		pHelpContext->onHelpContext();
-	}
-	else
-	{
-		QByteArray ba;
-		ba.append("setSource qthelp://language/doc/rdo_studio_rus/html/rdo_whats_new.htm\n");
-		studioApp.callQtAssistant(ba);
-	}
+	QByteArray ba;
+	ba.append("setSource qthelp://language/doc/rdo_studio_rus/html/rdo_whats_new.htm\n");
+	studioApp.callQtAssistant(ba);
 }
 
 void RDOStudioMainFrame::onHelpAbout()
