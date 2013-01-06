@@ -51,18 +51,16 @@ static char THIS_FILE[] = __FILE__;
 // -------------------- RDOStudioModel::ModelTemplateItem
 // --------------------------------------------------------------------------------
 RDOStudioModel::ModelTemplateItem::ModelTemplateItem()
-	: m_resID   (ruint(~0))
-	, m_position(~0       )
 {}
 
 RDOStudioModel::ModelTemplateItem::ModelTemplateItem(CREF(ModelTemplateItem) copy)
-	: m_resID   (copy.m_resID   )
-	, m_position(copy.m_position)
+	: resName (copy.resName )
+	, position(copy.position)
 {}
 
-RDOStudioModel::ModelTemplateItem::ModelTemplateItem(ruint resID, int position)
-	: m_resID   (resID   )
-	, m_position(position)
+RDOStudioModel::ModelTemplateItem::ModelTemplateItem(CREF(QString) resName, ruint position)
+	: resName (resName )
+	, position(position)
 {}
 
 // --------------------------------------------------------------------------------
@@ -131,81 +129,81 @@ RDOStudioModel::RDOStudioModel()
 	setIsRunning(m_GUI_IS_RUNNING);
 
 	ModelTemplate modelTemplate;
-	modelTemplate[ rdoModelObjects::SMR ] = ModelTemplateItem(IDR_MODEL_TMP0_SMR, 0);
+	modelTemplate[rdoModelObjects::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_0/template_0.smr");
 	m_modelTemplates[0] = modelTemplate;
 
 	modelTemplate.clear();
-	modelTemplate[ rdoModelObjects::SMR ] = ModelTemplateItem(IDR_MODEL_TMP1_SMR, 0);
+	modelTemplate[rdoModelObjects::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_1/template_1.smr");
 	m_modelTemplates[1] = modelTemplate;
 
 	modelTemplate.clear();
-	modelTemplate[ rdoModelObjects::EVN ] = ModelTemplateItem(IDR_MODEL_TMP2_EVN, 0 );
-	modelTemplate[ rdoModelObjects::PRC ] = ModelTemplateItem(IDR_MODEL_TMP2_PRC, 0 );
-	modelTemplate[ rdoModelObjects::PMD ] = ModelTemplateItem(IDR_MODEL_TMP2_PMD, 0 );
-	modelTemplate[ rdoModelObjects::PAT ] = ModelTemplateItem(IDR_MODEL_TMP2_PAT, 9 );
-	modelTemplate[ rdoModelObjects::RTP ] = ModelTemplateItem(IDR_MODEL_TMP2_RTP, 15);
-	modelTemplate[ rdoModelObjects::RSS ] = ModelTemplateItem(IDR_MODEL_TMP2_RSS, 12);
-	modelTemplate[ rdoModelObjects::DPT ] = ModelTemplateItem(IDR_MODEL_TMP2_DPT, 13);
-	modelTemplate[ rdoModelObjects::FRM ] = ModelTemplateItem(IDR_MODEL_TMP2_FRM, 7 );
-	modelTemplate[ rdoModelObjects::FUN ] = ModelTemplateItem(IDR_MODEL_TMP2_FUN, 10);
-	modelTemplate[ rdoModelObjects::SMR ] = ModelTemplateItem(IDR_MODEL_TMP2_SMR, 0 );
+	modelTemplate[rdoModelObjects::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.evn");
+	modelTemplate[rdoModelObjects::PRC] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.prc");
+	modelTemplate[rdoModelObjects::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.pmd");
+	modelTemplate[rdoModelObjects::PAT] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.pat", 9);
+	modelTemplate[rdoModelObjects::RTP] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.rtp", 15);
+	modelTemplate[rdoModelObjects::RSS] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.rss", 12);
+	modelTemplate[rdoModelObjects::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.dpt", 13);
+	modelTemplate[rdoModelObjects::FRM] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.frm", 7);
+	modelTemplate[rdoModelObjects::FUN] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.fun", 10);
+	modelTemplate[rdoModelObjects::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_2/template_2.smr");
 	m_modelTemplates[2] = modelTemplate;
 
 	modelTemplate.clear();
-	modelTemplate[ rdoModelObjects::PMD ] = ModelTemplateItem(IDR_MODEL_TMP3_PMD, 0  );
-	modelTemplate[ rdoModelObjects::PRC ] = ModelTemplateItem(IDR_MODEL_TMP3_PRC, 0  );
-	modelTemplate[ rdoModelObjects::EVN ] = ModelTemplateItem(IDR_MODEL_TMP3_EVN, 0  );
-	modelTemplate[ rdoModelObjects::PAT ] = ModelTemplateItem(IDR_MODEL_TMP3_PAT, 131);
-	modelTemplate[ rdoModelObjects::RTP ] = ModelTemplateItem(IDR_MODEL_TMP3_RTP, 98 );
-	modelTemplate[ rdoModelObjects::RSS ] = ModelTemplateItem(IDR_MODEL_TMP3_RSS, 0  );
-	modelTemplate[ rdoModelObjects::DPT ] = ModelTemplateItem(IDR_MODEL_TMP3_DPT, 0  );
-	modelTemplate[ rdoModelObjects::FRM ] = ModelTemplateItem(IDR_MODEL_TMP3_FRM, 84 );
-	modelTemplate[ rdoModelObjects::FUN ] = ModelTemplateItem(IDR_MODEL_TMP3_FUN, 44 );
-	modelTemplate[ rdoModelObjects::SMR ] = ModelTemplateItem(IDR_MODEL_TMP3_SMR, 0  );
+	modelTemplate[rdoModelObjects::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.evn");
+	modelTemplate[rdoModelObjects::PRC] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.prc");
+	modelTemplate[rdoModelObjects::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.pmd");
+	modelTemplate[rdoModelObjects::PAT] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.pat", 131);
+	modelTemplate[rdoModelObjects::RTP] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.rtp", 98);
+	modelTemplate[rdoModelObjects::RSS] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.rss");
+	modelTemplate[rdoModelObjects::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.dpt");
+	modelTemplate[rdoModelObjects::FRM] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.frm", 84);
+	modelTemplate[rdoModelObjects::FUN] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.fun", 44);
+	modelTemplate[rdoModelObjects::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_3/template_3.smr");
 	m_modelTemplates[3] = modelTemplate;
 
 	modelTemplate.clear();
-	modelTemplate[ rdoModelObjects::EVN ] = ModelTemplateItem( IDR_MODEL_TMP4_EVN, 0 );
-	modelTemplate[ rdoModelObjects::PAT ] = ModelTemplateItem( IDR_MODEL_TMP4_PAT, 0 );
-	modelTemplate[ rdoModelObjects::RTP ] = ModelTemplateItem( IDR_MODEL_TMP4_RTP, 0 );
-	modelTemplate[ rdoModelObjects::RSS ] = ModelTemplateItem( IDR_MODEL_TMP4_RSS, 0 );
-	modelTemplate[ rdoModelObjects::DPT ] = ModelTemplateItem( IDR_MODEL_TMP4_DPT, 0 );
-	modelTemplate[ rdoModelObjects::FUN ] = ModelTemplateItem( IDR_MODEL_TMP4_FUN, 0 );
-	modelTemplate[ rdoModelObjects::SMR ] = ModelTemplateItem( IDR_MODEL_TMP4_SMR, 0 );
-	modelTemplate[ rdoModelObjects::PMD ] = ModelTemplateItem( IDR_MODEL_TMP4_PMD, 0 );
+	modelTemplate[rdoModelObjects::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.evn");
+	modelTemplate[rdoModelObjects::PAT] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.pat");
+	modelTemplate[rdoModelObjects::RTP] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.rtp");
+	modelTemplate[rdoModelObjects::RSS] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.rss");
+	modelTemplate[rdoModelObjects::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.dpt");
+	modelTemplate[rdoModelObjects::FUN] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.fun");
+	modelTemplate[rdoModelObjects::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.smr");
+	modelTemplate[rdoModelObjects::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_4/template_4.pmd");
 	m_modelTemplates[4] = modelTemplate;
 
 	modelTemplate.clear();
-	modelTemplate[ rdoModelObjects::EVN ] = ModelTemplateItem(IDR_MODEL_TMP5_EVN, 0);
-	modelTemplate[ rdoModelObjects::PAT ] = ModelTemplateItem(IDR_MODEL_TMP5_PAT, 0);
-	modelTemplate[ rdoModelObjects::RTP ] = ModelTemplateItem(IDR_MODEL_TMP5_RTP, 0);
-	modelTemplate[ rdoModelObjects::RSS ] = ModelTemplateItem(IDR_MODEL_TMP5_RSS, 0);
-	modelTemplate[ rdoModelObjects::DPT ] = ModelTemplateItem(IDR_MODEL_TMP5_DPT, 0);
-	modelTemplate[ rdoModelObjects::FUN ] = ModelTemplateItem(IDR_MODEL_TMP5_FUN, 0);
-	modelTemplate[ rdoModelObjects::SMR ] = ModelTemplateItem(IDR_MODEL_TMP5_SMR, 0);
-	modelTemplate[ rdoModelObjects::PMD ] = ModelTemplateItem(IDR_MODEL_TMP5_PMD, 0);
+	modelTemplate[rdoModelObjects::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.evn");
+	modelTemplate[rdoModelObjects::PAT] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.pat");
+	modelTemplate[rdoModelObjects::RTP] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.rtp");
+	modelTemplate[rdoModelObjects::RSS] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.rss");
+	modelTemplate[rdoModelObjects::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.dpt");
+	modelTemplate[rdoModelObjects::FUN] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.fun");
+	modelTemplate[rdoModelObjects::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.smr");
+	modelTemplate[rdoModelObjects::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_5/template_5.pmd");
 	m_modelTemplates[5] = modelTemplate;
 
 	modelTemplate.clear();
-	modelTemplate[ rdoModelObjects::EVN ] = ModelTemplateItem(IDR_MODEL_TMP6_EVN, 0);
-	modelTemplate[ rdoModelObjects::PAT ] = ModelTemplateItem(IDR_MODEL_TMP6_PAT, 0);
-	modelTemplate[ rdoModelObjects::RTP ] = ModelTemplateItem(IDR_MODEL_TMP6_RTP, 0);
-	modelTemplate[ rdoModelObjects::RSS ] = ModelTemplateItem(IDR_MODEL_TMP6_RSS, 0);
-	modelTemplate[ rdoModelObjects::DPT ] = ModelTemplateItem(IDR_MODEL_TMP6_DPT, 0);
-	modelTemplate[ rdoModelObjects::FUN ] = ModelTemplateItem(IDR_MODEL_TMP6_FUN, 0);
-	modelTemplate[ rdoModelObjects::SMR ] = ModelTemplateItem(IDR_MODEL_TMP6_SMR, 0);
-	modelTemplate[ rdoModelObjects::PMD ] = ModelTemplateItem(IDR_MODEL_TMP6_PMD, 0);
+	modelTemplate[rdoModelObjects::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.evn");
+	modelTemplate[rdoModelObjects::PAT] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.pat");
+	modelTemplate[rdoModelObjects::RTP] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.rtp");
+	modelTemplate[rdoModelObjects::RSS] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.rss");
+	modelTemplate[rdoModelObjects::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.dpt");
+	modelTemplate[rdoModelObjects::FUN] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.fun");
+	modelTemplate[rdoModelObjects::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.smr");
+	modelTemplate[rdoModelObjects::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_6/template_6.pmd");
 	m_modelTemplates[6] = modelTemplate;
 
 	modelTemplate.clear();
-	modelTemplate[ rdoModelObjects::EVN ] = ModelTemplateItem(IDR_MODEL_TMP7_EVN, 0);
-	modelTemplate[ rdoModelObjects::PAT ] = ModelTemplateItem(IDR_MODEL_TMP7_PAT, 0);
-	modelTemplate[ rdoModelObjects::RTP ] = ModelTemplateItem(IDR_MODEL_TMP7_RTP, 0);
-	modelTemplate[ rdoModelObjects::RSS ] = ModelTemplateItem(IDR_MODEL_TMP7_RSS, 0);
-	modelTemplate[ rdoModelObjects::DPT ] = ModelTemplateItem(IDR_MODEL_TMP7_DPT, 0);
-	modelTemplate[ rdoModelObjects::FUN ] = ModelTemplateItem(IDR_MODEL_TMP7_FUN, 0);
-	modelTemplate[ rdoModelObjects::SMR ] = ModelTemplateItem(IDR_MODEL_TMP7_SMR, 0);
-	modelTemplate[ rdoModelObjects::PMD ] = ModelTemplateItem(IDR_MODEL_TMP7_PMD, 0);
+	modelTemplate[rdoModelObjects::EVN] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.evn");
+	modelTemplate[rdoModelObjects::PAT] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.pat");
+	modelTemplate[rdoModelObjects::RTP] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.rtp");
+	modelTemplate[rdoModelObjects::RSS] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.rss");
+	modelTemplate[rdoModelObjects::DPT] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.dpt");
+	modelTemplate[rdoModelObjects::FUN] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.fun");
+	modelTemplate[rdoModelObjects::SMR] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.smr");
+	modelTemplate[rdoModelObjects::PMD] = ModelTemplateItem(":/new_model_template/new_model_template/template_7/template_7.pmd");
 	m_modelTemplates[7] = modelTemplate;
 
 	notifies.push_back(RT_STUDIO_MODEL_GET_TEXT             );
@@ -709,40 +707,21 @@ void RDOStudioModel::newModelFromRepository()
 			ModelTemplate::const_iterator it = m_modelTemplates[*m_templateIndex].find(m_pModelView->getTab().indexToType(i));
 			if (it != m_modelTemplates[*m_templateIndex].end())
 			{
-				ruint resID = it->second.m_resID;
-				if (resID != - 1)
+				ASSERT(!it->second.resName.isEmpty())
+				QString resourceData;
+				QFile   file(it->second.resName);
+				if (file.open(QIODevice::ReadOnly) && file.isOpen())
 				{
-					// Пытаемся загрузить из String Table
-					tstring s = rdo::format(resID);
-					if (s.empty())
+					resourceData = file.readAll();
+				}
+				if (!resourceData.isEmpty())
+				{
+					edit->replaceCurrent(resourceData.toStdString());
+//					edit->updateEditGUI();
+					edit->scrollToLine(0);
+					if (it->second.position.is_initialized())
 					{
-						// Загрузка из String Table не удалась, пытаемся загрузить из MODEL_TMP (a-la RCDATA)
-						HRSRC res = ::FindResource(studioApp.m_hInstance, MAKEINTRESOURCE(resID), _T("MODEL_TMP"));
-						if (res)
-						{
-							HGLOBAL res_global = ::LoadResource(studioApp.m_hInstance, res);
-							if (res_global)
-							{
-								LPTSTR res_data = static_cast<LPTSTR>(::LockResource(res_global));
-								if (res_data)
-								{
-									DWORD dwSize = ::SizeofResource(studioApp.m_hInstance, res);
-									CString s_res;
-									LPTSTR s_res_data = s_res.GetBuffer(dwSize + 1);
-									memcpy(s_res_data, res_data, dwSize);
-									s_res_data[dwSize] = NULL;
-									s_res.ReleaseBuffer();
-									s = s_res;
-								}
-							}
-						}
-					}
-					if (!s.empty())
-					{
-						edit->replaceCurrent(s);
-//						edit->updateEditGUI();
-						edit->scrollToLine(0);
-						edit->setCurrentPos(it->second.m_position);
+						edit->setCurrentPos(*it->second.position);
 					}
 				}
 			}

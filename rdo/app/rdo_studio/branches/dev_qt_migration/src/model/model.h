@@ -110,12 +110,12 @@ private:
 
 	struct ModelTemplateItem
 	{
-		ruint m_resID;
-		int   m_position;
+		QString                resName;
+		boost::optional<ruint> position;
 
 		ModelTemplateItem();
 		ModelTemplateItem(CREF(ModelTemplateItem) copy);
-		ModelTemplateItem(ruint resID, int position);
+		ModelTemplateItem(CREF(QString) resName, ruint position = 0);
 	};
 	typedef  std::map<rdoModelObjects::RDOFileType, ModelTemplateItem>  ModelTemplate;
 	typedef  std::map<int, ModelTemplate>                               ModelTemplateList;

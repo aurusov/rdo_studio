@@ -82,4 +82,66 @@
     <file>images/mdi_model.png</file>
     <file>images/about.png</file>
   </qresource>
+  <qresource prefix="/new_model_template">
+    <file>new_model_template/template_4/template_4.dpt</file>
+    <file>new_model_template/template_4/template_4.evn</file>
+    <file>new_model_template/template_4/template_4.fun</file>
+    <file>new_model_template/template_4/template_4.pat</file>
+    <file>new_model_template/template_4/template_4.pmd</file>
+    <file>new_model_template/template_4/template_4.rdox</file>
+    <file>new_model_template/template_4/template_4.rss</file>
+    <file>new_model_template/template_4/template_4.rtp</file>
+    <file>new_model_template/template_4/template_4.smr</file>
+    <file>new_model_template/template_5/template_5.dpt</file>
+    <file>new_model_template/template_5/template_5.evn</file>
+    <file>new_model_template/template_5/template_5.fun</file>
+    <file>new_model_template/template_5/template_5.pat</file>
+    <file>new_model_template/template_5/template_5.pmd</file>
+    <file>new_model_template/template_5/template_5.rdox</file>
+    <file>new_model_template/template_5/template_5.rss</file>
+    <file>new_model_template/template_5/template_5.rtp</file>
+    <file>new_model_template/template_5/template_5.smr</file>
+    <file>new_model_template/template_6/template_6.dpt</file>
+    <file>new_model_template/template_6/template_6.evn</file>
+    <file>new_model_template/template_6/template_6.fun</file>
+    <file>new_model_template/template_6/template_6.pat</file>
+    <file>new_model_template/template_6/template_6.pmd</file>
+    <file>new_model_template/template_6/template_6.rdox</file>
+    <file>new_model_template/template_6/template_6.rss</file>
+    <file>new_model_template/template_6/template_6.rtp</file>
+    <file>new_model_template/template_6/template_6.smr</file>
+    <file>new_model_template/template_7/template_7.dpt</file>
+    <file>new_model_template/template_7/template_7.evn</file>
+    <file>new_model_template/template_7/template_7.fun</file>
+    <file>new_model_template/template_7/template_7.pat</file>
+    <file>new_model_template/template_7/template_7.pmd</file>
+    <file>new_model_template/template_7/template_7.rdox</file>
+    <file>new_model_template/template_7/template_7.rss</file>
+    <file>new_model_template/template_7/template_7.rtp</file>
+    <file>new_model_template/template_7/template_7.smr</file>
+    <file>new_model_template/template_1/template_1.rdox</file>
+    <file>new_model_template/template_2/template_2.dpt</file>
+    <file>new_model_template/template_2/template_2.evn</file>
+    <file>new_model_template/template_2/template_2.frm</file>
+    <file>new_model_template/template_2/template_2.fun</file>
+    <file>new_model_template/template_2/template_2.pat</file>
+    <file>new_model_template/template_2/template_2.pmd</file>
+    <file>new_model_template/template_2/template_2.prc</file>
+    <file>new_model_template/template_2/template_2.rdox</file>
+    <file>new_model_template/template_2/template_2.rss</file>
+    <file>new_model_template/template_2/template_2.rtp</file>
+    <file>new_model_template/template_2/template_2.smr</file>
+    <file>new_model_template/template_3/template_3.dpt</file>
+    <file>new_model_template/template_3/template_3.evn</file>
+    <file>new_model_template/template_3/template_3.frm</file>
+    <file>new_model_template/template_3/template_3.fun</file>
+    <file>new_model_template/template_3/template_3.pat</file>
+    <file>new_model_template/template_3/template_3.pmd</file>
+    <file>new_model_template/template_3/template_3.prc</file>
+    <file>new_model_template/template_3/template_3.rdox</file>
+    <file>new_model_template/template_3/template_3.rss</file>
+    <file>new_model_template/template_3/template_3.rtp</file>
+    <file>new_model_template/template_3/template_3.smr</file>
+    <file>new_model_template/template_0/template_0.rdox</file>
+  </qresource>
 </RCC>
