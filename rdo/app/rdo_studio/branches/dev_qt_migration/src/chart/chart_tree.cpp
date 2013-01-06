@@ -10,8 +10,9 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <QtCore/qprocess.h>
+#include <boost/bind.hpp>
 #include <boost/foreach.hpp>
+#include <QtCore/qprocess.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/chart/chart_tree.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracer.h"
@@ -21,7 +22,7 @@
 #include "app/rdo_studio_mfc/rdo_tracer/rdotraceroperation.h"
 #include "app/rdo_studio_mfc/rdo_tracer/rdotracerresult.h"
 #include "app/rdo_studio_mfc/src/application.h"
-#include "app/rdo_studio_mfc/src/main_windows_base.h"
+#include "app/rdo_studio_mfc/src/main_frm.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
@@ -55,6 +56,7 @@ Q_DECLARE_METATYPE(ChartTreeItem*);
 
 ChartTree::ChartTree(PTR(QWidget) pParent)
 	: parent_type(pParent)
+	, ActionActivator(boost::bind(&ChartTree::onActivate, this), boost::bind(&ChartTree::onDeactivate, this))
 {
 	setColumnCount    (1);
 	setHeaderHidden   (true);
@@ -362,6 +364,36 @@ void ChartTree::OnUpdateChartFindincharts(CCmdUI* pCmdUI)
 void ChartTree::OnChartFindincharts()
 {
 	findInCharts(getSelected());
+}
+
+void ChartTree::focusInEvent(QFocusEvent* pEvent)
+{
+	parent_type::focusInEvent(pEvent);
+	activate(pEvent);
+}
+
+void ChartTree::focusOutEvent(QFocusEvent* pEvent)
+{
+	parent_type::focusOutEvent(pEvent);
+	deactivate(pEvent);
+}
+
+void ChartTree::onActivate()
+{
+	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
+	ASSERT(pMainWindow);
+
+	pMainWindow->actHelpContext->setEnabled(true);
+	connect(pMainWindow->actHelpContext, SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
+}
+
+void ChartTree::onDeactivate()
+{
+	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
+	ASSERT(pMainWindow);
+
+	pMainWindow->actHelpContext->setEnabled(false);
+	disconnect(pMainWindow->actHelpContext, SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
 }
 
 void ChartTree::onHelpContext()
