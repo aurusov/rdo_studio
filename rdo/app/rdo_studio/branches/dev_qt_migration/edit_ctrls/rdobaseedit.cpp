@@ -916,11 +916,14 @@ tstring RDOBaseEdit::saveAsRTF(int start, int end) const
 	sprintf( lastStyle, RTF_SETFONTFACE "0" RTF_SETFONTSIZE "%d" RTF_SETCOLOR "0" RTF_SETBACKGROUND "0" RTF_BOLD_OFF RTF_ITALIC_OFF, style->font->size * 2 );
 #pragma warning(default: 4996)
 
+	tstring::size_type prevLength = saveStr.length();
 	rbool prevCR = false;
 	int styleCurrent = -1;
 	for ( i = start; i < end; i++ ) {
-		char ch   = (char)sendEditor( SCI_GETCHARAT, i );
 		int style = sendEditor( SCI_GETSTYLEAT, i );
+		if (!theme->styleUsing(style))
+			continue;
+		char ch   = (char)sendEditor( SCI_GETCHARAT, i );
 		if ( style != styleCurrent ) {
 			GetRTFStyleChange( deltaStyle, lastStyle, styles[style] );
 			if ( *deltaStyle ) saveStr += deltaStyle;
@@ -935,7 +938,15 @@ tstring RDOBaseEdit::saveAsRTF(int start, int end) const
 
 		prevCR = ch == '\r';
 	}
-	saveStr += RTF_BODYCLOSE;
+	rbool wasGenerated = prevLength != saveStr.length();
+	if (wasGenerated)
+	{
+		saveStr += RTF_BODYCLOSE;
+	}
+	else
+	{
+		saveStr.clear();
+	}
 
 	return saveStr;
 }
