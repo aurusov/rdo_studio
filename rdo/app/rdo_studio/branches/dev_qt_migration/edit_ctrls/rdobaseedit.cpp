@@ -1459,7 +1459,7 @@ void RDOBaseEdit::updateActions(rbool activated)
 	);
 	updateAction(
 		pMainWindow->actEditDel,
-		activated && !isReadOnly() && getCurrentPos() != getLength() || isSelected(),
+		activated && !isReadOnly() && (getCurrentPos() != getLength() || isSelected()),
 		this, "1onEditDel() " QLOCATION
 	);
 	updateAction(
