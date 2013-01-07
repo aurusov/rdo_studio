@@ -1459,7 +1459,7 @@ void RDOBaseEdit::updateActions(rbool activated)
 	);
 	updateAction(
 		pMainWindow->actEditDel,
-		activated && getCurrentPos() != getLength() || isSelected(),
+		activated && !isReadOnly() && getCurrentPos() != getLength() || isSelected(),
 		this, "1onEditDel() " QLOCATION
 	);
 	updateAction(
@@ -1469,12 +1469,12 @@ void RDOBaseEdit::updateActions(rbool activated)
 	);
 	updateAction(
 		pMainWindow->actEditUpperCase,
-		activated && isSelected(),
+		activated && !isReadOnly() && isSelected(),
 		this, "1onEditUpperCase() " QLOCATION
 	);
 	updateAction(
 		pMainWindow->actEditLowerCase,
-		activated && isSelected(),
+		activated && !isReadOnly() && isSelected(),
 		this, "1onEditLowerCase() " QLOCATION
 	);
 
