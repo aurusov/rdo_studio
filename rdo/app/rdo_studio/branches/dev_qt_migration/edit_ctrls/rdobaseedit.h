@@ -157,8 +157,9 @@ private slots:
 	void onEditCopy     ();
 	void onEditPaste    ();
 	void onEditDel      ();
-	void onEditCopyAsRTF();
 	void onEditSelectAll();
+
+	void onCopyAsRTF(QMimeData* pMimeData);
 
 	void onUpdateModify ();
 

@@ -89,8 +89,6 @@ border: none;
     <addaction name="actEditPaste"/>
     <addaction name="actEditDel"/>
     <addaction name="separator"/>
-    <addaction name="actEditCopyAsRTF"/>
-    <addaction name="separator"/>
     <addaction name="actEditSelectAll"/>
     <addaction name="separator"/>
     <addaction name="actEditUpPercase"/>
@@ -464,17 +462,6 @@ border: none;
    </property>
    <property name="shortcut">
     <string>Del</string>
-   </property>
-  </action>
-  <action name="actEditCopyAsRTF">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>Копировать как RTF</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Shift+C</string>
    </property>
   </action>
   <action name="actEditSelectAll">

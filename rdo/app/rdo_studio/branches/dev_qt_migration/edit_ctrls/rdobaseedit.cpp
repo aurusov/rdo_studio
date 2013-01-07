@@ -132,6 +132,7 @@ RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent):
 	QObject::connect(this, SIGNAL(charAdded(int)),      this, SLOT(catchCharAdded(int)));
 	QObject::connect(this, SIGNAL(updateUi()),          this, SLOT(onUpdateEditGUI()));
 	QObject::connect(this, SIGNAL(modified(int, int, int, int, const QByteArray&, int, int, int)), this, SLOT(onUpdateModify()));
+	QObject::connect(this, SIGNAL(aboutToCopy(QMimeData*)), this, SLOT(onCopyAsRTF(QMimeData*)));
 
 	sci_MARKER_BOOKMARK = getNewMarker();
 
@@ -675,7 +676,7 @@ rbool RDOBaseEdit::hasBookmarks() const
 	return nextLine >= 0;
 }
 
-void RDOBaseEdit::onEditCopyAsRTF()
+void RDOBaseEdit::onCopyAsRTF(QMimeData* pMimeData)
 {
 	if (!isSelected())
 		return;
@@ -685,14 +686,10 @@ void RDOBaseEdit::onEditCopyAsRTF()
 	if (result.empty())
 		return;
 
-	QMimeData* pMimeData = new QMimeData();
 	QByteArray ba;
 	ba.append(QString::fromStdString(result));
 	//! @todo для линуха надо будет использовать "text/rtf" ?
 	pMimeData->setData("Rich Text Format", ba);
-
-	QClipboard* pClipboard = QApplication::clipboard();
-	pClipboard->setMimeData(pMimeData, QClipboard::Clipboard);
 }
 
 // --------------------------------------------------------------------------------
@@ -1457,11 +1454,6 @@ void RDOBaseEdit::updateActions(rbool activated)
 		pMainWindow->actEditDel,
 		activated && getCurrentPos() != getLength() || isSelected(),
 		this, "1onEditDel() " QLOCATION
-	);
-	updateAction(
-		pMainWindow->actEditCopyAsRTF,
-		activated && isSelected(),
-		this, "1onEditCopyAsRTF() " QLOCATION
 	);
 	updateAction(
 		pMainWindow->actEditSelectAll,
