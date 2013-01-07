@@ -118,8 +118,6 @@ private:
 	//! @todo qt
 	//afx_msg void OnSetFocus( CWnd *pOldWnd );
 	//afx_msg void OnContextMenu( CWnd* pWnd, CPoint pos );
-	afx_msg void OnEditUpperCase();
-	afx_msg void OnEditLowerCase();
 	afx_msg void OnSearchFind();
 	afx_msg void OnSearchReplace();
 	afx_msg void OnSearchFindNext();
@@ -158,6 +156,8 @@ private slots:
 	void onEditPaste    ();
 	void onEditDel      ();
 	void onEditSelectAll();
+	void onEditUpperCase();
+	void onEditLowerCase();
 
 	void onCopyAsRTF(QMimeData* pMimeData);
 

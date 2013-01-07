@@ -78,8 +78,6 @@ static const UINT FIND_REPLASE_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 //BEGIN_MESSAGE_MAP( RDOBaseEdit, CWnd )
 //	ON_WM_SETFOCUS()
 //	ON_WM_CONTEXTMENU()
-//	ON_COMMAND(ID_EDIT_UPPERCASE, OnEditUpperCase)
-//	ON_COMMAND(ID_EDIT_LOWERCASE, OnEditLowerCase)
 //	ON_COMMAND(ID_SEARCH_FIND, OnSearchFind)
 //	ON_COMMAND(ID_SEARCH_REPLACE, OnSearchReplace)
 //	ON_COMMAND(ID_SEARCH_FIND_NEXT, OnSearchFindNext)
@@ -104,8 +102,6 @@ static const UINT FIND_REPLASE_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 //	ON_UPDATE_COMMAND_UI( ID_VIEW_ZOOMIN          , OnUpdateZoomIn )
 //	ON_UPDATE_COMMAND_UI( ID_VIEW_ZOOMOUT         , OnUpdateZoomOut )
 //	ON_UPDATE_COMMAND_UI( ID_VIEW_ZOOMRESET       , OnUpdateZoomReset )
-//	ON_UPDATE_COMMAND_UI( ID_EDIT_UPPERCASE       , OnIsSelected )
-//	ON_UPDATE_COMMAND_UI( ID_EDIT_LOWERCASE       , OnIsSelected )
 //	ON_UPDATE_COMMAND_UI( ID_SEARCH_BOOKMARK_PREVIOUS, OnHasBookmarks )
 //	ON_UPDATE_COMMAND_UI( ID_SEARCH_BOOKMARKS_CLEAR  , OnHasBookmarks )
 //	ON_UPDATE_COMMAND_UI( ID_SEARCH_FIND_PREVIOUS, OnUpdateSearchFindNextPrev )
@@ -295,14 +291,14 @@ void RDOBaseEdit::onEditSelectAll()
 	sendEditor(SCI_SELECTALL);
 }
 
-void RDOBaseEdit::OnEditUpperCase() 
+void RDOBaseEdit::onEditUpperCase() 
 {
-	sendEditor( SCI_UPPERCASE );
+	sendEditor(SCI_UPPERCASE);
 }
 
-void RDOBaseEdit::OnEditLowerCase() 
+void RDOBaseEdit::onEditLowerCase() 
 {
-	sendEditor( SCI_LOWERCASE );
+	sendEditor(SCI_LOWERCASE);
 }
 
 void RDOBaseEdit::OnIsSelected( CCmdUI* pCmdUI )
@@ -1470,6 +1466,16 @@ void RDOBaseEdit::updateActions(rbool activated)
 		pMainWindow->actEditSelectAll,
 		activated && !isEmpty(),
 		this, "1onEditSelectAll() " QLOCATION
+	);
+	updateAction(
+		pMainWindow->actEditUpperCase,
+		activated && isSelected(),
+		this, "1onEditUpperCase() " QLOCATION
+	);
+	updateAction(
+		pMainWindow->actEditLowerCase,
+		activated && isSelected(),
+		this, "1onEditLowerCase() " QLOCATION
 	);
 
 	QString modify = activated
