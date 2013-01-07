@@ -301,11 +301,6 @@ void RDOBaseEdit::onEditLowerCase()
 	sendEditor(SCI_LOWERCASE);
 }
 
-void RDOBaseEdit::OnIsSelected( CCmdUI* pCmdUI )
-{
-	pCmdUI->Enable( isSelected() );
-}
-
 tstring RDOBaseEdit::getCurrentWord() const
 {
 	int pos_begin = sendEditor( SCI_WORDSTARTPOSITION, getCurrentPos(), true );

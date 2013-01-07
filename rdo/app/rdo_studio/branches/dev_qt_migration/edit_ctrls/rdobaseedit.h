@@ -106,8 +106,6 @@ protected:
 	virtual void onActivate   ();
 	virtual void onDeactivate ();
 
-	afx_msg void OnIsSelected(CCmdUI* pCmdUI);
-
 protected slots:
 	        void onUpdateEditGUI();
 	virtual void onHelpContext  () = 0;
