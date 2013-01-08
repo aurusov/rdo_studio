@@ -708,7 +708,7 @@ void RDOEditorEdit::onUpdateActions(rbool activated)
 
 	updateAction(
 		pMainWindow->actViewToggleCurrentfold,
-		activated,
+		activated && !isEmpty(),
 		this, "onToggleCurrentFold()"
 		);
 
