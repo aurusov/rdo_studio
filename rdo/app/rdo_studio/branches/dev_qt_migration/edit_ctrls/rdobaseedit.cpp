@@ -132,9 +132,6 @@ static const UINT FIND_REPLASE_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 //	ON_COMMAND(ID_VIEW_ZOOMIN, OnViewZoomIn)
 //	ON_COMMAND(ID_VIEW_ZOOMOUT, OnViewZoomOut)
 //	ON_COMMAND(ID_VIEW_ZOOMRESET, OnViewZoomReset)
-//	ON_UPDATE_COMMAND_UI( ID_VIEW_ZOOMIN          , OnUpdateZoomIn )
-//	ON_UPDATE_COMMAND_UI( ID_VIEW_ZOOMOUT         , OnUpdateZoomOut )
-//	ON_UPDATE_COMMAND_UI( ID_VIEW_ZOOMRESET       , OnUpdateZoomReset )
 //	ON_UPDATE_COMMAND_UI( ID_SEARCH_BOOKMARK_PREVIOUS, OnHasBookmarks )
 //	ON_UPDATE_COMMAND_UI( ID_SEARCH_BOOKMARKS_CLEAR  , OnHasBookmarks )
 //	ON_UPDATE_COMMAND_UI( ID_SEARCH_FIND_PREVIOUS, OnUpdateSearchFindNextPrev )
@@ -1255,34 +1252,19 @@ void RDOBaseEdit::onViewShowEndOfLine()
 	methodOfGroup(boost::bind(&RDOBaseEdit::setViewEndOfLine, _1, !isViewEndOfLine()));
 }
 
-void RDOBaseEdit::OnViewZoomIn() 
+void RDOBaseEdit::onViewZoomInc() 
 {
 	methodOfGroup(boost::bind(&RDOBaseEdit::zoomIn, _1));
 }
 
-void RDOBaseEdit::OnViewZoomOut() 
+void RDOBaseEdit::onViewZoomDec() 
 {
 	methodOfGroup(boost::bind(&RDOBaseEdit::zoomOut, _1));
 }
 
-void RDOBaseEdit::OnViewZoomReset() 
+void RDOBaseEdit::onViewZoomReset() 
 {
 	methodOfGroup(boost::bind(&RDOBaseEdit::resetZoom, _1));
-}
-
-void RDOBaseEdit::OnUpdateZoomIn( CCmdUI *pCmdUI )
-{
-	pCmdUI->Enable( getZoom() < 20 );
-}
-
-void RDOBaseEdit::OnUpdateZoomOut( CCmdUI *pCmdUI )
-{
-	pCmdUI->Enable( getZoom() > -10 );
-}
-
-void RDOBaseEdit::OnUpdateZoomReset( CCmdUI *pCmdUI )
-{
-	pCmdUI->Enable( getZoom() );
 }
 
 int RDOBaseEdit::findPos( REF(tstring) findWhat, const int startFromLine, const rbool matchCase, const rbool matchWholeWord ) const
@@ -1424,6 +1406,24 @@ void RDOBaseEdit::onUpdateActions(rbool activated)
 		activated,
 		this, "onHelpContext()"
 	);
+
+	updateAction(
+		pMainWindow->actViewZoomInc,
+		activated &&  getZoom() < 20,
+		this, "onViewZoomInc()"
+		);
+
+	updateAction(
+		pMainWindow->actViewZoomDec,
+		activated && getZoom() > -10,
+		this, "onViewZoomDec()"
+		);
+
+	updateAction(
+		pMainWindow->actViewZoomReset,
+		activated && getZoom(),
+		this, "onViewZoomReset()"
+		);
 
 	QString modify = activated
 		? isReadOnly()

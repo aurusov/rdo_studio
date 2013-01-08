@@ -94,14 +94,8 @@ private:
 	afx_msg void OnBookmarkPrev();
 	afx_msg void OnBookmarkClearAll();
 	afx_msg void OnHasBookmarks( CCmdUI* pCmdUI );
-	afx_msg void OnViewZoomIn();
-	afx_msg void OnViewZoomOut();
-	afx_msg void OnViewZoomReset();
 	afx_msg void OnUpdateWhiteSpace( CCmdUI* pCmdUI );
 	afx_msg void OnUpdateEndOfLine( CCmdUI* pCmdUI );
-	afx_msg void OnUpdateZoomIn( CCmdUI *pCmdUI );
-	afx_msg void OnUpdateZoomOut( CCmdUI *pCmdUI );
-	afx_msg void OnUpdateZoomReset( CCmdUI *pCmdUI );
 	afx_msg void OnSearchGotoLine();
 	afx_msg LRESULT OnFindReplaceMsg( WPARAM wParam, LPARAM lParam );
 
@@ -118,6 +112,10 @@ private slots:
 	void onEditSelectAll();
 	void onEditUpperCase();
 	void onEditLowerCase();
+
+	void onViewZoomInc();
+	void onViewZoomDec();
+	void onViewZoomReset();
 
 	void onViewShowWhiteSpace();
 	void onViewShowEndOfLine ();
