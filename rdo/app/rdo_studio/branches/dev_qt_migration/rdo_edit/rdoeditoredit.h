@@ -38,8 +38,6 @@ protected:
 
 	void expand( int& line, rbool doExpand, rbool force = false, int visLevels = 0, int level = -1 ) const;
 	void foldChanged( int line, int levelNow, int levelPrev ) const;
-	void toggleCurrentFold() const;
-	void toggleAllFolds() const;
 	void foldMarginClick( int position, int modifiers ) const;
 
 	rbool canClearErrorLine;
@@ -59,8 +57,8 @@ private:
 private slots:
 	void onEditCommentSelection() const;
 	void onEditCompleteWord    ();
-	void onToggleAllFolds      ();
-	void onToggleCurrentFold   ();
+	void onToggleAllFolds      () const;
+	void onToggleCurrentFold   () const;
 
 public:
 	RDOEditorEdit(PTR(QWidget) pParent, PTR(QWidget) pView = NULL);

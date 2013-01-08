@@ -286,12 +286,12 @@ void RDOEditorEdit::foldChanged(int line, int levelNow, int levelPrev) const
 	}
 }
 
-void RDOEditorEdit::toggleCurrentFold() const
+void RDOEditorEdit::onToggleCurrentFold() const
 {
 	sendEditor(SCI_TOGGLEFOLD, getCurrentLineNumber());
 }
 
-void RDOEditorEdit::toggleAllFolds() const
+void RDOEditorEdit::onToggleAllFolds() const
 {
 	sendEditor(SCI_COLOURISE, 0, -1);
 	int maxLine = getLineCount();
@@ -334,7 +334,7 @@ void RDOEditorEdit::foldMarginClick(int position, int modifiers) const
 	int lineClick = getLineFromPosition(position);
 	if ((modifiers & SCMOD_SHIFT) && (modifiers & SCMOD_CTRL))
 	{
-		toggleAllFolds();
+		onToggleAllFolds();
 	}
 	else
 	{
@@ -369,16 +369,6 @@ void RDOEditorEdit::foldMarginClick(int position, int modifiers) const
 			}
 		}
 	}
-}
-
-void RDOEditorEdit::onToggleCurrentFold()
-{
-	toggleCurrentFold();
-}
-
-void RDOEditorEdit::onToggleAllFolds()
-{
-	toggleAllFolds();
 }
 
 void RDOEditorEdit::onEditCommentSelection() const
