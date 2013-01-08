@@ -1155,7 +1155,7 @@ void RDOBaseEdit::onBookmarkToggle()
 	bookmarkToggle();
 }
 
-void RDOBaseEdit::onBookmarkNext()
+void RDOBaseEdit::onBookmarkNext() const
 {
 	onBookmarkNextPrev(
 		boost::bind(&RDOBaseEdit::bookmarkNext, _1, _2, _3),
@@ -1163,7 +1163,7 @@ void RDOBaseEdit::onBookmarkNext()
 	);
 }
 
-void RDOBaseEdit::onBookmarkPrev()
+void RDOBaseEdit::onBookmarkPrev() const
 {
 	onBookmarkNextPrev(
 		boost::bind(&RDOBaseEdit::bookmarkPrev, _1, _2, _3),
@@ -1174,7 +1174,7 @@ void RDOBaseEdit::onBookmarkPrev()
 void RDOBaseEdit::onBookmarkNextPrev(
 	const boost::function<rbool (const RDOBaseEdit*, rbool, rbool)>& nextPrevFun,
 	const boost::function<Group::List::const_iterator (const Group::List::const_iterator& it)>& nextPrevGroup
-)
+) const
 {
 	if (nextPrevFun(this, false, true))
 	{

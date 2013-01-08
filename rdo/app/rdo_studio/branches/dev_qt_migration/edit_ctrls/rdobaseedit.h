@@ -108,8 +108,8 @@ private slots:
 	void onViewShowEndOfLine ();
 
 	void onBookmarkToggle  ();
-	void onBookmarkNext    ();
-	void onBookmarkPrev    ();
+	void onBookmarkNext    () const;
+	void onBookmarkPrev    () const;
 	void onBookmarkClearAll();
 
 	void onCopyAsRTF(QMimeData* pMimeData);
@@ -230,7 +230,7 @@ private:
 	void onBookmarkNextPrev(
 		const boost::function<rbool (const RDOBaseEdit*, rbool, rbool)>& nextPrevFun,
 		const boost::function<Group::List::const_iterator (const Group::List::const_iterator& it)>& nextPrevGroup
-	);
+	) const;
 };
 
 } // namespace rdoEditCtrl
