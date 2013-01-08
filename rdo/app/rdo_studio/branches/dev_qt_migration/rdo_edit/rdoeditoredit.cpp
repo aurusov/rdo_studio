@@ -697,13 +697,13 @@ void RDOEditorEdit::onUpdateActions(rbool activated)
 	);
 
 	updateAction(
-		pMainWindow->actViewToggleCurrentfold,
+		pMainWindow->actViewToggleCurrentFold,
 		activated && !isEmpty(),
 		this, "onToggleCurrentFold()"
 		);
 
 	updateAction(
-		pMainWindow->actViewToggleAllfolds,
+		pMainWindow->actViewToggleAllFolds,
 		activated && !isEmpty(),
 		this, "onToggleAllFolds()"
 		);

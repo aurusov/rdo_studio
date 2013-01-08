@@ -118,8 +118,8 @@ border: none;
     <property name="title">
      <string>Просмотр</string>
     </property>
-    <addaction name="actViewToggleAllfolds"/>
-    <addaction name="actViewToggleCurrentfold"/>
+    <addaction name="actViewToggleAllFolds"/>
+    <addaction name="actViewToggleCurrentFold"/>
     <addaction name="separator"/>
     <addaction name="actViewShowWhiteSpace"/>
     <addaction name="actViewShowEndOfLine"/>
@@ -649,7 +649,7 @@ border: none;
     <string>Ctrl+G</string>
    </property>
   </action>
-  <action name="actViewToggleAllfolds">
+  <action name="actViewToggleAllFolds">
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -660,7 +660,7 @@ border: none;
     <string>Ctrl+0</string>
    </property>
   </action>
-  <action name="actViewToggleCurrentfold">
+  <action name="actViewToggleCurrentFold">
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -668,10 +668,7 @@ border: none;
     <string>Свернуть/развернуть текущую группу</string>
    </property>
   </action>
-  <action name="actViewShowWhiteSpace">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
+  <action name="actViewShowSpace">
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -682,15 +679,12 @@ border: none;
     <string>Ctrl+8</string>
    </property>
   </action>
-  <action name="actViewShowEndOfLine">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
+  <action name="actViewShowEndSymbol">
    <property name="enabled">
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>Показать символы конца строки</string>
+    <string>Показать символ конца строки</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+9</string>
