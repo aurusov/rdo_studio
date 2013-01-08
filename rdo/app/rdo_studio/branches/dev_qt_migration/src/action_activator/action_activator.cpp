@@ -55,19 +55,17 @@ void ActionActivator::deactivate(QFocusEvent* pEvent)
 void ActionActivator::updateAction(QAction* pAction, rbool enabled, QObject* pObject, CREF(tstring) method)
 {
 	ASSERT(pAction);
-	ASSERT(pObject);
 
-	if (pAction->isEnabled() != enabled)
+	pAction->setEnabled(enabled);
+	if (enabled)
 	{
+		ASSERT(pObject);
+		ASSERT(!method.empty());
 		tstring formattedMethod = rdo::format("1%s %s", method.c_str(), QLOCATION);
-		pAction->setEnabled(enabled);
-		if (enabled)
-		{
-			QObject::connect(pAction, SIGNAL(triggered(bool)), pObject, qFlagLocation(formattedMethod.c_str()));
-		}
-		else
-		{
-			QObject::disconnect(pAction, SIGNAL(triggered(bool)), pObject, qFlagLocation(formattedMethod.c_str()));
-		}
+		QObject::connect(pAction, SIGNAL(triggered(bool)), pObject, qFlagLocation(formattedMethod.c_str()), Qt::UniqueConnection);
+	}
+	else
+	{
+		QObject::disconnect(pAction, SIGNAL(triggered(bool)), NULL, NULL);
 	}
 }
