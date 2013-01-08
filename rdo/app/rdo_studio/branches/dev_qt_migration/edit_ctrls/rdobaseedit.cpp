@@ -639,11 +639,9 @@ rbool RDOBaseEdit::bookmarkNext(rbool canLoop, rbool fromCurrentLine, rbool* was
 	rbool wasFound = false;
 	rbool was_loop = false;
 
-	int line = -1;
-	if (fromCurrentLine)
-	{
-		line = getCurrentLineNumber();
-	}
+	int line = fromCurrentLine
+		? getCurrentLineNumber()
+		: -1;
 
 	int nextLine = sendEditor(SCI_MARKERNEXT, line + 1, 1 << sci_MARKER_BOOKMARK);
 	if (nextLine < 0)
@@ -672,11 +670,9 @@ rbool RDOBaseEdit::bookmarkPrev(rbool canLoop, rbool fromCurrentLine, rbool* was
 	rbool was_loop = false;
 
 	int lineCount = getLineCount();
-	int line = lineCount + 1;
-	if (fromCurrentLine)
-	{
-		line = getCurrentLineNumber();
-	}
+	int line = fromCurrentLine
+		? getCurrentLineNumber()
+		: lineCount + 1;
 
 	int prevLine  = sendEditor(SCI_MARKERPREVIOUS, line - 1, 1 << sci_MARKER_BOOKMARK);
 	if (prevLine < 0)
