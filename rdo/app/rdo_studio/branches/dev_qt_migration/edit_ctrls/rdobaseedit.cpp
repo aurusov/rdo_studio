@@ -1407,16 +1407,6 @@ void RDOBaseEdit::onUpdateActions(rbool activated)
 		this, "onViewZoomReset()"
 	);
 	updateAction(
-		pMainWindow->actViewShowWhiteSpace,
-		activated,
-		this, "onViewShowWhiteSpace()"
-	);
-	updateAction(
-		pMainWindow->actViewShowEndOfLine,
-		activated,
-		this, "onViewShowEndOfLine()"
-	);
-	updateAction(
 		pMainWindow->actSearchBookmarkNext,
 		activated && GUI_HAS_BOOKMARK,
 		this, "onBookmarkNext()"
