@@ -1153,37 +1153,44 @@ void RDOBaseEdit::onBookmarkToggle()
 
 void RDOBaseEdit::onBookmarkNext()
 {
-	if ( bookmarkNext( false, true ) ) return;
+	if (bookmarkNext(false, true))
+	{
+		return;
+	}
 
-	if ( !m_pGroup ) {
-
+	if (!m_pGroup)
+	{
 		bookmarkNext();
-
-	} else {
-
-		Group::List::const_iterator it = m_pGroup->begin();
-		while ( it != m_pGroup->end() ) {
-			if ( *it == this ) break;
-			it++;
-		}
-		if ( !(*it) ) return;
+	}
+	else
+	{
+		Group::List::const_iterator it = std::find(m_pGroup->begin(), m_pGroup->end(), this);
+		ASSERT(it != m_pGroup->end());
 
 		rbool allItem = false;
 		rbool wasLoop = true;
-		while ( !allItem && *it && wasLoop ) {
-			it++;
-			if ( it == m_pGroup->end() ) {
+		while (!allItem && *it && wasLoop)
+		{
+			++it;
+			if (it == m_pGroup->end())
+			{
 				it = m_pGroup->begin();
 			}
-			if ( *it == this ) {
+			if (*it == this)
+			{
 				allItem = true;
-			} else {
-				(*it)->bookmarkNext( false, false, &wasLoop );
+			}
+			else
+			{
+				(*it)->bookmarkNext(false, false, &wasLoop);
 			}
 		}
-		if ( !allItem ) {
+		if (!allItem)
+		{
 			(*it)->setFocus();
-		} else {
+		}
+		else
+		{
 			(*it)->bookmarkNext();
 		}
 	}
@@ -1191,37 +1198,44 @@ void RDOBaseEdit::onBookmarkNext()
 
 void RDOBaseEdit::onBookmarkPrev()
 {
-	if ( bookmarkPrev( false, true ) ) return;
+	if (bookmarkPrev(false, true))
+	{
+		return;
+	}
 
-	if ( !m_pGroup ) {
-
+	if (!m_pGroup)
+	{
 		bookmarkPrev();
-
-	} else {
-
-		Group::List::const_iterator it = m_pGroup->begin();
-		while ( it != m_pGroup->end() ) {
-			if ( *it == this ) break;
-			it++;
-		}
-		if ( !(*it) ) return;
+	}
+	else
+	{
+		Group::List::const_iterator it = std::find(m_pGroup->begin(), m_pGroup->end(), this);
+		ASSERT(it != m_pGroup->end());
 
 		rbool allItem = false;
 		rbool wasLoop = true;
-		while ( !allItem && *it && wasLoop ) {
-			if ( it == m_pGroup->begin() ) {
+		while (!allItem && *it && wasLoop)
+		{
+			if (it == m_pGroup->begin())
+			{
 				it = m_pGroup->end();
 			}
-			it--;
-			if ( *it == this ) {
+			--it;
+			if (*it == this)
+			{
 				allItem = true;
-			} else {
-				(*it)->bookmarkPrev( false, false, &wasLoop );
+			}
+			else
+			{
+				(*it)->bookmarkPrev(false, false, &wasLoop);
 			}
 		}
-		if ( !allItem ) {
+		if (!allItem)
+		{
 			(*it)->setFocus();
-		} else {
+		}
+		else
+		{
 			(*it)->bookmarkPrev();
 		}
 	}
