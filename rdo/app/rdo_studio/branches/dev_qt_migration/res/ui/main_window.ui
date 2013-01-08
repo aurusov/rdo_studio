@@ -657,7 +657,7 @@ border: none;
     <string>Свернуть/развернуть все группы</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+0</string>
+    <string>Ctrl+Shift+0</string>
    </property>
   </action>
   <action name="actViewToggleCurrentFold">
@@ -679,7 +679,7 @@ border: none;
     <string>Показать пробелы</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+8</string>
+    <string>Ctrl+Shift+8</string>
    </property>
   </action>
   <action name="actViewShowEndOfLine">
@@ -693,7 +693,7 @@ border: none;
     <string>Показать символы конца строки</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+9</string>
+    <string>Ctrl+Shift+9</string>
    </property>
   </action>
   <action name="actViewZoomInc">
