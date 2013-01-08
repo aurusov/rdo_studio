@@ -617,70 +617,96 @@ void RDOBaseEdit::clearAll()
 	setReadOnly( readOnly );
 }
 
-rbool RDOBaseEdit::bookmarkToggle( int line ) const
+rbool RDOBaseEdit::bookmarkToggle(int line) const
 {
-	if ( line == -1 ) line = getCurrentLineNumber();
-	int state = sendEditor( SCI_MARKERGET, line );
-	if ( state & (1 << sci_MARKER_BOOKMARK) ) {
-		sendEditor( SCI_MARKERDELETE, line, sci_MARKER_BOOKMARK );
+	if (line == -1)
+	{
+		line = getCurrentLineNumber();
+	}
+	int state = sendEditor(SCI_MARKERGET, line);
+	if (state & (1 << sci_MARKER_BOOKMARK))
+	{
+		sendEditor(SCI_MARKERDELETE, line, sci_MARKER_BOOKMARK);
 		return false;
 	} else {
-		sendEditor( SCI_MARKERADD, line, sci_MARKER_BOOKMARK );
+		sendEditor(SCI_MARKERADD, line, sci_MARKER_BOOKMARK);
 		return true;
 	}
 }
 
-rbool RDOBaseEdit::bookmarkNext( const rbool canLoop, const rbool fromCurrentLine, rbool* wasLoop ) const
+rbool RDOBaseEdit::bookmarkNext(rbool canLoop, rbool fromCurrentLine, rbool* wasLoop) const
 {
 	rbool wasFound = false;
 	rbool was_loop = false;
 
 	int line = -1;
-	if ( fromCurrentLine ) line = getCurrentLineNumber();
-
-	int nextLine = sendEditor( SCI_MARKERNEXT, line + 1, 1 << sci_MARKER_BOOKMARK );
-	if ( nextLine < 0 ) {
-		was_loop = true;
-		if ( canLoop ) nextLine = sendEditor( SCI_MARKERNEXT, 0, 1 << sci_MARKER_BOOKMARK );
+	if (fromCurrentLine)
+	{
+		line = getCurrentLineNumber();
 	}
-	if ( (( canLoop && was_loop ) || !was_loop ) && nextLine >= 0 && nextLine != line ) {
-		gotoLineEnsureVisible( nextLine );
+
+	int nextLine = sendEditor(SCI_MARKERNEXT, line + 1, 1 << sci_MARKER_BOOKMARK);
+	if (nextLine < 0)
+	{
+		was_loop = true;
+		if (canLoop)
+		{
+			nextLine = sendEditor(SCI_MARKERNEXT, 0, 1 << sci_MARKER_BOOKMARK);
+		}
+	}
+	if (((canLoop && was_loop) || !was_loop) && nextLine >= 0 && nextLine != line)
+	{
+		gotoLineEnsureVisible(nextLine);
 		wasFound = true;
 	}
-	if ( wasLoop ) *wasLoop = was_loop;
+	if (wasLoop)
+	{
+		*wasLoop = was_loop;
+	}
 	return wasFound;
 }
 
-rbool RDOBaseEdit::bookmarkPrev( const rbool canLoop, const rbool fromCurrentLine, rbool* wasLoop ) const
+rbool RDOBaseEdit::bookmarkPrev(rbool canLoop, rbool fromCurrentLine, rbool* wasLoop) const
 {
 	rbool wasFound = false;
 	rbool was_loop = false;
 
 	int lineCount = getLineCount();
 	int line = lineCount + 1;
-	if ( fromCurrentLine ) line = getCurrentLineNumber();
-
-	int prevLine  = sendEditor( SCI_MARKERPREVIOUS, line - 1, 1 << sci_MARKER_BOOKMARK );
-	if ( prevLine < 0 ) {
-		was_loop = true;
-		if ( canLoop ) prevLine = sendEditor( SCI_MARKERPREVIOUS, lineCount, 1 << sci_MARKER_BOOKMARK );
+	if (fromCurrentLine)
+	{
+		line = getCurrentLineNumber();
 	}
-	if ( (( canLoop && was_loop ) || !was_loop ) && prevLine >= 0 && prevLine != line ) {
-		gotoLineEnsureVisible( prevLine );
+
+	int prevLine  = sendEditor(SCI_MARKERPREVIOUS, line - 1, 1 << sci_MARKER_BOOKMARK);
+	if (prevLine < 0)
+	{
+		was_loop = true;
+		if (canLoop)
+		{
+			prevLine = sendEditor(SCI_MARKERPREVIOUS, lineCount, 1 << sci_MARKER_BOOKMARK);
+		}
+	}
+	if (((canLoop && was_loop) || !was_loop) && prevLine >= 0 && prevLine != line)
+	{
+		gotoLineEnsureVisible(prevLine);
 		wasFound = true;
 	}
-	if ( wasLoop ) *wasLoop = was_loop;
+	if (wasLoop)
+	{
+		*wasLoop = was_loop;
+	}
 	return wasFound;
 }
 
 void RDOBaseEdit::bookmarkClearAll() const
 {
-	sendEditor( SCI_MARKERDELETEALL, sci_MARKER_BOOKMARK );
+	sendEditor(SCI_MARKERDELETEALL, sci_MARKER_BOOKMARK);
 }
 
 rbool RDOBaseEdit::hasBookmarks() const
 {
-	int nextLine = sendEditor( SCI_MARKERNEXT, 0, 1 << sci_MARKER_BOOKMARK );
+	int nextLine = sendEditor(SCI_MARKERNEXT, 0, 1 << sci_MARKER_BOOKMARK);
 	return nextLine >= 0;
 }
 

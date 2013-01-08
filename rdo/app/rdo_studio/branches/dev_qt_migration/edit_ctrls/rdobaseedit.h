@@ -184,11 +184,11 @@ public:
 	void zoomOut() const                                   { sendEditor( SCI_ZOOMOUT );        };
 	void resetZoom() const                                 { sendEditor( SCI_SETZOOM, 0 );     };
 
-	rbool bookmarkToggle( int line = -1 ) const;
-	rbool bookmarkNext( const rbool canLoop = true, const rbool fromCurrentLine = true, rbool* wasLoop = NULL ) const;
-	rbool bookmarkPrev( const rbool canLoop = true, const rbool fromCurrentLine = true, rbool* wasLoop = NULL ) const;
+	rbool bookmarkToggle  (int line = -1) const;
+	rbool bookmarkNext    (rbool canLoop = true, rbool fromCurrentLine = true, rbool* wasLoop = NULL) const;
+	rbool bookmarkPrev    (rbool canLoop = true, rbool fromCurrentLine = true, rbool* wasLoop = NULL) const;
 	void  bookmarkClearAll() const;
-	rbool hasBookmarks() const;
+	rbool hasBookmarks    () const;
 
 	int getLength() const                           { return sendEditor( SCI_GETLENGTH );                  };
 	int getLineCount() const                        { return sendEditor( SCI_GETLINECOUNT );               };
