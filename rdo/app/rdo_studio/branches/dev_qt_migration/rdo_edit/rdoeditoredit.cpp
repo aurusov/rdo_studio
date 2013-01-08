@@ -209,11 +209,6 @@ void RDOEditorEdit::setEditorStyle(PTR(RDOEditorEditStyle) pStyle)
 	defineMarker(sci_MARKER_ERROR, SC_MARK_BACKGROUND, RGB(0xFF, 0xFF, 0xFF), static_cast<RDOEditorEditTheme*>(style->theme)->errorBgColor);
 }
 
-void RDOEditorEdit::OnEditCompleteWord() 
-{
-	completeWord();
-}
-
 void RDOEditorEdit::expand(int& line, rbool doExpand, rbool force, int visLevels, int level) const
 {
 	int lineMaxSubord = sendEditor(SCI_GETLASTCHILD, line, level & SC_FOLDLEVELNUMBERMASK);
@@ -422,6 +417,11 @@ void RDOEditorEdit::onEditCommentSelection() const
 		setSelection(cr.cpMin, cr.cpMax);
 	}
 	sendEditor(SCI_ENDUNDOACTION);
+}
+
+void RDOEditorEdit::onEditCompleteWord()
+{
+	completeWord();
 }
 
 void RDOEditorEdit::completeWord()
@@ -713,5 +713,11 @@ void RDOEditorEdit::onUpdateActions(rbool activated)
 		pMainWindow->actEditCommentSelection,
 		activated && isSelected(),
 		this, "onEditCommentSelection()"
+	);
+
+	updateAction(
+		pMainWindow->actEditCompleteWord,
+		activated,
+		this, "onEditCompleteWord()"
 	);
 }

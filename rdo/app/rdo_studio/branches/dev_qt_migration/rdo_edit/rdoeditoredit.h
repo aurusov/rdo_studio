@@ -52,7 +52,6 @@ private:
 	virtual void onUpdateActions(rbool activated);
 	virtual void onHelpContext  ();
 
-	afx_msg void OnEditCompleteWord();
 	afx_msg void OnGotoNext();
 	afx_msg void OnGotoPrev();
 	afx_msg void OnUpdateGotoNext(CCmdUI* pCmdUI);
@@ -64,6 +63,7 @@ private:
 
 private slots:
 	void onEditCommentSelection() const;
+	void onEditCompleteWord();
 
 public:
 	RDOEditorEdit(PTR(QWidget) pParent, PTR(QWidget) pView = NULL);
