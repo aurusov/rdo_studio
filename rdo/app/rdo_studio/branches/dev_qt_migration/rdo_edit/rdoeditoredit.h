@@ -42,7 +42,6 @@ protected:
 	void toggleAllFolds() const;
 	void foldMarginClick( int position, int modifiers ) const;
 
-	void commentSelection() const;
 	void completeWord();
 
 	rbool canClearErrorLine;
@@ -50,9 +49,9 @@ protected:
 	rbool hasErrorLine  () const;
 
 private:
-	virtual void onHelpContext();
+	virtual void onUpdateActions(rbool activated);
+	virtual void onHelpContext  ();
 
-	afx_msg void OnEditCommentSelection();
 	afx_msg void OnEditCompleteWord();
 	afx_msg void OnGotoNext();
 	afx_msg void OnGotoPrev();
@@ -62,6 +61,9 @@ private:
 	afx_msg void OnToggleCurrentFold();
 	afx_msg void OnUpdateFold(CCmdUI* pCmdUI);
 	afx_msg void OnInsertCommand( UINT nID );
+
+private slots:
+	void onEditCommentSelection() const;
 
 public:
 	RDOEditorEdit(PTR(QWidget) pParent, PTR(QWidget) pView = NULL);
