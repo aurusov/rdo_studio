@@ -1411,47 +1411,47 @@ void RDOBaseEdit::updateActions(rbool activated)
 	updateAction(
 		pMainWindow->actEditUndo,
 		activated && sendEditor(SCI_CANUNDO),
-		this, "1onEditUndo() " QLOCATION
+		this, "onEditUndo()"
 	);
 	updateAction(
 		pMainWindow->actEditRedo,
 		activated && sendEditor(SCI_CANREDO),
-		this, "1onEditRedo() " QLOCATION
+		this, "onEditRedo()"
 	);
 	updateAction(
 		pMainWindow->actEditCut,
 		activated && !isReadOnly() && isSelected(),
-		this, "1onEditCut() " QLOCATION
+		this, "onEditCut()"
 	);
 	updateAction(
 		pMainWindow->actEditCopy,
 		activated && isSelected(),
-		this, "1onEditCopy() " QLOCATION
+		this, "onEditCopy()"
 	);
 	updateAction(
 		pMainWindow->actEditPaste,
 		activated && sendEditor(SCI_CANPASTE),
-		this, "1onEditPaste() " QLOCATION
+		this, "onEditPaste()"
 	);
 	updateAction(
 		pMainWindow->actEditDel,
 		activated && !isReadOnly() && (getCurrentPos() != getLength() || isSelected()),
-		this, "1onEditDel() " QLOCATION
+		this, "onEditDel()"
 	);
 	updateAction(
 		pMainWindow->actEditSelectAll,
 		activated && !isEmpty(),
-		this, "1onEditSelectAll() " QLOCATION
+		this, "onEditSelectAll()"
 	);
 	updateAction(
 		pMainWindow->actEditUpperCase,
 		activated && !isReadOnly() && isSelected(),
-		this, "1onEditUpperCase() " QLOCATION
+		this, "onEditUpperCase()"
 	);
 	updateAction(
 		pMainWindow->actEditLowerCase,
 		activated && !isReadOnly() && isSelected(),
-		this, "1onEditLowerCase() " QLOCATION
+		this, "onEditLowerCase()"
 	);
 
 	QString modify = activated

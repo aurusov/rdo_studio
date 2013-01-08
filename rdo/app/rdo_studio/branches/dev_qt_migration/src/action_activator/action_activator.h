@@ -29,7 +29,7 @@ protected:
 	void activate  (QFocusEvent* pEvent);
 	void deactivate(QFocusEvent* pEvent);
 
-	static void updateAction(QAction* pAction, rbool enabled, QObject* pObject, const char* method);
+	static void updateAction(QAction* pAction, rbool enabled, QObject* pObject, CREF(tstring) method);
 
 private:
 	Callback  m_onActivate;
