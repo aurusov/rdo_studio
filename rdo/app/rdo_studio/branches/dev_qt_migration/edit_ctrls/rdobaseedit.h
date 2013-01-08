@@ -62,8 +62,6 @@ protected:
 	void setLineIndentation( int line, int indent ) const;
 	void autoIndent() const;
 
-	void updateAllGUI();
-
 protected:
 	virtual void focusInEvent   (QFocusEvent* pEvent);
 	virtual void focusOutEvent  (QFocusEvent* pEvent);
@@ -75,7 +73,6 @@ protected slots:
 
 private:
 	//! @todo qt
-	//afx_msg void OnSetFocus( CWnd *pOldWnd );
 	//afx_msg void OnContextMenu( CWnd* pWnd, CPoint pos );
 	afx_msg void OnSearchFind();
 	afx_msg void OnSearchReplace();

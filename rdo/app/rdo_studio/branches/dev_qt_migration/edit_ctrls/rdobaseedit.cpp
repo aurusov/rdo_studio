@@ -159,16 +159,6 @@ RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent):
 RDOBaseEdit::~RDOBaseEdit()
 {}
 
-//! @todo qt
-//void RDOBaseEdit::OnSetFocus( CWnd* pOldWnd )
-//{
-//	CWnd::OnSetFocus( pOldWnd );
-//	if ( sciHWND ) {
-//		::SetFocus( sciHWND );
-//	}
-//	updateAllGUI();
-//}
-
 void RDOBaseEdit::catchNeedShown(int position, int length)
 {
 	ensureRangeVisible(position, position + length, false);
@@ -1239,11 +1229,6 @@ void RDOBaseEdit::onBookmarkClearAll()
 void RDOBaseEdit::onUpdateEditGUI()
 {
 	onUpdateActions(isActivated());
-}
-
-void RDOBaseEdit::updateAllGUI()
-{
-	onUpdateEditGUI();
 }
 
 void RDOBaseEdit::onViewShowWhiteSpace() 
