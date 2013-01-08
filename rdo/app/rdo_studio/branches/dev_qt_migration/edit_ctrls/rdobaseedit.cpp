@@ -11,7 +11,8 @@
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 #include <boost/bind.hpp>
-#include <boost/foreach.hpp>
+#include <boost/range.hpp>
+#include <boost/range/algorithm/for_each.hpp>
 #include <QtGui/qmessagebox.h>
 #include <QtGui/qclipboard.h>
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -58,10 +59,7 @@ RDOBaseEdit::Group::List::const_iterator RDOBaseEdit::Group::end() const
 
 void RDOBaseEdit::Group::for_each(CREF(this_method) fun)
 {
-	BOOST_FOREACH(PTR(RDOBaseEdit) pEdit, m_list)
-	{
-		fun(pEdit);
-	}
+	boost::range::for_each(m_list, fun);
 }
 
 // --------------------------------------------------------------------------------
