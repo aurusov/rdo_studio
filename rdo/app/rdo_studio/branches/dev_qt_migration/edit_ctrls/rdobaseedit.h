@@ -127,8 +127,11 @@ private slots:
 	void onUpdateModify();
 
 private:
-	typedef  boost::function<void (RDOBaseEdit*)>  this_method;
-	void methodOfGroup(CREF(this_method) fun);
+	typedef  boost::function<void (RDOBaseEdit*)>         this_method;
+	typedef  boost::function<rbool (const RDOBaseEdit*)>  this_predicate;
+
+	void  methodOfGroup   (CREF(this_method)    fun);
+	rbool predicateOfGroup(CREF(this_predicate) fun) const;
 
 public:
 	RDOBaseEdit(PTR(QWidget) pParent);
@@ -152,7 +155,8 @@ public:
 		List::const_iterator begin() const;
 		List::const_iterator end  () const;
 
-		void for_each(CREF(this_method) fun);
+		void                 for_each(CREF(this_method)    fun) const;
+		List::const_iterator find_if (CREF(this_predicate) fun) const;
 
 	private:
 		List m_list;

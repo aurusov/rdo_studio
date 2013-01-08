@@ -13,6 +13,7 @@
 #include <boost/bind.hpp>
 #include <boost/range.hpp>
 #include <boost/range/algorithm/for_each.hpp>
+#include <boost/range/algorithm/find_if.hpp>
 #include <QtGui/qmessagebox.h>
 #include <QtGui/qclipboard.h>
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -57,9 +58,14 @@ RDOBaseEdit::Group::List::const_iterator RDOBaseEdit::Group::end() const
 	return m_list.end();
 }
 
-void RDOBaseEdit::Group::for_each(CREF(this_method) fun)
+void RDOBaseEdit::Group::for_each(CREF(this_method) fun) const
 {
 	boost::range::for_each(m_list, fun);
+}
+
+RDOBaseEdit::Group::List::const_iterator RDOBaseEdit::Group::find_if(CREF(this_predicate) fun) const
+{
+	return boost::range::find_if(m_list, fun);
 }
 
 // --------------------------------------------------------------------------------
@@ -1220,22 +1226,7 @@ void RDOBaseEdit::OnBookmarkClearAll()
 
 void RDOBaseEdit::updateBookmarksGUI()
 {
-	GUI_HAS_BOOKMARK = false;
-	if (m_pGroup)
-	{
-		for (Group::List::const_iterator it = m_pGroup->begin(); it != m_pGroup->end(); ++it)
-		{
-			GUI_HAS_BOOKMARK = (*it)->hasBookmarks();
-			if (GUI_HAS_BOOKMARK)
-			{
-				break;
-			}
-		}
-	}
-	else
-	{
-		GUI_HAS_BOOKMARK = hasBookmarks();
-	}
+	GUI_HAS_BOOKMARK = predicateOfGroup(boost::bind(&RDOBaseEdit::hasBookmarks, _1));
 }
 
 void RDOBaseEdit::onUpdateEditGUI()
@@ -1485,4 +1476,11 @@ void RDOBaseEdit::setViewEndOfLine(rbool value)
 void RDOBaseEdit::methodOfGroup(CREF(this_method) fun)
 {
 	m_pGroup ? m_pGroup->for_each(fun) : fun(this);
+}
+
+rbool RDOBaseEdit::predicateOfGroup(CREF(this_predicate) fun) const
+{
+	return m_pGroup
+		? m_pGroup->find_if(fun) != m_pGroup->end()
+		: fun(this);
 }
