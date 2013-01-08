@@ -634,7 +634,7 @@ rbool RDOBaseEdit::bookmarkToggle(int line) const
 	}
 }
 
-rbool RDOBaseEdit::bookmarkNext(rbool canLoop, rbool fromCurrentLine, rbool* pWasLoop) const
+rbool RDOBaseEdit::bookmarkNext(rbool canLoop, rbool fromCurrentLine) const
 {
 	rbool wasFound = false;
 	rbool wasLoop  = false;
@@ -657,14 +657,11 @@ rbool RDOBaseEdit::bookmarkNext(rbool canLoop, rbool fromCurrentLine, rbool* pWa
 		gotoLineEnsureVisible(nextLine);
 		wasFound = true;
 	}
-	if (pWasLoop)
-	{
-		*pWasLoop = wasLoop;
-	}
+
 	return wasFound;
 }
 
-rbool RDOBaseEdit::bookmarkPrev(rbool canLoop, rbool fromCurrentLine, rbool* pWasLoop) const
+rbool RDOBaseEdit::bookmarkPrev(rbool canLoop, rbool fromCurrentLine) const
 {
 	rbool wasFound = false;
 	rbool wasLoop  = false;
@@ -688,10 +685,7 @@ rbool RDOBaseEdit::bookmarkPrev(rbool canLoop, rbool fromCurrentLine, rbool* pWa
 		gotoLineEnsureVisible(prevLine);
 		wasFound = true;
 	}
-	if (pWasLoop)
-	{
-		*pWasLoop = wasLoop;
-	}
+
 	return wasFound;
 }
 
