@@ -107,7 +107,7 @@ border: none;
     <addaction name="separator"/>
     <addaction name="actSearchFinInModel"/>
     <addaction name="separator"/>
-    <addaction name="actSearchBookmarksAddClear"/>
+    <addaction name="actSearchBookmarksToggle"/>
     <addaction name="actSearchBookmarkNext"/>
     <addaction name="actSearchBookmarkPrev"/>
     <addaction name="actSearchBookmarksClearAll"/>
@@ -584,7 +584,7 @@ border: none;
     <string>Ctrl+Shift+F</string>
    </property>
   </action>
-  <action name="actSearchBookmarksAddClear">
+  <action name="actSearchBookmarksToggle">
    <property name="enabled">
     <bool>false</bool>
    </property>

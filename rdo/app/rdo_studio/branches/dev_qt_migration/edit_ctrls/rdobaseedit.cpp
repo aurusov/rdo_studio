@@ -1133,13 +1133,13 @@ void RDOBaseEdit::autoIndent() const
 	}
 }
 
-void RDOBaseEdit::OnBookmarkToggle()
+void RDOBaseEdit::onBookmarkToggle()
 {
 	bookmarkToggle();
 	updateBookmarksGUI();
 }
 
-void RDOBaseEdit::OnBookmarkNext()
+void RDOBaseEdit::onBookmarkNext()
 {
 	if ( bookmarkNext( false, true ) ) return;
 
@@ -1177,7 +1177,7 @@ void RDOBaseEdit::OnBookmarkNext()
 	}
 }
 
-void RDOBaseEdit::OnBookmarkPrev()
+void RDOBaseEdit::onBookmarkPrev()
 {
 	if ( bookmarkPrev( false, true ) ) return;
 
@@ -1215,7 +1215,7 @@ void RDOBaseEdit::OnBookmarkPrev()
 	}
 }
 
-void RDOBaseEdit::OnBookmarkClearAll()
+void RDOBaseEdit::onBookmarkClearAll()
 {
 	methodOfGroup(boost::bind(&RDOBaseEdit::bookmarkClearAll, _1));
 	updateBookmarksGUI();
@@ -1235,11 +1235,6 @@ void RDOBaseEdit::updateAllGUI()
 {
 	onUpdateEditGUI();
 	updateBookmarksGUI();
-}
-
-void RDOBaseEdit::OnHasBookmarks( CCmdUI* pCmdUI )
-{
-	pCmdUI->Enable( GUI_HAS_BOOKMARK );
 }
 
 void RDOBaseEdit::onViewShowWhiteSpace() 
@@ -1406,24 +1401,41 @@ void RDOBaseEdit::onUpdateActions(rbool activated)
 		activated,
 		this, "onHelpContext()"
 	);
-
 	updateAction(
 		pMainWindow->actViewZoomInc,
 		activated &&  getZoom() < 20,
 		this, "onViewZoomInc()"
-		);
-
+	);
 	updateAction(
 		pMainWindow->actViewZoomDec,
 		activated && getZoom() > -10,
 		this, "onViewZoomDec()"
-		);
-
+	);
 	updateAction(
 		pMainWindow->actViewZoomReset,
 		activated && getZoom(),
 		this, "onViewZoomReset()"
-		);
+	);
+	updateAction(
+		pMainWindow->actSearchBookmarkNext,
+		activated && GUI_HAS_BOOKMARK,
+		this, "onBookmarkNext()"
+	);
+	updateAction(
+		pMainWindow->actSearchBookmarkPrev,
+		activated && GUI_HAS_BOOKMARK,
+		this, "onBookmarkPrev()"
+	);
+	updateAction(
+		pMainWindow->actSearchBookmarksToggle,
+		activated,
+		this, "onBookmarkToggle()"
+	);
+	updateAction(
+		pMainWindow->actSearchBookmarksClearAll,
+		activated && GUI_HAS_BOOKMARK,
+		this, "onBookmarkClearAll()"
+	);
 
 	QString modify = activated
 		? isReadOnly()

@@ -89,11 +89,6 @@ private:
 	afx_msg void OnUpdateSearchFindNextPrev(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateSearchFind(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateSearchReplace(CCmdUI* pCmdUI);
-	afx_msg void OnBookmarkToggle();
-	afx_msg void OnBookmarkNext();
-	afx_msg void OnBookmarkPrev();
-	afx_msg void OnBookmarkClearAll();
-	afx_msg void OnHasBookmarks( CCmdUI* pCmdUI );
 	afx_msg void OnUpdateWhiteSpace( CCmdUI* pCmdUI );
 	afx_msg void OnUpdateEndOfLine( CCmdUI* pCmdUI );
 	afx_msg void OnSearchGotoLine();
@@ -119,6 +114,11 @@ private slots:
 
 	void onViewShowWhiteSpace();
 	void onViewShowEndOfLine ();
+
+	void onBookmarkToggle();
+	void onBookmarkNext();
+	void onBookmarkPrev();
+	void onBookmarkClearAll();
 
 	void onCopyAsRTF(QMimeData* pMimeData);
 
