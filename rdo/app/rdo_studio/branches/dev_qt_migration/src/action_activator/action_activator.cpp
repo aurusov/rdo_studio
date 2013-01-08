@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <QtGUI/qaction.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/action_activator/action_activator.h"
 // --------------------------------------------------------------------------------
@@ -49,6 +50,25 @@ void ActionActivator::deactivate(QFocusEvent* pEvent)
 		{
 			m_activated = false;
 			m_onDeactivate();
+		}
+	}
+}
+
+void ActionActivator::updateAction(QAction* pAction, rbool enabled, QObject* pObject, const char* method)
+{
+	ASSERT(pAction);
+	ASSERT(pObject);
+
+	if (pAction->isEnabled() != enabled)
+	{
+		pAction->setEnabled(enabled);
+		if (enabled)
+		{
+			QObject::connect(pAction, SIGNAL(triggered(bool)), pObject, qFlagLocation(method));
+		}
+		else
+		{
+			QObject::disconnect(pAction, SIGNAL(triggered(bool)), pObject, qFlagLocation(method));
 		}
 	}
 }

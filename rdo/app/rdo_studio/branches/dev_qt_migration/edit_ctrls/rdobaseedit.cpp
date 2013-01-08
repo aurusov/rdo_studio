@@ -1403,25 +1403,6 @@ void RDOBaseEdit::onDeactivate()
 	updateActions(false);
 }
 
-void updateAction(QAction* pAction, rbool enabled, QObject* pObject, const char* method)
-{
-	ASSERT(pAction);
-	ASSERT(pObject);
-
-	if (pAction->isEnabled() != enabled)
-	{
-		pAction->setEnabled(enabled);
-		if (enabled)
-		{
-			QObject::connect(pAction, SIGNAL(triggered(bool)), pObject, qFlagLocation(method));
-		}
-		else
-		{
-			QObject::disconnect(pAction, SIGNAL(triggered(bool)), pObject, qFlagLocation(method));
-		}
-	}
-}
-
 void RDOBaseEdit::updateActions(rbool activated)
 {
 	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();

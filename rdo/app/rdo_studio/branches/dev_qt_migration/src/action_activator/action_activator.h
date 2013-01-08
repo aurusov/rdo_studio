@@ -29,6 +29,8 @@ protected:
 	void activate  (QFocusEvent* pEvent);
 	void deactivate(QFocusEvent* pEvent);
 
+	static void updateAction(QAction* pAction, rbool enabled, QObject* pObject, const char* method);
+
 private:
 	Callback  m_onActivate;
 	Callback  m_onDeactivate;
