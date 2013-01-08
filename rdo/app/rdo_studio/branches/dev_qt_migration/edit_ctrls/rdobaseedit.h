@@ -68,8 +68,6 @@ private:
 
 protected:
 	rbool GUI_HAS_BOOKMARK;
-	rbool GUI_ID_VIEW_WHITESPACE;
-	rbool GUI_ID_VIEW_ENDOFLINE;
 
 	long sendEditor( unsigned int msg, unsigned long wParam = 0, long lParam = 0 ) const   { return super::send( msg, wParam, lParam );; };
 	long sendEditorString( unsigned int msg, unsigned long wParam, const char* str ) const { return super::sends( msg, wParam, str ); };
@@ -127,8 +125,6 @@ private:
 	afx_msg void OnBookmarkPrev();
 	afx_msg void OnBookmarkClearAll();
 	afx_msg void OnHasBookmarks( CCmdUI* pCmdUI );
-	afx_msg void OnViewWhiteSpace();
-	afx_msg void OnViewEndOfLine();
 	afx_msg void OnViewZoomIn();
 	afx_msg void OnViewZoomOut();
 	afx_msg void OnViewZoomReset();
@@ -154,9 +150,12 @@ private slots:
 	void onEditUpperCase();
 	void onEditLowerCase();
 
+	void onViewShowWhiteSpace();
+	void onViewShowEndOfLine ();
+
 	void onCopyAsRTF(QMimeData* pMimeData);
 
-	void onUpdateModify ();
+	void onUpdateModify();
 
 public:
 	RDOBaseEdit(PTR(QWidget) pParent);
@@ -179,12 +178,6 @@ public:
 
 	rbool isReadOnly() const                               { return sendEditor( SCI_GETREADONLY ) ? true : false;           };
 	void setReadOnly( const rbool value )                  { sendEditor( SCI_SETREADONLY, value ); };
-
-	rbool isViewWhiteSpace() const                         { return sendEditor( SCI_GETVIEWWS ) != SCWS_INVISIBLE;                                                     };
-	void setViewWhiteSpace( const rbool value )            { GUI_ID_VIEW_WHITESPACE = value; sendEditor( SCI_SETVIEWWS, value ? SCWS_VISIBLEALWAYS : SCWS_INVISIBLE ); };
-
-	rbool isViewEndOfLine() const                          { return sendEditor( SCI_GETVIEWEOL ) ? true : false;                 };
-	void setEndOfLine( const rbool value )                 { GUI_ID_VIEW_ENDOFLINE = value; sendEditor( SCI_SETVIEWEOL, value ); };
 
 	void appendText( CREF(tstring) str ) const;
 
@@ -231,6 +224,13 @@ signals:
 protected:
 	int getCurrentLineNumber  () const { return getLineFromPosition(getCurrentPos());       };
 	int getCurrentColumnNumber() const { return sendEditor(SCI_GETCOLUMN, getCurrentPos()); };
+
+private:
+	rbool isViewWhiteSpace () const;
+	void  setViewWhiteSpace(rbool value);
+
+	rbool isViewEndOfLine () const;
+	void  setViewEndOfLine(rbool value);
 };
 
 } // namespace rdoEditCtrl

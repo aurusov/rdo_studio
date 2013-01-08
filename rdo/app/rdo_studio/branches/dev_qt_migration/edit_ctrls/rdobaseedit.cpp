@@ -91,13 +91,9 @@ static const UINT FIND_REPLASE_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 //	ON_COMMAND( ID_SEARCH_BOOKMARK_PREVIOUS, OnBookmarkPrev )
 //	ON_COMMAND( ID_SEARCH_BOOKMARKS_CLEAR  , OnBookmarkClearAll )
 //	ON_UPDATE_COMMAND_UI( ID_SEARCH_BOOKMARK_NEXT, OnHasBookmarks )
-//	ON_COMMAND(ID_VIEW_WHITESPACE, OnViewWhiteSpace)
-//	ON_COMMAND(ID_VIEW_ENDOFLINE, OnViewEndOfLine)
 //	ON_COMMAND(ID_VIEW_ZOOMIN, OnViewZoomIn)
 //	ON_COMMAND(ID_VIEW_ZOOMOUT, OnViewZoomOut)
 //	ON_COMMAND(ID_VIEW_ZOOMRESET, OnViewZoomReset)
-//	ON_UPDATE_COMMAND_UI( ID_VIEW_WHITESPACE      , OnUpdateWhiteSpace )
-//	ON_UPDATE_COMMAND_UI( ID_VIEW_ENDOFLINE       , OnUpdateEndOfLine )
 //	ON_UPDATE_COMMAND_UI( ID_VIEW_ZOOMIN          , OnUpdateZoomIn )
 //	ON_UPDATE_COMMAND_UI( ID_VIEW_ZOOMOUT         , OnUpdateZoomOut )
 //	ON_UPDATE_COMMAND_UI( ID_VIEW_ZOOMRESET       , OnUpdateZoomReset )
@@ -113,8 +109,6 @@ static const UINT FIND_REPLASE_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent):
 	super(pParent),
 	GUI_HAS_BOOKMARK( false ),
-	GUI_ID_VIEW_WHITESPACE( false ),
-	GUI_ID_VIEW_ENDOFLINE( false ),
 	markerCount( 0 ),
 	popupMenu( NULL ),
 	style( NULL ),
@@ -1227,26 +1221,34 @@ void RDOBaseEdit::OnHasBookmarks( CCmdUI* pCmdUI )
 	pCmdUI->Enable( GUI_HAS_BOOKMARK );
 }
 
-void RDOBaseEdit::OnViewWhiteSpace() 
+void RDOBaseEdit::onViewShowWhiteSpace() 
 {
-	GUI_ID_VIEW_WHITESPACE = !GUI_ID_VIEW_WHITESPACE;
-	if ( !group ) {
-		setViewWhiteSpace( GUI_ID_VIEW_WHITESPACE );
-	} else {
-		for ( RDOBaseEditListIterator it = group->begin(); it != group->end(); it++ ) {
-			(*it)->setViewWhiteSpace( GUI_ID_VIEW_WHITESPACE );
+	rbool value = !isViewWhiteSpace();
+	if (!group)
+	{
+		setViewWhiteSpace(value);
+	}
+	else
+	{
+		for (RDOBaseEditListIterator it = group->begin(); it != group->end(); ++it)
+		{
+			(*it)->setViewWhiteSpace(value);
 		}
 	}
 }
 
-void RDOBaseEdit::OnViewEndOfLine() 
+void RDOBaseEdit::onViewShowEndOfLine() 
 {
-	GUI_ID_VIEW_ENDOFLINE = !GUI_ID_VIEW_ENDOFLINE;
-	if ( !group ) {
-		setEndOfLine( GUI_ID_VIEW_ENDOFLINE );
-	} else {
-		for ( RDOBaseEditListIterator it = group->begin(); it != group->end(); it++ ) {
-			(*it)->setEndOfLine( GUI_ID_VIEW_ENDOFLINE );
+	rbool value = !isViewEndOfLine();
+	if (!group)
+	{
+		setViewEndOfLine(value);
+	}
+	else
+	{
+		for (RDOBaseEditListIterator it = group->begin(); it != group->end(); ++it)
+		{
+			(*it)->setViewEndOfLine(value);
 		}
 	}
 }
@@ -1282,16 +1284,6 @@ void RDOBaseEdit::OnViewZoomReset()
 			(*it)->resetZoom();
 		}
 	}
-}
-
-void RDOBaseEdit::OnUpdateWhiteSpace( CCmdUI* pCmdUI )
-{
-	pCmdUI->SetCheck( GUI_ID_VIEW_WHITESPACE );
-}
-
-void RDOBaseEdit::OnUpdateEndOfLine( CCmdUI* pCmdUI )
-{
-	pCmdUI->SetCheck( GUI_ID_VIEW_ENDOFLINE );
 }
 
 void RDOBaseEdit::OnUpdateZoomIn( CCmdUI *pCmdUI )
@@ -1430,6 +1422,20 @@ void RDOBaseEdit::onUpdateActions(rbool activated)
 		this, "onEditLowerCase()"
 	);
 	updateAction(
+		pMainWindow->actViewShowWhiteSpace,
+		activated,
+		this, "onViewShowWhiteSpace()"
+	);
+	pMainWindow->actViewShowWhiteSpace->setChecked(isViewWhiteSpace());
+
+	updateAction(
+		pMainWindow->actViewShowEndOfLine,
+		activated,
+		this, "onViewShowEndOfLine()"
+	);
+	pMainWindow->actViewShowEndOfLine->setChecked(isViewEndOfLine());
+
+	updateAction(
 		pMainWindow->actHelpContext,
 		activated,
 		this, "onHelpContext()"
@@ -1461,4 +1467,24 @@ void RDOBaseEdit::onUpdateActions(rbool activated)
 void RDOBaseEdit::onUpdateModify()
 {
 	emit modifyChanged(isModify());
+}
+
+rbool RDOBaseEdit::isViewWhiteSpace() const
+{
+	return sendEditor(SCI_GETVIEWWS) != SCWS_INVISIBLE;
+}
+
+void RDOBaseEdit::setViewWhiteSpace(rbool value)
+{
+	sendEditor(SCI_SETVIEWWS, value ? SCWS_VISIBLEALWAYS : SCWS_INVISIBLE);
+}
+
+rbool RDOBaseEdit::isViewEndOfLine() const
+{
+	return sendEditor(SCI_GETVIEWEOL) ? true : false;
+}
+
+void RDOBaseEdit::setViewEndOfLine(rbool value)
+{
+	sendEditor(SCI_SETVIEWEOL, value);
 }
