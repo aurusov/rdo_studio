@@ -1167,31 +1167,30 @@ void RDOBaseEdit::onBookmarkNext()
 		Group::List::const_iterator it = std::find(m_pGroup->begin(), m_pGroup->end(), this);
 		ASSERT(it != m_pGroup->end());
 
-		rbool allItem = false;
-		rbool wasLoop = true;
-		while (!allItem && *it && wasLoop)
+		while (true)
 		{
 			++it;
 			if (it == m_pGroup->end())
 			{
 				it = m_pGroup->begin();
 			}
+
 			if (*it == this)
 			{
-				allItem = true;
+				break;
 			}
-			else
+
+			if ((*it)->bookmarkNext(false, false))
 			{
-				(*it)->bookmarkNext(false, false, &wasLoop);
+				QWidget* pParent = (*it)->parentWidget()->parentWidget();
+				ASSERT(pParent);
+				QTabWidget* pTabWidget = dynamic_cast<QTabWidget*>(pParent);
+				if (pTabWidget)
+				{
+					pTabWidget->setCurrentWidget(*it);
+				}
+				break;
 			}
-		}
-		if (!allItem)
-		{
-			(*it)->setFocus();
-		}
-		else
-		{
-			(*it)->bookmarkNext();
 		}
 	}
 }
@@ -1212,31 +1211,30 @@ void RDOBaseEdit::onBookmarkPrev()
 		Group::List::const_iterator it = std::find(m_pGroup->begin(), m_pGroup->end(), this);
 		ASSERT(it != m_pGroup->end());
 
-		rbool allItem = false;
-		rbool wasLoop = true;
-		while (!allItem && *it && wasLoop)
+		while (true)
 		{
 			if (it == m_pGroup->begin())
 			{
 				it = m_pGroup->end();
 			}
 			--it;
+
 			if (*it == this)
 			{
-				allItem = true;
+				break;
 			}
-			else
+
+			if ((*it)->bookmarkPrev(false, false))
 			{
-				(*it)->bookmarkPrev(false, false, &wasLoop);
+				QWidget* pParent = (*it)->parentWidget()->parentWidget();
+				ASSERT(pParent);
+				QTabWidget* pTabWidget = dynamic_cast<QTabWidget*>(pParent);
+				if (pTabWidget)
+				{
+					pTabWidget->setCurrentWidget(*it);
+				}
+				break;
 			}
-		}
-		if (!allItem)
-		{
-			(*it)->setFocus();
-		}
-		else
-		{
-			(*it)->bookmarkPrev();
 		}
 	}
 }
