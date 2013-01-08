@@ -668,7 +668,10 @@ border: none;
     <string>Свернуть/развернуть текущую группу</string>
    </property>
   </action>
-  <action name="actViewShowSpace">
+  <action name="actViewShowWhiteSpace">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -679,12 +682,15 @@ border: none;
     <string>Ctrl+8</string>
    </property>
   </action>
-  <action name="actViewShowEndSymbol">
+  <action name="actViewShowEndOfLine">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="enabled">
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>Показать символ конца строки</string>
+    <string>Показать символы конца строки</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+9</string>
