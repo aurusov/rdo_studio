@@ -58,9 +58,9 @@ private:
 
 private slots:
 	void onEditCommentSelection() const;
-	void onEditCompleteWord    ()      ;
-	void onToggleAllFolds      ()      ;
-	void onToggleCurrentFold   ()      ;
+	void onEditCompleteWord();
+	void onToggleAllFolds();
+	void onToggleCurrentFold();
 
 public:
 	RDOEditorEdit(PTR(QWidget) pParent, PTR(QWidget) pView = NULL);
