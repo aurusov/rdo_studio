@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------- PLATFORM
 // ----------------------------------------------------------------------- INCLUDES
 #include <vector>
+#include <boost/function.hpp>
 #include <QtGui/qmenu.h>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdostream.h"
@@ -26,37 +27,6 @@ namespace rdoEditCtrl {
 // --------------------------------------------------------------------------------
 // -------------------- RDOBaseEdit
 // --------------------------------------------------------------------------------
-class RDOBaseEdit;
-
-typedef std::vector< RDOBaseEdit* >                 RDOBaseEditList;
-typedef std::vector< RDOBaseEdit* >::const_iterator RDOBaseEditListIterator;
-
-class RDOBaseEditGroup {
-private:
-	RDOBaseEditList list;
-
-public:
-	rbool bMatchCase;
-	rbool bMatchWholeWord;
-	rbool bSearchDown;
-	tstring findStr;
-	tstring replaceStr;
-
-	RDOBaseEditGroup():
-		bMatchCase( false ),
-		bMatchWholeWord( false ),
-		bSearchDown( true ),
-		findStr( "" ),
-		replaceStr( "" )
-	{
-	}
-	void insert( RDOBaseEdit* edit ) {
-		list.insert( list.end(), edit );
-	}
-	RDOBaseEditListIterator begin() const { return list.begin(); }
-	RDOBaseEditListIterator end()   const { return list.end();   }
-};
-
 class RDOBaseEdit
 	: public ScintillaEditBase
 	, public ActionActivator
@@ -156,14 +126,42 @@ private slots:
 
 	void onUpdateModify();
 
+private:
+	typedef  boost::function<void (RDOBaseEdit*)>  this_method;
+	void methodOfGroup(CREF(this_method) fun);
+
 public:
 	RDOBaseEdit(PTR(QWidget) pParent);
 	virtual ~RDOBaseEdit();
 
+	class Group
+	{
+	public:
+		typedef std::vector<PTR(RDOBaseEdit)> List;
+
+		rbool   bMatchCase;
+		rbool   bMatchWholeWord;
+		rbool   bSearchDown;
+		tstring findStr;
+		tstring replaceStr;
+
+		Group();
+
+		void insert(PTR(RDOBaseEdit) pEdit);
+
+		List::const_iterator begin() const;
+		List::const_iterator end  () const;
+
+		void for_each(CREF(this_method) fun);
+
+	private:
+		List m_list;
+	};
+
 	const RDOBaseEditStyle* getEditorStyle() const         { return style; };
 	void setEditorStyle( RDOBaseEditStyle* _style );
 
-	void setGroup(PTR(RDOBaseEditGroup) pGroup);
+	void setGroup(PTR(Group) pGroup);
 	void setPopupMenu( QMenu* const value )                { popupMenu = value; };
 
 	rbool isEmpty() const                                  { return getLength() == 0;                                                         };
@@ -225,7 +223,7 @@ protected:
 	int getCurrentColumnNumber() const { return sendEditor(SCI_GETCOLUMN, getCurrentPos()); };
 
 private:
-	PTR(RDOBaseEditGroup) m_pGroup;
+	PTR(Group) m_pGroup;
 
 	rbool isViewWhiteSpace () const;
 	void  setViewWhiteSpace(rbool value);

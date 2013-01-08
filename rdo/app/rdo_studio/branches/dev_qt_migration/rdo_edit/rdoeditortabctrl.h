@@ -41,7 +41,7 @@ public:
 	PTR(context_type) getItemEdit   (rdoModelObjects::RDOFileType type) const;
 
 private:
-	rdoEditCtrl::RDOBaseEditGroup group;
+	rdoEditCtrl::RDOBaseEdit::Group m_group;
 
 	void createPage(PTR(QWidget) pView, CREF(QString) name);
 };

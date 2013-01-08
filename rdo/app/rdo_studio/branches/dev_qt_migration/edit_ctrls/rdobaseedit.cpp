@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
+#include <boost/bind.hpp>
 #include <QtGui/qmessagebox.h>
 #include <QtGui/qclipboard.h>
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -29,6 +30,38 @@ static char THIS_FILE[] = __FILE__;
 
 using namespace rdoEditCtrl;
 using namespace rdoStyle;
+
+// --------------------------------------------------------------------------------
+// -------------------- RDOBaseEdit::Group
+// ---------------------------------------------------------------------------
+RDOBaseEdit::Group::Group()
+	: bMatchCase     (false)
+	, bMatchWholeWord(false)
+	, bSearchDown    (true )
+{}
+
+void RDOBaseEdit::Group::insert(PTR(RDOBaseEdit) pEdit)
+{
+	m_list.push_back(pEdit);
+}
+
+RDOBaseEdit::Group::List::const_iterator RDOBaseEdit::Group::begin() const
+{
+	return m_list.begin();
+}
+
+RDOBaseEdit::Group::List::const_iterator RDOBaseEdit::Group::end() const
+{
+	return m_list.end();
+}
+
+void RDOBaseEdit::Group::for_each(CREF(this_method) fun)
+{
+	for (List::const_iterator it = m_list.begin(); it != m_list.end(); ++it)
+	{
+		fun(*it);
+	}
+}
 
 // --------------------------------------------------------------------------------
 // -------------------- RDOBaseEdit
@@ -243,7 +276,7 @@ void RDOBaseEdit::setEditorStyle( RDOBaseEditStyle* _style )
 	sendEditor( SCI_SETHSCROLLBAR, style->window->showHorzScrollBar );
 }
 
-void RDOBaseEdit::setGroup(PTR(RDOBaseEditGroup) pGroup)
+void RDOBaseEdit::setGroup(PTR(Group) pGroup)
 {
 	m_pGroup = pGroup;
 }
@@ -1114,7 +1147,7 @@ void RDOBaseEdit::OnBookmarkNext()
 
 	} else {
 
-		RDOBaseEditListIterator it = m_pGroup->begin();
+		Group::List::const_iterator it = m_pGroup->begin();
 		while ( it != m_pGroup->end() ) {
 			if ( *it == this ) break;
 			it++;
@@ -1152,7 +1185,7 @@ void RDOBaseEdit::OnBookmarkPrev()
 
 	} else {
 
-		RDOBaseEditListIterator it = m_pGroup->begin();
+		Group::List::const_iterator it = m_pGroup->begin();
 		while ( it != m_pGroup->end() ) {
 			if ( *it == this ) break;
 			it++;
@@ -1182,26 +1215,27 @@ void RDOBaseEdit::OnBookmarkPrev()
 
 void RDOBaseEdit::OnBookmarkClearAll()
 {
-	if ( !m_pGroup ) {
-		bookmarkClearAll();
-	} else {
-		for ( RDOBaseEditListIterator it = m_pGroup->begin(); it != m_pGroup->end(); it++ ) {
-			(*it)->bookmarkClearAll();
-		}
-	}
+	methodOfGroup(boost::bind(&RDOBaseEdit::bookmarkClearAll, _1));
 	updateBookmarksGUI();
 }
 
 void RDOBaseEdit::updateBookmarksGUI()
 {
 	GUI_HAS_BOOKMARK = false;
-	if ( !m_pGroup ) {
-		GUI_HAS_BOOKMARK = hasBookmarks();
-	} else {
-		for ( RDOBaseEditListIterator it = m_pGroup->begin(); it != m_pGroup->end(); it++ ) {
+	if (m_pGroup)
+	{
+		for (Group::List::const_iterator it = m_pGroup->begin(); it != m_pGroup->end(); ++it)
+		{
 			GUI_HAS_BOOKMARK = (*it)->hasBookmarks();
-			if ( GUI_HAS_BOOKMARK ) break;
+			if (GUI_HAS_BOOKMARK)
+			{
+				break;
+			}
 		}
+	}
+	else
+	{
+		GUI_HAS_BOOKMARK = hasBookmarks();
 	}
 }
 
@@ -1223,67 +1257,27 @@ void RDOBaseEdit::OnHasBookmarks( CCmdUI* pCmdUI )
 
 void RDOBaseEdit::onViewShowWhiteSpace() 
 {
-	rbool value = !isViewWhiteSpace();
-	if (!m_pGroup)
-	{
-		setViewWhiteSpace(value);
-	}
-	else
-	{
-		for (RDOBaseEditListIterator it = m_pGroup->begin(); it != m_pGroup->end(); ++it)
-		{
-			(*it)->setViewWhiteSpace(value);
-		}
-	}
+	methodOfGroup(boost::bind(&RDOBaseEdit::setViewWhiteSpace, _1, !isViewWhiteSpace()));
 }
 
 void RDOBaseEdit::onViewShowEndOfLine() 
 {
-	rbool value = !isViewEndOfLine();
-	if (!m_pGroup)
-	{
-		setViewEndOfLine(value);
-	}
-	else
-	{
-		for (RDOBaseEditListIterator it = m_pGroup->begin(); it != m_pGroup->end(); ++it)
-		{
-			(*it)->setViewEndOfLine(value);
-		}
-	}
+	methodOfGroup(boost::bind(&RDOBaseEdit::setViewEndOfLine, _1, !isViewEndOfLine()));
 }
 
 void RDOBaseEdit::OnViewZoomIn() 
 {
-	if ( !m_pGroup ) {
-		zoomIn();
-	} else {
-		for ( RDOBaseEditListIterator it = m_pGroup->begin(); it != m_pGroup->end(); it++ ) {
-			(*it)->zoomIn();
-		}
-	}
+	methodOfGroup(boost::bind(&RDOBaseEdit::zoomIn, _1));
 }
 
 void RDOBaseEdit::OnViewZoomOut() 
 {
-	if ( !m_pGroup ) {
-		zoomOut();
-	} else {
-		for ( RDOBaseEditListIterator it = m_pGroup->begin(); it != m_pGroup->end(); it++ ) {
-			(*it)->zoomOut();
-		}
-	}
+	methodOfGroup(boost::bind(&RDOBaseEdit::zoomOut, _1));
 }
 
 void RDOBaseEdit::OnViewZoomReset() 
 {
-	if ( !m_pGroup ) {
-		resetZoom();
-	} else {
-		for ( RDOBaseEditListIterator it = m_pGroup->begin(); it != m_pGroup->end(); it++ ) {
-			(*it)->resetZoom();
-		}
-	}
+	methodOfGroup(boost::bind(&RDOBaseEdit::resetZoom, _1));
 }
 
 void RDOBaseEdit::OnUpdateZoomIn( CCmdUI *pCmdUI )
@@ -1487,4 +1481,9 @@ rbool RDOBaseEdit::isViewEndOfLine() const
 void RDOBaseEdit::setViewEndOfLine(rbool value)
 {
 	sendEditor(SCI_SETVIEWEOL, value);
+}
+
+void RDOBaseEdit::methodOfGroup(CREF(this_method) fun)
+{
+	m_pGroup ? m_pGroup->for_each(fun) : fun(this);
 }

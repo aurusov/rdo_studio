@@ -55,8 +55,8 @@ void RDOEditorTabCtrl::createPage(PTR(QWidget) pView, CREF(QString) name)
 	//! @todo qt
 	//pPage->getContext().setPopupMenu(&pView->popupMenu);
 
-	group.insert(pPage);
-	pPage->setGroup(&group);
+	m_group.insert(pPage);
+	pPage->setGroup(&m_group);
 }
 
 rdoModelObjects::RDOFileType RDOEditorTabCtrl::indexToType(int index) const
