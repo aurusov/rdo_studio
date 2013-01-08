@@ -40,7 +40,6 @@ using namespace rdoEditCtrl;
 
 //! @todo qt
 //BEGIN_MESSAGE_MAP( RDOEditorEdit, RDOEditorBaseEdit )
-//	ON_COMMAND(ID_EDIT_COMPLETEWORD, OnEditCompleteWord)
 //	ON_COMMAND(ID_BUILDFINDLOG_GOTO_NEXT, OnGotoNext)
 //	ON_COMMAND(ID_BUILDFINDLOG_GOTO_PREV, OnGotoPrev)
 //	ON_UPDATE_COMMAND_UI(ID_BUILDFINDLOG_GOTO_NEXT, OnUpdateGotoNext)
