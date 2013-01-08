@@ -94,10 +94,9 @@ private:
 	PTR(ChartTreeItem)   getIfItemIsDrawable(CPTR(QTreeWidgetItem) pCtrlItem) const;
 	PTR(QTreeWidgetItem) getSelected        () const;
 
-	virtual void focusInEvent (QFocusEvent* pEvent);
-	virtual void focusOutEvent(QFocusEvent* pEvent);
-	        void onActivate   ();
-	        void onDeactivate ();
+	virtual void focusInEvent   (QFocusEvent* pEvent);
+	virtual void focusOutEvent  (QFocusEvent* pEvent);
+	virtual void onUpdateActions(rbool activated);
 
 	//! @todo qt
 	//void doDragDrop( ChartTreeItem* item, CPoint point );

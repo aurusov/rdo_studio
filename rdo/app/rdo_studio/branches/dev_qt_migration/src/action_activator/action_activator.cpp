@@ -15,10 +15,8 @@
 #include "app/rdo_studio_mfc/src/action_activator/action_activator.h"
 // --------------------------------------------------------------------------------
 
-ActionActivator::ActionActivator(CREF(Callback) onActivate, CREF(Callback) onDeactivate)
-	: m_onActivate  (onActivate  )
-	, m_onDeactivate(onDeactivate)
-	, m_activated   (false       )
+ActionActivator::ActionActivator()
+	: m_activated(false)
 {}
 
 ActionActivator::~ActionActivator()
@@ -36,7 +34,7 @@ void ActionActivator::activate(QFocusEvent* pEvent)
 	if (!m_activated)
 	{
 		m_activated = true;
-		m_onActivate();
+		onUpdateActions(m_activated);
 	}
 }
 
@@ -49,7 +47,7 @@ void ActionActivator::deactivate(QFocusEvent* pEvent)
 		if (m_activated)
 		{
 			m_activated = false;
-			m_onDeactivate();
+			onUpdateActions(m_activated);
 		}
 	}
 }

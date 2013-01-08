@@ -10,7 +10,6 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/bind.hpp>
 #include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/frame/tree_ctrl.h"
@@ -20,7 +19,6 @@
 
 RDOStudioFrameTreeCtrl::RDOStudioFrameTreeCtrl(PTR(QWidget) pParent)
 	: parent_type(pParent)
-	, ActionActivator(boost::bind(&RDOStudioFrameTreeCtrl::onActivate, this), boost::bind(&RDOStudioFrameTreeCtrl::onDeactivate, this))
 {
 	setColumnCount    (1);
 	setHeaderHidden   (true);
@@ -65,22 +63,16 @@ void RDOStudioFrameTreeCtrl::focusOutEvent(QFocusEvent* pEvent)
 	deactivate(pEvent);
 }
 
-void RDOStudioFrameTreeCtrl::onActivate()
+void RDOStudioFrameTreeCtrl::onUpdateActions(rbool activated)
 {
 	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
 	ASSERT(pMainWindow);
 
-	pMainWindow->actHelpContext->setEnabled(true);
-	connect(pMainWindow->actHelpContext, SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
-}
-
-void RDOStudioFrameTreeCtrl::onDeactivate()
-{
-	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
-	ASSERT(pMainWindow);
-
-	pMainWindow->actHelpContext->setEnabled(false);
-	disconnect(pMainWindow->actHelpContext, SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
+	updateAction(
+		pMainWindow->actHelpContext,
+		activated,
+		this, "onHelpContext()"
+	);
 }
 
 void RDOStudioFrameTreeCtrl::onHelpContext()

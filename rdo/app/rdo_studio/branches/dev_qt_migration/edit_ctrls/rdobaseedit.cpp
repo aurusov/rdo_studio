@@ -10,7 +10,6 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/bind.hpp>
 #include <QtGui/qmessagebox.h>
 #include <QtGui/qclipboard.h>
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -113,7 +112,6 @@ static const UINT FIND_REPLASE_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 
 RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent):
 	super(pParent),
-	ActionActivator(boost::bind(&RDOBaseEdit::onActivate, this), boost::bind(&RDOBaseEdit::onDeactivate, this)),
 	GUI_HAS_BOOKMARK( false ),
 	GUI_ID_VIEW_WHITESPACE( false ),
 	GUI_ID_VIEW_ENDOFLINE( false ),
@@ -1215,7 +1213,7 @@ void RDOBaseEdit::updateBookmarksGUI()
 
 void RDOBaseEdit::onUpdateEditGUI()
 {
-	updateActions(isActivated());
+	onUpdateActions(isActivated());
 }
 
 void RDOBaseEdit::updateAllGUI()
@@ -1381,29 +1379,7 @@ void RDOBaseEdit::focusOutEvent(QFocusEvent* pEvent)
 	deactivate(pEvent);
 }
 
-void RDOBaseEdit::onActivate()
-{
-	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
-	ASSERT(pMainWindow);
-
-	pMainWindow->actHelpContext->setEnabled(true);
-	connect(pMainWindow->actHelpContext, SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
-
-	updateActions(true);
-}
-
-void RDOBaseEdit::onDeactivate()
-{
-	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
-	ASSERT(pMainWindow);
-
-	pMainWindow->actHelpContext->setEnabled(false);
-	disconnect(pMainWindow->actHelpContext, SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
-
-	updateActions(false);
-}
-
-void RDOBaseEdit::updateActions(rbool activated)
+void RDOBaseEdit::onUpdateActions(rbool activated)
 {
 	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
 	ASSERT(pMainWindow);
@@ -1452,6 +1428,11 @@ void RDOBaseEdit::updateActions(rbool activated)
 		pMainWindow->actEditLowerCase,
 		activated && !isReadOnly() && isSelected(),
 		this, "onEditLowerCase()"
+	);
+	updateAction(
+		pMainWindow->actHelpContext,
+		activated,
+		this, "onHelpContext()"
 	);
 
 	QString modify = activated

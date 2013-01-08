@@ -101,18 +101,15 @@ protected:
 	void updateBookmarksGUI();
 
 protected:
-	virtual void focusInEvent (QFocusEvent* pEvent);
-	virtual void focusOutEvent(QFocusEvent* pEvent);
-	virtual void onActivate   ();
-	virtual void onDeactivate ();
+	virtual void focusInEvent   (QFocusEvent* pEvent);
+	virtual void focusOutEvent  (QFocusEvent* pEvent);
+	virtual void onUpdateActions(rbool activated);
 
 protected slots:
 	        void onUpdateEditGUI();
 	virtual void onHelpContext  () = 0;
 
 private:
-	void updateActions(rbool activated);
-
 	//! @todo qt
 	//afx_msg void OnSetFocus( CWnd *pOldWnd );
 	//afx_msg void OnContextMenu( CWnd* pWnd, CPoint pos );

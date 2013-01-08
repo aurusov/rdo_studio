@@ -35,10 +35,9 @@ private:
 
 	PTR(QTreeWidgetItem) m_pRootItem;
 
-	virtual void focusInEvent (QFocusEvent* pEvent);
-	virtual void focusOutEvent(QFocusEvent* pEvent);
-	        void onActivate   ();
-	        void onDeactivate ();
+	virtual void focusInEvent   (QFocusEvent* pEvent);
+	virtual void focusOutEvent  (QFocusEvent* pEvent);
+	virtual void onUpdateActions(rbool activated);
 
 private slots:
 	void onHelpContext();

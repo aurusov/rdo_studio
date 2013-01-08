@@ -1061,38 +1061,27 @@ void LogView::mousePressEvent(QMouseEvent* pEvent)
 	}
 }
 
-void LogView::onActivate()
+void LogView::onUpdateActions(rbool activated)
 {
 	repaintLine(selectedLine());
 
 	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
 	ASSERT(pMainWindow);
 
-	pMainWindow->actHelpContext->setEnabled(true);
-	connect(pMainWindow->actHelpContext, SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
+	updateAction(
+		pMainWindow->actHelpContext,
+		activated,
+		this, "onHelpContext()"
+	);
 
-	setUpActionFind    (true);
-	setUpActionEditCopy(true);
-	setUpCoordStatusBar(true);
+	setUpActionFind    (activated);
+	setUpActionEditCopy(activated);
+	setUpCoordStatusBar(activated);
 
-	pMainWindow->statusBar()->update<StatusBar::SB_MODIFY>("Только чтение");
-}
-
-void LogView::onDeactivate()
-{
-	repaintLine(selectedLine());
-
-	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
-	ASSERT(pMainWindow);
-
-	pMainWindow->actHelpContext->setEnabled(false);
-	disconnect(pMainWindow->actHelpContext, SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
-
-	setUpActionFind    (false);
-	setUpActionEditCopy(false);
-	setUpCoordStatusBar(false);
-
-	pMainWindow->statusBar()->update<StatusBar::SB_MODIFY>("");
+	pMainWindow->statusBar()->update<StatusBar::SB_MODIFY>(activated
+		? "Только чтение"
+		: QString()
+	);
 }
 
 void LogView::onEditCopy()

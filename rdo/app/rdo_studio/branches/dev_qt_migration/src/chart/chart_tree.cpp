@@ -10,7 +10,6 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/bind.hpp>
 #include <boost/foreach.hpp>
 #include <QtCore/qprocess.h>
 // ----------------------------------------------------------------------- SYNOPSIS
@@ -56,7 +55,6 @@ Q_DECLARE_METATYPE(ChartTreeItem*);
 
 ChartTree::ChartTree(PTR(QWidget) pParent)
 	: parent_type(pParent)
-	, ActionActivator(boost::bind(&ChartTree::onActivate, this), boost::bind(&ChartTree::onDeactivate, this))
 {
 	setColumnCount    (1);
 	setHeaderHidden   (true);
@@ -378,22 +376,16 @@ void ChartTree::focusOutEvent(QFocusEvent* pEvent)
 	deactivate(pEvent);
 }
 
-void ChartTree::onActivate()
+void ChartTree::onUpdateActions(rbool activated)
 {
 	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
 	ASSERT(pMainWindow);
 
-	pMainWindow->actHelpContext->setEnabled(true);
-	connect(pMainWindow->actHelpContext, SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
-}
-
-void ChartTree::onDeactivate()
-{
-	RDOStudioMainFrame* pMainWindow = studioApp.getMainWndUI();
-	ASSERT(pMainWindow);
-
-	pMainWindow->actHelpContext->setEnabled(false);
-	disconnect(pMainWindow->actHelpContext, SIGNAL(triggered(bool)), this, SLOT(onHelpContext()));
+	updateAction(
+		pMainWindow->actHelpContext,
+		activated,
+		this, "onHelpContext()"
+	);
 }
 
 void ChartTree::onHelpContext()

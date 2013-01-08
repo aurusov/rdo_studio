@@ -10,14 +10,12 @@
 // ---------------------------------------------------------------------------- PCH
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
-#include <boost/bind.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "app/rdo_studio_mfc/src/action_activator/action_activator_widget.h"
 // --------------------------------------------------------------------------------
 
 ActionActivatorWidget::ActionActivatorWidget(PTR(QWidget) pParent)
-	: QWidget        (pParent)
-	, ActionActivator(boost::bind(&ActionActivatorWidget::onActivate, this), boost::bind(&ActionActivatorWidget::onDeactivate, this))
+	: QWidget(pParent)
 {}
 
 ActionActivatorWidget::~ActionActivatorWidget()
