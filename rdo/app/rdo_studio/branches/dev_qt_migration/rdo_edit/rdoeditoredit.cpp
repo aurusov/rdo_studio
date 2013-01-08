@@ -44,10 +44,6 @@ using namespace rdoEditCtrl;
 //	ON_COMMAND(ID_BUILDFINDLOG_GOTO_PREV, OnGotoPrev)
 //	ON_UPDATE_COMMAND_UI(ID_BUILDFINDLOG_GOTO_NEXT, OnUpdateGotoNext)
 //	ON_UPDATE_COMMAND_UI(ID_BUILDFINDLOG_GOTO_PREV, OnUpdateGotoPrev)
-//	ON_COMMAND(ID_VIEW_TOGGLE_ALLFOLDS, OnToggleAllFolds)
-//	ON_COMMAND(ID_VIEW_TOGGLE_CURRENTFOLD, OnToggleCurrentFold)
-//	ON_UPDATE_COMMAND_UI(ID_VIEW_TOGGLE_ALLFOLDS, OnUpdateFold)
-//	ON_UPDATE_COMMAND_UI(ID_VIEW_TOGGLE_CURRENTFOLD, OnUpdateFold)
 //
 //	ON_COMMAND_RANGE( ID_INSERT_PAT_TEMPL_OPERATION, ID_INSERT_ALGO_RETURN, OnInsertCommand )
 //
@@ -375,19 +371,14 @@ void RDOEditorEdit::foldMarginClick(int position, int modifiers) const
 	}
 }
 
-void RDOEditorEdit::OnToggleCurrentFold()
+void RDOEditorEdit::onToggleCurrentFold()
 {
 	toggleCurrentFold();
 }
 
-void RDOEditorEdit::OnToggleAllFolds()
+void RDOEditorEdit::onToggleAllFolds()
 {
 	toggleAllFolds();
-}
-
-void RDOEditorEdit::OnUpdateFold(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(!isEmpty());
 }
 
 void RDOEditorEdit::onEditCommentSelection() const
@@ -714,4 +705,16 @@ void RDOEditorEdit::onUpdateActions(rbool activated)
 		activated,
 		this, "onEditCompleteWord()"
 	);
+
+	updateAction(
+		pMainWindow->actViewToggleCurrentfold,
+		activated,
+		this, "onToggleCurrentFold()"
+		);
+
+	updateAction(
+		pMainWindow->actViewToggleAllfolds,
+		activated && !isEmpty(),
+		this, "onToggleAllFolds()"
+		);
 }

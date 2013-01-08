@@ -54,14 +54,13 @@ private:
 	afx_msg void OnGotoPrev();
 	afx_msg void OnUpdateGotoNext(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateGotoPrev(CCmdUI* pCmdUI);
-	afx_msg void OnToggleAllFolds();
-	afx_msg void OnToggleCurrentFold();
-	afx_msg void OnUpdateFold(CCmdUI* pCmdUI);
 	afx_msg void OnInsertCommand( UINT nID );
 
 private slots:
 	void onEditCommentSelection() const;
-	void onEditCompleteWord();
+	void onEditCompleteWord    ()      ;
+	void onToggleAllFolds      ()      ;
+	void onToggleCurrentFold   ()      ;
 
 public:
 	RDOEditorEdit(PTR(QWidget) pParent, PTR(QWidget) pView = NULL);
