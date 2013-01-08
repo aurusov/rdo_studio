@@ -634,10 +634,10 @@ rbool RDOBaseEdit::bookmarkToggle(int line) const
 	}
 }
 
-rbool RDOBaseEdit::bookmarkNext(rbool canLoop, rbool fromCurrentLine, rbool* wasLoop) const
+rbool RDOBaseEdit::bookmarkNext(rbool canLoop, rbool fromCurrentLine, rbool* pWasLoop) const
 {
 	rbool wasFound = false;
-	rbool was_loop = false;
+	rbool wasLoop  = false;
 
 	int line = fromCurrentLine
 		? getCurrentLineNumber()
@@ -646,28 +646,28 @@ rbool RDOBaseEdit::bookmarkNext(rbool canLoop, rbool fromCurrentLine, rbool* was
 	int nextLine = sendEditor(SCI_MARKERNEXT, line + 1, 1 << sci_MARKER_BOOKMARK);
 	if (nextLine < 0)
 	{
-		was_loop = true;
+		wasLoop = true;
 		if (canLoop)
 		{
 			nextLine = sendEditor(SCI_MARKERNEXT, 0, 1 << sci_MARKER_BOOKMARK);
 		}
 	}
-	if (((canLoop && was_loop) || !was_loop) && nextLine >= 0 && nextLine != line)
+	if (((canLoop && wasLoop) || !wasLoop) && nextLine >= 0 && nextLine != line)
 	{
 		gotoLineEnsureVisible(nextLine);
 		wasFound = true;
 	}
-	if (wasLoop)
+	if (pWasLoop)
 	{
-		*wasLoop = was_loop;
+		*pWasLoop = wasLoop;
 	}
 	return wasFound;
 }
 
-rbool RDOBaseEdit::bookmarkPrev(rbool canLoop, rbool fromCurrentLine, rbool* wasLoop) const
+rbool RDOBaseEdit::bookmarkPrev(rbool canLoop, rbool fromCurrentLine, rbool* pWasLoop) const
 {
 	rbool wasFound = false;
-	rbool was_loop = false;
+	rbool wasLoop  = false;
 
 	int lineCount = getLineCount();
 	int line = fromCurrentLine
@@ -677,20 +677,20 @@ rbool RDOBaseEdit::bookmarkPrev(rbool canLoop, rbool fromCurrentLine, rbool* was
 	int prevLine  = sendEditor(SCI_MARKERPREVIOUS, line - 1, 1 << sci_MARKER_BOOKMARK);
 	if (prevLine < 0)
 	{
-		was_loop = true;
+		wasLoop = true;
 		if (canLoop)
 		{
 			prevLine = sendEditor(SCI_MARKERPREVIOUS, lineCount, 1 << sci_MARKER_BOOKMARK);
 		}
 	}
-	if (((canLoop && was_loop) || !was_loop) && prevLine >= 0 && prevLine != line)
+	if (((canLoop && wasLoop) || !wasLoop) && prevLine >= 0 && prevLine != line)
 	{
 		gotoLineEnsureVisible(prevLine);
 		wasFound = true;
 	}
-	if (wasLoop)
+	if (pWasLoop)
 	{
-		*wasLoop = was_loop;
+		*pWasLoop = wasLoop;
 	}
 	return wasFound;
 }

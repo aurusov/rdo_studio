@@ -185,8 +185,8 @@ public:
 	void resetZoom() const                                 { sendEditor( SCI_SETZOOM, 0 );     };
 
 	rbool bookmarkToggle  (int line = -1) const;
-	rbool bookmarkNext    (rbool canLoop = true, rbool fromCurrentLine = true, rbool* wasLoop = NULL) const;
-	rbool bookmarkPrev    (rbool canLoop = true, rbool fromCurrentLine = true, rbool* wasLoop = NULL) const;
+	rbool bookmarkNext    (rbool canLoop = true, rbool fromCurrentLine = true, rbool* pWasLoop = NULL) const;
+	rbool bookmarkPrev    (rbool canLoop = true, rbool fromCurrentLine = true, rbool* pWasLoop = NULL) const;
 	void  bookmarkClearAll() const;
 	rbool hasBookmarks    () const;
 
