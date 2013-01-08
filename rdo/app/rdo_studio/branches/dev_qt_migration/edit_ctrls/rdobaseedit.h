@@ -108,16 +108,16 @@ private slots:
 	void onEditUpperCase();
 	void onEditLowerCase();
 
-	void onViewZoomInc();
-	void onViewZoomDec();
+	void onViewZoomInc  ();
+	void onViewZoomDec  ();
 	void onViewZoomReset();
 
 	void onViewShowWhiteSpace();
 	void onViewShowEndOfLine ();
 
-	void onBookmarkToggle();
-	void onBookmarkNext();
-	void onBookmarkPrev();
+	void onBookmarkToggle  ();
+	void onBookmarkNext    ();
+	void onBookmarkPrev    ();
 	void onBookmarkClearAll();
 
 	void onCopyAsRTF(QMimeData* pMimeData);
