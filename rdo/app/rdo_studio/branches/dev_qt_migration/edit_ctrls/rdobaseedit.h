@@ -144,6 +144,8 @@ public:
 
 		List::const_iterator begin() const;
 		List::const_iterator end  () const;
+		List::const_iterator next (CREF(List::const_iterator) it) const;
+		List::const_iterator prev (CREF(List::const_iterator) it) const;
 
 		void                 for_each(CREF(this_method)    fun) const;
 		List::const_iterator find_if (CREF(this_predicate) fun) const;
@@ -224,6 +226,11 @@ private:
 
 	rbool isViewEndOfLine () const;
 	void  setViewEndOfLine(rbool value);
+
+	void onBookmarkNextPrev(
+		const boost::function<rbool (const RDOBaseEdit*, rbool, rbool)>& nextPrevFun,
+		const boost::function<Group::List::const_iterator (const Group::List::const_iterator& it)>& nextPrevGroup
+	);
 };
 
 } // namespace rdoEditCtrl

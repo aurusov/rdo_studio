@@ -58,6 +58,28 @@ RDOBaseEdit::Group::List::const_iterator RDOBaseEdit::Group::end() const
 	return m_list.end();
 }
 
+RDOBaseEdit::Group::List::const_iterator RDOBaseEdit::Group::next(CREF(List::const_iterator) it) const
+{
+	RDOBaseEdit::Group::List::const_iterator result(it);
+	++result;
+	if (result == m_list.end())
+	{
+		result = m_list.begin();
+	}
+	return result;
+}
+
+RDOBaseEdit::Group::List::const_iterator RDOBaseEdit::Group::prev(CREF(List::const_iterator) it) const
+{
+	RDOBaseEdit::Group::List::const_iterator result(it);
+	if (result == m_list.begin())
+	{
+		result = m_list.end();
+	}
+	--result;
+	return result;
+}
+
 void RDOBaseEdit::Group::for_each(CREF(this_method) fun) const
 {
 	boost::range::for_each(m_list, fun);
@@ -1135,58 +1157,33 @@ void RDOBaseEdit::onBookmarkToggle()
 
 void RDOBaseEdit::onBookmarkNext()
 {
-	if (bookmarkNext(false, true))
-	{
-		return;
-	}
-
-	if (!m_pGroup)
-	{
-		bookmarkNext();
-	}
-	else
-	{
-		Group::List::const_iterator it = std::find(m_pGroup->begin(), m_pGroup->end(), this);
-		ASSERT(it != m_pGroup->end());
-
-		while (true)
-		{
-			++it;
-			if (it == m_pGroup->end())
-			{
-				it = m_pGroup->begin();
-			}
-
-			if (*it == this)
-			{
-				break;
-			}
-
-			if ((*it)->bookmarkNext(false, false))
-			{
-				QWidget* pParent = (*it)->parentWidget()->parentWidget();
-				ASSERT(pParent);
-				QTabWidget* pTabWidget = dynamic_cast<QTabWidget*>(pParent);
-				if (pTabWidget)
-				{
-					pTabWidget->setCurrentWidget(*it);
-				}
-				break;
-			}
-		}
-	}
+	onBookmarkNextPrev(
+		boost::bind(&RDOBaseEdit::bookmarkNext, _1, _2, _3),
+		boost::bind(&RDOBaseEdit::Group::next, m_pGroup, _1)
+	);
 }
 
 void RDOBaseEdit::onBookmarkPrev()
 {
-	if (bookmarkPrev(false, true))
+	onBookmarkNextPrev(
+		boost::bind(&RDOBaseEdit::bookmarkPrev, _1, _2, _3),
+		boost::bind(&RDOBaseEdit::Group::prev, m_pGroup, _1)
+	);
+}
+
+void RDOBaseEdit::onBookmarkNextPrev(
+	const boost::function<rbool (const RDOBaseEdit*, rbool, rbool)>& nextPrevFun,
+	const boost::function<Group::List::const_iterator (const Group::List::const_iterator& it)>& nextPrevGroup
+)
+{
+	if (nextPrevFun(this, false, true))
 	{
 		return;
 	}
 
 	if (!m_pGroup)
 	{
-		bookmarkPrev();
+		nextPrevFun(this, true, true);
 	}
 	else
 	{
@@ -1195,18 +1192,14 @@ void RDOBaseEdit::onBookmarkPrev()
 
 		while (true)
 		{
-			if (it == m_pGroup->begin())
-			{
-				it = m_pGroup->end();
-			}
-			--it;
+			it = nextPrevGroup(it);
 
 			if (*it == this)
 			{
 				break;
 			}
 
-			if ((*it)->bookmarkPrev(false, false))
+			if (nextPrevFun(*it, false, false))
 			{
 				QWidget* pParent = (*it)->parentWidget()->parentWidget();
 				ASSERT(pParent);
