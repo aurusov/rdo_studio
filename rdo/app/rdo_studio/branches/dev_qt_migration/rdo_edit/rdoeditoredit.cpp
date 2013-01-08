@@ -421,11 +421,6 @@ void RDOEditorEdit::onEditCommentSelection() const
 
 void RDOEditorEdit::onEditCompleteWord()
 {
-	completeWord();
-}
-
-void RDOEditorEdit::completeWord()
-{
 	if (!static_cast<RDOEditorEditStyle*>(style)->autoComplete->useAutoComplete)
 		return;
 

@@ -42,8 +42,6 @@ protected:
 	void toggleAllFolds() const;
 	void foldMarginClick( int position, int modifiers ) const;
 
-	void completeWord();
-
 	rbool canClearErrorLine;
 	void  clearErrorLine();
 	rbool hasErrorLine  () const;
