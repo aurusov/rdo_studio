@@ -89,8 +89,6 @@ private:
 	afx_msg void OnUpdateSearchFindNextPrev(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateSearchFind(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateSearchReplace(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateWhiteSpace( CCmdUI* pCmdUI );
-	afx_msg void OnUpdateEndOfLine( CCmdUI* pCmdUI );
 	afx_msg void OnSearchGotoLine();
 	afx_msg LRESULT OnFindReplaceMsg( WPARAM wParam, LPARAM lParam );
 
