@@ -83,7 +83,6 @@ protected:
 	void ensureRangeVisible( int posStart, int posEnd, rbool enforcePolicy = true ) const;
 
 	RDOBaseEditStyle* style;
-	RDOBaseEditGroup* group;
 
 	int  firstFoundPos;
 	rbool bHaveFound;
@@ -164,7 +163,7 @@ public:
 	const RDOBaseEditStyle* getEditorStyle() const         { return style; };
 	void setEditorStyle( RDOBaseEditStyle* _style );
 
-	void setGroup( RDOBaseEditGroup* _group );
+	void setGroup(PTR(RDOBaseEditGroup) pGroup);
 	void setPopupMenu( QMenu* const value )                { popupMenu = value; };
 
 	rbool isEmpty() const                                  { return getLength() == 0;                                                         };
@@ -226,6 +225,8 @@ protected:
 	int getCurrentColumnNumber() const { return sendEditor(SCI_GETCOLUMN, getCurrentPos()); };
 
 private:
+	PTR(RDOBaseEditGroup) m_pGroup;
+
 	rbool isViewWhiteSpace () const;
 	void  setViewWhiteSpace(rbool value);
 

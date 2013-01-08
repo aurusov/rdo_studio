@@ -112,7 +112,7 @@ RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent):
 	markerCount( 0 ),
 	popupMenu( NULL ),
 	style( NULL ),
-	group( NULL ),
+	m_pGroup( NULL ),
 	firstFoundPos( -1 ),
 	bHaveFound( false )
 {
@@ -243,9 +243,9 @@ void RDOBaseEdit::setEditorStyle( RDOBaseEditStyle* _style )
 	sendEditor( SCI_SETHSCROLLBAR, style->window->showHorzScrollBar );
 }
 
-void RDOBaseEdit::setGroup( RDOBaseEditGroup* _group )
+void RDOBaseEdit::setGroup(PTR(RDOBaseEditGroup) pGroup)
 {
-	group = _group;
+	m_pGroup = pGroup;
 }
 
 void RDOBaseEdit::onEditUndo() 
@@ -332,8 +332,8 @@ tstring RDOBaseEdit::getWordForFind() const
 {
 	if ( isSelected() ) {
 		return getSelection();
-	} else if ( group && !group->findStr.empty() ) {
-		return group->findStr;
+	} else if ( m_pGroup && !m_pGroup->findStr.empty() ) {
+		return m_pGroup->findStr;
 	} else {
 		return getCurrentWord();
 	}
@@ -367,7 +367,7 @@ void RDOBaseEdit::OnSearchFind()
 	//! @todo qt
 	//firstFoundPos = -1;
 	//CFindReplaceDialog* pDlg = new CFindReplaceDialog();
-	//DWORD flag = group ? ((group->bSearchDown ? FR_DOWN : 0) | (group->bMatchCase ? FR_MATCHCASE : 0) | (group->bMatchWholeWord ? FR_WHOLEWORD : 0)) : 0;
+	//DWORD flag = m_pGroup ? ((m_pGroup->bSearchDown ? FR_DOWN : 0) | (m_pGroup->bMatchCase ? FR_MATCHCASE : 0) | (m_pGroup->bMatchWholeWord ? FR_WHOLEWORD : 0)) : 0;
 	//pDlg->Create( true, getWordForFind().c_str(), NULL, flag, this );
 }
 
@@ -376,54 +376,54 @@ void RDOBaseEdit::OnSearchReplace()
 	//! @todo qt
 	//firstFoundPos = -1;
 	//CFindReplaceDialog* pDlg = new CFindReplaceDialog();
-	//DWORD flag = group ? ((group->bSearchDown ? FR_DOWN : 0) | (group->bMatchCase ? FR_MATCHCASE : 0) | (group->bMatchWholeWord ? FR_WHOLEWORD : 0)) : 0;
-	//pDlg->Create( false, getWordForFind().c_str(), group ? group->replaceStr.c_str() : NULL, flag, this );
+	//DWORD flag = m_pGroup ? ((m_pGroup->bSearchDown ? FR_DOWN : 0) | (m_pGroup->bMatchCase ? FR_MATCHCASE : 0) | (m_pGroup->bMatchWholeWord ? FR_WHOLEWORD : 0)) : 0;
+	//pDlg->Create( false, getWordForFind().c_str(), m_pGroup ? m_pGroup->replaceStr.c_str() : NULL, flag, this );
 }
 
 void RDOBaseEdit::OnSearchFindNext() 
 {
 	firstFoundPos = -1;
-	if ( group ) {
-		findNext( group->findStr, group->bSearchDown, group->bMatchCase, group->bMatchWholeWord );
+	if ( m_pGroup ) {
+		findNext( m_pGroup->findStr, m_pGroup->bSearchDown, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord );
 	}
 }
 
 void RDOBaseEdit::OnSearchFindPrevious() 
 {
 	firstFoundPos = -1;
-	if ( group ) {
-		findNext( group->findStr, !group->bSearchDown, group->bMatchCase, group->bMatchWholeWord );
+	if ( m_pGroup ) {
+		findNext( m_pGroup->findStr, !m_pGroup->bSearchDown, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord );
 	}
 }
 
 void RDOBaseEdit::OnSearchFindNextFast() 
 {
 	firstFoundPos = getCurrentPos();
-	if ( group ) {
-		group->findStr     = getWordForFind();
-		group->bSearchDown = true;
-		findNext( group->findStr, group->bSearchDown, group->bMatchCase, group->bMatchWholeWord );
+	if ( m_pGroup ) {
+		m_pGroup->findStr     = getWordForFind();
+		m_pGroup->bSearchDown = true;
+		findNext( m_pGroup->findStr, m_pGroup->bSearchDown, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord );
 	}
 }
 
 void RDOBaseEdit::OnSearchFindPreviousFast() 
 {
 	firstFoundPos = getCurrentPos();
-	if ( group ) {
-		group->findStr     = getWordForFind();
-		group->bSearchDown = true;
-		findNext( group->findStr, !group->bSearchDown, group->bMatchCase, group->bMatchWholeWord );
+	if ( m_pGroup ) {
+		m_pGroup->findStr     = getWordForFind();
+		m_pGroup->bSearchDown = true;
+		findNext( m_pGroup->findStr, !m_pGroup->bSearchDown, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord );
 	}
 }
 
 LRESULT RDOBaseEdit::OnFindReplaceMsg( WPARAM /*wParam*/, LPARAM lParam )
 {
 	//! @todo qt
-	//if ( !group ) return 0;
+	//if ( !m_pGroup ) return 0;
 
 	//CFindReplaceDialog* pDialog = CFindReplaceDialog::GetNotifier( lParam );
 
-	//group->findStr = pDialog->GetFindString();
+	//m_pGroup->findStr = pDialog->GetFindString();
 
 	//if ( pDialog->IsTerminating() ) {
 	//	firstFoundPos = -1;
@@ -433,26 +433,26 @@ LRESULT RDOBaseEdit::OnFindReplaceMsg( WPARAM /*wParam*/, LPARAM lParam )
 	//	rbool newSearchDown     = pDialog->SearchDown() ? true : false;
 	//	rbool newMatchCase      = pDialog->MatchCase() ? true : false;
 	//	rbool newMatchWholeWord = pDialog->MatchWholeWord() ? true : false;
-	//	if ( newSearchDown != group->bSearchDown || newMatchCase != group->bMatchCase || newMatchWholeWord != group->bMatchWholeWord ) {
+	//	if ( newSearchDown != m_pGroup->bSearchDown || newMatchCase != m_pGroup->bMatchCase || newMatchWholeWord != m_pGroup->bMatchWholeWord ) {
 	//		firstFoundPos = -1;
 	//	}
-	//	group->bSearchDown     = newSearchDown;
-	//	group->bMatchCase      = newMatchCase;
-	//	group->bMatchWholeWord = newMatchWholeWord;
+	//	m_pGroup->bSearchDown     = newSearchDown;
+	//	m_pGroup->bMatchCase      = newMatchCase;
+	//	m_pGroup->bMatchWholeWord = newMatchWholeWord;
 
 	//	if ( pDialog->FindNext() ) {
 
-	//		findNext( group->findStr, group->bSearchDown, group->bMatchCase, group->bMatchWholeWord );
+	//		findNext( m_pGroup->findStr, m_pGroup->bSearchDown, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord );
 
 	//	} else if ( pDialog->ReplaceCurrent() ) {
 
-	//		group->replaceStr = static_cast<LPCTSTR>(pDialog->GetReplaceString());
-	//		replace( group->findStr, group->replaceStr, group->bSearchDown, group->bMatchCase, group->bMatchWholeWord );
+	//		m_pGroup->replaceStr = static_cast<LPCTSTR>(pDialog->GetReplaceString());
+	//		replace( m_pGroup->findStr, m_pGroup->replaceStr, m_pGroup->bSearchDown, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord );
 
 	//	} else if ( pDialog->ReplaceAll() ) {
 
-	//		group->replaceStr = static_cast<LPCTSTR>(pDialog->GetReplaceString());
-	//		replaceAll( group->findStr, group->replaceStr, group->bMatchCase, group->bMatchWholeWord );
+	//		m_pGroup->replaceStr = static_cast<LPCTSTR>(pDialog->GetReplaceString());
+	//		replaceAll( m_pGroup->findStr, m_pGroup->replaceStr, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord );
 
 	//	}
 	//}
@@ -461,7 +461,7 @@ LRESULT RDOBaseEdit::OnFindReplaceMsg( WPARAM /*wParam*/, LPARAM lParam )
 
 void RDOBaseEdit::OnUpdateSearchFindNextPrev(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable( group ? !group->findStr.empty() : false );
+	pCmdUI->Enable( m_pGroup ? !m_pGroup->findStr.empty() : false );
 }
 
 void RDOBaseEdit::OnUpdateSearchFind(CCmdUI* pCmdUI) 
@@ -1108,14 +1108,14 @@ void RDOBaseEdit::OnBookmarkNext()
 {
 	if ( bookmarkNext( false, true ) ) return;
 
-	if ( !group ) {
+	if ( !m_pGroup ) {
 
 		bookmarkNext();
 
 	} else {
 
-		RDOBaseEditListIterator it = group->begin();
-		while ( it != group->end() ) {
+		RDOBaseEditListIterator it = m_pGroup->begin();
+		while ( it != m_pGroup->end() ) {
 			if ( *it == this ) break;
 			it++;
 		}
@@ -1125,8 +1125,8 @@ void RDOBaseEdit::OnBookmarkNext()
 		rbool wasLoop = true;
 		while ( !allItem && *it && wasLoop ) {
 			it++;
-			if ( it == group->end() ) {
-				it = group->begin();
+			if ( it == m_pGroup->end() ) {
+				it = m_pGroup->begin();
 			}
 			if ( *it == this ) {
 				allItem = true;
@@ -1146,14 +1146,14 @@ void RDOBaseEdit::OnBookmarkPrev()
 {
 	if ( bookmarkPrev( false, true ) ) return;
 
-	if ( !group ) {
+	if ( !m_pGroup ) {
 
 		bookmarkPrev();
 
 	} else {
 
-		RDOBaseEditListIterator it = group->begin();
-		while ( it != group->end() ) {
+		RDOBaseEditListIterator it = m_pGroup->begin();
+		while ( it != m_pGroup->end() ) {
 			if ( *it == this ) break;
 			it++;
 		}
@@ -1162,8 +1162,8 @@ void RDOBaseEdit::OnBookmarkPrev()
 		rbool allItem = false;
 		rbool wasLoop = true;
 		while ( !allItem && *it && wasLoop ) {
-			if ( it == group->begin() ) {
-				it = group->end();
+			if ( it == m_pGroup->begin() ) {
+				it = m_pGroup->end();
 			}
 			it--;
 			if ( *it == this ) {
@@ -1182,10 +1182,10 @@ void RDOBaseEdit::OnBookmarkPrev()
 
 void RDOBaseEdit::OnBookmarkClearAll()
 {
-	if ( !group ) {
+	if ( !m_pGroup ) {
 		bookmarkClearAll();
 	} else {
-		for ( RDOBaseEditListIterator it = group->begin(); it != group->end(); it++ ) {
+		for ( RDOBaseEditListIterator it = m_pGroup->begin(); it != m_pGroup->end(); it++ ) {
 			(*it)->bookmarkClearAll();
 		}
 	}
@@ -1195,10 +1195,10 @@ void RDOBaseEdit::OnBookmarkClearAll()
 void RDOBaseEdit::updateBookmarksGUI()
 {
 	GUI_HAS_BOOKMARK = false;
-	if ( !group ) {
+	if ( !m_pGroup ) {
 		GUI_HAS_BOOKMARK = hasBookmarks();
 	} else {
-		for ( RDOBaseEditListIterator it = group->begin(); it != group->end(); it++ ) {
+		for ( RDOBaseEditListIterator it = m_pGroup->begin(); it != m_pGroup->end(); it++ ) {
 			GUI_HAS_BOOKMARK = (*it)->hasBookmarks();
 			if ( GUI_HAS_BOOKMARK ) break;
 		}
@@ -1224,13 +1224,13 @@ void RDOBaseEdit::OnHasBookmarks( CCmdUI* pCmdUI )
 void RDOBaseEdit::onViewShowWhiteSpace() 
 {
 	rbool value = !isViewWhiteSpace();
-	if (!group)
+	if (!m_pGroup)
 	{
 		setViewWhiteSpace(value);
 	}
 	else
 	{
-		for (RDOBaseEditListIterator it = group->begin(); it != group->end(); ++it)
+		for (RDOBaseEditListIterator it = m_pGroup->begin(); it != m_pGroup->end(); ++it)
 		{
 			(*it)->setViewWhiteSpace(value);
 		}
@@ -1240,13 +1240,13 @@ void RDOBaseEdit::onViewShowWhiteSpace()
 void RDOBaseEdit::onViewShowEndOfLine() 
 {
 	rbool value = !isViewEndOfLine();
-	if (!group)
+	if (!m_pGroup)
 	{
 		setViewEndOfLine(value);
 	}
 	else
 	{
-		for (RDOBaseEditListIterator it = group->begin(); it != group->end(); ++it)
+		for (RDOBaseEditListIterator it = m_pGroup->begin(); it != m_pGroup->end(); ++it)
 		{
 			(*it)->setViewEndOfLine(value);
 		}
@@ -1255,10 +1255,10 @@ void RDOBaseEdit::onViewShowEndOfLine()
 
 void RDOBaseEdit::OnViewZoomIn() 
 {
-	if ( !group ) {
+	if ( !m_pGroup ) {
 		zoomIn();
 	} else {
-		for ( RDOBaseEditListIterator it = group->begin(); it != group->end(); it++ ) {
+		for ( RDOBaseEditListIterator it = m_pGroup->begin(); it != m_pGroup->end(); it++ ) {
 			(*it)->zoomIn();
 		}
 	}
@@ -1266,10 +1266,10 @@ void RDOBaseEdit::OnViewZoomIn()
 
 void RDOBaseEdit::OnViewZoomOut() 
 {
-	if ( !group ) {
+	if ( !m_pGroup ) {
 		zoomOut();
 	} else {
-		for ( RDOBaseEditListIterator it = group->begin(); it != group->end(); it++ ) {
+		for ( RDOBaseEditListIterator it = m_pGroup->begin(); it != m_pGroup->end(); it++ ) {
 			(*it)->zoomOut();
 		}
 	}
@@ -1277,10 +1277,10 @@ void RDOBaseEdit::OnViewZoomOut()
 
 void RDOBaseEdit::OnViewZoomReset() 
 {
-	if ( !group ) {
+	if ( !m_pGroup ) {
 		resetZoom();
 	} else {
-		for ( RDOBaseEditListIterator it = group->begin(); it != group->end(); it++ ) {
+		for ( RDOBaseEditListIterator it = m_pGroup->begin(); it != m_pGroup->end(); it++ ) {
 			(*it)->resetZoom();
 		}
 	}
