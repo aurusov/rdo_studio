@@ -37,8 +37,6 @@ private:
 	int   markerCount;
 
 protected:
-	rbool GUI_HAS_BOOKMARK;
-
 	long sendEditor( unsigned int msg, unsigned long wParam = 0, long lParam = 0 ) const   { return super::send( msg, wParam, lParam );; };
 	long sendEditorString( unsigned int msg, unsigned long wParam, const char* str ) const { return super::sends( msg, wParam, str ); };
 	QMenu* popupMenu;
@@ -65,7 +63,6 @@ protected:
 	void autoIndent() const;
 
 	void updateAllGUI();
-	void updateBookmarksGUI();
 
 protected:
 	virtual void focusInEvent   (QFocusEvent* pEvent);

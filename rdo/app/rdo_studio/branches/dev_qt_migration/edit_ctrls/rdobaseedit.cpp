@@ -133,7 +133,6 @@ static const UINT FIND_REPLASE_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 
 RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent):
 	super(pParent),
-	GUI_HAS_BOOKMARK( false ),
 	markerCount( 0 ),
 	popupMenu( NULL ),
 	style( NULL ),
@@ -1142,7 +1141,6 @@ void RDOBaseEdit::autoIndent() const
 void RDOBaseEdit::onBookmarkToggle()
 {
 	bookmarkToggle();
-	updateBookmarksGUI();
 }
 
 void RDOBaseEdit::onBookmarkNext()
@@ -1236,12 +1234,6 @@ void RDOBaseEdit::onBookmarkPrev()
 void RDOBaseEdit::onBookmarkClearAll()
 {
 	methodOfGroup(boost::bind(&RDOBaseEdit::bookmarkClearAll, _1));
-	updateBookmarksGUI();
-}
-
-void RDOBaseEdit::updateBookmarksGUI()
-{
-	GUI_HAS_BOOKMARK = predicateOfGroup(boost::bind(&RDOBaseEdit::hasBookmarks, _1));
 }
 
 void RDOBaseEdit::onUpdateEditGUI()
@@ -1252,7 +1244,6 @@ void RDOBaseEdit::onUpdateEditGUI()
 void RDOBaseEdit::updateAllGUI()
 {
 	onUpdateEditGUI();
-	updateBookmarksGUI();
 }
 
 void RDOBaseEdit::onViewShowWhiteSpace() 
@@ -1434,14 +1425,17 @@ void RDOBaseEdit::onUpdateActions(rbool activated)
 		activated && getZoom(),
 		this, "onViewZoomReset()"
 	);
+
+	rbool hasBookmark = predicateOfGroup(boost::bind(&RDOBaseEdit::hasBookmarks, _1));
+
 	updateAction(
 		pMainWindow->actSearchBookmarkNext,
-		activated && GUI_HAS_BOOKMARK,
+		activated && hasBookmark,
 		this, "onBookmarkNext()"
 	);
 	updateAction(
 		pMainWindow->actSearchBookmarkPrev,
-		activated && GUI_HAS_BOOKMARK,
+		activated && hasBookmark,
 		this, "onBookmarkPrev()"
 	);
 	updateAction(
@@ -1451,7 +1445,7 @@ void RDOBaseEdit::onUpdateActions(rbool activated)
 	);
 	updateAction(
 		pMainWindow->actSearchBookmarksClearAll,
-		activated && GUI_HAS_BOOKMARK,
+		activated && hasBookmark,
 		this, "onBookmarkClearAll()"
 	);
 
