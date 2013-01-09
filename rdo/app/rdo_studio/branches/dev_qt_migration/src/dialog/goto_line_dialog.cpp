@@ -25,6 +25,7 @@ GoToLineDialog::GoToLineDialog(PTR(QWidget) pParent, int _line, int lineCount)
 	label->setText(label->text() + " (1 - " + QString::number(lineCount) + ")");
 
 	lineEdit->setValidator(new QIntValidator(this));
+	lineEdit->setText(QString::number(m_line));
 
 	connect(buttonOk, SIGNAL(clicked()), this, SLOT(okButtonClicked()));
 	connect(buttonCancel, SIGNAL(clicked()), this, SLOT(reject()));
