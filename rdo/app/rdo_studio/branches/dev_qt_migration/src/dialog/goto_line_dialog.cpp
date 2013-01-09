@@ -14,21 +14,29 @@
 #include "app/rdo_studio_mfc/src/dialog/goto_line_dialog.h"
 // --------------------------------------------------------------------------------
 
-GoToLineDialog::GoToLineDialog(PTR(QWidget) pParent, int _line)
+GoToLineDialog::GoToLineDialog(PTR(QWidget) pParent, int _line, int lineCount)
 	: QDialog(pParent),
-	  line(_line)
+	  m_line(_line)
 {
 	setupUi(this);
 
 	layout()->setSizeConstraint(QLayout::SetFixedSize);
 
+	label->setText(label->text() + " (1 - " + QString::number(lineCount) + ")");
+
 	lineEdit->setValidator(new QIntValidator(this));
 
 	connect(buttonOk, SIGNAL(clicked()), this, SLOT(okButtonClicked()));
+	connect(buttonCancel, SIGNAL(clicked()), this, SLOT(reject()));
 }
 
 void GoToLineDialog::okButtonClicked()
 {
-	line = lineEdit->text().toInt();
+	m_line = lineEdit->text().toInt();
 	done(Accepted);
+}
+
+int GoToLineDialog::getLine() const
+{
+	return m_line;
 }
