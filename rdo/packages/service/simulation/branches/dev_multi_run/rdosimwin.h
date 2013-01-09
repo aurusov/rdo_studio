@@ -213,7 +213,8 @@ private:
 	rdo::simulation::report::RDOExitCode  m_exitCode;
 
 	void terminateModel();
-	void closeModel    (); 
+	void closeModel    ();
+	void runSeries     ();
 
 	ShowMode  m_showMode; //! current show mode
 	double    m_showRate; //! current show mode

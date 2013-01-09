@@ -1065,11 +1065,9 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 				if (!m_pThreadRuntime->runtimeError())
 				{
 					//! Остановились сами нормально
-					// место для добавления цикла //
-						// место для инициализации кол-ва запусков m_runCount //
 					broadcastMessage(RT_SIMULATOR_MODEL_STOP_OK);
 					closeModel();
-					if (m_runNumber < m_runCount)
+					/*if (m_runNumber < m_runCount)
 					{
 						parseModel();
 						runModel();
@@ -1078,7 +1076,8 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 					else
 					{
 						m_runNumber = 0;
-					}
+					}*/
+					runSeries();
 				}
 				else
 				{
@@ -1156,9 +1155,7 @@ void RDOThreadSimulator::runModel()
 {
 	if (m_runNumber == 0)
 	{
-		closeModel();
-		parseModel();
-		++m_runNumber;
+		runSeries();
 	}
 
 	ASSERT(m_pParser );
@@ -1244,6 +1241,26 @@ void RDOThreadSimulator::closeModel()
 	{
 		m_pParser = NULL;
 		TRACE(_T("******************************** Ошибка удаления m_pParser\n"));
+	}
+}
+
+void RDOThreadSimulator::runSeries()
+{
+	if (m_runNumber == 0)
+	{
+		closeModel();
+		parseModel();
+		++m_runNumber;
+	}
+	else if (m_runNumber < m_runCount && m_runNumber !=0)
+	{
+		parseModel();
+		runModel();
+		++m_runNumber;
+	}
+	else
+	{
+		m_runNumber = 0;
 	}
 }
 
