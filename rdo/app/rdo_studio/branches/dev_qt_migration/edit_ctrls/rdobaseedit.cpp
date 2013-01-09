@@ -1314,14 +1314,6 @@ void RDOBaseEdit::onSearchGotoLine()
 		dialog.line = getLineCount() + 1;
 	}
 	setCurrentPos(dialog.line - 1, 0);
-	//! @todo qt
-	//RDOGotoDlg dialog( this, getCurrentLineNumber() + 1 );
-	//if ( dialog.DoModal() == IDOK ) {
-	//	if ( dialog.line - 1 > getLineCount() ) {
-	//		dialog.line = getLineCount() + 1;
-	//	}
-	//	setCurrentPos( dialog.line - 1, 0 );
-	//}
 }
 
 void RDOBaseEdit::focusInEvent(QFocusEvent* pEvent)
