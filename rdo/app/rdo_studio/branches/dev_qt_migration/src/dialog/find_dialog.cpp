@@ -45,11 +45,6 @@ FindDialog::FindDialog(PTR(QWidget) pParent, CREF(OnFindCallback) onFindCallback
 	connect(directionDown, SIGNAL(toggled(bool)),              this, SLOT(onDirectionDownToggled(bool)));
 
 	setAttribute(Qt::WA_DeleteOnClose, true);
-
-	if (pParent)
-	{
-//		move(pParent->frameGeometry().center() - frameGeometry().center());
-	}
 }
 
 FindDialog::~FindDialog()
