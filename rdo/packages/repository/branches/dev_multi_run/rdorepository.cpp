@@ -31,8 +31,7 @@ RDOThreadRepository::RDOThreadRepository()
 	, m_modelPath    (_T("")                   )
 	, m_hasModel     (false                    )
 	, m_realOnlyInDlg(false                    )
-	, m_firstStart   (0                        )
-	, m_count        (0                        )
+	, m_runNumber    (0                        )
 {
 	notifies.push_back(RT_STUDIO_MODEL_NEW                  );
 	notifies.push_back(RT_STUDIO_MODEL_OPEN                 );
@@ -647,9 +646,9 @@ void RDOThreadRepository::beforeModelStart()
 	}
 	if (m_files[rdoModelObjects::TRC].m_described)
 	{
-		++m_firstStart;
-		tstring m_buffer = rdo::format("%i", m_firstStart);
-		m_traceFile.open((m_modelPath + m_buffer + getFileExtName(rdoModelObjects::TRC)).c_str(), std::ios::out | std::ios::binary);
+		++m_runNumber;
+		tstring buffer = rdo::format("%i", m_runNumber);
+		m_traceFile.open((m_modelPath + buffer + getFileExtName(rdoModelObjects::TRC)).c_str(), std::ios::out | std::ios::binary);
 		if (m_traceFile.is_open())
 		{
 			writeModelFilesInfo(m_traceFile);
@@ -669,10 +668,7 @@ void RDOThreadRepository::stopModel()
 	}
 	if (m_files[rdoModelObjects::PMV].m_described)
 	{
-		m_count++;
-		//char buffer[100];
-		//_itoa (m_count, buffer, 10);
-		tstring buffer = rdo::format("%i", m_count);
+		tstring buffer = rdo::format("%i", m_runNumber);
 		rdo::ofstream results_file;
 		results_file.open((m_modelPath + buffer + getFileExtName(rdoModelObjects::PMV)).c_str(), std::ios::out | std::ios::binary );
 		if (results_file.is_open())
