@@ -864,7 +864,7 @@ RDOThreadSimulator::RDOThreadSimulator()
 	, m_pThreadRuntime(NULL                          )
 	, m_exitCode      (rdo::simulation::report::EC_OK)
 	, m_runCount      (0                             )
-	, m_run           (0                             )
+	, m_runNumber     (0                             )
 {
 	notifies.push_back(RT_STUDIO_MODEL_BUILD              );
 	notifies.push_back(RT_STUDIO_MODEL_RUN                );
@@ -1069,15 +1069,15 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 						// место для инициализации кол-ва запусков m_runCount //
 					broadcastMessage(RT_SIMULATOR_MODEL_STOP_OK);
 					closeModel();
-					if (m_run < m_runCount)
+					if (m_runNumber < m_runCount)
 					{
-						parseModel_i();
+						parseModel();
 						runModel();
-						++m_run;
+						++m_runNumber;
 					}
 					else
 					{
-						m_run = 0;
+						m_runNumber = 0;
 					}
 				}
 				else
@@ -1113,7 +1113,14 @@ rbool RDOThreadSimulator::parseModel()
 	try
 	{
 		m_exitCode = rdo::simulation::report::EC_OK;
-		m_pParser->parse();
+		if (m_runNumber != 0)
+		{
+			m_pParser->parse(m_runNumber);
+		}
+		else
+		{
+			m_pParser->parse();
+		}
 	}
 	catch (REF(rdo::compiler::parser::RDOSyntaxException))
 	{
@@ -1134,61 +1141,24 @@ rbool RDOThreadSimulator::parseModel()
 
 	m_showMode = getInitialShowMode();
 	m_showRate = getInitialShowRate();
-	m_runCount = getInitialRunCount();
+	if (m_runNumber == 0)
+	{
+		m_runCount = getInitialRunCount();
+	}
 
 	broadcastMessage(RT_SIMULATOR_PARSE_OK);
 
 	return true;
 }
 
-rbool RDOThreadSimulator::parseModel_i()
-{
-	terminateModel();
-	closeModel();
-
-	m_pParser = rdo::Factory<rdo::compiler::parser::RDOParserModel>::create();
-	ASSERT(m_pParser);
-	m_pParser->init();
-	m_pRuntime = m_pParser->runtime();
-	ASSERT(m_pRuntime);
-
-	try
-	{
-		m_exitCode = rdo::simulation::report::EC_OK;
-		m_pParser->parse(m_run);
-	}
-	catch (REF(rdo::compiler::parser::RDOSyntaxException))
-	{
-		m_exitCode = rdo::simulation::report::EC_ParserError;
-		broadcastMessage(RT_SIMULATOR_PARSE_ERROR);
-		closeModel();
-		return false;
-	}
-	catch (REF(rdo::runtime::RDORuntimeException) ex)
-	{
-		tstring mess = ex.getType() + _T(" : ") + ex.message();
-		broadcastMessage(RT_SIMULATOR_PARSE_STRING, &mess);
-		m_exitCode = rdo::simulation::report::EC_ParserError;
-		broadcastMessage(RT_SIMULATOR_PARSE_ERROR);
-		closeModel();
-		return false;
-	}
-
-	m_showMode = getInitialShowMode();
-	m_showRate = getInitialShowRate();
-
-	broadcastMessage(RT_SIMULATOR_PARSE_OK);
-
-	return true;
-}
 
 void RDOThreadSimulator::runModel()
 {
-	if (m_run == 0)
+	if (m_runNumber == 0)
 	{
 		closeModel();
-		parseModel_i();
-		++m_run;
+		parseModel();
+		++m_runNumber;
 	}
 
 	ASSERT(m_pParser );

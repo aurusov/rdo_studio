@@ -64,7 +64,7 @@ public:
 	double                             getTraceStartTime() const { return m_traceStartTime; }
 	double                             getTraceEndTime  () const { return m_traceEndTime;   }
 	ruint                              getRunCount      () const { return m_runCount;       }
-	ruint                              getRun           () const { return m_run;            }
+	ruint                              getRun           () const { return m_runNumber;            }
 
 	void  setShowMode      (rdo::service::simulation::ShowMode showMode);
 	void  setFrameNumber   (int value,    CREF(YYLTYPE) pos);
@@ -104,7 +104,7 @@ private:
 	double                              m_traceStartTime;
 	double                              m_traceEndTime;
 	ruint                               m_runCount;
-	ruint                               m_run;
+	ruint                               m_runNumber;
 	ruint                               m_iterator;
 	YYLTYPE                             m_traceStartTime_pos;
 	YYLTYPE                             m_traceEndTime_pos;
