@@ -21,6 +21,8 @@ NewModelDialog::NewModelDialog(PTR(QWidget) pParent)
 {
 	setupUi(this);
 
+	layout()->setSizeConstraint(QLayout::SetFixedSize);
+
 	m_font    = labelError->font();
 	m_fontRed = m_font;
 	m_fontRed.setBold(true);
