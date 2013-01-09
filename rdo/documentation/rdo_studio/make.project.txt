@@ -1,0 +1,40 @@
+﻿Инструкции по сборки РДО (пока только библиотеки rdo_common) и проведению тестов.
+
+1. Генерация Makefile'ов и компиляция
+
+1.1 Для Linux
+cd <корень_проекта>
+mkdir build
+cd build
+cmake ..
+make -j4
+
+1.2 Для Windows через CMake (cmake-gui)
+
+1.2.1 Запустить 'CMake (cmake-gui)'
+1.2.2 Указать 'Where is the source code' путь к корню исходников, например 'C:/rdo/dev_linux'
+1.2.3 Указать 'Where to build the binaries' путь к подпапке build, например 'C:/rdo/dev_linux/build'
+1.2.4 Нажать 'Configure', для компиляции под MinGW выбрать 'MinGW Makefiles' (для Visual studio своё),
+      оставить выбранным вариант 'Use default native compilers'
+1.2.5 Если возникла ошибка, то еще раз повторяем 'Configure', у меня срабатывает со второго раза
+1.2.6 Нажать 'Generate'
+
+Всё, в папке 'C:/rdo/dev_linux/build ' лежат make-файлы, можем их компилить
+Компиляцию с использованием gcc через MinGW см. в 1.3, через Visual Studio: надо окрыть сгенерированный солюшен.
+
+1.3 Для Windows с использованием gcc через MinGW
+Пути к C:\MinGW\bin и C:\MinGW\msys\1.0\bin должны быть в PATH
+Запускаем 'MinGW Shell', окрывается консоль
+cd /c/rdo/dev_linux
+mkdir build
+cd build
+cmake -G 'MinGW Makefiles' ..
+cmake --build ./
+
+Если возникла ошибка при "cmake -G 'MinGW Makefiles' ..", то еще раз повторяем, у меня срабатывает со второго раза
+
+2. Запуск тестов для Linux
+
+cd <корень_проекта>
+cd build
+make test

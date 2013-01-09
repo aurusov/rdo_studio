@@ -1,0 +1,20 @@
+﻿MinGW - Minimalist GNU for Windows
+
+Используется для компиляции исходников под виндой через gcc.
+
+1. Скачиваем последнюю версию инсталятора 
+http://sourceforge.net/projects/mingw/files/Automated%20MinGW%20Installer/mingw-get-inst/
+(у меня mingw-get-inst-20110802.exe)
+
+PS: сам проект располагается http://www.mingw.org/
+
+2. На закладке 'Repository Catalogues' выбираем 'Download latest repository catalogues'
+3. Путь оставляем по умолчанию: 'C:\MinGW'
+4. На закладке 'Select Components' дополнительно выбираем
+C++ Compiler
+MSYS Basic System
+5. Дожидаемся конца инсталяции
+6. Прописываем в переменную окружения PATH пути к C:\MinGW\bin и C:\MinGW\msys\1.0\bin
+7. Запускаем 'MinGW Shell', окрывается консоль, устанавливаем еще пару пакетов (bison и flex)
+mingw-get install msys-bison
+mingw-get install msys-flex
