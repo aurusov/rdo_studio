@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2013
-  \file      go_to_next_line_dialog.h
+  \file      goto_line_dialog.h
   \author    Романов Ярослав (robot.xet@gmail.com)
   \date      04.01.2013
   \brief     
@@ -12,20 +12,19 @@
 // ----------------------------------------------------------------------- INCLUDES
 #include <QtGui/qdialog.h>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/projects/common/bin/rdo_studio/generated/ui_go_to_next_line_dialog.h"
+#include "app/rdo_studio_mfc/projects/common/bin/rdo_studio/generated/ui_goto_line_dialog.h"
 // --------------------------------------------------------------------------------
 
-class GoToNextLineDialog
+class GoToLineDialog
 	: public QDialog
-	, private Ui::GoToNextLineDialog
+	, private Ui::GoToLineDialog
 {
 Q_OBJECT
 
 public:
-	explicit GoToNextLineDialog(PTR(QWidget) pParent = NULL, int _line = -1);
+	explicit GoToLineDialog(PTR(QWidget) pParent = NULL, int _line = -1);
 
 	int line;
-
 private slots:
 	void okButtonClicked();
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>GoToNextLineDialog</class>
- <widget class="QDialog" name="GoToNextLineDialog">
+ <class>GoToLineDialog</class>
+ <widget class="QDialog" name="GoToLineDialog">
   <property name="enabled">
    <bool>true</bool>
   </property>

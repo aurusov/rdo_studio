@@ -1,6 +1,6 @@
 /*!
   \copyright (c) RDO-Team, 2013
-  \file      go_to_next_line_dialog.cpp
+  \file      goto_line_dialog.cpp
   \author    Романов Ярослав (robot.xet@gmail.com)
   \date      04.01.2013
   \brief     
@@ -11,10 +11,10 @@
 #include "app/rdo_studio_mfc/pch/stdpch.h"
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "app/rdo_studio_mfc/src/dialog/go_to_next_line_dialog.h"
+#include "app/rdo_studio_mfc/src/dialog/goto_line_dialog.h"
 // --------------------------------------------------------------------------------
 
-GoToNextLineDialog::GoToNextLineDialog(PTR(QWidget) pParent, int _line)
+GoToLineDialog::GoToLineDialog(PTR(QWidget) pParent, int _line)
 	: QDialog(pParent),
 	  line(_line)
 {
@@ -27,7 +27,7 @@ GoToNextLineDialog::GoToNextLineDialog(PTR(QWidget) pParent, int _line)
 	connect(buttonOk, SIGNAL(clicked()), this, SLOT(okButtonClicked()));
 }
 
-void GoToNextLineDialog::okButtonClicked()
+void GoToLineDialog::okButtonClicked()
 {
 	line = lineEdit->text().toInt();
 	done(Accepted);

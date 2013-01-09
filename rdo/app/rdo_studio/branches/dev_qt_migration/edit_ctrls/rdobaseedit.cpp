@@ -23,7 +23,7 @@
 #include "app/rdo_studio_mfc/resource.h"
 #include "thirdparty/sci/include/SciLexer.h"
 #include "thirdparty/sci/lexlib/WordList.h"
-#include "app/rdo_studio_mfc/src/dialog/go_to_next_line_dialog.h"
+#include "app/rdo_studio_mfc/src/dialog/goto_line_dialog.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
@@ -1307,7 +1307,7 @@ public:
 
 void RDOBaseEdit::onSearchGotoLine()
 {
-	GoToNextLineDialog dialog(this, getCurrentLineNumber() + 1);
+	GoToLineDialog dialog(this, getCurrentLineNumber() + 1);
 	dialog.exec();
 	if(dialog.line - 1 > getLineCount())
 	{
