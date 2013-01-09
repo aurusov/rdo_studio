@@ -1067,16 +1067,6 @@ void RDOThreadSimulator::proc(REF(RDOMessageInfo) msg)
 					//! Остановились сами нормально
 					broadcastMessage(RT_SIMULATOR_MODEL_STOP_OK);
 					closeModel();
-					/*if (m_runNumber < m_runCount)
-					{
-						parseModel();
-						runModel();
-						++m_runNumber;
-					}
-					else
-					{
-						m_runNumber = 0;
-					}*/
 					runSeries();
 				}
 				else
