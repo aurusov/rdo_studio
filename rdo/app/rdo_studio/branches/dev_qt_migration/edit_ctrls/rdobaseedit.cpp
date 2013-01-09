@@ -23,6 +23,7 @@
 #include "app/rdo_studio_mfc/resource.h"
 #include "thirdparty/sci/include/SciLexer.h"
 #include "thirdparty/sci/lexlib/WordList.h"
+#include "app/rdo_studio_mfc/src/dialog/go_to_next_line_dialog.h"
 // --------------------------------------------------------------------------------
 
 #ifdef _DEBUG
@@ -1304,8 +1305,15 @@ public:
 	int line;
 };
 
-void RDOBaseEdit::OnSearchGotoLine()
+void RDOBaseEdit::onSearchGotoLine()
 {
+	GoToNextLineDialog dialog(this, getCurrentLineNumber() + 1);
+	dialog.exec();
+	if(dialog.line - 1 > getLineCount())
+	{
+		dialog.line = getLineCount() + 1;
+	}
+	setCurrentPos(dialog.line - 1, 0);
 	//! @todo qt
 	//RDOGotoDlg dialog( this, getCurrentLineNumber() + 1 );
 	//if ( dialog.DoModal() == IDOK ) {
@@ -1434,6 +1442,11 @@ void RDOBaseEdit::onUpdateActions(rbool activated)
 		pMainWindow->actSearchBookmarksClearAll,
 		activated && hasBookmark,
 		this, "onBookmarkClearAll()"
+	);
+	updateAction(
+		pMainWindow->actSearchGotoLine,
+		activated,
+		this, "onSearchGotoLine()"
 	);
 
 	QString modify = activated

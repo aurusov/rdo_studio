@@ -83,7 +83,6 @@ private:
 	afx_msg void OnUpdateSearchFindNextPrev(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateSearchFind(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateSearchReplace(CCmdUI* pCmdUI);
-	afx_msg void OnSearchGotoLine();
 	afx_msg LRESULT OnFindReplaceMsg( WPARAM wParam, LPARAM lParam );
 
 private slots:
@@ -112,6 +111,8 @@ private slots:
 	void onBookmarkNext    () const;
 	void onBookmarkPrev    () const;
 	void onBookmarkClearAll();
+
+	void onSearchGotoLine();
 
 	void onCopyAsRTF(QMimeData* pMimeData);
 
