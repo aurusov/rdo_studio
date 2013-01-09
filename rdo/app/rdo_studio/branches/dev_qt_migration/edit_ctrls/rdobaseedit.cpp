@@ -1307,13 +1307,16 @@ public:
 
 void RDOBaseEdit::onSearchGotoLine()
 {
-	GoToLineDialog dialog(this, getCurrentLineNumber() + 1);
-	dialog.exec();
-	if(dialog.line - 1 > getLineCount())
+	GoToLineDialog dialog(this, getCurrentLineNumber() + 1, getLineCount());
+	if (dialog.exec() == QDialog::Accepted)
 	{
-		dialog.line = getLineCount() + 1;
+		int line = dialog.getLine();
+		if(dialog.getLine() - 1 > getLineCount())
+		{
+			line = getLineCount() + 1;
+		}
+		setCurrentPos(line - 1, 0);
 	}
-	setCurrentPos(dialog.line - 1, 0);
 }
 
 void RDOBaseEdit::focusInEvent(QFocusEvent* pEvent)
