@@ -709,7 +709,7 @@ border: none;
     <string>Увеличить масштаб</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+=</string>
+    <string>Ctrl++</string>
    </property>
   </action>
   <action name="actViewZoomDec">

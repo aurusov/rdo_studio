@@ -100,9 +100,10 @@ private slots:
 	void onEditUpperCase();
 	void onEditLowerCase();
 
-	void onViewZoomInc  ();
-	void onViewZoomDec  ();
-	void onViewZoomReset();
+	void onViewZoomChanged     (int zoom);
+	void onViewZoomInc         ();
+	void onViewZoomDec         ();
+	void onViewZoomReset       ();
 
 	void onViewShowWhiteSpace();
 	void onViewShowEndOfLine ();

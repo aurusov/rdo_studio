@@ -167,6 +167,7 @@ RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent):
 	QObject::connect(this, SIGNAL(updateUi()),          this, SLOT(onUpdateEditGUI()));
 	QObject::connect(this, SIGNAL(modified(int, int, int, int, const QByteArray&, int, int, int)), this, SLOT(onUpdateModify()));
 	QObject::connect(this, SIGNAL(aboutToCopy(QMimeData*)), this, SLOT(onCopyAsRTF(QMimeData*)));
+	QObject::connect(this, SIGNAL(zoom(int)),this, SLOT(onViewZoomChanged(int)));
 
 	sci_MARKER_BOOKMARK = getNewMarker();
 
@@ -1234,19 +1235,27 @@ void RDOBaseEdit::onViewShowEndOfLine()
 	methodOfGroup(boost::bind(&RDOBaseEdit::setViewEndOfLine, _1, !isViewEndOfLine()));
 }
 
-void RDOBaseEdit::onViewZoomInc() 
+void RDOBaseEdit::onViewZoomChanged(int)
+{
+	onUpdateActions(isActivated());
+}
+
+void RDOBaseEdit::onViewZoomInc()
 {
 	methodOfGroup(boost::bind(&RDOBaseEdit::zoomIn, _1));
+	onUpdateActions(isActivated());
 }
 
 void RDOBaseEdit::onViewZoomDec() 
 {
 	methodOfGroup(boost::bind(&RDOBaseEdit::zoomOut, _1));
+	onUpdateActions(isActivated());
 }
 
 void RDOBaseEdit::onViewZoomReset() 
 {
 	methodOfGroup(boost::bind(&RDOBaseEdit::resetZoom, _1));
+	onUpdateActions(isActivated());
 }
 
 int RDOBaseEdit::findPos( REF(tstring) findWhat, const int startFromLine, const rbool matchCase, const rbool matchWholeWord ) const
