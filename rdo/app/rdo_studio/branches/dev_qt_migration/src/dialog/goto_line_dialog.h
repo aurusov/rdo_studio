@@ -22,7 +22,7 @@ class GoToLineDialog
 Q_OBJECT
 
 public:
-	explicit GoToLineDialog(PTR(QWidget) pParent = NULL, int _line = -1, int lineCount = -1);
+	explicit GoToLineDialog(PTR(QWidget) pParent, int _line, int lineCount);
 
 	int getLine() const;
 
