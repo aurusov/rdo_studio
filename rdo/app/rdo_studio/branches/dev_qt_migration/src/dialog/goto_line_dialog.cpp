@@ -15,7 +15,7 @@
 // --------------------------------------------------------------------------------
 
 GoToLineDialog::GoToLineDialog(PTR(QWidget) pParent, int line, int lineCount)
-	: QDialog(pParent)
+	: QDialog(pParent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint)
 	, m_line (line   )
 {
 	setupUi(this);
@@ -26,9 +26,10 @@ GoToLineDialog::GoToLineDialog(PTR(QWidget) pParent, int line, int lineCount)
 
 	lineEdit->setValidator(new QIntValidator(1, lineCount, this));
 	lineEdit->setText(QString::number(m_line));
+	lineEdit->setFocus();
+	lineEdit->selectAll();
 
 	connect(buttonOk, SIGNAL(clicked()), this, SLOT(onOkButtonClicked()));
-	connect(buttonCancel, SIGNAL(clicked()), this, SLOT(reject()));
 }
 
 void GoToLineDialog::onOkButtonClicked()
