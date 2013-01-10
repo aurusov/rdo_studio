@@ -1288,8 +1288,7 @@ void RDOBaseEdit::onSearchGotoLine()
 	GoToLineDialog dialog(this, getCurrentLineNumber() + 1, getLineCount());
 	if (dialog.exec() == QDialog::Accepted)
 	{
-		int line = dialog.getLine();
-		setCurrentPos(line - 1, 0);
+		setCurrentPos(dialog.getLine() - 1, 0);
 	}
 }
 
