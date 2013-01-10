@@ -138,16 +138,10 @@ static const UINT FIND_REPLASE_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 //BEGIN_MESSAGE_MAP( RDOBaseEdit, CWnd )
 //	ON_WM_SETFOCUS()
 //	ON_WM_CONTEXTMENU()
-//	ON_COMMAND(ID_SEARCH_FIND, OnSearchFind)
 //	ON_COMMAND(ID_SEARCH_REPLACE, OnSearchReplace)
-//	ON_COMMAND(ID_SEARCH_FIND_NEXT, OnSearchFindNext)
-//	ON_COMMAND(ID_SEARCH_FIND_PREVIOUS, OnSearchFindPrevious)
 //	ON_COMMAND(ID_SEARCH_FIND_NEXT_FAST, OnSearchFindNextFast)
 //	ON_COMMAND(ID_SEARCH_FIND_PREVIOUS_FAST, OnSearchFindPreviousFast)
-//	ON_UPDATE_COMMAND_UI(ID_SEARCH_FIND_NEXT, OnUpdateSearchFindNextPrev)
-//	ON_UPDATE_COMMAND_UI(ID_SEARCH_FIND, OnUpdateSearchFind)
 //	ON_UPDATE_COMMAND_UI(ID_SEARCH_REPLACE, OnUpdateSearchReplace)
-//	ON_UPDATE_COMMAND_UI( ID_SEARCH_FIND_PREVIOUS, OnUpdateSearchFindNextPrev )
 //
 //	ON_REGISTERED_MESSAGE( FIND_REPLASE_MSG, OnFindReplaceMsg )
 //
@@ -160,7 +154,8 @@ RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent):
 	style( NULL ),
 	m_pGroup( NULL ),
 	firstFoundPos( -1 ),
-	bHaveFound( false )
+	bHaveFound( false ),
+	m_pFindDialog( NULL )
 {
 	QObject::connect(this, SIGNAL(needShown(int, int)), this, SLOT(catchNeedShown(int, int)));
 	QObject::connect(this, SIGNAL(charAdded(int)),      this, SLOT(catchCharAdded(int)));
@@ -399,13 +394,78 @@ void RDOBaseEdit::ensureRangeVisible( int posStart, int posEnd, rbool enforcePol
 	}
 }
 
-void RDOBaseEdit::OnSearchFind() 
+void RDOBaseEdit::onFindDlgFind(CREF(FindDialog::Settings) settings)
 {
-	//! @todo qt
-	//firstFoundPos = -1;
-	//CFindReplaceDialog* pDlg = new CFindReplaceDialog();
-	//DWORD flag = m_pGroup ? ((m_pGroup->bSearchDown ? FR_DOWN : 0) | (m_pGroup->bMatchCase ? FR_MATCHCASE : 0) | (m_pGroup->bMatchWholeWord ? FR_WHOLEWORD : 0)) : 0;
-	//pDlg->Create( true, getWordForFind().c_str(), NULL, flag, this );
+	m_findSettings = settings;
+	setUpActionFind(isActivated());
+	onSearchFindNext();
+}
+
+void RDOBaseEdit::onFindDlgClose()
+{
+	m_pFindDialog = NULL;
+}
+
+void RDOBaseEdit::onSearchFind() 
+{
+	m_findSettings.what = getSelection();
+
+	if (!m_pFindDialog)
+	{
+		m_pFindDialog = new FindDialog(
+			this,
+			boost::bind(&RDOBaseEdit::onFindDlgFind, this, _1),
+			boost::bind(&RDOBaseEdit::onFindDlgClose, this)
+			);
+	}
+
+	m_pFindDialog->setSettings(m_findSettings);
+	m_pFindDialog->show();
+	m_pFindDialog->raise();
+	m_pFindDialog->activateWindow();
+}
+void RDOBaseEdit::setUpActionFind(rbool activate)
+{
+	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
+	ASSERT(pMainWindow);
+
+	if (activate)
+	{
+		if (!pMainWindow->actSearchFind->isEnabled())
+		{
+			pMainWindow->actSearchFind->setEnabled(true);
+			connect(pMainWindow->actSearchFind, SIGNAL(triggered(bool)), this, SLOT(onSearchFind()));
+		}
+	}
+	else
+	{
+		if (pMainWindow->actSearchFind->isEnabled())
+		{
+			pMainWindow->actSearchFind->setEnabled(false);
+			disconnect(pMainWindow->actSearchFind, SIGNAL(triggered(bool)), this, SLOT(onSearchFind()));
+		}
+	}
+
+	if (activate && !m_findSettings.what.empty())
+	{
+		if (!pMainWindow->actSearchFindNext->isEnabled())
+		{
+			pMainWindow->actSearchFindNext->setEnabled(true);
+			pMainWindow->actSearchFindPrevious->setEnabled(true);
+			connect(pMainWindow->actSearchFindNext,     SIGNAL(triggered(bool)), this, SLOT(onSearchFindNext()));
+			connect(pMainWindow->actSearchFindPrevious, SIGNAL(triggered(bool)), this, SLOT(onSearchFindPrevious()));
+		}
+	}
+	else
+	{
+		if (pMainWindow->actSearchFindNext->isEnabled())
+		{
+			pMainWindow->actSearchFindNext->setEnabled(false);
+			pMainWindow->actSearchFindPrevious->setEnabled(false);
+			disconnect(pMainWindow->actSearchFindNext,     SIGNAL(triggered(bool)), this, SLOT(onSearchFindNext()));
+			disconnect(pMainWindow->actSearchFindPrevious, SIGNAL(triggered(bool)), this, SLOT(onSearchFindPrevious()));
+		}
+	}
 }
 
 void RDOBaseEdit::OnSearchReplace() 
@@ -417,40 +477,34 @@ void RDOBaseEdit::OnSearchReplace()
 	//pDlg->Create( false, getWordForFind().c_str(), m_pGroup ? m_pGroup->replaceStr.c_str() : NULL, flag, this );
 }
 
-void RDOBaseEdit::OnSearchFindNext() 
+void RDOBaseEdit::onSearchFindNext() 
 {
-	firstFoundPos = -1;
-	if ( m_pGroup ) {
-		findNext( m_pGroup->findStr, m_pGroup->bSearchDown, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord );
-	}
+	findNext( m_findSettings.what, m_findSettings.searchDown, m_findSettings.matchCase, m_findSettings.matchWholeWord );
 }
 
-void RDOBaseEdit::OnSearchFindPrevious() 
+void RDOBaseEdit::onSearchFindPrevious() 
 {
-	firstFoundPos = -1;
-	if ( m_pGroup ) {
-		findNext( m_pGroup->findStr, !m_pGroup->bSearchDown, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord );
-	}
+	findNext( m_findSettings.what, !m_findSettings.searchDown, m_findSettings.matchCase, m_findSettings.matchWholeWord );
 }
 
 void RDOBaseEdit::OnSearchFindNextFast() 
 {
-	firstFoundPos = getCurrentPos();
-	if ( m_pGroup ) {
-		m_pGroup->findStr     = getWordForFind();
-		m_pGroup->bSearchDown = true;
-		findNext( m_pGroup->findStr, m_pGroup->bSearchDown, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord );
-	}
+	//firstFoundPos = getCurrentPos();
+	//if ( m_pGroup ) {
+	//	m_pGroup->findStr     = getWordForFind();
+	//	m_pGroup->bSearchDown = true;
+	//	findNext( m_pGroup->findStr, m_pGroup->bSearchDown, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord );
+	//}
 }
 
 void RDOBaseEdit::OnSearchFindPreviousFast() 
 {
-	firstFoundPos = getCurrentPos();
-	if ( m_pGroup ) {
-		m_pGroup->findStr     = getWordForFind();
-		m_pGroup->bSearchDown = true;
-		findNext( m_pGroup->findStr, !m_pGroup->bSearchDown, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord );
-	}
+	//firstFoundPos = getCurrentPos();
+	//if ( m_pGroup ) {
+	//	m_pGroup->findStr     = getWordForFind();
+	//	m_pGroup->bSearchDown = true;
+	//	findNext( m_pGroup->findStr, !m_pGroup->bSearchDown, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord );
+	//}
 }
 
 LRESULT RDOBaseEdit::OnFindReplaceMsg( WPARAM /*wParam*/, LPARAM lParam )
@@ -494,16 +548,6 @@ LRESULT RDOBaseEdit::OnFindReplaceMsg( WPARAM /*wParam*/, LPARAM lParam )
 	//	}
 	//}
 	return 0;
-}
-
-void RDOBaseEdit::OnUpdateSearchFindNextPrev(CCmdUI* pCmdUI) 
-{
-	pCmdUI->Enable( m_pGroup ? !m_pGroup->findStr.empty() : false );
-}
-
-void RDOBaseEdit::OnUpdateSearchFind(CCmdUI* pCmdUI) 
-{
-	pCmdUI->Enable( !isEmpty() );
 }
 
 void RDOBaseEdit::OnUpdateSearchReplace(CCmdUI* pCmdUI) 
@@ -1416,6 +1460,13 @@ void RDOBaseEdit::onUpdateActions(rbool activated)
 		activated,
 		this, "onSearchGotoLine()"
 	);
+	updateAction(
+		pMainWindow->actSearchFind,
+		activated,
+		this, "onSearchFind()"
+	);
+
+	setUpActionFind    (activated);
 
 	QString modify = activated
 		? isReadOnly()
