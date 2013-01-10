@@ -14,34 +14,26 @@
 #include "app/rdo_studio_mfc/src/dialog/goto_line_dialog.h"
 // --------------------------------------------------------------------------------
 
-GoToLineDialog::GoToLineDialog(PTR(QWidget) pParent, int _line, int lineCount)
-	: QDialog(pParent),
-	  m_line(_line)
+GoToLineDialog::GoToLineDialog(PTR(QWidget) pParent, int line, int lineCount)
+	: QDialog(pParent)
+	, m_line (line   )
 {
 	setupUi(this);
 
 	layout()->setSizeConstraint(QLayout::SetFixedSize);
 
-	label->setText(label->text() + " (1 - " + QString::number(lineCount) + ")");
+	label->setText(QString("(1-%1)").arg(lineCount));
 
-	validator = new QIntValidator(1, lineCount, this);
-
-	lineEdit->setValidator(validator);
+	lineEdit->setValidator(new QIntValidator(1, lineCount, this));
 	lineEdit->setText(QString::number(m_line));
 
-	connect(buttonOk, SIGNAL(clicked()), this, SLOT(okButtonClicked()));
+	connect(buttonOk, SIGNAL(clicked()), this, SLOT(onOkButtonClicked()));
 	connect(buttonCancel, SIGNAL(clicked()), this, SLOT(reject()));
 }
 
-void GoToLineDialog::okButtonClicked()
+void GoToLineDialog::onOkButtonClicked()
 {
-	int pos = 0;
-	if(validator->validate(QString::number(lineEdit->text().toInt()), pos) == QValidator::Invalid)
-	{
-		m_line = validator->top() + 1;
-	}
-	else
-		m_line = lineEdit->text().toInt();
+	m_line = lineEdit->text().toInt();
 	done(Accepted);
 }
 

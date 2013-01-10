@@ -2,43 +2,16 @@
 <ui version="4.0">
  <class>GoToLineDialog</class>
  <widget class="QDialog" name="GoToLineDialog">
-  <property name="enabled">
-   <bool>true</bool>
-  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>255</width>
+    <width>218</width>
     <height>90</height>
    </rect>
   </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>255</width>
-    <height>90</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>16777215</width>
-    <height>16777215</height>
-   </size>
-  </property>
   <property name="windowTitle">
    <string>Перейти на строчку</string>
-  </property>
-  <property name="sizeGripEnabled">
-   <bool>false</bool>
-  </property>
-  <property name="modal">
-   <bool>false</bool>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="2" column="0">
@@ -74,18 +47,12 @@
     <widget class="QLineEdit" name="lineEdit">
      <property name="minimumSize">
       <size>
-       <width>235</width>
-       <height>10</height>
+       <width>200</width>
+       <height>0</height>
       </size>
-     </property>
-     <property name="contextMenuPolicy">
-      <enum>Qt::DefaultContextMenu</enum>
      </property>
      <property name="text">
       <string>1</string>
-     </property>
-     <property name="maxLength">
-      <number>50</number>
      </property>
     </widget>
    </item>

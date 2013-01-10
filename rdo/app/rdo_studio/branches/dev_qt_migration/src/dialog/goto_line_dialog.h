@@ -22,17 +22,15 @@ class GoToLineDialog
 Q_OBJECT
 
 public:
-	explicit GoToLineDialog(PTR(QWidget) pParent, int _line, int lineCount);
+	explicit GoToLineDialog(PTR(QWidget) pParent, int line, int lineCount);
 
 	int getLine() const;
 
 private:
 	int m_line;
-	QIntValidator* validator;
 
 private slots:
-	void okButtonClicked();
-
+	void onOkButtonClicked();
 };
 
 #endif // _RDO_STUDIO_GO_TO_NEXT_LINE_DIALOG_H_
