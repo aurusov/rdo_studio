@@ -1283,27 +1283,6 @@ tstring RDOBaseEdit::getLine( const int line ) const
 	return str;
 }
 
-// --------------------------------------------------------------------------------
-// -------------------- RDOGotoDlg
-// --------------------------------------------------------------------------------
-class RDOGotoDlg: public CDialog
-{
-protected:
-	virtual void DoDataExchange( CDataExchange* pDX )
-	{
-		CDialog::DoDataExchange( pDX );
-		DDX_Text(pDX, IDC_GOTO_EDIT, line);
-	}
-
-public:
-	RDOGotoDlg( CWnd* pParentWnd, int _line ):
-		CDialog( IDD_GOTO_LINE_DIALOG, pParentWnd ),
-		line( _line )
-	{
-	}
-	int line;
-};
-
 void RDOBaseEdit::onSearchGotoLine()
 {
 	GoToLineDialog dialog(this, getCurrentLineNumber() + 1, getLineCount());
