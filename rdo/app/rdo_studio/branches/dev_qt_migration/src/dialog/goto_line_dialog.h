@@ -28,6 +28,8 @@ public:
 
 private:
 	int m_line;
+	QIntValidator* validator;
+
 private slots:
 	void okButtonClicked();
 

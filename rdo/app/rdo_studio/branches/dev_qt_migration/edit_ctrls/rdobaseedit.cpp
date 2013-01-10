@@ -1311,12 +1311,6 @@ void RDOBaseEdit::onSearchGotoLine()
 	if (dialog.exec() == QDialog::Accepted)
 	{
 		int line = dialog.getLine();
-		int pos = 0;
-		QIntValidator* validator = new QIntValidator(1, getLineCount(), this);
-		if(validator->validate(QString::number(line), pos) == QValidator::Invalid)
-		{
-			line = validator->top() + 1;
-		}
 		setCurrentPos(line - 1, 0);
 	}
 }

@@ -24,7 +24,9 @@ GoToLineDialog::GoToLineDialog(PTR(QWidget) pParent, int _line, int lineCount)
 
 	label->setText(label->text() + " (1 - " + QString::number(lineCount) + ")");
 
-	lineEdit->setValidator(new QIntValidator(this));
+	validator = new QIntValidator(1, lineCount, this);
+
+	lineEdit->setValidator(validator);
 	lineEdit->setText(QString::number(m_line));
 
 	connect(buttonOk, SIGNAL(clicked()), this, SLOT(okButtonClicked()));
@@ -33,7 +35,13 @@ GoToLineDialog::GoToLineDialog(PTR(QWidget) pParent, int _line, int lineCount)
 
 void GoToLineDialog::okButtonClicked()
 {
-	m_line = lineEdit->text().toInt();
+	int pos = 0;
+	if(validator->validate(QString::number(lineEdit->text().toInt()), pos) == QValidator::Invalid)
+	{
+		m_line = validator->top() + 1;
+	}
+	else
+		m_line = lineEdit->text().toInt();
 	done(Accepted);
 }
 
