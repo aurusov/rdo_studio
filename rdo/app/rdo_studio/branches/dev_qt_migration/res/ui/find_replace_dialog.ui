@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>372</width>
+    <width>370</width>
     <height>171</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Найти</string>
+   <string>Найти и заменить</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
    <item row="0" column="0">
