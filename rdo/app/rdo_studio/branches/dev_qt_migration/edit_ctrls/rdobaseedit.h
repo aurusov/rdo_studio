@@ -21,6 +21,7 @@
 #include "app/rdo_studio_mfc/src/action_activator/action_activator.h"
 #include "thirdparty/sci/qt/ScintillaEditBase/ScintillaEditBase.h"
 #include "app/rdo_studio_mfc/src/dialog/find_dialog.h"
+#include "app/rdo_studio_mfc/src/dialog/find_replace_dialog.h"
 // --------------------------------------------------------------------------------
 
 namespace rdoEditCtrl {
@@ -39,6 +40,9 @@ private:
 
 	FindDialog*          m_pFindDialog;
 	FindDialog::Settings m_findSettings;
+
+	FindReplaceDialog*          m_pFindReplaceDialog;
+	FindReplaceDialog::Settings m_findReplaceSettings;
 
 protected:
 	long sendEditor( unsigned int msg, unsigned long wParam = 0, long lParam = 0 ) const   { return super::send( msg, wParam, lParam );; };
@@ -78,16 +82,19 @@ protected slots:
 private:
 	//! @todo qt
 	//afx_msg void OnContextMenu( CWnd* pWnd, CPoint pos );
-	afx_msg void OnSearchReplace();
 	afx_msg void OnSearchFindNextFast();
 	afx_msg void OnSearchFindPreviousFast();
 	afx_msg void OnUpdateSearchReplace(CCmdUI* pCmdUI);
-	afx_msg LRESULT OnFindReplaceMsg( WPARAM wParam, LPARAM lParam );
 
 	void setUpActionFind(rbool activate);
 
 	void onFindDlgFind(CREF(FindDialog::Settings) settings);
 	void onFindDlgClose();
+
+	void onFindReplaceDlgFind      (CREF(FindReplaceDialog::Settings) settings);
+	void onFindReplaceDlgReplace   (CREF(FindReplaceDialog::Settings) settings);
+	void onFindReplaceDlgReplaceAll(CREF(FindReplaceDialog::Settings) settings);
+	void onFindReplaceDlgClose     ();
 
 private slots:
 	void catchNeedShown(int position, int length);
@@ -116,10 +123,15 @@ private slots:
 	void onBookmarkPrev    () const;
 	void onBookmarkClearAll();
 
-	void onSearchGotoLine    ();
-	void onSearchFind        ();
-	void onSearchFindNext    ();
-	void onSearchFindPrevious();
+	void onSearchGotoLine       ();
+	void onSearchFind           ();
+	void onSearchFindNext       ();
+	void onSearchFindPrevious   ();
+	void onSearchReplace        ();
+	void onSearchReplaceMsg     ();
+	void onSearchReplaceFind    ();
+	void onSearchReplaceNext    ();
+	void onSearchReplaceAll     ();
 
 	void onCopyAsRTF(QMimeData* pMimeData);
 

@@ -155,7 +155,8 @@ RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent):
 	m_pGroup( NULL ),
 	firstFoundPos( -1 ),
 	bHaveFound( false ),
-	m_pFindDialog( NULL )
+	m_pFindDialog( NULL ),
+	m_pFindReplaceDialog( NULL )
 {
 	QObject::connect(this, SIGNAL(needShown(int, int)), this, SLOT(catchNeedShown(int, int)));
 	QObject::connect(this, SIGNAL(charAdded(int)),      this, SLOT(catchCharAdded(int)));
@@ -406,6 +407,32 @@ void RDOBaseEdit::onFindDlgClose()
 	m_pFindDialog = NULL;
 }
 
+void RDOBaseEdit::onFindReplaceDlgFind(CREF(FindReplaceDialog::Settings) settings)
+{
+	m_findReplaceSettings = settings;
+	setUpActionFind(isActivated());
+	onSearchReplaceFind();
+}
+
+void RDOBaseEdit::onFindReplaceDlgReplace(CREF(FindReplaceDialog::Settings) settings)
+{
+	m_findReplaceSettings = settings;
+	setUpActionFind(isActivated());
+	onSearchReplaceNext();
+}
+
+void RDOBaseEdit::onFindReplaceDlgReplaceAll(CREF(FindReplaceDialog::Settings) settings)
+{
+	m_findReplaceSettings = settings;
+	setUpActionFind(isActivated());
+	onSearchReplaceAll();
+}
+
+void RDOBaseEdit::onFindReplaceDlgClose()
+{
+	m_pFindReplaceDialog = NULL;
+}
+
 void RDOBaseEdit::onSearchFind() 
 {
 	m_findSettings.what = getSelection();
@@ -446,8 +473,27 @@ void RDOBaseEdit::setUpActionFind(rbool activate)
 		}
 	}
 
-	if (activate && !m_findSettings.what.empty())
+	if (activate)
 	{
+		if (!pMainWindow->actSearchReplace->isEnabled())
+		{
+			pMainWindow->actSearchReplace->setEnabled(true);
+			connect(pMainWindow->actSearchReplace, SIGNAL(triggered(bool)), this, SLOT(onSearchReplace()));
+		}
+	}
+	else
+	{
+		if (pMainWindow->actSearchReplace->isEnabled())
+		{
+			pMainWindow->actSearchReplace->setEnabled(false);
+			disconnect(pMainWindow->actSearchReplace, SIGNAL(triggered(bool)), this, SLOT(onSearchReplace()));
+		}
+	}
+
+	if (activate && (!m_findSettings.what.empty() || !m_findReplaceSettings.what.empty()))
+	{
+		if(m_findSettings.what.empty())
+			m_findSettings.what = m_findReplaceSettings.what;
 		if (!pMainWindow->actSearchFindNext->isEnabled())
 		{
 			pMainWindow->actSearchFindNext->setEnabled(true);
@@ -468,8 +514,25 @@ void RDOBaseEdit::setUpActionFind(rbool activate)
 	}
 }
 
-void RDOBaseEdit::OnSearchReplace() 
+void RDOBaseEdit::onSearchReplace() 
 {
+	m_findReplaceSettings.what = getSelection();
+
+	if (!m_pFindReplaceDialog)
+	{
+		m_pFindReplaceDialog = new FindReplaceDialog(
+			this,
+			boost::bind(&RDOBaseEdit::onFindReplaceDlgFind, this, _1),
+			boost::bind(&RDOBaseEdit::onFindReplaceDlgReplace, this, _1),
+			boost::bind(&RDOBaseEdit::onFindReplaceDlgReplaceAll, this, _1),
+			boost::bind(&RDOBaseEdit::onFindReplaceDlgClose, this)
+			);
+	}
+
+	m_pFindReplaceDialog->setSettings(m_findReplaceSettings);
+	m_pFindReplaceDialog->show();
+	m_pFindReplaceDialog->raise();
+	m_pFindReplaceDialog->activateWindow();
 	//! @todo qt
 	//firstFoundPos = -1;
 	//CFindReplaceDialog* pDlg = new CFindReplaceDialog();
@@ -482,9 +545,24 @@ void RDOBaseEdit::onSearchFindNext()
 	findNext( m_findSettings.what, m_findSettings.searchDown, m_findSettings.matchCase, m_findSettings.matchWholeWord );
 }
 
+void RDOBaseEdit::onSearchReplaceFind()
+{
+	findNext( m_findReplaceSettings.what, true, m_findReplaceSettings.matchCase, m_findReplaceSettings.matchWholeWord );
+}
+
 void RDOBaseEdit::onSearchFindPrevious() 
 {
 	findNext( m_findSettings.what, !m_findSettings.searchDown, m_findSettings.matchCase, m_findSettings.matchWholeWord );
+}
+
+void RDOBaseEdit::onSearchReplaceNext()
+{
+	replace( m_findReplaceSettings.what, m_findReplaceSettings.byWhat, true, m_findReplaceSettings.matchCase, m_findReplaceSettings.matchWholeWord );
+}
+
+void RDOBaseEdit::onSearchReplaceAll()
+{
+	replaceAll( m_findReplaceSettings.what, m_findReplaceSettings.byWhat, m_findReplaceSettings.matchCase, m_findReplaceSettings.matchWholeWord );
 }
 
 void RDOBaseEdit::OnSearchFindNextFast() 
@@ -507,8 +585,10 @@ void RDOBaseEdit::OnSearchFindPreviousFast()
 	//}
 }
 
-LRESULT RDOBaseEdit::OnFindReplaceMsg( WPARAM /*wParam*/, LPARAM lParam )
+void RDOBaseEdit::onSearchReplaceMsg()
 {
+	findNext(m_findReplaceSettings.what, true, m_findReplaceSettings.matchCase, m_findReplaceSettings.matchWholeWord);
+	replace (m_findReplaceSettings.what, m_findReplaceSettings.byWhat, true, m_findReplaceSettings.matchCase, m_findReplaceSettings.matchWholeWord);
 	//! @todo qt
 	//if ( !m_pGroup ) return 0;
 
@@ -547,7 +627,7 @@ LRESULT RDOBaseEdit::OnFindReplaceMsg( WPARAM /*wParam*/, LPARAM lParam )
 
 	//	}
 	//}
-	return 0;
+	//return 0;
 }
 
 void RDOBaseEdit::OnUpdateSearchReplace(CCmdUI* pCmdUI) 
