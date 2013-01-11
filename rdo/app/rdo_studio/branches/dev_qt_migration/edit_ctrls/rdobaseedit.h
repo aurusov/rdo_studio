@@ -84,7 +84,6 @@ private:
 	//afx_msg void OnContextMenu( CWnd* pWnd, CPoint pos );
 	afx_msg void OnSearchFindNextFast();
 	afx_msg void OnSearchFindPreviousFast();
-	afx_msg void OnUpdateSearchReplace(CCmdUI* pCmdUI);
 
 	void setUpActionFind(rbool activate);
 
@@ -128,7 +127,6 @@ private slots:
 	void onSearchFindNext       ();
 	void onSearchFindPrevious   ();
 	void onSearchReplace        ();
-	void onSearchReplaceMsg     ();
 	void onSearchReplaceFind    ();
 	void onSearchReplaceNext    ();
 	void onSearchReplaceAll     ();

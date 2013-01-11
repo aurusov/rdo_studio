@@ -138,13 +138,8 @@ static const UINT FIND_REPLASE_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 //BEGIN_MESSAGE_MAP( RDOBaseEdit, CWnd )
 //	ON_WM_SETFOCUS()
 //	ON_WM_CONTEXTMENU()
-//	ON_COMMAND(ID_SEARCH_REPLACE, OnSearchReplace)
 //	ON_COMMAND(ID_SEARCH_FIND_NEXT_FAST, OnSearchFindNextFast)
 //	ON_COMMAND(ID_SEARCH_FIND_PREVIOUS_FAST, OnSearchFindPreviousFast)
-//	ON_UPDATE_COMMAND_UI(ID_SEARCH_REPLACE, OnUpdateSearchReplace)
-//
-//	ON_REGISTERED_MESSAGE( FIND_REPLASE_MSG, OnFindReplaceMsg )
-//
 //END_MESSAGE_MAP()
 
 RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent):
@@ -533,11 +528,6 @@ void RDOBaseEdit::onSearchReplace()
 	m_pFindReplaceDialog->show();
 	m_pFindReplaceDialog->raise();
 	m_pFindReplaceDialog->activateWindow();
-	//! @todo qt
-	//firstFoundPos = -1;
-	//CFindReplaceDialog* pDlg = new CFindReplaceDialog();
-	//DWORD flag = m_pGroup ? ((m_pGroup->bSearchDown ? FR_DOWN : 0) | (m_pGroup->bMatchCase ? FR_MATCHCASE : 0) | (m_pGroup->bMatchWholeWord ? FR_WHOLEWORD : 0)) : 0;
-	//pDlg->Create( false, getWordForFind().c_str(), m_pGroup ? m_pGroup->replaceStr.c_str() : NULL, flag, this );
 }
 
 void RDOBaseEdit::onSearchFindNext() 
@@ -583,56 +573,6 @@ void RDOBaseEdit::OnSearchFindPreviousFast()
 	//	m_pGroup->bSearchDown = true;
 	//	findNext( m_pGroup->findStr, !m_pGroup->bSearchDown, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord );
 	//}
-}
-
-void RDOBaseEdit::onSearchReplaceMsg()
-{
-	findNext(m_findReplaceSettings.what, true, m_findReplaceSettings.matchCase, m_findReplaceSettings.matchWholeWord);
-	replace (m_findReplaceSettings.what, m_findReplaceSettings.byWhat, true, m_findReplaceSettings.matchCase, m_findReplaceSettings.matchWholeWord);
-	//! @todo qt
-	//if ( !m_pGroup ) return 0;
-
-	//CFindReplaceDialog* pDialog = CFindReplaceDialog::GetNotifier( lParam );
-
-	//m_pGroup->findStr = pDialog->GetFindString();
-
-	//if ( pDialog->IsTerminating() ) {
-	//	firstFoundPos = -1;
-	//	SetFocus();
-	//	return 0;
-	//} else {
-	//	rbool newSearchDown     = pDialog->SearchDown() ? true : false;
-	//	rbool newMatchCase      = pDialog->MatchCase() ? true : false;
-	//	rbool newMatchWholeWord = pDialog->MatchWholeWord() ? true : false;
-	//	if ( newSearchDown != m_pGroup->bSearchDown || newMatchCase != m_pGroup->bMatchCase || newMatchWholeWord != m_pGroup->bMatchWholeWord ) {
-	//		firstFoundPos = -1;
-	//	}
-	//	m_pGroup->bSearchDown     = newSearchDown;
-	//	m_pGroup->bMatchCase      = newMatchCase;
-	//	m_pGroup->bMatchWholeWord = newMatchWholeWord;
-
-	//	if ( pDialog->FindNext() ) {
-
-	//		findNext( m_pGroup->findStr, m_pGroup->bSearchDown, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord );
-
-	//	} else if ( pDialog->ReplaceCurrent() ) {
-
-	//		m_pGroup->replaceStr = static_cast<LPCTSTR>(pDialog->GetReplaceString());
-	//		replace( m_pGroup->findStr, m_pGroup->replaceStr, m_pGroup->bSearchDown, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord );
-
-	//	} else if ( pDialog->ReplaceAll() ) {
-
-	//		m_pGroup->replaceStr = static_cast<LPCTSTR>(pDialog->GetReplaceString());
-	//		replaceAll( m_pGroup->findStr, m_pGroup->replaceStr, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord );
-
-	//	}
-	//}
-	//return 0;
-}
-
-void RDOBaseEdit::OnUpdateSearchReplace(CCmdUI* pCmdUI) 
-{
-	pCmdUI->Enable( !isReadOnly() && !isEmpty() );
 }
 
 void RDOBaseEdit::findNext( REF(tstring) findWhat, const rbool searchDown, const rbool matchCase, const rbool matchWholeWord )
