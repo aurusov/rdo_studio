@@ -38,7 +38,7 @@ public:
 	typedef  boost::function<void (const Settings&)>  OnFindCallback;
 	typedef  boost::function<void ()>                 OnCloseCallback;
 
-	FindReplaceDialog(PTR(QWidget) pParent, CREF(OnFindCallback) onFindCallback, CREF(OnCloseCallback) onCloseCallback);
+	FindReplaceDialog(PTR(QWidget) pParent, CREF(OnFindCallback) onFindCallback, CREF(OnFindCallback) onReplaceCallback, CREF(OnFindCallback) onReplaceAllCallback, CREF(OnCloseCallback) onCloseCallback);
 	virtual ~FindReplaceDialog();
 
 	void setSettings(CREF(Settings) settings);
@@ -46,10 +46,14 @@ public:
 private:
 	Settings         m_settings;
 	OnFindCallback   m_onFindCallback;
+	OnFindCallback   m_onReplaceCallback;
+	OnFindCallback   m_onReplaceAllCallback;
 	OnCloseCallback  m_onCloseCallback;
 
 private slots:
 	void onFindButton();
+	void onReplaceButton();
+	void onReplaceAllButton();
 	void onWhatEdited           (const QString& text);
 	void onByWhatEdited         (const QString& text);
 	void onMatchCaseChanged     (int value);
