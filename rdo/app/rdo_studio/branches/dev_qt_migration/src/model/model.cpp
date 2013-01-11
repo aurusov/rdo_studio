@@ -22,7 +22,7 @@
 #include "repository/rdorepository.h"
 #include "simulator/runtime/rdo_exception.h"
 #include "app/rdo_studio_mfc/src/model/model.h"
-#include "app/rdo_studio_mfc/src/model/view.h"
+#include "app/rdo_studio_mfc/src/model/model_view.h"
 #include "app/rdo_studio_mfc/src/thread.h"
 #include "app/rdo_studio_mfc/src/main_frm.h"
 #include "app/rdo_studio_mfc/src/main_windows_base.h"
