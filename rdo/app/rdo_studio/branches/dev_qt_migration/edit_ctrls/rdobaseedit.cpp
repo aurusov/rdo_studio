@@ -130,7 +130,6 @@ RDOBaseEdit::Group::List::const_iterator RDOBaseEdit::Group::find_if(CREF(this_p
 #define MAX_COLORDEF    32
 
 // ---------------
-static const UINT FIND_REPLASE_MSG = ::RegisterWindowMessage( FINDMSGSTRING );
 
 // ON_UPDATE_COMMAND_UI сделано
 
