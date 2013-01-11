@@ -25,8 +25,8 @@ class RDOType
 {
 DECLARE_FACTORY(RDOType)
 public:
-	virtual CREF(rdo::runtime::LPRDOType)    type() const = 0;
-	virtual rdo::runtime::RDOType::TypeID  typeID() const = 0;;
+	virtual CREF(rdo::runtime::LPRDOType)   type() const = 0;
+	virtual rdo::runtime::RDOType::TypeID typeID() const = 0;
 
 protected:
 	RDOType();
