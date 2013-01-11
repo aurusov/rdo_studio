@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/type/runtime_wrapper_type.h"
-#include "simulator/runtime/headers/interface_db.h"
+#include "simulator/compiler/parser/headers/interface_db.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -21,21 +21,21 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- ATOM_TYPE_PARSER
 // --------------------------------------------------------------------------------
-#define DEFINE_ATOM_TYPE_PARSER(Type)                       \
-class RDOType__##Type: public RuntimeWrapperType            \
-{                                                           \
-private:                                                    \
-typedef RuntimeWrapperType parent_type;                     \
-public:                                                     \
-	RDOType__##Type():                                      \
-		RuntimeWrapperType(rdo::runtime::g_##Type)          \
-	{}                                                      \
-	~RDOType__##Type()                                      \
-	{}                                                      \
-	DECLARE_IType;                                          \
-	DECLARE_IModelStructure;                                \
-	virtual int selfInsertToDB(REF(InterfaceDB) db) const;  \
-};                                                          \
+#define DEFINE_ATOM_TYPE_PARSER(Type)              \
+class RDOType__##Type: public RuntimeWrapperType   \
+{                                                  \
+private:                                           \
+typedef RuntimeWrapperType parent_type;            \
+public:                                            \
+	RDOType__##Type():                             \
+		RuntimeWrapperType(rdo::runtime::g_##Type) \
+	{}                                             \
+	~RDOType__##Type()                             \
+	{}                                             \
+	DECLARE_IType;                                 \
+	DECLARE_IModelStructure;                       \
+	int serializeInDB(REF(InterfaceDB) db) const;  \
+};                                                 \
 DECLARE_POINTER(RDOType__##Type);
 
 DEFINE_ATOM_TYPE_PARSER(unknow       );

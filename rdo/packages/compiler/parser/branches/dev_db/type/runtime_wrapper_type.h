@@ -13,18 +13,19 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/type/type.h"
-#include "simulator/compiler/parser/type/type_i_db.h"
-#include "simulator/runtime/headers/interface_db.h"
+#include "simulator/compiler/parser/headers/interface_db.h"
+#include "simulator/compiler/parser/type/type_db_i.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
 
-class RuntimeWrapperType: public RDOType, ITypeDB
+class RuntimeWrapperType: public RDOType, ISerializeTypeInDB
 {
 DECLARE_FACTORY(RuntimeWrapperType)
 public:
 	virtual CREF(rdo::runtime::LPRDOType)    type() const;
 	virtual rdo::runtime::RDOType::TypeID  typeID() const;
+	virtual int serializeInDB(REF(InterfaceDB) db)  const;
 
 	virtual rdo::runtime::LPRDOCalc calc_cast(CREF(rdo::runtime::LPRDOCalc) pCalc, CREF(LPRDOType) pType) const;
 

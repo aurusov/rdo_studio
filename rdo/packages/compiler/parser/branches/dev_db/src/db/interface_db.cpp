@@ -15,7 +15,6 @@
 #include <iostream>
 #include <boost/foreach.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator\compiler\parser\type\runtime_wrapper_type.h"
 #include "simulator\compiler\parser\headers\general_db.h"
 #include "simulator\compiler\parser\headers\interface_db.h"
 // --------------------------------------------------------------------------------
@@ -41,13 +40,13 @@ void InterfaceDB::insertEnumRow(const QString& defaultValue)
 	insertRow("enum","DEFAULT,'" + defaultValue + "'");
 }
 
-void InterfaceDB::insertRTPParam(const QString& rtp_name, const QString& param_name, rdo::compiler::parser::RuntimeWrapperType type)
-{
-	QSqlQuery query;
-	query.exec("select r_t_id from rtp where r_t_name='" + rtp_name + "';");
-	query.next();
-	insertRow("param_of_type","DEFAULT,'" + param_name + "'," + QString::number(query.value(query.record().indexOf("r_t_id")).toInt()) + "," + QString::number(type.selfInsertToDB(*this)));
-}
+//void InterfaceDB::insertRTPParam(const QString& rtp_name, const QString& param_name, rdo::compiler::parser::RuntimeWrapperType type)
+//{
+//	QSqlQuery query;
+//	query.exec("select r_t_id from rtp where r_t_name='" + rtp_name + "';");
+//	query.next();
+//	insertRow("param_of_type","DEFAULT,'" + param_name + "'," + QString::number(query.value(query.record().indexOf("r_t_id")).toInt()) + "," + QString::number(type.selfInsertToDB(*this)));
+//}
 
 int InterfaceDB::getEnumTypeID(enumContainer& container, const QString defaultValue)
 {

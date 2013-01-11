@@ -12,7 +12,7 @@
 
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator/runtime/headers/interface_db.h"
+#include "simulator/compiler/parser/headers/interface_db.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -20,7 +20,7 @@ OPEN_RDO_PARSER_NAMESPACE
 class ISerializeTypeInDB
 {
 public:
-	virtual int selfInsertToDB(REF(InterfaceDB) db) const = 0;
+	virtual int serializeInDB(REF(InterfaceDB) db) const = 0;
 };
 
 CLOSE_RDO_PARSER_NAMESPACE

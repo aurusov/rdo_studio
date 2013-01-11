@@ -47,7 +47,7 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="../../../../"
+				AdditionalIncludeDirectories="../../../../../"
 				PreprocessorDefinitions="RDO_ST;RDO_LIMIT_RES;WIN32;NDEBUG;_LIB;WINVER=0x0501"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
@@ -114,7 +114,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../../"
+				AdditionalIncludeDirectories="../../../../../"
 				PreprocessorDefinitions="RDO_ST;RDO_LIMIT_RES;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501"
 				RuntimeLibrary="3"
 				BrowseInformation="1"
@@ -179,7 +179,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../../"
+				AdditionalIncludeDirectories="../../../../../"
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;RDO_LIMIT_RES;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -247,7 +247,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="../../../../"
+				AdditionalIncludeDirectories="../../../../../"
 				PreprocessorDefinitions="CORBA_ENABLE;RDO_MT;RDO_LIMIT_RES;WIN32;NDEBUG;_LIB;WINVER=0x0501"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
@@ -312,7 +312,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../../"
+				AdditionalIncludeDirectories="../../../../../"
 				PreprocessorDefinitions="RDO_MT;RDO_LIMIT_RES;WIN32;_DEBUG;_LIB;_UNISTD_H_;WINVER=0x0501"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
@@ -379,7 +379,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="../../../../"
+				AdditionalIncludeDirectories="../../../../../"
 				PreprocessorDefinitions="RDO_MT;RDO_LIMIT_RES;WIN32;NDEBUG;_LIB;WINVER=0x0501"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"

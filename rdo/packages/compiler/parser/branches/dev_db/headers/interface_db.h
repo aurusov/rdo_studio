@@ -15,7 +15,6 @@
 #include <QtSql\QtSql>
 #include <map>
 // ----------------------------------------------------------------------- SYNOPSIS
-#include "simulator\compiler\parser\type\runtime_wrapper_type.h"
 #include "simulator\compiler\parser\headers\general_db.h"
 // --------------------------------------------------------------------------------
 
@@ -24,7 +23,6 @@ class InterfaceDB: public GeneralDB
 public:
 	void insertRow      (const QString& tableName, const QString& qRow);
 	void insertRTPHeader(const QString& rtp_name, bool permanent);
-	void insertRTPParam (const QString& rtp_name, const QString& param_name, rdo::compiler::parser::RuntimeWrapperType type);
 	void insertIntRow   ();
 	void insertEnumRow  (const QString& defaultValue);
 

@@ -17,7 +17,7 @@
 #include "simulator/compiler/parser/rdoparser_error.h"
 #include "simulator/runtime/calc/operation/calc_unary.h"
 #include "simulator/runtime/rdo_resource.h"
-#include "simulator/runtime/headers/interface_db.h"
+#include "simulator/compiler/parser/headers/interface_db.h"
 // --------------------------------------------------------------------------------
 
 OPEN_RDO_PARSER_NAMESPACE
@@ -191,7 +191,7 @@ void RDOType__int::writeModelStructure(REF(rdo::ostream) stream) const
 	stream << _T("I") << std::endl;
 }
 
-int RDOType__int::selfInsertToDB(REF(InterfaceDB) db) const
+int RDOType__int::serializeInDB(REF(InterfaceDB) db) const
 {
 	db.insertRow("int","DEFAULT,NULL,NULL,NULL");
 
