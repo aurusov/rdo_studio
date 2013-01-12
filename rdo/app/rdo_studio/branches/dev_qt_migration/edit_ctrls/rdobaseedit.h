@@ -93,7 +93,7 @@ private:
 	void onFindReplaceDlgReplaceAll(CREF(FindReplaceDialog::Settings) settings);
 	void onFindReplaceDlgClose     ();
 
-	void updateActionFind(rbool activate);
+	void updateActionFind(rbool activated);
 
 private slots:
 	void catchNeedShown(int position, int length);

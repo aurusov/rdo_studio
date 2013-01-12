@@ -408,8 +408,8 @@ void RDOBaseEdit::onSearchFind()
 void RDOBaseEdit::onFindDlgFind(CREF(FindDialog::Settings) settings)
 {
 	m_findSettings = settings;
-	updateActionFind(isActivated());
 	onSearchFindNext();
+	updateActionFind(isActivated());
 }
 
 void RDOBaseEdit::onFindDlgClose()
@@ -527,22 +527,22 @@ void RDOBaseEdit::onSearchReplace()
 void RDOBaseEdit::onFindReplaceDlgFind(CREF(FindReplaceDialog::Settings) settings)
 {
 	m_findReplaceSettings = settings;
-	updateActionFind(isActivated());
 	findNext(m_findReplaceSettings.what, true, m_findReplaceSettings.matchCase, m_findReplaceSettings.matchWholeWord);
+	updateActionFind(isActivated());
 }
 
 void RDOBaseEdit::onFindReplaceDlgReplace(CREF(FindReplaceDialog::Settings) settings)
 {
 	m_findReplaceSettings = settings;
-	updateActionFind(isActivated());
 	replace(m_findReplaceSettings.what, m_findReplaceSettings.byWhat, true, m_findReplaceSettings.matchCase, m_findReplaceSettings.matchWholeWord);
+	updateActionFind(isActivated());
 }
 
 void RDOBaseEdit::onFindReplaceDlgReplaceAll(CREF(FindReplaceDialog::Settings) settings)
 {
 	m_findReplaceSettings = settings;
-	updateActionFind(isActivated());
 	replaceAll(m_findReplaceSettings.what, m_findReplaceSettings.byWhat, m_findReplaceSettings.matchCase, m_findReplaceSettings.matchWholeWord);
+	updateActionFind(isActivated());
 }
 
 void RDOBaseEdit::onFindReplaceDlgClose()
@@ -1430,67 +1430,34 @@ void RDOBaseEdit::onUpdateActions(rbool activated)
 	pMainWindow->statusBar()->update<StatusBar::SB_OVERWRITE>(overwrite);
 }
 
-void RDOBaseEdit::updateActionFind(rbool activate)
+void RDOBaseEdit::updateActionFind(rbool activated)
 {
 	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
 	ASSERT(pMainWindow);
 
-	if (activate)
-	{
-		if (!pMainWindow->actSearchFind->isEnabled())
-		{
-			pMainWindow->actSearchFind->setEnabled(true);
-			connect(pMainWindow->actSearchFind, SIGNAL(triggered(bool)), this, SLOT(onSearchFind()));
-		}
-	}
-	else
-	{
-		if (pMainWindow->actSearchFind->isEnabled())
-		{
-			pMainWindow->actSearchFind->setEnabled(false);
-			disconnect(pMainWindow->actSearchFind, SIGNAL(triggered(bool)), this, SLOT(onSearchFind()));
-		}
-	}
+	updateAction(
+		pMainWindow->actSearchFind,
+		activated && !isEmpty(),
+		this, "onSearchFind()"
+	);
 
-	if (activate)
-	{
-		if (!pMainWindow->actSearchReplace->isEnabled())
-		{
-			pMainWindow->actSearchReplace->setEnabled(true);
-			connect(pMainWindow->actSearchReplace, SIGNAL(triggered(bool)), this, SLOT(onSearchReplace()));
-		}
-	}
-	else
-	{
-		if (pMainWindow->actSearchReplace->isEnabled())
-		{
-			pMainWindow->actSearchReplace->setEnabled(false);
-			disconnect(pMainWindow->actSearchReplace, SIGNAL(triggered(bool)), this, SLOT(onSearchReplace()));
-		}
-	}
+	updateAction(
+		pMainWindow->actSearchReplace,
+		activated && !isEmpty() && !isReadOnly(),
+		this, "onSearchReplace()"
+	);
 
-	if (activate && (!m_findSettings.what.empty() || !m_findReplaceSettings.what.empty()))
-	{
-		if(m_findSettings.what.empty())
-			m_findSettings.what = m_findReplaceSettings.what;
-		if (!pMainWindow->actSearchFindNext->isEnabled())
-		{
-			pMainWindow->actSearchFindNext->setEnabled(true);
-			pMainWindow->actSearchFindPrevious->setEnabled(true);
-			connect(pMainWindow->actSearchFindNext,     SIGNAL(triggered(bool)), this, SLOT(onSearchFindNext()));
-			connect(pMainWindow->actSearchFindPrevious, SIGNAL(triggered(bool)), this, SLOT(onSearchFindPrevious()));
-		}
-	}
-	else
-	{
-		if (pMainWindow->actSearchFindNext->isEnabled())
-		{
-			pMainWindow->actSearchFindNext->setEnabled(false);
-			pMainWindow->actSearchFindPrevious->setEnabled(false);
-			disconnect(pMainWindow->actSearchFindNext,     SIGNAL(triggered(bool)), this, SLOT(onSearchFindNext()));
-			disconnect(pMainWindow->actSearchFindPrevious, SIGNAL(triggered(bool)), this, SLOT(onSearchFindPrevious()));
-		}
-	}
+	rbool findNextPrev = activated && !m_findReplaceSettings.what.empty();
+	updateAction(
+		pMainWindow->actSearchFindNext,
+		findNextPrev,
+		this, "onSearchFindNext()"
+	);
+	updateAction(
+		pMainWindow->actSearchFindPrevious,
+		findNextPrev,
+		this, "onSearchFindPrevious()"
+	);
 }
 
 void RDOBaseEdit::onUpdateModify()
