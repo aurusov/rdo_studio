@@ -14,6 +14,7 @@
 // ----------------------------------------------------------------------- INCLUDES
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "simulator/compiler/parser/param.h"
+#include "simulator/compiler/parser/type/type_db_i.h"
 #include "simulator/runtime/rdo_model_i.h"
 #include "utils/smart_ptr/factory.h"
 // --------------------------------------------------------------------------------
@@ -26,14 +27,16 @@ OPEN_RDO_PARSER_NAMESPACE
 PREDECLARE_POINTER(RDORTPResType);
 
 CLASS(RDORTPParam):
-	    INSTANCE_OF      (RDOParam       )
-	AND IMPLEMENTATION_OF(IModelStructure )
-	AND IMPLEMENTATION_OF(IName           )
+	    INSTANCE_OF      (RDOParam          )
+	AND IMPLEMENTATION_OF(IModelStructure   )
+	AND IMPLEMENTATION_OF(IName             )
+	AND IMPLEMENTATION_OF(ISerializeTypeInDB)
 {
 DECLARE_FACTORY(RDORTPParam);
 public:
 	DECLARE_IModelStructure;
 	DECLARE_IName;
+	virtual int serializeInDB(REF(InterfaceDB) db) const;
 
 private:
 	RDORTPParam(CREF(LPTypeInfo) pType, CREF(LPRDOValue) pDefault, CREF(RDOParserSrcInfo) src_info);

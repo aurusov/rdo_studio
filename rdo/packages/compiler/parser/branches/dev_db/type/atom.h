@@ -21,21 +21,21 @@ OPEN_RDO_PARSER_NAMESPACE
 // --------------------------------------------------------------------------------
 // -------------------- ATOM_TYPE_PARSER
 // --------------------------------------------------------------------------------
-#define DEFINE_ATOM_TYPE_PARSER(Type)              \
-class RDOType__##Type: public RuntimeWrapperType   \
-{                                                  \
-private:                                           \
-typedef RuntimeWrapperType parent_type;            \
-public:                                            \
-	RDOType__##Type():                             \
-		RuntimeWrapperType(rdo::runtime::g_##Type) \
-	{}                                             \
-	~RDOType__##Type()                             \
-	{}                                             \
-	DECLARE_IType;                                 \
-	DECLARE_IModelStructure;                       \
-	int serializeInDB(REF(InterfaceDB) db) const;  \
-};                                                 \
+#define DEFINE_ATOM_TYPE_PARSER(Type)                     \
+class RDOType__##Type: public RuntimeWrapperType          \
+{                                                         \
+private:                                                  \
+typedef RuntimeWrapperType parent_type;                   \
+public:                                                   \
+	RDOType__##Type():                                    \
+		RuntimeWrapperType(rdo::runtime::g_##Type)        \
+	{}                                                    \
+	~RDOType__##Type()                                    \
+	{}                                                    \
+	DECLARE_IType;                                        \
+	DECLARE_IModelStructure;                              \
+	virtual int serializeInDB(REF(InterfaceDB) db) const; \
+};                                                        \
 DECLARE_POINTER(RDOType__##Type);
 
 DEFINE_ATOM_TYPE_PARSER(unknow       );
