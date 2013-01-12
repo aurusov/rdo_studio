@@ -14,7 +14,6 @@
 #include <boost/foreach.hpp>
 #include <boost/date_time.hpp>
 #include <boost/filesystem.hpp>
-#include <boost/shared_ptr.hpp>
 // ----------------------------------------------------------------------- SYNOPSIS
 #include "utils/rdocommon.h"
 #include "utils/rdolocale.h"
@@ -85,8 +84,7 @@ int main(int argc, PTR(char) argv[])
 	new rdo::service::simulation::RDOThreadSimulator();
 	new rdo::repository::RDOThreadRepository();
 
-	boost::shared_ptr<rdo::StudioConsoleController> pAppController = boost::shared_ptr<rdo::StudioConsoleController>(new rdo::StudioConsoleController());
-	ASSERT(pAppController.get());
+	rdo::StudioConsoleController* pAppController = new rdo::StudioConsoleController();
 
 	rdo::repository::RDOThreadRepository::OpenFile data(model_file_name);
 	pAppController->broadcastMessage(RDOThread::RT_STUDIO_MODEL_OPEN, &data);
