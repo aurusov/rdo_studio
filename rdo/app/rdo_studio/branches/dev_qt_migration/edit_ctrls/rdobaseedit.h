@@ -109,27 +109,22 @@ private slots:
 	void onEditUpperCase();
 	void onEditLowerCase();
 
-	void onViewZoomChanged     (int zoom);
-	void onViewZoomInc         ();
-	void onViewZoomDec         ();
-	void onViewZoomReset       ();
+	void onSearchFind            ();
+	void onSearchFindNext        ();
+	void onSearchFindPrevious    ();
+	void onSearchReplace         ();
+	void onSearchBookmarkToggle  ();
+	void onSearchBookmarkNext    () const;
+	void onSearchBookmarkPrev    () const;
+	void onSearchBookmarkClearAll();
+	void onSearchGotoLine        ();
 
+	void onViewZoomChanged   (int zoom);
+	void onViewZoomInc       ();
+	void onViewZoomDec       ();
+	void onViewZoomReset     ();
 	void onViewShowWhiteSpace();
 	void onViewShowEndOfLine ();
-
-	void onBookmarkToggle  ();
-	void onBookmarkNext    () const;
-	void onBookmarkPrev    () const;
-	void onBookmarkClearAll();
-
-	void onSearchGotoLine    ();
-	void onSearchFind        ();
-	void onSearchFindNext    ();
-	void onSearchFindPrevious();
-	void onSearchReplace     ();
-	void onSearchReplaceFind ();
-	void onSearchReplaceNext ();
-	void onSearchReplaceAll  ();
 
 	void onCopyAsRTF(QMimeData* pMimeData);
 
@@ -246,7 +241,7 @@ private:
 	rbool isViewEndOfLine () const;
 	void  setViewEndOfLine(rbool value);
 
-	void onBookmarkNextPrev(
+	void onSearchBookmarkNextPrev(
 		const boost::function<rbool (const RDOBaseEdit*, rbool, rbool)>& nextPrevFun,
 		const boost::function<Group::List::const_iterator (const Group::List::const_iterator& it)>& nextPrevGroup
 	) const;
