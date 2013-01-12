@@ -41,7 +41,7 @@ void RDORTPParam::writeModelStructure(REF(rdo::ostream) stream) const
 
 int RDORTPParam::serializeInDB(REF(InterfaceDB) db) const
 {
-	return -1;
+	return this->getTypeInfo()->get_type()->serializeInDB(db);
 }
 
 CLOSE_RDO_PARSER_NAMESPACE

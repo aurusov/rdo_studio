@@ -93,15 +93,17 @@ int RDORTPResType::serializeInDB(REF(InterfaceDB) db) const
 {
 	db.insertRow("rtp", "DEFAULT,'" + QString(name().c_str()) + "'," + (m_permanent ? "true" : "false"));
 
-	BOOST_FOREACH(CREF(LPRDORTPParam) param, m_params)
-	{
-		param->serializeInDB(db);
-	}
-
 	QSqlQuery query;
 	query.exec("select max(r_t_id) as alt from rtp;");
 	query.next();
-	return query.value(query.record().indexOf("alt")).toInt();
+	int rtp_id = query.value(query.record().indexOf("alt")).toInt();
+
+	BOOST_FOREACH(CREF(LPRDORTPParam) param, m_params)
+	{
+		db.insertRow("param_of_type","DEFAULT,'" + QString(param->name().c_str()) + "'," + QString::number(rtp_id) + "," + QString::number(param->serializeInDB(db)));
+	}
+
+	return rtp_id;
 }
 
 tstring RDORTPResType::name() const

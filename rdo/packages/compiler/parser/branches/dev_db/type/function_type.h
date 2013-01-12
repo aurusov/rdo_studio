@@ -38,6 +38,7 @@ private:
 
 	virtual CREF(rdo::runtime::LPRDOType)    type() const;
 	virtual rdo::runtime::RDOType::TypeID  typeID() const;
+	virtual int serializeInDB(REF(InterfaceDB) db)  const { return -1; }; // аццкий костыль
 
 	DECLARE_IType;
 	DECLARE_IModelStructure;
@@ -65,6 +66,7 @@ private:
 
 	virtual CREF(rdo::runtime::LPRDOType)    type() const;
 	virtual rdo::runtime::RDOType::TypeID  typeID() const;
+	virtual int serializeInDB(REF(InterfaceDB) db)  const { return -1; }; // аццкий костыль
 
 	DECLARE_IType;
 	DECLARE_IModelStructure;

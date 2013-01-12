@@ -19,7 +19,7 @@
 
 OPEN_RDO_PARSER_NAMESPACE
 
-class RuntimeWrapperType: public RDOType, ISerializeTypeInDB
+class RuntimeWrapperType: public RDOType
 {
 DECLARE_FACTORY(RuntimeWrapperType)
 public:
