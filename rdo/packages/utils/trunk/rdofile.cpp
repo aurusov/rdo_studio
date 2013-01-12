@@ -114,10 +114,10 @@ tstring File::getTempFileName()
 
 rbool File::trimLeft(CREF(tstring) name)
 {
-	rdo::ifstream inputStream(name.c_str(), std::ios::binary);
+	boost::filesystem::ifstream inputStream(name.c_str(), std::ios::binary);
 	std::stringstream sstream;
 
-    if (!inputStream.good())
+	if (!inputStream.good())
 	{
 		return false;
 	}
@@ -126,7 +126,7 @@ rbool File::trimLeft(CREF(tstring) name)
 	while (!inputStream.eof())
 	{
 		char byte;
-		inputStream.get(byte);
+	inputStream.get(byte);
 
 		if (empty)
 		{
@@ -152,14 +152,13 @@ rbool File::trimLeft(CREF(tstring) name)
 		{
 			return false;
 		}
-		std::ofstream outStream(name.c_str(), std::ios::binary);
+	boost::filesystem::ofstream outStream(name.c_str(), std::ios::binary);
 		outStream << sstream.str();
 	}
 	catch (CREF(boost::system::error_code))
 	{
 		return false;
 	}
-
 	return true;
 }
 
