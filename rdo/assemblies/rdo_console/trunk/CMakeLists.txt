@@ -42,9 +42,10 @@ IF(NOT MSVC)
 #   SET(CDEFS "-m32 -o output32")
 ENDIF(NOT MSVC)
 
-IF(NOT MSVC)
+SET(ENABLE_UNICODE FALSE)
+IF(NOT MSVC AND ENABLE_UNICODE)
 #    ADD_DEFINITIONS(-DUNICODE)
-ENDIF(NOT MSVC)
+ENDIF(NOT MSVC AND ENABLE_UNICODE)
 
 SET(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR})
 SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR})
@@ -141,3 +142,23 @@ ADD_SUBDIRECTORY(${SIMULATOR_PATH})
 
 SET(APLICATIONS_DIRECTORY ${RDO_BASE_DIRECTORY}/app)
 ADD_SUBDIRECTORY(${APLICATIONS_DIRECTORY})
+
+#==============================================================================
+#---------------------------------- info --------------------------------------
+#==============================================================================
+
+# build info
+SET(BUILD_INFO_BAR "====================================================================================")
+SET(NOOP_STRING "")
+
+MESSAGE(STATUS ${NOOP_STRING})
+MESSAGE(STATUS ${BUILD_INFO_BAR})
+MESSAGE(STATUS "Summary of the build:")
+MESSAGE(STATUS ${BUILD_INFO_BAR})
+MESSAGE(STATUS "ENABLE_UNICODE:               ${ENABLE_UNICODE}")
+MESSAGE(STATUS ${BUILD_INFO_BAR})
+MESSAGE(STATUS "BUILD rdo console:            TRUE")
+MESSAGE(STATUS ${BUILD_INFO_BAR})
+MESSAGE(STATUS "Build type : ${CMAKE_BUILD_TYPE}")
+MESSAGE(STATUS ${BUILD_INFO_BAR})
+MESSAGE(STATUS ${NOOP_STRING})
