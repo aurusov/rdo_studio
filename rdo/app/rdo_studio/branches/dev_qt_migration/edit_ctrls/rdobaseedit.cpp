@@ -130,9 +130,6 @@ RDOBaseEdit::Group::List::const_iterator RDOBaseEdit::Group::find_if(CREF(this_p
 #define MAX_COLORDEF    32
 
 // ---------------
-
-// ON_UPDATE_COMMAND_UI сделано
-
 //! @todo qt
 //BEGIN_MESSAGE_MAP( RDOBaseEdit, CWnd )
 //	ON_WM_SETFOCUS()
@@ -141,16 +138,16 @@ RDOBaseEdit::Group::List::const_iterator RDOBaseEdit::Group::find_if(CREF(this_p
 //	ON_COMMAND(ID_SEARCH_FIND_PREVIOUS_FAST, OnSearchFindPreviousFast)
 //END_MESSAGE_MAP()
 
-RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent):
-	super(pParent),
-	markerCount( 0 ),
-	popupMenu( NULL ),
-	style( NULL ),
-	m_pGroup( NULL ),
-	firstFoundPos( -1 ),
-	bHaveFound( false ),
-	m_pFindDialog( NULL ),
-	m_pFindReplaceDialog( NULL )
+RDOBaseEdit::RDOBaseEdit(PTR(QWidget) pParent)
+	: super        (pParent)
+	, markerCount  (0   )
+	, popupMenu    (NULL)
+	, style        (NULL)
+	, m_pGroup     (NULL)
+	, firstFoundPos(-1  )
+	, bHaveFound   (false)
+	, m_pFindDialog       (NULL)
+	, m_pFindReplaceDialog(NULL)
 {
 	QObject::connect(this, SIGNAL(needShown(int, int)), this, SLOT(catchNeedShown(int, int)));
 	QObject::connect(this, SIGNAL(charAdded(int)),      this, SLOT(catchCharAdded(int)));
@@ -435,9 +432,9 @@ void RDOBaseEdit::onSearchFind()
 	{
 		m_pFindDialog = new FindDialog(
 			this,
-			boost::bind(&RDOBaseEdit::onFindDlgFind, this, _1),
+			boost::bind(&RDOBaseEdit::onFindDlgFind,  this, _1),
 			boost::bind(&RDOBaseEdit::onFindDlgClose, this)
-			);
+		);
 	}
 
 	m_pFindDialog->setSettings(m_findSettings);
@@ -445,6 +442,7 @@ void RDOBaseEdit::onSearchFind()
 	m_pFindDialog->raise();
 	m_pFindDialog->activateWindow();
 }
+
 void RDOBaseEdit::setUpActionFind(rbool activate)
 {
 	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
@@ -516,11 +514,11 @@ void RDOBaseEdit::onSearchReplace()
 	{
 		m_pFindReplaceDialog = new FindReplaceDialog(
 			this,
-			boost::bind(&RDOBaseEdit::onFindReplaceDlgFind, this, _1),
-			boost::bind(&RDOBaseEdit::onFindReplaceDlgReplace, this, _1),
+			boost::bind(&RDOBaseEdit::onFindReplaceDlgFind,       this, _1),
+			boost::bind(&RDOBaseEdit::onFindReplaceDlgReplace,    this, _1),
 			boost::bind(&RDOBaseEdit::onFindReplaceDlgReplaceAll, this, _1),
-			boost::bind(&RDOBaseEdit::onFindReplaceDlgClose, this)
-			);
+			boost::bind(&RDOBaseEdit::onFindReplaceDlgClose,      this)
+		);
 	}
 
 	m_pFindReplaceDialog->setSettings(m_findReplaceSettings);
@@ -531,27 +529,27 @@ void RDOBaseEdit::onSearchReplace()
 
 void RDOBaseEdit::onSearchFindNext() 
 {
-	findNext( m_findSettings.what, m_findSettings.searchDown, m_findSettings.matchCase, m_findSettings.matchWholeWord );
+	findNext(m_findSettings.what, m_findSettings.searchDown, m_findSettings.matchCase, m_findSettings.matchWholeWord);
 }
 
 void RDOBaseEdit::onSearchReplaceFind()
 {
-	findNext( m_findReplaceSettings.what, true, m_findReplaceSettings.matchCase, m_findReplaceSettings.matchWholeWord );
+	findNext(m_findReplaceSettings.what, true, m_findReplaceSettings.matchCase, m_findReplaceSettings.matchWholeWord);
 }
 
 void RDOBaseEdit::onSearchFindPrevious() 
 {
-	findNext( m_findSettings.what, !m_findSettings.searchDown, m_findSettings.matchCase, m_findSettings.matchWholeWord );
+	findNext(m_findSettings.what, !m_findSettings.searchDown, m_findSettings.matchCase, m_findSettings.matchWholeWord);
 }
 
 void RDOBaseEdit::onSearchReplaceNext()
 {
-	replace( m_findReplaceSettings.what, m_findReplaceSettings.byWhat, true, m_findReplaceSettings.matchCase, m_findReplaceSettings.matchWholeWord );
+	replace(m_findReplaceSettings.what, m_findReplaceSettings.byWhat, true, m_findReplaceSettings.matchCase, m_findReplaceSettings.matchWholeWord);
 }
 
 void RDOBaseEdit::onSearchReplaceAll()
 {
-	replaceAll( m_findReplaceSettings.what, m_findReplaceSettings.byWhat, m_findReplaceSettings.matchCase, m_findReplaceSettings.matchWholeWord );
+	replaceAll(m_findReplaceSettings.what, m_findReplaceSettings.byWhat, m_findReplaceSettings.matchCase, m_findReplaceSettings.matchWholeWord);
 }
 
 void RDOBaseEdit::OnSearchFindNextFast() 
@@ -560,7 +558,7 @@ void RDOBaseEdit::OnSearchFindNextFast()
 	//if ( m_pGroup ) {
 	//	m_pGroup->findStr     = getWordForFind();
 	//	m_pGroup->bSearchDown = true;
-	//	findNext( m_pGroup->findStr, m_pGroup->bSearchDown, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord );
+	//	findNext(m_pGroup->findStr, m_pGroup->bSearchDown, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord);
 	//}
 }
 
@@ -570,11 +568,11 @@ void RDOBaseEdit::OnSearchFindPreviousFast()
 	//if ( m_pGroup ) {
 	//	m_pGroup->findStr     = getWordForFind();
 	//	m_pGroup->bSearchDown = true;
-	//	findNext( m_pGroup->findStr, !m_pGroup->bSearchDown, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord );
+	//	findNext(m_pGroup->findStr, !m_pGroup->bSearchDown, m_pGroup->bMatchCase, m_pGroup->bMatchWholeWord);
 	//}
 }
 
-void RDOBaseEdit::findNext( REF(tstring) findWhat, const rbool searchDown, const rbool matchCase, const rbool matchWholeWord )
+void RDOBaseEdit::findNext(REF(tstring) findWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord)
 {
 	int findLen = findWhat.length();
 	if ( !findLen ) return;
@@ -630,7 +628,7 @@ void RDOBaseEdit::findNext( REF(tstring) findWhat, const rbool searchDown, const
 	}
 }
 
-void RDOBaseEdit::replace( REF(tstring) findWhat, REF(tstring) replaceWhat, const rbool searchDown, const rbool matchCase, const rbool matchWholeWord )
+void RDOBaseEdit::replace(REF(tstring) findWhat, REF(tstring) replaceWhat, rbool searchDown, rbool matchCase, rbool matchWholeWord)
 {
 	if ( bHaveFound ) {
 		int replaceLen = replaceWhat.length();
@@ -642,10 +640,10 @@ void RDOBaseEdit::replace( REF(tstring) findWhat, REF(tstring) replaceWhat, cons
 		setSelection( cr.cpMin + lenReplaced, cr.cpMin );
 		bHaveFound = false;
 	}
-	findNext( findWhat, searchDown, matchCase, matchWholeWord );
+	findNext(findWhat, searchDown, matchCase, matchWholeWord);
 }
 
-void RDOBaseEdit::replaceAll( REF(tstring) findWhat, REF(tstring) replaceWhat, const rbool matchCase, const rbool matchWholeWord )
+void RDOBaseEdit::replaceAll(REF(tstring) findWhat, REF(tstring) replaceWhat, rbool matchCase, rbool matchWholeWord)
 {
 	int findLen = findWhat.length();
 	if ( !findLen ) return;

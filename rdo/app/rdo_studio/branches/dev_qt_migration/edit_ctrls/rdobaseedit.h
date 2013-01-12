@@ -62,9 +62,9 @@ protected:
 
 	int  firstFoundPos;
 	rbool bHaveFound;
-	void findNext( REF(tstring) findWhat, const rbool searchDown = true, const rbool matchCase = false, const rbool matchWholeWord = false );
-	void replace( REF(tstring) findWhat, REF(tstring) replaceWhat, const rbool searchDown = true, const rbool matchCase = false, const rbool matchWholeWord = false );
-	void replaceAll( REF(tstring) findWhat, REF(tstring) replaceWhat, const rbool matchCase = false, const rbool matchWholeWord = false );
+	void findNext  (REF(tstring) findWhat, rbool searchDown = true, rbool matchCase = false, rbool matchWholeWord = false);
+	void replace   (REF(tstring) findWhat, REF(tstring) replaceWhat, rbool searchDown = true, rbool matchCase = false, rbool matchWholeWord = false);
+	void replaceAll(REF(tstring) findWhat, REF(tstring) replaceWhat, rbool matchCase = false, rbool matchWholeWord = false);
 
 	int indentOfBlock( int line ) const;
 	void setLineIndentation( int line, int indent ) const;
@@ -122,14 +122,14 @@ private slots:
 	void onBookmarkPrev    () const;
 	void onBookmarkClearAll();
 
-	void onSearchGotoLine       ();
-	void onSearchFind           ();
-	void onSearchFindNext       ();
-	void onSearchFindPrevious   ();
-	void onSearchReplace        ();
-	void onSearchReplaceFind    ();
-	void onSearchReplaceNext    ();
-	void onSearchReplaceAll     ();
+	void onSearchGotoLine    ();
+	void onSearchFind        ();
+	void onSearchFindNext    ();
+	void onSearchFindPrevious();
+	void onSearchReplace     ();
+	void onSearchReplaceFind ();
+	void onSearchReplaceNext ();
+	void onSearchReplaceAll  ();
 
 	void onCopyAsRTF(QMimeData* pMimeData);
 
