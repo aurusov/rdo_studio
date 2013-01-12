@@ -386,6 +386,25 @@ void RDOBaseEdit::ensureRangeVisible( int posStart, int posEnd, rbool enforcePol
 	}
 }
 
+void RDOBaseEdit::onSearchFind() 
+{
+	m_findSettings.what = getSelection();
+
+	if (!m_pFindDialog)
+	{
+		m_pFindDialog = new FindDialog(
+			this,
+			boost::bind(&RDOBaseEdit::onFindDlgFind,  this, _1),
+			boost::bind(&RDOBaseEdit::onFindDlgClose, this)
+		);
+	}
+
+	m_pFindDialog->setSettings(m_findSettings);
+	m_pFindDialog->show();
+	m_pFindDialog->raise();
+	m_pFindDialog->activateWindow();
+}
+
 void RDOBaseEdit::onFindDlgFind(CREF(FindDialog::Settings) settings)
 {
 	m_findSettings = settings;
@@ -422,25 +441,6 @@ void RDOBaseEdit::onFindReplaceDlgReplaceAll(CREF(FindReplaceDialog::Settings) s
 void RDOBaseEdit::onFindReplaceDlgClose()
 {
 	m_pFindReplaceDialog = NULL;
-}
-
-void RDOBaseEdit::onSearchFind() 
-{
-	m_findSettings.what = getSelection();
-
-	if (!m_pFindDialog)
-	{
-		m_pFindDialog = new FindDialog(
-			this,
-			boost::bind(&RDOBaseEdit::onFindDlgFind,  this, _1),
-			boost::bind(&RDOBaseEdit::onFindDlgClose, this)
-		);
-	}
-
-	m_pFindDialog->setSettings(m_findSettings);
-	m_pFindDialog->show();
-	m_pFindDialog->raise();
-	m_pFindDialog->activateWindow();
 }
 
 void RDOBaseEdit::setUpActionFind(rbool activate)
