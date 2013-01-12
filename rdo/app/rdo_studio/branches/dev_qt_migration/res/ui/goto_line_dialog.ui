@@ -2,14 +2,6 @@
 <ui version="4.0">
  <class>GoToLineDialog</class>
  <widget class="QDialog" name="GoToLineDialog">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>258</width>
-    <height>90</height>
-   </rect>
-  </property>
   <property name="windowTitle">
    <string>Перейти на строчку</string>
   </property>
@@ -32,7 +24,7 @@
      <item>
       <widget class="QPushButton" name="buttonOk">
        <property name="text">
-        <string>Ок</string>
+        <string>OK</string>
        </property>
       </widget>
      </item>
@@ -63,9 +55,6 @@
        <width>240</width>
        <height>0</height>
       </size>
-     </property>
-     <property name="text">
-      <string>1</string>
      </property>
     </widget>
    </item>
