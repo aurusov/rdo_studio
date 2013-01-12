@@ -158,9 +158,9 @@ private:
 	void        repaintLine         (rsint index);
 
 	void        setFont             ();
-	void        updateActionFind    (rbool activate);
-	void        updateActionEditCopy(rbool activate);
-	void        setUpCoordStatusBar (rbool activate);
+	void        updateActionFind    (rbool activated);
+	void        updateActionEditCopy(rbool activated);
+	void        setUpCoordStatusBar (rbool activated);
 	rbool       canCopy             () const;
 
 	rsint       find                (rbool searchDown);

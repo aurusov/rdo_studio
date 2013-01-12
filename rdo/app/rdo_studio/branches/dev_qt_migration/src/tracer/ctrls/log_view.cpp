@@ -746,76 +746,45 @@ void LogView::setFont()
 	m_charWidth  = fontMetrics.averageCharWidth(); // fontMetrics.maxWidth()
 }
 
-void LogView::updateActionFind(rbool activate)
+void LogView::updateActionFind(rbool activated)
 {
 	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
 	ASSERT(pMainWindow);
 
-	if (activate && m_strings.count())
-	{
-		if (!pMainWindow->actSearchFind->isEnabled())
-		{
-			pMainWindow->actSearchFind->setEnabled(true);
-			connect(pMainWindow->actSearchFind, SIGNAL(triggered(bool)), this, SLOT(onSearchFind()));
-		}
-	}
-	else
-	{
-		if (pMainWindow->actSearchFind->isEnabled())
-		{
-			pMainWindow->actSearchFind->setEnabled(false);
-			disconnect(pMainWindow->actSearchFind, SIGNAL(triggered(bool)), this, SLOT(onSearchFind()));
-		}
-	}
+	updateAction(
+		pMainWindow->actSearchFind,
+		activated && m_strings.count(),
+		this, "onSearchFind()"
+	);
 
-	if (activate && !m_findSettings.what.empty())
-	{
-		if (!pMainWindow->actSearchFindNext->isEnabled())
-		{
-			pMainWindow->actSearchFindNext->setEnabled(true);
-			pMainWindow->actSearchFindPrevious->setEnabled(true);
-			connect(pMainWindow->actSearchFindNext,     SIGNAL(triggered(bool)), this, SLOT(onSearchFindNext()));
-			connect(pMainWindow->actSearchFindPrevious, SIGNAL(triggered(bool)), this, SLOT(onSearchFindPrevious()));
-		}
-	}
-	else
-	{
-		if (pMainWindow->actSearchFindNext->isEnabled())
-		{
-			pMainWindow->actSearchFindNext->setEnabled(false);
-			pMainWindow->actSearchFindPrevious->setEnabled(false);
-			disconnect(pMainWindow->actSearchFindNext,     SIGNAL(triggered(bool)), this, SLOT(onSearchFindNext()));
-			disconnect(pMainWindow->actSearchFindPrevious, SIGNAL(triggered(bool)), this, SLOT(onSearchFindPrevious()));
-		}
-	}
+	rbool findNextPrev = activated && !m_findSettings.what.empty();
+	updateAction(
+		pMainWindow->actSearchFindNext,
+		findNextPrev,
+		this, "onSearchFindNext()"
+	);
+	updateAction(
+		pMainWindow->actSearchFindPrevious,
+		findNextPrev,
+		this, "onSearchFindPrevious()"
+	);
 }
 
-void LogView::updateActionEditCopy(rbool activate)
+void LogView::updateActionEditCopy(rbool activated)
 {
 	Ui::MainWindow* pMainWindow = studioApp.getMainWndUI();
 	ASSERT(pMainWindow);
 
-	if (activate && canCopy())
-	{
-		if (!pMainWindow->actEditCopy->isEnabled())
-		{
-			pMainWindow->actEditCopy->setEnabled(true);
-			connect(pMainWindow->actEditCopy, SIGNAL(triggered(bool)), this, SLOT(onEditCopy()));
-		}
-	}
-	else
-	{
-		if (pMainWindow->actEditCopy->isEnabled())
-		{
-			pMainWindow->actEditCopy->setEnabled(false);
-			disconnect(pMainWindow->actEditCopy, SIGNAL(triggered(bool)), this, SLOT(onEditCopy()));
-		}
-	}
+	updateAction(
+		pMainWindow->actEditCopy,
+		activated && canCopy(),
+		this, "onEditCopy()"
+	);
 }
 
-void LogView::setUpCoordStatusBar(rbool activate)
+void LogView::setUpCoordStatusBar(rbool activated)
 {
-	QString coord = activate && selectedLine() != -1
+	QString coord = activated && selectedLine() != -1
 		? QString("1 : %1").arg(selectedLine())
 		: QString();
 
