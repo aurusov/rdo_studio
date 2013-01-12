@@ -3,7 +3,8 @@
 #==============================================================================
 
 SET(SOURCE_FILES
-	main.cpp)
+    main.cpp
+    )
 	
 ADD_BOOST_TEST(test_rdo_utils_interface ${SOURCE_FILES})
 ADD_DEPENDENCIES(test_rdo_utils_interface rdo_utils)
