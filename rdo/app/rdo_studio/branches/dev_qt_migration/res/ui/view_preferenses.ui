@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>494</width>
+    <width>499</width>
     <height>449</height>
    </rect>
   </property>
@@ -14,6 +14,33 @@
    <string>Настройки</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="1" column="0">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>149</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="1" column="2">
+    <widget class="QPushButton" name="buttonCancel">
+     <property name="text">
+      <string>Отмена</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="3">
+    <widget class="QPushButton" name="buttonApply">
+     <property name="text">
+      <string>Применить</string>
+     </property>
+    </widget>
+   </item>
    <item row="1" column="4">
     <widget class="QPushButton" name="buttonHelp">
      <property name="text">
@@ -31,7 +58,7 @@
    <item row="0" column="0" colspan="5">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tab_1">
       <property name="accessibleName">
@@ -77,6 +104,22 @@
           </widget>
          </item>
          <item>
+          <spacer name="verticalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Maximum</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>10</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
           <widget class="QCheckBox" name="checkBox_3">
            <property name="text">
             <string>Открывать последний проект при старте</string>
@@ -103,7 +146,7 @@
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>180</height>
+           <height>220</height>
           </size>
          </property>
         </spacer>
@@ -275,11 +318,827 @@
       <attribute name="title">
        <string>Табуляция</string>
       </attribute>
+      <layout class="QGridLayout" name="gridLayout_3">
+       <item row="0" column="0">
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="title">
+          <string/>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_4">
+          <item row="0" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_3">
+              <property name="sizeConstraint">
+               <enum>QLayout::SetMinimumSize</enum>
+              </property>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_2">
+                <item>
+                 <widget class="QLabel" name="label">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>Размер табуляции</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_3">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="lineEdit">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>70</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_3">
+                <item>
+                 <widget class="QLabel" name="label_2">
+                  <property name="text">
+                   <string>Размер отступа</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_2">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="lineEdit_2">
+                  <property name="minimumSize">
+                   <size>
+                    <width>70</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>70</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_4">
+              <item>
+               <widget class="QCheckBox" name="checkBox_5">
+                <property name="text">
+                 <string>Использовать символ табуляции (не пробел)</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="checkBox_6">
+                <property name="text">
+                 <string>Отступ через табуляцию</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+          <item row="1" column="0">
+           <layout class="QVBoxLayout" name="verticalLayout_6">
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_5">
+              <item>
+               <widget class="QRadioButton" name="radioButton">
+                <property name="text">
+                 <string>Стирать табуляцией</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QRadioButton" name="radioButton_2">
+                <property name="text">
+                 <string>Стирать отступом</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="checkBox_7">
+              <property name="text">
+               <string>Авто-отступ</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <spacer name="verticalSpacer_4">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Minimum</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>180</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
      </widget>
      <widget class="QWidget" name="tab_4">
       <attribute name="title">
        <string>Стиль и цвет</string>
       </attribute>
+      <layout class="QGridLayout" name="gridLayout_5">
+       <item row="0" column="0" rowspan="7">
+        <widget class="QTreeWidget" name="treeWidget">
+         <property name="horizontalScrollBarPolicy">
+          <enum>Qt::ScrollBarAsNeeded</enum>
+         </property>
+         <column>
+          <property name="text">
+           <string>Все окна</string>
+          </property>
+         </column>
+         <item>
+          <property name="text">
+           <string>Исходный текст</string>
+          </property>
+          <item>
+           <property name="text">
+            <string>обыкновенный текст</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>переменная</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>ключевое слово</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>функция</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>трассировка</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>цвет</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>комментарий</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>число</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>строка</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>оператор</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>каретка</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>выделение</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>закладка</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>группа</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>ошибка</string>
+           </property>
+          </item>
+         </item>
+         <item>
+          <property name="text">
+           <string>Окно компиляции</string>
+          </property>
+          <item>
+           <property name="text">
+            <string>текст</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>выделенная строка</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>каретка</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>выделение</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>закладка</string>
+           </property>
+          </item>
+         </item>
+         <item>
+          <property name="text">
+           <string>Окно отладки</string>
+          </property>
+          <item>
+           <property name="text">
+            <string>текст</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>каретка</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>выделение</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>закладка</string>
+           </property>
+          </item>
+         </item>
+         <item>
+          <property name="text">
+           <string>Окно трассировки</string>
+          </property>
+          <item>
+           <property name="text">
+            <string>служебное событие (ES)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>начало действия (EB)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>окончание действия (EF)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>нерегулярное событие (EI)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>продукционное правило (ER)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>создание ресурса (RC)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>удаление ресурса (RE)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>изменение состояния ресурса (RK)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>трассировка индекса (V)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>статус окончания моделирования ($Status)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>статистика по поиску на графе (DPS)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>начало поиска (SB)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>трассировка раскрываемой вершины (SO)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>признак вершины (STN)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>признак вершины (STD)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>признак вершины (STR)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>создание ресурса (при поиске) (SRC)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>удаление ресурса (при поиске) (SRE)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>изменение состояния ресурса (при поиске) (SRK)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>трассировка решения (SD)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>завершение поиска (SES)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>завершение поиска (SEN)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>завершение поиска (SEM)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>завершение поиска (SEF)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>завершение поиска (SEU)</string>
+           </property>
+          </item>
+         </item>
+         <item>
+          <property name="text">
+           <string>Окно результатов</string>
+          </property>
+          <item>
+           <property name="text">
+            <string>обыкновенный текст</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>переменная</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>ключевое слово</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>число</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>строка</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>оператор</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>каретка</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>выделение</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>закладка</string>
+           </property>
+          </item>
+         </item>
+         <item>
+          <property name="text">
+           <string>Окно поиска</string>
+          </property>
+          <item>
+           <property name="text">
+            <string>текст</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>строка для поиска</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>выделенная строка</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>каретка</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>выделение</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>закладка</string>
+           </property>
+          </item>
+         </item>
+         <item>
+          <property name="text">
+           <string>Окно графиков</string>
+          </property>
+          <item>
+           <property name="text">
+            <string>ось</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>заголовок</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>легенда</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>график</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>время</string>
+           </property>
+          </item>
+         </item>
+         <item>
+          <property name="text">
+           <string>Окно анимации</string>
+          </property>
+          <item>
+           <property name="text">
+            <string>цвет окантовки</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>цвет фона за пределами кадра</string>
+           </property>
+          </item>
+         </item>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_7">
+         <item>
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Тема</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_4">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QComboBox" name="comboBox">
+           <property name="minimumSize">
+            <size>
+             <width>160</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="1" column="1" colspan="2">
+        <layout class="QHBoxLayout" name="horizontalLayout_8">
+         <item>
+          <widget class="QFontComboBox" name="fontComboBox">
+           <property name="minimumSize">
+            <size>
+             <width>200</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="comboBox_3">
+           <property name="minimumSize">
+            <size>
+             <width>90</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="2" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <item>
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>Текст</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="comboBox_2">
+           <property name="minimumSize">
+            <size>
+             <width>115</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="toolButton">
+           <property name="text">
+            <string>...</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="2" column="2" rowspan="2">
+        <layout class="QVBoxLayout" name="verticalLayout_7">
+         <item>
+          <widget class="QCheckBox" name="checkBox_8">
+           <property name="text">
+            <string>Утолстить</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="checkBox_9">
+           <property name="text">
+            <string>Наклонить</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="checkBox_10">
+           <property name="text">
+            <string>Подчеркнуть</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="3" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <item>
+          <widget class="QLabel" name="label_5">
+           <property name="text">
+            <string>Фон</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="comboBox_4">
+           <property name="minimumSize">
+            <size>
+             <width>115</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="toolButton_2">
+           <property name="text">
+            <string>...</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="4" column="1" colspan="2">
+        <layout class="QHBoxLayout" name="horizontalLayout_9">
+         <item>
+          <widget class="QCheckBox" name="checkBox_11">
+           <property name="text">
+            <string>Перенос слов</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="checkBox_12">
+           <property name="text">
+            <string>Горизонтальная прокрутка</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="5" column="1" colspan="2">
+        <layout class="QHBoxLayout" name="horizontalLayout_12">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_11">
+           <item>
+            <widget class="QLabel" name="label_6">
+             <property name="text">
+              <string>Группа</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="comboBox_5">
+             <property name="minimumSize">
+              <size>
+               <width>110</width>
+               <height>0</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_10">
+           <item>
+            <widget class="QLabel" name="label_7">
+             <property name="text">
+              <string>Закладка</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="comboBox_6">
+             <property name="minimumSize">
+              <size>
+               <width>80</width>
+               <height>0</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item row="6" column="1">
+        <widget class="QCheckBox" name="checkBox_13">
+         <property name="text">
+          <string>Группа для комментариев</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0" colspan="3">
+        <widget class="QTextBrowser" name="textBrowser"/>
+       </item>
+      </layout>
+      <zorder>label_3</zorder>
+      <zorder>comboBox</zorder>
+      <zorder>comboBox_3</zorder>
+      <zorder>label_4</zorder>
+      <zorder>label_5</zorder>
+      <zorder>fontComboBox</zorder>
+      <zorder>comboBox_2</zorder>
+      <zorder>comboBox_4</zorder>
+      <zorder>toolButton</zorder>
+      <zorder>toolButton_2</zorder>
+      <zorder>checkBox_8</zorder>
+      <zorder>checkBox_9</zorder>
+      <zorder>checkBox_10</zorder>
+      <zorder>label_4</zorder>
+      <zorder>checkBox_11</zorder>
+      <zorder>checkBox_12</zorder>
+      <zorder>label_6</zorder>
+      <zorder>label_7</zorder>
+      <zorder>comboBox_5</zorder>
+      <zorder>comboBox_6</zorder>
+      <zorder>checkBox_13</zorder>
+      <zorder>treeWidget</zorder>
+      <zorder>textBrowser</zorder>
      </widget>
      <widget class="QWidget" name="tab_5">
       <attribute name="title">
@@ -287,33 +1146,6 @@
       </attribute>
      </widget>
     </widget>
-   </item>
-   <item row="1" column="2">
-    <widget class="QPushButton" name="buttonCancel">
-     <property name="text">
-      <string>Отмена</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="3">
-    <widget class="QPushButton" name="buttonApply">
-     <property name="text">
-      <string>Применить</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>149</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
    </item>
   </layout>
  </widget>
